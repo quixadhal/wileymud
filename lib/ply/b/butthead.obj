@@ -105,7 +105,8 @@ Affect             0 0
 Affect             0 0
 ExtraDescr         pouch~
 This small pouch is made of soft deerskin.
-~
+
+~
 End
 #ITEM
 ObjId              13
@@ -180,7 +181,8 @@ Affect             0 0
 Affect             0 0
 ExtraDescr         whip~
 The whip is nothing more than a long piece of leather.
-~
+
+~
 End
 #ITEM
 ObjId              13
@@ -351,7 +353,8 @@ Affect             0 0
 Affect             0 0
 ExtraDescr         large knife~
 It appears to be about eight to nine inches in length, fairly sharp.
-~
+
+~
 End
 End
 #END_RENT

@@ -57,8 +57,10 @@ Affect             0 0
 Affect             0 0
 ExtraDescr         black leather jacket~
   The jack has been dyed a deep black color which entails the whole material
-except a red syckle that has been painted upon the left shoulder.
-~
+
+except a red syckle that has been painted upon the left shoulder.
+
+~
 End
 #ITEM
 ObjId              28
@@ -205,7 +207,8 @@ Affect             0 0
 Affect             0 0
 ExtraDescr         dagger~
 This small dagger is made of the spine of a dragon, strong and sharp.
-~
+
+~
 End
 #ITEM
 ObjId              28
@@ -232,9 +235,12 @@ Affect             0 0
 Affect             0 0
 ExtraDescr         vest scale~
   The vest seems to have a rather soft inner lining while on the outside 
-it seems to be covered with very hard scales of some large beast.  The 
-scales have a greenish tint to them.
-~
+
+it seems to be covered with very hard scales of some large beast.  The 
+
+scales have a greenish tint to them.
+
+~
 End
 #ITEM
 ObjId              28
@@ -285,8 +291,10 @@ Affect             0 0
 Affect             0 0
 ExtraDescr         hawk beaked mask~
   The mask has a huge beak upon it, rather it looks more like a hallow head
-of some huge bird.
-~
+
+of some huge bird.
+
+~
 End
 #ITEM
 ObjId              28
@@ -361,8 +369,10 @@ Affect             0 0
 Affect             0 0
 ExtraDescr         leg legplates scale~
   The legplates seem to have a soft inner lining while the scales on the 
-outer side seem to be very tough and tinted a soft green.
-~
+
+outer side seem to be very tough and tinted a soft green.
+
+~
 End
 #ITEM
 ObjId              28
@@ -437,8 +447,10 @@ Affect             0 0
 Affect             0 0
 ExtraDescr         arm armplates scale~
   The armplates seem to have a soft inner lining while the scales on the
-outer side seem to be very strong and tinted a soft green.
-~
+
+outer side seem to be very strong and tinted a soft green.
+
+~
 End
 #ITEM
 ObjId              28
@@ -489,7 +501,8 @@ Affect             0 0
 Affect             0 0
 ExtraDescr         ring~
 This small ring has a pure pearl in the center.
-~
+
+~
 End
 #ITEM
 ObjId              28
@@ -516,9 +529,12 @@ Affect             0 0
 Affect             0 0
 ExtraDescr         necklace skull~
 It appears to be a small skull, about the size of a monkeys, looking into
-the eyesockets it is quite obvious that one of the eye gems are missing.  The
-other that still remains is a black ebony hue.
-~
+
+the eyesockets it is quite obvious that one of the eye gems are missing.  The
+
+other that still remains is a black ebony hue.
+
+~
 End
 #ITEM
 ObjId              28
@@ -593,7 +609,8 @@ Affect             0 0
 Affect             0 0
 ExtraDescr         blue green staff~
   The staff has symbols that could only pertain to the holy arts.
-~
+
+~
 End
 #ITEM
 ObjId              32
@@ -668,7 +685,8 @@ Affect             0 0
 Affect             0 0
 ExtraDescr         pouch~
 This small pouch is made of soft deerskin.
-~
+
+~
 End
 #ITEM
 ObjId              32
@@ -695,10 +713,14 @@ Affect             0 0
 Affect             0 0
 ExtraDescr         gnarled branch~
   The branch is no more than a foot long and seems to be curved in every
-which way.  All about the small branch there appears to be runes of a sort,
-the only ones you can make out say this: "Call upon the dragon....", the rest
-seems unintelligable.
-~
+
+which way.  All about the small branch there appears to be runes of a sort,
+
+the only ones you can make out say this: "Call upon the dragon....", the rest
+
+seems unintelligable.
+
+~
 End
 #ITEM
 ObjId              32
@@ -773,7 +795,8 @@ Affect             17 -7
 Affect             0 0
 ExtraDescr         bearskin skin black~
   It looks as though it would fit someone fifteen feet tall and very heavy.
-~
+
+~
 End
 #ITEM
 ObjId              32

@@ -31,7 +31,8 @@ Affect             0 0
 Affect             0 0
 ExtraDescr         ring~
 This small ring has a pure pearl in the center.
-~
+
+~
 End
 #ITEM
 ObjId              1
@@ -58,9 +59,12 @@ Affect             0 0
 Affect             0 0
 ExtraDescr         scale bodice~
   This piece of armor looks more like the top of a elegant dress than 
-anything else, with shoulder straps houlstering the bousoms, much skin on
-the upper torso is exposed.
-~
+
+anything else, with shoulder straps houlstering the bousoms, much skin on
+
+the upper torso is exposed.
+
+~
 End
 #ITEM
 ObjId              2
@@ -111,8 +115,10 @@ Affect             0 0
 Affect             0 0
 ExtraDescr         armoured leggings~
   The leggings are made from links of chain and appear very strong.
-#5040
-armour plated gauntlets~
+
+#5040
+
+armour plated gauntlets~
 End
 #ITEM
 ObjId              4
@@ -669,7 +675,8 @@ Affect             0 0
 Affect             0 0
 ExtraDescr         pouch~
 This small pouch is made of soft deerskin.
-~
+
+~
 End
 End
 #END_RENT

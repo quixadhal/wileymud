@@ -8,14 +8,16 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <sys/types.h>
+#include <signal.h>
 #include <string.h>
 #include <assert.h>
+
 #include "include/global.h"
 #include "include/bug.h"
 #include "include/utils.h"
 #include "include/comm.h"
 #include "include/handler.h"
-#include "include/limits.h"
+#include "include/mudlimits.h"
 #include "include/db.h"
 #include "include/constants.h"
 #include "include/spells.h"
@@ -444,9 +446,7 @@ void spell_clone(BYTE level, struct char_data *ch, struct char_data *victim, str
     if(victim->player.long_descr)
       clone->player.long_descr = strdup(victim->player.long_descr);
     else {
-      clone->player.long_descr = calloc(strlen(victim->player.name)+
-                                        strlen(victim->player.title)+
-                                        22, 1);
+      CREATE(clone->player.long_descr, char, strlen(victim->player.name) + strlen(victim->player.title) + 22);
       strcpy(clone->player.long_descr, victim->player.name);
       strcat(clone->player.long_descr, " ");
       strcat(clone->player.long_descr, victim->player.title);
@@ -3956,7 +3956,7 @@ void spell_goodberry(BYTE level, struct char_data *ch, struct char_data *victim,
   act("$p suddenly appears in your hand.", TRUE, ch, tmp_obj, 0, TO_CHAR);
 }
 
-#ifdef 0
+#if 0
 
 void spell_tree_travel(BYTE level, struct char_data *ch, struct char_data *victim, struct obj_data *obj)
 {

@@ -105,8 +105,10 @@ Affect             0 0
 Affect             0 0
 ExtraDescr         armoured leggings~
   The leggings are made from links of chain and appear very strong.
-#5040
-armour plated gauntlets~
+
+#5040
+
+armour plated gauntlets~
 End
 #ITEM
 ObjId              10
@@ -254,23 +256,38 @@ Affect             0 0
 ExtraDescr         map shylar~
                          -= Grassland =-
 
-     -= Mansion =-           
-           +              -= Arcanus =-
-   	       	         	+
-         * * * * *  *  *  *  *  *+ -= Jakes =-  +-= Kark =-
-   
-                 -= Jessica =- +*                -= Farm =-
 
-                 -= Supply =-  +*+ -= Griffons =-      
-      +
-+-= Chapel =-+   -= Bakery =-  +*  -= Sass =-
-      +            		       +	
- -= Pastue =-     -= Tate =-   +*  *  *  *  *  *  *  *  *  *
--= Cemetary =-                         + 
-      +                            -= Home =-
+     -= Mansion =-           
 
-                         -= Grassland =-
-~
+           +              -= Arcanus =-
+
+   	       	         	+
+
+         * * * * *  *  *  *  *  *+ -= Jakes =-  +-= Kark =-
+
+   
+
+                 -= Jessica =- +*                -= Farm =-
+
+
+                 -= Supply =-  +*+ -= Griffons =-      
+
+      +
+
++-= Chapel =-+   -= Bakery =-  +*  -= Sass =-
+
+      +            		       +	
+
+ -= Pastue =-     -= Tate =-   +*  *  *  *  *  *  *  *  *  *
+
+-= Cemetary =-                         + 
+
+      +                            -= Home =-
+
+
+                         -= Grassland =-
+
+~
 End
 #ITEM
 ObjId              10

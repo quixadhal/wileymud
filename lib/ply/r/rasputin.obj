@@ -420,7 +420,8 @@ End
 ObjId              29
 ContainedBy        -1
 Name               
-treasure's box~
+
+treasure's box~
 Description
 A wooden treasure's box lies here.~
 ShortDescr
@@ -466,7 +467,8 @@ Affect             0 0
 Affect             0 0
 ExtraDescr         pouch~
 This small pouch is made of soft deerskin.
-~
+
+~
 End
 #ITEM
 ObjId              29

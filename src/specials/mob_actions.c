@@ -8,29 +8,29 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-#include "include/global.h"
-#include "include/bug.h"
-#include "include/utils.h"
+#include "global.h"
+#include "bug.h"
+#include "utils.h"
 
-#include "include/act_obj.h"
-#include "include/act_off.h"
-#include "include/comm.h"
-#include "include/constants.h"
-#include "include/db.h"
-#include "include/fight.h"
-#include "include/handler.h"
-#include "include/hash.h"
-#include "include/limits.h"
-#include "include/multiclass.h"
-#include "include/opinion.h"
-#include "include/spell_parser.h"
-#include "include/trap.h"
+#include "act_obj.h"
+#include "act_off.h"
+#include "comm.h"
+#include "constants.h"
+#include "db.h"
+#include "fight.h"
+#include "handler.h"
+#include "hash.h"
+#include "mudlimits.h"
+#include "multiclass.h"
+#include "opinion.h"
+#include "spell_parser.h"
+#include "trap.h"
 
-#include "include/act_skills.h"
-#include "include/spec_procs.h"
-#include "include/tracking.h"
+#include "act_skills.h"
+#include "spec_procs.h"
+#include "tracking.h"
 #define _MOB_ACTIONS_C
-#include "include/mob_actions.h"
+#include "mob_actions.h"
 
 void mobile_guardian(struct char_data *ch)
 {

@@ -6,6 +6,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <sys/types.h>
+#include <signal.h>
 #include <string.h>
 #include <ctype.h>
 #include <time.h>
@@ -29,11 +30,13 @@ inline void FreeHates(struct char_data *ch) {
   for (k = ch->hates.clist; k; k = n) {
     n = k->next;
     if(n)
-      if(n->valid)
-        if(!strcmp(n->valid, "AddHated"))
-          free(n);
-        else
+      if(n->valid) {
+        if(!strcmp(n->valid, "AddHated")) {
+          DESTROY(n);
+        } else {
           bug("Attempt to free invalid Hated chain");
+        }
+      }
   }
 }
 
@@ -45,11 +48,13 @@ inline void FreeFears(struct char_data *ch) {
   for (k = ch->fears.clist; k; k = n) {
     n = k->next;
     if(n)
-      if(n->valid)
-        if(!strcmp(n->valid, "AddFeared"))
-          free(n);
-        else
+      if(n->valid) {
+        if(!strcmp(n->valid, "AddFeared")) {
+          DESTROY(n);
+        } else {
           bug("Attempt to free invalid Feared chain");
+        }
+      }
   }
 }
 
@@ -67,12 +72,12 @@ int RemHated(struct char_data *ch, struct char_data *pud) {
 	  t = oldpud;
 	  if (ch->hates.clist == t) {
 	    ch->hates.clist = 0;
-	    if(t) free(t);
+	    DESTROY(t);
 	    break;
 	  } else {
 	    for (oldpud = ch->hates.clist; oldpud->next != t; oldpud = oldpud->next);
 	    oldpud->next = oldpud->next->next;
-	    if(t) free(t);
+	    DESTROY(t);
 	    break;
 	  }
 	}
@@ -81,12 +86,12 @@ int RemHated(struct char_data *ch, struct char_data *pud) {
 	  t = oldpud;
 	  if (ch->hates.clist == t) {
 	    ch->hates.clist = 0;
-	    if(t) free(t);
+	    DESTROY(t);
 	    break;
 	  } else {
 	    for (oldpud = ch->hates.clist; oldpud->next != t; oldpud = oldpud->next);
 	    oldpud->next = oldpud->next->next;
-	    if(t) free(t);
+	    DESTROY(t);
 	    break;
 	  }
 	}
@@ -199,13 +204,13 @@ int RemFeared(struct char_data *ch, struct char_data *pud) {
 	  t = oldpud;
 	  if (ch->fears.clist == t) {
 	    ch->fears.clist = 0;
-	    if(t) free(t);
+	    DESTROY(t);
 	    break;
 	  } else {
 	    for (oldpud = ch->fears.clist; oldpud->next != t;
 		 oldpud = oldpud->next);
 	    oldpud->next = oldpud->next->next;
-	    if(t) free(t);
+	    DESTROY(t);
 	    break;
 	  }
 	}
@@ -214,13 +219,13 @@ int RemFeared(struct char_data *ch, struct char_data *pud) {
 	  t = oldpud;
 	  if (ch->fears.clist == t) {
 	    ch->fears.clist = 0;
-	    if(t) free(t);
+	    DESTROY(t);
 	    break;
 	  } else {
 	    for (oldpud = ch->fears.clist; oldpud->next != t;
 		 oldpud = oldpud->next);
 	    oldpud->next = oldpud->next->next;
-	    if(t) free(t);
+	    DESTROY(t);
 	    break;
 	  }
 	}

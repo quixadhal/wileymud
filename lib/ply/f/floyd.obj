@@ -31,7 +31,8 @@ Affect             0 0
 Affect             0 0
 ExtraDescr         ring~
 This small ring has a pure pearl in the center.
-~
+
+~
 End
 #ITEM
 ObjId              1
@@ -106,8 +107,10 @@ Affect             0 0
 Affect             0 0
 ExtraDescr         black leather jacket~
   The jack has been dyed a deep black color which entails the whole material
-except a red syckle that has been painted upon the left shoulder.
-~
+
+except a red syckle that has been painted upon the left shoulder.
+
+~
 End
 #ITEM
 ObjId              4
@@ -158,8 +161,10 @@ Affect             0 0
 Affect             0 0
 ExtraDescr         copper legplates~
   These two long pieces of copper are extremely heavy and copper has been
-known to give way in batle to harsh blows.
-~
+
+known to give way in batle to harsh blows.
+
+~
 End
 #ITEM
 ObjId              6
@@ -210,8 +215,10 @@ Affect             0 0
 Affect             0 0
 ExtraDescr         copper armplates~
   It is a heavy couple pieces of armor and copper is known to give way in
-battle from a harsh blow.
-~
+
+battle from a harsh blow.
+
+~
 End
 #ITEM
 ObjId              8
@@ -238,7 +245,8 @@ Affect             0 0
 Affect             0 0
 ExtraDescr         black hooded robe~
   The symbol of Aklan in engraved upon it.
-~
+
+~
 End
 #ITEM
 ObjId              9
@@ -411,8 +419,10 @@ Affect             0 0
 Affect             0 0
 ExtraDescr         whip~
   The whip looks to be braided black leather which ends to be almost eight
-feet in length.  On the handle of the whip a red syckle has been embroidered.
-~
+
+feet in length.  On the handle of the whip a red syckle has been embroidered.
+
+~
 End
 #ITEM
 ObjId              21
@@ -439,7 +449,8 @@ Affect             0 0
 Affect             0 0
 ExtraDescr         twig small~
   The twig has writing upon it which can be read and recited.
-~
+
+~
 End
 #ITEM
 ObjId              21

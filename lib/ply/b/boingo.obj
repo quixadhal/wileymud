@@ -154,23 +154,38 @@ Affect             0 0
 ExtraDescr         map shylar~
                          -= Grassland =-
 
-     -= Mansion =-           
-           +              -= Arcanus =-
-   	       	         	+
-         * * * * *  *  *  *  *  *+ -= Jakes =-  +-= Kark =-
-   
-                 -= Jessica =- +*                -= Farm =-
 
-                 -= Supply =-  +*+ -= Griffons =-      
-      +
-+-= Chapel =-+   -= Bakery =-  +*  -= Sass =-
-      +            		       +	
- -= Pastue =-     -= Tate =-   +*  *  *  *  *  *  *  *  *  *
--= Cemetary =-                         + 
-      +                            -= Home =-
+     -= Mansion =-           
 
-                         -= Grassland =-
-~
+           +              -= Arcanus =-
+
+   	       	         	+
+
+         * * * * *  *  *  *  *  *+ -= Jakes =-  +-= Kark =-
+
+   
+
+                 -= Jessica =- +*                -= Farm =-
+
+
+                 -= Supply =-  +*+ -= Griffons =-      
+
+      +
+
++-= Chapel =-+   -= Bakery =-  +*  -= Sass =-
+
+      +            		       +	
+
+ -= Pastue =-     -= Tate =-   +*  *  *  *  *  *  *  *  *  *
+
+-= Cemetary =-                         + 
+
+      +                            -= Home =-
+
+
+                         -= Grassland =-
+
+~
 End
 #ITEM
 ObjId              7
@@ -221,7 +236,8 @@ Affect             0 0
 Affect             0 0
 ExtraDescr         large knife~
 It appears to be about eight to nine inches in length, fairly sharp.
-~
+
+~
 End
 End
 #END_RENT

@@ -103,7 +103,8 @@ Affect             0 0
 Affect             0 0
 ExtraDescr         armoured leggings~
   The leggings are made from links of chain and appear very strong.
-~
+
+~
 End
 #ITEM
 ObjId              4
@@ -1548,7 +1549,8 @@ Affect             0 0
 Affect             0 0
 ExtraDescr         whip~
 The whip is nothing more than a long piece of leather.
-~
+
+~
 End
 #ITEM
 ObjId              73
@@ -1575,7 +1577,8 @@ Affect             0 0
 Affect             0 0
 ExtraDescr         whip~
 The whip is nothing more than a long piece of leather.
-~
+
+~
 End
 #ITEM
 ObjId              73
@@ -1602,7 +1605,8 @@ Affect             0 0
 Affect             0 0
 ExtraDescr         whip~
 The whip is nothing more than a long piece of leather.
-~
+
+~
 End
 #ITEM
 ObjId              73
@@ -1725,9 +1729,12 @@ Affect             0 0
 Affect             0 0
 ExtraDescr         scale bodice~
   This piece of armor looks more like the top of a elegant dress than 
-anything else, with shoulder straps houlstering the bousoms, much skin on
-the upper torso is exposed.
-~
+
+anything else, with shoulder straps houlstering the bousoms, much skin on
+
+the upper torso is exposed.
+
+~
 End
 #ITEM
 ObjId              73
@@ -1754,9 +1761,12 @@ Affect             0 0
 Affect             0 0
 ExtraDescr         scale bodice~
   This piece of armor looks more like the top of a elegant dress than 
-anything else, with shoulder straps houlstering the bousoms, much skin on
-the upper torso is exposed.
-~
+
+anything else, with shoulder straps houlstering the bousoms, much skin on
+
+the upper torso is exposed.
+
+~
 End
 #ITEM
 ObjId              73
@@ -1783,9 +1793,12 @@ Affect             0 0
 Affect             0 0
 ExtraDescr         scale bodice~
   This piece of armor looks more like the top of a elegant dress than 
-anything else, with shoulder straps houlstering the bousoms, much skin on
-the upper torso is exposed.
-~
+
+anything else, with shoulder straps houlstering the bousoms, much skin on
+
+the upper torso is exposed.
+
+~
 End
 #ITEM
 ObjId              73

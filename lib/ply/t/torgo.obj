@@ -801,8 +801,10 @@ Affect             0 0
 Affect             0 0
 ExtraDescr         legplates plates~
   The plates appear to be made of pure silver while the fringe of the plates
-are decorated with the feathers of a mountain eagle.
-~
+
+are decorated with the feathers of a mountain eagle.
+
+~
 End
 #ITEM
 ObjId              40
@@ -829,9 +831,12 @@ Affect             0 0
 Affect             0 0
 ExtraDescr         boots~
   The boots appear to be made of a soft leather but are plated with silver
-plate to provide protection.  The top fringe of the boots are adorned with
-the feathers of a mountain eagle.
-~
+
+plate to provide protection.  The top fringe of the boots are adorned with
+
+the feathers of a mountain eagle.
+
+~
 End
 #ITEM
 ObjId              40
@@ -858,8 +863,10 @@ Affect             0 0
 Affect             0 0
 ExtraDescr         guantlets~
   The guantlets seem to be made of silver links and have small feathers of a 
-mountain eagle adorning the knuckles.
-~
+
+mountain eagle adorning the knuckles.
+
+~
 End
 #ITEM
 ObjId              40

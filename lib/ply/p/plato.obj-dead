@@ -178,23 +178,38 @@ Affect             0 0
 ExtraDescr         map shylar~
                          -= Grassland =-
 
-     -= Mansion =-           
-           +              -= Arcanus =-
-   	       	         	+
-         * * * * *  *  *  *  *  *+ -= Jakes =-  +-= Kark =-
-   
-                 -= Jessica =- +*                -= Farm =-
 
-                 -= Supply =-  +*+ -= Griffons =-      
-      +
-+-= Chapel =-+   -= Bakery =-  +*  -= Sass =-
-      +            		       +	
- -= Pastue =-     -= Tate =-   +*  *  *  *  *  *  *  *  *  *
--= Cemetary =-                         + 
-      +                            -= Home =-
+     -= Mansion =-           
 
-                         -= Grassland =-
-~
+           +              -= Arcanus =-
+
+   	       	         	+
+
+         * * * * *  *  *  *  *  *+ -= Jakes =-  +-= Kark =-
+
+   
+
+                 -= Jessica =- +*                -= Farm =-
+
+
+                 -= Supply =-  +*+ -= Griffons =-      
+
+      +
+
++-= Chapel =-+   -= Bakery =-  +*  -= Sass =-
+
+      +            		       +	
+
+ -= Pastue =-     -= Tate =-   +*  *  *  *  *  *  *  *  *  *
+
+-= Cemetary =-                         + 
+
+      +                            -= Home =-
+
+
+                         -= Grassland =-
+
+~
 End
 #ITEM
 ObjId              7
@@ -222,27 +237,48 @@ Affect             0 0
 ExtraDescr         letter newbie~
 Welcome to WileyMUD III
 
-Death is commonplace here.  If you wish to die infrequenly, consider a few
-pointers:
- 1> Use the consider command.
-    This command will help you by giving you a fairly good idea how well you
-    can take a mob.  Remember that the consider command will not factor in
-    damage from a mob's weapon.  Look and see if the mob has a weapon and
-    consider not attacking a mob.
- 2> Set wimp mode.
-    Entering the wimp command will automatically cause you to flee for the
-    first three levels of the game if your hit points drop too low.
- 3> Be aware that almost all mobs will remember you and some will track you.
-    If you attack a mob and have to flee, the mob will frequently attempt to
-    track you and kill you when it finds you.  If you must, duck into Griffin's
-    Tale, where no fighting is allowed.  When fleeing, move away a few rooms
-    to try to lose the trail of any mob which is following you.
- 4> Stay really close to Shylar for the first few levels, or leave in groups.
-    Most of the mobs in Shylar are fairly easy (except the shopkeepers,
-    guildmasters, and Eli).  Outside of Shylar, you are TOAST!
- 5> The most important item: Expect to die!
- -Sedna
-~
+
+Death is commonplace here.  If you wish to die infrequenly, consider a few
+
+pointers:
+
+ 1> Use the consider command.
+
+    This command will help you by giving you a fairly good idea how well you
+
+    can take a mob.  Remember that the consider command will not factor in
+
+    damage from a mob's weapon.  Look and see if the mob has a weapon and
+
+    consider not attacking a mob.
+
+ 2> Set wimp mode.
+
+    Entering the wimp command will automatically cause you to flee for the
+
+    first three levels of the game if your hit points drop too low.
+
+ 3> Be aware that almost all mobs will remember you and some will track you.
+
+    If you attack a mob and have to flee, the mob will frequently attempt to
+
+    track you and kill you when it finds you.  If you must, duck into Griffin's
+
+    Tale, where no fighting is allowed.  When fleeing, move away a few rooms
+
+    to try to lose the trail of any mob which is following you.
+
+ 4> Stay really close to Shylar for the first few levels, or leave in groups.
+
+    Most of the mobs in Shylar are fairly easy (except the shopkeepers,
+
+    guildmasters, and Eli).  Outside of Shylar, you are TOAST!
+
+ 5> The most important item: Expect to die!
+
+ -Sedna
+
+~
 End
 End
 #END_RENT

@@ -103,8 +103,10 @@ Affect             0 0
 Affect             0 0
 ExtraDescr         hawk beaked mask~
   The mask has a huge beak upon it, rather it looks more like a hallow head
-of some huge bird.
-~
+
+of some huge bird.
+
+~
 End
 #ITEM
 ObjId              4
@@ -323,7 +325,8 @@ Affect             0 0
 Affect             0 0
 ExtraDescr         scimitar sword~
   It is not the best workmanship, but the steel seems strong enough.
-~
+
+~
 End
 End
 #CARRIED
@@ -352,9 +355,12 @@ Affect             0 0
 Affect             0 0
 ExtraDescr         staff clawed~
   The staff appears to be made from ironwood and at the top seems to have 
-some sort of a avian foot, claws extended.  It could make a lasting scar
-upon someone, if they knew how to use it.
-~
+
+some sort of a avian foot, claws extended.  It could make a lasting scar
+
+upon someone, if they knew how to use it.
+
+~
 End
 #ITEM
 ObjId              21
@@ -453,7 +459,8 @@ Affect             0 0
 Affect             0 0
 ExtraDescr         candy heart~
   It bears the words, "BE MINE" in large block letters.
-~
+
+~
 End
 #ITEM
 ObjId              21

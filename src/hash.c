@@ -18,9 +18,14 @@ void init_hash_table(struct hash_header *ht, int rec_size, int table_size)
     dlog("init_hash_table");
   ht->rec_size = rec_size;
   ht->table_size = table_size;
-  ht->buckets = (void *)calloc(sizeof(struct hash_link **), table_size);
-
-  ht->keylist = (void *)malloc(sizeof(*ht->keylist) * (ht->klistsize = 128));
+  if(!(ht->buckets = (void *)calloc(sizeof(struct hash_link **), table_size))) {
+    bug("Cannot allocate hash bucket list");
+    exit(1);
+  }
+  if(!(ht->keylist = (void *)malloc(sizeof(*ht->keylist) * (ht->klistsize = 128)))) {
+    bug("Cannot allocate hash key list");
+    exit(1);
+  }
   ht->klistlen = 0;
 }
 
@@ -49,14 +54,20 @@ static void _hash_enter(struct hash_header *ht, int key, void *data)
 
   if (DEBUG)
     dlog("_hash_enter");
-  temp = (void *)malloc(sizeof(*temp));
+  if(!(temp = (void *)malloc(sizeof(*temp)))) {
+    bug("Cannot allocate hash entry");
+    exit(1);
+  }
   temp->key = key;
   temp->next = ht->buckets[HASH_KEY(ht, key)];
   temp->data = data;
   ht->buckets[HASH_KEY(ht, key)] = temp;
   if (ht->klistlen >= ht->klistsize) {
-    ht->keylist = (void *)realloc(ht->keylist, sizeof(*ht->keylist) *
-				  (ht->klistsize *= 2));
+    if(!(ht->keylist = (void *)realloc(ht->keylist, sizeof(*ht->keylist) *
+				  (ht->klistsize *= 2)))) {
+      bug("Cannot grow hash entry");
+      exit(1);
+    }
   }
   for (i = ht->klistlen; i >= 0; i--) {
     if (ht->keylist[i - 1] < key) {
@@ -106,7 +117,10 @@ void *hash_find_or_create(struct hash_header *ht, int key)
   if (rval)
     return rval;
 
-  rval = (void *)malloc(ht->rec_size);
+  if(!(rval = (void *)malloc(ht->rec_size))) {
+    bug("Cannot allocate return for hash search");
+    exit(1);
+  }
   _hash_enter(ht, key, rval);
   return rval;
 }

@@ -31,7 +31,8 @@ Affect             0 0
 Affect             0 0
 ExtraDescr         symbol drenth necklace~
 It is a pendant with a blood red hand upon a black background.
-~
+
+~
 End
 #ITEM
 ObjId              1
@@ -226,9 +227,12 @@ Affect             24 4
 Affect             17 -10
 ExtraDescr         robe~
 This elegant robe is made of fine silk, interweaved with golden strands.
-Touching the fabric it almost seethes with power, power only to be held
-by those that can use it.
-~
+
+Touching the fabric it almost seethes with power, power only to be held
+
+by those that can use it.
+
+~
 End
 #ITEM
 ObjId              9
@@ -303,7 +307,8 @@ Affect             0 0
 Affect             0 0
 ExtraDescr         silver braelet~
   It is made of excellent craftsmanship.
-~
+
+~
 End
 #ITEM
 ObjId              12
@@ -330,9 +335,12 @@ Affect             40 1
 Affect             0 0
 ExtraDescr         staff~
 This large staff is made of pure crystal, but not frail at all.  All along
-the crystal are runes embedded within the staff, it is enveloped in power
-only useable by those that can harness it.
-~
+
+the crystal are runes embedded within the staff, it is enveloped in power
+
+only useable by those that can harness it.
+
+~
 End
 End
 #CARRIED
@@ -697,9 +705,12 @@ Affect             0 0
 Affect             0 0
 ExtraDescr         lute~
   The lute looks used and worn but still seems playable, looking along the
-neck of the lute you can see five faded runes.  Perhaps this lute has more
-of a use than beautiful music.
-~
+
+neck of the lute you can see five faded runes.  Perhaps this lute has more
+
+of a use than beautiful music.
+
+~
 End
 #ITEM
 ObjId              32
@@ -726,9 +737,12 @@ Affect             0 0
 Affect             0 0
 ExtraDescr         lute~
   The lute looks used and worn but still seems playable, looking along the
-neck of the lute you can see five faded runes.  Perhaps this lute has more
-of a use than beautiful music.
-~
+
+neck of the lute you can see five faded runes.  Perhaps this lute has more
+
+of a use than beautiful music.
+
+~
 End
 #ITEM
 ObjId              32
@@ -755,7 +769,8 @@ Affect             0 0
 Affect             0 0
 ExtraDescr         staff~
 This staff is made of ancient oak, it seems to have arcane writing upon it.
-~
+
+~
 End
 #ITEM
 ObjId              32

@@ -8,6 +8,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <sys/types.h>
+#include <signal.h>
 #include <string.h>
 #include <assert.h>
 
@@ -340,7 +341,7 @@ void stop_follower(struct char_data *ch)
   if (ch->master->followers->follower == ch) {	/* Head of follower-list? */
     k = ch->master->followers;
     ch->master->followers = k->next;
-    free(k);
+    DESTROY(k);
   } else {			       /* locate follower who is not head of list */
 
     for (k = ch->master->followers; k->next && k->next->follower != ch; k = k->next);
@@ -348,7 +349,7 @@ void stop_follower(struct char_data *ch)
     if (k->next) {
       j = k->next;
       k->next = j->next;
-      free(j);
+      DESTROY(j);
     }
   }
 

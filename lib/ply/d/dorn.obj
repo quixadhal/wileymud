@@ -81,7 +81,8 @@ Affect             0 0
 Affect             0 0
 ExtraDescr         cloak fur~
   The cloak looks nice, if you were twenty feet tall.
-~
+
+~
 End
 #ITEM
 ObjId              11
@@ -156,8 +157,10 @@ Affect             0 0
 Affect             0 0
 ExtraDescr         metal plated boots~
   The boots are made of leather but covered with heavy, thick metal.  The
-protection they give your feet is almost not worth the added weight.
-~
+
+protection they give your feet is almost not worth the added weight.
+
+~
 End
 #ITEM
 ObjId              11
@@ -184,7 +187,8 @@ Affect             0 0
 Affect             0 0
 ExtraDescr         metal gauntlets~
   The gauntlets appear to be made of a very strong metal, perhaps mithral.
-~
+
+~
 End
 #ITEM
 ObjId              11

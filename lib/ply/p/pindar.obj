@@ -393,8 +393,10 @@ Affect             17 -5
 Affect             0 0
 ExtraDescr         girth silver chain chainmail~
   The girth is made from small links of silver that seem to sparkle in the 
-light.  It is not at all heavy and looks quite comfortable.
-~
+
+light.  It is not at all heavy and looks quite comfortable.
+
+~
 End
 #ITEM
 ObjId              28
@@ -661,8 +663,10 @@ Affect             0 0
 Affect             0 0
 ExtraDescr         metal plated boots~
   The boots are made of leather but covered with heavy, thick metal.  The
-protection they give your feet is almost not worth the added weight.
-~
+
+protection they give your feet is almost not worth the added weight.
+
+~
 End
 #ITEM
 ObjId              32

@@ -19,6 +19,18 @@
 #define _DIKU_SIGNALS_C
 #include "include/signals.h"
 
+/*
+       The sigaction structure is defined as
+
+              struct sigaction {
+                  void (*sa_handler)(int);
+                  void (*sa_sigaction)(int, siginfo_t *, void *);
+                  sigset_t sa_mask;
+                  int sa_flags;
+                  void (*sa_restorer)(void);
+              }
+*/
+
 void signal_setup(void)
 {
   register int i;

@@ -33,7 +33,8 @@ Affect             0 0
 Affect             0 0
 ExtraDescr         ring~
 This small ring has a pure pearl in the center.
-~
+
+~
 End
 #ITEM
 ObjId              22
@@ -60,7 +61,8 @@ Affect             0 0
 Affect             0 0
 ExtraDescr         cloak fur~
   The cloak looks nice, if you were twenty feet tall.
-~
+
+~
 End
 #ITEM
 ObjId              22
@@ -87,8 +89,10 @@ Affect             12 25
 Affect             25 2
 ExtraDescr         red cloak deep~
   The deep red cloak is encrusted with many runes of the arcane art.  It
-almost readiates with power as you touch it.
-~
+
+almost readiates with power as you touch it.
+
+~
 End
 #ITEM
 ObjId              22
@@ -283,8 +287,10 @@ Affect             17 -5
 Affect             0 0
 ExtraDescr         girth silver chain chainmail~
   The girth is made from small links of silver that seem to sparkle in the 
-light.  It is not at all heavy and looks quite comfortable.
-~
+
+light.  It is not at all heavy and looks quite comfortable.
+
+~
 End
 #ITEM
 ObjId              22
@@ -479,7 +485,8 @@ Affect             0 0
 Affect             0 0
 ExtraDescr         leather pouch~
   This pouch is obviously for keeping ones money in.
-~
+
+~
 End
 #ITEM
 ObjId              22
@@ -554,7 +561,8 @@ Affect             0 0
 Affect             0 0
 ExtraDescr         blue green staff~
   The staff has symbols that could only pertain to the holy arts.
-~
+
+~
 End
 #ITEM
 ObjId              22
@@ -581,7 +589,8 @@ Affect             0 0
 Affect             0 0
 ExtraDescr         blue green staff~
   The staff has symbols that could only pertain to the holy arts.
-~
+
+~
 End
 End
 #END_RENT

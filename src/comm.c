@@ -35,7 +35,7 @@
 #include "include/whod.h"
 #include "include/multiclass.h"
 #include "include/weather.h"
-#include "include/limits.h"
+#include "include/mudlimits.h"
 #include "include/spell_parser.h"
 #include "include/sound.h"
 #include "include/fight.h"
@@ -122,7 +122,7 @@ int main(int argc, char **argv) {
     pos++;
   }
 
-  if (pos < argc)
+  if (pos < argc) {
     if (!isdigit(*argv[pos])) {
       fprintf(stderr, "Usage: %s [-l] [-s] [-d pathname] [ port # ]\n",
 	      argv[0]);
@@ -131,6 +131,7 @@ int main(int argc, char **argv) {
       printf("Illegal port #\n");
       exit(0);
     }
+  }
 
   Uptime = time(0);
   sprintf(buf, "Running game on port %d.", port);
@@ -295,11 +296,12 @@ void game_loop(int s) {
 
     for (point = descriptor_list; point; point = next_point) {
       next_point = point->next;
-      if (FD_ISSET(point->descriptor, &output_set) && point->output.head)
+      if (FD_ISSET(point->descriptor, &output_set) && point->output.head) {
 	if (process_output(point) < 0)
 	  close_socket(point);
 	else
 	  point->prompt_mode = 1;
+      }
     }
 
     /* give the people some prompts  */
@@ -307,7 +309,7 @@ void game_loop(int s) {
       if (point->prompt_mode) {
 	if (point->str)
 	  write_to_descriptor(point->descriptor, "] ");
-	else if (!point->connected)
+	else if (!point->connected) {
 	  if (point->showstr_point)
 	    write_to_descriptor(point->descriptor, "*** Press return or q ***");
 	  else {
@@ -374,6 +376,7 @@ void game_loop(int s) {
 	      write_to_descriptor(point->descriptor, promptbuf);
 	    }
 	  }
+        }
 	point->prompt_mode = 0;
       }
     }
@@ -445,8 +448,8 @@ int get_from_q(struct txt_q *queue, char *dest) {
   tmp = queue->head;
   strcpy(dest, queue->head->text);
   queue->head = queue->head->next;
-  free(tmp->text);
-  free(tmp);
+  DESTROY(tmp->text);
+  DESTROY(tmp);
   return 1;
 }
 
@@ -722,7 +725,7 @@ int new_descriptor(int s) {
 		newd->host);
 	write_to_descriptor(desc, buf);
 	maxdesc = old_maxdesc;
-	free(newd);
+	DESTROY(newd);
 	close(desc);
 	return (0);
       }
@@ -737,7 +740,7 @@ int new_descriptor(int s) {
 	      newd->host);
       write_to_descriptor(desc, buf);
       maxdesc = old_maxdesc;
-      free(newd);
+      DESTROY(newd);
       close(desc);
       return (0);
     }
@@ -958,9 +961,9 @@ void close_socket(struct descriptor_data *d) {
 
     tmp->next = d->next;
   }
-  if (d->showstr_head)
-    free(d->showstr_head);
-  free(d);
+  /* if (d->showstr_head) */
+    DESTROY(d->showstr_head);
+  DESTROY(d);
 }
 
 void nonblock(int s) {

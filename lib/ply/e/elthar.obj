@@ -175,7 +175,8 @@ Affect             0 0
 Affect             0 0
 ExtraDescr         scimitar sword~
   It is not the best workmanship, but the steel seems strong enough.
-~
+
+~
 End
 #ITEM
 ObjId              7
@@ -324,7 +325,8 @@ Affect             0 0
 Affect             0 0
 ExtraDescr         whip~
 The whip is nothing more than a long piece of leather.
-~
+
+~
 End
 End
 #END_RENT

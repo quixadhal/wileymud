@@ -19,7 +19,7 @@
 #include "include/handler.h"
 #include "include/db.h"
 #include "include/spells.h"
-#include "include/limits.h"
+#include "include/mudlimits.h"
 #include "include/opinion.h"
 #include "include/multiclass.h"
 #include "include/constants.h"

@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <sys/types.h>
+#include <signal.h>
 #include <string.h>
 #include <ctype.h>
 #include <sys/time.h>
@@ -33,7 +34,7 @@ void InitBoards()
 
 void InitABoard(struct obj_data *obj)
 {
-  struct Board *new, *tmp;
+  struct Board *new_board, *tmp;
 
   if (DEBUG)
     dlog("InitABoard");
@@ -51,31 +52,31 @@ void InitABoard(struct obj_data *obj)
       }
     }
   }
-  new = (struct Board *)malloc(sizeof(*new));
-  if (!new) {
-    perror("InitABoard(malloc)");
-    exit(0);
-  }
-  bzero(new->head, sizeof(new->head));
-  bzero(new->msgs, sizeof(new->msgs));
 
-  new->Rnum = obj->item_number;
+  /*  
+   * new_board = (struct Board *)malloc(sizeof(*new_board));
+   * if (!new_board) {
+   *   perror("InitABoard(malloc)");
+   *   exit(0);
+   * }
+   * bzero(new_board->head, sizeof(new_board->head));
+   * bzero(new_board->msgs, sizeof(new_board->msgs));
+   */ 
 
-  sprintf(new->filename, "%d.messages", obj_index[obj->item_number].virtual);
-
-  OpenBoardFile(new);
-
-  board_load_board(new);
+  CREATE(new_board, struct Board, 1);
+  new_board->Rnum = obj->item_number;
+  sprintf(new_board->filename, "%d.messages", obj_index[obj->item_number].virtual);
+  OpenBoardFile(new_board);
+  board_load_board(new_board);
 
   /*
    **  add our new board to the beginning of the list
    */
 
   tmp = board_list;
-  new->next = tmp;
-  board_list = new;
-
-  fclose(new->file);
+  new_board->next = tmp;
+  board_list = new_board;
+  CloseBoardFile(new_board);
 }
 
 void OpenBoardFile(struct Board *b)
@@ -91,6 +92,17 @@ void OpenBoardFile(struct Board *b)
     perror("OpenBoardFile(fopen)");
     exit(0);
   }
+}
+
+void CloseBoardFile(struct Board *b)
+{
+  if (DEBUG)
+    dlog("CloseBoardFile");
+  if(!b || !b->file) {
+    bug("CloseBoardFile");
+    exit(0);
+  }
+  fclose(b->file);
 }
 
 struct Board *FindBoardInRoom(int room)
@@ -195,13 +207,10 @@ void board_write_msg(struct char_data *ch, char *arg, struct Board *b)
   tc = time(0);
   tm_info = (struct tm *)localtime(&tc);
 
-  /* b->head[b->msg_num] = (char *)malloc(strlen(arg) + strlen(GET_NAME(ch)) + 4); */
-  b->head[b->msg_num] = (char *)malloc(70 + strlen(GET_NAME(ch)) + 4);
-
+  /* Quixadhal:  Why 70? */
   /* +4 is for a space and '()' around the character name. */
-
-  if (!b->head[b->msg_num]) {
-    log("Malloc for board header failed.\n\r");
+  if(!TRY_TO_CREATE(b->head[b->msg_num], char, 70 + strlen(GET_NAME(ch)) + 4)) {
+    bug("Malloc for board header failed.");
     cprintf(ch, "The board is malfunctioning - sorry.\n\r");
     return;
   }
@@ -247,9 +256,9 @@ int board_remove_msg(struct char_data *ch, char *arg, struct Board *b)
     return 1;
   }
   ind = msg;
-  free(b->head[--ind]);
-  if (b->msgs[ind])
-    free(b->msgs[ind]);
+  DESTROY(b->head[--ind]);
+  /* if (b->msgs[ind]) */
+    DESTROY(b->msgs[ind]);
   for (; ind < b->msg_num - 1; ind++) {
     b->head[ind] = b->head[ind + 1];
     b->msgs[ind] = b->msgs[ind + 1];
@@ -283,17 +292,14 @@ void board_save_board(struct Board *b)
     fwrite(b->head[ind], sizeof(char), len, b->file);
 
     if (!b->msgs[ind]) {
-      if ((b->msgs[ind] = (char *)malloc(50))) {
-	strcpy(b->msgs[ind], "Generic Message");
-      } else {
-	exit(1);
-      }
+      CREATE(b->msgs[ind], char, 50);			/* Quixadhal: Why 50? */
+      strcpy(b->msgs[ind], "Generic Message");
     }
     len = strlen(b->msgs[ind]) + 1;
     fwrite(&len, sizeof(int), 1, b->file);
     fwrite(b->msgs[ind], sizeof(char), len, b->file);
   }
-  fclose(b->file);
+  CloseBoardFile(b);
   board_fix_long_desc(b);
   return;
 }
@@ -311,32 +317,30 @@ void board_load_board(struct Board *b)
 
   if (b->msg_num < 1 || b->msg_num > MAX_MSGS || feof(b->file)) {
     log("Board-message file corrupt or nonexistent.\n\r");
-    fclose(b->file);
+    CloseBoardFile(b);
     return;
   }
   for (ind = 0; ind < b->msg_num; ind++) {
     fread(&len, sizeof(int), 1, b->file);
 
-    b->head[ind] = (char *)malloc(len + 1);
-    if (!b->head[ind]) {
-      log("Malloc for board header failed.\n\r");
+    if(!TRY_TO_CREATE(b->head[ind], char, len + 1)) {
+      bug("Malloc for board header failed.");
       board_reset_board(b);
-      fclose(b->file);
+      CloseBoardFile(b);
       return;
     }
     fread(b->head[ind], sizeof(char), len, b->file);
     fread(&len, sizeof(int), 1, b->file);
 
-    b->msgs[ind] = (char *)malloc(len + 1);
-    if (!b->msgs[ind]) {
-      log("Malloc for board msg failed..\n\r");
+    if(!TRY_TO_CREATE(b->msgs[ind], char, len + 1)) {
+      bug("Malloc for board msg failed.");
       board_reset_board(b);
-      fclose(b->file);
+      CloseBoardFile(b);
       return;
     }
     fread(b->msgs[ind], sizeof(char), len, b->file);
   }
-  fclose(b->file);
+  CloseBoardFile(b);
   board_fix_long_desc(b);
   return;
 }
@@ -348,10 +352,10 @@ void board_reset_board(struct Board *b)
   if (DEBUG)
     dlog("board_reset_board");
   for (ind = 0; ind < MAX_MSGS; ind++) {
-    if (b->head[ind])
-      free(b->head[ind]);
-    if (b->msgs[ind])
-      free(b->msgs[ind]);
+    /* if (b->head[ind]) */
+      DESTROY(b->head[ind]);
+    /* if (b->msgs[ind]) */
+      DESTROY(b->msgs[ind]);
     b->head[ind] = b->msgs[ind] = NULL;
   }
   b->msg_num = 0;

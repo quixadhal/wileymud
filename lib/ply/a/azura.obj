@@ -55,8 +55,10 @@ Affect             0 0
 Affect             0 0
 ExtraDescr         black leather jacket~
   The jack has been dyed a deep black color which entails the whole material
-except a red syckle that has been painted upon the left shoulder.
-~
+
+except a red syckle that has been painted upon the left shoulder.
+
+~
 End
 #ITEM
 ObjId              2
@@ -107,8 +109,10 @@ Affect             0 0
 Affect             0 0
 ExtraDescr         black leather leggings~
   The leggings have been dyed black throughout except for a small red syckle
-placed upon the left thigh.
-~
+
+placed upon the left thigh.
+
+~
 End
 #ITEM
 ObjId              4
@@ -159,8 +163,10 @@ Affect             0 0
 Affect             0 0
 ExtraDescr         black leather sleeves~
   The sleeves have been dyed black throughout except for a small red syckle
-placed high on the left arm.
-~
+
+placed high on the left arm.
+
+~
 End
 #ITEM
 ObjId              6
@@ -235,7 +241,8 @@ Affect             18 2
 Affect             19 3
 ExtraDescr         silver shortsword short sword~
 The blade seems to be coated with silver.
-~
+
+~
 End
 End
 #CARRIED

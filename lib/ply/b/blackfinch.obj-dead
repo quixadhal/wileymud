@@ -31,7 +31,8 @@ Affect             18 2
 Affect             19 3
 ExtraDescr         large knife~
 It appears to be about eight to nine inches in length, fairly sharp.
-~
+
+~
 End
 End
 #CARRIED
@@ -324,8 +325,10 @@ Affect             0 0
 Affect             0 0
 ExtraDescr         pack leather~
   The pack looks much like a leather backpack, it even has straps so that it
-may be carried.
-~
+
+may be carried.
+
+~
 End
 End
 #END_RENT

@@ -651,3 +651,10 @@ global.h:1144: warning: function declaration isn't a prototype
   0500	Fixed Tate up to be "nice".
 980402	Quixadhal
   0000	Reduced spam from puff.
+000802	Quixadhal
+  0140	Started hacking makefile to work with modern linux again.
+  2222	Fixed reset_q bug by declaring it in db.c instead of db.h... how
+	did this work to begin with???
+000804	Quixadhal
+  0058	Removed MOST of the calls to malloc/calloc/free and used the utils.h
+	macro CREATE/et. al.... centralized error trapping.

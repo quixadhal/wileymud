@@ -8,6 +8,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <sys/types.h>
+#include <signal.h>
 #include <string.h>
 
 #include "include/global.h"
@@ -34,7 +35,7 @@ int is_ok(struct char_data *keeper, struct char_data *ch, int shop_nr)
     do_say(keeper,
 	   "Come back later!", 17);
     return (FALSE);
-  } else if (shop_index[shop_nr].close1 < time_info.hours)
+  } else if (shop_index[shop_nr].close1 < time_info.hours) {
     if (shop_index[shop_nr].open2 > time_info.hours) {
       do_say(keeper,
 	     "Sorry, we have closed, but come back later.", 17);
@@ -44,6 +45,7 @@ int is_ok(struct char_data *keeper, struct char_data *ch, int shop_nr)
 	     "Sorry, come back tomorrow.", 17);
       return (FALSE);
     };
+  }
 
   if (!(CAN_SEE(keeper, ch))) {
     do_say(keeper,
@@ -479,16 +481,12 @@ void boot_the_shops(void)
   for (;;) {
     buf = fread_string(shop_f);
     if (*buf == '#') {		       /* a new shop */
-      if (!number_of_shops)	       /* first shop */
+      if (!number_of_shops) {	       /* first shop */
 	CREATE(shop_index, struct shop_data, 1);
-
-      else if (!(shop_index =
-		 (struct shop_data *)realloc(
-				 shop_index, (number_of_shops + 1) *
-				       sizeof(struct shop_data)))) {
-	perror("Error in boot shop\n");
-	exit(0);
+      } else {
+        RECREATE(shop_index, struct shop_data, number_of_shops + 1);
       }
+
       for (count = 0; count < MAX_PROD; count++) {
 	fscanf(shop_f, "%d \n", &temp);
 	if (temp >= 0)

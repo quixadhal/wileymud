@@ -23,6 +23,7 @@ extern struct Board *board_list;
 void InitBoards(void);
 void InitABoard(struct obj_data *obj);
 void OpenBoardFile(struct Board *b);
+void CloseBoardFile(struct Board *b);
 struct Board *FindBoardInRoom(int room);
 int board(struct char_data *ch, int cmd, char *arg);
 void board_write_msg(struct char_data *ch, char *arg, struct Board *b);

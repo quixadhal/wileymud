@@ -17,9 +17,9 @@ struct special_proc_entry {
 };
 
 #ifndef _SPEC_PROCS_C
-struct special_proc_entry specials_m[];
-struct special_proc_entry specials_o[];
-struct special_proc_entry specials_r[];
+extern struct special_proc_entry *specials_m;
+extern struct special_proc_entry *specials_o;
+extern struct special_proc_entry *specials_r;
 #endif
 
 char *how_good(int percent);

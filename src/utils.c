@@ -28,7 +28,7 @@
 #include "include/reception.h"
 #include "include/act_off.h"
 #include "include/magic_utils.h"
-#include "include/limits.h"
+#include "include/mudlimits.h"
 #include "include/act_skills.h"
 #define _UTILS_C
 #include "include/utils.h"
@@ -222,7 +222,7 @@ inline void sprintbit(unsigned long vektor, const char *names[], char *result) {
   register long nr;
   *result = '\0';
   for (nr = 0; vektor; vektor >>= 1) {
-    if (IS_SET(1, vektor))
+    if (IS_SET(1, vektor)) {
       if (*names[nr] != '\n') {
 	strcat(result, names[nr]);
 	strcat(result, " ");
@@ -230,6 +230,7 @@ inline void sprintbit(unsigned long vektor, const char *names[], char *result) {
 	strcat(result, "UNDEFINED");
 	strcat(result, " ");
       }
+    }
     if (*names[nr] != '\n')
       nr++;
   }

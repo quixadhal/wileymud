@@ -55,9 +55,12 @@ Affect             0 0
 Affect             0 0
 ExtraDescr         scale bodice~
   This piece of armor looks more like the top of a elegant dress than 
-anything else, with shoulder straps houlstering the bousoms, much skin on
-the upper torso is exposed.
-~
+
+anything else, with shoulder straps houlstering the bousoms, much skin on
+
+the upper torso is exposed.
+
+~
 End
 #ITEM
 ObjId              2
@@ -180,8 +183,10 @@ Affect             0 0
 Affect             0 0
 ExtraDescr         small pouch~
   The pouch is not all that large but has a leather strap which makes it 
-wearable about your waiste.
-~
+
+wearable about your waiste.
+
+~
 End
 #ITEM
 ObjId              7
@@ -280,10 +285,14 @@ Affect             0 0
 Affect             0 0
 ExtraDescr         gnarled branch~
   The branch is no more than a foot long and seems to be curved in every
-which way.  All about the small branch there appears to be runes of a sort,
-the only ones you can make out say this: "Call upon the dragon....", the rest
-seems unintelligable.
-~
+
+which way.  All about the small branch there appears to be runes of a sort,
+
+the only ones you can make out say this: "Call upon the dragon....", the rest
+
+seems unintelligable.
+
+~
 End
 End
 #CARRIED
@@ -297,7 +306,8 @@ ShortDescr
 a small bone~
 ActionDescr
   It could be a leg bone of a man.
-~
+
+~
 VNum               1400
 EquippedAt         -1
 Values             0 1 4 7

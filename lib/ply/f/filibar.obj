@@ -81,7 +81,8 @@ Affect             0 0
 Affect             0 0
 ExtraDescr         ring~
 This small ring has a pure pearl in the center.
-~
+
+~
 End
 #ITEM
 ObjId              22
@@ -204,7 +205,8 @@ Affect             0 0
 Affect             0 0
 ExtraDescr         black wand~
 The wand has many strange arcane writings upon it.
-~
+
+~
 End
 #ITEM
 ObjId              22
@@ -231,7 +233,8 @@ Affect             0 0
 Affect             0 0
 ExtraDescr         black wand~
 The wand has many strange arcane writings upon it.
-~
+
+~
 End
 #ITEM
 ObjId              22
@@ -282,8 +285,10 @@ Affect             0 0
 Affect             0 0
 ExtraDescr         small pouch~
   The pouch is not all that large but has a leather strap which makes it 
-wearable about your waiste.
-~
+
+wearable about your waiste.
+
+~
 End
 #ITEM
 ObjId              22
@@ -478,7 +483,8 @@ Affect             0 0
 Affect             0 0
 ExtraDescr         silver braelet~
   It is made of excellent craftsmanship.
-~
+
+~
 End
 #ITEM
 ObjId              22
@@ -505,9 +511,12 @@ Affect             18 4
 Affect             19 4
 ExtraDescr         staff clawed~
   The staff appears to be made from ironwood and at the top seems to have 
-some sort of a avian foot, claws extended.  It could make a lasting scar
-upon someone, if they knew how to use it.
-~
+
+some sort of a avian foot, claws extended.  It could make a lasting scar
+
+upon someone, if they knew how to use it.
+
+~
 End
 #ITEM
 ObjId              22

@@ -55,8 +55,10 @@ Affect             18 2
 Affect             19 2
 ExtraDescr         silver longblade~
   The hilt of this fine blade seems to be made of ivory while the blade
-itself seems to have been wrought from silver.  The workmanship is excellent.
-~
+
+itself seems to have been wrought from silver.  The workmanship is excellent.
+
+~
 End
 End
 #CARRIED
@@ -86,23 +88,38 @@ Affect             0 0
 ExtraDescr         map shylar~
                          -= Grassland =-
 
-     -= Mansion =-           
-           +              -= Arcanus =-
-   	       	         	+
-         * * * * *  *  *  *  *  *+ -= Jakes =-  +-= Kark =-
-   
-                 -= Jessica =- +*                -= Farm =-
 
-                 -= Supply =-  +*+ -= Griffons =-      
-      +
-+-= Chapel =-+   -= Bakery =-  +*  -= Sass =-
-      +            		       +	
- -= Pastue =-     -= Tate =-   +*  *  *  *  *  *  *  *  *  *
--= Cemetary =-                         + 
-      +                            -= Home =-
+     -= Mansion =-           
 
-                         -= Grassland =-
-~
+           +              -= Arcanus =-
+
+   	       	         	+
+
+         * * * * *  *  *  *  *  *+ -= Jakes =-  +-= Kark =-
+
+   
+
+                 -= Jessica =- +*                -= Farm =-
+
+
+                 -= Supply =-  +*+ -= Griffons =-      
+
+      +
+
++-= Chapel =-+   -= Bakery =-  +*  -= Sass =-
+
+      +            		       +	
+
+ -= Pastue =-     -= Tate =-   +*  *  *  *  *  *  *  *  *  *
+
+-= Cemetary =-                         + 
+
+      +                            -= Home =-
+
+
+                         -= Grassland =-
+
+~
 End
 #ITEM
 ObjId              4

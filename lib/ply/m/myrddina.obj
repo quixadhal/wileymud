@@ -175,9 +175,12 @@ Affect             24 4
 Affect             17 -10
 ExtraDescr         robe~
 This elegant robe is made of fine silk, interweaved with golden strands.
-Touching the fabric it almost seethes with power, power only to be held
-by those that can use it.
-~
+
+Touching the fabric it almost seethes with power, power only to be held
+
+by those that can use it.
+
+~
 End
 #ITEM
 ObjId              7
@@ -204,7 +207,8 @@ Affect             0 0
 Affect             0 0
 ExtraDescr         pouch~
 This small pouch is made of soft deerskin.
-~
+
+~
 End
 #ITEM
 ObjId              8

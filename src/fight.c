@@ -8,6 +8,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <sys/types.h>
+#include <signal.h>
 #include <string.h>
 #include <assert.h>
 
@@ -21,7 +22,7 @@
 #include "include/constants.h"
 #include "include/spells.h"
 #include "include/spell_parser.h"
-#include "include/limits.h"
+#include "include/mudlimits.h"
 #include "include/random.h"
 #include "include/act_move.h"
 #include "include/reception.h"
@@ -835,7 +836,7 @@ int damage(struct char_data *ch, struct char_data *victim, int dam, int attackty
 
   if (victim != ch) {
     if (GET_POS(victim) > POSITION_STUNNED) {
-      if (!(victim->specials.fighting))
+      if (!(victim->specials.fighting)) {
 	if ((IS_PC(ch)) || (IS_NOT_SET(ch->specials.act, ACT_IMMORTAL))) {
 	  if (ch->attackers < MAX_ATTACKERS) {
 	    set_fighting(victim, ch);
@@ -844,15 +845,17 @@ int damage(struct char_data *ch, struct char_data *victim, int dam, int attackty
 	} else {
 	  return (FALSE);
 	}
+      }
     }
     if (GET_POS(ch) > POSITION_STUNNED) {
-      if (!(ch->specials.fighting))
+      if (!(ch->specials.fighting)) {
 	if ((IS_PC(ch)) || (IS_NOT_SET(ch->specials.act, ACT_IMMORTAL))) {
 	  set_fighting(ch, victim);
 	  GET_POS(ch) = POSITION_FIGHTING;
 	} else {
 	  return (FALSE);
 	}
+      }
     }
   }
   if (IS_NPC(ch) && IS_NPC(victim) && victim->master &&
@@ -1008,7 +1011,7 @@ int damage(struct char_data *ch, struct char_data *victim, int dam, int attackty
       stop_fighting(victim);
 
   if (GET_POS(victim) == POSITION_DEAD) {
-    if (IS_NPC(victim) || victim->desc)
+    if (IS_NPC(victim) || victim->desc) {
       if (IS_AFFECTED(ch, AFF_GROUP)) {
 	group_gain(ch, victim);
       } else {
@@ -1025,6 +1028,7 @@ int damage(struct char_data *ch, struct char_data *victim, int dam, int attackty
         gain_exp(ch, exp);
 	change_alignment(ch, victim);
       }
+    }
     if (IS_PC(victim)) {
       random_death_message(ch, victim);
       if (victim->in_room > -1) {

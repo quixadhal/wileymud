@@ -6,39 +6,39 @@
 #include <signal.h>
 #include <ctype.h>
 
-#include "include/global.h"
-#include "include/bug.h"
-#include "include/utils.h"
+#include "global.h"
+#include "bug.h"
+#include "utils.h"
 
-#include "include/act_comm.h"
-#include "include/act_info.h"
-#include "include/act_move.h"
-#include "include/act_obj.h"
-#include "include/act_off.h"
-#include "include/act_social.h"
-#include "include/act_wiz.h"
-#include "include/board.h"
-#include "include/comm.h"
-#include "include/constants.h"
-#include "include/db.h"
-#include "include/fight.h"
-#include "include/handler.h"
-#include "include/hash.h"
-#include "include/interpreter.h"
-#include "include/limits.h"
-#include "include/modify.h"
-#include "include/multiclass.h"
-#include "include/opinion.h"
-#include "include/reception.h"
-#include "include/shop.h"
-#include "include/spell_parser.h"
-#include "include/spells.h"
+#include "act_comm.h"
+#include "act_info.h"
+#include "act_move.h"
+#include "act_obj.h"
+#include "act_off.h"
+#include "act_social.h"
+#include "act_wiz.h"
+#include "board.h"
+#include "comm.h"
+#include "constants.h"
+#include "db.h"
+#include "fight.h"
+#include "handler.h"
+#include "hash.h"
+#include "interpreter.h"
+#include "mudlimits.h"
+#include "modify.h"
+#include "multiclass.h"
+#include "opinion.h"
+#include "reception.h"
+#include "shop.h"
+#include "spell_parser.h"
+#include "spells.h"
 
-#include "include/breath_weapons.h"
-#include "include/mob_actions.h"
-#include "include/tracking.h"
+#include "breath_weapons.h"
+#include "mob_actions.h"
+#include "tracking.h"
 #define _SPEC_PROCS_C
-#include "include/spec_procs.h"
+#include "spec_procs.h"
 
 static struct special_proc_entry specials_m[] = {
   {1, puff, "puff (Astral Traveller)"},
@@ -67,7 +67,7 @@ static struct special_proc_entry specials_m[] = {
   {3017, cleric, "cleric (Acolyte)"},
   {3020, MageGuildMaster, "MageGuildMaster (Jessica)"},
   {3021, ClericGuildMaster, "ClericGuildMaster (Pastue)"},
-  {3022, Tate_ThiefGuildMaster, "Tate_ThiefGuildMaster (Tate)"},
+  {3022, ThiefGuildMaster, "ThiefGuildMaster (Tate)"},
   {3023, FighterGuildMaster, "FighterGuildMaster (Kark)"},
   {3024, replicant, "replicant (Glowing Squirrel)"},
   {3043, Ned_Nutsmith, "Ned_Nutsmith (Nedrick)"},
@@ -159,8 +159,6 @@ static struct special_proc_entry specials_r[] = {
   {1020, House, "House (Quixadhal's Home)"},
   {1021, House, "House (Dirk's Home)"},
   {1025, House, "House (Highlander's Home)"},
-  {1030, House, "House (Sedna's Home)"},
-  {1037, ThePerch, "House (Morrighan's Home)"},
   {3035, pet_shops, "pet_shops (Griffith's Abode, Shylar)"},
   {5029, bank, "bank (Highstaff Depository)"},
   {5182, pet_shops, "pet_shops (Companion's Place, Highstaff)"},
@@ -3235,13 +3233,14 @@ void zm_init_combat(struct char_data * zmaster, struct char_data * target)
   for (fwr = zmaster->followers; fwr; fwr = fwr->next)
     if (IS_AFFECTED(fwr->follower, AFF_CHARM) &&
 	fwr->follower->specials.fighting == NULL &&
-	fwr->follower->in_room == target->in_room)
+	fwr->follower->in_room == target->in_room) {
       if (GET_POS(fwr->follower) == POSITION_STANDING) {
 	hit(fwr->follower, target, TYPE_UNDEFINED);
       } else if (GET_POS(fwr->follower) > POSITION_SLEEPING &&
 		 GET_POS(fwr->follower) < POSITION_FIGHTING) {
 	do_stand(fwr->follower, "", -1);
       }
+    }
 }
 
 int zm_kill_fidos(struct char_data *zmaster)
@@ -3488,7 +3487,7 @@ int zombie_master(struct char_data *ch, int cmd, char *arg)
             char_to_room(ack->follower, room);
             act("A gash of reddish light opens and $N stumbles through!",
                 FALSE, ack->follower, 0, ack->follower, TO_ROOM);
-            free(ack); /* in stop_follower code... sure? */
+            DESTROY(ack); /* in stop_follower code... sure? */
           }
           return TRUE;
         } else if( x >= 40) {
@@ -3543,12 +3542,12 @@ int zombie_master(struct char_data *ch, int cmd, char *arg)
 
 	if (*pet_name) {
 	  sprintf(buf, "%s %s", pet->player.name, pet_name);
-	  free(pet->player.name);
+	  DESTROY(pet->player.name);
 	  pet->player.name = strdup(buf);
 
 	  sprintf(buf, "%sA small sign on a chain around the neck says 'My Name is %s'\n\r",
 		  pet->player.description, pet_name);
-	  free(pet->player.description);
+	  DESTROY(pet->player.description);
 	  pet->player.description = strdup(buf);
 	}
 	char_to_room(pet, ch->in_room);
@@ -3759,51 +3758,6 @@ int zombie_master(struct char_data *ch, int cmd, char *arg)
     /*
      *  house routine for saved items.
      */
-
-    int ThePerch(struct char_data *ch, int cmd, char *arg)
-    {
-      struct obj_cost cost;
-      int i, save_room;
-      int found = 0;
-
-      if (IS_NPC(ch))
-	return (FALSE);
-
-      if (cmd != 92) {
-	return (FALSE);
-      } else {
-	found = 0;
-        if(!str_cmp(GET_NAME(ch), "Morrighan")) {
-          cprintf(ch, "Quixadhal warms a giant vat of cider for you to bathe in.\nAs you drift off to sleep, you hear the sound of a whipped cream can somewhere close by.\n");
-        } else if(!str_cmp(GET_NAME(ch), "Quixadhal")) {
-          cprintf(ch, "You curl up in the nice warm nest and drift back to real life.\n");
-        } else {
-          cprintf(ch, "You try to sleep, but the sound of tearing flesh distrubs you too much.\n");
-          return FALSE;
-        }
-	cost.total_cost = 0;	       /* Minimum cost */
-	cost.no_carried = 0;
-	cost.ok = TRUE;		       /* Use if any "-1" objects */
-
-	add_obj_cost(ch, 0, ch->carrying, &cost);
-	for (i = 0; i < MAX_WEAR; i++)
-	  add_obj_cost(ch, 0, ch->equipment[i], &cost);
-
-	if (!cost.ok) {
-	  return (FALSE);
-	}
-	cost.total_cost = 0;
-
-	GET_HOME(ch) = ch->in_room;
-        new_save_equipment(ch, &cost, FALSE);
-	save_obj(ch, &cost, 1);
-	save_room = ch->in_room;
-	extract_char(ch);
-	ch->in_room = save_room;
-	save_char(ch, ch->in_room);
-	return (TRUE);
-      }
-    }
 
     int House(struct char_data *ch, int cmd, char *arg)
     {
@@ -4095,7 +4049,7 @@ int zombie_master(struct char_data *ch, int cmd, char *arg)
             !IS_IMMORTAL(vict)) {
           if ((GET_HIT(vict) < 16) &&
               (GET_MAX_HIT(vict) != GET_HIT(vict))) {
-            if (GET_ALIGNMENT(vict) >= 0) {
+            if (GET_ALIGNMENT(vict) > ALIGN_EVIL) {
 	      act("$n says, You are hurt $N, let me heal you.",
                   TRUE, ch, 0, vict, TO_ROOM);
               is_evil= FALSE;
@@ -4116,7 +4070,7 @@ int zombie_master(struct char_data *ch, int cmd, char *arg)
             }
 	  } else if ((GET_MOVE(vict) < 25) &&
                      (GET_MAX_MOVE(vict) != GET_MOVE(vict))) {
-            if (GET_ALIGNMENT(vict) >= 0) {
+            if (GET_ALIGNMENT(vict) > ALIGN_EVIL) {
 	      act("$n says, You seem tired $N, let me help you.",
                   TRUE, ch, 0, vict, TO_ROOM);
               is_evil= FALSE;
@@ -4136,29 +4090,27 @@ int zombie_master(struct char_data *ch, int cmd, char *arg)
               }
             }
 	  } else if (IS_AFFECTED(vict, AFF_BLIND)) {
-            if (GET_ALIGNMENT(vict) >= 750) {
+            if (GET_ALIGNMENT(vict) > ALIGN_EVIL) {
 	      act("$n says, You seem to be blind $N, let me cure you.",
                   TRUE, ch, 0, vict, TO_ROOM);
               is_evil= FALSE;
               which_spell= SPELL_CURE_BLIND;
 	      break;
 	    } else {
-	        act("$n says, You are not good enough $N, I shall let you suffer.",
-                    FALSE, ch, 0, vict, TO_CHAR);
-	        act("$n says, You are not good enough $N, I shall let you suffer.",
+	        act("$n says, You are wicked $N, I shall let you suffer.",
                     TRUE, ch, 0, vict, TO_ROOM);
 	        continue;
             }
 	  } else if (IS_AFFECTED(vict, AFF_POISON)) {
-            if ((GET_ALIGNMENT(vict) >= 750) ||
-		((GET_ALIGNMENT(vict) >=300) && (GetMaxLevel(vict) <3))) {
+            if ((GET_ALIGNMENT(vict) > ALIGN_EVIL) ||
+		((GET_ALIGNMENT(vict) > ALIGN_VILE) && (GetMaxLevel(vict) <4))) {
 	      act("$n says, You seem to be sick $N, let me cure you.",
                   TRUE, ch, 0, vict, TO_ROOM);
               is_evil= FALSE;
               which_spell= SPELL_REMOVE_POISON;
 	      break;
               } else {
-	        act("$n says, You are not good enough $N, I shall let you suffer.",
+	        act("$n says, You are wicked $N, I shall let you suffer.",
                     TRUE, ch, 0, vict, TO_ROOM);
 	        continue;
               }
@@ -4193,9 +4145,11 @@ int zombie_master(struct char_data *ch, int cmd, char *arg)
 	}
 	return TRUE;
       }
+#if 0
       if(is_evil) {
         GET_ALIGNMENT(vict) += number(20, 100);
       }
+#endif
       switch(which_spell) {
         case SPELL_BLESS:
           say_spell(ch, SPELL_BLESS);
@@ -4399,30 +4353,31 @@ int mosquito(struct char_data *ch, int cmd, char *arg)
   }
 
   if(bloody && number(0,99) < 75) {
-  if(bloody->in_room == ch->in_room)
-    if(IS_MORTAL(bloody) && GET_POS(bloody) > POSITION_DEAD) {
-      act("$n dives at $N!", TRUE, ch, 0, bloody, TO_ROOM);
-      hit(ch, bloody, TYPE_UNDEFINED);
-      return TRUE;
-    } else {
-      if(number(0,99) < 10) {
-        act("$n howls in a suicide mision at $N!",
-            TRUE, ch, 0, bloody, TO_ROOM);
-        cprintf(bloody, "\nYou have DIED to a tiny mosquito!\n\r");
-        rprintf(bloody->in_room, "The mighty %s was vanquished by a mosquito!!!\n\rA dead body hits the ground and begins to rot.\n\r", GET_NAME(bloody));
-        make_corpse(bloody);
-        zero_rent(bloody);
-        char_from_room(bloody);
-        char_to_room(bloody, GET_HOME(bloody));
-        GET_HIT(bloody) = 1;
-        GET_POS(bloody) = POSITION_SLEEPING;
-        save_char(bloody, NOWHERE);
-        rprintf(bloody->in_room, "A humbled %s appears in a flash of light!\n\r", GET_NAME(bloody));
-        return FALSE;
+    if(bloody->in_room == ch->in_room) {
+      if(IS_MORTAL(bloody) && GET_POS(bloody) > POSITION_DEAD) {
+        act("$n dives at $N!", TRUE, ch, 0, bloody, TO_ROOM);
+        hit(ch, bloody, TYPE_UNDEFINED);
+        return TRUE;
       } else {
-        act("$n anticipates the taste of $N's immortal blood!",
-            TRUE, ch, 0, bloody, TO_ROOM);
-        return FALSE;
+        if(number(0,99) < 10) {
+          act("$n howls in a suicide mision at $N!",
+              TRUE, ch, 0, bloody, TO_ROOM);
+          cprintf(bloody, "\nYou have DIED to a tiny mosquito!\n\r");
+          rprintf(bloody->in_room, "The mighty %s was vanquished by a mosquito!!!\n\rA dead body hits the ground and begins to rot.\n\r", GET_NAME(bloody));
+          make_corpse(bloody);
+          zero_rent(bloody);
+          char_from_room(bloody);
+          char_to_room(bloody, GET_HOME(bloody));
+          GET_HIT(bloody) = 1;
+          GET_POS(bloody) = POSITION_SLEEPING;
+          save_char(bloody, NOWHERE);
+          rprintf(bloody->in_room, "A humbled %s appears in a flash of light!\n\r", GET_NAME(bloody));
+          return FALSE;
+        } else {
+          act("$n anticipates the taste of $N's immortal blood!",
+              TRUE, ch, 0, bloody, TO_ROOM);
+          return FALSE;
+        }
       }
     }
   }
@@ -4807,11 +4762,12 @@ int GuildMaster(struct char_data *ch, int cmd, char *arg) {
       argument= one_argument(arg, buf);
       targetclass= -1;
       for(i= 0; i< ABS_MAX_CLASS; i++)
-        if(is_abbrev(buf, (char *)class_name[i]))
+        if(is_abbrev(buf, (char *)class_name[i])) {
           if(targetclass == -1)
             targetclass= i;
           else
             break;
+        }
       if(targetclass < 0) {
         cprintf(ch, "%s exclaims, 'That's not any class I've heard of!'\n\r",
                 NAME(master));
@@ -4933,33 +4889,7 @@ int k_kill_wimps(struct char_data *karrn)
 
     for (vict = real_roomp(karrn->in_room)->people; vict; vict = vict->next_in_room) {
       if(vict->master != karrn && vict != karrn && (GET_POS(vict) > POSITION_DEAD)) {
-        if((!str_cmp(GET_NAME(vict), "Odalisque")) ||
-           (!str_cmp(GET_NAME(vict), "Tschakida"))) {
-          if ((choice= number(0,99)) < 10) {
-            switch(choice) {
-              case 0:
-                act("$n curls up in $N's lap and purrs.", TRUE, karrn, 0, vict, TO_ROOM);
-                break;
-              case 1:
-              case 2:
-              case 3:
-              case 4:
-                act("$n purrs and gently nuzzles $N.", TRUE, karrn, 0, vict, TO_ROOM);
-                break;
-              case 5:
-              case 6:
-              case 7:
-                act("$n blows a soft cloud of hot steam over $N.", TRUE, karrn, 0, vict, TO_ROOM);
-                break;
-              case 8:
-                act("$N smiles as $n licks her boots clean.", TRUE, karrn, 0, vict, TO_ROOM);
-                break;
-              case 9:
-                act("$n grovels before $N!", TRUE, karrn, 0, vict, TO_ROOM);
-                break;
-            }
-          }
-        } else if(!str_cmp(GET_NAME(vict), "Quixadhal")) {
+        if(!str_cmp(GET_NAME(vict), "Quixadhal")) {
           if ((choice= number(0,99)) < 10) {
             switch(choice) {
               case 0:
@@ -4977,44 +4907,6 @@ int k_kill_wimps(struct char_data *karrn)
               case 8:
                 act("$N waves to $n, who hops out and brings back a dark beer.", TRUE, karrn, 0, vict, TO_ROOM);
                 break;
-              case 9:
-                act("$n grovels before $N!", TRUE, karrn, 0, vict, TO_ROOM);
-                break;
-            }
-          }
-        } else if(!str_cmp(GET_NAME(vict), "Sedna")) {
-          if ((choice= number(0,99)) < 10) {
-            switch(choice) {
-              case 0:
-		act("$n grins and chews on $N's fingers!",TRUE,karrn,0,vict,TO_ROOM);
-		break;
-              case 1:
-		act("$n farts...the smell is hideous!",TRUE,karrn,0,vict,TO_ROOM);
-		act("$N gags and doubles over.",TRUE,karrn,0,vict,TO_ROOM);
-		cast_poison(maxlevel,karrn,"",SPELL_TYPE_SPELL,vict,0);
-		break;
-              case 2:
-              case 3:
-              case 4:
-              case 5:
-		act("$n laughs, \"Mock ME will you Sedna?\"",TRUE,karrn,0,vict,TO_ROOM);
-                say_spell(karrn, SPELL_LIGHTNING_BOLT);
-		cast_lightning_bolt(200,karrn,"",SPELL_TYPE_SPELL,vict,0);
-		act("$n growls, \"Stupid...\"",TRUE,karrn,0,vict,TO_ROOM);
-		cast_lightning_bolt(200,karrn,"",SPELL_TYPE_SPELL,vict,0);
-		act("$n growls, \"Idiotic...\"",TRUE,karrn,0,vict,TO_ROOM);
-		cast_lightning_bolt(200,karrn,"",SPELL_TYPE_SPELL,vict,0);
-		act("$n growls, \"DemiGOD!\"",TRUE,karrn,0,vict,TO_ROOM);
-                say_spell(karrn, SPELL_ENERGY_DRAIN);
-		cast_energy_drain(200,karrn,"",SPELL_TYPE_SPELL,vict,0);
-		break;
-              case 6:
-              case 7:
-		act("$n lifts his leg and pisses on $N.",TRUE,karrn,0,vict,TO_ROOM);
-		break;
-              case 8:
-		act("$n coughs up a huge hairball on $N.",TRUE,karrn,0,vict,TO_ROOM);
-		break;
               case 9:
                 act("$n grovels before $N!", TRUE, karrn, 0, vict, TO_ROOM);
                 break;
@@ -5108,29 +5000,7 @@ int Karrn(struct char_data *ch, int cmd, char *arg)
         if(number(0,99) < 10) {
           for (i = character_list; i; i = i->next) {
             if (IS_PC(i) && IS_IMMORTAL(i) && i != karrn && i->in_room != karrn->in_room) {
-              if(!str_cmp(GET_NAME(i), "Sedna")) {
-                tmp= i;
-                target= karrn->in_room;
-                do_shout(karrn, "Sedna!  I want a WORD with you!", 0);
-                act("A red slice of fire opens before $n, who is enveloped screaming, then silence.", TRUE, tmp, 0, 0, TO_ROOM);
-                if (MOUNTED(tmp)) {
-                  char_from_room(tmp);
-                  char_from_room(MOUNTED(tmp));
-                  char_to_room(tmp, target);
-                  char_to_room(MOUNTED(tmp), target);
-                  act("$n emerges from a column of fire that Karrn dismisses with a flick of his tail.", FALSE, tmp, 0, 0, TO_ROOM);
-                } else if (RIDDEN(tmp)) {
-                  char_from_room(RIDDEN(tmp));
-                  char_from_room(tmp);
-                  char_to_room(RIDDEN(tmp), target);
-                  char_to_room(tmp, target);
-                  act("$n emerges from a column of fire that Karrn dismisses with a flick of his tail.", FALSE, tmp, 0, 0, TO_ROOM);
-                } else {
-                  char_from_room(tmp);
-                  char_to_room(tmp, target);
-                  act("$n emerges from a column of fire that Karrn dismisses with a flick of his tail.", FALSE, tmp, 0, 0, TO_ROOM);
-                }
-              } else if(!str_cmp(GET_NAME(i), "Muidnar")) {
+              if(!str_cmp(GET_NAME(i), "Muidnar")) {
                 tmp= i;
                 target= karrn->in_room;
                 do_shout(karrn, "Muidnar!  Get over here you BASTARD!", 0);
@@ -5167,205 +5037,6 @@ int Karrn(struct char_data *ch, int cmd, char *arg)
     }
     return FALSE;
   }
-
-int Tate_ThiefGuildMaster(struct char_data *ch, int cmd, char *arg) {
-  register int anumber, i, target= THIEF_LEVEL_IND;
-  char pagebuf[16384];
-  struct char_data *master;
-  struct char_data *vict;
-  int is_good= FALSE;
-  int which_spell= SPELL_BLESS;
-
-  if ((cmd == CMD_practice) || (cmd == CMD_gain)) {
-    if(!(master = FindMobInRoomWithFunction(ch->in_room, Tate_ThiefGuildMaster)))
-      return FALSE;
-    if (HasClass(ch, CLASS_THIEF)) {
-      if (cmd == CMD_gain) {
-        GainLevel(master, ch, target);
-        return TRUE;
-      }
-      for (; isspace(*arg); arg++);
-      if (!*arg) {
-        sprintf(pagebuf, "You have got %d practice sessions left.\n\r",
-  	      ch->specials.pracs);
-        sprintf(pagebuf + strlen(pagebuf), "You can practice any of these skills:\n\r");
-        for(i= 0; i< MAX_SKILLS; i++)
-          if(CanUseClass(ch, i, target) &&
-            (spell_info[i].min_level[target] <= GetMaxLevel(master)-10) &&
-            (spell_info[i].min_level[target] >= GetMaxLevel(master)-20)) {
-  	  sprintf(pagebuf + strlen(pagebuf), "[%d] %s %s \n\r",
-  		  spell_info[i].min_level[target],
-  		  spell_info[i].name, how_good(ch->skills[i].learned));
-  	}
-        page_string(ch->desc, pagebuf, 1);
-        return TRUE;
-      }
-      for (; isspace(*arg); arg++);
-      if((anumber= GetSkillByName(arg))== -1) {
-        cprintf(ch, "I have no clue what skill that might be...\n\r");
-        return FALSE;
-      }
-      if(spell_info[anumber].min_level[target] < GetMaxLevel(master)-20) {
-        cprintf(ch, "It would be beneath me to teach you such drivel!\n\r");
-        return TRUE;
-      }
-      if(GetMaxLevel(master) < spell_info[anumber].min_level[target]) {
-        cprintf(ch, "I have not yet mastered that skill.\n\r");
-        return TRUE;
-      }
-      if(GET_LEVEL(ch, target) < spell_info[anumber].min_level[target]) {
-        cprintf(ch, "You are yet too frail to attempt that!\n\r");
-        return TRUE;
-      }
-      if(!CanUseClass(ch, anumber, target)) {
-        cprintf(ch, "You do not know of this skill...\n\r");
-        return TRUE;
-      }
-      if (ch->specials.pracs <= 0) {
-        cprintf(ch, "You do not seem to be able to practice now.\n\r");
-        return TRUE;
-      }
-      if (ch->skills[anumber].learned >= 95) {
-        cprintf(ch, "You know %s as well as I!\n\r", spell_info[anumber].name);
-        return TRUE;
-      }
-      cprintf(ch, "You Practice for a while...\n\r");
-      ch->specials.pracs--;
-      if((ch->skills[anumber].learned +=
-         (int_app[GET_INT(ch)].learn + fuzz(1))) >= 95) {
-        ch->skills[anumber].learned= 95;
-        cprintf(ch, "You are now a master of this art!\n\r");
-      }
-    } else {
-      cprintf(ch, "I could have you killed for unsanctioned thieving.\n\r", ch);
-      return FALSE;
-    }
-    return TRUE;
-  }
-  if(cmd)
-    return FALSE;
-
-  if (GET_POS(ch) == POSITION_FIGHTING)
-    return FALSE;
-
-      if ((GET_MANA(ch) < 60) && (GET_POS(ch) != POSITION_SLEEPING)) {
-	act("$n falls to the ground into a deep slumber.", TRUE, ch, 0, 0, TO_ROOM);
-	GET_POS(ch) = POSITION_SLEEPING;
-      }
-      if ((GET_MANA(ch) > 90) && (GET_POS(ch) != POSITION_STANDING)) {
-	GET_POS(ch) = POSITION_STANDING;
-	act("$n rises to his feet from a sound sleep.", TRUE, ch, 0, 0, TO_ROOM);
-	return TRUE;
-      }
-      if (GET_POS(ch) == POSITION_SLEEPING)
-	return FALSE;
-
-      for (vict = real_roomp(ch->in_room)->people;
-           vict; vict = vict->next_in_room) {
-        if (vict == ch) continue;
-        if ((GET_POS(vict) != POSITION_FIGHTING) &&
-            (GET_POS(vict) != POSITION_SLEEPING) &&
-            !IS_IMMORTAL(vict)) {
-          if ((GET_HIT(vict) < 16) &&
-              (GET_MAX_HIT(vict) != GET_HIT(vict))) {
-            if (GET_ALIGNMENT(vict) <= 0) {
-	      act("$n whispers, Here $N, now you owe me.",
-                  TRUE, ch, 0, vict, TO_ROOM);
-              is_good= FALSE;
-              which_spell= SPELL_CURE_LIGHT;
-	      break;
-	    } else {
-              is_good= TRUE;
-              if (number(0, 10) > 5) {
-                act("$n points at $N and mocks, let me show you the light!",
-                    TRUE, ch, 0, vict, TO_ROOM);
-                which_spell= SPELL_FAERIE_FIRE;
-                break;
-              } else {
-	        continue;
-              }
-            }
-	  } else if ((GET_MOVE(vict) < 25) &&
-                     (GET_MAX_MOVE(vict) != GET_MOVE(vict))) {
-            if (GET_ALIGNMENT(vict) <= 0) {
-	      act("$n says, You seem tired $N, let me help you.",
-                  TRUE, ch, 0, vict, TO_ROOM);
-              is_good= FALSE;
-              which_spell= SPELL_REFRESH;
-	      break;
-	    } else {
-              is_good= TRUE;
-              if (number(0, 10) > 5) {
-                act("$n points at $N and mocks, let me show you the light!",
-                    TRUE, ch, 0, vict, TO_ROOM);
-                which_spell= SPELL_FAERIE_FIRE;
-                break;
-              } else {
-	        continue;
-              }
-            }
-	  } else if (IS_AFFECTED(vict, AFF_BLIND)) {
-            if (GET_ALIGNMENT(vict) <= -750) {
-	      act("$n says, You are not so blind $N, but you owe me big time.",
-                  TRUE, ch, 0, vict, TO_ROOM);
-              is_good= FALSE;
-              which_spell= SPELL_CURE_BLIND;
-	      break;
-	    } else {
-	        continue;
-            }
-	  } else if (IS_AFFECTED(vict, AFF_POISON)) {
-            if ((GET_ALIGNMENT(vict) <= 750) ||
-		((GET_ALIGNMENT(vict) <=300) && (GetMaxLevel(vict) <3))) {
-	      act("$n says, Take care of yourself $N, steal for me.",
-                  TRUE, ch, 0, vict, TO_ROOM);
-              is_good= FALSE;
-              which_spell= SPELL_REMOVE_POISON;
-	      break;
-              } else {
-	        continue;
-              }
-          } else if (IS_HOLY(vict) && (GetMaxLevel(vict) > 4)) {
-	    act("$n hisses, There is no place for you here $N, GO!",
-                TRUE, ch, 0, vict, TO_ROOM);
-            say_spell(ch, SPELL_FEAR);
-            cast_fear(40, ch, "", SPELL_TYPE_SPELL, vict, 0);
-            return TRUE;
-          }
-	}
-      }
-      if (!vict) {
-	return TRUE;
-      }
-      if(is_good) {
-        GET_ALIGNMENT(vict) -= number(20, 100);
-      }
-      switch(which_spell) {
-        case SPELL_FAERIE_FIRE:
-          say_spell(ch, SPELL_FAERIE_FIRE);
-          cast_faerie_fire(20, ch, "", SPELL_TYPE_SPELL, vict, 0);
-          break;
-        case SPELL_CURE_LIGHT:
-          say_spell(ch, SPELL_CURE_LIGHT);
-          cast_cure_light(20, ch, "", SPELL_TYPE_SPELL, vict, 0);
-          break;
-        case SPELL_REFRESH:
-          say_spell(ch, SPELL_REFRESH);
-          cast_refresh(20, ch, "", SPELL_TYPE_SPELL, vict, 0);
-          break;
-        case SPELL_CURE_BLIND:
-          say_spell(ch, SPELL_CURE_BLIND);
-          cast_cure_blind(20, ch, "", SPELL_TYPE_SPELL, vict, 0);
-          break;
-        case SPELL_REMOVE_POISON:
-          say_spell(ch, SPELL_REMOVE_POISON);
-          cast_remove_poison(20, ch, "", SPELL_TYPE_SPELL, vict, 0);
-          break;
-      }
-      GET_MANA(ch) -= 5;
-      return TRUE;
-
-}
 
 char *MobFunctionNameByFunc(ifuncp func) {
   register int i;

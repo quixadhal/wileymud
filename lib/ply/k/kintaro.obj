@@ -31,7 +31,8 @@ Affect             0 0
 Affect             0 0
 ExtraDescr         ring~
 This small ring has a pure pearl in the center.
-~
+
+~
 End
 #ITEM
 ObjId              1
@@ -58,8 +59,10 @@ Affect             0 0
 Affect             0 0
 ExtraDescr         ring crystal~
   This ring is a simple silver band with a large, beautiful crystal
-set in the top of it that shimmers in the light.
-~
+
+set in the top of it that shimmers in the light.
+
+~
 End
 #ITEM
 ObjId              2
@@ -134,8 +137,10 @@ Affect             0 0
 Affect             0 0
 ExtraDescr         legplates~
   The legplates are made from a single piece of steel, adorned with beautiful
-feathers.
-~
+
+feathers.
+
+~
 End
 #ITEM
 ObjId              5
@@ -162,7 +167,8 @@ Affect             14 10
 Affect             0 0
 ExtraDescr         boots leather hard~
   The hard boots look suprisingly comfortable despite the stiff leather.
-~
+
+~
 End
 #ITEM
 ObjId              6
@@ -189,7 +195,8 @@ Affect             0 0
 Affect             0 0
 ExtraDescr         armplates feathered~
   The armplates are made of solid steel and adorned with beautiful feathers.
-~
+
+~
 End
 #ITEM
 ObjId              7
@@ -240,8 +247,10 @@ Affect             17 -5
 Affect             0 0
 ExtraDescr         girth silver chain chainmail~
   The girth is made from small links of silver that seem to sparkle in the 
-light.  It is not at all heavy and looks quite comfortable.
-~
+
+light.  It is not at all heavy and looks quite comfortable.
+
+~
 End
 #ITEM
 ObjId              9

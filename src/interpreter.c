@@ -11,6 +11,7 @@
 #include <ctype.h>
 #include <arpa/telnet.h>
 #include <sys/types.h>
+#include <signal.h>
 #include <time.h>
 #include <sys/timeb.h>
 
@@ -27,7 +28,7 @@ extern char *crypt(const char *key, const char *salt);
 #include "include/version.h"
 #include "include/db.h"
 #include "include/utils.h"
-#include "include/limits.h"
+#include "include/mudlimits.h"
 #include "include/constants.h"
 #include "include/act_comm.h"
 #include "include/act_info.h"
@@ -1308,7 +1309,7 @@ void nanny(struct descriptor_data *d, char *arg)
       dcprintf(d, "Enter a text you'd like others to see when they look at you.\n\rTerminate with a '@'.\n\r");
       if (d->character->player.description) {
 	dcprintf(d, "Old description :\n\r%s", d->character->player.description);
-	free(d->character->player.description);
+	DESTROY(d->character->player.description);
 	d->character->player.description = 0;
       }
       d->str = &d->character->player.description;
@@ -1379,7 +1380,7 @@ void nanny(struct descriptor_data *d, char *arg)
         if(list_of_players[i])
           if(!strncasecmp(list_of_players[i], name, strlen(name)))
             if(list_of_players[i][strlen(name)] == ' ') {
-              free(list_of_players[i]);
+              DESTROY(list_of_players[i]);
               list_of_players[i]= NULL;
               actual_players--;
             }
@@ -1446,17 +1447,13 @@ void update_player_list_entry(struct descriptor_data *d)
     if(list_of_players[i])
       if(!(strncasecmp(list_of_players[i], buf, strlen(tmpbuf)+ 1))) {
         found= 1;
-        free(list_of_players[i]);
-        if(!(list_of_players[i]= (char *)strdup(buf))) {
-          bug("Cannot allocation memory for strdup.");
-          exit(-1);
-        }
+        RECREATE(list_of_players[i], char, strlen(buf) + 1);
+        strcpy(list_of_players[i], buf);
       }
   }
   if(!found) {
-    list_of_players= (char **) realloc(list_of_players,
-      sizeof(char *) * (number_of_players + 1));
-    list_of_players[number_of_players]= (char *)strdup(buf);
+    RECREATE(list_of_players, char *, number_of_players + 1);
+    STRDUP(list_of_players[number_of_players], buf);
     number_of_players++;
     actual_players++;
   }

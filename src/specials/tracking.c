@@ -2,25 +2,26 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <string.h>
+#include <signal.h>
 
-#include "include/global.h"
-#include "include/bug.h"
-#include "include/utils.h"
+#include "global.h"
+#include "bug.h"
+#include "utils.h"
 
-#include "include/act_move.h"
-#include "include/comm.h"
-#include "include/constants.h"
-#include "include/db.h"
-#include "include/fight.h"
-#include "include/handler.h"
-#include "include/hash.h"
-#include "include/interpreter.h"
-#include "include/multiclass.h"
-#include "include/opinion.h"
-#include "include/spells.h"
+#include "act_move.h"
+#include "comm.h"
+#include "constants.h"
+#include "db.h"
+#include "fight.h"
+#include "handler.h"
+#include "hash.h"
+#include "interpreter.h"
+#include "multiclass.h"
+#include "opinion.h"
+#include "spells.h"
 
 #define _TRACKING_C
-#include "include/tracking.h"
+#include "tracking.h"
 
 /* predicates for find_path function */
 
@@ -98,7 +99,7 @@ int find_path(int in_room, ifuncp predicate, void *c_data, int depth) {
   hash_enter(&x_room, in_room, (void *)-1);
 
   /* initialize queue */
-  q_head = (struct room_q *)malloc(sizeof(struct room_q));
+  CREATE(q_head, struct room_q, 1);
 
   q_tail = q_head;
   q_tail->room_nr = in_room;
@@ -119,7 +120,7 @@ int find_path(int in_room, ifuncp predicate, void *c_data, int depth) {
               && !IS_SET(RM_FLAGS(tmp_room), DEATH)) {
             count++;
             /* mark room as visted and put on queue */
-            tmp_q = (struct room_q *)malloc(sizeof(struct room_q));
+            CREATE(tmp_q, struct room_q, 1);
 
             tmp_q->room_nr = tmp_room;
             tmp_q->next_q = 0;
@@ -136,7 +137,7 @@ int find_path(int in_room, ifuncp predicate, void *c_data, int depth) {
           tmp_room = q_head->room_nr;
           for (; q_head; q_head = tmp_q) {
             tmp_q = q_head->next_q;
-            free(q_head);
+            DESTROY(q_head);
           }
           /* return direction if first layer */
           if ((int)hash_find(&x_room, tmp_room) == -1)
@@ -148,7 +149,7 @@ int find_path(int in_room, ifuncp predicate, void *c_data, int depth) {
     }
     /* free queue head and point to next entry */
     tmp_q = q_head->next_q;
-    free(q_head);
+    DESTROY(q_head);
     q_head = tmp_q;
   }
   /* couldn't find path */

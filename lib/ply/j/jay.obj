@@ -55,9 +55,12 @@ Affect             0 0
 Affect             0 0
 ExtraDescr         scale bodice~
   This piece of armor looks more like the top of a elegant dress than 
-anything else, with shoulder straps houlstering the bousoms, much skin on
-the upper torso is exposed.
-~
+
+anything else, with shoulder straps houlstering the bousoms, much skin on
+
+the upper torso is exposed.
+
+~
 End
 #ITEM
 ObjId              2
@@ -204,7 +207,8 @@ Affect             0 0
 Affect             0 0
 ExtraDescr         large knife~
 It appears to be about eight to nine inches in length, fairly sharp.
-~
+
+~
 End
 End
 #CARRIED

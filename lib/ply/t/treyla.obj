@@ -55,7 +55,8 @@ Affect             0 0
 Affect             0 0
 ExtraDescr         leather bra~
   This obviously covers the bossums of a woman.
-~
+
+~
 End
 #ITEM
 ObjId              2
@@ -178,8 +179,10 @@ Affect             0 0
 Affect             0 0
 ExtraDescr         black leather sleeves~
   The sleeves have been dyed black throughout except for a small red syckle
-placed high on the left arm.
-~
+
+placed high on the left arm.
+
+~
 End
 #ITEM
 ObjId              7
@@ -206,8 +209,10 @@ Affect             17 -5
 Affect             0 0
 ExtraDescr         girth silver chain chainmail~
   The girth is made from small links of silver that seem to sparkle in the 
-light.  It is not at all heavy and looks quite comfortable.
-~
+
+light.  It is not at all heavy and looks quite comfortable.
+
+~
 End
 #ITEM
 ObjId              8
@@ -282,7 +287,8 @@ Affect             18 2
 Affect             19 3
 ExtraDescr         silver shortsword short sword~
 The blade seems to be coated with silver.
-~
+
+~
 End
 #ITEM
 ObjId              11

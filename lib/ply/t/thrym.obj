@@ -55,9 +55,12 @@ Affect             0 0
 Affect             0 0
 ExtraDescr         necklace tooth toothed~
   The necklace appears to be nothing more than a piece of leather on which
-many different teeth have been strung, gaining in size at it reaches the 
-lowest hanging point, the teeth at which are two inches long.
-~
+
+many different teeth have been strung, gaining in size at it reaches the 
+
+lowest hanging point, the teeth at which are two inches long.
+
+~
 End
 #ITEM
 ObjId              2
@@ -156,7 +159,8 @@ Affect             0 0
 Affect             0 0
 ExtraDescr         leg plates legplates dwarven~
   They appear to be made of a very strong metal, perhaps mithral.
-~
+
+~
 End
 #ITEM
 ObjId              6
@@ -255,8 +259,10 @@ Affect             17 -5
 Affect             0 0
 ExtraDescr         girth silver chain chainmail~
   The girth is made from small links of silver that seem to sparkle in the 
-light.  It is not at all heavy and looks quite comfortable.
-~
+
+light.  It is not at all heavy and looks quite comfortable.
+
+~
 End
 #ITEM
 ObjId              10

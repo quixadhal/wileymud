@@ -112,12 +112,18 @@ void init_string_block(struct string_block *sb)
 {
   if (DEBUG)
     dlog("init_string_block");
-  if((sb->data = (char *)malloc(sb->size = 128)))
-    *sb->data = '\0';
-  else {
-    log("Malloc call to init_string_block failed.  Exiting.");
-    kill(getpid(),14);
-  }
+  CREATE(sb->data, char, sb->size = 128);
+
+  /* Quixadhal:  WHY send yourslef a SIG_ALARM if you're out
+   * of memory???
+   *
+   * if((sb->data = (char *)malloc(sb->size = 128)))
+   *   *sb->data = '\0';
+   * else {
+   *   log("Malloc call to init_string_block failed.  Exiting.");
+   *   kill(getpid(),14);
+   * }
+   */
 }
 
 void append_to_string_block(struct string_block *sb, char *str)
@@ -131,7 +137,7 @@ void append_to_string_block(struct string_block *sb, char *str)
   if (len > sb->size) {
     if (len > (sb->size *= 2))
       sb->size = len;
-    sb->data = (char *)realloc(sb->data, sb->size);
+    RECREATE(sb->data, char, sb->size);
   }
   strcat(sb->data, str);
 }
@@ -147,7 +153,7 @@ void destroy_string_block(struct string_block *sb)
 {
   if (DEBUG)
     dlog("destroy_string_block");
-  free(sb->data);
+  DESTROY(sb->data);
   sb->data = NULL;
 }
 
@@ -437,7 +443,7 @@ void affect_remove(struct char_data *ch, struct affected_type *af)
     }
     hjp->next = af->next;	       /* skip the af element */
   }
-  free(af);
+  DESTROY(af);
   affect_total(ch);
 }
 
@@ -1432,17 +1438,19 @@ struct obj_data *get_obj_vis_accessible(struct char_data *ch, char *name)
 
   /* scan items carried */
   for (i = ch->carrying, j = 1; i && j <= number; i = i->next_content)
-    if (isname(tmp, i->name) && CAN_SEE_OBJ(ch, i))
+    if (isname(tmp, i->name) && CAN_SEE_OBJ(ch, i)) {
       if (j == number)
 	return (i);
       else
 	j++;
+    }
   for (i = real_roomp(ch->in_room)->contents; i && j <= number; i = i->next_content)
-    if (isname(tmp, i->name) && CAN_SEE_OBJ(ch, i))
+    if (isname(tmp, i->name) && CAN_SEE_OBJ(ch, i)) {
       if (j == number)
 	return (i);
       else
 	j++;
+    }
   return 0;
 }
 

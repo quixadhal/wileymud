@@ -8,6 +8,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <sys/types.h>
+#include <string.h>
 #include <sys/time.h>
 #include <ctype.h>
 #include <signal.h>
@@ -195,14 +196,9 @@ void load_char_objs(struct char_data *ch)
     fread(&rh, sizeof(rh), 1, fl);
 
   if (rh.inuse == 1) {
-    if((st = (void *)malloc(rh.length))) {
-      fread(st, rh.length, 1, fl);
-      obj_store_to_char(ch, st);
-    } else {
-      /* Uhhhh...huh...huh...malloc failed. */
-      log("Malloc failed in function load_char_objects.  Exiting.");
-      kill(getpid(),12);
-    }
+    CREATE_VOID(st, char, rh.length);
+    fread(st, rh.length, 1, fl);
+    obj_store_to_char(ch, st);
 
 /*
  * if the character has been out for 12 real hours, they are fully healed
@@ -249,7 +245,7 @@ void load_char_objs(struct char_data *ch)
        }
     }
     }
-    free(st);
+    DESTROY(st);
   } else {
     log("Char has no rental data");
   }

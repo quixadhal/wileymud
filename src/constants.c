@@ -10,7 +10,7 @@
 
 #include "include/global.h"
 #include "include/bug.h"
-#include "include/limits.h"
+#include "include/mudlimits.h"
 #include "include/trap.h"
 #define _CONSTANTS_C
 #include "include/constants.h"

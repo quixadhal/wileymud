@@ -16,8 +16,9 @@
 #include <ctype.h>
 #include <string.h>
 
-#include "include/global.h"
-#include "include/bug.h"
+#include "global.h"
+#include "bug.h"
+
 void watch(int port, char *text);
 void wave(int sock, char *text, int port);
 int new_connection(int s, int port);

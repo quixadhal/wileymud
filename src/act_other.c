@@ -19,7 +19,7 @@
 #include "include/handler.h"
 #include "include/db.h"
 #include "include/spells.h"
-#include "include/limits.h"
+#include "include/mudlimits.h"
 #include "include/constants.h"
 #include "include/spell_parser.h"
 #include "include/reception.h"
@@ -357,7 +357,7 @@ void do_steal(struct char_data *ch, char *argument, int cmd)
     }
   }
 
-  if (ohoh && IS_NPC(victim) && AWAKE(victim))
+  if (ohoh && IS_NPC(victim) && AWAKE(victim)) {
     if (IS_SET(victim->specials.act, ACT_NICE_THIEF)) {
       sprintf(buf, "%s is a damn thief!", GET_NAME(ch));
       do_shout(victim, buf, 0);
@@ -366,6 +366,7 @@ void do_steal(struct char_data *ch, char *argument, int cmd)
     } else {
       hit(victim, ch, TYPE_UNDEFINED);
     }
+  }
 }
 
 void do_practice(struct char_data *ch, char *arg, int cmd)

@@ -8,6 +8,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <sys/types.h>
+#include <signal.h>
 #include <ctype.h>
 #include <string.h>
 #include <assert.h>
@@ -27,7 +28,7 @@
 #include "include/handler.h"
 #include "include/act_obj.h"
 #define _DIKU_LIMITS_C
-#include "include/limits.h"
+#include "include/mudlimits.h"
 
 char *ClassTitles(struct char_data *ch)
 {
@@ -577,7 +578,7 @@ void set_title(struct char_data *ch)
     dlog("set_title");
   sprintf(buf, "the %s %s", RaceName[ch->race], ClassTitles(ch));
   if (GET_TITLE(ch)) {
-    free(GET_TITLE(ch));
+    DESTROY(GET_TITLE(ch));
     CREATE(GET_TITLE(ch), char, strlen(buf) + 1);
   } else {
     CREATE(GET_TITLE(ch), char, strlen(buf) + 1);
@@ -894,7 +895,7 @@ void point_update(int pulse)
                       GET_SDESC(mob));
             }
             /* this loses memory... can we free it first? */
-            if(mob->player.long_descr) free(mob->player.long_descr);
+            if(mob->player.long_descr) DESTROY(mob->player.long_descr);
             mob->player.long_descr = strdup(newbuffer);
             char_to_room(mob, j->in_room);
             GET_EXP(mob) = 75*GetMaxLevel(mob);

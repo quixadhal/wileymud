@@ -8,6 +8,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <sys/types.h>
+#include <signal.h>
 #include <string.h>
 #include <ctype.h>
 #include <time.h>
@@ -20,7 +21,7 @@
 #include "include/handler.h"
 #include "include/db.h"
 #include "include/spells.h"
-#include "include/limits.h"
+#include "include/mudlimits.h"
 #include "include/constants.h"
 #include "include/spell_parser.h"
 #include "include/board.h"
@@ -1318,15 +1319,15 @@ void do_pretitle(struct char_data *ch, char *argument, int cmd)
   if(*argument == ' ') argument++;
   strcpy(pretitle, argument);
 
-  if ((vict = get_char_vis(ch, name)) == NULL) {
+  if (!(vict = get_char_vis(ch, name))) {
     cprintf(ch, "I don't see them here?\n\r");
     return;
   }
-  if ((strlen(pretitle) == 0)) {
-    GET_PRETITLE(vict) = 0;
+  if (!strlen(pretitle)) {
+    GET_PRETITLE(vict) = NULL;
     return;
   }
-  GET_PRETITLE(vict) = (char *)calloc(1, strlen(pretitle)+1);
+  CREATE(GET_PRETITLE(vict), char, strlen(pretitle)+1);
   strcpy(GET_PRETITLE(vict), pretitle);
 }
 

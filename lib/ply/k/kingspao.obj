@@ -55,8 +55,10 @@ Affect             0 0
 Affect             0 0
 ExtraDescr         leg legplates scale~
   The legplates seem to have a soft inner lining while the scales on the 
-outer side seem to be very tough and tinted a soft green.
-~
+
+outer side seem to be very tough and tinted a soft green.
+
+~
 End
 #ITEM
 ObjId              2
@@ -155,8 +157,10 @@ Affect             0 0
 Affect             0 0
 ExtraDescr         small pouch~
   The pouch is not all that large but has a leather strap which makes it 
-wearable about your waiste.
-~
+
+wearable about your waiste.
+
+~
 End
 #ITEM
 ObjId              6
@@ -257,8 +261,10 @@ Affect             0 0
 Affect             0 0
 ExtraDescr         studded leather vest~
   The vest is mostly made of leather although throughout the hard leather
-there are small jutts of metal for added protection.
-~
+
+there are small jutts of metal for added protection.
+
+~
 End
 #ITEM
 ObjId              18
@@ -333,7 +339,8 @@ Affect             0 0
 Affect             0 0
 ExtraDescr         dagger~
 This small dagger is made of the spine of a dragon, strong and sharp.
-~
+
+~
 End
 #ITEM
 ObjId              18

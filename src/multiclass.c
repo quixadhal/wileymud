@@ -19,7 +19,7 @@
 #include "include/interpreter.h"
 #include "include/handler.h"
 #include "include/spells.h"
-#include "include/limits.h"
+#include "include/mudlimits.h"
 #include "include/opinion.h"
 #include "include/constants.h"
 #define _MULTICLASS_C

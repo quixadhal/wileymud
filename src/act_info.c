@@ -21,7 +21,7 @@
 #include "include/handler.h"
 #include "include/db.h"
 #include "include/spells.h"
-#include "include/limits.h"
+#include "include/mudlimits.h"
 #include "include/trap.h"
 #include "include/hash.h"
 #include "include/constants.h"
@@ -252,13 +252,14 @@ void list_obj_in_room(struct obj_data *list, struct char_data *ch)
     for (k = 0; k < cond_top; k++) {
       if ((ITEM_TYPE(cond_ptr[k]) == ITEM_TRAP) && (GET_TRAP_CHARGES(cond_ptr[k]) > 0)) {
 	num = number(1, 100);
-	if (num < ch->skills[SKILL_FIND_TRAP].learned / 3)
+	if (num < ch->skills[SKILL_FIND_TRAP].learned / 3) {
 	  if (cond_tot[k] > 1) {
 	    cprintf(ch, "[%2d] ", Inventory_Num++);
 	    show_mult_obj_to_char(cond_ptr[k], ch, 0, cond_tot[k]);
 	  } else {
 	    show_obj_to_char(cond_ptr[k], ch, 0);
 	  }
+        }
       } else {
 	if (cond_tot[k] > 1) {
 	  cprintf(ch, "[%2d] ", Inventory_Num++);
@@ -600,11 +601,12 @@ void show_mult_char_to_char(struct char_data *i, struct char_data *ch, int mode,
     dlog("show_mult_char_to_char");
   if (mode == 0) {
     if (IS_AFFECTED(i, AFF_HIDE) || !CAN_SEE(ch, i)) {
-      if (IS_AFFECTED(ch, AFF_SENSE_LIFE))
+      if (IS_AFFECTED(ch, AFF_SENSE_LIFE)) {
 	if (num == 1)
 	  cprintf(ch, "You sense a hidden life form in the room.\n\r");
 	else
 	  cprintf(ch, "You sense hidden life forma in the room.\n\r");
+      }
       return;
     }
     if (!(i->player.long_descr) || (GET_POS(i) != i->specials.default_pos)) {

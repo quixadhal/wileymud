@@ -2481,8 +2481,10 @@ Affect             0 0
 Affect             0 0
 ExtraDescr         silver longblade~
   The hilt of this fine blade seems to be made of ivory while the blade
-itself seems to have been wrought from silver.  The workmanship is excellent.
-~
+
+itself seems to have been wrought from silver.  The workmanship is excellent.
+
+~
 End
 #ITEM
 ObjId              124
@@ -2509,8 +2511,10 @@ Affect             0 0
 Affect             0 0
 ExtraDescr         silver longblade~
   The hilt of this fine blade seems to be made of ivory while the blade
-itself seems to have been wrought from silver.  The workmanship is excellent.
-~
+
+itself seems to have been wrought from silver.  The workmanship is excellent.
+
+~
 End
 #ITEM
 ObjId              124
@@ -2537,10 +2541,14 @@ Affect             0 0
 Affect             0 0
 ExtraDescr         gnarled branch~
   The branch is no more than a foot long and seems to be curved in every
-which way.  All about the small branch there appears to be runes of a sort,
-the only ones you can make out say this: "Call upon the dragon....", the rest
-seems unintelligable.
-~
+
+which way.  All about the small branch there appears to be runes of a sort,
+
+the only ones you can make out say this: "Call upon the dragon....", the rest
+
+seems unintelligable.
+
+~
 End
 #ITEM
 ObjId              124
@@ -2567,7 +2575,8 @@ Affect             0 0
 Affect             0 0
 ExtraDescr         salve~
 You could squeeze the healing juices from this salve and quaff them.
-~
+
+~
 End
 #ITEM
 ObjId              124
@@ -2666,10 +2675,14 @@ Affect             0 0
 Affect             0 0
 ExtraDescr         gnarled branch~
   The branch is no more than a foot long and seems to be curved in every
-which way.  All about the small branch there appears to be runes of a sort,
-the only ones you can make out say this: "Call upon the dragon....", the rest
-seems unintelligable.
-~
+
+which way.  All about the small branch there appears to be runes of a sort,
+
+the only ones you can make out say this: "Call upon the dragon....", the rest
+
+seems unintelligable.
+
+~
 End
 #ITEM
 ObjId              127
@@ -3056,8 +3069,10 @@ Affect             17 -5
 Affect             0 0
 ExtraDescr         girth silver chain chainmail~
   The girth is made from small links of silver that seem to sparkle in the 
-light.  It is not at all heavy and looks quite comfortable.
-~
+
+light.  It is not at all heavy and looks quite comfortable.
+
+~
 End
 #ITEM
 ObjId              127

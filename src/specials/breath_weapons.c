@@ -6,19 +6,19 @@
 #include <signal.h>
 #include <ctype.h>
 
-#include "include/global.h"
-#include "include/bug.h"
-#include "include/utils.h"
+#include "global.h"
+#include "bug.h"
+#include "utils.h"
 
-#include "include/act_off.h"
-#include "include/comm.h"
-#include "include/db.h"
-#include "include/limits.h"
-#include "include/multiclass.h"
-#include "include/spells.h"
+#include "act_off.h"
+#include "comm.h"
+#include "db.h"
+#include "mudlimits.h"
+#include "multiclass.h"
+#include "spells.h"
 
 #define _BREATH_WEAPONS_C
-#include "include/breath_weapons.h"
+#include "breath_weapons.h"
 
 static funcp breaths[] = {
   (funcp)cast_acid_breath, NULL,
@@ -43,10 +43,7 @@ struct breath_victim *choose_victims(struct char_data *ch,
   struct breath_victim *head = NULL, *temp = NULL;
 
   for (cons = real_roomp(ch->in_room)->people; cons; cons = cons->next_in_room) {
-    if(!(temp = (void *)malloc(sizeof(*temp)))) {
-      log("Malloc failure in special proc breath_victim.  Exiting.");
-      kill(getpid(),12);
-    }
+    CREATE_VOID(temp, struct breath_victim, 1);
     temp->ch = cons;
     temp->next = head;
     head = temp;
@@ -73,7 +70,7 @@ void free_victims(struct breath_victim *head) {
 
   while (head) {
     temp = head->next;
-    free(head);
+    DESTROY(head);
     head = temp;
   }
 }

@@ -55,9 +55,12 @@ Affect             0 0
 Affect             0 0
 ExtraDescr         scale bodice~
   This piece of armor looks more like the top of a elegant dress than 
-anything else, with shoulder straps houlstering the bousoms, much skin on
-the upper torso is exposed.
-~
+
+anything else, with shoulder straps houlstering the bousoms, much skin on
+
+the upper torso is exposed.
+
+~
 End
 #ITEM
 ObjId              2
@@ -303,23 +306,38 @@ Affect             0 0
 ExtraDescr         map shylar~
                          -= Grassland =-
 
-     -= Mansion =-           
-           +              -= Arcanus =-
-   	       	         	+
-         * * * * *  *  *  *  *  *+ -= Jakes =-  +-= Kark =-
-   
-                 -= Jessica =- +*                -= Farm =-
 
-                 -= Supply =-  +*+ -= Griffons =-      
-      +
-+-= Chapel =-+   -= Bakery =-  +*  -= Sass =-
-      +            		       +	
- -= Pastue =-     -= Tate =-   +*  *  *  *  *  *  *  *  *  *
--= Cemetary =-                         + 
-      +                            -= Home =-
+     -= Mansion =-           
 
-                         -= Grassland =-
-~
+           +              -= Arcanus =-
+
+   	       	         	+
+
+         * * * * *  *  *  *  *  *+ -= Jakes =-  +-= Kark =-
+
+   
+
+                 -= Jessica =- +*                -= Farm =-
+
+
+                 -= Supply =-  +*+ -= Griffons =-      
+
+      +
+
++-= Chapel =-+   -= Bakery =-  +*  -= Sass =-
+
+      +            		       +	
+
+ -= Pastue =-     -= Tate =-   +*  *  *  *  *  *  *  *  *  *
+
+-= Cemetary =-                         + 
+
+      +                            -= Home =-
+
+
+                         -= Grassland =-
+
+~
 End
 #ITEM
 ObjId              14

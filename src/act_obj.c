@@ -8,6 +8,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <sys/types.h>
+#include <signal.h>
 #include <string.h>
 #include <assert.h>
 #include <ctype.h>
@@ -24,7 +25,7 @@
 #include "include/constants.h"
 #include "include/spell_parser.h"
 #include "include/multiclass.h"
-#include "include/limits.h"
+#include "include/mudlimits.h"
 #include "include/fight.h"
 #include "include/act_info.h"
 #define _ACT_OBJ_C
@@ -703,7 +704,7 @@ void name_from_drinkcon(struct obj_data *obj)
     dlog("name_from_drinkcon");
   one_argument(obj->name, buf);
   new_name = strdup(buf);
-  free(obj->name);
+  DESTROY(obj->name);
   obj->name = new_name;
   return;
 
@@ -711,7 +712,7 @@ void name_from_drinkcon(struct obj_data *obj)
   if (*((obj->name) + i) == ' ') {
     *((obj->name) + i + 1) = '\0';
     new_name = strdup(obj->name);
-    free(obj->name);
+    DESTROY(obj->name);
     obj->name = new_name;
   }
 }
@@ -725,7 +726,7 @@ void name_to_drinkcon(struct obj_data *obj, int type)
   CREATE(new_name, char, strlen(obj->name) + strlen(drinknames[type]) + 2);
 
   sprintf(new_name, "%s %s", obj->name, drinknames[type]);
-  free(obj->name);
+  DESTROY(obj->name);
   obj->name = new_name;
 }
 

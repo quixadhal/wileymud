@@ -19,7 +19,7 @@
 #include "include/db.h"
 #include "include/spells.h"
 #include "include/constants.h"
-#include "include/limits.h"
+#include "include/mudlimits.h"
 #include "include/multiclass.h"
 #define _ACT_COMM_C
 #include "include/act_comm.h"

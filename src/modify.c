@@ -8,6 +8,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <sys/types.h>
+#include <signal.h>
 #include <ctype.h>
 #include <string.h>
 #include <time.h>
@@ -119,11 +120,7 @@ void string_add(struct descriptor_data *d, char *str)
       cprintf(d->character, "String too long. Last line skipped.\n\r");
       terminator = 1;
     } else {
-      if (!(*d->str = (char *)realloc(*d->str, strlen(*d->str) +
-				      strlen(str) + 3))) {
-	perror("string_add");
-	exit(1);
-      }
+      RECREATE(*d->str, char, strlen(*d->str) + strlen(str) + 3);
       strcat(*d->str, str);
     }
   }
@@ -291,7 +288,7 @@ void do_string(struct char_data *ch, char *arg, int cmd)
 	  cprintf(ch, "New field.\n\r");
 	  break;
 	} else if (!str_cmp(ed->keyword, string)) {	/* the field exists */
-	  free(ed->description);
+	  DESTROY(ed->description);
 	  ed->description = 0;
 	  ch->desc->str = &ed->description;
 	  cprintf(ch,  "Modifying description.\n\r");
@@ -311,9 +308,9 @@ void do_string(struct char_data *ch, char *arg, int cmd)
 	  cprintf(ch, "No field with that keyword.\n\r");
 	  return;
 	} else if (!str_cmp(ed->keyword, string)) {
-	  free(ed->keyword);
+	  DESTROY(ed->keyword);
 	  if (ed->description)
-	    free(ed->description);
+	    DESTROY(ed->description);
 
 	  /* delete the entry in the desr list */
 	  if (ed == obj->ex_description)
@@ -323,7 +320,7 @@ void do_string(struct char_data *ch, char *arg, int cmd)
 		 tmp = tmp->next);
 	    tmp->next = ed->next;
 	  }
-	  free(ed);
+	  DESTROY(ed);
 
 	  cprintf(ch, "Field deleted.\n\r");
 	  return;
@@ -337,7 +334,7 @@ void do_string(struct char_data *ch, char *arg, int cmd)
   }
 
   if (*ch->desc->str) {
-    free(*ch->desc->str);
+    DESTROY(*ch->desc->str);
   }
   if (*string) {		       /* there was a string in the argument array */
     if (strlen(string) > length[field - 1]) {
@@ -588,7 +585,7 @@ void show_string(struct descriptor_data *d, char *input)
 
   if (*buf) {
     if (d->showstr_head) {
-      free(d->showstr_head);
+      DESTROY(d->showstr_head);
       d->showstr_head = 0;
     }
     d->showstr_point = 0;
@@ -607,7 +604,7 @@ void show_string(struct descriptor_data *d, char *input)
       for (chk = d->showstr_point; isspace(*chk); chk++);
       if (!*chk) {
 	if (d->showstr_head) {
-	  free(d->showstr_head);
+	  DESTROY(d->showstr_head);
 	  d->showstr_head = 0;
 	}
 	d->showstr_point = 0;

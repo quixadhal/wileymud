@@ -7,7 +7,7 @@
 #endif
 
 #define bug(Str...) \
-        abug(__FILE__, __FUNCTION__, __LINE__, \
+        abug(__FILE__, __PRETTY_FUNCTION__, __LINE__, \
 	     GREATER_GOD, 0, NULL, NULL, Str ##)
 #define log(Str...) \
         abug(NULL, NULL, 0, GREATER_GOD, 0, NULL, NULL, Str ##)

@@ -17,7 +17,7 @@
 #include "include/handler.h"
 #include "include/db.h"
 #include "include/spells.h"
-#include "include/limits.h"
+#include "include/mudlimits.h"
 #include "include/constants.h"
 #include "include/spell_parser.h"
 #include "include/fight.h"

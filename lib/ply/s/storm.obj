@@ -897,7 +897,8 @@ Affect             0 0
 Affect             0 0
 ExtraDescr         scroll~
 The scroll has the words 'Oculocula Uizugubusuhl'
-~
+
+~
 End
 #ITEM
 ObjId              94
@@ -924,7 +925,8 @@ Affect             0 0
 Affect             0 0
 ExtraDescr         scroll~
 The scroll has the words 'Qfzahz Yaae'
-~
+
+~
 End
 #ITEM
 ObjId              94
@@ -951,7 +953,8 @@ Affect             0 0
 Affect             0 0
 ExtraDescr         scroll~
 The scroll has the words 'Eugtzs Zzus'
-~
+
+~
 End
 #ITEM
 ObjId              94
@@ -978,7 +981,8 @@ Affect             0 0
 Affect             0 0
 ExtraDescr         scroll~
 The scroll has the words 'Uizugubusuhl'
-~
+
+~
 End
 #ITEM
 ObjId              94
@@ -1029,7 +1033,8 @@ Affect             0 0
 Affect             0 0
 ExtraDescr         scroll~
 The scroll has the words 'Uizugubusuhl'
-~
+
+~
 End
 #ITEM
 ObjId              94
@@ -1056,7 +1061,8 @@ Affect             0 0
 Affect             0 0
 ExtraDescr         scroll~
 The scroll has the words 'Eugtzs Zzus'
-~
+
+~
 End
 #ITEM
 ObjId              94
@@ -1083,7 +1089,8 @@ Affect             0 0
 Affect             0 0
 ExtraDescr         scroll~
 The scroll has the words 'Qfzahz Yaae'
-~
+
+~
 End
 #ITEM
 ObjId              94
@@ -1110,7 +1117,8 @@ Affect             0 0
 Affect             0 0
 ExtraDescr         scroll~
 The scroll has the words 'Oculocula Uizugubusuhl'
-~
+
+~
 End
 #ITEM
 ObjId              94
@@ -1137,18 +1145,27 @@ Affect             0 0
 Affect             0 0
 ExtraDescr         note scroll paper~
 
-To: Saad
-From: Ahali(source)
 
-  I have found the key to morgoths tower.  I might
-have been seen as i left the tower, so i will be hiding
-out in the southern part of town, in the poor sector for
-two days.  I will return to the hideout in three days.
-Ohhhh.... the treasures i saw.......
+To: Saad
+
+From: Ahali(source)
 
 
-                                       Ahali
-~
+  I have found the key to morgoths tower.  I might
+
+have been seen as i left the tower, so i will be hiding
+
+out in the southern part of town, in the poor sector for
+
+two days.  I will return to the hideout in three days.
+
+Ohhhh.... the treasures i saw.......
+
+
+
+                                       Ahali
+
+~
 End
 #ITEM
 ObjId              94
@@ -1271,7 +1288,8 @@ Affect             0 0
 Affect             0 0
 ExtraDescr         potion~
 This potion has a saphire colored liquid inside of it.
-~
+
+~
 End
 #ITEM
 ObjId              94
@@ -1298,7 +1316,8 @@ Affect             0 0
 Affect             0 0
 ExtraDescr         potion pink~
 The potion swirls clockwise.
-~
+
+~
 End
 #ITEM
 ObjId              94
@@ -1325,7 +1344,8 @@ Affect             0 0
 Affect             0 0
 ExtraDescr         potion pink~
 The potion swirls counter clockwise.
-~
+
+~
 End
 #ITEM
 ObjId              94
@@ -1520,7 +1540,8 @@ Affect             0 0
 Affect             0 0
 ExtraDescr         black wand~
 The wand has many strange arcane writings upon it.
-~
+
+~
 End
 #ITEM
 ObjId              94
@@ -1547,7 +1568,8 @@ Affect             0 0
 Affect             0 0
 ExtraDescr         black wand~
 The wand has many strange arcane writings upon it.
-~
+
+~
 End
 #ITEM
 ObjId              94
@@ -1742,7 +1764,8 @@ Affect             0 0
 Affect             0 0
 ExtraDescr         ring~
 This small ring has a pure pearl in the center.
-~
+
+~
 End
 #ITEM
 ObjId              94
@@ -1769,7 +1792,8 @@ Affect             0 0
 Affect             0 0
 ExtraDescr         ring~
 This small ring has a pure pearl in the center.
-~
+
+~
 End
 #ITEM
 ObjId              94
@@ -2036,9 +2060,12 @@ Affect             18 2
 Affect             0 0
 ExtraDescr         longsword sword rusty~
   The blade of this sword barely looks like it wouldn't cut through a apple
-let alone armor and tough flesh.  Despite its decrepit blade it does seem
-to still balance well, almost too well.
-~
+
+let alone armor and tough flesh.  Despite its decrepit blade it does seem
+
+to still balance well, almost too well.
+
+~
 End
 #ITEM
 ObjId              94
@@ -2377,8 +2404,10 @@ Affect             0 0
 Affect             0 0
 ExtraDescr         staff~
   The staff has many intricate runes upon it, there is no doubt this object
-is for the arcane arts.  
-~
+
+is for the arcane arts.  
+
+~
 End
 #ITEM
 ObjId              111
@@ -2405,8 +2434,10 @@ Affect             0 0
 Affect             0 0
 ExtraDescr         ivory candle holder~
 Looking closely at the end you notice that it is shaped much like that of a
-skeleton key, many notches and angles upon it.
-~
+
+skeleton key, many notches and angles upon it.
+
+~
 End
 #ITEM
 ObjId              111
@@ -2433,8 +2464,10 @@ Affect             0 0
 Affect             0 0
 ExtraDescr         silver longblade~
   The hilt of this fine blade seems to be made of ivory while the blade
-itself seems to have been wrought from silver.  The workmanship is excellent.
-~
+
+itself seems to have been wrought from silver.  The workmanship is excellent.
+
+~
 End
 #ITEM
 ObjId              111
@@ -2581,7 +2614,8 @@ Affect             0 0
 Affect             0 0
 ExtraDescr         pouch~
 This small pouch is made of soft deerskin.
-~
+
+~
 End
 #ITEM
 ObjId              111
@@ -2632,9 +2666,12 @@ Affect             0 0
 Affect             0 0
 ExtraDescr         boots~
   The boots appear to be made of a soft leather but are plated with silver
-plate to provide protection.  The top fringe of the boots are adorned with
-the feathers of a mountain eagle.
-~
+
+plate to provide protection.  The top fringe of the boots are adorned with
+
+the feathers of a mountain eagle.
+
+~
 End
 #ITEM
 ObjId              111
@@ -2709,9 +2746,12 @@ Affect             24 4
 Affect             17 -10
 ExtraDescr         robe~
 This elegant robe is made of fine silk, interweaved with golden strands.
-Touching the fabric it almost seethes with power, power only to be held
-by those that can use it.
-~
+
+Touching the fabric it almost seethes with power, power only to be held
+
+by those that can use it.
+
+~
 End
 #ITEM
 ObjId              111

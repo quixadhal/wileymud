@@ -22,12 +22,28 @@ inline int strn_cmp(char *arg1, char *arg2, int n);
 #define ISNEWL(ch) ((ch) == '\n' || (ch) == '\r')
 #define IF_STR(st) ((st) ? (st) : "\0")
 #define CAP(st)  (*(st) = UPPER(*(st)), st)
-#define CREATE(result, type, number)  do {\
-	if (!((result) = (type *) calloc ((number), sizeof(type))))\
-		{ perror("malloc failure"); abort(); } } while(0)
-#define RECREATE(result,type,number) do {\
+
+/* bug(((failure) && *(failure))?(failure):"calloc failure"); */
+
+#define CREATE(result, type, number)  {\
+  if (!((result) = (type *) calloc ((number), sizeof(type))))\
+    { bug("malloc failure"); kill(getpid(), SIGHUP); } }
+#define RECREATE(result,type,number) {\
   if (!((result) = (type *) realloc ((result), sizeof(type) * (number))))\
-		{ perror("realloc failure"); abort(); } } while(0)
+    { bug("realloc failure"); kill(getpid(), SIGHUP); } }
+#define DESTROY(thing) { if ((thing)) free((thing)); }
+#define TRY_TO_CREATE(result, type, number) \
+  ((result) = (type *) calloc ((number), sizeof(type)))
+#define CREATE_VOID(result, type, number) {\
+  if (!((result) = (void *) calloc ((number), sizeof(type))))\
+    { bug("malloc failure"); kill(getpid(), SIGHUP); } }
+
+#define STRDUP(result, string)  {\
+  if (!((result) = (char *) calloc ((strlen(string)), sizeof(char))))\
+    { bug("malloc failure"); kill(getpid(), SIGHUP); }\
+  else strcpy((result), (string)); }
+
+
 #define IS_SET(flag,bit)  ((flag) & (bit))
 #define IS_NOT_SET(flag,bit)  (!IS_SET(flag,bit))
 #define IS_AFFECTED(ch,skill) ( IS_SET((ch)->specials.affected_by, (skill)) )

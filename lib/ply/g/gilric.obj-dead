@@ -55,8 +55,10 @@ Affect             0 0
 Affect             0 0
 ExtraDescr         hawk beaked mask~
   The mask has a huge beak upon it, rather it looks more like a hallow head
-of some huge bird.
-~
+
+of some huge bird.
+
+~
 End
 #ITEM
 ObjId              2
@@ -83,8 +85,10 @@ Affect             0 0
 Affect             0 0
 ExtraDescr         legplates~
   The legplates are made from a single piece of steel, adorned with beautiful
-feathers.
-~
+
+feathers.
+
+~
 End
 #ITEM
 ObjId              3
@@ -281,8 +285,10 @@ Affect             0 0
 Affect             0 0
 ExtraDescr         hawk beaked mask~
   The mask has a huge beak upon it, rather it looks more like a hallow head
-of some huge bird.
-~
+
+of some huge bird.
+
+~
 End
 #ITEM
 ObjId              24
@@ -357,9 +363,12 @@ Affect             0 0
 Affect             0 0
 ExtraDescr         staff clawed~
   The staff appears to be made from ironwood and at the top seems to have 
-some sort of a avian foot, claws extended.  It could make a lasting scar
-upon someone, if they knew how to use it.
-~
+
+some sort of a avian foot, claws extended.  It could make a lasting scar
+
+upon someone, if they knew how to use it.
+
+~
 End
 #ITEM
 ObjId              24

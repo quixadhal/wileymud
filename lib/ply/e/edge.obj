@@ -801,7 +801,8 @@ Affect             17 -7
 Affect             0 0
 ExtraDescr         bearskin skin black~
   It looks as though it would fit someone fifteen feet tall and very heavy.
-~
+
+~
 End
 #ITEM
 ObjId              73
@@ -852,8 +853,10 @@ Affect             18 2
 Affect             19 3
 ExtraDescr         knife sacrificial~
   The knife seems to be encrusted with jewels and made almost entirely of
-gold.
-~
+
+gold.
+
+~
 End
 #ITEM
 ObjId              73
@@ -928,9 +931,12 @@ Affect             0 0
 Affect             0 0
 ExtraDescr         lute~
   The lute looks used and worn but still seems playable, looking along the
-neck of the lute you can see five faded runes.  Perhaps this lute has more
-of a use than beautiful music.
-~
+
+neck of the lute you can see five faded runes.  Perhaps this lute has more
+
+of a use than beautiful music.
+
+~
 End
 #ITEM
 ObjId              73
@@ -957,9 +963,12 @@ Affect             0 0
 Affect             0 0
 ExtraDescr         lute~
   The lute looks used and worn but still seems playable, looking along the
-neck of the lute you can see five faded runes.  Perhaps this lute has more
-of a use than beautiful music.
-~
+
+neck of the lute you can see five faded runes.  Perhaps this lute has more
+
+of a use than beautiful music.
+
+~
 End
 #ITEM
 ObjId              73
@@ -1010,7 +1019,8 @@ Affect             0 0
 Affect             0 0
 ExtraDescr         dagger~
 This small dagger is made of the spine of a dragon, strong and sharp.
-~
+
+~
 End
 #ITEM
 ObjId              73
@@ -1229,9 +1239,12 @@ Affect             0 0
 Affect             0 0
 ExtraDescr         boots~
   The boots appear to be made of a soft leather but are plated with silver
-plate to provide protection.  The top fringe of the boots are adorned with
-the feathers of a mountain eagle.
-~
+
+plate to provide protection.  The top fringe of the boots are adorned with
+
+the feathers of a mountain eagle.
+
+~
 End
 #ITEM
 ObjId              73
@@ -1402,8 +1415,10 @@ Affect             18 4
 Affect             19 4
 ExtraDescr         bastard silver~
   The blade of this sword seems to be made of pure silver while the hilt is
-wrapped in a soft leather skin making it well balanced.
-~
+
+wrapped in a soft leather skin making it well balanced.
+
+~
 End
 #ITEM
 ObjId              73
@@ -1574,10 +1589,14 @@ Affect             0 0
 Affect             0 0
 ExtraDescr         gnarled branch~
   The branch is no more than a foot long and seems to be curved in every
-which way.  All about the small branch there appears to be runes of a sort,
-the only ones you can make out say this: "Call upon the dragon....", the rest
-seems unintelligable.
-~
+
+which way.  All about the small branch there appears to be runes of a sort,
+
+the only ones you can make out say this: "Call upon the dragon....", the rest
+
+seems unintelligable.
+
+~
 End
 #ITEM
 ObjId              82
@@ -1700,7 +1719,8 @@ Affect             0 0
 Affect             0 0
 ExtraDescr         pouch~
 This small pouch is made of soft deerskin.
-~
+
+~
 End
 #ITEM
 ObjId              82
@@ -1727,9 +1747,12 @@ Affect             17 -3
 Affect             0 0
 ExtraDescr         red cloak~
   The cloak is a soft red with small streak of other colors intertwined within.
-The pieces that are intertwined appear to be flakes of rock which makes the
-outside of the cloak very scratchy, the inside although seems very comfortable.
-~
+
+The pieces that are intertwined appear to be flakes of rock which makes the
+
+outside of the cloak very scratchy, the inside although seems very comfortable.
+
+~
 End
 #ITEM
 ObjId              82
@@ -1876,8 +1899,10 @@ Affect             0 0
 Affect             0 0
 ExtraDescr         legplates plates~
   The plates appear to be made of pure silver while the fringe of the plates
-are decorated with the feathers of a mountain eagle.
-~
+
+are decorated with the feathers of a mountain eagle.
+
+~
 End
 #ITEM
 ObjId              81
@@ -1928,8 +1953,10 @@ Affect             0 0
 Affect             0 0
 ExtraDescr         guantlets~
   The guantlets seem to be made of silver links and have small feathers of a 
-mountain eagle adorning the knuckles.
-~
+
+mountain eagle adorning the knuckles.
+
+~
 End
 #ITEM
 ObjId              81
@@ -1956,7 +1983,8 @@ Affect             0 0
 Affect             0 0
 ExtraDescr         armplates feathered~
   The armplates are made of solid steel and adorned with beautiful feathers.
-~
+
+~
 End
 #ITEM
 ObjId              81
@@ -2007,7 +2035,8 @@ Affect             18 2
 Affect             19 3
 ExtraDescr         silver shortsword short sword~
 The blade seems to be coated with silver.
-~
+
+~
 End
 End
 #END_RENT

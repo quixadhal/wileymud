@@ -8,6 +8,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <sys/types.h>
+#include <signal.h>
 #include <string.h>
 #include <ctype.h>
 #include <time.h>
@@ -17,7 +18,7 @@
 #include "include/utils.h"
 #include "include/comm.h"
 #include "include/handler.h"
-#include "include/limits.h"
+#include "include/mudlimits.h"
 #include "include/opinion.h"
 #include "include/hash.h"
 #include "include/constants.h"
@@ -42,6 +43,7 @@
 
 int top_of_world = -1;		       /* ref to the top element of world */
 struct hash_header room_db;
+struct reset_q_type reset_q;
 
 struct obj_data *object_list = 0;      /* the global linked list of obj's */
 struct char_data *character_list = 0;  /* global l-list of chars          */
@@ -179,15 +181,13 @@ void boot_db(void)
     if(list_of_players) {
       for(i= 0; i< number_of_players; i++)
         if(list_of_players[i])
-          free(list_of_players[i]);
-      free(list_of_players);
+          DESTROY(list_of_players[i]);
+      DESTROY(list_of_players);
     }
     fscanf(pfd, " %d ", &number_of_players);
     actual_players= number_of_players;
-    if(!(list_of_players= (char **)calloc(number_of_players,sizeof(char *)))) {
-      log("Failed to get memory for player list\n\r");
-      exit(-1);
-    }
+    CREATE(list_of_players, char *, number_of_players);
+
     for(i= 0; i< number_of_players; i++) {
       fgets(tmpbufx, 255, pfd);
       if(!(list_of_players[i]= (char *)strdup(tmpbufx))) {
@@ -293,12 +293,12 @@ struct index_data *generate_indices(FILE * fl, int *top)
   for (;;) {
     if (fgets(buf, sizeof(buf), fl)) {
       if (*buf == '#') {
-	if (!i)			       /* first cell */
+	if (!i)	{		       /* first cell */
 	  CREATE(index, struct index_data, 1);
-	else if (!(index = (struct index_data *)realloc(index, (i + 1) * sizeof(struct index_data)))) {
-	  perror("load indices");
-	  exit(0);
-	}
+        } else {
+          RECREATE(index, struct index_data, i + 1);
+        }
+
 	sscanf(buf, "#%d", &index[i].virtual);
 	index[i].pos = ftell(fl);
 	index[i].number = 0;
@@ -325,20 +325,20 @@ void cleanout_room(struct room_data *rp)
 
   if (DEBUG)
     dlog("cleanout_room");
-  free(rp->name);
-  free(rp->description);
+  DESTROY(rp->name);
+  DESTROY(rp->description);
   for (i = 0; i < MAX_NUM_EXITS; i++)
     if (rp->dir_option[i]) {
-      free(rp->dir_option[i]->general_description);
-      free(rp->dir_option[i]->keyword);
-      free(rp->dir_option[i]);
+      DESTROY(rp->dir_option[i]->general_description);
+      DESTROY(rp->dir_option[i]->keyword);
+      DESTROY(rp->dir_option[i]);
       rp->dir_option[i] = NULL;
     }
   for (exptr = rp->ex_description; exptr; exptr = nptr) {
     nptr = exptr->next;
-    free(exptr->keyword);
-    free(exptr->description);
-    free(exptr);
+    DESTROY(exptr->keyword);
+    DESTROY(exptr->description);
+    DESTROY(exptr);
   }
 }
 
@@ -625,14 +625,12 @@ void boot_zones(void)
 
     /* alloc a new zone */
 
-    if (!zon)
+    if (!zon) {
       CREATE(zone_table, struct zone_data, 1);
-
-    else if (!(zone_table =
-	       (struct zone_data *)realloc(zone_table, (zon + 1) * sizeof(struct zone_data)))) {
-      perror("boot_zones realloc");
-      exit(0);
+    } else {
+      RECREATE(zone_table, struct zone_data, zon + 1);
     }
+
     zone_table[zon].name = check;
     fscanf(fl, " %d ", &zone_table[zon].top);
     fscanf(fl, " %d ", &zone_table[zon].lifespan);
@@ -643,16 +641,13 @@ void boot_zones(void)
     cmd_no = 0;
 
     for (expand = 1;;) {
-      if (expand)
-	if (!cmd_no)
+      if (expand) {
+	if (!cmd_no) {
 	  CREATE(zone_table[zon].cmd, struct reset_com, 1);
-
-	else if (!(zone_table[zon].cmd =
-		   (struct reset_com *)realloc(zone_table[zon].cmd,
-			(cmd_no + 1) * sizeof(struct reset_com)))) {
-	  perror("reset command load");
-	  exit(0);
-	}
+        } else {
+	  RECREATE(zone_table[zon].cmd, struct reset_com, cmd_no + 1);
+        }
+      }
       expand = 1;
 
       fscanf(fl, " ");		       /* skip blanks */
@@ -684,7 +679,7 @@ void boot_zones(void)
     zon++;
   }
   top_of_zone_table = --zon;
-  free(check);
+  DESTROY(check);
   fclose(fl);
 }
 
@@ -1211,7 +1206,7 @@ void zone_update(void)
 	  reset_q.tail = temp;
 	temp->next = update_u->next;
       }
-      free(update_u);
+      DESTROY(update_u);
     }
   }
 }
@@ -1260,7 +1255,7 @@ void reset_zone(int zone)
 	break;
 
       case 'O':		       /* read an object */
-	if (obj_index[ZCMD.arg1].number < ZCMD.arg2)
+	if (obj_index[ZCMD.arg1].number < ZCMD.arg2) {
 	  if (ZCMD.arg3 >= 0 && ((rp = real_roomp(ZCMD.arg3)) != NULL)) {
 	    if (!get_obj_in_list_num(ZCMD.arg1, rp->contents)
 		&& (obj = read_object(ZCMD.arg1, REAL))) {
@@ -1275,6 +1270,7 @@ void reset_zone(int zone)
 	    last_cmd = 1;
 	  } else
 	    last_cmd = 0;
+        }
 	break;
 
       case 'P':		       /* object to object */
@@ -1640,13 +1636,11 @@ int create_entry(char *name)
   int i;
 
   if (top_of_p_table == -1 || player_table == NULL) {
-    CREATE(player_table, struct player_index_element, 1);
-
-    top_of_p_table = 0;
-  } else if (!(player_table = (struct player_index_element *)realloc(player_table, sizeof(struct player_index_element) * (++top_of_p_table + 1)))) {
-    perror("create entry");
-    exit(1);
+    CREATE(player_table, struct player_index_element, ((top_of_p_table = 0), 1));
+  } else {
+    RECREATE(player_table, struct player_index_element, ++top_of_p_table + 1);
   }
+
   CREATE(player_table[top_of_p_table].name, char, strlen(name) + 1);
 
   /* copy lowercase equivalent of name to table field */
@@ -1710,10 +1704,11 @@ void save_char(struct char_data *ch, SHORT load_room)
  * duplicated.
  */
   for(af= ch->affected; af; af= af->next) {
-    if(!affect)
-      affect= (struct affected_type *)malloc(sizeof(struct affected_type));
-    else
-      affect= (struct affected_type *)realloc(affect, (++naf + 1)* sizeof(struct affected_types));
+    if(!affect) {
+      CREATE(affect, struct affected_type, 1);
+    } else {
+      RECREATE(affect, struct affected_type, ++naf + 1);
+    }
     affect[naf] = *af;
     affect[naf].next = NULL;
     affect_modify(ch, affect[naf].location, affect[naf].modifier, affect[naf].bitvector, FALSE);
@@ -1733,7 +1728,7 @@ void save_char(struct char_data *ch, SHORT load_room)
   if(affect) {
     for(;naf >= 0; naf--)
       affect_modify(ch, affect[naf].location, affect[naf].modifier, affect[naf].bitvector, TRUE);
-    free(affect);
+    DESTROY(affect);
   }
   for(i= 0; i< MAX_WEAR; i++)
     if(char_equip[i])
@@ -1906,26 +1901,26 @@ void free_char(struct char_data *ch)
 
   if (DEBUG)
     dlog("free_char");
-  free(GET_NAME(ch));
+  DESTROY(GET_NAME(ch));
 
   if (ch->player.title)
-    free(ch->player.title);
+    DESTROY(ch->player.title);
   if (ch->player.pre_title)
-    free(ch->player.pre_title);
+    DESTROY(ch->player.pre_title);
   if (ch->player.short_descr)
-    free(ch->player.short_descr);
+    DESTROY(ch->player.short_descr);
   if (ch->player.long_descr)
-    free(ch->player.long_descr);
+    DESTROY(ch->player.long_descr);
   if (ch->player.description)
-    free(ch->player.description);
+    DESTROY(ch->player.description);
   if (ch->player.sounds)
-    free(ch->player.sounds);
+    DESTROY(ch->player.sounds);
   if (ch->player.distant_snds)
-    free(ch->player.distant_snds);
+    DESTROY(ch->player.distant_snds);
 
   for (af = ch->affected; af; af = af->next)
     affect_remove(ch, af);
-  free(ch);
+  DESTROY(ch);
 }
 
 /* release memory allocated for an obj struct */
@@ -1933,25 +1928,25 @@ void free_obj(struct obj_data *obj)
 {
   struct extra_descr_data *this, *next_one;
 
-  free(obj->name);
+  DESTROY(obj->name);
   if (obj->description)
-    free(obj->description);
+    DESTROY(obj->description);
   if (obj->short_description)
-    free(obj->short_description);
+    DESTROY(obj->short_description);
   if (obj->action_description)
-    free(obj->action_description);
+    DESTROY(obj->action_description);
 
   for (this = obj->ex_description;
        (this != 0); this = next_one) {
     next_one = this->next;
     if (this->keyword)
-      free(this->keyword);
+      DESTROY(this->keyword);
     if (this->description)
-      free(this->description);
-    free(this);
+      DESTROY(this->description);
+    DESTROY(this);
   }
 
-  free(obj);
+  DESTROY(obj);
 }
 
 /* read contents of a text file, and place in buf */
@@ -2533,8 +2528,8 @@ int fread_char(char *name, struct char_file_u *ch)
   char tname[40];
   char *t_ptr;
   char buf[MAX_STRING_LENGTH];
-  char *word;
-  UBYTE fMatch;
+  char *word = NULL;
+  UBYTE fMatch = 0;
 
   strcpy(tname, name);
   t_ptr = tname;

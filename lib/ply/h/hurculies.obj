@@ -81,8 +81,10 @@ Affect             0 0
 Affect             0 0
 ExtraDescr         armoured leggings~
   The leggings are made from links of chain and appear very strong.
-#5040
-armour plated gauntlets~
+
+#5040
+
+armour plated gauntlets~
 End
 #ITEM
 ObjId              8
@@ -181,7 +183,8 @@ Affect             18 1
 Affect             19 1
 ExtraDescr         silver shortsword short sword~
 The blade seems to be coated with silver.
-~
+
+~
 End
 #ITEM
 ObjId              8
