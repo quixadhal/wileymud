@@ -1,19 +1,17 @@
-#!/bin/bash
+#!/usr/local/bin/bash
 # 42 is our magic number for not rebooting,
 # otherwise we assume it crashed or we said reboot.
 
-echo $$ >/var/run/wiley.pid
-cd /home/wiley/bin
+echo $$ >/home/wiley/wiley.pid
+cd /home/wiley/wiley/bin
 while [ -x ./wileymud ]; do
   LOG=`/bin/date "+../lib/log/runlog.%y%m%d-%H%M%S"`
   touch $LOG
-  chown wiley.wiley $LOG
   chmod 640 $LOG
   ./wileymud 3000 >$LOG 2>&1 </dev/null
   STATUS=$?
-  gzip -9 $LOG
-  chown wiley.wiley $LOG.gz
-  chmod 640 $LOG.gz
+  bzip2 -9 $LOG
+  chmod 640 $LOG.bz2
   sync
   if [ $STATUS = 42 ]; then
     exit

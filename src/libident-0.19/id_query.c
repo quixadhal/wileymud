@@ -36,10 +36,10 @@
 #include "ident.h"
 
 
-int id_query __P4(ident_t *, id,
-		  int, lport,
-		  int, fport,
-		  struct timeval *, timeout)
+int    id_query __P((ident_t *id,
+			    int lport,
+			    int fport,
+			    __STRUCT_TIMEVAL_P timeout))
 {
 #ifdef SIGRETURNTYPE
     SIGRETURNTYPE (*old_sig)();

@@ -58,6 +58,17 @@ bash-2.05$ kill -l
 25) SIGXFSZ     26) SIGVTALRM   27) SIGPROF     28) SIGWINCH
 29) SIGINFO     30) SIGUSR1     31) SIGUSR2     
 
+  Under slackware 9.1 (Linux 2.4 kernel):
+
+ 1) SIGHUP       2) SIGINT       3) SIGQUIT      4) SIGILL
+ 5) SIGTRAP      6) SIGABRT      7) SIGBUS       8) SIGFPE
+ 9) SIGKILL     10) SIGUSR1     11) SIGSEGV     12) SIGUSR2
+13) SIGPIPE     14) SIGALRM     15) SIGTERM     17) SIGCHLD
+18) SIGCONT     19) SIGSTOP     20) SIGTSTP     21) SIGTTIN
+22) SIGTTOU     23) SIGURG      24) SIGXCPU     25) SIGXFSZ
+26) SIGVTALRM   27) SIGPROF     28) SIGWINCH    29) SIGIO
+30) SIGPWR      31) SIGSYS
+
 */
 
 void signal_setup(void)
@@ -68,6 +79,7 @@ void signal_setup(void)
   struct sigaction ack[] =
   {
     { SIG_DFL, 0, SA_NODEFER | SA_RESETHAND },
+#ifdef __openbsd__
     { hupsig, SIGHUP, SA_NODEFER },
     { SIG_IGN, SIGINT, SA_NODEFER },
     { SIG_IGN, SIGQUIT, SA_NODEFER },
@@ -98,7 +110,39 @@ void signal_setup(void)
     { SIG_IGN, SIGWINCH, SA_NODEFER },
     { shutdown_request, SIGUSR1, SA_NODEFER },
     { SIG_IGN, SIGUSR2, SA_NODEFER },
-//    { SIG_DFL, SIGINFO, SA_NODEFER | SA_RESETHAND },
+#else
+    { hupsig, SIGHUP, SA_NODEFER },
+    { SIG_IGN, SIGINT, SA_NODEFER },
+    { SIG_IGN, SIGQUIT, SA_NODEFER },
+    { SIG_DFL, SIGILL, SA_NODEFER | SA_RESETHAND },
+    { SIG_DFL, SIGTRAP, SA_NODEFER | SA_RESETHAND },
+    { SIG_DFL, SIGABRT, SA_NODEFER | SA_RESETHAND },
+    { SIG_DFL, SIGBUS, SA_NODEFER | SA_RESETHAND },
+    { SIG_DFL, SIGFPE, SA_NODEFER | SA_RESETHAND },
+    { SIG_DFL, SIGKILL, SA_NODEFER | SA_RESETHAND },
+    { SIG_DFL, SIGUSR1, SA_NODEFER | SA_RESETHAND },
+    { SIG_DFL, SIGSEGV, SA_NODEFER | SA_RESETHAND },
+    { SIG_DFL, SIGUSR2, SA_NODEFER | SA_RESETHAND },
+    { SIG_IGN, SIGPIPE, SA_NODEFER },
+    { logsig, SIGALRM, SA_NODEFER },
+    { SIG_IGN, SIGTERM, SA_NODEFER },
+    { SIG_DFL, 0, SA_NODEFER | SA_RESETHAND }, /* Not listed by kill -l ??? */
+    { SIG_IGN, SIGCHLD, SA_NODEFER },
+    { SIG_IGN, SIGCONT, SA_NODEFER },
+    { SIG_IGN, SIGSTOP, SA_NODEFER },
+    { SIG_IGN, SIGTSTP, SA_NODEFER },
+    { SIG_IGN, SIGTTIN, SA_NODEFER },
+    { SIG_IGN, SIGTTOU, SA_NODEFER },
+    { SIG_IGN, SIGURG, SA_NODEFER },
+    { SIG_IGN, SIGXCPU, SA_NODEFER },
+    { SIG_IGN, SIGXFSZ, SA_NODEFER },
+    { checkpointing, SIGVTALRM, SA_NODEFER },
+    { SIG_DFL, SIGPROF, SA_NODEFER | SA_RESETHAND },
+    { SIG_IGN, SIGWINCH, SA_NODEFER },
+    { SIG_IGN, SIGIO, SA_NODEFER },
+    { shutdown_request, SIGPWR, SA_NODEFER },
+    { SIG_IGN, SIGSYS, SA_NODEFER },
+#endif
   };
 
 /*

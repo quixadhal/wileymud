@@ -310,8 +310,8 @@ Room *bottom_of_world, *current, *top_of_world;
 int Brief = FALSE;
 int Light = FALSE;
 
-#define bug(Str...) abug(__FILE__, __FUNCTION__, __LINE__, 1, Str ##)
-#define log(Str...) abug(NULL, NULL, 0, 1, Str ##)
+#define bug(Str, ...) abug(__FILE__, __FUNCTION__, __LINE__, 1, Str, ## __VA_ARGS__)
+#define log(Str, ...) abug(NULL, NULL, 0, 1, Str, ## __VA_ARGS__)
 
 void abug(char *File, char *Func, int Line, int Verbose, char *Str,...)
 {

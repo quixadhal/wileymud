@@ -17,6 +17,7 @@
 #include <netdb.h>
 #include <netinet/in.h>
 #include <sys/time.h>
+#include <time.h>
 #include <signal.h>
 #include <string.h>
 #include <ctype.h>

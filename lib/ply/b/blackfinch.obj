@@ -1,8 +1,8 @@
 #RENT
 Owner              Blackfinch~
-Gold               3177
-TotalCost          282
-LastUpdate         842067867
+Gold               210
+TotalCost          44
+LastUpdate         1064698240
 MinimumStay        0
 End
 #EQUIPMENT
@@ -233,26 +233,32 @@ End
 #ITEM
 ObjId              9
 ContainedBy        -1
-Name               belt leather~
+Name               small pouch~
 Description
-A leather belt lies here.~
+A small pouch lies here.~
 ShortDescr
-a leather belt~
+a small pouch~
 ActionDescr
 (null)~
-VNum               3028
+VNum               10014
 EquippedAt         13
-Values             1 1 0 0
+Values             10 1 -1 0
 ExtraFlags         0
-Weight             1
+Weight             5
 Timer              0
 BitVector          0
-Type               9
+Type               15
 WearFlags          2049
 Cost               30
-CostPerDay         10
-Affect             17 -2
+CostPerDay         30
 Affect             0 0
+Affect             0 0
+ExtraDescr         small pouch~
+  The pouch is not all that large but has a leather strap which makes it 
+
+wearable about your waiste.
+
+~
 End
 #ITEM
 ObjId              10
@@ -305,35 +311,283 @@ End
 #ITEM
 ObjId              12
 ContainedBy        -1
-Name               large knife~
+Name               rod metal cold~
 Description
-A large knife lies here.~
+A metal rod lies here, it seems to be very cold.~
 ShortDescr
-a large knife~
+a cold metal rod~
 ActionDescr
 (null)~
-VNum               3021
+VNum               10004
 EquippedAt         16
-Values             0 1 5 11
-ExtraFlags         5440
-Weight             3
+Values             0 1 6 7
+ExtraFlags         0
+Weight             4
 Timer              0
 BitVector          0
 Type               5
 WearFlags          8193
-Cost               20
-CostPerDay         2
+Cost               45
+CostPerDay         45
 Affect             18 2
-Affect             19 3
-ExtraDescr         large knife~
-It appears to be about eight to nine inches in length, fairly sharp.
-
-~
+Affect             0 0
 End
 End
 #CARRIED
 #ITEM
-ObjId              13
+ObjId              19
+ContainedBy        16
+Name               bread~
+Description
+A loaf of bread has been left here.~
+ShortDescr
+a bread~
+ActionDescr
+(null)~
+VNum               3010
+EquippedAt         0
+Values             10 0 0 0
+ExtraFlags         0
+Weight             3
+Timer              0
+BitVector          0
+Type               19
+WearFlags          1
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              19
+ContainedBy        16
+Name               bread~
+Description
+A loaf of bread has been left here.~
+ShortDescr
+a bread~
+ActionDescr
+(null)~
+VNum               3010
+EquippedAt         0
+Values             10 0 0 0
+ExtraFlags         0
+Weight             3
+Timer              0
+BitVector          0
+Type               19
+WearFlags          1
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              19
+ContainedBy        16
+Name               bread~
+Description
+A loaf of bread has been left here.~
+ShortDescr
+a bread~
+ActionDescr
+(null)~
+VNum               3010
+EquippedAt         0
+Values             10 0 0 0
+ExtraFlags         0
+Weight             3
+Timer              0
+BitVector          0
+Type               19
+WearFlags          1
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              24
+ContainedBy        -1
+Name               scale bodice~
+Description
+A scale bodice lies here in a clump~
+ShortDescr
+a scale bodice~
+ActionDescr
+(null)~
+VNum               10005
+EquippedAt         0
+Values             2 2 0 0
+ExtraFlags         0
+Weight             15
+Timer              0
+BitVector          0
+Type               9
+WearFlags          9
+Cost               150
+CostPerDay         70
+Affect             0 0
+Affect             0 0
+ExtraDescr         scale bodice~
+  This piece of armor looks more like the top of a elegant dress than 
+
+anything else, with shoulder straps houlstering the bousoms, much skin on
+
+the upper torso is exposed.
+
+~
+End
+#ITEM
+ObjId              24
+ContainedBy        -1
+Name               scale skirt~
+Description
+A scale skirt lies here in a hump.~
+ShortDescr
+a scale skirt~
+ActionDescr
+(null)~
+VNum               10006
+EquippedAt         0
+Values             2 2 0 0
+ExtraFlags         0
+Weight             15
+Timer              0
+BitVector          0
+Type               9
+WearFlags          33
+Cost               150
+CostPerDay         10
+Affect             17 -4
+Affect             0 0
+End
+#ITEM
+ObjId              24
+ContainedBy        -1
+Name               belt leather~
+Description
+A leather belt lies here.~
+ShortDescr
+a leather belt~
+ActionDescr
+(null)~
+VNum               3028
+EquippedAt         0
+Values             1 1 0 0
+ExtraFlags         0
+Weight             1
+Timer              0
+BitVector          0
+Type               9
+WearFlags          2049
+Cost               30
+CostPerDay         10
+Affect             17 -2
+Affect             0 0
+End
+#ITEM
+ObjId              24
+ContainedBy        -1
+Name               whip~
+Description
+A whip lies here.~
+ShortDescr
+a whip~
+ActionDescr
+(null)~
+VNum               10001
+EquippedAt         0
+Values             0 1 4 2
+ExtraFlags         0
+Weight             5
+Timer              0
+BitVector          0
+Type               5
+WearFlags          8193
+Cost               25
+CostPerDay         25
+Affect             0 0
+Affect             0 0
+ExtraDescr         whip~
+The whip is nothing more than a long piece of leather.
+
+~
+End
+#ITEM
+ObjId              24
+ContainedBy        -1
+Name               boots leather~
+Description
+A pair of leather boots lie here.~
+ShortDescr
+a pair of leather boots~
+ActionDescr
+(null)~
+VNum               3026
+EquippedAt         -1
+Values             1 1 0 0
+ExtraFlags         0
+Weight             2
+Timer              0
+BitVector          0
+Type               9
+WearFlags          65
+Cost               50
+CostPerDay         10
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              24
+ContainedBy        -1
+Name               bag~
+Description
+A small bag.~
+ShortDescr
+a bag~
+ActionDescr
+(null)~
+VNum               3017
+EquippedAt         0
+Values             50 0 0 0
+ExtraFlags         0
+Weight             2
+Timer              0
+BitVector          0
+Type               15
+WearFlags          16385
+Cost               20
+CostPerDay         2
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              24
+ContainedBy        -1
+Name               boots leather~
+Description
+A pair of leather boots lie here.~
+ShortDescr
+a pair of leather boots~
+ActionDescr
+(null)~
+VNum               3026
+EquippedAt         -1
+Values             1 1 0 0
+ExtraFlags         0
+Weight             2
+Timer              0
+BitVector          0
+Type               9
+WearFlags          65
+Cost               50
+CostPerDay         10
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              24
 ContainedBy        -1
 Name               club wooden~
 Description
@@ -355,6 +609,34 @@ Cost               2
 CostPerDay         2
 Affect             0 0
 Affect             0 0
+End
+#ITEM
+ObjId              24
+ContainedBy        -1
+Name               large knife~
+Description
+A large knife lies here.~
+ShortDescr
+a large knife~
+ActionDescr
+(null)~
+VNum               3021
+EquippedAt         -1
+Values             0 1 5 11
+ExtraFlags         4096
+Weight             3
+Timer              0
+BitVector          0
+Type               5
+WearFlags          8193
+Cost               20
+CostPerDay         2
+Affect             0 0
+Affect             0 0
+ExtraDescr         large knife~
+It appears to be about eight to nine inches in length, fairly sharp.
+
+~
 End
 End
 #END_RENT

@@ -7,31 +7,31 @@ Title              the Dwarven Trickster/Missionary/Soldier~
 Description
 You see a scrany little whimp
 ~
-LastSite           nelli@localhost~
-LastLogin          847527513
+LastSite           yonger@orac.shadowlord.org~
+LastLogin          1064706049
 Birth              826172399
-Played             55238
+Played             66474
 Sex                1
 Race               3
 Class              7
-Alignment          1000
-Exp                16731
+Alignment          306
+Exp                16261
 Level              mage 5
 Level              cleric 5
 Level              warrior 5
 HeightWeight       101 179
 Gold               0 0
 HomeTown           3008
-LoadRoom           3008
+LoadRoom           -1
 PoofIn             ~
 PoofOut            ~
 AbilityScores      12 0 10 10 10 12
 AbilityPad         0 0 0 0
-HpManaMove         71 55 114 0 116 0
+HpManaMove         28 55 114 0 180 0
 AC                 100
 ToHitDamage        0 0
 SaveApply          0 0 0 0 0
-Conditions         0 23 23 0 0 0
+Conditions         0 18 18 0 0 0
 PointsPad1         0 0 0
 PointsPad2         0 0 0 0
 PointsPad3         0 0 0
@@ -50,11 +50,11 @@ NamedSkill         8 0 0 chill touch~
 NamedSkill         9 0 0 clone~
 NamedSkill         10 0 0 colour spray~
 NamedSkill         11 0 0 control weather~
-NamedSkill         12 14 0 create food~
+NamedSkill         12 26 0 create food~
 NamedSkill         13 0 0 create water~
 NamedSkill         14 0 0 cure blindness~
 NamedSkill         15 0 0 cure critical~
-NamedSkill         16 0 0 cure light~
+NamedSkill         16 6 0 cure light~
 NamedSkill         17 0 0 curse~
 NamedSkill         18 0 0 detect evil~
 NamedSkill         19 0 0 detect invisible~
@@ -123,7 +123,7 @@ NamedSkill         81 0 0 fireshield~
 NamedSkill         82 0 0 charm monster~
 NamedSkill         83 0 0 cure serious~
 NamedSkill         84 0 0 cause serious~
-NamedSkill         85 32 0 refresh~
+NamedSkill         85 60 0 refresh~
 NamedSkill         86 0 0 second wind~
 NamedSkill         87 68 0 turn~
 NamedSkill         88 0 0 succor~
@@ -184,9 +184,9 @@ NamedSkill         183 51 0 disarm~
 NamedSkill         184 0 0 shield bash~
 NamedSkill         185 0 0 riding~
 ActFlags           1 0
-Affect             0 3 1 1 18 0 0
-Affect             1 3 1 -1 24 0 0
-Affect             2 73 5 -10 17 0 0
+Affect             0 0 0 0 0 0 0
+Affect             1 0 0 0 0 0 0
+Affect             2 0 0 0 0 0 0
 Affect             3 0 0 0 0 0 0
 Affect             4 0 0 0 0 0 0
 Affect             5 0 0 0 0 0 0

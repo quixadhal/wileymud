@@ -11,8 +11,8 @@
 #include <string.h>
 
 #include "include/global.h"
-#include "include/bug.h"
 #include "include/utils.h"
+#include "include/bug.h"
 #include "include/comm.h"
 #include "include/interpreter.h"
 #include "include/handler.h"

@@ -38,9 +38,9 @@
 #include "ident.h"
 
 
-ident_t *id_open __P3(struct in_addr *, laddr,
-		      struct in_addr *, faddr,
-		      struct timeval *, timeout)
+ident_t * id_open __P((__STRUCT_IN_ADDR_P laddr,
+			   __STRUCT_IN_ADDR_P faddr,
+			   __STRUCT_TIMEVAL_P timeout))
 {
     ident_t *id;
     int res, tmperrno;

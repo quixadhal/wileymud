@@ -1,15 +1,15 @@
 #PLAYER
 Name               Muidnar~
-Passwd             Mu6qYj6lKtAkE~
+Passwd             MuX1.pMbcGXjI~
 Whizz              0
 PreTitle           Vile~
 Title              the Dark One~
 Description
 ~
-LastSite           rand@localhost~
-LastLogin          848340551
+LastSite           crand@localhost.shadowlord.org~
+LastLogin          1053715931
 Birth              827957651
-Played             19642
+Played             19890
 Sex                1
 Race               1
 Class              7
@@ -19,14 +19,14 @@ Level              mage 59
 Level              cleric 59
 Level              warrior 59
 HeightWeight       162 157
-Gold               100000 0
+Gold               105012 0
 HomeTown           3008
 LoadRoom           -1
 PoofIn             ~
 PoofOut            ~
 AbilityScores      25 99 18 18 18 18
 AbilityPad         0 0 0 0
-HpManaMove         6795 10070 276 0 301 0
+HpManaMove         6799 10070 276 0 357 0
 AC                 100
 ToHitDamage        0 0
 SaveApply          0 0 0 0 0
@@ -182,7 +182,7 @@ NamedSkill         182 84 1 disarm trap~
 NamedSkill         183 100 1 disarm~
 NamedSkill         184 96 1 shield bash~
 NamedSkill         185 73 1 riding~
-ActFlags           33 1
+ActFlags           32 1
 Affect             0 0 0 0 0 0 0
 Affect             1 0 0 0 0 0 0
 Affect             2 0 0 0 0 0 0

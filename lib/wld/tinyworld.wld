@@ -986,7 +986,7 @@ branch is visible not too far above you.
 10 1152 8
 The winds have settled down a bit, and the sun feels warm.
 ~
-The shadow of a great bird flits across your sight.
+The shadow of some great winged thing flits across your sight.
 ~
 D4
 You see a gigantic weather worn branch directly above you.
@@ -1000,15 +1000,15 @@ The ground has become a simple white blur... it MUST be down there.
 0 -1 1035
 S
 #1037
-The Perch~
+A broken branch~
   You are precariusly standing on a large branch, high
 atop an enormous spruce tree.  The wind howls gleefully and you
-feel your footing shift uneasily yet again.  Nestled close to the
-trunk, you see a cozy nest made of twigs, grasses, and what look
-like leather straps.  A few bones also stick out.
-  The warm yellow light of the setting sun steams in from the west,
-falling across the nest where a thin wisp of smoke rises from
-somewhere near the tree trunk.
+feel your footing shift uneasily yet again.  There is a ragged
+hole near the trunk, with a few scraps of twigs and perhaps a
+few bones sticking out.  It may have once been a nest.
+  The limp light of the setting sun slides in from the west,
+but does little to dispel the chill that hangs in the air here.
+You feel that this place is deserted.
 ~
 10 576 5
 D5
@@ -1017,33 +1017,17 @@ You see tiny morsels of humanity scurrying about below you.
 ~
 0 -1 1036
 E
-leather strap straps~
-  They look worn and ragged, apparantly having been used to
-restrain something... or someone.  There seem to be traces of
-whipped cream lingering.
-~
-E
 bones bone~
   The bones are picked clean and represent nearly all the
 denzies found in this world.  A large number of player-like
 skulls are clustered near the bottom.
 ~
 E
-nest twigs grasses twig grass~
-  The nest looks large and spacious from the outside, but a closer look
-reveals tremendous amounts of cushioning and padding which would make it
-extremely warm, soft, and comfortable for a late dinner.  This assumes that
-you haven't been invited the hard way.
-  A warm fire burns in the eastern corner of the nest.  It appears that
-someone has built a stone fireplace into the heart of the tree itself!
-The cushions near the hearth seem especially inviting.
-~
-E
 tree spruce~
   The pine tree is one of the tallest and largest you've ever
-seen.  It has to be several thousand years old, but it still
-is vibrantly alive and the bluish-green needles seem to almost
-glow in the setting sun.
+seen.  It has to be several thousand years old, but you sense
+no life within the bark.  It seems almost frozen solid, and
+yet feel sturdy enough.
 ~
 E
 branch~
@@ -1051,37 +1035,11 @@ branch~
 to be up here with the eagles.
 ~
 E
-cushion cushions cushioning padding~
-  The cushions are, in fact, enormous fluffy pillows done in
-various shades of green and brown.  They look very soft and warm
-in the light of the fire.  There are the impressions of several bodies
-near the hearth, and you could swear the smell of whipped cream peeks
-out from beneath the plush folds.
-~
-E
-fireplace fire~
-  Somehow, a gigantic stone fireplace is embedded into the living trunk
-of this immense spruce tree.  The opening is very large and the smell
-of roast venison wafts out into the nest.  Waves of heat wash into the
-nest, making you want to stretch out and fall asleep watching the sun
-set and the stars awaken from their slumber.
-  A small carving in one corner of the mantle catches your eye.
-~
-E
-carving~
-  There is a carving of a gigantic druegar battle axe cleaving a
-blackened tree inset into the stonework.  The axe itself has the
-impression of a beer mug.  You see a scrawled signature.
-~
-E
-signature~
-  Morrighan's Perch, crafted by Dread Quixadhal in the darkest of nights.
-~
-E
 sun sunlight~
-  The sun sets in a brilliant orange splendeur.  Her yellow
-light seems to flow smoothly over everything around you,
-lulling you towards the gentle sleep of the unwary.
+  The sun whimpers a lackluster orange glow that does little
+to offset the chill of the winds up here.  It feels like snow,
+and you're sure that would prove fatal if you were still up
+here.
 ~
 S
 #1200

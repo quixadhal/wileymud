@@ -38,8 +38,8 @@ extern struct descriptor_data *descriptor_list;
  * NOTE!  The calling interface is very ugly... it is designed to be very
  * versitle, not pretty... If you want it to be useful in your source code,
  * use a macro like this one:
- * #define bug(BugFile, ch, Str...) \
- *         abug(__FILE__, __FUNCTION__, __LINE__, BugFile, ch, Str, ## args)
+ * #define bug(BugFile, ch, Str, ...) \
+ *         abug(__FILE__, __FUNCTION__, __LINE__, BugFile, ch, Str, __VA_ARGS__ )
  * which can then be used by simply saying:
  * bug(BUGLOG, ch, "You died %d times!\n", deaths);
  * producing as an example:
@@ -48,7 +48,7 @@ extern struct descriptor_data *descriptor_list;
  * The datestamp is YYMMDD.HHMMSS.MIL format.
  */
 void abug(char *File, char *Func, int Line, UINT Level, UINT Type,
-	  char *BugFile, struct char_data *ch, char *Str,...)
+	  char *BugFile, struct char_data *ch, char *Str, ...)
 {
   va_list arg;
   char Result[MAX_STRING_LENGTH];

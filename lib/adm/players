@@ -1,5 +1,5 @@
-500
-quixadhal        quixadhal@localhost.shadowlord.org 102.06.21 03:11 60
+511
+quixadhal        root@localhost.shadowlord.org 103.11.18 15:59 60
 sedna            tmiley@yakko.cs.wmich.edu 96.11.21 17:45 59
 dirk             ochs@yakko.cs.wmich.edu 96.10.11 00:53 58
 highlander       kevin@localhost 96.02.16 16:21 59
@@ -24,7 +24,6 @@ clarina ochs@yakko.cs.wmich.edu 10
 coffinb user@dial11.phoenix.net 1
 colbey user@hysterix.bangor.ac.uk 1
 cronion user@river.it.gvsu.edu 1
-cultist          chris@yakko.cs.wmich.edu 96.01.18 17:29 10
 cygnus matt@yakko.cs.wmich.edu 1
 cyric            cyric@localhost 96.02.27 00:08 1
 damien           damien@tao.btc.uwe.ac.uk 96.08.26 03:42 1
@@ -128,7 +127,7 @@ spree 99deyou2@s13.lab.cc.wmich.edu 1
 subgenius nate@yakko.cs.wmich.edu 2
 tamar            bela@localhost 96.06.28 14:40 4
 taurus           tmiley@yakko.cs.wmich.edu 96.10.11 13:51 23
-thrym            root@tardis.vortex.net 96.02.26 21:37 12
+thrym            quixadhal@orac.shadowlord.org 103.09.28 00:23 12
 tim              mud@wakko.cs.wmich.edu 96.09.24 21:39 3
 ukyo user@vor.cs.wmich.edu 1
 urg user@130.210.156.33 1
@@ -262,7 +261,7 @@ grindal          jettero@localhost 96.03.04 23:22 1
 what             user@river.it.gvsu.edu 96.03.05 18:21 1
 odious           adork@pm067-05.dialip.mich.net 96.04.09 23:44 1
 gurginaltanusti  jettero@localhost 96.03.05 20:21 1
-yonger           nelli@localhost 96.11.09 03:17 5
+yonger           yonger@orac.shadowlord.org 103.09.27 19:40 5
 blinky           chris@serv01.net-link.net 96.03.07 09:42 1
 azura            tmiley@yakko.cs.wmich.edu 96.03.28 16:47 6
 guestb           adork@feyr.cs.wmich.edu 96.10.29 03:01 1
@@ -286,7 +285,7 @@ tiana            adork@port027.foxberry.com 96.04.18 20:49 1
 john             kurtg@localhost 96.03.22 12:18 1
 shithead         user@tigger.cc.wmich.edu 96.03.22 12:42 1
 filibar          adork@river.it.gvsu.edu 96.11.18 13:02 12
-muidnar          rand@localhost 96.11.18 13:08 59
+muidnar          crand@localhost.shadowlord.org 103.05.23 14:48 59
 selene           tmiley@yakko.cs.wmich.edu 96.03.25 20:12 2
 tika             X94RUBRINGER@tigger.cc.wmich.edu 96.04.08 01:54 5
 jolen            adork@ld-nas-004.sojourn.com 96.07.14 23:39 1
@@ -404,7 +403,7 @@ tal              adork@bot33.causeway.qub.ac.uk 96.09.01 17:47 1
 subam            adork@septum.aa.ans.net 96.11.20 00:33 7
 brak             bela@localhost 96.09.06 17:58 3
 thyra            ochs@yakko.cs.wmich.edu 96.09.17 21:21 4
-blackfinch       chris@yakko.cs.wmich.edu 96.09.06 23:35 8
+blackfinch       quixadhal@orac.shadowlord.org 103.09.27 17:06 8
 leland           root@pm199-28.dialip.mich.net 96.09.08 21:16 1
 artr             art@pm199-03.dialip.mich.net 96.10.20 00:10 3
 calisto          adork@kuts10.cc.ukans.edu 96.09.09 00:07 1
@@ -435,7 +434,6 @@ dofan            wiley@localhost 96.10.15 19:29 1
 david            root@pm199-03.dialip.mich.net 96.10.20 00:23 1
 joe              root@pm199-03.dialip.mich.net 96.10.20 00:27 1
 fuckface         adork@var.cs.wmich.edu 96.10.20 15:19 1
-ololiuhqui       demona@demona.doldrums.dyn.ml.org 98.09.28 01:13 1
 inanna           frogfarm@yakko.cs.wmich.edu 96.10.21 01:30 1
 someonne         adork@port1.modem1.cc.swt.edu 96.10.24 10:10 1
 mia              adork@line7116.ras.ilstu.edu 96.11.04 23:38 1
@@ -499,3 +497,16 @@ chevy            adork@alpha.delta.edu 96.11.28 19:09 1
 wolfskirscha     odalisq@bronx 99.04.07 22:37 1
 dorkboy          adork@te-64-146-16-122.transedge.com 102.05.09 14:46 1
 minime           adork@65.88.171.65 102.06.20 14:11 1
+jeff             adork@DSL-NE-16.qtm.net 103.01.22 13:54 1
+georgewbush      adork@work.nexcerpt.com 103.01.22 14:47 1
+symposium        adork@h71s233a153n47.user.nortelnetworks.com 103.01.23 00:37 1
+karmaj           adork@i088245114.rivernet.com.au 103.06.13 22:43 1
+gorbag           quixadhal@orac.shadowlord.org 103.09.20 22:06 1
+ololiuhqui       adork@demona.shadowlord.org 103.09.29 22:57 6
+mongar           yonger@orac.shadowlord.org 103.09.28 02:03 5
+cultist          quixadhal@orac.shadowlord.org 103.09.28 02:01 5
+bojester         adork@24.231.231.85.gha.mi.chartermi.net 103.10.22 23:48 5
+omne             adork@24.231.231.85.gha.mi.chartermi.net 103.10.13 18:30 5
+rangerbob        quixadhal@orac.shadowlord.org 103.09.29 22:36 40
+mobaxx           adork@24.247.112.126.kzo.mi.chartermi.net 103.10.08 14:51 1
+ash              adork@24.247.223.48.kzo.mi.chartermi.net 103.10.05 00:13 1

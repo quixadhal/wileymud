@@ -38,13 +38,13 @@
 #include "ident.h"
 
 
-int id_parse __P7(ident_t *, id,
-		  struct timeval *, timeout,
-		  int *, lport,
-		  int *, fport,
-		  char **, identifier,
-		  char **, opsys,
-		  char **, charset)
+int    id_parse __P((ident_t *id,
+			    __STRUCT_TIMEVAL_P timeout,
+			    int *lport,
+			    int *fport,
+			    char **identifier,
+			    char **opsys,
+			    char **charset))
 {
     char c, *cp, *tmp_charset;
     fd_set rs;
