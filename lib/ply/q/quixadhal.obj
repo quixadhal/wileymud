@@ -1,92 +1,12 @@
 #RENT
 Owner              Quixadhal~
-Gold               110038
-TotalCost          50
-LastUpdate         848469360
+Gold               100000
+TotalCost          0
+LastUpdate         930919057
 MinimumStay        0
 End
 #EQUIPMENT
 End
 #CARRIED
-#ITEM
-ObjId              2
-ContainedBy        -1
-Name               druegar berserker axe~
-Description
-A gigantic battle axe is embedded in the ground.~
-ShortDescr
-a gigantic druegar battle axe~
-ActionDescr
-(null)~
-VNum               4734
-EquippedAt         0
-Values             0 3 6 5
-ExtraFlags         194
-Weight             15
-Timer              0
-BitVector          0
-Type               5
-WearFlags          32769
-Cost               -1
-CostPerDay         2500
-Affect             17 35
-Affect             30 67
-ExtraDescr         druegar berserker axe~
-  This axe is as large as most dwarves, and is very heavy.  It seems to be
-made of a very dark metal.  The edges are razor sharp, and it humms in a
-strangly disturbing way.  Wicked druegar runes run all along the blade.~
-End
-#ITEM
-ObjId              2
-ContainedBy        -1
-Name               druegar berserker axe~
-Description
-A gigantic battle axe is embedded in the ground.~
-ShortDescr
-a gigantic druegar battle axe~
-ActionDescr
-(null)~
-VNum               4734
-EquippedAt         0
-Values             0 3 6 5
-ExtraFlags         194
-Weight             15
-Timer              0
-BitVector          0
-Type               5
-WearFlags          32769
-Cost               -1
-CostPerDay         2500
-Affect             17 35
-Affect             30 67
-ExtraDescr         druegar berserker axe~
-  This axe is as large as most dwarves, and is very heavy.  It seems to be
-made of a very dark metal.  The edges are razor sharp, and it humms in a
-strangly disturbing way.  Wicked druegar runes run all along the blade.~
-End
-#ITEM
-ObjId              2
-ContainedBy        -1
-Name               club wooden~
-Description
-A wooden club lies here.~
-ShortDescr
-a wooden club~
-ActionDescr
-(null)~
-VNum               3048
-EquippedAt         -1
-Values             0 1 6 7
-ExtraFlags         0
-Weight             5
-Timer              0
-BitVector          0
-Type               5
-WearFlags          8193
-Cost               2
-CostPerDay         2
-Affect             0 0
-Affect             0 0
-End
 End
 #END_RENT

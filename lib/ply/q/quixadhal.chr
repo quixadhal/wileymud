@@ -1,6 +1,6 @@
 #PLAYER
 Name               Quixadhal~
-Passwd             QuFCHiTFclWwE~
+Passwd             QuYMJlfjsZ6W6~
 Whizz              0
 PreTitle           Dread~
 Title              is the Dark Lord of VI~
@@ -10,14 +10,14 @@ larger, and larger, overshadowing all else, looming ever closer,
 reaching out to...
      hand you a HUGE glass of the blackest beer you've ever seen!
 ~
-LastSite           chris@yakko.cs.wmich.edu~
-LastLogin          848469360
+LastSite           me2@orac.doldrums.penguinpowered.com~
+LastLogin          930919057
 Birth              803755990
-Played             4013202
+Played             4162167
 Sex                1
 Race               2
 Class              63
-Alignment          282
+Alignment          -1000
 Exp                75000001
 Level              mage 60
 Level              cleric 60
@@ -26,14 +26,14 @@ Level              thief 60
 Level              ranger 60
 Level              druid 60
 HeightWeight       167 127
-Gold               110038 0
-HomeTown           3008
-LoadRoom           -1
+Gold               100000 0
+HomeTown           1020
+LoadRoom           1020
 PoofIn             ~
 PoofOut            ~
 AbilityScores      25 100 25 25 25 25
 AbilityPad         0 0 0 0
-HpManaMove         9652 9999 185 0 516 0
+HpManaMove         10002 9999 266 0 593 0
 AC                 100
 ToHitDamage        0 0
 SaveApply          0 0 0 0 0
@@ -189,7 +189,7 @@ NamedSkill         182 100 1 disarm trap~
 NamedSkill         183 100 1 disarm~
 NamedSkill         184 100 1 shield bash~
 NamedSkill         185 100 1 riding~
-ActFlags           68 1
+ActFlags           36 1
 Affect             0 0 0 0 0 0 0
 Affect             1 0 0 0 0 0 0
 Affect             2 0 0 0 0 0 0

@@ -977,9 +977,13 @@ void do_stat(struct char_data *ch, char *argument, int cmd)
     strcat(buf, buf2);
 
     if (IS_MOB(k)) {
-	strcpy(buf, "\n\rMobile Special procedure : ");
-	strcat(buf, (mob_index[k->nr].func ? "Exists\n\r" : "None\n\r"));
-	cprintf(ch, buf);
+	/* strcpy(buf, "\n\rMobile Special procedure : ");
+	   strcat(buf, (mob_index[k->nr].func ? "Exists\n\r" : "None\n\r"));
+           cprintf(ch, buf);
+         */
+        cprintf(ch, "\n\rMobile Special procedure : %s\n\r",
+	       (mob_index[k->nr].func ?
+               MobFunctionNameByFunc(mob_index[k->nr].func) : "None"));
     }
     cprintf(ch, "Carried weight: %d   Carried items: %d\n\r",
 	      IS_CARRYING_W(k),

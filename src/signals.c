@@ -26,7 +26,7 @@ void signal_setup(void)
   struct timeval interval;
   struct sigaction ack[] =
   {
-    {SIG_DFL, 0, SA_NOMASK | SA_ONESHOT, NULL},
+    {SIG_DFL, {0}, SA_NOMASK | SA_ONESHOT, NULL},
     {hupsig, SIGHUP, SA_NOMASK, NULL},
     {SIG_IGN, SIGINT, SA_NOMASK, NULL},
     {SIG_IGN, SIGQUIT, SA_NOMASK, NULL},

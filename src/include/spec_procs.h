@@ -135,5 +135,7 @@ int k_tired(struct char_data *karrn);
 int k_kill_aggressor(struct char_data *karrn);
 int k_kill_wimps(struct char_data *karrn);
 int Karrn(struct char_data *ch, int cmd, char *arg);
+int Tate_ThiefGuildMaster(struct char_data *ch, int cmd, char *arg);
+char *MobFunctionNameByFunc(ifuncp func);
 
 #endif

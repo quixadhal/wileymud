@@ -28,7 +28,12 @@ inline void FreeHates(struct char_data *ch) {
     dlog("FreeHates");
   for (k = ch->hates.clist; k; k = n) {
     n = k->next;
-    free(n);
+    if(n)
+      if(n->valid)
+        if(!strcmp(n->valid, "AddHated"))
+          free(n);
+        else
+          bug("Attempt to free invalid Hated chain");
   }
 }
 
@@ -39,7 +44,12 @@ inline void FreeFears(struct char_data *ch) {
     dlog("FreeFears");
   for (k = ch->fears.clist; k; k = n) {
     n = k->next;
-    free(n);
+    if(n)
+      if(n->valid)
+        if(!strcmp(n->valid, "AddFeared"))
+          free(n);
+        else
+          bug("Attempt to free invalid Feared chain");
   }
 }
 
@@ -57,12 +67,12 @@ int RemHated(struct char_data *ch, struct char_data *pud) {
 	  t = oldpud;
 	  if (ch->hates.clist == t) {
 	    ch->hates.clist = 0;
-	    free(t);
+	    if(t) free(t);
 	    break;
 	  } else {
 	    for (oldpud = ch->hates.clist; oldpud->next != t; oldpud = oldpud->next);
 	    oldpud->next = oldpud->next->next;
-	    free(t);
+	    if(t) free(t);
 	    break;
 	  }
 	}
@@ -71,12 +81,12 @@ int RemHated(struct char_data *ch, struct char_data *pud) {
 	  t = oldpud;
 	  if (ch->hates.clist == t) {
 	    ch->hates.clist = 0;
-	    free(t);
+	    if(t) free(t);
 	    break;
 	  } else {
 	    for (oldpud = ch->hates.clist; oldpud->next != t; oldpud = oldpud->next);
 	    oldpud->next = oldpud->next->next;
-	    free(t);
+	    if(t) free(t);
 	    break;
 	  }
 	}
@@ -100,6 +110,7 @@ int AddHated(struct char_data *ch, struct char_data *pud) {
 
   if (pud) {
     CREATE(newpud, struct char_list, 1);
+    strcpy(newpud->valid, "AddHated");
     newpud->op_ch = pud;
     strcpy(newpud->name, GET_NAME(pud));
     newpud->next = ch->hates.clist;
@@ -188,13 +199,13 @@ int RemFeared(struct char_data *ch, struct char_data *pud) {
 	  t = oldpud;
 	  if (ch->fears.clist == t) {
 	    ch->fears.clist = 0;
-	    free(t);
+	    if(t) free(t);
 	    break;
 	  } else {
 	    for (oldpud = ch->fears.clist; oldpud->next != t;
 		 oldpud = oldpud->next);
 	    oldpud->next = oldpud->next->next;
-	    free(t);
+	    if(t) free(t);
 	    break;
 	  }
 	}
@@ -203,13 +214,13 @@ int RemFeared(struct char_data *ch, struct char_data *pud) {
 	  t = oldpud;
 	  if (ch->fears.clist == t) {
 	    ch->fears.clist = 0;
-	    free(t);
+	    if(t) free(t);
 	    break;
 	  } else {
 	    for (oldpud = ch->fears.clist; oldpud->next != t;
 		 oldpud = oldpud->next);
 	    oldpud->next = oldpud->next->next;
-	    free(t);
+	    if(t) free(t);
 	    break;
 	  }
 	}
@@ -233,6 +244,7 @@ int AddFeared(struct char_data *ch, struct char_data *pud) {
 
   if (pud) {
     CREATE(newpud, struct char_list, 1);
+    strcpy(newpud->valid, "AddFeared");
     newpud->op_ch = pud;
     strcpy(newpud->name, GET_NAME(pud));
     newpud->next = ch->fears.clist;

@@ -198,6 +198,7 @@ struct char_list {
   struct char_data *op_ch;
   char name[50];
   struct char_list *next;
+  char valid[24];
 };
 
 typedef struct {

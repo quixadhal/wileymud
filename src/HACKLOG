@@ -629,3 +629,25 @@ global.h:1144: warning: function declaration isn't a prototype
 961011	Sedna
   1320	Fixed bug in colour spray which prevented registered players from
 	being affected by the spell.
+980917	Quixadhal
+  1937	Restored this mess from backup tapes.  I have no idea if I will really
+	do any work with it again, but if I don't, no one else will.  Perhaps
+	I can work with Jettero to some degree.  He may accept some parts of
+	Wiley in his own lpmud.
+  1952	Changed all occurances of dprintf() to dcprintf() to avoid a conflict
+	with the newer libgcc function.
+981005	Quixadhal
+  1500	Fixed a few things.  Compilation requires -static for some reason
+	under this versio of glibc.  Bizzare.  Memory handling seems more
+	picky nowadays... it crashes on things it used to allow (and probably
+	leak).  Attempting to add validation strings to some variables.
+  1530	Will attempt to remove some of the creeping featurism that changed
+	the way the game felt.  To start with, allow Tate to heal evil
+	people in Shylar... and make the random undead rising code percentage
+	vary based on the moon phase (add a moon phase and a way to find
+	out what it is).
+  2300	Hacked stat routine to list function names in mobs with specials.
+981010	Quixadhal
+  0500	Fixed Tate up to be "nice".
+980402	Quixadhal
+  0000	Reduced spam from puff.

@@ -76,7 +76,7 @@ void close_sockets(int s);
 void close_socket(struct descriptor_data *d);
 void nonblock(int s);
 
-void dprintf(struct descriptor_data *d, char *Str,...);
+void dcprintf(struct descriptor_data *d, char *Str,...);
 void cprintf(struct char_data *ch, char *Str,...);
 void rprintf(int room, char *Str,...);
 void zprintf(int zone, char *Str,...);

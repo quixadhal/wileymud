@@ -978,7 +978,7 @@ void nonblock(int s) {
  * This acts as an interface to write_to_q(), but it uses variable arguments
  * to eliminate multiple calls to sprintf().
  */
-void dprintf(struct descriptor_data *d, char *Str,...) {
+void dcprintf(struct descriptor_data *d, char *Str,...) {
   va_list arg;
   char Result[MAX_STRING_LENGTH];
 

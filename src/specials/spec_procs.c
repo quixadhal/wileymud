@@ -67,7 +67,7 @@ static struct special_proc_entry specials_m[] = {
   {3017, cleric, "cleric (Acolyte)"},
   {3020, MageGuildMaster, "MageGuildMaster (Jessica)"},
   {3021, ClericGuildMaster, "ClericGuildMaster (Pastue)"},
-  {3022, ThiefGuildMaster, "ThiefGuildMaster (Tate)"},
+  {3022, Tate_ThiefGuildMaster, "Tate_ThiefGuildMaster (Tate)"},
   {3023, FighterGuildMaster, "FighterGuildMaster (Kark)"},
   {3024, replicant, "replicant (Glowing Squirrel)"},
   {3043, Ned_Nutsmith, "Ned_Nutsmith (Nedrick)"},
@@ -278,7 +278,7 @@ struct char_data *FindMobInRoomWithFunction(int room, ifuncp func)
 }
 
 int MageGuildMaster(struct char_data *ch, int cmd, char *arg) {
-  register int number, i, target= MAGE_LEVEL_IND;
+  register int anumber, i, target= MAGE_LEVEL_IND;
   char pagebuf[16384];
   struct char_data *master;
 
@@ -307,23 +307,23 @@ int MageGuildMaster(struct char_data *ch, int cmd, char *arg) {
       page_string(ch->desc, pagebuf, 1);
       return TRUE;
     }
-    if((number= GetSpellByName(arg))== -1) {
+    if((anumber= GetSpellByName(arg))== -1) {
       cprintf(ch, "I have never heard of this spell...\n\r");
       return TRUE;
     }
-    if(spell_info[number].min_level[target] < GetMaxLevel(master)-20) {
+    if(spell_info[anumber].min_level[target] < GetMaxLevel(master)-20) {
       cprintf(ch, "It would be beneath me to teach you such drivel!\n\r");
       return TRUE;
     }
-    if(GetMaxLevel(master) < spell_info[number].min_level[target]) {
+    if(GetMaxLevel(master) < spell_info[anumber].min_level[target]) {
       cprintf(ch, "I have not yet mastered that spell.\n\r");
       return TRUE;
     }
-    if(GET_LEVEL(ch, target) < spell_info[number].min_level[target]) {
+    if(GET_LEVEL(ch, target) < spell_info[anumber].min_level[target]) {
       cprintf(ch, "You are yet too frail to attempt this spell.\n\r");
       return TRUE;
     }
-    if(!CanCastClass(ch, number, target)) {
+    if(!CanCastClass(ch, anumber, target)) {
       cprintf(ch, "You do not know of this spell...\n\r");
       return TRUE;
     }
@@ -331,16 +331,16 @@ int MageGuildMaster(struct char_data *ch, int cmd, char *arg) {
       cprintf(ch, "You do not seem to be able to practice now.\n\r");
       return TRUE;
     }
-    if (ch->skills[number].learned >= 95) {
-      cprintf(ch, "You know %s as well as I!\n\r", spell_info[number].name);
+    if (ch->skills[anumber].learned >= 95) {
+      cprintf(ch, "You know %s as well as I!\n\r", spell_info[anumber].name);
       return TRUE;
     }
     cprintf(ch, "You Practice for a while...\n\r");
     ch->specials.pracs--;
 
-    if((ch->skills[number].learned +=
+    if((ch->skills[anumber].learned +=
        (int_app[GET_INT(ch)].learn + fuzz(1))) >= 95) {
-      ch->skills[number].learned= 95;
+      ch->skills[anumber].learned= 95;
       cprintf(ch, "You are now a master of this art!\n\r");
     }
   } else {
@@ -351,7 +351,7 @@ int MageGuildMaster(struct char_data *ch, int cmd, char *arg) {
 }
 
 int ClericGuildMaster(struct char_data *ch, int cmd, char *arg) {
-  register int number, i, target= CLERIC_LEVEL_IND;
+  register int anumber, i, target= CLERIC_LEVEL_IND;
   char pagebuf[16384];
   struct char_data *master;
 
@@ -380,23 +380,23 @@ int ClericGuildMaster(struct char_data *ch, int cmd, char *arg) {
       page_string(ch->desc, pagebuf, 1);
       return TRUE;
     }
-    if((number= GetSpellByName(arg))== -1) {
+    if((anumber= GetSpellByName(arg))== -1) {
       cprintf(ch, "I know not of this miracle...\n\r");
       return TRUE;
     }
-    if(spell_info[number].min_level[target] < GetMaxLevel(master)-20) {
+    if(spell_info[anumber].min_level[target] < GetMaxLevel(master)-20) {
       cprintf(ch, "It would be beneath me to teach you such drivel!\n\r");
       return TRUE;
     }
-    if(GetMaxLevel(master) < spell_info[number].min_level[target]) {
+    if(GetMaxLevel(master) < spell_info[anumber].min_level[target]) {
       cprintf(ch, "I have not yet been granted that ability.\n\r");
       return TRUE;
     }
-    if(GET_LEVEL(ch, target) < spell_info[number].min_level[target]) {
+    if(GET_LEVEL(ch, target) < spell_info[anumber].min_level[target]) {
       cprintf(ch, "You are not yet worthy to ask for this blessing.\n\r");
       return TRUE;
     }
-    if(!CanCastClass(ch, number, target)) {
+    if(!CanCastClass(ch, anumber, target)) {
       cprintf(ch, "You do not know of this prayer...\n\r");
       return TRUE;
     }
@@ -404,16 +404,16 @@ int ClericGuildMaster(struct char_data *ch, int cmd, char *arg) {
       cprintf(ch, "You do not seem to be able to practice now.\n\r");
       return TRUE;
     }
-    if (ch->skills[number].learned >= 95) {
-      cprintf(ch, "You know %s as well as I!\n\r", spell_info[number].name);
+    if (ch->skills[anumber].learned >= 95) {
+      cprintf(ch, "You know %s as well as I!\n\r", spell_info[anumber].name);
       return TRUE;
     }
     cprintf(ch, "You Practice for a while...\n\r");
     ch->specials.pracs--;
 
-    if((ch->skills[number].learned +=
+    if((ch->skills[anumber].learned +=
        (int_app[GET_INT(ch)].learn + fuzz(1))) >= 95) {
-      ch->skills[number].learned= 95;
+      ch->skills[anumber].learned= 95;
       cprintf(ch, "Your faith is strong in this art!\n\r");
     }
   } else {
@@ -424,7 +424,7 @@ int ClericGuildMaster(struct char_data *ch, int cmd, char *arg) {
 }
 
 int ThiefGuildMaster(struct char_data *ch, int cmd, char *arg) {
-  register int number, i, target= THIEF_LEVEL_IND;
+  register int anumber, i, target= THIEF_LEVEL_IND;
   char pagebuf[16384];
   struct char_data *master;
 
@@ -454,23 +454,23 @@ int ThiefGuildMaster(struct char_data *ch, int cmd, char *arg) {
       return TRUE;
     }
     for (; isspace(*arg); arg++);
-    if((number= GetSkillByName(arg))== -1) {
+    if((anumber= GetSkillByName(arg))== -1) {
       cprintf(ch, "I have no clue what skill that might be...\n\r");
       return FALSE;
     }
-    if(spell_info[number].min_level[target] < GetMaxLevel(master)-20) {
+    if(spell_info[anumber].min_level[target] < GetMaxLevel(master)-20) {
       cprintf(ch, "It would be beneath me to teach you such drivel!\n\r");
       return TRUE;
     }
-    if(GetMaxLevel(master) < spell_info[number].min_level[target]) {
+    if(GetMaxLevel(master) < spell_info[anumber].min_level[target]) {
       cprintf(ch, "I have not yet mastered that skill.\n\r");
       return TRUE;
     }
-    if(GET_LEVEL(ch, target) < spell_info[number].min_level[target]) {
+    if(GET_LEVEL(ch, target) < spell_info[anumber].min_level[target]) {
       cprintf(ch, "You are yet too frail to attempt that!\n\r");
       return TRUE;
     }
-    if(!CanUseClass(ch, number, target)) {
+    if(!CanUseClass(ch, anumber, target)) {
       cprintf(ch, "You do not know of this skill...\n\r");
       return TRUE;
     }
@@ -478,15 +478,15 @@ int ThiefGuildMaster(struct char_data *ch, int cmd, char *arg) {
       cprintf(ch, "You do not seem to be able to practice now.\n\r");
       return TRUE;
     }
-    if (ch->skills[number].learned >= 95) {
-      cprintf(ch, "You know %s as well as I!\n\r", spell_info[number].name);
+    if (ch->skills[anumber].learned >= 95) {
+      cprintf(ch, "You know %s as well as I!\n\r", spell_info[anumber].name);
       return TRUE;
     }
     cprintf(ch, "You Practice for a while...\n\r");
     ch->specials.pracs--;
-    if((ch->skills[number].learned +=
+    if((ch->skills[anumber].learned +=
        (int_app[GET_INT(ch)].learn + fuzz(1))) >= 95) {
-      ch->skills[number].learned= 95;
+      ch->skills[anumber].learned= 95;
       cprintf(ch, "You are now a master of this art!\n\r");
     }
   } else {
@@ -497,7 +497,7 @@ int ThiefGuildMaster(struct char_data *ch, int cmd, char *arg) {
 }
 
 int FighterGuildMaster(struct char_data *ch, int cmd, char *arg) {
-  register int number, i, target= WARRIOR_LEVEL_IND;
+  register int anumber, i, target= WARRIOR_LEVEL_IND;
   char pagebuf[16384];
   struct char_data *master;
 
@@ -527,23 +527,23 @@ int FighterGuildMaster(struct char_data *ch, int cmd, char *arg) {
       return TRUE;
     }
     for (; isspace(*arg); arg++);
-    if((number= GetSkillByName(arg))== -1) {
+    if((anumber= GetSkillByName(arg))== -1) {
       cprintf(ch, "I have no clue what skill that might be...\n\r");
       return FALSE;
     }
-    if(spell_info[number].min_level[target] < GetMaxLevel(master)-20) {
+    if(spell_info[anumber].min_level[target] < GetMaxLevel(master)-20) {
       cprintf(ch, "It would be beneath me to teach you such drivel!\n\r");
       return TRUE;
     }
-    if(GetMaxLevel(master) < spell_info[number].min_level[target]) {
+    if(GetMaxLevel(master) < spell_info[anumber].min_level[target]) {
       cprintf(ch, "I have not yet mastered that skill.\n\r");
       return TRUE;
     }
-    if(GET_LEVEL(ch, target) < spell_info[number].min_level[target]) {
+    if(GET_LEVEL(ch, target) < spell_info[anumber].min_level[target]) {
       cprintf(ch, "You are yet too frail to attempt that!\n\r");
       return TRUE;
     }
-    if(!CanUseClass(ch, number, target)) {
+    if(!CanUseClass(ch, anumber, target)) {
       cprintf(ch, "You do not know of this skill...\n\r");
       return TRUE;
     }
@@ -551,15 +551,15 @@ int FighterGuildMaster(struct char_data *ch, int cmd, char *arg) {
       cprintf(ch, "You do not seem to be able to practice now.\n\r");
       return TRUE;
     }
-    if (ch->skills[number].learned >= 95) {
-      cprintf(ch, "You know %s as well as I!\n\r", spell_info[number].name);
+    if (ch->skills[anumber].learned >= 95) {
+      cprintf(ch, "You know %s as well as I!\n\r", spell_info[anumber].name);
       return TRUE;
     }
     cprintf(ch, "You Practice for a while...\n\r");
     ch->specials.pracs--;
-    if((ch->skills[number].learned +=
+    if((ch->skills[anumber].learned +=
        (int_app[GET_INT(ch)].learn + fuzz(1))) >= 95) {
-      ch->skills[number].learned= 95;
+      ch->skills[anumber].learned= 95;
       cprintf(ch, "You are now a master of this art!\n\r");
     }
   } else {
@@ -570,7 +570,7 @@ int FighterGuildMaster(struct char_data *ch, int cmd, char *arg) {
 }
 
 int RangerGuildMaster(struct char_data *ch, int cmd, char *arg) {
-  register int number, i, target= RANGER_LEVEL_IND;
+  register int anumber, i, target= RANGER_LEVEL_IND;
   int skill_num, spell_num;
   char pagebuf[16384];
   struct char_data *master;
@@ -613,26 +613,26 @@ int RangerGuildMaster(struct char_data *ch, int cmd, char *arg) {
     skill_num= GetSkillByName(arg);
     spell_num= GetSpellByName(arg);
     if(skill_num != -1)
-      number= skill_num;
+      anumber= skill_num;
     else if(spell_num != -1)
-      number=spell_num;
+      anumber=spell_num;
     else {
       cprintf(ch, "I have no clue what you are dreaming of...\n\r");
       return FALSE;
     }
-    if(spell_info[number].min_level[target] < GetMaxLevel(master)-20) {
+    if(spell_info[anumber].min_level[target] < GetMaxLevel(master)-20) {
       cprintf(ch, "It would be beneath me to teach you such drivel!\n\r");
       return TRUE;
     }
-    if(GetMaxLevel(master) < spell_info[number].min_level[target]) {
+    if(GetMaxLevel(master) < spell_info[anumber].min_level[target]) {
       cprintf(ch, "I'm not really very good at that.\n\r");
       return TRUE;
     }
-    if(GET_LEVEL(ch, target) < spell_info[number].min_level[target]) {
+    if(GET_LEVEL(ch, target) < spell_info[anumber].min_level[target]) {
       cprintf(ch, "You are yet too frail to attempt that!\n\r");
       return TRUE;
     }
-    if(!CanUseClass(ch, number, target) && !CanCastClass(ch, number, target)) {
+    if(!CanUseClass(ch, anumber, target) && !CanCastClass(ch, anumber, target)) {
       cprintf(ch, "You know nothing about that...\n\r");
       return TRUE;
     }
@@ -640,15 +640,15 @@ int RangerGuildMaster(struct char_data *ch, int cmd, char *arg) {
       cprintf(ch, "You do not seem to be able to practice now.\n\r");
       return TRUE;
     }
-    if (ch->skills[number].learned >= 95) {
-      cprintf(ch, "You know %s as well as I!\n\r", spell_info[number].name);
+    if (ch->skills[anumber].learned >= 95) {
+      cprintf(ch, "You know %s as well as I!\n\r", spell_info[anumber].name);
       return TRUE;
     }
     cprintf(ch, "You Practice for a while...\n\r");
     ch->specials.pracs--;
-    if((ch->skills[number].learned +=
+    if((ch->skills[anumber].learned +=
        (int_app[GET_INT(ch)].learn + fuzz(1))) >= 95) {
-      ch->skills[number].learned= 95;
+      ch->skills[anumber].learned= 95;
       cprintf(ch, "You are now a master of this art!\n\r");
     }
   } else {
@@ -660,7 +660,7 @@ int RangerGuildMaster(struct char_data *ch, int cmd, char *arg) {
 
     int GenericGuildMaster(struct char_data *ch, int cmd, char *arg)
     {
-      int number, i, percent;
+      int anumber, i, percent;
       struct char_data *master;
 
       struct skill_struct {
@@ -737,9 +737,9 @@ int RangerGuildMaster(struct char_data *ch, int cmd, char *arg) {
 	return (TRUE);
       } else {
 	for (; isspace(*arg); arg++);
-	number = search_block(arg, rl_skills, FALSE);
+	anumber = search_block(arg, rl_skills, FALSE);
 
-	if ((number == -1)) {
+	if ((anumber == -1)) {
 	  cprintf(ch, "You do not have ability to practice this skill!\n\r");
 	  return (TRUE);
 	}
@@ -747,25 +747,25 @@ int RangerGuildMaster(struct char_data *ch, int cmd, char *arg) {
 	  cprintf(ch, "You do not seem to be able to practice now.\n\r");
 	  return (TRUE);
 	}
-	if (number != -1) {
-	  if (ch->skills[r_skills[number].skill_numb].learned >= 95) {
+	if (anumber != -1) {
+	  if (ch->skills[r_skills[anumber].skill_numb].learned >= 95) {
 	    cprintf(ch, "You are already learned in this area.\n\r");
 	    return (TRUE);
 	  }
 	}
-	if (r_skills[number].skill_lvl > GetMaxLevel(ch) && !IS_IMMORTAL(ch)) {
+	if (r_skills[anumber].skill_lvl > GetMaxLevel(ch) && !IS_IMMORTAL(ch)) {
 	  cprintf(ch, "You do not know of this skill...\n\r");
 	  return (TRUE);
 	}
 	cprintf(ch, "You Practice for a while...\n\r");
 	ch->specials.pracs--;
 
-	if (number != -1) {
-	  percent = ch->skills[r_skills[number].skill_numb].learned + int_app[GET_INT(ch)].learn;
-	  ch->skills[r_skills[number].skill_numb].learned = MIN(95, percent);
+	if (anumber != -1) {
+	  percent = ch->skills[r_skills[anumber].skill_numb].learned + int_app[GET_INT(ch)].learn;
+	  ch->skills[r_skills[anumber].skill_numb].learned = MIN(95, percent);
 	}
-	if (number != -1) {
-	  if (ch->skills[r_skills[number].skill_numb].learned >= 95) {
+	if (anumber != -1) {
+	  if (ch->skills[r_skills[anumber].skill_numb].learned >= 95) {
 	    cprintf(ch, "You are now a master in this area.\n\r");
 	    return (TRUE);
 	  }
@@ -1104,7 +1104,7 @@ int ninja_master(struct char_data *ch, int cmd, char *arg)
     "disarm",			       /* No. 245 */
     "\n",
   };
-  int percent = 0, number = 0;
+  int percent = 0, anumber = 0;
   int charge, sk_num, mult;
 
   if (!AWAKE(ch))
@@ -1119,14 +1119,14 @@ int ninja_master(struct char_data *ch, int cmd, char *arg)
       cprintf(ch, " disarm:  %s\n\r", how_good(ch->skills[SKILL_DISARM].learned));
       return (TRUE);
     } else {
-      number = old_search_block(arg, 0, strlen(arg), n_skills, FALSE);
+      anumber = old_search_block(arg, 0, strlen(arg), n_skills, FALSE);
       cprintf(ch, "The ninja master says ");
-      if (number == -1) {
+      if (anumber == -1) {
 	cprintf(ch, "'I do not know of this skill.'\n\r");
 	return (TRUE);
       }
       charge = GetMaxLevel(ch) * 100;
-      switch (number) {
+      switch (anumber) {
       case 0:
       case 1:
 	sk_num = SKILL_TRACK;
@@ -1150,7 +1150,7 @@ int ninja_master(struct char_data *ch, int cmd, char *arg)
 
 	break;
       default:
-	sprintf(buf, "Strangeness in ninjamaster (%d)", number);
+	sprintf(buf, "Strangeness in ninjamaster (%d)", anumber);
 	log(buf);
 	return FALSE;
       }
@@ -2304,12 +2304,12 @@ int puff(struct char_data *ch, int cmd, char *arg)
    * (and all specials) get called approximately every 6 seconds, at 4
    * pulses per second.
    *
-   * Since we don't want puff spamming everyone, a flat 5% chance exists
+   * Since we don't want puff spamming everyone, a flat .5% chance exists
    * that he'll do ANYTHING at all... this works out to him doing something
    * on a average of every two minutes.
    */
 
-  if(number(0, 99) > 4)
+  if(number(1, 1000) > 5)
     return 1;
 
   switch(number(1,100)) {
@@ -4388,6 +4388,7 @@ int mosquito(struct char_data *ch, int cmd, char *arg)
   bloody = 0;
 
   for (tch = real_roomp(ch->in_room)->people; tch; tch = tch->next_in_room) {
+    if(tch == ch) continue;
     if(IS_MOB(tch))
       continue;
     blood= ((GET_HIT(tch)+1) * 100) / (GET_MAX_HIT(tch)+1);
@@ -4727,7 +4728,7 @@ void gm_gain(struct char_data *master, struct char_data *vict, int target) {
 }
 
 void gm_prac(struct char_data *master, struct char_data *vict, int target, char *arg) {
-  register int i, number;
+  register int i, anumber;
   char buf[MAX_STRING_LENGTH];
 
   if (!*arg) {
@@ -4745,19 +4746,19 @@ void gm_prac(struct char_data *master, struct char_data *vict, int target, char 
     page_string(vict->desc, buf, 1);
     return;
   }
-  if((number= GetSpellByName(arg))== -1) {
+  if((anumber= GetSpellByName(arg))== -1) {
     cprintf(vict, "I have never heard of this spell...\n\r");
     return;
   }
-  if(spell_info[number].min_level[target] < GET_LEVEL(master, target)-20) {
+  if(spell_info[anumber].min_level[target] < GET_LEVEL(master, target)-20) {
     cprintf(vict, "It would be beneath me to teach you such drivel!\n\r");
     return;
   }
-  if(GET_LEVEL(master, target)-10 < spell_info[number].min_level[target]) {
+  if(GET_LEVEL(master, target)-10 < spell_info[anumber].min_level[target]) {
     cprintf(vict, "I have not yet mastered that spell.\n\r");
     return;
   }
-  if(GET_LEVEL(vict, target) < spell_info[number].min_level[target]) {
+  if(GET_LEVEL(vict, target) < spell_info[anumber].min_level[target]) {
     cprintf(vict, "You are too frail to cast this spell.\n\r");
     return;
   }
@@ -4765,16 +4766,16 @@ void gm_prac(struct char_data *master, struct char_data *vict, int target, char 
     cprintf(vict, "You do not seem to be able to practice now.\n\r");
     return;
   }
-  if(vict->skills[number].learned >= 95) {
+  if(vict->skills[anumber].learned >= 95) {
     cprintf(vict, "You know it as well as I!\n\r");
     return;
   }
   cprintf(vict, "You Practice for a while...\n\r");
   vict->specials.pracs--;
 
-  if((vict->skills[number].learned +=
+  if((vict->skills[anumber].learned +=
      (int_app[GET_INT(vict)].learn + fuzz(1))) >= 95) {
-    vict->skills[number].learned= 95;
+    vict->skills[anumber].learned= 95;
     cprintf(vict, "You are now a master of this art.\n\r");
   }
 }
@@ -4932,7 +4933,8 @@ int k_kill_wimps(struct char_data *karrn)
 
     for (vict = real_roomp(karrn->in_room)->people; vict; vict = vict->next_in_room) {
       if(vict->master != karrn && vict != karrn && (GET_POS(vict) > POSITION_DEAD)) {
-        if(!str_cmp(GET_NAME(vict), "Morrighan")) {
+        if((!str_cmp(GET_NAME(vict), "Odalisque")) ||
+           (!str_cmp(GET_NAME(vict), "Tschakida"))) {
           if ((choice= number(0,99)) < 10) {
             switch(choice) {
               case 0:
@@ -5165,3 +5167,213 @@ int Karrn(struct char_data *ch, int cmd, char *arg)
     }
     return FALSE;
   }
+
+int Tate_ThiefGuildMaster(struct char_data *ch, int cmd, char *arg) {
+  register int anumber, i, target= THIEF_LEVEL_IND;
+  char pagebuf[16384];
+  struct char_data *master;
+  struct char_data *vict;
+  int is_good= FALSE;
+  int which_spell= SPELL_BLESS;
+
+  if ((cmd == CMD_practice) || (cmd == CMD_gain)) {
+    if(!(master = FindMobInRoomWithFunction(ch->in_room, Tate_ThiefGuildMaster)))
+      return FALSE;
+    if (HasClass(ch, CLASS_THIEF)) {
+      if (cmd == CMD_gain) {
+        GainLevel(master, ch, target);
+        return TRUE;
+      }
+      for (; isspace(*arg); arg++);
+      if (!*arg) {
+        sprintf(pagebuf, "You have got %d practice sessions left.\n\r",
+  	      ch->specials.pracs);
+        sprintf(pagebuf + strlen(pagebuf), "You can practice any of these skills:\n\r");
+        for(i= 0; i< MAX_SKILLS; i++)
+          if(CanUseClass(ch, i, target) &&
+            (spell_info[i].min_level[target] <= GetMaxLevel(master)-10) &&
+            (spell_info[i].min_level[target] >= GetMaxLevel(master)-20)) {
+  	  sprintf(pagebuf + strlen(pagebuf), "[%d] %s %s \n\r",
+  		  spell_info[i].min_level[target],
+  		  spell_info[i].name, how_good(ch->skills[i].learned));
+  	}
+        page_string(ch->desc, pagebuf, 1);
+        return TRUE;
+      }
+      for (; isspace(*arg); arg++);
+      if((anumber= GetSkillByName(arg))== -1) {
+        cprintf(ch, "I have no clue what skill that might be...\n\r");
+        return FALSE;
+      }
+      if(spell_info[anumber].min_level[target] < GetMaxLevel(master)-20) {
+        cprintf(ch, "It would be beneath me to teach you such drivel!\n\r");
+        return TRUE;
+      }
+      if(GetMaxLevel(master) < spell_info[anumber].min_level[target]) {
+        cprintf(ch, "I have not yet mastered that skill.\n\r");
+        return TRUE;
+      }
+      if(GET_LEVEL(ch, target) < spell_info[anumber].min_level[target]) {
+        cprintf(ch, "You are yet too frail to attempt that!\n\r");
+        return TRUE;
+      }
+      if(!CanUseClass(ch, anumber, target)) {
+        cprintf(ch, "You do not know of this skill...\n\r");
+        return TRUE;
+      }
+      if (ch->specials.pracs <= 0) {
+        cprintf(ch, "You do not seem to be able to practice now.\n\r");
+        return TRUE;
+      }
+      if (ch->skills[anumber].learned >= 95) {
+        cprintf(ch, "You know %s as well as I!\n\r", spell_info[anumber].name);
+        return TRUE;
+      }
+      cprintf(ch, "You Practice for a while...\n\r");
+      ch->specials.pracs--;
+      if((ch->skills[anumber].learned +=
+         (int_app[GET_INT(ch)].learn + fuzz(1))) >= 95) {
+        ch->skills[anumber].learned= 95;
+        cprintf(ch, "You are now a master of this art!\n\r");
+      }
+    } else {
+      cprintf(ch, "I could have you killed for unsanctioned thieving.\n\r", ch);
+      return FALSE;
+    }
+    return TRUE;
+  }
+  if(cmd)
+    return FALSE;
+
+  if (GET_POS(ch) == POSITION_FIGHTING)
+    return FALSE;
+
+      if ((GET_MANA(ch) < 60) && (GET_POS(ch) != POSITION_SLEEPING)) {
+	act("$n falls to the ground into a deep slumber.", TRUE, ch, 0, 0, TO_ROOM);
+	GET_POS(ch) = POSITION_SLEEPING;
+      }
+      if ((GET_MANA(ch) > 90) && (GET_POS(ch) != POSITION_STANDING)) {
+	GET_POS(ch) = POSITION_STANDING;
+	act("$n rises to his feet from a sound sleep.", TRUE, ch, 0, 0, TO_ROOM);
+	return TRUE;
+      }
+      if (GET_POS(ch) == POSITION_SLEEPING)
+	return FALSE;
+
+      for (vict = real_roomp(ch->in_room)->people;
+           vict; vict = vict->next_in_room) {
+        if (vict == ch) continue;
+        if ((GET_POS(vict) != POSITION_FIGHTING) &&
+            (GET_POS(vict) != POSITION_SLEEPING) &&
+            !IS_IMMORTAL(vict)) {
+          if ((GET_HIT(vict) < 16) &&
+              (GET_MAX_HIT(vict) != GET_HIT(vict))) {
+            if (GET_ALIGNMENT(vict) <= 0) {
+	      act("$n whispers, Here $N, now you owe me.",
+                  TRUE, ch, 0, vict, TO_ROOM);
+              is_good= FALSE;
+              which_spell= SPELL_CURE_LIGHT;
+	      break;
+	    } else {
+              is_good= TRUE;
+              if (number(0, 10) > 5) {
+                act("$n points at $N and mocks, let me show you the light!",
+                    TRUE, ch, 0, vict, TO_ROOM);
+                which_spell= SPELL_FAERIE_FIRE;
+                break;
+              } else {
+	        continue;
+              }
+            }
+	  } else if ((GET_MOVE(vict) < 25) &&
+                     (GET_MAX_MOVE(vict) != GET_MOVE(vict))) {
+            if (GET_ALIGNMENT(vict) <= 0) {
+	      act("$n says, You seem tired $N, let me help you.",
+                  TRUE, ch, 0, vict, TO_ROOM);
+              is_good= FALSE;
+              which_spell= SPELL_REFRESH;
+	      break;
+	    } else {
+              is_good= TRUE;
+              if (number(0, 10) > 5) {
+                act("$n points at $N and mocks, let me show you the light!",
+                    TRUE, ch, 0, vict, TO_ROOM);
+                which_spell= SPELL_FAERIE_FIRE;
+                break;
+              } else {
+	        continue;
+              }
+            }
+	  } else if (IS_AFFECTED(vict, AFF_BLIND)) {
+            if (GET_ALIGNMENT(vict) <= -750) {
+	      act("$n says, You are not so blind $N, but you owe me big time.",
+                  TRUE, ch, 0, vict, TO_ROOM);
+              is_good= FALSE;
+              which_spell= SPELL_CURE_BLIND;
+	      break;
+	    } else {
+	        continue;
+            }
+	  } else if (IS_AFFECTED(vict, AFF_POISON)) {
+            if ((GET_ALIGNMENT(vict) <= 750) ||
+		((GET_ALIGNMENT(vict) <=300) && (GetMaxLevel(vict) <3))) {
+	      act("$n says, Take care of yourself $N, steal for me.",
+                  TRUE, ch, 0, vict, TO_ROOM);
+              is_good= FALSE;
+              which_spell= SPELL_REMOVE_POISON;
+	      break;
+              } else {
+	        continue;
+              }
+          } else if (IS_HOLY(vict) && (GetMaxLevel(vict) > 4)) {
+	    act("$n hisses, There is no place for you here $N, GO!",
+                TRUE, ch, 0, vict, TO_ROOM);
+            say_spell(ch, SPELL_FEAR);
+            cast_fear(40, ch, "", SPELL_TYPE_SPELL, vict, 0);
+            return TRUE;
+          }
+	}
+      }
+      if (!vict) {
+	return TRUE;
+      }
+      if(is_good) {
+        GET_ALIGNMENT(vict) -= number(20, 100);
+      }
+      switch(which_spell) {
+        case SPELL_FAERIE_FIRE:
+          say_spell(ch, SPELL_FAERIE_FIRE);
+          cast_faerie_fire(20, ch, "", SPELL_TYPE_SPELL, vict, 0);
+          break;
+        case SPELL_CURE_LIGHT:
+          say_spell(ch, SPELL_CURE_LIGHT);
+          cast_cure_light(20, ch, "", SPELL_TYPE_SPELL, vict, 0);
+          break;
+        case SPELL_REFRESH:
+          say_spell(ch, SPELL_REFRESH);
+          cast_refresh(20, ch, "", SPELL_TYPE_SPELL, vict, 0);
+          break;
+        case SPELL_CURE_BLIND:
+          say_spell(ch, SPELL_CURE_BLIND);
+          cast_cure_blind(20, ch, "", SPELL_TYPE_SPELL, vict, 0);
+          break;
+        case SPELL_REMOVE_POISON:
+          say_spell(ch, SPELL_REMOVE_POISON);
+          cast_remove_poison(20, ch, "", SPELL_TYPE_SPELL, vict, 0);
+          break;
+      }
+      GET_MANA(ch) -= 5;
+      return TRUE;
+
+}
+
+char *MobFunctionNameByFunc(ifuncp func) {
+  register int i;
+  static char mobname[256];
+
+  mobname[0]= '\0';
+  for(i= 0; specials_m[i].vnum > 0; i++)
+    if(specials_m[i].proc == func)
+      strncpy(mobname, specials_m[i].name, 255);
+  return mobname;
+}

@@ -2034,7 +2034,7 @@ Tate, a young man, plays skillfully with the pole of spikes.
   He is dressed in a simple white tunic and black leggings.  His body is
 sleek and quick, much like a cat of the pounce.
 ~
-2 0 1000 W 2
+3 0 -1000 W 2
 15 0 0 15d8+80 1d8+15
 -1 100 1 1
 8 8 1
