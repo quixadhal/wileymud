@@ -1,7 +1,11 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <sys/types.h>
 #include <string.h>
 
-#include "structs.h"
+#include "global.h"
+#include "bug.h"
 #include "utils.h"
 #include "comm.h"
 #include "interpreter.h"
@@ -9,16 +13,11 @@
 #include "db.h"
 #include "spells.h"
 #include "trap.h"
+#include "utils.h"
+#define _SOUND_C
+#include "sound.h"
 
-/*
- * extern variables 
- */
-
-extern struct obj_data          *object_list;
-extern struct char_data         *character_list;
-
-int 
-RecGetObjRoom(struct obj_data *obj)
+int RecGetObjRoom(struct obj_data *obj)
 {
   if (obj->in_room != NOWHERE) {
     return (obj->in_room);
@@ -32,15 +31,14 @@ RecGetObjRoom(struct obj_data *obj)
   if (obj->in_obj) {
     return (RecGetObjRoom(obj->in_obj));
   }
+  return -1;	       /* This is an invalid room index... hope real_roomp() works */
 }
 
-void 
-MakeNoise(int room, char *local_snd, char *distant_snd)
+void MakeNoise(int room, char *local_snd, char *distant_snd)
 {
-  int                              door;
-  struct char_data                *ch;
-  struct room_data                *rp,
-                                  *orp;
+  int door;
+  struct char_data *ch;
+  struct room_data *rp, *orp;
 
   rp = real_roomp(room);
 
@@ -66,12 +64,12 @@ MakeNoise(int room, char *local_snd, char *distant_snd)
   }
 }
 
-MakeSound(int pulse)
+void MakeSound(int pulse)
 {
-  int                              room;
-  char                             buffer[128];
-  struct obj_data                 *obj;
-  struct char_data                *ch;
+  int room = -1;       /* default is bad value */
+  char buffer[128];
+  struct obj_data *obj;
+  struct char_data *ch;
 
   for (obj = object_list; obj; obj = obj->next) {
     if (ITEM_TYPE(obj) == ITEM_AUDIO) {
@@ -86,10 +84,7 @@ MakeSound(int pulse)
 	  room = obj->in_room;
 	} else {
 	  room = RecGetObjRoom(obj);
-	}			/*
-				 * *  broadcast to room
-				 */
-
+	}	       /* broadcast to room */
 	if (obj->action_description) {
 	  MakeNoise(room, obj->action_description, obj->action_description);
 	}
@@ -97,9 +92,7 @@ MakeSound(int pulse)
     }
   }
 
-/*
- * rooms
- */
+/* rooms */
 
   for (ch = character_list; ch; ch = ch->next) {
     if ((IS_PC(ch)) &&
@@ -116,9 +109,7 @@ MakeSound(int pulse)
     }
   }
 
-/*
- *   mobiles
- */
+/* mobiles */
 
   for (ch = character_list; ch; ch = ch->next) {
     if (IS_NPC(ch) && (ch->player.sounds) && (number(0, 7) == 0)) {

@@ -3,30 +3,26 @@
  */
 
 #include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <sys/types.h>
 #include <string.h>
 #include <ctype.h>
 #include <time.h>
 
-#include "structs.h"
+#include "global.h"
+#include "bug.h"
 #include "utils.h"
 #include "spells.h"
-#include "race.h"
-#include "opinion.h"
+#include "constants.h"
+#include "comm.h"
 #include "db.h"
+#define _OPINION_C
+#include "opinion.h"
 
-/*
- * external stuff
- */
-
-extern struct index_data        *mob_index;
-extern struct room_data         *world;
-extern int                       DEBUG;
-
-int 
-FreeHates(struct char_data *ch)
+void FreeHates(struct char_data *ch)
 {
-  struct char_list                *k,
-                                  *n;
+  struct char_list *k, *n;
 
   if (DEBUG)
     dlog("FreeHates");
@@ -36,11 +32,9 @@ FreeHates(struct char_data *ch)
   }
 }
 
-int 
-FreeFears(struct char_data *ch)
+void FreeFears(struct char_data *ch)
 {
-  struct char_list                *k,
-                                  *n;
+  struct char_list *k, *n;
 
   if (DEBUG)
     dlog("FreeFears");
@@ -50,11 +44,9 @@ FreeFears(struct char_data *ch)
   }
 }
 
-int 
-RemHated(struct char_data *ch, struct char_data *pud)
+int RemHated(struct char_data *ch, struct char_data *pud)
 {
-  struct char_list                *oldpud,
-                                  *t;
+  struct char_list *oldpud, *t;
 
   if (DEBUG)
     dlog("RemHated");
@@ -102,11 +94,10 @@ RemHated(struct char_data *ch, struct char_data *pud)
   return ((pud) ? TRUE : FALSE);
 }
 
-int 
-AddHated(struct char_data *ch, struct char_data *pud)
+int AddHated(struct char_data *ch, struct char_data *pud)
 {
 
-  struct char_list                *newpud;
+  struct char_list *newpud;
 
   if (DEBUG)
     dlog("AddHated");
@@ -132,8 +123,7 @@ AddHated(struct char_data *ch, struct char_data *pud)
   return ((pud) ? TRUE : FALSE);
 }
 
-int 
-AddHatred(struct char_data *ch, int parm_type, int parm)
+int AddHatred(struct char_data *ch, int parm_type, int parm)
 {
   if (DEBUG)
     dlog("AddHatred");
@@ -172,22 +162,22 @@ AddHatred(struct char_data *ch, int parm_type, int parm)
   if (!IS_SET(ch->specials.act, ACT_HATEFUL)) {
     SET_BIT(ch->specials.act, ACT_HATEFUL);
   }
+  return 1;	       /* assume this means it worked */
 }
 
-int 
-RemHatred(struct char_data *ch, unsigned short bitv)
+int RemHatred(struct char_data *ch, unsigned short bitv)
 {
   if (DEBUG)
     dlog("RemHatred");
   REMOVE_BIT(ch->hatefield, bitv);
   if (!ch->hatefield)
     REMOVE_BIT(ch->specials.act, ACT_HATEFUL);
+  return 1;	       /* assume this means it worked */
 }
 
-int 
-Hates(struct char_data *ch, struct char_data *v)
+int Hates(struct char_data *ch, struct char_data *v)
 {
-  struct char_list                *i;
+  struct char_list *i;
 
   if (DEBUG)
     dlog("Hates");
@@ -241,11 +231,10 @@ Hates(struct char_data *ch, struct char_data *v)
   return (FALSE);
 }
 
-int 
-Fears(struct char_data *ch, struct char_data *v)
+int Fears(struct char_data *ch, struct char_data *v)
 {
-  struct char_list                *i;
-  char                             buf[255];
+  struct char_list *i;
+  char buf[255];
 
   if (DEBUG)
     dlog("Fears");
@@ -312,13 +301,10 @@ Fears(struct char_data *ch, struct char_data *v)
   return (FALSE);
 }
 
-int 
-RemFeared(struct char_data *ch, struct char_data *pud)
+int RemFeared(struct char_data *ch, struct char_data *pud)
 {
 
-  struct char_list                *oldpud,
-                                  *t,
-                                  *tmp;
+  struct char_list *oldpud, *t, *tmp;
 
   if (DEBUG)
     dlog("RemFeared");
@@ -371,11 +357,10 @@ RemFeared(struct char_data *ch, struct char_data *pud)
   return ((pud) ? TRUE : FALSE);
 }
 
-int 
-AddFeared(struct char_data *ch, struct char_data *pud)
+int AddFeared(struct char_data *ch, struct char_data *pud)
 {
 
-  struct char_list                *newpud;
+  struct char_list *newpud;
 
   if (DEBUG)
     dlog("AddFeared");
@@ -399,8 +384,7 @@ AddFeared(struct char_data *ch, struct char_data *pud)
   return ((pud) ? TRUE : FALSE);
 }
 
-int 
-AddFears(struct char_data *ch, int parm_type, int parm)
+int AddFears(struct char_data *ch, int parm_type, int parm)
 {
   if (DEBUG)
     dlog("AddFears");
@@ -439,12 +423,12 @@ AddFears(struct char_data *ch, int parm_type, int parm)
   if (!IS_SET(ch->specials.act, ACT_AFRAID)) {
     SET_BIT(ch->specials.act, ACT_AFRAID);
   }
+  return 1;
 }
 
-struct char_data                *
-FindAHatee(struct char_data *ch)
+struct char_data *FindAHatee(struct char_data *ch)
 {
-  struct char_data                *tmp_ch;
+  struct char_data *tmp_ch;
 
   if (DEBUG)
     dlog("FindAHatee");
@@ -466,10 +450,9 @@ FindAHatee(struct char_data *ch)
   return (0);
 }
 
-struct char_data                *
-FindAFearee(struct char_data *ch)
+struct char_data *FindAFearee(struct char_data *ch)
 {
-  struct char_data                *tmp_ch;
+  struct char_data *tmp_ch;
 
   if (DEBUG)
     dlog("FindAFearee");
@@ -494,11 +477,10 @@ FindAFearee(struct char_data *ch)
  * thus the monsters will still hate them
  */
 
-void 
-ZeroHatred(struct char_data *ch, struct char_data *v)
+void ZeroHatred(struct char_data *ch, struct char_data *v)
 {
 
-  struct char_list                *oldpud;
+  struct char_list *oldpud;
 
   if (DEBUG)
     dlog("ZeroHatred");
@@ -513,11 +495,10 @@ ZeroHatred(struct char_data *ch, struct char_data *v)
   }
 }
 
-void 
-ZeroFeared(struct char_data *ch, struct char_data *v)
+void ZeroFeared(struct char_data *ch, struct char_data *v)
 {
 
-  struct char_list                *oldpud;
+  struct char_list *oldpud;
 
   if (DEBUG)
     dlog("ZeroFeared");
@@ -535,12 +516,10 @@ ZeroFeared(struct char_data *ch, struct char_data *v)
 /*
  * these two are to make the monsters completely forget about them.
  */
-void 
-DeleteHatreds(struct char_data *ch)
+void DeleteHatreds(struct char_data *ch)
 {
 
-  struct char_data                *i;
-  extern struct char_data         *character_list;
+  struct char_data *i;
 
   if (DEBUG)
     dlog("DeleteHatreds");
@@ -551,11 +530,9 @@ DeleteHatreds(struct char_data *ch)
 
 }
 
-void 
-DeleteFears(struct char_data *ch)
+void DeleteFears(struct char_data *ch)
 {
-  struct char_data                *i;
-  extern struct char_data         *character_list;
+  struct char_data *i;
 
   if (DEBUG)
     dlog("DeleteFears");

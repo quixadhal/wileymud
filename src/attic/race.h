@@ -1,6 +1,4 @@
-/*
- * Race -- Npc, otherwise 
- */
+/* Race -- Npc, otherwise */
 #define RACE_HALFBREED 0
 #define RACE_HUMAN     1
 #define RACE_ELVEN     2
@@ -8,9 +6,7 @@
 #define RACE_HALFLING  4
 #define RACE_GNOME     5
 
-/*
- * end of player races 
- */
+/* end of player races */
 
 #define RACE_REPTILE  6
 #define RACE_SPECIAL  7

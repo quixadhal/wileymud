@@ -2,40 +2,35 @@
  * Various utilities for handling traps
  */
 
-#include "structs.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <sys/types.h>
+
+#include "global.h"
+#include "bug.h"
 #include "utils.h"
 #include "spells.h"
-#include "trap.h"
 #include "comm.h"
+#include "db.h"
+#include "opinion.h"
+#include "constants.h"
+#define _TRAP_C
+#include "trap.h"
 
-extern struct char_data         *character_list;
-struct room_data                *real_roomp(int);
-extern int                       TrapDir[];
-extern int                       DEBUG;
-
-void 
-do_settrap(struct char_data *ch, char *arg, int cmd)
+void do_settrap(struct char_data *ch, char *arg, int cmd)
 {
 
-/*
- * parse for directions 
- */
-/*
- * trap that affects all directions is an AE trap 
- */
-/*
- * parse for type       
- */
-/*
- * parse for level      
- */
+/* parse for directions */
+/* trap that affects all directions is an AE trap */
+/* parse for type       */
+/* parse for level      */
 
 }
 
-int 
-CheckForMoveTrap(struct char_data *ch, int dir)
+int CheckForMoveTrap(struct char_data *ch, int dir)
 {
-  struct obj_data                 *i;
+  struct obj_data *i;
 
   if (DEBUG)
     dlog("CheckForMoveTrap");
@@ -49,10 +44,9 @@ CheckForMoveTrap(struct char_data *ch, int dir)
   return (FALSE);
 }
 
-int 
-CheckForInsideTrap(struct char_data *ch, struct obj_data *i)
+int CheckForInsideTrap(struct char_data *ch, struct obj_data *i)
 {
-  struct obj_data                 *t;
+  struct obj_data *t;
 
   if (DEBUG)
     dlog("CheckForInsideTrap");
@@ -66,8 +60,7 @@ CheckForInsideTrap(struct char_data *ch, struct obj_data *i)
   return (FALSE);
 }
 
-int 
-CheckForAnyTrap(struct char_data *ch, struct obj_data *i)
+int CheckForAnyTrap(struct char_data *ch, struct obj_data *i)
 {
   if (DEBUG)
     dlog("CheckForAnyTrap");
@@ -77,8 +70,7 @@ CheckForAnyTrap(struct char_data *ch, struct obj_data *i)
   return (FALSE);
 }
 
-int 
-CheckForGetTrap(struct char_data *ch, struct obj_data *i)
+int CheckForGetTrap(struct char_data *ch, struct obj_data *i)
 {
   if (DEBUG)
     dlog("CheckForGetTrap");
@@ -90,15 +82,10 @@ CheckForGetTrap(struct char_data *ch, struct obj_data *i)
   return (FALSE);
 }
 
-int 
-TriggerTrap(struct char_data *ch, struct obj_data *i)
+int TriggerTrap(struct char_data *ch, struct obj_data *i)
 {
-  int                              adj,
-                                   fireperc,
-                                   roll;
-  struct char_data                *v;
-
-  extern struct dex_app_type       dex_app[];
+  int adj, fireperc, roll;
+  struct char_data *v;
 
   if (DEBUG)
     dlog("TriggerTrap");
@@ -108,9 +95,7 @@ TriggerTrap(struct char_data *ch, struct obj_data *i)
       adj -= dex_app[GET_DEX(ch)].reaction * 5;
       fireperc = 95 + adj;
       roll = number(1, 100);
-      if (roll < fireperc) {	/*
-				 * trap is sprung 
-				 */
+      if (roll < fireperc) {	/* trap is sprung */
 	act("You hear a strange noise...", TRUE, ch, 0, 0, TO_ROOM);
 	act("You hear a strange noise...", TRUE, ch, 0, 0, TO_CHAR);
 	GET_TRAP_CHARGES(i) -= 1;
@@ -128,12 +113,9 @@ TriggerTrap(struct char_data *ch, struct obj_data *i)
   return (FALSE);
 }
 
-void 
-FindTrapDamage(struct char_data *v, struct obj_data *i)
+void FindTrapDamage(struct char_data *v, struct obj_data *i)
 {
-/*
- * trap types < 0 are special
- */
+/* trap types < 0 are special */
   if (DEBUG)
     dlog("FindTrapDamage");
 
@@ -144,11 +126,10 @@ FindTrapDamage(struct char_data *v, struct obj_data *i)
   }
 }
 
-void 
-TrapDamage(struct char_data *v, int damtype, int amnt, struct obj_data *t)
+void TrapDamage(struct char_data *v, int damtype, int amnt, struct obj_data *t)
 {
-  struct char_data                *tmp_ch;
-  char                             buf[132];
+  struct char_data *tmp_ch;
+  char buf[132];
 
   if (DEBUG)
     dlog("TrapDamage");
@@ -157,9 +138,7 @@ TrapDamage(struct char_data *v, int damtype, int amnt, struct obj_data *t)
     return;
 
   if (IS_AFFECTED(v, AFF_SANCTUARY))
-    amnt = MAX((int)(amnt / 2), 0);	/*
-					 * Max 1/2 damage when sanct'd 
-					 */
+    amnt = MAX((int)(amnt / 2), 0);	/* Max 1/2 damage when sanct'd */
 
   amnt = PreProcDam(v, damtype, amnt);
 
@@ -178,9 +157,7 @@ TrapDamage(struct char_data *v, int damtype, int amnt, struct obj_data *t)
 	sprintf(buf, "%s killed by a trap at %s",
 		GET_NAME(v), real_roomp(v->in_room)->name);
       log(buf);
-      /*
-       * remove the hatreds of this character 
-       */
+      /* remove the hatreds of this character */
     }
     for (tmp_ch = character_list; tmp_ch; tmp_ch = tmp_ch->next) {
       if (Hates(tmp_ch, v)) {
@@ -191,18 +168,15 @@ TrapDamage(struct char_data *v, int damtype, int amnt, struct obj_data *t)
   }
 }
 
-void 
-TrapDam(struct char_data *v, int damtype, int amnt, struct obj_data *t)
+void TrapDam(struct char_data *v, int damtype, int amnt, struct obj_data *t)
 {
 
-  char                             desc[20];
-  char                             buf[132];
+  char desc[20];
+  char buf[132];
 
   if (DEBUG)
     dlog("TrapDam");
-  /*
-   * easier than dealing with message(ug) 
-   */
+  /* easier than dealing with message(ug) */
   switch (damtype) {
   case TRAP_DAM_PIERCE:
     strcpy(desc, "pierced");
@@ -256,15 +230,10 @@ TrapDam(struct char_data *v, int damtype, int amnt, struct obj_data *t)
   }
 }
 
-void 
-TrapTeleport(struct char_data *v)
+void TrapTeleport(struct char_data *v)
 {
-  int                              to_room;
-  extern int                       top_of_world;	/*
-
-							 * ref to the top element of world 
-							 */
-  struct room_data                *room;
+  int to_room;
+  struct room_data *room;
 
   if (DEBUG)
     dlog("TrapTeleport");
@@ -295,11 +264,10 @@ TrapTeleport(struct char_data *v)
   }
 }
 
-void 
-TrapSleep(struct char_data *v)
+void TrapSleep(struct char_data *v)
 {
 
-  struct affected_type             af;
+  struct affected_type af;
 
   if (DEBUG)
     dlog("TrapSleep");
@@ -321,8 +289,7 @@ TrapSleep(struct char_data *v)
   }
 }
 
-void 
-InformMess(struct char_data *v)
+void InformMess(struct char_data *v)
 {
   if (DEBUG)
     dlog("InformMess");
@@ -349,9 +316,7 @@ InformMess(struct char_data *v)
     act("$n is dead! R.I.P.", TRUE, v, 0, 0, TO_ROOM);
     act("You are dead!  Sorry...", FALSE, v, 0, 0, TO_CHAR);
     break;
-  default:			/*
-				 * >= POSITION SLEEPING 
-				 */
+  default:	       /* >= POSITION SLEEPING */
     break;
   }
 }

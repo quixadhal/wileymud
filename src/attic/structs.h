@@ -1,24 +1,9 @@
 /*
- * This header file contains lots of definitions and most of the structures
- * that are not specific to one file.
- * It is meant to be included by every source file in the program.
+ * file: structs.h , Structures        .                  Part of DIKUMUD
+ * Usage: Declarations of central data structures
  */
 
-#if	!defined(FALSE)
-#define FALSE	 0
-#endif
-#if	!defined(TRUE)
-#define TRUE	 1
-#endif
-
-typedef unsigned char UBYTE;	/* 8 bit */
-typedef char BYTE;
-typedef unsigned short USHORT;	/* 16 bit */
-typedef short SHORT;
-typedef unsigned int UINT;	/* 32 bit */
-typedef int INT;
-typedef unsigned long long ULONG;	/* 64 bit */
-typedef long long LONG;
+#include <sys/types.h>
 
 typedef char sbyte;
 typedef unsigned char ubyte;
@@ -176,9 +161,10 @@ struct string_block {
   char	*data;
 };
 
+
 /*
- * memory stuff 
- */
+  memory stuff 
+*/
 
 struct char_list {
   struct char_data *op_ch;
@@ -200,8 +186,8 @@ typedef struct {
 
 
 /*
- * old stuff.
- */
+   old stuff.
+*/
 
 #define PULSE_ZONE     240
 #define PULSE_MOBILE   25 
@@ -1071,24 +1057,23 @@ struct txt_q
 
 /* modes of connectedness */
 
-#define CON_PLAYING   0
-#define CON_GET_NAME	    1
-#define CON_GET_NAMECNF  2
-#define CON_GET_PASSWORD  3
-#define CON_GET_NEW_PASWORD  4
-#define CON_CONFIRM_NEW_PASSWORD  5
-#define CON_GET_SEX    6
-#define CON_READ_MOTD   7
-#define CON_MENU_SELECT    8
-#define CON_EDIT_DESCRIPTION  9
-#define CON_GET_CLASS  10
-#define CON_LINKDEAD   11
-#define CON_GET_CHANGE_PASSWORD  12
-#define CON_CONFIRM_CHANGE_PASSWORD 13
+#define CON_PLYNG   0
+#define CON_NME	    1
+#define CON_NMECNF  2
+#define CON_PWDNRM  3
+#define CON_PWDGET  4
+#define CON_PWDCNF  5
+#define CON_QSEX    6
+#define CON_RMOTD   7
+#define CON_SLCT    8
+#define CON_EXDSCR  9
+#define CON_QCLASS  10
+#define CON_LDEAD   11
+#define CON_PWDNEW  12
+#define CON_PWDNCNF 13
 #define CON_WIZLOCK 14
-#define CON_GET_RACE   15
+#define CON_QRACE   15
 #define CON_RACPAR  16
-#define CON_SUICIDE 17
 
 struct snoop_data
 {
@@ -1196,11 +1181,4 @@ struct breather {
   int	vnum;
   int	cost;
   funcp	*breaths;
-};
-
-struct title_type
-{
-	char *title_m;
-	char *title_f;
-	int exp;
 };
