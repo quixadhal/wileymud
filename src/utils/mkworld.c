@@ -291,7 +291,7 @@ void Load_Rooms(void);
 void Link_World(void);
 void Main_Loop(void);
 void Command_copy_sub(Room *ptr, Room *from_ptr);
-void Command_flag_sub(Room *ptr, int index);
+void Command_flag_sub(Room *ptr, int idx);
 int find_keyword(char *buffer);
 
 /* Global Variables */
@@ -415,7 +415,7 @@ int main(int argc, char **argv)
 void Load_Rooms(void)
 {
   char tmp_str[BUFFER_SIZE];
-  int index, index2, temp_id;
+  int idx, idx2, temp_id;
   int done;
 
   if (!(fp = fopen(filename, "r"))) {
@@ -466,10 +466,10 @@ void Load_Rooms(void)
           current->room_id);
       exit(ERR_EOF);
     }
-    index = sscanf(tmp_str, "%d %d %d", &current->zonenum,
+    idx = sscanf(tmp_str, "%d %d %d", &current->zonenum,
 		   &current->room_flag,
 		   &current->sector_type);
-    if (index < 3) {
+    if (idx < 3) {
       trunc_string(tmp_str);
       log( "Room %d: Expected zone, flags and sector type for [#%d],\nFormat should have been \"%%d %%d %%d\", Got this instead:\n%s\n",
            number_rooms, current->room_id, tmp_str);
@@ -478,14 +478,14 @@ void Load_Rooms(void)
 
     if (current->sector_type == -1) {
       current->teleport= (Teleport_t *)calloc(1, sizeof(struct Teleport_st));
-      index = sscanf(tmp_str, "%d %d %d %d %d %d %d", &current->zonenum,
+      idx = sscanf(tmp_str, "%d %d %d %d %d %d %d", &current->zonenum,
 		     &current->room_flag,
 		     &current->sector_type,
 		     &current->teleport->time,
 		     &current->teleport->to_room,
 		     &current->teleport->do_look,
 		     &current->teleport->sector_type);
-      if (index < 7) {
+      if (idx < 7) {
 	trunc_string(tmp_str);
         log("Room %d: Invalid teleport flags in teleport room [#%d],\nExpected format \"%%d %%d -1 %%d %%d %%d %%d\", Got this:\n%s\n",
             number_rooms, current->room_id, tmp_str);
@@ -493,12 +493,12 @@ void Load_Rooms(void)
       }
     } else if (current->sector_type == 7) {
       current->river= (River_t *)calloc(1, sizeof(struct River_st));
-      index = sscanf(tmp_str, "%d %d %d %d %d", &current->zonenum,
+      idx = sscanf(tmp_str, "%d %d %d %d %d", &current->zonenum,
 		     &current->room_flag,
 		     &current->sector_type,
 		     &current->river->speed,
 		     &current->river->direction);
-      if (index < 5) {
+      if (idx < 5) {
 	trunc_string(tmp_str);
         log("Room %d: River room [#%d] is missing parameters,\nExpected format \"%%d %%d 7 %%d %%d\", Got this:\n%s\n",
             number_rooms, current->room_id, tmp_str);
@@ -507,8 +507,8 @@ void Load_Rooms(void)
     }
 
     if (current->room_flag & 1024) {
-      for (index = 0; index < 2; index++)
-	get_desc(&current->sound_ptr[index]);
+      for (idx = 0; idx < 2; idx++)
+	get_desc(&current->sound_ptr[idx]);
     }
 
     done = FALSE;
@@ -520,15 +520,15 @@ void Load_Rooms(void)
       }
       switch (tmp_str[0]) {
       case 'D':
-	index2 = sscanf(tmp_str, "D%d", &index);
-	if (index2 < 1 || index < 0 || index > 5) {
+	idx2 = sscanf(tmp_str, "D%d", &idx);
+	if (idx2 < 1 || idx < 0 || idx > 5) {
 	  trunc_string(tmp_str);
           log("Room %d: Expected direction in room [#%d] of the form \"D[0-5]\", Got this instead:\n%s\n",
               number_rooms, current->room_id, tmp_str);
 	  exit(ERR_BADEXIT);
 	}
 
-	get_desc(&current->exit[index].desc_ptr);
+	get_desc(&current->exit[idx].desc_ptr);
 
 	if (fgets(tmp_str, BUFFER_SIZE-1, fp) == NULL) {
           log("Room %d: Unexpected EOF reading exit keywords for room [#%d].",
@@ -542,24 +542,24 @@ void Load_Rooms(void)
 	  exit(ERR_EXITKEY);
 	}
 	tmp_str[strlen(tmp_str) - 1] = '\0';
-        current->exit[index].keywords = (char *)strdup(tmp_str);
+        current->exit[idx].keywords = (char *)strdup(tmp_str);
 
 	if (fgets(tmp_str, BUFFER_SIZE-1, fp) == NULL) {
           log("Room %d: Unexpected EOF reading exit data for room [#%d].",
               number_rooms, current->room_id);
           exit(ERR_EOF);
 	}
-	index2 = sscanf(tmp_str, "%d %d %d", &current->exit[index].door_flag,
-			&current->exit[index].key_number,
-			&current->exit[index].to_room);
-	if (index2 < 3) {
+	idx2 = sscanf(tmp_str, "%d %d %d", &current->exit[idx].door_flag,
+			&current->exit[idx].key_number,
+			&current->exit[idx].to_room);
+	if (idx2 < 3) {
 	  trunc_string(tmp_str);
           log("Room %d: Exit door flags, key and target expected in [#%d] as \"%%d %%d %%d\", Got:\n%s\n",
               number_rooms, current->room_id, tmp_str);
 	  exit(ERR_DOORFLAGS);
 	}
-	if (current->exit[index].door_flag < 0 ||
-            current->exit[index].door_flag > 4) {
+	if (current->exit[idx].door_flag < 0 ||
+            current->exit[idx].door_flag > 4) {
 	  trunc_string(tmp_str);
           log("Room %d: Door flags invalid in room [#%d], Must be [0-4], Got:\n%s\n",
               number_rooms, current->room_id, tmp_str);
@@ -584,12 +584,12 @@ void Load_Rooms(void)
               number_rooms, current->room_id, tmp_str);
 	  exit(ERR_EXTRAKEY);
 	}
-	index2 = current->number_extras;
-        if(index2) current->extra= (Extra_t *)realloc(current->extra,
-                   (index2+1) * sizeof(struct Extra_st));
+	idx2 = current->number_extras;
+        if(idx2) current->extra= (Extra_t *)realloc(current->extra,
+                   (idx2+1) * sizeof(struct Extra_st));
         else current->extra= (Extra_t *)calloc(1, sizeof(struct Extra_st));
-        current->extra[index2].keywords = (char *)strdup(strtok(tmp_str, "~\n\r\0"));
-	get_desc(&current->extra[index2].desc_ptr);
+        current->extra[idx2].keywords = (char *)strdup(strtok(tmp_str, "~\n\r\0"));
+	get_desc(&current->extra[idx2].desc_ptr);
 	current->number_extras++;
 	break;
 
@@ -614,7 +614,7 @@ void Load_Rooms(void)
 void Link_World(void)
 {
   Room *ptr;
-  int index2;
+  int idx2;
   int init_flag = TRUE;
   FILE *errfile = NULL;
   int counter;
@@ -630,11 +630,11 @@ void Link_World(void)
       printf("Linking Rooms...[#%d]\r", ptr->room_id);
       fflush(stdout);
     }
-    for (index2 = 0; index2 < 6; index2++)
-      if (ptr->exit[index2].door_flag > -1) {
-	ptr->exit[index2].real_to_room =
-	  find_room(ptr, ptr->exit[index2].to_room);
-	if (ptr->exit[index2].real_to_room == NULL && ptr->exit[index2].to_room != -1) {
+    for (idx2 = 0; idx2 < 6; idx2++)
+      if (ptr->exit[idx2].door_flag > -1) {
+	ptr->exit[idx2].real_to_room =
+	  find_room(ptr, ptr->exit[idx2].to_room);
+	if (ptr->exit[idx2].real_to_room == NULL && ptr->exit[idx2].to_room != -1) {
 	  if (init_flag) {
 	    if (!(errfile = fopen(errname, "w"))) {
               log("Cannot open %s as error file!", errname);
@@ -644,8 +644,8 @@ void Link_World(void)
 	  }
 	  fprintf(errfile,
 		  "Room [#%d] -- Unable to resolve %s exit to room [#%d]\n",
-		  ptr->room_id, directions[index2].name,
-		  ptr->exit[index2].to_room);
+		  ptr->room_id, directions[idx2].name,
+		  ptr->exit[idx2].to_room);
 	}
       }
     ptr = ptr->next;
@@ -659,34 +659,34 @@ void Link_World(void)
 
 void Main_Loop(void)
 {
-  int index, not_done = TRUE;
+  int idx, not_done = TRUE;
 
   Display_A_Room(current);
   do {
-    index = current->sector_type;
-    if (index == -1)
-      index = 10;
+    idx = current->sector_type;
+    if (idx == -1)
+      idx = 10;
 
     printf("( Zone: %d Room: %d Terrain: %-s ) ",
 	   current->zonenum,
 	   current->room_id,
-	   sector_types[index].name);
+	   sector_types[idx].name);
 
     get_inputs();
     printf("\n");
 
-    switch (index = find_keyword(inputs[0])) {
+    switch (idx = find_keyword(inputs[0])) {
     case NORTH:
     case EAST:
     case SOUTH:
     case WEST:
     case UP:
     case DOWN:
-      index--;
-      if (current->exit[index].real_to_room == NULL)
+      idx--;
+      if (current->exit[idx].real_to_room == NULL)
 	printf("\n>> There is no exit in that direction.\n\n");
       else {
-	current = current->exit[index].real_to_room;
+	current = current->exit[idx].real_to_room;
 	Display_A_Room(current);
       }
       break;
@@ -768,36 +768,36 @@ void Main_Loop(void)
 
 void Command_unlink(void)
 {
-  int index, old;
+  int idx, old;
 
-  index = direction_number(inputs[1]);
+  idx = direction_number(inputs[1]);
 
-  if (index == -1) {
+  if (idx == -1) {
     printf("UNLINK requires subparameters, the correct form is:\n");
     printf("--------------------------------------------------\n");
     printf("UNLINK <direction>\n\n");
     return;
   }
-  if (current->exit[index].to_room == -1) {
+  if (current->exit[idx].to_room == -1) {
     printf("** There is currently no exit in that direction.\n\n");
     return;
   }
 
-  if(current->exit[index].desc_ptr)
-    free(current->exit[index].desc_ptr);
-  current->exit[index].desc_ptr= NULL;
-  if(current->exit[index].keywords)
-    free(current->exit[index].keywords);
-  current->exit[index].keywords= NULL;
+  if(current->exit[idx].desc_ptr)
+    free(current->exit[idx].desc_ptr);
+  current->exit[idx].desc_ptr= NULL;
+  if(current->exit[idx].keywords)
+    free(current->exit[idx].keywords);
+  current->exit[idx].keywords= NULL;
 
-  current->exit[index].door_flag = -1;
-  current->exit[index].key_number= -1;
-  old= current->exit[index].to_room;
-  current->exit[index].to_room= -1;
-  current->exit[index].real_to_room = NULL;
+  current->exit[idx].door_flag = -1;
+  current->exit[idx].key_number= -1;
+  old= current->exit[idx].to_room;
+  current->exit[idx].to_room= -1;
+  current->exit[idx].real_to_room = NULL;
 
   printf(">> %s link to [#%d] broken.\n\n",
-	 directions[index].name, old);
+	 directions[idx].name, old);
 }
 
 void Command_brief(void)
@@ -902,7 +902,7 @@ void Command_copy(void)
 
 void Command_copy_sub(Room *ptr, Room *from_ptr)
 {
-  int index;
+  int idx;
 
   if(ptr->title)
     free(ptr->title);
@@ -928,13 +928,13 @@ void Command_copy_sub(Room *ptr, Room *from_ptr)
     *(ptr->river)= *(from_ptr->river);
   }
 
-  for (index = 0; index < 2; index++) {
-    if (from_ptr->sound_ptr[index] != NULL) {
-      if(ptr->sound_ptr[index])
-        free(ptr->sound_ptr[index]);
-      ptr->sound_ptr[index] = (char *)strdup(from_ptr->sound_ptr[index]);
+  for (idx = 0; idx < 2; idx++) {
+    if (from_ptr->sound_ptr[idx] != NULL) {
+      if(ptr->sound_ptr[idx])
+        free(ptr->sound_ptr[idx]);
+      ptr->sound_ptr[idx] = (char *)strdup(from_ptr->sound_ptr[idx]);
     } else {
-      ptr->sound_ptr[index] = NULL;
+      ptr->sound_ptr[idx] = NULL;
     }
   }
   printf(">> Title and description for room [#%d] has been changed.\n",
@@ -943,7 +943,7 @@ void Command_copy_sub(Room *ptr, Room *from_ptr)
 
 void Command_make(void)
 {
-  int index, roomid, source;
+  int idx, roomid, source;
   char tmp_str[BUFFER_SIZE];
   Room *ptr = NULL;
 
@@ -1006,11 +1006,11 @@ void Command_make(void)
       current->river= (River_t *)calloc(1, sizeof(struct River_st));
       *(current->river)= *(ptr->river);
     }
-    for (index = 0; index < 2; index++)
-      if (ptr->sound_ptr[index] != NULL) {
-	current->sound_ptr[index] = (char *)strdup(ptr->sound_ptr[index]);
+    for (idx = 0; idx < 2; idx++)
+      if (ptr->sound_ptr[idx] != NULL) {
+	current->sound_ptr[idx] = (char *)strdup(ptr->sound_ptr[idx]);
       } else
-	current->sound_ptr[index] = NULL;
+	current->sound_ptr[idx] = NULL;
   }
   printf(">> New Room Created.\n\n");
   Display_A_Room(current);
@@ -1019,7 +1019,7 @@ void Command_make(void)
 void Command_delete(void)
 {
   Room *ptr, *ptr2;
-  int index, zaproom;
+  int idx, zaproom;
 
   if (inputs[1][0] == '\0') {
     printf("DELETE requires a subparameter, the correct form is:\n");
@@ -1051,18 +1051,18 @@ void Command_delete(void)
                ptr2->room_id, ptr->room_id);
       }
     }
-    for (index = 0; index < 6; index++)
-      if (ptr2->exit[index].real_to_room == ptr) {
-	free(ptr2->exit[index].desc_ptr);
-	ptr2->exit[index].desc_ptr = NULL;
-	free(ptr2->exit[index].keywords);
-	ptr2->exit[index].keywords= NULL;
-	ptr2->exit[index].door_flag = -1;
-	ptr2->exit[index].key_number= -1;
-	ptr2->exit[index].to_room= -1;
-	ptr2->exit[index].real_to_room = NULL;
+    for (idx = 0; idx < 6; idx++)
+      if (ptr2->exit[idx].real_to_room == ptr) {
+	free(ptr2->exit[idx].desc_ptr);
+	ptr2->exit[idx].desc_ptr = NULL;
+	free(ptr2->exit[idx].keywords);
+	ptr2->exit[idx].keywords= NULL;
+	ptr2->exit[idx].door_flag = -1;
+	ptr2->exit[idx].key_number= -1;
+	ptr2->exit[idx].to_room= -1;
+	ptr2->exit[idx].real_to_room = NULL;
 	printf(">> Exit %-6s from room [#%d] to room [#%d] deleted.\n",
-	       directions[index].name, ptr2->room_id,
+	       directions[idx].name, ptr2->room_id,
 	       ptr->room_id);
       }
     ptr2 = ptr2->next;
@@ -1098,25 +1098,25 @@ void Command_delete(void)
       free(ptr->title);
     if(ptr->desc_ptr)
       free(ptr->desc_ptr);
-    for (index= 0; index < 2; index++) {
-      if(ptr->sound_ptr[index])
-        free(ptr->sound_ptr[index]);
+    for (idx= 0; idx < 2; idx++) {
+      if(ptr->sound_ptr[idx])
+        free(ptr->sound_ptr[idx]);
     }
     if(ptr->teleport)
       free(ptr->teleport);
     if(ptr->river)
       free(ptr->river);
-    for (index = 0; index < 6; index++) {
-      if(ptr->exit[index].desc_ptr)
-        free(ptr->exit[index].desc_ptr);
-      if(ptr->exit[index].keywords)
-        free(ptr->exit[index].keywords);
+    for (idx = 0; idx < 6; idx++) {
+      if(ptr->exit[idx].desc_ptr)
+        free(ptr->exit[idx].desc_ptr);
+      if(ptr->exit[idx].keywords)
+        free(ptr->exit[idx].keywords);
     }
-    for (index = 0; index < ptr->number_extras; index++) {
-      if(ptr->extra[index].desc_ptr)
-        free(ptr->extra[index].desc_ptr);
-      if(ptr->extra[index].keywords)
-        free(ptr->extra[index].keywords);
+    for (idx = 0; idx < ptr->number_extras; idx++) {
+      if(ptr->extra[idx].desc_ptr)
+        free(ptr->extra[idx].desc_ptr);
+      if(ptr->extra[idx].keywords)
+        free(ptr->extra[idx].keywords);
     }
     free(ptr->extra);
     free(ptr);
@@ -1128,16 +1128,16 @@ void Command_delete(void)
 
 void Command_desc(void)
 {
-  FILE *fp;
+  FILE *tfp;
 
   if (current->desc_ptr) {
     sprintf(tempfile, TMP_FILE, getpid());
-    if(!(fp= fopen(tempfile, "w"))) {
+    if(!(tfp= fopen(tempfile, "w"))) {
       log("Cannot open %s for output!", tempfile);
       exit(ERR_NOOUTPUT);
     }
-    fprintf(fp, "%s~\n", current->desc_ptr);
-    fclose(fp);
+    fprintf(tfp, "%s~\n", current->desc_ptr);
+    fclose(tfp);
     free(current->desc_ptr);
   }
 
@@ -1151,18 +1151,18 @@ void Command_desc(void)
 
 void Command_exits(void)
 {
-  int index, index2;
+  int idx, idx2;
   int no_exits = TRUE;
 
-  for (index = 0; index < 6; index++) {
-    index2 = current->exit[index].door_flag;
+  for (idx = 0; idx < 6; idx++) {
+    idx2 = current->exit[idx].door_flag;
 
-    if (current->exit[index].real_to_room != NULL) {
+    if (current->exit[idx].real_to_room != NULL) {
       printf("%-6s - %-s to Room %d (%-s)\n",
-	     directions[index].name,
-	     door_states[index2].name,
-	     current->exit[index].real_to_room->room_id,
-	     current->exit[index].real_to_room->title);
+	     directions[idx].name,
+	     door_states[idx2].name,
+	     current->exit[idx].real_to_room->room_id,
+	     current->exit[idx].real_to_room->title);
       no_exits = FALSE;
     }
   }
@@ -1173,7 +1173,7 @@ void Command_exits(void)
 
 void Command_extra(void)
 {
-  int index, index2;
+  int idx, idx2;
   char tmp_str[BUFFER_SIZE];
 
   if (find_keyword(inputs[1]) == DELETE) {
@@ -1184,37 +1184,37 @@ void Command_extra(void)
     printf("Select the extra description to delete:\n");
     printf("--------------------------------------\n");
 
-    for (index = 0; index < current->number_extras; index++)
-      printf("%d. %s\n", index + 1, current->extra[index].keywords);
+    for (idx = 0; idx < current->number_extras; idx++)
+      printf("%d. %s\n", idx + 1, current->extra[idx].keywords);
     printf("\nEnter selection > ");
     /* gets(tmp_str); */
     fgets(tmp_str, BUFFER_SIZE-1, stdin);
     if((strlen(tmp_str) > 0) && tmp_str[strlen(tmp_str)-1] == '\n')
       tmp_str[strlen(tmp_str)-1]= '\0';
-    if(!scan_a_number(tmp_str, &index) || --index < 0 || index >= current->number_extras) {
+    if(!scan_a_number(tmp_str, &idx) || --idx < 0 || idx >= current->number_extras) {
       printf("\n** Invalid selection.  No deletion performed.\n\n");
       return;
     }
 
-    index2 = index;
-    while (index2 < current->number_extras - 1) {
-      current->extra[index2].keywords= current->extra[index2 + 1].keywords;
-      current->extra[index2].desc_ptr= current->extra[index2 + 1].desc_ptr;
-      index2++;
+    idx2 = idx;
+    while (idx2 < current->number_extras - 1) {
+      current->extra[idx2].keywords= current->extra[idx2 + 1].keywords;
+      current->extra[idx2].desc_ptr= current->extra[idx2 + 1].desc_ptr;
+      idx2++;
     }
     current->number_extras--;
-    if(current->extra[index2].keywords)
-      free(current->extra[index2].keywords);
-    current->extra[index2].keywords= NULL;
-    if(current->extra[index2].desc_ptr)
-      free(current->extra[index2].desc_ptr);
-    current->extra[index2].desc_ptr = NULL;
+    if(current->extra[idx2].keywords)
+      free(current->extra[idx2].keywords);
+    current->extra[idx2].keywords= NULL;
+    if(current->extra[idx2].desc_ptr)
+      free(current->extra[idx2].desc_ptr);
+    current->extra[idx2].desc_ptr = NULL;
     current->extra= (Extra_t *)realloc(current->extra,
                    (current->number_extras) * sizeof(struct Extra_st));
     if(!current->number_extras)
       current->extra= NULL;
   } else {
-    index = current->number_extras;
+    idx = current->number_extras;
     printf("Enter the extra description keywords seperated by BLANKS.\n> ");
     /* gets(tmp_str); */
     fgets(tmp_str, BUFFER_SIZE-1, stdin);
@@ -1226,17 +1226,17 @@ void Command_extra(void)
       printf("\n**No keywords entered.  Extra description not created.\n\n");
       return;
     }
-    if(index) current->extra= (Extra_t *)realloc(current->extra,
-              (index+1) * sizeof(struct Extra_st));
+    if(idx) current->extra= (Extra_t *)realloc(current->extra,
+              (idx+1) * sizeof(struct Extra_st));
     else current->extra= (Extra_t *)calloc(1, sizeof(struct Extra_st));
-    if(current->extra[index].keywords)
-      free(current->extra[index].keywords);
-    current->extra[index].keywords= (char *)strdup(tmp_str);
+    if(current->extra[idx].keywords)
+      free(current->extra[idx].keywords);
+    current->extra[idx].keywords= (char *)strdup(tmp_str);
     printf("\n");
-    if (current->extra[index].desc_ptr)
-      free(current->extra[index].desc_ptr);
-    /* input_desc("extra description", &current->extra[index].desc_ptr); */
-    import_desc("extra description", &current->extra[index].desc_ptr);
+    if (current->extra[idx].desc_ptr)
+      free(current->extra[idx].desc_ptr);
+    /* input_desc("extra description", &current->extra[idx].desc_ptr); */
+    import_desc("extra description", &current->extra[idx].desc_ptr);
     current->number_extras++;
   }
   Display_A_Room(current);
@@ -1244,15 +1244,15 @@ void Command_extra(void)
 
 void Command_flag(void)
 {
-  int index = 0, index2 = 0, count = 0, startroom, endroom;
+  int idx = 0, idx2 = 0, count = 0, startroom, endroom;
   Room *ptr;
 
-  while (room_flags[index].name != NULL &&
-	 strcasecmp(room_flags[index].name, inputs[1]) != 0)
-    index++;
+  while (room_flags[idx].name != NULL &&
+	 strcasecmp(room_flags[idx].name, inputs[1]) != 0)
+    idx++;
 
   if (inputs[1][0] == '\0' ||
-      room_flags[index].name[0] == '\0' ||
+      room_flags[idx].name[0] == '\0' ||
       (inputs[2][0] != '\0' && inputs[3][0] == '\0')) {
     printf("FLAG command requires sub-parameters, the correct form is:\n");
     printf("---------------------------------------------------------\n");
@@ -1267,16 +1267,16 @@ void Command_flag(void)
     printf("                    changed.\n\n");
     printf("Valid FLAG parameters are:\n");
     printf("---------------------------");
-    while (room_flags[index2].name != NULL) {
-      if (index2 % 5 == 0)
+    while (room_flags[idx2].name != NULL) {
+      if (idx2 % 5 == 0)
 	printf("\n");
-      printf("%-10s ", room_flags[index2++].name);
+      printf("%-10s ", room_flags[idx2++].name);
     }
     printf("\n\n");
     return;
   }
   if (inputs[2][0] == '\0') {
-    Command_flag_sub(current, index);
+    Command_flag_sub(current, idx);
   } else {
     if(!scan_a_number(inputs[2], &startroom)) {
       printf("** Invalid start room %s specified.\n", inputs[2]);
@@ -1289,7 +1289,7 @@ void Command_flag(void)
     ptr = bottom_of_world;
     while (ptr != NULL) {
       if ((ptr->room_id >= startroom) && (ptr->room_id <= endroom)) {
-	Command_flag_sub(ptr, index);
+	Command_flag_sub(ptr, idx);
 	count++;
       }
       ptr = ptr->next;
@@ -1301,26 +1301,26 @@ void Command_flag(void)
   Display_A_Room(current);
 }
 
-void Command_flag_sub(Room *ptr, int index)
+void Command_flag_sub(Room *ptr, int idx)
 {
-  int index2 = 0;
+  int idx2 = 0;
 
-  if (ptr->room_flag & room_flags[index].mask) {
+  if (ptr->room_flag & room_flags[idx].mask) {
     ptr->room_flag = ptr->room_flag &
-      ~room_flags[index].mask;
+      ~room_flags[idx].mask;
 
-    if (index == 10)
-      for (index2 = 0; index2 < 2; index2++)
-        if(ptr->sound_ptr[index2])
-	  free(ptr->sound_ptr[index2]);
+    if (idx == 10)
+      for (idx2 = 0; idx2 < 2; idx2++)
+        if(ptr->sound_ptr[idx2])
+	  free(ptr->sound_ptr[idx2]);
 
     printf(">> Flag %s turned off for room [#%d].\n\n",
 	   inputs[1], ptr->room_id);
   } else {
     ptr->room_flag = ptr->room_flag |
-      room_flags[index].mask;
+      room_flags[idx].mask;
 
-    if (index == 10) {
+    if (idx == 10) {
       input_desc("sound #1", &ptr->sound_ptr[0]);
       input_desc("sound #2", &ptr->sound_ptr[1]);
     }
@@ -1331,16 +1331,16 @@ void Command_flag_sub(Room *ptr, int index)
 
 void Command_format(void)
 {
-  int index = 0, index2 = 0, index3 = 0, index4 = 0;
+  int idx = 0, idx2 = 0, idx3 = 0, idx4 = 0;
   char *ptr;
   char tmp_str[BUFFER_SIZE];
 
   if (strcasecmp(inputs[1], "desc") == 0)
-    index = 1;
+    idx = 1;
   else if (strcasecmp(inputs[1], "extra") == 0)
-    index = 2;
+    idx = 2;
 
-  if (index == 0) {
+  if (idx == 0) {
     printf("FORMAT command requires a sub-parameter, the correct form is:\n");
     printf("-------------------------------------------------------------\n");
     printf("FLAG <option>\n\n");
@@ -1350,7 +1350,7 @@ void Command_format(void)
     return;
   }
 
-  if (index == 1)
+  if (idx == 1)
     ptr = current->desc_ptr;
   else {
     if (current->number_extras == 0) {
@@ -1360,8 +1360,8 @@ void Command_format(void)
     printf("Select the extra description to format :\n");
     printf("----------------------------------------\n");
 
-    for (index = 0; index < current->number_extras; index++)
-      printf("%d. %s\n", index + 1, current->extra[index].keywords);
+    for (idx = 0; idx < current->number_extras; idx++)
+      printf("%d. %s\n", idx + 1, current->extra[idx].keywords);
 
     printf("\nEnter selection > ");
     /* gets(tmp_str); */
@@ -1369,52 +1369,52 @@ void Command_format(void)
     if((strlen(tmp_str) > 0) && tmp_str[strlen(tmp_str)-1] == '\n')
       tmp_str[strlen(tmp_str)-1]= '\0';
     trunc_string(tmp_str);
-    index = atoi(tmp_str) - 1;
-    if (index < 0 || index >= current->number_extras) {
+    idx = atoi(tmp_str) - 1;
+    if (idx < 0 || idx >= current->number_extras) {
       printf("\n** Invalid selection.  No formating performed.\n\n");
       return;
     }
-    ptr = current->extra[index].desc_ptr;
+    ptr = current->extra[idx].desc_ptr;
   }
 
   /*  First get rid of all current new lines.  */
-  index = -1;
-  while (++index <= strlen(ptr))
-    if (ptr[index] == '\n')
-      ptr[index] = ' ';
+  idx = -1;
+  while (++idx <= strlen(ptr))
+    if (ptr[idx] == '\n')
+      ptr[idx] = ' ';
 
   /*  Now insert the new newlines.  */
 
-  index2 = 78;
-  while (index2 < strlen(ptr)) {
+  idx2 = 78;
+  while (idx2 < strlen(ptr)) {
     /*  Starting at the current lines end position, go backwards
      * until we find a blank char.  This means we are at the
      * beginning of a word.
      */
 
-    index3 = index2;
-    while (index3 > 1 && ptr[index3] != ' ')
-      index3--;
-    ptr[index3] = '\n';
+    idx3 = idx2;
+    while (idx3 > 1 && ptr[idx3] != ' ')
+      idx3--;
+    ptr[idx3] = '\n';
 
     /*  Now go forwards past all the blanks so we start the new
      * "next line" with a non-blank char.
      */
 
-    index3++;
-    index4 = index3;
-    index2 = index3 + 77;
-    while (index3 <= strlen(ptr) && ptr[index3] == ' ')
-      index3++;
+    idx3++;
+    idx4 = idx3;
+    idx2 = idx3 + 77;
+    while (idx3 <= strlen(ptr) && ptr[idx3] == ' ')
+      idx3++;
 
     /*  Now compress everything down to eliminate the blanks
      * that we skipped over when finding the start of the
      * "next line".
      */
 
-    while (index3 <= strlen(ptr))
-      ptr[index4++] = ptr[index3++];
-    ptr[index3] = 0;
+    while (idx3 <= strlen(ptr))
+      ptr[idx4++] = ptr[idx3++];
+    ptr[idx3] = 0;
   }
   ptr[strlen(ptr) - 1] = '\n';
 
@@ -1447,19 +1447,19 @@ void Command_goto(void)
 
 void Command_help(void)
 {
-  int index = 0;
-  int index2 = 0;
+  int idx = 0;
+  int idx2 = 0;
   int prev = -1;
 
-  while (commands[index].name != NULL) {
-    if (commands[index].num != prev) {
-      printf("%-10s ", commands[index].name);
-      prev = commands[index].num;
-      index2++;
+  while (commands[idx].name != NULL) {
+    if (commands[idx].num != prev) {
+      printf("%-10s ", commands[idx].name);
+      prev = commands[idx].num;
+      idx2++;
     }
-    if (index2 % 6 == 0)
+    if (idx2 % 6 == 0)
       printf("\n");
-    index++;
+    idx++;
   }
   printf("\n\n");
 }
@@ -1477,13 +1477,13 @@ void Command_light(void)
 
 void Command_link(void)
 {
-  int index, index3, index4, roomid;
+  int idx, idx3, idx4, roomid;
   char tmp_str[BUFFER_SIZE];
   Room *ptr;
 
-  index = direction_number(inputs[1]);
+  idx = direction_number(inputs[1]);
 
-  if (index == -1 || inputs[2][0] == '\0') {
+  if (idx == -1 || inputs[2][0] == '\0') {
     printf("LINK requires subparameters, the correct form is:\n");
     printf("------------------------------------------------\n");
     printf("LINK <direction> <room id>\n\n");
@@ -1501,35 +1501,35 @@ void Command_link(void)
     return;
   }
 
-  if (current->exit[index].to_room != -1) {
+  if (current->exit[idx].to_room != -1) {
     printf("** Exit already exists to the %s. Please UNLINK exit first.\n\n",
-	   directions[index].name);
+	   directions[idx].name);
     return;
   }
-  current->exit[index].to_room= roomid;
-  current->exit[index].real_to_room = ptr;
+  current->exit[idx].to_room= roomid;
+  current->exit[idx].real_to_room = ptr;
 
   do {
     printf("Choose an exit type\n-------------------\n");
-    for (index3 = 0; index3 < 5; index3++)
-      printf("%d. %-s\n", index3 + 1, door_states[index3].name);
+    for (idx3 = 0; idx3 < 5; idx3++)
+      printf("%d. %-s\n", idx3 + 1, door_states[idx3].name);
 
     printf("> ");
     /* gets(tmp_str); */
     fgets(tmp_str, BUFFER_SIZE-1, stdin);
     if((strlen(tmp_str) > 0) && tmp_str[strlen(tmp_str)-1] == '\n')
       tmp_str[strlen(tmp_str)-1]= '\0';
-    if(!scan_a_number(tmp_str, &index3)) {
+    if(!scan_a_number(tmp_str, &idx3)) {
       printf("** Invalid choice... try again.\n");
     }
-  } while (index3 < 1 || index3 > 5);
+  } while (idx3 < 1 || idx3 > 5);
 
-  current->exit[index].door_flag = --index3;
+  current->exit[idx].door_flag = --idx3;
   printf("\n");
 
   /*  if this is a lockable door, ask for the object number to open it.  */
 
-  if (index3 > 0) {
+  if (idx3 > 0) {
     do {
       printf("Enter object number which can unlock/lock this door\n");
       printf("a -1 indicates that there is no key for this door.\n");
@@ -1539,7 +1539,7 @@ void Command_link(void)
       fgets(tmp_str, BUFFER_SIZE-1, stdin);
       if((strlen(tmp_str) > 0) && tmp_str[strlen(tmp_str)-1] == '\n')
         tmp_str[strlen(tmp_str)-1]= '\0';
-      if(!scan_a_number(tmp_str, &current->exit[index].key_number)) {
+      if(!scan_a_number(tmp_str, &current->exit[idx].key_number)) {
         printf("** Invalid choice... try again.\n");
       }
     } while (tmp_str[0] == '\0');
@@ -1548,7 +1548,7 @@ void Command_link(void)
   /*  Get any keywords for that direction.  */
 
   do {
-    index4 = FALSE;
+    idx4 = FALSE;
     printf("Enter all exit keywords seperated by BLANKS for this exit\n");
     printf("or return if there are none.\n");
     printf("----------------------------------------------------------\n> ");
@@ -1558,20 +1558,20 @@ void Command_link(void)
       tmp_str[strlen(tmp_str)-1]= '\0';
     trunc_string(tmp_str);
 
-    if (index3 > 0 && tmp_str[0] == '\0') {
+    if (idx3 > 0 && tmp_str[0] == '\0') {
       printf("\n** At least one keyword must be specified for exits with a door.\n\n");
-      index4 = TRUE;
+      idx4 = TRUE;
     }
-  } while (index4);
-  if(current->exit[index].keywords)
-    free(current->exit[index].keywords);
-  current->exit[index].keywords= (char *)strdup(tmp_str);
+  } while (idx4);
+  if(current->exit[idx].keywords)
+    free(current->exit[idx].keywords);
+  current->exit[idx].keywords= (char *)strdup(tmp_str);
   printf("\n");
 
   /*  Get the exit description if any.  */
 
-  free(current->exit[index].desc_ptr);
-  input_desc("exit description", &current->exit[index].desc_ptr);
+  free(current->exit[idx].desc_ptr);
+  input_desc("exit description", &current->exit[idx].desc_ptr);
   printf("\n");
 }
 
@@ -1626,28 +1626,28 @@ void Command_list(void)
 
 void Command_look(void)
 {
-  int index = 0;
+  int idx = 0;
 
   if (inputs[1][0] == '\0')
     Display_A_Room(current);
   else {
-    index = direction_number(inputs[1]);
-    if (index != -1) {
-      if (current->exit[index].desc_ptr != NULL &&
-	  *current->exit[index].desc_ptr != '\0')
-	printf("%s", current->exit[index].desc_ptr);
+    idx = direction_number(inputs[1]);
+    if (idx != -1) {
+      if (current->exit[idx].desc_ptr != NULL &&
+	  *current->exit[idx].desc_ptr != '\0')
+	printf("%s", current->exit[idx].desc_ptr);
       else
 	printf("You see nothing in particular in that direction.\n");
       printf("\n");
     } else {
-      index = 0;
-      while (index < current->number_extras &&
-	     strstr(current->extra[index].keywords,
+      idx = 0;
+      while (idx < current->number_extras &&
+	     strstr(current->extra[idx].keywords,
 		    inputs[1]) == 0)
-	index++;
-      if (index < current->number_extras &&
-	  current->extra[index].desc_ptr != NULL)
-	printf("%s", current->extra[index].desc_ptr);
+	idx++;
+      if (idx < current->number_extras &&
+	  current->extra[idx].desc_ptr != NULL)
+	printf("%s", current->extra[idx].desc_ptr);
       else
 	printf("You see of interest about the %s.\n", inputs[1]);
       printf("\n");
@@ -1657,7 +1657,7 @@ void Command_look(void)
 
 void Command_save(void)
 {
-  int index2;
+  int idx2;
   char tmp_str[BUFFER_SIZE];
   Room *ptr;
   int counter;
@@ -1720,21 +1720,21 @@ void Command_save(void)
 	      ptr->river->direction);
     fprintf(out, "\n");
     if (ptr->room_flag & 1024)
-      for (index2 = 0; index2 < 2; index2++)
-	fprintf(out, "%s~\n", ptr->sound_ptr[index2]);
-    for (index2 = 0; index2 < 6; index2++)
-      if (ptr->exit[index2].door_flag != -1) {
-	fprintf(out, "D%d\n", index2);
-	fprintf(out, "%s~\n", ptr->exit[index2].desc_ptr);
-	fprintf(out, "%s~\n", ptr->exit[index2].keywords);
+      for (idx2 = 0; idx2 < 2; idx2++)
+	fprintf(out, "%s~\n", ptr->sound_ptr[idx2]);
+    for (idx2 = 0; idx2 < 6; idx2++)
+      if (ptr->exit[idx2].door_flag != -1) {
+	fprintf(out, "D%d\n", idx2);
+	fprintf(out, "%s~\n", ptr->exit[idx2].desc_ptr);
+	fprintf(out, "%s~\n", ptr->exit[idx2].keywords);
 	fprintf(out, "%d %d %d\n",
-		ptr->exit[index2].door_flag,
-		ptr->exit[index2].key_number,
-		ptr->exit[index2].to_room);
+		ptr->exit[idx2].door_flag,
+		ptr->exit[idx2].key_number,
+		ptr->exit[idx2].to_room);
       }
-    for (index2 = 0; index2 < ptr->number_extras; index2++) {
-      fprintf(out, "E\n%s~\n", ptr->extra[index2].keywords);
-      fprintf(out, "%s~\n", ptr->extra[index2].desc_ptr);
+    for (idx2 = 0; idx2 < ptr->number_extras; idx2++) {
+      fprintf(out, "E\n%s~\n", ptr->extra[idx2].keywords);
+      fprintf(out, "%s~\n", ptr->extra[idx2].desc_ptr);
     }
     fprintf(out, "S\n");
     ptr = ptr->next;
@@ -1771,16 +1771,16 @@ void Command_title(void)
 
 void Command_sector(void)
 {
-  int index = 0, index2 = 0, index3 = 0, parm2, parm3, parm4;
+  int idx = 0, idx2 = 0, idx3 = 0, parm2, parm3, parm4;
 
-  while (sector_types[index].name != NULL &&
-	 strcasecmp(sector_types[index].name, inputs[1]) != 0)
-    index++;
+  while (sector_types[idx].name != NULL &&
+	 strcasecmp(sector_types[idx].name, inputs[1]) != 0)
+    idx++;
 
-  if (sector_types[index].name != NULL) {
-    index2 = sector_types[index].num;
+  if (sector_types[idx].name != NULL) {
+    idx2 = sector_types[idx].num;
 
-    if (index2 == -1) {
+    if (idx2 == -1) {
       if (inputs[2][0] == '\0' || inputs[3][0] == '\0' ||
 	  inputs[4][0] == '\0' || inputs[5][0] == '\0') {
 	printf("Sector TELEPORT requires sub-parameters, the correct form is:\n");
@@ -1804,16 +1804,16 @@ void Command_sector(void)
 	printf("** <do look> must be 0 or 1, room type not set.\n\n");
 	return;
       }
-      while (sector_types[index3].name != NULL &&
-	     strcasecmp(sector_types[index3].name, inputs[5]) != 0)
-	index3++;
+      while (sector_types[idx3].name != NULL &&
+	     strcasecmp(sector_types[idx3].name, inputs[5]) != 0)
+	idx3++;
 
-      if (sector_types[index3].name[0] == '\0' || sector_types[index3].num == -1) {
+      if (sector_types[idx3].name[0] == '\0' || sector_types[idx3].num == -1) {
 	printf("** <move type> must be a valid terrain type, room type not set.\n\n");
 	return;
       }
     }
-    if (index2 == 7) {
+    if (idx2 == 7) {
       if (inputs[2][0] == '\0' || inputs[3][0] == '\0') {
 	printf("Sector RIVER requires sub-parameters, the correct form is:\n");
 	printf("---------------------------------------------------------\n");
@@ -1822,38 +1822,38 @@ void Command_sector(void)
 	printf("     <river direction> - exit to drift through (s, n, e, w, etc..).\n\n");
 	return;
       }
-      index3 = direction_number(inputs[3]);
+      idx3 = direction_number(inputs[3]);
 
-      if (index3 < 0 || index3 > 5) {
+      if (idx3 < 0 || idx3 > 5) {
 	printf("** <river direction> must be a valid direction, room type not set.\n\n");
 	return;
       }
     }
 
-    current->sector_type = sector_types[index].num;
+    current->sector_type = sector_types[idx].num;
 
-    if (index2 == -1) {
+    if (idx2 == -1) {
       if(current->teleport)
         free(current->teleport);
       current->teleport= (Teleport_t *)calloc(1, sizeof(struct Teleport_st));
       current->teleport->time = parm2;
       current->teleport->to_room = parm3;
       current->teleport->do_look = parm4;
-      current->teleport->sector_type = index3;
-    } else if (index2 == 7) {
+      current->teleport->sector_type = idx3;
+    } else if (idx2 == 7) {
       if(current->river)
         free(current->river);
       current->river= (River_t *)calloc(1, sizeof(struct River_st));
       current->river->speed = atoi(inputs[2]);
-      current->river->direction = index3;
+      current->river->direction = idx3;
     }
     printf("\n");
   } else {
     printf("Valid SECTOR parameters are:\n");
     printf("---------------------------\n");
-    while (sector_types[index2].name != NULL) {
-      printf("%-12s ", sector_types[index2++].name);
-      if (index2 == 6)
+    while (sector_types[idx2].name != NULL) {
+      printf("%-12s ", sector_types[idx2++].name);
+      if (idx2 == 6)
 	printf("\n");
     }
     printf("\n\n");
@@ -1913,22 +1913,22 @@ void Command_zone(void)
 
 void Command_dig(void)
 {
-  int index, index3, index4, i, revindex, target, source, zone;
+  int idx, idx3, idx4, i, revidx, target, source, zone;
   char tmp_str[BUFFER_SIZE];
   Room *ptr, *ptr2, *tmpptr;
 
-  index = direction_number(inputs[1]);
+  idx = direction_number(inputs[1]);
 
-  if (index == -1 || inputs[2][0] == '\0') {
+  if (idx == -1 || inputs[2][0] == '\0') {
     printf("DIG requires subparameters, the correct form is:\n");
     printf("-----------------------------------------------\n");
     printf("DIG <direction> <room id> [room to copy]\n\n");
     return;
   }
 
-  if (current->exit[index].to_room != -1) {
+  if (current->exit[idx].to_room != -1) {
     printf("** Exit already exists to the %s. Please UNLINK exit first.\n\n",
-	   directions[index].name);
+	   directions[idx].name);
     return;
   }
 
@@ -1992,37 +1992,37 @@ void Command_dig(void)
       current = tmpptr;
     }
   }
-  revindex = rev_dir[direction_number(inputs[1])];
-  if (ptr->exit[revindex].to_room != -1) {
+  revidx = rev_dir[direction_number(inputs[1])];
+  if (ptr->exit[revidx].to_room != -1) {
     printf("** %s exit already exists in target. Please UNLINK first.\n\n",
-	   directions[revindex].name);
+	   directions[revidx].name);
     return;
   }
-  current->exit[index].to_room= target;
-  current->exit[index].real_to_room = ptr;
-  ptr->exit[revindex].to_room= current->room_id;
-  ptr->exit[revindex].real_to_room = current;
+  current->exit[idx].to_room= target;
+  current->exit[idx].real_to_room = ptr;
+  ptr->exit[revidx].to_room= current->room_id;
+  ptr->exit[revidx].real_to_room = current;
 
   do {
     printf("Choose an exit type\n-------------------\n");
-    for (index3 = 0; index3 < 5; index3++)
-      printf("%d. %-s\n", index3 + 1, door_states[index3].name);
+    for (idx3 = 0; idx3 < 5; idx3++)
+      printf("%d. %-s\n", idx3 + 1, door_states[idx3].name);
     printf("> ");
     /* gets(tmp_str); */
     fgets(tmp_str, BUFFER_SIZE-1, stdin);
     if((strlen(tmp_str) > 0) && tmp_str[strlen(tmp_str)-1] == '\n')
       tmp_str[strlen(tmp_str)-1]= '\0';
     trunc_string(tmp_str);
-    index3 = atoi(tmp_str);
-  } while (index3 < 1 || index3 > 5);
+    idx3 = atoi(tmp_str);
+  } while (idx3 < 1 || idx3 > 5);
 
-  current->exit[index].door_flag = --index3;
-  ptr->exit[revindex].door_flag = index3;
+  current->exit[idx].door_flag = --idx3;
+  ptr->exit[revidx].door_flag = idx3;
   printf("\n");
 
   /* if this is a lockable door, ask for the object number to open it. */
 
-  if (index3 > 0) {
+  if (idx3 > 0) {
     do {
       printf("Enter object number which can unlock/lock this door\n");
       printf("a -1 indicates that there is no key for this door.\n");
@@ -2036,8 +2036,8 @@ void Command_dig(void)
         printf("** Invalid lock... try again.\n");
         continue;
       } else {
-	current->exit[index].key_number= zone;
-	ptr->exit[revindex].key_number= zone;
+	current->exit[idx].key_number= zone;
+	ptr->exit[revidx].key_number= zone;
       }
     } while (tmp_str[0] == '\0');
     printf("\n");
@@ -2045,7 +2045,7 @@ void Command_dig(void)
   /*  Get any keywords for that direction.  */
 
   do {
-    index4 = FALSE;
+    idx4 = FALSE;
     printf("Enter all exit keywords seperated by BLANKS for this exit\n");
     printf("or return if there are none.\n");
     printf("----------------------------------------------------------\n> ");
@@ -2055,35 +2055,35 @@ void Command_dig(void)
       tmp_str[strlen(tmp_str)-1]= '\0';
     trunc_string(tmp_str);
 
-    if (index3 > 0 && tmp_str[0] == '\0') {
+    if (idx3 > 0 && tmp_str[0] == '\0') {
       printf("\n** At least one keyword must be specified for exits with a door.\n\n");
-      index4 = TRUE;
+      idx4 = TRUE;
     }
-  } while (index4);
-  if(current->exit[index].keywords)
-    free(current->exit[index].keywords);
-  current->exit[index].keywords= (char *)strdup(tmp_str);
-  if(ptr->exit[revindex].keywords)
-    free(ptr->exit[revindex].keywords);
-  ptr->exit[revindex].keywords= (char *)strdup(tmp_str);
+  } while (idx4);
+  if(current->exit[idx].keywords)
+    free(current->exit[idx].keywords);
+  current->exit[idx].keywords= (char *)strdup(tmp_str);
+  if(ptr->exit[revidx].keywords)
+    free(ptr->exit[revidx].keywords);
+  ptr->exit[revidx].keywords= (char *)strdup(tmp_str);
   printf("\n");
 
   /*  Get the exit description if any.  */
 
-  if(current->exit[index].desc_ptr)
-    free(current->exit[index].desc_ptr);
-  if(ptr->exit[revindex].desc_ptr)
-    free(ptr->exit[revindex].desc_ptr);
+  if(current->exit[idx].desc_ptr)
+    free(current->exit[idx].desc_ptr);
+  if(ptr->exit[revidx].desc_ptr)
+    free(ptr->exit[revidx].desc_ptr);
 
-  input_desc("exit description from here", &current->exit[index].desc_ptr);
-  input_desc("exit description to new room", &ptr->exit[revindex].desc_ptr);
-  /* ptr->exit[revindex].desc_ptr = strdup(current->exit[index].desc_ptr); */
+  input_desc("exit description from here", &current->exit[idx].desc_ptr);
+  input_desc("exit description to new room", &ptr->exit[revidx].desc_ptr);
+  /* ptr->exit[revidx].desc_ptr = strdup(current->exit[idx].desc_ptr); */
   printf("\n");
 }
 
 void Display_A_Room(Room *ptr)
 {
-  int index, index2, index3;
+  int idx, idx2, idx3;
 
   if ((ptr->room_flag & room_flags[0].mask) && !Light) {
     printf("It is too dark to see anything.\n\n");
@@ -2094,39 +2094,39 @@ void Display_A_Room(Room *ptr)
   if (!Brief)
     printf("%s", ptr->desc_ptr);
 
-  index = ptr->room_flag;
-  index2 = 0;
-  index3 = 0;
-  if (index != 0) {
+  idx = ptr->room_flag;
+  idx2 = 0;
+  idx3 = 0;
+  if (idx != 0) {
     printf("-----------------------------------------------------------------------\n");
     printf("ROOM FLAGS: ");
-    while (room_flags[index2].name != NULL) {
-      if (index & room_flags[index2].mask) {
-	if (index3++)
+    while (room_flags[idx2].name != NULL) {
+      if (idx & room_flags[idx2].mask) {
+	if (idx3++)
 	  printf(", ");
-	printf("%-s", room_flags[index2].name);
+	printf("%-s", room_flags[idx2].name);
       }
-      index2++;
+      idx2++;
     }
     printf("\n");
   }
   /*  Write out teleport flags (if teleport room) */
 
   if (ptr->sector_type == TELEPORT_ROOM) {
-    index = ptr->teleport->do_look;
-    if (index != 0)
-      index = 1;
-    index2 = ptr->teleport->sector_type;
-    if (index2 == -1)
-      index2 = 10;
+    idx = ptr->teleport->do_look;
+    if (idx != 0)
+      idx = 1;
+    idx2 = ptr->teleport->sector_type;
+    if (idx2 == -1)
+      idx2 = 10;
 
     printf("-----------------------------------------------------------------------\n");
     printf("TELEPORT: Time: %d   To Room: %d   Do Look: %-s\n",
 	   ptr->teleport->time,
 	   ptr->teleport->to_room,
-	   true_or_false[index]);
+	   true_or_false[idx]);
     printf("          Movement type: %-s \n",
-	   sector_types[index2].name);
+	   sector_types[idx2].name);
   }
   /*  Write out river info (if river room) */
 
@@ -2140,9 +2140,9 @@ void Display_A_Room(Room *ptr)
 
   if (ptr->room_flag & 1024) {
     printf("-----------------------------------------------------------------------\n");
-    for (index = 0; index < 2; index++) {
-      printf("SOUND %d:\n", index + 1);
-      printf("%s", ptr->sound_ptr[index]);
+    for (idx = 0; idx < 2; idx++) {
+      printf("SOUND %d:\n", idx + 1);
+      printf("%s", ptr->sound_ptr[idx]);
     }
   }
   /*  Write out the extra keywords, if any.  */
@@ -2150,48 +2150,48 @@ void Display_A_Room(Room *ptr)
   if (current->number_extras > 0) {
     printf("-----------------------------------------------------------------------\n");
     printf("EXTRA DESCRIPTION KEYWORDS:\n");
-    for (index = 0; index < ptr->number_extras; index++)
-      printf("%s\n", ptr->extra[index].keywords);
+    for (idx = 0; idx < ptr->number_extras; idx++)
+      printf("%s\n", ptr->extra[idx].keywords);
   }
   printf("\n");
 }
 
 int direction_number(char *ptr)
 {
-  int index;
+  int idx;
 
-  for (index = 0; index < strlen(ptr); index++)
-    ptr[index] = tolower(ptr[index]);
+  for (idx = 0; idx < strlen(ptr); idx++)
+    ptr[idx] = tolower(ptr[idx]);
 
-  index = 0;
-  while (directions[index].num != -1 &&
-	 strncmp(directions[index].name, ptr, strlen(ptr)) != 0)
-    index++;
+  idx = 0;
+  while (directions[idx].num != -1 &&
+	 strncmp(directions[idx].name, ptr, strlen(ptr)) != 0)
+    idx++;
 
-  return directions[index].num;
+  return directions[idx].num;
 }
 
 int find_keyword(char *buffer)
 {
-  int index;
+  int idx;
 
   if (buffer[0] == '\0')
     return -1;
 
-  for (index = 0; index < strlen(buffer); index++)
-    buffer[index] = tolower(buffer[index]);
+  for (idx = 0; idx < strlen(buffer); idx++)
+    buffer[idx] = tolower(buffer[idx]);
 
-  index = 0;
-  while (commands[index].name != NULL &&
-	 strncmp(commands[index].name, buffer, strlen(buffer)) != 0)
-    index++;
+  idx = 0;
+  while (commands[idx].name != NULL &&
+	 strncmp(commands[idx].name, buffer, strlen(buffer)) != 0)
+    idx++;
 
-  return commands[index].num;
+  return commands[idx].num;
 }
 
 void get_inputs(void)
 {
-  int index, index2;
+  int idx, idx2;
   char buffer[PAGE_SIZE];
   char *ptr;
 
@@ -2201,8 +2201,8 @@ void get_inputs(void)
     buffer[strlen(buffer)-1]= '\0';
   ptr = buffer;
 
-  for (index = 0; index < 11; index++) {
-    index2 = 0;
+  for (idx = 0; idx < 11; idx++) {
+    idx2 = 0;
 
     while (*ptr == ' ' && *ptr != 0)
       ptr++;
@@ -2210,20 +2210,20 @@ void get_inputs(void)
     if (*ptr == '\"') {
       ptr++;
       while (*ptr != '\"' && *ptr != 0)
-	inputs[index][index2++] = *ptr++;
+	inputs[idx][idx2++] = *ptr++;
       if (*ptr == '\"')
 	ptr++;
     } else {
       while (*ptr != ' ' && *ptr != 0)
-	inputs[index][index2++] = *ptr++;
+	inputs[idx][idx2++] = *ptr++;
     }
-    inputs[index][index2] = 0;
+    inputs[idx][idx2] = 0;
   }
 }
 
 void trunc_string(char *ptr)
 {
-  int index, found_eol, done;
+  int idx, found_eol, done;
 
 /*  Remove all trailing blanks, carriage returns, newlines and
  *  NULLS,  this compresses the string thus saving storage upon
@@ -2231,19 +2231,19 @@ void trunc_string(char *ptr)
  *  Also used to destroy blank lines..... evil...
  */
   found_eol = done = 0;
-  index = strlen(ptr);
-  while (index > -1 && !done) {
-    switch (ptr[index]) {
+  idx = strlen(ptr);
+  while (idx > -1 && !done) {
+    switch (ptr[idx]) {
     case '\0':
     case '\r':
     case '\t':
     case ' ':
-      index--;
+      idx--;
       break;
     case '\n':
       if (!found_eol) {
 	found_eol = 1;
-	index--;
+	idx--;
       } else {
 	done = 1;
       }
@@ -2252,19 +2252,19 @@ void trunc_string(char *ptr)
       done = 1;
     }
   }
-  ptr[++index] = '\0';
+  ptr[++idx] = '\0';
 /*
- * while (index > -1 &&
- * (ptr[index] == ' '  || ptr[index] == '\n' ||
- * ptr[index] == '\t' ||
- * ptr[index] == '\r' || ptr[index] == '\0'))
- * index--;
+ * while (idx > -1 &&
+ * (ptr[idx] == ' '  || ptr[idx] == '\n' ||
+ * ptr[idx] == '\t' ||
+ * ptr[idx] == '\r' || ptr[idx] == '\0'))
+ * idx--;
  */
 }
 
 void get_desc(char **ptr)
 {
-  int index = 0, index2;
+  int idx = 0, idx2;
   char tmp_str[PAGE_SIZE];
 
   /*  Read in a description into one long string
@@ -2272,20 +2272,20 @@ void get_desc(char **ptr)
    */
 
   do {
-    if (fgets(tmp_str + index, 82, fp) == NULL) {
+    if (fgets(tmp_str + idx, 82, fp) == NULL) {
       printf("**Unexpected end of file encountered while reading room %d.\n",
 	     current->room_id);
       exit(8);
     }
     trunc_string(tmp_str);
 
-    index2 = strlen(tmp_str);
-    tmp_str[index2] = '\n';
-    tmp_str[index2 + 1] = 0;
+    idx2 = strlen(tmp_str);
+    tmp_str[idx2] = '\n';
+    tmp_str[idx2 + 1] = 0;
 
-    index = index2 + 1;
-  } while (tmp_str[index2 - 1] != '~');
-  tmp_str[index2 - 1] = 0;
+    idx = idx2 + 1;
+  } while (tmp_str[idx2 - 1] != '~');
+  tmp_str[idx2 - 1] = 0;
 
   *ptr = malloc(strlen(tmp_str) + 1);
   strcpy(*ptr, tmp_str);
@@ -2293,7 +2293,7 @@ void get_desc(char **ptr)
 
 void input_desc(char *title, char **ptr)
 {
-  int index = 0, index2, line = 0;
+  int idx = 0, idx2, line = 0;
   char tmp_str[PAGE_SIZE];
 
   /*  Input a description into one long string
@@ -2307,8 +2307,8 @@ void input_desc(char *title, char **ptr)
   do {
     printf("%2d> ", ++line);
 
-    /* gets(tmp_str + index); */
-    fgets(tmp_str + index, BUFFER_SIZE-index-1, stdin);
+    /* gets(tmp_str + idx); */
+    fgets(tmp_str + idx, BUFFER_SIZE-idx-1, stdin);
     if((strlen(tmp_str) > 0) && tmp_str[strlen(tmp_str)-1] == '\n')
       tmp_str[strlen(tmp_str)-1]= '\0';
 
@@ -2319,57 +2319,57 @@ void input_desc(char *title, char **ptr)
       }
     }
     trunc_string(tmp_str);
-    index2 = strlen(tmp_str);
-    tmp_str[index2] = '\n';
-    tmp_str[index2 + 1] = 0;
-    index = index2 + 1;
-  } while (tmp_str[index2 - 1] != '~');
-  tmp_str[index2 - 1] = 0;
+    idx2 = strlen(tmp_str);
+    tmp_str[idx2] = '\n';
+    tmp_str[idx2 + 1] = 0;
+    idx = idx2 + 1;
+  } while (tmp_str[idx2 - 1] != '~');
+  tmp_str[idx2 - 1] = 0;
   *ptr = (char *)strdup(tmp_str);
 }
 
 void import_desc(char *title, char **ptr)
 {
-  int index = 0, index2;
+  int idx = 0, idx2;
   char tmp_str[PAGE_SIZE];
-  FILE *fp;
+  FILE *tfp;
 
   sprintf(tempfile, TMP_FILE, getpid());
-  if(!(fp= fopen(tempfile, "r"))) {
-    if(!(fp= fopen(tempfile, "w"))) {
+  if(!(tfp= fopen(tempfile, "r"))) {
+    if(!(tfp= fopen(tempfile, "w"))) {
       log("Cannot open %s for output!", tempfile);
       exit(ERR_NOOUTPUT);
     }
-    fprintf(fp, "~\n");
+    fprintf(tfp, "~\n");
   }
-  fclose(fp);
+  fclose(tfp);
   sprintf(tempfile, EDIT, getpid());
   system(tempfile);
   sprintf(tempfile, TMP_FILE, getpid());
   bzero(tmp_str, PAGE_SIZE);
-  if(!(fp= fopen(tempfile, "r"))) {
+  if(!(tfp= fopen(tempfile, "r"))) {
     printf("** No description entered!  Description not changed.");
     return;
   }
   do {
-    fgets(tmp_str + index, PAGE_SIZE-1, fp);
+    fgets(tmp_str + idx, PAGE_SIZE-1, tfp);
     trunc_string(tmp_str);
 
-    index2 = strlen(tmp_str);
-    tmp_str[index2] = '\n';
-    tmp_str[index2 + 1] = 0;
+    idx2 = strlen(tmp_str);
+    tmp_str[idx2] = '\n';
+    tmp_str[idx2 + 1] = 0;
 
-    index = index2 + 1;
-  } while (tmp_str[index2 - 1] != '~');
-  tmp_str[index2 - 1] = 0;
+    idx = idx2 + 1;
+  } while (tmp_str[idx2 - 1] != '~');
+  tmp_str[idx2 - 1] = 0;
 
   *ptr = (char *)strdup(tmp_str);
-  fclose(fp);
+  fclose(tfp);
 }
 
 Room *allocate_room(int temp_id)
 {
-  int index;
+  int idx;
   Room *ptr, *ptr2;
 
   /*  Allocate new room.  */
@@ -2421,13 +2421,13 @@ Room *allocate_room(int temp_id)
   ptr->sound_ptr[1] = NULL;
   ptr->teleport= NULL;
   ptr->river= NULL;
-  for (index = 0; index < 6; index++) {
-    ptr->exit[index].desc_ptr = NULL;
-    ptr->exit[index].keywords = NULL;
-    ptr->exit[index].door_flag = -1;
-    ptr->exit[index].key_number= -1;
-    ptr->exit[index].to_room= -1;
-    ptr->exit[index].real_to_room = NULL;
+  for (idx = 0; idx < 6; idx++) {
+    ptr->exit[idx].desc_ptr = NULL;
+    ptr->exit[idx].keywords = NULL;
+    ptr->exit[idx].door_flag = -1;
+    ptr->exit[idx].key_number= -1;
+    ptr->exit[idx].to_room= -1;
+    ptr->exit[idx].real_to_room = NULL;
   }
   ptr->number_extras = 0;
   ptr->extra= NULL;
@@ -2436,21 +2436,21 @@ Room *allocate_room(int temp_id)
   return ptr;
 }
 
-Room *find_room(Room *current, int search_id)
+Room *find_room(Room *current_room, int search_id)
 {
   Room *ptr;
 
   /*  Returns the room number given a room id or -1 if not found.  */
 
-  if (current->room_id < search_id) {
-    ptr = current->next;
+  if (current_room->room_id < search_id) {
+    ptr = current_room->next;
     while (ptr != NULL && (ptr->room_id != search_id))
       ptr = ptr->next;
-  } else if (current->room_id > search_id) {
-    ptr = current->prev;
+  } else if (current_room->room_id > search_id) {
+    ptr = current_room->prev;
     while (ptr != NULL && (ptr->room_id != search_id))
       ptr = ptr->prev;
   } else
-    ptr = current;
+    ptr = current_room;
   return ptr;
 }

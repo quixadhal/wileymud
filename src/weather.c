@@ -291,7 +291,7 @@ void reset_time(void) {
   char buf[80];
   long beginning_of_time = 650336715;
   long current_time;
-  struct time_info_data mud_time_passed(time_t t2, time_t t1);
+  /* struct time_info_data mud_time_passed(time_t t2, time_t t1); */
 
   if (!(f1 = fopen(TIME_FILE, "r"))) {
     fprintf(stderr, "Reset Time: Time file does not exist!\n");

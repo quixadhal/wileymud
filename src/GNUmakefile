@@ -27,7 +27,7 @@ NEED_CRYPT = -lcrypt
 #GNUINC = /usr/lib/gcc-lib/i386-unknown-openbsd3.1/2.95.3/include
 GNUINC = /usr/lib/gcc-lib/i486-slackware-linux/3.2.3/include
 
-WARN = -Wall -Wmissing-prototypes -Wformat-security -Winline -Wpointer-arith -Wcast-align -Wcast-qual -Wredundant-decls -Wshadow -Wstrict-prototypes # -Werror
+WARN = -Wall -Wmissing-prototypes -Wformat-security -Winline -Wpointer-arith -Wcast-align -Wcast-qual -Wredundant-decls -Wshadow -Werror # -Wstrict-prototypes -Werror
 OPT = -O3 -fstrength-reduce -fexpensive-optimizations -funroll-loops -finline-functions
 PIPE = -pipe -fpcc-struct-return
 
@@ -58,6 +58,12 @@ SRC2 =	$(addprefix utils/, $(TMP2))
 TMP3 =	mkworld.c
 OBJ3 =	$(addprefix obj/, $(TMP3:.c=.o))
 SRC3 =	$(addprefix utils/, $(TMP3))
+TMP4 =	genpasswd.c
+OBJ4 =	$(addprefix obj/, $(TMP4:.c=.o))
+SRC4 =	$(addprefix utils/, $(TMP4))
+TMP5 =	bounce.c
+OBJ5 =	$(addprefix obj/, $(TMP5:.c=.o))
+SRC5 =	$(addprefix utils/, $(TMP5))
 HDRS =	act_comm.h act_info.h act_move.h act_obj.h act_off.h \
 	act_other.h act_skills.h act_social.h act_wiz.h \
 	board.h bug.h comm.h constants.h db.h fight.h global.h \
@@ -78,9 +84,25 @@ LIB =	-L$(IDENTDIR) -lident $(NEED_CRYPT) $(NEED_COMPAT) $(EFENCE)
 AUX =	GNUmakefile .indent.pro HACKLOG version.proto .version.count \
 	world.wld
 
-ALLSRC = $(SRC) $(SPEC) $(SRC2) $(SRC3) $(IDENTSRC)
+ALLSRC = $(SRC) $(SPEC) $(SRC2) $(SRC3) $(SRC4) $(SRC5) $(IDENTSRC)
 
-all : bin/wileymud bin/sign bin/mkworld
+BINDIR = bin
+INSTDIR = ../bin
+BIN = wileymud sign mkworld genpasswd bounce
+ALLBIN = $(addprefix $(BINDIR)/, $(BIN))
+ALLINST = $(addprefix $(INSTDIR)/, $(BIN))
+
+all : $(ALLBIN)
+
+.PHONY : .installing
+
+.installing :
+	@echo 'Installing WileyMUD binaries!'
+
+$(ALLINST) : .installing $(ALLBIN)
+	install -D -b -g wiley -o wiley -m 0750 $(addprefix $(BINDIR)/, $(notdir $@)) $(addprefix $(INSTDIR)/, $(notdir $@))
+
+install : $(ALLINST)
 
 .deps/%.d: %.c
 	set -e; $(CC) -M $(CFLAGS) $< \
@@ -97,20 +119,30 @@ $(VER) : version.proto .version.count
 	@rm -f .sed.cmds
 	@echo New version file generated.
 
-bin/wileymud : $(OBJ) $(SPOB) $(LIBS)
+$(BINDIR)/wileymud : $(OBJ) $(SPOB) $(LIBS)
 	@echo Heave Ho!  Load the beastie!
 	$(CC) $(LDFLAGS) -o $@ $(OBJ) $(SPOB) $(LIB)
 	@echo $(VERSION) >.version.count
 	@ls -l $@
 
-bin/sign : $(OBJ2)
+$(BINDIR)/sign : $(OBJ2)
 	@echo Make the downtime notice program...
 	$(CC) $(LDFLAGS) -o $@ $(OBJ2) $(LIB)
 	@ls -l $@
 
-bin/mkworld : $(OBJ3)
+$(BINDIR)/mkworld : $(OBJ3)
 	@echo Make the world editing program...
 	$(CC) $(LDFLAGS) -o $@ $(OBJ3) $(LIB)
+	@ls -l $@
+
+$(BINDIR)/genpasswd : $(OBJ4)
+	@echo Make the password generation program...
+	$(CC) $(LDFLAGS) -o $@ $(OBJ4) $(LIB)
+	@ls -l $@
+
+$(BINDIR)/bounce : $(OBJ5)
+	@echo Make the port bouncer program...
+	$(CC) $(LDFLAGS) -o $@ $(OBJ5) $(LIB)
 	@ls -l $@
 
 $(OBJ): obj/%o : %c
@@ -125,6 +157,12 @@ $(OBJ2): obj/%o : utils/%c
 $(OBJ3): obj/%o : utils/%c
 	$(CC) $(CFLAGS) -c $< -o $@
 
+$(OBJ4): obj/%o : utils/%c
+	$(CC) $(CFLAGS) -c $< -o $@
+
+$(OBJ5): obj/%o : utils/%c
+	$(CC) $(CFLAGS) -c $< -o $@
+
 $(IDENTDIR)/libident.a: $(IDENTSRC) $(IDENTHDR)
 	(cd libident-0.19;make linux)
 
@@ -133,7 +171,7 @@ lex.yy.c : dbparser.l
 
 clean :
 	@echo -n Wiping away intermediate clutter...
-	@rm -f $(OBJ) $(SPOB) $(OBJ2) $(OBJ3) $(AUTHOBJ) $(IDENTOBJ) *.bak *~
+	@rm -f $(OBJ) $(SPOB) $(OBJ2) $(OBJ3) $(OBJ4) $(OBJ5) $(AUTHOBJ) $(IDENTOBJ) *.bak *~
 	@find . -name \*.d | xargs rm -f
 	@echo done.
 
@@ -147,7 +185,7 @@ spotless : clean
 
 backup :
 	@echo -n Creating idiot-proof file...
-	@tar -zcf $(TARFILE) $(SRC) $(SPEC) $(HDR) $(VER) $(AUX) $(SRC2) $(SRC3)
+	@tar -zcf $(TARFILE) $(SRC) $(SPEC) $(HDR) $(VER) $(AUX) $(SRC2) $(SRC3) $(SRC4) $(SRC5)
 	@chmod 640 ../backup*
 	@echo your ass is safe.
 
@@ -163,7 +201,7 @@ tags : $(SRC) $(SPEC) $(VER) $(HDR)
 
 depend : $(SRC) $(SPEC) $(VER) $(HDR)
 	@echo -n Figuring out dependancies...
-	@makedepend -pobj/ -fGNUmakefile -I$(GNUINC) -- $(CFLAGS) -- $(SRC) $(SPEC) $(SRC2) $(SRC3) $(VER) $(HDR)
+	@makedepend -pobj/ -fGNUmakefile -I$(GNUINC) -- $(CFLAGS) -- $(SRC) $(SPEC) $(SRC2) $(SRC3) $(SRC4) $(SRC5) $(VER) $(HDR)
 	@echo done.
 
 # DO NOT DELETE THIS LINE -- make depend depends on it.

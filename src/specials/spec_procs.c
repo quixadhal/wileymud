@@ -169,41 +169,41 @@ static struct special_proc_entry specials_r[] = {
  * Special procedures for rooms
  */
 
-char *how_good(int percent)
+char *how_good(int percent_known)
 {
   static char buf[256];
 
-  if (percent == 0)
+  if (percent_known == 0)
     strcpy(buf, " (not learned)");
-  else if (percent <= 6)
+  else if (percent_known <= 6)
     strcpy(buf, " (pitiful)");
-  else if (percent <= 12)
+  else if (percent_known <= 12)
     strcpy(buf, " (awful)");
-  else if (percent <= 18)
+  else if (percent_known <= 18)
     strcpy(buf, " (incredibly bad)");
-  else if (percent <= 24)
+  else if (percent_known <= 24)
     strcpy(buf, " (very bad)");
-  else if (percent <= 30)
+  else if (percent_known <= 30)
     strcpy(buf, " (bad)");
-  else if (percent <= 36)
+  else if (percent_known <= 36)
     strcpy(buf, " (very poor)");
-  else if (percent <= 42)
+  else if (percent_known <= 42)
     strcpy(buf, " (poor)");
-  else if (percent <= 48)
+  else if (percent_known <= 48)
     strcpy(buf, " (below average)");
-  else if (percent <= 54)
+  else if (percent_known <= 54)
     strcpy(buf, " (average)");
-  else if (percent <= 60)
+  else if (percent_known <= 60)
     strcpy(buf, " (better than average)");
-  else if (percent <= 66)
+  else if (percent_known <= 66)
     strcpy(buf, " (fair)");
-  else if (percent <= 72)
+  else if (percent_known <= 72)
     strcpy(buf, " (very fair)");
-  else if (percent <= 78)
+  else if (percent_known <= 78)
     strcpy(buf, " (good)");
-  else if (percent <= 84)
+  else if (percent_known <= 84)
     strcpy(buf, " (very good)");
-  else if (percent <= 90)
+  else if (percent_known <= 90)
     strcpy(buf, " (Superb)");
   else
     strcpy(buf, " (Master)");
@@ -658,7 +658,7 @@ int RangerGuildMaster(struct char_data *ch, int cmd, char *arg) {
 
     int GenericGuildMaster(struct char_data *ch, int cmd, char *arg)
     {
-      int anumber, i, percent;
+      int anumber, i, percent_chance;
       struct char_data *master;
 
       struct skill_struct {
@@ -759,8 +759,8 @@ int RangerGuildMaster(struct char_data *ch, int cmd, char *arg) {
 	ch->specials.pracs--;
 
 	if (anumber != -1) {
-	  percent = ch->skills[r_skills[anumber].skill_numb].learned + int_app[GET_INT(ch)].learn;
-	  ch->skills[r_skills[anumber].skill_numb].learned = MIN(95, percent);
+	  percent_chance = ch->skills[r_skills[anumber].skill_numb].learned + int_app[GET_INT(ch)].learn;
+	  ch->skills[r_skills[anumber].skill_numb].learned = MIN(95, percent_chance);
 	}
 	if (anumber != -1) {
 	  if (ch->skills[r_skills[anumber].skill_numb].learned >= 95) {
@@ -779,7 +779,7 @@ int dump(struct char_data *ch, int cmd, char *arg)
   struct char_data *tmp_char;
   int value = 0;
 
-  char *fname(char *namelist);
+  /* char *fname(char *namelist); */
 
   for (k = real_roomp(ch->in_room)->contents; k; k = real_roomp(ch->in_room)->contents) {
     sprintf(buf, "The %s vanishes in a puff of smoke.\n\r", fname(k->name));
@@ -830,30 +830,30 @@ int mayor(struct char_data *ch, int cmd, char *arg)
   "W3a3003b33000c111d0d111CE333333CE22c222112212111a1S.";
 
   static char *path;
-  static int index;
+  static int path_index;
   static BYTE move = FALSE;
 
   if (!move) {
     if (time_info.hours == 6) {
       move = TRUE;
       path = open_path;
-      index = 0;
+      path_index = 0;
     } else if (time_info.hours == 20) {
       move = TRUE;
       path = close_path;
-      index = 0;
+      path_index = 0;
     }
   }
   if (cmd || !move || (GET_POS(ch) < POSITION_SLEEPING) ||
       (GET_POS(ch) == POSITION_FIGHTING))
     return FALSE;
 
-  switch (path[index]) {
+  switch (path[path_index]) {
   case '0':
   case '1':
   case '2':
   case '3':
-    do_move(ch, "", path[index] - '0' + 1);
+    do_move(ch, "", path[path_index] - '0' + 1);
     break;
 
   case 'W':
@@ -909,7 +909,7 @@ int mayor(struct char_data *ch, int cmd, char *arg)
 
   }
 
-  index++;
+  path_index++;
   return FALSE;
 }
 
@@ -1102,7 +1102,7 @@ int ninja_master(struct char_data *ch, int cmd, char *arg)
     "disarm",			       /* No. 245 */
     "\n",
   };
-  int percent = 0, anumber = 0;
+  int percent_chance = 0, anumber = 0;
   int charge, sk_num, mult;
 
   if (!AWAKE(ch))
@@ -1169,9 +1169,9 @@ int ninja_master(struct char_data *ch, int cmd, char *arg)
     cprintf(ch, "'We will now begin.'\n\r");
     ch->specials.pracs--;
 
-    percent = ch->skills[sk_num].learned +
+    percent_chance = ch->skills[sk_num].learned +
       int_app[GET_INT(ch)].learn;
-    ch->skills[sk_num].learned = MIN(95, percent);
+    ch->skills[sk_num].learned = MIN(95, percent_chance);
 
     if (ch->skills[sk_num].learned >= 95) {
       cprintf(ch, "'You are now a master of this art.'\n\r");
@@ -1540,7 +1540,7 @@ int shylar_guard(struct char_data *ch, int cmd, char *arg)
     -10,
     -11
   };
-  static int index;
+  static int path_index;
   static BYTE move = FALSE;
   static BYTE haslight = FALSE;
   static int saying_count = 14;
@@ -1639,12 +1639,12 @@ int shylar_guard(struct char_data *ch, int cmd, char *arg)
       case 18:
       case 21:
         move = TRUE;
-        index = 0;
+        path_index = 0;
         break;
     }
   }
   if(!move) return FALSE;
-  if(!index) {
+  if(!path_index) {
     if(ch->in_room != home_room) {
       if(GET_POS(ch) < POSITION_STANDING)
         GET_POS(ch) = POSITION_STANDING;
@@ -1660,12 +1660,12 @@ int shylar_guard(struct char_data *ch, int cmd, char *arg)
     } else {
       GET_POS(ch) = POSITION_STANDING;
       act("$n awakens and looks around blearily.", FALSE, ch, 0, 0, TO_ROOM);
-      index++;
+      path_index++;
       return TRUE;
     }
   } else {
-    if(the_path[index] < 0) { /* do special-emote */
-      switch(-the_path[index]) {
+    if(the_path[path_index] < 0) { /* do special-emote */
+      switch(-the_path[path_index]) {
         case 1:
           act("$n mumbles to Buck 'Strong coffee and a shot of anything.'", FALSE, ch, 0, 0, TO_ROOM);
           act("$n groans and blinks at the room.", FALSE, ch, 0, 0, TO_ROOM);
@@ -1710,16 +1710,16 @@ int shylar_guard(struct char_data *ch, int cmd, char *arg)
           act("$n yawns mightily and passes out at the bar.", FALSE, ch, 0, 0, TO_ROOM);
           GET_POS(ch) = POSITION_SLEEPING;
           move= FALSE;
-          index= 0;
+          path_index= 0;
           return TRUE;
       }
-      index++;
+      path_index++;
       return TRUE;
     } else { /* go to room number */
       if(number(0,99) > 55) {
-        if(ch->in_room != the_path[index]) {
+        if(ch->in_room != the_path[path_index]) {
           if (0 <= (dir = find_path(ch->in_room,
-                          is_target_room_p, (void *)(the_path[index]), -200))) {
+                          is_target_room_p, (void *)(the_path[path_index]), -200))) {
             go_direction(ch, dir);
             return TRUE;
           } else {
@@ -1728,7 +1728,7 @@ int shylar_guard(struct char_data *ch, int cmd, char *arg)
             return FALSE;
           }
         } else {
-          index++;
+          path_index++;
         }
       } else if(number(0,99) > 50) { /* random emote */
         act(sayings[number(0,saying_count-1)], FALSE, ch, 0, 0, TO_ROOM);
@@ -1742,8 +1742,8 @@ int ghoul(struct char_data *ch, int cmd, char *arg)
 {
   struct char_data *tar;
 
-  void cast_paralyze(BYTE level, struct char_data *ch, char *arg, int type,
-		struct char_data *tar_ch, struct obj_data *tar_obj);
+  /* void cast_paralyze(BYTE level, struct char_data *ch, char *arg, int type,
+		struct char_data *tar_ch, struct obj_data *tar_obj); */
 
   if (cmd || !AWAKE(ch))
     return (FALSE);
@@ -1803,8 +1803,8 @@ int WizardGuard(struct char_data *ch, int cmd, char *arg)
 
 int vampire(struct char_data *ch, int cmd, char *arg)
 {
-  void cast_energy_drain(BYTE level, struct char_data *ch, char *arg, int type,
-		struct char_data *tar_ch, struct obj_data *tar_obj);
+  /* void cast_energy_drain(BYTE level, struct char_data *ch, char *arg, int type,
+		struct char_data *tar_ch, struct obj_data *tar_obj); */
 
   if (cmd || !AWAKE(ch))
     return (FALSE);
@@ -1823,8 +1823,8 @@ int vampire(struct char_data *ch, int cmd, char *arg)
 
 int wraith(struct char_data *ch, int cmd, char *arg)
 {
-  void cast_energy_drain(BYTE level, struct char_data *ch, char *arg, int type,
-		struct char_data *tar_ch, struct obj_data *tar_obj);
+  /* void cast_energy_drain(BYTE level, struct char_data *ch, char *arg, int type,
+		struct char_data *tar_ch, struct obj_data *tar_obj); */
 
   if (cmd || !AWAKE(ch))
     return (FALSE);
@@ -2291,8 +2291,8 @@ int puff(struct char_data *ch, int cmd, char *arg)
   struct char_data *i;
   char buf[80];
 
-  void do_emote(struct char_data *ch, char *argument, int cmd);
-  void do_shout(struct char_data *ch, char *argument, int cmd);
+  /* void do_emote(struct char_data *ch, char *argument, int cmd); */
+  /* void do_shout(struct char_data *ch, char *argument, int cmd); */
 
   if (cmd)
     return (0);
@@ -2746,8 +2746,8 @@ int temple_labrynth_sentry(struct char_data *ch, int cmd, char *arg)
   struct char_data *tch;
   int counter;
 
-  void cast_fireball(BYTE level, struct char_data *ch, char *arg, int type,
-		struct char_data *victim, struct obj_data *tar_obj);
+  /* void cast_fireball(BYTE level, struct char_data *ch, char *arg, int type,
+		struct char_data *victim, struct obj_data *tar_obj); */
 
   if (cmd || !AWAKE(ch))
     return FALSE;
@@ -3679,7 +3679,7 @@ int zombie_master(struct char_data *ch, int cmd, char *arg)
     {
       /* 222 is the normal chalice, 223 is chalice-on-altar */
 
-      struct obj_data *chalice;
+      struct obj_data *chalice_obj;
       char buf1[MAX_INPUT_LENGTH], buf2[MAX_INPUT_LENGTH];
       static int chl = -1, achl = -1;
 
@@ -3689,44 +3689,44 @@ int zombie_master(struct char_data *ch, int cmd, char *arg)
       }
       switch (cmd) {
       case 10:			       /* get */
-	if (!(chalice = get_obj_in_list_num(chl,
+	if (!(chalice_obj = get_obj_in_list_num(chl,
 				     real_roomp(ch->in_room)->contents))
-	    && CAN_SEE_OBJ(ch, chalice))
-	  if (!(chalice = get_obj_in_list_num(achl,
-					      real_roomp(ch->in_room)->contents)) && CAN_SEE_OBJ(ch, chalice))
+	    && CAN_SEE_OBJ(ch, chalice_obj))
+	  if (!(chalice_obj = get_obj_in_list_num(achl,
+					      real_roomp(ch->in_room)->contents)) && CAN_SEE_OBJ(ch, chalice_obj))
 	    return (0);
 
 	/* we found a chalice.. now try to get us */
 	do_get(ch, arg, cmd);
 	/* if got the altar one, switch her */
-	if (chalice == get_obj_in_list_num(achl, ch->carrying)) {
-	  extract_obj(chalice);
-	  chalice = read_object(chl, VIRTUAL);
-	  obj_to_char(chalice, ch);
+	if (chalice_obj == get_obj_in_list_num(achl, ch->carrying)) {
+	  extract_obj(chalice_obj);
+	  chalice_obj = read_object(chl, VIRTUAL);
+	  obj_to_char(chalice_obj, ch);
 	}
 	return (1);
 	break;
       case 67:			       /* put */
-	if (!(chalice = get_obj_in_list_num(chl, ch->carrying)))
+	if (!(chalice_obj = get_obj_in_list_num(chl, ch->carrying)))
 	  return (0);
 
 	argument_interpreter(arg, buf1, buf2);
 	if (!str_cmp(buf1, "chalice") && !str_cmp(buf2, "altar")) {
-	  extract_obj(chalice);
-	  chalice = read_object(achl, VIRTUAL);
-	  obj_to_room(chalice, ch->in_room);
+	  extract_obj(chalice_obj);
+	  chalice_obj = read_object(achl, VIRTUAL);
+	  obj_to_room(chalice_obj, ch->in_room);
 	  cprintf(ch, "Ok.\n\r");
 	}
 	return (1);
 	break;
       case 176:			       /* pray */
-	if (!(chalice = get_obj_in_list_num(achl,
+	if (!(chalice_obj = get_obj_in_list_num(achl,
 				    real_roomp(ch->in_room)->contents)))
 	  return (0);
 
 	do_action(ch, arg, cmd);	       /* pray */
 	cprintf(ch, CHAL_ACT);
-	extract_obj(chalice);
+	extract_obj(chalice_obj);
 	act("$n is torn out of existence!", TRUE, ch, 0, 0, TO_ROOM);
 	char_from_room(ch);
 	char_to_room(ch, 2500);	       /* before the fiery gates */
@@ -4765,7 +4765,7 @@ int GuildMaster(struct char_data *ch, int cmd, char *arg) {
       argument= one_argument(arg, buf);
       targetclass= -1;
       for(i= 0; i< ABS_MAX_CLASS; i++)
-        if(is_abbrev(buf, (char *)class_name[i])) {
+        if(is_abbrev(buf, class_name[i])) {
           if(targetclass == -1)
             targetclass= i;
           else

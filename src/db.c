@@ -94,7 +94,6 @@ int TMPbuff_ptr = 0;
 int ROOMcount = 0;
 int GLINEcount = 0;
 int LASTroomnumber = 0;
-struct hash_header room_db;
 
 char **list_of_players = NULL;
 int    number_of_players = 0;
@@ -283,7 +282,7 @@ void boot_db(void)
 struct index_data *generate_indices(FILE * fl, int *top)
 {
   int i = 0;
-  struct index_data *index = NULL;
+  struct index_data *indexp = NULL;
   char buf[82];
 
   if (DEBUG)
@@ -294,16 +293,16 @@ struct index_data *generate_indices(FILE * fl, int *top)
     if (fgets(buf, sizeof(buf), fl)) {
       if (*buf == '#') {
 	if (!i)	{		       /* first cell */
-	  CREATE(index, struct index_data, 1);
+	  CREATE(indexp, struct index_data, 1);
         } else {
-          RECREATE(index, struct index_data, i + 1);
+          RECREATE(indexp, struct index_data, i + 1);
         }
 
-	sscanf(buf, "#%d", &index[i].virtual);
-	index[i].pos = ftell(fl);
-	index[i].number = 0;
-	index[i].func = 0;
-	index[i].name = (index[i].virtual < 99999) ? fread_string(fl) : "omega";
+	sscanf(buf, "#%d", &indexp[i].virtual);
+	indexp[i].pos = ftell(fl);
+	indexp[i].number = 0;
+	indexp[i].func = 0;
+	indexp[i].name = (indexp[i].virtual < 99999) ? fread_string(fl) : "omega";
 	i++;
       } else {
 	if (*buf == '$')	       /* EOF */
@@ -315,7 +314,7 @@ struct index_data *generate_indices(FILE * fl, int *top)
     }
   }
   *top = i - 2;
-  return (index);
+  return (indexp);
 }
 
 void cleanout_room(struct room_data *rp)
@@ -2412,7 +2411,7 @@ char *fread_word(FILE * fp)
  */
 int fread_number(FILE * fp)
 {
-  int number;
+  int num;
   UBYTE sign;
   char c;
 
@@ -2420,7 +2419,7 @@ int fread_number(FILE * fp)
     c = getc(fp);
   } while (isspace(c));
 
-  number = 0;
+  num = 0;
 
   sign = FALSE;
   if (c == '+') {
@@ -2434,19 +2433,19 @@ int fread_number(FILE * fp)
     exit(1);
   }
   while (isdigit(c)) {
-    number = number * 10 + c - '0';
+    num = num * 10 + c - '0';
     c = getc(fp);
   }
 
   if (sign)
-    number = 0 - number;
+    num = 0 - num;
 
   if (c == '|')
-    number += fread_number(fp);
+    num += fread_number(fp);
   else if (c != ' ')
     ungetc(c, fp);
 
-  return number;
+  return num;
 }
 
 
@@ -2662,7 +2661,7 @@ int fread_char(char *name, struct char_file_u *ch)
         cl= fread_word(fp);
 
         for(x= 0; x< ABS_MAX_CLASS; x++)
-          if(!str_cmp(cl, (char *)class_name[x])) {
+          if(!str_cmp(cl, (const char *)class_name[x])) {
             ch->level[x]= fread_number(fp);
 	    fMatch = TRUE;
           }
@@ -2673,11 +2672,11 @@ int fread_char(char *name, struct char_file_u *ch)
     case 'N':
       CKEY("Name", ch->name, new_fread_string(fp));
       if (!str_cmp(word, "NamedSkill")) {
-	int number, learned, recognise, sn;
+	int skill_number, learned, recognise, sn;
         register char *s, *arg;
         register int x;
 
-        number = fread_number(fp);
+        skill_number = fread_number(fp);
 	learned = fread_number(fp);
 	recognise = fread_number(fp);
         arg = new_fread_string(fp);
@@ -2687,24 +2686,24 @@ int fread_char(char *name, struct char_file_u *ch)
         for(s= arg; *s && *s != '\''; *s= tolower(*s)) s++;
         if(*s == '\'') *s= '\0';
         if(!strlen(arg)) {
-          log("Empty skill name:  %d\n", number);
+          log("Empty skill name:  %d\n", skill_number);
           break;
         }
         for(sn= -1, x= 0; x< MAX_SKILLS; x++)
           if(!str_cmp(arg, spell_info[x].name))
             sn= x;
-        if(sn != number) {
-          log("Skill mismatch: %d read vs. %d lookup\n", number, sn);
+        if(sn != skill_number) {
+          log("Skill mismatch: %d read vs. %d lookup\n", skill_number, sn);
           log("Using lookup version.\n");
         }
         if(sn < 0) {
-          log("Unknown skill name:  %d\n", number);
-          if(number < 0 || number >= MAX_SKILLS) {
+          log("Unknown skill name:  %d\n", skill_number);
+          if(skill_number < 0 || skill_number >= MAX_SKILLS) {
             log("Totally invalid skill... ignoring.\n");
             break;
           } else {
             log("Using slot-number read in as a last resort.\n");
-            sn= number;
+            sn= skill_number;
           }
         }
         ch->skills[sn].learned= learned;

@@ -238,7 +238,7 @@ void do_trans(struct char_data *ch, char *argument, int cmd)
 
 void do_at(struct char_data *ch, char *argument, int cmd)
 {
-  char command[MAX_INPUT_LENGTH], loc_str[MAX_INPUT_LENGTH];
+  char command_str[MAX_INPUT_LENGTH], loc_str[MAX_INPUT_LENGTH];
   int location, original_loc;
   struct char_data *target_mob;
   struct obj_data *target_obj;
@@ -246,7 +246,7 @@ void do_at(struct char_data *ch, char *argument, int cmd)
   if (IS_NPC(ch))
     return;
 
-  half_chop(argument, loc_str, command);
+  half_chop(argument, loc_str, command_str);
   if (!*loc_str) {
     cprintf(ch, "You must supply a room number or a name.\n\r");
     return;
@@ -284,7 +284,7 @@ void do_at(struct char_data *ch, char *argument, int cmd)
   original_loc = ch->in_room;
   char_from_room(ch);
   char_to_room(ch, location);
-  command_interpreter(ch, command);
+  command_interpreter(ch, command_str);
 
   /* check if the guy's still there */
   for (target_mob = real_roomp(location)->people; target_mob; target_mob =
@@ -676,7 +676,7 @@ void do_stat(struct char_data *ch, char *argument, int cmd)
   BYTE found;
   struct room_data *rp = 0;
   char type[MAX_STRING_LENGTH], num[MAX_STRING_LENGTH];
-  int number;
+  int anumber;
 
   if (IS_NPC(ch))
     return;
@@ -686,11 +686,11 @@ void do_stat(struct char_data *ch, char *argument, int cmd)
   argument = one_argument(argument, type);
   only_argument(argument, num);
   if(!*num)
-    number= -2;
+    anumber= -2;
   else if(isdigit(*num))
-    number= atoi(num);
+    anumber= atoi(num);
   else
-    number= -1;
+    anumber= -1;
 
   /* no argument */
   if (!*type) {
@@ -699,15 +699,15 @@ void do_stat(struct char_data *ch, char *argument, int cmd)
   }
   /* ROOM  */
   if(!str_cmp("room", type) || !str_cmp("here", type)) {
-    if(number < 0) {
-      if(number == -2)
-        number= ch->in_room;
+    if(anumber < 0) {
+      if(anumber == -2)
+        anumber= ch->in_room;
       else {
         cprintf(ch, "Usage: stat room [vnum]\n\r");
         return;
       }
     }
-    rm = real_roomp(number);
+    rm = real_roomp(anumber);
     cprintf(ch, "Room Description: ---------------------------------------------------------\n\r%s", rm->description);
     if((desc= rm->ex_description)) {
       cprintf(ch, "---------------------------------------------------------------------------\n\r");
@@ -799,15 +799,15 @@ void do_stat(struct char_data *ch, char *argument, int cmd)
     count = 1;
 
     k= NULL;
-    if(number < 0) {
-      if(number == -2)
+    if(anumber < 0) {
+      if(anumber == -2)
         k= ch;
     }
     /* MOBILE in world */
-    if(number >= 0) {
-      if(!(k= get_char_num(number))) {
+    if(anumber >= 0) {
+      if(!(k= get_char_num(anumber))) {
         cprintf(ch, "Noone with that vnum exists, I shall load one!\n\r");
-        if(!(k= read_mobile(number, VIRTUAL))) {
+        if(!(k= read_mobile(anumber, VIRTUAL))) {
           cprintf(ch, "No such creature exists in Reality!\n\r");
           return;
         } else {
@@ -1059,15 +1059,15 @@ void do_stat(struct char_data *ch, char *argument, int cmd)
     count = 1;
 
     j= NULL;
-    if(number == -2) {
+    if(anumber == -2) {
       cprintf(ch, "Usage: stat obj <name|vnum>\n\r");
       return;
     }
     /* OBJECT in world */
-    if(number >= 0) {
-      if(!(j= get_obj_num(number))) {
+    if(anumber >= 0) {
+      if(!(j= get_obj_num(anumber))) {
         cprintf(ch, "Nothing with that vnum exists, I shall load one!\n\r");
-        if(!(j= read_object(number, VIRTUAL))) {
+        if(!(j= read_object(anumber, VIRTUAL))) {
           cprintf(ch, "No such object exists in Reality!\n\r");
           return;
         } else {
@@ -1334,7 +1334,7 @@ void do_pretitle(struct char_data *ch, char *argument, int cmd)
 void do_set(struct char_data *ch, char *argument, int cmd)
 {
   char field[20], name[20], parmstr[50];
-  int index;
+  int index_value;
   struct char_data *mob;
   int parm;
   char *pset_list[] =
@@ -1374,8 +1374,8 @@ void do_set(struct char_data *ch, char *argument, int cmd)
     cprintf(ch, buf);
     return;
   }
-  for (index = 0; pset_list[index]; index++)
-    if (!strcmp(field, pset_list[index])) {
+  for (index_value = 0; pset_list[index_value]; index_value++)
+    if (!strcmp(field, pset_list[index_value])) {
       int x;
       x= sscanf(parmstr, "%d", &parm);
       if (!x) {
@@ -1388,7 +1388,7 @@ void do_set(struct char_data *ch, char *argument, int cmd)
     cprintf(ch, "You wish you could set %s's stats...\n\r", GET_NAME(mob));
     return;
   }
-  switch (index) {
+  switch (index_value) {
   case 0:
     GET_ALIGNMENT(mob) = parm;
     break;
@@ -1889,7 +1889,7 @@ void do_load(struct char_data *ch, char *argument, int cmd)
   struct char_data *mob;
   struct obj_data *obj;
   char type[100], num[100];
-  int number;
+  int anumber;
 
   if (IS_NPC(ch))
     return;
@@ -1898,45 +1898,45 @@ void do_load(struct char_data *ch, char *argument, int cmd)
 
   only_argument(argument, num);
   if (isdigit(*num))
-    number = atoi(num);
+    anumber = atoi(num);
   else
-    number = -1;
+    anumber = -1;
 
   if (is_abbrev(type, "mobile")) {
-    if (number < 0) {
-      for (number = 0; number <= top_of_mobt; number++)
-	if (isname(num, mob_index[number].name))
+    if (anumber < 0) {
+      for (anumber = 0; anumber <= top_of_mobt; anumber++)
+	if (isname(num, mob_index[anumber].name))
 	  break;
-      if (number > top_of_mobt)
-	number = -1;
+      if (anumber > top_of_mobt)
+	anumber = -1;
     } else {
-      number = real_mobile(number);
+      anumber = real_mobile(anumber);
     }
-    if (number < 0 || number > top_of_mobt) {
+    if (anumber < 0 || anumber > top_of_mobt) {
       cprintf(ch, "There is no such monster.\n\r");
       return;
     }
-    mob = read_mobile(number, REAL);
+    mob = read_mobile(anumber, REAL);
     char_to_room(mob, ch->in_room);
 
     act("$n makes a quaint, magical gesture with one hand.", TRUE, ch, 0, 0, TO_ROOM);
     act("$n has summoned $N from the ether!", FALSE, ch, 0, mob, TO_ROOM);
     act("You bring forth $N from the the cosmic ether.", FALSE, ch, 0, mob, TO_CHAR);
   } else if (is_abbrev(type, "object")) {
-    if (number < 0) {
-      for (number = 0; number <= top_of_objt; number++)
-	if (isname(num, obj_index[number].name))
+    if (anumber < 0) {
+      for (anumber = 0; anumber <= top_of_objt; anumber++)
+	if (isname(num, obj_index[anumber].name))
 	  break;
-      if (number > top_of_objt)
-	number = -1;
+      if (anumber > top_of_objt)
+	anumber = -1;
     } else {
-      number = real_object(number);
+      anumber = real_object(anumber);
     }
-    if (number < 0 || number > top_of_objt) {
+    if (anumber < 0 || anumber > top_of_objt) {
       cprintf(ch, "There is no such object.\n\r");
       return;
     }
-    obj = read_object(number, REAL);
+    obj = read_object(anumber, REAL);
     obj_to_char(obj, ch);
     act("$n makes a strange magical gesture.", TRUE, ch, 0, 0, TO_ROOM);
     act("$n has created $p!", FALSE, ch, obj, 0, TO_ROOM);
@@ -2278,7 +2278,7 @@ void do_start(struct char_data *ch)
   int r_num;
   struct obj_data *obj;
 
-  void advance_level(struct char_data *ch, int i);
+  /* void advance_level(struct char_data *ch, int i); */
 
   StartLevels(ch);
   GET_EXP(ch) = 1;
@@ -2351,7 +2351,7 @@ void do_advance(struct char_data *ch, char *argument, int cmd)
   char name[100], level[100], class[100];
   int adv, newlevel, lin_class;
 
-  void gain_exp(struct char_data *ch, int gain);
+  /* void gain_exp(struct char_data *ch, int gain); */
 
   if (IS_NPC(ch))
     return;
@@ -2578,7 +2578,7 @@ void do_restore(struct char_data *ch, char *argument, int cmd)
   struct descriptor_data *i;
   char buf[256];
 
-  void update_pos(struct char_data *victim);
+  /* void update_pos(struct char_data *victim); */
 
   only_argument(argument, buf);
   if (!*buf) {
@@ -2805,7 +2805,7 @@ void do_show(struct char_data *ch, char *argument, int cmd)
 
   if (is_abbrev(buf, "zones")) {
     struct zone_data *zd;
-    int bottom = 0;
+    int zone_bottom = 0;
 
     append_to_string_block(&sb,
 			   "# Zone   name                                lifespan age     rooms     reset\n\r");
@@ -2829,9 +2829,9 @@ void do_show(struct char_data *ch, char *argument, int cmd)
 	break;
       }
       sprintf(buf, "%4d %-40s %4dm %4dm %6d-%-6d %s\n\r", zone, zd->name,
-	      zd->lifespan, zd->age, bottom, zd->top, mode);
+	      zd->lifespan, zd->age, zone_bottom, zd->top, mode);
       append_to_string_block(&sb, buf);
-      bottom = zd->top + 1;
+      zone_bottom = zd->top + 1;
     }
   } else if ((is_abbrev(buf, "objects") &&
 	     (which_i = obj_index, topi = top_of_objt)) ||

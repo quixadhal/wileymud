@@ -27,6 +27,7 @@
 #include "include/interpreter.h"
 #include "include/handler.h"
 #include "include/act_obj.h"
+#include "include/act_other.h"
 #define _DIKU_LIMITS_C
 #include "include/mudlimits.h"
 
@@ -734,7 +735,7 @@ void check_idling(struct char_data *ch)
   struct obj_cost cost;
   char buf[1024];
 
-  void do_save(struct char_data *ch, char *argument, int cmd);
+  /* void do_save(struct char_data *ch, char *argument, int cmd); */
 
   ++(ch->specials.timer);
 
@@ -778,7 +779,7 @@ void check_idling(struct char_data *ch)
 /* Update both PC's & NPC's and objects */
 void point_update(int current_pulse)
 {
-  void update_char_objects(struct char_data *ch);	/* handler.c */
+  /* void update_char_objects(struct char_data *ch); */ /* handler.c */ 
   struct char_data *i, *next_dude;
   struct obj_data *j, *next_thing;
   int count = 0;

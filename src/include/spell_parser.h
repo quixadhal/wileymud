@@ -65,6 +65,6 @@ int check_falling(struct char_data *ch);
 int check_drowning(struct char_data *ch);
 void check_falling_obj(struct obj_data *obj, int room);
 inline int check_nature(struct char_data *i);
-inline void check_all_nature(int pulse);
+inline void check_all_nature(int current_pulse);
 
 #endif

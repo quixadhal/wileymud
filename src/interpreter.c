@@ -159,12 +159,12 @@ int search_block(char *arg, char **list, BYTE exact)
   return (-1);
 }
 
-int old_search_block(char *argument, int begin, int length, char **list, int mode)
+int old_search_block(char *argument, int begin, int arglen, char **list, int mode)
 {
   int guess, found, search;
 
   /* If the word contain 0 letters, then a match is already found */
-  found = (length < 1);
+  found = (arglen < 1);
 
   guess = 0;
 
@@ -172,14 +172,14 @@ int old_search_block(char *argument, int begin, int length, char **list, int mod
 
   if (mode)
     while (NOT found AND * (list[guess]) != '\n') {
-      found = (length == strlen(list[guess]));
-      for (search = 0; (search < length AND found); search++)
+      found = (arglen == strlen(list[guess]));
+      for (search = 0; (search < arglen AND found); search++)
 	found = (*(argument + begin + search) == *(list[guess] + search));
       guess++;
   } else {
     while (NOT found AND * (list[guess]) != '\n') {
       found = 1;
-      for (search = 0; (search < length AND found); search++)
+      for (search = 0; (search < arglen AND found); search++)
 	found = (*(argument + begin + search) == *(list[guess] + search));
       guess++;
     }
@@ -192,8 +192,8 @@ void command_interpreter(struct char_data *ch, char *argument)
 {
   int look_at, cmd, begin;
   char buf[200];
-  extern int no_specials;
-  extern struct char_data *board_kludge_char;
+  /* extern int no_specials; */
+  /* extern struct char_data *board_kludge_char; */
 
   REMOVE_BIT(ch->specials.affected_by, AFF_HIDE);
 
@@ -391,7 +391,7 @@ int fill_word(char *argument)
  * According to the way this works, "" must be a valid abbreviation of
  * everything... seems odd, but...
  */
-inline int is_abbrev(char *arg1, char *arg2) {
+inline int is_abbrev(const char *arg1, const char *arg2) {
   if(!*arg1 || !*arg2)
     return 0;
   for(; *arg1; arg1++, arg2++)
@@ -821,7 +821,7 @@ int already_mob_name(char *ack_name)
   register int ack, blah;
   char pfft_name[80];
   char *pfft;
-  extern int top_of_mobt;
+  /* extern int top_of_mobt; */
 
   for (blah = FALSE, ack = 0; ack < top_of_mobt && !blah; ack++) {
     strcpy(pfft_name, mob_index[ack].name);
@@ -936,8 +936,8 @@ void nanny(struct descriptor_data *d, char *arg)
   int count = 0, oops = FALSE;
   char tmp_name[20];
   struct char_file_u tmp_store;
-  extern struct descriptor_data *descriptor_list;
-  extern int WizLock;
+  /* extern struct descriptor_data *descriptor_list; */
+  /* extern int WizLock; */
   struct char_data *ch;
   int i;
   char cryptbuf[17], cryptsalt[3]= { '\0', '\0', '\0' };
@@ -1328,20 +1328,20 @@ void nanny(struct descriptor_data *d, char *arg)
       {
 	struct descriptor_data *dd;
 	struct char_data *person;
-	int count = 0;
+	int lcount = 0;
 
 	dcprintf(d, "Players Connected.\n\r\n\r");
 	for (dd = descriptor_list; dd; dd = dd->next)
 	  if (!dd->connected) {
 	    person = dd->character;
 	    if (!IS_IMMORTAL(person) || IS_IMMORTAL(d->character)) {
-	      count++;
+	      lcount++;
 	      dcprintf(d, "%s %s %s\n\r", (person->player.pre_title ? person->player.pre_title :
 					  "")
 		      ,GET_NAME(person), person->player.title);
 	    }
 	  }
-	dcprintf(d, "Total Connected %d\n\r", count);
+	dcprintf(d, "Total Connected %d\n\r", lcount);
 	STATE(d) = CON_READ_MOTD;
 	break;
       }
@@ -1470,7 +1470,7 @@ void PutPasswd(struct descriptor_data *d)
   } else {
     sprintf(buf, "%s %s %s@%s %ld 1\n", d->usr_name,
             d->pwd, d->username, d->host, (long int) time(NULL));
-    fprintf(pfd, buf);
+    fprintf(pfd, "%s", buf);
     fclose(pfd);
     log(buf);
   }

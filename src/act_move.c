@@ -45,19 +45,19 @@ void NotLegalMove(struct char_data *ch)
 int check_exit_alias(struct char_data *ch, char *argument)
 {
   struct room_direction_data *exitp;
-  int index;
+  int exit_index;
 
-  int do_move(struct char_data *ch, char *arg, int cmd);
+  /* int do_move(struct char_data *ch, char *arg, int cmd); */
 
   /* void do_move(struct char_data *ch, char *argument, int cmd); */
   return 0;
   if (DEBUG)
     dlog("check_exit_alias");
-  for (index = 0; index < MAX_NUM_EXITS; index++) {
-    if ((exitp = EXIT(ch, index))) {
+  for (exit_index = 0; exit_index < MAX_NUM_EXITS; exit_index++) {
+    if ((exitp = EXIT(ch, exit_index))) {
       if (IS_SET(exitp->exit_info, EX_ALIAS))
 	if (!strncmp(exitp->exit_alias, argument, strlen(exitp->exit_alias)))
-	  return (do_move(ch, "", index + 1));
+	  return (do_move(ch, "", exit_index + 1));
     }
   }
   return 0;
@@ -143,7 +143,7 @@ int RawMove(struct char_data *ch, int dir)
   struct room_data *from_here, *to_here;
   struct char_data *pers;
   int amount;
-  int special(struct char_data *ch, int dir, char *arg);
+  /* int special(struct char_data *ch, int dir, char *arg); */
 
   if (DEBUG)
     dlog("RawMove");
@@ -621,7 +621,7 @@ void AddToCharHeap(struct char_data *heap[50], int *top, int total[50],
 int find_door(struct char_data *ch, char *type, char *dir)
 {
   int door;
-  char *dirs[] =
+  char *exit_dirs[] =
   {
     "north",
     "east",
@@ -637,7 +637,7 @@ int find_door(struct char_data *ch, char *type, char *dir)
     dlog("find_door");
 
   if (*dir) {			       /* a direction was specified */
-    if ((door = search_block(dir, dirs, FALSE)) == -1) {	/* Partial Match */
+    if ((door = search_block(dir, exit_dirs, FALSE)) == -1) {	/* Partial Match */
       cprintf(ch, "That's not a direction.\n\r");
       return (-1);
     }
@@ -1034,7 +1034,7 @@ void do_unlock(struct char_data *ch, char *argument, int cmd)
 
 void do_pick(struct char_data *ch, char *argument, int cmd)
 {
-  BYTE percent;
+  BYTE percent_chance;
   int door;
   char type[MAX_INPUT_LENGTH], dir[MAX_INPUT_LENGTH];
   struct room_direction_data *back, *exitp;
@@ -1047,9 +1047,9 @@ void do_pick(struct char_data *ch, char *argument, int cmd)
 
   argument_interpreter(argument, type, dir);
 
-  percent = number(1, 101);	       /* 101% is a complete failure */
+  percent_chance = number(1, 101);	       /* 101% is a complete failure */
 
-  if (percent > (ch->skills[SKILL_PICK_LOCK].learned)) {
+  if (percent_chance > (ch->skills[SKILL_PICK_LOCK].learned)) {
     cprintf(ch, "You failed to pick the lock.\n\r");
     return;
   }
@@ -1380,8 +1380,8 @@ void do_follow(struct char_data *ch, char *argument, int cmd)
   char name[MAX_INPUT_LENGTH];
   struct char_data *leader;
 
-  void stop_follower(struct char_data *ch);
-  void add_follower(struct char_data *ch, struct char_data *leader);
+  /* void stop_follower(struct char_data *ch); */
+  /* void add_follower(struct char_data *ch, struct char_data *leader); */
 
   if (DEBUG)
     dlog("do_follow");

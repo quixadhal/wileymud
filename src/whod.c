@@ -71,7 +71,7 @@ void do_whod(struct char_data *ch, char *arg, int cmd)
   char tmp[MAX_INPUT_LENGTH];
   int bit;
 
-  const char *modes[] =
+  char *modes[] =
   {
     "name",
     "title",
@@ -87,12 +87,12 @@ void do_whod(struct char_data *ch, char *arg, int cmd)
   half_chop(arg, buf, tmp);
   if (!*buf) {
     cprintf(ch, "Current WHOD mode:\n\r------------------\n\r");
-    sprintbit((long)whod_mode, modes, buf);
+    sprintbit((long)whod_mode, (const char **)modes, buf);
     strcat(buf, "\n\r");
     cprintf(ch, buf);
     return;
   }
-  if ((bit = old_search_block(buf, 0, strlen(buf), (char **)modes, FALSE)) == -1) {
+  if ((bit = old_search_block(buf, 0, strlen(buf), modes, FALSE)) == -1) {
     cprintf(ch, "That mode does not exist.\n\rAvailable modes are:\n\r");
     *buf = '\0';
     for (bit = 0; *modes[bit] != '\n'; bit++) {
@@ -196,7 +196,7 @@ void close_whod(void)
 
 void whod_loop(void)
 {
-  int nfound, size, players = 0, gods = 0, index;
+  int nfound, size, players = 0, gods = 0, char_index;
   fd_set in;
   u_long hostlong;
   struct timeval timeout;
@@ -208,7 +208,7 @@ void whod_loop(void)
   char *tmstr, *otmstr;
   long ttime;
   long thour, tmin, tsec;
-  extern long Uptime;
+  /* extern long Uptime; */
 
   static int newdesc;
 
@@ -256,7 +256,7 @@ void whod_loop(void)
 
       players = 0;
       gods = 0;
-      index = 0;
+      char_index = 0;
 
       for (ch = character_list; ch; ch = ch->next) {
 	if (IS_PC(ch)) {
@@ -267,7 +267,7 @@ void whod_loop(void)
 	    else
 	      players++;
 
-	    index++;
+	    char_index++;
 
             if (IS_SET(SHOW_IDLE, whod_mode)) {
               if(!(ch->desc)) {

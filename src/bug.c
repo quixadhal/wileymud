@@ -19,7 +19,7 @@
 #include "include/bug.h"
 
 #ifdef DIKU_CRUD
-extern struct descriptor_data *descriptor_list;
+/* extern struct descriptor_data *descriptor_list; */
 #else
 #define MAX_STRING_LENGTH 2048
 #endif

@@ -22,6 +22,7 @@
 #include "include/spells.h"
 
 #include "include/spec_procs.h"
+#include "include/act_info.h"
 #define _ACT_SKILLS_C
 #include "include/act_skills.h"
 
@@ -32,7 +33,7 @@
 void do_disarm(struct char_data *ch, char *argument, int cmd)
 {
   char name[30];
-  int percent;
+  int percent_chance;
   struct char_data *victim;
   struct obj_data *w;
   int chance;
@@ -71,14 +72,14 @@ void do_disarm(struct char_data *ch, char *argument, int cmd)
     cprintf(ch, "You trip and fall while trying to disarm.\n\r");
     return;
   }
-  percent = number(1, 101);	       /* 101% is a complete failure */
-  percent -= dex_app[(int)GET_DEX(ch)].reaction;
-  percent += dex_app[(int)GET_DEX(victim)].reaction;
+  percent_chance = number(1, 101);	       /* 101% is a complete failure */
+  percent_chance -= dex_app[(int)GET_DEX(ch)].reaction;
+  percent_chance += dex_app[(int)GET_DEX(victim)].reaction;
 
   if (!ch->equipment[WIELD] && !ch->equipment[WIELD_TWOH]) {
-    percent -= 50;
+    percent_chance -= 50;
   }
-  if (percent > ch->skills[SKILL_DISARM].learned) {
+  if (percent_chance > ch->skills[SKILL_DISARM].learned) {
     /*   failure   */
 
     GET_MANA(ch) -= 10;
@@ -120,8 +121,8 @@ void do_disarm(struct char_data *ch, char *argument, int cmd)
       else
 	chance = victim->skills[SKILL_TWO_HANDED].learned;
 
-      percent = number(1, 101);	       /* 101% is a complete failure */
-      if (percent > chance) {
+      percent_chance = number(1, 101);	       /* 101% is a complete failure */
+      if (percent_chance > chance) {
 	w = unequip_char(victim, WIELD_TWOH);
 	act("$n makes a very impressive fighting move.", TRUE, ch, 0, 0, TO_ROOM);
 	act("You send $p flying from $N's grasp.", TRUE, ch, w, victim, TO_CHAR);
@@ -150,7 +151,7 @@ void do_disarm(struct char_data *ch, char *argument, int cmd)
 
 void do_peer(struct char_data *ch, char *argument, int cmd)
 {
-  void do_look(struct char_data *ch, char *arg, int cmd);
+  /* void do_look(struct char_data *ch, char *arg, int cmd); */
 
   if (GET_MANA(ch) < (15 - GET_LEVEL(ch, BestThiefClass(ch)) / 4)) {
     cprintf(ch, "You don't really see anything...\n\r");

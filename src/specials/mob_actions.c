@@ -139,8 +139,8 @@ void mobile_activity(void)
   register struct char_data *ch, *tmp_ch;
   int k;
 
-  void do_move(struct char_data *ch, char *argument, int cmd);
-  void do_get(struct char_data *ch, char *argument, int cmd);
+  /* void do_move(struct char_data *ch, char *argument, int cmd); */
+  /* void do_get(struct char_data *ch, char *argument, int cmd); */
 
   for (ch = character_list; ch; ch = ch->next)
     if (IS_MOB(ch)) {

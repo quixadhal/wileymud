@@ -226,9 +226,9 @@ void spell_charm_person(BYTE level, struct char_data *ch, struct char_data *vict
 {
   struct affected_type af;
 
-  void add_follower(struct char_data *ch, struct char_data *leader);
-  BYTE circle_follow(struct char_data *ch, struct char_data *victim);
-  void stop_follower(struct char_data *ch);
+  /* void add_follower(struct char_data *ch, struct char_data *leader); */
+  /* BYTE circle_follow(struct char_data *ch, struct char_data *victim); */
+  /* void stop_follower(struct char_data *ch); */
 
   if (DEBUG)
     dlog("spell_charm_person");
@@ -727,8 +727,8 @@ void spell_create_water(BYTE level, struct char_data *ch, struct char_data *vict
 {
   int water;
 
-  void name_to_drinkcon(struct obj_data *obj, int type);
-  void name_from_drinkcon(struct obj_data *obj);
+  /* void name_to_drinkcon(struct obj_data *obj, int type); */
+  /* void name_from_drinkcon(struct obj_data *obj); */
 
   if (DEBUG)
     dlog("spell_create_water");
@@ -1860,9 +1860,9 @@ void spell_charm_monster(BYTE level, struct char_data *ch, struct char_data *vic
 {
   struct affected_type af;
 
-  void add_follower(struct char_data *ch, struct char_data *leader);
-  BYTE circle_follow(struct char_data *ch, struct char_data *victim);
-  void stop_follower(struct char_data *ch);
+  /* void add_follower(struct char_data *ch, struct char_data *leader); */
+  /* BYTE circle_follow(struct char_data *ch, struct char_data *victim); */
+  /* void stop_follower(struct char_data *ch); */
 
   assert(ch && victim);
 
@@ -1955,9 +1955,9 @@ void spell_identify(BYTE level, struct char_data *ch, struct char_data *victim, 
   char buf[256], buf2[256];
   int i;
   BYTE found;
-  int index;
+  int val_index;
 
-  struct time_info_data age(struct char_data *ch);
+  /* struct time_info_data age(struct char_data *ch); */
 
   assert(ch && (obj || victim));
   if (DEBUG)
@@ -1988,9 +1988,9 @@ void spell_identify(BYTE level, struct char_data *ch, struct char_data *victim, 
     case ITEM_SCROLL:
     case ITEM_POTION:
       cprintf(ch, "Level %d spells of:\n\r", obj->obj_flags.value[0]);
-      for (index = 1; index < 4; index++)
-	if (obj->obj_flags.value[index] > 0 && obj->obj_flags.value[index] < MAX_SKILLS) {
-          strcat(buf, spell_info[obj->obj_flags.value[index]].name);
+      for (val_index = 1; val_index < 4; val_index++)
+	if (obj->obj_flags.value[val_index] > 0 && obj->obj_flags.value[val_index] < MAX_SKILLS) {
+          strcat(buf, spell_info[obj->obj_flags.value[val_index]].name);
 	  strcat(buf, "\n\r");
 	  cprintf(ch, buf);
 	}
@@ -2126,7 +2126,7 @@ void spell_acid_breath(BYTE level, struct char_data *ch, struct char_data *victi
   int dam;
   int hpch;
 
-  int apply_ac(struct char_data *ch, int eq_pos);
+  /* int apply_ac(struct char_data *ch, int eq_pos); */
 
   assert(victim && ch);
   assert((level >= 1) && (level <= ABS_MAX_LVL));
@@ -2532,9 +2532,9 @@ void spell_turn(BYTE level, struct char_data *ch, struct char_data *victim, stru
   int flag;
   struct affected_type af;
 
-  void add_follower(struct char_data *ch, struct char_data *leader);
-  BYTE circle_follow(struct char_data *ch, struct char_data *victim);
-  void stop_follower(struct char_data *ch);
+  /* void add_follower(struct char_data *ch, struct char_data *leader); */
+  /* BYTE circle_follow(struct char_data *ch, struct char_data *victim); */
+  /* void stop_follower(struct char_data *ch); */
  
   assert(ch && victim);
   assert((level >= 1) && (level <= ABS_MAX_LVL));

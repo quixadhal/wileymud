@@ -27,7 +27,7 @@ char *replace_string(char *str, char *weapon, char *weapon_s);
 void dam_message(int dam, struct char_data *ch, struct char_data *victim, int w_type);
 int damage(struct char_data *ch, struct char_data *victim, int dam, int attacktype);
 void hit(struct char_data *ch, struct char_data *victim, int type);
-void perform_violence(int pulse);
+void perform_violence(int current_pulse);
 struct char_data *FindVictim(struct char_data *ch);
 struct char_data *FindAnyVictim(struct char_data *ch);
 int PreProcDam(struct char_data *ch, int type, int dam);

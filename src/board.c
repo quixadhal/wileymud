@@ -6,6 +6,7 @@
 #include <string.h>
 #include <ctype.h>
 #include <sys/time.h>
+#include <time.h>
 
 #include "include/global.h"
 #include "include/bug.h"
@@ -232,15 +233,15 @@ void board_write_msg(struct char_data *ch, char *arg, struct Board *b)
 int board_remove_msg(struct char_data *ch, char *arg, struct Board *b)
 {
   int ind, msg;
-  char number[MAX_INPUT_LENGTH];
+  char msg_number[MAX_INPUT_LENGTH];
 
   if (DEBUG)
     dlog("board_remove_msg");
-  one_argument(arg, number);
+  one_argument(arg, msg_number);
 
-  if (!*number || !isdigit(*number))
+  if (!*msg_number || !isdigit(*msg_number))
     return (0);
-  if (!(msg = atoi(number)))
+  if (!(msg = atoi(msg_number)))
     return (0);
   if (!b->msg_num) {
     cprintf(ch, "The board is empty!\n\r");
@@ -365,15 +366,15 @@ void board_reset_board(struct Board *b)
 
 int board_display_msg(struct char_data *ch, char *arg, struct Board *b)
 {
-  char number[MAX_INPUT_LENGTH], buffer[MAX_STRING_LENGTH];
+  char msg_number[MAX_INPUT_LENGTH], buffer[MAX_STRING_LENGTH];
   int msg;
 
   if (DEBUG)
     dlog("board_display_msg");
-  one_argument(arg, number);
-  if (!*number || !isdigit(*number))
+  one_argument(arg, msg_number);
+  if (!*msg_number || !isdigit(*msg_number))
     return (0);
-  if (!(msg = atoi(number)))
+  if (!(msg = atoi(msg_number)))
     return (0);
   if (!b->msg_num) {
     cprintf(ch, "The board is empty!\n\r");

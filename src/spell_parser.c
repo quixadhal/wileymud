@@ -1217,7 +1217,7 @@ inline int check_nature(struct char_data *i) {
   return check_drowning(i);
 }
 
-inline void check_all_nature(int pulse) {
+inline void check_all_nature(int current_pulse) {
   register struct char_data *i;
 
   for(i= character_list; i; i= i->next)

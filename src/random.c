@@ -13,7 +13,7 @@
 #define _RANDOM_C
 #include "include/random.h"
 
-extern struct descriptor_data *descriptor_list;
+/* extern struct descriptor_data *descriptor_list; */
 
 void random_death_message(struct char_data *ch, struct char_data *victim) {
   char tease[256];

@@ -17,8 +17,8 @@
 #define MIN(a,b) ((a)<=(b)?(a):(b))
 #define MAX(a,b) ((a)>=(b)?(a):(b))
 #endif
-inline int str_cmp(char *arg1, char *arg2);
-inline int strn_cmp(char *arg1, char *arg2, int n);
+inline int str_cmp(const char *arg1, const char *arg2);
+inline int strn_cmp(const char *arg1, const char *arg2, const int n);
 #define LOWER(c) (((c)>='A'  && (c) <= 'Z') ? ((c)+('a'-'A')) : (c))
 #define UPPER(c) (((c)>='a'  && (c) <= 'z') ? ((c)+('A'-'a')) : (c))
 #define ISNEWL(ch) ((ch) == '\n' || (ch) == '\r')
@@ -223,7 +223,7 @@ int in_group(struct char_data *ch1, struct char_data *ch2);
 int getall(char *name, char *newname);
 int getabunch(char *name, char *newname);
 int DetermineExp(struct char_data *mob, int exp_flags);
-void down_river(int pulse);
+void down_river(int current_pulse);
 inline int IsHumanoid(struct char_data *ch);
 inline int IsAnimal(struct char_data *ch);
 inline int IsUndead(struct char_data *ch);
@@ -241,7 +241,7 @@ void CallForAGuard(struct char_data *ch, struct char_data *vict, int lev);
 void StandUp(struct char_data *ch);
 void FighterMove(struct char_data *ch);
 void DevelopHatred(struct char_data *ch, struct char_data *v);
-void Teleport(int pulse);
+void Teleport(int current_pulse);
 int HasObject(struct char_data *ch, int ob_num);
 int room_of_object(struct obj_data *obj);
 struct char_data *char_holding(struct obj_data *obj);

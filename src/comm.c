@@ -575,7 +575,7 @@ int new_descriptor(int s) {
 
   int desc, old_maxdesc;
   struct descriptor_data *newd;
-  int index;
+  int desc_index;
 
   time_t tc;
   struct tm *t_info;
@@ -716,8 +716,8 @@ int new_descriptor(int s) {
   /* prepend to list */
 
   if (((t_info->tm_hour + 1) > 8) && ((t_info->tm_hour + 1) < 21))
-    for (index = 0; timed_con[index] != "\n"; index++) {
-      if (!strncmp(timed_con[index], newd->host, 49)) {
+    for (desc_index = 0; timed_con[desc_index] != "\n"; desc_index++) {
+      if (!strncmp(timed_con[desc_index], newd->host, 49)) {
 	sprintf(buf, "TIMED site connecting:%s\n", newd->host);
 	log(buf);
 	sprintf(buf, "\n\rThis site is blocked from : 9 am - 9 pm\n\r");
@@ -731,8 +731,8 @@ int new_descriptor(int s) {
 	return (0);
       }
     }
-  for (index = 0; bannished[index] != "\n"; index++) {
-    if (!strncmp(bannished[index], newd->host, 49)) {
+  for (desc_index = 0; bannished[desc_index] != "\n"; desc_index++) {
+    if (!strncmp(bannished[desc_index], newd->host, 49)) {
       sprintf(buf, "BANNISHED site connecting:%s\n", newd->host);
       log(buf);
       sprintf(buf, "\n\rDue to your System Administrators request, or for some\n\r");

@@ -12,6 +12,7 @@
 #include <sys/time.h>
 #include <ctype.h>
 #include <signal.h>
+#include <time.h>
 
 #include "include/global.h"
 #include "include/bug.h"
@@ -22,6 +23,8 @@
 #include "include/utils.h"
 #include "include/spells.h"
 #include "include/multiclass.h"
+#include "include/act_social.h"
+#include "include/spec_procs.h"
 #define _RECEPTION_C
 #include "include/reception.h"
 
@@ -58,7 +61,7 @@ void add_obj_cost(struct char_data *ch, struct char_data *re,
   }
 }
 
-BYTE recep_offer(struct char_data *ch, struct char_data *receptionist,
+BYTE recep_offer(struct char_data *ch, struct char_data *recep_mob,
 		 struct obj_cost *cost)
 {
   int i;
@@ -67,40 +70,40 @@ BYTE recep_offer(struct char_data *ch, struct char_data *receptionist,
   cost->total_cost = 0;		       /* Minimum cost */
   cost->no_carried = 0;
   cost->ok = TRUE;		       /* Use if any "-1" objects */
-  add_obj_cost(ch, receptionist, ch->carrying, cost);
+  add_obj_cost(ch, recep_mob, ch->carrying, cost);
 
   for (i = 0; i < MAX_WEAR; i++)
-    add_obj_cost(ch, receptionist, ch->equipment[i], cost);
+    add_obj_cost(ch, recep_mob, ch->equipment[i], cost);
 
   if (!cost->ok)
     return (FALSE);
 
   if (cost->no_carried == 0) {
-    if (receptionist)
+    if (recep_mob)
       act("$n tells you 'But you are not carrying anything?'",
-	  FALSE, receptionist, 0, ch, TO_VICT);
+	  FALSE, recep_mob, 0, ch, TO_VICT);
     return (FALSE);
   }
   if (cost->no_carried > MAX_OBJ_SAVE) {
-    if (receptionist) {
+    if (recep_mob) {
       sprintf(buf,
 	      "$n tells you 'Sorry, but I can't store any more than %d items.",
 	      MAX_OBJ_SAVE);
-      act(buf, FALSE, receptionist, 0, ch, TO_VICT);
+      act(buf, FALSE, recep_mob, 0, ch, TO_VICT);
     }
     return (FALSE);
   }
-  if (receptionist) {
+  if (recep_mob) {
     sprintf(buf,
 	    "$n tells you 'It will cost you %d coins per day'", cost->total_cost);
-    act(buf, FALSE, receptionist, 0, ch, TO_VICT);
+    act(buf, FALSE, recep_mob, 0, ch, TO_VICT);
     if (cost->total_cost > (GET_GOLD(ch) + GET_BANK(ch))) {
       if (GetMaxLevel(ch) < LOW_IMMORTAL)
 	act("$n tells you 'Which I can see you can't afford'",
-	    FALSE, receptionist, 0, ch, TO_VICT);
+	    FALSE, recep_mob, 0, ch, TO_VICT);
       else {
 	act("$n tells you 'Well, since you're a God, I guess it's okay'",
-	    FALSE, receptionist, 0, ch, TO_VICT);
+	    FALSE, recep_mob, 0, ch, TO_VICT);
 	cost->total_cost = 0;
       }
     }
@@ -145,7 +148,7 @@ void obj_store_to_char(struct char_data *ch, struct obj_file_u *st)
   struct obj_data *obj;
   int i, j;
 
-  void obj_to_char(struct obj_data *object, struct char_data *ch);
+  /* void obj_to_char(struct obj_data *object, struct char_data *ch); */
 
   for (i = 0; i < st->nobjects; i++) {
     if (st->objects[i].item_number > -1 &&
@@ -676,9 +679,9 @@ int receptionist(struct char_data *ch, int cmd, char *arg)
   SHORT action_tabel[9] =
   {23, 24, 36, 105, 106, 109, 111, 142, 147};
 
-  void do_action(struct char_data *ch, char *argument, int cmd);
-  int number(int from, int to);
-  int citizen(struct char_data *ch, int cmd, char *arg);
+  /* void do_action(struct char_data *ch, char *argument, int cmd); */
+  /* int number(int from, int to); */
+  /* int citizen(struct char_data *ch, int cmd, char *arg); */
 
   if (!ch->desc)
     return (FALSE);		       /* You've forgot FALSE - NPC couldn't leave */

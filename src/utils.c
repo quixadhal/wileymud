@@ -206,13 +206,13 @@ int scan_number(char *text, int *rval) {
   return 1;
 }
 
-inline int str_cmp(char *arg1, char *arg2) {
+inline int str_cmp(const char *arg1, const char *arg2) {
   if(!arg1 || !arg2)
     return 1;
   return strcasecmp(arg1, arg2);
 }
 
-inline int strn_cmp(char *arg1, char *arg2, int n) {
+inline int strn_cmp(const char *arg1, const char *arg2, const int n) {
   if(!arg1 || !arg2)
     return 1;
   return strncasecmp(arg1, arg2, n);
@@ -594,13 +594,13 @@ int DetermineExp(struct char_data *mob, int exp_flags)
 
 }
 
-void down_river(int pulse) {
+void down_river(int current_pulse) {
   struct char_data *ch, *tmp;
   struct obj_data *obj_object, *next_obj;
   int rd, or;
   struct room_data *rp;
 
-  if (pulse < 0)
+  if (current_pulse < 0)
     return;
 
   for (ch = character_list; ch; ch = tmp) {
@@ -609,7 +609,7 @@ void down_river(int pulse) {
       if (ch->in_room != NOWHERE) {
 	if (real_roomp(ch->in_room)->sector_type == SECT_WATER_NOSWIM)
 	  if ((real_roomp(ch->in_room))->river_speed > 0) {
-	    if ((pulse % (real_roomp(ch->in_room))->river_speed) == 0) {
+	    if ((current_pulse % (real_roomp(ch->in_room))->river_speed) == 0) {
 	      if (((real_roomp(ch->in_room))->river_dir < MAX_NUM_EXITS) &&
 		  ((real_roomp(ch->in_room))->river_dir >= 0)) {
 		rd = (real_roomp(ch->in_room))->river_dir;
@@ -950,14 +950,14 @@ void DevelopHatred(struct char_data *ch, struct char_data *v) {
 
 }
 
-void Teleport(int pulse) {
+void Teleport(int current_pulse) {
   char buf[256];
   struct char_data *ch, *tmp, *pers;
   struct obj_data *obj_object, *temp_obj;
   int or;
   struct room_data *rp, *dest;
 
-  if (pulse < 0)
+  if (current_pulse < 0)
     return;
 
   for (ch = character_list; ch; ch = ch->next) {
@@ -968,7 +968,7 @@ void Teleport(int pulse) {
 	(rp)->tele_targ > 0 &&
 	rp->tele_targ != rp->number &&
 	(rp)->tele_time > 0 &&
-	(pulse % (rp)->tele_time) == 0) {
+	(current_pulse % (rp)->tele_time) == 0) {
 
       dest = real_roomp(rp->tele_targ);
       if (!dest) {
@@ -1133,25 +1133,25 @@ inline void RemAllAffects(struct char_data *ch) {
 }
 
 inline char *pain_level(struct char_data *ch) {
-  register int percent;
+  register int health_percent;
 
   if (GET_MAX_HIT(ch) > 0)
-    percent = (100 * GET_HIT(ch)) / GET_MAX_HIT(ch);
+    health_percent = (100 * GET_HIT(ch)) / GET_MAX_HIT(ch);
   else
-    percent = -1;		       /* How could MAX_HIT be < 1?? */
-  if (percent >= 100)
+    health_percent = -1;		       /* How could MAX_HIT be < 1?? */
+  if (health_percent >= 100)
     return("is in an excellent condition");
-  else if (percent >= 90)
+  else if (health_percent >= 90)
     return("has a few scratches");
-  else if (percent >= 75)
+  else if (health_percent >= 75)
     return("has some small wounds and bruises");
-  else if (percent >= 50)
+  else if (health_percent >= 50)
     return("has quite a few wounds");
-  else if (percent >= 30)
+  else if (health_percent >= 30)
     return("has some big nasty wounds and scratches");
-  else if (percent >= 15)
+  else if (health_percent >= 15)
     return("looks pretty hurt");
-  else if (percent >= 0)
+  else if (health_percent >= 0)
     return("is in an awful condition");
   else
     return("is bleeding awfully from big wounds");

@@ -22,7 +22,14 @@ typedef long long LONG;
 
 typedef void (*funcp) ();
 typedef int (*ifuncp) ();
-/* #define funcp(x) void ((*(x))()) */
+
+/* This might be more correct... */
+/* typedef void (*__sighandler_t) (int); */
+
+/*
+#define funcp(x) void *(x)
+#define ifuncp(x) int *(x)
+*/
 
 #define WLD_FILE_DIRECTORY 	"wld"
 #define MAX_WLD_FILE_ENTRIES	25

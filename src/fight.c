@@ -802,7 +802,7 @@ int damage(struct char_data *ch, struct char_data *victim, int dam, int attackty
   int i, j, nr, max_hit, exp;
   struct room_data *rp;
 
-  int hit_limit(struct char_data *ch);
+  /* int hit_limit(struct char_data *ch); */
 
 /*  assert(GET_POS(victim) > POSITION_DEAD); */
   if (DEBUG)
@@ -817,10 +817,10 @@ int damage(struct char_data *ch, struct char_data *victim, int dam, int attackty
  */
   if (check_peaceful(ch, "") && attacktype != SPELL_POISON &&
       attacktype != TYPE_HUNGER ) {
-    char buf[MAX_INPUT_LENGTH];
+    char lbuf[MAX_INPUT_LENGTH];
 
-    sprintf(buf, "damage(,,,%d) called in PEACEFUL room", attacktype);
-    log(buf);
+    sprintf(lbuf, "damage(,,,%d) called in PEACEFUL room", attacktype);
+    log(lbuf);
     return FALSE;
   }
   if (ch->in_room != victim->in_room)
@@ -1320,7 +1320,7 @@ void hit(struct char_data *ch, struct char_data *victim, int type)
 }
 
 /* Control the fights going on */
-void perform_violence(int pulse)
+void perform_violence(int current_pulse)
 {
   struct char_data *ch, *vict;
   int i;

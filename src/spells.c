@@ -2750,7 +2750,7 @@ void cast_poly_self(BYTE level, struct char_data *ch, char *arg, int type, struc
 	if (PolyList[X].level > level) {
 	  X--;
 	} else {
-	  if (number(0,99) < 10 || !str_cmp((char *)PolyList[X].name, buffer)) {
+	  if (number(0,99) < 10 || !str_cmp(PolyList[X].name, buffer)) {
 	    mobn = PolyList[X].number;
 	    found = TRUE;
 	  } else {

@@ -1,4 +1,6 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include <strings.h>
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <sys/time.h>
@@ -10,6 +12,7 @@
 #include <netdb.h>
 #include <arpa/inet.h>
 #include <sys/ioctl.h>
+#include <unistd.h>
  
 #define    QLEN           5
  
@@ -17,14 +20,12 @@ int LISTEN_ON= 23;
 int JUMP_TO= 3000;
 
 char sbuf[2048], cbuf[2048];
-int main();
-void telcli();
+void telcli(int source);
+void communicate(int sfd, int cfd);
  
-int main(argc, argv)
-int argc;
-char *argv[];
+int main(int argc, char **argv)
 {
-    int srv_fd, rem_fd, rem_len, opt = 1;
+    int srv_fd, rem_fd, rem_len; /* , opt = 1; */
     struct sockaddr_in rem_addr, srv_addr;
  
     if(argc != 3) {
@@ -78,15 +79,14 @@ char *argv[];
     }
 }
  
-void telcli(source)
-int source;
+void telcli(int source)
 {
     int dest;
-    int found;
+    /* int found; */
     struct sockaddr_in sa;
-    struct hostent *hp;
-    struct servent *sp;
-    char string[100];
+    /* struct hostent *hp; */
+    /* struct servent *sp; */
+    /* char string[100]; */
  
     sa.sin_addr.s_addr = inet_addr("127.0.0.1");
     sa.sin_family = AF_INET;
@@ -108,10 +108,10 @@ int source;
     exit(0);
 }
  
-communicate(sfd,cfd)    {
+void communicate(int sfd, int cfd) {
     char *chead, *ctail, *shead, *stail;
     int num, nfd, spos, cpos;
-    extern int errno;
+    /* extern int errno; */
     fd_set rd, wr;
  
     chead = ctail = cbuf;

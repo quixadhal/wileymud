@@ -376,7 +376,7 @@ void bisect_arg(char *arg, int *field, char *string)
 void do_setskill(struct char_data *ch, char *arg, int cmd)
 {
   struct char_data *vict;
-  char name[100], num[100], buf[100], help[MAX_STRING_LENGTH];
+  char name[100], num[100], buf[100], helpstr[MAX_STRING_LENGTH];
   int skill, field, value, i;
   static char *skills[] =
   {
@@ -401,17 +401,17 @@ void do_setskill(struct char_data *ch, char *arg, int cmd)
   arg = one_argument(arg, name);
   if (!*name) {			       /* no arguments. print an informative text */
     cprintf(ch, "Syntax:\n\rsetskill <name> <skill> <field> <value>\n\r");
-    strcpy(help, "Skill being one of the following:\n\r\n\r");
+    strcpy(helpstr, "Skill being one of the following:\n\r\n\r");
     for (i = 1; *skills[i] != '\n'; i++) {
-      sprintf(help + strlen(help), "%18s", skills[i]);
+      sprintf(helpstr + strlen(helpstr), "%18s", skills[i]);
       if (!(i % 4)) {
-	strcat(help, "\n\r");
-	cprintf(ch, help);
-	*help = '\0';
+	strcat(helpstr, "\n\r");
+	cprintf(ch, helpstr);
+	*helpstr = '\0';
       }
     }
-    if (*help)
-      cprintf(ch, help);
+    if (*helpstr)
+      cprintf(ch, helpstr);
     return;
   }
   if (!(vict = get_char_vis(ch, name))) {

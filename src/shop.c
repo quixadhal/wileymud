@@ -23,6 +23,7 @@
 #include "include/multiclass.h"
 #include "include/act_social.h"
 #include "include/act_wiz.h"
+#include "include/spec_procs.h"
 #define _SHOP_C
 #include "include/shop.h"
 
@@ -410,7 +411,7 @@ int shop_keeper(struct char_data *ch, int cmd, char *arg)
   struct char_data *keeper;
   int shop_nr;
 
-  int citizen(struct char_data *ch, int cmd, char *arg);
+  /* int citizen(struct char_data *ch, int cmd, char *arg); */
 
   keeper = 0;
 

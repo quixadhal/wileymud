@@ -156,7 +156,7 @@ void do_backstab(struct char_data *ch, char *argument, int cmd)
 {
   struct char_data *victim;
   char name[256];
-  BYTE percent, base = 0;
+  BYTE percent_chance, base = 0;
 
   if (DEBUG)
     dlog("do_backstab");
@@ -212,10 +212,10 @@ void do_backstab(struct char_data *ch, char *argument, int cmd)
     base = 4;
   }
 
-  percent = number(1, 101);	       /* 101% is a complete failure */
+  percent_chance = number(1, 101);	       /* 101% is a complete failure */
 
   if (ch->skills[SKILL_BACKSTAB].learned) {
-    if (percent > ch->skills[SKILL_BACKSTAB].learned) {
+    if (percent_chance > ch->skills[SKILL_BACKSTAB].learned) {
       if (AWAKE(victim)) {
 	damage(ch, victim, 0, SKILL_BACKSTAB);
 	AddHated(victim, ch);
@@ -329,10 +329,10 @@ void do_order(struct char_data *ch, char *argument, int cmd)
 
 void do_flee(struct char_data *ch, char *argument, int cmd)
 {
-  int i, attempt, loose, die, percent;
+  int i, attempt, loose, flee_dir, percent_chance;
 
-  void gain_exp(struct char_data *ch, int gain);
-  int special(struct char_data *ch, int cmd, char *arg);
+  /* void gain_exp(struct char_data *ch, int gain); */
+  /* int special(struct char_data *ch, int cmd, char *arg); */
 
   if (DEBUG)
     dlog("do_flee");
@@ -360,12 +360,12 @@ void do_flee(struct char_data *ch, char *argument, int cmd)
       if (CAN_GO(ch, attempt) &&
 	  !IS_SET(real_roomp(EXIT(ch, attempt)->to_room)->room_flags, DEATH)) {
 	act("$n panics, and attempts to flee.", TRUE, ch, 0, 0, TO_ROOM);
-	if ((die = MoveOne(ch, attempt)) == 1) {
+	if ((flee_dir = MoveOne(ch, attempt)) == 1) {
 	  /* The escape has succeded */
 	  cprintf(ch, "You flee head over heels.\n\r");
 	  return;
 	} else {
-	  if (!die)
+	  if (!flee_dir)
 	    act("$n tries to flee, but is too exhausted!", TRUE, ch, 0, 0, TO_ROOM);
 	  return;
 	}
@@ -380,7 +380,7 @@ void do_flee(struct char_data *ch, char *argument, int cmd)
     if (CAN_GO(ch, attempt) &&
 	!IS_SET(real_roomp(EXIT(ch, attempt)->to_room)->room_flags, DEATH)) {
       act("$n panics, and attempts to flee.", TRUE, ch, 0, 0, TO_ROOM);
-      if ((die = MoveOne(ch, attempt)) == 1) {
+      if ((flee_dir = MoveOne(ch, attempt)) == 1) {
 	/* The escape has succeded. We'll be nice. */
 	if (GetMaxLevel(ch) >= 2) {
 	  loose = GetMaxLevel(ch) + (GetSecMaxLev(ch) / 2) + (GetThirdMaxLev(ch) / 3);
@@ -395,10 +395,10 @@ void do_flee(struct char_data *ch, char *argument, int cmd)
 	if (IS_NPC(ch)) {
 	  AddFeared(ch, ch->specials.fighting);
 	} else {
-	  percent = (int)100 *(float)GET_HIT(ch->specials.fighting) /
+	  percent_chance = (int)100 *(float)GET_HIT(ch->specials.fighting) /
 	      (float)GET_MAX_HIT(ch->specials.fighting);
 
-	  if (number(1, 101) < percent) {
+	  if (number(1, 101) < percent_chance) {
 	    if ((DoesHate(ch->specials.fighting, ch)) ||
 		((IS_GOOD(ch) && (IS_EVIL(ch->specials.fighting))) ||
 	         (IS_EVIL(ch) && (IS_GOOD(ch->specials.fighting)))) ) {
@@ -417,7 +417,7 @@ void do_flee(struct char_data *ch, char *argument, int cmd)
 	  stop_fighting(ch);
 	return;
       } else {
-	if (!die)
+	if (!flee_dir)
 	  act("$n tries to flee, but is too exhausted!", TRUE, ch, 0, 0, TO_ROOM);
 	return;
       }
@@ -432,7 +432,7 @@ void do_bandage(struct char_data *ch, char *argument, int cmd)
 {
   struct char_data *victim;
   char name[256];
-  BYTE percent;
+  BYTE percent_chance;
   int cost;
 
   if (DEBUG)
@@ -471,11 +471,11 @@ void do_bandage(struct char_data *ch, char *argument, int cmd)
   }
   act("$n quickly bandages $N.", FALSE, ch, 0, victim, TO_NOTVICT);
 
-  percent = number(1, 101);	       /* 101% is a complete failure */
+  percent_chance = number(1, 101);	       /* 101% is a complete failure */
 
   /* some modifications to account for dexterity, and level */
 
-  if (percent > ch->skills[SKILL_BANDAGE].learned) {
+  if (percent_chance > ch->skills[SKILL_BANDAGE].learned) {
     if (GET_HIT(victim) <= 0)
       GET_HIT(victim) += 1;
     update_pos(victim);
@@ -666,7 +666,7 @@ void do_bash(struct char_data *ch, char *argument, int cmd)
 {
   struct char_data *victim;
   char name[256];
-  BYTE percent;
+  BYTE percent_chance;
   int cost;
   int has_shield;
 
@@ -716,20 +716,20 @@ void do_bash(struct char_data *ch, char *argument, int cmd)
   }
   GET_MANA(ch) -= cost;
 
-  percent = number(1, 101);	       /* 101% is a complete failure */
+  percent_chance = number(1, 101);	       /* 101% is a complete failure */
 
   /* some modifications to account for dexterity, and level */
 
-  percent -= dex_app[(int)GET_DEX(ch)].reaction;
-  percent += dex_app[(int)GET_DEX(victim)].reaction;
+  percent_chance -= dex_app[(int)GET_DEX(ch)].reaction;
+  percent_chance += dex_app[(int)GET_DEX(victim)].reaction;
 
   if (MOUNTED(victim)) {
     if (IS_NPC(victim))
-      percent += GetMaxLevel(victim);
+      percent_chance += GetMaxLevel(victim);
     else
-      percent += ((ch->skills[SKILL_RIDE].learned) / 10);
+      percent_chance += ((ch->skills[SKILL_RIDE].learned) / 10);
   }
-  if (percent > ch->skills[SKILL_BASH].learned) {
+  if (percent_chance > ch->skills[SKILL_BASH].learned) {
     if (GET_POS(victim) > POSITION_DEAD) {
       if (has_shield)
 	damage(ch, victim, 0, SKILL_BASH_W_SHIELD);
@@ -763,7 +763,7 @@ void do_punch(struct char_data *ch, char *argument, int cmd)
 {
   struct char_data *victim;
   char name[256];
-  BYTE percent;
+  BYTE percent_chance;
   int dam;
   int cost;
 
@@ -813,16 +813,16 @@ void do_punch(struct char_data *ch, char *argument, int cmd)
   }
   GET_MANA(ch) -= cost;
 
-  percent = ((10 - (GET_AC(victim) / 10)) << 1) + number(1, 101);
+  percent_chance = ((10 - (GET_AC(victim) / 10)) << 1) + number(1, 101);
 
   /* some modifications to account for dexterity, */
 
   dam = dice(0, 4) + str_app[STRENGTH_APPLY_INDEX(ch)].todam;
 
-  if (percent < ch->skills[SKILL_BARE_HAND].learned)
+  if (percent_chance < ch->skills[SKILL_BARE_HAND].learned)
     dam += 2;
 
-  if (percent > ch->skills[SKILL_PUNCH].learned) {
+  if (percent_chance > ch->skills[SKILL_PUNCH].learned) {
     if (GET_POS(victim) > POSITION_DEAD) {
       damage(ch, victim, 0, SKILL_PUNCH);
     }
@@ -849,7 +849,7 @@ void do_punch(struct char_data *ch, char *argument, int cmd)
 void do_rescue(struct char_data *ch, char *argument, int cmd)
 {
   struct char_data *victim, *tmp_ch;
-  int percent;
+  int percent_chance;
   char victim_name[240];
   int cost;
 
@@ -899,8 +899,8 @@ void do_rescue(struct char_data *ch, char *argument, int cmd)
   if (!HasClass(ch, CLASS_WARRIOR) && !HasClass(ch, CLASS_RANGER))
     cprintf(ch, "But only true warriors can do this!");
   else {
-    percent = number(1, 101);	       /* 101% is a complete failure */
-    if (percent > ch->skills[SKILL_RESCUE].learned) {
+    percent_chance = number(1, 101);	       /* 101% is a complete failure */
+    if (percent_chance > ch->skills[SKILL_RESCUE].learned) {
       cprintf(ch, "You fail the rescue.\n\r");
       return;
     }
@@ -967,7 +967,7 @@ void do_kick(struct char_data *ch, char *argument, int cmd)
 {
   struct char_data *victim;
   char name[256];
-  BYTE percent;
+  BYTE percent_chance;
   int cost;
 
   if (DEBUG)
@@ -1016,10 +1016,10 @@ void do_kick(struct char_data *ch, char *argument, int cmd)
   }
   GET_MANA(ch) -= cost;
 
-  percent = ((10 - (GET_AC(victim) / 10)) << 1) + number(1, 101);
+  percent_chance = ((10 - (GET_AC(victim) / 10)) << 1) + number(1, 101);
   /* 101% is a complete failure */
 
-  if (percent > ch->skills[SKILL_KICK].learned) {
+  if (percent_chance > ch->skills[SKILL_KICK].learned) {
     if (GET_POS(victim) > POSITION_DEAD)
       damage(ch, victim, 0, SKILL_KICK);
   } else {

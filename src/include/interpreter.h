@@ -323,14 +323,14 @@ extern char *fill[];
 #endif
 
 int search_block(char *arg, char **list, BYTE exact);
-int old_search_block(char *argument, int begin, int length, char **list, int mode);
+int old_search_block(char *argument, int begin, int arglen, char **list, int mode);
 void command_interpreter(struct char_data *ch, char *argument);
 void argument_interpreter(char *argument, char *first_arg, char *second_arg);
 int is_number(char *str);
 char *one_argument(char *argument, char *first_arg);
 void only_argument(char *argument, char *dest);
 int fill_word(char *argument);
-inline int is_abbrev(char *arg1, char *arg2);
+inline int is_abbrev(const char *arg1, const char *arg2);
 void half_chop(char *string, char *arg1, char *arg2);
 int special(struct char_data *ch, int cmd, char *arg);
 void assign_command_pointers(void);

@@ -348,7 +348,7 @@ void list_obj_to_char(struct obj_data *list, struct char_data *ch, int mode,
 void show_char_to_char(struct char_data *i, struct char_data *ch, int mode)
 {
   char buffer[MAX_STRING_LENGTH];
-  int j, found, percent;
+  int j, found, health_percent;
   struct obj_data *tmp_obj;
 
   if (DEBUG)
@@ -510,28 +510,28 @@ void show_char_to_char(struct char_data *i, struct char_data *ch, int mode)
     /* Show a character to another */
 
     if (GET_MAX_HIT(i) > 0)
-      percent = (100 * GET_HIT(i)) / GET_MAX_HIT(i);
+      health_percent = (100 * GET_HIT(i)) / GET_MAX_HIT(i);
     else
-      percent = -1;		       /* How could MAX_HIT be < 1?? */
+      health_percent = -1;		       /* How could MAX_HIT be < 1?? */
 
     if (IS_NPC(i))
       strcpy(buffer, i->player.short_descr);
     else
       strcpy(buffer, GET_NAME(i));
 
-    if (percent >= 100)
+    if (health_percent >= 100)
       strcat(buffer, " is in an excellent condition.\n\r");
-    else if (percent >= 90)
+    else if (health_percent >= 90)
       strcat(buffer, " has a few scratches.\n\r");
-    else if (percent >= 75)
+    else if (health_percent >= 75)
       strcat(buffer, " has some small wounds and bruises.\n\r");
-    else if (percent >= 50)
+    else if (health_percent >= 50)
       strcat(buffer, " has quite a few wounds.\n\r");
-    else if (percent >= 30)
+    else if (health_percent >= 30)
       strcat(buffer, " has some big nasty wounds and scratches.\n\r");
-    else if (percent >= 15)
+    else if (health_percent >= 15)
       strcat(buffer, " looks pretty hurt.\n\r");
-    else if (percent >= 0)
+    else if (health_percent >= 0)
       strcat(buffer, " is in an awful condition.\n\r");
     else
       strcat(buffer, " is bleeding awfully from big wounds.\n\r");
@@ -551,7 +551,7 @@ void show_char_to_char(struct char_data *i, struct char_data *ch, int mode)
       for (j = 0; j < MAX_WEAR; j++) {
 	if (i->equipment[j]) {
 	  if (CAN_SEE_OBJ(ch, i->equipment[j])) {
-	    cprintf(ch, (char *)where[j]);
+	    cprintf(ch, "%s", where[j]);
 	    show_obj_to_char(i->equipment[j], ch, 1);
 	  }
 	}
@@ -594,7 +594,7 @@ void show_mult_char_to_char(struct char_data *i, struct char_data *ch, int mode,
 {
   char buffer[MAX_STRING_LENGTH];
   char tmp[10];
-  int j, found, percent;
+  int j, found, health_percent;
   struct obj_data *tmp_obj;
 
   if (DEBUG)
@@ -731,28 +731,28 @@ void show_mult_char_to_char(struct char_data *i, struct char_data *ch, int mode,
     /* Show a character to another */
 
     if (GET_MAX_HIT(i) > 0)
-      percent = (100 * GET_HIT(i)) / GET_MAX_HIT(i);
+      health_percent = (100 * GET_HIT(i)) / GET_MAX_HIT(i);
     else
-      percent = -1;		       /* How could MAX_HIT be < 1?? */
+      health_percent = -1;		       /* How could MAX_HIT be < 1?? */
 
     if (IS_NPC(i))
       strcpy(buffer, i->player.short_descr);
     else
       strcpy(buffer, GET_NAME(i));
 
-    if (percent >= 100)
+    if (health_percent >= 100)
       strcat(buffer, " is in an excellent condition.\n\r");
-    else if (percent >= 90)
+    else if (health_percent >= 90)
       strcat(buffer, " has a few scratches.\n\r");
-    else if (percent >= 75)
+    else if (health_percent >= 75)
       strcat(buffer, " has some small wounds and bruises.\n\r");
-    else if (percent >= 50)
+    else if (health_percent >= 50)
       strcat(buffer, " has quite a few wounds.\n\r");
-    else if (percent >= 30)
+    else if (health_percent >= 30)
       strcat(buffer, " has some big nasty wounds and scratches.\n\r");
-    else if (percent >= 15)
+    else if (health_percent >= 15)
       strcat(buffer, " looks pretty hurt.\n\r");
-    else if (percent >= 0)
+    else if (health_percent >= 0)
       strcat(buffer, " is in an awful condition.\n\r");
     else
       strcat(buffer, " is bleeding awfully from big wounds.\n\r");
@@ -773,7 +773,7 @@ void show_mult_char_to_char(struct char_data *i, struct char_data *ch, int mode,
       for (j = 0; j < MAX_WEAR; j++) {
 	if (i->equipment[j]) {
 	  if (CAN_SEE_OBJ(ch, i->equipment[j])) {
-	    cprintf(ch, (char *)where[j]);
+	    cprintf(ch, "%s", where[j]);
 	    show_obj_to_char(i->equipment[j], ch, 1);
 	  }
 	}
@@ -1864,7 +1864,6 @@ void do_who(struct char_data *ch, char *argument, int cmd)
   /* long ct, ot; */
   time_t ct, ot;
   char *tmstr, *otmstr;
-  extern long Uptime;
 
   if (DEBUG)
     dlog("do_who");
@@ -2064,16 +2063,16 @@ static int which_number_mobile(struct char_data *ch, struct char_data *mob)
 {
   struct char_data *i;
   char *name;
-  int number;
+  int the_number;
 
   if (DEBUG)
     dlog("which_number_mobile");
   name = fname(mob->player.name);
-  for (i = character_list, number = 0; i; i = i->next) {
+  for (i = character_list, the_number = 0; i; i = i->next) {
     if (isname(name, i->player.name) && i->in_room != NOWHERE) {
-      number++;
+      the_number++;
       if (i == mob)
-	return number;
+	return the_number;
     }
   }
   return 0;
@@ -2162,7 +2161,7 @@ void do_where(struct char_data *ch, char *argument, int cmd)
   register struct char_data *i;
   register struct obj_data *k;
   struct descriptor_data *d;
-  int number, count;
+  int which_number, count;
   struct string_block sb;
 
   if (DEBUG)
@@ -2204,9 +2203,9 @@ void do_where(struct char_data *ch, char *argument, int cmd)
   }
   if (isdigit(*name)) {
     nameonly = name;
-    count = number = get_number(&nameonly);
+    count = which_number = get_number(&nameonly);
   } else {
-    count = number = 0;
+    count = which_number = 0;
   }
 
   *buf = '\0';
@@ -2218,33 +2217,33 @@ void do_where(struct char_data *ch, char *argument, int cmd)
       if ((i->in_room != NOWHERE) &&
 	  ((GetMaxLevel(ch) >= LOW_IMMORTAL) || (real_roomp(i->in_room)->zone ==
 				  real_roomp(ch->in_room)->zone))) {
-	if (number == 0 || (--count) == 0) {
-	  if (number == 0) {
+	if (which_number == 0 || (--count) == 0) {
+	  if (which_number == 0) {
 	    sprintf(buf, "[%2d] ", ++count);	/* I love short circuiting :) */
 	    append_to_string_block(&sb, buf);
 	  }
 	  do_where_person(ch, i, &sb);
 	  *buf = 1;
-	  if (number != 0)
+	  if (which_number != 0)
 	    break;
 	}
 	if (GetMaxLevel(ch) < LOW_IMMORTAL)
 	  break;
       }
     }
-  /*  count = number; */
+  /*  count = which_number; */
 
   if (GetMaxLevel(ch) >= LOW_IMMORTAL) {
     for (k = object_list; k; k = k->next)
       if (isname(name, k->name) && CAN_SEE_OBJ(ch, k)) {
-	if (number == 0 || (--count) == 0) {
-	  if (number == 0) {
+	if (which_number == 0 || (--count) == 0) {
+	  if (which_number == 0) {
 	    sprintf(buf, "[%2d] ", ++count);
 	    append_to_string_block(&sb, buf);
 	  }
-	  do_where_object(ch, k, number != 0, &sb);
+	  do_where_object(ch, k, which_number != 0, &sb);
 	  *buf = 1;
-	  if (number != 0)
+	  if (which_number != 0)
 	    break;
 	}
       }
@@ -2618,7 +2617,7 @@ void do_map(struct char_data *ch, char *argument, int cmd)
                   real_roomp(exitdata->to_room)->name);
           sprintf(vnum[door], "#%-5.5d", exitdata->to_room);
           sprintf(terrain[door],
-                  sector_types[real_roomp(exitdata->to_room)->sector_type]);
+                  sector_types[real_roomp(exitdata->to_room)->sector_type], "");
         } else {
           if (!IS_SET(exitdata->exit_info, EX_SECRET)) {
             if (IS_SET(exitdata->exit_info, EX_CLOSED)) {
@@ -2630,7 +2629,7 @@ void do_map(struct char_data *ch, char *argument, int cmd)
                 sprintf(name[door], "%-20.20s",
                   real_roomp(exitdata->to_room)->name);
                 sprintf(terrain[door],
-                  sector_types[real_roomp(exitdata->to_room)->sector_type]);
+                  sector_types[real_roomp(exitdata->to_room)->sector_type], "");
               }
             }
           }

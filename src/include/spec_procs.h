@@ -22,7 +22,7 @@ extern struct special_proc_entry *specials_o;
 extern struct special_proc_entry *specials_r;
 #endif
 
-char *how_good(int percent);
+char *how_good(int percent_known);
 int GainLevel(struct char_data *guildmaster, struct char_data *ch, int class);
 struct char_data *FindMobInRoomWithFunction(int room, ifuncp func);
 int MageGuildMaster(struct char_data *ch, int cmd, char *arg);

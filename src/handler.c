@@ -25,6 +25,7 @@
 #include "include/modify.h"
 #include "include/multiclass.h"
 #include "include/opinion.h"
+#include "include/act_wiz.h"
 #define _HANDLER_C
 #include "include/handler.h"
 
@@ -551,7 +552,7 @@ void char_from_room(struct char_data *ch)
 /* place a character in a room */
 void char_to_room(struct char_data *ch, int room)
 {
-  void raw_kill(struct char_data *ch);
+  /* void raw_kill(struct char_data *ch); */
   struct room_data *rp;
 
   rp = real_roomp(room);
@@ -738,20 +739,20 @@ int get_number(char **name)
 
   int i;
   char *ppos;
-  char number[MAX_INPUT_LENGTH] = "";
+  char anumber[MAX_INPUT_LENGTH] = "";
 
   if (DEBUG)
     dlog("get_number");
   if ((ppos = (char *)index(*name, '.')) && ppos[1]) {
     *ppos++ = '\0';
-    strcpy(number, *name);
+    strcpy(anumber, *name);
     strcpy(*name, ppos);
 
-    for (i = 0; *(number + i); i++)
-      if (!isdigit(*(number + i)))
+    for (i = 0; *(anumber + i); i++)
+      if (!isdigit(*(anumber + i)))
 	return (0);
 
-    return (atoi(number));
+    return (atoi(anumber));
   }
   return (1);
 }
@@ -760,7 +761,7 @@ int get_number(char **name)
 struct obj_data *get_obj_in_list(char *name, struct obj_data *list)
 {
   struct obj_data *i;
-  int j, number;
+  int j, anumber;
   char tmpname[MAX_INPUT_LENGTH];
   char *tmp;
 
@@ -791,12 +792,12 @@ struct obj_data *get_obj_in_list(char *name, struct obj_data *list)
    * }
    */
 
-  if (!(number = get_number(&tmp)))
+  if (!(anumber = get_number(&tmp)))
     return (0);
 
-  for (i = list, j = 1; i && (j <= number); i = i->next_content)
+  for (i = list, j = 1; i && (j <= anumber); i = i->next_content)
     if (isname(tmp, i->name)) {
-      if (j == number)
+      if (j == anumber)
 	return (i);
       j++;
     }
@@ -821,7 +822,7 @@ struct obj_data *get_obj_in_list_num(int num, struct obj_data *list)
 struct obj_data *get_obj(char *name)
 {
   struct obj_data *i;
-  int j, number;
+  int j, anumber;
   char tmpname[MAX_INPUT_LENGTH];
   char *tmp;
 
@@ -829,12 +830,12 @@ struct obj_data *get_obj(char *name)
     dlog("get_obj");
   strcpy(tmpname, name);
   tmp = tmpname;
-  if (!(number = get_number(&tmp)))
+  if (!(anumber = get_number(&tmp)))
     return (0);
 
-  for (i = object_list, j = 1; i && (j <= number); i = i->next)
+  for (i = object_list, j = 1; i && (j <= anumber); i = i->next)
     if (isname(tmp, i->name)) {
-      if (j == number)
+      if (j == anumber)
 	return (i);
       j++;
     }
@@ -859,7 +860,7 @@ struct obj_data *get_obj_num(int nr)
 struct char_data *get_char_room(char *name, int room)
 {
   struct char_data *i;
-  int j, number;
+  int j, anumber;
   char tmpname[MAX_INPUT_LENGTH];
   char *tmp;
 
@@ -867,12 +868,12 @@ struct char_data *get_char_room(char *name, int room)
     dlog("get_char_room");
   strcpy(tmpname, name);
   tmp = tmpname;
-  if (!(number = get_number(&tmp)))
+  if (!(anumber = get_number(&tmp)))
     return (0);
 
-  for (i = real_roomp(room)->people, j = 1; i && (j <= number); i = i->next_in_room)
+  for (i = real_roomp(room)->people, j = 1; i && (j <= anumber); i = i->next_in_room)
     if (isname(tmp, GET_NAME(i))) {
-      if (j == number)
+      if (j == anumber)
 	return (i);
       j++;
     }
@@ -883,7 +884,7 @@ struct char_data *get_char_room(char *name, int room)
 struct char_data *get_char(char *name)
 {
   struct char_data *i;
-  int j, number;
+  int j, anumber;
   char tmpname[MAX_INPUT_LENGTH];
   char *tmp;
 
@@ -891,12 +892,12 @@ struct char_data *get_char(char *name)
     dlog("get_char");
   strcpy(tmpname, name);
   tmp = tmpname;
-  if (!(number = get_number(&tmp)))
+  if (!(anumber = get_number(&tmp)))
     return (0);
 
-  for (i = character_list, j = 1; i && (j <= number); i = i->next)
+  for (i = character_list, j = 1; i && (j <= anumber); i = i->next)
     if (isname(tmp, GET_NAME(i))) {
-      if (j == number)
+      if (j == anumber)
 	return (i);
       j++;
     }
@@ -1129,10 +1130,10 @@ void extract_char(struct char_data *ch)
   struct descriptor_data *t_desc;
   int l, was_in, j;
 
-  void do_save(struct char_data *ch, char *argument, int cmd);
-  void do_return(struct char_data *ch, char *argument, int cmd);
+  /* void do_save(struct char_data *ch, char *argument, int cmd); */
+  /* void do_return(struct char_data *ch, char *argument, int cmd); */
 
-  void die_follower(struct char_data *ch);
+  /* void die_follower(struct char_data *ch); */
 
   if (IS_PC(ch) && !ch->desc) {
     for (t_desc = descriptor_list; t_desc; t_desc = t_desc->next)
@@ -1282,7 +1283,7 @@ void extract_char(struct char_data *ch)
 struct char_data *get_char_room_vis(struct char_data *ch, char *name)
 {
   struct char_data *i;
-  int j, number;
+  int j, anumber;
   char tmpname[MAX_INPUT_LENGTH];
   char *tmp;
 
@@ -1292,14 +1293,14 @@ struct char_data *get_char_room_vis(struct char_data *ch, char *name)
 
   strcpy(tmpname, name);
   tmp = tmpname;
-  if (!(number = get_number(&tmp)))
+  if (!(anumber = get_number(&tmp)))
     return (0);
 
   for (i = real_roomp(ch->in_room)->people, j = 1;
-       i && (j <= number); i = i->next_in_room)
+       i && (j <= anumber); i = i->next_in_room)
     if (isname(tmp, GET_NAME(i)))
       if (CAN_SEE(ch, i)) {
-	if (j == number)
+	if (j == anumber)
 	  return (i);
 	j++;
       }
@@ -1311,7 +1312,7 @@ struct char_data *get_char_room_vis(struct char_data *ch, char *name)
 struct char_data *get_char_vis_world(struct char_data *ch, char *name, int *count)
 {
   struct char_data *i;
-  int j, number;
+  int j, anumber;
   char tmpname[MAX_INPUT_LENGTH];
   char *tmp;
 
@@ -1321,14 +1322,14 @@ struct char_data *get_char_vis_world(struct char_data *ch, char *name, int *coun
 
   strcpy(tmpname, name);
   tmp = tmpname;
-  if (!(number = get_number(&tmp)))
+  if (!(anumber = get_number(&tmp)))
     return (0);
 
   j = count ? *count : 1;
-  for (i = character_list; i && (j <= number); i = i->next)
+  for (i = character_list; i && (j <= anumber); i = i->next)
     if (isname(tmp, GET_NAME(i)))
       if (CAN_SEE(ch, i)) {
-	if (j == number)
+	if (j == anumber)
 	  return (i);
 	j++;
       }
@@ -1353,7 +1354,7 @@ struct char_data *get_char_vis(struct char_data *ch, char *name)
 struct obj_data *get_obj_in_list_vis(struct char_data *ch, char *name, struct obj_data *list)
 {
   struct obj_data *i;
-  int j, number;
+  int j, anumber;
   char tmpname[MAX_INPUT_LENGTH];
   char *tmp;
 
@@ -1361,13 +1362,13 @@ struct obj_data *get_obj_in_list_vis(struct char_data *ch, char *name, struct ob
     dlog("get_obj_in_list_vis");
   strcpy(tmpname, name);
   tmp = tmpname;
-  if (!(number = get_number(&tmp)))
+  if (!(anumber = get_number(&tmp)))
     return (0);
 
-  for (i = list, j = 1; i && (j <= number); i = i->next_content)
+  for (i = list, j = 1; i && (j <= anumber); i = i->next_content)
     if (isname(tmp, i->name))
       if (CAN_SEE_OBJ(ch, i)) {
-	if (j == number)
+	if (j == anumber)
 	  return (i);
 	j++;
       }
@@ -1378,7 +1379,7 @@ struct obj_data *get_obj_vis_world(struct char_data *ch, char *name,
 				   int *count)
 {
   struct obj_data *i;
-  int j, number;
+  int j, anumber;
   char tmpname[MAX_INPUT_LENGTH];
   char *tmp;
 
@@ -1386,16 +1387,16 @@ struct obj_data *get_obj_vis_world(struct char_data *ch, char *name,
     dlog("get_obj_vis_world");
   strcpy(tmpname, name);
   tmp = tmpname;
-  if (!(number = get_number(&tmp)))
+  if (!(anumber = get_number(&tmp)))
     return (0);
 
   j = count ? *count : 1;
 
   /* ok.. no luck yet. scan the entire obj list   */
-  for (i = object_list; i && (j <= number); i = i->next)
+  for (i = object_list; i && (j <= anumber); i = i->next)
     if (isname(tmp, i->name))
       if (CAN_SEE_OBJ(ch, i)) {
-	if (j == number)
+	if (j == anumber)
 	  return (i);
 	j++;
       }
@@ -1425,7 +1426,7 @@ struct obj_data *get_obj_vis(struct char_data *ch, char *name)
 struct obj_data *get_obj_vis_accessible(struct char_data *ch, char *name)
 {
   struct obj_data *i;
-  int j, number;
+  int j, anumber;
   char tmpname[MAX_INPUT_LENGTH];
   char *tmp;
 
@@ -1433,20 +1434,20 @@ struct obj_data *get_obj_vis_accessible(struct char_data *ch, char *name)
     dlog("get_obj_vis_accessible");
   strcpy(tmpname, name);
   tmp = tmpname;
-  if (!(number = get_number(&tmp)))
+  if (!(anumber = get_number(&tmp)))
     return (0);
 
   /* scan items carried */
-  for (i = ch->carrying, j = 1; i && j <= number; i = i->next_content)
+  for (i = ch->carrying, j = 1; i && j <= anumber; i = i->next_content)
     if (isname(tmp, i->name) && CAN_SEE_OBJ(ch, i)) {
-      if (j == number)
+      if (j == anumber)
 	return (i);
       else
 	j++;
     }
-  for (i = real_roomp(ch->in_room)->contents; i && j <= number; i = i->next_content)
+  for (i = real_roomp(ch->in_room)->contents; i && j <= anumber; i = i->next_content)
     if (isname(tmp, i->name) && CAN_SEE_OBJ(ch, i)) {
-      if (j == number)
+      if (j == anumber)
 	return (i);
       else
 	j++;

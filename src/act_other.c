@@ -136,8 +136,8 @@ void do_title(struct char_data *ch, char *argument, int cmd) {
 
 void do_quit(struct char_data *ch, char *argument, int cmd)
 {
-  void do_save(struct char_data *ch, char *argument, int cmd);
-  void die(struct char_data *ch);
+  /* void do_save(struct char_data *ch, char *argument, int cmd); */
+  /* void die(struct char_data *ch); */
 
   if (DEBUG)
     dlog("do_quit");
@@ -187,7 +187,7 @@ void do_not_here(struct char_data *ch, char *argument, int cmd)
 void do_sneak(struct char_data *ch, char *argument, int cmd)
 {
   struct affected_type af;
-  BYTE percent;
+  BYTE percent_chance;
 
   if (DEBUG)
     dlog("do_sneak");
@@ -201,9 +201,9 @@ void do_sneak(struct char_data *ch, char *argument, int cmd)
   cprintf(ch, "Ok, you'll try to move silently for a while.\n\r");
   cprintf(ch, "And you attempt to hide yourself.\n\r");
 
-  percent = number(1, 101);	       /* 101% is a complete failure */
+  percent_chance = number(1, 101);	       /* 101% is a complete failure */
 
-  if (percent > ch->skills[SKILL_SNEAK].learned + dex_app_skill[(int)GET_DEX(ch)].sneak)
+  if (percent_chance > ch->skills[SKILL_SNEAK].learned + dex_app_skill[(int)GET_DEX(ch)].sneak)
     return;
 
   if (ch->skills[SKILL_SNEAK].learned < 50)
@@ -221,7 +221,7 @@ void do_sneak(struct char_data *ch, char *argument, int cmd)
 void do_hide(struct char_data *ch, char *argument, int cmd)
 {
   struct affected_type af;
-  BYTE percent;
+  BYTE percent_chance;
 
   if (DEBUG)
     dlog("do_hide");
@@ -232,9 +232,9 @@ void do_hide(struct char_data *ch, char *argument, int cmd)
   if (IS_AFFECTED(ch, AFF_HIDE))
     REMOVE_BIT(ch->specials.affected_by, AFF_HIDE);
 
-  percent = number(1, 101);	       /* 101% is a complete failure */
+  percent_chance = number(1, 101);	       /* 101% is a complete failure */
 
-  if (percent > ch->skills[SKILL_SNEAK].learned + dex_app_skill[(int)GET_DEX(ch)].sneak)
+  if (percent_chance > ch->skills[SKILL_SNEAK].learned + dex_app_skill[(int)GET_DEX(ch)].sneak)
     return;
   if (ch->skills[SKILL_SNEAK].learned < 50)
     ch->skills[SKILL_SNEAK].learned += 2;
@@ -255,7 +255,7 @@ void do_steal(struct char_data *ch, char *argument, int cmd)
   char victim_name[240];
   char obj_name[240];
   char buf[240];
-  int percent;
+  int percent_chance;
   int gold, eq_pos;
   BYTE ohoh = FALSE;
   struct room_data *rp;
@@ -282,14 +282,14 @@ void do_steal(struct char_data *ch, char *argument, int cmd)
     return;
 
   /* 101% is a complete failure */
-  percent = number(1, 101) - dex_app_skill[(int)GET_DEX(ch)].p_pocket;
+  percent_chance = number(1, 101) - dex_app_skill[(int)GET_DEX(ch)].p_pocket;
 
   if (GET_POS(victim) < POSITION_SLEEPING)
-    percent = -1;		       /* ALWAYS SUCCESS */
+    percent_chance = -1;		       /* ALWAYS SUCCESS */
 
-  percent += GetTotLevel(victim);
+  percent_chance += GetTotLevel(victim);
   if (GetMaxLevel(victim) > MAX_MORT)
-    percent = 101;		       /* Failure */
+    percent_chance = 101;		       /* Failure */
 
   if (str_cmp(obj_name, "coins") && str_cmp(obj_name, "gold")) {
     if (!(obj = get_obj_in_list_vis(victim, obj_name, victim->carrying))) {
@@ -314,12 +314,12 @@ void do_steal(struct char_data *ch, char *argument, int cmd)
 	}
       }
     } else {			       /* obj found in inventory */
-      percent += GET_OBJ_WEIGHT(obj);  /* Make heavy harder */
+      percent_chance += GET_OBJ_WEIGHT(obj);  /* Make heavy harder */
       rp = real_roomp(ch->in_room);
       if (IS_SET(rp->room_flags, NO_STEAL)) {
-	percent = 101;
+	percent_chance = 101;
       }
-      if (AWAKE(victim) && (percent > ch->skills[SKILL_STEAL].learned)) {
+      if (AWAKE(victim) && (percent_chance > ch->skills[SKILL_STEAL].learned)) {
 	ohoh = TRUE;
 	act("Oops..", FALSE, ch, 0, 0, TO_CHAR);
 	act("$n tried to steal something from you!", FALSE, ch, 0, victim, TO_VICT);
@@ -338,7 +338,7 @@ void do_steal(struct char_data *ch, char *argument, int cmd)
       }
     }
   } else {			       /* Steal some coins */
-    if (AWAKE(victim) && (percent > ch->skills[SKILL_STEAL].learned)) {
+    if (AWAKE(victim) && (percent_chance > ch->skills[SKILL_STEAL].learned)) {
       ohoh = TRUE;
       act("Oops..", FALSE, ch, 0, 0, TO_CHAR);
       act("You discover that $n has $s hands in your wallet.", FALSE, ch, 0, victim, TO_VICT);

@@ -43,7 +43,7 @@ extern double RENT_RATE;
 #endif
 
 void add_obj_cost(struct char_data *ch, struct char_data *re, struct obj_data *obj, struct obj_cost *cost);
-BYTE recep_offer(struct char_data *ch, struct char_data *receptionist, struct obj_cost *cost);
+BYTE recep_offer(struct char_data *ch, struct char_data *recep_mob, struct obj_cost *cost);
 void update_file(FILE * fl, char *name, struct obj_file_u *st);
 void obj_store_to_char(struct char_data *ch, struct obj_file_u *st);
 void load_char_objs(struct char_data *ch);
