@@ -1,27 +1,40 @@
--l70 -lc70
--bad -bap -d0 -nbc -br -c40 -cd40 -ncdb -ce
--ci0 -cli0 -cp8 -di0 -nfc1 -nfca -i2 -ip2 -npcs -npsl
--sc -nss -ts8
--ncs -nbs -nlps
--lp
--sob
--T UBYTE
--T BYTE
--T USHORT
--T SHORT
--T UINT
--T INT
--T ULONG
--T LONG
--T sbyte
--T ubyte
--T sh_int
--T ush_int
--T bool
--T byte
+-pmt						/* Preserve make times */
+
+--line-length96					/* Overall width of code */
+--comment-line-length120			/* width of comment lines */
+--indent-level2					/* indent N spaces per level */
+--case-indentation2				/* indent case statements */
+--parameter-indentation2			/* indent old-style parameter declarations */
+--declaration-indentation40			/* variable declarations line up here */
+--tab-size8					/* tabs get expanded into N characters */
+
+--break-before-boolean-operator			/* break before boolean operators if possible */
+--dont-break-procedure-type			/* keep function type on the same line as the name */
+--blank-lines-after-declarations		/* space out declarations */
+--blank-lines-after-procedures			/* space out bodies */
+--blank-lines-after-commas			/* seperate lines for comma seperated declarations */
+--swallow-optional-blank-lines			/* remove "extra" blank lines */
+
+--braces-on-if-line				/* place opening brace ON the if line */
+--cuddle-else					/* put else with braces ala } else { */
+--cuddle-do-while				/* put while inline ala do { } while */
+--braces-on-struct-decl-line			/* put opening brace ON struct declaration line */
+--continue-at-parentheses			/* line up continuations at parens */
+
+--no-space-after-function-call-names		/* function() not function () */
+--dont-space-special-semicolon			/* no extra spacing of semicolons */
+--no-space-after-casts				/* (type)cast not (type) cast */
+
+--comment-indentation64				/* line up comments at column N */
+--declaration-comment-column64			/* line up comments after declarations in column N */
+--else-endif-column64				/* preprocessor #else and #endif comments line up here */
+--start-left-side-of-comments			/* add stars in block comments */
+--format-all-comments				/* try to reformat comments */
+--dont-format-first-column-comments		/* unless they are on the left! */
+--comment-delimiters-on-blank-lines		/* one lineers with no code should be made larger */
+
+/* Various typedefs used in our code */
+
 -T funcp
--T Guild_Min
--T Guild_Res
--T Guild_st
--T Opinion
--l70 -lc70
+-T ifuncp
+

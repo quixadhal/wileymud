@@ -19,18 +19,19 @@
 #include "global.h"
 #include "bug.h"
 
-void watch(int port, char *text);
-void wave(int sock, char *text, int port);
-int new_connection(int s, int port);
-int init_socket(int port);
-int write_to_descriptor(int desc, char *txt);
-void nonblock(int s);
+void                                    watch(int port, char *text);
+void                                    wave(int sock, char *text, int port);
+int                                     new_connection(int s, int port);
+int                                     init_socket(int port);
+int                                     write_to_descriptor(int desc, char *txt);
+void                                    nonblock(int s);
 
 int main(int argc, char **argv)
 {
-  int port;
-  char txt[8192], buf[83];
-  FILE *fl;
+  int                                     port;
+  char                                    txt[8192],
+                                          buf[83];
+  FILE                                   *fl;
 
   if (argc != 3) {
     fputs("Usage: sign (<filename> | - ) <port #>\n", stderr);
@@ -64,8 +65,8 @@ int main(int argc, char **argv)
 
 void watch(int port, char *text)
 {
-  int mother;
-  fd_set input_set;
+  int                                     mother;
+  fd_set                                  input_set;
 
   mother = init_socket(port);
 
@@ -83,7 +84,7 @@ void watch(int port, char *text)
 
 void wave(int sock, char *text, int port)
 {
-  int s;
+  int                                     s;
 
   if ((s = new_connection(sock, port)) < 0)
     return;
@@ -94,20 +95,26 @@ void wave(int sock, char *text, int port)
 
 int new_connection(int s, int port)
 {
-  struct sockaddr_in isa, ident;
-  struct hostent *host;
-  int i, t;
-  int fd, len, remote_port;
-  long remote_addr;
-  FILE *ifp, *ofp;
-  char buf[8192];
-  int args;
-  int lport, rport;
-  char reply_type[81];
-  char opsys_or_error[81];
-  char identifier[1024];
-  char charset[81];
-  char opsys[81];
+  struct sockaddr_in                      isa,
+                                          ident;
+  struct hostent                         *host;
+  int                                     i,
+                                          t;
+  int                                     fd,
+                                          len,
+                                          remote_port;
+  long                                    remote_addr;
+  FILE                                   *ifp,
+                                         *ofp;
+  char                                    buf[8192];
+  int                                     args;
+  int                                     lport,
+                                          rport;
+  char                                    reply_type[81];
+  char                                    opsys_or_error[81];
+  char                                    identifier[1024];
+  char                                    charset[81];
+  char                                    opsys[81];
 
   i = sizeof(isa);
   getsockname(s, (struct sockaddr *)&isa, &i);
@@ -116,45 +123,46 @@ int new_connection(int s, int port)
     return (-1);
   }
   nonblock(t);
-  remote_port= ntohs(isa.sin_port);
-  remote_addr= isa.sin_addr.s_addr;
+  remote_port = ntohs(isa.sin_port);
+  remote_addr = isa.sin_addr.s_addr;
   printf("accept on port %d from ", remote_port);
-  if((fd= socket(AF_INET, SOCK_STREAM, 0)) >= 0) {
-    ident.sin_family= AF_INET;
-    ident.sin_addr.s_addr= remote_addr;
-    ident.sin_port= htons(113);
-    len= sizeof(ident);
-    if(connect(fd, (struct sockaddr *)&ident, len) >= 0) {
-      len= sizeof(ident);
-      if(getsockname(fd, (struct sockaddr *)&ident, &len) >= 0) {
-        if((ifp= fdopen(fd, "r")) && (ofp= fdopen(fd, "w"))) {
-          fprintf(ofp, "%d , %d\n", remote_port, port);
-          fflush(ofp);
-          shutdown(fd, 1);
-          if(fgets(buf, sizeof(buf)-1, ifp)) {
-            if((args= sscanf(buf,
-                      " %d , %d : %[^ \t\n\r:] : %[^\t\n\r:] : %[^\n\r]",
-                      &lport, &rport, reply_type, opsys_or_error, identifier))
-               >= 3) {
-              opsys[0] = charset[0] = '\0';
-              if(sscanf(opsys_or_error, " %s , %s", opsys, charset) != 2)
-                strcpy(opsys, opsys_or_error);
-              if(!strcasecmp(reply_type, "USERID")) {
-                printf("%s@", identifier);
-              }
-            }
-          }
-          fclose(ifp); fclose(ofp);
-        }
+  if ((fd = socket(AF_INET, SOCK_STREAM, 0)) >= 0) {
+    ident.sin_family = AF_INET;
+    ident.sin_addr.s_addr = remote_addr;
+    ident.sin_port = htons(113);
+    len = sizeof(ident);
+    if (connect(fd, (struct sockaddr *)&ident, len) >= 0) {
+      len = sizeof(ident);
+      if (getsockname(fd, (struct sockaddr *)&ident, &len) >= 0) {
+	if ((ifp = fdopen(fd, "r")) && (ofp = fdopen(fd, "w"))) {
+	  fprintf(ofp, "%d , %d\n", remote_port, port);
+	  fflush(ofp);
+	  shutdown(fd, 1);
+	  if (fgets(buf, sizeof(buf) - 1, ifp)) {
+	    if ((args = sscanf(buf,
+			       " %d , %d : %[^ \t\n\r:] : %[^\t\n\r:] : %[^\n\r]",
+			       &lport, &rport, reply_type, opsys_or_error, identifier))
+		>= 3) {
+	      opsys[0] = charset[0] = '\0';
+	      if (sscanf(opsys_or_error, " %s , %s", opsys, charset) != 2)
+		strcpy(opsys, opsys_or_error);
+	      if (!strcasecmp(reply_type, "USERID")) {
+		printf("%s@", identifier);
+	      }
+	    }
+	  }
+	  fclose(ifp);
+	  fclose(ofp);
+	}
       }
     }
     shutdown(fd, 0);
     close(fd);
   }
-  if(!(host= gethostbyaddr((char *)&remote_addr, sizeof(remote_addr), AF_INET)))
+  if (!(host = gethostbyaddr((char *)&remote_addr, sizeof(remote_addr), AF_INET)))
     printf("%d.%d.%d.%d\n",
-            (int)((char *)remote_addr)[0], (int)((char *)remote_addr)[1],
-            (int)((char *)remote_addr)[2], (int)((char *)remote_addr)[3]);
+	   (int)((char *)remote_addr)[0], (int)((char *)remote_addr)[1],
+	   (int)((char *)remote_addr)[2], (int)((char *)remote_addr)[3]);
   else
     printf("%s\n", host->h_name);
   fflush(stdout);
@@ -163,12 +171,12 @@ int new_connection(int s, int port)
 
 int init_socket(int port)
 {
-  int s;
-  char *opt;
-  char hostname[1024];
-  struct sockaddr_in sa;
-  struct hostent *hp;
-  struct linger ld;
+  int                                     s;
+  char                                   *opt;
+  char                                    hostname[1024];
+  struct sockaddr_in                      sa;
+  struct hostent                         *hp;
+  struct linger                           ld;
 
   bzero(&sa, sizeof(struct sockaddr_in));
 
@@ -185,8 +193,7 @@ int init_socket(int port)
     perror("Init-socket");
     exit(-1);
   }
-  if (setsockopt(s, SOL_SOCKET, SO_REUSEADDR,
-		 (char *)&opt, sizeof(opt)) < 0) {
+  if (setsockopt(s, SOL_SOCKET, SO_REUSEADDR, (char *)&opt, sizeof(opt)) < 0) {
     perror("setsockopt REUSEADDR");
     exit(-1);
   }
@@ -196,7 +203,7 @@ int init_socket(int port)
     perror("setsockopt LINGER");
     exit(-1);
   }
-  if (bind(s, (struct sockaddr *)&sa, sizeof(sa) /*, 0 */ ) < 0) {
+  if (bind(s, (struct sockaddr *)&sa, sizeof(sa) /* , 0 */ ) < 0) {
     perror("bind");
     close(s);
     exit(-1);
@@ -207,7 +214,9 @@ int init_socket(int port)
 
 int write_to_descriptor(int desc, char *txt)
 {
-  int sofar, thisround, total;
+  int                                     sofar,
+                                          thisround,
+                                          total;
 
   total = strlen(txt);
   sofar = 0;
