@@ -33,38 +33,44 @@
   MAX(spell_info[sn].min_mana, spell_info[sn].max_mana/MAX(1, (GET_LEVEL(ch, BestMagicClass(ch))- SPELL_LEVEL(ch, sn))+1))
 
 #ifndef _SPELL_PARSER_C
-extern struct spell_info_type spell_info[MAX_SKILLS];
+extern struct spell_info_type           spell_info[MAX_SKILLS];
+
 /* extern char *spells[]; */
-extern const BYTE saving_throws[ABS_MAX_CLASS][MAX_SAVING_THROWS][ABS_MAX_LVL];
+extern const char                      
+  saving_throws[ABS_MAX_CLASS][MAX_SAVING_THROWS][ABS_MAX_LVL];
 
 #endif
 
-int GetSpellByName(char *name);
-int GetSkillByName(char *name);
-int SPELL_LEVEL(struct char_data *ch, int sn);
-inline int SKILL_LEVEL(struct char_data *ch, int sn);
-int CanCast(struct char_data *ch, int sn);
-inline int CanCastClass(struct char_data *ch, int sn, int cl);
-int CanUse(struct char_data *ch, int sn);
-inline int CanUseClass(struct char_data *ch, int sn, int cl);
-void affect_update(void);
-void clone_char(struct char_data *ch);
-void clone_obj(struct obj_data *obj);
-BYTE circle_follow(struct char_data *ch, struct char_data *victim);
-void stop_follower(struct char_data *ch);
-void die_follower(struct char_data *ch);
-void add_follower(struct char_data *ch, struct char_data *leader);
-void say_spell(struct char_data *ch, int si);
-BYTE saves_spell(struct char_data *ch, SHORT save_type);
-BYTE ImpSaveSpell(struct char_data *ch, SHORT save_type, int mod);
-char *skip_spaces(char *string);
-void do_cast(struct char_data *ch, char *argument, int cmd);
-void assign_spell_pointers(void);
-int splat(struct char_data *ch, struct room_data *rp, int height);
-int check_falling(struct char_data *ch);
-int check_drowning(struct char_data *ch);
-void check_falling_obj(struct obj_data *obj, int room);
-inline int check_nature(struct char_data *i);
-inline void check_all_nature(int current_pulse);
+int                                     GetSpellByName(char *name);
+int                                     GetSkillByName(char *name);
+int                                     SPELL_LEVEL(struct char_data *ch, int sn);
+inline int                              SKILL_LEVEL(struct char_data *ch, int sn);
+int                                     CanCast(struct char_data *ch, int sn);
+inline int                              CanCastClass(struct char_data *ch, int sn, int cl);
+int                                     CanUse(struct char_data *ch, int sn);
+inline int                              CanUseClass(struct char_data *ch, int sn, int cl);
+void                                    affect_update(void);
+void                                    clone_char(struct char_data *ch);
+void                                    clone_obj(struct obj_data *obj);
+char                                    circle_follow(struct char_data *ch,
+						      struct char_data *victim);
+void                                    stop_follower(struct char_data *ch);
+void                                    die_follower(struct char_data *ch);
+void                                    add_follower(struct char_data *ch,
+						     struct char_data *leader);
+void                                    say_spell(struct char_data *ch, int si);
+char                                    saves_spell(struct char_data *ch, short int save_type);
+char                                    ImpSaveSpell(struct char_data *ch, short int save_type,
+						     int mod);
+inline char                            *skip_spaces(char *string);
+void                                    do_cast(struct char_data *ch, char *argument, int cmd);
+void                                    assign_spell_pointers(void);
+int                                     splat(struct char_data *ch, struct room_data *rp,
+					      int height);
+int                                     check_falling(struct char_data *ch);
+int                                     check_drowning(struct char_data *ch);
+void                                    check_falling_obj(struct obj_data *obj, int room);
+inline int                              check_nature(struct char_data *i);
+inline void                             check_all_nature(int current_pulse);
 
 #endif

@@ -21,8 +21,8 @@ MANDIR=$(INSTROOT)/man/man3
 # needed for our purposes (stdlib, string, unistd).
 #
 WARN = -Wall -Wstrict-prototypes -Wmissing-prototypes
-OPT = -O3 -fstrength-reduce -funroll-loops -fexpensive-optimizations
-CFLAGS = $(WARN) $(OPT) -g -pipe
+OPT = -O3 #-fstrength-reduce -funroll-loops -fexpensive-optimizations
+CFLAGS = $(WARN) $(OPT) -ggdb -pipe
 
 LDLIBS =
 LIBIDENT = libident.a
@@ -138,7 +138,7 @@ aix hpux hpux8 hpux9:
 #
 #
 linux:
-	@$(MAKE) all CC="gcc" CFLAGS="-Wall -Wstrict-prototypes -Wmissing-prototypes -O3 -fstrength-reduce -funroll-loops -fexpensive-optimizations -g -DHAVE_ANSIHEADERS -pipe"
+	@$(MAKE) all CC="gcc" CFLAGS="$(CFLAGS) -DHAVE_ANSIHEADERS"
 
 #
 #

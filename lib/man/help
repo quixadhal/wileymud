@@ -1,30 +1,24 @@
 			  ---=>>> WileyMUD III <<<=---
-+---------------------------------------------------------------------------+
-|  Communication   |    Equipment     |     Movement     |    Experience    |
-|------------------+------------------+------------------+------------------|
-| ' say            | wear, wield      | n,s,e,w,u,d      | practice <skill> |
-| , group tell     | remove, hold     | enter, leave     | gain             |
-| " tell           | use <item>       | follow, flee     | prac <m/c/w/t/r> |
-| : emote          | recite <scroll>  | land             |  *add known to   |
-| @ whizz tell     | quaff <potion>   | sit, stand       |  show only your  |
-|   shout, whisper |                  | rest, sleep      |  known skills.   |
-|------------------+------------------+------------------+------------------|
-|      Groups      |      Shops       |      Combat      |      Food        |
-|------------------+------------------+------------------+------------------|
-| follow           | buy, sell        | consider, kill   | eat, taste       |
-| group, grep      | list             | cast, swat       | drink, sip       |
-| gtell, split     | value            | kick, bash       |                  |
-|                  | rent, offer      | rescue, backstab |                  |
-|                  |                  | flee             |                  |
-|------------------+------------------+------------------+------------------|
-|      Items       |     Corpses      |    Environment   |     Personal     |
-|------------------+------------------+------------------+------------------|
-| get, drop, put   | get all corpse   | look             | score, inventory |
-| buy, sell        | bury             | look in          | nosummon,noshout |
-| give             | desecrate        | search           | noteleport       |
-| steal, pick      |                  |                  | help             |
-| open, close      |                  |                  | who              |
-| lock, unlock     |                  |                  | quit (careful!)  |
-+---------------------------------------------------------------------------+
-|    There are many more!  Try things, and ask anyone else who's online!    |
-+---------------------------------------------------------------------------+
+
+ --Communication--    --Equipment--       --Movement--      --Experience--   
+  ' say              wear, wield        n,s,e,w,u,d        practice <skill>  
+  , group tell       remove, hold       enter, leave       gain              
+  " tell             use <item>         follow, flee       prac <m/c/w/t/r>  
+  : emote            recite <scroll>    land                *add known to    
+  @ whizz tell       quaff <potion>     sit, stand          show only your   
+    shout, whisper                      rest, sleep         known skills.    
+
+     --Groups--         --Shops--          --Combat--         --Food--       
+  follow             buy, sell          consider, kill     eat, taste        
+  group, grep        list               cast, swat         drink, sip        
+  gtell, split       value              kick, bash                           
+                     rent, offer        rescue, backstab                     
+                                        flee                                 
+
+     --Items--         --Corpses--       --Environment--     --Personal--    
+  get, drop, put     get all corpse     look               score, inventory  
+  buy, sell          bury               look in            nosummon,noshout  
+  give               desecrate          search             noteleport        
+  steal, pick                                              help              
+  open, close                                              who               
+  lock, unlock                                             quit (careful!)   

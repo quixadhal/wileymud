@@ -7,11 +7,11 @@
  *  violating our copyright.
  */
 
-#include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <unistd.h>
 #include <stdarg.h>
+#include <errno.h>
+#include <unistd.h>
 #include <ctype.h>
 #include <sys/types.h>
 #include <sys/socket.h>
@@ -26,188 +26,244 @@
 #include <sys/un.h>
 #include <sys/resource.h>
 
-#include "include/global.h"
-#include "include/bug.h"
-#include "include/utils.h"
-#include "include/interpreter.h"
-#include "include/handler.h"
-#include "include/db.h"
-#include "include/modify.h"
-#include "include/whod.h"
-#include "include/multiclass.h"
-#include "include/weather.h"
-#include "include/mudlimits.h"
-#include "include/spell_parser.h"
-#include "include/sound.h"
-#include "include/fight.h"
-#include "include/mob_actions.h"
+#include "global.h"
+#include "bug.h"
+#include "utils.h"
+#include "interpreter.h"
+#include "handler.h"
+#include "db.h"
+#include "modify.h"
+#include "whod.h"
+#include "multiclass.h"
+#include "weather.h"
+#include "mudlimits.h"
+#include "spell_parser.h"
+#include "sound.h"
+#include "fight.h"
+#include "mob_actions.h"
+#include "act_other.h"
+#include "signals.h"
 #define _COMM_C
-#include "include/comm.h"
+#include "comm.h"
 
 #ifdef RFC1413
 #include "libident-0.19/ident.h"
 #endif
 
-struct descriptor_data *descriptor_list;
-struct descriptor_data *next_to_process;
+struct descriptor_data                 *descriptor_list = NULL;
+struct descriptor_data                 *next_to_process = NULL;
 
-int mud_port;
-int slow_death = 0;	/* Shut her down, Martha, she's sucking mud */
-int diku_shutdown = 0;	/* clean shutdown */
-int diku_reboot = 0;	/* reboot the game after a shutdown */
-int DEBUG = 0;
-int DEBUG2 = 0;
-int no_specials = 0;	/* Suppress ass. of special routines */
-long Uptime;		/* time that the game has been up */
+int                                     mud_port = 0;
+int                                     slow_death = 0;	       /* Shut her down, Martha, she's sucking mud */
+int                                     diku_shutdown = 0;     /* clean shutdown */
+int                                     diku_reboot = 0;       /* reboot the game after a shutdown */
+int                                     DEBUG = FALSE;
+int                                     no_specials = 0;       /* Suppress ass. of special routines */
+long                                    Uptime = 0L;	       /* time that the game has been up */
 
-int maxdesc;
-int avail_descs;
-int tics = 0;			       /* for extern checkpointing */
-int pulse = 0;
-int pulse_update = PULSE_UPDATE + PULSE_VARIABLE;
-int pulse_river = PULSE_RIVER;
-int pulse_teleport = PULSE_TELEPORT;
-int pulse_nature = PULSE_NATURE;
-int pulse_sound = PULSE_SOUND;
-int pulse_zone = PULSE_ZONE;
-int pulse_mobile = PULSE_MOBILE;
-int pulse_violence = PULSE_VIOLENCE;
-int pulse_reboot = PULSE_REBOOT;
-int pulse_dump = PULSE_DUMP;
+int                                     maxdesc = 0;
+int                                     avail_descs = 0;
+int                                     tics = 0;	       /* for extern checkpointing */
+int                                     pulse = 0;
+int                                     pulse_update = PULSE_UPDATE + PULSE_VARIABLE;
+int                                     pulse_river = PULSE_RIVER;
+int                                     pulse_teleport = PULSE_TELEPORT;
+int                                     pulse_nature = PULSE_NATURE;
+int                                     pulse_sound = PULSE_SOUND;
+int                                     pulse_zone = PULSE_ZONE;
+int                                     pulse_mobile = PULSE_MOBILE;
+int                                     pulse_violence = PULSE_VIOLENCE;
+int                                     pulse_reboot = PULSE_REBOOT;
+int                                     pulse_dump = PULSE_DUMP;
 
-int main(int argc, char **argv) {
-  int port;
-  char buf[512];
-  int pos = 1;
-  char *dir;
+int main(int argc, char **argv)
+{
+  int                                     port = 0;
+  int                                     pos = 1;
+  char                                   *dir = NULL;
+  char                                   *logfile = NULL;
+  char                                   *pidfile = NULL;
 
-  if (DEBUG)
-    dlog("main");
+  if (DEBUG > 1)
+    dlog("called %s with %d, %08x", __PRETTY_FUNCTION__, argc, argv);
+
   port = DFLT_PORT;
   dir = DFLT_DIR;
   WizLock = FALSE;
 
   while ((pos < argc) && (*(argv[pos]) == '-')) {
     switch (*(argv[pos] + 1)) {
-    case 'w':
-      WizLock = TRUE;
-      log("WizLock is SET.");
-      break;
-    case 'D':
-      DEBUG = TRUE;
-      log("Debugging is on.");
-      break;
-    case 'l':
-      log("Lawful mode no longer available.");
-      break;
-    case 'd':
-      if (*(argv[pos] + 2))
-	dir = argv[pos] + 2;
-      else if (++pos < argc)
-	dir = argv[pos];
-      else {
-	log("Directory arg expected after option -d.");
-	exit(0);
-      }
-      break;
-    case 's':
-      no_specials = 1;
-      log("Suppressing assignment of special routines.");
-      break;
-    default:
-      sprintf(buf, "Unknown option -% in argument string.",
-	      *(argv[pos] + 1));
-      log(buf);
-      break;
+      case 'w':
+	WizLock = TRUE;
+	dlog("WizLock is SET.");
+	break;
+      case 'D':
+	DEBUG = TRUE;
+	dlog("Debugging is on.");
+	break;
+      case 'l':
+	dlog("Lawful mode no longer available.");
+	break;
+      case 'L':
+	if (*(argv[pos] + 2))
+	  logfile = argv[pos] + 2;
+	else if (++pos < argc)
+	  logfile = argv[pos];
+	else {
+	  bug("LOG filename expected after option -L.");
+	  exit(0);
+	}
+	break;
+      case 'P':
+	if (*(argv[pos] + 2))
+	  pidfile = argv[pos] + 2;
+	else if (++pos < argc)
+	  pidfile = argv[pos];
+	else {
+	  bug("PID filename expected after option -P.");
+	  exit(0);
+	}
+	break;
+      case 'd':
+	if (*(argv[pos] + 2))
+	  dir = argv[pos] + 2;
+	else if (++pos < argc)
+	  dir = argv[pos];
+	else {
+	  bug("Directory arg expected after option -d.");
+	  exit(0);
+	}
+	break;
+      case 's':
+	no_specials = 1;
+	dlog("Suppressing assignment of special routines.");
+	break;
+      default:
+	dlog("Unknown option -% in argument string.", *(argv[pos] + 1));
+	break;
     }
     pos++;
   }
 
   if (pos < argc) {
     if (!isdigit(*argv[pos])) {
-      fprintf(stderr, "Usage: %s [-l] [-s] [-d pathname] [ port # ]\n",
-	      argv[0]);
+      bug("Usage: %s [-l] [-s] [-d pathname] [ port # ]\n", argv[0]);
       exit(0);
     } else if ((port = atoi(argv[pos])) <= 1024) {
-      printf("Illegal port #\n");
+      bug("Illegal port #\n");
       exit(0);
     }
   }
 
   Uptime = time(0);
-  sprintf(buf, "Running game on port %d.", port);
-  mud_port= port;
-  log(buf);
+  mud_port = port;
+  dlog("Running game on port %d.", port);
 
   if (chdir(dir) < 0) {
     perror("chdir");
     exit(0);
   }
-  sprintf(buf, "Using %s as data directory.", dir);
-  log(buf);
+  dlog("Using %s as data directory.", dir);
+
+  if (pidfile) {
+    FILE                                   *pidfp = NULL;
+
+    if (!(pidfp = fopen(pidfile, "w"))) {
+      perror("fopen");
+      exit(0);
+    }
+    fprintf(pidfp, "%d\n", getpid());
+    fclose(pidfp);
+    dlog("PID written to %s", pidfile);
+  }
+
+  if (logfile) {
+    dlog("Switching to %s as stderr.", logfile);
+    stderr = freopen(logfile, "a", stderr);
+    if (!stderr)
+      exit(0);
+    close(fileno(stdout));
+    dup2(fileno(stderr), fileno(stdout));
+    dlog("Switch to %s completed.", logfile);
+  }
 
   srandom(time(0));
   run_the_game(port);
-  return(42);		       /* what's so great about HHGTTG, anyhow? */
+  return (42);						       /* what's so great about HHGTTG, anyhow? */
 }
 
 /* Init sockets, run game, and cleanup sockets */
-void run_the_game(int port) {
-  int s;
-  void signal_setup(void);
-  void coma(int);
+void run_the_game(int port)
+{
+  int                                     s = 0;
+
+  if (DEBUG > 1)
+    dlog("called %s with %d", __PRETTY_FUNCTION__, port);
 
   descriptor_list = NULL;
 
-  log("Signal trapping.");
+  dlog("Signal trapping.");
   signal_setup();
 
-  log("Opening mother connection.");
+  dlog("Opening mother connection.");
   s = init_socket(port);
   boot_db();
 
   init_whod(port);
-  log("Entering game loop.");
+  dlog("Entering game loop.");
   game_loop(s);
 
   close_sockets(s);
   close_whod();
 
   if (diku_reboot) {
-    log("Rebooting.");
+    dlog("Rebooting.");
     exit(0);
   }
-  log("Normal termination of game.");
+  dlog("Normal termination of game.");
 }
 
 /* Accept new connects, relay commands, and call 'heartbeat-functs' */
-void game_loop(int s) {
-  fd_set input_set, output_set, exc_set;
-  struct timeval last_time, now, timespent, timeout, null_time;
-  static struct timeval opt_time;
-  char comm[MAX_INPUT_LENGTH];
-  char promptbuf[256];
-  struct descriptor_data *point, *next_point;
-  int mask;
-  struct room_data *rm;
-  struct char_data *mount;
+void game_loop(int s)
+{
+  fd_set                                  input_set;
+  fd_set                                  output_set;
+  fd_set                                  exc_set;
+  struct timeval                          last_time;
+  struct timeval                          now;
+  struct timeval                          timespent;
+  struct timeval                          timeout;
+  struct timeval                          null_time;
+  static struct timeval                   opt_time;
+  char                                    comm[MAX_INPUT_LENGTH] = "\0\0\0";
+  char                                    promptbuf[256] = "\0\0\0";
+  struct descriptor_data                 *point = NULL;
+  struct descriptor_data                 *next_point = NULL;
+  struct room_data                       *rm = NULL;
+  struct char_data                       *mount = NULL;
+  int                                     mask = 0;
+
+  if (DEBUG > 1)
+    dlog("called %s with %d", __PRETTY_FUNCTION__, s);
 
   pulse = 0;
   null_time.tv_sec = 0;
   null_time.tv_usec = 0;
 
-  opt_time.tv_usec = OPT_USEC;	       /* Init time values */
+  opt_time.tv_usec = OPT_USEC;				       /* Init time values */
   opt_time.tv_sec = 0;
 
   gettimeofday(&last_time, (struct timezone *)0);
   maxdesc = s;
-  avail_descs = getdtablesize() - 2; /* !! Change if more needed !! */
+  avail_descs = getdtablesize() - 2;			       /* !! Change if more needed !! */
 
   mask = sigmask(SIGUSR1) | sigmask(SIGUSR2) | sigmask(SIGINT) |
     sigmask(SIGPIPE) | sigmask(SIGALRM) | sigmask(SIGTERM) |
     sigmask(SIGURG) | sigmask(SIGXCPU) | sigmask(SIGHUP);
 
-  /* Main loop */
+  /*
+   * Main loop 
+   */
   while (!diku_shutdown) {
     FD_ZERO(&input_set);
     FD_ZERO(&output_set);
@@ -238,18 +294,26 @@ void game_loop(int s) {
     }
     if (select(0, (fd_set *) 0, (fd_set *) 0, (fd_set *) 0, &timeout) < 0) {
       perror("Select sleep");
-      /*exit(1); */
+      /*
+       * exit(1); 
+       */
     }
     sigsetmask(0);
 
-    /* Respond to whatever might be happening */
+    /*
+     * Respond to whatever might be happening 
+     */
 
-    /* New connection? */
+    /*
+     * New connection? 
+     */
     if (FD_ISSET(s, &input_set))
       if (new_descriptor(s) < 0)
 	perror("New connection");
 
-    /* kick out the freaky folks */
+    /*
+     * kick out the freaky folks 
+     */
     for (point = descriptor_list; point; point = next_point) {
       next_point = point->next;
       if (FD_ISSET(point->descriptor, &exc_set)) {
@@ -266,7 +330,9 @@ void game_loop(int s) {
 	  close_socket(point);
     }
 
-    /* process_commands; */
+    /*
+     * process_commands; 
+     */
     for (point = descriptor_list; point; point = next_to_process) {
       next_to_process = point->next;
       if ((--(point->wait) <= 0) && get_from_q(&point->input, comm)) {
@@ -305,7 +371,9 @@ void game_loop(int s) {
       }
     }
 
-    /* give the people some prompts  */
+    /*
+     * give the people some prompts 
+     */
     for (point = descriptor_list; point; point = point->next) {
       if (point->prompt_mode) {
 	if (point->str)
@@ -314,7 +382,7 @@ void game_loop(int s) {
 	  if (point->showstr_point)
 	    write_to_descriptor(point->descriptor, "*** Press return or q ***");
 	  else {
-            bzero(promptbuf, 256);
+	    bzero(promptbuf, 256);
 	    if (IS_IMMORTAL(point->character) && IS_PC(point->character)) {
 	      if (MOUNTED(point->character)) {
 		mount = MOUNTED(point->character);
@@ -323,38 +391,34 @@ void game_loop(int s) {
 			GET_HIT(mount), GET_MAX_HIT(mount),
 			GET_MOVE(mount), GET_MAX_MOVE(mount));
 	      }
-              if (IS_SET(point->character->specials.act, PLR_STEALTH))
-                sprintf(promptbuf + strlen(promptbuf), "S");
-              if (point->character->invis_level > 0)
-                sprintf(promptbuf + strlen(promptbuf), "I=%d: ",
-                        point->character->invis_level);
+	      if (IS_SET(point->character->specials.act, PLR_STEALTH))
+		sprintf(promptbuf + strlen(promptbuf), "S");
+	      if (point->character->invis_level > 0)
+		sprintf(promptbuf + strlen(promptbuf), "I=%d: ", point->character->invis_level);
 	      rm = real_roomp(point->character->in_room);
 	      sprintf(promptbuf + strlen(promptbuf),
-                      "#%d - %s [#%d]> ", rm->zone, zone_table[rm->zone].name,
-                      rm->number);
+		      "#%d - %s [#%d]> ", rm->zone, zone_table[rm->zone].name, rm->number);
 	      write_to_descriptor(point->descriptor, promptbuf);
 /* OLD mobs didn't have classes.. this doesn't work anymore */
-	    } else if( IS_NPC(point->character) &&
-              (IS_SET(point->character->specials.act, ACT_POLYSELF) ||
-               IS_SET(point->character->specials.act, ACT_POLYOTHER))) {
+	    } else if (IS_NPC(point->character) &&
+		       (IS_SET(point->character->specials.act, ACT_POLYSELF) ||
+			IS_SET(point->character->specials.act, ACT_POLYOTHER))) {
 	      sprintf(promptbuf, "P %d/%dh %d/%dv > ",
 		      GET_HIT(point->character),
 		      GET_MAX_HIT(point->character),
-		      GET_MOVE(point->character),
-		      GET_MAX_MOVE(point->character));
+		      GET_MOVE(point->character), GET_MAX_MOVE(point->character));
 	      write_to_descriptor(point->descriptor, promptbuf);
-            } else if( IS_NPC(point->character) &&
-                       IS_SET(point->character->specials.act, ACT_SWITCH)) {
+	    } else if (IS_NPC(point->character) &&
+		       IS_SET(point->character->specials.act, ACT_SWITCH)) {
 	      sprintf(promptbuf, "*%s[#%d] in [#%d] %d/%dh %d/%dm %d/%dv > ",
 		      NAME(point->character),
-                      MobVnum(point->character),
+		      MobVnum(point->character),
 		      point->character->in_room,
 		      GET_HIT(point->character),
 		      GET_MAX_HIT(point->character),
 		      GET_MANA(point->character),
 		      GET_MAX_MANA(point->character),
-		      GET_MOVE(point->character),
-		      GET_MAX_MOVE(point->character));
+		      GET_MOVE(point->character), GET_MAX_MOVE(point->character));
 	      write_to_descriptor(point->descriptor, promptbuf);
 	    } else {
 	      if (MOUNTED(point->character)) {
@@ -365,19 +429,18 @@ void game_loop(int s) {
 			  GET_SDESC(mount),
 			  GET_HIT(mount), GET_MAX_HIT(mount),
 			  GET_MOVE(mount), GET_MAX_MOVE(mount));
-	        }
-              }
+		}
+	      }
 	      sprintf(promptbuf + strlen(promptbuf), "%d/%dh %d/%dm %d/%dv > ",
 		      GET_HIT(point->character),
 		      GET_MAX_HIT(point->character),
 		      GET_MANA(point->character),
 		      GET_MAX_MANA(point->character),
-		      GET_MOVE(point->character),
-		      GET_MAX_MOVE(point->character));
+		      GET_MOVE(point->character), GET_MAX_MOVE(point->character));
 	      write_to_descriptor(point->descriptor, promptbuf);
 	    }
 	  }
-        }
+	}
 	point->prompt_mode = 0;
       }
     }
@@ -386,62 +449,66 @@ void game_loop(int s) {
  */
 
     if ((++pulse) > PULSE_MAX)
-      pulse= 0;
+      pulse = 0;
 
     if ((--pulse_zone) <= 0) {
-      pulse_zone= PULSE_ZONE;
+      pulse_zone = PULSE_ZONE;
       zone_update();
     }
     if ((--pulse_teleport) <= 0) {
-      pulse_teleport= PULSE_TELEPORT;
+      pulse_teleport = PULSE_TELEPORT;
       Teleport(pulse);
     }
     if ((--pulse_nature) <= 0) {
-      pulse_nature= PULSE_NATURE;
+      pulse_nature = PULSE_NATURE;
       check_all_nature(pulse);
     }
     if ((--pulse_violence) <= 0) {
-      pulse_violence= PULSE_VIOLENCE;
+      pulse_violence = PULSE_VIOLENCE;
       perform_violence(pulse);
     }
     if ((--pulse_mobile) <= 0) {
-      pulse_mobile= PULSE_MOBILE;
+      pulse_mobile = PULSE_MOBILE;
       mobile_activity();
     }
     if ((--pulse_river) <= 0) {
-      pulse_river= PULSE_RIVER;
+      pulse_river = PULSE_RIVER;
       down_river(pulse);
     }
     if ((--pulse_sound) <= 0) {
-      pulse_sound= PULSE_SOUND;
+      pulse_sound = PULSE_SOUND;
       MakeSound(pulse);
     }
     if ((--pulse_update) <= 0) {
-      pulse_update= PULSE_UPDATE + number(0, PULSE_VARIABLE);
+      pulse_update = PULSE_UPDATE + number(0, PULSE_VARIABLE);
       weather_and_time(1);
       affect_update();
       point_update(pulse);
     }
     if ((--pulse_reboot) <= 0) {
-      pulse_reboot= PULSE_REBOOT;
+      pulse_reboot = PULSE_REBOOT;
       check_reboot();
     }
     if ((--pulse_dump) <= 0) {
-      pulse_dump= PULSE_DUMP;
+      pulse_dump = PULSE_DUMP;
       dump_player_list();
     }
-    tics++;	       /* tics since last checkpoint signal */
+    tics++;						       /* tics since last checkpoint signal */
   }
 }
 
 /*
  * general utility stuff (for local use)
  */
-int get_from_q(struct txt_q *queue, char *dest) {
-  struct txt_block *tmp;
+int get_from_q(struct txt_q *queue, char *dest)
+{
+  struct txt_block                       *tmp = NULL;
+
+  if (DEBUG > 2)
+    dlog("called %s with %08x, %s", __PRETTY_FUNCTION__, queue, VNULL(dest));
 
   if (!queue) {
-    log("Input from non-existant queue?");
+    dlog("Input from non-existant queue?");
     return 0;
   }
   if (!queue->head)
@@ -454,15 +521,24 @@ int get_from_q(struct txt_q *queue, char *dest) {
   return 1;
 }
 
-void write_to_q(char *txt, struct txt_q *queue) {
-  struct txt_block *new;
+void write_to_q(char *txt, struct txt_q *queue)
+{
+  struct txt_block                       *new = NULL;
+
+  /*
+   * Cannot call things in bug.c from things bug.c calls!
+   *
+   * if (DEBUG > 2)
+   *   dlog("called %s with %08x, %s", __PRETTY_FUNCTION__, VNULL(txt), queue);
+   */
 
   if (!queue) {
-    log("Output message to non-existant queue");
+    dlog("Output message to non-existant queue");
     return;
   }
   CREATE(new, struct txt_block, 1);
-  CREATE(new->text, char, strlen(txt) + 1);
+  CREATE(new->text, char, strlen          (txt) + 1);
+
   strcpy(new->text, txt);
 
   if (!queue->head) {
@@ -475,8 +551,13 @@ void write_to_q(char *txt, struct txt_q *queue) {
   }
 }
 
-struct timeval timediff(struct timeval *a, struct timeval *b) {
-  struct timeval result, tmp;
+struct timeval timediff(struct timeval *a, struct timeval *b)
+{
+  struct timeval                          result;
+  struct timeval                          tmp;
+
+  if (DEBUG > 3)
+    dlog("called %s with %08x, %08x", __PRETTY_FUNCTION__, a, b);
 
   tmp = *a;
 
@@ -492,8 +573,12 @@ struct timeval timediff(struct timeval *a, struct timeval *b) {
 }
 
 /* Empty the queues before closing connection */
-void flush_queues(struct descriptor_data *d) {
-  char dummy[MAX_STRING_LENGTH];
+void flush_queues(struct descriptor_data *d)
+{
+  char                                    dummy[MAX_STRING_LENGTH] = "\0\0\0";
+
+  if (DEBUG > 2)
+    dlog("called %s with %08x", __PRETTY_FUNCTION__, d);
 
   while (get_from_q(&d->output, dummy));
   while (get_from_q(&d->input, dummy));
@@ -503,13 +588,18 @@ void flush_queues(struct descriptor_data *d) {
  * socket handling
  */
 
-int init_socket(int port) {
-  int s;
-  char *opt;
-  char hostname[MAX_HOSTNAME + 1];
-  struct sockaddr_in sa;
-  struct hostent *hp;
-  int i, gotsocket;
+int init_socket(int port)
+{
+  char                                   *opt = NULL;
+  char                                    hostname[MAX_HOSTNAME + 1] = "\0\0\0";
+  struct sockaddr_in                      sa;
+  struct hostent                         *hp = NULL;
+  int                                     s = 0;
+  int                                     i = 0;
+  int                                     gotsocket = 0;
+
+  if (DEBUG > 2)
+    dlog("called %s with %d", __PRETTY_FUNCTION__, port);
 
   bzero(&sa, sizeof(struct sockaddr_in));
 
@@ -526,22 +616,22 @@ int init_socket(int port) {
     perror("Init-socket");
     exit(1);
   }
-  if(setsockopt(s, SOL_SOCKET, SO_REUSEADDR, (char *)&opt, sizeof(opt)) < 0) {
+  if (setsockopt(s, SOL_SOCKET, SO_REUSEADDR, (char *)&opt, sizeof(opt)) < 0) {
     perror("setsockopt REUSEADDR");
     exit(1);
   }
 
-  for(i= 60; i> 0; i--) {
+  for (i = 60; i > 0; i--) {
     if (bind(s, (struct sockaddr *)&sa, sizeof(sa)) < 0) {
-      gotsocket= 0;
-      fprintf(stderr, "Socket in use... retrying...\n");
-      sleep(1);
+      gotsocket = 0;
+      dlog("Socket in use... retrying...\n");
+      sleep(2);
     } else {
-      gotsocket= 1;
+      gotsocket = 1;
       break;
     }
   }
-  if(!gotsocket) {
+  if (!gotsocket) {
     perror("bind");
     close(s);
     exit(1);
@@ -550,9 +640,14 @@ int init_socket(int port) {
   return (s);
 }
 
-int new_connection(int s) {
-  struct sockaddr_in isa;
-  int i, t;
+int new_connection(int s)
+{
+  struct sockaddr_in                      isa;
+  int                                     i = 0;
+  int                                     t = 0;
+
+  if (DEBUG > 1)
+    dlog("called %s with %d", __PRETTY_FUNCTION__, s);
 
   i = sizeof(isa);
   getsockname(s, (struct sockaddr *)&isa, &i);
@@ -564,29 +659,29 @@ int new_connection(int s) {
   return t;
 }
 
-int new_descriptor(int s) {
-  struct sockaddr_in isa;
-  struct hostent *host;
-  int i;
-  int remote_port;
-  long remote_addr;
-  char buf[8192];
-  int badger = 0;
+int new_descriptor(int s)
+{
+  struct sockaddr_in                      isa;
+  struct hostent                         *host = NULL;
+  struct descriptor_data                 *newd = NULL;
+  time_t                                  tc = (time_t)0;
+  struct tm                              *t_info = NULL;
+  char                                    buf[8192] = "\0\0\0";
+  long                                    remote_addr = 0L;
+  int                                     i = 0;
+  int                                     remote_port = 0;
+  int                                     desc = 0;
+  int                                     old_maxdesc = 0;
+  int                                     desc_index = 0;
+#ifdef RFC1413
+  int                                     badger = 0;
+#endif
 
-  int desc, old_maxdesc;
-  struct descriptor_data *newd;
-  int desc_index;
-
-  time_t tc;
-  struct tm *t_info;
-
-  char *timed_con[] =
-  {
+  char                                   *timed_con[] = {
     "\n"
   };
 
-  char *bannished[] =
-  {
+  char                                   *bannished[] = {
     "grog.lab.cc.wmich.edu",
     "grog2.lab.cc.wmich.edu",
     "grog3.lab.cc.wmich.edu",
@@ -635,6 +730,9 @@ int new_descriptor(int s) {
     "\n"
   };
 
+  if (DEBUG > 2)
+    dlog("called %s with %d", __PRETTY_FUNCTION__, s);
+
   tc = time(0);
   t_info = localtime(&tc);
 
@@ -657,32 +755,33 @@ int new_descriptor(int s) {
 
   CREATE(newd, struct descriptor_data, 1);
 
-  remote_port= ntohs(isa.sin_port);
-  remote_addr= isa.sin_addr.s_addr;
+  remote_port = ntohs(isa.sin_port);
+  remote_addr = isa.sin_addr.s_addr;
 
-  newd->username[0]= '\0';
+  newd->username[0] = '\0';
 #ifdef RFC1413
   {
-    char *ack;
+    char                                   *ack = NULL;
 
-    if((ack= ident_id(desc, 10)))
+    if ((ack = ident_id(desc, 10)))
       strncpy(newd->username, ack, 16);
     else
-      badger= 2;
+      badger = 2;
   }
 #endif
-  if(!newd->username[0])
+  if (!newd->username[0])
     strcpy(newd->username, "adork");
 
-  if(!(host= gethostbyaddr((char *)&remote_addr, sizeof(remote_addr), AF_INET)))
-
+  if (!(host = gethostbyaddr((char *)&remote_addr, sizeof(remote_addr), AF_INET)))
     sprintf(newd->host, "%u.%u.%u.%u",
-            (int)(((char *)&remote_addr)[0])&255, (int)(((char *)&remote_addr)[1])&255,
-            (int)(((char *)&remote_addr)[2])&255, (int)(((char *)&remote_addr)[3])&255);
+	    (int)(((char *)&remote_addr)[0]) & 255, (int)(((char *)&remote_addr)[1]) & 255,
+	    (int)(((char *)&remote_addr)[2]) & 255, (int)(((char *)&remote_addr)[3]) & 255);
   else
     strncpy(newd->host, host->h_name, 49);
 
-  /* init desc data */
+  /*
+   * init desc data 
+   */
   newd->descriptor = desc;
   newd->connected = 1;
   newd->wait = 1;
@@ -701,29 +800,31 @@ int new_descriptor(int s) {
   newd->snoop.snoop_by = 0;
 
 #ifdef RFC1413
-  switch(badger) {
+  switch (badger) {
     case 1:
-      write_to_descriptor(desc, "\n\r **** Tell your sys-admin to upgrade to the SHINY NEW telnet using RFC1413 ****\n\r\n\r");
+      write_to_descriptor(desc,
+			  "\n\r **** Tell your sys-admin to upgrade to the SHINY NEW telnet using RFC1413 ****\n\r\n\r");
       break;
     case 2:
-      write_to_descriptor(desc, "\n\r **** Tell your sys-admin to practice safe telnet by using RFC1413 ****\n\r\n\r");
+      write_to_descriptor(desc,
+			  "\n\r **** Tell your sys-admin to practice safe telnet by using RFC1413 ****\n\r\n\r");
       break;
     default:
       break;
   }
 #endif
 
-  /* prepend to list */
+  /*
+   * prepend to list 
+   */
 
   if (((t_info->tm_hour + 1) > 8) && ((t_info->tm_hour + 1) < 21))
     for (desc_index = 0; timed_con[desc_index] != "\n"; desc_index++) {
       if (!strncmp(timed_con[desc_index], newd->host, 49)) {
-	sprintf(buf, "TIMED site connecting:%s\n", newd->host);
-	log(buf);
+	dlog("TIMED site connecting:%s\n", newd->host);
 	sprintf(buf, "\n\rThis site is blocked from : 9 am - 9 pm\n\r");
 	write_to_descriptor(desc, buf);
-	sprintf(buf, "You may connect after 9 pm from :[%s]\n\r",
-		newd->host);
+	sprintf(buf, "You may connect after 9 pm from :[%s]\n\r", newd->host);
 	write_to_descriptor(desc, buf);
 	maxdesc = old_maxdesc;
 	DESTROY(newd);
@@ -733,12 +834,10 @@ int new_descriptor(int s) {
     }
   for (desc_index = 0; bannished[desc_index] != "\n"; desc_index++) {
     if (!strncmp(bannished[desc_index], newd->host, 49)) {
-      sprintf(buf, "BANNISHED site connecting:%s\n", newd->host);
-      log(buf);
+      dlog("BANNISHED site connecting:%s\n", newd->host);
       sprintf(buf, "\n\rDue to your System Administrators request, or for some\n\r");
       write_to_descriptor(desc, buf);
-      sprintf(buf, "other reason, we are refusing all connections from:[%s]\n\r",
-	      newd->host);
+      sprintf(buf, "other reason, we are refusing all connections from:[%s]\n\r", newd->host);
       write_to_descriptor(desc, buf);
       maxdesc = old_maxdesc;
       DESTROY(newd);
@@ -753,16 +852,20 @@ int new_descriptor(int s) {
   return (0);
 }
 
-int process_output(struct descriptor_data *t) {
-  char i[MAX_STRING_LENGTH + 1];
+int process_output(struct descriptor_data *t)
+{
+  char                                    i[MAX_STRING_LENGTH + 1] = "\0\0\0";
 
-  if (DEBUG)
-    dlog("process_output");
+  if (DEBUG > 2)
+    dlog("called %s with %08x", __PRETTY_FUNCTION__, t);
+
   if (!t->prompt_mode && !t->connected)
     if (write_to_descriptor(t->descriptor, "\n\r") < 0)
       return (-1);
 
-  /* Cycle thru output queue */
+  /*
+   * Cycle thru output queue 
+   */
   while (get_from_q(&t->output, i)) {
     if ((t->snoop.snoop_by) && (t->snoop.snoop_by->desc)) {
       write_to_q("S* ", &t->snoop.snoop_by->desc->output);
@@ -773,18 +876,23 @@ int process_output(struct descriptor_data *t) {
   }
 
   if (!t->connected && !(t->character && !IS_NPC(t->character) &&
-		   IS_SET(t->character->specials.act, PLR_COMPACT)))
+			 IS_SET(t->character->specials.act, PLR_COMPACT)))
     if (write_to_descriptor(t->descriptor, "\n\r") < 0)
       return (-1);
 
   return (1);
 }
 
-int write_to_descriptor(int desc, char *txt) {
-  int sofar, thisround, total;
+int write_to_descriptor(int desc, char *txt)
+{
+  int                                     sofar = 0;
+  int                                     thisround = 0;
+  int                                     total = 0;
+
+  if (DEBUG > 2)
+    dlog("called %s with %d, %s", __PRETTY_FUNCTION__, desc, VNULL(txt));
 
   total = strlen(txt);
-  sofar = 0;
 
   do {
     thisround = write(desc, txt + sofar, total - sofar);
@@ -801,19 +909,30 @@ int write_to_descriptor(int desc, char *txt) {
   return (0);
 }
 
-int process_input(struct descriptor_data *t) {
-  int sofar, thisround, begin, squelch, i, k, flag;
-  char tmp[MAX_INPUT_LENGTH + 2], buffer[MAX_INPUT_LENGTH + 60];
-  long now_time;
+int process_input(struct descriptor_data *t)
+{
+  int                                     sofar = 0;
+  int                                     thisround = 0;
+  int                                     begin = 0;
+  int                                     squelch = 0;
+  int                                     i = 0;
+  int                                     k = 0;
+  int                                     flag = FALSE;
+  long                                    now_time = 0L;
+  char                                    tmp[MAX_INPUT_LENGTH + 2] = "\0\0\0";
+  char                                    buffer[MAX_INPUT_LENGTH + 60] = "\0\0\0";
 
-  sofar = 0;
-  flag = 0;
+  if (DEBUG > 2)
+    dlog("called %s with %08x", __PRETTY_FUNCTION__, t);
+
   begin = strlen(t->buf);
 
-  /* Read in some stuff */
+  /*
+   * Read in some stuff 
+   */
   do {
     if ((thisround = read(t->descriptor, t->buf + begin + sofar,
-		    MAX_STRING_LENGTH - (begin + sofar) - 1)) > 0) {
+			  MAX_STRING_LENGTH - (begin + sofar) - 1)) > 0) {
       sofar += thisround;
     } else {
       if (thisround < 0) {
@@ -824,7 +943,7 @@ int process_input(struct descriptor_data *t) {
 	  break;
 	}
       } else {
-	log("EOF encountered on socket read.");
+	dlog("EOF encountered on socket read.");
 	return (-1);
       }
     }
@@ -832,25 +951,29 @@ int process_input(struct descriptor_data *t) {
 
   *(t->buf + begin + sofar) = 0;
 
-  /* if no newline is contained in input, return without proc'ing */
+  /*
+   * if no newline is contained in input, return without proc'ing 
+   */
   for (i = begin; !ISNEWL(*(t->buf + i)); i++)
     if (!*(t->buf + i))
       return (0);
 
-  /* input contains 1 or more newlines; process the stuff */
+  /*
+   * input contains 1 or more newlines; process the stuff 
+   */
   for (i = 0, k = 0; *(t->buf + i);) {
     if (!ISNEWL(*(t->buf + i)) && !(flag = (k >= (MAX_INPUT_LENGTH - 2))))
-      if (*(t->buf + i) == '\b') {     /* backspace */
-	if (k) {		       /* more than one char ? */
+      if (*(t->buf + i) == '\b') {			       /* backspace */
+	if (k) {					       /* more than one char ? */
 	  if (*(tmp + --k) == '$')
 	    k--;
 	  i++;
 	} else {
-	  i++;			       /* no or just one char.. Skip backsp */
+	  i++;						       /* no or just one char.. Skip backsp */
 	}
       } else {
 	if (isascii(*(t->buf + i)) && isprint(*(t->buf + i))) {
-	  /* 
+	  /*
 	   * trans char, double for '$' (printf)        
 	   */
 	  if ((*(tmp + k) = *(t->buf + i)) == '$')
@@ -877,21 +1000,25 @@ int process_input(struct descriptor_data *t) {
 	write_to_q("\n\r", &t->snoop.snoop_by->desc->output);
       }
       if (flag) {
-	sprintf(buffer,
-		"Line too long. Truncated to:\n\r%s\n\r", tmp);
+	sprintf(buffer, "Line too long. Truncated to:\n\r%s\n\r", tmp);
 	if (write_to_descriptor(t->descriptor, buffer) < 0)
 	  return (-1);
 
-	/* skip the rest of the line */
+	/*
+	 * skip the rest of the line 
+	 */
 	for (; !ISNEWL(*(t->buf + i)); i++);
       }
-      /* find end of entry */
+      /*
+       * find end of entry 
+       */
       for (; ISNEWL(*(t->buf + i)); i++);
 
-      /* squelch the entry from the buffer */
+      /*
+       * squelch the entry from the buffer 
+       */
       for (squelch = 0;; squelch++)
-	if ((*(t->buf + squelch) =
-	     *(t->buf + i + squelch)) == '\0')
+	if ((*(t->buf + squelch) = *(t->buf + i + squelch)) == '\0')
 	  break;
       k = 0;
       i = 0;
@@ -900,18 +1027,23 @@ int process_input(struct descriptor_data *t) {
   return (1);
 }
 
-void close_sockets(int s) {
-  log("Closing all sockets.");
+void close_sockets(int s)
+{
+  if (DEBUG > 2)
+    dlog("called %s with %d", __PRETTY_FUNCTION__, s);
+
+  dlog("Closing all sockets.");
   while (descriptor_list)
     close_socket(descriptor_list);
   close(s);
 }
 
-void close_socket(struct descriptor_data *d) {
-  struct descriptor_data *tmp;
-  char buf[100];
+void close_socket(struct descriptor_data *d)
+{
+  struct descriptor_data                 *tmp = NULL;
 
-  void do_save(struct char_data *ch, char *argument, int cmd);
+  if (DEBUG > 2)
+    dlog("called %s with %08x", __PRETTY_FUNCTION__, d);
 
   if (!d)
     return;
@@ -921,7 +1053,9 @@ void close_socket(struct descriptor_data *d) {
   if (d->descriptor == maxdesc)
     --maxdesc;
 
-  /* Forget snooping */
+  /*
+   * Forget snooping 
+   */
 
   if (d->snoop.snooping)
     d->snoop.snooping->desc->snoop.snoop_by = 0;
@@ -934,40 +1068,45 @@ void close_socket(struct descriptor_data *d) {
     if (d->connected == CON_PLAYING) {
       do_save(d->character, "", 0);
       act("$n has lost $s link.", TRUE, d->character, 0, 0, TO_ROOM);
-      sprintf(buf, "Closing link to: %s.", GET_NAME(d->character));
-      log(buf);
+      dlog("Closing link to: %s.", GET_NAME(d->character));
       if (IS_NPC(d->character)) {
 	if (d->character->desc)
 	  d->character->orig = d->character->desc->original;
       }
-      d->character->desc = 0;
+      d->character->desc = NULL;
     } else {
-      if (GET_NAME(d->character)) {
-	sprintf(buf, "Losing player: %s.", GET_NAME(d->character));
-	log(buf);
-      }
+      if (GET_NAME(d->character))
+	dlog("Losing player: %s.", GET_NAME(d->character));
       free_char(d->character);
+      d->character = NULL; /* need to wipe this out so we don't pick at it! */
   } else
-    log("Losing descriptor without char.");
+    dlog("Losing descriptor without char.");
 
-  if (next_to_process == d)	       /* to avoid crashing the process loop */
+  if (next_to_process == d)				       /* to avoid crashing the process loop */
     next_to_process = next_to_process->next;
 
-  if (d == descriptor_list)	       /* this is the head of the list */
+  if (d == descriptor_list)				       /* this is the head of the list */
     descriptor_list = descriptor_list->next;
-  else {			       /* This is somewhere inside the list */
-    /* Locate the previous element */
-    for (tmp = descriptor_list; (tmp->next != d) && tmp;
-	 tmp = tmp->next);
+  else {						       /* This is somewhere inside the list */
+    /*
+     * Locate the previous element 
+     */
+    for (tmp = descriptor_list; (tmp->next != d) && tmp; tmp = tmp->next);
 
     tmp->next = d->next;
   }
-  /* if (d->showstr_head) */
-    DESTROY(d->showstr_head);
+  /*
+   * if (d->showstr_head) 
+   */
+  DESTROY(d->showstr_head);
   DESTROY(d);
 }
 
-void nonblock(int s) {
+void nonblock(int s)
+{
+  if (DEBUG > 2)
+    dlog("called %s with %d", __PRETTY_FUNCTION__, s);
+
   if (fcntl(s, F_SETFL, O_NDELAY) == -1) {
     perror("Noblock");
     exit(1);
@@ -982,9 +1121,10 @@ void nonblock(int s) {
  * This acts as an interface to write_to_q(), but it uses variable arguments
  * to eliminate multiple calls to sprintf().
  */
-void dcprintf(struct descriptor_data *d, char *Str,...) {
-  va_list arg;
-  char Result[MAX_STRING_LENGTH];
+void dcprintf(struct descriptor_data *d, char *Str, ...)
+{
+  va_list                                 arg;
+  char                                    Result[MAX_STRING_LENGTH];
 
   if (Str && *Str && d) {
     bzero(Result, MAX_STRING_LENGTH);
@@ -992,6 +1132,8 @@ void dcprintf(struct descriptor_data *d, char *Str,...) {
     vsprintf(Result, Str, arg);
     va_end(arg);
     write_to_q(Result, &d->output);
+    if (DEBUG > 2)
+      dlog("called %s with %08x, %s, result of %s", __PRETTY_FUNCTION__, d, VNULL(Str), Result);
   }
 }
 
@@ -999,9 +1141,10 @@ void dcprintf(struct descriptor_data *d, char *Str,...) {
  * This works like send_to_char(), but it uses variable arguments to
  * eliminate multiple calls to sprintf().
  */
-void cprintf(struct char_data *ch, char *Str,...) {
-  va_list arg;
-  char Result[MAX_STRING_LENGTH];
+void cprintf(struct char_data *ch, char *Str, ...)
+{
+  va_list                                 arg;
+  char                                    Result[MAX_STRING_LENGTH];
 
   if (Str && *Str && ch && ch->desc) {
     bzero(Result, MAX_STRING_LENGTH);
@@ -1009,17 +1152,24 @@ void cprintf(struct char_data *ch, char *Str,...) {
     vsprintf(Result, Str, arg);
     va_end(arg);
     write_to_q(Result, &ch->desc->output);
+    /*
+     * Cannot call things in bug.c from things bug.c calls!
+     *
+     * if (DEBUG > 2)
+     *   dlog("called %s with %s, %s, result of %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(Str), Result);
+     */
   }
 }
 
 /*
  * This one is an interface to replace send_to_room().
  */
-void rprintf(int room, char *Str,...) {
-  va_list arg;
-  struct char_data *i;
-  struct room_data *rr;
-  char Result[MAX_STRING_LENGTH];
+void rprintf(int room, char *Str, ...)
+{
+  va_list                                 arg;
+  char                                    Result[MAX_STRING_LENGTH];
+  struct char_data                       *i = NULL;
+  struct room_data                       *rr = NULL;
 
   if (Str && *Str && room >= 0 && (rr = real_roomp(room))) {
     bzero(Result, MAX_STRING_LENGTH);
@@ -1029,17 +1179,20 @@ void rprintf(int room, char *Str,...) {
     for (i = rr->people; i; i = i->next_in_room)
       if (i->desc)
 	write_to_q(Result, &i->desc->output);
+    if (DEBUG > 2)
+      dlog("called %s with %d, %s, result of %s", __PRETTY_FUNCTION__, room, VNULL(Str), Result);
   }
 }
 
 /*
  * This one is everyone in the zone specified.
  */
-void zprintf(int zone, char *Str,...) {
-  va_list arg;
-  struct descriptor_data *i;
-  char Result[MAX_STRING_LENGTH];
-  struct room_data *rr;
+void zprintf(int zone, char *Str, ...)
+{
+  va_list                                 arg;
+  char                                    Result[MAX_STRING_LENGTH];
+  struct descriptor_data                 *i = NULL;
+  struct room_data                       *rr = NULL;
 
   if (Str && *Str && zone >= 0) {
     bzero(Result, MAX_STRING_LENGTH);
@@ -1048,20 +1201,23 @@ void zprintf(int zone, char *Str,...) {
     va_end(arg);
     for (i = descriptor_list; i; i = i->next)
       if (!i->connected)
-        if(i->character)
-          if((rr= real_roomp(i->character->in_room)))
-            if(rr->zone == zone)
+	if (i->character)
+	  if ((rr = real_roomp(i->character->in_room)))
+	    if (rr->zone == zone)
 	      write_to_q(Result, &i->output);
+    if (DEBUG > 2)
+      dlog("called %s with %d, %s, result of %s", __PRETTY_FUNCTION__, zone, VNULL(Str), Result);
   }
 }
 
 /*
  * And this one sends to EVERYBODY int the game!!!!!
  */
-void aprintf(char *Str,...) {
-  va_list arg;
-  struct descriptor_data *i;
-  char Result[MAX_STRING_LENGTH];
+void allprintf(char *Str, ...)
+{
+  va_list                                 arg;
+  char                                    Result[MAX_STRING_LENGTH];
+  struct descriptor_data                 *i = NULL;
 
   if (Str && *Str) {
     bzero(Result, MAX_STRING_LENGTH);
@@ -1071,16 +1227,19 @@ void aprintf(char *Str,...) {
     for (i = descriptor_list; i; i = i->next)
       if (!i->connected)
 	write_to_q(Result, &i->output);
+    if (DEBUG > 2)
+      dlog("called %s with %s, result of %s", __PRETTY_FUNCTION__, VNULL(Str), Result);
   }
 }
 
 /*
  * Here is send_to_outdoor()
  */
-void oprintf(char *Str,...) {
-  va_list arg;
-  struct descriptor_data *i;
-  char Result[MAX_STRING_LENGTH];
+void oprintf(char *Str, ...)
+{
+  va_list                                 arg;
+  char                                    Result[MAX_STRING_LENGTH];
+  struct descriptor_data                 *i = NULL;
 
   if (Str && *Str) {
     bzero(Result, MAX_STRING_LENGTH);
@@ -1090,16 +1249,19 @@ void oprintf(char *Str,...) {
     for (i = descriptor_list; i; i = i->next)
       if (!i->connected && i->character && OUTSIDE(i->character))
 	write_to_q(Result, &i->output);
+    if (DEBUG > 2)
+      dlog("called %s with %s, result of %s", __PRETTY_FUNCTION__, VNULL(Str), Result);
   }
 }
 
 /*
  * Send to everyone except the given character.
  */
-void eprintf(struct char_data *ch, char *Str,...) {
-  va_list arg;
-  struct descriptor_data *i;
-  char Result[MAX_STRING_LENGTH];
+void eprintf(struct char_data *ch, char *Str, ...)
+{
+  va_list                                 arg;
+  char                                    Result[MAX_STRING_LENGTH];
+  struct descriptor_data                 *i = NULL;
 
   if (Str && *Str) {
     bzero(Result, MAX_STRING_LENGTH);
@@ -1109,17 +1271,20 @@ void eprintf(struct char_data *ch, char *Str,...) {
     for (i = descriptor_list; i; i = i->next)
       if (ch && ch->desc != i && !i->connected)
 	write_to_q(Result, &i->output);
+    if (DEBUG > 2)
+      dlog("called %s with %s, %s, result of %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(Str), Result);
   }
 }
 
 /*
  * This one is for send_to_room_except()
  */
-void reprintf(int room, struct char_data *ch, char *Str,...) {
-  va_list arg;
-  struct char_data *i;
-  struct room_data *rr;
-  char Result[MAX_STRING_LENGTH];
+void reprintf(int room, struct char_data *ch, char *Str, ...)
+{
+  va_list                                 arg;
+  char                                    Result[MAX_STRING_LENGTH];
+  struct char_data                       *i = NULL;
+  struct room_data                       *rr = NULL;
 
   if (Str && *Str && room >= 0 && (rr = real_roomp(room))) {
     bzero(Result, MAX_STRING_LENGTH);
@@ -1129,17 +1294,20 @@ void reprintf(int room, struct char_data *ch, char *Str,...) {
     for (i = rr->people; i; i = i->next_in_room)
       if (i != ch && i->desc)
 	write_to_q(Result, &i->desc->output);
+    if (DEBUG > 2)
+      dlog("called %s with %d, %s, %s, result of %s", __PRETTY_FUNCTION__, room, SAFE_NAME(ch), VNULL(Str), Result);
   }
 }
 
 /*
  * This one is for send_to_room_except()
  */
-void re2printf(int room, struct char_data *ch1, struct char_data *ch2, char *Str,...) {
-  va_list arg;
-  struct char_data *i;
-  struct room_data *rr;
-  char Result[MAX_STRING_LENGTH];
+void re2printf(int room, struct char_data *ch1, struct char_data *ch2, char *Str, ...)
+{
+  va_list                                 arg;
+  char                                    Result[MAX_STRING_LENGTH];
+  struct char_data                       *i = NULL;
+  struct room_data                       *rr = NULL;
 
   if (Str && *Str && room >= 0 && (rr = real_roomp(room))) {
     bzero(Result, MAX_STRING_LENGTH);
@@ -1149,16 +1317,19 @@ void re2printf(int room, struct char_data *ch1, struct char_data *ch2, char *Str
     for (i = rr->people; i; i = i->next_in_room)
       if (i != ch1 && i != ch2 && i->desc)
 	write_to_q(Result, &i->desc->output);
+    if (DEBUG > 2)
+      dlog("called %s with %d, %s, %s, %s, result of %s", __PRETTY_FUNCTION__, room, SAFE_NAME(ch1), SAFE_NAME(ch2), VNULL(Str), Result);
   }
 }
 
 /*
  * IMMORTAL printf.
  */
-void iprintf(char *Str,...) {
-  va_list arg;
-  struct descriptor_data *i;
-  char Result[MAX_STRING_LENGTH];
+void iprintf(char *Str, ...)
+{
+  va_list                                 arg;
+  char                                    Result[MAX_STRING_LENGTH];
+  struct descriptor_data                 *i = NULL;
 
   if (Str && *Str) {
     bzero(Result, MAX_STRING_LENGTH);
@@ -1168,11 +1339,17 @@ void iprintf(char *Str,...) {
     for (i = descriptor_list; i; i = i->next)
       if (!i->connected && i->character && IS_IMMORTAL(i->character))
 	write_to_q(Result, &i->output);
+    if (DEBUG > 2)
+      dlog("called %s with %s, result of %s", __PRETTY_FUNCTION__, VNULL(Str), Result);
   }
 }
 
-void save_all() {
-  struct descriptor_data *i;
+void save_all()
+{
+  struct descriptor_data                 *i = NULL;
+
+  if (DEBUG > 2)
+    dlog("called %s with no arguments", __PRETTY_FUNCTION__);
 
   for (i = descriptor_list; i; i = i->next)
     if (i->character)
@@ -1181,27 +1358,52 @@ void save_all() {
 
 /* higher-level communication */
 
-void act(char *str, int hide_invisible, struct char_data *ch,
-	 struct obj_data *obj, void *vict_obj, int type) {
-  register char *strp, *point, *i = NULL;
-  struct char_data *to;
-  char buf[MAX_STRING_LENGTH];
+void act(char *Str, int hide_invisible, struct char_data *ch,
+	 struct obj_data *obj, void *vict_obj, int type, ...)
+{
+  char                                   *strp = NULL;
+  char                                   *point = NULL;
+  char                                   *i = NULL;
+  struct char_data                       *to = NULL;
+  char                                    buf[MAX_STRING_LENGTH] = "\0\0\0";
+  char                                    str[MAX_STRING_LENGTH] = "\0\0\0";
+  va_list                                 arg;
 
-  if (!str)
+  if (DEBUG > 2)
+    dlog("called %s with %s, %d, %s, %08x, %08x, %d", __PRETTY_FUNCTION__, VNULL(Str), hide_invisible, SAFE_NAME(ch), obj, vict_obj, type);
+
+  if (!Str)
     return;
-  if (!*str)
+  if (!*Str)
     return;
 
-  if (type == TO_VICT)
+  bzero(buf, MAX_STRING_LENGTH);
+  bzero(str, MAX_STRING_LENGTH);
+
+  va_start(arg, type);
+  vsprintf(str, Str, arg);
+  va_end(arg);
+
+  if (DEBUG > 1) {
+    dlog("act got: %s", Str);
+    dlog("act became: %s", str);
+  }
+
+  /* Added checks to ensure ch and to are NOT NULL */
+  if (type == TO_VICT) {
     to = (struct char_data *)vict_obj;
-  else if (type == TO_CHAR)
+    if (!to || !ch)
+      return;
+  } else if (type == TO_CHAR) {
     to = ch;
-  else {
-    if(!ch)
+    if (!to)
       return;
-    if(!real_roomp(ch->in_room))
+  } else {
+    if (!ch)
       return;
-    if(!(to = real_roomp(ch->in_room)->people))
+    if (!real_roomp(ch->in_room))
+      return;
+    if (!(to = real_roomp(ch->in_room)->people))
       return;
   }
 
@@ -1212,61 +1414,60 @@ void act(char *str, int hide_invisible, struct char_data *ch,
       for (strp = str, point = buf;;)
 	if (*strp == '$') {
 	  switch (*(++strp)) {
-	  case 'n':
-	    i = PERS(ch, to);
-	    break;
-	  case 'N':
-	    i = PERS((struct char_data *)vict_obj, to);
-	    break;
-	  case 'm':
-	    i = HMHR(ch);
-	    break;
-	  case 'M':
-	    i = HMHR((struct char_data *)vict_obj);
-	    break;
-	  case 's':
-	    i = HSHR(ch);
-	    break;
-	  case 'S':
-	    i = HSHR((struct char_data *)vict_obj);
-	    break;
-	  case 'e':
-	    i = HSSH(ch);
-	    break;
-	  case 'E':
-	    i = HSSH((struct char_data *)vict_obj);
-	    break;
-	  case 'o':
-	    i = OBJN(obj, to);
-	    break;
-	  case 'O':
-	    i = OBJN((struct obj_data *)vict_obj, to);
-	    break;
-	  case 'p':
-	    i = OBJS(obj, to);
-	    break;
-	  case 'P':
-	    i = OBJS((struct obj_data *)vict_obj, to);
-	    break;
-	  case 'a':
-	    i = SANA(obj);
-	    break;
-	  case 'A':
-	    i = SANA((struct obj_data *)vict_obj);
-	    break;
-	  case 'T':
-	    i = (char *)vict_obj;
-	    break;
-	  case 'F':
-	    i = fname((char *)vict_obj);
-	    break;
-	  case '$':
-	    i = "$";
-	    break;
-	  default:
-	    log("Illegal $-code to act():");
-	    log(str);
-	    break;
+	    case 'n':
+	      i = PERS(ch, to);
+	      break;
+	    case 'N':
+	      i = PERS((struct char_data *)vict_obj, to);
+	      break;
+	    case 'm':
+	      i = HMHR(ch);
+	      break;
+	    case 'M':
+	      i = HMHR((struct char_data *)vict_obj);
+	      break;
+	    case 's':
+	      i = HSHR(ch);
+	      break;
+	    case 'S':
+	      i = HSHR((struct char_data *)vict_obj);
+	      break;
+	    case 'e':
+	      i = HSSH(ch);
+	      break;
+	    case 'E':
+	      i = HSSH((struct char_data *)vict_obj);
+	      break;
+	    case 'o':
+	      i = OBJN(obj, to);
+	      break;
+	    case 'O':
+	      i = OBJN((struct obj_data *)vict_obj, to);
+	      break;
+	    case 'p':
+	      i = OBJS(obj, to);
+	      break;
+	    case 'P':
+	      i = OBJS((struct obj_data *)vict_obj, to);
+	      break;
+	    case 'a':
+	      i = SANA(obj);
+	      break;
+	    case 'A':
+	      i = SANA((struct obj_data *)vict_obj);
+	      break;
+	    case 'T':
+	      i = (char *)vict_obj;
+	      break;
+	    case 'F':
+	      i = fname((char *)vict_obj);
+	      break;
+	    case '$':
+	      i = "$";
+	      break;
+	    default:
+	      dlog("Illegal $-code to act(): %s", str);
+	      break;
 	  }
 
 	  while ((*point = *(i++)))
@@ -1282,24 +1483,30 @@ void act(char *str, int hide_invisible, struct char_data *ch,
       *(++point) = '\0';
 
       write_to_q(CAP(buf), &to->desc->output);
+      if (DEBUG > 1)
+        dlog("act sent: %s", buf);
     }
     if ((type == TO_VICT) || (type == TO_CHAR))
       return;
   }
 }
 
-void dump_player_list(void) {
-  FILE *pfd;
-  int i;
+void dump_player_list(void)
+{
+  FILE                                   *pfd = NULL;
+  int                                     i = 0;
 
-  log("Dumping player list");
-  if(!(pfd= fopen(PLAYER_FILE, "w"))) {
+  if (DEBUG > 2)
+    dlog("called %s with no arguments", __PRETTY_FUNCTION__);
+
+  dlog("Dumping player list");
+  if (!(pfd = fopen(PLAYER_FILE, "w"))) {
     bug("Cannot save player data for new user!");
   } else {
     fprintf(pfd, "%d\n", actual_players);
-    for(i= 0; i< number_of_players; i++)
-      if(list_of_players[i])
-        fprintf(pfd, "%s", list_of_players[i]);
-    fclose(pfd);
+    for (i = 0; i < number_of_players; i++)
+      if (list_of_players[i])
+	fprintf(pfd, "%s", list_of_players[i]);
+    FCLOSE(pfd);
   }
 }

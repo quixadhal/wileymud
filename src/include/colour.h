@@ -11,7 +11,7 @@
 
 #define ESC        '\x1b'
 
-#define BLACK      "\x1b[30m"	/* These are foreground colour codes */
+#define BLACK      "\x1b[30m"				       /* These are foreground colour codes */
 #define RED        "\x1b[31m"
 #define GREEN      "\x1b[32m"
 #define YELLOW     "\x1b[33m"
@@ -20,7 +20,7 @@
 #define CYAN       "\x1b[36m"
 #define GREY       "\x1b[37m"
 
-#define B_BLACK    "\x1b[40m"	/* These are background colour codes */
+#define B_BLACK    "\x1b[40m"				       /* These are background colour codes */
 #define B_RED      "\x1b[41m"
 #define B_GREEN    "\x1b[42m"
 #define B_YELLOW   "\x1b[43m"
@@ -31,20 +31,20 @@
 
 /* Below are VT100 and ANSI codes (above are ANSI exclusively)       */
 
-#define EEEE       "\x1b#8"	/* Turns screen to EEEEs */
-#define CLRSCR     "\x1b[2j"	/* Clear screen          */
-#define CLREOL     "\x1b[K"	/* Clear to end of line  */
+#define EEEE       "\x1b#8"				       /* Turns screen to EEEEs */
+#define CLRSCR     "\x1b[2j"				       /* Clear screen */
+#define CLREOL     "\x1b[K"				       /* Clear to end of line */
 
-#define UPARR      "\x1b[A"	/* Up one line           */
-#define DOWNARR    "\x1b[B"	/* Down one line         */
-#define RIGHTARR   "\x1b[C"	/* Right one column      */
-#define LEFTARR    "\x1b[D"	/* Left one column       */
-#define HOMEPOS    "\x1b[H"	/* Home (upper left)     */
+#define UPARR      "\x1b[A"				       /* Up one line */
+#define DOWNARR    "\x1b[B"				       /* Down one line */
+#define RIGHTARR   "\x1b[C"				       /* Right one column */
+#define LEFTARR    "\x1b[D"				       /* Left one column */
+#define HOMEPOS    "\x1b[H"				       /* Home (upper left) */
 
-#define BOLD       "\x1b[1m"	/* High intensity        */
-#define FLASH      "\x1b[5m"	/* Flashing text         */
-#define INVERSE    "\x1b[7m"	/* XORed back and fore   */
-#define NTEXT      "\x1b[0m"	/* Normal text  (grey)   */
+#define BOLD       "\x1b[1m"				       /* High intensity */
+#define FLASH      "\x1b[5m"				       /* Flashing text */
+#define INVERSE    "\x1b[7m"				       /* XORed back and fore */
+#define NTEXT      "\x1b[0m"				       /* Normal text (grey) */
 
 /*
  * Other codes of note for future ANSI development:
@@ -52,10 +52,10 @@
  */
 
 #ifndef _COLOUR_C
-extern const struct colour_data colour_table[];
+extern const struct colour_data         colour_table[];
 #endif
 
-char *ansi_uppercase(char *txt);
-void ansi_colour(const char *txt, CHAR_DATA *ch);
+char                                   *ansi_uppercase(char *txt);
+void                                    ansi_colour(const char *txt, CHAR_DATA * ch);
 
 #endif

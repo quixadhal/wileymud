@@ -5,15 +5,15 @@
  */
 
 #include <stdlib.h>
-#include <unistd.h>
+/* #include <unistd.h> */
 #include <sys/types.h>
 
-#include "include/global.h"
-#include "include/bug.h"
-#include "include/mudlimits.h"
-#include "include/trap.h"
+#include "global.h"
+#include "bug.h"
+#include "mudlimits.h"
+#include "trap.h"
 #define _CONSTANTS_C
-#include "include/constants.h"
+#include "constants.h"
 
 const char *class_name[] =
 {
@@ -25,8 +25,8 @@ const char *exp_needed_text[] =
   "YES!  One more bunny should just about do it!!!"	/* < 1% left to go */
   "Your new level should arrive aaaany second now!",	/* 1..10% */
   "You can almost TASTE that level!",	/* 10 */
-"You think you catch a glimpse of a level just over the next hill.",	/* 20 */
-"You should be crusing now... That level will get here in no time!",	/* 30 */
+  "You think you catch a glimpse of a level just over the next hill.",	/* 20 */
+  "You should be crusing now... That level will get here in no time!",	/* 30 */
   "You're halfway to the next level!  HOORAY!",		/* > 40% */
   "You are almost at the halfway point.",	/* > 50% */
   "You are making good progress, but the way is still far away.",	/* > 60% */
@@ -1413,7 +1413,7 @@ const struct dex_skill_type dex_app_skill[26] =
 };
 
 /* [level] backstab multiplyer (thieves only) */
-const BYTE backstab_mult[ABS_MAX_LVL] =
+const char backstab_mult[ABS_MAX_LVL] =
 {
   1,				       /* 0 */
   1,				       /* 1 */

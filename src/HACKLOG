@@ -660,3 +660,59 @@ global.h:1144: warning: function declaration isn't a prototype
 	macro CREATE/et. al.... centralized error trapping.
 031126	Quixadhal
   2155	Got things going under Slackware linux again.
+040724	Quixadhal
+  0240	Finally tracked down obscure fclose() bug that crept in since gcc 3.4
+	Things are running again under Debian!
+040725	Quixadhal
+  1427	Changed do_debug command to accept on/off as params, or to toggle the
+        debug state.  DEBUG2 variable removed, as it was unused.
+040809	Quixadhal
+  0319	A few more cleanups.
+  0750	Restored OLD signal handling, sigaction seems to be a bit flaky.
+  0846	Made a proper init.d script for debian.
+	Also revamped my old .indent.pro file.
+040810	Quixadhal
+  0510	Removed log() from bug.c and converted all logs to dlogs or bugs.
+	Ran all code through indent to neaten it up a bit.
+  0717	Restored original DikuMUD license.... who was the naughty person that
+	"lost" that file, eh?  Also restored creators names to the login screen.
+	I'm sure lots of code was grafted from OTHER diku derivatives as well, but
+	there is no record, and I haven't the time to do a code audit against every
+	other codebase out there.  Suffice it to say, if *I* use code from elsewhere,
+	it will be documented!
+040813	Quixadhal
+  0418	Converted act() to use varargs, and tracked down a weird bug that showed up
+	as a result.  Apparently when you use vsprintf(), you get the string "(null)"
+	wherever a %s maps to a NULL pointer.  At least, if that's not where it comes
+	from, I haven't a clue since that string occurs in no code, nor in the lib files.
+	In any case, MakeSound() as being passed null pointers in a few cases, where there
+	was a local sound but no distant sound, and the new version of cprintf was
+	translating them to the string "(null)".  When I was being "improper" and using
+	cprintf(ch, foo) instead of cprintf(ch, "%s", foo), the NULL was getting in and
+	being caught by my error check... no action happened, bug lies dormant.
+040825	Quixadhal
+  0451	Began shoring up the debug log usage, and initializing ALL variables to some known
+	value.  I've done this for several other diku codebases, so it only makes sense to
+	finally do it with my own.  You may notice that I initialize char arrays to the
+	constant string "\0\0\0".... that's NOT the same things as "".  Specifically, I want
+	to stuff 4 bytes of zeroes in there so that a pointer dereference on such a thing will
+	correctly produce 0L instead of a random number from 0 to (2^24).  You 64-bit people
+	will have to change it to 7 bytes if you care, I have no way to test such a beast.
+041102	Quixadhal
+  0656	Finished my main pass at debug messages.  For the Love of God, don't turn debug up
+	higher than level 2 on a running mud!  Doing a few more cleanups, but it's about ready
+	to release unless I was actually going to start working on it again.  There are still
+	(and always will be!) lots of places for improvement, but I think it's stable and
+	no worse than most of the other diku's available out there!
+  1155	After going out to VOTE (Hanging Chads II : Bush vs. Kerry), added the ability to use
+	arguments in wizhelp.  No file yet, but hopefully that means the wizard commands can be
+	documented properly.
+041107	Quixadhal
+  0456	Fixed a bug I introduced into the board system when normalizing the calling parameters
+	of several functions.  I decided to make my official public release on Christmas, so
+	I may yet tweak a few more things before I give it away.  I'm thinking that adding
+	the I3 channel code might be worth doing, and perhaps a simple colour parser, but
+	that's about it.
+041108	Quixadhal
+  0406	Nope.  Adding I3 support will require either rewriting the I3 load/save routines, or
+	finally rewriting Wiley's entire ancient load/save code.

@@ -6,36 +6,37 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <unistd.h>
+/* #include <unistd.h> */
 #include <sys/types.h>
 #include <string.h>
 #include <ctype.h>
 #include <signal.h>
 
-#include "include/global.h"
-#include "include/bug.h"
-#include "include/utils.h"
-#include "include/comm.h"
-#include "include/db.h"
-#include "include/interpreter.h"
-#include "include/spells.h"
-#include "include/spell_parser.h"
-#include "include/constants.h"
-#include "include/fight.h"
-#include "include/modify.h"
-#include "include/multiclass.h"
-#include "include/opinion.h"
-#include "include/act_wiz.h"
+#include "global.h"
+#include "bug.h"
+#include "utils.h"
+#include "comm.h"
+#include "db.h"
+#include "interpreter.h"
+#include "spells.h"
+#include "spell_parser.h"
+#include "constants.h"
+#include "fight.h"
+#include "modify.h"
+#include "multiclass.h"
+#include "opinion.h"
+#include "act_wiz.h"
 #define _HANDLER_C
-#include "include/handler.h"
+#include "handler.h"
 
-char *fname(char *namelist)
+char                                   *fname(char *namelist)
 {
-  static char holder[30];
-  register char *point;
+  static char                             holder[30] = "\0\0\0";
+  char                                   *point = NULL;
 
-  if (DEBUG)
-    dlog("fname");
+  if (DEBUG > 2)
+    dlog("called %s with %s", __PRETTY_FUNCTION__, VNULL(namelist));
+
   for (point = holder; isalpha(*namelist); namelist++, point++)
     *point = *namelist;
 
@@ -44,14 +45,17 @@ char *fname(char *namelist)
   return (holder);
 }
 
+/*
+ * str must be writable 
+ */
 int split_string(char *str, char *sep, char **argv)
-     /* str must be writable */
 {
-  char *s;
-  int argc = 0;
+  char                                   *s = NULL;
+  int                                     argc = 0;
 
-  if (DEBUG)
-    dlog("split_string");
+  if (DEBUG > 2)
+    dlog("called %s with %s, %s, %08x", __PRETTY_FUNCTION__, VNULL(str), VNULL(sep), argv);
+
   s = strtok(str, sep);
   if (s)
     argv[argc++] = s;
@@ -68,12 +72,20 @@ int split_string(char *str, char *sep, char **argv)
 
 int isname(char *str, char *namelist)
 {
-  char *argv[30], *xargv[30];
-  int argc, xargc, i, j, exact;
-  char buf[MAX_INPUT_LENGTH], names[MAX_INPUT_LENGTH], *s;
+  char                                   *argv[30];
+  char                                   *xargv[30];
+  int                                     argc = 0;
+  int                                     xargc = 0;
+  int                                     i = 0;
+  int                                     j = 0;
+  int                                     exact = FALSE;
+  char                                    buf[MAX_INPUT_LENGTH] = "\0\0\0";
+  char                                    names[MAX_INPUT_LENGTH] = "\0\0\0";
+  char                                    *s = NULL;
 
-  if (DEBUG)
-    dlog("isname");
+  if (DEBUG > 2)
+    dlog("called %s with %s, %s", __PRETTY_FUNCTION__, VNULL(str), VNULL(namelist));
+
   strcpy(buf, str);
   argc = split_string(buf, "- \t\n\r,", argv);
 
@@ -88,9 +100,10 @@ int isname(char *str, char *namelist)
   } else {
     exact = 0;
   }
-  /* the string has now been split into separate words with the '-'
-   * replaced by string terminators.  pointers to the beginning of
-   * each word are in argv */
+  /*
+   * the string has now been split into separate words with the '-' replaced by string terminators.  pointers to the
+   * beginning of each word are in argv 
+   */
 
   if (exact && argc != xargc)
     return 0;
@@ -111,29 +124,31 @@ int isname(char *str, char *namelist)
 
 void init_string_block(struct string_block *sb)
 {
-  if (DEBUG)
-    dlog("init_string_block");
+  if (DEBUG > 2)
+    dlog("called %s with %08x", __PRETTY_FUNCTION__, sb);
+
   CREATE(sb->data, char, sb->size = 128);
 
-  /* Quixadhal:  WHY send yourslef a SIG_ALARM if you're out
-   * of memory???
-   *
-   * if((sb->data = (char *)malloc(sb->size = 128)))
-   *   *sb->data = '\0';
-   * else {
-   *   log("Malloc call to init_string_block failed.  Exiting.");
-   *   kill(getpid(),14);
-   * }
+  /*
+   * Quixadhal: WHY send yourslef a SIG_ALARM if you're out of memory???
    */
+#if 0
+  if ((sb->data = (char *)malloc(sb->size = * 128)))
+    *sb->data = '\0';
+  else {
+    bug("Malloc call to init_string_block failed.  Exiting.");
+    kill(getpid(),14);
+  } 
+#endif
 }
 
 void append_to_string_block(struct string_block *sb, char *str)
 {
+  int                                     len = 0;
 
-  int len;
+  if (DEBUG > 2)
+    dlog("called %s with %08x, %s", __PRETTY_FUNCTION__, sb, VNULL(str));
 
-  if (DEBUG)
-    dlog("append_to_string");
   len = strlen(sb->data) + strlen(str) + 1;
   if (len > sb->size) {
     if (len > (sb->size *= 2))
@@ -145,26 +160,29 @@ void append_to_string_block(struct string_block *sb, char *str)
 
 void page_string_block(struct string_block *sb, struct char_data *ch)
 {
-  if (DEBUG)
-    dlog("page_string_block");
+  if (DEBUG > 2)
+    dlog("called %s with %08x, %s", __PRETTY_FUNCTION__, sb, SAFE_NAME(ch));
+
   page_string(ch->desc, sb->data, 1);
 }
 
 void destroy_string_block(struct string_block *sb)
 {
-  if (DEBUG)
-    dlog("destroy_string_block");
+  if (DEBUG > 2)
+    dlog("called %s with %08x", __PRETTY_FUNCTION__, sb);
+
   DESTROY(sb->data);
   sb->data = NULL;
 }
 
-void affect_modify(struct char_data *ch, BYTE loc, BYTE mod, long bitv, BYTE add)
+void affect_modify(struct char_data *ch, char loc, char mod, long bitv, char add)
 {
-  int maxabil;
-  int i;
+  int                                     maxabil = 0;
+  int                                     i = 0;
 
-  if (DEBUG)
-    dlog("affect_modify");
+  if (DEBUG > 2)
+    dlog("called %s with %s, %d, %d, %ld, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), (int)loc, (int)mod, bitv, (int)add);
+
   if (loc == APPLY_IMMUNE) {
     if (add) {
       SET_BIT(ch->immune, mod);
@@ -204,154 +222,156 @@ void affect_modify(struct char_data *ch, BYTE loc, BYTE mod, long bitv, BYTE add
   maxabil = (IS_NPC(ch) ? 25 : 18);
 
   switch (loc) {
-  case APPLY_NONE:
-    break;
+    case APPLY_NONE:
+      break;
 
-  case APPLY_STR:
-    GET_STR(ch) += mod;
-    break;
+    case APPLY_STR:
+      GET_STR(ch) += mod;
+      break;
 
-  case APPLY_DEX:
-    GET_DEX(ch) += mod;
-    break;
+    case APPLY_DEX:
+      GET_DEX(ch) += mod;
+      break;
 
-  case APPLY_INT:
-    GET_INT(ch) += mod;
-    break;
+    case APPLY_INT:
+      GET_INT(ch) += mod;
+      break;
 
-  case APPLY_WIS:
-    GET_WIS(ch) += mod;
-    break;
+    case APPLY_WIS:
+      GET_WIS(ch) += mod;
+      break;
 
-  case APPLY_CON:
-    GET_CON(ch) += mod;
-    break;
+    case APPLY_CON:
+      GET_CON(ch) += mod;
+      break;
 
-  case APPLY_SEX:
-    /* ??? GET_SEX(ch) += mod; */
-    break;
+    case APPLY_SEX:
+      /*
+       * ??? GET_SEX(ch) += mod; 
+       */
+      break;
 
-  case APPLY_CLASS:
-    break;
+    case APPLY_CLASS:
+      break;
 
-  case APPLY_LEVEL:
-    break;
+    case APPLY_LEVEL:
+      break;
 
-  case APPLY_AGE:
-    /*                        ch->player.time.birth += mod; */
-    break;
+    case APPLY_AGE:
+      /*
+       * ch->player.time.birth += mod; 
+       */
+      break;
 
-  case APPLY_CHAR_WEIGHT:
-    GET_WEIGHT(ch) += mod;
-    break;
+    case APPLY_CHAR_WEIGHT:
+      GET_WEIGHT(ch) += mod;
+      break;
 
-  case APPLY_CHAR_HEIGHT:
-    GET_HEIGHT(ch) += mod;
-    break;
+    case APPLY_CHAR_HEIGHT:
+      GET_HEIGHT(ch) += mod;
+      break;
 
-  case APPLY_MANA:
-    ch->points.max_mana += mod;
-    break;
+    case APPLY_MANA:
+      ch->points.max_mana += mod;
+      break;
 
-  case APPLY_HIT:
-    ch->points.max_hit += mod;
-    break;
+    case APPLY_HIT:
+      ch->points.max_hit += mod;
+      break;
 
-  case APPLY_MOVE:
-    ch->points.max_move += mod;
-    break;
+    case APPLY_MOVE:
+      ch->points.max_move += mod;
+      break;
 
-  case APPLY_GOLD:
-    break;
+    case APPLY_GOLD:
+      break;
 
-  case APPLY_EXP:
-    break;
+    case APPLY_EXP:
+      break;
 
-  case APPLY_AC:
-    GET_AC(ch) += mod;
-    break;
+    case APPLY_AC:
+      GET_AC(ch) += mod;
+      break;
 
-  case APPLY_HITROLL:
-    GET_HITROLL(ch) += mod;
-    break;
+    case APPLY_HITROLL:
+      GET_HITROLL(ch) += mod;
+      break;
 
-  case APPLY_DAMROLL:
-    GET_DAMROLL(ch) += mod;
-    break;
+    case APPLY_DAMROLL:
+      GET_DAMROLL(ch) += mod;
+      break;
 
-  case APPLY_SAVING_PARA:
-    ch->specials.apply_saving_throw[0] += mod;
-    break;
+    case APPLY_SAVING_PARA:
+      ch->specials.apply_saving_throw[0] += mod;
+      break;
 
-  case APPLY_SAVING_ROD:
-    ch->specials.apply_saving_throw[1] += mod;
-    break;
+    case APPLY_SAVING_ROD:
+      ch->specials.apply_saving_throw[1] += mod;
+      break;
 
-  case APPLY_SAVING_PETRI:
-    ch->specials.apply_saving_throw[2] += mod;
-    break;
+    case APPLY_SAVING_PETRI:
+      ch->specials.apply_saving_throw[2] += mod;
+      break;
 
-  case APPLY_SAVING_BREATH:
-    ch->specials.apply_saving_throw[3] += mod;
-    break;
+    case APPLY_SAVING_BREATH:
+      ch->specials.apply_saving_throw[3] += mod;
+      break;
 
-  case APPLY_SAVING_SPELL:
-    ch->specials.apply_saving_throw[4] += mod;
-    break;
+    case APPLY_SAVING_SPELL:
+      ch->specials.apply_saving_throw[4] += mod;
+      break;
 
-  case APPLY_SAVE_ALL:
-    {
-      for (i = 0; i <= 4; i++)
-	ch->specials.apply_saving_throw[i] += mod;
-    }
-    break;
-  case APPLY_IMMUNE:
-    break;
-  case APPLY_SUSC:
-    break;
-  case APPLY_M_IMMUNE:
-    break;
-  case APPLY_SPELL:
-    break;
-  case APPLY_HITNDAM:
-    GET_HITROLL(ch) += mod;
-    GET_DAMROLL(ch) += mod;
-    break;
-  case APPLY_WEAPON_SPELL:
-  case APPLY_EAT_SPELL:
-    break;
-  case APPLY_BACKSTAB:
-    ch->skills[SKILL_BACKSTAB].learned += mod;
-    break;
-  case APPLY_KICK:
-    ch->skills[SKILL_KICK].learned += mod;
-    break;
-  case APPLY_SNEAK:
-    ch->skills[SKILL_SNEAK].learned += mod;
-    break;
-  case APPLY_HIDE:
-    ch->skills[SKILL_HIDE].learned += mod;
-    break;
-  case APPLY_BASH:
-    ch->skills[SKILL_BASH].learned += mod;
-    break;
-  case APPLY_PICK:
-    ch->skills[SKILL_PICK_LOCK].learned += mod;
-    break;
-  case APPLY_STEAL:
-    ch->skills[SKILL_STEAL].learned += mod;
-    break;
-  case APPLY_TRACK:
-    ch->skills[SKILL_TRACK].learned += mod;
-    break;
+    case APPLY_SAVE_ALL:
+      {
+	for (i = 0; i <= 4; i++)
+	  ch->specials.apply_saving_throw[i] += mod;
+      }
+      break;
+    case APPLY_IMMUNE:
+      break;
+    case APPLY_SUSC:
+      break;
+    case APPLY_M_IMMUNE:
+      break;
+    case APPLY_SPELL:
+      break;
+    case APPLY_HITNDAM:
+      GET_HITROLL(ch) += mod;
+      GET_DAMROLL(ch) += mod;
+      break;
+    case APPLY_WEAPON_SPELL:
+    case APPLY_EAT_SPELL:
+      break;
+    case APPLY_BACKSTAB:
+      ch->skills[SKILL_BACKSTAB].learned += mod;
+      break;
+    case APPLY_KICK:
+      ch->skills[SKILL_KICK].learned += mod;
+      break;
+    case APPLY_SNEAK:
+      ch->skills[SKILL_SNEAK].learned += mod;
+      break;
+    case APPLY_HIDE:
+      ch->skills[SKILL_HIDE].learned += mod;
+      break;
+    case APPLY_BASH:
+      ch->skills[SKILL_BASH].learned += mod;
+      break;
+    case APPLY_PICK:
+      ch->skills[SKILL_PICK_LOCK].learned += mod;
+      break;
+    case APPLY_STEAL:
+      ch->skills[SKILL_STEAL].learned += mod;
+      break;
+    case APPLY_TRACK:
+      ch->skills[SKILL_TRACK].learned += mod;
+      break;
 
-  default:
-    log("Unknown apply adjust attempt (handler.c, affect_modify).");
-    log(ch->player.name);
+    default:
+      bug("Unknown apply adjust attempt by %s.", ch->player.name);
+      break;
 
-    break;
-
-  }				       /* switch */
+  }							       /* switch */
 }
 
 /* This updates a character by subtracting everything he is affected by */
@@ -359,11 +379,13 @@ void affect_modify(struct char_data *ch, BYTE loc, BYTE mod, long bitv, BYTE add
 
 void affect_total(struct char_data *ch)
 {
-  struct affected_type *af;
-  int i, j;
+  struct affected_type                   *af = NULL;
+  int                                     i = 0;
+  int                                     j = 0;
 
-  if (DEBUG)
-    dlog("affect_total");
+  if (DEBUG > 2)
+    dlog("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
+
   for (i = 0; i < MAX_WEAR; i++) {
     if (ch->equipment[i])
       for (j = 0; j < MAX_OBJ_AFFECT; j++)
@@ -388,7 +410,9 @@ void affect_total(struct char_data *ch)
   for (af = ch->affected; af; af = af->next)
     affect_modify(ch, af->location, af->modifier, af->bitvector, TRUE);
 
-  /* Make certain values are between 0..25, not < 0 and not > 25! */
+  /*
+   * Make certain values are between 0..25, not < 0 and not > 25! 
+   */
 
   i = (IS_NPC(ch) ? 25 : 18);
 
@@ -404,10 +428,11 @@ void affect_total(struct char_data *ch)
  * Automatically sets apropriate bits and apply's */
 void affect_to_char(struct char_data *ch, struct affected_type *af)
 {
-  struct affected_type *affected_alloc;
+  struct affected_type                   *affected_alloc = NULL;
 
-  if (DEBUG)
-    dlog("affect_to_char");
+  if (DEBUG > 1)
+    dlog("called %s with %s, %08x", __PRETTY_FUNCTION__, SAFE_NAME(ch), af);
+
   CREATE(affected_alloc, struct affected_type, 1);
 
   *affected_alloc = *af;
@@ -423,26 +448,32 @@ void affect_to_char(struct char_data *ch, struct affected_type *af)
  * affect_location_apply                                                */
 void affect_remove(struct char_data *ch, struct affected_type *af)
 {
-  struct affected_type *hjp;
+  struct affected_type                   *hjp = NULL;
 
-  if(!ch->affected) return;
-  if (DEBUG)
-    dlog("affect_remove");
+  if (DEBUG > 2)
+    dlog("called %s with %s, %08x", __PRETTY_FUNCTION__, SAFE_NAME(ch), af);
+
+  if (!ch->affected)
+    return;
   affect_modify(ch, af->location, af->modifier, af->bitvector, FALSE);
 
-  /* remove structure *af from linked list */
+  /*
+   * remove structure *af from linked list 
+   */
 
   if (ch->affected == af) {
-    /* remove head of list */
+    /*
+     * remove head of list 
+     */
     ch->affected = af->next;
   } else {
     for (hjp = ch->affected; (hjp->next) && (hjp->next != af); hjp = hjp->next);
 
     if (hjp->next != af) {
-      log("Could not locate affected_type in ch->affected. (handler.c, affect_remove)");
+      bug("Could not locate affected_type in ch->affected.");
       return;
     }
-    hjp->next = af->next;	       /* skip the af element */
+    hjp->next = af->next;				       /* skip the af element */
   }
   DESTROY(af);
   affect_total(ch);
@@ -451,10 +482,11 @@ void affect_remove(struct char_data *ch, struct affected_type *af)
 /* Call affect_remove with every spell of spelltype "skill" */
 void affect_from_char(struct char_data *ch, short skill)
 {
-  struct affected_type *hjp;
+  struct affected_type                   *hjp = NULL;
 
-  if (DEBUG)
-    dlog("affect_from_char");
+  if (DEBUG > 1)
+    dlog("called %s with %s, %hd", __PRETTY_FUNCTION__, SAFE_NAME(ch), skill);
+
   for (hjp = ch->affected; hjp; hjp = hjp->next)
     if (hjp->type == skill)
       affect_remove(ch, hjp);
@@ -463,12 +495,13 @@ void affect_from_char(struct char_data *ch, short skill)
 
 /* Return if a char is affected by a spell (SPELL_XXX), NULL indicates 
  * not affected                                                        */
-BYTE affected_by_spell(struct char_data *ch, short skill)
+char affected_by_spell(struct char_data *ch, short skill)
 {
-  struct affected_type *hjp;
+  struct affected_type                   *hjp = NULL;
 
-  if (DEBUG)
-    dlog("affected_by_spell");
+  if (DEBUG > 2)
+    dlog("called %s with %s, %hd", __PRETTY_FUNCTION__, SAFE_NAME(ch), skill);
+
   for (hjp = ch->affected; hjp; hjp = hjp->next)
     if (hjp->type == skill)
       return (TRUE);
@@ -476,14 +509,14 @@ BYTE affected_by_spell(struct char_data *ch, short skill)
   return (FALSE);
 }
 
-void affect_join(struct char_data *ch, struct affected_type *af,
-		 BYTE avg_dur, BYTE avg_mod)
+void affect_join(struct char_data *ch, struct affected_type *af, char avg_dur, char avg_mod)
 {
-  struct affected_type *hjp;
-  BYTE found = FALSE;
+  struct affected_type                   *hjp = NULL;
+  char                                    found = FALSE;
 
-  if (DEBUG)
-    dlog("affect_join");
+  if (DEBUG > 2)
+    dlog("called %s with %s, %08x, %d, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), af, (int)avg_dur, (int)avg_mod);
+
   for (hjp = ch->affected; !found && hjp; hjp = hjp->next) {
     if (hjp->type == af->type) {
 
@@ -507,41 +540,39 @@ void affect_join(struct char_data *ch, struct affected_type *af,
 /* move a player out of a room */
 void char_from_room(struct char_data *ch)
 {
-  char buf[MAX_STRING_LENGTH];
-  struct char_data *i;
-  struct room_data *rp;
+  struct char_data                       *i = NULL;
+  struct room_data                       *rp = NULL;
+
+  if (DEBUG > 1)
+    dlog("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
 
   if (ch->in_room == NOWHERE) {
-    log("NOWHERE extracting char from room (handler.c, char_from_room)");
+    bug("NOWHERE extracting char from room");
     return;
   }
   if (ch->equipment[WEAR_LIGHT])
     if (ch->equipment[WEAR_LIGHT]->obj_flags.type_flag == ITEM_LIGHT)
-      if (ch->equipment[WEAR_LIGHT]->obj_flags.value[2]) {	/* Light is ON */
+      if (ch->equipment[WEAR_LIGHT]->obj_flags.value[2]) {     /* Light is ON */
 	real_roomp(ch->in_room)->light--;
 	if (real_roomp(ch->in_room)->light < 1)
 	  reprintf(ch->in_room, ch, "A source of light leaves the room....\n\r");
       }
   rp = real_roomp(ch->in_room);
   if (rp == NULL) {
-    sprintf(buf, "ERROR: char_from_room: %s was not in a valid room (%d)",
-       (!IS_NPC(ch) ? (ch)->player.name : (ch)->player.short_descr),
-	    ch->in_room);
-    log(buf);
+    dlog("ERROR: char_from_room: %s was not in a valid room (%d)",
+	 (!IS_NPC(ch) ? (ch)->player.name : (ch)->player.short_descr), ch->in_room);
     return;
   }
-  if (ch == rp->people)		       /* head of list */
+  if (ch == rp->people)					       /* head of list */
     rp->people = ch->next_in_room;
 
-  else {			       /* locate the previous element */
+  else {						       /* locate the previous element */
     for (i = rp->people; i && i->next_in_room != ch; i = i->next_in_room);
     if (i)
       i->next_in_room = ch->next_in_room;
     else {
-      sprintf(buf, "SHIT, %s was not in people list of his room %d!",
-       (!IS_NPC(ch) ? (ch)->player.name : (ch)->player.short_descr),
-	      ch->in_room);
-      log(buf);
+      dlog("SHIT, %s was not in people list of his room %d!",
+	   (!IS_NPC(ch) ? (ch)->player.name : (ch)->player.short_descr), ch->in_room);
     }
   }
 
@@ -552,8 +583,10 @@ void char_from_room(struct char_data *ch)
 /* place a character in a room */
 void char_to_room(struct char_data *ch, int room)
 {
-  /* void raw_kill(struct char_data *ch); */
-  struct room_data *rp;
+  struct room_data                       *rp = NULL;
+
+  if (DEBUG > 1)
+    dlog("called %s with %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), room);
 
   rp = real_roomp(room);
   if (!rp) {
@@ -568,7 +601,7 @@ void char_to_room(struct char_data *ch, int room)
 
   if (ch->equipment[WEAR_LIGHT])
     if (ch->equipment[WEAR_LIGHT]->obj_flags.type_flag == ITEM_LIGHT)
-      if (ch->equipment[WEAR_LIGHT]->obj_flags.value[2]) {	/* Light is ON */
+      if (ch->equipment[WEAR_LIGHT]->obj_flags.value[2]) {     /* Light is ON */
 	if ((rp->light < 1) && (ch->in_room))
 	  reprintf(ch->in_room, ch, "A source of light enters the room...\n\r");
 	rp->light++;
@@ -578,9 +611,9 @@ void char_to_room(struct char_data *ch, int room)
 /* give an object to a char   */
 void obj_to_char(struct obj_data *object, struct char_data *ch)
 {
+  if (DEBUG > 1)
+    dlog("called %s with %s, %s", __PRETTY_FUNCTION__, SAFE_ONAME(object), SAFE_NAME(ch));
 
-  if (DEBUG)
-    dlog("obj_to-char");
   if (ch->carrying)
     object->next_content = ch->carrying;
   else
@@ -596,10 +629,10 @@ void obj_to_char(struct obj_data *object, struct char_data *ch)
 /* take an object from a char */
 void obj_from_char(struct obj_data *object)
 {
-  struct obj_data *tmp;
+  struct obj_data                        *tmp = NULL;
 
-  if (DEBUG)
-    dlog("obj_from_char");
+  if (DEBUG > 1)
+    dlog("called %s with %s", __PRETTY_FUNCTION__, SAFE_ONAME(object));
 
   if (!object) {
     object = 0;
@@ -613,13 +646,13 @@ void obj_from_char(struct obj_data *object)
     object = 0;
     return;
   }
-  if (object->carried_by->carrying == object)	/* head of list */
+  if (object->carried_by->carrying == object)		       /* head of list */
     object->carried_by->carrying = object->next_content;
 
   else {
-    for (tmp = object->carried_by->carrying;
-	 tmp && (tmp->next_content != object);
-	 tmp = tmp->next_content);     /* locate previous */
+    for (tmp = object->carried_by->carrying; tmp && (tmp->next_content != object); tmp = tmp->next_content);	/* locate 
+														 * previous 
+														 */
 
     if (!tmp) {
       object = 0;
@@ -631,51 +664,59 @@ void obj_from_char(struct obj_data *object)
   IS_CARRYING_W(object->carried_by) -= GET_OBJ_WEIGHT(object);
   IS_CARRYING_N(object->carried_by)--;
   object->carried_by = 0;
-  object->equipped_by = 0;	       /* should be unnecessary, but, why risk it */
+  object->equipped_by = 0;				       /* should be unnecessary, but, why risk it */
   object->next_content = 0;
 }
 
 /* Return the effect of a piece of armor in position eq_pos */
 int apply_ac(struct char_data *ch, int eq_pos)
 {
-  if(!ch->equipment[eq_pos]) return 0;
+  if (DEBUG > 2)
+    dlog("called %s with %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), eq_pos);
+
+  if (!ch->equipment[eq_pos])
+    return 0;
   if (DEBUG)
     dlog("apply_ac");
   if (!(GET_ITEM_TYPE(ch->equipment[eq_pos]) == ITEM_ARMOR))
     return 0;
 
   switch (eq_pos) {
-  case WEAR_BODY:
-    return (3 * ch->equipment[eq_pos]->obj_flags.value[0]);	/* 30% */
-  case WEAR_HEAD:
-    return (2 * ch->equipment[eq_pos]->obj_flags.value[0]);	/* 20% */
-  case WEAR_LEGS:
-    return (2 * ch->equipment[eq_pos]->obj_flags.value[0]);	/* 20% */
-  case WEAR_FEET:
-    return (ch->equipment[eq_pos]->obj_flags.value[0]);		/* 10% */
-  case WEAR_HANDS:
-    return (ch->equipment[eq_pos]->obj_flags.value[0]);		/* 10% */
-  case WEAR_ARMS:
-    return (ch->equipment[eq_pos]->obj_flags.value[0]);		/* 10% */
-  case WEAR_SHIELD:
-    return (ch->equipment[eq_pos]->obj_flags.value[0]);		/* 10% */
+    case WEAR_BODY:
+      return (3 * ch->equipment[eq_pos]->obj_flags.value[0]);  /* 30% */
+    case WEAR_HEAD:
+      return (2 * ch->equipment[eq_pos]->obj_flags.value[0]);  /* 20% */
+    case WEAR_LEGS:
+      return (2 * ch->equipment[eq_pos]->obj_flags.value[0]);  /* 20% */
+    case WEAR_FEET:
+      return (ch->equipment[eq_pos]->obj_flags.value[0]);      /* 10% */
+    case WEAR_HANDS:
+      return (ch->equipment[eq_pos]->obj_flags.value[0]);      /* 10% */
+    case WEAR_ARMS:
+      return (ch->equipment[eq_pos]->obj_flags.value[0]);      /* 10% */
+    case WEAR_SHIELD:
+      return (ch->equipment[eq_pos]->obj_flags.value[0]);      /* 10% */
   }
   return 0;
 }
 
 void equip_char(struct char_data *ch, struct obj_data *obj, int pos)
 {
-  int j;
+  int                                     j = 0;
 
-  if(pos < 0 || pos >= MAX_WEAR) return;
+  if (DEBUG > 2)
+    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), SAFE_ONAME(obj), pos);
+
+  if (pos < 0 || pos >= MAX_WEAR)
+    return;
   if (DEBUG)
     dlog("equip_char");
   if (obj->carried_by) {
-    log("EQUIP: Obj is carried_by when equip.");
+    dlog("EQUIP: Obj is carried_by when equip.");
     return;
   }
   if (obj->in_room != NOWHERE) {
-    log("EQUIP: Obj is in_room when equip.");
+    dlog("EQUIP: Obj is in_room when equip.");
     return;
   }
   if ((IS_OBJ_STAT(obj, ITEM_ANTI_EVIL) && IS_EVIL(ch)) ||
@@ -687,7 +728,7 @@ void equip_char(struct char_data *ch, struct obj_data *obj, int pos)
       obj_to_room(obj, ch->in_room);
       return;
     } else {
-      log("ch->in_room = NOWHERE when equipping char.");
+      dlog("ch->in_room = NOWHERE when equipping char.");
     }
   }
   ch->equipment[pos] = obj;
@@ -700,20 +741,23 @@ void equip_char(struct char_data *ch, struct obj_data *obj, int pos)
   for (j = 0; j < MAX_OBJ_AFFECT; j++)
     affect_modify(ch,
 		  obj->affected[j].location,
-		  obj->affected[j].modifier,
-		  obj->obj_flags.bitvector,
-		  TRUE);
+		  obj->affected[j].modifier, obj->obj_flags.bitvector, TRUE);
 
   affect_total(ch);
 }
 
-struct obj_data *unequip_char(struct char_data *ch, int pos)
+struct obj_data                        *unequip_char(struct char_data *ch, int pos)
 {
-  int j;
-  struct obj_data *obj;
+  int                                     j = 0;
+  struct obj_data                        *obj = NULL;
 
-  if(pos < 0 || pos >= MAX_WEAR) return NULL;
-  if(!ch->equipment[pos]) return NULL;
+  if (DEBUG > 2)
+    dlog("called %s with %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), pos);
+
+  if (pos < 0 || pos >= MAX_WEAR)
+    return NULL;
+  if (!ch->equipment[pos])
+    return NULL;
   if (DEBUG)
     dlog("unequip_char");
   obj = ch->equipment[pos];
@@ -726,8 +770,7 @@ struct obj_data *unequip_char(struct char_data *ch, int pos)
 
   for (j = 0; j < MAX_OBJ_AFFECT; j++)
     affect_modify(ch, obj->affected[j].location,
-		  obj->affected[j].modifier,
-		  obj->obj_flags.bitvector, FALSE);
+		  obj->affected[j].modifier, obj->obj_flags.bitvector, FALSE);
 
   affect_total(ch);
 
@@ -736,17 +779,19 @@ struct obj_data *unequip_char(struct char_data *ch, int pos)
 
 int get_number(char **name)
 {
+  int                                     i = 0;
+  char                                   *ppos = NULL;
+  char                                    anumber[MAX_INPUT_LENGTH] = "\0\0\0";
+  char                                    spare[MAX_INPUT_LENGTH] = "\0\0\0";
 
-  int i;
-  char *ppos;
-  char anumber[MAX_INPUT_LENGTH] = "";
+  if (DEBUG > 2)
+    dlog("called %s with %08x", __PRETTY_FUNCTION__, name);
 
-  if (DEBUG)
-    dlog("get_number");
   if ((ppos = (char *)index(*name, '.')) && ppos[1]) {
     *ppos++ = '\0';
-    strcpy(anumber, *name);
-    strcpy(*name, ppos);
+    strcpy(anumber, *name); /* bleed off digits */
+    strcpy(spare, ppos); /* move name to a tmp space, in case of overlap, thanks valgrind */
+    strcpy(*name, spare);
 
     for (i = 0; *(anumber + i); i++)
       if (!isdigit(*(anumber + i)))
@@ -758,15 +803,17 @@ int get_number(char **name)
 }
 
 /* Search a given list for an object, and return a pointer to that object */
-struct obj_data *get_obj_in_list(char *name, struct obj_data *list)
+struct obj_data                        *get_obj_in_list(char *name, struct obj_data *list)
 {
-  struct obj_data *i;
-  int j, anumber;
-  char tmpname[MAX_INPUT_LENGTH];
-  char *tmp;
+  struct obj_data                        *i = NULL;
+  int                                     j = 0;
+  int                                     anumber = 0;
+  char                                    tmpname[MAX_INPUT_LENGTH] = "\0\0\0";
+  char                                   *tmp = NULL;
 
-  if (DEBUG)
-    dlog("get_obj_in_list");
+  if (DEBUG > 2)
+    dlog("called %s with %s, %08x", __PRETTY_FUNCTION__, VNULL(name), list);
+
   strcpy(tmpname, name);
   tmp = tmpname;
   /*
@@ -805,12 +852,13 @@ struct obj_data *get_obj_in_list(char *name, struct obj_data *list)
 }
 
 /* Search a given list for an object number, and return a ptr to that obj */
-struct obj_data *get_obj_in_list_num(int num, struct obj_data *list)
+struct obj_data                        *get_obj_in_list_num(int num, struct obj_data *list)
 {
-  struct obj_data *i;
+  struct obj_data                        *i = NULL;
 
-  if (DEBUG)
-    dlog("get_obj_in_list_num");
+  if (DEBUG > 2)
+    dlog("called %s with %d, %08x", __PRETTY_FUNCTION__, num, list);
+
   for (i = list; i; i = i->next_content)
     if (i->item_number == num)
       return (i);
@@ -819,15 +867,17 @@ struct obj_data *get_obj_in_list_num(int num, struct obj_data *list)
 }
 
 /*search the entire world for an object, and return a pointer  */
-struct obj_data *get_obj(char *name)
+struct obj_data                        *get_obj(char *name)
 {
-  struct obj_data *i;
-  int j, anumber;
-  char tmpname[MAX_INPUT_LENGTH];
-  char *tmp;
+  struct obj_data                        *i = NULL;
+  int                                     j = 0;
+  int                                     anumber = 0;
+  char                                    tmpname[MAX_INPUT_LENGTH] = "\0\0\0";
+  char                                   *tmp = NULL;
 
-  if (DEBUG)
-    dlog("get_obj");
+  if (DEBUG > 2)
+    dlog("called %s with %s", __PRETTY_FUNCTION__, VNULL(name));
+
   strcpy(tmpname, name);
   tmp = tmpname;
   if (!(anumber = get_number(&tmp)))
@@ -843,12 +893,13 @@ struct obj_data *get_obj(char *name)
 }
 
 /*search the entire world for an object number, and return a pointer  */
-struct obj_data *get_obj_num(int nr)
+struct obj_data                        *get_obj_num(int nr)
 {
-  struct obj_data *i;
+  struct obj_data                        *i = NULL;
 
-  if (DEBUG)
-    dlog("get_obj_num");
+  if (DEBUG > 2)
+    dlog("called %s with %d", __PRETTY_FUNCTION__, nr);
+
   for (i = object_list; i; i = i->next)
     if (i->item_number == nr)
       return (i);
@@ -857,15 +908,17 @@ struct obj_data *get_obj_num(int nr)
 }
 
 /* search a room for a char, and return a pointer if found..  */
-struct char_data *get_char_room(char *name, int room)
+struct char_data                       *get_char_room(char *name, int room)
 {
-  struct char_data *i;
-  int j, anumber;
-  char tmpname[MAX_INPUT_LENGTH];
-  char *tmp;
+  struct char_data                       *i = NULL;
+  int                                     j = 0;
+  int                                     anumber = 0;
+  char                                    tmpname[MAX_INPUT_LENGTH] = "\0\0\0";
+  char                                   *tmp = NULL;
 
-  if (DEBUG)
-    dlog("get_char_room");
+  if (DEBUG > 2)
+    dlog("called %s with %s, %d", __PRETTY_FUNCTION__, VNULL(name), room);
+
   strcpy(tmpname, name);
   tmp = tmpname;
   if (!(anumber = get_number(&tmp)))
@@ -881,15 +934,17 @@ struct char_data *get_char_room(char *name, int room)
 }
 
 /* search all over the world for a char, and return a pointer if found */
-struct char_data *get_char(char *name)
+struct char_data                       *get_char(char *name)
 {
-  struct char_data *i;
-  int j, anumber;
-  char tmpname[MAX_INPUT_LENGTH];
-  char *tmp;
+  struct char_data                       *i = NULL;
+  int                                     j = 0;
+  int                                     anumber = 0;
+  char                                    tmpname[MAX_INPUT_LENGTH] = "\0\0\0";
+  char                                   *tmp = NULL;
 
-  if (DEBUG)
-    dlog("get_char");
+  if (DEBUG > 2)
+    dlog("called %s with %s", __PRETTY_FUNCTION__, VNULL(name));
+
   strcpy(tmpname, name);
   tmp = tmpname;
   if (!(anumber = get_number(&tmp)))
@@ -905,12 +960,13 @@ struct char_data *get_char(char *name)
 }
 
 /* search all over the world for a char num, and return a pointer if found */
-struct char_data *get_char_num(int nr)
+struct char_data                       *get_char_num(int nr)
 {
-  struct char_data *i;
+  struct char_data                       *i = NULL;
 
-  if (DEBUG)
-    dlog("get_char_num");
+  if (DEBUG > 2)
+    dlog("called %s with %d", __PRETTY_FUNCTION__, nr);
+
   for (i = character_list; i; i = i->next)
     if (i->nr == nr)
       return (i);
@@ -921,9 +977,9 @@ struct char_data *get_char_num(int nr)
 /* put an object in a room */
 void obj_to_room(struct obj_data *object, int room)
 {
+  if (DEBUG > 1)
+    dlog("called %s with %s, %d", __PRETTY_FUNCTION__, SAFE_ONAME(object), room);
 
-  if (DEBUG)
-    dlog("obj_to_room");
   if (room == -1)
     room = 4;
 
@@ -931,22 +987,24 @@ void obj_to_room(struct obj_data *object, int room)
   real_roomp(room)->contents = object;
   object->in_room = room;
   object->carried_by = 0;
-  object->equipped_by = 0;	       /* should be unnecessary */
+  object->equipped_by = 0;				       /* should be unnecessary */
 }
 
 /* Take an object from a room */
 void obj_from_room(struct obj_data *object)
 {
-  struct obj_data *i;
+  struct obj_data                        *i = NULL;
 
-  if (DEBUG)
-    dlog("obj_from_room");
-  /* remove object from room */
+  if (DEBUG > 1)
+    dlog("called %s with %s", __PRETTY_FUNCTION__, SAFE_ONAME(object));
+  /*
+   * remove object from room 
+   */
 
-  if (object == real_roomp(object->in_room)->contents)	/* head of list */
+  if (object == real_roomp(object->in_room)->contents)	       /* head of list */
     real_roomp(object->in_room)->contents = object->next_content;
 
-  else {			       /* locate previous element in list */
+  else {						       /* locate previous element in list */
     for (i = real_roomp(object->in_room)->contents; i &&
 	 (i->next_content != object); i = i->next_content);
 
@@ -961,14 +1019,15 @@ void obj_from_room(struct obj_data *object)
 /* put an object in an object (quaint)  */
 void obj_to_obj(struct obj_data *obj, struct obj_data *obj_to)
 {
-  struct obj_data *tmp_obj;
+  struct obj_data                        *tmp_obj = NULL;
 
-  if (DEBUG)
-    dlog("obj_to_obj");
+  if (DEBUG > 1)
+    dlog("called %s with %s, %s", __PRETTY_FUNCTION__, SAFE_ONAME(obj), SAFE_ONAME(obj_to));
+
   obj->next_content = obj_to->contains;
   obj_to->contains = obj;
   obj->in_obj = obj_to;
-  /*  
+  /*
    * (jdb)  hopefully this will fix the object problem   
    */
   obj->carried_by = 0;
@@ -980,18 +1039,19 @@ void obj_to_obj(struct obj_data *obj, struct obj_data *obj_to)
 /* remove an object from an object */
 void obj_from_obj(struct obj_data *obj)
 {
-  struct obj_data *tmp, *obj_from;
+  struct obj_data                        *tmp = NULL;
+  struct obj_data                        *obj_from = NULL;
 
-  if (DEBUG)
-    dlog("obj_from_obj");
+  if (DEBUG > 1)
+    dlog("called %s with %s", __PRETTY_FUNCTION__, SAFE_ONAME(obj));
+
   if (obj->in_obj) {
     obj_from = obj->in_obj;
-    if (obj == obj_from->contains)     /* head of list */
+    if (obj == obj_from->contains)			       /* head of list */
       obj_from->contains = obj->next_content;
     else {
-      for (tmp = obj_from->contains;
-	   tmp && (tmp->next_content != obj);
-	   tmp = tmp->next_content);   /* locate previous */
+      for (tmp = obj_from->contains; tmp && (tmp->next_content != obj); tmp = tmp->next_content);	/* locate
+													 * previous */
 
       if (!tmp) {
 	perror("Fatal error in object structures.");
@@ -1000,13 +1060,17 @@ void obj_from_obj(struct obj_data *obj)
       tmp->next_content = obj->next_content;
     }
 
-    /* Subtract weight from containers container */
+    /*
+     * Subtract weight from containers container 
+     */
     for (tmp = obj->in_obj; tmp->in_obj; tmp = tmp->in_obj)
       GET_OBJ_WEIGHT(tmp) -= GET_OBJ_WEIGHT(obj);
 
     GET_OBJ_WEIGHT(tmp) -= GET_OBJ_WEIGHT(obj);
 
-    /* Subtract weight from char that carries the object */
+    /*
+     * Subtract weight from char that carries the object 
+     */
     if (tmp->carried_by)
       IS_CARRYING_W(tmp->carried_by) -= GET_OBJ_WEIGHT(obj);
 
@@ -1021,8 +1085,9 @@ void obj_from_obj(struct obj_data *obj)
 /* Set all carried_by to point to new owner */
 void object_list_new_owner(struct obj_data *list, struct char_data *ch)
 {
-  if (DEBUG)
-    dlog("object_list_new_owner");
+  if (DEBUG > 2)
+    dlog("called %s with %08x, %s", __PRETTY_FUNCTION__, list, SAFE_NAME(ch));
+
   if (list) {
     object_list_new_owner(list->contains, ch);
     object_list_new_owner(list->next_content, ch);
@@ -1033,10 +1098,12 @@ void object_list_new_owner(struct obj_data *list, struct char_data *ch)
 /* Extract an object from the world */
 void extract_obj(struct obj_data *obj)
 {
-  struct obj_data *temp1, *temp2;
+  struct obj_data                        *temp1 = NULL;
+  struct obj_data                        *temp2 = NULL;
 
-  if (DEBUG)
-    dlog("extract_obj");
+  if (DEBUG > 2)
+    dlog("called %s with %s", __PRETTY_FUNCTION__, SAFE_ONAME(obj));
+
   if (obj->in_room != NOWHERE)
     obj_from_room(obj);
   else if (obj->carried_by)
@@ -1049,35 +1116,32 @@ void extract_obj(struct obj_data *obj)
       obj->equipped_by->equipment[(int)obj->eq_pos] = 0;
 
     } else {
-      log("Extract on equipped item in slot -1 on:");
-      log(obj->equipped_by->player.name);
-      log(obj->name);
+      dlog("Extract on equipped item in slot -1 on: %s %s",
+           obj->equipped_by->player.name, obj->name);
       return;
     }
   } else if (obj->in_obj) {
     temp1 = obj->in_obj;
-    if (temp1->contains == obj)	       /* head of list */
+    if (temp1->contains == obj)				       /* head of list */
       temp1->contains = obj->next_content;
     else {
       for (temp2 = temp1->contains;
-	   temp2 && (temp2->next_content != obj);
-	   temp2 = temp2->next_content);
+	   temp2 && (temp2->next_content != obj); temp2 = temp2->next_content);
 
       if (temp2) {
-	temp2->next_content =
-	  obj->next_content;
+	temp2->next_content = obj->next_content;
       }
     }
   }
   for (; obj->contains; extract_obj(obj->contains));
-  /* leaves nothing ! */
+  /*
+   * leaves nothing ! 
+   */
 
-  if (object_list == obj)	       /* head of list */
+  if (object_list == obj)				       /* head of list */
     object_list = obj->next;
   else {
-    for (temp1 = object_list;
-	 temp1 && (temp1->next != obj);
-	 temp1 = temp1->next);
+    for (temp1 = object_list; temp1 && (temp1->next != obj); temp1 = temp1->next);
 
     if (temp1)
       temp1->next = obj->next;
@@ -1090,9 +1154,9 @@ void extract_obj(struct obj_data *obj)
 
 void update_object(struct obj_data *obj, int use)
 {
+  if (DEBUG > 2)
+    dlog("called %s with %s, %d", __PRETTY_FUNCTION__, SAFE_ONAME(obj), use);
 
-  if (DEBUG)
-    dlog("update_object");
   if (obj->obj_flags.timer > 0)
     obj->obj_flags.timer -= use;
   if (obj->contains)
@@ -1104,11 +1168,11 @@ void update_object(struct obj_data *obj, int use)
 
 void update_char_objects(struct char_data *ch)
 {
+  int                                     i = 0;
 
-  int i;
+  if (DEBUG > 2)
+    dlog("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
 
-  if (DEBUG)
-    dlog("update_char_objects");
   if (ch->equipment[WEAR_LIGHT])
     if (ch->equipment[WEAR_LIGHT]->obj_flags.type_flag == ITEM_LIGHT)
       if (ch->equipment[WEAR_LIGHT]->obj_flags.value[2] > 0)
@@ -1125,15 +1189,17 @@ void update_char_objects(struct char_data *ch)
 /* Extract a ch completely from the world, and leave his stuff behind */
 void extract_char(struct char_data *ch)
 {
-  struct obj_data *i, *o;
-  struct char_data *k, *next_char;
-  struct descriptor_data *t_desc;
-  int l, was_in, j;
+  struct obj_data                        *i = NULL;
+  struct obj_data                        *o = NULL;
+  struct char_data                       *k = NULL;
+  struct char_data                       *next_char = NULL;
+  struct descriptor_data                 *t_desc = NULL;
+  int                                     l = 0;
+  int                                     was_in = FALSE;
+  int                                     j = 0;
 
-  /* void do_save(struct char_data *ch, char *argument, int cmd); */
-  /* void do_return(struct char_data *ch, char *argument, int cmd); */
-
-  /* void die_follower(struct char_data *ch); */
+  if (DEBUG > 2)
+    dlog("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
 
   if (IS_PC(ch) && !ch->desc) {
     for (t_desc = descriptor_list; t_desc; t_desc = t_desc->next)
@@ -1141,17 +1207,19 @@ void extract_char(struct char_data *ch)
 	do_return(t_desc->character, "", 0);
   }
   if (ch->in_room == NOWHERE) {
-    log("NOWHERE extracting char. (handler.c, extract_char)");
+    bug("NOWHERE extracting char.");
     /*
      **  problem from linkdeath
      */
-    char_to_room(ch, 0);	       /* 0 == all purpose store */
+    char_to_room(ch, 0);				       /* 0 == all purpose store */
   }
   if (ch->followers || ch->master)
     die_follower(ch);
 
   if (ch->desc) {
-    /* Forget snooping */
+    /*
+     * Forget snooping 
+     */
     if (ch->desc->snoop.snooping)
       ch->desc->snoop.snooping->desc->snoop.snoop_by = 0;
 
@@ -1162,20 +1230,27 @@ void extract_char(struct char_data *ch)
     ch->desc->snoop.snooping = ch->desc->snoop.snoop_by = 0;
   }
   if (ch->carrying) {
-    /* transfer ch's objects to room */
+    /*
+     * transfer ch's objects to room 
+     */
 
     if (!IS_IMMORTAL(ch)) {
-      if (real_roomp(ch->in_room)->contents) {	/* room nonempty */
-	/* locate tail of room-contents */
-	for (i = real_roomp(ch->in_room)->contents; i->next_content;
-	     i = i->next_content);
+      if (real_roomp(ch->in_room)->contents) {		       /* room nonempty */
+	/*
+	 * locate tail of room-contents 
+	 */
+	for (i = real_roomp(ch->in_room)->contents; i->next_content; i = i->next_content);
 
-	/* append ch's stuff to room-contents */
+	/*
+	 * append ch's stuff to room-contents 
+	 */
 	i->next_content = ch->carrying;
       } else
 	real_roomp(ch->in_room)->contents = ch->carrying;
 
-      /* connect the stuff to the room */
+      /*
+       * connect the stuff to the room 
+       */
       for (i = ch->carrying; i; i = i->next_content) {
 	i->carried_by = 0;
 	i->in_room = ch->in_room;
@@ -1205,11 +1280,15 @@ void extract_char(struct char_data *ch)
       stop_fighting(k);
   }
 
-  /* Must remove from room before removing the equipment! */
+  /*
+   * Must remove from room before removing the equipment! 
+   */
   was_in = ch->in_room;
   char_from_room(ch);
 
-  /* clear equipment_list */
+  /*
+   * clear equipment_list 
+   */
   for (l = 0; l < MAX_WEAR; l++)
     if (ch->equipment[l])
       obj_to_room(unequip_char(ch, l), was_in);
@@ -1242,7 +1321,9 @@ void extract_char(struct char_data *ch)
     }
 
   }
-  /* pull the char from the list */
+  /*
+   * pull the char from the list 
+   */
 
   if (ch == character_list)
     character_list = ch->next;
@@ -1251,9 +1332,8 @@ void extract_char(struct char_data *ch)
     if (k)
       k->next = ch->next;
     else {
-      log("Trying to remove ?? from character_list. (handler.c, extract_char)");
-/*      abort();
- */
+      bug("Trying to remove NULL from character_list.");
+      /* abort(); */
     }
   }
 
@@ -1263,13 +1343,13 @@ void extract_char(struct char_data *ch)
     save_char(ch, NOWHERE);
   }
   if (IS_NPC(ch)) {
-    if (ch->nr > -1)		       /* if mobile */
+    if (ch->nr > -1)					       /* if mobile */
       mob_index[ch->nr].number--;
     FreeHates(ch);
     FreeFears(ch);
     free_char(ch);
-  }
-  if (ch->desc) {
+  } else if (ch->desc) { /* Moved the following into an else block since */
+                         /* valgrind pointed out that ch won't be valid for NPC's */
     ch->desc->connected = CON_MENU_SELECT;
     SEND_TO_Q(login_menu, ch->desc);
   }
@@ -1280,15 +1360,18 @@ void extract_char(struct char_data *ch)
  * which incorporate the actual player-data.
  * *********************************************************************** */
 
-struct char_data *get_char_room_vis(struct char_data *ch, char *name)
+struct char_data                       *get_char_room_vis(struct char_data *ch, char *name)
 {
-  struct char_data *i;
-  int j, anumber;
-  char tmpname[MAX_INPUT_LENGTH];
-  char *tmp;
+  struct char_data                       *i = NULL;
+  int                                     j = 0;
+  int                                     anumber = 0;
+  char                                    tmpname[MAX_INPUT_LENGTH] = "\0\0\0";
+  char                                   *tmp = NULL;
 
-  if((!strcasecmp(name, "me") || !strcasecmp(name, "myself")) &&
-     CAN_SEE(ch, ch))
+  if (DEBUG > 2)
+    dlog("called %s with %s, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(name));
+
+  if ((!strcasecmp(name, "me") || !strcasecmp(name, "myself")) && CAN_SEE(ch, ch))
     return ch;
 
   strcpy(tmpname, name);
@@ -1296,8 +1379,7 @@ struct char_data *get_char_room_vis(struct char_data *ch, char *name)
   if (!(anumber = get_number(&tmp)))
     return (0);
 
-  for (i = real_roomp(ch->in_room)->people, j = 1;
-       i && (j <= anumber); i = i->next_in_room)
+  for (i = real_roomp(ch->in_room)->people, j = 1; i && (j <= anumber); i = i->next_in_room)
     if (isname(tmp, GET_NAME(i)))
       if (CAN_SEE(ch, i)) {
 	if (j == anumber)
@@ -1309,15 +1391,19 @@ struct char_data *get_char_room_vis(struct char_data *ch, char *name)
 
 /* get a character from anywhere in the world, doesn't care much about
  * being in the same room... */
-struct char_data *get_char_vis_world(struct char_data *ch, char *name, int *count)
+struct char_data                       *get_char_vis_world(struct char_data *ch, char *name,
+							   int *count)
 {
-  struct char_data *i;
-  int j, anumber;
-  char tmpname[MAX_INPUT_LENGTH];
-  char *tmp;
+  struct char_data                       *i = NULL;
+  int                                     j = 0;
+  int                                     anumber = 0;
+  char                                    tmpname[MAX_INPUT_LENGTH] = "\0\0\0";
+  char                                   *tmp = NULL;
 
-  if((!strcasecmp(name, "me") || !strcasecmp(name, "myself")) &&
-     CAN_SEE(ch, ch))
+  if (DEBUG > 2)
+    dlog("called %s with %s, %s, %08x", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(name), count);
+
+  if ((!strcasecmp(name, "me") || !strcasecmp(name, "myself")) && CAN_SEE(ch, ch))
     return ch;
 
   strcpy(tmpname, name);
@@ -1338,28 +1424,34 @@ struct char_data *get_char_vis_world(struct char_data *ch, char *name, int *coun
   return 0;
 }
 
-struct char_data *get_char_vis(struct char_data *ch, char *name)
+struct char_data                       *get_char_vis(struct char_data *ch, char *name)
 {
-  struct char_data *i;
+  struct char_data                       *i = NULL;
 
-  /* check location */
-  if (DEBUG)
-    dlog("get_char_vis");
+  if (DEBUG > 2)
+    dlog("called %s with %s, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(name));
+
+  /*
+   * check location 
+   */
   if ((i = get_char_room_vis(ch, name)))
     return (i);
 
   return get_char_vis_world(ch, name, NULL);
 }
 
-struct obj_data *get_obj_in_list_vis(struct char_data *ch, char *name, struct obj_data *list)
+struct obj_data                        *get_obj_in_list_vis(struct char_data *ch, char *name,
+							    struct obj_data *list)
 {
-  struct obj_data *i;
-  int j, anumber;
-  char tmpname[MAX_INPUT_LENGTH];
-  char *tmp;
+  struct obj_data                        *i = NULL;
+  int                                     j = 0;
+  int                                     anumber = 0;
+  char                                    tmpname[MAX_INPUT_LENGTH] = "\0\0\0";
+  char                                   *tmp = NULL;
 
-  if (DEBUG)
-    dlog("get_obj_in_list_vis");
+  if (DEBUG > 2)
+    dlog("called %s with %s, %s, %08x", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(name), list);
+
   strcpy(tmpname, name);
   tmp = tmpname;
   if (!(anumber = get_number(&tmp)))
@@ -1375,16 +1467,18 @@ struct obj_data *get_obj_in_list_vis(struct char_data *ch, char *name, struct ob
   return (0);
 }
 
-struct obj_data *get_obj_vis_world(struct char_data *ch, char *name,
-				   int *count)
+struct obj_data                        *get_obj_vis_world(struct char_data *ch, char *name,
+							  int *count)
 {
-  struct obj_data *i;
-  int j, anumber;
-  char tmpname[MAX_INPUT_LENGTH];
-  char *tmp;
+  struct obj_data                        *i = NULL;
+  int                                     j = 0;
+  int                                     anumber = 0;
+  char                                    tmpname[MAX_INPUT_LENGTH] = "\0\0\0";
+  char                                   *tmp = NULL;
 
-  if (DEBUG)
-    dlog("get_obj_vis_world");
+  if (DEBUG > 2)
+    dlog("called %s with %s, %s, %08x", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(name), count);
+
   strcpy(tmpname, name);
   tmp = tmpname;
   if (!(anumber = get_number(&tmp)))
@@ -1392,7 +1486,9 @@ struct obj_data *get_obj_vis_world(struct char_data *ch, char *name,
 
   j = count ? *count : 1;
 
-  /* ok.. no luck yet. scan the entire obj list   */
+  /*
+   * ok.. no luck yet. scan the entire obj list 
+   */
   for (i = object_list; i && (j <= anumber); i = i->next)
     if (isname(tmp, i->name))
       if (CAN_SEE_OBJ(ch, i)) {
@@ -1406,38 +1502,47 @@ struct obj_data *get_obj_vis_world(struct char_data *ch, char *name,
 }
 
 /*search the entire world for an object, and return a pointer  */
-struct obj_data *get_obj_vis(struct char_data *ch, char *name)
+struct obj_data                        *get_obj_vis(struct char_data *ch, char *name)
 {
-  struct obj_data *i;
+  struct obj_data                        *i = NULL;
 
-  if (DEBUG)
-    dlog("get_obj_vis");
-  /* scan items carried */
+  if (DEBUG > 2)
+    dlog("called %s with %s, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(name));
+
+  /*
+   * scan items carried 
+   */
   if ((i = get_obj_in_list_vis(ch, name, ch->carrying)))
     return (i);
 
-  /* scan room */
+  /*
+   * scan room 
+   */
   if ((i = get_obj_in_list_vis(ch, name, real_roomp(ch->in_room)->contents)))
     return (i);
 
   return get_obj_vis_world(ch, name, NULL);
 }
 
-struct obj_data *get_obj_vis_accessible(struct char_data *ch, char *name)
+struct obj_data                        *get_obj_vis_accessible(struct char_data *ch, char *name)
 {
-  struct obj_data *i;
-  int j, anumber;
-  char tmpname[MAX_INPUT_LENGTH];
-  char *tmp;
+  struct obj_data                        *i = NULL;
+  int                                     j = 0;
+  int                                     anumber = 0;
+  char                                    tmpname[MAX_INPUT_LENGTH] = "\0\0\0";
+  char                                   *tmp = NULL;
 
-  if (DEBUG)
-    dlog("get_obj_vis_accessible");
+  if (DEBUG > 2)
+    dlog("called %s with %s, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(name));
+
   strcpy(tmpname, name);
   tmp = tmpname;
   if (!(anumber = get_number(&tmp)))
     return (0);
 
-  /* scan items carried */
+  /*
+   * scan items carried 
+   */
   for (i = ch->carrying, j = 1; i && j <= anumber; i = i->next_content)
     if (isname(tmp, i->name) && CAN_SEE_OBJ(ch, i)) {
       if (j == anumber)
@@ -1455,14 +1560,17 @@ struct obj_data *get_obj_vis_accessible(struct char_data *ch, char *name)
   return 0;
 }
 
-struct obj_data *create_money(int amount)
+struct obj_data                        *create_money(int amount)
 {
-  struct obj_data *obj;
-  struct extra_descr_data *new_descr;
-  char buf[80];
+  struct obj_data                        *obj = NULL;
+  struct extra_descr_data                *new_descr = NULL;
+  char                                    buf[80] = "\0\0\0";
+
+  if (DEBUG > 2)
+    dlog("called %s with %d", __PRETTY_FUNCTION__, amount);
 
   if (amount <= 0) {
-    log("ERROR: Try to create negative money.");
+    bug("ERROR: Try to create negative money.");
     exit(1);
   }
   CREATE(obj, struct obj_data, 1);
@@ -1493,7 +1601,8 @@ struct obj_data *create_money(int amount)
       sprintf(buf, "It looks like something round %d coins", 100 * (amount / 100));
       new_descr->description = strdup(buf);
     } else if (amount < 100000) {
-      sprintf(buf, "You guess there is %d coins", 1000 * ((amount / 1000) + number(0, (amount / 1000))));
+      sprintf(buf, "You guess there is %d coins",
+	      1000 * ((amount / 1000) + number(0, (amount / 1000))));
       new_descr->description = strdup(buf);
     } else
       new_descr->description = strdup("There is A LOT of coins");
@@ -1529,25 +1638,25 @@ struct obj_data *create_money(int amount)
 /* one_argument routine).                                                 */
 
 int generic_find(char *arg, int bitvector, struct char_data *ch,
-	       struct char_data **tar_ch, struct obj_data **tar_obj)
+		 struct char_data **tar_ch, struct obj_data **tar_obj)
 {
-  static char *ignore[] =
-  {
+  char                                    name[256] = "\0\0\0";
+  int                                     i = 0;
+  int                                     found = FALSE;
+  static char                            *ignore[] = {
     "the",
     "in",
     "on",
     "at",
-    "\n"};
+    "\n"
+  };
 
-  int i;
-  char name[256];
-  BYTE found;
+  if (DEBUG > 2)
+    dlog("called %s with %d, %s, %08x, %08x", __PRETTY_FUNCTION__, bitvector, SAFE_NAME(ch), tar_ch, tar_obj);
 
-  if (DEBUG)
-    dlog("generic_find");
-  found = FALSE;
-
-  /* Eliminate spaces and "ignore" words */
+  /*
+   * Eliminate spaces and "ignore" words 
+   */
   while (*arg && !found) {
 
     for (; *arg == ' '; arg++);
@@ -1566,7 +1675,7 @@ int generic_find(char *arg, int bitvector, struct char_data *ch,
   *tar_ch = 0;
   *tar_obj = 0;
 
-  if (IS_SET(bitvector, FIND_CHAR_ROOM)) {	/* Find person in room */
+  if (IS_SET(bitvector, FIND_CHAR_ROOM)) {		       /* Find person in room */
     if ((*tar_ch = get_char_room_vis(ch, name))) {
       return (FIND_CHAR_ROOM);
     }

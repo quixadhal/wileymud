@@ -6,35 +6,39 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <unistd.h>
+/* #include <unistd.h> */
 #include <sys/types.h>
 /* #include <malloc.h> */
 #include <string.h>
 #include <assert.h>
 #include <time.h>
 
-#include "include/global.h"
-#include "include/bug.h"
-#include "include/spells.h"
-#include "include/constants.h"
-#include "include/db.h"
-#include "include/opinion.h"
-#include "include/comm.h"
-#include "include/hash.h"
-#include "include/multiclass.h"
-#include "include/handler.h"
-#include "include/fight.h"
-#include "include/act_info.h"
-#include "include/reception.h"
-#include "include/act_off.h"
-#include "include/magic_utils.h"
-#include "include/mudlimits.h"
-#include "include/act_skills.h"
+#include "global.h"
+#include "bug.h"
+#include "spells.h"
+#include "constants.h"
+#include "db.h"
+#include "opinion.h"
+#include "comm.h"
+#include "hash.h"
+#include "multiclass.h"
+#include "handler.h"
+#include "fight.h"
+#include "act_info.h"
+#include "reception.h"
+#include "act_off.h"
+#include "magic_utils.h"
+#include "mudlimits.h"
+#include "act_skills.h"
 #define _UTILS_C
-#include "include/utils.h"
+#include "utils.h"
 
-inline int MobVnum(struct char_data *c) {
-  if(!c || IS_PC(c))
+inline int MobVnum(struct char_data *c)
+{
+  if (DEBUG > 3)
+    dlog("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(c));
+
+  if (!c || IS_PC(c))
     return 0;
   if (IS_MOB(c)) {
     return mob_index[c->nr].virtual;
@@ -45,7 +49,10 @@ inline int MobVnum(struct char_data *c) {
 
 inline int ObjVnum(struct obj_data *o)
 {
-  if(!o)
+  if (DEBUG > 3)
+    dlog("called %s with %s", __PRETTY_FUNCTION__, SAFE_ONAME(o));
+
+  if (!o)
     return 0;
   if (o->item_number >= 0)
     return obj_index[o->item_number].virtual;
@@ -55,12 +62,19 @@ inline int ObjVnum(struct obj_data *o)
 
 inline int percent(int value, int total)
 {
-  if(!total) return 0;
-    return ((value * 100) / total);
+  if (DEBUG > 3)
+    dlog("called %s with %d, %d", __PRETTY_FUNCTION__, value, total);
+
+  if (!total)
+    return 0;
+  return ((value * 100) / total);
 }
 
-inline char *ordinal(int x)
+inline char                            *ordinal(int x)
 {
+  if (DEBUG > 3)
+    dlog("called %s with %d", __PRETTY_FUNCTION__, x);
+
   if (x < 14 && x > 10)
     x = 4;
   else
@@ -79,7 +93,10 @@ inline char *ordinal(int x)
 
 int GetItemClassRestrictions(struct obj_data *obj)
 {
-  register int total = 0;
+  int                                     total = 0;
+
+  if (DEBUG > 3)
+    dlog("called %s with %s", __PRETTY_FUNCTION__, SAFE_ONAME(obj));
 
   if (IS_SET(obj->obj_flags.extra_flags, ITEM_ANTI_MAGE))
     total += CLASS_MAGIC_USER;
@@ -97,6 +114,9 @@ int GetItemClassRestrictions(struct obj_data *obj)
 
 int CAN_SEE(struct char_data *s, struct char_data *o)
 {
+  if (DEBUG > 3)
+    dlog("called %s with %s, %s", __PRETTY_FUNCTION__, SAFE_NAME(s), SAFE_NAME(o));
+
   if (!o || !s)
     return (FALSE);
 
@@ -124,16 +144,19 @@ int CAN_SEE(struct char_data *s, struct char_data *o)
     if (!IS_AFFECTED(s, AFF_DETECT_INVISIBLE))
       return (FALSE);
   }
-  if ((IS_DARK(s->in_room) || IS_DARK(o->in_room)) &&
-      (!IS_AFFECTED(s, AFF_INFRAVISION)))
+  if ((IS_DARK(s->in_room) || IS_DARK(o->in_room)) && (!IS_AFFECTED(s, AFF_INFRAVISION)))
     return (FALSE);
 
   return (TRUE);
 
 }
 
-int exit_ok(struct room_direction_data *room_exit, struct room_data **rpp) {
-  struct room_data *rp;
+int exit_ok(struct room_direction_data *room_exit, struct room_data **rpp)
+{
+  struct room_data                       *rp = NULL;
+
+  if (DEBUG > 3)
+    dlog("called %s with %08x, %08x", __PRETTY_FUNCTION__, room_exit, rpp);
 
   if (rpp == NULL)
     rpp = &rp;
@@ -147,14 +170,20 @@ int exit_ok(struct room_direction_data *room_exit, struct room_data **rpp) {
 
 inline int IsImmune(struct char_data *ch, int bit)
 {
-  if(!ch)
+  if (DEBUG > 3)
+    dlog("called %s with %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), bit);
+
+  if (!ch)
     return 0;
   return IS_SET(bit, ch->M_immune);
 }
 
 inline int IsResist(struct char_data *ch, int bit)
 {
-  if(!ch)
+  if (DEBUG > 3)
+    dlog("called %s with %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), bit);
+
+  if (!ch)
     return 0;
   if (GetMaxLevel(ch) >= LOW_IMMORTAL)
     return 1;
@@ -163,13 +192,20 @@ inline int IsResist(struct char_data *ch, int bit)
 
 inline int IsSusc(struct char_data *ch, int bit)
 {
-  if(!ch)
+  if (DEBUG > 3)
+    dlog("called %s with %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), bit);
+
+  if (!ch)
     return 0;
   return IS_SET(bit, ch->susc);
 }
 
 /* creates a random number in interval [from;to] */
-inline int number(int from, int to) {
+inline int number(int from, int to)
+{
+  if (DEBUG > 3)
+    dlog("called %s with %d, %d", __PRETTY_FUNCTION__, from, to);
+
   if (to - from + 1)
     return ((random() % (to - from + 1)) + from);
   else
@@ -177,28 +213,44 @@ inline int number(int from, int to) {
 }
 
 /* simulates dice roll */
-inline int dice(int rolls, int size) {
-  register int r;
-  register int sum = 0;
+inline int dice(int rolls, int size)
+{
+  int                                     r = 0;
+  int                                     sum = 0;
 
-  if(size < 1 || rolls < 1)
+  if (DEBUG > 3)
+    dlog("called %s with %d, %d", __PRETTY_FUNCTION__, rolls, size);
+
+  if (size < 1 || rolls < 1)
     return 0;
-  if(size == 1)
+  if (size == 1)
     return rolls;
-  for(r = 1; r <= rolls; r++)
+  for (r = 1; r <= rolls; r++)
     sum += ((random() % size) + 1);
   return sum;
 }
 
-inline int fuzz(int x) {
-  if(!x) return 0;
-  if(x < 0) x= -x;
-  return ((random() % ((2* x)+1)) - x);
+inline int fuzz(int x)
+{
+  if (DEBUG > 3)
+    dlog("called %s with %d", __PRETTY_FUNCTION__, x);
+
+  if (!x)
+    return 0;
+  if (x < 0)
+    x = -x;
+  return ((random() % ((2 * x) + 1)) - x);
 }
 
-int scan_number(char *text, int *rval) {
-  int length;
+int scan_number(char *text, int *rval)
+{
+  int                                     length = 0;
 
+  if (DEBUG > 3)
+    dlog("called %s with %s, %08x", __PRETTY_FUNCTION__, VNULL(text), rval);
+
+  if (!text || !*text)
+    return 0;
   if (1 != sscanf(text, " %i %n", rval, &length))
     return 0;
   if (text[length] != 0)
@@ -206,20 +258,33 @@ int scan_number(char *text, int *rval) {
   return 1;
 }
 
-inline int str_cmp(const char *arg1, const char *arg2) {
-  if(!arg1 || !arg2)
+inline int str_cmp(const char *arg1, const char *arg2)
+{
+  if (DEBUG > 3)
+    dlog("called %s with %s, %s", __PRETTY_FUNCTION__, VNULL(arg1), VNULL(arg2));
+
+  if (!arg1 || !arg2)
     return 1;
   return strcasecmp(arg1, arg2);
 }
 
-inline int strn_cmp(const char *arg1, const char *arg2, const int n) {
-  if(!arg1 || !arg2)
+inline int strn_cmp(const char *arg1, const char *arg2, const int n)
+{
+  if (DEBUG > 3)
+    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, VNULL(arg1), VNULL(arg2), n);
+
+  if (!arg1 || !arg2)
     return 1;
   return strncasecmp(arg1, arg2, n);
 }
 
-inline void sprintbit(unsigned long vektor, const char *names[], char *result) {
-  register long nr;
+inline void sprintbit(unsigned long vektor, const char *names[], char *result)
+{
+  long                                    nr = 0L;
+
+  if (DEBUG > 3)
+    dlog("called %s with %lu, %08x, %08x", __PRETTY_FUNCTION__, vektor, names, result);
+
   *result = '\0';
   for (nr = 0; vektor; vektor >>= 1) {
     if (IS_SET(1, vektor)) {
@@ -238,8 +303,13 @@ inline void sprintbit(unsigned long vektor, const char *names[], char *result) {
     strcat(result, "NOBITS");
 }
 
-inline void sprinttype(int type, const char *names[], char *result) {
-  register int nr;
+inline void sprinttype(int type, const char *names[], char *result)
+{
+  int                                     nr = 0;
+
+  if (DEBUG > 3)
+    dlog("called %s with %d, %08x, %08x", __PRETTY_FUNCTION__, type, names, result);
+
   for (nr = 0; (*names[nr] != '\n'); nr++);
   if (type < nr)
     strcpy(result, names[type]);
@@ -248,14 +318,18 @@ inline void sprinttype(int type, const char *names[], char *result) {
 }
 
 /* Calculate the REAL time passed over the last t2-t1 centuries (secs) */
-struct time_info_data real_time_passed(time_t t2, time_t t1) {
-  register long secs;
-  struct time_info_data now;
+struct time_info_data real_time_passed(time_t t2, time_t t1)
+{
+  long                                    secs = 0L;
+  struct time_info_data                   now;
+
+  if (DEBUG > 3)
+    dlog("called %s with %u, %u", __PRETTY_FUNCTION__, (long)t2, (long)t1);
 
   secs = (long)(t2 - t1);
-  now.hours = (secs / SECS_PER_REAL_HOUR) % 24;		/* 0..23 hours */
+  now.hours = (secs / SECS_PER_REAL_HOUR) % 24;		       /* 0..23 hours */
   secs -= SECS_PER_REAL_HOUR * now.hours;
-  now.day = (secs / SECS_PER_REAL_DAY);		/* 0..34 days  */
+  now.day = (secs / SECS_PER_REAL_DAY);			       /* 0..34 days */
   secs -= SECS_PER_REAL_DAY * now.day;
   now.month = -1;
   now.year = -1;
@@ -263,38 +337,50 @@ struct time_info_data real_time_passed(time_t t2, time_t t1) {
 }
 
 /* Calculate the MUD time passed over the last t2-t1 centuries (secs) */
-struct time_info_data mud_time_passed(time_t t2, time_t t1) {
-  register long secs;
-  struct time_info_data now;
+struct time_info_data mud_time_passed(time_t t2, time_t t1)
+{
+  long                                    secs = 0L;
+  struct time_info_data                   now;
+
+  if (DEBUG > 3)
+    dlog("called %s with %u, %u", __PRETTY_FUNCTION__, (long)t2, (long)t1);
 
   secs = (long)(t2 - t1);
-  now.hours = (secs / SECS_PER_MUD_HOUR) % 24;	/* 0..23 hours */
+  now.hours = (secs / SECS_PER_MUD_HOUR) % 24;		       /* 0..23 hours */
   secs -= SECS_PER_MUD_HOUR * now.hours;
-  now.day = (secs / SECS_PER_MUD_DAY) % 35;	/* 0..34 days  */
+  now.day = (secs / SECS_PER_MUD_DAY) % 35;		       /* 0..34 days */
   secs -= SECS_PER_MUD_DAY * now.day;
-  now.month = (secs / SECS_PER_MUD_MONTH) % 17;		/* 0..16 months */
+  now.month = (secs / SECS_PER_MUD_MONTH) % 17;		       /* 0..16 months */
   secs -= SECS_PER_MUD_MONTH * now.month;
-  now.year = (secs / SECS_PER_MUD_YEAR);	/* 0..XX? years */
+  now.year = (secs / SECS_PER_MUD_YEAR);		       /* 0..XX? years */
   return now;
 }
 
-struct time_info_data age(struct char_data *ch) {
-  struct time_info_data player_age;
+struct time_info_data age(struct char_data *ch)
+{
+  struct time_info_data                   player_age;
+
+  if (DEBUG > 3)
+    dlog("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
 
   player_age = mud_time_passed(time(0), ch->player.time.birth);
-  player_age.year += 17;	       /* All players start at 17 */
+  player_age.year += 17;				       /* All players start at 17 */
   return player_age;
 }
 
-int in_group(struct char_data *ch1, struct char_data *ch2) {
-/* 
- * three possibilities ->
- * 1.  char is char2's master
- * 2.  char2 is char's master
- * 3.  char and char2 follow same.
- * 
- * otherwise not true.
- */
+int in_group(struct char_data *ch1, struct char_data *ch2)
+{
+  if (DEBUG > 3)
+    dlog("called %s with %s, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch1), SAFE_NAME(ch2));
+
+  /* 
+   * three possibilities ->
+   * 1.  char is char2's master
+   * 2.  char2 is char's master
+   * 3.  char and char2 follow same.
+   * 
+   * otherwise not true.
+   */
 
   if ((!ch1) || (!ch2))
     return (0);
@@ -328,12 +414,15 @@ int in_group(struct char_data *ch1, struct char_data *ch2) {
 
 int getall(char *name, char *newname)
 {
-  char arg[40] = "\0\0\0",
-       tmpname[80] = "\0\0\0\0\0",
-       otname[80] = "\0";
-  char prd;
+  char                                    arg[40] = "\0\0\0";
+  char                                    tmpname[80] = "\0\0\0";
+  char                                    otname[80] = "\0\0\0";
+  char                                    prd = '\0';
 
-  sscanf(name, "%s ", otname);	       /* reads up to first space */
+  if (DEBUG > 3)
+    dlog("called %s with %s, %s", __PRETTY_FUNCTION__, VNULL(name), VNULL(newname));
+
+  sscanf(name, "%s ", otname);				       /* reads up to first space */
 
   if (strlen(otname) < 5)
     return (FALSE);
@@ -358,8 +447,11 @@ int getall(char *name, char *newname)
 
 int getabunch(char *name, char *newname)
 {
-  int num = 0;
-  char tmpname[80] = "\0";
+  int                                     num = 0;
+  char                                    tmpname[80] = "\0\0\0";
+
+  if (DEBUG > 3)
+    dlog("called %s with %s, %s", __PRETTY_FUNCTION__, VNULL(name), VNULL(newname));
 
   sscanf(name, "%d*%s", &num, tmpname);
   if (tmpname[0] == '\0')
@@ -382,223 +474,232 @@ int getabunch(char *name, char *newname)
 
 int DetermineExp(struct char_data *mob, int exp_flags)
 {
+  int                                     base = 0;
+  int                                     phit = 0;
+  int                                     sab = 0;
 
-  int base;
-  int phit;
-  int sab;
+  /* 
+   * reads in the monster, and adds the flags together 
+   * for simplicity, 1 exceptional ability is 2 special abilities 
+   */
 
-/* 
- * reads in the monster, and adds the flags together 
- * for simplicity, 1 exceptional ability is 2 special abilities 
- */
+  if (DEBUG > 3)
+    dlog("called %s with %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(mob), exp_flags);
 
   if (GetMaxLevel(mob) < 0)
     return (1);
 
   switch (GetMaxLevel(mob)) {
 
-  case 0:
-    base = 5;
-    phit = 1;
-    sab = 10;
-    break;
+    case 0:
+      base = 5;
+      phit = 1;
+      sab = 10;
+      break;
 
-  case 1:
-    base = 10;
-    phit = 1;
-    sab = 15;
-    break;
+    case 1:
+      base = 10;
+      phit = 1;
+      sab = 15;
+      break;
 
-  case 2:
-    base = 20;
-    phit = 2;
-    sab = 20;
-    break;
+    case 2:
+      base = 20;
+      phit = 2;
+      sab = 20;
+      break;
 
-  case 3:
-    base = 35;
-    phit = 3;
-    sab = 25;
-    break;
+    case 3:
+      base = 35;
+      phit = 3;
+      sab = 25;
+      break;
 
-  case 4:
-    base = 60;
-    phit = 4;
-    sab = 30;
-    break;
+    case 4:
+      base = 60;
+      phit = 4;
+      sab = 30;
+      break;
 
-  case 5:
-    base = 90;
-    phit = 5;
-    sab = 40;
-    break;
+    case 5:
+      base = 90;
+      phit = 5;
+      sab = 40;
+      break;
 
-  case 6:
-    base = 150;
-    phit = 6;
-    sab = 75;
-    break;
+    case 6:
+      base = 150;
+      phit = 6;
+      sab = 75;
+      break;
 
-  case 7:
-    base = 225;
-    phit = 8;
-    sab = 125;
-    break;
+    case 7:
+      base = 225;
+      phit = 8;
+      sab = 125;
+      break;
 
-  case 8:
-    base = 600;
-    phit = 12;
-    sab = 175;
-    break;
+    case 8:
+      base = 600;
+      phit = 12;
+      sab = 175;
+      break;
 
-  case 9:
-    base = 900;
-    phit = 14;
-    sab = 300;
-    break;
+    case 9:
+      base = 900;
+      phit = 14;
+      sab = 300;
+      break;
 
-  case 10:
-    base = 1100;
-    phit = 15;
-    sab = 450;
-    break;
+    case 10:
+      base = 1100;
+      phit = 15;
+      sab = 450;
+      break;
 
-  case 11:
-    base = 1300;
-    phit = 16;
-    sab = 700;
-    break;
+    case 11:
+      base = 1300;
+      phit = 16;
+      sab = 700;
+      break;
 
-  case 12:
-    base = 1550;
-    phit = 17;
-    sab = 700;
-    break;
+    case 12:
+      base = 1550;
+      phit = 17;
+      sab = 700;
+      break;
 
-  case 13:
-    base = 1800;
-    phit = 18;
-    sab = 950;
-    break;
+    case 13:
+      base = 1800;
+      phit = 18;
+      sab = 950;
+      break;
 
-  case 14:
-    base = 2100;
-    phit = 19;
-    sab = 950;
-    break;
+    case 14:
+      base = 2100;
+      phit = 19;
+      sab = 950;
+      break;
 
-  case 15:
-    base = 2400;
-    phit = 20;
-    sab = 1250;
-    break;
+    case 15:
+      base = 2400;
+      phit = 20;
+      sab = 1250;
+      break;
 
-  case 16:
-    base = 2700;
-    phit = 23;
-    sab = 1250;
-    break;
+    case 16:
+      base = 2700;
+      phit = 23;
+      sab = 1250;
+      break;
 
-  case 17:
-    base = 3000;
-    phit = 25;
-    sab = 1550;
-    break;
+    case 17:
+      base = 3000;
+      phit = 25;
+      sab = 1550;
+      break;
 
-  case 18:
-    base = 3500;
-    phit = 28;
-    sab = 1550;
-    break;
+    case 18:
+      base = 3500;
+      phit = 28;
+      sab = 1550;
+      break;
 
-  case 19:
-    base = 4000;
-    phit = 30;
-    sab = 2100;
-    break;
+    case 19:
+      base = 4000;
+      phit = 30;
+      sab = 2100;
+      break;
 
-  case 20:
-    base = 4500;
-    phit = 33;
-    sab = 2100;
-    break;
+    case 20:
+      base = 4500;
+      phit = 33;
+      sab = 2100;
+      break;
 
-  case 21:
-    base = 5000;
-    phit = 35;
-    sab = 2600;
-    break;
+    case 21:
+      base = 5000;
+      phit = 35;
+      sab = 2600;
+      break;
 
-  case 22:
-    base = 6000;
-    phit = 40;
-    sab = 3000;
-    break;
+    case 22:
+      base = 6000;
+      phit = 40;
+      sab = 3000;
+      break;
 
-  case 23:
-    base = 7000;
-    phit = 45;
-    sab = 3500;
-    break;
+    case 23:
+      base = 7000;
+      phit = 45;
+      sab = 3500;
+      break;
 
-  case 24:
-    base = 8000;
-    phit = 50;
-    sab = 4000;
-    break;
+    case 24:
+      base = 8000;
+      phit = 50;
+      sab = 4000;
+      break;
 
-  case 25:
-    base = 9000;
-    phit = 55;
-    sab = 4500;
-    break;
+    case 25:
+      base = 9000;
+      phit = 55;
+      sab = 4500;
+      break;
 
-  case 26:
-    base = 10000;
-    phit = 60;
-    sab = 5000;
-    break;
+    case 26:
+      base = 10000;
+      phit = 60;
+      sab = 5000;
+      break;
 
-  case 27:
-    base = 12000;
-    phit = 70;
-    sab = 6000;
-    break;
+    case 27:
+      base = 12000;
+      phit = 70;
+      sab = 6000;
+      break;
 
-  case 28:
-    base = 14000;
-    phit = 80;
-    sab = 7000;
-    break;
+    case 28:
+      base = 14000;
+      phit = 80;
+      sab = 7000;
+      break;
 
-  case 29:
-    base = 16000;
-    phit = 90;
-    sab = 8000;
-    break;
+    case 29:
+      base = 16000;
+      phit = 90;
+      sab = 8000;
+      break;
 
-  case 30:
-    base = 20000;
-    phit = 100;
-    sab = 10000;
-    break;
+    case 30:
+      base = 20000;
+      phit = 100;
+      sab = 10000;
+      break;
 
-  default:
-    base = 25000;
-    phit = 150;
-    sab = 20000;
-    break;
+    default:
+      base = 25000;
+      phit = 150;
+      sab = 20000;
+      break;
   }
 
   return (base + (phit * GET_HIT(mob)) + (sab * exp_flags));
 
 }
 
-void down_river(int current_pulse) {
-  struct char_data *ch, *tmp;
-  struct obj_data *obj_object, *next_obj;
-  int rd, or;
-  struct room_data *rp;
+void down_river(int current_pulse)
+{
+  struct char_data                       *ch = NULL;
+  struct char_data                       *tmp = NULL;
+  struct obj_data                        *obj_object = NULL;
+  struct obj_data                        *next_obj = NULL;
+  int                                     rd = 0;
+  int                                     or = 0;
+  struct room_data                       *rp = NULL;
+
+  if (DEBUG > 3)
+    dlog("called %s with %d", __PRETTY_FUNCTION__, current_pulse);
 
   if (current_pulse < 0)
     return;
@@ -618,8 +719,7 @@ void down_river(int current_pulse) {
 		  next_obj = obj_object->next_content;
 		  if ((real_roomp(ch->in_room))->dir_option[rd]) {
 		    obj_from_room(obj_object);
-		    obj_to_room(obj_object,
-				(real_roomp(ch->in_room))->dir_option[rd]->to_room);
+		    obj_to_room(obj_object, (real_roomp(ch->in_room))->dir_option[rd]->to_room);
 		  }
 		}
 /*
@@ -639,19 +739,19 @@ void down_river(int current_pulse) {
 		      char_from_room(MOUNTED(ch));
 		      char_to_room(ch, (real_roomp(or))->dir_option[rd]->to_room);
 		      char_to_room(MOUNTED(ch), (real_roomp(or))->dir_option[rd]->to_room);
-		      do_look(ch, "\0", 15);
+		      do_look(ch, "", 15);
 		    } else if (RIDDEN(ch)) {
 		      or = ch->in_room;
 		      char_from_room(ch);
 		      char_from_room(RIDDEN(ch));
 		      char_to_room(ch, (real_roomp(or))->dir_option[rd]->to_room);
 		      char_to_room(RIDDEN(ch), (real_roomp(or))->dir_option[rd]->to_room);
-		      do_look(ch, "\0", 15);
+		      do_look(ch, "", 15);
 		    } else {
 		      or = ch->in_room;
 		      char_from_room(ch);
 		      char_to_room(ch, (real_roomp(or))->dir_option[rd]->to_room);
-		      do_look(ch, "\0", 15);
+		      do_look(ch, "", 15);
 		    }
 
 		    if (IS_SET(RM_FLAGS(ch->in_room), DEATH) && GetMaxLevel(ch) < LOW_IMMORTAL) {
@@ -670,88 +770,116 @@ void down_river(int current_pulse) {
 }
 
 /* these are all very arbitrary */
-inline int IsHumanoid(struct char_data *ch) {
+inline int IsHumanoid(struct char_data *ch)
+{
+  if (DEBUG > 3)
+    dlog("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
+
   switch (GET_RACE(ch)) {
-  case RACE_HALFBREED:
-  case RACE_HUMAN:
-  case RACE_GNOME:
-  case RACE_ELVEN:
-  case RACE_DWARF:
-  case RACE_HALFLING:
-  case RACE_ORC:
-  case RACE_LYCANTH:
-  case RACE_UNDEAD:
-  case RACE_GIANT:
-  case RACE_GOBLIN:
-  case RACE_DEVIL:
-  case RACE_TROLL:
-  case RACE_VEGMAN:
-  case RACE_MFLAYER:
-  case RACE_DEMON:
-  case RACE_GHOST:
-  case RACE_PRIMATE:
-    return TRUE;
-  default:
-    return FALSE;
+    case RACE_HALFBREED:
+    case RACE_HUMAN:
+    case RACE_GNOME:
+    case RACE_ELVEN:
+    case RACE_DWARF:
+    case RACE_HALFLING:
+    case RACE_ORC:
+    case RACE_LYCANTH:
+    case RACE_UNDEAD:
+    case RACE_GIANT:
+    case RACE_GOBLIN:
+    case RACE_DEVIL:
+    case RACE_TROLL:
+    case RACE_VEGMAN:
+    case RACE_MFLAYER:
+    case RACE_DEMON:
+    case RACE_GHOST:
+    case RACE_PRIMATE:
+      return TRUE;
+    default:
+      return FALSE;
   }
 }
 
-inline int IsAnimal(struct char_data *ch) {
+inline int IsAnimal(struct char_data *ch)
+{
+  if (DEBUG > 3)
+    dlog("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
+
   switch (GET_RACE(ch)) {
-  case RACE_PREDATOR:
-  case RACE_FISH:
-  case RACE_BIRD:
-  case RACE_HERBIV:
-  case RACE_ANIMAL:
-  case RACE_LYCANTH:
-    return TRUE;
-  default:
-    return FALSE;
+    case RACE_PREDATOR:
+    case RACE_FISH:
+    case RACE_BIRD:
+    case RACE_HERBIV:
+    case RACE_ANIMAL:
+    case RACE_LYCANTH:
+      return TRUE;
+    default:
+      return FALSE;
   }
 }
 
-inline int IsUndead(struct char_data *ch) {
+inline int IsUndead(struct char_data *ch)
+{
+  if (DEBUG > 3)
+    dlog("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
+
   switch (GET_RACE(ch)) {
-  case RACE_UNDEAD:
-  case RACE_GHOST:
-    return TRUE;
-  default:
-    return FALSE;
+    case RACE_UNDEAD:
+    case RACE_GHOST:
+      return TRUE;
+    default:
+      return FALSE;
   }
 }
 
-inline int IsLycanthrope(struct char_data *ch) {
+inline int IsLycanthrope(struct char_data *ch)
+{
+  if (DEBUG > 3)
+    dlog("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
+
   switch (GET_RACE(ch)) {
-  case RACE_LYCANTH:
-    return TRUE;
-  default:
-    return FALSE;
+    case RACE_LYCANTH:
+      return TRUE;
+    default:
+      return FALSE;
   }
 }
 
-inline int IsDiabolic(struct char_data *ch) {
+inline int IsDiabolic(struct char_data *ch)
+{
+  if (DEBUG > 3)
+    dlog("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
+
   switch (GET_RACE(ch)) {
-  case RACE_DEMON:
-  case RACE_DEVIL:
-    return TRUE;
-  default:
-    return FALSE;
+    case RACE_DEMON:
+    case RACE_DEVIL:
+      return TRUE;
+    default:
+      return FALSE;
   }
 }
 
-inline int IsReptile(struct char_data *ch) {
+inline int IsReptile(struct char_data *ch)
+{
+  if (DEBUG > 3)
+    dlog("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
+
   switch (GET_RACE(ch)) {
-  case RACE_REPTILE:
-  case RACE_DRAGON:
-  case RACE_DINOSAUR:
-  case RACE_SNAKE:
-    return TRUE;
-  default:
-    return FALSE;
+    case RACE_REPTILE:
+    case RACE_DRAGON:
+    case RACE_DINOSAUR:
+    case RACE_SNAKE:
+      return TRUE;
+    default:
+      return FALSE;
   }
 }
 
-inline int IsDraconic(struct char_data *ch) {
+inline int IsDraconic(struct char_data *ch)
+{
+  if (DEBUG > 3)
+    dlog("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
+
   switch (GET_RACE(ch)) {
     case RACE_DRAGON:
       return TRUE;
@@ -760,54 +888,75 @@ inline int IsDraconic(struct char_data *ch) {
   }
 }
 
-inline int IsAvian(struct char_data *ch) {
+inline int IsAvian(struct char_data *ch)
+{
+  if (DEBUG > 3)
+    dlog("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
+
   switch (GET_RACE(ch)) {
     case RACE_BIRD:
     case RACE_DRAGON:
-    case RACE_GHOST:  /* insubstantial? */
+    case RACE_GHOST:					       /* insubstantial? */
       return TRUE;
     default:
       return FALSE;
   }
 }
 
-inline int IsExtraPlanar(struct char_data *ch) {
+inline int IsExtraPlanar(struct char_data *ch)
+{
+  if (DEBUG > 3)
+    dlog("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
+
   switch (GET_RACE(ch)) {
-  case RACE_DEMON:
-  case RACE_DEVIL:
-  case RACE_PLANAR:
-  case RACE_ELEMENT:
-    return TRUE;
-  default:
-    return FALSE;
+    case RACE_DEMON:
+    case RACE_DEVIL:
+    case RACE_PLANAR:
+    case RACE_ELEMENT:
+      return TRUE;
+    default:
+      return FALSE;
   }
 }
 
-inline int HasHands(struct char_data *ch) {
+inline int HasHands(struct char_data *ch)
+{
+  if (DEBUG > 3)
+    dlog("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
+
   if (IsHumanoid(ch) || IsDiabolic(ch) || IsDraconic(ch))
     return TRUE;
   else
     return FALSE;
 }
 
-inline int IsPerson(struct char_data *ch) {
+inline int IsPerson(struct char_data *ch)
+{
+  if (DEBUG > 3)
+    dlog("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
+
   switch (GET_RACE(ch)) {
-  case RACE_HUMAN:
-  case RACE_ELVEN:
-  case RACE_DWARF:
-  case RACE_HALFLING:
-  case RACE_GNOME:
-    return TRUE;
-  default:
-    return FALSE;
+    case RACE_HUMAN:
+    case RACE_ELVEN:
+    case RACE_DWARF:
+    case RACE_HALFLING:
+    case RACE_GNOME:
+      return TRUE;
+    default:
+      return FALSE;
   }
 }
 
-void SetHunting(struct char_data *ch, struct char_data *tch) {
-  int persist, dist;
+void SetHunting(struct char_data *ch, struct char_data *tch)
+{
+  int                                     persist = 0;
+  int                                     dist = 0;
+
+  if (DEBUG > 3)
+    dlog("called %s with %s, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), SAFE_NAME(tch));
 
   persist = GetMaxLevel(ch);
-/*   persist *= (int) GET_ALIGNMENT(ch) / 100; */
+  /*   persist *= (int) GET_ALIGNMENT(ch) / 100; */
   persist *= (int)GET_ALIGNMENT(ch) / 200;
 
   if (persist < 0)
@@ -815,7 +964,7 @@ void SetHunting(struct char_data *ch, struct char_data *tch) {
 
   dist = GET_INT(ch) + GetMaxLevel(ch);
 
-/*   dist = GET_ALIGNMENT(tch) - GET_ALIGNMENT(ch); */
+  /*   dist = GET_ALIGNMENT(tch) - GET_ALIGNMENT(ch); */
 
   dist = (dist > 0) ? dist : -dist;
   if (DoesHate(ch, tch))
@@ -833,8 +982,12 @@ void SetHunting(struct char_data *ch, struct char_data *tch) {
   }
 }
 
-void CallForGuard(struct char_data *ch, struct char_data *vict, int lev) {
-  struct char_data *i;
+void CallForGuard(struct char_data *ch, struct char_data *vict, int lev)
+{
+  struct char_data                       *i = NULL;
+
+  if (DEBUG > 3)
+    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), SAFE_NAME(vict), lev);
 
   if (lev == 0)
     lev = 3;
@@ -842,7 +995,8 @@ void CallForGuard(struct char_data *ch, struct char_data *vict, int lev) {
   for (i = character_list; i && lev > 0; i = i->next) {
     if (IS_NPC(i) && (i != ch)) {
       if (!i->specials.fighting) {
-	if ((mob_index[i->nr].virtual == GUARD_VNUM) || (mob_index[i->nr].virtual == GUARD2_VNUM)) {
+	if ((mob_index[i->nr].virtual == GUARD_VNUM)
+	    || (mob_index[i->nr].virtual == GUARD2_VNUM)) {
 	  if (number(1, 6) >= 3) {
 	    if (!IS_SET(i->specials.act, ACT_HUNTING)) {
 	      if (vict) {
@@ -857,8 +1011,12 @@ void CallForGuard(struct char_data *ch, struct char_data *vict, int lev) {
   }
 }
 
-void CallForAGuard(struct char_data *ch, struct char_data *vict, int lev) {
-  struct char_data *point;
+void CallForAGuard(struct char_data *ch, struct char_data *vict, int lev)
+{
+  struct char_data                       *point = NULL;
+
+  if (DEBUG > 3)
+    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), SAFE_NAME(vict), lev);
 
   if (lev == 0)
     lev = 3;
@@ -881,9 +1039,12 @@ void CallForAGuard(struct char_data *ch, struct char_data *vict, int lev) {
   }
 }
 
-void StandUp(struct char_data *ch) {
-  if ((GET_POS(ch) < POSITION_STANDING) &&
-      (GET_POS(ch) > POSITION_STUNNED)) {
+void StandUp(struct char_data *ch)
+{
+  if (DEBUG > 3)
+    dlog("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
+
+  if ((GET_POS(ch) < POSITION_STANDING) && (GET_POS(ch) > POSITION_STUNNED)) {
     if (ch->points.hit > (ch->points.max_hit / 2))
       act("$n quickly stands up.", 1, ch, 0, 0, TO_ROOM);
     else if (ch->points.hit > (ch->points.max_hit / 6))
@@ -894,38 +1055,46 @@ void StandUp(struct char_data *ch) {
   }
 }
 
-void FighterMove(struct char_data *ch) {
-  int num;
+void FighterMove(struct char_data *ch)
+{
+  int                                     num = 0;
+
+  if (DEBUG > 3)
+    dlog("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
 
   num = number(1, 4);
 
   switch (num) {
-  case 1:
-    if (!ch->skills[SKILL_BASH].learned)
-      ch->skills[SKILL_BASH].learned = 10 + GetMaxLevel(ch) * 4;
-    do_bash(ch, GET_NAME(ch->specials.fighting), 0);
-    break;
-  case 2:
-    if (ch->equipment[WIELD] || ch->equipment[WIELD_TWOH]) {
-      if (!ch->skills[SKILL_DISARM].learned)
-	ch->skills[SKILL_DISARM].learned = 10 + GetMaxLevel(ch) * 4;
-      do_disarm(ch, GET_NAME(ch->specials.fighting), 0);
-    } else {
-      if (!ch->skills[SKILL_DISARM].learned)
-	ch->skills[SKILL_DISARM].learned = 60 + GetMaxLevel(ch) * 4;
-      do_disarm(ch, GET_NAME(ch->specials.fighting), 0);
-    }
-    break;
-  case 3:
-  case 4:
-    if (!ch->skills[SKILL_KICK].learned)
-      ch->skills[SKILL_KICK].learned = 10 + GetMaxLevel(ch) * 4;
-    do_kick(ch, GET_NAME(ch->specials.fighting), 0);
-    break;
+    case 1:
+      if (!ch->skills[SKILL_BASH].learned)
+	ch->skills[SKILL_BASH].learned = 10 + GetMaxLevel(ch) * 4;
+      do_bash(ch, GET_NAME(ch->specials.fighting), 0);
+      break;
+    case 2:
+      if (ch->equipment[WIELD] || ch->equipment[WIELD_TWOH]) {
+	if (!ch->skills[SKILL_DISARM].learned)
+	  ch->skills[SKILL_DISARM].learned = 10 + GetMaxLevel(ch) * 4;
+	do_disarm(ch, GET_NAME(ch->specials.fighting), 0);
+      } else {
+	if (!ch->skills[SKILL_DISARM].learned)
+	  ch->skills[SKILL_DISARM].learned = 60 + GetMaxLevel(ch) * 4;
+	do_disarm(ch, GET_NAME(ch->specials.fighting), 0);
+      }
+      break;
+    case 3:
+    case 4:
+      if (!ch->skills[SKILL_KICK].learned)
+	ch->skills[SKILL_KICK].learned = 10 + GetMaxLevel(ch) * 4;
+      do_kick(ch, GET_NAME(ch->specials.fighting), 0);
+      break;
   }
 }
 
-void DevelopHatred(struct char_data *ch, struct char_data *v) {
+void DevelopHatred(struct char_data *ch, struct char_data *v)
+{
+  if (DEBUG > 3)
+    dlog("called %s with %s, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), SAFE_NAME(v));
+
   if (DoesHate(ch, v))
     return;
 
@@ -950,12 +1119,19 @@ void DevelopHatred(struct char_data *ch, struct char_data *v) {
 
 }
 
-void Teleport(int current_pulse) {
-  char buf[256];
-  struct char_data *ch, *tmp, *pers;
-  struct obj_data *obj_object, *temp_obj;
-  int or;
-  struct room_data *rp, *dest;
+void Teleport(int current_pulse)
+{
+  struct char_data                       *ch = NULL;
+  struct char_data                       *tmp = NULL;
+  struct char_data                       *pers = NULL;
+  struct obj_data                        *obj_object = NULL;
+  struct obj_data                        *temp_obj = NULL;
+  int                                     or = 0;
+  struct room_data                       *rp = NULL;
+  struct room_data                       *dest = NULL;
+
+  if (DEBUG > 3)
+    dlog("called %s with %d", __PRETTY_FUNCTION__, current_pulse);
 
   if (current_pulse < 0)
     return;
@@ -967,13 +1143,11 @@ void Teleport(int current_pulse) {
     if (rp &&
 	(rp)->tele_targ > 0 &&
 	rp->tele_targ != rp->number &&
-	(rp)->tele_time > 0 &&
-	(current_pulse % (rp)->tele_time) == 0) {
+	(rp)->tele_time > 0 && (current_pulse % (rp)->tele_time) == 0) {
 
       dest = real_roomp(rp->tele_targ);
       if (!dest) {
-	sprintf(buf, "invalid tele_target:ROOM %s", rp->name);
-	log(buf);
+	dlog("invalid tele_target:ROOM %s", rp->name);
 	continue;
       }
       obj_object = (rp)->contents;
@@ -986,17 +1160,19 @@ void Teleport(int current_pulse) {
 
       while (rp->people /* should never fail */ ) {
 
-	/* find an NPC in the room */
+	/*
+	 * find an NPC in the room 
+	 */
 	for (tmp = rp->people; tmp; tmp = tmp->next_in_room) {
 	  if (IS_NPC(tmp))
 	    break;
 	}
 
 	if (tmp == NULL)
-	  break;		       /* we've run out of NPCs */
+	  break;					       /* we've run out of NPCs */
 
 	or = tmp->in_room;
-	char_from_room(tmp);	       /* the list of people in the room has changed */
+	char_from_room(tmp);				       /* the list of people in the room has changed */
 	char_to_room(tmp, rp->tele_targ);
 	if (IS_SET(dest->room_flags, DEATH)) {
 	  death_cry(tmp);
@@ -1020,10 +1196,9 @@ void Teleport(int current_pulse) {
       char_from_room(ch);
       char_to_room(ch, rp->tele_targ);
       if (rp->tele_look) {
-	do_look(ch, "\0", 15);
+	do_look(ch, "", 15);
       }
-      if (IS_SET(dest->room_flags, DEATH) &&
-	  GetMaxLevel(ch) < LOW_IMMORTAL) {
+      if (IS_SET(dest->room_flags, DEATH) && GetMaxLevel(ch) < LOW_IMMORTAL) {
 	death_cry(ch);
 
 	if (IS_NPC(ch) && (IS_SET(ch->specials.act, ACT_POLYSELF))) {
@@ -1045,15 +1220,18 @@ void Teleport(int current_pulse) {
   }
 }
 
-int HasObject(struct char_data *ch, int ob_num) {
-  int j, found;
-  struct obj_data *i;
+int HasObject(struct char_data *ch, int ob_num)
+{
+  int                                     j = 0;
+  int                                     found = FALSE;
+  struct obj_data                        *i = NULL;
 
-/*
- * equipment too
- */
+  if (DEBUG > 3)
+    dlog("called %s with %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), ob_num);
 
-  found = 0;
+  /*
+   * equipment too
+   */
 
   for (j = 0; j < MAX_WEAR; j++)
     if (ch->equipment[j])
@@ -1062,7 +1240,9 @@ int HasObject(struct char_data *ch, int ob_num) {
   if (found > 0)
     return (TRUE);
 
-  /* carrying  */
+  /*
+   * carrying 
+   */
   for (i = ch->carrying; i; i = i->next_content)
     found += RecCompObjNum(i, ob_num);
 
@@ -1072,7 +1252,11 @@ int HasObject(struct char_data *ch, int ob_num) {
     return (FALSE);
 }
 
-int room_of_object(struct obj_data *obj) {
+int room_of_object(struct obj_data *obj)
+{
+  if (DEBUG > 3)
+    dlog("called %s with %s", __PRETTY_FUNCTION__, SAFE_ONAME(obj));
+
   if (obj->in_room != NOWHERE)
     return obj->in_room;
   else if (obj->carried_by)
@@ -1085,7 +1269,11 @@ int room_of_object(struct obj_data *obj) {
     return NOWHERE;
 }
 
-struct char_data *char_holding(struct obj_data *obj) {
+struct char_data                       *char_holding(struct obj_data *obj)
+{
+  if (DEBUG > 3)
+    dlog("called %s with %s", __PRETTY_FUNCTION__, SAFE_ONAME(obj));
+
   if (obj->in_room != NOWHERE)
     return NULL;
   else if (obj->carried_by)
@@ -1098,10 +1286,13 @@ struct char_data *char_holding(struct obj_data *obj) {
     return NULL;
 }
 
-int RecCompObjNum(struct obj_data *o, int obj_num) {
+int RecCompObjNum(struct obj_data *o, int obj_num)
+{
+  int                                     total = 0;
+  struct obj_data                        *i = NULL;
 
-  int total = 0;
-  struct obj_data *i;
+  if (DEBUG > 3)
+    dlog("called %s with %s, %d", __PRETTY_FUNCTION__, SAFE_ONAME(o), obj_num);
 
   if (obj_index[o->item_number].virtual == obj_num)
     total = 1;
@@ -1114,7 +1305,11 @@ int RecCompObjNum(struct obj_data *o, int obj_num) {
 
 }
 
-void RestoreChar(struct char_data *ch) {
+void RestoreChar(struct char_data *ch)
+{
+  if (DEBUG > 3)
+    dlog("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
+
   GET_MANA(ch) = GET_MAX_MANA(ch);
   GET_HIT(ch) = GET_MAX_HIT(ch);
   GET_MOVE(ch) = GET_MAX_MOVE(ch);
@@ -1128,56 +1323,89 @@ void RestoreChar(struct char_data *ch) {
   }
 }
 
-inline void RemAllAffects(struct char_data *ch) {
+inline void RemAllAffects(struct char_data *ch)
+{
+  if (DEBUG > 3)
+    dlog("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
+
   spell_dispel_magic(IMPLEMENTOR, ch, ch, 0);
 }
 
-inline char *pain_level(struct char_data *ch) {
-  register int health_percent;
+inline char                            *pain_level(struct char_data *ch)
+{
+  int                                     health_percent = 0;
+
+  if (DEBUG > 3)
+    dlog("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
 
   if (GET_MAX_HIT(ch) > 0)
     health_percent = (100 * GET_HIT(ch)) / GET_MAX_HIT(ch);
   else
-    health_percent = -1;		       /* How could MAX_HIT be < 1?? */
+    health_percent = -1;				       /* How could MAX_HIT be < 1?? */
   if (health_percent >= 100)
-    return("is in an excellent condition");
+    return ("is in an excellent condition");
   else if (health_percent >= 90)
-    return("has a few scratches");
+    return ("has a few scratches");
   else if (health_percent >= 75)
-    return("has some small wounds and bruises");
+    return ("has some small wounds and bruises");
   else if (health_percent >= 50)
-    return("has quite a few wounds");
+    return ("has quite a few wounds");
   else if (health_percent >= 30)
-    return("has some big nasty wounds and scratches");
+    return ("has some big nasty wounds and scratches");
   else if (health_percent >= 15)
-    return("looks pretty hurt");
+    return ("looks pretty hurt");
   else if (health_percent >= 0)
-    return("is in an awful condition");
+    return ("is in an awful condition");
   else
-    return("is bleeding awfully from big wounds");
+    return ("is bleeding awfully from big wounds");
 }
 
-inline int IsWizard(struct char_data *ch) {
-  if(!ch) return 0;
+inline int IsWizard(struct char_data *ch)
+{
+  if (DEBUG > 3)
+    dlog("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
+
+  if (!ch)
+    return 0;
   return ch->player.class & CLASS_WIZARD;
 }
 
-inline int IsPriest(struct char_data *ch) {
-  if(!ch) return 0;
+inline int IsPriest(struct char_data *ch)
+{
+  if (DEBUG > 3)
+    dlog("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
+
+  if (!ch)
+    return 0;
   return ch->player.class & CLASS_PRIEST;
 }
 
-inline int IsMagical(struct char_data *ch) {
-  if(!ch) return 0;
+inline int IsMagical(struct char_data *ch)
+{
+  if (DEBUG > 3)
+    dlog("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
+
+  if (!ch)
+    return 0;
   return ch->player.class & CLASS_MAGICAL;
 }
 
-inline int IsFighter(struct char_data *ch) {
-  if(!ch) return 0;
+inline int IsFighter(struct char_data *ch)
+{
+  if (DEBUG > 3)
+    dlog("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
+
+  if (!ch)
+    return 0;
   return ch->player.class & CLASS_FIGHTER;
 }
 
-inline int IsSneak(struct char_data *ch) {
-  if(!ch) return 0;
+inline int IsSneak(struct char_data *ch)
+{
+  if (DEBUG > 3)
+    dlog("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
+
+  if (!ch)
+    return 0;
   return ch->player.class & CLASS_SNEAK;
 }

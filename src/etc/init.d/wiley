@@ -1,0 +1,56 @@
+#!/bin/sh
+
+PORT=3000
+MUDDIR=/home/wiley
+PATH=$MUDDIR/bin:/bin:/usr/bin:/sbin:/usr/sbin
+DAEMON=$MUDDIR/bin/wileymud
+SCRIPT=$MUDDIR/bin/wileyloop
+PIDFILE=$MUDDIR/etc/wileymud.pid
+STARTDIR=$MUDDIR/bin
+LOGFILE=`/bin/date "+$MUDDIR/lib/log/runlog.%y%m%d-%H%M%S"`
+
+test -x $DAEMON || exit 0
+
+case "$1" in
+  start)
+	echo -n "Starting MUD Server: WileyMUD"
+        if start-stop-daemon --quiet --stop --signal 0 --pidfile $PIDFILE --name wileymud --user wiley
+	then
+		echo " already running."
+		exit
+	fi
+	/sbin/start-stop-daemon --start --quiet --chuid wiley:divine --chdir $STARTDIR --background --pidfile $PIDFILE --exec $SCRIPT -- -P $PIDFILE -L $LOGFILE $PORT
+	echo "."
+	;;
+  stop)
+	echo -n "Stopping MUD Server: WileyMUD"
+	if start-stop-daemon --quiet --stop --signal 0 --pidfile $PIDFILE --name wileymud --user wiley
+	then
+		PID=`cat $PIDFILE`
+		start-stop-daemon --quiet --stop --signal USR1 --user wiley --exec $DAEMON --pidfile $PIDFILE --name wileymud
+		# Now we wait for it to die
+		while kill -0 $PID 2>/dev/null; do sleep 1; done
+		rm -f $PIDFILE
+		echo "."
+	else
+		echo " not running.";
+	fi
+	;;
+  restart)
+	$0 stop
+	$0 start
+	;;
+  status)
+	if [ ! -f $PIDFILE ]; then
+		echo "No PID file, game may be down"
+		ps auxww | grep wiley | grep -v grep
+	else
+		ps auxww | grep `cat $PIDFILE` | grep -v grep
+	fi
+	;;
+  *)
+	echo "Usage: /etc/init.d/wiley {start|stop|restart|status}"
+	exit 1
+esac
+
+exit 0

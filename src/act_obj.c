@@ -6,37 +6,37 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <unistd.h>
+/* #include <unistd.h> */
 #include <sys/types.h>
 #include <signal.h>
 #include <string.h>
 #include <assert.h>
 #include <ctype.h>
 
-#include "include/global.h"
-#include "include/bug.h"
-#include "include/utils.h"
-#include "include/comm.h"
-#include "include/interpreter.h"
-#include "include/handler.h"
-#include "include/db.h"
-#include "include/spells.h"
-#include "include/trap.h"
-#include "include/constants.h"
-#include "include/spell_parser.h"
-#include "include/multiclass.h"
-#include "include/mudlimits.h"
-#include "include/fight.h"
-#include "include/act_info.h"
+#include "global.h"
+#include "bug.h"
+#include "utils.h"
+#include "comm.h"
+#include "interpreter.h"
+#include "handler.h"
+#include "db.h"
+#include "spells.h"
+#include "trap.h"
+#include "constants.h"
+#include "spell_parser.h"
+#include "multiclass.h"
+#include "mudlimits.h"
+#include "fight.h"
+#include "act_info.h"
 #define _ACT_OBJ_C
-#include "include/act_obj.h"
+#include "act_obj.h"
 
 /* procedures related to get */
-void get(struct char_data *ch, struct obj_data *obj_object,
-	 struct obj_data *sub_object)
+void get(struct char_data *ch, struct obj_data *obj_object, struct obj_data *sub_object)
 {
-  if (DEBUG)
-    dlog("get");
+  if (DEBUG > 2)
+    dlog("called %s with %s, %s, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), SAFE_ONAME(obj_object), SAFE_ONAME(sub_object));
+
   if (sub_object) {
     if (!IS_SET(sub_object->obj_flags.value[1], CONT_CLOSED)) {
       obj_from_obj(obj_object);
@@ -51,15 +51,14 @@ void get(struct char_data *ch, struct obj_data *obj_object,
 /*  jdb -- 11-9 */
     if (obj_object->in_room == NOWHERE) {
       obj_object->in_room = ch->in_room;
-      log("OBJ:%s got %s from room -1...", GET_NAME(ch), obj_object->name);
+      dlog("OBJ:%s got %s from room -1...", GET_NAME(ch), obj_object->name);
     }
     obj_from_room(obj_object);
     obj_to_char(obj_object, ch);
     act("You get $p.", 0, ch, obj_object, 0, TO_CHAR);
     act("$n gets $p.", 1, ch, obj_object, 0, TO_ROOM);
   }
-  if ((obj_object->obj_flags.type_flag == ITEM_MONEY) &&
-      (obj_object->obj_flags.value[0] >= 1)) {
+  if ((obj_object->obj_flags.type_flag == ITEM_MONEY) && (obj_object->obj_flags.value[0] >= 1)) {
     obj_from_char(obj_object);
     cprintf(ch, "There was %d coins.\n\r", obj_object->obj_flags.value[0]);
     GET_GOLD(ch) += obj_object->obj_flags.value[0];
@@ -69,22 +68,26 @@ void get(struct char_data *ch, struct obj_data *obj_object,
 
 void do_get(struct char_data *ch, char *argument, int cmd)
 {
-  char arg1[MAX_STRING_LENGTH];
-  char arg2[MAX_STRING_LENGTH];
-  struct obj_data *sub_object;
-  struct obj_data *obj_object;
-  struct obj_data *next_obj;
-  BYTE found = FALSE;
-  BYTE fail = FALSE;
-  int type = 3;
-  char newarg[100];
-  int num, p;
+  char                                    arg1[MAX_STRING_LENGTH] = "\0\0\0";
+  char                                    arg2[MAX_STRING_LENGTH] = "\0\0\0";
+  struct obj_data                        *sub_object = NULL;
+  struct obj_data                        *obj_object = NULL;
+  struct obj_data                        *next_obj = NULL;
+  char                                    found = FALSE;
+  char                                    fail = FALSE;
+  int                                     type = 3;
+  char                                    newarg[100] = "\0\0\0";
+  int                                     num = 0;
+  int                                     p = 0;
 
   if (DEBUG)
-    dlog("do_get");
+    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+
   argument_interpreter(argument, arg1, arg2);
 
-  /* get type */
+  /*
+   * get type 
+   */
   if (!*arg1)
     type = 0;
 
@@ -108,266 +111,273 @@ void do_get(struct char_data *ch, char *argument, int cmd)
     }
   }
   switch (type) {
-    /* get */
-  case 0:{
-      cprintf(ch, "Get what?\n\r");
-    }
-    break;
-    /* get all */
-  case 1:{
-      sub_object = 0;
-      found = FALSE;
-      fail = FALSE;
-      for (obj_object = real_roomp(ch->in_room)->contents; obj_object; obj_object = next_obj) {
-	next_obj = obj_object->next_content;
+      /*
+       * get 
+       */
+    case 0:{
+	cprintf(ch, "Get what?\n\r");
+      }
+      break;
+      /*
+       * get all 
+       */
+    case 1:{
+	sub_object = 0;
+	found = FALSE;
+	fail = FALSE;
+	for (obj_object = real_roomp(ch->in_room)->contents; obj_object; obj_object = next_obj) {
+	  next_obj = obj_object->next_content;
 /*
  * check for a trap (traps fire often)
  */
-	if (CheckForAnyTrap(ch, obj_object))
-	  return;
-
-	if (CAN_SEE_OBJ(ch, obj_object)) {
-	  if ((IS_CARRYING_N(ch) + 1) <= CAN_CARRY_N(ch)) {
-	    if ((IS_CARRYING_W(ch) + obj_object->obj_flags.weight) <=
-		CAN_CARRY_W(ch)) {
-	      if (CAN_WEAR(obj_object, ITEM_TAKE)) {
-		get(ch, obj_object, sub_object);
-		found = TRUE;
-	      } else {
-		cprintf(ch, "You can't take that\n\r");
-		fail = TRUE;
-	      }
-	    } else {
-	      cprintf(ch, "%s : You can't carry that much weight.\n\r",
-		      obj_object->short_description);
-	      fail = TRUE;
-	    }
-	  } else {
-	    cprintf(ch, "%s : You can't carry that many items.\n\r", obj_object->short_description);
-	    fail = TRUE;
-	  }
-	}
-      }
-      if (found) {
-	cprintf(ch, "OK.\n\r");
-      } else {
-	if (!fail)
-	  cprintf(ch, "You see nothing here.\n\r");
-      }
-    }
-    break;
-    /* get ??? (something) */
-  case 2:
-    {
-      sub_object = 0;
-      found = FALSE;
-      fail = FALSE;
-
-      if (getall(arg1, newarg) != FALSE) {
-	strcpy(arg1, newarg);
-	num = -1;
-      } else if ((p = getabunch(arg1, newarg)) != FALSE) {
-	strcpy(arg1, newarg);
-	num = p;
-      } else {
-	num = 1;
-      }
-
-      while (num != 0) {
-	obj_object =
-	  get_obj_in_list_vis(ch, arg1, real_roomp(ch->in_room)->contents);
-	if (obj_object) {
 	  if (CheckForAnyTrap(ch, obj_object))
 	    return;
 
-	  if ((IS_CARRYING_N(ch) + 1 < CAN_CARRY_N(ch))) {
-	    if ((IS_CARRYING_W(ch) + obj_object->obj_flags.weight) <
-		CAN_CARRY_W(ch)) {
-	      if (CAN_WEAR(obj_object, ITEM_TAKE)) {
-		get(ch, obj_object, sub_object);
-		found = TRUE;
+	  if (CAN_SEE_OBJ(ch, obj_object)) {
+	    if ((IS_CARRYING_N(ch) + 1) <= CAN_CARRY_N(ch)) {
+	      if ((IS_CARRYING_W(ch) + obj_object->obj_flags.weight) <= CAN_CARRY_W(ch)) {
+		if (CAN_WEAR(obj_object, ITEM_TAKE)) {
+		  get(ch, obj_object, sub_object);
+		  found = TRUE;
+		} else {
+		  cprintf(ch, "You can't take that\n\r");
+		  fail = TRUE;
+		}
 	      } else {
-		cprintf(ch, "You can't take that\n\r");
+		cprintf(ch, "%s : You can't carry that much weight.\n\r",
+			obj_object->short_description);
+		fail = TRUE;
+	      }
+	    } else {
+	      cprintf(ch, "%s : You can't carry that many items.\n\r",
+		      obj_object->short_description);
+	      fail = TRUE;
+	    }
+	  }
+	}
+	if (found) {
+	  cprintf(ch, "OK.\n\r");
+	} else {
+	  if (!fail)
+	    cprintf(ch, "You see nothing here.\n\r");
+	}
+      }
+      break;
+      /*
+       * get ??? (something) 
+       */
+    case 2:
+      {
+	sub_object = 0;
+	found = FALSE;
+	fail = FALSE;
+
+	if (getall(arg1, newarg) != FALSE) {
+	  strcpy(arg1, newarg);
+	  num = -1;
+	} else if ((p = getabunch(arg1, newarg)) != FALSE) {
+	  strcpy(arg1, newarg);
+	  num = p;
+	} else {
+	  num = 1;
+	}
+
+	while (num != 0) {
+	  obj_object = get_obj_in_list_vis(ch, arg1, real_roomp(ch->in_room)->contents);
+	  if (obj_object) {
+	    if (CheckForAnyTrap(ch, obj_object))
+	      return;
+
+	    if ((IS_CARRYING_N(ch) + 1 < CAN_CARRY_N(ch))) {
+	      if ((IS_CARRYING_W(ch) + obj_object->obj_flags.weight) < CAN_CARRY_W(ch)) {
+		if (CAN_WEAR(obj_object, ITEM_TAKE)) {
+		  get(ch, obj_object, sub_object);
+		  found = TRUE;
+		} else {
+		  cprintf(ch, "You can't take that\n\r");
+		  fail = TRUE;
+		  num = 0;
+		}
+	      } else {
+		cprintf(ch, "%s : You can't carry that much weight.\n\r",
+			obj_object->short_description);
 		fail = TRUE;
 		num = 0;
 	      }
 	    } else {
-	      cprintf(ch, "%s : You can't carry that much weight.\n\r",
+	      cprintf(ch, "%s : You can't carry that many items.\n\r",
 		      obj_object->short_description);
 	      fail = TRUE;
 	      num = 0;
 	    }
 	  } else {
-	    cprintf(ch, "%s : You can't carry that many items.\n\r",
-		    obj_object->short_description);
-	    fail = TRUE;
+	    if (num > 0) {
+	      cprintf(ch, "You do not see a %s here.\n\r", arg1);
+	    }
 	    num = 0;
+	    fail = TRUE;
 	  }
-	} else {
-	  if (num > 0) {
-	    cprintf(ch, "You do not see a %s here.\n\r", arg1);
-	  }
-	  num = 0;
-	  fail = TRUE;
+	  if (num > 0)
+	    num--;
 	}
-	if (num > 0)
-	  num--;
       }
-    }
-    break;
-    /* get all all */
-  case 3:
-    {
-      cprintf(ch, "You must be joking?!\n\r");
-    }
-    break;
-    /* get all ??? */
-  case 4:
-    {
-      found = FALSE;
-      fail = FALSE;
-      sub_object = (struct obj_data *)get_obj_vis_accessible(ch, arg2);
-      if (sub_object) {
-	if (GET_ITEM_TYPE(sub_object) == ITEM_CONTAINER) {
-	  for (obj_object = sub_object->contains; obj_object; obj_object = next_obj) {
-	    if (CheckForGetTrap(ch, obj_object))
-	      return;
+      break;
+      /*
+       * get all all 
+       */
+    case 3:
+      {
+	cprintf(ch, "You must be joking?!\n\r");
+      }
+      break;
+      /*
+       * get all ??? 
+       */
+    case 4:
+      {
+	found = FALSE;
+	fail = FALSE;
+	sub_object = (struct obj_data *)get_obj_vis_accessible(ch, arg2);
+	if (sub_object) {
+	  if (GET_ITEM_TYPE(sub_object) == ITEM_CONTAINER) {
+	    for (obj_object = sub_object->contains; obj_object; obj_object = next_obj) {
+	      if (CheckForGetTrap(ch, obj_object))
+		return;
 
-	    next_obj = obj_object->next_content;
-	    if (CAN_SEE_OBJ(ch, obj_object)) {
-	      if ((IS_CARRYING_N(ch) + 1 < CAN_CARRY_N(ch))) {
-		if ((IS_CARRYING_W(ch) + obj_object->obj_flags.weight) <
-		    CAN_CARRY_W(ch)) {
-		  if (CAN_WEAR(obj_object, ITEM_TAKE)) {
-		    get(ch, obj_object, sub_object);
-		    found = TRUE;
+	      next_obj = obj_object->next_content;
+	      if (CAN_SEE_OBJ(ch, obj_object)) {
+		if ((IS_CARRYING_N(ch) + 1 < CAN_CARRY_N(ch))) {
+		  if ((IS_CARRYING_W(ch) + obj_object->obj_flags.weight) < CAN_CARRY_W(ch)) {
+		    if (CAN_WEAR(obj_object, ITEM_TAKE)) {
+		      get(ch, obj_object, sub_object);
+		      found = TRUE;
+		    } else {
+		      cprintf(ch, "You can't take that\n\r");
+		      fail = TRUE;
+		    }
 		  } else {
-		    cprintf(ch, "You can't take that\n\r");
+		    cprintf(ch, "%s : You can't carry that much weight.\n\r",
+			    obj_object->short_description);
 		    fail = TRUE;
 		  }
 		} else {
-		  cprintf(ch, "%s : You can't carry that much weight.\n\r",
+		  cprintf(ch, "%s : You can't carry that many items.\n\r",
 			  obj_object->short_description);
 		  fail = TRUE;
 		}
-	      } else {
-		cprintf(ch, "%s : You can't carry that many items.\n\r",
-			obj_object->short_description);
-		fail = TRUE;
 	      }
 	    }
-	  }
-	  if (!found && !fail) {
-	    cprintf(ch, "You do not see anything in %s.\n\r",
-		    sub_object->short_description);
+	    if (!found && !fail) {
+	      cprintf(ch, "You do not see anything in %s.\n\r", sub_object->short_description);
+	      fail = TRUE;
+	    }
+	  } else {
+	    cprintf(ch, "%s is not a container.\n\r", sub_object->short_description);
 	    fail = TRUE;
 	  }
 	} else {
-	  cprintf(ch, "%s is not a container.\n\r",
-		  sub_object->short_description);
+	  cprintf(ch, "You do not see or have the %s.\n\r", arg2);
 	  fail = TRUE;
 	}
-      } else {
-	cprintf(ch, "You do not see or have the %s.\n\r", arg2);
-	fail = TRUE;
       }
-    }
-    break;
-  case 5:{
-      cprintf(ch, "You can't take a thing from more than one container.\n\r");
-    }
-    break;
+      break;
+    case 5:{
+	cprintf(ch, "You can't take a thing from more than one container.\n\r");
+      }
+      break;
 /*  
  * take ??? from ???   (is it??) 
  */
 
-  case 6:{
-      found = FALSE;
-      fail = FALSE;
-      sub_object = (struct obj_data *)
-	get_obj_vis_accessible(ch, arg2);
-      if (sub_object) {
-	if (GET_ITEM_TYPE(sub_object) == ITEM_CONTAINER) {
+    case 6:{
+	found = FALSE;
+	fail = FALSE;
+	sub_object = (struct obj_data *)
+	  get_obj_vis_accessible(ch, arg2);
+	if (sub_object) {
+	  if (GET_ITEM_TYPE(sub_object) == ITEM_CONTAINER) {
 
-	  if (getall(arg1, newarg) != FALSE) {
-	    num = -1;
-	    strcpy(arg1, newarg);
-	  } else if ((p = getabunch(arg1, newarg)) != FALSE) {
-	    num = p;
-	    strcpy(arg1, newarg);
-	  } else {
-	    num = 1;
-	  }
-	  while (num != 0) {
-	    obj_object = get_obj_in_list_vis(ch, arg1, sub_object->contains);
-	    if (obj_object) {
-	      if (CheckForInsideTrap(ch, sub_object))
-		return;
-	      if ((IS_CARRYING_N(ch) + 1 < CAN_CARRY_N(ch))) {
-		if ((IS_CARRYING_W(ch) + obj_object->obj_flags.weight) <
-		    CAN_CARRY_W(ch)) {
-		  if (CAN_WEAR(obj_object, ITEM_TAKE)) {
-		    get(ch, obj_object, sub_object);
-		    found = TRUE;
+	    if (getall(arg1, newarg) != FALSE) {
+	      num = -1;
+	      strcpy(arg1, newarg);
+	    } else if ((p = getabunch(arg1, newarg)) != FALSE) {
+	      num = p;
+	      strcpy(arg1, newarg);
+	    } else {
+	      num = 1;
+	    }
+	    while (num != 0) {
+	      obj_object = get_obj_in_list_vis(ch, arg1, sub_object->contains);
+	      if (obj_object) {
+		if (CheckForInsideTrap(ch, sub_object))
+		  return;
+		if ((IS_CARRYING_N(ch) + 1 < CAN_CARRY_N(ch))) {
+		  if ((IS_CARRYING_W(ch) + obj_object->obj_flags.weight) < CAN_CARRY_W(ch)) {
+		    if (CAN_WEAR(obj_object, ITEM_TAKE)) {
+		      get(ch, obj_object, sub_object);
+		      found = TRUE;
+		    } else {
+		      cprintf(ch, "You can't take that\n\r");
+		      fail = TRUE;
+		      num = 0;
+		    }
 		  } else {
-		    cprintf(ch, "You can't take that\n\r");
+		    cprintf(ch, "%s : You can't carry that much weight.\n\r",
+			    obj_object->short_description);
 		    fail = TRUE;
 		    num = 0;
 		  }
 		} else {
-		  cprintf(ch, "%s : You can't carry that much weight.\n\r",
+		  cprintf(ch, "%s : You can't carry that many items.\n\r",
 			  obj_object->short_description);
 		  fail = TRUE;
 		  num = 0;
 		}
 	      } else {
-		cprintf(ch, "%s : You can't carry that many items.\n\r",
-			obj_object->short_description);
-		fail = TRUE;
+		if (num > 0) {
+		  cprintf(ch, "%s does not contain the %s.\n\r", sub_object->short_description,
+			  arg1);
+		}
 		num = 0;
+		fail = TRUE;
 	      }
-	    } else {
-	      if (num > 0) {
-		cprintf(ch, "%s does not contain the %s.\n\r", sub_object->short_description, arg1);
-	      }
-	      num = 0;
-	      fail = TRUE;
+	      if (num > 0)
+		num--;
 	    }
-	    if (num > 0)
-	      num--;
+	  } else {
+	    cprintf(ch, "%s is not a container.\n\r", sub_object->short_description);
+	    fail = TRUE;
 	  }
 	} else {
-	  cprintf(ch, "%s is not a container.\n\r", sub_object->short_description);
+	  cprintf(ch, "You do not see or have the %s.\n\r", arg2);
 	  fail = TRUE;
 	}
-      } else {
-	cprintf(ch, "You do not see or have the %s.\n\r", arg2);
-	fail = TRUE;
       }
-    }
-    break;
+      break;
   }
 }
 
 void do_drop(struct char_data *ch, char *argument, int cmd)
 {
-  char arg[MAX_INPUT_LENGTH];
-  int amount;
-  struct obj_data *tmp_object;
-  struct obj_data *next_obj;
-  BYTE test = FALSE;
-  char newarg[100];
-  char *s;
-  int num, p;
+  struct obj_data                        *tmp_object = NULL;
+  struct obj_data                        *next_obj = NULL;
+  char                                   *s = NULL;
+  char                                    arg[MAX_INPUT_LENGTH] = "\0\0\0";
+  char                                    newarg[100] = "\0\0\0";
+  int                                     test = FALSE;
+  int                                     amount = 0;
+  int                                     num = 0;
+  int                                     p = 0;
 
   if (DEBUG)
-    dlog("do_drop");
+    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+
   s = one_argument(argument, arg);
   if (is_number(arg)) {
     amount = atoi(arg);
     strcpy(arg, s);
 
-    /* 
+    /*
      * if (0!=str_cmp("coins",arg) && 0!=str_cmp("coin",arg))  {
      * cprintf(ch, "Sorry, you can't do that (yet)...\n\r");
      * return;
@@ -397,9 +407,7 @@ void do_drop(struct char_data *ch, char *argument, int cmd)
 
   if (*arg) {
     if (!str_cmp(arg, "all")) {
-      for (tmp_object = ch->carrying;
-	   tmp_object;
-	   tmp_object = next_obj) {
+      for (tmp_object = ch->carrying; tmp_object; tmp_object = next_obj) {
 	next_obj = tmp_object->next_content;
 	if (!IS_SET(tmp_object->obj_flags.extra_flags, ITEM_NODROP) || IS_IMMORTAL(ch)) {
 	  if (CAN_SEE_OBJ(ch, tmp_object)) {
@@ -413,7 +421,8 @@ void do_drop(struct char_data *ch, char *argument, int cmd)
 	  test = TRUE;
 	} else {
 	  if (CAN_SEE_OBJ(ch, tmp_object)) {
-	    cprintf(ch, "You can't drop  %s, it must be CURSED!\n\r", tmp_object->short_description);
+	    cprintf(ch, "You can't drop  %s, it must be CURSED!\n\r",
+		    tmp_object->short_description);
 	    test = TRUE;
 	  }
 	}
@@ -422,7 +431,9 @@ void do_drop(struct char_data *ch, char *argument, int cmd)
 	cprintf(ch, "You do not seem to have anything.\n\r");
       }
     } else {
-      /* &&&&&& */
+      /*
+       * &&&&&& 
+       */
       if (getall(arg, newarg) != FALSE) {
 	num = -1;
 	strcpy(arg, newarg);
@@ -460,17 +471,19 @@ void do_drop(struct char_data *ch, char *argument, int cmd)
 
 void do_put(struct char_data *ch, char *argument, int cmd)
 {
-  char arg1[128];
-  char arg2[128];
-  struct obj_data *obj_object;
-  struct obj_data *sub_object;
-  struct char_data *tmp_char;
-  int bits;
-  char newarg[100];
-  int num, p;
+  struct obj_data                        *obj_object = NULL;
+  struct obj_data                        *sub_object = NULL;
+  struct char_data                       *tmp_char = NULL;
+  char                                    arg1[128] = "\0\0\0";
+  char                                    arg2[128] = "\0\0\0";
+  char                                    newarg[100] = "\0\0\0";
+  int                                     bits = 0;
+  int                                     num = 0;
+  int                                     p = 0;
 
   if (DEBUG)
-    dlog("do_put");
+    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+
   argument_interpreter(argument, arg1, arg2);
 
   if (*arg1) {
@@ -494,15 +507,13 @@ void do_put(struct char_data *ch, char *argument, int cmd)
       } else {
 	while (num != 0) {
 #if 1
-	  bits = generic_find(arg1, FIND_OBJ_INV,
-			      ch, &tmp_char, &obj_object);
+	  bits = generic_find(arg1, FIND_OBJ_INV, ch, &tmp_char, &obj_object);
 #else
 	  obj_object = get_obj_in_list_vis(ch, arg1, ch->carrying);
 #endif
 
 	  if (obj_object) {
-	    bits = generic_find(arg2, FIND_OBJ_INV | FIND_OBJ_ROOM,
-				ch, &tmp_char, &sub_object);
+	    bits = generic_find(arg2, FIND_OBJ_INV | FIND_OBJ_ROOM, ch, &tmp_char, &sub_object);
 	    if (sub_object) {
 	      if (GET_ITEM_TYPE(sub_object) == ITEM_CONTAINER) {
 		if (!IS_SET(sub_object->obj_flags.value[1], CONT_CLOSED)) {
@@ -511,12 +522,13 @@ void do_put(struct char_data *ch, char *argument, int cmd)
 		    return;
 		  }
 		  if (((sub_object->obj_flags.weight) +
-		       (obj_object->obj_flags.weight)) <
-		      (sub_object->obj_flags.value[0])) {
+		       (obj_object->obj_flags.weight)) < (sub_object->obj_flags.value[0])) {
 		    act("You put $p in $P", TRUE, ch, obj_object, sub_object, TO_CHAR);
 		    if (bits == FIND_OBJ_INV) {
 		      obj_from_char(obj_object);
-		      /* make up for above line */
+		      /*
+		       * make up for above line 
+		       */
 		      IS_CARRYING_W(ch) += GET_OBJ_WEIGHT(obj_object);
 
 		      obj_to_obj(obj_object, sub_object);
@@ -561,14 +573,19 @@ void do_put(struct char_data *ch, char *argument, int cmd)
 
 void do_give(struct char_data *ch, char *argument, int cmd)
 {
-  char obj_name[80], vict_name[80];
-  char arg[80], newarg[100];
-  int amount, num, p;
-  struct char_data *vict;
-  struct obj_data *obj;
+  struct char_data                       *vict = NULL;
+  struct obj_data                        *obj = NULL;
+  char                                    obj_name[80] = "\0\0\0";
+  char                                    vict_name[80] = "\0\0\0";
+  char                                    arg[80] = "\0\0\0";
+  char                                    newarg[100] = "\0\0\0";
+  int                                     amount = 0;
+  int                                     num = 0;
+  int                                     p = 0;
 
   if (DEBUG)
-    dlog("do_give");
+    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+
   argument = one_argument(argument, obj_name);
   if (is_number(obj_name)) {
     amount = atoi(obj_name);
@@ -605,8 +622,8 @@ void do_give(struct char_data *ch, char *argument, int cmd)
     if (IS_NPC(ch) || (GetMaxLevel(ch) < DEMIGOD))
       GET_GOLD(ch) -= amount;
     GET_GOLD(vict) += amount;
-    if ((amount > 1000) && (GetMaxLevel(ch) >= DEMIGOD)) {	/* hmmm */
-      log("%s gave %d coins to %s", GET_NAME(ch), amount, GET_NAME(vict));
+    if ((amount > 1000) && (GetMaxLevel(ch) >= DEMIGOD)) {     /* hmmm */
+      dlog("%s gave %d coins to %s", GET_NAME(ch), amount, GET_NAME(vict));
     }
     return;
   }
@@ -615,7 +632,9 @@ void do_give(struct char_data *ch, char *argument, int cmd)
     cprintf(ch, "Give what to who?\n\r");
     return;
   }
-  /* &&&& */
+  /*
+   * &&&& 
+   */
   if (getall(obj_name, newarg) != FALSE) {
     num = -1;
     strcpy(obj_name, newarg);
@@ -641,7 +660,7 @@ void do_give(struct char_data *ch, char *argument, int cmd)
       return;
     }
     if (vict == ch) {
-      log("%s just tried to give all.X to %s", GET_NAME(ch), GET_NAME(ch));
+      dlog("%s just tried to give all.X to %s", GET_NAME(ch), GET_NAME(ch));
       cprintf(ch, "Ok.\n\r");
       return;
     }
@@ -674,11 +693,12 @@ void do_give(struct char_data *ch, char *argument, int cmd)
 
 void weight_change_object(struct obj_data *obj, int weight)
 {
-  struct obj_data *tmp_obj;
-  struct char_data *tmp_ch;
+  struct obj_data                        *tmp_obj = NULL;
+  struct char_data                       *tmp_ch = NULL;
 
-  if (DEBUG)
-    dlog("weight_change_object");
+  if (DEBUG > 2)
+    dlog("called %s with %s, %d", __PRETTY_FUNCTION__, SAFE_ONAME(obj), weight);
+
   if (obj->in_room != NOWHERE) {
     GET_OBJ_WEIGHT(obj) += weight;
   } else if ((tmp_ch = obj->carried_by)) {
@@ -690,18 +710,19 @@ void weight_change_object(struct obj_data *obj, int weight)
     GET_OBJ_WEIGHT(obj) += weight;
     obj_to_obj(obj, tmp_obj);
   } else {
-    log("Unknown attempt to subtract weight from an object.");
+    bug("Unknown attempt to subtract weight from an object.");
   }
 }
 
 void name_from_drinkcon(struct obj_data *obj)
 {
-  int i;
-  char *new_name;
-  char buf[100];
+  int                                     i = 0;
+  char                                    buf[100] = "\0\0\0";
+  char                                   *new_name = NULL;
 
-  if (DEBUG)
-    dlog("name_from_drinkcon");
+  if (DEBUG > 2)
+    dlog("called %s with %s", __PRETTY_FUNCTION__, SAFE_ONAME(obj));
+
   one_argument(obj->name, buf);
   new_name = strdup(buf);
   DESTROY(obj->name);
@@ -719,11 +740,12 @@ void name_from_drinkcon(struct obj_data *obj)
 
 void name_to_drinkcon(struct obj_data *obj, int type)
 {
-  char *new_name;
+  char                                   *new_name = NULL;
 
-  if (DEBUG)
-    dlog("name_to_drinkcon");
-  CREATE(new_name, char, strlen(obj->name) + strlen(drinknames[type]) + 2);
+  if (DEBUG > 2)
+    dlog("called %s with %s, %d", __PRETTY_FUNCTION__, SAFE_ONAME(obj), type);
+
+  CREATE(new_name, char, strlen           (obj->name) + strlen(drinknames[type]) + 2);
 
   sprintf(new_name, "%s %s", obj->name, drinknames[type]);
   DESTROY(obj->name);
@@ -732,13 +754,14 @@ void name_to_drinkcon(struct obj_data *obj, int type)
 
 void do_drink(struct char_data *ch, char *argument, int cmd)
 {
-  char buf[255];
-  struct obj_data *temp;
-  struct affected_type af;
-  int amount;
+  struct obj_data                        *temp = NULL;
+  char                                    buf[255] = "\0\0\0";
+  int                                     amount = 0;
+  struct affected_type                    af;
 
   if (DEBUG)
-    dlog("do_drink");
+    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+
   only_argument(argument, buf);
 
   if (!(temp = get_obj_in_list_vis(ch, buf, ch->carrying))) {
@@ -760,9 +783,8 @@ void do_drink(struct char_data *ch, char *argument, int cmd)
     return;
   }
   if (temp->obj_flags.type_flag == ITEM_DRINKCON) {
-    if (temp->obj_flags.value[1] > 0) {		/* Not empty */
-      sprintf(buf, "$n drinks %s from $p", drinks[temp->obj_flags.value[2]]);
-      act(buf, TRUE, ch, temp, 0, TO_ROOM);
+    if (temp->obj_flags.value[1] > 0) {			       /* Not empty */
+      act("$n drinks %s from $p", TRUE, ch, temp, 0, TO_ROOM, drinks[temp->obj_flags.value[2]]);
       cprintf(ch, "You drink the %s.\n\r", drinks[temp->obj_flags.value[2]]);
 
       if (drink_aff[temp->obj_flags.value[2]][DRUNK] > 0)
@@ -776,13 +798,13 @@ void do_drink(struct char_data *ch, char *argument, int cmd)
 	weight_change_object(temp, -amount);
 
       gain_condition(ch, DRUNK, (int)((int)drink_aff
-		   [temp->obj_flags.value[2]][DRUNK] * amount) / 4);
+				      [temp->obj_flags.value[2]][DRUNK] * amount) / 4);
 
       gain_condition(ch, FULL, (int)((int)drink_aff
-		    [temp->obj_flags.value[2]][FULL] * amount) / 4);
+				     [temp->obj_flags.value[2]][FULL] * amount) / 4);
 
       gain_condition(ch, THIRST, (int)((int)drink_aff
-		  [temp->obj_flags.value[2]][THIRST] * amount) / 4);
+				       [temp->obj_flags.value[2]][THIRST] * amount) / 4);
 
       if (GET_COND(ch, DRUNK) > 10)
 	act("You feel drunk.", FALSE, ch, 0, 0, TO_CHAR);
@@ -793,10 +815,9 @@ void do_drink(struct char_data *ch, char *argument, int cmd)
       if (GET_COND(ch, FULL) > 20)
 	act("You are full.", FALSE, ch, 0, 0, TO_CHAR);
 
-      if (temp->obj_flags.value[3]) {  /* The shit was poisoned ! */
+      if (temp->obj_flags.value[3]) {			       /* The shit was poisoned ! */
 	act("Oops, it tasted rather strange ?!!?", FALSE, ch, 0, 0, TO_CHAR);
-	act("$n chokes and utters some strange sounds.",
-	    TRUE, ch, 0, 0, TO_ROOM);
+	act("$n chokes and utters some strange sounds.", TRUE, ch, 0, 0, TO_ROOM);
 	af.type = SPELL_POISON;
 	af.duration = amount * 3;
 	af.modifier = 0;
@@ -804,16 +825,18 @@ void do_drink(struct char_data *ch, char *argument, int cmd)
 	af.bitvector = AFF_POISON;
 	affect_join(ch, &af, FALSE, FALSE);
       }
-      /* empty the container, and no longer poison. */
+      /*
+       * empty the container, and no longer poison. 
+       */
       temp->obj_flags.value[1] -= amount;
-      if (!temp->obj_flags.value[1]) { /* The last bit */
+      if (!temp->obj_flags.value[1]) {			       /* The last bit */
 	temp->obj_flags.value[2] = 0;
 	temp->obj_flags.value[3] = 0;
 	name_from_drinkcon(temp);
       }
-      if (temp->obj_flags.value[1] < 1) {	/* its empty */
+      if (temp->obj_flags.value[1] < 1) {		       /* its empty */
 	if (temp->obj_flags.value[0] < 20) {
-	  extract_obj(temp);	       /* get rid of it */
+	  extract_obj(temp);				       /* get rid of it */
 	}
       }
       return;
@@ -826,28 +849,28 @@ void do_drink(struct char_data *ch, char *argument, int cmd)
 
 void do_puke(struct char_data *ch, char *argument, int cmd)
 {
-  char buf[100];
-  struct char_data *vict;
+  char                                    buf[100] = "\0\0\0";
+  struct char_data                       *vict = NULL;
 
   if (DEBUG)
-    dlog("do_puke");
+    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+
   one_argument(argument, buf);
 
   if (!*buf) {
-    act("$n blows chunks all over the room!",FALSE,ch,0,0,TO_ROOM);
-    act("You puke and spew filth all over the place.",FALSE,ch,0,0,TO_CHAR);
-  }
-  else if (!(vict = get_char_room_vis(ch, buf))) {
+    act("$n blows chunks all over the room!", FALSE, ch, 0, 0, TO_ROOM);
+    act("You puke and spew filth all over the place.", FALSE, ch, 0, 0, TO_CHAR);
+  } else if (!(vict = get_char_room_vis(ch, buf))) {
     cprintf(ch, "You can't puke on someone who isn't here.\n\r");
     return;
+  } else {
+    act("$n walks up to $N and pukes up sickly green ichor all over them!", FALSE, ch, 0, vict,
+	TO_ROOM);
+    act("You vomit green chunks all over $N!", FALSE, ch, 0, vict, TO_CHAR);
   }
-  else {
-     act("$n walks up to $N and pukes up sickly green ichor all over them!",FALSE,ch,0,vict,TO_ROOM);
-     act("You vomit green chunks all over $N!",FALSE,ch,0,vict,TO_CHAR);
-  }
-  if(IS_MORTAL(ch)) {
+  if (IS_MORTAL(ch)) {
     gain_condition(ch, FULL, -3);
-    if(GET_COND(ch, FULL) < 0) {
+    if (GET_COND(ch, FULL) < 0) {
       GET_COND(ch, FULL) = 0;
     }
     damage(ch, ch, 1, TYPE_SUFFERING);
@@ -855,28 +878,28 @@ void do_puke(struct char_data *ch, char *argument, int cmd)
   return;
 }
 
-
 void do_eat(struct char_data *ch, char *argument, int cmd)
 {
-  char buf[100];
-  int j, num;
-  struct obj_data *temp;
-  struct affected_type af;
+  char                                    buf[100] = "\0\0\0";
+  int                                     j = 0;
+  int                                     num = 0;
+  struct obj_data                        *temp = NULL;
+  struct affected_type                    af;
 
   if (DEBUG)
-    dlog("do_eat");
+    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+
   one_argument(argument, buf);
 
   if (!(temp = get_obj_in_list_vis(ch, buf, ch->carrying))) {
     act("You can't find it!", FALSE, ch, 0, 0, TO_CHAR);
     return;
   }
-  if ((temp->obj_flags.type_flag != ITEM_FOOD) &&
-      (GetMaxLevel(ch) < DEMIGOD)) {
+  if ((temp->obj_flags.type_flag != ITEM_FOOD) && (GetMaxLevel(ch) < DEMIGOD)) {
     act("Your stomach refuses to eat that!?!", FALSE, ch, 0, 0, TO_CHAR);
     return;
   }
-  if (GET_COND(ch, FULL) > 20) {       /* Stomach full */
+  if (GET_COND(ch, FULL) > 20) {			       /* Stomach full */
     act("You are to full to eat more!", FALSE, ch, 0, 0, TO_CHAR);
     return;
   }
@@ -898,8 +921,7 @@ void do_eat(struct char_data *ch, char *argument, int cmd)
     }
   if (temp->obj_flags.value[3] && (GetMaxLevel(ch) < LOW_IMMORTAL)) {
     act("That tasted rather strange !!", FALSE, ch, 0, 0, TO_CHAR);
-    act("$n coughs and utters some strange sounds.",
-	FALSE, ch, 0, 0, TO_ROOM);
+    act("$n coughs and utters some strange sounds.", FALSE, ch, 0, 0, TO_ROOM);
 
     af.type = SPELL_POISON;
     af.duration = temp->obj_flags.value[0] * 2;
@@ -913,17 +935,18 @@ void do_eat(struct char_data *ch, char *argument, int cmd)
 
 void do_pour(struct char_data *ch, char *argument, int cmd)
 {
-  char arg1[132];
-  char arg2[132];
-  struct obj_data *from_obj;
-  struct obj_data *to_obj;
-  int temp;
+  char                                    arg1[132] = "\0\0\0";
+  char                                    arg2[132] = "\0\0\0";
+  struct obj_data                        *from_obj = NULL;
+  struct obj_data                        *to_obj = NULL;
+  int                                     temp = 0;
 
   if (DEBUG)
-    dlog("do_pour");
+    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+
   argument_interpreter(argument, arg1, arg2);
 
-  if (!*arg1) {			       /* No arguments */
+  if (!*arg1) {						       /* No arguments */
     act("What do you want to pour from?", FALSE, ch, 0, 0, TO_CHAR);
     return;
   }
@@ -978,14 +1001,17 @@ void do_pour(struct char_data *ch, char *argument, int cmd)
     act("You can't pour to-from the same container?", FALSE, ch, 0, 0, TO_CHAR);
     return;
   }
-  cprintf(ch, "You pour the %s into the %s.",
-	  drinks[from_obj->obj_flags.value[2]], arg2);
+  cprintf(ch, "You pour the %s into the %s.", drinks[from_obj->obj_flags.value[2]], arg2);
 
-  /* New alias */
+  /*
+   * New alias 
+   */
   if (to_obj->obj_flags.value[1] == 0)
     name_to_drinkcon(to_obj, from_obj->obj_flags.value[2]);
 
-  /* First same type liq. */
+  /*
+   * First same type liq. 
+   */
   to_obj->obj_flags.value[2] = from_obj->obj_flags.value[2];
 
 /*
@@ -1005,21 +1031,23 @@ void do_pour(struct char_data *ch, char *argument, int cmd)
   if (from_obj->obj_flags.value[1] > from_obj->obj_flags.value[0])
     from_obj->obj_flags.value[1] = from_obj->obj_flags.value[0];
 
-  /* Then the poison boogie */
-  to_obj->obj_flags.value[3] =
-    (to_obj->obj_flags.value[3] || from_obj->obj_flags.value[3]);
+  /*
+   * Then the poison boogie 
+   */
+  to_obj->obj_flags.value[3] = (to_obj->obj_flags.value[3] || from_obj->obj_flags.value[3]);
 
   return;
 }
 
 void do_sip(struct char_data *ch, char *argument, int cmd)
 {
-  struct affected_type af;
-  char arg[MAX_STRING_LENGTH];
-  struct obj_data *temp;
+  char                                    arg[MAX_STRING_LENGTH] = "\0\0\0";
+  struct obj_data                        *temp = NULL;
+  struct affected_type                    af;
 
   if (DEBUG)
-    dlog("do_sip");
+    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+
   one_argument(argument, arg);
 
   if (!(temp = get_obj_in_list_vis(ch, arg, ch->carrying))) {
@@ -1030,12 +1058,12 @@ void do_sip(struct char_data *ch, char *argument, int cmd)
     act("You can't sip from that!", FALSE, ch, 0, 0, TO_CHAR);
     return;
   }
-  if (GET_COND(ch, DRUNK) > 10) {      /* The pig is drunk ! */
+  if (GET_COND(ch, DRUNK) > 10) {			       /* The pig is drunk ! */
     act("You simply fail to reach your mouth!", FALSE, ch, 0, 0, TO_CHAR);
     act("$n tries to sip, but fails!", TRUE, ch, 0, 0, TO_ROOM);
     return;
   }
-  if (!temp->obj_flags.value[1]) {     /* Empty */
+  if (!temp->obj_flags.value[1]) {			       /* Empty */
     act("But there is nothing in it?", FALSE, ch, 0, 0, TO_CHAR);
     return;
   }
@@ -1048,7 +1076,7 @@ void do_sip(struct char_data *ch, char *argument, int cmd)
 
   gain_condition(ch, THIRST, (int)(drink_aff[temp->obj_flags.value[2]][THIRST] / 4));
 
-  weight_change_object(temp, -1);      /* Subtract one unit */
+  weight_change_object(temp, -1);			       /* Subtract one unit */
 
   if (GET_COND(ch, DRUNK) > 10)
     act("You feel drunk.", FALSE, ch, 0, 0, TO_CHAR);
@@ -1071,7 +1099,7 @@ void do_sip(struct char_data *ch, char *argument, int cmd)
   }
   temp->obj_flags.value[1]--;
 
-  if (!temp->obj_flags.value[1]) {     /* The last bit */
+  if (!temp->obj_flags.value[1]) {			       /* The last bit */
     temp->obj_flags.value[2] = 0;
     temp->obj_flags.value[3] = 0;
     name_from_drinkcon(temp);
@@ -1082,12 +1110,13 @@ void do_sip(struct char_data *ch, char *argument, int cmd)
 
 void do_taste(struct char_data *ch, char *argument, int cmd)
 {
-  struct affected_type af;
-  char arg[80];
-  struct obj_data *temp;
+  struct affected_type                    af;
+  char                                    arg[80] = "\0\0\0";
+  struct obj_data                        *temp = NULL;
 
   if (DEBUG)
-    dlog("do_taste");
+    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+
   one_argument(argument, arg);
 
   if (!(temp = get_obj_in_list_vis(ch, arg, ch->carrying))) {
@@ -1122,7 +1151,7 @@ void do_taste(struct char_data *ch, char *argument, int cmd)
   }
   temp->obj_flags.value[0]--;
 
-  if (!temp->obj_flags.value[0]) {     /* Nothing left */
+  if (!temp->obj_flags.value[0]) {			       /* Nothing left */
     act("There is nothing left now.", FALSE, ch, 0, 0, TO_CHAR);
     extract_obj(temp);
   }
@@ -1132,68 +1161,70 @@ void do_taste(struct char_data *ch, char *argument, int cmd)
 
 /* functions related to wear */
 
-void perform_wear(struct char_data * ch, struct obj_data * obj_object, int keyword)
+void perform_wear(struct char_data *ch, struct obj_data *obj_object, int keyword)
 {
-  if (DEBUG)
-    dlog("perfrom_wear");
+  if (DEBUG > 2)
+    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), SAFE_ONAME(obj_object), keyword);
+
   switch (keyword) {
-  case 0:
-    act("$n lights $p and holds it.", FALSE, ch, obj_object, 0, TO_ROOM);
-    break;
-  case 1:
-    act("$n wears $p on $s finger.", TRUE, ch, obj_object, 0, TO_ROOM);
-    break;
-  case 2:
-    act("$n wears $p around $s neck.", TRUE, ch, obj_object, 0, TO_ROOM);
-    break;
-  case 3:
-    act("$n wears $p on $s body.", TRUE, ch, obj_object, 0, TO_ROOM);
-    break;
-  case 4:
-    act("$n wears $p on $s head.", TRUE, ch, obj_object, 0, TO_ROOM);
-    break;
-  case 5:
-    act("$n wears $p on $s legs.", TRUE, ch, obj_object, 0, TO_ROOM);
-    break;
-  case 6:
-    act("$n wears $p on $s feet.", TRUE, ch, obj_object, 0, TO_ROOM);
-    break;
-  case 7:
-    act("$n wears $p on $s hands.", TRUE, ch, obj_object, 0, TO_ROOM);
-    break;
-  case 8:
-    act("$n wears $p on $s arms.", TRUE, ch, obj_object, 0, TO_ROOM);
-    break;
-  case 9:
-    act("$n wears $p about $s body.", TRUE, ch, obj_object, 0, TO_ROOM);
-    break;
-  case 10:
-    act("$n wears $p about $s waist.", TRUE, ch, obj_object, 0, TO_ROOM);
-    break;
-  case 11:
-    act("$n wears $p around $s wrist.", TRUE, ch, obj_object, 0, TO_ROOM);
-    break;
-  case 12:
-    act("$n wields $p.", TRUE, ch, obj_object, 0, TO_ROOM);
-    break;
-  case 13:
-    act("$n grabs $p.", TRUE, ch, obj_object, 0, TO_ROOM);
-    break;
-  case 14:
-    act("$n starts using $p as shield.", TRUE, ch, obj_object, 0, TO_ROOM);
-    break;
-  case 15:
-    act("$n wields $p two handed.", TRUE, ch, obj_object, 0, TO_ROOM);
-    break;
+    case 0:
+      act("$n lights $p and holds it.", FALSE, ch, obj_object, 0, TO_ROOM);
+      break;
+    case 1:
+      act("$n wears $p on $s finger.", TRUE, ch, obj_object, 0, TO_ROOM);
+      break;
+    case 2:
+      act("$n wears $p around $s neck.", TRUE, ch, obj_object, 0, TO_ROOM);
+      break;
+    case 3:
+      act("$n wears $p on $s body.", TRUE, ch, obj_object, 0, TO_ROOM);
+      break;
+    case 4:
+      act("$n wears $p on $s head.", TRUE, ch, obj_object, 0, TO_ROOM);
+      break;
+    case 5:
+      act("$n wears $p on $s legs.", TRUE, ch, obj_object, 0, TO_ROOM);
+      break;
+    case 6:
+      act("$n wears $p on $s feet.", TRUE, ch, obj_object, 0, TO_ROOM);
+      break;
+    case 7:
+      act("$n wears $p on $s hands.", TRUE, ch, obj_object, 0, TO_ROOM);
+      break;
+    case 8:
+      act("$n wears $p on $s arms.", TRUE, ch, obj_object, 0, TO_ROOM);
+      break;
+    case 9:
+      act("$n wears $p about $s body.", TRUE, ch, obj_object, 0, TO_ROOM);
+      break;
+    case 10:
+      act("$n wears $p about $s waist.", TRUE, ch, obj_object, 0, TO_ROOM);
+      break;
+    case 11:
+      act("$n wears $p around $s wrist.", TRUE, ch, obj_object, 0, TO_ROOM);
+      break;
+    case 12:
+      act("$n wields $p.", TRUE, ch, obj_object, 0, TO_ROOM);
+      break;
+    case 13:
+      act("$n grabs $p.", TRUE, ch, obj_object, 0, TO_ROOM);
+      break;
+    case 14:
+      act("$n starts using $p as shield.", TRUE, ch, obj_object, 0, TO_ROOM);
+      break;
+    case 15:
+      act("$n wields $p two handed.", TRUE, ch, obj_object, 0, TO_ROOM);
+      break;
   }
 }
 
 int IsRestricted(int Mask, int Class)
 {
-  int i;
+  int                                     i = 0;
 
-  if (DEBUG)
-    dlog("IsRestricted");
+  if (DEBUG > 2)
+    dlog("called %s with %d, %d", __PRETTY_FUNCTION__, Mask, Class);
+
   for (i = CLASS_MAGIC_USER; i <= CLASS_DRUID; i *= 2) {
     if (IS_SET(Mask, i) && (IS_NOT_SET(i, Class))) {
       Mask -= i;
@@ -1208,10 +1239,10 @@ int IsRestricted(int Mask, int Class)
 
 void wear(struct char_data *ch, struct obj_data *obj_object, int keyword)
 {
-  int BitMask;
+  int                                     BitMask = 0;
 
-  if (DEBUG)
-    dlog("wear");
+  if (DEBUG > 2)
+    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), SAFE_ONAME(obj_object), keyword);
 
   if (!IS_IMMORTAL(ch)) {
     BitMask = GetItemClassRestrictions(obj_object);
@@ -1228,313 +1259,314 @@ void wear(struct char_data *ch, struct obj_data *obj_object, int keyword)
     }
   }
   switch (keyword) {
-  case 0:
-    {				       /* LIGHT SOURCE */
-      if (ch->equipment[WEAR_LIGHT])
-	cprintf(ch, "You are already holding a light source.\n\r");
-      else {
-	cprintf(ch, "Ok.\n\r");
-	perform_wear(ch, obj_object, keyword);
-	obj_from_char(obj_object);
-	equip_char(ch, obj_object, WEAR_LIGHT);
-	if (obj_object->obj_flags.value[2])
-	  real_roomp(ch->in_room)->light++;
-      }
-    }
-    break;
-
-  case 1:
-    {
-      if (CAN_WEAR(obj_object, ITEM_WEAR_FINGER)) {
-	if ((ch->equipment[WEAR_FINGER_L]) && (ch->equipment[WEAR_FINGER_R])) {
-	  cprintf(ch, "You are already wearing something on your fingers.\n\r");
-	} else {
+    case 0:
+      {							       /* LIGHT SOURCE */
+	if (ch->equipment[WEAR_LIGHT])
+	  cprintf(ch, "You are already holding a light source.\n\r");
+	else {
+	  cprintf(ch, "Ok.\n\r");
 	  perform_wear(ch, obj_object, keyword);
-	  if (ch->equipment[WEAR_FINGER_L]) {
-	    cprintf(ch, "You put %s on your right finger.\n\r",
-		    obj_object->short_description);
-	    obj_from_char(obj_object);
-	    equip_char(ch, obj_object, WEAR_FINGER_R);
+	  obj_from_char(obj_object);
+	  equip_char(ch, obj_object, WEAR_LIGHT);
+	  if (obj_object->obj_flags.value[2])
+	    real_roomp(ch->in_room)->light++;
+	}
+      }
+      break;
+
+    case 1:
+      {
+	if (CAN_WEAR(obj_object, ITEM_WEAR_FINGER)) {
+	  if ((ch->equipment[WEAR_FINGER_L]) && (ch->equipment[WEAR_FINGER_R])) {
+	    cprintf(ch, "You are already wearing something on your fingers.\n\r");
 	  } else {
-	    cprintf(ch, "You put %s on your left finger.\n\r",
-		    obj_object->short_description);
+	    perform_wear(ch, obj_object, keyword);
+	    if (ch->equipment[WEAR_FINGER_L]) {
+	      cprintf(ch, "You put %s on your right finger.\n\r",
+		      obj_object->short_description);
+	      obj_from_char(obj_object);
+	      equip_char(ch, obj_object, WEAR_FINGER_R);
+	    } else {
+	      cprintf(ch, "You put %s on your left finger.\n\r", obj_object->short_description);
+	      obj_from_char(obj_object);
+	      equip_char(ch, obj_object, WEAR_FINGER_L);
+	    }
+	  }
+	} else {
+	  cprintf(ch, "You can't wear that on your finger.\n\r");
+	}
+      }
+      break;
+    case 2:
+      {
+	if (CAN_WEAR(obj_object, ITEM_WEAR_NECK)) {
+	  if ((ch->equipment[WEAR_NECK_1]) && (ch->equipment[WEAR_NECK_2])) {
+	    cprintf(ch, "You can't wear any more around your neck.\n\r");
+	  } else {
+	    cprintf(ch, "OK.\n\r");
+	    perform_wear(ch, obj_object, keyword);
+	    if (ch->equipment[WEAR_NECK_1]) {
+	      obj_from_char(obj_object);
+	      equip_char(ch, obj_object, WEAR_NECK_2);
+	    } else {
+	      obj_from_char(obj_object);
+	      equip_char(ch, obj_object, WEAR_NECK_1);
+	    }
+	  }
+	} else {
+	  cprintf(ch, "You can't wear that around your neck.\n\r");
+	}
+      }
+      break;
+    case 3:
+      {
+	if (CAN_WEAR(obj_object, ITEM_WEAR_BODY)) {
+	  if (ch->equipment[WEAR_BODY]) {
+	    cprintf(ch, "You already wear something on your body.\n\r");
+	  } else {
+	    cprintf(ch, "OK.\n\r");
+	    perform_wear(ch, obj_object, keyword);
 	    obj_from_char(obj_object);
-	    equip_char(ch, obj_object, WEAR_FINGER_L);
+	    equip_char(ch, obj_object, WEAR_BODY);
+	  }
+	} else {
+	  cprintf(ch, "You can't wear that on your body.\n\r");
+	}
+      }
+      break;
+    case 4:
+      {
+	if (CAN_WEAR(obj_object, ITEM_WEAR_HEAD)) {
+	  if (ch->equipment[WEAR_HEAD]) {
+	    cprintf(ch, "You already wear something on your head.\n\r");
+	  } else {
+	    cprintf(ch, "OK.\n\r");
+	    perform_wear(ch, obj_object, keyword);
+	    obj_from_char(obj_object);
+	    equip_char(ch, obj_object, WEAR_HEAD);
+	  }
+	} else {
+	  cprintf(ch, "You can't wear that on your head.\n\r");
+	}
+      }
+      break;
+    case 5:{
+	if (CAN_WEAR(obj_object, ITEM_WEAR_LEGS)) {
+	  if (ch->equipment[WEAR_LEGS]) {
+	    cprintf(ch, "You already wear something on your legs.\n\r");
+	  } else {
+	    cprintf(ch, "OK.\n\r");
+	    perform_wear(ch, obj_object, keyword);
+	    obj_from_char(obj_object);
+	    equip_char(ch, obj_object, WEAR_LEGS);
+	  }
+	} else {
+	  cprintf(ch, "You can't wear that on your legs.\n\r");
+	}
+      }
+      break;
+    case 6:{
+	if (CAN_WEAR(obj_object, ITEM_WEAR_FEET)) {
+	  if (ch->equipment[WEAR_FEET]) {
+	    cprintf(ch, "You already wear something on your feet.\n\r");
+	  } else {
+	    cprintf(ch, "OK.\n\r");
+	    perform_wear(ch, obj_object, keyword);
+	    obj_from_char(obj_object);
+	    equip_char(ch, obj_object, WEAR_FEET);
+	  }
+	} else {
+	  cprintf(ch, "You can't wear that on your feet.\n\r");
+	}
+      }
+      break;
+    case 7:{
+	if (CAN_WEAR(obj_object, ITEM_WEAR_HANDS)) {
+	  if (ch->equipment[WEAR_HANDS]) {
+	    cprintf(ch, "You already wear something on your hands.\n\r");
+	  } else {
+	    cprintf(ch, "OK.\n\r");
+	    perform_wear(ch, obj_object, keyword);
+	    obj_from_char(obj_object);
+	    equip_char(ch, obj_object, WEAR_HANDS);
+	  }
+	} else {
+	  cprintf(ch, "You can't wear that on your hands.\n\r");
+	}
+      }
+      break;
+    case 8:{
+	if (CAN_WEAR(obj_object, ITEM_WEAR_ARMS)) {
+	  if (ch->equipment[WEAR_ARMS]) {
+	    cprintf(ch, "You already wear something on your arms.\n\r");
+	  } else {
+	    cprintf(ch, "OK.\n\r");
+	    perform_wear(ch, obj_object, keyword);
+	    obj_from_char(obj_object);
+	    equip_char(ch, obj_object, WEAR_ARMS);
+	  }
+	} else {
+	  cprintf(ch, "You can't wear that on your arms.\n\r");
+	}
+      }
+      break;
+    case 9:{
+	if (CAN_WEAR(obj_object, ITEM_WEAR_ABOUT)) {
+	  if (ch->equipment[WEAR_ABOUT]) {
+	    cprintf(ch, "You already wear something about your body.\n\r");
+	  } else {
+	    cprintf(ch, "OK.\n\r");
+	    perform_wear(ch, obj_object, keyword);
+	    obj_from_char(obj_object);
+	    equip_char(ch, obj_object, WEAR_ABOUT);
+	  }
+	} else {
+	  cprintf(ch, "You can't wear that about your body.\n\r");
+	}
+      }
+      break;
+    case 10:{
+	if (CAN_WEAR(obj_object, ITEM_WEAR_WAISTE)) {
+	  if (ch->equipment[WEAR_WAISTE]) {
+	    cprintf(ch, "You already wear something about your waist.\n\r");
+	  } else {
+	    cprintf(ch, "OK.\n\r");
+	    perform_wear(ch, obj_object, keyword);
+	    obj_from_char(obj_object);
+	    equip_char(ch, obj_object, WEAR_WAISTE);
+	  }
+	} else {
+	  cprintf(ch, "You can't wear that about your waist.\n\r");
+	}
+      }
+      break;
+    case 11:{
+	if (CAN_WEAR(obj_object, ITEM_WEAR_WRIST)) {
+	  if ((ch->equipment[WEAR_WRIST_L]) && (ch->equipment[WEAR_WRIST_R])) {
+	    cprintf(ch, "You already wear something around both your wrists.\n\r");
+	  } else {
+	    perform_wear(ch, obj_object, keyword);
+	    obj_from_char(obj_object);
+	    if (ch->equipment[WEAR_WRIST_L]) {
+	      cprintf(ch, "You wear the %s around your right wrist.\n\r",
+		      obj_object->short_description);
+	      equip_char(ch, obj_object, WEAR_WRIST_R);
+	    } else {
+	      cprintf(ch, "You wear the %s around your left wrist.\n\r",
+		      obj_object->short_description);
+	      equip_char(ch, obj_object, WEAR_WRIST_L);
+	    }
+	  }
+	} else {
+	  cprintf(ch, "You can't wear that around your wrist.\n\r");
+	}
+      }
+      break;
+
+    case 12:
+      if (CAN_WEAR(obj_object, ITEM_WIELD)) {
+	if (ch->equipment[WIELD] || ch->equipment[WIELD_TWOH]) {
+	  cprintf(ch, "You are already wielding something.\n\r");
+	} else {
+	  if (GET_OBJ_WEIGHT(obj_object) > str_app[STRENGTH_APPLY_INDEX(ch)].wield_w) {
+	    cprintf(ch, "It is too heavy for you to use.\n\r");
+	  } else {
+	    cprintf(ch, "OK.\n\r");
+	    perform_wear(ch, obj_object, keyword);
+	    obj_from_char(obj_object);
+	    equip_char(ch, obj_object, WIELD);
 	  }
 	}
       } else {
-	cprintf(ch, "You can't wear that on your finger.\n\r");
+	cprintf(ch, "You can't wield that.\n\r");
       }
-    }
-    break;
-  case 2:
-    {
-      if (CAN_WEAR(obj_object, ITEM_WEAR_NECK)) {
-	if ((ch->equipment[WEAR_NECK_1]) && (ch->equipment[WEAR_NECK_2])) {
-	  cprintf(ch, "You can't wear any more around your neck.\n\r");
-	} else {
-	  cprintf(ch, "OK.\n\r");
-	  perform_wear(ch, obj_object, keyword);
-	  if (ch->equipment[WEAR_NECK_1]) {
-	    obj_from_char(obj_object);
-	    equip_char(ch, obj_object, WEAR_NECK_2);
-	  } else {
-	    obj_from_char(obj_object);
-	    equip_char(ch, obj_object, WEAR_NECK_1);
-	  }
-	}
-      } else {
-	cprintf(ch, "You can't wear that around your neck.\n\r");
-      }
-    }
-    break;
-  case 3:
-    {
-      if (CAN_WEAR(obj_object, ITEM_WEAR_BODY)) {
-	if (ch->equipment[WEAR_BODY]) {
-	  cprintf(ch, "You already wear something on your body.\n\r");
-	} else {
-	  cprintf(ch, "OK.\n\r");
-	  perform_wear(ch, obj_object, keyword);
-	  obj_from_char(obj_object);
-	  equip_char(ch, obj_object, WEAR_BODY);
-	}
-      } else {
-	cprintf(ch, "You can't wear that on your body.\n\r");
-      }
-    }
-    break;
-  case 4:
-    {
-      if (CAN_WEAR(obj_object, ITEM_WEAR_HEAD)) {
-	if (ch->equipment[WEAR_HEAD]) {
-	  cprintf(ch, "You already wear something on your head.\n\r");
-	} else {
-	  cprintf(ch, "OK.\n\r");
-	  perform_wear(ch, obj_object, keyword);
-	  obj_from_char(obj_object);
-	  equip_char(ch, obj_object, WEAR_HEAD);
-	}
-      } else {
-	cprintf(ch, "You can't wear that on your head.\n\r");
-      }
-    }
-    break;
-  case 5:{
-      if (CAN_WEAR(obj_object, ITEM_WEAR_LEGS)) {
-	if (ch->equipment[WEAR_LEGS]) {
-	  cprintf(ch, "You already wear something on your legs.\n\r");
-	} else {
-	  cprintf(ch, "OK.\n\r");
-	  perform_wear(ch, obj_object, keyword);
-	  obj_from_char(obj_object);
-	  equip_char(ch, obj_object, WEAR_LEGS);
-	}
-      } else {
-	cprintf(ch, "You can't wear that on your legs.\n\r");
-      }
-    }
-    break;
-  case 6:{
-      if (CAN_WEAR(obj_object, ITEM_WEAR_FEET)) {
-	if (ch->equipment[WEAR_FEET]) {
-	  cprintf(ch, "You already wear something on your feet.\n\r");
-	} else {
-	  cprintf(ch, "OK.\n\r");
-	  perform_wear(ch, obj_object, keyword);
-	  obj_from_char(obj_object);
-	  equip_char(ch, obj_object, WEAR_FEET);
-	}
-      } else {
-	cprintf(ch, "You can't wear that on your feet.\n\r");
-      }
-    }
-    break;
-  case 7:{
-      if (CAN_WEAR(obj_object, ITEM_WEAR_HANDS)) {
-	if (ch->equipment[WEAR_HANDS]) {
-	  cprintf(ch, "You already wear something on your hands.\n\r");
-	} else {
-	  cprintf(ch, "OK.\n\r");
-	  perform_wear(ch, obj_object, keyword);
-	  obj_from_char(obj_object);
-	  equip_char(ch, obj_object, WEAR_HANDS);
-	}
-      } else {
-	cprintf(ch, "You can't wear that on your hands.\n\r");
-      }
-    }
-    break;
-  case 8:{
-      if (CAN_WEAR(obj_object, ITEM_WEAR_ARMS)) {
-	if (ch->equipment[WEAR_ARMS]) {
-	  cprintf(ch, "You already wear something on your arms.\n\r");
-	} else {
-	  cprintf(ch, "OK.\n\r");
-	  perform_wear(ch, obj_object, keyword);
-	  obj_from_char(obj_object);
-	  equip_char(ch, obj_object, WEAR_ARMS);
-	}
-      } else {
-	cprintf(ch, "You can't wear that on your arms.\n\r");
-      }
-    }
-    break;
-  case 9:{
-      if (CAN_WEAR(obj_object, ITEM_WEAR_ABOUT)) {
-	if (ch->equipment[WEAR_ABOUT]) {
-	  cprintf(ch, "You already wear something about your body.\n\r");
-	} else {
-	  cprintf(ch, "OK.\n\r");
-	  perform_wear(ch, obj_object, keyword);
-	  obj_from_char(obj_object);
-	  equip_char(ch, obj_object, WEAR_ABOUT);
-	}
-      } else {
-	cprintf(ch, "You can't wear that about your body.\n\r");
-      }
-    }
-    break;
-  case 10:{
-      if (CAN_WEAR(obj_object, ITEM_WEAR_WAISTE)) {
-	if (ch->equipment[WEAR_WAISTE]) {
-	  cprintf(ch, "You already wear something about your waist.\n\r");
-	} else {
-	  cprintf(ch, "OK.\n\r");
-	  perform_wear(ch, obj_object, keyword);
-	  obj_from_char(obj_object);
-	  equip_char(ch, obj_object, WEAR_WAISTE);
-	}
-      } else {
-	cprintf(ch, "You can't wear that about your waist.\n\r");
-      }
-    }
-    break;
-  case 11:{
-      if (CAN_WEAR(obj_object, ITEM_WEAR_WRIST)) {
-	if ((ch->equipment[WEAR_WRIST_L]) && (ch->equipment[WEAR_WRIST_R])) {
-	  cprintf(ch, "You already wear something around both your wrists.\n\r");
-	} else {
-	  perform_wear(ch, obj_object, keyword);
-	  obj_from_char(obj_object);
-	  if (ch->equipment[WEAR_WRIST_L]) {
-	    cprintf(ch, "You wear the %s around your right wrist.\n\r", obj_object->short_description);
-	    equip_char(ch, obj_object, WEAR_WRIST_R);
-	  } else {
-	    cprintf(ch, "You wear the %s around your left wrist.\n\r", obj_object->short_description);
-	    equip_char(ch, obj_object, WEAR_WRIST_L);
-	  }
-	}
-      } else {
-	cprintf(ch, "You can't wear that around your wrist.\n\r");
-      }
-    }
-    break;
+      break;
 
-  case 12:
-    if (CAN_WEAR(obj_object, ITEM_WIELD)) {
-      if (ch->equipment[WIELD] || ch->equipment[WIELD_TWOH]) {
-	cprintf(ch, "You are already wielding something.\n\r");
-      } else {
-	if (GET_OBJ_WEIGHT(obj_object) > str_app[STRENGTH_APPLY_INDEX(ch)].wield_w) {
-	  cprintf(ch, "It is too heavy for you to use.\n\r");
-	} else {
-	  cprintf(ch, "OK.\n\r");
-	  perform_wear(ch, obj_object, keyword);
-	  obj_from_char(obj_object);
-	  equip_char(ch, obj_object, WIELD);
-	}
-      }
-    } else {
-      cprintf(ch, "You can't wield that.\n\r");
-    }
-    break;
-
-  case 13:
-    if (CAN_WEAR(obj_object, ITEM_HOLD)) {
-      if (ch->equipment[HOLD]) {
-	cprintf(ch, "You are already holding something.\n\r");
-      } else if (ch->equipment[WIELD_TWOH]) {
-	cprintf(ch, "You are wielding a two handed blade, you can't hold things!\n\r");
-      } else if (ch->equipment[WEAR_SHIELD]) {
-	cprintf(ch, "Your hands are full already, you loser.\n\r");
-      } else {
-	cprintf(ch, "OK.\n\r");
-	perform_wear(ch, obj_object, keyword);
-	obj_from_char(obj_object);
-	equip_char(ch, obj_object, HOLD);
-      }
-    } else {
-      cprintf(ch, "You can't hold this.\n\r");
-    }
-    break;
-  case 14:
-    {
-      if (CAN_WEAR(obj_object, ITEM_WEAR_SHIELD)) {
-	if ((ch->equipment[WEAR_SHIELD])) {
-	  cprintf(ch, "You are already using a shield\n\r");
+    case 13:
+      if (CAN_WEAR(obj_object, ITEM_HOLD)) {
+	if (ch->equipment[HOLD]) {
+	  cprintf(ch, "You are already holding something.\n\r");
 	} else if (ch->equipment[WIELD_TWOH]) {
-	  cprintf(ch, "You can not use a shield while wielding a two handed weapon!\n\r");
-	} else if (ch->equipment[HOLD]) {
-	  cprintf(ch, "Your hands are full already, you are holding something.\n\r");
-	} else {
-	  perform_wear(ch, obj_object, keyword);
-	  cprintf(ch, "You start using the %s.\n\r", obj_object->short_description);
-	  obj_from_char(obj_object);
-	  equip_char(ch, obj_object, WEAR_SHIELD);
-	}
-      } else {
-	cprintf(ch, "You can't use that as a shield.\n\r");
-      }
-    }
-    break;
-
-  case 15:
-    if (CAN_WEAR(obj_object, ITEM_WIELD_TWOH)) {
-      if ((ch->equipment[WIELD]) || (ch->equipment[WIELD_TWOH])) {
-	cprintf(ch, "You are already wielding something.\n\r");
-      } else if (ch->equipment[WEAR_SHIELD]) {
-	cprintf(ch, "You can not wield two handed weapons and use a shield!\n\r");
-      } else if (ch->equipment[HOLD]) {
-	cprintf(ch, "But you are holding something!\n\r");
-      } else {
-	if (GET_OBJ_WEIGHT(obj_object) > str_app[STRENGTH_APPLY_INDEX(ch)].wield_w) {
-	  cprintf(ch, "It is too heavy for you to use.\n\r");
+	  cprintf(ch, "You are wielding a two handed blade, you can't hold things!\n\r");
+	} else if (ch->equipment[WEAR_SHIELD]) {
+	  cprintf(ch, "Your hands are full already, you loser.\n\r");
 	} else {
 	  cprintf(ch, "OK.\n\r");
 	  perform_wear(ch, obj_object, keyword);
 	  obj_from_char(obj_object);
-	  equip_char(ch, obj_object, WIELD_TWOH);
+	  equip_char(ch, obj_object, HOLD);
+	}
+      } else {
+	cprintf(ch, "You can't hold this.\n\r");
+      }
+      break;
+    case 14:
+      {
+	if (CAN_WEAR(obj_object, ITEM_WEAR_SHIELD)) {
+	  if ((ch->equipment[WEAR_SHIELD])) {
+	    cprintf(ch, "You are already using a shield\n\r");
+	  } else if (ch->equipment[WIELD_TWOH]) {
+	    cprintf(ch, "You can not use a shield while wielding a two handed weapon!\n\r");
+	  } else if (ch->equipment[HOLD]) {
+	    cprintf(ch, "Your hands are full already, you are holding something.\n\r");
+	  } else {
+	    perform_wear(ch, obj_object, keyword);
+	    cprintf(ch, "You start using the %s.\n\r", obj_object->short_description);
+	    obj_from_char(obj_object);
+	    equip_char(ch, obj_object, WEAR_SHIELD);
+	  }
+	} else {
+	  cprintf(ch, "You can't use that as a shield.\n\r");
 	}
       }
-    } else {
-      cprintf(ch, "You can't wield that two handed.\n\r");
-    }
-    break;
+      break;
 
-  case -1:{
-      cprintf(ch, "Wear %s where?.\n\r", obj_object->short_description);
-    }
-    break;
-  case -2:{
-      cprintf(ch, "You can't wear %s.\n\r", obj_object->short_description);
-    }
-    break;
-  default:{
-      log("Unknown type called in wear.");
-    }
-    break;
+    case 15:
+      if (CAN_WEAR(obj_object, ITEM_WIELD_TWOH)) {
+	if ((ch->equipment[WIELD]) || (ch->equipment[WIELD_TWOH])) {
+	  cprintf(ch, "You are already wielding something.\n\r");
+	} else if (ch->equipment[WEAR_SHIELD]) {
+	  cprintf(ch, "You can not wield two handed weapons and use a shield!\n\r");
+	} else if (ch->equipment[HOLD]) {
+	  cprintf(ch, "But you are holding something!\n\r");
+	} else {
+	  if (GET_OBJ_WEIGHT(obj_object) > str_app[STRENGTH_APPLY_INDEX(ch)].wield_w) {
+	    cprintf(ch, "It is too heavy for you to use.\n\r");
+	  } else {
+	    cprintf(ch, "OK.\n\r");
+	    perform_wear(ch, obj_object, keyword);
+	    obj_from_char(obj_object);
+	    equip_char(ch, obj_object, WIELD_TWOH);
+	  }
+	}
+      } else {
+	cprintf(ch, "You can't wield that two handed.\n\r");
+      }
+      break;
+
+    case -1:{
+	cprintf(ch, "Wear %s where?.\n\r", obj_object->short_description);
+      }
+      break;
+    case -2:{
+	cprintf(ch, "You can't wear %s.\n\r", obj_object->short_description);
+      }
+      break;
+    default:{
+	bug("Unknown type called in wear.");
+      }
+      break;
   }
 }
 
 void do_wear(struct char_data *ch, char *argument, int cmd)
 {
-  char arg1[MAX_INPUT_LENGTH];
-  char arg2[MAX_INPUT_LENGTH];
-  struct obj_data *obj_object, *next_obj;
-  int keyword;
-  static char *keywords[] =
-  {
+  char                                    arg1[MAX_INPUT_LENGTH] = "\0\0\0";
+  char                                    arg2[MAX_INPUT_LENGTH] = "\0\0\0";
+  struct obj_data                        *obj_object = NULL;
+  struct obj_data                        *next_obj = NULL;
+  int                                     keyword = 0;
+  static char                            *keywords[] = {
     "finger",
     "neck",
     "body",
@@ -1551,7 +1583,8 @@ void do_wear(struct char_data *ch, char *argument, int cmd)
   };
 
   if (DEBUG)
-    dlog("do_wear");
+    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+
   argument_interpreter(argument, arg1, arg2);
   if (*arg1) {
     if (!strcmp(arg1, "all")) {
@@ -1580,10 +1613,10 @@ void do_wear(struct char_data *ch, char *argument, int cmd)
 	  keyword = 4;
 	if (CAN_WEAR(obj_object, ITEM_WEAR_BODY))
 	  keyword = 3;
-        if (CAN_WEAR(obj_object,ITEM_WIELD_TWOH))
-          keyword = 15;
-        if (CAN_WEAR(obj_object,ITEM_WIELD))
-          keyword = 12;
+	if (CAN_WEAR(obj_object, ITEM_WIELD_TWOH))
+	  keyword = 15;
+	if (CAN_WEAR(obj_object, ITEM_WIELD))
+	  keyword = 12;
 	if (CAN_WEAR(obj_object, ITEM_WEAR_SHIELD))
 	  keyword = 14;
 	if (CAN_WEAR(obj_object, ITEM_HOLD))
@@ -1597,7 +1630,7 @@ void do_wear(struct char_data *ch, char *argument, int cmd)
       obj_object = get_obj_in_list_vis(ch, arg1, ch->carrying);
       if (obj_object) {
 	if (*arg2) {
-	  keyword = search_block(arg2, keywords, FALSE);	/* Partial Match */
+	  keyword = search_block(arg2, keywords, FALSE);       /* Partial Match */
 	  if (keyword == -1) {
 	    cprintf(ch, "%s is an unknown body location.\n\r", arg2);
 	  } else {
@@ -1642,13 +1675,14 @@ void do_wear(struct char_data *ch, char *argument, int cmd)
 
 void do_wield(struct char_data *ch, char *argument, int cmd)
 {
-  char arg1[MAX_STRING_LENGTH];
-  char arg2[MAX_STRING_LENGTH];
-  struct obj_data *obj_object;
-  int keyword = 12;
+  char                                    arg1[MAX_STRING_LENGTH] = "\0\0\0";
+  char                                    arg2[MAX_STRING_LENGTH] = "\0\0\0";
+  struct obj_data                        *obj_object = NULL;
+  int                                     keyword = 12;
 
   if (DEBUG)
-    dlog("do_wield");
+    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+
   argument_interpreter(argument, arg1, arg2);
   if (*arg1) {
     if (!strncmp("two", arg1, 3)) {
@@ -1664,7 +1698,7 @@ void do_wield(struct char_data *ch, char *argument, int cmd)
 	} else {
 	  cprintf(ch, "You do not seem to have the '%s'.\n\r", arg2);
 	}
-      } else {			       /* no arg2, check if they can wield it one handed, arg1 */
+      } else {						       /* no arg2, check if they can wield it one handed, arg1 */
 	obj_object = get_obj_in_list_vis(ch, arg1, ch->carrying);
 	if (obj_object) {
 	  keyword = 12;
@@ -1689,12 +1723,13 @@ void do_wield(struct char_data *ch, char *argument, int cmd)
 
 void do_grab(struct char_data *ch, char *argument, int cmd)
 {
-  char arg1[128];
-  char arg2[128];
-  struct obj_data *obj_object;
+  char                                    arg1[128] = "\0\0\0";
+  char                                    arg2[128] = "\0\0\0";
+  struct obj_data                        *obj_object = NULL;
 
   if (DEBUG)
-    dlog("do_grab");
+    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+
   argument_interpreter(argument, arg1, arg2);
 
   if (*arg1) {
@@ -1714,13 +1749,17 @@ void do_grab(struct char_data *ch, char *argument, int cmd)
 
 void do_remove(struct char_data *ch, char *argument, int cmd)
 {
-  char arg1[128], *T, *P;
-  int Rem_List[20], Num_Equip;
-  struct obj_data *obj_object;
-  int j;
+  char                                    arg1[128] = "\0\0\0";
+  char                                    *T = NULL;
+  char                                    *P = NULL;
+  int                                     Rem_List[20];
+  int                                     Num_Equip = 0;
+  struct obj_data                        *obj_object = NULL;
+  int                                     j = 0;
 
   if (DEBUG)
-    dlog("do_remove");
+    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+
   one_argument(argument, arg1);
 
   if (*arg1) {
@@ -1745,7 +1784,7 @@ void do_remove(struct char_data *ch, char *argument, int cmd)
 	}
       }
     }
-    if (isdigit(arg1[0])) {	       /* Make a list of item numbers for stuff to remove */
+    if (isdigit(arg1[0])) {				       /* Make a list of item numbers for stuff to remove */
 
       for (Num_Equip = j = 0; j < MAX_WEAR; j++) {
 	if (CAN_CARRY_N(ch) != IS_CARRYING_N(ch)) {
@@ -1816,18 +1855,20 @@ void do_remove(struct char_data *ch, char *argument, int cmd)
 
 void do_bury(struct char_data *ch, char *argument, int cmd)
 {
-  char buf[256];
-  struct obj_data *vict, *obj, *next;
-  int exp;
+  char                                    buf[256] = "\0\0\0";
+  struct obj_data                        *vict = NULL;
+  struct obj_data                        *obj = NULL;
+  struct obj_data                        *next = NULL;
+  int                                     experience = 0;
 
   if (DEBUG)
-    dlog("do_bury");
+    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+
   one_argument(argument, buf);
 
   if (!*buf) {
-    act("$n imitates Stalin, chanting 'We will bury you!'",
-        FALSE,ch,0,0,TO_ROOM);
-    act("You do a nice imitation of Stalin.",FALSE,ch,0,0,TO_CHAR);
+    act("$n imitates Stalin, chanting 'We will bury you!'", FALSE, ch, 0, 0, TO_ROOM);
+    act("You do a nice imitation of Stalin.", FALSE, ch, 0, 0, TO_CHAR);
     return;
   } else if (!(vict = get_obj_vis_accessible(ch, buf))) {
     cprintf(ch, "You feel you should go TO the %s first.\n\r", buf);
@@ -1835,21 +1876,21 @@ void do_bury(struct char_data *ch, char *argument, int cmd)
   } else if (!IS_CORPSE(vict)) {
     cprintf(ch, "You consider burying %s, but what if you can't find it again?\n\r", buf);
     return;
-  } 
+  }
 
   act("$n buries $p.", FALSE, ch, vict, ch, TO_ROOM);
   act("You bury $p.", FALSE, ch, vict, ch, TO_CHAR);
-  for(obj= vict->contains; obj; obj= next) {
-    next= obj->next_content;
+  for (obj = vict->contains; obj; obj = next) {
+    next = obj->next_content;
     obj_from_obj(obj);
     extract_obj(obj);
   }
   extract_obj(vict);
-  if(IS_MORTAL(ch)) {
-    exp= number(5, 50);
-    cprintf(ch, "You gain %d experience for your charity!\n\r", exp);
-    GET_EXP(ch) += exp;
-    GET_ALIGNMENT(ch) += number(5,50);
+  if (IS_MORTAL(ch)) {
+    experience = number(1, 50);
+    cprintf(ch, "You gain %d experience for your charity!\n\r", experience);
+    GET_EXP(ch) += experience;
+    GET_ALIGNMENT(ch) += number(0, 5);
     if (GET_ALIGNMENT(ch) > 999)
       GET_ALIGNMENT(ch) = 1000;
     WAIT_STATE(ch, 4);
@@ -1859,44 +1900,47 @@ void do_bury(struct char_data *ch, char *argument, int cmd)
 
 void do_desecrate(struct char_data *ch, char *argument, int cmd)
 {
-  char buf[256];
-  struct obj_data *vict, *obj, *next;
-  int exp;
+  char                                    buf[256] = "\0\0\0";
+  struct obj_data                        *vict = NULL;
+  struct obj_data                        *obj = NULL;
+  struct obj_data                        *next = NULL;
+  int                                     experience = 0;
 
   if (DEBUG)
-    dlog("do_desecrate");
+    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+
   one_argument(argument, buf);
 
   if (!*buf) {
-    act("$n looks around for things to desecrate.",
-        FALSE,ch,0,0,TO_ROOM);
-    act("You can't seem to find anything worth desecrating.",FALSE,ch,0,0,TO_CHAR);
+    act("$n looks around for things to desecrate.", FALSE, ch, 0, 0, TO_ROOM);
+    act("You can't seem to find anything worth desecrating.", FALSE, ch, 0, 0, TO_CHAR);
     return;
   } else if (!(vict = get_obj_vis_accessible(ch, buf))) {
     cprintf(ch, "You feel you should go TO the %s first.\n\r", buf);
     return;
   } else if (!IS_CORPSE(vict)) {
-    cprintf(ch, "You consider desecrating %s, but it just doesn't seem worth the bother.\n\r", buf);
+    cprintf(ch, "You consider desecrating %s, but it just doesn't seem worth the bother.\n\r",
+	    buf);
     return;
-  } 
+  }
 
-  act("$n stomps the bloody mush of $p into the ground and spits!", FALSE, ch, vict, ch, TO_ROOM);
+  act("$n stomps the bloody mush of $p into the ground and spits!", FALSE, ch, vict, ch,
+      TO_ROOM);
   act("You stomp the bloody mush of $p into the dirt and spit!", FALSE, ch, vict, ch, TO_CHAR);
-  for(obj= vict->contains; obj; obj= next) {
-    next= obj->next_content;
+  for (obj = vict->contains; obj; obj = next) {
+    next = obj->next_content;
     obj_from_obj(obj);
     extract_obj(obj);
   }
   extract_obj(vict);
-  if(IS_MORTAL(ch)) {
-    exp= number(5, 50);
-    cprintf(ch, "You gain %d experience for your depravity!\n\r", exp);
-    GET_EXP(ch) += exp;
-    GET_ALIGNMENT(ch) -= number(5,50);
+  if (IS_MORTAL(ch)) {
+    experience = number(1, 50);
+    cprintf(ch, "You gain %d experience for your depravity!\n\r", experience);
+    GET_EXP(ch) += experience;
+    GET_ALIGNMENT(ch) -= number(0, 5);
     if (GET_ALIGNMENT(ch) < -999)
       GET_ALIGNMENT(ch) = -1000;
     WAIT_STATE(ch, 4);
   }
   return;
 }
-

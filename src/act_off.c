@@ -6,47 +6,49 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <unistd.h>
+/* #include <unistd.h> */
 #include <sys/types.h>
 #include <string.h>
 #include <ctype.h>
 
-#include "include/global.h"
-#include "include/bug.h"
-#include "include/utils.h"
-#include "include/comm.h"
-#include "include/interpreter.h"
-#include "include/handler.h"
-#include "include/db.h"
-#include "include/spells.h"
-#include "include/mudlimits.h"
-#include "include/opinion.h"
-#include "include/multiclass.h"
-#include "include/constants.h"
-#include "include/spec_procs.h"
-#include "include/fight.h"
-#include "include/act_skills.h"
-#include "include/act_move.h"
-#include "include/spell_parser.h"
-#include "include/act_info.h"
-#include "include/breath_weapons.h"
+#include "global.h"
+#include "bug.h"
+#include "utils.h"
+#include "comm.h"
+#include "interpreter.h"
+#include "handler.h"
+#include "db.h"
+#include "spells.h"
+#include "mudlimits.h"
+#include "opinion.h"
+#include "multiclass.h"
+#include "constants.h"
+#include "spec_procs.h"
+#include "fight.h"
+#include "act_skills.h"
+#include "act_move.h"
+#include "spell_parser.h"
+#include "act_info.h"
+#include "breath_weapons.h"
 #define _ACT_OFF_C
-#include "include/act_off.h"
+#include "act_off.h"
 
-funcp bweapons[] = {
-  (void *) cast_geyser,
-  (void *) cast_fire_breath,
-  (void *) cast_gas_breath,
-  (void *) cast_frost_breath,
-  (void *) cast_acid_breath,
-  (void *) cast_lightning_breath
+funcp                                   bweapons[] = {
+  (void *)cast_geyser,
+  (void *)cast_fire_breath,
+  (void *)cast_gas_breath,
+  (void *)cast_frost_breath,
+  (void *)cast_acid_breath,
+  (void *)cast_lightning_breath
 };
 
-void do_swat(struct char_data *ch, char *argument, int cmd) {
-  struct char_data *vict;
+void do_swat(struct char_data *ch, char *argument, int cmd)
+{
+  struct char_data                       *vict = NULL;
 
   if (DEBUG)
-    dlog("do_swat");
+    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+
   if (IS_NPC(ch))
     return;
 
@@ -72,11 +74,12 @@ void do_swat(struct char_data *ch, char *argument, int cmd) {
 
 void do_hit(struct char_data *ch, char *argument, int cmd)
 {
-  char arg[80];
-  struct char_data *victim;
+  char                                    arg[80] = "\0\0\0";
+  struct char_data                       *victim = NULL;
 
   if (DEBUG)
-    dlog("do_hit");
+    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+
   if (check_peaceful(ch, "This is a place of peace.\n\r"))
     return;
 
@@ -94,8 +97,7 @@ void do_hit(struct char_data *ch, char *argument, int cmd)
 	return;
 
       if (IS_AFFECTED(ch, AFF_CHARM) && (ch->master == victim)) {
-	act("$N is your master! , you simply can't hit $M.",
-	    FALSE, ch, 0, victim, TO_CHAR);
+	act("$N is your master! , you simply can't hit $M.", FALSE, ch, 0, victim, TO_CHAR);
 	return;
       }
       if ((GET_POS(ch) == POSITION_STANDING || GET_POS(ch) == POSITION_MOUNTED) &&
@@ -113,12 +115,14 @@ void do_hit(struct char_data *ch, char *argument, int cmd)
 
 void do_kill(struct char_data *ch, char *argument, int cmd)
 {
-  static char arg[MAX_INPUT_LENGTH];
-  struct char_data *victim;
+  static char                             arg[MAX_INPUT_LENGTH] = "\0\0\0";
+  struct char_data                       *victim = NULL;
 
   if (DEBUG)
-    dlog("do_kill");
-  /* if ((GetMaxLevel(ch) < GREATER_GOD) || IS_NPC(ch)) */
+    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+  /*
+   * if ((GetMaxLevel(ch) < GREATER_GOD) || IS_NPC(ch)) 
+   */
   if (IS_NPC(ch) || (cmd != 216) || (GetMaxLevel(ch) < GREATER_GOD)) {
     do_hit(ch, argument, 0);
     return;
@@ -131,21 +135,19 @@ void do_kill(struct char_data *ch, char *argument, int cmd)
       cprintf(ch, "They aren't here.\n\r");
     else if (ch == victim)
       cprintf(ch, "Self-inflicted wounds are not allowed\n\r");
-    else  if(GetMaxLevel(ch) < GetMaxLevel(victim)) {
+    else if (GetMaxLevel(ch) < GetMaxLevel(victim)) {
       do_hit(ch, argument, 0);
       return;
     } else {
-      act("You hack $M to pieces! Blood flies everywhere!",
-	  FALSE, ch, 0, victim, TO_CHAR);
+      act("You hack $M to pieces! Blood flies everywhere!", FALSE, ch, 0, victim, TO_CHAR);
       act("$N hacks you into itty bitty pieces!", FALSE, victim, 0, ch, TO_CHAR);
-      act("$n brutally hacks $N into itty bitty pieces",
-	  FALSE, ch, 0, victim, TO_NOTVICT);
+      act("$n brutally hacks $N into itty bitty pieces", FALSE, ch, 0, victim, TO_NOTVICT);
       if (RIDDEN(victim)) {
-        FallOffMount(RIDDEN(victim), victim);
-        Dismount(RIDDEN(victim), victim, POSITION_SITTING);
+	FallOffMount(RIDDEN(victim), victim);
+	Dismount(RIDDEN(victim), victim, POSITION_SITTING);
       } else if (MOUNTED(victim)) {
-        FallOffMount(victim, MOUNTED(victim));
-        Dismount(victim, MOUNTED(victim), POSITION_SITTING);
+	FallOffMount(victim, MOUNTED(victim));
+	Dismount(victim, MOUNTED(victim), POSITION_SITTING);
       }
       raw_kill(victim);
     }
@@ -154,12 +156,14 @@ void do_kill(struct char_data *ch, char *argument, int cmd)
 
 void do_backstab(struct char_data *ch, char *argument, int cmd)
 {
-  struct char_data *victim;
-  char name[256];
-  BYTE percent_chance, base = 0;
+  struct char_data                       *victim = NULL;
+  char                                    name[256] = "\0\0\0";
+  int                                     percent_chance = 0;
+  int                                     base = 0;
 
   if (DEBUG)
-    dlog("do_backstab");
+    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+
   if (check_peaceful(ch, "This is a place of peace.\n\r"))
     return;
 
@@ -212,7 +216,7 @@ void do_backstab(struct char_data *ch, char *argument, int cmd)
     base = 4;
   }
 
-  percent_chance = number(1, 101);	       /* 101% is a complete failure */
+  percent_chance = number(1, 101);			       /* 101% is a complete failure */
 
   if (ch->skills[SKILL_BACKSTAB].learned) {
     if (percent_chance > ch->skills[SKILL_BACKSTAB].learned) {
@@ -243,18 +247,21 @@ void do_backstab(struct char_data *ch, char *argument, int cmd)
 
 void do_order(struct char_data *ch, char *argument, int cmd)
 {
-  char name[100], message[256];
-  char buf[256], message2[256];
-  char action[256], onwho[256];
+  char                                    name[100] = "\0\0\0";
+  char                                    message[256] = "\0\0\0";
+  char                                    message2[256] = "\0\0\0";
+  char                                    action[256] = "\0\0\0";
+  char                                    onwho[256] = "\0\0\0";
 
-  BYTE found = FALSE;
-  int org_room;
-  struct char_data *victim;
-  struct char_data *onwho_ptr;
-  struct follow_type *k;
+  int                                     found = FALSE;
+  int                                     org_room = 0;
+  struct char_data                       *victim = NULL;
+  struct char_data                       *onwho_ptr = NULL;
+  struct follow_type                     *k = NULL;
 
   if (DEBUG)
-    dlog("do_order");
+    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+
   half_chop(argument, name, message);
 
   strcpy(message2, message);
@@ -263,9 +270,7 @@ void do_order(struct char_data *ch, char *argument, int cmd)
     cprintf(ch, "Order who to do what?\n\r");
   else if (!(victim = get_char_room_vis(ch, name)) &&
 	   str_cmp("part", name) &&
-	   str_cmp("party", name) &&
-	   str_cmp("follower", name) &&
-	   str_cmp("followers", name))
+	   str_cmp("party", name) && str_cmp("follower", name) && str_cmp("followers", name))
     cprintf(ch, "That person isn't here.\n\r");
   else if (ch == victim)
     cprintf(ch, "You order yourself, very good.\n\r");
@@ -285,9 +290,7 @@ void do_order(struct char_data *ch, char *argument, int cmd)
 	is_abbrev("swat", action) ||
 	is_abbrev("backstab", action) ||
 	is_abbrev("punch", action) ||
-	is_abbrev("disarm", action) ||
-	is_abbrev("steal", action) ||
-	is_abbrev("hit", action)) {
+	is_abbrev("disarm", action) || is_abbrev("steal", action) || is_abbrev("hit", action)) {
       if ((onwho_ptr = get_char_room_vis(ch, onwho))) {
 	if (!CheckKill(ch, onwho_ptr)) {
 	  cprintf(ch, "You can't order other to do your dirty work.\n\r");
@@ -296,19 +299,18 @@ void do_order(struct char_data *ch, char *argument, int cmd)
       }
     }
     if (victim) {
-      sprintf(buf, "$N orders you to '%s'", message);
-      act(buf, FALSE, victim, 0, ch, TO_CHAR);
+      act("$N orders you to '%s'", FALSE, victim, 0, ch, TO_CHAR, message);
       act("$n gives $N an order.", FALSE, ch, 0, victim, TO_ROOM);
 
-      if (!(IS_IMMORTAL(ch) && !IS_IMMORTAL(victim)) && ((victim->master != ch) || !IS_AFFECTED(victim, AFF_CHARM)))
+      if (!(IS_IMMORTAL(ch) && !IS_IMMORTAL(victim))
+	  && ((victim->master != ch) || !IS_AFFECTED(victim, AFF_CHARM)))
 	act("$n has an indifferent look.", FALSE, victim, 0, 0, TO_ROOM);
       else {
 	cprintf(ch, "Ok.\n\r");
 	command_interpreter(victim, message);
       }
-    } else {			       /* This is order "followers" */
-      sprintf(buf, "$n issues the order '%s'.", message);
-      act(buf, FALSE, ch, 0, victim, TO_ROOM);
+    } else {						       /* This is order "followers" */
+      act("$n issues the order '%s'.", FALSE, ch, 0, victim, TO_ROOM, message);
 
       org_room = ch->in_room;
 
@@ -329,14 +331,16 @@ void do_order(struct char_data *ch, char *argument, int cmd)
 
 void do_flee(struct char_data *ch, char *argument, int cmd)
 {
-  int i, attempt, loose, flee_dir, percent_chance;
-
-  /* void gain_exp(struct char_data *ch, int gain); */
-  /* int special(struct char_data *ch, int cmd, char *arg); */
+  int                                     i = 0;
+  int                                     attempt = 0;
+  int                                     loose = 0;
+  int                                     flee_dir = 0;
+  int                                     percent_chance = 0;
 
   if (DEBUG)
-    dlog("do_flee");
-  if(IS_IMMORTAL(ch)) /* gods should never flee! */
+    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+
+  if (IS_IMMORTAL(ch))					       /* gods should never flee! */
     return;
   if (IS_AFFECTED(ch, AFF_PARALYSIS))
     return;
@@ -345,9 +349,7 @@ void do_flee(struct char_data *ch, char *argument, int cmd)
     FallOffMount(ch, MOUNTED(ch));
     Dismount(ch, MOUNTED(ch), POSITION_SITTING);
   }
-  if ((GET_POS(ch) <= POSITION_SITTING) &&
-      (GET_POS(ch) > POSITION_STUNNED) &&
-      !IsAvian(ch)) {
+  if ((GET_POS(ch) <= POSITION_SITTING) && (GET_POS(ch) > POSITION_STUNNED) && !IsAvian(ch)) {
     act("$n scrambles madly to $s feet!", TRUE, ch, 0, 0, TO_ROOM);
     act("Panic-stricken, you scramble to your feet.", TRUE, ch, 0, 0, TO_CHAR);
     GET_POS(ch) = POSITION_STANDING;
@@ -356,12 +358,14 @@ void do_flee(struct char_data *ch, char *argument, int cmd)
   }
   if (!(ch->specials.fighting)) {
     for (i = 0; i < MAX_NUM_EXITS; i++) {
-      attempt = number(0, 5);	       /* Select a random direction */
+      attempt = number(0, 5);				       /* Select a random direction */
       if (CAN_GO(ch, attempt) &&
 	  !IS_SET(real_roomp(EXIT(ch, attempt)->to_room)->room_flags, DEATH)) {
 	act("$n panics, and attempts to flee.", TRUE, ch, 0, 0, TO_ROOM);
 	if ((flee_dir = MoveOne(ch, attempt)) == 1) {
-	  /* The escape has succeded */
+	  /*
+	   * The escape has succeded 
+	   */
 	  cprintf(ch, "You flee head over heels.\n\r");
 	  return;
 	} else {
@@ -370,21 +374,27 @@ void do_flee(struct char_data *ch, char *argument, int cmd)
 	  return;
 	}
       }
-    }				       /* for */
-    /* No exits was found */
+    }							       /* for */
+    /*
+     * No exits was found 
+     */
     cprintf(ch, "PANIC! You couldn't escape!\n\r");
     return;
   }
   for (i = 0; i < MAX_NUM_EXITS; i++) {
-    attempt = number(0, MAX_NUM_EXITS-1);	/* Select a random direction */
+    attempt = number(0, MAX_NUM_EXITS - 1);		       /* Select a random direction */
     if (CAN_GO(ch, attempt) &&
 	!IS_SET(real_roomp(EXIT(ch, attempt)->to_room)->room_flags, DEATH)) {
       act("$n panics, and attempts to flee.", TRUE, ch, 0, 0, TO_ROOM);
       if ((flee_dir = MoveOne(ch, attempt)) == 1) {
-	/* The escape has succeded. We'll be nice. */
+	/*
+	 * The escape has succeded. We'll be nice. 
+	 */
 	if (GetMaxLevel(ch) >= 2) {
 	  loose = GetMaxLevel(ch) + (GetSecMaxLev(ch) / 2) + (GetThirdMaxLev(ch) / 3);
-	  loose -= GetMaxLevel(ch->specials.fighting) + (GetSecMaxLev(ch->specials.fighting) / 2) + (GetThirdMaxLev(ch->specials.fighting) / 3);
+	  loose -=
+	    GetMaxLevel(ch->specials.fighting) + (GetSecMaxLev(ch->specials.fighting) / 2) +
+	    (GetThirdMaxLev(ch->specials.fighting) / 3);
 	  loose *= GetMaxLevel(ch);
 	} else {
 	  loose = 0;
@@ -395,13 +405,13 @@ void do_flee(struct char_data *ch, char *argument, int cmd)
 	if (IS_NPC(ch)) {
 	  AddFeared(ch, ch->specials.fighting);
 	} else {
-	  percent_chance = (int)100 *(float)GET_HIT(ch->specials.fighting) /
-	      (float)GET_MAX_HIT(ch->specials.fighting);
+	  percent_chance = (int)100              *(float)GET_HIT(ch->specials.fighting) /
+	    (float)GET_MAX_HIT(ch->specials.fighting);
 
 	  if (number(1, 101) < percent_chance) {
 	    if ((DoesHate(ch->specials.fighting, ch)) ||
 		((IS_GOOD(ch) && (IS_EVIL(ch->specials.fighting))) ||
-	         (IS_EVIL(ch) && (IS_GOOD(ch->specials.fighting)))) ) {
+		 (IS_EVIL(ch) && (IS_GOOD(ch->specials.fighting))))) {
 	      SetHunting(ch->specials.fighting, ch);
 	    }
 	  }
@@ -422,21 +432,24 @@ void do_flee(struct char_data *ch, char *argument, int cmd)
 	return;
       }
     }
-  }				       /* for */
+  }							       /* for */
 
-  /* No exits were found */
+  /*
+   * No exits were found 
+   */
   cprintf(ch, "PANIC! You couldn't escape!\n\r");
 }
 
 void do_bandage(struct char_data *ch, char *argument, int cmd)
 {
-  struct char_data *victim;
-  char name[256];
-  BYTE percent_chance;
-  int cost;
+  struct char_data                       *victim = NULL;
+  char                                    name[256] = "\0\0\0";
+  int                                     percent_chance = 0;
+  int                                     cost = 0;
 
   if (DEBUG)
-    dlog("do_bandage");
+    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+
   only_argument(argument, name);
 
   if (!(victim = get_char_room_vis(ch, name))) {
@@ -471,9 +484,11 @@ void do_bandage(struct char_data *ch, char *argument, int cmd)
   }
   act("$n quickly bandages $N.", FALSE, ch, 0, victim, TO_NOTVICT);
 
-  percent_chance = number(1, 101);	       /* 101% is a complete failure */
+  percent_chance = number(1, 101);			       /* 101% is a complete failure */
 
-  /* some modifications to account for dexterity, and level */
+  /*
+   * some modifications to account for dexterity, and level 
+   */
 
   if (percent_chance > ch->skills[SKILL_BANDAGE].learned) {
     if (GET_HIT(victim) <= 0)
@@ -481,24 +496,26 @@ void do_bandage(struct char_data *ch, char *argument, int cmd)
     update_pos(victim);
     cprintf(ch, "They are still in need of help....\n\r");
     GET_MANA(ch) -= cost / 2;
-    act("$N is trying to save you, bandages have been put on your wounds!", FALSE, victim, 0, ch, TO_CHAR);
+    act("$N is trying to save you, bandages have been put on your wounds!", FALSE, victim, 0,
+	ch, TO_CHAR);
   } else {
     if (GET_HIT(victim) <= 0)
       GET_HIT(victim) = 1;
     update_pos(victim);
     cprintf(ch, "They should live...\n\r");
     GET_MANA(ch) -= cost;
-    act("$N has saved you, bandages have been put on your wounds!", FALSE, victim, 0, ch, TO_CHAR);
+    act("$N has saved you, bandages have been put on your wounds!", FALSE, victim, 0, ch,
+	TO_CHAR);
   }
 }
 
 void slam_into_wall(struct char_data *ch, struct room_direction_data *exitp)
 {
-  char doorname[128];
-  char buf[256];
+  char                                    doorname[128] = "\0\0\0";
 
-  if (DEBUG)
-    dlog("slam_into_wall");
+  if (DEBUG > 2)
+    dlog("called %s with %s, %08x", __PRETTY_FUNCTION__, SAFE_NAME(ch), exitp);
+
   if (exitp->keyword && *exitp->keyword) {
     if ((strcmp(fname(exitp->keyword), "secret") == 0) || (IS_SET(exitp->exit_info, EX_SECRET))) {
       strcpy(doorname, "wall");
@@ -510,8 +527,7 @@ void slam_into_wall(struct char_data *ch, struct room_direction_data *exitp)
   }
 
   cprintf(ch, "You slam your body against the %s with no effect\n\r", doorname);
-  sprintf(buf, "$n slams against the %s.\n\r", doorname);
-  act(buf, FALSE, ch, 0, 0, TO_ROOM);
+  act("$n slams against the %s.\n\r", FALSE, ch, 0, 0, TO_ROOM, doorname);
 
   GET_HIT(ch) -= number(1, 4);
 
@@ -522,17 +538,19 @@ void slam_into_wall(struct char_data *ch, struct room_direction_data *exitp)
   return;
 }
 
-void do_doorbash(struct char_data *ch, char *arg, int cmd)
+void do_doorbash(struct char_data *ch, char *argument, int cmd)
 {
-  int dir;
-  int ok;
-  struct room_direction_data *exitp;
-  int was_in, roll;
-
-  char buf[256], type[128], direction[128];
+  int                                     dir = -1;
+  int                                     ok = 0;
+  struct room_direction_data             *exitp = NULL;
+  int                                     was_in = FALSE;
+  int                                     roll = 0;
+  char                                    type[128] = "\0\0\0";
+  char                                    direction[128] = "\0\0\0";
 
   if (DEBUG)
-    dlog("do_doorbash");
+    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+
   if (GET_MOVE(ch) < 10) {
     cprintf(ch, "You're too tired to do that\n\r");
     return;
@@ -545,9 +563,9 @@ void do_doorbash(struct char_data *ch, char *arg, int cmd)
  * make sure that the argument is a direction, or a keyword.
  */
 
-  for (; *arg == ' '; arg++);
+  for (; *argument == ' '; argument++);
 
-  argument_interpreter(arg, type, direction);
+  argument_interpreter(argument, type, direction);
 
   if ((dir = find_door(ch, type, direction)) >= 0) {
     ok = TRUE;
@@ -572,8 +590,7 @@ void do_doorbash(struct char_data *ch, char *arg, int cmd)
       return;
     }
   }
-  sprintf(buf, "$n flings their body %swards", dirs[dir]);
-  act(buf, FALSE, ch, 0, 0, TO_ROOM);
+  act("$n flings their body %swards", FALSE, ch, 0, 0, TO_ROOM, dirs[dir]);
   cprintf(ch, "You fling your body %swards\n\r", dirs[dir]);
 
   if (IS_NOT_SET(exitp->exit_info, EX_CLOSED)) {
@@ -621,8 +638,8 @@ void do_doorbash(struct char_data *ch, char *arg, int cmd)
 	/*
 	 * unlock and open the door
 	 */
-	sprintf(buf, "$n slams into the %s, and smashes it down", fname(exitp->keyword));
-	act(buf, FALSE, ch, 0, 0, TO_ROOM);
+	act("$n slams into the %s, and smashes it down", FALSE, ch, 0, 0, TO_ROOM,
+            fname(exitp->keyword));
 	cprintf(ch, "You slam into the %s, and smashes open!\n\r", fname(exitp->keyword));
 	raw_unlock_door(ch, exitp, dir);
 	raw_open_door(ch, dir);
@@ -664,15 +681,16 @@ void do_doorbash(struct char_data *ch, char *arg, int cmd)
 
 void do_bash(struct char_data *ch, char *argument, int cmd)
 {
-  struct char_data *victim;
-  char name[256];
-  BYTE percent_chance;
-  int cost;
-  int has_shield;
+  struct char_data                       *victim = NULL;
+  char                                    name[256] = "\0\0\0";
+  int                                     percent_chance = 0;
+  int                                     cost = 0;
+  int                                     has_shield = FALSE;
 
   if (DEBUG)
-    dlog("do_bash");
-  if (check_peaceful(ch, "This is a place peace.\n\r"))
+    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+
+  if (check_peaceful(ch, "This is a place of peace.\n\r"))
     return;
 
   only_argument(argument, name);
@@ -716,9 +734,11 @@ void do_bash(struct char_data *ch, char *argument, int cmd)
   }
   GET_MANA(ch) -= cost;
 
-  percent_chance = number(1, 101);	       /* 101% is a complete failure */
+  percent_chance = number(1, 101);			       /* 101% is a complete failure */
 
-  /* some modifications to account for dexterity, and level */
+  /*
+   * some modifications to account for dexterity, and level 
+   */
 
   percent_chance -= dex_app[(int)GET_DEX(ch)].reaction;
   percent_chance += dex_app[(int)GET_DEX(victim)].reaction;
@@ -761,15 +781,16 @@ void do_bash(struct char_data *ch, char *argument, int cmd)
 
 void do_punch(struct char_data *ch, char *argument, int cmd)
 {
-  struct char_data *victim;
-  char name[256];
-  BYTE percent_chance;
-  int dam;
-  int cost;
+  struct char_data                       *victim = NULL;
+  char                                    name[256] = "\0\0\0";
+  int                                     percent_chance = 0;
+  int                                     dam = 0;
+  int                                     cost = 0;
 
   if (DEBUG)
-    dlog("do_punch");
-  if (check_peaceful(ch, "This is a place peace.\n\r"))
+    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+
+  if (check_peaceful(ch, "This is a place of peace.\n\r"))
     return;
 
   only_argument(argument, name);
@@ -815,7 +836,9 @@ void do_punch(struct char_data *ch, char *argument, int cmd)
 
   percent_chance = ((10 - (GET_AC(victim) / 10)) << 1) + number(1, 101);
 
-  /* some modifications to account for dexterity, */
+  /*
+   * some modifications to account for dexterity, 
+   */
 
   dam = dice(0, 4) + str_app[STRENGTH_APPLY_INDEX(ch)].todam;
 
@@ -848,13 +871,15 @@ void do_punch(struct char_data *ch, char *argument, int cmd)
 
 void do_rescue(struct char_data *ch, char *argument, int cmd)
 {
-  struct char_data *victim, *tmp_ch;
-  int percent_chance;
-  char victim_name[240];
-  int cost;
+  struct char_data                       *victim = NULL;
+  struct char_data                       *tmp_ch = NULL;
+  int                                     percent_chance = 0;
+  int                                     cost = 0;
+  char                                    victim_name[240] = "\0\0\0";
 
   if (DEBUG)
-    dlog("do_rescue");
+    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+
   if (check_peaceful(ch, "No one should need rescuing here.\n\r"))
     return;
 
@@ -889,8 +914,7 @@ void do_rescue(struct char_data *ch, char *argument, int cmd)
   GET_MANA(ch) -= cost;
 
   for (tmp_ch = real_roomp(ch->in_room)->people;
-       tmp_ch && (tmp_ch->specials.fighting != victim);
-       tmp_ch = tmp_ch->next_in_room);
+       tmp_ch && (tmp_ch->specials.fighting != victim); tmp_ch = tmp_ch->next_in_room);
 
   if (!tmp_ch) {
     act("But nobody is fighting $M?", FALSE, ch, 0, victim, TO_CHAR);
@@ -899,7 +923,7 @@ void do_rescue(struct char_data *ch, char *argument, int cmd)
   if (!HasClass(ch, CLASS_WARRIOR) && !HasClass(ch, CLASS_RANGER))
     cprintf(ch, "But only true warriors can do this!");
   else {
-    percent_chance = number(1, 101);	       /* 101% is a complete failure */
+    percent_chance = number(1, 101);			       /* 101% is a complete failure */
     if (percent_chance > ch->skills[SKILL_RESCUE].learned) {
       cprintf(ch, "You fail the rescue.\n\r");
       return;
@@ -923,11 +947,13 @@ void do_rescue(struct char_data *ch, char *argument, int cmd)
 
 void do_assist(struct char_data *ch, char *argument, int cmd)
 {
-  struct char_data *victim, *tmp_ch;
-  char victim_name[240];
+  struct char_data                       *victim = NULL;
+  struct char_data                       *tmp_ch = NULL;
+  char                                    victim_name[240] = "\0\0\0";
 
   if (DEBUG)
-    dlog("do_assist");
+    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+
   if (check_peaceful(ch, "This is a place of peace.\n\r"))
     return;
 
@@ -960,18 +986,19 @@ void do_assist(struct char_data *ch, char *argument, int cmd)
     return;
   }
   hit(ch, tmp_ch, TYPE_UNDEFINED);
-  WAIT_STATE(victim, PULSE_VIOLENCE + 2);	/* same as hit */
+  WAIT_STATE(victim, PULSE_VIOLENCE + 2);		       /* same as hit */
 }
 
 void do_kick(struct char_data *ch, char *argument, int cmd)
 {
-  struct char_data *victim;
-  char name[256];
-  BYTE percent_chance;
-  int cost;
+  struct char_data                       *victim = NULL;
+  char                                    name[256] = "\0\0\0";
+  int                                     percent_chance = 0;
+  int                                     cost = 0;
 
   if (DEBUG)
-    dlog("do_kick");
+    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+
   if (check_peaceful(ch, "This is a place of peace.\n\r"))
     return;
 
@@ -1017,14 +1044,18 @@ void do_kick(struct char_data *ch, char *argument, int cmd)
   GET_MANA(ch) -= cost;
 
   percent_chance = ((10 - (GET_AC(victim) / 10)) << 1) + number(1, 101);
-  /* 101% is a complete failure */
+  /*
+   * 101% is a complete failure 
+   */
 
   if (percent_chance > ch->skills[SKILL_KICK].learned) {
     if (GET_POS(victim) > POSITION_DEAD)
       damage(ch, victim, 0, SKILL_KICK);
   } else {
     if (GET_POS(victim) > POSITION_DEAD) {
-      /* damage(ch, victim, GET_LEVEL(ch, BestFightingClass(ch))>>1, SKILL_KICK); */
+      /*
+       * damage(ch, victim, GET_LEVEL(ch, BestFightingClass(ch))>>1, SKILL_KICK); 
+       */
       damage(ch, victim, dice(2, 8), SKILL_KICK);
       if (ch->skills[SKILL_KICK].learned < 50)
 	ch->skills[SKILL_KICK].learned += 2;
@@ -1035,9 +1066,12 @@ void do_kick(struct char_data *ch, char *argument, int cmd)
 
 void do_wimp(struct char_data *ch, char *argument, int cmd)
 {
-  /* sets the character in wimpy mode.  */
+  /*
+   * sets the character in wimpy mode.  
+   */
   if (DEBUG)
-    dlog("do_wimp");
+    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+
   if (IS_SET(ch->specials.act, PLR_WIMPY)) {
     REMOVE_BIT(ch->specials.act, PLR_WIMPY);
     cprintf(ch, "You are no longer a wimp.\n\r");
@@ -1052,28 +1086,28 @@ void do_wimp(struct char_data *ch, char *argument, int cmd)
 
 void do_breath(struct char_data *ch, char *argument, int cmd)
 {
-  struct char_data *victim;
-  char name[MAX_STRING_LENGTH];
-  int count, manacost = 0;
-  funcp weapon;
+  struct char_data                       *victim = NULL;
+  char                                    name[MAX_STRING_LENGTH] = "\0\0\0";
+  int                                     count = 0;
+  int                                     manacost = 0;
+  funcp                                   weapon = NULL;
 
   if (DEBUG)
-    dlog("do_breath");
+    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+
   if (check_peaceful(ch, "That wouldn't be nice at all.\n\r"))
     return;
 
   only_argument(argument, name);
 
   for (count = FIRST_BREATH_WEAPON;
-       count <= LAST_BREATH_WEAPON && !affected_by_spell(ch, count);
-       count++);
+       count <= LAST_BREATH_WEAPON && !affected_by_spell(ch, count); count++);
 
   if (count > LAST_BREATH_WEAPON) {
-    struct breather *scan;
+    struct breather                        *scan;
 
     for (scan = breath_monsters;
-	 scan->vnum >= 0 && scan->vnum != mob_index[ch->nr].virtual;
-	 scan++);
+	 scan->vnum >= 0 && scan->vnum != mob_index[ch->nr].virtual; scan++);
 
     if (scan->vnum < 0) {
       cprintf(ch, "You don't have a breath weapon.\n\r");
@@ -1082,7 +1116,7 @@ void do_breath(struct char_data *ch, char *argument, int cmd)
     for (count = 0; scan->breaths[count]; count++);
 
     if (count < 1) {
-      log("monster %s has no breath weapons", ch->player.short_descr);
+      dlog("monster %s has no breath weapons", ch->player.short_descr);
       cprintf(ch, "Why don't you have any breath weapons!?\n\r");
       return;
     }
@@ -1113,8 +1147,11 @@ void do_breath(struct char_data *ch, char *argument, int cmd)
 #if 0
 void do_shoot(struct char_data *ch, char *argument, int cmd)
 {
-  char arg[80];
-  struct char_data *victim;
+  char                                    arg[80] = "\0\0\0";
+  struct char_data                       *victim = NULL;
+
+  if (DEBUG)
+    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
   if (check_peaceful(ch, "You feel too peaceful to contemplate violence.\n\r"))
     return;

@@ -1,0 +1,165 @@
+@
+    Wizard chat.  Just like group chat, but all wizards see this.
+#
+ADVANCE
+    Gives a player (or mob) levels as if they had earned them.
+    A nice way to reward players who do something really cool.
+    I think negative arguments will demote players as well!
+#
+AT
+    Used to execute a command at the location specified.  Typically,
+    this will be the name of a mob or player.
+
+    "at eli trans bozo" -- teleports bozo to eli
+#
+DEBUG
+    Adjusts the debug level.  Don't go above 2 unless you
+    like pain and want to fill the disk quickly!
+#
+EVENT
+    This command allows an immortal to cause a pre-coded event
+    to happen, usually in the zone they are standing in.  These
+    special events help add a bit of variety to the normal mud
+    environment.
+#
+FORCE
+    Command used to force all following arguments to be passed to
+    another players' command interpreter as if they had typed it.
+    Useful for helping players find things.  Commonly used for
+    annoying the players.
+#
+GOTO
+    Goes to a specified location.  Can be a mob/player or a room
+    vnum.  This is your perfectly targeted teleport spell.
+#
+HIGHFIVE
+    Another cute immortal only emote.
+#
+HOME
+    Takes you to your home room.
+#    
+INVISIBLE
+    A wiz invisible command.
+#
+LOAD
+    Function to create any mob or object by name or vnum.  It will
+    appear in the room with you, or in your inventory.
+#
+LOGS
+    Toggles reception of log statements as a notify channel.  If on,
+    you get debug info sent to your character.  If off, they only go
+    to the logfile.
+#
+NOHASSLE
+    Makes you invisible to all other players.  Also makes you
+    impossible to attack or affect.  This can be set on mobs.
+#
+PLAYERS
+    A more detailed who list.
+#
+PRETITLE
+    Sets the pretitle of a character.
+#
+PSET
+    Allows manipulation of many player attributes.  You can use this
+    to restore lost gold, or tweak stats.
+#
+PURGE
+    Destroys ALL objects and mobs in the room you are standing in!
+    Useful after you've had your fun with the Berserker Axe.
+#
+RENTMODE
+    Allows you to set the rent value multiplier.  If all the rent
+    values are set properly, this should be 1.0.  You can have
+    specials by using fractions, or turn rent off with 0.0 (but
+    you still have to rent to not lose your items!).
+#
+REROLL
+    Randomly rerolls the ability scores of a player or mob.
+#
+RESET
+    Resets the zone specified.
+#
+RESTORE
+    Restores a player (or mob) to full mana/move/health.
+#
+RESTOREALL
+    Like restore, but to every player in the game!
+#
+SETREBOOT
+    Sets the time of day at which the gamedriver will automatically
+    reboot.  You can set two times, or set both to the same time to
+    only have one reboot per day.
+#
+SHOW
+    This is how you find what mobs match a pattern, such as
+    "show guard", which produces a LOT of output.
+#
+SHUTDOW
+    A placeholder to prevent you from accidentally shutting down
+    the game.  Since this comes first in sorting, you must type
+    out the entire SHUTDOWN command for it to work.
+#
+SHUTDOWN
+    Shut the game driver down and signal the boot script to exit.
+    Only do this if you are doing maintenance on the machine the
+    game runs on, or if you made a horrible data-corrupting bug that
+    will break things if allowed to continue.
+#
+SLAY
+    Kills a mortal, lower level wizard, or mob.  No questions asked.
+#
+SNOOP
+    Hooks your display onto a player so you see everything they see.
+#
+SNOWBALL
+    A cute attack that only immortals get to use!
+#
+SPELLS
+    Show all spells in the game.
+#
+STAT
+    This allows you to see vital statistics on any specific item in
+    the game.
+#
+STEALTH
+    Sets the stealth flag on a player.
+#
+SWITCH
+    Take control of a mob as if it were your character.  This is
+    the bread and butter of role playing, as it lets you take the
+    form of any mob, suspending the AI while you have control of
+    it.
+#
+TICKS
+    Displays when the next "tick" of various types will occur.
+#
+TRANSFER
+    This yanks a given mob or player to your location.  Very handy
+    for helping players around unintended jams, also handy when
+    used with AT.
+#
+USERS
+    A who list that shows where players are logged in from.
+#
+WALL
+    Global emote that has no prefixes.  This can be used for
+    atmosphere, or for warnings.
+#
+WIZHELP
+    Duh!
+#
+WIZLOCK
+    Prevent mortals from logging in.  This should be used if you
+    are debugging.
+#
+WIZNET
+    Another name for the @ command.  Wizard chat.
+#
+WORLD
+    Some statistics about the game world.
+#
+ZPURGE
+    Same as purge, but to an entire zone.  Handy if you want to
+    reset a zone to boot-time state, do this, then do reset.
+#~

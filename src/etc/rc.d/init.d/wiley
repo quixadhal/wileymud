@@ -13,8 +13,12 @@
 # Check that networking is up.
 [ ${NETWORKING} = "no" ] && exit 0
 
-[ -f /home/wiley/bin/wiley ] || exit 0
-[ -f /home/wiley/bin/wileymud ] || exit 0
+MUDDIR=/home/wiley
+LOCKDIR=/var/lock/subsys
+PIDDIR=/var/run
+
+[ -f $MUDDIR/bin/wiley ] || exit 0
+[ -f $MUDDIR/bin/wileymud ] || exit 0
 
 # See how we were called.
 case "$1" in
@@ -23,9 +27,9 @@ case "$1" in
         echo -n "Starting WileyMUD III: "
         if [ "`pidofproc wiley`" = "" ]; then
           echo -n "wiley "
-          /home/wiley/bin/wiley &
+          $MUDDIR/bin/wiley &
         fi
-        touch /var/lock/subsys/wiley
+        touch $LOCKDIR/wiley
         echo
         ;;
   stop)
@@ -38,11 +42,11 @@ case "$1" in
           kill -USR2 $pid1
           sleep 5
           kill -9 $pid1
-          rm -f /var/run/wileymud.pid
+          rm -f $PIDDIR/wileymud.pid
         fi
         killproc wiley
         echo "done"
-        rm -f /var/lock/subsys/wiley
+        rm -f $LOCKDIR/wiley
         ;;
   *)
         echo "Usage: wiley {start|stop}"

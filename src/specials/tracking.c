@@ -25,18 +25,30 @@
 
 /* predicates for find_path function */
 
-int is_target_room_p(int room, void *tgt_room) {
+inline int is_target_room_p(int room, void *tgt_room)
+{
+  if (DEBUG > 3)
+    dlog("called %s with %d, %08x", __PRETTY_FUNCTION__, room, tgt_room);
+
   return room == (int)tgt_room;
 }
 
-int named_object_on_ground(int room, void *c_data) {
-  char *name = c_data;
+inline int named_object_on_ground(int room, void *c_data)
+{
+  char                                   *name = c_data;
+
+  if (DEBUG > 3)
+    dlog("called %s with %d, %08x", __PRETTY_FUNCTION__, room, c_data);
 
   return NULL != get_obj_in_list(name, real_roomp(room)->contents);
 }
 
-int named_mobile_in_room(int room, struct hunting_data *c_data) {
-  struct char_data *scan;
+inline int named_mobile_in_room(int room, struct hunting_data *c_data)
+{
+  struct char_data                       *scan = NULL;
+
+  if (DEBUG > 3)
+    dlog("called %s with %d, %08x", __PRETTY_FUNCTION__, room, c_data);
 
   for (scan = real_roomp(room)->people; scan; scan = scan->next_in_room)
     if (isname(c_data->name, scan->player.name)) {
@@ -54,15 +66,27 @@ int named_mobile_in_room(int room, struct hunting_data *c_data) {
  * for mobiles that know how to open doors.
  */
 
-static void donothing(void) {
+static void donothing(void)
+{
+  if (DEBUG > 3)
+    dlog("called %s with no arguments", __PRETTY_FUNCTION__);
+
   return;
 }
 
-int choose_exit(int in_room, int tgt_room, int depth) {
+inline int choose_exit(int in_room, int tgt_room, int depth)
+{
+  if (DEBUG > 3)
+    dlog("called %s with %d, %d, %d", __PRETTY_FUNCTION__, in_room, tgt_room, depth);
+
   return find_path(in_room, is_target_room_p, (void *)tgt_room, depth);
 }
 
-int go_direction(struct char_data *ch, int dir) {
+inline int go_direction(struct char_data *ch, int dir)
+{
+  if (DEBUG > 3)
+    dlog("called %s with %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), dir);
+
   if (ch->specials.fighting)
     return 0;
 
@@ -74,15 +98,26 @@ int go_direction(struct char_data *ch, int dir) {
   return 0;
 }
 
-int find_path(int in_room, ifuncp predicate, void *c_data, int depth) {
-  struct room_q *tmp_q, *q_head, *q_tail;
+int find_path(int in_room, ifuncp predicate, void *c_data, int depth)
+{
+  struct room_q                          *tmp_q = NULL;
+  struct room_q                          *q_head = NULL;
+  struct room_q                          *q_tail = NULL;
+  int                                     i = 0;
+  int                                     tmp_room = 0;
+  int                                     count = 0;
+  int                                     thru_doors = 0;
+  struct room_data                       *herep = NULL;
+  struct room_data                       *therep = NULL;
+  struct room_direction_data             *exitp = NULL;
+  static struct hash_header               x_room;
 
-  int i, tmp_room, count = 0, thru_doors;
-  static struct hash_header x_room;
-  struct room_data *herep, *therep;
-  struct room_direction_data *exitp;
+  if (DEBUG > 2)
+    dlog("called %s with %d, %08x, %d", __PRETTY_FUNCTION__, in_room, c_data, depth);
 
-  /* If start = destination we are done */
+  /*
+   * If start = destination we are done 
+   */
   if ((predicate) (in_room, c_data))
     return -1;
 
@@ -93,12 +128,14 @@ int find_path(int in_room, ifuncp predicate, void *c_data, int depth) {
     thru_doors = FALSE;
   }
 
-  if (x_room.buckets)		       /* junk left over from a previous track */
+  if (x_room.buckets)					       /* junk left over from a previous track */
     destroy_hash_table(&x_room, donothing);
   init_hash_table(&x_room, sizeof(int), 2048);
   hash_enter(&x_room, in_room, (void *)-1);
 
-  /* initialize queue */
+  /*
+   * initialize queue 
+   */
   CREATE(q_head, struct room_q, 1);
 
   q_tail = q_head;
@@ -107,57 +144,82 @@ int find_path(int in_room, ifuncp predicate, void *c_data, int depth) {
 
   while (q_head) {
     herep = real_roomp(q_head->room_nr);
-    /* for each room test all directions */
+    /*
+     * for each room test all directions 
+     */
     for (i = 0; i < MAX_NUM_EXITS; i++) {
       exitp = herep->dir_option[i];
       if (exit_ok(exitp, &therep) && (thru_doors ? GO_OK_SMARTER : GO_OK)) {
-        /* next room */
-        tmp_room = herep->dir_option[i]->to_room;
-        if (!((predicate) (tmp_room, c_data))) {
-          /* shall we add room to queue ? */
-          /* count determines total breadth and depth */
-          if (!hash_find(&x_room, tmp_room) && (count < depth)
-              && !IS_SET(RM_FLAGS(tmp_room), DEATH)) {
-            count++;
-            /* mark room as visted and put on queue */
-            CREATE(tmp_q, struct room_q, 1);
+	/*
+	 * next room 
+	 */
+	tmp_room = herep->dir_option[i]->to_room;
+	if (!((predicate) (tmp_room, c_data))) {
+	  /*
+	   * shall we add room to queue ? 
+	   */
+	  /*
+	   * count determines total breadth and depth 
+	   */
+	  if (!hash_find(&x_room, tmp_room) && (count < depth)
+	      && !IS_SET(RM_FLAGS(tmp_room), DEATH)) {
+	    count++;
+	    /*
+	     * mark room as visted and put on queue 
+	     */
+	    CREATE(tmp_q, struct room_q, 1);
 
-            tmp_q->room_nr = tmp_room;
-            tmp_q->next_q = 0;
-            q_tail->next_q = tmp_q;
-            q_tail = tmp_q;
+	    tmp_q->room_nr = tmp_room;
+	    tmp_q->next_q = 0;
+	    q_tail->next_q = tmp_q;
+	    q_tail = tmp_q;
 
-            /* ancestor for first layer is the direction */
-            hash_enter(&x_room, tmp_room,
-                       ((int)hash_find(&x_room, q_head->room_nr) == -1) ?
-                       (void *)(i + 1) : hash_find(&x_room, q_head->room_nr));
-          }
-        } else {
-          /* have reached our goal so free queue */
-          tmp_room = q_head->room_nr;
-          for (; q_head; q_head = tmp_q) {
-            tmp_q = q_head->next_q;
-            DESTROY(q_head);
-          }
-          /* return direction if first layer */
-          if ((int)hash_find(&x_room, tmp_room) == -1)
-            return (i);
-          else			       /* else return the ancestor */
-            return (-1 + (int)hash_find(&x_room, tmp_room));
-        }
+	    /*
+	     * ancestor for first layer is the direction 
+	     */
+	    hash_enter(&x_room, tmp_room,
+		       ((int)hash_find(&x_room, q_head->room_nr) == -1) ?
+		       (void *)(i + 1) : hash_find(&x_room, q_head->room_nr));
+	  }
+	} else {
+	  /*
+	   * have reached our goal so free queue 
+	   */
+	  tmp_room = q_head->room_nr;
+	  for (; q_head; q_head = tmp_q) {
+	    tmp_q = q_head->next_q;
+	    DESTROY(q_head);
+	  }
+	  /*
+	   * return direction if first layer 
+	   */
+	  if ((int)hash_find(&x_room, tmp_room) == -1)
+	    return (i);
+	  else						       /* else return the ancestor */
+	    return (-1 + (int)hash_find(&x_room, tmp_room));
+	}
       }
     }
-    /* free queue head and point to next entry */
+    /*
+     * free queue head and point to next entry 
+     */
     tmp_q = q_head->next_q;
     DESTROY(q_head);
     q_head = tmp_q;
   }
-  /* couldn't find path */
+  /*
+   * couldn't find path 
+   */
   return (-1);
 }
 
-void MobHunt(struct char_data *ch) {
-  int res, k;
+void MobHunt(struct char_data *ch)
+{
+  int                                     res = 0;
+  int                                     k = 0;
+
+  if (DEBUG > 2)
+    dlog("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
 
   if (ch->persist <= 0) {
     res = choose_exit(ch->in_room, ch->old_room, 2000);
@@ -172,8 +234,7 @@ void MobHunt(struct char_data *ch) {
 	      act("$n fumes at $N", TRUE, ch, 0, ch->specials.hunting, TO_ROOM);
 	    } else {
 	      if (IsHumanoid(ch)) {
-		act("$n screams 'Time to die, $N'",
-		    TRUE, ch, 0, ch->specials.hunting, TO_ROOM);
+		act("$n screams 'Time to die, $N'", TRUE, ch, 0, ch->specials.hunting, TO_ROOM);
 	      } else if (IsAnimal(ch)) {
 		act("$n growls.", TRUE, ch, 0, 0, TO_ROOM);
 	      }
@@ -206,8 +267,12 @@ void MobHunt(struct char_data *ch) {
   }
 }
 
-int dir_track(struct char_data *ch, struct char_data *vict) {
-  int code;
+int dir_track(struct char_data *ch, struct char_data *vict)
+{
+  int                                     code = 0;
+
+  if (DEBUG > 2)
+    dlog("called %s with %s, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), SAFE_NAME(vict));
 
   if ((!ch) || (!vict))
     return (-1);
@@ -223,15 +288,19 @@ int dir_track(struct char_data *ch, struct char_data *vict) {
     } else {
       cprintf(ch, "\n\rTrack -> You have lost the trail.\n\r");
     }
-    return (-1);		       /* false to continue the hunt */
+    return (-1);					       /* false to continue the hunt */
   } else {
     cprintf(ch, "\n\rTrack -> You see a faint trail %sward\n\r", dirs[code]);
     return (code);
   }
 }
 
-int track(struct char_data *ch, struct char_data *vict) {
-  int code;
+int track(struct char_data *ch, struct char_data *vict)
+{
+  int                                     code = 0;
+
+  if (DEBUG > 2)
+    dlog("called %s with %s, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), SAFE_NAME(vict));
 
   if ((!ch) || (!vict))
     return (-1);
@@ -243,7 +312,7 @@ int track(struct char_data *ch, struct char_data *vict) {
 
   if (ch->in_room == vict->in_room) {
     cprintf(ch, "\n\rTrack -> You have found your target!\n\r");
-    return (FALSE);		       /* false to continue the hunt */
+    return (FALSE);					       /* false to continue the hunt */
   }
   if (code == -1) {
     cprintf(ch, "\n\rTrack -> You have lost the trail.\n\r");
@@ -254,11 +323,16 @@ int track(struct char_data *ch, struct char_data *vict) {
   }
 }
 
-void do_track(struct char_data *ch, char *argument, int cmd) {
-  char name[256];
-  int dist, code;
-  struct hunting_data huntd;
-  int cost;
+void do_track(struct char_data *ch, char *argument, int cmd)
+{
+  int                                     dist = 0;
+  int                                     code = 0;
+  int                                     cost = 0;
+  char                                    name[256] = "\0";
+  struct hunting_data                     huntd;
+
+  if (DEBUG)
+    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
   only_argument(argument, name);
 
@@ -286,15 +360,15 @@ void do_track(struct char_data *ch, char *argument, int cmd) {
   GET_MANA(ch) -= cost;
 
   switch (GET_RACE(ch)) {
-  case RACE_ELVEN:
-    dist += 10;			       /* even better */
-    break;
-  case RACE_DEVIL:
-  case RACE_DEMON:
-    dist = MAX_ROOMS;		       /* as good as can be */
-    break;
-  default:
-    break;
+    case RACE_ELVEN:
+      dist += 10;					       /* even better */
+      break;
+    case RACE_DEVIL:
+    case RACE_DEMON:
+      dist = MAX_ROOMS;					       /* as good as can be */
+      break;
+    default:
+      break;
   }
 
   if (GetMaxLevel(ch) >= IMMORTAL)

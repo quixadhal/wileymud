@@ -1,11 +1,11 @@
 # Butcher WileyMUD
-if [ -f /home/wiley/wiley.pid ]; then
+if [ -f /home/wiley/etc/wiley.pid ]; then
         WILEYPID=`ps -axw | grep wileymud | grep -v grep | awk '{print $1}'`
         if [ -n "$WILEYPID" ]; then
                 kill -USR1 $WILEYPID
                 sleep 5
         fi
         unset WILEYPID
-        kill -TERM `cat /home/wiley/wiley.pid`
-        rm -f /home/wiley/wiley.pid
+        kill -TERM `cat /home/wiley/etc/wiley.pid`
+        rm -f /home/wiley/etc/wiley.pid
 fi

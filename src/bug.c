@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <unistd.h>
+/* #include <unistd.h> */
 #include <sys/types.h>
 #include <stdarg.h>
 #include <time.h>
@@ -9,14 +9,14 @@
 
 #define DIKU_CRUD
 #ifdef DIKU_CRUD
-#include "include/global.h"
-#include "include/utils.h"
-#include "include/comm.h"
-#include "include/multiclass.h"
+#include "global.h"
+#include "utils.h"
+#include "comm.h"
+#include "multiclass.h"
 #endif
 
 #define _BUG_C
-#include "include/bug.h"
+#include "bug.h"
 
 #ifdef DIKU_CRUD
 /* extern struct descriptor_data *descriptor_list; */
@@ -47,21 +47,21 @@
  *  : You died 27 times!
  * The datestamp is YYMMDD.HHMMSS.MIL format.
  */
-void abug(char *File, char *Func, int Line, UINT Level, UINT Type,
+void abug(char *File, char *Func, int Line, unsigned int Level, unsigned int Type,
 	  char *BugFile, struct char_data *ch, char *Str, ...)
 {
-  va_list arg;
-  char Result[MAX_STRING_LENGTH];
-  char Temp[MAX_STRING_LENGTH];
-  FILE *fp;
-  struct timeb right_now;
-  struct tm *now_part;
+  va_list                                 arg;
+  char                                    Result[MAX_STRING_LENGTH] = "\0\0\0";
+  char                                    Temp[MAX_STRING_LENGTH] = "\0\0\0";
+  FILE                                   *fp = NULL;
+  struct timeb                            right_now;
+  struct tm                              *now_part = NULL;
 
   bzero(Result, MAX_STRING_LENGTH);
   va_start(arg, Str);
   if (Str && *Str) {
 #ifdef DIKU_CRUD
-    struct descriptor_data *i;
+    struct descriptor_data                 *i;
 
     strcpy(Result, "Notify> ");
 #endif
@@ -78,11 +78,10 @@ void abug(char *File, char *Func, int Line, UINT Level, UINT Type,
     strcpy(Temp, "PING!");
   va_end(arg);
   ftime(&right_now);
-  now_part= localtime((const time_t *)&right_now);
+  now_part = localtime((const time_t *)&right_now);
   sprintf(Result, "<: %02d%02d%02d.%02d%02d%02d.%03d",
-          now_part->tm_year, now_part->tm_mon+1, now_part->tm_mday,
-          now_part->tm_hour, now_part->tm_min, now_part->tm_sec,
-          right_now.millitm);
+	  now_part->tm_year, now_part->tm_mon + 1, now_part->tm_mday,
+	  now_part->tm_hour, now_part->tm_min, now_part->tm_sec, right_now.millitm);
   if (File || Func || Line) {
     strcat(Result, " (");
     if (File && *File) {
@@ -101,8 +100,8 @@ void abug(char *File, char *Func, int Line, UINT Level, UINT Type,
 	    ch->player.name, ch->in_room ? ch->in_room : 0);
   else
 #endif
-    if (File || Func || Line)
-      strcat(Result, "\n");
+  if (File || Func || Line)
+    strcat(Result, "\n");
 
   strcat(Result, " : ");
   strcat(Result, Temp);
@@ -116,8 +115,9 @@ void abug(char *File, char *Func, int Line, UINT Level, UINT Type,
 #endif
     } else {
       fprintf(fp, "%s\n", Result);
-      fclose(fp);
+      FCLOSE(fp);
     }
   }
   fprintf(stderr, "%s\n", Result);
+  fflush(stderr);
 }

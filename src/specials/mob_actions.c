@@ -34,6 +34,9 @@
 
 void mobile_guardian(struct char_data *ch)
 {
+  if (DEBUG > 2)
+    dlog("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
+
   if (ch->in_room > -1) {
     if ((!ch->master) || (!IS_AFFECTED(ch, AFF_CHARM)))
       return;
@@ -53,13 +56,15 @@ void mobile_guardian(struct char_data *ch)
 
 void mobile_wander(struct char_data *ch)
 {
-  int door;
-  struct room_direction_data *exitp;
-  struct room_data *rp;
+  int                                     door = 0;
+  struct room_direction_data             *exitp = NULL;
+  struct room_data                       *rp = NULL;
 
+  if (DEBUG > 2)
+    dlog("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
 
-  if ((!(IS_AFFECTED(ch,AFF_CHARM))) && (ch->master))
-	stop_follower(ch);
+  if ((!(IS_AFFECTED(ch, AFF_CHARM))) && (ch->master))
+    stop_follower(ch);
 
   if (RIDDEN(ch)) {
     if (RIDDEN(ch)->specials.fighting)
@@ -69,10 +74,9 @@ void mobile_wander(struct char_data *ch)
 
   }
   if (!((GET_POS(ch) == POSITION_STANDING) &&
-	((door = number(0, (MAX_NUM_EXITS-1)*3)) < MAX_NUM_EXITS) &&
+	((door = number(0, (MAX_NUM_EXITS - 1) * 3)) < MAX_NUM_EXITS) &&
 	exit_ok(exitp = EXIT(ch, door), &rp) &&
-	!IS_SET(rp->room_flags, NO_MOB) &&
-	!IS_SET(rp->room_flags, DEATH))
+	!IS_SET(rp->room_flags, NO_MOB) && !IS_SET(rp->room_flags, DEATH))
     )
     return;
 
@@ -91,8 +95,12 @@ void mobile_wander(struct char_data *ch)
 
 void MobScavenge(struct char_data *ch)
 {
-  struct obj_data *best_obj, *obj;
-  int max;
+  struct obj_data                        *best_obj = NULL;
+  struct obj_data                        *obj = NULL;
+  int                                     max = 0;
+
+  if (DEBUG > 2)
+    dlog("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
 
   if ((real_roomp(ch->in_room))->contents && !number(0, 5)) {
     for (max = 1, best_obj = 0, obj = (real_roomp(ch->in_room))->contents;
@@ -103,7 +111,7 @@ void MobScavenge(struct char_data *ch)
 	  max = obj->obj_flags.cost;
 	}
       }
-    }				       /* for */
+    }							       /* for */
 
     if (best_obj) {
       if (CheckForAnyTrap(ch, best_obj))
@@ -115,19 +123,19 @@ void MobScavenge(struct char_data *ch)
 
       if (IS_SET(ch->specials.act, ACT_USE_ITEM)) {
 	switch (GET_ITEM_TYPE(best_obj)) {
-	case ITEM_WEAPON:
-	  {
-	    if (!ch->equipment[WIELD] && !ch->equipment[WIELD_TWOH]) {
-	      do_wield(ch, best_obj->name, 0);
+	  case ITEM_WEAPON:
+	    {
+	      if (!ch->equipment[WIELD] && !ch->equipment[WIELD_TWOH]) {
+		do_wield(ch, best_obj->name, 0);
+	      }
 	    }
-	  }
-	  break;
+	    break;
 
-	case ITEM_ARMOR:
-	  {
-	    do_wear(ch, best_obj->name, 0);
-	  }
-	  break;
+	  case ITEM_ARMOR:
+	    {
+	      do_wear(ch, best_obj->name, 0);
+	    }
+	    break;
 	}
       }
     }
@@ -136,33 +144,37 @@ void MobScavenge(struct char_data *ch)
 
 void mobile_activity(void)
 {
-  register struct char_data *ch, *tmp_ch;
-  int k;
+  struct char_data                       *ch = NULL;
+  struct char_data                       *tmp_ch = NULL;
+  int                                     k = 0;
 
-  /* void do_move(struct char_data *ch, char *argument, int cmd); */
-  /* void do_get(struct char_data *ch, char *argument, int cmd); */
+  if (DEBUG > 2)
+    dlog("called %s with no arguments", __PRETTY_FUNCTION__);
 
   for (ch = character_list; ch; ch = ch->next)
     if (IS_MOB(ch)) {
-      /* Examine call for special procedure */
-      /* some status checking for errors */
+      /*
+       * Examine call for special procedure 
+       * some status checking for errors 
+       */
 
       if ((ch->in_room < 0) || !hash_find(&room_db, ch->in_room)) {
-	log("Char not in correct room.  moving to 3 ");
+	dlog("Char not in correct room.  moving to 3 ");
 	char_from_room(ch);
 	char_to_room(ch, 3);
       }
       if (IS_SET(ch->specials.act, ACT_SPEC) && !no_specials) {
 	if (!mob_index[ch->nr].func) {
-	  log("Attempting to call a non-existing MOB func. (mobact.c)");
-	  log(ch->player.name);
+	  bug("Mob %s attempting to call a non-existing MOB func.", ch->player.name);
 	  REMOVE_BIT(ch->specials.act, ACT_SPEC);
 	} else {
 	  if ((*mob_index[ch->nr].func) (ch, 0, ""))
 	    continue;
 	}
       }
-      /* check to see if the monster is possessed */
+      /*
+       * check to see if the monster is possessed 
+       */
 
       if (AWAKE(ch) && (!ch->specials.fighting) && (!ch->desc) &&
 	  (!IS_SET(ch->specials.act, ACT_POLYSELF))) {
@@ -170,7 +182,7 @@ void mobile_activity(void)
 
 	if (IS_SET(ch->specials.act, ACT_SCAVENGER)) {
 	  MobScavenge(ch);
-	}			       /* Scavenger */
+	}						       /* Scavenger */
 	if (IS_SET(ch->specials.act, ACT_HUNTING)) {
 	  MobHunt(ch);
 	} else if ((!IS_SET(ch->specials.act, ACT_SENTINEL)))
@@ -185,8 +197,7 @@ void mobile_activity(void)
 		  act("$n growls '$N, would you care to step outside?'",
 		      TRUE, ch, 0, tmp_ch, TO_ROOM);
 		else if (IsAnimal(ch))
-		  act("$n snarls at $N...",
-		      TRUE, ch, 0, tmp_ch, TO_ROOM);
+		  act("$n snarls at $N...", TRUE, ch, 0, tmp_ch, TO_ROOM);
 
 	      } else {
 		if (IsHumanoid(ch)) {
@@ -246,12 +257,14 @@ void mobile_activity(void)
 	if (IS_SET(ch->specials.act, ACT_GUARDIAN))
 	  mobile_guardian(ch);
 
-      }				       /* If AWAKE(ch)   */
-    }				       /* If IS_MOB(ch)  */
+      }							       /* If AWAKE(ch) */
+    }							       /* If IS_MOB(ch) */
 }
 
 int SameRace(struct char_data *ch1, struct char_data *ch2)
 {
+  if (DEBUG > 3)
+    dlog("called %s with %s, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch1), SAFE_NAME(ch2));
 
   if ((!ch1) || (!ch2))
     return (FALSE);
@@ -272,16 +285,18 @@ int SameRace(struct char_data *ch1, struct char_data *ch2)
     return (TRUE);
   }
   return (FALSE);
-
 }
 
 void AssistFriend(struct char_data *ch)
 {
-  struct char_data *damsel, *targ, *tmp_ch;
-  int t, found;
+  struct char_data                       *damsel = NULL;
+  struct char_data                       *targ = NULL;
+  struct char_data                       *tmp_ch = NULL;
+  int                                     t = 0;
+  int                                     found = FALSE;
 
-  damsel = 0;
-  targ = 0;
+  if (DEBUG > 3)
+    dlog("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
 
   if (check_peaceful(ch, ""))
     return;
@@ -290,8 +305,7 @@ void AssistFriend(struct char_data *ch)
    * find the people who are fighting
    */
 
-  for (tmp_ch = (real_roomp(ch->in_room))->people; tmp_ch;
-       tmp_ch = tmp_ch->next_in_room) {
+  for (tmp_ch = (real_roomp(ch->in_room))->people; tmp_ch; tmp_ch = tmp_ch->next_in_room) {
     if (CAN_SEE(ch, tmp_ch)) {
       if (!IS_SET(ch->specials.act, ACT_WIMPY)) {
 	if (IS_NPC(tmp_ch) && (SameRace(tmp_ch, ch))) {

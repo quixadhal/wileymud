@@ -6,45 +6,46 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <unistd.h>
+/* #include <unistd.h> */
 #include <sys/types.h>
 #include <signal.h>
 #include <string.h>
 
-#include "include/global.h"
-#include "include/bug.h"
-#include "include/utils.h"
-#include "include/comm.h"
-#include "include/interpreter.h"
-#include "include/handler.h"
-#include "include/db.h"
-#include "include/spells.h"
-#include "include/multiclass.h"
+#include "global.h"
+#include "bug.h"
+#include "utils.h"
+#include "comm.h"
+#include "interpreter.h"
+#include "handler.h"
+#include "db.h"
+#include "spells.h"
+#include "multiclass.h"
 #define _ACT_SOCIAL_C
-#include "include/act_social.h"
+#include "act_social.h"
 
-struct social_messg *soc_mess_list = 0;
-struct pose_type pose_messages[MAX_MESSAGES];
-static int list_top = -1;
+struct social_messg                    *soc_mess_list = 0;
+struct pose_type                        pose_messages[MAX_MESSAGES];
+static int                              list_top = -1;
 
-char *fread_action(FILE * fl)
+char                                   *fread_action(FILE * fl)
 {
-  char buf[MAX_STRING_LENGTH], *rslt;
+  char                                    buf[MAX_STRING_LENGTH] = "\0\0\0";
+  char                                   *rslt = NULL;
 
-  if (DEBUG)
-    dlog("fread_action");
+  if (DEBUG > 2)
+    dlog("called %s with %08x", __PRETTY_FUNCTION__, fl);
 
   for (;;) {
     fgets(buf, MAX_STRING_LENGTH, fl);
     if (feof(fl)) {
-      log("Fread_action - unexpected EOF.");
+      bug("Fread_action - unexpected EOF.");
       exit(0);
     }
     if (*buf == '#')
       return (0);
     else {
       *(buf + strlen(buf) - 1) = '\0';
-      CREATE(rslt, char, strlen(buf) + 1);
+      CREATE(rslt, char, strlen               (buf) + 1);
 
       strcpy(rslt, buf);
       return (rslt);
@@ -54,11 +55,14 @@ char *fread_action(FILE * fl)
 
 void boot_social_messages(void)
 {
-  FILE *fl;
-  int tmp, hide, min_pos;
+  FILE                                   *fl = NULL;
+  int                                     tmp = 0;
+  int                                     hide = 0;
+  int                                     min_pos = 0;
 
-  if (DEBUG)
-    dlog("boot_social_messages");
+  if (DEBUG > 1)
+    dlog("called %s with no arguments", __PRETTY_FUNCTION__);
+
   if (!(fl = fopen(SOCMESS_FILE, "r"))) {
     perror("boot_social_messages");
     exit(0);
@@ -70,14 +74,18 @@ void boot_social_messages(void)
     fscanf(fl, " %d ", &hide);
     fscanf(fl, " %d \n", &min_pos);
 
-    /* alloc a new cell */
+    /*
+     * alloc a new cell 
+     */
     if (!soc_mess_list) {
       CREATE(soc_mess_list, struct social_messg, ((list_top = 0), 1));
     } else {
       RECREATE(soc_mess_list, struct social_messg, (++list_top + 1));
     }
 
-    /* read the stuff */
+    /*
+     * read the stuff 
+     */
     soc_mess_list[list_top].act_nr = tmp;
     soc_mess_list[list_top].hide = hide;
     soc_mess_list[list_top].min_victim_position = min_pos;
@@ -87,7 +95,9 @@ void boot_social_messages(void)
 
     soc_mess_list[list_top].char_found = fread_action(fl);
 
-    /* if no char_found, the rest is to be ignored */
+    /*
+     * if no char_found, the rest is to be ignored 
+     */
     if (!soc_mess_list[list_top].char_found)
       continue;
 
@@ -100,16 +110,18 @@ void boot_social_messages(void)
 
     soc_mess_list[list_top].others_auto = fread_action(fl);
   }
-  fclose(fl);
+  FCLOSE(fl);
 }
 
 int find_action(int cmd)
 {
-  int bot, top, mid;
+  int                                     bot = 0;
+  int                                     top = 0;
+  int                                     mid = 0;
 
-  if (DEBUG)
-    dlog("find_action");
-  bot = 0;
+  if (DEBUG > 2)
+    dlog("called %s with %d", __PRETTY_FUNCTION__, cmd);
+
   top = list_top;
 
   if (top < 0)
@@ -132,13 +144,14 @@ int find_action(int cmd)
 
 void do_action(struct char_data *ch, char *argument, int cmd)
 {
-  int act_nr;
-  char buf[MAX_INPUT_LENGTH];
-  struct social_messg *action;
-  struct char_data *vict;
+  int                                     act_nr = 0;
+  char                                    buf[MAX_INPUT_LENGTH] = "\0\0\0";
+  struct social_messg                    *action = NULL;
+  struct char_data                       *vict = NULL;
 
   if (DEBUG)
-    dlog("do_action");
+    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+
   if ((act_nr = find_action(cmd)) < 0) {
     cprintf(ch, "That action is not supported.\n\r");
     return;
@@ -151,35 +164,33 @@ void do_action(struct char_data *ch, char *argument, int cmd)
     *buf = '\0';
 
   if (!*buf) {
-    cprintf(ch, action->char_no_arg);
-    cprintf(ch, "\n\r");
-    act(action->others_no_arg, action->hide, ch, 0, 0, TO_ROOM);
+    cprintf(ch, "%s\n\r", action->char_no_arg);
+    act("%s", action->hide, ch, 0, 0, TO_ROOM, action->others_no_arg);
     return;
   }
   if (!(vict = get_char_room_vis(ch, buf))) {
-    cprintf(ch, action->not_found);
-    cprintf(ch, "\n\r");
+    cprintf(ch, "%s\n\r", action->not_found);
   } else if (vict == ch) {
-    cprintf(ch, action->char_auto);
-    cprintf(ch, "\n\r");
-    act(action->others_auto, action->hide, ch, 0, 0, TO_ROOM);
+    cprintf(ch, "%s\n\r", action->char_auto);
+    act("%s", action->hide, ch, 0, 0, TO_ROOM, action->others_auto);
   } else {
     if (GET_POS(vict) < action->min_victim_position) {
       act("$N is not in a proper position for that.", FALSE, ch, 0, vict, TO_CHAR);
     } else {
-      act(action->char_found, 0, ch, 0, vict, TO_CHAR);
-
-      act(action->others_found, action->hide, ch, 0, vict, TO_NOTVICT);
-
-      act(action->vict_found, action->hide, ch, 0, vict, TO_VICT);
+      act("%s", 0, ch, 0, vict, TO_CHAR, action->char_found);
+      act("%s", action->hide, ch, 0, vict, TO_NOTVICT, action->others_found);
+      act("%s", action->hide, ch, 0, vict, TO_VICT, action->vict_found);
     }
   }
 }
 
 void do_insult(struct char_data *ch, char *argument, int cmd)
 {
-  static char arg[MAX_STRING_LENGTH];
-  struct char_data *victim;
+  static char                             arg[MAX_STRING_LENGTH] = "\0\0\0";
+  struct char_data                       *victim = NULL;
+
+  if (DEBUG)
+    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
   only_argument(argument, arg);
 
@@ -191,38 +202,35 @@ void do_insult(struct char_data *ch, char *argument, int cmd)
 	cprintf(ch, "You insult %s.\n\r", GET_NAME(victim));
 
 	switch (random() % 3) {
-	case 0:{
-	    if (GET_SEX(ch) == SEX_MALE) {
-	      if (GET_SEX(victim) == SEX_MALE)
-		act(
-		  "$n accuses you of fighting like a woman!", FALSE,
-		     ch, 0, victim, TO_VICT);
-	      else
-		act("$n says that women can't fight.",
-		    FALSE, ch, 0, victim, TO_VICT);
-	    } else {		       /* Ch == Woman */
-	      if (GET_SEX(victim) == SEX_MALE)
-		act("$n accuses you of having the smallest.... (brain?)",
-		    FALSE, ch, 0, victim, TO_VICT);
-	      else
-		act("$n tells you that you'd loose a beautycontest against a troll.",
-		    FALSE, ch, 0, victim, TO_VICT);
+	  case 0:{
+	      if (GET_SEX(ch) == SEX_MALE) {
+		if (GET_SEX(victim) == SEX_MALE)
+		  act("$n accuses you of fighting like a woman!", FALSE,
+		      ch, 0, victim, TO_VICT);
+		else
+		  act("$n says that women can't fight.", FALSE, ch, 0, victim, TO_VICT);
+	      } else {					       /* Ch == Woman */
+		if (GET_SEX(victim) == SEX_MALE)
+		  act("$n accuses you of having the smallest.... (brain?)",
+		      FALSE, ch, 0, victim, TO_VICT);
+		else
+		  act("$n tells you that you'd loose a beautycontest against a troll.",
+		      FALSE, ch, 0, victim, TO_VICT);
+	      }
 	    }
-	  }
-	  break;
-	case 1:{
-	    act("$n calls your mother a bitch!",
-		FALSE, ch, 0, victim, TO_VICT);
-	  }
-	  break;
-	default:{
-	    act("$n tells you to get lost!", FALSE, ch, 0, victim, TO_VICT);
-	  }
-	  break;
-	}			       /* end switch */
+	    break;
+	  case 1:{
+	      act("$n calls your mother a bitch!", FALSE, ch, 0, victim, TO_VICT);
+	    }
+	    break;
+	  default:{
+	      act("$n tells you to get lost!", FALSE, ch, 0, victim, TO_VICT);
+	    }
+	    break;
+	}						       /* end switch */
 
 	act("$n insults $N.", TRUE, ch, 0, victim, TO_NOTVICT);
-      } else {			       /* ch == victim */
+      } else {						       /* ch == victim */
 	cprintf(ch, "You feel insulted.\n\r");
       }
     }
@@ -232,8 +240,12 @@ void do_insult(struct char_data *ch, char *argument, int cmd)
 
 void boot_pose_messages(void)
 {
-  FILE *fl;
-  int counter, class;
+  FILE                                   *fl = NULL;
+  int                                     counter = 0;
+  int                                     class = 0;
+
+  if (DEBUG > 1)
+    dlog("called %s with no arguments", __PRETTY_FUNCTION__);
 
   return;
 
@@ -251,13 +263,16 @@ void boot_pose_messages(void)
     }
   }
 
-  fclose(fl);
+  FCLOSE(fl);
 }
 
 void do_pose(struct char_data *ch, char *argument, int cmd)
 {
-  int to_pose;
-  int counter;
+  int                                     to_pose = 0;
+  int                                     counter = 0;
+
+  if (DEBUG)
+    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
   cprintf(ch, "Sorry Buggy command.\n\r");
   return;

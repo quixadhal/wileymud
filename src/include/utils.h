@@ -9,16 +9,20 @@
 #define GUARD_VNUM 3060
 #define GUARD2_VNUM 3069
 
-#define EXP_NEEDED(ch,cl) ((titles[cl][GET_LEVEL(ch,cl)+1].exp / (IS_PC(ch)?1:20)) - GET_EXP(ch))
-#define GOLD_NEEDED(ch,cl) (IS_PC(ch)?((3*(16<<(GET_LEVEL(ch,cl)+1)/3)+((16<<(GET_LEVEL(ch,cl)+1)/3)*((GET_LEVEL(ch,cl)+1)%3))) / ((GET_LEVEL(ch,cl)<8)?((GET_LEVEL(ch,cl)<4)?8:2):1)):0)
+#define EXP_NEEDED(ch,cl) ((titles[cl][(int)GET_LEVEL(ch,cl)+1].exp / (IS_PC(ch)?1:20)) - GET_EXP(ch))
+#define GOLD_NEEDED(ch,cl) (IS_PC(ch)?((3*(16<<((int)GET_LEVEL(ch,cl)+1)/3)+((16<<((int)GET_LEVEL(ch,cl)+1)/3)*(((int)GET_LEVEL(ch,cl)+1)%3))) / (((int)GET_LEVEL(ch,cl)<8)?(((int)GET_LEVEL(ch,cl)<4)?8:2):1)):0)
 
 #define NAME(ch) ((ch)?(IS_NPC(ch)?(ch)->player.short_descr:(ch)->player.name):"")
 #ifndef MIN
 #define MIN(a,b) ((a)<=(b)?(a):(b))
 #define MAX(a,b) ((a)>=(b)?(a):(b))
 #endif
-inline int str_cmp(const char *arg1, const char *arg2);
-inline int strn_cmp(const char *arg1, const char *arg2, const int n);
+
+#define VNULL(s) ((s)?(s):"(null)")
+
+inline int                              str_cmp(const char *arg1, const char *arg2);
+inline int                              strn_cmp(const char *arg1, const char *arg2,
+						 const int n);
 #define LOWER(c) (((c)>='A'  && (c) <= 'Z') ? ((c)+('a'-'A')) : (c))
 #define UPPER(c) (((c)>='a'  && (c) <= 'z') ? ((c)+('A'-'a')) : (c))
 #define ISNEWL(ch) ((ch) == '\n' || (ch) == '\r')
@@ -27,24 +31,74 @@ inline int strn_cmp(const char *arg1, const char *arg2, const int n);
 
 /* bug(((failure) && *(failure))?(failure):"calloc failure"); */
 
-#define CREATE(result, type, number)  {\
-  if (!((result) = (type *) calloc ((number), sizeof(type))))\
-    { bug("malloc failure"); kill(getpid(), SIGHUP); } }
-#define RECREATE(result,type,number) {\
-  if (!((result) = (type *) realloc ((result), sizeof(type) * (number))))\
-    { bug("realloc failure"); kill(getpid(), SIGHUP); } }
-#define DESTROY(thing) { if ((thing)) free((thing)); }
-#define TRY_TO_CREATE(result, type, number) \
-  ((result) = (type *) calloc ((number), sizeof(type)))
-#define CREATE_VOID(result, type, number) {\
-  if (!((result) = (void *) calloc ((number), sizeof(type))))\
-    { bug("malloc failure"); kill(getpid(), SIGHUP); } }
+#define FCLOSE(fp) \
+do {               \
+  if((fp))         \
+    fclose(fp);    \
+  fp = NULL;       \
+} while(0)
 
-#define STRDUP(result, string)  {\
-  if (!((result) = (char *) calloc ((strlen(string)), sizeof(char))))\
-    { bug("malloc failure"); kill(getpid(), SIGHUP); }\
-  else strcpy((result), (string)); }
+#define CREATE(result, type, number)					\
+do									\
+{									\
+  if (!((result) = (type *) calloc ((number), sizeof(type))))		\
+  {									\
+    perror("calloc failure");						\
+    fprintf(stderr, "Calloc failure @ %s:%d\n", __FILE__, __LINE__ );	\
+    fflush(stderr);                                                     \
+    abort();								\
+  }									\
+} while(0)
 
+#define CREATE_VOID(result, type, number)				\
+do									\
+{									\
+  if (!((result) = (void *) calloc ((number), sizeof(type))))		\
+  {									\
+    perror("calloc failure");						\
+    fprintf(stderr, "Calloc failure @ %s:%d\n", __FILE__, __LINE__ );	\
+    fflush(stderr);                                                     \
+    abort();								\
+  }									\
+} while(0)
+
+#define STRDUP(result, string)						\
+do									\
+{									\
+  if (!((result) = (char *) calloc (strlen(string), sizeof(char))))	\
+  {									\
+    perror("calloc failure");						\
+    fprintf(stderr, "Calloc failure @ %s:%d\n", __FILE__, __LINE__ );	\
+    fflush(stderr);                                                     \
+    abort();								\
+  }									\
+  else									\
+  {									\
+    strcpy((result), (string));						\
+  }									\
+} while(0)
+
+#define RECREATE(result,type,number)					\
+do									\
+{									\
+  if(!((result) = (type *)realloc((result), sizeof(type) * (number))))	\
+  {									\
+    perror("realloc failure");						\
+    fprintf(stderr, "Realloc failure @ %s:%d\n", __FILE__, __LINE__ );	\
+    fflush(stderr);                                                     \
+    abort();								\
+  }									\
+} while(0)
+
+#define DESTROY(point)							\
+do									\
+{									\
+  if((point))								\
+  {									\
+    free((point));							\
+    (point) = NULL;							\
+  }									\
+} while(0)
 
 #define IS_SET(flag,bit)  ((flag) & (bit))
 #define IS_NOT_SET(flag,bit)  (!IS_SET(flag,bit))
@@ -79,7 +133,7 @@ inline int strn_cmp(const char *arg1, const char *arg2, const int n);
 #define MOUNTED(ch)  ((ch)->specials.mounted_on)
 #define RIDDEN(ch)	((ch)->specials.ridden_by)
 #define GET_ZONE(room)	(real_roomp(room)->zone)
-#define GET_LEVEL(ch, i)   ((int)(ch)->player.level[(int)(i)])
+#define GET_LEVEL(ch, i)   ((ch)->player.level[(int)(i)])
 #define GET_CLASS_TITLE(ch, class, lev)   ((ch)->player.sex ?  \
    (((ch)->player.sex == 1) ? titles[(int)(class)][(int)(lev)].title_m : \
     titles[(int)(class)][(int)(lev)].title_f) : titles[(int)(class)][(int)(lev)].title_m)
@@ -89,20 +143,22 @@ inline int strn_cmp(const char *arg1, const char *arg2, const int n);
 #define GET_POS(ch)     ((ch)->specials.position)
 #define GET_COND(ch, i) ((ch)->specials.conditions[(int)(i)])
 #define GET_NAME(ch)    ((ch)->player.name)
+#define SAFE_NAME(ch)   (((ch)&&((ch)->player.name))?((ch)->player.name):"(someone)")
+#define SAFE_ONAME(obj) (((obj)&&((obj)->name))?((obj)->name):"(something)")
 #define GET_SDESC(ch)	((ch)->player.short_descr)
 #define GET_TITLE(ch)   ((ch)->player.title)
-#define GET_PRETITLE(ch)   ((ch)->player.pre_title)
+#define GET_PRETITLE(ch)  ((ch)->player.pre_title)
 #define GET_POOF_IN(ch)   ((ch)->player.poof_in)
-#define GET_POOF_OUT(ch)   ((ch)->player.poof_out)
+#define GET_POOF_OUT(ch)  ((ch)->player.poof_out)
 #define GET_CLASS(ch)   ((ch)->player.class)
 #define GET_HOME(ch)	((ch)->player.hometown)
 #define GET_AGE(ch)     (age(ch).year)
-#define GET_STR(ch)     ((int)(ch)->tmpabilities.str)
-#define GET_ADD(ch)     ((int)(ch)->tmpabilities.str_add)
-#define GET_DEX(ch)     ((int)(ch)->tmpabilities.dex)
-#define GET_INT(ch)     ((int)(ch)->tmpabilities.intel)
-#define GET_WIS(ch)     ((int)(ch)->tmpabilities.wis)
-#define GET_CON(ch)     ((int)(ch)->tmpabilities.con)
+#define GET_STR(ch)     ((ch)->tmpabilities.str)
+#define GET_ADD(ch)     ((ch)->tmpabilities.str_add)
+#define GET_DEX(ch)     ((ch)->tmpabilities.dex)
+#define GET_INT(ch)     ((ch)->tmpabilities.intel)
+#define GET_WIS(ch)     ((ch)->tmpabilities.wis)
+#define GET_CON(ch)     ((ch)->tmpabilities.con)
 #define STRENGTH_APPLY_INDEX(ch) \
         ( ((GET_ADD(ch)==0) || (GET_STR(ch) != 18)) ? GET_STR(ch) :\
           (GET_ADD(ch) <= 50) ? 26 :( \
@@ -199,61 +255,67 @@ inline int strn_cmp(const char *arg1, const char *arg2, const int n);
 #define IS_NEUTRAL(ch) (!IS_GOOD(ch) && !IS_EVIL(ch))
 #define ITEM_TYPE(obj)  ((int)(obj)->obj_flags.type_flag)
 
-inline int MobVnum(struct char_data *c);
-inline int ObjVnum(struct obj_data *o);
-inline int percent(int value, int total);
-inline char *ordinal(int x);
-int GetItemClassRestrictions(struct obj_data *obj);
-int CAN_SEE(struct char_data *s, struct char_data *o);
-int exit_ok(struct room_direction_data *room_exit, struct room_data **rpp);
-inline int IsImmune(struct char_data *ch, int bit);
-inline int IsResist(struct char_data *ch, int bit);
-inline int IsSusc(struct char_data *ch, int bit);
-inline int number(int from, int to);
-inline int dice(int rolls, int size);
-inline int fuzz(int x);
-int scan_number(char *text, int *rval);
+inline int                              MobVnum(struct char_data *c);
+inline int                              ObjVnum(struct obj_data *o);
+inline int                              percent(int value, int total);
+inline char                            *ordinal(int x);
+int                                     GetItemClassRestrictions(struct obj_data *obj);
+int                                     CAN_SEE(struct char_data *s, struct char_data *o);
+int                                     exit_ok(struct room_direction_data *room_exit,
+						struct room_data **rpp);
+inline int                              IsImmune(struct char_data *ch, int bit);
+inline int                              IsResist(struct char_data *ch, int bit);
+inline int                              IsSusc(struct char_data *ch, int bit);
+inline int                              number(int from, int to);
+inline int                              dice(int rolls, int size);
+inline int                              fuzz(int x);
+int                                     scan_number(char *text, int *rval);
 
-inline void sprintbit(unsigned long vektor, const char *names[], char *result);
-inline void sprinttype(int type, const char *names[], char *result);
-struct time_info_data real_time_passed(time_t t2, time_t t1);
-struct time_info_data mud_time_passed(time_t t2, time_t t1);
-struct time_info_data age(struct char_data *ch);
-int in_group(struct char_data *ch1, struct char_data *ch2);
-int getall(char *name, char *newname);
-int getabunch(char *name, char *newname);
-int DetermineExp(struct char_data *mob, int exp_flags);
-void down_river(int current_pulse);
-inline int IsHumanoid(struct char_data *ch);
-inline int IsAnimal(struct char_data *ch);
-inline int IsUndead(struct char_data *ch);
-inline int IsLycanthrope(struct char_data *ch);
-inline int IsDiabolic(struct char_data *ch);
-inline int IsReptile(struct char_data *ch);
-inline int IsDraconic(struct char_data *ch);
-inline int IsAvian(struct char_data *ch);
-inline int IsExtraPlanar(struct char_data *ch);
-inline int HasHands(struct char_data *ch);
-inline int IsPerson(struct char_data *ch);
-void SetHunting(struct char_data *ch, struct char_data *tch);
-void CallForGuard(struct char_data *ch, struct char_data *vict, int lev);
-void CallForAGuard(struct char_data *ch, struct char_data *vict, int lev);
-void StandUp(struct char_data *ch);
-void FighterMove(struct char_data *ch);
-void DevelopHatred(struct char_data *ch, struct char_data *v);
-void Teleport(int current_pulse);
-int HasObject(struct char_data *ch, int ob_num);
-int room_of_object(struct obj_data *obj);
-struct char_data *char_holding(struct obj_data *obj);
-int RecCompObjNum(struct obj_data *o, int obj_num);
-void RestoreChar(struct char_data *ch);
-inline void RemAllAffects(struct char_data *ch);
-inline char *pain_level(struct char_data *ch);
-inline int IsWizard(struct char_data *ch);
-inline int IsPriest(struct char_data *ch);
-inline int IsMagical(struct char_data *ch);
-inline int IsFighter(struct char_data *ch);
-inline int IsSneak(struct char_data *ch);
+inline void                             sprintbit(unsigned long vektor, const char *names[],
+						  char *result);
+inline void                             sprinttype(int type, const char *names[], char *result);
+struct time_info_data                   real_time_passed(time_t t2, time_t t1);
+struct time_info_data                   mud_time_passed(time_t t2, time_t t1);
+struct time_info_data                   age(struct char_data *ch);
+int                                     in_group(struct char_data *ch1, struct char_data *ch2);
+int                                     getall(char *name, char *newname);
+int                                     getabunch(char *name, char *newname);
+int                                     DetermineExp(struct char_data *mob, int exp_flags);
+void                                    down_river(int current_pulse);
+inline int                              IsHumanoid(struct char_data *ch);
+inline int                              IsAnimal(struct char_data *ch);
+inline int                              IsUndead(struct char_data *ch);
+inline int                              IsLycanthrope(struct char_data *ch);
+inline int                              IsDiabolic(struct char_data *ch);
+inline int                              IsReptile(struct char_data *ch);
+inline int                              IsDraconic(struct char_data *ch);
+inline int                              IsAvian(struct char_data *ch);
+inline int                              IsExtraPlanar(struct char_data *ch);
+inline int                              HasHands(struct char_data *ch);
+inline int                              IsPerson(struct char_data *ch);
+void                                    SetHunting(struct char_data *ch, struct char_data *tch);
+void                                    CallForGuard(struct char_data *ch,
+						     struct char_data *vict, int lev);
+void                                    CallForAGuard(struct char_data *ch,
+						      struct char_data *vict, int lev);
+void                                    StandUp(struct char_data *ch);
+void                                    FighterMove(struct char_data *ch);
+void                                    DevelopHatred(struct char_data *ch,
+						      struct char_data *v);
+void                                    Teleport(int current_pulse);
+int                                     HasObject(struct char_data *ch, int ob_num);
+int                                     room_of_object(struct obj_data *obj);
+struct char_data                       *char_holding(struct obj_data *obj);
+int                                     RecCompObjNum(struct obj_data *o, int obj_num);
+void                                    RestoreChar(struct char_data *ch);
+inline void                             RemAllAffects(struct char_data *ch);
+inline char                            *pain_level(struct char_data *ch);
+inline int                              IsWizard(struct char_data *ch);
+inline int                              IsPriest(struct char_data *ch);
+inline int                              IsMagical(struct char_data *ch);
+inline int                              IsFighter(struct char_data *ch);
+inline int                              IsSneak(struct char_data *ch);
+
 #define IsNonMagical(ch) (!IsMagical(ch))
 
 #endif

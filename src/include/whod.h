@@ -25,7 +25,6 @@
 #define WIZ_MIN_LEVEL 50
 #define WIZ_MAX_LEVEL 60
 
-#define LOG(msg) log(msg)
 #define WHOD_DELAY_TIME 1
 #define DISPLAY_LINKDEAD 1
 
@@ -51,14 +50,15 @@
 #ifndef _WHOD_C
 /* static long disconnect_time; */
 /* static int s; */
-extern int whod_mode;
+extern int                              whod_mode;
+
 /* static int state; */
 /* static int whod_port; */
 #endif
 
-void do_whod(struct char_data *ch, char *arg, int cmd);
-void init_whod(int port);
-void close_whod(void);
-void whod_loop(void);
+void                                    do_whod(struct char_data *ch, char *arg, int cmd);
+void                                    init_whod(int port);
+void                                    close_whod(void);
+void                                    whod_loop(void);
 
 #endif

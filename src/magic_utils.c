@@ -4,28 +4,32 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <unistd.h>
+/* #include <unistd.h> */
 #include <sys/types.h>
 #include <assert.h>
 
-#include "include/global.h"
-#include "include/bug.h"
-#include "include/utils.h"
-#include "include/comm.h"
-#include "include/db.h"
-#include "include/spells.h"
-#include "include/handler.h"
-#include "include/mudlimits.h"
-#include "include/fight.h"
-#include "include/spell_parser.h"
-#include "include/multiclass.h"
+#include "global.h"
+#include "bug.h"
+#include "utils.h"
+#include "comm.h"
+#include "db.h"
+#include "spells.h"
+#include "handler.h"
+#include "mudlimits.h"
+#include "fight.h"
+#include "spell_parser.h"
+#include "multiclass.h"
 #define _MAGIC_UTILS_C
-#include "include/magic_utils.h"
+#include "magic_utils.h"
 
 void SwitchStuff(struct char_data *giver, struct char_data *taker)
 {
-  struct obj_data *obj, *next;
-  int j;
+  struct obj_data                        *obj = NULL;
+  struct obj_data                        *next = NULL;
+  int                                     j = 0;
+
+  if (DEBUG > 2)
+    dlog("called %s with %s, %s", __PRETTY_FUNCTION__, SAFE_NAME(giver), SAFE_NAME(taker));
 
   /*
    *  take all the stuff from the giver, put in on the
@@ -89,6 +93,9 @@ void SwitchStuff(struct char_data *giver, struct char_data *taker)
 
 void FailCharm(struct char_data *victim, struct char_data *ch)
 {
+  if (DEBUG > 2)
+    dlog("called %s with %s, %s", __PRETTY_FUNCTION__, SAFE_NAME(victim), SAFE_NAME(ch));
+
   if (IS_NPC(victim)) {
     if (!victim->specials.fighting) {
       set_fighting(victim, ch);
@@ -100,6 +107,8 @@ void FailCharm(struct char_data *victim, struct char_data *ch)
 
 void FailSleep(struct char_data *victim, struct char_data *ch)
 {
+  if (DEBUG > 2)
+    dlog("called %s with %s, %s", __PRETTY_FUNCTION__, SAFE_NAME(victim), SAFE_NAME(ch));
 
   cprintf(victim, "You feel sleepy for a moment,but then you recover\n\r");
   if (IS_NPC(victim))
@@ -109,6 +118,9 @@ void FailSleep(struct char_data *victim, struct char_data *ch)
 
 void FailPara(struct char_data *victim, struct char_data *ch)
 {
+  if (DEBUG > 2)
+    dlog("called %s with %s, %s", __PRETTY_FUNCTION__, SAFE_NAME(victim), SAFE_NAME(ch));
+
   cprintf(victim, "You feel frozen for a moment,but then you recover\n\r");
   if (IS_NPC(victim))
     if ((!victim->specials.fighting) && (GET_POS(victim) > POSITION_SLEEPING))
@@ -117,26 +129,36 @@ void FailPara(struct char_data *victim, struct char_data *ch)
 
 void FailCalm(struct char_data *victim, struct char_data *ch)
 {
+  if (DEBUG > 2)
+    dlog("called %s with %s, %s", __PRETTY_FUNCTION__, SAFE_NAME(victim), SAFE_NAME(ch));
+
   cprintf(victim, "You feel happy but the effect soon fades.\n\r");
   if (IS_NPC(victim))
     if (!victim->specials.fighting)
       set_fighting(victim, ch);
 }
 
-void AreaEffectSpell(struct char_data *castor, int dam, int spell_type, int zflag, char *zone_mesg)
+void AreaEffectSpell(struct char_data *castor, int dam, int spell_type, int zflag,
+		     char *zone_mesg)
 {
-  struct char_data *victim, *next_victim;
+  struct char_data                       *victim = NULL;
+  struct char_data                       *next_victim = NULL;
+
+  if (DEBUG > 2)
+    dlog("called %s with %s, %d, %d, %d, %s", __PRETTY_FUNCTION__, SAFE_NAME(castor), dam, spell_type, zflag, VNULL(zone_mesg));
 
   for (victim = character_list; victim; victim = next_victim) {
     next_victim = victim->next;
     if ((castor->in_room == victim->in_room) && castor != victim) {
-      if (IS_IMMORTAL(victim)) continue;
-      if (!CheckKill(castor, victim)) continue;
+      if (IS_IMMORTAL(victim))
+	continue;
+      if (!CheckKill(castor, victim))
+	continue;
       if (IS_AFFECTED(victim, AFF_GROUP))
-        if ((victim == castor->master) ||
-            (victim->master == castor) ||
-            (victim->master == castor->master)) continue;
-	switch (spell_type) {
+	if ((victim == castor->master) ||
+	    (victim->master == castor) || (victim->master == castor->master))
+	  continue;
+      switch (spell_type) {
 	case SPELL_EARTHQUAKE:
 	  damage(castor, victim, dam, spell_type);
 	  act("You fall and hurt yourself!!\n\r", FALSE, castor, 0, victim, TO_VICT);
@@ -166,16 +188,18 @@ void AreaEffectSpell(struct char_data *castor, int dam, int spell_type, int zfla
 	    dam >>= 1;
 	  damage(castor, victim, dam, SPELL_ICE_STORM);
 	  break;
-        case SPELL_METEOR_SWARM:
-          if (saves_spell(victim, SAVING_SPELL)) {
-            act("You dive for cover but are still burned by the flames all around you.\n\r", FALSE, castor, 0, victim, TO_VICT);
-            damage(castor, victim, dam/2, spell_type);
-          } else {
-            act("You scream in agony as a ball of flame goes through you!\n\r", FALSE, castor, 0, victim, TO_VICT);
-            damage(castor, victim, dam, spell_type);
-          }
-          break;
-	}
+	case SPELL_METEOR_SWARM:
+	  if (saves_spell(victim, SAVING_SPELL)) {
+	    act("You dive for cover but are still burned by the flames all around you.\n\r",
+		FALSE, castor, 0, victim, TO_VICT);
+	    damage(castor, victim, dam / 2, spell_type);
+	  } else {
+	    act("You scream in agony as a ball of flame goes through you!\n\r", FALSE, castor,
+		0, victim, TO_VICT);
+	    damage(castor, victim, dam, spell_type);
+	  }
+	  break;
+      }
     } else {
       if (zflag) {
 	/*

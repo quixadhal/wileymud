@@ -1,5 +1,5 @@
 # Kick off WileyMUD
-if [ -x /home/wiley/wiley/bin/wiley ]; then
-        su -l wiley -c '/home/wiley/wiley/bin/wiley &'
+if [ -x /home/wiley/bin/wiley ]; then
+        su -l wiley -c '/home/wiley/bin/wiley &'
         echo -n ' WileyMUD'
 fi
