@@ -1,4 +1,4 @@
-#!/usr/bin/make
+#!/usr/local/bin/gmake
 # Must be GNU Make!
 
 #WIDTH=96
@@ -19,15 +19,15 @@ CC = gcc
 #GNUINC = /usr/lib/gcc-lib/i386-redhat-linux/2.7.2.3/include
 #GNUINC = /usr/lib/gcc-lib/i386-redhat-linux/egcs-2.90.27/include
 #GNUINC = /usr/lib/gcc-lib/i486-linux/2.7.2.3/include
-GNUINC = /usr/lib/gcc-lib/i386-unknown-openbsd3.0/2.95.3/include
+GNUINC = /usr/lib/gcc-lib/i386-unknown-openbsd3.1/2.95.3/include
 #PROF = -pg
 #BUGFLAGS = -DDEBUG_FILE
 #WARN = -Wall -Wstrict-prototypes -Wmissing-prototypes
 WARN = -Wall -Wmissing-prototypes
 #WARN = -w
-DEBUG = -g -fno-common -fno-builtin -rdynamic -m486 -static #-fcheck-memory-usage
+DEBUG = -g -fno-common -fno-builtin -rdynamic #-m486 -static #-fcheck-memory-usage
 #DEBUG = -g3 -static
-#OPT = -O3 -fstrength-reduce -fexpensive-optimizations -funroll-loops -finline-functions #-m586
+OPT = -O3 -fstrength-reduce -fexpensive-optimizations -funroll-loops -finline-functions #-m586
 #STRIP = -s
 PIPE = -pipe -fpcc-struct-return
 

@@ -984,7 +984,10 @@ void Command_make(void)
     Command_title();
     Command_desc();
     printf("Zone for this room\n------------------\n> ");
-    gets(tmp_str);
+    /* gets(tmp_str); */
+    fgets(tmp_str, BUFFER_SIZE-1, stdin);
+    if((strlen(tmp_str) > 0) && tmp_str[strlen(tmp_str)-1] == '\n')
+      tmp_str[strlen(tmp_str)-1]= '\0';
     if(!scan_a_number(tmp_str, &current->zonenum)) {
       printf("** Invalid zone entered, defaulting to zone %d.\n", lastzone);
       current->zonenum= lastzone;

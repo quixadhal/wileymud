@@ -973,7 +973,7 @@ void nanny(struct descriptor_data *d, char *arg)
       return;
     }
     if (!ValidPlayer(tmp_name, d->pwd, d->oldpwd)) {
-      dcprintf(d, "\n\rDeadMUD is currently in registration-only mode.\n\rPlease email mud@yakko.cs.wmich.edu for a character!\n\r");
+      dcprintf(d, "\n\rWileyMUD is currently in registration-only mode.\n\rPlease email quixadhal@shadowlord.org for a character!\n\r");
       STATE(d) = CON_WIZLOCK;
       return;
     }
