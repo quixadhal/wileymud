@@ -1,0 +1,13 @@
+gcc -g -Dsun3 -m68020 -fstrength-reduce -fvolatile  -target sun3 -c  comm.c
+gcc -g -Dsun3 -m68020 -fstrength-reduce -fvolatile  -target sun3 -c  act.comm.c
+gcc -g -Dsun3 -m68020 -fstrength-reduce -fvolatile  -target sun3 -c  act.informative.c
+gcc -g -Dsun3 -m68020 -fstrength-reduce -fvolatile  -target sun3 -c  act.move.c
+gcc -g -Dsun3 -m68020 -fstrength-reduce -fvolatile  -target sun3 -c  act.obj1.c
+gcc -g -Dsun3 -m68020 -fstrength-reduce -fvolatile  -target sun3 -c  act.obj2.c
+gcc -g -Dsun3 -m68020 -fstrength-reduce -fvolatile  -target sun3 -c  act.offensive.c
+gcc -g -Dsun3 -m68020 -fstrength-reduce -fvolatile  -target sun3 -c  act.other.c
+gcc -g -Dsun3 -m68020 -fstrength-reduce -fvolatile  -target sun3 -c  act.social.c
+gcc -g -Dsun3 -m68020 -fstrength-reduce -fvolatile  -target sun3 -c  act.wizard.c
+gcc -g -Dsun3 -m68020 -fstrength-reduce -fvolatile  -target sun3 -c  handler.c
+gcc -g -Dsun3 -m68020 -fstrength-reduce -fvolatile  -target sun3 -c  db.c
+gcc -g -Dsun3 -m68020 -fstrength-reduce -fvolatile  -target sun3 -c  interpreter.c

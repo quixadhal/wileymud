@@ -1,0 +1,31 @@
+void do_equipment(struct char_data *ch, char *argument, int cmd) {
+  int j,Worn_Index;
+  bool found;
+  char String[256];
+  
+  send_to_char("Equipment in use:\n\r", ch);
+  found = FALSE;
+  for (Worn_Index=j=0; j< MAX_WEAR; j++) 
+  {
+    if (ch->equipment[j])
+    {
+      Worn_Index++;
+      sprintf(String,"%s",where[j]);
+      send_to_char(String,ch);
+      if (CAN_SEE_OBJ(ch,ch->equipment[j])) 
+      {
+	show_obj_to_char(ch->equipment[j],ch,1);
+	found = TRUE;
+      }
+      else
+      {
+	send_to_char("Something.\n\r",ch);
+	found = TRUE;
+      }
+    }
+  }
+  if(!found) {
+    send_to_char(" Nothing.\n\r", ch);
+  }
+}
+

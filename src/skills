@@ -1,0 +1,148 @@
+  Skills...hmmm, here are some that might work.
+  (heraldry)  cackle
+Warrior:
+  unarmed combat
+    > slight bonus to hit when fighting without a weapon
+  endurance
+    > use less movement in combat depending on your ability in it, shouldn't
+      ever be better than 1 for every 3rd round.
+  two-handed fighting style
+  dual wielding fighting style
+    > how well you are at wielding two weapons, at superb should only be
+      normal with primary weapon, -2 with secondary.
+  shield bash
+    > must have shield, does a bit more damage than normal bash which does
+      only like one point.
+  throw
+    > throws oppenent down and gives them some damage.
+  critical strike
+    > how well you are at hitting a vital area, possibly for double, perhaps
+      triple damage at superb.
+  door bash
+    > chance to bash down a door.  (calls in mobs from adjoining rooms??)
+  multi-attack
+    > perhaps a 30% chance of extra attack at superb.
+  presence
+    > how fearful you look, at superb could cause fear into mobs of way
+      lower level. (they run away)
+  grab
+    > try to grab a oppents weapon and steal it away.
+  shield block
+    > chance to block a blow each round, if you have a shield.
+  blind-fighting
+    > better chance to see oppenent in darkness, and better chance to hit
+      them.
+  arms evaluation
+    > decide the craftmanship of a weapon or armor.  if armor value is
+      1 = poor, 2 = not too bad, 3 = reasonable, 4 = a good make, 
+      5 = very well made, 6 = exquisite
+  weapon specialization
+    > sharp, bludgeoning, piercing weapons.  at superb, +1 to hit +2 to 
+      damage if wielding that weapon class.
+
+Thief
+  set traps
+    > if they had a trap item they could set it.
+  peer/scout
+    > look into a adjoining room provided no doors stand in your way.
+  detect noise
+    > if mob is within a room away, tell them of such.
+  find/remove traps
+    > would allow me to put traps in the game.  :)
+  dodge
+    > ability to dodge a attack.  low percentage even at superb
+  parry
+    > ability to parry a attack.  same as above
+  climb walls
+    > there will be a use for this in the future, a adventure i am making.
+  evaluate
+    > find the value of something, of course this would have to be off
+      a lot.  cackle
+  forgery/pawn/fencing
+    > get a better price for something in a shop.
+  feign death
+    > this skill would allow a mob to think you were dead, causing the 
+      combat to end.  this could work like hide, touch a key and it is
+      ruined.
+  night sight
+    > see better in the dark
+  disguise
+    > temporarily change their name and title, only as it appears in a room
+      and in a who.  Therefore if you look at a thief desguised as ryan who's
+      real name is chris, you can't look at ryan.  Thus, no thief could do
+      something as someone else without a intelligent person looking at them
+      and finding out if that really was them.
+  trip
+    > puts oppenent on their ass, like bash
+  retreat
+    > chance to remove yourself from a combat without fleeing.  of course
+      the mob must come after you.  cackle
+  read arcane
+    > chance to read scrolls
+  knockout
+    > real low chance to knockout oppenent with a pounding weapon.
+  detect doors
+    > chance of finding secret doors
+  thieves cant
+    > a language only thieves can understand...definatley need this one
+
+Mage
+ Perhaps with the casting classes you could seperate skills from spells by
+ creating a new commands calls 'spells'  or  'skills'.  All this would really
+ do is stop your screen from becoming a jumbled mess since the pager doesn't
+ work when you type a prac.
+  scribe
+    > allow you to create a scroll of a spell you know.
+  read magic
+    > how well you are at reading scrolls, especially ones of higher level
+  brewing/cooking
+    > making Zorn's scorn, how well you can do it.
+  spellcraft
+    > could make your chance of learning a spell slightly better.  or perhaps
+      give you a 4% increase instead of a 2% while doing it on your own.
+  cantrip
+    > options for cantrip
+       > smoke = make smoke come from your fingertips to cloud a room for a
+	 short period of time.
+       > energize = would give your body a energized effect, the first thing
+	 to attack you would take a point of damage per learning phase.  So
+	 8 points max if cantrip is superb.
+       > cheeseball neet effects.  cackle
+  speed reading
+    > allows you to read from you spellbooks faster, thusly casting faster
+  alteration spells
+    > might as well get these started for all the spheres...at this point
+      could allow a bit more damage, or faster casting.
+  religion
+    > chance of understanding a cleric spell...low, very low.
+
+Cleric
+  healing/herbalism
+    > cure a few points of damage.  needs bloodmoss
+  gathering
+    > chance of finding bloodmoss
+  commune
+    > low chance of your god giving you mana, move, hits, or rem curses.
+      we would need to add another item to the player and that woule be
+      a god.  i have invented Tyken(good), Aklan(evil), Ya'vell(neutral)
+  repent
+    > would allow your aling to shift a few points good or evil depending
+      on which way you repent.
+
+Ranger
+  gather/survival
+    > gather berries and shit.
+  set snares
+    > catch small animals for food.  come back after so many ticks and there
+      might be some food in the snare.
+  gaming/hunting
+    > again, able to get food on their own.
+  two-handed weapon style
+  dual wield
+    > a ranger shouldn't really get anything off if he is real good at this
+  animal handling
+    > if a ranger comes across a mobile that isn't aggresive and is race_animal
+      a slight chance of charming the animal.
+  
+
+
