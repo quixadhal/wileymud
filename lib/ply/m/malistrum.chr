@@ -1,0 +1,291 @@
+#PLAYER
+Name               Malistrum~
+Passwd             MaHQpvceHEx0Q~
+Whizz              0
+PreTitle           ~
+Title              the Demon Scribe/Missionary~
+Description
+Before you stands the shattered remnants of a former God.  His absence
+from the world has caused the loss of any followers he once had.  You
+see only a faint hint of his dark past.
+~
+LastSite           todd@localhost~
+LastLogin          844553136
+Birth              801763120
+Played             181854
+Sex                2
+Race               21
+Class              3
+Alignment          -1000
+Exp                54999
+Level              mage 6
+Level              cleric 5
+HeightWeight       182 107
+Gold               99312 0
+HomeTown           3008
+LoadRoom           -1
+PoofIn             ~
+PoofOut            ~
+AbilityScores      18 0 18 18 18 18
+AbilityPad         0 0 0 0
+HpManaMove         155 145 120 0 152 0
+AC                 100
+ToHitDamage        0 0
+SaveApply          0 0 0 0 0
+Conditions         -1 -1 -1 0 0 0
+PointsPad1         0 0 0
+PointsPad2         0 0 0 0
+PointsPad3         0 0 0
+ShortSavePad       0 0 0 0
+SavePad            0 0 0 0
+Pracs              32
+SkillsToLearn      0
+Skill              0 75 1 "none"
+Skill              1 77 1 "armour"
+Skill              2 76 1 "teleport"
+Skill              3 71 1 "bless"
+Skill              4 100 1 "blindness"
+Skill              5 95 1 "burning hands"
+Skill              6 63 1 "call lightning"
+Skill              7 52 1 "charm person"
+Skill              8 76 1 "chill touch"
+Skill              9 69 1 "clone"
+Skill              10 80 1 "colour spray"
+Skill              11 62 1 "control weather"
+Skill              12 96 1 "create food"
+Skill              13 90 1 "create water"
+Skill              14 77 1 "cure blindness"
+Skill              15 77 1 "cure critical"
+Skill              16 87 1 "cure light"
+Skill              17 67 1 "curse"
+Skill              18 55 1 "detect evil"
+Skill              19 85 1 "detect invisible"
+Skill              20 95 1 "detect magic"
+Skill              21 57 1 "detect poison"
+Skill              22 52 1 "dispel evil"
+Skill              23 95 1 "earthquake"
+Skill              24 56 1 "enchant weapon"
+Skill              25 60 1 "energy drain"
+Skill              26 55 1 "fireball"
+Skill              27 70 1 "harm"
+Skill              28 87 1 "heal"
+Skill              29 75 1 "invisibility"
+Skill              30 93 1 "lightning bolt"
+Skill              31 62 1 "locate object"
+Skill              32 76 1 "magic missile"
+Skill              33 93 1 "poison"
+Skill              34 83 1 "protection from evil"
+Skill              35 76 1 "remove curse"
+Skill              36 100 1 "sanctuary"
+Skill              37 71 1 "shocking grasp"
+Skill              38 52 1 "sleep"
+Skill              39 75 1 "strength"
+Skill              40 64 1 "summon"
+Skill              41 83 1 "ventriloquate"
+Skill              42 61 1 "word of recall"
+Skill              43 60 1 "remove poison"
+Skill              44 97 1 "sense life"
+Skill              45 88 1 "sneak"
+Skill              46 61 1 "hide"
+Skill              47 58 1 "steal"
+Skill              48 54 1 "backstab"
+Skill              49 66 1 "pick lock"
+Skill              50 93 1 "kick"
+Skill              51 73 1 "bash"
+Skill              52 98 1 "rescue"
+Skill              53 69 1 "IDENTIFY"
+Skill              54 93 1 "infravision"
+Skill              55 100 1 "cause light"
+Skill              56 80 1 "cause critical"
+Skill              57 98 1 "flamestrike"
+Skill              58 94 1 "dispel good"
+Skill              59 66 1 "weakness"
+Skill              60 97 1 "dispel magic"
+Skill              61 86 1 "knock"
+Skill              62 52 1 "know alignment"
+Skill              63 73 1 "animate dead"
+Skill              64 53 1 "paralyze"
+Skill              65 60 1 "remove paralysis"
+Skill              66 73 1 "fear"
+Skill              67 52 1 "acid blast"
+Skill              68 81 1 "water breath"
+Skill              69 75 1 "fly"
+Skill              70 51 1 "cone of cold"
+Skill              71 95 1 "meteor swarm"
+Skill              72 82 1 "ice storm"
+Skill              73 63 1 "shield"
+Skill              74 95 1 "monsum one"
+Skill              75 53 1 "monsum two"
+Skill              76 75 1 "monsum three"
+Skill              77 91 1 "monsum four"
+Skill              78 61 1 "monsum five"
+Skill              79 80 1 "monsum six"
+Skill              80 81 1 "monsum seven"
+Skill              81 78 1 "fireshield"
+Skill              82 77 1 "charm monster"
+Skill              83 79 1 "cure serious"
+Skill              84 97 1 "cause serious"
+Skill              85 69 1 "refresh"
+Skill              86 52 1 "second wind"
+Skill              87 76 1 "turn"
+Skill              88 92 1 "succor"
+Skill              89 96 1 "create light"
+Skill              90 67 1 "continual light"
+Skill              91 88 1 "calm"
+Skill              92 56 1 "stoneskin"
+Skill              93 69 1 "conjure elemental"
+Skill              94 60 1 "true sight"
+Skill              95 59 1 "minor creation"
+Skill              96 95 1 "faerie fire"
+Skill              97 83 1 "faerie fog"
+Skill              98 86 1 "cacaodemon"
+Skill              99 84 1 "polymorph self"
+Skill              100 83 1 "MANA"
+Skill              101 87 1 "astral walk"
+Skill              102 79 1 "group fly"
+Skill              103 64 1 "aid"
+Skill              104 74 1 "shelter"
+Skill              105 57 1 "DRAGON BREATH"
+Skill              106 92 1 "goodberry"
+Skill              107 100 1 "visions"
+Skill              108 98 1 ""
+Skill              109 52 1 ""
+Skill              110 53 1 ""
+Skill              111 53 1 ""
+Skill              112 80 1 ""
+Skill              113 80 1 ""
+Skill              114 82 1 ""
+Skill              115 77 1 ""
+Skill              116 74 1 ""
+Skill              117 84 1 ""
+Skill              118 77 1 ""
+Skill              119 65 1 ""
+Skill              120 79 1 ""
+Skill              121 68 1 ""
+Skill              122 52 1 ""
+Skill              123 59 1 ""
+Skill              124 88 1 ""
+Skill              125 88 1 ""
+Skill              126 68 1 ""
+Skill              127 91 1 ""
+Skill              128 95 1 ""
+Skill              129 53 1 ""
+Skill              130 75 1 ""
+Skill              131 77 1 ""
+Skill              132 65 1 ""
+Skill              133 53 1 ""
+Skill              134 66 1 ""
+Skill              135 89 1 ""
+Skill              136 85 1 ""
+Skill              137 57 1 ""
+Skill              138 62 1 ""
+Skill              139 57 1 ""
+Skill              140 85 1 ""
+Skill              141 90 1 ""
+Skill              142 60 1 ""
+Skill              143 64 1 ""
+Skill              144 95 1 ""
+Skill              145 66 1 ""
+Skill              146 65 1 ""
+Skill              147 68 1 ""
+Skill              148 100 1 ""
+Skill              149 67 1 "doorbash"
+Skill              150 83 1 "read magic"
+Skill              151 52 1 "scribe"
+Skill              152 85 1 "brewing"
+Skill              153 59 1 "punch"
+Skill              154 62 1 "two handed"
+Skill              155 72 1 "dual wield"
+Skill              156 97 1 "bandage"
+Skill              157 54 1 "search"
+Skill              158 88 1 "swimming"
+Skill              159 92 1 "endurance"
+Skill              160 58 1 "barehand"
+Skill              161 62 1 "blind fighting"
+Skill              162 93 1 "parry"
+Skill              163 98 1 "appraise"
+Skill              164 90 1 "smite spec"
+Skill              165 83 1 "stab spec"
+Skill              166 60 1 "whip spec"
+Skill              167 99 1 "slash spec"
+Skill              168 65 1 "smash spec"
+Skill              169 73 1 "cleave spec"
+Skill              170 55 1 "crush spec"
+Skill              171 100 1 "bludgeon spec"
+Skill              172 87 1 "pierce spec"
+Skill              173 90 1 "peer"
+Skill              174 88 1 "hear noise"
+Skill              175 81 1 "dodge"
+Skill              176 55 1 "barter"
+Skill              177 78 1 "knockout"
+Skill              178 99 1 "spellcraft"
+Skill              179 79 1 "meditation"
+Skill              180 95 1 "track"
+Skill              181 55 1 "locate trap"
+Skill              182 56 1 "disarm trap"
+Skill              183 79 1 "disarm"
+Skill              184 65 1 "shield bash"
+Skill              185 68 1 "riding"
+Skill              186 76 1 ""
+Skill              187 61 1 ""
+Skill              188 97 1 ""
+Skill              189 88 1 ""
+Skill              190 77 1 ""
+Skill              191 79 1 ""
+Skill              192 100 1 ""
+Skill              193 95 1 ""
+Skill              194 76 1 ""
+Skill              195 63 1 ""
+Skill              196 77 1 ""
+Skill              197 87 1 ""
+Skill              198 61 1 ""
+Skill              199 66 1 ""
+Skill              200 0 0 ""
+Skill              201 0 0 ""
+Skill              202 0 0 ""
+Skill              203 0 0 ""
+Skill              204 0 0 ""
+Skill              205 0 0 ""
+Skill              206 0 0 ""
+Skill              207 0 0 ""
+Skill              208 0 0 ""
+Skill              209 0 0 ""
+Skill              210 0 0 ""
+Skill              211 0 0 ""
+Skill              212 0 0 ""
+Skill              213 0 0 ""
+Skill              214 0 0 ""
+Skill              215 0 0 ""
+Skill              216 0 0 ""
+Skill              217 0 0 ""
+Skill              218 0 0 ""
+Skill              219 0 0 ""
+Skill              220 0 0 ""
+Skill              221 0 0 ""
+ActFlags           36 1
+Affect             0 20 39 0 0 16 0
+Affect             1 69 2 0 0 2048 0
+Affect             2 19 6 0 0 8 0
+Affect             3 29 0 -40 17 2 0
+Affect             4 0 0 0 0 0 0
+Affect             5 0 0 0 0 0 0
+Affect             6 0 0 0 0 0 0
+Affect             7 0 0 0 0 0 0
+Affect             8 0 0 0 0 0 0
+Affect             9 0 0 0 0 0 0
+Affect             10 0 0 0 0 0 0
+Affect             11 0 0 0 0 0 0
+Affect             12 0 0 0 0 0 0
+Affect             13 0 0 0 0 0 0
+Affect             14 0 0 0 0 0 0
+Affect             15 0 0 0 0 0 0
+Affect             16 0 0 0 0 0 0
+Affect             17 0 0 0 0 0 0
+Affect             18 0 0 0 0 0 0
+Affect             19 0 0 0 0 0 0
+Affect             20 0 0 0 0 0 0
+Affect             21 0 0 0 0 0 0
+Affect             22 0 0 0 0 0 0
+Affect             23 0 0 0 0 0 0
+Affect             24 0 0 0 0 0 0
+End

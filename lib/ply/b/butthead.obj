@@ -1,0 +1,357 @@
+#RENT
+Owner              Butthead~
+Gold               0
+TotalCost          171
+LastUpdate         846383724
+MinimumStay        0
+End
+#EQUIPMENT
+End
+#CARRIED
+#ITEM
+ObjId              13
+ContainedBy        -1
+Name               torch~
+Description
+A large torch.~
+ShortDescr
+a torch~
+ActionDescr
+(null)~
+VNum               3015
+EquippedAt         0
+Values             0 0 4 0
+ExtraFlags         0
+Weight             3
+Timer              0
+BitVector          0
+Type               1
+WearFlags          1
+Cost               10
+CostPerDay         3
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              13
+ContainedBy        -1
+Name               boots leather~
+Description
+A pair of leather boots lie here.~
+ShortDescr
+a pair of leather boots~
+ActionDescr
+(null)~
+VNum               3026
+EquippedAt         0
+Values             1 1 0 0
+ExtraFlags         0
+Weight             2
+Timer              0
+BitVector          0
+Type               9
+WearFlags          65
+Cost               50
+CostPerDay         10
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              13
+ContainedBy        -1
+Name               leather armbands~
+Description
+A pair of leather armbands lie here.~
+ShortDescr
+some leather armbands~
+ActionDescr
+(null)~
+VNum               1301
+EquippedAt         0
+Values             1 0 0 0
+ExtraFlags         0
+Weight             3
+Timer              0
+BitVector          0
+Type               9
+WearFlags          257
+Cost               54
+CostPerDay         54
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              13
+ContainedBy        -1
+Name               pouch small leather~
+Description
+A small pouch made of soft leather is piled upon the floor.~
+ShortDescr
+a small leather pouch~
+ActionDescr
+(null)~
+VNum               4603
+EquippedAt         0
+Values             300 1 -1 0
+ExtraFlags         64
+Weight             4
+Timer              0
+BitVector          0
+Type               15
+WearFlags          2049
+Cost               50
+CostPerDay         35
+Affect             0 0
+Affect             0 0
+ExtraDescr         pouch~
+This small pouch is made of soft deerskin.
+~
+End
+#ITEM
+ObjId              13
+ContainedBy        -1
+Name               club wooden~
+Description
+A wooden club lies here.~
+ShortDescr
+a wooden club~
+ActionDescr
+(null)~
+VNum               3048
+EquippedAt         0
+Values             0 1 6 7
+ExtraFlags         0
+Weight             5
+Timer              0
+BitVector          0
+Type               5
+WearFlags          8193
+Cost               2
+CostPerDay         2
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              13
+ContainedBy        -1
+Name               bottle water~
+Description
+A bottle of clear liquid has been left here.~
+ShortDescr
+a bottle~
+ActionDescr
+(null)~
+VNum               3003
+EquippedAt         0
+Values             16 16 0 0
+ExtraFlags         0
+Weight             2
+Timer              0
+BitVector          0
+Type               17
+WearFlags          16385
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              13
+ContainedBy        -1
+Name               whip~
+Description
+A whip lies here.~
+ShortDescr
+a whip~
+ActionDescr
+(null)~
+VNum               10001
+EquippedAt         0
+Values             0 1 4 2
+ExtraFlags         0
+Weight             5
+Timer              0
+BitVector          0
+Type               5
+WearFlags          8193
+Cost               25
+CostPerDay         25
+Affect             0 0
+Affect             0 0
+ExtraDescr         whip~
+The whip is nothing more than a long piece of leather.
+~
+End
+#ITEM
+ObjId              13
+ContainedBy        -1
+Name               slab white cheese~
+Description
+A slab of white cheese rests here.~
+ShortDescr
+a slab of cheese~
+ActionDescr
+(null)~
+VNum               5017
+EquippedAt         0
+Values             15 0 0 0
+ExtraFlags         0
+Weight             1
+Timer              0
+BitVector          0
+Type               19
+WearFlags          16385
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              13
+ContainedBy        -1
+Name               slab white cheese~
+Description
+A slab of white cheese rests here.~
+ShortDescr
+a slab of cheese~
+ActionDescr
+(null)~
+VNum               5017
+EquippedAt         0
+Values             15 0 0 0
+ExtraFlags         0
+Weight             1
+Timer              0
+BitVector          0
+Type               19
+WearFlags          16385
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              13
+ContainedBy        -1
+Name               coral stick~
+Description
+A stick of coral lies here.~
+ShortDescr
+a stick of coral~
+ActionDescr
+(null)~
+VNum               6514
+EquippedAt         0
+Values             12 3 2 68
+ExtraFlags         64
+Weight             1
+Timer              0
+BitVector          0
+Type               3
+WearFlags          16385
+Cost               34
+CostPerDay         34
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              13
+ContainedBy        -1
+Name               slab white cheese~
+Description
+A slab of white cheese rests here.~
+ShortDescr
+a slab of cheese~
+ActionDescr
+(null)~
+VNum               5017
+EquippedAt         0
+Values             15 0 0 0
+ExtraFlags         0
+Weight             1
+Timer              0
+BitVector          0
+Type               19
+WearFlags          16385
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              13
+ContainedBy        -1
+Name               bread~
+Description
+A loaf of bread has been left here.~
+ShortDescr
+a bread~
+ActionDescr
+(null)~
+VNum               3010
+EquippedAt         0
+Values             10 0 0 0
+ExtraFlags         0
+Weight             3
+Timer              0
+BitVector          0
+Type               19
+WearFlags          1
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              13
+ContainedBy        -1
+Name               water cup~
+Description
+A cup of fine water rests here.~
+ShortDescr
+a cup~
+ActionDescr
+(null)~
+VNum               5010
+EquippedAt         0
+Values             24 13 0 0
+ExtraFlags         0
+Weight             -10
+Timer              0
+BitVector          0
+Type               17
+WearFlags          16385
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              13
+ContainedBy        -1
+Name               large knife~
+Description
+A large knife lies here.~
+ShortDescr
+a large knife~
+ActionDescr
+(null)~
+VNum               3021
+EquippedAt         0
+Values             0 1 5 11
+ExtraFlags         4096
+Weight             3
+Timer              0
+BitVector          0
+Type               5
+WearFlags          8193
+Cost               20
+CostPerDay         2
+Affect             0 0
+Affect             0 0
+ExtraDescr         large knife~
+It appears to be about eight to nine inches in length, fairly sharp.
+~
+End
+End
+#END_RENT

@@ -1,0 +1,24 @@
+				=-= Wiley =-=
+
+Communication:                       Movement:
+  say, shout, tell, ask, whisper,      north, south, east, west, up, down,
+  grep, gtell, look, look in,	       (n,s,e,w,u,d,) enter, leave, go, pull,
+  order (follower/party),whod          push
+
+Equiping yourself:		     Food and shops:
+  wield, wear, remove, grap, hold,     buy, list, value, sell, offer, eat,
+  use <item>, recite <scroll>,         drink, taste, sip
+  quaff <potion> wear 2.(item),
+  get, get <?> from <?>		     Practicing:
+				       practice <skill>, prac, prac <w/t/m/c/r>
+Classes and skills:		       prac (w/t/m/c/r) known
+  warrior, thief, magic user, 
+  cleric, ranger, kick, bash,	     Grouping:
+  rescue, disarm, sneak, hide,         follow, group, grep, gtell
+  backstab, steal, pick, punch,
+  throw				     Casting:
+				       cast 'spell' <target>, magic missile,
+Combat:				       armor, bless, shield
+  kill, swat, cast, kick, bash,
+  backstab, consider, cast,	     Help:
+  disarm, get all from corpse          help, help <topic>

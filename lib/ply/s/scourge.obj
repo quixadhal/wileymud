@@ -1,0 +1,587 @@
+#RENT
+Owner              Scourge~
+Gold               0
+TotalCost          5999
+LastUpdate         829153226
+MinimumStay        0
+End
+#EQUIPMENT
+End
+#CARRIED
+#ITEM
+ObjId              22
+ContainedBy        -1
+Name               pearl ring~
+Description
+A small ring lies here on the ground.~
+ShortDescr
+a pearl ring~
+ActionDescr
+(null)~
+VNum               4602
+EquippedAt         0
+Values             0 0 -1 0
+ExtraFlags         64
+Weight             1
+Timer              0
+BitVector          0
+Type               1
+WearFlags          3
+Cost               1001
+CostPerDay         150
+Affect             0 0
+Affect             0 0
+ExtraDescr         ring~
+This small ring has a pure pearl in the center.
+~
+End
+#ITEM
+ObjId              22
+ContainedBy        -1
+Name               large fur cloak~
+Description
+A huge cloak made of fur lies here.~
+ShortDescr
+a large fur cloak~
+ActionDescr
+(null)~
+VNum               20104
+EquippedAt         0
+Values             0 0 0 0
+ExtraFlags         0
+Weight             100
+Timer              0
+BitVector          0
+Type               12
+WearFlags          5
+Cost               10
+CostPerDay         10
+Affect             0 0
+Affect             0 0
+ExtraDescr         cloak fur~
+  The cloak looks nice, if you were twenty feet tall.
+~
+End
+#ITEM
+ObjId              22
+ContainedBy        -1
+Name               red cloak~
+Description
+A deep red cloak lies in a heap here.~
+ShortDescr
+a deep red cloak~
+ActionDescr
+(null)~
+VNum               9004
+EquippedAt         0
+Values             0 0 0 0
+ExtraFlags         64
+Weight             10
+Timer              0
+BitVector          0
+Type               12
+WearFlags          5
+Cost               2000
+CostPerDay         10
+Affect             12 25
+Affect             25 2
+ExtraDescr         red cloak deep~
+  The deep red cloak is encrusted with many runes of the arcane art.  It
+almost readiates with power as you touch it.
+~
+End
+#ITEM
+ObjId              22
+ContainedBy        -1
+Name               chestplate golden~
+Description
+A golden chestplate sparkles on the ground here.~
+ShortDescr
+a golden chestplate~
+ActionDescr
+(null)~
+VNum               5077
+EquippedAt         0
+Values             3 5 0 0
+ExtraFlags         90112
+Weight             55
+Timer              0
+BitVector          0
+Type               9
+WearFlags          9
+Cost               6519
+CostPerDay         2519
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              22
+ContainedBy        -1
+Name               helm gold encrusted~
+Description
+A gold encrusted helm lies here.~
+ShortDescr
+a gold encrusted helm~
+ActionDescr
+(null)~
+VNum               5078
+EquippedAt         0
+Values             3 5 0 0
+ExtraFlags         90112
+Weight             34
+Timer              0
+BitVector          0
+Type               9
+WearFlags          17
+Cost               2365
+CostPerDay         1365
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              22
+ContainedBy        -1
+Name               spiked leg plates~
+Description
+A pair of spiked leg plates lie here.~
+ShortDescr
+some spiked leg plates~
+ActionDescr
+(null)~
+VNum               6416
+EquippedAt         0
+Values             4 4 0 0
+ExtraFlags         90112
+Weight             23
+Timer              0
+BitVector          0
+Type               9
+WearFlags          33
+Cost               954
+CostPerDay         354
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              22
+ContainedBy        -1
+Name               leather boots~
+Description
+A pair of boots made of leather lies here.~
+ShortDescr
+a pair of leather boots~
+ActionDescr
+(null)~
+VNum               9607
+EquippedAt         0
+Values             1 1 0 0
+ExtraFlags         0
+Weight             7
+Timer              0
+BitVector          0
+Type               9
+WearFlags          65
+Cost               20
+CostPerDay         20
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              22
+ContainedBy        -1
+Name               spike plated gloves~
+Description
+A pair of spike plated gloves lie here.~
+ShortDescr
+some spike plated gloves~
+ActionDescr
+(null)~
+VNum               6417
+EquippedAt         0
+Values             2 2 0 0
+ExtraFlags         90112
+Weight             13
+Timer              0
+BitVector          0
+Type               9
+WearFlags          129
+Cost               345
+CostPerDay         145
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              22
+ContainedBy        -1
+Name               spiked arm plates~
+Description
+A pair of spiked arm plates lie here.~
+ShortDescr
+some spiked arm plates~
+ActionDescr
+(null)~
+VNum               6415
+EquippedAt         0
+Values             4 4 0 0
+ExtraFlags         90112
+Weight             20
+Timer              0
+BitVector          0
+Type               9
+WearFlags          257
+Cost               523
+CostPerDay         223
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              22
+ContainedBy        -1
+Name               robe white~
+Description
+A robe of white lies here in a clump.~
+ShortDescr
+a white robe~
+ActionDescr
+(null)~
+VNum               5093
+EquippedAt         0
+Values             0 0 0 0
+ExtraFlags         0
+Weight             2
+Timer              0
+BitVector          0
+Type               12
+WearFlags          1025
+Cost               123
+CostPerDay         123
+Affect             17 -5
+Affect             0 0
+End
+#ITEM
+ObjId              22
+ContainedBy        -1
+Name               girth silver chain chainmail~
+Description
+A girth made of silver chainmail lies here.~
+ShortDescr
+a girth of silver chainmail~
+ActionDescr
+(null)~
+VNum               5066
+EquippedAt         0
+Values             0 3 0 0
+ExtraFlags         8192
+Weight             10
+Timer              0
+BitVector          0
+Type               9
+WearFlags          2049
+Cost               200
+CostPerDay         100
+Affect             17 -5
+Affect             0 0
+ExtraDescr         girth silver chain chainmail~
+  The girth is made from small links of silver that seem to sparkle in the 
+light.  It is not at all heavy and looks quite comfortable.
+~
+End
+#ITEM
+ObjId              22
+ContainedBy        -1
+Name               bracer metal~
+Description
+A metal bracer lies here.~
+ShortDescr
+a metal bracer~
+ActionDescr
+(null)~
+VNum               4720
+EquippedAt         0
+Values             0 0 0 0
+ExtraFlags         0
+Weight             20
+Timer              0
+BitVector          0
+Type               12
+WearFlags          4097
+Cost               300
+CostPerDay         300
+Affect             17 -2
+Affect             0 0
+End
+#ITEM
+ObjId              22
+ContainedBy        -1
+Name               steel banded bracer~
+Description
+A steel banded bracer lies here.~
+ShortDescr
+a steel banded bracer~
+ActionDescr
+(null)~
+VNum               6431
+EquippedAt         0
+Values             0 0 0 0
+ExtraFlags         0
+Weight             2
+Timer              0
+BitVector          0
+Type               11
+WearFlags          4097
+Cost               134
+CostPerDay         134
+Affect             17 -2
+Affect             0 0
+End
+#ITEM
+ObjId              22
+ContainedBy        -1
+Name               claymore sword~
+Description
+A large, well crafted claymore sword is here.~
+ShortDescr
+A claymore~
+ActionDescr
+(null)~
+VNum               15032
+EquippedAt         0
+Values             0 1 9 3
+ExtraFlags         29248
+Weight             9
+Timer              0
+BitVector          0
+Type               5
+WearFlags          40961
+Cost               750
+CostPerDay         10
+Affect             18 4
+Affect             19 4
+End
+#ITEM
+ObjId              22
+ContainedBy        -1
+Name               cloak long red~
+Description
+A long red cloak lies here in a clump.~
+ShortDescr
+a long red cloak~
+ActionDescr
+(null)~
+VNum               5081
+EquippedAt         0
+Values             3 3 0 0
+ExtraFlags         0
+Weight             12
+Timer              0
+BitVector          0
+Type               9
+WearFlags          5
+Cost               651
+CostPerDay         61
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              22
+ContainedBy        -1
+Name               water cup~
+Description
+A cup of fine water rests here.~
+ShortDescr
+a cup~
+ActionDescr
+(null)~
+VNum               5010
+EquippedAt         0
+Values             24 13 0 0
+ExtraFlags         0
+Weight             -10
+Timer              0
+BitVector          0
+Type               17
+WearFlags          16385
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              22
+ContainedBy        -1
+Name               pouch leather~
+Description
+A leather pouch lies here.~
+ShortDescr
+a leather pouch~
+ActionDescr
+(null)~
+VNum               5922
+EquippedAt         0
+Values             10 0 -1 0
+ExtraFlags         0
+Weight             3
+Timer              0
+BitVector          0
+Type               15
+WearFlags          16385
+Cost               12
+CostPerDay         12
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              22
+ContainedBy        -1
+Name               whip scourge~
+Description
+A whip lies here with many hooks attached to the end.~
+ShortDescr
+a scourge~
+ActionDescr
+(null)~
+VNum               10002
+EquippedAt         0
+Values             0 1 6 2
+ExtraFlags         2624
+Weight             5
+Timer              0
+BitVector          0
+Type               5
+WearFlags          8193
+Cost               50
+CostPerDay         50
+Affect             18 1
+Affect             0 0
+End
+#ITEM
+ObjId              22
+ContainedBy        -1
+Name               leather pouch~
+Description
+A small leather pouch lies here.~
+ShortDescr
+a leather pouch~
+ActionDescr
+(null)~
+VNum               4709
+EquippedAt         0
+Values             30 0 -1 0
+ExtraFlags         0
+Weight             6
+Timer              0
+BitVector          0
+Type               15
+WearFlags          16385
+Cost               10
+CostPerDay         10
+Affect             0 0
+Affect             0 0
+ExtraDescr         leather pouch~
+  This pouch is obviously for keeping ones money in.
+~
+End
+#ITEM
+ObjId              22
+ContainedBy        -1
+Name               key ebon~
+Description
+A key made of ebon lies here.~
+ShortDescr
+a ebon key~
+ActionDescr
+(null)~
+VNum               32100
+EquippedAt         0
+Values             2 0 0 0
+ExtraFlags         0
+Weight             1
+Timer              0
+BitVector          0
+Type               18
+WearFlags          16385
+Cost               1
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              22
+ContainedBy        -1
+Name               key ebon~
+Description
+A key made of ebon lies here.~
+ShortDescr
+a ebon key~
+ActionDescr
+(null)~
+VNum               32100
+EquippedAt         0
+Values             2 0 0 0
+ExtraFlags         0
+Weight             1
+Timer              0
+BitVector          0
+Type               18
+WearFlags          16385
+Cost               1
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              22
+ContainedBy        -1
+Name               blue green staff~
+Description
+A blue green staff with a leaf design is sitting on the ground here.~
+ShortDescr
+a blue green staff~
+ActionDescr
+(null)~
+VNum               9602
+EquippedAt         0
+Values             1 3 3 16
+ExtraFlags         64
+Weight             1
+Timer              0
+BitVector          0
+Type               4
+WearFlags          16385
+Cost               1000
+CostPerDay         200
+Affect             0 0
+Affect             0 0
+ExtraDescr         blue green staff~
+  The staff has symbols that could only pertain to the holy arts.
+~
+End
+#ITEM
+ObjId              22
+ContainedBy        -1
+Name               blue green staff~
+Description
+A blue green staff with a leaf design is sitting on the ground here.~
+ShortDescr
+a blue green staff~
+ActionDescr
+(null)~
+VNum               9602
+EquippedAt         0
+Values             1 3 3 16
+ExtraFlags         64
+Weight             1
+Timer              0
+BitVector          0
+Type               4
+WearFlags          16385
+Cost               1000
+CostPerDay         200
+Affect             0 0
+Affect             0 0
+ExtraDescr         blue green staff~
+  The staff has symbols that could only pertain to the holy arts.
+~
+End
+End
+#END_RENT

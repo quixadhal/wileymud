@@ -1,0 +1,2765 @@
+#RENT
+Owner              Storm~
+Gold               403
+TotalCost          1
+LastUpdate         829892324
+MinimumStay        0
+End
+#EQUIPMENT
+#ITEM
+ObjId              0
+ContainedBy        -1
+Name               water cup~
+Description
+A cup of fine water rests here.~
+ShortDescr
+a cup~
+ActionDescr
+(null)~
+VNum               5010
+EquippedAt         17
+Values             24 10 0 0
+ExtraFlags         0
+Weight             -13
+Timer              0
+BitVector          0
+Type               17
+WearFlags          16385
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+End
+#CARRIED
+#ITEM
+ObjId              94
+ContainedBy        9
+Name               water cup~
+Description
+A cup of fine water rests here.~
+ShortDescr
+a cup~
+ActionDescr
+(null)~
+VNum               5010
+EquippedAt         0
+Values             24 0 0 0
+ExtraFlags         0
+Weight             -23
+Timer              0
+BitVector          0
+Type               17
+WearFlags          16385
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              94
+ContainedBy        9
+Name               water cup~
+Description
+A cup of fine water rests here.~
+ShortDescr
+a cup~
+ActionDescr
+(null)~
+VNum               5010
+EquippedAt         0
+Values             24 0 0 0
+ExtraFlags         0
+Weight             -23
+Timer              0
+BitVector          0
+Type               17
+WearFlags          16385
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              94
+ContainedBy        9
+Name               water cup~
+Description
+A cup of fine water rests here.~
+ShortDescr
+a cup~
+ActionDescr
+(null)~
+VNum               5010
+EquippedAt         0
+Values             24 0 0 0
+ExtraFlags         0
+Weight             -23
+Timer              0
+BitVector          0
+Type               17
+WearFlags          16385
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              94
+ContainedBy        9
+Name               water cup~
+Description
+A cup of fine water rests here.~
+ShortDescr
+a cup~
+ActionDescr
+(null)~
+VNum               5010
+EquippedAt         0
+Values             24 0 0 0
+ExtraFlags         0
+Weight             -23
+Timer              0
+BitVector          0
+Type               17
+WearFlags          16385
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              94
+ContainedBy        9
+Name               water cup~
+Description
+A cup of fine water rests here.~
+ShortDescr
+a cup~
+ActionDescr
+(null)~
+VNum               5010
+EquippedAt         0
+Values             24 0 0 0
+ExtraFlags         0
+Weight             -23
+Timer              0
+BitVector          0
+Type               17
+WearFlags          16385
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              94
+ContainedBy        9
+Name               water cup~
+Description
+A cup of fine water rests here.~
+ShortDescr
+a cup~
+ActionDescr
+(null)~
+VNum               5010
+EquippedAt         0
+Values             24 0 0 0
+ExtraFlags         0
+Weight             -23
+Timer              0
+BitVector          0
+Type               17
+WearFlags          16385
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              94
+ContainedBy        9
+Name               water cup~
+Description
+A cup of fine water rests here.~
+ShortDescr
+a cup~
+ActionDescr
+(null)~
+VNum               5010
+EquippedAt         0
+Values             24 0 0 0
+ExtraFlags         0
+Weight             -23
+Timer              0
+BitVector          0
+Type               17
+WearFlags          16385
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              94
+ContainedBy        9
+Name               water cup~
+Description
+A cup of fine water rests here.~
+ShortDescr
+a cup~
+ActionDescr
+(null)~
+VNum               5010
+EquippedAt         0
+Values             24 8 0 0
+ExtraFlags         0
+Weight             -15
+Timer              0
+BitVector          0
+Type               17
+WearFlags          16385
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              94
+ContainedBy        9
+Name               water cup~
+Description
+A cup of fine water rests here.~
+ShortDescr
+a cup~
+ActionDescr
+(null)~
+VNum               5010
+EquippedAt         0
+Values             24 0 0 0
+ExtraFlags         0
+Weight             -23
+Timer              0
+BitVector          0
+Type               17
+WearFlags          16385
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              94
+ContainedBy        9
+Name               water cup~
+Description
+A cup of fine water rests here.~
+ShortDescr
+a cup~
+ActionDescr
+(null)~
+VNum               5010
+EquippedAt         0
+Values             24 0 0 0
+ExtraFlags         0
+Weight             -23
+Timer              0
+BitVector          0
+Type               17
+WearFlags          16385
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              94
+ContainedBy        9
+Name               water cup~
+Description
+A cup of fine water rests here.~
+ShortDescr
+a cup~
+ActionDescr
+(null)~
+VNum               5010
+EquippedAt         0
+Values             24 0 0 0
+ExtraFlags         0
+Weight             -23
+Timer              0
+BitVector          0
+Type               17
+WearFlags          16385
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              94
+ContainedBy        9
+Name               water cup~
+Description
+A cup of fine water rests here.~
+ShortDescr
+a cup~
+ActionDescr
+(null)~
+VNum               5010
+EquippedAt         0
+Values             24 24 0 0
+ExtraFlags         0
+Weight             1
+Timer              0
+BitVector          0
+Type               17
+WearFlags          16385
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              94
+ContainedBy        9
+Name               water cup~
+Description
+A cup of fine water rests here.~
+ShortDescr
+a cup~
+ActionDescr
+(null)~
+VNum               5010
+EquippedAt         0
+Values             24 0 0 0
+ExtraFlags         0
+Weight             -23
+Timer              0
+BitVector          0
+Type               17
+WearFlags          16385
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              94
+ContainedBy        9
+Name               water cup~
+Description
+A cup of fine water rests here.~
+ShortDescr
+a cup~
+ActionDescr
+(null)~
+VNum               5010
+EquippedAt         0
+Values             24 0 0 0
+ExtraFlags         0
+Weight             -23
+Timer              0
+BitVector          0
+Type               17
+WearFlags          16385
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              94
+ContainedBy        9
+Name               water cup~
+Description
+A cup of fine water rests here.~
+ShortDescr
+a cup~
+ActionDescr
+(null)~
+VNum               5010
+EquippedAt         0
+Values             24 0 0 0
+ExtraFlags         0
+Weight             -23
+Timer              0
+BitVector          0
+Type               17
+WearFlags          16385
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              94
+ContainedBy        9
+Name               water cup~
+Description
+A cup of fine water rests here.~
+ShortDescr
+a cup~
+ActionDescr
+(null)~
+VNum               5010
+EquippedAt         0
+Values             24 0 0 0
+ExtraFlags         0
+Weight             -23
+Timer              0
+BitVector          0
+Type               17
+WearFlags          16385
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              94
+ContainedBy        9
+Name               water cup~
+Description
+A cup of fine water rests here.~
+ShortDescr
+a cup~
+ActionDescr
+(null)~
+VNum               5010
+EquippedAt         0
+Values             24 0 0 0
+ExtraFlags         0
+Weight             -23
+Timer              0
+BitVector          0
+Type               17
+WearFlags          16385
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              94
+ContainedBy        9
+Name               water cup~
+Description
+A cup of fine water rests here.~
+ShortDescr
+a cup~
+ActionDescr
+(null)~
+VNum               5010
+EquippedAt         0
+Values             24 0 0 0
+ExtraFlags         0
+Weight             -23
+Timer              0
+BitVector          0
+Type               17
+WearFlags          16385
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              94
+ContainedBy        9
+Name               water cup~
+Description
+A cup of fine water rests here.~
+ShortDescr
+a cup~
+ActionDescr
+(null)~
+VNum               5010
+EquippedAt         0
+Values             24 0 0 0
+ExtraFlags         0
+Weight             -23
+Timer              0
+BitVector          0
+Type               17
+WearFlags          16385
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              94
+ContainedBy        9
+Name               water cup~
+Description
+A cup of fine water rests here.~
+ShortDescr
+a cup~
+ActionDescr
+(null)~
+VNum               5010
+EquippedAt         0
+Values             24 0 0 0
+ExtraFlags         0
+Weight             -23
+Timer              0
+BitVector          0
+Type               17
+WearFlags          16385
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              94
+ContainedBy        9
+Name               shell walnut~
+Description
+A walnut shell lies here, cracked and broken.~
+ShortDescr
+a walnut shell~
+ActionDescr
+(null)~
+VNum               1131
+EquippedAt         0
+Values             0 0 0 0
+ExtraFlags         0
+Weight             1
+Timer              0
+BitVector          0
+Type               11
+WearFlags          16385
+Cost               1
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              94
+ContainedBy        9
+Name               conk shell~
+Description
+A conk shell lies here.~
+ShortDescr
+a conk shell~
+ActionDescr
+(null)~
+VNum               6513
+EquippedAt         0
+Values             12 4 44 36
+ExtraFlags         64
+Weight             1
+Timer              0
+BitVector          0
+Type               10
+WearFlags          16385
+Cost               32
+CostPerDay         32
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              94
+ContainedBy        9
+Name               conk shell~
+Description
+A conk shell lies here.~
+ShortDescr
+a conk shell~
+ActionDescr
+(null)~
+VNum               6513
+EquippedAt         0
+Values             12 4 44 36
+ExtraFlags         64
+Weight             1
+Timer              0
+BitVector          0
+Type               10
+WearFlags          16385
+Cost               32
+CostPerDay         32
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              94
+ContainedBy        9
+Name               conk shell~
+Description
+A conk shell lies here.~
+ShortDescr
+a conk shell~
+ActionDescr
+(null)~
+VNum               6513
+EquippedAt         0
+Values             12 4 44 36
+ExtraFlags         64
+Weight             1
+Timer              0
+BitVector          0
+Type               10
+WearFlags          16385
+Cost               32
+CostPerDay         32
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              94
+ContainedBy        9
+Name               conk shell~
+Description
+A conk shell lies here.~
+ShortDescr
+a conk shell~
+ActionDescr
+(null)~
+VNum               6513
+EquippedAt         0
+Values             12 4 44 36
+ExtraFlags         64
+Weight             1
+Timer              0
+BitVector          0
+Type               10
+WearFlags          16385
+Cost               32
+CostPerDay         32
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              94
+ContainedBy        9
+Name               shell walnut~
+Description
+A walnut shell lies here, cracked and broken.~
+ShortDescr
+a walnut shell~
+ActionDescr
+(null)~
+VNum               1131
+EquippedAt         0
+Values             0 0 0 0
+ExtraFlags         0
+Weight             1
+Timer              0
+BitVector          0
+Type               11
+WearFlags          16385
+Cost               1
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              94
+ContainedBy        9
+Name               ebon tiera~
+Description
+A tiera made of dark ebony lies here.~
+ShortDescr
+a ebon tiera~
+ActionDescr
+(null)~
+VNum               6428
+EquippedAt         0
+Values             0 0 0 0
+ExtraFlags         64
+Weight             2
+Timer              0
+BitVector          0
+Type               11
+WearFlags          17
+Cost               290
+CostPerDay         490
+Affect             4 2
+Affect             3 -1
+End
+#ITEM
+ObjId              94
+ContainedBy        9
+Name               ebon tiera~
+Description
+A tiera made of dark ebony lies here.~
+ShortDescr
+a ebon tiera~
+ActionDescr
+(null)~
+VNum               6428
+EquippedAt         0
+Values             0 0 0 0
+ExtraFlags         64
+Weight             2
+Timer              0
+BitVector          0
+Type               11
+WearFlags          17
+Cost               290
+CostPerDay         490
+Affect             4 2
+Affect             3 -1
+End
+#ITEM
+ObjId              94
+ContainedBy        9
+Name               ebon tiera~
+Description
+A tiera made of dark ebony lies here.~
+ShortDescr
+a ebon tiera~
+ActionDescr
+(null)~
+VNum               6428
+EquippedAt         0
+Values             0 0 0 0
+ExtraFlags         64
+Weight             2
+Timer              0
+BitVector          0
+Type               11
+WearFlags          17
+Cost               290
+CostPerDay         490
+Affect             4 2
+Affect             3 -1
+End
+#ITEM
+ObjId              94
+ContainedBy        9
+Name               ring ebon~
+Description
+A ring, black with a ebon gem lies here.~
+ShortDescr
+a ebon ring~
+ActionDescr
+(null)~
+VNum               5916
+EquippedAt         0
+Values             0 0 0 0
+ExtraFlags         576
+Weight             1
+Timer              0
+BitVector          0
+Type               11
+WearFlags          3
+Cost               432
+CostPerDay         123
+Affect             4 1
+Affect             3 -1
+End
+#ITEM
+ObjId              94
+ContainedBy        9
+Name               ring ebon~
+Description
+A ring, black with a ebon gem lies here.~
+ShortDescr
+a ebon ring~
+ActionDescr
+(null)~
+VNum               5916
+EquippedAt         0
+Values             0 0 0 0
+ExtraFlags         576
+Weight             1
+Timer              0
+BitVector          0
+Type               11
+WearFlags          3
+Cost               432
+CostPerDay         123
+Affect             4 1
+Affect             3 -1
+End
+#ITEM
+ObjId              94
+ContainedBy        9
+Name               ring ebon~
+Description
+A ring, black with a ebon gem lies here.~
+ShortDescr
+a ebon ring~
+ActionDescr
+(null)~
+VNum               5916
+EquippedAt         0
+Values             0 0 0 0
+ExtraFlags         576
+Weight             1
+Timer              0
+BitVector          0
+Type               11
+WearFlags          3
+Cost               432
+CostPerDay         123
+Affect             4 1
+Affect             3 -1
+End
+#ITEM
+ObjId              94
+ContainedBy        9
+Name               ring ebon~
+Description
+A ring, black with a ebon gem lies here.~
+ShortDescr
+a ebon ring~
+ActionDescr
+(null)~
+VNum               5916
+EquippedAt         0
+Values             0 0 0 0
+ExtraFlags         576
+Weight             1
+Timer              0
+BitVector          0
+Type               11
+WearFlags          3
+Cost               432
+CostPerDay         123
+Affect             4 1
+Affect             3 -1
+End
+#ITEM
+ObjId              94
+ContainedBy        9
+Name               ring ebon~
+Description
+A ring, black with a ebon gem lies here.~
+ShortDescr
+a ebon ring~
+ActionDescr
+(null)~
+VNum               5916
+EquippedAt         0
+Values             0 0 0 0
+ExtraFlags         576
+Weight             1
+Timer              0
+BitVector          0
+Type               11
+WearFlags          3
+Cost               432
+CostPerDay         123
+Affect             4 1
+Affect             3 -1
+End
+#ITEM
+ObjId              94
+ContainedBy        9
+Name               ring ebon~
+Description
+A ring, black with a ebon gem lies here.~
+ShortDescr
+a ebon ring~
+ActionDescr
+(null)~
+VNum               5916
+EquippedAt         0
+Values             0 0 0 0
+ExtraFlags         576
+Weight             1
+Timer              0
+BitVector          0
+Type               11
+WearFlags          3
+Cost               432
+CostPerDay         123
+Affect             4 1
+Affect             3 -1
+End
+#ITEM
+ObjId              94
+ContainedBy        9
+Name               scroll~
+Description
+A scroll lies here.~
+ShortDescr
+a scroll~
+ActionDescr
+(null)~
+VNum               5927
+EquippedAt         0
+Values             16 6 -1 -1
+ExtraFlags         64
+Weight             1
+Timer              0
+BitVector          0
+Type               2
+WearFlags          16385
+Cost               349
+CostPerDay         49
+Affect             0 0
+Affect             0 0
+ExtraDescr         scroll~
+The scroll has the words 'Oculocula Uizugubusuhl'
+~
+End
+#ITEM
+ObjId              94
+ContainedBy        9
+Name               scroll~
+Description
+A scroll lies here.~
+ShortDescr
+a scroll~
+ActionDescr
+(null)~
+VNum               5928
+EquippedAt         0
+Values             16 12 -1 -1
+ExtraFlags         64
+Weight             1
+Timer              0
+BitVector          0
+Type               2
+WearFlags          16385
+Cost               349
+CostPerDay         49
+Affect             0 0
+Affect             0 0
+ExtraDescr         scroll~
+The scroll has the words 'Qfzahz Yaae'
+~
+End
+#ITEM
+ObjId              94
+ContainedBy        9
+Name               scroll~
+Description
+A scroll lies here.~
+ShortDescr
+a scroll~
+ActionDescr
+(null)~
+VNum               5929
+EquippedAt         0
+Values             16 22 -1 -1
+ExtraFlags         64
+Weight             1
+Timer              0
+BitVector          0
+Type               2
+WearFlags          16385
+Cost               349
+CostPerDay         49
+Affect             0 0
+Affect             0 0
+ExtraDescr         scroll~
+The scroll has the words 'Eugtzs Zzus'
+~
+End
+#ITEM
+ObjId              94
+ContainedBy        9
+Name               scroll~
+Description
+A scroll lies here.~
+ShortDescr
+a scroll~
+ActionDescr
+(null)~
+VNum               5930
+EquippedAt         0
+Values             16 29 -1 -1
+ExtraFlags         64
+Weight             1
+Timer              0
+BitVector          0
+Type               2
+WearFlags          16385
+Cost               349
+CostPerDay         49
+Affect             0 0
+Affect             0 0
+ExtraDescr         scroll~
+The scroll has the words 'Uizugubusuhl'
+~
+End
+#ITEM
+ObjId              94
+ContainedBy        9
+Name               case scroll~
+Description
+A scroll case lies here.~
+ShortDescr
+a scroll case~
+ActionDescr
+(null)~
+VNum               5926
+EquippedAt         0
+Values             5 5 -1 0
+ExtraFlags         0
+Weight             6
+Timer              0
+BitVector          0
+Type               15
+WearFlags          16385
+Cost               39
+CostPerDay         39
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              94
+ContainedBy        9
+Name               scroll~
+Description
+A scroll lies here.~
+ShortDescr
+a scroll~
+ActionDescr
+(null)~
+VNum               5930
+EquippedAt         0
+Values             16 29 -1 -1
+ExtraFlags         64
+Weight             1
+Timer              0
+BitVector          0
+Type               2
+WearFlags          16385
+Cost               349
+CostPerDay         49
+Affect             0 0
+Affect             0 0
+ExtraDescr         scroll~
+The scroll has the words 'Uizugubusuhl'
+~
+End
+#ITEM
+ObjId              94
+ContainedBy        9
+Name               scroll~
+Description
+A scroll lies here.~
+ShortDescr
+a scroll~
+ActionDescr
+(null)~
+VNum               5929
+EquippedAt         0
+Values             16 22 -1 -1
+ExtraFlags         64
+Weight             1
+Timer              0
+BitVector          0
+Type               2
+WearFlags          16385
+Cost               349
+CostPerDay         49
+Affect             0 0
+Affect             0 0
+ExtraDescr         scroll~
+The scroll has the words 'Eugtzs Zzus'
+~
+End
+#ITEM
+ObjId              94
+ContainedBy        9
+Name               scroll~
+Description
+A scroll lies here.~
+ShortDescr
+a scroll~
+ActionDescr
+(null)~
+VNum               5928
+EquippedAt         0
+Values             16 12 -1 -1
+ExtraFlags         64
+Weight             1
+Timer              0
+BitVector          0
+Type               2
+WearFlags          16385
+Cost               349
+CostPerDay         49
+Affect             0 0
+Affect             0 0
+ExtraDescr         scroll~
+The scroll has the words 'Qfzahz Yaae'
+~
+End
+#ITEM
+ObjId              94
+ContainedBy        9
+Name               scroll~
+Description
+A scroll lies here.~
+ShortDescr
+a scroll~
+ActionDescr
+(null)~
+VNum               5927
+EquippedAt         0
+Values             16 6 -1 -1
+ExtraFlags         64
+Weight             1
+Timer              0
+BitVector          0
+Type               2
+WearFlags          16385
+Cost               349
+CostPerDay         49
+Affect             0 0
+Affect             0 0
+ExtraDescr         scroll~
+The scroll has the words 'Oculocula Uizugubusuhl'
+~
+End
+#ITEM
+ObjId              94
+ContainedBy        9
+Name               scroll~
+Description
+A rolled up scroll lies here.~
+ShortDescr
+a rolled up scroll~
+ActionDescr
+(null)~
+VNum               20204
+EquippedAt         0
+Values             0 0 0 0
+ExtraFlags         0
+Weight             1
+Timer              0
+BitVector          0
+Type               12
+WearFlags          16385
+Cost               0
+CostPerDay         0
+Affect             0 0
+Affect             0 0
+ExtraDescr         note scroll paper~
+
+To: Saad
+From: Ahali(source)
+
+  I have found the key to morgoths tower.  I might
+have been seen as i left the tower, so i will be hiding
+out in the southern part of town, in the poor sector for
+two days.  I will return to the hideout in three days.
+Ohhhh.... the treasures i saw.......
+
+
+                                       Ahali
+~
+End
+#ITEM
+ObjId              94
+ContainedBy        9
+Name               case scroll~
+Description
+A scroll case lies here.~
+ShortDescr
+a scroll case~
+ActionDescr
+(null)~
+VNum               5926
+EquippedAt         0
+Values             5 5 -1 0
+ExtraFlags         0
+Weight             6
+Timer              0
+BitVector          0
+Type               15
+WearFlags          16385
+Cost               39
+CostPerDay         39
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              94
+ContainedBy        9
+Name               yellow potion~
+Description
+A yellow potion sits here.~
+ShortDescr
+a yellow potion~
+ActionDescr
+(null)~
+VNum               9707
+EquippedAt         0
+Values             15 1 3 -1
+ExtraFlags         64
+Weight             1
+Timer              0
+BitVector          0
+Type               10
+WearFlags          16385
+Cost               1000
+CostPerDay         10
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              94
+ContainedBy        9
+Name               yellow potion~
+Description
+A yellow potion sits here.~
+ShortDescr
+a yellow potion~
+ActionDescr
+(null)~
+VNum               9707
+EquippedAt         0
+Values             15 1 3 -1
+ExtraFlags         64
+Weight             1
+Timer              0
+BitVector          0
+Type               10
+WearFlags          16385
+Cost               1000
+CostPerDay         10
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              94
+ContainedBy        9
+Name               potion red~
+Description
+A vial filled with a red, pasty substance is here.~
+ShortDescr
+a red potion~
+ActionDescr
+(null)~
+VNum               9204
+EquippedAt         0
+Values             1 16 0 0
+ExtraFlags         0
+Weight             1
+Timer              0
+BitVector          0
+Type               10
+WearFlags          1
+Cost               65
+CostPerDay         65
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              94
+ContainedBy        9
+Name               potion saphire~
+Description
+There is a small potion laying here.~
+ShortDescr
+a saphire potion~
+ActionDescr
+(null)~
+VNum               4609
+EquippedAt         0
+Values             15 1 3 -1
+ExtraFlags         64
+Weight             1
+Timer              0
+BitVector          0
+Type               10
+WearFlags          1
+Cost               1000
+CostPerDay         400
+Affect             0 0
+Affect             0 0
+ExtraDescr         potion~
+This potion has a saphire colored liquid inside of it.
+~
+End
+#ITEM
+ObjId              94
+ContainedBy        9
+Name               pink potion~
+Description
+A pink potion lies here.~
+ShortDescr
+a pink potion~
+ActionDescr
+(null)~
+VNum               9802
+EquippedAt         0
+Values             30 28 -1 -1
+ExtraFlags         64
+Weight             2
+Timer              0
+BitVector          0
+Type               10
+WearFlags          16385
+Cost               233
+CostPerDay         34
+Affect             0 0
+Affect             0 0
+ExtraDescr         potion pink~
+The potion swirls clockwise.
+~
+End
+#ITEM
+ObjId              94
+ContainedBy        9
+Name               pink potion~
+Description
+A pink potion lies here.~
+ShortDescr
+a pink potion~
+ActionDescr
+(null)~
+VNum               9803
+EquippedAt         0
+Values             30 27 -1 -1
+ExtraFlags         64
+Weight             2
+Timer              0
+BitVector          0
+Type               10
+WearFlags          16385
+Cost               364
+CostPerDay         30
+Affect             0 0
+Affect             0 0
+ExtraDescr         potion pink~
+The potion swirls counter clockwise.
+~
+End
+#ITEM
+ObjId              94
+ContainedBy        9
+Name               yellow potion~
+Description
+A yellow potion sits here.~
+ShortDescr
+a yellow potion~
+ActionDescr
+(null)~
+VNum               9707
+EquippedAt         0
+Values             15 1 3 -1
+ExtraFlags         64
+Weight             1
+Timer              0
+BitVector          0
+Type               10
+WearFlags          16385
+Cost               1000
+CostPerDay         10
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              94
+ContainedBy        9
+Name               dragon scale bracer~
+Description
+A dragon scale bracer lies here.~
+ShortDescr
+a scale bracer~
+ActionDescr
+(null)~
+VNum               9718
+EquippedAt         0
+Values             1 3 0 0
+ExtraFlags         0
+Weight             1
+Timer              0
+BitVector          0
+Type               9
+WearFlags          4097
+Cost               345
+CostPerDay         345
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              94
+ContainedBy        9
+Name               dragon scale bracer~
+Description
+A dragon scale bracer lies here.~
+ShortDescr
+a scale bracer~
+ActionDescr
+(null)~
+VNum               9718
+EquippedAt         0
+Values             3 3 0 0
+ExtraFlags         0
+Weight             1
+Timer              0
+BitVector          0
+Type               9
+WearFlags          4097
+Cost               345
+CostPerDay         345
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              94
+ContainedBy        9
+Name               dragon scale bracer~
+Description
+A dragon scale bracer lies here.~
+ShortDescr
+a scale bracer~
+ActionDescr
+(null)~
+VNum               9718
+EquippedAt         0
+Values             2 3 0 0
+ExtraFlags         0
+Weight             1
+Timer              0
+BitVector          0
+Type               9
+WearFlags          4097
+Cost               345
+CostPerDay         345
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              94
+ContainedBy        9
+Name               scale boots~
+Description
+A pair of boots made with metal scales is here.~
+ShortDescr
+A pair of scale boots~
+ActionDescr
+(null)~
+VNum               15009
+EquippedAt         0
+Values             4 4 0 0
+ExtraFlags         90112
+Weight             8
+Timer              0
+BitVector          0
+Type               9
+WearFlags          65
+Cost               150
+CostPerDay         30
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              94
+ContainedBy        9
+Name               dragon scale shield~
+Description
+A dragon scale shield lies here.~
+ShortDescr
+a dragon scale shield~
+ActionDescr
+(null)~
+VNum               9710
+EquippedAt         0
+Values             14 15 0 0
+ExtraFlags         24576
+Weight             6
+Timer              0
+BitVector          0
+Type               9
+WearFlags          513
+Cost               1932
+CostPerDay         932
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              94
+ContainedBy        9
+Name               dragon scale shield~
+Description
+A dragon scale shield lies here.~
+ShortDescr
+a dragon scale shield~
+ActionDescr
+(null)~
+VNum               9710
+EquippedAt         0
+Values             15 15 0 0
+ExtraFlags         24576
+Weight             6
+Timer              0
+BitVector          0
+Type               9
+WearFlags          513
+Cost               1932
+CostPerDay         932
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              94
+ContainedBy        9
+Name               wand black~
+Description
+There is a small black wand resting here on the ground.~
+ShortDescr
+a black wand~
+ActionDescr
+(null)~
+VNum               4608
+EquippedAt         0
+Values             15 1 1 26
+ExtraFlags         118848
+Weight             1
+Timer              0
+BitVector          0
+Type               3
+WearFlags          16385
+Cost               5000
+CostPerDay         1000
+Affect             0 0
+Affect             0 0
+ExtraDescr         black wand~
+The wand has many strange arcane writings upon it.
+~
+End
+#ITEM
+ObjId              94
+ContainedBy        9
+Name               wand black~
+Description
+There is a small black wand resting here on the ground.~
+ShortDescr
+a black wand~
+ActionDescr
+(null)~
+VNum               4608
+EquippedAt         0
+Values             15 1 1 26
+ExtraFlags         118848
+Weight             1
+Timer              0
+BitVector          0
+Type               3
+WearFlags          16385
+Cost               5000
+CostPerDay         1000
+Affect             0 0
+Affect             0 0
+ExtraDescr         black wand~
+The wand has many strange arcane writings upon it.
+~
+End
+#ITEM
+ObjId              94
+ContainedBy        9
+Name               sickle black~
+Description
+A sickle lies here.~
+ShortDescr
+a black sickle~
+ActionDescr
+(null)~
+VNum               9804
+EquippedAt         0
+Values             0 2 7 3
+ExtraFlags         96832
+Weight             14
+Timer              0
+BitVector          0
+Type               5
+WearFlags          32769
+Cost               2678
+CostPerDay         1500
+Affect             40 3
+Affect             0 0
+End
+#ITEM
+ObjId              94
+ContainedBy        9
+Name               sickle black~
+Description
+A sickle lies here.~
+ShortDescr
+a black sickle~
+ActionDescr
+(null)~
+VNum               9804
+EquippedAt         0
+Values             0 2 5 3
+ExtraFlags         96832
+Weight             14
+Timer              0
+BitVector          0
+Type               5
+WearFlags          32769
+Cost               2678
+CostPerDay         1500
+Affect             40 3
+Affect             0 0
+End
+#ITEM
+ObjId              94
+ContainedBy        9
+Name               breast plate black engraved~
+Description
+A breast plate, engraved with black metal lies here.~
+ShortDescr
+a black engraaved breast plate~
+ActionDescr
+(null)~
+VNum               9010
+EquippedAt         0
+Values             2 2 0 0
+ExtraFlags         90112
+Weight             34
+Timer              0
+BitVector          0
+Type               9
+WearFlags          9
+Cost               654
+CostPerDay         354
+Affect             17 -5
+Affect             0 0
+End
+#ITEM
+ObjId              94
+ContainedBy        9
+Name               cloak black elven~
+Description
+A tattered black elven cloak lies here.~
+ShortDescr
+A black tattered elven cloak~
+ActionDescr
+(null)~
+VNum               7010
+EquippedAt         0
+Values             7 8 0 0
+ExtraFlags         64
+Weight             2
+Timer              0
+BitVector          0
+Type               9
+WearFlags          1025
+Cost               500
+CostPerDay         100
+Affect             34 5
+Affect             35 5
+End
+#ITEM
+ObjId              94
+ContainedBy        9
+Name               ring clear gem~
+Description
+A ring lies here, the gem clear and unmarred.~
+ShortDescr
+a clear gem ring~
+ActionDescr
+(null)~
+VNum               5931
+EquippedAt         0
+Values             0 0 0 0
+ExtraFlags         64
+Weight             1
+Timer              0
+BitVector          0
+Type               11
+WearFlags          3
+Cost               597
+CostPerDay         597
+Affect             1 1
+Affect             0 0
+End
+#ITEM
+ObjId              94
+ContainedBy        9
+Name               ring clear gem~
+Description
+A ring lies here, the gem clear and unmarred.~
+ShortDescr
+a clear gem ring~
+ActionDescr
+(null)~
+VNum               5931
+EquippedAt         0
+Values             0 0 0 0
+ExtraFlags         64
+Weight             1
+Timer              0
+BitVector          0
+Type               11
+WearFlags          3
+Cost               597
+CostPerDay         597
+Affect             1 1
+Affect             0 0
+End
+#ITEM
+ObjId              94
+ContainedBy        9
+Name               giant granite ring~
+Description
+A giant granite ring lies here.~
+ShortDescr
+a giant granite ring~
+ActionDescr
+(null)~
+VNum               26007
+EquippedAt         0
+Values             5 5 0 0
+ExtraFlags         24640
+Weight             8
+Timer              0
+BitVector          0
+Type               9
+WearFlags          2049
+Cost               5000
+CostPerDay         5
+Affect             17 -2
+Affect             0 0
+End
+#ITEM
+ObjId              94
+ContainedBy        9
+Name               pearl ring~
+Description
+A small ring lies here on the ground.~
+ShortDescr
+a pearl ring~
+ActionDescr
+(null)~
+VNum               4602
+EquippedAt         0
+Values             0 0 -1 0
+ExtraFlags         64
+Weight             1
+Timer              0
+BitVector          0
+Type               1
+WearFlags          3
+Cost               1001
+CostPerDay         150
+Affect             0 0
+Affect             0 0
+ExtraDescr         ring~
+This small ring has a pure pearl in the center.
+~
+End
+#ITEM
+ObjId              94
+ContainedBy        9
+Name               pearl ring~
+Description
+A small ring lies here on the ground.~
+ShortDescr
+a pearl ring~
+ActionDescr
+(null)~
+VNum               4602
+EquippedAt         0
+Values             0 0 -1 0
+ExtraFlags         64
+Weight             1
+Timer              0
+BitVector          0
+Type               1
+WearFlags          3
+Cost               1001
+CostPerDay         150
+Affect             0 0
+Affect             0 0
+ExtraDescr         ring~
+This small ring has a pure pearl in the center.
+~
+End
+#ITEM
+ObjId              94
+ContainedBy        9
+Name               beer barrel pony keg~
+Description
+A beer barrel has been left here.~
+ShortDescr
+a pony keg~
+ActionDescr
+(null)~
+VNum               3000
+EquippedAt         0
+Values             50 0 0 0
+ExtraFlags         0
+Weight             -20
+Timer              0
+BitVector          0
+Type               17
+WearFlags          16385
+Cost               300
+CostPerDay         100
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              94
+ContainedBy        9
+Name               beer barrel pony keg~
+Description
+A beer barrel has been left here.~
+ShortDescr
+a pony keg~
+ActionDescr
+(null)~
+VNum               3000
+EquippedAt         0
+Values             50 0 0 0
+ExtraFlags         0
+Weight             -20
+Timer              0
+BitVector          0
+Type               17
+WearFlags          16385
+Cost               300
+CostPerDay         100
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              94
+ContainedBy        9
+Name               ring clear gem~
+Description
+A ring lies here, the gem clear and unmarred.~
+ShortDescr
+a clear gem ring~
+ActionDescr
+(null)~
+VNum               5931
+EquippedAt         -1
+Values             0 0 0 0
+ExtraFlags         64
+Weight             1
+Timer              0
+BitVector          0
+Type               11
+WearFlags          3
+Cost               597
+CostPerDay         597
+Affect             1 1
+Affect             0 0
+End
+#ITEM
+ObjId              94
+ContainedBy        9
+Name               ring clear gem~
+Description
+A ring lies here, the gem clear and unmarred.~
+ShortDescr
+a clear gem ring~
+ActionDescr
+(null)~
+VNum               5931
+EquippedAt         -1
+Values             0 0 0 0
+ExtraFlags         64
+Weight             1
+Timer              0
+BitVector          0
+Type               11
+WearFlags          3
+Cost               597
+CostPerDay         597
+Affect             1 1
+Affect             0 0
+End
+#ITEM
+ObjId              94
+ContainedBy        9
+Name               thick bearskin cloak~
+Description
+A bearskin lies here.~
+ShortDescr
+a thick bearskin cloak~
+ActionDescr
+(null)~
+VNum               5413
+EquippedAt         -1
+Values             3 3 0 0
+ExtraFlags         0
+Weight             34
+Timer              0
+BitVector          0
+Type               9
+WearFlags          5
+Cost               529
+CostPerDay         259
+Affect             17 -5
+Affect             26 2
+End
+#ITEM
+ObjId              94
+ContainedBy        9
+Name               helm black~
+Description
+A helm made of black metal lies here.~
+ShortDescr
+a black engraved helm~
+ActionDescr
+(null)~
+VNum               9009
+EquippedAt         -1
+Values             4 4 0 0
+ExtraFlags         90112
+Weight             13
+Timer              0
+BitVector          0
+Type               9
+WearFlags          17
+Cost               234
+CostPerDay         234
+Affect             17 -3
+Affect             0 0
+End
+#ITEM
+ObjId              94
+ContainedBy        9
+Name               chestplate golden~
+Description
+A golden chestplate sparkles on the ground here.~
+ShortDescr
+a golden chestplate~
+ActionDescr
+(null)~
+VNum               5077
+EquippedAt         -1
+Values             4 5 0 0
+ExtraFlags         90368
+Weight             55
+Timer              0
+BitVector          0
+Type               9
+WearFlags          9
+Cost               6519
+CostPerDay         2519
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              94
+ContainedBy        9
+Name               red jeweled necklace~
+Description
+A necklace with a red jewel in it lies here.~
+ShortDescr
+a red jeweled necklace~
+ActionDescr
+(null)~
+VNum               6426
+EquippedAt         -1
+Values             0 0 0 0
+ExtraFlags         64
+Weight             2
+Timer              0
+BitVector          0
+Type               11
+WearFlags          5
+Cost               983
+CostPerDay         983
+Affect             12 5
+Affect             0 0
+End
+#ITEM
+ObjId              94
+ContainedBy        9
+Name               red hooded robe~
+Description
+A red hooded robe lies here.~
+ShortDescr
+a red hooded robe~
+ActionDescr
+(null)~
+VNum               6429
+EquippedAt         0
+Values             0 0 0 0
+ExtraFlags         0
+Weight             4
+Timer              0
+BitVector          0
+Type               11
+WearFlags          1025
+Cost               34
+CostPerDay         34
+Affect             17 -3
+Affect             0 0
+End
+#ITEM
+ObjId              94
+ContainedBy        9
+Name               longsword sword~
+Description
+A longsword lies here.~
+ShortDescr
+a longsword~
+ActionDescr
+(null)~
+VNum               9801
+EquippedAt         0
+Values             0 1 8 3
+ExtraFlags         28736
+Weight             12
+Timer              0
+BitVector          0
+Type               5
+WearFlags          40961
+Cost               1400
+CostPerDay         800
+Affect             19 3
+Affect             0 0
+End
+#ITEM
+ObjId              94
+ContainedBy        9
+Name               sword longsword rusty~
+Description
+A longsword covered in rust lies here.~
+ShortDescr
+a rusty longsword~
+ActionDescr
+(null)~
+VNum               20001
+EquippedAt         0
+Values             0 1 6 3
+ExtraFlags         12352
+Weight             10
+Timer              0
+BitVector          0
+Type               5
+WearFlags          8193
+Cost               10
+CostPerDay         10
+Affect             18 2
+Affect             0 0
+ExtraDescr         longsword sword rusty~
+  The blade of this sword barely looks like it wouldn't cut through a apple
+let alone armor and tough flesh.  Despite its decrepit blade it does seem
+to still balance well, almost too well.
+~
+End
+#ITEM
+ObjId              94
+ContainedBy        9
+Name               sword blade two handed engraved~
+Description
+A huge sword lies here, engravings upon the blade.~
+ShortDescr
+a engraved two-handed blade~
+ActionDescr
+(null)~
+VNum               9020
+EquippedAt         0
+Values             0 1 10 3
+ExtraFlags         28672
+Weight             18
+Timer              0
+BitVector          0
+Type               5
+WearFlags          32769
+Cost               345
+CostPerDay         345
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              94
+ContainedBy        9
+Name               bastard sword~
+Description
+A large bastard sword lies here.~
+ShortDescr
+a bastard sword~
+ActionDescr
+(null)~
+VNum               5023
+EquippedAt         0
+Values             0 2 4 3
+ExtraFlags         30016
+Weight             10
+Timer              0
+BitVector          0
+Type               5
+WearFlags          40961
+Cost               700
+CostPerDay         200
+Affect             18 2
+Affect             19 2
+End
+#ITEM
+ObjId              94
+ContainedBy        9
+Name               steel banded bracer~
+Description
+A steel banded bracer lies here.~
+ShortDescr
+a steel banded bracer~
+ActionDescr
+(null)~
+VNum               6431
+EquippedAt         -1
+Values             0 0 0 0
+ExtraFlags         0
+Weight             2
+Timer              0
+BitVector          0
+Type               11
+WearFlags          4097
+Cost               134
+CostPerDay         134
+Affect             17 -2
+Affect             0 0
+End
+#ITEM
+ObjId              94
+ContainedBy        9
+Name               steel banded bracer~
+Description
+A steel banded bracer lies here.~
+ShortDescr
+a steel banded bracer~
+ActionDescr
+(null)~
+VNum               6431
+EquippedAt         -1
+Values             0 0 0 0
+ExtraFlags         0
+Weight             2
+Timer              0
+BitVector          0
+Type               11
+WearFlags          4097
+Cost               134
+CostPerDay         134
+Affect             17 -2
+Affect             0 0
+End
+#ITEM
+ObjId              111
+ContainedBy        -1
+Name               headress feathered~
+Description
+A headress made completely of feathers lies here.~
+ShortDescr
+a feathered headress~
+ActionDescr
+(null)~
+VNum               1309
+EquippedAt         0
+Values             2 3 0 0
+ExtraFlags         0
+Weight             13
+Timer              0
+BitVector          0
+Type               9
+WearFlags          17
+Cost               658
+CostPerDay         658
+Affect             3 1
+Affect             2 -1
+End
+#ITEM
+ObjId              111
+ContainedBy        -1
+Name               rusty warhammer~
+Description
+A rusty warhammer lies here.~
+ShortDescr
+rusty warhammer~
+ActionDescr
+(null)~
+VNum               9713
+EquippedAt         0
+Values             0 2 5 7
+ExtraFlags         24576
+Weight             7
+Timer              0
+BitVector          0
+Type               5
+WearFlags          49153
+Cost               98
+CostPerDay         98
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              111
+ContainedBy        -1
+Name               rusty warhammer~
+Description
+A rusty warhammer lies here.~
+ShortDescr
+rusty warhammer~
+ActionDescr
+(null)~
+VNum               9713
+EquippedAt         0
+Values             0 2 5 7
+ExtraFlags         25664
+Weight             7
+Timer              0
+BitVector          0
+Type               5
+WearFlags          49153
+Cost               98
+CostPerDay         98
+Affect             18 1
+Affect             19 2
+End
+#ITEM
+ObjId              111
+ContainedBy        -1
+Name               emerald gem~
+Description
+An emerald gem lies here.~
+ShortDescr
+an emerald gem~
+ActionDescr
+(null)~
+VNum               9809
+EquippedAt         0
+Values             1 0 0 0
+ExtraFlags         0
+Weight             1
+Timer              0
+BitVector          0
+Type               18
+WearFlags          16385
+Cost               1848
+CostPerDay         32
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              111
+ContainedBy        -1
+Name               emerald gem~
+Description
+An emerald gem lies here.~
+ShortDescr
+an emerald gem~
+ActionDescr
+(null)~
+VNum               9809
+EquippedAt         0
+Values             1 0 0 0
+ExtraFlags         0
+Weight             1
+Timer              0
+BitVector          0
+Type               18
+WearFlags          16385
+Cost               1848
+CostPerDay         32
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              111
+ContainedBy        -1
+Name               golden dagger~
+Description
+A golden dagger lies here.~
+ShortDescr
+a golden dagger~
+ActionDescr
+(null)~
+VNum               9805
+EquippedAt         0
+Values             0 2 4 11
+ExtraFlags         6656
+Weight             2
+Timer              0
+BitVector          0
+Type               5
+WearFlags          8193
+Cost               2861
+CostPerDay         332
+Affect             32 6
+Affect             0 0
+End
+#ITEM
+ObjId              111
+ContainedBy        -1
+Name               bag~
+Description
+A small bag.~
+ShortDescr
+a bag~
+ActionDescr
+(null)~
+VNum               3017
+EquippedAt         0
+Values             50 0 0 0
+ExtraFlags         0
+Weight             2
+Timer              0
+BitVector          0
+Type               15
+WearFlags          16385
+Cost               20
+CostPerDay         2
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              111
+ContainedBy        -1
+Name               aklan symbol broach~
+Description
+A broach lies here, the symbol of Aklan upon it.~
+ShortDescr
+a aklan symbol broach~
+ActionDescr
+(null)~
+VNum               6430
+EquippedAt         0
+Values             0 0 0 0
+ExtraFlags         0
+Weight             3
+Timer              0
+BitVector          0
+Type               11
+WearFlags          9
+Cost               54
+CostPerDay         54
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              111
+ContainedBy        -1
+Name               aklan broach~
+Description
+A broach lies here, the symbol of Aklan upon it.~
+ShortDescr
+a aklan broach~
+ActionDescr
+(null)~
+VNum               6424
+EquippedAt         0
+Values             0 0 0 0
+ExtraFlags         2624
+Weight             2
+Timer              0
+BitVector          0
+Type               11
+WearFlags          9
+Cost               456
+CostPerDay         456
+Affect             17 -9
+Affect             26 5
+End
+#ITEM
+ObjId              111
+ContainedBy        -1
+Name               staff ruling large~
+Description
+A large and intricate staff rests here.~
+ShortDescr
+a wooden staff~
+ActionDescr
+(null)~
+VNum               4708
+EquippedAt         0
+Values             25 5 5 7
+ExtraFlags         118848
+Weight             10
+Timer              0
+BitVector          0
+Type               4
+WearFlags          16385
+Cost               1000
+CostPerDay         100
+Affect             0 0
+Affect             0 0
+ExtraDescr         staff~
+  The staff has many intricate runes upon it, there is no doubt this object
+is for the arcane arts.  
+~
+End
+#ITEM
+ObjId              111
+ContainedBy        -1
+Name               ivory candle holder~
+Description
+A ivory candle holder lies here.~
+ShortDescr
+a ivory candle holder~
+ActionDescr
+(null)~
+VNum               5913
+EquippedAt         0
+Values             2 0 0 0
+ExtraFlags         0
+Weight             1
+Timer              0
+BitVector          0
+Type               18
+WearFlags          16385
+Cost               134
+CostPerDay         1234
+Affect             0 0
+Affect             0 0
+ExtraDescr         ivory candle holder~
+Looking closely at the end you notice that it is shaped much like that of a
+skeleton key, many notches and angles upon it.
+~
+End
+#ITEM
+ObjId              111
+ContainedBy        -1
+Name               silver longblade~
+Description
+A longblade made of silver sparkles here.~
+ShortDescr
+a silver longblade~
+ActionDescr
+(null)~
+VNum               5071
+EquippedAt         0
+Values             0 1 9 3
+ExtraFlags         12288
+Weight             10
+Timer              0
+BitVector          0
+Type               5
+WearFlags          8193
+Cost               500
+CostPerDay         200
+Affect             0 0
+Affect             0 0
+ExtraDescr         silver longblade~
+  The hilt of this fine blade seems to be made of ivory while the blade
+itself seems to have been wrought from silver.  The workmanship is excellent.
+~
+End
+#ITEM
+ObjId              111
+ContainedBy        -1
+Name               scaled tunic~
+Description
+A tunic made from very small scales lies here.~
+ShortDescr
+a scaled tunic~
+ActionDescr
+(null)~
+VNum               6206
+EquippedAt         0
+Values             0 0 0 0
+ExtraFlags         0
+Weight             7
+Timer              0
+BitVector          0
+Type               12
+WearFlags          9
+Cost               335
+CostPerDay         635
+Affect             17 -6
+Affect             0 0
+End
+#ITEM
+ObjId              111
+ContainedBy        -1
+Name               giants femur~
+Description
+A giants femur lies here~
+ShortDescr
+a giants femur~
+ActionDescr
+(null)~
+VNum               9706
+EquippedAt         0
+Values             0 2 3 7
+ExtraFlags         24576
+Weight             7
+Timer              0
+BitVector          0
+Type               5
+WearFlags          8193
+Cost               300
+CostPerDay         300
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              111
+ContainedBy        -1
+Name               pearl small~
+Description
+A small pearl lies here.~
+ShortDescr
+a small pearl~
+ActionDescr
+(null)~
+VNum               6512
+EquippedAt         0
+Values             0 0 -1 0
+ExtraFlags         64
+Weight             1
+Timer              0
+BitVector          0
+Type               1
+WearFlags          1
+Cost               988
+CostPerDay         88
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              111
+ContainedBy        -1
+Name               great helm~
+Description
+A great helm lies here.~
+ShortDescr
+a great helm~
+ActionDescr
+(null)~
+VNum               6119
+EquippedAt         0
+Values             5 5 0 0
+ExtraFlags         90112
+Weight             45
+Timer              0
+BitVector          0
+Type               9
+WearFlags          17
+Cost               2134
+CostPerDay         234
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              111
+ContainedBy        -1
+Name               mace ball pinged~
+Description
+A mace lies here, small pieces of metal on the head.~
+ShortDescr
+a ball pinged mace~
+ActionDescr
+(null)~
+VNum               5094
+EquippedAt         0
+Values             0 1 6 4
+ExtraFlags         0
+Weight             7
+Timer              0
+BitVector          0
+Type               5
+WearFlags          8193
+Cost               543
+CostPerDay         43
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              111
+ContainedBy        -1
+Name               pouch small leather~
+Description
+A small pouch made of soft leather is piled upon the floor.~
+ShortDescr
+a small leather pouch~
+ActionDescr
+(null)~
+VNum               4603
+EquippedAt         -1
+Values             300 1 -1 0
+ExtraFlags         320
+Weight             4
+Timer              0
+BitVector          0
+Type               15
+WearFlags          2049
+Cost               50
+CostPerDay         35
+Affect             0 0
+Affect             0 0
+ExtraDescr         pouch~
+This small pouch is made of soft deerskin.
+~
+End
+#ITEM
+ObjId              111
+ContainedBy        -1
+Name               scale leggings~
+Description
+A pair of leggings made of metal scales are here.~
+ShortDescr
+A pair of scale leggings~
+ActionDescr
+(null)~
+VNum               15006
+EquippedAt         -1
+Values             3 4 0 0
+ExtraFlags         90112
+Weight             16
+Timer              0
+BitVector          0
+Type               9
+WearFlags          33
+Cost               300
+CostPerDay         15
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              111
+ContainedBy        -1
+Name               boots~
+Description
+A pair of boots adorned with feathers lie here.~
+ShortDescr
+a pair of feathered boots~
+ActionDescr
+(null)~
+VNum               5105
+EquippedAt         -1
+Values             4 4 0 0
+ExtraFlags         0
+Weight             5
+Timer              0
+BitVector          0
+Type               9
+WearFlags          65
+Cost               150
+CostPerDay         50
+Affect             0 0
+Affect             0 0
+ExtraDescr         boots~
+  The boots appear to be made of a soft leather but are plated with silver
+plate to provide protection.  The top fringe of the boots are adorned with
+the feathers of a mountain eagle.
+~
+End
+#ITEM
+ObjId              111
+ContainedBy        -1
+Name               armour plated gauntlets~
+Description
+A pair of armour plated gauntlets are here.~
+ShortDescr
+a pair of armour plated gauntlets~
+ActionDescr
+(null)~
+VNum               5040
+EquippedAt         -1
+Values             4 4 0 0
+ExtraFlags         90368
+Weight             15
+Timer              0
+BitVector          0
+Type               9
+WearFlags          129
+Cost               450
+CostPerDay         100
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              111
+ContainedBy        -1
+Name               scale sleeves~
+Description
+A pair of sleeves made of metal scales are here.~
+ShortDescr
+A pair of scale sleeves~
+ActionDescr
+(null)~
+VNum               15007
+EquippedAt         -1
+Values             4 4 0 0
+ExtraFlags         90112
+Weight             16
+Timer              0
+BitVector          0
+Type               9
+WearFlags          257
+Cost               300
+CostPerDay         65
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              111
+ContainedBy        -1
+Name               robe golden silk~
+Description
+A golden robe lays piled upon the ground here.~
+ShortDescr
+a golden silk robe~
+ActionDescr
+(null)~
+VNum               4607
+EquippedAt         -1
+Values             0 0 0 0
+ExtraFlags         118848
+Weight             2
+Timer              0
+BitVector          0
+Type               12
+WearFlags          1025
+Cost               1000
+CostPerDay         100
+Affect             24 4
+Affect             17 -10
+ExtraDescr         robe~
+This elegant robe is made of fine silk, interweaved with golden strands.
+Touching the fabric it almost seethes with power, power only to be held
+by those that can use it.
+~
+End
+#ITEM
+ObjId              111
+ContainedBy        -1
+Name               girth~
+Description
+A silver girth adorned with feathers lies here.~
+ShortDescr
+a feathered girth~
+ActionDescr
+(null)~
+VNum               5106
+EquippedAt         -1
+Values             2 4 0 0
+ExtraFlags         8192
+Weight             10
+Timer              0
+BitVector          0
+Type               9
+WearFlags          2049
+Cost               200
+CostPerDay         100
+Affect             17 -4
+Affect             0 0
+End
+#ITEM
+ObjId              111
+ContainedBy        -1
+Name               rusty warhammer~
+Description
+A rusty warhammer lies here.~
+ShortDescr
+rusty warhammer~
+ActionDescr
+(null)~
+VNum               9713
+EquippedAt         -1
+Values             0 2 5 7
+ExtraFlags         25664
+Weight             7
+Timer              0
+BitVector          0
+Type               5
+WearFlags          49153
+Cost               98
+CostPerDay         98
+Affect             18 2
+Affect             19 2
+End
+End
+#END_RENT

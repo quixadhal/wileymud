@@ -10,16 +10,20 @@
 #include <sys/types.h>
 #include <string.h>
 
-#include "global.h"
-#include "bug.h"
-#include "comm.h"
-#include "handler.h"
-#include "db.h"
-#include "interpreter.h"
-#include "utils.h"
-#include "constants.h"
+#include "include/global.h"
+#include "include/bug.h"
+#include "include/comm.h"
+#include "include/handler.h"
+#include "include/db.h"
+#include "include/interpreter.h"
+#include "include/utils.h"
+#include "include/constants.h"
+#include "include/act_comm.h"
+#include "include/multiclass.h"
+#include "include/act_social.h"
+#include "include/act_wiz.h"
 #define _SHOP_C
-#include "shop.h"
+#include "include/shop.h"
 
 struct shop_data *shop_index;
 int number_of_shops;
@@ -89,7 +93,6 @@ void shopping_buy(char *arg, struct char_data *ch,
   char argm[100], buf[MAX_STRING_LENGTH], newarg[100];
   int num = 1;
   struct obj_data *temp1;
-  struct char_data *temp_char;
 
   if (!(is_ok(keeper, ch, shop_nr)))
     return;
@@ -142,15 +145,13 @@ void shopping_buy(char *arg, struct char_data *ch,
     }
   }
   if ((IS_CARRYING_N(ch) + num) > (CAN_CARRY_N(ch))) {
-    sprintf(buf, "%s : You can't carry that many items.\n\r",
+    cprintf(ch, "%s : You can't carry that many items.\n\r",
 	    fname(temp1->name));
-    send_to_char(buf, ch);
     return;
   }
   if ((IS_CARRYING_W(ch) + (num * temp1->obj_flags.weight)) > CAN_CARRY_W(ch)) {
-    sprintf(buf, "%s : You can't carry that much weight.\n\r",
+    cprintf(ch, "%s : You can't carry that much weight.\n\r",
 	    fname(temp1->name));
-    send_to_char(buf, ch);
     return;
   }
   act("$n buys $p.", FALSE, ch, temp1, 0, TO_ROOM);
@@ -163,10 +164,8 @@ void shopping_buy(char *arg, struct char_data *ch,
 
   do_tell(keeper, buf, 19);
 
-  sprintf(buf, "You now have %s (*%d).\n\r",
+  cprintf(ch, "You now have %s (*%d).\n\r",
 	  temp1->short_description, num);
-
-  send_to_char(buf, ch);
 
   while (num-- > 0) {
 
@@ -183,7 +182,7 @@ void shopping_buy(char *arg, struct char_data *ch,
     else {
       obj_from_char(temp1);
       if (temp1 == NULL) {
-	send_to_char("Sorry, I just ran out of those.\n\r", ch);
+	cprintf(ch, "Sorry, I just ran out of those.\n\r");
 	GET_GOLD(ch) += (int)(temp1->obj_flags.cost *
 			      shop_index[shop_nr].profit_buy);
 	return;
@@ -202,7 +201,6 @@ void shopping_sell(char *arg, struct char_data *ch,
   char argm[100], buf[MAX_STRING_LENGTH];
   int cost;
   struct obj_data *temp1;
-  struct char_data *temp_char;
 
   if (!(is_ok(keeper, ch, shop_nr)))
     return;
@@ -271,9 +269,8 @@ void shopping_sell(char *arg, struct char_data *ch,
 
   do_tell(keeper, buf, 19);
 
-  sprintf(buf, "The shopkeeper now has %s.\n\r",
+  cprintf(ch, "The shopkeeper now has %s.\n\r",
 	  temp1->short_description);
-  send_to_char(buf, ch);
 
   if (GET_GOLD(keeper) < (int)(temp1->obj_flags.cost *
 			       shop_index[shop_nr].profit_sell)) {
@@ -289,7 +286,7 @@ void shopping_sell(char *arg, struct char_data *ch,
 
   obj_from_char(temp1);
   if (temp1 == NULL) {
-    send_to_char("As far as I am concerned, you are out..\n\r", ch);
+    cprintf(ch, "As far as I am concerned, you are out..\n\r");
     return;
   }
   if ((get_obj_in_list(argm, keeper->carrying)) ||
@@ -377,7 +374,7 @@ void shopping_list(char *arg, struct char_data *ch,
   if (!found_obj)
     strcat(buf, "Nothing!\n\r");
 
-  send_to_char(buf, ch);
+  cprintf(ch, buf);
   return;
 }
 
@@ -406,8 +403,7 @@ void shopping_kill(char *arg, struct char_data *ch,
 
 int shop_keeper(struct char_data *ch, int cmd, char *arg)
 {
-  char argm[100], buf[MAX_STRING_LENGTH];
-  struct obj_data *temp1;
+  char argm[100];
   struct char_data *temp_char;
   struct char_data *keeper;
   int shop_nr;
@@ -467,7 +463,7 @@ int shop_keeper(struct char_data *ch, int cmd, char *arg)
   return (FALSE);
 }
 
-void boot_the_shops()
+void boot_the_shops(void)
 {
   char *buf;
   int temp;
@@ -555,7 +551,7 @@ void boot_the_shops()
   fclose(shop_f);
 }
 
-void assign_the_shopkeepers()
+void assign_the_shopkeepers(void)
 {
   int temp1;
 

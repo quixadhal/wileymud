@@ -1,0 +1,132 @@
+#RENT
+Owner              Majhuun~
+Gold               250
+TotalCost          96
+LastUpdate         828525940
+MinimumStay        0
+End
+#EQUIPMENT
+#ITEM
+ObjId              0
+ContainedBy        -1
+Name               lantern~
+Description
+A brass lantern.~
+ShortDescr
+a lantern~
+ActionDescr
+~               ~
+VNum               3016
+EquippedAt         0
+Values             0 0 69 0
+ExtraFlags         0
+Weight             1
+Timer              0
+BitVector          0
+Type               1
+WearFlags          1
+Cost               50
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              1
+ContainedBy        -1
+Name               mace spiked~
+Description
+A spiked mace lies here.~
+ShortDescr
+a spiked mace~
+ActionDescr
+(null)~
+VNum               5908
+EquippedAt         16
+Values             0 1 8 7
+ExtraFlags         0
+Weight             8
+Timer              0
+BitVector          0
+Type               5
+WearFlags          8193
+Cost               65
+CostPerDay         65
+Affect             0 0
+Affect             0 0
+End
+End
+#CARRIED
+#ITEM
+ObjId              4
+ContainedBy        -1
+Name               meat hunk~
+Description
+A hunk of dead flesh sits here.~
+ShortDescr
+a hunk of meat~
+ActionDescr
+(null)~
+VNum               4
+EquippedAt         0
+Values             3 0 0 0
+ExtraFlags         131072
+Weight             1
+Timer              0
+BitVector          0
+Type               19
+WearFlags          1
+Cost               10
+CostPerDay         10
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              4
+ContainedBy        -1
+Name               meat hunk~
+Description
+A hunk of dead flesh sits here.~
+ShortDescr
+a hunk of meat~
+ActionDescr
+(null)~
+VNum               4
+EquippedAt         0
+Values             3 0 0 0
+ExtraFlags         131072
+Weight             1
+Timer              0
+BitVector          0
+Type               19
+WearFlags          1
+Cost               10
+CostPerDay         10
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              4
+ContainedBy        -1
+Name               meat hunk~
+Description
+A hunk of dead flesh sits here.~
+ShortDescr
+a hunk of meat~
+ActionDescr
+(null)~
+VNum               4
+EquippedAt         0
+Values             4 0 0 0
+ExtraFlags         131072
+Weight             1
+Timer              0
+BitVector          0
+Type               19
+WearFlags          1
+Cost               10
+CostPerDay         10
+Affect             0 0
+Affect             0 0
+End
+End
+#END_RENT

@@ -8,19 +8,19 @@
 #include <sys/types.h>
 #include <assert.h>
 
-#include "global.h"
-#include "bug.h"
-#include "utils.h"
-#include "comm.h"
-#include "db.h"
-#include "spells.h"
-#include "handler.h"
-#include "limits.h"
-#include "fight.h"
-#include "spell_parser.h"
-#include "multiclass.h"
+#include "include/global.h"
+#include "include/bug.h"
+#include "include/utils.h"
+#include "include/comm.h"
+#include "include/db.h"
+#include "include/spells.h"
+#include "include/handler.h"
+#include "include/limits.h"
+#include "include/fight.h"
+#include "include/spell_parser.h"
+#include "include/multiclass.h"
 #define _MAGIC_UTILS_C
-#include "magic_utils.h"
+#include "include/magic_utils.h"
 
 void SwitchStuff(struct char_data *giver, struct char_data *taker)
 {
@@ -94,14 +94,14 @@ void FailCharm(struct char_data *victim, struct char_data *ch)
       set_fighting(victim, ch);
     }
   } else {
-    send_to_char("You feel charmed, but the feeling fades.\n\r", victim);
+    cprintf(victim, "You feel charmed, but the feeling fades.\n\r");
   }
 }
 
 void FailSleep(struct char_data *victim, struct char_data *ch)
 {
 
-  send_to_char("You feel sleepy for a moment,but then you recover\n\r", victim);
+  cprintf(victim, "You feel sleepy for a moment,but then you recover\n\r");
   if (IS_NPC(victim))
     if ((!victim->specials.fighting) && (GET_POS(victim) > POSITION_SLEEPING))
       set_fighting(victim, ch);
@@ -109,7 +109,7 @@ void FailSleep(struct char_data *victim, struct char_data *ch)
 
 void FailPara(struct char_data *victim, struct char_data *ch)
 {
-  send_to_char("You feel frozen for a moment,but then you recover\n\r", victim);
+  cprintf(victim, "You feel frozen for a moment,but then you recover\n\r");
   if (IS_NPC(victim))
     if ((!victim->specials.fighting) && (GET_POS(victim) > POSITION_SLEEPING))
       set_fighting(victim, ch);
@@ -117,7 +117,7 @@ void FailPara(struct char_data *victim, struct char_data *ch)
 
 void FailCalm(struct char_data *victim, struct char_data *ch)
 {
-  send_to_char("You feel happy but the effect soon fades.\n\r", victim);
+  cprintf(victim, "You feel happy but the effect soon fades.\n\r");
   if (IS_NPC(victim))
     if (!victim->specials.fighting)
       set_fighting(victim, ch);
@@ -181,7 +181,7 @@ void AreaEffectSpell(struct char_data *castor, int dam, int spell_type, int zfla
 	/*
 	 * if(GET_ZONE(castor->in_room) == GET_ZONE(victim->in_room))
 	 * {
-	 * send_to_char(zone_mesg,victim);
+	 * cprintf(victim, zone_mesg);
 	 * }
 	 */
       }

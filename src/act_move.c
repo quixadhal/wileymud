@@ -10,19 +10,26 @@
 #include <sys/types.h>
 #include <string.h>
 
-#include "global.h"
-#include "bug.h"
-#include "utils.h"
-#include "comm.h"
-#include "interpreter.h"
-#include "handler.h"
-#include "db.h"
-#include "spells.h"
-#include "trap.h"
-#include "constants.h"
-#include "whod.h"
+#include "include/global.h"
+#include "include/bug.h"
+#include "include/utils.h"
+#include "include/comm.h"
+#include "include/interpreter.h"
+#include "include/handler.h"
+#include "include/db.h"
+#include "include/spells.h"
+#include "include/trap.h"
+#include "include/constants.h"
+#include "include/whod.h"
+#include "include/multiclass.h"
+#include "include/fight.h"
+#include "include/reception.h"
+#include "include/magic_utils.h"
+#include "include/spell_parser.h"
+#include "include/act_info.h"
+#include "include/act_skills.h"
 #define _ACT_MOVE_C
-#include "act_move.h"
+#include "include/act_move.h"
 
 /*
  * Some new movement commands for diku-mud.. a bit more object oriented.
@@ -32,13 +39,12 @@ void NotLegalMove(struct char_data *ch)
 {
   if (DEBUG)
     dlog("NotLegalMove");
-  send_to_char("Alas, you cannot go that way...\n\r", ch);
+  cprintf(ch, "Alas, you cannot go that way...\n\r");
 }
 
 int check_exit_alias(struct char_data *ch, char *argument)
 {
   struct room_direction_data *exitp;
-  char buf[512];
   int index;
 
   int do_move(struct char_data *ch, char *arg, int cmd);
@@ -48,7 +54,7 @@ int check_exit_alias(struct char_data *ch, char *argument)
   if (DEBUG)
     dlog("check_exit_alias");
   for (index = 0; index < MAX_NUM_EXITS; index++) {
-    if (exitp = EXIT(ch, index)) {
+    if ((exitp = EXIT(ch, index))) {
       if (IS_SET(exitp->exit_info, EX_ALIAS))
 	if (!strncmp(exitp->exit_alias, argument, strlen(exitp->exit_alias)))
 	  return (do_move(ch, "", index + 1));
@@ -61,7 +67,7 @@ int ValidMove(struct char_data *ch, int cmd)
 {
   char tmp[256];
   struct room_direction_data *exitp;
-  struct room_data *here, *there;
+  struct room_data *there;
   struct char_data *v;
 
   if (DEBUG)
@@ -76,7 +82,7 @@ int ValidMove(struct char_data *ch, int cmd)
 
   if (MOUNTED(ch)) {
     if (GET_POS(MOUNTED(ch)) < POSITION_FIGHTING) {
-      send_to_char("Your mount must be standing\n\r", ch);
+      cprintf(ch, "Your mount must be standing\n\r");
       return (FALSE);
     }
     if (ch->in_room != MOUNTED(ch)->in_room) {
@@ -102,8 +108,7 @@ int ValidMove(struct char_data *ch, int cmd)
           }
           return TRUE;
         }
-	sprintf(tmp, "The %s seems to be closed.\n\r", fname(exitp->keyword));
-	send_to_char(tmp, ch);
+	cprintf(ch, "The %s seems to be closed.\n\r", fname(exitp->keyword));
 	return (FALSE);
       } else {
 	NotLegalMove(ch);
@@ -116,13 +121,13 @@ int ValidMove(struct char_data *ch, int cmd)
   } else {
     if (IS_SET(there->room_flags, INDOORS)) {
       if (MOUNTED(ch)) {
-	send_to_char("Your mount refuses to go that way\n\r", ch);
+	cprintf(ch, "Your mount refuses to go that way\n\r");
 	return (FALSE);
       }
     }
     if (IS_SET(there->room_flags, DEATH)) {
       if (MOUNTED(ch)) {
-	send_to_char("Your mount refuses to go that way\n\r", ch);
+	cprintf(ch, "Your mount refuses to go that way\n\r");
 	return (FALSE);
       }
     }
@@ -180,7 +185,7 @@ int RawMove(struct char_data *ch, int dir)
 	     (GET_LEVEL(ch, BestThiefClass(ch)) < 40))
       amount += 1;
 
-    amount -= MAX(2, wis_app[GET_DEX(ch)].bonus);
+    amount -= MAX(2, wis_app[(int)GET_DEX(ch)].bonus);
 
     if (amount <= 0)
       amount = 1;
@@ -197,7 +202,7 @@ int RawMove(struct char_data *ch, int dir)
   if (to_here == NULL) {
     char_from_room(ch);
     char_to_room(ch, 0);
-    send_to_char("Uh-oh.  The ground melts beneath you as you fall into the swirling chaos.\n\r", ch);
+    cprintf(ch, "Uh-oh.  The ground melts beneath you as you fall into the swirling chaos.\n\r");
     do_look(ch, "\0", 15);
     return TRUE;
   }
@@ -222,7 +227,7 @@ int RawMove(struct char_data *ch, int dir)
   if ((from_here->sector_type == SECT_WATER_NOSWIM) || (to_here->sector_type == SECT_WATER_NOSWIM)) {
     if (MOUNTED(ch)) {
       if (!IS_AFFECTED(MOUNTED(ch), AFF_WATERBREATH) && !IS_AFFECTED(MOUNTED(ch), AFF_FLYING)) {
-	send_to_char("Your mount would have to fly or swim to go there\n\r", ch);
+	cprintf(ch, "Your mount would have to fly or swim to go there\n\r");
 	return (FALSE);
       }
     }
@@ -233,7 +238,7 @@ int RawMove(struct char_data *ch, int dir)
 	if (obj->obj_flags.type_flag == ITEM_BOAT)
 	  has_boat = TRUE;
       if (!has_boat) {
-	send_to_char("You need a boat to go there.\n\r", ch);
+	cprintf(ch, "You need a boat to go there.\n\r");
 	return (FALSE);
       }
       if (has_boat)
@@ -247,12 +252,12 @@ int RawMove(struct char_data *ch, int dir)
   if ((from_here->sector_type == SECT_AIR) || (to_here->sector_type == SECT_AIR)) {
     if (MOUNTED(ch)) {
       if (!IS_AFFECTED(MOUNTED(ch), AFF_FLYING)) {
-	send_to_char("Your mount would have to fly to go there!\n\r", ch);
+	cprintf(ch, "Your mount would have to fly to go there!\n\r");
 	return (FALSE);
       }
     }
     if (!IS_AFFECTED(ch, AFF_FLYING)) {
-      send_to_char("You would have to Fly to go there!\n\r", ch);
+      cprintf(ch, "You would have to Fly to go there!\n\r");
       return (FALSE);
     }
   }
@@ -263,23 +268,23 @@ int RawMove(struct char_data *ch, int dir)
   if ((from_here->sector_type == SECT_UNDERWATER) || (to_here->sector_type == SECT_UNDERWATER)) {
     if (MOUNTED(ch)) {
       if (!IS_AFFECTED(MOUNTED(ch), AFF_WATERBREATH)) {
-	send_to_char("Your mount would need gills to go there!\n\r", ch);
+	cprintf(ch, "Your mount would need gills to go there!\n\r");
 	return (FALSE);
       }
     }
     if (!IS_AFFECTED(ch, AFF_WATERBREATH)) {
-      send_to_char("You would need to be a fish to go there!\n\r", ch);
+      cprintf(ch, "You would need to be a fish to go there!\n\r");
       return (FALSE);
     }
   }
   if (!MOUNTED(ch)) {
     if (GET_MOVE(ch) < need_movement) {
-      send_to_char("You are too exhausted.\n\r", ch);
+      cprintf(ch, "You are too exhausted.\n\r");
       return (FALSE);
     }
   } else {
     if (GET_MOVE(MOUNTED(ch)) < need_movement) {
-      send_to_char("Your mount is too exhausted.\n\r", ch);
+      cprintf(ch, "Your mount is too exhausted.\n\r");
       return (FALSE);
     }
   }
@@ -411,16 +416,17 @@ int MoveGroup(struct char_data *ch, int dir)
       }
     }
   }
+  return 1;
 }
 
-int DisplayOneMove(struct char_data *ch, int dir, int was_in)
+void DisplayOneMove(struct char_data *ch, int dir, int was_in)
 {
   if (DEBUG)
     dlog("DisplayOneMove");
   DisplayMove(ch, dir, was_in, 1);
 }
 
-int DisplayGroupMove(struct char_data *ch, int dir, int was_in, int total)
+void DisplayGroupMove(struct char_data *ch, int dir, int was_in, int total)
 {
   if (DEBUG)
     dlog("DisplayGroupMove");
@@ -443,13 +449,13 @@ int do_move(struct char_data *ch, char *argument, int cmd)
   }
   if (RIDDEN(ch)) {
     if (RIDDEN(ch)->specials.fighting) {
-      send_to_char("You can't, your rider is fighting!\n\r", ch);
+      cprintf(ch, "You can't, your rider is fighting!\n\r");
       return FALSE;
     }
   }
   if (MOUNTED(ch)) {
     if (MOUNTED(ch)->specials.fighting) {
-      send_to_char("You can't, your mount is fighting!\n\r", ch);
+      cprintf(ch, "You can't, your mount is fighting!\n\r");
       return FALSE;
     }
   }
@@ -460,7 +466,7 @@ int do_move(struct char_data *ch, char *argument, int cmd)
    */
 
   if (ch->attackers > 2) {
-    send_to_char("There's too many people around, no place to flee!\n\r", ch);
+    cprintf(ch, "There's too many people around, no place to flee!\n\r");
     return FALSE;
   }
   if (!ch->followers && !ch->master) {
@@ -478,7 +484,7 @@ int do_move(struct char_data *ch, char *argument, int cmd)
  * MoveOne and MoveGroup print messages.  Raw move sends success or failure.
  */
 
-int DisplayMove(struct char_data *ch, int dir, int was_in, int total)
+void DisplayMove(struct char_data *ch, int dir, int was_in, int total)
 {
   struct char_data *tmp_ch;
   char tmp[256];
@@ -516,7 +522,7 @@ int DisplayMove(struct char_data *ch, int dir, int was_in, int total)
 	    }
 	  }
 	}
-	send_to_char(tmp, tmp_ch);
+	cprintf(tmp_ch, tmp);
       }
     }
   }
@@ -577,22 +583,20 @@ int DisplayMove(struct char_data *ch, int dir, int was_in, int total)
 	  sprintf(tmp + strlen(tmp), " [%d]", total);
 	}
 	strcat(tmp, "\n\r");
-	send_to_char(tmp, tmp_ch);
+	cprintf(tmp_ch, tmp);
       }
     }
   }
 }
 
-int AddToCharHeap(struct char_data *heap[50], int *top, int total[50],
+void AddToCharHeap(struct char_data *heap[50], int *top, int total[50],
 		  struct char_data *k)
 {
   int found, i;
 
   if (DEBUG)
     dlog("AddToCharHeap");
-  if (*top > 50) {
-    return (FALSE);
-  } else {
+  if (*top <= 50) {
     found = FALSE;
     for (i = 0; (i < *top && !found); i++) {
       if (*top > 0) {
@@ -616,7 +620,6 @@ int AddToCharHeap(struct char_data *heap[50], int *top, int total[50],
 
 int find_door(struct char_data *ch, char *type, char *dir)
 {
-  char buf[MAX_STRING_LENGTH];
   int door;
   char *dirs[] =
   {
@@ -635,7 +638,7 @@ int find_door(struct char_data *ch, char *type, char *dir)
 
   if (*dir) {			       /* a direction was specified */
     if ((door = search_block(dir, dirs, FALSE)) == -1) {	/* Partial Match */
-      send_to_char("That's not a direction.\n\r", ch);
+      cprintf(ch, "That's not a direction.\n\r");
       return (-1);
     }
     exitp = EXIT(ch, door);
@@ -645,13 +648,11 @@ int find_door(struct char_data *ch, char *type, char *dir)
       if ((isname(type, exitp->keyword)) && (strcmp(type, "secret"))) {
 	return (door);
       } else {
-	sprintf(buf, "I see no %s there.\n\r", type);
-	send_to_char(buf, ch);
+	cprintf(ch, "I see no %s there.\n\r", type);
 	return (-1);
       }
     } else {
-      sprintf(buf, "I see no %s there.\n\r", type);
-      send_to_char(buf, ch);
+      cprintf(ch, "I see no %s there.\n\r", type);
       return (-1);
     }
   } else {			       /* try to locate the keyword */
@@ -659,13 +660,12 @@ int find_door(struct char_data *ch, char *type, char *dir)
       if ((exitp = EXIT(ch, door)) && exitp->keyword && isname(type, exitp->keyword))
 	return (door);
 
-    sprintf(buf, "I see no %s here.\n\r", type);
-    send_to_char(buf, ch);
+    cprintf(ch, "I see no %s here.\n\r", type);
     return (-1);
   }
 }
 
-open_door(struct char_data * ch, int dir)
+void open_door(struct char_data * ch, int dir)
      /* remove all necessary bits and send messages */
 {
   struct room_direction_data *exitp, *back;
@@ -677,8 +677,7 @@ open_door(struct char_data * ch, int dir)
 
   rp = real_roomp(ch->in_room);
   if (rp == NULL) {
-    sprintf(buf, "NULL rp in open_door() for %s.", PERS(ch, ch));
-    log(buf);
+    log("NULL rp in open_door() for %s.", PERS(ch, ch));
   }
   exitp = rp->dir_option[dir];
 
@@ -699,28 +698,24 @@ open_door(struct char_data * ch, int dir)
       (back->to_room == ch->in_room)) {
     REMOVE_BIT(back->exit_info, EX_CLOSED);
     if (back->keyword) {
-      sprintf(buf, "The %s is opened from the other side.\n\r",
+      rprintf(exitp->to_room, "The %s is opened from the other side.\n\r",
 	      fname(back->keyword));
-      send_to_room(buf, exitp->to_room);
     } else
-      send_to_room("The door is opened from the other side.\n\r",
-		   exitp->to_room);
+      rprintf(exitp->to_room, "The door is opened from the other side.\n\r");
   }
 }
 
-raw_open_door(struct char_data *ch, int dir)
+void raw_open_door(struct char_data *ch, int dir)
      /* remove all necessary bits and send messages */
 {
   struct room_direction_data *exitp, *back;
   struct room_data *rp;
-  char buf[MAX_INPUT_LENGTH];
 
   if (DEBUG)
     dlog("raw_open_door");
   rp = real_roomp(ch->in_room);
   if (rp == NULL) {
-    sprintf(buf, "NULL rp in open_door() for %s.", PERS(ch, ch));
-    log(buf);
+    log("NULL rp in open_door() for %s.", PERS(ch, ch));
   }
   exitp = rp->dir_option[dir];
 
@@ -731,12 +726,10 @@ raw_open_door(struct char_data *ch, int dir)
       (back->to_room == ch->in_room)) {
     REMOVE_BIT(back->exit_info, EX_CLOSED);
     if (back->keyword && (strcmp("secret", fname(back->keyword)))) {
-      sprintf(buf, "The %s is opened from the other side.\n\r",
+      rprintf(exitp->to_room, "The %s is opened from the other side.\n\r",
 	      fname(back->keyword));
-      send_to_room(buf, exitp->to_room);
     } else {
-      send_to_room("The door is opened from the other side.\n\r",
-		   exitp->to_room);
+      rprintf(exitp->to_room, "The door is opened from the other side.\n\r");
     }
   }
 }
@@ -744,8 +737,7 @@ raw_open_door(struct char_data *ch, int dir)
 void do_open(struct char_data *ch, char *argument, int cmd)
 {
   int door;
-  char type[MAX_INPUT_LENGTH], dir[MAX_INPUT_LENGTH], buf[MAX_STRING_LENGTH];
-  struct room_direction_data *back;
+  char type[MAX_INPUT_LENGTH], dir[MAX_INPUT_LENGTH];
   struct obj_data *obj;
   struct char_data *victim;
   struct room_direction_data *exitp;
@@ -755,36 +747,34 @@ void do_open(struct char_data *ch, char *argument, int cmd)
     dlog("do_open");
 
   if (!*type)
-    send_to_char("Open what?\n\r", ch);
+    cprintf(ch, "Open what?\n\r");
   else if (generic_find(argument, FIND_OBJ_INV | FIND_OBJ_ROOM, ch, &victim, &obj)) {
     /* this is an object */
     if (obj->obj_flags.type_flag != ITEM_CONTAINER)
-      send_to_char("That's not a container.\n\r", ch);
+      cprintf(ch, "That's not a container.\n\r");
     else if (IS_NOT_SET(obj->obj_flags.value[1], CONT_CLOSED))
-      send_to_char("But it's already open!\n\r", ch);
+      cprintf(ch, "But it's already open!\n\r");
     else if (IS_NOT_SET(obj->obj_flags.value[1], CONT_CLOSEABLE))
-      send_to_char("You can't do that.\n\r", ch);
+      cprintf(ch, "You can't do that.\n\r");
     else if (IS_SET(obj->obj_flags.value[1], CONT_LOCKED))
-      send_to_char("It seems to be locked.\n\r", ch);
+      cprintf(ch, "It seems to be locked.\n\r");
     else {
       REMOVE_BIT(obj->obj_flags.value[1], CONT_CLOSED);
-      send_to_char("Ok.\n\r", ch);
+      cprintf(ch, "Ok.\n\r");
       act("$n opens $p.", FALSE, ch, obj, 0, TO_ROOM);
     }
   } else if ((door = find_door(ch, type, dir)) >= 0) {
     /* perhaps it is a door */
     exitp = EXIT(ch, door);
     if (IS_NOT_SET(exitp->exit_info, EX_ISDOOR))
-      send_to_char("That's impossible, I'm afraid.\n\r", ch);
+      cprintf(ch, "That's impossible, I'm afraid.\n\r");
     else if (IS_NOT_SET(exitp->exit_info, EX_CLOSED))
-      send_to_char("It's already open!\n\r", ch);
+      cprintf(ch, "It's already open!\n\r");
     else if (IS_SET(exitp->exit_info, EX_LOCKED))
-      send_to_char("It seems to be locked.\n\r", ch);
+      cprintf(ch, "It seems to be locked.\n\r");
     else {
-      struct room_data *rp;
-
       open_door(ch, door);
-      send_to_char("Ok.\n\r", ch);
+      cprintf(ch, "Ok.\n\r");
     }
   }
 }
@@ -792,7 +782,7 @@ void do_open(struct char_data *ch, char *argument, int cmd)
 void do_close(struct char_data *ch, char *argument, int cmd)
 {
   int door;
-  char type[MAX_INPUT_LENGTH], dir[MAX_INPUT_LENGTH], buf[MAX_STRING_LENGTH];
+  char type[MAX_INPUT_LENGTH], dir[MAX_INPUT_LENGTH];
   struct room_direction_data *back, *exitp;
   struct obj_data *obj;
   struct char_data *victim;
@@ -803,21 +793,21 @@ void do_close(struct char_data *ch, char *argument, int cmd)
   argument_interpreter(argument, type, dir);
 
   if (!*type)
-    send_to_char("Close what?\n\r", ch);
+    cprintf(ch, "Close what?\n\r");
   else if (generic_find(argument, FIND_OBJ_INV | FIND_OBJ_ROOM,
 			ch, &victim, &obj)) {
 
     /* this is an object */
 
     if (obj->obj_flags.type_flag != ITEM_CONTAINER)
-      send_to_char("That's not a container.\n\r", ch);
+      cprintf(ch, "That's not a container.\n\r");
     else if (IS_SET(obj->obj_flags.value[1], CONT_CLOSED))
-      send_to_char("But it's already closed!\n\r", ch);
+      cprintf(ch, "But it's already closed!\n\r");
     else if (!IS_SET(obj->obj_flags.value[1], CONT_CLOSEABLE))
-      send_to_char("That's impossible.\n\r", ch);
+      cprintf(ch, "That's impossible.\n\r");
     else {
       SET_BIT(obj->obj_flags.value[1], CONT_CLOSED);
-      send_to_char("Ok.\n\r", ch);
+      cprintf(ch, "Ok.\n\r");
       act("$n closes $p.", FALSE, ch, obj, 0, TO_ROOM);
     }
   } else if ((door = find_door(ch, type, dir)) >= 0) {
@@ -825,9 +815,9 @@ void do_close(struct char_data *ch, char *argument, int cmd)
     /* Or a door */
     exitp = EXIT(ch, door);
     if (!IS_SET(exitp->exit_info, EX_ISDOOR))
-      send_to_char("That's absurd.\n\r", ch);
+      cprintf(ch, "That's absurd.\n\r");
     else if (IS_SET(exitp->exit_info, EX_CLOSED))
-      send_to_char("It's already closed!\n\r", ch);
+      cprintf(ch, "It's already closed!\n\r");
     else {
       SET_BIT(exitp->exit_info, EX_CLOSED);
       if (exitp->keyword)
@@ -835,17 +825,16 @@ void do_close(struct char_data *ch, char *argument, int cmd)
 	    TO_ROOM);
       else
 	act("$n closes the door.", FALSE, ch, 0, 0, TO_ROOM);
-      send_to_char("Ok.\n\r", ch);
+      cprintf(ch, "Ok.\n\r");
       /* now for closing the other side, too */
       if (exit_ok(exitp, &rp) &&
 	  (back = rp->dir_option[rev_dir[door]]) &&
 	  (back->to_room == ch->in_room)) {
 	SET_BIT(back->exit_info, EX_CLOSED);
 	if (back->keyword) {
-	  sprintf(buf, "The %s closes quietly.\n\r", back->keyword);
-	  send_to_room(buf, exitp->to_room);
+	  rprintf(exitp->to_room, "The %s closes quietly.\n\r", back->keyword);
 	} else
-	  send_to_room("The door closes quietly.\n\r", exitp->to_room);
+	  rprintf(exitp->to_room, "The door closes quietly.\n\r");
       }
     }
   }
@@ -872,7 +861,6 @@ void raw_unlock_door(struct char_data *ch, struct room_direction_data *exitp, in
 {
   struct room_data *rp;
   struct room_direction_data *back;
-  char buf[128];
 
   if (DEBUG)
     dlog("raw_unlock_door");
@@ -884,9 +872,7 @@ void raw_unlock_door(struct char_data *ch, struct room_direction_data *exitp, in
       back->to_room == ch->in_room) {
     REMOVE_BIT(back->exit_info, EX_LOCKED);
   } else {
-    sprintf(buf, "Inconsistent door locks in rooms %d->%d",
-	    ch->in_room, exitp->to_room);
-    log(buf);
+    log("Inconsistent door locks in rooms %d->%d", ch->in_room, exitp->to_room);
   }
 }
 
@@ -894,7 +880,6 @@ void raw_lock_door(struct char_data *ch, struct room_direction_data *exitp, int 
 {
   struct room_data *rp;
   struct room_direction_data *back;
-  char buf[128];
 
   if (DEBUG)
     dlog("raw_lock_door");
@@ -907,9 +892,7 @@ void raw_lock_door(struct char_data *ch, struct room_direction_data *exitp, int 
       back->to_room == ch->in_room) {
     SET_BIT(back->exit_info, EX_LOCKED);
   } else {
-    sprintf(buf, "Inconsistent door locks in rooms %d->%d",
-	    ch->in_room, exitp->to_room);
-    log(buf);
+    log("Inconsistent door locks in rooms %d->%d", ch->in_room, exitp->to_room);
   }
 }
 
@@ -928,25 +911,25 @@ void do_lock(struct char_data *ch, char *argument, int cmd)
   argument_interpreter(argument, type, dir);
 
   if (!*type)
-    send_to_char("Lock what?\n\r", ch);
+    cprintf(ch, "Lock what?\n\r");
   else if (generic_find(argument, FIND_OBJ_INV | FIND_OBJ_ROOM,
 			ch, &victim, &obj)) {
 
     /* this is an object */
 
     if (obj->obj_flags.type_flag != ITEM_CONTAINER)
-      send_to_char("That's not a container.\n\r", ch);
+      cprintf(ch, "That's not a container.\n\r");
     else if (!IS_SET(obj->obj_flags.value[1], CONT_CLOSED))
-      send_to_char("Maybe you should close it first...\n\r", ch);
+      cprintf(ch, "Maybe you should close it first...\n\r");
     else if (obj->obj_flags.value[2] < 0)
-      send_to_char("That thing can't be locked.\n\r", ch);
+      cprintf(ch, "That thing can't be locked.\n\r");
     else if (!has_key(ch, obj->obj_flags.value[2]))
-      send_to_char("You don't seem to have the proper key.\n\r", ch);
+      cprintf(ch, "You don't seem to have the proper key.\n\r");
     else if (IS_SET(obj->obj_flags.value[1], CONT_LOCKED))
-      send_to_char("It is locked already.\n\r", ch);
+      cprintf(ch, "It is locked already.\n\r");
     else {
       SET_BIT(obj->obj_flags.value[1], CONT_LOCKED);
-      send_to_char("*Cluck*\n\r", ch);
+      cprintf(ch, "*Cluck*\n\r");
       act("$n locks $p - 'cluck', it says.", FALSE, ch, obj, 0, TO_ROOM);
     }
   } else if ((door = find_door(ch, type, dir)) >= 0) {
@@ -955,15 +938,15 @@ void do_lock(struct char_data *ch, char *argument, int cmd)
     exitp = EXIT(ch, door);
 
     if (!IS_SET(exitp->exit_info, EX_ISDOOR))
-      send_to_char("That's absurd.\n\r", ch);
+      cprintf(ch, "That's absurd.\n\r");
     else if (!IS_SET(exitp->exit_info, EX_CLOSED))
-      send_to_char("You have to close it first, I'm afraid.\n\r", ch);
+      cprintf(ch, "You have to close it first, I'm afraid.\n\r");
     else if (exitp->key < 0)
-      send_to_char("There does not seem to be any keyholes.\n\r", ch);
+      cprintf(ch, "There does not seem to be any keyholes.\n\r");
     else if (!has_key(ch, exitp->key))
-      send_to_char("You don't have the proper key.\n\r", ch);
+      cprintf(ch, "You don't have the proper key.\n\r");
     else if (IS_SET(exitp->exit_info, EX_LOCKED))
-      send_to_char("It's already locked!\n\r", ch);
+      cprintf(ch, "It's already locked!\n\r");
     else {
       SET_BIT(exitp->exit_info, EX_LOCKED);
       if (exitp->keyword)
@@ -971,7 +954,7 @@ void do_lock(struct char_data *ch, char *argument, int cmd)
 	    TO_ROOM);
       else
 	act("$n locks the door.", FALSE, ch, 0, 0, TO_ROOM);
-      send_to_char("*Click*\n\r", ch);
+      cprintf(ch, "*Click*\n\r");
       /* now for locking the other side, too */
       rp = real_roomp(exitp->to_room);
       if (rp &&
@@ -997,23 +980,23 @@ void do_unlock(struct char_data *ch, char *argument, int cmd)
   argument_interpreter(argument, type, dir);
 
   if (!*type)
-    send_to_char("Unlock what?\n\r", ch);
+    cprintf(ch, "Unlock what?\n\r");
   else if (generic_find(argument, FIND_OBJ_INV | FIND_OBJ_ROOM,
 			ch, &victim, &obj)) {
 
     /* this is an object */
 
     if (obj->obj_flags.type_flag != ITEM_CONTAINER)
-      send_to_char("That's not a container.\n\r", ch);
+      cprintf(ch, "That's not a container.\n\r");
     else if (obj->obj_flags.value[2] < 0)
-      send_to_char("Odd - you can't seem to find a keyhole.\n\r", ch);
+      cprintf(ch, "Odd - you can't seem to find a keyhole.\n\r");
     else if (!has_key(ch, obj->obj_flags.value[2]))
-      send_to_char("You don't seem to have the proper key.\n\r", ch);
+      cprintf(ch, "You don't seem to have the proper key.\n\r");
     else if (!IS_SET(obj->obj_flags.value[1], CONT_LOCKED))
-      send_to_char("Oh.. it wasn't locked, after all.\n\r", ch);
+      cprintf(ch, "Oh.. it wasn't locked, after all.\n\r");
     else {
       REMOVE_BIT(obj->obj_flags.value[1], CONT_LOCKED);
-      send_to_char("*Click*\n\r", ch);
+      cprintf(ch, "*Click*\n\r");
       act("$n unlocks $p.", FALSE, ch, obj, 0, TO_ROOM);
     }
   } else if ((door = find_door(ch, type, dir)) >= 0) {
@@ -1022,15 +1005,15 @@ void do_unlock(struct char_data *ch, char *argument, int cmd)
     exitp = EXIT(ch, door);
 
     if (!IS_SET(exitp->exit_info, EX_ISDOOR))
-      send_to_char("That's absurd.\n\r", ch);
+      cprintf(ch, "That's absurd.\n\r");
     else if (!IS_SET(exitp->exit_info, EX_CLOSED))
-      send_to_char("Heck.. it ain't even closed!\n\r", ch);
+      cprintf(ch, "Heck.. it ain't even closed!\n\r");
     else if (exitp->key < 0)
-      send_to_char("You can't seem to spot any keyholes.\n\r", ch);
+      cprintf(ch, "You can't seem to spot any keyholes.\n\r");
     else if (!has_key(ch, exitp->key))
-      send_to_char("You do not have the proper key for that.\n\r", ch);
+      cprintf(ch, "You do not have the proper key for that.\n\r");
     else if (!IS_SET(exitp->exit_info, EX_LOCKED))
-      send_to_char("It's already unlocked, it seems.\n\r", ch);
+      cprintf(ch, "It's already unlocked, it seems.\n\r");
     else {
       REMOVE_BIT(exitp->exit_info, EX_LOCKED);
       if (exitp->keyword)
@@ -1038,7 +1021,7 @@ void do_unlock(struct char_data *ch, char *argument, int cmd)
 	    TO_ROOM);
       else
 	act("$n unlocks the door.", FALSE, ch, 0, 0, TO_ROOM);
-      send_to_char("*click*\n\r", ch);
+      cprintf(ch, "*click*\n\r");
       /* now for unlocking the other side, too */
       rp = real_roomp(exitp->to_room);
       if (rp &&
@@ -1067,26 +1050,26 @@ void do_pick(struct char_data *ch, char *argument, int cmd)
   percent = number(1, 101);	       /* 101% is a complete failure */
 
   if (percent > (ch->skills[SKILL_PICK_LOCK].learned)) {
-    send_to_char("You failed to pick the lock.\n\r", ch);
+    cprintf(ch, "You failed to pick the lock.\n\r");
     return;
   }
   if (!*type) {
-    send_to_char("Pick what?\n\r", ch);
+    cprintf(ch, "Pick what?\n\r");
   } else if (generic_find(argument, FIND_OBJ_INV | FIND_OBJ_ROOM, ch, &victim, &obj)) {
     /* this is an object */
     if (obj->obj_flags.type_flag != ITEM_CONTAINER)
-      send_to_char("That's not a container.\n\r", ch);
+      cprintf(ch, "That's not a container.\n\r");
     else if (!IS_SET(obj->obj_flags.value[1], CONT_CLOSED))
-      send_to_char("Silly - it ain't even closed!\n\r", ch);
+      cprintf(ch, "Silly - it ain't even closed!\n\r");
     else if (obj->obj_flags.value[2] < 0)
-      send_to_char("Odd - you can't seem to find a keyhole.\n\r", ch);
+      cprintf(ch, "Odd - you can't seem to find a keyhole.\n\r");
     else if (!IS_SET(obj->obj_flags.value[1], CONT_LOCKED))
-      send_to_char("Oho! This thing is NOT locked!\n\r", ch);
+      cprintf(ch, "Oho! This thing is NOT locked!\n\r");
     else if (IS_SET(obj->obj_flags.value[1], CONT_PICKPROOF))
-      send_to_char("It resists your attempts at picking it.\n\r", ch);
+      cprintf(ch, "It resists your attempts at picking it.\n\r");
     else {
       REMOVE_BIT(obj->obj_flags.value[1], CONT_LOCKED);
-      send_to_char("*Click*\n\r", ch);
+      cprintf(ch, "*Click*\n\r");
       act("$n fiddles with $p.", FALSE, ch, obj, 0, TO_ROOM);
       if (ch->skills[SKILL_PICK_LOCK].learned < 50)
 	ch->skills[SKILL_PICK_LOCK].learned += 2;
@@ -1094,22 +1077,22 @@ void do_pick(struct char_data *ch, char *argument, int cmd)
   } else if ((door = find_door(ch, type, dir)) >= 0) {
     exitp = EXIT(ch, door);
     if (!IS_SET(exitp->exit_info, EX_ISDOOR))
-      send_to_char("That's absurd.\n\r", ch);
+      cprintf(ch, "That's absurd.\n\r");
     else if (!IS_SET(exitp->exit_info, EX_CLOSED))
-      send_to_char("You realize that the door is already open.\n\r", ch);
+      cprintf(ch, "You realize that the door is already open.\n\r");
     else if (exitp->key < 0)
-      send_to_char("You can't seem to spot any lock to pick.\n\r", ch);
+      cprintf(ch, "You can't seem to spot any lock to pick.\n\r");
     else if (!IS_SET(exitp->exit_info, EX_LOCKED))
-      send_to_char("Oh.. it wasn't locked at all.\n\r", ch);
+      cprintf(ch, "Oh.. it wasn't locked at all.\n\r");
     else if (IS_SET(exitp->exit_info, EX_PICKPROOF))
-      send_to_char("You seem to be unable to pick this lock.\n\r", ch);
+      cprintf(ch, "You seem to be unable to pick this lock.\n\r");
     else {
       REMOVE_BIT(exitp->exit_info, EX_LOCKED);
       if (exitp->keyword)
 	act("$n skillfully picks the lock of the $F.", 0, ch, 0, exitp->keyword, TO_ROOM);
       else
 	act("$n picks the lock.", TRUE, ch, 0, 0, TO_ROOM);
-      send_to_char("The lock quickly yields to your skills.\n\r", ch);
+      cprintf(ch, "The lock quickly yields to your skills.\n\r");
       /* now for unlocking the other side, too */
       rp = real_roomp(exitp->to_room);
       if (rp &&
@@ -1125,7 +1108,7 @@ void do_pick(struct char_data *ch, char *argument, int cmd)
 void do_enter(struct char_data *ch, char *argument, int cmd)
 {
   int door;
-  char buf[MAX_INPUT_LENGTH], tmp[MAX_STRING_LENGTH];
+  char buf[MAX_INPUT_LENGTH];
   struct room_direction_data *exitp;
   struct room_data *rp;
 
@@ -1141,10 +1124,9 @@ void do_enter(struct char_data *ch, char *argument, int cmd)
 	do_move(ch, "", ++door);
 	return;
       }
-    sprintf(tmp, "There is no %s here.\n\r", buf);
-    send_to_char(tmp, ch);
+    cprintf(ch, "There is no %s here.\n\r", buf);
   } else if (IS_SET(real_roomp(ch->in_room)->room_flags, INDOORS)) {
-    send_to_char("You are already indoors.\n\r", ch);
+    cprintf(ch, "You are already indoors.\n\r");
   } else {
     /* try to locate an entrance */
     for (door = 0; door < MAX_NUM_EXITS; door++)
@@ -1154,7 +1136,7 @@ void do_enter(struct char_data *ch, char *argument, int cmd)
 	do_move(ch, "", ++door);
 	return;
       }
-    send_to_char("You can't seem to find anything to enter.\n\r", ch);
+    cprintf(ch, "You can't seem to find anything to enter.\n\r");
   }
 }
 
@@ -1168,7 +1150,7 @@ void do_leave(struct char_data *ch, char *argument, int cmd)
     dlog("do_leave");
 
   if (!IS_SET(RM_FLAGS(ch->in_room), INDOORS))
-    send_to_char("You are outside.. where do you want to go?\n\r", ch);
+    cprintf(ch, "You are outside.. where do you want to go?\n\r");
   else {
     for (door = 0; door < MAX_NUM_EXITS; door++)
       if (exit_ok(exitp = EXIT(ch, door), &rp) &&
@@ -1177,7 +1159,7 @@ void do_leave(struct char_data *ch, char *argument, int cmd)
 	do_move(ch, "", ++door);
 	return;
       }
-    send_to_char("I see no obvious exits to the outside.\n\r", ch);
+    cprintf(ch, "I see no obvious exits to the outside.\n\r");
   }
 }
 
@@ -1207,7 +1189,7 @@ void do_stand(struct char_data *ch, char *argument, int cmd)
     }
     break;
   case POSITION_MOUNTED:
-    send_to_char("But you are mounted?\n\r", ch);
+    cprintf(ch, "But you are mounted?\n\r");
     break;
   case POSITION_FIGHTING:{
       act("Do you not consider fighting as standing?", FALSE, ch, 0, 0, TO_CHAR);
@@ -1235,7 +1217,7 @@ void do_sit(struct char_data *ch, char *argument, int cmd)
     }
     break;
   case POSITION_SITTING:{
-      send_to_char("You'r sitting already.\n\r", ch);
+      cprintf(ch, "You'r sitting already.\n\r");
     }
     break;
   case POSITION_RESTING:{
@@ -1249,7 +1231,7 @@ void do_sit(struct char_data *ch, char *argument, int cmd)
     }
     break;
   case POSITION_MOUNTED:
-    send_to_char("But you are mounted?\n\r", ch);
+    cprintf(ch, "But you are mounted?\n\r");
     break;
   case POSITION_FIGHTING:{
       act("Sit down while fighting? are you MAD?", FALSE, ch, 0, 0, TO_CHAR);
@@ -1270,30 +1252,30 @@ void do_rest(struct char_data *ch, char *argument, int cmd)
     dlog("do_rest");
   switch (GET_POS(ch)) {
   case POSITION_STANDING:{
-      send_to_char("You sit down and rest your tired bones.\n\r", ch);
+      cprintf(ch, "You sit down and rest your tired bones.\n\r");
       act("$n sits down and rests.", TRUE, ch, 0, 0, TO_ROOM);
       GET_POS(ch) = POSITION_RESTING;
     }
     break;
   case POSITION_SITTING:{
-      send_to_char("You rest your tired bones\n\r.", ch);
+      cprintf(ch, "You rest your tired bones\n\r.");
       act("$n rests.", TRUE, ch, 0, 0, TO_ROOM);
       GET_POS(ch) = POSITION_RESTING;
     }
     break;
   case POSITION_RESTING:{
-      send_to_char("You are already resting.\n\r", ch);
+      cprintf(ch, "You are already resting.\n\r");
     }
     break;
   case POSITION_SLEEPING:{
-      send_to_char("You have to wake up first.\n\r", ch);
+      cprintf(ch, "You have to wake up first.\n\r");
     }
     break;
   case POSITION_MOUNTED:
-    send_to_char("But you are mounted?\n\r", ch);
+    cprintf(ch, "But you are mounted?\n\r");
     break;
   case POSITION_FIGHTING:{
-      send_to_char("Rest while fighting? are you MAD?\n\r", ch);
+      cprintf(ch, "Rest while fighting? are you MAD?\n\r");
     }
     break;
   default:{
@@ -1315,20 +1297,20 @@ void do_sleep(struct char_data *ch, char *argument, int cmd)
   case POSITION_STANDING:
   case POSITION_SITTING:
   case POSITION_RESTING:{
-      send_to_char("You go to sleep.\n\r", ch);
+      cprintf(ch, "You go to sleep.\n\r");
       act("$n lies down and falls asleep.", TRUE, ch, 0, 0, TO_ROOM);
       GET_POS(ch) = POSITION_SLEEPING;
     }
     break;
   case POSITION_SLEEPING:{
-      send_to_char("You are already sound asleep.\n\r", ch);
+      cprintf(ch, "You are already sound asleep.\n\r");
     }
     break;
   case POSITION_MOUNTED:
-    send_to_char("But you are mounted?\n\r", ch);
+    cprintf(ch, "But you are mounted?\n\r");
     break;
   case POSITION_FIGHTING:{
-      send_to_char("Sleep while fighting? are you MAD?\n\r", ch);
+      cprintf(ch, "Sleep while fighting? are you MAD?\n\r");
     }
     break;
   default:{
@@ -1375,17 +1357,17 @@ void do_wake(struct char_data *ch, char *argument, int cmd)
 	  }
 	}
       } else {
-	send_to_char("You do not see that person here.\n\r", ch);
+	cprintf(ch, "You do not see that person here.\n\r");
       }
     }
   } else {
     if (IS_AFFECTED(ch, AFF_SLEEP)) {
-      send_to_char("You can't wake up!\n\r", ch);
+      cprintf(ch, "You can't wake up!\n\r");
     } else {
       if (GET_POS(ch) > POSITION_SLEEPING)
-	send_to_char("You are already awake...\n\r", ch);
+	cprintf(ch, "You are already awake...\n\r");
       else {
-	send_to_char("You wake, and sit up.\n\r", ch);
+	cprintf(ch, "You wake, and sit up.\n\r");
 	act("$n awakens.", TRUE, ch, 0, 0, TO_ROOM);
 	GET_POS(ch) = POSITION_SITTING;
       }
@@ -1395,7 +1377,7 @@ void do_wake(struct char_data *ch, char *argument, int cmd)
 
 void do_follow(struct char_data *ch, char *argument, int cmd)
 {
-  char name[160];
+  char name[MAX_INPUT_LENGTH];
   struct char_data *leader;
 
   void stop_follower(struct char_data *ch);
@@ -1408,11 +1390,11 @@ void do_follow(struct char_data *ch, char *argument, int cmd)
 
   if (*name) {
     if (!(leader = get_char_room_vis(ch, name))) {
-      send_to_char("I see no person by that name here!\n\r", ch);
+      cprintf(ch, "I see no person by that name here!\n\r");
       return;
     }
   } else {
-    send_to_char("Who do you wish to follow?\n\r", ch);
+    cprintf(ch, "Who do you wish to follow?\n\r");
     return;
   }
 
@@ -1426,7 +1408,7 @@ void do_follow(struct char_data *ch, char *argument, int cmd)
 
     if (leader == ch) {
       if (!ch->master) {
-	send_to_char("You are already following yourself.\n\r", ch);
+	cprintf(ch, "You are already following yourself.\n\r");
 	return;
       }
       stop_follower(ch);

@@ -1,0 +1,561 @@
+#RENT
+Owner              Filibar~
+Gold               0
+TotalCost          0
+LastUpdate         848340300
+MinimumStay        0
+End
+#EQUIPMENT
+End
+#CARRIED
+#ITEM
+ObjId              22
+ContainedBy        -1
+Name               ring clear gem~
+Description
+A ring lies here, the gem clear and unmarred.~
+ShortDescr
+a clear gem ring~
+ActionDescr
+(null)~
+VNum               5931
+EquippedAt         0
+Values             0 0 0 0
+ExtraFlags         64
+Weight             1
+Timer              0
+BitVector          0
+Type               11
+WearFlags          3
+Cost               597
+CostPerDay         597
+Affect             1 1
+Affect             0 0
+End
+#ITEM
+ObjId              22
+ContainedBy        -1
+Name               ring clear gem~
+Description
+A ring lies here, the gem clear and unmarred.~
+ShortDescr
+a clear gem ring~
+ActionDescr
+(null)~
+VNum               5931
+EquippedAt         0
+Values             0 0 0 0
+ExtraFlags         64
+Weight             1
+Timer              0
+BitVector          0
+Type               11
+WearFlags          3
+Cost               597
+CostPerDay         597
+Affect             1 1
+Affect             0 0
+End
+#ITEM
+ObjId              22
+ContainedBy        -1
+Name               pearl ring~
+Description
+A small ring lies here on the ground.~
+ShortDescr
+a pearl ring~
+ActionDescr
+(null)~
+VNum               4602
+EquippedAt         0
+Values             0 0 -1 0
+ExtraFlags         64
+Weight             1
+Timer              0
+BitVector          0
+Type               1
+WearFlags          3
+Cost               1001
+CostPerDay         150
+Affect             0 0
+Affect             0 0
+ExtraDescr         ring~
+This small ring has a pure pearl in the center.
+~
+End
+#ITEM
+ObjId              22
+ContainedBy        -1
+Name               ogre tongue~
+Description
+A fried ogre tongue rests here.~
+ShortDescr
+a cooked ogre tongue~
+ActionDescr
+(null)~
+VNum               5018
+EquippedAt         0
+Values             24 0 0 0
+ExtraFlags         0
+Weight             1
+Timer              0
+BitVector          0
+Type               19
+WearFlags          16385
+Cost               30
+CostPerDay         3
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              22
+ContainedBy        -1
+Name               ogre tongue~
+Description
+A fried ogre tongue rests here.~
+ShortDescr
+a cooked ogre tongue~
+ActionDescr
+(null)~
+VNum               5018
+EquippedAt         0
+Values             24 0 0 0
+ExtraFlags         0
+Weight             1
+Timer              0
+BitVector          0
+Type               19
+WearFlags          16385
+Cost               30
+CostPerDay         3
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              22
+ContainedBy        -1
+Name               ogre tongue~
+Description
+A fried ogre tongue rests here.~
+ShortDescr
+a cooked ogre tongue~
+ActionDescr
+(null)~
+VNum               5018
+EquippedAt         0
+Values             24 0 0 0
+ExtraFlags         0
+Weight             1
+Timer              0
+BitVector          0
+Type               19
+WearFlags          16385
+Cost               30
+CostPerDay         3
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              22
+ContainedBy        -1
+Name               ogre tongue~
+Description
+A fried ogre tongue rests here.~
+ShortDescr
+a cooked ogre tongue~
+ActionDescr
+(null)~
+VNum               5018
+EquippedAt         0
+Values             24 0 0 0
+ExtraFlags         0
+Weight             1
+Timer              0
+BitVector          0
+Type               19
+WearFlags          16385
+Cost               30
+CostPerDay         3
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              22
+ContainedBy        -1
+Name               wand black~
+Description
+There is a small black wand resting here on the ground.~
+ShortDescr
+a black wand~
+ActionDescr
+(null)~
+VNum               4608
+EquippedAt         0
+Values             15 1 1 26
+ExtraFlags         118848
+Weight             1
+Timer              0
+BitVector          0
+Type               3
+WearFlags          16385
+Cost               5000
+CostPerDay         1000
+Affect             0 0
+Affect             0 0
+ExtraDescr         black wand~
+The wand has many strange arcane writings upon it.
+~
+End
+#ITEM
+ObjId              22
+ContainedBy        -1
+Name               wand black~
+Description
+There is a small black wand resting here on the ground.~
+ShortDescr
+a black wand~
+ActionDescr
+(null)~
+VNum               4608
+EquippedAt         0
+Values             15 1 0 26
+ExtraFlags         118848
+Weight             1
+Timer              0
+BitVector          0
+Type               3
+WearFlags          16385
+Cost               5000
+CostPerDay         1000
+Affect             0 0
+Affect             0 0
+ExtraDescr         black wand~
+The wand has many strange arcane writings upon it.
+~
+End
+#ITEM
+ObjId              22
+ContainedBy        -1
+Name               bag~
+Description
+A small bag.~
+ShortDescr
+a bag~
+ActionDescr
+(null)~
+VNum               3017
+EquippedAt         0
+Values             50 0 0 0
+ExtraFlags         0
+Weight             2
+Timer              0
+BitVector          0
+Type               15
+WearFlags          16385
+Cost               20
+CostPerDay         2
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              22
+ContainedBy        -1
+Name               small pouch~
+Description
+A small pouch lies here.~
+ShortDescr
+a small pouch~
+ActionDescr
+(null)~
+VNum               10014
+EquippedAt         0
+Values             10 1 -1 0
+ExtraFlags         0
+Weight             5
+Timer              0
+BitVector          0
+Type               15
+WearFlags          2049
+Cost               30
+CostPerDay         30
+Affect             0 0
+Affect             0 0
+ExtraDescr         small pouch~
+  The pouch is not all that large but has a leather strap which makes it 
+wearable about your waiste.
+~
+End
+#ITEM
+ObjId              22
+ContainedBy        -1
+Name               red jeweled necklace~
+Description
+A necklace with a red jewel in it lies here.~
+ShortDescr
+a red jeweled necklace~
+ActionDescr
+(null)~
+VNum               6426
+EquippedAt         0
+Values             0 0 0 0
+ExtraFlags         64
+Weight             2
+Timer              0
+BitVector          0
+Type               11
+WearFlags          5
+Cost               983
+CostPerDay         983
+Affect             12 5
+Affect             0 0
+End
+#ITEM
+ObjId              22
+ContainedBy        -1
+Name               jerkin silk black~
+Description
+A black silk jerkin lies here.~
+ShortDescr
+a black silk jerkin~
+ActionDescr
+(null)~
+VNum               5085
+EquippedAt         0
+Values             1 2 0 0
+ExtraFlags         256
+Weight             1
+Timer              0
+BitVector          0
+Type               9
+WearFlags          9
+Cost               549
+CostPerDay         59
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              22
+ContainedBy        -1
+Name               leggings black silk~
+Description
+Some black silk leggings lie here.~
+ShortDescr
+some black silk leggings~
+ActionDescr
+(null)~
+VNum               5086
+EquippedAt         0
+Values             2 2 0 0
+ExtraFlags         256
+Weight             1
+Timer              0
+BitVector          0
+Type               9
+WearFlags          33
+Cost               543
+CostPerDay         53
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              22
+ContainedBy        -1
+Name               gloves silk~
+Description
+A pair of silk gloves lie here.~
+ShortDescr
+some silk gloves~
+ActionDescr
+(null)~
+VNum               5087
+EquippedAt         0
+Values             1 1 0 0
+ExtraFlags         256
+Weight             1
+Timer              0
+BitVector          0
+Type               9
+WearFlags          129
+Cost               54
+CostPerDay         6
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              22
+ContainedBy        -1
+Name               padded leather sleeves~
+Description
+A pair of sleeves made of padded leather is here.~
+ShortDescr
+padded leather sleeves~
+ActionDescr
+(null)~
+VNum               9206
+EquippedAt         0
+Values             2 2 0 0
+ExtraFlags         256
+Weight             5
+Timer              0
+BitVector          0
+Type               9
+WearFlags          257
+Cost               75
+CostPerDay         4
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              22
+ContainedBy        -1
+Name               cloak black elven~
+Description
+A tattered black elven cloak lies here.~
+ShortDescr
+A black tattered elven cloak~
+ActionDescr
+(null)~
+VNum               7010
+EquippedAt         0
+Values             8 8 0 0
+ExtraFlags         320
+Weight             2
+Timer              0
+BitVector          0
+Type               9
+WearFlags          1025
+Cost               500
+CostPerDay         100
+Affect             34 5
+Affect             35 5
+End
+#ITEM
+ObjId              22
+ContainedBy        -1
+Name               steel banded bracer~
+Description
+A steel banded bracer lies here.~
+ShortDescr
+a steel banded bracer~
+ActionDescr
+(null)~
+VNum               6431
+EquippedAt         0
+Values             0 0 0 0
+ExtraFlags         256
+Weight             2
+Timer              0
+BitVector          0
+Type               11
+WearFlags          4097
+Cost               134
+CostPerDay         134
+Affect             17 -2
+Affect             0 0
+End
+#ITEM
+ObjId              22
+ContainedBy        -1
+Name               silver bracelet~
+Description
+A small ring of silver lies here on the ground.~
+ShortDescr
+a silver bracelet~
+ActionDescr
+(null)~
+VNum               3046
+EquippedAt         0
+Values             0 0 0 0
+ExtraFlags         0
+Weight             4
+Timer              0
+BitVector          0
+Type               12
+WearFlags          4097
+Cost               100
+CostPerDay         30
+Affect             0 0
+Affect             0 0
+ExtraDescr         silver braelet~
+  It is made of excellent craftsmanship.
+~
+End
+#ITEM
+ObjId              22
+ContainedBy        -1
+Name               staff clawed~
+Description
+A staff with a large claw at the top lies here.~
+ShortDescr
+a clawed staff~
+ActionDescr
+(null)~
+VNum               1307
+EquippedAt         0
+Values             0 1 7 7
+ExtraFlags         1344
+Weight             5
+Timer              0
+BitVector          0
+Type               5
+WearFlags          32769
+Cost               123
+CostPerDay         123
+Affect             18 4
+Affect             19 4
+ExtraDescr         staff clawed~
+  The staff appears to be made from ironwood and at the top seems to have 
+some sort of a avian foot, claws extended.  It could make a lasting scar
+upon someone, if they knew how to use it.
+~
+End
+#ITEM
+ObjId              22
+ContainedBy        -1
+Name               red jeweled necklace~
+Description
+A necklace with a red jewel in it lies here.~
+ShortDescr
+a red jeweled necklace~
+ActionDescr
+(null)~
+VNum               6426
+EquippedAt         0
+Values             0 0 0 0
+ExtraFlags         64
+Weight             2
+Timer              0
+BitVector          0
+Type               11
+WearFlags          5
+Cost               983
+CostPerDay         983
+Affect             12 5
+Affect             0 0
+End
+#ITEM
+ObjId              21
+ContainedBy        -1
+Name               belt leather~
+Description
+A leather belt lies here.~
+ShortDescr
+a leather belt~
+ActionDescr
+(null)~
+VNum               3028
+EquippedAt         -1
+Values             1 1 0 0
+ExtraFlags         256
+Weight             1
+Timer              0
+BitVector          0
+Type               9
+WearFlags          2049
+Cost               30
+CostPerDay         10
+Affect             17 -2
+Affect             0 0
+End
+End
+#END_RENT

@@ -25,26 +25,39 @@
 #include <sys/un.h>
 #include <sys/resource.h>
 
-#include "global.h"
-#include "bug.h"
-#include "utils.h"
-#include "interpreter.h"
-#include "handler.h"
-#include "db.h"
+#include "include/global.h"
+#include "include/bug.h"
+#include "include/utils.h"
+#include "include/interpreter.h"
+#include "include/handler.h"
+#include "include/db.h"
+#include "include/modify.h"
+#include "include/whod.h"
+#include "include/multiclass.h"
+#include "include/weather.h"
+#include "include/limits.h"
+#include "include/spell_parser.h"
+#include "include/sound.h"
+#include "include/fight.h"
+#include "include/mob_actions.h"
 #define _COMM_C
-#include "comm.h"
+#include "include/comm.h"
+
+#ifdef RFC1413
+#include "libident-0.19/ident.h"
+#endif
 
 struct descriptor_data *descriptor_list;
 struct descriptor_data *next_to_process;
 
-int lawful = 0;			       /* work like the game regulator */
-int slow_death = 0;		       /* Shut her down, Martha, she's sucking mud */
-int diku_shutdown = 0;		       /* clean shutdown */
-int diku_reboot = 0;		       /* reboot the game after a shutdown */
+int mud_port;
+int slow_death = 0;	/* Shut her down, Martha, she's sucking mud */
+int diku_shutdown = 0;	/* clean shutdown */
+int diku_reboot = 0;	/* reboot the game after a shutdown */
 int DEBUG = 0;
 int DEBUG2 = 0;
-int no_specials = 0;		       /* Suppress ass. of special routines */
-long Uptime;			       /* time that the game has been up */
+int no_specials = 0;	/* Suppress ass. of special routines */
+long Uptime;		/* time that the game has been up */
 
 int maxdesc;
 int avail_descs;
@@ -58,47 +71,20 @@ int pulse_sound = PULSE_SOUND;
 int pulse_zone = PULSE_ZONE;
 int pulse_mobile = PULSE_MOBILE;
 int pulse_violence = PULSE_VIOLENCE;
-int pulse_law = PULSE_LAW;
+int pulse_reboot = PULSE_REBOOT;
 int pulse_dump = PULSE_DUMP;
 
-int mud_port;
-
-/*
- * main game loop and related stuff
- */
-
-int main(int argc, char **argv)
-{
-#ifdef UNIX_COMM
-  char *path;
-
-#else
+int main(int argc, char **argv) {
   int port;
-
-#endif
   char buf[512];
   int pos = 1;
   char *dir;
-  int res;
-  struct rlimit rl;
 
   if (DEBUG)
     dlog("main");
-#ifdef UNIX_COMM
-  path = DFLT_PATH;
-#else
   port = DFLT_PORT;
-#endif
-
   dir = DFLT_DIR;
-
   WizLock = FALSE;
-
-#ifdef sun3
-  res = getrlimit(RLIMIT_NOFILE, &rl);
-  rl.rlim_cur = 128;
-  res = setrlimit(RLIMIT_NOFILE, &rl);
-#endif
 
   while ((pos < argc) && (*(argv[pos]) == '-')) {
     switch (*(argv[pos] + 1)) {
@@ -111,8 +97,7 @@ int main(int argc, char **argv)
       log("Debugging is on.");
       break;
     case 'l':
-      lawful = 1;
-      log("Lawful mode selected.");
+      log("Lawful mode no longer available.");
       break;
     case 'd':
       if (*(argv[pos] + 2))
@@ -138,9 +123,6 @@ int main(int argc, char **argv)
   }
 
   if (pos < argc)
-#ifdef UNIX_COMM
-    path = argv[pos];
-#else
     if (!isdigit(*argv[pos])) {
       fprintf(stderr, "Usage: %s [-l] [-s] [-d pathname] [ port # ]\n",
 	      argv[0]);
@@ -149,15 +131,9 @@ int main(int argc, char **argv)
       printf("Illegal port #\n");
       exit(0);
     }
-#endif
 
   Uptime = time(0);
-
-#ifdef UNIX_COMM
-  sprintf(buf, "Running game on path: %s", path);
-#else
   sprintf(buf, "Running game on port %d.", port);
-#endif
   mud_port= port;
   log(buf);
 
@@ -169,24 +145,14 @@ int main(int argc, char **argv)
   log(buf);
 
   srandom(time(0));
-#ifdef UNIX_COMM
-  run_the_game(path);
-#else
   run_the_game(port);
-#endif
   return(42);		       /* what's so great about HHGTTG, anyhow? */
 }
 
 /* Init sockets, run game, and cleanup sockets */
-#ifdef UNIX_COMM
-int run_the_game(char *path)
-#else
-int run_the_game(int port)
-#endif
-{
+void run_the_game(int port) {
   int s;
   void signal_setup(void);
-  int load(void);
   void coma(int);
 
   descriptor_list = NULL;
@@ -195,24 +161,12 @@ int run_the_game(int port)
   signal_setup();
 
   log("Opening mother connection.");
-#ifdef UNIX_COMM
-  s = init_socket(path);
-#else
   s = init_socket(port);
-#endif
-  if (lawful && load() >= 6) {
-    log("System load too high at startup.");
-    coma(s);
-  }
   boot_db();
 
   init_whod(port);
   log("Entering game loop.");
   game_loop(s);
-
-#ifdef UNIX_COMM
-  unlink(path);
-#endif
 
   close_sockets(s);
   close_whod();
@@ -225,20 +179,15 @@ int run_the_game(int port)
 }
 
 /* Accept new connects, relay commands, and call 'heartbeat-functs' */
-int game_loop(int s)
-{
-
-  char log_buf[512];
-  int tmp_room, old_len;
+void game_loop(int s) {
   fd_set input_set, output_set, exc_set;
   struct timeval last_time, now, timespent, timeout, null_time;
   static struct timeval opt_time;
   char comm[MAX_INPUT_LENGTH];
   char promptbuf[256];
-  struct descriptor_data *t, *point, *next_point;
+  struct descriptor_data *point, *next_point;
   int mask;
   struct room_data *rm;
-  struct char_data *rider;
   struct char_data *mount;
 
   pulse = 0;
@@ -248,15 +197,9 @@ int game_loop(int s)
   opt_time.tv_usec = OPT_USEC;	       /* Init time values */
   opt_time.tv_sec = 0;
 
-#ifdef sun3
-  gettimeofday(&last_time, (struct timeval *)0);
-#else
   gettimeofday(&last_time, (struct timezone *)0);
-#endif
-
   maxdesc = s;
-  /* !! Change if more needed !! */
-  avail_descs = getdtablesize() - 2;
+  avail_descs = getdtablesize() - 2; /* !! Change if more needed !! */
 
   mask = sigmask(SIGUSR1) | sigmask(SIGUSR2) | sigmask(SIGINT) |
     sigmask(SIGPIPE) | sigmask(SIGALRM) | sigmask(SIGTERM) |
@@ -264,7 +207,6 @@ int game_loop(int s)
 
   /* Main loop */
   while (!diku_shutdown) {
-    /* Check what's happening out there */
     FD_ZERO(&input_set);
     FD_ZERO(&output_set);
     FD_ZERO(&exc_set);
@@ -277,12 +219,7 @@ int game_loop(int s)
       }
     }
 
-    /* check out the time */
-#ifdef sun3
-    gettimeofday(&now, (struct timeval *)0);
-#else
     gettimeofday(&now, (struct timezone *)0);
-#endif
     timespent = timediff(&now, &last_time);
     timeout = timediff(&opt_time, &timespent);
     last_time.tv_sec = now.tv_sec + timeout.tv_sec;
@@ -295,7 +232,7 @@ int game_loop(int s)
     whod_loop();
     if (select(maxdesc + 1, &input_set, &output_set, &exc_set, &null_time) < 0) {
       perror("Select poll");
-      return (-1);
+      return;
     }
     if (select(0, (fd_set *) 0, (fd_set *) 0, (fd_set *) 0, &timeout) < 0) {
       perror("Select sleep");
@@ -440,62 +377,16 @@ int game_loop(int s)
 	point->prompt_mode = 0;
       }
     }
-#ifdef OLD_WILEY
-    pulse++;
+/*
+ * PULSE handling.... periodic events
+ */
 
-    if (!(pulse % PULSE_ZONE)) {
-      zone_update();
-      if (lawful)
-	gr(s);
-    }
-    if (!(pulse % PULSE_TELEPORT))
-      Teleport(pulse);
-
-    if (!(pulse % PULSE_VIOLENCE))
-      perform_violence(pulse);
-
-    if (!(pulse % PULSE_MOBILE))
-      mobile_activity();
-
-    if (!(pulse % PULSE_RIVER))
-      down_river(pulse);
-
-    if (!(pulse % PULSE_SOUND))
-      MakeSound();
-
-    /*
-     * if (!(pulse % PULSE_FALL))
-     * all_fall_down();
-     * 
-     * if (!(pulse % PULSE_DROWN))
-     * glug_glug_glug();
-     */
-
-/*    if (!(pulse % (SECS_PER_MUD_HOUR * 5))) */
-    if (!(pulse % (PULSE_UPDATE + subtics))) {
-      subtics = number(0, PULSE_VARIABLE);
-      weather_and_time(1);
-      affect_update();
-      point_update(pulse);
-    }
-    if (!(pulse % 1200)) {
-      if (lawful)
-	night_watchman();
-      check_reboot();
-    }
-    if (pulse >= 3600) {
-      dump_player_list();
-      pulse = 0;
-    }
-#else
     if ((++pulse) > PULSE_MAX)
       pulse= 0;
 
     if ((--pulse_zone) <= 0) {
       pulse_zone= PULSE_ZONE;
       zone_update();
-      if (lawful)
-	gr(s);
     }
     if ((--pulse_teleport) <= 0) {
       pulse_teleport= PULSE_TELEPORT;
@@ -523,53 +414,43 @@ int game_loop(int s)
     }
     if ((--pulse_update) <= 0) {
       pulse_update= PULSE_UPDATE + number(0, PULSE_VARIABLE);
-/*
- *    iprintf("\n\r** Next Tick in %1.2lf seconds! **\n\r",
- *            pulse_update/(double)PULSE_PER_SECOND);
- */
       weather_and_time(1);
       affect_update();
       point_update(pulse);
     }
-    if ((--pulse_law) <= 0) {
-      pulse_law= PULSE_LAW;
-      if (lawful)
-	night_watchman();
+    if ((--pulse_reboot) <= 0) {
+      pulse_reboot= PULSE_REBOOT;
       check_reboot();
     }
     if ((--pulse_dump) <= 0) {
       pulse_dump= PULSE_DUMP;
       dump_player_list();
     }
-#endif
-    tics++;			       /* tics since last checkpoint signal */
+    tics++;	       /* tics since last checkpoint signal */
   }
 }
 
 /*
  * general utility stuff (for local use)
  */
-
-int get_from_q(struct txt_q *queue, char *dest)
-{
+int get_from_q(struct txt_q *queue, char *dest) {
   struct txt_block *tmp;
 
-  /* Q empty? */
+  if (!queue) {
+    log("Input from non-existant queue?");
+    return 0;
+  }
   if (!queue->head)
-    return (0);
-
+    return 0;
   tmp = queue->head;
   strcpy(dest, queue->head->text);
   queue->head = queue->head->next;
-
   free(tmp->text);
   free(tmp);
-
-  return (1);
+  return 1;
 }
 
-void write_to_q(char *txt, struct txt_q *queue)
-{
+void write_to_q(char *txt, struct txt_q *queue) {
   struct txt_block *new;
 
   if (!queue) {
@@ -578,10 +459,8 @@ void write_to_q(char *txt, struct txt_q *queue)
   }
   CREATE(new, struct txt_block, 1);
   CREATE(new->text, char, strlen(txt) + 1);
-
   strcpy(new->text, txt);
 
-  /* Q empty? */
   if (!queue->head) {
     new->next = NULL;
     queue->head = queue->tail = new;
@@ -592,26 +471,24 @@ void write_to_q(char *txt, struct txt_q *queue)
   }
 }
 
-struct timeval timediff(struct timeval *a, struct timeval *b)
-{
-  struct timeval rslt, tmp;
+struct timeval timediff(struct timeval *a, struct timeval *b) {
+  struct timeval result, tmp;
 
   tmp = *a;
 
-  if ((rslt.tv_usec = tmp.tv_usec - b->tv_usec) < 0) {
-    rslt.tv_usec += 1000000;
+  if ((result.tv_usec = tmp.tv_usec - b->tv_usec) < 0) {
+    result.tv_usec += 1000000;
     --(tmp.tv_sec);
   }
-  if ((rslt.tv_sec = tmp.tv_sec - b->tv_sec) < 0) {
-    rslt.tv_usec = 0;
-    rslt.tv_sec = 0;
+  if ((result.tv_sec = tmp.tv_sec - b->tv_sec) < 0) {
+    result.tv_usec = 0;
+    result.tv_sec = 0;
   }
-  return (rslt);
+  return result;
 }
 
 /* Empty the queues before closing connection */
-void flush_queues(struct descriptor_data *d)
-{
+void flush_queues(struct descriptor_data *d) {
   char dummy[MAX_STRING_LENGTH];
 
   while (get_from_q(&d->output, dummy));
@@ -622,43 +499,7 @@ void flush_queues(struct descriptor_data *d)
  * socket handling
  */
 
-#ifdef UNIX_COMM
-int init_socket(char *path)
-{
-  int s;
-  char *opt;
-  struct sockaddr_un sa;
-  struct linger ld;
-  FILE *fl;
-
-  if (fl = fopen(path, "r")) {
-    fclose(fl);
-    unlink(path);
-  }
-  s = socket(AF_UNIX, SOCK_STREAM, 0);
-  if (s < 0) {
-    perror("Init-socket");
-    exit(1);
-  }
-  ld.l_onoff = 1;
-  ld.l_linger = 1000;
-  if (setsockopt(s, SOL_SOCKET, SO_LINGER, &ld, sizeof(ld)) < 0) {
-    perror("setsockopt LINGER");
-    exit(1);
-  }
-  sa.sun_family = AF_UNIX;
-  strcpy(sa.sun_path, path);
-  if (bind(s, &sa, sizeof(sa.sun_family) + strlen(path), 0) < 0) {
-    perror("bind");
-    close(s);
-    exit(1);
-  }
-  listen(s, 3);
-  return (s);
-}
-#else
-int init_socket(int port)
-{
+int init_socket(int port) {
   int s;
   char *opt;
   char hostname[MAX_HOSTNAME + 1];
@@ -666,10 +507,6 @@ int init_socket(int port)
   struct hostent *hp;
   int i, gotsocket;
 
-#ifdef sun3			       /* linux don't have linger structs yet */
-  struct linger ld;
-
-#endif
   bzero(&sa, sizeof(struct sockaddr_in));
 
   gethostname(hostname, MAX_HOSTNAME);
@@ -685,27 +522,13 @@ int init_socket(int port)
     perror("Init-socket");
     exit(1);
   }
-  if (setsockopt(s, SOL_SOCKET, SO_REUSEADDR,
-		 (char *)&opt, sizeof(opt)) < 0) {
+  if(setsockopt(s, SOL_SOCKET, SO_REUSEADDR, (char *)&opt, sizeof(opt)) < 0) {
     perror("setsockopt REUSEADDR");
     exit(1);
   }
-#ifdef sun3
-  ld.l_onoff = 1;
-  ld.l_linger = 500;
-  if (setsockopt(s, SOL_SOCKET, SO_LINGER, &ld, sizeof(ld)) < 0) {
-    perror("setsockopt LINGER");
-    exit(1);
-  }
-#endif
 
   for(i= 60; i> 0; i--) {
-#ifdef sun3
-    if (bind(s, &sa, sizeof(sa), 0) < 0)
-#else
-    if (bind(s, (struct sockaddr *)&sa, sizeof(sa)) < 0)
-#endif
-    {
+    if (bind(s, (struct sockaddr *)&sa, sizeof(sa)) < 0) {
       gotsocket= 0;
       fprintf(stderr, "Socket in use... retrying...\n");
       sleep(1);
@@ -722,10 +545,8 @@ int init_socket(int port)
   listen(s, 3);
   return (s);
 }
-#endif
 
-int new_connection(int s)
-{
+int new_connection(int s) {
   struct sockaddr_in isa;
   int i, t;
 
@@ -739,62 +560,21 @@ int new_connection(int s)
   return t;
 }
 
-/* print an internet host address prettily */
-static void printhost(addr, buf)
-  struct in_addr *addr;
-  char *buf;
-{
-  struct hostent *h;
-  char *s, **p;
-  int i;
-
-  h = gethostbyaddr(addr, sizeof(*addr), AF_INET);
-
-  if (h != NULL) {
-    strcpy(buf, h->h_name);
-  } else {
-#ifdef sun3
-    sprintf(buf, "%d.%d.%d.%d", addr->S_un.S_un_b.s_b1,
-	    addr->S_un.S_un_b.s_b2,
-	    addr->S_un.S_un_b.s_b3,
-	    addr->S_un.S_un_b.s_b4);
-#else
-    sprintf(buf, "0.0.0.0");
-#endif
-  }
-}
-
-int new_descriptor(int s)
-{
-  struct sockaddr_in isa, ident;
+int new_descriptor(int s) {
+  struct sockaddr_in isa;
   struct hostent *host;
-  int i, t, temp,temp2;
-  long *temp4;
-
-  int fd, len, remote_port;
+  int i;
+  int remote_port;
   long remote_addr;
-  FILE *ifp, *ofp;
   char buf[8192];
-  int args;
-  int lport, rport;
-  char reply_type[81];
-  char opsys_or_error[81];
-  char identifier[1024];
-  char charset[81];
-  char opsys[81];
   int badger = 0;
 
   int desc, old_maxdesc;
   struct descriptor_data *newd;
-  int size;
   int index;
-  struct sockaddr_in sock;
-  struct hostent *from;
 
-  char log_buf[512];
   long tc;
   struct tm *t_info;
-  char dummy;
 
   char *timed_con[] =
   {
@@ -878,74 +658,25 @@ int new_descriptor(int s)
 
   newd->username[0]= '\0';
 #ifdef RFC1413
-  if((fd= socket(AF_INET, SOCK_STREAM, 0)) >= 0) {
-    ident.sin_family= AF_INET;
-    ident.sin_addr.s_addr= remote_addr;
-    ident.sin_port= htons(113);
-    len= sizeof(ident);
-    if(connect(fd, &ident, len) >= 0) {
-      len= sizeof(ident);
-      if(getsockname(fd, &ident, &len) >= 0) {
-        if((ifp= fdopen(fd, "r")) && (ofp= fdopen(fd, "w"))) {
-          fprintf(ofp, "%d , %d\n", remote_port, mud_port);
-          fflush(ofp);
-          shutdown(fd, 1);
-          if(fgets(buf, sizeof(buf)-1, ifp)) {
-            if((args= sscanf(buf,
-                      " %d , %d : %[^ \t\n\r:] : %[^\t\n\r:] : %[^\n\r]",
-                      &lport, &rport, reply_type, opsys_or_error, identifier))
-               >= 3) {
-              opsys[0] = charset[0] = '\0';
-              if(sscanf(opsys_or_error, " %s , %s", opsys, charset) != 2)
-                strcpy(opsys, opsys_or_error);
-              if(!strcasecmp(reply_type, "USERID")) {
-                strncpy(newd->username, identifier, 16);
-              }
-            }
-          }
-          fclose(ifp); fclose(ofp);
-        }
-      }
-    } else {
-      badger = 1;
-    }
-    shutdown(fd, 0);
-    close(fd);
+  {
+    char *ack;
+
+    if((ack= ident_id(desc, 10)))
+      strncpy(newd->username, ack, 16);
+    else
+      badger= 2;
   }
 #endif
   if(!newd->username[0])
-    strcpy(newd->username, "user");
+    strcpy(newd->username, "adork");
 
   if(!(host= gethostbyaddr((char *)&remote_addr, sizeof(remote_addr), AF_INET)))
 
     sprintf(newd->host, "%u.%u.%u.%u",
             (int)(((char *)&remote_addr)[0])&255, (int)(((char *)&remote_addr)[1])&255,
             (int)(((char *)&remote_addr)[2])&255, (int)(((char *)&remote_addr)[3])&255);
-/*   {
-	temp4=&remote_addr;
-	for(temp=0;temp <4;temp++)
-	{
-		temp2=atoi((char)remote_addr);
-		sprintf(newd->host, "%d",temp2);
-		if (temp<3)
-			sprintf(newd->host,".");
-		temp4++;
-	}
-   }
-*/
   else
     strncpy(newd->host, host->h_name, 49);
-
-#if 0
-  /* find info */
-  size = sizeof(sock);
-  if (getpeername(desc, (struct sockaddr *)&sock, &size) < 0) {
-    perror("getpeername");
-    *newd->host = '\0';
-  } else {
-    printhost(&sock.sin_addr, newd->host);
-  }
-#endif
 
   /* init desc data */
   newd->descriptor = desc;
@@ -965,14 +696,22 @@ int new_descriptor(int s)
   newd->snoop.snooping = 0;
   newd->snoop.snoop_by = 0;
 
-  if(badger)
-    write_to_descriptor(desc, "\n\r **** Tell your sys-admin to practice safe telnet by using RFC1413 ****\n\r\n\r");
+#ifdef RFC1413
+  switch(badger) {
+    case 1:
+      write_to_descriptor(desc, "\n\r **** Tell your sys-admin to upgrade to the SHINY NEW telnet using RFC1413 ****\n\r\n\r");
+      break;
+    case 2:
+      write_to_descriptor(desc, "\n\r **** Tell your sys-admin to practice safe telnet by using RFC1413 ****\n\r\n\r");
+      break;
+    default:
+      break;
+  }
+#endif
 
   /* prepend to list */
 
-  if (
-       ((t_info->tm_hour + 1) > 8) && ((t_info->tm_hour + 1) < 21)
-    )
+  if (((t_info->tm_hour + 1) > 8) && ((t_info->tm_hour + 1) < 21))
     for (index = 0; timed_con[index] != "\n"; index++) {
       if (!strncmp(timed_con[index], newd->host, 49)) {
 	sprintf(buf, "TIMED site connecting:%s\n", newd->host);
@@ -1010,8 +749,7 @@ int new_descriptor(int s)
   return (0);
 }
 
-int process_output(struct descriptor_data *t)
-{
+int process_output(struct descriptor_data *t) {
   char i[MAX_STRING_LENGTH + 1];
 
   if (DEBUG)
@@ -1038,8 +776,7 @@ int process_output(struct descriptor_data *t)
   return (1);
 }
 
-int write_to_descriptor(int desc, char *txt)
-{
+int write_to_descriptor(int desc, char *txt) {
   int sofar, thisround, total;
 
   total = strlen(txt);
@@ -1060,8 +797,7 @@ int write_to_descriptor(int desc, char *txt)
   return (0);
 }
 
-int process_input(struct descriptor_data *t)
-{
+int process_input(struct descriptor_data *t) {
   int sofar, thisround, begin, squelch, i, k, flag;
   char tmp[MAX_INPUT_LENGTH + 2], buffer[MAX_INPUT_LENGTH + 60];
   long now_time;
@@ -1160,19 +896,14 @@ int process_input(struct descriptor_data *t)
   return (1);
 }
 
-void close_sockets(int s)
-{
+void close_sockets(int s) {
   log("Closing all sockets.");
-
   while (descriptor_list)
     close_socket(descriptor_list);
-
   close(s);
 }
 
-void close_socket(struct descriptor_data *d)
-{
-  struct affected_type *af;
+void close_socket(struct descriptor_data *d) {
   struct descriptor_data *tmp;
   char buf[100];
 
@@ -1192,7 +923,7 @@ void close_socket(struct descriptor_data *d)
     d->snoop.snooping->desc->snoop.snoop_by = 0;
 
   if (d->snoop.snoop_by) {
-    send_to_char("Your victim is no longer among us.\n\r", d->snoop.snoop_by);
+    cprintf(d->snoop.snoop_by, "Your victim is no longer among us.\n\r");
     d->snoop.snoop_by->desc->snoop.snooping = 0;
   }
   if (d->character)
@@ -1232,154 +963,22 @@ void close_socket(struct descriptor_data *d)
   free(d);
 }
 
-void nonblock(int s)
-{
-#ifdef sun3
-  if (fcntl(s, F_SETFL, FNDELAY) == -1)
-#else
-  if (fcntl(s, F_SETFL, O_NDELAY) == -1)
-#endif
-  {
+void nonblock(int s) {
+  if (fcntl(s, F_SETFL, O_NDELAY) == -1) {
     perror("Noblock");
     exit(1);
   }
-}
-
-/* sleep while the load is too high */
-void coma(int s)
-{
-  fd_set input_set;
-  static struct timeval timeout =
-  {
-    60,
-    0
-  };
-  int conn;
-
-  int workhours(void);
-  int load(void);
-
-  log("Entering comatose state.");
-
-  sigsetmask(sigmask(SIGUSR1) | sigmask(SIGUSR2) | sigmask(SIGINT) |
-	     sigmask(SIGPIPE) | sigmask(SIGALRM) | sigmask(SIGTERM) |
-	     sigmask(SIGURG) | sigmask(SIGXCPU) | sigmask(SIGHUP));
-
-  while (descriptor_list)
-    close_socket(descriptor_list);
-
-  FD_ZERO(&input_set);
-  do {
-    FD_SET(s, &input_set);
-    if (select(64, &input_set, 0, 0, &timeout) < 0) {
-      perror("coma select");
-      exit(1);
-    }
-    if (FD_ISSET(s, &input_set)) {
-      if (load() < 6) {
-	log("Leaving coma with visitor.");
-	sigsetmask(0);
-	return;
-      }
-      if ((conn = new_connection(s)) >= 0) {
-	write_to_descriptor(conn, COMA_SIGN);
-	sleep(2);
-	close(conn);
-      }
-    }
-    tics = 1;
-    if (workhours()) {
-      log("Working hours collision during coma. Exit.");
-      exit(0);
-    }
-  }
-  while (load() >= 6);
-
-  log("Leaving coma.");
-  sigsetmask(0);
 }
 
 /*
  * Public routines for system-to-player-communication
  */
 
-#if 0
-void send_to_char(char *messg, struct char_data *ch)
-{
-  if (ch)
-    if (ch->desc && messg)
-      write_to_q(messg, &ch->desc->output);
-}
-
-void send_to_room(char *messg, int room)
-{
-  struct char_data *i;
-
-  if (messg)
-    for (i = real_roomp(room)->people; i; i = i->next_in_room)
-      if (i->desc)
-	write_to_q(messg, &i->desc->output);
-}
-
-void send_to_all(char *messg)
-{
-  struct descriptor_data *i;
-
-  if (messg)
-    for (i = descriptor_list; i; i = i->next)
-      if (!i->connected)
-	write_to_q(messg, &i->output);
-}
-
-void send_to_outdoor(char *messg)
-{
-  struct descriptor_data *i;
-
-  if (messg)
-    for (i = descriptor_list; i; i = i->next)
-      if (!i->connected && i->character != NULL)
-	if (OUTSIDE(i->character))
-	  write_to_q(messg, &i->output);
-}
-
-void send_to_except(char *messg, struct char_data *ch)
-{
-  struct descriptor_data *i;
-
-  if (messg)
-    for (i = descriptor_list; i; i = i->next)
-      if (ch->desc != i && !i->connected)
-	write_to_q(messg, &i->output);
-}
-
-void send_to_room_except(char *messg, int room, struct char_data *ch)
-{
-  struct char_data *i;
-
-  if (messg)
-    for (i = real_roomp(room)->people; i; i = i->next_in_room)
-      if (i != ch && i->desc)
-	write_to_q(messg, &i->desc->output);
-}
-
-void send_to_room_except_two(char *messg, int room, struct char_data *ch1, struct char_data *ch2)
-{
-  struct char_data *i;
-
-  if (messg)
-    for (i = real_roomp(room)->people; i; i = i->next_in_room)
-      if (i != ch1 && i != ch2 && i->desc)
-	write_to_q(messg, &i->desc->output);
-}
-
-#endif
-
 /*
  * This acts as an interface to write_to_q(), but it uses variable arguments
  * to eliminate multiple calls to sprintf().
  */
-void dprintf(struct descriptor_data *d, char *Str,...)
-{
+void dprintf(struct descriptor_data *d, char *Str,...) {
   va_list arg;
   char Result[MAX_STRING_LENGTH];
 
@@ -1396,8 +995,7 @@ void dprintf(struct descriptor_data *d, char *Str,...)
  * This works like send_to_char(), but it uses variable arguments to
  * eliminate multiple calls to sprintf().
  */
-void cprintf(struct char_data *ch, char *Str,...)
-{
+void cprintf(struct char_data *ch, char *Str,...) {
   va_list arg;
   char Result[MAX_STRING_LENGTH];
 
@@ -1413,8 +1011,7 @@ void cprintf(struct char_data *ch, char *Str,...)
 /*
  * This one is an interface to replace send_to_room().
  */
-void rprintf(int room, char *Str,...)
-{
+void rprintf(int room, char *Str,...) {
   va_list arg;
   struct char_data *i;
   struct room_data *rr;
@@ -1434,8 +1031,7 @@ void rprintf(int room, char *Str,...)
 /*
  * This one is everyone in the zone specified.
  */
-void zprintf(int zone, char *Str,...)
-{
+void zprintf(int zone, char *Str,...) {
   va_list arg;
   struct descriptor_data *i;
   char Result[MAX_STRING_LENGTH];
@@ -1449,7 +1045,7 @@ void zprintf(int zone, char *Str,...)
     for (i = descriptor_list; i; i = i->next)
       if (!i->connected)
         if(i->character)
-          if(rr= real_roomp(i->character->in_room))
+          if((rr= real_roomp(i->character->in_room)))
             if(rr->zone == zone)
 	      write_to_q(Result, &i->output);
   }
@@ -1458,8 +1054,7 @@ void zprintf(int zone, char *Str,...)
 /*
  * And this one sends to EVERYBODY int the game!!!!!
  */
-void aprintf(char *Str,...)
-{
+void aprintf(char *Str,...) {
   va_list arg;
   struct descriptor_data *i;
   char Result[MAX_STRING_LENGTH];
@@ -1478,8 +1073,7 @@ void aprintf(char *Str,...)
 /*
  * Here is send_to_outdoor()
  */
-void oprintf(char *Str,...)
-{
+void oprintf(char *Str,...) {
   va_list arg;
   struct descriptor_data *i;
   char Result[MAX_STRING_LENGTH];
@@ -1498,8 +1092,7 @@ void oprintf(char *Str,...)
 /*
  * Send to everyone except the given character.
  */
-void eprintf(struct char_data *ch, char *Str,...)
-{
+void eprintf(struct char_data *ch, char *Str,...) {
   va_list arg;
   struct descriptor_data *i;
   char Result[MAX_STRING_LENGTH];
@@ -1518,8 +1111,7 @@ void eprintf(struct char_data *ch, char *Str,...)
 /*
  * This one is for send_to_room_except()
  */
-void reprintf(int room, struct char_data *ch, char *Str,...)
-{
+void reprintf(int room, struct char_data *ch, char *Str,...) {
   va_list arg;
   struct char_data *i;
   struct room_data *rr;
@@ -1539,8 +1131,7 @@ void reprintf(int room, struct char_data *ch, char *Str,...)
 /*
  * This one is for send_to_room_except()
  */
-void re2printf(int room, struct char_data *ch1, struct char_data *ch2, char *Str,...)
-{
+void re2printf(int room, struct char_data *ch1, struct char_data *ch2, char *Str,...) {
   va_list arg;
   struct char_data *i;
   struct room_data *rr;
@@ -1560,8 +1151,7 @@ void re2printf(int room, struct char_data *ch1, struct char_data *ch2, char *Str
 /*
  * IMMORTAL printf.
  */
-void iprintf(char *Str,...)
-{
+void iprintf(char *Str,...) {
   va_list arg;
   struct descriptor_data *i;
   char Result[MAX_STRING_LENGTH];
@@ -1577,8 +1167,7 @@ void iprintf(char *Str,...)
   }
 }
 
-void save_all()
-{
+void save_all() {
   struct descriptor_data *i;
 
   for (i = descriptor_list; i; i = i->next)
@@ -1589,9 +1178,8 @@ void save_all()
 /* higher-level communication */
 
 void act(char *str, int hide_invisible, struct char_data *ch,
-	 struct obj_data *obj, void *vict_obj, int type)
-{
-  register char *strp, *point, *i;
+	 struct obj_data *obj, void *vict_obj, int type) {
+  register char *strp, *point, *i = NULL;
   struct char_data *to;
   char buf[MAX_STRING_LENGTH];
 
@@ -1677,7 +1265,7 @@ void act(char *str, int hide_invisible, struct char_data *ch,
 	    break;
 	  }
 
-	  while (*point = *(i++))
+	  while ((*point = *(i++)))
 	    ++point;
 
 	  ++strp;
@@ -1696,8 +1284,7 @@ void act(char *str, int hide_invisible, struct char_data *ch,
   }
 }
 
-void dump_player_list(void)
-{
+void dump_player_list(void) {
   FILE *pfd;
   int i;
 

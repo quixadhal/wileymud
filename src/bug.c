@@ -7,14 +7,22 @@
 #include <string.h>
 #include <sys/timeb.h>
 
-#include "global.h"
-#include "utils.h"
-#include "comm.h"
-#include "multiclass.h"
-#define _BUG_C
-#include "bug.h"
+#define DIKU_CRUD
+#ifdef DIKU_CRUD
+#include "include/global.h"
+#include "include/utils.h"
+#include "include/comm.h"
+#include "include/multiclass.h"
+#endif
 
+#define _BUG_C
+#include "include/bug.h"
+
+#ifdef DIKU_CRUD
 extern struct descriptor_data *descriptor_list;
+#else
+#define MAX_STRING_LENGTH 2048
+#endif
 
 /*
  * This is my general purpose error handler that spews a time-stamped
@@ -35,8 +43,9 @@ extern struct descriptor_data *descriptor_list;
  * which can then be used by simply saying:
  * bug(BUGLOG, ch, "You died %d times!\n", deaths);
  * producing as an example:
- * <: Sun Feb 19 19:56:42 EST 1995 (ack.c;barf,135) Quixadhal [#3001]:
+ * <: 950219.195642.037 (ack.c;barf,135) Quixadhal [#3001]:
  *  : You died 27 times!
+ * The datestamp is YYMMDD.HHMMSS.MIL format.
  */
 void abug(char *File, char *Func, int Line, UINT Level, UINT Type,
 	  char *BugFile, struct char_data *ch, char *Str,...)
@@ -44,44 +53,36 @@ void abug(char *File, char *Func, int Line, UINT Level, UINT Type,
   va_list arg;
   char Result[MAX_STRING_LENGTH];
   char Temp[MAX_STRING_LENGTH];
-#if 0
-  char *Time;
-#endif
-  char Time[256];
   FILE *fp;
-  long current_time;
   struct timeb right_now;
   struct tm *now_part;
 
   bzero(Result, MAX_STRING_LENGTH);
   va_start(arg, Str);
   if (Str && *Str) {
+#ifdef DIKU_CRUD
     struct descriptor_data *i;
 
     strcpy(Result, "Notify> ");
+#endif
     vsprintf(Temp, Str, arg);
+#ifdef DIKU_CRUD
     strcat(Result, Temp);
-    /* NOTIFY(Result, Level, Type); */
     for (i = descriptor_list; i; i = i->next)
-      if ((!i->connected) && (GetMaxLevel(i->character) >= 57) &&
+      if ((!i->connected) && (GetMaxLevel(i->character) >= Level) &&
 	  (IS_SET(i->character->specials.act, PLR_LOGS)))
 	write_to_q(Result, &i->output);
     bzero(Result, MAX_STRING_LENGTH);
+#endif
   } else
     strcpy(Temp, "PING!");
   va_end(arg);
   ftime(&right_now);
-  now_part= localtime(&right_now);
-  sprintf(Time, "%02d%02d%02d.%02d%02d%02d.%03d",
+  now_part= localtime((const time_t *)&right_now);
+  sprintf(Result, "<: %02d%02d%02d.%02d%02d%02d.%03d",
           now_part->tm_year, now_part->tm_mon+1, now_part->tm_mday,
           now_part->tm_hour, now_part->tm_min, now_part->tm_sec,
           right_now.millitm);
-#if 0
-  current_time = time(NULL);
-  Time = ctime(&current_time);
-  Time[strlen(Time) - 1] = '\0';
-#endif
-  sprintf(Result, "<: %s", Time);
   if (File || Func || Line) {
     strcat(Result, " (");
     if (File && *File) {
@@ -94,11 +95,14 @@ void abug(char *File, char *Func, int Line, UINT Level, UINT Type,
     else
       strcat(Result, ")");
   }
+#ifdef DIKU_CRUD
   if (ch && !IS_NPC(ch))
     sprintf(Result + strlen(Result), " %s [#%d]\n",
 	    ch->player.name, ch->in_room ? ch->in_room : 0);
-  else if (File || Func || Line)
-    strcat(Result, "\n");
+  else
+#endif
+    if (File || Func || Line)
+      strcat(Result, "\n");
 
   strcat(Result, " : ");
   strcat(Result, Temp);
@@ -106,8 +110,10 @@ void abug(char *File, char *Func, int Line, UINT Level, UINT Type,
   if (BugFile && *BugFile) {
     if (!(fp = fopen(BugFile, "a"))) {
       perror(BugFile);
+#ifdef DIKU_CRUD
       if (ch)
 	send_to_char("Could not open the file!\n\r", ch);
+#endif
     } else {
       fprintf(fp, "%s\n", Result);
       fclose(fp);

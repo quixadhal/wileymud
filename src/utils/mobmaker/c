@@ -1,0 +1,12 @@
+#! /bin/tcsh
+
+clear
+echo Compiling...
+echo cmoblist.cpp
+g++ -c cmoblist.cpp >& tmp
+echo cmob.cpp
+g++ -c cmob.cpp >>& tmp
+echo -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+cat tmp
+echo -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+

@@ -107,6 +107,7 @@ A spear lies here.~
 5 28736 8193
 0 1 10 1
 15 100 10
+E
 spear~
   The spear is made of oak with a barbed iron head that seems to be sharpened
 to a deathly edge.
@@ -259,14 +260,38 @@ a long, slender sword~
 A long, slender sword lies on the ground.~
 ~
 5 12352 8193
-0 1 6 3 
-4 300 300
+0 2 8 3 
+4 9300 3000
 E
 sword long slender~
 It is a long, slender sword that seems to be made from silver. 
 ~
+#1018
+Warhammer~
+a black two-handed warhamer~
+A black two-handed warhammer lies on the ground.~
+~
+5 24576 49153 
+0 4 6 7 
+4 300 300
+E
+black warhammer~
+It is a warhammer of death that seems to be made of an unknown metal.
+~
+#1019
+Lock-Bar Axe~
+A black two-handed Lock-Bar Axe~
+A black two-handed Lock-Bar Axe lies on the ground.~
+~
+5 24576 49153
+0 3 6 5 
+4 300 300
+E
+black lock-bar axe~
+It is a black axe made of an unknown alloy.
+~
 #1022
-key black
+key black~
 A black key~
 A black key that feels cold to the touch.~
 ~
@@ -275,7 +300,6 @@ A black key that feels cold to the touch.~
 1 0 0
 A
 9 1
-~
 #1023
 cloak highlanders~
 A dark eery sort of cloak~
@@ -288,7 +312,6 @@ A
 17 -6 
 A
 25 10 
-~
 #1024
 staff highlanders~
 The staff of Highlander~
@@ -296,13 +319,11 @@ A purple staff with the head of a demon as its decoration.~
 ~
 5 512 40961
 0 2 6 0 
-1 0 0
 10 500 5000
 A
 30 33
 A
 30 4
-~
 #1100
 pedastal small~
 a small pedastal~
@@ -358,6 +379,30 @@ A small pebble lies here.~
 toe-nail toe nail~
 a toe-nail~
 A large toe-nail lies here.~
+~
+11 0 16385
+0 0 0 0
+1 1 1
+#1124
+stone blue pale~
+a pale blue stone~
+A pale robin's-egg blue stone waits patiently here.~
+~
+11 0 16385
+0 0 0 0
+1 1 1
+#1125
+stone clear~
+a clear stone~
+A strange transparent stone sits here, shot thru with specks of silver!~
+~
+11 0 16385
+0 0 0 0
+1 1 1
+#1126
+stone grey gray~
+a grey stone~
+A large grey stone sulks on the ground here.~
 ~
 11 0 16385
 0 0 0 0
@@ -2153,6 +2198,7 @@ A pair of armoured leggings are here.~
 E
 armoured leggings~
   The leggings are made from links of chain and appear very strong.
+~
 #5040
 armour plated gauntlets~
 a pair of armour plated gauntlets~
@@ -3432,7 +3478,6 @@ E
 orb small~
 It has odd looking pins upon it.  They look quite sharp.
 ~
-~
 #5938
 shell conk small~
 a small conk shell~
@@ -3956,7 +4001,7 @@ a glaive~
 A large polearm lies here; a glaive.~
 ~
 5 28672 32769
-1 10 3
+0 1 10 3
 12 654 64
 #6145
 glaive guisarme~
@@ -4208,6 +4253,7 @@ a black baldric~
 A black baldric is lieing here.~
 ~
 11 0 1025
+0 0 0 0
 3 75 75
 A
 17 -2
@@ -5149,7 +5195,7 @@ A small pool of water is by your feet.~
 ~
 15 0 0
 10 0 -1 0
-~
+1 0 0
 #7005
 boots black elven~
 A pair of black elven boots~
@@ -5162,7 +5208,6 @@ A
 32 5
 A
 34 5
-~
 #7008
 key adamantine~
 An adamantine key~
@@ -5171,7 +5216,6 @@ A key made out of a very hard metal is here.~
 18 0 16385
 4 0 0 0
 1 0 0
-~
 #7010
 cloak black elven~
 A black tattered elven cloak~
@@ -5184,7 +5228,6 @@ A
 34 5
 A
 35 5
-~
 #7015
 black staff~
 A black wooden staff~
@@ -5195,7 +5238,6 @@ A smooth black staff leans against the wall here.~
 5 100 500
 A
 12 -10
-~
 #9002
 metal shod staff~
 a metal shod staff~
@@ -6651,6 +6693,325 @@ A pair of leather armbands lies on the gorund here.~
 9 0 257
 2 2 0 0
 4 8 2
+#22000
+durable white silk aba~
+a durable white silk aba~
+An aba made of durable white silks lies here.~
+~
+9 64 9
+10 10 0 0
+10 2000 5000
+A
+14 100 
+A
+12 -50
+E
+white silk aba~
+  The aba is made of fine silks.
+~
+#22001
+keffiyeh white silk~
+A white keffiyeh with black Agal~
+A keffiyeh made of durable white silk lies here.~
+~
+9 0 17
+4 4 0 0 
+5 1000 500
+#22002
+black silk sash~
+a black silk sash~
+A piece of clothe lies here on the ground.~
+~
+9 0 2049
+3 3 0 0
+5 50 5
+#22003
+great scimitar~
+a great scimitar~
+A gigantic scimitar of rare quality lies here on the ground.~
+~
+5 28672 32769
+0 4 4 5
+18 4000 6562
+#22004
+tooth~
+A 6 inch tooth~
+A razor sharp 6 inch tooth is lies here.~
+~
+5 12290 8193
+0 1 8 11
+5 2 10
+#22200
+dolman blue~
+A blue dolman~ 
+A blue dolman bearing the mark of the Djinn lies here.~
+~
+9 53248 9
+2 2 0 0 
+3 100 6
+#22201
+jambiya~
+A jambiya~
+A jambiya lies here.~
+~
+5 4096 8193 
+0 2 3 11
+5 200 100
+#25000
+key ivory large~
+A large ivory key~
+A large ivory key lies here.~
+~
+18 1024 16385
+1 0 0 0
+1 300 -1
+#25001
+key tassled~
+A tassled key~
+A key with tassles lies on the ground.~
+~
+18 1024 16385
+1 0 0 0
+1 30 -1
+#25002
+key red~
+A red key~
+A red-colored key lies on the ground.~
+~
+18 0 16485
+2 0 0 0
+1 30 -1
+#25003
+key gold~
+A golden key~
+A key made of gold lies here.~
+~
+18 1025 16385
+1 0 0 0
+1 500 -1
+#25004
+candy heart~
+A candy heart~
+A candy heart beats slowly on the ground.~
+~
+19 67 16385
+12 0 0 0
+1 5 100
+E
+candy heart~
+  It bears the words, "BE MINE" in large block letters.
+~
+#25005
+rose flower red~
+A rose~
+A lonely red rose is lying on the ground.~
+A lonely red rose screams, "LOVE ME!"~
+23 321 24593
+0 0 0 0
+1 20 500
+A
+39 3
+E
+rose flower red~
+  Looking the rose you remember that somebody loves you.
+~
+#25006
+sword bastard bazzak~
+A bastard sword of Bazzak~
+A bastard sword of Bazzak stands here.~
+~
+5 29696 32769
+0 3 3 3
+14 300 2200
+A
+19 2
+E
+bastard sword bazzak~
+  This is a sword is the standard weapon issued to the guards
+of the Castle Bazzak.
+~
+#25007
+chestplate ivory chest~
+An ivory chestplate~
+A chestplate made of ivory lies here, unused.~
+~
+9 13312 9
+5 4 0 0
+5 400 9000
+#25008
+gauntlets ivory~
+Ivory gauntlets~
+A pair of gauntlet laden with ivory sits here.~
+~
+9 13312 129
+3 2 0 0
+3 300 400
+#25009
+helm helmet fullhelm ivory~
+An Ivory Fullhelm~
+An helmet made of ivory sits here on the ground.~
+~
+9 13312 17
+4 4 0 0
+4 500 2600
+#25010
+cutlass ivory~
+An ivory cutlass~
+A cutlass made of ivory sits here twitching.~
+~
+5 30048 32769
+0 3 4 5
+16 0 -1
+A
+40 3
+#25011
+cap jester~
+A jester's cap~
+A strange looking cap covered in bells lies here.~
+~
+11 0 17
+0 0 0 0
+2 50 10
+#25012
+ball juggling~
+A juggling ball~
+A small fuzzy ball of bright colors rolls around on the ground.~
+~
+5 0 8193
+0 1 6 7
+3 50 10
+#25013
+cane wooden~
+A wooden cane~
+A long straight stick lies on the ground.~
+~
+5 1024 8193
+0 2 4 7
+5 300 300
+A
+9 5
+#25014
+tassle tassled whip~
+A tassled whip~
+A long strip of leather with tassles on one end lies here.~
+~
+5 117825 8193
+0 1 2 0
+7 5000 23000
+A
+30 7
+#25015
+sword bastard bazzak~
+A bastard sword of Bazzak~
+A bastard sword of Bazzak stands here.~
+~
+5 29696 32769
+0 3 4 3
+14 300 2200
+A
+19 2
+E
+bastard sword bazzak~
+  This sword is almost identical in appearance to the standard
+issue bazzak sword, but you notice that it is in fact slightly
+better balanced.
+~
+#25016
+legplates ivory~
+Ivory legplates~
+A set of legplates made of ivory lie here.~
+~
+9 13312 33
+4 2 0 0
+5 300 300
+#25017
+armplates ivory~
+Ivory armplates~
+A set of armplates made of ivory lie here.~
+~
+9 13312 257
+4 2 0 0
+5 300 300
+#25018
+broken bottle beer~
+A broken beer bottle~
+A broken bottle of beer lies here.~
+~
+5 0 8193
+0 2 3 3
+3 20 100
+#25019
+signet bazzak ring~
+The Bazzak Signet Ring~
+A ring bearing the Sign of Bazzak lies here.~
+~
+11 3392 3
+0 0 0 0
+2 200 1500
+A
+13 50
+A
+1 -1
+#25020
+history story book~
+The History of Bazzak~
+A book lies here entitled, "The History of Bazzak"~
+~
+12 0 0
+0 0 0 0
+5 0 -1
+E
+history story book~
+							"The History of the Castle Bazzak"
+
+  Not so long ago, this castle was a grand place, known throughout
+the land.  My father, the king of this castle, ruled the Black
+Mountains and surrounding grasslands and maintained peace in the
+land.  
+  In more recent times, however, things became not so pleasant.
+Ten years ago, a dark shadow fell over the area.  Soon there
+were constant raids by undead and ogres against our castle and
+the many tiny villages which once thrived in these lands.
+	My father, the king, offered this castle as home for those
+who had survived the initial raids.  He began leading troops
+into the mountains in an attempt to reclaim his land.  Each time,
+he gave me the same orders.
+	His instructions were plain.  If he were not to return, I was
+to inherit the throne.  The castle was to be locked up, and no
+evil be allowed to penetrate its walls.  For years now, that is
+exactly what we have done.
+	I do not know what fate my father came to.  My prayers are still
+that he has simply been captured and will someday return to rid the
+land of evil.
+~
+#25021
+dagger ivory~
+An ivory dagger~
+A short knife lies here, twitching slightly.~
+~
+5 35907 8193
+0 2 5 1
+5 100 200
+A
+32 3
+#25022
+robe decorated~
+A well-decorated robe~
+A robe lies here, decorated with the insignia of Bazzak.~
+~
+9 1344 1024
+9 9 0 0
+5 100 100
+#25023
+ivory staff~
+An ivory staff~
+A long straight piece of ivory lies here.~
+~
+4 1344 16385
+18 5 5 34
+5 5000 3400
+A
+29 18
 #26001
 chest~
 a granite chest~

@@ -1,0 +1,39 @@
+#RENT
+Owner              Paige~
+Gold               100000
+TotalCost          0
+LastUpdate         848616347
+MinimumStay        0
+End
+#EQUIPMENT
+End
+#CARRIED
+#ITEM
+ObjId              0
+ContainedBy        -1
+Name               leather bra~
+Description
+A leather bra lies here.~
+ShortDescr
+a leather bra~
+ActionDescr
+(null)~
+VNum               1302
+EquippedAt         0
+Values             1 1 0 0
+ExtraFlags         0
+Weight             2
+Timer              0
+BitVector          0
+Type               9
+WearFlags          9
+Cost               34
+CostPerDay         34
+Affect             0 0
+Affect             0 0
+ExtraDescr         leather bra~
+  This obviously covers the bossums of a woman.
+~
+End
+End
+#END_RENT

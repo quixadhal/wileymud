@@ -1,0 +1,135 @@
+#RENT
+Owner              Questor~
+Gold               267
+TotalCost          0
+LastUpdate         847507073
+MinimumStay        0
+End
+#EQUIPMENT
+#ITEM
+ObjId              0
+ContainedBy        -1
+Name               vest leather~
+Description
+A leather vest lies here.~
+ShortDescr
+a leather vest~
+ActionDescr
+(null)~
+VNum               3051
+EquippedAt         5
+Values             2 2 0 0
+ExtraFlags         8192
+Weight             7
+Timer              0
+BitVector          0
+Type               9
+WearFlags          9
+Cost               34
+CostPerDay         24
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              1
+ContainedBy        -1
+Name               scale skirt~
+Description
+A scale skirt lies here in a hump.~
+ShortDescr
+a scale skirt~
+ActionDescr
+(null)~
+VNum               10006
+EquippedAt         7
+Values             2 2 0 0
+ExtraFlags         0
+Weight             15
+Timer              0
+BitVector          0
+Type               9
+WearFlags          33
+Cost               150
+CostPerDay         10
+Affect             17 -4
+Affect             0 0
+End
+#ITEM
+ObjId              2
+ContainedBy        -1
+Name               leather bracer~
+Description
+A leather bracer lies here.~
+ShortDescr
+a leather bracer~
+ActionDescr
+(null)~
+VNum               3025
+EquippedAt         14
+Values             1 1 0 0
+ExtraFlags         0
+Weight             1
+Timer              0
+BitVector          0
+Type               9
+WearFlags          4097
+Cost               10
+CostPerDay         5
+Affect             17 -2
+Affect             0 0
+End
+#ITEM
+ObjId              3
+ContainedBy        -1
+Name               leather bracer~
+Description
+A leather bracer lies here.~
+ShortDescr
+a leather bracer~
+ActionDescr
+(null)~
+VNum               3025
+EquippedAt         15
+Values             1 1 0 0
+ExtraFlags         0
+Weight             1
+Timer              0
+BitVector          0
+Type               9
+WearFlags          4097
+Cost               10
+CostPerDay         5
+Affect             17 -2
+Affect             0 0
+End
+#ITEM
+ObjId              4
+ContainedBy        -1
+Name               large knife~
+Description
+A large knife lies here.~
+ShortDescr
+a large knife~
+ActionDescr
+(null)~
+VNum               3021
+EquippedAt         16
+Values             0 1 5 11
+ExtraFlags         4096
+Weight             3
+Timer              0
+BitVector          0
+Type               5
+WearFlags          8193
+Cost               20
+CostPerDay         2
+Affect             0 0
+Affect             0 0
+ExtraDescr         large knife~
+It appears to be about eight to nine inches in length, fairly sharp.
+~
+End
+End
+#CARRIED
+End
+#END_RENT

@@ -1,0 +1,1146 @@
+#RENT
+Owner              Puck~
+Gold               115
+TotalCost          115
+LastUpdate         847428085
+MinimumStay        0
+End
+#EQUIPMENT
+#ITEM
+ObjId              0
+ContainedBy        -1
+Name               leg legplates scale~
+Description
+A pair of scale legplates lie here.~
+ShortDescr
+scale legplates~
+ActionDescr
+(null)~
+VNum               6001
+EquippedAt         7
+Values             1 1 0 0
+ExtraFlags         8448
+Weight             18
+Timer              0
+BitVector          0
+Type               9
+WearFlags          33
+Cost               350
+CostPerDay         350
+Affect             0 0
+Affect             0 0
+ExtraDescr         leg legplates scale~
+  The legplates seem to have a soft inner lining while the scales on the 
+outer side seem to be very tough and tinted a soft green.
+~
+End
+#ITEM
+ObjId              1
+ContainedBy        -1
+Name               scale gauntlets~
+Description
+A pair of gauntlets made of metal scales is here.~
+ShortDescr
+A pair of scale gauntlets~
+ActionDescr
+(null)~
+VNum               15008
+EquippedAt         9
+Values             4 4 0 0
+ExtraFlags         24576
+Weight             8
+Timer              0
+BitVector          0
+Type               9
+WearFlags          129
+Cost               150
+CostPerDay         30
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              2
+ContainedBy        -1
+Name               cloak black elven~
+Description
+A tattered black elven cloak lies here.~
+ShortDescr
+A black tattered elven cloak~
+ActionDescr
+(null)~
+VNum               7010
+EquippedAt         12
+Values             4 4 0 0
+ExtraFlags         320
+Weight             2
+Timer              0
+BitVector          0
+Type               9
+WearFlags          1025
+Cost               500
+CostPerDay         100
+Affect             34 5
+Affect             35 5
+End
+#ITEM
+ObjId              3
+ContainedBy        -1
+Name               pouch small leather~
+Description
+A small pouch made of soft leather is piled upon the floor.~
+ShortDescr
+a small leather pouch~
+ActionDescr
+(null)~
+VNum               4603
+EquippedAt         13
+Values             300 1 -1 0
+ExtraFlags         64
+Weight             4
+Timer              0
+BitVector          0
+Type               15
+WearFlags          2049
+Cost               50
+CostPerDay         35
+Affect             0 0
+Affect             0 0
+ExtraDescr         pouch~
+This small pouch is made of soft deerskin.
+~
+End
+#ITEM
+ObjId              4
+ContainedBy        -1
+Name               bracer ivory~
+Description
+A bracer made of ivory lies here.~
+ShortDescr
+a ivory bracer~
+ActionDescr
+(null)~
+VNum               9013
+EquippedAt         14
+Values             0 0 0 0
+ExtraFlags         64
+Weight             4
+Timer              0
+BitVector          0
+Type               11
+WearFlags          4097
+Cost               123
+CostPerDay         123
+Affect             26 16
+Affect             27 96
+End
+#ITEM
+ObjId              5
+ContainedBy        -1
+Name               bracer ivory~
+Description
+A bracer made of ivory lies here.~
+ShortDescr
+a ivory bracer~
+ActionDescr
+(null)~
+VNum               9013
+EquippedAt         15
+Values             0 0 0 0
+ExtraFlags         64
+Weight             4
+Timer              0
+BitVector          0
+Type               11
+WearFlags          4097
+Cost               123
+CostPerDay         123
+Affect             26 16
+Affect             27 96
+End
+#ITEM
+ObjId              6
+ContainedBy        -1
+Name               water cup~
+Description
+A cup of fine water rests here.~
+ShortDescr
+a cup~
+ActionDescr
+(null)~
+VNum               5010
+EquippedAt         17
+Values             24 15 0 0
+ExtraFlags         0
+Weight             -8
+Timer              0
+BitVector          0
+Type               17
+WearFlags          16385
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+End
+#CARRIED
+#ITEM
+ObjId              19
+ContainedBy        13
+Name               ogre tongue~
+Description
+A fried ogre tongue rests here.~
+ShortDescr
+a cooked ogre tongue~
+ActionDescr
+(null)~
+VNum               5018
+EquippedAt         0
+Values             24 0 0 0
+ExtraFlags         0
+Weight             1
+Timer              0
+BitVector          0
+Type               19
+WearFlags          16385
+Cost               30
+CostPerDay         3
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              19
+ContainedBy        13
+Name               ogre tongue~
+Description
+A fried ogre tongue rests here.~
+ShortDescr
+a cooked ogre tongue~
+ActionDescr
+(null)~
+VNum               5018
+EquippedAt         0
+Values             24 0 0 0
+ExtraFlags         0
+Weight             1
+Timer              0
+BitVector          0
+Type               19
+WearFlags          16385
+Cost               30
+CostPerDay         3
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              19
+ContainedBy        13
+Name               ogre tongue~
+Description
+A fried ogre tongue rests here.~
+ShortDescr
+a cooked ogre tongue~
+ActionDescr
+(null)~
+VNum               5018
+EquippedAt         0
+Values             24 0 0 0
+ExtraFlags         0
+Weight             1
+Timer              0
+BitVector          0
+Type               19
+WearFlags          16385
+Cost               30
+CostPerDay         3
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              19
+ContainedBy        13
+Name               ogre tongue~
+Description
+A fried ogre tongue rests here.~
+ShortDescr
+a cooked ogre tongue~
+ActionDescr
+(null)~
+VNum               5018
+EquippedAt         0
+Values             24 0 0 0
+ExtraFlags         0
+Weight             1
+Timer              0
+BitVector          0
+Type               19
+WearFlags          16385
+Cost               30
+CostPerDay         3
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              19
+ContainedBy        13
+Name               ogre tongue~
+Description
+A fried ogre tongue rests here.~
+ShortDescr
+a cooked ogre tongue~
+ActionDescr
+(null)~
+VNum               5018
+EquippedAt         0
+Values             24 0 0 0
+ExtraFlags         0
+Weight             1
+Timer              0
+BitVector          0
+Type               19
+WearFlags          16385
+Cost               30
+CostPerDay         3
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              19
+ContainedBy        13
+Name               ogre tongue~
+Description
+A fried ogre tongue rests here.~
+ShortDescr
+a cooked ogre tongue~
+ActionDescr
+(null)~
+VNum               5018
+EquippedAt         0
+Values             24 0 0 0
+ExtraFlags         0
+Weight             1
+Timer              0
+BitVector          0
+Type               19
+WearFlags          16385
+Cost               30
+CostPerDay         3
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              44
+ContainedBy        -1
+Name               pearl small~
+Description
+A small pearl lies here.~
+ShortDescr
+a small pearl~
+ActionDescr
+(null)~
+VNum               6512
+EquippedAt         0
+Values             0 0 -1 0
+ExtraFlags         64
+Weight             1
+Timer              0
+BitVector          0
+Type               1
+WearFlags          1
+Cost               988
+CostPerDay         88
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              44
+ContainedBy        -1
+Name               giant granite ring~
+Description
+A giant granite ring lies here.~
+ShortDescr
+a giant granite ring~
+ActionDescr
+(null)~
+VNum               26007
+EquippedAt         0
+Values             5 5 0 0
+ExtraFlags         24896
+Weight             8
+Timer              0
+BitVector          0
+Type               9
+WearFlags          2049
+Cost               5000
+CostPerDay         5
+Affect             17 -2
+Affect             0 0
+End
+#ITEM
+ObjId              44
+ContainedBy        -1
+Name               bracer ivory~
+Description
+A bracer made of ivory lies here.~
+ShortDescr
+a ivory bracer~
+ActionDescr
+(null)~
+VNum               9013
+EquippedAt         0
+Values             0 0 0 0
+ExtraFlags         64
+Weight             4
+Timer              0
+BitVector          0
+Type               11
+WearFlags          4097
+Cost               123
+CostPerDay         123
+Affect             26 16
+Affect             27 96
+End
+#ITEM
+ObjId              44
+ContainedBy        -1
+Name               claymore~
+Description
+A huge sword lies here; a claymore.~
+ShortDescr
+a claymore~
+ActionDescr
+(null)~
+VNum               6156
+EquippedAt         0
+Values             0 1 14 3
+ExtraFlags         29760
+Weight             15
+Timer              0
+BitVector          0
+Type               5
+WearFlags          32769
+Cost               2543
+CostPerDay         2543
+Affect             18 4
+Affect             19 4
+End
+#ITEM
+ObjId              44
+ContainedBy        -1
+Name               ogre tongue~
+Description
+A fried ogre tongue rests here.~
+ShortDescr
+a cooked ogre tongue~
+ActionDescr
+(null)~
+VNum               5018
+EquippedAt         0
+Values             24 0 0 0
+ExtraFlags         0
+Weight             1
+Timer              0
+BitVector          0
+Type               19
+WearFlags          16385
+Cost               30
+CostPerDay         3
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              44
+ContainedBy        -1
+Name               ogre tongue~
+Description
+A fried ogre tongue rests here.~
+ShortDescr
+a cooked ogre tongue~
+ActionDescr
+(null)~
+VNum               5018
+EquippedAt         0
+Values             24 0 0 0
+ExtraFlags         0
+Weight             1
+Timer              0
+BitVector          0
+Type               19
+WearFlags          16385
+Cost               30
+CostPerDay         3
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              44
+ContainedBy        -1
+Name               ogre tongue~
+Description
+A fried ogre tongue rests here.~
+ShortDescr
+a cooked ogre tongue~
+ActionDescr
+(null)~
+VNum               5018
+EquippedAt         0
+Values             24 0 0 0
+ExtraFlags         0
+Weight             1
+Timer              0
+BitVector          0
+Type               19
+WearFlags          16385
+Cost               30
+CostPerDay         3
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              44
+ContainedBy        -1
+Name               ogre tongue~
+Description
+A fried ogre tongue rests here.~
+ShortDescr
+a cooked ogre tongue~
+ActionDescr
+(null)~
+VNum               5018
+EquippedAt         0
+Values             24 0 0 0
+ExtraFlags         0
+Weight             1
+Timer              0
+BitVector          0
+Type               19
+WearFlags          16385
+Cost               30
+CostPerDay         3
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              44
+ContainedBy        -1
+Name               ogre tongue~
+Description
+A fried ogre tongue rests here.~
+ShortDescr
+a cooked ogre tongue~
+ActionDescr
+(null)~
+VNum               5018
+EquippedAt         0
+Values             24 0 0 0
+ExtraFlags         0
+Weight             1
+Timer              0
+BitVector          0
+Type               19
+WearFlags          16385
+Cost               30
+CostPerDay         3
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              44
+ContainedBy        -1
+Name               ogre tongue~
+Description
+A fried ogre tongue rests here.~
+ShortDescr
+a cooked ogre tongue~
+ActionDescr
+(null)~
+VNum               5018
+EquippedAt         0
+Values             24 0 0 0
+ExtraFlags         0
+Weight             1
+Timer              0
+BitVector          0
+Type               19
+WearFlags          16385
+Cost               30
+CostPerDay         3
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              44
+ContainedBy        -1
+Name               gnarled branch~
+Description
+A small, gnarled branch lies here.~
+ShortDescr
+a gnarled branch~
+ActionDescr
+(null)~
+VNum               1901
+EquippedAt         0
+Values             30 1 1 42
+ExtraFlags         64
+Weight             10
+Timer              0
+BitVector          0
+Type               3
+WearFlags          16385
+Cost               2000
+CostPerDay         500
+Affect             0 0
+Affect             0 0
+ExtraDescr         gnarled branch~
+  The branch is no more than a foot long and seems to be curved in every
+which way.  All about the small branch there appears to be runes of a sort,
+the only ones you can make out say this: "Call upon the dragon....", the rest
+seems unintelligable.
+~
+End
+#ITEM
+ObjId              44
+ContainedBy        -1
+Name               gnarled branch~
+Description
+A small, gnarled branch lies here.~
+ShortDescr
+a gnarled branch~
+ActionDescr
+(null)~
+VNum               1901
+EquippedAt         0
+Values             30 1 1 42
+ExtraFlags         64
+Weight             10
+Timer              0
+BitVector          0
+Type               3
+WearFlags          16385
+Cost               2000
+CostPerDay         500
+Affect             0 0
+Affect             0 0
+ExtraDescr         gnarled branch~
+  The branch is no more than a foot long and seems to be curved in every
+which way.  All about the small branch there appears to be runes of a sort,
+the only ones you can make out say this: "Call upon the dragon....", the rest
+seems unintelligable.
+~
+End
+#ITEM
+ObjId              44
+ContainedBy        -1
+Name               gnarled branch~
+Description
+A small, gnarled branch lies here.~
+ShortDescr
+a gnarled branch~
+ActionDescr
+(null)~
+VNum               1901
+EquippedAt         0
+Values             30 1 1 42
+ExtraFlags         64
+Weight             10
+Timer              0
+BitVector          0
+Type               3
+WearFlags          16385
+Cost               2000
+CostPerDay         500
+Affect             0 0
+Affect             0 0
+ExtraDescr         gnarled branch~
+  The branch is no more than a foot long and seems to be curved in every
+which way.  All about the small branch there appears to be runes of a sort,
+the only ones you can make out say this: "Call upon the dragon....", the rest
+seems unintelligable.
+~
+End
+#ITEM
+ObjId              44
+ContainedBy        -1
+Name               gnarled branch~
+Description
+A small, gnarled branch lies here.~
+ShortDescr
+a gnarled branch~
+ActionDescr
+(null)~
+VNum               1901
+EquippedAt         0
+Values             30 1 1 42
+ExtraFlags         64
+Weight             10
+Timer              0
+BitVector          0
+Type               3
+WearFlags          16385
+Cost               2000
+CostPerDay         500
+Affect             0 0
+Affect             0 0
+ExtraDescr         gnarled branch~
+  The branch is no more than a foot long and seems to be curved in every
+which way.  All about the small branch there appears to be runes of a sort,
+the only ones you can make out say this: "Call upon the dragon....", the rest
+seems unintelligable.
+~
+End
+#ITEM
+ObjId              44
+ContainedBy        -1
+Name               gnarled branch~
+Description
+A small, gnarled branch lies here.~
+ShortDescr
+a gnarled branch~
+ActionDescr
+(null)~
+VNum               1901
+EquippedAt         0
+Values             30 1 1 42
+ExtraFlags         64
+Weight             10
+Timer              0
+BitVector          0
+Type               3
+WearFlags          16385
+Cost               2000
+CostPerDay         500
+Affect             0 0
+Affect             0 0
+ExtraDescr         gnarled branch~
+  The branch is no more than a foot long and seems to be curved in every
+which way.  All about the small branch there appears to be runes of a sort,
+the only ones you can make out say this: "Call upon the dragon....", the rest
+seems unintelligable.
+~
+End
+#ITEM
+ObjId              44
+ContainedBy        -1
+Name               gnarled branch~
+Description
+A small, gnarled branch lies here.~
+ShortDescr
+a gnarled branch~
+ActionDescr
+(null)~
+VNum               1901
+EquippedAt         0
+Values             30 1 1 42
+ExtraFlags         64
+Weight             10
+Timer              0
+BitVector          0
+Type               3
+WearFlags          16385
+Cost               2000
+CostPerDay         500
+Affect             0 0
+Affect             0 0
+ExtraDescr         gnarled branch~
+  The branch is no more than a foot long and seems to be curved in every
+which way.  All about the small branch there appears to be runes of a sort,
+the only ones you can make out say this: "Call upon the dragon....", the rest
+seems unintelligable.
+~
+End
+#ITEM
+ObjId              44
+ContainedBy        -1
+Name               gnarled branch~
+Description
+A small, gnarled branch lies here.~
+ShortDescr
+a gnarled branch~
+ActionDescr
+(null)~
+VNum               1901
+EquippedAt         0
+Values             30 1 1 42
+ExtraFlags         64
+Weight             10
+Timer              0
+BitVector          0
+Type               3
+WearFlags          16385
+Cost               2000
+CostPerDay         500
+Affect             0 0
+Affect             0 0
+ExtraDescr         gnarled branch~
+  The branch is no more than a foot long and seems to be curved in every
+which way.  All about the small branch there appears to be runes of a sort,
+the only ones you can make out say this: "Call upon the dragon....", the rest
+seems unintelligable.
+~
+End
+#ITEM
+ObjId              44
+ContainedBy        -1
+Name               wafer holy~
+Description
+A wafer lies here.~
+ShortDescr
+a wafer~
+ActionDescr
+(null)~
+VNum               3049
+EquippedAt         0
+Values             1 0 0 0
+ExtraFlags         0
+Weight             1
+Timer              0
+BitVector          0
+Type               19
+WearFlags          1
+Cost               30
+CostPerDay         30
+Affect             31 3
+Affect             0 0
+End
+#ITEM
+ObjId              44
+ContainedBy        -1
+Name               wafer holy~
+Description
+A wafer lies here.~
+ShortDescr
+a wafer~
+ActionDescr
+(null)~
+VNum               3049
+EquippedAt         0
+Values             1 0 0 0
+ExtraFlags         0
+Weight             1
+Timer              0
+BitVector          0
+Type               19
+WearFlags          1
+Cost               30
+CostPerDay         30
+Affect             31 3
+Affect             0 0
+End
+#ITEM
+ObjId              44
+ContainedBy        -1
+Name               wafer holy~
+Description
+A wafer lies here.~
+ShortDescr
+a wafer~
+ActionDescr
+(null)~
+VNum               3049
+EquippedAt         0
+Values             1 0 0 0
+ExtraFlags         0
+Weight             1
+Timer              0
+BitVector          0
+Type               19
+WearFlags          1
+Cost               30
+CostPerDay         30
+Affect             31 3
+Affect             0 0
+End
+#ITEM
+ObjId              44
+ContainedBy        -1
+Name               wafer holy~
+Description
+A wafer lies here.~
+ShortDescr
+a wafer~
+ActionDescr
+(null)~
+VNum               3049
+EquippedAt         0
+Values             1 0 0 0
+ExtraFlags         0
+Weight             1
+Timer              0
+BitVector          0
+Type               19
+WearFlags          1
+Cost               30
+CostPerDay         30
+Affect             31 3
+Affect             0 0
+End
+#ITEM
+ObjId              44
+ContainedBy        -1
+Name               wafer holy~
+Description
+A wafer lies here.~
+ShortDescr
+a wafer~
+ActionDescr
+(null)~
+VNum               3049
+EquippedAt         0
+Values             1 0 0 0
+ExtraFlags         0
+Weight             1
+Timer              0
+BitVector          0
+Type               19
+WearFlags          1
+Cost               30
+CostPerDay         30
+Affect             31 3
+Affect             0 0
+End
+#ITEM
+ObjId              44
+ContainedBy        -1
+Name               wafer holy~
+Description
+A wafer lies here.~
+ShortDescr
+a wafer~
+ActionDescr
+(null)~
+VNum               3049
+EquippedAt         0
+Values             1 0 0 0
+ExtraFlags         0
+Weight             1
+Timer              0
+BitVector          0
+Type               19
+WearFlags          1
+Cost               30
+CostPerDay         30
+Affect             31 3
+Affect             0 0
+End
+#ITEM
+ObjId              44
+ContainedBy        -1
+Name               wafer holy~
+Description
+A wafer lies here.~
+ShortDescr
+a wafer~
+ActionDescr
+(null)~
+VNum               3049
+EquippedAt         0
+Values             1 0 0 0
+ExtraFlags         0
+Weight             1
+Timer              0
+BitVector          0
+Type               19
+WearFlags          1
+Cost               30
+CostPerDay         30
+Affect             31 3
+Affect             0 0
+End
+#ITEM
+ObjId              44
+ContainedBy        -1
+Name               wafer holy~
+Description
+A wafer lies here.~
+ShortDescr
+a wafer~
+ActionDescr
+(null)~
+VNum               3049
+EquippedAt         0
+Values             1 0 0 0
+ExtraFlags         0
+Weight             1
+Timer              0
+BitVector          0
+Type               19
+WearFlags          1
+Cost               30
+CostPerDay         30
+Affect             31 3
+Affect             0 0
+End
+#ITEM
+ObjId              44
+ContainedBy        -1
+Name               
+treasure's box~
+Description
+A wooden treasure's box lies here.~
+ShortDescr
+a treasure's box~
+ActionDescr
+(null)~
+VNum               5047
+EquippedAt         0
+Values             10 1 -1 0
+ExtraFlags         0
+Weight             3
+Timer              0
+BitVector          0
+Type               15
+WearFlags          16385
+Cost               100
+CostPerDay         10
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              44
+ContainedBy        -1
+Name               claymore~
+Description
+A huge sword lies here; a claymore.~
+ShortDescr
+a claymore~
+ActionDescr
+(null)~
+VNum               6156
+EquippedAt         -1
+Values             0 1 14 3
+ExtraFlags         29760
+Weight             15
+Timer              0
+BitVector          0
+Type               5
+WearFlags          32769
+Cost               2543
+CostPerDay         2543
+Affect             18 4
+Affect             19 4
+End
+#ITEM
+ObjId              44
+ContainedBy        -1
+Name               ring clear gem~
+Description
+A ring lies here, the gem clear and unmarred.~
+ShortDescr
+a clear gem ring~
+ActionDescr
+(null)~
+VNum               5931
+EquippedAt         -1
+Values             0 0 0 0
+ExtraFlags         64
+Weight             1
+Timer              0
+BitVector          0
+Type               11
+WearFlags          3
+Cost               597
+CostPerDay         597
+Affect             1 1
+Affect             0 0
+End
+#ITEM
+ObjId              44
+ContainedBy        -1
+Name               ring wedding~
+Description
+A small golden ring lies on the ground here.~
+ShortDescr
+a wedding ring~
+ActionDescr
+(null)~
+VNum               6915
+EquippedAt         -1
+Values             0 0 0 0
+ExtraFlags         320
+Weight             1
+Timer              0
+BitVector          0
+Type               12
+WearFlags          3
+Cost               50
+CostPerDay         10
+Affect             0 0
+Affect             0 0
+ExtraDescr         ring wedding~
+  The band is made of pure gold made into small leaves that form the ring
+itself.
+~
+End
+#ITEM
+ObjId              44
+ContainedBy        -1
+Name               red jeweled necklace~
+Description
+A necklace with a red jewel in it lies here.~
+ShortDescr
+a red jeweled necklace~
+ActionDescr
+(null)~
+VNum               6426
+EquippedAt         -1
+Values             0 0 0 0
+ExtraFlags         64
+Weight             2
+Timer              0
+BitVector          0
+Type               11
+WearFlags          5
+Cost               983
+CostPerDay         983
+Affect             12 5
+Affect             0 0
+End
+#ITEM
+ObjId              44
+ContainedBy        -1
+Name               red jeweled necklace~
+Description
+A necklace with a red jewel in it lies here.~
+ShortDescr
+a red jeweled necklace~
+ActionDescr
+(null)~
+VNum               6426
+EquippedAt         -1
+Values             0 0 0 0
+ExtraFlags         64
+Weight             2
+Timer              0
+BitVector          0
+Type               11
+WearFlags          5
+Cost               983
+CostPerDay         983
+Affect             12 5
+Affect             0 0
+End
+#ITEM
+ObjId              44
+ContainedBy        -1
+Name               scale vest~
+Description
+A vest made of metal scales is here.~
+ShortDescr
+A scale vest~
+ActionDescr
+(null)~
+VNum               15005
+EquippedAt         -1
+Values             2 2 0 0
+ExtraFlags         24576
+Weight             24
+Timer              0
+BitVector          0
+Type               9
+WearFlags          9
+Cost               500
+CostPerDay         20
+Affect             0 0
+Affect             0 0
+End
+End
+#END_RENT

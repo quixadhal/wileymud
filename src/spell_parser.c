@@ -8,253 +8,27 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <sys/types.h>
+#include <string.h>
 #include <assert.h>
 
-#include "global.h"
-#include "bug.h"
-#include "utils.h"
-#include "comm.h"
-#include "db.h"
-#include "interpreter.h"
-#include "handler.h"
-#include "spells.h"
-#include "constants.h"
-#include "act_off.h"
+#include "include/global.h"
+#include "include/bug.h"
+#include "include/utils.h"
+#include "include/comm.h"
+#include "include/db.h"
+#include "include/interpreter.h"
+#include "include/handler.h"
+#include "include/spells.h"
+#include "include/constants.h"
+#include "include/act_off.h"
+#include "include/random.h"
+#include "include/multiclass.h"
+#include "include/fight.h"
+#include "include/act_info.h"
 #define _SPELL_PARSER_C
-#include "spell_parser.h"
+#include "include/spell_parser.h"
 
 struct spell_info_type spell_info[MAX_SKILLS];
-
-#if 0
-char *spells[] =
-{
-  "armor",			       /* 1 */
-  "teleport",
-  "bless",
-  "blindness",
-  "burning hands",
-  "call lightning",
-  "charm person",
-  "chill touch",
-  "clone",
-  "colour spray",		       /* colour spray */
-  "control weather",		       /* 11 */
-  "create food",
-  "create water",
-  "cure blind",
-  "cure critic",
-  "cure light",
-  "curse",
-  "detect evil",
-  "detect invisibility",
-  "detect magic",
-  "detect poison",		       /* 21 */
-  "dispel evil",
-  "earthquake",
-  "enchant weapon",
-  "energy drain",
-  "fireball",
-  "harm",
-  "heal",
-  "invisibility",
-  "lightning bolt",
-  "locate object",		       /* 31 */
-  "magic missile",
-  "poison",
-  "protection from evil",
-  "remove curse",
-  "sanctuary",
-  "shocking grasp",
-  "sleep",
-  "strength",
-  "summon",
-  "ventriloquate",		       /* 41 */
-  "word of recall",
-  "remove poison",
-  "sense life",			       /* 44 */
-
-   /* RESERVED SKILLS */
-  "sneak",		       /* 45 */
-  "hide",
-  "steal",
-  "backstab",
-  "pick",
-  "kick",			       /* 50 */
-  "bash",
-  "rescue",
-   /* NON-CASTABLE SPELLS (Scrolls/potions/wands/staffs) */
-
-  "identify",			       /* 53 */
-  "infravision",
-  "cause light",
-  "cause critical",
-  "flamestrike",
-  "dispel good",
-  "weakness",
-  "dispel magic",
-  "knock",
-  "know alignment",
-  "animate dead",
-  "paralyze",
-  "remove paralysis",
-  "fear",
-  "acid blast",			       /* 67 */
-  "water breath",
-  "fly",
-  "cone of cold",		       /* 70 */
-  "meteor swarm",
-  "ice storm",
-  "shield",
-  "monsum one",
-  "monsum two",
-  "monsum three",
-  "monsum four",
-  "monsum five",
-  "monsum six",
-  "monsum seven",		       /* 80 */
-  "fireshield",
-  "charm monster",
-  "cure serious",
-  "cause serious",
-  "refresh",
-  "second wind",
-  "turn",
-  "succor",
-  "create light",
-  "continual light",		       /* 90 */
-  "calm",
-  "stone skin",
-  "conjure elemental",
-  "true sight",
-  "minor creation",
-  "faerie fire",
-  "faerie fog",
-  "cacaodemon",
-  "polymorph self",
-  "mana",			       /* 100 */
-  "astral walk",
-  "group fly",			       /* 102 - spell_fly_group */
-  "aid",			       /* 103 - spell_aid */
-  "shelter",			       /* 104 - spell_shelter */
-  "****",
-  "****",
-  "****",
-  "****",
-  "****",
-  "****",			       /* 110 */
-  "****",
-  "****",
-  "****",
-  "****",
-  "****",
-  "****",
-  "****",
-  "****",
-  "****",
-  "****",			       /* 120 */
-  "****",
-  "****",
-  "****",
-  "****",
-  "****",
-  "****",
-  "****",
-  "****",
-  "****",
-  "****",			       /* 130 */
-  "****",
-  "****",
-  "****",
-  "****",
-  "****",
-  "****",
-  "****",
-  "****",
-  "****",
-  "****",			       /* 140 */
-  "****",
-  "****",
-  "****",
-  "****",
-  "****",
-  "****",
-  "****",
-  "****",
-  "doorbash",
-  "read magic",			       /* 150 */
-  "scribe",
-  "brew",
-  "punch",
-  "two hand",
-  "two weapon",
-  "bandage",
-  "search",
-  "swimming",
-  "endurance",
-  "bare hand",			       /* 160 */
-  "blind fighting",
-  "parry",
-  "apraise",
-  "spec smite",
-  "spec stab",
-  "spec whip",
-  "spec slash",
-  "spec smash",
-  "spec cleave",
-  "spec crush",			       /* 170 */
-  "spec bludge",
-  "spec pierce",
-  "peer",
-  "detect noise",
-  "dodge",
-  "barter",
-  "knock out",
-  "spellcraft",
-  "meditation",
-  "hunt",			       /* 180 */
-  "find traps",
-  "disarm traps",
-  "disarm",
-  "bash with shield",
-  "ride",
-  "****",
-  "****",
-  "****",
-  "****",
-  "****",			       /* 190 */
-  "****",
-  "****",
-  "****",
-  "****",
-  "****",
-  "****",
-  "****",
-  "****",
-  "green slime",
-  "geyser",			       /* 200 */
-  "fire breath",
-  "gas breath",
-  "frost breath",
-  "acid breath",
-  "lightning breath",
-  "TYPE_HIT",
-  "TYPE_BLUDGEON",
-  "TYPE_PIERCE",
-  "TYPE_SLASH",
-  "TYPE_WHIP",			       /* 210 */
-  "TYPE_CLAW",
-  "TYPE_BITE",
-  "TYPE_STING",
-  "TYPE_CRUSH",
-  "TYPE_CLEAVE",
-  "TYPE_STAB",
-  "TYPE_SMASH",
-  "TYPE_SMITE",
-  "TYPE_SUFFERING",
-  "TYPE_HUNGER",
-  "\n"
-};
-#endif
 
 const BYTE saving_throws[ABS_MAX_CLASS][MAX_SAVING_THROWS][ABS_MAX_LVL] =
 {
@@ -318,6 +92,22 @@ int GetSpellByName(char *name) {
   return -1;
 }
 
+int GetSkillByName(char *name) {
+/*
+ * for now it must be a linear search... later we might make a btree or
+ * a hash table..
+ */
+  register int i;
+
+  if(!name || !*name)
+    return -1;
+  for(i= 0; i< MAX_SKILLS; i++)
+    if(spell_info[i].useable)
+      if(is_abbrev(name, spell_info[i].name))
+        return i;
+  return -1;
+}
+
 int SPELL_LEVEL(struct char_data *ch, int sn) {
   register int i, lowest;
 
@@ -328,11 +118,15 @@ int SPELL_LEVEL(struct char_data *ch, int sn) {
   return lowest;
 }
 
+inline int SKILL_LEVEL(struct char_data *ch, int sn) {
+  return SPELL_LEVEL(ch, sn);
+}
+
 int CanCast(struct char_data *ch, int sn) {
   register int i, lowest, lowclass;
 
   if(!ch || sn < 0 || sn >= MAX_SKILLS)
-    return -1;
+    return 0;
   lowest= ABS_MAX_LVL;
   lowclass= -1;
   for(i= 0; i< ABS_MAX_CLASS; i++) {
@@ -350,9 +144,35 @@ int CanCast(struct char_data *ch, int sn) {
 
 inline int CanCastClass(struct char_data *ch, int sn, int cl) {
   if(!ch || sn < 0 || sn >= MAX_SKILLS)
-    return -1;
+    return 0;
   return (HasClass(ch, 1<<cl) && spell_info[sn].castable &&
           spell_info[sn].spell_pointer &&
+          GET_LEVEL(ch, cl) >= spell_info[sn].min_level[cl]);
+}
+
+int CanUse(struct char_data *ch, int sn) {
+  register int i, lowest, lowclass;
+
+  if(!ch || sn < 0 || sn >= MAX_SKILLS)
+    return 0;
+  lowest= ABS_MAX_LVL;
+  lowclass= -1;
+  for(i= 0; i< ABS_MAX_CLASS; i++) {
+    if(!HasClass(ch, 1<<i) || !spell_info[sn].useable)
+      continue;
+    if(GET_LEVEL(ch, i) >= spell_info[sn].min_level[i])
+      if(spell_info[sn].min_level[i] < lowest) {
+        lowest= spell_info[sn].min_level[i];
+        lowclass= i;
+      }
+  }
+  return(lowclass > -1)?1:0;
+}
+
+inline int CanUseClass(struct char_data *ch, int sn, int cl) {
+  if(!ch || sn < 0 || sn >= MAX_SKILLS)
+    return 0;
+  return (HasClass(ch, 1<<cl) && spell_info[sn].useable &&
           GET_LEVEL(ch, cl) >= spell_info[sn].min_level[cl]);
 }
 
@@ -368,16 +188,14 @@ void affect_update(void)
 	af->duration--;
 	if (af->duration == 0) {
 	  if (*spell_wear_off_soon_msg[af->type]) {
-	    send_to_char(spell_wear_off_soon_msg[af->type], i);
-	    send_to_char("\n\r", i);
+	    cprintf(i, "%s\n\r", spell_wear_off_soon_msg[af->type]);
 	  }
 	}
       } else {
-	if ((af->type > 0) && (af->type <= MAX_EXIST_SPELL)) {
+	if ((af->type > 0) && (af->type <= MAX_SKILLS /* MAX_EXIST_SPELL */)) {
 	  if (!af->next || (af->next->type != af->type) || (af->next->duration > 0)) {
 	    if (*spell_wear_off_msg[af->type]) {
-	      send_to_char(spell_wear_off_msg[af->type], i);
-	      send_to_char("\n\r", i);
+	      cprintf(i, "%s\n\r", spell_wear_off_msg[af->type]);
 
 	      /* check to see if the exit down is connected, if so make the person */
 	      /* fall down into that room and take 1d6 damage */
@@ -666,19 +484,6 @@ void say_spell(struct char_data *ch, int si)
 
   for (temp_char = real_roomp(ch->in_room)->people; temp_char; temp_char = temp_char->next_in_room)
     if (temp_char != ch) {
-/*
- * **  Remove-For-Multi-Class
- * if (ch->player.class == temp_char->player.class)
- * 
- */
-#if 0
-      if((GET_LEVEL(temp_char, CLERIC_LEVEL_IND) >= spell_info[si-1].min_level[CLERIC_LEVEL_IND]) ||
-         (GET_LEVEL(temp_char, MAGE_LEVEL_IND) >= spell_info[si-1].min_level[MAGE_LEVEL_IND]) ||
-         (GET_LEVEL(temp_char, WARRIOR_LEVEL_IND) >= spell_info[si-1].min_level[WARRIOR_LEVEL_IND]) ||
-         (GET_LEVEL(temp_char, THIEF_LEVEL_IND) >= spell_info[si-1].min_level[THIEF_LEVEL_IND]) ||
-         (GET_LEVEL(temp_char, RANGER_LEVEL_IND) >= spell_info[si-1].min_level[RANGER_LEVEL_IND]) ||
-         (GET_LEVEL(temp_char, DRUID_LEVEL_IND) >= spell_info[si-1].min_level[DRUID_LEVEL_IND]))
-#endif
       if(CanCast(temp_char, si-1))
 	act(buf, FALSE, ch, 0, temp_char, TO_VICT);
       else
@@ -765,17 +570,17 @@ void do_cast(struct char_data *ch, char *argument, int cmd)
   argument = skip_spaces(argument);
 
   if (!(*argument)) {
-    send_to_char("cast 'spell name' <target>\n\r", ch);
+    cprintf(ch, "cast 'spell name' <target>\n\r");
     return;
   }
   if (*argument != '\'') {
-    send_to_char("Magic must always be enclosed by single quotes: '\n\r", ch);
+    cprintf(ch, "Magic must always be enclosed by single quotes: '\n\r");
     return;
   }
   for (qend = 1; *(argument + qend) && (*(argument + qend) != '\''); qend++)
     *(argument + qend) = LOWER(*(argument + qend));
   if (*(argument + qend) != '\'') {
-    send_to_char("Magic must always be enclosed by single quotes: '\n\r", ch);
+    cprintf(ch, "Magic must always be enclosed by single quotes: '\n\r");
     return;
   }
   /* spl = old_search_block(argument, 1, qend - 1, spells, 0); */
@@ -794,19 +599,19 @@ void do_cast(struct char_data *ch, char *argument, int cmd)
     if (GET_POS(ch) < spell_info[spl].minimum_position) {
       switch (GET_POS(ch)) {
       case POSITION_SLEEPING:
-	send_to_char("You dream about your great magical powers.\n\r", ch);
+	cprintf(ch, "You dream about your great magical powers.\n\r");
 	break;
       case POSITION_RESTING:
-	send_to_char("You lazily think about how wonderful magic is.\n\r", ch);
+	cprintf(ch, "You lazily think about how wonderful magic is.\n\r");
 	break;
       case POSITION_SITTING:
-	send_to_char("You start to incant and then your butt falls asleep!\n\r", ch);
+	cprintf(ch, "You start to incant and then your butt falls asleep!\n\r");
 	break;
       case POSITION_FIGHTING:
-	send_to_char("You start to incant and your book is knocked away!.\n\r", ch);
+	cprintf(ch, "You start to incant and your book is knocked away!.\n\r");
 	break;
       default:
-	send_to_char("If only you had thought of that earlier!\n\r", ch);
+	cprintf(ch, "If only you had thought of that earlier!\n\r");
 	break;
       }
     } else {
@@ -828,31 +633,31 @@ void do_cast(struct char_data *ch, char *argument, int cmd)
 	argument = one_argument(argument, name);
 	if (*name) {
 	  if (IS_SET(spell_info[spl].targets, TAR_CHAR_ROOM)) {
-	    if (tar_char = get_char_room_vis(ch, name)) {
+	    if ((tar_char = get_char_room_vis(ch, name))) {
 	      if (tar_char == ch || tar_char == ch->specials.fighting ||
 		  tar_char->attackers < MAX_ATTACKERS ||
 		  tar_char->specials.fighting == ch)
 		target_ok = TRUE;
 	      else {
-		send_to_char("You wish everyone would stop for a moment...\n\r", ch);
+		cprintf(ch, "You wish everyone would stop for a moment...\n\r");
 		return;
 	      }
 	    }
 	  }
 	  if (!target_ok && IS_SET(spell_info[spl].targets, TAR_CHAR_WORLD))
-	    if (tar_char = get_char_vis(ch, name))
+	    if ((tar_char = get_char_vis(ch, name)))
 	      target_ok = TRUE;
 
 	  if (!target_ok && IS_SET(spell_info[spl].targets, TAR_OBJ_INV))
-	    if (tar_obj = get_obj_in_list_vis(ch, name, ch->carrying))
+	    if ((tar_obj = get_obj_in_list_vis(ch, name, ch->carrying)))
 	      target_ok = TRUE;
 
 	  if (!target_ok && IS_SET(spell_info[spl].targets, TAR_OBJ_ROOM))
-	    if (tar_obj = get_obj_in_list_vis(ch, name, real_roomp(ch->in_room)->contents))
+	    if ((tar_obj = get_obj_in_list_vis(ch, name, real_roomp(ch->in_room)->contents)))
 	      target_ok = TRUE;
 
 	  if (!target_ok && IS_SET(spell_info[spl].targets, TAR_OBJ_WORLD))
-	    if (tar_obj = get_obj_vis(ch, name))
+	    if ((tar_obj = get_obj_vis(ch, name)))
 	      target_ok = TRUE;
 
 	  if (!target_ok && IS_SET(spell_info[spl].targets, TAR_OBJ_EQUIP)) {
@@ -874,7 +679,7 @@ void do_cast(struct char_data *ch, char *argument, int cmd)
 	  if (tar_char) {
 	    if (IS_NPC(tar_char))
 	      if (IS_SET(tar_char->specials.act, ACT_IMMORTAL)) {
-		send_to_char("You can't cast magic on that!", ch);
+		cprintf(ch, "You can't cast magic on that!");
 		return;
 	      }
 	  }
@@ -929,7 +734,7 @@ void do_cast(struct char_data *ch, char *argument, int cmd)
                   spell_info[spl].name);
 	  return;
 	} else if ((tar_char != ch) && IS_SET(spell_info[spl].targets, TAR_SELF_ONLY)) {
-          cprintf(ch, "Only you are worth of the %s spell.\n\r",
+          cprintf(ch, "Only you are worthy of the %s spell.\n\r",
                   spell_info[spl].name);
 	  return;
 	} else if (IS_AFFECTED(ch, AFF_CHARM) && (ch->master == tar_char)) {
@@ -951,7 +756,7 @@ void do_cast(struct char_data *ch, char *argument, int cmd)
         WAIT_STATE(ch, spell_info[spl].delay);
 
       if ((spell_info[spl].spell_pointer == 0) && spl > 0)
-	send_to_char("Sorry, this magic has not yet been implemented\n\r", ch);
+	cprintf(ch, "Sorry, this magic has not yet been implemented\n\r");
       else {
 	if (number(1, 100) > (ch->skills[spl].learned + (GetMaxLevel(ch) / 5))) {	/* 101% is failure */
           random_miscast(ch, spell_info[spl].name);
@@ -983,46 +788,13 @@ void do_cast(struct char_data *ch, char *argument, int cmd)
   random_magic_failure(ch);
 }
 
-void random_miscast(struct char_data *ch, char *name) {
-  static char *oops[] = {
-"You just can't seem to concentrate on %s...\n\r",
-"Your %s refuses to work without back-pay.\n\r",
-"You cast your %s aside and decide to go home.\n\r",
-"You proudly watch your %s spell fly away into the sky.\n\r",
-"Quixadhal walks up and grabs your %s, muttering 'Fools!'\n\r",
-"Your %s falls to the ground and shatters!\n\r",
-"I don't remember any %s?  D'oh!\n\r",
-"The warrenty on your %s spell has expired.\n\r",
-"That last spell didn't LOOK like %s...\n\r",
-NULL };
-  static int howmany= 9;
-
-  cprintf(ch, oops[number(1,howmany)-1], name);
-}
-
-void random_magic_failure(struct char_data *ch) {
-  static char *oops[] = {
-"Bylle Grylle Grop Gryf???",
-"Olle Bolle Snop Snyf?",
-"Olle Grylle Bolle Bylle?!?",
-"Gryffe Olle Gnyffe Snop???",
-"Bolle Snylle Gryf Bylle?!!?",
-"A dragon appears and WHAPS you for trying to cast that!",
-"You try to cast, but it makes no sense...",
-"Did you mean cast it in bronze?",
-"Cast away matee's!  The tide's a turnin'!",
-NULL };
-  static int howmany= 9;
-
-  cprintf(ch, "%s\n\r", oops[number(1,howmany)-1]);
-}
-
 void assign_spell_pointers(void)
 {
 /*
  * castable means the cast command can find and use it... it is thus a spell.
  * useable means it is a skill that can be applied, such as kick.
  * if it is neither, then it is for internal game use such as TYPE_SUFFERING.
+ * Actually, useable more properly means it is a skill that can be practiced.
  */
   register int i, j;
 
@@ -1033,155 +805,160 @@ void assign_spell_pointers(void)
     spell_info[i].min_mana= spell_info[i].max_mana= 100;
     spell_info[i].targets= TAR_IGNORE;
     spell_info[i].minimum_position= POSITION_STANDING;
+    spell_info[i].generic_level= LOKI;
+    spell_info[i].generic_classes= CLASS_ALL;
     for(j= 0; j< ABS_MAX_CLASS; j++)
       spell_info[i].min_level[j]= LOKI;
   }
 
-ASSIGN_SPELL( SKILL_APRAISE, 0, 0, "appraise", NULL, 0, 100, 100, TAR_IGNORE, POSITION_STANDING, LOKI, LOKI, LOKI, LOKI, LOKI, LOKI);
-ASSIGN_SPELL( SKILL_BACKSTAB, 0, 0, "backstab", NULL, 0, 100, 100, TAR_IGNORE, POSITION_STANDING, LOKI, LOKI, LOKI, LOKI, LOKI, LOKI );
-ASSIGN_SPELL( SKILL_BANDAGE, 0, 0, "bandage", NULL, 0, 100, 100, TAR_IGNORE, POSITION_STANDING, LOKI, LOKI, LOKI, LOKI, LOKI, LOKI );
-ASSIGN_SPELL( SKILL_BARE_HAND, 0, 0, "barehand", NULL, 0, 100, 100, TAR_IGNORE, POSITION_STANDING, LOKI, LOKI, LOKI, LOKI, LOKI, LOKI );
-ASSIGN_SPELL( SKILL_BARTER, 0, 0, "barter", NULL, 0, 100, 100, TAR_IGNORE, POSITION_STANDING, LOKI, LOKI, LOKI, LOKI, LOKI, LOKI );
-ASSIGN_SPELL( SKILL_BASH, 0, 0, "bash", NULL, 0, 100, 100, TAR_IGNORE, POSITION_STANDING, LOKI, LOKI, LOKI, LOKI, LOKI, LOKI );
-ASSIGN_SPELL( SKILL_BASH_W_SHIELD, 0, 0, "shield bash", NULL, 0, 100, 100, TAR_IGNORE, POSITION_STANDING, LOKI, LOKI, LOKI, LOKI, LOKI, LOKI );
-ASSIGN_SPELL( SKILL_BLIND_FIGHTING, 0, 0, "blind fighting", NULL, 0, 100, 100, TAR_IGNORE, POSITION_STANDING, LOKI, LOKI, LOKI, LOKI, LOKI, LOKI );
-ASSIGN_SPELL( SKILL_BREW, 0, 0, "brewing", NULL, 0, 100, 100, TAR_IGNORE, POSITION_STANDING, LOKI, LOKI, LOKI, LOKI, LOKI, LOKI );
-ASSIGN_SPELL( SKILL_DETECT_NOISE, 0, 0, "hear noise", NULL, 0, 100, 100, TAR_IGNORE, POSITION_STANDING, LOKI, LOKI, LOKI, LOKI, LOKI, LOKI );
-ASSIGN_SPELL( SKILL_DISARM, 0, 0, "disarm", NULL, 0, 100, 100, TAR_IGNORE, POSITION_STANDING, LOKI, LOKI, LOKI, LOKI, LOKI, LOKI );
-ASSIGN_SPELL( SKILL_DISARM_TRAP, 0, 0, "disarm trap", NULL, 0, 100, 100, TAR_IGNORE, POSITION_STANDING, LOKI, LOKI, LOKI, LOKI, LOKI, LOKI );
-ASSIGN_SPELL( SKILL_DODGE, 0, 0, "dodge", NULL, 0, 100, 100, TAR_IGNORE, POSITION_STANDING, LOKI, LOKI, LOKI, LOKI, LOKI, LOKI );
-ASSIGN_SPELL( SKILL_DOOR_BASH, 0, 0, "doorbash", NULL, 0, 100, 100, TAR_IGNORE, POSITION_STANDING, LOKI, LOKI, LOKI, LOKI, LOKI, LOKI );
-ASSIGN_SPELL( SKILL_ENDURANCE, 0, 0, "endurance", NULL, 0, 100, 100, TAR_IGNORE, POSITION_STANDING, LOKI, LOKI, LOKI, LOKI, LOKI, LOKI );
-ASSIGN_SPELL( SKILL_FIND_TRAP, 0, 0, "locate trap", NULL, 0, 100, 100, TAR_IGNORE, POSITION_STANDING, LOKI, LOKI, LOKI, LOKI, LOKI, LOKI );
-ASSIGN_SPELL( SKILL_HIDE, 0, 0, "hide", NULL, 0, 100, 100, TAR_IGNORE, POSITION_STANDING, LOKI, LOKI, LOKI, LOKI, LOKI, LOKI );
-ASSIGN_SPELL( SKILL_HUNT, 0, 0, "hunt", NULL, 0, 100, 100, TAR_IGNORE, POSITION_STANDING, LOKI, LOKI, LOKI, LOKI, LOKI, LOKI );
-ASSIGN_SPELL( SKILL_KICK, 0, 0, "kick", NULL, 0, 100, 100, TAR_IGNORE, POSITION_STANDING, LOKI, LOKI, LOKI, LOKI, LOKI, LOKI );
-ASSIGN_SPELL( SKILL_KNOCK_OUT, 0, 0, "knockout", NULL, 0, 100, 100, TAR_IGNORE, POSITION_STANDING, LOKI, LOKI, LOKI, LOKI, LOKI, LOKI );
-ASSIGN_SPELL( SKILL_MEDITATION, 0, 0, "meditation", NULL, 0, 100, 100, TAR_IGNORE, POSITION_STANDING, LOKI, LOKI, LOKI, LOKI, LOKI, LOKI );
-ASSIGN_SPELL( SKILL_PARRY, 0, 0, "parry", NULL, 0, 100, 100, TAR_IGNORE, POSITION_STANDING, LOKI, LOKI, LOKI, LOKI, LOKI, LOKI );
-ASSIGN_SPELL( SKILL_PEER, 0, 0, "peer", NULL, 0, 100, 100, TAR_IGNORE, POSITION_STANDING, LOKI, LOKI, LOKI, LOKI, LOKI, LOKI );
-ASSIGN_SPELL( SKILL_PICK_LOCK, 0, 0, "pick", NULL, 0, 100, 100, TAR_IGNORE, POSITION_STANDING, LOKI, LOKI, LOKI, LOKI, LOKI, LOKI );
-ASSIGN_SPELL( SKILL_PUNCH, 0, 0, "punch", NULL, 0, 100, 100, TAR_IGNORE, POSITION_STANDING, LOKI, LOKI, LOKI, LOKI, LOKI, LOKI );
-ASSIGN_SPELL( SKILL_READ_MAGIC, 0, 0, "read magic", NULL, 0, 100, 100, TAR_IGNORE, POSITION_STANDING, LOKI, LOKI, LOKI, LOKI, LOKI, LOKI );
-ASSIGN_SPELL( SKILL_RESCUE, 0, 0, "rescue", NULL, 0, 100, 100, TAR_IGNORE, POSITION_STANDING, LOKI, LOKI, LOKI, LOKI, LOKI, LOKI );
-ASSIGN_SPELL( SKILL_RIDE, 0, 0, "riding", NULL, 0, 100, 100, TAR_IGNORE, POSITION_STANDING, LOKI, LOKI, LOKI, LOKI, LOKI, LOKI );
-ASSIGN_SPELL( SKILL_SCRIBE, 0, 0, "scribe", NULL, 0, 100, 100, TAR_IGNORE, POSITION_STANDING, LOKI, LOKI, LOKI, LOKI, LOKI, LOKI );
-ASSIGN_SPELL( SKILL_SEARCH, 0, 0, "search", NULL, 0, 100, 100, TAR_IGNORE, POSITION_STANDING, LOKI, LOKI, LOKI, LOKI, LOKI, LOKI );
-ASSIGN_SPELL( SKILL_SNEAK, 0, 0, "sneak", NULL, 0, 100, 100, TAR_IGNORE, POSITION_STANDING, LOKI, LOKI, LOKI, LOKI, LOKI, LOKI );
-ASSIGN_SPELL( SKILL_SPEC_BLUDGE, 0, 0, "bludgeon spec", NULL, 0, 100, 100, TAR_IGNORE, POSITION_STANDING, LOKI, LOKI, LOKI, LOKI, LOKI, LOKI );
-ASSIGN_SPELL( SKILL_SPEC_CLEAVE, 0, 0, "cleave spec", NULL, 0, 100, 100, TAR_IGNORE, POSITION_STANDING, LOKI, LOKI, LOKI, LOKI, LOKI, LOKI );
-ASSIGN_SPELL( SKILL_SPEC_CRUSH, 0, 0, "crush spec", NULL, 0, 100, 100, TAR_IGNORE, POSITION_STANDING, LOKI, LOKI, LOKI, LOKI, LOKI, LOKI );
-ASSIGN_SPELL( SKILL_SPEC_PIERCE, 0, 0, "pierce spec", NULL, 0, 100, 100, TAR_IGNORE, POSITION_STANDING, LOKI, LOKI, LOKI, LOKI, LOKI, LOKI );
-ASSIGN_SPELL( SKILL_SPEC_SLASH, 0, 0, "slash spec", NULL, 0, 100, 100, TAR_IGNORE, POSITION_STANDING, LOKI, LOKI, LOKI, LOKI, LOKI, LOKI );
-ASSIGN_SPELL( SKILL_SPEC_SMASH, 0, 0, "smash spec", NULL, 0, 100, 100, TAR_IGNORE, POSITION_STANDING, LOKI, LOKI, LOKI, LOKI, LOKI, LOKI );
-ASSIGN_SPELL( SKILL_SPEC_SMITE, 0, 0, "smite spec", NULL, 0, 100, 100, TAR_IGNORE, POSITION_STANDING, LOKI, LOKI, LOKI, LOKI, LOKI, LOKI );
-ASSIGN_SPELL( SKILL_SPEC_STAB, 0, 0, "stab spec", NULL, 0, 100, 100, TAR_IGNORE, POSITION_STANDING, LOKI, LOKI, LOKI, LOKI, LOKI, LOKI );
-ASSIGN_SPELL( SKILL_SPEC_WHIP, 0, 0, "whip spec", NULL, 0, 100, 100, TAR_IGNORE, POSITION_STANDING, LOKI, LOKI, LOKI, LOKI, LOKI, LOKI );
-ASSIGN_SPELL( SKILL_SPELLCRAFT, 0, 0, "spellcraft", NULL, 0, 100, 100, TAR_IGNORE, POSITION_STANDING, LOKI, LOKI, LOKI, LOKI, LOKI, LOKI );
-ASSIGN_SPELL( SKILL_STEAL, 0, 0, "steal", NULL, 0, 100, 100, TAR_IGNORE, POSITION_STANDING, LOKI, LOKI, LOKI, LOKI, LOKI, LOKI );
-ASSIGN_SPELL( SKILL_SWIMMING, 0, 0, "swimming", NULL, 0, 100, 100, TAR_IGNORE, POSITION_STANDING, LOKI, LOKI, LOKI, LOKI, LOKI, LOKI );
-ASSIGN_SPELL( SKILL_TWO_HANDED, 0, 0, "two handed", NULL, 0, 100, 100, TAR_IGNORE, POSITION_STANDING, LOKI, LOKI, LOKI, LOKI, LOKI, LOKI );
-ASSIGN_SPELL( SKILL_TWO_WEAPON, 0, 0, "dual wield", NULL, 0, 100, 100, TAR_IGNORE, POSITION_STANDING, LOKI, LOKI, LOKI, LOKI, LOKI, LOKI );
-ASSIGN_SPELL( SPELL_MANA, 0, 0, "MANA", NULL, 12, 100, 100, TAR_IGNORE, POSITION_FIGHTING, LOKI, LOKI, LOKI, LOKI, LOKI, LOKI );
-ASSIGN_SPELL( SPELL_ACID_BLAST, 1, 0, "acid blast", cast_acid_blast, 24, 15, 50, TAR_CHAR_ROOM|TAR_FIGHT_VICT|TAR_VIOLENT, POSITION_FIGHTING, 7, LOW_IMMORTAL, LOKI, LOKI, LOKI, LOKI );
-ASSIGN_SPELL( SPELL_AID, 1, 0, "aid", cast_aid, 12, 15, 50, TAR_CHAR_ROOM, POSITION_STANDING, LOW_IMMORTAL, 10, LOKI, LOKI, LOKI, LOKI );
-ASSIGN_SPELL( SPELL_ANIMATE_DEAD, 1, 0, "animate dead", cast_animate_dead, 24, 15, 50, TAR_OBJ_ROOM, POSITION_STANDING, 10, 7, LOKI, LOKI, LOKI, LOKI );
-ASSIGN_SPELL( SPELL_ARMOR, 1, 0, "armour", cast_armor, 12, 5, 50, TAR_CHAR_ROOM, POSITION_STANDING, 4, 1, LOKI, LOKI, 10, LOKI );
-ASSIGN_SPELL( SPELL_ASTRAL_WALK, 1, 0, "astral walk", cast_astral_walk, 12, 33, 50, TAR_CHAR_WORLD, POSITION_STANDING, 21, 18, LOKI, LOKI, LOKI, LOKI );
-ASSIGN_SPELL( SPELL_BLESS, 1, 0, "bless", cast_bless, 12, 5, 50, TAR_OBJ_INV|TAR_OBJ_EQUIP|TAR_CHAR_ROOM, POSITION_STANDING, LOW_IMMORTAL, 1, LOKI, LOKI, LOKI, LOKI );
-ASSIGN_SPELL( SPELL_BLINDNESS, 1, 0, "blindness", cast_blindness, 24, 5, 50, TAR_CHAR_ROOM|TAR_FIGHT_VICT|TAR_VIOLENT, POSITION_FIGHTING, 8, 6, LOKI, LOKI, LOKI, LOKI );
-ASSIGN_SPELL( SPELL_BURNING_HANDS, 1, 0, "burning hands", cast_burning_hands, 24, 30, 50, TAR_IGNORE|TAR_VIOLENT, POSITION_FIGHTING, 5, LOW_IMMORTAL, LOKI, LOKI, LOKI, LOKI );
-ASSIGN_SPELL( SPELL_CACAODEMON, 1, 0, "cacaodemon", cast_cacaodemon, 24, 50, 100, TAR_IGNORE, POSITION_STANDING, 30, 30, LOKI, LOKI, LOKI, LOKI );
-ASSIGN_SPELL( SPELL_CALL_LIGHTNING, 1, 0, "call lightning", cast_call_lightning, 36, 15, 50, TAR_CHAR_ROOM|TAR_FIGHT_VICT|TAR_VIOLENT, POSITION_FIGHTING, LOW_IMMORTAL, 15, LOKI, LOKI, LOKI, LOKI );
-ASSIGN_SPELL( SPELL_CALM, 1, 0, "calm", cast_calm, 24, 15, 50, TAR_CHAR_ROOM, POSITION_STANDING, 4, 2, LOKI, LOKI, LOKI, LOKI );
-ASSIGN_SPELL( SPELL_CAUSE_CRITICAL, 1, 0, "cause critical", cast_cause_critic, 18, 11, 50, TAR_CHAR_ROOM|TAR_FIGHT_VICT|TAR_VIOLENT, POSITION_FIGHTING, LOW_IMMORTAL, 9, LOKI, LOKI, LOKI, LOKI );
-ASSIGN_SPELL( SPELL_CAUSE_LIGHT, 1, 0, "cause light", cast_cause_light, 12, 8, 50, TAR_CHAR_ROOM|TAR_FIGHT_VICT, POSITION_FIGHTING, LOW_IMMORTAL, 1, LOKI, LOKI, LOKI, LOKI );
-ASSIGN_SPELL( SPELL_CAUSE_SERIOUS, 1, 0, "cause serious", cast_cause_serious, 12, 9, 50, TAR_CHAR_ROOM|TAR_VIOLENT, POSITION_FIGHTING, 30, 7, LOKI, LOKI, LOKI, LOKI );
-ASSIGN_SPELL( SPELL_CHARM_MONSTER, 1, 0, "charm monster", cast_charm_monster, 18, 5, 50, TAR_CHAR_ROOM|TAR_VIOLENT, POSITION_STANDING, 8, 8, LOKI, LOKI, LOKI, LOKI );
-ASSIGN_SPELL( SPELL_CHARM_PERSON, 1, 0, "charm person", cast_charm_person, 12, 5, 50, TAR_CHAR_ROOM|TAR_SELF_NONO|TAR_FIGHT_VICT|TAR_VIOLENT, POSITION_STANDING, 12, 12, LOKI, LOKI, LOKI, LOKI );
-ASSIGN_SPELL( SPELL_CHILL_TOUCH, 1, 0, "chill touch", cast_chill_touch, 12, 15, 50, TAR_CHAR_ROOM|TAR_FIGHT_VICT|TAR_VIOLENT, POSITION_FIGHTING, 3, LOW_IMMORTAL, LOKI, LOKI, LOKI, LOKI );
-ASSIGN_SPELL( SPELL_CLONE, 1, 0, "clone", cast_clone, 48, 50, 100, TAR_CHAR_WORLD, POSITION_STANDING, 25, 48, LOKI, LOKI, LOKI, LOKI );
-ASSIGN_SPELL( SPELL_COLOUR_SPRAY, 1, 0, "colour spray", cast_colour_spray, 24, 15, 50, TAR_IGNORE|TAR_VIOLENT, POSITION_FIGHTING, 11, LOW_IMMORTAL, LOKI, LOKI, LOKI, LOKI );
-ASSIGN_SPELL( SPELL_CONE_OF_COLD, 1, 0, "cone of cold", cast_cone_of_cold, 24, 15, 50, TAR_IGNORE|TAR_VIOLENT, POSITION_FIGHTING, 11, LOW_IMMORTAL, LOKI, LOKI, LOKI, LOKI );
-ASSIGN_SPELL( SPELL_CONJURE_ELEMENTAL, 1, 0, "conjure elemental", cast_conjure_elemental, 24, 30, 100, TAR_IGNORE, POSITION_STANDING, 16, 14, LOKI, LOKI, LOKI, LOKI );
-ASSIGN_SPELL( SPELL_CONTROL_WEATHER, 1, 0, "control weather", cast_control_weather, 36, 25, 50, TAR_IGNORE, POSITION_STANDING, 10, 13, LOKI, LOKI, LOKI, LOKI );
-ASSIGN_SPELL( SPELL_CONT_LIGHT, 1, 0, "continual light", cast_cont_light, 24, 10, 50, TAR_IGNORE, POSITION_STANDING, 3, 4, LOKI, LOKI, LOKI, LOKI );
-ASSIGN_SPELL( SPELL_CREATE_FOOD, 1, 0, "create food", cast_create_food, 12, 5, 50, TAR_IGNORE, POSITION_STANDING, LOW_IMMORTAL, 3, LOKI, LOKI, 11, LOKI );
-ASSIGN_SPELL( SPELL_CREATE_WATER, 1, 0, "create water", cast_create_water, 12, 5, 50, TAR_OBJ_INV|TAR_OBJ_EQUIP, POSITION_STANDING, LOW_IMMORTAL, 2, LOKI, LOKI, 10, LOKI );
-ASSIGN_SPELL( SPELL_CURE_BLIND, 1, 0, "cure blindness", cast_cure_blind, 12, 5, 50, TAR_CHAR_ROOM, POSITION_STANDING, LOW_IMMORTAL, 4, LOKI, LOKI, LOKI, LOKI );
-ASSIGN_SPELL( SPELL_CURE_CRITIC, 1, 0, "cure critical", cast_cure_critic, 12, 11, 50, TAR_CHAR_ROOM, POSITION_FIGHTING, LOW_IMMORTAL, 9, LOKI, LOKI, LOKI, LOKI );
-ASSIGN_SPELL( SPELL_CURE_LIGHT, 1, 0, "cure light", cast_cure_light, 12, 5, 50, TAR_CHAR_ROOM, POSITION_FIGHTING, LOW_IMMORTAL, 1, LOKI, LOKI, 10, LOKI );
-ASSIGN_SPELL( SPELL_CURE_SERIOUS, 1, 0, "cure serious", cast_cure_serious, 12, 9, 50, TAR_CHAR_ROOM, POSITION_FIGHTING, 30, 7, LOKI, LOKI, 15, LOKI );
-ASSIGN_SPELL( SPELL_CURSE, 1, 0, "curse", cast_curse, 24, 20, 50, TAR_CHAR_ROOM|TAR_OBJ_ROOM|TAR_OBJ_INV|TAR_OBJ_EQUIP|TAR_FIGHT_VICT|TAR_VIOLENT, POSITION_STANDING, 12, 12, LOKI, LOKI, LOKI, LOKI );
-ASSIGN_SPELL( SPELL_DETECT_EVIL, 1, 0, "detect evil", cast_detect_evil, 12, 5, 50, TAR_CHAR_ROOM, POSITION_STANDING, LOW_IMMORTAL, 1, LOKI, LOKI, LOKI, LOKI );
-ASSIGN_SPELL( SPELL_DETECT_INVISIBLE, 1, 0, "detect invisible", cast_detect_invisibility, 12, 5, 50, TAR_CHAR_ROOM, POSITION_STANDING, 2, 5, LOKI, LOKI, LOKI, LOKI );
-ASSIGN_SPELL( SPELL_DETECT_MAGIC, 1, 0, "detect magic", cast_detect_magic, 12, 5, 50, TAR_CHAR_ROOM, POSITION_STANDING, 1, 3, LOKI, LOKI, LOKI, LOKI );
-ASSIGN_SPELL( SPELL_DETECT_POISON, 1, 0, "detect poison", cast_detect_poison, 12, 5, 50, TAR_CHAR_ROOM|TAR_OBJ_INV|TAR_OBJ_EQUIP, POSITION_STANDING, LOW_IMMORTAL, 2, LOKI, LOKI, LOKI, LOKI );
-ASSIGN_SPELL( SPELL_DISPEL_EVIL, 1, 0, "dispel evil", cast_dispel_evil, 36, 100, 100, TAR_CHAR_ROOM|TAR_FIGHT_VICT, POSITION_FIGHTING, LOW_IMMORTAL, 12, LOKI, LOKI, LOKI, LOKI );
-ASSIGN_SPELL( SPELL_DISPEL_GOOD, 1, 0, "dispel good", cast_dispel_good, 36, 100, 100, TAR_CHAR_ROOM|TAR_FIGHT_VICT, POSITION_FIGHTING, LOW_IMMORTAL, 12, LOKI, LOKI, LOKI, LOKI );
-ASSIGN_SPELL( SPELL_DISPEL_MAGIC, 1, 0, "dispel magic", cast_dispel_magic, 12, 15, 50, TAR_CHAR_ROOM|TAR_FIGHT_VICT, POSITION_FIGHTING, 6, 6, LOKI, LOKI, LOKI, LOKI );
-ASSIGN_SPELL( SPELL_DRAGON_BREATH, 0, 0, "DRAGON BREATH", cast_dragon_breath, 0, 100, 100, TAR_IGNORE|TAR_VIOLENT, POSITION_STANDING, LOKI, LOKI, LOKI, LOKI, LOKI, LOKI );
-#if 0
-ASSIGN_SPELL( SPELL_EARTHQUAKE, 1, 0, "earthquake", cast_earthquake, 24, 15, 50, TAR_IGNORE|TAR_VIOLENT, POSITION_FIGHTING, LOW_IMMORTAL, 8, LOKI, LOKI, LOKI, LOKI );
+ASSIGN_SPELL( SKILL_APRAISE, 0, 1, "appraise", NULL, 0, 100, 100, TAR_IGNORE, POSITION_STANDING, 2, CLASS_ALL, LOKI, LOKI, LOKI, LOKI, LOKI, LOKI);
+ASSIGN_SPELL( SKILL_BACKSTAB, 0, 1, "backstab", NULL, 0, 100, 100, TAR_IGNORE, POSITION_STANDING, LOKI, CLASS_ALL, LOKI, LOKI, LOKI, 1, LOKI, LOKI );
+ASSIGN_SPELL( SKILL_BANDAGE, 0, 1, "bandage", NULL, 0, 100, 100, TAR_IGNORE, POSITION_STANDING, 1, CLASS_ALL, LOKI, LOKI, LOKI, LOKI, LOKI, LOKI );
+ASSIGN_SPELL( SKILL_BARE_HAND, 0, 1, "barehand", NULL, 0, 100, 100, TAR_IGNORE, POSITION_STANDING, 1, CLASS_ALL, LOKI, LOKI, LOKI, LOKI, LOKI, LOKI );
+ASSIGN_SPELL( SKILL_BARTER, 0, 0, "barter", NULL, 0, 100, 100, TAR_IGNORE, POSITION_STANDING, LOKI, CLASS_ALL, LOKI, LOKI, LOKI, LOKI, LOKI, LOKI );
+ASSIGN_SPELL( SKILL_BASH, 0, 1, "bash", NULL, 0, 100, 100, TAR_IGNORE, POSITION_STANDING, LOKI, CLASS_ALL, LOKI, LOKI, 1, LOKI, 1, LOKI );
+ASSIGN_SPELL( SKILL_BASH_W_SHIELD, 0, 0, "shield bash", NULL, 0, 100, 100, TAR_IGNORE, POSITION_STANDING, LOKI, CLASS_ALL, LOKI, LOKI, LOKI, LOKI, LOKI, LOKI );
+ASSIGN_SPELL( SKILL_BLIND_FIGHTING, 0, 0, "blind fighting", NULL, 0, 100, 100, TAR_IGNORE, POSITION_STANDING, LOKI, CLASS_ALL, LOKI, LOKI, LOKI, LOKI, LOKI, LOKI );
+ASSIGN_SPELL( SKILL_BREW, 0, 0, "brewing", NULL, 0, 100, 100, TAR_IGNORE, POSITION_STANDING, LOKI, CLASS_ALL, LOKI, LOKI, LOKI, LOKI, LOKI, LOKI );
+ASSIGN_SPELL( SKILL_DETECT_NOISE, 0, 0, "hear noise", NULL, 0, 100, 100, TAR_IGNORE, POSITION_STANDING, LOKI, CLASS_ALL, LOKI, LOKI, LOKI, LOKI, LOKI, LOKI );
+ASSIGN_SPELL( SKILL_DISARM, 0, 1, "disarm", NULL, 0, 100, 100, TAR_IGNORE, POSITION_STANDING, LOKI, CLASS_ALL, LOKI, LOKI, 1, LOKI, 1, LOKI );
+ASSIGN_SPELL( SKILL_DISARM_TRAP, 0, 0, "disarm trap", NULL, 0, 100, 100, TAR_IGNORE, POSITION_STANDING, LOKI, CLASS_ALL, LOKI, LOKI, LOKI, LOKI, LOKI, LOKI );
+ASSIGN_SPELL( SKILL_DODGE, 0, 0, "dodge", NULL, 0, 100, 100, TAR_IGNORE, POSITION_STANDING, LOKI, CLASS_ALL, LOKI, LOKI, LOKI, LOKI, LOKI, LOKI );
+ASSIGN_SPELL( SKILL_DOOR_BASH, 0, 1, "doorbash", NULL, 0, 100, 100, TAR_IGNORE, POSITION_STANDING, LOKI, CLASS_ALL, LOKI, LOKI, 1, LOKI, 1, LOKI );
+ASSIGN_SPELL( SKILL_ENDURANCE, 0, 1, "endurance", NULL, 0, 100, 100, TAR_IGNORE, POSITION_STANDING, 3, CLASS_ALL, LOKI, LOKI, LOKI, LOKI, LOKI, LOKI );
+ASSIGN_SPELL( SKILL_FIND_TRAP, 0, 1, "locate trap", NULL, 0, 100, 100, TAR_IGNORE, POSITION_STANDING, LOKI, CLASS_ALL, LOKI, LOKI, LOKI, 1, LOKI, LOKI );
+ASSIGN_SPELL( SKILL_HIDE, 0, 1, "hide", NULL, 0, 100, 100, TAR_IGNORE, POSITION_STANDING, LOKI, CLASS_ALL, LOKI, LOKI, LOKI, 1, 1, LOKI );
+ASSIGN_SPELL( SKILL_KICK, 0, 1, "kick", NULL, 0, 100, 100, TAR_IGNORE, POSITION_STANDING, LOKI, CLASS_ALL, LOKI, LOKI, 1, LOKI, LOKI, LOKI );
+ASSIGN_SPELL( SKILL_KNOCK_OUT, 0, 0, "knockout", NULL, 0, 100, 100, TAR_IGNORE, POSITION_STANDING, LOKI, CLASS_ALL, LOKI, LOKI, LOKI, LOKI, LOKI, LOKI );
+ASSIGN_SPELL( SKILL_MEDITATION, 0, 1, "meditation", NULL, 0, 100, 100, TAR_IGNORE, POSITION_STANDING, 7, CLASS_ALL, LOKI, LOKI, LOKI, LOKI, LOKI, LOKI );
+ASSIGN_SPELL( SKILL_PARRY, 0, 0, "parry", NULL, 0, 100, 100, TAR_IGNORE, POSITION_STANDING, LOKI, CLASS_ALL, LOKI, LOKI, LOKI, LOKI, LOKI, LOKI );
+ASSIGN_SPELL( SKILL_PEER, 0, 1, "peer", NULL, 0, 100, 100, TAR_IGNORE, POSITION_STANDING, LOKI, CLASS_ALL, LOKI, LOKI, LOKI, 1, 1, LOKI );
+ASSIGN_SPELL( SKILL_PICK_LOCK, 0, 1, "pick lock", NULL, 0, 100, 100, TAR_IGNORE, POSITION_STANDING, LOKI, CLASS_ALL, LOKI, LOKI, LOKI, 1, LOKI, LOKI );
+ASSIGN_SPELL( SKILL_PUNCH, 0, 1, "punch", NULL, 0, 100, 100, TAR_IGNORE, POSITION_STANDING, 2, CLASS_ALL, LOKI, LOKI, 1, LOKI, 1, LOKI );
+ASSIGN_SPELL( SKILL_READ_MAGIC, 0, 0, "read magic", NULL, 0, 100, 100, TAR_IGNORE, POSITION_STANDING, 3, CLASS_ALL, LOKI, LOKI, LOKI, LOKI, LOKI, LOKI );
+ASSIGN_SPELL( SKILL_RESCUE, 0, 1, "rescue", NULL, 0, 100, 100, TAR_IGNORE, POSITION_STANDING, LOKI, CLASS_ALL, LOKI, LOKI, 1, LOKI, 1, LOKI );
+ASSIGN_SPELL( SKILL_RIDE, 0, 1, "riding", NULL, 0, 100, 100, TAR_IGNORE, POSITION_STANDING, 1, CLASS_ALL, LOKI, LOKI, LOKI, LOKI, LOKI, LOKI );
+ASSIGN_SPELL( SKILL_SCRIBE, 0, 0, "scribe", NULL, 0, 100, 100, TAR_IGNORE, POSITION_STANDING, LOKI, CLASS_ALL, LOKI, LOKI, LOKI, LOKI, LOKI, LOKI );
+ASSIGN_SPELL( SKILL_SEARCH, 0, 1, "search", NULL, 0, 100, 100, TAR_IGNORE, POSITION_STANDING, LOKI, CLASS_ALL, LOKI, LOKI, LOKI, 1, 1, LOKI );
+ASSIGN_SPELL( SKILL_SNEAK, 0, 1, "sneak", NULL, 0, 100, 100, TAR_IGNORE, POSITION_STANDING, LOKI, CLASS_ALL, LOKI, LOKI, LOKI, 1, 1, LOKI );
+ASSIGN_SPELL( SKILL_SPEC_BLUDGE, 0, 1, "bludgeon spec", NULL, 0, 100, 100, TAR_IGNORE, POSITION_STANDING, LOKI, CLASS_ALL, LOKI, LOKI, 1, LOKI, LOKI, LOKI );
+ASSIGN_SPELL( SKILL_SPEC_CLEAVE, 0, 1, "cleave spec", NULL, 0, 100, 100, TAR_IGNORE, POSITION_STANDING, LOKI, CLASS_ALL, LOKI, LOKI, 1, LOKI, LOKI, LOKI );
+ASSIGN_SPELL( SKILL_SPEC_CRUSH, 0, 1, "crush spec", NULL, 0, 100, 100, TAR_IGNORE, POSITION_STANDING, LOKI, CLASS_ALL, LOKI, LOKI, 1, LOKI, LOKI, LOKI );
+ASSIGN_SPELL( SKILL_SPEC_PIERCE, 0, 1, "pierce spec", NULL, 0, 100, 100, TAR_IGNORE, POSITION_STANDING, LOKI, CLASS_ALL, LOKI, LOKI, 1, LOKI, LOKI, LOKI );
+ASSIGN_SPELL( SKILL_SPEC_SLASH, 0, 1, "slash spec", NULL, 0, 100, 100, TAR_IGNORE, POSITION_STANDING, LOKI, CLASS_ALL, LOKI, LOKI, 1, LOKI, LOKI, LOKI );
+ASSIGN_SPELL( SKILL_SPEC_SMASH, 0, 1, "smash spec", NULL, 0, 100, 100, TAR_IGNORE, POSITION_STANDING, LOKI, CLASS_ALL, LOKI, LOKI, 1, LOKI, LOKI, LOKI );
+ASSIGN_SPELL( SKILL_SPEC_SMITE, 0, 1, "smite spec", NULL, 0, 100, 100, TAR_IGNORE, POSITION_STANDING, LOKI, CLASS_ALL, LOKI, LOKI, 1, LOKI, LOKI, LOKI );
+ASSIGN_SPELL( SKILL_SPEC_STAB, 0, 1, "stab spec", NULL, 0, 100, 100, TAR_IGNORE, POSITION_STANDING, LOKI, CLASS_ALL, LOKI, LOKI, 1, LOKI, LOKI, LOKI );
+ASSIGN_SPELL( SKILL_SPEC_WHIP, 0, 1, "whip spec", NULL, 0, 100, 100, TAR_IGNORE, POSITION_STANDING, LOKI, CLASS_ALL, LOKI, LOKI, 1, LOKI, LOKI, LOKI );
+ASSIGN_SPELL( SKILL_SPELLCRAFT, 0, 1, "spellcraft", NULL, 0, 100, 100, TAR_IGNORE, POSITION_STANDING, 7, CLASS_MAGICAL, LOKI, LOKI, LOKI, LOKI, LOKI, LOKI );
+ASSIGN_SPELL( SKILL_STEAL, 0, 1, "steal", NULL, 0, 100, 100, TAR_IGNORE, POSITION_STANDING, LOKI, CLASS_ALL, LOKI, LOKI, LOKI, 1, LOKI, LOKI );
+ASSIGN_SPELL( SKILL_SWIMMING, 0, 1, "swimming", NULL, 0, 100, 100, TAR_IGNORE, POSITION_STANDING, 1, CLASS_ALL, LOKI, LOKI, LOKI, LOKI, LOKI, LOKI );
+ASSIGN_SPELL( SKILL_TRACK, 0, 1, "track", NULL, 0, 100, 100, TAR_IGNORE, POSITION_STANDING, 3, CLASS_SNEAK, LOKI, LOKI, LOKI, 1, 1, LOKI );
+ASSIGN_SPELL( SKILL_TWO_HANDED, 0, 1, "two handed", NULL, 0, 100, 100, TAR_IGNORE, POSITION_STANDING, 5, CLASS_FIGHTER, LOKI, LOKI, LOKI, LOKI, LOKI, LOKI );
+ASSIGN_SPELL( SKILL_TWO_WEAPON, 0, 0, "dual wield", NULL, 0, 100, 100, TAR_IGNORE, POSITION_STANDING, LOKI, CLASS_ALL, LOKI, LOKI, LOKI, LOKI, LOKI, LOKI );
+ASSIGN_SPELL( SPELL_MANA, 0, 0, "MANA", NULL, 12, 100, 100, TAR_IGNORE, POSITION_FIGHTING, LOKI, CLASS_ALL, LOKI, LOKI, LOKI, LOKI, LOKI, LOKI );
+ASSIGN_SPELL( SPELL_ACID_BLAST, 1, 0, "acid blast", cast_acid_blast, 24, 15, 50, TAR_CHAR_ROOM|TAR_FIGHT_VICT|TAR_VIOLENT, POSITION_FIGHTING, LOKI, CLASS_ALL, 7, LOW_IMMORTAL, LOKI, LOKI, LOKI, LOKI );
+ASSIGN_SPELL( SPELL_AID, 1, 0, "aid", cast_aid, 12, 15, 50, TAR_CHAR_ROOM, POSITION_STANDING, LOKI, CLASS_ALL, LOW_IMMORTAL, 10, LOKI, LOKI, LOKI, LOKI );
+ASSIGN_SPELL( SPELL_ANIMATE_DEAD, 1, 0, "animate dead", cast_animate_dead, 24, 15, 50, TAR_OBJ_ROOM, POSITION_STANDING, LOKI, CLASS_ALL, 10, 7, LOKI, LOKI, LOKI, LOKI );
+ASSIGN_SPELL( SPELL_ARMOR, 1, 0, "armour", cast_armor, 12, 5, 50, TAR_CHAR_ROOM, POSITION_STANDING, LOKI, CLASS_ALL, 4, 1, LOKI, LOKI, 10, LOKI );
+ASSIGN_SPELL( SPELL_ASTRAL_WALK, 1, 0, "astral walk", cast_astral_walk, 12, 33, 50, TAR_CHAR_WORLD, POSITION_STANDING, LOKI, CLASS_ALL, 21, 18, LOKI, LOKI, LOKI, LOKI );
+ASSIGN_SPELL( SPELL_BLESS, 1, 0, "bless", cast_bless, 12, 5, 50, TAR_OBJ_INV|TAR_OBJ_EQUIP|TAR_CHAR_ROOM, POSITION_STANDING, LOKI, CLASS_ALL, LOW_IMMORTAL, 1, LOKI, LOKI, LOKI, LOKI );
+ASSIGN_SPELL( SPELL_BLINDNESS, 1, 0, "blindness", cast_blindness, 24, 5, 50, TAR_CHAR_ROOM|TAR_FIGHT_VICT|TAR_VIOLENT, POSITION_FIGHTING, LOKI, CLASS_ALL, 8, 6, LOKI, LOKI, LOKI, LOKI );
+ASSIGN_SPELL( SPELL_BURNING_HANDS, 1, 0, "burning hands", cast_burning_hands, 24, 30, 50, TAR_IGNORE|TAR_VIOLENT, POSITION_FIGHTING, LOKI, CLASS_ALL, 5, LOW_IMMORTAL, LOKI, LOKI, LOKI, LOKI );
+ASSIGN_SPELL( SPELL_CACAODEMON, 1, 0, "cacaodemon", cast_cacaodemon, 24, 50, 100, TAR_IGNORE, POSITION_STANDING, LOKI, CLASS_ALL, 30, 30, LOKI, LOKI, LOKI, LOKI );
+ASSIGN_SPELL( SPELL_CALL_LIGHTNING, 1, 0, "call lightning", cast_call_lightning, 36, 15, 50, TAR_CHAR_ROOM|TAR_FIGHT_VICT|TAR_VIOLENT, POSITION_FIGHTING, LOKI, CLASS_ALL, LOW_IMMORTAL, 15, LOKI, LOKI, LOKI, LOKI );
+ASSIGN_SPELL( SPELL_CALM, 1, 0, "calm", cast_calm, 24, 15, 50, TAR_CHAR_ROOM, POSITION_STANDING, LOKI, CLASS_ALL, 4, 2, LOKI, LOKI, LOKI, LOKI );
+ASSIGN_SPELL( SPELL_CAUSE_CRITICAL, 1, 0, "cause critical", cast_cause_critic, 18, 11, 50, TAR_CHAR_ROOM|TAR_FIGHT_VICT|TAR_VIOLENT, POSITION_FIGHTING, LOKI, CLASS_ALL, LOW_IMMORTAL, 9, LOKI, LOKI, LOKI, LOKI );
+ASSIGN_SPELL( SPELL_CAUSE_LIGHT, 1, 0, "cause light", cast_cause_light, 12, 8, 50, TAR_CHAR_ROOM|TAR_FIGHT_VICT, POSITION_FIGHTING, LOKI, CLASS_ALL, LOW_IMMORTAL, 1, LOKI, LOKI, LOKI, LOKI );
+ASSIGN_SPELL( SPELL_CAUSE_SERIOUS, 1, 0, "cause serious", cast_cause_serious, 12, 9, 50, TAR_CHAR_ROOM|TAR_VIOLENT, POSITION_FIGHTING, LOKI, CLASS_ALL, 30, 7, LOKI, LOKI, LOKI, LOKI );
+ASSIGN_SPELL( SPELL_CHARM_MONSTER, 1, 0, "charm monster", cast_charm_monster, 18, 5, 50, TAR_CHAR_ROOM|TAR_VIOLENT, POSITION_STANDING, LOKI, CLASS_ALL, 8, 8, LOKI, LOKI, LOKI, LOKI );
+ASSIGN_SPELL( SPELL_CHARM_PERSON, 1, 0, "charm person", cast_charm_person, 12, 5, 50, TAR_CHAR_ROOM|TAR_SELF_NONO|TAR_FIGHT_VICT|TAR_VIOLENT, POSITION_STANDING, LOKI, CLASS_ALL, 12, 12, LOKI, LOKI, LOKI, LOKI );
+ASSIGN_SPELL( SPELL_CHILL_TOUCH, 1, 0, "chill touch", cast_chill_touch, 12, 15, 50, TAR_CHAR_ROOM|TAR_FIGHT_VICT|TAR_VIOLENT, POSITION_FIGHTING, LOKI, CLASS_ALL, 3, LOW_IMMORTAL, LOKI, LOKI, LOKI, LOKI );
+ASSIGN_SPELL( SPELL_CLONE, 1, 0, "clone", cast_clone, 48, 50, 100, TAR_CHAR_WORLD, POSITION_STANDING, LOKI, CLASS_ALL, 25, 48, LOKI, LOKI, LOKI, LOKI );
+ASSIGN_SPELL( SPELL_COLOUR_SPRAY, 1, 0, "colour spray", cast_colour_spray, 24, 15, 50, TAR_IGNORE|TAR_VIOLENT, POSITION_FIGHTING, LOKI, CLASS_ALL, 11, LOW_IMMORTAL, LOKI, LOKI, LOKI, LOKI );
+ASSIGN_SPELL( SPELL_CONE_OF_COLD, 1, 0, "cone of cold", cast_cone_of_cold, 24, 15, 50, TAR_IGNORE|TAR_VIOLENT, POSITION_FIGHTING, LOKI, CLASS_ALL, 11, LOW_IMMORTAL, LOKI, LOKI, LOKI, LOKI );
+ASSIGN_SPELL( SPELL_CONJURE_ELEMENTAL, 1, 0, "conjure elemental", cast_conjure_elemental, 24, 30, 100, TAR_IGNORE, POSITION_STANDING, LOKI, CLASS_ALL, 16, 14, LOKI, LOKI, LOKI, LOKI );
+ASSIGN_SPELL( SPELL_CONTROL_WEATHER, 1, 0, "control weather", cast_control_weather, 36, 25, 50, TAR_IGNORE, POSITION_STANDING, LOKI, CLASS_ALL, 10, 13, LOKI, LOKI, LOKI, LOKI );
+ASSIGN_SPELL( SPELL_CONT_LIGHT, 1, 0, "continual light", cast_cont_light, 24, 10, 50, TAR_IGNORE, POSITION_STANDING, LOKI, CLASS_ALL, 3, 4, LOKI, LOKI, LOKI, LOKI );
+ASSIGN_SPELL( SPELL_CREATE_FOOD, 1, 0, "create food", cast_create_food, 12, 5, 50, TAR_IGNORE, POSITION_STANDING, LOKI, CLASS_ALL, LOW_IMMORTAL, 3, LOKI, LOKI, 11, LOKI );
+ASSIGN_SPELL( SPELL_CREATE_WATER, 1, 0, "create water", cast_create_water, 12, 5, 50, TAR_OBJ_INV|TAR_OBJ_EQUIP, POSITION_STANDING, LOKI, CLASS_ALL, LOW_IMMORTAL, 2, LOKI, LOKI, 10, LOKI );
+ASSIGN_SPELL( SPELL_CURE_BLIND, 1, 0, "cure blindness", cast_cure_blind, 12, 5, 50, TAR_CHAR_ROOM, POSITION_STANDING, LOKI, CLASS_ALL, LOW_IMMORTAL, 4, LOKI, LOKI, LOKI, LOKI );
+ASSIGN_SPELL( SPELL_CURE_CRITIC, 1, 0, "cure critical", cast_cure_critic, 12, 11, 50, TAR_CHAR_ROOM, POSITION_FIGHTING, LOKI, CLASS_ALL, LOW_IMMORTAL, 9, LOKI, LOKI, LOKI, LOKI );
+ASSIGN_SPELL( SPELL_CURE_LIGHT, 1, 0, "cure light", cast_cure_light, 12, 5, 50, TAR_CHAR_ROOM, POSITION_FIGHTING, LOKI, CLASS_ALL, LOW_IMMORTAL, 1, LOKI, LOKI, 10, LOKI );
+ASSIGN_SPELL( SPELL_CURE_SERIOUS, 1, 0, "cure serious", cast_cure_serious, 12, 9, 50, TAR_CHAR_ROOM, POSITION_FIGHTING, LOKI, CLASS_ALL, 30, 7, LOKI, LOKI, 15, LOKI );
+ASSIGN_SPELL( SPELL_CURSE, 1, 0, "curse", cast_curse, 24, 20, 50, TAR_CHAR_ROOM|TAR_OBJ_ROOM|TAR_OBJ_INV|TAR_OBJ_EQUIP|TAR_FIGHT_VICT|TAR_VIOLENT, POSITION_STANDING, LOKI, CLASS_ALL, 12, 12, LOKI, LOKI, LOKI, LOKI );
+ASSIGN_SPELL( SPELL_DETECT_EVIL, 1, 0, "detect evil", cast_detect_evil, 12, 5, 50, TAR_CHAR_ROOM, POSITION_STANDING, LOKI, CLASS_ALL, LOW_IMMORTAL, 1, LOKI, LOKI, LOKI, LOKI );
+ASSIGN_SPELL( SPELL_DETECT_INVISIBLE, 1, 0, "detect invisible", cast_detect_invisibility, 12, 5, 50, TAR_CHAR_ROOM, POSITION_STANDING, LOKI, CLASS_ALL, 2, 5, LOKI, LOKI, LOKI, LOKI );
+ASSIGN_SPELL( SPELL_DETECT_MAGIC, 1, 0, "detect magic", cast_detect_magic, 12, 5, 50, TAR_CHAR_ROOM, POSITION_STANDING, LOKI, CLASS_ALL, 1, 3, LOKI, LOKI, LOKI, LOKI );
+ASSIGN_SPELL( SPELL_DETECT_POISON, 1, 0, "detect poison", cast_detect_poison, 12, 5, 50, TAR_CHAR_ROOM|TAR_OBJ_INV|TAR_OBJ_EQUIP, POSITION_STANDING, LOKI, CLASS_ALL, LOW_IMMORTAL, 2, LOKI, LOKI, LOKI, LOKI );
+ASSIGN_SPELL( SPELL_DISPEL_EVIL, 1, 0, "dispel evil", cast_dispel_evil, 36, 100, 100, TAR_CHAR_ROOM|TAR_FIGHT_VICT, POSITION_FIGHTING, LOKI, CLASS_ALL, LOW_IMMORTAL, 12, LOKI, LOKI, LOKI, LOKI );
+ASSIGN_SPELL( SPELL_DISPEL_GOOD, 1, 0, "dispel good", cast_dispel_good, 36, 100, 100, TAR_CHAR_ROOM|TAR_FIGHT_VICT, POSITION_FIGHTING, LOKI, CLASS_ALL, LOW_IMMORTAL, 12, LOKI, LOKI, LOKI, LOKI );
+ASSIGN_SPELL( SPELL_DISPEL_MAGIC, 1, 0, "dispel magic", cast_dispel_magic, 12, 15, 50, TAR_CHAR_ROOM|TAR_FIGHT_VICT, POSITION_FIGHTING, LOKI, CLASS_ALL, 6, 6, LOKI, LOKI, LOKI, LOKI );
+ASSIGN_SPELL( SPELL_DRAGON_BREATH, 0, 0, "DRAGON BREATH", cast_dragon_breath, 0, 100, 100, TAR_IGNORE|TAR_VIOLENT, POSITION_STANDING, LOKI, CLASS_ALL, LOKI, LOKI, LOKI, LOKI, LOKI, LOKI );
+#if 1
+ASSIGN_SPELL( SPELL_EARTHQUAKE, 1, 0, "earthquake", cast_earthquake, 24, 15, 50, TAR_IGNORE|TAR_VIOLENT, POSITION_FIGHTING, LOKI, CLASS_ALL, LOW_IMMORTAL, 8, LOKI, LOKI, LOKI, LOKI );
+#else
+ASSIGN_SPELL( SPELL_EARTHQUAKE, 1, 0, "earthquake", cast_new_earthquake, 24, 15, 50, TAR_IGNORE|TAR_VIOLENT, POSITION_FIGHTING, LOKI, CLASS_ALL, LOW_IMMORTAL, 8, LOKI, LOKI, LOKI, LOKI );
 #endif
-ASSIGN_SPELL( SPELL_EARTHQUAKE, 1, 0, "earthquake", cast_new_earthquake, 24, 15, 50, TAR_IGNORE|TAR_VIOLENT, POSITION_FIGHTING, LOW_IMMORTAL, 8, LOKI, LOKI, LOKI, LOKI );
-ASSIGN_SPELL( SPELL_ENCHANT_WEAPON, 1, 0, "enchant weapon", cast_enchant_weapon, 48, 100, 100, TAR_OBJ_INV|TAR_OBJ_EQUIP, POSITION_STANDING, 9, 25, LOKI, LOKI, LOKI, LOKI );
-ASSIGN_SPELL( SPELL_ENERGY_DRAIN, 1, 0, "energy drain", cast_energy_drain, 36, 35, 50, TAR_CHAR_ROOM|TAR_FIGHT_VICT|TAR_VIOLENT, POSITION_FIGHTING, 17, LOW_IMMORTAL, LOKI, LOKI, LOKI, LOKI );
-ASSIGN_SPELL( SPELL_FAERIE_FIRE, 1, 0, "faerie fire", cast_faerie_fire, 12, 10, 50, TAR_CHAR_ROOM|TAR_SELF_NONO, POSITION_STANDING, 5, 3, LOKI, LOKI, 11, LOKI );
-ASSIGN_SPELL( SPELL_FAERIE_FOG, 1, 0, "faerie fog", cast_faerie_fog, 24, 20, 50, TAR_IGNORE, POSITION_STANDING, 13, 10, LOKI, LOKI, 14, LOKI );
-ASSIGN_SPELL( SPELL_FEAR, 1, 0, "fear", cast_fear, 12, 15, 50, TAR_CHAR_ROOM|TAR_FIGHT_VICT|TAR_VIOLENT, POSITION_FIGHTING, 8, LOW_IMMORTAL, LOKI, LOKI, LOKI, LOKI );
-ASSIGN_SPELL( SPELL_FIREBALL, 1, 0, "fireball", cast_fireball, 36, 15, 50, TAR_IGNORE|TAR_VIOLENT, POSITION_FIGHTING, 15, LOW_IMMORTAL, LOKI, LOKI, LOKI, LOKI );
-ASSIGN_SPELL( SPELL_FIRESHIELD, 1, 0, "fireshield", cast_fireshield, 24, 40, 50, TAR_SELF_ONLY|TAR_CHAR_ROOM, POSITION_STANDING, 20, 19, LOKI, LOKI, LOKI, LOKI );
-ASSIGN_SPELL( SPELL_FLAMESTRIKE, 1, 0, "flamestrike", cast_flamestrike, 24, 15, 50, TAR_CHAR_ROOM|TAR_FIGHT_VICT|TAR_VIOLENT, POSITION_FIGHTING, LOW_IMMORTAL, 11, LOKI, LOKI, LOKI, LOKI );
-ASSIGN_SPELL( SPELL_FLY, 1, 0, "fly", cast_flying, 12, 15, 50, TAR_CHAR_ROOM, POSITION_FIGHTING, 3, 14, LOKI, LOKI, 18, LOKI );
-ASSIGN_SPELL( SPELL_FLY_GROUP, 1, 0, "group fly", cast_fly_group, 18, 30, 50, TAR_IGNORE, POSITION_FIGHTING, 8, 22, LOKI, LOKI, LOKI, LOKI );
-ASSIGN_SPELL( SPELL_HARM, 1, 0, "harm", cast_harm, 36, 50, 100, TAR_CHAR_ROOM|TAR_FIGHT_VICT|TAR_VIOLENT, POSITION_FIGHTING, LOW_IMMORTAL, 17, LOKI, LOKI, LOKI, LOKI );
-ASSIGN_SPELL( SPELL_HEAL, 1, 0, "heal", cast_heal, 18, 50, 100, TAR_CHAR_ROOM, POSITION_FIGHTING, LOW_IMMORTAL, 17, LOKI, LOKI, LOKI, LOKI );
-ASSIGN_SPELL( SPELL_ICE_STORM, 1, 0, "ice storm", cast_ice_storm, 12, 15, 50, TAR_IGNORE|TAR_VIOLENT, POSITION_FIGHTING, 7, LOW_IMMORTAL, LOKI, LOKI, LOKI, LOKI );
-ASSIGN_SPELL( SPELL_IDENTIFY, 0, 0, "IDENTIFY", cast_identify, 1, 100, 100, TAR_IGNORE, POSITION_STANDING, LOKI, LOKI, LOKI, LOKI, LOKI, LOKI );
-ASSIGN_SPELL( SPELL_INFRAVISION, 1, 0, "infravision", cast_infravision, 12, 7, 50, TAR_CHAR_ROOM, POSITION_STANDING, 5, LOW_IMMORTAL, LOKI, LOKI, LOKI, LOKI );
-ASSIGN_SPELL( SPELL_INVISIBLE, 1, 0, "invisibility", cast_invisibility, 12, 5, 50, TAR_CHAR_ROOM|TAR_OBJ_INV|TAR_OBJ_ROOM|TAR_OBJ_EQUIP, POSITION_STANDING, 4, LOW_IMMORTAL, LOKI, LOKI, LOKI, LOKI );
-ASSIGN_SPELL( SPELL_KNOCK, 1, 0, "knock", cast_knock, 12, 10, 50, TAR_IGNORE, POSITION_STANDING, 3, LOW_IMMORTAL, LOKI, LOKI, LOKI, LOKI );
-ASSIGN_SPELL( SPELL_KNOW_ALIGNMENT, 1, 0, "know alignment", cast_know_alignment, 12, 10, 50, TAR_CHAR_ROOM|TAR_FIGHT_VICT, POSITION_FIGHTING, 4, 3, LOKI, LOKI, LOKI, LOKI );
-ASSIGN_SPELL( SPELL_LIGHT, 1, 0, "create light", cast_light, 12, 5, 50, TAR_IGNORE, POSITION_STANDING, 1, 2, LOKI, LOKI, LOKI, LOKI );
-ASSIGN_SPELL( SPELL_LIGHTNING_BOLT, 1, 0, "lightning bolt", cast_lightning_bolt, 24, 15, 50, TAR_CHAR_ROOM|TAR_FIGHT_VICT|TAR_VIOLENT, POSITION_FIGHTING, 9, LOW_IMMORTAL, LOKI, LOKI, LOKI, LOKI );
-ASSIGN_SPELL( SPELL_LOCATE_OBJECT, 1, 0, "locate object", cast_locate_object, 12, 20, 50, TAR_NAME, POSITION_STANDING, LOW_IMMORTAL, 4, LOKI, LOKI, LOKI, LOKI );
-ASSIGN_SPELL( SPELL_MAGIC_MISSILE, 1, 0, "magic missile", cast_magic_missile, 12, 10, 50, TAR_CHAR_ROOM|TAR_FIGHT_VICT|TAR_VIOLENT, POSITION_FIGHTING, 1, LOW_IMMORTAL, LOKI, LOKI, LOKI, LOKI );
-ASSIGN_SPELL( SPELL_METEOR_SWARM, 1, 0, "meteor swarm", cast_meteor_swarm, 24, 50, 50, TAR_IGNORE|TAR_VIOLENT, POSITION_FIGHTING, 20, LOW_IMMORTAL, LOKI, LOKI, LOKI, LOKI );
-ASSIGN_SPELL( SPELL_MINOR_CREATE, 1, 0, "minor creation", cast_minor_creation, 24, 30, 50, TAR_IGNORE, POSITION_STANDING, 8, 14, LOKI, LOKI, LOKI, LOKI );
-ASSIGN_SPELL( SPELL_MON_SUM_1, 1, 0, "monsum one", cast_mon_sum1, 24, 10, 50, TAR_IGNORE, POSITION_FIGHTING, 5, LOW_IMMORTAL, LOKI, LOKI, LOKI, LOKI );
-ASSIGN_SPELL( SPELL_MON_SUM_2, 1, 0, "monsum two", cast_mon_sum2, 24, 12, 50, TAR_IGNORE, POSITION_FIGHTING, 7, LOW_IMMORTAL, LOKI, LOKI, LOKI, LOKI );
-ASSIGN_SPELL( SPELL_MON_SUM_3, 1, 0, "monsum three", cast_mon_sum3, 24, 15, 50, TAR_IGNORE, POSITION_FIGHTING, 9, LOW_IMMORTAL, LOKI, LOKI, LOKI, LOKI );
-ASSIGN_SPELL( SPELL_MON_SUM_4, 1, 0, "monsum four", cast_mon_sum4, 24, 17, 50, TAR_IGNORE, POSITION_FIGHTING, 11, LOW_IMMORTAL, LOKI, LOKI, LOKI, LOKI );
-ASSIGN_SPELL( SPELL_MON_SUM_5, 1, 0, "monsum five", cast_mon_sum5, 24, 20, 50, TAR_IGNORE, POSITION_FIGHTING, 13, LOW_IMMORTAL, LOKI, LOKI, LOKI, LOKI );
-ASSIGN_SPELL( SPELL_MON_SUM_6, 1, 0, "monsum six", cast_mon_sum6, 24, 22, 50, TAR_IGNORE, POSITION_FIGHTING, 15, LOW_IMMORTAL, LOKI, LOKI, LOKI, LOKI );
-ASSIGN_SPELL( SPELL_MON_SUM_7, 1, 0, "monsum seven", cast_mon_sum7, 24, 25, 50, TAR_IGNORE, POSITION_STANDING, 17, LOW_IMMORTAL, LOKI, LOKI, LOKI, LOKI );
-ASSIGN_SPELL( SPELL_PARALYSIS, 1, 0, "paralyze", cast_paralyze, 36, 40, 50, TAR_CHAR_ROOM|TAR_FIGHT_VICT|TAR_VIOLENT, POSITION_FIGHTING, 15, 15, LOKI, LOKI, LOKI, LOKI );
-ASSIGN_SPELL( SPELL_POISON, 1, 0, "poison", cast_poison, 24, 10, 50, TAR_CHAR_ROOM|TAR_SELF_NONO|TAR_OBJ_INV|TAR_OBJ_EQUIP|TAR_OBJ_ROOM|TAR_FIGHT_VICT|TAR_VIOLENT, POSITION_FIGHTING, LOW_IMMORTAL, 8, LOKI, LOKI, LOKI, LOKI );
-ASSIGN_SPELL( SPELL_POLY_SELF, 1, 0, "polymorph self", cast_poly_self, 12, 30, 50, TAR_IGNORE, POSITION_FIGHTING, 8, LOW_IMMORTAL, LOKI, LOKI, LOKI, LOKI );
-ASSIGN_SPELL( SPELL_PROTECT_FROM_EVIL, 1, 0, "protection from evil", cast_protection_from_evil, 12, 5, 50, TAR_CHAR_ROOM, POSITION_STANDING, LOW_IMMORTAL, 6, LOKI, LOKI, LOKI, LOKI );
-ASSIGN_SPELL( SPELL_REFRESH, 1, 0, "refresh", cast_refresh, 12, 5, 50, TAR_CHAR_ROOM, POSITION_STANDING, 3, 2, LOKI, LOKI, 11, LOKI );
-ASSIGN_SPELL( SPELL_REMOVE_CURSE, 1, 0, "remove curse", cast_remove_curse, 12, 5, 50, TAR_CHAR_ROOM|TAR_OBJ_INV|TAR_OBJ_EQUIP|TAR_OBJ_ROOM, POSITION_STANDING, LOW_IMMORTAL, 7, LOKI, LOKI, LOKI, LOKI );
-ASSIGN_SPELL( SPELL_REMOVE_PARALYSIS, 1, 0, "remove paralysis", cast_remove_paralysis, 12, 10, 50, TAR_CHAR_ROOM|TAR_FIGHT_VICT, POSITION_FIGHTING, LOW_IMMORTAL, 4, LOKI, LOKI, LOKI, LOKI );
-ASSIGN_SPELL( SPELL_REMOVE_POISON, 1, 0, "remove poison", cast_remove_poison, 12, 5, 50, TAR_CHAR_ROOM|TAR_OBJ_INV|TAR_OBJ_ROOM, POSITION_STANDING, LOW_IMMORTAL, 5, LOKI, LOKI, LOKI, LOKI );
-ASSIGN_SPELL( SPELL_SANCTUARY, 1, 0, "sanctuary", cast_sanctuary, 36, 50, 50, TAR_CHAR_ROOM, POSITION_STANDING, LOW_IMMORTAL, 19, LOKI, LOKI, LOKI, LOKI );
-ASSIGN_SPELL( SPELL_SECOND_WIND, 1, 0, "second wind", cast_second_wind, 12, 5, 50, TAR_CHAR_ROOM, POSITION_STANDING, 12, 6, LOKI, LOKI, 16, LOKI );
-ASSIGN_SPELL( SPELL_SENSE_LIFE, 1, 0, "sense life", cast_sense_life, 12, 5, 50, TAR_CHAR_ROOM, POSITION_STANDING, LOW_IMMORTAL, 7, LOKI, LOKI, LOKI, LOKI );
-ASSIGN_SPELL( SPELL_SHELTER, 1, 0, "shelter", cast_shelter, 12, 100, 100, TAR_IGNORE, POSITION_STANDING, 10, 10, LOKI, LOKI, LOKI, LOKI );
-ASSIGN_SPELL( SPELL_SHIELD, 1, 0, "shield", cast_shield, 24, 15, 50, TAR_CHAR_ROOM, POSITION_FIGHTING, 1, 15, LOKI, LOKI, LOKI, LOKI );
-ASSIGN_SPELL( SPELL_SHOCKING_GRASP, 1, 0, "shocking grasp", cast_shocking_grasp, 12, 15, 50, TAR_CHAR_ROOM|TAR_FIGHT_VICT|TAR_VIOLENT, POSITION_FIGHTING, 1, LOW_IMMORTAL, LOKI, LOKI, LOKI, LOKI );
-ASSIGN_SPELL( SPELL_SLEEP, 1, 0, "sleep", cast_sleep, 24, 15, 50, TAR_CHAR_ROOM|TAR_FIGHT_VICT, POSITION_STANDING, 3, LOW_IMMORTAL, LOKI, LOKI, LOKI, LOKI );
-ASSIGN_SPELL( SPELL_STONE_SKIN, 1, 0, "stoneskin", cast_stone_skin, 24, 20, 50, TAR_CHAR_ROOM, POSITION_STANDING, 16, 32, LOKI, LOKI, 14, LOKI );
-ASSIGN_SPELL( SPELL_STRENGTH, 1, 0, "strength", cast_strength, 12, 10, 50, TAR_CHAR_ROOM, POSITION_STANDING, 4, LOW_IMMORTAL, LOKI, LOKI, LOKI, LOKI );
-ASSIGN_SPELL( SPELL_SUCCOR, 1, 0, "succor", cast_succor, 24, 15, 50, TAR_IGNORE, POSITION_STANDING, 21, 18, LOKI, LOKI, LOKI, LOKI );
-ASSIGN_SPELL( SPELL_SUMMON, 1, 0, "summon", cast_summon, 36, 20, 50, TAR_CHAR_WORLD, POSITION_STANDING, 18, 16, LOKI, LOKI, LOKI, LOKI );
-ASSIGN_SPELL( SPELL_TELEPORT, 1, 0, "teleport", cast_teleport, 12, 33, 50, TAR_CHAR_ROOM|TAR_FIGHT_VICT, POSITION_FIGHTING, 8, LOW_IMMORTAL, LOKI, LOKI, LOKI, LOKI );
-ASSIGN_SPELL( SPELL_TRUE_SIGHT, 1, 0, "true sight", cast_true_seeing, 24, 20, 50, TAR_CHAR_ROOM, POSITION_STANDING, LOW_IMMORTAL, 12, LOKI, LOKI, LOKI, LOKI );
-ASSIGN_SPELL( SPELL_TURN, 1, 0, "turn", cast_turn, 12, 5, 50, TAR_CHAR_ROOM, POSITION_STANDING, LOW_IMMORTAL, 1, LOKI, LOKI, LOKI, LOKI );
-ASSIGN_SPELL( SPELL_VENTRILOQUATE, 1, 0, "ventriloquate", cast_ventriloquate, 12, 5, 50, TAR_CHAR_ROOM|TAR_OBJ_ROOM|TAR_SELF_NONO, POSITION_STANDING, 1, LOW_IMMORTAL, LOKI, LOKI, LOKI, LOKI );
-ASSIGN_SPELL( SPELL_WATER_BREATH, 1, 0, "water breath", cast_water_breath, 12, 15, 50, TAR_CHAR_ROOM, POSITION_FIGHTING, 4, LOW_IMMORTAL, LOKI, LOKI, LOKI, LOKI );
-ASSIGN_SPELL( SPELL_WEAKNESS, 1, 0, "weakness", cast_weakness, 12, 10, 50, TAR_CHAR_ROOM|TAR_FIGHT_VICT|TAR_VIOLENT, POSITION_FIGHTING, 4, LOW_IMMORTAL, LOKI, LOKI, LOKI, LOKI );
-ASSIGN_SPELL( SPELL_WORD_OF_RECALL, 1, 0, "word of recall", cast_word_of_recall, 12, 5, 50, TAR_CHAR_ROOM|TAR_SELF_ONLY, POSITION_FIGHTING, LOW_IMMORTAL, 10, LOKI, LOKI, LOKI, LOKI );
+ASSIGN_SPELL( SPELL_ENCHANT_WEAPON, 1, 0, "enchant weapon", cast_enchant_weapon, 48, 100, 100, TAR_OBJ_INV|TAR_OBJ_EQUIP, POSITION_STANDING, LOKI, CLASS_ALL, 9, 25, LOKI, LOKI, LOKI, LOKI );
+ASSIGN_SPELL( SPELL_ENERGY_DRAIN, 1, 0, "energy drain", cast_energy_drain, 36, 35, 50, TAR_CHAR_ROOM|TAR_FIGHT_VICT|TAR_VIOLENT, POSITION_FIGHTING, LOKI, CLASS_ALL, 17, LOW_IMMORTAL, LOKI, LOKI, LOKI, LOKI );
+ASSIGN_SPELL( SPELL_FAERIE_FIRE, 1, 0, "faerie fire", cast_faerie_fire, 12, 10, 50, TAR_CHAR_ROOM|TAR_SELF_NONO, POSITION_STANDING, LOKI, CLASS_ALL, 5, 3, LOKI, LOKI, 11, LOKI );
+ASSIGN_SPELL( SPELL_FAERIE_FOG, 1, 0, "faerie fog", cast_faerie_fog, 24, 20, 50, TAR_IGNORE, POSITION_STANDING, LOKI, CLASS_ALL, 13, 10, LOKI, LOKI, 14, LOKI );
+ASSIGN_SPELL( SPELL_FEAR, 1, 0, "fear", cast_fear, 12, 15, 50, TAR_CHAR_ROOM|TAR_FIGHT_VICT|TAR_VIOLENT, POSITION_FIGHTING, LOKI, CLASS_ALL, 8, LOW_IMMORTAL, LOKI, LOKI, LOKI, LOKI );
+ASSIGN_SPELL( SPELL_FIREBALL, 1, 0, "fireball", cast_fireball, 36, 15, 50, TAR_IGNORE|TAR_VIOLENT, POSITION_FIGHTING, LOKI, CLASS_ALL, 15, LOW_IMMORTAL, LOKI, LOKI, LOKI, LOKI );
+ASSIGN_SPELL( SPELL_FIRESHIELD, 1, 0, "fireshield", cast_fireshield, 24, 40, 50, TAR_SELF_ONLY|TAR_CHAR_ROOM, POSITION_STANDING, LOKI, CLASS_ALL, 20, 19, LOKI, LOKI, LOKI, LOKI );
+ASSIGN_SPELL( SPELL_FLAMESTRIKE, 1, 0, "flamestrike", cast_flamestrike, 24, 15, 50, TAR_CHAR_ROOM|TAR_FIGHT_VICT|TAR_VIOLENT, POSITION_FIGHTING, LOKI, CLASS_ALL, LOW_IMMORTAL, 11, LOKI, LOKI, LOKI, LOKI );
+ASSIGN_SPELL( SPELL_FLY, 1, 0, "fly", cast_flying, 12, 15, 50, TAR_CHAR_ROOM, POSITION_FIGHTING, LOKI, CLASS_ALL, 3, 14, LOKI, LOKI, 18, LOKI );
+ASSIGN_SPELL( SPELL_FLY_GROUP, 1, 0, "group fly", cast_fly_group, 18, 30, 50, TAR_IGNORE, POSITION_FIGHTING, LOKI, CLASS_ALL, 8, 22, LOKI, LOKI, LOKI, LOKI );
+ASSIGN_SPELL( SPELL_GOODBERRY, 1, 0, "goodberry", cast_goodberry, 12, 40, 80, TAR_IGNORE, POSITION_STANDING, LOKI, CLASS_ALL, LOKI,40, LOKI, LOKI, 25, LOKI ); 
+ASSIGN_SPELL( SPELL_HARM, 1, 0, "harm", cast_harm, 36, 50, 100, TAR_CHAR_ROOM|TAR_FIGHT_VICT|TAR_VIOLENT, POSITION_FIGHTING, LOKI, CLASS_ALL, LOW_IMMORTAL, 17, LOKI, LOKI, LOKI, LOKI );
+ASSIGN_SPELL( SPELL_HEAL, 1, 0, "heal", cast_heal, 18, 50, 100, TAR_CHAR_ROOM, POSITION_FIGHTING, LOKI, CLASS_ALL, LOW_IMMORTAL, 17, LOKI, LOKI, LOKI, LOKI );
+ASSIGN_SPELL( SPELL_ICE_STORM, 1, 0, "ice storm", cast_ice_storm, 12, 15, 50, TAR_IGNORE|TAR_VIOLENT, POSITION_FIGHTING, LOKI, CLASS_ALL, 7, LOW_IMMORTAL, LOKI, LOKI, LOKI, LOKI );
+ASSIGN_SPELL( SPELL_IDENTIFY, 0, 0, "IDENTIFY", cast_identify, 1, 100, 100, TAR_IGNORE, POSITION_STANDING, LOKI, CLASS_ALL, LOKI, LOKI, LOKI, LOKI, LOKI, LOKI );
+ASSIGN_SPELL( SPELL_INFRAVISION, 1, 0, "infravision", cast_infravision, 12, 7, 50, TAR_CHAR_ROOM, POSITION_STANDING, LOKI, CLASS_ALL, 5, LOW_IMMORTAL, LOKI, LOKI, LOKI, LOKI );
+ASSIGN_SPELL( SPELL_INVISIBLE, 1, 0, "invisibility", cast_invisibility, 12, 5, 50, TAR_CHAR_ROOM|TAR_OBJ_INV|TAR_OBJ_ROOM|TAR_OBJ_EQUIP, POSITION_STANDING, LOKI, CLASS_ALL, 4, LOW_IMMORTAL, LOKI, LOKI, LOKI, LOKI );
+ASSIGN_SPELL( SPELL_KNOCK, 1, 0, "knock", cast_knock, 12, 10, 50, TAR_IGNORE, POSITION_STANDING, LOKI, CLASS_ALL, 3, LOW_IMMORTAL, LOKI, LOKI, LOKI, LOKI );
+ASSIGN_SPELL( SPELL_KNOW_ALIGNMENT, 1, 0, "know alignment", cast_know_alignment, 12, 10, 50, TAR_CHAR_ROOM|TAR_FIGHT_VICT, POSITION_FIGHTING, LOKI, CLASS_ALL, 4, 3, LOKI, LOKI, LOKI, LOKI );
+ASSIGN_SPELL( SPELL_LIGHT, 1, 0, "create light", cast_light, 12, 5, 50, TAR_IGNORE, POSITION_STANDING, LOKI, CLASS_ALL, 1, 2, LOKI, LOKI, LOKI, LOKI );
+ASSIGN_SPELL( SPELL_LIGHTNING_BOLT, 1, 0, "lightning bolt", cast_lightning_bolt, 24, 15, 50, TAR_CHAR_ROOM|TAR_FIGHT_VICT|TAR_VIOLENT, POSITION_FIGHTING, LOKI, CLASS_ALL, 9, LOW_IMMORTAL, LOKI, LOKI, LOKI, LOKI );
+ASSIGN_SPELL( SPELL_LOCATE_OBJECT, 1, 0, "locate object", cast_locate_object, 12, 20, 50, TAR_NAME, POSITION_STANDING, LOKI, CLASS_ALL, LOW_IMMORTAL, 4, LOKI, LOKI, LOKI, LOKI );
+ASSIGN_SPELL( SPELL_MAGIC_MISSILE, 1, 0, "magic missile", cast_magic_missile, 12, 10, 50, TAR_CHAR_ROOM|TAR_FIGHT_VICT|TAR_VIOLENT, POSITION_FIGHTING, LOKI, CLASS_ALL, 1, LOW_IMMORTAL, LOKI, LOKI, LOKI, LOKI );
+ASSIGN_SPELL( SPELL_METEOR_SWARM, 1, 0, "meteor swarm", cast_meteor_swarm, 24, 50, 50, TAR_IGNORE|TAR_VIOLENT, POSITION_FIGHTING, LOKI, CLASS_ALL, 20, LOW_IMMORTAL, LOKI, LOKI, LOKI, LOKI );
+ASSIGN_SPELL( SPELL_MINOR_CREATE, 1, 0, "minor creation", cast_minor_creation, 24, 30, 50, TAR_IGNORE, POSITION_STANDING, LOKI, CLASS_ALL, 8, 14, LOKI, LOKI, LOKI, LOKI );
+ASSIGN_SPELL( SPELL_MON_SUM_1, 1, 0, "monsum one", cast_mon_sum1, 24, 10, 50, TAR_IGNORE, POSITION_FIGHTING, LOKI, CLASS_ALL, 5, LOW_IMMORTAL, LOKI, LOKI, LOKI, LOKI );
+ASSIGN_SPELL( SPELL_MON_SUM_2, 1, 0, "monsum two", cast_mon_sum2, 24, 12, 50, TAR_IGNORE, POSITION_FIGHTING, LOKI, CLASS_ALL, 7, LOW_IMMORTAL, LOKI, LOKI, LOKI, LOKI );
+ASSIGN_SPELL( SPELL_MON_SUM_3, 1, 0, "monsum three", cast_mon_sum3, 24, 15, 50, TAR_IGNORE, POSITION_FIGHTING, LOKI, CLASS_ALL, 9, LOW_IMMORTAL, LOKI, LOKI, LOKI, LOKI );
+ASSIGN_SPELL( SPELL_MON_SUM_4, 1, 0, "monsum four", cast_mon_sum4, 24, 17, 50, TAR_IGNORE, POSITION_FIGHTING, LOKI, CLASS_ALL, 11, LOW_IMMORTAL, LOKI, LOKI, LOKI, LOKI );
+ASSIGN_SPELL( SPELL_MON_SUM_5, 1, 0, "monsum five", cast_mon_sum5, 24, 20, 50, TAR_IGNORE, POSITION_FIGHTING, LOKI, CLASS_ALL, 13, LOW_IMMORTAL, LOKI, LOKI, LOKI, LOKI );
+ASSIGN_SPELL( SPELL_MON_SUM_6, 1, 0, "monsum six", cast_mon_sum6, 24, 22, 50, TAR_IGNORE, POSITION_FIGHTING, LOKI, CLASS_ALL, 15, LOW_IMMORTAL, LOKI, LOKI, LOKI, LOKI );
+ASSIGN_SPELL( SPELL_MON_SUM_7, 1, 0, "monsum seven", cast_mon_sum7, 24, 25, 50, TAR_IGNORE, POSITION_STANDING, LOKI, CLASS_ALL, 17, LOW_IMMORTAL, LOKI, LOKI, LOKI, LOKI );
+ASSIGN_SPELL( SPELL_PARALYSIS, 1, 0, "paralyze", cast_paralyze, 36, 40, 50, TAR_CHAR_ROOM|TAR_FIGHT_VICT|TAR_VIOLENT, POSITION_FIGHTING, LOKI, CLASS_ALL, 15, 15, LOKI, LOKI, LOKI, LOKI );
+ASSIGN_SPELL( SPELL_POISON, 1, 0, "poison", cast_poison, 24, 10, 50, TAR_CHAR_ROOM|TAR_SELF_NONO|TAR_OBJ_INV|TAR_OBJ_EQUIP|TAR_OBJ_ROOM|TAR_FIGHT_VICT|TAR_VIOLENT, POSITION_FIGHTING, LOKI, CLASS_ALL, LOW_IMMORTAL, 8, LOKI, LOKI, LOKI, LOKI );
+ASSIGN_SPELL( SPELL_POLY_SELF, 1, 0, "polymorph self", cast_poly_self, 12, 30, 50, TAR_IGNORE, POSITION_FIGHTING, LOKI, CLASS_ALL, 8, LOW_IMMORTAL, LOKI, LOKI, LOKI, LOKI );
+ASSIGN_SPELL( SPELL_PROTECT_FROM_EVIL, 1, 0, "protection from evil", cast_protection_from_evil, 12, 5, 50, TAR_CHAR_ROOM, POSITION_STANDING, LOKI, CLASS_ALL, LOW_IMMORTAL, 6, LOKI, LOKI, LOKI, LOKI );
+ASSIGN_SPELL( SPELL_REFRESH, 1, 0, "refresh", cast_refresh, 12, 5, 50, TAR_CHAR_ROOM, POSITION_STANDING, LOKI, CLASS_ALL, 3, 2, LOKI, LOKI, 11, LOKI );
+ASSIGN_SPELL( SPELL_REMOVE_CURSE, 1, 0, "remove curse", cast_remove_curse, 12, 5, 50, TAR_CHAR_ROOM|TAR_OBJ_INV|TAR_OBJ_EQUIP|TAR_OBJ_ROOM, POSITION_STANDING, LOKI, CLASS_ALL, LOW_IMMORTAL, 7, LOKI, LOKI, LOKI, LOKI );
+ASSIGN_SPELL( SPELL_REMOVE_PARALYSIS, 1, 0, "remove paralysis", cast_remove_paralysis, 12, 10, 50, TAR_CHAR_ROOM|TAR_FIGHT_VICT, POSITION_FIGHTING, LOKI, CLASS_ALL, LOW_IMMORTAL, 4, LOKI, LOKI, LOKI, LOKI );
+ASSIGN_SPELL( SPELL_REMOVE_POISON, 1, 0, "remove poison", cast_remove_poison, 12, 5, 50, TAR_CHAR_ROOM|TAR_OBJ_INV|TAR_OBJ_ROOM, POSITION_STANDING, LOKI, CLASS_ALL, LOW_IMMORTAL, 5, LOKI, LOKI, LOKI, LOKI );
+ASSIGN_SPELL( SPELL_SANCTUARY, 1, 0, "sanctuary", cast_sanctuary, 36, 50, 50, TAR_CHAR_ROOM, POSITION_STANDING, LOKI, CLASS_ALL, LOW_IMMORTAL, 19, LOKI, LOKI, LOKI, LOKI );
+ASSIGN_SPELL( SPELL_SECOND_WIND, 1, 0, "second wind", cast_second_wind, 12, 5, 50, TAR_CHAR_ROOM, POSITION_STANDING, LOKI, CLASS_ALL, 12, 6, LOKI, LOKI, 16, LOKI );
+ASSIGN_SPELL( SPELL_SENSE_LIFE, 1, 0, "sense life", cast_sense_life, 12, 5, 50, TAR_CHAR_ROOM, POSITION_STANDING, LOKI, CLASS_ALL, LOW_IMMORTAL, 7, LOKI, LOKI, LOKI, LOKI );
+ASSIGN_SPELL( SPELL_SHELTER, 1, 0, "shelter", cast_shelter, 12, 100, 100, TAR_IGNORE, POSITION_STANDING, LOKI, CLASS_ALL, 10, 10, LOKI, LOKI, LOKI, LOKI );
+ASSIGN_SPELL( SPELL_SHIELD, 1, 0, "shield", cast_shield, 24, 15, 50, TAR_CHAR_ROOM, POSITION_FIGHTING, LOKI, CLASS_ALL, 1, 15, LOKI, LOKI, LOKI, LOKI );
+ASSIGN_SPELL( SPELL_SHOCKING_GRASP, 1, 0, "shocking grasp", cast_shocking_grasp, 12, 15, 50, TAR_CHAR_ROOM|TAR_FIGHT_VICT|TAR_VIOLENT, POSITION_FIGHTING, LOKI, CLASS_ALL, 1, LOW_IMMORTAL, LOKI, LOKI, LOKI, LOKI );
+ASSIGN_SPELL( SPELL_SLEEP, 1, 0, "sleep", cast_sleep, 24, 15, 50, TAR_CHAR_ROOM|TAR_FIGHT_VICT, POSITION_STANDING, LOKI, CLASS_ALL, 3, LOW_IMMORTAL, LOKI, LOKI, LOKI, LOKI );
+ASSIGN_SPELL( SPELL_STONE_SKIN, 1, 0, "stoneskin", cast_stone_skin, 24, 20, 50, TAR_CHAR_ROOM, POSITION_STANDING, LOKI, CLASS_ALL, 16, 32, LOKI, LOKI, 14, LOKI );
+ASSIGN_SPELL( SPELL_STRENGTH, 1, 0, "strength", cast_strength, 12, 10, 50, TAR_CHAR_ROOM, POSITION_STANDING, LOKI, CLASS_ALL, 4, LOW_IMMORTAL, LOKI, LOKI, LOKI, LOKI );
+ASSIGN_SPELL( SPELL_SUCCOR, 1, 0, "succor", cast_succor, 24, 15, 50, TAR_IGNORE, POSITION_STANDING, LOKI, CLASS_ALL, 21, 18, LOKI, LOKI, LOKI, LOKI );
+ASSIGN_SPELL( SPELL_SUMMON, 1, 0, "summon", cast_summon, 36, 20, 50, TAR_CHAR_WORLD, POSITION_STANDING, LOKI, CLASS_ALL, 18, 16, LOKI, LOKI, LOKI, LOKI );
+ASSIGN_SPELL( SPELL_TELEPORT, 1, 0, "teleport", cast_teleport, 12, 33, 50, TAR_CHAR_ROOM|TAR_FIGHT_VICT, POSITION_FIGHTING, LOKI, CLASS_ALL, 8, LOW_IMMORTAL, LOKI, LOKI, LOKI, LOKI );
+ASSIGN_SPELL( SPELL_TRUE_SIGHT, 1, 0, "true sight", cast_true_seeing, 24, 20, 50, TAR_CHAR_ROOM, POSITION_STANDING, LOKI, CLASS_ALL, LOW_IMMORTAL, 12, LOKI, LOKI, LOKI, LOKI );
+ASSIGN_SPELL( SPELL_TURN, 1, 0, "turn", cast_turn, 12, 5, 50, TAR_CHAR_ROOM, POSITION_STANDING, LOKI, CLASS_ALL, LOW_IMMORTAL, 1, LOKI, LOKI, LOKI, LOKI );
+ASSIGN_SPELL( SPELL_VENTRILOQUATE, 1, 0, "ventriloquate", cast_ventriloquate, 12, 5, 50, TAR_CHAR_ROOM|TAR_OBJ_ROOM|TAR_SELF_NONO, POSITION_STANDING, LOKI, CLASS_ALL, 1, LOW_IMMORTAL, LOKI, LOKI, LOKI, LOKI );
+ASSIGN_SPELL( SPELL_VISIONS, 1, 0, "visions", cast_visions, 12, 25, 40, TAR_CHAR_WORLD, POSITION_STANDING, LOKI, CLASS_ALL, LOKI, 15, LOKI, LOKI, 30, LOKI );
+ASSIGN_SPELL( SPELL_WATER_BREATH, 1, 0, "water breath", cast_water_breath, 12, 15, 50, TAR_CHAR_ROOM, POSITION_FIGHTING, LOKI, CLASS_ALL, 4, LOW_IMMORTAL, LOKI, LOKI, LOKI, LOKI );
+ASSIGN_SPELL( SPELL_WEAKNESS, 1, 0, "weakness", cast_weakness, 12, 10, 50, TAR_CHAR_ROOM|TAR_FIGHT_VICT|TAR_VIOLENT, POSITION_FIGHTING, LOKI, CLASS_ALL, 4, LOW_IMMORTAL, LOKI, LOKI, LOKI, LOKI );
+ASSIGN_SPELL( SPELL_WORD_OF_RECALL, 1, 0, "word of recall", cast_word_of_recall, 12, 5, 50, TAR_CHAR_ROOM|TAR_SELF_ONLY, POSITION_FIGHTING, LOKI, CLASS_ALL, LOW_IMMORTAL, 10, LOKI, LOKI, LOKI, LOKI );
 }
 
 int splat(struct char_data *ch, struct room_data *rp, int height) {
@@ -1221,7 +998,6 @@ int check_falling(struct char_data *ch)
 {
   struct room_data *rp, *targ;
   int done, count, saved;
-  char buf[256];
 
   if (IS_AFFECTED(ch, AFF_FLYING))
     return (FALSE);
@@ -1268,6 +1044,7 @@ int check_falling(struct char_data *ch)
     do_look(ch, "", 0);
     return FALSE;
   }
+  return TRUE;
 }
 
 int check_drowning(struct char_data *ch)

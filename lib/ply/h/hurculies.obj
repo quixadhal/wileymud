@@ -1,0 +1,235 @@
+#RENT
+Owner              HURCULIES~
+Gold               1970
+TotalCost          1707
+LastUpdate         838246210
+MinimumStay        0
+End
+#EQUIPMENT
+End
+#CARRIED
+#ITEM
+ObjId              8
+ContainedBy        -1
+Name               engraved breast piece armor~
+Description
+A beautiful breast peice with golden engraving is here.~
+ShortDescr
+a engraved breast piece~
+ActionDescr
+(null)~
+VNum               5038
+EquippedAt         0
+Values             2 4 0 0
+ExtraFlags         90112
+Weight             35
+Timer              0
+BitVector          0
+Type               9
+WearFlags          9
+Cost               2500
+CostPerDay         1200
+Affect             17 -3
+Affect             0 0
+End
+#ITEM
+ObjId              8
+ContainedBy        -1
+Name               chain-link chainlink chain link hood~
+Description
+A chain-link hood is here.~
+ShortDescr
+a chain-link hood~
+ActionDescr
+(null)~
+VNum               5042
+EquippedAt         0
+Values             3 3 0 0
+ExtraFlags         8192
+Weight             14
+Timer              0
+BitVector          0
+Type               9
+WearFlags          17
+Cost               550
+CostPerDay         100
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              8
+ContainedBy        -1
+Name               armoured leggings~
+Description
+A pair of armoured leggings are here.~
+ShortDescr
+some armoured leggings~
+ActionDescr
+(null)~
+VNum               5039
+EquippedAt         0
+Values             3 3 0 0
+ExtraFlags         8192
+Weight             17
+Timer              0
+BitVector          0
+Type               9
+WearFlags          33
+Cost               600
+CostPerDay         100
+Affect             0 0
+Affect             0 0
+ExtraDescr         armoured leggings~
+  The leggings are made from links of chain and appear very strong.
+#5040
+armour plated gauntlets~
+End
+#ITEM
+ObjId              8
+ContainedBy        -1
+Name               plated boots~
+Description
+A pair of plated boots are here.~
+ShortDescr
+a pair of plated boots~
+ActionDescr
+(null)~
+VNum               5041
+EquippedAt         0
+Values             4 4 0 0
+ExtraFlags         90112
+Weight             16
+Timer              0
+BitVector          0
+Type               9
+WearFlags          65
+Cost               475
+CostPerDay         100
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              8
+ContainedBy        -1
+Name               armour plated gauntlets~
+Description
+A pair of armour plated gauntlets are here.~
+ShortDescr
+a pair of armour plated gauntlets~
+ActionDescr
+(null)~
+VNum               5040
+EquippedAt         0
+Values             4 4 0 0
+ExtraFlags         90112
+Weight             15
+Timer              0
+BitVector          0
+Type               9
+WearFlags          129
+Cost               450
+CostPerDay         100
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              8
+ContainedBy        -1
+Name               wooden shield~
+Description
+A wooden shield lies here.~
+ShortDescr
+a wooden shield~
+ActionDescr
+(null)~
+VNum               5045
+EquippedAt         0
+Values             4 5 0 0
+ExtraFlags         24576
+Weight             2
+Timer              0
+BitVector          0
+Type               9
+WearFlags          513
+Cost               50
+CostPerDay         5
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              8
+ContainedBy        -1
+Name               silver shortsword short sword~
+Description
+A shortsword made of silver lies here.~
+ShortDescr
+a silver shortsword~
+ActionDescr
+(null)~
+VNum               5053
+EquippedAt         0
+Values             0 1 6 1
+ExtraFlags         13376
+Weight             5
+Timer              0
+BitVector          0
+Type               5
+WearFlags          8193
+Cost               750
+CostPerDay         100
+Affect             18 1
+Affect             19 1
+ExtraDescr         silver shortsword short sword~
+The blade seems to be coated with silver.
+~
+End
+#ITEM
+ObjId              8
+ContainedBy        -1
+Name               fray leaf pie~
+Description
+A delicious fray leaf pie lies here.~
+ShortDescr
+a fray leaf pie~
+ActionDescr
+(null)~
+VNum               5049
+EquippedAt         0
+Values             7 0 0 0
+ExtraFlags         0
+Weight             1
+Timer              0
+BitVector          0
+Type               19
+WearFlags          16385
+Cost               15
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              8
+ContainedBy        -1
+Name               fray leaf pie~
+Description
+A delicious fray leaf pie lies here.~
+ShortDescr
+a fray leaf pie~
+ActionDescr
+(null)~
+VNum               5049
+EquippedAt         0
+Values             7 0 0 0
+ExtraFlags         0
+Weight             1
+Timer              0
+BitVector          0
+Type               19
+WearFlags          16385
+Cost               15
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+End
+#END_RENT

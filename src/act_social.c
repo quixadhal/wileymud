@@ -10,17 +10,17 @@
 #include <sys/types.h>
 #include <string.h>
 
-#include "global.h"
-#include "bug.h"
-#include "utils.h"
-#include "comm.h"
-#include "interpreter.h"
-#include "handler.h"
-#include "db.h"
-#include "spells.h"
-#include "multiclass.h"
+#include "include/global.h"
+#include "include/bug.h"
+#include "include/utils.h"
+#include "include/comm.h"
+#include "include/interpreter.h"
+#include "include/handler.h"
+#include "include/db.h"
+#include "include/spells.h"
+#include "include/multiclass.h"
 #define _ACT_SOCIAL_C
-#include "act_social.h"
+#include "include/act_social.h"
 
 struct social_messg *soc_mess_list = 0;
 struct pose_type pose_messages[MAX_MESSAGES];
@@ -143,7 +143,7 @@ void do_action(struct char_data *ch, char *argument, int cmd)
   if (DEBUG)
     dlog("do_action");
   if ((act_nr = find_action(cmd)) < 0) {
-    send_to_char("That action is not supported.\n\r", ch);
+    cprintf(ch, "That action is not supported.\n\r");
     return;
   }
   action = &soc_mess_list[act_nr];
@@ -154,17 +154,17 @@ void do_action(struct char_data *ch, char *argument, int cmd)
     *buf = '\0';
 
   if (!*buf) {
-    send_to_char(action->char_no_arg, ch);
-    send_to_char("\n\r", ch);
+    cprintf(ch, action->char_no_arg);
+    cprintf(ch, "\n\r");
     act(action->others_no_arg, action->hide, ch, 0, 0, TO_ROOM);
     return;
   }
   if (!(vict = get_char_room_vis(ch, buf))) {
-    send_to_char(action->not_found, ch);
-    send_to_char("\n\r", ch);
+    cprintf(ch, action->not_found);
+    cprintf(ch, "\n\r");
   } else if (vict == ch) {
-    send_to_char(action->char_auto, ch);
-    send_to_char("\n\r", ch);
+    cprintf(ch, action->char_auto);
+    cprintf(ch, "\n\r");
     act(action->others_auto, action->hide, ch, 0, 0, TO_ROOM);
   } else {
     if (GET_POS(vict) < action->min_victim_position) {
@@ -181,7 +181,6 @@ void do_action(struct char_data *ch, char *argument, int cmd)
 
 void do_insult(struct char_data *ch, char *argument, int cmd)
 {
-  static char buf[100];
   static char arg[MAX_STRING_LENGTH];
   struct char_data *victim;
 
@@ -189,11 +188,10 @@ void do_insult(struct char_data *ch, char *argument, int cmd)
 
   if (*arg) {
     if (!(victim = get_char_room_vis(ch, arg))) {
-      send_to_char("Can't hear you!\n\r", ch);
+      cprintf(ch, "Can't hear you!\n\r");
     } else {
       if (victim != ch) {
-	sprintf(buf, "You insult %s.\n\r", GET_NAME(victim));
-	send_to_char(buf, ch);
+	cprintf(ch, "You insult %s.\n\r", GET_NAME(victim));
 
 	switch (random() % 3) {
 	case 0:{
@@ -228,11 +226,11 @@ void do_insult(struct char_data *ch, char *argument, int cmd)
 
 	act("$n insults $N.", TRUE, ch, 0, victim, TO_NOTVICT);
       } else {			       /* ch == victim */
-	send_to_char("You feel insulted.\n\r", ch);
+	cprintf(ch, "You feel insulted.\n\r");
       }
     }
   } else
-    send_to_char("Sure you don't want to insult everybody.\n\r", ch);
+    cprintf(ch, "Sure you don't want to insult everybody.\n\r");
 }
 
 void boot_pose_messages(void)
@@ -264,11 +262,11 @@ void do_pose(struct char_data *ch, char *argument, int cmd)
   int to_pose;
   int counter;
 
-  send_to_char("Sorry Buggy command.\n\r", ch);
+  cprintf(ch, "Sorry Buggy command.\n\r");
   return;
 
   if ((GetMaxLevel(ch) < pose_messages[0].level) || IS_NPC(ch)) {
-    send_to_char("You can't do that.\n\r", ch);
+    cprintf(ch, "You can't do that.\n\r");
     return;
   }
   for (counter = 0; (pose_messages[counter].level < GetMaxLevel(ch)) &&

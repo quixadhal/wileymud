@@ -1,0 +1,411 @@
+#RENT
+Owner              Azura~
+Gold               12
+TotalCost          1805
+LastUpdate         828053995
+MinimumStay        0
+End
+#EQUIPMENT
+#ITEM
+ObjId              0
+ContainedBy        -1
+Name               lantern~
+Description
+A brass lantern.~
+ShortDescr
+a lantern~
+ActionDescr
+~               ~
+VNum               3016
+EquippedAt         0
+Values             0 0 56 0
+ExtraFlags         0
+Weight             1
+Timer              0
+BitVector          0
+Type               1
+WearFlags          1
+Cost               50
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              1
+ContainedBy        -1
+Name               black leather jacket~
+Description
+A leather jacket made of dyed black lies here.~
+ShortDescr
+a black leather jacket~
+ActionDescr
+(null)~
+VNum               6103
+EquippedAt         5
+Values             2 2 0 0
+ExtraFlags         8448
+Weight             8
+Timer              0
+BitVector          0
+Type               9
+WearFlags          9
+Cost               350
+CostPerDay         350
+Affect             0 0
+Affect             0 0
+ExtraDescr         black leather jacket~
+  The jack has been dyed a deep black color which entails the whole material
+except a red syckle that has been painted upon the left shoulder.
+~
+End
+#ITEM
+ObjId              2
+ContainedBy        -1
+Name               skullcap~
+Description
+A skullcap lies here.~
+ShortDescr
+a skullcap~
+ActionDescr
+(null)~
+VNum               6115
+EquippedAt         6
+Values             2 2 0 0
+ExtraFlags         256
+Weight             5
+Timer              0
+BitVector          0
+Type               9
+WearFlags          17
+Cost               213
+CostPerDay         23
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              3
+ContainedBy        -1
+Name               black leather leggings~
+Description
+A pair of dyed black leather leggings lie here.~
+ShortDescr
+black leather leggings~
+ActionDescr
+(null)~
+VNum               6104
+EquippedAt         7
+Values             2 2 0 0
+ExtraFlags         8448
+Weight             6
+Timer              0
+BitVector          0
+Type               9
+WearFlags          33
+Cost               300
+CostPerDay         300
+Affect             0 0
+Affect             0 0
+ExtraDescr         black leather leggings~
+  The leggings have been dyed black throughout except for a small red syckle
+placed upon the left thigh.
+~
+End
+#ITEM
+ObjId              4
+ContainedBy        -1
+Name               black leather boots~
+Description
+A pair of boots that have been dyed red lie here.~
+ShortDescr
+black leather boots~
+ActionDescr
+(null)~
+VNum               6107
+EquippedAt         8
+Values             2 2 0 0
+ExtraFlags         256
+Weight             5
+Timer              0
+BitVector          0
+Type               9
+WearFlags          65
+Cost               70
+CostPerDay         70
+Affect             14 5
+Affect             0 0
+End
+#ITEM
+ObjId              5
+ContainedBy        -1
+Name               black leather sleeves~
+Description
+A pair of black leather sleeves lie here.~
+ShortDescr
+black leather sleeves~
+ActionDescr
+(null)~
+VNum               6105
+EquippedAt         10
+Values             2 2 0 0
+ExtraFlags         8448
+Weight             5
+Timer              0
+BitVector          0
+Type               9
+WearFlags          257
+Cost               250
+CostPerDay         250
+Affect             0 0
+Affect             0 0
+ExtraDescr         black leather sleeves~
+  The sleeves have been dyed black throughout except for a small red syckle
+placed high on the left arm.
+~
+End
+#ITEM
+ObjId              6
+ContainedBy        -1
+Name               harness leather plate shoulder~
+Description
+A peice of leather plate lies here, with a small strand of leather attached.~
+ShortDescr
+a shoulder harness~
+ActionDescr
+(null)~
+VNum               5203
+EquippedAt         12
+Values             1 1 0 0
+ExtraFlags         8448
+Weight             10
+Timer              0
+BitVector          0
+Type               9
+WearFlags          1025
+Cost               10
+CostPerDay         10
+Affect             17 -2
+Affect             0 0
+End
+#ITEM
+ObjId              7
+ContainedBy        -1
+Name               clothe red sash~
+Description
+A red piece of clothe lies here on the ground.~
+ShortDescr
+a red sash~
+ActionDescr
+(null)~
+VNum               6106
+EquippedAt         13
+Values             0 0 0 0
+ExtraFlags         0
+Weight             5
+Timer              0
+BitVector          0
+Type               12
+WearFlags          2049
+Cost               50
+CostPerDay         5
+Affect             17 -2
+Affect             0 0
+End
+#ITEM
+ObjId              8
+ContainedBy        -1
+Name               silver shortsword short sword~
+Description
+A shortsword made of silver lies here.~
+ShortDescr
+a silver shortsword~
+ActionDescr
+(null)~
+VNum               5053
+EquippedAt         16
+Values             0 1 6 1
+ExtraFlags         13632
+Weight             5
+Timer              0
+BitVector          0
+Type               5
+WearFlags          8193
+Cost               750
+CostPerDay         100
+Affect             18 2
+Affect             19 3
+ExtraDescr         silver shortsword short sword~
+The blade seems to be coated with silver.
+~
+End
+End
+#CARRIED
+#ITEM
+ObjId              15
+ContainedBy        -1
+Name               lantern~
+Description
+A brass lantern.~
+ShortDescr
+a lantern~
+ActionDescr
+~               ~
+VNum               3016
+EquippedAt         0
+Values             0 0 58 0
+ExtraFlags         0
+Weight             1
+Timer              0
+BitVector          0
+Type               1
+WearFlags          1
+Cost               50
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              15
+ContainedBy        -1
+Name               lantern~
+Description
+A brass lantern.~
+ShortDescr
+a lantern~
+ActionDescr
+~               ~
+VNum               3016
+EquippedAt         0
+Values             0 0 96 0
+ExtraFlags         0
+Weight             1
+Timer              0
+BitVector          0
+Type               1
+WearFlags          1
+Cost               50
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              15
+ContainedBy        -1
+Name               shortsword~
+Description
+A shortsword lies here.~
+ShortDescr
+a shortsword~
+ActionDescr
+(null)~
+VNum               5084
+EquippedAt         -1
+Values             0 1 6 11
+ExtraFlags         12288
+Weight             5
+Timer              0
+BitVector          0
+Type               5
+WearFlags          8193
+Cost               43
+CostPerDay         43
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              15
+ContainedBy        -1
+Name               leggings black leather~
+Description
+A pair of black leather leggings lie here.~
+ShortDescr
+some black leather leggings~
+ActionDescr
+(null)~
+VNum               5083
+EquippedAt         -1
+Values             2 2 0 0
+ExtraFlags         8192
+Weight             5
+Timer              0
+BitVector          0
+Type               9
+WearFlags          33
+Cost               23
+CostPerDay         23
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              15
+ContainedBy        -1
+Name               vest black leather~
+Description
+A black leather vest lies here in a pile.~
+ShortDescr
+a black leather vest~
+ActionDescr
+(null)~
+VNum               5082
+EquippedAt         -1
+Values             2 2 0 0
+ExtraFlags         8192
+Weight             7
+Timer              0
+BitVector          0
+Type               9
+WearFlags          9
+Cost               54
+CostPerDay         54
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              15
+ContainedBy        -1
+Name               buckler shield~
+Description
+A buckler shield is lieing here.~
+ShortDescr
+a buckler shield~
+ActionDescr
+(null)~
+VNum               6110
+EquippedAt         -1
+Values             5 5 0 0
+ExtraFlags         8448
+Weight             5
+Timer              0
+BitVector          0
+Type               9
+WearFlags          513
+Cost               65
+CostPerDay         65
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              15
+ContainedBy        -1
+Name               healers bag~
+Description
+A bag is lieing here.~
+ShortDescr
+a healers bag~
+ActionDescr
+(null)~
+VNum               6163
+EquippedAt         -1
+Values             10 1 -1 0
+ExtraFlags         0
+Weight             4
+Timer              0
+BitVector          0
+Type               15
+WearFlags          16385
+Cost               2348
+CostPerDay         348
+Affect             0 0
+Affect             0 0
+End
+End
+#END_RENT

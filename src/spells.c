@@ -10,17 +10,20 @@
 #include <sys/types.h>
 #include <strings.h>
 
-#include "global.h"
-#include "bug.h"
-#include "utils.h"
-#include "comm.h"
-#include "db.h"
-#include "interpreter.h"
-#include "handler.h"
-#include "constants.h"
+#include "include/global.h"
+#include "include/bug.h"
+#include "include/utils.h"
+#include "include/comm.h"
+#include "include/db.h"
+#include "include/interpreter.h"
+#include "include/handler.h"
+#include "include/constants.h"
+#include "include/multiclass.h"
+#include "include/fight.h"
+#include "include/act_move.h"
 #define _SPELLS_C
-#include "spells.h"
-#include "spell_parser.h"
+#include "include/spells.h"
+#include "include/spell_parser.h"
 
 void cast_armor(BYTE level, struct char_data *ch, char *arg, int type, struct char_data *tar_ch, struct obj_data *tar_obj)
 {
@@ -28,7 +31,7 @@ void cast_armor(BYTE level, struct char_data *ch, char *arg, int type, struct ch
   case SPELL_TYPE_SPELL:
     if (affected_by_spell(tar_ch, SPELL_ARMOR) ||
 	affected_by_spell(tar_ch, SPELL_STONE_SKIN)) {
-      send_to_char("Nothing seems to happen.\n\r", ch);
+      cprintf(ch, "Nothing seems to happen.\n\r");
       return;
     }
     if (ch != tar_ch)
@@ -95,13 +98,11 @@ void cast_teleport(BYTE level, struct char_data *ch, char *arg, int type, struct
 
 void cast_bless(BYTE level, struct char_data *ch, char *arg, int type, struct char_data *tar_ch, struct obj_data *tar_obj)
 {
-  struct affected_type af;
-
   switch (type) {
   case SPELL_TYPE_SPELL:
     if (tar_obj) {		       /* It's an object */
       if (IS_SET(tar_obj->obj_flags.extra_flags, ITEM_BLESS)) {
-	send_to_char("Nothing seems to happen.\n\r", ch);
+	cprintf(ch, "Nothing seems to happen.\n\r");
 	return;
       }
       spell_bless(level, ch, 0, tar_obj);
@@ -110,7 +111,7 @@ void cast_bless(BYTE level, struct char_data *ch, char *arg, int type, struct ch
 
       if (affected_by_spell(tar_ch, SPELL_BLESS) ||
 	  (GET_POS(tar_ch) == POSITION_FIGHTING)) {
-	send_to_char("Nothing seems to happen.\n\r", ch);
+	cprintf(ch, "Nothing seems to happen.\n\r");
 	return;
       }
       spell_bless(level, ch, tar_ch, 0);
@@ -161,12 +162,10 @@ void cast_bless(BYTE level, struct char_data *ch, char *arg, int type, struct ch
 
 void cast_blindness(BYTE level, struct char_data *ch, char *arg, int type, struct char_data *tar_ch, struct obj_data *tar_obj)
 {
-  struct affected_type af;
-
   switch (type) {
   case SPELL_TYPE_SPELL:
     if (IS_AFFECTED(tar_ch, AFF_BLIND)) {
-      send_to_char("Nothing seems to happen.\n\r", ch);
+      cprintf(ch, "Nothing seems to happen.\n\r");
       return;
     }
     spell_blindness(level, ch, tar_ch, 0);
@@ -292,24 +291,23 @@ void cast_chill_touch(BYTE level, struct char_data *ch, char *arg, int type, str
 
 void cast_clone(BYTE level, struct char_data *ch, char *arg, int type, struct char_data *tar_ch, struct obj_data *tar_obj)
 {
-  struct char_data *vict;
   struct char_data *victim, *next_victim;
   struct obj_data *sac;
   char buf[MAX_STRING_LENGTH];
 
   if (!ch->equipment[HOLD]) {
-    send_to_char("You must be holding the component for this spell.\n\r", ch);
+    cprintf(ch, "You must be holding the component for this spell.\n\r");
     return;
   }
   sac = unequip_char(ch, HOLD);
   if (sac) {
     obj_to_char(sac, ch);
     if (ObjVnum(sac) != GLASS_MIRROR) {
-      send_to_char("That is not the correct item.\n\r", ch);
+      cprintf(ch, "That is not the correct item.\n\r");
       return;
     }
   } else {
-    send_to_char("You must be holding the component for this spell.\n\r", ch);
+    cprintf(ch, "You must be holding the component for this spell.\n\r");
     return;
   }
   cprintf(ch, "You shatter %s %s into thousands of tiny shards.\n\r", SANA(sac),sac->short_description);
@@ -338,7 +336,7 @@ void cast_clone(BYTE level, struct char_data *ch, char *arg, int type, struct ch
       if (tar_ch) {        
         spell_clone(level,ch,tar_ch,0);
       } else {
-        cprintf(buf, "You create a duplicate of %s %s.\n\r",SANA(tar_obj),tar_obj->short_description);
+        cprintf(ch, "You create a duplicate of %s %s.\n\r",SANA(tar_obj),tar_obj->short_description);
         sprintf(buf, "$n creates a duplicate of %s %s,\n\r",SANA(tar_obj),tar_obj->short_description);
         act(buf, FALSE, ch, 0, 0, TO_ROOM);
         spell_clone(level,ch,0,tar_obj);
@@ -382,52 +380,52 @@ void cast_control_weather(BYTE level, struct char_data *ch, char *arg, int type,
     one_argument(arg, buffer);
 
     if (str_cmp("better", buffer) && str_cmp("worse", buffer)) {
-      send_to_char("Do you want it to get better or worse?\n\r", ch);
+      cprintf(ch, "Do you want it to get better or worse?\n\r");
       return;
     }
     if (!OUTSIDE(ch)) {
-      send_to_char("You need to be outside.\n\r", ch);
+      cprintf(ch, "You need to be outside.\n\r");
     }
     if (!str_cmp("better", buffer)) {
       if (weather_info.sky == SKY_CLOUDLESS)
 	return;
       if (weather_info.sky == SKY_CLOUDY) {
-	send_to_outdoor("The clouds disappear.\n\r");
+	oprintf("The clouds disappear.\n\r");
 	weather_info.sky = SKY_CLOUDLESS;
       }
       if (weather_info.sky == SKY_RAINING) {
 	if ((time_info.month > 3) && (time_info.month < 14))
-	  send_to_outdoor("The rain has stopped.\n\r");
+	  oprintf("The rain has stopped.\n\r");
 	else
-	  send_to_outdoor("The snow has stopped. \n\r");
+	  oprintf("The snow has stopped. \n\r");
 	weather_info.sky = SKY_CLOUDY;
       }
       if (weather_info.sky == SKY_LIGHTNING) {
 	if ((time_info.month > 3) && (time_info.month < 14))
-	  send_to_outdoor("The lightning has gone, but it is still raining.\n\r");
+	  oprintf("The lightning has gone, but it is still raining.\n\r");
 	else
-	  send_to_outdoor("The blizzard is over, but it is still snowing.\n\r");
+	  oprintf("The blizzard is over, but it is still snowing.\n\r");
 	weather_info.sky = SKY_RAINING;
       }
       return;
     } else {
       if (weather_info.sky == SKY_CLOUDLESS) {
-	send_to_outdoor("The sky is getting cloudy.\n\r");
+	oprintf("The sky is getting cloudy.\n\r");
 	weather_info.sky = SKY_CLOUDY;
 	return;
       }
       if (weather_info.sky == SKY_CLOUDY) {
 	if ((time_info.month > 3) && (time_info.month < 14))
-	  send_to_outdoor("It starts to rain.\n\r");
+	  oprintf("It starts to rain.\n\r");
 	else
-	  send_to_outdoor("It starts to snow. \n\r");
+	  oprintf("It starts to snow. \n\r");
 	weather_info.sky = SKY_RAINING;
       }
       if (weather_info.sky == SKY_RAINING) {
 	if ((time_info.month > 3) && (time_info.month < 14))
-	  send_to_outdoor("You are caught in lightning storm.\n\r");
+	  oprintf("You are caught in lightning storm.\n\r");
 	else
-	  send_to_outdoor("You are caught in a blizzard. \n\r");
+	  oprintf("You are caught in a blizzard. \n\r");
 	weather_info.sky = SKY_LIGHTNING;
       }
       if (weather_info.sky == SKY_LIGHTNING) {
@@ -469,7 +467,7 @@ void cast_create_water(BYTE level, struct char_data *ch, char *arg, int type, st
   switch (type) {
   case SPELL_TYPE_SPELL:
     if (tar_obj->obj_flags.type_flag != ITEM_DRINKCON) {
-      send_to_char("It is unable to hold water.\n\r", ch);
+      cprintf(ch, "It is unable to hold water.\n\r");
       return;
     }
     spell_create_water(level, ch, 0, tar_obj);
@@ -522,13 +520,13 @@ void cast_shocking_grasp(BYTE level, struct char_data *ch, char *arg, int type, 
 void cast_new_earthquake(BYTE level, struct char_data *ch, char *arg, int type, struct char_data *victim, struct obj_data *tar_obj)
 {
   register int vnum, done;
-  struct obj_data *sac;
+  struct obj_data *sac = NULL;
 
   done= 0;
   if(ch->equipment[HOLD]) {
     vnum= ObjVnum(ch->equipment[HOLD]);
     if(vnum == HAMMER_1 || vnum == HAMMER_2 || vnum == HAMMER_3) {
-      if(sac = unequip_char(ch, HOLD)) {
+      if((sac = unequip_char(ch, HOLD))) {
         obj_to_char(sac, ch);
         done= 1;
       }
@@ -538,7 +536,7 @@ void cast_new_earthquake(BYTE level, struct char_data *ch, char *arg, int type, 
     if(ch->equipment[WIELD]) {
       vnum= ObjVnum(ch->equipment[WIELD]);
       if(vnum == HAMMER_1 || vnum == HAMMER_2 || vnum == HAMMER_3) {
-        if(sac = unequip_char(ch, WIELD)) {
+        if((sac = unequip_char(ch, WIELD))) {
           obj_to_char(sac, ch);
           done= 1;
         }
@@ -549,7 +547,7 @@ void cast_new_earthquake(BYTE level, struct char_data *ch, char *arg, int type, 
     if(ch->equipment[WIELD_TWOH]) {
       vnum= ObjVnum(ch->equipment[WIELD_TWOH]);
       if(vnum == HAMMER_1 || vnum == HAMMER_2 || vnum == HAMMER_3) {
-        if(sac = unequip_char(ch, WIELD_TWOH)) {
+        if((sac = unequip_char(ch, WIELD_TWOH))) {
           obj_to_char(sac, ch);
           done= 1;
         }
@@ -1002,7 +1000,7 @@ void cast_stone_skin(BYTE level, struct char_data *ch, char *arg, int type, stru
     if (affected_by_spell(ch, SPELL_STONE_SKIN) ||
 	affected_by_spell(ch, SPELL_ARMOR) ||
 	affected_by_spell(ch, SPELL_SHIELD)) {
-      send_to_char("Nothing seems to happen.\n\r", ch);
+      cprintf(ch, "Nothing seems to happen.\n\r");
       return;
     }
     spell_stone_skin(level, ch, ch, 0);
@@ -1041,7 +1039,7 @@ void cast_astral_walk(BYTE level, struct char_data *ch, char *arg, int type, str
   case SPELL_TYPE_SPELL:
 
     if (!tar_ch)
-      send_to_char("Yes, but who do you wish to walk to?\n", ch);
+      cprintf(ch, "Yes, but who do you wish to walk to?\n");
     else
       spell_astral_walk(level, ch, tar_ch, 0);
     break;
@@ -1052,15 +1050,32 @@ void cast_astral_walk(BYTE level, struct char_data *ch, char *arg, int type, str
   }
 }
 
+void cast_visions(BYTE level, struct char_data *ch, char *arg, int type, struct char_data *tar_ch, struct obj_data *tar_obj)
+{
+  switch (type) {
+  case SPELL_TYPE_WAND:
+  case SPELL_TYPE_SCROLL:
+  case SPELL_TYPE_POTION:
+  case SPELL_TYPE_SPELL:
+
+    if (!tar_ch)
+      cprintf(ch, "Yes, but who do you wish to spy on?\n");
+    else
+      spell_visions(level, ch, tar_ch, 0);
+    break;
+
+  default:
+    log("Serious screw-up in visions!");
+    break;
+  }
+}
+
 void cast_infravision(BYTE level, struct char_data *ch, char *arg, int type, struct char_data *tar_ch, struct obj_data *tar_obj)
 {
-
-  struct affected_type af;
-
   switch (type) {
   case SPELL_TYPE_SPELL:
     if (IS_AFFECTED(tar_ch, AFF_INFRAVISION)) {
-      send_to_char("Nothing seems to happen.\n\r", ch);
+      cprintf(ch, "Nothing seems to happen.\n\r");
       return;
     }
     spell_infravision(level, ch, tar_ch, 0);
@@ -1106,7 +1121,7 @@ void cast_true_seeing(BYTE level, struct char_data *ch, char *arg, int type, str
   switch (type) {
   case SPELL_TYPE_SPELL:
     if (IS_AFFECTED(tar_ch, AFF_TRUE_SIGHT)) {
-      send_to_char("Nothing seems to happen.\n\r", ch);
+      cprintf(ch, "Nothing seems to happen.\n\r");
       return;
     }
     spell_true_seeing(level, ch, tar_ch, 0);
@@ -1245,11 +1260,11 @@ void cast_flying(BYTE level, struct char_data *ch, char *arg, int type, struct c
 {
 
   if (MOUNTED(ch)) {
-    send_to_char("Not while you are mounted!\n\r", ch);
+    cprintf(ch, "Not while you are mounted!\n\r");
     return;
   }
   if (MOUNTED(tar_ch)) {
-    send_to_char("Not while they are mounted!\n\r", ch);
+    cprintf(ch, "Not while they are mounted!\n\r");
     return;
   }
   switch (type) {
@@ -1265,6 +1280,28 @@ void cast_flying(BYTE level, struct char_data *ch, char *arg, int type, struct c
 
   default:
     log("Serious screw-up in fly");
+    break;
+  }
+}
+
+void cast_goodberry(BYTE level, struct char_data *ch, char *arg, int type, struct char_data *tar_ch, struct obj_data *tar_obj)
+{
+  switch (type) {
+  case SPELL_TYPE_SPELL:
+    spell_goodberry(level, ch, ch, 0);
+    break;
+  case SPELL_TYPE_SCROLL:
+    if (tar_obj)
+      return;
+    spell_goodberry(level, ch, ch, 0);
+    break;
+  case SPELL_TYPE_WAND:
+    if (tar_obj)
+      return;
+    spell_goodberry(level, ch, ch, 0);
+    break;
+  default:
+    log("Serious screw-up in continual light!");
     break;
   }
 }
@@ -1402,7 +1439,7 @@ void cast_shield(BYTE level, struct char_data *ch, char *arg, int type, struct c
   switch (type) {
   case SPELL_TYPE_SPELL:
     if (affected_by_spell(tar_ch, SPELL_STONE_SKIN)) {
-      send_to_char("Nothing seems to happen.\n\r", ch);
+      cprintf(ch, "Nothing seems to happen.\n\r");
       return;
     }
     spell_shield(level, ch, tar_ch, 0);
@@ -1467,7 +1504,7 @@ void cast_detect_evil(BYTE level, struct char_data *ch, char *arg, int type, str
   switch (type) {
   case SPELL_TYPE_SPELL:
     if (affected_by_spell(tar_ch, SPELL_DETECT_EVIL)) {
-      send_to_char("Nothing seems to happen.\n\r", tar_ch);
+      cprintf(tar_ch, "Nothing seems to happen.\n\r");
       return;
     }
     spell_detect_evil(level, ch, tar_ch, 0);
@@ -1495,7 +1532,7 @@ void cast_detect_invisibility(BYTE level, struct char_data *ch, char *arg, int t
   switch (type) {
   case SPELL_TYPE_SPELL:
     if (IS_AFFECTED(tar_ch, AFF_DETECT_INVISIBLE)) {
-      send_to_char("Nothing seems to happen.\n\r", tar_ch);
+      cprintf(tar_ch, "Nothing seems to happen.\n\r");
       return;
     }
     spell_detect_invisibility(level, ch, tar_ch, 0);
@@ -1523,7 +1560,7 @@ void cast_detect_magic(BYTE level, struct char_data *ch, char *arg, int type, st
   switch (type) {
   case SPELL_TYPE_SPELL:
     if (affected_by_spell(tar_ch, SPELL_DETECT_MAGIC)) {
-      send_to_char("Nothing seems to happen.\n\r", tar_ch);
+      cprintf(tar_ch, "Nothing seems to happen.\n\r");
       return;
     }
     spell_detect_magic(level, ch, tar_ch, 0);
@@ -1734,12 +1771,12 @@ void cast_invisibility(BYTE level, struct char_data *ch, char *arg, int type, st
   case SPELL_TYPE_SPELL:
     if (tar_obj) {
       if (IS_SET(tar_obj->obj_flags.extra_flags, ITEM_INVISIBLE))
-	send_to_char("Nothing new seems to happen.\n\r", ch);
+	cprintf(ch, "Nothing new seems to happen.\n\r");
       else
 	spell_invisibility(level, ch, 0, tar_obj);
     } else {			       /* tar_ch */
       if (IS_AFFECTED(tar_ch, AFF_INVISIBLE))
-	send_to_char("Nothing new seems to happen.\n\r", ch);
+	cprintf(ch, "Nothing new seems to happen.\n\r");
       else
 	spell_invisibility(level, ch, tar_ch, 0);
     }
@@ -1786,7 +1823,7 @@ void cast_locate_object(BYTE level, struct char_data *ch, char *arg, int type, s
 {
   switch (type) {
   case SPELL_TYPE_SPELL:
-    spell_locate_object(level, ch, 0, tar_obj);
+    spell_locate_object(level, ch, 0, (char *)tar_obj);
     break;
   default:
     log("Serious screw-up in locate object!");
@@ -2070,12 +2107,12 @@ void cast_ventriloquate(BYTE level, struct char_data *ch, char *arg, int type, s
 
     if ((tmp_ch != ch) && (tmp_ch != tar_ch)) {
       if (saves_spell(tmp_ch, SAVING_SPELL))
-	send_to_char(buf2, tmp_ch);
+	cprintf(tmp_ch, buf2);
       else
-	send_to_char(buf1, tmp_ch);
+	cprintf(tmp_ch, buf1);
     } else {
       if (tmp_ch == tar_ch)
-	send_to_char(buf3, tar_ch);
+	cprintf(tar_ch, buf3);
     }
   }
 }
@@ -2229,7 +2266,7 @@ void cast_dragon_breath(BYTE level, struct char_data *ch, char *arg, int type, s
   if (scan->vnum == 0) {
     char buf[MAX_STRING_LENGTH];
 
-    send_to_char("Hey, this potion isn't in my list!\n\r", ch);
+    cprintf(ch, "Hey, this potion isn't in my list!\n\r");
     sprintf(buf, "unlisted breath potion %s %d", potion->short_description,
 	    obj_index[potion->item_number].virtual);
     log(buf);
@@ -2240,13 +2277,13 @@ void cast_dragon_breath(BYTE level, struct char_data *ch, char *arg, int type, s
       af.type = scan->spell[i];
       af.duration = 1 + dice(1, 2);
       if (GET_CON(ch) < 4) {
-	send_to_char("You are too weak to stomach the potion and spew it all over the floor.\n\r", ch);
+	cprintf(ch, "You are too weak to stomach the potion and spew it all over the floor.\n\r");
 	act("$n gags and pukes glowing goop all over the floor.",
 	    FALSE, ch, 0, ch, TO_NOTVICT);
 	break;
       }
       if (level > MIN(GET_CON(ch) - 1, GetMaxLevel(ch))) {
-	send_to_char("!GACK! You are too weak to handle the full power of the potion.\n\r", ch);
+	cprintf(ch, "!GACK! You are too weak to handle the full power of the potion.\n\r");
 	act("$n gags and flops around on the floor a bit.",
 	    FALSE, ch, 0, ch, TO_NOTVICT);
 	level = MIN(GET_CON(ch) - 1, GetMaxLevel(ch));
@@ -2255,7 +2292,7 @@ void cast_dragon_breath(BYTE level, struct char_data *ch, char *arg, int type, s
       af.location = APPLY_CON;
       af.bitvector = 0;
       affect_to_char(ch, &af);
-      send_to_char("You feel powerful forces build within your stomach...\n\r", ch);
+      cprintf(ch, "You feel powerful forces build within your stomach...\n\r");
     }
   }
 }
@@ -2323,7 +2360,6 @@ void cast_lightning_breath(BYTE level, struct char_data *ch, char *arg, int type
 
 void cast_knock(BYTE level, struct char_data *ch, char *arg, int type, struct char_data *tar_ch, struct obj_data *tar_obj)
 {
-  BYTE percent;
   int door, other_room;
   char dir[MAX_INPUT_LENGTH], buf[MAX_STRING_LENGTH];
   char otype[MAX_INPUT_LENGTH];
@@ -2339,7 +2375,7 @@ void cast_knock(BYTE level, struct char_data *ch, char *arg, int type, struct ch
       argument_interpreter(arg, otype, dir);
 
       if (!otype) {
-	send_to_char("Knock on what?\n\r", ch);
+	cprintf(ch, "Knock on what?\n\r");
 	return;
       }
       if (generic_find(arg, FIND_OBJ_INV | FIND_OBJ_ROOM, ch, &victim, &obj)) {
@@ -2350,7 +2386,7 @@ void cast_knock(BYTE level, struct char_data *ch, char *arg, int type, struct ch
 	} else if (obj->obj_flags.value[2] < 0) {
 	  sprintf(buf, "%s doesn't have a lock...\n\r", obj->name);
 	} else if (!IS_SET(obj->obj_flags.value[1], CONT_LOCKED)) {
-	  sprintf(buf, "Hehe.. %s wasn't even locked.\n\r", ch);
+	  sprintf(buf, "Hehe.. %s wasn't even locked.\n\r", obj->name);
 	} else
 /*
  * if (IS_SET(obj->obj_flags.value[1], CONT_PICKPROOF)) 
@@ -2364,21 +2400,21 @@ void cast_knock(BYTE level, struct char_data *ch, char *arg, int type, struct ch
 	  sprintf(buf, "<Click>\n\r");
 	  act("$n magically opens $p", FALSE, ch, obj, 0, TO_ROOM);
 	}
-	send_to_char(buf, ch);
+	cprintf(ch, buf);
 	return;
       } else if ((door = find_door(ch, otype, dir)) >= 0) {
 	if (!IS_SET(EXIT(ch, door)->exit_info, EX_ISDOOR))
-	  send_to_char("That's absurd.\n\r", ch);
+	  cprintf(ch, "That's absurd.\n\r");
 	else if (!IS_SET(EXIT(ch, door)->exit_info, EX_CLOSED))
-	  send_to_char("You realize that the door is already open.\n\r", ch);
+	  cprintf(ch, "You realize that the door is already open.\n\r");
 	else if (EXIT(ch, door)->key < 0)
-	  send_to_char("You can't seem to spot any lock to knock.\n\r", ch);
+	  cprintf(ch, "You can't seem to spot any lock to knock.\n\r");
 	else if (!IS_SET(EXIT(ch, door)->exit_info, EX_LOCKED))
-	  send_to_char("Oh.. it wasn't locked at all.\n\r", ch);
+	  cprintf(ch, "Oh.. it wasn't locked at all.\n\r");
 	else
 /*
  * if (IS_SET(EXIT(ch, door)->exit_info, EX_PICKPROOF))
- * send_to_char("You seem to be unable to knock this...\n\r", ch);
+ * cprintf(ch, "You seem to be unable to knock this...\n\r");
  * else
  */
 	{
@@ -2388,9 +2424,9 @@ void cast_knock(BYTE level, struct char_data *ch, char *arg, int type, struct ch
 		EXIT(ch, door)->keyword, TO_ROOM);
 	  else
 	    act("$n magically opens the lock.", TRUE, ch, 0, 0, TO_ROOM);
-	  send_to_char("The lock quickly yields to your skills.\n\r", ch);
+	  cprintf(ch, "The lock quickly yields to your skills.\n\r");
 	  if ((other_room = EXIT(ch, door)->to_room) != NOWHERE)
-	    if (back = real_roomp(other_room)->dir_option[rev_dir[door]])
+	    if ((back = real_roomp(other_room)->dir_option[rev_dir[door]]))
 	      if (back->to_room == ch->in_room)
 		REMOVE_BIT(back->exit_info, EX_LOCKED);
 	}
@@ -2497,16 +2533,16 @@ void cast_animate_dead(BYTE level, struct char_data *ch, char *arg, int type, st
       if (IS_CORPSE(tar_obj)) {
 	spell_animate_dead(level, ch, 0, tar_obj);
       } else {
-	send_to_char("That's not a corpse!\n\r", ch);
+	cprintf(ch, "That's not a corpse!\n\r");
 	return;
       }
     } else {
-      send_to_char("That isn't a corpse!\n\r", ch);
+      cprintf(ch, "That isn't a corpse!\n\r");
       return;
     }
     break;
   case SPELL_TYPE_POTION:
-    send_to_char("Your body revolts against the magic liquid.\n\r", ch);
+    cprintf(ch, "Your body revolts against the magic liquid.\n\r");
     ch->points.hit = 0;
     break;
   case SPELL_TYPE_STAFF:
@@ -2698,13 +2734,13 @@ const struct PolyType PolyList[] =
 void cast_poly_self(BYTE level, struct char_data *ch, char *arg, int type, struct char_data *tar_ch, struct obj_data *tar_obj)
 {
   char buffer[40];
-  int mobn, X = LAST_POLY_MOB, found = FALSE;
+  int mobn = 0, X = LAST_POLY_MOB, found = FALSE;
   struct char_data *mob;
 
   /* one_argument(arg, buffer); */
   only_argument(arg, buffer);
   if (IS_NPC(ch)) {
-    send_to_char("You don't really want to do that.\n\r", ch);
+    cprintf(ch, "You don't really want to do that.\n\r");
     return;
   }
   switch (type) {
@@ -2714,7 +2750,7 @@ void cast_poly_self(BYTE level, struct char_data *ch, char *arg, int type, struc
 	if (PolyList[X].level > level) {
 	  X--;
 	} else {
-	  if (!str_cmp(PolyList[X].name, buffer)) {
+	  if (number(0,99) < 10 || !str_cmp((char *)PolyList[X].name, buffer)) {
 	    mobn = PolyList[X].number;
 	    found = TRUE;
 	  } else {
@@ -2726,14 +2762,15 @@ void cast_poly_self(BYTE level, struct char_data *ch, char *arg, int type, struc
       }
 
       if (!found) {
-	send_to_char("Couldn't find any of those\n\r", ch);
-	return;
-      } else {
+        for(X= LAST_POLY_MOB; X >= 0 && PolyList[X].level > level; X--);
+	mobn = PolyList[number(0,X)].number;
+      }
+      {
 	mob = read_mobile(mobn, VIRTUAL);
 	if (mob) {
 	  spell_poly_self(level, ch, mob, 0);
 	} else {
-	  send_to_char("You couldn't summon an image of that creature\n\r", ch);
+	  cprintf(ch, "You couldn't summon an image of that creature\n\r");
 	}
 	return;
       }
@@ -2752,23 +2789,21 @@ void cast_poly_self(BYTE level, struct char_data *ch, char *arg, int type, struc
 
 void cast_shelter(BYTE level, struct char_data *ch, char *arg, int type, struct char_data *tar_ch, struct obj_data *tar_obj)
 {
-  int mob, obj;
   struct obj_data *sac;
-  struct char_data *el;
 
   if (!ch->equipment[HOLD]) {
-    send_to_char(" You must be holding the component for this spell.\n\r", ch);
+    cprintf(ch, " You must be holding the component for this spell.\n\r");
     return;
   }
   sac = unequip_char(ch, HOLD);
   if (sac) {
     obj_to_char(sac, ch);
     if (ObjVnum(sac) != NUT_CRACKED) {
-      send_to_char("That is not the correct item.\n\r", ch);
+      cprintf(ch, "That is not the correct item.\n\r");
       return;
     }
   } else {
-    send_to_char("You must be holding the component for this spell.\n\r", ch);
+    cprintf(ch, "You must be holding the component for this spell.\n\r");
     return;
   }
 
@@ -2788,11 +2823,16 @@ void cast_shelter(BYTE level, struct char_data *ch, char *arg, int type, struct 
 #define BAG          3017
 #define WATER_BARREL 3005
 #define BREAD        3010
+#define PAPER        6
+#define PEN          5
+#define SIGN         35
+#define GOOD_WALNUT  1130
+#define BAD_WALNUT   1132
 
 void cast_minor_creation(BYTE level, struct char_data *ch, char *arg, int type, struct char_data *tar_ch, struct obj_data *tar_obj)
 {
   char buffer[40];
-  int mob, obj;
+  int obj;
   struct obj_data *o;
 
   one_argument(arg, buffer);
@@ -2801,7 +2841,9 @@ void cast_minor_creation(BYTE level, struct char_data *ch, char *arg, int type, 
     obj = LONG_SWORD;
   } else if (!str_cmp(buffer, "shield")) {
     obj = SHIELD;
-  } else if (!str_cmp(buffer, "canoe")) {
+  } else if (!str_cmp(buffer, "boat")) {
+    obj = BOAT;
+  } else if (!str_cmp(buffer, "raft")) {
     obj = BOAT;
   } else if (!str_cmp(buffer, "bag")) {
     obj = BAG;
@@ -2809,14 +2851,25 @@ void cast_minor_creation(BYTE level, struct char_data *ch, char *arg, int type, 
     obj = WATER_BARREL;
   } else if (!str_cmp(buffer, "bread")) {
     obj = BREAD;
+  } else if (!str_cmp(buffer, "walnut")) {
+    if(number(0,99)< 2)
+      obj = GOOD_WALNUT;
+    else
+      obj = BAD_WALNUT;
+  } else if (!str_cmp(buffer, "sign")) {
+    obj = SIGN;
+  } else if (!str_cmp(buffer, "paper")) {
+    obj = PAPER;
+  } else if (!str_cmp(buffer, "pen")) {
+    obj = PEN;
   } else {
-    send_to_char("There is nothing of that available\n\r", ch);
+    cprintf(ch, "There is nothing of that available\n\r");
     return;
   }
 
   o = read_object(obj, VIRTUAL);
   if (!o) {
-    send_to_char("There is nothing of that available\n\r", ch);
+    cprintf(ch, "There is nothing of that available\n\r");
     return;
   }
   switch (type) {
@@ -2837,9 +2890,9 @@ void cast_minor_creation(BYTE level, struct char_data *ch, char *arg, int type, 
 #define EARTH_ELEMENTAL 12
 
 #define RED_STONE       1120
-#define PALE_BLUE_STONE 1121
-#define CLEAR_STONE     1122
-#define GREY_STONE      1123
+#define PALE_BLUE_STONE 1124
+#define CLEAR_STONE     1125
+#define GREY_STONE      1126
 
 void cast_conjure_elemental(BYTE level, struct char_data *ch, char *arg, int type, struct char_data *tar_ch, struct obj_data *tar_obj)
 {
@@ -2863,27 +2916,27 @@ void cast_conjure_elemental(BYTE level, struct char_data *ch, char *arg, int typ
     mob = EARTH_ELEMENTAL;
     obj = GREY_STONE;
   } else {
-    send_to_char("There are no elementals of that type available\n\r", ch);
+    cprintf(ch, "There are no elementals of that type available\n\r");
     return;
   }
   if (!ch->equipment[HOLD]) {
-    send_to_char(" You must be holding the correct stone\n\r", ch);
+    cprintf(ch, " You must be holding the correct stone\n\r");
     return;
   }
   sac = unequip_char(ch, HOLD);
   if (sac) {
     obj_to_char(sac, ch);
     if (ObjVnum(sac) != obj) {
-      send_to_char("You must have the correct item to sacrifice.\n\r", ch);
+      cprintf(ch, "You must have the correct item to sacrifice.\n\r");
       return;
     }
     el = read_mobile(mob, VIRTUAL);
     if (!el) {
-      send_to_char("There are no elementals of that type available\n\r", ch);
+      cprintf(ch, "There are no elementals of that type available\n\r");
       return;
     }
   } else {
-    send_to_char("You must be holding the correct item to sacrifice.\n\r", ch);
+    cprintf(ch, "You must be holding the correct item to sacrifice.\n\r");
     return;
   }
 
@@ -2940,27 +2993,27 @@ void cast_cacaodemon(BYTE level, struct char_data *ch, char *arg, int type, stru
     mob = DEMON_TYPE_VI;
     obj = SWORD_ANCIENTS;
   } else {
-    send_to_char("There are no demons of that type available\n\r", ch);
+    cprintf(ch, "There are no demons of that type available\n\r");
     return;
   }
   if (!ch->equipment[WIELD]) {
-    send_to_char(" You must be wielding the correct item\n\r", ch);
+    cprintf(ch, " You must be wielding the correct item\n\r");
     return;
   }
   sac = unequip_char(ch, WIELD);
   if (sac) {
     obj_to_char(sac, ch);
     if (ObjVnum(sac) != obj) {
-      send_to_char("You must have the correct item to sacrifice.\n\r", ch);
+      cprintf(ch, "You must have the correct item to sacrifice.\n\r");
       return;
     }
     el = read_mobile(mob, VIRTUAL);
     if (!el) {
-      send_to_char("There are no demons of that type available\n\r", ch);
+      cprintf(ch, "There are no demons of that type available\n\r");
       return;
     }
   } else {
-    send_to_char("You must be holding the correct item to sacrifice.\n\r", ch);
+    cprintf(ch, "You must be holding the correct item to sacrifice.\n\r");
     return;
   }
 

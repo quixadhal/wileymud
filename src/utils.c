@@ -13,16 +13,25 @@
 #include <assert.h>
 #include <time.h>
 
-#include "global.h"
-#include "bug.h"
-#include "spells.h"
-#include "constants.h"
-#include "db.h"
-#include "opinion.h"
-#include "comm.h"
-#include "hash.h"
+#include "include/global.h"
+#include "include/bug.h"
+#include "include/spells.h"
+#include "include/constants.h"
+#include "include/db.h"
+#include "include/opinion.h"
+#include "include/comm.h"
+#include "include/hash.h"
+#include "include/multiclass.h"
+#include "include/handler.h"
+#include "include/fight.h"
+#include "include/act_info.h"
+#include "include/reception.h"
+#include "include/act_off.h"
+#include "include/magic_utils.h"
+#include "include/limits.h"
+#include "include/act_skills.h"
 #define _UTILS_C
-#include "utils.h"
+#include "include/utils.h"
 
 inline int MobVnum(struct char_data *c) {
   if(!c || IS_PC(c))
@@ -136,55 +145,10 @@ int exit_ok(struct room_direction_data *exit, struct room_data **rpp) {
   return (*rpp != NULL);
 }
 
-void Zwrite(FILE * fp, char cmd, int tf, int arg1, int arg2, int arg3,
-	    char *desc)
-{
-  char buf[100];
-
-  if (*desc) {
-    sprintf(buf, "%c %d %d %d %d   ; %s\n", cmd, tf, arg1, arg2, arg3, desc);
-    fputs(buf, fp);
-  } else {
-    sprintf(buf, "%c %d %d %d %d\n", cmd, tf, arg1, arg2, arg3);
-    fputs(buf, fp);
-  }
-}
-
-void RecZwriteObj(FILE * fp, struct obj_data *o)
-{
-  struct obj_data *t;
-
-  if (ITEM_TYPE(o) = ITEM_CONTAINER) {
-    for (t = o->contains; t; t = t->next_content) {
-      Zwrite(fp, 'P', 1, ObjVnum(t), obj_index[t->item_number].number, ObjVnum(o),
-	     t->short_description);
-      RecZwriteObj(fp, t);
-    }
-  } else {
-    return;
-  }
-}
-
-FILE *MakeZoneFile(struct char_data * c)
-{
-  char buf[256];
-  FILE *fp;
-
-  sprintf(buf, "%s/%s.zon", MKZONE_PATH, GET_NAME(c));
-
-  if ((fp = fopen(buf, "w")) != NULL)
-    return (fp);
-  else
-    return (0);
-
-}
-
 inline int IsImmune(struct char_data *ch, int bit)
 {
   if(!ch)
     return 0;
-  if (GetMaxLevel(ch) >= LOW_IMMORTAL)
-    return 1;
   return IS_SET(bit, ch->M_immune);
 }
 
@@ -254,41 +218,7 @@ inline int strn_cmp(char *arg1, char *arg2, int n) {
   return strncasecmp(arg1, arg2, n);
 }
 
-#if 0
-/* returns: 0 if equal, 1 if arg1 > arg2, -1 if arg1 < arg2  */
-/* scan 'till found different or end of both                 */
-int str_cmp(char *arg1, char *arg2) {
-  int chk, i;
-
-  if ((!arg2) || (!arg1))
-    return (1);
-
-  for (i = 0; *(arg1 + i) || *(arg2 + i); i++)
-    if (chk = LOWER(*(arg1 + i)) - LOWER(*(arg2 + i)))
-      if (chk < 0)
-	return (-1);
-      else
-	return (1);
-  return (0);
-}
-
-/* returns: 0 if equal, 1 if arg1 > arg2, -1 if arg1 < arg2  */
-/* scan 'till found different, end of both, or n reached     */
-int strn_cmp(char *arg1, char *arg2, int n) {
-  int chk, i;
-
-  for (i = 0; (*(arg1 + i) || *(arg2 + i)) && (n > 0); i++, n--)
-    if (chk = LOWER(*(arg1 + i)) - LOWER(*(arg2 + i)))
-      if (chk < 0)
-	return (-1);
-      else
-	return (1);
-
-  return (0);
-}
-#endif
-
-inline void sprintbit(unsigned long vektor, char *names[], char *result) {
+inline void sprintbit(unsigned long vektor, const char *names[], char *result) {
   register long nr;
   *result = '\0';
   for (nr = 0; vektor; vektor >>= 1) {
@@ -307,7 +237,7 @@ inline void sprintbit(unsigned long vektor, char *names[], char *result) {
     strcat(result, "NOBITS");
 }
 
-inline void sprinttype(int type, char *names[], char *result) {
+inline void sprinttype(int type, const char *names[], char *result) {
   register int nr;
   for (nr = 0; (*names[nr] != '\n'); nr++);
   if (type < nr)
@@ -397,15 +327,17 @@ int in_group(struct char_data *ch1, struct char_data *ch2) {
 
 int getall(char *name, char *newname)
 {
-  char arg[40] = "\0\0\0", tmpname[80] = "\0\0\0\0\0", otname[80] = "\0";
+  char arg[40] = "\0\0\0",
+       tmpname[80] = "\0\0\0\0\0",
+       otname[80] = "\0";
   char prd;
 
-  sscanf(name, "%s ", &otname);	       /* reads up to first space */
+  sscanf(name, "%s ", otname);	       /* reads up to first space */
 
   if (strlen(otname) < 5)
     return (FALSE);
 
-  sscanf(otname, "%3s%c%s", &arg, &prd, &tmpname);
+  sscanf(otname, "%3s%c%s", arg, &prd, tmpname);
 
   if (prd != '.')
     return (FALSE);
@@ -419,7 +351,7 @@ int getall(char *name, char *newname)
 
   name++;
 
-  for (; *newname = *name; name++, newname++);
+  for (; (*newname = *name); name++, newname++);
   return (TRUE);
 }
 
@@ -428,7 +360,7 @@ int getabunch(char *name, char *newname)
   int num = 0;
   char tmpname[80] = "\0";
 
-  sscanf(name, "%d*%s", &num, &tmpname);
+  sscanf(name, "%d*%s", &num, tmpname);
   if (tmpname[0] == '\0')
     return (FALSE);
   if (num < 1)
@@ -441,7 +373,7 @@ int getabunch(char *name, char *newname)
 
   name++;
 
-  for (; *newname = *name; name++, newname++);
+  for (; (*newname = *name); name++, newname++);
 
   return (num);
 
@@ -665,7 +597,6 @@ void down_river(int pulse) {
   struct char_data *ch, *tmp;
   struct obj_data *obj_object, *next_obj;
   int rd, or;
-  char buf[80];
   struct room_data *rp;
 
   if (pulse < 0)
@@ -700,8 +631,7 @@ void down_river(int pulse) {
 		    if (ch->specials.fighting) {
 		      stop_fighting(ch);
 		    }
-		    sprintf(buf, "You drift %s...\n\r", dirs[rd]);
-		    send_to_char(buf, ch);
+		    cprintf(ch, "You drift %s...\n\r", dirs[rd]);
 		    if (MOUNTED(ch)) {
 		      or = ch->in_room;
 		      char_from_room(ch);
@@ -738,220 +668,8 @@ void down_river(int pulse) {
   }
 }
 
-#if 0
-void RoomSave(struct char_data *ch, int start, int end)
-{
-  char fn[80], temp[2048], dots[500];
-  int rstart, rend, i, j, k, x;
-  struct extra_descr_data *exptr;
-  FILE *fp;
-  struct room_data *rp;
-  struct room_direction_data *rdd;
-  char buf[256];
-
-  sprintf(buf, "%s/%s.wld", MKZONE_PATH, ch->player.name);
-
-  if ((fp = fopen(buf, "w")) == NULL) {
-    send_to_char("Can't write to disk now..try later \n\r", ch);
-    return;
-  }
-  rstart = start;
-  rend = end;
-
-  if (((rstart <= -1) || (rend <= -1)) ||
-      ((rstart > 40000) || (rend > 40000))) {
-    send_to_char("I don't know those room #s.  make sure they are all\n\r", ch);
-    send_to_char("contiguous.\n\r", ch);
-    fclose(fp);
-    return;
-  }
-  send_to_char("Saving\n", ch);
-  strcpy(dots, "\0");
-
-  for (i = rstart; i <= rend; i++) {
-
-    rp = real_roomp(i);
-    if (rp == NULL)
-      continue;
-
-    strcat(dots, ".");
-
-/*
- * strip ^Ms from description
- */
-    x = 0;
-
-    if (!rp->description) {
-      CREATE(rp->description, char, 128);
-
-      strcpy(rp->description, "Empty");
-    }
-    for (k = 0; k <= strlen(rp->description); k++) {
-      if (rp->description[k] != 13)
-	temp[x++] = rp->description[k];
-    }
-    temp[x] = '\0';
-
-    fprintf(fp, "#%d\n%s~\n%s~\n", rp->number, rp->name,
-	    temp);
-    if (!rp->tele_targ) {
-      fprintf(fp, "%d %d %d", rp->zone, rp->room_flags, rp->sector_type);
-    } else {
-      fprintf(fp, "%d %d -1 %d %d %d %d", rp->zone, rp->room_flags,
-	      rp->tele_time, rp->tele_targ,
-	      rp->tele_look, rp->sector_type);
-    }
-    if (rp->sector_type == SECT_WATER_NOSWIM) {
-      fprintf(fp, " %d %d", rp->river_speed, rp->river_dir);
-    }
-    fprintf(fp, "\n");
-
-    for (j = 0; j < MAX_NUM_EXITS; j++) {
-      rdd = rp->dir_option[j];
-      if (rdd) {
-	fprintf(fp, "D%d\n", j);
-
-	if (rdd->general_description) {
-	  if (strlen(rdd->general_description) > 0)
-	    x = 0;
-
-	  for (k = 0; k <= strlen(rdd->general_description); k++) {
-	    if (rdd->general_description[k] != 13)
-	      temp[x++] = rdd->general_description[k];
-	  }
-	  temp[x] = '\0';
-
-	  fprintf(fp, "%s~\n", temp);
-	} else {
-	  fprintf(fp, "~\n");
-	}
-
-	if (rdd->keyword) {
-	  if (strlen(rdd->keyword) > 0)
-	    fprintf(fp, "%s~\n", rdd->keyword);
-	} else {
-	  fprintf(fp, "~\n");
-	}
-
-	if (IS_SET(rdd->exit_info, EX_PICKPROOF)) {
-	  fprintf(fp, "2");
-	} else if (IS_SET(rdd->exit_info, EX_ISDOOR)) {
-	  fprintf(fp, "1");
-	} else {
-	  fprintf(fp, "0");
-	}
-
-	fprintf(fp, " %d ",
-		rdd->key);
-
-	fprintf(fp, "%d\n", rdd->to_room);
-      }
-    }
-
-/*
- * extra descriptions..
- */
-
-    for (exptr = rp->ex_description; exptr; exptr = exptr->next) {
-      x = 0;
-
-      if (exptr->description) {
-	for (k = 0; k <= strlen(exptr->description); k++) {
-	  if (exptr->description[k] != 13)
-	    temp[x++] = exptr->description[k];
-	}
-	temp[x] = '\0';
-
-	fprintf(fp, "E\n%s~\n%s~\n", exptr->keyword, temp);
-      }
-    }
-
-    fprintf(fp, "S\n");
-
-  }
-
-  fclose(fp);
-  send_to_char(dots, ch);
-  send_to_char("\n\rDone\n\r", ch);
-}
-
-void RoomLoad(struct char_data *ch, int start, int end)
-{
-  FILE *fp;
-  int rnum, i, vnum, flag, tmp, found = FALSE, x;
-  char *temp, chk[50];
-  struct extra_descr_data *new_descr, *exptr, *nptr, ignore_descr;
-  struct room_data dummy, *rp;
-  char buf[256];
-
-  sprintf(buf, "%s/%s.wld", MKZONE_PATH, ch->player.name);
-
-  if ((fp = fopen(buf, "r")) == NULL) {
-    send_to_char("You don't appear to have an area...\n\r", ch);
-    return;
-  }
-  send_to_char("Searching and loading rooms\n\r", ch);
-
-  while ((!found) && ((x = feof(fp)) != TRUE)) {
-
-    fscanf(fp, "#%d\n", &vnum);
-    if ((vnum >= start) && (vnum <= end)) {
-      if (vnum == end)
-	found = TRUE;
-
-      if (NULL == (rp = hash_find(&room_db, vnum))) {
-	rp = (void *)malloc(sizeof(*rp));
-	bzero(rp, sizeof(*rp));
-	hash_enter(&room_db, vnum, rp);
-	send_to_char("+", ch);
-      } else {
-	if (rp->people) {
-	  act("$n reaches down and scrambles reality.", FALSE, ch, NULL,
-	      rp->people, TO_ROOM);
-	}
-	cleanout_room(rp);
-	send_to_char("-", ch);
-      }
-
-      rp->number = vnum;
-      load_one_room(fp, rp);
-
-    } else {
-      send_to_char(".", ch);
-      /*  read w/out loading */
-      load_one_room(fp, &dummy);
-      cleanout_room(&dummy);
-    }
-  }
-  fclose(fp);
-
-  if (!found) {
-    send_to_char("\n\rThe room number(s) that you specified could not all be found.\n\r", ch);
-  } else {
-    send_to_char("\n\rDone.\n\r", ch);
-  }
-
-}
-
-void fake_setup_dir(FILE * fl, int room, int dir)
-{
-  int tmp;
-  char buf[256], *temp;
-
-  temp = (char *)&buf;
-
-  temp = fread_string(fl);	       /* descr */
-  temp = fread_string(fl);	       /* key */
-
-  fscanf(fl, " %d ", &tmp);
-  fscanf(fl, " %d ", &tmp);
-  fscanf(fl, " %d ", &tmp);
-}
-#endif
-
-inline int IsHumanoid(struct char_data *ch) {
 /* these are all very arbitrary */
-
+inline int IsHumanoid(struct char_data *ch) {
   switch (GET_RACE(ch)) {
   case RACE_HALFBREED:
   case RACE_HUMAN:
@@ -971,12 +689,9 @@ inline int IsHumanoid(struct char_data *ch) {
   case RACE_DEMON:
   case RACE_GHOST:
   case RACE_PRIMATE:
-    return (TRUE);
-    break;
-
+    return TRUE;
   default:
-    return (FALSE);
-    break;
+    return FALSE;
   }
 }
 
@@ -988,11 +703,9 @@ inline int IsAnimal(struct char_data *ch) {
   case RACE_HERBIV:
   case RACE_ANIMAL:
   case RACE_LYCANTH:
-    return (TRUE);
-    break;
+    return TRUE;
   default:
-    return (FALSE);
-    break;
+    return FALSE;
   }
 }
 
@@ -1000,37 +713,29 @@ inline int IsUndead(struct char_data *ch) {
   switch (GET_RACE(ch)) {
   case RACE_UNDEAD:
   case RACE_GHOST:
-    return (TRUE);
-    break;
+    return TRUE;
   default:
-    return (FALSE);
-    break;
+    return FALSE;
   }
 }
 
 inline int IsLycanthrope(struct char_data *ch) {
   switch (GET_RACE(ch)) {
   case RACE_LYCANTH:
-    return (TRUE);
-    break;
+    return TRUE;
   default:
-    return (FALSE);
-    break;
+    return FALSE;
   }
-
 }
 
 inline int IsDiabolic(struct char_data *ch) {
   switch (GET_RACE(ch)) {
   case RACE_DEMON:
   case RACE_DEVIL:
-    return (TRUE);
-    break;
+    return TRUE;
   default:
-    return (FALSE);
-    break;
+    return FALSE;
   }
-
 }
 
 inline int IsReptile(struct char_data *ch) {
@@ -1039,45 +744,30 @@ inline int IsReptile(struct char_data *ch) {
   case RACE_DRAGON:
   case RACE_DINOSAUR:
   case RACE_SNAKE:
-    return (TRUE);
-    break;
+    return TRUE;
   default:
-    return (FALSE);
-    break;
+    return FALSE;
   }
 }
 
-inline int HasHands(struct char_data *ch) {
-
-  if (IsHumanoid(ch))
-    return (TRUE);
-  if (IsUndead(ch))
-    return (TRUE);
-  if (IsLycanthrope(ch))
-    return (TRUE);
-  if (IsDiabolic(ch))
-    return (TRUE);
-  if (GET_RACE(ch) == RACE_DRAGON)
-    return (FALSE);
-}
-
-inline int IsPerson(struct char_data *ch) {
-
+inline int IsDraconic(struct char_data *ch) {
   switch (GET_RACE(ch)) {
-  case RACE_HUMAN:
-  case RACE_ELVEN:
-  case RACE_DWARF:
-  case RACE_HALFLING:
-  case RACE_GNOME:
-    return (TRUE);
-    break;
-
-  default:
-    return (FALSE);
-    break;
-
+    case RACE_DRAGON:
+      return TRUE;
+    default:
+      return FALSE;
   }
+}
 
+inline int IsAvian(struct char_data *ch) {
+  switch (GET_RACE(ch)) {
+    case RACE_BIRD:
+    case RACE_DRAGON:
+    case RACE_GHOST:  /* insubstantial? */
+      return TRUE;
+    default:
+      return FALSE;
+  }
 }
 
 inline int IsExtraPlanar(struct char_data *ch) {
@@ -1086,17 +776,34 @@ inline int IsExtraPlanar(struct char_data *ch) {
   case RACE_DEVIL:
   case RACE_PLANAR:
   case RACE_ELEMENT:
-    return (TRUE);
-    break;
+    return TRUE;
   default:
-    return (FALSE);
-    break;
+    return FALSE;
+  }
+}
+
+inline int HasHands(struct char_data *ch) {
+  if (IsHumanoid(ch) || IsDiabolic(ch) || IsDraconic(ch))
+    return TRUE;
+  else
+    return FALSE;
+}
+
+inline int IsPerson(struct char_data *ch) {
+  switch (GET_RACE(ch)) {
+  case RACE_HUMAN:
+  case RACE_ELVEN:
+  case RACE_DWARF:
+  case RACE_HALFLING:
+  case RACE_GNOME:
+    return TRUE;
+  default:
+    return FALSE;
   }
 }
 
 void SetHunting(struct char_data *ch, struct char_data *tch) {
   int persist, dist;
-  char buf[256];
 
   persist = GetMaxLevel(ch);
 /*   persist *= (int) GET_ALIGNMENT(ch) / 100; */
@@ -1110,7 +817,7 @@ void SetHunting(struct char_data *ch, struct char_data *tch) {
 /*   dist = GET_ALIGNMENT(tch) - GET_ALIGNMENT(ch); */
 
   dist = (dist > 0) ? dist : -dist;
-  if (Hates(ch, tch))
+  if (DoesHate(ch, tch))
     dist *= 2;
 
   SET_BIT(ch->specials.act, ACT_HUNTING);
@@ -1120,9 +827,8 @@ void SetHunting(struct char_data *ch, struct char_data *tch) {
   ch->old_room = ch->in_room;
 
   if (GetMaxLevel(tch) >= IMMORTAL) {
-    sprintf(buf, ">>%s is hunting you from %s\n\r",
+    cprintf(tch, ">>%s is hunting you from %s\n\r",
 	    ch->player.short_descr, (real_roomp(ch->in_room))->name);
-    send_to_char(buf, tch);
   }
 }
 
@@ -1151,7 +857,6 @@ void CallForGuard(struct char_data *ch, struct char_data *vict, int lev) {
 }
 
 void CallForAGuard(struct char_data *ch, struct char_data *vict, int lev) {
-  int zone;
   struct char_data *point;
 
   if (lev == 0)
@@ -1220,9 +925,7 @@ void FighterMove(struct char_data *ch) {
 }
 
 void DevelopHatred(struct char_data *ch, struct char_data *v) {
-  int diff, patience, var;
-
-  if (Hates(ch, v))
+  if (DoesHate(ch, v))
     return;
 
   if (ch == v)
@@ -1294,12 +997,6 @@ void Teleport(int pulse) {
 	or = tmp->in_room;
 	char_from_room(tmp);	       /* the list of people in the room has changed */
 	char_to_room(tmp, rp->tele_targ);
-#if 0
-	/* it's a bloody NPC!? why look? */
-	if (rp->tele_look) {
-	  do_look(tmp, "\0", 15);
-	}
-#endif
 	if (IS_SET(dest->room_flags, DEATH)) {
 	  death_cry(tmp);
 	  if (IS_NPC(tmp) && (IS_SET(tmp->specials.act, ACT_POLYSELF))) {

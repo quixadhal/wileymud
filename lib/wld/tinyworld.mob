@@ -48,7 +48,7 @@ Flames almost sear your skin as a huge flame elemental burns here.
 It looks vaguely man-shaped, covered in flames, hot as a forge.
 ~
 2 8 0 W 2
-12 4 2 12d8+12 1d8+3
+12 4 2 12d8+40 1d8+3
 -1 0 2 26
 8 8 3 0 1 2
 The fire elemental crackles merrily.
@@ -63,7 +63,7 @@ The humidity feels higher here as a water elemental splashes nearby.
    It looks vaguely man-shaped, made entirely of water.
 ~
 2 8 0 W 2
-12 4 2 12d8+12 1d8+3
+12 4 2 12d8+40 1d8+3
 -1 0 2 26
 8 8 3 0 1 2
 The water elemental splashes about.
@@ -79,7 +79,7 @@ A huge mound of earth has taken form here.
 it.
 ~
 2 8 0 M 2
-12 4 2 12d8+12 1d8+3
+12 4 2 12d8+40 1d8+3
 -1 0 2 26
 8 8 3 32 4 8
 #13
@@ -91,7 +91,7 @@ Your clothes ruffle slightly, as a air elemental spins here.
 12 foot high shape.
 ~
 2097152 8 0 W 2
-12 4 2 12d8+12 1d8+3
+12 4 2 12d12+40 1d8+3
 -1 0 2 26
 8 8 3 0 64 1
 The Air elemental makes a whistling sound.
@@ -375,7 +375,7 @@ A ghoul stands here.
 ~
   It smells awful!  And looks worse!
 ~
-131076 0 -1000 M 2
+131077 0 -1000 M 2
 2 16 6 2d8+22 1d4+0
 -1 0 0 10
 8 8 0
@@ -500,7 +500,7 @@ A dwarven cleric stands here.
 ~
   He looks rather holy.
 ~
-131072 0 0 S
+131073 0 0 S
 4 15 2 4d8+34 2d4+0
 -1 0 0 3
 8 8 1
@@ -522,7 +522,7 @@ A ghast is here.
 ~
   Ugly and smelly beyond description.
 ~
-131072 32768 -1000 M 2
+131073 32768 -1000 M 2
 4 15 4 4d8+24 1d6+0
 -1 0 0 10
 8 8 0
@@ -566,7 +566,7 @@ A poisonous toad hops about.
 ~
   It looks fairly large, and the poison (you suspect) can be lethal.
 ~
-4 0 0 S
+5 0 0 S
 2 16 7 2d8+12 1d4+1
 -1 0 0 6
 8 8 0
@@ -656,7 +656,7 @@ A snake slithers about here, it has a head at either end!
 ~
   It must move about by gripping one head with the other!
 ~
-4 0 0 M 2
+5 0 0 M 2
 6 13 3 6d8+36 1d3+0
 -1 0 0 22
 8 8 0
@@ -667,7 +667,7 @@ A rattlesnake shakes his tail in warning.
 ~
   It is rather large for a snake... You probably want to go now...
 ~
-2 0 0 S
+3 0 0 S
 4 15 5 4d8+4 1d3+0
 -1 0 0 22
 8 8 0
@@ -755,7 +755,7 @@ An ogre magi stands here, feasting on human flesh.
 ~
   He is large, and vaguely oriental.
 ~
-131072 0 -500 S
+131073 0 -500 S
 5 15 4 5d8+25 1d12+0
 -1 0 0 17
 8 8 1
@@ -895,7 +895,7 @@ to make himself feel a little better.
 0 0 0
 18 79 15 11 6 3
 6 6 6 6 6
-8 8 1
+8 8 1 0
 This is the first test sound.
 ~
 This is the second test sound.
@@ -1608,7 +1608,7 @@ This is a large brownish snake with a diamond-shaped pattern on it's back
 and large "pits" near it's cat-like eyes.  It flicks its tongue into the air,
 and quickly turns to face you.  It rapidly coils and strikes!
 ~
-96 1572864 0 W 2
+97 1572864 0 W 2
 2 19 6 2d8+1 1d2+0
 -1 0 175 22
 8 8 0
@@ -1625,7 +1625,7 @@ This large reptile seems to be hunting for mice or other small animals.
 Unfortunately for you, it's not too picky about what it just bites, only
 what it is actually going to consume!
 ~
-96 1572864 0 W 2
+97 1572864 0 W 2
 2 19 6 2d8+1 1d2+0
 -1 0 175 22
 8 8 0
@@ -3950,7 +3950,7 @@ A man walks here, his complection a very dark shade of grey.
   He looks very unnatural to his surroundings, almost as if he could blend
 into that which is around him in a instant.
 ~
-131140 524288 -999 W 1
+131141 524288 -999 W 1
 6 14 3 6d8+32 1d4+2
 -1 4 667 1
 8 8 1
@@ -3966,7 +3966,7 @@ A young thief is here looking at you with a slight grin.
   He is a small man not moe than sixteen years of age.  He does, although,
 have a glow about him, one of youth and mischief.
 ~
-131140 524288 -999 W 1
+131141 524288 -999 W 1
 5 15 5 5d8+25 1d4+2
 -1 2 534 1
 8 8 1
@@ -5402,6 +5402,7 @@ A small man is huddling in the corner.
 3 0 0 W 1
 70 1 6 40d6+25 1d4+0
 -1 0 4369 1
+8 8 1
 The man sneers and scowls 'Ogres...'.
 ~
 ~
@@ -5414,7 +5415,7 @@ A bearded man stands in the center of his cell.
 proudly although there is a sadness about him.
 ~
 3 0 0 W 1
-70 1 6 40d10+25 1d4+1
+50 1 6 40d10+25 1d4+1
 -1 0 5421 1
 8 8 1
 A bearded man nods to you.
@@ -5725,7 +5726,7 @@ A large warrior sits behind the desk paging through the book.
 scars he has seen a few.
 ~
 262147 0 -700 W 2
-30 1 6 30d10+140 1d4+10
+35 1 6 30d10+140 1d4+10
 -1 5 5000 1
 6 6 1
 Sign if you wish, Hahrmen has given me permission to train.
@@ -5740,7 +5741,7 @@ A small man sits behind the desk pawning a dagger.
 book.
 ~
 3 0 -700 W 2
-30 1 6 30d8+120 1d4+6
+35 1 6 30d8+120 1d4+6
 -1 5 5000 1
 6 6 1
 Hahrmen has ordered me to trail all recruits.
@@ -5755,7 +5756,7 @@ A thin man dressed in black robes sits behind the desk patiently.
 your very soul almost looking for something he lost long ago.
 ~
 3 0 -700 W 1
-30 1 6 30d4+120 1d4+7
+35 1 6 30d4+120 1d4+7
 -1 5 5000 1
 6 6 1
 The arts should be known lest you be taken in these lands.
@@ -5769,10 +5770,14 @@ A old man sits around the fire, slowing going over prayers.
   He is dressed in mere rags but seems content as he mumbles the words
 over and over praying to some god long lost to man now.
 ~
-3 0 700 W 1
-30 1 8 30d8+120 1d4+1
--1 0 5000 1
-6 6 1
+3 0 700 C
+1 2 1 182 240 4d10+6
+35d100+500 35 35d8+120 8 1 1
+1d4+1 1
+0 0 0
+3d6 0 3d6 3d6 1d6+12 18
+0 0 0 0 0
+6 6 1 0
 The man looks up at you and says, "May the ways of Ya'vell travel with you."
 ~
 ~
@@ -6114,7 +6119,7 @@ A hermit stares blankly at the ground around himself.
 his facial area seems to switch faces constantly.  It is obvious this man
 is not of this world but instead placed here to do a gods work.
 ~
-65 32768 W 3
+65 32768 0 W 3
 50 1 0 50d12+320 1d8+8
 -1 12 84340 1
 8 8 1
@@ -6659,6 +6664,7 @@ A small perch swims about.
 64 65536 0 W 1
 1 20 10 1d1+0 1d1+0
 -1 0 1 15
+8 8 1
 The swirling funnel almost sucks you within its waters.
 ~
 ~
@@ -6672,6 +6678,7 @@ A small sunfish darts to a fro.
 64 65536 0 W 1
 1 20 10 1d1+0 1d1+0
 -1 0 1 15
+8 8 1
 A small bubble rises up and is sucked into the funnel.
 ~
 ~
@@ -6685,6 +6692,7 @@ A small blue gill swims up to you.
 64 65536 0 W 1
 1 20 10 1d1+0 1d1+0
 -1 0 1 15
+8 8 1
 The roar of the curning waters is heard even here.
 ~
 ~
@@ -6698,6 +6706,7 @@ A small bass engulfs a miniature minnow.
 64 65536 0 W 1
 1 20 10 1d1+0 1d1+0
 -1 0 1 15
+8 8 1
 The waters flow with incredible speed as the funnel swirls near.
 ~
 ~
@@ -8039,7 +8048,7 @@ Big Horn is here, watching over the new recruits.
 metal helm with one huge horn jutting out from the side.
 ~
 262147 0 900 W 3
-30 3 6 30d8+30 1d8+5
+45 3 6 45d8+90 1d8+5
 -1 1000 14000 1
 8 8 1
 Big Horn barks an order to a group of trainees.
@@ -8256,7 +8265,7 @@ Vail is here, wearing his holy symbol and wielding a huge mace.
 He has a rather large scar across his bare chest.
 ~
 3 0 900 W 3
-30 5 6 30d8+30 1d8+2
+45 5 6 45d8+90 1d8+2
 -1 1000 13000 1
 8 8 1
 WHAM!  Vail slams his mace into the training dummy!
@@ -8271,7 +8280,7 @@ Elias is here, in his robes bearing the symbol of Eldath.
 serene smile on his face.
 ~
 3 0 900 W 1
-30 7 8 30d8+30 1d8+1
+45 7 8 45d8+90 1d8+1
 -1 1000 13000 1
 8 8 1
 "Greetings child!" Elias says, "How may I assist you?"
@@ -8286,7 +8295,7 @@ Cael the High Druid is here, is robes of flowing green.
 He holds a huge oaken cudgel and softly strokes his long white beard.
 ~
 3 0 900 W 2
-30 6 8 30d8+30 1d8+1
+45 6 8 45d8+90 1d8+1
 -1 1000 13000 1
 8 8 1
 A bird flys in, lands on Cael's shoulder for a second, and then flits away.
@@ -8301,7 +8310,7 @@ Reever, high priest of Tymora, is here before the altar.
 on a silver chain against his chest.
 ~
 3 0 900 W 2
-30 5 6 30d8+30 1d8+1
+45 5 6 45d8+90 1d8+1
 -1 1000 12000 1
 8 8 1
 Reever looks up, smiles, and then goes back to his praying.
@@ -8422,7 +8431,7 @@ Aahz is here, poring over a large, dusty tome.
 titles and so calls himself Aahz the Great and Powerful.
 ~
 3 0 900 W 3
-30 6 6 30d8+30 1d8+2
+45 6 6 45d8+90 1d8+2
 -1 1000 12000 1
 8 8 1
 Aahz quietly turns the page of his book and adjusts his spectacles.
@@ -8528,7 +8537,7 @@ Finnly the Master Thief is here, playing with a dagger.
 scar on his right cheek and his motions are almost cat like.
 ~
 3 0 900 W 4
-30 7 6 30d8+30 1d8+2
+45 7 6 45d8+90 1d8+2
 -1 1000 12000 1
 8 8 1
 Finnly smirks and hands you your money pouch back.
@@ -8797,6 +8806,490 @@ arts, most unknown to the known world.
 8 8 1
 Ilrand says 'The world is a vast place, enjoy what it has to offer.'
 ~
+~
+#15055
+fighter wizened~
+A wizened fighter~
+A wizened fighter wanders here.
+~
+   He is an old fighter with many scars on his body.  It is clear that he has
+seen many battles.  His arms and legs are strong and muscular and he has a
+mean scowl on his face.
+~
+226 0 -340 C
+1 4 1 135 237 10d5+15
+20d100+1000 20 10d20+25 7 3 2
+4d12+8 0
+4d12+8 0
+0 0 0
+18 20 15 16 8 6
+0 0 0 0 0
+8 8 0 0
+#15056
+brigand~
+A brigand~
+A brigand crouches here in the shadows.
+~
+   The brigand looks around for someone to assault.  His eyes narrow as he 
+sees you, and clutches his weapon tightly.
+~
+98 524288 -605 C
+1 8 1 135 237 15d5+25
+17d100+500 20 7d5+10 6 2 1
+4d8+8 0
+0 0 0
+16 0 18 9 13 6
+0 0 0 0 0
+8 8 0 0
+#15057
+soldier warrior youth~
+A young soldier~
+A young soldier is here.
+~
+   He is young, but sure of himself.  His dwarven arms are strong and muscular.
+For a dwarf, he seems rather comfortable with the surface dwellers around him.
+He appears brash, and would probably start a fight easily.
+~
+68 32768 -100 C
+3 4 1 135 237 5d5+40
+15d100+500 18 7d8+4 8 5 1
+4d12+6 0
+0 0 0
+18 0 10 11 8 5
+0 0 0 0 0
+8 8 1 0
+A young soldier smiles and saunters about proudly.
+~
+~
+#15058
+woman mage wizard~
+A strangely dressed woman~
+A strangely dressed woman stands here, observing others quietly.
+~
+   She is tall and mysterious.  She shows no sign of emotion at all as she
+looks at the people around her.  Her clothing is a purple-red color and seems
+to absorb light.  She wears jewelry on her fingers and carries a pouch
+discreetly hidden under a cape.
+~
+64 32770 -350 C
+1 1 2 135 237 5d8+20
+29d199+300 20 5d8+4 1 2 1
+4d8+8 0
+7 8 96
+12 0 8 9 18 16
+0 0 0 0 0
+8 8 0 0
+#15059
+urchin street child~
+A street urchin~
+A street urchin plays here.
+~
+   The child is grubby and underfed.  Clearly a sad testimony to the poverty of
+some in this city.  Her hair is dirty and her clothes are tattered.
+~
+131919 0 0 W 1
+1 10 10 2d6+5 1d3+3
+-1 0 100 1
+8 8 2 0 0 0
+The street urchin giggles as she splashes in a puddle, spraying mud everywhere.
+~
+You hear children giggling nearby.
+~
+#15060
+urchin street child~
+A street urchin~
+A street urchin plays here.
+~
+   The child is grubby and underfed, clearly a sad testimony to the poverty of
+some in this city.  His hair is dirty and his clothes are tattered.
+~
+131919 0 0 W 1
+1 10 10 2d6+5 1d3+3
+-1 0 100 1
+8 8 1 0 0 0
+The street urchin plays with a small frog in a puddle.
+~
+You hear children giggling nearby.
+~
+#15061
+trader merchant man lizard lizardman~
+A trader~
+A trader wanders through the city, looking for the dock.
+~
+   The trader is what looks like a lizardman, but dressed in a sailor's outfit.
+He wears a strange symbol and clothing, which is surprising for a lizardman. He
+looks constantly around and behind him and seems rather suspicious.  
+~
+393284 0 -230 C
+6 12 1 135 237 10d20+50
+25d100+1000 25 25d10+100 2 1 2
+10d4+5 0
+10d4+5 0
+0 0 0
+18 10 18 10 13 10
+0 0 0 0 0
+8 8 0 0
+#15062
+sailor fisherman~
+A fisherman~
+A fisherman walks here.
+~
+   The fisherman looks old and smells of the sea.  His face is wrinkled and
+haggard.  His long, grey hair hangs down to his shoulder.  He smiles eerily at
+you, which makes you shiver.  His arms are strong and scarred from many a
+battle.  Perhaps he was a soldier once.
+~
+393284 0 -432 C
+1 4 1 137 235 10d6+25
+25d100+1000 25 23d10+100 4 2 2
+7d8+4 0
+7d8+4 0
+0 0 0
+18 20 15 17 12 15
+0 0 0 0 0
+8 8 1 0
+The old sailor whispers to you, "Beware the lords of Neshtar." 
+~
+You hear a gravelly voice singing an old sailor song.
+~
+#15063
+trader merchant~
+A merchant~
+A merchant is here, hawking his wares.
+~
+   He is a shady looking sort of fellow with narrow, beady little eyes.  He
+shouts about a magical extract, blessed by the king himself, which cures all
+ailments.  His clothes are plain and his purse seems empty, as if no one wants
+what he is selling.
+~
+393284 0 -300 C
+1 4 1 137 235 2d6+25
+20d100+200 20 20d8+50 0 1 2
+1d10+2 0
+1d10+2 0
+0 0 0
+17 0 18 10 8 7
+0 0 0 0 0
+8 8 1 0
+A merchant shouts, "Behold, a magical salve for only 300gp.  Blessed by the
+king."
+~
+You hear someone shouting.
+~
+#15084
+thief criminal~
+A thief~
+A thief crouches behind people, trying not to be noticed.
+~
+  You can't really make out any details.  Just as your gaze falls
+upon the fellow, he ducks behind someone else and you have to find
+him again.
+~
+131140 0 -422 C
+4 8 1 137 235 4d10+20 
+18d100+100 20 20d20+50 0 7 1
+1d10+2 0
+0 0 0
+16 0 18 8 7 7
+0 0 0 0 0
+8 8 0 0
+#15085
+traveler tourist woman~
+A traveler~
+A traveler walks here, lugging her baggage around.
+~
+   She looks as if she is from around Highstaff.  She has not a blemish on her
+hands, suggesting a life of idleness.  She holds her head high and looks out of
+place here.  The quantity of baggage suggests that she is moving here.
+~
+64 0 -200 C
+1 2 2 137 235 4d10+20
+15d100+100 20 20d10+50 2 5 1
+1d6+4 0
+0 0 0
+14 0 14 9 8 15
+0 0 0 0 0
+8 8 0 0
+#15086
+traveler tourist man~
+A traveler~
+A traveler walks here, lugging his baggage around.
+~
+   He looks as if he is from around Highstaff.  He has not a blemish on his
+hands, suggesting a life of idleness.  He struggles under the weight of the
+baggage and looks as if he is carrying all of his life's possessions.
+~
+64 0 -240 C
+1 2 1 137 235 4d10+20 
+17d100+100 20 20d10+50 2 5 1
+1d8+4 0
+0 0 0
+16 0 14 9 9 15
+0 0 0 0 0
+8 8 1 0
+A traveler grunts under the weight of his baggage.
+~
+~
+#15087
+constable sloppy guard pig fascist~
+A sloppy looking constable~
+A sloppy looking constable meanders here.
+~
+   The constable of Serpent's Reach is charged with protecting the citizens of
+Lord Mohrip's city, but the way he looks doesn't make you feel confident of
+your safety.  He is, however, well armored and has probably seen many battles.
+~
+64 0 -265 C
+1 2 1 137 235 4d8+10
+23d100+100 25 25d10+50 -3 4 2
+1d12+8 0
+1d12+8 0
+0 0 0
+18 20 15 12 9 9
+0 0 0 0 0
+8 8 1 0
+The constable lets out a loud belch and snickers.
+~
+You hear the jingling of keys nearby.
+~
+#15088
+priest aklan~
+An Aklan priest~
+An Aklan priest is here, looking for converts.
+~
+   The priest sneers around him as he shouts about the imminent demise of Tyken
+at the hands of Aklan.  He preaches that gold, sex, and power come to the loyal
+followers of Aklan.  His arms are thick and scarred.
+~
+393284 32 -1000 C
+1 6 1 137 235 4d8+35
+25d100+100 25 25d10+40 -4 2 2
+1d10+6 0
+1d10+6 0
+0 0 0
+18 0 15 16 12 10
+0 0 0 0 0
+8 8 1 0
+An aklan priest shouts, "Join us or DIE!!!"
+~
+You hear someone shouting nearby.
+~
+#15089
+priest guard tyken~
+A Tyken Guard~
+A Tyken Guard stands here vigilantly.
+~
+   The Tyken Guard are the most feared and courageous followers of Tyken.
+Their reputation of valiant battle in the face of impossible odds is well known
+throughout the land, but they are rarely seen by laymen.  This guard has
+clearly seen many battles, and has many scars to prove it.
+~
+393286 32 1000 C
+1 6 1 135 237 10d5+20
+30d100+230 30 25d10+100 -4 0 2
+2d10+5 0
+2d10+5 0
+0 0 0
+18 10 13 14 18 17
+0 0 0 0 0
+8 8 0 0
+#15090
+troll ugly mercenary~
+An ugly troll~
+An ugly troll wanders here.
+~
+   The troll is ugly and smelly.  He seems to be better dressed than the
+average troll, so you suspect he may be a mercenary looking for work.  The
+weapons he wears reinforces that suspicion.
+~
+393284 32768 -506 C
+31 4 1 135 237 2d20+35
+30d100+100 30 28d10+25 -1 1 2
+1d16+2 0
+1d16+2 0
+0 0 0
+18 10 10 10 8 7
+0 0 0 0 0
+8 8 1 0
+The troll grunts a poorly formed sentence, "Me soldier for hire."
+~
+~
+#15091
+warrior ogre old~
+An old ogre warrior~
+An old ogre warrior stand here, bragging about his victories.
+~
+   The old ogre warrior smells awful, and looks as frightening as he smells.
+He is missing a finger, an eye, and has many scars.  His bulging muscles are
+barely contained by his grubby clothing.
+~
+262210 32768 -833 C
+17 4 1 135 237 4d25+200
+30d100+100 30 32d10+25 -2 0 2
+2d10+3 0
+2d10+3 0
+0 0 0
+18 20 8 14 7 6
+0 0 0 0 0
+8 8 1 0
+The old ogre laughs loudly and slaps his buddy harshly on the back.
+~
+You hear gruff laughter nearby.
+~
+#15092
+warrior ogre~
+An ogre warrior~
+An ogre warrior stands here, talking about his campaigns.
+~
+   The ogre warrior is younger than his partner, but no less smelly.  He is
+missing an ear and has numerous scars on his body.  His muscles bulge through
+his thin, dirty clothing.
+~
+262210 32768 -586 C
+17 4 1 135 237 4d20+200
+26d100+100 26 25d10+25 0 2 2
+2d6+5 0
+2d6+5 0
+0 0 0
+18 0 10 16 6 4
+0 0 0 0 0
+8 8 1 0
+The ogre warrior takes another swig of a disgusting looking swill.
+~
+You hear a gruff voice talking about battles.
+~
+#15093
+warrior orc half-orc~
+An half-orc warrior~
+An half-orc warrior sits next to the door, obviously drunk.
+~
+   The half-orc warrior is hideous to look at.  His stare is vacant of any
+signs of intelligence and he is dressed in ripped, smelly rags.  He looks like
+an outcast, fodder for an infantry.
+~
+2662210 0 -567 C
+11 4 1 135 237 4d10+100
+20d100+50 20 20d10+25 3 7 1
+2d6+0 0
+0 0 0
+17 0 6 10 7 3
+0 0 0 0 0
+6 6 1 0
+The half-orc takes another swig of his beer and belches loudly.
+~
+You hear a disgusting belch nearby.
+~
+#15094
+bard singer~
+A bard~
+A bard sits here, singing a sad melody.
+~
+   The bard looks to be a wanderer, traveling and telling the stories of the
+old wars of the gods, lest they be forgotten.  He strums his harp and his voice
+is sweet and melodious.
+~
+66 32 -100 C
+1 2 1 135 237 4d6+50
+22d100+50 22 21d10+50 0 0 2
+2d10+5 0
+2d10+5 0
+0 0 0
+17 0 15 12 16 18
+0 0 0 0 0
+6 6 1 0
+The bard sings, "Old Ellis faced off,
+the denizens of orcs,
+he knew he would perish that day.
+Without any fear,
+not e'en a blink,
+he slew till he met his ill fate."
+~
+You hear a bard singing a sad melody.
+~
+#15095
+barmaid maid waitress~
+A barmaid~
+A barmaid weaves around the rowdy patrons, carrying drinks to tables.
+~
+   The barmaid has seen better years.  Sweat drips off her forehead, as if she
+has slaved all day in this dirty tavern.  Her clothes were clearly pretty once,
+but now have dirt, stains, and tears from years of abuse.
+~
+262210 0 120 C
+1 4 2 137 237 4d12+12
+18d100+50 18 17d10+50 3 5 1
+2d6+4 0
+0 0 0
+16 0 16 10 15 15
+0 0 0 0 0
+8 8 1 0
+The barmaid screams as a patron gooses her.  She turns around and delivers a
+mighty slap to the offender.
+~
+You a hear a brief scream nearby, followed by a slapping sound.
+~
+#15096
+man fat old dirty~
+A fat old man~
+A fat old man sits here, snuggling a young lady.
+~
+   The old man has more on his mind than the hot sauna as he snuggles a young
+lady at least half his age.  He is still rather muscular for an old man, and
+has enough scars to lead you to believe he was once a soldier.
+~
+262210 0 -243 C
+1 4 1 135 237 0d0+0
+20d100+100 25 22d10+100 5 0 2
+4d6+1 0
+4d6+1 0
+0 0 0
+17 0 15 10 17 10
+0 0 0 0 0
+6 6 1 0
+The dirty old man gropes the young woman.
+~
+~
+#15097
+lady woman young~
+A young lady~
+A young lady snuggles up to the old man.
+~
+   She is quite beautiful, but you can't help but wonder what she wants with
+that old man.  Maybe he's rich.  She whispers something into his ear, and
+occasionally slaps his hands away playfully.
+~
+262210 0 -290 C
+1 4 2 135 237 0d0+0
+10d100+100 15 18d10+50 5 3 1
+2d6+1 0
+0 0 0
+15 0 10 9 10 9
+0 0 0 0 0
+6 6 1 0
+The young lady whispers something into the old man's ear, then giggles.
+~
+You hear a woman giggling nearby.
+~
+#15098
+man young~
+A young man~
+A young man is here, sleeping in the sauna.
+~
+   He is young and strong.  The pile of clothes in the corner suggests that he
+is a city guard enjoying his day off.
+~
+262210 0 -303 C
+1 6 1 137 237 0d0+0
+15d100+100 15 15d10+50 5 1 2
+2d6+1 0
+2d6+1 0
+0 0 0
+18 10 15 10 9 8
+0 0 0 0 0
+4 4 1 0
+The young man snores loudly.
+~
+You hear someone snoring nearby.
 ~
 #20000
 worker ant~
@@ -9326,19 +9819,30 @@ A small bloated buffalo like creature sleeps among the vegitation.
 -1 0 100 35
 4 4 1
 #20904
-karrn dragon Black~
-Karrn, a black dragon~
-A large ominous black dragon glares a huge eye at you.
+karrn dragon black~
+Karrn, the Legendary Black Dragon of Despair~
+A monsterous black dragon pivots a single orb in your direction.
 ~
-  The very being of this large creature makes the hair on your neck
-stand on end, and you get this giant urge to flee and run for your life.
-One scale alone stands almost as tall as a strong warrior, this beast must
-be as old as time itself.
+  You see the most ancient of black drakes standing before you.  The
+hairs on the your neck curl as they, wisely, try to flee.  His feet
+are buried in the murk, yet he seems able to pull them free with
+terrifyingly little effort.  Wisps of smoke curl about the area, and
+his eyes glow with a vibrant red intellect.
 ~
-38 4229160 -1000 M 5
-39 0 1 39d15+217 1d10+8
--1 0 39818 9
-8 8 4 16 12 2
+2621447 4229160 -1000 C
+9 5 1 850 2340 100d100+100
+500d2000+50000 45 55d16+300 -2 1 7
+1d12+8 0
+1d12+8 0
+3d8+12 0
+1d10+6 0
+1d10+6 0
+3d8+12 0
+1d16+4 0
+144 5 2
+24 99 18 19 18 17
+3 3 3 3 3
+8 8 0 0
 #20905
 leech giant~
 A giant leech~
@@ -9383,6 +9887,415 @@ A long wormlike slug slithers through the mud.
 4 17 9 4d8+14 1d4+3
 -1 0 470 19
 8 8 0
+#22000
+wanderer hermit man~
+A desert wanderer~
+A large man wearing disheveled rags tries to keep his distance from you.
+~
+  The desert wanderer looks as if he's about to flee, he clearly doesn't 
+like company.  His clothes are dark and ragged.  He carries a water-skin
+that he attempts to hide from you.  His hands seem to be built of iron,
+you'd hate to have him hit you.
+
+~
+131140 0 -400 C
+1 1 1 198 250 10d100+100
+8d1000+5000 30 19d8+70 -1 10 4
+2d4+2 1
+2d4+2 1
+2d4+2 1
+2d4+2 1
+0 0 0
+2d4+10 4d25+0 2d4+10 2d4+10 2d4+10 2d4+10
+5 5 5 5 5
+8 8 0 0
+#22005
+sand worm~
+A sand worm~
+A gigantic sand worm is here, looking hungry.
+~
+  The sand worm is mostly buried in sand, but it's about 5 feet thick,
+and about 10 feet have emerged from the sand.  It has hundreds of 6 inch
+teeth lining it's thoat.  It's slow, but you'd hate it if it bit you.
+
+~
+32 32808 0 C
+18 1 0 999 999 0d1+0
+30d1000+666 25 25d10+100 -8 10 1
+6d6+6 1
+0 0 0
+0d0+18 0d0+99 0d0+1 0d0+18 0d0+3 0d0+3
+20 20 20 20 20
+8 8 0 0
+#22010
+dust devil swirling~
+A dust devil~
+A miniature funnel of dust swirls here.
+~
+  It is very hard to see the dust devil.  It is apperently made out of
+only sand and wind.  It is a minor elemental, and it hates you.  It's 
+excited about getting the chance to attack you.
+
+~
+32 1574954 0 C
+26 1 3 100 100 0d0+0
+10d500+1000 20 5d10+10 -9 10 2
+1d4+2 1
+1d4+2 1
+112 13 2
+2d7+2 0d0+0 0d0+18 0d0+7 0d0+3 0d0+18
+20 20 20 20 20
+8 8 0 0
+#22200
+sha'ir man mage~
+A Sha'ir~
+A sha'ir, a follower of the Djinn, stands here.
+~
+  This man smells like a mage.  You can smell spell components such as:
+unmentionable parts of dead animals, and assorted spices.  He is clearly
+a follower of the Djinn, mainly because he wears a Djinn logo on his 
+robes.  
+
+~
+1 0 500 C
+1 1 1 198 250 10d90+100
+10d500+0 30 30d4+40 6 20 1
+1d4+4 1
+0 0 0
+10d10+10 0d0+0 10d10+10 10d10+10 0d0+18 0d0+18
+20 20 20 20 20
+8 8 0 0
+#22205
+djinni djinn guard~
+A Djinni~
+A Djinni Guard hovers here waiting to slay fighting players.
+~
+  The Djinni Guard hovers about seven feet tall.  He is huge, probably
+about 300 pounds.  Although, this fat man doesn't look jolly.  Slung 
+over his shoulder is a Djinn Guard's sash.  Further, he is gracefully
+brandishing an invisible sword.  You suspect he's strong enough to
+squash you without much of a fight.
+
+~
+0 4227112 1000 C
+1 1 1 198 250 0d0+0
+4d1000+1000 1 6d100+50 6 7 3
+3d3+3 1
+3d3+3 1
+3d3+3 1
+0 0 0
+3d4+6 1d99+1 3d6+0 3d6+0 3d5+3 3d5+3
+5 5 5 5 5
+8 8 0 0
+#22210
+Wind Guardian~
+A wind guardian~
+A windy presence is felt here.
+~
+  You don't see much of anything.  You can, however, feel that there is
+a life form in the room.  It pulses around you, letting you know it's 
+there.  It seems as though it has announced it's presence, perhaps it
+could have stayed hidden if it really wanted.  I also seems like it 
+is made of wind itself... like a living breeze.
+
+~
+0 0 0 C
+1 4 1 198 250 0d0+0
+2d500+500 20 10d20+100 -4 10 3
+2d8+2 1
+2d8+2 1
+2d8+2 1
+0 0 0
+3d6+0 0d0+0 3d6+0 3d6+0 3d6+0 3d6+0
+10 10 10 10 10
+8 8 0 0
+#25000
+guard bazzak gate~
+A Gate Guard~
+A guard stands here blocking your entrance into the Castle.
+~
+  The guard looks intent on preventing something from entering the
+castle, but you are unsure of just what.  As you approach, he utters
+something under his breath, and you feel like he's learned something
+about your disposition.
+
+~
+262210 0 600 C
+3 4 1 198 250 0d0+0
+10d500+5000 17 17d8+12 2 7 2
+2d6+2 1
+2d6+2 1
+0 0 0
+1d4+14 1d30+0 2d3+12 1d4+13 3d6+0 3d6+0
+10 10 10 10 10
+8 8 0 0
+#25001
+guard interior~
+An interior guard~
+A guard stands here, guarding the interior of the castle.
+~
+  The guard wanders the castle, attempting to purge the presence of any
+evil from the place.  As he peers over to you, he mumbles to himself
+and you think perhaps he is a little more knowledgable about your 
+disposition than you thought he could be.
+
+~
+262208 0 400 C
+3 4 1 198 250 0d0+0
+9d1000+9000 17 19d8+20 2 4 2
+3d3+5 1
+3d3+5 1
+0 0 0
+1d3+15 1d60+0 1d4+14 3d6+0 3d6+0 3d6+0
+10 10 10 10 10
+8 8 0 0
+#25002
+arsenal guard bazzak~
+An arsenal guard~
+A guard stands here guarding the weapons.
+~
+  The guard seems to hate everybody.  He stands his ground casually
+until you enter the room, at which time he draws his sword and 
+glares at you.
+
+~
+262242 40 0 C
+3 4 1 198 250 0d0+0
+9d1000+9000 17 0d0+130 3 5 1
+2d8+0 1
+0 0 0
+0d0+18 1d30+0 3d6+0 1d3+15 3d6+0 3d6+0
+10 10 10 10 10
+8 8 0 0
+#25003
+jester~
+A courtroom Jester~
+A courtroom Jester stands here, juggling.
+~
+  Wearing the stereotypical cap and juggling three tiny soft balls,
+you realize that this faery's sole purpose in life is to entertain
+others.  The skill with which she juggles and the speed with which
+she dances and flips makes her a difficult target.
+
+~
+131268 2048 100 C
+36 8 2 198 250 1d200+0
+4d1000+9000 17 2d10+60 -4 4 3
+1d4+0 1
+1d4+0 1
+1d4+0 1
+0 0 0
+1d8+10 0d0+0 0d0+18 3d6+0 3d6+0 3d6+0
+10 10 10 10 10
+8 8 1 0
+The jester exclaims, 'Watch THIS everyone!'~
+You hear some rumbling noises nearby.~
+#25004
+buxom teenager girl~
+A buxom teenager~
+A buxom teenager stands here arching her back.
+~
+  A blatantly topheavy young lass seems to steal all the attention
+away from the poor jesters as boys and dirty old men are constantly
+following her around.
+
+~
+2097220 0 500 C
+1 1 2 136 140 0d0+0
+15d500+7000 17 5d10+70 4 7 2
+2d4+0 1
+2d4+0 1
+0 0 0
+3d6+0 0d0+0 3d6+0 3d6+0 3d6+0 3d6+0
+10 10 10 10 10
+8 8 0 0
+#25005
+dirty old man~
+A dirty old man~
+A dirty old man stands here gaping at the buxom teenager.
+~
+  It has obviously taken this man many years and numerous trials
+and tribulations to discover the the greatest thing in life is
+blond 12-year-old girls.  The wrinkles cover his face but there is
+a profound twinkle of life in his eyes.
+
+~
+262212 4194304 500 C
+1 4 1 198 250 3d100+0
+0d0+11056 17 2d10+100 3 10 3
+1d4+2 1
+1d4+2 1
+1d4+2 1
+0 0 0
+2d8+2 0d0+0 0d0+12 3d6+0 3d6+0 1d5+13
+10 10 10 10 10
+8 8 0 0
+#25006
+boy teenage~
+A teenage boy~
+A young boy stands here, attempting to court female passersby.
+~
+  Covered in dirt, acne, and sweat, this boy still thinks he has a 
+chance at wooing buxom young lass.  
+
+~
+393284 4194304 900 C
+3 4 1 198 250 1d10+0
+10d500+9000 17 3d30+30 3 10 2
+2d3+1 1
+2d3+1 1
+0 0 0
+3d6+0 0d0+0 3d6+0 3d6+0 3d6+0 3d6+0
+10 10 10 10 10
+8 8 0 0
+#25007
+drunk drunken warrior man~
+A drunken warrior~
+A very large man stands here, quite inebriated.
+~
+  Well armoured in the traditional ivory of the castle, this man seems
+to have had a couple liters too much ale.  His festive singing, dancing,
+and even the occasional vomiting makes him a truly repulsive sight.
+
+~
+393284 0 750 C
+3 4 1 198 250 1d300+0
+10d700+9000 17 1d30+100 6 7 2
+3d3+0 1
+3d3+0 1
+0 0 0
+1d4+14 2d15+0 0d0+12 3d6+0 0d0+10 3d6+0
+10 10 10 10 10
+8 8 0 0
+#25008
+front guard~
+A front gate guard~
+A man stands here, guarding the front gates.
+~
+  Well armed man sits in the dark, watching for intruders who might
+try to enter the castle without permission.
+
+~
+262242 0 1000 C
+3 4 1 198 250 0d0+0
+30d1000+0 17 3d15+90 4 6 2
+2d4+0 1
+2d4+0 1
+0 0 0
+1d4+14 1d100-1 3d6+0 3d6+0 3d6+0 3d6+0
+10 10 10 10 10
+8 8 0 0
+#25009
+waitress wench~
+The waitress~
+A dwarven waitress is here serving drinks.
+~
+  A long description about the maid.
+~
+131140 0 500 C
+3 4 2 198 250 1d600+0
+0d0+7000 14 1d40+70 3 10 1
+1d4+1 1
+0 0 0
+3d6+0 0d0+0 3d6+0 3d6+0 3d6+0 3d6+0
+10 10 10 10 10
+8 8 0 0
+#25010
+warrior practicing~
+A practicing warrior~
+A young warrior stands here, practicing his moves.
+~
+  The youth of this fine warrior is hidden by the precision and
+skill with which he executes his moves.  He looks surprisingly
+strong, and not surprisingly, he doesn't seem to bright.  He is,
+however, strong and quick.
+
+~
+262498 0 660 C
+3 4 1 198 250 1d100+0
+0d0+14000 17 15d10+0 2 10 2
+2d4+0 1
+2d4+0 1
+0 0 0
+1d6+12 1d99+0 1d6+12 3d6+0 3d6+0 3d6+0
+10 10 10 10 10
+8 8 0 0
+#25011
+sentry king guard~
+A King's Sentry~
+A man in gold stands here guarding the door.
+~
+  The sparkle from his armour is almost blinding, and the strength
+underneath it is frightening.  He stands his ground firmly, 
+preventing any and all entrance into the room.
+
+~
+262210 32776 1000 C
+3 4 1 198 250 0d0+0
+20d500+9000 17 4d10+100 0 6 2
+2d4+0 1
+2d4+0 1
+0 0 0
+0d0+18 0d0+0 4d4+2 3d6+0 3d6+0 3d6+0
+10 10 10 10 10
+8 8 0 0
+#25012
+kings guard king~
+A king's guard~
+A man stands here protecting the king from harm.
+~
+  A very large dwarf stands here dressed in golden armor, brandishing
+a sword.  Unlike the sentry's, he doesn't seem set on staying in
+one spot.  He feels free to wander around intimidating most anybody.
+
+~
+393316 0 1000 C
+3 4 1 198 250 0d0+0
+40d500+0 17 6d10+120 2 10 2
+2d4+0 1
+2d4+0 1
+0 0 0
+0d0+18 0d0+0 4d4+2 3d6+0 3d6+0 3d6+0
+10 10 10 10 10
+8 8 0 0
+#25013
+prince bazzak~
+The prince~
+The Prince of the Castle sits here, mourning the loss of his father.
+~
+  Dressed in armour matching the guards, a young boy, of no more
+than fifteen sits on the throne, tears running down his face.  He
+seems to be mourning the loss of the king.  When you look his way,
+he merely points to the story.
+
+~
+262210 0 1000 C
+3 4 1 198 250 1d1000+0
+20d500+9000 20 0d0+200 0 7 2
+3d3+0 1
+3d3+0 1
+0 0 0
+4d4+2 0d0+0 0d0+18 3d6+0 3d6+0 3d6+0
+10 10 10 10 10
+6 8 0 0
+#25014
+mage bazzak~
+The Bazzak Mage~
+The only mage in the castle stands here over a potion.
+~
+  This small dwarf seems frustrated at the world.  He hides in his
+library pouring over potions and books all day, and he doesn't seem
+to have any sort of a knack for it.
+
+~
+131142 40 600 C
+3 1 1 198 250 1d1000+0
+0d0+10000 17 1d1+1 3 10 1
+1d4+0 1
+0 0 0
+3d6+0 0d0+0 3d6+0 3d6+0 0d0+18 0d0+18
+10 10 10 10 10
+8 8 0 0
 #30000
 skeleton moore~
 A skeleton~
@@ -9481,6 +10394,23 @@ tentacles off the sides making it very difficult to get close to.
 15 11 3 15d10+85 1d3+1
 -1 0 17567 31
 8 8 0
+#32300
+jennifer sex slave~
+Jennifer~
+Jennifer the sex slave stands here waiting for her master.
+~
+  Jennifer is very beautiful woman.  Her eyes are hazel and her shoulder length
+blonde hair is smooth as silk.  She smiles as you approach her.  Her clothes 
+are of the finest material in the land and her figure...whoa!
+~
+67 0 300 C
+2 2 2 135 237 0
+10d100+300 10 12d10+30 10 8 1
+1d4+0 0
+0 0 0
+12 0 15 10 10 16
+0 0 0 0 0
+8 8 0 0
 #50000
 end~
 end~

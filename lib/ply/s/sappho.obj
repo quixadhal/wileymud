@@ -1,0 +1,63 @@
+#RENT
+Owner              Sappho~
+Gold               0
+TotalCost          10
+LastUpdate         825546967
+MinimumStay        0
+End
+#EQUIPMENT
+#ITEM
+ObjId              0
+ContainedBy        -1
+Name               boots leather~
+Description
+A pair of leather boots lie here.~
+ShortDescr
+a pair of leather boots~
+ActionDescr
+(null)~
+VNum               3026
+EquippedAt         8
+Values             1 1 0 0
+ExtraFlags         0
+Weight             2
+Timer              0
+BitVector          0
+Type               9
+WearFlags          65
+Cost               50
+CostPerDay         10
+Affect             0 0
+Affect             0 0
+End
+End
+#CARRIED
+#ITEM
+ObjId              1
+ContainedBy        -1
+Name               large knife~
+Description
+A large knife lies here.~
+ShortDescr
+a large knife~
+ActionDescr
+(null)~
+VNum               3021
+EquippedAt         0
+Values             0 1 5 11
+ExtraFlags         4096
+Weight             3
+Timer              0
+BitVector          0
+Type               5
+WearFlags          8193
+Cost               20
+CostPerDay         2
+Affect             0 0
+Affect             0 0
+ExtraDescr         large knife~
+It appears to be about eight to nine inches in length, fairly sharp.
+~
+End
+End
+#END_RENT

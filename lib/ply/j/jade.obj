@@ -1,0 +1,397 @@
+#RENT
+Owner              Jade~
+Gold               509
+TotalCost          0
+LastUpdate         849246183
+MinimumStay        0
+End
+#EQUIPMENT
+#ITEM
+ObjId              0
+ContainedBy        -1
+Name               traveling cloak~
+Description
+A traveling cloak lies here.~
+ShortDescr
+a traveling cloak~
+ActionDescr
+(null)~
+VNum               3053
+EquippedAt         3
+Values             0 0 0 0
+ExtraFlags         0
+Weight             15
+Timer              0
+BitVector          0
+Type               11
+WearFlags          5
+Cost               12
+CostPerDay         12
+Affect             17 -3
+Affect             26 2
+End
+#ITEM
+ObjId              1
+ContainedBy        -1
+Name               scale bodice~
+Description
+A scale bodice lies here in a clump~
+ShortDescr
+a scale bodice~
+ActionDescr
+(null)~
+VNum               10005
+EquippedAt         5
+Values             2 2 0 0
+ExtraFlags         0
+Weight             15
+Timer              0
+BitVector          0
+Type               9
+WearFlags          9
+Cost               150
+CostPerDay         70
+Affect             0 0
+Affect             0 0
+ExtraDescr         scale bodice~
+  This piece of armor looks more like the top of a elegant dress than 
+anything else, with shoulder straps houlstering the bousoms, much skin on
+the upper torso is exposed.
+~
+End
+#ITEM
+ObjId              2
+ContainedBy        -1
+Name               cap leather~
+Description
+A leather cap lies here.~
+ShortDescr
+a leather cap~
+ActionDescr
+(null)~
+VNum               3027
+EquippedAt         6
+Values             1 1 0 0
+ExtraFlags         0
+Weight             1
+Timer              0
+BitVector          0
+Type               9
+WearFlags          17
+Cost               35
+CostPerDay         10
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              3
+ContainedBy        -1
+Name               scale skirt~
+Description
+A scale skirt lies here in a hump.~
+ShortDescr
+a scale skirt~
+ActionDescr
+(null)~
+VNum               10006
+EquippedAt         7
+Values             2 2 0 0
+ExtraFlags         0
+Weight             15
+Timer              0
+BitVector          0
+Type               9
+WearFlags          33
+Cost               150
+CostPerDay         10
+Affect             17 -4
+Affect             0 0
+End
+#ITEM
+ObjId              4
+ContainedBy        -1
+Name               boots leather~
+Description
+A pair of leather boots lie here.~
+ShortDescr
+a pair of leather boots~
+ActionDescr
+(null)~
+VNum               3026
+EquippedAt         8
+Values             1 1 0 0
+ExtraFlags         0
+Weight             2
+Timer              0
+BitVector          0
+Type               9
+WearFlags          65
+Cost               50
+CostPerDay         10
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              5
+ContainedBy        -1
+Name               belt leather~
+Description
+A leather belt lies here.~
+ShortDescr
+a leather belt~
+ActionDescr
+(null)~
+VNum               3028
+EquippedAt         13
+Values             1 1 0 0
+ExtraFlags         0
+Weight             1
+Timer              0
+BitVector          0
+Type               9
+WearFlags          2049
+Cost               30
+CostPerDay         10
+Affect             17 -2
+Affect             0 0
+End
+#ITEM
+ObjId              6
+ContainedBy        -1
+Name               leather bracer~
+Description
+A leather bracer lies here.~
+ShortDescr
+a leather bracer~
+ActionDescr
+(null)~
+VNum               3025
+EquippedAt         14
+Values             1 1 0 0
+ExtraFlags         0
+Weight             1
+Timer              0
+BitVector          0
+Type               9
+WearFlags          4097
+Cost               10
+CostPerDay         5
+Affect             17 -2
+Affect             0 0
+End
+#ITEM
+ObjId              7
+ContainedBy        -1
+Name               leather bracer~
+Description
+A leather bracer lies here.~
+ShortDescr
+a leather bracer~
+ActionDescr
+(null)~
+VNum               3025
+EquippedAt         15
+Values             1 1 0 0
+ExtraFlags         0
+Weight             1
+Timer              0
+BitVector          0
+Type               9
+WearFlags          4097
+Cost               10
+CostPerDay         5
+Affect             17 -2
+Affect             0 0
+End
+#ITEM
+ObjId              8
+ContainedBy        -1
+Name               rod metal cold~
+Description
+A metal rod lies here, it seems to be very cold.~
+ShortDescr
+a cold metal rod~
+ActionDescr
+(null)~
+VNum               10004
+EquippedAt         16
+Values             0 1 6 7
+ExtraFlags         0
+Weight             4
+Timer              0
+BitVector          0
+Type               5
+WearFlags          8193
+Cost               45
+CostPerDay         45
+Affect             18 2
+Affect             0 0
+End
+End
+#CARRIED
+#ITEM
+ObjId              14
+ContainedBy        -1
+Name               bottle water~
+Description
+A bottle of clear liquid has been left here.~
+ShortDescr
+a bottle~
+ActionDescr
+(null)~
+VNum               3003
+EquippedAt         0
+Values             16 10 0 0
+ExtraFlags         0
+Weight             2
+Timer              0
+BitVector          0
+Type               17
+WearFlags          16385
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              14
+ContainedBy        -1
+Name               bottle water~
+Description
+A bottle of clear liquid has been left here.~
+ShortDescr
+a bottle~
+ActionDescr
+(null)~
+VNum               3003
+EquippedAt         0
+Values             16 16 0 0
+ExtraFlags         0
+Weight             2
+Timer              0
+BitVector          0
+Type               17
+WearFlags          16385
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              14
+ContainedBy        -1
+Name               map shlyar~
+Description
+A map lies here.~
+ShortDescr
+a map~
+ActionDescr
+(null)~
+VNum               3050
+EquippedAt         0
+Values             0 0 0 0
+ExtraFlags         0
+Weight             2
+Timer              0
+BitVector          0
+Type               12
+WearFlags          1
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+ExtraDescr         map shylar~
+                         -= Grassland =-
+
+     -= Mansion =-           
+           +              -= Arcanus =-
+   	       	         	+
+         * * * * *  *  *  *  *  *+ -= Jakes =-  +-= Kark =-
+   
+                 -= Jessica =- +*                -= Farm =-
+
+                 -= Supply =-  +*+ -= Griffons =-      
+      +
++-= Chapel =-+   -= Bakery =-  +*  -= Sass =-
+      +            		       +	
+ -= Pastue =-     -= Tate =-   +*  *  *  *  *  *  *  *  *  *
+-= Cemetary =-                         + 
+      +                            -= Home =-
+
+                         -= Grassland =-
+~
+End
+#ITEM
+ObjId              14
+ContainedBy        -1
+Name               salami stick~
+Description
+A long, dried out, stick of salami is here.~
+ShortDescr
+a stick of salami~
+ActionDescr
+(null)~
+VNum               3012
+EquippedAt         0
+Values             20 0 0 0
+ExtraFlags         0
+Weight             5
+Timer              0
+BitVector          0
+Type               19
+WearFlags          1
+Cost               9
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              14
+ContainedBy        -1
+Name               bottle water~
+Description
+A bottle of clear liquid has been left here.~
+ShortDescr
+a bottle~
+ActionDescr
+(null)~
+VNum               3003
+EquippedAt         -1
+Values             16 9 0 0
+ExtraFlags         0
+Weight             2
+Timer              0
+BitVector          0
+Type               17
+WearFlags          16385
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              14
+ContainedBy        -1
+Name               club wooden~
+Description
+A wooden club lies here.~
+ShortDescr
+a wooden club~
+ActionDescr
+(null)~
+VNum               3048
+EquippedAt         -1
+Values             0 1 6 7
+ExtraFlags         0
+Weight             5
+Timer              0
+BitVector          0
+Type               5
+WearFlags          8193
+Cost               2
+CostPerDay         2
+Affect             0 0
+Affect             0 0
+End
+End
+#END_RENT

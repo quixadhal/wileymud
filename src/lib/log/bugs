@@ -1,0 +1,108 @@
+**Raven[6066]: CYRIC: Room messages can be seen while POSSITION_SLEEPING
+**Muth[6310]: CYRIC: 'guard' command says that the creature alertly watches everyone.
+**Daisy[20060]: room 20060 says the road travels north and south but it doesn't....
+**Morgana[10697]: MUTH: Male prisoner, W desc.
+**Grimwell[5202]: something about this wooded area ain't right.
+**Grimwell[5202]: getting out's a bitch
+**Goodwind[4749]: protection from evil doesn't show on spell list
+**Muidnar[6125]: help on the spell fear
+**Muidnar[5086]: would like help on meteor swarm
+**Muidnar[6400]: what is fairy fog and why is it not on the spell list It is 13th level mage
+**Muth[10276]: MUTH: Fucking put something in here!
+**Muth[10276]: MUTH: This is Travelers rest...
+**Prancer[3010]: I can't register to playerkill!
+**Muth[30028]: MUTH: west exit here is looping.
+**Muidnar[5175]: you have a ~ in the description
+**Coffin[4704]: or typo, in the mine dialog ther instead of there.
+**Muth[5175]: MUTH: tila
+**Coffin[3453]: can see the sun going down in the rat cellar.
+**Muth[5107]: MUTH: This exit messed up.
+**Muidnar[3001]: I though that when you died you lost half of the exp to the level you were working on?? I died and when from needing 150k to ne
+**Grimwell[1000]: When someone is writing on one board it locks the ohter out. I can't read the immort board when a player is writing on the back room board
+**Muidnar[3016]: your help files are baked
+**DroiD[3121]: help files are glitched
+**Yaya[9626]: The hermit has some probs. When he walks up after I kill bandit guards and takes the keys from them it is a problem
+**Coffin[5014]: 1 north from golden dragon then 1 east put youto outside golden dragon through small door to east.
+**Robin[1681]: protected is spelled wrong when armor spell wears off.
+**Boromir[1363]: there is no prot from evili in list of spells active when i cast it on my self
+**Belle[3007]: This is the third time I've come on after renting and have all my equipment gone.  :( I watch it scroll by to make sure it rents when I quit...and still i
+**Thomas[5040]: room desc has a few errors.
+**Guido[10699]: things aree
+**Thomas[10686]: door to the east should be closed at reboot of zone
+**Thomas[10689]: message #10011 over word acolyte (like a fraction 1/a) appears in room. either action for cook or the room. check cook first. 
+**Thomas[10692]: wall to south loads open?
+**Faust[1728]: i cant find asguards temple
+**Prancer[4658]: there is nowhere for me to train
+**Muidnar[6113]: conjure elemental is 16th mage I have it does it work???
+**Muidnar[6113]: stone skin is also 16th mage spell I luv it??
+**Grimwell[3008]: Claymore I did a where on it and it was in a small leather pouch. ummm no way
+**Ladyhawke[1400]: you have a typo on the scribe Undrea! "studying"
+**Barracuda[3001]: why does a heal spell do a negative 4hp????
+**Moses[3008]: you can still be charmed if you're not registered
+**Zodiac[6424]: For mages, if you know the spell you don't understand another casting it.  If you don't you can understand them!
+**Scruffy[20533]: south exit goes to 1 s and 1 e instead of 1 south
+**Scruffy[20529]: no northern exit here due to bug in area 1 n.
+**Scruffy[20770]: found a short man and ferocious cat ON the great river?
+**Robin[10255]: Stone skin doesn't wear off completely.  It wears off in two stages making it a pain to use again.
+**Belle[5210]: the description claims.. a arch and stairs lead east to a street below nope...no sirree.. doesn't.
+**Nifer[5186]: when you wear shield, it should be wear (an) aklan shield as shield.... not (a) aklan shield!:) thanks.
+**Melanie[4752]: this bracer didn't /isn't useful....
+**Valiant[3024]: halberd
+**Quixadhal[1367]: failed disarm should wake sleepers up
+**Quixadhal[1367]: hatred only hold for attack starters.. should also be true for those who assist/are grouped...
+**Dirk[3016]: zorn (old mage in arcane) sometimes offers money for something, but doesn't give you any when he buys it
+**Thrym[3000]: caps are lost in say
+**Quixadhal[10678]: load/stat needs work
+**Quixadhal[10678]: reconnecting gets the first active player, not the one matching the name!
+**Quixadhal[9076]: astaral walk shows room desc twice
+**Quixadhal[3000]: ' command needs to be fixed
+**Quixadhal[3000]: testing buglog
+**Dirk[3000]: testing
+**Dirk[3000]: goto shows the immortal arrive in a puff of smoke even if he's invisible (it says "someone arrives in a puff of smoke")
+**Dirk[3000]: pony keg still shows in inventory after it is empty, but you can't find it when you try to drink out of it. It should either disappear, or say its empty
+**Thrym[5153]: shop is empty
+**Thrym[4622]: portal is to the west
+**Quixadhal[3001]: fountain in here?  no a barrel
+**Quixadhal[3008]: You are hungry should have a return on it
+**Zolar[3444]: I'm a cleric, but it says as a 1st level warrior I need X xp to become an attendant
+**Quixadhal[3001]: vnum for room is negative?????
+**Dirk[20063]: 20063 goes to 20063 when you go west
+**Zolar[20062]: this room says grasslands reach out in all directions, but doesn't have an exit to the south
+**Zolar[20061]: same with this room
+**Zolar[20058]: this room says safe road to north and east, but north is entrance to mountains
+**Zolar[20056]: never mind
+**Zolar[3007]: this room shuold probably be dark
+**Zolar[1708]: going north brings you back to this same room
+**Zolar[10696]: I can say "get all chest" and it tells me I can't carry that much weight, even thoguh the chest is locked
+**Quixadhal[1438]: klarion
+**Quixadhal[1438]: Klarion
+**Zolar[5124]: the rooms here aren't quite mapped right
+**Zolar[5031]: this room says stairs lead up, but there are no stairs
+**Gorbag[5010]: Quixadhal
+**Blackfinch[3427]: in score... orlistening
+**Blackfinch[3044]: gender in assist fail command
+**Dirk[5018]: when you do thank <yourself> it says "<name> thanks #hself since you won't"
+**Quixadhal[1020]: Clarina
+**Thrym[5067]: the back gate is locked in Highstaff, but it is not openable (from the inside)!
+**Thrym[10687]: Faulty reset in priestess area
+**Thrym[10687]: SOMEONE needs to ensure that the chest is refilled with gold on each reset
+**Diether[3000]: spam\
+**Puck[5264]: no help on doorbash
+**Natas[3000]: villager
+**Natas[3000]: zaxxon
+**Puck[4667]: I can't get better than awful at doorbash!  & I've got an 18 strength?  It supposed to be that way?
+**Myrth[5153]: I think that for some reason it takes a little too long for the game to respond after casting shield.  For the ability to do your next set of commands aft
+**Dorn[5264]: feathered vests and black vests have the same AC with appraise... but feathered offers better protection
+**Dorn[5123]: shelter
+**Dorn[5123]: shelter no help file
+**Dorn[5260]: put all pouch: You cannot do that (yet)!
+**Cultist[1708]: infinite north loop
+**Kingspao[3007]: cleric wielding dagger
+**Myrth[4671]: when casting shield something should say that it was successful.
+**Quixadhal[5009]: make it almost impossible to learn spells without pracing.
+**Floyd[6083]: rooms don't quite line up here
+**Floyd[6081]: room here is screwey compared to the one to the east
+**Bennu[3001]: heya
+**Bennu[3001]: sorry
+**Quixadhal[3049]: fiddles with BUG!
+**Dinsdale[3004]: i saw darkshard fight a villager and he would get several attack without the villager attacking,kinda wierd.

@@ -1,0 +1,547 @@
+#RENT
+Owner              Kalamar~
+Gold               0
+TotalCost          1603
+LastUpdate         823524293
+MinimumStay        0
+End
+#EQUIPMENT
+End
+#CARRIED
+#ITEM
+ObjId              21
+ContainedBy        -1
+Name               spiked breast plate~
+Description
+A breast plate covered in spikes lies here.~
+ShortDescr
+a spiked breast plate~
+ActionDescr
+(null)~
+VNum               6414
+EquippedAt         0
+Values             4 4 0 0
+ExtraFlags         90112
+Weight             25
+Timer              0
+BitVector          0
+Type               9
+WearFlags          9
+Cost               792
+CostPerDay         592
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              21
+ContainedBy        -1
+Name               great helm~
+Description
+A great helm lies here.~
+ShortDescr
+a great helm~
+ActionDescr
+(null)~
+VNum               6119
+EquippedAt         0
+Values             5 5 0 0
+ExtraFlags         90112
+Weight             45
+Timer              0
+BitVector          0
+Type               9
+WearFlags          17
+Cost               2134
+CostPerDay         234
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              21
+ContainedBy        -1
+Name               black chain leggings~
+Description
+A pair of black chain leggings lie here.~
+ShortDescr
+some black chain leggings~
+ActionDescr
+(null)~
+VNum               6406
+EquippedAt         0
+Values             3 3 0 0
+ExtraFlags         8192
+Weight             9
+Timer              0
+BitVector          0
+Type               9
+WearFlags          33
+Cost               154
+CostPerDay         154
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              21
+ContainedBy        -1
+Name               spike plated boots~
+Description
+A pair of spike plated boots lie here.~
+ShortDescr
+some spike plated boots~
+ActionDescr
+(null)~
+VNum               6418
+EquippedAt         0
+Values             4 4 0 0
+ExtraFlags         90112
+Weight             17
+Timer              0
+BitVector          0
+Type               9
+WearFlags          65
+Cost               487
+CostPerDay         187
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              21
+ContainedBy        -1
+Name               armour plated gauntlets~
+Description
+A pair of armour plated gauntlets are here.~
+ShortDescr
+a pair of armour plated gauntlets~
+ActionDescr
+(null)~
+VNum               5040
+EquippedAt         0
+Values             3 3 0 0
+ExtraFlags         90112
+Weight             15
+Timer              0
+BitVector          0
+Type               9
+WearFlags          129
+Cost               450
+CostPerDay         100
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              21
+ContainedBy        -1
+Name               metal arm plates~
+Description
+A pair of metal arm plates lie here.~
+ShortDescr
+a pair of metal arm plates~
+ActionDescr
+(null)~
+VNum               5035
+EquippedAt         0
+Values             4 4 0 0
+ExtraFlags         90112
+Weight             25
+Timer              0
+BitVector          0
+Type               9
+WearFlags          257
+Cost               500
+CostPerDay         75
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              21
+ContainedBy        -1
+Name               body shield~
+Description
+A body shield lies here.~
+ShortDescr
+a body shield~
+ActionDescr
+(null)~
+VNum               6114
+EquippedAt         0
+Values             12 12 0 0
+ExtraFlags         24576
+Weight             25
+Timer              0
+BitVector          0
+Type               9
+WearFlags          513
+Cost               432
+CostPerDay         32
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              21
+ContainedBy        -1
+Name               harness leather plate shoulder~
+Description
+A peice of leather plate lies here, with a small strand of leather attached.~
+ShortDescr
+a shoulder harness~
+ActionDescr
+(null)~
+VNum               5203
+EquippedAt         0
+Values             1 1 0 0
+ExtraFlags         8192
+Weight             10
+Timer              0
+BitVector          0
+Type               9
+WearFlags          1025
+Cost               10
+CostPerDay         10
+Affect             17 -2
+Affect             0 0
+End
+#ITEM
+ObjId              21
+ContainedBy        -1
+Name               girth silver chain chainmail~
+Description
+A girth made of silver chainmail lies here.~
+ShortDescr
+a girth of silver chainmail~
+ActionDescr
+(null)~
+VNum               5066
+EquippedAt         0
+Values             4 4 0 0
+ExtraFlags         8192
+Weight             10
+Timer              0
+BitVector          0
+Type               9
+WearFlags          2049
+Cost               200
+CostPerDay         100
+Affect             17 -5
+Affect             0 0
+ExtraDescr         girth silver chain chainmail~
+  The girth is made from small links of silver that seem to sparkle in the 
+light.  It is not at all heavy and looks quite comfortable.
+~
+End
+#ITEM
+ObjId              21
+ContainedBy        -1
+Name               leather bracer~
+Description
+A leather bracer lies here.~
+ShortDescr
+a leather bracer~
+ActionDescr
+(null)~
+VNum               3025
+EquippedAt         0
+Values             1 1 0 0
+ExtraFlags         0
+Weight             1
+Timer              0
+BitVector          0
+Type               9
+WearFlags          4097
+Cost               10
+CostPerDay         5
+Affect             17 -2
+Affect             0 0
+End
+#ITEM
+ObjId              21
+ContainedBy        -1
+Name               leather bracer~
+Description
+A leather bracer lies here.~
+ShortDescr
+a leather bracer~
+ActionDescr
+(null)~
+VNum               3025
+EquippedAt         0
+Values             1 1 0 0
+ExtraFlags         0
+Weight             1
+Timer              0
+BitVector          0
+Type               9
+WearFlags          4097
+Cost               10
+CostPerDay         5
+Affect             17 -2
+Affect             0 0
+End
+#ITEM
+ObjId              21
+ContainedBy        -1
+Name               bastard sword~
+Description
+A large bastard sword lies here.~
+ShortDescr
+a bastard sword~
+ActionDescr
+(null)~
+VNum               5023
+EquippedAt         0
+Values             0 2 4 3
+ExtraFlags         28672
+Weight             10
+Timer              0
+BitVector          0
+Type               5
+WearFlags          40961
+Cost               700
+CostPerDay         200
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              21
+ContainedBy        -1
+Name               ogre tongue~
+Description
+A fried ogre tongue rests here.~
+ShortDescr
+a cooked ogre tongue~
+ActionDescr
+(null)~
+VNum               5018
+EquippedAt         0
+Values             24 0 0 0
+ExtraFlags         0
+Weight             1
+Timer              0
+BitVector          0
+Type               19
+WearFlags          16385
+Cost               30
+CostPerDay         3
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              21
+ContainedBy        -1
+Name               ogre tongue~
+Description
+A fried ogre tongue rests here.~
+ShortDescr
+a cooked ogre tongue~
+ActionDescr
+(null)~
+VNum               5018
+EquippedAt         0
+Values             24 0 0 0
+ExtraFlags         0
+Weight             1
+Timer              0
+BitVector          0
+Type               19
+WearFlags          16385
+Cost               30
+CostPerDay         3
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              21
+ContainedBy        -1
+Name               ogre tongue~
+Description
+A fried ogre tongue rests here.~
+ShortDescr
+a cooked ogre tongue~
+ActionDescr
+(null)~
+VNum               5018
+EquippedAt         0
+Values             24 0 0 0
+ExtraFlags         0
+Weight             1
+Timer              0
+BitVector          0
+Type               19
+WearFlags          16385
+Cost               30
+CostPerDay         3
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              21
+ContainedBy        -1
+Name               ogre tongue~
+Description
+A fried ogre tongue rests here.~
+ShortDescr
+a cooked ogre tongue~
+ActionDescr
+(null)~
+VNum               5018
+EquippedAt         0
+Values             24 0 0 0
+ExtraFlags         0
+Weight             1
+Timer              0
+BitVector          0
+Type               19
+WearFlags          16385
+Cost               30
+CostPerDay         3
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              21
+ContainedBy        -1
+Name               water cup~
+Description
+A cup of fine water rests here.~
+ShortDescr
+a cup~
+ActionDescr
+(null)~
+VNum               5010
+EquippedAt         0
+Values             24 0 0 0
+ExtraFlags         0
+Weight             -23
+Timer              0
+BitVector          0
+Type               17
+WearFlags          16385
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              21
+ContainedBy        -1
+Name               cup dwarven ale~
+Description
+A cup of dwarven ale rests here.~
+ShortDescr
+a cup~
+ActionDescr
+(null)~
+VNum               5009
+EquippedAt         0
+Values             3 3 3 0
+ExtraFlags         0
+Weight             1
+Timer              0
+BitVector          0
+Type               17
+WearFlags          16385
+Cost               10
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              21
+ContainedBy        -1
+Name               cup dwarven ale~
+Description
+A cup of dwarven ale rests here.~
+ShortDescr
+a cup~
+ActionDescr
+(null)~
+VNum               5009
+EquippedAt         0
+Values             3 3 3 0
+ExtraFlags         0
+Weight             1
+Timer              0
+BitVector          0
+Type               17
+WearFlags          16385
+Cost               10
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              21
+ContainedBy        -1
+Name               cup dwarven ale~
+Description
+A cup of dwarven ale rests here.~
+ShortDescr
+a cup~
+ActionDescr
+(null)~
+VNum               5009
+EquippedAt         0
+Values             3 3 3 0
+ExtraFlags         0
+Weight             1
+Timer              0
+BitVector          0
+Type               17
+WearFlags          16385
+Cost               10
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              21
+ContainedBy        -1
+Name               cup dwarven ale~
+Description
+A cup of dwarven ale rests here.~
+ShortDescr
+a cup~
+ActionDescr
+(null)~
+VNum               5009
+EquippedAt         0
+Values             3 3 3 0
+ExtraFlags         0
+Weight             1
+Timer              0
+BitVector          0
+Type               17
+WearFlags          16385
+Cost               10
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              21
+ContainedBy        -1
+Name               pouch small leather~
+Description
+A small pouch made of soft leather is piled upon the floor.~
+ShortDescr
+a small leather pouch~
+ActionDescr
+(null)~
+VNum               4603
+EquippedAt         0
+Values             300 1 -1 0
+ExtraFlags         64
+Weight             4
+Timer              0
+BitVector          0
+Type               15
+WearFlags          2049
+Cost               50
+CostPerDay         35
+Affect             0 0
+Affect             0 0
+ExtraDescr         pouch~
+This small pouch is made of soft deerskin.
+~
+End
+End
+#END_RENT

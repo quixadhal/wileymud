@@ -1,0 +1,60 @@
+#RENT
+Owner              Barkley~
+Gold               0
+TotalCost          0
+LastUpdate         820775885
+MinimumStay        0
+End
+#EQUIPMENT
+End
+#CARRIED
+#ITEM
+ObjId              1
+ContainedBy        -1
+Name               heafty loaf bread~
+Description
+A heafty loaf of bread rests here.~
+ShortDescr
+a heafty loaf of bread~
+ActionDescr
+(null)~
+VNum               5016
+EquippedAt         0
+Values             7 0 0 0
+ExtraFlags         0
+Weight             1
+Timer              0
+BitVector          0
+Type               19
+WearFlags          1
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              1
+ContainedBy        -1
+Name               heafty loaf bread~
+Description
+A heafty loaf of bread rests here.~
+ShortDescr
+a heafty loaf of bread~
+ActionDescr
+(null)~
+VNum               5016
+EquippedAt         0
+Values             7 0 0 0
+ExtraFlags         0
+Weight             1
+Timer              0
+BitVector          0
+Type               19
+WearFlags          1
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+End
+#END_RENT

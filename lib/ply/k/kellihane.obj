@@ -1,0 +1,40 @@
+#RENT
+Owner              Kellihane~
+Gold               2329
+TotalCost          2
+LastUpdate         847430980
+MinimumStay        0
+End
+#EQUIPMENT
+End
+#CARRIED
+#ITEM
+ObjId              0
+ContainedBy        -1
+Name               silver longblade~
+Description
+A longblade made of silver sparkles here.~
+ShortDescr
+a silver longblade~
+ActionDescr
+(null)~
+VNum               5071
+EquippedAt         -1
+Values             0 1 9 3
+ExtraFlags         12288
+Weight             10
+Timer              0
+BitVector          0
+Type               5
+WearFlags          8193
+Cost               500
+CostPerDay         200
+Affect             0 0
+Affect             0 0
+ExtraDescr         silver longblade~
+  The hilt of this fine blade seems to be made of ivory while the blade
+itself seems to have been wrought from silver.  The workmanship is excellent.
+~
+End
+End
+#END_RENT

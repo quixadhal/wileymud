@@ -11,13 +11,13 @@
 #include <signal.h>
 #include <sys/time.h>
 
-#include "global.h"
-#include "bug.h"
-#include "utils.h"
-#include "comm.h"
-#include "whod.h"
+#include "include/global.h"
+#include "include/bug.h"
+#include "include/utils.h"
+#include "include/comm.h"
+#include "include/whod.h"
 #define _DIKU_SIGNALS_C
-#include "signals.h"
+#include "include/signals.h"
 
 void signal_setup(void)
 {
@@ -94,11 +94,7 @@ void signal_setup(void)
       sigaction(i, &ack[i], NULL);
 }
 
-#ifdef sun3
-void checkpointing(void)
-#else
 void checkpointing(int a)
-#endif
 {
   if (!tics) {
     log("CHECKPOINT shutdown: tics not updated");
@@ -111,11 +107,7 @@ void checkpointing(int a)
     tics = 0;
 }
 
-#ifdef sun3
-void shutdown_request(void)
-#else
 void shutdown_request(int a)
-#endif
 {
   log("Received USR2 - shutdown request");
   close_sockets(0);
@@ -123,11 +115,7 @@ void shutdown_request(int a)
   exit(42);
 }
 
-#ifdef sun3
-void hupsig(void)
-#else
 void hupsig(int a)
-#endif
 {
   log("Received SIGHUP, or SIGTERM. Shutting down");
   close_sockets(0);
@@ -135,11 +123,7 @@ void hupsig(int a)
   exit(0);			       /* something more elegant should perhaps be substituted */
 }
 
-#ifdef sun3
-void logsig(void)
-#else
 void logsig(int a)
-#endif
 {
   log("Signal received. Ignoring.");
 }

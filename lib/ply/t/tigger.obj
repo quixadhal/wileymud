@@ -1,0 +1,63 @@
+#RENT
+Owner              Tigger~
+Gold               0
+TotalCost          1138
+LastUpdate         826342315
+MinimumStay        0
+End
+#EQUIPMENT
+End
+#CARRIED
+#ITEM
+ObjId              1
+ContainedBy        -1
+Name               two-handed sword two handed~
+Description
+A large two-handed sword lies here.~
+ShortDescr
+a two-handed sword~
+ActionDescr
+(null)~
+VNum               5054
+EquippedAt         0
+Values             0 1 16 3
+ExtraFlags         30016
+Weight             17
+Timer              0
+BitVector          0
+Type               5
+WearFlags          32769
+Cost               3000
+CostPerDay         1000
+Affect             18 1
+Affect             19 1
+End
+#ITEM
+ObjId              1
+ContainedBy        -1
+Name               pouch small leather~
+Description
+A small pouch made of soft leather is piled upon the floor.~
+ShortDescr
+a small leather pouch~
+ActionDescr
+(null)~
+VNum               4603
+EquippedAt         0
+Values             300 1 -1 0
+ExtraFlags         64
+Weight             4
+Timer              0
+BitVector          0
+Type               15
+WearFlags          2049
+Cost               50
+CostPerDay         35
+Affect             0 0
+Affect             0 0
+ExtraDescr         pouch~
+This small pouch is made of soft deerskin.
+~
+End
+End
+#END_RENT

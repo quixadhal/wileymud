@@ -1,0 +1,218 @@
+From @pollux.cs.uga.edu:baker@castor.cs.uga.edu Mon Jul 27 21:39:25 1992
+Return-Path: <@pollux.cs.uga.edu:baker@castor.cs.uga.edu>
+Received: from pollux.cs.uga.edu by coyote.cs.wmich.edu (4.1/SMI-4.1)
+	id AA12466; Mon, 27 Jul 92 21:39:18 EDT
+Received: from castor (castor.cs.uga.edu) by pollux.cs.uga.edu (4.1/25-eef)
+	id AA11579; Mon, 27 Jul 92 21:39:18 EDT
+Received: by castor (4.1/2.0-eef)
+	id AA29459; Mon, 27 Jul 92 21:39:06 EDT
+From: baker@castor.cs.uga.edu (Danny Baker)
+Message-Id: <9207280139.AA29459@castor>
+Subject: Armor Info, Standardization ideas
+To: dm-proj@coyote.cs.wmich.edu
+Date: Mon, 27 Jul 92 21:39:05 EDT
+X-Mailer: ELM [version 2.3 PL11]
+Status: OR
+
+
+	Here is my proposal for a standardized armor system, along with info
+on how Diku equiped items work....
+
+Here is a compilation of armor info from the 1st and 2nd edition AD&D Players
+Handbook, along with some adjustments for Diku of my own.  All AC values in the
+two charts are in the AD&D format - multiply by 10 to find out how much a full
+suit of a type of armor will remove from your Diku Base AC of 100.
+
+					Weight of         Cost of
+AC      Type(s)                         full suit         full suit
+-------------------------------------------------------------------------------
+1       Robes, Clothing                   5 lb             varies
+
+2       Soft Leather                     15 lb              5 gp 
+	Padded                           10 lb              4 gp 
+
+3       Studded leather                  25 lb             15 gp
+	Ring Mail                        30 lb             30 gp
+
+4       Scale Mail                       40 lb             45 gp
+	Brigandine			 35 lb             45 gp
+
+5	Chain Mail			 40 lb             75 gp
+
+6       Splint Mail			 40 lb             80 gp
+	Banded Mail			 35 lb             90 gp
+	Bronze Plate Mail		 45 lb            100 gp
+	(note : just to get away from the old diku feel, let's not use
+	 bronze plate unless it's really appropriate ;)
+
+7	Plate Mail			 50 lb 		  400 gp
+
+8	Field Plate			 60 lb		 1000 gp
+
+9	Full Plate			 80 lb		 4000+ gp
+
+
+(note on costs : these are just suggestions - "fine" armours, shabbily made
+ armor, etc, should cost whatever is appropriate - it's up to you, just don't
+ make it too cheap ;)
+
+
+Shields :
+AC 	   type		weight		cost
+-------------------------------------------------
+.01-.03   Buckler        3 lb            1 gp   <- Thieves should be limited to
+.03-.05   Small		 5 lb            3 gp
+.05-.07   Normal	10 lb		 7 gp
+.07-1.0   Body		15 lb		10 gp  (Full length, chin to toe type)
+
+Shields are done as fractions of an AC point to simulate that they are only
+good vs a certain number of attacks/round.
+
+*******
+
+Diku items of type 'ARMOR' are modified in the following manner according to
+what location they are worn on. 
+
+                         Armor Value is multiplied by
+Equip Position             this number when worn
+------------------------------------------------------------
+BODY                              3
+LEGS				  2
+ARMS				  2
+HANDS				  1
+HEAD				  1
+FEET				  1
+SHIELD				 (1)
+---------------------------------------
+TOTAL w/o a Shield		 10 
+
+Thus, when a player is wearing a full suit of Plate Mail armor, AC 8, they
+will have a total AC of :
+
+100-(8*10) = 20  (which is 2 in AD&D terms - exactly what plate should be)
+
+With a large shield, worth 10 points of Diku AC, that person would have an AC
+of 10, or 1 in AD&D, which is correct for Plate mail and shield.
+
+The point here is that when you are designing armor for your area, whether it
+be for sale or whatever, you should keep Value 0 in the Obj file constant for
+every piece of that armor.  The game will automatically insert the multiplier
+appropriate to the location when figuring a players AC, so there is no need to
+make chain leggings AC 5 and a chain hauberk AC 10 - the game takes into
+account the difference in area and importance between the various locations.
+The primary 'vital areas' - chest, head, and groin/legs - are all 'weighted'
+to be worth more of the total 10 AC than the other areas are.
+
+Also, there is no need to have anything with a base Armor Value of 9. If a
+piece of armor is magickal, give it an APPLY_AC with the appropriate value, and
+you may wish to take into account the various location modifiers when doing
+this, because APPLY_AC is *not* affected by the multpliers.
+
+Example : Here are several pieces of a suit of Plate Mail +1 ->
+#1000
+greaves plate platemail~
+a pair of plate mail greaves~
+On the ground you see a nicely polished pair of plate mail greaves.~
+~
+9 0 33      <- Type ARMOR, wear flags : TAKE and WEAR_LEGS
+8 0 0 0     <- Armor value of 8, which is plates base value
+10 80 1     <- wt 10, as it = 2/10ths of a 50 lb suit; 80 gp = 2/10*400 gp
+A
+17 -2       <- The -2 comes from -1 for the enchantment * 2 for the location
+#1001
+breast plate~
+a plate mail breast piece~
+On the ground you see a nicely polished plate mail breast piece.~
+~
+9 0 9
+8 0 0 0
+15 120 1
+A
+17 -3       <- BODY location is *3
+#1002
+gauntlets plate~
+a pair of plate mail gauntlets~
+On the ground...blah blah blah...~
+~
+9 0 129
+8 0 0 0
+5 40 1
+A
+17 -1     <- HANDS location is only *1 -- no mulitplier
+#1003
+shield metal~     <- not part of the plate +1, just a shield example
+a metal shield~
+On the ground...~
+~
+9 0 513
+6 0 0 0   <- not a 'body shield' therefore not worth 10 AC but only 5-7
+10 10 1
+E
+shield metal~
+Just a normal shield made of metal.
+~
+If the all 6 parts of the suit of plate are done in this manner, you will
+end up with a suit of armor worth 90 AC, giving an effective AC of 10 w/o a
+shield, by simply having each part of the full suit be partially enchanted
+while preserving the base AC as that of plate mail.  Doing the opposite will
+produce a suit of Plate Mail -1, cursed ;)
+
+If you want to simulate exceptionally well made armor, or shabby/old armor,
+you could give some key parts a positive of negative modifier as is fitting,
+or even have it resistant/susceptible to certain attack types (Immunity just
+shouldn't happen for players ;).  For example, a well made suit of full plate
+may give a resistance to slashing weapons, or a good suit of padded armor may
+work well against bludgeoning weapons, but be susceptible to piercing weapons.
+Actually, just about all armor sorts (non-magickal) had a hard time against
+piercing weapons, so a bad suit of *any* type of armor could give a 
+susceptibility to piercing.  Of course, magickal and 'exceptionally' well made
+stuff oughta be rare, and if sold anywhere, should be expensive and only once/
+reboot.
+
+
+********
+
+Items worn on any location besides HEAD, HANDS, ARMS, LEGS, BODY, FEET, and 
+SHIELD should not be of type ARMOR - only those 7 locations are meant to be
+for armor, as they cover all of the important places.  Wearing a full suit of
+one particular type of armor (ie, all 7 pieces) will grant you an Armor class
+equivalant to AD&D; there is no need, and no sense, in trying to pass rings,
+bracelets, capes, cloaks, necklaces, belts, girths, etc, as 'armor', thus no
+reason to give them Item Type 9/ARMOR.  Items such as the above should be of
+item type 11/WORN.  If they grant AC through some magickal means, then they
+should have an APPLY_AC of the appropriate amount.  A 'Ring of Protection +1'
+would have : 
+A
+17 -10
+as +1 in AD&D terms = -10 in Diku terms. 
+
+All locations besides the 8 meant for ARMOR are mainly for ornamentation, and
+for magickal items.  However, just because something is worn on one of the
+ARMOR locations doesn't mean it should automatically be worth any AC -- for
+example, a jeweled tiera or a pair of silk gloves shouldn't do anything in
+terms of Armor, as neither item is going effectively directly protect against
+a weapon, though they may affect DEX or MANA, or may just be 'treasures' or
+'trinkets'.  I personally would recommend having alot of 'trinket' type items
+in an area, to add spice and interest, especially if Scrolls of Identify are
+rare/expensive (as they should be, IMO).  A nice diversity of items will keep
+players interested, and is more realistic.  Just because an item wouldn't be
+magickal is no reason to not make it, ie - animal furs, some normal clothing,
+small gems, etc. Remember also that wealth needn't be especially managable or
+easy to get back to town - it can be tapestries, silver/pewter mugs, a keg of
+fine wine, statues of moderate size, gem stones and jewelry, parts from rare or
+magickal creatures such as unicorn horns, cockatrice feathers, etc.  It should
+be possible to sell these items somewhere also - a Magician's shop would buy
+spell components, a jeweler buy gems and such, etc.  I personally think a 2
+coin system would be interesting - copper and silver, or silver and gold, etc.
+
+Also, one other standardization - all Cloaks should be 'WORN_ABOUT' rather than
+WORN_NECK - Wearing 2 cloaks is not believable IMO, though wearing 2 necklaces,
+2 capes, or such, is logical and believable, as is wearing a cape and a cloak.
+
+That's it... hopefully it didn't lose anything through it's length.  If I
+didn't explain something well enough, or if someone thinks anything I said
+doesn't make sense (happens to the best of us ;) please lemme know.
+
+
+Derkhil
+

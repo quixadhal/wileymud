@@ -1,0 +1,165 @@
+#RENT
+Owner              Onyx~
+Gold               722
+TotalCost          4
+LastUpdate         847439146
+MinimumStay        0
+End
+#EQUIPMENT
+#ITEM
+ObjId              0
+ContainedBy        -1
+Name               vest feathered~
+Description
+A vest made almost completely of feathers lies here.~
+ShortDescr
+a feathered vest~
+ActionDescr
+(null)~
+VNum               1306
+EquippedAt         5
+Values             2 2 0 0
+ExtraFlags         0
+Weight             7
+Timer              0
+BitVector          0
+Type               9
+WearFlags          9
+Cost               235
+CostPerDay         235
+Affect             17 -6
+Affect             0 0
+End
+#ITEM
+ObjId              1
+ContainedBy        -1
+Name               hawk beaked mask~
+Description
+A mask with a large beak upon it lies here.~
+ShortDescr
+a hawk beaked mask~
+ActionDescr
+(null)~
+VNum               1305
+EquippedAt         6
+Values             2 2 0 0
+ExtraFlags         8192
+Weight             5
+Timer              0
+BitVector          0
+Type               9
+WearFlags          17
+Cost               67
+CostPerDay         67
+Affect             0 0
+Affect             0 0
+ExtraDescr         hawk beaked mask~
+  The mask has a huge beak upon it, rather it looks more like a hallow head
+of some huge bird.
+~
+End
+#ITEM
+ObjId              2
+ContainedBy        -1
+Name               leather armbands~
+Description
+A pair of leather armbands lie here.~
+ShortDescr
+some leather armbands~
+ActionDescr
+(null)~
+VNum               1301
+EquippedAt         10
+Values             1 0 0 0
+ExtraFlags         0
+Weight             3
+Timer              0
+BitVector          0
+Type               9
+WearFlags          257
+Cost               54
+CostPerDay         54
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              3
+ContainedBy        -1
+Name               robe white~
+Description
+A robe of white lies here in a clump.~
+ShortDescr
+a white robe~
+ActionDescr
+(null)~
+VNum               5093
+EquippedAt         12
+Values             0 0 0 0
+ExtraFlags         0
+Weight             2
+Timer              0
+BitVector          0
+Type               12
+WearFlags          1025
+Cost               123
+CostPerDay         123
+Affect             17 -5
+Affect             0 0
+End
+#ITEM
+ObjId              4
+ContainedBy        -1
+Name               staff clawed~
+Description
+A staff with a large claw at the top lies here.~
+ShortDescr
+a clawed staff~
+ActionDescr
+(null)~
+VNum               1307
+EquippedAt         18
+Values             0 1 7 7
+ExtraFlags         0
+Weight             5
+Timer              0
+BitVector          0
+Type               5
+WearFlags          32769
+Cost               123
+CostPerDay         123
+Affect             0 0
+Affect             0 0
+ExtraDescr         staff clawed~
+  The staff appears to be made from ironwood and at the top seems to have 
+some sort of a avian foot, claws extended.  It could make a lasting scar
+upon someone, if they knew how to use it.
+~
+End
+End
+#CARRIED
+#ITEM
+ObjId              6
+ContainedBy        -1
+Name               bottle water~
+Description
+A bottle of clear liquid has been left here.~
+ShortDescr
+a bottle~
+ActionDescr
+(null)~
+VNum               3003
+EquippedAt         0
+Values             16 4 0 0
+ExtraFlags         0
+Weight             2
+Timer              0
+BitVector          0
+Type               17
+WearFlags          16385
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+End
+#END_RENT

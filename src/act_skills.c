@@ -6,18 +6,24 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include <sys/types.h>
 
-#include "global.h"
-#include "bug.h"
-#include "db.h"
-#include "constants.h"
-#include "spells.h"
-#include "comm.h"
-#include "handler.h"
-#include "utils.h"
+#include "include/global.h"
+#include "include/bug.h"
+#include "include/utils.h"
+
+#include "include/comm.h"
+#include "include/constants.h"
+#include "include/db.h"
+#include "include/fight.h"
+#include "include/handler.h"
+#include "include/interpreter.h"
+#include "include/multiclass.h"
+#include "include/spell_parser.h"
+#include "include/spells.h"
+
+#include "include/spec_procs.h"
 #define _ACT_SKILLS_C
-#include "act_skills.h"
+#include "include/act_skills.h"
 
 /*
  * **  Disarm:
@@ -40,34 +46,34 @@ void do_disarm(struct char_data *ch, char *argument, int cmd)
     if (ch->specials.fighting) {
       victim = ch->specials.fighting;
     } else {
-      send_to_char("Disarm who?\n\r", ch);
+      cprintf(ch, "Disarm who?\n\r");
       return;
     }
   }
   if (victim == ch) {
-    send_to_char("Aren't we funny today...\n\r", ch);
+    cprintf(ch, "Aren't we funny today...\n\r");
     return;
   }
   if (!CheckKill(ch, victim))
     return;
 
   if (ch->attackers > 3) {
-    send_to_char("There is no room to disarm!\n\r", ch);
+    cprintf(ch, "There is no room to disarm!\n\r");
     return;
   }
   if (victim->attackers > 3) {
-    send_to_char("There is no room to disarm!\n\r", ch);
+    cprintf(ch, "There is no room to disarm!\n\r");
     return;
   }
   cost = 25 - (GET_LEVEL(ch, BestFightingClass(ch)) / 10);
 
   if (GET_MANA(ch) < cost) {
-    send_to_char("You trip and fall while trying to disarm.\n\r", ch);
+    cprintf(ch, "You trip and fall while trying to disarm.\n\r");
     return;
   }
   percent = number(1, 101);	       /* 101% is a complete failure */
-  percent -= dex_app[GET_DEX(ch)].reaction;
-  percent += dex_app[GET_DEX(victim)].reaction;
+  percent -= dex_app[(int)GET_DEX(ch)].reaction;
+  percent += dex_app[(int)GET_DEX(victim)].reaction;
 
   if (!ch->equipment[WIELD] && !ch->equipment[WIELD_TWOH]) {
     percent -= 50;
@@ -78,13 +84,13 @@ void do_disarm(struct char_data *ch, char *argument, int cmd)
     GET_MANA(ch) -= 10;
     act("You try to disarm $N, but fail miserably.", TRUE, ch, 0, victim, TO_CHAR);
     if ((ch->equipment[WIELD]) && (number(1, 10) > 8)) {
-      send_to_char("Your weapon flies from your hand while trying!\n\r", ch);
+      cprintf(ch, "Your weapon flies from your hand while trying!\n\r");
       w = unequip_char(ch, WIELD);
       obj_from_char(w);
       obj_to_room(w, ch->in_room);
       act("$n tries to disarm $N, but $n loses his weapon!", TRUE, ch, 0, victim, TO_ROOM);
     } else if ((ch->equipment[WIELD_TWOH]) && (number(1, 10) > 9)) {
-      send_to_char("Your weapon slips from your hands while trying!\n\r", ch);
+      cprintf(ch, "Your weapon slips from your hands while trying!\n\r");
       w = unequip_char(ch, WIELD_TWOH);
       obj_from_char(w);
       obj_to_room(w, ch->in_room);
@@ -142,32 +148,16 @@ void do_disarm(struct char_data *ch, char *argument, int cmd)
   }
 }
 
-/*
- * **   Track:
- */
-
-int named_mobile_in_room(int room, struct hunting_data *c_data)
-{
-  struct char_data *scan;
-
-  for (scan = real_roomp(room)->people; scan; scan = scan->next_in_room)
-    if (isname(c_data->name, scan->player.name)) {
-      *(c_data->victim) = scan;
-      return 1;
-    }
-  return 0;
-}
-
 void do_peer(struct char_data *ch, char *argument, int cmd)
 {
   void do_look(struct char_data *ch, char *arg, int cmd);
 
   if (GET_MANA(ch) < (15 - GET_LEVEL(ch, BestThiefClass(ch)) / 4)) {
-    send_to_char("You don't really see anything...\n\r", ch);
+    cprintf(ch, "You don't really see anything...\n\r");
     return;
   }
   if (!*argument) {
-    send_to_char("You must peer in a direction...\n\r", ch);
+    cprintf(ch, "You must peer in a direction...\n\r");
     return;
   }
   if (ch->skills[SKILL_PEER].learned < number(1, 101)) {
@@ -182,136 +172,6 @@ void do_peer(struct char_data *ch, char *argument, int cmd)
   act("$n peers about the area.", TRUE, ch, 0, 0, TO_ROOM);
 
   do_look(ch, argument, SKILL_PEER);
-}
-
-void do_track(struct char_data *ch, char *argument, int cmd)
-{
-  char name[256], buf[256];
-  int dist, code;
-  struct hunting_data huntd;
-  int cost;
-
-  only_argument(argument, name);
-
-  dist = ch->skills[SKILL_HUNT].learned;
-
-  if (IS_SET(ch->player.class, CLASS_RANGER)) {
-    dist *= 2;
-    cost = 15 - (GET_LEVEL(ch, RANGER_LEVEL_IND) / 10);
-  } else if (IS_SET(ch->player.class, CLASS_THIEF)) {
-    cost = 50 - GET_LEVEL(ch, THIEF_LEVEL_IND);
-    dist = dist;
-  } else {
-    dist = dist / 2;
-    cost = 50 - (GET_LEVEL(ch, BestThiefClass(ch)) / 2);
-  }
-
-  if (!dist) {
-    send_to_char("You do not know of this skill yet!\n\r", ch);
-    return;
-  }
-  if (GET_MANA(ch) < cost) {
-    send_to_char("You can not seem to concentrate on the trail...\n\r", ch);
-    return;
-  }
-  GET_MANA(ch) -= cost;
-
-  switch (GET_RACE(ch)) {
-  case RACE_ELVEN:
-    dist += 10;			       /* even better */
-    break;
-  case RACE_DEVIL:
-  case RACE_DEMON:
-    dist = MAX_ROOMS;		       /* as good as can be */
-    break;
-  default:
-    break;
-  }
-
-  if (GetMaxLevel(ch) >= IMMORTAL)
-    dist = MAX_ROOMS;
-
-  ch->hunt_dist = dist;
-
-  ch->specials.hunting = 0;
-  huntd.name = name;
-  huntd.victim = &ch->specials.hunting;
-  code = find_path(ch->in_room, named_mobile_in_room, &huntd, -dist);
-
-  WAIT_STATE(ch, PULSE_VIOLENCE * 1);
-
-  if (code == -1) {
-    send_to_char("You are unable to find traces of one.\n\r", ch);
-    return;
-  } else {
-    if (IS_LIGHT(ch->in_room)) {
-      SET_BIT(ch->specials.act, PLR_HUNTING);
-      sprintf(buf, "You see traces of your quarry to the %s\n\r", dirs[code]);
-      send_to_char(buf, ch);
-      if (ch->skills[SKILL_HUNT].learned < 50)
-	ch->skills[SKILL_HUNT].learned += 2;
-    } else {
-      ch->specials.hunting = 0;
-      send_to_char("It's too dark in here to track...\n\r", ch);
-      return;
-    }
-  }
-}
-
-int track(struct char_data *ch, struct char_data *vict)
-{
-
-  char buf[256];
-  int code;
-
-  if ((!ch) || (!vict))
-    return (-1);
-
-  code = choose_exit(ch->in_room, vict->in_room, ch->hunt_dist);
-
-  if ((!ch) || (!vict))
-    return (-1);
-
-  if (ch->in_room == vict->in_room) {
-    send_to_char("\n\rTrack -> You have found your target!\n\r", ch);
-    return (FALSE);		       /* false to continue the hunt */
-  }
-  if (code == -1) {
-    send_to_char("\n\rTrack -> You have lost the trail.\n\r", ch);
-    return (FALSE);
-  } else {
-    sprintf(buf, "\n\rTrack -> You see a faint trail %sward\n\r", dirs[code]);
-    send_to_char(buf, ch);
-    return (TRUE);
-  }
-}
-
-int dir_track(struct char_data *ch, struct char_data *vict)
-{
-  char buf[256];
-  int code;
-
-  if ((!ch) || (!vict))
-    return (-1);
-
-  code = choose_exit(ch->in_room, vict->in_room, ch->hunt_dist);
-
-  if ((!ch) || (!vict))
-    return (-1);
-
-  if (code == -1) {
-    if (ch->in_room == vict->in_room) {
-      send_to_char("\n\rTrack -> You have found your target!\n\r", ch);
-    } else {
-      send_to_char("\n\rTrack -> You have lost the trail.\n\r", ch);
-    }
-    return (-1);		       /* false to continue the hunt */
-  } else {
-    sprintf(buf, "\n\rTrack -> You see a faint trail %sward\n\r", dirs[code]);
-    send_to_char(buf, ch);
-    return (code);
-  }
-
 }
 
 int RideCheck(struct char_data *ch)
@@ -342,7 +202,7 @@ void FallOffMount(struct char_data *ch, struct char_data *h)
   act("You lose control and fall off of $N", FALSE, ch, 0, h, TO_CHAR);
 }
 
-int Dismount(struct char_data *ch, struct char_data *h, int pos)
+void Dismount(struct char_data *ch, struct char_data *h, int pos)
 {
   MOUNTED(ch) = 0;
   RIDDEN(h) = 0;
@@ -352,7 +212,6 @@ int Dismount(struct char_data *ch, struct char_data *h, int pos)
 
 int MountEgoCheck(struct char_data *rider, struct char_data *mount)
 {
-  int class_ok;
   int diff;
   int chance;
 
@@ -404,36 +263,35 @@ int MountEgoCheck(struct char_data *rider, struct char_data *mount)
 
 void do_mount(struct char_data *ch, char *arg, int cmd)
 {
-  char buf[256];
   char name[112];
   int check;
   struct char_data *horse;
 
   if (IS_AFFECTED(ch, AFF_FLYING)) {
-    send_to_char("You can't, you are flying!\n\r", ch);
+    cprintf(ch, "You can't, you are flying!\n\r");
     return;
   }
   if (cmd == 269) {
     only_argument(arg, name);
     if (!(horse = get_char_room_vis(ch, name))) {
-      send_to_char("Mount what?\n\r", ch);
+      cprintf(ch, "Mount what?\n\r");
       return;
     }
     if (!IsHumanoid(ch)) {
-      send_to_char("You can't ride things!\n\r", ch);
+      cprintf(ch, "You can't ride things!\n\r");
       return;
     }
     if (IS_SET(horse->specials.act, ACT_MOUNT)) {
       if (GET_POS(horse) < POSITION_STANDING) {
-	send_to_char("Your mount must be standing\n\r", ch);
+	cprintf(ch, "Your mount must be standing\n\r");
 	return;
       }
       if (RIDDEN(horse)) {
-	send_to_char("Already ridden\n\r", ch);
+	cprintf(ch, "Already ridden\n\r");
 	return;
       }
       if (MOUNTED(ch)) {
-	send_to_char("Already riding\n\r", ch);
+	cprintf(ch, "Already riding\n\r");
 	return;
       }
       if (GetMaxLevel(horse) > 3)
@@ -474,7 +332,7 @@ void do_mount(struct char_data *ch, char *arg, int cmd)
 	WAIT_STATE(ch, PULSE_VIOLENCE * 2);
       }
     } else {
-      send_to_char("You can't ride that!\n\r", ch);
+      cprintf(ch, "You can't ride that!\n\r");
       return;
     }
   } else if (cmd == 270) {
@@ -485,6 +343,6 @@ void do_mount(struct char_data *ch, char *arg, int cmd)
     Dismount(ch, MOUNTED(ch), POSITION_STANDING);
     return;
   } else {
-    send_to_char("Hmmmmmm, don't think you mounted on anything?\n\r", ch);
+    cprintf(ch, "Hmmmmmm, don't think you mounted on anything?\n\r");
   }
 }

@@ -84,3 +84,16 @@ Tue Jun 20 22:49:02 EDT 1995
   0243	Added in Highlander's new immortal area, complete with a guardian
 	mob and some equipment.
   0836	Added test creature for my new type C mob.
+960315  Muidnar
+  1930  Properly added exits and modified some objects for the game.
+        backed up .mob .ojb and .wld will be doing some changes so stay the
+        hell out unless its quix..
+960319  Muidnar
+  2011  Dug up Zar's proper Keep descriptions and added them in. going to get
+        use to adding rooms again....  
+960320  Muidnar
+  0111  Added 20 rooms for maze pathway to city of Rylis AND checked to make
+        sure all rooms where linked correctly by mapping it.
+960418	Quixadhal
+  1722	A while ago.... added Paige's castle area... not linked to the main
+	world yet.

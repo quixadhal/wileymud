@@ -1,0 +1,156 @@
+#RENT
+Owner              Shakes~
+Gold               1098
+TotalCost          0
+LastUpdate         825044187
+MinimumStay        0
+End
+#EQUIPMENT
+#ITEM
+ObjId              0
+ContainedBy        -1
+Name               cap leather~
+Description
+A leather cap lies here.~
+ShortDescr
+a leather cap~
+ActionDescr
+(null)~
+VNum               3027
+EquippedAt         6
+Values             1 1 0 0
+ExtraFlags         0
+Weight             1
+Timer              0
+BitVector          0
+Type               9
+WearFlags          17
+Cost               35
+CostPerDay         10
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              1
+ContainedBy        -1
+Name               silver longblade~
+Description
+A longblade made of silver sparkles here.~
+ShortDescr
+a silver longblade~
+ActionDescr
+(null)~
+VNum               5071
+EquippedAt         16
+Values             0 1 9 3
+ExtraFlags         13632
+Weight             10
+Timer              0
+BitVector          0
+Type               5
+WearFlags          8193
+Cost               500
+CostPerDay         200
+Affect             18 2
+Affect             19 2
+ExtraDescr         silver longblade~
+  The hilt of this fine blade seems to be made of ivory while the blade
+itself seems to have been wrought from silver.  The workmanship is excellent.
+~
+End
+End
+#CARRIED
+#ITEM
+ObjId              4
+ContainedBy        -1
+Name               map shlyar~
+Description
+A map lies here.~
+ShortDescr
+a map~
+ActionDescr
+(null)~
+VNum               3050
+EquippedAt         0
+Values             0 0 0 0
+ExtraFlags         0
+Weight             2
+Timer              0
+BitVector          0
+Type               12
+WearFlags          1
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+ExtraDescr         map shylar~
+                         -= Grassland =-
+
+     -= Mansion =-           
+           +              -= Arcanus =-
+   	       	         	+
+         * * * * *  *  *  *  *  *+ -= Jakes =-  +-= Kark =-
+   
+                 -= Jessica =- +*                -= Farm =-
+
+                 -= Supply =-  +*+ -= Griffons =-      
+      +
++-= Chapel =-+   -= Bakery =-  +*  -= Sass =-
+      +            		       +	
+ -= Pastue =-     -= Tate =-   +*  *  *  *  *  *  *  *  *  *
+-= Cemetary =-                         + 
+      +                            -= Home =-
+
+                         -= Grassland =-
+~
+End
+#ITEM
+ObjId              4
+ContainedBy        -1
+Name               bottle water~
+Description
+A bottle of clear liquid has been left here.~
+ShortDescr
+a bottle~
+ActionDescr
+(null)~
+VNum               3003
+EquippedAt         0
+Values             16 8 0 0
+ExtraFlags         0
+Weight             2
+Timer              0
+BitVector          0
+Type               17
+WearFlags          16385
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              4
+ContainedBy        -1
+Name               bottle water~
+Description
+A bottle of clear liquid has been left here.~
+ShortDescr
+a bottle~
+ActionDescr
+(null)~
+VNum               3003
+EquippedAt         0
+Values             16 16 0 0
+ExtraFlags         0
+Weight             2
+Timer              0
+BitVector          0
+Type               17
+WearFlags          16385
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+End
+#END_RENT

@@ -1,0 +1,387 @@
+#RENT
+Owner              Kingspao~
+Gold               851
+TotalCost          547
+LastUpdate         824255581
+MinimumStay        0
+End
+#EQUIPMENT
+#ITEM
+ObjId              0
+ContainedBy        -1
+Name               leather jerkin~
+Description
+A small mound of leather lies here.~
+ShortDescr
+a leather jerkin~
+ActionDescr
+(null)~
+VNum               3037
+EquippedAt         5
+Values             1 1 0 0
+ExtraFlags         8192
+Weight             10
+Timer              0
+BitVector          0
+Type               9
+WearFlags          9
+Cost               18
+CostPerDay         18
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              1
+ContainedBy        -1
+Name               leg legplates scale~
+Description
+A pair of scale legplates lie here.~
+ShortDescr
+scale legplates~
+ActionDescr
+(null)~
+VNum               6001
+EquippedAt         7
+Values             3 3 0 0
+ExtraFlags         8192
+Weight             18
+Timer              0
+BitVector          0
+Type               9
+WearFlags          33
+Cost               350
+CostPerDay         350
+Affect             0 0
+Affect             0 0
+ExtraDescr         leg legplates scale~
+  The legplates seem to have a soft inner lining while the scales on the 
+outer side seem to be very tough and tinted a soft green.
+~
+End
+#ITEM
+ObjId              2
+ContainedBy        -1
+Name               boots leather~
+Description
+A pair of leather boots lie here.~
+ShortDescr
+a pair of leather boots~
+ActionDescr
+(null)~
+VNum               3026
+EquippedAt         8
+Values             1 1 0 0
+ExtraFlags         0
+Weight             2
+Timer              0
+BitVector          0
+Type               9
+WearFlags          65
+Cost               50
+CostPerDay         10
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              3
+ContainedBy        -1
+Name               aklan shield~
+Description
+A shield lies here.~
+ShortDescr
+a aklan shield~
+ActionDescr
+(null)~
+VNum               6408
+EquippedAt         11
+Values             10 10 0 0
+ExtraFlags         24576
+Weight             12
+Timer              0
+BitVector          0
+Type               9
+WearFlags          513
+Cost               89
+CostPerDay         89
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              4
+ContainedBy        -1
+Name               harness leather plate shoulder~
+Description
+A peice of leather plate lies here, with a small strand of leather attached.~
+ShortDescr
+a shoulder harness~
+ActionDescr
+(null)~
+VNum               5203
+EquippedAt         12
+Values             1 1 0 0
+ExtraFlags         8192
+Weight             10
+Timer              0
+BitVector          0
+Type               9
+WearFlags          1025
+Cost               10
+CostPerDay         10
+Affect             17 -2
+Affect             0 0
+End
+#ITEM
+ObjId              5
+ContainedBy        -1
+Name               small pouch~
+Description
+A small pouch lies here.~
+ShortDescr
+a small pouch~
+ActionDescr
+(null)~
+VNum               10014
+EquippedAt         13
+Values             10 5 -1 0
+ExtraFlags         0
+Weight             5
+Timer              0
+BitVector          0
+Type               15
+WearFlags          2049
+Cost               30
+CostPerDay         30
+Affect             0 0
+Affect             0 0
+ExtraDescr         small pouch~
+  The pouch is not all that large but has a leather strap which makes it 
+wearable about your waiste.
+~
+End
+#ITEM
+ObjId              6
+ContainedBy        -1
+Name               leather bracer~
+Description
+A leather bracer lies here.~
+ShortDescr
+a leather bracer~
+ActionDescr
+(null)~
+VNum               3025
+EquippedAt         14
+Values             1 1 0 0
+ExtraFlags         0
+Weight             1
+Timer              0
+BitVector          0
+Type               9
+WearFlags          4097
+Cost               10
+CostPerDay         5
+Affect             17 -2
+Affect             0 0
+End
+#ITEM
+ObjId              7
+ContainedBy        -1
+Name               leather bracer~
+Description
+A leather bracer lies here.~
+ShortDescr
+a leather bracer~
+ActionDescr
+(null)~
+VNum               3025
+EquippedAt         15
+Values             1 1 0 0
+ExtraFlags         0
+Weight             1
+Timer              0
+BitVector          0
+Type               9
+WearFlags          4097
+Cost               10
+CostPerDay         5
+Affect             17 -2
+Affect             0 0
+End
+#ITEM
+ObjId              8
+ContainedBy        -1
+Name               cleaver meat~
+Description
+A large meat cleaver lies here.~
+ShortDescr
+a meat cleaver~
+ActionDescr
+(null)~
+VNum               10003
+EquippedAt         16
+Values             0 1 6 5
+ExtraFlags         0
+Weight             5
+Timer              0
+BitVector          0
+Type               5
+WearFlags          8193
+Cost               30
+CostPerDay         30
+Affect             0 0
+Affect             0 0
+End
+End
+#CARRIED
+#ITEM
+ObjId              18
+ContainedBy        -1
+Name               studded leather vest~
+Description
+A vest made of leather with metal studs lies here.~
+ShortDescr
+a vest of studded leather~
+ActionDescr
+(null)~
+VNum               3033
+EquippedAt         0
+Values             2 2 0 0
+ExtraFlags         8192
+Weight             15
+Timer              0
+BitVector          0
+Type               9
+WearFlags          9
+Cost               140
+CostPerDay         40
+Affect             0 0
+Affect             0 0
+ExtraDescr         studded leather vest~
+  The vest is mostly made of leather although throughout the hard leather
+there are small jutts of metal for added protection.
+~
+End
+#ITEM
+ObjId              18
+ContainedBy        -1
+Name               bottle water~
+Description
+A bottle of clear liquid has been left here.~
+ShortDescr
+a bottle~
+ActionDescr
+(null)~
+VNum               3003
+EquippedAt         0
+Values             16 16 0 0
+ExtraFlags         0
+Weight             2
+Timer              0
+BitVector          0
+Type               17
+WearFlags          16385
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              18
+ContainedBy        -1
+Name               water cup~
+Description
+A cup of fine water rests here.~
+ShortDescr
+a cup~
+ActionDescr
+(null)~
+VNum               5010
+EquippedAt         0
+Values             24 23 0 0
+ExtraFlags         0
+Weight             0
+Timer              0
+BitVector          0
+Type               17
+WearFlags          16385
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              18
+ContainedBy        -1
+Name               dagger small bone~
+Description
+There is a small dagger laying here, made of the spine of some beast.~
+ShortDescr
+a small bone dagger~
+ActionDescr
+(null)~
+VNum               4604
+EquippedAt         -1
+Values             0 1 5 11
+ExtraFlags         64
+Weight             3
+Timer              0
+BitVector          0
+Type               5
+WearFlags          8193
+Cost               20
+CostPerDay         25
+Affect             0 0
+Affect             0 0
+ExtraDescr         dagger~
+This small dagger is made of the spine of a dragon, strong and sharp.
+~
+End
+#ITEM
+ObjId              18
+ContainedBy        -1
+Name               clothe leggings~
+Description
+A pile of clothe lies here on the floor.~
+ShortDescr
+a pair of clothe leggings~
+ActionDescr
+(null)~
+VNum               3038
+EquippedAt         -1
+Values             1 1 0 0
+ExtraFlags         0
+Weight             5
+Timer              0
+BitVector          0
+Type               9
+WearFlags          33
+Cost               10
+CostPerDay         5
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              16
+ContainedBy        -1
+Name               bottle water~
+Description
+A bottle of clear liquid has been left here.~
+ShortDescr
+a bottle~
+ActionDescr
+(null)~
+VNum               3003
+EquippedAt         0
+Values             16 16 0 0
+ExtraFlags         0
+Weight             14
+Timer              0
+BitVector          0
+Type               17
+WearFlags          16385
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+End
+#END_RENT

@@ -1,0 +1,284 @@
+#RENT
+Owner              Jay~
+Gold               95
+TotalCost          0
+LastUpdate         849113051
+MinimumStay        0
+End
+#EQUIPMENT
+#ITEM
+ObjId              0
+ContainedBy        -1
+Name               torch~
+Description
+A large torch.~
+ShortDescr
+a torch~
+ActionDescr
+(null)~
+VNum               3015
+EquippedAt         0
+Values             0 0 11 0
+ExtraFlags         0
+Weight             3
+Timer              0
+BitVector          0
+Type               1
+WearFlags          1
+Cost               10
+CostPerDay         3
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              1
+ContainedBy        -1
+Name               scale bodice~
+Description
+A scale bodice lies here in a clump~
+ShortDescr
+a scale bodice~
+ActionDescr
+(null)~
+VNum               10005
+EquippedAt         5
+Values             2 2 0 0
+ExtraFlags         0
+Weight             15
+Timer              0
+BitVector          0
+Type               9
+WearFlags          9
+Cost               150
+CostPerDay         70
+Affect             0 0
+Affect             0 0
+ExtraDescr         scale bodice~
+  This piece of armor looks more like the top of a elegant dress than 
+anything else, with shoulder straps houlstering the bousoms, much skin on
+the upper torso is exposed.
+~
+End
+#ITEM
+ObjId              2
+ContainedBy        -1
+Name               cap leather~
+Description
+A leather cap lies here.~
+ShortDescr
+a leather cap~
+ActionDescr
+(null)~
+VNum               3027
+EquippedAt         6
+Values             1 1 0 0
+ExtraFlags         0
+Weight             1
+Timer              0
+BitVector          0
+Type               9
+WearFlags          17
+Cost               35
+CostPerDay         10
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              3
+ContainedBy        -1
+Name               boots leather~
+Description
+A pair of leather boots lie here.~
+ShortDescr
+a pair of leather boots~
+ActionDescr
+(null)~
+VNum               3026
+EquippedAt         8
+Values             1 1 0 0
+ExtraFlags         0
+Weight             2
+Timer              0
+BitVector          0
+Type               9
+WearFlags          65
+Cost               50
+CostPerDay         10
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              4
+ContainedBy        -1
+Name               leather gloves~
+Description
+A pair of leather gloves lie here.~
+ShortDescr
+some leather gloves~
+ActionDescr
+(null)~
+VNum               3052
+EquippedAt         9
+Values             2 2 0 0
+ExtraFlags         8192
+Weight             4
+Timer              0
+BitVector          0
+Type               9
+WearFlags          129
+Cost               12
+CostPerDay         12
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              5
+ContainedBy        -1
+Name               leather bracer~
+Description
+A leather bracer lies here.~
+ShortDescr
+a leather bracer~
+ActionDescr
+(null)~
+VNum               3025
+EquippedAt         14
+Values             1 1 0 0
+ExtraFlags         0
+Weight             1
+Timer              0
+BitVector          0
+Type               9
+WearFlags          4097
+Cost               10
+CostPerDay         5
+Affect             17 -2
+Affect             0 0
+End
+#ITEM
+ObjId              6
+ContainedBy        -1
+Name               leather bracer~
+Description
+A leather bracer lies here.~
+ShortDescr
+a leather bracer~
+ActionDescr
+(null)~
+VNum               3025
+EquippedAt         15
+Values             1 1 0 0
+ExtraFlags         0
+Weight             1
+Timer              0
+BitVector          0
+Type               9
+WearFlags          4097
+Cost               10
+CostPerDay         5
+Affect             17 -2
+Affect             0 0
+End
+#ITEM
+ObjId              7
+ContainedBy        -1
+Name               large knife~
+Description
+A large knife lies here.~
+ShortDescr
+a large knife~
+ActionDescr
+(null)~
+VNum               3021
+EquippedAt         16
+Values             0 1 5 11
+ExtraFlags         4096
+Weight             3
+Timer              0
+BitVector          0
+Type               5
+WearFlags          8193
+Cost               20
+CostPerDay         2
+Affect             0 0
+Affect             0 0
+ExtraDescr         large knife~
+It appears to be about eight to nine inches in length, fairly sharp.
+~
+End
+End
+#CARRIED
+#ITEM
+ObjId              10
+ContainedBy        -1
+Name               torch~
+Description
+A large torch.~
+ShortDescr
+a torch~
+ActionDescr
+(null)~
+VNum               3015
+EquippedAt         0
+Values             0 0 0 0
+ExtraFlags         0
+Weight             3
+Timer              0
+BitVector          0
+Type               1
+WearFlags          1
+Cost               10
+CostPerDay         3
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              10
+ContainedBy        -1
+Name               tallow candle~
+Description
+A tallow candle in a brass holder is sitting here.~
+ShortDescr
+a tallow candle~
+ActionDescr
+(null)~
+VNum               9212
+EquippedAt         0
+Values             0 0 10 0
+ExtraFlags         0
+Weight             0
+Timer              0
+BitVector          0
+Type               1
+WearFlags          1
+Cost               1
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              10
+ContainedBy        -1
+Name               tallow candle~
+Description
+A tallow candle in a brass holder is sitting here.~
+ShortDescr
+a tallow candle~
+ActionDescr
+(null)~
+VNum               9212
+EquippedAt         0
+Values             0 0 10 0
+ExtraFlags         0
+Weight             0
+Timer              0
+BitVector          0
+Type               1
+WearFlags          1
+Cost               1
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+End
+#END_RENT

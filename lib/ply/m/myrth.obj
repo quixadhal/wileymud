@@ -1,0 +1,675 @@
+#RENT
+Owner              Myrth~
+Gold               5398
+TotalCost          842
+LastUpdate         839945405
+MinimumStay        0
+End
+#EQUIPMENT
+#ITEM
+ObjId              0
+ContainedBy        -1
+Name               pearl ring~
+Description
+A small ring lies here on the ground.~
+ShortDescr
+a pearl ring~
+ActionDescr
+(null)~
+VNum               4602
+EquippedAt         2
+Values             0 0 -1 0
+ExtraFlags         64
+Weight             1
+Timer              0
+BitVector          0
+Type               1
+WearFlags          3
+Cost               1001
+CostPerDay         150
+Affect             0 0
+Affect             0 0
+ExtraDescr         ring~
+This small ring has a pure pearl in the center.
+~
+End
+#ITEM
+ObjId              1
+ContainedBy        -1
+Name               scale bodice~
+Description
+A scale bodice lies here in a clump~
+ShortDescr
+a scale bodice~
+ActionDescr
+(null)~
+VNum               10005
+EquippedAt         5
+Values             2 2 0 0
+ExtraFlags         0
+Weight             15
+Timer              0
+BitVector          0
+Type               9
+WearFlags          9
+Cost               150
+CostPerDay         70
+Affect             0 0
+Affect             0 0
+ExtraDescr         scale bodice~
+  This piece of armor looks more like the top of a elegant dress than 
+anything else, with shoulder straps houlstering the bousoms, much skin on
+the upper torso is exposed.
+~
+End
+#ITEM
+ObjId              2
+ContainedBy        -1
+Name               chain-link chainlink chain link hood~
+Description
+A chain-link hood is here.~
+ShortDescr
+a chain-link hood~
+ActionDescr
+(null)~
+VNum               5042
+EquippedAt         6
+Values             3 3 0 0
+ExtraFlags         8192
+Weight             14
+Timer              0
+BitVector          0
+Type               9
+WearFlags          17
+Cost               550
+CostPerDay         100
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              3
+ContainedBy        -1
+Name               armoured leggings~
+Description
+A pair of armoured leggings are here.~
+ShortDescr
+some armoured leggings~
+ActionDescr
+(null)~
+VNum               5039
+EquippedAt         7
+Values             3 3 0 0
+ExtraFlags         8192
+Weight             17
+Timer              0
+BitVector          0
+Type               9
+WearFlags          33
+Cost               600
+CostPerDay         100
+Affect             0 0
+Affect             0 0
+ExtraDescr         armoured leggings~
+  The leggings are made from links of chain and appear very strong.
+#5040
+armour plated gauntlets~
+End
+#ITEM
+ObjId              4
+ContainedBy        -1
+Name               plated boots~
+Description
+A pair of plated boots are here.~
+ShortDescr
+a pair of plated boots~
+ActionDescr
+(null)~
+VNum               5041
+EquippedAt         8
+Values             3 4 0 0
+ExtraFlags         90112
+Weight             16
+Timer              0
+BitVector          0
+Type               9
+WearFlags          65
+Cost               475
+CostPerDay         100
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              5
+ContainedBy        -1
+Name               armour plated gauntlets~
+Description
+A pair of armour plated gauntlets are here.~
+ShortDescr
+a pair of armour plated gauntlets~
+ActionDescr
+(null)~
+VNum               5040
+EquippedAt         9
+Values             4 4 0 0
+ExtraFlags         90112
+Weight             15
+Timer              0
+BitVector          0
+Type               9
+WearFlags          129
+Cost               450
+CostPerDay         100
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              6
+ContainedBy        -1
+Name               leather armbands~
+Description
+A couple pieces of leather lie here on the ground.~
+ShortDescr
+a pair of leather armbands~
+ActionDescr
+(null)~
+VNum               3034
+EquippedAt         10
+Values             1 1 0 0
+ExtraFlags         0
+Weight             10
+Timer              0
+BitVector          0
+Type               9
+WearFlags          257
+Cost               16
+CostPerDay         6
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              7
+ContainedBy        -1
+Name               shell large~
+Description
+A large shell lies here.~
+ShortDescr
+a large shell~
+ActionDescr
+(null)~
+VNum               6511
+EquippedAt         11
+Values             10 10 0 0
+ExtraFlags         0
+Weight             13
+Timer              0
+BitVector          0
+Type               9
+WearFlags          513
+Cost               56
+CostPerDay         56
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              8
+ContainedBy        -1
+Name               leather bracer~
+Description
+A leather bracer lies here.~
+ShortDescr
+a leather bracer~
+ActionDescr
+(null)~
+VNum               3025
+EquippedAt         14
+Values             1 1 0 0
+ExtraFlags         0
+Weight             1
+Timer              0
+BitVector          0
+Type               9
+WearFlags          4097
+Cost               10
+CostPerDay         5
+Affect             17 -2
+Affect             0 0
+End
+#ITEM
+ObjId              9
+ContainedBy        -1
+Name               leather bracer~
+Description
+A leather bracer lies here.~
+ShortDescr
+a leather bracer~
+ActionDescr
+(null)~
+VNum               3025
+EquippedAt         15
+Values             1 1 0 0
+ExtraFlags         0
+Weight             1
+Timer              0
+BitVector          0
+Type               9
+WearFlags          4097
+Cost               10
+CostPerDay         5
+Affect             17 -2
+Affect             0 0
+End
+#ITEM
+ObjId              10
+ContainedBy        -1
+Name               curved falchion sword~
+Description
+A curved falchion sword lies here.~
+ShortDescr
+a falchion sword~
+ActionDescr
+(null)~
+VNum               5019
+EquippedAt         16
+Values             0 1 6 3
+ExtraFlags         12288
+Weight             5
+Timer              0
+BitVector          0
+Type               5
+WearFlags          8193
+Cost               1500
+CostPerDay         100
+Affect             0 0
+Affect             0 0
+End
+End
+#CARRIED
+#ITEM
+ObjId              28
+ContainedBy        13
+Name               salami stick~
+Description
+A long, dried out, stick of salami is here.~
+ShortDescr
+a stick of salami~
+ActionDescr
+(null)~
+VNum               3012
+EquippedAt         0
+Values             20 0 0 0
+ExtraFlags         0
+Weight             5
+Timer              0
+BitVector          0
+Type               19
+WearFlags          1
+Cost               9
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              28
+ContainedBy        13
+Name               salami stick~
+Description
+A long, dried out, stick of salami is here.~
+ShortDescr
+a stick of salami~
+ActionDescr
+(null)~
+VNum               3012
+EquippedAt         0
+Values             20 0 0 0
+ExtraFlags         0
+Weight             5
+Timer              0
+BitVector          0
+Type               19
+WearFlags          1
+Cost               9
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              28
+ContainedBy        13
+Name               salami stick~
+Description
+A long, dried out, stick of salami is here.~
+ShortDescr
+a stick of salami~
+ActionDescr
+(null)~
+VNum               3012
+EquippedAt         0
+Values             20 0 0 0
+ExtraFlags         0
+Weight             5
+Timer              0
+BitVector          0
+Type               19
+WearFlags          1
+Cost               9
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              28
+ContainedBy        13
+Name               salami stick~
+Description
+A long, dried out, stick of salami is here.~
+ShortDescr
+a stick of salami~
+ActionDescr
+(null)~
+VNum               3012
+EquippedAt         0
+Values             20 0 0 0
+ExtraFlags         0
+Weight             5
+Timer              0
+BitVector          0
+Type               19
+WearFlags          1
+Cost               9
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              28
+ContainedBy        13
+Name               salami stick~
+Description
+A long, dried out, stick of salami is here.~
+ShortDescr
+a stick of salami~
+ActionDescr
+(null)~
+VNum               3012
+EquippedAt         0
+Values             20 0 0 0
+ExtraFlags         0
+Weight             5
+Timer              0
+BitVector          0
+Type               19
+WearFlags          1
+Cost               9
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              28
+ContainedBy        13
+Name               bottle water~
+Description
+A bottle of clear liquid has been left here.~
+ShortDescr
+a bottle~
+ActionDescr
+(null)~
+VNum               3003
+EquippedAt         0
+Values             16 6 0 0
+ExtraFlags         0
+Weight             2
+Timer              0
+BitVector          0
+Type               17
+WearFlags          16385
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              28
+ContainedBy        13
+Name               bottle water~
+Description
+A bottle of clear liquid has been left here.~
+ShortDescr
+a bottle~
+ActionDescr
+(null)~
+VNum               3003
+EquippedAt         0
+Values             16 7 0 0
+ExtraFlags         0
+Weight             2
+Timer              0
+BitVector          0
+Type               17
+WearFlags          16385
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              28
+ContainedBy        13
+Name               bottle water~
+Description
+A bottle of clear liquid has been left here.~
+ShortDescr
+a bottle~
+ActionDescr
+(null)~
+VNum               3003
+EquippedAt         0
+Values             16 16 0 0
+ExtraFlags         0
+Weight             2
+Timer              0
+BitVector          0
+Type               17
+WearFlags          16385
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              28
+ContainedBy        13
+Name               bottle water~
+Description
+A bottle of clear liquid has been left here.~
+ShortDescr
+a bottle~
+ActionDescr
+(null)~
+VNum               3003
+EquippedAt         0
+Values             16 16 0 0
+ExtraFlags         0
+Weight             2
+Timer              0
+BitVector          0
+Type               17
+WearFlags          16385
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              28
+ContainedBy        13
+Name               bottle water~
+Description
+A bottle of clear liquid has been left here.~
+ShortDescr
+a bottle~
+ActionDescr
+(null)~
+VNum               3003
+EquippedAt         0
+Values             16 16 0 0
+ExtraFlags         0
+Weight             2
+Timer              0
+BitVector          0
+Type               17
+WearFlags          16385
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              28
+ContainedBy        13
+Name               bottle water~
+Description
+A bottle of clear liquid has been left here.~
+ShortDescr
+a bottle~
+ActionDescr
+(null)~
+VNum               3003
+EquippedAt         0
+Values             16 16 0 0
+ExtraFlags         0
+Weight             2
+Timer              0
+BitVector          0
+Type               17
+WearFlags          16385
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              28
+ContainedBy        13
+Name               bottle water~
+Description
+A bottle of clear liquid has been left here.~
+ShortDescr
+a bottle~
+ActionDescr
+(null)~
+VNum               3003
+EquippedAt         0
+Values             16 16 0 0
+ExtraFlags         0
+Weight             2
+Timer              0
+BitVector          0
+Type               17
+WearFlags          16385
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              28
+ContainedBy        13
+Name               bottle water~
+Description
+A bottle of clear liquid has been left here.~
+ShortDescr
+a bottle~
+ActionDescr
+(null)~
+VNum               3003
+EquippedAt         0
+Values             16 16 0 0
+ExtraFlags         0
+Weight             2
+Timer              0
+BitVector          0
+Type               17
+WearFlags          16385
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              28
+ContainedBy        13
+Name               bottle water~
+Description
+A bottle of clear liquid has been left here.~
+ShortDescr
+a bottle~
+ActionDescr
+(null)~
+VNum               3003
+EquippedAt         0
+Values             16 16 0 0
+ExtraFlags         0
+Weight             2
+Timer              0
+BitVector          0
+Type               17
+WearFlags          16385
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              28
+ContainedBy        13
+Name               bottle water~
+Description
+A bottle of clear liquid has been left here.~
+ShortDescr
+a bottle~
+ActionDescr
+(null)~
+VNum               3003
+EquippedAt         0
+Values             16 16 0 0
+ExtraFlags         0
+Weight             2
+Timer              0
+BitVector          0
+Type               17
+WearFlags          16385
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              28
+ContainedBy        -1
+Name               pouch small leather~
+Description
+A small pouch made of soft leather is piled upon the floor.~
+ShortDescr
+a small leather pouch~
+ActionDescr
+(null)~
+VNum               4603
+EquippedAt         -1
+Values             300 1 -1 0
+ExtraFlags         64
+Weight             4
+Timer              0
+BitVector          0
+Type               15
+WearFlags          2049
+Cost               50
+CostPerDay         35
+Affect             0 0
+Affect             0 0
+ExtraDescr         pouch~
+This small pouch is made of soft deerskin.
+~
+End
+End
+#END_RENT

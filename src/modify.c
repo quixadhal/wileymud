@@ -12,17 +12,19 @@
 #include <string.h>
 #include <time.h>
 
-#include "global.h"
-#include "bug.h"
-#include "utils.h"
-#include "interpreter.h"
-#include "handler.h"
-#include "db.h"
-#include "comm.h"
+#include "include/global.h"
+#include "include/bug.h"
+#include "include/utils.h"
+#include "include/interpreter.h"
+#include "include/handler.h"
+#include "include/db.h"
+#include "include/comm.h"
+#include "include/multiclass.h"
 #define _MODIFY_C
-#include "modify.h"
+#include "include/modify.h"
 
-struct room_data *world;	       /* dyn alloc'ed array of rooms     */
+int REBOOT_AT1, REBOOT_AT2;	/* 0-23, time of optional reboot if -e lib/reboot */
+struct room_data *world;	/* dyn alloc'ed array of rooms     */
 char *string_fields[] =
 {
   "name",
@@ -99,14 +101,13 @@ void string_add(struct descriptor_data *d, char *str)
 
   /* determine if this is the terminal string, and truncate if so */
   for (scan = str; *scan; scan++)
-    if (terminator = (*scan == '@')) {
+    if ((terminator = (*scan == '@'))) {
       *scan = '\0';
       break;
     }
   if (!(*d->str)) {
     if (strlen(str) > d->max_str) {
-      send_to_char("String too long - Truncated.\n\r",
-		   d->character);
+      cprintf(d->character, "String too long - Truncated.\n\r");
       *(str + d->max_str) = '\0';
       terminator = 1;
     }
@@ -115,8 +116,7 @@ void string_add(struct descriptor_data *d, char *str)
     strcpy(*d->str, str);
   } else {
     if (strlen(str) + strlen(*d->str) > d->max_str) {
-      send_to_char("String too long. Last line skipped.\n\r",
-		   d->character);
+      cprintf(d->character, "String too long. Last line skipped.\n\r");
       terminator = 1;
     } else {
       if (!(*d->str = (char *)realloc(*d->str, strlen(*d->str) +
@@ -142,7 +142,6 @@ void string_add(struct descriptor_data *d, char *str)
 void quad_arg(char *arg, int *type, char *name, int *field, char *string)
 {
   char buf[MAX_STRING_LENGTH];
-  int i;
 
   /* determine type */
   arg = one_argument(arg, buf);
@@ -164,7 +163,7 @@ void quad_arg(char *arg, int *type, char *name, int *field, char *string)
     return;
   /* string */
   for (; isspace(*arg); arg++);
-  for (; *string = *arg; arg++, string++);
+  for (; (*string = *arg); arg++, string++);
   return;
 }
 
@@ -184,45 +183,43 @@ void do_string(struct char_data *ch, char *arg, int cmd)
   quad_arg(arg, &type, name, &field, string);
 
   if (type == TP_ERROR) {
-    send_to_char(
-	      "Syntax:\n\rstring (char) <name> <field> [<string>].",
-		  ch);
+    cprintf(ch,  "Syntax:\n\rstring (char) <name> <field> [<string>].");
     return;
   }
   if (!field) {
-    send_to_char("No field by that name. Try 'help string'.\n\r", ch);
+    cprintf(ch, "No field by that name. Try 'help string'.\n\r");
     return;
   }
   if (type == TP_MOB) {
     /* locate the beast */
     if (!(mob = get_char_vis(ch, name))) {
-      send_to_char("I don't know anyone by that name...\n\r", ch);
+      cprintf(ch, "I don't know anyone by that name...\n\r");
       return;
     }
     switch (field) {
     case 1:
       if (!IS_NPC(mob) && GetMaxLevel(ch) < IMPLEMENTOR) {
-	send_to_char("You can't change that field for players.", ch);
+	cprintf(ch, "You can't change that field for players.");
 	return;
       }
       if (!*string) {
-	send_to_char("You have to supply a name!\n\r", ch);
+	cprintf(ch, "You have to supply a name!\n\r");
 	return;
       }
       ch->desc->str = &mob->player.name;
       if (!IS_NPC(mob))
-	send_to_char("WARNING: You have changed the name of a player.\n\r", ch);
+	cprintf(ch, "WARNING: You have changed the name of a player.\n\r");
       break;
     case 2:
       if (!IS_NPC(mob)) {
-	send_to_char("That field is for monsters only.\n\r", ch);
+	cprintf(ch, "That field is for monsters only.\n\r");
 	return;
       }
       ch->desc->str = &mob->player.short_descr;
       break;
     case 3:
       if (!IS_NPC(mob)) {
-	send_to_char("That field is for monsters only.\n\r", ch);
+	cprintf(ch, "That field is for monsters only.\n\r");
 	return;
       }
       ch->desc->str = &mob->player.long_descr;
@@ -232,36 +229,36 @@ void do_string(struct char_data *ch, char *arg, int cmd)
       break;
     case 5:
       if (IS_NPC(mob)) {
-	send_to_char("Monsters have no titles.\n\r", ch);
+	cprintf(ch, "Monsters have no titles.\n\r");
 	return;
       }
       if ((GetMaxLevel(ch) > GetMaxLevel(mob)) && (ch != mob))
 	ch->desc->str = &mob->player.title;
       else {
-	send_to_char("Sorry, can't set the title of someone of highter level.\n\r", ch);
+	cprintf(ch, "Sorry, can't set the title of someone of highter level.\n\r");
 	return;
       }
       break;
     default:
-      send_to_char("That field is undefined for monsters.\n\r", ch);
+      cprintf(ch, "That field is undefined for monsters.\n\r");
       return;
       break;
     }
   } else {
-    send_to_char("Stringing of objects is no longer allowed for now.\n\r", ch);
+    cprintf(ch, "Stringing of objects is no longer allowed for now.\n\r");
     return;
 
     /* type == TP_OBJ */
     /* locate the object */
     if (!(obj = get_obj_vis(ch, name))) {
-      send_to_char("Can't find such a thing here..\n\r", ch);
+      cprintf(ch, "Can't find such a thing here..\n\r");
       return;
     }
     switch (field) {
 
     case 1:
       if (!*string) {
-	send_to_char("You have to supply a keyword.\n\r", ch);
+	cprintf(ch, "You have to supply a keyword.\n\r");
 	return;
       } else {
 	ch->desc->str = &obj->name;
@@ -276,7 +273,7 @@ void do_string(struct char_data *ch, char *arg, int cmd)
       break;
     case 4:
       if (!*string) {
-	send_to_char("You have to supply a keyword.\n\r", ch);
+	cprintf(ch, "You have to supply a keyword.\n\r");
 	return;
       }
       /* try to locate extra description */
@@ -291,14 +288,13 @@ void do_string(struct char_data *ch, char *arg, int cmd)
 	  strcpy(ed->keyword, string);
 	  ed->description = 0;
 	  ch->desc->str = &ed->description;
-	  send_to_char("New field.\n\r", ch);
+	  cprintf(ch, "New field.\n\r");
 	  break;
 	} else if (!str_cmp(ed->keyword, string)) {	/* the field exists */
 	  free(ed->description);
 	  ed->description = 0;
 	  ch->desc->str = &ed->description;
-	  send_to_char(
-			"Modifying description.\n\r", ch);
+	  cprintf(ch,  "Modifying description.\n\r");
 	  break;
 	}
       ch->desc->max_str = MAX_STRING_LENGTH;
@@ -306,13 +302,13 @@ void do_string(struct char_data *ch, char *arg, int cmd)
       break;
     case 6:			       /* deletion */
       if (!*string) {
-	send_to_char("You must supply a field name.\n\r", ch);
+	cprintf(ch, "You must supply a field name.\n\r");
 	return;
       }
       /* try to locate field */
       for (ed = obj->ex_description;; ed = ed->next)
 	if (!ed) {
-	  send_to_char("No field with that keyword.\n\r", ch);
+	  cprintf(ch, "No field with that keyword.\n\r");
 	  return;
 	} else if (!str_cmp(ed->keyword, string)) {
 	  free(ed->keyword);
@@ -329,13 +325,12 @@ void do_string(struct char_data *ch, char *arg, int cmd)
 	  }
 	  free(ed);
 
-	  send_to_char("Field deleted.\n\r", ch);
+	  cprintf(ch, "Field deleted.\n\r");
 	  return;
 	}
       break;
     default:
-      send_to_char(
-		    "That field is undefined for objects.\n\r", ch);
+      cprintf(ch,  "That field is undefined for objects.\n\r");
       return;
       break;
     }
@@ -346,16 +341,16 @@ void do_string(struct char_data *ch, char *arg, int cmd)
   }
   if (*string) {		       /* there was a string in the argument array */
     if (strlen(string) > length[field - 1]) {
-      send_to_char("String too long - truncated.\n\r", ch);
+      cprintf(ch, "String too long - truncated.\n\r");
       *(string + length[field - 1]) = '\0';
     }
     CREATE(*ch->desc->str, char, strlen(string) + 1);
 
     strcpy(*ch->desc->str, string);
     ch->desc->str = 0;
-    send_to_char("Ok.\n\r", ch);
+    cprintf(ch, "Ok.\n\r");
   } else {			       /* there was no string. enter string mode */
-    send_to_char("Enter string. terminate with '@'.\n\r", ch);
+    cprintf(ch, "Enter string. terminate with '@'.\n\r");
     *ch->desc->str = 0;
     ch->desc->max_str = length[field - 1];
   }
@@ -364,7 +359,6 @@ void do_string(struct char_data *ch, char *arg, int cmd)
 void bisect_arg(char *arg, int *field, char *string)
 {
   char buf[MAX_INPUT_LENGTH];
-  int i;
 
   /* field name and number */
   arg = one_argument(arg, buf);
@@ -373,265 +367,10 @@ void bisect_arg(char *arg, int *field, char *string)
 
   /* string */
   for (; isspace(*arg); arg++);
-  for (; *string = *arg; arg++, string++);
+  for (; (*string = *arg); arg++, string++);
 
   return;
 }
-
-#if 0
-void do_cust(struct char_data *ch, char *arg, int cmd)
-{
-  int field, dflags, dir, exroom, dkey, room, rspeed, rdir, tele_room,
-      tele_time, tele_look;
-  unsigned r_flags;
-  int zone, s_type;
-  char name[MAX_INPUT_LENGTH], string[512], buf[132];
-  struct extra_descr_data *ed, *tmp;
-  struct room_data *rp;
-
-  rp = real_roomp(ch->in_room);
-
-  if ((IS_NPC(ch)) || (GetMaxLevel(ch) < LOW_IMMORTAL))
-    return;
-
-  bisect_arg(arg, &field, string);
-
-  if (!field) {
-    send_to_char("Try 'help cust'.\n\r", ch);
-    return;
-  }
-  r_flags = -1;
-  s_type = -1;
-
-  switch (field) {
-  case 1:
-    ch->desc->str = &rp->name;
-    break;
-  case 2:
-    ch->desc->str = &rp->description;
-    break;
-  case 3:
-    sscanf(string, "%u %d ", &r_flags, &s_type);
-    if ((r_flags < 0) || (s_type < 0) || (s_type > 9)) {
-      send_to_char("cust flags <flags> <sector_type>\n\r", ch);
-      send_to_char("flags must be > 0, and sectors range from [0..9]\n\r", ch);
-      send_to_char("type 'help flags_sector'\n\r", ch);
-      return;
-    }
-    rp->room_flags = r_flags;
-    rp->sector_type = s_type;
-
-    if (rp->sector_type == SECT_WATER_NOSWIM) {
-      send_to_char("Now set the dir and speed for this river.\n\r", ch);
-      send_to_char("cust rivr <speed> <dir>.\n\r", ch);
-      rp->river_speed = 0;
-      rp->river_dir = 0;
-      return;
-    }
-    return;
-    break;
-
-  case 4:
-    sscanf(string, "%d %d %d %d ", &dir, &dflags, &dkey, &exroom);
-
-    /*
-     * check if the exit exists
-     */
-    if ((dir < 0) || (dir > 5)) {
-      send_to_char("You need to use numbers for that (0 - 5)", ch);
-      return;
-    }
-    if (rp->dir_option[dir]) {
-      send_to_char("modifying exit\n\r", ch);
-      if (dflags == 1)
-	rp->dir_option[dir]->exit_info = EX_ISDOOR;
-      else if (dflags == 2)
-	rp->dir_option[dir]->exit_info = EX_ISDOOR | EX_PICKPROOF;
-      else
-	rp->dir_option[dir]->exit_info = 0;
-
-      rp->dir_option[dir]->key = dkey;
-      if (real_roomp(exroom) != NULL) {
-	rp->dir_option[dir]->to_room = exroom;
-      } else {
-	send_to_char("Deleting exit.\n\r", ch);
-	free(rp->dir_option[dir]);
-	rp->dir_option[dir] = 0;
-	return;
-      }
-    } else if (real_roomp(exroom) == NULL) {
-      send_to_char("That's not a valid room.\n\r", ch);
-      return;
-    } else {
-      send_to_char("New exit\n\r", ch);
-      CREATE(rp->dir_option[dir],
-	     struct room_direction_data, 1);
-
-      if (dflags == 1)
-	rp->dir_option[dir]->exit_info = EX_ISDOOR;
-      else if (dflags == 2)
-	rp->dir_option[dir]->exit_info = EX_ISDOOR | EX_PICKPROOF;
-      else
-	rp->dir_option[dir]->exit_info = 0;
-      rp->dir_option[dir]->key = dkey;
-      rp->dir_option[dir]->to_room = exroom;
-    }
-
-    if (rp->dir_option[dir]->exit_info > 0) {
-      string[0] = 0;
-      send_to_char("Enter keywords, end with an @ on the same line. \n\r", ch);
-      ch->desc->str = &rp->dir_option[dir]->keyword;
-      break;
-    } else {
-      return;
-    }
-
-  case 5:
-    dir = -1;
-    sscanf(string, "%d", &dir);
-    if ((dir >= 0) && (dir < MAX_NUM_EXITS)) {
-      send_to_char("Enter text, exit with an @ on a BLANK line", ch);
-      string[0] = 0;
-      if (rp->dir_option[dir]) {
-	ch->desc->str = &rp->dir_option[dir]->general_description;
-      } else {
-	CREATE(rp->dir_option[dir],
-	       struct room_direction_data, 1);
-
-	ch->desc->str = &rp->dir_option[dir]->general_description;
-      }
-    } else {
-      send_to_char("Wrong direction!\n\r", ch);
-      send_to_char("Use 0-5. You will be prompted for text.\n\r", ch);
-      return;
-    }
-    break;
-  case 6:
-    /* 
-     * extra descriptions 
-     */
-    if (!*string) {
-      send_to_char("A keyword must be supplied.\n\r", ch);
-      return;
-    }
-    /* try to locate extra description */
-    for (ed = rp->ex_description;; ed = ed->next)
-      if (!ed) {
-	CREATE(ed, struct extra_descr_data, 1);
-
-	ed->next = rp->ex_description;
-	rp->ex_description = ed;
-	CREATE(ed->keyword, char, strlen(string) + 1);
-
-	strcpy(ed->keyword, string);
-	ed->description = 0;
-	ch->desc->str = &ed->description;
-	send_to_char("New field.\n\r", ch);
-	break;
-      } else if (!str_cmp(ed->keyword, string)) {
-	/* the field exists */
-	free(ed->description);
-	ed->description = 0;
-	ch->desc->str = &ed->description;
-	send_to_char("Modifying description.\n\r", ch);
-	break;
-      }
-    ch->desc->max_str = MAX_STRING_LENGTH;
-    return;
-    break;
-
-  case 7:
-    /*  this is where the river stuff will go */
-    rspeed = 0;
-    rdir = 0;
-    sscanf(string, "%d %d ", &rspeed, &rdir);
-    if ((rdir >= 0) && (rdir < MAX_NUM_EXITS)) {
-      rp->river_speed = rspeed;
-      rp->river_dir = rdir;
-    } else {
-      send_to_char(" cust rivr <speed> <dir>\n\r", ch);
-    }
-    return;
-
-  case 8:
-    /*  this is where the teleport stuff will go */
-    tele_room = -1;
-    tele_time = -1;
-    tele_look = -1;
-    sscanf(string, "%d %d %d", &tele_time, &tele_room, &tele_look);
-    if (tele_room < 0 || tele_time < 0 || tele_look < 0) {
-      send_to_char(" cust tele <time> <room_nr> <look-flag>\n\r", ch);
-      return;
-      break;
-    } else {
-      real_roomp(ch->in_room)->tele_time = tele_time;
-      real_roomp(ch->in_room)->tele_targ = tele_room;
-      real_roomp(ch->in_room)->tele_look = tele_look;
-      return;
-      break;
-    }
-
-    return;
-  case 9:
-    /*
-     * deletion
-     */
-    if (!*string) {
-      send_to_char("You must supply a field name.\n\r", ch);
-      return;
-    }
-    /* try to locate field */
-    for (ed = rp->ex_description;; ed = ed->next)
-      if (!ed) {
-	send_to_char("No field with that keyword.\n\r", ch);
-	return;
-      } else if (!str_cmp(ed->keyword, string)) {
-	free(ed->keyword);
-	if (ed->description)
-	  free(ed->description);
-
-	/* delete the entry in the desr list */
-	if (ed == rp->ex_description)
-	  rp->ex_description = ed->next;
-	else {
-	  for (tmp = rp->ex_description; tmp->next != ed;
-	       tmp = tmp->next);
-	  tmp->next = ed->next;
-	}
-	free(ed);
-
-	send_to_char("Field deleted.\n\r", ch);
-	return;
-      }
-    break;
-
-  default:
-    send_to_char("Sorry, don't know that one....\n\r", ch);
-    return;
-    break;
-  }
-
-  if (*ch->desc->str) {
-    free(*ch->desc->str);
-  }
-  if (*string) {		       /* there was a string in the argument array */
-    if (strlen(string) > room_length[field - 1]) {
-      send_to_char("String too long - truncated.\n\r", ch);
-      *(string + length[field - 1]) = '\0';
-    }
-    CREATE(*ch->desc->str, char, strlen(string) + 1);
-
-    strcpy(*ch->desc->str, string);
-    ch->desc->str = 0;
-    send_to_char("Ok.\n\r", ch);
-  } else {			       /* there was no string. enter string mode */
-    send_to_char("Enter string. exit with an @.\n\r", ch);
-    *ch->desc->str = 0;
-    ch->desc->max_str = room_length[field - 1];
-  }
-
-}
-#endif
 
 /*
  * Modification of character skills
@@ -658,62 +397,60 @@ void do_setskill(struct char_data *ch, char *arg, int cmd)
     "defend", "dirk", "listen", "missile", "detect", "\n"
   };
 
-  send_to_char("This routine is disabled untill it fitts\n\r", ch);
-  send_to_char("The new structures (sorry Quinn) ....Bombman\n\r", ch);
+  cprintf(ch, "This routine is disabled untill it fitts\n\r");
+  cprintf(ch, "The new structures (sorry Quinn) ....Bombman\n\r");
   return;
 
   arg = one_argument(arg, name);
   if (!*name) {			       /* no arguments. print an informative text */
-    send_to_char("Syntax:\n\rsetskill <name> <skill> <field> <value>\n\r",
-		 ch);
+    cprintf(ch, "Syntax:\n\rsetskill <name> <skill> <field> <value>\n\r");
     strcpy(help, "Skill being one of the following:\n\r\n\r");
     for (i = 1; *skills[i] != '\n'; i++) {
       sprintf(help + strlen(help), "%18s", skills[i]);
       if (!(i % 4)) {
 	strcat(help, "\n\r");
-	send_to_char(help, ch);
+	cprintf(ch, help);
 	*help = '\0';
       }
     }
     if (*help)
-      send_to_char(help, ch);
+      cprintf(ch, help);
     return;
   }
   if (!(vict = get_char_vis(ch, name))) {
-    send_to_char("No living thing by that name.\n\r", ch);
+    cprintf(ch, "No living thing by that name.\n\r");
     return;
   }
   arg = one_argument(arg, buf);
   if (!*buf) {
-    send_to_char("Skill name expected.\n\r", ch);
+    cprintf(ch, "Skill name expected.\n\r");
     return;
   }
   if ((skill = old_search_block(buf, 0, strlen(buf), skills, 1)) < 0) {
-    send_to_char("No such skill is known. Try 'setskill' for list.\n\r", ch);
+    cprintf(ch, "No such skill is known. Try 'setskill' for list.\n\r");
     return;
   }
   argument_interpreter(arg, buf, num);
   if (!*num || !*buf) {
-    send_to_char("Field name or value undefined.\n\r", ch);
+    cprintf(ch, "Field name or value undefined.\n\r");
     return;
   }
   if ((field = old_search_block(buf, 0, strlen(buf), skill_fields, 0)) < 0) {
-    send_to_char("Unrecognized field.\n\r", ch);
+    cprintf(ch, "Unrecognized field.\n\r");
     return;
   }
   value = atoi(num);
   if (field == 3) {
     if (value < -1) {
-      send_to_char("Minimum value for that is -1.\n\r", ch);
+      cprintf(ch, "Minimum value for that is -1.\n\r");
       return;
     }
   } else if (value < 0) {
-    send_to_char("Minimum value for that is 0.\n\r", ch);
+    cprintf(ch, "Minimum value for that is 0.\n\r");
     return;
   }
   if (value > max_value[field - 1]) {
-    sprintf(buf, "Max value for that is %d.\n\r", max_value[field - 1]);
-    send_to_char(buf, ch);
+    cprintf(ch, "Max value for that is %d.\n\r", max_value[field - 1]);
     return;
   }
   switch (field) {
@@ -727,7 +464,7 @@ void do_setskill(struct char_data *ch, char *arg, int cmd)
     break;
   }
 
-  send_to_char("Ok.\n\r", ch);
+  cprintf(ch, "Ok.\n\r");
 }
 
 /* db stuff *********************************************** */
@@ -879,29 +616,7 @@ void show_string(struct descriptor_data *d, char *input)
     }
 }
 
-void night_watchman(void)
-{
-  long tc;
-  struct tm *t_info;
-
-  tc = time(0);
-  t_info = localtime(&tc);
-
-  if ((t_info->tm_hour == 8) && (t_info->tm_wday > 0) &&
-      (t_info->tm_wday < 6))
-    if (t_info->tm_min > 50) {
-      log("Leaving the scene for the serious folks.");
-      send_to_all("Closing down. Thank you for flying DikuMUD.\n\r");
-      diku_shutdown = 1;
-    } else if (t_info->tm_min > 40)
-      send_to_all("ATTENTION: DikuMUD will shut down in 10 minutes.\n\r");
-    else if (t_info->tm_min > 30)
-      send_to_all("Warning: The game will close in 20 minutes.\n\r");
-}
-
-void check_reboot(void)
-{
-  char log_buf[512];
+void check_reboot(void) {
   long tc;
   struct tm *t_info;
   char dummy;
@@ -914,13 +629,10 @@ void check_reboot(void)
   tmstr= asctime(t_info);
   *(tmstr + strlen(tmstr) -1) = '\0';
 
-  sprintf(log_buf, "CHECKREBOOT:hour:%d min:%d", t_info->tm_hour + 1, t_info->tm_min);
-  log(log_buf);
-
   if ((((t_info->tm_hour + 1) == REBOOT_AT1) ||
        ((t_info->tm_hour + 1) == REBOOT_AT2)) &&
       (t_info->tm_min > 30))
-    if (boot = fopen(REBOOT_FILE, "r")) {
+    if ((boot = fopen(REBOOT_FILE, "r"))) {
       if (t_info->tm_min > 55) {
 	log("**** Reboot exists ****");
 	fread(&dummy, sizeof(dummy), 1, boot);
@@ -928,7 +640,7 @@ void check_reboot(void)
 	  log("Reboot is nonempty.");
 	  if (system(REBOOT_FILE)) {
 	    log("Reboot script terminated abnormally");
-	    send_to_all("The reboot was cancelled.\n\r");
+	    aprintf("The reboot was cancelled.\n\r");
 	    sprintf(buf, "mv %s %s.FAILED", REBOOT_FILE, REBOOT_FILE);
 	    system(buf);
 	    fclose(boot);
@@ -958,153 +670,3 @@ void check_reboot(void)
       fclose(boot);
     }
 }
-
-#ifdef GR
-
-int workhours()
-{
-  long tc;
-  struct tm *t_info;
-
-  tc = time(0);
-  t_info = localtime(&tc);
-
-  return ((t_info->tm_wday > 0) && (t_info->tm_wday < 6) && (t_info->tm_hour >= 9)
-	  && (t_info->tm_hour < 17));
-}
-
-/*
- * * This procedure is *heavily* system dependent. If your system is not set up
- * * properly for this particular way of reading the system load (It's weird all
- * * right - but I couldn't think of anything better), change it, or don't use -l.
- * * It shouldn't be necessary to use -l anyhow. It's oppressive and unchristian
- * * to harness man's desire to play. Who needs a friggin' degree, anyhow?
- */
-
-int load(void)
-{
-  struct syslinfo {
-    char sl_date[12];		       /* "Tue Sep 16\0" */
-    char sl_time[8];		       /* "11:10\0" */
-    char sl_load1[6];		       /* "12.0\0" */
-    char sl_load2[10];		       /* "+2.3 14u\0" */
-  } info;
-  FILE *fl;
-  int ld, i, sum;
-  static int previous[5];
-  static int p_point = -1;
-
-  if (!(fl = fopen("/tmp/.sysline", "r"))) {
-    perror("sysline. (dying)");
-    slow_death = 1;
-    return (-1);
-  }
-  if (!fread(&info, sizeof(info), 1, fl)) {
-    perror("fread sysline (dying)");
-    slow_death = 1;
-    return (-1);
-  }
-  fclose(fl);
-
-  if (p_point < 0) {
-    previous[0] = atoi(info.sl_load1);
-    for (i = 1; i < 5; i++)
-      previous[i] = previous[0];
-    p_point = 1;
-    return (previous[0]);
-  } else {
-    /* put new figure in table */
-    previous[p_point] = atoi(info.sl_load1);
-    if (++p_point > 4)
-      p_point = 0;
-
-    for (i = 0, sum = 0; i < 5; i++)
-      sum += previous[i];
-    return ((int)sum / 5);
-  }
-}
-
-#if 0
-char *nogames(void)
-{
-  static char text[200];
-  FILE *fl;
-
-  if (fl = fopen("lib/nogames", "r")) {
-    log("/usr/games/nogames exists");
-    fgets(text, fl);
-    return (text);
-    fclose(fl);
-  } else
-    return (0);
-}
-#endif
-
-#ifdef OLD_COMA
-void coma(void)
-{
-  log("Entering comatose state");
-
-  while (descriptor_list)
-    close_socket(descriptor_list);
-
-  do {
-    sleep(300);
-    tics = 1;
-    if (workhours()) {
-      log("Working hours collision during coma. Exit.");
-      exit(0);
-    }
-  }
-  while (load() >= 6);
-
-  log("Leaving coma");
-}
-
-#endif
-
-/* emulate the game regulator */
-void gr(int s)
-{
-#if 0
-  char *txt = 0, buf[1024];
-  int ld = 0;
-  static char *warnings[3] =
-  {
-    "If things don't look better within 3 minutes, the game will pause.\n\r",
-    "The game will close temporarily 2 minutes from now.\n\r",
-    "WARNING: The game will close in 1 minute.\n\r"
-  };
-  static int wnr = 0;
-
-  if (((ld = load()) >= 6) || (txt = nogames()) || slow_death) {
-    if (ld >= 6) {
-      sprintf(buf, "The system load is greater than 6.0 (%d)\n\r", ld);
-      send_to_all(buf);
-    } else if (slow_death)
-      send_to_all("The game is dying.\n\r");
-    else {
-      strcpy(buf,
-	"Game playing is no longer permitted on this machine:\n\r");
-      strcat(buf, txt);
-      strcat(buf, "\n\r");
-      send_to_all(buf);
-    }
-
-    if (wnr < 3)
-      send_to_all(warnings[wnr++]);
-    else if (ld >= 6) {
-      coma(s);
-      wnr = 0;
-    } else
-      diku_shutdown = 1;
-  } else if (workhours())
-    diku_shutdown = 1;		       /* this shouldn't happen */
-  else if (wnr) {
-    send_to_all("Things look brighter now - you can continue playing.\n\r");
-    wnr = 0;
-  }
-#endif
-}
-
-#endif

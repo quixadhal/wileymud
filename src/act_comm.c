@@ -10,17 +10,19 @@
 #include <sys/types.h>
 #include <string.h>
 
-#include "global.h"
-#include "bug.h"
-#include "utils.h"
-#include "comm.h"
-#include "interpreter.h"
-#include "handler.h"
-#include "db.h"
-#include "spells.h"
-#include "constants.h"
+#include "include/global.h"
+#include "include/bug.h"
+#include "include/utils.h"
+#include "include/comm.h"
+#include "include/interpreter.h"
+#include "include/handler.h"
+#include "include/db.h"
+#include "include/spells.h"
+#include "include/constants.h"
+#include "include/limits.h"
+#include "include/multiclass.h"
 #define _ACT_COMM_C
-#include "act_comm.h"
+#include "include/act_comm.h"
 
 void do_say(struct char_data *ch, char *argument, int cmd)
 {
@@ -32,7 +34,7 @@ void do_say(struct char_data *ch, char *argument, int cmd)
   for (i = 0; *(argument + i) == ' '; i++);
 
   if (!*(argument + i))
-    send_to_char("usage: say <mesg>.\n\r", ch);
+    cprintf(ch, "usage: say <mesg>.\n\r");
   else {
     switch(argument[strlen(argument)-1]) {
       case '!':
@@ -65,25 +67,27 @@ void do_shout(struct char_data *ch, char *argument, int cmd)
   char buf1[MAX_INPUT_LENGTH + 40];
   struct descriptor_data *i;
   struct room_data *rp, *mrp;
+#ifdef RADIUS_SHOUT
   struct room_direction_data *exitp;
   struct char_data *v;
   int x;
+#endif
 
   if (DEBUG)
     dlog("do_shout");
 
   if (IS_SET(ch->specials.act, PLR_NOSHOUT)) {
-    send_to_char("You can't shout!!\n\r", ch);
+    cprintf(ch, "You can't shout!!\n\r");
     return;
   }
   for (; *argument == ' '; argument++);
 
   if (ch->master && IS_AFFECTED(ch, AFF_CHARM)) {
-    send_to_char("You pet is trying to shout....", ch->master);
+    cprintf(ch->master, "You pet is trying to shout....");
     return;
   }
   if (!(*argument))
-    send_to_char("usage: shout <mesg>.\n\r", ch);
+    cprintf(ch, "usage: shout <mesg>.\n\r");
   else {
     sprintf(buf1, "$n shouts '%s'", argument);
 
@@ -185,11 +189,10 @@ void do_commune(struct char_data *ch, char *argument, int cmd)
   for (; *argument == ' '; argument++);
 
   if (!(*argument))
-    send_to_char("Communing among the gods is fine, but WHAT?\n\r", ch);
+    cprintf(ch, "Communing among the gods is fine, but WHAT?\n\r");
   else {
     if (IS_NPC(ch) || IS_SET(ch->specials.act, PLR_ECHO)) {
-      sprintf(buf1, "You wiz : '%s'\n\r", argument);	/*part of wiznet */
-      send_to_char(buf1, ch);
+      cprintf(ch, "You wiz : '%s'\n\r", argument);	/*part of wiznet */
     }
     sprintf(buf1, "$n : '%s'", argument);	/* this is part of wiz */
 
@@ -211,15 +214,15 @@ void do_tell(struct char_data *ch, char *argument, int cmd)
   half_chop(argument, name, message);
 
   if (!*name || !*message) {
-    send_to_char("usage: tell <who> <mesg>.\n\r", ch);
+    cprintf(ch, "usage: tell <who> <mesg>.\n\r");
     return;
   }
   if (!(vict = get_char_vis(ch, name))) {
-    send_to_char("No-one by that name here..\n\r", ch);
+    cprintf(ch, "No-one by that name here..\n\r");
     return;
   }
   if (ch == vict) {
-    send_to_char("You try to tell yourself something.\n\r", ch);
+    cprintf(ch, "You try to tell yourself something.\n\r");
     return;
   }
   if (GET_POS(vict) == POSITION_SLEEPING) {
@@ -227,15 +230,15 @@ void do_tell(struct char_data *ch, char *argument, int cmd)
     return;
   }
   if (IS_NPC(vict) && !(vict->desc)) {
-    send_to_char("No-one by that name here..\n\r", ch);
+    cprintf(ch, "No-one by that name here..\n\r");
     return;
   }
   if (!vict->desc) {
-    send_to_char("They can't hear you, link dead.\n\r", ch);
+    cprintf(ch, "They can't hear you, link dead.\n\r");
     return;
   }
   if (IS_SET(vict->specials.new_act, NEW_PLR_NOTELL) && IS_MORTAL(ch)) {
-    send_to_char("They are not recieving tells at the moment.\n\r", ch);
+    cprintf(ch, "They are not recieving tells at the moment.\n\r");
     return;
   }
   switch(message[strlen(message)-1]) {
@@ -267,20 +270,18 @@ void do_whisper(struct char_data *ch, char *argument, int cmd)
   half_chop(argument, name, message);
 
   if (!*name || !*message)
-    send_to_char("Who do you want to whisper to.. and what??\n\r", ch);
+    cprintf(ch, "Who do you want to whisper to.. and what??\n\r");
   else if (!(vict = get_char_room_vis(ch, name)))
-    send_to_char("No-one by that name here..\n\r", ch);
+    cprintf(ch, "No-one by that name here..\n\r");
   else if (vict == ch) {
     act("$n whispers quietly to $mself.", FALSE, ch, 0, 0, TO_ROOM);
-    send_to_char
-      ("You can't seem to get your mouth close enough to your ear...\n\r", ch);
+    cprintf(ch, "You can't seem to get your mouth close enough to your ear...\n\r");
   } else {
     sprintf(buf, "$n whispers to you, '%s'", message);
     act(buf, FALSE, ch, 0, vict, TO_VICT);
     if (IS_NPC(ch) || (IS_SET(ch->specials.act, PLR_ECHO))) {
-      sprintf(buf, "You whisper to %s, '%s'\n\r",
+      cprintf(ch, "You whisper to %s, '%s'\n\r",
       (IS_NPC(vict) ? vict->player.name : GET_NAME(vict)), message);
-      send_to_char(buf, ch);
     }
     act("$n whispers something to $N.", FALSE, ch, 0, vict, TO_NOTVICT);
   }
@@ -296,20 +297,19 @@ void do_ask(struct char_data *ch, char *argument, int cmd)
   half_chop(argument, name, message);
 
   if (!*name || !*message)
-    send_to_char("Who do you want to ask something.. and what??\n\r", ch);
+    cprintf(ch, "Who do you want to ask something.. and what??\n\r");
   else if (!(vict = get_char_room_vis(ch, name)))
-    send_to_char("No-one by that name here..\n\r", ch);
+    cprintf(ch, "No-one by that name here..\n\r");
   else if (vict == ch) {
     act("$n quietly asks $mself a question.", FALSE, ch, 0, 0, TO_ROOM);
-    send_to_char("You think about it for a while...\n\r", ch);
+    cprintf(ch, "You think about it for a while...\n\r");
   } else {
     sprintf(buf, "$n asks you '%s'", message);
     act(buf, FALSE, ch, 0, vict, TO_VICT);
 
     if (IS_NPC(ch) || (IS_SET(ch->specials.act, PLR_ECHO))) {
-      sprintf(buf, "You ask %s, '%s'\n\r",
+      cprintf(ch, "You ask %s, '%s'\n\r",
       (IS_NPC(vict) ? vict->player.name : GET_NAME(vict)), message);
-      send_to_char(buf, ch);
     }
     act("$n asks $N a question.", FALSE, ch, 0, vict, TO_NOTVICT);
   }
@@ -318,8 +318,7 @@ void do_ask(struct char_data *ch, char *argument, int cmd)
 void do_write(struct char_data *ch, char *argument, int cmd)
 {
   struct obj_data *paper = 0, *pen = 0;
-  char papername[MAX_INPUT_LENGTH], penname[MAX_INPUT_LENGTH],
-       buf[MAX_STRING_LENGTH];
+  char papername[MAX_INPUT_LENGTH], penname[MAX_INPUT_LENGTH];
 
   if (DEBUG)
     dlog("do_write");
@@ -329,21 +328,19 @@ void do_write(struct char_data *ch, char *argument, int cmd)
     return;
 
   if (!*papername) {		       /* nothing was delivered */
-    send_to_char("write (on) papername (with) penname.\n\r", ch);
+    cprintf(ch, "write (on) papername (with) penname.\n\r");
     return;
   }
   if (!*penname) {
-    send_to_char("write (on) papername (with) penname.\n\r", ch);
+    cprintf(ch, "write (on) papername (with) penname.\n\r");
     return;
   }
   if (!(paper = get_obj_in_list_vis(ch, papername, ch->carrying))) {
-    sprintf(buf, "You have no %s.\n\r", papername);
-    send_to_char(buf, ch);
+    cprintf(ch, "You have no %s.\n\r", papername);
     return;
   }
   if (!(pen = get_obj_in_list_vis(ch, penname, ch->carrying))) {
-    sprintf(buf, "You have no %s.\n\r", penname);
-    send_to_char(buf, ch);
+    cprintf(ch, "You have no %s.\n\r", penname);
     return;
   }
   /* ok.. now let's see what kind of stuff we've found */
@@ -352,12 +349,11 @@ void do_write(struct char_data *ch, char *argument, int cmd)
   } else if (paper->obj_flags.type_flag != ITEM_NOTE) {
     act("You can't write on $p.", FALSE, ch, paper, 0, TO_CHAR);
   } else if (paper->action_description) {
-    send_to_char("There's something written on it already.\n\r", ch);
+    cprintf(ch, "There's something written on it already.\n\r");
     return;
   } else {
     /* we can write - hooray! */
-    send_to_char
-      ("Ok.. go ahead and write.. end the note with a @.\n\r", ch);
+    cprintf(ch, "Ok.. go ahead and write.. end the note with a @.\n\r");
     act("$n begins to jot down a note.", TRUE, ch, 0, 0, TO_ROOM);
     ch->desc->str = &paper->action_description;
     ch->desc->max_str = MAX_NOTE_LENGTH;
@@ -369,20 +365,18 @@ void do_group_tell(struct char_data *ch, char *arguement, int cmd)
   struct char_data *k, *vict;
   struct follow_type *f;
 
-  char name[100], message[MAX_INPUT_LENGTH + 20], buf[MAX_INPUT_LENGTH + 20];
-
   if (DEBUG)
     dlog("do_group_tell");
   if (!*arguement) {
-    send_to_char("usage: gtell <mesg>.\n\r", ch);
+    cprintf(ch, "usage: gtell <mesg>.\n\r");
     return;
   }
   if (!IS_AFFECTED(ch, AFF_GROUP)) {
-    send_to_char("But you are a member of no group?!\n\r", ch);
+    cprintf(ch, "But you are a member of no group?!\n\r");
     return;
   }
   if (GET_POS(ch) == POSITION_SLEEPING) {
-    send_to_char("You are to tired to do this....\n\r", ch);
+    cprintf(ch, "You are to tired to do this....\n\r");
     return;
   }
   if (!ch->master)
@@ -391,34 +385,26 @@ void do_group_tell(struct char_data *ch, char *arguement, int cmd)
     /* tell the leader of the group */
 
     k = ch->master;
-    if (IS_AFFECTED(k, AFF_GROUP)) {
-      if ((GET_POS(k) != POSITION_SLEEPING) && (k->desc) && (k != ch)) {
-	sprintf(buf, "%s tells the group '%s'\n\r",
+    if (IS_AFFECTED(k, AFF_GROUP))
+      if ((GET_POS(k) != POSITION_SLEEPING) && (k->desc) && (k != ch))
+	cprintf(k, "%s tells the group '%s'\n\r",
 		(IS_NPC(ch) ? ch->player.short_descr : GET_NAME(ch)), arguement);
-	send_to_char(buf, k);
-      }
-    }
   }
 
   /* tell the followers of the group and exclude ourselfs */
 
   for (f = k->followers; f; f = f->next) {
     vict = f->follower;
-    if (IS_AFFECTED(vict, AFF_GROUP)) {
+    if (IS_AFFECTED(vict, AFF_GROUP))
       if ((GET_POS(vict) != POSITION_SLEEPING) &&
 	  (vict->desc) &&
-	  (vict != ch)) {
-	sprintf(buf, "%s tells the group '%s'\n\r",
+	  (vict != ch))
+	cprintf(vict, "%s tells the group '%s'\n\r",
 		(IS_NPC(ch) ? ch->player.short_descr : GET_NAME(ch)), arguement);
-	send_to_char(buf, vict);
-      }
-    }
   }
 
-  if (IS_NPC(ch) || IS_SET(ch->specials.act, PLR_ECHO)) {
-    sprintf(buf, "You tell the group '%s'\n\r", arguement);
-    send_to_char(buf, ch);
-  }
+  if (IS_NPC(ch) || IS_SET(ch->specials.act, PLR_ECHO))
+    cprintf(ch, "You tell the group '%s'\n\r", arguement);
 }
 
 void do_group_report(struct char_data *ch, char *arguement, int cmd)
@@ -426,17 +412,17 @@ void do_group_report(struct char_data *ch, char *arguement, int cmd)
   struct char_data *k, *vict;
   struct follow_type *f;
 
-  char name[100], message[MAX_INPUT_LENGTH + 20], buf[MAX_INPUT_LENGTH + 20];
+  char message[MAX_INPUT_LENGTH + 20];
 
   if (DEBUG)
     dlog("do_group_report");
 
   if (!IS_AFFECTED(ch, AFF_GROUP)) {
-    send_to_char("But you are a member of no group?!\n\r", ch);
+    cprintf(ch, "But you are a member of no group?!\n\r");
     return;
   }
   if (GET_POS(ch) == POSITION_SLEEPING) {
-    send_to_char("You are to tired to do this....\n\r", ch);
+    cprintf(ch, "You are to tired to do this....\n\r");
     return;
   }
   sprintf(message,
@@ -455,59 +441,52 @@ void do_group_report(struct char_data *ch, char *arguement, int cmd)
     /* tell the leader of the group */
 
     k = ch->master;
-    if (IS_AFFECTED(k, AFF_GROUP)) {
-      if ((GET_POS(k) != POSITION_SLEEPING) && (k->desc) && (k != ch)) {
-	send_to_char(message, k);
-      }
-    }
+    if (IS_AFFECTED(k, AFF_GROUP))
+      if ((GET_POS(k) != POSITION_SLEEPING) && (k->desc) && (k != ch))
+	cprintf(k, message);
   }
 
   /* tell the followers of the group and exclude ourselfs */
 
   for (f = k->followers; f; f = f->next) {
     vict = f->follower;
-    if (IS_AFFECTED(vict, AFF_GROUP)) {
+    if (IS_AFFECTED(vict, AFF_GROUP))
       if ((GET_POS(vict) != POSITION_SLEEPING) &&
 	  (vict->desc) &&
-	  (vict != ch)) {
-	send_to_char(message, vict);
-      }
-    }
+	  (vict != ch))
+	cprintf(vict, message);
   }
 
-  if (IS_NPC(ch) || IS_SET(ch->specials.act, PLR_ECHO)) {
-    sprintf(buf, "You tell the group your stats.\n\r", arguement);
-    send_to_char(buf, ch);
-  }
+  if (IS_NPC(ch) || IS_SET(ch->specials.act, PLR_ECHO))
+    cprintf(ch, "You tell the group your stats.\n\r");
 }
 
 void do_split(struct char_data *ch, char *arguement, int cmd)
 {
-  struct char_data *k, *vict;
+  struct char_data *vict;
   struct follow_type *f;
   char blah[256];
-  int amount, count, i, share;
-  char buf[512];
+  int amount, count, share;
 
   if (DEBUG)
     dlog("do_split");
   if (!IS_AFFECTED(ch, AFF_GROUP)) {
-    send_to_char("You are a member of no group!\n\r", ch);
+    cprintf(ch, "You are a member of no group!\n\r");
     return;
   }
   if (ch->master) {
-    send_to_char("You must be the leader of the group to use this.\n\r", ch);
+    cprintf(ch, "You must be the leader of the group to use this.\n\r");
     return;
   }
   one_argument(arguement, blah);
 
   if (!is_number(blah)) {
-    send_to_char("You must supply an integer amount.\n\r", ch);
+    cprintf(ch, "You must supply an integer amount.\n\r");
     return;
   }
   amount = atoi(blah);
   if (amount > GET_GOLD(ch)) {
-    send_to_char("You do not have that much gold.\n\r", ch);
+    cprintf(ch, "You do not have that much gold.\n\r");
     return;
   }
   GET_GOLD(ch) -= amount;
@@ -524,16 +503,14 @@ void do_split(struct char_data *ch, char *arguement, int cmd)
   share = amount / count;
   GET_GOLD(ch) += share;
 
-  sprintf(buf, "You split the gold into shares of %d coin(s)\n\r", share);
-  send_to_char(buf, ch);
+  cprintf(ch, "You split the gold into shares of %d coin(s)\n\r", share);
 
   for (f = ch->followers; f; f = f->next) {
     vict = f->follower;
     if (IS_AFFECTED(vict, AFF_GROUP)) {
       if ((vict->desc) && (vict != ch)) {
-	sprintf(buf, "%s gives you %d coins.\n\r",
+	cprintf(ch, "%s gives you %d coins.\n\r",
 	(IS_NPC(ch) ? ch->player.short_descr : GET_NAME(ch)), share);
-	send_to_char(buf, vict);
 	GET_GOLD(vict) += share;
       }
     }
@@ -545,7 +522,7 @@ void do_land(struct char_data *ch, char *arg, int cmd)
   if (DEBUG)
     dlog("do_land");
   if (IS_NOT_SET(ch->specials.affected_by, AFF_FLYING)) {
-    send_to_char("But you are not flying?\n\r", ch);
+    cprintf(ch, "But you are not flying?\n\r");
     return;
   }
   act("$n slowly lands on the ground.", FALSE, ch, 0, 0, TO_ROOM);
@@ -555,7 +532,7 @@ void do_land(struct char_data *ch, char *arg, int cmd)
   if (IS_SET(ch->specials.affected_by, AFF_FLYING))
     REMOVE_BIT(ch->specials.affected_by, AFF_FLYING);
 
-  send_to_char("You feel the extreme pull of gravity...\n\r", ch);
+  cprintf(ch, "You feel the extreme pull of gravity...\n\r");
 }
 
 void do_invis_off(struct char_data *ch, char *arg, int cmd)
@@ -563,7 +540,7 @@ void do_invis_off(struct char_data *ch, char *arg, int cmd)
   if (DEBUG)
     dlog("do_invis_off");
   if (!IS_SET(ch->specials.affected_by, AFF_INVISIBLE)) {
-    send_to_char("But you are not invisible?\n\r", ch);
+    cprintf(ch, "But you are not invisible?\n\r");
     return;
   }
   act("$n slowly fades into existence.", FALSE, ch, 0, 0, TO_ROOM);

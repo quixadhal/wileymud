@@ -1,0 +1,227 @@
+#RENT
+Owner              Boingo~
+Gold               27
+TotalCost          20
+LastUpdate         834606104
+MinimumStay        0
+End
+#EQUIPMENT
+#ITEM
+ObjId              0
+ContainedBy        -1
+Name               torch~
+Description
+A large torch.~
+ShortDescr
+a torch~
+ActionDescr
+(null)~
+VNum               3015
+EquippedAt         0
+Values             0 0 4 0
+ExtraFlags         0
+Weight             3
+Timer              0
+BitVector          0
+Type               1
+WearFlags          1
+Cost               10
+CostPerDay         3
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              1
+ContainedBy        -1
+Name               boots leather~
+Description
+A pair of leather boots lie here.~
+ShortDescr
+a pair of leather boots~
+ActionDescr
+(null)~
+VNum               3026
+EquippedAt         8
+Values             1 1 0 0
+ExtraFlags         0
+Weight             2
+Timer              0
+BitVector          0
+Type               9
+WearFlags          65
+Cost               50
+CostPerDay         10
+Affect             0 0
+Affect             0 0
+End
+End
+#CARRIED
+#ITEM
+ObjId              7
+ContainedBy        -1
+Name               heafty loaf bread~
+Description
+A heafty loaf of bread rests here.~
+ShortDescr
+a heafty loaf of bread~
+ActionDescr
+(null)~
+VNum               5016
+EquippedAt         0
+Values             7 0 0 0
+ExtraFlags         0
+Weight             1
+Timer              0
+BitVector          0
+Type               19
+WearFlags          1
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              7
+ContainedBy        -1
+Name               heafty loaf bread~
+Description
+A heafty loaf of bread rests here.~
+ShortDescr
+a heafty loaf of bread~
+ActionDescr
+(null)~
+VNum               5016
+EquippedAt         0
+Values             7 0 0 0
+ExtraFlags         0
+Weight             1
+Timer              0
+BitVector          0
+Type               19
+WearFlags          1
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              7
+ContainedBy        -1
+Name               bottle water~
+Description
+A bottle of clear liquid has been left here.~
+ShortDescr
+a bottle~
+ActionDescr
+(null)~
+VNum               3003
+EquippedAt         0
+Values             16 16 0 0
+ExtraFlags         0
+Weight             2
+Timer              0
+BitVector          0
+Type               17
+WearFlags          16385
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              7
+ContainedBy        -1
+Name               map shlyar~
+Description
+A map lies here.~
+ShortDescr
+a map~
+ActionDescr
+(null)~
+VNum               3050
+EquippedAt         0
+Values             0 0 0 0
+ExtraFlags         0
+Weight             2
+Timer              0
+BitVector          0
+Type               12
+WearFlags          1
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+ExtraDescr         map shylar~
+                         -= Grassland =-
+
+     -= Mansion =-           
+           +              -= Arcanus =-
+   	       	         	+
+         * * * * *  *  *  *  *  *+ -= Jakes =-  +-= Kark =-
+   
+                 -= Jessica =- +*                -= Farm =-
+
+                 -= Supply =-  +*+ -= Griffons =-      
+      +
++-= Chapel =-+   -= Bakery =-  +*  -= Sass =-
+      +            		       +	
+ -= Pastue =-     -= Tate =-   +*  *  *  *  *  *  *  *  *  *
+-= Cemetary =-                         + 
+      +                            -= Home =-
+
+                         -= Grassland =-
+~
+End
+#ITEM
+ObjId              7
+ContainedBy        -1
+Name               bottle water~
+Description
+A bottle of clear liquid has been left here.~
+ShortDescr
+a bottle~
+ActionDescr
+(null)~
+VNum               3003
+EquippedAt         -1
+Values             16 16 0 0
+ExtraFlags         0
+Weight             2
+Timer              0
+BitVector          0
+Type               17
+WearFlags          16385
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              7
+ContainedBy        -1
+Name               large knife~
+Description
+A large knife lies here.~
+ShortDescr
+a large knife~
+ActionDescr
+(null)~
+VNum               3021
+EquippedAt         -1
+Values             0 1 5 11
+ExtraFlags         4096
+Weight             3
+Timer              0
+BitVector          0
+Type               5
+WearFlags          8193
+Cost               20
+CostPerDay         2
+Affect             0 0
+Affect             0 0
+ExtraDescr         large knife~
+It appears to be about eight to nine inches in length, fairly sharp.
+~
+End
+End
+#END_RENT

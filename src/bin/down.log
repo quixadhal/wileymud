@@ -1,0 +1,27 @@
+Input text (terminate with ^D)
+accept on port 1069 from kevin@yakko.cs.wmich.edu
+accept on port 1146 from flair@yakko.cs.wmich.edu
+accept on port 4006 from tigger.cc.wmich.edu
+accept on port 1226 from jettero@yakko.cs.wmich.edu
+accept on port 1230 from flair@yakko.cs.wmich.edu
+accept on port 1327 from bryan@localhost
+accept on port 1454 from ochs@yakko.cs.wmich.edu
+accept on port 1709 from bryan@localhost
+accept on port 1034 from flair@yakko.cs.wmich.edu
+accept on port 1050 from flair@localhost
+accept on port 1058 from jettero@yakko.cs.wmich.edu
+accept on port 3820 from piglet.cc.wmich.edu
+accept on port 3825 from piglet.cc.wmich.edu
+accept on port 1237 from flair@yakko.cs.wmich.edu
+accept on port 1468 from flair@yakko.cs.wmich.edu
+accept on port 1516 from flair@yakko.cs.wmich.edu
+accept on port 1716 from nick@localhost
+accept on port 1768 from wiley@localhost
+accept on port 1315 from tigger.cc.wmich.edu
+accept on port 1374 from kathi@mea.net-link.net
+accept on port 1046 from jeremy@localhost
+accept on port 1053 from jeremy@localhost
+accept on port 1059 from jeremy@localhost
+accept on port 1062 from flair@localhost
+accept on port 3812 from piglet.cc.wmich.edu
+accept on port 1696 from 99ochs2@s13.lab.cc.wmich.edu

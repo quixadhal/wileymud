@@ -1,0 +1,161 @@
+#RENT
+Owner              Felcyn~
+Gold               5649
+TotalCost          73
+LastUpdate         823969194
+MinimumStay        0
+End
+#EQUIPMENT
+#ITEM
+ObjId              0
+ContainedBy        -1
+Name               scale bodice~
+Description
+A scale bodice lies here in a clump~
+ShortDescr
+a scale bodice~
+ActionDescr
+(null)~
+VNum               10005
+EquippedAt         5
+Values             2 2 0 0
+ExtraFlags         0
+Weight             15
+Timer              0
+BitVector          0
+Type               9
+WearFlags          9
+Cost               150
+CostPerDay         70
+Affect             0 0
+Affect             0 0
+ExtraDescr         scale bodice~
+  This piece of armor looks more like the top of a elegant dress than 
+anything else, with shoulder straps houlstering the bousoms, much skin on
+the upper torso is exposed.
+~
+End
+#ITEM
+ObjId              1
+ContainedBy        -1
+Name               scale skirt~
+Description
+A scale skirt lies here in a hump.~
+ShortDescr
+a scale skirt~
+ActionDescr
+(null)~
+VNum               10006
+EquippedAt         7
+Values             2 2 0 0
+ExtraFlags         0
+Weight             15
+Timer              0
+BitVector          0
+Type               9
+WearFlags          33
+Cost               150
+CostPerDay         10
+Affect             17 -4
+Affect             0 0
+End
+#ITEM
+ObjId              2
+ContainedBy        -1
+Name               bottle water~
+Description
+A bottle of clear liquid has been left here.~
+ShortDescr
+a bottle~
+ActionDescr
+(null)~
+VNum               3003
+EquippedAt         17
+Values             16 16 0 0
+ExtraFlags         0
+Weight             2
+Timer              0
+BitVector          0
+Type               17
+WearFlags          16385
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+End
+#CARRIED
+#ITEM
+ObjId              5
+ContainedBy        -1
+Name               bottle water~
+Description
+A bottle of clear liquid has been left here.~
+ShortDescr
+a bottle~
+ActionDescr
+(null)~
+VNum               3003
+EquippedAt         0
+Values             16 16 0 0
+ExtraFlags         0
+Weight             2
+Timer              0
+BitVector          0
+Type               17
+WearFlags          16385
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              5
+ContainedBy        -1
+Name               heafty loaf bread~
+Description
+A heafty loaf of bread rests here.~
+ShortDescr
+a heafty loaf of bread~
+ActionDescr
+(null)~
+VNum               5016
+EquippedAt         0
+Values             7 0 0 0
+ExtraFlags         0
+Weight             1
+Timer              0
+BitVector          0
+Type               19
+WearFlags          1
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              5
+ContainedBy        -1
+Name               heafty loaf bread~
+Description
+A heafty loaf of bread rests here.~
+ShortDescr
+a heafty loaf of bread~
+ActionDescr
+(null)~
+VNum               5016
+EquippedAt         0
+Values             7 0 0 0
+ExtraFlags         0
+Weight             1
+Timer              0
+BitVector          0
+Type               19
+WearFlags          1
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+End
+#END_RENT

@@ -1,0 +1,204 @@
+#RENT
+Owner              Zar~
+Gold               0
+TotalCost          0
+LastUpdate         847847176
+MinimumStay        0
+End
+#EQUIPMENT
+End
+#CARRIED
+#ITEM
+ObjId              7
+ContainedBy        -1
+Name               chestplate ivory chest~
+Description
+A chestplate made of ivory lies here, unused.~
+ShortDescr
+An ivory chestplate~
+ActionDescr
+(null)~
+VNum               25007
+EquippedAt         0
+Values             5 4 0 0
+ExtraFlags         13312
+Weight             5
+Timer              0
+BitVector          0
+Type               9
+WearFlags          9
+Cost               400
+CostPerDay         9000
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              7
+ContainedBy        -1
+Name               helm helmet fullhelm ivory~
+Description
+An helmet made of ivory sits here on the ground.~
+ShortDescr
+An Ivory Fullhelm~
+ActionDescr
+(null)~
+VNum               25009
+EquippedAt         0
+Values             4 4 0 0
+ExtraFlags         13312
+Weight             4
+Timer              0
+BitVector          0
+Type               9
+WearFlags          17
+Cost               500
+CostPerDay         2600
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              7
+ContainedBy        -1
+Name               gauntlets ivory~
+Description
+A pair of gauntlet laden with ivory sits here.~
+ShortDescr
+Ivory gauntlets~
+ActionDescr
+(null)~
+VNum               25008
+EquippedAt         0
+Values             3 2 0 0
+ExtraFlags         13312
+Weight             3
+Timer              0
+BitVector          0
+Type               9
+WearFlags          129
+Cost               300
+CostPerDay         400
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              7
+ContainedBy        -1
+Name               sword bastard bazzak~
+Description
+A bastard sword of Bazzak stands here.~
+ShortDescr
+A bastard sword of Bazzak~
+ActionDescr
+(null)~
+VNum               25006
+EquippedAt         0
+Values             0 3 3 3
+ExtraFlags         29696
+Weight             14
+Timer              0
+BitVector          0
+Type               5
+WearFlags          32769
+Cost               300
+CostPerDay         2200
+Affect             19 2
+Affect             0 0
+End
+#ITEM
+ObjId              7
+ContainedBy        -1
+Name               sword bastard bazzak~
+Description
+A bastard sword of Bazzak stands here.~
+ShortDescr
+A bastard sword of Bazzak~
+ActionDescr
+(null)~
+VNum               25015
+EquippedAt         0
+Values             0 3 4 3
+ExtraFlags         29696
+Weight             14
+Timer              0
+BitVector          0
+Type               5
+WearFlags          32769
+Cost               300
+CostPerDay         2200
+Affect             19 2
+Affect             0 0
+End
+#ITEM
+ObjId              7
+ContainedBy        -1
+Name               legplates gold trimmed~
+Description
+A pair of golden trimmed legplates lie here.~
+ShortDescr
+some gold trimmed legplates~
+ActionDescr
+(null)~
+VNum               5079
+EquippedAt         0
+Values             5 5 0 0
+ExtraFlags         90112
+Weight             31
+Timer              0
+BitVector          0
+Type               9
+WearFlags          33
+Cost               2987
+CostPerDay         1987
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              7
+ContainedBy        -1
+Name               helm gold encrusted~
+Description
+A gold encrusted helm lies here.~
+ShortDescr
+a gold encrusted helm~
+ActionDescr
+(null)~
+VNum               5078
+EquippedAt         0
+Values             5 5 0 0
+ExtraFlags         90112
+Weight             34
+Timer              0
+BitVector          0
+Type               9
+WearFlags          17
+Cost               2365
+CostPerDay         1365
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              7
+ContainedBy        -1
+Name               signet bazzak ring~
+Description
+A ring bearing the Sign of Bazzak lies here.~
+ShortDescr
+The Bazzak Signet Ring~
+ActionDescr
+(null)~
+VNum               25019
+EquippedAt         0
+Values             0 0 0 0
+ExtraFlags         3392
+Weight             2
+Timer              0
+BitVector          0
+Type               11
+WearFlags          3
+Cost               200
+CostPerDay         1500
+Affect             13 50
+Affect             1 -1
+End
+End
+#END_RENT

@@ -1,0 +1,14 @@
+This is version 4.0 of Dans authuser library with a patch applied to
+catch the SIGPIPE signal that can occur when writing to a remote
+non-existant auth daemon. There is also a patch applied that fixes
+the (previously) incorrect argument declaration to clearsa().
+
+There is also a new function, auth_tcpuser4() with a additional
+last argument that specifies the maximum amount of time to
+wait on read():ing the reply from the remote Ident server. This
+is so that things won't hang if it isn't an Ident server at the
+other end... auth_tcpuser3() calls auth_tcpuser4() with a read-timeout
+of 30 seconds, so if the remote site transmits the result at a slower
+pace than that you will get an error back.
+
+/Peter Eriksson (pen@lysator.liu.se), 2 Feb 1993

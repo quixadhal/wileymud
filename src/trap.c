@@ -7,22 +7,22 @@
 #include <unistd.h>
 #include <sys/types.h>
 
-#include "global.h"
-#include "bug.h"
-#include "utils.h"
-#include "spells.h"
-#include "comm.h"
-#include "db.h"
-#include "opinion.h"
-#include "constants.h"
-#include "fight.h"
-#include "reception.h"
-#include "spell_parser.h"
-#include "multiclass.h"
-#include "handler.h"
-#include "act_info.h"
+#include "include/global.h"
+#include "include/bug.h"
+#include "include/utils.h"
+#include "include/spells.h"
+#include "include/comm.h"
+#include "include/db.h"
+#include "include/opinion.h"
+#include "include/constants.h"
+#include "include/fight.h"
+#include "include/reception.h"
+#include "include/spell_parser.h"
+#include "include/multiclass.h"
+#include "include/handler.h"
+#include "include/act_info.h"
 #define _TRAP_C
-#include "trap.h"
+#include "include/trap.h"
 
 void do_settrap(struct char_data *ch, char *arg, int cmd)
 {
@@ -166,7 +166,7 @@ void TrapDamage(struct char_data *v, int damtype, int amnt, struct obj_data *t)
       /* remove the hatreds of this character */
     }
     for (tmp_ch = character_list; tmp_ch; tmp_ch = tmp_ch->next) {
-      if (Hates(tmp_ch, v)) {
+      if (DoesHate(tmp_ch, v)) {
 	RemHated(tmp_ch, v);
       }
     }
@@ -244,7 +244,7 @@ void TrapTeleport(struct char_data *v)
   if (DEBUG)
     dlog("TrapTeleport");
   if (saves_spell(v, SAVING_SPELL)) {
-    send_to_char("You feel strange, but the effect fades.\n\r", v);
+    cprintf(v, "You feel strange, but the effect fades.\n\r");
     return;
   }
   do {
@@ -291,7 +291,7 @@ void TrapSleep(struct char_data *v)
       GET_POS(v) = POSITION_SLEEPING;
     }
   } else {
-    send_to_char("You feel sleepy, but you recover\n\r", v);
+    cprintf(v, "You feel sleepy, but you recover\n\r");
   }
 }
 

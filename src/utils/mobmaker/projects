@@ -1,0 +1,15 @@
+Projects
+--------
+F: We need to allow the last mob to have sounds, too.
+F: Save should default to loaded name.
+F: Quit should verify.
+J: Um save defaults.
+F: Can GO to first mobname
+J: V2 stuff.... Avoid number crash code.
+F: Um.. rather than 18d1+0, it should be 0d0+18
+F: make set sav or set save do _all_ the saving throws.
+F: can't have negative additions.ZZ
+
+
+
+

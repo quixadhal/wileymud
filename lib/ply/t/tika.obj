@@ -1,0 +1,615 @@
+#RENT
+Owner              Tika~
+Gold               3309
+TotalCost          804
+LastUpdate         828943199
+MinimumStay        0
+End
+#EQUIPMENT
+#ITEM
+ObjId              0
+ContainedBy        -1
+Name               torch~
+Description
+A large torch.~
+ShortDescr
+a torch~
+ActionDescr
+(null)~
+VNum               3015
+EquippedAt         0
+Values             0 0 0 0
+ExtraFlags         0
+Weight             3
+Timer              0
+BitVector          0
+Type               1
+WearFlags          1
+Cost               10
+CostPerDay         3
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              1
+ContainedBy        -1
+Name               vest leather~
+Description
+A leather vest lies here.~
+ShortDescr
+a leather vest~
+ActionDescr
+(null)~
+VNum               3051
+EquippedAt         5
+Values             2 2 0 0
+ExtraFlags         8192
+Weight             7
+Timer              0
+BitVector          0
+Type               9
+WearFlags          9
+Cost               34
+CostPerDay         24
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              2
+ContainedBy        -1
+Name               boots leather~
+Description
+A pair of leather boots lie here.~
+ShortDescr
+a pair of leather boots~
+ActionDescr
+(null)~
+VNum               3026
+EquippedAt         8
+Values             1 1 0 0
+ExtraFlags         0
+Weight             2
+Timer              0
+BitVector          0
+Type               9
+WearFlags          65
+Cost               50
+CostPerDay         10
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              3
+ContainedBy        -1
+Name               leather gloves~
+Description
+A pair of leather gloves lie here.~
+ShortDescr
+some leather gloves~
+ActionDescr
+(null)~
+VNum               3052
+EquippedAt         9
+Values             2 2 0 0
+ExtraFlags         8192
+Weight             4
+Timer              0
+BitVector          0
+Type               9
+WearFlags          129
+Cost               12
+CostPerDay         12
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              4
+ContainedBy        -1
+Name               belt leather~
+Description
+A leather belt lies here.~
+ShortDescr
+a leather belt~
+ActionDescr
+(null)~
+VNum               3028
+EquippedAt         13
+Values             1 1 0 0
+ExtraFlags         0
+Weight             1
+Timer              0
+BitVector          0
+Type               9
+WearFlags          2049
+Cost               30
+CostPerDay         10
+Affect             17 -2
+Affect             0 0
+End
+#ITEM
+ObjId              5
+ContainedBy        -1
+Name               leather bracer~
+Description
+A leather bracer lies here.~
+ShortDescr
+a leather bracer~
+ActionDescr
+(null)~
+VNum               3025
+EquippedAt         14
+Values             1 1 0 0
+ExtraFlags         0
+Weight             1
+Timer              0
+BitVector          0
+Type               9
+WearFlags          4097
+Cost               10
+CostPerDay         5
+Affect             17 -2
+Affect             0 0
+End
+#ITEM
+ObjId              6
+ContainedBy        -1
+Name               leather bracer~
+Description
+A leather bracer lies here.~
+ShortDescr
+a leather bracer~
+ActionDescr
+(null)~
+VNum               3025
+EquippedAt         15
+Values             1 1 0 0
+ExtraFlags         0
+Weight             1
+Timer              0
+BitVector          0
+Type               9
+WearFlags          4097
+Cost               10
+CostPerDay         5
+Affect             17 -2
+Affect             0 0
+End
+#ITEM
+ObjId              7
+ContainedBy        -1
+Name               bloodletter bastard sword~
+Description
+A large bastard sword with an inscription is lying here.~
+ShortDescr
+a large bastard sword~
+ActionDescr
+(null)~
+VNum               9600
+EquippedAt         16
+Values             0 2 4 3
+ExtraFlags         28736
+Weight             12
+Timer              0
+BitVector          0
+Type               5
+WearFlags          40961
+Cost               1000
+CostPerDay         100
+Affect             40 1
+Affect             0 0
+ExtraDescr         bastard~
+There is an inscption on the blade that reads "Bloodletter".
+~
+End
+End
+#CARRIED
+#ITEM
+ObjId              23
+ContainedBy        14
+Name               bottle water~
+Description
+A bottle of clear liquid has been left here.~
+ShortDescr
+a bottle~
+ActionDescr
+(null)~
+VNum               3003
+EquippedAt         0
+Values             16 8 0 0
+ExtraFlags         0
+Weight             2
+Timer              0
+BitVector          0
+Type               17
+WearFlags          16385
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              23
+ContainedBy        14
+Name               bottle water~
+Description
+A bottle of clear liquid has been left here.~
+ShortDescr
+a bottle~
+ActionDescr
+(null)~
+VNum               3003
+EquippedAt         0
+Values             16 6 0 0
+ExtraFlags         0
+Weight             2
+Timer              0
+BitVector          0
+Type               17
+WearFlags          16385
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              23
+ContainedBy        14
+Name               acorn~
+Description
+A acorn lies here.~
+ShortDescr
+a acorn~
+ActionDescr
+(null)~
+VNum               3054
+EquippedAt         0
+Values             5 0 0 0
+ExtraFlags         0
+Weight             1
+Timer              0
+BitVector          0
+Type               19
+WearFlags          16385
+Cost               3
+CostPerDay         3
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              23
+ContainedBy        14
+Name               acorn~
+Description
+A acorn lies here.~
+ShortDescr
+a acorn~
+ActionDescr
+(null)~
+VNum               3054
+EquippedAt         0
+Values             5 0 0 0
+ExtraFlags         0
+Weight             1
+Timer              0
+BitVector          0
+Type               19
+WearFlags          16385
+Cost               3
+CostPerDay         3
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              23
+ContainedBy        14
+Name               bread~
+Description
+A loaf of bread has been left here.~
+ShortDescr
+a bread~
+ActionDescr
+(null)~
+VNum               3010
+EquippedAt         0
+Values             10 0 0 0
+ExtraFlags         0
+Weight             3
+Timer              0
+BitVector          0
+Type               19
+WearFlags          1
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              23
+ContainedBy        14
+Name               bread~
+Description
+A loaf of bread has been left here.~
+ShortDescr
+a bread~
+ActionDescr
+(null)~
+VNum               3010
+EquippedAt         0
+Values             10 0 0 0
+ExtraFlags         0
+Weight             3
+Timer              0
+BitVector          0
+Type               19
+WearFlags          1
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              23
+ContainedBy        14
+Name               bread~
+Description
+A loaf of bread has been left here.~
+ShortDescr
+a bread~
+ActionDescr
+(null)~
+VNum               3010
+EquippedAt         0
+Values             10 0 0 0
+ExtraFlags         0
+Weight             3
+Timer              0
+BitVector          0
+Type               19
+WearFlags          1
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              23
+ContainedBy        14
+Name               bread~
+Description
+A loaf of bread has been left here.~
+ShortDescr
+a bread~
+ActionDescr
+(null)~
+VNum               3010
+EquippedAt         0
+Values             10 0 0 0
+ExtraFlags         0
+Weight             3
+Timer              0
+BitVector          0
+Type               19
+WearFlags          1
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              23
+ContainedBy        14
+Name               bread~
+Description
+A loaf of bread has been left here.~
+ShortDescr
+a bread~
+ActionDescr
+(null)~
+VNum               3010
+EquippedAt         0
+Values             10 0 0 0
+ExtraFlags         0
+Weight             3
+Timer              0
+BitVector          0
+Type               19
+WearFlags          1
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              24
+ContainedBy        -1
+Name               torch~
+Description
+A large torch.~
+ShortDescr
+a torch~
+ActionDescr
+(null)~
+VNum               3015
+EquippedAt         0
+Values             0 0 21 0
+ExtraFlags         0
+Weight             3
+Timer              0
+BitVector          0
+Type               1
+WearFlags          1
+Cost               10
+CostPerDay         3
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              24
+ContainedBy        -1
+Name               bag~
+Description
+A small bag.~
+ShortDescr
+a bag~
+ActionDescr
+(null)~
+VNum               3017
+EquippedAt         -1
+Values             50 0 0 0
+ExtraFlags         0
+Weight             2
+Timer              0
+BitVector          0
+Type               15
+WearFlags          16385
+Cost               20
+CostPerDay         2
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              24
+ContainedBy        -1
+Name               herbs some herb~
+Description
+Some herbs are lieing here.~
+ShortDescr
+some herbs~
+ActionDescr
+(null)~
+VNum               6164
+EquippedAt         0
+Values             1 0 0 0
+ExtraFlags         0
+Weight             1
+Timer              0
+BitVector          0
+Type               19
+WearFlags          1
+Cost               123
+CostPerDay         123
+Affect             31 15
+Affect             0 0
+End
+#ITEM
+ObjId              24
+ContainedBy        -1
+Name               herbs some herb~
+Description
+Some herbs are lieing here.~
+ShortDescr
+some herbs~
+ActionDescr
+(null)~
+VNum               6164
+EquippedAt         0
+Values             1 0 0 0
+ExtraFlags         0
+Weight             1
+Timer              0
+BitVector          0
+Type               19
+WearFlags          1
+Cost               123
+CostPerDay         123
+Affect             31 15
+Affect             0 0
+End
+#ITEM
+ObjId              24
+ContainedBy        -1
+Name               herbs some herb~
+Description
+Some herbs are lieing here.~
+ShortDescr
+some herbs~
+ActionDescr
+(null)~
+VNum               6164
+EquippedAt         0
+Values             1 0 0 0
+ExtraFlags         0
+Weight             1
+Timer              0
+BitVector          0
+Type               19
+WearFlags          1
+Cost               123
+CostPerDay         123
+Affect             31 15
+Affect             0 0
+End
+#ITEM
+ObjId              24
+ContainedBy        -1
+Name               herbs some herb~
+Description
+Some herbs are lieing here.~
+ShortDescr
+some herbs~
+ActionDescr
+(null)~
+VNum               6164
+EquippedAt         0
+Values             1 0 0 0
+ExtraFlags         0
+Weight             1
+Timer              0
+BitVector          0
+Type               19
+WearFlags          1
+Cost               123
+CostPerDay         123
+Affect             31 15
+Affect             0 0
+End
+#ITEM
+ObjId              24
+ContainedBy        -1
+Name               herbs some herb~
+Description
+Some herbs are lieing here.~
+ShortDescr
+some herbs~
+ActionDescr
+(null)~
+VNum               6164
+EquippedAt         0
+Values             1 0 0 0
+ExtraFlags         0
+Weight             1
+Timer              0
+BitVector          0
+Type               19
+WearFlags          1
+Cost               123
+CostPerDay         123
+Affect             31 15
+Affect             0 0
+End
+#ITEM
+ObjId              24
+ContainedBy        -1
+Name               club wooden~
+Description
+A wooden club lies here.~
+ShortDescr
+a wooden club~
+ActionDescr
+(null)~
+VNum               3048
+EquippedAt         -1
+Values             0 1 6 7
+ExtraFlags         0
+Weight             5
+Timer              0
+BitVector          0
+Type               5
+WearFlags          8193
+Cost               2
+CostPerDay         2
+Affect             0 0
+Affect             0 0
+End
+End
+#END_RENT

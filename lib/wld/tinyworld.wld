@@ -560,14 +560,20 @@ all directions, and seems to curve a bit in the deepest distances.  The odd
 thing is, you can't tell if you are on the inside or outside of a huge sphere.
   A bonfire of insane proportions burns in the distance, and you suddenly
 realize that it seems to be at once brilliant white, and a murky red colour.
-The only sane direction seems to be northward.
+The fire blazes away to the north, and you suddenly notice a very tall tree
+rising from a snow covered hill to the west.
 ~
-10 588 5
+10 76 5
 D0
 The fire is gigantic, yet seems odd somehow.
 ~
 ~
 0 -1 1018
+D3
+The hill sits near the firelight, yet towers over it somehow.
+~
+~
+0 -1 1033
 D5
 The stairs below you seem to have disappeared.  Only mountain peaks exist.
 ~
@@ -898,6 +904,184 @@ E
 Sedna~
 She seems unaware of your presence as she slowly stirs the cauldron.  She
 looks as if she is older than any woman you have ever met.
+~
+S
+#1033
+A Snow-Covered Hillside~
+  The hillside climbs steeply here.  A thick blanket of snow covers the
+tall grass and sagebrush that cling to life beside the fire.  The ruddy
+light makes the snow seem bloody somehow, as if something deadly dark
+hunted this land.  For some reason, it doesn't really feel cold at
+all.
+  A truely monstrous spruce tree dominates the hilltop.  You think
+that only the strongest of eagles could make their way to the top, any
+lesser birds would be damaged by the winds.
+~
+10 192 5
+D1
+You see the emptiness of oblivion below you.
+~
+~
+0 -1 1017
+D4
+Staring up into the spruce makes your head spin.  Surely the
+ground is a safer place to be?
+~
+~
+0 -1 1034
+S
+#1034
+The Lower Trunk~
+  You are floating around the base of an enormous spruce tree.  The
+ground is painfully far away already, and the top is just barely
+visible.  Branches stick out above you, but if you weren't already
+flying they would seem desperately out of reach.
+~
+10 1152 8
+The winter winds howl about you, knocking clumps of snow loose from above.
+~
+You hear a faint cry from above, and a growl below.
+~
+D4
+You can just make out a nest high up in the treetop.
+~
+~
+0 -1 1035
+D5
+The ground already seems quite some ways away.
+~
+~
+0 -1 1033
+S
+#1035
+A Few Branches~
+  The air feels a bit colder here.  The snow is falling regularly
+and sometimes blurs your vision.  Some large branches stick out at
+intervals, but not often enough to help you stop a fall.  Another
+bit of climbing and you'll be up among the clouds!
+~
+10 1152 8
+Winds scream around you and claw at your presence.
+~
+A faint flapping of wings complements the howling of a wolf below.
+~
+D4
+A few clouds lurk at this level, but none come near this tree.
+~
+~
+0 -1 1036
+D5
+You see lots of snow, it doesn't look soft enough to help much.
+~
+~
+0 -1 1034
+S
+#1036
+Among the Clouds~
+  You seem to have a bit of trouble breathing here, the air is
+very thin.  However, now that you are above the cloud cover, the
+warm light of the sun dispels the cold and snow.  A rather large
+branch is visible not too far above you.
+~
+10 1152 8
+The winds have settled down a bit, and the sun feels warm.
+~
+The shadow of a great bird flits across your sight.
+~
+D4
+You see a gigantic weather worn branch directly above you.
+~
+~
+0 -1 1037
+D5
+The ground has become a simple white blur... it MUST be down there.
+~
+~
+0 -1 1035
+S
+#1037
+The Perch~
+  You are precariusly standing on a large branch, high
+atop an enormous spruce tree.  The wind howls gleefully and you
+feel your footing shift uneasily yet again.  Nestled close to the
+trunk, you see a cozy nest made of twigs, grasses, and what look
+like leather straps.  A few bones also stick out.
+  The warm yellow light of the setting sun steams in from the west,
+falling across the nest where a thin wisp of smoke rises from
+somewhere near the tree trunk.
+~
+10 576 5
+D5
+You see tiny morsels of humanity scurrying about below you.
+~
+~
+0 -1 1036
+E
+leather strap straps~
+  They look worn and ragged, apparantly having been used to
+restrain something... or someone.  There seem to be traces of
+whipped cream lingering.
+~
+E
+bones bone~
+  The bones are picked clean and represent nearly all the
+denzies found in this world.  A large number of player-like
+skulls are clustered near the bottom.
+~
+E
+nest twigs grasses twig grass~
+  The nest looks large and spacious from the outside, but a closer look
+reveals tremendous amounts of cushioning and padding which would make it
+extremely warm, soft, and comfortable for a late dinner.  This assumes that
+you haven't been invited the hard way.
+  A warm fire burns in the eastern corner of the nest.  It appears that
+someone has built a stone fireplace into the heart of the tree itself!
+The cushions near the hearth seem especially inviting.
+~
+E
+tree spruce~
+  The pine tree is one of the tallest and largest you've ever
+seen.  It has to be several thousand years old, but it still
+is vibrantly alive and the bluish-green needles seem to almost
+glow in the setting sun.
+~
+E
+branch~
+  The branch LOOKS solid enough.  Perhaps you simply aren't meant
+to be up here with the eagles.
+~
+E
+cushion cushions cushioning padding~
+  The cushions are, in fact, enormous fluffy pillows done in
+various shades of green and brown.  They look very soft and warm
+in the light of the fire.  There are the impressions of several bodies
+near the hearth, and you could swear the smell of whipped cream peeks
+out from beneath the plush folds.
+~
+E
+fireplace fire~
+  Somehow, a gigantic stone fireplace is embedded into the living trunk
+of this immense spruce tree.  The opening is very large and the smell
+of roast venison wafts out into the nest.  Waves of heat wash into the
+nest, making you want to stretch out and fall asleep watching the sun
+set and the stars awaken from their slumber.
+  A small carving in one corner of the mantle catches your eye.
+~
+E
+carving~
+  There is a carving of a gigantic druegar battle axe cleaving a
+blackened tree inset into the stonework.  The axe itself has the
+impression of a beer mug.  You see a scrawled signature.
+~
+E
+signature~
+  Morrighan's Perch, crafted by Dread Quixadhal in the darkest of nights.
+~
+E
+sun sunlight~
+  The sun sets in a brilliant orange splendeur.  Her yellow
+light seems to flow smoothly over everything around you,
+lulling you towards the gentle sleep of the unwary.
 ~
 S
 #1200
@@ -5279,7 +5463,7 @@ D1
 D2
 ~
 ~
-0 -1 1488
+0 -1 1483
 D3
 ~
 ~
@@ -7463,7 +7647,7 @@ D0
 D1
 ~
 ~
-0 -1 1521
+0 -1 1523
 D2
 ~
 ~
@@ -10702,7 +10886,7 @@ of the huge rock towers.
   It looks as though the cliff continues to travel to the northeast, angling
 its way into the red rock.
 ~
-16 0 6
+16 0 5
 D0
 A small dusty trail following this crest.
 ~
@@ -10731,7 +10915,7 @@ and crevices that look very dangerous.
   The mountainside continues evenly to the north and south while it descends to
 the west.
 ~
-16 0 6
+16 0 5
 D0
 ~
 ~
@@ -10754,7 +10938,7 @@ and crevices that look very dangerous.
   The mountainside continues evenly to the north and south while it descends to
 the west.
 ~
-16 0 6
+16 0 5
 D0
 ~
 ~
@@ -10775,7 +10959,7 @@ a valley hundreds of feet below.  To the northwest the mountain seems to
 descend with a jagged consistency, making travel very difficult.
   The mountain continues to the north and seems to descend to the west.
 ~
-16 0 6
+16 0 5
 D0
 ~
 ~
@@ -10794,7 +10978,7 @@ hills that never seem to end.
   The mountainside descends to the east and west while you could continue to
 travel amongst the jagged crest to the north and south.
 ~
-16 0 6
+16 0 5
 D0
 ~
 ~
@@ -10821,7 +11005,7 @@ hills that never seem to end.
   The mountainside descends to the east and west while you could continue to
 travel amongst the jagged crest to the north and south.
 ~
-16 0 6
+16 0 5
 D0
 ~
 ~
@@ -10848,7 +11032,7 @@ hills that never seem to end.
   The mountainside descends to the east and west while you could continue to
 travel amongst the jagged crest to the north and south.
 ~
-16 0 6
+16 0 5
 D0
 ~
 ~
@@ -10875,7 +11059,7 @@ hills that never seem to end.
   The mountainside descends to the east and west while you could continue to
 travel amongst the jagged crest to the north and south.
 ~
-16 0 6
+16 0 5
 D0
 ~
 ~
@@ -10902,7 +11086,7 @@ hills that never seem to end.
   The mountainside descends to the east and west while you could continue to
 travel amongst the jagged crest to the north and south.
 ~
-16 0 6
+16 0 5
 D0
 ~
 ~
@@ -10930,7 +11114,7 @@ hills that never seem to end.
 travel amongst the jagged crest to the north and south.  A small trail seems
 to have been made out that travels to the west and south.
 ~
-16 0 6
+16 0 5
 D0
 ~
 ~
@@ -10958,7 +11142,7 @@ hills that never seem to end.
 travel amongst the jagged crest to the north and south.  A small trail can be
 made out traveling north and south.
 ~
-16 0 6
+16 0 5
 D0
 ~
 ~
@@ -10986,7 +11170,7 @@ to the east a sea of hills is all you see.
 west.  A small trail can be made out spawning from the road leading north
 along the crest.
 ~
-16 0 4
+16 0 5
 D0
 ~
 ~
@@ -11013,7 +11197,7 @@ hills that never seem to end.
   The mountainside descends to the east and west while you could continue to
 travel amongst the jagged crest to the north and south.
 ~
-16 0 6
+16 0 5
 D0
 ~
 ~
@@ -11040,7 +11224,7 @@ hills that never seem to end.
   The mountainside descends to the east and west while you could continue to
 travel amongst the jagged crest to the north and south.
 ~
-16 0 6
+16 0 5
 D0
 ~
 ~
@@ -11067,7 +11251,7 @@ hills that never seem to end.
   The mountainside descends to the east and west while you could continue to
 travel amongst the jagged crest to the north and south.
 ~
-16 0 6
+16 0 5
 D0
 ~
 ~
@@ -11094,7 +11278,7 @@ hills that never seem to end.
   The mountainside descends to the east and west while you could continue to
 travel amongst the jagged crest to the north and south.
 ~
-16 0 6
+16 0 5
 D0
 ~
 ~
@@ -11121,7 +11305,7 @@ hills that never seem to end.
   The mountainside descends to the east and west while you could continue to
 travel amongst the jagged crest to the north and south.
 ~
-16 0 6
+16 0 5
 D0
 ~
 ~
@@ -11148,7 +11332,7 @@ hills that never seem to end.
   The mountainside descends to the east and west while you could continue to
 travel amongst the jagged crest to the north and south.
 ~
-16 0 6
+16 0 5
 D0
 ~
 ~
@@ -11175,7 +11359,7 @@ hills that never seem to end.
   The mountainside descends to the east and west while you could continue to
 travel amongst the jagged crest to the north and south.
 ~
-16 0 6
+16 0 5
 D0
 ~
 ~
@@ -11202,7 +11386,7 @@ hills that never seem to end.
   The mountainside descends to the east and west while you could continue to
 travel amongst the jagged crest to the north and south.
 ~
-16 0 6
+16 0 5
 D0
 ~
 ~
@@ -11230,7 +11414,7 @@ a bit, as it does to the east and west.
   The mountain defends to the east, west, and south while the crest continues
 to the north.
 ~
-16 0 6
+16 0 5
 D0
 ~
 ~
@@ -11256,7 +11440,7 @@ where a cliff lies.
   The crest of the mountain lies up the mountain to the north while it seems
 to descend elsewhere.
 ~
-16 0 6
+16 0 5
 D0
 ~
 ~
@@ -11285,7 +11469,7 @@ building made of the red rock and very beautiful.
 A majestic building seems to have a entrance to the east, past a couple huge
 towers of rock.
 ~
-16 0 6
+16 0 5
 D0
 ~
 ~
@@ -11309,7 +11493,7 @@ direction amongst the rock and crag looks very difficult and dangerous.
   A deep crag lies to the north and south while the mountain face rises
 to the west and descends to the east.
 ~
-16 0 6
+16 0 5
 D0
 ~
 ~
@@ -11336,7 +11520,7 @@ direction amongst the rock and crag looks very difficult and dangerous.
   More rock and crag lie to the north and south while the mountain face rises
 to the west and descends to the east.
 ~
-16 0 6
+16 0 5
 D0
 ~
 ~
@@ -11363,7 +11547,7 @@ direction amongst the rock and crag looks very difficult and dangerous.
   More rock and crag lie to the north and south while the mountain face rises
 to the west and descends to the east.
 ~
-16 0 6
+16 0 5
 D0
 ~
 ~
@@ -11390,7 +11574,7 @@ direction amongst the rock and crag looks very difficult and dangerous.
   More rock and crag lie to the north and south while the mountain face rises
 to the west and descends to the east.
 ~
-16 0 6
+16 0 5
 D0
 ~
 ~
@@ -11417,7 +11601,7 @@ direction amongst the rock and crag looks very difficult and dangerous.
   More rock and crag lie to the north and south while the mountain face rises
 to the west and descends to the east.
 ~
-16 0 6
+16 0 5
 D0
 ~
 ~
@@ -11444,7 +11628,7 @@ direction amongst the rock and crag looks very difficult and dangerous.
   More rock and crag lie to the north and south while the mountain face rises
 to the west and descends to the east.
 ~
-16 0 6
+16 0 5
 D0
 ~
 ~
@@ -11471,7 +11655,7 @@ direction amongst the rock and crag looks very difficult and dangerous.
   More rock and crag lie to the north and south while the mountain face rises
 to the west and descends to the east.
 ~
-16 0 6
+16 0 5
 D0
 ~
 ~
@@ -11498,7 +11682,7 @@ but in the mountain looks even more dangerous.
   This road descends to the east while ascending to the west.  The red rock
 of the redspine lies elsewhere.
 ~
-16 0 4
+16 0 5
 D0
 ~
 ~
@@ -11525,7 +11709,7 @@ direction amongst the rock and crag looks very difficult and dangerous.
   More rock and crag lie to the north and south while the mountain face rises
 to the west and descends to the east.
 ~
-16 0 6
+16 0 5
 D0
 ~
 ~
@@ -11552,7 +11736,7 @@ direction amongst the rock and crag looks very difficult and dangerous.
   More rock and crag lie to the north and south while the mountain face rises
 to the west and descends to the east.
 ~
-16 0 6
+16 0 5
 D0
 ~
 ~
@@ -11579,7 +11763,7 @@ direction amongst the rock and crag looks very difficult and dangerous.
   More rock and crag lie to the north and south while the mountain face rises
 to the west and descends to the east.
 ~
-16 0 6
+16 0 5
 D0
 ~
 ~
@@ -11606,7 +11790,7 @@ direction amongst the rock and crag looks very difficult and dangerous.
   More rock and crag lie to the north and south while the mountain face rises
 to the west and descends to the east.
 ~
-16 0 6
+16 0 5
 D0
 ~
 ~
@@ -11633,7 +11817,7 @@ direction amongst the rock and crag looks very difficult and dangerous.
   More rock and crag lie to the north and south while the mountain face rises
 to the west and descends to the east.
 ~
-16 0 6
+16 0 5
 D0
 ~
 ~
@@ -11660,7 +11844,7 @@ direction amongst the rock and crag looks very difficult and dangerous.
   More rock and crag lie to the north and south while the mountain face rises
 to the west and descends to the east.
 ~
-16 0 6
+16 0 5
 D0
 ~
 ~
@@ -11687,7 +11871,7 @@ direction amongst the rock and crag looks very difficult and dangerous.
   More rock and crag lie to the north and south while the mountain face rises
 to the west and descends to the east.
 ~
-16 0 6
+16 0 5
 D0
 ~
 ~
@@ -11714,7 +11898,7 @@ direction amongst the rock and crag looks very difficult and dangerous.
   More rock and crag lie to the north and south while the mountain face rises
 to the west and descends to the east.
 ~
-16 0 6
+16 0 5
 D0
 ~
 ~
@@ -11741,7 +11925,7 @@ direction amongst the rock and crag looks very difficult and dangerous.
   More rock and crag lie to the north and south while the mountain face rises
 to the west and descends to the east.
 ~
-16 0 6
+16 0 5
 D0
 ~
 ~
@@ -11766,7 +11950,7 @@ of you.  Looking over the cliff, as it angles to the northeast and southwest,
 there seems to be a valley hundreds of feet below you.
   The mountain seems to ascend to the north and west.
 ~
-16 0 6
+16 0 5
 D0
 ~
 ~
@@ -11785,7 +11969,7 @@ direction amongst the rock and crag looks very difficult and dangerous.
   More rock and crag lie to the north and south while the mountain face rises
 to the west and descends to the east.
 ~
-16 0 6
+16 0 5
 D0
 ~
 ~
@@ -11812,7 +11996,7 @@ direction amongst the rock and crag looks very difficult and dangerous.
   More rock and crag lie to the north and south while the mountain face rises
 to the west and descends to the east.
 ~
-16 0 6
+16 0 5
 D0
 ~
 ~
@@ -11839,7 +12023,7 @@ direction amongst the rock and crag looks very difficult and dangerous.
   More rock and crag lie to the north and south while the mountain face rises
 to the west and descends to the east.
 ~
-16 0 6
+16 0 5
 D0
 ~
 ~
@@ -11866,7 +12050,7 @@ direction amongst the rock and crag looks very difficult and dangerous.
   More rock and crag lie to the north and south while the mountain face rises
 to the west and descends to the east.
 ~
-16 0 6
+16 0 5
 D0
 ~
 ~
@@ -11893,7 +12077,7 @@ direction amongst the rock and crag looks very difficult and dangerous.
   More rock and crag lie to the north and south while the mountain face rises
 to the west and descends to the east.
 ~
-16 0 6
+16 0 5
 D0
 ~
 ~
@@ -11920,7 +12104,7 @@ direction amongst the rock and crag looks very difficult and dangerous.
   More rock and crag lie to the north and south while the mountain face rises
 to the west and descends to the east.
 ~
-16 0 6
+16 0 5
 D0
 ~
 ~
@@ -11947,7 +12131,7 @@ direction amongst the rock and crag looks very difficult and dangerous.
   More rock and crag lie to the north and south while the mountain face rises
 to the west and descends to the east.
 ~
-16 0 6
+16 0 5
 D0
 ~
 ~
@@ -11974,7 +12158,7 @@ but in the mountain looks even more dangerous.
   This road descends to the east while ascending to the west.  The red rock
 of the redspine lies elsewhere.
 ~
-16 0 4
+16 0 5
 D0
 ~
 ~
@@ -12001,7 +12185,7 @@ direction amongst the rock and crag looks very difficult and dangerous.
   More rock and crag lie to the north and south while the mountain face rises
 to the west and descends to the east.
 ~
-16 0 6
+16 0 5
 D0
 ~
 ~
@@ -12028,7 +12212,7 @@ direction amongst the rock and crag looks very difficult and dangerous.
   More rock and crag lie to the north and south while the mountain face rises
 to the west and descends to the east.
 ~
-16 0 6
+16 0 5
 D0
 ~
 ~
@@ -12055,7 +12239,7 @@ direction amongst the rock and crag looks very difficult and dangerous.
   More rock and crag lie to the north and south while the mountain face rises
 to the west and descends to the east.
 ~
-16 0 6
+16 0 5
 D0
 ~
 ~
@@ -12082,7 +12266,7 @@ direction amongst the rock and crag looks very difficult and dangerous.
   More rock and crag lie to the north and south while the mountain face rises
 to the west and descends to the east.
 ~
-16 0 6
+16 0 5
 D0
 ~
 ~
@@ -12109,7 +12293,7 @@ direction amongst the rock and crag looks very difficult and dangerous.
   More rock and crag lie to the north and south while the mountain face rises
 to the west and descends to the east.
 ~
-16 0 6
+16 0 5
 D0
 ~
 ~
@@ -12136,7 +12320,7 @@ direction amongst the rock and crag looks very difficult and dangerous.
   More rock and crag lie to the north and south while the mountain face rises
 to the west and descends to the east.
 ~
-16 0 6
+16 0 5
 D0
 ~
 ~
@@ -12163,7 +12347,7 @@ direction amongst the rock and crag looks very difficult and dangerous.
   More rock and crag lie to the north and south while the mountain face rises
 to the west and descends to the east.
 ~
-16 0 6
+16 0 5
 D0
 ~
 ~
@@ -12190,7 +12374,7 @@ direction amongst the rock and crag looks very difficult and dangerous.
   More rock and crag lie to the north and south while the mountain face rises
 to the west and descends to the east.
 ~
-16 0 6
+16 0 5
 D0
 ~
 ~
@@ -12215,7 +12399,7 @@ of you.  Looking over the cliff, as it angles to the northeast and southwest,
 there seems to be a valley hundreds of feet below you.
   The mountain seems to ascend to the north and west.
 ~
-16 0 6
+16 0 5
 D0
 ~
 ~
@@ -12234,7 +12418,7 @@ very difficult.
   The mountain ascends to the west while seeming to level off into some
 foothills to the east.
 ~
-16 0 6
+16 0 5
 D0
 ~
 ~
@@ -12261,7 +12445,7 @@ very difficult.
   The mountain ascends to the west while seeming to level off into some
 foothills to the east.
 ~
-16 0 6
+16 0 5
 D0
 ~
 ~
@@ -12288,7 +12472,7 @@ very difficult.
   The mountain ascends to the west while seeming to level off into some
 foothills to the east.
 ~
-16 0 6
+16 0 5
 D0
 ~
 ~
@@ -12315,7 +12499,7 @@ very difficult.
   The mountain ascends to the west while seeming to level off into some
 foothills to the east.
 ~
-16 0 6
+16 0 5
 D0
 ~
 ~
@@ -12342,7 +12526,7 @@ very difficult.
   The mountain ascends to the west while seeming to level off into some
 foothills to the east.
 ~
-16 0 6
+16 0 5
 D0
 ~
 ~
@@ -12369,7 +12553,7 @@ very difficult.
   The mountain ascends to the west while seeming to level off into some
 foothills to the east.
 ~
-16 0 6
+16 0 5
 D0
 ~
 ~
@@ -12396,7 +12580,7 @@ very difficult.
   The mountain ascends to the west while seeming to level off into some
 foothills to the east.
 ~
-16 0 6
+16 0 5
 D0
 ~
 ~
@@ -12423,7 +12607,7 @@ easier than it does in the hard red rock around you.
   This path travels up the mountain to the west while begins into some hills
 to the east.
 ~
-16 0 4
+16 0 5
 D0
 ~
 ~
@@ -12450,7 +12634,7 @@ very difficult.
   The mountain ascends to the west while seeming to level off into some
 foothills to the east.
 ~
-16 0 6
+16 0 5
 D0
 ~
 ~
@@ -12477,7 +12661,7 @@ very difficult.
   The mountain ascends to the west while seeming to level off into some
 foothills to the east.
 ~
-16 0 6
+16 0 5
 D0
 ~
 ~
@@ -12504,7 +12688,7 @@ very difficult.
   The mountain ascends to the west while seeming to level off into some
 foothills to the east.
 ~
-16 0 6
+16 0 5
 D0
 ~
 ~
@@ -12531,7 +12715,7 @@ very difficult.
   The mountain ascends to the west while seeming to level off into some
 foothills to the east.
 ~
-16 0 6
+16 0 5
 D0
 ~
 ~
@@ -12558,7 +12742,7 @@ very difficult.
   The mountain ascends to the west while seeming to level off into some
 foothills to the east.
 ~
-16 0 6
+16 0 5
 D0
 ~
 ~
@@ -12585,7 +12769,7 @@ very difficult.
   The mountain ascends to the west while seeming to level off into some
 foothills to the east.
 ~
-16 0 6
+16 0 5
 D0
 ~
 ~
@@ -12612,7 +12796,7 @@ very difficult.
   The mountain ascends to the west while seeming to level off into some
 foothills to the east.
 ~
-16 0 6
+16 0 5
 D0
 ~
 ~
@@ -12639,7 +12823,7 @@ but that only caught you eye for a second.
   Some hills are beginning to form to the east of you while the mountain rises
 to the west.
 ~
-16 0 6
+16 0 5
 D0
 ~
 ~
@@ -12797,7 +12981,7 @@ would appear as though a small trail lies near this cliff.  The mountain
 rises further to the west and south.
   The redspine lies all about you.
 ~
-16 0 6
+16 0 5
 D0
 ~
 ~
@@ -12824,7 +13008,7 @@ would appear as though a small trail lies near this cliff.  The mountain
 rises further to the west and south.
   The redspine lies all about you.
 ~
-16 0 6
+16 0 5
 D0
 ~
 ~
@@ -12851,7 +13035,7 @@ would appear as though a small trail lies near this cliff.  The mountain
 rises further to the west and south.
   The redspine lies all about you.
 ~
-16 0 6
+16 0 5
 D0
 ~
 ~
@@ -12878,7 +13062,7 @@ would appear as though a small trail lies near this cliff.  The mountain
 rises further to the west and south.
   The redspine lies all about you.
 ~
-16 0 6
+16 0 5
 D0
 ~
 ~
@@ -13353,7 +13537,7 @@ could find yourself at the bottom of a endless crag.
   The mountain ascends to the south while descends to the north, elsewhere lies
 more of the jagged red rock.
 ~
-16 0 6
+16 0 5
 D0
 ~
 ~
@@ -13380,7 +13564,7 @@ could find yourself at the bottom of a endless crag.
   The mountain ascends to the south while descends to the north, elsewhere lies
 more of the jagged red rock.
 ~
-16 0 6
+16 0 5
 D0
 ~
 ~
@@ -13407,7 +13591,7 @@ could find yourself at the bottom of a endless crag.
   The mountain ascends to the south while descends to the north, elsewhere lies
 more of the jagged red rock.
 ~
-16 0 6
+16 0 5
 D0
 ~
 ~
@@ -13434,7 +13618,7 @@ could find yourself at the bottom of a endless crag.
   The mountain ascends to the south while descends to the north, elsewhere lies
 more of the jagged red rock.
 ~
-16 0 6
+16 0 5
 D0
 ~
 ~
@@ -13461,7 +13645,7 @@ could find yourself at the bottom of a endless crag.
   The mountain ascends to the south while descends to the north, elsewhere lies
 more of the jagged red rock.
 ~
-16 0 6
+16 0 5
 D0
 ~
 ~
@@ -13488,7 +13672,7 @@ could find yourself at the bottom of a endless crag.
   The mountain ascends to the south while descends to the north, elsewhere lies
 more of the jagged red rock.
 ~
-16 0 6
+16 0 5
 D0
 ~
 ~
@@ -13515,7 +13699,7 @@ could find yourself at the bottom of a endless crag.
   The mountain ascends to the south while descends to the north, elsewhere lies
 more of the jagged red rock.
 ~
-16 0 6
+16 0 5
 D0
 ~
 ~
@@ -13542,7 +13726,7 @@ could find yourself at the bottom of a endless crag.
   The mountain ascends to the south while descends to the north, elsewhere lies
 more of the jagged red rock.
 ~
-16 0 6
+16 0 5
 D0
 ~
 ~
@@ -13569,7 +13753,7 @@ could find yourself at the bottom of a endless crag.
   The mountain ascends to the south while descends to the north, elsewhere lies
 more of the jagged red rock.
 ~
-16 0 6
+16 0 5
 D0
 ~
 ~
@@ -13596,7 +13780,7 @@ could find yourself at the bottom of a endless crag.
   The mountain ascends to the south while descends to the north, elsewhere lies
 more of the jagged red rock.
 ~
-16 0 6
+16 0 5
 D0
 ~
 ~
@@ -13623,7 +13807,7 @@ could find yourself at the bottom of a endless crag.
   The mountain ascends to the south while descends to the north, elsewhere lies
 more of the jagged red rock.
 ~
-16 0 6
+16 0 5
 D0
 ~
 ~
@@ -13650,7 +13834,7 @@ could find yourself at the bottom of a endless crag.
   The mountain ascends to the south while descends to the north, elsewhere lies
 more of the jagged red rock.
 ~
-16 0 6
+16 0 5
 D0
 ~
 ~
@@ -13677,7 +13861,7 @@ could find yourself at the bottom of a endless crag.
   The mountain ascends to the south while descends to the north, elsewhere lies
 more of the jagged red rock.
 ~
-16 0 6
+16 0 5
 D0
 ~
 ~
@@ -13704,7 +13888,7 @@ could find yourself at the bottom of a endless crag.
   The mountain ascends to the south while descends to the north, elsewhere lies
 more of the jagged red rock.
 ~
-16 0 6
+16 0 5
 D0
 ~
 ~
@@ -13733,7 +13917,7 @@ the ascending slope of the mountain to the south.
 more of the jagged red rock.  On the southern ascent of the mountain slope
 a cave has formed into the mountainside.
 ~
-16 0 6
+16 0 5
 D0
 ~
 ~
@@ -13761,7 +13945,7 @@ could find yourself at the bottom of a endless crag.
   The mountain ascends to the south while descends to the north, elsewhere lies
 more of the jagged red rock.
 ~
-16 0 6
+16 0 5
 D0
 ~
 ~
@@ -13788,7 +13972,7 @@ could find yourself at the bottom of a endless crag.
   The mountain ascends to the south while descends to the north, elsewhere lies
 more of the jagged red rock.
 ~
-16 0 6
+16 0 5
 D0
 ~
 ~
@@ -13815,7 +13999,7 @@ could find yourself at the bottom of a endless crag.
   The mountain ascends to the south while descends to the north, elsewhere lies
 more of the jagged red rock.
 ~
-16 0 6
+16 0 5
 D0
 ~
 ~
@@ -13842,7 +14026,7 @@ could find yourself at the bottom of a endless crag.
   The mountain ascends to the south while descends to the north, elsewhere lies
 more of the jagged red rock.
 ~
-16 0 6
+16 0 5
 D0
 ~
 ~
@@ -13869,7 +14053,7 @@ could find yourself at the bottom of a endless crag.
   The mountain ascends to the south while descends to the north, elsewhere lies
 more of the jagged red rock.
 ~
-16 0 6
+16 0 5
 D0
 ~
 ~
@@ -13896,7 +14080,7 @@ could find yourself at the bottom of a endless crag.
   The mountain ascends to the south while descends to the north, elsewhere lies
 more of the jagged red rock.
 ~
-16 0 6
+16 0 5
 D0
 ~
 ~
@@ -13923,7 +14107,7 @@ could find yourself at the bottom of a endless crag.
   The mountain ascends to the south while descends to the north, elsewhere lies
 more of the jagged red rock.
 ~
-16 0 6
+16 0 5
 D0
 ~
 ~
@@ -13950,7 +14134,7 @@ could find yourself at the bottom of a endless crag.
   The mountain ascends to the south while descends to the north, elsewhere lies
 more of the jagged red rock.
 ~
-16 0 6
+16 0 5
 D0
 ~
 ~
@@ -13977,7 +14161,7 @@ could find yourself at the bottom of a endless crag.
   The mountain ascends to the south while descends to the north, elsewhere lies
 more of the jagged red rock.
 ~
-16 0 6
+16 0 5
 D0
 ~
 ~
@@ -14004,7 +14188,7 @@ steep angles making travel very difficult.
   The redspine lies all about you except to the west where a cliff falls off
 into a valley below.
 ~
-16 0 6
+16 0 5
 D0
 ~
 ~
@@ -14028,7 +14212,7 @@ raises high above even your height, into the clouds above.
   The redspine descends to the north and south while the crest continues to
 the east and west.
 ~
-16 0 6
+16 0 5
 D0
 ~
 ~
@@ -14056,7 +14240,7 @@ raises high above even your height, into the clouds above.
   The redspine descends to the north and south while the crest continues to
 the east and west.
 ~
-16 0 6
+16 0 5
 D0
 ~
 ~
@@ -14084,7 +14268,7 @@ raises high above even your height, into the clouds above.
   The redspine descends to the north and south while the crest continues to
 the east and west.
 ~
-16 0 6
+16 0 5
 D0
 ~
 ~
@@ -14112,7 +14296,7 @@ raises high above even your height, into the clouds above.
   The redspine descends to the north and south while the crest continues to
 the east and west.
 ~
-16 0 6
+16 0 5
 D0
 ~
 ~
@@ -14140,7 +14324,7 @@ raises high above even your height, into the clouds above.
   The redspine descends to the north and south while the crest continues to
 the east and west.
 ~
-16 0 6
+16 0 5
 D0
 ~
 ~
@@ -14168,7 +14352,7 @@ raises high above even your height, into the clouds above.
   The redspine descends to the north and south while the crest continues to
 the east and west.
 ~
-16 0 6
+16 0 5
 D0
 ~
 ~
@@ -14196,7 +14380,7 @@ raises high above even your height, into the clouds above.
   The redspine descends to the north and south while the crest continues to
 the east and west.
 ~
-16 0 6
+16 0 5
 D0
 ~
 ~
@@ -14224,7 +14408,7 @@ raises high above even your height, into the clouds above.
   The redspine descends to the north and south while the crest continues to
 the east and west.
 ~
-16 0 6
+16 0 5
 D0
 ~
 ~
@@ -14255,7 +14439,7 @@ you might see something inside the outcropping.
   The redspine descends to the north and south while the crest continues to
 the east and west.
 ~
-16 0 6
+16 0 5
 D0
 ~
 ~
@@ -14279,7 +14463,7 @@ raises high above even your height, into the clouds above.
   The redspine descends to the north and south while the crest continues to
 the east and west.
 ~
-16 0 6
+16 0 5
 D0
 ~
 ~
@@ -14307,7 +14491,7 @@ raises high above even your height, into the clouds above.
   The redspine descends to the north and south while the crest continues to
 the east and west.
 ~
-16 0 6
+16 0 5
 D0
 ~
 ~
@@ -14335,7 +14519,7 @@ raises high above even your height, into the clouds above.
   The redspine descends to the north and south while the crest continues to
 the east and west.
 ~
-16 0 6
+16 0 5
 D0
 ~
 ~
@@ -14363,7 +14547,7 @@ raises high above even your height, into the clouds above.
   The redspine descends to the north and south while the crest continues to
 the east and west.
 ~
-16 0 6
+16 0 5
 D0
 ~
 ~
@@ -14391,7 +14575,7 @@ raises high above even your height, into the clouds above.
   The redspine descends to the north and south while the crest continues to
 the west but seems to descend to the east.
 ~
-16 0 6
+16 0 5
 D0
 ~
 ~
@@ -14416,7 +14600,7 @@ caverns nearby, all making travel very difficult.  The mountain seems to
 ascend to the west while descending in all other directions.
   The mountain ascends to the west while descending in other directions.
 ~
-16 0 6
+16 0 5
 D0
 ~
 ~
@@ -14444,7 +14628,7 @@ that edges a cliff, north and west continuing south.
   The redspine lies all about you while to the west the mountain side seems
 to ascend a bit.
 ~
-16 0 6
+16 0 5
 D0
 ~
 ~
@@ -14472,7 +14656,7 @@ there, old and unused but you can see that it still leads east.
   The mountain side ascends to the north while descends to the south.  A steep
 cliff falls off to the west, the bottom of which lies a valley.
 ~
-16 0 6
+16 0 5
 D0
 ~
 ~
@@ -14495,7 +14679,7 @@ closer among the towers of rock there appears to be a slight trail here and
 there, old and unused but you can see that it still leads east.
   The mountain side ascends to the north while descends to the south.
 ~
-16 0 6
+16 0 5
 D0
 ~
 ~
@@ -14522,7 +14706,7 @@ closer among the towers of rock there appears to be a slight trail here and
 there, old and unused but you can see that it still leads east.
   The mountain side ascends to the north while descends to the south.
 ~
-16 0 6
+16 0 5
 D0
 ~
 ~
@@ -14549,7 +14733,7 @@ closer among the towers of rock there appears to be a slight trail here and
 there, old and unused but you can see that it still leads east.
   The mountain side ascends to the north while descends to the south.
 ~
-16 0 6
+16 0 5
 D0
 ~
 ~
@@ -14576,7 +14760,7 @@ closer among the towers of rock there appears to be a slight trail here and
 there, old and unused but you can see that it still leads east.
   The mountain side ascends to the north while descends to the south.
 ~
-16 0 6
+16 0 5
 D0
 ~
 ~
@@ -14603,7 +14787,7 @@ closer among the towers of rock there appears to be a slight trail here and
 there, old and unused but you can see that it still leads east.
   The mountain side ascends to the north while descends to the south.
 ~
-16 0 6
+16 0 5
 D0
 ~
 ~
@@ -14630,7 +14814,7 @@ closer among the towers of rock there appears to be a slight trail here and
 there, old and unused but you can see that it still leads east.
   The mountain side ascends to the north while descends to the south.
 ~
-16 0 6
+16 0 5
 D0
 ~
 ~
@@ -14657,7 +14841,7 @@ closer among the towers of rock there appears to be a slight trail here and
 there, old and unused but you can see that it still leads east.
   The mountain side ascends to the north while descends to the south.
 ~
-16 0 6
+16 0 5
 D0
 ~
 ~
@@ -14684,7 +14868,7 @@ closer among the towers of rock there appears to be a slight trail here and
 there, old and unused but you can see that it still leads east.
   The mountain side ascends to the north while descends to the south.
 ~
-16 0 6
+16 0 5
 D0
 ~
 ~
@@ -14712,7 +14896,7 @@ perimeter of which seems to be surrounded by a large fence and gate.
   The redspine lies about you while a citadel is nestled among the rocks to
 the north.
 ~
-16 0 6
+16 0 5
 D0
 ~
 ~
@@ -14738,7 +14922,7 @@ to the north and descend to the south.  A carefull step is needed here as one
 wrong step could put you at the bottom of a endless crag.
   The mountain ascends to the north while descends to the south.
 ~
-16 0 6
+16 0 5
 D0
 ~
 ~
@@ -14764,7 +14948,7 @@ to the north and descend to the south.  A carefull step is needed here as one
 wrong step could put you at the bottom of a endless crag.
   The mountain ascends to the north while descends to the south.
 ~
-16 0 6
+16 0 5
 D0
 ~
 ~
@@ -14790,7 +14974,7 @@ to the north and descend to the south.  A carefull step is needed here as one
 wrong step could put you at the bottom of a endless crag.
   The mountain ascends to the north while descends to the south.
 ~
-16 0 6
+16 0 5
 D0
 ~
 ~
@@ -14816,7 +15000,7 @@ to the north and descend to the south.  A carefull step is needed here as one
 wrong step could put you at the bottom of a endless crag.
   The mountain ascends to the north while descends to the south.
 ~
-16 0 6
+16 0 5
 D0
 ~
 ~
@@ -14842,7 +15026,7 @@ to the north and descend to the south.  A carefull step is needed here as one
 wrong step could put you at the bottom of a endless crag.
   The mountain ascends to the north while descends to the south.
 ~
-16 0 6
+16 0 5
 D0
 ~
 ~
@@ -14868,7 +15052,7 @@ to the north and descend to the south.  A carefull step is needed here as one
 wrong step could put you at the bottom of a endless crag.
   The mountain ascends to the north while descends to the south.
 ~
-16 0 6
+16 0 5
 D0
 ~
 ~
@@ -14896,7 +15080,7 @@ that edges a cliff, north and west continuing south.
   The redspine lies all about you while to the west the mountain side seems
 to ascend a bit.
 ~
-16 0 6
+16 0 5
 D0
 ~
 ~
@@ -14923,7 +15107,7 @@ mountain seems to ascend to the north and descend to the south while the
 jagged rock continues making travel very difficult.
   The mountain seems to ascend to the north and descend to the south.
 ~
-16 0 6
+16 0 5
 D0
 ~
 ~
@@ -14946,7 +15130,7 @@ amongst these elements is very difficult and requires a steady step or you
 might find yourself at the bottom of a endless crag.
   The mountain side ascends to the north while descends to the south.
 ~
-16 0 6
+16 0 5
 D0
 ~
 ~
@@ -14976,7 +15160,7 @@ effort to accomplish.
   The mountain side ascends to the north while descends to the south, below
 you in a crag lies a cave entrance.
 ~
-16 0 6
+16 0 5
 D0
 ~
 ~
@@ -15008,7 +15192,7 @@ amongst these elements is very difficult and requires a steady step or you
 might find yourself at the bottom of a endless crag.
   The mountain side ascends to the north while descends to the south.
 ~
-16 0 6
+16 0 5
 D0
 ~
 ~
@@ -15035,7 +15219,7 @@ amongst these elements is very difficult and requires a steady step or you
 might find yourself at the bottom of a endless crag.
   The mountain side ascends to the north while descends to the south.
 ~
-16 0 6
+16 0 5
 D0
 ~
 ~
@@ -15063,7 +15247,7 @@ might find yourself at the bottom of a endless crag.  A crag has opened up
 down into the mountain where a cave entrance can be made out.
   The mountain side ascends to the north while descends to the south.
 ~
-16 0 6
+16 0 5
 D0
 ~
 ~
@@ -15097,7 +15281,7 @@ is apparent that a crag leads into a cave just below you that one could
 climb down into.
   The mountain side ascends to the north while descends to the south.
 ~
-16 0 6
+16 0 5
 D0
 ~
 ~
@@ -15129,7 +15313,7 @@ amongst these elements is very difficult and requires a steady step or you
 might find yourself at the bottom of a endless crag.
   The mountain side ascends to the north while descends to the south.
 ~
-16 0 6
+16 0 5
 D0
 ~
 ~
@@ -15156,7 +15340,7 @@ amongst these elements is very difficult and requires a steady step or you
 might find yourself at the bottom of a endless crag.
   The mountain side ascends to the north while descends to the south.
 ~
-16 0 6
+16 0 5
 D0
 ~
 ~
@@ -15183,7 +15367,7 @@ amongst these elements is very difficult and requires a steady step or you
 might find yourself at the bottom of a endless crag.
   The mountain side ascends to the north while descends to the south.
 ~
-16 0 6
+16 0 5
 D0
 ~
 ~
@@ -15210,7 +15394,7 @@ amongst these elements is very difficult and requires a steady step or you
 might find yourself at the bottom of a endless crag.
   The mountain side ascends to the north while descends to the south.
 ~
-16 0 6
+16 0 5
 D0
 ~
 ~
@@ -15237,7 +15421,7 @@ amongst these elements is very difficult and requires a steady step or you
 might find yourself at the bottom of a endless crag.
   The mountain side ascends to the north while descends to the south.
 ~
-16 0 6
+16 0 5
 D0
 ~
 ~
@@ -15264,7 +15448,7 @@ amongst these elements is very difficult and requires a steady step or you
 might find yourself at the bottom of a endless crag.
   The mountain side ascends to the north while descends to the south.
 ~
-16 0 6
+16 0 5
 D0
 ~
 ~
@@ -15291,7 +15475,7 @@ amongst these elements is very difficult and requires a steady step or you
 might find yourself at the bottom of a endless crag.
   The mountain side ascends to the north while descends to the south.
 ~
-16 0 6
+16 0 5
 D0
 ~
 ~
@@ -15318,7 +15502,7 @@ amongst these elements is very difficult and requires a steady step or you
 might find yourself at the bottom of a endless crag.
   The mountain side ascends to the north while descends to the south.
 ~
-16 0 6
+16 0 5
 D0
 ~
 ~
@@ -15345,7 +15529,7 @@ amongst these elements is very difficult and requires a steady step or you
 might find yourself at the bottom of a endless crag.
   The mountain side ascends to the north while descends to the south.
 ~
-16 0 6
+16 0 5
 D0
 ~
 ~
@@ -15373,7 +15557,7 @@ that edges a cliff, north and west continuing south.
   The redspine lies all about you while to the west the mountain side seems
 to ascend a bit.
 ~
-16 0 6
+16 0 5
 D0
 ~
 ~
@@ -15400,7 +15584,7 @@ gives way to a ocean.  The cliff continues around to the south where a beach
 lies far below, waves of a ocean lapping up against it.
   The mountain side ascends to the north.
 ~
-16 0 6
+16 0 5
 D0
 ~
 ~
@@ -15420,7 +15604,7 @@ end despite you high vantage point.
   The mountain ascends to the north while more of this cliff lies to the east
 and west.
 ~
-16 0 6
+16 0 5
 D0
 ~
 ~
@@ -15444,7 +15628,7 @@ end despite you high vantage point.
   The mountain ascends to the north while more of this cliff lies to the east
 and west.
 ~
-16 0 6
+16 0 5
 D0
 ~
 ~
@@ -15468,7 +15652,7 @@ end despite you high vantage point.
   The mountain ascends to the north while more of this cliff lies to the east
 and west.
 ~
-16 0 6
+16 0 5
 D0
 ~
 ~
@@ -15492,7 +15676,7 @@ end despite you high vantage point.
   The mountain ascends to the north while more of this cliff lies to the east
 and west.
 ~
-16 0 6
+16 0 5
 D0
 ~
 ~
@@ -15516,7 +15700,7 @@ end despite you high vantage point.
   The mountain ascends to the north while more of this cliff lies to the east
 and west.
 ~
-16 0 6
+16 0 5
 D0
 ~
 ~
@@ -15540,7 +15724,7 @@ end despite you high vantage point.
   The mountain ascends to the north while more of this cliff lies to the east
 and west.
 ~
-16 0 6
+16 0 5
 D0
 ~
 ~
@@ -15564,7 +15748,7 @@ end despite you high vantage point.
   The mountain ascends to the north while more of this cliff lies to the east
 and west.
 ~
-16 0 6
+16 0 5
 D0
 ~
 ~
@@ -15588,7 +15772,7 @@ end despite you high vantage point.
   The mountain ascends to the north while more of this cliff lies to the east
 and west.
 ~
-16 0 6
+16 0 5
 D0
 ~
 ~
@@ -15612,7 +15796,7 @@ end despite you high vantage point.
   The mountain ascends to the north while more of this cliff lies to the east
 and west.
 ~
-16 0 6
+16 0 5
 D0
 ~
 ~
@@ -15636,7 +15820,7 @@ end despite you high vantage point.
   The mountain ascends to the north while more of this cliff lies to the east
 and to the west the cliff soon curves south.
 ~
-16 0 6
+16 0 5
 D0
 ~
 ~
@@ -15658,7 +15842,7 @@ seems to descend in every direction except to the north where the mountain
 side rises.
   The redspine lies all about you.
 ~
-16 0 6
+16 0 5
 D0
 ~
 ~
@@ -15684,7 +15868,7 @@ seems to descend in every direction except to the north where the mountain
 side rises.
   The redspine lies all about you.
 ~
-16 0 6
+16 0 5
 D0
 ~
 ~
@@ -15710,7 +15894,7 @@ seems to descend in every direction except to the north where the mountain
 side rises.
   The redspine lies all about you.
 ~
-16 0 6
+16 0 5
 D0
 ~
 ~
@@ -15736,7 +15920,7 @@ seems to descend in every direction except to the north where the mountain
 side rises.
   The redspine lies all about you.
 ~
-16 0 6
+16 0 5
 D0
 ~
 ~
@@ -15762,7 +15946,7 @@ seems to descend in every direction except to the north where the mountain
 side rises.
   The redspine lies all about you.
 ~
-16 0 6
+16 0 5
 D0
 ~
 ~
@@ -15788,7 +15972,7 @@ seems to descend in every direction except to the north where the mountain
 side rises.
   The redspine lies all about you.
 ~
-16 0 6
+16 0 5
 D0
 ~
 ~
@@ -15815,7 +15999,7 @@ south the mountain continues with its rocky path though the ascent is not
 as great as other parts.
   The redspine lies all about you.
 ~
-16 0 6
+16 0 5
 D0
 ~
 ~
@@ -15842,7 +16026,7 @@ south the mountain continues with its rocky path though the ascent is not
 as great as other parts.
   The redspine lies all about you.
 ~
-16 0 6
+16 0 5
 D0
 ~
 ~
@@ -15869,7 +16053,7 @@ south the mountain continues with its rocky path though the ascent is not
 as great as other parts.
   The redspine lies all about you.
 ~
-16 0 6
+16 0 5
 D0
 ~
 ~
@@ -15895,7 +16079,7 @@ seems to ascend to the north while other areas are simply rocky, the
 ascention and decention are not enough to make a felt difference.
   The redspine lies all about you.
 ~
-16 0 6
+16 0 5
 D0
 ~
 ~
@@ -15921,7 +16105,7 @@ seems to ascend to the north while other areas are simply rocky, the
 ascention and decention are not enough to make a felt difference.
   The redspine lies all about you.
 ~
-16 0 6
+16 0 5
 D0
 ~
 ~
@@ -15947,7 +16131,7 @@ seems to ascend to the north while other areas are simply rocky, the
 ascention and decention are not enough to make a felt difference.
   The redspine lies all about you.
 ~
-16 0 6
+16 0 5
 D0
 ~
 ~
@@ -15973,7 +16157,7 @@ to the south of you which ends the mountains path, at the bottom of which
 lies a valley.
   The redspine lies all about you.
 ~
-16 0 6
+16 0 5
 D0
 ~
 ~
@@ -15995,7 +16179,7 @@ to the south of you which ends the mountains path, at the bottom of which
 lies a valley.
   The redspine lies all about you.
 ~
-16 0 6
+16 0 5
 D0
 ~
 ~
@@ -23784,7 +23968,8 @@ Forest Riverbank~
   Dry leaves crackle underfoot as you walk amongst the scattered oaks and
 birches.  Occasionally you catch sight of a small forest animal scampering
 through the thick underbrush covering the ground around the trees.  To the
-north you can see a wide river flowing westward.
+north you can see a wide river flowing westward.  You see movement in a
+foxhole below you.
   Through the forest to the south and west you can see a road, and to the
 north the ground drops off sharply towards the river.  The forest continues to
 the east.
@@ -23802,6 +23987,11 @@ D3
 ~
 ~
 0 -1 2033
+D5
+You see a foxhole below you that you just might be able to fit through.
+~
+leaves foxhole~
+3 -1 32300
 E
 trees tree oak birch~
 The trees grow close together here, and form a thick canopy far above
@@ -37339,7 +37529,7 @@ Golden Dragon~
 who want to eat or drink at the Inn.  A path has been cleared through the
 tables so that everyone has a clear shot directly to the bar.
   More of the Golden Dragon lies to the south and east while the bar lies to
-the southeast, unreachable at the moment due to a unfortunate spill on the
+the southeast, unreachable at the moment due to an unfortunate spill on the
 floor.
 ~
 50 8 1
@@ -37354,8 +37544,8 @@ D2
 S
 #5011
 Golden Dragon~
-  Tables line the floor of this large bar as many people come here to loose
-themselves in a drunken slumber.  There is always a open chair and a good
+  Tables line the floor of this large bar as many people come here to lose
+themselves in a drunken slumber.  There is always an open chair and a good
 fight at the Dragon as the saying goes.
   The bar lies to the south while more tables and chairs continue to the west.
   A small wooden door blocks the eastern exit.
@@ -37492,7 +37682,7 @@ door west w~
 E
 hole~
   Best not to look long, as the darkness that resides within seems to move on
-its own violation.
+its own volition.
 ~
 S
 #5018
@@ -37550,7 +37740,7 @@ door west w~
 S
 #5021
 Open Room~
-  A small bed and a equally as small dresser lie silently in this open room.
+  A small bed and an equally as small dresser lie silently in this open room.
 The bed has been recently made and all drawers are empty.  A small note has
 been left on the bed.  A small archway seems to lead west of this chamber
 into a small adjoining chamber.
@@ -37642,7 +37832,7 @@ S
 Conjunction~
   This small street is a dirt and stone road made mostly by many feet trodden
 upon it over the years.  You can see that is leads into a north-south street
-not to far ahead.
+not too far ahead.
   This street continues on while a small wood lies to the north of you.
 ~
 50 4 1
@@ -37739,7 +37929,7 @@ the depository.
 E
 note notes~
   The notes have scribblings of numbers written upon them.  It would appear
-all money is kept in numerical bookeeping.
+all money is kept in numerical bookkeeping.
 ~
 S
 #5030
@@ -48759,7 +48949,7 @@ sky, made of red granite.  To the north the gnarled roots and trees look
 as though they might be penetrated, but at great difficulty.  The beach
 seems to continue a distance to the west while a thick mist flows out from
 the valley, dispersing as it meets the salty air.
-  The beach continues north and west while the gnarled roots and trees to
+  The beach continues east and west while the gnarled roots and trees to
 the north might allow passage.
 ~
 60 1024 1
@@ -49172,7 +49362,7 @@ Near the water, a small crab moves back into the depths of the sea.
 D1
 ~
 ~
-0 -1 6083
+0 -1 6082
 D3
 ~
 ~
@@ -56767,6 +56957,418 @@ A large shell.
 shell large~
 3 -1 6591
 S
+#6800
+Underground Cavern~
+  Razor sharp rocks jut out of the walls as you venture slowly down the path
+into the darkness.  Only the screeches of bats can be heard echoing through
+the passageway.  The smooth path guides you through the jagged rocks that
+await your first slip.  A cool drop of water can be heard splashing off in
+the dark.  Every so often the remains of what once may have been a lost
+adventure lie scattered in the rocks.
+~
+68 7 4
+D1
+It is to dark to see.
+~
+~
+0 -1 6801
+D5
+Entrance
+~
+~
+0 -1 1013
+S
+#6801
+Underground Cavern~
+  Razor sharp rocks jut out of the walls as you venture slowly down the path
+into the darkness.  Only the screeches of bats can be heard echoing through
+the passageway.  The smooth path guides you through the jagged rocks that
+await your first slip.  A cool drop of water can be heard splashing off in
+the dark.  Every so often the remains of  what once may have been a lost
+adventure lie scattered in the rocks.
+~
+68 7 4
+D1
+Darkness.
+~
+~
+0 -1 6802
+D3
+Darkness.
+~
+~
+0 -1 6800
+S
+#6802
+Underground Cavern~
+  Razor sharp rocks jut out of the walls as you venture slowly down the path
+into the darkness.  Only the screeches of bats can be heard echoing through
+the passageway.  The smooth path guides you through the jagged rocks that
+await your first slip.  A cool drop of water can be heard splashing off in
+the dark.  Every so often the remains of  what once may have been a lost
+adventure lie scattered in the rocks.
+~
+68 7 4
+D1
+Darkness.
+~
+~
+0 -1 6803
+D3
+Darkness.
+~
+~
+0 -1 6801
+S
+#6803
+Underground Cavern~
+  Razor sharp rocks jut out of the walls as you venture slowly down the path
+into the darkness.  Only the screeches of bats can be heard echoing through
+the passageway.  The smooth path guides you through the jagged rocks that
+await your first slip.  A cool drop of water can be heard splashing off in
+the dark.  Every so often the remains of  what once may have been a lost
+adventure lie scattered in the rocks.
+~
+68 7 4
+D2
+Darkness.
+~
+~
+0 -1 6804
+D3
+Darkness.
+~
+~
+0 -1 6802
+S
+#6804
+Underground Cavern~
+  Razor sharp rocks jut out of the walls as you venture slowly down the path
+into the darkness.  Only the screeches of bats can be heard echoing through
+the passageway.  The smooth path guides you through the jagged rocks that
+await your first slip.  A cool drop of water can be heard splashing off in
+the dark.  Every so often the remains of  what once may have been a lost
+adventure lie scattered in the rocks.
+~
+68 7 4
+D0
+Darkness.
+~
+~
+0 -1 6803
+D1
+Darkness.
+~
+~
+0 -1 6819
+D3
+Darkness.
+~
+~
+0 -1 6805
+S
+#6805
+Underground Cavern~
+  Razor sharp rocks jut out of the walls as you venture slowly down the path
+into the darkness.  Only the screeches of bats can be heard echoing through
+the passageway.  The smooth path guides you through the jagged rocks that
+await your first slip.  A cool drop of water can be heard splashing off in
+the dark.  Every so often the remains of  what once may have been a lost
+adventure lie scattered in the rocks.
+~
+68 7 4
+D1
+Darkness.
+~
+~
+0 -1 6804
+D2
+Darkness.
+~
+~
+0 -1 6806
+D3
+Darkness.
+~
+~
+0 -1 6807
+S
+#6806
+Underground Cavern~
+  Razor sharp rocks jut out of the walls as you venture slowly down the path
+into the darkness.  Only the screeches of bats can be heard echoing through
+the passageway.  The smooth path guides you through the jagged rocks that
+await your first slip.  A cool drop of water can be heard splashing off in
+the dark.  Every so often the remains of  what once may have been a lost
+adventure lie scattered in the rocks.
+~
+68 7 4
+D0
+Darkness.
+~
+~
+0 -1 6805
+D1
+Darkness.
+~
+~
+0 -1 6812
+D2
+Darkness.
+~
+~
+0 -1 6813
+S
+#6807
+Underground Cavern~
+  Razor sharp rocks jut out of the walls as you venture slowly down the path
+into the darkness.  Only the screeches of bats can be heard echoing through
+the passageway.  The smooth path guides you through the jagged rocks that
+await your first slip.  A cool drop of water can be heard splashing off in
+the dark.  Every so often the remains of  what once may have been a lost
+adventure lie scattered in the rocks.
+~
+68 7 4
+D1
+Darkness.
+~
+~
+0 -1 6805
+D2
+Darkness.
+~
+~
+0 -1 6809
+D3
+Darkness.
+~
+~
+0 -1 6810
+S
+#6809
+Underground Cavern~
+  Razor sharp rocks jut out of the walls as you venture slowly down the path
+into the darkness.  Only the screeches of bats can be heard echoing through
+the passageway.  The smooth path guides you through the jagged rocks that
+await your first slip.  A cool drop of water can be heard splashing off in
+the dark.  Every so often the remains of what once may have been a lost
+adventure lie scattered in the rocks.
+~
+68 7 4
+D0
+Darkness.
+~
+~
+0 -1 6807
+D3
+Darkness.
+~
+~
+0 -1 6811
+S
+#6810
+Dead End~
+  Razor sharp rocks jut out of the walls as you venture slowly down the path
+into the darkness.  Only the screeches of bats can be heard echoing through
+the passageway.  The smooth path guides you through the jagged rocks that
+await your first slip.  A cool drop of water can be heard splashing off in
+the dark.  Every so often the remains of  what once may have been a lost
+adventure lie scattered in the rocks.
+~
+68 7 4
+D1
+Darkness.
+~
+~
+0 -1 6807
+S
+#6811
+Dead End~
+  Razor sharp rocks jut out of the walls as you venture slowly down the path
+into the darkness.  Only the screeches of bats can be heard echoing through
+the passageway.  The smooth path guides you through the jagged rocks that
+await your first slip.  A cool drop of water can be heard splashing off in
+the dark.  Every so often the remains of  what once may have been a lost
+adventure lie scattered in the rocks.
+~
+68 7 4
+D1
+Darkness.
+~
+~
+0 -1 6809
+S
+#6812
+Underground Cavern~
+  Razor sharp rocks jut out of the walls as you venture slowly down the path
+into the darkness.  Only the screeches of bats can be heard echoing through
+the passageway.  The smooth path guides you through the jagged rocks that
+await your first slip.  A cool drop of water can be heard splashing off in
+the dark.  Every so often the remains of  what once may have been a lost
+adventure lie scattered in the rocks.
+~
+68 7 4
+D1
+Darkness.
+~
+~
+0 -1 6818
+D3
+Darkness.
+~
+~
+0 -1 6806
+S
+#6813
+Underground Cavern~
+  Razor sharp rocks jut out of the walls as you venture slowly down the path
+into the darkness.  Only the screeches of bats can be heard echoing through
+the passageway.  The smooth path guides you through the jagged rocks that
+await your first slip.  A cool drop of water can be heard splashing off in
+the dark.  Every so often the remains of  what once may have been a lost
+adventure lie scattered in the rocks.
+~
+68 7 4
+D0
+Darkness.
+~
+~
+0 -1 6806
+D1
+Darkness.
+~
+~
+0 -1 6816
+D3
+Darkness.
+~
+~
+0 -1 6814
+S
+#6814
+Underground Cavern~
+  Razor sharp rocks jut out of the walls as you venture slowly down the path
+into the darkness.  Only the screeches of bats can be heard echoing through
+the passageway.  The smooth path guides you through the jagged rocks that
+await your first slip.  A cool drop of water can be heard splashing off in
+the dark.  Every so often the remains of  what once may have been a lost
+adventure lie scattered in the rocks.
+~
+68 7 4
+D1
+Darkness.
+~
+~
+0 -1 6813
+D3
+Darkness.
+~
+~
+0 -1 6815
+S
+#6815
+Dead End~
+  The path comes to an end here, in the mists of the rocks lie the remains
+of unfortunate adventures that have lost their way.  This area is covered
+with bat droppings.
+~
+68 7 4
+D1
+Darkness.
+~
+~
+0 -1 6814
+S
+#6816
+Underground Cavern~
+  Razor sharp rocks jut out of the walls as you venture slowly down the path
+into the darkness.  Only the screeches of bats can be heard echoing through
+the passageway.  The smooth path guides you through the jagged rocks that
+await your first slip.  A cool drop of water can be heard splashing off in
+the dark.  Every so often the remains of  what once may have been a lost
+adventure lie scattered in the rocks.
+~
+68 7 4
+D3
+Darkness.
+~
+~
+0 -1 6813
+D4
+Darkness.
+~
+~
+0 -1 6817
+S
+#6817
+Before the Gates of Rylis~
+  As you emerge for the darkness of the cavern you stand before two large
+blacken gates.  The sounds of thousands of screaming souls flow out from
+behind the the great city walls.  Guards dressed in black armor walk the
+walls above, moving as if they float above the walkways themselves.
+In the distance through the gates an enormous castle reaches upwards and
+disappears into the darkend fog that floats above the city.
+~
+68 7 1
+D5
+Darkness.
+~
+~
+0 -1 6816
+S
+#6818
+Dead End~
+  Razor sharp rocks jut out of the walls as you venture slowly down the path
+into the darkness.  Only the screeches of bats can be heard echoing through
+the passageway.  The smooth path guides you through the jagged rocks that
+await your first slip.  A cool drop of water can be heard splashing off in
+the dark.  Every so often the remains of  what once may have been a lost
+adventure lie scattered in the rocks.
+~
+68 7 4
+D3
+Darkness.
+~
+~
+0 -1 6812
+S
+#6819
+Underground Cavern~
+  Razor sharp rocks jut out of the walls as you venture slowly down the path
+into the darkness.  Only the screeches of bats can be heard echoing through
+the passageway.  The smooth path guides you through the jagged rocks that
+await your first slip.  A cool drop of water can be heard splashing off in
+the dark.  Every so often the remains of  what once may have been a lost
+adventure lie scattered in the rocks.
+~
+68 7 4
+D0
+Darkness.
+~
+~
+0 -1 6820
+D3
+Darkness.
+~
+~
+0 -1 6804
+S
+#6820
+Dead End~
+  Razor sharp rocks jut out of the walls as you venture slowly down the path
+into the darkness.  Only the screeches of bats can be heard echoing through
+the passageway.  The smooth path guides you through the jagged rocks that
+await your first slip.  A cool drop of water can be heard splashing off in
+the dark.  Every so often the remains of  what once may have been a lost
+adventure lie scattered in the rocks.
+~
+68 7 4
+D2
+Darkness.
+~
+~
+0 -1 6819
+S
 #7000
 Stone Ledge~
   You are on a thin ledge of stone that is set about one third of the way
@@ -62163,17 +62765,20 @@ through a great expanse of hills. Far off to the south
 the highest tips of the Black Mountains loom like a
 shadow over the horizon. To the west the peaks of the
 Redspine Mountains rise into the sky. To the east the
-road disappears into a thick forest.
+road disappears into a thick forest.  A broad avenue
+heads north to a bustling walled city.
 ~
 100 0 4
 D0
+The gate of a bustling city lies directly north.
 ~
 ~
-0 -1 10079
+0 -1 15047
 D1
+The road dwindles to a trail as it dives into the forest.
 ~
 ~
-0 -1 -1
+0 -1 11000
 D2
 ~
 ~
@@ -72103,6 +72708,21 @@ mushroom house~
 be made of wattle and daub, but it doesn't have the patchy falling-apart
 look that most peasant homes have.  It LOOKS like a living organism.
 ~
+S
+#11000
+Travelers Road~
+  You stand on a scraggly dirt track which winds its
+way through the dense foliage.  Huge trees lean over
+and choke out much of what was daylight a few steps
+westward.  The track continues into the forest to
+the east.
+~
+110 0 3
+D3
+The road bursts from the trees and widens.
+~
+~
+0 -1 10079
 S
 #15001
 Tower 2nd Floor~
@@ -103070,6 +103690,1193 @@ You see the entrance.
 ~
 0 -1 21107
 S
+#25011
+Arsenal~
+  In case of attack, the guards in these quarters will not be shy of
+weapons.  Each wall has a variety of armaments mounted on them.  A
+few are missing, most likely held by the guards currently on duty.
+~
+250 0 0
+D1
+A solid metal door lies to the east.
+~
+door metal~
+1 -1 25021
+S
+#25013
+Cellar Stairs~
+  Although the cellar did not smell pleasant, the odor gets worse here.
+There are stairs here leading into darkness.  The room itself is mostly
+unlit, and spider webs fill the corners.
+~
+250 0 0
+D2
+There is a door to the south.
+~
+door~
+1 -1 25014
+S
+#25014
+Wine Cellar~
+  The source of the musky odor is revealed as you enter the wine cellar.
+Racks upon racks of wine bottles, each covered with their own layer of
+dust, line the walls.  None of them are less than a hundred years old.
+A door lies to the north as well as to the east.
+~
+250 0 0
+D0
+There is a door to the north.
+~
+door~
+1 -1 25013
+D1
+A door leads back to the hallway.
+~
+door~
+1 -1 25024
+S
+#25015
+Kitchen~
+  Preparations for a large banquet are underway in this room.  Despite
+the opening to the air above you lets out some of the smoke from the
+many fires which accomodate the cooking of various meats, soups, and
+other dishes.
+~
+250 0 0
+D2
+A passage to the south leads back to the Banquet hall.
+~
+passage~
+0 -1 25016
+S
+#25016
+Banquet Hall~
+  Once again you enter a massive room.  Drunken shouting and barbaric
+yelling fill the room, and occasionally a small brawl breaks out, ending
+quickly in a painful scream.
+Tables fill the hall, covered in goblets.  The smell of vomit occasionally
+hit your nose.
+A narrow passageway is to the north.
+~
+250 0 0
+D0
+Smoke billows forth from the passage to the north.
+~
+passage~
+0 -1 25015
+D1
+The banquet continues to the east.
+~
+~
+0 -1 25026
+D2
+More of the banquet lies to the south.
+~
+~
+0 -1 25017
+S
+#25017
+Banquet Hall~
+  Once again you enter a massive room.  Drunken shouting and barbaric
+yelling fill the room, and occasionally a small brawl breaks out, ending
+quickly in a painful scream.
+Tables fill the hall, covered in goblets.  The smell of vomit occasionally
+hit your nose.
+~
+250 0 0
+D0
+More of the banquet lies to the north.
+~
+~
+0 -1 25016
+D1
+The banquet continues to the east.
+~
+~
+0 -1 25027
+D2
+More of the banquet hall lies to the south.
+~
+~
+0 -1 25018
+S
+#25018
+Banquet Hall~
+  Once again you enter a massive room.  Drunken shouting and barbaric
+yelling fill the room, and occasionally a small brawl breaks out, ending
+quickly in a painful scream.
+Tables fill the hall, covered in goblets.  The smell of vomit occasionally
+hit your nose.
+~
+250 0 0
+D0
+The banquet continues to the north.
+~
+~
+0 -1 25017
+D1
+More of the hall lies to the east.
+~
+~
+0 -1 25028
+S
+#25021
+Guard Barracks~
+  Four beds are situated along the north and south walls.  Although there
+is nothing exemplary about these quarters, its does appear to be a
+comfortable place to live.  Apparently, the gate guards work, eat, and
+sleep in these rooms.
+~
+250 0 0
+D1
+When the guards are awake but not on duty they entertain themselves
+to the east.
+~
+~
+0 -1 25031
+D3
+A door of solid metal lies to the west.
+~
+door metal~
+1 -1 25011
+E
+bed~
+There is nothing special about the beds.  The appear comfortable, and
+are well blanketed.
+~
+S
+#25022
+Western Hallway~
+  The hallway is darker this direction.  Although there seems to be just
+as many candles along these walls, there is not as much life to them.
+The musky odor has all but disappeared from the air, but the draft has
+increased and is emanating from the west.
+~
+250 0 0
+D2
+The hallway continues to the south.
+~
+~
+0 -1 25023
+S
+#25023
+Western Hallway~
+  The hallway is darker this direction.  Although there seems to be just
+as many candles along these walls, there is not as much life to them.
+The musky odor is not as strong here, but you feel a slight draft coming
+from the north.
+~
+250 0 0
+D0
+The hallway comes to an end to the north.
+~
+~
+0 -1 25022
+D2
+The hallway continues to the south.
+~
+~
+0 -1 25024
+S
+#25024
+Western Hallway~
+  The hallway is darker this direction.  Although there seems to be just
+as many candles along these walls, there is not as much life to them.
+A strong musky odor fills this section of the hall, its seems to emanate
+from the door on the western wall.
+~
+250 0 0
+D0
+The hallway continues to the north.
+~
+~
+0 -1 25023
+D2
+The hallway appears to turn to the south.
+~
+~
+0 -1 25025
+D3
+A door lies to the west.
+~
+door~
+1 -1 25014
+S
+#25025
+Hallway Corner~
+  The hallway makes a sharp turn the north here.  To the north, the hallway
+gets a little darker and a musky odor drifts toward you.  It is combated by
+a far more pleasant smell drifting through the doors to the south.
+~
+250 0 0
+D0
+The hallway continues to the north.
+~
+~
+0 -1 25024
+D1
+The hallway continues to the east.
+~
+~
+0 -1 25035
+D2
+A set of double doors lies to the south.
+~
+doors door~
+1 -1 25026
+S
+#25026
+Banquet Hall~
+  Once again you enter a massive room.  Drunken shouting and barbaric
+yelling fill the room, and occasionally a small brawl breaks out, ending
+quickly in a painful scream.
+Tables fill the hall, covered in goblets.  The smell of vomit occasionally
+hit your nose.
+~
+250 0 0
+D0
+A set of double doors lies to the north.
+~
+doors door~
+1 -1 25025
+D2
+The hall continues to the south.
+~
+~
+0 -1 25027
+D3
+The hall continues to the west.
+~
+~
+0 -1 25016
+S
+#25027
+Banquet Hall~
+  Once again you enter a massive room.  Drunken shouting and barbaric
+yelling fill the room, and occasionally a small brawl breaks out, ending
+quickly in a painful scream.
+Tables fill the hall, covered in goblets.  The smell of vomit occasionally
+hit your nose.
+~
+250 0 0
+D0
+The hall continues to the north.
+~
+~
+0 -1 25026
+D2
+More of the hall lies to the south.
+~
+~
+0 -1 25028
+D3
+The banquet continues to the west.
+~
+~
+0 -1 25017
+S
+#25028
+Banquet Hall~
+  Once again you enter a massive room.  Drunken shouting and barbaric
+yelling fill the room, and occasionally a small brawl breaks out, ending
+quickly in a painful scream.
+Tables fill the hall, covered in goblets.  The smell of vomit occasionally
+hit your nose.
+~
+250 0 0
+D0
+The banquet continues to the north.
+~
+~
+0 -1 25027
+D3
+The banquet continues to the west.
+~
+~
+0 -1 25018
+S
+#25030
+Western Tower~
+  Unlike the other rooms of the barracks, this room is dark.  The only
+source of light is through a few small slits in the eastern and northern
+walls, allowing the guards to spy on those who wish to enter their
+fortress.
+~
+250 1 0
+D2
+A door lies to the south.
+~
+door~
+1 -1 25031
+E
+slit slits opening~
+Light shines in through these slits, and through them, you can make
+out the opposite guard tower.
+~
+S
+#25031
+Guard Barracks~
+  Apparently, even the guards of this castle live in luxury.  The room
+is warm, plush, and well lit.  There are plenty of places to sit and
+relax, and there is a table to eat at.  Musical instruments are hung
+on the walls, provided entertainment between shifts.
+~
+250 0 0
+D0
+A door lies to the north.
+~
+door~
+1 -1 25030
+D1
+A plain wooden door stands to the east.
+~
+door~
+1 25001 25041
+D3
+The guards seem to sleep to the west.
+~
+~
+0 -1 25021
+E
+table~
+A table of solid oak sits in the center of the room.
+~
+S
+#25032
+Grand Hall~
+  As you travel across the room you are frequently reminded of how large
+it truly is.  Your feet have become sore after walking to the western
+wall.  Candles line the walls and chandeliers hang high above you.
+~
+250 0 0
+D1
+The carpeted section of the hall lies to the east.
+~
+~
+0 -1 25042
+D2
+The hall continues to the south.
+~
+~
+0 -1 25033
+S
+#25033
+Grand Hall~
+  As you travel across the room you are frequently reminded of how large
+it truly is.  Your feet have become sore after walking to the western
+wall.  Candles line the walls and chandeliers hang high above you.
+~
+250 0 0
+D0
+The hall continues to the north.
+~
+~
+0 -1 25032
+D1
+More of the hall lies to the east.
+~
+More of the hall lies to the west.~
+0 -1 25043
+D2
+The hall continues to the south.
+~
+~
+0 -1 25034
+S
+#25034
+Grand Hall~
+  As you travel across the room you are frequently reminded of how large
+it truly is.  Your feet have become sore after walking to the western
+wall.  Candles line the walls and chandeliers hang high above you.
+~
+250 0 0
+D0
+The hall continues to the north.
+~
+~
+0 -1 25033
+D1
+The carpeted area continues to the east.
+~
+~
+0 -1 25044
+S
+#25035
+Central Hallway~
+  This hallway appears to be the main vein of the castle.  Apart from the
+candles lining the walls, there is no decoration.
+The hallway continues to the east and west.
+~
+250 0 0
+D1
+The hallway continues to the east.
+~
+~
+0 -1 25045
+D3
+The hallway continues to the west.
+~
+~
+0 -1 25025
+S
+#25036
+Lavatory of the King's Guard~
+  Having no door from this lavatory must make it very uncomfortable to
+use the facilities.  The room does, however, seem very comfortable to
+use.  Although, like the other lavatories in the castle, the odor is
+quite unpleasant.
+~
+250 0 0
+D1
+The Guard Post lies to the east.
+~
+~
+0 -1 25046
+S
+#25038
+King's Study~
+  The walls of the study are lined with books, though it seems as though
+none have been touched in years.  Although the bookshelves themselves are
+well cleaned, you notice the top of the books are actually covered with a
+layer of dust.  The King was obviously a fighting man, with little interest
+in more intellectual pursuits.
+~
+250 0 0
+D1
+A door lies to the east.
+~
+door~
+1 -1 25048
+S
+#25040
+Entrance~
+  Before you to the south stands a Majestic Castle.  Although it has
+obviously been here for quite some time, it has been well maintained.
+Laurels creep their way upward along the grey bricks.  To the east
+and west are guard towers, and peering into the small opening you
+might be able to make out some eyes staring back at you.
+A set of doors lies to your south.
+~
+250 0 1
+D2
+The doors seem unbearably heavy, with no decoration apart from a
+large ivory keyhole.
+~
+doors~
+1 25000 25041
+E
+guard towers tower~
+  The guard towers are made of near solid grey rock, but there are small
+slits carved into the sides.  These slits are dark, but looking in you
+think you might be able to make out eyes.
+~
+E
+doors~
+  The doors seem unbearably heavy.  A large ivory keyhole is its only
+noticable feature.
+~
+E
+laurels laurel plants~
+  The plants climb their way up the castle.  Following them, you are
+consumed by how massive this castle seems to be, and wonder what fate
+may await you inside.
+~
+S
+#25041
+Foyer~
+  Although terribly simplistic, there is something grand about this room.
+The walls are undecorated, with doors on each side, but it is lit by a
+massive, yet simple, chandelier hung from the ceiling.
+~
+250 0 0
+D0
+Large, heavy doors impede your quick escape from the foyer.
+~
+doors~
+1 25000 25040
+D1
+A plain wooden door lies to the east.
+~
+door~
+1 25001 25051
+D2
+A grand set of double doors lies to the south.
+~
+doors grand door~
+2 25002 25042
+D3
+A plain wooden door stands to the west.
+~
+door~
+1 25001 25031
+E
+chandelier~
+  The chandelier is large in scale, but simple in design.  Some twenty or
+thirty candles shine light throughout the room.
+~
+S
+#25042
+Grand Carpeted Hall~
+  As you step into this room, the vastness of the room consumes you.  The
+room must span at least fifty yards in each direction, giving the
+inhabitants of the castle a place to socialize and move about.  Chandeliers
+fill the ceiling while candles line the walls.
+Red carpeting runs north to south here.
+
+~
+250 0 0
+D0
+A grand set of double doors lies to the north.
+~
+doors grand door~
+2 25002 25041
+D1
+The hall continues to the east.
+~
+~
+0 -1 25052
+D2
+The carpeting continues to the south.
+~
+~
+0 -1 25043
+D3
+More of the hall lies to the west.
+~
+~
+0 -1 25032
+S
+#25043
+Grand Carpeted Hall~
+  As you step into this room, the vastness of the room consumes you.  The
+room must span at least fifty yards in each direction, giving the
+inhabitants of the castle a place to socialize and move about.  Chandeliers
+fill the ceiling while candles line the walls.
+Red carpeting runs north to south here.
+
+~
+250 0 0
+D0
+The red carpeting continues to the north.
+~
+~
+0 -1 25042
+D1
+More of the hall lies to the east.
+~
+~
+0 -1 25053
+D2
+The carpeting continues to the south.
+~
+~
+0 -1 25044
+D3
+More of the hall lies to the west.
+~
+~
+0 -1 25033
+S
+#25044
+Grand Carpeted Hall~
+  As you step into this room, the vastness of the room consumes you.  The
+room must span at least fifty yards in each direction, giving the
+inhabitants of the castle a place to socialize and move about.  Chandeliers
+fill the ceiling while candles line the walls.
+Red carpeting runs north to south here.
+
+~
+250 0 0
+D0
+The carpeting continues to the north.
+~
+~
+0 -1 25043
+D1
+The grand hall continues to the east.
+~
+~
+0 -1 25054
+D2
+A plain wooden door lies to the south.
+~
+door wooden plain~
+1 -1 25045
+D3
+More of the hall continues to the west.
+~
+~
+0 -1 25034
+S
+#25045
+Central Hallway~
+  This hallway appears to be the main vein of the castle.  Apart from the
+candles lining the walls, there is no decoration.
+To the north is a plain wooden door, in drastic contrast to the large
+golden door to the south.
+The red carpeting runs north to south here.
+The hallway continues to the east and west.
+~
+250 0 0
+D0
+A plain wooden door lies to the north.
+~
+door wooden plain~
+1 -1 25044
+D1
+The hallway continues to the east.
+~
+~
+0 -1 25055
+D2
+A solidly built door lies to the south.
+~
+door golden~
+1 25003 25046
+D3
+The hallway continues to the west.
+~
+~
+0 -1 25035
+S
+#25046
+King's Guard Post~
+  This room is majestic in appearance.  Large paintings line the walls,
+goblets of gold sit on the table in the corner.
+You can assume that somebody important lives through the door to the
+south, as it is even more grand than the golden door to the north.
+~
+250 0 0
+D0
+A solidly built golden door lies to the north.
+~
+door golden~
+1 25003 25045
+D1
+The Guards apparently sleep to the east.
+~
+~
+0 -1 25056
+D2
+The golden door to the south is solidly built and well-polished.
+~
+door golden~
+1 25003 25047
+D3
+A lavatory lies to the west.
+~
+~
+0 -1 25036
+S
+#25047
+The King's Chambers~
+  In comparison to this room, the rest of the castle in slovenly.  The
+chandelier that hangs from the ceiling is larger than any you've seen.
+The room is warm, and beautifully decorated with furs and paintings
+from all parts of the land, and you'd swear the floor was made of solid
+gold.  Everything is well-polished and dust free.
+~
+250 0 0
+D0
+The door to the north matches the floor perfectly, and you catch your
+reflection in its shiny surface.
+~
+door golden~
+1 25003 25046
+D1
+A door lies to the east.
+~
+door~
+1 -1 25057
+D2
+The room continues to the south.
+~
+~
+0 -1 25048
+S
+#25048
+The King's Chambers~
+  In comparison to this room, the rest of the castle in slovenly.  The
+chandelier that hangs from the ceiling is larger than any you've seen.
+The room is warm, and beautifully decorated with furs and paintings
+from all parts of the land, and you'd swear the floor was made of solid
+gold.  Everything is well-polished and dust free.
+The King's bed sits along the southern wall, also built of solid gold.
+~
+250 0 0
+D0
+The room continues to the north.
+~
+~
+0 -1 25047
+D1
+~
+painting~
+3 -1 25058
+D3
+A door lies to the west.
+~
+door~
+1 -1 25038
+E
+bed~
+If only you could cut off a piece of that to sell!
+~
+S
+#25050
+Eastern Tower~
+  Unlike the other rooms of the barracks, this room is dark.  The only
+source of light is through a few small slits in the eastern and northern
+walls, allowing the guards to spy on those who wish to enter their
+fortress.
+~
+250 1025 0
+You feel like somethings coming your way from the east.
+~
+~
+D2
+A solidly built door lies to the south.
+~
+door solid~
+1 -1 25051
+E
+slit slits opening openings~
+Light shines in through these small vertical slits, and through them
+you can make out the opposite guard tower.
+~
+S
+#25051
+Guard Barracks~
+  Apparently, even the guards of this castle live in luxury.  The room
+is warm, plush, and well lit.  There are plenty of places to sit and
+relax, and there is a table to eat at.  Musical instruments are hung
+on the walls, provided entertainment between shifts.
+~
+250 0 0
+D0
+A solidly built door lies to the north.
+~
+door solid~
+1 -1 25050
+D1
+Sleeping quarters are to the east.
+~
+~
+0 -1 25061
+D3
+A plain wooden door lies to the west.
+~
+door~
+1 25001 25041
+E
+table~
+The table is solidly built of a heavy wood, probably oak.
+~
+S
+#25052
+Grand Hall~
+  As you travel across the room you are frequently reminded of how large
+it truly is.  Your feet have become sore after walking to the western
+wall.  Candles line the walls and chandeliers hang high above you.
+~
+250 0 0
+D2
+The grand hall continues to the south.
+~
+~
+0 -1 25053
+D3
+The carpeted area of the hall is to the west.
+~
+~
+0 -1 25042
+S
+#25053
+Grand Hall~
+  As you travel across the room you are frequently reminded of how large
+it truly is.  Your feet have become sore after walking to the western
+wall.  Candles line the walls and chandeliers hang high above you.
+~
+250 0 0
+D0
+The grand hall continues to the north.
+~
+~
+0 -1 25052
+D2
+The hall continues to the south.
+~
+~
+0 -1 25054
+D3
+The carpeted area lies to the west.
+~
+~
+0 -1 25043
+S
+#25054
+Grand Hall~
+  As you travel across the room you are frequently reminded of how large
+it truly is.  Your feet have become sore after walking to the western
+wall.  Candles line the walls and chandeliers hang high above you.
+~
+250 0 0
+D0
+The hall continues to the north.
+~
+~
+0 -1 25053
+D3
+The carpeted area continues to the west.
+~
+~
+0 -1 25044
+S
+#25055
+Central Hallway~
+  This hallway appears to be the main vein of the castle.  Apart from the
+candles lining the walls, there is no decoration.
+The hallway continues to the east and west.
+~
+250 0 0
+D1
+The hallway continues to the east.
+~
+~
+0 -1 25065
+D3
+The hallway continues to the west.
+~
+~
+0 -1 25045
+S
+#25056
+King's Guards Barracks~
+  Obviously, these guards live as high a life as anybody in this castle.
+The beds that lie to the north, east, and south are covered in thick
+blanketing.  The chairs are of the highest quality and comfort, and
+exotic weapons hang on the walls.
+~
+250 0 0
+D3
+The Guard post is to the west.
+~
+~
+0 -1 25046
+S
+#25057
+Meeting Room~
+  A large table fills the center of this room, surrounded by eight
+chairs, one of which is significantly larger than the rest.  The
+room is well lit, although the table leaves little room to move
+about.
+~
+250 0 0
+D3
+A door lies to the west.
+~
+door~
+1 -1 25047
+S
+#25058
+The King's Treasure Room~
+  It is obvious the ruler of the castle does not do his own cleaning, as
+this room is dusty and unclean.  There are shelves everywhere, and you
+assume that at some time they held treasures, though the room is now all
+but empty.
+There is a large mural on the southern wall.
+~
+250 0 0
+D2
+~
+lever~
+3 -1 25200
+D3
+The back of a painting is to the west.
+~
+painting~
+3 -1 25048
+E
+mural painting~
+The mural is a combination of painting and sculpture.  It definately
+has a layered look and is intricate in its design.
+~
+S
+#25061
+Guard Barracks~
+  Four beds are situated along the north and south walls.  Although there
+is nothing exemplary about these quarters, its does appear to be a
+comfortable place to live.  Apparently, the gate guards work, eat, and
+sleep in these rooms.
+~
+250 0 0
+D1
+A large metal door lies to the east.
+~
+door metal~
+1 -1 25071
+D3
+The guard's waking hours are spent to the west or on duty.
+~
+~
+0 -1 25051
+S
+#25062
+Eastern Hallway~
+  The hallway gets darker here, and a draft hits you from the north.  The
+activity of the castle is barely noticable here.
+~
+250 0 0
+D2
+The hallway continues to the south.
+~
+~
+0 -1 25063
+S
+#25063
+Eastern Hallway~
+  The hallway gets darker here, and a draft hits you from the north.  The
+activity of the castle is barely noticable here.
+~
+250 0 0
+D0
+The hallway seems to end up ahead.
+~
+~
+0 -1 25062
+D2
+The hallway continues to the south.
+~
+~
+0 -1 25064
+S
+#25064
+Eastern Hallway~
+The hallway is darker here, apparently not many people travel down this
+section of the castle.  Occasional explosions sound through the door to
+the east, accompanied by screams of frustration.
+~
+250 0 0
+D0
+The hallway continues to the north.
+~
+~
+0 -1 25063
+D1
+An unsturdy door is to the east.
+~
+door~
+1 -1 25074
+D2
+The hallway hits a corner to the south.
+~
+~
+0 -1 25065
+S
+#25065
+Turn in the Hallway~
+  The hallway makes a sharp turn to the north here.  The walls in this area
+are still empty of any decoration.  You can make out barbaric grunting
+coming from the south, and the occasional sounds of explosions coming
+from somewhere to the north.
+~
+250 0 0
+D0
+The hallway gets darker to the north.
+~
+~
+0 -1 25064
+D2
+The doors to the south muffle the grunting heard from behind.
+~
+doors door~
+1 -1 25066
+D3
+The hallway steers to the west.
+~
+~
+0 -1 25055
+S
+#25066
+Gymnasium~
+  The grunting from the practicing warriors deafens your ears as you
+enter the gymnasium.  The ceiling is impressively tall and the room
+is spacious, allowing those who wish to maintain their physique plenty
+of room to practice.
+~
+250 1024 0
+It is difficult to hear anything over the barbaric grunting.
+~
+You hear a painful scream as one of the warriors cuts off
+another's limb.
+~
+D0
+The doors to the north lead back to the hallway.
+~
+doors door~
+1 -1 25065
+D1
+~
+~
+0 -1 25076
+D2
+~
+~
+0 -1 25067
+S
+#25067
+Gymnasium~
+  The grunting from the practicing warriors deafens your ears as it echoes
+off the walls of the gymnasium.  The ceiling is impressively tall and the
+room is spacious, allowing those who wish to maintain their physique plenty
+of room to practice.
+~
+250 0 0
+D0
+~
+~
+0 -1 25066
+D1
+~
+~
+0 -1 25077
+D2
+~
+~
+0 -1 25068
+S
+#25068
+Gymnasium~
+  The grunting from the practicing warriors deafens your ears as it echoes
+off the walls of the gymnasium.  The ceiling is impressively tall and the
+room is spacious, allowing those who wish to maintain their physique plenty
+of room to practice.
+~
+250 0 0
+D0
+~
+~
+0 -1 25067
+D1
+~
+~
+0 -1 25078
+S
+#25071
+Arsenal~
+  In case of attack, the guards in these quarters will not be shy of
+weapons.  Each wall has a variety of armaments mounted on them.  A
+few are missing, most likely held by the guards currently on duty.
+~
+250 0 0
+D3
+A large metal door lies to the west.
+~
+door metal~
+1 -1 25061
+S
+#25073
+Mage's Quarters~
+  Probably the only intellectual in the castle, a mage makes his home
+this room.  He probably gets very few visitors, being far from the rest
+of the inhabitants.  The room is dark, and cluttered with vials, books,
+and burning candles.  Occasionally an explosion interrupts the mage's
+cries of frustration.
+~
+250 0 0
+D2
+~
+~
+0 -1 25074
+S
+#25074
+Library~
+  Apparently there is not much interest in this castle in the pursuits of
+intellectual studies.  The library is dark and damp, and most unclean.
+The only obvious activity is from a room to the north, from which you here
+cries of frustration.
+~
+250 0 0
+D0
+~
+~
+0 -1 25073
+D3
+An unsturdy door lies to the west.
+~
+door~
+1 -1 25064
+S
+#25076
+Gymnasium~
+  The grunting from the practicing warriors deafens your ears as it echoes
+off the walls of the gymnasium.  The ceiling is impressively tall and the
+room is spacious, allowing those who wish to maintain their physique plenty
+of room to practice.
+~
+250 0 0
+D2
+~
+~
+0 -1 25077
+D3
+~
+~
+0 -1 25066
+S
+#25077
+Gymnasium~
+  The grunting from the practicing warriors deafens your ears as it echoes
+off the walls of the gymnasium.  The ceiling is impressively tall and the
+room is spacious, allowing those who wish to maintain their physique plenty
+of room to practice.
+~
+250 0 0
+D0
+~
+~
+0 -1 25076
+D2
+~
+~
+0 -1 25078
+D3
+~
+~
+0 -1 25067
+S
+#25078
+Gymnasium~
+  The grunting from the practicing warriors deafens your ears as it echoes
+off the walls of the gymnasium.  The ceiling is impressively tall and the
+room is spacious, allowing those who wish to maintain their physique plenty
+of room to practice.
+~
+250 0 0
+D0
+~
+~
+0 -1 25077
+D3
+~
+~
+0 -1 25068
+S
+#25200
+Secret Passage~
+  Insects and rodents line the floor of this passage.  After following its
+numerous turns and curves you are uncertain which direction you are facing
+or how far you have traveled.
+As you reach the end of this tunnel, you find a rather obvious panel to
+the north.
+~
+250 0 0
+D0
+The panel seems like it might slide open.
+~
+panel~
+3 -1 25050
+S
 #30000
 Iron Gate~
   You stand on a dirt path in the middle of a small wooded clearing, trees rise
@@ -105393,8 +107200,10 @@ nomad~
 S
 #32260
 Zar's Chamber~
-  A pile of straw lies in one corner as an large empty bookshelf fill the
-other wall. Rats walk around this room as if they own it.
+  A large elegant bed lies in the center of the room.  Bookshelves line the
+walls, they are full of old books on the mystic arts.  The room is alive
+with the feeling of magic.  To your east you see a large oaken door and to
+your west you hear noises.
 ~
 320 9 1
 D1
@@ -105408,9 +107217,11 @@ zar~
 S
 #32261
 Courtyard~
-   Huge weeds grow between the large rocks that lie scattered all about. The
-air stinks because of all the animal excretion lying about. Dust blows in
-your face from what is left of the walls that use to surround this keep.
+  Flower gardens line both sides of the trail leading to a huge door.
+The path splits and then reconnects as it circles a statue of Tyken. The
+statue grins at you giving you the feeling that it is alive.  A soft warm
+wind blows in from the southwest making the flowers sway, filling the air
+with their aroma.
 ~
 320 713 3
 D0
@@ -105426,9 +107237,9 @@ It is dark ahead.
 S
 #32262
 Lounge~
-   A broken wooden bench rests in one corner while rats scurry across the
-main floor. A large hole in the wall where a window use to be as the smelly
-air from outside flows into this room.
+  An oak bench rests in one corner while doves fly about the open room.  The
+smell of food cooking drifts into the room, it seems to be coming from the
+north.  The the south there is a door and off to your east you see stairs.
 ~
 320 9 1
 D3
@@ -105439,8 +107250,10 @@ It is dark ahead.
 S
 #32263
 Entrance Hall~
-  A huge rusty iron doors lies to the south. This dust filled room is covered
-bird droppings as small rodents scurry across the floor.
+  The walls around you are solid marble, the floor you are standing on is
+pure white as if never walked on.  A huge shiny brass door lies to your
+sourth.  Off to the west you see an oak door with the symbol of Tyken on
+it.  To your north there is a hallway and to your east an archway.
 ~
 320 9 1
 D1
@@ -105596,5 +107409,108 @@ It is dark ahead.
 ~
 ~
 0 -1 32270
+S
+#32300
+Foxhole~
+  You are inside a tiny fox hole.  There is a bed of hay on the back of the
+wall, and there are numerous skeletons of small furry animals all over the
+room.
+~
+46 1 0
+D2
+You feel a breeze coming from behind a bed of hay.
+~
+bed hay straw~
+3 -1 32301
+D4
+There is an exit above you.
+~
+hole foxhole~
+0 -1 2259
+S
+#32301
+Crevice~
+  You are inside a narrow crevice.  Water trickles down the crevice.  The
+crevice is so narrow that limestone rubs onto your clothes as you squeeze
+through.
+  You can continue descending the crevice or climb back up.
+~
+46 1 0
+D0
+There seems to be a bed of straw blocking the way.
+~
+bed straw hay~
+3 -1 32300
+D5
+~
+~~
+0 -1 32302
+S
+#32302
+Crevice~
+  You are inside a narrow crevice.  Water trickles down the crevice.  The
+crevice is so narrow that limestone rubs onto your clothes as you squeeze
+through.
+  You can continue to the south or back up to the north.
+~
+46 1 0
+D4
+~
+~
+0 -1 32301
+D5
+~
+~
+0 -1 32303
+S
+#32303
+Crevice~
+  You are inside a narrow crevice.  Water trickles down the crevice.  The
+crevice is so narrow that limestone rubs onto your clothes as you squeeze
+through.
+  You can continue to the south or back up to the north.
+~
+46 1 0
+D4
+~
+~
+0 -1 32302
+D5
+~
+~
+0 -1 32304
+S
+#32304
+A Limestone Pit~
+   This is an enormous room of limestone.  Puddles lie here and there.  There
+is a platinum grate in the floor.
+   You can climb back up the crevice from here.
+~
+46 129 0
+D4
+~
+~
+0 -1 32303
+D5
+You see a platinum grating on the floor of this chamber.  There is a key
+hole mounted in the grating.
+~
+grate grating platinum~
+2 32250 32305
+S
+#32305
+Dorn's Digs~
+  This room is almost completely covered by mirrors, clearly showing Dorn's
+vanity.  There is a set of beat up white furniture and an enormous bed of
+chicken feathers.
+  There is an exit above which you can climb out to leave this room.
+~
+46 0 0
+D4
+You see a platinum grating above you.  There is a key hole mounted in
+the grating.
+~
+grate grating platinum~
+2 32250 32304
 S
 $

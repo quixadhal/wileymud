@@ -1,0 +1,36 @@
+#RENT
+Owner              Gerin~
+Gold               1000
+TotalCost          234
+LastUpdate         829202196
+MinimumStay        0
+End
+#EQUIPMENT
+End
+#CARRIED
+#ITEM
+ObjId              0
+ContainedBy        -1
+Name               great helm~
+Description
+A great helm lies here.~
+ShortDescr
+a great helm~
+ActionDescr
+(null)~
+VNum               6119
+EquippedAt         0
+Values             5 5 0 0
+ExtraFlags         90112
+Weight             45
+Timer              0
+BitVector          0
+Type               9
+WearFlags          17
+Cost               2134
+CostPerDay         234
+Affect             0 0
+Affect             0 0
+End
+End
+#END_RENT

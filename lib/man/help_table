@@ -1,11 +1,164 @@
+"ACID BLAST" ACIDBLAST
+
+    Acid blast creates a powerful blast of acid that does a great deal of
+    damage.
+
+#
+"ACTIVE SKILLS"
+  Riding: This skill allows you to mount a beast and make it carry you
+    and the supplies you have.  type help mount for more info.
+
+  Bandage: An active skill in the art of medicine.  A player with this skill
+    has the chance of reviving a fallen comrade in battle by applying knowledge
+    learned through practice.  This skill is a must for those that do not
+    have the god given powers of healing.
+
+  Track: SEE TRACK
+
+  Punch: Bare knuckle brawling is the best type of fun any can find!
+    Punch aids those that can not seem to hang onto their weapon in
+    battle, or those that do not wish to wield a weapon at all.
+    The skill bare hand aids in this offensive skill greatly along
+    with any str bonus that might be applied.  Those that wear
+    gloves of some sort have been known to knock an opponent down
+    to his knees, only to never see the light of day.
+
+  Apraise : This skill give minor information on an object that is
+    either a weapon, armour, or light source.  Message depicting
+    the relative value of the object and information that is
+    unique to each object.  Apraise on a weapon will give its
+    weapon class, for the fighters that can specialize in that
+    class.  For a torch, it will give the hours left to burn.
+    On armour, it will show the Effective and True Armour class
+    of the object.  If the True and Effective armour classes are
+    not the same, it is time to get the armour repaired. This
+    can also be done by just looking at the armour.
+
+  DoorBash: A player with this skill has a chance to break down
+    a door by the shear force aplied by hurling their body into it.
+    This is a tiring skill and can even damage you if not careful.
+    Ever bashed a door down and found that no floor was on the other
+    side? (HINT)
+
+#
+ADVANCE
+Immort-Only
+
+To advance a player to a level higher than his present. Default is to
+advance him one level. A level 0 player (Man/Woman) is always only
+advanced by one level.
+
+#
 AID
 
   This prayer allows the target to have more hit points than what is normally
   allowed for their position.  It also has been known to help with ones
-  hunger, thirst and even from time to time affect armor class and makes one
+  hunger, thirst and even from time to time affect armour class and makes one
   hit better.
 
 Duration: level.
+
+#
+ALLCOMMANDS
+
+   This will give you a list of all the commands that are available
+   to you at this moment.
+
+#
+"ANIMATE DEAD" ANIMATEDEAD
+
+   Bringing forth a undead shell of the being which once lived is frowned
+   upon by most in the realm.
+
+#
+APPEAR
+
+   This command willfully dispells a invisibility spell.  Ironhands claim.
+
+#
+ARMOUR
+
+   This incantation allows the caster to bring forth a invisible suit of
+   magical protection that seems to allow protection even if the caster
+   wears other forms of armour or protection.  It is known that a higher
+   level mages magical armour will hold its consistancy much longer than
+   one of lower level.
+   The prayer for this spell seems to work much the same as several priests
+   and mages have consulted and tested upon it.
+
+Duration: Level of the Best Magic Class. See Note.
+Damage: None
+Special: AC is reduced by 2.  Note, this may not be shown by what is on your
+	 score. Internally the AC is done by -100 <-> 100, not -10 <-> 10
+	 so rounding does occur for the the score command. But it is a good
+	 approximation as to your ac.
+Note: Since this is a shared spell between mages and clerics, the duration
+      is calculated as per the best level of the two. Not necessarily the
+      class in which you practiced it first.
+
+#
+"ARMOUR CLASS" ARMOURCLASS AC
+
+   Armour Class of a individual is dependant upon there ability to outmanuever
+   their foe.  The armour that one wears upon his body also helps blunt the
+   strike of a foes weapon.
+
+#
+ASSIST
+
+  If you type assist <player> you will begin fighting the same
+person the <player> is.
+
+  ASSIST is similar to RESCUE except the <player> continues fighting.
+It is better than KILL in many cases because you do not have to choose
+between 1.golem and 2.golem (or 1.lamia that just entered the room).
+Even though monsters of the same type assist each other in combat,
+ASSIST is better because you will eliminate one aggressor much faster.
+
+See also: RESCUE, KILL
+#
+"ASTRAL WALK" ASTRALWALK
+
+   This prayer allows the caster to bring forth a door into a trans-dimensional
+   realm from which one can go almost anywhere on the known world.  The
+   prayer is rather draining and takes some time to cast although those
+   who's faith is true to their diety have been noted to bring there followers
+   along with them through their door, and out into the new location.  A
+   high priest of Tyken had his last day as he prayed for the spell and
+   transported himself and a small party to a location known only to him, he
+   did not unfortunatly return.
+
+Duration: None
+Damage: None
+Special: Only rooms that will allow you entrance as per magic can be
+	 walked to.
+
+#
+ATTRIBUTES
+Immort-Only
+
+Currently these are the only attributes you may work with when working
+with cust. Things in <> are what you are to enter, <CR> means hit return
+at this point.
+
+cust name		<name of room> <CR>
+cust desc		<CR>
+cust extra		<keywords> <CR>
+cust exit		<dir> <door flags> <key> <to_room> <CR>
+cust xdesc		<dir> <CR>
+cust flags		<flags> <sector_type> <CR>
+cust riv		<speed> <dir> <CR>
+cust tele		<time> <to_room> <look-flag> <CR>
+
+#
+FLAMESTRIKE
+
+  This prayer brings forth a pillar of flames from the heavens upon the
+  casters command.  A very damaging spell as the flames of the pillar
+  have crucified many with its scorching heat.  
+
+Duration: None.
+Damage: (level/5) * 1d8.
 
 #
 GAIN
@@ -22,16 +175,6 @@ PARALYZE
 
 Duration: 5 rounds.
 Damage: 1 target immoble.
-
-#
-FLAMESTRIKE
-
-  This prayer brings forth a pillar of flames from the heavens upon the
-  casters command.  A very damaging spell as the flames of the pillar
-  have crucified many with its scorching heat.  
-
-Duration: None.
-Damage: (level/5) * 1d8.
 
 #
 FEAR
@@ -119,43 +262,6 @@ PASSIVE
     the recovery of both mana and health, a player with meditation can earn
     these two amounts back faster while resting or sleeping. A must for any
     that wishes to stay in style with the monks of the redspines.
-
-#
-ACTIVE
-  Riding: This skill allows you to mount a beast and make it carry you
-    and the supplies you have.  type help mount for more info.
-
-  Bandage: An active skill in the art of medicine.  A player with this skill
-    has the chance of reviving a fallen comrade in battle by applying knowledge
-    learned through practice.  This skill is a must for those that do not
-    have the god given powers of healing.
-
-  Track: SEE TRACK
-
-  Punch: Bare knuckle brawling is the best type of fun any can find!
-    Punch aids those that can not seem to hang onto their weapon in
-    battle, or those that do not wish to wield a weapon at all.
-    The skill bare hand aids in this offensive skill greatly along
-    with any str bonus that might be applied.  Those that wear
-    gloves of some sort have been known to knock an opponent down
-    to his knees, only to never see the light of day.
-
-  Apraise : This skill give minor information on an object that is
-    either a weapon, armor, or light source.  Message depicting
-    the relative value of the object and information that is
-    unique to each object.  Apraise on a weapon will give its
-    weapon class, for the fighters that can specialize in that
-    class.  For a torch, it will give the hours left to burn.
-    On armor, it will show the Effective and True Armor class
-    of the object.  If the True and Effective armor classes are
-    not the same, it is time to get the armor repaired. This
-    can also be done by just looking at the armor.
-
-  DoorBash: A player with this skill has a chance to break down
-    a door by the shear force aplied by hurling their body into it.
-    This is a tiring skill and can even damage you if not careful.
-    Ever bashed a door down and found that no floor was on the other
-    side? (HINT)
 
 #
 MOUNT
@@ -353,12 +459,6 @@ Usage: swat <mobile name>
    will be directed towards another target.
 
 #
-ALLCOMMANDS
-
-   This will give you a list of all the commands that are available
-   to you at this moment.
-
-#
 HOUSES KEEPS CASTLES
 
     When you obtain 25th level you become a Lord of the land and 
@@ -429,12 +529,6 @@ METEOR SWARM
     in the room doing massive destructive damage.
 
 #
-ACID BLAST
-
-    Acid blast creates a powerful blast of acid that does a great deal of
-    damage.
-
-#
 CACAODEMON
 
     This spell is wreathed in mystery. The only sure knowledge about it
@@ -498,12 +592,6 @@ CHARM MONSTER
 
    Casting this spell upon a creature of the realm will, at times, make it
    see you as its master.  At other times it will strike you down.
-
-#
-ANIMATE DEAD
-
-   Bringing forth a undead shell of the being which once lived is frowned
-   upon by most in the realm.
 
 #
 REFRESH
@@ -675,13 +763,6 @@ LOOK
 See also : EXAMINE or READ
 
 #
-AC ARMORCLASS
-
-   Armor Class of a individual is dependant upon there ability to outmanuever
-   their foe.  The armor that one wears upon his body also helps blunt the
-   strike of a foes weapon.
-
-#
 OPEN CLOSE LOCK UNLOCK
 
 Usage (example):
@@ -808,14 +889,14 @@ See also: EQUIPMENT
 #
 EQUIPMENT
 
-When you want to know what armor, weapon, charms etc. you are wearing.
+When you want to know what armour, weapon, charms etc. you are wearing.
 
 See also: INVENTORY
 
 #
 WEAR
 
-If you want to wear some clothes, armor or the likes.
+If you want to wear some clothes, armour or the likes.
 For example : 
 
 > wear boots
@@ -1016,7 +1097,7 @@ READ
 When you want to read something.
 #
 REMOVE
-If you tire of wearing some armor or wielding a weapon.
+If you tire of wearing some armour or wielding a weapon.
 
 rem shield
 rem sword
@@ -1029,7 +1110,7 @@ SHOPS
 quests, and where he may sell his treasure if he should manage to
 survive the perils with his life and sanity intact. Many shops trade
 only in a specific type of merchandise. Thus, a baker may well refuse
-to buy your armor, even if it is of high quality!
+to buy your armour, even if it is of high quality!
 
 See also: BUY, SELL, LIST, VALUE
 #
@@ -1097,7 +1178,7 @@ RANGER
    favorably on those that keep a GOOD outlook on life, those that do not
    seem to find themselves becoming more as a fighter.
      Rangers are not allowed to wear any solid plates of metal upon their
-   bodies, although studded and perhaps banded armors would be allowed.
+   bodies, although studded and perhaps banded armours would be allowed.
      These men of the land benefit from several different skills and at 
    higher levels gain the use of a limited spell field.
 
@@ -1407,27 +1488,6 @@ grab or hold commands). You must still supply the name of the staff or
 wand to avoid confusion.
 
 #
-ARMOR
-
-   This incantation allows the caster to bring forth a invisible suit of
-   magical protection that seems to allow protection even if the caster
-   wears other forms of armor or protection.  It is known that a higher
-   level mages magical armor will hold its consistancy much longer than
-   one of lower level.
-   The prayer for this spell seems to work much the same as several priests
-   and mages have consulted and tested upon it.
-
-Duration: Level of the Best Magic Class. See Note.
-Damage: None
-Special: AC is reduced by 2.  Note, this may not be shown by what is on your
-	 score. Internally the AC is done by -100 <-> 100, not -10 <-> 10
-	 so rounding does occur for the the score command. But it is a good
-	 approximation as to your ac.
-Note: Since this is a shared spell between mages and clerics, the duration
-      is calculated as per the best level of the two. Not necessarily the
-      class in which you practiced it first.
-
-#
 TELEPORT
 
    This spell will take the target to a place about the realm.  Unlucky
@@ -1462,7 +1522,7 @@ BLINDNESS
 
 Duration: 2d4 hrs
 Damage: None
-Special: Victim is -4 hit and armor is increased by 2.
+Special: Victim is -4 hit and armour is increased by 2.
 
 #
 CLONE
@@ -1628,11 +1688,11 @@ Special: -1 Hit and -1 save.
 #
 "DETECT EVIL"
 
-   The incantation of this spell allows one to see a colored outline of
+   The incantation of this spell allows one to see a coloured outline of
    the targets true faith.  Those who find themselves following a lighter
    path through life find the spell lasting longer, allowing them to see
    more of there eternal foes.  Several high mages have been experimenting
-   with this spell trying to get many different colors beyond those which
+   with this spell trying to get many different colours beyond those which
    the spells calls upon.
    The prayer is very similar to the incantation although the faith of the
    caster is much more dependant upon how long the spell allows you to see
@@ -1735,11 +1795,6 @@ Duration: 1hr + (level/2)
 Damage: None
 Special: This is nullified if combat is entered, and a person is rendered
 	 visible to those that can see into other plains of existance.
-
-#
-APPEAR
-
-   This command willfully dispells a invisibility spell.  Ironhands claim.
 
 #
 "LOCATE OBJECT"
@@ -1923,7 +1978,7 @@ Damage: 5d6 + ( One extra bolt for each 5 levels starting at 10th level )
 i.e.  50th level mage strikes with 14 bolts of lightning.
 
 #
-"COLOR SPRAY"
+"COLOUR SPRAY"
 
    This incantation calls forth the rays of the rainbow often blinding all
    those in its path.  The rays also seem to sear into the target causing 
@@ -1935,7 +1990,7 @@ i.e.  50th level mage strikes with 14 bolts of lightning.
 Area Affect Spell.
 Duration: Special
 Damage: 1d6 per creature, affects everyone except castor.
-Special: Everyone except castor is affected by color spray.
+Special: Everyone except castor is affected by colour spray.
 	 Those failing their save are blinded for 2d4 hrs.
          See BLINDNESS
 
@@ -2039,23 +2094,6 @@ Special: Those with the evil out look on life will do more damage then
 A victim of this spell is allowed a save for no damage done.
 
 #
-"ASTRAL WALK"
-
-   This prayer allows the caster to bring forth a door into a trans-dimensional
-   realm from which one can go almost anywhere on the known world.  The
-   prayer is rather draining and takes some time to cast although those
-   who's faith is true to their diety have been noted to bring there followers
-   along with them through their door, and out into the new location.  A
-   high priest of Tyken had his last day as he prayed for the spell and
-   transported himself and a small party to a location known only to him, he
-   did not unfortunatly return.
-
-Duration: None
-Damage: None
-Special: Only rooms that will allow you entrance as per magic can be
-	 walked to.
-
-#
 HELP
 
 Following help is available:
@@ -2076,14 +2114,6 @@ Example:
  > 'help mag'
    will match 'magic user' or 'magic missile' depending on first
    occurrence in the help file.
-#
-ADVANCE
-Immort-Only
-
-To advance a player to a level higher than his present. Default is to
-advance him one level. A level 0 player (Man/Woman) is always only
-advanced by one level.
-
 #
 WIZHELP
 Immort-Only
@@ -2157,23 +2187,6 @@ field:
     flags: This works on the room flags. 'help room_flags'
 
 See also: ATTRIBUTES
-
-#
-ATTRIBUTES
-Immort-Only
-
-Currently these are the only attributes you may work with when working
-with cust. Things in <> are what you are to enter, <CR> means hit return
-at this point.
-
-cust name		<name of room> <CR>
-cust desc		<CR>
-cust extra		<keywords> <CR>
-cust exit		<dir> <door flags> <key> <to_room> <CR>
-cust xdesc		<dir> <CR>
-cust flags		<flags> <sector_type> <CR>
-cust riv		<speed> <dir> <CR>
-cust tele		<time> <to_room> <look-flag> <CR>
 
 #
 ROOM_FLAGS
@@ -2301,19 +2314,6 @@ advance quickly in this art.
 
 You see a slight trail to the west...
 
-#
-ASSIST
-
-  If you type assist <player> you will begin fighting the same
-person the <player> is.
-
-  ASSIST is similar to RESCUE except the <player> continues fighting.
-It is better than KILL in many cases because you do not have to choose
-between 1.golem and 2.golem (or 1.lamia that just entered the room).
-Even though monsters of the same type assist each other in combat,
-ASSIST is better because you will eliminate one aggressor much faster.
-
-See also: RESCUE, KILL
 #
 SLANG TERMS ABBREVIATIONS BTW BRB IMO IMHO REIMBS
 

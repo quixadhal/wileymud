@@ -1,0 +1,232 @@
+.TH authuser 3
+.SH NAME
+authuser \- remote authentication library using the Authentication Server
+.SH SYNTAX
+.B #include <authuser.h>
+
+unsigned short \fBauth_tcpport\fR;
+
+char *\fBauth_xline(\fIuser,fd,&inremote\fB)\fR;
+
+int \fBauth_fd(\fIfd,&inremote,&local,&remote\fB)\fR;
+.br
+int \fBauth_fd2(\fIfd,&inlocal,&inremote,&local,&remote\fB)\fR;
+
+int \fBauth_tcpsock(\fIfd,inlocal,inremote\fB)\fR;
+
+char *\fBauth_tcpuser(\fIinremote,local,remote\fB)\fR;
+.br
+char *\fBauth_tcpuser2(\fIinlocal,inremote,local,remote\fB)\fR;
+.br
+char *\fBauth_tcpuser3(\fIinlocal,inremote,local,remote,ctimeout\fB)\fR;
+.br
+char *\fBauth_tcpuser4(\fIinlocal,inremote,local,remote,ctimeout,rtimeout\fB)\fR;
+
+char *\fBauth_sockuser(\fIs,local,remote\fB)\fR;
+
+char *\fIuser\fP;
+.br
+int \fIfd\fP;
+.br
+int \fIs\fP;
+.br
+unsigned long \fIinlocal\fP;
+.br
+unsigned long \fIinremote\fP;
+.br
+unsigned short \fIlocal\fP;
+.br
+unsigned short \fIremote\fP;
+.br
+int \fItimeout\fP;
+.SH DESCRIPTION
+The
+.B authuser
+library provides a simple interface for
+finding out the remote identity
+of a connection through the
+Authentication Server
+as specified by RFC 931.
+Use the -lauthuser loader option
+to compile a program with this library.
+
+.B auth_xline(\fIuser,fd,&inremote\fB)
+returns a line of the form X-Auth-User: user or X-Forgery-By: username,
+depending upon what the host on the other side of
+.I fd
+thinks of the user.
+This is particularly appropriate for
+mail and news headers.
+.PP
+If the remote host reports that
+.I user
+owns the connection on that side,
+.B auth_xline
+will return X-Auth-User: user.
+If the remote host reports that a different
+username
+owns the connection,
+.B auth_xline
+will return X-Forgery-By: username.
+If user is NULL,
+it returns X-Auth-User: username
+with the username reported by the remote host.
+If 
+.I fd
+is not a TCP connection
+or authentication is impossible,
+.B auth_xline
+returns NULL, setting errno appropriately.
+
+The line is not cr-lf terminated.
+It is stored in a static area
+which is overwritten on each call to
+.B auth_xline.
+.B auth_xline
+places the Internet address of the other host into
+.I inremote.
+
+.B auth_fd2(\fIfd,&inlocal,&inremote,&local,&remote\fB)
+retrieves address information from the connection in socket
+.I fd.
+It places the
+Internet addresses of the connection into
+.I inlocal
+and
+.I inremote
+and the local and remote
+TCP ports into 
+.I local
+and 
+.I remote.
+.B auth_fd2
+returns -1 upon error, setting errno appropriately.
+
+.B auth_tcpuser2(\fIinlocal,inremote,local,remote\fB)
+returns the name of the user on the other end of the TCP connection
+between
+.I remote@inremote
+and
+.I local@inlocal.
+If authentication is impossible,
+.B auth_tcpuser2
+returns
+NULL, setting errno appropriately.
+The user name is stored in a static area
+which is overwritten on each call to
+.B auth_tcpuser2,
+.B auth_tcpuser,
+.B auth_sockuser,
+and
+.B auth_xline.
+
+.B \fIs\fB = auth_tcpsock(\fIfd,inlocal,inremote\fB)
+sets
+.I s
+to a non-blocking socket which is connecting to the Authentication
+Server at
+.I inremote.
+It returns -1 on error, setting errno appropriately.
+.B auth_sockuser(\fIs,local,remote\fB)
+makes sure that the socket has connected and
+then does the same job as
+.B auth_tcpuser2,
+returning the name of the user on the other end of the TCP connection
+between
+.I remote@inremote
+and
+.I local@inlocal,
+or NULL (with errno set) if authentication is not possible.
+.I s
+is closed by
+.B auth_sockuser.
+The advantage of
+using
+.B auth_tcpsock
+and
+.B auth_sockuser
+instead of
+.B auth_tcpuser2
+is that you can perform other actions while waiting for the
+authentication request to complete.
+You can select
+.I s
+for writing
+to see if it is ready for
+.B auth_sockuser
+yet.
+
+.B auth_tcpuser3(\fIinlocal,inremote,local,remote,ctimeout\fB)
+is like
+.B auth_tcpuser2
+but
+returns
+NULL with errno set to ETIMEDOUT
+if the authentication request has not been accepted or refused after
+.I ctimeout
+seconds.
+
+.B auth_tcpuser4(\fIinlocal,inremote,local,remote,ctimeout,rtimeout\fB)
+is like
+.B auth_tcpuser3
+but returns
+NULL with errno set to ETIMEDOUT
+if the reply to the authentication request is being sent slower than
+.I rtimeout
+seconds/character.
+
+.B auth_fd(\fIfd,&inremote,&local,&remote\fB)
+is the same as
+.B auth_fd2
+but throws away the
+.I inlocal
+information.
+.B auth_tcpuser(\fIinremote,local,remote\fB)
+is the same as
+.B auth_tcpuser2
+but may not bind to the proper local address on
+hosts with multiple IP addresses.
+These functions do not perform properly on multihomed
+hosts and should not be used.
+They are provided only for backwards compatibility.
+
+The authentication routines check with the
+remote Authentication Server on port
+.B auth_tcpport,
+which defaults to 113
+as specified by RFC 931.
+You can set
+.B auth_tcpport
+to other values
+for nonstandard implementations.
+.SH RESTRICTIONS
+.B authuser
+does no backslash interpretation
+upon the remote user name.
+This is conformance with the proposed revision to
+RFC 931.
+
+.B authuser
+does not use the operating system type
+information provided by the Authentication Server.
+.SH VERSION
+authuser version 4.0, February 9, 1992.
+.SH AUTHOR
+Placed into the public domain by Daniel J. Bernstein.
+.SH REFERENCES
+The authentication server is more secure than passwords
+in some ways, but less secure than passwords in many ways.
+(It's certainly better than no password at all---e.g., for
+mail or news.)
+It is not the final solution.
+For an excellent discussion of security problems within
+the TCP/IP protocol suite, see
+Steve Bellovin's article
+``Security Problems in the TCP/IP Protocol Suite.''
+.SH "SEE ALSO"
+tcpclient(1),
+tcpserver(1),
+getpeername(3),
+getsockname(3),
+tcp(4),
+authd(8)

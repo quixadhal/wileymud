@@ -1,0 +1,180 @@
+#RENT
+Owner              Rinewice~
+Gold               0
+TotalCost          30
+LastUpdate         824610862
+MinimumStay        0
+End
+#EQUIPMENT
+End
+#CARRIED
+#ITEM
+ObjId              6
+ContainedBy        -1
+Name               padded leather vest~
+Description
+A vest made of padded leather lies on the floor here.~
+ShortDescr
+padded leather vest~
+ActionDescr
+(null)~
+VNum               9205
+EquippedAt         0
+Values             2 2 0 0
+ExtraFlags         0
+Weight             10
+Timer              0
+BitVector          0
+Type               9
+WearFlags          9
+Cost               100
+CostPerDay         5
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              6
+ContainedBy        -1
+Name               padded leather leggings~
+Description
+A pair of padded leather leggings is here.~
+ShortDescr
+padded leather leggings~
+ActionDescr
+(null)~
+VNum               9207
+EquippedAt         0
+Values             2 2 0 0
+ExtraFlags         0
+Weight             5
+Timer              0
+BitVector          0
+Type               9
+WearFlags          33
+Cost               75
+CostPerDay         4
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              6
+ContainedBy        -1
+Name               padded leather sleeves~
+Description
+A pair of sleeves made of padded leather is here.~
+ShortDescr
+padded leather sleeves~
+ActionDescr
+(null)~
+VNum               9206
+EquippedAt         0
+Values             2 2 0 0
+ExtraFlags         0
+Weight             5
+Timer              0
+BitVector          0
+Type               9
+WearFlags          257
+Cost               75
+CostPerDay         4
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              6
+ContainedBy        -1
+Name               club wooden~
+Description
+A wooden club lies here.~
+ShortDescr
+a wooden club~
+ActionDescr
+(null)~
+VNum               3048
+EquippedAt         0
+Values             0 1 6 7
+ExtraFlags         0
+Weight             5
+Timer              0
+BitVector          0
+Type               5
+WearFlags          8193
+Cost               2
+CostPerDay         2
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              6
+ContainedBy        -1
+Name               club wooden~
+Description
+A wooden club lies here.~
+ShortDescr
+a wooden club~
+ActionDescr
+(null)~
+VNum               3048
+EquippedAt         0
+Values             0 1 6 7
+ExtraFlags         0
+Weight             5
+Timer              0
+BitVector          0
+Type               5
+WearFlags          8193
+Cost               2
+CostPerDay         2
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              6
+ContainedBy        -1
+Name               dagger~
+Description
+A dagger with a long thin blade is here.~
+ShortDescr
+a dagger~
+ActionDescr
+(null)~
+VNum               3020
+EquippedAt         0
+Values             0 1 4 11
+ExtraFlags         0
+Weight             1
+Timer              0
+BitVector          0
+Type               5
+WearFlags          8193
+Cost               15
+CostPerDay         10
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              6
+ContainedBy        -1
+Name               dagger~
+Description
+A dagger with a long thin blade is here.~
+ShortDescr
+a dagger~
+ActionDescr
+(null)~
+VNum               3020
+EquippedAt         0
+Values             0 1 4 11
+ExtraFlags         0
+Weight             1
+Timer              0
+BitVector          0
+Type               5
+WearFlags          8193
+Cost               15
+CostPerDay         10
+Affect             0 0
+Affect             0 0
+End
+End
+#END_RENT

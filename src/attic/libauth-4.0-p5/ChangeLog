@@ -1,0 +1,9 @@
+Tue Jul 21 22:33:58 1992  Peter Eriksson  (pen@lysator)
+
+	* Fixed SIGPIPE bug around select() in auth_tcpuser3().
+
+Thu Mar 12 01:01:10 1992  Peter Eriksson  (pen@robert)
+
+	* Fixed SIGPIPE bug around write().
+	
+

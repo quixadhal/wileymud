@@ -1,0 +1,52 @@
+#!/bin/sh
+#
+# httpd         This shell script takes care of starting and stopping
+#               httpd.
+#
+
+# Source function library.
+. /etc/rc.d/init.d/functions
+
+# Source networking configuration.
+. /etc/sysconfig/network
+
+# Check that networking is up.
+[ ${NETWORKING} = "no" ] && exit 0
+
+[ -f /mud/wiley/bin/wiley ] || exit 0
+[ -f /mud/wiley/bin/wileymud ] || exit 0
+
+# See how we were called.
+case "$1" in
+  start)
+        # Start daemons.
+        echo -n "Starting WileyMUD III: "
+        if [ "`pidofproc wiley`" = "" ]; then
+          echo -n "wiley "
+          /mud/wiley/bin/wiley &
+        fi
+        touch /var/lock/subsys/wiley
+        echo
+        ;;
+  stop)
+        # Stop daemons.
+        echo -n "Shutting down WileyMUD III: "
+        pid1=`pidofproc wileymud`
+        pid2=`pidofproc wiley`
+        if [ "$pid1" != "" ]; then
+          echo -n "wileymud "
+          kill -USR2 $pid1
+          sleep 5
+          kill -9 $pid1
+          rm -f /var/run/wileymud.pid
+        fi
+        killproc wiley
+        echo "done"
+        rm -f /var/lock/subsys/wiley
+        ;;
+  *)
+        echo "Usage: wiley {start|stop}"
+        exit 1
+esac
+
+exit 0

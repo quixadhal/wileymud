@@ -1,0 +1,310 @@
+#RENT
+Owner              Dorn~
+Gold               100000
+TotalCost          58
+LastUpdate         847684227
+MinimumStay        0
+End
+#EQUIPMENT
+End
+#CARRIED
+#ITEM
+ObjId              11
+ContainedBy        -1
+Name               ring clear gem~
+Description
+A ring lies here, the gem clear and unmarred.~
+ShortDescr
+a clear gem ring~
+ActionDescr
+(null)~
+VNum               5931
+EquippedAt         0
+Values             0 0 0 0
+ExtraFlags         64
+Weight             1
+Timer              0
+BitVector          0
+Type               11
+WearFlags          3
+Cost               597
+CostPerDay         597
+Affect             1 1
+Affect             0 0
+End
+#ITEM
+ObjId              11
+ContainedBy        -1
+Name               ring clear gem~
+Description
+A ring lies here, the gem clear and unmarred.~
+ShortDescr
+a clear gem ring~
+ActionDescr
+(null)~
+VNum               5931
+EquippedAt         0
+Values             0 0 0 0
+ExtraFlags         64
+Weight             1
+Timer              0
+BitVector          0
+Type               11
+WearFlags          3
+Cost               597
+CostPerDay         597
+Affect             1 1
+Affect             0 0
+End
+#ITEM
+ObjId              11
+ContainedBy        -1
+Name               large fur cloak~
+Description
+A huge cloak made of fur lies here.~
+ShortDescr
+a large fur cloak~
+ActionDescr
+(null)~
+VNum               20104
+EquippedAt         0
+Values             0 0 0 0
+ExtraFlags         0
+Weight             100
+Timer              0
+BitVector          0
+Type               12
+WearFlags          5
+Cost               10
+CostPerDay         10
+Affect             0 0
+Affect             0 0
+ExtraDescr         cloak fur~
+  The cloak looks nice, if you were twenty feet tall.
+~
+End
+#ITEM
+ObjId              11
+ContainedBy        -1
+Name               chestplate golden~
+Description
+A golden chestplate sparkles on the ground here.~
+ShortDescr
+a golden chestplate~
+ActionDescr
+(null)~
+VNum               5077
+EquippedAt         0
+Values             5 5 0 0
+ExtraFlags         90112
+Weight             55
+Timer              0
+BitVector          0
+Type               9
+WearFlags          9
+Cost               6519
+CostPerDay         2519
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              11
+ContainedBy        -1
+Name               legplates gold trimmed~
+Description
+A pair of golden trimmed legplates lie here.~
+ShortDescr
+some gold trimmed legplates~
+ActionDescr
+(null)~
+VNum               5079
+EquippedAt         0
+Values             5 5 0 0
+ExtraFlags         90112
+Weight             31
+Timer              0
+BitVector          0
+Type               9
+WearFlags          33
+Cost               2987
+CostPerDay         1987
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              11
+ContainedBy        -1
+Name               metal plated boots~
+Description
+A pair of boots, plated with metal lies here.~
+ShortDescr
+a pair of metal plated boots~
+ActionDescr
+(null)~
+VNum               3031
+EquippedAt         0
+Values             2 2 0 0
+ExtraFlags         90112
+Weight             20
+Timer              0
+BitVector          0
+Type               9
+WearFlags          65
+Cost               135
+CostPerDay         35
+Affect             0 0
+Affect             0 0
+ExtraDescr         metal plated boots~
+  The boots are made of leather but covered with heavy, thick metal.  The
+protection they give your feet is almost not worth the added weight.
+~
+End
+#ITEM
+ObjId              11
+ContainedBy        -1
+Name               gauntlets metal~
+Description
+A pair of metal gauntlets lie here.~
+ShortDescr
+some metal gauntlets~
+ActionDescr
+(null)~
+VNum               4721
+EquippedAt         0
+Values             4 4 0 0
+ExtraFlags         24576
+Weight             25
+Timer              0
+BitVector          0
+Type               9
+WearFlags          129
+Cost               600
+CostPerDay         100
+Affect             0 0
+Affect             0 0
+ExtraDescr         metal gauntlets~
+  The gauntlets appear to be made of a very strong metal, perhaps mithral.
+~
+End
+#ITEM
+ObjId              11
+ContainedBy        -1
+Name               metal arm plates~
+Description
+A pair of metal arm plates lie here.~
+ShortDescr
+a pair of metal arm plates~
+ActionDescr
+(null)~
+VNum               5035
+EquippedAt         0
+Values             4 4 0 0
+ExtraFlags         90112
+Weight             25
+Timer              0
+BitVector          0
+Type               9
+WearFlags          257
+Cost               500
+CostPerDay         75
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              11
+ContainedBy        -1
+Name               cloak black elven~
+Description
+A tattered black elven cloak lies here.~
+ShortDescr
+A black tattered elven cloak~
+ActionDescr
+(null)~
+VNum               7010
+EquippedAt         0
+Values             8 8 0 0
+ExtraFlags         64
+Weight             2
+Timer              0
+BitVector          0
+Type               9
+WearFlags          1025
+Cost               500
+CostPerDay         100
+Affect             34 5
+Affect             35 5
+End
+#ITEM
+ObjId              11
+ContainedBy        -1
+Name               giant granite ring~
+Description
+A giant granite ring lies here.~
+ShortDescr
+a giant granite ring~
+ActionDescr
+(null)~
+VNum               26007
+EquippedAt         0
+Values             5 5 0 0
+ExtraFlags         24640
+Weight             8
+Timer              0
+BitVector          0
+Type               9
+WearFlags          2049
+Cost               5000
+CostPerDay         5
+Affect             17 -2
+Affect             0 0
+End
+#ITEM
+ObjId              11
+ContainedBy        -1
+Name               bracer ivory~
+Description
+A bracer made of ivory lies here.~
+ShortDescr
+a ivory bracer~
+ActionDescr
+(null)~
+VNum               9013
+EquippedAt         0
+Values             0 0 0 0
+ExtraFlags         64
+Weight             4
+Timer              0
+BitVector          0
+Type               11
+WearFlags          4097
+Cost               123
+CostPerDay         123
+Affect             26 16
+Affect             27 96
+End
+#ITEM
+ObjId              11
+ContainedBy        -1
+Name               bracer ivory~
+Description
+A bracer made of ivory lies here.~
+ShortDescr
+a ivory bracer~
+ActionDescr
+(null)~
+VNum               9013
+EquippedAt         0
+Values             0 0 0 0
+ExtraFlags         64
+Weight             4
+Timer              0
+BitVector          0
+Type               11
+WearFlags          4097
+Cost               123
+CostPerDay         123
+Affect             26 16
+Affect             27 96
+End
+End
+#END_RENT

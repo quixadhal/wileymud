@@ -1,0 +1,284 @@
+#RENT
+Owner              Yoda~
+Gold               6
+TotalCost          1
+LastUpdate         848719054
+MinimumStay        0
+End
+#EQUIPMENT
+End
+#CARRIED
+#ITEM
+ObjId              10
+ContainedBy        -1
+Name               scale bodice~
+Description
+A scale bodice lies here in a clump~
+ShortDescr
+a scale bodice~
+ActionDescr
+(null)~
+VNum               10005
+EquippedAt         0
+Values             2 2 0 0
+ExtraFlags         0
+Weight             15
+Timer              0
+BitVector          0
+Type               9
+WearFlags          9
+Cost               150
+CostPerDay         70
+Affect             0 0
+Affect             0 0
+ExtraDescr         scale bodice~
+  This piece of armor looks more like the top of a elegant dress than 
+anything else, with shoulder straps houlstering the bousoms, much skin on
+the upper torso is exposed.
+~
+End
+#ITEM
+ObjId              10
+ContainedBy        -1
+Name               scale skirt~
+Description
+A scale skirt lies here in a hump.~
+ShortDescr
+a scale skirt~
+ActionDescr
+(null)~
+VNum               10006
+EquippedAt         0
+Values             2 2 0 0
+ExtraFlags         0
+Weight             15
+Timer              0
+BitVector          0
+Type               9
+WearFlags          33
+Cost               150
+CostPerDay         10
+Affect             17 -4
+Affect             0 0
+End
+#ITEM
+ObjId              10
+ContainedBy        -1
+Name               boots leather~
+Description
+A pair of leather boots lie here.~
+ShortDescr
+a pair of leather boots~
+ActionDescr
+(null)~
+VNum               3026
+EquippedAt         0
+Values             1 1 0 0
+ExtraFlags         0
+Weight             2
+Timer              0
+BitVector          0
+Type               9
+WearFlags          65
+Cost               50
+CostPerDay         10
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              10
+ContainedBy        -1
+Name               hammer warhammer~
+Description
+A large hilted warhammer lies here.~
+ShortDescr
+a warhammer~
+ActionDescr
+(null)~
+VNum               5055
+EquippedAt         0
+Values             0 1 10 7
+ExtraFlags         24576
+Weight             9
+Timer              0
+BitVector          0
+Type               5
+WearFlags          57345
+Cost               1500
+CostPerDay         100
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              10
+ContainedBy        -1
+Name               torch~
+Description
+A large torch.~
+ShortDescr
+a torch~
+ActionDescr
+(null)~
+VNum               3015
+EquippedAt         0
+Values             0 0 18 0
+ExtraFlags         0
+Weight             3
+Timer              0
+BitVector          0
+Type               1
+WearFlags          1
+Cost               10
+CostPerDay         3
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              10
+ContainedBy        -1
+Name               torch~
+Description
+A large torch.~
+ShortDescr
+a torch~
+ActionDescr
+(null)~
+VNum               3015
+EquippedAt         0
+Values             0 0 24 0
+ExtraFlags         0
+Weight             3
+Timer              0
+BitVector          0
+Type               1
+WearFlags          1
+Cost               10
+CostPerDay         3
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              10
+ContainedBy        -1
+Name               heafty loaf bread~
+Description
+A heafty loaf of bread rests here.~
+ShortDescr
+a heafty loaf of bread~
+ActionDescr
+(null)~
+VNum               5016
+EquippedAt         0
+Values             7 0 0 0
+ExtraFlags         0
+Weight             1
+Timer              0
+BitVector          0
+Type               19
+WearFlags          1
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              10
+ContainedBy        -1
+Name               heafty loaf bread~
+Description
+A heafty loaf of bread rests here.~
+ShortDescr
+a heafty loaf of bread~
+ActionDescr
+(null)~
+VNum               5016
+EquippedAt         0
+Values             7 0 0 0
+ExtraFlags         0
+Weight             1
+Timer              0
+BitVector          0
+Type               19
+WearFlags          1
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              10
+ContainedBy        -1
+Name               heafty loaf bread~
+Description
+A heafty loaf of bread rests here.~
+ShortDescr
+a heafty loaf of bread~
+ActionDescr
+(null)~
+VNum               5016
+EquippedAt         0
+Values             7 0 0 0
+ExtraFlags         0
+Weight             1
+Timer              0
+BitVector          0
+Type               19
+WearFlags          1
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              10
+ContainedBy        -1
+Name               heafty loaf bread~
+Description
+A heafty loaf of bread rests here.~
+ShortDescr
+a heafty loaf of bread~
+ActionDescr
+(null)~
+VNum               5016
+EquippedAt         0
+Values             7 0 0 0
+ExtraFlags         0
+Weight             1
+Timer              0
+BitVector          0
+Type               19
+WearFlags          1
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              10
+ContainedBy        -1
+Name               large knife~
+Description
+A large knife lies here.~
+ShortDescr
+a large knife~
+ActionDescr
+(null)~
+VNum               3021
+EquippedAt         0
+Values             0 1 5 11
+ExtraFlags         4096
+Weight             3
+Timer              0
+BitVector          0
+Type               5
+WearFlags          8193
+Cost               20
+CostPerDay         2
+Affect             0 0
+Affect             0 0
+ExtraDescr         large knife~
+It appears to be about eight to nine inches in length, fairly sharp.
+~
+End
+End
+#END_RENT

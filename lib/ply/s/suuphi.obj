@@ -1,0 +1,348 @@
+#RENT
+Owner              Suuphi~
+Gold               0
+TotalCost          70
+LastUpdate         848355354
+MinimumStay        0
+End
+#EQUIPMENT
+#ITEM
+ObjId              0
+ContainedBy        -1
+Name               pearl small~
+Description
+A small pearl lies here.~
+ShortDescr
+a small pearl~
+ActionDescr
+(null)~
+VNum               6512
+EquippedAt         0
+Values             0 0 -1 0
+ExtraFlags         64
+Weight             1
+Timer              0
+BitVector          0
+Type               1
+WearFlags          1
+Cost               988
+CostPerDay         88
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              1
+ContainedBy        -1
+Name               jeweled necklace~
+Description
+A necklace made of semi-precious stones is here.~
+ShortDescr
+a jeweled necklace~
+ActionDescr
+(null)~
+VNum               9208
+EquippedAt         3
+Values             0 0 0 0
+ExtraFlags         0
+Weight             1
+Timer              0
+BitVector          0
+Type               11
+WearFlags          5
+Cost               150
+CostPerDay         5
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              2
+ContainedBy        -1
+Name               breastplate silver encrusted~
+Description
+A breastplate lies here, encrusted with silver.~
+ShortDescr
+a silver encrusted breastplate~
+ActionDescr
+(null)~
+VNum               5097
+EquippedAt         5
+Values             4 4 0 0
+ExtraFlags         90112
+Weight             43
+Timer              0
+BitVector          0
+Type               9
+WearFlags          9
+Cost               6512
+CostPerDay         512
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              3
+ContainedBy        -1
+Name               scale skirt~
+Description
+A scale skirt lies here in a hump.~
+ShortDescr
+a scale skirt~
+ActionDescr
+(null)~
+VNum               10006
+EquippedAt         7
+Values             2 2 0 0
+ExtraFlags         0
+Weight             15
+Timer              0
+BitVector          0
+Type               9
+WearFlags          33
+Cost               150
+CostPerDay         10
+Affect             17 -4
+Affect             0 0
+End
+#ITEM
+ObjId              4
+ContainedBy        -1
+Name               boots leather~
+Description
+A pair of leather boots lie here.~
+ShortDescr
+a pair of leather boots~
+ActionDescr
+(null)~
+VNum               3026
+EquippedAt         8
+Values             1 1 0 0
+ExtraFlags         0
+Weight             2
+Timer              0
+BitVector          0
+Type               9
+WearFlags          65
+Cost               50
+CostPerDay         10
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              5
+ContainedBy        -1
+Name               padded leather sleeves~
+Description
+A pair of sleeves made of padded leather is here.~
+ShortDescr
+padded leather sleeves~
+ActionDescr
+(null)~
+VNum               9206
+EquippedAt         10
+Values             2 2 0 0
+ExtraFlags         0
+Weight             5
+Timer              0
+BitVector          0
+Type               9
+WearFlags          257
+Cost               75
+CostPerDay         4
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              6
+ContainedBy        -1
+Name               harness leather plate shoulder~
+Description
+A peice of leather plate lies here, with a small strand of leather attached.~
+ShortDescr
+a shoulder harness~
+ActionDescr
+(null)~
+VNum               5203
+EquippedAt         12
+Values             1 1 0 0
+ExtraFlags         8192
+Weight             10
+Timer              0
+BitVector          0
+Type               9
+WearFlags          1025
+Cost               10
+CostPerDay         10
+Affect             17 -2
+Affect             0 0
+End
+#ITEM
+ObjId              7
+ContainedBy        -1
+Name               great scimitar~
+Description
+A gigantic scimitar of rare quality lies here on the ground.~
+ShortDescr
+a great scimitar~
+ActionDescr
+(null)~
+VNum               22003
+EquippedAt         18
+Values             0 4 4 5
+ExtraFlags         30016
+Weight             18
+Timer              0
+BitVector          0
+Type               5
+WearFlags          32769
+Cost               4000
+CostPerDay         6562
+Affect             18 4
+Affect             19 4
+End
+End
+#CARRIED
+#ITEM
+ObjId              13
+ContainedBy        8
+Name               bottle water~
+Description
+A bottle of clear liquid has been left here.~
+ShortDescr
+a bottle~
+ActionDescr
+(null)~
+VNum               3003
+EquippedAt         0
+Values             16 2 0 0
+ExtraFlags         0
+Weight             2
+Timer              0
+BitVector          0
+Type               17
+WearFlags          16385
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              13
+ContainedBy        8
+Name               bottle water~
+Description
+A bottle of clear liquid has been left here.~
+ShortDescr
+a bottle~
+ActionDescr
+(null)~
+VNum               3003
+EquippedAt         0
+Values             16 16 0 0
+ExtraFlags         0
+Weight             2
+Timer              0
+BitVector          0
+Type               17
+WearFlags          16385
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              13
+ContainedBy        8
+Name               bottle water~
+Description
+A bottle of clear liquid has been left here.~
+ShortDescr
+a bottle~
+ActionDescr
+(null)~
+VNum               3003
+EquippedAt         0
+Values             16 16 0 0
+ExtraFlags         0
+Weight             2
+Timer              0
+BitVector          0
+Type               17
+WearFlags          16385
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              13
+ContainedBy        8
+Name               bottle water~
+Description
+A bottle of clear liquid has been left here.~
+ShortDescr
+a bottle~
+ActionDescr
+(null)~
+VNum               3003
+EquippedAt         0
+Values             16 16 0 0
+ExtraFlags         0
+Weight             2
+Timer              0
+BitVector          0
+Type               17
+WearFlags          16385
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              13
+ContainedBy        8
+Name               salami stick~
+Description
+A long, dried out, stick of salami is here.~
+ShortDescr
+a stick of salami~
+ActionDescr
+(null)~
+VNum               3012
+EquippedAt         0
+Values             20 0 0 0
+ExtraFlags         0
+Weight             5
+Timer              0
+BitVector          0
+Type               19
+WearFlags          1
+Cost               9
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              13
+ContainedBy        -1
+Name               bag~
+Description
+A small bag.~
+ShortDescr
+a bag~
+ActionDescr
+(null)~
+VNum               3017
+EquippedAt         -1
+Values             50 0 0 0
+ExtraFlags         0
+Weight             2
+Timer              0
+BitVector          0
+Type               15
+WearFlags          16385
+Cost               20
+CostPerDay         2
+Affect             0 0
+Affect             0 0
+End
+End
+#END_RENT

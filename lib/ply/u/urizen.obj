@@ -1,0 +1,3087 @@
+#RENT
+Owner              Urizen~
+Gold               13746
+TotalCost          0
+LastUpdate         848468946
+MinimumStay        0
+End
+#EQUIPMENT
+#ITEM
+ObjId              0
+ContainedBy        -1
+Name               water cup~
+Description
+A cup of fine water rests here.~
+ShortDescr
+a cup~
+ActionDescr
+(null)~
+VNum               5010
+EquippedAt         17
+Values             24 0 0 0
+ExtraFlags         0
+Weight             -23
+Timer              0
+BitVector          0
+Type               17
+WearFlags          16385
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+End
+#CARRIED
+#ITEM
+ObjId              124
+ContainedBy        15
+Name               water cup~
+Description
+A cup of fine water rests here.~
+ShortDescr
+a cup~
+ActionDescr
+(null)~
+VNum               5010
+EquippedAt         0
+Values             24 0 0 0
+ExtraFlags         0
+Weight             -23
+Timer              0
+BitVector          0
+Type               17
+WearFlags          16385
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              124
+ContainedBy        15
+Name               water cup~
+Description
+A cup of fine water rests here.~
+ShortDescr
+a cup~
+ActionDescr
+(null)~
+VNum               5010
+EquippedAt         0
+Values             24 0 0 0
+ExtraFlags         0
+Weight             -23
+Timer              0
+BitVector          0
+Type               17
+WearFlags          16385
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              124
+ContainedBy        15
+Name               water cup~
+Description
+A cup of fine water rests here.~
+ShortDescr
+a cup~
+ActionDescr
+(null)~
+VNum               5010
+EquippedAt         0
+Values             24 0 0 0
+ExtraFlags         0
+Weight             -23
+Timer              0
+BitVector          0
+Type               17
+WearFlags          16385
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              124
+ContainedBy        15
+Name               water cup~
+Description
+A cup of fine water rests here.~
+ShortDescr
+a cup~
+ActionDescr
+(null)~
+VNum               5010
+EquippedAt         0
+Values             24 0 0 0
+ExtraFlags         0
+Weight             -23
+Timer              0
+BitVector          0
+Type               17
+WearFlags          16385
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              124
+ContainedBy        15
+Name               water cup~
+Description
+A cup of fine water rests here.~
+ShortDescr
+a cup~
+ActionDescr
+(null)~
+VNum               5010
+EquippedAt         0
+Values             24 0 0 0
+ExtraFlags         0
+Weight             -23
+Timer              0
+BitVector          0
+Type               17
+WearFlags          16385
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              124
+ContainedBy        15
+Name               water cup~
+Description
+A cup of fine water rests here.~
+ShortDescr
+a cup~
+ActionDescr
+(null)~
+VNum               5010
+EquippedAt         0
+Values             24 0 0 0
+ExtraFlags         0
+Weight             -23
+Timer              0
+BitVector          0
+Type               17
+WearFlags          16385
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              124
+ContainedBy        15
+Name               water cup~
+Description
+A cup of fine water rests here.~
+ShortDescr
+a cup~
+ActionDescr
+(null)~
+VNum               5010
+EquippedAt         0
+Values             24 0 0 0
+ExtraFlags         0
+Weight             -23
+Timer              0
+BitVector          0
+Type               17
+WearFlags          16385
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              124
+ContainedBy        15
+Name               water cup~
+Description
+A cup of fine water rests here.~
+ShortDescr
+a cup~
+ActionDescr
+(null)~
+VNum               5010
+EquippedAt         0
+Values             24 0 0 0
+ExtraFlags         0
+Weight             -23
+Timer              0
+BitVector          0
+Type               17
+WearFlags          16385
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              124
+ContainedBy        15
+Name               water cup~
+Description
+A cup of fine water rests here.~
+ShortDescr
+a cup~
+ActionDescr
+(null)~
+VNum               5010
+EquippedAt         0
+Values             24 0 0 0
+ExtraFlags         0
+Weight             -23
+Timer              0
+BitVector          0
+Type               17
+WearFlags          16385
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              124
+ContainedBy        15
+Name               water cup~
+Description
+A cup of fine water rests here.~
+ShortDescr
+a cup~
+ActionDescr
+(null)~
+VNum               5010
+EquippedAt         0
+Values             24 0 0 0
+ExtraFlags         0
+Weight             -23
+Timer              0
+BitVector          0
+Type               17
+WearFlags          16385
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              124
+ContainedBy        15
+Name               water cup~
+Description
+A cup of fine water rests here.~
+ShortDescr
+a cup~
+ActionDescr
+(null)~
+VNum               5010
+EquippedAt         0
+Values             24 0 0 0
+ExtraFlags         0
+Weight             -23
+Timer              0
+BitVector          0
+Type               17
+WearFlags          16385
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              124
+ContainedBy        15
+Name               water cup~
+Description
+A cup of fine water rests here.~
+ShortDescr
+a cup~
+ActionDescr
+(null)~
+VNum               5010
+EquippedAt         0
+Values             24 0 0 0
+ExtraFlags         0
+Weight             -23
+Timer              0
+BitVector          0
+Type               17
+WearFlags          16385
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              124
+ContainedBy        15
+Name               water cup~
+Description
+A cup of fine water rests here.~
+ShortDescr
+a cup~
+ActionDescr
+(null)~
+VNum               5010
+EquippedAt         0
+Values             24 0 0 0
+ExtraFlags         0
+Weight             -23
+Timer              0
+BitVector          0
+Type               17
+WearFlags          16385
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              124
+ContainedBy        15
+Name               water cup~
+Description
+A cup of fine water rests here.~
+ShortDescr
+a cup~
+ActionDescr
+(null)~
+VNum               5010
+EquippedAt         0
+Values             24 0 0 0
+ExtraFlags         0
+Weight             -23
+Timer              0
+BitVector          0
+Type               17
+WearFlags          16385
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              124
+ContainedBy        15
+Name               water cup~
+Description
+A cup of fine water rests here.~
+ShortDescr
+a cup~
+ActionDescr
+(null)~
+VNum               5010
+EquippedAt         0
+Values             24 24 0 0
+ExtraFlags         0
+Weight             1
+Timer              0
+BitVector          0
+Type               17
+WearFlags          16385
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              124
+ContainedBy        15
+Name               water cup~
+Description
+A cup of fine water rests here.~
+ShortDescr
+a cup~
+ActionDescr
+(null)~
+VNum               5010
+EquippedAt         0
+Values             24 0 0 0
+ExtraFlags         0
+Weight             -23
+Timer              0
+BitVector          0
+Type               17
+WearFlags          16385
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              124
+ContainedBy        15
+Name               water cup~
+Description
+A cup of fine water rests here.~
+ShortDescr
+a cup~
+ActionDescr
+(null)~
+VNum               5010
+EquippedAt         0
+Values             24 0 0 0
+ExtraFlags         0
+Weight             -23
+Timer              0
+BitVector          0
+Type               17
+WearFlags          16385
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              124
+ContainedBy        15
+Name               water cup~
+Description
+A cup of fine water rests here.~
+ShortDescr
+a cup~
+ActionDescr
+(null)~
+VNum               5010
+EquippedAt         0
+Values             24 0 0 0
+ExtraFlags         0
+Weight             -23
+Timer              0
+BitVector          0
+Type               17
+WearFlags          16385
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              124
+ContainedBy        15
+Name               water cup~
+Description
+A cup of fine water rests here.~
+ShortDescr
+a cup~
+ActionDescr
+(null)~
+VNum               5010
+EquippedAt         0
+Values             24 0 0 0
+ExtraFlags         0
+Weight             -23
+Timer              0
+BitVector          0
+Type               17
+WearFlags          16385
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              124
+ContainedBy        15
+Name               water cup~
+Description
+A cup of fine water rests here.~
+ShortDescr
+a cup~
+ActionDescr
+(null)~
+VNum               5010
+EquippedAt         0
+Values             24 0 0 0
+ExtraFlags         0
+Weight             -23
+Timer              0
+BitVector          0
+Type               17
+WearFlags          16385
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              124
+ContainedBy        15
+Name               water cup~
+Description
+A cup of fine water rests here.~
+ShortDescr
+a cup~
+ActionDescr
+(null)~
+VNum               5010
+EquippedAt         0
+Values             24 0 0 0
+ExtraFlags         0
+Weight             -23
+Timer              0
+BitVector          0
+Type               17
+WearFlags          16385
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              124
+ContainedBy        15
+Name               water cup~
+Description
+A cup of fine water rests here.~
+ShortDescr
+a cup~
+ActionDescr
+(null)~
+VNum               5010
+EquippedAt         0
+Values             24 0 0 0
+ExtraFlags         0
+Weight             -23
+Timer              0
+BitVector          0
+Type               17
+WearFlags          16385
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              124
+ContainedBy        15
+Name               water cup~
+Description
+A cup of fine water rests here.~
+ShortDescr
+a cup~
+ActionDescr
+(null)~
+VNum               5010
+EquippedAt         0
+Values             24 0 0 0
+ExtraFlags         0
+Weight             -23
+Timer              0
+BitVector          0
+Type               17
+WearFlags          16385
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              124
+ContainedBy        15
+Name               water cup~
+Description
+A cup of fine water rests here.~
+ShortDescr
+a cup~
+ActionDescr
+(null)~
+VNum               5010
+EquippedAt         0
+Values             24 0 0 0
+ExtraFlags         0
+Weight             -23
+Timer              0
+BitVector          0
+Type               17
+WearFlags          16385
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              124
+ContainedBy        15
+Name               water cup~
+Description
+A cup of fine water rests here.~
+ShortDescr
+a cup~
+ActionDescr
+(null)~
+VNum               5010
+EquippedAt         0
+Values             24 0 0 0
+ExtraFlags         0
+Weight             -23
+Timer              0
+BitVector          0
+Type               17
+WearFlags          16385
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              124
+ContainedBy        15
+Name               water cup~
+Description
+A cup of fine water rests here.~
+ShortDescr
+a cup~
+ActionDescr
+(null)~
+VNum               5010
+EquippedAt         0
+Values             24 0 0 0
+ExtraFlags         0
+Weight             -23
+Timer              0
+BitVector          0
+Type               17
+WearFlags          16385
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              124
+ContainedBy        15
+Name               water cup~
+Description
+A cup of fine water rests here.~
+ShortDescr
+a cup~
+ActionDescr
+(null)~
+VNum               5010
+EquippedAt         0
+Values             24 0 0 0
+ExtraFlags         0
+Weight             -23
+Timer              0
+BitVector          0
+Type               17
+WearFlags          16385
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              124
+ContainedBy        15
+Name               water cup~
+Description
+A cup of fine water rests here.~
+ShortDescr
+a cup~
+ActionDescr
+(null)~
+VNum               5010
+EquippedAt         0
+Values             24 0 0 0
+ExtraFlags         0
+Weight             -23
+Timer              0
+BitVector          0
+Type               17
+WearFlags          16385
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              124
+ContainedBy        15
+Name               water cup~
+Description
+A cup of fine water rests here.~
+ShortDescr
+a cup~
+ActionDescr
+(null)~
+VNum               5010
+EquippedAt         0
+Values             24 0 0 0
+ExtraFlags         0
+Weight             -23
+Timer              0
+BitVector          0
+Type               17
+WearFlags          16385
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              124
+ContainedBy        15
+Name               water cup~
+Description
+A cup of fine water rests here.~
+ShortDescr
+a cup~
+ActionDescr
+(null)~
+VNum               5010
+EquippedAt         0
+Values             24 0 0 0
+ExtraFlags         0
+Weight             -23
+Timer              0
+BitVector          0
+Type               17
+WearFlags          16385
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              124
+ContainedBy        15
+Name               water cup~
+Description
+A cup of fine water rests here.~
+ShortDescr
+a cup~
+ActionDescr
+(null)~
+VNum               5010
+EquippedAt         0
+Values             24 0 0 0
+ExtraFlags         0
+Weight             -23
+Timer              0
+BitVector          0
+Type               17
+WearFlags          16385
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              124
+ContainedBy        15
+Name               water cup~
+Description
+A cup of fine water rests here.~
+ShortDescr
+a cup~
+ActionDescr
+(null)~
+VNum               5010
+EquippedAt         0
+Values             24 0 0 0
+ExtraFlags         0
+Weight             -23
+Timer              0
+BitVector          0
+Type               17
+WearFlags          16385
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              124
+ContainedBy        15
+Name               water cup~
+Description
+A cup of fine water rests here.~
+ShortDescr
+a cup~
+ActionDescr
+(null)~
+VNum               5010
+EquippedAt         0
+Values             24 0 0 0
+ExtraFlags         0
+Weight             -23
+Timer              0
+BitVector          0
+Type               17
+WearFlags          16385
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              124
+ContainedBy        15
+Name               water cup~
+Description
+A cup of fine water rests here.~
+ShortDescr
+a cup~
+ActionDescr
+(null)~
+VNum               5010
+EquippedAt         0
+Values             24 0 0 0
+ExtraFlags         0
+Weight             -23
+Timer              0
+BitVector          0
+Type               17
+WearFlags          16385
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              124
+ContainedBy        15
+Name               water cup~
+Description
+A cup of fine water rests here.~
+ShortDescr
+a cup~
+ActionDescr
+(null)~
+VNum               5010
+EquippedAt         0
+Values             24 0 0 0
+ExtraFlags         0
+Weight             -23
+Timer              0
+BitVector          0
+Type               17
+WearFlags          16385
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              124
+ContainedBy        15
+Name               water cup~
+Description
+A cup of fine water rests here.~
+ShortDescr
+a cup~
+ActionDescr
+(null)~
+VNum               5010
+EquippedAt         0
+Values             24 0 0 0
+ExtraFlags         0
+Weight             -23
+Timer              0
+BitVector          0
+Type               17
+WearFlags          16385
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              124
+ContainedBy        15
+Name               water cup~
+Description
+A cup of fine water rests here.~
+ShortDescr
+a cup~
+ActionDescr
+(null)~
+VNum               5010
+EquippedAt         0
+Values             24 0 0 0
+ExtraFlags         0
+Weight             -23
+Timer              0
+BitVector          0
+Type               17
+WearFlags          16385
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              124
+ContainedBy        15
+Name               water cup~
+Description
+A cup of fine water rests here.~
+ShortDescr
+a cup~
+ActionDescr
+(null)~
+VNum               5010
+EquippedAt         0
+Values             24 0 0 0
+ExtraFlags         0
+Weight             -23
+Timer              0
+BitVector          0
+Type               17
+WearFlags          16385
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              124
+ContainedBy        15
+Name               water cup~
+Description
+A cup of fine water rests here.~
+ShortDescr
+a cup~
+ActionDescr
+(null)~
+VNum               5010
+EquippedAt         0
+Values             24 0 0 0
+ExtraFlags         0
+Weight             -23
+Timer              0
+BitVector          0
+Type               17
+WearFlags          16385
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              124
+ContainedBy        15
+Name               water cup~
+Description
+A cup of fine water rests here.~
+ShortDescr
+a cup~
+ActionDescr
+(null)~
+VNum               5010
+EquippedAt         0
+Values             24 0 0 0
+ExtraFlags         0
+Weight             -23
+Timer              0
+BitVector          0
+Type               17
+WearFlags          16385
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              124
+ContainedBy        15
+Name               water cup~
+Description
+A cup of fine water rests here.~
+ShortDescr
+a cup~
+ActionDescr
+(null)~
+VNum               5010
+EquippedAt         0
+Values             24 0 0 0
+ExtraFlags         0
+Weight             -23
+Timer              0
+BitVector          0
+Type               17
+WearFlags          16385
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              124
+ContainedBy        15
+Name               water cup~
+Description
+A cup of fine water rests here.~
+ShortDescr
+a cup~
+ActionDescr
+(null)~
+VNum               5010
+EquippedAt         0
+Values             24 0 0 0
+ExtraFlags         0
+Weight             -23
+Timer              0
+BitVector          0
+Type               17
+WearFlags          16385
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              124
+ContainedBy        15
+Name               water cup~
+Description
+A cup of fine water rests here.~
+ShortDescr
+a cup~
+ActionDescr
+(null)~
+VNum               5010
+EquippedAt         0
+Values             24 0 0 0
+ExtraFlags         0
+Weight             -23
+Timer              0
+BitVector          0
+Type               17
+WearFlags          16385
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              124
+ContainedBy        15
+Name               water cup~
+Description
+A cup of fine water rests here.~
+ShortDescr
+a cup~
+ActionDescr
+(null)~
+VNum               5010
+EquippedAt         0
+Values             24 0 0 0
+ExtraFlags         0
+Weight             -23
+Timer              0
+BitVector          0
+Type               17
+WearFlags          16385
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              124
+ContainedBy        15
+Name               water cup~
+Description
+A cup of fine water rests here.~
+ShortDescr
+a cup~
+ActionDescr
+(null)~
+VNum               5010
+EquippedAt         0
+Values             24 0 0 0
+ExtraFlags         0
+Weight             -23
+Timer              0
+BitVector          0
+Type               17
+WearFlags          16385
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              124
+ContainedBy        15
+Name               water cup~
+Description
+A cup of fine water rests here.~
+ShortDescr
+a cup~
+ActionDescr
+(null)~
+VNum               5010
+EquippedAt         0
+Values             24 0 0 0
+ExtraFlags         0
+Weight             -23
+Timer              0
+BitVector          0
+Type               17
+WearFlags          16385
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              124
+ContainedBy        15
+Name               water cup~
+Description
+A cup of fine water rests here.~
+ShortDescr
+a cup~
+ActionDescr
+(null)~
+VNum               5010
+EquippedAt         0
+Values             24 0 0 0
+ExtraFlags         0
+Weight             -23
+Timer              0
+BitVector          0
+Type               17
+WearFlags          16385
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              124
+ContainedBy        15
+Name               water cup~
+Description
+A cup of fine water rests here.~
+ShortDescr
+a cup~
+ActionDescr
+(null)~
+VNum               5010
+EquippedAt         0
+Values             24 0 0 0
+ExtraFlags         0
+Weight             -23
+Timer              0
+BitVector          0
+Type               17
+WearFlags          16385
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              124
+ContainedBy        15
+Name               water cup~
+Description
+A cup of fine water rests here.~
+ShortDescr
+a cup~
+ActionDescr
+(null)~
+VNum               5010
+EquippedAt         0
+Values             24 0 0 0
+ExtraFlags         0
+Weight             -23
+Timer              0
+BitVector          0
+Type               17
+WearFlags          16385
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              124
+ContainedBy        15
+Name               water cup~
+Description
+A cup of fine water rests here.~
+ShortDescr
+a cup~
+ActionDescr
+(null)~
+VNum               5010
+EquippedAt         0
+Values             24 0 0 0
+ExtraFlags         0
+Weight             -23
+Timer              0
+BitVector          0
+Type               17
+WearFlags          16385
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              124
+ContainedBy        15
+Name               water cup~
+Description
+A cup of fine water rests here.~
+ShortDescr
+a cup~
+ActionDescr
+(null)~
+VNum               5010
+EquippedAt         0
+Values             24 0 0 0
+ExtraFlags         0
+Weight             -23
+Timer              0
+BitVector          0
+Type               17
+WearFlags          16385
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              124
+ContainedBy        15
+Name               water cup~
+Description
+A cup of fine water rests here.~
+ShortDescr
+a cup~
+ActionDescr
+(null)~
+VNum               5010
+EquippedAt         0
+Values             24 0 0 0
+ExtraFlags         0
+Weight             -23
+Timer              0
+BitVector          0
+Type               17
+WearFlags          16385
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              124
+ContainedBy        15
+Name               water cup~
+Description
+A cup of fine water rests here.~
+ShortDescr
+a cup~
+ActionDescr
+(null)~
+VNum               5010
+EquippedAt         0
+Values             24 0 0 0
+ExtraFlags         0
+Weight             -23
+Timer              0
+BitVector          0
+Type               17
+WearFlags          16385
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              124
+ContainedBy        15
+Name               water cup~
+Description
+A cup of fine water rests here.~
+ShortDescr
+a cup~
+ActionDescr
+(null)~
+VNum               5010
+EquippedAt         0
+Values             24 0 0 0
+ExtraFlags         0
+Weight             -23
+Timer              0
+BitVector          0
+Type               17
+WearFlags          16385
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              124
+ContainedBy        15
+Name               water cup~
+Description
+A cup of fine water rests here.~
+ShortDescr
+a cup~
+ActionDescr
+(null)~
+VNum               5010
+EquippedAt         0
+Values             24 0 0 0
+ExtraFlags         0
+Weight             -23
+Timer              0
+BitVector          0
+Type               17
+WearFlags          16385
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              124
+ContainedBy        15
+Name               water cup~
+Description
+A cup of fine water rests here.~
+ShortDescr
+a cup~
+ActionDescr
+(null)~
+VNum               5010
+EquippedAt         0
+Values             24 0 0 0
+ExtraFlags         0
+Weight             -23
+Timer              0
+BitVector          0
+Type               17
+WearFlags          16385
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              124
+ContainedBy        15
+Name               water cup~
+Description
+A cup of fine water rests here.~
+ShortDescr
+a cup~
+ActionDescr
+(null)~
+VNum               5010
+EquippedAt         0
+Values             24 0 0 0
+ExtraFlags         0
+Weight             -23
+Timer              0
+BitVector          0
+Type               17
+WearFlags          16385
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              124
+ContainedBy        15
+Name               water cup~
+Description
+A cup of fine water rests here.~
+ShortDescr
+a cup~
+ActionDescr
+(null)~
+VNum               5010
+EquippedAt         0
+Values             24 0 0 0
+ExtraFlags         0
+Weight             -23
+Timer              0
+BitVector          0
+Type               17
+WearFlags          16385
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              124
+ContainedBy        15
+Name               water cup~
+Description
+A cup of fine water rests here.~
+ShortDescr
+a cup~
+ActionDescr
+(null)~
+VNum               5010
+EquippedAt         0
+Values             24 0 0 0
+ExtraFlags         0
+Weight             -23
+Timer              0
+BitVector          0
+Type               17
+WearFlags          16385
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              124
+ContainedBy        15
+Name               water cup~
+Description
+A cup of fine water rests here.~
+ShortDescr
+a cup~
+ActionDescr
+(null)~
+VNum               5010
+EquippedAt         0
+Values             24 0 0 0
+ExtraFlags         0
+Weight             -23
+Timer              0
+BitVector          0
+Type               17
+WearFlags          16385
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              124
+ContainedBy        15
+Name               water cup~
+Description
+A cup of fine water rests here.~
+ShortDescr
+a cup~
+ActionDescr
+(null)~
+VNum               5010
+EquippedAt         0
+Values             24 0 0 0
+ExtraFlags         0
+Weight             -23
+Timer              0
+BitVector          0
+Type               17
+WearFlags          16385
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              124
+ContainedBy        15
+Name               water cup~
+Description
+A cup of fine water rests here.~
+ShortDescr
+a cup~
+ActionDescr
+(null)~
+VNum               5010
+EquippedAt         0
+Values             24 0 0 0
+ExtraFlags         0
+Weight             -23
+Timer              0
+BitVector          0
+Type               17
+WearFlags          16385
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              124
+ContainedBy        15
+Name               water cup~
+Description
+A cup of fine water rests here.~
+ShortDescr
+a cup~
+ActionDescr
+(null)~
+VNum               5010
+EquippedAt         0
+Values             24 0 0 0
+ExtraFlags         0
+Weight             -23
+Timer              0
+BitVector          0
+Type               17
+WearFlags          16385
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              124
+ContainedBy        15
+Name               water cup~
+Description
+A cup of fine water rests here.~
+ShortDescr
+a cup~
+ActionDescr
+(null)~
+VNum               5010
+EquippedAt         0
+Values             24 0 0 0
+ExtraFlags         0
+Weight             -23
+Timer              0
+BitVector          0
+Type               17
+WearFlags          16385
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              124
+ContainedBy        15
+Name               water cup~
+Description
+A cup of fine water rests here.~
+ShortDescr
+a cup~
+ActionDescr
+(null)~
+VNum               5010
+EquippedAt         0
+Values             24 0 0 0
+ExtraFlags         0
+Weight             -23
+Timer              0
+BitVector          0
+Type               17
+WearFlags          16385
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              124
+ContainedBy        15
+Name               water cup~
+Description
+A cup of fine water rests here.~
+ShortDescr
+a cup~
+ActionDescr
+(null)~
+VNum               5010
+EquippedAt         0
+Values             24 0 0 0
+ExtraFlags         0
+Weight             -23
+Timer              0
+BitVector          0
+Type               17
+WearFlags          16385
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              124
+ContainedBy        15
+Name               water cup~
+Description
+A cup of fine water rests here.~
+ShortDescr
+a cup~
+ActionDescr
+(null)~
+VNum               5010
+EquippedAt         0
+Values             24 0 0 0
+ExtraFlags         0
+Weight             -23
+Timer              0
+BitVector          0
+Type               17
+WearFlags          16385
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              124
+ContainedBy        15
+Name               water cup~
+Description
+A cup of fine water rests here.~
+ShortDescr
+a cup~
+ActionDescr
+(null)~
+VNum               5010
+EquippedAt         0
+Values             24 0 0 0
+ExtraFlags         0
+Weight             -23
+Timer              0
+BitVector          0
+Type               17
+WearFlags          16385
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              124
+ContainedBy        15
+Name               water cup~
+Description
+A cup of fine water rests here.~
+ShortDescr
+a cup~
+ActionDescr
+(null)~
+VNum               5010
+EquippedAt         0
+Values             24 0 0 0
+ExtraFlags         0
+Weight             -23
+Timer              0
+BitVector          0
+Type               17
+WearFlags          16385
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              124
+ContainedBy        15
+Name               water cup~
+Description
+A cup of fine water rests here.~
+ShortDescr
+a cup~
+ActionDescr
+(null)~
+VNum               5010
+EquippedAt         0
+Values             24 0 0 0
+ExtraFlags         0
+Weight             -23
+Timer              0
+BitVector          0
+Type               17
+WearFlags          16385
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              124
+ContainedBy        15
+Name               water cup~
+Description
+A cup of fine water rests here.~
+ShortDescr
+a cup~
+ActionDescr
+(null)~
+VNum               5010
+EquippedAt         0
+Values             24 0 0 0
+ExtraFlags         0
+Weight             -23
+Timer              0
+BitVector          0
+Type               17
+WearFlags          16385
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              124
+ContainedBy        15
+Name               water cup~
+Description
+A cup of fine water rests here.~
+ShortDescr
+a cup~
+ActionDescr
+(null)~
+VNum               5010
+EquippedAt         0
+Values             24 0 0 0
+ExtraFlags         0
+Weight             -23
+Timer              0
+BitVector          0
+Type               17
+WearFlags          16385
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              124
+ContainedBy        15
+Name               water cup~
+Description
+A cup of fine water rests here.~
+ShortDescr
+a cup~
+ActionDescr
+(null)~
+VNum               5010
+EquippedAt         0
+Values             24 0 0 0
+ExtraFlags         0
+Weight             -23
+Timer              0
+BitVector          0
+Type               17
+WearFlags          16385
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              124
+ContainedBy        15
+Name               water cup~
+Description
+A cup of fine water rests here.~
+ShortDescr
+a cup~
+ActionDescr
+(null)~
+VNum               5010
+EquippedAt         0
+Values             24 0 0 0
+ExtraFlags         0
+Weight             -23
+Timer              0
+BitVector          0
+Type               17
+WearFlags          16385
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              124
+ContainedBy        15
+Name               water cup~
+Description
+A cup of fine water rests here.~
+ShortDescr
+a cup~
+ActionDescr
+(null)~
+VNum               5010
+EquippedAt         0
+Values             24 0 0 0
+ExtraFlags         0
+Weight             -23
+Timer              0
+BitVector          0
+Type               17
+WearFlags          16385
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              124
+ContainedBy        15
+Name               water cup~
+Description
+A cup of fine water rests here.~
+ShortDescr
+a cup~
+ActionDescr
+(null)~
+VNum               5010
+EquippedAt         0
+Values             24 0 0 0
+ExtraFlags         0
+Weight             -23
+Timer              0
+BitVector          0
+Type               17
+WearFlags          16385
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              124
+ContainedBy        15
+Name               water cup~
+Description
+A cup of fine water rests here.~
+ShortDescr
+a cup~
+ActionDescr
+(null)~
+VNum               5010
+EquippedAt         0
+Values             24 0 0 0
+ExtraFlags         0
+Weight             -23
+Timer              0
+BitVector          0
+Type               17
+WearFlags          16385
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              124
+ContainedBy        15
+Name               water cup~
+Description
+A cup of fine water rests here.~
+ShortDescr
+a cup~
+ActionDescr
+(null)~
+VNum               5010
+EquippedAt         0
+Values             24 0 0 0
+ExtraFlags         0
+Weight             -23
+Timer              0
+BitVector          0
+Type               17
+WearFlags          16385
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              124
+ContainedBy        15
+Name               water cup~
+Description
+A cup of fine water rests here.~
+ShortDescr
+a cup~
+ActionDescr
+(null)~
+VNum               5010
+EquippedAt         0
+Values             24 0 0 0
+ExtraFlags         0
+Weight             -23
+Timer              0
+BitVector          0
+Type               17
+WearFlags          16385
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              124
+ContainedBy        15
+Name               water cup~
+Description
+A cup of fine water rests here.~
+ShortDescr
+a cup~
+ActionDescr
+(null)~
+VNum               5010
+EquippedAt         0
+Values             24 0 0 0
+ExtraFlags         0
+Weight             -23
+Timer              0
+BitVector          0
+Type               17
+WearFlags          16385
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              124
+ContainedBy        15
+Name               water cup~
+Description
+A cup of fine water rests here.~
+ShortDescr
+a cup~
+ActionDescr
+(null)~
+VNum               5010
+EquippedAt         0
+Values             24 0 0 0
+ExtraFlags         0
+Weight             -23
+Timer              0
+BitVector          0
+Type               17
+WearFlags          16385
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              124
+ContainedBy        15
+Name               water cup~
+Description
+A cup of fine water rests here.~
+ShortDescr
+a cup~
+ActionDescr
+(null)~
+VNum               5010
+EquippedAt         0
+Values             24 0 0 0
+ExtraFlags         0
+Weight             -23
+Timer              0
+BitVector          0
+Type               17
+WearFlags          16385
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              124
+ContainedBy        15
+Name               water cup~
+Description
+A cup of fine water rests here.~
+ShortDescr
+a cup~
+ActionDescr
+(null)~
+VNum               5010
+EquippedAt         0
+Values             24 0 0 0
+ExtraFlags         0
+Weight             -23
+Timer              0
+BitVector          0
+Type               17
+WearFlags          16385
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              124
+ContainedBy        15
+Name               water cup~
+Description
+A cup of fine water rests here.~
+ShortDescr
+a cup~
+ActionDescr
+(null)~
+VNum               5010
+EquippedAt         0
+Values             24 0 0 0
+ExtraFlags         0
+Weight             -23
+Timer              0
+BitVector          0
+Type               17
+WearFlags          16385
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              124
+ContainedBy        15
+Name               water cup~
+Description
+A cup of fine water rests here.~
+ShortDescr
+a cup~
+ActionDescr
+(null)~
+VNum               5010
+EquippedAt         0
+Values             24 0 0 0
+ExtraFlags         0
+Weight             -23
+Timer              0
+BitVector          0
+Type               17
+WearFlags          16385
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              124
+ContainedBy        15
+Name               water cup~
+Description
+A cup of fine water rests here.~
+ShortDescr
+a cup~
+ActionDescr
+(null)~
+VNum               5010
+EquippedAt         0
+Values             24 0 0 0
+ExtraFlags         0
+Weight             -23
+Timer              0
+BitVector          0
+Type               17
+WearFlags          16385
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              124
+ContainedBy        15
+Name               water cup~
+Description
+A cup of fine water rests here.~
+ShortDescr
+a cup~
+ActionDescr
+(null)~
+VNum               5010
+EquippedAt         0
+Values             24 0 0 0
+ExtraFlags         0
+Weight             -23
+Timer              0
+BitVector          0
+Type               17
+WearFlags          16385
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              124
+ContainedBy        15
+Name               water cup~
+Description
+A cup of fine water rests here.~
+ShortDescr
+a cup~
+ActionDescr
+(null)~
+VNum               5010
+EquippedAt         0
+Values             24 0 0 0
+ExtraFlags         0
+Weight             -23
+Timer              0
+BitVector          0
+Type               17
+WearFlags          16385
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              124
+ContainedBy        15
+Name               water cup~
+Description
+A cup of fine water rests here.~
+ShortDescr
+a cup~
+ActionDescr
+(null)~
+VNum               5010
+EquippedAt         0
+Values             24 0 0 0
+ExtraFlags         0
+Weight             -23
+Timer              0
+BitVector          0
+Type               17
+WearFlags          16385
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              124
+ContainedBy        15
+Name               water cup~
+Description
+A cup of fine water rests here.~
+ShortDescr
+a cup~
+ActionDescr
+(null)~
+VNum               5010
+EquippedAt         0
+Values             24 0 0 0
+ExtraFlags         0
+Weight             -23
+Timer              0
+BitVector          0
+Type               17
+WearFlags          16385
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              124
+ContainedBy        15
+Name               water cup~
+Description
+A cup of fine water rests here.~
+ShortDescr
+a cup~
+ActionDescr
+(null)~
+VNum               5010
+EquippedAt         0
+Values             24 24 0 0
+ExtraFlags         0
+Weight             1
+Timer              0
+BitVector          0
+Type               17
+WearFlags          16385
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              124
+ContainedBy        15
+Name               ogre tongue~
+Description
+A fried ogre tongue rests here.~
+ShortDescr
+a cooked ogre tongue~
+ActionDescr
+(null)~
+VNum               5018
+EquippedAt         0
+Values             24 0 0 0
+ExtraFlags         0
+Weight             1
+Timer              0
+BitVector          0
+Type               19
+WearFlags          16385
+Cost               30
+CostPerDay         3
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              124
+ContainedBy        15
+Name               ogre tongue~
+Description
+A fried ogre tongue rests here.~
+ShortDescr
+a cooked ogre tongue~
+ActionDescr
+(null)~
+VNum               5018
+EquippedAt         0
+Values             24 0 0 0
+ExtraFlags         0
+Weight             1
+Timer              0
+BitVector          0
+Type               19
+WearFlags          16385
+Cost               30
+CostPerDay         3
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              124
+ContainedBy        15
+Name               ogre tongue~
+Description
+A fried ogre tongue rests here.~
+ShortDescr
+a cooked ogre tongue~
+ActionDescr
+(null)~
+VNum               5018
+EquippedAt         0
+Values             24 0 0 0
+ExtraFlags         0
+Weight             1
+Timer              0
+BitVector          0
+Type               19
+WearFlags          16385
+Cost               30
+CostPerDay         3
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              124
+ContainedBy        15
+Name               ogre tongue~
+Description
+A fried ogre tongue rests here.~
+ShortDescr
+a cooked ogre tongue~
+ActionDescr
+(null)~
+VNum               5018
+EquippedAt         0
+Values             24 0 0 0
+ExtraFlags         0
+Weight             1
+Timer              0
+BitVector          0
+Type               19
+WearFlags          16385
+Cost               30
+CostPerDay         3
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              124
+ContainedBy        15
+Name               ogre tongue~
+Description
+A fried ogre tongue rests here.~
+ShortDescr
+a cooked ogre tongue~
+ActionDescr
+(null)~
+VNum               5018
+EquippedAt         0
+Values             24 0 0 0
+ExtraFlags         0
+Weight             1
+Timer              0
+BitVector          0
+Type               19
+WearFlags          16385
+Cost               30
+CostPerDay         3
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              124
+ContainedBy        15
+Name               ogre tongue~
+Description
+A fried ogre tongue rests here.~
+ShortDescr
+a cooked ogre tongue~
+ActionDescr
+(null)~
+VNum               5018
+EquippedAt         0
+Values             24 0 0 0
+ExtraFlags         0
+Weight             1
+Timer              0
+BitVector          0
+Type               19
+WearFlags          16385
+Cost               30
+CostPerDay         3
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              124
+ContainedBy        15
+Name               bottle water~
+Description
+A bottle of clear liquid has been left here.~
+ShortDescr
+a bottle~
+ActionDescr
+(null)~
+VNum               3003
+EquippedAt         0
+Values             16 16 0 0
+ExtraFlags         0
+Weight             2
+Timer              0
+BitVector          0
+Type               17
+WearFlags          16385
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              124
+ContainedBy        15
+Name               bottle water~
+Description
+A bottle of clear liquid has been left here.~
+ShortDescr
+a bottle~
+ActionDescr
+(null)~
+VNum               3003
+EquippedAt         0
+Values             16 16 0 0
+ExtraFlags         0
+Weight             2
+Timer              0
+BitVector          0
+Type               17
+WearFlags          16385
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              124
+ContainedBy        15
+Name               bottle water~
+Description
+A bottle of clear liquid has been left here.~
+ShortDescr
+a bottle~
+ActionDescr
+(null)~
+VNum               3003
+EquippedAt         0
+Values             16 16 0 0
+ExtraFlags         0
+Weight             2
+Timer              0
+BitVector          0
+Type               17
+WearFlags          16385
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              124
+ContainedBy        15
+Name               bottle water~
+Description
+A bottle of clear liquid has been left here.~
+ShortDescr
+a bottle~
+ActionDescr
+(null)~
+VNum               3003
+EquippedAt         0
+Values             16 16 0 0
+ExtraFlags         0
+Weight             2
+Timer              0
+BitVector          0
+Type               17
+WearFlags          16385
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              124
+ContainedBy        15
+Name               silver longblade~
+Description
+A longblade made of silver sparkles here.~
+ShortDescr
+a silver longblade~
+ActionDescr
+(null)~
+VNum               5071
+EquippedAt         0
+Values             0 1 9 3
+ExtraFlags         12288
+Weight             10
+Timer              0
+BitVector          0
+Type               5
+WearFlags          8193
+Cost               500
+CostPerDay         200
+Affect             0 0
+Affect             0 0
+ExtraDescr         silver longblade~
+  The hilt of this fine blade seems to be made of ivory while the blade
+itself seems to have been wrought from silver.  The workmanship is excellent.
+~
+End
+#ITEM
+ObjId              124
+ContainedBy        15
+Name               silver longblade~
+Description
+A longblade made of silver sparkles here.~
+ShortDescr
+a silver longblade~
+ActionDescr
+(null)~
+VNum               5071
+EquippedAt         0
+Values             0 1 9 3
+ExtraFlags         12288
+Weight             10
+Timer              0
+BitVector          0
+Type               5
+WearFlags          8193
+Cost               500
+CostPerDay         200
+Affect             0 0
+Affect             0 0
+ExtraDescr         silver longblade~
+  The hilt of this fine blade seems to be made of ivory while the blade
+itself seems to have been wrought from silver.  The workmanship is excellent.
+~
+End
+#ITEM
+ObjId              124
+ContainedBy        15
+Name               gnarled branch~
+Description
+A small, gnarled branch lies here.~
+ShortDescr
+a gnarled branch~
+ActionDescr
+(null)~
+VNum               1901
+EquippedAt         0
+Values             30 1 1 42
+ExtraFlags         64
+Weight             10
+Timer              0
+BitVector          0
+Type               3
+WearFlags          16385
+Cost               2000
+CostPerDay         500
+Affect             0 0
+Affect             0 0
+ExtraDescr         gnarled branch~
+  The branch is no more than a foot long and seems to be curved in every
+which way.  All about the small branch there appears to be runes of a sort,
+the only ones you can make out say this: "Call upon the dragon....", the rest
+seems unintelligable.
+~
+End
+#ITEM
+ObjId              124
+ContainedBy        15
+Name               salve~
+Description
+A small salve lies here.~
+ShortDescr
+a salve~
+ActionDescr
+(null)~
+VNum               5062
+EquippedAt         0
+Values             10 16 -1 -1
+ExtraFlags         0
+Weight             1
+Timer              0
+BitVector          0
+Type               10
+WearFlags          16385
+Cost               200
+CostPerDay         20
+Affect             0 0
+Affect             0 0
+ExtraDescr         salve~
+You could squeeze the healing juices from this salve and quaff them.
+~
+End
+#ITEM
+ObjId              124
+ContainedBy        15
+Name               breastplate silver encrusted~
+Description
+A breastplate lies here, encrusted with silver.~
+ShortDescr
+a silver encrusted breastplate~
+ActionDescr
+(null)~
+VNum               5097
+EquippedAt         0
+Values             4 4 0 0
+ExtraFlags         90112
+Weight             43
+Timer              0
+BitVector          0
+Type               9
+WearFlags          9
+Cost               6512
+CostPerDay         512
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              124
+ContainedBy        15
+Name               helm silver winged~
+Description
+A helm made of silver lies here, small wings on the sides.~
+ShortDescr
+a silver winged helm~
+ActionDescr
+(null)~
+VNum               5096
+EquippedAt         0
+Values             4 4 0 0
+ExtraFlags         90112
+Weight             18
+Timer              0
+BitVector          0
+Type               9
+WearFlags          17
+Cost               546
+CostPerDay         54
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              124
+ContainedBy        15
+Name               sword silver hilted bastard sword~
+Description
+A bastard sword lies here, the hilt shining with silver.~
+ShortDescr
+a silver hilted bastard sword~
+ActionDescr
+(null)~
+VNum               5098
+EquippedAt         0
+Values             0 2 4 3
+ExtraFlags         28672
+Weight             13
+Timer              0
+BitVector          0
+Type               5
+WearFlags          40961
+Cost               1439
+CostPerDay         439
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              124
+ContainedBy        15
+Name               gnarled branch~
+Description
+A small, gnarled branch lies here.~
+ShortDescr
+a gnarled branch~
+ActionDescr
+(null)~
+VNum               1901
+EquippedAt         0
+Values             30 1 1 42
+ExtraFlags         64
+Weight             10
+Timer              0
+BitVector          0
+Type               3
+WearFlags          16385
+Cost               2000
+CostPerDay         500
+Affect             0 0
+Affect             0 0
+ExtraDescr         gnarled branch~
+  The branch is no more than a foot long and seems to be curved in every
+which way.  All about the small branch there appears to be runes of a sort,
+the only ones you can make out say this: "Call upon the dragon....", the rest
+seems unintelligable.
+~
+End
+#ITEM
+ObjId              127
+ContainedBy        -1
+Name               bag~
+Description
+A small bag.~
+ShortDescr
+a bag~
+ActionDescr
+(null)~
+VNum               3017
+EquippedAt         0
+Values             50 0 0 0
+ExtraFlags         0
+Weight             2
+Timer              0
+BitVector          0
+Type               15
+WearFlags          16385
+Cost               20
+CostPerDay         2
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              127
+ContainedBy        -1
+Name               bag~
+Description
+A small bag.~
+ShortDescr
+a bag~
+ActionDescr
+(null)~
+VNum               3017
+EquippedAt         0
+Values             50 0 0 0
+ExtraFlags         0
+Weight             2
+Timer              0
+BitVector          0
+Type               15
+WearFlags          16385
+Cost               20
+CostPerDay         2
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              127
+ContainedBy        -1
+Name               bag~
+Description
+A small bag.~
+ShortDescr
+a bag~
+ActionDescr
+(null)~
+VNum               3017
+EquippedAt         0
+Values             50 0 0 0
+ExtraFlags         0
+Weight             2
+Timer              0
+BitVector          0
+Type               15
+WearFlags          16385
+Cost               20
+CostPerDay         2
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              127
+ContainedBy        -1
+Name               bag~
+Description
+A small bag.~
+ShortDescr
+a bag~
+ActionDescr
+(null)~
+VNum               3017
+EquippedAt         0
+Values             50 0 0 0
+ExtraFlags         0
+Weight             2
+Timer              0
+BitVector          0
+Type               15
+WearFlags          16385
+Cost               20
+CostPerDay         2
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              127
+ContainedBy        -1
+Name               ring emerald~
+Description
+A ring with a large emerald in it lies here.~
+ShortDescr
+a emerald ring~
+ActionDescr
+(null)~
+VNum               9015
+EquippedAt         -1
+Values             0 0 0 0
+ExtraFlags         64
+Weight             3
+Timer              0
+BitVector          0
+Type               11
+WearFlags          3
+Cost               123
+CostPerDay         123
+Affect             5 2
+Affect             4 -2
+End
+#ITEM
+ObjId              127
+ContainedBy        -1
+Name               ring clear gem~
+Description
+A ring lies here, the gem clear and unmarred.~
+ShortDescr
+a clear gem ring~
+ActionDescr
+(null)~
+VNum               5931
+EquippedAt         -1
+Values             0 0 0 0
+ExtraFlags         64
+Weight             1
+Timer              0
+BitVector          0
+Type               11
+WearFlags          3
+Cost               597
+CostPerDay         597
+Affect             1 1
+Affect             0 0
+End
+#ITEM
+ObjId              127
+ContainedBy        -1
+Name               cloak long red~
+Description
+A long red cloak lies here in a clump.~
+ShortDescr
+a long red cloak~
+ActionDescr
+(null)~
+VNum               5081
+EquippedAt         -1
+Values             2 3 0 0
+ExtraFlags         0
+Weight             12
+Timer              0
+BitVector          0
+Type               9
+WearFlags          5
+Cost               651
+CostPerDay         61
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              127
+ContainedBy        -1
+Name               cloak long red~
+Description
+A long red cloak lies here in a clump.~
+ShortDescr
+a long red cloak~
+ActionDescr
+(null)~
+VNum               5081
+EquippedAt         -1
+Values             3 3 0 0
+ExtraFlags         0
+Weight             12
+Timer              0
+BitVector          0
+Type               9
+WearFlags          5
+Cost               651
+CostPerDay         61
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              127
+ContainedBy        -1
+Name               chestplate golden~
+Description
+A golden chestplate sparkles on the ground here.~
+ShortDescr
+a golden chestplate~
+ActionDescr
+(null)~
+VNum               5077
+EquippedAt         -1
+Values             5 5 0 0
+ExtraFlags         90112
+Weight             55
+Timer              0
+BitVector          0
+Type               9
+WearFlags          9
+Cost               6519
+CostPerDay         2519
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              127
+ContainedBy        -1
+Name               helm gold encrusted~
+Description
+A gold encrusted helm lies here.~
+ShortDescr
+a gold encrusted helm~
+ActionDescr
+(null)~
+VNum               5078
+EquippedAt         -1
+Values             5 5 0 0
+ExtraFlags         90112
+Weight             34
+Timer              0
+BitVector          0
+Type               9
+WearFlags          17
+Cost               2365
+CostPerDay         1365
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              127
+ContainedBy        -1
+Name               legplates gold trimmed~
+Description
+A pair of golden trimmed legplates lie here.~
+ShortDescr
+some gold trimmed legplates~
+ActionDescr
+(null)~
+VNum               5079
+EquippedAt         -1
+Values             4 5 0 0
+ExtraFlags         90112
+Weight             31
+Timer              0
+BitVector          0
+Type               9
+WearFlags          33
+Cost               2987
+CostPerDay         1987
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              127
+ContainedBy        -1
+Name               spike plated boots~
+Description
+A pair of spike plated boots lie here.~
+ShortDescr
+some spike plated boots~
+ActionDescr
+(null)~
+VNum               6418
+EquippedAt         -1
+Values             2 4 0 0
+ExtraFlags         90112
+Weight             17
+Timer              0
+BitVector          0
+Type               9
+WearFlags          65
+Cost               487
+CostPerDay         187
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              127
+ContainedBy        -1
+Name               armour plated gauntlets~
+Description
+A pair of armour plated gauntlets are here.~
+ShortDescr
+a pair of armour plated gauntlets~
+ActionDescr
+(null)~
+VNum               5040
+EquippedAt         -1
+Values             4 4 0 0
+ExtraFlags         90112
+Weight             15
+Timer              0
+BitVector          0
+Type               9
+WearFlags          129
+Cost               450
+CostPerDay         100
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              127
+ContainedBy        -1
+Name               metal arm plates~
+Description
+A pair of metal arm plates lie here.~
+ShortDescr
+a pair of metal arm plates~
+ActionDescr
+(null)~
+VNum               5035
+EquippedAt         -1
+Values             4 4 0 0
+ExtraFlags         90112
+Weight             25
+Timer              0
+BitVector          0
+Type               9
+WearFlags          257
+Cost               500
+CostPerDay         75
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              127
+ContainedBy        -1
+Name               cloak black elven~
+Description
+A tattered black elven cloak lies here.~
+ShortDescr
+A black tattered elven cloak~
+ActionDescr
+(null)~
+VNum               7010
+EquippedAt         -1
+Values             8 8 0 0
+ExtraFlags         64
+Weight             2
+Timer              0
+BitVector          0
+Type               9
+WearFlags          1025
+Cost               500
+CostPerDay         100
+Affect             34 5
+Affect             35 5
+End
+#ITEM
+ObjId              127
+ContainedBy        -1
+Name               girth silver chain chainmail~
+Description
+A girth made of silver chainmail lies here.~
+ShortDescr
+a girth of silver chainmail~
+ActionDescr
+(null)~
+VNum               5066
+EquippedAt         -1
+Values             4 4 0 0
+ExtraFlags         8192
+Weight             10
+Timer              0
+BitVector          0
+Type               9
+WearFlags          2049
+Cost               200
+CostPerDay         100
+Affect             17 -5
+Affect             0 0
+ExtraDescr         girth silver chain chainmail~
+  The girth is made from small links of silver that seem to sparkle in the 
+light.  It is not at all heavy and looks quite comfortable.
+~
+End
+#ITEM
+ObjId              127
+ContainedBy        -1
+Name               two-handed sword two handed~
+Description
+A large two-handed sword lies here.~
+ShortDescr
+a two-handed sword~
+ActionDescr
+(null)~
+VNum               5054
+EquippedAt         -1
+Values             0 1 15 3
+ExtraFlags         30016
+Weight             17
+Timer              0
+BitVector          0
+Type               5
+WearFlags          32769
+Cost               3000
+CostPerDay         1000
+Affect             18 2
+Affect             19 3
+End
+End
+#END_RENT

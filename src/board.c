@@ -4,23 +4,26 @@
 #include <sys/types.h>
 #include <string.h>
 #include <ctype.h>
+#include <sys/time.h>
 
-#include "global.h"
-#include "bug.h"
-#include "utils.h"
-#include "comm.h"
-#include "db.h"
-#include "interpreter.h"
+#include "include/global.h"
+#include "include/bug.h"
+#include "include/utils.h"
+#include "include/comm.h"
+#include "include/db.h"
+#include "include/interpreter.h"
+#include "include/multiclass.h"
+#include "include/modify.h"
+#include "include/handler.h"
+#include "include/act_info.h"
 #define _BOARD_C
-#include "board.h"
+#include "include/board.h"
 
 struct char_data *board_kludge_char;
 struct Board *board_list;
 
 void InitBoards()
 {
-  struct obj_data *obj;
-
   if (DEBUG)
     dlog("InitBoards");
   /* this is called at the very beginning, like shopkeepers */
@@ -102,7 +105,7 @@ struct Board *FindBoardInRoom(int room)
 
   for (o = real_roomp(room)->contents; o;
        o = o->next_content) {
-    if (obj_index[o->item_number].func == board) {
+    if (obj_index[o->item_number].func == (ifuncp)board) {
       for (nb = board_list; nb; nb = nb->next) {
 	if (nb->Rnum == o->item_number)
 	  return (nb);
@@ -165,18 +168,18 @@ int board(struct char_data *ch, int cmd, char *arg)
 void board_write_msg(struct char_data *ch, char *arg, struct Board *b)
 {
   char new_arg[60];
-  char *ptr, time_str[60];
+  char time_str[60];
   struct tm *tm_info;
   time_t tc;
 
   if (DEBUG)
     dlog("board_write_msg");
   if (b->msg_num > MAX_MSGS - 1) {
-    send_to_char("The board is full already.\n\r", ch);
+    cprintf(ch, "The board is full already.\n\r");
     return;
   }
   if (board_kludge_char) {
-    send_to_char("Sorry, but someone has stolen the pen.. wait a few minutes.\n\r", ch);
+    cprintf(ch, "Sorry, but someone has stolen the pen.. wait a few minutes.\n\r");
     return;
   }
   /* skip blanks */
@@ -184,7 +187,7 @@ void board_write_msg(struct char_data *ch, char *arg, struct Board *b)
   for (; isspace(*arg); arg++);
 
   if (!*arg) {
-    send_to_char("We must have a headline!\n\r", ch);
+    cprintf(ch, "We must have a headline!\n\r");
     return;
   }
   board_kludge_char = ch;
@@ -199,7 +202,7 @@ void board_write_msg(struct char_data *ch, char *arg, struct Board *b)
 
   if (!b->head[b->msg_num]) {
     log("Malloc for board header failed.\n\r");
-    send_to_char("The board is malfunctioning - sorry.\n\r", ch);
+    cprintf(ch, "The board is malfunctioning - sorry.\n\r");
     return;
   }
   strncpy(new_arg, arg, 40);
@@ -208,7 +211,7 @@ void board_write_msg(struct char_data *ch, char *arg, struct Board *b)
   sprintf(b->head[b->msg_num], "%s (%s) %s", new_arg, GET_NAME(ch), time_str);
   b->msgs[b->msg_num] = NULL;
 
-  send_to_char("Write your message. Terminate with an @.\n\r\n\r", ch);
+  cprintf(ch, "Write your message. Terminate with an @.\n\r\n\r");
   act("$n starts to write a message.", TRUE, ch, 0, 0, TO_ROOM);
 
   ch->desc->str = &b->msgs[b->msg_num];
@@ -231,18 +234,17 @@ int board_remove_msg(struct char_data *ch, char *arg, struct Board *b)
   if (!(msg = atoi(number)))
     return (0);
   if (!b->msg_num) {
-    send_to_char("The board is empty!\n\r", ch);
+    cprintf(ch, "The board is empty!\n\r");
     return (1);
   }
   if (msg < 1 || msg > b->msg_num) {
-    send_to_char("That message exists only in your imagination..\n\r",
-		 ch);
+    cprintf(ch, "That message exists only in your imagination..\n\r");
     return (1);
   }
   if (GetMaxLevel(ch) < 19) {
-    send_to_char("Due to misuse of the REMOVE command, only 19th level\n\r", ch);
-    send_to_char("and above can remove messages.\n\r", ch);
-    return;
+    cprintf(ch, "Due to misuse of the REMOVE command, only 19th level\n\r");
+    cprintf(ch, "and above can remove messages.\n\r");
+    return 1;
   }
   ind = msg;
   free(b->head[--ind]);
@@ -253,7 +255,7 @@ int board_remove_msg(struct char_data *ch, char *arg, struct Board *b)
     b->msgs[ind] = b->msgs[ind + 1];
   }
   b->msg_num--;
-  send_to_char("Message removed.\n\r", ch);
+  cprintf(ch, "Message removed.\n\r");
   board_save_board(b);
   return (1);
 }
@@ -281,7 +283,7 @@ void board_save_board(struct Board *b)
     fwrite(b->head[ind], sizeof(char), len, b->file);
 
     if (!b->msgs[ind]) {
-      if (b->msgs[ind] = (char *)malloc(50)) {
+      if ((b->msgs[ind] = (char *)malloc(50))) {
 	strcpy(b->msgs[ind], "Generic Message");
       } else {
 	exit(1);
@@ -359,7 +361,7 @@ void board_reset_board(struct Board *b)
 
 int board_display_msg(struct char_data *ch, char *arg, struct Board *b)
 {
-  char buf[512], number[MAX_INPUT_LENGTH], buffer[MAX_STRING_LENGTH];
+  char number[MAX_INPUT_LENGTH], buffer[MAX_STRING_LENGTH];
   int msg;
 
   if (DEBUG)
@@ -370,12 +372,11 @@ int board_display_msg(struct char_data *ch, char *arg, struct Board *b)
   if (!(msg = atoi(number)))
     return (0);
   if (!b->msg_num) {
-    send_to_char("The board is empty!\n\r", ch);
+    cprintf(ch, "The board is empty!\n\r");
     return (1);
   }
   if (msg < 1 || msg > b->msg_num) {
-    send_to_char("That message exists only in your imagination..\n\r",
-		 ch);
+    cprintf(ch, "That message exists only in your imagination..\n\r");
     return (1);
   }
   /* Bad news */
@@ -405,7 +406,7 @@ int board_show_board(struct char_data *ch, char *arg, struct Board *b)
     return (0);
 
   if (board_kludge_char) {
-    send_to_char("Sorry, but someone is writing a message\n\r", ch);
+    cprintf(ch, "Sorry, but someone is writing a message\n\r");
     return (0);
   }
   strcpy(buf, "This is a bulletin board. Usage: READ/REMOVE <messg #>, WRITE <header>\n\r");

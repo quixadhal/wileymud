@@ -1,0 +1,215 @@
+#PLAYER
+Name               Paige~
+Passwd             Pa9AvGDrtw/SE~
+Whizz              0
+PreTitle           Stunning~
+Title              the Goddess of Love~
+Description
+Before you stands a maiden beyond beauty.  Long dark curls run down
+her back and her figure is astounding.  She radiates a warmth that
+makes you understand that not all the love has been driven out of
+this land.
+~
+LastSite           flair@wiley.cs.wmich.edu~
+LastLogin          848616406
+Birth              826441701
+Played             59424
+Sex                2
+Race               2
+Class              7
+Alignment          850
+Exp                59999999
+Level              mage 58
+Level              cleric 58
+Level              warrior 58
+HeightWeight       166 198
+Gold               100000 0
+HomeTown           3008
+LoadRoom           -1
+PoofIn             ~
+PoofOut            ~
+AbilityScores      19 99 18 18 18 18
+AbilityPad         0 0 0 0
+HpManaMove         1016 1000 274 0 309 0
+AC                 100
+ToHitDamage        0 0
+SaveApply          0 0 0 0 0
+Conditions         -1 -1 -1 0 0 0
+PointsPad1         0 0 0
+PointsPad2         0 0 0 0
+PointsPad3         0 0 0
+ShortSavePad       0 0 0 0
+SavePad            0 0 0 0
+Pracs              87
+SkillsToLearn      0
+NamedSkill         1 66 1 armour~
+NamedSkill         2 99 1 teleport~
+NamedSkill         3 82 1 bless~
+NamedSkill         4 77 1 blindness~
+NamedSkill         5 65 1 burning hands~
+NamedSkill         6 86 1 call lightning~
+NamedSkill         7 90 1 charm person~
+NamedSkill         8 51 1 chill touch~
+NamedSkill         9 66 1 clone~
+NamedSkill         10 80 1 colour spray~
+NamedSkill         11 64 1 control weather~
+NamedSkill         12 71 1 create food~
+NamedSkill         13 63 1 create water~
+NamedSkill         14 57 1 cure blindness~
+NamedSkill         15 69 1 cure critical~
+NamedSkill         16 51 1 cure light~
+NamedSkill         17 66 1 curse~
+NamedSkill         18 55 1 detect evil~
+NamedSkill         19 70 1 detect invisible~
+NamedSkill         20 57 1 detect magic~
+NamedSkill         21 65 1 detect poison~
+NamedSkill         22 52 1 dispel evil~
+NamedSkill         23 76 1 earthquake~
+NamedSkill         24 67 1 enchant weapon~
+NamedSkill         25 98 1 energy drain~
+NamedSkill         26 62 1 fireball~
+NamedSkill         27 89 1 harm~
+NamedSkill         28 88 1 heal~
+NamedSkill         29 65 1 invisibility~
+NamedSkill         30 69 1 lightning bolt~
+NamedSkill         31 68 1 locate object~
+NamedSkill         32 56 1 magic missile~
+NamedSkill         33 67 1 poison~
+NamedSkill         34 74 1 protection from evil~
+NamedSkill         35 57 1 remove curse~
+NamedSkill         36 82 1 sanctuary~
+NamedSkill         37 59 1 shocking grasp~
+NamedSkill         38 71 1 sleep~
+NamedSkill         39 58 1 strength~
+NamedSkill         40 75 1 summon~
+NamedSkill         41 50 1 ventriloquate~
+NamedSkill         42 97 1 word of recall~
+NamedSkill         43 70 1 remove poison~
+NamedSkill         44 88 1 sense life~
+NamedSkill         45 79 1 sneak~
+NamedSkill         46 89 1 hide~
+NamedSkill         47 90 1 steal~
+NamedSkill         48 95 1 backstab~
+NamedSkill         49 69 1 pick lock~
+NamedSkill         50 84 1 kick~
+NamedSkill         51 76 1 bash~
+NamedSkill         52 58 1 rescue~
+NamedSkill         53 60 1 IDENTIFY~
+NamedSkill         54 51 1 infravision~
+NamedSkill         55 75 1 cause light~
+NamedSkill         56 57 1 cause critical~
+NamedSkill         57 89 1 flamestrike~
+NamedSkill         58 88 1 dispel good~
+NamedSkill         59 70 1 weakness~
+NamedSkill         60 78 1 dispel magic~
+NamedSkill         61 56 1 knock~
+NamedSkill         62 88 1 know alignment~
+NamedSkill         63 84 1 animate dead~
+NamedSkill         64 74 1 paralyze~
+NamedSkill         65 86 1 remove paralysis~
+NamedSkill         66 91 1 fear~
+NamedSkill         67 80 1 acid blast~
+NamedSkill         68 95 1 water breath~
+NamedSkill         69 86 1 fly~
+NamedSkill         70 88 1 cone of cold~
+NamedSkill         71 94 1 meteor swarm~
+NamedSkill         72 87 1 ice storm~
+NamedSkill         73 85 1 shield~
+NamedSkill         74 63 1 monsum one~
+NamedSkill         75 99 1 monsum two~
+NamedSkill         76 63 1 monsum three~
+NamedSkill         77 77 1 monsum four~
+NamedSkill         78 62 1 monsum five~
+NamedSkill         79 82 1 monsum six~
+NamedSkill         80 96 1 monsum seven~
+NamedSkill         81 96 1 fireshield~
+NamedSkill         82 82 1 charm monster~
+NamedSkill         83 53 1 cure serious~
+NamedSkill         84 81 1 cause serious~
+NamedSkill         85 84 1 refresh~
+NamedSkill         86 52 1 second wind~
+NamedSkill         87 88 1 turn~
+NamedSkill         88 97 1 succor~
+NamedSkill         89 90 1 create light~
+NamedSkill         90 57 1 continual light~
+NamedSkill         91 74 1 calm~
+NamedSkill         92 96 1 stoneskin~
+NamedSkill         93 69 1 conjure elemental~
+NamedSkill         94 83 1 true sight~
+NamedSkill         95 94 1 minor creation~
+NamedSkill         96 79 1 faerie fire~
+NamedSkill         97 98 1 faerie fog~
+NamedSkill         98 74 1 cacaodemon~
+NamedSkill         99 73 1 polymorph self~
+NamedSkill         100 84 1 MANA~
+NamedSkill         101 61 1 astral walk~
+NamedSkill         102 91 1 group fly~
+NamedSkill         103 95 1 aid~
+NamedSkill         104 70 1 shelter~
+NamedSkill         105 54 1 DRAGON BREATH~
+NamedSkill         106 93 1 goodberry~
+NamedSkill         107 57 1 visions~
+NamedSkill         149 74 1 doorbash~
+NamedSkill         150 79 1 read magic~
+NamedSkill         151 68 1 scribe~
+NamedSkill         152 74 1 brewing~
+NamedSkill         153 50 1 punch~
+NamedSkill         154 57 1 two handed~
+NamedSkill         155 67 1 dual wield~
+NamedSkill         156 81 1 bandage~
+NamedSkill         157 64 1 search~
+NamedSkill         158 89 1 swimming~
+NamedSkill         159 57 1 endurance~
+NamedSkill         160 95 1 barehand~
+NamedSkill         161 58 1 blind fighting~
+NamedSkill         162 67 1 parry~
+NamedSkill         163 86 1 appraise~
+NamedSkill         164 69 1 smite spec~
+NamedSkill         165 71 1 stab spec~
+NamedSkill         166 72 1 whip spec~
+NamedSkill         167 83 1 slash spec~
+NamedSkill         168 92 1 smash spec~
+NamedSkill         169 91 1 cleave spec~
+NamedSkill         170 77 1 crush spec~
+NamedSkill         171 68 1 bludgeon spec~
+NamedSkill         172 72 1 pierce spec~
+NamedSkill         173 70 1 peer~
+NamedSkill         174 69 1 hear noise~
+NamedSkill         175 99 1 dodge~
+NamedSkill         176 66 1 barter~
+NamedSkill         177 75 1 knockout~
+NamedSkill         178 78 1 spellcraft~
+NamedSkill         179 65 1 meditation~
+NamedSkill         180 74 1 track~
+NamedSkill         181 56 1 locate trap~
+NamedSkill         182 58 1 disarm trap~
+NamedSkill         183 72 1 disarm~
+NamedSkill         184 56 1 shield bash~
+NamedSkill         185 90 1 riding~
+ActFlags           97 1
+Affect             0 0 0 0 0 0 0
+Affect             1 0 0 0 0 0 0
+Affect             2 0 0 0 0 0 0
+Affect             3 0 0 0 0 0 0
+Affect             4 0 0 0 0 0 0
+Affect             5 0 0 0 0 0 0
+Affect             6 0 0 0 0 0 0
+Affect             7 0 0 0 0 0 0
+Affect             8 0 0 0 0 0 0
+Affect             9 0 0 0 0 0 0
+Affect             10 0 0 0 0 0 0
+Affect             11 0 0 0 0 0 0
+Affect             12 0 0 0 0 0 0
+Affect             13 0 0 0 0 0 0
+Affect             14 0 0 0 0 0 0
+Affect             15 0 0 0 0 0 0
+Affect             16 0 0 0 0 0 0
+Affect             17 0 0 0 0 0 0
+Affect             18 0 0 0 0 0 0
+Affect             19 0 0 0 0 0 0
+Affect             20 0 0 0 0 0 0
+Affect             21 0 0 0 0 0 0
+Affect             22 0 0 0 0 0 0
+Affect             23 0 0 0 0 0 0
+Affect             24 0 0 0 0 0 0
+End

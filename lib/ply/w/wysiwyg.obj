@@ -1,0 +1,300 @@
+#RENT
+Owner              Wysiwyg~
+Gold               9269
+TotalCost          287
+LastUpdate         837436358
+MinimumStay        0
+End
+#EQUIPMENT
+End
+#CARRIED
+#ITEM
+ObjId              10
+ContainedBy        -1
+Name               traveling cloak~
+Description
+A traveling cloak lies here.~
+ShortDescr
+a traveling cloak~
+ActionDescr
+(null)~
+VNum               3053
+EquippedAt         0
+Values             0 0 0 0
+ExtraFlags         0
+Weight             15
+Timer              0
+BitVector          0
+Type               11
+WearFlags          5
+Cost               12
+CostPerDay         12
+Affect             17 -3
+Affect             26 2
+End
+#ITEM
+ObjId              10
+ContainedBy        -1
+Name               vest leather~
+Description
+A leather vest lies here.~
+ShortDescr
+a leather vest~
+ActionDescr
+(null)~
+VNum               3051
+EquippedAt         0
+Values             2 2 0 0
+ExtraFlags         8192
+Weight             7
+Timer              0
+BitVector          0
+Type               9
+WearFlags          9
+Cost               34
+CostPerDay         24
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              10
+ContainedBy        -1
+Name               cap leather~
+Description
+A leather cap lies here.~
+ShortDescr
+a leather cap~
+ActionDescr
+(null)~
+VNum               3027
+EquippedAt         0
+Values             1 1 0 0
+ExtraFlags         0
+Weight             1
+Timer              0
+BitVector          0
+Type               9
+WearFlags          17
+Cost               35
+CostPerDay         10
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              10
+ContainedBy        -1
+Name               armoured leggings~
+Description
+A pair of armoured leggings are here.~
+ShortDescr
+some armoured leggings~
+ActionDescr
+(null)~
+VNum               5039
+EquippedAt         0
+Values             3 3 0 0
+ExtraFlags         8192
+Weight             17
+Timer              0
+BitVector          0
+Type               9
+WearFlags          33
+Cost               600
+CostPerDay         100
+Affect             0 0
+Affect             0 0
+ExtraDescr         armoured leggings~
+  The leggings are made from links of chain and appear very strong.
+#5040
+armour plated gauntlets~
+End
+#ITEM
+ObjId              10
+ContainedBy        -1
+Name               boots leather~
+Description
+A pair of leather boots lie here.~
+ShortDescr
+a pair of leather boots~
+ActionDescr
+(null)~
+VNum               3026
+EquippedAt         0
+Values             1 1 0 0
+ExtraFlags         0
+Weight             2
+Timer              0
+BitVector          0
+Type               9
+WearFlags          65
+Cost               50
+CostPerDay         10
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              10
+ContainedBy        -1
+Name               leather gloves~
+Description
+A pair of leather gloves lie here.~
+ShortDescr
+some leather gloves~
+ActionDescr
+(null)~
+VNum               3052
+EquippedAt         0
+Values             2 2 0 0
+ExtraFlags         8192
+Weight             4
+Timer              0
+BitVector          0
+Type               9
+WearFlags          129
+Cost               12
+CostPerDay         12
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              10
+ContainedBy        -1
+Name               belt leather~
+Description
+A leather belt lies here.~
+ShortDescr
+a leather belt~
+ActionDescr
+(null)~
+VNum               3028
+EquippedAt         0
+Values             1 1 0 0
+ExtraFlags         0
+Weight             1
+Timer              0
+BitVector          0
+Type               9
+WearFlags          2049
+Cost               30
+CostPerDay         10
+Affect             17 -2
+Affect             0 0
+End
+#ITEM
+ObjId              10
+ContainedBy        -1
+Name               leather bracer~
+Description
+A leather bracer lies here.~
+ShortDescr
+a leather bracer~
+ActionDescr
+(null)~
+VNum               3025
+EquippedAt         0
+Values             1 1 0 0
+ExtraFlags         0
+Weight             1
+Timer              0
+BitVector          0
+Type               9
+WearFlags          4097
+Cost               10
+CostPerDay         5
+Affect             17 -2
+Affect             0 0
+End
+#ITEM
+ObjId              10
+ContainedBy        -1
+Name               longsword~
+Description
+A longsword lies here.~
+ShortDescr
+a longsword~
+ActionDescr
+(null)~
+VNum               5056
+EquippedAt         0
+Values             0 1 8 3
+ExtraFlags         12864
+Weight             8
+Timer              0
+BitVector          0
+Type               5
+WearFlags          8193
+Cost               1000
+CostPerDay         100
+Affect             18 1
+Affect             19 1
+End
+#ITEM
+ObjId              10
+ContainedBy        -1
+Name               map shlyar~
+Description
+A map lies here.~
+ShortDescr
+a map~
+ActionDescr
+(null)~
+VNum               3050
+EquippedAt         0
+Values             0 0 0 0
+ExtraFlags         0
+Weight             2
+Timer              0
+BitVector          0
+Type               12
+WearFlags          1
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+ExtraDescr         map shylar~
+                         -= Grassland =-
+
+     -= Mansion =-           
+           +              -= Arcanus =-
+   	       	         	+
+         * * * * *  *  *  *  *  *+ -= Jakes =-  +-= Kark =-
+   
+                 -= Jessica =- +*                -= Farm =-
+
+                 -= Supply =-  +*+ -= Griffons =-      
+      +
++-= Chapel =-+   -= Bakery =-  +*  -= Sass =-
+      +            		       +	
+ -= Pastue =-     -= Tate =-   +*  *  *  *  *  *  *  *  *  *
+-= Cemetary =-                         + 
+      +                            -= Home =-
+
+                         -= Grassland =-
+~
+End
+#ITEM
+ObjId              10
+ContainedBy        -1
+Name               torch~
+Description
+A large torch.~
+ShortDescr
+a torch~
+ActionDescr
+(null)~
+VNum               3015
+EquippedAt         0
+Values             0 0 24 0
+ExtraFlags         0
+Weight             3
+Timer              0
+BitVector          0
+Type               1
+WearFlags          1
+Cost               10
+CostPerDay         3
+Affect             0 0
+Affect             0 0
+End
+End
+#END_RENT

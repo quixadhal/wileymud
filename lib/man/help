@@ -1,24 +1,30 @@
-				=-= Wiley =-=
-
-Communication:                       Movement:
-  say, shout, tell, ask, whisper,      north, south, east, west, up, down,
-  grep, gtell, look, look in,	       (n,s,e,w,u,d,) enter, leave, go, pull,
-  order (follower/party),whod          push
-
-Equiping yourself:		     Food and shops:
-  wield, wear, remove, grap, hold,     buy, list, value, sell, offer, eat,
-  use <item>, recite <scroll>,         drink, taste, sip
-  quaff <potion> wear 2.(item),
-  get, get <?> from <?>		     Practicing:
-				       practice <skill>, prac, prac <w/t/m/c/r>
-Classes and skills:		       prac (w/t/m/c/r) known
-  warrior, thief, magic user, 
-  cleric, ranger, kick, bash,	     Grouping:
-  rescue, disarm, sneak, hide,         follow, group, grep, gtell
-  backstab, steal, pick, punch,
-  throw				     Casting:
-				       cast 'spell' <target>, magic missile,
-Combat:				       armor, bless, shield
-  kill, swat, cast, kick, bash,
-  backstab, consider, cast,	     Help:
-  disarm, get all from corpse          help, help <topic>
+			  ---=>>> WileyMUD III <<<=---
++---------------------------------------------------------------------------+
+|  Communication   |    Equipment     |     Movement     |    Experience    |
+|------------------+------------------+------------------+------------------|
+| ' say            | wear, wield      | n,s,e,w,u,d      | practice <skill> |
+| , group tell     | remove, hold     | enter, leave     | gain             |
+| " tell           | use <item>       | follow, flee     | prac <m/c/w/t/r> |
+| : emote          | recite <scroll>  | land             |  *add known to   |
+| @ whizz tell     | quaff <potion>   | sit, stand       |  show only your  |
+|   shout, whisper |                  | rest, sleep      |  known skills.   |
+|------------------+------------------+------------------+------------------|
+|      Groups      |      Shops       |      Combat      |      Food        |
+|------------------+------------------+------------------+------------------|
+| follow           | buy, sell        | consider, kill   | eat, taste       |
+| group, grep      | list             | cast, swat       | drink, sip       |
+| gtell, split     | value            | kick, bash       |                  |
+|                  | rent, offer      | rescue, backstab |                  |
+|                  |                  | flee             |                  |
+|------------------+------------------+------------------+------------------|
+|      Items       |     Corpses      |    Environment   |     Personal     |
+|------------------+------------------+------------------+------------------|
+| get, drop, put   | get all corpse   | look             | score, inventory |
+| buy, sell        | bury             | look in          | nosummon,noshout |
+| give             | desecrate        | search           | noteleport       |
+| steal, pick      |                  |                  | help             |
+| open, close      |                  |                  | who              |
+| lock, unlock     |                  |                  | quit (careful!)  |
++---------------------------------------------------------------------------+
+|    There are many more!  Try things, and ask anyone else who's online!    |
++---------------------------------------------------------------------------+

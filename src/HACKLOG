@@ -428,3 +428,204 @@ global.h:1144: warning: function declaration isn't a prototype
 951223	Quixadhal
   0519	Rewrote puff() again.  Simplified a bit.  The values may need
 	tweaking if he does stuff too often.
+951229	Quixadhal
+  0608	Fixed a grouping bug caused by the variable victlvl not being
+	initialized properly.
+  0715	Added IsAvian and IsDraconic functions.
+	Gave Dragons hands (HasHands is now true for them).
+  0720	Found a design flaw with the hatred/fear system... (big surprise!)
+	There are two interfaces to determine if one creature hates
+	another... one is the Hates() function, the other is the
+	FindAHatee() function.  The first says "does a hate b?", while
+	the second says "who in the room do I hate?"
+	Problem:  In some places this is used as you'd expect...
+		"Can I clobber this creature?"
+		However, in others it is "do I presently hate them?"
+	The distinction is:  if we make Hates() also check things like	
+	visibility (it does), paralysis, immortality of victim, etc...
+	then when  the second question is asked, we will give the wrong
+	answer.  If we don't check those, the first question will fail.
+	The only solution I can find is:
+		DoesHate() - says "do I hate this person?"
+		CanHate() - says "can I kill this person by hatred?"
+960105	Quixadhal
+  0512	Added a check to the CheckKill() function which says if the
+	victim is POSITION_DEAD, return FALSE.  This should keep the
+	upper level calls to hit() and such from crashing due to
+	hitting dead people.  Also moved functionality to CanKill,
+	which accepts a string to be printed on failure... such as
+	"You can't bring yourself to backstab %s.\n\r"
+	CheckKill is a small inline that calls CanKill with the
+	traditional "It doesn't affect %s.\n\r".
+960106	Quixadhal
+  0400	Hopefully fixed a bug with guildmasters shouting... optimized the
+	code for GainLevel while I was at it.
+  0749	Cleaned up comm.c a little bit.... got rid of UNIX_COMM stuff.
+  1208	Finally figured out dependancy rules well enough to move all the
+	object files into a subdirectory properly.  obj/ now contains all
+	object files so they are out of sight.
+  1210	Guildmasters now won't teach anything that is 20 levels BELOW their
+	own level.  This means guildmasters now have a "window" of 10 levels.
+	IE:  If the guildmaster is 15th level, he will teach up to 5th level
+	skills.  If the guildmaster is 25th level, he will teach skills that
+	fall between 5th and 15th level.  This ALSO means that the 25th
+	level guildmaster will NOT teach 1st through 5th level skills, and
+	they ALSO will not train anyone who is less than 5th level!  So if
+	a newbie makes his way to Highstaff, he has to go back to Shylar
+	to train. <snicker>
+  1702	Added two more (!) fields to ASSIGN_SPELL().... We now also keep a
+	generic level and generic class field.  If a guildmaster is generic,
+	he can teach any skill whose generic level falls into his range.
+	He will teach it to anyone who has one (or more) of the classes
+	that is stored in the generic class bitmask.  Hence we have
+	spellcraft at glev 7, gcl CLASS_MAGICAL = any mage, cleric, druid,
+	or ranger can learn this skill at level 7.
+  1722	Mage, Cleric, Thief and Ranger guildmaster routines are now all
+	nearly identical...  With a clever table of response messages, I
+	think I can reduce them to a single guildmaster routine soon.
+960109	Quixadhal
+  1851	Fixed small bug in Congratulations message from guildmasters.
+960110	Quixadhal
+  2034	Fixed bug with practice in guildmaster routines.... We can't use
+	GET_LEVEL() until we have a unified routine AND the mobs actually
+	have classes... had to switch back to GetMaxLevel().
+960111	Quixadhal
+  1858	Changed PULSE_LAW to PULSE_REBOOT since we only do reboot checking
+	nowadays.
+960217	Quixadhal
+  1350	Changed move so that immortals can enter private rooms.
+	Also did more work on reception.  ASCII object saves may be fixed.
+960225	Quixadhal
+  0710	Raised gredth guildmasters to level 35.. this should let them
+	train levels 16 to 25, thus not overlapping with Highstaff's
+	6 to 15 anymore.  Level 25+ needs to be done in SR. (Dirk!!!)
+	WHile doing so, I tweaked my type 'C' mobs a bit... you should now
+	be able to specify stats by dice rolls OR constants... IE:
+	I made the cleric guildmaster have: 3d6 0 3d6 3d6 1d6+12 18
+	A 0 for saving throws means "you figure it out"
+  0730	Hooray!  It seems to have worked.  The old man cleric in gredth
+	has a 7 strength, but 18 int and wisdom.  He successfully trained
+	a 15th level cleric to 16th.  Perhaps I should allow one level of
+	overlap like practice... hmmmmm... we'll see.. time to sleep now.
+960226	Quixadhal
+  0530	Changed at command to use the same search technique as score.
+	This was because earlier today I found at 3.goblin didn't work!
+  0602	Redid 'C' mob loader... now uses fread_dice() throughout... this
+	function scans in a dice roll of the format xdy+z and allows you
+	to omit y and z, which default to 1 and 0.  z can also be negative,
+	but do NOT use spaces or omit x.
+  0610	Changed fight.c so that mobs gain exp for pkilling, just like
+	players do... 500xp per level at present.  I think I'd also like
+	mobs to gain levels if they get enough exp. <grin>
+  0634	Cut out deadwood from utils.c.  Removed olc support since it was
+	never fully finished and won't be under my reign.  My inheritor
+	can grab the old code (or SillyMUD where it came from) if he/she
+	wants it.
+  0740	Redid weather.c and optimized a bit.  Group experience redid...
+	I hope it works better now.
+  0800	Fixed bug with axe routine... when you are forced to attack a
+	player, it got the name wrong.... also touched up group exp code
+	and added a log statement to try and see if it's working right.
+  0830	YES!  Fixed it... can you believe GetSecMaxLev and GetThirdMaxLev
+	were off by one?  They were returning third and fourth highest
+	levels, and thus dropping to zero.  Also made it so that kill
+	comes before kiss in the command lookups, and made you enter
+	the game grouped with yourself.
+  0845	Added synonyms of "me" and "myself" to get_char_vis() routines.
+	This won't do everything, but it's a start.
+  1630	Fixed bug in moon-phase caused by stupid 1..32 indexing instead of
+	normal C 0..31.  Thanks Sedna!
+960227	Quixadhal
+  0500	Tweaked experience code a bit... multi-classes should be ok.
+	Changed astral-traveller to use fname(GET_NAME(x)), so we should
+	get "goblin" instead of "a goblin" I hope.
+	mobs now gain levels!  If your mob manages to get enough exp,
+	he will go up a level now, reaping the benefits.  Hence, if you
+	mobs stay alive, they can get more powerful... however, it also
+	works with mobs who kill people.
+	New event added:  goodies.  Will scatter gold around the zone
+	and a few objects and thieves/bandits/etc... some of themobs
+	are bigger, some are tiny.... good for mid-levelers, or newbies
+	if a few mids are on to help.
+960228	Quixadhal
+  0535	Tweaked mob exp a bit more.  Mobs now only gain 1/4 what players
+	do.... but they only NEED 1/20 to level.  So they level four
+	times as fast, but don't become worth so much exp.
+	Fixed score so that mobs doing score get the right display.
+960301	Quixadhal
+  1324	TOTALLY changed experience tables!  Don't HIT me!  Damnit!
+	Sorry, but this was LONG overdue... as has been said before,
+	this mud wasn't DESIGNED for 50 levels... it started life with
+	only 20 levels and got HACKED!  The experience tables need to
+	keep it challenging, as it is NOT.  If you doubt, look at this
+	fact.  Dorn took a good 10 DAYS of playing time to get his
+	character up to level 20.... he then proceeded to get up to
+	level 30 in about a week (not playing time... elapsed time).
+	Thus level 30 didn't mean as much as level 20.  If we're gonna
+	have 50 levels, they need to be 50 level's worth of pain.
+	Changed earthquake back to the old one for now.... damn bugs.
+  1330	Maybe closed a small bug that let non-grouped PC followers
+	get a share of the leftover exp.  I saw this happen once.
+  1335	Added fun effects to quaffing from fountains. <grin>
+960302	Quixadhal
+  0507	Changed fountain so it only does the special thing if
+	you are thirsty (or a god)... Also changed polymorph self
+	spell so it is more random (I hope!).
+  0601	Damn... I have to get back to my story!
+	Well, instead, I made corpses have a 40/60 chance of coming
+	back to life as a RANDOM UNDEAD!  If this happens in Shylar,
+	It will be a wimpy one...  Also added a bury command which
+	lets people put their corpses to rest... They get an extra
+	50..100 exp for doing so, and their alignment shifts 5..50
+	towards good.  They also incur 4 wait states as penalty.
+  0607	Correction... if zone is Shylar (10), we don't do this at all.
+960308	Quixadhal
+  1609	Changed bury to take items on the corpse with it to the grave.
+	Added a sign and pen to the minor creation spell... thanks Dorn!
+  1629	Changed objects for elemental summoning.
+960313	Quixadhal
+  0200	Sedna did some stuff for new spells that aren't documented yet.
+	I fiddled with one of them and maybe fixed it... maybe...
+960315	Sedna
+  0857	Trying to add the standard special procedures for summoned monsters.
+        Also, have changed turn to include the ability of good priests to
+	slay undead if two saving throws fail, and charm for evil priests.
+	Have added goodberry to ranger spells and added new spell (astral
+	vision) to clerics.
+960321	Quixadhal
+  2245	Added costs for gaining levels....
+960319	Sedna
+  ????  Gave summoned mobs the abilities that members of their race should
+        have.  For example, summoned ghasts and ghouls can paralyze.
+        Summoned dwarven clerics and ogre magi can cast as well.
+960327	Quixadhal
+  2115	Added a desecrate command as equivalent to bury, but evil!
+  2155	HOPEFULLY modified code for zombies that rise or are created with
+	animate dead so they wear all their equipment.  I also modified
+	the wear command so it should try to wear weapons (wield).... thus
+	wear all might be sufficient to ready yourself for combat.  This is
+	MOSTLY for mobs as there is now "wield all" or "wield any" command.
+960529	Quixadhal
+  0500	gcc 2.7.2 doesn't like wiley.... so since I have to go through
+	and fix all the things -w was hiding, I removed send_to_char and
+	replaced them all with cprintf.
+  0530	Got up to act_off.c.  Decided to also rework all log() macros to
+	remove sprintf(buf, fjdklsa);log(buf); pairs....
+960610	Quixadhal
+  1351	Got all warnings removed from source except two prototype
+	complaints that have to do with the funcp declarations.
+	Fixed numerous tiny bugs throughtout the source as this
+	happened.
+960612	Quixadhal
+  0234	Began splitting spec_procs.c up into seperate modules.
+	I will probably also merge mob_actions.c into the new
+	specials.c.  I expect to have a main specials.c, which
+	will contain general routines and defaults, and then
+	each special routine will be in its own file.  The
+	include/specials.h will then have prototypes for all
+	special routines (as it does now).
+960617	Quixadhal
+  0048	Moved mkworld and sign into utils subdirectory.
+961011	Sedna
+  1320	Fixed bug in colour spray which prevented registered players from
+	being affected by the spell.

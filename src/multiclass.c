@@ -7,22 +7,23 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <limits.h>
 #include <sys/types.h>
 #include <string.h>
 
-#include "global.h"
-#include "bug.h"
-#include "utils.h"
-#include "comm.h"
-#include "db.h"
-#include "interpreter.h"
-#include "handler.h"
-#include "spells.h"
-#include "limits.h"
-#include "opinion.h"
-#include "constants.h"
+#include "include/global.h"
+#include "include/bug.h"
+#include "include/utils.h"
+#include "include/comm.h"
+#include "include/db.h"
+#include "include/interpreter.h"
+#include "include/handler.h"
+#include "include/spells.h"
+#include "include/limits.h"
+#include "include/opinion.h"
+#include "include/constants.h"
 #define _MULTICLASS_C
-#include "multiclass.h"
+#include "include/multiclass.h"
 
 int GetClassLevel(struct char_data *ch, int class)
 {
@@ -143,7 +144,7 @@ int BestMagicClass(struct char_data *ch)
 
 int GetSecMaxLev(struct char_data *ch)
 {
-  return (GetALevel(ch, 2));
+  return (GetALevel(ch, 1));
 }
 
 int GetALevel(struct char_data *ch, int which)
@@ -168,7 +169,7 @@ int GetALevel(struct char_data *ch, int which)
     }
   }
 
-  if (which >= -1 && which < ABS_MAX_CLASS) {
+  if (which > -1 && which < ABS_MAX_CLASS) {
     return (ind[which]);
   }
   return 0;
@@ -176,7 +177,7 @@ int GetALevel(struct char_data *ch, int which)
 
 int GetThirdMaxLev(struct char_data *ch)
 {
-  return (GetALevel(ch, 3));
+  return (GetALevel(ch, 2));
 }
 
 int GetMaxLevel(struct char_data *ch)
@@ -189,6 +190,19 @@ int GetMaxLevel(struct char_data *ch)
   }
 
   return (max);
+}
+
+int GetMinLevel(struct char_data *ch)
+{
+  int min = INT_MAX, i;
+
+  for (i = MAGE_LEVEL_IND; i <= DRUID_LEVEL_IND; i++) {
+    if (GET_LEVEL(ch, i) > 0)
+      if (GET_LEVEL(ch, i) < min)
+        min = GET_LEVEL(ch, i);
+  }
+
+  return (min);
 }
 
 int GetTotLevel(struct char_data *ch)

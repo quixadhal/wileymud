@@ -2,6 +2,18 @@
 Limbo~
 10 0 0
 M 0 1 1 1           * astral traveler
+M 0 10 3 1	    * fire elemental
+M 0 10 3 1	    * fire elemental
+M 0 10 3 1	    * fire elemental
+M 0 11 3 1	    * water elemental
+M 0 11 3 1	    * water elemental
+M 0 11 3 1	    * water elemental
+M 0 12 3 1	    * earth elemental
+M 0 12 3 1	    * earth elemental
+M 0 12 3 1	    * earth elemental
+M 0 13 3 1	    * air elemental
+M 0 13 3 1	    * air elemental
+M 0 13 3 1	    * air elemental
 M 0 3009 1 10       * umbro the warrior w/equip
 E 1 3029 10 5
 E 1 3030 10 6
@@ -990,6 +1002,7 @@ E 1 4703 100 5
 M 0 4702 11 4749
 E 1 4702 100 6
 E 1 4703 100 5
+G 1 1126 1          * grey stone
 M 0 4704 1 4749     * dwarven king  w/key
 G 1 4700 1    
 M 0 4705 10 4733    * duegar
@@ -4055,9 +4068,9 @@ E 1 6522 14 18
 M 0 6517 7 6576
 E 1 6520 14 12
 E 1 6523 14 18
-M 0 6518 3 6577		* resting locathah
-M 0 6518 3 6578
-M 0 6518 3 6579
+M 0 6518 4 6577		* resting locathah
+M 0 6518 4 6578
+M 0 6518 4 6579
 M 0 6519 5 6570		* dark locathah
 E 1 6524 5 18
 M 0 6519 5 6573
@@ -4584,6 +4597,7 @@ Slaadi Temple~
 9899 31 1
 M 0 9800 10 9861	* red slaadi
 M 0 9800 10 9862
+G 0 1120 1		* red stone for slaadi
 M 0 9800 10 9863
 M 0 9800 10 9866
 M 0 9800 10 9869
@@ -4842,9 +4856,15 @@ Faerie Village~
 10799 27 1
 S
 
+#110
+Centaur Village~
+11599 17 1
+S
+
+
 #150
 Serpent's Reach~
-15999 0 0
+15999 59 2
 M 0 15000 1 15183	* baker
 G 1 15001 100
 G 1 15002 100
@@ -4901,7 +4921,7 @@ M 0 15016 1 15199	* rathos, toymaker
 M 0 15017 1 15200	* lockston, jeweler
 M 0 15018 1 15201	* cleric gm, vail
 M 0 15019 1 15202	* cleric gm, elias
-M 0 15020 1 15203	* ranger gm, cael
+M 0 15020 1 7024 	* ranger gm, cael
 M 0 15021 1 15204	* cleric gm, reever
 M 0 15023 1 15209	* baker
 M 0 15024 1 15206	* baker
@@ -5045,6 +5065,7 @@ E 1 20104 10 12
 E 1 20107 1 16
 G 1 26006 1
 M 0 20007 1 20101     * roc
+G 1 1125 1
 M 0 20008 9 20116     * small trolls
 M 0 20008 9 20121
 M 0 20008 9 20126
@@ -5301,6 +5322,499 @@ Halfling village~
 21108 30 1
 S
 
+#250
+The Castle of Bazzak~
+25200 60 1
+M 0 25000 4 25040			* a gate guard
+G 1 25000 1						*  with a key
+E 1 25006 50 18				*  wielding the two handed bazzak bastard sword
+E 1 25007 50 5				*  wearing an ivory chestpiece.
+E 1 25008 50 9				*  wearing gauntlets
+E 1 25009 50 6        *  wearing an ivory helm
+M 0 25000 4 25040			* a gate guard
+E 1 25006 50 18				*  wielding the two handed bazzak bastard sword
+E 1 25007 50 5				*  wearing an ivory chestpiece.
+E 1 25008 50 9				*  wearing gauntlets
+E 1 25009 50 6        *  wearing an ivory helm
+M 0 25000 4 25041			* a gate guard
+E 1 25006 50 18				*  wielding the two handed bazzak bastard sword
+E 1 25007 50 5				*  wearing an ivory chestpiece.
+E 1 25008 50 9				*  wearing gauntlets
+E 1 25009 50 6        *  wearing an ivory helm
+M 0 25000 4 25041			* a gate guard
+E 1 25006 50 18				*  wielding the two handed bazzak bastard sword
+E 1 25007 50 5				*  wearing an ivory chestpiece.
+E 1 25008 50 9				*  wearing gauntlets
+E 1 25009 50 6        *  wearing an ivory helm
+M 0 25001 20 25041    * an interior guard
+G 1 25001 1						*  with the key to the guard's quarters.
+E 1 25006 50 18				*  wielding the two handed bazzak bastard sword
+E 1 25007 50 5				*  wearing an ivory chestpiece.
+E 1 25008 50 9				*  wearing gauntlets
+E 1 25009 50 6        *  wearing an ivory helm
+M 0 25001 20 25031    * an interior guard
+E 1 25006 50 18				*  wielding the two handed bazzak bastard sword
+E 1 25007 50 5				*  wearing an ivory chestpiece.
+E 1 25008 50 9				*  wearing gauntlets
+E 1 25009 50 6        *  wearing an ivory helm
+M 0 25001 20 25031    * an interior guard
+E 1 25006 50 18				*  wielding the two handed bazzak bastard sword
+E 1 25007 50 5				*  wearing an ivory chestpiece.
+E 1 25008 50 9				*  wearing gauntlets
+E 1 25009 50 6        *  wearing an ivory helm
+M 0 25001 20 25051    * an interior guard
+E 1 25006 50 18				*  wielding the two handed bazzak bastard sword
+E 1 25007 50 5				*  wearing an ivory chestpiece.
+E 1 25008 50 9				*  wearing gauntlets
+E 1 25009 50 6        *  wearing an ivory helm
+M 0 25001 20 25051    * an interior guard
+E 1 25006 50 18				*  wielding the two handed bazzak bastard sword
+E 1 25007 50 5				*  wearing an ivory chestpiece.
+E 1 25008 50 9				*  wearing gauntlets
+E 1 25009 50 6        *  wearing an ivory helm
+M 0 25001 20 25021    * an interior guard
+E 1 25006 50 18				*  wielding the two handed bazzak bastard sword
+E 1 25007 50 5				*  wearing an ivory chestpiece.
+E 1 25008 50 9				*  wearing gauntlets
+E 1 25009 50 6        *  wearing an ivory helm
+M 0 25001 20 25021    * an interior guard
+E 1 25006 50 18				*  wielding the two handed bazzak bastard sword
+E 1 25007 50 5				*  wearing an ivory chestpiece.
+E 1 25008 50 9				*  wearing gauntlets
+E 1 25009 50 6        *  wearing an ivory helm
+M 0 25001 20 25061    * an interior guard
+E 1 25006 50 18				*  wielding the two handed bazzak bastard sword
+E 1 25007 50 5				*  wearing an ivory chestpiece.
+E 1 25008 50 9				*  wearing gauntlets
+E 1 25009 50 6        *  wearing an ivory helm
+M 0 25001 20 25061    * an interior guard
+E 1 25006 50 18				*  wielding the two handed bazzak bastard sword
+E 1 25007 50 5				*  wearing an ivory chestpiece.
+E 1 25008 50 9				*  wearing gauntlets
+E 1 25009 50 6        *  wearing an ivory helm
+M 0 25001 20 25044    * an interior guard
+E 1 25006 50 18				*  wielding the two handed bazzak bastard sword
+E 1 25007 50 5				*  wearing an ivory chestpiece.
+E 1 25008 50 9				*  wearing gauntlets
+E 1 25009 50 6        *  wearing an ivory helm
+M 0 25001 20 25044    * an interior guard
+E 1 25006 50 18				*  wielding the two handed bazzak bastard sword
+E 1 25007 50 5				*  wearing an ivory chestpiece.
+E 1 25008 50 9				*  wearing gauntlets
+E 1 25009 50 6        *  wearing an ivory helm
+M 0 25001 20 25018    * an interior guard
+E 1 25006 50 18				*  wielding the two handed bazzak bastard sword
+E 1 25007 50 5				*  wearing an ivory chestpiece.
+E 1 25008 50 9				*  wearing gauntlets
+E 1 25009 50 6        *  wearing an ivory helm
+M 0 25001 20 25023    * an interior guard
+E 1 25006 50 18				*  wielding the two handed bazzak bastard sword
+E 1 25007 50 5				*  wearing an ivory chestpiece.
+E 1 25008 50 9				*  wearing gauntlets
+E 1 25009 50 6        *  wearing an ivory helm
+M 0 25001 20 25053    * an interior guard
+E 1 25006 50 18				*  wielding the two handed bazzak bastard sword
+E 1 25007 50 5				*  wearing an ivory chestpiece.
+E 1 25008 50 9				*  wearing gauntlets
+E 1 25009 50 6        *  wearing an ivory helm
+M 0 25001 20 25067    * an interior guard
+E 1 25006 50 18				*  wielding the two handed bazzak bastard sword
+E 1 25007 50 5				*  wearing an ivory chestpiece.
+E 1 25008 50 9				*  wearing gauntlets
+E 1 25009 50 6        *  wearing an ivory helm
+M 0 25002 4 25011     * an arsenal guard
+E 1 25010 4 18				*  wielding a cutlass from hell
+E 1 25007 50 5				*  wearing an ivory chestpiece.
+E 1 25008 50 9				*  wearing gauntlets
+E 1 25009 50 6        *  wearing an ivory helm
+M 0 25002 4 25011     * an arsenal guard
+E 1 25010 4 18				*  wielding a cutlass from hell
+E 1 25007 50 5				*  wearing an ivory chestpiece.
+E 1 25008 50 9				*  wearing gauntlets
+E 1 25009 50 6        *  wearing an ivory helm
+M 0 25002 4 25071     * an arsenal guard
+E 1 25010 4 18				*  wielding a cutlass from hell
+E 1 25007 50 5				*  wearing an ivory chestpiece.
+E 1 25008 50 9				*  wearing gauntlets
+E 1 25009 50 6        *  wearing an ivory helm
+M 0 25002 4 25071     * an arsenal guard
+E 1 25010 4 18				*  wielding a cutlass from hell
+E 1 25007 50 5				*  wearing an ivory chestpiece.
+E 1 25008 50 9				*  wearing gauntlets
+E 1 25009 50 6        *  wearing an ivory helm
+M 0 25003 10 25042    * a courtroom jester
+E 1 25011 30 6        *  wearing a jester's cap
+E 1 25012 30 16       *  and wielding a juggler's ball
+G 1 25012 30          *      and holding 2 more.
+G 1 25012 30
+M 0 25003 10 25043    * a courtroom jester
+E 1 25011 30 6        *  wearing a jester's cap
+E 1 25012 30 16       *  and wielding a juggler's ball
+G 1 25012 30          *      and holding 2 more.
+G 1 25012 30
+M 0 25003 10 25044    * a courtroom jester
+E 1 25011 30 6        *  wearing a jester's cap
+E 1 25012 30 16       *  and wielding a juggler's ball
+G 1 25012 30          *      and holding 2 more.
+G 1 25012 30
+M 0 25003 10 25032    * a courtroom jester
+E 1 25011 30 6        *  wearing a jester's cap
+E 1 25012 30 16       *  and wielding a juggler's ball
+G 1 25012 30          *      and holding 2 more.
+G 1 25012 30
+M 0 25003 10 25033    * a courtroom jester
+E 1 25011 30 6        *  wearing a jester's cap
+E 1 25012 30 16       *  and wielding a juggler's ball
+G 1 25012 30          *      and holding 2 more.
+G 1 25012 30
+M 0 25003 10 25034    * a courtroom jester
+E 1 25011 30 6        *  wearing a jester's cap
+E 1 25012 30 16       *  and wielding a juggler's ball
+G 1 25012 30          *      and holding 2 more.
+G 1 25012 30
+M 0 25003 10 25052    * a courtroom jester
+E 1 25011 30 6        *  wearing a jester's cap
+E 1 25012 30 16       *  and wielding a juggler's ball
+G 1 25012 30          *      and holding 2 more.
+G 1 25012 30
+M 0 25003 10 25053    * a courtroom jester
+E 1 25011 30 6        *  wearing a jester's cap
+E 1 25012 30 16       *  and wielding a juggler's ball
+G 1 25012 30          *      and holding 2 more.
+G 1 25012 30
+M 0 25003 10 25054    * a courtroom jester
+E 1 25011 30 6        *  wearing a jester's cap
+E 1 25012 30 16       *  and wielding a juggler's ball
+G 1 25012 30          *      and holding 2 more.
+G 1 25012 30
+M 0 25003 10 25027    * a courtroom jester
+E 1 25011 30 6        *  wearing a jester's cap
+E 1 25012 30 16       *  and wielding a juggler's ball
+G 1 25012 30          *      and holding 2 more.
+G 1 25012 30
+M 0 25003 10 25028    * a courtroom jester
+E 1 25011 30 6        *  wearing a jester's cap
+E 1 25012 30 16       *  and wielding a juggler's ball
+G 1 25012 30          *      and holding 2 more.
+G 1 25012 30
+M 0 25003 10 25017    * a courtroom jester
+E 1 25011 30 6        *  wearing a jester's cap
+E 1 25012 30 16       *  and wielding a juggler's ball
+G 1 25012 30          *      and holding 2 more.
+G 1 25012 30
+M 0 25004 10 25043    * a buxom teenager
+E 1 1302 30 5         *  sporting a leather bra
+E 1 1303 30 7         *  and a leather skirt
+E 1 1301 30 10        *  and leather armbands
+E 1 10002 30 16       *  wielding a scourge.
+M 1 25005 10 25043    * being followed by a dirty old man
+E 1 25013 10 16       *  wielding a cane
+M 0 25004 10 25054    * a buxom teenager
+E 1 1302 30 5         *  sporting a leather bra
+E 1 1303 30 7         *  and a leather skirt
+E 1 1301 30 10        *  and leather armbands
+E 1 10002 30 16       *  wielding a scourge.
+M 1 25006 10 25054    * followed by a young boy
+E 1 25006 50 18				*  wielding the two handed bazzak bastard sword
+M 0 25004 10 25044    * a buxom teenager
+E 1 1302 30 5         *  sporting a leather bra
+E 1 1303 30 7         *  and a leather skirt
+E 1 1301 30 10        *  and leather armbands
+E 1 10002 30 16       *  wielding a scourge.
+M 1 25005 10 25044    * being followed by a dirty old man
+E 1 25013 10 16       *  wielding a cane
+M 0 25004 10 25034    * a buxom teenager
+E 1 1302 30 5         *  sporting a leather bra
+E 1 1303 30 7         *  and a leather skirt
+E 1 1301 30 10        *  and leather armbands
+E 1 10002 30 16       *  wielding a scourge.
+M 1 25006 10 25034    * followed by a young boy
+E 1 25006 50 18				*  wielding the two handed bazzak bastard sword
+M 0 25004 10 25027    * a buxom teenager
+E 1 1302 30 5         *  sporting a leather bra
+E 1 1303 30 7         *  and a leather skirt
+E 1 1301 30 10        *  and leather armbands
+E 1 25014 3 16        *  wielding a _special_ whip.
+M 1 25006 10 25027    * followed by a young boy
+E 1 25006 50 18				*  wielding the two handed bazzak bastard sword
+M 0 25004 10 25016    * a buxom teenager
+E 1 1302 30 5         *  sporting a leather bra
+E 1 1303 30 7         *  and a leather skirt
+E 1 1301 30 10        *  and leather armbands
+E 1 25014 3 16        *  wielding a _special_ whip.
+M 1 25005 10 25016    * being followed by a dirty old man
+E 1 25013 10 16       *  wielding a cane
+M 1 25006 10 25016    * followed by a young boy
+E 1 25006 50 18				*  wielding the two handed bazzak bastard sword
+M 0 25007 20 25016    * A drunken warrior
+E 1 25015 50 18				*  wielding the two handed bazzak bastard sword
+E 1 25007 50 5				*  wearing an ivory chestpiece.
+E 1 25008 50 9				*  wearing gauntlets
+E 1 25009 50 6        *  wearing an ivory helm
+E 1 25016 30 7        *  wearing ivory legplates
+E 1 25017 30 10       *  wearing ivory armplates
+M 0 25007 20 25017    * A drunken warrior
+E 1 25015 50 18				*  wielding the two handed bazzak bastard sword
+E 1 25007 50 5				*  wearing an ivory chestpiece.
+E 1 25008 50 9				*  wearing gauntlets
+E 1 25009 50 6        *  wearing an ivory helm
+E 1 25016 30 7        *  wearing ivory legplates
+E 1 25017 30 10       *  wearing ivory armplates
+M 0 25007 20 25018    * A drunken warrior
+E 1 25015 50 18				*  wielding the two handed bazzak bastard sword
+E 1 25007 50 5				*  wearing an ivory chestpiece.
+E 1 25008 50 9				*  wearing gauntlets
+E 1 25009 50 6        *  wearing an ivory helm
+E 1 25016 30 7        *  wearing ivory legplates
+E 1 25017 30 10       *  wearing ivory armplates
+M 0 25007 20 25026    * A drunken warrior
+E 1 25015 50 18				*  wielding the two handed bazzak bastard sword
+E 1 25007 50 5				*  wearing an ivory chestpiece.
+E 1 25008 50 9				*  wearing gauntlets
+E 1 25009 50 6        *  wearing an ivory helm
+E 1 25016 30 7        *  wearing ivory legplates
+E 1 25017 30 10       *  wearing ivory armplates
+M 0 25007 20 25027    * A drunken warrior
+E 1 25015 50 18				*  wielding the two handed bazzak bastard sword
+E 1 25007 50 5				*  wearing an ivory chestpiece.
+E 1 25008 50 9				*  wearing gauntlets
+E 1 25009 50 6        *  wearing an ivory helm
+E 1 25016 30 7        *  wearing ivory legplates
+E 1 25017 30 10       *  wearing ivory armplates
+M 0 25007 20 25028    * A drunken warrior
+E 1 25015 50 18				*  wielding the two handed bazzak bastard sword
+E 1 25007 50 5				*  wearing an ivory chestpiece.
+E 1 25008 50 9				*  wearing gauntlets
+E 1 25009 50 6        *  wearing an ivory helm
+E 1 25016 30 7        *  wearing ivory legplates
+E 1 25017 30 10       *  wearing ivory armplates
+M 0 25007 20 25026    * A drunken warrior
+E 1 25015 50 18				*  wielding the two handed bazzak bastard sword
+E 1 25007 50 5				*  wearing an ivory chestpiece.
+E 1 25008 50 9				*  wearing gauntlets
+E 1 25009 50 6        *  wearing an ivory helm
+E 1 25016 30 7        *  wearing ivory legplates
+E 1 25017 30 10       *  wearing ivory armplates
+M 0 25007 20 25027    * A drunken warrior
+E 1 25015 50 18				*  wielding the two handed bazzak bastard sword
+E 1 25007 50 5				*  wearing an ivory chestpiece.
+E 1 25008 50 9				*  wearing gauntlets
+E 1 25009 50 6        *  wearing an ivory helm
+E 1 25016 30 7        *  wearing ivory legplates
+E 1 25017 30 10       *  wearing ivory armplates
+M 0 25007 20 25028    * A drunken warrior
+E 1 25015 50 18				*  wielding the two handed bazzak bastard sword
+E 1 25007 50 5				*  wearing an ivory chestpiece.
+E 1 25008 50 9				*  wearing gauntlets
+E 1 25009 50 6        *  wearing an ivory helm
+E 1 25016 30 7        *  wearing ivory legplates
+E 1 25017 30 10       *  wearing ivory armplates
+M 0 25008 6 25030     * A front gate guard
+E 1 25015 50 18				*  wielding the two handed bazzak bastard sword
+E 1 25007 50 5				*  wearing an ivory chestpiece.
+E 1 25008 50 9				*  wearing gauntlets
+E 1 25009 50 6        *  wearing an ivory helm
+E 1 25016 30 7        *  wearing ivory legplates
+E 1 25017 30 10       *  wearing ivory armplates
+G 1 25002 1           *  and a key
+M 0 25008 6 25030     * A front gate guard
+E 1 25015 50 18				*  wielding the two handed bazzak bastard sword
+E 1 25007 50 5				*  wearing an ivory chestpiece.
+E 1 25008 50 9				*  wearing gauntlets
+E 1 25009 50 6        *  wearing an ivory helm
+E 1 25016 30 7        *  wearing ivory legplates
+E 1 25017 30 10       *  wearing ivory armplates
+M 0 25008 6 25050     * A front gate guard
+E 1 25015 50 18				*  wielding the two handed bazzak bastard sword
+E 1 25007 50 5				*  wearing an ivory chestpiece.
+E 1 25008 50 9				*  wearing gauntlets
+E 1 25009 50 6        *  wearing an ivory helm
+E 1 25016 30 7        *  wearing ivory legplates
+E 1 25017 30 10       *  wearing ivory armplates
+M 0 25008 6 25050     * A front gate guard
+E 1 25015 50 18				*  wielding the two handed bazzak bastard sword
+E 1 25007 50 5				*  wearing an ivory chestpiece.
+E 1 25008 50 9				*  wearing gauntlets
+E 1 25009 50 6        *  wearing an ivory helm
+E 1 25016 30 7        *  wearing ivory legplates
+E 1 25017 30 10       *  wearing ivory armplates
+M 0 25009 6 25015     * A waitress
+G 1 3001 20						*  with three beer bottles
+G 1 3001 20
+G 1 3001 20
+E 1 25018 20 16       *  wielding a broken beer bottle.
+M 0 25009 6 25015     * A waitress
+G 1 3001 20						*  with three beer bottles
+G 1 3001 20
+G 1 3001 20
+E 1 25018 20 16       *  wielding a broken beer bottle.
+M 0 25009 6 25015     * A waitress
+G 1 3001 20						*  with three beer bottles
+G 1 3001 20
+G 1 3001 20
+E 1 25018 20 16       *  wielding a broken beer bottle.
+M 0 25009 6 25016     * A waitress
+G 1 3001 20						*  with three beer bottles
+G 1 3001 20
+G 1 3001 20
+E 1 25018 20 16       *  wielding a broken beer bottle.
+M 0 25009 6 25027     * A waitress
+G 1 3001 20						*  with three beer bottles
+G 1 3001 20
+G 1 3001 20
+E 1 25018 20 16       *  wielding a broken beer bottle.
+M 0 25009 6 25018     * A waitress
+G 1 3001 20						*  with three beer bottles
+G 1 3001 20
+G 1 3001 20
+E 1 25018 20 16       *  wielding a broken beer bottle.
+M 0 25010 12 25066    * A Practicing warrior
+E 1 25006 50 18				*  wielding the two handed bazzak bastard sword
+E 1 25007 50 5				*  wearing an ivory chestpiece.
+E 1 25008 50 9				*  wearing gauntlets
+E 1 25009 50 6        *  wearing an ivory helm
+E 1 25016 30 7        *  wearing ivory legplates
+E 1 25017 30 10       *  wearing ivory armplates
+M 0 25010 12 25066    * A Practicing warrior
+E 1 25006 50 18				*  wielding the two handed bazzak bastard sword
+E 1 25007 50 5				*  wearing an ivory chestpiece.
+E 1 25008 50 9				*  wearing gauntlets
+E 1 25009 50 6        *  wearing an ivory helm
+E 1 25016 30 7        *  wearing ivory legplates
+E 1 25017 30 10       *  wearing ivory armplates
+M 0 25010 12 25067    * A Practicing warrior
+E 1 25006 50 18				*  wielding the two handed bazzak bastard sword
+E 1 25007 50 5				*  wearing an ivory chestpiece.
+E 1 25008 50 9				*  wearing gauntlets
+E 1 25009 50 6        *  wearing an ivory helm
+E 1 25016 30 7        *  wearing ivory legplates
+E 1 25017 30 10       *  wearing ivory armplates
+M 0 25010 12 25067    * A Practicing warrior
+E 1 25006 50 18				*  wielding the two handed bazzak bastard sword
+E 1 25007 50 5				*  wearing an ivory chestpiece.
+E 1 25008 50 9				*  wearing gauntlets
+E 1 25009 50 6        *  wearing an ivory helm
+E 1 25016 30 7        *  wearing ivory legplates
+E 1 25017 30 10       *  wearing ivory armplates
+M 0 25010 12 25068    * A Practicing warrior
+E 1 25006 50 18				*  wielding the two handed bazzak bastard sword
+E 1 25007 50 5				*  wearing an ivory chestpiece.
+E 1 25008 50 9				*  wearing gauntlets
+E 1 25009 50 6        *  wearing an ivory helm
+E 1 25016 30 7        *  wearing ivory legplates
+E 1 25017 30 10       *  wearing ivory armplates
+M 0 25010 12 25068    * A Practicing warrior
+E 1 25006 50 18				*  wielding the two handed bazzak bastard sword
+E 1 25007 50 5				*  wearing an ivory chestpiece.
+E 1 25008 50 9				*  wearing gauntlets
+E 1 25009 50 6        *  wearing an ivory helm
+E 1 25016 30 7        *  wearing ivory legplates
+E 1 25017 30 10       *  wearing ivory armplates
+M 0 25010 12 25076    * A Practicing warrior
+E 1 25006 50 18				*  wielding the two handed bazzak bastard sword
+E 1 25007 50 5				*  wearing an ivory chestpiece.
+E 1 25008 50 9				*  wearing gauntlets
+E 1 25009 50 6        *  wearing an ivory helm
+E 1 25016 30 7        *  wearing ivory legplates
+E 1 25017 30 10       *  wearing ivory armplates
+M 0 25010 12 25076    * A Practicing warrior
+E 1 25006 50 18				*  wielding the two handed bazzak bastard sword
+E 1 25007 50 5				*  wearing an ivory chestpiece.
+E 1 25008 50 9				*  wearing gauntlets
+E 1 25009 50 6        *  wearing an ivory helm
+E 1 25016 30 7        *  wearing ivory legplates
+E 1 25017 30 10       *  wearing ivory armplates
+M 0 25010 12 25077    * A Practicing warrior
+E 1 25006 50 18				*  wielding the two handed bazzak bastard sword
+E 1 25007 50 5				*  wearing an ivory chestpiece.
+E 1 25008 50 9				*  wearing gauntlets
+E 1 25009 50 6        *  wearing an ivory helm
+E 1 25016 30 7        *  wearing ivory legplates
+E 1 25017 30 10       *  wearing ivory armplates
+M 0 25010 12 25077    * A Practicing warrior
+E 1 25006 50 18				*  wielding the two handed bazzak bastard sword
+E 1 25007 50 5				*  wearing an ivory chestpiece.
+E 1 25008 50 9				*  wearing gauntlets
+E 1 25009 50 6        *  wearing an ivory helm
+E 1 25016 30 7        *  wearing ivory legplates
+E 1 25017 30 10       *  wearing ivory armplates
+M 0 25010 12 25078    * A Practicing warrior
+E 1 25006 50 18				*  wielding the two handed bazzak bastard sword
+E 1 25007 50 5				*  wearing an ivory chestpiece.
+E 1 25008 50 9				*  wearing gauntlets
+E 1 25009 50 6        *  wearing an ivory helm
+E 1 25016 30 7        *  wearing ivory legplates
+E 1 25017 30 10       *  wearing ivory armplates
+M 0 25010 12 25078    * A Practicing warrior
+E 1 25006 50 18				*  wielding the two handed bazzak bastard sword
+E 1 25007 50 5				*  wearing an ivory chestpiece.
+E 1 25008 50 9				*  wearing gauntlets
+E 1 25009 50 6        *  wearing an ivory helm
+E 1 25016 30 7        *  wearing ivory legplates
+E 1 25017 30 10       *  wearing ivory armplates
+M 0 25011 2 25045     * A king's sentry
+E 1 5077 20 5         *   wearing a golden chestplate
+E 1 5078 20 6         *   wearing a gold encrusted helm
+E 1 5079 20 7         *   wearing golden legplates
+E 1 25015 50 18				*  wielding the two handed bazzak bastard sword
+G 1 25003 1						*  and a key to the king's room.
+M 0 25011 2 25045     * A king's sentry
+E 1 5077 20 5         *   wearing a golden chestplate
+E 1 5078 20 6         *   wearing a gold encrusted helm
+E 1 5079 20 7         *   wearing golden legplates
+E 1 25015 50 18				*  wielding the two handed bazzak bastard sword
+G 1 25003 1
+M 0 25012 6 25046     * A king's guard
+E 1 5077 20 5         *   wearing a golden chestplate
+E 1 5078 20 6         *   wearing a gold encrusted helm
+E 1 5079 20 7         *   wearing golden legplates
+E 1 25015 50 18				*  wielding the two handed bazzak bastard sword
+M 0 25012 6 25036     * A king's guard
+E 1 5077 20 5         *   wearing a golden chestplate
+E 1 5078 20 6         *   wearing a gold encrusted helm
+E 1 5079 20 7         *   wearing golden legplates
+E 1 25015 50 18				*  wielding the two handed bazzak bastard sword
+M 0 25012 6 25056     * A king's guard
+E 1 5077 20 5         *   wearing a golden chestplate
+E 1 5078 20 6         *   wearing a gold encrusted helm
+E 1 5079 20 7         *   wearing golden legplates
+E 1 25015 50 18				*  wielding the two handed bazzak bastard sword
+M 0 25012 6 25047     * A king's guard
+E 1 5077 20 5         *   wearing a golden chestplate
+E 1 5078 20 6         *   wearing a gold encrusted helm
+E 1 5079 20 7         *   wearing golden legplates
+E 1 25015 50 18				*  wielding the two handed bazzak bastard sword
+M 0 25012 6 25047     * A king's guard
+E 1 5077 20 5         *   wearing a golden chestplate
+E 1 5078 20 6         *   wearing a gold encrusted helm
+E 1 5079 20 7         *   wearing golden legplates
+E 1 25015 50 18				*  wielding the two handed bazzak bastard sword
+M 0 25012 6 25048     * A king's guard
+E 1 5077 20 5         *   wearing a golden chestplate
+E 1 5078 20 6         *   wearing a gold encrusted helm
+E 1 5079 20 7         *   wearing golden legplates
+E 1 25015 50 18				*  wielding the two handed bazzak bastard sword
+M 0 25013 1 25048     * The prince
+E 1 5077 20 5         *   wearing a golden chestplate
+E 1 5078 20 6         *   wearing a gold encrusted helm
+E 1 5079 20 7         *   wearing golden legplates
+E 1 25015 50 18				*  wielding the two handed bazzak bastard sword
+E 1 25019 1 1         *   and wearing his signet ringg
+O 0 25020 1 25048     *  and the story is here.
+M 0 25014 1 25073     * The Bazzak Mage
+E 1 25021 1 16				*  wielding his special dagger
+E 1 25022 1 12				*  and wearing his robe.
+G 1 25023 1           *  and carrying a magic staff
+O 1 25006 50 25011		*  wielding the two handed bazzak bastard sword
+O 1 25006 50 25011		*  wielding the two handed bazzak bastard sword
+O 1 25006 50 25011		*  wielding the two handed bazzak bastard sword
+O 1 25006 50 25011		*  wielding the two handed bazzak bastard sword
+O 1 25006 50 25071		*  wielding the two handed bazzak bastard sword
+O 1 25006 50 25071		*  wielding the two handed bazzak bastard sword
+O 1 25006 50 25071		*  wielding the two handed bazzak bastard sword
+O 1 25006 50 25071		*  wielding the two handed bazzak bastard sword
+S
+
 #300
 Cemetary of Shylar~
 32000 7 2
@@ -5321,7 +5835,12 @@ S
 
 #320
 Mortal Keeps~
-32300 48 0
+33000 48 0
+M 0 32300 1 32305
+M 0 6518 4 32265	* blue stone
+G 1 1124 1		* resting locathah in mortal keep
+M 0 2101 1 32301
+O 0 32250 1 32305
 D 0 32004 0 2		* corwin
 D 0 32005 2 2
 D 0 32005 3 1
@@ -5349,6 +5868,8 @@ D 0 32207 2 2		* nomad
 D 0 32208 0 2
 D 0 32261 0 2		* zar
 D 0 32263 2 2
+D 0 2259 5 1
+D 0 32305 4 2
 S
 
 $~

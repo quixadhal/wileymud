@@ -1,0 +1,260 @@
+#RENT
+Owner              Myrddina~
+Gold               1249
+TotalCost          924
+LastUpdate         823579128
+MinimumStay        0
+End
+#EQUIPMENT
+#ITEM
+ObjId              0
+ContainedBy        -1
+Name               jeweled necklace~
+Description
+A necklace made of semi-precious stones is here.~
+ShortDescr
+a jeweled necklace~
+ActionDescr
+(null)~
+VNum               9208
+EquippedAt         3
+Values             0 0 0 0
+ExtraFlags         0
+Weight             1
+Timer              0
+BitVector          0
+Type               11
+WearFlags          5
+Cost               150
+CostPerDay         5
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              1
+ContainedBy        -1
+Name               vest feathered~
+Description
+A vest made almost completely of feathers lies here.~
+ShortDescr
+a feathered vest~
+ActionDescr
+(null)~
+VNum               1306
+EquippedAt         5
+Values             2 2 0 0
+ExtraFlags         0
+Weight             7
+Timer              0
+BitVector          0
+Type               9
+WearFlags          9
+Cost               235
+CostPerDay         235
+Affect             17 -6
+Affect             0 0
+End
+#ITEM
+ObjId              2
+ContainedBy        -1
+Name               helm silver winged~
+Description
+A helm made of silver lies here, small wings on the sides.~
+ShortDescr
+a silver winged helm~
+ActionDescr
+(null)~
+VNum               5096
+EquippedAt         6
+Values             3 4 0 0
+ExtraFlags         90112
+Weight             18
+Timer              0
+BitVector          0
+Type               9
+WearFlags          17
+Cost               546
+CostPerDay         54
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              3
+ContainedBy        -1
+Name               leggings black leather~
+Description
+A pair of black leather leggings lie here.~
+ShortDescr
+some black leather leggings~
+ActionDescr
+(null)~
+VNum               5083
+EquippedAt         7
+Values             2 2 0 0
+ExtraFlags         8192
+Weight             5
+Timer              0
+BitVector          0
+Type               9
+WearFlags          33
+Cost               23
+CostPerDay         23
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              4
+ContainedBy        -1
+Name               boots leather~
+Description
+A pair of leather boots lie here.~
+ShortDescr
+a pair of leather boots~
+ActionDescr
+(null)~
+VNum               3026
+EquippedAt         8
+Values             1 1 0 0
+ExtraFlags         0
+Weight             2
+Timer              0
+BitVector          0
+Type               9
+WearFlags          65
+Cost               50
+CostPerDay         10
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              5
+ContainedBy        -1
+Name               armour plated gauntlets~
+Description
+A pair of armour plated gauntlets are here.~
+ShortDescr
+a pair of armour plated gauntlets~
+ActionDescr
+(null)~
+VNum               5040
+EquippedAt         9
+Values             4 4 0 0
+ExtraFlags         90112
+Weight             15
+Timer              0
+BitVector          0
+Type               9
+WearFlags          129
+Cost               450
+CostPerDay         100
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              6
+ContainedBy        -1
+Name               robe golden silk~
+Description
+A golden robe lays piled upon the ground here.~
+ShortDescr
+a golden silk robe~
+ActionDescr
+(null)~
+VNum               4607
+EquippedAt         12
+Values             0 0 0 0
+ExtraFlags         118848
+Weight             2
+Timer              0
+BitVector          0
+Type               12
+WearFlags          1025
+Cost               1000
+CostPerDay         100
+Affect             24 4
+Affect             17 -10
+ExtraDescr         robe~
+This elegant robe is made of fine silk, interweaved with golden strands.
+Touching the fabric it almost seethes with power, power only to be held
+by those that can use it.
+~
+End
+#ITEM
+ObjId              7
+ContainedBy        -1
+Name               pouch small leather~
+Description
+A small pouch made of soft leather is piled upon the floor.~
+ShortDescr
+a small leather pouch~
+ActionDescr
+(null)~
+VNum               4603
+EquippedAt         13
+Values             300 1 -1 0
+ExtraFlags         64
+Weight             4
+Timer              0
+BitVector          0
+Type               15
+WearFlags          2049
+Cost               50
+CostPerDay         35
+Affect             0 0
+Affect             0 0
+ExtraDescr         pouch~
+This small pouch is made of soft deerskin.
+~
+End
+#ITEM
+ObjId              8
+ContainedBy        -1
+Name               sword silver hilted bastard sword~
+Description
+A bastard sword lies here, the hilt shining with silver.~
+ShortDescr
+a silver hilted bastard sword~
+ActionDescr
+(null)~
+VNum               5098
+EquippedAt         18
+Values             0 2 4 3
+ExtraFlags         28672
+Weight             13
+Timer              0
+BitVector          0
+Type               5
+WearFlags          40961
+Cost               1439
+CostPerDay         439
+Affect             0 0
+Affect             0 0
+End
+End
+#CARRIED
+#ITEM
+ObjId              9
+ContainedBy        -1
+Name               bag~
+Description
+A small bag.~
+ShortDescr
+a bag~
+ActionDescr
+(null)~
+VNum               3017
+EquippedAt         0
+Values             50 0 0 0
+ExtraFlags         0
+Weight             2
+Timer              0
+BitVector          0
+Type               15
+WearFlags          16385
+Cost               20
+CostPerDay         2
+Affect             0 0
+Affect             0 0
+End
+End
+#END_RENT

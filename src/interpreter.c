@@ -14,30 +14,36 @@
 #include <time.h>
 #include <sys/timeb.h>
 
-#include "global.h"
-#include "bug.h"
-#include "comm.h"
-#include "version.h"
-#include "db.h"
-#include "utils.h"
-#include "limits.h"
-#include "constants.h"
-#include "act_comm.h"
-#include "act_info.h"
-#include "act_move.h"
-#include "act_obj.h"
-#include "act_off.h"
-#include "act_other.h"
-#include "act_skills.h"
-#include "act_social.h"
-#include "act_wiz.h"
-#include "spells.h"
-#include "spell_parser.h"
-#include "modify.h"
-#include "whod.h"
-#include "events.h"
+#include "include/global.h"
+#include "include/bug.h"
+#include "include/comm.h"
+#include "include/version.h"
+#include "include/db.h"
+#include "include/utils.h"
+#include "include/limits.h"
+#include "include/constants.h"
+#include "include/act_comm.h"
+#include "include/act_info.h"
+#include "include/act_move.h"
+#include "include/act_obj.h"
+#include "include/act_off.h"
+#include "include/act_other.h"
+#include "include/act_skills.h"
+#include "include/act_social.h"
+#include "include/act_wiz.h"
+#include "include/spells.h"
+#include "include/spell_parser.h"
+#include "include/modify.h"
+#include "include/whod.h"
+#include "include/events.h"
+#include "include/random.h"
+#include "include/board.h"
+#include "include/multiclass.h"
+#include "include/handler.h"
+#include "include/reception.h"
+#include "include/tracking.h"
 #define _INTERPRETER_C
-#include "interpreter.h"
+#include "include/interpreter.h"
 
 struct command_info cmd_info[MAX_CMD_LIST];
 
@@ -52,10 +58,10 @@ int WizLock;
 char *command[] =
 {
   "north", "east", "south", "west", "up",
-  "down", "enter", "exits", "kiss", "get",
+  "down", "enter", "exits", "kill", "get",
   "drink", "eat", "wear", "wield", "look",
   "score", "say", "shout", "tell", "inventory",
-  "qui", "bounce", "smile", "dance", "kill",
+  "qui", "bounce", "smile", "dance", "kiss",
   "cackle", "laugh", "giggle", "shake", "puke",
   "growl", "scream", "insult", "comfort", "nod",
   "sigh", "sulk", "help", "who", "emote",
@@ -106,7 +112,8 @@ char *command[] =
   "notell", "scribe", "apraise", "bandage", "search",
   "skills", "doorbash", "restoreall", "mount", "dismount",
   "land", "nosummon", "noteleport", "players", "reset",
-  "event", "zpurge", "ticks",
+  "event", "zpurge", "ticks", "bury", "desecrate",
+  "setreboot", "home",
   "\n"
 };
 
@@ -179,7 +186,6 @@ void command_interpreter(struct char_data *ch, char *argument)
   char buf[200];
   extern int no_specials;
   extern struct char_data *board_kludge_char;
-  char debug_buf[512];
 
   REMOVE_BIT(ch->specials.affected_by, AFF_HIDE);
 
@@ -216,31 +222,27 @@ void command_interpreter(struct char_data *ch, char *argument)
       if (GET_POS(ch) < cmd_info[cmd].minimum_position) {
 	switch (GET_POS(ch)) {
 	case POSITION_DEAD:
-	  send_to_char("Lie still; you are DEAD!!! :-( \n\r", ch);
+	  cprintf(ch, "Lie still; you are DEAD!!! :-( \n\r");
 	  break;
 	case POSITION_INCAP:
 	case POSITION_MORTALLYW:
-	  send_to_char(
-			"You are in a pretty bad shape, unable to do anything!\n\r",
-			ch);
+	  cprintf(ch, "You are in a pretty bad shape, unable to do anything!\n\r");
 	  break;
 
 	case POSITION_STUNNED:
-	  send_to_char(
-			"All you can do right now, is think about the stars!\n\r", ch);
+	  cprintf(ch, "All you can do right now, is think about the stars!\n\r");
 	  break;
 	case POSITION_SLEEPING:
-	  send_to_char("In your dreams, or what?\n\r", ch);
+	  cprintf(ch, "In your dreams, or what?\n\r");
 	  break;
 	case POSITION_RESTING:
-	  send_to_char("Nah... You feel too relaxed to do that..\n\r",
-		       ch);
+	  cprintf(ch, "Nah... You feel too relaxed to do that..\n\r");
 	  break;
 	case POSITION_SITTING:
-	  send_to_char("Maybe you should get on your feet first?\n\r", ch);
+	  cprintf(ch, "Maybe you should get on your feet first?\n\r");
 	  break;
 	case POSITION_FIGHTING:
-	  send_to_char("No way! You are fighting for your life!\n\r", ch);
+	  cprintf(ch, "No way! You are fighting for your life!\n\r");
 	  break;
 	}
       } else {
@@ -257,7 +259,7 @@ void command_interpreter(struct char_data *ch, char *argument)
       }
       return;
     } else {
-      send_to_char(" You are paralyzed, you can't do much of anything!\n\r", ch);
+      cprintf(ch, " You are paralyzed, you can't do much of anything!\n\r");
       return;
     }
   }
@@ -265,7 +267,7 @@ void command_interpreter(struct char_data *ch, char *argument)
     return;
 
   if (cmd > 0 && (cmd_info[cmd].command_pointer == 0))
-    send_to_char("Sorry, that command has yet to be implemented...\n\r", ch);
+    cprintf(ch, "Sorry, that command has yet to be implemented...\n\r");
   else {
     random_error_message(ch);
   }
@@ -372,21 +374,7 @@ int fill_word(char *argument)
 
 /*
  * determine if a given string is an abbreviation of another 
- */
-#if 0
-int is_abbrev(char *arg1, char *arg2)
-{
-  if (!*arg1)
-    return (0);
-
-  for (; *arg1; arg1++, arg2++)
-    if (LOWER(*arg1) != LOWER(*arg2))
-      return (0);
-
-  return (1);
-}
-#endif
-/*
+ *
  * If the either source or target is NULL, it would crash so return 0.
  * If the source is longer than the target, it fails since
  * "lightning" is NOT an abbreviation of "light".
@@ -413,7 +401,7 @@ void half_chop(char *string, char *arg1, char *arg2)
   for (; !isspace(*arg1 = *string) && *string; string++, arg1++);
   *arg1 = '\0';
   for (; isspace(*string); string++);
-  for (; *arg2 = *string; string++, arg2++);
+  for (; (*arg2 = *string); string++, arg2++);
 }
 
 int special(struct char_data *ch, int cmd, char *arg)
@@ -423,8 +411,8 @@ int special(struct char_data *ch, int cmd, char *arg)
   int j, test;
 
   if (ch->in_room == NOWHERE) {
-    char_to_room(ch, 3001);
-    return;
+    char_to_room(ch, DEFAULT_HOME);
+    return 0;
   }
   /* special in room?   */
   if (real_roomp(ch->in_room)->funct)
@@ -484,6 +472,7 @@ void assign_command_pointers(void)
   COMMANDO(CMD_force	, POSITION_SLEEPING, do_force, 55);
   COMMANDO(CMD_goto	, POSITION_SLEEPING, do_goto, 51);
   COMMANDO(CMD_highfive	, POSITION_DEAD, do_highfive, 51);
+  COMMANDO(CMD_home	, POSITION_DEAD, do_home, 51);
   COMMANDO(CMD_invisible, POSITION_DEAD, do_invis, 52);
   COMMANDO(CMD_load	, POSITION_DEAD, do_load, 57);
   COMMANDO(CMD_logs	, POSITION_DEAD, do_show_logs, 57);
@@ -498,6 +487,7 @@ void assign_command_pointers(void)
   COMMANDO(CMD_reset	, POSITION_DEAD, do_reset, 57);
   COMMANDO(CMD_restore	, POSITION_DEAD, do_restore, 58);
   COMMANDO(CMD_restoreall, POSITION_DEAD, do_restore_all, 52);
+  COMMANDO(CMD_setreboot, POSITION_DEAD, do_setreboot, 57);
   COMMANDO(CMD_show	, POSITION_DEAD, do_show, 54);
   COMMANDO(CMD_shutdow	, POSITION_DEAD, do_shutdow, 58);
   COMMANDO(CMD_shutdown	, POSITION_DEAD, do_shutdown, 58);
@@ -510,7 +500,7 @@ void assign_command_pointers(void)
   COMMANDO(CMD_string	, POSITION_SLEEPING, do_string, 56);
   COMMANDO(CMD_switch	, POSITION_DEAD, do_switch, 55);
   COMMANDO(CMD_ticks	, POSITION_DEAD, do_ticks, 51);
-  COMMANDO(CMD_title	, POSITION_DEAD, do_title, 51);
+  COMMANDO(CMD_title	, POSITION_DEAD, do_title, 30);
   COMMANDO(CMD_transfer	, POSITION_SLEEPING, do_trans, 52);
   COMMANDO(CMD_users	, POSITION_DEAD, do_users, 51);
   COMMANDO(CMD_wall	, POSITION_DEAD, do_system, 55);
@@ -548,6 +538,7 @@ void assign_command_pointers(void)
   COMMANDO(CMD_brief	, POSITION_DEAD, do_brief, 0);
   COMMANDO(CMD_bug	, POSITION_DEAD, do_bug, 0);
   COMMANDO(CMD_burp	, POSITION_RESTING, do_action, 0);
+  COMMANDO(CMD_bury	, POSITION_STANDING, do_bury, 0);
   COMMANDO(CMD_buy	, POSITION_STANDING, do_not_here, 0);
   COMMANDO(CMD_cackle	, POSITION_RESTING, do_action, 0);
   COMMANDO(CMD_cast	, POSITION_SITTING, do_cast, 1);
@@ -568,14 +559,15 @@ void assign_command_pointers(void)
   COMMANDO(CMD_dance	, POSITION_STANDING, do_action, 0);
   COMMANDO(CMD_daydream	, POSITION_SLEEPING, do_action, 0);
   COMMANDO(CMD_deposit	, POSITION_RESTING, do_not_here, 1);
+  COMMANDO(CMD_desecrate, POSITION_STANDING, do_desecrate, 0);
   COMMANDO(CMD_disarm	, POSITION_FIGHTING, do_disarm, 1);
   COMMANDO(CMD_dismount	, POSITION_MOUNTED, do_mount, 1);
   COMMANDO(CMD_doh	, POSITION_DEAD, do_action, 0);
   COMMANDO(CMD_doorbash	, POSITION_STANDING, do_doorbash, 1);
-  COMMANDO(CMD_down	, POSITION_STANDING, do_move, 0);
+  COMMANDO(CMD_down	, POSITION_STANDING, (funcp)do_move, 0);
   COMMANDO(CMD_drink	, POSITION_RESTING, do_drink, 0);
   COMMANDO(CMD_drop	, POSITION_RESTING, do_drop, 0);
-  COMMANDO(CMD_east	, POSITION_STANDING, do_move, 0);
+  COMMANDO(CMD_east	, POSITION_STANDING, (funcp)do_move, 0);
   COMMANDO(CMD_eat	, POSITION_RESTING, do_eat, 0);
   COMMANDO(CMD_echo	, POSITION_SLEEPING, do_echo, 1);
   COMMANDO(CMD_emote	, POSITION_SLEEPING, do_emote, 0);
@@ -638,7 +630,7 @@ void assign_command_pointers(void)
   COMMANDO(CMD_news	, POSITION_SLEEPING, do_news, 0);
   COMMANDO(CMD_nibble	, POSITION_RESTING, do_action, 0);
   COMMANDO(CMD_nod	, POSITION_RESTING, do_action, 0);
-  COMMANDO(CMD_north	, POSITION_STANDING, do_move, 0);
+  COMMANDO(CMD_north	, POSITION_STANDING, (funcp)do_move, 0);
   COMMANDO(CMD_noshout	, POSITION_SLEEPING, do_noshout, 1);
   COMMANDO(CMD_nosummon	, POSITION_SLEEPING, do_plr_nosummon, 1);
   COMMANDO(CMD_noteleport, POSITION_SLEEPING, do_plr_noteleport, 1);
@@ -695,7 +687,7 @@ void assign_command_pointers(void)
   COMMANDO(CMD_sing	, POSITION_RESTING, do_action, 0);
   COMMANDO(CMD_sip	, POSITION_RESTING, do_sip, 0);
   COMMANDO(CMD_sit	, POSITION_RESTING, do_sit, 0);
-  COMMANDO(CMD_skills	, POSITION_STANDING, do_skills, 1);
+  COMMANDO(CMD_skills	, POSITION_STANDING, (funcp)do_skills, 1);
   COMMANDO(CMD_slap	, POSITION_RESTING, do_action, 0);
   COMMANDO(CMD_sleep	, POSITION_SLEEPING, do_sleep, 0);
   COMMANDO(CMD_smile	, POSITION_RESTING, do_action, 0);
@@ -708,7 +700,7 @@ void assign_command_pointers(void)
   COMMANDO(CMD_sniff	, POSITION_RESTING, do_action, 0);
   COMMANDO(CMD_snore	, POSITION_SLEEPING, do_action, 0);
   COMMANDO(CMD_snuggle	, POSITION_RESTING, do_action, 0);
-  COMMANDO(CMD_south	, POSITION_STANDING, do_move, 0);
+  COMMANDO(CMD_south	, POSITION_STANDING, (funcp)do_move, 0);
   COMMANDO(CMD_spank	, POSITION_RESTING, do_action, 0);
   COMMANDO(CMD_spit	, POSITION_STANDING, do_action, 0);
   COMMANDO(CMD_split	, POSITION_RESTING, do_split, 1);
@@ -733,14 +725,14 @@ void assign_command_pointers(void)
   COMMANDO(CMD_twiddle	, POSITION_RESTING, do_action, 0);
   COMMANDO(CMD_typo	, POSITION_DEAD, do_typo, 0);
   COMMANDO(CMD_unlock	, POSITION_SITTING, do_unlock, 0);
-  COMMANDO(CMD_up	, POSITION_STANDING, do_move, 0);
+  COMMANDO(CMD_up	, POSITION_STANDING, (funcp)do_move, 0);
   COMMANDO(CMD_use	, POSITION_SITTING, do_use, 1);
   COMMANDO(CMD_value	, POSITION_STANDING, do_not_here, 0);
   COMMANDO(CMD_wake	, POSITION_SLEEPING, do_wake, 0);
   COMMANDO(CMD_wave	, POSITION_RESTING, do_action, 0);
   COMMANDO(CMD_wear	, POSITION_RESTING, do_wear, 0);
   COMMANDO(CMD_weather	, POSITION_RESTING, do_weather, 0);
-  COMMANDO(CMD_west	, POSITION_STANDING, do_move, 0);
+  COMMANDO(CMD_west	, POSITION_STANDING, (funcp)do_move, 0);
   COMMANDO(CMD_where	, POSITION_DEAD, do_where, 1);
   COMMANDO(CMD_whine	, POSITION_RESTING, do_action, 0);
   COMMANDO(CMD_whisper	, POSITION_RESTING, do_whisper, 0);
@@ -782,7 +774,7 @@ int _parse_name(char *arg, char *name)
   int i;
 
   for (; isspace(*arg); arg++);
-  for (i = 0; *name = *arg; arg++, i++, name++)
+  for (i = 0; (*name = *arg); arg++, i++, name++)
     if ((*arg < 0) || !isalpha(*arg) || i > 15)
       return (1);
 
@@ -798,7 +790,7 @@ int valid_parse_name(char *arg, char *name)
 {
   register int i;
   char *hard[] =
-  {"god", "demigod", NULL};
+  {"god", "demigod", "myself", "me", NULL};
 
   if (!arg || !*arg)
     return 0;
@@ -807,7 +799,7 @@ int valid_parse_name(char *arg, char *name)
   for (i = 0; hard[i]; i++)
     if (!strcasecmp(hard[i], arg))
       return 0;
-  for (i = 0; *name = *arg; i++, arg++, name++)
+  for (i = 0; (*name = *arg); i++, arg++, name++)
     if (!*arg || !isalpha(*arg) || i > 15)
       return 0;
   return 1;
@@ -831,7 +823,7 @@ int already_mob_name(char *ack_name)
       blah = TRUE;
       break;
     }
-    while (pfft = (char *)strtok(NULL, " ")) {
+    while ((pfft = (char *)strtok(NULL, " "))) {
       if (!strcasecmp(pfft, ack_name)) {
 	blah = TRUE;
 	break;
@@ -853,7 +845,7 @@ int banned_name(char *ack_name)
     return FALSE;
   if (!strcasecmp(pfft, ack_name))
     return TRUE;
-  while (pfft = (char *)strtok(NULL, " \t\n\r")) {
+  while ((pfft = (char *)strtok(NULL, " \t\n\r"))) {
     if (!strcasecmp(pfft, ack_name))
       return TRUE;
   }
@@ -933,13 +925,9 @@ int check_playing(struct descriptor_data *d, char *tmp_name)
  */
 void nanny(struct descriptor_data *d, char *arg)
 {
-  char buf[100];
-  int player_i, count = 0, oops = FALSE;
+  int count = 0, oops = FALSE;
   char tmp_name[20];
   struct char_file_u tmp_store;
-  struct char_data *tmp_ch;
-  struct char_data tmp_ch2;
-  struct descriptor_data *k;
   extern struct descriptor_data *descriptor_list;
   extern int WizLock;
   struct char_data *ch;
@@ -1135,7 +1123,7 @@ void nanny(struct descriptor_data *d, char *arg)
     d->character->player.class = 0;
     count = 0;
     oops = FALSE;
-    for (; *arg && count < 3 && !oops; *arg++) {
+    for (; *arg && count < 3 && !oops; arg++) {
       switch (*arg) {
       default:
 	dprintf(d, "I wish *I* could be a \"%s\" too!\n\r%s", arg, class_menu);
@@ -1294,6 +1282,8 @@ void nanny(struct descriptor_data *d, char *arg)
           iprintf("Comrade %s has entered the world.\n\r", NAME(d->character));
       }
 
+      if(!IS_SET(d->character->specials.affected_by, AFF_GROUP))
+        SET_BIT(d->character->specials.affected_by, AFF_GROUP);
       STATE(d) = CON_PLAYING;
       if (!GetMaxLevel(d->character))
 	do_start(d->character);
@@ -1436,7 +1426,7 @@ void update_player_list_entry(struct descriptor_data *d)
   for(i= 0; i< strlen(tmpbuf); i++)
     tmpbuf[i]= tolower(tmpbuf[i]);
   ftime(&right_now);
-  now_part= localtime(&right_now);
+  now_part= localtime((const time_t *)&right_now);
   sprintf(buf, "%-16s %s@%s %02d.%02d.%02d %02d:%02d ",
           tmpbuf, d->username, d->host, now_part->tm_year,
           now_part->tm_mon+1, now_part->tm_mday,
@@ -1470,7 +1460,6 @@ void PutPasswd(struct descriptor_data *d)
 {
   FILE *pfd;
   char buf[256];
-  int i;
 
   if ((pfd = fopen(PASSWD_NEW, "a")) == NULL) {
     log("Cannot save password data for new user!\n\r");
@@ -1537,35 +1526,3 @@ int GetPlayerFile(char *name, struct char_data *where)
 }
 #endif
 
-void random_error_message(struct char_data *ch) {
-  static char *oops[] = {
-"Pardon?",
-"I didn't quite catch that one...",
-"I'm sorry Dave, I'm afraid I can't let you do that.",
-"Quixadhal will spank you for typing that!",
-"Connection closed by foreign host",
-"NO CARRIER",
-"Ummmm.. go away, we already got one.",
-"Huh huh huh, what a dork!",
-"You WISH you could type...",
-"Just type it and get it over with.",
-"No.",
-"Maybe later...",
-"Arglebargle, glop-glyf!?!",
-"Quixadhal snickers 'You think THAT will stop me?'",
-"The keyboard refuses to let go.",
-"Ouch!  Not that key!  Damnit, that one hurts!",
-"Stop calling me buttknocker!!!",
-"Muidnar cackles 'Nice typo!  Muahahahahaha!!!'",
-"I hope YOU understood that, I certainly didn't.",
-"Now where did I put that punchcard with the Highstaff macro on it?",
-"Cyric sighs 'Wiley was alot harder back in MY days.'",
-"Isn't the X-Files on or something?",
-"I'll pretend you didn't type that.",
-"Blah blah blah blah, blah blah, blah...",
-"Uhhhh..... Shutup!",
-NULL };
-  static int howmany= 25;
-
-  cprintf(ch, "%s\n\r", oops[number(1,howmany)-1]);
-}

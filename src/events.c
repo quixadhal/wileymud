@@ -9,29 +9,36 @@
 #include <string.h>
 #include <ctype.h>
 
-#include "global.h"
-#include "bug.h"
-#include "utils.h"
-#include "comm.h"
-#include "interpreter.h"
-#include "handler.h"
-#include "db.h"
-#include "spells.h"
-#include "limits.h"
-#include "constants.h"
-#include "spell_parser.h"
-#include "fight.h"
-#include "spec_procs.h"
+#include "include/global.h"
+#include "include/bug.h"
+#include "include/utils.h"
+#include "include/comm.h"
+#include "include/interpreter.h"
+#include "include/handler.h"
+#include "include/db.h"
+#include "include/spells.h"
+#include "include/limits.h"
+#include "include/constants.h"
+#include "include/spell_parser.h"
+#include "include/fight.h"
+#include "include/spec_procs.h"
+#include "include/opinion.h"
+#include "include/hash.h"
 #define _DIKU_EVENTS_C
-#include "events.h"
+#include "include/events.h"
 
 static int mob_count;
+static int obj_count;
+static int gold_count;
 
 static void event_fill_zone_with_mobs( int rnum, struct room_data *rp,
                                        struct event_mob_in_zone *mobs );
 static void event_rats_invade_zone(struct char_data *ch, char *arg);
 static void event_undead_invade_zone(struct char_data *ch, char *arg);
 static void event_zombie_master(struct char_data *ch, char *arg);
+static void event_scatter_goodies_zone( int rnum, struct room_data *rp,
+                                        struct event_goodies *stuff      );
+static void event_scatter_goodies(struct char_data *ch, char *arg);
 
 void do_event(struct char_data *ch, char *argument, int cmd)
 {
@@ -40,13 +47,15 @@ void do_event(struct char_data *ch, char *argument, int cmd)
     "rats - Rats invade whatever zone you are standing in. [1+]",
     "undead - The undead rise and devour the zone you are in. [4-10]",
     "xenthia - The Lady of the Dead rises and enters the world. [10-15]",
+    "goodies - Goodies fall to earth, with a few bandits too. [2-15]",
     NULL
   };
   static const funcp event_code[] = {
     NULL,
-    event_rats_invade_zone,
-    event_undead_invade_zone,
-    event_zombie_master,
+    (funcp)event_rats_invade_zone,
+    (funcp)event_undead_invade_zone,
+    (funcp)event_zombie_master,
+    (funcp)event_scatter_goodies,
     NULL
   };
   int i;
@@ -80,6 +89,56 @@ void do_event(struct char_data *ch, char *argument, int cmd)
   cprintf(ch, "Doing Event [#%d] %s\n\r", found, event_list[found]);
   log("%s does Event [#%d] %s", GET_NAME(ch), found, event_list[found]);
   event_code[found](ch, argument);
+}
+
+static void event_scatter_goodies_zone( int rnum, struct room_data *rp,
+                                        struct event_goodies *stuff      )
+{
+  int i, exit_found, gold;
+  struct char_data *monster;
+  struct obj_data *object;
+  struct obj_data *coins;
+
+  if(!rp || rp->number < stuff->bottom || rp->number > stuff->top)
+    return;
+  if(IS_SET(rp->room_flags, (NO_MOB|PEACEFUL|PRIVATE)))
+    return;
+  exit_found= 0;
+  for(i= 0; i< MAX_NUM_EXITS; i++) /* neswud */
+    if(rp->dir_option[i]) {
+      exit_found= 1;
+      break;
+    }
+  if(!exit_found)
+    return;
+  if(number(0,99) >= stuff->chance)
+    return;
+  gold= dice(stuff->gold_dice, stuff->gold_die)+ stuff->gold_mod;
+  gold_count+= gold;
+  coins = create_money(gold);
+  obj_to_room(coins, rnum);
+  rprintf(rnum,
+          "In a brilliant green flash, a pile of %s appears before you!\n\r",
+          coins->short_description);
+  if(number(0,99) < stuff->mob_chance) {
+    i= number(1, stuff->mob_count)- 1;
+    if((monster= read_mobile(stuff->mob_vnum[i], VIRTUAL))) {
+      GET_GOLD(monster)= 0;
+      mob_count++;
+      char_to_room(monster, rnum);
+      act("A rift of red light rips open and $N rushes out!", FALSE,
+          monster, 0, monster, TO_ROOM);
+    }
+  }
+  if(number(0,99) < stuff->obj_chance) {
+    i= number(1, stuff->obj_count)- 1;
+    if((object= read_object(stuff->obj_vnum[i], VIRTUAL))) {
+      obj_count++;
+      obj_to_room(object, rnum);
+      rprintf(rnum, "In a shimmering of blue light, %s %s forms!\n\r",
+              SANA(object), object->short_description);
+    }
+  }
 }
 
 static void event_fill_zone_with_mobs( int rnum, struct room_data *rp,
@@ -118,7 +177,7 @@ static void event_fill_zone_with_mobs( int rnum, struct room_data *rp,
                      + mobs->mobset[i].gold_mod;
     if(mobs->mobset[i].obj_vnum >= 0) {
       if(number(0, 99) < mobs->mobset[i].obj_chance) {
-        if(object= read_object(mobs->mobset[i].obj_vnum, VIRTUAL))
+        if((object= read_object(mobs->mobset[i].obj_vnum, VIRTUAL)))
           obj_to_char(object, monster);
       }
     }
@@ -127,6 +186,35 @@ static void event_fill_zone_with_mobs( int rnum, struct room_data *rp,
     act("In a shimmering column of blue light, $N appears!", FALSE,
         monster, 0, monster, TO_ROOM);
   }
+}
+
+static void event_scatter_goodies(struct char_data *ch, char *arg)
+{
+  int the_objects[] = { 5023, 6131, 5932, 15011, 7010, 5937, 1901, 9015 };
+  int the_mobs[] = { 1200, 9618, 1400, 5441, 5054, 5055, 15047, 9620, 1202, 9601 };
+  struct event_goodies junk = {
+    0, 0, 50, 4, 6, -3,
+    7, 8, the_objects,
+    11, 10, the_mobs
+  };
+  int zone;
+  struct room_data *rp;
+
+  if((rp= real_roomp(ch->in_room)))
+    zone= rp->zone;
+  else
+    return;
+
+  junk.bottom= zone? (zone_table[zone- 1].top+1): 0;
+  junk.top= zone_table[zone].top;
+  if (IS_SET(ch->specials.act, PLR_STEALTH))
+    zprintf(zone, "\n\rSuddenly, you fell the winds HOWL into being!\n\rYou can hear the sounds of things FALLING all around you!\n\r\n\r");
+  else
+    zprintf(zone, "\n\rYou hear %s chanting, and suddenly a wind HOWLS in from %s direction!\n\rYou can hear the sounds of things FALLING all around you!\n\r\n\r", GET_NAME(ch), HSHR(ch));
+  mob_count= obj_count= gold_count= 0;
+  hash_iterate(&room_db, (funcp)event_scatter_goodies_zone, &junk);
+  cprintf(ch, "You just added %d critters, %d things, and %d gold to %s [#%d].\n\r", mob_count, obj_count, gold_count, zone_table[zone].name, zone);
+  log("%s added %d critters, %d things, and %d gold to %s [#%d].\n\r", GET_NAME(ch), mob_count, obj_count, gold_count, zone_table[zone].name, zone);
 }
 
 static void event_rats_invade_zone(struct char_data *ch, char *arg)
@@ -145,11 +233,11 @@ static void event_rats_invade_zone(struct char_data *ch, char *arg)
     { 3433, 4, 6, 5, 1, 6, 4, 1, 4, -1, 0, -1 }, /* giant rat */ 
     { 5056, 3, 8, 5, 2, 6, 10, 1, 2, -1, 0, -1 } /* black cat */
   };
-  struct event_mob_in_zone mobs = { 0, 0, 60, 1, 8, 11, &mobset };
+  struct event_mob_in_zone mobs = { 0, 0, 60, 1, 8, 11, mobset };
   int zone;
   struct room_data *rp;
 
-  if(rp= real_roomp(ch->in_room))
+  if((rp= real_roomp(ch->in_room)))
     zone= rp->zone;
   else
     return;
@@ -161,7 +249,7 @@ static void event_rats_invade_zone(struct char_data *ch, char *arg)
   else
     zprintf(zone, "\n\rIn a puff of acrid smoke, you see %s snap %s fingers!\n\rYou hear odd scurrying sounds all around you...\n\r\n\r", GET_NAME(ch), HSHR(ch));
   mob_count= 0;
-  hash_iterate(&room_db, event_fill_zone_with_mobs, &mobs);
+  hash_iterate(&room_db, (funcp)event_fill_zone_with_mobs, &mobs);
   cprintf(ch, "You just added %d rats to %s [#%d].\n\r", mob_count,
           zone_table[zone].name, zone);
   log("%s added %d rats to %s [#%d].", GET_NAME(ch), mob_count,
@@ -237,11 +325,11 @@ static void event_undead_invade_zone(struct char_data *ch, char *arg)
     { 4603, 1, 8, 5, 1, 6, 4, 0, 0, 0, 0, -1 }, /* small skeleton */
     { 4603, 1, 8, 5, 1, 6, 4, 0, 0, 0, 0, -1 } /* small skeleton */
   };
-  struct event_mob_in_zone mobs = { 0, 0, 50, 1, 3, 64, &mobset };
+  struct event_mob_in_zone mobs = { 0, 0, 50, 1, 3, 64, mobset };
   int zone;
   struct room_data *rp;
 
-  if(rp= real_roomp(ch->in_room))
+  if((rp= real_roomp(ch->in_room)))
     zone= rp->zone;
   else
     return;
@@ -261,7 +349,7 @@ static void event_undead_invade_zone(struct char_data *ch, char *arg)
   else
     zprintf(zone, "\n\r%s's voice booms all around you, \"Go forth ancient ones!\n\rKill the puny mortals and feast on their bones!\"\n\rThe air grows still and cold as you feel... things... begin to move.\n\r", GET_NAME(ch));
   mob_count= 0;
-  hash_iterate(&room_db, event_fill_zone_with_mobs, &mobs);
+  hash_iterate(&room_db, (funcp)event_fill_zone_with_mobs, &mobs);
   cprintf(ch, "You just added %d undead spirits to %s [#%d].\n\r", mob_count,
           zone_table[zone].name, zone);
   log("%s added %d undead to %s [#%d].", GET_NAME(ch), mob_count,
@@ -273,10 +361,9 @@ static void event_zombie_master(struct char_data *ch, char *arg)
   struct room_data *rp;
   struct char_data *master;
   struct char_data *mob;
-  char buf[MAX_STRING_LENGTH];
   int i, j, zone;
 
-  if(rp= real_roomp(ch->in_room)) {
+  if((rp= real_roomp(ch->in_room))) {
     zone= rp->zone;
     master = read_mobile(666, VIRTUAL); /* xenthia, lady of the dead */
     j= dice(1,4)+ 3;

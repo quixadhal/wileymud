@@ -8,20 +8,31 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <sys/types.h>
+#include <time.h>
 #include <string.h>
 
-#include "global.h"
-#include "bug.h"
-#include "utils.h"
-#include "comm.h"
-#include "handler.h"
-#include "interpreter.h"
-#include "db.h"
+#include "include/global.h"
+#include "include/bug.h"
+#include "include/utils.h"
+#include "include/comm.h"
+#include "include/handler.h"
+#include "include/interpreter.h"
+#include "include/db.h"
 #define _WEATHER_C
-#include "weather.h"
+#include "include/weather.h"
 
-void weather_and_time(int mode)
-{
+char *moon_names[] = {
+"new",
+"waxing cresent",
+"waxing half",
+"waxing gibbus",
+"full",
+"waning gibbus",
+"waning half",
+"waning cresent"
+};
+
+inline void weather_and_time(int mode) {
   another_hour(mode);
   if (mode)
     weather_change();
@@ -29,10 +40,7 @@ void weather_and_time(int mode)
     update_time_and_weather();
 }
 
-void another_hour(int mode)
-{
-  char moon[20], buf[100];
-
+void another_hour(int mode) {
   time_info.hours++;
   if (time_info.hours >= HOURS_PER_MUD_DAY) {
     time_info.hours = 0;
@@ -55,44 +63,33 @@ void another_hour(int mode)
   if (mode) {
     switch (time_info.hours) {
     case 0:
-      send_to_outdoor("The moon rises high overhead.\n\r");
+      oprintf("The moon rises high overhead.\n\r");
       break;
     case 4:
-      send_to_outdoor("The moon sets.\n\r");
+      oprintf("The moon sets.\n\r");
       break;
     case 6:
       weather_info.sunlight = SUN_RISE;
-      send_to_outdoor("The sun rises in the east.\n\r");
+      oprintf("The sun rises in the east.\n\r");
       break;
     case 7:
       weather_info.sunlight = SUN_LIGHT;
-      send_to_outdoor("The day has begun.\n\r");
+      oprintf("The day has begun.\n\r");
       break;
     case 12:
-      send_to_outdoor("It is noon.\n\r");
+      oprintf("It is noon.\n\r");
       break;
     case 18:
       weather_info.sunlight = SUN_SET;
-      send_to_outdoor("The sun slowly disappears in the west.\n\r");
+      oprintf("The sun slowly disappears in the west.\n\r");
       break;
     case 19:
       weather_info.sunlight = SUN_DARK;
-      send_to_outdoor("The night has begun.\n\r");
+      oprintf("The night has begun.\n\r");
       break;
     case 21:
-      if (weather_info.moon < 4) {
-	strcpy(moon, "new");
-      } else if (weather_info.moon < 12) {
-	strcpy(moon, "waxing");
-      } else if (weather_info.moon < 20) {
-	strcpy(moon, "full");
-      } else if (weather_info.moon < 28) {
-	strcpy(moon, "waning");
-      } else {
-	strcpy(moon, "new");
-      }
-      sprintf(buf, "A %s moon rises in the east\n\r", moon);
-      send_to_outdoor(buf);
+      	oprintf("A %s moon rises in the eastern sky.\n\r",
+              moon_names[(weather_info.moon - 1) / 4]);
       break;
     default:
       break;
@@ -100,8 +97,7 @@ void another_hour(int mode)
   }
 }
 
-void weather_change(void)
-{
+void weather_change(void) {
   int diff, change;
 
   if ((time_info.month >= 9) && (time_info.month <= 16))
@@ -174,8 +170,7 @@ void weather_change(void)
   ChangeWeather(change);
 }
 
-void ChangeWeather(int change)
-{
+void ChangeWeather(int change) {
   if (change < 0)
     change = 0;
   if (change > 7)
@@ -186,49 +181,49 @@ void ChangeWeather(int change)
     break;
   case 1:
     {
-      send_to_outdoor("The sky is getting cloudy.\n\r");
+      oprintf("The sky is getting cloudy.\n\r");
       weather_info.sky = SKY_CLOUDY;
       break;
     }
   case 2:
     {
       if ((time_info.month > 3) && (time_info.month < 14))
-	send_to_outdoor("It starts to rain.\n\r");
+	oprintf("It starts to rain.\n\r");
       else
-	send_to_outdoor("It starts to drizzle. \n\r");
+	oprintf("It starts to drizzle. \n\r");
       weather_info.sky = SKY_RAINING;
       break;
     }
   case 3:
     {
-      send_to_outdoor("The clouds disappear.\n\r");
+      oprintf("The clouds disappear.\n\r");
       weather_info.sky = SKY_CLOUDLESS;
       break;
     }
   case 4:
     {
       if ((time_info.month > 3) && (time_info.month < 14))
-	send_to_outdoor("You are caught in lightning storm.\n\r");
+	oprintf("You are caught in lightning storm.\n\r");
       else
-	send_to_outdoor("You are caught in a layer of fog. \n\r");
+	oprintf("You are caught in a layer of fog. \n\r");
       weather_info.sky = SKY_LIGHTNING;
       break;
     }
   case 5:
     {
       if ((time_info.month > 3) && (time_info.month < 14))
-	send_to_outdoor("The rain has stopped.\n\r");
+	oprintf("The rain has stopped.\n\r");
       else
-	send_to_outdoor("The drizzle has stopped. \n\r");
+	oprintf("The drizzle has stopped. \n\r");
       weather_info.sky = SKY_CLOUDY;
       break;
     }
   case 6:
     {
       if ((time_info.month > 3) && (time_info.month < 14))
-	send_to_outdoor("The lightning has gone, but it is still raining.\n\r");
+	oprintf("The lightning has gone, but it is still raining.\n\r");
       else
-	send_to_outdoor("The fog has lifted, but it is still drizzling.\n\r");
+	oprintf("The fog has lifted, but it is still drizzling.\n\r");
       weather_info.sky = SKY_RAINING;
       break;
     }
@@ -237,25 +232,24 @@ void ChangeWeather(int change)
   }
 }
 
-void GetMonth(int month)
-{
+void GetMonth(int month) {
   if (month < 0)
     return;
 
   switch (month) {
   case 0:
   case 1:
-    send_to_outdoor(" It is bitterly cold outside\n\r");
+    oprintf(" It is bitterly cold outside\n\r");
     break;
   case 2:
-    send_to_outdoor(" It is very cold \n\r");
+    oprintf(" It is very cold \n\r");
     break;
   case 3:
   case 4:
-    send_to_outdoor(" It is chilly outside \n\r");
+    oprintf(" It is chilly outside \n\r");
     break;
   case 5:
-    send_to_outdoor(" The flowers start to bloom \n\r");
+    oprintf(" The flowers start to bloom \n\r");
     break;
   case 6:
   case 7:
@@ -263,29 +257,28 @@ void GetMonth(int month)
   case 9:
   case 10:
   case 11:
-    send_to_outdoor(" It is warm and humid. \n\r");
+    oprintf(" It is warm and humid. \n\r");
     break;
   case 12:
-    send_to_outdoor(" It starts to get a little windy \n\r");
+    oprintf(" It starts to get a little windy \n\r");
     break;
   case 13:
-    send_to_outdoor(" The air is getting chilly \n\r");
+    oprintf(" The air is getting chilly \n\r");
     break;
   case 14:
-    send_to_outdoor(" The leaves start to change colors. \n\r");
+    oprintf(" The leaves start to change colors. \n\r");
     break;
   case 15:
-    send_to_outdoor(" It starts to get cold \n\r");
+    oprintf(" It starts to get cold \n\r");
     break;
   case 16:
   case 17:
-    send_to_outdoor(" It is bitterly cold outside \n\r");
+    oprintf(" It is bitterly cold outside \n\r");
     break;
   }
 }
 
-void reset_weather(void)
-{
+inline void reset_weather(void) {
   weather_info.pressure = 960;
   weather_info.change = 0;
   weather_info.sky = SKY_CLOUDLESS;
@@ -293,8 +286,7 @@ void reset_weather(void)
   weather_info.wind_direction = WIND_DEAD;
 }
 
-void reset_time(void)
-{
+void reset_time(void) {
   FILE *f1;
   char buf[80];
   long beginning_of_time = 650336715;
@@ -307,7 +299,7 @@ void reset_time(void)
     reset_weather();
   } else {
     fgets(buf, 80, f1);
-    fscanf(f1, "%d\n", &current_time);
+    fscanf(f1, "%ld\n", &current_time);
     fscanf(f1, "%d\n", &time_info.hours);
     fscanf(f1, "%d\n", &time_info.day);
     fscanf(f1, "%d\n", &time_info.month);
@@ -331,8 +323,7 @@ void reset_time(void)
   log(buf);
 }
 
-void update_time_and_weather(void)
-{
+void update_time_and_weather(void) {
   FILE *f1;
   long current_time;
 
@@ -343,7 +334,7 @@ void update_time_and_weather(void)
   current_time = time(0);
   log("Time update.");
   fprintf(f1, "# Time -last,hours,day,month,year\n");
-  fprintf(f1, "%d\n", current_time);
+  fprintf(f1, "%ld\n", current_time);
   fprintf(f1, "%d\n", time_info.hours);
   fprintf(f1, "%d\n", time_info.day);
   fprintf(f1, "%d\n", time_info.month);

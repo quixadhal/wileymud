@@ -1,0 +1,84 @@
+#RENT
+Owner              Skull~
+Gold               0
+TotalCost          19
+LastUpdate         842051115
+MinimumStay        0
+End
+#EQUIPMENT
+#ITEM
+ObjId              0
+ContainedBy        -1
+Name               padded leather vest~
+Description
+A vest made of padded leather lies on the floor here.~
+ShortDescr
+padded leather vest~
+ActionDescr
+(null)~
+VNum               9205
+EquippedAt         5
+Values             2 2 0 0
+ExtraFlags         0
+Weight             10
+Timer              0
+BitVector          0
+Type               9
+WearFlags          9
+Cost               100
+CostPerDay         5
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              1
+ContainedBy        -1
+Name               padded leather leggings~
+Description
+A pair of padded leather leggings is here.~
+ShortDescr
+padded leather leggings~
+ActionDescr
+(null)~
+VNum               9207
+EquippedAt         7
+Values             2 2 0 0
+ExtraFlags         0
+Weight             5
+Timer              0
+BitVector          0
+Type               9
+WearFlags          33
+Cost               75
+CostPerDay         4
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              2
+ContainedBy        -1
+Name               dagger~
+Description
+A dagger with a long thin blade is here.~
+ShortDescr
+a dagger~
+ActionDescr
+(null)~
+VNum               3020
+EquippedAt         16
+Values             0 1 4 11
+ExtraFlags         0
+Weight             1
+Timer              0
+BitVector          0
+Type               5
+WearFlags          8193
+Cost               15
+CostPerDay         10
+Affect             0 0
+Affect             0 0
+End
+End
+#CARRIED
+End
+#END_RENT

@@ -1,0 +1,108 @@
+#RENT
+Owner              Max~
+Gold               0
+TotalCost          13
+LastUpdate         823163228
+MinimumStay        0
+End
+#EQUIPMENT
+End
+#CARRIED
+#ITEM
+ObjId              3
+ContainedBy        -1
+Name               beer bottle~
+Description
+A beer bottle has been left here.~
+ShortDescr
+a bottle~
+ActionDescr
+(null)~
+VNum               3001
+EquippedAt         0
+Values             8 1 1 0
+ExtraFlags         0
+Weight             2
+Timer              0
+BitVector          0
+Type               17
+WearFlags          16385
+Cost               20
+CostPerDay         8
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              3
+ContainedBy        -1
+Name               ale bottle dark~
+Description
+A dark bottle of ale has been left here.~
+ShortDescr
+a bottle~
+ActionDescr
+(null)~
+VNum               3002
+EquippedAt         0
+Values             8 8 3 0
+ExtraFlags         0
+Weight             2
+Timer              0
+BitVector          0
+Type               17
+WearFlags          16385
+Cost               10
+CostPerDay         3
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              3
+ContainedBy        -1
+Name               ale bottle dark~
+Description
+A dark bottle of ale has been left here.~
+ShortDescr
+a bottle~
+ActionDescr
+(null)~
+VNum               3002
+EquippedAt         0
+Values             8 8 3 0
+ExtraFlags         0
+Weight             2
+Timer              0
+BitVector          0
+Type               17
+WearFlags          16385
+Cost               10
+CostPerDay         3
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              3
+ContainedBy        -1
+Name               ale bottle dark~
+Description
+A dark bottle of ale has been left here.~
+ShortDescr
+a bottle~
+ActionDescr
+(null)~
+VNum               3002
+EquippedAt         0
+Values             8 8 3 0
+ExtraFlags         0
+Weight             2
+Timer              0
+BitVector          0
+Type               17
+WearFlags          16385
+Cost               10
+CostPerDay         3
+Affect             0 0
+Affect             0 0
+End
+End
+#END_RENT

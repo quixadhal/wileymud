@@ -1,0 +1,605 @@
+#RENT
+Owner              Gilric~
+Gold               21326
+TotalCost          974
+LastUpdate         841449348
+MinimumStay        0
+End
+#EQUIPMENT
+#ITEM
+ObjId              0
+ContainedBy        -1
+Name               vest feathered~
+Description
+A vest made almost completely of feathers lies here.~
+ShortDescr
+a feathered vest~
+ActionDescr
+(null)~
+VNum               1306
+EquippedAt         5
+Values             2 2 0 0
+ExtraFlags         0
+Weight             7
+Timer              0
+BitVector          0
+Type               9
+WearFlags          9
+Cost               235
+CostPerDay         235
+Affect             17 -6
+Affect             0 0
+End
+#ITEM
+ObjId              1
+ContainedBy        -1
+Name               hawk beaked mask~
+Description
+A mask with a large beak upon it lies here.~
+ShortDescr
+a hawk beaked mask~
+ActionDescr
+(null)~
+VNum               1305
+EquippedAt         6
+Values             2 2 0 0
+ExtraFlags         8192
+Weight             5
+Timer              0
+BitVector          0
+Type               9
+WearFlags          17
+Cost               67
+CostPerDay         67
+Affect             0 0
+Affect             0 0
+ExtraDescr         hawk beaked mask~
+  The mask has a huge beak upon it, rather it looks more like a hallow head
+of some huge bird.
+~
+End
+#ITEM
+ObjId              2
+ContainedBy        -1
+Name               legplates feathered~
+Description
+Some legplates adorned with feathers lie here.~
+ShortDescr
+a pair of feathered legplates~
+ActionDescr
+(null)~
+VNum               5067
+EquippedAt         7
+Values             4 4 0 0
+ExtraFlags         90112
+Weight             10
+Timer              0
+BitVector          0
+Type               9
+WearFlags          33
+Cost               200
+CostPerDay         100
+Affect             0 0
+Affect             0 0
+ExtraDescr         legplates~
+  The legplates are made from a single piece of steel, adorned with beautiful
+feathers.
+~
+End
+#ITEM
+ObjId              3
+ContainedBy        -1
+Name               plated boots~
+Description
+A pair of plated boots are here.~
+ShortDescr
+a pair of plated boots~
+ActionDescr
+(null)~
+VNum               5041
+EquippedAt         8
+Values             4 4 0 0
+ExtraFlags         90112
+Weight             16
+Timer              0
+BitVector          0
+Type               9
+WearFlags          65
+Cost               475
+CostPerDay         100
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              4
+ContainedBy        -1
+Name               armour plated gauntlets~
+Description
+A pair of armour plated gauntlets are here.~
+ShortDescr
+a pair of armour plated gauntlets~
+ActionDescr
+(null)~
+VNum               5040
+EquippedAt         9
+Values             4 4 0 0
+ExtraFlags         90112
+Weight             15
+Timer              0
+BitVector          0
+Type               9
+WearFlags          129
+Cost               450
+CostPerDay         100
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              5
+ContainedBy        -1
+Name               robe clothe~
+Description
+A robe made of clothe lies here.~
+ShortDescr
+a clothe robe~
+ActionDescr
+(null)~
+VNum               1308
+EquippedAt         12
+Values             0 0 0 0
+ExtraFlags         0
+Weight             5
+Timer              0
+BitVector          0
+Type               12
+WearFlags          1025
+Cost               26
+CostPerDay         26
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              6
+ContainedBy        -1
+Name               bastard sword~
+Description
+A large bastard sword lies here.~
+ShortDescr
+a bastard sword~
+ActionDescr
+(null)~
+VNum               5023
+EquippedAt         16
+Values             0 2 4 3
+ExtraFlags         28672
+Weight             10
+Timer              0
+BitVector          0
+Type               5
+WearFlags          40961
+Cost               700
+CostPerDay         200
+Affect             0 0
+Affect             0 0
+End
+End
+#CARRIED
+#ITEM
+ObjId              26
+ContainedBy        13
+Name               ogre tongue~
+Description
+A fried ogre tongue rests here.~
+ShortDescr
+a cooked ogre tongue~
+ActionDescr
+(null)~
+VNum               5018
+EquippedAt         0
+Values             24 0 0 0
+ExtraFlags         0
+Weight             1
+Timer              0
+BitVector          0
+Type               19
+WearFlags          16385
+Cost               30
+CostPerDay         3
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              26
+ContainedBy        13
+Name               ogre tongue~
+Description
+A fried ogre tongue rests here.~
+ShortDescr
+a cooked ogre tongue~
+ActionDescr
+(null)~
+VNum               5018
+EquippedAt         0
+Values             24 0 0 0
+ExtraFlags         0
+Weight             1
+Timer              0
+BitVector          0
+Type               19
+WearFlags          16385
+Cost               30
+CostPerDay         3
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              24
+ContainedBy        13
+Name               vest feathered~
+Description
+A vest made almost completely of feathers lies here.~
+ShortDescr
+a feathered vest~
+ActionDescr
+(null)~
+VNum               1306
+EquippedAt         -1
+Values             2 2 0 0
+ExtraFlags         0
+Weight             7
+Timer              0
+BitVector          0
+Type               9
+WearFlags          9
+Cost               235
+CostPerDay         235
+Affect             17 -6
+Affect             0 0
+End
+#ITEM
+ObjId              24
+ContainedBy        13
+Name               hawk beaked mask~
+Description
+A mask with a large beak upon it lies here.~
+ShortDescr
+a hawk beaked mask~
+ActionDescr
+(null)~
+VNum               1305
+EquippedAt         -1
+Values             2 2 0 0
+ExtraFlags         8192
+Weight             5
+Timer              0
+BitVector          0
+Type               9
+WearFlags          17
+Cost               67
+CostPerDay         67
+Affect             0 0
+Affect             0 0
+ExtraDescr         hawk beaked mask~
+  The mask has a huge beak upon it, rather it looks more like a hallow head
+of some huge bird.
+~
+End
+#ITEM
+ObjId              24
+ContainedBy        13
+Name               leather armbands~
+Description
+A pair of leather armbands lie here.~
+ShortDescr
+some leather armbands~
+ActionDescr
+(null)~
+VNum               1301
+EquippedAt         -1
+Values             1 0 0 0
+ExtraFlags         0
+Weight             3
+Timer              0
+BitVector          0
+Type               9
+WearFlags          257
+Cost               54
+CostPerDay         54
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              24
+ContainedBy        13
+Name               robe clothe~
+Description
+A robe made of clothe lies here.~
+ShortDescr
+a clothe robe~
+ActionDescr
+(null)~
+VNum               1308
+EquippedAt         -1
+Values             0 0 0 0
+ExtraFlags         0
+Weight             5
+Timer              0
+BitVector          0
+Type               12
+WearFlags          1025
+Cost               26
+CostPerDay         26
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              24
+ContainedBy        13
+Name               staff clawed~
+Description
+A staff with a large claw at the top lies here.~
+ShortDescr
+a clawed staff~
+ActionDescr
+(null)~
+VNum               1307
+EquippedAt         -1
+Values             0 1 7 7
+ExtraFlags         0
+Weight             5
+Timer              0
+BitVector          0
+Type               5
+WearFlags          32769
+Cost               123
+CostPerDay         123
+Affect             0 0
+Affect             0 0
+ExtraDescr         staff clawed~
+  The staff appears to be made from ironwood and at the top seems to have 
+some sort of a avian foot, claws extended.  It could make a lasting scar
+upon someone, if they knew how to use it.
+~
+End
+#ITEM
+ObjId              24
+ContainedBy        13
+Name               robe clothe~
+Description
+A robe made of clothe lies here.~
+ShortDescr
+a clothe robe~
+ActionDescr
+(null)~
+VNum               1308
+EquippedAt         -1
+Values             0 0 0 0
+ExtraFlags         0
+Weight             5
+Timer              0
+BitVector          0
+Type               12
+WearFlags          1025
+Cost               26
+CostPerDay         26
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              24
+ContainedBy        13
+Name               robe clothe~
+Description
+A robe made of clothe lies here.~
+ShortDescr
+a clothe robe~
+ActionDescr
+(null)~
+VNum               1308
+EquippedAt         -1
+Values             0 0 0 0
+ExtraFlags         0
+Weight             5
+Timer              0
+BitVector          0
+Type               12
+WearFlags          1025
+Cost               26
+CostPerDay         26
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              24
+ContainedBy        13
+Name               robe clothe~
+Description
+A robe made of clothe lies here.~
+ShortDescr
+a clothe robe~
+ActionDescr
+(null)~
+VNum               1308
+EquippedAt         -1
+Values             0 0 0 0
+ExtraFlags         0
+Weight             5
+Timer              0
+BitVector          0
+Type               12
+WearFlags          1025
+Cost               26
+CostPerDay         26
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              23
+ContainedBy        -1
+Name               bag~
+Description
+A small bag.~
+ShortDescr
+a bag~
+ActionDescr
+(null)~
+VNum               3017
+EquippedAt         -1
+Values             50 0 0 0
+ExtraFlags         0
+Weight             2
+Timer              0
+BitVector          0
+Type               15
+WearFlags          16385
+Cost               20
+CostPerDay         2
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              23
+ContainedBy        -1
+Name               robe clothe~
+Description
+A robe made of clothe lies here.~
+ShortDescr
+a clothe robe~
+ActionDescr
+(null)~
+VNum               1308
+EquippedAt         -1
+Values             0 0 0 0
+ExtraFlags         0
+Weight             5
+Timer              0
+BitVector          0
+Type               12
+WearFlags          1025
+Cost               26
+CostPerDay         26
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              23
+ContainedBy        -1
+Name               robe clothe~
+Description
+A robe made of clothe lies here.~
+ShortDescr
+a clothe robe~
+ActionDescr
+(null)~
+VNum               1308
+EquippedAt         -1
+Values             0 0 0 0
+ExtraFlags         0
+Weight             5
+Timer              0
+BitVector          0
+Type               12
+WearFlags          1025
+Cost               26
+CostPerDay         26
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              23
+ContainedBy        -1
+Name               leather clothe~
+Description
+A leather clothe lies here.~
+ShortDescr
+a leather clothe~
+ActionDescr
+(null)~
+VNum               1304
+EquippedAt         -1
+Values             1 1 0 0
+ExtraFlags         0
+Weight             2
+Timer              0
+BitVector          0
+Type               9
+WearFlags          2049
+Cost               23
+CostPerDay         23
+Affect             17 -1
+Affect             0 0
+End
+#ITEM
+ObjId              23
+ContainedBy        -1
+Name               leather clothe~
+Description
+A leather clothe lies here.~
+ShortDescr
+a leather clothe~
+ActionDescr
+(null)~
+VNum               1304
+EquippedAt         -1
+Values             1 1 0 0
+ExtraFlags         0
+Weight             2
+Timer              0
+BitVector          0
+Type               9
+WearFlags          2049
+Cost               23
+CostPerDay         23
+Affect             17 -1
+Affect             0 0
+End
+#ITEM
+ObjId              23
+ContainedBy        -1
+Name               leather clothe~
+Description
+A leather clothe lies here.~
+ShortDescr
+a leather clothe~
+ActionDescr
+(null)~
+VNum               1304
+EquippedAt         -1
+Values             1 1 0 0
+ExtraFlags         0
+Weight             2
+Timer              0
+BitVector          0
+Type               9
+WearFlags          2049
+Cost               23
+CostPerDay         23
+Affect             17 -1
+Affect             0 0
+End
+#ITEM
+ObjId              23
+ContainedBy        -1
+Name               leather clothe~
+Description
+A leather clothe lies here.~
+ShortDescr
+a leather clothe~
+ActionDescr
+(null)~
+VNum               1304
+EquippedAt         -1
+Values             1 1 0 0
+ExtraFlags         0
+Weight             2
+Timer              0
+BitVector          0
+Type               9
+WearFlags          2049
+Cost               23
+CostPerDay         23
+Affect             17 -1
+Affect             0 0
+End
+End
+#END_RENT

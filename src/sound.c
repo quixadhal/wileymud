@@ -4,17 +4,17 @@
 #include <sys/types.h>
 #include <string.h>
 
-#include "global.h"
-#include "bug.h"
-#include "comm.h"
-#include "interpreter.h"
-#include "handler.h"
-#include "db.h"
-#include "spells.h"
-#include "trap.h"
-#include "utils.h"
+#include "include/global.h"
+#include "include/bug.h"
+#include "include/comm.h"
+#include "include/interpreter.h"
+#include "include/handler.h"
+#include "include/db.h"
+#include "include/spells.h"
+#include "include/trap.h"
+#include "include/utils.h"
 #define _SOUND_C
-#include "sound.h"
+#include "include/sound.h"
 
 int RecGetObjRoom(struct obj_data *obj)
 {
@@ -46,7 +46,7 @@ void MakeNoise(int room, char *local_snd, char *distant_snd)
       if (!IS_NPC(ch) &&
 	  !IS_SET(ch->specials.act, PLR_DEAF) &&
 	  (GET_POS(ch) != POSITION_SLEEPING))
-	send_to_char(local_snd, ch);
+	cprintf(ch, local_snd);
     }
 
     for (door = 0; door < MAX_NUM_EXITS; door++) {
@@ -55,7 +55,7 @@ void MakeNoise(int room, char *local_snd, char *distant_snd)
 	  if (!IS_NPC(ch) &&
 	      (!IS_SET(ch->specials.act, PLR_DEAF) &&
 	       (GET_POS(ch) != POSITION_SLEEPING))) {
-	    send_to_char(distant_snd, ch);
+	    cprintf(ch, distant_snd);
 	  }
 	}
       }
@@ -101,9 +101,9 @@ void MakeSound(int pulse)
       ) {
       if (real_roomp(ch->in_room)->sound != 0) {
 	if (number(0, 1) == 1)
-	  send_to_char(real_roomp(ch->in_room)->sound, ch);
+	  cprintf(ch, real_roomp(ch->in_room)->sound);
 	else if (real_roomp(ch->in_room)->distant_sound != 0)
-	  send_to_char(real_roomp(ch->in_room)->distant_sound, ch);
+	  cprintf(ch, real_roomp(ch->in_room)->distant_sound);
       }
     }
   }

@@ -1,0 +1,330 @@
+#RENT
+Owner              Elthar~
+Gold               110
+TotalCost          92
+LastUpdate         820043904
+MinimumStay        0
+End
+#EQUIPMENT
+#ITEM
+ObjId              0
+ContainedBy        -1
+Name               torch~
+Description
+A large torch.~
+ShortDescr
+a torch~
+ActionDescr
+(null)~
+VNum               3015
+EquippedAt         0
+Values             0 0 7 0
+ExtraFlags         0
+Weight             3
+Timer              0
+BitVector          0
+Type               1
+WearFlags          1
+Cost               10
+CostPerDay         3
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              1
+ContainedBy        -1
+Name               traveling cloak~
+Description
+A traveling cloak lies here.~
+ShortDescr
+a traveling cloak~
+ActionDescr
+(null)~
+VNum               3053
+EquippedAt         3
+Values             0 0 0 0
+ExtraFlags         0
+Weight             15
+Timer              0
+BitVector          0
+Type               11
+WearFlags          5
+Cost               12
+CostPerDay         12
+Affect             17 -3
+Affect             26 2
+End
+#ITEM
+ObjId              2
+ContainedBy        -1
+Name               boots leather~
+Description
+A pair of leather boots lie here.~
+ShortDescr
+a pair of leather boots~
+ActionDescr
+(null)~
+VNum               3026
+EquippedAt         8
+Values             1 1 0 0
+ExtraFlags         0
+Weight             2
+Timer              0
+BitVector          0
+Type               9
+WearFlags          65
+Cost               50
+CostPerDay         10
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              3
+ContainedBy        -1
+Name               leather gloves~
+Description
+A pair of leather gloves lie here.~
+ShortDescr
+some leather gloves~
+ActionDescr
+(null)~
+VNum               3052
+EquippedAt         9
+Values             2 2 0 0
+ExtraFlags         8192
+Weight             4
+Timer              0
+BitVector          0
+Type               9
+WearFlags          129
+Cost               12
+CostPerDay         12
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              4
+ContainedBy        -1
+Name               leather bracer~
+Description
+A leather bracer lies here.~
+ShortDescr
+a leather bracer~
+ActionDescr
+(null)~
+VNum               3025
+EquippedAt         14
+Values             1 1 0 0
+ExtraFlags         0
+Weight             1
+Timer              0
+BitVector          0
+Type               9
+WearFlags          4097
+Cost               10
+CostPerDay         5
+Affect             17 -2
+Affect             0 0
+End
+#ITEM
+ObjId              5
+ContainedBy        -1
+Name               leather bracer~
+Description
+A leather bracer lies here.~
+ShortDescr
+a leather bracer~
+ActionDescr
+(null)~
+VNum               3025
+EquippedAt         15
+Values             1 1 0 0
+ExtraFlags         0
+Weight             1
+Timer              0
+BitVector          0
+Type               9
+WearFlags          4097
+Cost               10
+CostPerDay         5
+Affect             17 -2
+Affect             0 0
+End
+#ITEM
+ObjId              6
+ContainedBy        -1
+Name               scimitar sword~
+Description
+A long curved scimitar lies here.~
+ShortDescr
+a scimitar~
+ActionDescr
+(null)~
+VNum               9609
+EquippedAt         16
+Values             0 1 8 3
+ExtraFlags         12288
+Weight             10
+Timer              0
+BitVector          0
+Type               5
+WearFlags          8193
+Cost               30
+CostPerDay         30
+Affect             0 0
+Affect             0 0
+ExtraDescr         scimitar sword~
+  It is not the best workmanship, but the steel seems strong enough.
+~
+End
+#ITEM
+ObjId              7
+ContainedBy        -1
+Name               bottle water~
+Description
+A bottle of clear liquid has been left here.~
+ShortDescr
+a bottle~
+ActionDescr
+(null)~
+VNum               3003
+EquippedAt         17
+Values             16 16 0 0
+ExtraFlags         0
+Weight             2
+Timer              0
+BitVector          0
+Type               17
+WearFlags          16385
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+End
+#CARRIED
+#ITEM
+ObjId              12
+ContainedBy        -1
+Name               heafty loaf bread~
+Description
+A heafty loaf of bread rests here.~
+ShortDescr
+a heafty loaf of bread~
+ActionDescr
+(null)~
+VNum               5016
+EquippedAt         0
+Values             7 0 0 0
+ExtraFlags         0
+Weight             1
+Timer              0
+BitVector          0
+Type               19
+WearFlags          1
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              12
+ContainedBy        -1
+Name               bottle water~
+Description
+A bottle of clear liquid has been left here.~
+ShortDescr
+a bottle~
+ActionDescr
+(null)~
+VNum               3003
+EquippedAt         0
+Values             16 10 0 0
+ExtraFlags         0
+Weight             2
+Timer              0
+BitVector          0
+Type               17
+WearFlags          16385
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              12
+ContainedBy        -1
+Name               torch~
+Description
+A large torch.~
+ShortDescr
+a torch~
+ActionDescr
+(null)~
+VNum               3015
+EquippedAt         0
+Values             0 0 15 0
+ExtraFlags         0
+Weight             3
+Timer              0
+BitVector          0
+Type               1
+WearFlags          1
+Cost               10
+CostPerDay         3
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              12
+ContainedBy        -1
+Name               cleaver meat~
+Description
+A large meat cleaver lies here.~
+ShortDescr
+a meat cleaver~
+ActionDescr
+(null)~
+VNum               10003
+EquippedAt         -1
+Values             0 1 6 5
+ExtraFlags         0
+Weight             5
+Timer              0
+BitVector          0
+Type               5
+WearFlags          8193
+Cost               30
+CostPerDay         30
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              12
+ContainedBy        -1
+Name               whip~
+Description
+A whip lies here.~
+ShortDescr
+a whip~
+ActionDescr
+(null)~
+VNum               10001
+EquippedAt         -1
+Values             0 1 4 2
+ExtraFlags         0
+Weight             5
+Timer              0
+BitVector          0
+Type               5
+WearFlags          8193
+Cost               25
+CostPerDay         25
+Affect             0 0
+Affect             0 0
+ExtraDescr         whip~
+The whip is nothing more than a long piece of leather.
+~
+End
+End
+#END_RENT

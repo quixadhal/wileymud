@@ -1,0 +1,231 @@
+#RENT
+Owner              Tanin~
+Gold               117
+TotalCost          2688
+LastUpdate         841876383
+MinimumStay        0
+End
+#EQUIPMENT
+#ITEM
+ObjId              0
+ContainedBy        -1
+Name               pearl small~
+Description
+A small pearl lies here.~
+ShortDescr
+a small pearl~
+ActionDescr
+(null)~
+VNum               6512
+EquippedAt         0
+Values             0 0 -1 0
+ExtraFlags         64
+Weight             1
+Timer              0
+BitVector          0
+Type               1
+WearFlags          1
+Cost               988
+CostPerDay         88
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              1
+ContainedBy        -1
+Name               engraved breast piece armor~
+Description
+A beautiful breast peice with golden engraving is here.~
+ShortDescr
+a engraved breast piece~
+ActionDescr
+(null)~
+VNum               5038
+EquippedAt         5
+Values             4 4 0 0
+ExtraFlags         90112
+Weight             35
+Timer              0
+BitVector          0
+Type               9
+WearFlags          9
+Cost               2500
+CostPerDay         1200
+Affect             17 -3
+Affect             0 0
+End
+#ITEM
+ObjId              2
+ContainedBy        -1
+Name               chain-link chainlink chain link hood~
+Description
+A chain-link hood is here.~
+ShortDescr
+a chain-link hood~
+ActionDescr
+(null)~
+VNum               5042
+EquippedAt         6
+Values             2 3 0 0
+ExtraFlags         8192
+Weight             14
+Timer              0
+BitVector          0
+Type               9
+WearFlags          17
+Cost               550
+CostPerDay         100
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              3
+ContainedBy        -1
+Name               armoured leggings~
+Description
+A pair of armoured leggings are here.~
+ShortDescr
+some armoured leggings~
+ActionDescr
+(null)~
+VNum               5039
+EquippedAt         7
+Values             1 3 0 0
+ExtraFlags         8192
+Weight             17
+Timer              0
+BitVector          0
+Type               9
+WearFlags          33
+Cost               600
+CostPerDay         100
+Affect             0 0
+Affect             0 0
+ExtraDescr         armoured leggings~
+  The leggings are made from links of chain and appear very strong.
+~
+End
+#ITEM
+ObjId              4
+ContainedBy        -1
+Name               plated boots~
+Description
+A pair of plated boots are here.~
+ShortDescr
+a pair of plated boots~
+ActionDescr
+(null)~
+VNum               5041
+EquippedAt         8
+Values             4 4 0 0
+ExtraFlags         90112
+Weight             16
+Timer              0
+BitVector          0
+Type               9
+WearFlags          65
+Cost               475
+CostPerDay         100
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              5
+ContainedBy        -1
+Name               armour plated gauntlets~
+Description
+A pair of armour plated gauntlets are here.~
+ShortDescr
+a pair of armour plated gauntlets~
+ActionDescr
+(null)~
+VNum               5040
+EquippedAt         9
+Values             4 4 0 0
+ExtraFlags         90112
+Weight             15
+Timer              0
+BitVector          0
+Type               9
+WearFlags          129
+Cost               450
+CostPerDay         100
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              6
+ContainedBy        -1
+Name               two-handed sword two handed~
+Description
+A large two-handed sword lies here.~
+ShortDescr
+a two-handed sword~
+ActionDescr
+(null)~
+VNum               5054
+EquippedAt         18
+Values             0 1 16 3
+ExtraFlags         29760
+Weight             17
+Timer              0
+BitVector          0
+Type               5
+WearFlags          32769
+Cost               3000
+CostPerDay         1000
+Affect             18 1
+Affect             19 1
+End
+End
+#CARRIED
+#ITEM
+ObjId              9
+ContainedBy        -1
+Name               coral stick~
+Description
+A stick of coral lies here.~
+ShortDescr
+a stick of coral~
+ActionDescr
+(null)~
+VNum               6514
+EquippedAt         0
+Values             12 3 3 68
+ExtraFlags         64
+Weight             1
+Timer              0
+BitVector          0
+Type               3
+WearFlags          16385
+Cost               34
+CostPerDay         34
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              9
+ContainedBy        -1
+Name               conk shell~
+Description
+A conk shell lies here.~
+ShortDescr
+a conk shell~
+ActionDescr
+(null)~
+VNum               6513
+EquippedAt         0
+Values             12 4 44 36
+ExtraFlags         64
+Weight             1
+Timer              0
+BitVector          0
+Type               10
+WearFlags          16385
+Cost               32
+CostPerDay         32
+Affect             0 0
+Affect             0 0
+End
+End
+#END_RENT

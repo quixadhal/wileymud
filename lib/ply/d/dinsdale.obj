@@ -1,0 +1,827 @@
+#RENT
+Owner              Dinsdale~
+Gold               502
+TotalCost          5
+LastUpdate         829871374
+MinimumStay        0
+End
+#EQUIPMENT
+#ITEM
+ObjId              0
+ContainedBy        -1
+Name               leather bracer~
+Description
+A leather bracer lies here.~
+ShortDescr
+a leather bracer~
+ActionDescr
+(null)~
+VNum               3025
+EquippedAt         15
+Values             1 1 0 0
+ExtraFlags         0
+Weight             1
+Timer              0
+BitVector          0
+Type               9
+WearFlags          4097
+Cost               10
+CostPerDay         5
+Affect             17 -2
+Affect             0 0
+End
+End
+#CARRIED
+#ITEM
+ObjId              28
+ContainedBy        8
+Name               black leather jacket~
+Description
+A leather jacket made of dyed black lies here.~
+ShortDescr
+a black leather jacket~
+ActionDescr
+(null)~
+VNum               6103
+EquippedAt         0
+Values             2 2 0 0
+ExtraFlags         8192
+Weight             8
+Timer              0
+BitVector          0
+Type               9
+WearFlags          9
+Cost               350
+CostPerDay         350
+Affect             0 0
+Affect             0 0
+ExtraDescr         black leather jacket~
+  The jack has been dyed a deep black color which entails the whole material
+except a red syckle that has been painted upon the left shoulder.
+~
+End
+#ITEM
+ObjId              28
+ContainedBy        8
+Name               leggings black leather~
+Description
+A pair of black leather leggings lie here.~
+ShortDescr
+some black leather leggings~
+ActionDescr
+(null)~
+VNum               5083
+EquippedAt         0
+Values             2 2 0 0
+ExtraFlags         8192
+Weight             5
+Timer              0
+BitVector          0
+Type               9
+WearFlags          33
+Cost               23
+CostPerDay         23
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              28
+ContainedBy        8
+Name               vest black leather~
+Description
+A black leather vest lies here in a pile.~
+ShortDescr
+a black leather vest~
+ActionDescr
+(null)~
+VNum               5082
+EquippedAt         0
+Values             2 2 0 0
+ExtraFlags         8192
+Weight             7
+Timer              0
+BitVector          0
+Type               9
+WearFlags          9
+Cost               54
+CostPerDay         54
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              28
+ContainedBy        8
+Name               leggings black leather~
+Description
+A pair of black leather leggings lie here.~
+ShortDescr
+some black leather leggings~
+ActionDescr
+(null)~
+VNum               5083
+EquippedAt         0
+Values             2 2 0 0
+ExtraFlags         8192
+Weight             5
+Timer              0
+BitVector          0
+Type               9
+WearFlags          33
+Cost               23
+CostPerDay         23
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              28
+ContainedBy        8
+Name               vest black leather~
+Description
+A black leather vest lies here in a pile.~
+ShortDescr
+a black leather vest~
+ActionDescr
+(null)~
+VNum               5082
+EquippedAt         0
+Values             2 2 0 0
+ExtraFlags         8192
+Weight             7
+Timer              0
+BitVector          0
+Type               9
+WearFlags          9
+Cost               54
+CostPerDay         54
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              28
+ContainedBy        8
+Name               robe black~
+Description
+A black robe lies here.~
+ShortDescr
+a black robe~
+ActionDescr
+(null)~
+VNum               5910
+EquippedAt         0
+Values             0 0 0 0
+ExtraFlags         0
+Weight             4
+Timer              0
+BitVector          0
+Type               11
+WearFlags          1025
+Cost               56
+CostPerDay         56
+Affect             17 -6
+Affect             0 0
+End
+#ITEM
+ObjId              28
+ContainedBy        8
+Name               dagger small bone~
+Description
+There is a small dagger laying here, made of the spine of some beast.~
+ShortDescr
+a small bone dagger~
+ActionDescr
+(null)~
+VNum               4604
+EquippedAt         0
+Values             0 1 5 11
+ExtraFlags         64
+Weight             3
+Timer              0
+BitVector          0
+Type               5
+WearFlags          8193
+Cost               20
+CostPerDay         25
+Affect             0 0
+Affect             0 0
+ExtraDescr         dagger~
+This small dagger is made of the spine of a dragon, strong and sharp.
+~
+End
+#ITEM
+ObjId              28
+ContainedBy        8
+Name               vest scale~
+Description
+A vest made of odd looking scales lies here.~
+ShortDescr
+a scale vest~
+ActionDescr
+(null)~
+VNum               6000
+EquippedAt         0
+Values             3 3 0 0
+ExtraFlags         8192
+Weight             25
+Timer              0
+BitVector          0
+Type               9
+WearFlags          9
+Cost               450
+CostPerDay         350
+Affect             0 0
+Affect             0 0
+ExtraDescr         vest scale~
+  The vest seems to have a rather soft inner lining while on the outside 
+it seems to be covered with very hard scales of some large beast.  The 
+scales have a greenish tint to them.
+~
+End
+#ITEM
+ObjId              28
+ContainedBy        8
+Name               vest feathered~
+Description
+A vest made almost completely of feathers lies here.~
+ShortDescr
+a feathered vest~
+ActionDescr
+(null)~
+VNum               1306
+EquippedAt         0
+Values             2 2 0 0
+ExtraFlags         0
+Weight             7
+Timer              0
+BitVector          0
+Type               9
+WearFlags          9
+Cost               235
+CostPerDay         235
+Affect             17 -6
+Affect             0 0
+End
+#ITEM
+ObjId              28
+ContainedBy        8
+Name               hawk beaked mask~
+Description
+A mask with a large beak upon it lies here.~
+ShortDescr
+a hawk beaked mask~
+ActionDescr
+(null)~
+VNum               1305
+EquippedAt         0
+Values             2 2 0 0
+ExtraFlags         8192
+Weight             5
+Timer              0
+BitVector          0
+Type               9
+WearFlags          17
+Cost               67
+CostPerDay         67
+Affect             0 0
+Affect             0 0
+ExtraDescr         hawk beaked mask~
+  The mask has a huge beak upon it, rather it looks more like a hallow head
+of some huge bird.
+~
+End
+#ITEM
+ObjId              28
+ContainedBy        8
+Name               robe white~
+Description
+A robe made of white material lies here.~
+ShortDescr
+a white robe~
+ActionDescr
+(null)~
+VNum               3100
+EquippedAt         0
+Values             0 0 0 0
+ExtraFlags         0
+Weight             4
+Timer              0
+BitVector          0
+Type               12
+WearFlags          1025
+Cost               125
+CostPerDay         125
+Affect             17 -4
+Affect             0 0
+End
+#ITEM
+ObjId              28
+ContainedBy        8
+Name               hood chainmail~
+Description
+A chainmail hood lies here.~
+ShortDescr
+a chainmail hood~
+ActionDescr
+(null)~
+VNum               5911
+EquippedAt         -1
+Values             3 3 0 0
+ExtraFlags         8192
+Weight             13
+Timer              0
+BitVector          0
+Type               9
+WearFlags          17
+Cost               123
+CostPerDay         123
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              28
+ContainedBy        8
+Name               leg legplates scale~
+Description
+A pair of scale legplates lie here.~
+ShortDescr
+scale legplates~
+ActionDescr
+(null)~
+VNum               6001
+EquippedAt         -1
+Values             3 3 0 0
+ExtraFlags         8192
+Weight             18
+Timer              0
+BitVector          0
+Type               9
+WearFlags          33
+Cost               350
+CostPerDay         350
+Affect             0 0
+Affect             0 0
+ExtraDescr         leg legplates scale~
+  The legplates seem to have a soft inner lining while the scales on the 
+outer side seem to be very tough and tinted a soft green.
+~
+End
+#ITEM
+ObjId              28
+ContainedBy        8
+Name               leather gloves~
+Description
+A pair of leather gloves lie here.~
+ShortDescr
+some leather gloves~
+ActionDescr
+(null)~
+VNum               3052
+EquippedAt         -1
+Values             2 2 0 0
+ExtraFlags         8192
+Weight             4
+Timer              0
+BitVector          0
+Type               9
+WearFlags          129
+Cost               12
+CostPerDay         12
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              28
+ContainedBy        8
+Name               boots leather~
+Description
+A pair of leather boots lie here.~
+ShortDescr
+a pair of leather boots~
+ActionDescr
+(null)~
+VNum               3026
+EquippedAt         -1
+Values             1 1 0 0
+ExtraFlags         0
+Weight             2
+Timer              0
+BitVector          0
+Type               9
+WearFlags          65
+Cost               50
+CostPerDay         10
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              28
+ContainedBy        8
+Name               arm armplates scale~
+Description
+A pair of scale armplates lie here.~
+ShortDescr
+scale armplates~
+ActionDescr
+(null)~
+VNum               6002
+EquippedAt         -1
+Values             3 3 0 0
+ExtraFlags         8192
+Weight             15
+Timer              0
+BitVector          0
+Type               9
+WearFlags          257
+Cost               300
+CostPerDay         300
+Affect             0 0
+Affect             0 0
+ExtraDescr         arm armplates scale~
+  The armplates seem to have a soft inner lining while the scales on the
+outer side seem to be very strong and tinted a soft green.
+~
+End
+#ITEM
+ObjId              28
+ContainedBy        8
+Name               belt leather~
+Description
+A leather belt lies here.~
+ShortDescr
+a leather belt~
+ActionDescr
+(null)~
+VNum               3028
+EquippedAt         -1
+Values             0 1 0 0
+ExtraFlags         0
+Weight             1
+Timer              0
+BitVector          0
+Type               9
+WearFlags          2049
+Cost               30
+CostPerDay         10
+Affect             17 -2
+Affect             0 0
+End
+#ITEM
+ObjId              28
+ContainedBy        8
+Name               pearl ring~
+Description
+A small ring lies here on the ground.~
+ShortDescr
+a pearl ring~
+ActionDescr
+(null)~
+VNum               4602
+EquippedAt         -1
+Values             0 0 -1 0
+ExtraFlags         64
+Weight             1
+Timer              0
+BitVector          0
+Type               1
+WearFlags          3
+Cost               1001
+CostPerDay         150
+Affect             0 0
+Affect             0 0
+ExtraDescr         ring~
+This small ring has a pure pearl in the center.
+~
+End
+#ITEM
+ObjId              28
+ContainedBy        8
+Name               necklace skull~
+Description
+A necklace with a small skull at the end lies here.~
+ShortDescr
+a skull necklace~
+ActionDescr
+(null)~
+VNum               5923
+EquippedAt         0
+Values             1 13 5924 0
+ExtraFlags         512
+Weight             2
+Timer              0
+BitVector          0
+Type               15
+WearFlags          5
+Cost               12
+CostPerDay         12
+Affect             0 0
+Affect             0 0
+ExtraDescr         necklace skull~
+It appears to be a small skull, about the size of a monkeys, looking into
+the eyesockets it is quite obvious that one of the eye gems are missing.  The
+other that still remains is a black ebony hue.
+~
+End
+#ITEM
+ObjId              28
+ContainedBy        8
+Name               leather bracer~
+Description
+A leather bracer lies here.~
+ShortDescr
+a leather bracer~
+ActionDescr
+(null)~
+VNum               3025
+EquippedAt         0
+Values             1 1 0 0
+ExtraFlags         0
+Weight             1
+Timer              0
+BitVector          0
+Type               9
+WearFlags          4097
+Cost               10
+CostPerDay         5
+Affect             17 -2
+Affect             0 0
+End
+#ITEM
+ObjId              32
+ContainedBy        -1
+Name               whip scourge~
+Description
+A whip lies here with many hooks attached to the end.~
+ShortDescr
+a scourge~
+ActionDescr
+(null)~
+VNum               10002
+EquippedAt         0
+Values             0 1 6 2
+ExtraFlags         2624
+Weight             5
+Timer              0
+BitVector          0
+Type               5
+WearFlags          8193
+Cost               50
+CostPerDay         50
+Affect             18 1
+Affect             0 0
+End
+#ITEM
+ObjId              32
+ContainedBy        -1
+Name               blue green staff~
+Description
+A blue green staff with a leaf design is sitting on the ground here.~
+ShortDescr
+a blue green staff~
+ActionDescr
+(null)~
+VNum               9602
+EquippedAt         0
+Values             1 3 3 16
+ExtraFlags         64
+Weight             1
+Timer              0
+BitVector          0
+Type               4
+WearFlags          16385
+Cost               1000
+CostPerDay         200
+Affect             0 0
+Affect             0 0
+ExtraDescr         blue green staff~
+  The staff has symbols that could only pertain to the holy arts.
+~
+End
+#ITEM
+ObjId              32
+ContainedBy        -1
+Name               leather armbands~
+Description
+A pair of leather armbands lie here.~
+ShortDescr
+some leather armbands~
+ActionDescr
+(null)~
+VNum               1301
+EquippedAt         0
+Values             1 0 0 0
+ExtraFlags         0
+Weight             3
+Timer              0
+BitVector          0
+Type               9
+WearFlags          257
+Cost               54
+CostPerDay         54
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              32
+ContainedBy        -1
+Name               red eye shield~
+Description
+A large shield bearing the symbol of a red eye is here.~
+ShortDescr
+a large shield~
+ActionDescr
+(null)~
+VNum               9601
+EquippedAt         0
+Values             10 10 0 0
+ExtraFlags         24640
+Weight             8
+Timer              0
+BitVector          0
+Type               9
+WearFlags          513
+Cost               1000
+CostPerDay         125
+Affect             17 -5
+Affect             0 0
+End
+#ITEM
+ObjId              32
+ContainedBy        -1
+Name               pouch small leather~
+Description
+A small pouch made of soft leather is piled upon the floor.~
+ShortDescr
+a small leather pouch~
+ActionDescr
+(null)~
+VNum               4603
+EquippedAt         -1
+Values             300 1 -1 0
+ExtraFlags         64
+Weight             4
+Timer              0
+BitVector          0
+Type               15
+WearFlags          2049
+Cost               50
+CostPerDay         35
+Affect             0 0
+Affect             0 0
+ExtraDescr         pouch~
+This small pouch is made of soft deerskin.
+~
+End
+#ITEM
+ObjId              32
+ContainedBy        -1
+Name               gnarled branch~
+Description
+A small, gnarled branch lies here.~
+ShortDescr
+a gnarled branch~
+ActionDescr
+(null)~
+VNum               1901
+EquippedAt         0
+Values             30 1 1 42
+ExtraFlags         64
+Weight             10
+Timer              0
+BitVector          0
+Type               3
+WearFlags          16385
+Cost               2000
+CostPerDay         500
+Affect             0 0
+Affect             0 0
+ExtraDescr         gnarled branch~
+  The branch is no more than a foot long and seems to be curved in every
+which way.  All about the small branch there appears to be runes of a sort,
+the only ones you can make out say this: "Call upon the dragon....", the rest
+seems unintelligable.
+~
+End
+#ITEM
+ObjId              32
+ContainedBy        -1
+Name               traveling cloak~
+Description
+A traveling cloak lies here.~
+ShortDescr
+a traveling cloak~
+ActionDescr
+(null)~
+VNum               3053
+EquippedAt         -1
+Values             0 0 0 0
+ExtraFlags         0
+Weight             15
+Timer              0
+BitVector          0
+Type               11
+WearFlags          5
+Cost               12
+CostPerDay         12
+Affect             17 -3
+Affect             26 2
+End
+#ITEM
+ObjId              32
+ContainedBy        -1
+Name               vest chainmail~
+Description
+A chainmail vest lies here.~
+ShortDescr
+a chainmail vest~
+ActionDescr
+(null)~
+VNum               5912
+EquippedAt         -1
+Values             3 3 0 0
+ExtraFlags         8192
+Weight             26
+Timer              0
+BitVector          0
+Type               9
+WearFlags          9
+Cost               231
+CostPerDay         231
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              32
+ContainedBy        -1
+Name               bearskin skin black~
+Description
+A huge bearskin lies here.~
+ShortDescr
+a black bearskin~
+ActionDescr
+(null)~
+VNum               1403
+EquippedAt         -1
+Values             3 3 0 0
+ExtraFlags         0
+Weight             80
+Timer              0
+BitVector          0
+Type               9
+WearFlags          1025
+Cost               200
+CostPerDay         20
+Affect             17 -7
+Affect             0 0
+ExtraDescr         bearskin skin black~
+  It looks as though it would fit someone fifteen feet tall and very heavy.
+~
+End
+#ITEM
+ObjId              32
+ContainedBy        -1
+Name               leather bracer~
+Description
+A leather bracer lies here.~
+ShortDescr
+a leather bracer~
+ActionDescr
+(null)~
+VNum               3025
+EquippedAt         -1
+Values             1 1 0 0
+ExtraFlags         0
+Weight             1
+Timer              0
+BitVector          0
+Type               9
+WearFlags          4097
+Cost               10
+CostPerDay         5
+Affect             17 -2
+Affect             0 0
+End
+#ITEM
+ObjId              32
+ContainedBy        -1
+Name               claymore~
+Description
+A huge sword lies here; a claymore.~
+ShortDescr
+a claymore~
+ActionDescr
+(null)~
+VNum               6156
+EquippedAt         -1
+Values             0 1 14 3
+ExtraFlags         28928
+Weight             15
+Timer              0
+BitVector          0
+Type               5
+WearFlags          32769
+Cost               2543
+CostPerDay         2543
+Affect             0 0
+Affect             0 0
+End
+End
+#END_RENT

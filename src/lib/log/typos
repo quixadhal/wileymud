@@ -1,0 +1,343 @@
+**Derkhil[20434]: in the Warrior ants (#20002) name list : 'warior' ant -> 'warrior'
+**Derkhil[20059]: 'Looking into the grass you can see that travel looks difficul.' -> 'The grass around is quite thick, and it appears difficult to travel through.'
+**Derkhil[20059]: And that descript is repeated several times....
+**Derkhil[20059]: road 'travells' north -> 'travels'
+**Derkhil[20062]: On worker ants : for their 'collany' -> 'colony'
+**Derkhil[3167]: 1st sentance (repeated in many descripts in this and Elcid's grassland zones ) : (cont)
+**Derkhil[3167]: (cont) Harsh stalks of grass brush up against you, making travel through the thick grassland very difficult.  (the other sentances cover the fact that th
+**Derkhil[3167]: (cont) fact that there is grasslands on all around you)
+**Derkhil[20156]: On the extra descript of the 'Rusty Longsword' (#20001) : sword 'barely looks like it would'nt' cut -> 'looks like it wouldn't'
+**Derkhil[20156]: On extra descript on rusty long : its 'decrepid' blade -> 'decrepit'
+**Derkhil[20147]: and, 'infact,' has -> 'in fact,'
+**Derkhil[20146]: Do trolls shit alot or what? ;;)
+**Derkhil[20145]: again, 'infact' -> 'in fact'...meebe there oughta be a bit less dung covered paths...
+**Derkhil[20141]: This whole descript is screwed - missing a bunch of it
+**Derkhil[20138]: heh..more 'infact'...in vi, :%s/infact,/in fact,/g  oughta fix them all...
+**Derkhil[5054]: array 'or' stained -> 'of'
+**Derkhil[5054]: be 'written' in blood -> 'drawn'
+**Derkhil[20177]: in title : "Chef's" -> "Chief's"
+**Moroi[5328]: Descrip says tunnel runs n s actually runs e w
+**Derkhil[20101]: only 'ovious' exit -> 'obvious'
+**Derkhil[20024]: grass and 'thistelweeds' with an -> 'thistleweed'  (probably a repeated mistake, too..)
+**Moroi[1670]: Says that hills lie n and e but really they only lie east
+**Derkhil[5085]: small 'ountercounter' on the -> 'counter'
+**Elbereth[1644]: east should be west
+**Ehran[1263]: squigglies are in the desc!
+**Derkhil[4673]: Linewrap here on the third line
+**Derkhil[15039]: while a 'dorr' to the -> 'door'
+**Derkhil[15015]: in the 'cieling' leads -> 'ceiling'
+**Derkhil[15019]: 'cieling' -> 'ceiling'
+**Derkhil[15198]: as the 'punget' -> 'pungent'
+**Derkhil[15228]: and being 'attented' to -> 'attended'
+**Derkhil[15202]: *tinkle* of a flute? howabout piping of a flute...
+**Derkhil[15202]: both sets of doors leading out of this room have the same name, 'door' - one should be different to facilitate opening/etc
+**Derkhil[15143]: the indention is screwy here - 3 space on first pararather than 2. and none on 'South Wall Raod...'
+**Derkhil[15143]: bustle of 'Templs' Square -> 'Temple'
+**Derkhil[15206]: walls and 'cieling' -> 'ceiling'
+**Derkhil[15206]: the most 'prepostorous' stories -> 'preposterous'
+**Derkhil[15182]: the north, 'but no apparant entrance.' -> 'but no entrance is apparent.'
+**Derkhil[15241]: when armor wears off, it says '... less proctected', oughta be '... less protected'
+**Derkhil[15247]: try ':%s/cieling/ceiling/g' in vi on the .wld file..it's a common typo...
+**Rhyvan[1263]: 2 tildes showing here, after room name and room descript
+**Rhyvan[20011]: prob at end of last sentance here
+**Rhyvan[3023]: a wooden door to 'th' west -> 'the'
+**Rhyvan[3034]: spotless and 'peacful.' -> 'peaceful'
+**Elbereth[3001]: In the cleric spell list, 'create water' is available both as a 2nd and a 3rd-level spell....I suppose the 3rd-level spell should be 'create food'
+**Elbereth[3016]: You can't open the door to the east as there already is one of the same name to the north.
+**Raya[3011]: contraptoin should be contraption
+**Locutus[2032]: there's a place on travelers road(far away) that says exits are e or w, but they are e or n
+**Locutus[2034]: scratch that...there are 2 places that say that(one as mentioned before) and one that says e or w, but exits are e or n(stone bridge)
+**Elbereth[2008]: You should be able to follow the road to the East, too
+**Elbereth[3017]: Are there actually 2nd-lvl spells called 'Sleep' and 'Refresh' at all?
+**Locutus[1247]: Not sure if this is a typo or not.....there is a place in the Wood along the Grassland that the exits show 'Grassland~' as an exit
+**Dread[2000]: east---west
+**Derkhil[5036]: what so ever reside 'amung' the 'angershangers' or -> 'among' the 'hangers'
+**Derkhil[5040]: 'mallsmall' bridge -> 'small'
+**Derkhil[5084]: some sort of a 'ntersecintersection.' -> 'intersection.'
+**Sandy[3108]: the new message forovergrown trail sould be a sentance if you look at the one before it ;)
+**Locutus[4674]: Guest Chamber in tower  showeing should be showing
+**Derkhil[6373]: trees of 'mamoth' proportions -> 'mammoth'
+**Daisy[5084]: room 5084 has an "ntersecintersection"
+**Belle[9597]: heafty bread should be "hefty" bread
+**Robin[1292]: Cave Enterance should be spelled Cave Entrance?
+**Daisy[5000]: Highstaff gate guard "bodly" should be boldly
+**Daisy[10075]: Room 10075 Raod instead of Road
+**Belle[5154]: description room 5154 has a "buidling"
+**Daisy[5194]: room 5194 has a "smal" road in the first line
+**Araya[3149]: line spacing
+**Lan[1299]: road is spelled rood by the jungle..
+**Locutus[1219]: to in You are to full to eat.... should be too
+**Araya[20011]: "steeper.to"
+**Mithrandir[3016]: practise practice
+**Robin[1401]: the word 'receive' is spelled wrong when you receive experience.
+**Robin[5129]: in the highstaff depository citizens is spelled wrong.
+**Robin[3001]: When the armor spell wears off it says 'you feel less proctected instead of protected.
+**Robin[1402]: travelers road is spelled wrong heading out of town
+**Daisy[6126]: room 6126 has a 'couldren' ...should be cauldron on line 1
+**Bennu[3033]: Acolyte - n. 1. An attendant or assistant. ...
+**Robin[3001]: I think alcolyte in the Chapel is supposed to be spelled acolyte.
+**Ikee[1263]: this room description has odd carriage returns
+**Yaya[3001]: hi
+**Korak[4627]: info says the jungles of Nesthar are NE; I've found them to be northwest
+**Exba[3044]: You are to? full to eat more!
+**Bull[3038]: message when spellcasters cast, I see "[person] intones a mistake magic" -->should probably be "mystic" magic.
+**Araya[3015]: "Your feet rise up off the ground.(..) <- no <CR>
+**Araya[3040]: sex not specific in "but HE'S not fighting anyone."
+**Finrod[3017]: Jessica, a beautiful young women(sp?)
+**Jensen[4614]: you need a carriage return (~) after GREP
+**Ikee[3001]: if a female stares in to space, it says HIS eyes
+**Finrod[3011]: the help for 'chill touch' says it reduces str by 1, yet the save is for 'half damage'?
+**Finrod[3010]: the 'continual light' spell doesn't list it's duration
+**Finrod[30010]: the armor spell info says it last 24 hrs, but for me it only lasted 5 hrs; must be level related?
+**Finrod[3017]: what is the duration of the 'infravision' spell?
+**RichardEarthroot[3011]: fdafsd
+**RichardEarthroot[3011]: in Dark Home there is a typo 4 lines down "contraption"
+**Finrod[3033]: I see that 'acolyte' is now spelled correctly, but it still says 'a alcolyte says a prayer to his god'
+**Ironhand[6119]: should be bartering not bardering in trade deal.
+**Korak[1951]: the doors double closes quietly?
+**Korak[4740]: emmense(?) cavern in the walkway in the dwarven mines
+**Korak[1244]: cave enterance?
+**Digger[30017]: it says You recieve your share of 99 experience, should be receive.
+**Araya[5014]: "North - South Processional" should be "West - ..."
+**Elbereth[5084]: Heh...ntersecintersection is supposta be 'intersection', eh?
+**Stinger[3008]: COME ON YOU GOT A TYPO ON THE WIZLIST!!!
+**Hung[3002]: WAISTE? = WAIST
+**Hung[3018]: You recieve your share of 80 experience.RECEIVE
+**Robin[1402]: travelers is spelled wrong here.
+**Robin[1402]: travelers is spelled wrong here.
+**Robin[1402]: travelers is spelled wrong here.
+**Robin[1402]: travelers is spelled wrong here.
+**Hung[5031]: empecibly
+**Digger[3428]: it say's: A large spider go to sleep, should be goes to sleep.
+**Atlas[9603]: weasal is spelled wrong.
+**Hung[5098]: ntersecintersection.
+**Hung[5104]: continueing 
+**Hung[5010]: You recieve your share of 96 experience. = receive
+**Atlas[1536]: THERE grey color should be THEIR grey color.
+**Hung[5159]: A cup of wine of wine for 
+**Elleb[1384]: in elder hut it say The fire bursts to live instead of life.
+**Elleb[1364]: components vest says it has man pockets instead of many (when you drop it).
+**Korak[4657]: should tackle in the list of social commands be tickle?
+**Belle[6104]: In desription for Gredth room Podium. "A sany path lies to the south" SAndy?
+**Bkjb[3011]: contraptoin should be contraption
+**Hung[1743]: amungst in redspine mountains
+**Laurie[5025]: a drum heard beating in the disance....rhythm not rhtyme
+**Laurie[5028]: a large dog lieing about....should by lying
+**Laurie[5034]: A merchants yells out...should be A merchant yells out.
+**Laurie[5030]: A eagle flys high above..should be An eagle flies above..
+**Laurie[5030]: do you want me to stop now?
+**Elleb[1381]: while all my other monster summons say A xxxx stands here, the one for giant lizard says A giant lizard rests here.
+**Hung[6401]: a evil grin (grammar)
+**Korak[5034]: shouldn't it be mosaic, not mosiac?
+**Korak[5335]: shouldn't this say just to the WEST you can see that the sewer opens up...?
+**Korak[4632]: extrances(?) line the hall...
+**DroiD[6414]: The Aklan Warrior eyes _your_ -> you waringly
+**AWK[5014]: test
+**Korak[4674]: strewn about showeing(?) that something...
+**Korak[5032]: shouldn't it be 'dining room'?
+**Robin[6123]: It is supposed to say train all recruits for timed message not trail (thief Guildmaster  Greth)
+**Coffin[20159]: 1 n into Entrance to mountains is rood not road.
+**Coffin[10689]: in The Kitchen of the temple NE of shylar is a typo, eatern instead of easter.
+**Mudman[20013]: Typos All throughout Grasslands Area!
+**Mudman[3017]: There are 2 typos in Jessica's Home
+**Mudman[1401]: tht - misspelled in travelers road right when it hits the mountains
+**Mudman[1724]: Many typos along redspine crest
+**Belle[5000]: 'A gate guard stands *bodly* should be boldly
+**Belle[10099]: line six 'redsping' should be redspine
+**Belle[10167]: line 5 'eastwrd' should be eastward
+**Belle[10054]: line 5 'Mountians' should be mountains
+**Belle[1401]: line 2 'pasing' passing
+**Coffin[5119]: 2w, 2n of high Gate is a type peices instead of pieces.
+**Coffin[5091]: 'A <wite>' instead of <white> feathered bird flys by you and lands not far away.
+**Scruffy[10663]: desc say cieling instead of ceiling
+**Scruffy[10702]: description of joran the bard contains a tildy
+**Robin[5402]: Lieutenant is spelled wrong in this Ogre room
+**Robin[5401]: The definite sound of somethign being bashed can be heard  (definite spelled wrong)
+**Baradakus[10659]: shouldn't this say 'to the west and SOUTH the field lines the side of the rise'?
+**Alv[5120]: A weathy man proudly makes his way about here.
+**Alv[10702]: Joran the elven bard~
+**Melanie[30012]: ldance you led hin to the danceflor?
+**Scruffy[20158]: Road high into mountains says rood instead of road in desc.
+**Belle[6112]: the assist command always says 'he's not fighting anyone isntead of the gender proper term.
+**MadMardigan[3008]: you'r sitting already.
+**Corwin[6400]: a shadow moves in the darkness is darness in midgaard
+**MadMardigan[10675]: the hall
+**Melanie[3026]: peirce..... pierce
+**Shadowspan[4674]: showeing
+**DeadWolf[3000]: supply shop -piece of paper. - perouse
+**Daisy[1602]: In the description for this room, there is no indication that travelers road goes south at this point.
+**Ladyhawke[5156]: eq.
+**Tyrus[3007]: on traveler's road north of supply house "On the side ot the road"
+**Mister[3000]: There should be a comma after "hurt" when Eli heals.
+**Trump[3012]: calloused is spelled incorectly.
+**Omnist[1781]: "quit" should be "quite" on help traps.
+**Omnist[1781]: quit find... sorry.
+**Omnist[1781]: help find... double sorry.  :)
+**DeadWolf[4674]: guest chamber in tower : showeing
+**DeadWolf[20046]: ants : collony should be colony.
+**DeadWolf[3046]: You are *to* full to eat more!
+**MadMardigan[15104]: founders square, not swuare
+**Dirk[3000]: when you order a follower to kill someone not registered, it says you can't order other to do your dirty work. Should be others
+**DeadWolf[4650]: library at top of tower, tombs given instead of tomes.
+**DeadWolf[4649]: caged room in tower, wand given instead of wander.
+**Melanie[3040]: You are TO full to eat more!    ????
+**Dirk[3008]: when you thank yourself the message other people see says thanks #hself
+**DeadWolf[4647]: stone stair : string aura of evil.
+**DeadWolf[3008]: griff : envite should be invite.
+**DeadWolf[3010]: skills : apraise -> appraise
+**Robin[5402]: lieutenant is spelled wrong here
+**Ender[5003]: "two green eyes stair [stare] at you but quickly vanish
+**Ender[5004]: in Vulture's wines, i typed 'buy wine' but he sold me ale (at a significant markup)
+**Bug[3008]: This room
+**Bug[3008]: This room
+**Bug[3008]: This room
+**Bug[3008]: This room
+**Bug[3008]: This room
+**Bug[3008]: This room
+**Bug[3008]: This room
+**Bug[3008]: This room
+**Bug[3008]: This room
+**Bug[3008]: This room
+**Bug[3008]: This room
+**Bug[3008]: This room
+**Bug[3008]: This room
+**Bug[3008]: This room
+**Bug[3008]: This room
+**Bug[3008]: This room
+**Bug[3008]: This room
+**Bug[3008]: This room
+**Bug[3008]: This room
+**Bug[3008]: This room
+**Bug[3008]: This room
+**Bug[3008]: This room
+**Bug[3008]: This room
+**Bug[3008]: This room
+**Bug[3008]: This room
+**Bug[3008]: This room
+**Bug[3008]: This room
+**Bug[3008]: This room
+**Bug[3008]: This room
+**Bug[3008]: This room
+**Bug[3008]: This room
+**Bug[3008]: This room
+**Bug[3008]: This room
+**Bug[3008]: This room
+**Bug[3008]: This room
+**Bug[3008]: This room
+**Bug[3008]: This room
+**Bug[3008]: This room
+**Bug[3008]: This room
+**Bug[3008]: This room
+**Bug[3008]: This room
+**Bug[3008]: This room
+**Bug[3008]: This room
+**Bug[3008]: This room
+**Bug[3008]: This room
+**Bug[3008]: This room
+**Bug[3008]: This room
+**Bug[3008]: This room
+**Bug[3008]: This room
+**Bug[3008]: This room
+**Bug[3008]: This room
+**Bug[3008]: This room
+**Bug[3008]: This room
+**Bug[3008]: This room
+**Bug[3008]: This room
+**Bug[3008]: This room
+**Bug[3008]: This room
+**Bug[3008]: This room
+**Bug[3008]: This room
+**Bug[3008]: This room
+**Bug[3008]: This room
+**Bug[3008]: This room
+**Bug[3008]: This room
+**Bug[3008]: This room
+**Bug[3008]: This room
+**Bug[3008]: This room
+**Bug[3008]: This room
+**Bug[3008]: This room
+**Bug[3008]: This room
+**Bug[3008]: This room
+**Bug[3008]: This room
+**Bug[3008]: This room
+**Bug[3008]: This room
+**Bug[3008]: This room
+**Bug[3008]: This room
+**Bug[3008]: This room
+**Bug[3008]: This room
+**Bug[3008]: This room
+**Bug[3008]: This room
+**Bug[3008]: This room
+**Bug[3008]: This room
+**Bug[3008]: This room
+**Bug[3008]: This room
+**Bug[3008]: This room
+**Bug[3008]: This room
+**Bug[3008]: This room
+**Bug[3008]: This room
+**Bug[3008]: This room
+**Bug[3008]: This room
+**Bug[3008]: This room
+**Bug[3008]: This room
+**Bug[3008]: This room
+**Bug[3008]: This room
+**Bug[3008]: This room
+**Bug[3008]: This room
+**Bug[3008]: This room
+**Bug[3008]: This room
+**Bug[3008]: This room
+**Bug[3008]: This room
+**Belle[4605]: The main hall lies to the east Should be west East takes you to the tower gardens.
+**Garlon[3007]: of the road
+**Garlon[3017]: failures
+**Belle[6021]: I just saw #6000 lizardman lizard green A green-skinned .... 
+**Belle[10124]: the word flows is not spelled flwos
+**Belle[10426]: 'teh west' :)
+**Belle[20757]: murkey is spelled murky. :)
+**Omnist[6104]: sandy is spelled sany
+**Swift[5210]: misspelled of in last line.
+**Garlon[30008]: devoid
+**Lan[10427]: teh the misspelled
+**Belle[10702]: Joan the elven bard~ <--- is that ~ supposed to be there?
+**Belle[1486]: Grammer: There was nn coins  should be There were nn coins
+**Scruffy[2008]: directions in description say south or west, should be south or east.
+**Scruffy[20217]: desc. says shorline instead of shoreline.
+**Scruffy[20771]: desc. says damn instead of dam.
+**Baradakus[3048]: skill level should be better THAN average, not then
+**Krystal[3012]: Sass exclaimES, "Just look around.......
+**Robin[3002]: Do you ever do anything with these?
+**DeadWolf[10673]: temple : Top of the stairs : torhces
+**Belle[4605]: ( Hp:112 Mp:170 Mv:135 ) type The main hall lies to the east you go east and end up in the Tower Gardens. :)
+**Scruffy[1245]: Cave says trail is to the north, its to the south.
+**Belle[5210]: it says a arch and it should be an arch
+**Darkness[5021]: cant/cast
+**Garlon[4647]: strong
+**Scruffy[10427]: desc says teh instead of the
+**Zolar[3008]: in help halflings, it says but instead of by
+**Zolar[3435]: is Gold Soverigns supposed to be spelled Sovereigns? (on the score screen)
+**Zolar[5002]: several mistakes in the sign on the wall in this room
+**Zolar[10683]: cieling instead of ceiling
+**Zolar[10685]: same here
+**Zolar[10684]: priestess spells sacrifice wrong
+**Dirk[6544]: kelpie emreges should be kelpie emerges
+**Zolar[10666]: motony should be monotony
+**Zolar[20011]: fix the description this room
+**Zolar[4674]: showeing should be showing
+**Zolar[20013]: ant collecting food for collony, should be colony
+**Zolar[4626]: need one more line after the room description here
+**Zolar[1263]: theres an extra ~ in this room
+**Zolar[20013]: description missing last line in this room
+**Zolar[9629]: bandit says "he's sell his own mother", should be "he'd sell his own mother"
+**Clarina[2008]: road doesn't go where it wsays it does
+**Puck[5104]: a halfling says, "My feet arn't all that hairy yet."  arn't should be aren't.
+**Myrth[2008]: in the forest west of shylar road goes s or e desc
+**Myrth[2008]: says south or west
+**Quixadhal[5009]: wite feathered bird
+**Chronos[4646]: string
+**Chronos[6126]: corrated carotid
+**Chronos[5272]: gladitor gladiator
+**Chronos[6032]: abdomin abdomen
+**Floyd[5015]: weathy man in highstaff should be wealthy
+**Floyd[1384]: the fire bursts to live? should be life
+**Chronos[9603]: weasal weasel
+**Chronos[6111]: drunkun drunken

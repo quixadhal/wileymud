@@ -1,0 +1,565 @@
+#RENT
+Owner              Floyd~
+Gold               16231
+TotalCost          1785
+LastUpdate         823433540
+MinimumStay        0
+End
+#EQUIPMENT
+#ITEM
+ObjId              0
+ContainedBy        -1
+Name               pearl ring~
+Description
+A small ring lies here on the ground.~
+ShortDescr
+a pearl ring~
+ActionDescr
+(null)~
+VNum               4602
+EquippedAt         0
+Values             0 0 -1 0
+ExtraFlags         64
+Weight             1
+Timer              0
+BitVector          0
+Type               1
+WearFlags          3
+Cost               1001
+CostPerDay         150
+Affect             0 0
+Affect             0 0
+ExtraDescr         ring~
+This small ring has a pure pearl in the center.
+~
+End
+#ITEM
+ObjId              1
+ContainedBy        -1
+Name               aklan's aklan pendant~
+Description
+A pendant lies here, the symbol of Aklan engraved in it.~
+ShortDescr
+aklan's pendant~
+ActionDescr
+(null)~
+VNum               6411
+EquippedAt         3
+Values             0 0 0 0
+ExtraFlags         0
+Weight             2
+Timer              0
+BitVector          0
+Type               11
+WearFlags          5
+Cost               234
+CostPerDay         34
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              2
+ContainedBy        -1
+Name               aklan's aklan pendant~
+Description
+A pendant lies here, the symbol of Aklan engraved in it.~
+ShortDescr
+aklan's pendant~
+ActionDescr
+(null)~
+VNum               6411
+EquippedAt         4
+Values             0 0 0 0
+ExtraFlags         0
+Weight             2
+Timer              0
+BitVector          0
+Type               11
+WearFlags          5
+Cost               234
+CostPerDay         34
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              3
+ContainedBy        -1
+Name               black leather jacket~
+Description
+A leather jacket made of dyed black lies here.~
+ShortDescr
+a black leather jacket~
+ActionDescr
+(null)~
+VNum               6103
+EquippedAt         5
+Values             1 1 0 0
+ExtraFlags         8192
+Weight             8
+Timer              0
+BitVector          0
+Type               9
+WearFlags          9
+Cost               350
+CostPerDay         350
+Affect             0 0
+Affect             0 0
+ExtraDescr         black leather jacket~
+  The jack has been dyed a deep black color which entails the whole material
+except a red syckle that has been painted upon the left shoulder.
+~
+End
+#ITEM
+ObjId              4
+ContainedBy        -1
+Name               cap leather~
+Description
+A leather cap lies here.~
+ShortDescr
+a leather cap~
+ActionDescr
+(null)~
+VNum               3027
+EquippedAt         6
+Values             1 1 0 0
+ExtraFlags         0
+Weight             1
+Timer              0
+BitVector          0
+Type               9
+WearFlags          17
+Cost               35
+CostPerDay         10
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              5
+ContainedBy        -1
+Name               copper legplates~
+Description
+A couple pieces of long copper lies here.~
+ShortDescr
+a pair of copper legplates~
+ActionDescr
+(null)~
+VNum               3043
+EquippedAt         7
+Values             3 3 0 0
+ExtraFlags         90112
+Weight             30
+Timer              0
+BitVector          0
+Type               9
+WearFlags          33
+Cost               80
+CostPerDay         18
+Affect             0 0
+Affect             0 0
+ExtraDescr         copper legplates~
+  These two long pieces of copper are extremely heavy and copper has been
+known to give way in batle to harsh blows.
+~
+End
+#ITEM
+ObjId              6
+ContainedBy        -1
+Name               black leather boots~
+Description
+A pair of boots that have been dyed red lie here.~
+ShortDescr
+black leather boots~
+ActionDescr
+(null)~
+VNum               6107
+EquippedAt         8
+Values             1 1 0 0
+ExtraFlags         0
+Weight             5
+Timer              0
+BitVector          0
+Type               9
+WearFlags          65
+Cost               70
+CostPerDay         70
+Affect             14 5
+Affect             0 0
+End
+#ITEM
+ObjId              7
+ContainedBy        -1
+Name               copper armplates~
+Description
+A couple pieces of copper lie here.~
+ShortDescr
+a pair of copper armplates~
+ActionDescr
+(null)~
+VNum               3042
+EquippedAt         10
+Values             3 3 0 0
+ExtraFlags         90112
+Weight             30
+Timer              0
+BitVector          0
+Type               9
+WearFlags          257
+Cost               70
+CostPerDay         7
+Affect             0 0
+Affect             0 0
+ExtraDescr         copper armplates~
+  It is a heavy couple pieces of armor and copper is known to give way in
+battle from a harsh blow.
+~
+End
+#ITEM
+ObjId              8
+ContainedBy        -1
+Name               black hooded robe~
+Description
+A black hooded robe lies here.~
+ShortDescr
+a black hooded robe~
+ActionDescr
+(null)~
+VNum               6410
+EquippedAt         12
+Values             0 0 0 0
+ExtraFlags         0
+Weight             4
+Timer              0
+BitVector          0
+Type               11
+WearFlags          1025
+Cost               67
+CostPerDay         67
+Affect             0 0
+Affect             0 0
+ExtraDescr         black hooded robe~
+  The symbol of Aklan in engraved upon it.
+~
+End
+#ITEM
+ObjId              9
+ContainedBy        -1
+Name               belt leather~
+Description
+A leather belt lies here.~
+ShortDescr
+a leather belt~
+ActionDescr
+(null)~
+VNum               3028
+EquippedAt         13
+Values             1 1 0 0
+ExtraFlags         0
+Weight             1
+Timer              0
+BitVector          0
+Type               9
+WearFlags          2049
+Cost               30
+CostPerDay         10
+Affect             17 -2
+Affect             0 0
+End
+#ITEM
+ObjId              10
+ContainedBy        -1
+Name               leather bracer~
+Description
+A leather bracer lies here.~
+ShortDescr
+a leather bracer~
+ActionDescr
+(null)~
+VNum               3025
+EquippedAt         14
+Values             0 0 0 0
+ExtraFlags         0
+Weight             1
+Timer              0
+BitVector          0
+Type               9
+WearFlags          4097
+Cost               10
+CostPerDay         5
+Affect             17 -2
+Affect             0 0
+End
+#ITEM
+ObjId              11
+ContainedBy        -1
+Name               leather bracer~
+Description
+A leather bracer lies here.~
+ShortDescr
+a leather bracer~
+ActionDescr
+(null)~
+VNum               3025
+EquippedAt         15
+Values             0 0 0 0
+ExtraFlags         0
+Weight             1
+Timer              0
+BitVector          0
+Type               9
+WearFlags          4097
+Cost               10
+CostPerDay         5
+Affect             17 -2
+Affect             0 0
+End
+#ITEM
+ObjId              12
+ContainedBy        -1
+Name               fray leaf pie~
+Description
+A delicious fray leaf pie lies here.~
+ShortDescr
+a fray leaf pie~
+ActionDescr
+(null)~
+VNum               5049
+EquippedAt         17
+Values             7 0 0 0
+ExtraFlags         0
+Weight             1
+Timer              0
+BitVector          0
+Type               19
+WearFlags          16385
+Cost               15
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+End
+#CARRIED
+#ITEM
+ObjId              21
+ContainedBy        -1
+Name               two-handed sword two handed~
+Description
+A large two-handed sword lies here.~
+ShortDescr
+a two-handed sword~
+ActionDescr
+(null)~
+VNum               5054
+EquippedAt         -1
+Values             0 1 16 3
+ExtraFlags         28736
+Weight             17
+Timer              0
+BitVector          0
+Type               5
+WearFlags          32769
+Cost               3000
+CostPerDay         1000
+Affect             18 1
+Affect             19 1
+End
+#ITEM
+ObjId              21
+ContainedBy        -1
+Name               clothe red sash~
+Description
+A red piece of clothe lies here on the ground.~
+ShortDescr
+a red sash~
+ActionDescr
+(null)~
+VNum               6106
+EquippedAt         -1
+Values             0 0 0 0
+ExtraFlags         0
+Weight             5
+Timer              0
+BitVector          0
+Type               12
+WearFlags          2049
+Cost               50
+CostPerDay         5
+Affect             17 -2
+Affect             0 0
+End
+#ITEM
+ObjId              21
+ContainedBy        -1
+Name               leather whip~
+Description
+A long piece of leather lies here, one end frayed the other a handle.~
+ShortDescr
+a whip~
+ActionDescr
+(null)~
+VNum               6108
+EquippedAt         -1
+Values             0 1 6 2
+ExtraFlags         0
+Weight             5
+Timer              0
+BitVector          0
+Type               5
+WearFlags          8193
+Cost               30
+CostPerDay         30
+Affect             0 0
+Affect             0 0
+ExtraDescr         whip~
+  The whip looks to be braided black leather which ends to be almost eight
+feet in length.  On the handle of the whip a red syckle has been embroidered.
+~
+End
+#ITEM
+ObjId              21
+ContainedBy        -1
+Name               twig small~
+Description
+A small twig lies here.~
+ShortDescr
+a small twig~
+ActionDescr
+(null)~
+VNum               6109
+EquippedAt         0
+Values             20 17 -1 -1
+ExtraFlags         64
+Weight             1
+Timer              0
+BitVector          0
+Type               2
+WearFlags          16385
+Cost               10
+CostPerDay         10
+Affect             0 0
+Affect             0 0
+ExtraDescr         twig small~
+  The twig has writing upon it which can be read and recited.
+~
+End
+#ITEM
+ObjId              21
+ContainedBy        -1
+Name               clothe red sash~
+Description
+A red piece of clothe lies here on the ground.~
+ShortDescr
+a red sash~
+ActionDescr
+(null)~
+VNum               6106
+EquippedAt         -1
+Values             0 0 0 0
+ExtraFlags         0
+Weight             5
+Timer              0
+BitVector          0
+Type               12
+WearFlags          2049
+Cost               50
+CostPerDay         5
+Affect             17 -2
+Affect             0 0
+End
+#ITEM
+ObjId              21
+ContainedBy        -1
+Name               robe white~
+Description
+A robe of white lies here in a clump.~
+ShortDescr
+a white robe~
+ActionDescr
+(null)~
+VNum               5093
+EquippedAt         -1
+Values             0 0 0 0
+ExtraFlags         0
+Weight             2
+Timer              0
+BitVector          0
+Type               12
+WearFlags          1025
+Cost               123
+CostPerDay         123
+Affect             17 -5
+Affect             0 0
+End
+#ITEM
+ObjId              21
+ContainedBy        -1
+Name               fray leaf pie~
+Description
+A delicious fray leaf pie lies here.~
+ShortDescr
+a fray leaf pie~
+ActionDescr
+(null)~
+VNum               5049
+EquippedAt         0
+Values             7 0 0 0
+ExtraFlags         0
+Weight             1
+Timer              0
+BitVector          0
+Type               19
+WearFlags          16385
+Cost               15
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              21
+ContainedBy        -1
+Name               fray leaf pie~
+Description
+A delicious fray leaf pie lies here.~
+ShortDescr
+a fray leaf pie~
+ActionDescr
+(null)~
+VNum               5049
+EquippedAt         0
+Values             7 0 0 0
+ExtraFlags         0
+Weight             1
+Timer              0
+BitVector          0
+Type               19
+WearFlags          16385
+Cost               15
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              21
+ContainedBy        -1
+Name               clothe red sash~
+Description
+A red piece of clothe lies here on the ground.~
+ShortDescr
+a red sash~
+ActionDescr
+(null)~
+VNum               6106
+EquippedAt         -1
+Values             0 0 0 0
+ExtraFlags         0
+Weight             5
+Timer              0
+BitVector          0
+Type               12
+WearFlags          2049
+Cost               50
+CostPerDay         5
+Affect             17 -2
+Affect             0 0
+End
+End
+#END_RENT

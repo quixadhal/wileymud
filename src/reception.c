@@ -9,17 +9,20 @@
 #include <unistd.h>
 #include <sys/types.h>
 #include <sys/time.h>
+#include <ctype.h>
+#include <signal.h>
 
-#include "global.h"
-#include "bug.h"
-#include "comm.h"
-#include "handler.h"
-#include "db.h"
-#include "interpreter.h"
-#include "utils.h"
-#include "spells.h"
+#include "include/global.h"
+#include "include/bug.h"
+#include "include/comm.h"
+#include "include/handler.h"
+#include "include/db.h"
+#include "include/interpreter.h"
+#include "include/utils.h"
+#include "include/spells.h"
+#include "include/multiclass.h"
 #define _RECEPTION_C
-#include "reception.h"
+#include "include/reception.h"
 
 double RENT_RATE= 1.0;
 
@@ -30,7 +33,6 @@ double RENT_RATE= 1.0;
 void add_obj_cost(struct char_data *ch, struct char_data *re,
 		  struct obj_data *obj, struct obj_cost *cost)
 {
-  char buf[MAX_INPUT_LENGTH];
   int temp;
 
   /* Add cost for an item and it's contents, and next->contents */
@@ -40,8 +42,7 @@ void add_obj_cost(struct char_data *ch, struct char_data *re,
       temp = MAX(0, (int)(obj->obj_flags.cost_per_day * RENT_RATE));
       cost->total_cost += temp;
       if (re) {
-	sprintf(buf, "%30s : %d coins/day\n\r", obj->short_description, temp);
-	send_to_char(buf, ch);
+	cprintf(ch, "%30s : %d coins/day\n\r", obj->short_description, temp);
       }
       cost->no_carried++;
       add_obj_cost(ch, re, obj->contains, cost);
@@ -169,8 +170,6 @@ void obj_store_to_char(struct char_data *ch, struct obj_file_u *st)
 void load_char_objs(struct char_data *ch)
 {
   FILE *fl;
-  int i, j;
-  BYTE found = FALSE;
   float timegold;
   int difference;
   struct rental_header rh;
@@ -196,9 +195,14 @@ void load_char_objs(struct char_data *ch)
     fread(&rh, sizeof(rh), 1, fl);
 
   if (rh.inuse == 1) {
-    st = (void *)malloc(rh.length);
-    fread(st, rh.length, 1, fl);
-    obj_store_to_char(ch, st);
+    if((st = (void *)malloc(rh.length))) {
+      fread(st, rh.length, 1, fl);
+      obj_store_to_char(ch, st);
+    } else {
+      /* Uhhhh...huh...huh...malloc failed. */
+      log("Malloc failed in function load_char_objects.  Exiting.");
+      kill(getpid(),12);
+    }
 
 /*
  * if the character has been out for 12 real hours, they are fully healed
@@ -222,8 +226,7 @@ void load_char_objs(struct char_data *ch)
 			 ((double)SECS_PER_REAL_DAY))));
       sprintf(buf, "Char ran up charges of %g gold in rent", timegold);
       log(buf);
-      sprintf(buf, "You ran up charges of %g gold in rent.\n\r", timegold);
-      send_to_char(buf, ch);
+      cprintf(ch, "You ran up charges of %g gold in rent.\n\r", timegold);
 /*
  * Sedna's hack begins here.
  * The butler is now friends with the banker.
@@ -235,13 +238,13 @@ void load_char_objs(struct char_data *ch)
 	GET_BANK(ch) -= difference;
 	if (GET_BANK(ch) < 0) {
 	  log("Char ran out of money in rent-is flat broke");
-	  send_to_char("You ran out of money, you deadbeat.\n\r", ch);
+	  cprintf(ch, "You ran out of money, you deadbeat.\n\r");
 	  GET_GOLD(ch) = 0;
 	  GET_BANK(ch) = 0;
         }
 	else {
           log("Char ran out of money in rent-withdrew from bank");
-          send_to_char("You ran out of money, and had to make a quick trip to the bank.\n\r",ch);
+          cprintf(ch, "You ran out of money, and had to make a quick trip to the bank.\n\r");
 	  GET_GOLD(ch) = 0;
        }
     }
@@ -264,8 +267,7 @@ void load_char_objs(struct char_data *ch)
 /* Puts object in store, at first item which has no -1 */
 void put_obj_in_store(struct obj_data *obj, struct obj_file_u *st)
 {
-  int i, j;
-  BYTE found = FALSE;
+  int j;
   struct obj_file_elem *oe;
 
   if (st->nobjects >= MAX_OBJ_SAVE) {
@@ -303,8 +305,6 @@ static int contained_weight(struct obj_data *container)
 /* Destroy inventory after transferring it to "store inventory" */
 void obj_to_store(struct obj_data *obj, struct obj_file_u *st, struct char_data *ch, int delete)
 {
-  static char buf[240];
-
   if (!obj)
     return;
 
@@ -313,10 +313,8 @@ void obj_to_store(struct obj_data *obj, struct obj_file_u *st, struct char_data 
 
   if ((obj->obj_flags.timer < 0) && (obj->obj_flags.timer != OBJ_NOTIMER)) {
     if (delete) {
-      sprintf(buf,
-	      "You're told: '%s is just old junk, I'll throw it away for you.'\n\r",
+      cprintf(ch, "You're told: '%s is just old junk, I'll throw it away for you.'\n\r",
 	      obj->short_description);
-      send_to_char(buf, ch);
       if (obj->in_obj)
 	obj_from_obj(obj);
       obj_from_char(obj);
@@ -324,10 +322,8 @@ void obj_to_store(struct obj_data *obj, struct obj_file_u *st, struct char_data 
     }
   } else if (obj->obj_flags.cost_per_day < 0) {
     if (delete) {
-      sprintf(buf,
-	      "You're told: '%s is just old junk, I'll throw it away for you.'\n\r",
+      cprintf(ch, "You're told: '%s is just old junk, I'll throw it away for you.'\n\r",
 	      obj->short_description);
-      send_to_char(buf, ch);
       if (obj->in_obj)
 	obj_from_obj(obj);
       obj_from_char(obj);
@@ -359,8 +355,7 @@ void save_obj(struct char_data *ch, struct obj_cost *cost, int delete)
 {
   static struct obj_file_u st;
   FILE *fl;
-  int pos, i, j;
-  BYTE found = FALSE;
+  int i;
   char name[40];
   char *t_ptr;
   char path[256];
@@ -528,9 +523,46 @@ void new_save_equipment(struct char_data *ch, struct obj_cost *cost, int delete)
   fclose(fp);
 }
 
-int new_load_equipment(struct char_data *ch) {
+int fread_object(struct obj_data *obj, FILE *fp) {
+  UBYTE fMatch, done;
+  char *word;
+
+  done= 0;
+  for(;;) { /* Get equipment slot information */
+    word = feof(fp) ? "End" : fread_word(fp);
+    fMatch = FALSE;
+
+    switch (toupper(word[0])) {
+    case '*':
+      fMatch = TRUE;
+      fread_to_eol(fp);
+      break;
+    case '#':
+      fMatch = TRUE;
+      fread_to_eol(fp);
+      break;
+    case 'E':
+      if (!str_cmp(word, "End")) {
+        fMatch= 1;
+        done= 1;
+        break;
+      }
+    }
+    if (!fMatch) {
+      bug("Fread_char: no match.");
+      if (!feof(fp))
+        fread_to_eol(fp);
+    }
+    if (done)
+      break;
+  }
+  return 1;
+}
+
+int new_load_equipment(struct char_data *ch, struct obj_cost *cost) {
   FILE *fp;
   char name[40], filename[256], *t_ptr;
+#if 0
   double charges;
   struct obj_data *obj;
   struct obj_indexing {
@@ -539,9 +571,10 @@ int new_load_equipment(struct char_data *ch) {
     struct obj_data *Myself;
     struct obj_data *MyContainer;
   } *inventory;
+  int state= 0;
+#endif
   UBYTE fMatch, done;
   char *word;
-  int state= 0;
 
   strcpy(name, GET_NAME(ch));
   t_ptr = name;
@@ -560,8 +593,11 @@ int new_load_equipment(struct char_data *ch) {
     fprintf(fp, "TotalCost          %d\n", 0);
     fprintf(fp, "LastUpdate         %ld\n", time(NULL));
     fprintf(fp, "MinimumStay        0\n");
+    fprintf(fp, "End\n");
     fprintf(fp, "#EQUIPMENT\n");
+    fprintf(fp, "End\n");
     fprintf(fp, "#CARRIED\n");
+    fprintf(fp, "End\n");
     fprintf(fp, "#END_RENT\n");
     fclose(fp);
     return -1;
@@ -584,6 +620,39 @@ int new_load_equipment(struct char_data *ch) {
       if (!str_cmp(word, "End")) {
         fMatch= 1;
         done= 1;
+        break;
+      }
+    case 'G':
+      if (!str_cmp(word, "Gold")) {
+        fMatch = TRUE;
+        GET_GOLD(ch)= fread_number(fp);
+        break;
+      }
+    case 'L':
+      if (!str_cmp(word, "LastUpdate")) {
+        fMatch = TRUE;
+        fread_number(fp);
+        break;
+      }
+    case 'M':
+      if (!str_cmp(word, "MinimumStay")) {
+        fMatch = TRUE;
+        fread_number(fp);
+        break;
+      }
+    case 'O':
+      if (!str_cmp(word, "Owner")) {
+        fMatch = TRUE;
+        word = fread_word(fp);
+        if(!str_cmp(word, name))
+          log("%s loading %s's equipment!", name, word);
+        break;
+      }
+    case 'T':
+      if (!str_cmp(word, "TotalCost")) {
+        fMatch = TRUE;
+        cost->total_cost= fread_number(fp);
+        break;
       }
     }
     if (!fMatch) {
@@ -594,7 +663,8 @@ int new_load_equipment(struct char_data *ch) {
     if (done)
       break;
   }
-
+  /* we've now gotten the rental header.... now we have to get the stuff */
+  return 0;
 }
 
 /*
@@ -603,7 +673,6 @@ int new_load_equipment(struct char_data *ch) {
 
 int receptionist(struct char_data *ch, int cmd, char *arg)
 {
-  char buf[240];
   struct obj_cost cost;
   struct char_data *recep = 0;
   struct char_data *temp_char;
@@ -654,8 +723,7 @@ int receptionist(struct char_data *ch, int cmd, char *arg)
     {				       /* Rent  */
       if (recep_offer(ch, recep, &cost)) {
 	GET_HOME(ch) = ch->in_room;
-	sprintf(buf, "Your home has been set to this room, %s\n\r", real_roomp(ch->in_room)->name);
-	send_to_char(buf, ch);
+	cprintf(ch, "Your home has been set to this room, %s\n\r", real_roomp(ch->in_room)->name);
 
 	act("$n stores your stuff in the safe, and helps you into your chamber.",
 	    FALSE, recep, 0, ch, TO_VICT);
@@ -680,8 +748,7 @@ int receptionist(struct char_data *ch, int cmd, char *arg)
     {				       /* sethome */
       GET_HOME(ch) = ch->in_room;
       save_char(ch, ch->in_room);
-      sprintf(buf, "Your home has been set to this room, %s\n\r", real_roomp(ch->in_room)->name);
-      send_to_char(buf, ch);
+      cprintf(ch, "Your home has been set to this room, %s\n\r", real_roomp(ch->in_room)->name);
     }
     break;
   }

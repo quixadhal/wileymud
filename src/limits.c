@@ -8,18 +8,26 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <sys/types.h>
+#include <ctype.h>
+#include <string.h>
 #include <assert.h>
 
-#include "global.h"
-#include "bug.h"
-#include "spells.h"
-#include "comm.h"
-#include "db.h"
-#include "spell_parser.h"
-#include "constants.h"
-#include "utils.h"
+#include "include/global.h"
+#include "include/bug.h"
+#include "include/spells.h"
+#include "include/comm.h"
+#include "include/db.h"
+#include "include/spell_parser.h"
+#include "include/constants.h"
+#include "include/utils.h"
+#include "include/multiclass.h"
+#include "include/fight.h"
+#include "include/reception.h"
+#include "include/interpreter.h"
+#include "include/handler.h"
+#include "include/act_obj.h"
 #define _DIKU_LIMITS_C
-#include "limits.h"
+#include "include/limits.h"
 
 char *ClassTitles(struct char_data *ch)
 {
@@ -74,23 +82,6 @@ int mana_limit(struct char_data *ch)
 
   max = 100;
 
-#ifdef OLD_WILEY
-  if (HasClass(ch, CLASS_MAGIC_USER)) {
-    max += GET_LEVEL(ch, MAGE_LEVEL_IND) * 5;
-  } else if (HasClass(ch, CLASS_CLERIC)) {
-    max += ((2 * GET_LEVEL(ch, CLERIC_LEVEL_IND)) / 3) * 5;
-  } else if (HasClass(ch, CLASS_DRUID)) {
-    max += (GET_LEVEL(ch, DRUID_LEVEL_IND) / 2) * 5;
-  } else if (HasClass(ch, CLASS_RANGER)) {
-    max += (GET_LEVEL(ch, RANGER_LEVEL_IND) / 2) * 5;
-  } else if (HasClass(ch, CLASS_WARRIOR)) {
-    max += (GET_LEVEL(ch, WARRIOR_LEVEL_IND) / 4) * 5;
-  } else if (HasClass(ch, CLASS_THIEF)) {
-    max += (GET_LEVEL(ch, THIEF_LEVEL_IND) / 3) * 5;
-  } else {
-    max = 100;
-  }
-#else
   extra= 0;
   if (IS_PC(ch)) {
     if (HasClass(ch, CLASS_MAGIC_USER))
@@ -110,7 +101,6 @@ int mana_limit(struct char_data *ch)
       extra = ((extra * 10) / ((cl * 10) + 5));
     max += extra;
   }
-#endif
   max += ch->points.max_mana;	       /* bonus mana */
   return (max);
 }
@@ -149,16 +139,6 @@ int move_limit(struct char_data *ch)
   else
     max = ch->points.max_move;
 
-#ifdef OLD_WILEY
-  if (GET_RACE(ch) == RACE_GNOME)
-    max -= 20;
-  if (GET_RACE(ch) == RACE_DWARF)
-    max -= 17;
-  if (GET_RACE(ch) == RACE_HALFLING)
-    max -= 14;
-  else if (GET_RACE(ch) == RACE_ELVEN)
-    max += 10;
-#else
   switch(GET_RACE(ch)) {
     case RACE_DWARF:
       max -= 15;
@@ -173,8 +153,6 @@ int move_limit(struct char_data *ch)
       max += 10;
       break;
   }
-#endif
-
   return (max);
 }
 
@@ -377,7 +355,16 @@ void advance_level(struct char_data *ch, int class)
   if (DEBUG)
     dlog("advance_level");
   if (GET_LEVEL(ch, class) > 0 &&
-      GET_EXP(ch) < titles[class][GET_LEVEL(ch, class) + 1].exp) {
+      GET_EXP(ch) < 
+#ifdef MOB_LEVELING
+      ((IS_PC(ch) || (IS_SET(ch->specials.act, ACT_POLYSELF) ||
+                      IS_SET(ch->specials.act, ACT_POLYSELF)))?
+        titles[class][GET_LEVEL(ch, class) + 1].exp:
+        (titles[class][GET_LEVEL(ch, class) + 1].exp/ 20))
+#else
+      titles[class][GET_LEVEL(ch, class) + 1].exp
+#endif
+     ) {
     log("Bad advance_level");
     return;
   }
@@ -466,7 +453,7 @@ void advance_level(struct char_data *ch, int class)
       ch->specials.conditions[i] = -1;
 
   ch->points.max_move = GET_MAX_MOVE(ch);
-  update_player_list_entry(ch->desc);
+  if(IS_PC(ch)) update_player_list_entry(ch->desc);
   log("%s advances to level %d.\n\r", GET_NAME(ch), GetMaxLevel(ch));
 }
 
@@ -601,39 +588,49 @@ void set_title(struct char_data *ch)
 void gain_exp(struct char_data *ch, int gain)
 {
   int i;
-  BYTE is_altered = FALSE;
-  char buf[256];
 
 /*  save_char(ch,NOWHERE); */
 
   if (!IS_IMMORTAL(ch)) {
     if (gain > 0) {
-      gain = MIN(10000, gain);
+      gain = MIN(100000, gain);
 
-      if (IS_PC(ch)) {
+      if (IS_PC(ch) || (IS_SET(ch->specials.act, ACT_POLYSELF) ||
+                        IS_SET(ch->specials.act, ACT_POLYSELF))) {
 	gain /= HowManyClasses(ch);
-      } else
-	gain /= 2;
+      } else {
+#ifdef MOB_LEVELING
+        GET_EXP(ch) += gain;
+	for (i = MAGE_LEVEL_IND; i <= DRUID_LEVEL_IND; i++) {
+	  if (GET_LEVEL(ch, i)) {
+	    if (GET_EXP(ch) >= ((titles[i][GET_LEVEL(ch, i) + 1].exp / 20))) {
+	      advance_level(ch, i);
+              act("$n seems to be looking more healthy today.", FALSE, ch,
+                  0, 0, TO_ROOM);
+            }
+          }
+        }
+        return;
+#endif
+      }
 
-      if (GetMaxLevel(ch) == 1)
+      if (IS_PC(ch) && (GetMaxLevel(ch) == 1))
 	gain *= 2;
 
-      if (IS_PC(ch) || (IS_SET(ch->specials.act, ACT_POLYSELF))) {
+      if (IS_PC(ch) || (IS_SET(ch->specials.act, ACT_POLYSELF) ||
+                        IS_SET(ch->specials.act, ACT_POLYSELF))) {
 	for (i = MAGE_LEVEL_IND; i <= DRUID_LEVEL_IND; i++) {
 	  if (GET_LEVEL(ch, i)) {
 	    if (GET_EXP(ch) >= titles[i][GET_LEVEL(ch, i) + 2].exp) {
-	      send_to_char(
-			    "You will not gain anymore exp until you practice at a guild.\n\r", ch);
+	      cprintf(ch,  "You will not gain anymore exp until you practice at a guild.\n\r");
 	      GET_EXP(ch) = titles[i][GET_LEVEL(ch, i) + 2].exp - 1;
 	      return;
 	    } else if (GET_EXP(ch) >= titles[i][GET_LEVEL(ch, i) + 1].exp) {
 	      /* do nothing..this is cool */
 	    } else if (GET_EXP(ch) + gain >= titles[i][GET_LEVEL(ch, i) + 1].exp) {
-	      sprintf(buf, "You have gained enough to be a(n) %s\n\r",
+	      cprintf(ch, "You have gained enough to be a(n) %s\n\r",
 		      GET_CLASS_TITLE(ch, i, GET_LEVEL(ch, i) + 1));
-	      send_to_char(buf, ch);
-	      send_to_char(
-			    "You will not gain anymore exp until you practice at a guild.\n\r", ch);
+	      cprintf(ch,  "You will not gain anymore exp until you practice at a guild.\n\r");
 	      if (GET_EXP(ch) + gain >= titles[i][GET_LEVEL(ch, i) + 2].exp) {
 		GET_EXP(ch) = titles[i][GET_LEVEL(ch, i) + 2].exp - 1;
 		return;
@@ -675,7 +672,7 @@ void gain_exp_regardless(struct char_data *ch, int gain, int class)
 
       for (i = 0; (i < ABS_MAX_LVL) && (titles[class][i].exp <= GET_EXP(ch)); i++) {
 	if (i > GET_LEVEL(ch, class)) {
-	  send_to_char("You raise a level\n\r", ch);
+	  cprintf(ch, "You raise a level\n\r");
 /*        GET_LEVEL(ch,class) = i; */
 	  advance_level(ch, class);
 	  is_altered = TRUE;
@@ -712,18 +709,18 @@ void gain_condition(struct char_data *ch, int condition, int value)
   switch (condition) {
   case FULL:
     {
-      send_to_char("You are hungry.\n\r", ch);
+      cprintf(ch, "You are hungry.\n\r");
       return;
     }
   case THIRST:
     {
-      send_to_char("You are thirsty.\n\r", ch);
+      cprintf(ch, "You are thirsty.\n\r");
       return;
     }
   case DRUNK:
     {
       if (intoxicated)
-	send_to_char("You are now sober.\n\r", ch);
+	cprintf(ch, "You are now sober.\n\r");
       return;
     }
   default:
@@ -782,7 +779,7 @@ void point_update(int pulse)
 {
   void update_char_objects(struct char_data *ch);	/* handler.c */
   struct char_data *i, *next_dude;
-  struct obj_data *j, *next_thing, *jj, *next_thing2;
+  struct obj_data *j, *next_thing;
   int count = 0;
 
   /* characters */
@@ -876,13 +873,64 @@ void point_update(int pulse)
       if (j->obj_flags.timer > 0)
 	j->obj_flags.timer--;
       if (!j->obj_flags.timer) {
-	if (j->carried_by)
+	if (j->carried_by) {
 	  act("$p biodegrades in your hands.", FALSE, j->carried_by, j, 0, TO_CHAR);
-	else if ((j->in_room != NOWHERE) && (real_roomp(j->in_room)->people)) {
-	  act("$p dissolves into a fertile soil.", TRUE, real_roomp(j->in_room)->people, j, 0, TO_ROOM);
-	  act("$p dissolves into a fertile soil.", TRUE, real_roomp(j->in_room)->people, j, 0, TO_CHAR);
+	  ObjFromCorpse(j);
+        } else if (j->in_room != NOWHERE) {
+          if ((number(0,99) < 40) && (real_roomp(j->in_room)->zone != 10)) {
+            struct char_data *mob;
+            struct obj_data *obj_object, *next_obj;
+            int mobset[] = { 9002, 9001, 4616, 4615, 4613, 9003, 4603 };
+            char newbuffer[256], newtmp[256];
+
+            mob = read_mobile(mobset[number(0,6)], VIRTUAL);
+            strcpy(newtmp, j->short_description);
+            if(!strncmp(newtmp, "the corpse of ", 14)) {
+              newtmp[14]= tolower(newtmp[14]);
+              sprintf(newbuffer, "%s of %s has arisen to KILL!\n\r",
+                      GET_SDESC(mob), &newtmp[14]);
+            } else {
+              sprintf(newbuffer, "%s has recently risen to KILL!\n\r",
+                      GET_SDESC(mob));
+            }
+            /* this loses memory... can we free it first? */
+            if(mob->player.long_descr) free(mob->player.long_descr);
+            mob->player.long_descr = strdup(newbuffer);
+            char_to_room(mob, j->in_room);
+            GET_EXP(mob) = 75*GetMaxLevel(mob);
+            IS_CARRYING_W(mob) = 0;
+            IS_CARRYING_N(mob) = 0;
+            for (obj_object = j->contains; obj_object;
+                 obj_object = next_obj) {
+              next_obj = obj_object->next_content;
+              obj_from_obj(obj_object);
+              obj_to_char(obj_object, mob);
+            }
+            mob->points.max_hit = dice(GetMaxLevel(mob), 8)+
+                                  number(20, 10*GetMaxLevel(mob));
+            GET_HIT(mob)= GET_MAX_HIT(mob);
+            GET_EXP(mob)= dice(GetMaxLevel(mob), 10)* 10+
+                          number(1, 10*GetMaxLevel(mob));
+            mob->player.sex = 0;
+            GET_RACE(mob) = RACE_UNDEAD;
+            if (!IS_SET(mob->specials.act, ACT_AGGRESSIVE)) {
+              SET_BIT(mob->specials.act, ACT_AGGRESSIVE);
+            }
+            if (IS_SET(mob->specials.act, ACT_SENTINEL)) {
+              REMOVE_BIT(mob->specials.act, ACT_SENTINEL);
+            }
+            if(real_roomp(j->in_room)->people) {
+	      act("$p slowly rises as $N and screams 'DIE!'", TRUE, real_roomp(j->in_room)->people, j, mob, TO_ROOM);
+	      act("$p slowly rises as $N and screams 'DIE!'", TRUE, real_roomp(j->in_room)->people, j, mob, TO_CHAR);
+            }
+            do_wear(mob, "all", 0);
+            extract_obj(j);
+          } else if (real_roomp(j->in_room)->people) {
+	    act("$p dissolves into a lump of fertile soil.", TRUE, real_roomp(j->in_room)->people, j, 0, TO_ROOM);
+	    act("$p dissolves into a lump of fertile soil.", TRUE, real_roomp(j->in_room)->people, j, 0, TO_CHAR);
+	    ObjFromCorpse(j);
+          } else ObjFromCorpse(j);
 	}
-	ObjFromCorpse(j);
       }
     }
   }
@@ -903,7 +951,7 @@ int ObjFromCorpse(struct obj_data *c)
       else if (c->in_room != NOWHERE)
 	obj_to_room(jj, c->in_room);
       else
-	assert(FALSE);
+	return(FALSE);
     } else {
       /*
        * **  hmm..  it isn't in the object it says it is in.
@@ -916,4 +964,5 @@ int ObjFromCorpse(struct obj_data *c)
     }
   }
   extract_obj(c);
+  return TRUE;
 }

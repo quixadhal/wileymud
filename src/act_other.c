@@ -11,19 +11,26 @@
 #include <string.h>
 #include <ctype.h>
 
-#include "global.h"
-#include "bug.h"
-#include "utils.h"
-#include "comm.h"
-#include "interpreter.h"
-#include "handler.h"
-#include "db.h"
-#include "spells.h"
-#include "limits.h"
-#include "constants.h"
-#include "spell_parser.h"
+#include "include/global.h"
+#include "include/bug.h"
+#include "include/utils.h"
+#include "include/comm.h"
+#include "include/interpreter.h"
+#include "include/handler.h"
+#include "include/db.h"
+#include "include/spells.h"
+#include "include/limits.h"
+#include "include/constants.h"
+#include "include/spell_parser.h"
+#include "include/reception.h"
+#include "include/multiclass.h"
+#include "include/fight.h"
+#include "include/spec_procs.h"
+#include "include/act_skills.h"
+#include "include/act_comm.h"
+#include "include/modify.h"
 #define _ACT_OTHER_C
-#include "act_other.h"
+#include "include/act_other.h"
 
 void do_gain(struct char_data *ch, char *argument, int cmd)
 {
@@ -35,17 +42,17 @@ void do_guard(struct char_data *ch, char *argument, int cmd)
   if (DEBUG)
     dlog("do_guard");
   if (!IS_NPC(ch) || IS_SET(ch->specials.act, ACT_POLYSELF)) {
-    send_to_char("Sorry. you can't just put your brain on autopilot!\n\r", ch);
+    cprintf(ch, "Sorry. you can't just put your brain on autopilot!\n\r");
     return;
   }
   if (IS_SET(ch->specials.act, ACT_GUARDIAN)) {
     act("$n relaxes.", FALSE, ch, 0, 0, TO_ROOM);
-    send_to_char("You relax.\n\r", ch);
+    cprintf(ch, "You relax.\n\r");
     REMOVE_BIT(ch->specials.act, ACT_GUARDIAN);
   } else {
     SET_BIT(ch->specials.act, ACT_GUARDIAN);
     act("$n alertly watches you.", FALSE, ch, 0, 0, TO_ROOM);
-    send_to_char("You snap to attention\n\r", ch);
+    cprintf(ch, "You snap to attention\n\r");
   }
   return;
 }
@@ -96,13 +103,13 @@ void do_junk(struct char_data *ch, char *argument, int cmd)
 	  sprintf(buf, "$n junks %s.\n\r", arg);
 	  act(buf, 1, ch, 0, 0, TO_ROOM);
 	} else {
-	  send_to_char("You don't have anything like that\n\r", ch);
+	  cprintf(ch, "You don't have anything like that\n\r");
 	}
 	return;
       }
     }
   } else {
-    send_to_char("Junk what?", ch);
+    cprintf(ch, "Junk what?");
     return;
   }
 }
@@ -111,22 +118,18 @@ void do_qui(struct char_data *ch, char *argument, int cmd)
 {
   if (DEBUG)
     dlog("do_qui");
-  send_to_char("You have to write quit - no less, to quit!\n\r", ch);
+  cprintf(ch, "You have to write quit - no less, to quit!\n\r");
   return;
 }
 
-void do_title(struct char_data *ch, char *argument, int cmd)
-{
-  char buf[200];
-
+void do_title(struct char_data *ch, char *argument, int cmd) {
   if (IS_NPC(ch) || !ch->desc)
     return;
 
   for (; isspace(*argument); argument++);
 
   if (*argument) {
-    sprintf(buf, "Your title has been set to : <%s>\n\r", argument);
-    send_to_char(buf, ch);
+    cprintf(ch, "Your title has been set to : <%s>\n\r", argument);
     ch->player.title = strdup(argument);
   }
 }
@@ -142,11 +145,11 @@ void do_quit(struct char_data *ch, char *argument, int cmd)
     return;
 
   if (GET_POS(ch) == POSITION_FIGHTING) {
-    send_to_char("No way! You are fighting.\n\r", ch);
+    cprintf(ch, "No way! You are fighting.\n\r");
     return;
   }
   if (GET_POS(ch) < POSITION_STUNNED) {
-    send_to_char("You die before your time!\n\r", ch);
+    cprintf(ch, "You die before your time!\n\r");
     die(ch);
     return;
   }
@@ -162,14 +165,12 @@ void do_quit(struct char_data *ch, char *argument, int cmd)
 
 void do_save(struct char_data *ch, char *argument, int cmd)
 {
-  char buf[100];
   struct obj_cost cost;
 
   if (IS_NPC(ch))
     return;
 
-  sprintf(buf, "Saving %s.\n\r", GET_NAME(ch));
-  send_to_char(buf, ch);
+  cprintf(ch, "Saving %s.\n\r", GET_NAME(ch));
   recep_offer(ch, NULL, &cost);
   new_save_equipment(ch, &cost, FALSE);
   save_obj(ch, &cost, FALSE);
@@ -180,7 +181,7 @@ void do_not_here(struct char_data *ch, char *argument, int cmd)
 {
   if (DEBUG)
     dlog("do_not_here");
-  send_to_char("Sorry, but you cannot do that here!\n\r", ch);
+  cprintf(ch, "Sorry, but you cannot do that here!\n\r");
 }
 
 void do_sneak(struct char_data *ch, char *argument, int cmd)
@@ -194,15 +195,15 @@ void do_sneak(struct char_data *ch, char *argument, int cmd)
     affect_from_char(ch, SKILL_SNEAK);
     if (IS_AFFECTED(ch, AFF_HIDE))
       REMOVE_BIT(ch->specials.affected_by, AFF_HIDE);
-    send_to_char("You are no longer sneaky.\n\r", ch);
+    cprintf(ch, "You are no longer sneaky.\n\r");
     return;
   }
-  send_to_char("Ok, you'll try to move silently for a while.\n\r", ch);
-  send_to_char("And you attempt to hide yourself.\n\r", ch);
+  cprintf(ch, "Ok, you'll try to move silently for a while.\n\r");
+  cprintf(ch, "And you attempt to hide yourself.\n\r");
 
   percent = number(1, 101);	       /* 101% is a complete failure */
 
-  if (percent > ch->skills[SKILL_SNEAK].learned + dex_app_skill[GET_DEX(ch)].sneak)
+  if (percent > ch->skills[SKILL_SNEAK].learned + dex_app_skill[(int)GET_DEX(ch)].sneak)
     return;
 
   if (ch->skills[SKILL_SNEAK].learned < 50)
@@ -224,8 +225,7 @@ void do_hide(struct char_data *ch, char *argument, int cmd)
 
   if (DEBUG)
     dlog("do_hide");
-  send_to_char("Ok, you'll try to move silently for a while.\n\r", ch);
-  send_to_char("and you attempt to hide yourself.\n\r", ch);
+  cprintf(ch, "Ok, you crawl into a dark corner and lurk.\n\r");
 
   if (IS_AFFECTED(ch, AFF_SNEAK))
     affect_from_char(ch, SKILL_SNEAK);
@@ -234,7 +234,7 @@ void do_hide(struct char_data *ch, char *argument, int cmd)
 
   percent = number(1, 101);	       /* 101% is a complete failure */
 
-  if (percent > ch->skills[SKILL_SNEAK].learned + dex_app_skill[GET_DEX(ch)].sneak)
+  if (percent > ch->skills[SKILL_SNEAK].learned + dex_app_skill[(int)GET_DEX(ch)].sneak)
     return;
   if (ch->skills[SKILL_SNEAK].learned < 50)
     ch->skills[SKILL_SNEAK].learned += 2;
@@ -269,10 +269,10 @@ void do_steal(struct char_data *ch, char *argument, int cmd)
   only_argument(argument, victim_name);
 
   if (!(victim = get_char_room_vis(ch, victim_name))) {
-    send_to_char("Steal what from who?\n\r", ch);
+    cprintf(ch, "Steal what from who?\n\r");
     return;
   } else if (victim == ch) {
-    send_to_char("Come on now, that's rather stupid!\n\r", ch);
+    cprintf(ch, "Come on now, that's rather stupid!\n\r");
     return;
   }
   if (!CheckKill(ch, victim))
@@ -282,7 +282,7 @@ void do_steal(struct char_data *ch, char *argument, int cmd)
     return;
 
   /* 101% is a complete failure */
-  percent = number(1, 101) - dex_app_skill[GET_DEX(ch)].p_pocket;
+  percent = number(1, 101) - dex_app_skill[(int)GET_DEX(ch)].p_pocket;
 
   if (GET_POS(victim) < POSITION_SLEEPING)
     percent = -1;		       /* ALWAYS SUCCESS */
@@ -305,7 +305,7 @@ void do_steal(struct char_data *ch, char *argument, int cmd)
 	return;
       } else {			       /* It is equipment */
 	if ((GET_POS(victim) > POSITION_STUNNED)) {
-	  send_to_char("Steal the equipment now? Impossible!\n\r", ch);
+	  cprintf(ch, "Steal the equipment now? Impossible!\n\r");
 	  return;
 	} else {
 	  act("You unequip $p and steal it.", FALSE, ch, obj, 0, TO_CHAR);
@@ -329,12 +329,12 @@ void do_steal(struct char_data *ch, char *argument, int cmd)
 	  if ((IS_CARRYING_W(ch) + GET_OBJ_WEIGHT(obj)) < CAN_CARRY_W(ch)) {
 	    obj_from_char(obj);
 	    obj_to_char(obj, ch);
-	    send_to_char("Got it!\n\r", ch);
+	    cprintf(ch, "Got it!\n\r");
 	    if (ch->skills[SKILL_STEAL].learned < 50)
 	      ch->skills[SKILL_STEAL].learned += 1;
 	  }
 	} else
-	  send_to_char("You cannot carry that much.\n\r", ch);
+	  cprintf(ch, "You cannot carry that much.\n\r");
       }
     }
   } else {			       /* Steal some coins */
@@ -350,10 +350,9 @@ void do_steal(struct char_data *ch, char *argument, int cmd)
       if (gold > 0) {
 	GET_GOLD(ch) += gold;
 	GET_GOLD(victim) -= gold;
-	sprintf(buf, "Bingo! You got %d gold coins.\n\r", gold);
-	send_to_char(buf, ch);
+	cprintf(ch, "Bingo! You got %d gold coins.\n\r", gold);
       } else {
-	send_to_char("You couldn't get any gold...\n\r", ch);
+	cprintf(ch, "You couldn't get any gold...\n\r");
       }
     }
   }
@@ -363,7 +362,7 @@ void do_steal(struct char_data *ch, char *argument, int cmd)
       sprintf(buf, "%s is a damn thief!", GET_NAME(ch));
       do_shout(victim, buf, 0);
       log(buf);
-      send_to_char("Don't you ever do that again!\n\r", ch);
+      cprintf(ch, "Don't you ever do that again!\n\r");
     } else {
       hit(victim, ch, TYPE_UNDEFINED);
     }
@@ -379,58 +378,6 @@ void do_practice(struct char_data *ch, char *arg, int cmd)
   struct skill_struct {
     char skill_name[40];
     int skill_numb;
-  };
-
-  struct skill_struct t_skills[] =
-  {
-    {"sneak", SKILL_SNEAK},
-    {"hide", SKILL_HIDE},
-    {"steal", SKILL_STEAL},
-    {"backstab", SKILL_BACKSTAB},
-    {"pick", SKILL_PICK_LOCK},
-    {"track", SKILL_HUNT},
-    {"search", SKILL_SEARCH},
-    {"peer", SKILL_PEER},
-    {"find_traps", SKILL_FIND_TRAP},
-/*    {"listen",                SKILL_DETECT_NOISE}, 
- * {"disarm_traps",    SKILL_DISARM_TRAP}, */
-    {"\n", -1}
-  };
-
-  struct skill_struct wa_skills[] =
-  {
-    {"kick", SKILL_KICK},
-    {"bash", SKILL_BASH},
-    {"rescue", SKILL_RESCUE},
-    {"disarm", SKILL_DISARM},
-    {"punch", SKILL_PUNCH},
-    {"doorbash", SKILL_DOOR_BASH},
-    {"smite spec", SKILL_SPEC_SMITE},
-    {"stab spec", SKILL_SPEC_STAB},
-    {"whip spec", SKILL_SPEC_WHIP},
-    {"slash spec", SKILL_SPEC_SLASH},
-    {"smash spec", SKILL_SPEC_SMASH},
-    {"cleave spec", SKILL_SPEC_CLEAVE},
-    {"crush spec", SKILL_SPEC_CRUSH},
-    {"bludge spec", SKILL_SPEC_BLUDGE},
-    {"peirce spec", SKILL_SPEC_PIERCE},
-    {'\n', -1}
-  };
-
-  struct skill_struct r_skills[] =
-  {
-    {"rescue", SKILL_RESCUE},
-    {"hide", SKILL_HIDE},
-    {"sneak", SKILL_SNEAK},
-    {"track", SKILL_HUNT},
-    {"disarm", SKILL_DISARM},
-    {"punch", SKILL_PUNCH},
-    {"bash", SKILL_BASH},
-    {"doorbash", SKILL_DOOR_BASH},
-    {"search", SKILL_SEARCH},
-    {"peer", SKILL_PEER},
-  /* { "listen", SKILL_DETECT_NOISE}, */
-    {"\n", -1}
   };
 
   if (DEBUG)
@@ -456,10 +403,11 @@ void do_practice(struct char_data *ch, char *arg, int cmd)
 	return;
       }
       sprintf(buf, "You can practise any of these MANLY skills:\n\r");
-      for (i = 0; wa_skills[i].skill_name[0] != '\n'; i++) {
-        sprintf(buf + strlen(buf), "%s%s\n\r", wa_skills[i].skill_name,
-	        how_good(ch->skills[wa_skills[i].skill_numb].learned));
-      }
+        for(i=0; i< MAX_SKILLS; i++) {
+          if(CanUseClass(ch, i, WARRIOR_LEVEL_IND))
+            sprintf(buf + strlen(buf), "%s%s\n\r", spell_info[i].name,
+	            how_good(ch->skills[i].learned));
+	}
       page_string(ch->desc, buf, 1);
       return;
     }
@@ -472,19 +420,17 @@ void do_practice(struct char_data *ch, char *arg, int cmd)
 	return;
       }
       sprintf(buf, "You can practise any of these outdoor skills:\n\r");
-
-      for (i = 0; r_skills[i].skill_name[0] != '\n'; i++) {
-        sprintf(buf + strlen(buf), "%s%s\n\r", r_skills[i].skill_name,
-	        how_good(ch->skills[r_skills[i].skill_numb].learned));
-      }
-      if (GET_LEVEL(ch, RANGER_LEVEL_IND) >= RANGER_CAST_LEVEL) {
+        for(i=0; i< MAX_SKILLS; i++) {
+          if(CanUseClass(ch, i, RANGER_LEVEL_IND))
+            sprintf(buf + strlen(buf), "%s%s\n\r", spell_info[i].name,
+	            how_good(ch->skills[i].learned));
+	}
 	sprintf(buf + strlen(buf), "Or these leaf-and-twig charms:\n\r");
         for(i=0; i< MAX_SKILLS; i++) {
           if(CanCastClass(ch, i, RANGER_LEVEL_IND))
             sprintf(buf + strlen(buf), "%s%s\n\r", spell_info[i].name,
 	            how_good(ch->skills[i].learned));
 	}
-      }
       page_string(ch->desc, buf, 1);
       return;
     }
@@ -497,10 +443,11 @@ void do_practice(struct char_data *ch, char *arg, int cmd)
 	return;
       }
       sprintf(buf, "You can practice any of these sneaky skills:\n\r");
-      for (i = 0; t_skills[i].skill_name[0] != '\n'; i++) {
-        sprintf(buf + strlen(buf), "%s%s\n\r", t_skills[i].skill_name,
-	        how_good(ch->skills[t_skills[i].skill_numb].learned));
-      }
+        for(i=0; i< MAX_SKILLS; i++) {
+          if(CanUseClass(ch, i, THIEF_LEVEL_IND))
+            sprintf(buf + strlen(buf), "%s%s\n\r", spell_info[i].name,
+	            how_good(ch->skills[i].learned));
+	}
       page_string(ch->desc, buf, 1);
       return;
     }
@@ -574,94 +521,90 @@ void do_idea(struct char_data *ch, char *argument, int cmd)
 {
   FILE *fl;
   char str[MAX_INPUT_LENGTH + 20];
-  struct descriptor_data *i;
 
   if (DEBUG)
     dlog("do_idea");
   if (IS_NPC(ch)) {
-    send_to_char("Monsters can't have ideas - Go away.\n\r", ch);
+    cprintf(ch, "Monsters can't have ideas - Go away.\n\r");
     return;
   }
   /* skip whites */
   for (; isspace(*argument); argument++);
 
   if (!*argument) {
-    send_to_char
-      ("That doesn't sound like a good idea to me.. Sorry.\n\r", ch);
+    cprintf(ch, "That doesn't sound like a good idea to me.. Sorry.\n\r");
     return;
   }
   if (!(fl = fopen(IDEA_FILE, "a"))) {
     perror("do_idea");
-    send_to_char("Could not open the idea-file.\n\r", ch);
+    cprintf(ch, "Could not open the idea-file.\n\r");
     return;
   }
   sprintf(str, "**%s: %s\n", GET_NAME(ch), argument);
 
   fputs(str, fl);
   fclose(fl);
-  send_to_char("Woah!  That's pretty cool.  Thanks!\n\r", ch);
+  cprintf(ch, "Woah!  That's pretty cool.  Thanks!\n\r");
 }
 
 void do_typo(struct char_data *ch, char *argument, int cmd)
 {
   FILE *fl;
   char str[MAX_INPUT_LENGTH + 20];
-  struct descriptor_data *i;
 
   if (DEBUG)
     dlog("do_typo");
   if (IS_NPC(ch)) {
-    send_to_char("Monsters can't spell - leave me alone.\n\r", ch);
+    cprintf(ch, "Monsters can't spell - leave me alone.\n\r");
     return;
   }
   /* skip whites */
   for (; isspace(*argument); argument++);
 
   if (!*argument) {
-    send_to_char("I beg your pardon?\n\r", ch);
+    cprintf(ch, "I beg your pardon?\n\r");
     return;
   }
   if (!(fl = fopen(TYPO_FILE, "a"))) {
     perror("do_typo");
-    send_to_char("Could not open the typo-file.\n\r", ch);
+    cprintf(ch, "Could not open the typo-file.\n\r");
     return;
   }
   sprintf(str, "**%s[%d]: %s\n",
 	  GET_NAME(ch), ch->in_room, argument);
   fputs(str, fl);
   fclose(fl);
-  send_to_char("No problem.  We can send a whizzling to fix it.\n\r", ch);
+  cprintf(ch, "No problem.  We can send a whizzling to fix it.\n\r");
 }
 
 void do_bug(struct char_data *ch, char *argument, int cmd)
 {
   FILE *fl;
   char str[MAX_INPUT_LENGTH + 20];
-  struct descriptor_data *i;
 
   if (DEBUG)
     dlog("do_bug");
   if (IS_NPC(ch)) {
-    send_to_char("You are a monster! Bug off!\n\r", ch);
+    cprintf(ch, "You are a monster! Bug off!\n\r");
     return;
   }
   /* skip whites */
   for (; isspace(*argument); argument++);
 
   if (!*argument) {
-    send_to_char("Pardon?\n\r", ch);
+    cprintf(ch, "Pardon?\n\r");
     return;
   }
   if (!(fl = fopen(BUG_FILE, "a"))) {
     perror("do_bug");
-    send_to_char("Could not open the bug-file.\n\r", ch);
+    cprintf(ch, "Could not open the bug-file.\n\r");
     return;
   }
   sprintf(str, "**%s[%d]: %s\n",
 	  GET_NAME(ch), ch->in_room, argument);
   fputs(str, fl);
   fclose(fl);
-  send_to_char("Really?  Ok, we'll send someone to have a look.\n\r", ch);
+  cprintf(ch, "Really?  Ok, we'll send someone to have a look.\n\r");
 }
 
 void do_brief(struct char_data *ch, char *argument, int cmd)
@@ -672,10 +615,10 @@ void do_brief(struct char_data *ch, char *argument, int cmd)
     return;
 
   if (IS_SET(ch->specials.act, PLR_BRIEF)) {
-    send_to_char("Brief mode off.\n\r", ch);
+    cprintf(ch, "Brief mode off.\n\r");
     REMOVE_BIT(ch->specials.act, PLR_BRIEF);
   } else {
-    send_to_char("Brief mode on.\n\r", ch);
+    cprintf(ch, "Brief mode on.\n\r");
     SET_BIT(ch->specials.act, PLR_BRIEF);
   }
 }
@@ -688,10 +631,10 @@ void do_compact(struct char_data *ch, char *argument, int cmd)
     return;
 
   if (IS_SET(ch->specials.act, PLR_COMPACT)) {
-    send_to_char("You are now in the uncompacted mode.\n\r", ch);
+    cprintf(ch, "You are now in the uncompacted mode.\n\r");
     REMOVE_BIT(ch->specials.act, PLR_COMPACT);
   } else {
-    send_to_char("You are now in compact mode.\n\r", ch);
+    cprintf(ch, "You are now in compact mode.\n\r");
     SET_BIT(ch->specials.act, PLR_COMPACT);
   }
 }
@@ -710,9 +653,9 @@ void do_group(struct char_data *ch, char *argument, int cmd)
 
   if (!*name) {
     if (!IS_AFFECTED(ch, AFF_GROUP)) {
-      send_to_char("But you are a member of no group?!\n\r", ch);
+      cprintf(ch, "But you are a member of no group?!\n\r");
     } else {
-      send_to_char("Your group consists of:\n\r", ch);
+      cprintf(ch, "Your group consists of:\n\r");
       if (ch->master)
 	k = ch->master;
       else
@@ -728,7 +671,7 @@ void do_group(struct char_data *ch, char *argument, int cmd)
     return;
   }
   if (!(victim = get_char_room_vis(ch, name))) {
-    send_to_char("No one here by that name.\n\r", ch);
+    cprintf(ch, "No one here by that name.\n\r");
   } else {
     if (ch->master) {
       act("You can not enroll group members without being head of a group.",
@@ -769,6 +712,7 @@ void do_group(struct char_data *ch, char *argument, int cmd)
  *	}
  */
         chlvl= GetMaxLevel(ch);
+        victlvl= GetMaxLevel(victim);
         if(IS_PC(victim) && victim != ch) {
           int toolow, toohigh;
           /* newbies can mix with each other */
@@ -918,7 +862,7 @@ void do_recite(struct char_data *ch, char *argument, int cmd)
     bits = generic_find(argument, FIND_OBJ_INV | FIND_OBJ_ROOM |
 		FIND_OBJ_EQUIP | FIND_CHAR_ROOM, ch, &victim, &obj);
     if (bits == 0) {
-      send_to_char("No such thing around to recite the scroll on.\n\r", ch);
+      cprintf(ch, "No such thing around to recite the scroll on.\n\r");
       return;
     }
   } else {
@@ -927,7 +871,7 @@ void do_recite(struct char_data *ch, char *argument, int cmd)
 
   if (ch->skills[SKILL_READ_MAGIC].learned < number(1, 101)) {
     if (scroll->obj_flags.value[1] != SPELL_WORD_OF_RECALL) {
-      send_to_char("You can't understand this...\n\r", ch);
+      cprintf(ch, "You can't understand this...\n\r");
       return;
     }
   }
@@ -975,7 +919,7 @@ void do_use(struct char_data *ch, char *argument, int cmd)
        ((BYTE)stick->obj_flags.value[0], ch, "", SPELL_TYPE_STAFF, 0, 0));
       WAIT_STATE(ch, PULSE_VIOLENCE);
     } else {
-      send_to_char("The staff seems powerless.\n\r", ch);
+      cprintf(ch, "The staff seems powerless.\n\r");
     }
   } else if (stick->obj_flags.type_flag == ITEM_WAND) {
     bits = generic_find(argument, FIND_CHAR_ROOM | FIND_OBJ_INV |
@@ -1004,18 +948,17 @@ void do_use(struct char_data *ch, char *argument, int cmd)
 	  tmp_char, tmp_object));
 	WAIT_STATE(ch, PULSE_VIOLENCE);
       } else {
-	send_to_char("The wand seems powerless.\n\r", ch);
+	cprintf(ch, "The wand seems powerless.\n\r");
       }
     } else {
-      send_to_char("What should the wand be pointed at?\n\r", ch);
+      cprintf(ch, "What should the wand be pointed at?\n\r");
     }
   } else {
-    send_to_char("Use is normally only for wand's and staff's.\n\r", ch);
+    cprintf(ch, "Use is normally only for wand's and staff's.\n\r");
   }
 }
 
-do_plr_noshout(struct char_data *ch, char *argument, int cmd)
-{
+void do_plr_noshout(struct char_data *ch, char *argument, int cmd) {
   char buf[128];
 
   if (DEBUG)
@@ -1027,18 +970,18 @@ do_plr_noshout(struct char_data *ch, char *argument, int cmd)
 
   if (!*buf) {
     if (IS_SET(ch->specials.act, PLR_DEAF)) {
-      send_to_char("You can now hear shouts again.\n\r", ch);
+      cprintf(ch, "You can now hear shouts again.\n\r");
       REMOVE_BIT(ch->specials.act, PLR_DEAF);
     } else {
-      send_to_char("From now on, you won't hear shouts.\n\r", ch);
+      cprintf(ch, "From now on, you won't hear shouts.\n\r");
       SET_BIT(ch->specials.act, PLR_DEAF);
     }
   } else {
-    send_to_char("Only the gods can shut up someone else. \n\r", ch);
+    cprintf(ch, "Only the gods can shut up someone else. \n\r");
   }
 }
-do_plr_notell(struct char_data *ch, char *argument, int cmd)
-{
+
+void do_plr_notell(struct char_data *ch, char *argument, int cmd) {
   char buf[128];
 
   if (DEBUG)
@@ -1048,16 +991,15 @@ do_plr_notell(struct char_data *ch, char *argument, int cmd)
   only_argument(argument, buf);
 
   if (IS_SET(ch->specials.new_act, NEW_PLR_NOTELL)) {
-    send_to_char("You can now hear tells again.\n\r", ch);
+    cprintf(ch, "You can now hear tells again.\n\r");
     REMOVE_BIT(ch->specials.new_act, NEW_PLR_NOTELL);
   } else {
-    send_to_char("From now on, you won't hear tells.\n\r", ch);
+    cprintf(ch, "From now on, you won't hear tells.\n\r");
     SET_BIT(ch->specials.new_act, NEW_PLR_NOTELL);
   }
 }
 
-do_plr_nosummon(struct char_data *ch, char *argument, int cmd)
-{
+void do_plr_nosummon(struct char_data *ch, char *argument, int cmd) {
 
   if (DEBUG)
     dlog("do_plr_nosummon");
@@ -1065,20 +1007,19 @@ do_plr_nosummon(struct char_data *ch, char *argument, int cmd)
     return;
 
   if(IS_SET(ch->specials.new_act, NEW_PLR_KILLOK)) {
-    send_to_char("Sorry, registered servants of the Dread Lord cannot hide!\n\r", ch);
+    cprintf(ch, "Sorry, registered servants of the Dread Lord cannot hide!\n\r");
     return;
   }
   if (IS_SET(ch->specials.new_act, NEW_PLR_SUMMON)) {
-    send_to_char("You can now be summoned.\n\r", ch);
+    cprintf(ch, "You can now be summoned.\n\r");
     REMOVE_BIT(ch->specials.new_act, NEW_PLR_SUMMON);
   } else {
-    send_to_char("From now on, you can't be summoned.\n\r", ch);
+    cprintf(ch, "From now on, you can't be summoned.\n\r");
     SET_BIT(ch->specials.new_act, NEW_PLR_SUMMON);
   }
 }
 
-do_plr_noteleport(struct char_data *ch, char *argument, int cmd)
-{
+void do_plr_noteleport(struct char_data *ch, char *argument, int cmd) {
 
   if (DEBUG)
     dlog("do_plr_noteleport");
@@ -1086,14 +1027,14 @@ do_plr_noteleport(struct char_data *ch, char *argument, int cmd)
     return;
 
   if(IS_SET(ch->specials.new_act, NEW_PLR_KILLOK)) {
-    send_to_char("Sorry, registered servants of the Dread Lord cannot cower!\n\r", ch);
+    cprintf(ch, "Sorry, registered servants of the Dread Lord cannot cower!\n\r");
     return;
   }
   if (IS_SET(ch->specials.new_act, NEW_PLR_TELEPORT)) {
-    send_to_char("You can now be teleported.\n\r", ch);
+    cprintf(ch, "You can now be teleported.\n\r");
     REMOVE_BIT(ch->specials.new_act, NEW_PLR_TELEPORT);
   } else {
-    send_to_char("From now on, you can't be teleported.\n\r", ch);
+    cprintf(ch, "From now on, you can't be teleported.\n\r");
     SET_BIT(ch->specials.new_act, NEW_PLR_TELEPORT);
   }
 }

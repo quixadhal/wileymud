@@ -10,20 +10,23 @@
 #include <sys/types.h>
 #include <string.h>
 #include <ctype.h>
-#include <assert.h>
+#include <signal.h>
 
-#include "global.h"
-#include "bug.h"
-#include "utils.h"
-#include "comm.h"
-#include "db.h"
-#include "interpreter.h"
-#include "spells.h"
-#include "spell_parser.h"
-#include "constants.h"
-#include "fight.h"
+#include "include/global.h"
+#include "include/bug.h"
+#include "include/utils.h"
+#include "include/comm.h"
+#include "include/db.h"
+#include "include/interpreter.h"
+#include "include/spells.h"
+#include "include/spell_parser.h"
+#include "include/constants.h"
+#include "include/fight.h"
+#include "include/modify.h"
+#include "include/multiclass.h"
+#include "include/opinion.h"
 #define _HANDLER_C
-#include "handler.h"
+#include "include/handler.h"
 
 char *fname(char *namelist)
 {
@@ -56,7 +59,7 @@ int split_string(char *str, char *sep, char **argv)
     return 1;
   }
 
-  while (s = strtok(NULL, sep)) {
+  while ((s = strtok(NULL, sep))) {
     argv[argc++] = s;
   }
   return argc;
@@ -109,8 +112,12 @@ void init_string_block(struct string_block *sb)
 {
   if (DEBUG)
     dlog("init_string_block");
-  sb->data = (char *)malloc(sb->size = 128);
-  *sb->data = '\0';
+  if((sb->data = (char *)malloc(sb->size = 128)))
+    *sb->data = '\0';
+  else {
+    log("Malloc call to init_string_block failed.  Exiting.");
+    kill(getpid(),14);
+  }
 }
 
 void append_to_string_block(struct string_block *sb, char *str)
@@ -328,7 +335,7 @@ void affect_modify(struct char_data *ch, BYTE loc, BYTE mod, long bitv, BYTE add
     ch->skills[SKILL_STEAL].learned += mod;
     break;
   case APPLY_TRACK:
-    ch->skills[SKILL_HUNT].learned += mod;
+    ch->skills[SKILL_TRACK].learned += mod;
     break;
 
   default:
@@ -347,7 +354,6 @@ void affect_total(struct char_data *ch)
 {
   struct affected_type *af;
   int i, j;
-  int num;
 
   if (DEBUG)
     dlog("affect_total");
@@ -412,7 +418,7 @@ void affect_remove(struct char_data *ch, struct affected_type *af)
 {
   struct affected_type *hjp;
 
-  assert(ch->affected);
+  if(!ch->affected) return;
   if (DEBUG)
     dlog("affect_remove");
   affect_modify(ch, af->location, af->modifier, af->bitvector, FALSE);
@@ -507,7 +513,7 @@ void char_from_room(struct char_data *ch)
       if (ch->equipment[WEAR_LIGHT]->obj_flags.value[2]) {	/* Light is ON */
 	real_roomp(ch->in_room)->light--;
 	if (real_roomp(ch->in_room)->light < 1)
-	  send_to_room_except("A source of light leaves the room....\n\r", ch->in_room, ch);
+	  reprintf(ch->in_room, ch, "A source of light leaves the room....\n\r");
       }
   rp = real_roomp(ch->in_room);
   if (rp == NULL) {
@@ -557,7 +563,7 @@ void char_to_room(struct char_data *ch, int room)
     if (ch->equipment[WEAR_LIGHT]->obj_flags.type_flag == ITEM_LIGHT)
       if (ch->equipment[WEAR_LIGHT]->obj_flags.value[2]) {	/* Light is ON */
 	if ((rp->light < 1) && (ch->in_room))
-	  send_to_room_except("A source of light enters the room...\n\r", ch->in_room, ch);
+	  reprintf(ch->in_room, ch, "A source of light enters the room...\n\r");
 	rp->light++;
       }
 }
@@ -625,7 +631,7 @@ void obj_from_char(struct obj_data *object)
 /* Return the effect of a piece of armor in position eq_pos */
 int apply_ac(struct char_data *ch, int eq_pos)
 {
-  assert(ch->equipment[eq_pos]);
+  if(!ch->equipment[eq_pos]) return 0;
   if (DEBUG)
     dlog("apply_ac");
   if (!(GET_ITEM_TYPE(ch->equipment[eq_pos]) == ITEM_ARMOR))
@@ -654,8 +660,7 @@ void equip_char(struct char_data *ch, struct obj_data *obj, int pos)
 {
   int j;
 
-  assert(pos >= 0 && pos < MAX_WEAR);
-  /* assert(!(ch->equipment[pos])); */
+  if(pos < 0 || pos >= MAX_WEAR) return;
   if (DEBUG)
     dlog("equip_char");
   if (obj->carried_by) {
@@ -700,8 +705,8 @@ struct obj_data *unequip_char(struct char_data *ch, int pos)
   int j;
   struct obj_data *obj;
 
-  assert(pos >= 0 && pos < MAX_WEAR);
-  assert(ch->equipment[pos]);
+  if(pos < 0 || pos >= MAX_WEAR) return NULL;
+  if(!ch->equipment[pos]) return NULL;
   if (DEBUG)
     dlog("unequip_char");
   obj = ch->equipment[pos];
@@ -1034,7 +1039,7 @@ void extract_obj(struct obj_data *obj)
       /*
        **  set players equipment slot to 0; that will avoid the garbage items.
        */
-      obj->equipped_by->equipment[obj->eq_pos] = 0;
+      obj->equipped_by->equipment[(int)obj->eq_pos] = 0;
 
     } else {
       log("Extract on equipped item in slot -1 on:");
@@ -1144,7 +1149,7 @@ void extract_char(struct char_data *ch)
       ch->desc->snoop.snooping->desc->snoop.snoop_by = 0;
 
     if (ch->desc->snoop.snoop_by) {
-      send_to_char("Your victim is no longer among us.\n\r", ch->desc->snoop.snoop_by);
+      cprintf(ch->desc->snoop.snoop_by, "Your victim is no longer among us.\n\r");
       ch->desc->snoop.snoop_by->desc->snoop.snooping = 0;
     }
     ch->desc->snoop.snooping = ch->desc->snoop.snoop_by = 0;
@@ -1169,7 +1174,7 @@ void extract_char(struct char_data *ch)
 	i->in_room = ch->in_room;
       }
     } else {
-      send_to_char("Here, you dropped some stuff, let me help you get rid of that.\n\r", ch);
+      cprintf(ch, "Here, you dropped some stuff, let me help you get rid of that.\n\r");
       for (i = ch->carrying; i; i = o) {
 	o = i->next_content;
 	extract_obj(i);
@@ -1208,10 +1213,10 @@ void extract_char(struct char_data *ch)
 	if (k->specials.hunting == ch) {
 	  k->specials.hunting = 0;
 	}
-      if (Hates(k, ch)) {
+      if (DoesHate(k, ch)) {
 	RemHated(k, ch);
       }
-      if (Fears(k, ch)) {
+      if (DoesFear(k, ch)) {
 	RemFeared(k, ch);
       }
     }
@@ -1221,10 +1226,10 @@ void extract_char(struct char_data *ch)
 	if (k->specials.hunting == ch) {
 	  k->specials.hunting = 0;
 	}
-      if (Hates(k, ch)) {
+      if (DoesHate(k, ch)) {
 	ZeroHatred(k, ch);
       }
-      if (Fears(k, ch)) {
+      if (DoesFear(k, ch)) {
 	ZeroFeared(k, ch);
       }
     }
@@ -1275,6 +1280,10 @@ struct char_data *get_char_room_vis(struct char_data *ch, char *name)
   char tmpname[MAX_INPUT_LENGTH];
   char *tmp;
 
+  if((!strcasecmp(name, "me") || !strcasecmp(name, "myself")) &&
+     CAN_SEE(ch, ch))
+    return ch;
+
   strcpy(tmpname, name);
   tmp = tmpname;
   if (!(number = get_number(&tmp)))
@@ -1299,6 +1308,10 @@ struct char_data *get_char_vis_world(struct char_data *ch, char *name, int *coun
   int j, number;
   char tmpname[MAX_INPUT_LENGTH];
   char *tmp;
+
+  if((!strcasecmp(name, "me") || !strcasecmp(name, "myself")) &&
+     CAN_SEE(ch, ch))
+    return ch;
 
   strcpy(tmpname, name);
   tmp = tmpname;
@@ -1325,7 +1338,7 @@ struct char_data *get_char_vis(struct char_data *ch, char *name)
   /* check location */
   if (DEBUG)
     dlog("get_char_vis");
-  if (i = get_char_room_vis(ch, name))
+  if ((i = get_char_room_vis(ch, name)))
     return (i);
 
   return get_char_vis_world(ch, name, NULL);
@@ -1393,11 +1406,11 @@ struct obj_data *get_obj_vis(struct char_data *ch, char *name)
   if (DEBUG)
     dlog("get_obj_vis");
   /* scan items carried */
-  if (i = get_obj_in_list_vis(ch, name, ch->carrying))
+  if ((i = get_obj_in_list_vis(ch, name, ch->carrying)))
     return (i);
 
   /* scan room */
-  if (i = get_obj_in_list_vis(ch, name, real_roomp(ch->in_room)->contents))
+  if ((i = get_obj_in_list_vis(ch, name, real_roomp(ch->in_room)->contents)))
     return (i);
 
   return get_obj_vis_world(ch, name, NULL);
@@ -1545,12 +1558,12 @@ int generic_find(char *arg, int bitvector, struct char_data *ch,
   *tar_obj = 0;
 
   if (IS_SET(bitvector, FIND_CHAR_ROOM)) {	/* Find person in room */
-    if (*tar_ch = get_char_room_vis(ch, name)) {
+    if ((*tar_ch = get_char_room_vis(ch, name))) {
       return (FIND_CHAR_ROOM);
     }
   }
   if (IS_SET(bitvector, FIND_CHAR_WORLD)) {
-    if (*tar_ch = get_char_vis(ch, name)) {
+    if ((*tar_ch = get_char_vis(ch, name))) {
       return (FIND_CHAR_WORLD);
     }
   }
@@ -1566,22 +1579,22 @@ int generic_find(char *arg, int bitvector, struct char_data *ch,
   }
   if (IS_SET(bitvector, FIND_OBJ_INV)) {
     if (IS_SET(bitvector, FIND_OBJ_ROOM)) {
-      if (*tar_obj = get_obj_vis_accessible(ch, name)) {
+      if ((*tar_obj = get_obj_vis_accessible(ch, name))) {
 	return (FIND_OBJ_INV);
       }
     } else {
-      if (*tar_obj = get_obj_in_list_vis(ch, name, ch->carrying)) {
+      if ((*tar_obj = get_obj_in_list_vis(ch, name, ch->carrying))) {
 	return (FIND_OBJ_INV);
       }
     }
   }
   if (IS_SET(bitvector, FIND_OBJ_ROOM)) {
-    if (*tar_obj = get_obj_in_list_vis(ch, name, real_roomp(ch->in_room)->contents)) {
+    if ((*tar_obj = get_obj_in_list_vis(ch, name, real_roomp(ch->in_room)->contents))) {
       return (FIND_OBJ_ROOM);
     }
   }
   if (IS_SET(bitvector, FIND_OBJ_WORLD)) {
-    if (*tar_obj = get_obj_vis(ch, name)) {
+    if ((*tar_obj = get_obj_vis(ch, name))) {
       return (FIND_OBJ_WORLD);
     }
   }

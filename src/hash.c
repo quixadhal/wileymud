@@ -4,11 +4,11 @@
 #include <string.h>
 #include <sys/types.h>
 
-#include "global.h"
-#include "bug.h"
-#include "comm.h"
+#include "include/global.h"
+#include "include/bug.h"
+#include "include/comm.h"
 #define _HASH_C
-#include "hash.h"
+#include "include/hash.h"
 
 void init_hash_table(struct hash_header *ht, int rec_size, int table_size)
 {
@@ -24,7 +24,7 @@ void init_hash_table(struct hash_header *ht, int rec_size, int table_size)
   ht->klistlen = 0;
 }
 
-void destroy_hash_table(struct hash_header *ht, void (*gman)())
+void destroy_hash_table(struct hash_header *ht, funcp gman)
 {
   int i;
   struct hash_link *scan, *temp;
@@ -146,7 +146,7 @@ void *hash_remove(struct hash_header *ht, int key)
   return NULL;
 }
 
-void hash_iterate(struct hash_header *ht, void (*func)(), void *cdata)
+void hash_iterate(struct hash_header *ht, funcp func, void *cdata)
 {
 
   int i;

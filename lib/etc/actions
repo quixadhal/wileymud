@@ -1,13 +1,3 @@
-9 0 0
-Isn't there someone you want to kiss?
-#
-You kiss $M.
-$n kisses $N.
-$n kisses you.
-Never around when required.
-You get a big wet spot on yourself!
-#
-
 22 0 0
 BOIINNNNNNGG!
 $n bounces around.
@@ -33,6 +23,16 @@ $n sends you across the dancefloor.
 Eh, WHO?
 You skip and dance around by yourself.
 $n skips a light Fandango.
+
+25 0 0
+Isn't there someone you want to kiss?
+#
+You kiss $M.
+$n kisses $N.
+$n kisses you.
+Never around when required.
+You get a big wet spot on yourself!
+#
 
 26 0 0
 You cackle gleefully.
