@@ -132,16 +132,16 @@ int CAN_SEE(struct char_data *s, struct char_data *o)
 
 }
 
-int exit_ok(struct room_direction_data *exit, struct room_data **rpp) {
+int exit_ok(struct room_direction_data *room_exit, struct room_data **rpp) {
   struct room_data *rp;
 
   if (rpp == NULL)
     rpp = &rp;
-  if (!exit) {
+  if (!room_exit) {
     *rpp = NULL;
     return FALSE;
   }
-  *rpp = real_roomp(exit->to_room);
+  *rpp = real_roomp(room_exit->to_room);
   return (*rpp != NULL);
 }
 
@@ -177,15 +177,15 @@ inline int number(int from, int to) {
 }
 
 /* simulates dice roll */
-inline int dice(int number, int size) {
+inline int dice(int rolls, int size) {
   register int r;
   register int sum = 0;
 
-  if(size < 1 || number < 1)
+  if(size < 1 || rolls < 1)
     return 0;
   if(size == 1)
-    return number;
-  for(r = 1; r <= number; r++)
+    return rolls;
+  for(r = 1; r <= rolls; r++)
     sum += ((random() % size) + 1);
   return sum;
 }

@@ -658,3 +658,5 @@ global.h:1144: warning: function declaration isn't a prototype
 000804	Quixadhal
   0058	Removed MOST of the calls to malloc/calloc/free and used the utils.h
 	macro CREATE/et. al.... centralized error trapping.
+031126	Quixadhal
+  2155	Got things going under Slackware linux again.

@@ -224,7 +224,6 @@ extern int TMPbuff_ptr;
 extern int ROOMcount;
 extern int GLINEcount;
 extern int LASTroomnumber;
-extern struct hash_header room_db;
 
 extern char **list_of_players;
 extern int    number_of_players;

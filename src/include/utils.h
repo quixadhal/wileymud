@@ -205,12 +205,12 @@ inline int percent(int value, int total);
 inline char *ordinal(int x);
 int GetItemClassRestrictions(struct obj_data *obj);
 int CAN_SEE(struct char_data *s, struct char_data *o);
-int exit_ok(struct room_direction_data *exit, struct room_data **rpp);
+int exit_ok(struct room_direction_data *room_exit, struct room_data **rpp);
 inline int IsImmune(struct char_data *ch, int bit);
 inline int IsResist(struct char_data *ch, int bit);
 inline int IsSusc(struct char_data *ch, int bit);
 inline int number(int from, int to);
-inline int dice(int number, int size);
+inline int dice(int rolls, int size);
 inline int fuzz(int x);
 int scan_number(char *text, int *rval);
 

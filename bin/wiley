@@ -1,9 +1,9 @@
-#!/usr/local/bin/bash
+#!/usr/bin/bash
 # 42 is our magic number for not rebooting,
 # otherwise we assume it crashed or we said reboot.
 
 #echo $$ >/var/run/wiley.pid
-cd /home/quixadhal/cvs/wiley/bin
+cd /home/wiley/wiley/bin
 while [ -x ./wileymud ]; do
   LOG=`/bin/date "+../lib/log/runlog.%y%m%d-%H%M%S"`
   touch $LOG

@@ -11,6 +11,11 @@ OLDVERSION=$(shell cat .version.count)
 VERSION=$(shell echo $(OLDVERSION) + 1 | bc)
 
 CC = gcc
+MACHINE = -mcpu=pentium2 -march=pentium2
+
+NEED_CRYPT = -lcrypt
+#NEED_COMPAT = -lcompat
+
 #GNUINC = /usr/local/lib/gcc-lib/sparc-sun-sunos4.1.3_U1/2.6.3/include
 #GNUINC = /usr/lib/gcc-lib/i486-linux/2.5.8/include
 #GNUINC = /usr/lib/gcc-lib/i486-linux/2.6.3/include
@@ -22,19 +27,18 @@ CC = gcc
 #GNUINC = /usr/lib/gcc-lib/i386-unknown-openbsd3.1/2.95.3/include
 GNUINC = /usr/lib/gcc-lib/i486-slackware-linux/3.2.3/include
 
-#PROF = -pg
-#BUGFLAGS = -DDEBUG_FILE
-#WARN = -Wall -Wstrict-prototypes -Wmissing-prototypes
-WARN = -Wall -Wmissing-prototypes
-#WARN = -w
-DEBUG = -g -fno-common -fno-builtin -rdynamic #-m486 -static #-fcheck-memory-usage
-#DEBUG = -g3 -static
-OPT = -O3 -fstrength-reduce -fexpensive-optimizations -funroll-loops -finline-functions #-m586
-#STRIP = -s
+WARN = -Wall -Wmissing-prototypes -Wformat-security -Winline -Wpointer-arith -Wcast-align -Wcast-qual -Wredundant-decls -Wshadow -Wstrict-prototypes # -Werror
+OPT = -O3 -fstrength-reduce -fexpensive-optimizations -funroll-loops -finline-functions
 PIPE = -pipe -fpcc-struct-return
 
+#BUGFLAGS = -DDEBUG_FILE
+DEBUG = -g -fno-common -fno-builtin -rdynamic #-m486 -static #-fcheck-memory-usage
+#STRIP = -s
+#EFENCE = -lefence
+#PROF = -pg
+
 #CFLAGS = -g -Dsun3 -m68020 -fstrength-reduce -fvolatile 
-CFLAGS = $(WARN) $(DEBUG) $(PROF) $(OPT) $(PIPE) -Iinclude
+CFLAGS = $(MACHINE) $(WARN) $(DEBUG) $(PROF) $(OPT) $(PIPE) -Iinclude
 LDFLAGS = $(DEBUG) $(PROF) $(STRIP)
 
 SRC =	act_comm.c act_info.c act_move.c act_obj.c act_off.c \
@@ -70,7 +74,7 @@ IDENTSRC = $(addprefix $(IDENTDIR)/, id_close.c id_open.c id_parse.c \
 IDENTHDR = $(addprefix $(IDENTDIR)/, ident.h)
 IDENTOBJ = $(IDENTSRC:.c=.o)
 LIBS =	$(IDENTDIR)/libident.a
-LIB =	-L$(IDENTDIR) -lident -lcrypt # -lcompat # -lefence # -lcrypt
+LIB =	-L$(IDENTDIR) -lident $(NEED_CRYPT) $(NEED_COMPAT) $(EFENCE)
 AUX =	GNUmakefile .indent.pro HACKLOG version.proto .version.count \
 	world.wld
 

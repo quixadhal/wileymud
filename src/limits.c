@@ -54,20 +54,20 @@ char *ClassTitles(struct char_data *ch)
 /* When age in 45..59 calculate the line between p3 & p4 */
 /* When age in 60..79 calculate the line between p4 & p5 */
 /* When age >= 80 return the value p6 */
-int graf(int age, int p0, int p1, int p2, int p3, int p4, int p5, int p6)
+int graf(int char_age, int p0, int p1, int p2, int p3, int p4, int p5, int p6)
 {
   if (DEBUG)
     dlog("graf");
-  if (age < 15)
+  if (char_age < 15)
     return (p0);		       /* < 15   */
-  else if (age <= 29)
-    return (int)(p1 + (((age - 15) * (p2 - p1)) / 15));		/* 15..29 */
-  else if (age <= 44)
-    return (int)(p2 + (((age - 30) * (p3 - p2)) / 15));		/* 30..44 */
-  else if (age <= 59)
-    return (int)(p3 + (((age - 45) * (p4 - p3)) / 15));		/* 45..59 */
-  else if (age <= 79)
-    return (int)(p4 + (((age - 60) * (p5 - p4)) / 20));		/* 60..79 */
+  else if (char_age <= 29)
+    return (int)(p1 + (((char_age - 15) * (p2 - p1)) / 15));		/* 15..29 */
+  else if (char_age <= 44)
+    return (int)(p2 + (((char_age - 30) * (p3 - p2)) / 15));		/* 30..44 */
+  else if (char_age <= 59)
+    return (int)(p3 + (((char_age - 45) * (p4 - p3)) / 15));		/* 45..59 */
+  else if (char_age <= 79)
+    return (int)(p4 + (((char_age - 60) * (p5 - p4)) / 20));		/* 60..79 */
   else
     return (p6);		       /* >= 80 */
 }
@@ -776,7 +776,7 @@ void check_idling(struct char_data *ch)
 }
 
 /* Update both PC's & NPC's and objects */
-void point_update(int pulse)
+void point_update(int current_pulse)
 {
   void update_char_objects(struct char_data *ch);	/* handler.c */
   struct char_data *i, *next_dude;
