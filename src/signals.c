@@ -31,6 +31,35 @@
               }
 */
 
+/*
+	And under OpenBSD that would be:
+
+     struct sigaction {
+             union {
+                     void    (*__sa_handler) __P((int));
+                     void    (*__sa_sigaction) __P((int, siginfo_t *, void *));
+             } __sigaction_u;
+             sigset_t sa_mask;
+             int      sa_flags;
+     };
+
+*/
+
+/*
+  Also worth noting under OpenBSD:
+
+bash-2.05$ kill -l
+ 1) SIGHUP       2) SIGINT       3) SIGQUIT      4) SIGILL
+ 5) SIGTRAP      6) SIGABRT      7) SIGEMT       8) SIGFPE
+ 9) SIGKILL     10) SIGBUS      11) SIGSEGV     12) SIGSYS
+13) SIGPIPE     14) SIGALRM     15) SIGTERM     16) SIGURG
+17) SIGSTOP     18) SIGTSTP     19) SIGCONT     20) SIGCHLD
+21) SIGTTIN     22) SIGTTOU     23) SIGIO       24) SIGXCPU
+25) SIGXFSZ     26) SIGVTALRM   27) SIGPROF     28) SIGWINCH
+29) SIGINFO     30) SIGUSR1     31) SIGUSR2     
+
+*/
+
 void signal_setup(void)
 {
   register int i;
@@ -38,38 +67,38 @@ void signal_setup(void)
   struct timeval interval;
   struct sigaction ack[] =
   {
-    {SIG_DFL, {0}, SA_NOMASK | SA_ONESHOT, NULL},
-    {hupsig, SIGHUP, SA_NOMASK, NULL},
-    {SIG_IGN, SIGINT, SA_NOMASK, NULL},
-    {SIG_IGN, SIGQUIT, SA_NOMASK, NULL},
-    {SIG_DFL, SIGILL, SA_NOMASK | SA_ONESHOT, NULL},
-    {SIG_DFL, SIGTRAP, SA_NOMASK | SA_ONESHOT, NULL},
-    {SIG_IGN, SIGIOT, SA_NOMASK, NULL},
-    {SIG_DFL, SIGBUS, SA_NOMASK | SA_ONESHOT, NULL},
-    {SIG_DFL, SIGFPE, SA_NOMASK | SA_ONESHOT, NULL},
-    {SIG_DFL, SIGKILL, SA_NOMASK | SA_ONESHOT, NULL},
-    {SIG_DFL, SIGUSR1, SA_NOMASK | SA_ONESHOT, NULL},
-    {SIG_DFL, SIGSEGV, SA_NOMASK | SA_ONESHOT, NULL},
-    {shutdown_request, SIGUSR2, SA_NOMASK, NULL},
-    {SIG_IGN, SIGPIPE, SA_NOMASK, NULL},
-    {logsig, SIGALRM, SA_NOMASK, NULL},
-    {SIG_IGN, SIGTERM, SA_NOMASK, NULL},
-    {SIG_DFL, SIGSTKFLT, SA_NOMASK | SA_ONESHOT, NULL},
-    {SIG_IGN, SIGCHLD, SA_NOMASK, NULL},
-    {SIG_IGN, SIGCONT, SA_NOMASK, NULL},
-    {SIG_IGN, SIGSTOP, SA_NOMASK, NULL},
-    {SIG_IGN, SIGTSTP, SA_NOMASK, NULL},
-    {SIG_IGN, SIGTTIN, SA_NOMASK, NULL},
-    {SIG_IGN, SIGTTOU, SA_NOMASK, NULL},
-    {SIG_IGN, SIGURG, SA_NOMASK, NULL},
-    {SIG_IGN, SIGXCPU, SA_NOMASK, NULL},
-    {SIG_IGN, SIGXFSZ, SA_NOMASK, NULL},
-    {checkpointing, SIGVTALRM, SA_NOMASK, NULL},
-    {SIG_DFL, SIGPROF, SA_NOMASK | SA_ONESHOT, NULL},
-    {SIG_IGN, SIGWINCH, SA_NOMASK, NULL},
-    {SIG_IGN, SIGIO, SA_NOMASK, NULL},
-    {shutdown_request, SIGPWR, SA_NOMASK, NULL},
-    {SIG_DFL, SIGUNUSED, SA_NOMASK | SA_ONESHOT, NULL}
+    { SIG_DFL, 0, SA_NODEFER | SA_RESETHAND },
+    { hupsig, SIGHUP, SA_NODEFER },
+    { SIG_IGN, SIGINT, SA_NODEFER },
+    { SIG_IGN, SIGQUIT, SA_NODEFER },
+    { SIG_DFL, SIGILL, SA_NODEFER | SA_RESETHAND },
+    { SIG_DFL, SIGTRAP, SA_NODEFER | SA_RESETHAND },
+    { SIG_DFL, SIGABRT, SA_NODEFER | SA_RESETHAND },
+    { SIG_DFL, SIGEMT, SA_NODEFER | SA_RESETHAND },
+    { SIG_DFL, SIGFPE, SA_NODEFER | SA_RESETHAND },
+    { SIG_DFL, SIGKILL, SA_NODEFER | SA_RESETHAND },
+    { SIG_DFL, SIGBUS, SA_NODEFER | SA_RESETHAND },
+    { SIG_DFL, SIGSEGV, SA_NODEFER | SA_RESETHAND },
+    { SIG_DFL, SIGSYS, SA_NODEFER | SA_RESETHAND },
+    { SIG_IGN, SIGPIPE, SA_NODEFER },
+    { logsig, SIGALRM, SA_NODEFER },
+    { SIG_IGN, SIGTERM, SA_NODEFER },
+    { SIG_IGN, SIGURG, SA_NODEFER },
+    { SIG_IGN, SIGSTOP, SA_NODEFER },
+    { SIG_IGN, SIGTSTP, SA_NODEFER },
+    { SIG_IGN, SIGCONT, SA_NODEFER },
+    { SIG_IGN, SIGCHLD, SA_NODEFER },
+    { SIG_IGN, SIGTTIN, SA_NODEFER },
+    { SIG_IGN, SIGTTOU, SA_NODEFER },
+    { SIG_IGN, SIGIO, SA_NODEFER },
+    { SIG_IGN, SIGXCPU, SA_NODEFER },
+    { SIG_IGN, SIGXFSZ, SA_NODEFER },
+    { checkpointing, SIGVTALRM, SA_NODEFER },
+    { SIG_DFL, SIGPROF, SA_NODEFER | SA_RESETHAND },
+    { SIG_IGN, SIGWINCH, SA_NODEFER },
+    { shutdown_request, SIGUSR1, SA_NODEFER },
+    { SIG_IGN, SIGUSR2, SA_NODEFER },
+//    { SIG_DFL, SIGINFO, SA_NODEFER | SA_RESETHAND },
   };
 
 /*
@@ -101,7 +130,7 @@ void signal_setup(void)
   setitimer(ITIMER_VIRTUAL, &itime, 0);
   /* signal(SIGVTALRM, checkpointing); */
 
-  for (i = 0; i < 32; i++)
+  for (i = 1; i < 32; i++)
     if (ack[i].sa_handler != SIG_DFL)
       sigaction(i, &ack[i], NULL);
 }

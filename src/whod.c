@@ -203,7 +203,7 @@ void whod_loop(void)
   char buf[MAX_STRING_LENGTH];
   struct char_data *ch;
   struct hostent *hent;
-  long ct, ot;
+  time_t ct, ot;
   char *tmstr, *otmstr;
   long ttime;
   long thour, tmin, tsec;

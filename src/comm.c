@@ -576,7 +576,7 @@ int new_descriptor(int s) {
   struct descriptor_data *newd;
   int index;
 
-  long tc;
+  time_t tc;
   struct tm *t_info;
 
   char *timed_con[] =

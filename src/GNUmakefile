@@ -18,7 +18,8 @@ CC = gcc
 #GNUINC = /usr/lib/gcc-lib/i486-linux/2.7.2/include
 #GNUINC = /usr/lib/gcc-lib/i386-redhat-linux/2.7.2.3/include
 #GNUINC = /usr/lib/gcc-lib/i386-redhat-linux/egcs-2.90.27/include
-GNUINC = /usr/lib/gcc-lib/i486-linux/2.7.2.3/include
+#GNUINC = /usr/lib/gcc-lib/i486-linux/2.7.2.3/include
+GNUINC = /usr/lib/gcc-lib/i386-unknown-openbsd3.0/2.95.3/include
 #PROF = -pg
 #BUGFLAGS = -DDEBUG_FILE
 #WARN = -Wall -Wstrict-prototypes -Wmissing-prototypes
@@ -67,7 +68,7 @@ IDENTSRC = $(addprefix $(IDENTDIR)/, id_close.c id_open.c id_parse.c \
 IDENTHDR = $(addprefix $(IDENTDIR)/, ident.h)
 IDENTOBJ = $(IDENTSRC:.c=.o)
 LIBS =	$(IDENTDIR)/libident.a
-LIB =	-L$(IDENTDIR) -lident -lcrypt -lefence
+LIB =	-L$(IDENTDIR) -lident -lcompat # -lefence # -lcrypt
 AUX =	GNUmakefile .indent.pro HACKLOG version.proto .version.count \
 	world.wld
 

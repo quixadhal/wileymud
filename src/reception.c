@@ -495,7 +495,7 @@ void new_save_equipment(struct char_data *ch, struct obj_cost *cost, int delete)
   fprintf(fp, "Owner              %s~\n", GET_NAME(ch));
   fprintf(fp, "Gold               %d\n", GET_GOLD(ch));
   fprintf(fp, "TotalCost          %d\n", cost->total_cost);
-  fprintf(fp, "LastUpdate         %ld\n", time(NULL));
+  fprintf(fp, "LastUpdate         %ld\n", (long int)time(NULL));
   fprintf(fp, "MinimumStay        0\n");
   fprintf(fp, "End\n");
   fprintf(fp, "#EQUIPMENT\n");
@@ -587,7 +587,7 @@ int new_load_equipment(struct char_data *ch, struct obj_cost *cost) {
     fprintf(fp, "Owner              %s~\n", GET_NAME(ch));
     fprintf(fp, "Gold               %d\n", GET_GOLD(ch));
     fprintf(fp, "TotalCost          %d\n", 0);
-    fprintf(fp, "LastUpdate         %ld\n", time(NULL));
+    fprintf(fp, "LastUpdate         %ld\n", (long int)time(NULL));
     fprintf(fp, "MinimumStay        0\n");
     fprintf(fp, "End\n");
     fprintf(fp, "#EQUIPMENT\n");

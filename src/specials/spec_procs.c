@@ -4049,7 +4049,8 @@ int zombie_master(struct char_data *ch, int cmd, char *arg)
             !IS_IMMORTAL(vict)) {
           if ((GET_HIT(vict) < 16) &&
               (GET_MAX_HIT(vict) != GET_HIT(vict))) {
-            if (GET_ALIGNMENT(vict) > ALIGN_EVIL) {
+            if ((GET_ALIGNMENT(vict) > ALIGN_VERY_EVIL) ||
+		((GET_ALIGNMENT(vict) > ALIGN_VILE) && (GetMaxLevel(vict) <4))) {
 	      act("$n says, You are hurt $N, let me heal you.",
                   TRUE, ch, 0, vict, TO_ROOM);
               is_evil= FALSE;
@@ -4070,7 +4071,8 @@ int zombie_master(struct char_data *ch, int cmd, char *arg)
             }
 	  } else if ((GET_MOVE(vict) < 25) &&
                      (GET_MAX_MOVE(vict) != GET_MOVE(vict))) {
-            if (GET_ALIGNMENT(vict) > ALIGN_EVIL) {
+            if ((GET_ALIGNMENT(vict) > ALIGN_VERY_EVIL) ||
+		((GET_ALIGNMENT(vict) > ALIGN_VILE) && (GetMaxLevel(vict) <4))) {
 	      act("$n says, You seem tired $N, let me help you.",
                   TRUE, ch, 0, vict, TO_ROOM);
               is_evil= FALSE;
@@ -4090,7 +4092,8 @@ int zombie_master(struct char_data *ch, int cmd, char *arg)
               }
             }
 	  } else if (IS_AFFECTED(vict, AFF_BLIND)) {
-            if (GET_ALIGNMENT(vict) > ALIGN_EVIL) {
+            if ((GET_ALIGNMENT(vict) > ALIGN_VERY_EVIL) ||
+		((GET_ALIGNMENT(vict) > ALIGN_VILE) && (GetMaxLevel(vict) <4))) {
 	      act("$n says, You seem to be blind $N, let me cure you.",
                   TRUE, ch, 0, vict, TO_ROOM);
               is_evil= FALSE;
@@ -4102,7 +4105,7 @@ int zombie_master(struct char_data *ch, int cmd, char *arg)
 	        continue;
             }
 	  } else if (IS_AFFECTED(vict, AFF_POISON)) {
-            if ((GET_ALIGNMENT(vict) > ALIGN_EVIL) ||
+            if ((GET_ALIGNMENT(vict) > ALIGN_VERY_EVIL) ||
 		((GET_ALIGNMENT(vict) > ALIGN_VILE) && (GetMaxLevel(vict) <4))) {
 	      act("$n says, You seem to be sick $N, let me cure you.",
                   TRUE, ch, 0, vict, TO_ROOM);
@@ -4114,7 +4117,7 @@ int zombie_master(struct char_data *ch, int cmd, char *arg)
                     TRUE, ch, 0, vict, TO_ROOM);
 	        continue;
               }
-          } else if (IS_VILE(vict) && (GetMaxLevel(vict) > 4)) {
+          } else if (IS_REALLY_VILE(vict) && (GetMaxLevel(vict) > 4)) {
 	    act("$n screams, BEGONE foul $N, I shall not suffer your presence!",
                 TRUE, ch, 0, vict, TO_ROOM);
             say_spell(ch, SPELL_FEAR);

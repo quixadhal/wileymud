@@ -13,8 +13,10 @@
 #define GOLD_NEEDED(ch,cl) (IS_PC(ch)?((3*(16<<(GET_LEVEL(ch,cl)+1)/3)+((16<<(GET_LEVEL(ch,cl)+1)/3)*((GET_LEVEL(ch,cl)+1)%3))) / ((GET_LEVEL(ch,cl)<8)?((GET_LEVEL(ch,cl)<4)?8:2):1)):0)
 
 #define NAME(ch) ((ch)?(IS_NPC(ch)?(ch)->player.short_descr:(ch)->player.name):"")
+#ifndef MIN
 #define MIN(a,b) ((a)<=(b)?(a):(b))
 #define MAX(a,b) ((a)>=(b)?(a):(b))
+#endif
 inline int str_cmp(char *arg1, char *arg2);
 inline int strn_cmp(char *arg1, char *arg2, int n);
 #define LOWER(c) (((c)>='A'  && (c) <= 'Z') ? ((c)+('a'-'A')) : (c))

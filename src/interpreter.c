@@ -1469,7 +1469,7 @@ void PutPasswd(struct descriptor_data *d)
     log("Cannot save password data for new user!\n\r");
   } else {
     sprintf(buf, "%s %s %s@%s %ld 1\n", d->usr_name,
-            d->pwd, d->username, d->host, time(NULL));
+            d->pwd, d->username, d->host, (long int) time(NULL));
     fprintf(pfd, buf);
     fclose(pfd);
     log(buf);

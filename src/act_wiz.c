@@ -1643,7 +1643,7 @@ void do_shutdow(struct char_data *ch, char *argument, int cmd)
 
 void do_shutdown(struct char_data *ch, char *argument, int cmd)
 {
-  long tc;
+  time_t tc;
   struct tm *t_info;
   char *tmstr;
   char buf[100], arg[MAX_INPUT_LENGTH];

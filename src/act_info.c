@@ -1861,7 +1861,8 @@ void do_who(struct char_data *ch, char *argument, int cmd)
   struct char_data *person;
   long ttime;
   long thour, tmin, tsec;
-  long ct, ot;
+  /* long ct, ot; */
+  time_t ct, ot;
   char *tmstr, *otmstr;
   extern long Uptime;
 
@@ -2423,7 +2424,7 @@ void do_spells(struct char_data *ch, char *argument, int cmd)
     return;
   *buf = 0;
   sprintf(buf, "Spell Name                Ma Cl Wa Th Ra Dr\n\r");
-  for (i = 1; i <= MAX_SKILLS; i++) {
+  for (i = 1; i < MAX_SKILLS; i++) {
     if(!spell_info[i].castable) continue;
     sprintf(buf + strlen(buf), "[%3d] %-20s  %2d %2d %2d %2d %2d %2d\n\r",
 	    i, spell_info[i].name,
@@ -2440,7 +2441,8 @@ void do_spells(struct char_data *ch, char *argument, int cmd)
 
 void do_world(struct char_data *ch, char *argument, int cmd)
 {
-  long ct, ot;
+  /* long ct, ot; */
+  time_t ct, ot;
   char *tmstr, *otmstr;
 
   if (DEBUG)
