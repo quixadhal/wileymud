@@ -1,0 +1,9 @@
+#!/bin/bash
+LOG=`/bin/date "+runlog.%y%m%d-%H%M%S"`
+
+./wileymud 4000 >$LOG 2>&1 </dev/null
+
+while [ -e ../lib/etc/reboot ]; do
+  LOG=`/bin/date "+runlog.%y%m%d-%H%M%S"`
+  ./wileymud 4000 >$LOG 2>&1 </dev/null
+done

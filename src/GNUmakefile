@@ -18,9 +18,9 @@ GNUINC = /usr/lib/gcc-lib/i486-linux/2.6.3/include
 #BUGFLAGS = -DDEBUG_FILE
 #DEBUG = -ggdb3 -Wall
 #DEBUG = -g -Wall $(BUGFLAGS) -DVERBOSE
-DEBUG = -g -w $(BUGFLAGS) -DVERBOSE
+#DEBUG = -g -O3 -w $(BUGFLAGS) -DVERBOSE
 #DEBUG = -Wall -DVERBOSE
-#OPT = -O3 -fomit-frame-pointer -fstrength-reduce -fexpensive-optimizations
+OPT = -O3 -fomit-frame-pointer -fstrength-reduce -fexpensive-optimizations
 #STRIP = -s
 #INCDIR = -I../inc
 
@@ -49,7 +49,7 @@ LIB =
 AUX =	GNUmakefile .indent.pro HACKLOG version.proto .version.count \
 	lex.yy.c dbparser.l
 
-all : wiley
+all : wileymud
 
 version.h : version.proto .version.count
 	@echo '/* Auto-generated from version.proto -- DO NOT EDIT */' > $@
@@ -59,7 +59,7 @@ version.h : version.proto .version.count
 	@rm -f .sed.cmds
 	@echo New version file generated.
 
-wiley : $(OBJ)
+wileymud : $(OBJ)
 	@echo Heave Ho!  Load the beastie!
 	$(CC) $(LDFLAGS) -o $@ $(OBJ) $(LIB)
 	@echo $(VERSION) >.version.count
@@ -83,7 +83,7 @@ clean :
 
 spotless : clean
 	@echo -n Destroying the world and all those within it...
-	@rm -f wiley notice
+	@rm -f wileymud notice
 	@rm -f printout sedscr
 	@rm -f tags refs
 	@echo done!
@@ -218,8 +218,6 @@ comm.o: /usr/include/linux/signal.h /usr/include/sys/un.h
 comm.o: /usr/include/linux/un.h /usr/include/sys/resource.h limits.h
 comm.o: /usr/include/linux/resource.h structs.h utils.h comm.h interpreter.h
 comm.o: handler.h db.h
-constants.o: structs.h /usr/include/sys/types.h /usr/include/linux/types.h
-constants.o: /usr/include/asm/types.h limits.h trap.h
 constants2.o: structs.h /usr/include/sys/types.h /usr/include/linux/types.h
 constants2.o: /usr/include/asm/types.h limits.h trap.h
 db.o: /usr/include/stdio.h /usr/include/libio.h /usr/include/_G_config.h
@@ -253,8 +251,8 @@ interpreter.o: /usr/lib/gcc-lib/i486-linux/2.6.3/include/stddef.h
 interpreter.o: /usr/include/ctype.h /usr/include/stdio.h /usr/include/libio.h
 interpreter.o: /usr/include/_G_config.h /usr/include/arpa/telnet.h structs.h
 interpreter.o: /usr/include/sys/types.h /usr/include/linux/types.h
-interpreter.o: /usr/include/asm/types.h comm.h interpreter.h db.h utils.h
-interpreter.o: limits.h race.h
+interpreter.o: /usr/include/asm/types.h comm.h version.h interpreter.h db.h
+interpreter.o: utils.h limits.h race.h
 limits.o: /usr/include/stdio.h /usr/include/libio.h /usr/include/_G_config.h
 limits.o: /usr/include/assert.h structs.h /usr/include/sys/types.h
 limits.o: /usr/include/linux/types.h /usr/include/asm/types.h limits.h
@@ -347,9 +345,6 @@ spells3.o: /usr/lib/gcc-lib/i486-linux/2.6.3/include/stddef.h structs.h
 spells3.o: /usr/include/sys/types.h /usr/include/linux/types.h
 spells3.o: /usr/include/asm/types.h utils.h comm.h db.h interpreter.h
 spells3.o: spells.h handler.h poly.h
-update_obj.o: /usr/include/stdio.h /usr/include/libio.h
-update_obj.o: /usr/include/_G_config.h structs.h /usr/include/sys/types.h
-update_obj.o: /usr/include/linux/types.h /usr/include/asm/types.h db.h
 utility.o: /usr/include/stdio.h /usr/include/libio.h /usr/include/_G_config.h
 utility.o: /usr/include/malloc.h /usr/include/features.h
 utility.o: /usr/include/sys/cdefs.h
@@ -365,7 +360,7 @@ weather.o: /usr/lib/gcc-lib/i486-linux/2.6.3/include/stddef.h structs.h
 weather.o: /usr/include/sys/types.h /usr/include/linux/types.h
 weather.o: /usr/include/asm/types.h utils.h comm.h handler.h interpreter.h
 weather.o: db.h
-whod.o: /usr/include/sys/types.h /usr/include/linux/types.h
+whod.o: version.h /usr/include/sys/types.h /usr/include/linux/types.h
 whod.o: /usr/include/asm/types.h /usr/include/sys/socket.h
 whod.o: /usr/include/features.h /usr/include/sys/cdefs.h
 whod.o: /usr/include/linux/socket.h /usr/include/linux/sockios.h

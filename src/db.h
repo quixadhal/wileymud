@@ -42,13 +42,13 @@
 #define TIME_FILE         "etc/time"	/*
 					 * game calendar information  
 					 */
-#define IDEA_FILE         "etc/ideas"	/*
+#define IDEA_FILE         "adm/ideas"	/*
 					 * for the 'idea'-command     
 					 */
-#define TYPO_FILE         "etc/typos"	/*
+#define TYPO_FILE         "adm/typos"	/*
 					 * 'typo'             
 					 */
-#define BUG_FILE          "etc/bugs"	/*
+#define BUG_FILE          "adm/bugs"	/*
 					 * 'bug'              
 					 */
 #define MESS_FILE         "etc/messages"	/*
@@ -72,14 +72,14 @@
 #define POSEMESS_FILE     "etc/poses"	/*
 					 * for 'pose'-command         
 					 */
-#define BOARD_FILE_PATH   "etc"
+#define BOARD_FILE_PATH   "boards"
 #define REBOOT_FILE	  "etc/reboot"
 #define OBJ_SAVE_FILE	  "ply/pcobjs.obj"
 #define SHOP_FILE	  "wld/tinyworld.shp"
 #define MKZONE_PATH	  "wld/mkzone"
 #define NOGAMES_FILE      "nogames"
 
-#define DEFAULT_HOME		3	/*
+#define DEFAULT_HOME		3001	/*
 					 * when a player is created 
 					 */
 

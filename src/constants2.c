@@ -250,39 +250,35 @@ const int                        TrapDir[] =
   TRAP_EFF_DOWN
 };
 
+#ifndef EASY_WILEY
 const int                        movement_loss[] =
 {
-  1,				/*
-				 * Inside     
-				 */
-  2,				/*
-				 * City       
-				 */
-  2,				/*
-				 * Field      
-				 */
-  3,				/*
-				 * Forest     
-				 */
-  4,				/*
-				 * Hills      
-				 */
-  6,				/*
-				 * Mountains  
-				 */
-  8,				/*
-				 * Swimming   
-				 */
-  10,				/*
-				 * Unswimable 
-				 */
-  2,				/*
-				 * Flying     
-				 */
-  20				/*
-				 * Submarine  
-				 */
+  1,				/* * Inside     */
+  2,				/* * City       */
+  2,				/* * Field      */
+  3,				/* * Forest     */
+  4,				/* * Hills      */
+  6,				/* * Mountains  */
+  8,				/* * Swimming   */
+  10,				/* * Unswimable */
+  2,				/* * Flying     */
+  20				/* * Submarine  */
 };
+#else
+const int                        movement_loss[] =
+{
+  1,				/* * Inside     */
+  2,				/* * City       */
+  3,				/* * Field      */
+  4,				/* * Forest     */
+  6,				/* * Hills      */
+  8,				/* * Mountains  */
+  12,				/* * Swimming   */
+  16,				/* * Unswimable */
+  2,				/* * Flying     */
+  20				/* * Submarine  */
+};
+#endif
 
 const char                      *dirs[] =
 {
@@ -306,12 +302,12 @@ const char                      *ItemDamType[] =
 
 const char                      *weekdays[7] =
 {
-  "the Day of the Moon",
-  "the Day of the Bull",
-  "the Day of the Deception",
+  "the Day of Darkness",
+  "the Day of the Knife",
+  "the Day of Whispers",
+  "the Day of Vengence",
   "the Day of Thunder",
-  "the Day of Freedom",
-  "the day of the Great Gods",
+  "the day of the Great VI",
   "the Day of the Sun"};
 
 const char                      *month_name[17] =
@@ -319,17 +315,17 @@ const char                      *month_name[17] =
   "Month of Winter",		/*
 				 * 0 
 				 */
-  "Month of the Winter Wiley Wolf",
+  "Month of the Forbidding",
   "Month of the Frost Giant",
   "Month of the Old Forces",
-  "Month of the Grand Struggle",
-  "Month of the Spring",
+  "Month of the Cataclysm",
+  "Month of the Awakening",
   "Month of Nature",
   "Month of Futility",
   "Month of the Dragon",
   "Month of the Sun",
-  "Month of the Heat",
-  "Month of the Battle",
+  "Month of the Salamander",
+  "Month of the Descent",
   "Month of the Dark Shades",
   "Month of the Shadows",
   "Month of the Long Shadows",
@@ -420,7 +416,7 @@ const char                      *drinknames[] =
   "coffee",
   "blood",
   "salt",
-  "cola",
+  "coke",
   "\n"
 };
 

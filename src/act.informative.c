@@ -2063,7 +2063,7 @@ do_who(struct char_data *ch, char *argument, int cmd)
 	}
       }
   }
-  sprintf(buf, "\n\rTotal players on Wiley: %d\n\r", count);
+  sprintf(buf, "\n\rTotal players on DeadMUD: %d\n\r", count);
   send_to_char(buf, ch);
 }
 
@@ -2574,13 +2574,13 @@ do_world(struct char_data *ch, char *argument, int cmd)
   ot = Uptime;
   otmstr = asctime(localtime(&ot));
   *(otmstr + strlen(otmstr) - 1) = '\0';
-  sprintf(buf, "Wiley start time was: %s\n\r", otmstr);
+  sprintf(buf, "Dead start time was: %s\n\r", otmstr);
   send_to_char(buf, ch);
 
   ct = time(0);
   tmstr = asctime(localtime(&ct));
   *(tmstr + strlen(tmstr) - 1) = '\0';
-  sprintf(buf, "Wiley's time is: %s\n\r", tmstr);
+  sprintf(buf, "Quixadhal's time is: %s\n\r", tmstr);
   send_to_char(buf, ch);
   sprintf(buf, "Total number of players: %d\n\r", top_of_p_table + 1);
   send_to_char(buf, ch);

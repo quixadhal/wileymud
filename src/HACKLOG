@@ -3,3 +3,9 @@
 	Moved the lib directory back a level and changed modify.c to
 	use a define instead of a hardcoded filename.
   1743	Improper number of arguments to bind() in sign.c.
+950528	Quixadhal.
+  1625	Ummmmmm... Huh huh huh.... Caffeine fit!  All records lost!
+	Sorry, I got too busy hacking to pay attention... oh well....
+	Most changes were done in interpreter.c, and had to do with
+	the password system and signal handling.
+	Reconnecting needs to be fixed when NOT using valid passwords.

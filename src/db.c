@@ -208,7 +208,7 @@ boot_db(void)
   file_to_string(WIZLIST_FILE, wizlist);
   file_to_string(WMOTD_FILE, wmotd);
 
-  log(" - Opening:\n\t\t- mobile\n\t\t- object\n\t\t- help files");
+  log(" - Booting:\n\t\t- mobile\n\t\t- object\n\t\t- help files");
   if (!(mob_f = fopen(MOB_FILE, "r"))) {
     perror("boot mobiles");
     exit(0);
@@ -222,50 +222,39 @@ boot_db(void)
   else
     help_index = build_help_index(help_fl, &top_of_helpt);
 
-  log("Loading zone table.");
+  log(" - Loading:\n\t\t- zone table\n\t\t- rooms");
   boot_zones();
-
-  log("Loading rooms.");
   boot_world();
 
-  log("Generating index table for mobiles.");
+  log(" - Generating:\n\t\t- index table for mobiles\n\t\t- index table for objects");
   mob_index = generate_indices(mob_f, &top_of_mobt);
-
-  log("Generating index table for objects.");
   obj_index = generate_indices(obj_f, &top_of_objt);
 
-  log("Renumbering zone table.");
+  log(" - Renumbering zone table.");
   renum_zone_table();
 
-#if 1
+#if 0
   log("Generating player index.");
   build_player_index();
 #endif
 
-  log("Loading fight messages.");
+  log(" - Loading:\n\t\t- fight messages\n\t\t- social messages\n\t\t- pose messages");
   load_messages();
-
-  log("Loading social messages.");
   boot_social_messages();
-
-  log("Loading pose messages.");
   boot_pose_messages();
 
-  log("Assigning function pointers:");
+  log(" - Assigning function pointers:\n\t\t- mobiles\n\t\t- objects\n\t\t- rooms\n\t\t- commands\n\t\t- spells");
   if (!no_specials) {
-    log("   Mobiles.");
     assign_mobiles();
-    log("   Objects.");
     assign_objects();
-    log("   Room.");
     assign_rooms();
   }
-  log("   Commands.");
   assign_command_pointers();
-  log("   Spells.");
   assign_spell_pointers();
 
+  log(" - Performing boot-time reset of:");
   for (i = 0; i <= top_of_zone_table; i++) {
+    char ack[80];
     char                            *s;
     int                              d,
                                      e;
@@ -273,7 +262,8 @@ boot_db(void)
     s = zone_table[i].name;
     d = (i ? (zone_table[i - 1].top + 1) : 0);
     e = zone_table[i].top;
-    fprintf(stderr, "Performing boot-time reset of %s (rooms %d-%d).\n", s, d, e);
+    sprintf(ack, "\n\t\t- %s (rooms %d-%d).", s, d, e);
+    log(ack);
     reset_zone(i);
   }
   reset_q.head = reset_q.tail = 0;
@@ -1494,7 +1484,7 @@ load_char(char *name, struct char_file_u *char_element)
   for (; *t_ptr != '\0'; t_ptr++)
     *t_ptr = LOWER(*t_ptr);
 
-  sprintf(buf, "ply/%s.p", tname);
+  sprintf(buf, "ply/%c/%s.p", tname[0], tname);
   if (!(fl = fopen(buf, "r+b")))
     return (-1);
 
@@ -1516,6 +1506,8 @@ store_to_char(struct char_file_u *st, struct char_data *ch)
 {
   int                              i;
   long                             t;
+
+  strcpy(ch->desc->pwd, st->pwd);
 
   GET_SEX(ch) = st->sex;
   ch->player.class = st->class;
@@ -1803,7 +1795,7 @@ save_char(struct char_data *ch, sh_int load_room)
   for (; *t_ptr != '\0'; t_ptr++)
     *t_ptr = LOWER(*t_ptr);
 
-  sprintf(buf, "ply/%s.p", name);
+  sprintf(buf, "ply/%c/%s.p", name[0], name);
   if (!(fl = fopen(buf, "w+b"))) {
     perror("save char");
     exit(1);
@@ -2133,8 +2125,9 @@ init_char(struct char_data *ch)
    * *** if this is our first player --- he be God *** 
    */
 
+  ch->player.name[0]= toupper(ch->player.name[0]);
   if (!strcmp(GET_NAME(ch), "Quixadhal")) {
-    GET_EXP(ch) = 24000000;
+    GET_EXP(ch) = 30000000;
     GET_LEVEL(ch, 0) = IMPLEMENTOR;
     GET_LEVEL(ch, 1) = IMPLEMENTOR;
     GET_LEVEL(ch, 2) = IMPLEMENTOR;

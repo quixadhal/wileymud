@@ -10,6 +10,7 @@
 #include <arpa/telnet.h>
 #include "structs.h"
 #include "comm.h"
+#include "version.h"
 #include "interpreter.h"
 #include "db.h"
 #include "utils.h"
@@ -59,6 +60,7 @@ void                             init_char(struct char_data *ch);
 void                             store_to_char(struct char_file_u *st, struct char_data *ch);
 int                              create_entry(char *name);
 
+void PutPasswd(char *who, char *pwd, char *host);
 int                              GetPasswd(char *tmp_name, char *pwd);
 int                              GetPlayerFile(char *tmp_name, struct char_data *ch);
 
@@ -185,79 +187,25 @@ void                             do_peer(struct char_data *ch, char *argument, i
 void                             do_wizhelp(struct char_data *ch, char *argument, int cmd);
 void                             do_credits(struct char_data *ch, char *argument, int cmd);
 void                             do_compact(struct char_data *ch, char *argument, int cmd);
-void                             do_wimp(struct char_data *ch, char *argument, int cmd);	/*
-
-												 * jdb -8-16 
-												 */
-void                             do_commune(struct char_data *ch, char *argument, int cmd);	/*
-
-												 * jdb - 9-1 
-												 */
-void                             do_nohassle(struct char_data *ch, char *argument, int cmd);	/*
-
-												 * jdb 9-6 
-												 */
-void                             do_system(struct char_data *ch, char *argument, int cmd);	/*
-
-												 * jdb 9-16 
-												 */
-void                             do_pull(struct char_data *ch, char *argument, int cmd);	/*
-
-												 * jdb 9-16 
-												 */
-void                             do_stealth(struct char_data *ch, char *argument, int cmd);	/*
-
-												 * jdb 9-17 
-												 */
-void                             do_cust(struct char_data *ch, char *arg, int cmd);	/*
-
-											 * jdb 9-29 
-											 */
-void                             do_set(struct char_data *ch, char *arg, int cmd);	/*
-
-											 * jdb 9-29 
-											 */
-void                             do_rsave(struct char_data *ch, char *arg, int cmd);	/*
-
-											 * jdb 10-5 
-											 */
-void                             do_rload(struct char_data *ch, char *arg, int cmd);	/*
-
-											 * jdb 10-5 
-											 */
-void                             do_wizlock(struct char_data *ch, char *arg, int cmd);	/*
-
-											 * jdb 10-15 
-											 */
-void                             do_highfive(struct char_data *ch, char *arg, int cmd);		/*
-
-												 * jdb 10-30 
-												 */
-void                             do_title(struct char_data *ch, char *arg, int cmd);	/*
-
-											 * jdb 11-3 
-											 */
+void                             do_wimp(struct char_data *ch, char *argument, int cmd);	/* * jdb -8-16 */
+void                             do_commune(struct char_data *ch, char *argument, int cmd);	/* * jdb - 9-1 */
+void                             do_nohassle(struct char_data *ch, char *argument, int cmd);	/* * jdb 9-6 */
+void                             do_system(struct char_data *ch, char *argument, int cmd);	/* * jdb 9-16 */
+void                             do_pull(struct char_data *ch, char *argument, int cmd);	/* * jdb 9-16 */
+void                             do_stealth(struct char_data *ch, char *argument, int cmd);	/* * jdb 9-17 */
+void                             do_cust(struct char_data *ch, char *arg, int cmd);	/* * jdb 9-29 */
+void                             do_set(struct char_data *ch, char *arg, int cmd);	/* * jdb 9-29 */
+void                             do_rsave(struct char_data *ch, char *arg, int cmd);	/* * jdb 10-5 */
+void                             do_rload(struct char_data *ch, char *arg, int cmd);	/* * jdb 10-5 */
+void                             do_wizlock(struct char_data *ch, char *arg, int cmd);	/* * jdb 10-15 */
+void                             do_highfive(struct char_data *ch, char *arg, int cmd);		/* * jdb 10-30 */
+void                             do_title(struct char_data *ch, char *arg, int cmd);	/* * jdb 11-3 */
 void                             do_pretitle(struct char_data *ch, char *arg, int cmd);
-void                             do_uptime(struct char_data *ch, char *arg, int cmd);	/*
-
-											 * jdb 12-3 
-											 */
-void                             do_instazone(struct char_data *ch, char *arg, int cmd);	/*
-
-												 * jdb 12-3 
-												 */
-void                             do_disarm(struct char_data *ch, char *arg, int cmd);	/*
-
-											 * jdb 12-3 
-											 */
-void                             do_junk(struct char_data *ch, char *arg, int cmd);	/*
-
-											 * jdb 12-17 
-											 */
-void                             do_gain(struct char_data *ch, char *arg, int cmd);	/*
-
-											 * jdb 1-19 
-											 */
+void                             do_uptime(struct char_data *ch, char *arg, int cmd);	/* * jdb 12-3 */
+void                             do_instazone(struct char_data *ch, char *arg, int cmd);	/* * jdb 12-3 */
+void                             do_disarm(struct char_data *ch, char *arg, int cmd);	/* * jdb 12-3 */
+void                             do_junk(struct char_data *ch, char *arg, int cmd);	/* * jdb 12-17 */
+void                             do_gain(struct char_data *ch, char *arg, int cmd);	/* * jdb 1-19 */
 void                             do_track(struct char_data *ch, char *arg, int cmd);
 void                             do_swat(struct char_data *ch, char *arg, int cmd);
 void                             do_world(struct char_data *ch, char *arg, int cmd);
@@ -278,9 +226,7 @@ void                             do_scribe(struct char_data *ch, char *arg, int 
 
 char                            *command[] =
 {
-  "north",			/*
-				 * 1 
-				 */
+  "north",			/* 1 */
   "east",
   "south",
   "west",
@@ -1479,6 +1425,7 @@ nanny(struct descriptor_data *d, char *arg)
   char                             tmp_name[20];
   struct char_file_u               tmp_store;
   struct char_data                *tmp_ch;
+  struct char_data                 tmp_ch2;
   struct descriptor_data          *k;
   extern struct descriptor_data   *descriptor_list;
   extern int                       WizLock;
@@ -1536,22 +1483,104 @@ nanny(struct descriptor_data *d, char *arg)
 	if (GetPasswd(tmp_name, d->pwd)) {
 	  SEND_TO_Q("Password: ", d);
 	  write(d->descriptor, echo_off, 4);
-	  STATE(d) = CON_PWDNRM;
 	  strcpy(d->usr_name, tmp_name);
-	}
-#if 0
-	if ((player_i = load_char(tmp_name, &tmp_store)) > -1) {
-	  store_to_char(&tmp_store, d->character);
-	  strcpy(d->pwd, tmp_store.pwd);
-	  d->pos = player_table[player_i].nr;
-	  SEND_TO_Q("Password: ", d);
-	  write(d->descriptor, echo_off, 4);
 	  STATE(d) = CON_PWDNRM;
-	}
-#endif
+          log("Password entry found.");
+	} else if(!strcmp(d->pwd, "NOT USED")||!strcmp(d->pwd, "IS VALID")) {
+          int escape_flag= 0;
+          log("Password file not used...");
+	  strcpy(d->usr_name, tmp_name);
+	  for (tmp_ch = character_list; tmp_ch; tmp_ch = tmp_ch->next) {
+	    if ((!IS_NPC(tmp_ch) && !tmp_ch->desc &&
+                 (!str_cmp(d->usr_name), GET_NAME(tmp_ch))) ||
+	        (IS_NPC(tmp_ch) && tmp_ch->orig &&
+	 	 !str_cmp(d->usr_name, GET_NAME(tmp_ch->orig))
+	        )) {
+/*
+	      if (GetPlayerFile(d->usr_name, &tmp_ch2) != 0) {
+                strcpy(d->pwd, tmp_ch2.pwd);
+	        SEND_TO_Q("Password: ", d);
+	        write(d->descriptor, echo_off, 4);
+	        STATE(d) = CON_PWDNRM;
+                log("Attempting reconnection.");
+                escape_flag= 1;
+              } else {
+                SEND_TO_Q("Cannot reconnect somehow... weird.\n\r",d);
+                SEND_TO_Q("Name: ",d);
+                return;
+              }
+*/
+	        SEND_TO_Q("Password: ", d);
+	        write(d->descriptor, echo_off, 4);
+	        STATE(d) = CON_PWDNRM;
+                log("Attempting reconnection.");
+                escape_flag= 1;
+            }
+          }
+          if(escape_flag) break;
+	  GET_NAME(d->character) = (char *)strdup(d->usr_name);
+	  if (GetPlayerFile(d->usr_name, d->character) != 0) {
+	    SEND_TO_Q("Password: ", d);
+	    write(d->descriptor, echo_off, 4);
+	    STATE(d) = CON_PWDNRM;
+            log("Player file found.");
+	  } else {
+            register int ack, blah;
+            char ack_name[80];
+            char pfft_name[80];
+            char *pfft;
+            extern int top_of_mobt, top_of_objt;
 
-	else {
-	  sprintf(buf, "Please email to wiley@wiley.cs.wmich.edu for information on creation\n\r");
+            blah= 0;
+            strcpy(ack_name, tmp_name);
+            for(ack= 0; ack < top_of_mobt; ack++) {
+              strcpy(pfft_name, mob_index[ack].name);
+              if(!(pfft= (char *)strtok(pfft_name, " ")))
+                continue;
+              if(!strcasecmp(pfft, ack_name)) {
+                blah= 1;
+                break;
+              }
+              while(pfft= (char *)strtok(NULL, " ")) {
+                if(!strcasecmp(pfft, ack_name)) {
+                  blah= 1;
+                  break;
+                }
+              }
+              if(blah) break;
+            }
+#ifdef ANAL_MODE
+            for(ack= 0; ack < top_of_objt; ack++) {
+              strcpy(pfft_name, obj_index[ack].name);
+              if(!(pfft= (char *)strtok(pfft_name, " ")))
+                continue;
+              if(!strcasecmp(pfft, ack_name)) {
+                blah= 1;
+                break;
+              }
+              while(pfft= (char *)strtok(NULL, " ")) {
+                if(!strcasecmp(pfft, ack_name)) {
+                  blah= 1;
+                  break;
+                }
+              }
+              if(blah) break;
+            }
+#endif
+            if(blah) {
+              SEND_TO_Q("Sorry, that name is already used.\n\r",d);
+              SEND_TO_Q("Name: ",d);
+              return;
+            } else {
+              SEND_TO_Q("New Password: ", d);
+	      write(d->descriptor, echo_off, 4);
+	      strcpy(d->usr_name, tmp_name);
+	      STATE(d) = CON_PWDGET;
+              log("New player!");
+            }
+          }
+        } else {
+	  sprintf(buf, "Please email mud@yakko.cs.wmich.edu for character creation\n\r");
 	  SEND_TO_Q(buf, d);
 	  STATE(d) = CON_WIZLOCK;
 	}
@@ -1571,10 +1600,16 @@ nanny(struct descriptor_data *d, char *arg)
 	  write(d->descriptor, echo_off, 4);
 	  return;
 	}
-	for (tmp_ch = character_list; tmp_ch; tmp_ch = tmp_ch->next)
+	for (tmp_ch = character_list; tmp_ch; tmp_ch = tmp_ch->next) {
 	  if (
-	       ((!str_cmp(d->usr_name), GET_NAME(tmp_ch)) &&
-		!tmp_ch->desc && !IS_NPC(tmp_ch)) ||
+/* Doh!
+ * If it is not a player, it will not have the player.name structure and
+ * will SEGV before it checks IS_NPC().... please remember left-to-right.
+ *	       ((!str_cmp(d->usr_name), GET_NAME(tmp_ch)) &&
+ *		!tmp_ch->desc && !IS_NPC(tmp_ch)) ||
+ */
+ 	       (!IS_NPC(tmp_ch) && !tmp_ch->desc &&
+                (!str_cmp(d->usr_name), GET_NAME(tmp_ch))) ||
 	       (IS_NPC(tmp_ch) && tmp_ch->orig &&
 		!str_cmp(d->usr_name, GET_NAME(tmp_ch->orig))
 	       )) {
@@ -1603,6 +1638,7 @@ nanny(struct descriptor_data *d, char *arg)
 	    log(buf);
 	    return;
 	  }
+        }
 	/*
 	 * Get the player record now.... 
 	 */
@@ -1616,22 +1652,50 @@ nanny(struct descriptor_data *d, char *arg)
 	    SEND_TO_Q(wmotd, d);
 	  SEND_TO_Q("\n\r\n*** Press Return: ", d);
 	  STATE(d) = CON_RMOTD;
-	} else
-	  SEND_TO_Q("Choose A Race:\n\r", d);
-	SEND_TO_Q("G) Gnome\n\rF) Halfling\n\rD) Dwarf\n\rE) Elf\n\rH) Human\n\r", d);
-	SEND_TO_Q("For help type '?'. \n\r Race:  ", d);
-	STATE(d) = CON_QRACE;
+	} else {
+          SEND_TO_Q(RACEMENU, d);
+	  STATE(d) = CON_QRACE;
+        }
       }
     }
     break;
 
+  case CON_PWDGET:
+    for (; isspace(*arg); arg++);
+    if (!*arg || strlen(arg) > 10) {
+      write(d->descriptor, echo_on, 6);
+      SEND_TO_Q("Illegal password.\n\r", d);
+      SEND_TO_Q("Password: ", d);
+      write(d->descriptor, echo_off, 4);
+      return;
+    }
+    strncpy(d->pwd, arg, 10);
+    *(d->pwd + 10) = '\0';
+    write(d->descriptor, echo_on, 6);
+    SEND_TO_Q("Please retype password: ", d);
+    STATE(d) = CON_PWDCNF;
+    write(d->descriptor, echo_off, 4);
+    break;
+  case CON_PWDCNF:
+    for (; isspace(*arg); arg++);
+    if (strncmp(arg, d->pwd, 10)) {
+      write(d->descriptor, echo_on, 6);
+      SEND_TO_Q("Passwords don't match.\n\r", d);
+      SEND_TO_Q("Retype password: ", d);
+      write(d->descriptor, echo_off, 4);
+      STATE(d) = CON_PWDGET;
+      return;
+    }
+    write(d->descriptor, echo_on, 6);
+    PutPasswd(d->usr_name, d->pwd, d->host);
+    SEND_TO_Q(RACEMENU, d);
+    STATE(d) = CON_QRACE;
+    break;
   case CON_QRACE:
     {
       for (; isspace(*arg); arg++);
       if (!*arg) {
-	SEND_TO_Q("Choose A Race:\n\r", d);
-	SEND_TO_Q("G) Gnome\n\rF) Halfling\n\rD) Dwarf\n\rE) Elf\n\rH) Human\n\r", d);
-	SEND_TO_Q("For help type '?'. \n\r Race:  ", d);
+        SEND_TO_Q(RACEMENU, d);
 	STATE(d) = CON_QRACE;
       } else {
 	switch (*arg) {
@@ -1639,7 +1703,7 @@ nanny(struct descriptor_data *d, char *arg)
 	case 'D':
 	  {
 	    GET_RACE(d->character) = RACE_DWARF;
-	    SEND_TO_Q("What is your sex (M/F) ? ", d);
+	    SEND_TO_Q(SEXMENU, d);
 	    STATE(d) = CON_QSEX;
 	  }
 	  break;
@@ -1648,7 +1712,7 @@ nanny(struct descriptor_data *d, char *arg)
 	case 'E':
 	  {
 	    GET_RACE(d->character) = RACE_ELVEN;
-	    SEND_TO_Q("What is your sex (M/F) ? ", d);
+	    SEND_TO_Q(SEXMENU, d);
 	    STATE(d) = CON_QSEX;
 	  }
 	  break;
@@ -1657,7 +1721,7 @@ nanny(struct descriptor_data *d, char *arg)
 	case 'g':
 	  {
 	    GET_RACE(d->character) = RACE_GNOME;
-	    SEND_TO_Q("What is your sex (M/F) ? ", d);
+	    SEND_TO_Q(SEXMENU, d);
 	    STATE(d) = CON_QSEX;
 	  }
 	  break;
@@ -1666,7 +1730,7 @@ nanny(struct descriptor_data *d, char *arg)
 	case 'F':
 	  {
 	    GET_RACE(d->character) = RACE_HALFLING;
-	    SEND_TO_Q("What is your sex (M/F) ? ", d);
+	    SEND_TO_Q(SEXMENU, d);
 	    STATE(d) = CON_QSEX;
 	  }
 	  break;
@@ -1674,9 +1738,6 @@ nanny(struct descriptor_data *d, char *arg)
 	case '?':
 	  {
 	    SEND_TO_Q(RACEHELP, d);
-	    SEND_TO_Q("Choose A Race:\n\r", d);
-	    SEND_TO_Q("G) Gnome\n\rF) Halfling\n\rD) Dwarf\n\rE) Elf\n\rH) Human\n\r", d);
-	    SEND_TO_Q("For help type '?'. \n\r Race:  ", d);
 	    STATE(d) = CON_QRACE;
 	  }
 	  break;
@@ -1685,7 +1746,7 @@ nanny(struct descriptor_data *d, char *arg)
 	case 'H':
 	  {
 	    GET_RACE(d->character) = RACE_HUMAN;
-	    SEND_TO_Q("What is your sex (M/F) ? ", d);
+	    SEND_TO_Q(SEXMENU, d);
 	    STATE(d) = CON_QSEX;
 	  }
 	  break;
@@ -1811,6 +1872,7 @@ nanny(struct descriptor_data *d, char *arg)
  * break;
  * }
  */
+        case ' ':
 	case '\\':		/*
 				 * ignore these 
 				 */
@@ -1951,6 +2013,15 @@ nanny(struct descriptor_data *d, char *arg)
       SEND_TO_Q(STORY, d);
       STATE(d) = CON_RMOTD;
       break;
+    case '4':
+      SEND_TO_Q("Enter a new password: ", d);
+/*
+ * Insert this line before what you don't want to echo
+ */
+      write(d->descriptor, echo_off, 4);
+
+      STATE(d) = CON_PWDNEW;
+      break;
     case '5':
       {
 	struct descriptor_data          *dd;
@@ -1974,20 +2045,44 @@ nanny(struct descriptor_data *d, char *arg)
 	STATE(d) = CON_RMOTD;
 	break;
       }
-    case '4':
-      SEND_TO_Q("Enter a new password: ", d);
-/*
- * Insert this line before what you don't want to echo
- */
-      write(d->descriptor, echo_off, 4);
-
-      STATE(d) = CON_PWDNEW;
+    case '6':
+      if (IS_IMMORTAL(d->character)) {
+        SEND_TO_Q("\n\rSorry, you are a slave to the source...  There is no escape for you!\n\r", d);
+        SEND_TO_Q(MENU, d);
+        break;
+      }
+      SEND_TO_Q(SUICIDE_MSG, d);
+      STATE(d) = CON_SUICIDE;
       break;
     default:
       SEND_TO_Q("Wrong option.\n\r", d);
       SEND_TO_Q(MENU, d);
       break;
     }
+    break;
+  case CON_SUICIDE:
+    for(; isspace(*arg); arg++);
+    if(!strcmp(arg, "I want to DIE!")) {
+      char name[80], *t_ptr, old[80], bkp[80];
+      strcpy(name, d->usr_name);
+      t_ptr = name;
+      for (; *t_ptr != '\0'; t_ptr++)
+        *t_ptr = LOWER(*t_ptr);
+      sprintf(old, "ply/%c/%s.p", name[0], name);
+      sprintf(bkp, "ply/%c/%s.p-bkp", name[0], name);
+      rename(old, bkp);
+      sprintf(old, "ply/%c/%s.o", name[0], name);
+      sprintf(bkp, "ply/%c/%s.o-bkp", name[0], name);
+      rename(old, bkp);
+      sprintf(old, "-- SUICIDE -- %s is no more!\n", name);
+      log(old);
+      SEND_TO_Q(SUICIDE_DONE, d);
+      STATE(d) = CON_WIZLOCK;
+      break;
+    }
+    SEND_TO_Q("You are SAVED!\n\r", d);
+    SEND_TO_Q(MENU, d);
+    STATE(d) = CON_SLCT;
     break;
   case CON_PWDNEW:
     /*
@@ -2065,6 +2160,22 @@ nanny(struct descriptor_data *d, char *arg)
   }
 }
 
+void
+PutPasswd(char *who, char *pwd, char *host)
+{
+  FILE *pfd;
+  char  buf[256];
+
+  if ((pfd = fopen("etc/passwd.new", "a")) == NULL) {
+    log("Cannot save password data for new user!\n\r");
+  } else {
+    sprintf(buf, "%s %s user@%s\n", who, pwd, host);
+    fprintf(pfd, buf);
+    fclose(pfd);
+    log(buf);
+  }
+}
+
 int 
 GetPasswd(char *who, char *pwd)
 {
@@ -2075,10 +2186,16 @@ GetPasswd(char *who, char *pwd)
   char                            *t_ptr;
   char                             pname[40];
   char                             passwd[40];
+  char                             email[80];
 
-  if ((pwd_fd = fopen("etc/passwd.dk", "r")) == NULL) {
+  if ((pwd_fd = fopen("etc/passwd", "r")) == NULL) {
+/*
     log("No PASSWD File.\n\r");
     exit(0);
+*/
+    strcpy(pwd, "NOT USED");
+    log("Password checking disabled!\n\r");
+    return (0);
   }
   sprintf(buf, "Searching Passwd for %s", who);
   log(buf);
@@ -2089,14 +2206,17 @@ GetPasswd(char *who, char *pwd)
   for (; *t_ptr != '\0'; t_ptr++)
     *t_ptr = LOWER(*t_ptr);
 
-  while (fscanf(pwd_fd, " %s %s\n", pname, passwd) > 1) {
+  while (fscanf(pwd_fd, " %s %s %s\n", pname, passwd, email) > 1) {
     if (!strcmp(tname, pname)) {
       sprintf(buf, "Found %s in Passwd File.", tname);
       log(buf);
-      strcpy(pwd, passwd);
+      if(!strcmp(passwd, "*")) strcpy(pwd, "IS VALID");
+      else strcpy(pwd, passwd);
+      fclose(pwd_fd);
       return (1);
     }
   }
+  fclose(pwd_fd);
   return (0);
 }
 

@@ -51,7 +51,7 @@ add_obj_cost(struct char_data *ch, struct char_data *re,
 
   if (obj) {
     if ((obj->item_number > -1) && (cost->ok)) {
-      temp = (MAX(0, obj->obj_flags.cost_per_day) * 0);		/*
+      temp = (MAX(0, obj->obj_flags.cost_per_day) * 1);		/*
 								 * fix for full price
 								 */
       cost->total_cost += 0;
@@ -216,7 +216,7 @@ load_char_objs(struct char_data *ch)
   t_ptr = name;
   for (; *t_ptr != '\0'; t_ptr++)
     *t_ptr = LOWER(*t_ptr);
-  sprintf(path, "ply/%s.o", name);
+  sprintf(path, "ply/%c/%s.o", name[0], name);
 
   if (!(fl = fopen(path, "r+b"))) {
     log("no .o file for character");
@@ -427,7 +427,7 @@ save_obj(struct char_data *ch, struct obj_cost *cost, int delete)
   for (; *t_ptr != '\0'; t_ptr++)
     *t_ptr = LOWER(*t_ptr);
 
-  sprintf(path, "ply/%s.o", name);
+  sprintf(path, "ply/%c/%s.o", name[0], name);
   if (!(fl = fopen(path, "w+b"))) {
     perror("saving PC's objects");
     exit(1);
@@ -706,7 +706,7 @@ zero_rent(struct char_data *ch)
   t_ptr = name;
   for (; *t_ptr != '\0'; t_ptr++)
     *t_ptr = LOWER(*t_ptr);
-  sprintf(path, "ply/%s.o", name);
+  sprintf(path, "ply/%c/%s.o", name[0], name);
   if (!(fl = fopen(path, "w+b"))) {
     perror("saving PC's objects");
     exit(1);

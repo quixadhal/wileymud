@@ -103,85 +103,85 @@ assign_mobiles(void)
 
   static struct special_proc_entry specials_o[] =
   {
-/*
- * { 1, puff },
- * { 3, RepairGuy },
- * { 1201, magic_user },
- * { 1204, eli_priest },
- * { 1206, RangerGuildMaster },
- * { 1208, RangerGuildMaster },
- * { 1601, RangerGuildMaster },
- * { 3005, receptionist }, 
- * { 3006, NudgeNudge },
- * { 3008, fido },
- * { 3012, cleric },
- * { 3013, magic_user },
- * { 3017, cleric },
- * { 3020, MageGuildMaster }, 
- * { 3021, ClericGuildMaster }, 
- * { 3022, ThiefGuildMaster }, 
- * { 3023, FighterGuildMaster },
- * { 3024, replicant },
- * { 3043, Ned_Nutsmith },
- * { 4006, replicant },
- * { 4622, magic_user },
- * { 4623, magic_user },
- * { 4706, wraith },
- * { 5016, cityguard },
- * { 5017, cityguard },
- * { 5027, MageGuildMaster },
- * { 5030, BreathWeapon },
- * { 5031, ThiefGuildMaster },
- * { 5032, FighterGuildMaster },
- * { 5033, ClericGuildMaster },
- * { 5034, receptionist },
- * { 5052, cityguard },
- * { 5068, cityguard },
- * { 5069, cityguard },
- * { 5078, cleric },
- * { 5079, magic_user },
- * { 5080, cityguard },
- * { 5090, cityguard },
- * { 5091, cityguard },
- * { 5436, MageGuildMaster },
- * { 5437, ClericGuildMaster },
- * { 5438, FighterGuildMaster },
- * { 5439, ThiefGuildMaster },
- * { 5440, RangerGuildMaster },
- * { 6107, FighterGuildMaster },
- * { 6108, ThiefGuildMaster },
- * { 6109, MageGuildMaster },
- * { 6110, ClericGuildMaster },
- * { 6111, magic_user },
- * { 6132, janitor_eats },
- * { 6201, cleric },
- * { 6209, magic_user },
- * { 6408, cleric },
- * { 6525, FighterGuildMaster },
- * { 6526, ClericGuildMaster },
- * { 6527, ThiefGuildMaster },
- * { 6528, MageGuildMaster },
- * { 6529, RangerGuildMaster },
- * { 6910, magic_user }, 
- * { 9000, shadow },
- * { 9002, ghoul },
- * { 9004, wraith },
- * { 9005, wraith },
- * { 10003, cleric },
- * { 10018, receptionist },
- * { 15004, FighterGuildMaster },
- * { 15013, RepairGuy },
- * { 15018, ClericGuildMaster },
- * { 15019, ClericGuildMaster },
- * { 15020, RangerGuildMaster },
- * { 15021, ClericGuildMaster },
- * { 15029, MageGuildMaster },
- * { 15036, ThiefGuildMaster },
- * { 15052, FighterGuildMaster },
- * { 15053, ClericGuildMaster },
- * { 15054, GenericGuildMaster },
- * { 20016, cleric },
- */
+  
+   { 1, puff },
+   { 3, RepairGuy },
+   { 1201, magic_user },
+   { 1204, eli_priest },
+   { 1206, RangerGuildMaster },
+   { 1208, RangerGuildMaster },
+   { 1601, RangerGuildMaster },
+   { 3005, receptionist }, 
+   { 3006, NudgeNudge },
+   { 3008, fido },
+   { 3012, cleric },
+   { 3013, magic_user },
+   { 3017, cleric },
+   { 3020, MageGuildMaster }, 
+   { 3021, ClericGuildMaster }, 
+   { 3022, ThiefGuildMaster }, 
+   { 3023, FighterGuildMaster },
+   { 3024, replicant },
+   { 3043, Ned_Nutsmith },
+   { 4006, replicant },
+   { 4622, magic_user },
+   { 4623, magic_user },
+   { 4706, wraith },
+   { 5016, cityguard },
+   { 5017, cityguard },
+   { 5027, MageGuildMaster },
+   { 5030, BreathWeapon },
+   { 5031, ThiefGuildMaster },
+   { 5032, FighterGuildMaster },
+   { 5033, ClericGuildMaster },
+   { 5034, receptionist },
+   { 5052, cityguard },
+   { 5068, cityguard },
+   { 5069, cityguard },
+   { 5078, cleric },
+   { 5079, magic_user },
+   { 5080, cityguard },
+   { 5090, cityguard },
+   { 5091, cityguard },
+   { 5436, MageGuildMaster },
+   { 5437, ClericGuildMaster },
+   { 5438, FighterGuildMaster },
+   { 5439, ThiefGuildMaster },
+   { 5440, RangerGuildMaster },
+   { 6107, FighterGuildMaster },
+   { 6108, ThiefGuildMaster },
+   { 6109, MageGuildMaster },
+   { 6110, ClericGuildMaster },
+   { 6111, magic_user },
+   { 6132, janitor_eats },
+   { 6201, cleric },
+   { 6209, magic_user },
+   { 6408, cleric },
+   { 6525, FighterGuildMaster },
+   { 6526, ClericGuildMaster },
+   { 6527, ThiefGuildMaster },
+   { 6528, MageGuildMaster },
+   { 6529, RangerGuildMaster },
+   { 6910, magic_user }, 
+   { 9000, shadow },
+   { 9002, ghoul },
+   { 9004, wraith },
+   { 9005, wraith },
+   { 10003, cleric },
+   { 10018, receptionist },
+   { 15004, FighterGuildMaster },
+   { 15013, RepairGuy },
+   { 15018, ClericGuildMaster },
+   { 15019, ClericGuildMaster },
+   { 15020, RangerGuildMaster },
+   { 15021, ClericGuildMaster },
+   { 15029, MageGuildMaster },
+   { 15036, ThiefGuildMaster },
+   { 15052, FighterGuildMaster },
+   { 15053, ClericGuildMaster },
+   { 15054, GenericGuildMaster },
+   { 20016, cleric },
+   
     {-1, NULL},
   };
 
@@ -213,13 +213,11 @@ assign_objects(void)
   int                              board(struct char_data *ch, int cmd, char *arg);
   int                              fountain(struct char_data *ch, int cmd, char *arg);
 
-/*
- * obj_index[real_object(3098)].func = board;
- * obj_index[real_object(3099)].func = board;
- * obj_index[real_object(3)].func = fountain;
- * obj_index[real_object(3005)].func = fountain;
- * obj_index[real_object(5099)].func = board;
- */
+  obj_index[real_object(3098)].func = board;
+  obj_index[real_object(3099)].func = board;
+  obj_index[real_object(3)].func = fountain;
+  obj_index[real_object(3005)].func = fountain;
+  obj_index[real_object(5099)].func = board;
   InitBoards();
 }
 
@@ -240,9 +238,10 @@ assign_rooms(void)
 
   static struct special_proc_entry specials_r[] =
   {
-    {1001, House},		/*
-				 * Cyric's Home 
-				 */
+    {1001, House},		/* * Cyric's Home */
+    {3035, pet_shops},
+    {5029, bank},
+    {5182, pet_shops},
     {-1, NULL},
   };
 

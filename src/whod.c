@@ -8,10 +8,12 @@
 *      Change the following #define-statements to adjust the             *
 *      WHOD to your server.                                              */
 
+#include "version.h"
+
 /*
  * *** The following statement sets the name of the MUD in WHOD      *** 
  */
-#define MUDNAME "WileyIIMUD"
+#define MUDNAME "DeadMUD"
 
 /*
  * *** The following statement indicates the WHOD default mode 
@@ -335,7 +337,7 @@ whod_loop(void)
       }
       LOG(buf);
 
-      sprintf(buf, "\n\r         Welcome to %s\n\r\n\r", MUDNAME);
+      sprintf(buf, VERSION_STR);
       sprintf(buf + strlen(buf), "\n\r***  Active players on %s:\n\r\n\r", MUDNAME);
 
       players = 0;
@@ -375,12 +377,12 @@ whod_loop(void)
       ot = Uptime;
       otmstr = asctime(localtime(&ot));
       *(otmstr + strlen(otmstr) - 1) = '\0';
-      sprintf(buf + strlen(buf), "Wiley start time was: %s\n\r", otmstr);
+      sprintf(buf + strlen(buf), "Dead start time was: %s\n\r", otmstr);
 
       ct = time(0);
       tmstr = asctime(localtime(&ct));
       *(tmstr + strlen(tmstr) - 1) = '\0';
-      sprintf(buf + strlen(buf), "Wiley's time is: %s\n\r", tmstr);
+      sprintf(buf + strlen(buf), "Quixadhal's time is: %s\n\r", tmstr);
 
       WRITE(newdesc, buf);
 

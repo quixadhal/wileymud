@@ -5,9 +5,9 @@
   * ************************************************************************* 
   */
 #ifdef UNIX_COMM
-#define DFLT_PATH "/home/michaels/Src/af_unix.socket"
+#define DFLT_PATH "/mud/af_unix.socket"
 #else
-#define DFLT_PORT 9836
+#define DFLT_PORT 4320
 #endif
 
 void                             send_to_all(char *messg);

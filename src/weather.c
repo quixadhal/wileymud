@@ -321,6 +321,9 @@ reset_time(void)
   char                             buf[80];
   extern unsigned char             moontype;
   long                             beginning_of_time = 650336715;
+/*
+ * When is this?  It might be changed....
+ */
   long                             current_time;
   struct time_info_data            mud_time_passed(time_t t2, time_t t1);
 

@@ -1604,6 +1604,7 @@ struct txt_q {
 #define CON_WIZLOCK 14
 #define CON_QRACE   15
 #define CON_RACPAR  16
+#define CON_SUICIDE 17
 
 struct snoop_data {
   struct char_data                *snooping;

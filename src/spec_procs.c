@@ -653,7 +653,7 @@ dump(struct char_data *ch, int cmd, char *arg)
   }
 }
 
-#ifdef 0
+#ifdef 1
 
 int 
 mayor(struct char_data *ch, int cmd, char *arg)
@@ -806,7 +806,7 @@ find_mobile_here_with_spec_proc(int (*fcn) (), int rnumber)
  * Execute a social command.                                        
  */
 
-#ifdef 0
+#ifdef 1
 
 void 
 exec_social(struct char_data *npc, char *cmd, int next_line,
@@ -970,7 +970,7 @@ snake(struct char_data *ch, int cmd, char *arg)
   return FALSE;
 }
 
-#ifdef 0
+#ifdef 1
 
 int 
 ninja_master(struct char_data *ch, int cmd, char *arg)
@@ -1468,7 +1468,7 @@ ghoul(struct char_data *ch, int cmd, char *arg)
   return FALSE;
 }
 
-#ifdef 0
+#ifdef 1
 
 int 
 WizardGuard(struct char_data *ch, int cmd, char *arg)
@@ -1573,7 +1573,7 @@ shadow(struct char_data *ch, int cmd, char *arg)
   return FALSE;
 }
 
-#ifdef 0
+#ifdef 1
 
 int 
 geyser(struct char_data *ch, int cmd, char *arg)
@@ -2133,7 +2133,7 @@ cleric(struct char_data *ch, int cmd, char *arg)
  * ******************************************************************** 
  */
 
-#ifdef 0
+#ifdef 1
 
 int 
 guild_guard(struct char_data *ch, int cmd, char *arg)
@@ -2331,7 +2331,7 @@ replicant(struct char_data *ch, int cmd, char *arg)
   return FALSE;
 }
 
-#ifdef 0
+#ifdef 1
 
 #define TYT_NONE 0
 #define TYT_CIT  1
@@ -2514,7 +2514,7 @@ janitor_eats(struct char_data *ch, int cmd, char *arg)
   return (FALSE);
 }
 
-#ifdef 0
+#ifdef 1
 
 int 
 tormentor(struct char_data *ch, int cmd, char *arg)
@@ -2543,7 +2543,7 @@ Fighter(struct char_data *ch, int cmd, char *arg)
   return (FALSE);
 }
 
-#ifdef 0
+#ifdef 1
 
 int 
 RustMonster(struct char_data *ch, int cmd, char *arg)
@@ -2846,7 +2846,7 @@ NudgeNudge(struct char_data *ch, int cmd, char *arg)
   }
 }
 
-#ifdef 0
+#ifdef 1
 
 int 
 AGGRESSIVE(struct char_data *ch, int cmd, char *arg)
@@ -2931,7 +2931,7 @@ cityguard(struct char_data *ch, int cmd, char *arg)
   return (FALSE);
 }
 
-#ifdef 0
+#ifdef 1
 
 int 
 WarrenGuard(struct char_data *ch, int cmd, char *arg)
@@ -3340,7 +3340,7 @@ pray_for_items(struct char_data *ch, int cmd, char *arg)
  * ******************************************************************** 
  */
 
-#ifdef 0
+#ifdef 1
 
 #define CHAL_ACT \
 "You are torn out of reality!\n\r\
@@ -3705,7 +3705,7 @@ House(struct char_data *ch, int cmd, char *arg)
   }
 }
 
-#ifdef 0
+#ifdef 1
 
 int 
 paramedics(struct char_data *ch, int cmd, char *arg)

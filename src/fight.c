@@ -512,16 +512,25 @@ raw_kill(struct char_data *ch)
     make_corpse(ch);
     extract_char(ch);
   } else {
-    send_to_char("\nYou have DIED!, but are sent HOME instead.\n", ch);
-    sprintf(buf, "%s disappears in a flash of light!\n", GET_NAME(ch));
+/*
+    act("The spirit of $n flashes away!\n\rA dead body hits the ground and begins to rot.", TRUE, ch, 0, 0, TO_ROOM);
+    act(" +++ You have DIED! +++  Your spirit flees in terror!", FALSE, ch, 0, 0, TO_CHAR);
+*/
+    send_to_char("\nYou have DIED!, your spirit flees in terror!\n\r", ch);
+    sprintf(buf, "The spirit of %s flashes away!\n\rA dead body hits the ground and begins to rot.\n\r", GET_NAME(ch));
     send_to_room(buf, ch->in_room);
+    make_corpse(ch);
     zero_rent(ch);
+/* Does this strip their gold and items?  We shall see.. */
     char_from_room(ch);
     char_to_room(ch, GET_HOME(ch));
     GET_HIT(ch) = 1;
-    GET_POS(ch) = POSITION_STANDING;
+    GET_POS(ch) = POSITION_SLEEPING;
     save_char(ch, NOWHERE);
-    sprintf(buf, "%s appears in a flash of light!\n\r", GET_NAME(ch));
+/*
+    act("A terrified $n appears in a flash of light!", TRUE, ch, 0, 0, TO_ROOM);
+*/
+    sprintf(buf, "A terrified %s appears in a flash of light!\n\r", GET_NAME(ch));
     send_to_room(buf, ch->in_room);
   }
 }
