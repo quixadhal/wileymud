@@ -1,0 +1,86 @@
+               ************* LOG FILE **************
+
+Tue Jun 20 22:49:02 EDT 1995
+  -- Made a backup of all the world files and gzipped them. 
+
+950624	Quixadhal
+  0540	Nice log file!  I'll make a note to actually add things here :)
+950625	Quixadhal
+  0109	Changed protections of active world files to 440.  This means when
+	you edit the file you have to use :w! to write it out (from vi).
+	It adds an extra measure of "Doh!" protection.
+  0345	Added Dirk's fixes to the worldfile.  These include numerous
+	spelling corrections, and the correction of the odd exit mappings
+	in the mansion and in the cemetary near shylar.
+  0346	Applied my own diffs as well, to add in my immortal home.
+	NOTE:  The order of the patches is important... You must apply
+	Fred's patch first, then mine.  If you do it the other way, Fred's
+	will fail.
+  0410	Fixed a typo for #1018 (which was $1018)... oops!
+  0426	Changed all reset times for zones... hopefully this will reduce
+	the number that reset all at the same time.
+	BTW:  This makes the 30-40minute slot pretty cramped!
+  0532	Fixed a few bugs in the world file (damn diku... D4.. not D5!)
+	renamed this file to HACKLOG to make it more evil.
+950626	Quixadhal
+  0320	Added Dirk's room.
+950628  Muidnar
+  2015  Went through by hand on the obj 1 - 5000 and changed prices and checked 
+        objects...
+950701	Quixadhal
+  0337	Moved all backup files to a subdirectory.
+950702	Quixadhal
+  0600	Renamed zones to be more asthetic.
+	Old names (with credits) are kept in ZONE.LIST.  Someday we can put
+	this online somewhere... maybe.
+950703	Quixadhal
+  0600	Unlinked enterance to Serpent's Reach...
+	Room 10079 should have a North link to 15047... it now points
+	to 10079 until we get the zone finished or at least have a few
+	mobs in it!
+950709	Quixadhal
+  0315	Created Xenthia, Lady of the Dead for the zombie master routine.
+	She will be non-agressive near Shylar somewhere, and she will wander
+	to find bodies.
+950709	Quixadhal
+  0900	Moved backup dir out of main lib area... makes for easier backups.
+950710	Quixadhal
+  0047	Added Kevin's non-theme immortal area.  Muidnar can beat the living
+	crap out of him if he cares.... :)
+	Added Xenthia's specials a bit better.
+	Added a very annoying mosquito.
+950729	Quixadhal
+  0700	Added Druegar Berserker axe with special routine.... nasty!
+950828	Quixadhal, of course
+  0600	Finished running the world through ispell.  Also corrected it so
+	that the world builder program will read it... we can now do offline
+	building as if we were online... kindof....  not an lp, but it's a
+	start.  Much better than vi anyways.
+950830	Quixadhal
+  0124	Added faerie village zone.... the rooms are being made.
+950903	Quixadhal
+  2253	Added an evil creature to the world... 3044... argh!
+951004	Dirk
+  0017	Fixed a few spelling mistakes in the mob file (Lovitar mobs)
+951214	Quixadhal
+  0508	Lots of changes happened during the coup... but almost none were
+	logged so oh well.
+	I have added Highlander's drow outpost, minus the two links to the
+	outside world... we'll have to add those tomorrow/today.
+	I also added the first few rooms of the faerie village... yes, you
+	can accidentally teleport in there and never get back out... oops...
+	oh well... hopefully I'll finish it before any newbies find it :)
+951215	Quixadhal
+  0420	Chanced world file to fix Kevin's exits.
+	Also upped prices on gnarled branches.
+951216	Quixadhal
+  1300	Fixed the doors in Kevin's area.
+951219	Quixadhal
+  2134	Selected three hammers for the new earthquake spell.  Made sure they
+	were holdable and wieldable.
+951220	Quixadhal
+  0534	Gave Grimdale the Axe... we'll see.....
+951221	Quixadhal
+  0243	Added in Highlander's new immortal area, complete with a guardian
+	mob and some equipment.
+  0836	Added test creature for my new type C mob.

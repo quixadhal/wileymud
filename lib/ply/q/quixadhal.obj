@@ -1,0 +1,63 @@
+#RENT
+Owner              Quixadhal~
+Gold               100000
+TotalCost          47
+LastUpdate         820124446
+MinimumStay        0
+End
+#EQUIPMENT
+End
+#CARRIED
+#ITEM
+ObjId              1
+ContainedBy        -1
+Name               robe black~
+Description
+A black robe lies here.~
+ShortDescr
+a black robe~
+ActionDescr
+(null)~
+VNum               5910
+EquippedAt         0
+Values             0 0 0 0
+ExtraFlags         0
+Weight             4
+Timer              0
+BitVector          0
+Type               11
+WearFlags          1025
+Cost               56
+CostPerDay         56
+Affect             17 -6
+Affect             0 0
+End
+#ITEM
+ObjId              1
+ContainedBy        -1
+Name               mirror glass~
+Description
+A small, highly polished glass mirror lies here.~
+ShortDescr
+a small mirror~
+ActionDescr
+(null)~
+VNum               1133
+EquippedAt         0
+Values             0 0 0 0
+ExtraFlags         0
+Weight             1
+Timer              0
+BitVector          0
+Type               8
+WearFlags          16385
+Cost               20
+CostPerDay         10
+Affect             0 0
+Affect             0 0
+ExtraDescr         mirror glass small~
+  You jump back in terror as you catch a glimps of some horrible monster!
+Oh, sorry, that was just your reflection.~
+End
+End
+#END_RENT
