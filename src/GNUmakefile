@@ -16,17 +16,15 @@ CC = gcc
 GNUINC = /usr/lib/gcc-lib/i486-linux/2.6.3/include
 #PROF = -pg
 #BUGFLAGS = -DDEBUG_FILE
-#DEBUG = -ggdb3 -Wall
-#DEBUG = -g -Wall $(BUGFLAGS) -DVERBOSE
-#DEBUG = -g -O3 -w $(BUGFLAGS) -DVERBOSE
-#DEBUG = -Wall -Wstrict-prototypes -Wmissing-prototypes
-DEBUG = -w
-OPT = -O3 -fomit-frame-pointer -fstrength-reduce -fexpensive-optimizations -funroll-loops
+#WARN = -Wall -Wstrict-prototypes -Wmissing-prototypes
+WARN = -w
+#DEBUG = -g
+OPT = -O3 -fomit-frame-pointer -fstrength-reduce -fexpensive-optimizations -funroll-loops -m486
 STRIP = -s
 #INCDIR = -I../inc
 
 #CFLAGS = -g -Dsun3 -m68020 -fstrength-reduce -fvolatile 
-CFLAGS = $(DEBUG) $(PROF) $(OPT) $(INCDIR) -pipe
+CFLAGS = $(WARN) $(DEBUG) $(PROF) $(OPT) $(INCDIR) -pipe
 LDFLAGS = $(DEBUG) $(PROF) $(STRIP)
 
 SRC =	act_comm.c act_info.c act_move.c act_obj.c act_off.c \
@@ -35,21 +33,23 @@ SRC =	act_comm.c act_info.c act_move.c act_obj.c act_off.c \
 	hash.c interpreter.c limits.c magic.c magic_utils.c \
 	mob_actions.c modify.c multiclass.c opinion.c reception.c \
 	shop.c signals.c sound.c spec_procs.c spell_parser.c \
-	spells.c trap.c utils.c weather.c whod.c yywrap.c
+	spells.c trap.c utils.c weather.c whod.c events.c
 OBJ =	$(SRC:.c=.o)
 SRC2 =	sign.c
 OBJ2 =	$(SRC2:.c=.o)
+SRC3 =	mkworld.c
+OBJ3 =	$(SRC3:.c=.o)
 HDR =	act_comm.h act_info.h act_move.h act_obj.h act_off.h \
 	act_other.h act_skills.h act_social.h act_wiz.h \
 	board.h bug.h comm.h constants.h db.h fight.h global.h \
 	handler.h hash.h interpreter.h limits.h magic_utils.h \
 	mob_actions.h modify.h multiclass.h myerrors.h opinion.h \
 	reception.h shop.h sound.h spec_procs.h spell_parser.h \
-	spells.h trap.h utils.h weather.h whod.h
+	spells.h trap.h utils.h weather.h whod.h signals.h events.h
 VER =	version.h
 LIB =
 AUX =	GNUmakefile .indent.pro HACKLOG version.proto .version.count \
-	lex.yy.c dbparser.l
+	world.wld
 
 all : wileymud
 
@@ -65,14 +65,19 @@ wileymud : $(OBJ)
 	@echo Heave Ho!  Load the beastie!
 	$(CC) $(LDFLAGS) -o $@ $(OBJ) $(LIB)
 	@echo $(VERSION) >.version.count
-	@ls -l $@*
+	@ls -l $@
 
 sign : $(OBJ2)
 	@echo Make the downtime notice program...
 	$(CC) $(LDFLAGS) -o $@ $(OBJ2) $(LIB)
-	@ls -l $@*
+	@ls -l $@
 
-$(OBJ) $(OBJ2) : %o : %c
+mkworld : $(OBJ3)
+	@echo Make the world editing program...
+	$(CC) $(LDFLAGS) -o $@ $(OBJ3) $(LIB)
+	@ls -l $@
+
+$(OBJ) $(OBJ2) $(OBJ3): %o : %c
 	$(CC) $(CFLAGS) -c $<
 
 lex.yy.c : dbparser.l
@@ -85,14 +90,14 @@ clean :
 
 spotless : clean
 	@echo -n Destroying the world and all those within it...
-	@rm -f wileymud notice
+	@rm -f wileymud notice mkworld
 	@rm -f printout sedscr
 	@rm -f tags refs
 	@echo done!
 
 backup :
 	@echo -n Creating idiot-proof file...
-	@tar -zcf $(TARFILE) $(SRC) $(HDR) $(VER) $(AUX) $(SRC2)
+	@tar -zcf $(TARFILE) $(SRC) $(HDR) $(VER) $(AUX) $(SRC2) $(SRC3)
 	@chmod 640 ../backup*
 	@echo your ass is safe.
 
@@ -124,7 +129,7 @@ act_comm.o: /usr/include/posix_opt.h /usr/include/gnu/types.h
 act_comm.o: /usr/include/confname.h /usr/include/sys/types.h
 act_comm.o: /usr/include/linux/types.h /usr/include/asm/types.h
 act_comm.o: /usr/include/string.h global.h bug.h utils.h comm.h interpreter.h
-act_comm.o: handler.h db.h spells.h act_comm.h
+act_comm.o: handler.h db.h spells.h constants.h act_comm.h
 act_info.o: /usr/include/stdio.h /usr/include/libio.h
 act_info.o: /usr/include/_G_config.h /usr/include/stdlib.h
 act_info.o: /usr/include/features.h /usr/include/sys/cdefs.h
@@ -136,9 +141,9 @@ act_info.o: /usr/include/posix_opt.h /usr/include/gnu/types.h
 act_info.o: /usr/include/confname.h /usr/include/sys/types.h
 act_info.o: /usr/include/linux/types.h /usr/include/asm/types.h
 act_info.o: /usr/include/string.h /usr/include/ctype.h /usr/include/time.h
-act_info.o: global.h bug.h utils.h comm.h interpreter.h handler.h db.h
-act_info.o: spells.h limits.h trap.h hash.h constants.h spell_parser.h
-act_info.o: act_info.h
+act_info.o: global.h bug.h version.h utils.h comm.h interpreter.h handler.h
+act_info.o: db.h spells.h limits.h trap.h hash.h constants.h spell_parser.h
+act_info.o: whod.h act_info.h
 act_move.o: /usr/include/stdio.h /usr/include/libio.h
 act_move.o: /usr/include/_G_config.h /usr/include/stdlib.h
 act_move.o: /usr/include/features.h /usr/include/sys/cdefs.h
@@ -150,7 +155,7 @@ act_move.o: /usr/include/posix_opt.h /usr/include/gnu/types.h
 act_move.o: /usr/include/confname.h /usr/include/sys/types.h
 act_move.o: /usr/include/linux/types.h /usr/include/asm/types.h
 act_move.o: /usr/include/string.h global.h bug.h utils.h comm.h interpreter.h
-act_move.o: handler.h db.h spells.h trap.h constants.h act_move.h
+act_move.o: handler.h db.h spells.h trap.h constants.h whod.h act_move.h
 act_obj.o: /usr/include/stdio.h /usr/include/libio.h /usr/include/_G_config.h
 act_obj.o: /usr/include/stdlib.h /usr/include/features.h
 act_obj.o: /usr/include/sys/cdefs.h
@@ -213,7 +218,7 @@ act_social.o: /usr/include/posix_opt.h /usr/include/gnu/types.h
 act_social.o: /usr/include/confname.h /usr/include/sys/types.h
 act_social.o: /usr/include/linux/types.h /usr/include/asm/types.h
 act_social.o: /usr/include/string.h global.h bug.h utils.h comm.h
-act_social.o: interpreter.h handler.h db.h spells.h act_social.h
+act_social.o: interpreter.h handler.h db.h spells.h multiclass.h act_social.h
 act_wiz.o: /usr/include/stdio.h /usr/include/libio.h /usr/include/_G_config.h
 act_wiz.o: /usr/include/stdlib.h /usr/include/features.h
 act_wiz.o: /usr/include/sys/cdefs.h
@@ -248,7 +253,7 @@ bug.o: /usr/include/gnu/types.h /usr/include/confname.h
 bug.o: /usr/include/sys/types.h /usr/include/linux/types.h
 bug.o: /usr/include/asm/types.h
 bug.o: /usr/lib/gcc-lib/i486-linux/2.6.3/include/stdarg.h /usr/include/time.h
-bug.o: /usr/include/string.h global.h utils.h comm.h bug.h
+bug.o: /usr/include/string.h global.h utils.h comm.h multiclass.h bug.h
 comm.o: /usr/include/errno.h /usr/include/features.h /usr/include/sys/cdefs.h
 comm.o: /usr/include/linux/errno.h /usr/include/stdio.h /usr/include/libio.h
 comm.o: /usr/include/_G_config.h /usr/include/stdlib.h
@@ -270,8 +275,8 @@ comm.o: /usr/include/sys/time.h /usr/include/linux/time.h /usr/include/time.h
 comm.o: /usr/include/fcntl.h /usr/include/linux/fcntl.h /usr/include/signal.h
 comm.o: /usr/include/linux/signal.h /usr/include/sys/un.h
 comm.o: /usr/include/linux/un.h /usr/include/sys/resource.h limits.h
-comm.o: /usr/include/linux/resource.h global.h bug.h utils.h comm.h
-comm.o: interpreter.h handler.h db.h
+comm.o: /usr/include/linux/resource.h global.h bug.h utils.h interpreter.h
+comm.o: handler.h db.h comm.h
 constants.o: /usr/include/stdlib.h /usr/include/features.h
 constants.o: /usr/include/sys/cdefs.h
 constants.o: /usr/lib/gcc-lib/i486-linux/2.6.3/include/stddef.h
@@ -292,7 +297,7 @@ db.o: /usr/include/confname.h /usr/include/sys/types.h
 db.o: /usr/include/linux/types.h /usr/include/asm/types.h
 db.o: /usr/include/string.h /usr/include/ctype.h /usr/include/time.h global.h
 db.o: bug.h utils.h comm.h handler.h limits.h opinion.h hash.h constants.h
-db.o: spells.h spell_parser.h myerrors.h db.h lex.yy.c
+db.o: spells.h spell_parser.h myerrors.h db.h
 fight.o: /usr/include/stdio.h /usr/include/libio.h /usr/include/_G_config.h
 fight.o: /usr/include/stdlib.h /usr/include/features.h
 fight.o: /usr/include/sys/cdefs.h
@@ -327,7 +332,8 @@ hash.o: /usr/lib/gcc-lib/i486-linux/2.6.3/include/float.h
 hash.o: /usr/include/alloca.h /usr/include/unistd.h /usr/include/posix_opt.h
 hash.o: /usr/include/gnu/types.h /usr/include/confname.h
 hash.o: /usr/include/sys/types.h /usr/include/linux/types.h
-hash.o: /usr/include/asm/types.h global.h bug.h comm.h hash.h
+hash.o: /usr/include/asm/types.h /usr/include/string.h global.h bug.h comm.h
+hash.o: hash.h
 interpreter.o: /usr/include/stdio.h /usr/include/libio.h
 interpreter.o: /usr/include/_G_config.h /usr/include/stdlib.h
 interpreter.o: /usr/include/features.h /usr/include/sys/cdefs.h
@@ -343,7 +349,7 @@ interpreter.o: /usr/include/arpa/telnet.h global.h bug.h comm.h version.h
 interpreter.o: db.h utils.h limits.h constants.h act_comm.h act_info.h
 interpreter.o: act_move.h act_obj.h act_off.h act_other.h act_skills.h
 interpreter.o: act_social.h act_wiz.h spells.h spell_parser.h modify.h whod.h
-interpreter.o: interpreter.h
+interpreter.o: events.h interpreter.h
 limits.o: /usr/include/stdio.h /usr/include/libio.h /usr/include/_G_config.h
 limits.o: /usr/include/stdlib.h /usr/include/features.h
 limits.o: /usr/include/sys/cdefs.h
@@ -379,7 +385,8 @@ magic_utils.o: /usr/include/posix_opt.h /usr/include/gnu/types.h
 magic_utils.o: /usr/include/confname.h /usr/include/sys/types.h
 magic_utils.o: /usr/include/linux/types.h /usr/include/asm/types.h
 magic_utils.o: /usr/include/assert.h global.h bug.h utils.h comm.h db.h
-magic_utils.o: spells.h handler.h limits.h magic_utils.h
+magic_utils.o: spells.h handler.h limits.h fight.h spell_parser.h
+magic_utils.o: multiclass.h magic_utils.h
 mob_actions.o: /usr/include/stdio.h /usr/include/libio.h
 mob_actions.o: /usr/include/_G_config.h /usr/include/stdlib.h
 mob_actions.o: /usr/include/features.h /usr/include/sys/cdefs.h
@@ -465,7 +472,7 @@ signals.o: /usr/include/confname.h /usr/include/sys/types.h
 signals.o: /usr/include/linux/types.h /usr/include/asm/types.h
 signals.o: /usr/include/signal.h /usr/include/linux/signal.h
 signals.o: /usr/include/sys/time.h /usr/include/linux/time.h
-signals.o: /usr/include/time.h global.h bug.h utils.h
+signals.o: /usr/include/time.h global.h bug.h utils.h comm.h whod.h signals.h
 sound.o: /usr/include/stdio.h /usr/include/libio.h /usr/include/_G_config.h
 sound.o: /usr/include/stdlib.h /usr/include/features.h
 sound.o: /usr/include/sys/cdefs.h
@@ -475,8 +482,8 @@ sound.o: /usr/lib/gcc-lib/i486-linux/2.6.3/include/float.h
 sound.o: /usr/include/alloca.h /usr/include/unistd.h /usr/include/posix_opt.h
 sound.o: /usr/include/gnu/types.h /usr/include/confname.h
 sound.o: /usr/include/sys/types.h /usr/include/linux/types.h
-sound.o: /usr/include/asm/types.h /usr/include/string.h global.h bug.h
-sound.o: utils.h comm.h interpreter.h handler.h db.h spells.h trap.h sound.h
+sound.o: /usr/include/asm/types.h /usr/include/string.h global.h bug.h comm.h
+sound.o: interpreter.h handler.h db.h spells.h trap.h utils.h sound.h
 spec_procs.o: /usr/include/stdio.h /usr/include/libio.h
 spec_procs.o: /usr/include/_G_config.h /usr/include/stdlib.h
 spec_procs.o: /usr/include/features.h /usr/include/sys/cdefs.h
@@ -527,7 +534,8 @@ trap.o: /usr/include/alloca.h /usr/include/unistd.h /usr/include/posix_opt.h
 trap.o: /usr/include/gnu/types.h /usr/include/confname.h
 trap.o: /usr/include/sys/types.h /usr/include/linux/types.h
 trap.o: /usr/include/asm/types.h global.h bug.h utils.h spells.h comm.h db.h
-trap.o: opinion.h constants.h trap.h
+trap.o: opinion.h constants.h fight.h reception.h spell_parser.h multiclass.h
+trap.o: handler.h act_info.h trap.h
 utils.o: /usr/include/stdio.h /usr/include/libio.h /usr/include/_G_config.h
 utils.o: /usr/include/stdlib.h /usr/include/features.h
 utils.o: /usr/include/sys/cdefs.h
@@ -569,3 +577,16 @@ whod.o: /usr/include/linux/in.h /usr/include/asm/byteorder.h
 whod.o: /usr/include/sys/time.h /usr/include/linux/time.h /usr/include/time.h
 whod.o: /usr/include/signal.h /usr/include/linux/signal.h version.h global.h
 whod.o: bug.h db.h comm.h utils.h whod.h
+events.o: /usr/include/stdio.h /usr/include/libio.h /usr/include/_G_config.h
+events.o: /usr/include/stdlib.h /usr/include/features.h
+events.o: /usr/include/sys/cdefs.h
+events.o: /usr/lib/gcc-lib/i486-linux/2.6.3/include/stddef.h
+events.o: /usr/include/errno.h /usr/include/linux/errno.h
+events.o: /usr/lib/gcc-lib/i486-linux/2.6.3/include/float.h
+events.o: /usr/include/alloca.h /usr/include/unistd.h
+events.o: /usr/include/posix_opt.h /usr/include/gnu/types.h
+events.o: /usr/include/confname.h /usr/include/sys/types.h
+events.o: /usr/include/linux/types.h /usr/include/asm/types.h
+events.o: /usr/include/string.h /usr/include/ctype.h global.h bug.h utils.h
+events.o: comm.h interpreter.h handler.h db.h spells.h limits.h constants.h
+events.o: spell_parser.h fight.h spec_procs.h events.h

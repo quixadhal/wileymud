@@ -1,26 +1,29 @@
 #ifndef _WHOD_H
 #define _WHOD_H
 
-#define MUDNAME "DeadMUD"
-#define START_TIME "Dead start time was: %s\n\r"
+#define MUDNAME "WileyMUD"
+#define START_TIME "Wiley start time was: %s\n\r"
 #define GAME_TIME "Quixadhal's time is: %s\n\r"
 
 /*
  * *** The following statement indicates the WHOD default mode 
  * Modes can be:
  * SHOW_NAME
- * SHOW_LEVEL
  * SHOW_TITLE
- * SHOW_CLASS
+ * SHOW_SITE
  * SHOW_ON
+ * SHOW_OFF
+ * SHOW_LEVEL
+ * SHOW_IDLE
+ * SHOW_ROOM
  */
 
-#define DEFAULT_MODE ( SHOW_NAME | SHOW_ON )
+#define DEFAULT_MODE ( SHOW_NAME | SHOW_TITLE | SHOW_IDLE | SHOW_ROOM | SHOW_ON )
 
 #define INVIS_LEVEL(ch) ((ch)->invis_level)
 
 #define WIZ_MIN_LEVEL 50
-#define WIZ_MAX_LEVEL 59
+#define WIZ_MAX_LEVEL 60
 
 #define LOG(msg) log(msg)
 #define WHOD_DELAY_TIME 3
@@ -38,6 +41,9 @@
 #define SHOW_SITE	0x00000004
 #define SHOW_ON		0x00000008
 #define SHOW_OFF	0x00000010
+#define SHOW_LEVEL	0x00000020
+#define SHOW_IDLE	0x00000040
+#define SHOW_ROOM	0x00000080
 
 #define WRITE(d,msg) if((write((d),(msg),strlen(msg)))<0){\
                             perror("whod.c - write");}
@@ -45,7 +51,7 @@
 #ifndef _WHOD_C
 /* static long disconnect_time; */
 /* static int s; */
-/* static int whod_mode = DEFAULT_MODE; */
+extern int whod_mode;
 /* static int state; */
 /* static int whod_port; */
 #endif

@@ -3,11 +3,11 @@
 
 #define bug(Str...) \
         abug(__FILE__, __FUNCTION__, __LINE__, \
-	     GREATER_GOD, NULL, NULL, NULL, Str ##)
+	     GREATER_GOD, 0, NULL, NULL, Str ##)
 #define log(Str...) \
-        abug(NULL, NULL, 0, GREATER_GOD, NULL, NULL, NULL, Str ##)
+        abug(NULL, NULL, 0, GREATER_GOD, 0, NULL, NULL, Str ##)
 #define dlog(Str...) \
-	abug(NULL, NULL, 0, GREATER_GOD, NULL, NULL, NULL, Str ##)
+	abug(NULL, NULL, 0, GREATER_GOD, 0, NULL, NULL, Str ##)
 
 void abug(char *File, char *Func, int Line, UINT Level, UINT Type, char *BugFile, struct char_data *ch, char *Str,...);
 

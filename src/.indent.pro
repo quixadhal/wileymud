@@ -5,6 +5,14 @@
 -ncs -nbs -nlps
 -lp
 -sob
+-T UBYTE
+-T BYTE
+-T USHORT
+-T SHORT
+-T UINT
+-T INT
+-T ULONG
+-T LONG
 -T sbyte
 -T ubyte
 -T sh_int

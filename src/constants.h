@@ -45,12 +45,17 @@
 #define RACE_PLANT    37
 
 #ifndef _CONSTANTS_C
+extern const char *class_name[];
+extern const char *exp_needed_text[];
+extern const char *percent_hit[];
+extern const char *percent_tired[];
 extern const char *spell_wear_off_msg[];
 extern const char *spell_wear_off_soon_msg[];
 extern const int rev_dir[];
 extern const int TrapDir[];
 extern const int movement_loss[];
 extern const char *dirs[];
+extern const char *dir_from[];
 extern const char *ItemDamType[];
 extern const char *weekdays[7];
 extern const char *month_name[17];
@@ -63,7 +68,7 @@ extern int ItemSaveThrows[22][5];
 extern const int drink_aff[][3];
 extern const char *color_liquid[];
 extern const char *fullness[];
-extern const struct title_type titles[6][ABS_MAX_LVL];
+extern const struct title_type titles[6][ABS_MAX_LVL + 1];
 extern const char *RaceName[];
 extern const char *item_types[];
 extern const char *wear_bits[];
@@ -84,11 +89,12 @@ extern const char *connected_types[];
 extern const int thaco[6][ABS_MAX_LVL];
 extern const struct str_app_type str_app[31];
 extern const struct dex_skill_type dex_app_skill[26];
-extern const byte backstab_mult[ABS_MAX_LVL];
+extern const BYTE backstab_mult[ABS_MAX_LVL];
 extern struct dex_app_type dex_app[26];
 extern struct con_app_type con_app[26];
 extern struct int_app_type int_app[26];
 extern struct wis_app_type wis_app[26];
+
 #endif
 
 #endif

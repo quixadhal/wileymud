@@ -162,7 +162,7 @@ int AddHatred(struct char_data *ch, int parm_type, int parm)
   if (!IS_SET(ch->specials.act, ACT_HATEFUL)) {
     SET_BIT(ch->specials.act, ACT_HATEFUL);
   }
-  return 1;	       /* assume this means it worked */
+  return 1;			       /* assume this means it worked */
 }
 
 int RemHatred(struct char_data *ch, unsigned short bitv)
@@ -172,7 +172,7 @@ int RemHatred(struct char_data *ch, unsigned short bitv)
   REMOVE_BIT(ch->hatefield, bitv);
   if (!ch->hatefield)
     REMOVE_BIT(ch->specials.act, ACT_HATEFUL);
-  return 1;	       /* assume this means it worked */
+  return 1;			       /* assume this means it worked */
 }
 
 int Hates(struct char_data *ch, struct char_data *v)
@@ -186,6 +186,8 @@ int Hates(struct char_data *ch, struct char_data *v)
 
   if (ch == v)
     return (FALSE);
+  if(!(CAN_SEE(ch, v)))
+    return FALSE;
 
   if (IS_SET(ch->hatefield, HATE_CHAR)) {
     if (ch->hates.clist) {
@@ -227,6 +229,14 @@ int Hates(struct char_data *ch, struct char_data *v)
   if (IS_SET(ch->hatefield, HATE_VNUM)) {
     if (ch->hates.vnum == mob_index[v->nr].virtual)
       return (TRUE);
+  }
+  if (IS_SET(ch->hatefield, HATE_RICH)) {
+    if (GET_GOLD(v) > ch->hates.gold) {
+      if(IS_PC(v))
+        cprintf(v, "%s charges, screaming 'I must have your GOLD!'\n\r",
+                GET_SDESC(ch));
+      return (TRUE);
+    }
   }
   return (FALSE);
 }
@@ -436,7 +446,7 @@ struct char_data *FindAHatee(struct char_data *ch)
     return (0);
 
   for (tmp_ch = real_roomp(ch->in_room)->people; tmp_ch; tmp_ch = tmp_ch->next_in_room) {
-    if (Hates(ch, tmp_ch) && (CAN_SEE(ch, tmp_ch))) {
+    if (Hates(ch, tmp_ch) && (CAN_SEE(ch, tmp_ch)) && (!IS_SET(tmp_ch->specials.act, PLR_NOHASSLE))) {
       if (ch->in_room == tmp_ch->in_room) {
 	if (ch != tmp_ch) {
 	  return (tmp_ch);

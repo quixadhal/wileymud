@@ -16,3 +16,174 @@
 950611
   0437	use more tricks from the running wiley..... dead bodies now have
 	corpses, and you default to sleeping when you reappear in the inn.
+950614
+  0345	finally fixed a few nagging bugs.  nanny() has been rewritten.
+	old routines like send_to_char() have been replaced with varargs
+	routines like cprintf().  Now all places that used to sprintf to
+	a local scratch var should be redone.... <sigh>.
+	Rent is now done properly.  Pro-rated by the second and rounded
+	to the nearest gold piece (truncated actually).
+	I believe the code is now stable enough to try indenting and
+	removing warnings.  This is now a backup copy that will run
+	on a seperate port for testing, in case I'm wrong!
+  0354	did a global sed on all files:
+s/sbyte/BYTE/g
+s/ubyte/UBYTE/g
+s/sh_int/SHORT/g
+s/ush_int/USHORT/g
+s/byte/BYTE/g
+s/bool/BYTE/g
+  0402	ran all source through indent.
+  0412	It compiled perfectly.... warning debugging can begin tomorrow then!
+950615
+  0300	fixed a bug in suicide.
+	changed prompt and fixed a bug in do_score.
+  0500	changed who format and added more whod options.
+950617
+  0530	made most menus file-based instead of hard-coded.
+	changed group command to only allow the group leader to add
+	people who are +/- 20%+1 of their level... thus a 2nd level
+	character can only group with 1-3rd level.  a 10th level could
+	group with 7-13th, a 40th would be ok with 31-49th.
+	We can adjust this figure if that sounds bad.
+  1120	caused villagers to wake people up on a 25% chance (always if they
+	start following you).
+950618
+  0412	fixed bug in villager code.
+  0446	added argument to score command (for immortals only).
+  0456	began ridding the code of warnings.
+	yywrap.c is clean.
+	bug.c is almost clean:
+global.h:462: warning: function declaration isn't a prototype
+global.h:1144: warning: function declaration isn't a prototype
+	these are from declarations and typedefs of the form:
+	form: foo (*bar)();
+	I don't know an easy and correct way to eliminate them.
+	sound.c is almost clean.
+	hash.c is almost clean.
+	sign.c is almost clean.
+	signals.c is almost clean.
+	added a signals.h header file.
+	magic_utils.c is almost clean.
+  1234	fixed long-standing bug in act(), comm.c.  Checks for invalid
+	character or location when doing a TO_ROOM action.
+  1348	multiclass.c is almost clean.
+  1404	act_social.c is almost clean.
+  1513	changed do_who() command to allow NPC's to use who.
+	Why would an unswitched npc ever use it?
+  1547	trap.c would be clean if character attributes were not chars.
+	We should change them to ints, but to do so would invalidate
+	the player files... so until we get the ASCII save routines
+	done and in place, we can't do anything about it.
+  1701	changed do_look() so that one cannot see outdoors after dark.
+	(if the moon is not new, you can see monsters.)
+950619
+  0331	tweaked do_look() a bit more to allow for dark hours between
+	sunset/moonrise and especially moonset/sunrise.  also changed
+	do_exits() in a similar fashion.
+  0530	a bit more tweaking... added in cloud-cover.
+	also, made hunger and thirst more devastating.  They do damage
+	now and can kill you!
+950621
+  0600	changed switch command to try finding mob in room first.
+	added ascii player save function.... this saves the char_file_u
+	structure, rather than directly from the char_data.  Done for
+	ease of porting for now.... will add read routines later.  Treat
+	this as a report file until they are in.
+  1354	gave immortals the ability to walk through closed doors.
+  1655	found crasher in who routines... when whod ran through the character
+	list, it didn't check for linkdead people, and thus segfaulted when
+	it tried to access their descriptor for the idle time.
+950622
+  1430	Neatened up the door-walk routine a little....
+950623
+  0212	Fixed bugs in score... including sneak bug.
+  0341	got order of class names right.
+950624
+  1830	Fixed bug in score... uncleared buffer made a mess of affects.
+	Made Eli tell evil people he won't heal them instead of just ignoring
+	them... this should help people figure out why he heals villagers but
+	not them after they slaughter lots of children.
+950625
+  0530	Fixed a few more bugs (including pretitle) and neatened up code a bit.
+	Set my room and muidnar's room to be rent areas.
+  1519	Added fuzz(x) function to utils.c.  The returns a random number from
+	-x to x, which can be used to slightly adjust things like zone
+	reset times, etc...
+950626
+  0305	added a red dragon to the polymorph list (wiz only), and fixed the
+	parser for that spell.  Started renaming levels (mage is done).
+950630
+  2100	added "all" argument to restore.. will replace restoreall command.
+	changed hunger again.. you don't lose move now.
+	changed score a bit more....
+	player tracking now complete.
+950701
+  0353	added a reset command to reset zones by hand.
+	added a skeleton event command, which will allow wizards to do
+	complex events with minimal effort... such as loading lots of
+	rats into Shylar, or bringing forth a goblin raid.
+  1654	rat event done.. may need some tuning yet.
+	must be set to NOT load mobs into rooms which are peaceful, or
+	which have no exits.
+950702
+  0600	added a zone purge command.
+	fixed up rat event a bit.... seems ok now.
+	fixed say bug when using ' command.
+950706
+  1330	changed lightning bolt spell damage to be uncapped
+        (L/10+ L/3 + 1)d6.... this provides a slightly lower damage at low
+	levels but considerably higher damage at upper levels.  Unlike magic
+	missile, one should be able to channel more electricity as they get
+	higher (mm has a physical limit on the number of missiles shot).
+	Also changed rat exp worth.
+	Also changed fireball from L/5 to L/3.
+950709
+  2123	Hacked the shit out of the zombie master routines.
+	Added our friendly mosquitos to the game.
+950710
+  0600	Fixed all the bugs I could find in zombie master's new routine.
+	MUCH more intelligent now.
+	added event to bring xenthia and a few followers into the world.
+	be careful around shylar.... highstaff is ok but she won't last
+	long!  OUt in the woods or the mountains is great.
+	Shylar is ok, IF a few higher levels are on to take care of her.
+	EVENTUALLY, code will be written to force her zombie hoard to
+	disperse and attack Shylar when it hits 50 strong.
+	(randomly distribute them throught the shylar zone until they
+	are all gone... make them not follow her... make them aggressive,
+	also make other mobs hate them... so the villagers will help)
+	Added hate flags back to lovitar!
+950717
+  0700	Caught Steve cheating like a dog.  Wasted time dealing with him.
+	Made defines for command numbers, and changed COMMANDO() calls
+	to use them instead of the hard numbers.... This should let us
+	shuffle the order around later and get rid of all the socials.
+	Must go through all the code that is called by them (do_*) and
+	change hard coded numbers to the defines.
+950720
+  0600	Tweaked gain routines a little more.
+	Found tics and reset them to 70 seconds (70 *4 instead of 75 * 5)
+	Added in a line to randomize it by adding 20 seconds.... commented
+	out until I see if the game CAN keep up with 70 second tics.
+	If so, I'll add it in so tics will be 60..80 seconds.
+950721
+  0831	Rewrote tick handling to use seperate counters... this makes it
+	easier to see how long until the next tick occurs.... we will need
+	to synchronize ticks with realtime somehow... I can't find anywhere
+	that does this, so I think that's why it gets so far off.
+	Tweaked a few more numbers.... ticks should now be between
+	70 and 95 seconds... 
+	Added ticks command to give a full summary of tick info.
+	Added feature to tell immortals when the next tick will happen.
+  1715	Caused meat to spoil.
+	Fixed invis level to work as described.
+	Fixed bug in dispel_magic... more to be done.. lots of hardcoding.
+	Possible Muidnar hack fixed :)
+950722
+  0700	Made Eli cast refresh and bless people (make them less evil)
+	Also made him cast fear at anyone > 4th level who was -900 align
+  1842	Did a little bit of the prototyping for future genericism of
+	spellcasting.  rangers seem to have been hacked into casting, instead
+	of changing spell_info_type as should have been done... we'll have
+	to change that later to accomodate druids and future classes.

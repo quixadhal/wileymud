@@ -48,7 +48,7 @@
 
 static long disconnect_time;
 static int s;
-static int whod_mode = DEFAULT_MODE;
+int whod_mode = DEFAULT_MODE;
 static int state;
 static int whod_port;
 
@@ -73,6 +73,9 @@ void do_whod(struct char_data *ch, char *arg, int cmd)
     "site",
     "on",
     "off",
+    "level",
+    "idle",
+    "room",
     "\n"
   };
 
@@ -95,7 +98,7 @@ void do_whod(struct char_data *ch, char *arg, int cmd)
     send_to_char(buf, ch);
     return;
   }
-  bit--;	       /* Is bit no + 1 */
+  bit--;			       /* Is bit no + 1 */
   if (SHOW_ON == 1 << bit) {
     if (IS_SET(whod_mode, SHOW_ON))
       send_to_char("WHOD already turned on.\n\r", ch);
@@ -203,6 +206,8 @@ void whod_loop(void)
   char time_buf[100];
   long ct, ot;
   char *tmstr, *otmstr;
+  long ttime;
+  long thour, tmin, tsec;
   extern long Uptime;
 
   static int newdesc;
@@ -251,7 +256,7 @@ void whod_loop(void)
       LOG(buf);
 
       sprintf(buf, VERSION_STR);
-      sprintf(buf + strlen(buf), "\n\r***  Active players on %s:\n\r\n\r", MUDNAME);
+      strcat(buf, "\n\r");
 
       players = 0;
       gods = 0;
@@ -267,18 +272,50 @@ void whod_loop(void)
 
 	    index++;
 
+            if (IS_SET(SHOW_IDLE, whod_mode)) {
+              if(!(ch->desc)) {
+                strcat(buf, "linkdead ");
+              } else {
+	        ttime = GET_IDLE_TIME(ch);
+                thour = ttime / 3600;
+                ttime -= thour * 3600;
+	        tmin = ttime / 60;
+                ttime -= tmin * 60;
+	        tsec = ttime;
+                if(!thour && !tmin && (tsec <= 15))
+                  strcat(buf, " playing ");
+                else
+                  sprintf(buf+ strlen(buf), "%02d:%02d:%02d ", thour, tmin, tsec);
+              }
+            }
+
+	    if (IS_SET(SHOW_LEVEL, whod_mode)) {
+              if(GetMaxLevel(ch) >= WIZ_MAX_LEVEL)
+                sprintf(buf + strlen(buf), "[ God ] ");
+              else if(GetMaxLevel(ch) >= WIZ_MIN_LEVEL)
+                sprintf(buf + strlen(buf), "[Whizz] ");
+              else
+                sprintf(buf + strlen(buf), "[ %3d ] ", GetMaxLevel(ch));
+            }
+
+	    if (IS_SET(SHOW_TITLE, whod_mode))
+	      if(GET_PRETITLE(ch))
+	        sprintf(buf + strlen(buf), "%s ", GET_PRETITLE(ch));
+
 	    if (IS_SET(SHOW_NAME, whod_mode))
-	      sprintf(buf + strlen(buf), "[%2d] %s ", index, GET_NAME(ch));
+	      sprintf(buf + strlen(buf), "%s ", GET_NAME(ch));
 
 	    if (IS_SET(SHOW_TITLE, whod_mode))
 	      sprintf(buf + strlen(buf), "%s ", GET_TITLE(ch));
 
+            if (IS_SET(SHOW_ROOM, whod_mode)) {
+              sprintf(buf + strlen(buf), "- %s ",
+                      real_roomp(ch->in_room)->name);
+            }
+
 	    if (IS_SET(SHOW_SITE, whod_mode)) {
 	      if (ch->desc->host != NULL)
-		sprintf(tmp, "[%s] ", ch->desc->host);
-	      else
-		sprintf(tmp, "[ ** Unknown ** ] ");
-	      strcat(buf, tmp);
+		sprintf(buf + strlen(buf), "(%s)", ch->desc->host);
 	    }
 	    strcat(buf, "\n\r");
 	    WRITE(newdesc, buf);
@@ -286,7 +323,7 @@ void whod_loop(void)
 	  }
 	}
       }
-      sprintf(buf + strlen(buf), "\n\r\n\rPlayers: %d\tGods: %d\n\r", players, gods);
+      sprintf(buf + strlen(buf), "\n\rPlayers: %d\tGods: %d\n\r", players, gods);
       ot = Uptime;
       otmstr = asctime(localtime(&ot));
       *(otmstr + strlen(otmstr) - 1) = '\0';

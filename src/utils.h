@@ -11,7 +11,7 @@
 
 #define LOWER(c) (((c)>='A'  && (c) <= 'Z') ? ((c)+('a'-'A')) : (c))
 #define UPPER(c) (((c)>='a'  && (c) <= 'z') ? ((c)+('A'-'a')) : (c))
-#define ISNEWL(ch) ((ch) == '\n' || (ch) == '\r') 
+#define ISNEWL(ch) ((ch) == '\n' || (ch) == '\r')
 #define IF_STR(st) ((st) ? (st) : "\0")
 #define CAP(st)  (*(st) = UPPER(*(st)), st)
 #define CREATE(result, type, number)  do {\
@@ -25,6 +25,12 @@
 #define IS_AFFECTED(ch,skill) ( IS_SET((ch)->specials.affected_by, (skill)) )
 #define IS_DARK(room)  (!real_roomp(room)->light && IS_SET(real_roomp(room)->room_flags, DARK))
 #define IS_LIGHT(room)  (real_roomp(room)->light || !IS_SET(real_roomp(room)->room_flags, DARK))
+#define NO_MOON (time_info.hours == 4 || time_info.hours == 5 || time_info.hours == 19 || time_info.hours == 20)
+#define FULL_MOON ((weather_info.moon >= 12) && (weather_info.moon < 20))
+#define STORMY (weather_info.sky > SKY_CLOUDY)
+#define IS_LIGHTOUT(room) (!IS_SET(real_roomp(room)->room_flags, INDOORS) && ((weather_info.sunlight > SUN_DARK) || (FULL_MOON && !STORMY && !NO_MOON)) || real_roomp(room)->light)
+#define IS_DARKOUT(room) (!IS_SET(real_roomp(room)->room_flags, INDOORS) && ((weather_info.sunlight == SUN_DARK) && !(FULL_MOON && !STORMY && !NO_MOON)) && !(real_roomp(room)->light))
+#define BRIGHT_MOON(room) ((weather_info.moon >= 5) && (weather_info.moon < 28) && !NO_MOON)
 #define IS_PC(ch)  (!IS_SET((ch)->specials.act, ACT_ISNPC))
 #define IS_NPC(ch)  (IS_SET((ch)->specials.act, ACT_ISNPC))
 #define IS_MOB(ch)  (IS_SET((ch)->specials.act, ACT_ISNPC) && ((ch)->nr >-1))
@@ -39,7 +45,7 @@
 #define HSSH(ch) ((ch)->player.sex ?					\
 	(((ch)->player.sex == 1) ? "he" : "she") : "it")
 #define HMHR(ch) ((ch)->player.sex ? 					\
-	(((ch)->player.sex == 1) ? "him" : "her") : "it")	
+	(((ch)->player.sex == 1) ? "him" : "her") : "it")
 #define ANA(obj) (index("aeiouyAEIOUY", *(obj)->name) ? "An" : "A")
 #define SANA(obj) (index("aeiouyAEIOUY", *(obj)->name) ? "an" : "a")
 #define A_AN(str) (index("aeiouyAEIOUY", *(str)) ? "An" : "A")
@@ -57,6 +63,7 @@
 #define GET_POS(ch)     ((ch)->specials.position)
 #define GET_COND(ch, i) ((ch)->specials.conditions[(i)])
 #define GET_NAME(ch)    ((ch)->player.name)
+#define GET_SDESC(ch)	((ch)->player.short_descr)
 #define GET_TITLE(ch)   ((ch)->player.title)
 #define GET_PRETITLE(ch)   ((ch)->player.pre_title)
 #define GET_POOF_IN(ch)   ((ch)->player.poof_in)
@@ -149,8 +156,14 @@
 #define GET_ALIGNMENT(ch) ((ch)->specials.alignment)
 #define IS_REALLY_HOLY(ch) ((GET_ALIGNMENT(ch) == 1000))
 #define IS_REALLY_VILE(ch) ((GET_ALIGNMENT(ch) == -1000))
+/* This makes no sense... I will change it. */
+#ifdef OLD_WILEY
 #define IS_HOLY(ch)	((GET_ALIGNMENT(ch)>900 && GET_ALIGNMENT(ch) < 1000 ))
 #define IS_VILE(ch)	((GET_ALIGNMENT(ch) < -900 && GET_ALIGNMENT(ch)>-1000))
+#else
+#define IS_HOLY(ch)	(GET_ALIGNMENT(ch)>900)
+#define IS_VILE(ch)	(GET_ALIGNMENT(ch) < -900)
+#endif
 #define IS_GOOD(ch)    (GET_ALIGNMENT(ch) >= 350)
 #define IS_EVIL(ch)    (GET_ALIGNMENT(ch) <= -350)
 #define IS_NEUTRAL(ch) (!IS_GOOD(ch) && !IS_EVIL(ch))
@@ -158,62 +171,66 @@
 
 int MIN(int a, int b);
 int MAX(int a, int b);
+int percent(int value, int total);
 char *ordinal(int x);
 int GetItemClassRestrictions(struct obj_data *obj);
 int CAN_SEE(struct char_data *s, struct char_data *o);
-int exit_ok(struct room_direction_data	*exit, struct room_data **rpp);
-int MobVnum( struct char_data *c);
-int ObjVnum( struct obj_data *o);
-void Zwrite (FILE *fp, char cmd, int tf, int arg1, int arg2, int arg3, char *desc);
-void RecZwriteObj(FILE *fp, struct obj_data *o);
-FILE *MakeZoneFile( struct char_data *c);
+int exit_ok(struct room_direction_data *exit, struct room_data **rpp);
+int MobVnum(struct char_data *c);
+int ObjVnum(struct obj_data *o);
+void Zwrite(FILE * fp, char cmd, int tf, int arg1, int arg2, int arg3, char *desc);
+void RecZwriteObj(FILE * fp, struct obj_data *o);
+FILE *MakeZoneFile(struct char_data *c);
 int IsImmune(struct char_data *ch, int bit);
 int IsResist(struct char_data *ch, int bit);
 int IsSusc(struct char_data *ch, int bit);
 int number(int from, int to);
 int dice(int number, int size);
+inline int fuzz(int x);
 int scan_number(char *text, int *rval);
 int str_cmp(char *arg1, char *arg2);
 int strn_cmp(char *arg1, char *arg2, int n);
+
 #if 0
 void log(char *str);
 void dlog(char *str);
 void slog(char *str);
+
 #endif
 void sprintbit(unsigned long vektor, char *names[], char *result);
 void sprinttype(int type, char *names[], char *result);
 struct time_info_data real_time_passed(time_t t2, time_t t1);
 struct time_info_data mud_time_passed(time_t t2, time_t t1);
 struct time_info_data age(struct char_data *ch);
-char in_group ( struct char_data *ch1, struct char_data *ch2);
+char in_group(struct char_data *ch1, struct char_data *ch2);
 int getall(char *name, char *newname);
-int getabunch(char *name, char  *newname);
-int DetermineExp( struct char_data *mob, int exp_flags);
-void down_river( int pulse );
+int getabunch(char *name, char *newname);
+int DetermineExp(struct char_data *mob, int exp_flags);
+void down_river(int pulse);
 void RoomSave(struct char_data *ch, int start, int end);
-void RoomLoad( struct char_data *ch, int start, int end);
-void fake_setup_dir(FILE *fl, int room, int dir);
-int IsHumanoid( struct char_data *ch);
-int IsAnimal( struct char_data *ch);
-int IsUndead( struct char_data *ch);
-int IsLycanthrope( struct char_data *ch);
-int IsDiabolic( struct char_data *ch);
-int IsReptile( struct char_data *ch);
-int HasHands( struct char_data *ch);
-int IsPerson( struct char_data *ch);
-int IsExtraPlanar( struct char_data *ch);
-void SetHunting( struct char_data *ch, struct char_data *tch);
-void CallForGuard( struct char_data *ch, struct char_data *vict, int lev);
-void CallForAGuard(struct char_data *ch,struct char_data *vict,int lev);
-void StandUp (struct char_data *ch);
-void FighterMove( struct char_data *ch);
-void DevelopHatred( struct char_data *ch, struct char_data *v);
-void Teleport( int pulse );
-int HasObject( struct char_data *ch, int ob_num);
+void RoomLoad(struct char_data *ch, int start, int end);
+void fake_setup_dir(FILE * fl, int room, int dir);
+int IsHumanoid(struct char_data *ch);
+int IsAnimal(struct char_data *ch);
+int IsUndead(struct char_data *ch);
+int IsLycanthrope(struct char_data *ch);
+int IsDiabolic(struct char_data *ch);
+int IsReptile(struct char_data *ch);
+int HasHands(struct char_data *ch);
+int IsPerson(struct char_data *ch);
+int IsExtraPlanar(struct char_data *ch);
+void SetHunting(struct char_data *ch, struct char_data *tch);
+void CallForGuard(struct char_data *ch, struct char_data *vict, int lev);
+void CallForAGuard(struct char_data *ch, struct char_data *vict, int lev);
+void StandUp(struct char_data *ch);
+void FighterMove(struct char_data *ch);
+void DevelopHatred(struct char_data *ch, struct char_data *v);
+void Teleport(int pulse);
+int HasObject(struct char_data *ch, int ob_num);
 int room_of_object(struct obj_data *obj);
 struct char_data *char_holding(struct obj_data *obj);
-int RecCompObjNum( struct obj_data *o, int obj_num);
+int RecCompObjNum(struct obj_data *o, int obj_num);
 void RestoreChar(struct char_data *ch);
-void RemAllAffects( struct char_data *ch);
+void RemAllAffects(struct char_data *ch);
 
 #endif

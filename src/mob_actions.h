@@ -6,7 +6,7 @@ void mobile_wander(struct char_data *ch);
 void MobHunt(struct char_data *ch);
 void MobScavenge(struct char_data *ch);
 void mobile_activity(void);
-int SameRace( struct char_data *ch1, struct char_data *ch2);
-int AssistFriend( struct char_data *ch);
+int SameRace(struct char_data *ch1, struct char_data *ch2);
+int AssistFriend(struct char_data *ch);
 
 #endif

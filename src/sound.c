@@ -6,7 +6,6 @@
 
 #include "global.h"
 #include "bug.h"
-#include "utils.h"
 #include "comm.h"
 #include "interpreter.h"
 #include "handler.h"
@@ -31,7 +30,7 @@ int RecGetObjRoom(struct obj_data *obj)
   if (obj->in_obj) {
     return (RecGetObjRoom(obj->in_obj));
   }
-  return -1;	       /* This is an invalid room index... hope real_roomp() works */
+  return -1;			       /* This is an invalid room index... hope real_roomp() works */
 }
 
 void MakeNoise(int room, char *local_snd, char *distant_snd)
@@ -66,7 +65,7 @@ void MakeNoise(int room, char *local_snd, char *distant_snd)
 
 void MakeSound(int pulse)
 {
-  int room = -1;       /* default is bad value */
+  int room = -1;		       /* default is bad value */
   char buffer[128];
   struct obj_data *obj;
   struct char_data *ch;
@@ -84,7 +83,7 @@ void MakeSound(int pulse)
 	  room = obj->in_room;
 	} else {
 	  room = RecGetObjRoom(obj);
-	}	       /* broadcast to room */
+	}			       /* broadcast to room */
 	if (obj->action_description) {
 	  MakeNoise(room, obj->action_description, obj->action_description);
 	}

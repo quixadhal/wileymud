@@ -14,7 +14,7 @@ void do_not_here(struct char_data *ch, char *argument, int cmd);
 void do_sneak(struct char_data *ch, char *argument, int cmd);
 void do_hide(struct char_data *ch, char *argument, int cmd);
 void do_steal(struct char_data *ch, char *argument, int cmd);
-void do_practice(struct char_data *ch, char *arg, int cmd) ;
+void do_practice(struct char_data *ch, char *arg, int cmd);
 void do_idea(struct char_data *ch, char *argument, int cmd);
 void do_typo(struct char_data *ch, char *argument, int cmd);
 void do_bug(struct char_data *ch, char *argument, int cmd);

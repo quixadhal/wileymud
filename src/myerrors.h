@@ -1,4 +1,4 @@
-#define err_s		58	/* this should be the last token we parse */
+#define err_s		58	       /* this should be the last token we parse */
 #define ERR_inherit_not_found (err_s+1)
 #define ERR_seq		(err_s+2)
 #define ERR_strlen	(err_s+3)
@@ -6,7 +6,8 @@
 #define ERR_ex_name	(err_s+5)
 #define ERR_list	(err_s+6)
 
-char * error_list[] = {
+char *error_list[] =
+{
   "EOF found on file before done.",
   "error with inherit.",
   "error with pound '#'.",
@@ -65,12 +66,12 @@ char * error_list[] = {
   "error with YES response.",
   "error with OFF response.",
   "error with ON response.",
-  "error with extra description statement.", 
+  "error with extra description statement.",
 
   "error with inheriting room, not found in dbase?",
   "error with rooms being out of sequence!",
   "error, string is too long.",
-  "Hey, I can only catch most of them, I have no clue as to this one.",
+"Hey, I can only catch most of them, I have no clue as to this one.",
   "error, no key name given for extra description.",
   "error, keyword not found in list of usable values.",
 };

@@ -23,9 +23,9 @@ void drop_level(struct char_data *ch, int class);
 void set_title(struct char_data *ch);
 void gain_exp(struct char_data *ch, int gain);
 void gain_exp_regardless(struct char_data *ch, int gain, int class);
-void gain_condition(struct char_data *ch,int condition,int value);
+void gain_condition(struct char_data *ch, int condition, int value);
 void check_idling(struct char_data *ch);
-void point_update( int pulse );
-int ObjFromCorpse( struct obj_data *c);
+void point_update(int pulse);
+int ObjFromCorpse(struct obj_data *c);
 
 #endif

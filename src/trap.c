@@ -15,6 +15,12 @@
 #include "db.h"
 #include "opinion.h"
 #include "constants.h"
+#include "fight.h"
+#include "reception.h"
+#include "spell_parser.h"
+#include "multiclass.h"
+#include "handler.h"
+#include "act_info.h"
 #define _TRAP_C
 #include "trap.h"
 
@@ -95,7 +101,7 @@ int TriggerTrap(struct char_data *ch, struct obj_data *i)
       adj -= dex_app[GET_DEX(ch)].reaction * 5;
       fireperc = 95 + adj;
       roll = number(1, 100);
-      if (roll < fireperc) {	/* trap is sprung */
+      if (roll < fireperc) {	       /* trap is sprung */
 	act("You hear a strange noise...", TRUE, ch, 0, 0, TO_ROOM);
 	act("You hear a strange noise...", TRUE, ch, 0, 0, TO_CHAR);
 	GET_TRAP_CHARGES(i) -= 1;
@@ -138,7 +144,7 @@ void TrapDamage(struct char_data *v, int damtype, int amnt, struct obj_data *t)
     return;
 
   if (IS_AFFECTED(v, AFF_SANCTUARY))
-    amnt = MAX((int)(amnt / 2), 0);	/* Max 1/2 damage when sanct'd */
+    amnt = MAX((int)(amnt / 2), 0);    /* Max 1/2 damage when sanct'd */
 
   amnt = PreProcDam(v, damtype, amnt);
 
@@ -316,7 +322,7 @@ void InformMess(struct char_data *v)
     act("$n is dead! R.I.P.", TRUE, v, 0, 0, TO_ROOM);
     act("You are dead!  Sorry...", FALSE, v, 0, 0, TO_CHAR);
     break;
-  default:	       /* >= POSITION SLEEPING */
+  default:			       /* >= POSITION SLEEPING */
     break;
   }
 }

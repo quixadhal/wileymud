@@ -14,20 +14,10 @@
 #include "global.h"
 #include "bug.h"
 #include "utils.h"
-
-#ifdef sun3
-void shutdown_request(void);
-void checkpointing(void);
-void logsig(void);
-void hupsig(void);
-
-#else
-void shutdown_request(int);
-void checkpointing(int);
-void logsig(int);
-void hupsig(int);
-
-#endif
+#include "comm.h"
+#include "whod.h"
+#define _DIKU_SIGNALS_C
+#include "signals.h"
 
 void signal_setup(void)
 {
@@ -36,7 +26,7 @@ void signal_setup(void)
   struct timeval interval;
   struct sigaction ack[] =
   {
-    {SIG_DFL, NULL, SA_NOMASK | SA_ONESHOT, NULL},
+    {SIG_DFL, 0, SA_NOMASK | SA_ONESHOT, NULL},
     {hupsig, SIGHUP, SA_NOMASK, NULL},
     {SIG_IGN, SIGINT, SA_NOMASK, NULL},
     {SIG_IGN, SIGQUIT, SA_NOMASK, NULL},
@@ -92,7 +82,7 @@ void signal_setup(void)
    * set up the deadlock-protection 
    */
 
-  interval.tv_sec = 900;	/* 30 minutes */
+  interval.tv_sec = 900;	       /* 30 minutes */
   interval.tv_usec = 0;
   itime.it_interval = interval;
   itime.it_value = interval;
@@ -110,8 +100,6 @@ void checkpointing(void)
 void checkpointing(int a)
 #endif
 {
-  extern int tics;
-
   if (!tics) {
     log("CHECKPOINT shutdown: tics not updated");
     log("SHUTDOWN:now");
@@ -141,12 +129,10 @@ void hupsig(void)
 void hupsig(int a)
 #endif
 {
-  extern int diku_shutdown;
-
   log("Received SIGHUP, or SIGTERM. Shutting down");
   close_sockets(0);
   close_whod();
-  exit(0);       /* something more elegant should perhaps be substituted */
+  exit(0);			       /* something more elegant should perhaps be substituted */
 }
 
 #ifdef sun3

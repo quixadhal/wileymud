@@ -9,6 +9,7 @@
 #include "global.h"
 #include "utils.h"
 #include "comm.h"
+#include "multiclass.h"
 #define _BUG_C
 #include "bug.h"
 
@@ -57,8 +58,8 @@ void abug(char *File, char *Func, int Line, UINT Level, UINT Type,
     /* NOTIFY(Result, Level, Type); */
     for (i = descriptor_list; i; i = i->next)
       if ((!i->connected) && (GetMaxLevel(i->character) >= 57) &&
-          (IS_SET(i->character->specials.act, PLR_LOGS)))
-        write_to_q(Result, &i->output);
+	  (IS_SET(i->character->specials.act, PLR_LOGS)))
+	write_to_q(Result, &i->output);
     bzero(Result, MAX_STRING_LENGTH);
   } else
     strcpy(Temp, "PING!");
@@ -82,9 +83,8 @@ void abug(char *File, char *Func, int Line, UINT Level, UINT Type,
   if (ch && !IS_NPC(ch))
     sprintf(Result + strlen(Result), " %s [#%d]\n",
 	    ch->player.name, ch->in_room ? ch->in_room : 0);
-  else
-    if (File || Func || Line)
-      strcat(Result, "\n");
+  else if (File || Func || Line)
+    strcat(Result, "\n");
 
   strcat(Result, " : ");
   strcat(Result, Temp);
