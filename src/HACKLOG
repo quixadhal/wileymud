@@ -1,0 +1,5 @@
+950527	Quixadhal.
+  1727	Reopened the X-file on this case.
+	Moved the lib directory back a level and changed modify.c to
+	use a define instead of a hardcoded filename.
+  1743	Improper number of arguments to bind() in sign.c.

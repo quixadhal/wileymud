@@ -1,0 +1,18 @@
+-l70 -lc70
+-bad -bap -d0 -bc -br -c33 -cd33 -cdb -ce
+-ci0 -cli0 -cp8 -di33 -nfc1 -nfca -i2 -ip2 -npcs -psl
+-sc -nss -ts8
+-ncs -nbs -nlps
+-lp
+-sob
+-T sbyte
+-T ubyte
+-T sh_int
+-T ush_int
+-T bool
+-T byte
+-T funcp
+-T Guild_Min
+-T Guild_Res
+-T Guild_st
+-T Opinion

@@ -1,9 +1,11 @@
-/* ************************************************************************
-*  file: utils.h, Utility module.                         Part of DIKUMUD *
-*  Usage: Utility macros                                                  *
-************************************************************************* */
+/*
+ * ************************************************************************
+ * *  file: utils.h, Utility module.                         Part of DIKUMUD *
+ * *  Usage: Utility macros                                                  *
+ * ************************************************************************* 
+ */
 
-int CAN_SEE(struct char_data *s, struct char_data *o);
+int                              CAN_SEE(struct char_data *s, struct char_data *o);
 
 #define TRUE  1
 
@@ -13,7 +15,7 @@ int CAN_SEE(struct char_data *s, struct char_data *o);
 
 #define UPPER(c) (((c)>='a'  && (c) <= 'z') ? ((c)+('A'-'a')) : (c) )
 
-#define ISNEWL(ch) ((ch) == '\n' || (ch) == '\r') 
+#define ISNEWL(ch) ((ch) == '\n' || (ch) == '\r')
 
 #define IF_STR(st) ((st) ? (st) : "\0")
 
@@ -51,7 +53,6 @@ int CAN_SEE(struct char_data *s, struct char_data *o);
 
 #define GET_LEVEL(ch, i)   ((ch)->player.level[(i)])
 
-
 #define GET_CLASS_TITLE(ch, class, lev)   ((ch)->player.sex ?  \
    (((ch)->player.sex == 1) ? titles[(class)][(lev)].title_m : \
     titles[(class)][(lev)].title_f) : titles[(class)][(lev)].title_m)
@@ -67,7 +68,7 @@ int CAN_SEE(struct char_data *s, struct char_data *o);
 	(((ch)->player.sex == 1) ? "he" : "she") : "it")
 
 #define HMHR(ch) ((ch)->player.sex ? 					\
-	(((ch)->player.sex == 1) ? "him" : "her") : "it")	
+	(((ch)->player.sex == 1) ? "him" : "her") : "it")
 
 #define ANA(obj) (index("aeiouyAEIOUY", *(obj)->name) ? "An" : "A")
 
@@ -163,7 +164,9 @@ int CAN_SEE(struct char_data *s, struct char_data *o);
 
 #define WAIT_STATE(ch, cycle)  (((ch)->desc) ? (ch)->desc->wait = (cycle) : 0)
 
-/* Object And Carry related macros */
+/*
+ * Object And Carry related macros 
+ */
 
 #define CAN_SEE_OBJ(sub, obj)                                           \
 	(   ( (!IS_NPC(sub)) && (GetMaxLevel(sub)>LOW_IMMORTAL))       ||   \
@@ -196,9 +199,9 @@ int CAN_SEE(struct char_data *s, struct char_data *o);
 
 #define IS_OBJ_STAT(obj,stat) (IS_SET((obj)->obj_flags.extra_flags,stat))
 
-
-
-/* char name/short_desc(for mobs) or someone?  */
+/*
+ * char name/short_desc(for mobs) or someone?  
+ */
 
 #define PERS(ch, vict)   (                                          \
 	CAN_SEE(vict, ch) ?						                                    \
@@ -228,7 +231,7 @@ int CAN_SEE(struct char_data *s, struct char_data *o);
 
 #define EXIT(ch, door)  (real_roomp((ch)->in_room)->dir_option[door])
 
-int exit_ok(struct room_direction_data *, struct room_data **);
+int                              exit_ok(struct room_direction_data *, struct room_data **);
 
 #define CAN_GO(ch, door) (EXIT(ch,door)&&real_roomp(EXIT(ch,door)->to_room) \
                           && !IS_SET(EXIT(ch, door)->exit_info, EX_CLOSED))

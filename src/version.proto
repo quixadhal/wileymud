@@ -1,0 +1,7 @@
+#ifndef _VERSION_H
+#define _VERSION_H
+
+#define VERSION_STR \
+"\n\rWelcome to Quixadhal's DeadMUD, Version 0.XxXw3-alpha (YyY)\n\r\n\r"
+
+#endif
