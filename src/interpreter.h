@@ -1,27 +1,22 @@
 /*
- * ************************************************************************
- * *  file: Interpreter.h , Command interpreter module.      Part of DIKUMUD *
- * *  Usage: Procedures interpreting user command                            *
- * ************************************************************************* 
+ * file: Interpreter.h , Command interpreter module.      Part of DIKUMUD
+ * Usage: Procedures interpreting user command
  */
 
-void                             command_interpreter(struct char_data *ch, char *argument);
-int                              search_block(char *arg, char **list, bool exact);
-int                              old_search_block(char *argument, int begin, int length, char **list, int mode);
-char                             lower(char c);
-void                             argument_interpreter(char *argument, char *first_arg, char *second_arg);
-char                            *one_argument(char *argument, char *first_arg);
-void                             only_argument(char *argument, char *first_arg);
-int                              fill_word(char *argument);
-void                             half_chop(char *string, char *arg1, char *arg2);
-void                             nanny(struct descriptor_data *d, char *arg);
-int                              is_abbrev(char *arg1, char *arg2);
+#ifndef _INTERPRETER_H
+#define _INTERPRETER_H
 
-struct command_info {
-  void                             (*command_pointer) (struct char_data * ch, char *argument, int cmd);
-  byte                             minimum_position;
-  byte                             minimum_level;
-};
+#define COMMANDO(number,min_pos,pointer,min_level) {      \
+  cmd_info[(number)].command_pointer = (pointer);         \
+  cmd_info[(number)].minimum_position = (min_pos);        \
+  cmd_info[(number)].minimum_level = (min_level); }
+
+#define NOT !
+#define AND &&
+#define OR ||
+
+#define STATE(d) ((d)->connected)
+#define MAX_CMD_LIST 288
 
 #define MENU \
 "\n\r" \
@@ -74,19 +69,39 @@ struct command_info {
 "\n\r" \
 "Race [DEHFG?]:  "
 
-#define GREETINGS \
-"Welcome to the dismal lands of\n\r" \
-"                  ________                     .___ _____   ____ ___________   \n\r" \
-"     (_\\_|_|_/_)  \\______ \\   ____ _____     __| _//     \\ |    |   \\______ \\  \n\r" \
-"  ____=_(o o)      |    |  \\_/ __ \\\\__  \\   / __ |/  \\ /  \\|    |   /|    |  \\ \n\r" \
-" /m00se _\\ /       |    `   \\  ___/ / __ \\_/ /_/ /    Y    \\    |  / |    `   \\\n\r" \
-"'+____+/  O       /_______  /\\___  >____  /\\____ \\____|__  /______/ /_______  /\n\r" \
-" |\\   |\\                  \\/     \\/     \\/      \\/       \\/                 \\/ \n\r" \
-" ^ ^  ^ ^\n\r" \
-" Being tested, abused, spammed and crashed on port 4000 of yakko.cs.wmich.edu.\n\r" \
+#define CLASSMENU \
+"Choose one or more classes, seperated by the \"/\" character.\n\r" \
+"Available:  (C)leric, (T)hief, (W)arrior, (M)age, or (R)anger\n\r" \
+"For help, try (?).  Please remember Rangers cannot multi-class!\n\r" \
 "\n\r" \
-"Quixadhal says, \"If you think this is bad, wait 'till you see the REAL game!\"\n\r" \
-"\n\r"
+"Class [CTWMR?]:  "
+
+#define CLASSHELP \
+"You may learn one or more of the following trades to become famous at:\n\r" \
+"\n\r" \
+"Cleric:    A devout and holy person who believes in, and carries out,\n\r" \
+"           will of their god.  Not every god has the same set of\n\r" \
+"           values... One god's Good is another god's Evil.\n\r" \
+"Thief:     The thief is the outcast of society.  Any thief knows that\n\r" \
+"           the misfortune of others can be turned to a tidy profit!\n\r" \
+"           Soon, thieves will have their abilities exempted from the\n\r" \
+"           player registration system, thus making them more powerful\n\r" \
+"           if more dangerous to play!\n\r" \
+"Warrior:   UNNNGGH!  Me kill things!  As you'd guess, the fighters of\n\r" \
+"           this place choose force as the answer to just about\n\r" \
+"           everything.  Unfortunately for the rest of us, it often\n\r" \
+"           works!\n\r" \
+"Mage:      The mage believes that brute force is as useless as grubbing\n\r" \
+"           on your knees before some god.  TRUE power comes from\n\r" \
+"           knowledge of the universe!  Many a mage has died to prove\n\r" \
+"           that point.  But, a few have lived...\n\r" \
+"Ranger:    The ranger chooses to take a little bit from all the classes.\n\r" \
+"           An outdoorsman, he is self-sufficient and has learned to\n\r" \
+"           fight very well.  His closeness to nature has taught him some\n\r" \
+"           skills in magic and given him some understanding of the ways\n\r" \
+"           of the nature gods.  Society has taught him trickery as well!\n\r" \
+"\n\r" \
+"Class [CTWMR?]:  "
 
 #define WELC_MESSG VERSION_STR
 
@@ -158,3 +173,42 @@ struct command_info {
 "            Blood...\n\r" \
 "                                Darkness...\n\r" \
 "                                                        Eternal."
+
+struct command_info {
+  void (*command_pointer) (struct char_data * ch, char *argument, int cmd);
+  byte minimum_position;
+  byte minimum_level;
+};
+
+#ifndef _INTERPRETER_C
+extern struct command_info cmd_info[MAX_CMD_LIST];
+extern char echo_on[];
+extern char echo_off[];
+extern int WizLock;
+extern char *command[];
+extern char *fill[];
+#endif
+
+int search_block(char *arg, char **list, bool exact);
+int old_search_block(char *argument, int begin, int length, char **list, int mode);
+void command_interpreter(struct char_data *ch, char *argument);
+void argument_interpreter(char *argument, char *first_arg, char *second_arg);
+int is_number(char *str);
+char *one_argument(char *argument, char *first_arg);
+void only_argument(char *argument, char *dest);
+int fill_word(char *argument);
+int is_abbrev(char *arg1, char *arg2);
+void half_chop(char *string, char *arg1, char *arg2);
+int special(struct char_data *ch, int cmd, char *arg);
+void assign_command_pointers(void);
+int find_name(char *name);
+int _parse_name(char *arg, char *name);
+int valid_parse_name(char *arg, char *name);
+int already_mob_name(char *ack_name);
+int check_reconnect(struct descriptor_data *d);
+int check_playing(struct descriptor_data *d, char *tmp_name);
+void nanny(struct descriptor_data *d, char *arg);
+void PutPasswd(char *who, char *pwd, char *host);
+int ValidPlayer(char *who, char *pwd);
+
+#endif

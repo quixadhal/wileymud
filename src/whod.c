@@ -1,79 +1,16 @@
-/************************************************************************\
-*                                                                        *
-*      Opens a port (the port # above the port # the game itself is	 *
-*      being run). On this port people can connect to see who's on.	 *
-*	 The player wont have to enter the game to see if it's worth	 *
-*      playing at the time, thus saving money.				 *
-*									 *
-*      Change the following #define-statements to adjust the             *
-*      WHOD to your server.                                              */
-
-#include "version.h"
-
 /*
- * *** The following statement sets the name of the MUD in WHOD      *** 
- */
-#define MUDNAME "DeadMUD"
-
-/*
- * *** The following statement indicates the WHOD default mode 
- * Modes can be:
- * SHOW_NAME
- * SHOW_LEVEL
- * SHOW_TITLE
- * SHOW_CLASS
- * SHOW_ON
+ * Opens a port (the port # above the port # the game itself is
+ * being run). On this port people can connect to see who's on.
+ * The player wont have to enter the game to see if it's worth
+ * playing at the time, thus saving money.
+ *
+ * Change the following #define-statements to adjust the
+ * WHOD to your server.
  */
 
-#define DEFAULT_MODE ( SHOW_NAME | SHOW_TITLE | SHOW_ON )
-
-/*
- * *** The following statement tells if a character is INVIS     *** 
- */
-#define INVIS_LEVEL(ch) ((ch)->invis_level)
-
-/*
- * *** Specify the lowest & highest wizard level                 *** 
- */
-#define WIZ_MIN_LEVEL 50
-#define WIZ_MAX_LEVEL 59
-
-/*
- * *** The following statement will send a message to the system log *** 
- */
-#define LOG(msg) log(msg)
-
-/*
- * *** Time to wait for disconnection (in seconds)                   *** 
- */
-#define WHOD_DELAY_TIME 3
-
-/*
- * *** Show linkdead people on the list as well ?  1=yes, 0=no       *** 
- */
-#define DISPLAY_LINKDEAD 1
-
-/*
- * In function run_the_game(int port):                           *
- * *      ..                                                             *
- * *      init_whod(port);                                                       *
- * *      log("Entering game loop.");                                    *
- * *      game_loop(s);                                                  *
- * *      close_sockets(s);                                              *
- * *      close_whod();                                                  *
- * *      ..                                                             *
- * *                                                                     *
- * *      In function game_loop ():                                         *
- * *      ..                                                                *
- * *      sigsetmask(mask);                                                 *
- * *      whod_loop();                                                      *
- * *      if (select(maxdesc + 1, &input_set, &output_set,                  *
- * *                 &exc_set, &null_time) < 0)                             *
- * *      ..                                                                *
- * *                                                                        *
- * *********************************************************************** 
- */
-
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <sys/un.h>
@@ -81,66 +18,55 @@
 #include <netinet/in.h>
 #include <sys/time.h>
 #include <signal.h>
-#include <stdio.h>
 
-#include "structs.h"
+#include "version.h"
+#include "global.h"
+#include "bug.h"
+#include "db.h"
+#include "comm.h"
 #include "utils.h"
-
-#define WHOD_OPENING 1
-#define WHOD_OPEN    2
-#define WHOD_DELAY   3
-#define WHOD_END     4
-#define WHOD_CLOSED  5
-#define WHOD_CLOSING 6
-
-#define SHOW_NAME	1<<0
-#define SHOW_TITLE	1<<1
-#define SHOW_SITE	1<<2
-#define SHOW_ON		1<<3
-#define SHOW_OFF	1<<4
-
-#define WRITE(d,msg) if((write((d),(msg),strlen(msg)))<0){\
-                            perror("whod.c - write");}
+#define _WHOD_C
+#include "whod.h"
 
 /*
- * *** External functions *** 
+ * In function run_the_game(int port):
+ *   ...
+ *   init_whod(port);
+ *   log("Entering game loop.");
+ *   game_loop(s);
+ *   close_sockets(s);
+ *   close_whod();
+ *   ...
+ *
+ *   In function game_loop ():
+ *   ...
+ *   sigsetmask(mask);
+ *   whod_loop();
+ *   if (select(maxdesc + 1, &input_set, &output_set, &exc_set, &null_time) < 0)
+ *   ...
  */
-int                              init_socket(int port);
 
-/*
- * *** External variables *** 
- */
-extern struct char_data         *character_list;
-
-/*
- * *** Internal variables *** 
- */
-static long                      disconnect_time;
-static int                       s;
-static int                       whod_mode = DEFAULT_MODE;
-static int                       state;
-static int                       whod_port;
-
-/*
- * ------ WHOD interface for use inside of the game ------        
- */
+static long disconnect_time;
+static int s;
+static int whod_mode = DEFAULT_MODE;
+static int state;
+static int whod_port;
 
 /*
  * Function   : do_whod
- * * Parameters : doer, argument string, number of WHOD command (not used)
- * * Returns    : --
- * * Description: MUD command to set the mode of the WHOD-connection according
- * *              to the command string.                                  
+ * Parameters : doer, argument string, number of WHOD command (not used)
+ * Returns    : --
+ * Description: MUD command to set the mode of the WHOD-connection according
+ *              to the command string.                                  
  */
 
-void 
-do_whod(struct char_data *ch, char *arg, int cmd)
+void do_whod(struct char_data *ch, char *arg, int cmd)
 {
-  char                             buf[256];
-  char                             tmp[MAX_INPUT_LENGTH];
-  int                              bit;
+  char buf[256];
+  char tmp[MAX_INPUT_LENGTH];
+  int bit;
 
-  static char                     *modes[] =
+  static char *modes[] =
   {
     "name",
     "title",
@@ -169,9 +95,7 @@ do_whod(struct char_data *ch, char *arg, int cmd)
     send_to_char(buf, ch);
     return;
   }
-  bit--;			/*
-				 * Is bit no + 1 
-				 */
+  bit--;	       /* Is bit no + 1 */
   if (SHOW_ON == 1 << bit) {
     if (IS_SET(whod_mode, SHOW_ON))
       send_to_char("WHOD already turned on.\n\r", ch);
@@ -229,13 +153,12 @@ do_whod(struct char_data *ch, char *arg, int cmd)
 
 /*
  * Function   : init_whod
- * * Parameters : Port #-1 the daemon should be run at
- * * Returns    : --
- * * Description: Opens the WHOD port and sets the state of WHO-daemon to OPEN
+ * Parameters : Port #-1 the daemon should be run at
+ * Returns    : --
+ * Description: Opens the WHOD port and sets the state of WHO-daemon to OPEN
  */
 
-void 
-init_whod(int port)
+void init_whod(int port)
 {
   whod_port = port + 1;
   LOG("WHOD port opened.");
@@ -245,14 +168,13 @@ init_whod(int port)
 
 /*
  * Function   : close_whod
- * * Parameters : --
- * * Returns    : --
- * * Description: Closes the WHOD port and sets the state of WHO-daemon to
- * *              CLOSED.                                                 
+ * Parameters : --
+ * Returns    : --
+ * Description: Closes the WHOD port and sets the state of WHO-daemon to
+ *              CLOSED.                                                 
  */
 
-void 
-close_whod(void)
+void close_whod(void)
 {
   if (state != WHOD_CLOSED) {
     state = WHOD_CLOSED;
@@ -263,36 +185,27 @@ close_whod(void)
 
 /*
  * Function   : whod_loop
- * * Parameters : --
- * * Returns    : --
- * * Description: Serves incoming WHO calls.                             
+ * Parameters : --
+ * Returns    : --
+ * Description: Serves incoming WHO calls.                             
  */
 
-void 
-whod_loop(void)
+void whod_loop(void)
 {
-  int                              nfound,
-                                   size,
-                                   players = 0,
-                                   gods = 0,
-                                   index,
-                                   i;
-  fd_set                           in;
-  u_long                           hostlong;
-  struct timeval                   timeout;
-  struct sockaddr_in               newaddr;
-  char                             buf[MAX_STRING_LENGTH],
-                                   tmp[80];
-  struct char_data                *ch;
-  struct hostent                  *hent;
-  char                             time_buf[100];
-  long                             ct,
-                                   ot;
-  char                            *tmstr,
-                                  *otmstr;
-  extern long                      Uptime;
+  int nfound, size, players = 0, gods = 0, index, i;
+  fd_set in;
+  u_long hostlong;
+  struct timeval timeout;
+  struct sockaddr_in newaddr;
+  char buf[MAX_STRING_LENGTH], tmp[80];
+  struct char_data *ch;
+  struct hostent *hent;
+  char time_buf[100];
+  long ct, ot;
+  char *tmstr, *otmstr;
+  extern long Uptime;
 
-  static int                       newdesc;
+  static int newdesc;
 
   switch (state) {
 /****************************************************************/
@@ -377,12 +290,12 @@ whod_loop(void)
       ot = Uptime;
       otmstr = asctime(localtime(&ot));
       *(otmstr + strlen(otmstr) - 1) = '\0';
-      sprintf(buf + strlen(buf), "Dead start time was: %s\n\r", otmstr);
+      sprintf(buf + strlen(buf), START_TIME, otmstr);
 
       ct = time(0);
       tmstr = asctime(localtime(&ct));
       *(tmstr + strlen(tmstr) - 1) = '\0';
-      sprintf(buf + strlen(buf), "Quixadhal's time is: %s\n\r", tmstr);
+      sprintf(buf + strlen(buf), GAME_TIME, tmstr);
 
       WRITE(newdesc, buf);
 
@@ -424,15 +337,10 @@ whod_loop(void)
   return;
 }
 
-/*
- * *** You might want to use this in your help_file.                 *** 
- */
-/*
- * *** It should be placed in the end of the file, so help on WHO is *** 
- */
-/*
- * ***  availeble too.                                               *** 
- */
+/**** You might want to use this in your help_file.                 ****/
+/**** It should be placed in the end of the file, so help on WHO is ****/
+/**** availeble too.                                                ****/
+
 /*
  * WHOD
  * 

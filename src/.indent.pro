@@ -1,6 +1,6 @@
 -l70 -lc70
--bad -bap -d0 -bc -br -c33 -cd33 -cdb -ce
--ci0 -cli0 -cp8 -di33 -nfc1 -nfca -i2 -ip2 -npcs -psl
+-bad -bap -d0 -nbc -br -c40 -cd40 -ncdb -ce
+-ci0 -cli0 -cp8 -di0 -nfc1 -nfca -i2 -ip2 -npcs -npsl
 -sc -nss -ts8
 -ncs -nbs -nlps
 -lp
@@ -16,3 +16,4 @@
 -T Guild_Res
 -T Guild_st
 -T Opinion
+-l70 -lc70

@@ -3,6 +3,6 @@
 #define _VERSION_H
 
 #define VERSION_STR \
-"\n\rWelcome to Quixadhal's DeadMUD, Version 0.181w3-alpha (95.05.29)\n\r\n\r"
+"\n\rWelcome to Quixadhal's DeadMUD, Version 0.213w3-alpha (95.06.14)\n\r\n\r"
 
 #endif

@@ -1,232 +1,53 @@
 /*
- *  file: Interpreter.c , Command interpreter module.      Part of DIKUMUD *
- *  Usage: Procedures interpreting user command                            *
- *  Copyright (C) 1990, 1991 - see 'license.doc' for complete information. *
- ************************************************************************* */
+ * file: Interpreter.c , Command interpreter module.      Part of DIKUMUD
+ * Usage: Procedures interpreting user command
+ * Copyright (C) 1990, 1991 - see 'license.doc' for complete information.
+ */
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
 #include <string.h>
 #include <ctype.h>
-#include <stdio.h>
 #include <arpa/telnet.h>
-#include "structs.h"
+
+#include "global.h"
+#include "bug.h"
 #include "comm.h"
 #include "version.h"
-#include "interpreter.h"
 #include "db.h"
 #include "utils.h"
 #include "limits.h"
-#include "race.h"
+#include "constants.h"
+#include "act_comm.h"
+#include "act_info.h"
+#include "act_move.h"
+#include "act_obj.h"
+#include "act_off.h"
+#include "act_other.h"
+#include "act_skills.h"
+#include "act_social.h"
+#include "act_wiz.h"
+#include "spells.h"
+#include "spell_parser.h"
+#include "modify.h"
+#include "whod.h"
+#define _INTERPRETER_C
+#include "interpreter.h"
 
-#define COMMANDO(number,min_pos,pointer,min_level) {      \
-                  cmd_info[(number)].command_pointer = (pointer);         \
-                    cmd_info[(number)].minimum_position = (min_pos);        \
-                cmd_info[(number)].minimum_level = (min_level); }
+struct command_info cmd_info[MAX_CMD_LIST];
 
-#define NOT !
-#define AND &&
-#define OR ||
-
-#define STATE(d) ((d)->connected)
-#define MAX_CMD_LIST 288
-
-extern const struct title_type   titles[4][ABS_MAX_LVL];
-extern char                      motd[MAX_STRING_LENGTH];
-extern char                      wmotd[MAX_STRING_LENGTH];
-extern struct char_data         *character_list;
-extern struct player_index_element *player_table;
-extern int                       top_of_p_table;
-extern struct index_data        *mob_index;
-extern struct index_data        *obj_index;
-extern struct hash_header        room_db;
-extern struct char_data         *board_kludge_char;
-extern int                       DEBUG;
-extern int                       DEBUG2;
-struct command_info              cmd_info[MAX_CMD_LIST];
-
-char                             echo_on[] =
+char echo_on[] =
 {
-  IAC, WONT, TELOPT_ECHO, '\r', '\n', '\0'};
-char                             echo_off[] =
+  IAC, WONT, TELOPT_ECHO, '\0'};
+char echo_off[] =
 {
   IAC, WILL, TELOPT_ECHO, '\0'};
-int                              WizLock;
+int WizLock;
 
-/*
- * external fcntls 
- */
-int                              check_exit_alias(struct char_data *ch, char *argument);
-void                             set_title(struct char_data *ch);
-void                             init_char(struct char_data *ch);
-void                             store_to_char(struct char_file_u *st, struct char_data *ch);
-int                              create_entry(char *name);
-
-void PutPasswd(char *who, char *pwd, char *host);
-int                              GetPasswd(char *tmp_name, char *pwd);
-int                              GetPlayerFile(char *tmp_name, struct char_data *ch);
-
-void                             log(char *str);
-
-void                             do_move(struct char_data *ch, char *argument, int cmd);
-void                             do_bandage(struct char_data *ch, char *argument, int cmd);
-void                             do_look(struct char_data *ch, char *argument, int cmd);
-void                             do_read(struct char_data *ch, char *argument, int cmd);
-void                             do_say(struct char_data *ch, char *argument, int cmd);
-void                             do_exit(struct char_data *ch, char *argument, int cmd);
-void                             do_snoop(struct char_data *ch, char *argument, int cmd);
-void                             do_insult(struct char_data *ch, char *argument, int cmd);
-void                             do_quit(struct char_data *ch, char *argument, int cmd);
-void                             do_qui(struct char_data *ch, char *argument, int cmd);
-void                             do_help(struct char_data *ch, char *argument, int cmd);
-void                             do_who(struct char_data *ch, char *argument, int cmd);
-void                             do_emote(struct char_data *ch, char *argument, int cmd);
-void                             do_echo(struct char_data *ch, char *argument, int cmd);
-void                             do_trans(struct char_data *ch, char *argument, int cmd);
-void                             do_kill(struct char_data *ch, char *argument, int cmd);
-void                             do_stand(struct char_data *ch, char *argument, int cmd);
-void                             do_sit(struct char_data *ch, char *argument, int cmd);
-void                             do_rest(struct char_data *ch, char *argument, int cmd);
-void                             do_sleep(struct char_data *ch, char *argument, int cmd);
-void                             do_wake(struct char_data *ch, char *argument, int cmd);
-void                             do_force(struct char_data *ch, char *argument, int cmd);
-void                             do_get(struct char_data *ch, char *argument, int cmd);
-void                             do_drop(struct char_data *ch, char *argument, int cmd);
-void                             do_news(struct char_data *ch, char *argument, int cmd);
-void                             do_score(struct char_data *ch, char *argument, int cmd);
-void                             do_inventory(struct char_data *ch, char *argument, int cmd);
-void                             do_equipment(struct char_data *ch, char *argument, int cmd);
-void                             do_shout(struct char_data *ch, char *argument, int cmd);
-void                             do_not_here(struct char_data *ch, char *argument, int cmd);
-void                             do_tell(struct char_data *ch, char *argument, int cmd);
-void                             do_invis_off(struct char_data *ch, char *argument, int cmd);
-void                             do_group_tell(struct char_data *ch, char *argument, int cmd);
-void                             do_group_report(struct char_data *ch, char *argument, int cmd);
-void                             do_wear(struct char_data *ch, char *argument, int cmd);
-void                             do_wield(struct char_data *ch, char *argument, int cmd);
-void                             do_grab(struct char_data *ch, char *argument, int cmd);
-void                             do_remove(struct char_data *ch, char *argument, int cmd);
-void                             do_put(struct char_data *ch, char *argument, int cmd);
-void                             do_shutdown(struct char_data *ch, char *argument, int cmd);
-void                             do_save(struct char_data *ch, char *argument, int cmd);
-void                             do_hit(struct char_data *ch, char *argument, int cmd);
-void                             do_string(struct char_data *ch, char *arg, int cmd);
-void                             do_give(struct char_data *ch, char *arg, int cmd);
-void                             do_stat(struct char_data *ch, char *arg, int cmd);
-void                             do_guard(struct char_data *ch, char *arg, int cmd);
-void                             do_time(struct char_data *ch, char *arg, int cmd);
-void                             do_weather(struct char_data *ch, char *arg, int cmd);
-void                             do_load(struct char_data *ch, char *arg, int cmd);
-void                             do_purge(struct char_data *ch, char *arg, int cmd);
-void                             do_shutdow(struct char_data *ch, char *arg, int cmd);
-void                             do_idea(struct char_data *ch, char *arg, int cmd);
-void                             do_typo(struct char_data *ch, char *arg, int cmd);
-void                             do_bug(struct char_data *ch, char *arg, int cmd);
-void                             do_whisper(struct char_data *ch, char *arg, int cmd);
-void                             do_cast(struct char_data *ch, char *arg, int cmd);
-void                             do_at(struct char_data *ch, char *arg, int cmd);
-void                             do_goto(struct char_data *ch, char *arg, int cmd);
-void                             do_form(struct char_data *ch, char *arg, int cmd);
-void                             do_ask(struct char_data *ch, char *arg, int cmd);
-void                             do_drink(struct char_data *ch, char *arg, int cmd);
-void                             do_eat(struct char_data *ch, char *arg, int cmd);
-void                             do_pour(struct char_data *ch, char *arg, int cmd);
-void                             do_sip(struct char_data *ch, char *arg, int cmd);
-void                             do_taste(struct char_data *ch, char *arg, int cmd);
-void                             do_order(struct char_data *ch, char *arg, int cmd);
-void                             do_follow(struct char_data *ch, char *arg, int cmd);
-void                             do_rent(struct char_data *ch, char *arg, int cmd);
-void                             do_offer(struct char_data *ch, char *arg, int cmd);
-void                             do_advance(struct char_data *ch, char *arg, int cmd);
-void                             do_close(struct char_data *ch, char *arg, int cmd);
-void                             do_open(struct char_data *ch, char *arg, int cmd);
-void                             do_lock(struct char_data *ch, char *arg, int cmd);
-void                             do_unlock(struct char_data *ch, char *arg, int cmd);
-void                             do_exits(struct char_data *ch, char *arg, int cmd);
-void                             do_enter(struct char_data *ch, char *arg, int cmd);
-void                             do_leave(struct char_data *ch, char *arg, int cmd);
-void                             do_write(struct char_data *ch, char *arg, int cmd);
-void                             do_flee(struct char_data *ch, char *arg, int cmd);
-void                             do_sneak(struct char_data *ch, char *arg, int cmd);
-void                             do_hide(struct char_data *ch, char *arg, int cmd);
-void                             do_backstab(struct char_data *ch, char *arg, int cmd);
-void                             do_pick(struct char_data *ch, char *arg, int cmd);
-void                             do_steal(struct char_data *ch, char *arg, int cmd);
-void                             do_mount(struct char_data *ch, char *arg, int cmd);
-void                             do_land(struct char_data *ch, char *arg, int cmd);
-void                             do_bash(struct char_data *ch, char *arg, int cmd);
-void                             do_doorbash(struct char_data *ch, char *arg, int cmd);
-void                             do_restore_all(struct char_data *ch, char *arg, int cmd);
-void                             do_punch(struct char_data *ch, char *arg, int cmd);
-void                             do_rescue(struct char_data *ch, char *arg, int cmd);
-void                             do_kick(struct char_data *ch, char *arg, int cmd);
-void                             do_examine(struct char_data *ch, char *arg, int cmd);
-void                             do_info(struct char_data *ch, char *arg, int cmd);
-void                             do_users(struct char_data *ch, char *arg, int cmd);
-void                             do_where(struct char_data *ch, char *arg, int cmd);
-void                             do_levels(struct char_data *ch, char *arg, int cmd);
-void                             do_reroll(struct char_data *ch, char *arg, int cmd);
-void                             do_brief(struct char_data *ch, char *arg, int cmd);
-void                             do_wizlist(struct char_data *ch, char *arg, int cmd);
-void                             do_consider(struct char_data *ch, char *arg, int cmd);
-void                             do_group(struct char_data *ch, char *arg, int cmd);
-void                             do_restore(struct char_data *ch, char *arg, int cmd);
-void                             do_return(struct char_data *ch, char *argument, int cmd);
-void                             do_switch(struct char_data *ch, char *argument, int cmd);
-void                             do_quaff(struct char_data *ch, char *argument, int cmd);
-void                             do_recite(struct char_data *ch, char *argument, int cmd);
-void                             do_use(struct char_data *ch, char *argument, int cmd);
-void                             do_pose(struct char_data *ch, char *argument, int cmd);
-void                             do_noshout(struct char_data *ch, char *argument, int cmd);
-void                             do_show_logs(struct char_data *ch, char *argument, int cmd);
-void                             do_plr_noshout(struct char_data *ch, char *argument, int cmd);
-void                             do_plr_notell(struct char_data *ch, char *argument, int cmd);
-void                             do_plr_nosummon(struct char_data *ch, char *argument, int cmd);
-void                             do_plr_noteleport(struct char_data *ch, char *argument, int cmd);
-void                             do_search(struct char_data *ch, char *argument, int cmd);
-void                             do_skills(struct char_data *ch, char *argument, int cmd);
-void                             do_peer(struct char_data *ch, char *argument, int cmd);
-void                             do_wizhelp(struct char_data *ch, char *argument, int cmd);
-void                             do_credits(struct char_data *ch, char *argument, int cmd);
-void                             do_compact(struct char_data *ch, char *argument, int cmd);
-void                             do_wimp(struct char_data *ch, char *argument, int cmd);	/* * jdb -8-16 */
-void                             do_commune(struct char_data *ch, char *argument, int cmd);	/* * jdb - 9-1 */
-void                             do_nohassle(struct char_data *ch, char *argument, int cmd);	/* * jdb 9-6 */
-void                             do_system(struct char_data *ch, char *argument, int cmd);	/* * jdb 9-16 */
-void                             do_pull(struct char_data *ch, char *argument, int cmd);	/* * jdb 9-16 */
-void                             do_stealth(struct char_data *ch, char *argument, int cmd);	/* * jdb 9-17 */
-void                             do_cust(struct char_data *ch, char *arg, int cmd);	/* * jdb 9-29 */
-void                             do_set(struct char_data *ch, char *arg, int cmd);	/* * jdb 9-29 */
-void                             do_rsave(struct char_data *ch, char *arg, int cmd);	/* * jdb 10-5 */
-void                             do_rload(struct char_data *ch, char *arg, int cmd);	/* * jdb 10-5 */
-void                             do_wizlock(struct char_data *ch, char *arg, int cmd);	/* * jdb 10-15 */
-void                             do_highfive(struct char_data *ch, char *arg, int cmd);		/* * jdb 10-30 */
-void                             do_title(struct char_data *ch, char *arg, int cmd);	/* * jdb 11-3 */
-void                             do_pretitle(struct char_data *ch, char *arg, int cmd);
-void                             do_uptime(struct char_data *ch, char *arg, int cmd);	/* * jdb 12-3 */
-void                             do_instazone(struct char_data *ch, char *arg, int cmd);	/* * jdb 12-3 */
-void                             do_disarm(struct char_data *ch, char *arg, int cmd);	/* * jdb 12-3 */
-void                             do_junk(struct char_data *ch, char *arg, int cmd);	/* * jdb 12-17 */
-void                             do_gain(struct char_data *ch, char *arg, int cmd);	/* * jdb 1-19 */
-void                             do_track(struct char_data *ch, char *arg, int cmd);
-void                             do_swat(struct char_data *ch, char *arg, int cmd);
-void                             do_world(struct char_data *ch, char *arg, int cmd);
-void                             do_spells(struct char_data *ch, char *arg, int cmd);
-void                             do_allcommands(struct char_data *ch, char *arg, int cmd);
-void                             do_action(struct char_data *ch, char *arg, int cmd);
-void                             do_practice(struct char_data *ch, char *arg, int cmd);
-void                             do_assist(struct char_data *ch, char *arg, int cmd);
-void                             do_breath(struct char_data *ch, char *arg, int cmd);
-void                             do_show(struct char_data *ch, char *arg, int cmd);
-void                             do_debug(struct char_data *ch, char *arg, int cmd);
-void                             do_invis(struct char_data *ch, char *arg, int cmd);
-void                             do_pager(struct char_data *ch, char *arg, int cmd);
-void                             do_whod(struct char_data *ch, char *arg, int cmd);
-void                             do_split(struct char_data *ch, char *arg, int cmd);
-void                             do_apraise(struct char_data *ch, char *arg, int cmd);
-void                             do_scribe(struct char_data *ch, char *arg, int cmd);
-
-char                            *command[] =
+char *command[] =
 {
-  "north",			/* 1 */
+  "north",	       /* 1 */
   "east",
   "south",
   "west",
@@ -236,9 +57,7 @@ char                            *command[] =
   "exits",
   "kiss",
   "get",
-  "drink",			/*
-				 * 11 
-				 */
+  "drink",	       /* 11 */
   "eat",
   "wear",
   "wield",
@@ -248,9 +67,7 @@ char                            *command[] =
   "shout",
   "tell",
   "inventory",
-  "qui",			/*
-				 * 21 
-				 */
+  "qui",	       /* 21 */
   "bounce",
   "smile",
   "dance",
@@ -260,9 +77,7 @@ char                            *command[] =
   "giggle",
   "shake",
   "puke",
-  "growl",			/*
-				 * 31 
-				 */
+  "growl",	       /* 31 */
   "scream",
   "insult",
   "comfort",
@@ -272,9 +87,7 @@ char                            *command[] =
   "help",
   "who",
   "emote",
-  "echo",			/*
-				 * 41 
-				 */
+  "echo",	       /* 41 */
   "stand",
   "sit",
   "rest",
@@ -284,9 +97,7 @@ char                            *command[] =
   "transfer",
   "hug",
   "snuggle",
-  "cuddle",			/*
-				 * 51 
-				 */
+  "cuddle",	       /* 51 */
   "nuzzle",
   "cry",
   "news",
@@ -296,9 +107,7 @@ char                            *command[] =
   "value",
   "list",
   "drop",
-  "goto",			/*
-				 * 61 
-				 */
+  "goto",	       /* 61 */
   "weather",
   "read",
   "pour",
@@ -308,9 +117,7 @@ char                            *command[] =
   "shutdow",
   "save",
   "hit",
-  "string",			/*
-				 * 71 
-				 */
+  "string",	       /* 71 */
   "give",
   "quit",
   "stat",
@@ -320,9 +127,7 @@ char                            *command[] =
   "purge",
   "shutdown",
   "idea",
-  "typo",			/*
-				 * 81 
-				 */
+  "typo",	       /* 81 */
   "bug",
   "whisper",
   "cast",
@@ -332,9 +137,7 @@ char                            *command[] =
   "sip",
   "taste",
   "snoop",
-  "follow",			/*
-				 * 91 
-				 */
+  "follow",	       /* 91 */
   "rent",
   "offer",
   "poke",
@@ -344,9 +147,7 @@ char                            *command[] =
   "bow",
   "open",
   "close",
-  "lock",			/*
-				 * 101 
-				 */
+  "lock",	       /* 101 */
   "unlock",
   "leave",
   "applaud",
@@ -356,9 +157,7 @@ char                            *command[] =
   "clap",
   "cough",
   "curtsey",
-  "fart",			/*
-				 * 111 
-				 */
+  "fart",	       /* 111 */
   "flip",
   "fondle",
   "frown",
@@ -368,9 +167,7 @@ char                            *command[] =
   "grope",
   "hiccup",
   "lick",
-  "love",			/*
-				 * 121 
-				 */
+  "love",	       /* 121 */
   "moan",
   "nibble",
   "pout",
@@ -380,9 +177,7 @@ char                            *command[] =
   "shrug",
   "sing",
   "slap",
-  "smirk",			/*
-				 * 131 
-				 */
+  "smirk",	       /* 131 */
   "snap",
   "sneeze",
   "snicker",
@@ -392,9 +187,7 @@ char                            *command[] =
   "squeeze",
   "stare",
   "strut",
-  "thank",			/*
-				 * 141 
-				 */
+  "thank",	       /* 141 */
   "twiddle",
   "wave",
   "whistle",
@@ -404,9 +197,7 @@ char                            *command[] =
   "snowball",
   "write",
   "hold",
-  "flee",			/*
-				 * 151 
-				 */
+  "flee",	       /* 151 */
   "sneak",
   "hide",
   "backstab",
@@ -416,9 +207,7 @@ char                            *command[] =
   "rescue",
   "kick",
   "french",
-  "comb",			/*
-				 * 161 
-				 */
+  "comb",	       /* 161 */
   "massage",
   "tickle",
   "practice",
@@ -428,9 +217,7 @@ char                            *command[] =
   "info",
   "'",
   "practise",
-  "curse",			/*
-				 * 171 
-				 */
+  "curse",	       /* 171 */
   "use",
   "where",
   "levels",
@@ -440,9 +227,7 @@ char                            *command[] =
   "beg",
   "bleed",
   "cringe",
-  "daydream",			/*
-				 * 181 
-				 */
+  "daydream",	       /* 181 */
   "fume",
   "grovel",
   "hop",
@@ -452,9 +237,7 @@ char                            *command[] =
   "ponder",
   "punch",
   "snarl",
-  "spank",			/*
-				 * 191 
-				 */
+  "spank",	       /* 191 */
   "steam",
   "tackle",
   "taunt",
@@ -464,213 +247,83 @@ char                            *command[] =
   "yodel",
   "brief",
   "wizlist",
-  "consider",			/*
-				 * 201 
-				 */
+  "consider",	       /* 201 */
   "group",
   "restore",
   "return",
-  "switch",			/*
-				 * 205 
-				 */
+  "switch",	       /* 205 */
   "quaff",
   "recite",
   "users",
   "pose",
   "noshout",
-  "wizhelp",			/*
-				 * 211 
-				 */
-  "credits",			/*
-				 * 212 
-				 */
-  "compact",			/*
-				 * 213 
-				 */
-  ":",				/*
-				 * emote 214 
-				 */
-  "hermit",			/*
-				 * 215
-				 */
-  "slay",			/*
-				 * instead of "kill" for immorts (8/16) 
-							      *//*
-							      * 216
-							      */
-  "wimp",			/*
-				 * 217 
-				 */
-  "junk",			/*
-				 * 218 
-				 */
-  "deposit",			/*
-				 * 219 
-			       *//*
-			       * 9 - 4ish 
-			       */
-  "withdraw",			/*
-				 * 220 
-				 */
+  "wizhelp",	       /* 211 */
+  "credits",	       /* 212 */
+  "compact",	       /* 213 */
+  ":",		       /* emote 214 */
+  "hermit",	       /* 215 */
+  "slay",	       /* instead of "kill" for immorts (8/16) 216 */
+  "wimp",	       /* 217 */
+  "junk",	       /* 218 */
+  "deposit",	       /* 219 * 9 - 4ish */
+  "withdraw",	       /* 220 */
   "balance",
-  "nohassle",			/*
-				 * 9 - 6 
-				 */
-  "system",			/*
-				 * 9 - 16 
-				 */
+  "nohassle",	       /* 9 - 6 */
+  "system",	       /* 9 - 16 */
   "pull",
-  "stealth",			/*
-				 * 225 
-				 */
-  "cust",			/*
-				 * 226 
-				 */
-  "pset",			/*
-				 * 227 
-				 */
-  "sroom",			/*
-				 * 228 
-				 */
-  "lroom",			/*
-				 * 229 
-				 */
-  "track",			/*
-				 * 230 
-				 */
-  "wizlock",			/*
-				 * 231 
-				 */
-  "highfive",			/*
-				 * 232 
-				 */
-  "title",			/*
-				 * 233 
-				 */
-  "whozone",			/*
-				 * 234 
-				 */
-  "assist",			/*
-				 * 235 
-				 */
-  "swat",			/*
-				 * 236 
-				 */
-  "world",			/*
-				 * 237 
-				 */
-  "allspells",			/*
-				 * 238 
-				 */
-  "breath",			/*
-				 * 239 
-				 */
-  "show",			/*
-				 * 240 
-				 */
-  "debug",			/*
-				 * 241 
-				 */
-  "invisible",			/*
-				 * 242 
-				 */
-  "gain",			/*
-				 * 243 
-				 */
-  "mkzone",			/*
-				 * 244 
-				 */
-  "disarm",			/*
-				 * 245 
-				 */
-  "bonk",			/*
-				 * 246 
-				 */
-  "wiznet",			/*
-				 * 247 
-				 */
-  "form",			/*
-				 * 248 
-				 */
-  "gtell",			/*
-				 * 249 
-				 */
-  "pretitle",			/*
-				 * 250 
-				 */
-  "allcommands",		/*
-				 * 251 
-				 */
-  "grep",			/*
-				 * 252 
-				 */
-  "pager",			/*
-				 * 253 
-				 */
-  "appear",			/*
-				 * 254 
-				 */
-  "logs",			/*
-				 * 255 
-				 */
-  "sethome",			/*
-				 * 256 
-				 */
-  "register",			/*
-				 * 257 
-				 */
-  "send",			/*
-				 * 258 
-				 */
-  "whod",			/*
-				 * 259 
-				 */
-  "split",			/*
-				 * 260 
-				 */
-  "notell",			/*
-				 * 261 
-				 */
-  "scribe",			/*
-				 * 262 
-				 */
-  "apraise",			/*
-				 * 263 
-				 */
-  "bandage",			/*
-				 * 264 
-				 */
-  "search",			/*
-				 * 265 
-				 */
-  "skills",			/*
-				 * 266 
-				 */
-  "doorbash",			/*
-				 * 267 
-				 */
-  "restoreall",			/*
-				 * 268 
-				 */
-  "mount",			/*
-				 * 269 
-				 */
-  "dismount",			/*
-				 * 270 
-				 */
-  "land",			/*
-				 * 271 
-				 */
-  "nosummon",			/*
-				 * 272 
-				 */
-  "noteleport",			/*
-				 * 273 
-				 */
+  "stealth",	       /* 225 */
+  "cust",	       /* 226 */
+  "pset",	       /* 227 */
+  "sroom",	       /* 228 */
+  "lroom",	       /* 229 */
+  "track",	       /* 230 */
+  "wizlock",	       /* 231 */
+  "highfive",	       /* 232 */
+  "title",	       /* 233 */
+  "whozone",	       /* 234 */
+  "assist",	       /* 235 */
+  "swat",	       /* 236 */
+  "world",	       /* 237 */
+  "allspells",	       /* 238 */
+  "breath",	       /* 239 */
+  "show",	       /* 240 */
+  "debug",	       /* 241 */
+  "invisible",	       /* 242 */
+  "gain",	       /* 243 */
+  "mkzone",	       /* 244 */
+  "disarm",	       /* 245 */
+  "bonk",	       /* 246 */
+  "wiznet",	       /* 247 */
+  "form",	       /* 248 */
+  "gtell",	       /* 249 */
+  "pretitle",	       /* 250 */
+  "allcommands",       /* 251 */
+  "grep",	       /* 252 */
+  "pager",	       /* 253 */
+  "appear",	       /* 254 */
+  "logs",	       /* 255 */
+  "sethome",	       /* 256 */
+  "register",	       /* 257 */
+  "send",	       /* 258 */
+  "whod",	       /* 259 */
+  "split",	       /* 260 */
+  "notell",	       /* 261 */
+  "scribe",	       /* 262 */
+  "apraise",	       /* 263 */
+  "bandage",	       /* 264 */
+  "search",	       /* 265 */
+  "skills",	       /* 266 */
+  "doorbash",	       /* 267 */
+  "restoreall",	       /* 268 */
+  "mount",	       /* 269 */
+  "dismount",	       /* 270 */
+  "land",	       /* 271 */
+  "nosummon",	       /* 272 */
+  "noteleport",	       /* 273 */
   "\n"
 };
 
-char                            *fill[] =
+char *fill[] =
 {
   "in",
   "from",
@@ -682,15 +335,11 @@ char                            *fill[] =
   "\n"
 };
 
-int 
-search_block(char *arg, char **list, bool exact)
+int search_block(char *arg, char **list, bool exact)
 {
-  register int                     i,
-                                   l;
+  register int i, l;
 
-  /*
-   * Make into lower case, and get length of string 
-   */
+  /* Make into lower case, and get length of string */
   for (l = 0; *(arg + l); l++)
     *(arg + l) = LOWER(*(arg + l));
 
@@ -700,9 +349,7 @@ search_block(char *arg, char **list, bool exact)
 	return (i);
   } else {
     if (!l)
-      l = 1;			/*
-				 * Avoid "" to match the first available string 
-				 */
+      l = 1;	       /* Avoid "" to match the first available string */
     for (i = 0; **(list + i) != '\n'; i++)
       if (!strncmp(arg, *(list + i), l))
 	return (i);
@@ -710,23 +357,16 @@ search_block(char *arg, char **list, bool exact)
   return (-1);
 }
 
-int 
-old_search_block(char *argument, int begin, int length, char **list, int mode)
+int old_search_block(char *argument, int begin, int length, char **list, int mode)
 {
-  int                              guess,
-                                   found,
-                                   search;
+  int guess, found, search;
 
-  /*
-   * If the word contain 0 letters, then a match is already found 
-   */
+  /* If the word contain 0 letters, then a match is already found */
   found = (length < 1);
 
   guess = 0;
 
-  /*
-   * Search for a match 
-   */
+  /* Search for a match */
 
   if (mode)
     while (NOT found AND * (list[guess]) != '\n') {
@@ -746,16 +386,13 @@ old_search_block(char *argument, int begin, int length, char **list, int mode)
   return (found ? guess : -1);
 }
 
-void 
-command_interpreter(struct char_data *ch, char *argument)
+void command_interpreter(struct char_data *ch, char *argument)
 {
-  int                              look_at,
-                                   cmd,
-                                   begin;
-  char                             buf[200];
-  extern int                       no_specials;
-  extern struct char_data         *board_kludge_char;
-  char                             debug_buf[512];
+  int look_at, cmd, begin;
+  char buf[200];
+  extern int no_specials;
+  extern struct char_data *board_kludge_char;
+  char debug_buf[512];
 
   REMOVE_BIT(ch->specials.affected_by, AFF_HIDE);
 
@@ -763,18 +400,12 @@ command_interpreter(struct char_data *ch, char *argument)
     board_save_board(FindBoardInRoom(ch->in_room));
     board_kludge_char = 0;
   }
-  /*
-   * Find first non blank 
-   */
+  /* Find first non blank */
   for (begin = 0; (*(argument + begin) == ' '); begin++);
 
-  /*
-   * Find length of first word 
-   */
+  /* Find length of first word */
   for (look_at = 0; *(argument + begin + look_at) > ' '; look_at++) {
-    /*
-     * Make all letters lower case AND find length 
-     */
+    /* Make all letters lower case AND find length */
     *(argument + begin + look_at) = LOWER(*(argument + begin + look_at));
   }
 
@@ -831,7 +462,7 @@ command_interpreter(struct char_data *ch, char *argument)
 
 	if ((GetMaxLevel(ch) >= LOW_IMMORTAL) && (GetMaxLevel(ch) < IMPLEMENTOR)) {
 	  sprintf(buf, "%s:%s", ch->player.name, argument);
-	  slog(buf);
+	  log(buf);
 	}
       }
       return;
@@ -849,31 +480,20 @@ command_interpreter(struct char_data *ch, char *argument)
     send_to_char("Pardon? \n\r", ch);
 }
 
-void 
-argument_interpreter(char *argument, char *first_arg, char *second_arg)
+void argument_interpreter(char *argument, char *first_arg, char *second_arg)
 {
-  int                              look_at,
-                                   found,
-                                   begin;
+  int look_at, found, begin;
 
   found = begin = 0;
 
   do {
-    /*
-     * Find first non blank 
-     */
+    /* Find first non blank */
     for (; *(argument + begin) == ' '; begin++);
 
-    /*
-     * Find length of first word 
-     */
+    /* Find length of first word */
+    /* Make all letters lower case, AND copy them to first_arg */
     for (look_at = 0; *(argument + begin + look_at) > ' '; look_at++)
-      /*
-       * Make all letters lower case,
-       * AND copy them to first_arg 
-       */
-      *(first_arg + look_at) =
-	LOWER(*(argument + begin + look_at));
+      *(first_arg + look_at) = LOWER(*(argument + begin + look_at));
 
     *(first_arg + look_at) = '\0';
     begin += look_at;
@@ -881,19 +501,12 @@ argument_interpreter(char *argument, char *first_arg, char *second_arg)
   } while (fill_word(first_arg));
 
   do {
-    /*
-     * Find first non blank 
-     */
+    /* Find first non blank */
     for (; *(argument + begin) == ' '; begin++);
 
-    /*
-     * Find length of first word 
-     */
+    /* Find length of first word */
+    /* Make all letters lower case, AND copy them to second_arg */
     for (look_at = 0; *(argument + begin + look_at) > ' '; look_at++)
-      /*
-       * Make all letters lower case,
-       * AND copy them to second_arg 
-       */
       *(second_arg + look_at) =
 	LOWER(*(argument + begin + look_at));
 
@@ -903,10 +516,9 @@ argument_interpreter(char *argument, char *first_arg, char *second_arg)
   } while (fill_word(second_arg));
 }
 
-int 
-is_number(char *str)
+int is_number(char *str)
 {
-  int                              look_at;
+  int look_at;
 
   if (*str == '\0')
     return (0);
@@ -936,31 +548,17 @@ is_number(char *str)
  * find the first sub-argument of a string, return pointer to first char in
  * primary argument, following the sub-arg                  
  */
-char                            *
-one_argument(char *argument, char *first_arg)
+char *one_argument(char *argument, char *first_arg)
 {
-  int                              found,
-                                   begin,
-                                   look_at;
+  int found, begin, look_at;
 
   found = begin = 0;
 
   do {
-    /*
-     * Find first non blank 
-     */
     for (; isspace(*(argument + begin)); begin++);
 
-    /*
-     * Find length of first word 
-     */
     for (look_at = 0; *(argument + begin + look_at) > ' '; look_at++)
-      /*
-       * Make all letters lower case,
-       * AND copy them to first_arg 
-       */
-      *(first_arg + look_at) =
-	LOWER(*(argument + begin + look_at));
+      *(first_arg + look_at) = LOWER(*(argument + begin + look_at));
 
     *(first_arg + look_at) = '\0';
     begin += look_at;
@@ -969,16 +567,14 @@ one_argument(char *argument, char *first_arg)
   return (argument + begin);
 }
 
-void 
-only_argument(char *argument, char *dest)
+void only_argument(char *argument, char *dest)
 {
   while (*argument && isspace(*argument))
     argument++;
   strcpy(dest, argument);
 }
 
-int 
-fill_word(char *argument)
+int fill_word(char *argument)
 {
   return (search_block(argument, fill, TRUE) >= 0);
 }
@@ -986,8 +582,7 @@ fill_word(char *argument)
 /*
  * determine if a given string is an abbreviation of another 
  */
-int 
-is_abbrev(char *arg1, char *arg2)
+int is_abbrev(char *arg1, char *arg2)
 {
   if (!*arg1)
     return (0);
@@ -1002,8 +597,7 @@ is_abbrev(char *arg1, char *arg2)
 /*
  * return first 'word' plus trailing substring of input string 
  */
-void 
-half_chop(char *string, char *arg1, char *arg2)
+void half_chop(char *string, char *arg1, char *arg2)
 {
   for (; isspace(*string); string++);
   for (; !isspace(*arg1 = *string) && *string; string++, arg1++);
@@ -1012,28 +606,22 @@ half_chop(char *string, char *arg1, char *arg2)
   for (; *arg2 = *string; string++, arg2++);
 }
 
-int 
-special(struct char_data *ch, int cmd, char *arg)
+int special(struct char_data *ch, int cmd, char *arg)
 {
-  register struct obj_data        *i;
-  register struct char_data       *k;
-  int                              j,
-                                   test;
+  register struct obj_data *i;
+  register struct char_data *k;
+  int j, test;
 
   if (ch->in_room == NOWHERE) {
     char_to_room(ch, 3001);
     return;
   }
-  /*
-   * special in room? 
-   */
+  /* special in room?   */
   if (real_roomp(ch->in_room)->funct)
     if ((*real_roomp(ch->in_room)->funct) (ch, cmd, arg))
       return (1);
 
-  /*
-   * special in equipment list? 
-   */
+  /* special in equipment list?   */
   for (j = 0; j <= (MAX_WEAR - 1); j++)
     if (ch->equipment[j] && ch->equipment[j]->item_number >= 0)
       if (obj_index[ch->equipment[j]->item_number].func)
@@ -1041,9 +629,7 @@ special(struct char_data *ch, int cmd, char *arg)
 	  return (1);
 
   test++;
-  /*
-   * special in inventory? 
-   */
+  /* special in inventory?   */
   for (i = ch->carrying; i; i = i->next_content)
     if (i->item_number >= 0)
       if (obj_index[i->item_number].func)
@@ -1052,9 +638,7 @@ special(struct char_data *ch, int cmd, char *arg)
 
   test++;
 
-  /*
-   * special in mobile present? 
-   */
+  /* special in mobile present?   */
   for (k = real_roomp(ch->in_room)->people; k; k = k->next_in_room)
     if (IS_MOB(k))
       if (mob_index[k->nr].func)
@@ -1063,9 +647,7 @@ special(struct char_data *ch, int cmd, char *arg)
 
   test++;
 
-  /*
-   * special in object present? 
-   */
+  /* special in object present?   */
   for (i = real_roomp(ch->in_room)->contents; i; i = i->next_content)
     if (i->item_number >= 0)
       if (obj_index[i->item_number].func)
@@ -1077,10 +659,9 @@ special(struct char_data *ch, int cmd, char *arg)
   return (0);
 }
 
-void 
-assign_command_pointers(void)
+void assign_command_pointers(void)
 {
-  int                              position;
+  int position;
 
   for (position = 0; position < MAX_CMD_LIST; position++)
     cmd_info[position].command_pointer = 0;
@@ -1251,9 +832,7 @@ assign_command_pointers(void)
   COMMANDO(164, POSITION_RESTING, do_practice, 1);
   COMMANDO(165, POSITION_RESTING, do_action, 0);
   COMMANDO(166, POSITION_SITTING, do_examine, 0);
-  COMMANDO(167, POSITION_RESTING, do_get, 0);	/*
-						 * TAKE 
-						 */
+  COMMANDO(167, POSITION_RESTING, do_get, 0);	/* TAKE */
   COMMANDO(168, POSITION_SLEEPING, do_info, 0);
   COMMANDO(169, POSITION_RESTING, do_say, 0);
   COMMANDO(170, POSITION_RESTING, do_practice, 1);
@@ -1369,23 +948,18 @@ assign_command_pointers(void)
   COMMANDO(259, POSITION_DEAD, do_whod, 59);
   COMMANDO(268, POSITION_DEAD, do_restore_all, 59);
 
-}				/*
-				 * 259 - last command number used 
-				 */
+}		       /* 259 - last command number used */
 
 /*
- * *************************************************************************
- * *  Stuff for controlling the non-playing sockets (get name, pwd etc)       *
- * ************************************************************************* 
+ * Stuff for controlling the non-playing sockets (get name, pwd etc)
  */
 
 /*
  * locate entry in p_table with entry->name == name. -1 mrks failed search 
  */
-int 
-find_name(char *name)
+int find_name(char *name)
 {
-  int                              i;
+  int i;
 
   for (i = 0; i <= top_of_p_table; i++) {
     if (!str_cmp((player_table + i)->name, name))
@@ -1394,14 +968,10 @@ find_name(char *name)
   return (-1);
 }
 
-int 
-_parse_name(char *arg, char *name)
+int _parse_name(char *arg, char *name)
 {
-  int                              i;
+  int i;
 
-  /*
-   * skip whitespaces 
-   */
   for (; isspace(*arg); arg++);
   for (i = 0; *name = *arg; arg++, i++, name++)
     if ((*arg < 0) || !isalpha(*arg) || i > 15)
@@ -1413,414 +983,314 @@ _parse_name(char *arg, char *name)
 }
 
 /*
- * deal with newcomers and other non-playing sockets 
+ * An improved version of _parse_name()
  */
-void 
-nanny(struct descriptor_data *d, char *arg)
+int valid_parse_name(char *arg, char *name)
 {
-  char                             buf[100];
-  int                              player_i,
-                                   count = 0,
-                                   oops = FALSE;
-  char                             tmp_name[20];
-  struct char_file_u               tmp_store;
-  struct char_data                *tmp_ch;
-  struct char_data                 tmp_ch2;
-  struct descriptor_data          *k;
-  extern struct descriptor_data   *descriptor_list;
-  extern int                       WizLock;
+  register int i;
+  char *hard[] = { "god", "demigod", NULL };
 
-  void                             do_look(struct char_data *ch, char *argument, int cmd);
-  void                             load_char_objs(struct char_data *ch);
-  int                              load_char(char *name, struct char_file_u *char_element);
+  if(!arg || !*arg)
+    return 0;
+  for(i= 0; hard[i]; i++)
+    if(!strcasecmp(hard[i], arg))
+      return 0;
+  for(i= 0; *name= *arg; i++, arg++, name++)
+    if(!*arg || !isalpha(*arg) || i> 15)
+      return 0;
+  return 1;
+}
 
-  write(d->descriptor, echo_on, 6);
-
-  switch (STATE(d)) {
-  case CON_NME:
-    {
-      if (!d->character) {
-	CREATE(d->character, struct char_data, 1);
-
-	clear_char(d->character);
-	d->character->desc = d;
-      }
-      for (; isspace(*arg); arg++);
-      if (!*arg)
-	close_socket(d);
-      else {
-	if (_parse_name(arg, tmp_name)) {
-	  SEND_TO_Q("Illegal name, please try another.", d);
-	  SEND_TO_Q("Name: ", d);
-	  return;
-	}
-	/*
-	 * Check if already playing 
-	 */
-	for (k = descriptor_list; k; k = k->next) {
-	  if ((k->character != d->character) && k->character) {
-	    if (k->original) {
-	      if (GET_NAME(k->original) &&
-		  (str_cmp(GET_NAME(k->original), tmp_name) == 0)) {
-		SEND_TO_Q("Already playing, cannot connect\n\r", d);
-		SEND_TO_Q("Name: ", d);
-		return;
-	      }
-	    } else {
-	      if (GET_NAME(k->character) &&
-		  (str_cmp(GET_NAME(k->character), tmp_name) == 0)) {
-		SEND_TO_Q("Already playing, cannot connect\n\r", d);
-		SEND_TO_Q("Name: ", d);
-		return;
-	      }
-	    }
-	  }
-	}
-
-	/*
-	 * GetPasswd gets the passwd entry from the player passwd file 
-	 */
-	if (GetPasswd(tmp_name, d->pwd)) {
-	  SEND_TO_Q("Password: ", d);
-	  write(d->descriptor, echo_off, 4);
-	  strcpy(d->usr_name, tmp_name);
-	  STATE(d) = CON_PWDNRM;
-          log("Password entry found.");
-	} else if(!strcmp(d->pwd, "NOT USED")||!strcmp(d->pwd, "IS VALID")) {
-          int escape_flag= 0;
-          log("Password file not used...");
-	  strcpy(d->usr_name, tmp_name);
-	  for (tmp_ch = character_list; tmp_ch; tmp_ch = tmp_ch->next) {
-	    if ((!IS_NPC(tmp_ch) && !tmp_ch->desc &&
-                 (!str_cmp(d->usr_name), GET_NAME(tmp_ch))) ||
-	        (IS_NPC(tmp_ch) && tmp_ch->orig &&
-	 	 !str_cmp(d->usr_name, GET_NAME(tmp_ch->orig))
-	        )) {
 /*
-	      if (GetPlayerFile(d->usr_name, &tmp_ch2) != 0) {
-                strcpy(d->pwd, tmp_ch2.pwd);
-	        SEND_TO_Q("Password: ", d);
-	        write(d->descriptor, echo_off, 4);
-	        STATE(d) = CON_PWDNRM;
-                log("Attempting reconnection.");
-                escape_flag= 1;
-              } else {
-                SEND_TO_Q("Cannot reconnect somehow... weird.\n\r",d);
-                SEND_TO_Q("Name: ",d);
-                return;
-              }
-*/
-	        SEND_TO_Q("Password: ", d);
-	        write(d->descriptor, echo_off, 4);
-	        STATE(d) = CON_PWDNRM;
-                log("Attempting reconnection.");
-                escape_flag= 1;
-            }
-          }
-          if(escape_flag) break;
-	  GET_NAME(d->character) = (char *)strdup(d->usr_name);
-	  if (GetPlayerFile(d->usr_name, d->character) != 0) {
-	    SEND_TO_Q("Password: ", d);
-	    write(d->descriptor, echo_off, 4);
-	    STATE(d) = CON_PWDNRM;
-            log("Player file found.");
-	  } else {
-            register int ack, blah;
-            char ack_name[80];
-            char pfft_name[80];
-            char *pfft;
-            extern int top_of_mobt, top_of_objt;
-
-            blah= 0;
-            strcpy(ack_name, tmp_name);
-            for(ack= 0; ack < top_of_mobt; ack++) {
-              strcpy(pfft_name, mob_index[ack].name);
-              if(!(pfft= (char *)strtok(pfft_name, " ")))
-                continue;
-              if(!strcasecmp(pfft, ack_name)) {
-                blah= 1;
-                break;
-              }
-              while(pfft= (char *)strtok(NULL, " ")) {
-                if(!strcasecmp(pfft, ack_name)) {
-                  blah= 1;
-                  break;
-                }
-              }
-              if(blah) break;
-            }
-#ifdef ANAL_MODE
-            for(ack= 0; ack < top_of_objt; ack++) {
-              strcpy(pfft_name, obj_index[ack].name);
-              if(!(pfft= (char *)strtok(pfft_name, " ")))
-                continue;
-              if(!strcasecmp(pfft, ack_name)) {
-                blah= 1;
-                break;
-              }
-              while(pfft= (char *)strtok(NULL, " ")) {
-                if(!strcasecmp(pfft, ack_name)) {
-                  blah= 1;
-                  break;
-                }
-              }
-              if(blah) break;
-            }
-#endif
-            if(blah) {
-              SEND_TO_Q("Sorry, that name is already used.\n\r",d);
-              SEND_TO_Q("Name: ",d);
-              return;
-            } else {
-              SEND_TO_Q("New Password: ", d);
-	      write(d->descriptor, echo_off, 4);
-	      strcpy(d->usr_name, tmp_name);
-	      STATE(d) = CON_PWDGET;
-              log("New player!");
-            }
-          }
-        } else {
-	  sprintf(buf, "Please email mud@yakko.cs.wmich.edu for character creation\n\r");
-	  SEND_TO_Q(buf, d);
-	  STATE(d) = CON_WIZLOCK;
-	}
+ * Make sure they are not trying to take a mob name...
+ */
+int already_mob_name(char *ack_name)
+{
+  register int ack, blah;
+  char pfft_name[80];
+  char *pfft;
+  extern int top_of_mobt;
+  
+  for (blah= FALSE, ack = 0; ack < top_of_mobt && !blah; ack++) {
+    strcpy(pfft_name, mob_index[ack].name);
+    if (!(pfft = (char *)strtok(pfft_name, " ")))
+      continue;
+    if (!strcasecmp(pfft, ack_name)) {
+      blah = TRUE;
+      break;
+    }
+    while (pfft = (char *)strtok(NULL, " ")) {
+      if (!strcasecmp(pfft, ack_name)) {
+        blah = TRUE;
+        break;
       }
     }
-    break;
+  }
+  return blah;
+}
 
-  case CON_PWDNRM:
-    {
-      for (; isspace(*arg); arg++);
-      if (!*arg)
-	close_socket(d);
-      else {
-	if (strncmp(arg, d->pwd, 10)) {
-	  SEND_TO_Q("Wrong password.\n\r", d);
-	  SEND_TO_Q("Password: ", d);
-	  write(d->descriptor, echo_off, 4);
-	  return;
-	}
-	for (tmp_ch = character_list; tmp_ch; tmp_ch = tmp_ch->next) {
-	  if (
+/*
+ * See if the player has lost his link
+ */
+int check_reconnect(struct descriptor_data *d)
+{
+  struct char_data *tmp_ch;
+
+  for (tmp_ch = character_list; tmp_ch; tmp_ch = tmp_ch->next) {
+    if (
 /* Doh!
  * If it is not a player, it will not have the player.name structure and
  * will SEGV before it checks IS_NPC().... please remember left-to-right.
- *	       ((!str_cmp(d->usr_name), GET_NAME(tmp_ch)) &&
- *		!tmp_ch->desc && !IS_NPC(tmp_ch)) ||
+ *             ((!str_cmp(d->usr_name), GET_NAME(tmp_ch)) &&
+ *              !tmp_ch->desc && !IS_NPC(tmp_ch)) ||
  */
- 	       (!IS_NPC(tmp_ch) && !tmp_ch->desc &&
-                (!str_cmp(d->usr_name), GET_NAME(tmp_ch))) ||
-	       (IS_NPC(tmp_ch) && tmp_ch->orig &&
-		!str_cmp(d->usr_name, GET_NAME(tmp_ch->orig))
-	       )) {
-	    write(d->descriptor, echo_on, 6);
-	    SEND_TO_Q("Reconnecting.\n\r", d);
-	    free_char(d->character);
-	    tmp_ch->desc = d;
-	    d->character = tmp_ch;
-	    tmp_ch->specials.timer = 0;
-	    if (tmp_ch->orig) {
-	      tmp_ch->desc->original = tmp_ch->orig;
-	      tmp_ch->orig = 0;
-	    }
-	    STATE(d) = CON_PLYNG;
-
-	    act("$n has reconnected.", TRUE, tmp_ch, 0, 0, TO_ROOM);
-	    sprintf(buf, "%s[%s] has reconnected.", GET_NAME(d->character), d->host);
-	    if (d->character->in_room == NOWHERE)
-	      char_to_room(d->character, DEFAULT_HOME);
-	    else {
-	      if (d->character->in_room == 0) {
-		char_from_room(d->character);
-		char_to_room(d->character, DEFAULT_HOME);
-	      }
-	    }
-	    log(buf);
-	    return;
-	  }
+        (!IS_NPC(tmp_ch) && !tmp_ch->desc &&
+         (!str_cmp(d->usr_name, GET_NAME(tmp_ch)))) ||
+          (IS_NPC(tmp_ch) && tmp_ch->orig &&
+           !str_cmp(d->usr_name, GET_NAME(tmp_ch->orig))
+        )) {
+      free_char(d->character);
+      tmp_ch->desc = d;
+      d->character = tmp_ch;
+      tmp_ch->specials.timer = 0;
+      if (tmp_ch->orig) {
+        tmp_ch->desc->original = tmp_ch->orig;
+        tmp_ch->orig = 0;
+      }
+      STATE(d) = CON_PLAYING;
+      dprintf(d, "\n\r%sReconnecting to %s.\n\r", echo_on, GET_NAME(d->character));
+      act("$n has reconnected.", TRUE, tmp_ch, 0, 0, TO_ROOM);
+      if (d->character->in_room == NOWHERE)
+        char_to_room(d->character, DEFAULT_HOME);
+      else {
+        if (d->character->in_room == 0) {
+          char_from_room(d->character);
+          char_to_room(d->character, DEFAULT_HOME);
         }
-	/*
-	 * Get the player record now.... 
-	 */
-	log("Getting PlayerFile");
-	GET_NAME(d->character) = (char *)strdup(d->usr_name);
-	if (GetPlayerFile(d->usr_name, d->character) != 0) {
-	  sprintf(buf, "%s[%s] has connected.", GET_NAME(d->character), d->host);
-	  log(buf);
-	  SEND_TO_Q(motd, d);
-	  if (GetMaxLevel(d->character) > LOW_IMMORTAL)
-	    SEND_TO_Q(wmotd, d);
-	  SEND_TO_Q("\n\r\n*** Press Return: ", d);
-	  STATE(d) = CON_RMOTD;
-	} else {
-          SEND_TO_Q(RACEMENU, d);
-	  STATE(d) = CON_QRACE;
+      }
+      log("%s[%s] has reconnected.", GET_NAME(d->character), d->host);
+      return TRUE;
+    }
+  }
+  return FALSE;
+}
+
+int check_playing(struct descriptor_data *d, char *tmp_name)
+{
+  struct descriptor_data *k;
+
+  for (k = descriptor_list; k; k = k->next) {
+    if ((k->character != d->character) && k->character) {
+      if (k->original) {
+        if ( GET_NAME(k->original) &&
+             !str_cmp(GET_NAME(k->original), tmp_name)) {
+          return 1;
+        }
+      } else {
+        if ( GET_NAME(k->character) &&
+             !str_cmp(GET_NAME(k->character), tmp_name)) {
+          return 1;
         }
       }
     }
-    break;
+  }
+  return 0;
+}
 
-  case CON_PWDGET:
-    for (; isspace(*arg); arg++);
+/*
+ * deal with newcomers and other non-playing sockets 
+ */
+void nanny(struct descriptor_data *d, char *arg)
+{
+  char buf[100];
+  int player_i, count = 0, oops = FALSE;
+  char tmp_name[20];
+  struct char_file_u tmp_store;
+  struct char_data *tmp_ch;
+  struct char_data tmp_ch2;
+  struct descriptor_data *k;
+  extern struct descriptor_data *descriptor_list;
+  extern int WizLock;
+  struct char_data *ch;
+
+  while(isspace(*arg))
+    arg++;
+  ch = d->character;
+  write(d->descriptor, echo_on, strlen(echo_on));
+
+  switch (STATE(d)) {
+  default:
+    bug("Nanny:  illegal state %d.\n", STATE(d));
+    close_socket(d);
+    return;
+  case CON_GET_NAME:
+    log("Got Connection from: %s", d->host);
+    if (!d->character) {
+      CREATE(d->character, struct char_data, 1);
+      clear_char(d->character);
+      d->character->desc = d;
+    }
+    if (!*arg) {
+      close_socket(d);
+      return;
+    }
+    if (!valid_parse_name(arg, tmp_name)) {
+      dprintf(d, "\rIllegal name, please try another.\n\rWHAT is your Name? ");
+      return;
+    }
+    if (check_playing(d, tmp_name)) {
+      dprintf(d, "\rSorry, %s is already playing... you might be cheating!\n\rWhat is YOUR Name? ", tmp_name);
+      return;
+    }
+    if (!ValidPlayer(tmp_name, d->pwd)) {
+      dprintf(d, "\n\rDeadMUD is currently in registration-only mode.\n\rPlease email mud@yakko.cs.wmich.edu for a character!\n\r");
+      STATE(d) = CON_WIZLOCK;
+      return;
+    }
+    strcpy(d->usr_name, tmp_name);
+/*  GET_NAME(d->character) = (char *)strdup(d->usr_name); */
+    if (load_char(d->usr_name, &tmp_store) > -1) {
+    /* if (GetPlayerFile(d->usr_name, d->character)) */
+      store_to_char(&tmp_store, d->character);
+      strcpy(d->pwd, tmp_store.pwd);
+      log("%s@%s loaded.", d->usr_name, d->host);
+      dprintf(d, "\n\r%sWHAT is your Password? ", echo_off);
+      STATE(d) = CON_GET_PASSWORD;
+    } else {
+      if(already_mob_name(d->usr_name)) {
+        dprintf(d, "\rBut you'd be confused with a MONSTER!.\n\rWHAT is your Name? ");
+        return;
+      }
+      GET_NAME(d->character) = (char *)strdup(d->usr_name);
+      dprintf(d, "\n\r%sChoose a password for %s: ", echo_off, d->usr_name);
+      STATE(d) = CON_GET_NEW_PASWORD;
+      log("New player!");
+    }
+    return;
+  case CON_GET_PASSWORD:
+    if (!*arg) {
+      close_socket(d);
+      return;
+    }
+    if (strncmp(arg, d->pwd, 10)) {
+      dprintf(d, "\r***BUZZ!*** Wrong password.\n\r%sGuess again: ", echo_off);
+      return;
+    }
+    if(check_reconnect(d))
+      return;
+    log("%s@%s has connected.", GET_NAME(d->character), d->host);
+    if (GetMaxLevel(d->character) > LOW_IMMORTAL)
+      dprintf(d, "\n\r%s", wmotd);
+    else
+      dprintf(d, "\n\r%s", motd);
+    dprintf(d, "*** Press Return: ", d);
+    STATE(d) = CON_READ_MOTD;
+    return;
+  case CON_GET_NEW_PASWORD:
     if (!*arg || strlen(arg) > 10) {
-      write(d->descriptor, echo_on, 6);
-      SEND_TO_Q("Illegal password.\n\r", d);
-      SEND_TO_Q("Password: ", d);
-      write(d->descriptor, echo_off, 4);
+      dprintf(d, "\rIllegal password.\n\r%sChoose a password for %s: ", echo_off, d->usr_name);
       return;
     }
     strncpy(d->pwd, arg, 10);
     *(d->pwd + 10) = '\0';
-    write(d->descriptor, echo_on, 6);
-    SEND_TO_Q("Please retype password: ", d);
-    STATE(d) = CON_PWDCNF;
-    write(d->descriptor, echo_off, 4);
-    break;
-  case CON_PWDCNF:
-    for (; isspace(*arg); arg++);
+    dprintf(d, "\n\r%sPlease retype your password: ", echo_off);
+    STATE(d) = CON_CONFIRM_NEW_PASSWORD;
+    return;
+  case CON_CONFIRM_NEW_PASSWORD:
     if (strncmp(arg, d->pwd, 10)) {
-      write(d->descriptor, echo_on, 6);
-      SEND_TO_Q("Passwords don't match.\n\r", d);
-      SEND_TO_Q("Retype password: ", d);
-      write(d->descriptor, echo_off, 4);
-      STATE(d) = CON_PWDGET;
+      dprintf(d, "\n\rBut those don't match!\n\r%sTry your password again: ", echo_off);
+      STATE(d) = CON_GET_NEW_PASWORD;
       return;
     }
-    write(d->descriptor, echo_on, 6);
     PutPasswd(d->usr_name, d->pwd, d->host);
-    SEND_TO_Q(RACEMENU, d);
-    STATE(d) = CON_QRACE;
-    break;
-  case CON_QRACE:
-    {
-      for (; isspace(*arg); arg++);
-      if (!*arg) {
-        SEND_TO_Q(RACEMENU, d);
-	STATE(d) = CON_QRACE;
-      } else {
-	switch (*arg) {
-	case 'd':
-	case 'D':
-	  {
-	    GET_RACE(d->character) = RACE_DWARF;
-	    SEND_TO_Q(SEXMENU, d);
-	    STATE(d) = CON_QSEX;
-	  }
-	  break;
-
-	case 'e':
-	case 'E':
-	  {
-	    GET_RACE(d->character) = RACE_ELVEN;
-	    SEND_TO_Q(SEXMENU, d);
-	    STATE(d) = CON_QSEX;
-	  }
-	  break;
-
-	case 'G':
-	case 'g':
-	  {
-	    GET_RACE(d->character) = RACE_GNOME;
-	    SEND_TO_Q(SEXMENU, d);
-	    STATE(d) = CON_QSEX;
-	  }
-	  break;
-
-	case 'f':
-	case 'F':
-	  {
-	    GET_RACE(d->character) = RACE_HALFLING;
-	    SEND_TO_Q(SEXMENU, d);
-	    STATE(d) = CON_QSEX;
-	  }
-	  break;
-
-	case '?':
-	  {
-	    SEND_TO_Q(RACEHELP, d);
-	    STATE(d) = CON_QRACE;
-	  }
-	  break;
-
-	case 'h':
-	case 'H':
-	  {
-	    GET_RACE(d->character) = RACE_HUMAN;
-	    SEND_TO_Q(SEXMENU, d);
-	    STATE(d) = CON_QSEX;
-	  }
-	  break;
-
-	default:
-	  {
-	    SEND_TO_Q("\n\rThat's not a race.\n\rRACE?:", d);
-	    STATE(d) = CON_QRACE;
-	  }
-	  break;
-	}
-      }
+    dprintf(d, "\r%s", RACEMENU);
+    STATE(d) = CON_GET_RACE;
+    return;
+  case CON_GET_RACE:
+    if (!*arg) {
+      dprintf(d, "\r%s", RACEMENU);
+      return;
     }
-    break;
-
-  case CON_QSEX:		/*
-				 * query sex of new user  
-				 */
-    /*
-     * skip whitespaces 
-     */
-    for (; isspace(*arg); arg++);
     switch (*arg) {
+    default:
+      dprintf(d, "\rThat's not a race.\n\r%s", RACEMENU);
+      STATE(d) = CON_GET_RACE;
+      break;
+    case '?':
+      dprintf(d, "\r%s", RACEHELP);
+      STATE(d) = CON_GET_RACE;
+      break;
+    case 'd':
+    case 'D':
+      GET_RACE(d->character) = RACE_DWARF;
+      dprintf(d, SEXMENU);
+      STATE(d) = CON_GET_SEX;
+      break;
+    case 'e':
+    case 'E':
+      GET_RACE(d->character) = RACE_ELVEN;
+      dprintf(d, SEXMENU);
+      STATE(d) = CON_GET_SEX;
+      break;
+    case 'G':
+    case 'g':
+      GET_RACE(d->character) = RACE_GNOME;
+      dprintf(d, SEXMENU);
+      STATE(d) = CON_GET_SEX;
+      break;
+    case 'f':
+    case 'F':
+      GET_RACE(d->character) = RACE_HALFLING;
+      dprintf(d, SEXMENU);
+      STATE(d) = CON_GET_SEX;
+      break;
+    case 'h':
+    case 'H':
+      GET_RACE(d->character) = RACE_HUMAN;
+      dprintf(d, SEXMENU);
+      STATE(d) = CON_GET_SEX;
+      break;
+    }
+    return;
+  case CON_GET_SEX:
+    switch (*arg) {
+    default:
+      dprintf(d, "But how will you mate???\n\r%s", SEXMENU);
+      return;
     case 'm':
     case 'M':
-      /*
-       * sex MALE 
-       */
       d->character->player.sex = SEX_MALE;
       break;
     case 'f':
     case 'F':
-      /*
-       * sex FEMALE 
-       */
       d->character->player.sex = SEX_FEMALE;
       break;
-    default:
-      SEND_TO_Q("That's not a sex..\n\r", d);
-      SEND_TO_Q("What IS your sex? :", d);
-      return;
-      break;
     }
+    dprintf(d, CLASSMENU);
+    STATE(d) = CON_GET_CLASS;
+    return;
 
-    SEND_TO_Q("\n\rSelect a class:\n\r[C] Cleric\n\r[T] Thief\n\r[W] Warrior\n\r[M] Magic-user\n\r[R] Ranger\n\r", d);
-    SEND_TO_Q("\n\r", d);
-    SEND_TO_Q("\n\rPlease Note:  Rangers may not be multi-class, they may", d);
-    SEND_TO_Q("\n\ronly be single class!", d);
-    SEND_TO_Q("\n\r\n\rIf you choose to be multi-class, please do so now.", d);
-    SEND_TO_Q("\n\rClasses will not be changed within the game.", d);
-    SEND_TO_Q("\n\r", d);
-    SEND_TO_Q("\n\rUse '/' to sperate your class choices.", d);
-    SEND_TO_Q("\n\rEnter W/C or W/M/C (etc) to be multi-classed", d);
-    SEND_TO_Q("\n\rClass :", d);
-    STATE(d) = CON_QCLASS;
-    break;
-
-  case CON_QCLASS:
-    {
-      /*
-       * skip whitespaces 
-       */
-      for (; isspace(*arg); arg++);
+  case CON_GET_CLASS:
       d->character->player.class = 0;
       count = 0;
       oops = FALSE;
       for (; *arg && count < 3 && !oops; *arg++) {
 	switch (*arg) {
+	default:
+	  dprintf(d, "I wish *I* could be a \"%s\" too!\n\r%s", arg, CLASSMENU);
+	  STATE(d) = CON_GET_CLASS;
+	  oops = TRUE;
+	  break;
+        case '?':
+          dprintf(d, CLASSHELP);
+          STATE(d) = CON_GET_CLASS;
+          break;
 	case 'm':
 	case 'M':
 	  {
 	    if (!IS_SET(d->character->player.class, CLASS_MAGIC_USER))
 	      d->character->player.class += CLASS_MAGIC_USER;
-	    STATE(d) = CON_RMOTD;
+	    STATE(d) = CON_READ_MOTD;
 	    count++;
 	    break;
 	  }
@@ -1829,7 +1299,7 @@ nanny(struct descriptor_data *d, char *arg)
 	  {
 	    if (!IS_SET(d->character->player.class, CLASS_CLERIC))
 	      d->character->player.class += CLASS_CLERIC;
-	    STATE(d) = CON_RMOTD;
+	    STATE(d) = CON_READ_MOTD;
 	    count++;
 	    break;
 	  }
@@ -1840,7 +1310,7 @@ nanny(struct descriptor_data *d, char *arg)
 	  {
 	    if (!IS_SET(d->character->player.class, CLASS_WARRIOR))
 	      d->character->player.class += CLASS_WARRIOR;
-	    STATE(d) = CON_RMOTD;
+	    STATE(d) = CON_READ_MOTD;
 	    count++;
 	    break;
 	  }
@@ -1849,7 +1319,7 @@ nanny(struct descriptor_data *d, char *arg)
 	  {
 	    if (!IS_SET(d->character->player.class, CLASS_THIEF))
 	      d->character->player.class += CLASS_THIEF;
-	    STATE(d) = CON_RMOTD;
+	    STATE(d) = CON_READ_MOTD;
 	    count++;
 	    break;
 	  }
@@ -1858,7 +1328,7 @@ nanny(struct descriptor_data *d, char *arg)
 	  {
 	    if (!IS_SET(d->character->player.class, CLASS_RANGER))
 	      d->character->player.class = CLASS_RANGER;
-	    STATE(d) = CON_RMOTD;
+	    STATE(d) = CON_READ_MOTD;
 	    count++;
 	    break;
 	  }
@@ -1867,98 +1337,59 @@ nanny(struct descriptor_data *d, char *arg)
  * case 'D': {
  * if (!IS_SET(d->character->player.class, CLASS_DRUID))
  * d->character->player.class += CLASS_DRUID;
- * STATE(d) = CON_RMOTD;
+ * STATE(d) = CON_READ_MOTD;
  * count++;
  * break;
  * }
  */
-        case ' ':
-	case '\\':		/*
-				 * ignore these 
-				 */
+	case ' ':
+	case ',':
+	case '\\':    /* ignore these */
 	case '/':
 	  break;
 
-	default:
-	  SEND_TO_Q("I don't recognize that class.\n\r", d);
-	  STATE(d) = CON_QCLASS;
-	  oops = TRUE;
-	  break;
 	}
 
 	if ((count > 1) && IS_SET(d->character->player.class, CLASS_RANGER)) {
-	  SEND_TO_Q("Rangers may only be single classed.\n\r", d);
-	  SEND_TO_Q("Please choose again.\n\r\n\r", d);
-	  SEND_TO_Q("\n\rSelect a class:\n\r[C] Cleric\n\r[T] Thief\n\r[W] Warrior\n\r[M] Magic-user\n\r[R] Ranger\n\r",
-		    d);
-	  SEND_TO_Q("\n\r", d);
-	  SEND_TO_Q("\n\rPlease Note:  Rangers may not be multi-class, they may", d);
-	  SEND_TO_Q("\n\ronly be single class!", d);
-	  SEND_TO_Q("\n\r\n\rIf you choose to be multi-class, please do so now.", d);
-	  SEND_TO_Q("\n\rClasses will not be changed within the game.", d);
-	  SEND_TO_Q("\n\r", d);
-	  SEND_TO_Q("\n\rUse '/' to sperate your class choices.", d);
-	  SEND_TO_Q("\n\rEnter W/C or W/C/M (etc) to be multi-classed", d);
-	  SEND_TO_Q("\n\rClass :", d);
-	  STATE(d) = CON_QCLASS;
+	  dprintf(d, "Rangers may only be single classed.\n\r%s", CLASSMENU);
+	  STATE(d) = CON_GET_CLASS;
 	  oops = TRUE;
 	}
       }
 
-      if (STATE(d) != CON_QCLASS) {
-	sprintf(buf, "%s [%s] new player.", GET_NAME(d->character), d->host);
-	log(buf);
-	/*
-	 * ** now that classes are set, initialize
-	 */
-
+      if (STATE(d) != CON_GET_CLASS) {
+	log("%s [%s] new player.", GET_NAME(d->character), d->host);
 	init_char(d->character);
-	/*
-	 * create an entry in the file 
-	 */
 	d->pos = create_entry(GET_NAME(d->character));
 	save_char(d->character, NOWHERE);
-	SEND_TO_Q(motd, d);
-	SEND_TO_Q("\n\r\n*** PRESS RETURN: ", d);
-	STATE(d) = CON_RMOTD;
+	dprintf(d, "\n\r%s\n\r*** PRESS RETURN: ", motd);
+	STATE(d) = CON_READ_MOTD;
       }
-    }
-    break;
-
-  case CON_RMOTD:		/*
-				 * read CR after printing motd  
-				 */
-    SEND_TO_Q(MENU, d);
-    STATE(d) = CON_SLCT;
+    return;
+  case CON_READ_MOTD:
+    dprintf(d, "\n\r%s", MENU);
+    STATE(d) = CON_MENU_SELECT;
     if (WizLock) {
       if (GetMaxLevel(d->character) < LOW_IMMORTAL) {
-	sprintf(buf, "Sorry, the game is locked up for repair\n\r");
-	SEND_TO_Q(buf, d);
+	dprintf(d, "Sorry, the game is locked so the whizz's can break stuff!\n\r");
 	STATE(d) = CON_WIZLOCK;
       }
     }
-    break;
-
+    return;
   case CON_WIZLOCK:
     close_socket(d);
-    break;
-
-  case CON_SLCT:		/*
-				 * get selection from main menu 
-				 */
-    /*
-     * skip whitespaces 
-     */
-    for (; isspace(*arg); arg++);
+    return;
+  case CON_MENU_SELECT:
     switch (*arg) {
+    default:
+      dprintf(d, "Wrong option.\n\r%s", MENU);
+      return;
     case '0':
       close_socket(d);
-      break;
-
+      return;
     case '1':
       reset_char(d->character);
-      sprintf(buf, "Loading %s's equipment", d->character->player.name);
-      log(buf);
+      log("Loading %s's equipment", d->character->player.name);
       load_char_objs(d->character);
       save_char(d->character, NOWHERE);
       send_to_char(WELC_MESSG, d->character);
@@ -1966,8 +1397,9 @@ nanny(struct descriptor_data *d, char *arg)
       character_list = d->character;
       if (d->character->in_room == NOWHERE) {
 	if (GetMaxLevel(d->character) >= LOW_IMMORTAL) {
-	  char_to_room(d->character, 1000);
-	  GET_HOME(d->character) = 1000;
+	  if (!real_roomp(GET_HOME(d->character)))
+	    GET_HOME(d->character) = 1000;
+	  char_to_room(d->character, GET_HOME(d->character));
 	} else {
 	  if (!real_roomp(GET_HOME(d->character)))
 	    GET_HOME(d->character) = DEFAULT_HOME;
@@ -1988,242 +1420,162 @@ nanny(struct descriptor_data *d, char *arg)
       if (GetMaxLevel(d->character) >= 58)
 	d->character->invis_level = GetMaxLevel(d->character) - 1;
 
-      STATE(d) = CON_PLYNG;
+      STATE(d) = CON_PLAYING;
       if (!GetMaxLevel(d->character))
 	do_start(d->character);
       do_look(d->character, "", 15);
       d->prompt_mode = 1;
-      break;
-
+      return;
     case '2':
-      SEND_TO_Q("Enter a text you'd like others to see when they look at you.\n\r", d);
-      SEND_TO_Q("Terminate with a '@'.\n\r", d);
+      dprintf(d, "Enter a text you'd like others to see when they look at you.\n\rTerminate with a '@'.\n\r");
       if (d->character->player.description) {
-	SEND_TO_Q("Old description :\n\r", d);
-	SEND_TO_Q(d->character->player.description, d);
+	dprintf(d, "Old description :\n\r%s", d->character->player.description);
 	free(d->character->player.description);
 	d->character->player.description = 0;
       }
       d->str = &d->character->player.description;
       d->max_str = 240;
-      STATE(d) = CON_EXDSCR;
-      break;
-
+      STATE(d) = CON_EDIT_DESCRIPTION;
+      return;
     case '3':
-      SEND_TO_Q(STORY, d);
-      STATE(d) = CON_RMOTD;
-      break;
+      dprintf(d, STORY);
+      STATE(d) = CON_READ_MOTD;
+      return;
     case '4':
-      SEND_TO_Q("Enter a new password: ", d);
-/*
- * Insert this line before what you don't want to echo
- */
-      write(d->descriptor, echo_off, 4);
-
-      STATE(d) = CON_PWDNEW;
-      break;
+      dprintf(d, "%sEnter a new password: ", echo_off);
+      STATE(d) = CON_GET_CHANGE_PASSWORD;
+      return;
     case '5':
       {
-	struct descriptor_data          *dd;
-	struct char_data                *person;
-	int                              count = 0;
+	struct descriptor_data *dd;
+	struct char_data *person;
+	int count = 0;
 
-	SEND_TO_Q("Players Connected.\n\r\n\r", d);
+	dprintf(d, "Players Connected.\n\r\n\r");
 	for (dd = descriptor_list; dd; dd = dd->next)
 	  if (!dd->connected) {
 	    person = dd->character;
 	    if (!IS_IMMORTAL(person) || IS_IMMORTAL(d->character)) {
 	      count++;
-	      sprintf(buf, "%s %s %s\n\r", (person->player.pre_title ? person->player.pre_title :
+	      dprintf(d, "%s %s %s\n\r", (person->player.pre_title ? person->player.pre_title :
 					    "")
 		      ,GET_NAME(person), person->player.title);
-	      SEND_TO_Q(buf, d);
 	    }
 	  }
-	sprintf(buf, "Total Connected %d\n\r", count);
-	SEND_TO_Q(buf, d);
-	STATE(d) = CON_RMOTD;
+	dprintf(d, "Total Connected %d\n\r", count);
+	STATE(d) = CON_READ_MOTD;
 	break;
       }
+      return;
     case '6':
       if (IS_IMMORTAL(d->character)) {
-        SEND_TO_Q("\n\rSorry, you are a slave to the source...  There is no escape for you!\n\r", d);
-        SEND_TO_Q(MENU, d);
-        break;
+	dprintf("\n\rSorry, you are a slave to the source...  There is no escape for you!\n\r%s", MENU);
+	break;
       }
-      SEND_TO_Q(SUICIDE_MSG, d);
+      dprintf(d, SUICIDE_MSG);
       STATE(d) = CON_SUICIDE;
-      break;
-    default:
-      SEND_TO_Q("Wrong option.\n\r", d);
-      SEND_TO_Q(MENU, d);
-      break;
+      return;
     }
-    break;
+    return;
   case CON_SUICIDE:
-    for(; isspace(*arg); arg++);
-    if(!strcmp(arg, "I want to DIE!")) {
+    if (!strcmp(arg, "I want to DIE!")) {
       char name[80], *t_ptr, old[80], bkp[80];
+
       strcpy(name, d->usr_name);
       t_ptr = name;
       for (; *t_ptr != '\0'; t_ptr++)
-        *t_ptr = LOWER(*t_ptr);
+	*t_ptr = LOWER(*t_ptr);
       sprintf(old, "ply/%c/%s.p", name[0], name);
-      sprintf(bkp, "ply/%c/%s.p-bkp", name[0], name);
+      sprintf(bkp, "ply/%c/%s.p-dead", name[0], name);
       rename(old, bkp);
       sprintf(old, "ply/%c/%s.o", name[0], name);
-      sprintf(bkp, "ply/%c/%s.o-bkp", name[0], name);
+      sprintf(bkp, "ply/%c/%s.o-dead", name[0], name);
       rename(old, bkp);
-      sprintf(old, "-- SUICIDE -- %s is no more!\n", name);
-      log(old);
-      SEND_TO_Q(SUICIDE_DONE, d);
+      log("-- SUICIDE -- %s is no more!\n", name);
+      dprintf(d, SUICIDE_DONE);
       STATE(d) = CON_WIZLOCK;
-      break;
+      return;
     }
-    SEND_TO_Q("You are SAVED!\n\r", d);
-    SEND_TO_Q(MENU, d);
-    STATE(d) = CON_SLCT;
-    break;
-  case CON_PWDNEW:
-    /*
-     * skip whitespaces 
-     */
-    for (; isspace(*arg); arg++);
-
+    dprintf(d, "You are SAVED!\n\r%s", MENU);
+    STATE(d) = CON_MENU_SELECT;
+    return;
+  case CON_GET_CHANGE_PASSWORD:
     if (!*arg || strlen(arg) > 10) {
-      write(d->descriptor, echo_on, 6);
-
-      SEND_TO_Q("Illegal password.\n\r", d);
-      SEND_TO_Q("Password: ", d);
-/*
- * Insert this line before what you don't want to echo
- */
-      write(d->descriptor, echo_off, 4);
+      dprintf(d, "\rIllegal password.\n\r%sPassword: ", echo_off);
       return;
     }
     strncpy(d->pwd, arg, 10);
     *(d->pwd + 10) = '\0';
-    /*
-     * other 
-     */
-/*
- * When you want echo back on..............
- */
-    write(d->descriptor, echo_on, 6);
-    SEND_TO_Q("Please retype password: ", d);
-    STATE(d) = CON_PWDNCNF;
-/*
- * Insert this line before what you don't want to echo
- */
-    write(d->descriptor, echo_off, 4);
-    break;
-  case CON_PWDNCNF:
-    /*
-     * skip whitespaces 
-     */
-    for (; isspace(*arg); arg++);
+    dprintf(d, "\n\r%sPlease retype password: ", echo_off);
+    STATE(d) = CON_CONFIRM_CHANGE_PASSWORD;
+    return;
+  case CON_CONFIRM_CHANGE_PASSWORD:
     if (strncmp(arg, d->pwd, 10)) {
-      /*
-       * other * /
-       * /*
-       * When you want echo back on..............
-       */
-      write(d->descriptor, echo_on, 6);
-      SEND_TO_Q("Passwords don't match.\n\r", d);
-      SEND_TO_Q("Retype password: ", d);
-/*
- * Insert this line before what you don't want to echo
- */
-      write(d->descriptor, echo_off, 4);
-
-      STATE(d) = CON_PWDNEW;
+      dprintf(d, "\rPasswords don't match.\n\r%sRetype password: ", echo_off);
+      STATE(d) = CON_GET_CHANGE_PASSWORD;
       return;
     }
-    /*
-     * other 
-     */
-/*
- * When you want echo back on..............
- */
-    write(d->descriptor, echo_on, 6);
-
-    SEND_TO_Q(
-    "\n\rDone. You must enter the game to make the change final\n\r",
-	       d);
-    SEND_TO_Q(MENU, d);
-    STATE(d) = CON_SLCT;
-    break;
-  default:
-    log("Nanny: illegal state of con'ness");
-    abort();
-    break;
+    dprintf(d, "%s\n\rDone. You must enter the game to make the change final\n\r%s", echo_on, MENU);
+    STATE(d) = CON_MENU_SELECT;
+    return;
   }
 }
 
-void
-PutPasswd(char *who, char *pwd, char *host)
+void PutPasswd(char *who, char *pwd, char *host)
 {
   FILE *pfd;
-  char  buf[256];
+  char buf[256];
 
-  if ((pfd = fopen("etc/passwd.new", "a")) == NULL) {
+  if ((pfd = fopen(PASSWD_NEW, "a")) == NULL) {
     log("Cannot save password data for new user!\n\r");
   } else {
-    sprintf(buf, "%s %s user@%s\n", who, pwd, host);
+    sprintf(buf, "%s %s user@%s %ld\n", who, pwd, host, time(NULL));
     fprintf(pfd, buf);
     fclose(pfd);
     log(buf);
   }
 }
 
-int 
-GetPasswd(char *who, char *pwd)
+int ValidPlayer(char *who, char *pwd)
 {
-  FILE                            *pwd_fd;
-  char                             path[256];
-  char                             buf[256];
-  char                             tname[40];
-  char                            *t_ptr;
-  char                             pname[40];
-  char                             passwd[40];
-  char                             email[80];
+  FILE *pwd_fd;
+  char tname[40];
+  char *t_ptr;
+  char pname[40];
+  char passwd[40];
+  char email[80];
+  long timestamp;
 
-  if ((pwd_fd = fopen("etc/passwd", "r")) == NULL) {
-/*
-    log("No PASSWD File.\n\r");
-    exit(0);
-*/
+  if (!(pwd_fd = fopen(PASSWD_FILE, "r"))) {
     strcpy(pwd, "NOT USED");
-    log("Password checking disabled!\n\r");
-    return (0);
+    log("Password checking disabled!");
+    return 1;
   }
-  sprintf(buf, "Searching Passwd for %s", who);
-  log(buf);
+  log("Searching passwd file for %s...", who);
 
   strcpy(tname, who);
-  t_ptr = tname;
-
-  for (; *t_ptr != '\0'; t_ptr++)
+  for (t_ptr = tname; *t_ptr; t_ptr++)
     *t_ptr = LOWER(*t_ptr);
 
-  while (fscanf(pwd_fd, " %s %s %s\n", pname, passwd, email) > 1) {
+  while (fscanf(pwd_fd, " %s %s %s %ld\n", pname, passwd, email, &timestamp) > 1) {
     if (!strcmp(tname, pname)) {
-      sprintf(buf, "Found %s in Passwd File.", tname);
-      log(buf);
-      if(!strcmp(passwd, "*")) strcpy(pwd, "IS VALID");
-      else strcpy(pwd, passwd);
+      log("Found %s in passwd file.", tname);
+      if (!strcmp(passwd, "*"))
+	strcpy(pwd, "IS VALID");
+      else
+	strcpy(pwd, passwd);
       fclose(pwd_fd);
-      return (1);
+      return 1;
     }
   }
   fclose(pwd_fd);
-  return (0);
+  return 0;
 }
 
-int 
-GetPlayerFile(char *name, struct char_data *where)
+#if 0
+int GetPlayerFile(char *name, struct char_data *where)
 {
-  struct char_file_u               tmp_store;
+  struct char_file_u tmp_store;
 
   if ((load_char(name, &tmp_store)) > -1) {
     store_to_char(&tmp_store, where);
@@ -2231,3 +1583,4 @@ GetPlayerFile(char *name, struct char_data *where)
   }
   return (0);
 }
+#endif

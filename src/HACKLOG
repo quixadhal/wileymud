@@ -1,11 +1,18 @@
-950527	Quixadhal.
-  1727	Reopened the X-file on this case.
-	Moved the lib directory back a level and changed modify.c to
-	use a define instead of a hardcoded filename.
-  1743	Improper number of arguments to bind() in sign.c.
-950528	Quixadhal.
-  1625	Ummmmmm... Huh huh huh.... Caffeine fit!  All records lost!
-	Sorry, I got too busy hacking to pay attention... oh well....
-	Most changes were done in interpreter.c, and had to do with
-	the password system and signal handling.
-	Reconnecting needs to be fixed when NOT using valid passwords.
+950609	Hacklog begins anew.
+	Attempting to combine some of the hacks I did earlier with the version
+	that actually works.
+  1826	combined magic[123].c into magic.c and spells[123].c into spells.c.
+  2008	fixed signal handling for Linux.
+  2025	changed default whod to only show character names... not titles.
+  2035	eliminated log(), dlog(), and slog() functions from utils.c.
+	added dlog() macro to bug.h and changed the two slog() calls into
+	standard log() calls.
+  2051	created act_comm.h file for function definitions.
+  2345	restored old database routines so it should load the old format of
+	database.
+950610
+  0145	started removing all external references from all .c files... those
+	should be in header files!!!
+950611
+  0437	use more tricks from the running wiley..... dead bodies now have
+	corpses, and you default to sleeping when you reappear in the inn.

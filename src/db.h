@@ -1,237 +1,255 @@
 /*
- * ************************************************************************
- * *  file: db.h , Database module.                          Part of DIKUMUD *
- * *  Usage: Loading/Saving chars booting world.                             *
- * ************************************************************************* 
+ * file: db.h , Database module.                          Part of DIKUMUD
+ * Usage: Loading/Saving chars booting world.
  */
 
-/*
- * data files used by the game system 
- */
+#ifndef _DB_H
+#define _DB_H
 
-#define DFLT_DIR          "../lib"	/*
-					 * default data directory     
-					 */
-#define WORLD_FILE        "wld/tinyworld.wld"	/*
-						 * room definitions           
-						 */
-#define MOB_FILE          "wld/tinyworld.mob"	/*
-						 * monster prototypes         
-						 */
-#define OBJ_FILE          "wld/tinyworld.obj"	/*
-						 * object prototypes          
-						 */
-#define ZONE_FILE         "wld/tinyworld.zon"	/*
-						 * zone defs & command tables 
-						 */
-#define CREDITS_FILE      "etc/credits"		/*
-						 * for the 'credits' command  
-						 */
-#define NEWS_FILE         "etc/news"	/*
-					 * for the 'news' command     
-					 */
-#define MOTD_FILE         "etc/motd"	/*
-					 * messages of today          
-					 */
-#define WMOTD_FILE        "etc/wmotd"	/*
-					 * messages of today          
-					 */
-#define PLAYER_FILE       "ply/players"		/*
-						 * the player database        
-						 */
-#define TIME_FILE         "etc/time"	/*
-					 * game calendar information  
-					 */
-#define IDEA_FILE         "adm/ideas"	/*
-					 * for the 'idea'-command     
-					 */
-#define TYPO_FILE         "adm/typos"	/*
-					 * 'typo'             
-					 */
-#define BUG_FILE          "adm/bugs"	/*
-					 * 'bug'              
-					 */
-#define MESS_FILE         "etc/messages"	/*
-						 * damage message             
-						 */
-#define SOCMESS_FILE      "etc/actions"		/*
-						 * messgs for social acts     
-						 */
-#define HELP_KWRD_FILE    "man/help_table"	/*
-						 * for HELP <keywrd>          
-						 */
-#define HELP_PAGE_FILE    "man/help"	/*
-					 * for HELP <CR>              
-					 */
-#define INFO_FILE         "etc/info"	/*
-					 * for INFO                   
-					 */
-#define WIZLIST_FILE      "etc/wizlist"		/*
-						 * for WIZLIST                
-						 */
-#define POSEMESS_FILE     "etc/poses"	/*
-					 * for 'pose'-command         
-					 */
-#define BOARD_FILE_PATH   "boards"
-#define REBOOT_FILE	  "etc/reboot"
-#define OBJ_SAVE_FILE	  "ply/pcobjs.obj"
+/* data files used by the game system */
+
+#define DFLT_DIR          "../lib"           /* default data directory     */
+#define WORLD_FILE        "wld/tinyworld.wld" /* room definitions           */
+#define MOB_FILE          "wld/tinyworld.mob" /* monster prototypes         */
+#define OBJ_FILE          "wld/tinyworld.obj" /* object prototypes          */
+#define ZONE_FILE         "wld/tinyworld.zon" /* zone defs & command tables */
 #define SHOP_FILE	  "wld/tinyworld.shp"
+#define CREDITS_FILE      "etc/credits"       /* for the 'credits' command  */
+#define NEWS_FILE         "etc/news"          /* for the 'news' command     */
+#define MOTD_FILE         "etc/motd"          /* messages of today          */
+#define WMOTD_FILE        "etc/wmotd"         /* messages of today          */
+#define GREETINGS_FILE    "etc/greetings"
+#define PLAYER_FILE       "ply/players"       /* the player database        */
+#define TIME_FILE         "etc/time"          /* game calendar information  */
+#define MESS_FILE         "etc/messages"      /* damage message             */
+#define SOCMESS_FILE      "etc/actions"       /* messgs for social acts     */
+#define INFO_FILE         "etc/info"          /* for INFO                   */
+#define WIZLIST_FILE      "etc/wizlist"       /* for WIZLIST                */
+#define POSEMESS_FILE     "etc/poses"         /* for 'pose'-command         */
+#define HELP_KWRD_FILE    "man/help_table"    /* for HELP <keywrd>          */
+#define HELP_PAGE_FILE    "man/help"          /* for HELP <CR>              */
+#define BOARD_FILE_PATH   "boards"
+#define OBJ_SAVE_FILE	  "ply/pcobjs.obj"
 #define MKZONE_PATH	  "wld/mkzone"
-#define NOGAMES_FILE      "nogames"
+#define IDEA_FILE         "log/ideas"         /* for the 'idea'-command     */
+#define TYPO_FILE         "log/typos"         /*         'typo'             */
+#define BUG_FILE          "log/bugs"          /*         'bug'              */
+#define REBOOT_FILE	  "adm/reboot"
+#define PASSWD_FILE       "adm/passwd"
+#define PASSWD_NEW        "adm/passwd.new"
+#define PASSWD_OFF        "adm/passwd.off"
 
-#define DEFAULT_HOME		3001	/*
-					 * when a player is created 
-					 */
-
-/*
- * public procedures in db.c 
- */
-
-void                             boot_db(void);
-void                             save_char(struct char_data *ch, sh_int load_room);
-int                              create_entry(char *name);
-void                             zone_update(void);
-void                             init_char(struct char_data *ch);
-void                             clear_char(struct char_data *ch);
-void                             clear_object(struct obj_data *obj);
-void                             reset_char(struct char_data *ch);
-void                             free_char(struct char_data *ch);
-struct room_data                *real_roomp(int virtual);
-char                            *fread_string(FILE * fl);
-int                              real_object(int virtual);
-int                              real_mobile(int virtual);
+#define DEFAULT_HOME		3001	/* when a player is created */
 
 #define REAL 0
 #define VIRTUAL 1
 
-struct obj_data                 *read_object(int nr, int type);
-struct char_data                *read_mobile(int nr, int type);
+#define LOG_ZONE_ERROR(ch, type, zone, cmd) {\
+  sprintf(buf, "error in zone %s cmd %d (%c) resolving %s number", \
+    zone_table[zone].name, cmd, ch, type); \
+  log(buf); \
+  }
 
-/*
- * structure for the reset commands 
- */
-struct reset_com {
-  char                             command;	/*
-						 * current command                      
-						 */
-  bool                             if_flag;	/*
-						 * if TRUE: exe only if preceding exe'd 
-						 */
-  int                              arg1;	/*
-						 */
-  int                              arg2;	/*
-						 * Arguments to the command             
-						 */
-  int                              arg3;	/*
-						 */
+#define ZO_DEAD  999
+#define ZCMD zone_table[zone].cmd[cmd_no]
+#define ZNAME zone_table[zone].name
 
-  /*
-   * *  Commands:              *
-   * *  'M': Read a mobile     *
-   * *  'O': Read an object    *
-   * *  'L': Has a leader      *
-   * *  'G': Give obj to mob   *
-   * *  'P': Put obj in obj    *
-   * *  'G': Obj to char       *
-   * *  'E': Obj to char equip *
-   * *  'D': Set state of door *
-   */
+/* structure for the reset commands */
+struct reset_com
+{
+	char command;   /* current command                      */ 
+	bool if_flag;   /* if TRUE: exe only if preceding exe'd */
+	int arg1;       /*                                      */
+	int arg2;       /* Arguments to the command             */
+	int arg3;       /*                                      */
+
+	/* 
+	*  Commands:              *
+	*  'M': Read a mobile     *
+	*  'O': Read an object    *
+	*  'L': Has a leader      *
+	*  'G': Give obj to mob   *
+	*  'P': Put obj in obj    *
+	*  'G': Obj to char       *
+	*  'E': Obj to char equip *
+	*  'D': Set state of door *
+	*/
 };
 
-/*
- * zone definition structure. for the 'zone-table'   
- */
-struct zone_data {
-  char                            *name;	/*
-						 * name of this zone                  
-						 */
-  int                              lifespan;	/*
-						 * how long between resets (minutes)  
-						 */
-  int                              age;		/*
-						 * current age of this zone (minutes) 
-						 */
-  int                              top;		/*
-						 * upper limit for rooms in this zone 
-						 */
 
-  int                              reset_mode;	/*
-						 * conditions for reset (see below)   
-						 */
-  struct reset_com                *cmd;		/*
-						 * command table for reset                 
-						 */
 
-  /*
-   * *  Reset mode:                              *
-   * *  0: Don't reset, and don't update age.    *
-   * *  1: Reset if no PC's are located in zone. *
-   * *  2: Just reset.                           *
-   */
+/* zone definition structure. for the 'zone-table'   */
+struct zone_data
+{
+	char *name;             /* name of this zone                  */
+	int lifespan;           /* how long between resets (minutes)  */
+	int age;                /* current age of this zone (minutes) */
+	int top;                /* upper limit for rooms in this zone */
+
+	int reset_mode;         /* conditions for reset (see below)   */
+	struct reset_com *cmd;  /* command table for reset	           */
+
+	/*
+	*  Reset mode:                              *
+	*  0: Don't reset, and don't update age.    *
+	*  1: Reset if no PC's are located in zone. *
+	*  2: Just reset.                           *
+	*/
 };
 
-/*
- * element in monster and object index-tables   
- */
-struct index_data {
-  int                              virtual;	/*
-						 * virtual number of this mob/obj           
-						 */
-  long                             pos;		/*
-						 * file position of this field              
-						 */
-  int                              number;	/*
-						 * number of existing units of this mob/obj     
-						 */
-  int                              (*func) ();	/*
-						 * special procedure for this mob/obj       
-						 */
-  char                            *name;
+
+
+
+/* element in monster and object index-tables   */
+struct index_data
+{
+	int virtual;    /* virtual number of this mob/obj           */
+	long pos;       /* file position of this field              */
+	int number;     /* number of existing units of this mob/obj	*/
+	int (*func)();  /* special procedure for this mob/obj       */
+	char *name;
 };
 
-struct obj_index_data {
-  int                              virtual;	/*
-						 * virtual number of this mob/obj           
-						 */
-  long                             pos;		/*
-						 * file position of this field              
-						 */
-  int                              number;	/*
-						 * number of existing units of this mob/obj     
-						 */
-  int                              (*func) ();	/*
-						 * special procedure for this mob/obj       
-						 */
-  char                            *name;
-  struct obj_data                 *template;	/*
-						 * for preloading of objects 
-						 */
+
+struct obj_index_data
+{
+	int virtual;    /* virtual number of this mob/obj           */
+	long pos;       /* file position of this field              */
+	int number;     /* number of existing units of this mob/obj	*/
+	int (*func)();  /* special procedure for this mob/obj       */
+	char *name;
+	struct obj_data *template; /* for preloading of objects */
 };
 
-/*
- * for queueing zones for update   
- */
-struct reset_q_element {
-  int                              zone_to_reset;	/*
-							 * ref to zone_data 
-							 */
-  struct reset_q_element          *next;
+
+
+
+/* for queueing zones for update   */
+struct reset_q_element
+{
+	int zone_to_reset;            /* ref to zone_data */
+	struct reset_q_element *next;	
 };
 
-/*
- * structure for the update queue     
- */
-struct reset_q_type {
-  struct reset_q_element          *head;
-  struct reset_q_element          *tail;
+
+
+/* structure for the update queue     */
+struct reset_q_type
+{
+	struct reset_q_element *head;
+	struct reset_q_element *tail;
 } reset_q;
 
-struct player_index_element {
-  char                            *name;
-  int                              nr;
+
+
+struct player_index_element
+{
+	char *name;
+	int nr;
 };
 
-struct help_index_element {
-  char                            *keyword;
-  long                             pos;
+
+struct help_index_element
+{
+	char *keyword;
+	long pos;
 };
+#ifndef _DB_C
+extern int top_of_world;
+extern struct hash_header room_db;
+extern struct obj_data  *object_list;
+extern struct char_data *character_list;
+
+extern struct zone_data *zone_table;
+extern int top_of_zone_table;
+extern struct message_list fight_messages[MAX_MESSAGES];
+extern struct player_index_element *player_table;
+extern int top_of_p_table;
+extern int top_of_p_file;
+
+extern char credits[MAX_STRING_LENGTH];
+extern char news[MAX_STRING_LENGTH];
+extern char motd[MAX_STRING_LENGTH];
+extern char help[MAX_STRING_LENGTH];
+extern char info[MAX_STRING_LENGTH];
+extern char wizlist[MAX_STRING_LENGTH];
+extern char wmotd[MAX_STRING_LENGTH];
+extern char greetings[MAX_STRING_LENGTH];
+
+extern FILE *mob_f;
+extern FILE *obj_f;
+extern FILE *help_fl;
+
+extern struct index_data *mob_index;
+extern struct index_data *obj_index;
+extern struct help_index_element *help_index;
+
+extern int top_of_mobt;
+extern int top_of_objt;
+extern int top_of_helpt;
+
+extern struct time_info_data time_info;
+extern struct weather_data weather_info;
+
+extern char TMPbuff[1620];
+extern int TMPbuff_ptr;
+extern int ROOMcount;
+extern int GLINEcount;
+extern int LASTroomnumber;
+extern struct hash_header room_db;
+
+#endif
+
+void boot_db(void);
+#if 0
+void build_player_index(void);
+#endif
+struct index_data *generate_indices(FILE *fl, int *top);
+void cleanout_room(struct room_data *rp);
+void completely_cleanout_room(struct room_data *rp);
+void load_one_room(FILE *fl, struct room_data *rp);
+void boot_world(void);
+void allocate_room(int room_number);
+void setup_dir(FILE *fl, int room, int dir);
+void renum_zone_table(void);
+void boot_zones(void);
+struct char_data *read_mobile(int nr, int type);
+struct obj_data *read_object(int nr, int type);
+void zone_update(void);
+void reset_zone(int zone);
+int is_empty(int zone_nr);
+int load_char(char *name, struct char_file_u *char_element);
+void store_to_char(struct char_file_u *st, struct char_data *ch);
+void char_to_store(struct char_data *ch, struct char_file_u *st);
+int create_entry(char *name);
+void save_char(struct char_data *ch, sh_int load_room);
+int compare(struct player_index_element *arg1, struct player_index_element *arg2);
+char *fread_string(FILE *fl);
+void free_char(struct char_data *ch);
+void free_obj(struct obj_data *obj);
+int file_to_string(char *name, char *buf);
+void reset_char(struct char_data *ch);
+void clear_char(struct char_data *ch);
+void clear_object(struct obj_data *obj);
+void init_char(struct char_data *ch);
+struct room_data *real_roomp(int virtual);
+void print_hash_ent( int KEY, struct room_data * This , void * NOTHING );
+#if 0
+void boot_world(void);
+#endif
+int real_mobile(int virtual);
+int real_object(int virtual);
+/* lex shit */
+void PrintError(int ErrorCode);
+int FindThisToken(int WHICH_TOKEN);
+int FindTokenInList( int WHICH_TOKEN, int list[] );
+void ResetThisRoom( struct room_data * This );
+void ResetThisExit( struct room_direction_data * This );
+struct room_data * FindThisRoom( int WhichRoom );
+int InheritThisRoom( struct room_data * WorkingRoom, int This );
+int parse_wld(FILE *which_file);
+void make_extra_description( struct room_data * This );
+void make_exit( struct room_data * WorkingRoom );
+int make_room(int RoomNumber);
+
+#endif
