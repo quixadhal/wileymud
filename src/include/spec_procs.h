@@ -10,15 +10,9 @@ struct social_type {
   int next_line;
 };
 
-struct breath_victim {
-  struct char_data *ch;
-  int yesno;			       /* 1 0 */
-  struct breath_victim *next;
-};
-
 struct special_proc_entry {
   int vnum;
-  int (*proc) (struct char_data *, int, char *);
+  ifuncp proc;
   char *name;
 };
 
@@ -26,25 +20,18 @@ struct special_proc_entry {
 struct special_proc_entry specials_m[];
 struct special_proc_entry specials_o[];
 struct special_proc_entry specials_r[];
-
-/* static funcp breaths[]; */
-extern struct breather breath_monsters[];
-
-/* static char *elf_comm[]; */
 #endif
 
-int is_target_room_p(int room, void *tgt_room);
-int named_object_on_ground(int room, void *c_data);
 char *how_good(int percent);
-int GainLevel(struct char_data *ch, int class);
-struct char_data *FindMobInRoomWithFunction(int room, int (*func) ());
+int GainLevel(struct char_data *guildmaster, struct char_data *ch, int class);
+struct char_data *FindMobInRoomWithFunction(int room, ifuncp func);
 int MageGuildMaster(struct char_data *ch, int cmd, char *arg);
 int ClericGuildMaster(struct char_data *ch, int cmd, char *arg);
 int ThiefGuildMaster(struct char_data *ch, int cmd, char *arg);
 int FighterGuildMaster(struct char_data *ch, int cmd, char *arg);
 int dump(struct char_data *ch, int cmd, char *arg);
 int mayor(struct char_data *ch, int cmd, char *arg);
-struct char_data *find_mobile_here_with_spec_proc(int (*fcn) (), int rnumber);
+struct char_data *find_mobile_here_with_spec_proc(ifuncp fcn, int rnumber);
 void exec_social(struct char_data *npc, char *cmd, int next_line, int *cur_line, void **thing);
 void npc_steal(struct char_data *ch, struct char_data *victim);
 int snake(struct char_data *ch, int cmd, char *arg);
@@ -66,11 +53,6 @@ int wraith(struct char_data *ch, int cmd, char *arg);
 int shadow(struct char_data *ch, int cmd, char *arg);
 int geyser(struct char_data *ch, int cmd, char *arg);
 int green_slime(struct char_data *ch, int cmd, char *arg);
-struct breath_victim *choose_victims(struct char_data *ch, struct char_data *first_victim);
-void free_victims(struct breath_victim *head);
-int breath_weapon(struct char_data *ch, struct char_data *target, int mana_cost, void (*func) ());
-int use_breath_weapon(struct char_data *ch, struct char_data *target, int cost, void (*func) ());
-int BreathWeapon(struct char_data *ch, int cmd, char *arg);
 int DracoLich(struct char_data *ch, int cmd, char *arg);
 int Drow(struct char_data *ch, int cmd, char *arg);
 int Leader(struct char_data *ch, int cmd, char *arg);
@@ -112,7 +94,7 @@ int zm_tired(struct char_data *zmaster);
 int zm_stunned_followers(struct char_data *zmaster);
 void zm_zap_spell_at(struct char_data *ch, struct char_data *vict, int maxlevel);
 void zm_zap_area_at(struct char_data *ch, int maxlevel);
-zm_init_combat(struct char_data *zmaster, struct char_data *target);
+void zm_init_combat(struct char_data *zmaster, struct char_data *target);
 int zm_kill_fidos(struct char_data *zmaster);
 int zm_kill_aggressor(struct char_data *zmaster);
 int zm_kill_wimps(struct char_data *zmaster);
@@ -127,15 +109,6 @@ int pray_for_items(struct char_data *ch, int cmd, char *arg);
 "After a time, a new reality comes into focus... you are elsewhere.\n\r"
 int chalice(struct char_data *ch, int cmd, char *arg);
 int kings_hall(struct char_data *ch, int cmd, char *arg);
-#define IS_DIR    (real_roomp(q_head->room_nr)->dir_option[i])
-#define GO_OK  (!IS_SET(IS_DIR->exit_info,EX_CLOSED)\
-		 && (IS_DIR->to_room != NOWHERE))
-#define GO_OK_SMARTER  (!IS_SET(IS_DIR->exit_info,EX_LOCKED)\
-		 && (IS_DIR->to_room != NOWHERE))
-/* static void donothing(); */
-int find_path(int in_room, int (*predicate) (), void *c_data, int depth);
-int choose_exit(int in_room, int tgt_room, int depth);
-int go_direction(struct char_data *ch, int dir);
 int House(struct char_data *ch, int cmd, char *arg);
 int paramedics(struct char_data *ch, int cmd, char *arg);
 int jugglernaut(struct char_data *ch, int cmd, char *arg);
@@ -145,7 +118,6 @@ int firenewt(struct char_data *ch, int cmd, char *arg);
 int eli_priest(struct char_data *ch, int cmd, char *arg);
 int fountain(struct char_data *ch, int cmd, char *arg);
 int RangerGuildMaster(struct char_data *ch, int cmd, char *arg);
-int do_skills(struct char_data *ch, int cmd, char *arg);
 int GenericGuildMaster(struct char_data *ch, int cmd, char *arg);
 int mosquito(struct char_data *ch, int cmd, char *arg);
 int BerserkerAxe(struct char_data *ch, int cmd, char *arg);
@@ -153,5 +125,15 @@ void assign_mobiles(void);
 void assign_objects(void);
 void assign_rooms(void);
 char *name_special_proc(int type, int vnum);
+void gm_wrong_class(struct char_data *master, struct char_data *vict);
+void gm_wrong_alignment(struct char_data *master, struct char_data *vict);
+void gm_gain(struct char_data *master, struct char_data *vict, int target);
+void gm_prac(struct char_data *master, struct char_data *vict, int target, char *arg);
+int GuildMaster(struct char_data *ch, int cmd, char *arg);
+int ThePerch(struct char_data *ch, int cmd, char *arg);
+int k_tired(struct char_data *karrn);
+int k_kill_aggressor(struct char_data *karrn);
+int k_kill_wimps(struct char_data *karrn);
+int Karrn(struct char_data *ch, int cmd, char *arg);
 
 #endif

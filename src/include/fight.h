@@ -38,11 +38,12 @@ int DamageItem(struct char_data *ch, struct obj_data *o, int num);
 int ItemSave(struct obj_data *i, int dam_type);
 int DamagedByAttack(struct obj_data *i, int dam_type);
 int WeaponCheck(struct char_data *ch, struct char_data *v, int type, int dam);
-int DamageStuff(struct char_data *v, int type, int dam);
+void DamageStuff(struct char_data *v, int type, int dam);
 int GetItemDamageType(int type);
 int SkipImmortals(struct char_data *v, int amnt);
-int CheckKill(struct char_data *ch, struct char_data *vict);
-int WeaponSpell(struct char_data *c, struct char_data *v, int type);
+int CanKill(struct char_data *ch, struct char_data *vict, char *msg);
+inline int CheckKill(struct char_data *ch, struct char_data *vict);
+void WeaponSpell(struct char_data *c, struct char_data *v, int type);
 struct char_data *FindAnAttacker(struct char_data *ch);
 
 #if 0

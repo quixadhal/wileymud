@@ -16,8 +16,8 @@
 #include <ctype.h>
 #include <string.h>
 
-#include "global.h"
-#include "bug.h"
+#include "include/global.h"
+#include "include/bug.h"
 void watch(int port, char *text);
 void wave(int sock, char *text, int port);
 int new_connection(int s, int port);
@@ -123,9 +123,9 @@ int new_connection(int s, int port)
     ident.sin_addr.s_addr= remote_addr;
     ident.sin_port= htons(113);
     len= sizeof(ident);
-    if(connect(fd, &ident, len) >= 0) {
+    if(connect(fd, (struct sockaddr *)&ident, len) >= 0) {
       len= sizeof(ident);
-      if(getsockname(fd, &ident, &len) >= 0) {
+      if(getsockname(fd, (struct sockaddr *)&ident, &len) >= 0) {
         if((ifp= fdopen(fd, "r")) && (ofp= fdopen(fd, "w"))) {
           fprintf(ofp, "%d , %d\n", remote_port, port);
           fflush(ofp);

@@ -249,49 +249,50 @@ typedef struct Room_struct {
   struct Room_struct *next;
 } Room;
 
-void Command_brief();
-void Command_unlink();
-void Command_change();
-void Command_copy();
-void Command_make();
-void Command_desc();
-void Command_delete();
-void Command_exits();
-void Command_extra();
-void Command_flag();
-void Command_format();
-void Command_goto();
-void Command_help();
-void Command_light();
-void Command_link();
-void Command_list();
-void Command_look();
-void Command_save();
-void Command_set();
-void Command_title();
-void Command_sector();
-void Command_zone();
-void Command_dig();
+void Command_brief(void);
+void Command_unlink(void);
+void Command_change(void);
+void Command_copy(void);
+void Command_make(void);
+void Command_desc(void);
+void Command_delete(void);
+void Command_exits(void);
+void Command_extra(void);
+void Command_flag(void);
+void Command_format(void);
+void Command_goto(void);
+void Command_help(void);
+void Command_light(void);
+void Command_link(void);
+void Command_list(void);
+void Command_look(void);
+void Command_save(void);
+void Command_set(void);
+void Command_title(void);
+void Command_sector(void);
+void Command_zone(void);
+void Command_dig(void);
 
-void Display_A_Room();
-void trunc_string();
-Room *find_room();
-void get_inputs();
-void get_desc();
-void input_desc();
-void import_desc();
-void put_desc();
-int print_desc();
-int direction_number();
-Room *allocate_room();
+void Display_A_Room(Room *ptr);
+void trunc_string(char *ptr);
+Room *find_room(Room *current, int search_id);
+void get_inputs(void);
+void get_desc(char **ptr);
+void input_desc(char *title, char **ptr);
+void import_desc(char *title, char **ptr);
+void put_desc(void);
+int print_desc(void);
+int direction_number(char *ptr);
+Room *allocate_room(int temp_id);
 
 void abug(char *File, char *Func, int Line, int Verbose, char *Str,...);
 int scan_a_number(char *string, int *number);
-void Load_Rooms();
-void Link_World();
-void Main_Loop();
+void Load_Rooms(void);
+void Link_World(void);
+void Main_Loop(void);
 void Command_copy_sub(Room *ptr, Room *from_ptr);
 void Command_flag_sub(Room *ptr, int index);
+int find_keyword(char *buffer);
 
 /* Global Variables */
 
@@ -318,7 +319,6 @@ void abug(char *File, char *Func, int Line, int Verbose, char *Str,...)
   char Result[PAGE_SIZE];
   char Temp[PAGE_SIZE];
   char Time[BUFFER_SIZE];
-  long current_time;
   struct timeb right_now;
   struct tm *now_part;
 
@@ -363,7 +363,7 @@ int scan_a_number(char *string, int *number)
   return sscanf(string, "%d", number);
 }
 
-main(int argc, char **argv)
+int main(int argc, char **argv)
 {
   char tmp_str[BUFFER_SIZE];
   char *blah;
@@ -393,7 +393,7 @@ main(int argc, char **argv)
     printf("Using default input file, %s.\n", filename);
   }
   strcpy(tmp_str, filename);
-  if(blah= strtok(tmp_str, ".\n\r\t\0")) {
+  if((blah= strtok(tmp_str, ".\n\r\t\0"))) {
     errname= (char *)calloc(1, strlen(blah)+5);
     strcpy(errname, blah);
     strcat(errname, ".err");
@@ -412,11 +412,11 @@ main(int argc, char **argv)
   exit(0);
 }
 
-void Load_Rooms()
+void Load_Rooms(void)
 {
   char tmp_str[BUFFER_SIZE];
-  int index, index2, index3, temp_id;
-  int done, run_sort = FALSE;
+  int index, index2, temp_id;
+  int done;
 
   if (!(fp = fopen(filename, "r"))) {
     log("Cannot open %s for input!", filename);
@@ -611,12 +611,12 @@ void Load_Rooms()
   fclose(fp);
 }
 
-void Link_World()
+void Link_World(void)
 {
   Room *ptr;
-  int index, index2;
+  int index2;
   int init_flag = TRUE;
-  FILE *errfile;
+  FILE *errfile = NULL;
   int counter;
 
   printf("Linking Rooms...\r");
@@ -657,7 +657,7 @@ void Link_World()
   printf("\rAll Rooms Linked.                                  \n");
 }
 
-void Main_Loop()
+void Main_Loop(void)
 {
   int index, not_done = TRUE;
 
@@ -766,7 +766,7 @@ void Main_Loop()
   } while (not_done);
 }
 
-void Command_unlink()
+void Command_unlink(void)
 {
   int index, old;
 
@@ -800,7 +800,7 @@ void Command_unlink()
 	 directions[index].name, old);
 }
 
-void Command_brief()
+void Command_brief(void)
 {
   if (Brief) {
     printf(">> Brief descriptions turned off.\n\n");
@@ -811,7 +811,7 @@ void Command_brief()
   }
 }
 
-void Command_change()
+void Command_change(void)
 {
   char tmp_str[PAGE_SIZE];
   char *ptr;
@@ -844,7 +844,7 @@ void Command_change()
   Display_A_Room(current);
 }
 
-void Command_copy()
+void Command_copy(void)
 {
   Room *ptr, *ptr2;
   int count = 0;
@@ -941,11 +941,11 @@ void Command_copy_sub(Room *ptr, Room *from_ptr)
 	 ptr->room_id);
 }
 
-void Command_make()
+void Command_make(void)
 {
-  int run_sort = FALSE, index, roomid, source;
+  int index, roomid, source;
   char tmp_str[BUFFER_SIZE];
-  Room *ptr;
+  Room *ptr = NULL;
 
   if (inputs[1][0] == '\0') {
     printf("MAKE requires subparameters, the correct form is:\n");
@@ -986,7 +986,7 @@ void Command_make()
     printf("Zone for this room\n------------------\n> ");
     gets(tmp_str);
     if(!scan_a_number(tmp_str, &current->zonenum)) {
-      printf("** Invalid zone entered, defaulting to zone %d.\n");
+      printf("** Invalid zone entered, defaulting to zone %d.\n", lastzone);
       current->zonenum= lastzone;
     } else lastzone= current->zonenum;
   } else {
@@ -1013,7 +1013,7 @@ void Command_make()
   Display_A_Room(current);
 }
 
-void Command_delete()
+void Command_delete(void)
 {
   Room *ptr, *ptr2;
   int index, zaproom;
@@ -1123,7 +1123,7 @@ void Command_delete()
   Display_A_Room(current);
 }
 
-void Command_desc()
+void Command_desc(void)
 {
   FILE *fp;
 
@@ -1146,11 +1146,10 @@ void Command_desc()
   printf("\n");
 }
 
-void Command_exits()
+void Command_exits(void)
 {
-  int index, index2, index3;
+  int index, index2;
   int no_exits = TRUE;
-  Room *ptr;
 
   for (index = 0; index < 6; index++) {
     index2 = current->exit[index].door_flag;
@@ -1169,7 +1168,7 @@ void Command_exits()
   printf("\n");
 }
 
-void Command_extra()
+void Command_extra(void)
 {
   int index, index2;
   char tmp_str[BUFFER_SIZE];
@@ -1234,7 +1233,7 @@ void Command_extra()
   Display_A_Room(current);
 }
 
-void Command_flag()
+void Command_flag(void)
 {
   int index = 0, index2 = 0, count = 0, startroom, endroom;
   Room *ptr;
@@ -1321,7 +1320,7 @@ void Command_flag_sub(Room *ptr, int index)
   }
 }
 
-void Command_format()
+void Command_format(void)
 {
   int index = 0, index2 = 0, index3 = 0, index4 = 0;
   char *ptr;
@@ -1410,9 +1409,9 @@ void Command_format()
   Display_A_Room(current);
 }
 
-void Command_goto()
+void Command_goto(void)
 {
-  int new_room, number;
+  int number;
   Room *ptr;
 
   if (inputs[1][0] == '\0') {
@@ -1434,7 +1433,7 @@ void Command_goto()
   }
 }
 
-void Command_help()
+void Command_help(void)
 {
   int index = 0;
   int index2 = 0;
@@ -1453,7 +1452,7 @@ void Command_help()
   printf("\n\n");
 }
 
-void Command_light()
+void Command_light(void)
 {
   if (Light) {
     printf(">> You turn off your lantern.\n\n");
@@ -1464,9 +1463,9 @@ void Command_light()
   }
 }
 
-void Command_link()
+void Command_link(void)
 {
-  int index, index2, index3, index4, roomid;
+  int index, index3, index4, roomid;
   char tmp_str[BUFFER_SIZE];
   Room *ptr;
 
@@ -1555,7 +1554,7 @@ void Command_link()
   printf("\n");
 }
 
-void Command_list()
+void Command_list(void)
 {
   Room *ptr;
   int count = 0, startroom, endroom;
@@ -1601,11 +1600,9 @@ void Command_list()
   printf("\n");
 }
 
-void Command_look(buffer)
-  char *buffer;
+void Command_look(void)
 {
   int index = 0;
-  int msg_printed = FALSE;
 
   if (inputs[1][0] == '\0')
     Display_A_Room(current);
@@ -1634,10 +1631,10 @@ void Command_look(buffer)
   }
 }
 
-void Command_save()
+void Command_save(void)
 {
   int index2;
-  char tmp_str[BUFFER_SIZE], out_str[BUFFER_SIZE];
+  char tmp_str[BUFFER_SIZE];
   Room *ptr;
   int counter;
 
@@ -1650,7 +1647,7 @@ void Command_save()
   else
     outname= (char *)strdup(tmp_str);
 
-  if (out = fopen(outname, "r")) {
+  if ((out = fopen(outname, "r"))) {
     printf("File already exists, overwrite (Y or N)? ");
     gets(tmp_str);
 
@@ -1718,7 +1715,7 @@ void Command_save()
   printf(">> Saved %d rooms to %s.\n", counter, outname);
 }
 
-void Command_title()
+void Command_title(void)
 {
   char tmp_str[BUFFER_SIZE];
 
@@ -1739,9 +1736,9 @@ void Command_title()
   printf("\nTitle set to: %s\n\n", tmp_str);
 }
 
-void Command_sector()
+void Command_sector(void)
 {
-  int index = 0, index2 = 0, index3 = 0, parm1, parm2, parm3, parm4;
+  int index = 0, index2 = 0, index3 = 0, parm2, parm3, parm4;
 
   while (sector_types[index].name != NULL &&
 	 strcasecmp(sector_types[index].name, inputs[1]) != 0)
@@ -1766,7 +1763,7 @@ void Command_sector()
 	printf("** <teleport time> must be a multiple of 10, room type not set.\n\n");
 	return;
       }
-      if (!scan_a_number(inputs[3], &parm3) || find_room(current, inputs[3]) == NULL) {
+      if (!scan_a_number(inputs[3], &parm3) || find_room(current, parm3) == NULL) {
 	printf("** <to room> does not exist, room type not set.\n\n");
 	return;
       }
@@ -1831,7 +1828,7 @@ void Command_sector()
   }
 }
 
-void Command_zone()
+void Command_zone(void)
 {
   Room *ptr;
   int count = 0, zone, startroom, endroom;
@@ -1881,9 +1878,9 @@ void Command_zone()
   }
 }
 
-void Command_dig()
+void Command_dig(void)
 {
-  int index, index2, index3, index4, i, revindex, target, source, zone;
+  int index, index3, index4, i, revindex, target, source, zone;
   char tmp_str[BUFFER_SIZE];
   Room *ptr, *ptr2, *tmpptr;
 
@@ -2147,7 +2144,7 @@ int find_keyword(char *buffer)
   return commands[index].num;
 }
 
-void get_inputs()
+void get_inputs(void)
 {
   int index, index2;
   char buffer[PAGE_SIZE];
@@ -2228,7 +2225,7 @@ void get_desc(char **ptr)
 
   do {
     if (fgets(tmp_str + index, 82, fp) == NULL) {
-      printf("**Unexpected end of file encountered while reading room %s.\n",
+      printf("**Unexpected end of file encountered while reading room %d.\n",
 	     current->room_id);
       exit(8);
     }

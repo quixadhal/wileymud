@@ -17,6 +17,18 @@ struct event_mob_in_zone {
   struct event_mob_set *mobset;
 };
 
+struct event_goodies {
+  int bottom, top;
+  int chance;
+  int gold_dice, gold_die, gold_mod;
+  int obj_chance;
+  int obj_count;
+  int *obj_vnum;
+  int mob_chance;
+  int mob_count;
+  int *mob_vnum;
+};
+
 void do_event(struct char_data *ch, char *argument, int cmd);
 
 #endif

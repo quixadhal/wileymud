@@ -4,7 +4,7 @@
 #define MANA_MU 1
 #define MANA_CL 1
 
-#define ASSIGN_SPELL( nr, cast, use, nam, func, dly, minmana, maxmana, tar, pos, mlev, clev, wlev, tlev, rlev, dlev ) {\
+#define ASSIGN_SPELL( nr, cast, use, nam, func, dly, minmana, maxmana, tar, pos, glev, gcl, mlev, clev, wlev, tlev, rlev, dlev ) {\
   spell_info[nr].castable = (cast); \
   spell_info[nr].useable = (use); \
   spell_info[nr].name = (nam); \
@@ -14,6 +14,8 @@
   spell_info[nr].max_mana = (maxmana); \
   spell_info[nr].targets = (tar); \
   spell_info[nr].minimum_position = (pos); \
+  spell_info[nr].generic_level= (glev); \
+  spell_info[nr].generic_classes= (gcl); \
   spell_info[nr].min_level[MAGE_LEVEL_IND] = (mlev); \
   spell_info[nr].min_level[CLERIC_LEVEL_IND] = (clev); \
   spell_info[nr].min_level[WARRIOR_LEVEL_IND] = (wlev); \
@@ -38,9 +40,13 @@ extern const BYTE saving_throws[ABS_MAX_CLASS][MAX_SAVING_THROWS][ABS_MAX_LVL];
 #endif
 
 int GetSpellByName(char *name);
+int GetSkillByName(char *name);
 int SPELL_LEVEL(struct char_data *ch, int sn);
+inline int SKILL_LEVEL(struct char_data *ch, int sn);
 int CanCast(struct char_data *ch, int sn);
 inline int CanCastClass(struct char_data *ch, int sn, int cl);
+int CanUse(struct char_data *ch, int sn);
+inline int CanUseClass(struct char_data *ch, int sn, int cl);
 void affect_update(void);
 void clone_char(struct char_data *ch);
 void clone_obj(struct obj_data *obj);
@@ -53,8 +59,6 @@ BYTE saves_spell(struct char_data *ch, SHORT save_type);
 BYTE ImpSaveSpell(struct char_data *ch, SHORT save_type, int mod);
 char *skip_spaces(char *string);
 void do_cast(struct char_data *ch, char *argument, int cmd);
-void random_miscast(struct char_data *ch, char *name);
-void random_magic_failure(struct char_data *ch);
 void assign_spell_pointers(void);
 int splat(struct char_data *ch, struct room_data *rp, int height);
 int check_falling(struct char_data *ch);

@@ -55,7 +55,9 @@ struct spell_info_type {
   UBYTE max_mana;
   BYTE minimum_position;	/* Position for caster */
   SHORT targets;		/* See below for use with TAR_XXX */
-  BYTE min_level[ABS_MAX_LVL];	/* Level required for magic user */
+  BYTE generic_level;		/* Level for generic teachings */
+  int  generic_classes;		/* Classes allowed to learn generic skills */
+  BYTE min_level[ABS_MAX_LVL];	/* Level required for the various classes */
 };
 
 /* Possible Targets:
@@ -473,12 +475,20 @@ void cast_aid(BYTE level, struct char_data *ch, char *arg, int type, struct char
 void spell_shelter(BYTE level, struct char_data *ch, struct char_data *victim, struct obj_data *obj);
 void cast_shelter(BYTE level, struct char_data *ch, char *arg, int type, struct char_data *tar_ch, struct obj_data *tar_obj);
 
-#define MAX_EXIST_SPELL             104		/* move this and change it */
-
-#define SPELL_H_FEAST               103
 #define SPELL_DRAGON_BREATH         105
 void cast_dragon_breath(BYTE level, struct char_data *ch, char *arg, int type, struct char_data *tar_ch, struct obj_data *potion);
 
+#define SPELL_GOODBERRY             106
+void spell_goodberry(BYTE level, struct char_data *ch, struct char_data *victim, struct obj_data *obj);
+void cast_goodberry(BYTE level, struct char_data *ch, char *arg, int type, struct char_data *tar_ch, struct obj_data *tar_obj);
+
+#define SPELL_VISIONS               107
+void spell_visions(BYTE level, struct char_data *ch, struct char_data *victim, struct obj_data *obj);
+void cast_visions(BYTE level, struct char_data *ch, char *arg, int type, struct char_data *tar_ch, struct obj_data *tar_obj);
+
+#define MAX_EXIST_SPELL             107		/* move this and change it */
+
+#define SPELL_H_FEAST               103
 #define SPELL_WEB                   106
 #define SPELL_MINOR_TRACK           107
 #define SPELL_MAJOR_TRACK           108
@@ -518,8 +528,6 @@ void spell_feeblemind(BYTE level, struct char_data *ch, struct char_data *victim
 #define SPELL_SHILLELAGH            122
 void spell_shillelagh(BYTE level, struct char_data *ch, struct char_data *victim, struct obj_data *obj);
 
-#define SPELL_GOODBERRY             123
-void spell_goodberry(BYTE level, struct char_data *ch, struct char_data *victim, struct obj_data *obj);
 
 #define SPELL_FLAME_BLADE           124
 void spell_flame_blade(BYTE level, struct char_data *ch, struct char_data *victim, struct obj_data *obj);
@@ -726,7 +734,7 @@ void spell_prot_align_group(BYTE level, struct char_data *ch, struct char_data *
 #define SKILL_KNOCK_OUT		177    /* m,c,t NOT PUT IN */
 #define SKILL_SPELLCRAFT	178    /* m,c */
 #define SKILL_MEDITATION	179    /* m,c */
-#define SKILL_HUNT              180    /* r,t */
+#define SKILL_TRACK             180    /* r,t */
 #define SKILL_FIND_TRAP         181    /* t */
 #define SKILL_DISARM_TRAP       182    /* t */
 #define SKILL_DISARM            183    /* f,r */

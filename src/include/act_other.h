@@ -24,9 +24,9 @@ void do_group(struct char_data *ch, char *argument, int cmd);
 void do_quaff(struct char_data *ch, char *argument, int cmd);
 void do_recite(struct char_data *ch, char *argument, int cmd);
 void do_use(struct char_data *ch, char *argument, int cmd);
-do_plr_noshout(struct char_data *ch, char *argument, int cmd);
-do_plr_notell(struct char_data *ch, char *argument, int cmd);
-do_plr_nosummon(struct char_data *ch, char *argument, int cmd);
-do_plr_noteleport(struct char_data *ch, char *argument, int cmd);
+void do_plr_noshout(struct char_data *ch, char *argument, int cmd);
+void do_plr_notell(struct char_data *ch, char *argument, int cmd);
+void do_plr_nosummon(struct char_data *ch, char *argument, int cmd);
+void do_plr_noteleport(struct char_data *ch, char *argument, int cmd);
 
 #endif

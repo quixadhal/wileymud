@@ -20,6 +20,10 @@ typedef int INT;
 typedef unsigned long long ULONG;      /* 64 bit */
 typedef long long LONG;
 
+typedef void (*funcp) ();
+typedef int (*ifuncp) ();
+/* #define funcp(x) void ((*(x))()) */
+
 #define WLD_FILE_DIRECTORY 	"wld"
 #define MAX_WLD_FILE_ENTRIES	25
 
@@ -216,23 +220,24 @@ typedef struct {
 #define PULSE_UPDATE	(70 * PULSE_PER_SECOND)
 #define PULSE_VARIABLE	(30 * PULSE_PER_SECOND)
 
+#define PULSE_VIOLENCE    6 /* combat rounds */
 #define PULSE_RIVER      10 /* These two must be 10 to make the timings */
 #define PULSE_TELEPORT   10 /* in the world files come out right. */
-#define PULSE_NATURE     19
-#define PULSE_SOUND      33
-#define PULSE_ZONE      239
-#define PULSE_MOBILE     25
-#define PULSE_VIOLENCE    6
-#define PULSE_LAW       589
-#define PULSE_DUMP     3601
-#define PULSE_MAX	999999
+#define PULSE_NATURE     19 /* This is checks for falling/drowning */
+#define PULSE_MOBILE     25 /* mob movement/specials/etc */
+#define PULSE_SOUND      33 /* room sounds */
+#define PULSE_ZONE      239 /* zone updates */
+#define PULSE_REBOOT    599 /* reboot checking */
+#define PULSE_SHOUT    1203 /* replacement for the astral traveller */
+#define PULSE_DUMP     3601 /* dump player list */
+#define PULSE_MAX    999999
 
 #define WAIT_SEC       4
 #define WAIT_ROUND     4
 
 #define MAX_STRING_LENGTH   8192
 #define NORMAL_BUFFER_SIZE   512
-#define MAX_INPUT_LENGTH     160
+#define MAX_INPUT_LENGTH     256
 #define MAX_MESSAGES          60
 #define MAX_ITEMS            153
 
@@ -488,7 +493,7 @@ struct room_data {
 
   BYTE light;			       /* Number of lightsources in room     */
 
-  int (*funct) ();		       /* special procedure                  */
+  ifuncp funct;
 
   struct obj_data *contents;	       /* List of items in room              */
   struct char_data *people;	       /* List of NPC / PC in room           */
@@ -1181,8 +1186,6 @@ struct con_app_type {
 };
 
 /************************************************************/
-
-typedef void (*funcp) ();
 
 struct breather {
   int vnum;

@@ -44,6 +44,7 @@
 #define TYPO_FILE         "log/typos"  /*         'typo'             */
 #define BUG_FILE          "log/bugs"   /*         'bug'              */
 #define REBOOT_FILE	  "adm/reboot"
+#define REBOOTTIME_FILE	  "adm/reboot.times"
 #define PASSWD_FILE       "adm/passwd"
 #define PASSWD_NEW        "adm/passwd.new"
 #define PASSWD_OFF        "adm/passwd.off"
@@ -134,7 +135,7 @@ struct index_data {
   int virtual;			       /* virtual number of this mob/obj           */
   long pos;			       /* file position of this field              */
   int number;			       /* number of existing units of this mob/obj     */
-  int (*func) ();		       /* special procedure for this mob/obj       */
+  ifuncp func;
   char *name;
 };
 
@@ -142,7 +143,7 @@ struct obj_index_data {
   int virtual;			       /* virtual number of this mob/obj           */
   long pos;			       /* file position of this field              */
   int number;			       /* number of existing units of this mob/obj     */
-  int (*func) ();		       /* special procedure for this mob/obj       */
+  ifuncp func;
   char *name;
   struct obj_data *template;	       /* for preloading of objects */
 };
@@ -244,6 +245,7 @@ void allocate_room(int room_number);
 void setup_dir(FILE * fl, int room, int dir);
 void renum_zone_table(void);
 void boot_zones(void);
+void fread_dice(FILE *fp, long int *x, long int *y, long int *z);
 struct char_data *read_mobile(int nr, int type);
 struct obj_data *read_object(int nr, int type);
 void zone_update(void);
@@ -292,5 +294,6 @@ char *fread_word(FILE * fp);
 int fread_number(FILE * fp);
 void fread_to_eol(FILE * fp);
 int fread_char(char *name, struct char_file_u *char_element);
+char *new_fread_string(FILE * fp);
 
 #endif

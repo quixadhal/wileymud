@@ -20,7 +20,7 @@ extern struct Board *board_list;
 
 #endif
 
-void InitBoards();
+void InitBoards(void);
 void InitABoard(struct obj_data *obj);
 void OpenBoardFile(struct Board *b);
 struct Board *FindBoardInRoom(int room);

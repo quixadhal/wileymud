@@ -9,6 +9,9 @@
 #define GUARD_VNUM 3060
 #define GUARD2_VNUM 3069
 
+#define EXP_NEEDED(ch,cl) ((titles[cl][GET_LEVEL(ch,cl)+1].exp / (IS_PC(ch)?1:20)) - GET_EXP(ch))
+#define GOLD_NEEDED(ch,cl) (IS_PC(ch)?((3*(16<<(GET_LEVEL(ch,cl)+1)/3)+((16<<(GET_LEVEL(ch,cl)+1)/3)*((GET_LEVEL(ch,cl)+1)%3))) / ((GET_LEVEL(ch,cl)<8)?((GET_LEVEL(ch,cl)<4)?8:2):1)):0)
+
 #define NAME(ch) ((ch)?(IS_NPC(ch)?(ch)->player.short_descr:(ch)->player.name):"")
 #define MIN(a,b) ((a)<=(b)?(a):(b))
 #define MAX(a,b) ((a)>=(b)?(a):(b))
@@ -33,8 +36,8 @@ inline int strn_cmp(char *arg1, char *arg2, int n);
 #define NO_MOON (time_info.hours == 4 || time_info.hours == 5 || time_info.hours == 19 || time_info.hours == 20)
 #define FULL_MOON ((weather_info.moon >= 12) && (weather_info.moon < 20))
 #define STORMY (weather_info.sky > SKY_CLOUDY)
-#define IS_LIGHTOUT(room) (!IS_SET(real_roomp(room)->room_flags, INDOORS) && ((weather_info.sunlight > SUN_DARK) || (FULL_MOON && !STORMY && !NO_MOON)) || real_roomp(room)->light)
-#define IS_DARKOUT(room) (!IS_SET(real_roomp(room)->room_flags, INDOORS) && ((weather_info.sunlight == SUN_DARK) && !(FULL_MOON && !STORMY && !NO_MOON)) && !(real_roomp(room)->light))
+#define IS_LIGHTOUT(room) ((!IS_SET(real_roomp(room)->room_flags, INDOORS) && ((weather_info.sunlight > SUN_DARK) || (FULL_MOON && !STORMY && !NO_MOON))) || real_roomp(room)->light)
+#define IS_DARKOUT(room)  ((!IS_SET(real_roomp(room)->room_flags, INDOORS) && ((weather_info.sunlight == SUN_DARK) && !(FULL_MOON && !STORMY && !NO_MOON))) && !(real_roomp(room)->light))
 #define BRIGHT_MOON(room) ((weather_info.moon >= 5) && (weather_info.moon < 28) && !NO_MOON)
 #define IS_PC(ch)  (!IS_SET((ch)->specials.act, ACT_ISNPC))
 #define IS_NPC(ch)  (IS_SET((ch)->specials.act, ACT_ISNPC))
@@ -58,15 +61,15 @@ inline int strn_cmp(char *arg1, char *arg2, int n);
 #define MOUNTED(ch)  ((ch)->specials.mounted_on)
 #define RIDDEN(ch)	((ch)->specials.ridden_by)
 #define GET_ZONE(room)	(real_roomp(room)->zone)
-#define GET_LEVEL(ch, i)   ((ch)->player.level[(i)])
+#define GET_LEVEL(ch, i)   ((int)(ch)->player.level[(int)(i)])
 #define GET_CLASS_TITLE(ch, class, lev)   ((ch)->player.sex ?  \
-   (((ch)->player.sex == 1) ? titles[(class)][(lev)].title_m : \
-    titles[(class)][(lev)].title_f) : titles[(class)][(lev)].title_m)
+   (((ch)->player.sex == 1) ? titles[(int)(class)][(int)(lev)].title_m : \
+    titles[(int)(class)][(int)(lev)].title_f) : titles[(int)(class)][(int)(lev)].title_m)
 #define GET_REQ(i) (i<2  ? "Awful" :(i<4  ? "Bad"     :(i<7  ? "Poor"      :\
 (i<10 ? "Average" :(i<14 ? "Fair"    :(i<20 ? "Good"    :(i<24 ? "Very good" :\
         "Superb" )))))))
 #define GET_POS(ch)     ((ch)->specials.position)
-#define GET_COND(ch, i) ((ch)->specials.conditions[(i)])
+#define GET_COND(ch, i) ((ch)->specials.conditions[(int)(i)])
 #define GET_NAME(ch)    ((ch)->player.name)
 #define GET_SDESC(ch)	((ch)->player.short_descr)
 #define GET_TITLE(ch)   ((ch)->player.title)
@@ -76,12 +79,12 @@ inline int strn_cmp(char *arg1, char *arg2, int n);
 #define GET_CLASS(ch)   ((ch)->player.class)
 #define GET_HOME(ch)	((ch)->player.hometown)
 #define GET_AGE(ch)     (age(ch).year)
-#define GET_STR(ch)     ((ch)->tmpabilities.str)
-#define GET_ADD(ch)     ((ch)->tmpabilities.str_add)
-#define GET_DEX(ch)     ((ch)->tmpabilities.dex)
-#define GET_INT(ch)     ((ch)->tmpabilities.intel)
-#define GET_WIS(ch)     ((ch)->tmpabilities.wis)
-#define GET_CON(ch)     ((ch)->tmpabilities.con)
+#define GET_STR(ch)     ((int)(ch)->tmpabilities.str)
+#define GET_ADD(ch)     ((int)(ch)->tmpabilities.str_add)
+#define GET_DEX(ch)     ((int)(ch)->tmpabilities.dex)
+#define GET_INT(ch)     ((int)(ch)->tmpabilities.intel)
+#define GET_WIS(ch)     ((int)(ch)->tmpabilities.wis)
+#define GET_CON(ch)     ((int)(ch)->tmpabilities.con)
 #define STRENGTH_APPLY_INDEX(ch) \
         ( ((GET_ADD(ch)==0) || (GET_STR(ch) != 18)) ? GET_STR(ch) :\
           (GET_ADD(ch) <= 50) ? 26 :( \
@@ -121,7 +124,7 @@ inline int strn_cmp(char *arg1, char *arg2, int n);
 #define GET_ITEM_TYPE(obj) ((obj)->obj_flags.type_flag)
 #define CAN_WEAR(obj, part) (IS_SET((obj)->obj_flags.wear_flags,part))
 #define GET_OBJ_WEIGHT(obj) ((obj)->obj_flags.weight)
-#define CAN_CARRY_W(ch) (str_app[STRENGTH_APPLY_INDEX(ch)].carry_w)
+#define CAN_CARRY_W(ch) (str_app[(int)STRENGTH_APPLY_INDEX(ch)].carry_w)
 #define CAN_CARRY_N(ch) (5+GET_DEX(ch)/2+GetMaxLevel(ch)/2)
 #define IS_CARRYING_W(ch) ((ch)->specials.carry_weight)
 #define IS_CARRYING_N(ch) ((ch)->specials.carry_items)
@@ -146,9 +149,9 @@ inline int strn_cmp(char *arg1, char *arg2, int n);
 #define OUTSIDE(ch) (!IS_SET(real_roomp((ch)->in_room)->room_flags,INDOORS))
 #define IS_IMMORTAL(ch) ((GetMaxLevel(ch)>=LOW_IMMORTAL)&&(!IS_NPC(ch)))
 #define IS_MORTAL(ch)   (!IS_IMMORTAL(ch))
-#define IS_POLICE(ch) ((mob_index[ch->nr].virtual == 3060) || \
-                       (mob_index[ch->nr].virtual == 3069) || \
-                       (mob_index[ch->nr].virtual == 3067))
+#define IS_POLICE(ch) ((mob_index[(int)ch->nr].virtual == 3060) || \
+                       (mob_index[(int)ch->nr].virtual == 3069) || \
+                       (mob_index[(int)ch->nr].virtual == 3067))
 #define IS_CORPSE(obj) (GET_ITEM_TYPE((obj))==ITEM_CONTAINER && \
 			(obj)->obj_flags.value[3] && \
 			isname("corpse", (obj)->name))
@@ -185,9 +188,6 @@ inline char *ordinal(int x);
 int GetItemClassRestrictions(struct obj_data *obj);
 int CAN_SEE(struct char_data *s, struct char_data *o);
 int exit_ok(struct room_direction_data *exit, struct room_data **rpp);
-void Zwrite(FILE * fp, char cmd, int tf, int arg1, int arg2, int arg3, char *desc);
-void RecZwriteObj(FILE * fp, struct obj_data *o);
-FILE *MakeZoneFile(struct char_data *c);
 inline int IsImmune(struct char_data *ch, int bit);
 inline int IsResist(struct char_data *ch, int bit);
 inline int IsSusc(struct char_data *ch, int bit);
@@ -195,13 +195,9 @@ inline int number(int from, int to);
 inline int dice(int number, int size);
 inline int fuzz(int x);
 int scan_number(char *text, int *rval);
-#if 0
-int str_cmp(char *arg1, char *arg2);
-int strn_cmp(char *arg1, char *arg2, int n);
-#endif
 
-inline void sprintbit(unsigned long vektor, char *names[], char *result);
-inline void sprinttype(int type, char *names[], char *result);
+inline void sprintbit(unsigned long vektor, const char *names[], char *result);
+inline void sprinttype(int type, const char *names[], char *result);
 struct time_info_data real_time_passed(time_t t2, time_t t1);
 struct time_info_data mud_time_passed(time_t t2, time_t t1);
 struct time_info_data age(struct char_data *ch);
@@ -210,20 +206,17 @@ int getall(char *name, char *newname);
 int getabunch(char *name, char *newname);
 int DetermineExp(struct char_data *mob, int exp_flags);
 void down_river(int pulse);
-#if 0
-void RoomSave(struct char_data *ch, int start, int end);
-void RoomLoad(struct char_data *ch, int start, int end);
-void fake_setup_dir(FILE * fl, int room, int dir);
-#endif
 inline int IsHumanoid(struct char_data *ch);
 inline int IsAnimal(struct char_data *ch);
 inline int IsUndead(struct char_data *ch);
 inline int IsLycanthrope(struct char_data *ch);
 inline int IsDiabolic(struct char_data *ch);
 inline int IsReptile(struct char_data *ch);
+inline int IsDraconic(struct char_data *ch);
+inline int IsAvian(struct char_data *ch);
+inline int IsExtraPlanar(struct char_data *ch);
 inline int HasHands(struct char_data *ch);
 inline int IsPerson(struct char_data *ch);
-inline int IsExtraPlanar(struct char_data *ch);
 void SetHunting(struct char_data *ch, struct char_data *tch);
 void CallForGuard(struct char_data *ch, struct char_data *vict, int lev);
 void CallForAGuard(struct char_data *ch, struct char_data *vict, int lev);

@@ -1,9 +1,6 @@
 #ifndef _MODIFY_H
 #define _MODIFY_H
 
-#define REBOOT_AT1 7     /* 0-23, time of optional reboot if -e lib/reboot */
-#define REBOOT_AT2 19
-
 #define TP_MOB    0
 #define TP_OBJ    1
 #define TP_ERROR  2
@@ -12,6 +9,7 @@
 #define NEW
 
 #ifndef _MODIFY_C
+extern int REBOOT_AT1, REBOOT_AT2; /* 0-23, time of optional reboot if -e lib/reboot */
 extern struct room_data *world;
 extern char *string_fields[];
 extern char *room_fields[];
@@ -31,11 +29,10 @@ char *one_word(char *argument, char *first_arg);
 struct help_index_element *build_help_index(FILE * fl, int *num);
 void page_string(struct descriptor_data *d, char *str, int keep_internal);
 void show_string(struct descriptor_data *d, char *input);
-void night_watchman(void);
 void check_reboot(void);
 
 #ifdef GR
-int workhours();
+int workhours(void);
 int load(void);
 
 #if 0

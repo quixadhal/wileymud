@@ -18,13 +18,13 @@ struct hash_header {
 #define	HASH_KEY(ht,key)	( (((unsigned int)(key)) * 17) % (ht)->table_size )
 
 void init_hash_table(struct hash_header *ht, int rec_size, int table_size);
-void destroy_hash_table(struct hash_header *ht, void (*gman)());
+void destroy_hash_table(struct hash_header *ht, funcp gman);
 
 /* static void _hash_enter(struct hash_header *ht, int key, void *data); */
 void *hash_find(struct hash_header *ht, int key);
 int hash_enter(struct hash_header *ht, int key, void *data);
 void *hash_find_or_create(struct hash_header *ht, int key);
 void *hash_remove(struct hash_header *ht, int key);
-void hash_iterate(struct hash_header *ht, void (*func) (), void *cdata);
+void hash_iterate(struct hash_header *ht, funcp func, void *cdata);
 
 #endif

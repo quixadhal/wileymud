@@ -57,5 +57,8 @@ int new_save_obj(struct char_data *ch, struct obj_data *obj, FILE *fp, int delet
 void new_save_equipment(struct char_data *ch, struct obj_cost *cost, int delete);
 int receptionist(struct char_data *ch, int cmd, char *arg);
 void zero_rent(struct char_data *ch);
+int fread_object(struct obj_data *obj, FILE *fp);
+int new_load_equipment(struct char_data *ch, struct obj_cost *cost);
+int TotalWeight(struct obj_data *obj);
 
 #endif

@@ -18,7 +18,7 @@
  * SHOW_ROOM
  */
 
-#define DEFAULT_MODE ( SHOW_NAME | SHOW_TITLE | SHOW_IDLE | SHOW_LEVEL | SHOW_ROOM | SHOW_ON )
+#define DEFAULT_MODE ( SHOW_NAME | SHOW_TITLE | SHOW_IDLE | SHOW_ROOM | SHOW_ON )
 
 #define INVIS_LEVEL(ch) ((ch)->invis_level)
 

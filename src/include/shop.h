@@ -40,7 +40,7 @@ void shopping_value(char *arg, struct char_data *ch, struct char_data *keeper, i
 void shopping_list(char *arg, struct char_data *ch, struct char_data *keeper, int shop_nr);
 void shopping_kill(char *arg, struct char_data *ch, struct char_data *keeper, int shop_nr);
 int shop_keeper(struct char_data *ch, int cmd, char *arg);
-void boot_the_shops();
-void assign_the_shopkeepers();
+void boot_the_shops(void);
+void assign_the_shopkeepers(void);
 
 #endif

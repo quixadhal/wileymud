@@ -9,6 +9,7 @@
 /* title_type definition moved to global.h */
 
 #define STARTING_HP 20
+#define MOB_LEVELING
 
 char *ClassTitles(struct char_data *ch);
 int graf(int age, int p0, int p1, int p2, int p3, int p4, int p5, int p6);

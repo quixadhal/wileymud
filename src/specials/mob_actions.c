@@ -7,19 +7,30 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include <sys/types.h>
 
-#include "global.h"
-#include "bug.h"
-#include "utils.h"
-#include "handler.h"
-#include "db.h"
-#include "comm.h"
-#include "constants.h"
-#include "opinion.h"
-#include "trap.h"
+#include "include/global.h"
+#include "include/bug.h"
+#include "include/utils.h"
+
+#include "include/act_obj.h"
+#include "include/act_off.h"
+#include "include/comm.h"
+#include "include/constants.h"
+#include "include/db.h"
+#include "include/fight.h"
+#include "include/handler.h"
+#include "include/hash.h"
+#include "include/limits.h"
+#include "include/multiclass.h"
+#include "include/opinion.h"
+#include "include/spell_parser.h"
+#include "include/trap.h"
+
+#include "include/act_skills.h"
+#include "include/spec_procs.h"
+#include "include/tracking.h"
 #define _MOB_ACTIONS_C
-#include "mob_actions.h"
+#include "include/mob_actions.h"
 
 void mobile_guardian(struct char_data *ch)
 {
@@ -78,57 +89,6 @@ void mobile_wander(struct char_data *ch)
   }
 }
 
-void MobHunt(struct char_data *ch)
-{
-  int res, k;
-
-  if (ch->persist <= 0) {
-    res = choose_exit(ch->in_room, ch->old_room, 2000);
-    if (res > -1) {
-      go_direction(ch, res);
-    } else {
-      if (ch->specials.hunting) {
-	if (ch->specials.hunting->in_room == ch->in_room) {
-	  if (Hates(ch, ch->specials.hunting) &&
-	      (!IS_AFFECTED(ch->specials.hunting, AFF_HIDE))) {
-	    if (check_peaceful(ch, "You CAN'T fight here!\n\r")) {
-	      act("$n fumes at $N", TRUE, ch, 0, ch->specials.hunting, TO_ROOM);
-	    } else {
-	      if (IsHumanoid(ch)) {
-		act("$n screams 'Time to die, $N'",
-		    TRUE, ch, 0, ch->specials.hunting, TO_ROOM);
-	      } else if (IsAnimal(ch)) {
-		act("$n growls.", TRUE, ch, 0, 0, TO_ROOM);
-	      }
-	      hit(ch, ch->specials.hunting, 0);
-	      return;
-	    }
-	  }
-	}
-      }
-      REMOVE_BIT(ch->specials.act, ACT_HUNTING);
-      ch->specials.hunting = 0;
-      ch->hunt_dist = 0;
-    }
-  } else if (ch->specials.hunting) {
-    if (ch->hunt_dist <= 50)
-      ch->hunt_dist = 50;
-    for (k = 1; k <= 2 && ch->specials.hunting; k++) {
-      ch->persist -= 1;
-      res = dir_track(ch, ch->specials.hunting);
-      if (res != -1) {
-	go_direction(ch, res);
-      } else {
-	ch->persist = 0;
-	ch->specials.hunting = 0;
-	ch->hunt_dist = 0;
-      }
-    }
-  } else {
-    ch->persist = 0;
-  }
-}
-
 void MobScavenge(struct char_data *ch)
 {
   struct obj_data *best_obj, *obj;
@@ -177,10 +137,7 @@ void MobScavenge(struct char_data *ch)
 void mobile_activity(void)
 {
   register struct char_data *ch, *tmp_ch;
-  struct char_data *damsel, *targ;
-  struct obj_data *obj, *best_obj, *worst_obj;
-  int door, found, max, min, t, res, k;
-  char buf[80];
+  int k;
 
   void do_move(struct char_data *ch, char *argument, int cmd);
   void do_get(struct char_data *ch, char *argument, int cmd);
@@ -318,7 +275,7 @@ int SameRace(struct char_data *ch1, struct char_data *ch2)
 
 }
 
-int AssistFriend(struct char_data *ch)
+void AssistFriend(struct char_data *ch)
 {
   struct char_data *damsel, *targ, *tmp_ch;
   int t, found;

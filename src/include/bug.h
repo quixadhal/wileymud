@@ -1,6 +1,11 @@
 #ifndef _BUG_H
 #define _BUG_H
 
+#define DIKU_CRUD
+#ifndef DIKU_CRUD
+#define GREATER_GOD 0
+#endif
+
 #define bug(Str...) \
         abug(__FILE__, __FUNCTION__, __LINE__, \
 	     GREATER_GOD, 0, NULL, NULL, Str ##)

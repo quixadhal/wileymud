@@ -9,7 +9,6 @@ struct show_room_zone_struct {
 };
 
 void do_polymorph(struct char_data *ch, char *argument, int cmdnum);
-void do_instazone(struct char_data *ch, char *argument, int cmdnum);
 void do_highfive(struct char_data *ch, char *argument, int cmd);
 void do_rentmode(struct char_data *ch, char *argument, int cmd);
 void do_wizlock(struct char_data *ch, char *argument, int cmd);
@@ -20,6 +19,7 @@ void do_trans(struct char_data *ch, char *argument, int cmd);
 void do_at(struct char_data *ch, char *argument, int cmd);
 void do_form(struct char_data *ch, char *argument, int cmd);
 void do_goto(struct char_data *ch, char *argument, int cmd);
+void do_home(struct char_data *ch, char *argument, int cmd);
 void do_apraise(struct char_data *ch, char *argument, int cmd);
 void do_stat(struct char_data *ch, char *argument, int cmd);
 void do_pretitle(struct char_data *ch, char *argument, int cmd);
@@ -57,5 +57,6 @@ void do_invis(struct char_data *ch, char *argument, int cmd);
 void do_reset(struct char_data *ch, char *argument, int cmd);
 void do_zone_purge(struct char_data *ch, char *argument, int cmd);
 void do_not_yet_implemented(struct char_data *ch, char *argument, int cmd);
+void do_setreboot(struct char_data *ch, char *argument, int cmd);
 
 #endif
