@@ -1,9 +1,9 @@
 #ifndef _WHOD_H
 #define _WHOD_H
 
-#define MUDNAME "WileyMUD"
-#define START_TIME "Wiley start time was: %s\n\r"
-#define GAME_TIME "Quixadhal's time is: %s\n\r"
+#define MUDNAME		"WileyMUD"
+#define START_TIME	"Wiley start time was: %s\n\r"
+#define GAME_TIME	"Quixadhal's time is:  %s\n\r"
 
 /*
  * *** The following statement indicates the WHOD default mode 
@@ -18,7 +18,7 @@
  * SHOW_ROOM
  */
 
-#define DEFAULT_MODE ( SHOW_NAME | SHOW_TITLE | SHOW_IDLE | SHOW_ROOM | SHOW_ON )
+#define DEFAULT_MODE ( SHOW_NAME | SHOW_TITLE | SHOW_IDLE | SHOW_LEVEL | SHOW_ROOM | SHOW_ON )
 
 #define INVIS_LEVEL(ch) ((ch)->invis_level)
 

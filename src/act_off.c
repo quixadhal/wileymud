@@ -122,7 +122,10 @@ void do_kill(struct char_data *ch, char *argument, int cmd)
       send_to_char("They aren't here.\n\r", ch);
     else if (ch == victim)
       send_to_char("Self-inflicted wounds are not allowed\n\r", ch);
-    else {
+    else  if(GetMaxLevel(ch) < GetMaxLevel(victim)) {
+      do_hit(ch, argument, 0);
+      return;
+    } else {
       act("You hack $M to pieces! Blood flies everywhere!",
 	  FALSE, ch, 0, victim, TO_CHAR);
       act("$N hacks you into itty bitty pieces!", FALSE, victim, 0, ch, TO_CHAR);

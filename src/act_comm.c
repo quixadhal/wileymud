@@ -559,6 +559,7 @@ void do_invis_off(struct char_data *ch, char *arg, int cmd)
     return;
   }
   act("$n slowly fades into existence.", FALSE, ch, 0, 0, TO_ROOM);
+  act("You feel exposed.", FALSE, ch,0,0,TO_CHAR);
 
   if (affected_by_spell(ch, SPELL_INVISIBLE))
     affect_from_char(ch, SPELL_INVISIBLE);

@@ -11,9 +11,8 @@ struct show_room_zone_struct {
 void do_polymorph(struct char_data *ch, char *argument, int cmdnum);
 void do_instazone(struct char_data *ch, char *argument, int cmdnum);
 void do_highfive(struct char_data *ch, char *argument, int cmd);
+void do_rentmode(struct char_data *ch, char *argument, int cmd);
 void do_wizlock(struct char_data *ch, char *argument, int cmd);
-void do_rload(struct char_data *ch, char *argument, int cmd);
-void do_rsave(struct char_data *ch, char *argument, int cmd);
 void do_emote(struct char_data *ch, char *argument, int cmd);
 void do_echo(struct char_data *ch, char *argument, int cmd);
 void do_system(struct char_data *ch, char *argument, int cmd);

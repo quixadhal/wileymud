@@ -472,9 +472,29 @@ void show_char_to_char(struct char_data *i, struct char_data *ch, int mode)
       act("You see nothing special about $m.", FALSE, i, 0, ch, TO_VICT);
     }
 
-    if (IS_PC(i))
-      sprintf(buffer, "%s is %s.\n\r", GET_NAME(i), RaceName[GET_RACE(i)]);
-    else
+    if (IS_PC(i)) {
+      if(ch == i) {
+        if(IS_SET(i->specials.new_act, NEW_PLR_KILLOK)) {
+          sprintf(buffer, "You are %s and bear the Mark of Dread Quixadhal.\n\r", RaceName[GET_RACE(i)]);
+        } else {
+          sprintf(buffer, "You are %s.\n\r", RaceName[GET_RACE(i)]);
+        }
+      } else {
+        if(IS_SET(ch->specials.new_act, NEW_PLR_KILLOK)) {
+          if(IS_SET(i->specials.new_act, NEW_PLR_KILLOK)) {
+            sprintf(buffer, "%s is %s and also bears the Mark of the Dread Lord.\n\r", GET_NAME(i), RaceName[GET_RACE(i)]);
+          } else {
+            sprintf(buffer, "%s is %s.\n\r", GET_NAME(i), RaceName[GET_RACE(i)]);
+          }
+        } else {
+          if(IS_SET(i->specials.new_act, NEW_PLR_KILLOK)) {
+            sprintf(buffer, "%s is %s and bears the Mark of Dread Quixadhal.\n\r", GET_NAME(i), RaceName[GET_RACE(i)]);
+          } else {
+            sprintf(buffer, "%s is %s.\n\r", GET_NAME(i), RaceName[GET_RACE(i)]);
+          }
+        }
+      }
+    } else
       sprintf(buffer, "%s is %s.\n\r", MOB_NAME(i), RaceName[GET_RACE(i)]);
 
     send_to_char(buffer, ch);
@@ -1075,8 +1095,23 @@ void do_look(struct char_data *ch, char *argument, int cmd)
 	  if (tmp_char) {
 	    show_char_to_char(tmp_char, ch, 1);
 	    if (ch != tmp_char) {
-	      act("$n looks at you.", TRUE, ch, 0, tmp_char, TO_VICT);
-	      act("$n looks at $N.", TRUE, ch, 0, tmp_char, TO_NOTVICT);
+              if(IS_SET(ch->specials.new_act, NEW_PLR_KILLOK)) {
+                if(IS_SET(tmp_char->specials.new_act, NEW_PLR_KILLOK)) {
+	          act("$n looks at you and grins.", TRUE, ch, 0, tmp_char, TO_VICT);
+	          act("$n and $N share some private joke.", TRUE, ch, 0, tmp_char, TO_NOTVICT);
+                } else {
+	          act("$n looks at you hungrily.", TRUE, ch, 0, tmp_char, TO_VICT);
+	          act("$n looks at $N and salivates.", TRUE, ch, 0, tmp_char, TO_NOTVICT);
+                }
+              } else {
+                if(IS_SET(tmp_char->specials.new_act, NEW_PLR_KILLOK)) {
+	          act("$n looks at you and shivers.", TRUE, ch, 0, tmp_char, TO_VICT);
+	          act("$n backs away from $N.", TRUE, ch, 0, tmp_char, TO_NOTVICT);
+                } else {
+	          act("$n looks at you.", TRUE, ch, 0, tmp_char, TO_VICT);
+	          act("$n looks at $N.", TRUE, ch, 0, tmp_char, TO_NOTVICT);
+                }
+              }
 	    }
 	    return;
 	  }
@@ -1376,14 +1411,18 @@ void do_exits(struct char_data *ch, char *argument, int cmd)
       if (!real_roomp(exitdata->to_room)) {
 	/* don't print unless immortal */
 	if (IS_IMMORTAL(ch)) {
-	  sprintf(buf + strlen(buf), "%s - swirling chaos of #%d\n\r",
+	  sprintf(buf + strlen(buf), "%s - [#%d] Swirling CHAOS!\n\r",
 		  exits[door], exitdata->to_room);
 	}
       } else if (exitdata->to_room != NOWHERE &&
       (!IS_SET(exitdata->exit_info, EX_CLOSED) || IS_IMMORTAL(ch))) {
 	if ((IS_DARK(exitdata->to_room) || IS_DARKOUT(exitdata->to_room)) && !IS_IMMORTAL(ch))
 	  sprintf(buf + strlen(buf), "%s - Too dark to tell", exits[door]);
-	else
+	else if(IS_IMMORTAL(ch))
+	  sprintf(buf + strlen(buf), "%s - [#%d] %s", exits[door],
+                  exitdata->to_room,
+		  real_roomp(exitdata->to_room)->name);
+        else
 	  sprintf(buf + strlen(buf), "%s - %s", exits[door],
 		  real_roomp(exitdata->to_room)->name);
 	if (IS_SET(exitdata->exit_info, EX_CLOSED))
@@ -1429,8 +1468,9 @@ void do_score(struct char_data *ch, char *argument, int cmd)
       }
     }
   }
-  cprintf(ch, "%s%s %s %s is %d years old.\n\r",
-      ((age(ch).month == 0) && (age(target).day == 0)) ? "Newbie " : "",
+  cprintf(ch, "%s%s%s %s %s is %d years old.\n\r",
+      (IS_SET(target->specials.new_act, NEW_PLR_KILLOK)) ? "Black " : "",
+      ((age(target).year == 17) && (age(target).month == 0)) ? "Newbie " : "",
 	  GET_PRETITLE(target) ? GET_PRETITLE(target) : "", GET_NAME(target),
           GET_TITLE(target),
 	  GET_AGE(target));
@@ -1704,11 +1744,21 @@ void do_time(struct char_data *ch, char *argument, int cmd)
 	  time_info.year);
 
   send_to_char(buf, ch);
-  if (tm_info->tm_hour > 12)
-    sprintf(tbuf, "In RL time, it is %2d:%2.2d\n\r", tm_info->tm_hour - 12,
+  if (tm_info->tm_hour == 0)
+    if (tm_info->tm_min == 0)
+      sprintf(tbuf, "In RL, it is midnight!\n\r");
+    else
+      sprintf(tbuf, "In RL, it is 12:%2.2dam.\n\r", tm_info->tm_min);
+  else if (tm_info->tm_hour == 12)
+    if (tm_info->tm_min == 0)
+      sprintf(tbuf, "In RL, it is noon.\n\r");
+    else
+      sprintf(tbuf, "In RL, it is 12:%2.2dpm.\n\r", tm_info->tm_min);
+  else if (tm_info->tm_hour > 12)
+    sprintf(tbuf, "In RL, it is %2d:%2.2dpm.\n\r", tm_info->tm_hour - 12,
 	    tm_info->tm_min);
   else
-    sprintf(tbuf, "In RL time, it is %2d:%2.2d\n\r", tm_info->tm_hour,
+    sprintf(tbuf, "In RL, it is %2d:%2.2dam.\n\r", tm_info->tm_hour,
 	    tm_info->tm_min);
   send_to_char(tbuf, ch);
 }
@@ -1914,6 +1964,8 @@ void do_who(struct char_data *ch, char *argument, int cmd)
     if (IS_SET(SHOW_LEVEL, whod_mode)) {
       if (GetMaxLevel(person) >= WIZ_MAX_LEVEL)
 	sprintf(buf + strlen(buf), "[ God ] ");
+      else if (GetMaxLevel(person) == WIZ_MAX_LEVEL-1)
+	sprintf(buf + strlen(buf), "[Power] ");
       else if (GetMaxLevel(person) >= WIZ_MIN_LEVEL)
 	sprintf(buf + strlen(buf), "[Whizz] ");
       else
@@ -2433,13 +2485,13 @@ void do_world(struct char_data *ch, char *argument, int cmd)
   *(tmstr + strlen(tmstr) - 1) = '\0';
   sprintf(buf, "Wiley's time is: %s\n\r", tmstr);
   send_to_char(buf, ch);
-  sprintf(buf, "Total number of players: %d\n\r", top_of_p_table + 1);
-  send_to_char(buf, ch);
-  sprintf(buf, "Total number of mobiles: %d\n\r", top_of_mobt + 1);
-  send_to_char(buf, ch);
   sprintf(buf, "Total number of rooms: %d\n\r", room_db.klistlen);
   send_to_char(buf, ch);
   sprintf(buf, "Total number of objects: %d\n\r", top_of_objt + 1);
+  send_to_char(buf, ch);
+  sprintf(buf, "Total number of mobiles: %d\n\r", top_of_mobt + 1);
+  send_to_char(buf, ch);
+  sprintf(buf, "Total number of players: %d\n\r", number_of_players);
   send_to_char(buf, ch);
 }
 

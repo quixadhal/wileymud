@@ -93,11 +93,11 @@ char *command[] =
   "wizhelp", "credits", "compact", ":", "hermit",
   "slay", "wimp", "junk", "deposit", "withdraw",
   "balance", "nohassle", "system", "pull", "stealth",
-  "cust", "pset", "sroom", "lroom", "track",
+  "doh", "pset", "@", "\"", "track",
   "wizlock", "highfive", "title", "whozone", "assist",
   "swat", "world", "allspells", "breath", "show",
   "debug", "invisible", "gain", "mkzone", "disarm",
-  "bonk", "wiznet", "form", "gtell", "pretitle",
+  "bonk", "wiznet", "rentmode", "gtell", "pretitle",
   "allcommands", "grep", "pager", "appear", "logs",
   "sethome", "register", "send", "whod", "split",
   "notell", "scribe", "apraise", "bandage", "search",
@@ -189,7 +189,9 @@ void command_interpreter(struct char_data *ch, char *argument)
 
   /* Find length of first word */
   /* Order swapped by Quixadhal to fix say bug when using "'" */
-  if ((*(argument + begin) == '\'') || (*(argument + begin) == ':'))
+  if ((*(argument + begin) == '\'') || (*(argument + begin) == ':') ||
+      (*(argument + begin) == '\"') || (*(argument + begin) == ',') ||
+      (*(argument + begin) == '@'))
     look_at = begin + 1;
   else
     for (look_at = 0; *(argument + begin + look_at) > ' '; look_at++) {
@@ -455,23 +457,23 @@ void assign_command_pointers(void)
   COMMANDO(CMD_east	, POSITION_STANDING, do_move, 0);
   COMMANDO(CMD_south	, POSITION_STANDING, do_move, 0);
   COMMANDO(CMD_west	, POSITION_STANDING, do_move, 0);
-  COMMANDO(CMD_up		, POSITION_STANDING, do_move, 0);
+  COMMANDO(CMD_up	, POSITION_STANDING, do_move, 0);
   COMMANDO(CMD_down	, POSITION_STANDING, do_move, 0);
   COMMANDO(CMD_enter	, POSITION_STANDING, do_enter, 0);
   COMMANDO(CMD_exits	, POSITION_RESTING, do_exits, 0);
   COMMANDO(CMD_kiss	, POSITION_RESTING, do_action, 0);
-  COMMANDO(CMD_get		, POSITION_RESTING, do_get, 0);
+  COMMANDO(CMD_get	, POSITION_RESTING, do_get, 0);
   COMMANDO(CMD_drink	, POSITION_RESTING, do_drink, 0);
-  COMMANDO(CMD_eat		, POSITION_RESTING, do_eat, 0);
+  COMMANDO(CMD_eat	, POSITION_RESTING, do_eat, 0);
   COMMANDO(CMD_wear	, POSITION_RESTING, do_wear, 0);
   COMMANDO(CMD_wield	, POSITION_RESTING, do_wield, 0);
   COMMANDO(CMD_look	, POSITION_RESTING, do_look, 0);
   COMMANDO(CMD_score	, POSITION_DEAD, do_score, 0);
-  COMMANDO(CMD_say		, POSITION_RESTING, do_say, 0);
+  COMMANDO(CMD_say	, POSITION_RESTING, do_say, 0);
   COMMANDO(CMD_shout	, POSITION_RESTING, do_shout, 0);
-  COMMANDO(CMD_tell	, POSITION_DEAD, do_tell, 0);
-  COMMANDO(CMD_inventory	, POSITION_DEAD, do_inventory, 0);
-  COMMANDO(CMD_qui		, POSITION_DEAD, do_qui, 0);
+  COMMANDO(CMD_tell	, POSITION_RESTING, do_tell, 0);
+  COMMANDO(CMD_inventory, POSITION_DEAD, do_inventory, 0);
+  COMMANDO(CMD_qui	, POSITION_DEAD, do_qui, 0);
   COMMANDO(CMD_bounce	, POSITION_STANDING, do_action, 0);
   COMMANDO(CMD_smile	, POSITION_RESTING, do_action, 0);
   COMMANDO(CMD_dance	, POSITION_STANDING, do_action, 0);
@@ -480,44 +482,44 @@ void assign_command_pointers(void)
   COMMANDO(CMD_laugh	, POSITION_RESTING, do_action, 0);
   COMMANDO(CMD_giggle	, POSITION_RESTING, do_action, 0);
   COMMANDO(CMD_shake	, POSITION_RESTING, do_action, 0);
-  COMMANDO(CMD_puke	, POSITION_RESTING, do_action, 0);
+  COMMANDO(CMD_puke	, POSITION_RESTING, do_puke, 0);
   COMMANDO(CMD_growl	, POSITION_RESTING, do_action, 0);
   COMMANDO(CMD_scream	, POSITION_RESTING, do_action, 0);
   COMMANDO(CMD_insult	, POSITION_RESTING, do_insult, 0);
   COMMANDO(CMD_comfort	, POSITION_RESTING, do_action, 0);
-  COMMANDO(CMD_nod		, POSITION_RESTING, do_action, 0);
+  COMMANDO(CMD_nod	, POSITION_RESTING, do_action, 0);
   COMMANDO(CMD_sigh	, POSITION_RESTING, do_action, 0);
   COMMANDO(CMD_sulk	, POSITION_RESTING, do_action, 0);
   COMMANDO(CMD_help	, POSITION_DEAD, do_help, 0);
-  COMMANDO(CMD_who		, POSITION_DEAD, do_who, 0);
-  COMMANDO(CMD_emote	, POSITION_SLEEPING, do_emote, 1);
+  COMMANDO(CMD_who	, POSITION_DEAD, do_who, 0);
+  COMMANDO(CMD_emote	, POSITION_SLEEPING, do_emote, 0);
   COMMANDO(CMD_echo	, POSITION_SLEEPING, do_echo, 1);
   COMMANDO(CMD_stand	, POSITION_RESTING, do_stand, 0);
-  COMMANDO(CMD_sit		, POSITION_RESTING, do_sit, 0);
+  COMMANDO(CMD_sit	, POSITION_RESTING, do_sit, 0);
   COMMANDO(CMD_rest	, POSITION_RESTING, do_rest, 0);
   COMMANDO(CMD_sleep	, POSITION_SLEEPING, do_sleep, 0);
   COMMANDO(CMD_wake	, POSITION_SLEEPING, do_wake, 0);
-  COMMANDO(CMD_force, POSITION_SLEEPING, do_force, 55);
-  COMMANDO(CMD_transfer, POSITION_SLEEPING, do_trans, 52);
-  COMMANDO(CMD_hug		, POSITION_RESTING, do_action, 0);
+  COMMANDO(CMD_force	, POSITION_SLEEPING, do_force, 55);
+  COMMANDO(CMD_transfer	, POSITION_SLEEPING, do_trans, 52);
+  COMMANDO(CMD_hug	, POSITION_RESTING, do_action, 0);
   COMMANDO(CMD_snuggle	, POSITION_RESTING, do_action, 0);
   COMMANDO(CMD_cuddle	, POSITION_RESTING, do_action, 0);
   COMMANDO(CMD_nuzzle	, POSITION_RESTING, do_action, 0);
-  COMMANDO(CMD_cry		, POSITION_RESTING, do_action, 0);
+  COMMANDO(CMD_cry	, POSITION_RESTING, do_action, 0);
   COMMANDO(CMD_news	, POSITION_SLEEPING, do_news, 0);
-  COMMANDO(CMD_equipment	, POSITION_SLEEPING, do_equipment, 0);
-  COMMANDO(CMD_buy		, POSITION_STANDING, do_not_here, 0);
+  COMMANDO(CMD_equipment, POSITION_SLEEPING, do_equipment, 0);
+  COMMANDO(CMD_buy	, POSITION_STANDING, do_not_here, 0);
   COMMANDO(CMD_sell	, POSITION_STANDING, do_not_here, 0);
   COMMANDO(CMD_value	, POSITION_STANDING, do_not_here, 0);
   COMMANDO(CMD_list	, POSITION_STANDING, do_not_here, 0);
   COMMANDO(CMD_drop	, POSITION_RESTING, do_drop, 0);
-  COMMANDO(CMD_goto, POSITION_SLEEPING, do_goto, 51);
+  COMMANDO(CMD_goto	, POSITION_SLEEPING, do_goto, 51);
   COMMANDO(CMD_weather	, POSITION_RESTING, do_weather, 0);
   COMMANDO(CMD_read	, POSITION_RESTING, do_read, 0);
   COMMANDO(CMD_pour	, POSITION_STANDING, do_pour, 0);
   COMMANDO(CMD_grab	, POSITION_RESTING, do_grab, 0);
   COMMANDO(CMD_remove	, POSITION_RESTING, do_remove, 0);
-  COMMANDO(CMD_put		, POSITION_RESTING, do_put, 0);
+  COMMANDO(CMD_put	, POSITION_RESTING, do_put, 0);
   COMMANDO(CMD_shutdow	, POSITION_DEAD, do_shutdow, 58);
   COMMANDO(CMD_save	, POSITION_SLEEPING, do_save, 0);
   COMMANDO(CMD_hit	, POSITION_FIGHTING, do_hit, 0);
@@ -532,13 +534,13 @@ void assign_command_pointers(void)
   COMMANDO(CMD_shutdown	, POSITION_DEAD, do_shutdown, 58);
   COMMANDO(CMD_idea	, POSITION_DEAD, do_idea, 0);
   COMMANDO(CMD_typo	, POSITION_DEAD, do_typo, 0);
-  COMMANDO(CMD_bug		, POSITION_DEAD, do_bug, 0);
+  COMMANDO(CMD_bug	, POSITION_DEAD, do_bug, 0);
   COMMANDO(CMD_whisper	, POSITION_RESTING, do_whisper, 0);
   COMMANDO(CMD_cast	, POSITION_SITTING, do_cast, 1);
   COMMANDO(CMD_at	, POSITION_DEAD, do_at, 53);
-  COMMANDO(CMD_ask		, POSITION_RESTING, do_ask, 0);
+  COMMANDO(CMD_ask	, POSITION_RESTING, do_ask, 0);
   COMMANDO(CMD_order	, POSITION_RESTING, do_order, 1);
-  COMMANDO(CMD_sip		, POSITION_RESTING, do_sip, 0);
+  COMMANDO(CMD_sip	, POSITION_RESTING, do_sip, 0);
   COMMANDO(CMD_taste	, POSITION_RESTING, do_taste, 0);
   COMMANDO(CMD_snoop	, POSITION_DEAD, do_snoop, 59);
   COMMANDO(CMD_follow	, POSITION_RESTING, do_follow, 0);
@@ -548,7 +550,7 @@ void assign_command_pointers(void)
   COMMANDO(CMD_advance	, POSITION_DEAD, do_advance, 59);
   COMMANDO(CMD_accuse	, POSITION_SITTING, do_action, 0);
   COMMANDO(CMD_grin	, POSITION_RESTING, do_action, 0);
-  COMMANDO(CMD_bow		, POSITION_STANDING, do_action, 0);
+  COMMANDO(CMD_bow	, POSITION_STANDING, do_action, 0);
   COMMANDO(CMD_open	, POSITION_SITTING, do_open, 0);
   COMMANDO(CMD_close	, POSITION_SITTING, do_close, 0);
   COMMANDO(CMD_lock	, POSITION_SITTING, do_lock, 0);
@@ -615,26 +617,26 @@ void assign_command_pointers(void)
   COMMANDO(CMD_massage	, POSITION_RESTING, do_action, 0);
   COMMANDO(CMD_tickle	, POSITION_RESTING, do_action, 0);
   COMMANDO(CMD_practice	, POSITION_RESTING, do_practice, 1);
-  COMMANDO(CMD_pat		, POSITION_RESTING, do_action, 0);
+  COMMANDO(CMD_pat	, POSITION_RESTING, do_action, 0);
   COMMANDO(CMD_examine	, POSITION_SITTING, do_examine, 0);
   COMMANDO(CMD_take	, POSITION_RESTING, do_get, 0);	/* TAKE */
   COMMANDO(CMD_info	, POSITION_SLEEPING, do_info, 0);
-  COMMANDO(CMD_SAY		, POSITION_RESTING, do_say, 0);
+  COMMANDO(CMD_SAY	, POSITION_RESTING, do_say, 0);
   COMMANDO(CMD_practise	, POSITION_RESTING, do_practice, 1);
   COMMANDO(CMD_curse	, POSITION_RESTING, do_action, 0);
-  COMMANDO(CMD_use		, POSITION_SITTING, do_use, 1);
+  COMMANDO(CMD_use	, POSITION_SITTING, do_use, 1);
   COMMANDO(CMD_where	, POSITION_DEAD, do_where, 1);
   COMMANDO(CMD_levels	, POSITION_DEAD, do_levels, 0);
   COMMANDO(CMD_reroll	, POSITION_DEAD, do_reroll, 58);
   COMMANDO(CMD_pray	, POSITION_SITTING, do_action, 0);
-  COMMANDO(CMD_COMMA	, POSITION_SLEEPING, do_emote, 1);
-  COMMANDO(CMD_beg		, POSITION_RESTING, do_action, 0);
+  COMMANDO(CMD_GTELL	, POSITION_RESTING, do_group_tell, 0);
+  COMMANDO(CMD_beg	, POSITION_RESTING, do_action, 0);
   COMMANDO(CMD_bleed	, POSITION_RESTING, do_not_here, 0);
   COMMANDO(CMD_cringe	, POSITION_RESTING, do_action, 0);
   COMMANDO(CMD_daydream	, POSITION_SLEEPING, do_action, 0);
   COMMANDO(CMD_fume	, POSITION_RESTING, do_action, 0);
   COMMANDO(CMD_grovel	, POSITION_RESTING, do_action, 0);
-  COMMANDO(CMD_hop		, POSITION_RESTING, do_action, 0);
+  COMMANDO(CMD_hop	, POSITION_RESTING, do_action, 0);
   COMMANDO(CMD_nudge	, POSITION_RESTING, do_action, 0);
   COMMANDO(CMD_peer	, POSITION_STANDING, do_peer, 1);
   COMMANDO(CMD_point	, POSITION_RESTING, do_action, 0);
@@ -664,7 +666,7 @@ void assign_command_pointers(void)
   COMMANDO(CMD_wizhelp	, POSITION_SLEEPING, do_wizhelp, 51);
   COMMANDO(CMD_credits	, POSITION_DEAD, do_credits, 0);
   COMMANDO(CMD_compact	, POSITION_DEAD, do_compact, 0);
-  COMMANDO(CMD_EMOTE	, POSITION_SLEEPING, do_emote, 1);
+  COMMANDO(CMD_EMOTE	, POSITION_SLEEPING, do_emote, 0);
   COMMANDO(CMD_hermit	, POSITION_SLEEPING, do_plr_noshout, 1);
   COMMANDO(CMD_slay	, POSITION_STANDING, do_kill, 57);
   COMMANDO(CMD_wimp	, POSITION_DEAD, do_wimp, 1);
@@ -676,10 +678,10 @@ void assign_command_pointers(void)
   COMMANDO(CMD_system	, POSITION_DEAD, do_system, 55);
   COMMANDO(CMD_pull	, POSITION_STANDING, do_not_here, 1);
   COMMANDO(CMD_stealth	, POSITION_DEAD, do_stealth, 58);
-  COMMANDO(CMD_cust	, POSITION_DEAD, do_not_yet_implemented, 56); /* cust */
+  COMMANDO(CMD_doh	, POSITION_DEAD, do_action, 0);
   COMMANDO(CMD_pset	, POSITION_DEAD, do_set, 58);
-  COMMANDO(CMD_sroom	, POSITION_DEAD, do_not_yet_implemented, 56); /* rsave */
-  COMMANDO(CMD_lroom	, POSITION_DEAD, do_not_yet_implemented, 56); /* rload */
+  COMMANDO(CMD_WIZNET	, POSITION_DEAD, do_commune, 51);
+  COMMANDO(CMD_TELL	, POSITION_RESTING, do_tell, 0);
   COMMANDO(CMD_track	, POSITION_DEAD, do_track, 1);
   COMMANDO(CMD_wizlock	, POSITION_DEAD, do_wizlock, 53);
   COMMANDO(CMD_highfive	, POSITION_DEAD, do_highfive, 55);
@@ -688,20 +690,20 @@ void assign_command_pointers(void)
   COMMANDO(CMD_assist	, POSITION_FIGHTING, do_assist, 0);
   COMMANDO(CMD_swat	, POSITION_DEAD, do_swat, 1);
   COMMANDO(CMD_world	, POSITION_DEAD, do_world, 51);
-  COMMANDO(CMD_allspells	, POSITION_DEAD, do_spells, 53);
+  COMMANDO(CMD_allspells, POSITION_DEAD, do_spells, 53);
   COMMANDO(CMD_breath	, POSITION_FIGHTING, do_breath, 0);
   COMMANDO(CMD_show	, POSITION_DEAD, do_show, 54);
   COMMANDO(CMD_debug 	, POSITION_DEAD, do_debug, 59);
-  COMMANDO(CMD_invisible	, POSITION_DEAD, do_invis, 52);
+  COMMANDO(CMD_invisible, POSITION_DEAD, do_invis, 52);
   COMMANDO(CMD_gain	, POSITION_DEAD, do_gain, 1);
   COMMANDO(CMD_mkzone	, POSITION_DEAD, do_not_yet_implemented, 57); /* instazone */
   COMMANDO(CMD_disarm	, POSITION_FIGHTING, do_disarm, 1);
   COMMANDO(CMD_bonk	, POSITION_SITTING, do_action, 1);
   COMMANDO(CMD_wiznet	, POSITION_DEAD, do_commune, 51);
-  COMMANDO(CMD_form	, POSITION_DEAD, do_not_yet_implemented, 56); /* form */
-  COMMANDO(CMD_gtell	, POSITION_DEAD, do_group_tell, 1);
+  COMMANDO(CMD_rentmode	, POSITION_DEAD, do_rentmode, 57);
+  COMMANDO(CMD_gtell	, POSITION_RESTING, do_group_tell, 0);
   COMMANDO(CMD_pretitle	, POSITION_DEAD, do_pretitle, 55);
-  COMMANDO(CMD_allcommands	, POSITION_DEAD, do_allcommands, 1);
+  COMMANDO(CMD_allcommands, POSITION_DEAD, do_allcommands, 1);
   COMMANDO(CMD_grep	, POSITION_DEAD, do_group_report, 1);
   COMMANDO(CMD_pager	, POSITION_DEAD, do_pager, 1);
   COMMANDO(CMD_appear	, POSITION_DEAD, do_invis_off, 1);
@@ -718,12 +720,12 @@ void assign_command_pointers(void)
   COMMANDO(CMD_search	, POSITION_STANDING, do_search, 1);
   COMMANDO(CMD_skills	, POSITION_STANDING, do_skills, 1);
   COMMANDO(CMD_doorbash	, POSITION_STANDING, do_doorbash, 1);
-  COMMANDO(CMD_restoreall	, POSITION_DEAD, do_restore_all, 52);
+  COMMANDO(CMD_restoreall, POSITION_DEAD, do_restore_all, 52);
   COMMANDO(CMD_mount	, POSITION_STANDING, do_mount, 1);
   COMMANDO(CMD_dismount	, POSITION_MOUNTED, do_mount, 1);
   COMMANDO(CMD_land	, POSITION_DEAD, do_land, 1);
   COMMANDO(CMD_nosummon	, POSITION_SLEEPING, do_plr_nosummon, 1);
-  COMMANDO(CMD_noteleport	, POSITION_SLEEPING, do_plr_noteleport, 1);
+  COMMANDO(CMD_noteleport, POSITION_SLEEPING, do_plr_noteleport, 1);
   COMMANDO(CMD_players	, POSITION_DEAD, do_players, 59);
   COMMANDO(CMD_reset	, POSITION_DEAD, do_reset, 57);
   COMMANDO(CMD_event	, POSITION_DEAD, do_event, 55);
@@ -1191,7 +1193,7 @@ void nanny(struct descriptor_data *d, char *arg)
     STATE(d) = CON_MENU_SELECT;
     if (WizLock) {
       if (GetMaxLevel(d->character) < LOW_IMMORTAL) {
-	dprintf(d, "Sorry, the game is locked so the whizz's can break stuff!\n\r");
+	dprintf(d, "\n\rSorry, the game is locked so the whizz's can break stuff!\n\r");
 	STATE(d) = CON_WIZLOCK;
       }
     }
@@ -1235,7 +1237,7 @@ void nanny(struct descriptor_data *d, char *arg)
 	}
       }
       if (GetMaxLevel(d->character) >= LOKI) {
-        if(strcasecmp(GET_NAME(d->character), "Quixadhal")) {
+        if((strcasecmp(GET_NAME(d->character), "Quixadhal"))) {
           cprintf(d->character, "Fool!  You DARE challenge the Dread Lord?\n\r");
           if(GET_LEVEL(d->character, 0)) GET_LEVEL(d->character, 0) = LOW_IMMORTAL;
           if(GET_LEVEL(d->character, 1)) GET_LEVEL(d->character, 1) = LOW_IMMORTAL;
@@ -1248,8 +1250,10 @@ void nanny(struct descriptor_data *d, char *arg)
       }
       if (GetMaxLevel(d->character) < 58)
 	act("$n has entered the game.", TRUE, d->character, 0, 0, TO_ROOM);
-      if (GetMaxLevel(d->character) >= 58)
-	d->character->invis_level = GetMaxLevel(d->character) - 1;
+/*
+ *    if (GetMaxLevel(d->character) >= 58)
+ *	d->character->invis_level = GetMaxLevel(d->character) - 1;
+ */
 
       STATE(d) = CON_PLAYING;
       if (!GetMaxLevel(d->character))

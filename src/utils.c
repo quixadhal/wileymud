@@ -85,7 +85,7 @@ int CAN_SEE(struct char_data *s, struct char_data *o)
   if ((s->in_room == -1) || (o->in_room == -1))
     return (FALSE);
 
-  if (o->invis_level > GetMaxLevel(s))
+  if (o->invis_level >= GetMaxLevel(s))
     return FALSE;
 
   if (IS_IMMORTAL(s))

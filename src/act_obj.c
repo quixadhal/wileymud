@@ -781,7 +781,7 @@ void do_drink(struct char_data *ch, char *argument, int cmd)
   if ((GET_COND(ch, DRUNK) > 15) && (GET_COND(ch, THIRST) > 0)) {
 /* The pig is drunk */
     act("You're just sloshed.", FALSE, ch, 0, 0, TO_CHAR);
-    act("$n is looks really drunk.", TRUE, ch, 0, 0, TO_ROOM);
+    act("$n looks really drunk.", TRUE, ch, 0, 0, TO_ROOM);
     return;
   }
   if ((GET_COND(ch, FULL) > 20) && (GET_COND(ch, THIRST) > 0)) {	/* Stomach full */
@@ -853,6 +853,41 @@ void do_drink(struct char_data *ch, char *argument, int cmd)
     return;
   }
 }
+
+void do_puke(struct char_data *ch, char *argument, int cmd)
+{
+  char buf[100];
+  int j, num;
+  struct obj_data *temp;
+  struct affected_type af;
+  struct char_data *vict;
+
+  if (DEBUG)
+    dlog("do_puke");
+  one_argument(argument, buf);
+
+  if (!*buf) {
+    act("$n blows chunks all over the room!",FALSE,ch,0,0,TO_ROOM);
+    act("You puke and spew filth all over the place.",FALSE,ch,0,0,TO_CHAR);
+  }
+  else if (!(vict = get_char_room_vis(ch, buf))) {
+    send_to_char("You can't puke on someone who isn't here.\n\r", ch);
+    return;
+  }
+  else {
+     act("$n walks up to $N and pukes up sickly green ichor all over them!",FALSE,ch,0,vict,TO_ROOM);
+     act("You vomit green chunks all over $N!",FALSE,ch,0,vict,TO_CHAR);
+  }
+  if(IS_MORTAL(ch)) {
+    gain_condition(ch, FULL, -3);
+    if(GET_COND(ch, FULL) < 0) {
+      GET_COND(ch, FULL) = 0;
+    }
+    damage(ch, ch, 1, TYPE_SUFFERING);
+  }
+  return;
+}
+
 
 void do_eat(struct char_data *ch, char *argument, int cmd)
 {
@@ -1404,7 +1439,7 @@ void wear(struct char_data *ch, struct obj_data *obj_object, int keyword)
   case 10:{
       if (CAN_WEAR(obj_object, ITEM_WEAR_WAISTE)) {
 	if (ch->equipment[WEAR_WAISTE]) {
-	  send_to_char("You already wear something about your waiste.\n\r",
+	  send_to_char("You already wear something about your waist.\n\r",
 		       ch);
 	} else {
 	  send_to_char("OK.\n\r", ch);

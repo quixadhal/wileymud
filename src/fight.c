@@ -524,43 +524,86 @@ void group_gain(struct char_data *ch, struct char_data *victim)
     k = ch;
 
   /* can't get exp for killing players */
-
-  if (IS_PC(victim)) {
-    return;
-  }
+/*
+ * Oh yes you can!
+ *
+ *  if (IS_PC(victim)) {
+ *    return;
+ *  }
+ */
+#ifdef OLD_WILEY
   if (IS_AFFECTED(k, AFF_GROUP) && (k->in_room == ch->in_room)) {
     no_members = (GetMaxLevel(k) + (int)((GetSecMaxLev(k) * .3) + (GetThirdMaxLev(k) * .2)));
+#else
+  if (IS_AFFECTED(k, AFF_GROUP)) { /* if they are grouped, they suck exp */
+    no_members = GetTotLevel(k);
+#endif
   } else
     no_members = 0;
 
   for (f = k->followers; f; f = f->next)
+#ifdef OLD_WILEY
     if (IS_AFFECTED(f->follower, AFF_GROUP) && (f->follower->in_room == ch->in_room))
       no_members += GetMaxLevel(f->follower)
 	+ (int)((GetSecMaxLev(f->follower) * .3) + (GetThirdMaxLev(f->follower) * .2));
+#else
+    if (IS_AFFECTED(f->follower, AFF_GROUP))
+      no_members += GetTotLevel(f->follower);
+#endif
 
   if (no_members >= 1)
-    share = (GET_EXP(victim) / no_members);
+    share = ((IS_PC(victim)?GetMaxLevel(victim)*100:GET_EXP(victim)) / no_members);
   else
     share = 0;
 
-  share = MIN(share, 8000);
+  share = MIN(share, 100000);
 
+#ifdef OLD_WILEY
   if (IS_AFFECTED(k, AFF_GROUP) && (k->in_room == ch->in_room)) {
+#else
+  if (IS_AFFECTED(k, AFF_GROUP)) {
+#endif
     int amnt;
 
+#ifdef OLD_WILEY
     amnt = share * (GetMaxLevel(k) + (int)((GetSecMaxLev(k) * .3) + (GetThirdMaxLev(k) * .2)));
-    sprintf(buf, "You recieve your share of %d experience.", amnt);
+#else
+    amnt = share * GetTotLevel(k);
+#endif
+    if(IS_SET(k->specials.new_act, NEW_PLR_KILLOK))
+      amnt *= 1.10;
+    if(k->in_room != ch->in_room) {
+      amnt /= 10;
+      sprintf(buf, "You recieve your coward's share of %d experience.", amnt);
+    } else {
+      sprintf(buf, "You recieve your share of %d experience.", amnt);
+    }
     act(buf, FALSE, k, 0, 0, TO_CHAR);
     gain_exp(k, amnt);
     change_alignment(k, victim);
   }
   for (f = k->followers; f; f = f->next) {
+#ifdef OLD_WILEY
     if (IS_AFFECTED(f->follower, AFF_GROUP) && (f->follower->in_room == ch->in_room)) {
+#else
+    if (IS_AFFECTED(f->follower, AFF_GROUP)) {
+#endif
       int amnt;
 
+#ifdef OLD_WILEY
       amnt = share * (GetMaxLevel(f->follower) +
 		      (int)((GetSecMaxLev(f->follower) * .3) + (GetThirdMaxLev(f->follower) * .2)));
-      sprintf(buf, "You recieve your share of %d experience.", amnt);
+#else
+      amnt = share * GetTotLevel(f->follower);
+#endif
+      if(IS_SET(f->follower->specials.new_act, NEW_PLR_KILLOK))
+        amnt *= 1.10;
+      if(f->follower->in_room != ch->in_room) {
+        amnt /= 10;
+        sprintf(buf, "You recieve your coward's share of %d experience.", amnt);
+      } else {
+        sprintf(buf, "You recieve your share of %d experience.", amnt);
+      }
       act(buf, FALSE, f->follower, 0, 0, TO_CHAR);
       gain_exp(f->follower, amnt);
       change_alignment(f->follower, victim);
@@ -748,8 +791,6 @@ int damage(struct char_data *ch, struct char_data *victim, int dam, int attackty
 	  return (FALSE);
 	}
     }
-  }
-  if (victim != ch) {
     if (GET_POS(ch) > POSITION_STUNNED) {
       if (!(ch->specials.fighting))
 	if ((IS_PC(ch)) || (IS_NOT_SET(ch->specials.act, ACT_IMMORTAL))) {
@@ -918,15 +959,69 @@ int damage(struct char_data *ch, struct char_data *victim, int dam, int attackty
 	group_gain(ch, victim);
       } else {
 	/* Calculate level-difference bonus */
-	exp = GET_EXP(victim);
-	exp = MAX(exp, 1);
-	exp = MIN(exp, 100000);
-	if (IS_NPC(victim)) {
+	exp = IS_PC(victim)? GetMaxLevel(victim)*100:
+              MIN(100000,MAX(1,GET_EXP(victim)));
+        if(IS_SET(ch->specials.new_act, NEW_PLR_KILLOK))
+          exp *= 1.10;
+/*	if (IS_NPC(victim)) { */
 	  gain_exp(ch, exp);
-	}
+/*	} */
 	change_alignment(ch, victim);
       }
     if (IS_PC(victim)) {
+      char tease[256];
+      int  bugcount= 16, razz;
+      struct descriptor_data *xx;
+      char *bugger[] = {
+        "%s shouts '%s is no longer a problem.'\n\r",
+        "%s beams to everyone '%s no longer causes lag!'\n\r",
+        "%s taunts '%s was too easy!  I need a greater challenge!'\n\r",
+        "%s screams 'DIE %s!  So shall ALL perish who dare attack ME!'\n\r",
+        "%s asks '%s, is that the BEST you can DO?'\n\r",
+        "%s mocks '%s died like a squealing pig!  What a wuss!'\n\r",
+        "%s yells 'I spit on the rotting flesh of %s!'\n\r",
+        "%s smirks 'So, %s, you come back to lie at my feet again?'\n\r",
+        "%s says 'Hope you have a pleasant stay in Hell, %s.'\n\r",
+        "%s grins and says 'Good!  I will use %s's intestines for my raft!'\n\r",
+	"%s cackles 'Hey %s!  You forgot all your stuff when you DIED!'\n\r",
+	"%s grunts 'Ptuey!  %s, your brain is too salty!'\n\r",
+	"%s snickers 'Ha!  I bet %s thought a GOD would intervene, eh?'\n\r",
+	"%s prays 'Rust in pieces %s.  May your soul be eaten quickly.\n\r",
+	"%s jumps up and down on %s's corpse and shouts 'YES!!!'\n\r",
+	"%s licks up the blood of %s and cackles 'You make a wonderful dinner!'\n\r",
+        NULL
+      };
+      char *mybugger[] = {
+        "You shout '%s is no longer a problem.'\n\r",
+        "You beam to everyone '%s no longer causes lag!'\n\r",
+        "You taunt '%s was too easy!  I need a greater challenge!'\n\r",
+        "You scream 'DIE %s!  So shall ALL perish who dare attack ME!'\n\r",
+        "You ask '%s, is that the BEST you can DO?'\n\r",
+        "You mock '%s died like a squealing pig!  What a wuss!'\n\r",
+        "You yell 'I spit on the rotting flesh of %s!'\n\r",
+        "You smirk 'So, %s, you come back to lie at my feet again?'\n\r",
+        "You say 'Hope you have a pleasant stay in Hell, %s.'\n\r",
+        "You grin and say 'Good!  I will use %s's intestines for my raft!'\n\r",
+	"You cackle 'Hey %s!  You forgot all your stuff when you DIED!'\n\r",
+	"You grunt 'Ptuey!  %s, your brain is too salty!'\n\r",
+	"You snicker 'Ha!  I bet %s thought a GOD would intervene, eh?'\n\r",
+	"You pray 'Rust in pieces %s.  May your soul be eaten quickly.\n\r",
+	"You jump up and down on %s's corpse and shout 'YES!!!'\n\r",
+	"You lick up the blood of %s and cackle 'You make a wonderful dinner!'\n\r",
+        NULL
+      };
+      gain_exp(ch, GetMaxLevel(victim)*100);
+      sprintf(tease, bugger[razz= number(0,bugcount-1)],
+              (IS_NPC(ch) ? ch->player.short_descr : GET_NAME(ch)),
+              GET_NAME(victim));
+      for (xx = descriptor_list; xx; xx = xx->next)
+        if (xx->character != ch && !xx->connected &&
+            !IS_SET(xx->character->specials.act, PLR_NOSHOUT) &&
+            !IS_SET(xx->character->specials.act, PLR_DEAF))
+          act(tease, 0, ch, 0, xx->character, TO_VICT);
+      cprintf(victim, tease);
+      sprintf(tease, mybugger[razz], GET_NAME(victim));
+      cprintf(ch, tease);
       if (victim->in_room > -1) {
 	sprintf(buf, "%s killed by %s at %s",
 		GET_NAME(victim),

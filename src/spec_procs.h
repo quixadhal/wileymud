@@ -1,6 +1,10 @@
 #ifndef _SPEC_PROCS_H
 #define _SPEC_PROCS_H
 
+#define SPECIAL_MOB	1
+#define SPECIAL_OBJ	2
+#define SPECIAL_ROOM	3
+
 struct social_type {
   char *cmd;
   int next_line;
@@ -15,9 +19,14 @@ struct breath_victim {
 struct special_proc_entry {
   int vnum;
   int (*proc) (struct char_data *, int, char *);
+  char *name;
 };
 
 #ifndef _SPEC_PROCS_C
+struct special_proc_entry specials_m[];
+struct special_proc_entry specials_o[];
+struct special_proc_entry specials_r[];
+
 /* static funcp breaths[]; */
 extern struct breather breath_monsters[];
 
@@ -63,6 +72,7 @@ int blink(struct char_data *ch, int cmd, char *arg);
 int Ned_Nutsmith(struct char_data *ch, int cmd, char *arg);
 int RepairGuy(struct char_data *ch, int cmd, char *arg);
 int citizen(struct char_data *ch, int cmd, char *arg);
+int shylar_guard(struct char_data *ch, int cmd, char *arg);
 int ghoul(struct char_data *ch, int cmd, char *arg);
 
 #if 1
@@ -193,8 +203,10 @@ int RangerGuildMaster(struct char_data *ch, int cmd, char *arg);
 int do_skills(struct char_data *ch, int cmd, char *arg);
 int GenericGuildMaster(struct char_data *ch, int cmd, char *arg);
 int mosquito(struct char_data *ch, int cmd, char *arg);
+int BerserkerAxe(struct char_data *ch, int cmd, char *arg);
 void assign_mobiles(void);
 void assign_objects(void);
 void assign_rooms(void);
+char *name_special_proc(int type, int vnum);
 
 #endif

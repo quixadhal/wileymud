@@ -199,3 +199,103 @@ global.h:1144: warning: function declaration isn't a prototype
   0700	Hopefully have Xenthia coded to disperse most of her army to Shylar
 	when she gets 50 of them!  This will be cool if it works.
 	Fixed a couple more little things.
+950907
+  0506	Yup.. haven't kept loggint thigns :)
+	Added taunting to players who get killed: "A villager mocks..."
+	Cleaned up spells a bit.... up to the c's.
+950919	Quixadhal
+  0630	EEK!  No logs!  Argh!  Ok, fixed astral a bit more....
+	Also changed whod to we level 59ers are something more than just
+	a Whizz... :)
+950922  Sedna
+  0417  Had a really bad day at work and decided to take it out on wiley
+        players... :^)  I made the butler friends with the banker.  That
+        is, if you have less gold on you than what it takes to rent, you
+        can rent with what you have in the bank.  Conversely, if you re-
+        enter the game and ran out of gold in your pocket, the game will
+        deduct the difference from your bank account, telling you:
+        "You ran out of gold and had to make a quick trip to the bank."
+
+        It will call you a deadbeat only after draining both your pocket
+        and your bankbook.  :^)
+951003	Dirk
+  1800	Added cure blindness and remove poison to Eli, but only if you are
+	very good (above 750 align) Right now it's cut and pasted from the
+	other ones, so if you are under 750 and need help, he will either
+	say you are wicked, or bless you. I may change that, so he won't
+	cast bless on you if you are under 750. You'll just need to be that
+	good for him to help you.
+  1950	Added the hack where he won't bless you now if you're under 750, he'll
+	just tell you that you aren't good enough, and he will let you suffer
+951106  Sedna
+  0140  Wrote a line in act_comm.c which sends a message to player when they
+        appear which is identical to the message they receive when invisibility
+        wears off.  "You feel exposed."
+951119	Quixadhal
+  0332	Lots of changes have not been logged... Here are a few.
+	o	Modified group code so that it works correctly.
+		People can group withing lvl/2 of their leader.
+		group members no longer get pasted by area affects.
+		exp is PROPERLY distributed to all group members, but
+		people who are not in the room will get 1/10 of their share.
+		NOTE: the other 9/10 is LOST as a penalty for the rest of
+		the group to discourage wimps and slackers.
+	o	summoning/animate spells now have a chance of making the
+		target turn on the caster.... wouldn't YOU be pissed?
+	o	colour-spray can paralyze very low level monsters.
+	o	meat spoils and becomes poisonous.
+	o	a village guard patrols shylar.
+	o	charm monster/charm person are now based on the humanoid
+		status of the target.
+	o	registered players get a 10% exp bonus, but can no longer
+		disable summon or teleport.  Also, anyone can now tell
+		a reg'd player by looking at them.
+	o	added a rentmode command to enable/disable rent costs.
+		it should eventually save the state in a file, but for
+		now you can toggle it by hand.
+	o	added more parameters to pset command.
+	o	removed nasties that had energy_drain spells from the
+		undead mobs in event undead.... that was too much.
+	o	probably more changes that I can't recall.. but that's what
+		I get for ignoring logs.... let's all promise to be nice
+		hackers and keep this file up to date ok?
+  0518	Added messages for rebooting... also neatened up the time command.
+	Made Eli turn undead.
+	Should change spell_turn() in magic.c so that:
+		if the caster is good and they are maybe twice as high level
+		as the mob, the mob should be killed instead of forced to
+		flee.
+		if the caster is evil and they are twice as high, the mob
+		should become a follower for a limited duration.
+		(IE: charm monster)
+951125	Quixadhal
+  1944	Hacked comm.c to retry socket initialization every second for a minute.
+951130  Sedna
+        Modified the act_mobile to stop a mob from following a player after
+		their charm wears off.
+	Modified the puke function so that instead of a simple emote, it
+		actually deducts 2 from the player's fullness and does one
+		point of hit damage for puking.
+951203	Quixadhal
+  2102	Fixed puke and exempted gods from the damaging effects.
+	Reclaimed immortal status for myself alone while the minor Gods
+	shuffle and fight amongst themselves.
+951209	Quixadhal
+  1754	Fixed exit command to be friendly to immortals.
+951210	Quixadhal
+  2334	Modified stat command, added doh social, added half-done clone
+	spell.  Minor tweaks that I forgot to log yesterday.
+  0006	Removed cust command... replaced with more useful doh emote :)
+	Removed lroom command... replaced with " alias for tell.
+	Modified interpreter to allow no-spaces between ' " , and : for
+	the say, tell, gtell, and emote commands resp.
+  0101	Prevented slaying of greater gods by lesser gods... they have to
+	kill us the hard way.
+  0118	Made emote tell you "You emote: ..." if echo is on.
+951213	Quixadhal
+  2330	Alphabetized the spell assignment lists in spell_parser.c.
+  2235	Hacked rent-mode so it accepts an argument... this is a floating
+	point number which is the rent multiplier.  IE: rentmode 1.5 should
+	make things cost half again as much as usual.
+  2356	Fixed restore to disallow any but "all" for < 56th level... we
+	can now free the restoreall command slot.

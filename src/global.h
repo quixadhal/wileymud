@@ -94,6 +94,7 @@ typedef long long LONG;
 #define OP_EVIL  5
 #define OP_GOOD  6
 #define OP_VNUM  7
+#define OP_GOLD  8
 
 #define ABS_MAX_LVL  61
 #define MAX_MORT     50
@@ -198,16 +199,16 @@ typedef struct {
 
 #define PULSE_PER_SECOND	4
 /* #define PULSE_UPDATE	(75 * 5) */
-#define PULSE_UPDATE	(75 * PULSE_PER_SECOND)
-#define PULSE_VARIABLE	(25 * PULSE_PER_SECOND)
+#define PULSE_UPDATE	(70 * PULSE_PER_SECOND)
+#define PULSE_VARIABLE	(30 * PULSE_PER_SECOND)
 
 #define PULSE_RIVER    13
 #define PULSE_TELEPORT      11
-#define PULSE_SOUND	31
+#define PULSE_SOUND	33
 #define PULSE_ZONE     239
 #define PULSE_MOBILE   25
 #define PULSE_VIOLENCE 6
-#define PULSE_LAW	1201
+#define PULSE_LAW	589
 #define PULSE_DUMP	3601
 #define PULSE_MAX	999999
 

@@ -214,8 +214,8 @@ int GetMaxLevel(struct char_data *ch)
 int GetTotLevel(struct char_data *ch)
 {
 
-  return (GET_LEVEL(ch, 0) + GET_LEVEL(ch, 1) + GET_LEVEL(ch, 2) + GET_LEVEL(ch, 3) +
-	  GET_LEVEL(ch, 4) + GET_LEVEL(ch, 5));
+  return (GET_LEVEL(ch, 0) + GET_LEVEL(ch, 1) + GET_LEVEL(ch, 2)
+          + GET_LEVEL(ch, 3) + GET_LEVEL(ch, 4) + GET_LEVEL(ch, 5));
 
 }
 

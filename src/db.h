@@ -48,6 +48,7 @@
 #define PASSWD_NEW        "adm/passwd.new"
 #define PASSWD_OFF        "adm/passwd.off"
 #define BANNED_NAME_FILE  "adm/banned"
+#define RENTCOST_FILE     "adm/rent"
 
 #define DEFAULT_HOME		3001   /* when a player is created */
 

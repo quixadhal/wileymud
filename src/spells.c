@@ -288,43 +288,66 @@ void cast_chill_touch(BYTE level, struct char_data *ch, char *arg, int type, str
   }
 }
 
+#define GLASS_MIRROR	1133
+
 void cast_clone(BYTE level, struct char_data *ch, char *arg, int type, struct char_data *tar_ch, struct obj_data *tar_obj)
 {
   struct char_data *vict;
+  struct char_data *victim, *next_victim;
+  struct obj_data *sac;
   char buf[MAX_STRING_LENGTH];
 
-  send_to_char("Not *YET* implemented.", ch);
-  return;
+  if (!ch->equipment[HOLD]) {
+    send_to_char("You must be holding the component for this spell.\n\r", ch);
+    return;
+  }
+  sac = unequip_char(ch, HOLD);
+  if (sac) {
+    obj_to_char(sac, ch);
+    if (ObjVnum(sac) != GLASS_MIRROR) {
+      send_to_char("That is not the correct item.\n\r", ch);
+      return;
+    }
+  } else {
+    send_to_char("You must be holding the component for this spell.\n\r", ch);
+    return;
+  }
+  cprintf(ch, "You shatter %s %s into thousands of tiny shards.\n\r", SANA(sac),sac->short_description);
+  sprintf(buf, "$n shatters %s %s into thousands of tiny shards.\n\r", SANA(sac),sac->short_description);
+  act(buf, FALSE, ch, 0, 0, TO_ROOM);
+  obj_from_char(sac);
+  extract_obj(sac);
 
-  /* clone both char and obj !! */
+  for (victim = character_list; victim; victim = next_victim) {
+    next_victim = victim->next;
+    if ((ch->in_room == victim->in_room)) {
+      if (IS_IMMORTAL(victim)) continue;
+      if (affected_by_spell(victim, SPELL_SHIELD)) {
+        act("Tiny shards of glass knife through the air bouncing off your shield!\n\r",
+            FALSE, ch, 0, victim, TO_VICT);
+        continue;
+      }
+      damage(victim, victim, dice(2,4), TYPE_SUFFERING);
+      act("Tiny shards of glass knife through the air and strike you!\n\r",
+          FALSE, ch, 0, victim, TO_VICT);
+    }
+  }
 
-/*
- * switch (type) {
- * case SPELL_TYPE_SPELL:
- * if (tar_ch) {        
- * sprintf(buf, "You create a duplicate of %s.\n\r", GET_NAME(tar_ch));
- * send_to_char(buf, ch);
- * sprintf(buf, "%%s creates a duplicate of %s,\n\r", GET_NAME(tar_ch));
- * perform(buf, ch, FALSE);
- * 
- * spell_clone(level,ch,tar_ch,0);
- * } else {
- * sprintf(buf, "You create a duplicate of %s %s.\n\r",SANA(tar_obj),tar_obj->short_description);
- * send_to_char(buf, ch);
- * sprintf(buf, "%%s creates a duplicate of %s %s,\n\r",SANA(tar_obj),tar_obj->short_description);
- * perform(buf, ch, FALSE);
- * 
- * spell_clone(level,ch,0,tar_obj);
- * };
- * break;
- * 
- * 
- * default : 
- * log("Serious screw-up in clone!");
- * break;
- * }
- */
-  /* MISSING REST OF SWITCH -- POTION, SCROLL, WAND */
+  switch (type) {
+    case SPELL_TYPE_SPELL:
+      if (tar_ch) {        
+        spell_clone(level,ch,tar_ch,0);
+      } else {
+        cprintf(buf, "You create a duplicate of %s %s.\n\r",SANA(tar_obj),tar_obj->short_description);
+        sprintf(buf, "$n creates a duplicate of %s %s,\n\r",SANA(tar_obj),tar_obj->short_description);
+        act(buf, FALSE, ch, 0, 0, TO_ROOM);
+        spell_clone(level,ch,0,tar_obj);
+      }
+      break;
+    default: 
+      log("Serious screw-up in clone!");
+      break;
+  }
 }
 
 void cast_colour_spray(BYTE level, struct char_data *ch, char *arg, int type, struct char_data *victim, struct obj_data *tar_obj)

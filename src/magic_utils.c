@@ -130,7 +130,12 @@ void AreaEffectSpell(struct char_data *castor, int dam, int spell_type, int zfla
   for (victim = character_list; victim; victim = next_victim) {
     next_victim = victim->next;
     if ((castor->in_room == victim->in_room) && castor != victim) {
-      if ((IS_MORTAL(victim) || IS_NPC(victim)) && CheckKill(castor, victim)) {
+      if (IS_IMMORTAL(victim)) continue;
+      if (!CheckKill(castor, victim)) continue;
+      if (IS_AFFECTED(victim, AFF_GROUP))
+        if ((victim == castor->master) ||
+            (victim->master == castor) ||
+            (victim->master == castor->master)) continue;
 	switch (spell_type) {
 	case SPELL_EARTHQUAKE:
 	  damage(castor, victim, dam, spell_type);
@@ -163,14 +168,14 @@ void AreaEffectSpell(struct char_data *castor, int dam, int spell_type, int zfla
 	  break;
         case SPELL_METEOR_SWARM:
           if (saves_spell(victim, SAVING_SPELL)) {
-            dam >>= 1;
             act("You dive for cover but are still burned by the flames all around you.\n\r", FALSE, castor, 0, victim, TO_VICT);
-          } else
+            damage(castor, victim, dam/2, spell_type);
+          } else {
             act("You scream in agony as a ball of flame goes through you!\n\r", FALSE, castor, 0, victim, TO_VICT);
-          damage(castor, victim, dam, spell_type);
+            damage(castor, victim, dam, spell_type);
+          }
           break;
 	}
-      }
     } else {
       if (zflag) {
 	/*

@@ -18,10 +18,9 @@ GNUINC = /usr/lib/gcc-lib/i486-linux/2.6.3/include
 #BUGFLAGS = -DDEBUG_FILE
 #WARN = -Wall -Wstrict-prototypes -Wmissing-prototypes
 WARN = -w
-DEBUG = -g
-OPT = -O3 -fstrength-reduce -fexpensive-optimizations -funroll-loops -m486
-#OPT = -O3 -fomit-frame-pointer -fstrength-reduce -fexpensive-optimizations -funroll-loops -m486
-#STRIP = -s
+#DEBUG = -g
+OPT = -O3 -fomit-frame-pointer -fstrength-reduce -fexpensive-optimizations -funroll-loops -m486
+STRIP = -s
 #INCDIR = -I../inc
 
 #CFLAGS = -g -Dsun3 -m68020 -fstrength-reduce -fvolatile 
@@ -230,9 +229,10 @@ act_wiz.o: /usr/include/alloca.h /usr/include/unistd.h
 act_wiz.o: /usr/include/posix_opt.h /usr/include/gnu/types.h
 act_wiz.o: /usr/include/confname.h /usr/include/sys/types.h
 act_wiz.o: /usr/include/linux/types.h /usr/include/asm/types.h
-act_wiz.o: /usr/include/string.h /usr/include/ctype.h global.h bug.h utils.h
-act_wiz.o: comm.h interpreter.h handler.h db.h spells.h limits.h constants.h
-act_wiz.o: spell_parser.h board.h act_wiz.h
+act_wiz.o: /usr/include/string.h /usr/include/ctype.h /usr/include/time.h
+act_wiz.o: global.h bug.h utils.h comm.h interpreter.h handler.h db.h
+act_wiz.o: spells.h limits.h constants.h spell_parser.h board.h whod.h
+act_wiz.o: reception.h spec_procs.h act_wiz.h
 board.o: /usr/include/stdio.h /usr/include/libio.h /usr/include/_G_config.h
 board.o: /usr/include/stdlib.h /usr/include/features.h
 board.o: /usr/include/sys/cdefs.h
@@ -243,7 +243,7 @@ board.o: /usr/include/alloca.h /usr/include/unistd.h /usr/include/posix_opt.h
 board.o: /usr/include/gnu/types.h /usr/include/confname.h
 board.o: /usr/include/sys/types.h /usr/include/linux/types.h
 board.o: /usr/include/asm/types.h /usr/include/string.h /usr/include/ctype.h
-board.o: global.h bug.h utils.h comm.h db.h board.h
+board.o: global.h bug.h utils.h comm.h db.h interpreter.h board.h
 bug.o: /usr/include/stdio.h /usr/include/libio.h /usr/include/_G_config.h
 bug.o: /usr/include/stdlib.h /usr/include/features.h /usr/include/sys/cdefs.h
 bug.o: /usr/lib/gcc-lib/i486-linux/2.6.3/include/stddef.h
@@ -254,7 +254,8 @@ bug.o: /usr/include/gnu/types.h /usr/include/confname.h
 bug.o: /usr/include/sys/types.h /usr/include/linux/types.h
 bug.o: /usr/include/asm/types.h
 bug.o: /usr/lib/gcc-lib/i486-linux/2.6.3/include/stdarg.h /usr/include/time.h
-bug.o: /usr/include/string.h global.h utils.h comm.h multiclass.h bug.h
+bug.o: /usr/include/string.h /usr/include/sys/timeb.h global.h utils.h comm.h
+bug.o: multiclass.h bug.h
 comm.o: /usr/include/errno.h /usr/include/features.h /usr/include/sys/cdefs.h
 comm.o: /usr/include/linux/errno.h /usr/include/stdio.h /usr/include/libio.h
 comm.o: /usr/include/_G_config.h /usr/include/stdlib.h

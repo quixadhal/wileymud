@@ -378,6 +378,7 @@ void bisect_arg(char *arg, int *field, char *string)
   return;
 }
 
+#if 0
 void do_cust(struct char_data *ch, char *arg, int cmd)
 {
   int field, dflags, dir, exroom, dkey, room, rspeed, rdir, tele_room,
@@ -630,6 +631,7 @@ void do_cust(struct char_data *ch, char *arg, int cmd)
   }
 
 }
+#endif
 
 /*
  * Modification of character skills
@@ -905,9 +907,12 @@ void check_reboot(void)
   char dummy;
   FILE *boot;
   char buf[512];
+  char *tmstr;
 
   tc = time(0);
   t_info = localtime(&tc);
+  tmstr= asctime(t_info);
+  *(tmstr + strlen(tmstr) -1) = '\0';
 
   sprintf(log_buf, "CHECKREBOOT:hour:%d min:%d", t_info->tm_hour + 1, t_info->tm_min);
   log(log_buf);
@@ -935,14 +940,21 @@ void check_reboot(void)
 	}
 	sprintf(buf, "touch %s", REBOOT_FILE);
 	system(buf);
-	send_to_all("Automatic reboot. Come back in a little while.\n\r");
+        aprintf(
+          "\x007\n\rBroadcast message from Quixadhal (tty0) %s...\n\r\n\r",
+          tmstr);
+        aprintf("\x007Automatic reboot.  Come back in a few minutes!\n\r");
+        aprintf("\x007The system is going down NOW !!\n\r\n\r");
 	diku_shutdown = diku_reboot = 1;
-      } else if (t_info->tm_min > 40)
-	send_to_all(
-		     "ATTENTION: DikuMUD will reboot in less then 10 minutes.\n\r");
-      else if (t_info->tm_min > 30)
-	send_to_all(
-		     "Warning: The game will reboot in less then 20 minutes.\n\r");
+      } else if (t_info->tm_min > 40) {
+        aprintf(
+          "\x007\n\rBroadcast message from Quixadhal (tty0) %s...\n\r\n\r",
+          tmstr);
+        aprintf("\x007Automatic reboot.  Game is now Whizz-Locked!\n\r");
+        aprintf("\x007The system is going DOWN in %d minutes !!\n\r\n\r",
+                55 - t_info->tm_min);
+        WizLock = 1;
+      }
       fclose(boot);
     }
 }

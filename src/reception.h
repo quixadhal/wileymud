@@ -6,8 +6,6 @@
 #ifndef _RECEPTION_H
 #define _RECEPTION_H
 
-#define RENT_RATE	1	       /* 0 for no rent */
-
 #define OBJ_FILE_FREE "\0\0\0"
 
 #define MAX_OBJ_SAVE 200	       /* Used in OBJ_FILE_U *DO*NOT*CHANGE* */
@@ -39,6 +37,10 @@ struct obj_file_u {
    * but it is handy for the times when you
    * need a fast one lying around.  */
 };
+
+#ifndef _RECEPTION_C
+extern double RENT_RATE;
+#endif
 
 void add_obj_cost(struct char_data *ch, struct char_data *re, struct obj_data *obj, struct obj_cost *cost);
 BYTE recep_offer(struct char_data *ch, struct char_data *receptionist, struct obj_cost *cost);

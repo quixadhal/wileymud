@@ -1,0 +1,19 @@
+Quixadhal's List of Impossible Tasks:
+
+o Remove all unused functions from the source.
+o Remove anything that is #ifdef'd out.
+o Rewrite all "stupid" functions like MAX() and str_cmp().
+o Finish rebalancing spell code.
+o Create calling interfaces for non-implemented spells.
+o Finish druid class.
+o Move fighters/ranger/thief skills into a single table with mage/clerics.
+o Redefine the costs and levels for the spells... some powerful ones are
+  acquired too soon, some wimpy ones take too long to get.
+o Make all the wizard commands have a common interface style.
+o Update documentation!!!
+o Change the way skills are handled.  Entires already exist in the spell
+  lists, so let's use them!  Create function pointers to the skills so that
+  the actual application of a skill calls the function.  This way we can
+  encode levels and mana costs in here.. we just need to have a way to
+  prevent people from "cast 'hide' self".
+o Lots more to list, but this is a start.

@@ -10,6 +10,7 @@ void weight_change_object(struct obj_data *obj, int weight);
 void name_from_drinkcon(struct obj_data *obj);
 void name_to_drinkcon(struct obj_data *obj, int type);
 void do_drink(struct char_data *ch, char *argument, int cmd);
+void do_puke(struct char_data *ch, char *argument, int cmd);
 void do_eat(struct char_data *ch, char *argument, int cmd);
 void do_pour(struct char_data *ch, char *argument, int cmd);
 void do_sip(struct char_data *ch, char *argument, int cmd);

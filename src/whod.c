@@ -292,6 +292,8 @@ void whod_loop(void)
 	    if (IS_SET(SHOW_LEVEL, whod_mode)) {
               if(GetMaxLevel(ch) >= WIZ_MAX_LEVEL)
                 sprintf(buf + strlen(buf), "[ God ] ");
+              else if(GetMaxLevel(ch) == WIZ_MAX_LEVEL-1)
+                sprintf(buf + strlen(buf), "[Power] ");
               else if(GetMaxLevel(ch) >= WIZ_MIN_LEVEL)
                 sprintf(buf + strlen(buf), "[Whizz] ");
               else

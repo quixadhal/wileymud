@@ -198,7 +198,7 @@
 #define CMD_levels	174
 #define CMD_reroll	175
 #define CMD_pray	176
-#define CMD_COMMA	177
+#define CMD_GTELL	177
 #define CMD_beg		178 /* social */
 #define CMD_bleed	179 /* social */
 #define CMD_cringe	180 /* social */
@@ -247,10 +247,10 @@
 #define CMD_system	223
 #define CMD_pull	224
 #define CMD_stealth	225
-#define CMD_cust	226
+#define CMD_doh		226
 #define CMD_pset	227
-#define CMD_sroom	228
-#define CMD_lroom	229
+#define CMD_WIZNET	228
+#define CMD_TELL	229
 #define CMD_track	230
 #define CMD_wizlock	231
 #define CMD_highfive	232
@@ -269,7 +269,7 @@
 #define CMD_disarm	245
 #define CMD_bonk	246 /* social */
 #define CMD_wiznet	247
-#define CMD_form	248
+#define CMD_rentmode	248
 #define CMD_gtell	249
 #define CMD_pretitle	250
 #define CMD_allcommands	251

@@ -131,7 +131,7 @@ static void event_fill_zone_with_mobs( int rnum, struct room_data *rp,
 
 static void event_rats_invade_zone(struct char_data *ch, char *arg)
 {
-  struct event_mob_set mobset[10] = {
+  struct event_mob_set mobset[11] = {
 /* vnum, hp: xdy+z, exp: xdy+z, gold: xdy+z, object %, obj vnum */
     { 4618, 6, 8, 8, 1, 6, 4, 2, 6, 0, 2, 4602 }, /* special large rat */
     { 4618, 4, 6, 5, 1, 6, 4, 1, 6, 0, 0, -1 }, /* large rat */
@@ -142,9 +142,10 @@ static void event_rats_invade_zone(struct char_data *ch, char *arg)
     { 3432, 2, 6, 1, 1, 6, 4, 0, 0, 0, 0, -1 }, /* disgusting rat */
     { 3433, 4, 6, 1, 1, 6, 4, 1, 4, -1, 0, -1 }, /* giant rat */ 
     { 3433, 4, 6, 1, 1, 6, 4, 1, 4, -1, 0, -1 }, /* giant rat */ 
-    { 3433, 4, 6, 5, 1, 6, 4, 1, 4, -1, 0, -1 } /* giant rat */ 
+    { 3433, 4, 6, 5, 1, 6, 4, 1, 4, -1, 0, -1 }, /* giant rat */ 
+    { 5056, 3, 8, 5, 2, 6, 10, 1, 2, -1, 0, -1 } /* black cat */
   };
-  struct event_mob_in_zone mobs = { 0, 0, 60, 1, 6, 10, &mobset };
+  struct event_mob_in_zone mobs = { 0, 0, 60, 1, 8, 11, &mobset };
   int zone;
   struct room_data *rp;
 
@@ -169,11 +170,11 @@ static void event_rats_invade_zone(struct char_data *ch, char *arg)
 
 static void event_undead_invade_zone(struct char_data *ch, char *arg)
 {
-  struct event_mob_set mobset[36] = {
+  struct event_mob_set mobset[64] = {
 /* vnum, hp: xdy+z, exp: xdy+z, gold: xdy+z, object %, obj vnum */
-    { 9004, 9, 8, 20, 9, 9, 9, 0, 0, 0, 0, -1 }, /* wraith */
-    { 9005, 8, 8, 20, 2, 6, 4, 0, 0, 0, 0, -1 }, /* wight */
-    { 9005, 8, 8, 20, 2, 6, 4, 0, 0, 0, 0, -1 }, /* wight */
+    { 9002, 9, 8, 40, 7, 8, 6, 0, 0, 0, 0, -1 }, /* ghoul */
+    { 9002, 8, 8, 30, 5, 8, 6, 0, 0, 0, 0, -1 }, /* ghoul */
+    { 9001, 8, 8, 20, 3, 6, 4, 0, 0, 0, 0, -1 }, /* juju zombie */
     { 9001, 7, 8, 20, 2, 6, 4, 0, 0, 0, 0, -1 }, /* juju zombie */
     { 9001, 7, 8, 20, 2, 6, 4, 0, 0, 0, 0, -1 }, /* juju zombie */
     { 9001, 6, 8, 20, 2, 6, 4, 0, 0, 0, 0, -1 }, /* juju zombie */
@@ -236,7 +237,7 @@ static void event_undead_invade_zone(struct char_data *ch, char *arg)
     { 4603, 1, 8, 5, 1, 6, 4, 0, 0, 0, 0, -1 }, /* small skeleton */
     { 4603, 1, 8, 5, 1, 6, 4, 0, 0, 0, 0, -1 } /* small skeleton */
   };
-  struct event_mob_in_zone mobs = { 0, 0, 60, 1, 3, 64, &mobset };
+  struct event_mob_in_zone mobs = { 0, 0, 50, 1, 3, 64, &mobset };
   int zone;
   struct room_data *rp;
 
@@ -244,7 +245,15 @@ static void event_undead_invade_zone(struct char_data *ch, char *arg)
     zone= rp->zone;
   else
     return;
-
+/* don't code things like this here.... if a whizz annoys people, it is his
+ * job to make it up... but if there is a good reason, he should be able to
+ * do ANYTHING.
+ *
+ *  if((rp->zone == 10)||(rp->zone == 11)) {
+ *	cprintf(ch,"You may not load this event into the newbie area.\n\r");
+ *	return; }
+ *
+ */
   mobs.bottom= zone? (zone_table[zone- 1].top+1): 0;
   mobs.top= zone_table[zone].top;
   if (IS_SET(ch->specials.act, PLR_STEALTH))
@@ -270,7 +279,7 @@ static void event_zombie_master(struct char_data *ch, char *arg)
   if(rp= real_roomp(ch->in_room)) {
     zone= rp->zone;
     master = read_mobile(666, VIRTUAL); /* xenthia, lady of the dead */
-    j= dice(1,6)+ 3;
+    j= dice(1,4)+ 3;
     if (IS_SET(ch->specials.act, PLR_STEALTH))
       aprintf("\n\rYou feel a darkening of the land.\n\rYou hear a low moaning wind arise nearby...\n\r\n\r");
     else

@@ -21,6 +21,8 @@
 #define _RECEPTION_C
 #include "reception.h"
 
+double RENT_RATE= 1.0;
+
 /*
  * Routines used for the "Offer"
  */
@@ -35,7 +37,7 @@ void add_obj_cost(struct char_data *ch, struct char_data *re,
 
   if (obj) {
     if ((obj->item_number > -1) && (cost->ok)) {
-      temp = MAX(0, obj->obj_flags.cost_per_day) * RENT_RATE;
+      temp = MAX(0, (int)(obj->obj_flags.cost_per_day * RENT_RATE));
       cost->total_cost += temp;
       if (re) {
 	sprintf(buf, "%30s : %d coins/day\n\r", obj->short_description, temp);
@@ -90,7 +92,7 @@ BYTE recep_offer(struct char_data *ch, struct char_data *receptionist,
     sprintf(buf,
 	    "$n tells you 'It will cost you %d coins per day'", cost->total_cost);
     act(buf, FALSE, receptionist, 0, ch, TO_VICT);
-    if (cost->total_cost > GET_GOLD(ch)) {
+    if (cost->total_cost > (GET_GOLD(ch) + GET_BANK(ch))) {
       if (GetMaxLevel(ch) < LOW_IMMORTAL)
 	act("$n tells you 'Which I can see you can't afford'",
 	    FALSE, receptionist, 0, ch, TO_VICT);
@@ -101,7 +103,7 @@ BYTE recep_offer(struct char_data *ch, struct char_data *receptionist,
       }
     }
   }
-  if (cost->total_cost > GET_GOLD(ch))
+  if (cost->total_cost > (GET_GOLD(ch) + GET_BANK(ch)))
     return (FALSE);
   else
     return (TRUE);
@@ -170,6 +172,7 @@ void load_char_objs(struct char_data *ch)
   int i, j;
   BYTE found = FALSE;
   float timegold;
+  int difference;
   struct rental_header rh;
   struct obj_file_u *st;
   char name[40];
@@ -224,13 +227,27 @@ void load_char_objs(struct char_data *ch)
       log(buf);
       sprintf(buf, "You ran up charges of %g gold in rent.\n\r", timegold);
       send_to_char(buf, ch);
+/*
+ * Sedna's hack begins here.
+ * The butler is now friends with the banker.
+ */
+      difference = timegold - GET_GOLD(ch);
       GET_GOLD(ch) -= timegold;
 
       if (GET_GOLD(ch) < 0) {
-	log("Char ran out of money in rent");
-	send_to_char("You ran out of money, you deadbeat.\n\r", ch);
-	GET_GOLD(ch) = 0;
-      }
+	GET_BANK(ch) -= difference;
+	if (GET_BANK(ch) < 0) {
+	  log("Char ran out of money in rent-is flat broke");
+	  send_to_char("You ran out of money, you deadbeat.\n\r", ch);
+	  GET_GOLD(ch) = 0;
+	  GET_BANK(ch) = 0;
+        }
+	else {
+          log("Char ran out of money in rent-withdrew from bank");
+          send_to_char("You ran out of money, and had to make a quick trip to the bank.\n\r",ch);
+	  GET_GOLD(ch) = 0;
+       }
+    }
     }
     free(st);
   } else {

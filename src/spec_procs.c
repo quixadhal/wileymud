@@ -34,6 +34,117 @@
 #define _SPEC_PROCS_C
 #include "spec_procs.h"
 
+struct special_proc_entry specials_m[] = {
+  {1, puff, "puff (Astral Traveller)"},
+  {3, RepairGuy, "RepairGuy (Blacksmith)"},
+  {666, zombie_master, "zombie_master (Xenthia)"},
+  {667, mosquito, "mosquito (Mosquito)"},
+  {1201, magic_user, "magic_user (Goblin Shaman)"},
+  {1204, eli_priest, "eli_priest (Eli)"},
+  {1206, RangerGuildMaster, "RangerGuildMaster (Grassland Ranger)"},
+  {1208, RangerGuildMaster, "RangerGuildMaster (Forest Ranger)"},
+  {1601, RangerGuildMaster, "RangerGuildMaster (Mountain Ranger)"},
+  {3005, receptionist, "receptionist (Butler)"},
+  {3006, NudgeNudge, "NudgeNudge (Villager)"},
+  {3008, fido, "fido (Small Dog)"},
+  {3012, cleric, "cleric (Yentile)"},
+  {3013, magic_user, "magic_user (Undrea)"},
+  {3017, cleric, "cleric (Acolyte)"},
+  {3020, MageGuildMaster, "MageGuildMaster (Jessica)"},
+  {3021, ClericGuildMaster, "ClericGuildMaster (Pastue)"},
+  {3022, ThiefGuildMaster, "ThiefGuildMaster (Tate)"},
+  {3023, FighterGuildMaster, "FighterGuildMaster (Kark)"},
+  {3024, replicant, "replicant (Glowing Squirrel)"},
+  {3043, Ned_Nutsmith, "Ned_Nutsmith (Nedrick)"},
+  {3044, janitor_eats, "janitor_eats (Barney)"},
+  {3045, NudgeNudge, "NudgeNudge (Village Girl)"},
+  {3047, shylar_guard, "shylar_guard (Village Guard)"},
+  {4006, replicant, "replicant (Glowing Cave Worm)"},
+  {4622, magic_user, "magic_user (Xytheus)"},
+  {4623, magic_user, "magic_user (Fallath)"},
+  {4706, wraith, "wraith (Grimdale)"},
+  {5016, cityguard, "cityguard (Highstaff Gate Guard)"},
+  {5017, cityguard, "cityguard (Highstaff Guard)"},
+  {5027, MageGuildMaster, "MageGuildMaster (Incubad)"},
+  {5030, BreathWeapon, "BreathWeapon (Immature Dragon)"},
+  {5031, ThiefGuildMaster, "ThiefGuildMaster (Ahkrain)"},
+  {5032, FighterGuildMaster, "FighterGuildMaster (Ulrick)"},
+  {5033, ClericGuildMaster, "ClericGuildMaster (Delaron)"},
+  {5034, receptionist, "receptionist (Maid)"},
+  {5052, cityguard, "cityguard (Depository Guard)"},
+  {5068, cityguard, "cityguard (Halfling Militia)"},
+  {5069, cityguard, "cityguard (Halfling Captain)"},
+  {5078, cleric, "cleric (High Priest)"},
+  {5079, magic_user, "magic_user (Arcane Man)"},
+  {5080, cityguard, "cityguard (Sector Guard)"},
+  {5090, cityguard, "cityguard (Highstaff Captain)"},
+  {5091, cityguard, "cityguard (High Sect Guard)"},
+  {5436, MageGuildMaster, "MageGuildMaster (Small Man)"},
+  {5437, ClericGuildMaster, "ClericGuildMaster (Noble Man)"},
+  {5438, FighterGuildMaster, "FighterGuildMaster (Strong Man)"},
+  {5439, ThiefGuildMaster, "ThiefGuildMaster (Small Man)"},
+  {5440, RangerGuildMaster, "RangerGuildMaster (Bearded Man)"},
+  {6107, FighterGuildMaster, "FighterGuildMaster (Large Man)"},
+  {6108, ThiefGuildMaster, "ThiefGuildMaster (Small Man)"},
+  {6109, MageGuildMaster, "MageGuildMaster (Thin Man)"},
+  {6110, ClericGuildMaster, "ClericGuildMaster (Old Priest)"},
+  {6111, magic_user, "magic_user (Old Witch)"},
+  {6132, janitor_eats, "janitor_eats (Hermit)"},
+  {6201, cleric, "cleric (Black-skinned Lizard)"},
+  {6209, magic_user, "magic_user (Reddish-skinned Lizard)"},
+  {6408, cleric, "cleric (Priest of Aklan)"},
+  {6525, FighterGuildMaster, "FighterGuildMaster (Man)"},
+  {6526, ClericGuildMaster, "ClericGuildMaster (Man)"},
+  {6527, ThiefGuildMaster, "ThiefGuildMaster (Man)"},
+  {6528, MageGuildMaster, "MageGuildMaster (Man)"},
+  {6529, RangerGuildMaster, "RangerGuildMaster (Man)"},
+  {6910, magic_user, "magic_user (Isha)"},
+  {7001, Fighter, "Fighter (Drow Warrior)"},
+  {7002, cleric, "cleric (Drow Priestess)"},
+  {7003, magic_user, "magic_user (Drow Mage)"},
+  {9000, shadow, "shadow (Asgard)"},
+  {9002, ghoul, "ghoul (Ghoul)"},
+  {9004, wraith, "wraith (Wraith)"},
+  {9005, wraith, "wraith (Wight)"},
+  {10003, cleric, "cleric (High Priestess of Lovitar)"},
+  {10018, receptionist, "receptionist (Alek)"},
+  {15004, FighterGuildMaster, "FighterGuildMaster (Big Horn)"},
+  {15013, RepairGuy, "RepairGuy (Dunkal)"},
+  {15018, ClericGuildMaster, "ClericGuildMaster (Vail)"},
+  {15019, ClericGuildMaster, "ClericGuildMaster (Elias)"},
+  {15020, RangerGuildMaster, "RangerGuildMaster (Cael)"},
+  {15021, ClericGuildMaster, "ClericGuildMaster (Reever)"},
+  {15029, MageGuildMaster, "MageGuildMaster (Aahz)"},
+  {15036, ThiefGuildMaster, "ThiefGuildMaster (Finnly)"},
+  {15052, FighterGuildMaster, "FighterGuildMaster (Swordsmaster)"},
+  {15053, ClericGuildMaster, "ClericGuildMaster (Priest)"},
+  {15054, GenericGuildMaster, "GenericGuildMaster (Ilrand)"},
+  {20016, cleric, "cleric (Priest Giant)"},
+  {-1, NULL, "NULL (none)"},
+};
+
+struct special_proc_entry specials_o[] = {
+  {3, fountain, "fountain (Highstaff Fountain)"},
+  {3005, fountain, "fountain (Shylar Barrel)"},
+  {3098, board, "board (Wizard's Board)"},
+  {3099, board, "board (Shylar Board)"},
+  {5099, board, "board (Highstaff Board)"},
+  {4734, BerserkerAxe, "BerserkerAxe (Druegar Axe)"},
+  {-1, NULL, "NULL (none)"},
+};
+
+struct special_proc_entry specials_r[] = {
+  {1014, House, "House (Muidnar's Home)"},
+  {1020, House, "House (Quixadhal's Home)"},
+  {1021, House, "House (Dirk's Home)"},
+  {1024, House, "House (Highlander's Home)"},
+  {1030, House, "House (Sedna's Home)"},
+  {3035, pet_shops, "pet_shops (Griffith's Abode, Shylar)"},
+  {5029, bank, "bank (Highstaff Depository)"},
+  {5182, pet_shops, "pet_shops (Companion's Place, Highstaff)"},
+  {-1, NULL, "NULL (none)"},
+};
+
 static funcp breaths[] =
 {
 cast_acid_breath, 0, cast_frost_breath, 0, cast_lightning_breath, 0,
@@ -94,7 +205,7 @@ char *how_good(int percent)
   if (percent == 0)
     strcpy(buf, " (not learned)");
   else if (percent <= 6)
-    strcpy(buf, " (pitifull)");
+    strcpy(buf, " (pitiful)");
   else if (percent <= 12)
     strcpy(buf, " (awful)");
   else if (percent <= 18)
@@ -112,7 +223,7 @@ char *how_good(int percent)
   else if (percent <= 54)
     strcpy(buf, " (average)");
   else if (percent <= 60)
-    strcpy(buf, " (better then average)");
+    strcpy(buf, " (better than average)");
   else if (percent <= 66)
     strcpy(buf, " (fair)");
   else if (percent <= 72)
@@ -195,7 +306,7 @@ int MageGuildMaster(struct char_data *ch, int cmd, char *arg)
     if (!*arg) {
       sprintf(pagebuf, "You have got %d practice sessions left.\n\r",
 	      ch->specials.spells_to_learn);
-      sprintf(pagebuf + strlen(pagebuf), "You can practise any of these spells:\n\r");
+      sprintf(pagebuf + strlen(pagebuf), "You can practice any of these spells:\n\r");
       for (i = 0; *spells[i] != '\n'; i++)
 	if (spell_info[i + 1].spell_pointer &&
 	    (spell_info[i + 1].min_level[MAGE_LEVEL_IND] <=
@@ -278,7 +389,7 @@ int ClericGuildMaster(struct char_data *ch, int cmd, char *arg)
     if (!*arg) {
       sprintf(pagebuf, "You have got %d practice sessions left.\n\r",
 	      ch->specials.spells_to_learn);
-      sprintf(pagebuf + strlen(pagebuf), "You can practise any of these spells:\n\r");
+      sprintf(pagebuf + strlen(pagebuf), "You can practice any of these spells:\n\r");
       for (i = 0; *spells[i] != '\n'; i++)
 	if (spell_info[i + 1].spell_pointer &&
 	    (spell_info[i + 1].min_level[CLERIC_LEVEL_IND] <=
@@ -394,7 +505,7 @@ int ThiefGuildMaster(struct char_data *ch, int cmd, char *arg)
       sprintf(buf, "You have got %d practice sessions left.\n\r",
 	      ch->specials.spells_to_learn);
       send_to_char(buf, ch);
-      send_to_char("You can practise any of these skills:\n\r", ch);
+      send_to_char("You can practice any of these skills:\n\r", ch);
       for (i = 0; t_skills[i].skill_name[0] != '\n'; i++) {
 	send_to_char(t_skills[i].skill_name, ch);
 	send_to_char(how_good(ch->skills[t_skills[i].skill_numb].learned), ch);
@@ -508,7 +619,7 @@ int FighterGuildMaster(struct char_data *ch, int cmd, char *arg)
       sprintf(buf, "You have got %d practice sessions left.\n\r",
 	      ch->specials.spells_to_learn);
       send_to_char(buf, ch);
-      send_to_char("You can practise any of these skills:\n\r", ch);
+      send_to_char("You can practice any of these skills:\n\r", ch);
       for (i = 0; wa_skills[i].skill_name[0] != '\n'; i++) {
 	send_to_char(wa_skills[i].skill_name, ch);
 	send_to_char(how_good(ch->skills[wa_skills[i].skill_numb].learned), ch);
@@ -519,7 +630,7 @@ int FighterGuildMaster(struct char_data *ch, int cmd, char *arg)
     for (; isspace(*arg); arg++);
     number = search_block(arg, wl_skills, FALSE);
     if (number == -1) {
-      send_to_char("You do not have ability to practise this skill!\n\r", ch);
+      send_to_char("You do not have ability to practice this skill!\n\r", ch);
       return (TRUE);
     }
     if (ch->specials.spells_to_learn <= 0) {
@@ -1291,6 +1402,236 @@ int citizen(struct char_data *ch, int cmd, char *arg)
   }
 }
 
+int shylar_guard(struct char_data *ch, int cmd, char *arg)
+{
+  static struct obj_data *i, *temp, *next_obj;
+  static struct char_data *tch, *evil;
+  static int max_evil, lev;
+  static int dir;
+  static int home_room = 3001;
+  static int path_len = 22;
+  static int the_path[] = {
+    3001, /* start in the bar */
+    -1,
+    -2,
+    3000, /* taunt eli */
+    -3,
+    3003, /* knock on tate's door */
+    -4,
+    3011, /* knock on tate */
+    -5,
+    3049, /* greet ned */
+    -6,
+    3041, /* lick farmer's wife */
+    -7,
+    3017, /* french jessica */
+    -8,
+    3421, /* check the mansion */
+    3033, /* steal from pastue's pot */
+    -9,
+    3147, /* go past iron gate */
+    3001, /* go back home to the bar */
+    -10,
+    -11
+  };
+  static int index;
+  static BYTE move = FALSE;
+  static BYTE haslight = FALSE;
+  static int saying_count = 14;
+  char *sayings[] = {
+    "$n says 'Hey baby, wanna see my knightstick?'",
+    "$n shouts 'You there!  Stop loitering!'",
+    "$n says 'What's all this then?'",
+    "$n says 'Move along scum!  Bloody peasants!'",
+    "$n asks 'You don't have a doughnut do you?'",
+    "$n yells 'Hey!  Hey!  We'll have none of that in THIS town!'",
+    "$n snickers 'There's plenty of room in the jail for you.'",
+    "$n drools 'Mmmmm.. Doughnut...'",
+    "$n drools 'A nice frosty mug of Duff's Beer!  Mmmmm... Duff's...'",
+    "$n exclaims 'D'oh!'",
+    "$n chants 'Must KILL for Dread Quixadhal...'",
+    "$n screams 'Slow that wagon down!'",
+    "$n yawns and looks really bored.",
+    "$n squishes a bug with his heel and grins.",
+    NULL
+  };
+  static int spook_count = 7;
+  char *spooky[] = {
+    "$n shudders and says 'Damn I hate those creepy things!'",
+    "$n shivers and says 'Those dead things give me the creeps!'",
+    "$n backs away and says 'Keep your dead away from me!'",
+    "$n glares and says 'Will you LIE DOWN and be DEAD?  Geez!'",
+    "$n whimpers and cries 'Get away!  I'm allergic to walking dead!'",
+    "$n cries out 'Ahhh!  Save me Eli!  Dead Uncle Joe is coming for me!'",
+    "$n exclaims 'Go back!  Back to the land of Mordor!  errrr... or something.'",
+    NULL
+  };
+
+  if(cmd || (GET_POS(ch) < POSITION_SLEEPING))
+    return FALSE;
+
+  if(AWAKE(ch)) {
+    if (ch->specials.fighting) {
+      if (GET_POS(ch) == POSITION_FIGHTING) {
+        FighterMove(ch);
+      } else {
+        StandUp(ch);
+      }
+      if (number(0, 20) > 15) {
+        do_shout(ch, "Help me Eli!  I don't get paid enough for THIS!!!", 0);
+      } else {
+        act("$n shouts 'Help me Eli!  I don't get paid enough for THIS!!!'", TRUE, ch, 0, 0, TO_ROOM);
+      }
+      if (ch->specials.fighting)
+        CallForGuard(ch, ch->specials.fighting, 4);
+      return (TRUE);
+    } else {
+      if(!haslight) {
+        if(IS_DARKOUT(ch->in_room))
+          do_grab(ch, "torch", 0);
+      } else {
+        if(IS_LIGHTOUT(ch->in_room))
+          do_remove(ch, "torch", 0);
+      }
+      max_evil = 1000;
+      evil = 0;
+      for(tch= real_roomp(ch->in_room)->people; tch; tch= tch->next_in_room) {
+        if ((IS_NPC(tch)) && (IsUndead(tch)) && CAN_SEE(ch, tch)) {
+          act(spooky[number(0, spook_count-1)], FALSE, ch, 0, 0, TO_ROOM);
+          break;
+        }
+        if(tch->specials.fighting) {
+          if ((GET_ALIGNMENT(tch) < max_evil) &&
+              (IS_NPC(tch) || IS_NPC(tch->specials.fighting))) {
+	    max_evil = GET_ALIGNMENT(tch);
+	    evil = tch;
+          }
+        }
+      }
+      if (!check_peaceful(ch, "") && evil && 
+          ((GetMaxLevel(evil) >= 4) || IS_NPC(evil)) &&
+          (GET_ALIGNMENT(evil->specials.fighting) >= 0)) {
+        act("$n screams 'Get out of my town you bastard!!!'",
+    	FALSE, ch, 0, 0, TO_ROOM);
+        hit(ch, evil, TYPE_UNDEFINED);
+        return (TRUE);
+      }
+      for (i = real_roomp(ch->in_room)->contents; i; i = i->next_content) {
+        if (IS_SET(i->obj_flags.wear_flags, ITEM_TAKE)) {
+          act("$n picks up something and puts it in his pocket.", FALSE, ch, 0, 0, TO_ROOM);
+          obj_from_room(i);
+          obj_to_char(i, ch);
+          return (TRUE);
+        }
+      }
+    }
+  }
+  if (!move) {
+    switch(time_info.hours) {
+      case 6:
+      case 12:
+      case 18:
+      case 21:
+        move = TRUE;
+        index = 0;
+        break;
+    }
+  }
+  if(!move) return FALSE;
+  if(!index) {
+    if(ch->in_room != home_room) {
+      if(GET_POS(ch) < POSITION_STANDING)
+        GET_POS(ch) = POSITION_STANDING;
+      if (0 <= (dir = find_path(ch->in_room,
+      		     is_target_room_p, home_room, -200))) {
+        go_direction(ch, dir);
+        return TRUE;
+      } else {
+        act("$n whimpers 'Help me!  I'm lost!.'", FALSE, ch, 0, 0, TO_ROOM);
+        mobile_wander(ch);
+        return FALSE;
+      }
+    } else {
+      GET_POS(ch) = POSITION_STANDING;
+      act("$n awakens and looks around blearily.", FALSE, ch, 0, 0, TO_ROOM);
+      index++;
+      return TRUE;
+    }
+  } else {
+    if(the_path[index] < 0) { /* do special-emote */
+      switch(-the_path[index]) {
+        case 1:
+          act("$n mumbles to Buck 'Strong coffee and a shot of anything.'", FALSE, ch, 0, 0, TO_ROOM);
+          act("$n groans and blinks at the room.", FALSE, ch, 0, 0, TO_ROOM);
+          break;
+        case 2:
+          act("$n drinks his \"coffee\" and perks up.", FALSE, ch, 0, 0, TO_ROOM);
+          act("$n says 'Thanks Buck!  Put it on my tab.'", FALSE, ch, 0, 0, TO_ROOM);
+          break;
+        case 3:
+          act("$n says 'Eli, Why don't you get a REAL job?'", FALSE, ch, 0, 0, TO_ROOM);
+          act("$n shakes his head.", FALSE, ch, 0, 0, TO_ROOM);
+          break;
+        case 4:
+          act("$n bellows 'Open up in there Tate!  I know you're up to something!'", FALSE, ch, 0, 0, TO_ROOM);
+          act("$n bangs on Tate's door until it nearly breaks down.", FALSE, ch, 0, 0, TO_ROOM);
+          break;
+        case 5:
+          act("$n grabs Tate by the collar and shakes him.", FALSE, ch, 0, 0, TO_ROOM);
+          act("$n says 'Tate!  One day I'll catch you and your thieves...'", FALSE, ch, 0, 0, TO_ROOM);
+          act("WHAM!  $n slams Tate up against the wall.", FALSE, ch, 0, 0, TO_ROOM);
+          break;
+        case 6:
+          act("$n snickers 'Hey there Ned!  You still playing with your nuts?'", FALSE, ch, 0, 0, TO_ROOM);
+          break;
+        case 7:
+          act("$n says 'I'm glad your husband is out in the fields Maam.'", FALSE, ch, 0, 0, TO_ROOM);
+          act("$n licks the Farmer's Wife.", FALSE, ch, 0, 0, TO_ROOM);
+          break;
+        case 8:
+          act("$n murmers 'Let me show you some REAL magic Jessica.'", FALSE, ch, 0, 0, TO_ROOM);
+          act("$n frenches Jessica and makes a charmed longstaff.", FALSE, ch, 0, 0, TO_ROOM);
+          break;
+        case 9:
+          act("$n mumbles a prayer to Dread Quixadhal.", FALSE, ch, 0, 0, TO_ROOM);
+          act("$n slips a few coins from the Donation Pot.", FALSE, ch, 0, 0, TO_ROOM);
+          break;
+        case 10:
+          act("$n exclaims 'Another hard day's work done!'", FALSE, ch, 0, 0, TO_ROOM);
+          act("$n orders several firebreathers and begins to down them.", FALSE, ch, 0, 0, TO_ROOM);
+          break;
+        case 11:
+          act("$n yawns mightily and passes out at the bar.", FALSE, ch, 0, 0, TO_ROOM);
+          GET_POS(ch) = POSITION_SLEEPING;
+          move= FALSE;
+          index= 0;
+          return TRUE;
+      }
+      index++;
+      return TRUE;
+    } else { /* go to room number */
+      if(number(0,99) > 55) {
+        if(ch->in_room != the_path[index]) {
+          if (0 <= (dir = find_path(ch->in_room,
+                          is_target_room_p, the_path[index], -200))) {
+            go_direction(ch, dir);
+            return TRUE;
+          } else {
+            act("$n whimpers 'Help me!  I'm lost!.'", FALSE, ch, 0, 0, TO_ROOM);
+            mobile_wander(ch);
+            return FALSE;
+          }
+        } else {
+          index++;
+        }
+      } else if(number(0,99) > 50) { /* random emote */
+        act(sayings[number(0,saying_count-1)], FALSE, ch, 0, 0, TO_ROOM);
+      }
+    }
+  }
+  return FALSE;
+}
+
 int ghoul(struct char_data *ch, int cmd, char *arg)
 {
   struct char_data *tar;
@@ -1968,74 +2309,52 @@ int puff(struct char_data *ch, int cmd, char *arg)
   if (cmd)
     return (0);
 
-  switch (number(0, 250)) {
-  case 4:
-  case 5:
-  case 6:
-  case 7:
-    {
-      for (i = character_list; i; i = i->next) {
-	if (!IS_NPC(i)) {
-	  if (number(0, 5) == 0) {
-	    if (!strcmp(GET_NAME(i), "Muidnar")) {
-	      do_shout(ch, "Muidnar!  I need reimbursement!", 0);
-	    }
-	  }
-	}
-	break;
-      }
-    }
-    return (1);
-  case 13:
-    for (i = character_list; i; i = i->next) {
-      if (!IS_NPC(i) && !IS_IMMORTAL(i)) {
-	if (number(0, 20) == 0) {
-	  sprintf(buf, "%s shout Where is Puff?", GET_NAME(i));
-	  do_force(ch, buf, 0);
-	  do_restore(ch, GET_NAME(i), 0);
-	  return (TRUE);
-	}
-      }
-    }
-    return (1);
-  case 20:
-    for (i = character_list; i; i = i->next) {
-      if (!IS_NPC(i) && !IS_IMMORTAL(i)) {
-	if (number(0, 15) == 0) {
-	  sprintf(buf, "Hiya %s!", GET_NAME(i));
-	  do_shout(ch, buf, 0);
-	  return (TRUE);
-	}
-      }
-    }
-    break;
-  case 23:
-    if (number(0, 20) == 0) {
+  /* N/10000 chance which means 100 == 1% */
+  if(number(0,9999) < 90) {
+    if (!number(0, 20)) {
       do_shout(ch, "Suffer, I will make you all suffer!!!!!", 0);
-    }
-    break;
-  case 26:
-    if (number(0, 10) == 0)
+    } else if (!number(0, 10)) {
       do_shout(ch, "Suffer!!!!!! All will Suffer Quixadhal's WRATH!!!", 0);
-    break;
-  case 28:
-    do_shout(ch, "SAVE!", 0);
-    return (TRUE);
-  case 32:
-    if (number(0, 10) == 0) {
+    } else if (!number(0, 10)) {
       do_shout(ch, "Any good weapons for sale!", 0);
-      return (TRUE);
-    }
-    break;
-
-  case 33:
-    if (number(0, 10) == 0) {
+    } else if (!number(0, 10)) {
+      do_shout(ch, "I wish there were more victims, err... players!", 0);
+    } else if (!number(0, 10)) {
       do_shout(ch, "Anyone want a red ring??", 0);
-      return (TRUE);
+    } else if (!number(0, 10)) {
+      do_shout(ch, "The Vax is DEAD!!!!", 0);
+    } else if (!number(0, 5)) {
+      do_shout(ch, "Windows 95 SUCKS!!!", 0);
+    } else if (!number(0, 4)) {
+      do_shout(ch, "The PowerPC has DIED!", 0);
+    } else if (!number(0, 3)) {
+      do_shout(ch, "Bill Gates has been forced to WALK the PLANK!", 0);
+    } else if (!number(0, 2)) {
+      do_shout(ch, "Linux RULES!!!!!", 0);
+    } else if (!number(0, 1)) {
+      do_shout(ch, "The Amiga LIVES!", 0);
+    } else {
+      do_shout(ch, "SAVE, and Ye Shall Be SAVED!", 0);
     }
-    break;
-  case 34:
-  case 38:
+  } else if(number(0,9999) < 36) {
+    for (i = character_list; i; i = i->next) {
+      if (!IS_NPC(i) && !number(0,5)) {
+        if(IS_IMMORTAL(i)) {
+          sprintf(buf, "%s!  I need reimbursement!", GET_NAME(i));
+          do_shout(ch, buf, 0);
+          return 1;
+        }
+      }
+    }
+  } else if(number(0,9999) < 9) {
+    for (i = character_list; i; i = i->next) {
+      if (!IS_NPC(i) && !IS_IMMORTAL(i) && !number(0,15)) {
+	sprintf(buf, "Hiya %s!", GET_NAME(i));
+	do_shout(ch, buf, 0);
+        return (TRUE);
+      }
+    }
+  } else if(number(0,9999) < 18) {
     for (i = character_list; i; i = i->next) {
       if (!IS_NPC(i)) {
 	if (number(0, 20) == 0) {
@@ -2047,22 +2366,82 @@ int puff(struct char_data *ch, int cmd, char *arg)
 	}
       }
     }
-    return (TRUE);
-  case 41:
-    if (number(0, 10) == 0) {
-      do_shout(ch, "The Vax is DEAD!!!!", 0);
-      return (TRUE);
+  } else if(number(0,9999) < 37) {
+    for (i = character_list; i; i = i->next) {
+      if (!IS_NPC(i) && !IS_IMMORTAL(i) && !number(0,20)) {
+        switch(GET_SEX(i)) {
+          case SEX_MALE:
+	    sprintf(buf, "I shall HEAL you brother %s!", GET_NAME(i));
+            break;
+          case SEX_FEMALE:
+	    sprintf(buf, "I shall HEAL you sister %s!", GET_NAME(i));
+            break;
+          default:
+	    sprintf(buf, "I shall HEAL you %s, whatever you are!", GET_NAME(i));
+            break;
+        }
+        do_shout(ch, buf, 0);
+        cast_cure_light(20, ch, "", SPELL_TYPE_SPELL, i, 0);
+        return (TRUE);
+      }
     }
-    break;
-  case 42:
-    if (number(0, 10) == 0) {
-      do_shout(ch, "I wish there were more victims, err... players!", 0);
-      return (TRUE);
+  } else if(number(0,9999) < 45) {
+    for (i = character_list; i; i = i->next) {
+      if (!IS_NPC(i) && !IS_IMMORTAL(i) && !number(0,20)) {
+        switch(GET_SEX(i)) {
+          case SEX_MALE:
+	    sprintf(buf, "Be at ease brother %s!", GET_NAME(i));
+            break;
+          case SEX_FEMALE:
+	    sprintf(buf, "Be at ease sister %s!", GET_NAME(i));
+            break;
+          default:
+	    sprintf(buf, "Be at ease %s, whatever you are!", GET_NAME(i));
+            break;
+        }
+        do_shout(ch, buf, 0);
+        cast_refresh(20, ch, "", SPELL_TYPE_SPELL, i, 0);
+        return (TRUE);
+      }
     }
-    break;
-  default:
-    return (0);
+  } else if(number(0,9999) < 9) {
+    for (i = character_list; i; i = i->next) {
+      if (!IS_NPC(i) && !IS_IMMORTAL(i) && !number(0,20)) {
+	sprintf(buf, "%s shout Where is Puff?", GET_NAME(i));
+	do_force(ch, buf, 0);
+	do_restore(ch, GET_NAME(i), 0);
+	return (TRUE);
+      }
+    }
+  } else if(number(0,9999) < 9) {
+    for (i = character_list; i; i = i->next) {
+      if (!IS_NPC(i) && !IS_IMMORTAL(i) && OUTSIDE(i)) {
+        if (((weather_info.sky == SKY_CLOUDY) && !number(0,20)) ||
+            ((weather_info.sky == SKY_RAINING) && !number(0,10)) ||
+            ((weather_info.sky == SKY_LIGHTNING) && !number(0,5))) {
+          if (GET_HIT(i) > 10) {
+            if (saves_spell(i, SAVING_SPELL)) {
+              /* damage(ch, i, dice(1,4), SPELL_CALL_LIGHTNING); */
+              GET_HIT(i) -=dice(1,4);
+            } else {
+              /* damage(ch, i, dice(2,4), SPELL_CALL_LIGHTNING); */
+              GET_HIT(i) -=dice(2,4);
+            }
+            act("The looming dark clouds above you suddenly rumble and you feel
+a searing\n\rpain in your chest!", FALSE, i, 0, 0, TO_CHAR);
+            act("A brilliant flash of light blinds you for a moment. As your vision clears\n\ryou see smoke rising from $N.", FALSE, i, 0, i, TO_ROOM);
+          } else {
+            act("The looming dark clouds above you suddenly rumble and you feel
+your hair\n\rstanding on end!", FALSE, i, 0, 0, TO_CHAR);
+            act("A brilliant flash of light blinds you for a moment. As your vision clears\n\ryou see $N's hair standing on end.", FALSE, i, 0, i, TO_ROOM);
+          }
+        }
+      }
+    }
+  } else {
+    return 0;
   }
+  return 1;
 }
 
 int regenerator(struct char_data *ch, int cmd, char *arg)
@@ -2478,6 +2857,10 @@ int NudgeNudge(struct char_data *ch, int cmd, char *arg)
 {
 
   struct char_data *vict;
+/*  char complaint[80];
+
+  sprintf(complaint,"NudgeNudge: called for %s at %d.",ch->name,ch->in_room);
+  log(complaint); */
 
   if (cmd || !AWAKE(ch))
     return (FALSE);
@@ -2487,12 +2870,19 @@ int NudgeNudge(struct char_data *ch, int cmd, char *arg)
   }
   switch (ch->act_ptr) {
   case NN_LOOSE:
+/*    bug("NN_LOOSE");*/
     /*
      * ** find a victim
      */
     vict = FindVictim(ch);
     if (!vict)
       return (FALSE);
+    if (IS_IMMORTAL(vict) && !IS_SET(vict->specials.act, PLR_STEALTH) &&
+        (number(0,99)< 50)) {
+      act("$n falls and grovels in abject terror before you.", FALSE, ch, 0, 0, TO_CHAR);
+      act("$n falls and grovels in abject terror before $N.", FALSE, ch, 0, vict, TO_ROOM);
+      return FALSE;
+    }
     /* start following */
     if (circle_follow(ch, vict)) {
       return (FALSE);
@@ -2503,11 +2893,24 @@ int NudgeNudge(struct char_data *ch, int cmd, char *arg)
     ch->act_ptr = NN_FOLLOW;
     if (!AWAKE(vict))
       do_wake(ch, GET_NAME(vict), 0);
-    do_say(ch, "Good Evenin' Squire!", 0);
-    act("$n nudges you.", FALSE, ch, 0, 0, TO_CHAR);
-    act("$n nudges $N.", FALSE, ch, 0, ch->master, TO_ROOM);
+    if (ch->player.sex == SEX_MALE) {
+       bug("SEX_MALE");
+       do_say(ch, "Good Evenin' Squire!", 0);
+       act("$n nudges you.", FALSE, ch, 0, 0, TO_CHAR);
+       act("$n nudges $N.", FALSE, ch, 0, ch->master, TO_ROOM);
+    } else if (ch->player.sex == SEX_FEMALE) {
+       bug("SEX_FEMALE");
+       do_say(ch, "Hello, handsome!", 0);
+       act("$n snuggles up to you.", FALSE, ch, 0, 0, TO_CHAR);
+       act("$n snuggles up to $N.", FALSE, ch, 0, ch->master, TO_ROOM);
+    } else {
+       bug("neuter");
+       do_say(ch, "What the fuck?  I'm neuter!", 0);
+       act("$n looks between it's legs and screams!!!", FALSE,ch,0,0,TO_ROOM);
+    }
     break;
   case NN_FOLLOW:
+    bug("NN_FOLLOW");
     if(!ch->master) {
       ch->act_ptr = NN_STOP;
       break;
@@ -2517,53 +2920,141 @@ int NudgeNudge(struct char_data *ch, int cmd, char *arg)
         do_wake(ch, GET_NAME(ch->master), 0);
     switch (number(0, 20)) {
     case 0:
-      do_say(ch, "Is your wife a goer?  Know what I mean, eh?", 0);
-      act("$n nudges you.", FALSE, ch, 0, 0, TO_CHAR);
-      act("$n nudges $N.", FALSE, ch, 0, ch->master, TO_ROOM);
+      bug("0");
+      if (ch->player.sex == SEX_MALE) {
+         bug("SEX_MALE");
+         do_say(ch, "Is your wife a goer?  Know what I mean, eh?", 0);
+         act("$n nudges you.", FALSE, ch, 0, 0, TO_CHAR);
+         act("$n nudges $N.", FALSE, ch, 0, ch->master, TO_ROOM);
+      } else if (ch->player.sex == SEX_FEMALE) {
+         bug("SEX_FEMALE");
+         do_say(ch, "So, do you have a girlfriend?", 0);
+         act("$n hugs you.",FALSE,ch,0,0,TO_CHAR);
+         act("$n hugs $N.",FALSE,ch,0,ch->master,TO_ROOM);
+      } else {
+         bug("neuter");
+         do_say(ch,"My nads are gone!  Help!!",0);
+         act("$n looks around for something it thinks is missing.",FALSE,ch,0,0,
+            TO_ROOM);
+      }
       break;
     case 1:
-      act("$n winks at you.", FALSE, ch, 0, 0, TO_CHAR);
-      act("$n winks at you.", FALSE, ch, 0, 0, TO_CHAR);
-      act("$n winks at $N.", FALSE, ch, 0, ch->master, TO_ROOM);
-      act("$n winks at $N.", FALSE, ch, 0, ch->master, TO_ROOM);
-      act("$n nudges you.", FALSE, ch, 0, 0, TO_CHAR);
-      act("$n nudges $N.", FALSE, ch, 0, ch->master, TO_ROOM);
-      act("$n nudges you.", FALSE, ch, 0, 0, TO_CHAR);
-      act("$n nudges $N.", FALSE, ch, 0, ch->master, TO_ROOM);
-      do_say(ch, "Say no more!  Say no MORE!", 0);
+      if (ch->player.sex == SEX_MALE) {
+         bug("SEX_MALE");
+         act("$n winks at you.", FALSE, ch, 0, 0, TO_CHAR);
+         act("$n winks at you.", FALSE, ch, 0, 0, TO_CHAR);
+         act("$n winks at $N.", FALSE, ch, 0, ch->master, TO_ROOM);
+         act("$n winks at $N.", FALSE, ch, 0, ch->master, TO_ROOM);
+         act("$n nudges you.", FALSE, ch, 0, 0, TO_CHAR);
+         act("$n nudges $N.", FALSE, ch, 0, ch->master, TO_ROOM);
+         act("$n nudges you.", FALSE, ch, 0, 0, TO_CHAR);
+         act("$n nudges $N.", FALSE, ch, 0, ch->master, TO_ROOM);
+         do_say(ch, "Say no more!  Say no MORE!", 0);
+      } else if (ch->player.sex == SEX_FEMALE) {
+         bug("SEX_FEMALE");
+         act("$n kisses you.",FALSE,ch,0,0,TO_CHAR);
+         act("$n hugs you.",FALSE,ch,0,0,TO_CHAR);
+         act("$n kisses $N.",FALSE,ch,0,ch->master,TO_ROOM);
+         act("$n hugs $N.",FALSE,ch,0,ch->master,TO_ROOM);
+         do_say(ch, "You're so handsome.  Will you marry me?",0);
+      } else {
+         bug("neuter");
+         act("$n starts sobbing ridiculously and curses the gods for his fate",
+            FALSE,ch,0,0,TO_ROOM);
+      }
       break;
     case 2:
-      do_say(ch, "You been around, eh?", 0);
-      do_say(ch, "...I mean you've ..... done it, eh?", 0);
-      act("$n nudges you.", FALSE, ch, 0, 0, TO_CHAR);
-      act("$n nudges $N.", FALSE, ch, 0, ch->master, TO_ROOM);
-      act("$n nudges you.", FALSE, ch, 0, 0, TO_CHAR);
-      act("$n nudges $N.", FALSE, ch, 0, ch->master, TO_ROOM);
+      bug("2");
+      if (ch->player.sex == SEX_MALE) {
+         bug("SEX_MALE");
+         do_say(ch, "You been around, eh?", 0);
+         do_say(ch, "...I mean you've ..... done it, eh?", 0);
+         act("$n nudges you.", FALSE, ch, 0, 0, TO_CHAR);
+         act("$n nudges $N.", FALSE, ch, 0, ch->master, TO_ROOM);
+         act("$n nudges you.", FALSE, ch, 0, 0, TO_CHAR);
+         act("$n nudges $N.", FALSE, ch, 0, ch->master, TO_ROOM);
+      } else if (ch->player.sex == SEX_FEMALE) {
+         bug("SEX_FEMALE");
+         act("$n giggles, winks at you, and sashays about the room.",
+             FALSE,ch,0,0,TO_CHAR);
+         act("$n giggles, winks at $N, and sashays about the room.",
+             FALSE,ch,0,ch->master,TO_ROOM);
+      } else {
+         bug("neuter");
+         act("$n looks glassy-eyed.",FALSE,ch,0,0,TO_ROOM);
+      }
       break;
     case 3:
-      do_say(ch, "A nod's as good as a wink to a blind bat, eh?", 0);
-      act("$n nudges you.", FALSE, ch, 0, 0, TO_CHAR);
-      act("$n nudges $N.", FALSE, ch, 0, ch->master, TO_ROOM);
-      act("$n nudges you.", FALSE, ch, 0, 0, TO_CHAR);
-      act("$n nudges $N.", FALSE, ch, 0, ch->master, TO_ROOM);
+      bug("3");
+      if (ch->player.sex == SEX_MALE) {
+         bug("SEX_MALE");
+         do_say(ch, "A nod's as good as a wink to a blind bat, eh?", 0);
+         act("$n nudges you.", FALSE, ch, 0, 0, TO_CHAR);
+         act("$n nudges $N.", FALSE, ch, 0, ch->master, TO_ROOM);
+         act("$n nudges you.", FALSE, ch, 0, 0, TO_CHAR);
+         act("$n nudges $N.", FALSE, ch, 0, ch->master, TO_ROOM);
+      } else if (ch->player.sex == SEX_FEMALE) {
+         bug("SEX_FEMALE");
+         do_say(ch,"You're so strong and brave.",0);
+         act("$n asks you, 'If a dragon held me captive, would you save me?'" ,FALSE,ch,0,0,TO_CHAR);
+         act("$n asks $N, 'If a dragon held me captive, would you save me?'",FALSE,ch,0,ch->master,TO_ROOM);
+      } else {
+         bug("neuter");
+         act("$n grumbles something about incompetent mud builders...",FALSE,
+           ch,0,0,TO_ROOM);
+      }
       break;
     case 4:
-      do_say(ch, "You're WICKED, eh!  WICKED!", 0);
-      act("$n winks at you.", FALSE, ch, 0, 0, TO_CHAR);
-      act("$n winks at you.", FALSE, ch, 0, 0, TO_CHAR);
-      act("$n winks at $N.", FALSE, ch, 0, ch->master, TO_ROOM);
-      act("$n winks at $N.", FALSE, ch, 0, ch->master, TO_ROOM);
+      bug("4");
+      if (ch->player.sex == SEX_MALE) {
+         bug("SEX_MALE");
+         do_say(ch, "You're WICKED, eh!  WICKED!", 0);
+         act("$n winks at you.", FALSE, ch, 0, 0, TO_CHAR);
+         act("$n winks at you.", FALSE, ch, 0, 0, TO_CHAR);
+         act("$n winks at $N.", FALSE, ch, 0, ch->master, TO_ROOM);
+         act("$n winks at $N.", FALSE, ch, 0, ch->master, TO_ROOM);
+      } else if (ch->player.sex == SEX_FEMALE) {
+         bug("SEX_FEMALE");
+         act("$n blows you a kiss.",FALSE,ch,0,0,TO_CHAR);
+         act("$n blows $N a kiss.",FALSE,ch,0,ch->master,TO_ROOM);
+         act("$n giggles and winks at you.",FALSE,ch,0,0,TO_CHAR);
+         act("$n giggles and winks at $N.",FALSE,ch,0,ch->master,TO_ROOM);
+      } else {
+         bug("neuter");
+         act("$n looks bewildered.",FALSE,ch,0,0,TO_ROOM);
+      }
       break;
     case 5:
-      do_say(ch, "Wink. Wink.", 0);
+      bug("5");
+      if(ch->player.sex == SEX_MALE) {
+         bug("SEX_MALE");
+         do_say(ch, "Wink. Wink.", 0);
+      } else if (ch->player.sex == SEX_FEMALE) {
+         bug("SEX_FEMALE");
+         act("$n says, '$N, I love you!'",FALSE,ch,0,0,TO_CHAR);
+         act("$n says to $N, '$N, I love you!'",FALSE,ch,0,ch->master,TO_ROOM);
+      } else {
+         bug("neuter");
+      }
       break;
     case 6:
-      do_say(ch, "Nudge. Nudge.", 0);
+      bug("6");
+      if (ch->player.sex == SEX_MALE) {
+         bug("SEX_MALE");
+         do_say(ch, "Nudge. Nudge.", 0);
+      } else if (ch->player.sex == SEX_FEMALE) {
+         bug("SEX_FEMALE");
+         act("$n kisses you passionately.",FALSE,ch,0,0,TO_CHAR);
+         act("$n kisses $N passionately.",FALSE,ch,0,ch->master,TO_ROOM);
+      } else {
+         bug("neuter");
+      }
       break;
     case 7:
     case 8:
     case 9:
     case 10:
+      bug("7..10");
       ch->act_ptr = NN_STOP;
       break;
     default:
@@ -2571,11 +3062,24 @@ int NudgeNudge(struct char_data *ch, int cmd, char *arg)
     }
     break;
   case NN_STOP:
+    bug("NN_STOP");
     /*
      * **  Stop following
      */
-    do_say(ch, "Evening, Squire", 0);
-    stop_follower(ch);
+    if (ch->player.sex == SEX_MALE) {
+       bug("SEX_MALE");
+       do_say(ch, "Evening, Squire", 0);
+       stop_follower(ch);
+    } else if (ch->player.sex == SEX_FEMALE) {
+       bug("SEX_FEMALE");
+       do_say(ch,"Whenever you're in town again, look me up!",0);
+       act("$n blows you a kiss.",FALSE,ch,0,0,TO_CHAR);
+       act("$n blows $N a kiss.",FALSE,ch,0,ch->master,TO_CHAR);
+       stop_follower(ch);
+    } else {
+       bug("neuter");
+       stop_follower(ch);
+    }
     ch->act_ptr = NN_LOOSE;
     break;
   default:
@@ -3516,7 +4020,7 @@ int zombie_master(struct char_data *ch, int cmd, char *arg)
 	for (ext = real_roomp(ch->in_room)->ex_description; ext && !found; ext = ext->next)
 	  if (str_cmp(GET_NAME(ch), ext->keyword) == 0) {
 	    found = 1;
-	    send_to_char("Okay, found your name in the anals.\n\r", ch);
+	    send_to_char("Okay, found your name in the annals.\n\r", ch);
 	  }
 	if (!found) {
 	  if (strncmp(GET_NAME(ch), real_roomp(ch->in_room)->name, strlen(GET_NAME(ch)))) {
@@ -3727,7 +4231,11 @@ int zombie_master(struct char_data *ch, int cmd, char *arg)
 	  arg++;
 	if (!strncmp("me", arg, 2)) {
 	  SET_BIT(ch->specials.new_act, NEW_PLR_KILLOK);
-          cprintf(ch, "You have been registered to kill and be killed by other players\n\r");
+          if (IS_SET(ch->specials.new_act, NEW_PLR_TELEPORT))
+            REMOVE_BIT(ch->specials.new_act, NEW_PLR_TELEPORT);
+          if (IS_SET(ch->specials.new_act, NEW_PLR_SUMMON))
+            REMOVE_BIT(ch->specials.new_act, NEW_PLR_SUMMON);
+          cprintf(ch, "You have registered to kill other players in the name of Dread Lord Quixadhal!\n\r");
 	} else {
           cprintf(ch,
 "Registering your character as a player killer is a permenant thing, and\n\r"
@@ -3758,6 +4266,15 @@ int zombie_master(struct char_data *ch, int cmd, char *arg)
 
       for (vict = real_roomp(ch->in_room)->people;
            vict; vict = vict->next_in_room) {
+        if(!IS_IMMORTAL(vict)) {
+          if (IsUndead(vict)) {
+	    act("$n points at $N and bellows, 'BEGONE Abomination! Flee back to Dread Quixadhal, your dark master!'",
+                TRUE, ch, 0, vict, TO_ROOM);
+            say_spell(ch, SPELL_TURN);
+            cast_turn(40, ch, "", SPELL_TYPE_SPELL, vict, 0);
+            return TRUE;
+          }
+        }
         if ((GET_POS(vict) != POSITION_FIGHTING) &&
             (GET_POS(vict) != POSITION_SLEEPING) &&
             !IS_IMMORTAL(vict)) {
@@ -3803,6 +4320,33 @@ int zombie_master(struct char_data *ch, int cmd, char *arg)
 	        continue;
               }
             }
+	  } else if (IS_AFFECTED(vict, AFF_BLIND)) {
+            if (GET_ALIGNMENT(vict) >= 750) {
+	      act("$n says, You seem to be blind $N, let me cure you.",
+                  TRUE, ch, 0, vict, TO_ROOM);
+              is_evil= FALSE;
+              which_spell= SPELL_CURE_BLIND;
+	      break;
+	    } else {
+	        act("$n says, You are not good enough $N, I shall let you suffer.",
+                    FALSE, ch, 0, vict, TO_CHAR);
+	        act("$n says, You are not good enough $N, I shall let you suffer.",
+                    TRUE, ch, 0, vict, TO_ROOM);
+	        continue;
+            }
+	  } else if (IS_AFFECTED(vict, AFF_POISON)) {
+            if ((GET_ALIGNMENT(vict) >= 750) ||
+		((GET_ALIGNMENT(vict) >=300) && (GetMaxLevel(vict) <3))) {
+	      act("$n says, You seem to be sick $N, let me cure you.",
+                  TRUE, ch, 0, vict, TO_ROOM);
+              is_evil= FALSE;
+              which_spell= SPELL_REMOVE_POISON;
+	      break;
+              } else {
+	        act("$n says, You are not good enough $N, I shall let you suffer.",
+                    TRUE, ch, 0, vict, TO_ROOM);
+	        continue;
+              }
           } else if (IS_VILE(vict) && (GetMaxLevel(vict) > 4)) {
 	    act("$n screams, BEGONE foul $N, I shall not suffer your presence!",
                 TRUE, ch, 0, vict, TO_ROOM);
@@ -3849,6 +4393,14 @@ int zombie_master(struct char_data *ch, int cmd, char *arg)
         case SPELL_REFRESH:
           say_spell(ch, SPELL_REFRESH);
           cast_refresh(20, ch, "", SPELL_TYPE_SPELL, vict, 0);
+          break;
+        case SPELL_CURE_BLIND:
+          say_spell(ch, SPELL_CURE_BLIND);
+          cast_cure_blind(20, ch, "", SPELL_TYPE_SPELL, vict, 0);
+          break;
+        case SPELL_REMOVE_POISON:
+          say_spell(ch, SPELL_REMOVE_POISON);
+          cast_remove_poison(20, ch, "", SPELL_TYPE_SPELL, vict, 0);
           break;
       }
       GET_MANA(ch) -= 5;
@@ -3981,7 +4533,7 @@ int zombie_master(struct char_data *ch, int cmd, char *arg)
 	if (!*arg) {
 	  sprintf(buf, "You have got %d practice sessions left.\n\r", ch->specials.spells_to_learn);
 	  send_to_char(buf, ch);
-	  send_to_char("You can practise any of these skills:\n\r", ch);
+	  send_to_char("You can practice any of these skills:\n\r", ch);
 	  for (i = 0; r_skills[i].skill_name[0] != '\n'; i++) {
 	    send_to_char(r_skills[i].skill_name, ch);
 	    send_to_char(how_good(ch->skills[r_skills[i].skill_numb].learned), ch);
@@ -4004,7 +4556,7 @@ int zombie_master(struct char_data *ch, int cmd, char *arg)
 	number = search_block(arg, rl_skills, FALSE);
 	number2 = search_block(arg, rl_spells, FALSE);
 	if ((number == -1) && (number2 == -1)) {
-	  send_to_char("You do not have ability to practise this skill!\n\r", ch);
+	  send_to_char("You do not have ability to practice this skill!\n\r", ch);
 	  return (TRUE);
 	}
 	if (ch->specials.spells_to_learn <= 0) {
@@ -4125,7 +4677,7 @@ int zombie_master(struct char_data *ch, int cmd, char *arg)
       if (!*arg) {
 	sprintf(buf, "You have got %d practice sessions left.\n\r", ch->specials.spells_to_learn);
 	send_to_char(buf, ch);
-	send_to_char("You can practise any of these skills:\n\r", ch);
+	send_to_char("You can practice any of these skills:\n\r", ch);
 	for (i = 0; r_skills[i].skill_name[0] != '\n'; i++) {
 	  if (r_skills[i].skill_lvl <= GetMaxLevel(ch) || IS_IMMORTAL(ch)) {
 	    if ((IS_SET(ch->player.class, r_skills[i].skill_class) &&
@@ -4142,7 +4694,7 @@ int zombie_master(struct char_data *ch, int cmd, char *arg)
 	number = search_block(arg, rl_skills, FALSE);
 
 	if ((number == -1)) {
-	  send_to_char("You do not have ability to practise this skill!\n\r", ch);
+	  send_to_char("You do not have ability to practice this skill!\n\r", ch);
 	  return (TRUE);
 	}
 	if (ch->specials.spells_to_learn <= 0) {
@@ -4375,175 +4927,23 @@ int BerserkerAxe(struct char_data *ch, int cmd, char *arg)
      * Assignments
      */
 
-    /* assign special procedures to mobiles */
-    void assign_mobiles(void)
-    {
-    #if 0
-      int cityguard(struct char_data *ch, int cmd, char *arg);
-      int Inquisitor(struct char_data *ch, int cmd, char *arg);
-      int temple_labrynth_liar(struct char_data *ch, int cmd, char *arg);
-      int AbyssGateKeeper(struct char_data *ch, int cmd, char *arg);
-      int temple_labrynth_sentry(struct char_data *ch, int cmd, char *arg);
-      int NudgeNudge(struct char_data *ch, int cmd, char *arg);
-      int RustMonster(struct char_data *ch, int cmd, char *arg);
-      int PaladinGuildGuard(struct char_data *ch, int cmd, char *arg);
-      int tormentor(struct char_data *ch, int cmd, char *arg);
-      int receptionist(struct char_data *ch, int cmd, char *arg);
-      int Ned_Nutsmith(struct char_data *ch, int cmd, char *arg);
-      int MageGuildMaster(struct char_data *ch, int cmd, char *arg);
-      int ThiefGuildMaster(struct char_data *ch, int cmd, char *arg);
-      int ClericGuildMaster(struct char_data *ch, int cmd, char *arg);
-      int FighterGuildMaster(struct char_data *ch, int cmd, char *arg);
-      int RangerGuildMaster(struct char_data *ch, int cmd, char *arg);
-      int GenericGuildMaster(struct char_data *ch, int cmd, char *arg);
-      int guild_guard(struct char_data *ch, int cmd, char *arg);
-      int puff(struct char_data *ch, int cmd, char *arg);
-      int fido(struct char_data *ch, int cmd, char *arg);
-      int janitor(struct char_data *ch, int cmd, char *arg);
-      int janitor_eats(struct char_data *ch, int cmd, char *arg);
-      int mayor(struct char_data *ch, int cmd, char *arg);
-      int eric_johnson(struct char_data *ch, int cmd, char *arg);
-      int andy_wilcox(struct char_data *ch, int cmd, char *arg);
-      int zombie_master(struct char_data *ch, int cmd, char *arg);
-  int snake(struct char_data *ch, int cmd, char *arg);
-  int thief(struct char_data *ch, int cmd, char *arg);
-  int magic_user(struct char_data *ch, int cmd, char *arg);
-  int cleric(struct char_data *ch, int cmd, char *arg);
-  int ghoul(struct char_data *ch, int cmd, char *arg);
-  int vampire(struct char_data *ch, int cmd, char *arg);
-  int wraith(struct char_data *ch, int cmd, char *arg);
-  int shadow(struct char_data *ch, int cmd, char *arg);
-  int geyser(struct char_data *ch, int cmd, char *arg);
-
-  int green_slime(struct char_data *ch, int cmd, char *arg);
-  int BreathWeapon(struct char_data *ch, int cmd, char *arg);
-  int DracoLich(struct char_data *ch, int cmd, char *arg);
-  int Drow(struct char_data *ch, int cmd, char *arg);
-  int Leader(struct char_data *ch, int cmd, char *arg);
-  int citizen(struct char_data *ch, int cmd, char *arg);
-  int ninja_master(struct char_data *ch, int cmd, char *arg);
-  int WizardGuard(struct char_data *ch, int cmd, char *arg);
-  int AbbarachDragon(struct char_data *ch, int cmd, char *arg);
-  int Tytan(struct char_data *ch, int cmd, char *arg);
-  int replicant(struct char_data *ch, int cmd, char *arg);
-  int regenerator(struct char_data *ch, int cmd, char *arg);
-  int blink(struct char_data *ch, int cmd, char *arg);
-  int RepairGuy(struct char_data *ch, int cmd, char *arg);
-  int Ringwraith(struct char_data *ch, int cmd, char *arg);
-  int sisyphus(struct char_data *ch, int cmd, char *arg);
-  int jabberwocky(struct char_data *ch, int cmd, char *arg);
-  int flame(struct char_data *ch, int cmd, char *arg);
-  int banana(struct char_data *ch, int cmd, char *arg);
-  int paramedics(struct char_data *ch, int cmd, char *arg);
-  int jugglernaut(struct char_data *ch, int cmd, char *arg);
-  int delivery_elf(struct char_data *ch, int cmd, char *arg);
-  int delivery_beast(struct char_data *ch, int cmd, char *arg);
-  int Keftab(struct char_data *ch, int cmd, char *arg);
-  int StormGiant(struct char_data *ch, int cmd, char *arg);
-  int Kraken(struct char_data *ch, int cmd, char *arg);
-  int Manticore(struct char_data *ch, int cmd, char *arg);
-  int Fighter(struct char_data *ch, int cmd, char *arg);
-  int AGGRESSIVE(struct char_data *ch, int cmd, char *arg);
-  int eli_priest(struct char_data *ch, int cmd, char *arg);
-  int firenewt(struct char_data *ch, int cmd, char *arg);
-
-#endif
-
-  static struct special_proc_entry specials_o[] =
-  {
-    {1, puff},
-    {3, RepairGuy},
-    {666, zombie_master},
-    {667, mosquito},
-    {1201, magic_user},
-    {1204, eli_priest},
-    {1206, RangerGuildMaster},
-    {1208, RangerGuildMaster},
-    {1601, RangerGuildMaster},
-    {3005, receptionist},
-    {3006, NudgeNudge},
-    {3008, fido},
-    {3012, cleric},
-    {3013, magic_user},
-    {3017, cleric},
-    {3020, MageGuildMaster},
-    {3021, ClericGuildMaster},
-    {3022, ThiefGuildMaster},
-    {3023, FighterGuildMaster},
-    {3024, replicant},
-    {3043, Ned_Nutsmith},
-    {4006, replicant},
-    {4622, magic_user},
-    {4623, magic_user},
-    {4706, wraith},
-    {5016, cityguard},
-    {5017, cityguard},
-    {5027, MageGuildMaster},
-    {5030, BreathWeapon},
-    {5031, ThiefGuildMaster},
-    {5032, FighterGuildMaster},
-    {5033, ClericGuildMaster},
-    {5034, receptionist},
-    {5052, cityguard},
-    {5068, cityguard},
-    {5069, cityguard},
-    {5078, cleric},
-    {5079, magic_user},
-    {5080, cityguard},
-    {5090, cityguard},
-    {5091, cityguard},
-    {5436, MageGuildMaster},
-    {5437, ClericGuildMaster},
-    {5438, FighterGuildMaster},
-    {5439, ThiefGuildMaster},
-    {5440, RangerGuildMaster},
-    {6107, FighterGuildMaster},
-    {6108, ThiefGuildMaster},
-    {6109, MageGuildMaster},
-    {6110, ClericGuildMaster},
-    {6111, magic_user},
-    {6132, janitor_eats},
-    {6201, cleric},
-    {6209, magic_user},
-    {6408, cleric},
-    {6525, FighterGuildMaster},
-    {6526, ClericGuildMaster},
-    {6527, ThiefGuildMaster},
-    {6528, MageGuildMaster},
-    {6529, RangerGuildMaster},
-    {6910, magic_user},
-    {9000, shadow},
-    {9002, ghoul},
-    {9004, wraith},
-    {9005, wraith},
-    {10003, cleric},
-    {10018, receptionist},
-    {15004, FighterGuildMaster},
-    {15013, RepairGuy},
-    {15018, ClericGuildMaster},
-    {15019, ClericGuildMaster},
-    {15020, RangerGuildMaster},
-    {15021, ClericGuildMaster},
-    {15029, MageGuildMaster},
-    {15036, ThiefGuildMaster},
-    {15052, FighterGuildMaster},
-    {15053, ClericGuildMaster},
-    {15054, GenericGuildMaster},
-    {20016, cleric},
-    {-1, NULL},
-  };
-
+/* assign special procedures to mobiles */
+void assign_mobiles(void)
+{
   int i, rnum;
   char buf[MAX_STRING_LENGTH];
 
-  for (i = 0; specials_o[i].vnum >= 0; i++) {
-    rnum = real_mobile(specials_o[i].vnum);
+  for (i = 0; specials_m[i].vnum >= 0; i++) {
+    rnum = real_mobile(specials_m[i].vnum);
     if (rnum < 0) {
       sprintf(buf, "mobile_assign: Mobile %d not found in database.",
-	      specials_o[i].vnum);
+	      specials_m[i].vnum);
       log(buf);
     } else {
-      mob_index[rnum].func = specials_o[i].proc;
+      mob_index[rnum].func = specials_m[i].proc;
+/*      sprintf(buf, "mobile_assign: Mobile %d assigned function %d.",
+              specials_m[i].vnum,specials_m[i].proc);
+      log(buf); */
     }
   }
 
@@ -4554,28 +4954,6 @@ int BerserkerAxe(struct char_data *ch, int cmd, char *arg)
 /* assign special procedures to objects */
 void assign_objects(void)
 {
-#if 0
-  int board(struct char_data *ch, int cmd, char *arg);
-  int fountain(struct char_data *ch, int cmd, char *arg);
-
-/*
- * obj_index[real_object(3098)].func = board;
- * obj_index[real_object(3099)].func = board;
- * obj_index[real_object(3)].func = fountain;
- * obj_index[real_object(3005)].func = fountain;
- * obj_index[real_object(5099)].func = board;
- */
-#endif
-  static struct special_proc_entry specials_o[] =
-  {
-    {3, fountain},		       /* fountain that gives water */
-    {3005, fountain},		       /* barrel of water */
-    {3098, board},		       /* wizard bboard */
-    {3099, board},		       /* bboard in Shylar */
-    {5099, board},		       /* bboard in Highstaff */
-    {4734, BerserkerAxe},              /* druegar axe of insanity */
-    {-1, NULL},
-  };
   int i, onum;
 
   for (i = 0; specials_o[i].vnum >= 0; i++) {
@@ -4592,30 +4970,6 @@ void assign_objects(void)
 /* assign special procedures to rooms */
 void assign_rooms(void)
 {
-#if 0
-  int chalice(struct char_data *ch, int cmd, char *arg);
-  int dump(struct char_data *ch, int cmd, char *arg);
-  int mail_room(struct char_data *ch, int cmd, char *arg);
-  int kings_hall(struct char_data *ch, int cmd, char *arg);
-  int pet_shops(struct char_data *ch, int cmd, char *arg);
-  int pray_for_items(struct char_data *ch, int cmd, char *arg);
-  int bank(struct char_data *ch, int cmd, char *arg);
-  int House(struct char_data *ch, int cmd, char *arg);
-
-#endif
-
-  static struct special_proc_entry specials_r[] =
-  {
-    {1014, House},		       /* Muidnar's Coffin */
-    {1020, House},		       /* Quixadhal's Fire */
-    {1021, House},                     /* Dirk's Abode */
-    {1024, House},                     /* Highlander's Bar */
-    {3035, pet_shops},		       /* Griffith's Abode - Shylar */
-    {5029, bank},		       /* Highstaff Depository */
-    {5182, pet_shops},		       /* Companion's Place - Highstaff */
-    {-1, NULL},
-  };
-
   int i;
   struct room_data *rp;
 
@@ -4626,4 +4980,28 @@ void assign_rooms(void)
     } else
       rp->funct = specials_r[i].proc;
   }
+}
+
+char *name_special_proc(int type, int vnum)
+{
+  int i;
+  struct special_proc_entry *spec;
+
+  switch(type) {
+    case SPECIAL_MOB:
+      spec= specials_m;
+      break;
+    case SPECIAL_OBJ:
+      spec= specials_o;
+      break;
+    case SPECIAL_ROOM:
+      spec= specials_r;
+      break;
+    default:
+      return "UNKNOWN";
+  }
+  for (i= 0; spec[i].vnum >= 0; i++)
+    if(spec[i].vnum == i)
+      return spec[i].name;
+  return "UNKNOWN";
 }

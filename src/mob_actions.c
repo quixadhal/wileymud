@@ -46,6 +46,10 @@ void mobile_wander(struct char_data *ch)
   struct room_direction_data *exitp;
   struct room_data *rp;
 
+
+  if ((!(IS_AFFECTED(ch,AFF_CHARM))) && (ch->master))
+	stop_follower(ch);
+
   if (RIDDEN(ch)) {
     if (RIDDEN(ch)->specials.fighting)
       return;
@@ -87,7 +91,7 @@ void MobHunt(struct char_data *ch)
 	if (ch->specials.hunting->in_room == ch->in_room) {
 	  if (Hates(ch, ch->specials.hunting) &&
 	      (!IS_AFFECTED(ch->specials.hunting, AFF_HIDE))) {
-	    if (check_peaceful(ch, "You'd CAN'T fight here!\n\r")) {
+	    if (check_peaceful(ch, "You CAN'T fight here!\n\r")) {
 	      act("$n fumes at $N", TRUE, ch, 0, ch->specials.hunting, TO_ROOM);
 	    } else {
 	      if (IsHumanoid(ch)) {

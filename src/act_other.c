@@ -769,23 +769,29 @@ void do_group(struct char_data *ch, char *argument, int cmd)
 
     if (found) {
       if (IS_AFFECTED(victim, AFF_GROUP)) {
-	act("$n has been kicked out of $N's group!", FALSE, victim, 0, ch, TO_ROOM);
-	act("You are no longer a member of $N's group!", FALSE, victim, 0, ch, TO_CHAR);
+        if(victim != ch) {
+	  act("$n has been kicked out of $N's group!", FALSE, victim, 0, ch, TO_ROOM);
+	  act("You are no longer a member of $N's group!", FALSE, victim, 0, ch, TO_CHAR);
+        } else {
+	  act("You are no longer a group leader!", FALSE, victim, 0, ch, TO_CHAR);
+        }
 	REMOVE_BIT(victim->specials.affected_by, AFF_GROUP);
       } else {
 	if ((victlvl= GetMaxLevel(victim)) >= LOW_IMMORTAL) {
 	  act("You really don't want $n in your group.", FALSE, victim, 0, 0, TO_CHAR);
 	  return;
 	}
-	if ((chlvl= GetMaxLevel(ch)) >= LOW_IMMORTAL) {
-	  act("Now now.  That would be CHEATING!", FALSE, ch, 0, 0, TO_CHAR);
-	  return;
-
-	}
-        if(IS_PC(victim)) {
+/*
+ *	if ((chlvl= GetMaxLevel(ch)) >= LOW_IMMORTAL) {
+ *	  act("Now now.  That would be CHEATING!", FALSE, ch, 0, 0, TO_CHAR);
+ *	  return;
+ *	}
+ */
+        chlvl= GetMaxLevel(ch);
+        if(IS_PC(victim) && victim != ch) {
           int toolow, toohigh;
           /* newbies can mix with each other */
-          toolow= (chlvl <= 4)? 0: MAX(5, chlvl/2);
+          toolow= (chlvl <= 4)? 0: MAX(3, chlvl/2);
           /* but newbies and adults don't mix */
           toohigh= (chlvl <= 4)? 5: (chlvl+ chlvl/2);
           if (victlvl <= toolow) {
@@ -798,19 +804,24 @@ void do_group(struct char_data *ch, char *argument, int cmd)
             return;
           }
           if ( victlvl >= toohigh) {
-            act("$N whines like a child for group membership!",
+            act("You WISH $N would deign to join your group!",
                 FALSE, ch, 0, victim, TO_CHAR);
-            act("$N pats you on the head and tells you to go play with the chickens.",
+            act("$N BEGS you to help $M go kill the chickens.",
                 FALSE, victim, 0, ch, TO_CHAR);
-            act("$n grovels and begs $N for group membership.",
+            act("$N grovels and begs $n to join $S group.",
 	        FALSE, victim, 0, ch, TO_ROOM);
             return;
           }
         }
-	act("$n is now a member of $N's group.",
-	    FALSE, victim, 0, ch, TO_ROOM);
-	act("You are now a member of $N's group.",
-	    FALSE, victim, 0, ch, TO_CHAR);
+        if(victim != ch ) {
+	  act("$n joins the glorious cause of $N's group.",
+  	      FALSE, victim, 0, ch, TO_ROOM);
+  	  act("You are now a member of $N's group.",
+	      FALSE, victim, 0, ch, TO_CHAR);
+        } else {
+	  act("You are now your own group leader.",
+	      FALSE, victim, 0, ch, TO_CHAR);
+        }
 	SET_BIT(victim->specials.affected_by, AFF_GROUP);
       }
     } else {
@@ -1072,6 +1083,10 @@ do_plr_nosummon(struct char_data *ch, char *argument, int cmd)
   if (IS_NPC(ch))
     return;
 
+  if(IS_SET(ch->specials.new_act, NEW_PLR_KILLOK)) {
+    send_to_char("Sorry, registered servants of the Dread Lord cannot hide!\n\r", ch);
+    return;
+  }
   if (IS_SET(ch->specials.new_act, NEW_PLR_SUMMON)) {
     send_to_char("You can now be summoned.\n\r", ch);
     REMOVE_BIT(ch->specials.new_act, NEW_PLR_SUMMON);
@@ -1089,6 +1104,10 @@ do_plr_noteleport(struct char_data *ch, char *argument, int cmd)
   if (IS_NPC(ch))
     return;
 
+  if(IS_SET(ch->specials.new_act, NEW_PLR_KILLOK)) {
+    send_to_char("Sorry, registered servants of the Dread Lord cannot cower!\n\r", ch);
+    return;
+  }
   if (IS_SET(ch->specials.new_act, NEW_PLR_TELEPORT)) {
     send_to_char("You can now be teleported.\n\r", ch);
     REMOVE_BIT(ch->specials.new_act, NEW_PLR_TELEPORT);

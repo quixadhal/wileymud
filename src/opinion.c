@@ -158,6 +158,11 @@ int AddHatred(struct char_data *ch, int parm_type, int parm)
       SET_BIT(ch->hatefield, HATE_VNUM);
     ch->hates.vnum = parm;
     break;
+  case OP_GOLD:
+    if (!IS_SET(ch->hatefield, HATE_RICH))
+      SET_BIT(ch->hatefield, HATE_RICH);
+    ch->hates.gold = parm;
+    break;
   }
   if (!IS_SET(ch->specials.act, ACT_HATEFUL)) {
     SET_BIT(ch->specials.act, ACT_HATEFUL);

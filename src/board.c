@@ -10,6 +10,7 @@
 #include "utils.h"
 #include "comm.h"
 #include "db.h"
+#include "interpreter.h"
 #define _BOARD_C
 #include "board.h"
 
@@ -22,9 +23,7 @@ void InitBoards()
 
   if (DEBUG)
     dlog("InitBoards");
-  /*
-   **  this is called at the very beginning, like shopkeepers
-   */
+  /* this is called at the very beginning, like shopkeepers */
   board_list = 0;
 
 }
@@ -129,27 +128,32 @@ int board(struct char_data *ch, int cmd, char *arg)
     return (FALSE);
 
   switch (cmd) {
-  case 1:
-  case 2:
-  case 3:
-  case 4:
-  case 5:
-  case 6:
+  case CMD_north:
+  case CMD_east:
+  case CMD_south:
+  case CMD_west:
+  case CMD_up:
+  case CMD_down:
+  case CMD_who:
+  case CMD_tell:
+  case CMD_exits:
+  case CMD_goto:
     return FALSE;
     break;
-  case 15:			       /* look */
-    board_show_board(ch, arg, nb);
+  case CMD_look:			       /* look */
+    if(!board_show_board(ch, arg, nb)) /* no args, or failed */
+      do_look(ch, "", 0);
     return TRUE;
     break;
-  case 149:			       /* write */
+  case CMD_write:			       /* write */
     board_write_msg(ch, arg, nb);
     return TRUE;
     break;
-  case 63:			       /* read */
+  case CMD_read:			       /* read */
     board_display_msg(ch, arg, nb);
     return TRUE;
     break;
-  case 66:			       /* remove */
+  case CMD_remove:			       /* remove */
     board_remove_msg(ch, arg, nb);
     return TRUE;
     break;

@@ -23,6 +23,7 @@
 #include "constants.h"
 #include "spells.h"
 #include "spell_parser.h"
+#include "reception.h"
 
 #include "myerrors.h"
 #define _DB_C
@@ -145,6 +146,29 @@ void boot_db(void)
   file_to_string(SUICIDE_DONE_FILE, suicide_done);
   log("- Loading banned name list");
   file_to_prompt(BANNED_NAME_FILE, banned_names);
+  log("- Loading rent mode");
+  if(!(pfd= fopen(RENTCOST_FILE, "r"))) {
+    log("Default rent cost of 1.0 used.");
+    if(!(pfd= fopen(RENTCOST_FILE, "w"))) {
+      log("Cannot save rent cost!");
+    } else {
+      fprintf(pfd, "%lf\n", 1.0);
+      fclose(pfd);
+    }
+  } else {
+    double it;
+    if(fscanf(pfd, " %lf ", &it) != 1) {
+      log("Invalid rent cost.");
+      if(!(pfd= fopen(RENTCOST_FILE, "w"))) {
+        log("Cannot save rent cost!");
+      } else {
+        fprintf(pfd, "%lf\n", 1.0);
+        fclose(pfd);
+      }
+    }
+    RENT_RATE= it;
+    fclose(pfd);
+  }
   log("- Loading player list");
   if(!(pfd= fopen(PLAYER_FILE, "r"))) {
     log("Cannot load accumulated player data\n\r");
@@ -205,12 +229,6 @@ void boot_db(void)
   obj_index = generate_indices(obj_f, &top_of_objt);
   log("- Renumbering zones");
   renum_zone_table();
-
-#if 0
-  log("Generating player index.");
-  build_player_index();
-#endif
-
   if (!no_specials) {
     log("- Assigining mobile functions");
     assign_mobiles();
@@ -229,53 +247,6 @@ void boot_db(void)
   reset_q.head = reset_q.tail = 0;
   log("Boot db -- DONE.");
 }
-
-#if 0
-/* generate index table for the player file */
-void build_player_index(void)
-{
-  int nr = -1, i;
-  struct char_file_u dummy;
-  FILE *fl;
-
-  if (!(fl = fopen(PLAYER_FILE, "rb+"))) {
-    perror("build player index");
-    exit(0);
-  }
-  for (; !feof(fl);) {
-    fread(&dummy, sizeof(struct char_file_u), 1, fl);
-
-    if (!feof(fl)) {		       /* new record */
-      /* Create new entry in the list */
-      if (nr == -1) {
-	CREATE(player_table,
-	       struct player_index_element, 1);
-
-	nr = 0;
-      } else {
-	if (!(player_table = (struct player_index_element *)
-	      realloc(player_table, (++nr + 1) *
-		      sizeof(struct player_index_element)))) {
-	  perror("generate index");
-	  exit(0);
-	}
-      }
-
-      player_table[nr].nr = nr;
-
-      CREATE(player_table[nr].name, char,
-	     strlen(dummy.name) + 1);
-
-      for (i = 0; *(player_table[nr].name + i) =
-	   LOWER(*(dummy.name + i)); i++);
-    }
-  }
-
-  fclose(fl);
-  top_of_p_table = nr;
-  top_of_p_file = top_of_p_table;
-}
-#endif
 
 /* generate index table for object or monster file */
 struct index_data *generate_indices(FILE * fl, int *top)
@@ -471,7 +442,8 @@ void boot_world(void)
     exit(0);
   }
   while (1 == fscanf(fl, " #%d\n", &virtual_nr)) {
-    fprintf(stderr, "Loading Room [#%d]\r", virtual_nr);
+    if(!(virtual_nr%10))
+      fprintf(stderr, "Loading Room [#%d]\r", virtual_nr);
     allocate_room(virtual_nr);
     rp = real_roomp(virtual_nr);
     bzero(rp, sizeof(*rp));
@@ -1536,11 +1508,6 @@ int create_entry(char *name)
 {
   int i;
 
-#if 0
-  fprintf(stderr, "PLAYER TABLE = %d\n", top_of_p_table);
-  fprintf(stderr, "NAME = %s\n", name);
-#endif
-
   if (top_of_p_table == -1 || player_table == NULL) {
     CREATE(player_table, struct player_index_element, 1);
 
@@ -2002,7 +1969,7 @@ void init_char(struct char_data *ch)
 
   /* *** if this is our first player --- he be God *** */
 
-  if (!strcmp(GET_NAME(ch), "Quixadhal")) {
+  if (!strcmp(GET_NAME(ch), "Dirk")) {
     GET_EXP(ch) = 24000000;
     GET_LEVEL(ch, 0) = LOKI;
     GET_LEVEL(ch, 1) = LOKI;

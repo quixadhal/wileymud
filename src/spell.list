@@ -1,0 +1,40 @@
+Delay	Mana	Name				Levels (m c w t r d)
+-----	-----	-------------------------------	-- -- -- -- -- --
+24	15	Acid Blast			7
+12	15	Aid				   10
+24	15	Animate Dead			10 7
+12	5	Armour				4  1
+12	33	Astral Walk			21 18
+12	5	Bless				   1
+24	5	Blindness			8  6
+24	30	Burning Hands			5
+24	50	Cacaodemon			30 30
+36	15	Call Lightning			   15
+24	15	Calm				4  2
+18	11	Cause Critical			   9
+12	8	Cause Light			   1
+12	9	Cause Serious			30 7
+18	5	Charm Monster			8  8
+12	5	Charm Person			12 12
+12	15	Chill Touch			3
+48	51	Clone				25 48
+24	15	Colour Spray			11
+24	15	Cone of Cold			11
+24	30	Conjure Elemental		16 14
+36	25	Control Weather			10 13
+24	10	Continual Light			3  4
+12	5	Create Food			   3
+12	5	Create Water			   2
+12	5	Cure Blindness			   4
+12	11	Cure Critical			   9
+12	5	Cure Light			   1
+12	9	Cure Serious			30 7
+24	20	Curse				12 12
+12	5	Detect Evil			   1
+12	5	Detect Invisible		2  5
+12	5	Detect Magic			1  3
+12	5	Detect Poison			   2
+24	100	Dispel Evil			   12
+36	15	Dispel Good			   12
+12	15	Dispel Magic			6  6
+24	15	Earthquake			   8

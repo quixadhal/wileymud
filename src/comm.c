@@ -511,8 +511,10 @@ int game_loop(int s)
     }
     if ((--pulse_update) <= 0) {
       pulse_update= PULSE_UPDATE + number(0, PULSE_VARIABLE);
-      iprintf("\n\r** Next Tick in %1.2lf seconds! **\n\r",
-              pulse_update/(double)PULSE_PER_SECOND);
+/*
+ *    iprintf("\n\r** Next Tick in %1.2lf seconds! **\n\r",
+ *            pulse_update/(double)PULSE_PER_SECOND);
+ */
       weather_and_time(1);
       affect_update();
       point_update(pulse);
@@ -650,6 +652,7 @@ int init_socket(int port)
   char hostname[MAX_HOSTNAME + 1];
   struct sockaddr_in sa;
   struct hostent *hp;
+  int i, gotsocket;
 
 #ifdef sun3			       /* linux don't have linger structs yet */
   struct linger ld;
@@ -684,12 +687,22 @@ int init_socket(int port)
   }
 #endif
 
+  for(i= 60; i> 0; i--) {
 #ifdef sun3
-  if (bind(s, &sa, sizeof(sa), 0) < 0)
+    if (bind(s, &sa, sizeof(sa), 0) < 0)
 #else
-  if (bind(s, (struct sockaddr *)&sa, sizeof(sa)) < 0)
+    if (bind(s, (struct sockaddr *)&sa, sizeof(sa)) < 0)
 #endif
-  {
+    {
+      gotsocket= 0;
+      fprintf(stderr, "Socket in use... retrying...\n");
+      sleep(1);
+    } else {
+      gotsocket= 1;
+      break;
+    }
+  }
+  if(!gotsocket) {
     perror("bind");
     close(s);
     exit(1);
@@ -743,7 +756,9 @@ int new_descriptor(int s)
 {
   struct sockaddr_in isa, ident;
   struct hostent *host;
-  int i, t;
+  int i, t, temp,temp2;
+  long *temp4;
+
   int fd, len, remote_port;
   long remote_addr;
   FILE *ifp, *ofp;
@@ -890,9 +905,22 @@ int new_descriptor(int s)
     strcpy(newd->username, "user");
 
   if(!(host= gethostbyaddr((char *)&remote_addr, sizeof(remote_addr), AF_INET)))
-    sprintf(newd->host, "%d.%d.%d.%d",
-            (int)((char *)remote_addr)[0], (int)((char *)remote_addr)[1],
-            (int)((char *)remote_addr)[2], (int)((char *)remote_addr)[3]);
+
+    sprintf(newd->host, "%u.%u.%u.%u",
+            (int)(((char *)&remote_addr)[0])&255, (int)(((char *)&remote_addr)[1])&255,
+            (int)(((char *)&remote_addr)[2])&255, (int)(((char *)&remote_addr)[3])&255);
+/*   {
+	temp4=&remote_addr;
+	for(temp=0;temp <4;temp++)
+	{
+		temp2=atoi((char)remote_addr);
+		sprintf(newd->host, "%d",temp2);
+		if (temp<3)
+			sprintf(newd->host,".");
+		temp4++;
+	}
+   }
+*/
   else
     strncpy(newd->host, host->h_name, 49);
 

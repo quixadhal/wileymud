@@ -69,7 +69,7 @@ const char *percent_tired[] =
 const char *spell_wear_off_msg[] =
 {
   "RESERVED DB.C",
-  "You feel less proctected.",
+  "You feel less protected.",
   "!Teleport!",
   "You feel less righteous.",
   "You feel a cloak of blindness disolve.",
@@ -177,7 +177,7 @@ const char *spell_wear_off_msg[] =
 const char *spell_wear_off_soon_msg[] =
 {
   "RESERVED DB.C",
-  "You begin to feel less proctected.",
+  "You begin to feel less protected.",
   "!Teleport!",
   "You begin to feel less righteous.",
   "You begin to see shades of gray.",
