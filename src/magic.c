@@ -2646,6 +2646,7 @@ void spell_meteor_swarm(BYTE level, struct char_data *ch, struct char_data *vict
   assert(victim && ch);
   assert((level >= 1) && (level <= ABS_MAX_LVL));
 
+#ifdef OLD_WILEY
   if (!CheckKill(ch, victim))
     return;
 
@@ -2673,6 +2674,12 @@ void spell_meteor_swarm(BYTE level, struct char_data *ch, struct char_data *vict
     dam >>= 1;
 
   damage(ch, victim, dam, SPELL_METEOR_SWARM);
+#else
+  dam = dice((level/2), 6)+ level;
+  cprintf(ch, "You draw the symbols of fire and death in the air before you...\n\rWith a Word, you send it into your foes!!\n\r");
+  act("$n sends intense balls of fire swirling all around the room!\n\r", FALSE, ch, 0, 0, TO_ROOM);
+  AreaEffectSpell(ch, dam, SPELL_METEOR_SWARM, 1, "You feel a searing blast skim right by you!\n\r");
+#endif
 }
 
 void spell_Create_Monster(BYTE level, struct char_data *ch, struct char_data *victim, struct obj_data *obj)

@@ -17,7 +17,7 @@
 
 const char *class_name[] =
 {
-  "mage", "cleric", "warrior", "thief", "ranger", "druid"
+  "mage", "cleric", "warrior", "thief", "ranger", "druid", NULL
 };
 
 const char *exp_needed_text[] =

@@ -23,12 +23,12 @@
                spell_info[nr].beats = (beat);            \
                spell_info[nr].minimum_position = (pos);  \
                spell_info[nr].min_usesmana = (mana);     \
-               spell_info[nr].min_level_magic = (mlev);  \
-               spell_info[nr].min_level_cleric = (clev); \
-               spell_info[nr].min_level_warrior = (wlev); \
-               spell_info[nr].min_level_thief = (tlev); \
-               spell_info[nr].min_level_ranger = (rlev); \
-               spell_info[nr].min_level_druid = (dlev); \
+               spell_info[nr].min_level[MAGE_LEVEL_IND] = (mlev);  \
+               spell_info[nr].min_level[CLERIC_LEVEL_IND] = (clev); \
+               spell_info[nr].min_level[WARRIOR_LEVEL_IND] = (wlev); \
+               spell_info[nr].min_level[THIEF_LEVEL_IND] = (tlev); \
+               spell_info[nr].min_level[RANGER_LEVEL_IND] = (rlev); \
+               spell_info[nr].min_level[DRUID_LEVEL_IND] = (dlev); \
         }
 
 /* 100 is the MAX_MANA for a character */

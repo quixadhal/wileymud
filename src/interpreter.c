@@ -954,11 +954,18 @@ void nanny(struct descriptor_data *d, char *arg)
     }
     strcpy(d->usr_name, tmp_name);
 /*  GET_NAME(d->character) = (char *)strdup(d->usr_name); */
-    if (load_char(d->usr_name, &tmp_store) > -1) {
+    if (fread_char(d->usr_name, &tmp_store) > -1) {
       /* if (GetPlayerFile(d->usr_name, d->character)) */
       store_to_char(&tmp_store, d->character);
       strcpy(d->pwd, tmp_store.pwd);
       log("%s@%s loaded.", d->usr_name, d->host);
+      dprintf(d, "\n\r%sWHAT is your Password? ", echo_off);
+      STATE(d) = CON_GET_PASSWORD;
+    } else if (load_char(d->usr_name, &tmp_store) > -1) {
+      /* if (GetPlayerFile(d->usr_name, d->character)) */
+      store_to_char(&tmp_store, d->character);
+      strcpy(d->pwd, tmp_store.pwd);
+      log("%s@%s loaded from old playerfile.", d->usr_name, d->host);
       dprintf(d, "\n\r%sWHAT is your Password? ", echo_off);
       STATE(d) = CON_GET_PASSWORD;
     } else {
@@ -1315,6 +1322,9 @@ void nanny(struct descriptor_data *d, char *arg)
       rename(old, bkp);
       sprintf(old, "ply/%c/%s.o", name[0], name);
       sprintf(bkp, "ply/%c/%s.o-dead", name[0], name);
+      rename(old, bkp);
+      sprintf(old, "ply/%c/%s.chr", name[0], name);
+      sprintf(bkp, "ply/%c/%s.chr-dead", name[0], name);
       rename(old, bkp);
       for(i= 0; i< number_of_players; i++) {
         if(list_of_players[i])

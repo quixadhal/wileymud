@@ -18,9 +18,10 @@ GNUINC = /usr/lib/gcc-lib/i486-linux/2.6.3/include
 #BUGFLAGS = -DDEBUG_FILE
 #WARN = -Wall -Wstrict-prototypes -Wmissing-prototypes
 WARN = -w
-#DEBUG = -g
-OPT = -O3 -fomit-frame-pointer -fstrength-reduce -fexpensive-optimizations -funroll-loops -m486
-STRIP = -s
+DEBUG = -g
+OPT = -O3 -fstrength-reduce -fexpensive-optimizations -funroll-loops -m486
+#OPT = -O3 -fomit-frame-pointer -fstrength-reduce -fexpensive-optimizations -funroll-loops -m486
+#STRIP = -s
 #INCDIR = -I../inc
 
 #CFLAGS = -g -Dsun3 -m68020 -fstrength-reduce -fvolatile 

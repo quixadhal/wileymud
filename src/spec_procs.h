@@ -141,7 +141,7 @@ int cityguard(struct char_data *ch, int cmd, char *arg);
 
 #if 1
 #define ZM_MANA	10
-#define ZM_NEMESIS 3060
+#define ZM_NEMESIS 1204
 int WarrenGuard(struct char_data *ch, int cmd, char *arg);
 int zm_tired(struct char_data *zmaster);
 int zm_stunned_followers(struct char_data *zmaster);

@@ -187,3 +187,15 @@ global.h:1144: warning: function declaration isn't a prototype
 	spellcasting.  rangers seem to have been hacked into casting, instead
 	of changing spell_info_type as should have been done... we'll have
 	to change that later to accomodate druids and future classes.
+950737
+  1720	Hacked in ascii restore files... not fully working yet.
+	also redid who a bit to include start time.
+950728
+  1000	Got ascii save routines to work finally.  Tweaks to axe code and
+	who routines.  bug fixes for do_invis and a couple others.. minor.
+	The save routines are the biggies... we can now edit player files
+	with vi directly.  object save files should be next.
+950729
+  0700	Hopefully have Xenthia coded to disperse most of her army to Shylar
+	when she gets 50 of them!  This will be cool if it works.
+	Fixed a couple more little things.

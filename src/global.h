@@ -54,6 +54,7 @@ typedef long long LONG;
 
 #define MAX_CONDITIONS	6
 #define MAX_NUMBER_OF_CLASSES 12
+#define ABS_MAX_CLASS 6
 
 #define MAGE_LEVEL_IND    0
 #define CLERIC_LEVEL_IND  1
@@ -214,6 +215,7 @@ typedef struct {
 #define WAIT_ROUND     4
 
 #define MAX_STRING_LENGTH   8192
+#define NORMAL_BUFFER_SIZE   512
 #define MAX_INPUT_LENGTH     160
 #define MAX_MESSAGES          60
 #define MAX_ITEMS            153

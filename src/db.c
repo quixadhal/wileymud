@@ -1403,6 +1403,9 @@ void char_to_store(struct char_data *ch, struct char_file_u *st)
   struct affected_type *af;
   struct obj_data *char_eq[MAX_WEAR];
 
+/* zero the structure.. hope this doesn't break things */
+  bzero(st, sizeof(struct char_file_u));
+
   /* Unaffect everything a character can be affected by */
 
   for (i = 0; i < MAX_WEAR; i++) {
@@ -1480,6 +1483,19 @@ void char_to_store(struct char_data *ch, struct char_file_u *st)
     strcpy(st->description, ch->player.description);
   else
     *st->description = '\0';
+
+  if (ch->desc)
+    if (ch->desc->host)
+      if (ch->desc->username) {
+        char ackpfft[256];
+        sprintf(ackpfft, "%s@%s", ch->desc->username, ch->desc->host);
+        strncpy(st->last_connect_site, ackpfft, 48);
+      } else
+        strncpy(st->last_connect_site, ch->desc->host, 48);
+    else
+      strcpy(st->last_connect_site, "unknown");
+  else
+    strcpy(st->last_connect_site, "unknown");
 
   for (i = 0; i <= MAX_TOUNGE - 1; i++)
     st->talks[i] = ch->player.talks[i];
@@ -1576,7 +1592,7 @@ void save_char(struct char_data *ch, SHORT load_room)
   }
   fwrite(&st, sizeof(struct char_file_u), 1, fl);
   fclose(fl);
-  sprintf(buf, "ply/%c/%s.txt", name[0], name);
+  sprintf(buf, "ply/%c/%s.chr", name[0], name);
   new_save_char(&st, buf);
 }
 
@@ -1632,86 +1648,85 @@ struct char_file_u {
     exit(1);
   }
   fprintf(fp, "#PLAYER\n");
-  fprintf(fp, "Name                %s~\n", ch->name);
-/*
-  fprintf(fp, "Passwd              %s~\n", ch->pwd);
-*/
-  fprintf(fp, "Whizz               %d\n", ch->points.wiz_priv);
-  fprintf(fp, "PreTitle            %s~\n", ch->pre_title);
-  fprintf(fp, "Title               %s~\n", ch->title);
+  fprintf(fp, "Name               %s~\n", ch->name);
+  fprintf(fp, "Password           %s~\n", ch->pwd);
+  fprintf(fp, "Whizz              %d\n", ch->points.wiz_priv);
+  fprintf(fp, "PreTitle           %s~\n", ch->pre_title);
+  fprintf(fp, "Title              %s~\n", ch->title);
   fprintf(fp, "Description\n%s~\n", fix_string(ch->description));
-  fprintf(fp, "LastSite            %s~\n", ch->last_connect_site);
-  fprintf(fp, "LastLogin           %ld\n", (long)ch->last_logon);
-  fprintf(fp, "Birth               %ld\n", (long)ch->birth);
-  fprintf(fp, "Played              %d\n", ch->played);
-  fprintf(fp, "Sex                 %d\n", (int)ch->sex);
-  fprintf(fp, "Race                %d\n", ch->race);
-  fprintf(fp, "Class               %d\n", (int)ch->class);
-  fprintf(fp, "Alignment           %d\n", ch->alignment);
-  fprintf(fp, "Exp                 %ld\n", (long)(ch->points.exp));
-  fprintf(fp, "Levels              %d %d %d %d %d %d\n",
-          (int)(ch->level[0]), (int)(ch->level[1]), (int)(ch->level[2]),
-          (int)(ch->level[3]), (int)(ch->level[4]), (int)(ch->level[5]));
-  fprintf(fp, "HeightWeight        %d %d\n",
+  fprintf(fp, "LastSite           %s~\n", ch->last_connect_site);
+  fprintf(fp, "LastLogin          %ld\n", (long)ch->last_logon);
+  fprintf(fp, "Birth              %ld\n", (long)ch->birth);
+  fprintf(fp, "Played             %d\n", ch->played);
+  fprintf(fp, "Sex                %d\n", (int)ch->sex);
+  fprintf(fp, "Race               %d\n", ch->race);
+  fprintf(fp, "Class              %d\n", (int)ch->class);
+  fprintf(fp, "Alignment          %d\n", ch->alignment);
+  fprintf(fp, "Exp                %ld\n", (long)(ch->points.exp));
+  for(i= 0; i< ABS_MAX_CLASS; i++)
+    if(ch->level[i])
+      fprintf(fp, "Level              %s %d\n", class_name[i],
+              (int)(ch->level[i]));
+  fprintf(fp, "HeightWeight       %d %d\n",
           (int)ch->height, (int)ch->weight);
-  fprintf(fp, "Gold                %d %d\n",
+  fprintf(fp, "Gold               %d %d\n",
           (int)(ch->points.gold), (int)(ch->points.bankgold));
-  fprintf(fp, "HomeTown            %d\n", ch->hometown);
-  fprintf(fp, "LoadRoom            %d\n", ch->load_room);
-  fprintf(fp, "PoofIn              %s~\n", ch->poof_in);
-  fprintf(fp, "PoofOut             %s~\n", ch->poof_out);
-  fprintf(fp, "AbilityScores       %d %d %d %d %d %d\n",
+  fprintf(fp, "HomeTown           %d\n", ch->hometown);
+  fprintf(fp, "LoadRoom           %d\n", ch->load_room);
+  fprintf(fp, "PoofIn             %s~\n", ch->poof_in);
+  fprintf(fp, "PoofOut            %s~\n", ch->poof_out);
+  fprintf(fp, "AbilityScores      %d %d %d %d %d %d\n",
           (int)(ch->abilities.str), (int)(ch->abilities.str_add),
           (int)(ch->abilities.dex), (int)(ch->abilities.con),
           (int)(ch->abilities.intel), (int)(ch->abilities.wis));
-  fprintf(fp, "AbilityPad          %d %d %d %d\n",
+  fprintf(fp, "AbilityPad         %d %d %d %d\n",
           (int)(ch->abilities.d1), (int)(ch->abilities.d2),
           (int)(ch->abilities.d3), (int)(ch->abilities.d4));
-  fprintf(fp, "HpManaMove          %d %d %d %d %d %d\n",
+  fprintf(fp, "HpManaMove         %d %d %d %d %d %d\n",
           (int)(ch->points.hit), (int)(ch->points.max_hit),
           (int)(ch->points.mana), (int)(ch->points.max_mana),
           (int)(ch->points.move), (int)(ch->points.max_move));
-  fprintf(fp, "AC                  %d\n", (int)(ch->points.armor));
-  fprintf(fp, "ToHitDamage         %d %d\n",
+  fprintf(fp, "AC                 %d\n", (int)(ch->points.armor));
+  fprintf(fp, "ToHitDamage        %d %d\n",
           (int)(ch->points.hitroll), (int)(ch->points.damroll));
-  fprintf(fp, "SaveApply           %d %d %d %d %d\n",
+  fprintf(fp, "SaveApply          %d %d %d %d %d\n",
           (int)(ch->apply_saving_throw[0]), (int)(ch->apply_saving_throw[1]),
           (int)(ch->apply_saving_throw[2]), (int)(ch->apply_saving_throw[3]),
           (int)(ch->apply_saving_throw[4]));
-  fprintf(fp, "Conditions          %d %d %d %d %d %d\n",
+  fprintf(fp, "Conditions         %d %d %d %d %d %d\n",
           (int)(ch->conditions[0]), (int)(ch->conditions[1]),
           (int)(ch->conditions[2]), (int)(ch->conditions[3]),
           (int)(ch->conditions[4]), (int)(ch->conditions[5]));
-  fprintf(fp, "PointsPad1          %d %d %d\n",
+  fprintf(fp, "PointsPad1         %d %d %d\n",
           (int)(ch->points.blah1), (int)(ch->points.blah2),
           (int)(ch->points.blah3));
-  fprintf(fp, "PointsPad2          %d %d %d %d\n",
+  fprintf(fp, "PointsPad2         %d %d %d %d\n",
           (int)(ch->points.i1), (int)(ch->points.i2),
           (int)(ch->points.i3), (int)(ch->points.i4));
-  fprintf(fp, "PointsPad3          %d %d %d\n",
+  fprintf(fp, "PointsPad3         %d %d %d\n",
           (int)(ch->points.s1), (int)(ch->points.s2),
           (int)(ch->points.s3));
-  fprintf(fp, "ShortSavePad        %d %d %d %d\n",
+  fprintf(fp, "ShortSavePad       %d %d %d %d\n",
           (int)(ch->sh_save_blah1), (int)(ch->sh_save_blah2),
           (int)(ch->sh_save_blah3), (int)(ch->sh_save_blah4));
-  fprintf(fp, "SavePad             %d %d %d %d\n",
+  fprintf(fp, "SavePad            %d %d %d %d\n",
           ch->save_blah1, ch->save_blah2,
           ch->save_blah3, ch->save_blah4);
-  fprintf(fp, "SpellsToLearn       %d\n", ch->spells_to_learn);
-  fprintf(fp, "SkillsToLearn       %d\n", ch->skills_to_learn);
+  fprintf(fp, "SpellsToLearn      %d\n", ch->spells_to_learn);
+  fprintf(fp, "SkillsToLearn      %d\n", ch->skills_to_learn);
   for(i= 0; i< MAX_SKILLS; i++)
-    fprintf(fp, "Skill               %d %d %d\n", i,
-            (int)(ch->skills[i].learned), (int)(ch->skills[i].recognise));
-  fprintf(fp, "ActFlags            %d %d\n", (int)(ch->act), ch->new_act);
+    fprintf(fp, "Skill              %d %d %d \"%s\"\n", i,
+            (int)(ch->skills[i].learned), (int)(ch->skills[i].recognise),
+            (i?spells[i-1]:"none"));
+  fprintf(fp, "ActFlags           %d %d\n", (int)(ch->act), ch->new_act);
   for(i= 0; i< MAX_AFFECT; i++)
-    fprintf(fp, "Affect              %d %d %d %d %d %d %ld %lx\n", i,
+    fprintf(fp, "Affect             %d %d %d %d %d %ld %lu\n", i,
             (int)(ch->affected[i].type),
             (int)(ch->affected[i].duration),
             (int)(ch->affected[i].modifier),
             (int)(ch->affected[i].location),
             ch->affected[i].bitvector,
             (unsigned long)(ch->affected[i].next));
-
   fprintf(fp, "End\n");
   fclose(fp);
 }
@@ -1727,55 +1742,6 @@ int compare(struct player_index_element *arg1, struct player_index_element *arg2
 /*
  * procs of a (more or less) general utility nature
  */
-
-/* read and allocate space for a '~'-terminated string from a given file */
-char *fread_string(FILE * fl)
-{
-  char buf[MAX_STRING_LENGTH], tmp[500];
-  char *rslt;
-  register char *point;
-  int flag;
-
-  if (DEBUG)
-    dlog("fread_string");
-  bzero(buf, sizeof(buf));
-
-  do {
-    if (!fgets(tmp, MAX_STRING_LENGTH, fl)) {
-      perror("fread_str");
-      log("File read error.");
-      return ("Empty");
-    }
-    if (strlen(tmp) + strlen(buf) + 1 > MAX_STRING_LENGTH) {
-      log("fread_string: string too large (db.c)");
-      exit(0);
-    } else
-      strcat(buf, tmp);
-
-    for (point = buf + strlen(buf) - 2; point >= buf && isspace(*point);
-	 point--);
-    if (flag = (*point == '~'))
-      if (*(buf + strlen(buf) - 3) == '\n') {
-	*(buf + strlen(buf) - 2) = '\r';
-	*(buf + strlen(buf) - 1) = '\0';
-      } else
-	*(buf + strlen(buf) - 2) = '\0';
-    else {
-      *(buf + strlen(buf) + 1) = '\0';
-      *(buf + strlen(buf)) = '\r';
-    }
-  } while (!flag);
-
-  /* do the allocate boogie  */
-
-  if (strlen(buf) > 0) {
-    CREATE(rslt, char, strlen(buf) + 1);
-
-    strcpy(rslt, buf);
-  } else
-    rslt = 0;
-  return (rslt);
-}
 
 /* release memory allocated for a char struct */
 void free_char(struct char_data *ch)
@@ -2789,3 +2755,458 @@ char *fix_string(const char *str)
   strfix[i] = '\0';
   return strfix;
 }
+
+/*
+ * read and allocate space for a '~'-terminated string from a given file
+ * modified to skip leading tabs.... provides for a compatible interface
+ * for reading ascii save files (unless you are weird enough to use tabs
+ * in your descriptions?)
+ */
+char *fread_string(FILE * fl)
+{
+  char buf[MAX_STRING_LENGTH], tmp[NORMAL_BUFFER_SIZE];
+  char *ack;
+  char *rslt;
+  register char *point;
+  int flag;
+
+  if (DEBUG)
+    dlog("fread_string");
+  bzero(buf, sizeof(buf));
+
+  do {
+    if (!fgets(tmp, MAX_STRING_LENGTH, fl)) {
+      perror("fread_str");
+      bug("File read error.");
+      return ("Empty");
+    }
+    ack= tmp;
+    if (strlen(ack) + strlen(buf) + 1 > MAX_STRING_LENGTH) {
+      ack[MAX_STRING_LENGTH- strlen(buf)- 2]= '\0';
+      log("fread_string: string too long, truncating!\n%s\n", buf);
+    }
+    strcat(buf, ack);
+
+    for (point = buf + strlen(buf) - 2; point >= buf && isspace(*point);
+	 point--);
+    if (flag = (*point == '~'))
+      if (*(buf + strlen(buf) - 3) == '\n') {
+	*(buf + strlen(buf) - 2) = '\r';
+	*(buf + strlen(buf) - 1) = '\0';
+      } else
+	*(buf + strlen(buf) - 2) = '\0';
+    else {
+      *(buf + strlen(buf) + 1) = '\0';
+      *(buf + strlen(buf)) = '\r';
+    }
+  } while (!flag);
+
+  /* do the allocate boogie  */
+
+  if (strlen(buf) > 0) {
+    CREATE(rslt, char, strlen(buf) + 1);
+    strcpy(rslt, buf);
+  } else
+    rslt = 0;
+  return (rslt);
+}
+
+/*
+ * Read one word (into static buffer).
+ */
+char *fread_word(FILE * fp)
+{
+  static char word[MAX_INPUT_LENGTH];
+  char *pword;
+  char cEnd;
+
+  do {
+    cEnd = getc(fp);
+  } while (isspace(cEnd));
+
+  if (cEnd == '\'' || cEnd == '"') {
+    pword = word;
+  } else {
+    word[0] = cEnd;
+    pword = word + 1;
+    cEnd = ' ';
+  }
+
+  for (; pword < word + MAX_INPUT_LENGTH; pword++) {
+    *pword = getc(fp);
+    if (cEnd == ' ' ? isspace(*pword) : *pword == cEnd) {
+      if (cEnd == ' ')
+	ungetc(*pword, fp);
+      *pword = '\0';
+      return word;
+    }
+  }
+  word[MAX_INPUT_LENGTH-1]= '\0';
+  bug("Fread_word: word too long.\n%s\n", word);
+  return word;
+}
+
+/*
+ * Read a number from a file.
+ */
+int fread_number(FILE * fp)
+{
+  int number;
+  UBYTE sign;
+  char c;
+
+  do {
+    c = getc(fp);
+  } while (isspace(c));
+
+  number = 0;
+
+  sign = FALSE;
+  if (c == '+') {
+    c = getc(fp);
+  } else if (c == '-') {
+    sign = TRUE;
+    c = getc(fp);
+  }
+  if (!isdigit(c)) {
+    bug("Fread_number: bad format.\nOffending char = '%c'\n", c);
+    exit(1);
+  }
+  while (isdigit(c)) {
+    number = number * 10 + c - '0';
+    c = getc(fp);
+  }
+
+  if (sign)
+    number = 0 - number;
+
+  if (c == '|')
+    number += fread_number(fp);
+  else if (c != ' ')
+    ungetc(c, fp);
+
+  return number;
+}
+
+
+/*
+ * Read to end of line (for comments).
+ */
+void fread_to_eol(FILE * fp)
+{
+  char c;
+
+  c = getc(fp);
+  while (c != '\n' && c != '\r')
+    c = getc(fp);
+  do {
+    c = getc(fp);
+  } while (c == '\n' || c == '\r');
+  ungetc(c, fp);
+}
+
+/*
+ * Read and allocate space for a string from a file.
+ */
+char *new_fread_string(FILE * fp)
+{
+  static char buf[MAX_STRING_LENGTH];
+  char *ack;
+  int flag;
+  char c;
+
+  bzero(buf, MAX_STRING_LENGTH);
+  ack = buf;
+  flag = 0;
+  do {
+    c = getc(fp);
+  } while (isspace(c));
+
+  if ((*ack++ = c) == '~')
+    return "";
+
+  for (;;) {
+    if (ack > &buf[MAX_STRING_LENGTH-1]) {
+      bug("new_fread_string: MAX_STRING %d exceeded, truncating.", MAX_STRING_LENGTH);
+      return buf;
+    }
+    switch (*ack = getc(fp)) {
+    default:
+      flag= 0;
+      ack++;
+      break;
+    case EOF:
+      bug("Fread_string: EOF");
+      return buf;
+    case '\r':
+      break;
+    case '~':
+      ack++;
+      flag= 1;
+      break;
+    case '\n':
+      if(flag) {
+        if(ack > buf) {
+          ack--;
+          *ack= '\0';
+        }
+        return buf;
+      } else {
+        flag= 0;
+        ack++;
+        *ack++ = '\r';
+      }
+      break;
+    }
+  }
+}
+
+int fread_char(char *name, struct char_file_u *ch)
+{
+  FILE *fp;
+  char tname[40];
+  char *t_ptr;
+  char buf[MAX_STRING_LENGTH];
+  char *word;
+  UBYTE fMatch;
+
+  strcpy(tname, name);
+  t_ptr = tname;
+  for (; *t_ptr != '\0'; t_ptr++)
+    *t_ptr = LOWER(*t_ptr);
+
+  sprintf(buf, "ply/%c/%s.chr", tname[0], tname);
+  if(!(fp= fopen(buf, "r")))
+    return (-1);
+
+  bzero(ch, sizeof(struct char_file_u));
+  for (;;) {
+    word = feof(fp) ? "End" : fread_word(fp);
+    fMatch = FALSE;
+
+    switch (toupper(word[0])) {
+    case '*':
+      fMatch = TRUE;
+      fread_to_eol(fp);
+      break;
+    case '#':
+      fMatch = TRUE;
+      fread_to_eol(fp);
+      break;
+
+    case 'A':
+      KEY("Alignment", ch->alignment, fread_number(fp));
+      KEY("AC", ch->points.armor, fread_number(fp));
+      if (!str_cmp(word, "AbilityScores")) {
+        ch->abilities.str= fread_number(fp);
+        ch->abilities.str_add= fread_number(fp);
+        ch->abilities.dex= fread_number(fp);
+        ch->abilities.con= fread_number(fp);
+        ch->abilities.intel= fread_number(fp);
+        ch->abilities.wis= fread_number(fp);
+	fMatch = TRUE;
+	break;
+      }
+      if (!str_cmp(word, "AbilityPad")) {
+        ch->abilities.d1= fread_number(fp);
+        ch->abilities.d2= fread_number(fp);
+        ch->abilities.d3= fread_number(fp);
+        ch->abilities.d4= fread_number(fp);
+	fMatch = TRUE;
+	break;
+      }
+      if (!str_cmp(word, "ActFlags")) {
+        ch->act= fread_number(fp);
+        ch->new_act= fread_number(fp);
+	fMatch = TRUE;
+	break;
+      }
+      if (!str_cmp(word, "Affect")) {
+        int x;
+
+        x= fread_number(fp);
+        ch->affected[x].type= fread_number(fp);
+        ch->affected[x].duration= fread_number(fp);
+        ch->affected[x].modifier= fread_number(fp);
+        ch->affected[x].location= fread_number(fp);
+        ch->affected[x].bitvector= fread_number(fp);
+        ch->affected[x].next= (unsigned long)fread_number(fp);
+	fMatch = TRUE;
+	break;
+      }
+      break;
+
+    case 'B':
+      KEY("Birth", ch->birth, fread_number(fp));
+      break;
+
+    case 'C':
+      KEY("Class", ch->class, fread_number(fp));
+      if (!str_cmp(word, "Conditions")) {
+        register int x;
+
+        for(x= 0; x< 6; x++)
+          ch->conditions[x]= fread_number(fp);
+	fMatch = TRUE;
+        break;
+      }
+      break;
+
+    case 'D':
+      CKEY("Description", ch->description, new_fread_string(fp));
+      break;
+
+    case 'E':
+      if (!str_cmp(word, "End"))
+	return 0;
+      KEY("Exp", ch->points.exp, fread_number(fp));
+      break;
+
+    case 'G':
+      if (!str_cmp(word, "Gold")) {
+        ch->points.gold= fread_number(fp);
+        ch->points.bankgold= fread_number(fp);
+	fMatch = TRUE;
+        break;
+      }
+      break;
+
+    case 'H':
+      KEY("HomeTown", ch->hometown, fread_number(fp));
+      if (!str_cmp(word, "HeightWeight")) {
+        ch->height= fread_number(fp);
+        ch->weight= fread_number(fp);
+	fMatch = TRUE;
+        break;
+      }
+      if (!str_cmp(word, "HpManaMove")) {
+	ch->points.hit = fread_number(fp);
+	ch->points.max_hit = fread_number(fp);
+	ch->points.mana = fread_number(fp);
+	ch->points.max_mana = fread_number(fp);
+	ch->points.move = fread_number(fp);
+	ch->points.max_move = fread_number(fp);
+	fMatch = TRUE;
+	break;
+      }
+      break;
+
+    case 'L':
+      CKEY("LastSite", ch->last_connect_site, new_fread_string(fp));
+      KEY("LastLogin", ch->last_logon, fread_number(fp));
+      KEY("LoadRoom", ch->load_room, fread_number(fp));
+      if(!str_cmp(word, "Level")) {
+        register int x;
+        char *cl;
+        cl= fread_word(fp);
+
+        for(x= 0; x< ABS_MAX_CLASS; x++)
+          if(!str_cmp(cl, class_name[x])) {
+            ch->level[x]= fread_number(fp);
+	    fMatch = TRUE;
+          }
+        break;
+      }
+      break;
+
+    case 'N':
+      CKEY("Name", ch->name, new_fread_string(fp));
+      break;
+
+    case 'P':
+      CKEY("Password", ch->pwd, new_fread_string(fp));
+      KEY("Played", ch->played, fread_number(fp));
+      CKEY("PreTitle", ch->pre_title, new_fread_string(fp));
+      CKEY("PoofIn", ch->poof_in, new_fread_string(fp));
+      CKEY("PoofOut", ch->poof_out, new_fread_string(fp));
+      if (!str_cmp(word, "PointsPad1")) {
+        ch->points.blah1= fread_number(fp);
+        ch->points.blah2= fread_number(fp);
+        ch->points.blah3= fread_number(fp);
+	fMatch = TRUE;
+	break;
+      }
+      if (!str_cmp(word, "PointsPad2")) {
+        ch->points.i1= fread_number(fp);
+        ch->points.i2= fread_number(fp);
+        ch->points.i3= fread_number(fp);
+        ch->points.i4= fread_number(fp);
+	fMatch = TRUE;
+	break;
+      }
+      if (!str_cmp(word, "PointsPad3")) {
+        ch->points.s1= fread_number(fp);
+        ch->points.s2= fread_number(fp);
+        ch->points.s3= fread_number(fp);
+	fMatch = TRUE;
+	break;
+      }
+      break;
+
+    case 'R':
+      KEY("Race", ch->race, fread_number(fp));
+      break;
+
+    case 'S':
+      KEY("Sex", ch->sex, fread_number(fp));
+      KEY("SpellsToLearn", ch->spells_to_learn, fread_number(fp));
+      KEY("SkillsToLearn", ch->skills_to_learn, fread_number(fp));
+      if (!str_cmp(word, "SaveApply")) {
+        register int x;
+
+        for(x= 0; x< 5; x++)
+          ch->apply_saving_throw[x]= fread_number(fp);
+	fMatch = TRUE;
+        break;
+      }
+      if (!str_cmp(word, "ShortSavePad")) {
+        ch->sh_save_blah1= fread_number(fp);
+        ch->sh_save_blah2= fread_number(fp);
+        ch->sh_save_blah3= fread_number(fp);
+        ch->sh_save_blah4= fread_number(fp);
+	fMatch = TRUE;
+	break;
+      }
+      if (!str_cmp(word, "SavePad")) {
+        ch->save_blah1= fread_number(fp);
+        ch->save_blah2= fread_number(fp);
+        ch->save_blah3= fread_number(fp);
+        ch->save_blah4= fread_number(fp);
+	fMatch = TRUE;
+	break;
+      }
+      if (!str_cmp(word, "Skill")) {
+	int sn;
+
+	sn = fread_number(fp);
+        ch->skills[sn].learned= fread_number(fp);
+        ch->skills[sn].recognise= fread_number(fp);
+        fread_to_eol(fp);
+	fMatch = TRUE;
+        break;
+      }
+      break;
+
+    case 'T':
+      CKEY("Title", ch->title, new_fread_string(fp));
+      if (!str_cmp(word, "ToHitDamage")) {
+        ch->points.hitroll= fread_number(fp);
+        ch->points.damroll= fread_number(fp);
+	fMatch = TRUE;
+        break;
+      }
+      break;
+
+    case 'W':
+      KEY("Whizz", ch->points.wiz_priv, fread_number(fp));
+      break;
+    }
+
+    if (!fMatch) {
+      bug("Fread_char: no match.");
+      if (!feof(fp))
+	fread_to_eol(fp);
+    }
+  }
+}
+

@@ -2727,7 +2727,7 @@ void do_invis(struct char_data *ch, char *argument, int cmd)
     if (level <= 0)
       level = 0;
     else {
-      if (level > GetMaxLevel(ch)) {
+      if (level >= GetMaxLevel(ch)) {
 	send_to_char("Sorry, you cant invis that high yet!\n\r", ch);
 	return;
       }

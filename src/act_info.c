@@ -1862,6 +1862,9 @@ void do_who(struct char_data *ch, char *argument, int cmd)
   struct char_data *person;
   long ttime;
   long thour, tmin, tsec;
+  long ct, ot;
+  char *tmstr, *otmstr;
+  extern long Uptime;
 
   if (DEBUG)
     dlog("do_who");
@@ -1870,8 +1873,11 @@ void do_who(struct char_data *ch, char *argument, int cmd)
  *   return;
  */
 
-  sprintf(buf + strlen(buf), "\n\r*** Active players on %s ***\n\r\n\r", MUDNAME);
-  send_to_char(buf, ch);
+/*
+ * sprintf(buf + strlen(buf), "\n\r*** Active players on %s ***\n\r\n\r", MUDNAME);
+ * send_to_char(buf, ch);
+ */
+  cprintf(ch, "%s\n\r", VERSION_STR);
 
   count = 0;
   for (d = descriptor_list; d; d = d->next) {
@@ -1936,7 +1942,16 @@ void do_who(struct char_data *ch, char *argument, int cmd)
     strcat(buf, "\n\r");
     send_to_char(buf, ch);
   }
-  sprintf(buf, "\n\rTotal players on %s: %d\n\r", MUDNAME, count);
+  sprintf(buf, "\n\rTotal visible players on %s: %d\n\r", MUDNAME, count);
+  ot = Uptime;
+  otmstr = asctime(localtime(&ot));
+  *(otmstr + strlen(otmstr) - 1) = '\0';
+  sprintf(buf + strlen(buf), START_TIME, otmstr);
+
+  ct = time(0);
+  tmstr = asctime(localtime(&ct));
+  *(tmstr + strlen(tmstr) - 1) = '\0';
+  sprintf(buf + strlen(buf), GAME_TIME, tmstr);
   send_to_char(buf, ch);
 }
 
@@ -2383,12 +2398,17 @@ void do_spells(struct char_data *ch, char *argument, int cmd)
   if (IS_NPC(ch))
     return;
   *buf = 0;
+  sprintf(buf, "Spell Name                Mana  Ma Cl Wa Th Ra Dr\n\r");
   for (i = 1; i <= MAX_EXIST_SPELL; i++) {
-    sprintf(buf + strlen(buf), "[%2d] %-20s  Mana: %3d, Cl: %2d, Mu: %2d\n\r",
+    sprintf(buf + strlen(buf), "[%3d] %-20s  %4d, %2d %2d %2d %2d %2d %2d\n\r",
 	    i, spells[i - 1],
 	    spell_info[i].min_usesmana,
-	    spell_info[i].min_level_cleric,
-	    spell_info[i].min_level_magic);
+	    spell_info[i].min_level[MAGE_LEVEL_IND],
+	    spell_info[i].min_level[CLERIC_LEVEL_IND],
+	    spell_info[i].min_level[WARRIOR_LEVEL_IND],
+	    spell_info[i].min_level[THIEF_LEVEL_IND],
+	    spell_info[i].min_level[RANGER_LEVEL_IND],
+	    spell_info[i].min_level[DRUID_LEVEL_IND]);
   }
   strcat(buf, "\n\r");
   page_string(ch->desc, buf, 1);

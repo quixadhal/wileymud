@@ -419,8 +419,10 @@ void raw_kill(struct char_data *ch)
    * give them some food and water so they don't whine.
    */
 
-  GET_COND(ch, THIRST) = 20;
-  GET_COND(ch, FULL) = 20;
+  if(IS_MORTAL(ch)) {
+    GET_COND(ch, THIRST) = 20;
+    GET_COND(ch, FULL) = 20;
+  }
 
   /*
    *   return them from POLY -t morph
@@ -430,25 +432,31 @@ void raw_kill(struct char_data *ch)
     make_corpse(ch);
     extract_char(ch);
   } else {
-/*
- *  send_to_char("\nYou have DIED!, but are sent HOME instead.\n",ch);
- *  sprintf(buf,"%s disappears in a flash of light!\n",GET_NAME(ch));
- */
-    send_to_char("\nYou have DIED!, your spirit flees in terror!\n\r", ch);
-    sprintf(buf, "The spirit of %s flashes away!\n\rA dead body hits the ground and begins to rot.\n\r", GET_NAME(ch));
-    send_to_room(buf, ch->in_room);
-    make_corpse(ch);
-    zero_rent(ch);
-    char_from_room(ch);
-    char_to_room(ch, GET_HOME(ch));
-    GET_HIT(ch) = 1;
-    GET_POS(ch) = POSITION_SLEEPING;
-    save_char(ch, NOWHERE);
-/*
- *  sprintf(buf,"%s appears in a flash of light!\n\r",GET_NAME(ch));
- */
-    sprintf(buf, "A terrified %s appears in a flash of light!\n\r", GET_NAME(ch));
-    send_to_room(buf, ch->in_room);
+    if(IS_IMMORTAL(ch)) {
+      cprintf(ch, "\nYou have been FORCED from this plane!\n\r");
+      sprintf(buf, "The Immortal %s dissolves and fades from sight!\n\rA dead body hits the ground and begins to rot.\n\r", GET_NAME(ch));
+      send_to_room(buf, ch->in_room);
+      make_corpse(ch);
+      zero_rent(ch);
+      char_from_room(ch);
+      char_to_room(ch, 0);
+      GET_HIT(ch) = GET_MAX_HIT(ch);
+      GET_POS(ch) = POSITION_STANDING;
+      save_char(ch, NOWHERE);
+    } else {
+      send_to_char("\nYou have DIED!, your spirit flees in terror!\n\r", ch);
+      sprintf(buf, "The spirit of %s flashes away!\n\rA dead body hits the ground and begins to rot.\n\r", GET_NAME(ch));
+      send_to_room(buf, ch->in_room);
+      make_corpse(ch);
+      zero_rent(ch);
+      char_from_room(ch);
+      char_to_room(ch, GET_HOME(ch));
+      GET_HIT(ch) = 1;
+      GET_POS(ch) = POSITION_SLEEPING;
+      save_char(ch, NOWHERE);
+      sprintf(buf, "A terrified %s appears in a flash of light!\n\r", GET_NAME(ch));
+      send_to_room(buf, ch->in_room);
+    }
   }
 }
 

@@ -170,6 +170,7 @@ int MageGuildMaster(struct char_data *ch, int cmd, char *arg)
 {
   int number, i, percent;
   char buf[MAX_INPUT_LENGTH];
+  char pagebuf[16384];
   struct char_data *guildmaster;
 
   if ((cmd != 164) && (cmd != 170) && (cmd != 243))
@@ -192,35 +193,33 @@ int MageGuildMaster(struct char_data *ch, int cmd, char *arg)
     for (; isspace(*arg); arg++);
 
     if (!*arg) {
-      sprintf(buf, "You have got %d practice sessions left.\n\r",
+      sprintf(pagebuf, "You have got %d practice sessions left.\n\r",
 	      ch->specials.spells_to_learn);
-      send_to_char(buf, ch);
-      send_to_char("You can practise any of these spells:\n\r", ch);
+      sprintf(pagebuf + strlen(pagebuf), "You can practise any of these spells:\n\r");
       for (i = 0; *spells[i] != '\n'; i++)
 	if (spell_info[i + 1].spell_pointer &&
-	    (spell_info[i + 1].min_level_magic <=
+	    (spell_info[i + 1].min_level[MAGE_LEVEL_IND] <=
 	     GET_LEVEL(ch, MAGE_LEVEL_IND)) &&
-	    (spell_info[i + 1].min_level_magic <=
+	    (spell_info[i + 1].min_level[MAGE_LEVEL_IND] <=
 	     GetMaxLevel(guildmaster) - 10)) {
 
-	  sprintf(buf, "[%d] %s %s \n\r",
-		  spell_info[i + 1].min_level_magic,
+	  sprintf(pagebuf + strlen(pagebuf), "[%d] %s %s \n\r",
+		  spell_info[i + 1].min_level[MAGE_LEVEL_IND],
 		  spells[i], how_good(ch->skills[i + 1].learned));
-	  send_to_char(buf, ch);
 	}
+      page_string(ch->desc, pagebuf, 1);
       return (TRUE);
-
     }
     number = old_search_block(arg, 0, strlen(arg), spells, FALSE);
     if (number == -1) {
       send_to_char("You do not know of this spell...\n\r", ch);
       return (TRUE);
     }
-    if (GET_LEVEL(ch, MAGE_LEVEL_IND) < spell_info[number].min_level_magic) {
+    if (GET_LEVEL(ch, MAGE_LEVEL_IND) < spell_info[number].min_level[MAGE_LEVEL_IND]) {
       send_to_char("You do not know of this spell...\n\r", ch);
       return (TRUE);
     }
-    if (GetMaxLevel(guildmaster) - 10 < spell_info[number].min_level_magic) {
+    if (GetMaxLevel(guildmaster) - 10 < spell_info[number].min_level[MAGE_LEVEL_IND]) {
       do_say(guildmaster, "I don't know of this spell.", 0);
       return (TRUE);
     }
@@ -254,6 +253,7 @@ int ClericGuildMaster(struct char_data *ch, int cmd, char *arg)
 {
   int number, i, percent;
   char buf[MAX_INPUT_LENGTH];
+  char pagebuf[16384];
   struct char_data *guildmaster;
 
   if ((cmd != 164) && (cmd != 170) && (cmd != 243))
@@ -276,21 +276,20 @@ int ClericGuildMaster(struct char_data *ch, int cmd, char *arg)
     for (; isspace(*arg); arg++);
 
     if (!*arg) {
-      sprintf(buf, "You have got %d practice sessions left.\n\r",
+      sprintf(pagebuf, "You have got %d practice sessions left.\n\r",
 	      ch->specials.spells_to_learn);
-      send_to_char(buf, ch);
-      send_to_char("You can practise any of these spells:\n\r", ch);
+      sprintf(pagebuf + strlen(pagebuf), "You can practise any of these spells:\n\r");
       for (i = 0; *spells[i] != '\n'; i++)
 	if (spell_info[i + 1].spell_pointer &&
-	    (spell_info[i + 1].min_level_cleric <=
+	    (spell_info[i + 1].min_level[CLERIC_LEVEL_IND] <=
 	     GET_LEVEL(ch, CLERIC_LEVEL_IND)) &&
-	    (spell_info[i + 1].min_level_cleric <=
+	    (spell_info[i + 1].min_level[CLERIC_LEVEL_IND] <=
 	     GetMaxLevel(guildmaster) - 10)) {
-	  sprintf(buf, "[%d] %s %s \n\r",
-		  spell_info[i + 1].min_level_cleric, spells[i],
+	  sprintf(pagebuf + strlen(pagebuf), "[%d] %s %s \n\r",
+		  spell_info[i + 1].min_level[CLERIC_LEVEL_IND], spells[i],
 		  how_good(ch->skills[i + 1].learned));
-	  send_to_char(buf, ch);
 	}
+      page_string(ch->desc, pagebuf, 1);
       return (TRUE);
     }
     number = old_search_block(arg, 0, strlen(arg), spells, FALSE);
@@ -298,11 +297,11 @@ int ClericGuildMaster(struct char_data *ch, int cmd, char *arg)
       send_to_char("You do not know of this spell...\n\r", ch);
       return (TRUE);
     }
-    if (GET_LEVEL(ch, CLERIC_LEVEL_IND) < spell_info[number].min_level_cleric) {
+    if (GET_LEVEL(ch, CLERIC_LEVEL_IND) < spell_info[number].min_level[CLERIC_LEVEL_IND]) {
       send_to_char("You do not know of this spell...\n\r", ch);
       return (TRUE);
     }
-    if (GetMaxLevel(guildmaster) - 10 < spell_info[number].min_level_cleric) {
+    if (GetMaxLevel(guildmaster) - 10 < spell_info[number].min_level[CLERIC_LEVEL_IND]) {
       do_say(guildmaster, "I don't know of this spell.", 0);
       return (TRUE);
     }
@@ -3018,7 +3017,7 @@ int zombie_master(struct char_data *ch, int cmd, char *arg)
       	  FALSE, zmaster, 0, 0, TO_ROOM);
         } else if(number(0,99) < 75) {
           act("$n says 'Come!  Join me in eternal Life!' and gestures sharply.",
-      	FALSE, zmaster, 0, 0, TO_ROOM);
+      	      FALSE, zmaster, 0, 0, TO_ROOM);
           GET_MANA(zmaster) -= ZM_MANA;
           spell_animate_dead(GetMaxLevel(zmaster), ch, NULL, temp1);
           /* assume the new follower is top of the list? */
@@ -3041,8 +3040,52 @@ int zombie_master(struct char_data *ch, int cmd, char *arg)
         go_direction(zmaster, dir);
         return TRUE;
       } else if (1 == dice(1, 5)) {
-        act("$n can't find any bodies.", FALSE, zmaster, 0, 0, TO_ROOM);
-        return TRUE;
+        struct follow_type *pfft;
+        int x, y;
+        int top, bottom, zone;
+        struct follow_type *ack;
+        struct room_data *rp;
+        int room;
+
+        x= 0;
+        for (pfft = zmaster->followers; pfft; pfft = pfft->next)
+          x++;
+        if(x > 50) {
+          aprintf("\n\rA loud feminine voice, dripping with malice, suddenly booms out!\n\r'I, Xenthia, have returned to take my revenge upon Eli!  He shall regret the\n\rday he spurned me and renounced our love!!!'\n\r\n\rThe wind dies and you hear the shuffling of many feet in the land around you.\n\r\n\r");
+          for (y= x; y> 5; y--) {
+            do {
+              /* zone 10 is Shylar, 11 is Grasslands */
+              bottom= zone_table[9].top+1;
+              top= zone_table[10].top;
+              room= number(bottom, top);
+              rp= real_roomp(room);
+              fprintf(stderr, "Selecting zombie %d room... [#%d]\r", y, room);
+            } while (!rp || IS_SET(rp->room_flags, (NO_MOB|PEACEFUL|PRIVATE)));
+            fprintf(stderr, "Got zombie %d room... [#%d]\n", y, room);
+            ack= zmaster->followers;
+            if(!ack)
+              break;
+            zmaster->followers= ack->next;
+            ack->follower->master = NULL;
+            REMOVE_BIT(ack->follower->specials.affected_by, AFF_CHARM | AFF_GROUP | AFF_FLYING);
+#if 0
+            stop_follower(ack);
+#endif
+            REMOVE_BIT(ack->follower->specials.act, ACT_GUARDIAN);
+            SET_BIT(ack->follower->specials.act, ACT_AGGRESSIVE|ACT_ANNOYING);
+            char_to_room(ack->follower, room);
+            act("A gash of reddish light opens and $N stumbles through!",
+                FALSE, ack->follower, 0, ack->follower, TO_ROOM);
+            free(ack); /* in stop_follower code... sure? */
+          }
+          return TRUE;
+        } else if( x >= 40) {
+          aprintf("\n\rXenthia shouts, 'Soon Eli!  I shall make you PAY for your crimes!'\n\r\n\r");
+          return TRUE;
+        } else {
+          act("$n can't find any bodies.", FALSE, zmaster, 0, 0, TO_ROOM);
+          return TRUE;
+        }
       } else {
         mobile_wander(zmaster);
       }
@@ -3883,6 +3926,7 @@ int zombie_master(struct char_data *ch, int cmd, char *arg)
 	{"stone skin", SPELL_STONE_SKIN, 12},
 	{"second wind", SPELL_SECOND_WIND, 12},
 	{"cure serious", SPELL_CURE_SERIOUS, 14},
+	{"fly", SPELL_CURE_SERIOUS, 14},
 	{"\n", -1, -1}
       };
 
@@ -3914,6 +3958,7 @@ int zombie_master(struct char_data *ch, int cmd, char *arg)
 	"stone skin",
 	"second wind",
 	"cure serious",
+	"fly",
 	"\n"
       };
 
@@ -4202,6 +4247,8 @@ int BerserkerAxe(struct char_data *ch, int cmd, char *arg)
   if (cmd == CMD_flee) {
     if(IS_IMMORTAL(ch))
       return 0;
+    act("$n looks abashed and then seems taken by a sudden fury!",
+        TRUE, ch, 0, ch, TO_ROOM);
     cprintf(ch, "You are suddenly furious at your cowardice... You fight on!\n\r");
     return 1;
   }
@@ -4211,6 +4258,8 @@ int BerserkerAxe(struct char_data *ch, int cmd, char *arg)
     one_argument(arg, tmp);
     if (!*tmp || !isname(tmp, "druegar berserker axe"))
       return 0;
+    act("$n clutches a gigantic axe tightly and glares at you.",
+        TRUE, ch, 0, ch, TO_ROOM);
     cprintf(ch, "You cannot bear to relinquish your weapon while you yet live!\n\r");
     return 1;
   }
@@ -4220,6 +4269,8 @@ int BerserkerAxe(struct char_data *ch, int cmd, char *arg)
     one_argument(arg, tmp);
     if (!*tmp || !isname(tmp, "druegar berserker axe"))
       return 0;
+    act("$n clutches a gigantic axe tightly and glares at you.",
+        TRUE, ch, 0, ch, TO_ROOM);
     cprintf(ch, "Not for all the gold in the world!\n\r");
     return 1;
   }
@@ -4229,24 +4280,32 @@ int BerserkerAxe(struct char_data *ch, int cmd, char *arg)
     one_argument(arg, tmp);
     if (!*tmp || !isname(tmp, "druegar berserker axe"))
       return 0;
+    act("$n seems nervous and quickly looks over a giant axe.",
+        TRUE, ch, 0, ch, TO_ROOM);
     cprintf(ch, "It hurts to even joke about destroying your weapon!\n\r");
     return 1;
   }
   if (cmd == CMD_sleep) {
     if(IS_IMMORTAL(ch))
       return 0;
+    act("$n suddenly snaps to attention and begins drooling.",
+        TRUE, ch, 0, ch, TO_ROOM);
     cprintf(ch, "No time to sleep!  There are too many things to kill!\n\r");
     return 1;
   }
   if (cmd == CMD_rest) {
     if(IS_IMMORTAL(ch))
       return 0;
+    act("$n sits down and fidgets.",
+        TRUE, ch, 0, ch, TO_ROOM);
     cprintf(ch, "Just for a moment. There are things that must die!\n\r");
     return 0;
   }
   if (cmd == CMD_cast) {
     if(IS_IMMORTAL(ch))
       return 0;
+    act("$n sneers, 'A pox on all filthy magi and their weakling spells!'",
+        TRUE, ch, 0, ch, TO_ROOM);
     cprintf(ch, "You have no need for weakling tricks!  FIGHT!\n\r");
     return 1;
   }
@@ -4254,8 +4313,21 @@ int BerserkerAxe(struct char_data *ch, int cmd, char *arg)
     return 0;
   if(!AWAKE(ch))
     return 0;
+  if(check_peaceful(ch, ""))
+    return 0;
   if(GET_POS(ch) == POSITION_FIGHTING)
     return 0;
+  if(GET_POS(ch) == POSITION_RESTING) {
+    if(number(0, 99) < 50) {
+      act("$n jumps up and stares all around with a savage grin!",
+          TRUE, ch, 0, ch, TO_ROOM);
+      cprintf(ch, "You can't stand sitting still any longer!\n\r");
+      StandUp(ch);
+    } else {
+      act("$n fidgets and grumbles about death.",
+          TRUE, ch, 0, ch, TO_ROOM);
+    }
+  }
 
   for (victim = real_roomp(ch->in_room)->people; victim; victim = victim->next_in_room) {
     if(ch == victim)
@@ -4266,6 +4338,9 @@ int BerserkerAxe(struct char_data *ch, int cmd, char *arg)
       continue;
     if(GetMaxLevel(victim) > MAX(5, (2* GetMaxLevel(ch))))
       continue;
+    if(IS_NPC(ch))
+      if(GetMaxLevel(victim) < (GetMaxLevel(ch) / 2))
+        continue;
     if(GET_RACE(victim) == RACE_DWARF)
       continue;
     if(GET_RACE(victim) == RACE_ELVEN) {

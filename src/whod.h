@@ -26,7 +26,7 @@
 #define WIZ_MAX_LEVEL 60
 
 #define LOG(msg) log(msg)
-#define WHOD_DELAY_TIME 3
+#define WHOD_DELAY_TIME 1
 #define DISPLAY_LINKDEAD 1
 
 #define WHOD_OPENING 1

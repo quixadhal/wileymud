@@ -161,6 +161,14 @@ void AreaEffectSpell(struct char_data *castor, int dam, int spell_type, int zfla
 	    dam >>= 1;
 	  damage(castor, victim, dam, SPELL_ICE_STORM);
 	  break;
+        case SPELL_METEOR_SWARM:
+          if (saves_spell(victim, SAVING_SPELL)) {
+            dam >>= 1;
+            act("You dive for cover but are still burned by the flames all around you.\n\r", FALSE, castor, 0, victim, TO_VICT);
+          } else
+            act("You scream in agony as a ball of flame goes through you!\n\r", FALSE, castor, 0, victim, TO_VICT);
+          damage(castor, victim, dam, spell_type);
+          break;
 	}
       }
     } else {

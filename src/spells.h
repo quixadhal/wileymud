@@ -52,12 +52,7 @@ struct spell_info_type {
   UBYTE min_usesmana;		       /* Amount of mana used by a spell        */
   BYTE beats;			       /* Heartbeats until ready for next */
 
-  BYTE min_level_magic;		       /* Level required for magic user   */
-  BYTE min_level_cleric;	       /* Level required for cleric       */
-  BYTE min_level_warrior;
-  BYTE min_level_thief;
-  BYTE min_level_ranger;
-  BYTE min_level_druid;
+  BYTE min_level[ABS_MAX_LVL];	       /* Level required for magic user   */
   SHORT targets;		       /* See below for use with TAR_XXX  */
 };
 
@@ -470,7 +465,11 @@ void cast_fly_group(BYTE level, struct char_data *ch, char *arg, int type, struc
 void spell_aid(BYTE level, struct char_data *ch, struct char_data *victim, struct obj_data *obj);
 void cast_aid(BYTE level, struct char_data *ch, char *arg, int type, struct char_data *tar_ch, struct obj_data *tar_obj);
 
-#define MAX_EXIST_SPELL             103		/* move this and change it */
+#define SPELL_SHELTER               104
+void spell_shelter(BYTE level, struct char_data *ch, struct char_data *victim, struct obj_data *obj);
+void cast_shelter(BYTE level, struct char_data *ch, char *arg, int type, struct char_data *tar_ch, struct obj_data *tar_obj);
+
+#define MAX_EXIST_SPELL             104		/* move this and change it */
 
 #define SPELL_H_FEAST               103
 #define SPELL_DRAGON_BREATH         105
@@ -675,14 +674,12 @@ void cast_lightning_breath(BYTE level, struct char_data *ch, char *arg, int type
 #define LAST_BREATH_WEAPON	     205
 
 /* no defines for these? */
-void cast_shelter(BYTE level, struct char_data *ch, char *arg, int type, struct char_data *tar_ch, struct obj_data *tar_obj);
 void spell_chain_lightn(BYTE level, struct char_data *ch, struct char_data *victim, struct obj_data *obj);
 void spell_detect_charm(BYTE level, struct char_data *ch, struct char_data *victim, struct obj_data *obj);
 void spell_invis_group(BYTE level, struct char_data *ch, struct char_data *victim, struct obj_data *obj);
 void spell_major_create(BYTE level, struct char_data *ch, struct char_data *victim, struct obj_data *obj);
 void spell_poison_cloud(BYTE level, struct char_data *ch, struct char_data *victim, struct obj_data *obj);
 void spell_prot_align_group(BYTE level, struct char_data *ch, struct char_data *victim, struct obj_data *obj);
-void spell_shelter(BYTE level, struct char_data *ch, struct char_data *victim, struct obj_data *obj);
 
 /* MAX_SKILL is 200!  */
 
@@ -761,6 +758,6 @@ void spell_shelter(BYTE level, struct char_data *ch, struct char_data *victim, s
 /* More anything but spells and weapontypes can be insterted here! */
 
 #define MAX_TYPES 70
-#define MAX_SPL_LIST	215
+#define MAX_SPL_LIST	221
 
 #endif

@@ -444,6 +444,7 @@ void do_practice(struct char_data *ch, char *arg, int cmd)
     {"stone skin", SPELL_STONE_SKIN},
     {"second wind", SPELL_SECOND_WIND},
     {"cure serious", SPELL_CURE_SERIOUS},
+    {"fly", SPELL_FLY},
     {"\n", -1}
   };
 
@@ -531,15 +532,15 @@ void do_practice(struct char_data *ch, char *arg, int cmd)
       sprintf(buf, "Your heavy spellbook contains these spells:\n\r");
       for (i = 0; *spells[i] != '\n'; i++)
 	if (spell_info[i + 1].spell_pointer &&
-	    (spell_info[i + 1].min_level_magic <= GET_LEVEL(ch, MAGE_LEVEL_IND))) {
+	    (spell_info[i + 1].min_level[MAGE_LEVEL_IND] <= GET_LEVEL(ch, MAGE_LEVEL_IND))) {
 	  if (!flag) {
 	    sprintf(buf + strlen(buf), "[%2d] %s%s\n\r",
-		    spell_info[i + 1].min_level_magic,
+		    spell_info[i + 1].min_level[MAGE_LEVEL_IND],
 		    spells[i], how_good(ch->skills[i + 1].learned));
 	  } else {
 	    if (ch->skills[i + 1].learned > 0) {
 	      sprintf(buf + strlen(buf), "[%2d] %s%s\n\r",
-		      spell_info[i + 1].min_level_magic,
+		      spell_info[i + 1].min_level[MAGE_LEVEL_IND],
 		    spells[i], how_good(ch->skills[i + 1].learned));
 	    }
 	  }
@@ -563,15 +564,15 @@ void do_practice(struct char_data *ch, char *arg, int cmd)
 	flag = 1;
       for (i = 0; *spells[i] != '\n'; i++)
 	if (spell_info[i + 1].spell_pointer &&
-	    (spell_info[i + 1].min_level_cleric <= GET_LEVEL(ch, CLERIC_LEVEL_IND))) {
+	    (spell_info[i + 1].min_level[CLERIC_LEVEL_IND] <= GET_LEVEL(ch, CLERIC_LEVEL_IND))) {
 	  if (!flag) {
 	    sprintf(buf + strlen(buf), "[%2d] %s%s\n\r",
-		    spell_info[i + 1].min_level_cleric,
+		    spell_info[i + 1].min_level[CLERIC_LEVEL_IND],
 		    spells[i], how_good(ch->skills[i + 1].learned));
 	  } else {
 	    if (ch->skills[i + 1].learned > 0) {
 	      sprintf(buf + strlen(buf), "[%2d] %s%s\n\r",
-		      spell_info[i + 1].min_level_cleric,
+		      spell_info[i + 1].min_level[CLERIC_LEVEL_IND],
 		    spells[i], how_good(ch->skills[i + 1].learned));
 	    }
 	  }
@@ -782,7 +783,12 @@ void do_group(struct char_data *ch, char *argument, int cmd)
 
 	}
         if(IS_PC(victim)) {
-          if (victlvl < (chlvl - (chlvl / 5) - 1)) {
+          int toolow, toohigh;
+          /* newbies can mix with each other */
+          toolow= (chlvl <= 4)? 0: MAX(5, chlvl/2);
+          /* but newbies and adults don't mix */
+          toohigh= (chlvl <= 4)? 5: (chlvl+ chlvl/2);
+          if (victlvl <= toolow) {
             act("It would be beneath you to lead the lowly $N into battle!",
                 FALSE, ch, 0, victim, TO_CHAR);
             act("$N is too mighty to pay any heed to the likes of you!",
@@ -791,12 +797,12 @@ void do_group(struct char_data *ch, char *argument, int cmd)
 	        FALSE, victim, 0, ch, TO_ROOM);
             return;
           }
-          if ( victlvl > (chlvl + (chlvl / 5) + 1)) {
-            act("$n whines like a child for group membership!",
+          if ( victlvl >= toohigh) {
+            act("$N whines like a child for group membership!",
                 FALSE, ch, 0, victim, TO_CHAR);
-            act("$n pats you on the head and tells you to go play with the chickens.",
+            act("$N pats you on the head and tells you to go play with the chickens.",
                 FALSE, victim, 0, ch, TO_CHAR);
-            act("$N grovels and begs $n for group membership.",
+            act("$n grovels and begs $N for group membership.",
 	        FALSE, victim, 0, ch, TO_ROOM);
             return;
           }

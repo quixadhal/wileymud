@@ -30,19 +30,22 @@ static int mob_count;
 static void event_fill_zone_with_mobs( int rnum, struct room_data *rp,
                                        struct event_mob_in_zone *mobs );
 static void event_rats_invade_zone(struct char_data *ch, char *arg);
+static void event_undead_invade_zone(struct char_data *ch, char *arg);
 static void event_zombie_master(struct char_data *ch, char *arg);
 
 void do_event(struct char_data *ch, char *argument, int cmd)
 {
   static const char *event_list[] = {
     NULL,
-    "rats - Rats invade whatever zone you are standing in.",
-    "xenthia - The Lady of the Dead rises and enters the world.",
+    "rats - Rats invade whatever zone you are standing in. [1+]",
+    "undead - The undead rise and devour the zone you are in. [4-10]",
+    "xenthia - The Lady of the Dead rises and enters the world. [10-15]",
     NULL
   };
   static const funcp event_code[] = {
     NULL,
     event_rats_invade_zone,
+    event_undead_invade_zone,
     event_zombie_master,
     NULL
   };
@@ -129,7 +132,8 @@ static void event_fill_zone_with_mobs( int rnum, struct room_data *rp,
 static void event_rats_invade_zone(struct char_data *ch, char *arg)
 {
   struct event_mob_set mobset[10] = {
-    { 4618, 6, 8, 8, 1, 6, 4, 2, 6, 0, 10, 4602 }, /* special large rat */
+/* vnum, hp: xdy+z, exp: xdy+z, gold: xdy+z, object %, obj vnum */
+    { 4618, 6, 8, 8, 1, 6, 4, 2, 6, 0, 2, 4602 }, /* special large rat */
     { 4618, 4, 6, 5, 1, 6, 4, 1, 6, 0, 0, -1 }, /* large rat */
     { 4618, 4, 6, 3, 1, 6, 4, 1, 4, 0, 0, -1 }, /* large rat */
     { 3432, 3, 6, 1, 1, 6, 4, 1, 2, -1, 0, -1 }, /* disgusting rat */
@@ -160,6 +164,98 @@ static void event_rats_invade_zone(struct char_data *ch, char *arg)
   cprintf(ch, "You just added %d rats to %s [#%d].\n\r", mob_count,
           zone_table[zone].name, zone);
   log("%s added %d rats to %s [#%d].", GET_NAME(ch), mob_count,
+          zone_table[zone].name, zone);
+}
+
+static void event_undead_invade_zone(struct char_data *ch, char *arg)
+{
+  struct event_mob_set mobset[36] = {
+/* vnum, hp: xdy+z, exp: xdy+z, gold: xdy+z, object %, obj vnum */
+    { 9004, 9, 8, 20, 9, 9, 9, 0, 0, 0, 0, -1 }, /* wraith */
+    { 9005, 8, 8, 20, 2, 6, 4, 0, 0, 0, 0, -1 }, /* wight */
+    { 9005, 8, 8, 20, 2, 6, 4, 0, 0, 0, 0, -1 }, /* wight */
+    { 9001, 7, 8, 20, 2, 6, 4, 0, 0, 0, 0, -1 }, /* juju zombie */
+    { 9001, 7, 8, 20, 2, 6, 4, 0, 0, 0, 0, -1 }, /* juju zombie */
+    { 9001, 6, 8, 20, 2, 6, 4, 0, 0, 0, 0, -1 }, /* juju zombie */
+    { 9002, 5, 8, 20, 4, 8, 6, 0, 0, 0, 0, -1 }, /* ghoul */
+    { 9002, 5, 8, 0, 4, 8, 6, 0, 0, 0, 0, -1 }, /* ghoul */
+    { 9002, 4, 8, 20, 4, 8, 6, 0, 0, 0, 0, -1 }, /* ghoul */
+    { 9002, 4, 8, 20, 4, 8, 6, 0, 0, 0, 0, -1 }, /* ghoul */
+    { 4616, 7, 8, 20, 2, 6, 4, 0, 0, 0, 0, -1 }, /* banshee */
+    { 4616, 6, 8, 20, 2, 6, 4, 0, 0, 0, 0, -1 }, /* banshee */
+    { 4616, 6, 8, 20, 2, 6, 4, 0, 0, 0, 0, -1 }, /* banshee */
+    { 4616, 5, 8, 20, 2, 6, 4, 0, 0, 0, 0, -1 }, /* banshee */
+    { 4616, 5, 8, 20, 2, 6, 4, 0, 0, 0, 0, -1 }, /* banshee */
+    { 4615, 6, 8, 20, 1, 6, 4, 0, 0, 0, 0, -1 }, /* shadow */
+    { 4615, 6, 8, 20, 1, 6, 4, 0, 0, 0, 0, -1 }, /* shadow */
+    { 4615, 5, 8, 20, 1, 6, 4, 0, 0, 0, 0, -1 }, /* shadow */
+    { 4615, 5, 8, 20, 1, 6, 4, 0, 0, 0, 0, -1 }, /* shadow */
+    { 4615, 5, 8, 20, 1, 6, 4, 0, 0, 0, 0, -1 }, /* shadow */
+    { 4615, 5, 8, 20, 1, 6, 4, 0, 0, 0, 0, -1 }, /* shadow */
+    { 4615, 4, 8, 20, 1, 6, 4, 0, 0, 0, 0, -1 }, /* shadow */
+    { 4613, 6, 8, 20, 1, 6, 4, 0, 0, 0, 0, -1 }, /* poltergeist */
+    { 4613, 5, 8, 20, 1, 6, 4, 0, 0, 0, 0, -1 }, /* poltergeist */
+    { 4613, 4, 8, 20, 1, 6, 4, 0, 0, 0, 0, -1 }, /* poltergeist */
+    { 4613, 4, 8, 20, 1, 6, 4, 0, 0, 0, 0, -1 }, /* poltergeist */
+    { 4613, 4, 8, 20, 1, 6, 4, 0, 0, 0, 0, -1 }, /* poltergeist */
+    { 4613, 4, 8, 20, 1, 6, 4, 0, 0, 0, 0, -1 }, /* poltergeist */
+    { 4613, 4, 8, 20, 1, 6, 4, 0, 0, 0, 0, -1 }, /* poltergeist */
+    { 9003, 5, 8, 20, 1, 6, 4, 0, 0, 0, 0, -1 }, /* skeleton */
+    { 9003, 4, 8, 20, 1, 6, 4, 0, 0, 0, 0, -1 }, /* skeleton */
+    { 9003, 4, 8, 20, 1, 6, 4, 0, 0, 0, 0, -1 }, /* skeleton */
+    { 9003, 4, 8, 20, 1, 6, 4, 0, 0, 0, 0, -1 }, /* skeleton */
+    { 9003, 3, 8, 20, 1, 6, 4, 0, 0, 0, 0, -1 }, /* skeleton */
+    { 9003, 3, 8, 20, 1, 6, 4, 0, 0, 0, 0, -1 }, /* skeleton */
+    { 9003, 3, 8, 20, 1, 6, 4, 0, 0, 0, 0, -1 }, /* skeleton */
+    { 5300, 5, 8, 5, 1, 6, 4, 0, 0, 0, 0, -1 }, /* sewer skeleton */
+    { 5300, 4, 8, 5, 1, 6, 4, 0, 0, 0, 0, -1 }, /* sewer skeleton */
+    { 5300, 3, 8, 5, 1, 6, 4, 0, 0, 0, 0, -1 }, /* sewer skeleton */
+    { 5300, 3, 8, 5, 1, 6, 4, 0, 0, 0, 0, -1 }, /* sewer skeleton */
+    { 5300, 2, 8, 5, 1, 6, 4, 0, 0, 0, 0, -1 }, /* sewer skeleton */
+    { 5300, 2, 8, 5, 1, 6, 4, 0, 0, 0, 0, -1 }, /* sewer skeleton */
+    { 5300, 2, 8, 5, 1, 6, 4, 0, 0, 0, 0, -1 }, /* sewer skeleton */
+    { 5300, 2, 8, 5, 1, 6, 4, 0, 0, 0, 0, -1 }, /* sewer skeleton */
+    { 5300, 2, 8, 5, 1, 6, 4, 0, 0, 0, 0, -1 }, /* sewer skeleton */
+    { 5300, 2, 8, 5, 1, 6, 4, 0, 0, 0, 0, -1 }, /* sewer skeleton */
+    { 5300, 2, 8, 5, 1, 6, 4, 0, 0, 0, 0, -1 }, /* sewer skeleton */
+    { 5300, 2, 8, 5, 1, 6, 4, 0, 0, 0, 0, -1 }, /* sewer skeleton */
+    { 4603, 5, 8, 5, 1, 6, 4, 0, 0, 0, 0, -1 }, /* small skeleton */
+    { 4603, 4, 8, 5, 1, 6, 4, 0, 0, 0, 0, -1 }, /* small skeleton */
+    { 4603, 3, 8, 5, 1, 6, 4, 0, 0, 0, 0, -1 }, /* small skeleton */
+    { 4603, 2, 8, 5, 1, 6, 4, 0, 0, 0, 0, -1 }, /* small skeleton */
+    { 4603, 2, 8, 5, 1, 6, 4, 0, 0, 0, 0, -1 }, /* small skeleton */
+    { 4603, 2, 8, 5, 1, 6, 4, 0, 0, 0, 0, -1 }, /* small skeleton */
+    { 4603, 1, 8, 5, 1, 6, 4, 0, 0, 0, 0, -1 }, /* small skeleton */
+    { 4603, 1, 8, 5, 1, 6, 4, 0, 0, 0, 0, -1 }, /* small skeleton */
+    { 4603, 1, 8, 5, 1, 6, 4, 0, 0, 0, 0, -1 }, /* small skeleton */
+    { 4603, 1, 8, 5, 1, 6, 4, 0, 0, 0, 0, -1 }, /* small skeleton */
+    { 4603, 1, 8, 5, 1, 6, 4, 0, 0, 0, 0, -1 }, /* small skeleton */
+    { 4603, 1, 8, 5, 1, 6, 4, 0, 0, 0, 0, -1 }, /* small skeleton */
+    { 4603, 1, 8, 5, 1, 6, 4, 0, 0, 0, 0, -1 }, /* small skeleton */
+    { 4603, 1, 8, 5, 1, 6, 4, 0, 0, 0, 0, -1 }, /* small skeleton */
+    { 4603, 1, 8, 5, 1, 6, 4, 0, 0, 0, 0, -1 }, /* small skeleton */
+    { 4603, 1, 8, 5, 1, 6, 4, 0, 0, 0, 0, -1 } /* small skeleton */
+  };
+  struct event_mob_in_zone mobs = { 0, 0, 60, 1, 3, 64, &mobset };
+  int zone;
+  struct room_data *rp;
+
+  if(rp= real_roomp(ch->in_room))
+    zone= rp->zone;
+  else
+    return;
+
+  mobs.bottom= zone? (zone_table[zone- 1].top+1): 0;
+  mobs.top= zone_table[zone].top;
+  if (IS_SET(ch->specials.act, PLR_STEALTH))
+    zprintf(zone, "\n\rSuddenly, the warmth is snatched from the air around you.\n\rYou feel the icy cold touch of the grave as you gasp in anticipation...\n\rThe wind begins to howl around you as things move about.\n\r\n\r");
+  else
+    zprintf(zone, "\n\r%s's voice booms all around you, \"Go forth ancient ones!\n\rKill the puny mortals and feast on their bones!\"\n\rThe air grows still and cold as you feel... things... begin to move.\n\r", GET_NAME(ch));
+  mob_count= 0;
+  hash_iterate(&room_db, event_fill_zone_with_mobs, &mobs);
+  cprintf(ch, "You just added %d undead spirits to %s [#%d].\n\r", mob_count,
+          zone_table[zone].name, zone);
+  log("%s added %d undead to %s [#%d].", GET_NAME(ch), mob_count,
           zone_table[zone].name, zone);
 }
 

@@ -51,6 +51,31 @@
 
 #define DEFAULT_HOME		3001   /* when a player is created */
 
+#define KEY(literal, field, value) \
+if (!str_cmp((word), (literal))) { \
+  field  = (value); \
+  fMatch = TRUE; \
+  break; \
+}
+
+#define CKEY(literal, field, value) \
+if (!str_cmp((word), (literal))) { \
+  char *v; \
+  v= (value); \
+  strcpy((field), v?v:""); \
+  fMatch = TRUE; \
+  break; \
+}
+
+#define SKEY(string, field) { \
+  if (!str_cmp((word), (string))) { \
+    if(field) free(field); \
+    field = fread_string(fp); \
+    fMatch = TRUE; \
+    break; \
+  } \
+}
+
 #define REAL 0
 #define VIRTUAL 1
 
@@ -230,7 +255,6 @@ int create_entry(char *name);
 void save_char(struct char_data *ch, SHORT load_room);
 void new_save_char(struct char_file_u *ch, char *filename);
 int compare(struct player_index_element *arg1, struct player_index_element *arg2);
-char *fread_string(FILE * fl);
 void free_char(struct char_data *ch);
 void free_obj(struct obj_data *obj);
 int file_to_string(char *name, char *buf);
@@ -262,5 +286,10 @@ void make_exit(struct room_data *WorkingRoom);
 int make_room(int RoomNumber);
 #endif
 char *fix_string(const char *str);
+char *fread_string(FILE * fl);
+char *fread_word(FILE * fp);
+int fread_number(FILE * fp);
+void fread_to_eol(FILE * fp);
+int fread_char(char *name, struct char_file_u *char_element);
 
 #endif

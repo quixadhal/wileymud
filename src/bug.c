@@ -5,6 +5,7 @@
 #include <stdarg.h>
 #include <time.h>
 #include <string.h>
+#include <sys/timeb.h>
 
 #include "global.h"
 #include "utils.h"
@@ -43,9 +44,14 @@ void abug(char *File, char *Func, int Line, UINT Level, UINT Type,
   va_list arg;
   char Result[MAX_STRING_LENGTH];
   char Temp[MAX_STRING_LENGTH];
+#if 0
   char *Time;
+#endif
+  char Time[256];
   FILE *fp;
   long current_time;
+  struct timeb right_now;
+  struct tm *now_part;
 
   bzero(Result, MAX_STRING_LENGTH);
   va_start(arg, Str);
@@ -64,9 +70,17 @@ void abug(char *File, char *Func, int Line, UINT Level, UINT Type,
   } else
     strcpy(Temp, "PING!");
   va_end(arg);
+  ftime(&right_now);
+  now_part= localtime(&right_now);
+  sprintf(Time, "%02d.%02d.%02d.%02d.%02d.%02d.%03d",
+          now_part->tm_year, now_part->tm_mon, now_part->tm_mday,
+          now_part->tm_hour, now_part->tm_min, now_part->tm_sec,
+          right_now.millitm);
+#if 0
   current_time = time(NULL);
   Time = ctime(&current_time);
   Time[strlen(Time) - 1] = '\0';
+#endif
   sprintf(Result, "<: %s", Time);
   if (File || Func || Line) {
     strcat(Result, " (");
