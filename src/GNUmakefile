@@ -1,37 +1,46 @@
-##
-CC=gcc
-##
-LD=gcc
-##
-CFLAGS = -g -Dsun3 -m68020 -fstrength-reduce -fvolatile 
-##
-HEADERFILES = structs.h utils.h comm.h interpreter.h db.h
-##
-OBJS = comm.o act.comm.o act.informative.o act.move.o act.obj1.o act.obj2.o \
-	act.offensive.o act.other.o act.social.o act.wizard.o handler.o \
-	db.o interpreter.o utility.o spec_assign.o shop.o limits.o mobact.o \
-	fight.o modify.o weather.o spells1.o spells2.o spells3.o spell_parser.o \
-	reception.o constants.o spec_procs.o signals.o board.o magic.o \
-	magic2.o magic3.o skills.o Opinion.o Trap.o magicutils.o multiclass.o hash.o \
-	Sound.o whod.o 
+#!/usr/local/bin/gmake
 
-SRCS = comm.c act.comm.c act.informative.c act.move.c act.obj1.c act.obj2.c \
+CC = gcc
+CFLAGS = -O3
+#CFLAGS = -g -Dsun3 -m68020 -fstrength-reduce -fvolatile 
+LDFLAGS = -s
+LIB =
+SRC =	db.c comm.c act.comm.c act.informative.c act.move.c act.obj1.c \
+	act.obj2.c \
 	act.offensive.c act.other.c act.social.c act.wizard.c handler.c \
-	db.c interpreter.c utility.c spec_assign.c shop.c limits.c mobact.c \
-	fight.c modify.c weather.c spells1.c spells2.c spells3.c spell_parser.c \
-	reception.c constants.c spec_procs.c signals.c board.c magic.c \
-	magic2.c magic3.c skills.c Opinion.c Trap.c magicutils.c multiclass.c hash.c \
-	Sound.c whod.c 
+	interpreter.c utility.c spec_assign.c shop.c limits.c mobact.c \
+	fight.c modify.c weather.c spells1.c spells2.c spells3.c \
+	spell_parser.c reception.c constants.c spec_procs.c signals.c \
+	board.c magic.c magic2.c magic3.c skills.c Opinion.c Trap.c \
+	magicutils.c multiclass.c hash.c Sound.c whod.c 
+OBJ = $(SRC:.c=.o)
+HDR = structs.h utils.h comm.h interpreter.h db.h
+AUX = GNUmakefile lex.yy.c dbparser.l
 
 all : dmserver
 
-dmserver : ${OBJS}
-	$(LD) -o $@ $(CFLAGS) ${OBJS} 
-        
-depend :
-	makedepend ${SRCS}
+dmserver : $(OBJ)
+	$(CC) $(LDFLAGS) -o $@ $(OBJ) $(LIB)
 
+$(OBJ) : %o : %c
+	$(CC) $(CFLAGS) -c $< -o $@
 
+lex.yy.c : dbparser.l
+	flex -f $<
+
+clean :
+	rm -f *.o *.bak
+	rm -f dmserver
+	rm -f printout
+
+backup :
+	tar -zcvf backup.tar.gz $(SRC) $(HDR) $(AUX)
+
+printout : $(SRC) $(HDR)
+	/usr/5bin/pr -l80 -w96 -f -n5 $(HDR) $(SRC) > $@
+
+depend : lex.yy.c $(SRC) $(HDR)
+	makedepend -fGNUmakefile -- $(CFLAGS) -- $(SRC)
 
 # DO NOT DELETE THIS LINE -- make depend depends on it.
 
@@ -83,7 +92,7 @@ act.social.o: handler.h db.h spells.h
 act.wizard.o: /usr/include/stdio.h /usr/include/string.h
 act.wizard.o: /usr/include/sys/stdtypes.h /usr/include/ctype.h structs.h
 act.wizard.o: /usr/include/sys/types.h /usr/include/sys/sysmacros.h utils.h
-act.wizard.o: comm.h interpreter.h handler.h db.h spells.h limits.h
+act.wizard.o: comm.h interpreter.h handler.h db.h spells.h limits.h race.h
 handler.o: /usr/include/string.h /usr/include/sys/stdtypes.h
 handler.o: /usr/include/stdio.h /usr/include/ctype.h /usr/include/assert.h
 handler.o: structs.h /usr/include/sys/types.h /usr/include/sys/sysmacros.h
@@ -91,7 +100,8 @@ handler.o: utils.h comm.h db.h handler.h interpreter.h spells.h
 db.o: /usr/include/stdio.h /usr/include/string.h /usr/include/sys/stdtypes.h
 db.o: /usr/include/ctype.h /usr/include/sys/time.h structs.h
 db.o: /usr/include/sys/types.h /usr/include/sys/sysmacros.h utils.h db.h
-db.o: comm.h handler.h limits.h race.h opinion.h hash.h
+db.o: comm.h handler.h limits.h race.h opinion.h hash.h spells.h myerrors.h
+db.o: lex.yy.c
 interpreter.o: /usr/include/string.h /usr/include/sys/stdtypes.h
 interpreter.o: /usr/include/ctype.h /usr/include/stdio.h
 interpreter.o: /usr/include/arpa/telnet.h structs.h /usr/include/sys/types.h
@@ -133,6 +143,10 @@ spells1.o: comm.h db.h interpreter.h spells.h handler.h s_list.h
 spells2.o: /usr/include/stdio.h structs.h /usr/include/sys/types.h
 spells2.o: /usr/include/sys/stdtypes.h /usr/include/sys/sysmacros.h utils.h
 spells2.o: comm.h db.h interpreter.h spells.h handler.h poly.h
+spells3.o: /usr/include/stdio.h /usr/include/strings.h structs.h
+spells3.o: /usr/include/sys/types.h /usr/include/sys/stdtypes.h
+spells3.o: /usr/include/sys/sysmacros.h utils.h comm.h db.h interpreter.h
+spells3.o: spells.h handler.h poly.h
 spell_parser.o: /usr/include/stdio.h /usr/include/assert.h structs.h
 spell_parser.o: /usr/include/sys/types.h /usr/include/sys/stdtypes.h
 spell_parser.o: /usr/include/sys/sysmacros.h utils.h comm.h db.h
@@ -140,7 +154,7 @@ spell_parser.o: interpreter.h spells.h handler.h
 reception.o: /usr/include/stdio.h /usr/include/sys/time.h
 reception.o: /usr/include/sys/time.h structs.h /usr/include/sys/types.h
 reception.o: /usr/include/sys/stdtypes.h /usr/include/sys/sysmacros.h comm.h
-reception.o: handler.h db.h interpreter.h utils.h spells.h
+reception.o: handler.h db.h interpreter.h utils.h spells.h reception.h
 constants.o: structs.h /usr/include/sys/types.h /usr/include/sys/stdtypes.h
 constants.o: /usr/include/sys/sysmacros.h limits.h trap.h
 spec_procs.o: /usr/include/stdio.h /usr/include/string.h
@@ -165,6 +179,10 @@ magic2.o: /usr/include/stdio.h /usr/include/assert.h structs.h
 magic2.o: /usr/include/sys/types.h /usr/include/sys/stdtypes.h
 magic2.o: /usr/include/sys/sysmacros.h utils.h comm.h spells.h handler.h
 magic2.o: limits.h db.h race.h
+magic3.o: /usr/include/stdio.h /usr/include/assert.h structs.h
+magic3.o: /usr/include/sys/types.h /usr/include/sys/stdtypes.h
+magic3.o: /usr/include/sys/sysmacros.h utils.h comm.h spells.h handler.h
+magic3.o: limits.h db.h race.h
 skills.o: structs.h /usr/include/sys/types.h /usr/include/sys/stdtypes.h
 skills.o: /usr/include/sys/sysmacros.h utils.h race.h spells.h comm.h
 skills.o: handler.h
@@ -188,3 +206,9 @@ Sound.o: /usr/include/stdio.h /usr/include/string.h
 Sound.o: /usr/include/sys/stdtypes.h structs.h /usr/include/sys/types.h
 Sound.o: /usr/include/sys/sysmacros.h utils.h comm.h interpreter.h handler.h
 Sound.o: db.h spells.h trap.h
+whod.o: /usr/include/sys/types.h /usr/include/sys/stdtypes.h
+whod.o: /usr/include/sys/sysmacros.h /usr/include/sys/socket.h
+whod.o: /usr/include/sys/un.h /usr/include/netdb.h /usr/include/netinet/in.h
+whod.o: /usr/include/sys/time.h /usr/include/sys/time.h /usr/include/signal.h
+whod.o: /usr/include/sys/signal.h /usr/include/vm/faultcode.h
+whod.o: /usr/include/stdio.h structs.h utils.h

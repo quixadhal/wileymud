@@ -1952,7 +1952,7 @@ void init_char(struct char_data *ch)
 
   /* *** if this is our first player --- he be God *** */
 
-  if(!strcmp(GET_NAME(ch),"Cyric") )
+  if(!strcmp(GET_NAME(ch),"Quixadhal") )
   {
     GET_EXP(ch) = 24000000;
     GET_LEVEL(ch,0) = IMPLEMENTOR;

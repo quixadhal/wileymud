@@ -35,7 +35,7 @@ void extract_obj(struct obj_data *obj);
 char *ClassTitles(struct char_data *ch)
 {
   int i, count=0;
-  char buf[256];
+  static char buf[256];
     for(i=MAGE_LEVEL_IND; i<=DRUID_LEVEL_IND; i++) {
       if (GET_LEVEL(ch, i)) {
 	count++;

@@ -54,6 +54,7 @@ int check_exit_alias(struct char_data *ch,char *argument)
   int index;
 
   int do_move(struct char_data *ch,char *arg,int cmd);
+  /* void do_move(struct char_data *ch, char *argument, int cmd); */
   return 0;
   if(DEBUG) dlog("check_exit_alias");
   for(index=0;index<6;index++)
@@ -486,7 +487,8 @@ int DisplayGroupMove(struct char_data *ch, int dir, int was_in, int total)
 }
 
 
-void do_move(struct char_data *ch, char *argument, int cmd)
+/* void do_move(struct char_data *ch, char *argument, int cmd) */
+int do_move(struct char_data *ch, char *argument, int cmd)
 {
 
   if(DEBUG) dlog("do_move");
@@ -494,8 +496,7 @@ void do_move(struct char_data *ch, char *argument, int cmd)
   {
     if(RideCheck(RIDDEN(ch))) 
     {
-      do_move(RIDDEN(ch), argument, cmd);
-      return;
+      return(do_move(RIDDEN(ch), argument, cmd));
     }
     else
     {
@@ -509,7 +510,7 @@ void do_move(struct char_data *ch, char *argument, int cmd)
     if(RIDDEN(ch)->specials.fighting)
     {
       send_to_char("You can't, your rider is fighting!\n\r",ch);
-      return;
+      return FALSE;
     }
   }
 
@@ -518,7 +519,7 @@ void do_move(struct char_data *ch, char *argument, int cmd)
     if(MOUNTED(ch)->specials.fighting)
     {
       send_to_char("You can't, your mount is fighting!\n\r",ch);
-      return;
+      return FALSE;
     }
   }
 
@@ -531,19 +532,19 @@ void do_move(struct char_data *ch, char *argument, int cmd)
   if (ch->attackers > 2) 
   {
     send_to_char("There's too many people around, no place to flee!\n\r", ch);
-    return;
+    return FALSE;
   }
   
   if (!ch->followers && !ch->master) 
   {
-    MoveOne(ch,cmd);
+    return(MoveOne(ch,cmd));
   }
   else
   {
     if (!ch->followers) {
-      MoveOne(ch, cmd);
+      return(MoveOne(ch, cmd));
     } else {
-      MoveGroup(ch, cmd);
+      return(MoveGroup(ch, cmd));
     }
   }
 }

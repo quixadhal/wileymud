@@ -1339,6 +1339,9 @@ void nanny(struct descriptor_data *d, char *arg)
           STATE(d) = CON_RMOTD;
         }
         else
+          SEND_TO_Q("Choose A Race:\n\r", d);
+          SEND_TO_Q("G) Gnome\n\rF) Halfling\n\rD) Dwarf\n\rE) Elf\n\rH) Human\n\r",d);
+          SEND_TO_Q("For help type '?'. \n\r Race:  ", d);
           STATE(d) = CON_QRACE; 
       }
     }

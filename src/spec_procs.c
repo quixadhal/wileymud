@@ -2615,7 +2615,7 @@ int temple_labrynth_sentry(struct char_data *ch, int cmd, char *arg)
 int Whirlwind (struct char_data *ch, int cmd, char *arg)
 {
   struct char_data *tmp;
-  const char *names[] = { "Cyric", "", 0};
+  const char *names[] = { "Quixadhal", "", 0};
   int i = 0;
   
   if (ch->in_room == -1) return(FALSE);
@@ -3196,7 +3196,7 @@ int pray_for_items(struct char_data *ch, int cmd, char *arg)
       if(str_cmp(buf, ext->keyword) == 0) {
 	if (gold == 0) {
 	  gold = 1;
-	  act("$n kneels at the altar and chants a prayer to Cyric.",
+	  act("$n kneels at the altar and chants a prayer to Quixadhal.",
 	      FALSE, ch, 0, 0, TO_ROOM);
 	  act("You notice a faint light in Odin's eye.",
 	      FALSE, ch, 0, 0, TO_CHAR);

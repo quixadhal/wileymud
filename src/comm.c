@@ -223,7 +223,7 @@ int run_the_game(int port)
   int s; 
   void signal_setup(void);
   int load(void);
-  void coma(void);
+  void coma(int);
   
   descriptor_list = NULL;
   
@@ -239,7 +239,7 @@ int run_the_game(int port)
   if (lawful && load() >= 6)
     {
       log("System load too high at startup.");
-      coma();
+      coma(s);
     }
   
   boot_db();

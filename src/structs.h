@@ -895,10 +895,15 @@ struct char_data
 
 struct time_info_data
 {
-  byte hours;
-  byte day;
-  byte month;
-  sh_int year;
+/* Sorry Cyric... but you can't scanf("%d") into a char and expect it NOT
+ * to give a SIGBUS!  get a clue!
+ *
+ * byte hours;
+ * byte day;
+ * byte month;
+ */
+  int hours, day, month;
+  int year;
 };
 
 /* How much light is in the land ? */
