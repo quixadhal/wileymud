@@ -1,0 +1,15 @@
+#!/bin/sh
+# usage:  prog1 | ped | prog2
+
+: ${EDITOR:=/usr/ucb/vi}
+: ${TMPDIR:=/tmp}
+: ${HEXOUT:="xd -c"}
+: ${HEXIN:="xd -l"}
+TMPFILE=${TMPDIR}/.ped$$
+
+trap "trap '' 0 1 2 3 15; rm -f $TMPFILE; exit 0" 0 1 2 3 15
+
+$HEXOUT $1 >$TMPFILE
+$EDITOR $TMPFILE </dev/tty >/dev/tty
+cat $TMPFILE | $HEXIN >$2
+exit 0
