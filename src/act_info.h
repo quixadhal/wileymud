@@ -50,5 +50,6 @@ void do_world(struct char_data *ch, char *argument, int cmd);
 void do_skills(struct char_data *ch, int cmd, char *arg);
 void do_players(struct char_data *ch, char *argument, int cmd);
 void do_ticks(struct char_data *ch, char *argument, int cmd);
+void do_map(struct char_data *ch, char *argument, int cmd);
 
 #endif

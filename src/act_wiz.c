@@ -123,7 +123,7 @@ void do_instazone(struct char_data *ch, char *argument, int cmdnum)
        *  lastly.. doors
        */
 
-      for (j = 0; j < 6; j++) {
+      for (j = 0; j < MAX_NUM_EXITS; j++) {
 	/*
 	 *  if there is an door type exit, write it.
 	 */
@@ -184,11 +184,10 @@ void do_rentmode(struct char_data *ch, char *argument, int cmd)
     cprintf(ch, "You cannot toggle rent costs.\n\r");
     return;
   }
-  if(argument) {
+  if(argument && *argument) {
     only_argument(argument, buf);
-    if(isdigit(*buf))
-      if(sscanf(buf, " %lf ", &it) == 1)
-        RENT_RATE= it;
+    if(sscanf(buf, " %lf ", &it) == 1)
+      RENT_RATE= it;
     sprintf(buf, "Rent now costs %lf normal.", RENT_RATE);
     cprintf(ch, "%s\n\r", buf);
     log(buf);
@@ -365,7 +364,11 @@ void do_trans(struct char_data *ch, char *argument, int cmd)
   else if (str_cmp("all", buf)) {
     if (!(victim = get_char_vis_world(ch, buf, NULL)))
       send_to_char("No-one by that name around.\n\r", ch);
-    else {
+    else if(GetMaxLevel(victim) > GetMaxLevel(ch)) {
+      cprintf(ch, "You are not strong enough to force %s to appear.\n\r",
+              NAME(victim));
+      cprintf(victim, "%s would like to transfer you.\n\r", NAME(ch));
+    } else {
       act("$n disappears in a mushroom cloud.", FALSE, victim, 0, 0, TO_ROOM);
       target = ch->in_room;
       if (MOUNTED(victim)) {
@@ -869,7 +872,7 @@ void do_stat(struct char_data *ch, char *argument, int cmd)
       cprintf(ch, "Special Procedure: %s.\n\r",
               name_special_proc(SPECIAL_ROOM, rm->number));
     }
-    for(i= 0; i< 6; i++) {
+    for(i= 0; i< MAX_NUM_EXITS; i++) {
       if(rm->dir_option[i]) {
         rp= real_roomp(rm->dir_option[i]->to_room);
         cprintf(ch, "Exit %s to %s [#%d] is called %s.\n\r", dirs[i],
@@ -894,14 +897,14 @@ void do_stat(struct char_data *ch, char *argument, int cmd)
       cprintf(ch, "Lifeforms present:\n\r");
       for(; k; k = k->next_in_room) {
         if(CAN_SEE(ch, k)) {
+          register int v;
           sprintf(buf, "%s", GET_NAME(k));
-          if(!IS_NPC(k))
+          if(!(v= MobVnum(k)))
             strcat(buf, "(PC)");
-          else if(!IS_MOB(k))
+          else if(v < 0)
             strcat(buf, "(NPC)");
           else
-            sprintf(buf+strlen(buf), " [#%d]",
-                    (k->nr >= 0)? mob_index[k->nr].virtual: -1);
+            sprintf(buf+strlen(buf), " [#%d]", v);
           cprintf(ch, "     %s\n\r", buf);
         }
       }
@@ -909,8 +912,7 @@ void do_stat(struct char_data *ch, char *argument, int cmd)
     if(j= rm->contents) {
       cprintf(ch, "Objects present:\n\r");
       for(; j; j = j->next_content)
-        cprintf(ch, "     %s [#%d]\n\r", j->name,
-                (j->item_number >= 0)? obj_index[j->item_number].virtual: -1);
+        cprintf(ch, "     %s [#%d]\n\r", j->name, ObjVnum(j));
     }
     return;
   } else if(!str_cmp("mob", type) || !str_cmp("pc", type)) {
@@ -929,8 +931,7 @@ void do_stat(struct char_data *ch, char *argument, int cmd)
           cprintf(ch, "No such creature exists in Reality!\n\r");
           return;
         } else {
-          cprintf(ch, "A new %s appears for your inspection.\n\r",
-                  GET_SDESC(k));
+          cprintf(ch, "%s appears for your inspection.\n\r", NAME(k));
           char_to_room(k, ch->in_room);
         }
       }
@@ -939,8 +940,25 @@ void do_stat(struct char_data *ch, char *argument, int cmd)
         k= ch;
       } else if(!(k = get_char_room_vis(ch, num))) {
         if(!(k = get_char_vis_world(ch, num, &count))) {
-          cprintf(ch, "No such creature is visible in the Realm.\n\r");
-          return;
+          register int x;
+          cprintf(ch, "No creature exists by that name, I shall make one!\n\r");
+          for(x= 0; x< top_of_mobt; x++) {
+            if(isname(num, mob_index[x].name)) {
+              if(!(k= read_mobile(x, REAL))) {
+                cprintf(ch, "No such creature exists in Reality!\n\r");
+                return;
+              } else {
+                cprintf(ch, "%s appears for your inspection.\n\r", NAME(k));
+                char_to_room(k, ch->in_room);
+                x= -1;
+                break;
+              }
+            }
+          }
+          if(x> -1) {
+            cprintf(ch, "No such creature exists in Reality!\n\r");
+            return;
+          }
         }
       }
     }
@@ -1158,7 +1176,7 @@ void do_stat(struct char_data *ch, char *argument, int cmd)
     if (k->affected) {
 	send_to_char("\n\rAffecting Spells:\n\r--------------\n\r", ch);
 	for (aff = k->affected; aff; aff = aff->next) {
-	  sprintf(buf, "Spell : '%s'\n\r", spells[aff->type - 1]);
+	  sprintf(buf, "Spell : '%s'\n\r", spell_info[aff->type].name);
 	  send_to_char(buf, ch);
 	  sprintf(buf, "     Modifies %s by %d points\n\r", apply_types[aff->location], aff->modifier);
 	  send_to_char(buf, ch);
@@ -1531,10 +1549,10 @@ void do_set(struct char_data *ch, char *argument, int cmd)
     GET_GOLD(mob) = parm;
     break;
   case 8:
-    mob->specials.spells_to_learn = parm;
+    mob->specials.pracs = parm;
     break;
   case 9:
-    if(ch == mob && parm > 25 && GetMaxLevel(ch) < 59) {
+    if(ch == mob && parm > 25 && GetMaxLevel(ch) < LOKI) {
       cprintf(ch, "Sure, we all want to be more powerful.\n\r");
       return;
     }
@@ -1542,7 +1560,7 @@ void do_set(struct char_data *ch, char *argument, int cmd)
     mob->tmpabilities = mob->abilities;
     break;
   case 10:
-    if(ch == mob && parm > 25 && GetMaxLevel(ch) < 59) {
+    if(ch == mob && parm > 25 && GetMaxLevel(ch) < LOKI) {
       cprintf(ch, "Sure, we all want to be more powerful.\n\r");
       return;
     }
@@ -1550,7 +1568,7 @@ void do_set(struct char_data *ch, char *argument, int cmd)
     mob->tmpabilities = mob->abilities;
     break;
   case 11:
-    if(ch == mob && parm > 25 && GetMaxLevel(ch) < 59) {
+    if(ch == mob && parm > 25 && GetMaxLevel(ch) < LOKI) {
       cprintf(ch, "Sure, we all want to be more powerful.\n\r");
       return;
     }
@@ -1558,7 +1576,7 @@ void do_set(struct char_data *ch, char *argument, int cmd)
     mob->tmpabilities = mob->abilities;
     break;
   case 12:
-    if(ch == mob && parm > 25 && GetMaxLevel(ch) < 59) {
+    if(ch == mob && parm > 25 && GetMaxLevel(ch) < LOKI) {
       cprintf(ch, "Sure, we all want to be more powerful.\n\r");
       return;
     }
@@ -1566,7 +1584,7 @@ void do_set(struct char_data *ch, char *argument, int cmd)
     mob->tmpabilities = mob->abilities;
     break;
   case 13:
-    if(ch == mob && parm > 25 && GetMaxLevel(ch) < 59) {
+    if(ch == mob && parm > 25 && GetMaxLevel(ch) < LOKI) {
       cprintf(ch, "Sure, we all want to be more powerful.\n\r");
       return;
     }
@@ -1860,7 +1878,7 @@ void do_switch(struct char_data *ch, char *argument, int cmd)
 	send_to_char("Mixing snoop & switch is bad for your health.\n\r", ch);
 	return;
       }
-      if (victim->desc || (!IS_NPC(victim))) {
+      if (victim->desc || (!IS_NPC(victim)) || IS_SET(victim->specials.act, ACT_SWITCH)) {
 	send_to_char(
 	  "You can't do that, the body is already in use!\n\r", ch);
       } else {
@@ -1869,6 +1887,7 @@ void do_switch(struct char_data *ch, char *argument, int cmd)
 	ch->desc->character = victim;
 	ch->desc->original = ch;
 
+        SET_BIT(victim->specials.act, ACT_SWITCH);
 	victim->desc = ch->desc;
 	ch->desc = 0;
       }
@@ -1883,13 +1902,16 @@ void do_return(struct char_data *ch, char *argument, int cmd)
   if (!ch->desc)
     return;
 
-  if (!ch->desc->original) {
-    send_to_char("Huh? Talk sense I cant understand you\n\r", ch);
+  if (!ch->desc->original || (IS_NOT_SET(ch->specials.act, ACT_SWITCH) &&
+      IS_NOT_SET(ch->specials.act, ACT_POLYSELF) &&
+      IS_NOT_SET(ch->specials.act, ACT_POLYOTHER))) {
+    send_to_char("Huh?  Talk sense I can't understand you.\n\r", ch);
     return;
   } else {
     send_to_char("You return to your original body.\n\r", ch);
 
-    if (IS_SET(ch->specials.act, ACT_POLYSELF) && cmd) {
+    if ((IS_SET(ch->specials.act, ACT_POLYSELF) ||
+         IS_SET(ch->specials.act, ACT_POLYOTHER)) && cmd) {
       mob = ch;
       per = ch->desc->original;
 
@@ -1900,13 +1922,16 @@ void do_return(struct char_data *ch, char *argument, int cmd)
 
       /*  SwitchStuff(mob, per); */
     }
+    if(IS_SET(ch->specials.act, ACT_SWITCH))
+      REMOVE_BIT(ch->specials.act, ACT_SWITCH);
     ch->desc->character = ch->desc->original;
     ch->desc->original = 0;
 
     ch->desc->character->desc = ch->desc;
     ch->desc = 0;
 
-    if (IS_SET(ch->specials.act, ACT_POLYSELF) && cmd) {
+    if ((IS_SET(ch->specials.act, ACT_POLYSELF) ||
+         IS_SET(ch->specials.act, ACT_POLYOTHER)) && cmd) {
       extract_char(mob);
     }
   }
@@ -2016,6 +2041,7 @@ void do_load(struct char_data *ch, char *argument, int cmd)
     act("$n makes a strange magical gesture.", TRUE, ch, 0, 0, TO_ROOM);
     act("$n has created $p!", FALSE, ch, obj, 0, TO_ROOM);
     act("You now have $p.", FALSE, ch, obj, 0, TO_CHAR);
+#if 0
   } else if (is_abbrev(type, "room")) {
     int start, end;
 
@@ -2033,9 +2059,9 @@ void do_load(struct char_data *ch, char *argument, int cmd)
       send_to_char("Load? Fine!  Load we must, But what?\n\r", ch);
       break;
     }
+#endif
   } else {
-    send_to_char("Usage: load (object|mobile) (number|name)\n\r"
-		 "       load room start [end]\n\r", ch);
+    cprintf(ch, "Usage:  load <object|mobile> <vnum|name>\n\r");
   }
 }
 
@@ -2485,6 +2511,10 @@ void do_advance(struct char_data *ch, char *argument, int cmd)
     send_to_char("NO! Not on NPC's.\n\r", ch);
     return;
   }
+  if (IS_IMMORTAL(victim)) {
+    cprintf(ch, "But they are already as powerful as you can imagine!\n\r");
+    return;
+  }
   argument = one_argument(argument, class);
 
   if (!*class) {
@@ -2670,13 +2700,10 @@ void restore_one_victim(struct char_data *victim)
       }
     if (GetMaxLevel(victim) >= LOKI) {
       if((strcasecmp(GET_NAME(victim), "Quixadhal"))) {
+        register int x;
         cprintf(victim, "Fool!  You DARE challenge the Dread Lord?\n\r");
-        if(GET_LEVEL(victim, 0)) GET_LEVEL(victim, 0) = LOW_IMMORTAL;
-        if(GET_LEVEL(victim, 1)) GET_LEVEL(victim, 1) = LOW_IMMORTAL;
-        if(GET_LEVEL(victim, 2)) GET_LEVEL(victim, 2) = LOW_IMMORTAL;
-        if(GET_LEVEL(victim, 3)) GET_LEVEL(victim, 3) = LOW_IMMORTAL;
-        if(GET_LEVEL(victim, 4)) GET_LEVEL(victim, 4) = LOW_IMMORTAL;
-        if(GET_LEVEL(victim, 5)) GET_LEVEL(victim, 5) = LOW_IMMORTAL;
+        for(x= 0; x< ABS_MAX_CLASS; x++)
+          if(HasClass(victim, 1<<x)) GET_LEVEL(victim, x) = LOW_IMMORTAL;
         save_char(victim, NOWHERE);
       }
     }
@@ -2742,7 +2769,7 @@ void do_noshout(struct char_data *ch, char *argument, int cmd)
 
   only_argument(argument, buf);
 
-  if (!*buf)
+  if (!*buf || IS_MORTAL(ch))
     if (IS_SET(ch->specials.act, PLR_NOSHOUT)) {
       send_to_char("You can now hear shouts again.\n\r", ch);
       REMOVE_BIT(ch->specials.act, PLR_NOSHOUT);

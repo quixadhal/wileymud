@@ -25,13 +25,8 @@
 #include "spell_parser.h"
 #include "reception.h"
 
-#include "myerrors.h"
 #define _DB_C
 #include "db.h"
-
-#ifdef CYRIC_HACK
-#include "lex.yy.c"
-#endif
 
 /*
  * declarations of most of the 'global' variables
@@ -296,7 +291,7 @@ void cleanout_room(struct room_data *rp)
     dlog("cleanout_room");
   free(rp->name);
   free(rp->description);
-  for (i = 0; i < 6; i++)
+  for (i = 0; i < MAX_NUM_EXITS; i++)
     if (rp->dir_option[i]) {
       free(rp->dir_option[i]->general_description);
       free(rp->dir_option[i]->keyword);
@@ -393,7 +388,7 @@ void load_one_room(FILE * fl, struct room_data *rp)
   rp->funct = 0;
   rp->light = 0;		       /* Zero light sources */
 
-  for (tmp = 0; tmp <= 5; tmp++)
+  for (tmp = 0; tmp < MAX_NUM_EXITS; tmp++)
     rp->dir_option[tmp] = 0;
 
   rp->ex_description = 0;
@@ -666,7 +661,7 @@ void boot_zones(void)
 struct char_data *read_mobile(int nr, int type)
 {
   int i;
-  long tmp, tmp2, tmp3;
+  long tmp, tmp2, tmp3, tmp4, tmp5, tmp6;
   struct char_data *mob;
   char buf[100];
   char letter;
@@ -708,7 +703,10 @@ struct char_data *read_mobile(int nr, int type)
 
   fscanf(mob_f, " %c ", &letter);
 
-  if (letter != 'D') {
+  switch(letter) {
+    case 'W':
+    case 'M':
+    case 'S': {
     if ((letter == 'W') || (letter == 'M')) {
       fscanf(mob_f, " %D ", &tmp);
       mob->mult_att = tmp;
@@ -814,7 +812,8 @@ struct char_data *read_mobile(int nr, int type)
       mob->player.sounds = 0;
       mob->player.distant_snds = 0;
     }
-  } else {
+  } break;
+  case 'D': {
     /* The old monsters are down below here */
 
     fscanf(mob_f, "\n");
@@ -903,27 +902,93 @@ struct char_data *read_mobile(int nr, int type)
 
     /* Calculate THAC0 as a formular of Level */
     mob->points.hitroll = MAX(1, GET_LEVEL(mob, WARRIOR_LEVEL_IND) - 3);
+  } break;
+  case 'C': {
+    register int x;
+
+    fscanf(mob_f, " %d %d %d %d %d ", &tmp, &tmp2, &tmp3, &tmp4, &tmp5);
+    GET_RACE(mob) = tmp;
+    mob->player.class = tmp2;
+    mob->player.sex = tmp3;
+    mob->player.height = tmp4;
+    mob->player.weight = tmp5;
+    fscanf(mob_f, " %dd%d+%d \n", &tmp, &tmp2, &tmp3);
+    mob->points.gold = dice(tmp, tmp2)+ tmp3;
+    fscanf(mob_f, " %dd%d+%d ", &tmp, &tmp2, &tmp3);
+    GET_EXP(mob) = dice(tmp, tmp2)+ tmp3;
+    fscanf(mob_f, " %d ", &tmp);
+    if(!mob->player.class) /* no class... store level in warrior slot */
+      GET_LEVEL(mob, WARRIOR_LEVEL_IND)= tmp;
+    else for(x= 0; x< ABS_MAX_CLASS; x++)
+      if(HasClass(mob, 1<<x))
+        GET_LEVEL(mob, x)= tmp;
+    fscanf(mob_f, " %dd%d+%d ", &tmp, &tmp2, &tmp3);
+    mob->points.hit= mob->points.max_hit = dice(tmp, tmp2) + tmp3;
+    mob->points.mana = mob->points.max_mana = 100;
+    mob->points.move = mob->points.max_move = 100;
+    fscanf(mob_f, " %d %d %d \n", &tmp, &tmp2, &tmp3);
+    mob->points.armor = 10 * tmp;
+    mob->points.hitroll = 20 - tmp2;
+    mob->mult_att = tmp3;
+    if(mob->mult_att < 0)
+      mob->mult_att= 1;
+    for(x= 0; x< mob->mult_att; x++) {
+      fscanf(mob_f, " %dd%d+%d %d \n", &tmp, &tmp2, &tmp3, &tmp4);
+      mob->points.damroll = tmp3;
+      mob->specials.damnodice = tmp;
+      mob->specials.damsizedice = tmp2;
+      /* damage type is ignored for now...
+       * we also note that only the last line is used... and that we
+       * assume mult_att= 1 == mult_att= 0
+       */
+    }
+    fscanf(mob_f, " %d %d %d \n", &tmp, &tmp2, &tmp3);
+    mob->immune = tmp;
+    mob->M_immune = tmp2;
+    mob->susc = tmp3;
+    fscanf(mob_f, " %d %d %d %d %d %d \n", &tmp, &tmp2, &tmp3, &tmp4,
+           &tmp5, &tmp6);
+    mob->abilities.str = tmp;
+    mob->abilities.str_add = tmp2;
+    mob->abilities.dex = tmp3;
+    mob->abilities.con = tmp4;
+    mob->abilities.intel = tmp5;
+    mob->abilities.wis = tmp6;
+    for(x= 0; x< 5; x++) {
+      fscanf(mob_f, " %d ", &tmp);
+      mob->specials.apply_saving_throw[x] = tmp;
+    }
+    fscanf(mob_f, "\n");
+    fscanf(mob_f, " %d %d %d \n", &tmp, &tmp2, &tmp3);
+    mob->specials.position = tmp;
+    mob->specials.default_pos = tmp2;
+    if(tmp3) {
+      mob->player.sounds = fread_string(mob_f);
+      mob->player.distant_snds = fread_string(mob_f);
+    }
+    mob->player.time.birth = time(0);
+    mob->player.time.played = 0;
+    mob->player.time.logon = time(0);
+    for(x= 0; x< 3; x++)
+      GET_COND(mob, x)= -1;
+  } break;
+  default: {
+    log("Unknown mobile type code '%c' in \"%s\"!  HELP!\n\r", letter,
+        mob->player.name);
+  } break;
   }
-
   mob->tmpabilities = mob->abilities;
-
   for (i = 0; i < MAX_WEAR; i++)
     mob->equipment[i] = 0;
-
   mob->nr = nr;
-
   mob->desc = 0;
-
   if (!IS_SET(mob->specials.act, ACT_ISNPC))
     SET_BIT(mob->specials.act, ACT_ISNPC);
 
   /* insert in list */
-
   mob->next = character_list;
   character_list = mob;
-
   mob_index[nr].number++;
-
   return (mob);
 }
 
@@ -1335,7 +1400,7 @@ void store_to_char(struct char_file_u *st, struct char_data *ch)
   for (i = 0; i <= MAX_SKILLS - 1; i++)
     ch->skills[i] = st->skills[i];
 
-  ch->specials.spells_to_learn = st->spells_to_learn;
+  ch->specials.pracs = st->pracs;
   ch->specials.alignment = st->alignment;
 
   ch->specials.act = st->act;
@@ -1351,7 +1416,7 @@ void store_to_char(struct char_file_u *st, struct char_data *ch)
   strcpy(GET_NAME(ch), st->name);
 
   /* Not used as far as I can see (Michael) */
-  for (i = 0; i <= 5; i++)
+  for (i = 0; i <= MAX_SAVING_THROWS; i++)
     ch->specials.apply_saving_throw[i] = st->apply_saving_throw[i];
 
   for (i = 0; i <= 2; i++)
@@ -1433,7 +1498,7 @@ void char_to_store(struct char_data *ch, struct char_file_u *st)
   st->abilities = ch->abilities;
   st->points = ch->points;
   st->alignment = ch->specials.alignment;
-  st->spells_to_learn = ch->specials.spells_to_learn;
+  st->pracs = ch->specials.pracs;
   st->act = ch->specials.act;
   st->new_act = ch->specials.new_act;
 
@@ -1546,12 +1611,14 @@ void save_char(struct char_data *ch, SHORT load_room)
 
   st.load_room = load_room;
   strcpy(st.pwd, ch->desc->pwd);
+  strcpy(st.oldpwd, ch->desc->oldpwd);
 
   strcpy(name, GET_NAME(ch));
   t_ptr = name;
   for (; *t_ptr != '\0'; t_ptr++)
     *t_ptr = LOWER(*t_ptr);
 
+#if 0
   sprintf(buf, "ply/%c/%s.p", name[0], name);
   if (!(fl = fopen(buf, "w+b"))) {
     perror("save char");
@@ -1559,6 +1626,7 @@ void save_char(struct char_data *ch, SHORT load_room)
   }
   fwrite(&st, sizeof(struct char_file_u), 1, fl);
   fclose(fl);
+#endif
   sprintf(buf, "ply/%c/%s.chr", name[0], name);
   new_save_char(&st, buf);
 }
@@ -1589,7 +1657,7 @@ struct char_file_u {
   struct char_point_data points;
   struct char_skill_data skills[MAX_SKILLS];
   struct affected_type affected[MAX_AFFECT];
-  int spells_to_learn;
+  int pracs;
   int skills_to_learn;
   int alignment;
   time_t last_logon;		       /* Time (in secs) of last logon */
@@ -1616,7 +1684,7 @@ struct char_file_u {
   }
   fprintf(fp, "#PLAYER\n");
   fprintf(fp, "Name               %s~\n", ch->name);
-  fprintf(fp, "Password           %s~\n", ch->pwd);
+  fprintf(fp, "Passwd             %s~\n", ch->pwd);
   fprintf(fp, "Whizz              %d\n", ch->points.wiz_priv);
   fprintf(fp, "PreTitle           %s~\n", ch->pre_title);
   fprintf(fp, "Title              %s~\n", ch->title);
@@ -1679,12 +1747,12 @@ struct char_file_u {
   fprintf(fp, "SavePad            %d %d %d %d\n",
           ch->save_blah1, ch->save_blah2,
           ch->save_blah3, ch->save_blah4);
-  fprintf(fp, "SpellsToLearn      %d\n", ch->spells_to_learn);
+  fprintf(fp, "Pracs              %d\n", ch->pracs);
   fprintf(fp, "SkillsToLearn      %d\n", ch->skills_to_learn);
   for(i= 0; i< MAX_SKILLS; i++)
     fprintf(fp, "Skill              %d %d %d \"%s\"\n", i,
             (int)(ch->skills[i].learned), (int)(ch->skills[i].recognise),
-            (i?spells[i-1]:"none"));
+            (i?spell_info[i].name:"none"));
   fprintf(fp, "ActFlags           %d %d\n", (int)(ch->act), ch->new_act);
   for(i= 0; i< MAX_AFFECT; i++)
     fprintf(fp, "Affect             %d %d %d %d %d %ld %lu\n", i,
@@ -1869,9 +1937,9 @@ void reset_char(struct char_data *ch)
     ch->player.class = 8;
     send_to_char("Setting your class to THIEF only.\n\r", ch);
   }
-  for (i = 0; i <= 5; i++) {
+  for (i = 0; i < ABS_MAX_CLASS; i++) {
     if (GET_LEVEL(ch, i) > LOKI) {
-      GET_LEVEL(ch, i) = 51;
+      GET_LEVEL(ch, i) = LOW_IMMORTAL;
     }
   }
 
@@ -1969,14 +2037,13 @@ void init_char(struct char_data *ch)
 
   /* *** if this is our first player --- he be God *** */
 
-  if (!strcmp(GET_NAME(ch), "Dirk")) {
+  if (!strcmp(GET_NAME(ch), "Quixadhal")) {
+    register int x;
     GET_EXP(ch) = 24000000;
-    GET_LEVEL(ch, 0) = LOKI;
-    GET_LEVEL(ch, 1) = LOKI;
-    GET_LEVEL(ch, 2) = LOKI;
-    GET_LEVEL(ch, 3) = LOKI;
-    GET_LEVEL(ch, 4) = LOKI;
-    GET_LEVEL(ch, 5) = LOKI;
+    for(x= 0; x< ABS_MAX_CLASS; x++) {
+      GET_LEVEL(ch, x) = LOKI;
+      ch->player.class |= 1<<x;
+    }
   }
   set_title(ch);
 
@@ -2053,7 +2120,7 @@ void init_char(struct char_data *ch)
   }
 
   ch->specials.affected_by = 0;
-  ch->specials.spells_to_learn = 0;
+  ch->specials.pracs = 0;
 
   for (i = 0; i < 5; i++)
     ch->specials.apply_saving_throw[i] = 0;
@@ -2066,127 +2133,6 @@ struct room_data *real_roomp(int virtual)
 {
   return hash_find(&room_db, virtual);
 }
-
-#ifdef CYRIC_HACK
-void print_hash_ent(int KEY, struct room_data *This, void *NOTHING)
-{
-  int i, flag = 0, a, b;
-  struct extra_descr_data *point;
-
-  printf("Name        :%s, ", This->name);
-  printf("Number      :%d\n", This->number);
-  if (This->description)
-    printf("Description\n-----------%s-----------\n", This->description);
-  else
-    printf("Description\n-----------\nnone\n-----------\n", This->description);
-
-  for (point = This->ex_description; point; point = point->next) {
-    printf("Extra Description.\n");
-    printf("  Key Words:%s\n", point->keyword);
-    printf("  Description:\n-----------%s-----------\n", point->description);
-  }
-
-  printf("Zone        :%d, ", This->zone);
-  printf("Flags       :%d, ", This->room_flags);
-  printf("Sector      :%s\n", Sector_names[This->sector_type]);
-  printf("River Dir :%s, ", (This->river_dir >= 0 ? dirs[This->river_dir] : "None"));
-  printf("River Spd :%d, ", This->river_speed);
-  printf("Tele Time :%d, ", This->tele_time);
-  printf("Tele Targ :%d, ", This->tele_targ);
-  printf("Tele Look :%s\n", (This->tele_look != 0 ? "Yes" : "No"));
-  printf("In room Sound:\n%s\n", This->sound);
-  printf("Distand Sound:\n%s\n", This->distant_sound);
-  for (i = 0; i < 6; i++) {
-    if (This->dir_option[i]) {
-      printf("  Exit : %s\n", dirs[i]);
-      printf("  Keyword : %s\n", This->dir_option[i]->keyword);
-      printf("  Exit Info : ");
-      if (This->dir_option[i]->exit_info) {
-	for (a = 1, b = 0; a < 64; a *= 2, b++) {
-	  if (IS_SET(This->dir_option[i]->exit_info, a)) {
-	    printf(" %s ", EXIT_FLAGS_NAMES[b]);
-	  }
-	}
-	printf("\n");
-      } else
-	printf("None\n");
-
-      printf("  Key : %d, ", This->dir_option[i]->key);
-      printf("  To Room : %d\n", This->dir_option[i]->to_room);
-      printf("  Exit Alias : %s\n", This->dir_option[i]->exit_alias);
-      printf("\n");
-      flag++;
-    }
-  }
-  if (!flag)
-    printf("  No EXITS defined for this room.\n");
-  else
-    printf("  Number of EXITS defined : %d.\n", flag);
-  printf("\n");
-}
-
-void boot_world(void)
-{
-  FILE *fl;
-  struct room_data *rp;
-  char *wld_file_list[MAX_WLD_FILE_ENTRIES];
-  int index = 0;
-  char buf[256];
-
-  init_hash_table(&room_db, sizeof(struct room_data), 2048);
-
-  /* This will read in the Master.wld file which contains all of the
-   * areas that are to be loaded into the game.
-   */
-
-  sprintf(buf, "%s/Master.wld", WLD_FILE_DIRECTORY);
-  if ((fl = fopen(buf, "r")) == NULL) {
-    fprintf(stderr, "fopen: file not found!\n");
-    exit(0);
-  }
-  yyin = fl;
-  while ((MYtoken = yylex()) != TOK_zero) {
-    fprintf(stderr, "TOKEN_STRING [%s]\n", yytext);
-    fprintf(stderr, "TOKEN_NUMBER [%d]\n", MYtoken);
-    if (MYtoken == TOK_ID) {
-      wld_file_list[index] = (char *)strdup(yytext);
-      index++;
-    } else {
-      fprintf(stderr, "ERROR in Master.wld File?\n");
-      exit(0);
-    }
-  }
-  wld_file_list[index] = '\0';
-  index = 0;
-  fclose(fl);
-  while (wld_file_list[index]) {
-    sprintf(buf, "%s/%s", WLD_FILE_DIRECTORY, wld_file_list[index]);
-    if ((fl = fopen(buf, "r")) == NULL) {
-      fprintf(stderr, "fopen: file not found!\n");
-      exit(0);
-    }
-    yyin = fl;
-    yyrestart(yyin);
-    LINEcount = 0;
-    if (!parse_wld(yyin)) {
-      printf("Database Parse Aborted\n");
-      exit(0);
-    }
-    fclose(fl);
-    index++;
-    GLINEcount += LINEcount;
-  }
-
-/*
- * printf("------------------ Dumping Hash Table -----------------------\n");
- * hash_iterate(&room_db,print_hash_ent,NULL);
- */
-
-  printf("\n");
-  printf("ROOMcount %d, GLINEcount %d\n", ROOMcount, GLINEcount);
-  fclose(fl);
-}
-#endif
 
 /* returns the real number of the monster with given virtual number */
 int real_mobile(int virtual)
@@ -2238,474 +2184,6 @@ int real_object(int virtual)
       bot = mid + 1;
   }
 }
-
-/*
- * This is all the new crap for the lex parser!!!!!  YUK!!!!
- */
-
-#ifdef CYRIC_HACK
-void PrintError(int ErrorCode)
-{
-  fprintf(stderr, "%%Error - line %d %s\n", LINEcount, error_list[ErrorCode]);
-}
-
-int FindThisToken(int WHICH_TOKEN)
-{
-  do {
-    MYtoken = yylex();
-    if (MYtoken == WHICH_TOKEN)
-      return (MYtoken);
-  } while (MYtoken);
-  return (MYtoken);
-}
-
-int FindTokenInList(int WHICH_TOKEN, int list[])
-{
-  int index;
-
-  for (index = 0; list[index] != -1; index++) {
-    if (list[index] == WHICH_TOKEN)
-      return 1;
-  }
-  return 0;
-}
-
-void ResetThisRoom(struct room_data *This)
-{
-  int i;
-
-  This->name = DEFAULT_ROOM_NAME;
-  This->zone = DEFAULT_ROOM_ZONE;
-  This->sector_type = DEFAULT_ROOM_SECT;
-  This->river_dir = DEFAULT_ROOM_RIVER_DIR;
-  This->river_speed = DEFAULT_ROOM_RIVER_SPEED;
-  This->tele_time = DEFAULT_ROOM_TELE_TIME;
-  This->tele_targ = DEFAULT_ROOM_TELE_TARG;
-  This->tele_look = DEFAULT_ROOM_TELE_LOOK;
-  This->description = DEFAULT_ROOM_DESC;
-  This->ex_description = DEFAULT_ROOM_EX_DESC;
-  This->room_flags = DEFAULT_ROOM_FLAGS;
-  This->sound = DEFAULT_ROOM_SOUND;
-  This->distant_sound = DEFAULT_ROOM_DISTANT_SOUND;
-  This->light = DEFAULT_ROOM_LIGHT;
-  This->funct = DEFAULT_ROOM_FUNCT;
-  This->contents = DEFAULT_ROOM_CONTENTS;
-  This->people = DEFAULT_ROOM_PEOPLE;
-  for (i = 0; i <= MAX_NUM_EXITS; i++) {
-    This->dir_option[i] = 0;
-  }
-}
-
-void ResetThisExit(struct room_direction_data *This)
-{
-  This->general_description = DEFAULT_EXIT_GENERAL_DESCRIPTION;
-  This->keyword = DEFAULT_EXIT_KEYWORD;
-  This->exit_info = DEFAULT_EXIT_EXIT_INFO;
-  This->key = DEFAULT_EXIT_KEY;
-  This->to_room = DEFAULT_EXIT_TO_ROOM;
-  This->exit_alias = DEFAULT_EXIT_ALIAS;
-  return;
-}
-
-struct room_data *FindThisRoom(int WhichRoom)
-{
-  return (real_roomp(WhichRoom));
-}
-
-int InheritThisRoom(struct room_data *WorkingRoom, int This)
-{
-  struct room_data *this_ptr;
-
-  if (WorkingRoom == NULL) {
-    fprintf(stderr, "%%ERROR - pointer null - InheritThisRoom\n");
-    exit(0);
-  }
-  if ((this_ptr = FindThisRoom(This)) == NULL) {
-    PrintError(ERR_inherit_not_found);
-    return 0;
-  }
-  WorkingRoom->name = this_ptr->name;
-  WorkingRoom->zone = this_ptr->zone;
-  WorkingRoom->sector_type = this_ptr->sector_type;
-  if (FindTokenInList((this_ptr->sector_type + TOK_inside), LIST_water)) {
-    WorkingRoom->river_dir = this_ptr->river_dir;
-    WorkingRoom->river_speed = this_ptr->river_speed;
-  }
-  WorkingRoom->tele_time = this_ptr->tele_time;
-  WorkingRoom->tele_targ = this_ptr->tele_targ;
-  WorkingRoom->tele_look = this_ptr->tele_look;
-  WorkingRoom->description = this_ptr->description;
-  WorkingRoom->ex_description = this_ptr->ex_description;
-  WorkingRoom->room_flags = this_ptr->room_flags;
-  WorkingRoom->sound = this_ptr->sound;
-  WorkingRoom->distant_sound = this_ptr->distant_sound;
-  WorkingRoom->light = this_ptr->light;
-  WorkingRoom->funct = this_ptr->funct;
-  return 1;
-}
-
-int parse_wld(FILE * which_file)
-{
-
-  while (1) {
-    MYtoken = yylex();		       /* Get A token */
-    switch (MYtoken) {
-    case TOK_zero:
-      if (ROOMcompile) {
-	PrintError(TOK_zero);
-	return 0;
-      }
-      return 1;
-      break;
-    case TOK_pound:
-      MYtoken = yylex();
-      if (MYtoken != TOK_int) {
-	PrintError(TOK_pound);
-	return 0;
-      }
-      if (!make_room(atoi(yytext)))
-	return 0;
-      ROOMcount++;
-      break;
-    case TOK_cr:
-      break;
-    case TOK_end:
-      PrintError(TOK_end);
-      exit(0);
-      break;
-    default:
-      PrintError(ERR_unknown);
-      exit(0);
-      break;
-    }
-  }
-  return 1;
-}
-
-void make_extra_description(struct room_data *This)
-{
-  struct extra_descr_data *new_descr;
-  char c;
-
-  CREATE(new_descr, struct extra_descr_data, 1);
-
-  TMPbuff_ptr = 0;
-  while (1) {
-    c = input();
-    if (TMPbuff_ptr > MAX_MY_STRING_LENGTH) {
-      PrintError(ERR_strlen);
-      exit(0);
-    }
-    if (c == '~' || c == '\n') {
-      LINEcount++;
-      break;
-    } else
-      TMPbuff[TMPbuff_ptr++] = c;
-  }
-  if (TMPbuff_ptr == 0) {
-    PrintError(ERR_ex_name);
-    exit(0);
-  }
-  TMPbuff[TMPbuff_ptr] = '\0';
-  new_descr->keyword = (char *)strdup(TMPbuff);
-
-  TMPbuff_ptr = 0;
-  while (1) {
-    c = input();
-    if (TMPbuff_ptr > MAX_DESC_LENGTH) {
-      PrintError(ERR_strlen);
-      exit(0);
-    }
-    if (c == '\n')
-      LINEcount++;
-    if (c == '~') {
-      LINEcount++;
-      break;
-    } else
-      TMPbuff[TMPbuff_ptr++] = c;
-  }
-  TMPbuff[TMPbuff_ptr] = '\0';
-  new_descr->description = (char *)strdup(TMPbuff);
-  new_descr->next = This->ex_description;
-  This->ex_description = new_descr;
-}
-
-void make_exit(struct room_data *WorkingRoom)
-{
-  int direction;
-  char c;
-
-  MYtoken = yylex();
-  switch (MYtoken) {
-  case TOK_north:
-  case TOK_east:
-  case TOK_south:
-  case TOK_west:
-  case TOK_up:
-  case TOK_down:
-    {
-      direction = MYtoken - TOK_north;
-      CREATE(WorkingRoom->dir_option[direction], struct room_direction_data, 1);
-
-      ResetThisExit(WorkingRoom->dir_option[direction]);
-      do {
-	MYtoken = yylex();
-	switch (MYtoken) {
-	case TOK_inherit:
-	  MYtoken = yylex();
-	  if (MYtoken == TOK_int) {
-	    /* nothing yet */
-	  } else {
-	    PrintError(TOK_inherit);
-	    return;
-	  }
-	  break;
-	case TOK_key:
-	  MYtoken = yylex();
-	  if (MYtoken != TOK_int) {
-	    PrintError(TOK_key);
-	    exit(0);
-	  }
-	  WorkingRoom->dir_option[direction]->key = atoi(yytext);
-	  break;
-	case TOK_flags:
-	  MYtoken = yylex();
-	  while (MYtoken != TOK_tilde) {
-	    if (FindTokenInList(MYtoken, LIST_exit_flags)) {
-	      WorkingRoom->dir_option[direction]->exit_info |=
-		EXIT_FLAGS[MYtoken - TOK_isdoor];
-	    } else {
-	      PrintError(ERR_list);
-	      exit(0);
-	    }
-	    MYtoken = yylex();
-	  }
-	  break;
-	case TOK_goto:
-	  MYtoken = yylex();
-	  if (MYtoken != TOK_int) {
-	    PrintError(TOK_goto);
-	    exit(0);
-	  }
-	  WorkingRoom->dir_option[direction]->to_room = atoi(yytext);
-	  break;
-	case TOK_desc:
-	  TMPbuff_ptr = 0;
-	  while (1) {
-	    c = input();
-	    if (TMPbuff_ptr > MAX_MY_STRING_LENGTH) {
-	      PrintError(ERR_strlen);
-	      exit(0);
-	    }
-	    if (c == '~') {
-	      LINEcount++;
-	      TMPbuff[TMPbuff_ptr++] = '\n';
-	      break;
-	    } else
-	      TMPbuff[TMPbuff_ptr++] = c;
-	  }
-	  if (TMPbuff_ptr == 0) {
-	    PrintError(TOK_desc);
-	    break;
-	  }
-	  TMPbuff[TMPbuff_ptr] = '\0';
-	  WorkingRoom->dir_option[direction]->general_description
-	    = (char *)strdup(TMPbuff);
-	  break;
-	case TOK_end:
-	  return;
-	  break;
-	default:
-	  PrintError(ERR_unknown);
-	  return;
-	  break;
-	}
-      } while (MYtoken && (MYtoken != TOK_end));
-      return;
-    }
-    break;
-  default:
-    PrintError(MYtoken);
-    FindThisToken(TOK_end);
-    return;
-    break;
-  }
-}
-
-int make_room(int RoomNumber)
-{
-  struct room_data *WorkingRoom;
-  char c;
-
-  ROOMcompile = 1;
-  allocate_room(RoomNumber);
-  WorkingRoom = real_roomp(RoomNumber);
-  ResetThisRoom(WorkingRoom);
-  WorkingRoom->number = RoomNumber;
-
-  while (1) {
-    MYtoken = yylex();
-    switch (MYtoken) {
-    case TOK_zero:
-      PrintError(TOK_zero);
-      ROOMcompile = 0;
-      return 0;
-      break;
-    case TOK_flags:
-      while (yylex() != TOK_tilde);
-      break;
-    case TOK_name:
-    case TOK_sound1:
-    case TOK_sound2:
-      TMPbuff_ptr = 0;
-      while (1) {
-	c = input();
-	if (TMPbuff_ptr > MAX_MY_STRING_LENGTH) {
-	  PrintError(ERR_strlen);
-	  return 0;
-	}
-	if (c == '\n')
-	  LINEcount++;
-	if (c == '~' || c == '\n')
-	  break;
-	else
-	  TMPbuff[TMPbuff_ptr++] = c;
-      }
-      if (TMPbuff_ptr == 0) {
-	PrintError(MYtoken);
-	return 0;
-      }
-      TMPbuff[TMPbuff_ptr] = '\0';
-      switch (MYtoken) {
-      case TOK_name:
-	WorkingRoom->name = (char *)strdup(TMPbuff);
-	break;
-      case TOK_sound1:
-	WorkingRoom->sound = (char *)strdup(TMPbuff);
-	break;
-      case TOK_sound2:
-	WorkingRoom->distant_sound = (char *)strdup(TMPbuff);
-	break;
-      }
-      break;
-    case TOK_desc:
-      TMPbuff_ptr = 0;
-      while (1) {
-	c = input();
-	if (TMPbuff_ptr > MAX_DESC_LENGTH) {
-	  PrintError(ERR_strlen);
-	  return 0;
-	}
-	if (c == '~')
-	  break;
-	else
-	  TMPbuff[TMPbuff_ptr++] = c;
-      }
-      TMPbuff[TMPbuff_ptr] = '\0';
-      WorkingRoom->description = (char *)strdup(TMPbuff);
-      break;
-    case TOK_ex_desc:
-      make_extra_description(WorkingRoom);
-      break;
-    case TOK_inherit:
-      MYtoken = yylex();
-      if (MYtoken == TOK_int) {
-	if (!InheritThisRoom(WorkingRoom, atoi(yytext)))
-	  return 0;
-      } else {
-	PrintError(TOK_inherit);
-	return 0;
-      }
-      break;
-    case TOK_pound:
-      PrintError(TOK_pound);
-      unput('#');
-      ROOMcompile = 0;
-      return 0;
-      break;
-    case TOK_exit:
-      make_exit(WorkingRoom);
-      break;
-    case TOK_zone:
-      MYtoken = yylex();
-      if (MYtoken != TOK_int) {
-	PrintError(TOK_zone);
-	PrintError(TOK_int);
-	return 0;
-      }
-      WorkingRoom->zone = atoi(yytext);
-      break;
-    case TOK_sect:
-      MYtoken = yylex();
-      if (!FindTokenInList(MYtoken, LIST_sector)) {
-	PrintError(TOK_sect);
-	PrintError(ERR_list);
-	return 0;
-      }
-      WorkingRoom->sector_type = MYtoken - TOK_inside;
-      if (FindTokenInList(MYtoken, LIST_water)) {	/* is sector type water? */
-	MYtoken = yylex();	       /* this should be direction? */
-	if (FindTokenInList(MYtoken, LIST_direction)) {
-	  WorkingRoom->river_dir = MYtoken - TOK_north;
-	  MYtoken = yylex();	       /* this should be speed */
-	  if (MYtoken == TOK_int) {
-	    WorkingRoom->river_speed = atoi(yytext);
-	  } else {
-	    PrintError(TOK_int);
-	    exit(0);
-	  }
-	} else {
-	  PrintError(ERR_list);
-	  exit(0);
-	}
-      }
-      break;
-    case TOK_tele_time:
-      MYtoken = yylex();
-      if (MYtoken != TOK_int) {
-	PrintError(TOK_tele_time);
-	PrintError(TOK_int);
-	exit(0);
-      }
-      WorkingRoom->tele_time = atoi(yytext);
-      break;
-    case TOK_tele_targ:
-      MYtoken = yylex();
-      if (MYtoken != TOK_int) {
-	PrintError(TOK_tele_targ);
-	PrintError(TOK_int);
-	exit(0);
-      }
-      WorkingRoom->tele_targ = atoi(yytext);
-      break;
-    case TOK_tele_look:
-      MYtoken = yylex();
-      if (!FindTokenInList(MYtoken, LIST_reply)) {
-	PrintError(TOK_tele_look);
-	PrintError(ERR_list);
-	exit(0);
-      }
-      WorkingRoom->tele_look = MYtoken - TOK_no;
-      break;
-    case TOK_end:
-      if (NESTlevel > 0) {
-	PrintError(TOK_end);
-	ROOMcompile = 0;
-	exit(0);
-      }
-      ROOMcompile = 0;
-      return 1;
-      break;
-    default:
-      PrintError(ERR_unknown);
-      return (0);
-      break;
-    }
-  }
-  ROOMcompile = 0;
-  return 0;
-}
-#endif
 
 char *fix_string(const char *str)
 {
@@ -3012,7 +2490,7 @@ int fread_char(char *name, struct char_file_u *ch)
       if (!str_cmp(word, "Conditions")) {
         register int x;
 
-        for(x= 0; x< 6; x++)
+        for(x= 0; x< MAX_CONDITIONS; x++)
           ch->conditions[x]= fread_number(fp);
 	fMatch = TRUE;
         break;
@@ -3081,11 +2559,13 @@ int fread_char(char *name, struct char_file_u *ch)
       break;
 
     case 'P':
-      CKEY("Password", ch->pwd, new_fread_string(fp));
+      CKEY("Passwd", ch->pwd, new_fread_string(fp));
+      CKEY("Password", ch->oldpwd, new_fread_string(fp));
       KEY("Played", ch->played, fread_number(fp));
       CKEY("PreTitle", ch->pre_title, new_fread_string(fp));
       CKEY("PoofIn", ch->poof_in, new_fread_string(fp));
       CKEY("PoofOut", ch->poof_out, new_fread_string(fp));
+      KEY("Pracs", ch->pracs, fread_number(fp));
       if (!str_cmp(word, "PointsPad1")) {
         ch->points.blah1= fread_number(fp);
         ch->points.blah2= fread_number(fp);
@@ -3116,7 +2596,7 @@ int fread_char(char *name, struct char_file_u *ch)
 
     case 'S':
       KEY("Sex", ch->sex, fread_number(fp));
-      KEY("SpellsToLearn", ch->spells_to_learn, fread_number(fp));
+      KEY("SpellsToLearn", ch->pracs, fread_number(fp));
       KEY("SkillsToLearn", ch->skills_to_learn, fread_number(fp));
       if (!str_cmp(word, "SaveApply")) {
         register int x;
@@ -3176,4 +2656,3 @@ int fread_char(char *name, struct char_file_u *ch)
     }
   }
 }
-

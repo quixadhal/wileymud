@@ -220,9 +220,6 @@ void load_char_objs(struct char_data *ch)
       timegold = (int)(((double)(st->total_cost) *
 			(((double)(time(0) - st->last_update)) /
 			 ((double)SECS_PER_REAL_DAY))));
-/*
- *    timegold=(int)(((st->total_cost*((double)time(0)-st->last_update))/(SECS_PER_REAL_DAY))*0);  
- */
       sprintf(buf, "Char ran up charges of %g gold in rent", timegold);
       log(buf);
       sprintf(buf, "You ran up charges of %g gold in rent.\n\r", timegold);
@@ -403,130 +400,201 @@ void save_obj(struct char_data *ch, struct obj_cost *cost, int delete)
   fclose(fl);
 }
 
-/*
- * Routines used to update object file, upon boot time
- */
+void fwrite_obj(struct obj_data *obj, FILE *fp, int ObjId, int ContainedBy) {
+  register int i;
+  register struct extra_descr_data *ex;
 
-void update_obj_file(void)
-{
-  FILE *fl, *char_file;
-  struct obj_file_u st;
-  struct rental_header rh;
-  struct char_file_u ch_st;
-  struct char_data tmp_char;
-  int pos, no_read, player_i;
-  long days_passed, secs_lost;
-  char buf[MAX_STRING_LENGTH];
+  fprintf(fp, "#ITEM\n");
+  fprintf(fp, "ObjId              %d\n", ObjId);
+  fprintf(fp, "ContainedBy        %d\n", ContainedBy);
+  fprintf(fp, "Name               %s~\n", obj->name);
+  fprintf(fp, "Description\n%s~\n", obj->description);
+  fprintf(fp, "ShortDescr\n%s~\n", obj->short_description);
+  fprintf(fp, "ActionDescr\n%s~\n", obj->action_description);
+  fprintf(fp, "VNum               %d\n", ObjVnum(obj));
+  fprintf(fp, "EquippedAt         %d\n", (int)obj->eq_pos);
+  fprintf(fp, "Values             %d %d %d %d\n", obj->obj_flags.value[0],
+          obj->obj_flags.value[1], obj->obj_flags.value[2],
+          obj->obj_flags.value[3]);
+  fprintf(fp, "ExtraFlags         %ld\n", obj->obj_flags.extra_flags);
+  fprintf(fp, "Weight             %d\n", obj->obj_flags.weight);
+  fprintf(fp, "Timer              %d\n", obj->obj_flags.timer);
+  fprintf(fp, "BitVector          %ld\n", obj->obj_flags.bitvector);
+  fprintf(fp, "Type               %d\n", (int)obj->obj_flags.type_flag);
+  fprintf(fp, "WearFlags          %d\n", obj->obj_flags.wear_flags);
+  fprintf(fp, "Cost               %d\n", obj->obj_flags.cost);
+  fprintf(fp, "CostPerDay         %d\n", obj->obj_flags.cost_per_day);
+  for(i= 0; i< MAX_OBJ_AFFECT; i++)
+    fprintf(fp, "Affect             %d %d\n",
+            (int)obj->affected[i].location, (int)obj->affected[i].modifier);
+  for(ex= obj->ex_description; ex; ex= ex->next)
+    fprintf(fp, "ExtraDescr         %s~\n%s~\n",
+            ex->keyword, ex->description);
+  fprintf(fp, "End\n");
+}
 
-  int find_name(char *name);
+int new_save_obj(struct char_data *ch, struct obj_data *obj, FILE *fp, int delete, int ObjId, int ContainedBy) {
+  if(!obj)
+    return ObjId-1;
 
-  if (!(char_file = fopen(PLAYER_FILE, "r+b"))) {
-    perror("Opening player file for reading. (reception.c, update_obj_file)");
+  ObjId= new_save_obj(ch, obj->contains, fp, delete, ObjId+1, ObjId);
+  ObjId= new_save_obj(ch, obj->next_content, fp, delete, ObjId+1, ContainedBy);
+
+  if((obj->obj_flags.timer < 0) && (obj->obj_flags.timer != OBJ_NOTIMER)) {
+    if(delete) {
+      cprintf(ch, "You think %s is just old junk and throw it away.\n\r",
+              OBJS(obj, ch));
+      if(obj->in_obj)
+        obj_from_obj(obj);
+      obj_from_char(obj);
+      extract_obj(obj);
+    }
+    return ObjId-1;
+  } else if(obj->obj_flags.cost_per_day < 0) {
+    if(delete) {
+      cprintf(ch, "You think %s is just old junk and throw it away.\n\r",
+              OBJS(obj, ch));
+      if(obj->in_obj)
+        obj_from_obj(obj);
+      obj_from_char(obj);
+      extract_obj(obj);
+    }
+    return ObjId-1;
+  } else if(obj->item_number == -1) {
+    if(delete) {
+      if(obj->in_obj)
+        obj_from_obj(obj);
+      obj_from_char(obj);
+      extract_obj(obj);
+    }
+    return ObjId-1;
+  } else {
+    int weight = contained_weight(obj);
+
+    GET_OBJ_WEIGHT(obj) -= weight;
+    fwrite_obj(obj, fp, ObjId, ContainedBy);
+    GET_OBJ_WEIGHT(obj) += weight;
+    if (delete) {
+      if (obj->in_obj)
+	obj_from_obj(obj);
+      extract_obj(obj);
+    }
+  }
+  return ObjId;
+}
+
+void new_save_equipment(struct char_data *ch, struct obj_cost *cost, int delete) {
+  FILE *fp;
+  char name[40], filename[256], *t_ptr;
+  register int i, ObjId;
+
+  strcpy(name, GET_NAME(ch));
+  t_ptr = name;
+  for (; *t_ptr != '\0'; t_ptr++)
+    *t_ptr = LOWER(*t_ptr);
+  sprintf(filename, "ply/%c/%s.obj", name[0], name);
+
+  zero_rent(ch);
+
+  if (!(fp= fopen(filename, "w"))) {
+    perror("new_save_equipment");
     exit(1);
   }
-  /* r+b is for Binary Reading/Writing */
-  if (!(fl = fopen(OBJ_SAVE_FILE, "r+b"))) {
-    perror("   Opening object file for updating");
-    exit(1);
+  fprintf(fp, "#RENT\n");
+  fprintf(fp, "Owner              %s~\n", GET_NAME(ch));
+  fprintf(fp, "Gold               %d\n", GET_GOLD(ch));
+  fprintf(fp, "TotalCost          %d\n", cost->total_cost);
+  fprintf(fp, "LastUpdate         %ld\n", time(NULL));
+  fprintf(fp, "MinimumStay        0\n");
+  fprintf(fp, "End\n");
+  fprintf(fp, "#EQUIPMENT\n");
+  ObjId= -1;
+  for(i= 0; i< MAX_WEAR; i++) {
+    if(ch->equipment[i]) {
+      if(delete) {
+        ObjId= new_save_obj(ch, unequip_char(ch, i), fp, delete, ObjId+1, -1);
+      } else {
+        ObjId= new_save_obj(ch, ch->equipment[i], fp, delete, ObjId+1, -1);
+      }
+    }
   }
-  pos = 0;
-  errno = 0;
-  while (!feof(fl)) {
-    /* read a rental header */
-    no_read = fread(&rh, sizeof(rh), 1, fl);
-    if (no_read == 0)
+  fprintf(fp, "End\n");
+  fprintf(fp, "#CARRIED\n");
+  ObjId= new_save_obj(ch, ch->carrying, fp, delete, ObjId+1, -1);
+  fprintf(fp, "End\n");
+  fprintf(fp, "#END_RENT\n");
+  if(delete)
+    ch->carrying= 0;
+  fclose(fp);
+}
+
+int new_load_equipment(struct char_data *ch) {
+  FILE *fp;
+  char name[40], filename[256], *t_ptr;
+  double charges;
+  struct obj_data *obj;
+  struct obj_indexing {
+    int ObjId;
+    int ContainedBy;
+    struct obj_data *Myself;
+    struct obj_data *MyContainer;
+  } *inventory;
+  UBYTE fMatch, done;
+  char *word;
+  int state= 0;
+
+  strcpy(name, GET_NAME(ch));
+  t_ptr = name;
+  for (; *t_ptr != '\0'; t_ptr++)
+    *t_ptr = LOWER(*t_ptr);
+  sprintf(filename, "ply/%c/%s.obj", name[0], name);
+  if(!(fp= fopen(filename, "r"))) {
+    log("%s has no rental history!", GET_NAME(ch));
+    if(!(fp= fopen(filename, "w"))) {
+      perror("new_load_equipment");
+      exit(1);
+    }
+    fprintf(fp, "#RENT\n");
+    fprintf(fp, "Owner              %s~\n", GET_NAME(ch));
+    fprintf(fp, "Gold               %d\n", GET_GOLD(ch));
+    fprintf(fp, "TotalCost          %d\n", 0);
+    fprintf(fp, "LastUpdate         %ld\n", time(NULL));
+    fprintf(fp, "MinimumStay        0\n");
+    fprintf(fp, "#EQUIPMENT\n");
+    fprintf(fp, "#CARRIED\n");
+    fprintf(fp, "#END_RENT\n");
+    fclose(fp);
+    return -1;
+  }
+  done= 0;
+  for(;;) { /* Get rental information */
+    word = feof(fp) ? "End" : fread_word(fp);
+    fMatch = FALSE;
+
+    switch (toupper(word[0])) {
+    case '*':
+      fMatch = TRUE;
+      fread_to_eol(fp);
       break;
-    if (no_read != 1) {
-      perror("corrupted object save file 1");
-      exit(1);
-    }
-    if (!rh.inuse) {
-/*      sprintf(buf, "   skipping hole size %d.", rh.length);
- * log(buf);
- */
-      if (fseek(fl, rh.length, 1)) {
-	perror("corrupted object save file 2");
-	exit(1);
-      }
-      continue;
-    }
-    /* read in the char part of the rental data */
-    no_read = fread(&st, (rh.length > sizeof(st)) ? sizeof(st) : rh.length, 1, fl);
-    if (rh.length > sizeof(st)) {
-      st.nobjects = MAX_OBJ_SAVE;
-      fseek(fl, rh.length - sizeof(st), 1);
-    }
-    if (no_read != 1) {
-      perror("corrupted object save file 3");
-      exit(1);
-    }
-    pos += no_read;
-
-    if ((!feof(fl)) && (no_read > 0) && rh.owner[0]) {
-      /*
-       * sprintf(buf, "   Processing %s[%d].", rh.owner, pos);
-       * log(buf);
-       */
-      days_passed = ((time(0) - st.last_update) / SECS_PER_REAL_DAY);
-      secs_lost = ((time(0) - st.last_update) % SECS_PER_REAL_DAY);
-
-      /* load player record too, probably kinda slow :( */
-      if ((player_i = find_name(rh.owner)) < 0) {
-	perror("   Character not in list. (update_obj_file)");
-
-	/*
-	 * seek backwards to beginning of player record.
-	 * set rh.inuse to 0
-	 * seek forwards to beginning of next record
-	 */
-
-	fseek(fl, -rh.length - sizeof(rh), 1);
-	rh.inuse = 0;
-	fwrite(&rh, sizeof(rh), 1, fl);
-	fseek(fl, rh.length, 1);
-
-	continue;
-	exit(1);
-      }
-      fseek(char_file, (long)(player_table[player_i].nr * sizeof(struct char_file_u)), 0);
-      fread(&ch_st, sizeof(struct char_file_u), 1, char_file);
-
-      if (ch_st.load_room == NOWHERE) {
-	/* reset last_update_time so they have a grace period from the time the game came *UP*. 
-	 * log("     a game crash victim."); */
-	st.last_update = time(0);
-	fseek(fl, -rh.length, 1);
-	fwrite(&st, rh.length, 1, fl);
-	fseek(fl, 0, 1);
-	continue;		       /* next record */
-      }
-      if (days_passed > 0) {
-	if ((st.total_cost * days_passed) > st.gold_left) {
-	  sprintf(buf, "   Dumping %s from object file.", ch_st.name);
-	  log(buf);
-	  ch_st.points.gold = 0;
-	  ch_st.load_room = NOWHERE;
-	  fseek(char_file, (long)(player_table[player_i].nr * sizeof(struct char_file_u)), 0);
-	  fwrite(&ch_st, sizeof(struct char_file_u), 1, char_file);
-
-	  fseek(fl, -rh.length - sizeof(rh), 1);
-	  rh.inuse = 0;
-	  fwrite(&rh, sizeof(rh), 1, fl);
-	  fseek(fl, rh.length, 1);
-	} else {
-	  sprintf(buf, "   Updating %s", rh.owner);
-	  log(buf);
-	  st.gold_left -= (st.total_cost * days_passed);
-	  st.last_update = time(0) - secs_lost;
-	  fseek(fl, -rh.length, 1);
-	  fwrite(&st, rh.length, 1, fl);
-	  fseek(fl, 0, 1);
-	}
+    case '#':
+      fMatch = TRUE;
+      fread_to_eol(fp);
+      break;
+    case 'E':
+      if (!str_cmp(word, "End")) {
+        fMatch= 1;
+        done= 1;
       }
     }
+    if (!fMatch) {
+      bug("Fread_char: no match.");
+      if (!feof(fp))
+        fread_to_eol(fp);
+    }
+    if (done)
+      break;
   }
-  fclose(fl);
-  fclose(char_file);
+
 }
 
 /*
@@ -593,6 +661,7 @@ int receptionist(struct char_data *ch, int cmd, char *arg)
 	    FALSE, recep, 0, ch, TO_VICT);
 	act("$n helps $N into $S private chamber.", FALSE, recep, 0, ch, TO_NOTVICT);
 
+        new_save_equipment(ch, &cost, FALSE);
 	save_obj(ch, &cost, 1);
 	save_room = ch->in_room;
 	extract_char(ch);
@@ -645,3 +714,23 @@ void zero_rent(struct char_data *ch)
   fclose(fl);
   return;
 }
+
+/*
+ * This is for future use.  Right now, weights are pre-calculated so the
+ * weight of a container IS the weight of itself plus all interior objects.
+ * Later, to avoid cup problems, we may change it so you must query the
+ * total weight of an object by summing the individual weights.
+ */
+int TotalWeight(struct obj_data *obj)
+{
+  struct obj_data *tmp;
+  register int rval;
+
+  if(!obj)
+    return 0;
+  rval = GET_OBJ_WEIGHT(obj);
+  for(tmp= obj->contains; tmp; tmp= tmp->next_content)
+    rval += TotalWeight(tmp);
+  return rval;
+}
+

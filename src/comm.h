@@ -61,6 +61,7 @@ extern int pulse;
 extern int pulse_update;
 extern int pulse_river;
 extern int pulse_teleport;
+extern int pulse_nature;
 extern int pulse_sound;
 extern int pulse_zone;
 extern int pulse_mobile;

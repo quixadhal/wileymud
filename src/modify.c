@@ -489,7 +489,7 @@ void do_cust(struct char_data *ch, char *arg, int cmd)
   case 5:
     dir = -1;
     sscanf(string, "%d", &dir);
-    if ((dir >= 0) && (dir <= 5)) {
+    if ((dir >= 0) && (dir < MAX_NUM_EXITS)) {
       send_to_char("Enter text, exit with an @ on a BLANK line", ch);
       string[0] = 0;
       if (rp->dir_option[dir]) {
@@ -545,7 +545,7 @@ void do_cust(struct char_data *ch, char *arg, int cmd)
     rspeed = 0;
     rdir = 0;
     sscanf(string, "%d %d ", &rspeed, &rdir);
-    if ((rdir >= 0) && (rdir <= 5)) {
+    if ((rdir >= 0) && (rdir < MAX_NUM_EXITS)) {
       rp->river_speed = rspeed;
       rp->river_dir = rdir;
     } else {
@@ -943,15 +943,15 @@ void check_reboot(void)
         aprintf(
           "\x007\n\rBroadcast message from Quixadhal (tty0) %s...\n\r\n\r",
           tmstr);
-        aprintf("\x007Automatic reboot.  Come back in a few minutes!\n\r");
-        aprintf("\x007The system is going down NOW !!\n\r\n\r");
+        aprintf("Automatic reboot.  Come back in a few minutes!\n\r");
+        aprintf("\x007The system is going down NOW !!\n\r\x007\n\r");
 	diku_shutdown = diku_reboot = 1;
       } else if (t_info->tm_min > 40) {
         aprintf(
           "\x007\n\rBroadcast message from Quixadhal (tty0) %s...\n\r\n\r",
           tmstr);
-        aprintf("\x007Automatic reboot.  Game is now Whizz-Locked!\n\r");
-        aprintf("\x007The system is going DOWN in %d minutes !!\n\r\n\r",
+        aprintf("Automatic reboot.  Game is now Whizz-Locked!\n\r");
+        aprintf("\x007The system is going DOWN in %d minutes !!\n\r\x007\n\r",
                 55 - t_info->tm_min);
         WizLock = 1;
       }

@@ -171,6 +171,7 @@ void do_save(struct char_data *ch, char *argument, int cmd)
   sprintf(buf, "Saving %s.\n\r", GET_NAME(ch));
   send_to_char(buf, ch);
   recep_offer(ch, NULL, &cost);
+  new_save_equipment(ch, &cost, FALSE);
   save_obj(ch, &cost, FALSE);
   save_char(ch, NOWHERE);
 }
@@ -432,25 +433,9 @@ void do_practice(struct char_data *ch, char *arg, int cmd)
     {"\n", -1}
   };
 
-  struct skill_struct r_spells[] =
-  {
-    {"armor", SPELL_ARMOR},
-    {"create food", SPELL_CREATE_FOOD},
-
-    {"cure light", SPELL_CURE_LIGHT},
-    {"refresh", SPELL_REFRESH},
-    {"faerie fire", SPELL_FAERIE_FIRE},
-    {"faerie fog", SPELL_FAERIE_FOG},
-    {"stone skin", SPELL_STONE_SKIN},
-    {"second wind", SPELL_SECOND_WIND},
-    {"cure serious", SPELL_CURE_SERIOUS},
-    {"fly", SPELL_FLY},
-    {"\n", -1}
-  };
-
   if (DEBUG)
     dlog("do_practice");
-  if ((cmd != 164) && (cmd != 170))
+  if (cmd != CMD_practice)
     return;
 
   for (; isspace(*arg); arg++);
@@ -466,7 +451,7 @@ void do_practice(struct char_data *ch, char *arg, int cmd)
   case 'f':
   case 'F':
     {
-      if (!GET_LEVEL(ch, WARRIOR_LEVEL_IND)) {
+      if(!HasClass(ch, CLASS_WARRIOR)) {
 	cprintf(ch, "I bet you wish you were a warrior.\n\r");
 	return;
       }
@@ -482,7 +467,7 @@ void do_practice(struct char_data *ch, char *arg, int cmd)
   case 'r':
   case 'R':
     {
-      if (!GET_LEVEL(ch, RANGER_LEVEL_IND)) {
+      if(!HasClass(ch, CLASS_RANGER)) {
 	cprintf(ch, "I wish I was a Ranger too!\n\r");
 	return;
       }
@@ -493,10 +478,11 @@ void do_practice(struct char_data *ch, char *arg, int cmd)
 	        how_good(ch->skills[r_skills[i].skill_numb].learned));
       }
       if (GET_LEVEL(ch, RANGER_LEVEL_IND) >= RANGER_CAST_LEVEL) {
-	sprintf(buf + strlen(buf), "Or these leaf-and-twig spells:\n\r");
-	for (i = 0; r_spells[i].skill_name[0] != '\n'; i++) {
-          sprintf(buf + strlen(buf), "%s%s\n\r", r_spells[i].skill_name,
-	          how_good(ch->skills[r_spells[i].skill_numb].learned));
+	sprintf(buf + strlen(buf), "Or these leaf-and-twig charms:\n\r");
+        for(i=0; i< MAX_SKILLS; i++) {
+          if(CanCastClass(ch, i, RANGER_LEVEL_IND))
+            sprintf(buf + strlen(buf), "%s%s\n\r", spell_info[i].name,
+	            how_good(ch->skills[i].learned));
 	}
       }
       page_string(ch->desc, buf, 1);
@@ -506,7 +492,7 @@ void do_practice(struct char_data *ch, char *arg, int cmd)
   case 't':
   case 'T':
     {
-      if (!GET_LEVEL(ch, THIEF_LEVEL_IND)) {
+      if(!HasClass(ch, CLASS_THIEF)) {
 	cprintf(ch, "A voice whispers, 'You are not a thief.'\n\r");
 	return;
       }
@@ -522,7 +508,7 @@ void do_practice(struct char_data *ch, char *arg, int cmd)
   case 'M':
   case 'm':
     {
-      if (!GET_LEVEL(ch, MAGE_LEVEL_IND)) {
+      if(!HasClass(ch, CLASS_MAGIC_USER)) {
 	cprintf(ch, "You pretend to be a magic-user, 'Gooble-dah!'\n\r");
 	return;
       }
@@ -530,18 +516,17 @@ void do_practice(struct char_data *ch, char *arg, int cmd)
       if (is_abbrev(sec_arg, "known"))
 	flag = 1;
       sprintf(buf, "Your heavy spellbook contains these spells:\n\r");
-      for (i = 0; *spells[i] != '\n'; i++)
-	if (spell_info[i + 1].spell_pointer &&
-	    (spell_info[i + 1].min_level[MAGE_LEVEL_IND] <= GET_LEVEL(ch, MAGE_LEVEL_IND))) {
+      for(i= 0; i< MAX_SKILLS; i++)
+        if(CanCastClass(ch, i, MAGE_LEVEL_IND)) {
 	  if (!flag) {
 	    sprintf(buf + strlen(buf), "[%2d] %s%s\n\r",
-		    spell_info[i + 1].min_level[MAGE_LEVEL_IND],
-		    spells[i], how_good(ch->skills[i + 1].learned));
+		    spell_info[i].min_level[MAGE_LEVEL_IND],
+		    spell_info[i].name, how_good(ch->skills[i].learned));
 	  } else {
-	    if (ch->skills[i + 1].learned > 0) {
+	    if (ch->skills[i].learned > 0) {
 	      sprintf(buf + strlen(buf), "[%2d] %s%s\n\r",
-		      spell_info[i + 1].min_level[MAGE_LEVEL_IND],
-		    spells[i], how_good(ch->skills[i + 1].learned));
+		      spell_info[i].min_level[MAGE_LEVEL_IND],
+		      spell_info[i].name, how_good(ch->skills[i].learned));
 	    }
 	  }
 	}
@@ -554,26 +539,25 @@ void do_practice(struct char_data *ch, char *arg, int cmd)
   case 'P':
   case 'p':
     {
-      if (!GET_LEVEL(ch, CLERIC_LEVEL_IND)) {
+      if(!HasClass(ch, CLASS_CLERIC)) {
 	cprintf(ch, "You feel that impersonating a cleric might be bad.\n\r");
 	return;
       }
-      sprintf(buf, "You can pray for any of these spells:\n\r");
+      sprintf(buf, "You can pray for any of these miracles:\n\r");
       flag = 0;
       if (is_abbrev(sec_arg, "known"))
 	flag = 1;
-      for (i = 0; *spells[i] != '\n'; i++)
-	if (spell_info[i + 1].spell_pointer &&
-	    (spell_info[i + 1].min_level[CLERIC_LEVEL_IND] <= GET_LEVEL(ch, CLERIC_LEVEL_IND))) {
+      for(i= 0; i< MAX_SKILLS; i++)
+        if(CanCastClass(ch, i, CLERIC_LEVEL_IND)) {
 	  if (!flag) {
 	    sprintf(buf + strlen(buf), "[%2d] %s%s\n\r",
-		    spell_info[i + 1].min_level[CLERIC_LEVEL_IND],
-		    spells[i], how_good(ch->skills[i + 1].learned));
+		    spell_info[i].min_level[CLERIC_LEVEL_IND],
+		    spell_info[i].name, how_good(ch->skills[i].learned));
 	  } else {
-	    if (ch->skills[i + 1].learned > 0) {
+	    if (ch->skills[i].learned > 0) {
 	      sprintf(buf + strlen(buf), "[%2d] %s%s\n\r",
-		      spell_info[i + 1].min_level[CLERIC_LEVEL_IND],
-		    spells[i], how_good(ch->skills[i + 1].learned));
+		      spell_info[i].min_level[CLERIC_LEVEL_IND],
+		      spell_info[i].name, how_good(ch->skills[i].learned));
 	    }
 	  }
 	}
@@ -584,7 +568,6 @@ void do_practice(struct char_data *ch, char *arg, int cmd)
   default:
     cprintf(ch, "Ah, but practice which class???\n\r");
   }
-
 }
 
 void do_idea(struct char_data *ch, char *argument, int cmd)
@@ -616,7 +599,7 @@ void do_idea(struct char_data *ch, char *argument, int cmd)
 
   fputs(str, fl);
   fclose(fl);
-  send_to_char("Ok. Thanks.\n\r", ch);
+  send_to_char("Woah!  That's pretty cool.  Thanks!\n\r", ch);
 }
 
 void do_typo(struct char_data *ch, char *argument, int cmd)
@@ -647,8 +630,7 @@ void do_typo(struct char_data *ch, char *argument, int cmd)
 	  GET_NAME(ch), ch->in_room, argument);
   fputs(str, fl);
   fclose(fl);
-  send_to_char("Ok. thanks.\n\r", ch);
-
+  send_to_char("No problem.  We can send a whizzling to fix it.\n\r", ch);
 }
 
 void do_bug(struct char_data *ch, char *argument, int cmd)
@@ -679,7 +661,7 @@ void do_bug(struct char_data *ch, char *argument, int cmd)
 	  GET_NAME(ch), ch->in_room, argument);
   fputs(str, fl);
   fclose(fl);
-  send_to_char("Ok.\n\r", ch);
+  send_to_char("Really?  Ok, we'll send someone to have a look.\n\r", ch);
 }
 
 void do_brief(struct char_data *ch, char *argument, int cmd)
@@ -748,7 +730,6 @@ void do_group(struct char_data *ch, char *argument, int cmd)
   if (!(victim = get_char_room_vis(ch, name))) {
     send_to_char("No one here by that name.\n\r", ch);
   } else {
-
     if (ch->master) {
       act("You can not enroll group members without being head of a group.",
 	  FALSE, ch, 0, 0, TO_CHAR);
@@ -777,7 +758,7 @@ void do_group(struct char_data *ch, char *argument, int cmd)
         }
 	REMOVE_BIT(victim->specials.affected_by, AFF_GROUP);
       } else {
-	if ((victlvl= GetMaxLevel(victim)) >= LOW_IMMORTAL) {
+        if(IS_IMMORTAL(victim) && !IS_IMMORTAL(ch)) {
 	  act("You really don't want $n in your group.", FALSE, victim, 0, 0, TO_CHAR);
 	  return;
 	}

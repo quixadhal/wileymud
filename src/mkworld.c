@@ -371,7 +371,7 @@ main(int argc, char **argv)
   printf(
 "\n"
 "+--------------------------------------------------------------------------+\n"
-"|            WileyMUD III: Worldmaker, Version 1.2, 95.09.03               |\n"
+"|            WileyMUD III: Worldmaker, Version 1.21, 95.12.15              |\n"
 "|  Programmed by: Mike Nikkel             Original Code : Chris Michaels   |\n"
 "|                  Enhanced and Debugged by: Chris Meshkin                 |\n"
 "+--------------------------------------------------------------------------+\n"
@@ -1129,13 +1129,11 @@ void Command_desc()
 
   if (current->desc_ptr) {
     sprintf(tempfile, TMP_FILE, getpid());
-    if(!(fp= fopen(tempfile, "r"))) {
-      if(!(fp= fopen(tempfile, "w"))) {
-        log("Cannot open %s for output!", tempfile);
-        exit(ERR_NOOUTPUT);
-      }
-      fprintf(fp, "%s~\n", current->desc_ptr);
+    if(!(fp= fopen(tempfile, "w"))) {
+      log("Cannot open %s for output!", tempfile);
+      exit(ERR_NOOUTPUT);
     }
+    fprintf(fp, "%s~\n", current->desc_ptr);
     fclose(fp);
     free(current->desc_ptr);
   }
@@ -1876,10 +1874,10 @@ void Command_zone()
 	count++;
       }
       ptr = ptr->next;
-      if (count == 0)
-	printf("** No Rooms were found between %d and %d.\n",
-	       startroom, endroom);
     }
+    if (count == 0)
+      printf("** No Rooms were found between %d and %d.\n",
+             startroom, endroom);
   }
 }
 

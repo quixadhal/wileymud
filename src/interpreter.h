@@ -191,7 +191,7 @@
 #define CMD_take	167
 #define CMD_info	168
 #define CMD_SAY		169
-#define CMD_practise	170
+#define CMD_map		170
 #define CMD_curse	171 /* social */
 #define CMD_use		172
 #define CMD_where	173
@@ -244,7 +244,7 @@
 #define CMD_withdraw	220
 #define CMD_balance	221
 #define CMD_nohassle	222
-#define CMD_system	223
+#define CMD_wall	223
 #define CMD_pull	224
 #define CMD_stealth	225
 #define CMD_doh		226
@@ -259,7 +259,7 @@
 #define CMD_assist	235
 #define CMD_swat	236
 #define CMD_world	237
-#define CMD_allspells	238
+#define CMD_spells	238
 #define CMD_breath	239
 #define CMD_show	240
 #define CMD_debug 	241
@@ -325,7 +325,7 @@ int is_number(char *str);
 char *one_argument(char *argument, char *first_arg);
 void only_argument(char *argument, char *dest);
 int fill_word(char *argument);
-int is_abbrev(char *arg1, char *arg2);
+inline int is_abbrev(char *arg1, char *arg2);
 void half_chop(char *string, char *arg1, char *arg2);
 int special(struct char_data *ch, int cmd, char *arg);
 void assign_command_pointers(void);
@@ -338,6 +338,7 @@ int check_playing(struct descriptor_data *d, char *tmp_name);
 void nanny(struct descriptor_data *d, char *arg);
 void update_player_list_entry(struct descriptor_data *ch);
 void PutPasswd(struct descriptor_data *d);
-int ValidPlayer(char *who, char *pwd);
+int ValidPlayer(char *who, char *pwd, char *oldpwd);
+void random_error_message(struct char_data *ch);
 
 #endif

@@ -192,7 +192,7 @@ void set_fighting(struct char_data *ch, struct char_data *vict)
     log("Fighting character set to fighting another.");
     return;
   }
-  if (vict->attackers <= 5) {
+  if (vict->attackers < MAX_ATTACKERS) {
     vict->attackers += 1;
   } else {
     log("more than 6 people attacking one target");
@@ -390,7 +390,7 @@ void death_cry(struct char_data *ch)
   act("Your blood freezes as you hear $n's death cry.", FALSE, ch, 0, 0, TO_ROOM);
   was_in = ch->in_room;
 
-  for (door = 0; door <= 5; door++) {
+  for (door = 0; door < MAX_NUM_EXITS; door++) {
     if (CAN_GO(ch, door)) {
       ch->in_room = (real_roomp(was_in))->dir_option[door]->to_room;
       act("Your blood freezes as you hear someones death cry.", FALSE, ch, 0, 0, TO_ROOM);
@@ -783,7 +783,7 @@ int damage(struct char_data *ch, struct char_data *victim, int dam, int attackty
     if (GET_POS(victim) > POSITION_STUNNED) {
       if (!(victim->specials.fighting))
 	if ((IS_PC(ch)) || (IS_NOT_SET(ch->specials.act, ACT_IMMORTAL))) {
-	  if (ch->attackers < 6) {
+	  if (ch->attackers < MAX_ATTACKERS) {
 	    set_fighting(victim, ch);
 	    GET_POS(victim) = POSITION_FIGHTING;
 	  }
@@ -1368,7 +1368,7 @@ void perform_violence(int pulse)
 	    } else {		       /* target has died */
 	      vict = FindAnAttacker(ch);
 	      if (vict) {
-		if (vict->attackers < 6)
+		if (vict->attackers < MAX_ATTACKERS)
 		  hit(ch, vict, TYPE_UNDEFINED);
 	      }
 	    }

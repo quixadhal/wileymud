@@ -45,15 +45,17 @@ struct attack_hit_type {
 #define TAR_ROOM         (1<<13)       /* spells which target the room  */
 
 struct spell_info_type {
-  void (*spell_pointer)
-       (BYTE level, struct char_data * ch, char *arg, int type,
-	struct char_data * tar_ch, struct obj_data * tar_obj);
-  BYTE minimum_position;	       /* Position for caster                  */
-  UBYTE min_usesmana;		       /* Amount of mana used by a spell        */
-  BYTE beats;			       /* Heartbeats until ready for next */
-
-  BYTE min_level[ABS_MAX_LVL];	       /* Level required for magic user   */
-  SHORT targets;		       /* See below for use with TAR_XXX  */
+  BYTE castable;		/* Is it a castable spell? */
+  BYTE useable;			/* Is it a useable skill? */
+  char *name;			/* Text name of spell */
+  void (*spell_pointer) (BYTE level, struct char_data * ch, char *arg, int type,
+	                 struct char_data * tar_ch, struct obj_data * tar_obj);
+  BYTE delay;			/* Heartbeats until ready for next */
+  UBYTE min_mana;		/* Amount of mana used by a spell */
+  UBYTE max_mana;
+  BYTE minimum_position;	/* Position for caster */
+  SHORT targets;		/* See below for use with TAR_XXX */
+  BYTE min_level[ABS_MAX_LVL];	/* Level required for magic user */
 };
 
 /* Possible Targets:
@@ -173,6 +175,8 @@ void cast_dispel_evil(BYTE level, struct char_data *ch, char *arg, int type, str
 #define SPELL_EARTHQUAKE             23
 void spell_earthquake(BYTE level, struct char_data *ch, struct char_data *victim, struct obj_data *obj);
 void cast_earthquake(BYTE level, struct char_data *ch, char *arg, int type, struct char_data *victim, struct obj_data *tar_obj);
+void spell_new_earthquake(BYTE level, struct char_data *ch, struct char_data *victim, struct obj_data *obj);
+void cast_new_earthquake(BYTE level, struct char_data *ch, char *arg, int type, struct char_data *victim, struct obj_data *tar_obj);
 
 #define SPELL_ENCHANT_WEAPON         24
 void spell_enchant_weapon(BYTE level, struct char_data *ch, struct char_data *victim, struct obj_data *obj);
@@ -758,6 +762,5 @@ void spell_prot_align_group(BYTE level, struct char_data *ch, struct char_data *
 /* More anything but spells and weapontypes can be insterted here! */
 
 #define MAX_TYPES 70
-#define MAX_SPL_LIST	221
 
 #endif

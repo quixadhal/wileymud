@@ -299,3 +299,132 @@ global.h:1144: warning: function declaration isn't a prototype
 	make things cost half again as much as usual.
   2356	Fixed restore to disallow any but "all" for < 56th level... we
 	can now free the restoreall command slot.
+951214	Quixadhal
+  0300	Started cleaning out old files.  Freed up about 20 Meg!
+  0339	Fixed stat to work properly with objects and mobs... It still has the
+	bug of not loading a mob if one doesn't exist in the world, but that
+	is relatively minor.
+  0349	Changed whod for the external port so it doesn't show invis/hidden
+	people.  It also no longer shows the room, regardless of whod settings.
+	Make people log in to find out where someone is.  It WILL show those
+	who are in dark areas though.
+  0354	Changed system command to wall, allspells to just spells.
+  0427	Added a randomized error message routine instead of just "Pardon?".
+	Also made the idea/bug/typo messages more interesting.
+	Maybe someone will use them...
+  0445	Closed a few more security holes.  Maybe fixed noshout... I'm not
+	clear on how the flags actually are used yet.
+  0450	Disabled saving of binary player files...
+  1554	Added CAN_CAST function to spell_parser.c.  This determines if a
+	character can cast the spell in question.  It uses both their
+	level and the antiquated HasClass() function that we want to do
+	away with.
+951216	Quixadhal
+  1415	Fixed special routine display for rooms.
+  0224	inlined several functions from utils.c and converted a few to use
+	system calls instead of the old versions (str_cmp == strcasecmp).
+  0257	Replaced lots of hard-coded "<6" with "< ABS_MAX_CLASS", or
+	"< MAX_NUM_EXITS" as appropriate... now we work on "<=5"
+  0317	Created new NAME() macro.  This one works on both players and
+	mobs, returning the name or short_descr field, respectively.
+	It also returns "" if passed a NULL pointer, better than a
+	seggie!
+  0337	Changed the consider command.  It now introduces a fuzz factor
+	into the level difference.. should make it even more random, and
+	more importanly, it should give slightly different messages for
+	the same mobs.
+  0356	Replaced all "<=5" with exits/class defines.  We are now one step
+	closer to being able to add more classes.
+  0433	I believe I've modified do_stat so that a given mob will be
+	created if none exist in the world at all.  Thus, if you type
+	"stat mob eli" (or his vnum), it should first look in the room
+	you are in.  If no eli is present, it will look in the world.
+	If no eli can be found in the entire world, it will try to search
+	the mob table for the first match of eli.  If one is found, an
+	eli will be loaded where you stand and then stat will continue.
+  0440	Fixed trans so wizards cannot summon above their station.
+  0815	Skeleton of merged guildmaster routine is done.  This still needs
+	some work to integrate all classes and skills, but I think this
+	will wait until skills and non-magi have been merged into the
+	single spell_info structure.
+951218	Quixadhal
+  0146	Got falling/drowning code back online.
+	Fixed a bug with passing null pointers to strcmp().
+	Made guildmasters congratulate people for gaining a level.
+	Made eli "congratulate" people for registering.
+	Made Ned charge an extra 250 gold to look at a nut.
+  1715	Removed code for Cyric's new database format.  Some of it anyways.
+	myerror.h is no longer present.
+  1858	Fixed minor bug in date stamping routine... tm_mon is the month
+	number from 0..11, so we had to add 1 for human consumption.
+	Also fixed a bug in optimization of dice()... oops!  I think it
+	is correct now.
+	First official PURGE of the player base!  We cut out 1/4 of the
+	users for inactivity.  Basically, I deleted anyone who did not
+	have a text-based save file.  Also added a datestamp to the
+	player list dump.
+  2354	Fixed prompts to distinguish between immortals who are switched
+	and mortals who are polymorphed.
+951219	Quixadhal
+  0154	Added a map command, which if it looks nice, may replace the exits
+	command.  It is quasi-graphical.
+  0412	Made chill touch spell force undead to flee if they fail their save.
+  0433	Replaced more assert()'s with if() return's in magic.c.
+	Removed bug() statements from NudgeNudge.
+	Time to compile one last time tonight.... the modems supposedly
+	will die at 5am, so I have to get outta here!
+  0446	Added a description for cure_XXX spells so the person doing the
+	healing can see how well it works.
+  1703	Made experimental map command (graphical exits) available to mortals.
+	Fixed falling bug (I hope!) that got the sector types of the wrong room.
+  1801	Improved drowning routine so that people have a chance of drowning
+	if in any water sector, not just underwater.  Based off their swimming
+	skill.
+  2213	Recoded earthquake spell!  It is much more powerful now and does damage
+	in adjacent rooms!  It also requires one of three objects for a
+	material component... one can be found in Highstaff!
+951220	Quixadhal
+  0430	Fixed minor bug with printing uninitialized buffer variable in the
+	remove command for message boards... Removed both the print statement
+	and the buffer, since it wasn't used!
+  0510	Added timestamp to players log.
+  0520	Added immortal announcement when an imp logs in.
+  1630	Took the first step in eliminating seperate class tables and
+	began merging the seperate "spells" block into "spell_info".
+951221	Quixadhal
+  0131	Almost completed removing spells.  It is still used in a couple of
+	sticky places... I'll replace those AFTER verifying that it has
+	worked for all the other commands.
+  0137	Global search and replace... spells_to_learn -> pracs.
+  0836	Finished creating new type 'C' mob.  This is my first draft at a
+	replacement format for the mob file.  Allows class setting so perhaps
+	we can do generic guildmasters and similar automatic class sensing.
+  1530	Made tell work like say.. that is use the punctuation at the end.
+  2120	Added support for ascii equipment files.  The writing routines are
+	in place, but a reader must be written.  Slightly tricky to get the
+	container/contained relationship right.  Also eliminate all references
+	to spells and r_spells.
+  2250	Fixed up no-magic rooms properly.... added more class checking routines
+	for future extensions: IsWizard, IsPriest, IsSneak, etc...
+951222	Quixadhal
+  0042	Added encryption to password entries.  We still support the old
+	passwords, but no longer write them out in clear text.
+  0044	Fixed suicide to also rename .obj files.
+  0201	Encrypted passwords are now functional.
+	Support for restoring objects to their former positions (wielded or
+	inside containers) has been added.
+  0525	Fixed prompts to distinguish between switched immortals, polymorphed
+	players, normal players, and normal immortals.
+	Changed many messages, especially in do_cast().  Allowed mobs to cast
+	if the CanCast() function allows it... IE: If they have one of the
+	magical classes set.  This means only type 'C' mobs and those generated
+	by spells or special routines.
+	Added a save of all equipment immediately upon entry to the game
+	because Cultist had himself seen briefly as carrying only one object
+	when he had a whole bunch... This seems to have fixed it.
+  2024	Started writing ascii object reader.
+	Changed do_cast() some more... mana loss now varies based on your
+	spellcraft and meditation abilities.  More random messages too!
+951223	Quixadhal
+  0519	Rewrote puff() again.  Simplified a bit.  The values may need
+	tweaking if he does stuff too often.

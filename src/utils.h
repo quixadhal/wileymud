@@ -9,6 +9,11 @@
 #define GUARD_VNUM 3060
 #define GUARD2_VNUM 3069
 
+#define NAME(ch) ((ch)?(IS_NPC(ch)?(ch)->player.short_descr:(ch)->player.name):"")
+#define MIN(a,b) ((a)<=(b)?(a):(b))
+#define MAX(a,b) ((a)>=(b)?(a):(b))
+inline int str_cmp(char *arg1, char *arg2);
+inline int strn_cmp(char *arg1, char *arg2, int n);
 #define LOWER(c) (((c)>='A'  && (c) <= 'Z') ? ((c)+('a'-'A')) : (c))
 #define UPPER(c) (((c)>='a'  && (c) <= 'z') ? ((c)+('A'-'a')) : (c))
 #define ISNEWL(ch) ((ch) == '\n' || (ch) == '\r')
@@ -154,71 +159,71 @@
 			  real_roomp(EXIT(ch,door)->to_room) \
                           && !IS_SET(EXIT(ch, door)->exit_info, EX_LOCKED))
 #define GET_ALIGNMENT(ch) ((ch)->specials.alignment)
-#define IS_REALLY_HOLY(ch) ((GET_ALIGNMENT(ch) == 1000))
-#define IS_REALLY_VILE(ch) ((GET_ALIGNMENT(ch) == -1000))
+#define IS_REALLY_HOLY(ch) ((GET_ALIGNMENT(ch) >= ALIGN_REALLY_HOLY))
+#define IS_REALLY_VILE(ch) ((GET_ALIGNMENT(ch) <= ALIGN_REALLY_VILE))
 /* This makes no sense... I will change it. */
 #ifdef OLD_WILEY
 #define IS_HOLY(ch)	((GET_ALIGNMENT(ch)>900 && GET_ALIGNMENT(ch) < 1000 ))
 #define IS_VILE(ch)	((GET_ALIGNMENT(ch) < -900 && GET_ALIGNMENT(ch)>-1000))
 #else
-#define IS_HOLY(ch)	(GET_ALIGNMENT(ch)>900)
-#define IS_VILE(ch)	(GET_ALIGNMENT(ch) < -900)
+#define IS_HOLY(ch)	 (GET_ALIGNMENT(ch) >= ALIGN_HOLY)
+#define IS_VILE(ch)	 (GET_ALIGNMENT(ch) <= ALIGN_VILE)
 #endif
-#define IS_GOOD(ch)    (GET_ALIGNMENT(ch) >= 350)
-#define IS_EVIL(ch)    (GET_ALIGNMENT(ch) <= -350)
+#define IS_VERY_GOOD(ch) (GET_ALIGNMENT(ch) >= ALIGN_VERY_GOOD)
+#define IS_VERY_EVIL(ch) (GET_ALIGNMENT(ch) <= ALIGN_VERY_EVIL)
+#define IS_GOOD(ch)      (GET_ALIGNMENT(ch) >= ALIGN_GOOD)
+#define IS_EVIL(ch)      (GET_ALIGNMENT(ch) <= ALIGN_EVIL)
+#define IS_NICE(ch)      (GET_ALIGNMENT(ch) >= ALIGN_NICE)
+#define IS_WICKED(ch)    (GET_ALIGNMENT(ch) <= ALIGN_WICKED)
 #define IS_NEUTRAL(ch) (!IS_GOOD(ch) && !IS_EVIL(ch))
 #define ITEM_TYPE(obj)  ((int)(obj)->obj_flags.type_flag)
 
-int MIN(int a, int b);
-int MAX(int a, int b);
-int percent(int value, int total);
-char *ordinal(int x);
+inline int MobVnum(struct char_data *c);
+inline int ObjVnum(struct obj_data *o);
+inline int percent(int value, int total);
+inline char *ordinal(int x);
 int GetItemClassRestrictions(struct obj_data *obj);
 int CAN_SEE(struct char_data *s, struct char_data *o);
 int exit_ok(struct room_direction_data *exit, struct room_data **rpp);
-int MobVnum(struct char_data *c);
-int ObjVnum(struct obj_data *o);
 void Zwrite(FILE * fp, char cmd, int tf, int arg1, int arg2, int arg3, char *desc);
 void RecZwriteObj(FILE * fp, struct obj_data *o);
 FILE *MakeZoneFile(struct char_data *c);
-int IsImmune(struct char_data *ch, int bit);
-int IsResist(struct char_data *ch, int bit);
-int IsSusc(struct char_data *ch, int bit);
-int number(int from, int to);
-int dice(int number, int size);
+inline int IsImmune(struct char_data *ch, int bit);
+inline int IsResist(struct char_data *ch, int bit);
+inline int IsSusc(struct char_data *ch, int bit);
+inline int number(int from, int to);
+inline int dice(int number, int size);
 inline int fuzz(int x);
 int scan_number(char *text, int *rval);
+#if 0
 int str_cmp(char *arg1, char *arg2);
 int strn_cmp(char *arg1, char *arg2, int n);
-
-#if 0
-void log(char *str);
-void dlog(char *str);
-void slog(char *str);
-
 #endif
-void sprintbit(unsigned long vektor, char *names[], char *result);
-void sprinttype(int type, char *names[], char *result);
+
+inline void sprintbit(unsigned long vektor, char *names[], char *result);
+inline void sprinttype(int type, char *names[], char *result);
 struct time_info_data real_time_passed(time_t t2, time_t t1);
 struct time_info_data mud_time_passed(time_t t2, time_t t1);
 struct time_info_data age(struct char_data *ch);
-char in_group(struct char_data *ch1, struct char_data *ch2);
+int in_group(struct char_data *ch1, struct char_data *ch2);
 int getall(char *name, char *newname);
 int getabunch(char *name, char *newname);
 int DetermineExp(struct char_data *mob, int exp_flags);
 void down_river(int pulse);
+#if 0
 void RoomSave(struct char_data *ch, int start, int end);
 void RoomLoad(struct char_data *ch, int start, int end);
 void fake_setup_dir(FILE * fl, int room, int dir);
-int IsHumanoid(struct char_data *ch);
-int IsAnimal(struct char_data *ch);
-int IsUndead(struct char_data *ch);
-int IsLycanthrope(struct char_data *ch);
-int IsDiabolic(struct char_data *ch);
-int IsReptile(struct char_data *ch);
-int HasHands(struct char_data *ch);
-int IsPerson(struct char_data *ch);
-int IsExtraPlanar(struct char_data *ch);
+#endif
+inline int IsHumanoid(struct char_data *ch);
+inline int IsAnimal(struct char_data *ch);
+inline int IsUndead(struct char_data *ch);
+inline int IsLycanthrope(struct char_data *ch);
+inline int IsDiabolic(struct char_data *ch);
+inline int IsReptile(struct char_data *ch);
+inline int HasHands(struct char_data *ch);
+inline int IsPerson(struct char_data *ch);
+inline int IsExtraPlanar(struct char_data *ch);
 void SetHunting(struct char_data *ch, struct char_data *tch);
 void CallForGuard(struct char_data *ch, struct char_data *vict, int lev);
 void CallForAGuard(struct char_data *ch, struct char_data *vict, int lev);
@@ -231,6 +236,13 @@ int room_of_object(struct obj_data *obj);
 struct char_data *char_holding(struct obj_data *obj);
 int RecCompObjNum(struct obj_data *o, int obj_num);
 void RestoreChar(struct char_data *ch);
-void RemAllAffects(struct char_data *ch);
+inline void RemAllAffects(struct char_data *ch);
+inline char *pain_level(struct char_data *ch);
+inline int IsWizard(struct char_data *ch);
+inline int IsPriest(struct char_data *ch);
+inline int IsMagical(struct char_data *ch);
+inline int IsFighter(struct char_data *ch);
+inline int IsSneak(struct char_data *ch);
+#define IsNonMagical(ch) (!IsMagical(ch))
 
 #endif

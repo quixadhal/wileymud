@@ -36,7 +36,7 @@ A large feather lies here.~
 ~
 21 0 16385
 0 0 0 0
-1 10 10
+1 10 1
 E
 quill feathered~
   The quill seems to have a dark liquid soaked into its long vein, almost as
@@ -49,7 +49,7 @@ A piece of parchment lies here.~
 ~
 16 0 16385
 0 0 0 0
-1 10 10
+1 10 1
 #7
 meat hunk~
 a hunk of meat~
@@ -57,7 +57,7 @@ A hunk of dead flesh sits here.~
 ~
 19 131072 1
 6 0 0 1 
-1 10 10
+1 10 1
 #30
 scrap~
 a scrap~
@@ -66,6 +66,22 @@ A scrap lies here.~
 12 0 1
 0 0 0 0
 1 1 1 
+#35
+sign board flashing large~
+A large flashing sign~
+A large, flashing sign sits here begging to be read.~
+~
+16 0 16385
+0 0 0 0
+200 0 0
+#36
+pen marker blue flourescent~
+A blue fluorescent marker~
+A blue fluorescent marker lies here.~
+~
+21 0 16385
+0 0 0 0 
+1 0 0
 #1000
 crown antlers antler rack~
 a rack of antlers~
@@ -153,7 +169,7 @@ A shirt made of black dragon scales hangs upon its hook.~
 ~
 9 64 9
 6 6 0 0
-12 9999 9999
+12 9999 999
 E
 black scale shirt~
   The shirt is made of the scales from a black dragon, and judging by the
@@ -166,7 +182,7 @@ A pendant hangs upon a hook.~
 ~
 11 64 5
 0 0 0 0
-2 9999 9999
+2 9999 999
 E
 black onyx pendant~
   The pendant holds a jewel that you have never seen, looking closer it
@@ -179,7 +195,7 @@ A staff leans up against a hook.~
 ~
 5 64 8193
 0 1 10 6
-7 9999 9999
+7 9 99999
 A
 40 4
 A
@@ -191,7 +207,7 @@ A black dragon scale skirt has been left here.~
 ~
 9 64 2049
 6 6 0 0
-10 100 100
+10 1000 1000
 E
 skirt scale~
 The deep black scales of the skirt look very polished and quite well placed
@@ -204,7 +220,7 @@ A black dragon scale leggings has been left here.~
 ~
 9 64 33
 6 6 0 0
-8 500 500
+8 1500 1500
 E
 leggings scale~
 The deep black scales of the leggings look very polished and quite well placed
@@ -231,7 +247,7 @@ A black dragon scale jerkin has been left here.~
 ~
 9 64 9
 6 6 0 0
-4 500 500
+4 1500 1500
 E
 jerkin~
 The deep black scales of the jerkin look very polished and quite well placed
@@ -248,6 +264,44 @@ A long, slender sword lies on the ground.~
 E
 sword long slender~
 It is a long, slender sword that seems to be made from silver. 
+~
+#1022
+key black
+A black key~
+A black key that feels cold to the touch.~
+~
+18 576 16385 
+3 0 0 0
+1 0 0
+A
+9 1
+~
+#1023
+cloak highlanders~
+A dark eery sort of cloak~
+A silky black cloak that seems to devour the light around it.~
+~
+11 576 1025
+0 0 0 0
+10 500 5000
+A
+17 -6 
+A
+25 10 
+~
+#1024
+staff highlanders~
+The staff of Highlander~
+A purple staff with the head of a demon as its decoration.~
+~
+5 512 40961
+0 2 6 0 
+1 0 0
+10 500 5000
+A
+30 33
+A
+30 4
 ~
 #1100
 pedastal small~
@@ -332,6 +386,18 @@ A walnut lies here.~
 19 0 16385
 5 0 0 0
 1 10 10
+#1133
+mirror glass~
+a small mirror~
+A small, highly polished glass mirror lies here.~
+~
+8 0 16385
+0 0 0 0
+1 20 10
+E
+mirror glass small~
+  You jump back in terror as you catch a glimps of some horrible monster!
+Oh, sorry, that was just your reflection.~
 #1200
 mailbox~
 a mailbox~
@@ -580,7 +646,7 @@ A small, gnarled branch lies here.~
 ~
 3 64 16385
 30 1 1 42
-5 3000 10
+10 2000 500
 E
 gnarled branch~
   The branch is no more than a foot long and seems to be curved in every
@@ -595,7 +661,7 @@ A small flask lies here.~
 ~
 10 64 16385
 5 19 -1 -1
-1 1500 5
+1 350 50
 E
 flask~
   The flask is filled with a liquid dust.  Looking into it you can see the 
@@ -661,7 +727,7 @@ A loaf of bread has been left here.~
 ~
 19 0 1
 10 0 0 0
-3 5 10
+3 5 1
 #3011
 pastry~
 a pastry~
@@ -669,7 +735,7 @@ A nice looking delicious pastry has been placed here.~
 ~
 19 0 1
 5 0 0 0
-2 2 5
+2 2 1 
 #3012
 salami stick~
 a stick of salami~
@@ -677,7 +743,7 @@ A long, dried out, stick of salami is here.~
 ~
 19 0 1
 20 0 0 0
-5 9 20
+5 9 1 
 #3015
 torch~
 a torch~
@@ -693,7 +759,7 @@ A brass lantern.~
 ~                
 1 0 1       
 0 0 96 0 
-1 50 17  
+1 50 1  
 #3017
 bag~
 a bag~
@@ -701,7 +767,7 @@ A small bag.~
 ~
 15 0 16385
 50 0 0 0
-2 20 7
+2 20 2 
 #3018
 box~
 a box~
@@ -717,7 +783,7 @@ A dagger with a long thin blade is here.~
 ~
 5 0 8193
 0 1 4 11
-1 10 10
+1 15 10
 #3021
 large knife~
 a large knife~
@@ -725,7 +791,7 @@ A large knife lies here.~
 ~
 5 4096 8193 
 0 1 5 11
-3 20 20
+3 20 2
 E
 large knife~
 It appears to be about eight to nine inches in length, fairly sharp.
@@ -737,7 +803,7 @@ A leather bracer lies here.~
 ~
 9 0 4097
 1 1 0 0
-1 10 10
+1 10 5 
 A
 17 -2
 #3026
@@ -773,7 +839,7 @@ A large pile of chainmail lies here.~
 ~
 9 8192 9
 3 3 0 0
-25 50 50
+25 500 50
 #3030
 helm horned~
 a horned helm~
@@ -781,7 +847,7 @@ A helmet with large horns lies here.~
 ~
 9 90112 17
 2 2 0 0
-10 35 35
+10 135 35
 E
 helm~
   The helm has large horns on the top of it.
@@ -793,7 +859,7 @@ A pair of boots, plated with metal lies here.~
 ~
 9 90112 65
 2 2 0 0
-20 35 35
+20 135 35
 E
 metal plated boots~
   The boots are made of leather but covered with heavy, thick metal.  The
@@ -806,7 +872,7 @@ A longsword lies here.~
 ~
 5 12288 8193
 0 1 8 3
-6 45 45
+6 145 45
 E
 longsword~
   The longsword is not the best workmanship, but it looks as though it has
@@ -819,7 +885,7 @@ A vest made of leather with metal studs lies here.~
 ~
 9 8192 9
 2 2 0 0
-15 40 40
+15 140 40
 E
 studded leather vest~
   The vest is mostly made of leather although throughout the hard leather
@@ -832,7 +898,7 @@ A couple pieces of leather lie here on the ground.~
 ~
 9 0 257
 1 1 0 0
-10 16 16
+10 16 6
 #3035
 chainmail girth~
 a chainmail girth~
@@ -840,7 +906,7 @@ A large clump of chainmail lies here.~
 ~
 9 8192 2049
 3 3 0 0
-20 50 50
+20 350 50
 A
 17 -4
 #3036
@@ -850,7 +916,7 @@ A huge broadsword lies here.~
 ~
 5 28672 32769
 0 1 8 3
-12 79 79
+12 179 79
 A
 19 1
 #3037
@@ -868,7 +934,7 @@ A pile of clothe lies here on the floor.~
 ~
 9 0 33
 1 1 0 0
-5 10 10
+5 10 5 
 #3039
 shortblade sword~
 a shortblade~
@@ -876,7 +942,7 @@ A shortblade lies here.~
 ~
 5 12288 8193
 0 1 6 11
-5 35 35
+5 65 35
 #3040
 large mace~
 a large mace~
@@ -884,7 +950,7 @@ A large mace lies here.~
 ~
 5 8192 8193
 0 1 8 7
-10 56 56
+10 74 16
 #3041
 copper breast plate~
 a copper breast plate~
@@ -892,7 +958,7 @@ A copper breast plate lies here.~
 ~
 9 90112 9
 3 3 0 0
-50 100 100
+50 100 10
 E
 copper breast plate~
   It is a heavy piece of armor that cover the upper torso, although copper
@@ -905,7 +971,7 @@ A couple pieces of copper lie here.~
 ~
 9 90112 257
 3 3 0 0
-30 70 70
+30 70 7
 E
 copper armplates~
   It is a heavy couple pieces of armor and copper is known to give way in
@@ -918,7 +984,7 @@ A couple pieces of long copper lies here.~
 ~
 9 90112 33
 3 3 0 0
-30 80 80
+30 80 18
 E
 copper legplates~
   These two long pieces of copper are extremely heavy and copper has been
@@ -931,7 +997,7 @@ A large mound of purple clothe lies here.~
 ~
 12 0 1025
 0 0 0 0
-2 30 30
+2 30 33
 A
 17 -4
 E
@@ -959,7 +1025,7 @@ A small ring of silver lies here on the ground.~
 ~
 12 0 4097
 0 0 0 0
-4 100 100
+4 100 30
 E
 silver braelet~
   It is made of excellent craftsmanship.
@@ -1006,7 +1072,7 @@ A map lies here.~
 ~
 12 0 1
 0 0 0 0
-2 5 5
+2 5 1 
 E
 map shylar~
                          -= Grassland =-
@@ -1035,7 +1101,7 @@ A leather vest lies here.~
 ~
 9 8192 9
 2 2 0 0
-7 34 34
+7 34 24
 #3052
 leather gloves~
 some leather gloves~
@@ -1071,7 +1137,7 @@ A cashue nut lies here.~
 ~
 19 0 16385
 7 0 0 0
-1 5 5
+1 5 1 
 #3056
 peanut~
 a peanut~
@@ -1103,7 +1169,7 @@ A robe made of white material lies here.~
 ~
 12 0 1025
 0 0 0 0
-4 25 25
+4 125 125
 A
 17 -4
 E
@@ -1117,7 +1183,7 @@ A robe made of black material lies here.~
 ~
 12 0 1025
 0 0 0 0
-4 25 25
+4 125 125
 A 
 17 -4
 E
@@ -1166,6 +1232,39 @@ hammer small~
   The hammer has a small metal head with leather wrapped wooden handle,
 it could almost be a mace of sorts.
 ~
+#3105
+letter newbie~
+a letter to newbies~
+A letter to newbies lies here, begging to be read.~
+~
+12 0 1
+0 0 0 0
+2 5 1
+E
+letter newbie~
+Welcome to WileyMUD III
+
+Death is commonplace here.  If you wish to die infrequenly, consider a few
+pointers:
+ 1> Use the consider command.
+    This command will help you by giving you a fairly good idea how well you
+    can take a mob.  Remember that the consider command will not factor in
+    damage from a mob's weapon.  Look and see if the mob has a weapon and
+    consider not attacking a mob.
+ 2> Set wimp mode.
+    Entering the wimp command will automatically cause you to flee for the
+    first three levels of the game if your hit points drop too low.
+ 3> Be aware that almost all mobs will remember you and some will track you.
+    If you attack a mob and have to flee, the mob will frequently attempt to
+    track you and kill you when it finds you.  If you must, duck into Griffin's
+    Tale, where no fighting is allowed.  When fleeing, move away a few rooms
+    to try to lose the trail of any mob which is following you.
+ 4> Stay really close to Shylar for the first few levels, or leave in groups.
+    Most of the mobs in Shylar are fairly easy (except the shopkeepers,
+    guildmasters, and Eli).  Outside of Shylar, you are TOAST!
+ 5> The most important item: Expect to die!
+ -Sedna
+~
 #4600
 key marble~
 a marble key~
@@ -1197,7 +1296,7 @@ A small ring lies here on the ground.~
 ~
 1 64 3  
 0 0 -1 0
-1 1000 50
+1 1001 150
 E
 ring~
 This small ring has a pure pearl in the center.
@@ -1209,7 +1308,7 @@ A small pouch made of soft leather is piled upon the floor.~
 ~
 15 64 2049
 300 1 -1 0
-4 5000 35
+4 50 35
 E
 pouch~
 This small pouch is made of soft deerskin.
@@ -1221,7 +1320,7 @@ There is a small dagger laying here, made of the spine of some beast.~
 ~
 5 64 8193
 0 1 5 11
-3 2000 25
+3 20 25
 E
 dagger~
 This small dagger is made of the spine of a dragon, strong and sharp.
@@ -1319,7 +1418,7 @@ A large dwarven helm lies here on the ground.~
 ~
 9 90112 17
 2 2 0 0
-17 100 100
+17 100 10
 E
 helm~
   The helm is intricatly carved with stenciled designs.
@@ -1331,7 +1430,7 @@ A dwarven breast plate lies here on the ground.~
 ~
 9 90112 9 
 3 3 0 0
-45 150 150
+45 1150 1015
 E
 breast plate~
   The breast plate is made of thick steel and seems to be made of excellent
@@ -1365,7 +1464,7 @@ A large battle axe lies here on the ground.~
 ~
 5 28736 40961
 0 1 8 5
-9 10000 100
+9 1000 300
 E
 dwarven battle axe~
   It is encarved with beautiful dwarven runes.~
@@ -1388,7 +1487,7 @@ A large and intricate staff rests here.~
 ~
 4 118848 16385
 25 5 5 7
-10 1000 1000
+10 1000 100
 E
 staff~
   The staff has many intricate runes upon it, there is no doubt this object
@@ -1467,7 +1566,7 @@ A large dwarven breast plate lies here.~
 ~
 9 90112 9
 4 4 0 0
-50 2000 2000
+50 2000 200
 E
 plate breast dwarven~
   It appears to be made of a very strong metal, perhaps mithral.
@@ -1479,7 +1578,7 @@ A large dwarven helm lies here.~
 ~
 9 90112 17
 4 4 0 0
-30 1000 1000
+30 1000 400
 E
 helm dwarven~
   The helm appears to be made of a very strong metal, perhaps mithral.
@@ -1491,7 +1590,7 @@ A pair of dwarven leg plates lie here.~
 ~
 9 90112 33
 4 4 0 0
-40 1500 1500
+40 1500 500
 E
 leg plates legplates dwarven~
   They appear to be made of a very strong metal, perhaps mithral.
@@ -1503,7 +1602,7 @@ A pair of dwarven arm plates lie here.~
 ~
 9 90112 257
 4 4 0 0
-40 1300 1300
+40 1300 300
 E
 arm plates armplates dwarven~
   They appear to be made of a very strong metal, perhaps mithral.
@@ -1542,7 +1641,7 @@ A pair of metal gauntlets lie here.~
 ~
 9 24576 129
 4 4 0 0
-25 600 600
+25 600 100
 E
 metal gauntlets~
   The gauntlets appear to be made of a very strong metal, perhaps mithral.
@@ -1554,7 +1653,7 @@ A pair of metal plated boots lie here.~
 ~
 9 90112 65
 4 4 0 0
-35 750 750
+35 750 150
 E
 metal plated boots~
   The boots are plated heavily with a strong metal, perhaps mithral.
@@ -1574,7 +1673,7 @@ A large hammer lies here.~
 ~
 5 4096 8193
 0 1 8 7
-10 350 350
+10 350 150
 #4725
 red jewel~
 a red jewel~
@@ -1582,7 +1681,7 @@ A red jewel lies here.~
 ~
 8 64 16385
 0 0 0 0
-5 1000 1000
+5 1000 100
 A
 1 1
 E
@@ -1596,7 +1695,7 @@ A small pasty lies here.~
 ~
 19 0 1
 12 0 0 0
-1 5 5
+1 5 1 
 #4727
 mug~
 mug~
@@ -1625,7 +1724,7 @@ A vest made of hard leather lies here.~
 ~
 9 8192 9
 2 2 0 0
-30 350 350
+30 350 50
 E
 leather vest hard~
   The vest is made of a extremely hard leather, almost as hard as metal.
@@ -1637,7 +1736,7 @@ A pair of hard leather sleeves lie here.~
 ~
 9 8192 257
 2 2 0 0
-20 250 250
+20 250 20
 E
 leather sleeves hard~
   The sleeves are almost as hard as metal.
@@ -1649,7 +1748,7 @@ A pair of hard leather leggings lie here.~
 ~
 9 8192 33
 2 2 0 0
-20 250 250
+20 250 25
 E
 leggings leather hard~
   The leggings are almost as hard as metal.
@@ -1661,7 +1760,7 @@ A red jewel lies here.~
 ~
 8 0 16385
 0 0 0 0
-5 570 500
+5 570 50
 E
 jewel red~
   The jewel is a beautiful shade of red!
@@ -1673,11 +1772,28 @@ A blue jewel lies here.~
 ~
 8 0 16385
 0 0 0 0
-5 600 600
+5 600 60
 E
 blue jewel~
   The jewel is a wonderful shade of blue!
 ~ 
+#4734
+druegar berserker axe~
+a gigantic druegar battle axe~
+A gigantic battle axe is embedded in the ground.~
+~
+5 194 32769
+0 3 6 5
+15 -1 2500
+E
+druegar berserker axe~
+  This axe is as large as most dwarves, and is very heavy.  It seems to be
+made of a very dark metal.  The edges are razor sharp, and it humms in a
+strangly disturbing way.  Wicked druegar runes run all along the blade.~
+A
+17 35
+A
+30 67
 #5000
 rolled map of city~
 a rolled map~
@@ -1697,7 +1813,7 @@ A small piece of paper lies here.~
 ~
 12 0 16385
 0 0 0 0 
-1 50 1
+1 5 1
 E
 small piece of paper pass~
 This small, hard piece of paper has the words, "PASS" written upon it.
@@ -1781,7 +1897,7 @@ A cup of fine water rests here.~
 ~
 17 0 16385
 24 24 0 0
-1 5 5
+1 5 1
 #5011
 flask local specialty~
 a blue tinted flask~
@@ -1837,7 +1953,7 @@ A slab of white cheese rests here.~
 ~
 19 0 16385
 15 0 0 0
-1 15 1
+1 5 1
 #5018
 ogre tongue~
 a cooked ogre tongue~
@@ -1869,7 +1985,7 @@ A longsword lies here.~
 ~
 5 12288 8193
 0 1 8 3 
-7 1500 150
+7 500 150
 #5022
 scimitar sword curved~
 a scimitar~
@@ -1877,7 +1993,7 @@ A curved scimitar lies here.~
 ~
 5 12288 8193
 0 1 8 3
-6 1750 100
+6 750 100
 #5023
 bastard sword~
 a bastard sword~
@@ -1885,7 +2001,7 @@ A large bastard sword lies here.~
 ~
 5 28672 40961
 0 2 4 3
-10 2000 200
+10 700 200
 #5024
 clay spoon~
 a clay spoon~
@@ -1977,7 +2093,7 @@ A metal breast plate lies here.~
 ~
 9 90112 9
 4 4 0 0
-30 1000 100
+30 1500 500
 #5034
 metal plate girth~
 a plate metal girth~
@@ -2019,7 +2135,7 @@ A beautiful breast peice with golden engraving is here.~
 ~
 9 90112 9
 4 4 0 0
-35 2500 200
+35 2500 1200
 A
 17 -3
 E
@@ -2033,7 +2149,7 @@ A pair of armoured leggings are here.~
 ~
 9 8192 33
 3 3 0 0
-17 1000 100
+17 600 100
 E
 armoured leggings~
   The leggings are made from links of chain and appear very strong.
@@ -2044,7 +2160,7 @@ A pair of armour plated gauntlets are here.~
 ~
 9 90112 129
 4 4 0 0
-15 750 100
+15 450 100
 #5041
 plated boots~
 a pair of plated boots~
@@ -2052,7 +2168,7 @@ A pair of plated boots are here.~
 ~
 9 90112 65
 4 4 0 0
-16 875 100
+16 475 100
 #5042
 chain-link chainlink chain link hood~
 a chain-link hood~
@@ -2092,8 +2208,9 @@ A oak bench is here, large enough for several to sit upon.~
 ~
 12 0 16385
 0 0 0 0
-200 10 1
+200 10 100
 #5047
+
 treasure's box~
 a treasure's box~
 A wooden treasure's box lies here.~
@@ -2143,7 +2260,7 @@ A double-edged axe lies here.~
 ~
 5 28672 40961
 0 1 8 5
-9 1500 100
+9 500 100
 #5053
 silver shortsword short sword~
 a silver shortsword~
@@ -2162,15 +2279,15 @@ a two-handed sword~
 A large two-handed sword lies here.~
 ~
 5 28672 32769
-0 1 10 3
-17 3000 100
+0 1 16 3
+17 3000 1000
 #5055
 hammer warhammer~
 a warhammer~
 A large hilted warhammer lies here.~
 ~
-5 24576 40961
-0 1 8 7
+5 24576 57345
+0 1 10 7
 9 1500 100
 #5056
 longsword~
@@ -2318,7 +2435,7 @@ A halberd lies here, spanning some 10 feet in length.~
 ~
 5 28672 32769
 0 1 12 1
-15 200 100
+15 800 500
 E
 halberd~
   The halberd is a extremely long weapon, perfect for keeping things at bay,
@@ -2347,7 +2464,7 @@ A longblade made of silver sparkles here.~
 ~
 5 12288 8193
 0 1 9 3
-10 500 500
+10 500 200
 E
 silver longblade~
   The hilt of this fine blade seems to be made of ivory while the blade
@@ -2376,7 +2493,7 @@ A fur vest lies here in a clump.~
 ~
 9 0 9
 3 3 0 0
-32 197 197
+32 197 97
 #5075
 axe large~
 a large axe~
@@ -2392,7 +2509,7 @@ A curved blade lies here on the ground.~
 ~
 5 12288 8193
 0 1 8 3
-10 123 123
+10 123 23
 #5077
 chestplate golden~
 a golden chestplate~
@@ -2400,7 +2517,7 @@ A golden chestplate sparkles on the ground here.~
 ~
 9 90112 9
 5 5 0 0
-55 6519 6519
+55 6519 2519
 #5078
 helm gold encrusted~
 a gold encrusted helm~
@@ -2408,7 +2525,7 @@ A gold encrusted helm lies here.~
 ~
 9 90112 17
 5 5 0 0
-34 2365 2365
+34 2365 1365
 #5079
 legplates gold trimmed~
 some gold trimmed legplates~
@@ -2416,7 +2533,7 @@ A pair of golden trimmed legplates lie here.~
 ~
 9 90112 33
 5 5 0 0
-31 2987 2987
+31 2987 1987
 #5080
 halberd~
 a halberd~
@@ -2432,7 +2549,7 @@ A long red cloak lies here in a clump.~
 ~
 9 0 5
 3 3 0 0
-12 651 651
+12 651 61
 #5082
 vest black leather~
 a black leather vest~
@@ -2464,7 +2581,7 @@ A black silk jerkin lies here.~
 ~
 9 0 9
 2 2 0 0
-1 549 549
+1 549 59
 #5086
 leggings black silk~
 some black silk leggings~
@@ -2472,7 +2589,7 @@ Some black silk leggings lie here.~
 ~
 9 0 33
 2 2 0 0
-1 543 543
+1 543 53
 #5087
 gloves silk~
 some silk gloves~
@@ -2480,7 +2597,7 @@ A pair of silk gloves lie here.~
 ~
 9 0 129
 1 1 0 0
-1 654 645
+1 54 6
 #5088
 longsword grey bladed~
 a grey bladed longsword~
@@ -2488,7 +2605,7 @@ A longsword lies here, the blade a ashen grey.~
 ~
 5 28672 8193
 0 1 8 3
-7 439 439
+7 439 139
 #5089
 vest leather small~
 a small leather vest~
@@ -2496,7 +2613,7 @@ A small leather vest lies here.~
 ~
 9 8192 9
 2 2 0 0
-12 86 86
+12 86 46
 #5090
 leggings small leather~
 some small leather leggings~
@@ -2538,7 +2655,7 @@ A mace lies here, small pieces of metal on the head.~
 ~
 5 0 8193
 0 1 8 4
-7 543 543
+7 543 43
 #5095
 staff aged~
 a aged staff~
@@ -2546,7 +2663,7 @@ A aged staff lies here.~
 ~
 5 0 32769
 0 1 6 7
-3 1 1
+3 1 20 
 #5096
 helm silver winged~
 a silver winged helm~
@@ -2554,7 +2671,7 @@ A helm made of silver lies here, small wings on the sides.~
 ~
 9 90112 17
 4 4 0 0
-18 546 546
+18 546 54
 #5097
 breastplate silver encrusted~
 a silver encrusted breastplate~
@@ -2562,7 +2679,7 @@ A breastplate lies here, encrusted with silver.~
 ~
 9 90112 9
 4 4 0 0
-43 6512 6512
+43 6512 512
 #5098
 sword silver hilted bastard sword~
 a silver hilted bastard sword~
@@ -2570,7 +2687,7 @@ A bastard sword lies here, the hilt shining with silver.~
 ~
 5 28672 40961
 0 2 4 3
-13 5439 5439
+13 1439 439
 #5099
 board bulletin~
 a bulletin board~
@@ -2599,7 +2716,7 @@ A breastplate made of silver lies here.~
 ~
 9 90112 9
 4 4 0 0
-20 1000 150
+20 1000 550
 E
 breatplate breast plate~
   The breastplate does appear to be made of pure silver and would fit any
@@ -2680,8 +2797,8 @@ a silver bastard sword~
 A bastard sword made of silver lies here.~
 ~
 5 28672 40961
-0 2 4 3
-10 400 100
+0 2 6 3
+10 1400 700
 E
 bastard silver~
   The blade of this sword seems to be made of pure silver while the hilt is
@@ -2737,7 +2854,7 @@ A old bastad sword lies here.~
 ~
 5 28736 40961
 0 2 4 3
-12 1000 100
+12 2000 1400
 E
 bastard sword~
   The sword looks very heavy as it can be used with two hands or one.  There 
@@ -2843,7 +2960,7 @@ A torch lies here.~
 ~
 1 0 1
 0 0 30 0
-2 23 23
+2 23 1 
 #5411
 lantern~
 a lantern~
@@ -2851,7 +2968,7 @@ A lantern lies here.~
 ~
 1 0 1
 0 0 100 0
-5 65 65
+5 65 5
 #5412
 dented helm~
 a dented helm~
@@ -2867,7 +2984,7 @@ A bearskin lies here.~
 ~
 9 0 5
 3 3 0 0
-34 129 129
+34 529 259
 A
 17 -5
 A
@@ -2879,7 +2996,7 @@ A curved blade lies here.~
 ~
 5 12288 40961
 0 2 6 5
-16 659 659
+16 659 159
 A
 18 1
 A
@@ -2899,7 +3016,7 @@ A opaque stone lies here.~
 ~
 8 64 1
 0 0 0 0
-1 451 451
+1 451 41
 E
 opaque stone~
 There is a slight gimmer in the dull shell.
@@ -2911,7 +3028,7 @@ A red jewel lies here.~
 ~
 8 64 16385
 0 0 0 0
-1 347 347
+1 347 37
 E
 red jewel~
 There are obvious arcane inscriptions upon it.
@@ -2923,7 +3040,7 @@ A violet ruby lies here.~
 ~
 8 64 16385
 0 0 0 0
-1 547 547
+1 547 57
 E
 violet ruby~
 The ruby glistens in the light.
@@ -2999,7 +3116,7 @@ a desk drawer~
 ~
 15 0 0
 30 7 -1 0
-90 909 909
+90 9 909
 #5908
 mace spiked~
 a spiked mace~
@@ -3053,7 +3170,7 @@ A ivory candle holder lies here.~
 ~
 18 0 16385
 2 0 0 0
-1 1234 1234
+1 134 1234
 E
 ivory candle holder~
 Looking closely at the end you notice that it is shaped much like that of a
@@ -3082,7 +3199,7 @@ A ring, black with a ebon gem lies here.~
 ~
 11 576 3
 0 0 0 0
-1 432 423
+1 432 123
 A
 4 1
 A
@@ -3098,7 +3215,7 @@ A scroll lies here.~
 ~
 2 64 16385
 16 20 -1 -1
-1 198 198
+1 198 98
 E
 scroll~
 The scroll has the words 'Oculocula Uizugubusuhl'
@@ -3110,7 +3227,7 @@ A scroll lies here.~
 ~
 2 64 16385
 16 33 -1 -1
-1 198 198
+1 198 98
 E
 scroll~
 The scroll has the words 'Tuagai'
@@ -3134,7 +3251,7 @@ A scroll lies here.~
 ~
 2 64 16385
 16 31 -1 -1
-1 118 118
+1 118 82
 E
 scroll~
 The scroll has the words 'Hifqahz Abyzqh'
@@ -3146,7 +3263,7 @@ A scroll lies here.~
 ~
 2 64 16385
 16 4 -1 -1
-1 298 298
+1 298 98
 E
 scroll~
 The scroll has the words 'Noselacri'
@@ -3180,7 +3297,7 @@ A small ebony gem lies here.~
 ~
 18 0 16385
 1 0 0 0
-1 345 345
+1 345 45
 #5925
 belt skull buckled~
 a skull buckled belt~
@@ -3208,7 +3325,7 @@ A scroll lies here.~
 ~
 2 64 16385
 16 6 -1 -1
-1 349 349
+1 349 49
 E
 scroll~
 The scroll has the words 'Oculocula Uizugubusuhl'
@@ -3220,7 +3337,7 @@ A scroll lies here.~
 ~
 2 64 16385
 16 12 -1 -1
-1 349 349
+1 349 49
 E
 scroll~
 The scroll has the words 'Qfzahz Yaae'
@@ -3232,7 +3349,7 @@ A scroll lies here.~
 ~
 2 64 16385
 16 22 -1 -1
-1 349 349
+1 349 49
 E
 scroll~
 The scroll has the words 'Eugtzs Zzus'
@@ -3244,7 +3361,7 @@ A scroll lies here.~
 ~
 2 64 16385
 16 29 -1 -1
-1 349 349
+1 349 49
 E
 scroll~
 The scroll has the words 'Uizugubusuhl'
@@ -3264,9 +3381,9 @@ hammer heavy~
 a heavy hammer~
 A hammer lies here, the head made of iron.~
 ~
-5 0 8193
+5 0 24577
 0 1 10 0
-24 43 43
+24 743 443
 #5933
 apron leather~
 a leather apron~
@@ -3331,7 +3448,7 @@ A vest made of odd looking scales lies here.~
 ~
 9 8192 9
 3 3 0 0
-25 450 450
+25 450 350
 E
 vest scale~
   The vest seems to have a rather soft inner lining while on the outside 
@@ -3412,7 +3529,7 @@ A small boat lies here, hull skyward so the water drains.~
 ~
 22 0 1
 0 0 0 0
-50 60 60
+50 60 6000
 E
 boat small~
   The boat is barely large enough for one person to sit comfortably in not
@@ -3425,7 +3542,7 @@ A canoe lies here, hull skyward to drain water.~
 ~
 22 0 1
 0 0 0 0
-55 89 89
+55 89 8900
 E
 canoe~
   The canoe is suprisingly heavy considering it is made of nothing more
@@ -3438,7 +3555,7 @@ A barge is here, tipped upon its side do to lack of water.~
 ~
 22 0 1
 0 0 0 0
-500 5000 5000
+500 3000 5000
 E
 barge~
   The barge could hold several people provided they all knew how to pole
@@ -3490,7 +3607,7 @@ A red piece of clothe lies here on the ground.~
 ~
 12 0 2049
 0 0 0 0
-5 50 50
+5 50 5
 A
 17 -2
 E
@@ -3534,7 +3651,7 @@ twig small~
 a small twig~
 A small twig lies here.~
 ~
-2 64 1 
+2 64 16385
 20 17 -1 -1
 1 10 10
 E
@@ -3572,7 +3689,7 @@ A medium shield lis here.~
 ~
 9 24576 513
 10 10 0 0
-15 165 165
+15 165 65
 #6114
 body shield~
 a body shield~
@@ -3580,7 +3697,7 @@ A body shield lies here.~
 ~
 9 24576 513
 12 12 0 0
-25 432 432
+25 432 32
 #6115
 skullcap~
 a skullcap~
@@ -3588,7 +3705,7 @@ A skullcap lies here.~
 ~
 9 0 17
 2 2 0 0
-5 213 213
+5 213 23
 #6116
 coif~
 a coif~
@@ -3596,7 +3713,7 @@ A coif lies here.~
 ~
 9 8192 17
 3 3 0 0
-10 543 543
+10 543 43
 E
 coif~
   It looks much like a chain-linked hood.
@@ -3608,7 +3725,7 @@ A helmet with a open face lies here.~
 ~
 9 73728 17
 3 3 0 0
-25 987 987
+25 987 387
 #6118
 helmet close faced~
 a close-faced helmet~
@@ -3616,7 +3733,7 @@ A helmet with a closed face lies here.~
 ~
 9 90112 17
 4 4 0 0
-30 1234 1234
+30 1234 134
 #6119
 great helm~
 a great helm~
@@ -3624,7 +3741,7 @@ A great helm lies here.~
 ~
 9 90112 17
 5 5 0 0
-45 2134 2134
+45 2134 234
 #6120
 battle axe~
 a battle axe~
@@ -3632,7 +3749,7 @@ A battle axe lies here.~
 ~
 5 12288 40961
 0 1 8 5
-10 278 278
+10 278 78
 #6121
 long handle battle axe~
 a long handled battle axe~
@@ -3640,7 +3757,7 @@ A battle axe with a long handle lies here.~
 ~
 5 12288 32769
 0 1 9 5
-15 567 567
+15 567 256
 #6122
 cestus~
 a pair of cestus~
@@ -3648,7 +3765,7 @@ A pair of cestus lie here.~
 ~
 5 8192 8321
 0 1 2 7
-5 123 123
+5 123 23
 E
 cestus~
   These are gauntlets that have large strips of sharp metal along the
@@ -3669,7 +3786,7 @@ A dagger made for parrying lies here.~
 ~
 5 4096 8193
 0 1 4 1
-5 321 321
+5 321 21
 A
 17 -2
 E
@@ -3684,7 +3801,7 @@ A flail lies here.~
 ~
 5 8192 8193
 0 1 6 7
-8 123 123
+8 123 23
 #6126
 horsemans flail~
 a horseman's flail~
@@ -3692,7 +3809,7 @@ A large flail lies here with a long metal chain attached to a ball.~
 ~
 5 8192 8193
 0 1 7 7
-9 764 764
+9 764 264
 #6127
 footmans flail~
 a footman's flail~
@@ -3700,7 +3817,7 @@ A large flail lies here with a couple chains leading to large balls.~
 ~
 5 8192 8193
 0 1 8 7
-10 1345 1345
+10 1345 345
 #6128
 gouplilians flail~
 a gouplilian's flail~
@@ -3708,7 +3825,7 @@ A gouplilian's flail is lieing here.~
 ~
 5 8192 8193
 0 1 9 7
-11 2345 2345
+11 2345 345
 #6129
 gaff~
 a gaff~
@@ -3728,7 +3845,7 @@ A javelin lies here.~
 ~
 5 4096 8193
 0 1 6 11
-5 765 765
+5 765 76
 #6131
 mace~
 a mace~
@@ -3736,7 +3853,7 @@ A mace lies here.~
 ~
 5 0 8193
 0 1 6 7
-6 123 123
+6 123 23
 #6132
 footmans mace~
 a footman's mace~
@@ -3744,7 +3861,7 @@ A footman's mace lies here.~
 ~
 5 0 8193
 0 1 7 7
-8 654 654
+8 654 64
 #6133
 horsemans mace~
 a horseman's mace~
@@ -3752,7 +3869,7 @@ A horseman's mace lies here.~
 ~
 5 0 8193
 0 1 8 7
-10 1765 1765
+10 565 165
 #6134
 morning star~
 a morning star~
@@ -3760,7 +3877,7 @@ A morning star lies here.~
 ~
 5 0 8193
 0 1 6 7
-10 1456 1456
+10 146 56
 #6135
 military pick~
 a military pick~
@@ -3768,7 +3885,7 @@ A military pick lies here.~
 ~
 5 12288 8193
 0 1 6 11
-6 345 345
+6 345 35
 #6136
 footmans pick~
 a footman's pick~
@@ -3776,7 +3893,7 @@ A footman's pick lies here.~
 ~
 5 12288 8193
 0 1 7 11
-7 786 786
+7 786 76
 #6137
 horsemans pick~
 a horseman's pick~
@@ -3784,7 +3901,7 @@ A horseman's pick lies here.~
 ~
 5 12288 8193
 0 1 8 11
-8 1876 1876
+8 876 176
 #6138
 awl pike~
 a awl pike~
@@ -3792,7 +3909,7 @@ A large polearm lies here; a awl pike.~
 ~
 5 28672 32769
 0 1 8 1
-7 654 654
+7 654 64
 #6139
 bardiche~
 a bardiche~
@@ -3800,7 +3917,7 @@ A large polearm lies here; a bardiche.~
 ~
 5 28672 32769
 0 1 8 3
-10 876 876
+10 876 76
 #6140
 bec de corbin~
 a Bec de corbin~
@@ -3808,7 +3925,7 @@ A large polearm lies here; a Bec de corbin.~
 ~
 5 28672 32769
 0 1 6 1
-8 456 456
+8 456 46
 #6141
 bill guisarme~
 a bill guisarme~
@@ -3816,7 +3933,7 @@ A large polearm lies here; a bill guisarme.~
 ~
 5 28672 32769
 0 1 9 3
-11 832 832
+11 832 32
 #6142
 fauchard~
 a fauchard~
@@ -3824,7 +3941,7 @@ A large polearm lies here; a fauchard.~
 ~
 5 28672 32769
 0 1 8 3
-10 712 712
+10 712 12
 #6143
 fauchard fork~
 a fauchard fork~
@@ -3832,7 +3949,7 @@ A large polearm lies here; a fauchard fork.~
 ~
 5 28672 32769
 0 1 8 1
-10 777 777
+10 777 77
 #6144
 glaive~
 a glaive~
@@ -3840,7 +3957,7 @@ A large polearm lies here; a glaive.~
 ~
 5 28672 32769
 1 10 3
-12 1654 1654
+12 654 64
 #6145
 glaive guisarme~
 a glaive guisarme~
@@ -3848,7 +3965,7 @@ A large polearm lies here; a glaive guisarme.~
 ~
 5 28672 32769
 0 1 11 3
-13 2345 2345
+13 735 545
 #6146
 guisarme~
 a guisarme~
@@ -3856,7 +3973,7 @@ A large polearm lies here; a guisarme.~
 ~
 5 28672 32769
 0 1 10 3
-10 1237 1237
+10 737 237
 #6147
 partisan~
 a partisan~
@@ -3864,7 +3981,7 @@ A large polearm lies here; a partisan.~
 ~
 5 28672 32769
 0 1 10 1
-14 4326 4326
+14 936 426
 #6148
 lucerne hammer~
 a lucerne hammer~
@@ -3872,7 +3989,7 @@ A large polearm lies here; a lucerne hammer.~
 ~
 5 28672 32769
 0 1 6 1
-6 345 345
+6 345 34
 #6149
 voulge~
 a voulge~
@@ -3880,7 +3997,7 @@ A large polearm lies here; a voulge.~
 ~
 5 28672 32769
 0 2 6 3
-14 5423 5423
+14 1423 543
 #6150
 quarterstaff~
 a quarterstaff~
@@ -3920,7 +4037,7 @@ A long spear lies here.~
 ~
 5 4096 32769
 0 1 7 1
-7 543 543
+7 543 54
 #6155
 stiletto~
 a stiletto~
@@ -3928,15 +4045,15 @@ A stiletto lies here.~
 ~
 5 4096 8193
 0 1 4 11
-2 432 432
+2 312 42
 #6156
 claymore~
 a claymore~
 A huge sword lies here; a claymore.~
 ~
 5 28672 32769
-0 1 10 3
-15 6543 6543
+0 1 14 3
+15 2543 2543
 #6157
 cutlass~
 a cutlass~
@@ -3944,7 +4061,7 @@ A cutlass lies here.~
 ~
 5 12288 8193
 0 1 6 3
-6 765 765
+6 765 75
 #6157
 khoplesh~
 a khoplesh~
@@ -3952,7 +4069,7 @@ A large khoplesh lies here.~
 ~
 5 12288 8193
 0 1 8 3
-10 1287 1287
+10 687 287
 #6158
 rapier~
 a rapier~
@@ -3960,7 +4077,7 @@ A long rapier lies here.~
 ~
 5 12288 8193
 0 1 6 1
-5 1234 1234
+5 734 134
 #6159
 sabre~
 a sabre~
@@ -3968,7 +4085,7 @@ A sabre lies here.~
 ~
 5 12288 8193
 0 1 8 3
-7 543 543
+7 543 43
 #6160
 trident~
 a trident~
@@ -4004,7 +4121,7 @@ A bag is lieing here.~
 ~
 15 0 16385
 10 5 -1 0
-4 2348 2348
+4 2348 348
 #6164
 herbs some herb~
 some herbs~
@@ -4022,7 +4139,7 @@ A beacon lantern is lieing here.~
 ~
 1 0 1
 0 0 120 0
-5 432 432
+5 432 2
 #6166
 bullseye lantern~
 a bullseye lantern~
@@ -4030,7 +4147,7 @@ A bullseye lantern is lieing here.~
 ~
 1 0 1
 0 0 50 0
-6 44 44
+6 44 4
 #6167
 hooded lantern~
 a hooded lantern~
@@ -4046,7 +4163,7 @@ Some iron rations are lieing here.~
 ~
 19 0 1
 0 0 24 0
-1 76 76
+1 76 1 
 #6169
 dry provisions~
 some dry provisions~
@@ -4054,7 +4171,7 @@ Some dry provisions are lieing here.~
 ~
 19 0 1
 0 0 14 0
-1 35 35
+1 35 5
 #6170
 waterskin water skin~
 a waterskin~
@@ -4062,7 +4179,7 @@ A waterskin is lieing here.~
 ~
 17 0 16385
 10 10 0 0
-1 54 54
+1 54 4
 #6171
 wineskin wine skin~
 a wineskin~
@@ -4070,7 +4187,7 @@ A wineskin is lieing here.~
 ~
 17 0 16385
 10 10 2 0
-1 87 87
+1 87 7
 #6172
 baladrana~
 a baladrana~
@@ -4078,7 +4195,7 @@ A baladrana is lieing here.~
 ~
 11 0 5
 0 0 0 0
-2 89 89
+2 889 129
 A
 17 -3
 E
@@ -4182,7 +4299,7 @@ A knife lies here, it has a very long blade.~
 ~
 5 0 8193
 0 1 5 11
-3 2400 2400
+3 400 2400
 E
 knife sacrificial~
   The knife seems to be encrusted with jewels and made almost entirely of
@@ -4195,7 +4312,7 @@ A tunic made from very small scales lies here.~
 ~
 12 0 9
 0 0 0 0
-7 35 35
+7 335 635
 A
 17 -6
 E
@@ -4211,7 +4328,7 @@ A robe made from reddish scales lies here.~
 ~
 12 0 1025
 0 0 0 0
-10 450 450
+10 1450 1050
 A
 17 -12
 E
@@ -4225,7 +4342,7 @@ A large shell lies here, fashioned to fit someones chest.~
 ~
 9 0 9
 4 4 0 0
-25 650 650
+25 2650 1650
 E
 shell torso~
   This shell could have belonged to a turtle at some point in time, now it
@@ -4294,7 +4411,7 @@ A blue gem lies here.~
 ~
 8 0 16385
 0 0 0 0
-2 4000 4000
+2 4000 400
 E
 gem blue~
   The gem appears to be flawless and must be worth a pretty penny.
@@ -4306,7 +4423,7 @@ A red gem lies here.~
 ~
 8 0 16385
 0 0 0 0
-2 3600 3600
+2 3600 36
 E
 gem red~
   The gem appears to be almost flawless and no less beautiful.
@@ -4318,7 +4435,7 @@ A necklace laced with diamonds lies here.~
 ~
 8 64 5
 0 0 0 0
-3 2300 2300
+3 2300 23
 A
 26 1
 E
@@ -4341,7 +4458,7 @@ A small metal rod lies here.~
 ~
 3 64 16385
 49 5 5 32
-2 456 456
+2 456 45
 E
 small rod metal~
   The rod almost radiates in you hand as you look upon it.  You can see
@@ -4355,7 +4472,7 @@ A pair of black silk gloves lie here.~
 ~
 9 0 129
 1 1 0 0
-2 234 234
+2 234 24
 A
 38 5
 #6401
@@ -4365,7 +4482,7 @@ A studded leather jacket lies here.~
 ~
 9 8192 9
 2 2 0 0
-8 123 123
+8 123 23
 #6402
 studded leather pants~
 some studded leather pants~
@@ -4393,7 +4510,7 @@ A shirt made of black chain lies here.~
 ~
 9 8192 9
 3 3 0 0
-12 521 521
+12 521 52
 #6405
 black chain sleeves~
 some black chain sleeves~
@@ -4433,7 +4550,7 @@ A longsword lies here.~
 ~
 5 28672 8193
 0 1 7 3
-8 456 456
+8 456 256
 #6410
 black hooded robe~
 a black hooded robe~
@@ -4453,7 +4570,7 @@ A pendant lies here, the symbol of Aklan engraved in it.~
 ~
 11 0 5
 0 0 0 0
-2 234 234
+2 234 34
 #6412
 leather sandals~
 some leather sandals~
@@ -4469,7 +4586,7 @@ A metal helm with leather like wings on it lies here.~
 ~
 9 73728 17
 4 4 0 0
-13 678 678
+13 678 78
 E
 leather winged helm~
   The helm is made of a black metal and has leathery wings protruding
@@ -4482,7 +4599,7 @@ A breast plate covered in spikes lies here.~
 ~
 9 90112 9
 4 4 0 0
-25 1592 1592
+25 792 592
 #6415
 spiked arm plates~
 some spiked arm plates~
@@ -4490,7 +4607,7 @@ A pair of spiked arm plates lie here.~
 ~
 9 90112 257
 4 4 0 0
-20 923 923
+20 523 223
 #6416
 spiked leg plates~
 some spiked leg plates~
@@ -4498,7 +4615,7 @@ A pair of spiked leg plates lie here.~
 ~
 9 90112 33
 4 4 0 0
-23 954 954
+23 954 354
 #6417
 spike plated gloves~
 some spike plated gloves~
@@ -4506,7 +4623,7 @@ A pair of spike plated gloves lie here.~
 ~
 9 90112 129
 4 4 0 0
-13 345 345
+13 345 145
 #6418
 spike plated boots~
 some spike plated boots~
@@ -4514,7 +4631,7 @@ A pair of spike plated boots lie here.~
 ~
 9 90112 65
 4 4 0 0
-17 487 487
+17 487 187
 #6419
 aklan symbol shield~
 a aklan symbol shield~
@@ -4522,7 +4639,7 @@ A shield lies here, the Aklan symbol upon it.~
 ~
 9 24576 513
 10 10 0 0
-14 345 345
+14 345 145
 #6420
 claw hilted two handed blade~
 a claw hilted two-handed blade~
@@ -4530,7 +4647,7 @@ A two-handed blade, hilt crafted into a claw lies here.~
 ~
 5 28672 32769
 0 1 10 3
-16 2924 2924
+16 924 524
 #6421
 red coiled rope~
 a red coiled rope~
@@ -4546,7 +4663,7 @@ A amulet lies here, the symbol of Aklan upon it.~
 ~
 11 0 5
 0 0 0 0
-2 654 654
+2 54 54
 #6423
 black hooded robe~
 a black hooded robe~
@@ -4570,7 +4687,7 @@ A broach lies here, the symbol of Aklan upon it.~
 ~
 11 2624 9
 0 0 0 0
-2 3456 3456
+2 456 456
 A
 17 -9
 A
@@ -4582,7 +4699,7 @@ A pendant lies here, the symbol of Aklan upon it.~
 ~
 11 2624 5
 0 0 0 0
-2 5321 5321
+2 321 321
 A
 26 1
 A
@@ -4594,7 +4711,7 @@ A necklace with a red jewel in it lies here.~
 ~
 11 64 5
 0 0 0 0
-2 1983 1983
+2 983 983
 A
 12 5
 #6427
@@ -4604,7 +4721,7 @@ A bracer made of banded steel lies here.~
 ~
 11 118912 4097
 0 0 0 0
-2 1298 1298
+2 298 298
 A
 17 -5
 #6428
@@ -4614,7 +4731,7 @@ A tiera made of dark ebony lies here.~
 ~
 11 64 17
 0 0 0 0
-2 1290 1290
+2 290 490
 A
 4 2
 A
@@ -4636,7 +4753,7 @@ A broach lies here, the symbol of Aklan upon it.~
 ~
 11 0 9
 0 0 0 0
-3 654 654
+3 54 54
 #6431
 steel banded bracer~
 a steel banded bracer~
@@ -4644,7 +4761,7 @@ A steel banded bracer lies here.~
 ~
 11 0 4097
 0 0 0 0
-2 234 234
+2 134 134
 A
 17 -2
 #6432
@@ -4662,7 +4779,7 @@ A pearl lies here.~
 ~
 18 0 16385
 2 0 0 0
-1 329 329
+1 329 29
 #6501
 cauldron~
 a cauldron~
@@ -4766,7 +4883,7 @@ A small pearl lies here.~
 ~
 1 64 1
 0 0 -1 0
-1 988 988
+1 988 88
 #6513
 conk shell~
 a conk shell~
@@ -4798,7 +4915,7 @@ A bit of purple lichen clings deep within cracks of the caverns walls.~
 ~
 14 96 1 
 389 -3 1 3
-1 345 345
+1 45 345
 #6517
 lichen violet~
 some violet lichen~
@@ -4806,7 +4923,7 @@ A bit of violet lichen clings to the coral within the cavern.~
 ~
 14 96 1
 509 -3 1 2 
-1 345 345
+1 45 345
 #6518
 shell conk~
 a conk shell~
@@ -4814,7 +4931,7 @@ A conk shell lies here.~
 ~
 3 64 16385
 25 3 3 10
-4 234 234
+4 34 234
 #6519
 key coral~
 a coral key~
@@ -5018,12 +5135,66 @@ The Scythe of Death rests heavily on the ground.~
 ~
 5 0 32769
 0 1 100 5
-100 30000 10000
+100 -1 -1 
 E
 scythe~
 It is a very heavy scythe.  The grey handle is made from hard wood and the long
 iron blade is completely smooth from countless years of use.  It feels cold to
 the touch.
+~
+#7001
+pond pool~
+A small pool of water~
+A small pool of water is by your feet.~
+~
+15 0 0
+10 0 -1 0
+~
+#7005
+boots black elven~
+A pair of black elven boots~
+A tattered pair of dark black elven boots stand at attention.~
+~
+11 64 65
+0 0 0 0
+2 500 100
+A
+32 5
+A
+34 5
+~
+#7008
+key adamantine~
+An adamantine key~
+A key made out of a very hard metal is here.~
+~
+18 0 16385
+4 0 0 0
+1 0 0
+~
+#7010
+cloak black elven~
+A black tattered elven cloak~
+A tattered black elven cloak lies here.~
+~
+9 64 1025
+8 8 0 0
+2 500 100
+A
+34 5
+A
+35 5
+~
+#7015
+black staff~
+A black wooden staff~
+A smooth black staff leans against the wall here.~
+~
+4 66112 16385
+30 4 4 38
+5 100 500
+A
+12 -10
 ~
 #9002
 metal shod staff~
@@ -5124,7 +5295,7 @@ A breast plate, engraved with black metal lies here.~
 ~
 9 90112 9
 4 4 0 0
-34 654 654
+34 654 354
 A
 17 -5
 #9011
@@ -5134,7 +5305,7 @@ A pair of black engraved leg plates lie here.~
 ~
 9 90112 33
 4 4 0 0
-22 432 432
+22 432 132
 A
 17 -4
 #9012
@@ -5198,7 +5369,7 @@ A scroll lies here.~
 ~
 2 64 16385
 25 26 -1 -1
-1 234 234
+1 234 34
 #9018
 scroll~
 a scroll~
@@ -5206,7 +5377,7 @@ A scroll lies here.~
 ~
 2 64 16385
 25 30 -1 -1
-1 253 253
+1 253 53
 #9019
 scroll~
 a scroll~
@@ -5214,7 +5385,7 @@ A scroll lies here.~
 ~
 2 64 16385
 25 1 -1 -1
-1 124 124
+1 124 24
 #9020
 sword blade two handed engraved~
 a engraved two-handed blade~
@@ -5324,7 +5495,7 @@ A large shield bearing the symbol of a red eye is here.~
 ~
 9 24640 513
 10 0 0 0
-8 9000 125
+8 1000 125
 A
 17 -5
 #9602
@@ -5334,7 +5505,7 @@ A blue green staff with a leaf design is sitting on the ground here.~
 ~
 4 64 16385
 1 3 3 16
-1 10000 200
+1 1000 200
 E
 blue green staff~
   The staff has symbols that could only pertain to the holy arts.
@@ -5466,7 +5637,7 @@ A giants femur lies here~
 ~
 5 24576 8193
 0 2 4 7
-7 900 300
+7 300 300
 #9707
 yellow potion~
 a yellow potion~
@@ -5474,7 +5645,7 @@ A yellow potion sits here.~
 ~
 10 64 16385
 15 1 3 -1
-1 10000 10000
+1 1000 10
 #9708
 rusty dagger~ 
 a rusty dagger~
@@ -5490,7 +5661,7 @@ A dragon scale shield lies here.~
 ~
 9 24576 513
 15 15 0 0
-6 1932 1932 
+6 1932 932 
 #9711
 rusty breast plate~
 a rusty breast plate~
@@ -5512,7 +5683,7 @@ rusty warhammer~
 rusty warhammer~
 A rusty warhammer lies here.~
 ~
-5 24576 32769
+5 24576 49153
 0 2 5 7
 7 98 98 
 #9714
@@ -5522,7 +5693,7 @@ A green potion sits here.~
 ~
 10 64 16385
 15 29 -1 -1
-1 13985 13985
+1 139 39
 #9715
 rusty spike~ 
 a rusty spike~
@@ -5562,7 +5733,7 @@ A longsword lies here.~
 ~
 5 28736 40961 
 0 1 8 3
-12 48798 4878 
+12 1400 801 
 A
 18 3 
 #9801
@@ -5572,7 +5743,7 @@ A longsword lies here.~
 ~
 5 28736 40961
 0 1 8 3
-12 48798 4878
+12 1400 800 
 A 
 19 3 
 #9802
@@ -5582,7 +5753,7 @@ A pink potion lies here.~
 ~
 10 64 16385
 30 28 -1 -1
-2 9233 934
+2 233 34
 E
 potion pink~
 The potion swirls clockwise.
@@ -5594,7 +5765,7 @@ A pink potion lies here.~
 ~
 10 64 16385
 30 27 -1 -1
-2 7364 730
+2 364 30
 E
 potion pink~
 The potion swirls counter clockwise.
@@ -5605,8 +5776,8 @@ a black sickle~
 A sickle lies here.~
 ~
 5 96832 32769 
-0 2 6 3
-14 7678 7678
+0 2 7 3
+14 2678 1500 
 A
 40 3
 #9805
@@ -5615,8 +5786,8 @@ a golden dagger~
 A golden dagger lies here.~
 ~
 5 6656 8193
-0 1 6 11
-2 27861 2332
+0 2 4 11
+2 2861 332
 A
 32 6
 #9806
@@ -5650,7 +5821,7 @@ An emerald gem lies here.~
 ~
 18 0 16385
 1 0 0 0
-1 87848 8732
+1 1848 32
 #9810
 steel chest~
 a steel chest~
@@ -5747,7 +5918,7 @@ A scale bodice lies here in a clump~
 ~
 9 0 9
 2 2 0 0
-15 150 150
+15 150 70
 E
 scale bodice~
   This piece of armor looks more like the top of a elegant dress than 
@@ -5761,7 +5932,7 @@ A scale skirt lies here in a hump.~
 ~
 9 0 33
 2 2 0 0
-15 150 150
+15 150 10
 A
 17 -4
 E
@@ -5788,7 +5959,7 @@ A wooden chest lies here.~
 ~
 15 0 1
 20 13 10009 0
-60 200 200
+60 200 20
 E
 chest wooden~
   The chest is made of wood with iron branded sides.
@@ -5828,7 +5999,7 @@ A lute lies here.~
 ~
 3 64 16385
 10 5 5 3
-5 100 100
+5 100 10
 E
 lute~
   The lute looks used and worn but still seems playable, looking along the
@@ -5927,7 +6098,7 @@ A pair of sleeves made of metal scales are here.~
 ~
 9 90112 257
 4 4 0 0
-16 300 15
+16 300 65
 #15008
 scale gauntlets~
 A pair of scale gauntlets~
@@ -5935,7 +6106,7 @@ A pair of gauntlets made of metal scales is here.~
 ~
 9 24576 129
 4 4 0 0
-8 150 10
+8 150 30
 #15009
 scale boots~
 A pair of scale boots~
@@ -5943,7 +6114,7 @@ A pair of boots made with metal scales is here.~
 ~
 9 90112 65
 4 4 0 0
-8 150 10
+8 150 30
 #15010
 scale hood~
 A scale hood~
@@ -5959,7 +6130,7 @@ A vest made of chainmail is here.~
 ~
 9 24576 9
 3 3 0 0
-24 350 15
+24 350 55
 #15012
 chain chainmail leggings~
 A pair of chainmail leggings~
@@ -5967,7 +6138,7 @@ A pair of leggings made of chainmail are here.~
 ~
 9 90112 33 
 3 3 0 0
-16 200 10
+16 200 40
 #15013
 chain chaimail sleeves~
 A pair of chainmail sleeves~
@@ -5975,7 +6146,7 @@ A pair of sleeves made of chainmail are here.~
 ~
 9 90112 257
 3 3 0 0
-16 200 10
+16 200 30
 #15014
 chain chainmail gauntlets~
 A pair of chainmail gauntlets~
@@ -5983,7 +6154,7 @@ A pair of gauntlets made of chainmail are here.~
 ~
 9 90112 129
 3 3 0 0
-8 100 5
+8 100 34 
 #15015
 fine breast plate~
 A fine breast plate~
@@ -5991,7 +6162,7 @@ An exquisitely crafted breast plate is here.~
 ~
 9 90112 9
 5 5 0 0
-30 1500 100
+30 1500 300
 A
 17 -3
 #15016
@@ -6001,7 +6172,7 @@ A crystal pendant on a leather necklace is lying here.~
 ~
 11 0 4
 0 0 0 0
-1 100 2
+1 100 41 
 A
 26 4
 E
@@ -6046,7 +6217,7 @@ A large flail is sitting on the ground here.~
 ~
 5 8192 8193
 0 1 6 6 
-8 400 10
+8 400 40
 #15021
 morning star~
 A morning star~
@@ -6054,7 +6225,7 @@ A large, spiked, morning star is on the ground here.~
 ~
 5 28672 8193
 0 2 4 6
-8 400 10
+8 400 40
 #15022
 ball chain~
 A ball and chain~
@@ -6062,7 +6233,7 @@ A large, spiked ball on the end of a chain is lying here.~
 ~
 5 28672 8193
 0 2 4 4 
-10 450 10
+10 450 40
 #15023
 silver edged mace~
 A silver edged mace~

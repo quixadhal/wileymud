@@ -220,7 +220,7 @@ void board_write_msg(struct char_data *ch, char *arg, struct Board *b)
 int board_remove_msg(struct char_data *ch, char *arg, struct Board *b)
 {
   int ind, msg;
-  char buf[256], number[MAX_INPUT_LENGTH];
+  char number[MAX_INPUT_LENGTH];
 
   if (DEBUG)
     dlog("board_remove_msg");
@@ -254,7 +254,6 @@ int board_remove_msg(struct char_data *ch, char *arg, struct Board *b)
   }
   b->msg_num--;
   send_to_char("Message removed.\n\r", ch);
-  send_to_char(buf, ch);
   board_save_board(b);
   return (1);
 }

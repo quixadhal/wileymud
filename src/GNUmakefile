@@ -18,9 +18,9 @@ GNUINC = /usr/lib/gcc-lib/i486-linux/2.6.3/include
 #BUGFLAGS = -DDEBUG_FILE
 #WARN = -Wall -Wstrict-prototypes -Wmissing-prototypes
 WARN = -w
-#DEBUG = -g
-OPT = -O3 -fomit-frame-pointer -fstrength-reduce -fexpensive-optimizations -funroll-loops -m486
-STRIP = -s
+DEBUG = -g
+#OPT = -O3 -fomit-frame-pointer -fstrength-reduce -fexpensive-optimizations -funroll-loops -m486
+#STRIP = -s
 #INCDIR = -I../inc
 
 #CFLAGS = -g -Dsun3 -m68020 -fstrength-reduce -fvolatile 
@@ -43,7 +43,7 @@ HDR =	act_comm.h act_info.h act_move.h act_obj.h act_off.h \
 	act_other.h act_skills.h act_social.h act_wiz.h \
 	board.h bug.h comm.h constants.h db.h fight.h global.h \
 	handler.h hash.h interpreter.h limits.h magic_utils.h \
-	mob_actions.h modify.h multiclass.h myerrors.h opinion.h \
+	mob_actions.h modify.h multiclass.h opinion.h \
 	reception.h shop.h sound.h spec_procs.h spell_parser.h \
 	spells.h trap.h utils.h weather.h whod.h signals.h events.h
 VER =	version.h
@@ -299,7 +299,7 @@ db.o: /usr/include/confname.h /usr/include/sys/types.h
 db.o: /usr/include/linux/types.h /usr/include/asm/types.h
 db.o: /usr/include/string.h /usr/include/ctype.h /usr/include/time.h global.h
 db.o: bug.h utils.h comm.h handler.h limits.h opinion.h hash.h constants.h
-db.o: spells.h spell_parser.h myerrors.h db.h
+db.o: spells.h spell_parser.h reception.h db.h
 fight.o: /usr/include/stdio.h /usr/include/libio.h /usr/include/_G_config.h
 fight.o: /usr/include/stdlib.h /usr/include/features.h
 fight.o: /usr/include/sys/cdefs.h
@@ -347,11 +347,12 @@ interpreter.o: /usr/include/posix_opt.h /usr/include/gnu/types.h
 interpreter.o: /usr/include/confname.h /usr/include/sys/types.h
 interpreter.o: /usr/include/linux/types.h /usr/include/asm/types.h
 interpreter.o: /usr/include/string.h /usr/include/ctype.h
-interpreter.o: /usr/include/arpa/telnet.h global.h bug.h comm.h version.h
-interpreter.o: db.h utils.h limits.h constants.h act_comm.h act_info.h
-interpreter.o: act_move.h act_obj.h act_off.h act_other.h act_skills.h
-interpreter.o: act_social.h act_wiz.h spells.h spell_parser.h modify.h whod.h
-interpreter.o: events.h interpreter.h
+interpreter.o: /usr/include/arpa/telnet.h /usr/include/time.h
+interpreter.o: /usr/include/sys/timeb.h global.h bug.h comm.h version.h db.h
+interpreter.o: utils.h limits.h constants.h act_comm.h act_info.h act_move.h
+interpreter.o: act_obj.h act_off.h act_other.h act_skills.h act_social.h
+interpreter.o: act_wiz.h spells.h spell_parser.h modify.h whod.h events.h
+interpreter.o: interpreter.h
 limits.o: /usr/include/stdio.h /usr/include/libio.h /usr/include/_G_config.h
 limits.o: /usr/include/stdlib.h /usr/include/features.h
 limits.o: /usr/include/sys/cdefs.h

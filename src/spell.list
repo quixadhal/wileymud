@@ -3,7 +3,7 @@ Delay	Mana	Name				Levels (m c w t r d)
 24	15	Acid Blast			7
 12	15	Aid				   10
 24	15	Animate Dead			10 7
-12	5	Armour				4  1
+12	5	Armour				4  1        10
 12	33	Astral Walk			21 18
 12	5	Bless				   1
 24	5	Blindness			8  6
@@ -23,12 +23,12 @@ Delay	Mana	Name				Levels (m c w t r d)
 24	30	Conjure Elemental		16 14
 36	25	Control Weather			10 13
 24	10	Continual Light			3  4
-12	5	Create Food			   3
-12	5	Create Water			   2
+12	5	Create Food			   3        10
+12	5	Create Water			   2        10
 12	5	Cure Blindness			   4
 12	11	Cure Critical			   9
-12	5	Cure Light			   1
-12	9	Cure Serious			30 7
+12	5	Cure Light			   1        10
+12	9	Cure Serious			30 7        14
 24	20	Curse				12 12
 12	5	Detect Evil			   1
 12	5	Detect Invisible		2  5
@@ -38,3 +38,58 @@ Delay	Mana	Name				Levels (m c w t r d)
 36	15	Dispel Good			   12
 12	15	Dispel Magic			6  6
 24	15	Earthquake			   8
+48	100	Energy Drain			17
+12	10	Faerie Fire			5  3        11
+24	20	Faerie Fog			13 10       11
+12	15	Fear				8
+36	15	Fireball			15
+24	40	Fireshield			20 19
+24	15	Flamestrike			   11
+12	15	Fly				3  14       14
+18	30	Group Fly			8  22
+36	50	Harm				   17
+18	50	Heal				   17
+12	15	Ice Storm			7
+12	7	Infravision			5
+12	5	Invisibility			4
+12	10	Knock				3
+12	10	Know Alignment			4  3
+12	5	Light				1  2
+24	15	Lightning Bolt			9
+12	20	Locate Object			   4
+12	10	Magic Missile			1
+24	50	Meteor Swarm			20
+24	30	Minor Creation			8  14
+24	10	Monster Summoning I		5
+24	12	Monster Summoning II		7
+24	15	Monster Summoning III		9
+24	17	Monster Summoning IV		11
+24	20	Monster Summoning V		13
+24	22	Monster Summoning VI		15
+24	25	Monster Summoning VII		17
+36	40	Paralysis			15 15
+24	10	Poison				   8
+12	30	Polymorph Self			8
+12	5	Protection from Evil		   6
+12	5	Refresh				3  2       11
+12	5	Remove Curse			   7
+12	10	Remove Paralysis		   4
+12	5	Remove Poison			   5
+36	50	Sanctuary			   19
+12	5	Second Wind			12 6        12
+12	5	Sense Life			   7
+12	100	Shelter				10 10
+24	15	Shield				1  15
+12	15	Shocking Grasp			1
+24	15	Sleep				3
+24	20	Stoneskin			16 32       12
+12	10	Strength			4
+24	15	Succor				21 18
+36	20	Summon				18 16
+12	33	Teleport			8
+24	20	True Sight			   12
+12	5	Turn				   1
+12	5	Ventriloquate			1
+12	15	Water Breath			4
+12	10	Weakness			4
+12	5	Word of Recall			   10

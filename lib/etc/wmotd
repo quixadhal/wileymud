@@ -1,5 +1,12 @@
-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 
-From the old wizard news, I gather there may be a bug pertaining to lockups.
-This might just be a relic of the old Sun 3/60 it was running on... keep your
-eyes open!
+Login access to the wiley account is now limited to myself alone.
+I know some of you can log in via root anyways, but don't do it!
+
+For the sake of sanity and consistancy, I'll ask that you submit
+changes to the code or the world files to me and let me merge them
+into the master files.  I know it's a pain, but I've given you all
+complete read access to the entire game (unlike the older administration
+which only handed out select tidbits of code).  If I do start getting
+behind I'll let someone else share the editor's job...
+
+						-Dread Lord Quixadhal.

@@ -393,7 +393,7 @@ void advance_level(struct char_data *ch, int class)
   switch (class) {
   case MAGE_LEVEL_IND:
     {
-      ch->specials.spells_to_learn += MAX(3, wis_app[GET_INT(ch)].bonus);
+      ch->specials.pracs += MAX(3, wis_app[GET_INT(ch)].bonus);
       if (GET_LEVEL(ch, MAGE_LEVEL_IND) < 30)
 	add_hp += number(2, 4);
       else
@@ -412,7 +412,7 @@ void advance_level(struct char_data *ch, int class)
 
   case CLERIC_LEVEL_IND:
     {
-      ch->specials.spells_to_learn += MAX(3, wis_app[GET_WIS(ch)].bonus);
+      ch->specials.pracs += MAX(3, wis_app[GET_WIS(ch)].bonus);
       if (GET_LEVEL(ch, CLERIC_LEVEL_IND) < 30)
 	add_hp += number(2, 8);
       else
@@ -422,7 +422,7 @@ void advance_level(struct char_data *ch, int class)
 
   case THIEF_LEVEL_IND:
     {
-      ch->specials.spells_to_learn += MAX(3, wis_app[GET_DEX(ch)].bonus);
+      ch->specials.pracs += MAX(3, wis_app[GET_DEX(ch)].bonus);
       if (GET_LEVEL(ch, THIEF_LEVEL_IND) < 30)
 	add_hp += number(2, 6);
       else
@@ -432,7 +432,7 @@ void advance_level(struct char_data *ch, int class)
 
   case RANGER_LEVEL_IND:
     {
-      ch->specials.spells_to_learn +=
+      ch->specials.pracs +=
 	MAX(3, wis_app[(GET_DEX(ch) >= GET_STR(ch) ? GET_DEX(ch) : GET_STR(ch))].bonus);
       if (GET_LEVEL(ch, RANGER_LEVEL_IND) < 30)
 	add_hp += number(2, 10);
@@ -443,7 +443,7 @@ void advance_level(struct char_data *ch, int class)
 
   case WARRIOR_LEVEL_IND:
     {
-      ch->specials.spells_to_learn += MAX(3, wis_app[GET_STR(ch)].bonus);
+      ch->specials.pracs += MAX(3, wis_app[GET_STR(ch)].bonus);
       if (GET_LEVEL(ch, WARRIOR_LEVEL_IND) < 30)
 	add_hp += number(2, 10);
       else
@@ -570,7 +570,7 @@ void drop_level(struct char_data *ch, int class)
   if (ch->points.max_hit < 1)
     ch->points.max_hit = 1;
 
-  ch->specials.spells_to_learn -= MAX(3, wis_app[GET_WIS(ch)].bonus);
+  ch->specials.pracs -= MAX(3, wis_app[GET_WIS(ch)].bonus);
 
 /*
  *ch->points.exp =
@@ -755,10 +755,14 @@ void check_idling(struct char_data *ch)
     GET_POS(ch) = POSITION_STANDING;
     char_from_room(ch);
     char_to_room(ch, 0);
-    GET_HOME(ch) = 3008;
+    if(IS_IMMORTAL(ch))
+      GET_HOME(ch)= 1000;
+    else
+      GET_HOME(ch) = 3008;
 
     if (recep_offer(ch, NULL, &cost)) {
       cost.total_cost = 0;
+      new_save_equipment(ch, &cost, FALSE);
       save_obj(ch, &cost, TRUE);
     }
     extract_char(ch);

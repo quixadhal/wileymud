@@ -2329,5 +2329,19 @@ IMHO  : In My Opinion / In My Humble Opinion
 Reimb : Reimbursal for equipment loss due to glitches in the game.  If you
 	feel you need a reimb, post a note on the board and a God will get
 	in touch with you about it :)
-#~
+#
+FUNC_ACT
 
+Nasty function that does formatted output for player situations.
+
+    $n - ch                      $N - victim
+    $m - him/her/it of ch        $M him/her/it of victim
+    $s - his/her/it of ch        $S his/her/it of victim
+    $e - he/she/it of ch         $E he/she/it of victim
+    $o - objective
+    $p - possessive
+    $a - a/an obj                $A a/an victim
+    $T - victim 
+    $F - fname(victim)
+
+#~

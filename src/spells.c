@@ -515,6 +515,70 @@ void cast_shocking_grasp(BYTE level, struct char_data *ch, char *arg, int type, 
   }
 }
 
+#define HAMMER_1	5055
+#define HAMMER_2	5932
+#define HAMMER_3	9713
+
+void cast_new_earthquake(BYTE level, struct char_data *ch, char *arg, int type, struct char_data *victim, struct obj_data *tar_obj)
+{
+  register int vnum, done;
+  struct obj_data *sac;
+
+  done= 0;
+  if(ch->equipment[HOLD]) {
+    vnum= ObjVnum(ch->equipment[HOLD]);
+    if(vnum == HAMMER_1 || vnum == HAMMER_2 || vnum == HAMMER_3) {
+      if(sac = unequip_char(ch, HOLD)) {
+        obj_to_char(sac, ch);
+        done= 1;
+      }
+    }
+  }
+  if(!done) {
+    if(ch->equipment[WIELD]) {
+      vnum= ObjVnum(ch->equipment[WIELD]);
+      if(vnum == HAMMER_1 || vnum == HAMMER_2 || vnum == HAMMER_3) {
+        if(sac = unequip_char(ch, WIELD)) {
+          obj_to_char(sac, ch);
+          done= 1;
+        }
+      }
+    }
+  }
+  if(!done) {
+    if(ch->equipment[WIELD_TWOH]) {
+      vnum= ObjVnum(ch->equipment[WIELD_TWOH]);
+      if(vnum == HAMMER_1 || vnum == HAMMER_2 || vnum == HAMMER_3) {
+        if(sac = unequip_char(ch, WIELD_TWOH)) {
+          obj_to_char(sac, ch);
+          done= 1;
+        }
+      }
+    }
+  }
+  if (!done) {
+    cprintf(ch, "You must have the component for this spell ready.\n\r");
+    return;
+  }
+  act("You smash $o into the ground and cause it to split asunder!\n\r",
+      FALSE, ch, sac, 0, TO_VICT);
+  act("$n smashes $o into the ground and the earth splits open!\n\r",
+      FALSE, ch, sac, 0, TO_ROOM);
+  obj_from_char(sac);
+  extract_obj(sac);
+
+  switch (type) {
+  case SPELL_TYPE_SPELL:
+  case SPELL_TYPE_SCROLL:
+  case SPELL_TYPE_STAFF:
+    spell_new_earthquake(level, ch, 0, 0);
+    break;
+  default:
+    log("Serious screw-up in new earthquake!");
+    break;
+  }
+}
+
 void cast_earthquake(BYTE level, struct char_data *ch, char *arg, int type, struct char_data *victim, struct obj_data *tar_obj)
 {
   switch (type) {

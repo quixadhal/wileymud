@@ -62,41 +62,21 @@ int OnlyClass(struct char_data *ch, int class)
 
 }
 
-int HasClass(struct char_data *ch, int class)
+inline int HasClass(struct char_data *ch, int class)
 {
-
-  if (IS_SET(class, ch->player.class))
-    return (TRUE);
-
+  if (IS_SET(ch->player.class, class))
+    return TRUE;
   return FALSE;
 }
 
-int HowManyClasses(struct char_data *ch)
+inline int HowManyClasses(struct char_data *ch)
 {
-  short tot = 0;
+  register int i, tot = 0;
 
-  if (IS_SET(ch->player.class, CLASS_MAGIC_USER))
-    tot++;
-
-  if (IS_SET(ch->player.class, CLASS_WARRIOR))
-    tot++;
-
-  if (IS_SET(ch->player.class, CLASS_THIEF))
-    tot++;
-
-  if (IS_SET(ch->player.class, CLASS_CLERIC))
-    tot++;
-
-  if (IS_SET(ch->player.class, CLASS_RANGER))
-    tot++;
-
-  if (IS_SET(ch->player.class, CLASS_DRUID))
-    tot++;
-
-  if (!tot)
-    tot = 1;
-
-  return tot;
+  for(i= 0; i< ABS_MAX_CLASS; i++)
+    if(HasClass(ch, 1<<i))
+      tot++;
+  return tot?tot:1;
 }
 
 int BestFightingClass(struct char_data *ch)
@@ -178,8 +158,8 @@ int GetALevel(struct char_data *ch, int which)
  *  chintzy sort. (just to prove that I did learn something in college)
  */
 
-  for (i = 0; i <= 4; i++) {
-    for (j = i + 1; j <= 5; j++) {
+  for (i = 0; i < ABS_MAX_CLASS-1; i++) {
+    for (j = i + 1; j < ABS_MAX_CLASS; j++) {
       if (ind[j] > ind[i]) {
 	k = ind[i];
 	ind[i] = ind[j];
@@ -188,7 +168,7 @@ int GetALevel(struct char_data *ch, int which)
     }
   }
 
-  if (which >= -1 && which < 6) {
+  if (which >= -1 && which < ABS_MAX_CLASS) {
     return (ind[which]);
   }
   return 0;

@@ -58,7 +58,7 @@ void mobile_wander(struct char_data *ch)
 
   }
   if (!((GET_POS(ch) == POSITION_STANDING) &&
-	((door = number(0, 15)) <= 5) &&
+	((door = number(0, (MAX_NUM_EXITS-1)*3)) < MAX_NUM_EXITS) &&
 	exit_ok(exitp = EXIT(ch, door), &rp) &&
 	!IS_SET(rp->room_flags, NO_MOB) &&
 	!IS_SET(rp->room_flags, DEATH))
@@ -277,8 +277,7 @@ void mobile_activity(void)
 	  for (k = 0; k <= 5; k++) {
 	    tmp_ch = FindVictim(ch);
 	    if (tmp_ch) {
-	      if (check_peaceful(ch,
-				 "You can't seem to exercise your violent tendencies.\n\r")) {
+	      if (check_peaceful(ch, "You can't seem to exercise your violent tendencies.\n\r")) {
 		act("$n growls impotently", TRUE, ch, 0, 0, TO_ROOM);
 		return;
 	      }

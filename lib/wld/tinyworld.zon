@@ -1,5 +1,5 @@
 #0
-Limbo(m)~
+Limbo~
 10 0 0
 M 0 1 1 1           * astral traveler
 M 0 3009 1 10       * umbro the warrior w/equip
@@ -51,7 +51,7 @@ G 1 3003 6
 S
 
 #10
-Immorts(m)~
+Immortal Realms~
 1150 0 0
 M 0 1000 1 1005     * master of the hunt w/eq
 E 1 1000 1 6
@@ -75,6 +75,10 @@ P 1 1007 1 1003
 P 1 1008 1 1003
 O 0 3098 1 1008		* board
 O 1 1100 1 1010  	* pedastal
+M 0 1022 1 1022   *Load up a Naga 
+G 1 1022 1        *Give that naga a key
+O 0 1023 1 1026   *Put the cloak in the armoury
+O 0 1024 1 1026   *Put the staff in the armoury
 D 0 1000 2 1
 D 0 1001 0 1
 D 0 1002 2 1
@@ -85,11 +89,14 @@ D 0 1007 2 1
 D 0 1009 0 1
 D 0 1009 1 1
 D 0 1012 3 1
+D 0 1022 0 3  * Lock highlander's door
+D 0 1023 3 3  * Lock highlander's other door
+O 0 4734 1 1020    * berserker axe
 S
 
 #12
-Glade w/wood(c/m)~
-1349 40 2
+Woodland Glade~
+1349 41 2
 M 0 6910 1 1269     * isha w/equip
 E 1 6910 1 13
 E 1 6911 1 7
@@ -134,8 +141,8 @@ M 0 3105 3  1267
 S
 
 #13
-Featheredfolk(m)~
-1399 20 1
+Feather Folk~
+1399 19 1
 M 0 1300 10 1351    	* male featherfolk w/eq
 E 1 1300 10 7
 E 1 1301 30 10
@@ -353,7 +360,7 @@ D 0 1384 3 1
 S
 
 #14
-Hills(m)~
+Hills~
 1510 45 2
 M 0 1400 5 1405     * half-orcs with bone
 E 1 1400 30 16
@@ -398,8 +405,8 @@ D 0 1536 2 1
 S
 
 #16
-Redspine(m)~
-1949 60 2
+Redspine Mountains~
+1949 61 2
 M 0 1600 6 1827     * mountain giants
 M 0 1600 6 1882
 M 0 1600 6 1871
@@ -412,8 +419,8 @@ D 0 1658 0 1
 S
 
 #19
-Monastery(m)~
-1999 60 1
+Monastery~
+1999 63 1
 M 0 1900 5 1950     * walking monks
 E 1 1900 20 12
 M 0 1900 5 1950
@@ -453,8 +460,8 @@ D 0 1951 3 1
 S
 
 #20
-Oaken forest(d)~
-2400 45 2
+Oaken Forest~
+2400 44 2
 M 0 2100 10 2011	* wild Rabbit
 M 0 2100 10 2290
 M 0 2100 10 2286
@@ -519,35 +526,35 @@ M 0 2120 5 2119
 M 0 2120 5 2123	
 M 0 2120 5 2123
 M 0 2121 1 2216		* bear at Rotting log
-O 0 1132 40 2260
+O 0 1130 40 2260
 O 0 1132 40 2213
 O 0 1132 40 2308
 O 0 1132 40 2019
 O 0 1132 40 2237
 O 0 1132 40 2275
 O 0 1132 40 2239
-O 0 1132 40 2118
+O 0 1130 40 2118
 O 0 1132 40 2198
 O 0 1132 40 2259
 O 0 1132 40 2261
-O 0 1132 40 2262
+O 0 1130 40 2262
 O 0 1132 40 2263
 D 0 2106 0 1
 S
 
 #28
-Eastern river(d)~
+Eastern River~
 2897 0 0
 S
 
 #29
-Northern river(d)~
+Northern River~
 2946 0 0
 S
 
 #30
-Shylar(m)~
-3099 15 2
+Shylar~
+3099 14 2
 M 0 3042 1 3049		* nester
 G 1 3054 1
 G 1 3055 1
@@ -605,10 +612,17 @@ M 0 3018 5 3002
 M 0 3018 5 3015
 M 0 3018 5 3005
 M 0 3019 5 3016     * large women
+L 1 3046 3          * w/village girl as follower
 M 0 3019 5 3002
+L 1 3046 3
 M 0 3019 5 3002
 M 0 3019 5 3015
+L 1 3046 3
 M 0 3019 5 3005
+M 0 3045 4 3003     * village girl
+M 0 3045 4 3020
+M 0 3045 4 3000
+M 0 3045 4 3016
 M 0 3006 7 3016     * villagers
 M 0 3006 7 3002
 M 0 3006 7 3002
@@ -640,6 +654,10 @@ M 0 3016 6 3025
 E 1 3048 100 16
 M 0 3016 6 3029
 E 1 3048 100 16
+M 0 3047 1 3001     * village guard
+E 1 3021 100 16
+E 1 3026 100 8
+G 1 3016 100
 M 0 3025 5 3039     * chickens
 M 0 3025 5 3040
 M 0 3025 5 3040
@@ -699,8 +717,8 @@ D 0 3049 1 1
 S
 
 #31
-Grasslands(m)~
-3230 35 2
+Grasslands near Shylar~
+3230 32 2
 M 0 1206 1 3215     * ranger gm
 M 0 3100 10 3210    * stryders
 M 0 3100 10 3173
@@ -747,8 +765,8 @@ D 0 3151 0 1
 S
 
 #34
-Deserted Mansion(h)~
-3499 10 1
+Deserted Mansion~
+3499 11 1
 M 0 3432 7 3427     * these load large rats
 M 0 3432 7 3427
 M 0 3432 7 3422
@@ -781,8 +799,8 @@ P 1 9213 1 9211     * gold in nest
 S
 
 #46
-Tower of Necromancy(m)~
-4699 25 1
+Necromancer's Tower~
+4699 26 1
 M 0 4600 6 4602     * puts 3 snakes in garden.
 M 0 4600 6 4602
 M 0 4600 6 4602
@@ -881,8 +899,8 @@ D 0 4667 1 2
 S
 
 #47
-Dwarven kingdown(m)~
-4779 45 2 
+Dwarven Kingdown~
+4779 44 2 
 M 0 4700 10 4705    * dwarven miners
 E 1 4701 100 16
 M 0 4700 10 4709
@@ -986,7 +1004,7 @@ M 0 4705 10 4729
 M 0 4705 10 4715
 M 0 4703 1 4743     * yentle, growing rocks
 M 0 4706 1 4769     * grimdale the ancient king w/axe
-E 1 4706 1 18
+E 1 4734 99 18       * replaced normal axe with druegar axe E 1 4706 1 18
 M 0 4707 1 4720     * rock worm
 M 0 4708 3 4769     * dwarven spirits
 M 0 4708 3 4769
@@ -1027,8 +1045,8 @@ D 0 4779 0 1
 S
 
 #50
-Highstaff/city(m)~
-5215 45 2
+City of Highstaff~
+5215 47 2
 M 0 5035 1 5182     * belle, the pet keeper
 M 0 207 1 5183      * belles pets
 M 0 231 1 5183
@@ -1775,8 +1793,8 @@ O 0 3 2 5086
 S
 
 #51
-Highstaff/keep(m)~
-5254 50 1
+Highstaff Keep~
+5254 49 1
 M 0 5100 7 5217     * guards upon the keep walls
 E 1 5063 30 6
 E 1 5064 30 5
@@ -1899,8 +1917,8 @@ D 0 5252 1 1
 S
 
 #52
-Highstaff/arena(m)~
-5281 35 1
+Highstaff Arena~
+5281 33 1
 M 0 5200 1 5275     * master of the arena
 G 1 5200 1
 M 0 5201 4 5267     * gladiators w/whip & harness
@@ -1980,8 +1998,8 @@ D 0 5272 1 2
 S
 
 #53
-Highstaff/sewer(m)~
-5338 30 1
+Sewers below Highstaff~
+5338 28 1
 M 0 5300 6 5290     * skeletons
 M 0 5300 6 5298
 M 0 5300 6 5301
@@ -2017,8 +2035,8 @@ D 0 5338 1 1
 S
 
 #54
-Ogre Havens(m)~
-5499 35 1
+Ogre Havens~
+5499 36 1
 M 0 5400 2 5401		* huge ogre guards
 E 1 5406 200 5
 E 1 5407 200 18
@@ -2806,8 +2824,8 @@ D 0 5442 2 1
 S
 
 #59
-Drenth temple(m)~
-5999 37 1
+Drenth Temple~
+5999 34 1
 M 0 5900 2 5900		* temple gate guards
 E 1 5908 20 16		* mace
 E 1 5909 100 3		* symbol
@@ -3003,8 +3021,8 @@ D 0 5916 2 2
 S
 
 #60
-Hidden valley(m)~
-6064 40 2
+Hidden Valley~
+6064 41 2
 M 0 6000 12 6021     * green skinned lizardmen w/eq
 E 1 6000 12 5
 E 1 6001 12 7
@@ -3092,13 +3110,13 @@ M 0 6002 6 6045
 S
 
 #61
-Beach(m)~
+Beach~
 6093 0 0
 S
 
 #62
-Gredth(m)~
-6199 40 2
+Gredth~
+6199 42 2
 M 0 6132 5 6114		* hermit
 M 0 6132 5 6118
 M 0 6100 1 6107     * barnel the boatman selling boats
@@ -3386,7 +3404,7 @@ M 0 6131 2 6117
 S
 
 #63
-Snake god [temple](m)~
+Temple of the Snake God~
 6299 55 1
 M 0 6200 10 6200     * brown-skinned lizards w/eq
 E 1 6200 10 6
@@ -3468,8 +3486,8 @@ D 0 6217 1 1
 S
 
 #64
-Midvalley(m)~
-6399 40 2
+Valley of Midgaard~
+6399 43 2
 M 0 6300 15 6330     * famine plagued men
 M 0 6300 15 6333
 M 0 6300 15 6338
@@ -3488,8 +3506,8 @@ M 0 6300 15 6335
 S
 
 #65
-Old Midgaard(m)~
-6499 35 1
+Ruined Midgaard~
+6499 37 1
 M 0 6132 5 6440		* hermit
 M 0 6400 15 6440 	* starving man
 M 0 6400 15 6412
@@ -3566,6 +3584,7 @@ E 1 6406 20 7
 E 1 6407 20 8
 E 1 6408 20 11
 E 1 6409 20 16
+H 1 32 100		* hate good > 100
 M 0 6403 20 6412
 E 1 6404 20 5
 E 1 6405 20 10
@@ -3573,6 +3592,7 @@ E 1 6406 20 7
 E 1 6407 20 8
 E 1 6408 20 11
 E 1 6409 20 16
+H 1 32 100		* hate good > 100
 M 0 6403 20 6413
 E 1 6404 20 5
 E 1 6405 20 10
@@ -3580,6 +3600,7 @@ E 1 6406 20 7
 E 1 6407 20 8
 E 1 6408 20 11
 E 1 6409 20 16
+H 1 32 100		* hate good > 100
 M 0 6403 20 6414
 E 1 6404 20 5
 E 1 6405 20 10
@@ -3587,6 +3608,7 @@ E 1 6406 20 7
 E 1 6407 20 8
 E 1 6408 20 11
 E 1 6409 20 16
+H 1 32 100		* hate good > 100
 M 0 6403 20 6405
 E 1 6404 20 5
 E 1 6405 20 10
@@ -3594,6 +3616,7 @@ E 1 6406 20 7
 E 1 6407 20 8
 E 1 6408 20 11
 E 1 6409 20 16
+H 1 32 100		* hate good > 100
 M 0 6403 20 6403
 E 1 6404 20 5
 E 1 6405 20 10
@@ -3601,6 +3624,7 @@ E 1 6406 20 7
 E 1 6407 20 8
 E 1 6408 20 11
 E 1 6409 20 16
+H 1 32 100		* hate good > 100
 M 0 6403 20 6431
 E 1 6404 20 5
 E 1 6405 20 10
@@ -3608,6 +3632,7 @@ E 1 6406 20 7
 E 1 6407 20 8
 E 1 6408 20 11
 E 1 6409 20 16
+H 1 32 100		* hate good > 100
 M 0 6403 20 6416
 E 1 6404 20 5
 E 1 6405 20 10
@@ -3615,6 +3640,7 @@ E 1 6406 20 7
 E 1 6407 20 8
 E 1 6408 20 11
 E 1 6409 20 16
+H 1 32 100		* hate good > 100
 M 0 6403 20 6421
 E 1 6404 20 5
 E 1 6405 20 10
@@ -3622,6 +3648,7 @@ E 1 6406 20 7
 E 1 6407 20 8
 E 1 6408 20 11
 E 1 6409 20 16
+H 1 32 100		* hate good > 100
 M 0 6403 20 6422
 E 1 6404 20 5
 E 1 6405 20 10
@@ -3629,6 +3656,7 @@ E 1 6406 20 7
 E 1 6407 20 8
 E 1 6408 20 11
 E 1 6409 20 16
+H 1 32 100		* hate good > 100
 M 0 6403 20 6423
 E 1 6404 20 5
 E 1 6405 20 10
@@ -3636,6 +3664,7 @@ E 1 6406 20 7
 E 1 6407 20 8
 E 1 6408 20 11
 E 1 6409 20 16
+H 1 32 100		* hate good > 100
 M 0 6403 20 6443
 E 1 6404 20 5
 E 1 6405 20 10
@@ -3643,6 +3672,7 @@ E 1 6406 20 7
 E 1 6407 20 8
 E 1 6408 20 11
 E 1 6409 20 16
+H 1 32 100		* hate good > 100
 M 0 6403 20 6448
 E 1 6404 20 5
 E 1 6405 20 10
@@ -3650,6 +3680,7 @@ E 1 6406 20 7
 E 1 6407 20 8
 E 1 6408 20 11
 E 1 6409 20 16
+H 1 32 100		* hate good > 100
 M 0 6403 20 6426
 E 1 6404 20 5
 E 1 6405 20 10
@@ -3657,6 +3688,7 @@ E 1 6406 20 7
 E 1 6407 20 8
 E 1 6408 20 11
 E 1 6409 20 16
+H 1 32 100		* hate good > 100
 M 0 6403 20 6446
 E 1 6404 20 5
 E 1 6405 20 10
@@ -3664,6 +3696,7 @@ E 1 6406 20 7
 E 1 6407 20 8
 E 1 6408 20 11
 E 1 6409 20 16
+H 1 32 100		* hate good > 100
 M 0 6403 20 6450
 E 1 6404 20 5
 E 1 6405 20 10
@@ -3671,81 +3704,112 @@ E 1 6406 20 7
 E 1 6407 20 8
 E 1 6408 20 11
 E 1 6409 20 16
+H 1 32 100		* hate good > 100
 M 0 6404 20 6402 	* aklan follower
 E 1 6410 20 12
 E 1 6411 20 3
 E 1 6412 20 8
+H 1 32 100		* hate good > 100
 M 0 6404 20 6402
 E 1 6410 20 12
 E 1 6411 20 3
 E 1 6412 20 8
+H 1 32 100		* hate good > 100
 M 0 6404 20 6403
 E 1 6410 20 12
 E 1 6411 20 3
 E 1 6412 20 8
+H 1 32 100		* hate good > 100
 M 0 6404 20 6403
 E 1 6410 20 12
 E 1 6411 20 3
 E 1 6412 20 8
+H 1 32 100		* hate good > 100
 M 0 6404 20 6404
 E 1 6410 20 12
 E 1 6411 20 3
 E 1 6412 20 8
+H 1 32 100		* hate good > 100
 M 0 6404 20 6405
 E 1 6410 20 12
 E 1 6411 20 3
 E 1 6412 20 8
+H 1 32 100		* hate good > 100
 M 0 6404 20 6406
 E 1 6410 20 12
 E 1 6411 20 3
 E 1 6412 20 8
+H 1 32 100		* hate good > 100
 M 0 6404 20 6407
 E 1 6410 20 12
 E 1 6411 20 3
 E 1 6412 20 8
+H 1 32 100		* hate good > 100
 M 0 6404 20 6440
 E 1 6410 20 12
 E 1 6411 20 3
 E 1 6412 20 8
+H 1 32 100		* hate good > 100
 M 0 6404 20 6412
 E 1 6410 20 12
 E 1 6411 20 3
 E 1 6412 20 8
+H 1 32 100		* hate good > 100
 M 0 6404 20 6414
 E 1 6410 20 12
 E 1 6411 20 3
 E 1 6412 20 8
+H 1 32 100		* hate good > 100
 M 0 6404 20 6443
 E 1 6410 20 12
 E 1 6411 20 3
 E 1 6412 20 8
+H 1 32 100		* hate good > 100
 M 0 6404 20 6444
 E 1 6410 20 12
 E 1 6411 20 3
 E 1 6412 20 8
+H 1 32 100		* hate good > 100
 M 0 6404 20 6426
 E 1 6410 20 12
 E 1 6411 20 3
 E 1 6412 20 8
+H 1 32 100		* hate good > 100
 M 0 6404 20 6445
 E 1 6410 20 12
 E 1 6411 20 3
 E 1 6412 20 8
+H 1 32 100		* hate good > 100
 M 0 6405 15 6454 	* gaurdian wolves
+H 1 32 100		* hate good > 100
 M 0 6405 15 6454
+H 1 32 100		* hate good > 100
 M 0 6405 15 6401
+H 1 32 100		* hate good > 100
 M 0 6405 15 6401
+H 1 32 100		* hate good > 100
 M 0 6405 15 6404
+H 1 32 100		* hate good > 100
 M 0 6405 15 6414
+H 1 32 100		* hate good > 100
 M 0 6405 15 6414
+H 1 32 100		* hate good > 100
 M 0 6405 15 6440
+H 1 32 100		* hate good > 100
 M 0 6405 15 6440
+H 1 32 100		* hate good > 100
 M 0 6405 15 6417
+H 1 32 100		* hate good > 100
 M 0 6405 15 6421
+H 1 32 100		* hate good > 100
 M 0 6405 15 6451
+H 1 32 100		* hate good > 100
 M 0 6405 15 6425
+H 1 32 100		* hate good > 100
 M 0 6405 15 6425
+H 1 32 100		* hate good > 100
 M 0 6405 15 6427
+H 1 32 100		* hate good > 100
 M 0 6406 5 6414		* aklan guards
 E 1 6413 5 6
 E 1 6414 5 5
@@ -3756,6 +3820,7 @@ E 1 6418 5 8
 E 1 6420 5 18
 E 1 6421 5 13
 E 1 6422 5 3
+H 1 32 100		* hate good > 100
 M 0 6406 5 6440
 E 1 6413 5 6
 E 1 6414 5 5
@@ -3766,6 +3831,7 @@ E 1 6418 5 8
 E 1 6420 5 18
 E 1 6421 5 13
 E 1 6422 5 3
+H 1 32 100		* hate good > 100
 M 0 6406 5 6401
 E 1 6413 5 6
 E 1 6414 5 5
@@ -3776,6 +3842,7 @@ E 1 6418 5 8
 E 1 6420 5 18
 E 1 6421 5 13
 E 1 6422 5 3
+H 1 32 100		* hate good > 100
 M 0 6406 5 6454
 E 1 6413 5 6
 E 1 6414 5 5
@@ -3786,6 +3853,7 @@ E 1 6418 5 8
 E 1 6420 5 18
 E 1 6421 5 13
 E 1 6422 5 3
+H 1 32 100		* hate good > 100
 M 0 6406 5 6454
 E 1 6413 5 6
 E 1 6414 5 5
@@ -3796,6 +3864,7 @@ E 1 6418 5 8
 E 1 6420 5 18
 E 1 6421 5 13
 E 1 6422 5 3
+H 1 32 100		* hate good > 100
 M 0 6407 1 6405		* golem
 M 0 6408 1 6454		* head priest
 E 1 6423 1 12
@@ -3804,56 +3873,67 @@ E 1 6425 1 3
 E 1 6426 1 4
 E 1 6427 1 14
 E 1 6428 1 6
+H 1 32 100		* hate good > 100
 M 0 6409 2 6454 	* lesser priests
 E 1 6429 15 12
 E 1 6430 15 5
 E 1 6431 15 14
 E 1 6432 15 8
+H 1 32 100		* hate good > 100
 M 0 6409 2 6441
 E 1 6429 15 12
 E 1 6430 15 5
 E 1 6431 15 14
 E 1 6432 15 8
+H 1 32 100		* hate good > 100
 M 0 6410 2 6454
 E 1 6429 15 12
 E 1 6430 15 5
 E 1 6431 15 14
 E 1 6432 15 8
+H 1 32 100		* hate good > 100
 M 0 6410 2 6455
 E 1 6429 15 12
 E 1 6430 15 5
 E 1 6431 15 14
 E 1 6432 15 8
+H 1 32 100		* hate good > 100
 M 0 6411 2 6454
 E 1 6429 15 12
 E 1 6430 15 5
 E 1 6431 15 14
 E 1 6432 15 8
+H 1 32 100		* hate good > 100
 M 0 6411 2 6441
 E 1 6429 15 12
 E 1 6430 15 5
 E 1 6431 15 14
 E 1 6432 15 8
+H 1 32 100		* hate good > 100
 M 0 6412 2 6454
 E 1 6429 15 12
 E 1 6430 15 5
 E 1 6431 15 14
 E 1 6432 15 8
+H 1 32 100		* hate good > 100
 M 0 6412 2 6455
 E 1 6429 15 12
 E 1 6430 15 5
 E 1 6431 15 14
 E 1 6432 15 8
+H 1 32 100		* hate good > 100
 M 0 6413 2 6454
 E 1 6429 15 12
 E 1 6430 15 5
 E 1 6431 15 14
 E 1 6432 15 8
+H 1 32 100		* hate good > 100
 M 0 6413 2 6441
 E 1 6429 15 12
 E 1 6430 15 5
 E 1 6431 15 14
 E 1 6432 15 8
+H 1 32 100		* hate good > 100
 M 0 6414 1 6433		* mage
 M 0 6415 1 6409		* baker
 M 0 6416 1 6411		* weaponsmith
@@ -3862,8 +3942,8 @@ M 0 6418 1 6420		* armourer
 S
 
 #66
-Locathah(m)~
-6599 36 1
+Locathah~
+6599 38 1
 M 0 6500 3 6504		* perch
 M 0 6501 3 6504		* sunfish
 M 0 6502 3 6508		* blue gill
@@ -4039,9 +4119,57 @@ D 0 6593 3 1
 D 0 6594 1 1
 S
 
+#70
+Drow Outpost~
+7099 31 2
+P 0 7008 1 7001   * key in pool
+M 0 7000 6 7011   * Drow Fighter
+E 1 6404 100 5
+E 1 6405 100 10
+E 1 6406 100 7
+E 1 7005 25 8
+E 1 7010 15 12
+E 1 9007 100 16
+M 0 7000 10 7029  * Drow Fighter S/Side
+E 1 6404 100 5
+E 1 6405 100 10
+E 1 6406 100 7
+E 1 7005 25 8
+E 1 7010 15 12
+E 1 9007 100 16
+M 0 7001 10 7022    *Drow Warrior
+E 1 6404 100 5
+E 1 6405 100 10
+E 1 6406 100 10
+E 1 7005 25 8
+E 1 7010 15 12
+E 1 9007 100 16
+M 0 7002 3 7024     *Drow Priestess
+E 1 7015 2 17
+E 1 5910 99 12
+M 0 7003 1 7024   *Drow Mage
+E 1 5910 99 12
+M 0 7020 2 7050   * Drider
+M 0 7020 2 7060  * Another Drider
+M 0 4619 10 7056  * Spider
+M 0 4619 10 7034 *Spider
+D 0 7040 3 1	* close secret enterance to bear's cave
+D 0 1245 1 1	* and from the bear's cave in.
+D 0 7010 3 1      * Close 1st door
+D 0 7011 1 1      * From other side too
+D 0 7011 0 2      * Close & lock second door
+D 0 7012 2 2
+D 0 7016 3 2   * Lock door
+D 0 7017 1 2    * Again
+D 0 7024 5 1   * Close altar
+D 0 7050 4 1  * from otherside
+D 0 7026 3 2   *Lock Altar S side
+D 0 7027 1 2   *from other side
+S
+
 #90
-Temple of Asgard(h)~
-9076 60 1
+Temple of Asgard~
+9076 62 1
 M 0 9001 10 9013     * juju zombies 
 M 0 9001 10 9013
 M 0 9001 10 9013
@@ -4121,8 +4249,8 @@ P 1 9006 1 9005
 S
 
 #95
-Kobold Lair(h)~
-9618 30 1
+Kobold Lair~
+9618 27 1
 M 0 9618 10 9606    * the following lines load kobolds
 E 1 3020 10 16
 M 0 9618 10 9606
@@ -4166,8 +4294,8 @@ D 0 9618 2 1
 S
 
 #96
-Grugnik's camp(h)~
-9651 50 1
+Grugnik's Camp~
+9651 53 1
 M 0 6132 5 9626		* hermit
 M 0 9604 4 9622     * gate guards, one with key
 E 1 9606 30 5
@@ -4280,8 +4408,8 @@ D 0 9646 3 2
 S
 
 #97
-Orc caves(mdr)~
-9799 30 2
+Orc Caves~
+9799 29 2
 M 0 9700 10 9701  	* orc guards w/eq
 E 1 9700 11 11
 E 1 9701 11 5
@@ -4452,8 +4580,8 @@ M 0 9715 5 9719
 S
 
 #98
-Slaad temple(mdr)~
-9899 30 1
+Slaadi Temple~
+9899 31 1
 M 0 9800 10 9861	* red slaadi
 M 0 9800 10 9862
 M 0 9800 10 9863
@@ -4519,65 +4647,76 @@ M 0 9809 2 9803
 S
 
 #100
-Eastern hills(g)~
+Eastern Hills~
 10428 0 0
 M 0 10018 1 10276	* travelers rest
 S
 
 #101
-Temple of lovitar(g)~
-10702 45 1
+Temple of Lovitar~
+10702 39 1
 M 0 10001 8 10658	* Loads an acolyte priestess
 E 1 10001 17 16		* Loads whip to priestess
 E 1 10005 18 5		* Loads bodice to priestess
 E 1 10006 18 7		* Loads skirt to priestess
+H 1 1 1			* Make her hate men
 M 0 10001 8 10660
 E 1 10005 18 5	
 E 1 10006 18 7
+H 1 1 1			* Make her hate men
 M 0 10001 8 10662
 E 1 10001 17 16	
 E 1 10005 18 5
 E 1 10006 18 7
+H 1 1 1			* Make her hate men
 M 0 10001 8 10663
 E 1 10001 17 16	
 E 1 10005 18 5
 E 1 10006 18 7
+H 1 1 1			* Make her hate men
 M 0 10001 8 10667
 E 1 10001 17 16	
 E 1 10005 18 5
 E 1 10006 18 7
+H 1 1 1			* Make her hate men
 M 0 10001 8 10670
 E 1 10001 17 16	
 E 1 10005 18 5
 E 1 10006 18 7
+H 1 1 1			* Make her hate men
 M 0 10001 8 10680
 E 1 10001 17 16	
 E 1 10005 18 5
 E 1 10006 18 7
+H 1 1 1			* Make her hate men
 M 0 10002 4 10681	* Loads a wandering priestess
 E 1 10001 17 16
 E 1 10005 18 5
 E 1 10006 18 7
 E 1 10014 10 13		* Gives a pouch to priestess
 P 1 10015 10 10014	* Puts 23 coins in the pouch
+H 1 1 1			* Make her hate men
 M 0 10002 4 10666
 E 1 10001 17 16
 E 1 10005 18 5
 E 1 10006 18 7
 E 1 10014 10 13
 P 1 10015 10 10014
+H 1 1 1			* Make her hate men
 M 0 10002 4 10674
 E 1 10001 17 16
 E 1 10005 18 5
 E 1 10006 18 7
 E 1 10014 10 13	
 P 1 10015 10 10014
+H 1 1 1			* Make her hate men
 M 0 10002 4 10678
 E 1 10001 17 16
 E 1 10005 18 5
 E 1 10006 18 7
 E 1 10014 10 13	
 P 1 10015 10 10014
+H 1 1 1			* Make her hate men
 M 0 10003 1 10684	* priestess w/eq
 E 1 10002 1 16	
 E 1 10005 18 5
@@ -4587,36 +4726,42 @@ P 1 10015 10 10014
 P 1 10009 1 10014
 P 1 10010 1 10014
 P 1 10000 1 10014
+H 1 1 1			* Make her hate men
 M 0 10005 5 10656	* Loads guardian priestess
 E 1 10001 17 16
 E 1 10005 18 5
 E 1 10006 18 7
 E 1 10014 10 13
 P 1 10015 10 10014
+H 1 1 1			* Make her hate men
 M 0 10005 5 10656
 E 1 10001 17 16
 E 1 10005 18 5
 E 1 10006 18 7
 E 1 10014 10 13
 P 1 10015 10 10014
+H 1 1 1			* Make her hate men
 M 0 10005 5 10690
 E 1 10001 17 16
 E 1 10005 18 5
 E 1 10006 18 7
 E 1 10014 10 13
 P 1 10015 10 10014
+H 1 1 1			* Make her hate men
 M 0 10005 5 10692
 E 1 10001 17 16
 E 1 10005 18 5
 E 1 10006 18 7
 E 1 10014 10 13
 P 1 10015 10 10014
+H 1 1 1			* Make her hate men
 M 0 10005 5 10693
 E 1 10001 17 16
 E 1 10005 18 5
 E 1 10006 18 7
 E 1 10014 10 13
 P 1 10015 10 10014
+H 1 1 1			* Make her hate men
 M 0 10004 1 10672	* Loads the stone golem. suffer
 M 0 10006 6 10695	* Loads a war dog
 M 0 10006 6 10695
@@ -4625,8 +4770,11 @@ M 0 10006 6 10698
 M 0 10006 6 10698
 M 0 10006 6 10698
 M 0 10007 3 10697	* Loads a male prisoner to his cell
+H 1 1 2			* Make him hate women
 M 0 10007 3 10697
+H 1 1 2			* Make him hate women
 M 0 10007 3 10697
+H 1 1 2			* Make him hate women
 M 0 10008 4 10700	* Loads village girl to her cell
 M 0 10008 4 10700
 M 0 10008 4 10700
@@ -4634,17 +4782,28 @@ M 0 10008 4 10700
 M 0 10009 1 10702	* Loads a bard to his cell
 E 1 10012 1 17		* Gives the bard a lute
 M 0 10011 6 10688	* Loads acolyte to resting chamber
+H 1 1 1			* Make her hate men
 M 0 10011 6 10688
+H 1 1 1			* Make her hate men
 M 0 10011 6 10688
+H 1 1 1			* Make her hate men
 M 0 10011 6 10686
+H 1 1 1			* Make her hate men
 M 0 10011 6 10686
+H 1 1 1			* Make her hate men
 M 0 10011 6 10686
+H 1 1 1			* Make her hate men
 M 0 10012 4 10684	* Loads acolyte participating in the ceremony
+H 1 1 1			* Make her hate men
 M 0 10012 4 10684
+H 1 1 1			* Make her hate men
 M 0 10012 4 10684
+H 1 1 1			* Make her hate men
 M 0 10012 4 10684
+H 1 1 1			* Make her hate men
 M 0 10010 1 10689	* Loads cook in the kitchen
 E 1 10003 1 16		* Gives cleaver to cook
+H 1 1 1			* Make her hate men
 O 0 10007 1 10687	* Puts a desk in the office
 O 0 10008 1 10687	* Puts a wood bound chest in the office
 P 1 10013 2 10008	* Puts 93 coins in the chest
@@ -4678,8 +4837,13 @@ D 0 10701 3 2
 D 0 10702 3 2
 S
 
+#107
+Faerie Village~
+10799 27 1
+S
+
 #150
-Serpent's Reach(h)~
+Serpent's Reach~
 15999 0 0
 M 0 15000 1 15183	* baker
 G 1 15001 100
@@ -4797,8 +4961,8 @@ D 0 15222 3 1
 S
 
 #200
-Grasslands(e)~
-20072 35 2
+Grasslands~
+20072 26 2
 M 0 20000 2 20010     * scout ant
 M 0 20000 2 20025
 M 0 20005 4 20033     * small procupine
@@ -4809,8 +4973,8 @@ M 0 20006 1 20044     * large porcupine
 S
 
 #201
-Trolls/lions/keep(e)~
-20178 35 2
+Giant Keep~
+20178 38 2
 D 0 20114 0 1
 D 0 20115 2 1
 D 0 20149 1 1
@@ -4906,8 +5070,8 @@ O 0 20001 1 20156     * rusted longsword
 S
 
 #203
-Jungles of Nesthar(e)~
-20771 50 2
+Jungles of Nesthar~
+20771 54 2
 M 0 20220 30 20212 	* baboons
 M 0 20220 30 20227 
 M 0 20220 30 20242
@@ -5040,8 +5204,8 @@ M 0 20234 15 20411
 S
 
 #208
-Ant mound(e)~
-20862 20 2
+Ant Mound~
+20862 23 2
 M 0 20001 15 20801     * worker ants
 M 0 20001 15 20810
 M 0 20001 15 20815
@@ -5078,8 +5242,8 @@ M 0 20004 1 20860      * queen ant
 S
 
 #209
-Jungle swamp(e)~
-20986 40 1
+Swamps~
+20986 47 1
 M 0 20901 1 20930
 M 0 20902 1 20930
 M 0 20903 1 20930
@@ -5099,8 +5263,8 @@ M 0 20908 12 20940
 S
 
 #210
-Tribesmen village(e)~
-21019 30 1
+Tribal Village~
+21019 34 1
 M 0 20234 15 21015
 M 0 20234 15 21016
 M 0 20234 15 21017
@@ -5133,13 +5297,13 @@ D 0 21063 1 1
 S
 
 #211
-Halfling village(e)~
+Halfling village~
 21108 30 1
 S
 
 #300
-Shylar cemetary(c)~
-32000 5 2
+Cemetary of Shylar~
+32000 7 2
 M 0 30000 3 30009     * Skeleton
 M 0 30000 3 30013     * Skeleton
 M 0 30000 3 30025     * Skeleton
@@ -5156,8 +5320,8 @@ O 0 9212  1 30033     * puts candles in grave
 S
 
 #320
-Keeps(m)~
-32300 30 0
+Mortal Keeps~
+32300 48 0
 D 0 32004 0 2		* corwin
 D 0 32005 2 2
 D 0 32005 3 1

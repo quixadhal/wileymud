@@ -94,7 +94,7 @@ static void event_fill_zone_with_mobs( int rnum, struct room_data *rp,
   if(IS_SET(rp->room_flags, (NO_MOB|PEACEFUL|PRIVATE)))
     return;
   exit_found= 0;
-  for(i= 0; i< 6; i++) /* neswud */
+  for(i= 0; i< MAX_NUM_EXITS; i++) /* neswud */
     if(rp->dir_option[i]) {
       exit_found= 1;
       break;

@@ -159,7 +159,7 @@ void do_shout(struct char_data *ch, char *argument, int cmd)
 	    !IS_SET(v->specials.act, PLR_NOSHOUT) &&
 	    !IS_SET(v->specials.act, PLR_DEAF))
 	  act(buf1, 0, ch, 0, v, TO_VICT);
-      for(x= 0; x< 6; x++)
+      for(x= 0; x< MAX_NUM_EXITS; x++)
         if((exitp= EXIT(ch, x)) && exit_ok(exitp, mrp))
           if((rp= real_roomp(exitp->to_room)) && (rp != mrp)) {
             sprintf(buf1, "$n shouts %s '%s'", dir_from[rev_dir[x]], argument);
@@ -204,7 +204,7 @@ void do_commune(struct char_data *ch, char *argument, int cmd)
 void do_tell(struct char_data *ch, char *argument, int cmd)
 {
   struct char_data *vict;
-  char name[100], message[MAX_INPUT_LENGTH + 20], buf[MAX_INPUT_LENGTH + 20];
+  char name[100], message[MAX_INPUT_LENGTH + 20];
 
   if (DEBUG)
     dlog("do_tell");
@@ -238,14 +238,22 @@ void do_tell(struct char_data *ch, char *argument, int cmd)
     send_to_char("They are not recieving tells at the moment.\n\r", ch);
     return;
   }
-  sprintf(buf, "%s tells you '%s'\n\r",
-     (IS_NPC(ch) ? ch->player.short_descr : GET_NAME(ch)), message);
-  send_to_char(buf, vict);
-
-  if (IS_NPC(ch) || IS_SET(ch->specials.act, PLR_ECHO)) {
-    sprintf(buf, "You tell %s '%s'\n\r",
-	    (IS_NPC(vict) ? vict->player.short_descr : GET_NAME(vict)), message);
-    send_to_char(buf, ch);
+  switch(message[strlen(message)-1]) {
+    case '!':
+      cprintf(vict, "%s exclaims to you '%s'\n\r", NAME(ch), message);
+      if (IS_NPC(ch) || IS_SET(ch->specials.act, PLR_ECHO))
+        cprintf(ch, "You exclaim to %s '%s'\n\r", NAME(vict), message);
+      break;
+    case '?':
+      cprintf(vict, "%s asks you '%s'\n\r", NAME(ch), message);
+      if (IS_NPC(ch) || IS_SET(ch->specials.act, PLR_ECHO))
+        cprintf(ch, "You ask %s '%s'\n\r", NAME(vict), message);
+      break;
+    default:
+      cprintf(vict, "%s tells you '%s'\n\r", NAME(ch), message);
+      if (IS_NPC(ch) || IS_SET(ch->specials.act, PLR_ECHO))
+        cprintf(ch, "You tell %s '%s'\n\r", NAME(vict), message);
+      break;
   }
 }
 

@@ -73,7 +73,7 @@ void abug(char *File, char *Func, int Line, UINT Level, UINT Type,
   ftime(&right_now);
   now_part= localtime(&right_now);
   sprintf(Time, "%02d%02d%02d.%02d%02d%02d.%03d",
-          now_part->tm_year, now_part->tm_mon, now_part->tm_mday,
+          now_part->tm_year, now_part->tm_mon+1, now_part->tm_mday,
           now_part->tm_hour, now_part->tm_min, now_part->tm_sec,
           right_now.millitm);
 #if 0

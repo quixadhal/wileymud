@@ -264,7 +264,8 @@ void whod_loop(void)
 
       for (ch = character_list; ch; ch = ch->next) {
 	if (IS_PC(ch)) {
-	  if ((INVIS_LEVEL(ch) < 2) && (GetMaxLevel(ch) <= WIZ_MAX_LEVEL)) {
+	  if ((INVIS_LEVEL(ch) < 2) && (GetMaxLevel(ch) <= WIZ_MAX_LEVEL) &&
+             !IS_AFFECTED(ch, AFF_HIDE) && !IS_AFFECTED(ch, AFF_INVISIBLE)) {
 	    if (GetMaxLevel(ch) >= WIZ_MIN_LEVEL)
 	      gods++;
 	    else
@@ -310,10 +311,15 @@ void whod_loop(void)
 	    if (IS_SET(SHOW_TITLE, whod_mode))
 	      sprintf(buf + strlen(buf), "%s ", GET_TITLE(ch));
 
-            if (IS_SET(SHOW_ROOM, whod_mode)) {
-              sprintf(buf + strlen(buf), "- %s ",
-                      real_roomp(ch->in_room)->name);
-            }
+/*
+ * This is bad for the external whod... it pinpoints people too easily.
+ * Make them enter the game to see where people are.
+ *
+ *          if (IS_SET(SHOW_ROOM, whod_mode)) {
+ *            sprintf(buf + strlen(buf), "- %s ",
+ *                    real_roomp(ch->in_room)->name);
+ *          }
+ */
 
 	    if (IS_SET(SHOW_SITE, whod_mode)) {
 	      if (ch->desc->host != NULL)
@@ -325,7 +331,7 @@ void whod_loop(void)
 	  }
 	}
       }
-      sprintf(buf + strlen(buf), "\n\rPlayers: %d\tGods: %d\n\r", players, gods);
+      sprintf(buf + strlen(buf), "\n\rVisible Players: %d\tVisible Gods: %d\n\r", players, gods);
       ot = Uptime;
       otmstr = asctime(localtime(&ot));
       *(otmstr + strlen(otmstr) - 1) = '\0';

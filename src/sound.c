@@ -49,7 +49,7 @@ void MakeNoise(int room, char *local_snd, char *distant_snd)
 	send_to_char(local_snd, ch);
     }
 
-    for (door = 0; door <= 5; door++) {
+    for (door = 0; door < MAX_NUM_EXITS; door++) {
       if (rp->dir_option[door] && (orp = real_roomp(rp->dir_option[door]->to_room))) {
 	for (ch = orp->people; ch; ch = ch->next_in_room) {
 	  if (!IS_NPC(ch) &&

@@ -1363,7 +1363,7 @@ void do_search(struct char_data *ch, char *argument, int cmd)
 
   send_to_char("You search the area...\n\r", ch);
 
-  for (door = 0; door <= 5; door++) {
+  for (door = 0; door < MAX_NUM_EXITS; door++) {
     exitdata = EXIT(ch, door);
     if (exitdata) {
       if (real_roomp(exitdata->to_room)) {
@@ -1405,7 +1405,7 @@ void do_exits(struct char_data *ch, char *argument, int cmd)
   *buf = '\0';
   if (DEBUG)
     dlog("do_exits");
-  for (door = 0; door <= 5; door++) {
+  for (door = 0; door < MAX_NUM_EXITS; door++) {
     exitdata = EXIT(ch, door);
     if (exitdata) {
       if (!real_roomp(exitdata->to_room)) {
@@ -1632,7 +1632,7 @@ void do_score(struct char_data *ch, char *argument, int cmd)
 	  "You have scored %d Experience Points in %d days and %d hours!\n\r",
 	  GET_EXP(target), playing_time.day, playing_time.hours);
 
-  for(j= 0; j<= 5; j++) {
+  for(j= 0; j< ABS_MAX_CLASS; j++) {
     if (GET_LEVEL(target, j) > 0) {
       if (GET_LEVEL(target, j) >= LOKI) {
         cprintf(ch, "You are the most powerful %s in all creation!\n\r",
@@ -1675,12 +1675,12 @@ void do_score(struct char_data *ch, char *argument, int cmd)
 	    strcat(buf, ", ");
             cnt+= 2;
           }
-          if((cnt + strlen(spells[aff->type -1])) > 77) {
+          if((cnt + strlen(spell_info[aff->type].name)) > 77) {
             strcat(buf, "\n\r");
             cnt= 0;
           }
-	  strcat(buf, spells[aff->type - 1]);
-          cnt+= strlen(spells[aff->type -1]);
+	  strcat(buf, spell_info[aff->type].name);
+          cnt+= strlen(spell_info[aff->type].name);
 	  isneedy = 1;
         }
         break;
@@ -1689,12 +1689,12 @@ void do_score(struct char_data *ch, char *argument, int cmd)
 	  strcat(buf, ", ");
           cnt+= 2;
         }
-        if((cnt + strlen(spells[aff->type -1])) > 77) {
+        if((cnt + strlen(spell_info[aff->type].name)) > 77) {
           strcat(buf, "\n\r");
           cnt= 0;
         }
-	strcat(buf, spells[aff->type - 1]);
-        cnt+= strlen(spells[aff->type -1]);
+	strcat(buf, spell_info[aff->type].name);
+        cnt+= strlen(spell_info[aff->type].name);
 	isneedy = 1;
 	break;
       }
@@ -2404,40 +2404,67 @@ void do_consider(struct char_data *ch, char *argument, int cmd)
     return;
   }
   if (victim == ch) {
-    send_to_char("The perfect match!\n\r", ch);
+    cprintf(ch, "You think it would be ridiculously easy to kill yourself.\n\r"
+            "Just type quit, and then pick option 6.\n\r");
     return;
   }
   if (!IS_NPC(victim)) {
-    send_to_char("Hmmmm, I think you might get in trouble for that.\n\r", ch);
-    return;
+    if (!IS_SET(ch->specials.new_act, NEW_PLR_KILLOK)) {
+      cprintf(ch, "You can't bear the thought of killing another player!\n\r");
+      cprintf(victim, "%s thinks about you and quakes in terror!\n\r",
+              NAME(ch));
+      return;
+    } else {
+      if(!IS_SET(victim->specials.new_act, NEW_PLR_KILLOK)) {
+        cprintf(ch, "You wish you could cut down %s, but the fool does not serve the Dread Lord.\n\r", NAME(victim));
+        cprintf(victim, "%s seems interested in you for some reason.\n\r",
+                NAME(ch));
+        return;
+      }
+    }
   }
-  diff = (GetMaxLevel(victim) + (GetSecMaxLev(victim) / 2) +
-	  (GetThirdMaxLev(victim) / 3)) -
-    (GetMaxLevel(ch) + (GetSecMaxLev(ch) / 2) + (GetThirdMaxLev(ch) / 3));
-  if (diff <= -10)
-    send_to_char("Too easy to be believed.\n\r", ch);
-  else if (diff <= -5)
-    send_to_char("Not a problem.\n\r", ch);
-  else if (diff <= -3)
-    send_to_char("Rather easy.\n\r", ch);
-  else if (diff <= -2)
-    send_to_char("Easy.\n\r", ch);
-  else if (diff <= -1)
-    send_to_char("Fairly easy.\n\r", ch);
-  else if (diff == 0)
-    send_to_char("The perfect match!\n\r", ch);
-  else if (diff <= 1)
-    send_to_char("You would need some luck!\n\r", ch);
-  else if (diff <= 2)
-    send_to_char("You would need a lot of luck!\n\r", ch);
-  else if (diff <= 3)
-    send_to_char("You would need a lot of luck and great equipment!\n\r", ch);
-  else if (diff <= 5)
-    send_to_char("Do you feel lucky, punk?\n\r", ch);
-  else if (diff <= 10)
-    send_to_char("Are you crazy?\n\r", ch);
-  else if (diff <= 100)
-    send_to_char("You ARE mad!\n\r", ch);
+  diff=(GetMaxLevel(victim)+(GetSecMaxLev(victim)/2)+(GetThirdMaxLev(victim)/3))
+      -(GetMaxLevel(ch)+(GetSecMaxLev(ch)/2)+(GetThirdMaxLev(ch)/3))
+      +fuzz(MAX(1,GetMaxLevel(ch)/5));
+  if (diff <= -50) {
+    cprintf(ch, "You looked at them.  Why aren't they dead?\n\r");
+  } else if (diff <= -30) {
+    cprintf(ch, "Why bother?  It would be a waste of 5 seconds.\n\r");
+  } else if (diff <= -20) {
+    cprintf(ch, "You would have to clean your weapons.\n\r");
+  } else if (diff <= -15) {
+    cprintf(ch, "Easy?  Understatement of the day there...\n\r");
+  } else if (diff <= -10) {
+    cprintf(ch, "Too easy to be believed.\n\r");
+  } else if (diff <= -5) {
+    cprintf(ch, "Not a problem.\n\r");
+  } else if (diff <= -3) {
+    cprintf(ch, "Rather easy.\n\r");
+  } else if (diff <= -2) {
+    cprintf(ch, "Easy.\n\r");
+  } else if (diff <= -1) {
+    cprintf(ch, "Looks easy.\n\r");
+  } else if (diff == 0) {
+    cprintf(ch, "The perfect match!\n\r");
+  } else if (diff <= 1) {
+    cprintf(ch, "You would need some luck!\n\r");
+  } else if (diff <= 2) {
+    cprintf(ch, "You would need a lot of luck!\n\r");
+  } else if (diff <= 3) {
+    cprintf(ch, "You would need a lot of luck and great equipment!\n\r");
+  } else if (diff <= 5) {
+    cprintf(ch, "Do you feel lucky, punk?\n\r");
+  } else if (diff <= 10) {
+    cprintf(ch, "Who do you think YOU'RE looking at, WIMP?\n\r");
+  } else if (diff <= 15) {
+    cprintf(ch, "Are you crazy?\n\r");
+  } else if (diff <= 20) {
+    cprintf(ch, "Think about this for a moment.\n\r");
+  } else if (diff <= 30) {
+    cprintf(ch, "You ARE mad!\n\r");
+  } else {
+    cprintf(ch, "Just tell me where to send the flowers.\n\r");
+  }
 }
 
 void do_spells(struct char_data *ch, char *argument, int cmd)
@@ -2450,11 +2477,11 @@ void do_spells(struct char_data *ch, char *argument, int cmd)
   if (IS_NPC(ch))
     return;
   *buf = 0;
-  sprintf(buf, "Spell Name                Mana  Ma Cl Wa Th Ra Dr\n\r");
-  for (i = 1; i <= MAX_EXIST_SPELL; i++) {
-    sprintf(buf + strlen(buf), "[%3d] %-20s  %4d, %2d %2d %2d %2d %2d %2d\n\r",
-	    i, spells[i - 1],
-	    spell_info[i].min_usesmana,
+  sprintf(buf, "Spell Name                Ma Cl Wa Th Ra Dr\n\r");
+  for (i = 1; i <= MAX_SKILLS; i++) {
+    if(!spell_info[i].castable) continue;
+    sprintf(buf + strlen(buf), "[%3d] %-20s  %2d %2d %2d %2d %2d %2d\n\r",
+	    i, spell_info[i].name,
 	    spell_info[i].min_level[MAGE_LEVEL_IND],
 	    spell_info[i].min_level[CLERIC_LEVEL_IND],
 	    spell_info[i].min_level[WARRIOR_LEVEL_IND],
@@ -2548,7 +2575,7 @@ void do_skills(struct char_data *ch, int cmd, char *arg)
     "\n"
   };
 
-  sprintf(buf, "You have got %d practice sessions left.\n\r", ch->specials.spells_to_learn);
+  sprintf(buf, "You have got %d practice sessions left.\n\r", ch->specials.pracs);
   send_to_char(buf, ch);
   for (i = 0; r_skills[i].skill_name[0] != '\n'; i++) {
     if (r_skills[i].skill_lvl <= GetMaxLevel(ch) || IS_IMMORTAL(ch)) {
@@ -2593,6 +2620,8 @@ void do_ticks(struct char_data *ch, char *argument, int cmd)
           pulse_zone/(double)PULSE_PER_SECOND);
   cprintf(ch, "  Next Teleport tick:\t%1.2lf\n\r",
           pulse_teleport/(double)PULSE_PER_SECOND);
+  cprintf(ch, "  Next Nature tick:\t%1.2lf\n\r",
+          pulse_nature/(double)PULSE_PER_SECOND);
   cprintf(ch, "  Next Violence tick:\t%1.2lf\n\r",
           pulse_violence/(double)PULSE_PER_SECOND);
   cprintf(ch, "  Next River tick:\t%1.2lf\n\r",
@@ -2605,3 +2634,96 @@ void do_ticks(struct char_data *ch, char *argument, int cmd)
           pulse_dump/(double)PULSE_PER_SECOND);
 }
 
+void do_map(struct char_data *ch, char *argument, int cmd)
+{
+  char *template =
+"\n\r"
+"    U                      +----------------------+\n\r"
+"    | N                    | %-20.20s |\n\r"
+"    |/                     | %-6.6s  %12.12s |\n\r"
+"W---/---E                  +-----------+----------+\n\r"
+"   /|                                  |\n\r"
+"  S |                            ______+________________,\n\r"
+"    D                           / %-20.20s /\n\r"
+"                               / %-6.6s  %12.12s /\n\r"
+"                              /______________________/\n\r"
+"                                       | /              _______________________,\n\r"
+"   _______________________,            |/              / %-20.20s /\n\r"
+"  / %-20.20s /_____________/______________/ %-6.6s  %12.12s /\n\r"
+" / %-6.6s  %12.12s /             /|             /______________________/\n\r"
+"/______________________/             / |\n\r"
+"                         ___________/__+________,\n\r"
+"                        / %-20.20s /\n\r"
+"                       / %-6.6s  %12.12s /\n\r"
+"                      /______________________/\n\r"
+"                                       |\n\r"
+"                           +-----------+----------+\n\r"
+"                           | %-20.20s |\n\r"
+"                           | %-6.6s  %12.12s |\n\r"
+"                           +----------------------+\n\r";
+  char *exits[] =
+  {
+    "North",
+    "East ",
+    "South",
+    "West ",
+    "Up   ",
+    "Down "
+  };
+  int door;
+  struct room_direction_data *exitdata;
+  char name[MAX_NUM_EXITS][21];
+  char vnum[MAX_NUM_EXITS][7];
+  char terrain[MAX_NUM_EXITS][13];
+
+  if (DEBUG)
+    dlog("do_map");
+
+  for (door = 0; door < MAX_NUM_EXITS; door++) {
+    bzero(name[door], 21);
+    bzero(vnum[door], 7);
+    bzero(terrain[door], 13);
+    exitdata = EXIT(ch, door);
+    if (exitdata) {
+      if (!real_roomp(exitdata->to_room)) {
+	if (IS_IMMORTAL(ch)) {
+          sprintf(name[door], "Swirling CHAOS!");
+          sprintf(vnum[door], "#%-5.5d", exitdata->to_room);
+	}
+      } else if (exitdata->to_room != NOWHERE) {
+        if(IS_IMMORTAL(ch)) {
+          sprintf(name[door], "%c%c%c%c %-15.15s",
+                  (IS_DARK(exitdata->to_room)||IS_DARKOUT(exitdata->to_room))?
+                  'D':' ',
+                  (IS_SET(exitdata->exit_info, EX_SECRET))?'S':' ',
+                  (IS_SET(exitdata->exit_info, EX_CLOSED))?'C':' ',
+                  (IS_SET(exitdata->exit_info, EX_LOCKED))?'L':' ',
+                  real_roomp(exitdata->to_room)->name);
+          sprintf(vnum[door], "#%-5.5d", exitdata->to_room);
+          sprintf(terrain[door],
+                  sector_types[real_roomp(exitdata->to_room)->sector_type]);
+        } else {
+          if (!IS_SET(exitdata->exit_info, EX_SECRET)) {
+            if (IS_SET(exitdata->exit_info, EX_CLOSED)) {
+              sprintf(name[door], "A Closed Door");
+            } else {
+	      if (IS_DARK(exitdata->to_room) || IS_DARKOUT(exitdata->to_room)) {
+                sprintf(name[door], "Darkness");
+              } else {
+                sprintf(name[door], "%-20.20s",
+                  real_roomp(exitdata->to_room)->name);
+                sprintf(terrain[door],
+                  sector_types[real_roomp(exitdata->to_room)->sector_type]);
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  cprintf(ch, template, name[UP], vnum[UP], terrain[UP],
+          name[NORTH], vnum[NORTH], terrain[NORTH],
+          name[EAST], name[WEST], vnum[EAST], terrain[EAST],
+          vnum[WEST], terrain[WEST], name[SOUTH], vnum[SOUTH],
+          terrain[SOUTH], name[DOWN], vnum[DOWN], terrain[DOWN]);
+}

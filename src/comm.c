@@ -53,6 +53,7 @@ int pulse = 0;
 int pulse_update = PULSE_UPDATE + PULSE_VARIABLE;
 int pulse_river = PULSE_RIVER;
 int pulse_teleport = PULSE_TELEPORT;
+int pulse_nature = PULSE_NATURE;
 int pulse_sound = PULSE_SOUND;
 int pulse_zone = PULSE_ZONE;
 int pulse_mobile = PULSE_MOBILE;
@@ -173,7 +174,7 @@ int main(int argc, char **argv)
 #else
   run_the_game(port);
 #endif
-  return (0);
+  return(42);		       /* what's so great about HHGTTG, anyhow? */
 }
 
 /* Init sockets, run game, and cleanup sockets */
@@ -218,7 +219,7 @@ int run_the_game(int port)
 
   if (diku_reboot) {
     log("Rebooting.");
-    exit(42);			       /* what's so great about HHGTTG, anyhow? */
+    exit(0);
   }
   log("Normal termination of game.");
 }
@@ -373,8 +374,8 @@ int game_loop(int s)
 	  if (point->showstr_point)
 	    write_to_descriptor(point->descriptor, "*** Press return or q ***");
 	  else {
-            bzero(promptbuf, 80);
-	    if (IS_IMMORTAL(point->character)) {
+            bzero(promptbuf, 256);
+	    if (IS_IMMORTAL(point->character) && IS_PC(point->character)) {
 	      if (MOUNTED(point->character)) {
 		mount = MOUNTED(point->character);
 		sprintf(promptbuf, "[%s has %d/%dh %d/%dv]\n\r",
@@ -392,12 +393,30 @@ int game_loop(int s)
                       "#%d - %s [#%d]> ", rm->zone, zone_table[rm->zone].name,
                       rm->number);
 	      write_to_descriptor(point->descriptor, promptbuf);
-	    } else if (HasClass(point->character, CLASS_MAGIC_USER) ||
-		       HasClass(point->character, CLASS_DRUID) ||
-		       HasClass(point->character, CLASS_RANGER) ||
-		       HasClass(point->character, CLASS_CLERIC) ||
-		       HasClass(point->character, CLASS_THIEF) ||
-		       HasClass(point->character, CLASS_WARRIOR)) {
+/* OLD mobs didn't have classes.. this doesn't work anymore */
+	    } else if( IS_NPC(point->character) &&
+              (IS_SET(point->character->specials.act, ACT_POLYSELF) ||
+               IS_SET(point->character->specials.act, ACT_POLYOTHER))) {
+	      sprintf(promptbuf, "P %d/%dh %d/%dv > ",
+		      GET_HIT(point->character),
+		      GET_MAX_HIT(point->character),
+		      GET_MOVE(point->character),
+		      GET_MAX_MOVE(point->character));
+	      write_to_descriptor(point->descriptor, promptbuf);
+            } else if( IS_NPC(point->character) &&
+                       IS_SET(point->character->specials.act, ACT_SWITCH)) {
+	      sprintf(promptbuf, "*%s[#%d] in [#%d] %d/%dh %d/%dm %d/%dv > ",
+		      NAME(point->character),
+                      MobVnum(point->character),
+		      point->character->in_room,
+		      GET_HIT(point->character),
+		      GET_MAX_HIT(point->character),
+		      GET_MANA(point->character),
+		      GET_MAX_MANA(point->character),
+		      GET_MOVE(point->character),
+		      GET_MAX_MOVE(point->character));
+	      write_to_descriptor(point->descriptor, promptbuf);
+	    } else {
 	      if (MOUNTED(point->character)) {
 		if (HasClass(point->character, CLASS_RANGER) ||
 		    IS_AFFECTED(MOUNTED(point->character), AFF_CHARM)) {
@@ -413,17 +432,6 @@ int game_loop(int s)
 		      GET_MAX_HIT(point->character),
 		      GET_MANA(point->character),
 		      GET_MAX_MANA(point->character),
-		      GET_MOVE(point->character),
-		      GET_MAX_MOVE(point->character));
-	      write_to_descriptor(point->descriptor, promptbuf);
-	    } else {
-	      sprintf(promptbuf, "*%s[#%d] in %s[#%d] %d/%dh %d/%dv > ",
-		      GET_SDESC(point->character),
-		      mob_index[point->character->nr].virtual,
-		      real_roomp(point->character->in_room)->name,
-		      point->character->in_room,
-		      GET_HIT(point->character),
-		      GET_MAX_HIT(point->character),
 		      GET_MOVE(point->character),
 		      GET_MAX_MOVE(point->character));
 	      write_to_descriptor(point->descriptor, promptbuf);
@@ -492,6 +500,10 @@ int game_loop(int s)
     if ((--pulse_teleport) <= 0) {
       pulse_teleport= PULSE_TELEPORT;
       Teleport(pulse);
+    }
+    if ((--pulse_nature) <= 0) {
+      pulse_nature= PULSE_NATURE;
+      check_all_nature(pulse);
     }
     if ((--pulse_violence) <= 0) {
       pulse_violence= PULSE_VIOLENCE;

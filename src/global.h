@@ -52,7 +52,21 @@ typedef long long LONG;
 #define DEFAULT_EXIT_TO_ROOM 0
 #define DEFAULT_EXIT_ALIAS '\0'
 
-#define MAX_CONDITIONS	6
+#define ALIGN_REALLY_VILE -1000
+#define ALIGN_VILE -900
+#define ALIGN_VERY_EVIL -700
+#define ALIGN_EVIL -350
+#define ALIGN_WICKED -100
+#define ALIGN_NEUTRAL 0
+#define ALIGN_NICE 100
+#define ALIGN_GOOD 350
+#define ALIGN_VERY_GOOD 700
+#define ALIGN_HOLY 900
+#define ALIGN_REALLY_HOLY 1000
+
+#define MAX_CONDITIONS 6
+#define MAX_SAVING_THROWS 5 /* note: <= for this one... */
+#define MAX_ATTACKERS 6
 #define MAX_NUMBER_OF_CLASSES 12
 #define ABS_MAX_CLASS 6
 
@@ -202,14 +216,15 @@ typedef struct {
 #define PULSE_UPDATE	(70 * PULSE_PER_SECOND)
 #define PULSE_VARIABLE	(30 * PULSE_PER_SECOND)
 
-#define PULSE_RIVER    13
-#define PULSE_TELEPORT      11
-#define PULSE_SOUND	33
-#define PULSE_ZONE     239
-#define PULSE_MOBILE   25
-#define PULSE_VIOLENCE 6
-#define PULSE_LAW	589
-#define PULSE_DUMP	3601
+#define PULSE_RIVER      10 /* These two must be 10 to make the timings */
+#define PULSE_TELEPORT   10 /* in the world files come out right. */
+#define PULSE_NATURE     19
+#define PULSE_SOUND      33
+#define PULSE_ZONE      239
+#define PULSE_MOBILE     25
+#define PULSE_VIOLENCE    6
+#define PULSE_LAW       589
+#define PULSE_DUMP     3601
 #define PULSE_MAX	999999
 
 #define WAIT_SEC       4
@@ -513,7 +528,10 @@ struct room_data {
  */
 
 #define MAX_TOUNGE  3		       /* Used in CHAR_FILE_U *DO*NOT*CHANGE* */
-#define MAX_SKILLS  200		       /* Used in CHAR_FILE_U *DO*NOT*CHANGE* */
+#define MAX_SKILLS  222		       /* Used in CHAR_FILE_U *DO*NOT*CHANGE* */
+/* This is now the MAX_SPL_LIST define also... binary save files are no
+ * longer used (for characters), so changing it should not hurt much.
+ */
 #define MAX_WEAR    19
 #define MAX_AFFECT  25		       /* Used in CHAR_FILE_U *DO*NOT*CHANGE* */
 
@@ -603,13 +621,18 @@ struct room_data {
 #define APPLY_HITNDAM          40
 
 /* 'class' for PC's */
-#define CLASS_ALL ( CLASS_MAGIC_USER | CLASS_CLERIC | CLASS_WARRIOR | CLASS_THIEF | CLASS_RANGER | CLASS_DRUID )
 #define CLASS_MAGIC_USER  1
 #define CLASS_CLERIC      2
 #define CLASS_WARRIOR     4
 #define CLASS_THIEF       8
 #define CLASS_RANGER	  16
 #define CLASS_DRUID	  32
+#define CLASS_ALL ( CLASS_MAGIC_USER | CLASS_CLERIC | CLASS_WARRIOR | CLASS_THIEF | CLASS_RANGER | CLASS_DRUID )
+#define CLASS_WIZARD ( CLASS_MAGIC_USER | CLASS_RANGER )
+#define CLASS_PRIEST ( CLASS_CLERIC | CLASS_DRUID | CLASS_RANGER )
+#define CLASS_MAGICAL ( CLASS_MAGIC_USER | CLASS_CLERIC | CLASS_RANGER | CLASS_DRUID )
+#define CLASS_FIGHTER ( CLASS_WARRIOR | CLASS_RANGER )
+#define CLASS_SNEAK ( CLASS_THIEF | CLASS_RANGER )
 
 /* sex */
 #define SEX_NEUTRAL   0
@@ -656,6 +679,7 @@ struct room_data {
 #define ACT_PROTECTOR (1<<20)	       /* mob will come to aid those that call */
 				 /* this is inter zonal only             */
 #define ACT_MOUNT     (1<<21)	       /* mobile can act as a mount      */
+#define ACT_SWITCH    (1<<22)    /* we are a wizard switch to a mob */
 
 /* For players : specials.act */
 #define PLR_BRIEF     (1<<0)
@@ -730,7 +754,7 @@ struct char_player_data {
   char *distant_snds;		       /* Sound that the monster makes (other) */
   BYTE sex;			       /* PC / NPC s sex                       */
   BYTE class;			       /* PC s class or NPC alignment          */
-  BYTE level[6];		       /* PC / NPC s level                     */
+  BYTE level[ABS_MAX_CLASS];	       /* PC / NPC s level                     */
   int hometown;			       /* PC s Hometown (zone)                 */
   BYTE talks[MAX_TOUNGE];	       /* PC s Tounges 0 for NPC           */
   struct time_data time;	       /* PC s AGE in days                 */
@@ -797,7 +821,7 @@ struct char_special_data {
   BYTE default_pos;		       /* Default position for NPC                */
   unsigned long act;		       /* flags for NPC behavior                  */
   int new_act;			       /* new flags */
-  BYTE spells_to_learn;		       /* How many can you learn yet this level   */
+  BYTE pracs;		       /* How many can you learn yet this level   */
 
   int carry_weight;		       /* Carried weight                          */
   BYTE carry_items;		       /* Number of items carried                 */
@@ -941,7 +965,8 @@ struct weather_data {
 
 struct char_file_u {
   char name[20];
-  char pwd[11];
+  char oldpwd[11];
+  char pwd[17];
   char title[80];
   char pre_title[80];
   BYTE sex;
@@ -971,7 +996,7 @@ struct char_file_u {
 
   /* specials */
 
-  int spells_to_learn;
+  int pracs;
   int skills_to_learn;
   int alignment;
 
@@ -1078,7 +1103,8 @@ struct descriptor_data {
   long idle_time;		       /* for ilde time duh */
   char host[50];		       /* hostname                   */
   char usr_name[20];		       /* user name */
-  char pwd[12];			       /* password                   */
+  char oldpwd[12];		       /* password                   */
+  char pwd[17];			       /* password                   */
   char username[17];                   /* actual username from system */
   int pos;			       /* position in player-file    */
   int connected;		       /* mode of 'connectedness'    */

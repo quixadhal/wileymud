@@ -110,6 +110,18 @@ flesh of a luckless being.
 2 18 10 2d8+0 1d8+0
 -1 0 40 10
 8 8 3 7 8 64
+#200
+worm~
+A tiny worm~
+A pitiful earthworm crawls here.
+~
+  The earthworm squirms and wriggles along the ground.  You could squash it
+by dropping a single gold piece on it.
+~
+131076 65536 0 S
+1 20 10 1d4+1 1d2+0
+-1 0 0 19
+8 8 0
 #201
 goblin~
 A goblin~
@@ -782,6 +794,40 @@ enough to kill trees.
 12 7 4 12d8+62 1d8+0
 -1 0 0 17
 8 8 1
+#666
+xenthia zombie lady~
+Xenthia, Lady of the Dead~
+Xenthia stands here, creating an army to destroy Shylar.
+~
+  You can tell that she was once very beautiful, and her figure still seems
+inviting.  However, her skin has become mottled and cracked in places.  A mane
+of pure black hair cascades down her back, with a single broad silvery streak
+along her left temple.  Her eyes... Her eyes are the grey of mists, but frozen
+and sharpened into daggers of the deadliest caliber.  She glances up at you,
+smirks, and returns to her abominable ritual of animation.
+~
+131077 34984 -1000 M 2
+18 12 -3 18d4+50 2d4+1
+-1 200 3000 1
+8 8 5
+1036 2050 32
+#667
+mosquito bug~
+An annoying mosquito~
+An annoying mosquito flies about your head.
+~
+  The little bloodsucker is very big, and very fat... filled with the blood
+of other unfortunates, no doubt.  It seems intent on making you another of
+those contributers.
+~
+160 2088 -10 W 1
+1 15 0 1d2+0 1d2+0
+-1 0 1 12
+8 8 2
+You hear an inceasent buzzing and droning.
+~
+You hear a faint, high pitched whine from nearby.
+~
 #1000
 master hunt~
 The master of the hunt~
@@ -830,6 +876,43 @@ is occupied by eight hairy legs and a huge black abdomen.
 27 8 3 27d8+79 1d4+4
 -1 0 12349 13
 8 8 1
+#1020
+testbeast test creature~
+A test creature~
+This creature exists to test Quixadhal's new type 'C' mob structure.
+~
+  This creature is a test of Quixadhal's new type 'C' mob structure.
+He looks very unhappy about the changes and will probably kill you just
+to make himself feel a little better.
+~
+2359330 100392 0 C
+18 5 1 135 237 10d20+0
+10d500+2000 20 20d8+100 -7 6 4
+2d4+3 1
+2d4+3 1
+2d4+3 1
+2d4+3 1
+0 0 0
+18 79 15 11 6 3
+6 6 6 6 6
+8 8 1
+This is the first test sound.
+~
+This is the second test sound.
+~
+#1022
+naga spirit~
+Spirit Naga~
+A Spirit Naga is slithering around here guarding something.
+~
+  The spirit naga is black and crimson banded with an almost human like
+head with stringy hair and deep brown eyes.
+~
+258 32768 -1000 S 1 
+30 11 3 30d10+45 1d6+4
+-1 0 4000 10
+8 8 3
+15 0 0
 #1200
 goblin~
 A Goblin~
@@ -1742,7 +1825,7 @@ bare existance.
 ~
 131141 0 400 S 
 2 19 9 2d8+2 1d4+1 
--1 3 80 1
+-1 3 120 1
 8 8 1
 #3007
 leper~
@@ -1853,7 +1936,7 @@ bare existance.
 ~
 393222 0 400 S 
 3 17 8 2d8+8 1d4+2 
--1 3 80 1
+-1 3 200 1
 8 8 1
 #3016
 villager~
@@ -1865,7 +1948,7 @@ bare existance.
 ~
 393284 0 400 S 
 3 17 8 3d8+8 1d4+2 
--1 3 80 1
+-1 3 200 1
 8 8 1
 #3017
 acolyte~
@@ -2257,6 +2340,61 @@ between his two fingers.
 Ned moves about on his barrel, grabbing another nut from within and cracks it.
 ~
 ~
+#3044
+barney dinosaur it~
+An overweight purple dinosaur~
+A stupid looking purple dinosaur is waddling around here... SINGING!
+~
+  You see a large chunk of styrofoam, crudely hacked and chipped to resemble
+a tyrannosaur.  The entire monstrosity is spray-painted a gaudy purple, except
+the ample belly, which seems to be peeling.  It is SINGING!
+~
+2752917 0 -1000 W 1
+1 20 9 2000d1+0 1d1+0
+-1 100 2000 14
+8 8 0
+C'mon kids, SING with me! "I love me, you love me, I'm as dumb as I can be!"
+~
+You hear stomping and really horrible singing nearby.
+~
+#3045
+girl villager~
+A village girl~
+A village girl stands here.
+~
+  The girl is young and pretty, but seems rather poorly dressed and underfed.
+Her clothes look rather boring and uncolorful. 
+~
+133 0 1000 S
+2 19 9 2d8+2 1d4+1
+-1 2 120 1
+8 8 2
+#3046
+girl villager~
+A village girl~
+A village girl stands here.
+~
+  The girl is young and pretty, but seems rather poorly dressed and underfed.
+Her clothes look rather boring and uncolorful.  She seems to be loaded down
+with the drudgery of housework as she follows her mother. 
+~
+65668 0 1000 S
+2 19 9 2d8+2 1d4+1
+-1 2 120 1
+8 8 2
+#3047
+village guard~
+The village guard~
+The village guard loiters here.
+~
+  He is dressed in rather decent clothing and has a powdery white residue
+clinging to the front of his dark blue shirt.  Overweight and underpaid, he
+looks ready to kick someone just for fun.
+~
+393287 0 750 M 2
+5 15 8 7d8+24 1d4+2
+-1 25 500 1
+4 8 1
 #3100
 stryder bird small~
 A small stryder~
@@ -2292,7 +2430,7 @@ age that has done, perhaps the use of raw magical power has prematurely
 ages him.
 ~
 2 0 0 W 2
-15 10 6 15d8+30 1d4+2
+15 10 6 15d8+70 1d4+2
 -1 10000 100 1
 6 6 1
 The man looks up from his desk and gives you a eerie grin.
@@ -5220,7 +5358,7 @@ A small man is here cowering in fear.
 this man hasn't seen much hard activity as his body is frail and hurt.
 ~
 3 0 0 W 1
-40 1 10 40d4+25 1d4+0
+70 1 10 40d4+25 1d4+0
 -1 0 5432 1
 8 8 1
 A small man says 'Help me!  I beg you!'
@@ -5234,7 +5372,7 @@ A noble is here praying silently to himself.
   The man is beaten and bruised but still remains to appear rather healthy.
 ~
 3 0 0 W 1
-40 1 10 40d8+25 1d4+0
+70 1 10 40d8+25 1d4+0
 -1 0 4561 1
 8 8 1
 The man utters a single legible word, 'Tyken'.
@@ -5248,7 +5386,7 @@ A very large and strong man kneels hammering his fists together.
   The man is very badly beaten but still remains strong.
 ~
 3 0 0 W 1
-40 1 10 40d10+25 1d4+0
+70 1 10 40d10+25 1d4+0
 -1 0 5671 1
 8 8 1
 The man looks you deep in the eye, you can tell he has a strong soul.
@@ -5262,7 +5400,7 @@ A small man is huddling in the corner.
   The man is scarred very badly, most seem to be quite old though.
 ~
 3 0 0 W 1
-40 1 6 40d6+25 1d4+0
+70 1 6 40d6+25 1d4+0
 -1 0 4369 1
 The man sneers and scowls 'Ogres...'.
 ~
@@ -5276,7 +5414,7 @@ A bearded man stands in the center of his cell.
 proudly although there is a sadness about him.
 ~
 3 0 0 W 1
-40 1 6 40d10+25 1d4+1
+70 1 6 40d10+25 1d4+1
 -1 0 5421 1
 8 8 1
 A bearded man nods to you.
@@ -6956,6 +7094,76 @@ The dark-robed skeletal figure radiates an unendurable coldness.
 30 0 -10 1d1+665 1d100+0
 0 500000
 8 8 0
+#7000
+drow fighter~
+A drow fighter~
+A drow fighter is standing here.
+~
+  A fairly slender elf with dark grey skin looking very sneaky like.
+~
+393444 32768 -500 S
+10 12 5 10d10+46 1d4+0
+-1 25 1200 2
+8 8 1
+#7001
+drow warrior~
+A drow warrior~
+A drow warrior is standing here looking sneaky.
+~
+  A fairly strong elf with dark grey skin looking very sneaky like.
+~
+393317 557056 -750 M 2
+12 9 4 12d10+25 1d4+1
+-1 45 2000 2
+8 8 1
+#7002
+drow priestess~
+A drow priestess~
+A drow priestess is standing here, chanting.
+~
+  A slender female drow dressed in mostly black.  Her hair
+ flows behind her as she waves her fingers and starts to chant.
+~
+131301 1605800 -1000 S
+16 8 3 16d10+45 1d4+2
+-1 250 4500 2
+8 8 5 7 8 0
+#7003
+drow mage~
+A drow mage~
+A dark complected elf who stands here making magical gestures.
+~
+  He looks highly evil and very self indulged as he prepares to cast.
+~
+35 32768 -1000 M 2
+15 14 6 15d8+45 1d4+0
+-1 100 2000 2
+8 8 1
+#7020
+drider~
+A drider~
+A creepy looking Drider is standing here.
+~
+  An obimination, half drow half spider and 100% angry.
+~
+2097443 32768 -900 M 3
+10 9 7 10d10+45 1d8+1
+-1 0 2500 7
+8 8 1
+#7050
+nightmare~
+A nightmare~
+A rather large, powerful, jet black horse stands here.
+~
+  The nightmare looks at you with glowing red eyes, and snorts
+almost fire like nostrils in your direction.  You notice his hooves
+are burning.
+~
+2097184 2080 -1000 M 3
+17 15 4 17d8+22 1d6+1
+-1 0 2750 21
+8 8 3
+0 1 0
 #9000
 asgard the lich~
 Asgard the Lich~
@@ -7406,7 +7614,7 @@ A grey slaadi leaps towards you.
   This nasty creature as two long powerful arms with long claws. It stands
 around 6 ' tall with light grey skin.
 ~
-393252 32768 -790 M 2
+393316 32768 -790 M 2
 19 12 1 19d8+70 2d8+4
 -1 0 10492 6
 8 8 0
@@ -7520,7 +7728,7 @@ as if she desires some reason to use it.
 5 18 10 4d8+25 1d4+1
 -1 0 870 1
 8 8 2
-The priestess says "Men shall pay for their transgressions agains Lovitar!"
+The priestess says "Men shall pay for their transgressions against Lovitar!"
 ~
 ~
 #10003
@@ -7528,15 +7736,15 @@ priestess high~
 The High Priestess~
 The High Priestess of Lovitar stands here leading a ceremony.
 ~
-  The High Priestess is definately a wicked woman. She has an evil 
+  The High Priestess is definitely a wicked woman. She has an evil 
 smile on her face and giggles every time she pulls on her hooked
-flail which is currently dug into the flesh of her current sacrafice.
+flail which is currently dug into the flesh of her current sacrifice.
 ~
 67 0 -1000 W 2
 8 17 8 7d8+55 1d4+1
 -1 0 2270 1
 8 8 2
-The High Priestess giggles insanely as she forces her sacrafice to suffer.
+The High Priestess giggles insanely as she forces her sacrifice to suffer.
 ~
 The sound of soft demonic laughter can be heard nearby.
 ~
@@ -7556,10 +7764,10 @@ torso where some fool with a sword might have tried to harm it.
 #10005
 priestess~
 A priestess~
-A priestess stands here gaurding the area.
+A priestess stands here guarding the area.
 ~
   The priestess has an almost bored look about her. Guarding this area
-is obiously not her cup of tea. Possibly she holds the fancy of giving
+is obviously not her cup of tea. Possibly she holds the fancy of giving
 a sacrifice to allmighty Lovitar. Yes, the thought of slowly killing
 a man for her goddess does make her smile.
 ~
@@ -7575,7 +7783,7 @@ wardog dog~
 A large wardog~
 A large wardog growls as it leaps for you!
 ~
-  The wardog is a magnificant beast. Large rippleing muscles cover its
+  The wardog is a magnificant beast. Large rippling muscles cover its
 stout firm body. Gleaming, razor-sharp, white teeth accent its fearsome
 snarl.
 ~
@@ -7639,7 +7847,7 @@ The plump cook~
 A plump cook stands behind a counter here hacking at some meat with a cleaver.
 ~
   The cook is quite plump and a little muscular looking. She wears the symbol
-of Lovitar over her apron and is glareing at you with a less than pleasant
+of Lovitar over her apron and is glaring at you with a less than pleasant
 smile. 
 ~
 66 0 -600 W 2
@@ -7949,7 +8157,7 @@ Herman chuckles to himself as he mixes some herbs in a large clay bowl.
 #15012
 koffman butcher~
 Koffman~
-Koffman the Butcher is here, busily choping meat.
+Koffman the Butcher is here, busily chopping meat.
 ~
 Koffman is a huge, beefy man dressed in a blood stained smock.  He has
 a large scar on his right cheek and a wicked looking meat cleaver in his
@@ -7995,7 +8203,7 @@ Thinking that no one is looking, Frumpton takes a swig of ale.
 ~
 #15015
 kahmil~
-Kahmil
+Kahmil~
 Kahmil is here, looking over a new shipment of spices.
 ~
 Kahmil is a somewhat, slim, dark skinned man who obviously came to the
@@ -8377,7 +8585,7 @@ An alley cat is slinking about here, looking for food.
 hopes of a little piece of food.
 ~
 192 0 0 W 1
-3 17 8 3d8+3 1D4+1
+3 17 8 3d8+3 1d4+1
 -1 0 200 35
 8 8 0
 The cat meows pitiously at you.
@@ -8583,7 +8791,7 @@ he has seen much of the world and gained many of its benefits and knowledge.
 Combining them together he has made himself a self-taught master in many
 arts, most unknown to the known world.
 ~
-133189 4194304 1000 W 3
+133185 4194304 1000 W 3
 50 1 0 50d10+275 1d10+10
 -1 45 65781 1
 8 8 1

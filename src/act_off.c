@@ -339,7 +339,7 @@ void do_flee(struct char_data *ch, char *argument, int cmd)
     return;
   }
   if (!(ch->specials.fighting)) {
-    for (i = 0; i < 6; i++) {
+    for (i = 0; i < MAX_NUM_EXITS; i++) {
       attempt = number(0, 5);	       /* Select a random direction */
       if (CAN_GO(ch, attempt) &&
 	  !IS_SET(real_roomp(EXIT(ch, attempt)->to_room)->room_flags, DEATH)) {
@@ -359,8 +359,8 @@ void do_flee(struct char_data *ch, char *argument, int cmd)
     send_to_char("PANIC! You couldn't escape!\n\r", ch);
     return;
   }
-  for (i = 0; i < 6; i++) {
-    attempt = number(0, 5);	       /* Select a random direction */
+  for (i = 0; i < MAX_NUM_EXITS; i++) {
+    attempt = number(0, MAX_NUM_EXITS-1);	/* Select a random direction */
     if (CAN_GO(ch, attempt) &&
 	!IS_SET(real_roomp(EXIT(ch, attempt)->to_room)->room_flags, DEATH)) {
       act("$n panics, and attempts to flee.", TRUE, ch, 0, 0, TO_ROOM);

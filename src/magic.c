@@ -320,6 +320,20 @@ void spell_chill_touch(BYTE level, struct char_data *ch, struct char_data *victi
   if (!CheckKill(ch, victim))
     return;
 
+  if(IsUndead(victim)) {
+    if (!saves_spell(victim, SAVING_SPELL)) {
+/* 
+ * af.type      = SPELL_FEAR;
+ * af.duration  = 4+level;
+ * af.modifier  = 0;
+ * af.location  = APPLY_NONE;
+ * af.bitvector = 0;
+ * affect_join(victim, &af, FALSE, FALSE);
+ */
+      do_flee(victim, "", 0);
+    }
+    return;
+  }
   lvl = GET_LEVEL(ch, MAGE_LEVEL_IND);
 #ifdef OLD_WILEY
   dam = dice(GET_LEVEL(ch, MAGE_LEVEL_IND)/3, 4);
@@ -406,7 +420,7 @@ void spell_clone(BYTE level, struct char_data *ch, struct char_data *victim, str
     chance/= 2;
   chance= MIN(MAX(1,chance),95);
 
-  if(GetMaxLevel(ch) < 60) {
+  if(GetMaxLevel(ch) < LOKI) {
     cprintf(ch, "Sorry!  Clone is not quite ready yet.\n\r");
     cprintf(ch, "You would have a %d%% chance of it working though!\n\r", chance);
     return;
@@ -734,9 +748,10 @@ void spell_create_water(BYTE level, struct char_data *ch, struct char_data *vict
   void name_to_drinkcon(struct obj_data *obj, int type);
   void name_from_drinkcon(struct obj_data *obj);
 
-  assert(ch && obj);
   if (DEBUG)
     dlog("spell_create_water");
+  if(!ch || !obj || level < 0 || level > ABS_MAX_LVL)
+    return;
   if (GET_ITEM_TYPE(obj) == ITEM_DRINKCON) {
     if ((obj->obj_flags.value[2] != LIQ_WATER) && (obj->obj_flags.value[1] != 0)) {
       name_from_drinkcon(obj);
@@ -763,10 +778,10 @@ void spell_create_water(BYTE level, struct char_data *ch, struct char_data *vict
 
 void spell_cure_blind(BYTE level, struct char_data *ch, struct char_data *victim, struct obj_data *obj)
 {
-  assert(victim);
-  assert((level >= 0) && (level <= ABS_MAX_LVL));
   if (DEBUG)
-    dlog("spell-cure_blind");
+    dlog("spell_cure_blind");
+  if(!victim || level < 0 || level > ABS_MAX_LVL)
+    return;
   if (affected_by_spell(victim, SPELL_BLINDNESS)) {
     affect_from_char(victim, SPELL_BLINDNESS);
     send_to_char("Your vision returns!\n\r", victim);
@@ -780,10 +795,10 @@ void spell_magic_missile(BYTE level, struct char_data *ch, struct char_data *vic
   int dam;
   int missiles;
 
-  assert(victim && ch);
-  assert((level >= 1) && (level <= ABS_MAX_LVL));
   if (DEBUG)
     dlog("spell_magic_missle");
+  if(!ch || !victim || level < 0 || level > ABS_MAX_LVL)
+    return;
 
   if (!CheckKill(ch, victim))
     return;
@@ -803,10 +818,10 @@ void spell_shocking_grasp(BYTE level, struct char_data *ch, struct char_data *vi
   int dam;
   int classes;
 
-  assert(victim && ch);
-  assert((level >= 1) && (level <= ABS_MAX_LVL));
   if (DEBUG)
     dlog("spell_shocking_graps");
+  if(!ch || !victim || level < 0 || level > ABS_MAX_LVL)
+    return;
   if (!CheckKill(ch, victim))
     return;
 
@@ -830,10 +845,10 @@ void spell_lightning_bolt(BYTE level, struct char_data *ch, struct char_data *vi
   int dam;
   int high_die;
 
-  assert(victim && ch);
-  assert((level >= 1) && (level <= ABS_MAX_LVL));
   if (DEBUG)
     dlog("spell_lightning_bolt");
+  if(!ch || !victim || level < 0 || level > ABS_MAX_LVL)
+    return;
   if (!CheckKill(ch, victim))
     return;
 
@@ -857,10 +872,10 @@ void spell_energy_drain(BYTE level, struct char_data *ch, struct char_data *vict
 {
   int dam, xp, mana;
 
-  assert(victim && ch);
-  assert((level >= 1) && (level <= ABS_MAX_LVL));
   if (DEBUG)
     dlog("spell_energy_drain");
+  if(!ch || !victim || level < 0 || level > ABS_MAX_LVL)
+    return;
 
   if (!CheckKill(ch, victim))
     return;
@@ -942,10 +957,10 @@ void spell_fireball(BYTE level, struct char_data *ch, struct char_data *victim, 
   struct char_data *tmp_victim, *temp;
   int high_die;
 
-  assert(ch);
-  assert((level >= 1) && (level <= ABS_MAX_LVL));
   if (DEBUG)
     dlog("spell_fireball");
+  if(!ch || level < 0 || level > ABS_MAX_LVL)
+    return;
 #ifdef OLD_WILEY
   high_die = (level / 5) + 2;
 #else
@@ -954,24 +969,78 @@ void spell_fireball(BYTE level, struct char_data *ch, struct char_data *victim, 
   dam = dice(high_die, 6);
 
   AreaEffectSpell(ch, dam, SPELL_FIREBALL, 1, "You feel a blast of hot air.\n\r");
+}
 
-#ifdef 0
-  for (tmp_victim = character_list; tmp_victim; tmp_victim = temp) {
-    temp = tmp_victim->next;
-    if ((ch->in_room == tmp_victim->in_room) && (ch != tmp_victim)) {
-      if (IS_PC(tmp_victim) && IS_IMMORTAL(tmp_victim) && !IS_IMMORTAL(ch)) {
-	send_to_char("Some puny mortal tries to toast you with a fireball", tmp_victim);
-      } else {
-	if (saves_spell(tmp_victim, SAVING_SPELL))
-	  dam >>= 1;
-	damage(ch, tmp_victim, dam, SPELL_FIREBALL);
+void spell_new_earthquake(BYTE level, struct char_data *ch, struct char_data *victim, struct obj_data *obj)
+{
+  register int i,localdamage, neardamage, found;
+  struct room_data *rp[MAX_NUM_EXITS];
+  struct room_data *here, *tmp;
+  struct room_direction_data *exitdata;
+  struct char_data *victim, *next_victim;
+
+  if (DEBUG)
+    dlog("spell_new_earthquake");
+  if(!ch || level < 0 || level > ABS_MAX_LVL)
+    return;
+  localdamage = dice(level, 4);
+  neardamage = dice(level/4, 4);
+  if(!(here= real_roomp(ch->in_room)))
+    return;
+  for(i= 0; i< MAX_NUM_EXITS; i++)
+    if(exitdata= EXIT(ch, i))
+      rp[i]= real_roomp(exitdata->to_room);
+  for(victim= character_list; victim; victim= next_victim) {
+    next_victim= victim->next;
+    if(victim == ch) continue;
+    if(IS_IMMORTAL(victim) && !IS_IMMORTAL(ch)) {
+      cprintf(victim, "The ground shakes a bit as the mortals play.\n\r");
+      continue;
+    }
+    if(!CheckKill(ch, victim)) continue;
+    if(IS_AFFECTED(victim, AFF_GROUP))
+      if((victim == ch->master) ||
+         (victim->master == ch) ||
+         (victim->master == ch->master)) continue;
+    if(victim->in_room == ch->in_room) { /* full SUFFERAGE! */
+      damage(ch, victim, localdamage, SPELL_EARTHQUAKE);
+      act("You fall and are pummled with debris!\n\r", FALSE, ch, 0,
+          victim, TO_VICT);
+      if(GET_POS(victim) > POSITION_SITTING)
+        GET_POS(victim)= POSITION_SITTING;
+      if(GET_POS(victim) > POSITION_DEAD) {
+        WAIT_STATE(victim, (PULSE_VIOLENCE * 3));
+        if(IS_MOB(victim))
+          AddHated(victim, ch);
       }
     } else {
-      if (real_roomp(ch->in_room)->zone == real_roomp(tmp_victim->in_room)->zone)
-	send_to_char("You feel a blast of hot air.\n\r", tmp_victim);
+      if(!(tmp= real_roomp(victim->in_room)))
+        continue;
+      found= 0;
+      for(i= 0; i< MAX_NUM_EXITS; i++) {
+        if(rp[i] && tmp->number == rp[i]->number) { /* adjacent rooms SUFFER! */
+          found= 1;
+          damage(victim, victim, neardamage, SPELL_EARTHQUAKE);
+          act("The ground shakes nearby and you lose your footing!\n\r",
+              FALSE, victim, 0, victim, TO_VICT);
+          if(GET_POS(victim) > POSITION_SITTING)
+            GET_POS(victim)= POSITION_SITTING;
+          if(GET_POS(victim) > POSITION_DEAD) {
+            WAIT_STATE(victim, (PULSE_VIOLENCE));
+            if(IS_MOB(victim))
+              AddHated(victim, ch);
+          }
+          break;
+        }
+      }
+      if(!found) {
+        if(here->zone == tmp->zone) { /* Well, tell them it moved for them */
+          act("The ground quivers all around you...\n\r",
+              FALSE, victim, 0, victim, TO_VICT);
+        }
+      }
     }
   }
-#endif
 }
 
 void spell_earthquake(BYTE level, struct char_data *ch, struct char_data *victim, struct obj_data *obj)
@@ -981,10 +1050,10 @@ void spell_earthquake(BYTE level, struct char_data *ch, struct char_data *victim
 
   struct char_data *tmp_victim, *temp;
 
-  assert(ch);
-  assert((level >= 1) && (level <= ABS_MAX_LVL));
   if (DEBUG)
     dlog("spell_earthquake");
+  if(!ch || level < 0 || level > ABS_MAX_LVL)
+    return;
   dam = dice(1, 8) + level;
 
   send_to_char("The ground trembles beneath your feet!\n\r", ch);
@@ -1014,9 +1083,10 @@ void spell_dispel_evil(BYTE level, struct char_data *ch, struct char_data *victi
 {
   int dam;
 
-  assert(ch && victim);
-  assert((level >= 1) && (level <= ABS_MAX_LVL));
-
+  if (DEBUG)
+    dlog("spell_dispel_evil");
+  if(!ch || !victim || level < 0 || level > ABS_MAX_LVL)
+    return;
   if (!CheckKill(ch, victim))
     return;
 
@@ -1048,11 +1118,11 @@ void spell_harm(BYTE level, struct char_data *ch, struct char_data *victim, stru
 {
   int dam;
 
-  assert(victim && ch);
-  assert((level >= 1) && (level <= ABS_MAX_LVL));
-
   if (DEBUG)
     dlog("spell_harm");
+  if(!ch || !victim || level < 0 || level > ABS_MAX_LVL)
+    return;
+
   if (!CheckKill(ch, victim))
     return;
 
@@ -1082,6 +1152,10 @@ void spell_shelter(BYTE level, struct char_data *ch, struct char_data *victim, s
   struct extra_descr_data *ext;
   int found = 0;
 
+  if (DEBUG)
+    dlog("spell_shelter");
+  if(!ch || level < 0 || level > ABS_MAX_LVL)
+    return;
   if (IS_NPC(ch))
     return;
 
@@ -1102,6 +1176,7 @@ void spell_shelter(BYTE level, struct char_data *ch, struct char_data *victim, s
   cost.total_cost = 0;
 
   GET_HOME(ch) = ch->in_room;
+  new_save_equipment(ch, &cost, FALSE);
   save_obj(ch, &cost, 1);
   save_room = ch->in_room;
   send_to_char("You open a small rip in the fabric of space!\n\r", ch);
@@ -1120,11 +1195,14 @@ void spell_astral_walk(BYTE level, struct char_data *ch, struct char_data *victi
   int location;
   struct room_data *rp;
 
-  assert(ch && victim);
+  if (DEBUG)
+    dlog("spell_astral_walk");
+  if(!ch || !victim || level < 0 || level > ABS_MAX_LVL)
+    return;
   location = victim->in_room;
   rp = real_roomp(location);
 
-  if (GetMaxLevel(victim) > MAX_MORT || !rp || IS_SET(rp->room_flags, PRIVATE) ||
+  if (!rp || IS_SET(rp->room_flags, PRIVATE) ||
       IS_SET(rp->room_flags, NO_SUM) || IS_SET(rp->room_flags, NO_MAGIC)) {
     send_to_char("You failed.\n\r", ch);
     return;
@@ -1173,8 +1251,10 @@ void spell_cure_critic(BYTE level, struct char_data *ch, struct char_data *victi
   else
     GET_HIT(victim) += healpoints;
 
-  send_to_char("You feel better!\n\r", victim);
+  cprintf(victim, "You feel better!\n\r");
   update_pos(victim);
+  if(ch)
+    cprintf(ch, "%s %s.\n\r", NAME(victim), pain_level(victim));
 }
 
 void spell_cure_light(BYTE level, struct char_data *ch, struct char_data *victim, struct obj_data *obj)
@@ -1209,6 +1289,8 @@ void spell_cure_light(BYTE level, struct char_data *ch, struct char_data *victim
 
   send_to_char("You feel better!\n\r", victim);
   update_pos(victim);
+  if(ch)
+    cprintf(ch, "%s %s.\n\r", NAME(victim), pain_level(victim));
 }
 
 void spell_curse(BYTE level, struct char_data *ch, struct char_data *victim, struct obj_data *obj)
@@ -1960,8 +2042,8 @@ void spell_identify(BYTE level, struct char_data *ch, struct char_data *victim, 
       sprintf(buf, "Level %d spells of:\n\r", obj->obj_flags.value[0]);
       send_to_char(buf, ch);
       for (index = 1; index < 4; index++)
-	if (obj->obj_flags.value[index] >= 1) {
-	  sprinttype(obj->obj_flags.value[index] - 1, spells, buf);
+	if (obj->obj_flags.value[index] > 0 && obj->obj_flags.value[index] < MAX_SKILLS) {
+          strcat(buf, spell_info[obj->obj_flags.value[index]].name);
 	  strcat(buf, "\n\r");
 	  send_to_char(buf, ch);
 	}
@@ -1977,8 +2059,8 @@ void spell_identify(BYTE level, struct char_data *ch, struct char_data *victim, 
       sprintf(buf, "Level %d spell of:\n\r", obj->obj_flags.value[0]);
       send_to_char(buf, ch);
 
-      if (obj->obj_flags.value[3] >= 1) {
-	sprinttype(obj->obj_flags.value[3] - 1, spells, buf);
+      if (obj->obj_flags.value[3] > 0 && obj->obj_flags.value[3] < MAX_SKILLS) {
+        strcat(buf, spell_info[obj->obj_flags.value[3]].name);
 	strcat(buf, "\n\r");
 	send_to_char(buf, ch);
       }
@@ -2419,6 +2501,8 @@ void spell_cure_serious(BYTE level, struct char_data *ch, struct char_data *vict
 
   send_to_char("You feel better!\n\r", victim);
   update_pos(victim);
+  if(ch)
+    cprintf(ch, "%s %s.\n\r", NAME(victim), pain_level(victim));
 }
 
 void spell_mana(BYTE level, struct char_data *ch, struct char_data *victim, struct obj_data *obj)
@@ -3389,7 +3473,7 @@ void spell_dispel_magic(BYTE level, struct char_data *ch, struct char_data *vict
     /*
      *  aggressive Act.
      */
-    if ((victim->attackers < 6) && (!victim->specials.fighting) &&
+    if ((victim->attackers < MAX_ATTACKERS) && (!victim->specials.fighting) &&
 	(IS_NPC(victim))) {
       set_fighting(victim, ch);
     }
@@ -3403,7 +3487,7 @@ void spell_dispel_magic(BYTE level, struct char_data *ch, struct char_data *vict
     /*
      *  aggressive Act.
      */
-    if ((victim->attackers < 6) && (!victim->specials.fighting) &&
+    if ((victim->attackers < MAX_ATTACKERS) && (!victim->specials.fighting) &&
 	(IS_NPC(victim))) {
       set_fighting(victim, ch);
     }
