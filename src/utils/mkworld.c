@@ -28,7 +28,7 @@
 #define DFLT_INPUT	"world.in"
 #define DFLT_OUTPUT	"world.out"
 #define TMP_FILE	"/tmp/world.%d"
-#define EDIT		"/usr/bin/vi /tmp/world.%d"
+#define EDIT		"/usr/local/bin/vim /tmp/world.%d"
 
 #define ERR_NOINPUT	1	/* Cannot read input file */
 #define ERR_BADROOMID	2	/* No valid room virtual number */
@@ -1187,7 +1187,10 @@ void Command_extra(void)
     for (index = 0; index < current->number_extras; index++)
       printf("%d. %s\n", index + 1, current->extra[index].keywords);
     printf("\nEnter selection > ");
-    gets(tmp_str);
+    /* gets(tmp_str); */
+    fgets(tmp_str, BUFFER_SIZE-1, stdin);
+    if((strlen(tmp_str) > 0) && tmp_str[strlen(tmp_str)-1] == '\n')
+      tmp_str[strlen(tmp_str)-1]= '\0';
     if(!scan_a_number(tmp_str, &index) || --index < 0 || index >= current->number_extras) {
       printf("\n** Invalid selection.  No deletion performed.\n\n");
       return;
@@ -1213,7 +1216,10 @@ void Command_extra(void)
   } else {
     index = current->number_extras;
     printf("Enter the extra description keywords seperated by BLANKS.\n> ");
-    gets(tmp_str);
+    /* gets(tmp_str); */
+    fgets(tmp_str, BUFFER_SIZE-1, stdin);
+    if((strlen(tmp_str) > 0) && tmp_str[strlen(tmp_str)-1] == '\n')
+      tmp_str[strlen(tmp_str)-1]= '\0';
     trunc_string(tmp_str);
 
     if (tmp_str[0] == '\0') {
@@ -1358,7 +1364,10 @@ void Command_format(void)
       printf("%d. %s\n", index + 1, current->extra[index].keywords);
 
     printf("\nEnter selection > ");
-    gets(tmp_str);
+    /* gets(tmp_str); */
+    fgets(tmp_str, BUFFER_SIZE-1, stdin);
+    if((strlen(tmp_str) > 0) && tmp_str[strlen(tmp_str)-1] == '\n')
+      tmp_str[strlen(tmp_str)-1]= '\0';
     trunc_string(tmp_str);
     index = atoi(tmp_str) - 1;
     if (index < 0 || index >= current->number_extras) {
@@ -1506,7 +1515,10 @@ void Command_link(void)
       printf("%d. %-s\n", index3 + 1, door_states[index3].name);
 
     printf("> ");
-    gets(tmp_str);
+    /* gets(tmp_str); */
+    fgets(tmp_str, BUFFER_SIZE-1, stdin);
+    if((strlen(tmp_str) > 0) && tmp_str[strlen(tmp_str)-1] == '\n')
+      tmp_str[strlen(tmp_str)-1]= '\0';
     if(!scan_a_number(tmp_str, &index3)) {
       printf("** Invalid choice... try again.\n");
     }
@@ -1523,7 +1535,10 @@ void Command_link(void)
       printf("a -1 indicates that there is no key for this door.\n");
       printf("---------------------------------------------------\n");
       printf("> ");
-      gets(tmp_str);
+      /* gets(tmp_str); */
+      fgets(tmp_str, BUFFER_SIZE-1, stdin);
+      if((strlen(tmp_str) > 0) && tmp_str[strlen(tmp_str)-1] == '\n')
+        tmp_str[strlen(tmp_str)-1]= '\0';
       if(!scan_a_number(tmp_str, &current->exit[index].key_number)) {
         printf("** Invalid choice... try again.\n");
       }
@@ -1537,7 +1552,10 @@ void Command_link(void)
     printf("Enter all exit keywords seperated by BLANKS for this exit\n");
     printf("or return if there are none.\n");
     printf("----------------------------------------------------------\n> ");
-    gets(tmp_str);
+    /* gets(tmp_str); */
+    fgets(tmp_str, BUFFER_SIZE-1, stdin);
+    if((strlen(tmp_str) > 0) && tmp_str[strlen(tmp_str)-1] == '\n')
+      tmp_str[strlen(tmp_str)-1]= '\0';
     trunc_string(tmp_str);
 
     if (index3 > 0 && tmp_str[0] == '\0') {
@@ -1589,7 +1607,10 @@ void Command_list(void)
 	count++;
 	if (count % 22 == 0) {
 	  printf("MORE? > ");
-	  gets(tmp_str);
+          /* gets(tmp_str); */
+          fgets(tmp_str, BUFFER_SIZE-1, stdin);
+          if((strlen(tmp_str) > 0) && tmp_str[strlen(tmp_str)-1] == '\n')
+            tmp_str[strlen(tmp_str)-1]= '\0';
 	  if (toupper(tmp_str[0]) == 'N')
 	    break;
 	}
@@ -1642,7 +1663,10 @@ void Command_save(void)
   int counter;
 
   printf("Filename to save to? (default is %s)\n> ", DFLT_OUTPUT);
-  gets(tmp_str);
+  /* gets(tmp_str); */
+  fgets(tmp_str, BUFFER_SIZE-1, stdin);
+  if((strlen(tmp_str) > 0) && tmp_str[strlen(tmp_str)-1] == '\n')
+    tmp_str[strlen(tmp_str)-1]= '\0';
   trunc_string(tmp_str);
 
   if (!tmp_str[0])
@@ -1652,7 +1676,10 @@ void Command_save(void)
 
   if ((out = fopen(outname, "r"))) {
     printf("File already exists, overwrite (Y or N)? ");
-    gets(tmp_str);
+    /* gets(tmp_str); */
+    fgets(tmp_str, BUFFER_SIZE-1, stdin);
+    if((strlen(tmp_str) > 0) && tmp_str[strlen(tmp_str)-1] == '\n')
+      tmp_str[strlen(tmp_str)-1]= '\0';
 
     if (tmp_str[0] != 'Y' && tmp_str[0] != 'y') {
       printf("\n** World not saved...\n\n");
@@ -1724,7 +1751,10 @@ void Command_title(void)
 
   do {
     printf("Enter new title:\n----------------\n> ");
-    gets(tmp_str);
+    /* gets(tmp_str); */
+    fgets(tmp_str, BUFFER_SIZE-1, stdin);
+    if((strlen(tmp_str) > 0) && tmp_str[strlen(tmp_str)-1] == '\n')
+      tmp_str[strlen(tmp_str)-1]= '\0';
     trunc_string(tmp_str);
 
     if (tmp_str[0] == '\0')
@@ -1944,7 +1974,10 @@ void Command_dig(void)
       Command_title();
       Command_desc();
       printf("Zone for this room\n------------------\n> ");
-      gets(tmp_str);
+      /* gets(tmp_str); */
+      fgets(tmp_str, BUFFER_SIZE-1, stdin);
+      if((strlen(tmp_str) > 0) && tmp_str[strlen(tmp_str)-1] == '\n')
+        tmp_str[strlen(tmp_str)-1]= '\0';
       if (tmp_str[0] == '\0') {
 	printf("** Null zone entered, defaulting to previous zone.\n");
 	current->zonenum= tmpptr->zonenum;
@@ -1975,7 +2008,10 @@ void Command_dig(void)
     for (index3 = 0; index3 < 5; index3++)
       printf("%d. %-s\n", index3 + 1, door_states[index3].name);
     printf("> ");
-    gets(tmp_str);
+    /* gets(tmp_str); */
+    fgets(tmp_str, BUFFER_SIZE-1, stdin);
+    if((strlen(tmp_str) > 0) && tmp_str[strlen(tmp_str)-1] == '\n')
+      tmp_str[strlen(tmp_str)-1]= '\0';
     trunc_string(tmp_str);
     index3 = atoi(tmp_str);
   } while (index3 < 1 || index3 > 5);
@@ -1992,7 +2028,10 @@ void Command_dig(void)
       printf("a -1 indicates that there is no key for this door.\n");
       printf("---------------------------------------------------\n");
       printf("> ");
-      gets(tmp_str);
+      /* gets(tmp_str); */
+      fgets(tmp_str, BUFFER_SIZE-1, stdin);
+      if((strlen(tmp_str) > 0) && tmp_str[strlen(tmp_str)-1] == '\n')
+        tmp_str[strlen(tmp_str)-1]= '\0';
       if(!scan_a_number(tmp_str, &zone)) {
         printf("** Invalid lock... try again.\n");
         continue;
@@ -2010,7 +2049,10 @@ void Command_dig(void)
     printf("Enter all exit keywords seperated by BLANKS for this exit\n");
     printf("or return if there are none.\n");
     printf("----------------------------------------------------------\n> ");
-    gets(tmp_str);
+    /* gets(tmp_str); */
+    fgets(tmp_str, BUFFER_SIZE-1, stdin);
+    if((strlen(tmp_str) > 0) && tmp_str[strlen(tmp_str)-1] == '\n')
+      tmp_str[strlen(tmp_str)-1]= '\0';
     trunc_string(tmp_str);
 
     if (index3 > 0 && tmp_str[0] == '\0') {
@@ -2153,7 +2195,10 @@ void get_inputs(void)
   char buffer[PAGE_SIZE];
   char *ptr;
 
-  gets(buffer);
+  /* gets(buffer); */
+  fgets(buffer, PAGE_SIZE-1, stdin);
+  if((strlen(buffer) > 0) && buffer[strlen(buffer)-1] == '\n')
+    buffer[strlen(buffer)-1]= '\0';
   ptr = buffer;
 
   for (index = 0; index < 11; index++) {
@@ -2261,7 +2306,12 @@ void input_desc(char *title, char **ptr)
 
   do {
     printf("%2d> ", ++line);
-    gets(tmp_str + index);
+
+    /* gets(tmp_str + index); */
+    fgets(tmp_str + index, BUFFER_SIZE-index-1, stdin);
+    if((strlen(tmp_str) > 0) && tmp_str[strlen(tmp_str)-1] == '\n')
+      tmp_str[strlen(tmp_str)-1]= '\0';
+
     if(line == 1) {
       if(!strcmp(tmp_str, "")) {
         import_desc(title, ptr);
