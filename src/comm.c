@@ -37,6 +37,7 @@
 #include "multiclass.h"
 #include "weather.h"
 #include "mudlimits.h"
+#include "spells.h"
 #include "spell_parser.h"
 #include "sound.h"
 #include "fight.h"

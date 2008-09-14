@@ -276,7 +276,7 @@ void sscanf_dice(char *str, int *x, int *y, int *z) {
     *z= -*z;
 }
 
-inline char *ordinal(int x) {
+char *ordinal(int x) {
   if (x < 14 && x > 10)
     x = 4;
   else

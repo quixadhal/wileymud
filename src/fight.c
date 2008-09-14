@@ -1031,6 +1031,21 @@ int damage(struct char_data *ch, struct char_data *victim, int dam, int attackty
 	gain_exp(ch, experience);
 	change_alignment(ch, victim);
       }
+
+
+      if (victim->in_room > -1) {
+	sprintf(buf, "%s butchered by %s at %s",
+		(IS_NPC(victim) ? MOB_NAME(victim) : GET_NAME(victim)),
+		(IS_NPC(ch) ? MOB_NAME(ch) : GET_NAME(ch)),
+		(real_roomp(victim->in_room))->name);
+      } else {
+	sprintf(buf, "%s butchered by %s at Nowhere.",
+		(IS_NPC(victim) ? MOB_NAME(victim) : GET_NAME(victim)),
+		(IS_NPC(ch) ? MOB_NAME(ch) : GET_NAME(ch)));
+      }
+      dlog(buf);
+
+
     }
     if (IS_PC(victim)) {
       random_death_message(ch, victim);
@@ -2163,7 +2178,7 @@ int CanKill(struct char_data *ch, struct char_data *vict, char *msg)
     return (TRUE);
 }
 
-inline int CheckKill(struct char_data *ch, struct char_data *vict)
+ int CheckKill(struct char_data *ch, struct char_data *vict)
 {
   if (DEBUG > 2)
     dlog("called %s with %s, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), SAFE_NAME(vict));

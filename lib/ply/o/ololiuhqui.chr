@@ -1,42 +1,39 @@
 #PLAYER
 Name               Ololiuhqui~
-Passwd             Ol596sfKTuHqo~
+Passwd             Olsu4B4AeR.v.~
 Whizz              0
 PreTitle           ~
-Title              the Human Warrior~
+Title              the Human ~
 Description
-A tall, angular redhead with a pair of tsurugi and a gleam in her eye.
-She looks like a MUDding MADWOMAN!
 ~
-LastSite           adork@demona.shadowlord.org~
-LastLogin          1064890647
-Birth              1064198615
-Played             22109
+LastSite           adork@24-247-112-219.dhcp.klmz.mi.charter.com~
+LastLogin          1144106829
+Birth              1144106829
+Played             0
 Sex                2
 Race               1
 Class              4
-Alignment          915
-Exp                42824
-Level              warrior 6
-HeightWeight       166 156
-Gold               66 200
-HomeTown           5021
-LoadRoom           5021
+Alignment          0
+Exp                0
+HeightWeight       169 110
+Gold               0 0
+HomeTown           3001
+LoadRoom           -1
 PoofIn             ~
 PoofOut            ~
-AbilityScores      18 81 14 14 11 14
+AbilityScores      0 0 0 0 0 0
 AbilityPad         0 0 0 0
-HpManaMove         61 52 109 0 107 0
+HpManaMove         6 0 100 0 96 0
 AC                 100
 ToHitDamage        0 0
 SaveApply          0 0 0 0 0
-Conditions         0 24 24 0 0 0
+Conditions         24 24 24 0 0 0
 PointsPad1         0 0 0
 PointsPad2         0 0 0 0
 PointsPad3         0 0 0
 ShortSavePad       0 0 0 0
 SavePad            0 0 0 0
-Pracs              6
+Pracs              0
 SkillsToLearn      0
 NamedSkill         1 0 0 armour~
 NamedSkill         2 0 0 teleport~
@@ -87,8 +84,8 @@ NamedSkill         46 0 0 hide~
 NamedSkill         47 0 0 steal~
 NamedSkill         48 0 0 backstab~
 NamedSkill         49 0 0 pick lock~
-NamedSkill         50 29 0 kick~
-NamedSkill         51 82 0 bash~
+NamedSkill         50 0 0 kick~
+NamedSkill         51 0 0 bash~
 NamedSkill         52 0 0 rescue~
 NamedSkill         53 0 0 IDENTIFY~
 NamedSkill         54 0 0 infravision~
@@ -162,9 +159,9 @@ NamedSkill         162 0 0 parry~
 NamedSkill         163 0 0 appraise~
 NamedSkill         164 0 0 smite spec~
 NamedSkill         165 0 0 stab spec~
-NamedSkill         166 11 0 whip spec~
-NamedSkill         167 11 0 slash spec~
-NamedSkill         168 60 0 smash spec~
+NamedSkill         166 0 0 whip spec~
+NamedSkill         167 0 0 slash spec~
+NamedSkill         168 0 0 smash spec~
 NamedSkill         169 0 0 cleave spec~
 NamedSkill         170 0 0 crush spec~
 NamedSkill         171 0 0 bludgeon spec~
@@ -179,11 +176,11 @@ NamedSkill         179 0 0 meditation~
 NamedSkill         180 0 0 track~
 NamedSkill         181 0 0 locate trap~
 NamedSkill         182 0 0 disarm trap~
-NamedSkill         183 13 0 disarm~
+NamedSkill         183 0 0 disarm~
 NamedSkill         184 0 0 shield bash~
 NamedSkill         185 0 0 riding~
 ActFlags           0 0
-Affect             0 69 5 0 0 2048 0
+Affect             0 0 0 0 0 0 0
 Affect             1 0 0 0 0 0 0
 Affect             2 0 0 0 0 0 0
 Affect             3 0 0 0 0 0 0

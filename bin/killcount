@@ -1,0 +1,14 @@
+#!/bin/bash
+
+cat ~wiley/kill.log \
+| colrm 1 20 \
+| colrm 25 \
+| sort \
+| perl -e '%x = ();while(<>) { chomp; $x{$_}++; }; printf("%-24.24s %5d\n", $_, $x{$_}) foreach (reverse sort {$x{$a} <=> $x{$b}} keys %x);' \
+> ~wiley/killcount.log
+
+chmod 644 ~wiley/killcount.log
+
+printf "%-24s %-5s\n" "Victim" "Count"
+printf "%-24s %-5s\n" "------------------------" "-----"
+head -10 ~wiley/killcount.log

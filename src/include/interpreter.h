@@ -333,8 +333,8 @@ void                                    argument_interpreter(char *argument, cha
 int                                     is_number(char *str);
 char                                   *one_argument(char *argument, char *first_arg);
 void                                    only_argument(char *argument, char *dest);
-inline int                              fill_word(char *argument);
-inline int                              is_abbrev(const char *arg1, const char *arg2);
+ int                              fill_word(char *argument);
+ int                              is_abbrev(const char *arg1, const char *arg2);
 void                                    half_chop(char *string, char *arg1, char *arg2);
 int                                     special(struct char_data *ch, int cmd, char *arg);
 void                                    assign_command_pointers(void);

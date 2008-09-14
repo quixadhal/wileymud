@@ -21,6 +21,6 @@ char * remap_name(char *Old);
 keyword * make_keyword_list(char *String);
 char * timestamp(void);
 void sscanf_dice(char *str, int *x, int *y, int *z);
-inline char *ordinal(int x);
+char *ordinal(int x);
 
 #endif

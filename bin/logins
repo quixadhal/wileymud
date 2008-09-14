@@ -1,0 +1,69 @@
+#!/bin/bash
+
+#./05.01/runlog.050112-172935.bz2:107:<: 1050112.173035.179 : Quixadhal (adork@24.247.116.59.kzo.mi.chartermi.net) has connected.
+#./07.12/runlog.071204-050227.bz2:855:<: 1071204.130559.432 : GrooveMerchant [24-176-16-157.dhcp.klmz.mi.charter.com] new player.
+
+#<: 1080220.222734.566 : Losing player: Quixadhal.
+
+#2008-02-20 22:29:20 (line  1756) Quixadhal        (adork@goneril.shadowlord.org)
+
+cd ~wiley/lib/log
+
+LASTMONTH=`date -d 'last month' +'%y.%m'`
+FILES=`find $LASTMONTH -type f -name runlog.\*.bz2`
+#FILES=`find . -type f -name runlog.\*.bz2`
+FILES="$FILES ./runlog.*"
+TMP="/tmp/expressions.$$"
+TMP2="/tmp/expressions2.$$"
+OUT="/tmp/output.$$"
+OUT2="/tmp/output2.$$"
+
+echo 'has connected' >$TMP
+echo 'new player' >>$TMP
+echo 'Losing player' >$TMP2
+
+bzgrep -n -f $TMP $FILES \
+| awk -F: '{print $4" "$2" "$5;}' \
+| awk '{printf("%s (line %5d) %-16s %s\n",$1,$2,$3,$4);}' \
+| sed 's/^10/200/' \
+| perl -e 'while(<>) { chomp; s/(\d{4})(\d{2})(\d{2})\.(\d{2})(\d{2})(\d{2})\.(\d+)/$1-$2-$3 $4:$5:$6/; print "$_\n"; }' \
+| sort -n \
+| sed 's/^/login  -> /' \
+>$OUT
+
+bzgrep -n -f $TMP2 $FILES \
+| awk -F: '{print $4" "$2" "$6;}' \
+| awk '{printf("%s (line %5d) %s\n",$1,$2,$3);}' \
+| sed 's/^10/200/' \
+| sed 's/\.$//' \
+| perl -e 'while(<>) { chomp; s/(\d{4})(\d{2})(\d{2})\.(\d{2})(\d{2})(\d{2})\.(\d+)/$1-$2-$3 $4:$5:$6/; print "$_\n"; }' \
+| sort -n \
+| sed 's/^/logout <- /' \
+>$OUT2
+
+if [ ! -f ~wiley/login.log ]; then
+  touch ~wiley/login.log
+fi
+
+sort -s -k3,20 $OUT $OUT2 ~wiley/login.log | uniq >$TMP
+cp $TMP ~wiley/login.log
+chmod 644 ~wiley/login.log
+
+cat ~wiley/login.log | awk '{print $7}' | sort | uniq >~wiley/player.list
+
+rm -f $TMP $TMP2 $OUT $OUT2
+cd - >/dev/null 2>&1
+
+printf "%-19s %-16s\n" "Date" "Player"
+printf "%-19s %-16s\n" "-------------------" "----------------"
+cat ~wiley/login.log \
+| grep login \
+| colrm 1 10 \
+| colrm 20 32 \
+| colrm 38 \
+| sort -r \
+| sort -s -k3 \
+| uniq -f2 \
+| sort -s \
+| tail -10
+

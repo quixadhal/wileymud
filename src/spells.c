@@ -19,11 +19,11 @@
 #include "handler.h"
 #include "constants.h"
 #include "multiclass.h"
-#include "fight.h"
 #include "act_move.h"
 #define _SPELLS_C
 #include "spells.h"
 #include "spell_parser.h"
+#include "fight.h"
 
 void cast_armor(char level, struct char_data *ch, char *arg, int type, struct char_data *victim,
 		struct obj_data *tar_obj)

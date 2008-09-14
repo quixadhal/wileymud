@@ -33,7 +33,7 @@
 #define _UTILS_C
 #include "utils.h"
 
-inline int MobVnum(struct char_data *c)
+ int MobVnum(struct char_data *c)
 {
   if (DEBUG > 3)
     dlog("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(c));
@@ -47,7 +47,7 @@ inline int MobVnum(struct char_data *c)
   }
 }
 
-inline int ObjVnum(struct obj_data *o)
+ int ObjVnum(struct obj_data *o)
 {
   if (DEBUG > 3)
     dlog("called %s with %s", __PRETTY_FUNCTION__, SAFE_ONAME(o));
@@ -60,7 +60,7 @@ inline int ObjVnum(struct obj_data *o)
     return -1;
 }
 
-inline int percent(int value, int total)
+ int percent(int value, int total)
 {
   if (DEBUG > 3)
     dlog("called %s with %d, %d", __PRETTY_FUNCTION__, value, total);
@@ -70,7 +70,7 @@ inline int percent(int value, int total)
   return ((value * 100) / total);
 }
 
-inline char                            *ordinal(int x)
+ char                            *ordinal(int x)
 {
   if (DEBUG > 3)
     dlog("called %s with %d", __PRETTY_FUNCTION__, x);
@@ -168,7 +168,7 @@ int exit_ok(struct room_direction_data *room_exit, struct room_data **rpp)
   return (*rpp != NULL);
 }
 
-inline int IsImmune(struct char_data *ch, int bit)
+ int IsImmune(struct char_data *ch, int bit)
 {
   if (DEBUG > 3)
     dlog("called %s with %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), bit);
@@ -178,7 +178,7 @@ inline int IsImmune(struct char_data *ch, int bit)
   return IS_SET(bit, ch->M_immune);
 }
 
-inline int IsResist(struct char_data *ch, int bit)
+ int IsResist(struct char_data *ch, int bit)
 {
   if (DEBUG > 3)
     dlog("called %s with %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), bit);
@@ -190,7 +190,7 @@ inline int IsResist(struct char_data *ch, int bit)
   return IS_SET(bit, ch->immune);
 }
 
-inline int IsSusc(struct char_data *ch, int bit)
+ int IsSusc(struct char_data *ch, int bit)
 {
   if (DEBUG > 3)
     dlog("called %s with %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), bit);
@@ -201,7 +201,7 @@ inline int IsSusc(struct char_data *ch, int bit)
 }
 
 /* creates a random number in interval [from;to] */
-inline int number(int from, int to)
+ int number(int from, int to)
 {
   if (DEBUG > 3)
     dlog("called %s with %d, %d", __PRETTY_FUNCTION__, from, to);
@@ -213,7 +213,7 @@ inline int number(int from, int to)
 }
 
 /* simulates dice roll */
-inline int dice(int rolls, int size)
+ int dice(int rolls, int size)
 {
   int                                     r = 0;
   int                                     sum = 0;
@@ -230,7 +230,7 @@ inline int dice(int rolls, int size)
   return sum;
 }
 
-inline int fuzz(int x)
+ int fuzz(int x)
 {
   if (DEBUG > 3)
     dlog("called %s with %d", __PRETTY_FUNCTION__, x);
@@ -258,7 +258,7 @@ int scan_number(char *text, int *rval)
   return 1;
 }
 
-inline int str_cmp(const char *arg1, const char *arg2)
+ int str_cmp(const char *arg1, const char *arg2)
 {
   if (DEBUG > 3)
     dlog("called %s with %s, %s", __PRETTY_FUNCTION__, VNULL(arg1), VNULL(arg2));
@@ -268,7 +268,7 @@ inline int str_cmp(const char *arg1, const char *arg2)
   return strcasecmp(arg1, arg2);
 }
 
-inline int strn_cmp(const char *arg1, const char *arg2, const int n)
+ int strn_cmp(const char *arg1, const char *arg2, const int n)
 {
   if (DEBUG > 3)
     dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, VNULL(arg1), VNULL(arg2), n);
@@ -278,7 +278,7 @@ inline int strn_cmp(const char *arg1, const char *arg2, const int n)
   return strncasecmp(arg1, arg2, n);
 }
 
-inline void sprintbit(unsigned long vektor, const char *names[], char *result)
+ void sprintbit(unsigned long vektor, const char *names[], char *result)
 {
   long                                    nr = 0L;
 
@@ -303,7 +303,7 @@ inline void sprintbit(unsigned long vektor, const char *names[], char *result)
     strcat(result, "NOBITS");
 }
 
-inline void sprinttype(int type, const char *names[], char *result)
+ void sprinttype(int type, const char *names[], char *result)
 {
   int                                     nr = 0;
 
@@ -770,7 +770,7 @@ void down_river(int current_pulse)
 }
 
 /* these are all very arbitrary */
-inline int IsHumanoid(struct char_data *ch)
+ int IsHumanoid(struct char_data *ch)
 {
   if (DEBUG > 3)
     dlog("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
@@ -800,7 +800,7 @@ inline int IsHumanoid(struct char_data *ch)
   }
 }
 
-inline int IsAnimal(struct char_data *ch)
+ int IsAnimal(struct char_data *ch)
 {
   if (DEBUG > 3)
     dlog("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
@@ -818,7 +818,7 @@ inline int IsAnimal(struct char_data *ch)
   }
 }
 
-inline int IsUndead(struct char_data *ch)
+ int IsUndead(struct char_data *ch)
 {
   if (DEBUG > 3)
     dlog("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
@@ -832,7 +832,7 @@ inline int IsUndead(struct char_data *ch)
   }
 }
 
-inline int IsLycanthrope(struct char_data *ch)
+ int IsLycanthrope(struct char_data *ch)
 {
   if (DEBUG > 3)
     dlog("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
@@ -845,7 +845,7 @@ inline int IsLycanthrope(struct char_data *ch)
   }
 }
 
-inline int IsDiabolic(struct char_data *ch)
+ int IsDiabolic(struct char_data *ch)
 {
   if (DEBUG > 3)
     dlog("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
@@ -859,7 +859,7 @@ inline int IsDiabolic(struct char_data *ch)
   }
 }
 
-inline int IsReptile(struct char_data *ch)
+ int IsReptile(struct char_data *ch)
 {
   if (DEBUG > 3)
     dlog("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
@@ -875,7 +875,7 @@ inline int IsReptile(struct char_data *ch)
   }
 }
 
-inline int IsDraconic(struct char_data *ch)
+ int IsDraconic(struct char_data *ch)
 {
   if (DEBUG > 3)
     dlog("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
@@ -888,7 +888,7 @@ inline int IsDraconic(struct char_data *ch)
   }
 }
 
-inline int IsAvian(struct char_data *ch)
+ int IsAvian(struct char_data *ch)
 {
   if (DEBUG > 3)
     dlog("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
@@ -903,7 +903,7 @@ inline int IsAvian(struct char_data *ch)
   }
 }
 
-inline int IsExtraPlanar(struct char_data *ch)
+ int IsExtraPlanar(struct char_data *ch)
 {
   if (DEBUG > 3)
     dlog("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
@@ -919,7 +919,7 @@ inline int IsExtraPlanar(struct char_data *ch)
   }
 }
 
-inline int HasHands(struct char_data *ch)
+ int HasHands(struct char_data *ch)
 {
   if (DEBUG > 3)
     dlog("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
@@ -930,7 +930,7 @@ inline int HasHands(struct char_data *ch)
     return FALSE;
 }
 
-inline int IsPerson(struct char_data *ch)
+ int IsPerson(struct char_data *ch)
 {
   if (DEBUG > 3)
     dlog("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
@@ -1323,7 +1323,7 @@ void RestoreChar(struct char_data *ch)
   }
 }
 
-inline void RemAllAffects(struct char_data *ch)
+ void RemAllAffects(struct char_data *ch)
 {
   if (DEBUG > 3)
     dlog("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
@@ -1331,7 +1331,7 @@ inline void RemAllAffects(struct char_data *ch)
   spell_dispel_magic(IMPLEMENTOR, ch, ch, 0);
 }
 
-inline char                            *pain_level(struct char_data *ch)
+ char                            *pain_level(struct char_data *ch)
 {
   int                                     health_percent = 0;
 
@@ -1360,7 +1360,7 @@ inline char                            *pain_level(struct char_data *ch)
     return ("is bleeding awfully from big wounds");
 }
 
-inline int IsWizard(struct char_data *ch)
+ int IsWizard(struct char_data *ch)
 {
   if (DEBUG > 3)
     dlog("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
@@ -1370,7 +1370,7 @@ inline int IsWizard(struct char_data *ch)
   return ch->player.class & CLASS_WIZARD;
 }
 
-inline int IsPriest(struct char_data *ch)
+ int IsPriest(struct char_data *ch)
 {
   if (DEBUG > 3)
     dlog("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
@@ -1380,7 +1380,7 @@ inline int IsPriest(struct char_data *ch)
   return ch->player.class & CLASS_PRIEST;
 }
 
-inline int IsMagical(struct char_data *ch)
+ int IsMagical(struct char_data *ch)
 {
   if (DEBUG > 3)
     dlog("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
@@ -1390,7 +1390,7 @@ inline int IsMagical(struct char_data *ch)
   return ch->player.class & CLASS_MAGICAL;
 }
 
-inline int IsFighter(struct char_data *ch)
+ int IsFighter(struct char_data *ch)
 {
   if (DEBUG > 3)
     dlog("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
@@ -1400,7 +1400,7 @@ inline int IsFighter(struct char_data *ch)
   return ch->player.class & CLASS_FIGHTER;
 }
 
-inline int IsSneak(struct char_data *ch)
+ int IsSneak(struct char_data *ch)
 {
   if (DEBUG > 3)
     dlog("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));

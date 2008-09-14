@@ -7,16 +7,16 @@
 #define MAX_MOON_PHASES	32
 
 #ifndef _WEATHER_C
-extern char *moon_names[];
+extern char                            *moon_names[];
 #endif
 
-inline void weather_and_time(int mode);
-void another_hour(int mode);
-void weather_change(void);
-void ChangeWeather(int change);
-void GetMonth(int month);
-inline void reset_weather(void);
-void reset_time(void);
-void update_time_and_weather(void);
+ void                             weather_and_time(int mode);
+void                                    another_hour(int mode);
+void                                    weather_change(void);
+void                                    ChangeWeather(int change);
+void                                    GetMonth(int month);
+ void                             reset_weather(void);
+void                                    reset_time(void);
+void                                    update_time_and_weather(void);
 
 #endif

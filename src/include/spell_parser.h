@@ -44,11 +44,11 @@ extern const char
 int                                     GetSpellByName(char *name);
 int                                     GetSkillByName(char *name);
 int                                     SPELL_LEVEL(struct char_data *ch, int sn);
-inline int                              SKILL_LEVEL(struct char_data *ch, int sn);
+ int                              SKILL_LEVEL(struct char_data *ch, int sn);
 int                                     CanCast(struct char_data *ch, int sn);
-inline int                              CanCastClass(struct char_data *ch, int sn, int cl);
+ int                              CanCastClass(struct char_data *ch, int sn, int cl);
 int                                     CanUse(struct char_data *ch, int sn);
-inline int                              CanUseClass(struct char_data *ch, int sn, int cl);
+ int                              CanUseClass(struct char_data *ch, int sn, int cl);
 void                                    affect_update(void);
 void                                    clone_char(struct char_data *ch);
 void                                    clone_obj(struct obj_data *obj);
@@ -62,7 +62,7 @@ void                                    say_spell(struct char_data *ch, int si);
 char                                    saves_spell(struct char_data *ch, short int save_type);
 char                                    ImpSaveSpell(struct char_data *ch, short int save_type,
 						     int mod);
-inline char                            *skip_spaces(char *string);
+ char                            *skip_spaces(char *string);
 void                                    do_cast(struct char_data *ch, char *argument, int cmd);
 void                                    assign_spell_pointers(void);
 int                                     splat(struct char_data *ch, struct room_data *rp,
@@ -70,7 +70,7 @@ int                                     splat(struct char_data *ch, struct room_
 int                                     check_falling(struct char_data *ch);
 int                                     check_drowning(struct char_data *ch);
 void                                    check_falling_obj(struct obj_data *obj, int room);
-inline int                              check_nature(struct char_data *i);
-inline void                             check_all_nature(int current_pulse);
+ int                              check_nature(struct char_data *i);
+ void                             check_all_nature(int current_pulse);
 
 #endif

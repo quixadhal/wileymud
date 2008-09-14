@@ -11,16 +11,16 @@ MACHINE     = #-mcpu=pentium2 -march=pentium2
 NEED_CRYPT  = -lcrypt #Linux needs this
 #NEED_COMPAT = -lcompat #BSD needs this
 
-W_FORMAT    = -Wformat -Wformat-security #-Wmissing-format-attribute
-W_NITPICK   = -Wpointer-arith -Winline
-W_MESSY     = -Wmissing-braces -Wparentheses -Wshadow #-Wredundant-decls
-W_FUNC      = #-Wstrict-prototypes #-Wmissing-prototypes
-W_TYPE      = -Wcast-qual -Wcast-align -Wchar-subscripts -Wreturn-type -Wswitch #-Wwrite-strings
-W_EXTRA     = -Wunused #-Wunreachable-code
-W_C_ONLY    = -Wmissing-declarations -Wimplicit-int -Wimplicit-function-declaration #-Wsequence-point -Wnonnull
-W_ANSI      = #-pedantic
-W_UBER      = -Wall #-W
-W_ERROR     = -Werror
+W_FORMAT    = ##-Wformat -Wformat-security #-Wmissing-format-attribute
+W_NITPICK   = ##-Wpointer-arith -Winline
+W_MESSY     = ##-Wmissing-braces -Wparentheses -Wshadow #-Wredundant-decls
+W_FUNC      = ###-Wstrict-prototypes #-Wmissing-prototypes
+W_TYPE      = ##-Wcast-qual -Wcast-align -Wchar-subscripts -Wreturn-type -Wswitch #-Wwrite-strings
+W_EXTRA     = ##-Wunused #-Wunreachable-code
+W_C_ONLY    = ##-Wmissing-declarations -Wimplicit-int -Wimplicit-function-declaration #-Wsequence-point -Wnonnull
+W_ANSI      = ###-pedantic
+W_UBER      = ##-Wall #-W
+W_ERROR     = ##-Werror
 
 W_ALL       = $(W_ANSI) $(W_UBER) $(W_FORMAT) $(W_MESSY) $(W_FUNC) $(W_TYPE) $(W_EXTRA) $(W_NITPICK) $(W_ERROR)
 W_CLANG     = $(W_C_ONLY)

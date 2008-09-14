@@ -192,7 +192,7 @@ int SPELL_LEVEL(struct char_data *ch, int sn)
   return lowest;
 }
 
-inline int SKILL_LEVEL(struct char_data *ch, int sn)
+ int SKILL_LEVEL(struct char_data *ch, int sn)
 {
   return SPELL_LEVEL(ch, sn);
 }
@@ -222,7 +222,7 @@ int CanCast(struct char_data *ch, int sn)
   return (lowclass > -1) ? 1 : 0;
 }
 
-inline int CanCastClass(struct char_data *ch, int sn, int cl)
+ int CanCastClass(struct char_data *ch, int sn, int cl)
 {
   if (DEBUG > 2)
     dlog("called %s with %s, %d, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), sn, cl);
@@ -259,7 +259,7 @@ int CanUse(struct char_data *ch, int sn)
   return (lowclass > -1) ? 1 : 0;
 }
 
-inline int CanUseClass(struct char_data *ch, int sn, int cl)
+ int CanUseClass(struct char_data *ch, int sn, int cl)
 {
   if (DEBUG > 2)
     dlog("called %s with %s, %d, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), sn, cl);
@@ -675,7 +675,7 @@ char ImpSaveSpell(struct char_data *ch, short int save_type, int mod)
   return (MAX(1, save) < number(1, 20));
 }
 
-inline char                                   *skip_spaces(char *string)
+ char                                   *skip_spaces(char *string)
 {
   if (DEBUG > 3)
     dlog("called %s with %s", __PRETTY_FUNCTION__, VNULL(string));
@@ -1585,7 +1585,7 @@ void check_falling_obj(struct obj_data *obj, int room)
   }
 }
 
-inline int check_nature(struct char_data *i)
+ int check_nature(struct char_data *i)
 {
   if (DEBUG > 3)
     dlog("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(i));
@@ -1596,7 +1596,7 @@ inline int check_nature(struct char_data *i)
   return check_drowning(i);
 }
 
-inline void check_all_nature(int current_pulse)
+ void check_all_nature(int current_pulse)
 {
   struct char_data                       *i = NULL;
 

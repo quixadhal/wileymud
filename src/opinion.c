@@ -22,7 +22,7 @@
 #define _OPINION_C
 #include "opinion.h"
 
-inline void FreeHates(struct char_data *ch)
+ void FreeHates(struct char_data *ch)
 {
   struct char_list                       *k = NULL;
   struct char_list                       *n = NULL;
@@ -43,7 +43,7 @@ inline void FreeHates(struct char_data *ch)
   }
 }
 
-inline void FreeFears(struct char_data *ch)
+ void FreeFears(struct char_data *ch)
 {
   struct char_list                       *k = NULL;
   struct char_list                       *n = NULL;
@@ -190,7 +190,7 @@ int AddHatred(struct char_data *ch, int parm_type, int parm)
   return 1;						       /* assume this means it worked */
 }
 
-inline int RemHatred(struct char_data *ch, unsigned short bitv)
+ int RemHatred(struct char_data *ch, unsigned short bitv)
 {
   if (DEBUG > 2)
     dlog("called %s with %s, %04hx", __PRETTY_FUNCTION__, SAFE_NAME(ch), bitv);
@@ -336,7 +336,7 @@ int AddFears(struct char_data *ch, int parm_type, int parm)
  * thus the monsters will still hate them
  */
 
-inline void ZeroHatred(struct char_data *ch, struct char_data *v)
+ void ZeroHatred(struct char_data *ch, struct char_data *v)
 {
   struct char_list                       *oldpud;
 
@@ -353,7 +353,7 @@ inline void ZeroHatred(struct char_data *ch, struct char_data *v)
   }
 }
 
-inline void ZeroFeared(struct char_data *ch, struct char_data *v)
+ void ZeroFeared(struct char_data *ch, struct char_data *v)
 {
   struct char_list                       *oldpud = NULL;
 
@@ -430,7 +430,7 @@ int DoesHate(struct char_data *ch, struct char_data *v)
   return (FALSE);
 }
 
-inline int CanHate(struct char_data *ch, struct char_data *v)
+ int CanHate(struct char_data *ch, struct char_data *v)
 {
   if (ch == v)
     return FALSE;
@@ -509,7 +509,7 @@ int DoesFear(struct char_data *ch, struct char_data *v)
   return (FALSE);
 }
 
-inline int CanFear(struct char_data *ch, struct char_data *v)
+ int CanFear(struct char_data *ch, struct char_data *v)
 {
   if (DEBUG > 2)
     dlog("called %s with %s, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), SAFE_NAME(v));
@@ -576,7 +576,7 @@ struct char_data                       *FindAFearee(struct char_data *ch)
 /*
  * these two are to make the monsters completely forget about them.
  */
-inline void DeleteHatreds(struct char_data *ch)
+ void DeleteHatreds(struct char_data *ch)
 {
   struct char_data                       *i = NULL;
 
@@ -589,7 +589,7 @@ inline void DeleteHatreds(struct char_data *ch)
   }
 }
 
-inline void DeleteFears(struct char_data *ch)
+ void DeleteFears(struct char_data *ch)
 {
   struct char_data                       *i = NULL;
 

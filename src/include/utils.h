@@ -20,8 +20,8 @@
 
 #define VNULL(s) ((s)?(s):"(null)")
 
-inline int                              str_cmp(const char *arg1, const char *arg2);
-inline int                              strn_cmp(const char *arg1, const char *arg2,
+ int                              str_cmp(const char *arg1, const char *arg2);
+ int                              strn_cmp(const char *arg1, const char *arg2,
 						 const int n);
 #define LOWER(c) (((c)>='A'  && (c) <= 'Z') ? ((c)+('a'-'A')) : (c))
 #define UPPER(c) (((c)>='a'  && (c) <= 'z') ? ((c)+('A'-'a')) : (c))
@@ -255,25 +255,25 @@ do									\
 #define IS_NEUTRAL(ch) (!IS_GOOD(ch) && !IS_EVIL(ch))
 #define ITEM_TYPE(obj)  ((int)(obj)->obj_flags.type_flag)
 
-inline int                              MobVnum(struct char_data *c);
-inline int                              ObjVnum(struct obj_data *o);
-inline int                              percent(int value, int total);
-inline char                            *ordinal(int x);
+ int                              MobVnum(struct char_data *c);
+ int                              ObjVnum(struct obj_data *o);
+ int                              percent(int value, int total);
+ char                            *ordinal(int x);
 int                                     GetItemClassRestrictions(struct obj_data *obj);
 int                                     CAN_SEE(struct char_data *s, struct char_data *o);
 int                                     exit_ok(struct room_direction_data *room_exit,
 						struct room_data **rpp);
-inline int                              IsImmune(struct char_data *ch, int bit);
-inline int                              IsResist(struct char_data *ch, int bit);
-inline int                              IsSusc(struct char_data *ch, int bit);
-inline int                              number(int from, int to);
-inline int                              dice(int rolls, int size);
-inline int                              fuzz(int x);
+ int                              IsImmune(struct char_data *ch, int bit);
+ int                              IsResist(struct char_data *ch, int bit);
+ int                              IsSusc(struct char_data *ch, int bit);
+ int                              number(int from, int to);
+ int                              dice(int rolls, int size);
+extern  int                              fuzz(int x);
 int                                     scan_number(char *text, int *rval);
 
-inline void                             sprintbit(unsigned long vektor, const char *names[],
+ void                             sprintbit(unsigned long vektor, const char *names[],
 						  char *result);
-inline void                             sprinttype(int type, const char *names[], char *result);
+ void                             sprinttype(int type, const char *names[], char *result);
 struct time_info_data                   real_time_passed(time_t t2, time_t t1);
 struct time_info_data                   mud_time_passed(time_t t2, time_t t1);
 struct time_info_data                   age(struct char_data *ch);
@@ -282,17 +282,17 @@ int                                     getall(char *name, char *newname);
 int                                     getabunch(char *name, char *newname);
 int                                     DetermineExp(struct char_data *mob, int exp_flags);
 void                                    down_river(int current_pulse);
-inline int                              IsHumanoid(struct char_data *ch);
-inline int                              IsAnimal(struct char_data *ch);
-inline int                              IsUndead(struct char_data *ch);
-inline int                              IsLycanthrope(struct char_data *ch);
-inline int                              IsDiabolic(struct char_data *ch);
-inline int                              IsReptile(struct char_data *ch);
-inline int                              IsDraconic(struct char_data *ch);
-inline int                              IsAvian(struct char_data *ch);
-inline int                              IsExtraPlanar(struct char_data *ch);
-inline int                              HasHands(struct char_data *ch);
-inline int                              IsPerson(struct char_data *ch);
+ int                              IsHumanoid(struct char_data *ch);
+ int                              IsAnimal(struct char_data *ch);
+ int                              IsUndead(struct char_data *ch);
+ int                              IsLycanthrope(struct char_data *ch);
+ int                              IsDiabolic(struct char_data *ch);
+ int                              IsReptile(struct char_data *ch);
+ int                              IsDraconic(struct char_data *ch);
+ int                              IsAvian(struct char_data *ch);
+ int                              IsExtraPlanar(struct char_data *ch);
+ int                              HasHands(struct char_data *ch);
+ int                              IsPerson(struct char_data *ch);
 void                                    SetHunting(struct char_data *ch, struct char_data *tch);
 void                                    CallForGuard(struct char_data *ch,
 						     struct char_data *vict, int lev);
@@ -308,13 +308,13 @@ int                                     room_of_object(struct obj_data *obj);
 struct char_data                       *char_holding(struct obj_data *obj);
 int                                     RecCompObjNum(struct obj_data *o, int obj_num);
 void                                    RestoreChar(struct char_data *ch);
-inline void                             RemAllAffects(struct char_data *ch);
-inline char                            *pain_level(struct char_data *ch);
-inline int                              IsWizard(struct char_data *ch);
-inline int                              IsPriest(struct char_data *ch);
-inline int                              IsMagical(struct char_data *ch);
-inline int                              IsFighter(struct char_data *ch);
-inline int                              IsSneak(struct char_data *ch);
+ void                             RemAllAffects(struct char_data *ch);
+ char                            *pain_level(struct char_data *ch);
+ int                              IsWizard(struct char_data *ch);
+ int                              IsPriest(struct char_data *ch);
+ int                              IsMagical(struct char_data *ch);
+ int                              IsFighter(struct char_data *ch);
+ int                              IsSneak(struct char_data *ch);
 
 #define IsNonMagical(ch) (!IsMagical(ch))
 

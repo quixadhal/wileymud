@@ -421,7 +421,7 @@ void only_argument(char *argument, char *dest)
   strcpy(dest, argument);
 }
 
-inline int fill_word(char *argument)
+ int fill_word(char *argument)
 {
   if (DEBUG > 2)
     dlog("called %s with %s", __PRETTY_FUNCTION__, VNULL(argument));
@@ -440,7 +440,7 @@ inline int fill_word(char *argument)
  * According to the way this works, "" must be a valid abbreviation of
  * everything... seems odd, but...
  */
-inline int is_abbrev(const char *arg1, const char *arg2)
+ int is_abbrev(const char *arg1, const char *arg2)
 {
   if (DEBUG > 2)
     dlog("called %s with %s, %s", __PRETTY_FUNCTION__, VNULL(arg1), VNULL(arg2));

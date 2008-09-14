@@ -32,7 +32,7 @@ char                                   *moon_names[] = {
   "waning cresent"
 };
 
-inline void weather_and_time(int mode)
+ void weather_and_time(int mode)
 {
   if (DEBUG > 3)
     dlog("called %s with %d", __PRETTY_FUNCTION__, mode);
@@ -299,7 +299,7 @@ void GetMonth(int month)
   }
 }
 
-inline void reset_weather(void)
+ void reset_weather(void)
 {
   if (DEBUG > 3)
     dlog("called %s with no arguments", __PRETTY_FUNCTION__);

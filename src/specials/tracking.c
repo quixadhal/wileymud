@@ -12,20 +12,20 @@
 #include "comm.h"
 #include "constants.h"
 #include "db.h"
-#include "fight.h"
 #include "handler.h"
 #include "hash.h"
 #include "interpreter.h"
 #include "multiclass.h"
 #include "opinion.h"
 #include "spells.h"
+#include "fight.h"
 
 #define _TRACKING_C
 #include "tracking.h"
 
 /* predicates for find_path function */
 
-inline int is_target_room_p(int room, void *tgt_room)
+ int is_target_room_p(int room, void *tgt_room)
 {
   if (DEBUG > 3)
     dlog("called %s with %d, %08x", __PRETTY_FUNCTION__, room, tgt_room);
@@ -33,7 +33,7 @@ inline int is_target_room_p(int room, void *tgt_room)
   return room == (int)tgt_room;
 }
 
-inline int named_object_on_ground(int room, void *c_data)
+ int named_object_on_ground(int room, void *c_data)
 {
   char                                   *name = c_data;
 
@@ -43,7 +43,7 @@ inline int named_object_on_ground(int room, void *c_data)
   return NULL != get_obj_in_list(name, real_roomp(room)->contents);
 }
 
-inline int named_mobile_in_room(int room, struct hunting_data *c_data)
+ int named_mobile_in_room(int room, struct hunting_data *c_data)
 {
   struct char_data                       *scan = NULL;
 
@@ -74,7 +74,7 @@ static void donothing(void)
   return;
 }
 
-inline int choose_exit(int in_room, int tgt_room, int depth)
+ int choose_exit(int in_room, int tgt_room, int depth)
 {
   if (DEBUG > 3)
     dlog("called %s with %d, %d, %d", __PRETTY_FUNCTION__, in_room, tgt_room, depth);
@@ -82,7 +82,7 @@ inline int choose_exit(int in_room, int tgt_room, int depth)
   return find_path(in_room, is_target_room_p, (void *)tgt_room, depth);
 }
 
-inline int go_direction(struct char_data *ch, int dir)
+ int go_direction(struct char_data *ch, int dir)
 {
   if (DEBUG > 3)
     dlog("called %s with %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), dir);

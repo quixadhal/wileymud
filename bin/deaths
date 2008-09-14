@@ -1,0 +1,41 @@
+#!/bin/bash
+
+#./05.01/runlog.050112-172935.bz2:107:<: 1050112.173035.179 : Alden killed by A villager at Travelers road
+
+cd ~wiley/lib/log
+
+LASTMONTH=`date -d 'last month' +'%y.%m'`
+FILES=`find $LASTMONTH -type f -name runlog.\*.bz2`
+#FILES=`find . -type f -name runlog.\*.bz2`
+FILES="$FILES ./runlog.*"
+TMP="/tmp/expressions.$$"
+OUT="/tmp/output.$$"
+
+bzgrep -n -e 'killed by' $FILES \
+| awk -F: '{print $4$5;}' \
+| sed 's/  / /g' \
+| awk '{printf("%s@%s@%s",$1,$2,$5); for(i=6;i<=NF;i++){ printf(" %s", $i); }; printf("\n");}' \
+| sed 's/ at /@/g'\
+| sed 's/^10/200/' \
+| awk -F@ '{printf("%-19s %-16s %-24s %-24s\n", $1, $2, $3, $4);}' \
+| perl -e 'while(<>) { chomp; s/(\d{4})(\d{2})(\d{2})\.(\d{2})(\d{2})(\d{2})\.(\d+)/$1-$2-$3 $4:$5:$6/; print "$_\n"; }' \
+| sort -n \
+>$OUT
+
+if [ ! -f ~wiley/death.log ]; then
+  touch ~wiley/death.log
+fi
+
+sort -s -k1,18 $OUT ~wiley/death.log \
+| uniq \
+>$TMP
+
+cp $TMP ~wiley/death.log
+chmod 644 ~wiley/death.log
+
+rm -f $TMP $OUT
+cd - >/dev/null 2>&1
+
+printf "%-19s %-16s %-24s %-24s\n" "Date" "Victim" "Perp" "Location"
+printf "%-19s %-16s %-24s %-24s\n" "-------------------" "----------------" "------------------------" "------------------------"
+tail -10 ~wiley/death.log

@@ -52,7 +52,7 @@ int                                     GetItemDamageType(int type);
 int                                     SkipImmortals(struct char_data *v, int amnt);
 int                                     CanKill(struct char_data *ch, struct char_data *vict,
 						char *msg);
-inline int                              CheckKill(struct char_data *ch, struct char_data *vict);
+ int                              CheckKill(struct char_data *ch, struct char_data *vict);
 void                                    WeaponSpell(struct char_data *c, struct char_data *v,
 						    int type);
 struct char_data                       *FindAnAttacker(struct char_data *ch);

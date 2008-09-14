@@ -72,7 +72,7 @@ int OnlyClass(struct char_data *ch, int class)
 
 }
 
-inline int HasClass(struct char_data *ch, int class)
+ int HasClass(struct char_data *ch, int class)
 {
   if (DEBUG > 3)
     dlog("called %s with %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), class);
@@ -82,7 +82,7 @@ inline int HasClass(struct char_data *ch, int class)
   return FALSE;
 }
 
-inline int HowManyClasses(struct char_data *ch)
+ int HowManyClasses(struct char_data *ch)
 {
   int                                     i = 0;
   int                                     tot = 0;

@@ -21,7 +21,6 @@
 #include "comm.h"
 #include "constants.h"
 #include "db.h"
-#include "fight.h"
 #include "handler.h"
 #include "hash.h"
 #include "interpreter.h"
@@ -31,8 +30,9 @@
 #include "opinion.h"
 #include "reception.h"
 #include "shop.h"
-#include "spell_parser.h"
 #include "spells.h"
+#include "spell_parser.h"
+#include "fight.h"
 
 #include "breath_weapons.h"
 #include "mob_actions.h"
