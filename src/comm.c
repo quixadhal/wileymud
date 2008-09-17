@@ -44,6 +44,7 @@
 #include "mob_actions.h"
 #include "act_other.h"
 #include "signals.h"
+#include "sql.h"
 #define _COMM_C
 #include "comm.h"
 
@@ -81,12 +82,13 @@ int main(int argc, char **argv)
 {
   int                                     port = 0;
   int                                     pos = 1;
+  int                                     exit_code = 0;
   char                                   *dir = NULL;
   char                                   *logfile = NULL;
   char                                   *pidfile = NULL;
 
   if (DEBUG > 1)
-    dlog("called %s with %d, %08x", __PRETTY_FUNCTION__, argc, argv);
+    log_info("called %s with %d, %08x", __PRETTY_FUNCTION__, argc, argv);
 
   port = DFLT_PORT;
   dir = DFLT_DIR;
@@ -96,14 +98,14 @@ int main(int argc, char **argv)
     switch (*(argv[pos] + 1)) {
       case 'w':
 	WizLock = TRUE;
-	dlog("WizLock is SET.");
+	log_info("WizLock is SET.");
 	break;
       case 'D':
 	DEBUG = TRUE;
-	dlog("Debugging is on.");
+	log_info("Debugging is on.");
 	break;
       case 'l':
-	dlog("Lawful mode no longer available.");
+	log_info("Lawful mode no longer available.");
 	break;
       case 'L':
 	if (*(argv[pos] + 2))
@@ -111,8 +113,8 @@ int main(int argc, char **argv)
 	else if (++pos < argc)
 	  logfile = argv[pos];
 	else {
-	  bug("LOG filename expected after option -L.");
-	  exit(0);
+	  log_fatal("LOG filename expected after option -L.");
+	  proper_exit(MUD_HALT);
 	}
 	break;
       case 'P':
@@ -121,8 +123,8 @@ int main(int argc, char **argv)
 	else if (++pos < argc)
 	  pidfile = argv[pos];
 	else {
-	  bug("PID filename expected after option -P.");
-	  exit(0);
+	  log_fatal("PID filename expected after option -P.");
+	  proper_exit(MUD_HALT);
 	}
 	break;
       case 'd':
@@ -131,16 +133,16 @@ int main(int argc, char **argv)
 	else if (++pos < argc)
 	  dir = argv[pos];
 	else {
-	  bug("Directory arg expected after option -d.");
-	  exit(0);
+	  log_fatal("Directory arg expected after option -d.");
+	  proper_exit(MUD_HALT);
 	}
 	break;
       case 's':
 	no_specials = 1;
-	dlog("Suppressing assignment of special routines.");
+	log_info("Suppressing assignment of special routines.");
 	break;
       default:
-	dlog("Unknown option -% in argument string.", *(argv[pos] + 1));
+	log_info("Unknown option -% in argument string.", *(argv[pos] + 1));
 	break;
     }
     pos++;
@@ -148,80 +150,95 @@ int main(int argc, char **argv)
 
   if (pos < argc) {
     if (!isdigit(*argv[pos])) {
-      bug("Usage: %s [-l] [-s] [-d pathname] [ port # ]\n", argv[0]);
-      exit(0);
+      log_fatal("Usage: %s [-l] [-s] [-d pathname] [ port # ]\n", argv[0]);
+      proper_exit(MUD_HALT);
     } else if ((port = atoi(argv[pos])) <= 1024) {
-      bug("Illegal port #\n");
-      exit(0);
+      log_fatal("Illegal port #\n");
+      proper_exit(MUD_HALT);
     }
   }
 
   Uptime = time(0);
   mud_port = port;
-  dlog("Running game on port %d.", port);
+  log_boot("Running game on port %d.", port);
 
   if (chdir(dir) < 0) {
-    perror("chdir");
-    exit(0);
+    log_fatal("Cannot change directory to %s", dir);
+    proper_exit(MUD_HALT);
   }
-  dlog("Using %s as data directory.", dir);
+  log_boot("Using %s as data directory.", dir);
 
   if (pidfile) {
     FILE                                   *pidfp = NULL;
 
     if (!(pidfp = fopen(pidfile, "w"))) {
-      perror("fopen");
-      exit(0);
+      log_fatal("Cannot open PID file %s", pidfile);
+      proper_exit(MUD_HALT);
     }
     fprintf(pidfp, "%d\n", getpid());
     fclose(pidfp);
-    dlog("PID written to %s", pidfile);
+    log_boot("PID written to %s", pidfile);
   }
 
   if (logfile) {
-    dlog("Switching to %s as stderr.", logfile);
+    log_boot("Switching to %s as stderr.", logfile);
     stderr = freopen(logfile, "a", stderr);
-    if (!stderr)
-      exit(0);
+    if (!stderr) {
+      log_fatal("Cannot reopen stderr!");
+      proper_exit(MUD_HALT);
+    }
     close(fileno(stdout));
     dup2(fileno(stderr), fileno(stdout));
-    dlog("Switch to %s completed.", logfile);
+    log_boot("Switch to %s completed.", logfile);
   }
 
   srandom(time(0));
-  run_the_game(port);
-  return (42);						       /* what's so great about HHGTTG, anyhow? */
+
+  if (init_sql()) {
+    log_boot("Connected to database!");
+    log_boot("%s\n", version_pgsql());
+  } else {
+    log_fatal("%s\n", "Couldn't open Database Connection!  Aborting!");
+    return MUD_HALT;
+  }
+
+  exit_code = run_the_game(port);
+
+  log_boot("Disconnecting from database!");
+  close_sql();
+  return exit_code;
 }
 
 /* Init sockets, run game, and cleanup sockets */
-void run_the_game(int port)
+int run_the_game(int port)
 {
   int                                     s = 0;
 
   if (DEBUG > 1)
-    dlog("called %s with %d", __PRETTY_FUNCTION__, port);
+    log_info("called %s with %d", __PRETTY_FUNCTION__, port);
 
   descriptor_list = NULL;
 
-  dlog("Signal trapping.");
+  log_boot("Signal trapping.");
   signal_setup();
 
-  dlog("Opening mother connection.");
+  log_boot("Opening mother connection.");
   s = init_socket(port);
   boot_db();
 
   init_whod(port);
-  dlog("Entering game loop.");
+  log_boot("Entering game loop.");
   game_loop(s);
 
   close_sockets(s);
   close_whod();
 
   if (diku_reboot) {
-    dlog("Rebooting.");
-    exit(0);
+    log_boot("Rebooting.");
+    return MUD_REBOOT;
   }
-  dlog("Normal termination of game.");
+  log_boot("Normal termination of game.");
+  return MUD_HALT;					       /* what's so great about HHGTTG, anyhow? */
 }
 
 /* Accept new connects, relay commands, and call 'heartbeat-functs' */
@@ -245,7 +262,7 @@ void game_loop(int s)
   int                                     mask = 0;
 
   if (DEBUG > 1)
-    dlog("called %s with %d", __PRETTY_FUNCTION__, s);
+    log_info("called %s with %d", __PRETTY_FUNCTION__, s);
 
   pulse = 0;
   null_time.tv_sec = 0;
@@ -290,13 +307,13 @@ void game_loop(int s)
     sigsetmask(mask);
     whod_loop();
     if (select(maxdesc + 1, &input_set, &output_set, &exc_set, &null_time) < 0) {
-      perror("Select poll");
+      log_error("Select poll");
       return;
     }
     if (select(0, (fd_set *) 0, (fd_set *) 0, (fd_set *) 0, &timeout) < 0) {
-      perror("Select sleep");
+      log_error("Select sleep");
       /*
-       * exit(1); 
+       * proper_exit(MUD_HALT); 
        */
     }
     sigsetmask(0);
@@ -310,7 +327,7 @@ void game_loop(int s)
      */
     if (FD_ISSET(s, &input_set))
       if (new_descriptor(s) < 0)
-	perror("New connection");
+	log_info("New connection");
 
     /*
      * kick out the freaky folks 
@@ -344,6 +361,7 @@ void game_loop(int s)
 	  char_to_room(point->character, point->character->specials.was_in_room);
 	  point->character->specials.was_in_room = NOWHERE;
 	  act("$n has returned.", TRUE, point->character, 0, 0, TO_ROOM);
+          log_auth(point->character, "RECONNECTED %s (%s@%s)!", GET_NAME(point->character), point->username, point->host);
 	}
 	point->wait = 1;
 	if (point->character)
@@ -506,10 +524,10 @@ int get_from_q(struct txt_q *queue, char *dest)
   struct txt_block                       *tmp = NULL;
 
   if (DEBUG > 2)
-    dlog("called %s with %08x, %s", __PRETTY_FUNCTION__, queue, VNULL(dest));
+    log_info("called %s with %08x, %s", __PRETTY_FUNCTION__, queue, VNULL(dest));
 
   if (!queue) {
-    dlog("Input from non-existant queue?");
+    log_info("Input from non-existant queue?");
     return 0;
   }
   if (!queue->head)
@@ -530,11 +548,11 @@ void write_to_q(char *txt, struct txt_q *queue)
    * Cannot call things in bug.c from things bug.c calls!
    *
    * if (DEBUG > 2)
-   *   dlog("called %s with %08x, %s", __PRETTY_FUNCTION__, VNULL(txt), queue);
+   *   log_info("called %s with %08x, %s", __PRETTY_FUNCTION__, VNULL(txt), queue);
    */
 
   if (!queue) {
-    dlog("Output message to non-existant queue");
+    log_info("Output message to non-existant queue");
     return;
   }
   CREATE(new, struct txt_block, 1);
@@ -558,7 +576,7 @@ struct timeval timediff(struct timeval *a, struct timeval *b)
   struct timeval                          tmp;
 
   if (DEBUG > 3)
-    dlog("called %s with %08x, %08x", __PRETTY_FUNCTION__, a, b);
+    log_info("called %s with %08x, %08x", __PRETTY_FUNCTION__, a, b);
 
   tmp = *a;
 
@@ -579,7 +597,7 @@ void flush_queues(struct descriptor_data *d)
   char                                    dummy[MAX_STRING_LENGTH] = "\0\0\0";
 
   if (DEBUG > 2)
-    dlog("called %s with %08x", __PRETTY_FUNCTION__, d);
+    log_info("called %s with %08x", __PRETTY_FUNCTION__, d);
 
   while (get_from_q(&d->output, dummy));
   while (get_from_q(&d->input, dummy));
@@ -600,32 +618,32 @@ int init_socket(int port)
   int                                     gotsocket = 0;
 
   if (DEBUG > 2)
-    dlog("called %s with %d", __PRETTY_FUNCTION__, port);
+    log_info("called %s with %d", __PRETTY_FUNCTION__, port);
 
   bzero(&sa, sizeof(struct sockaddr_in));
 
   gethostname(hostname, MAX_HOSTNAME);
   hp = gethostbyname(hostname);
   if (hp == NULL) {
-    perror("gethostbyname");
-    exit(1);
+    log_fatal("gethostbyname");
+    proper_exit(MUD_HALT);
   }
   sa.sin_family = hp->h_addrtype;
   sa.sin_port = htons(port);
   s = socket(AF_INET, SOCK_STREAM, 0);
   if (s < 0) {
-    perror("Init-socket");
-    exit(1);
+    log_fatal("Init-socket");
+    proper_exit(MUD_HALT);
   }
   if (setsockopt(s, SOL_SOCKET, SO_REUSEADDR, (char *)&opt, sizeof(opt)) < 0) {
-    perror("setsockopt REUSEADDR");
-    exit(1);
+    log_fatal("setsockopt REUSEADDR");
+    proper_exit(MUD_HALT);
   }
 
   for (i = 60; i > 0; i--) {
     if (bind(s, (struct sockaddr *)&sa, sizeof(sa)) < 0) {
       gotsocket = 0;
-      dlog("Socket in use... retrying...\n");
+      log_info("Socket in use... retrying...\n");
       sleep(2);
     } else {
       gotsocket = 1;
@@ -633,9 +651,9 @@ int init_socket(int port)
     }
   }
   if (!gotsocket) {
-    perror("bind");
     close(s);
-    exit(1);
+    log_fatal("bind");
+    proper_exit(MUD_HALT);
   }
   listen(s, 3);
   return (s);
@@ -648,12 +666,12 @@ int new_connection(int s)
   int                                     t = 0;
 
   if (DEBUG > 1)
-    dlog("called %s with %d", __PRETTY_FUNCTION__, s);
+    log_info("called %s with %d", __PRETTY_FUNCTION__, s);
 
   i = sizeof(isa);
   getsockname(s, (struct sockaddr *)&isa, &i);
   if ((t = accept(s, (struct sockaddr *)&isa, &i)) < 0) {
-    perror("Accept");
+    log_error("Accept");
     return (-1);
   }
   nonblock(t);
@@ -683,56 +701,11 @@ int new_descriptor(int s)
   };
 
   char                                   *bannished[] = {
-    "grog.lab.cc.wmich.edu",
-    "grog2.lab.cc.wmich.edu",
-    "grog3.lab.cc.wmich.edu",
-    "s01.lab.cc.wmich.edu",
-    "s02.lab.cc.wmich.edu",
-    "s03.lab.cc.wmich.edu",
-    "s04.lab.cc.wmich.edu",
-    "s05.lab.cc.wmich.edu",
-    "s06.lab.cc.wmich.edu",
-    "s07.lab.cc.wmich.edu",
-    "s08.lab.cc.wmich.edu",
-    "s09.lab.cc.wmich.edu",
-    "s10.lab.cc.wmich.edu",
-    "s11.lab.cc.wmich.edu",
-    "s12.lab.cc.wmich.edu",
-    "s14.lab.cc.wmich.edu",
-    "s15.lab.cc.wmich.edu",
-    "s16.lab.cc.wmich.edu",
-    "s17.lab.cc.wmich.edu",
-    "s18.lab.cc.wmich.edu",
-    "s19.lab.cc.wmich.edu",
-    "s20.lab.cc.wmich.edu",
-    "s21.lab.cc.wmich.edu",
-    "s22.lab.cc.wmich.edu",
-    "s23.lab.cc.wmich.edu",
-    "s24.lab.cc.wmich.edu",
-    "s25.lab.cc.wmich.edu",
-    "s26.lab.cc.wmich.edu",
-    "s27.lab.cc.wmich.edu",
-    "s28.lab.cc.wmich.edu",
-    "s29.lab.cc.wmich.edu",
-    "s30.lab.cc.wmich.edu",
-    "s31.lab.cc.wmich.edu",
-    "s32.lab.cc.wmich.edu",
-    "s33.lab.cc.wmich.edu",
-    "s34.lab.cc.wmich.edu",
-    "s35.lab.cc.wmich.edu",
-    "s36.lab.cc.wmich.edu",
-    "s37.lab.cc.wmich.edu",
-    "s38.lab.cc.wmich.edu",
-    "s39.lab.cc.wmich.edu",
-    "s40.lab.cc.wmich.edu",
-    "s41.lab.cc.wmich.edu",
-    "s42.lab.cc.wmich.edu",
-    "s43.lab.cc.wmich.edu",
     "\n"
   };
 
   if (DEBUG > 2)
-    dlog("called %s with %d", __PRETTY_FUNCTION__, s);
+    log_info("called %s with %d", __PRETTY_FUNCTION__, s);
 
   tc = time(0);
   t_info = localtime(&tc);
@@ -742,7 +715,7 @@ int new_descriptor(int s)
   i = sizeof(isa);
   getsockname(s, (struct sockaddr *)&isa, &i);
   if ((desc = accept(s, (struct sockaddr *)&isa, &i)) < 0) {
-    perror("Accept");
+    log_error("Accept");
     return (-1);
   }
   nonblock(desc);
@@ -822,7 +795,7 @@ int new_descriptor(int s)
   if (((t_info->tm_hour + 1) > 8) && ((t_info->tm_hour + 1) < 21))
     for (desc_index = 0; timed_con[desc_index] != "\n"; desc_index++) {
       if (!strncmp(timed_con[desc_index], newd->host, 49)) {
-	dlog("TIMED site connecting:%s\n", newd->host);
+	log_info("TIMED site connecting:%s\n", newd->host);
 	sprintf(buf, "\n\rThis site is blocked from : 9 am - 9 pm\n\r");
 	write_to_descriptor(desc, buf);
 	sprintf(buf, "You may connect after 9 pm from :[%s]\n\r", newd->host);
@@ -835,7 +808,7 @@ int new_descriptor(int s)
     }
   for (desc_index = 0; bannished[desc_index] != "\n"; desc_index++) {
     if (!strncmp(bannished[desc_index], newd->host, 49)) {
-      dlog("BANNISHED site connecting:%s\n", newd->host);
+      log_info("BANNISHED site connecting:%s\n", newd->host);
       sprintf(buf, "\n\rDue to your System Administrators request, or for some\n\r");
       write_to_descriptor(desc, buf);
       sprintf(buf, "other reason, we are refusing all connections from:[%s]\n\r", newd->host);
@@ -858,7 +831,7 @@ int process_output(struct descriptor_data *t)
   char                                    i[MAX_STRING_LENGTH + 1] = "\0\0\0";
 
   if (DEBUG > 2)
-    dlog("called %s with %08x", __PRETTY_FUNCTION__, t);
+    log_info("called %s with %08x", __PRETTY_FUNCTION__, t);
 
   if (!t->prompt_mode && !t->connected)
     if (write_to_descriptor(t->descriptor, "\n\r") < 0)
@@ -891,7 +864,7 @@ int write_to_descriptor(int desc, char *txt)
   int                                     total = 0;
 
   if (DEBUG > 2)
-    dlog("called %s with %d, %s", __PRETTY_FUNCTION__, desc, VNULL(txt));
+    log_info("called %s with %d, %s", __PRETTY_FUNCTION__, desc, VNULL(txt));
 
   total = strlen(txt);
 
@@ -900,7 +873,7 @@ int write_to_descriptor(int desc, char *txt)
     if (thisround < 0) {
       if (errno == EWOULDBLOCK)
 	break;
-      perror("Write to socket");
+      log_error("Write to socket");
       return (-1);
     }
     sofar += thisround;
@@ -924,7 +897,7 @@ int process_input(struct descriptor_data *t)
   char                                    buffer[MAX_INPUT_LENGTH + 60] = "\0\0\0";
 
   if (DEBUG > 2)
-    dlog("called %s with %08x", __PRETTY_FUNCTION__, t);
+    log_info("called %s with %08x", __PRETTY_FUNCTION__, t);
 
   begin = strlen(t->buf);
 
@@ -938,13 +911,13 @@ int process_input(struct descriptor_data *t)
     } else {
       if (thisround < 0) {
 	if (errno != EWOULDBLOCK) {
-	  perror("Read1 - ERROR");
+	  log_error("Read1 - ERROR");
 	  return (-1);
 	} else {
 	  break;
 	}
       } else {
-	dlog("EOF encountered on socket read.");
+	log_info("EOF encountered on socket read.");
 	return (-1);
       }
     }
@@ -1031,9 +1004,9 @@ int process_input(struct descriptor_data *t)
 void close_sockets(int s)
 {
   if (DEBUG > 2)
-    dlog("called %s with %d", __PRETTY_FUNCTION__, s);
+    log_info("called %s with %d", __PRETTY_FUNCTION__, s);
 
-  dlog("Closing all sockets.");
+  log_info("Closing all sockets.");
   while (descriptor_list)
     close_socket(descriptor_list);
   close(s);
@@ -1044,7 +1017,7 @@ void close_socket(struct descriptor_data *d)
   struct descriptor_data                 *tmp = NULL;
 
   if (DEBUG > 2)
-    dlog("called %s with %08x", __PRETTY_FUNCTION__, d);
+    log_info("called %s with %08x", __PRETTY_FUNCTION__, d);
 
   if (!d)
     return;
@@ -1069,19 +1042,22 @@ void close_socket(struct descriptor_data *d)
     if (d->connected == CON_PLAYING) {
       do_save(d->character, "", 0);
       act("$n has lost $s link.", TRUE, d->character, 0, 0, TO_ROOM);
-      dlog("Closing link to: %s.", GET_NAME(d->character));
+      /* log_info("Closing link to: %s.", GET_NAME(d->character)); */
+      log_auth(d->character, "LINKDEAD %s (%s@%s)!", GET_NAME(d->character), d->username, d->host);
       if (IS_NPC(d->character)) {
 	if (d->character->desc)
 	  d->character->orig = d->character->desc->original;
       }
       d->character->desc = NULL;
     } else {
-      if (GET_NAME(d->character))
-	dlog("Losing player: %s.", GET_NAME(d->character));
+      if (GET_NAME(d->character)) {
+	/* log_info("Losing player: %s.", GET_NAME(d->character)); */
+        log_auth(d->character, "GOODBYE %s (%s@%s)!", GET_NAME(d->character), d->username, d->host);
+      }
       free_char(d->character);
       d->character = NULL; /* need to wipe this out so we don't pick at it! */
   } else
-    dlog("Losing descriptor without char.");
+    log_info("Losing descriptor without char.");
 
   if (next_to_process == d)				       /* to avoid crashing the process loop */
     next_to_process = next_to_process->next;
@@ -1106,11 +1082,11 @@ void close_socket(struct descriptor_data *d)
 void nonblock(int s)
 {
   if (DEBUG > 2)
-    dlog("called %s with %d", __PRETTY_FUNCTION__, s);
+    log_info("called %s with %d", __PRETTY_FUNCTION__, s);
 
   if (fcntl(s, F_SETFL, O_NDELAY) == -1) {
-    perror("Noblock");
-    exit(1);
+    log_fatal("Noblock");
+    proper_exit(MUD_HALT);
   }
 }
 
@@ -1134,7 +1110,7 @@ void dcprintf(struct descriptor_data *d, char *Str, ...)
     va_end(arg);
     write_to_q(Result, &d->output);
     if (DEBUG > 2)
-      dlog("called %s with %08x, %s, result of %s", __PRETTY_FUNCTION__, d, VNULL(Str), Result);
+      log_info("called %s with %08x, %s, result of %s", __PRETTY_FUNCTION__, d, VNULL(Str), Result);
   }
 }
 
@@ -1157,7 +1133,7 @@ void cprintf(struct char_data *ch, char *Str, ...)
      * Cannot call things in bug.c from things bug.c calls!
      *
      * if (DEBUG > 2)
-     *   dlog("called %s with %s, %s, result of %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(Str), Result);
+     *   log_info("called %s with %s, %s, result of %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(Str), Result);
      */
   }
 }
@@ -1181,7 +1157,7 @@ void rprintf(int room, char *Str, ...)
       if (i->desc)
 	write_to_q(Result, &i->desc->output);
     if (DEBUG > 2)
-      dlog("called %s with %d, %s, result of %s", __PRETTY_FUNCTION__, room, VNULL(Str), Result);
+      log_info("called %s with %d, %s, result of %s", __PRETTY_FUNCTION__, room, VNULL(Str), Result);
   }
 }
 
@@ -1207,7 +1183,7 @@ void zprintf(int zone, char *Str, ...)
 	    if (rr->zone == zone)
 	      write_to_q(Result, &i->output);
     if (DEBUG > 2)
-      dlog("called %s with %d, %s, result of %s", __PRETTY_FUNCTION__, zone, VNULL(Str), Result);
+      log_info("called %s with %d, %s, result of %s", __PRETTY_FUNCTION__, zone, VNULL(Str), Result);
   }
 }
 
@@ -1229,7 +1205,7 @@ void allprintf(char *Str, ...)
       if (!i->connected)
 	write_to_q(Result, &i->output);
     if (DEBUG > 2)
-      dlog("called %s with %s, result of %s", __PRETTY_FUNCTION__, VNULL(Str), Result);
+      log_info("called %s with %s, result of %s", __PRETTY_FUNCTION__, VNULL(Str), Result);
   }
 }
 
@@ -1251,7 +1227,7 @@ void oprintf(char *Str, ...)
       if (!i->connected && i->character && OUTSIDE(i->character))
 	write_to_q(Result, &i->output);
     if (DEBUG > 2)
-      dlog("called %s with %s, result of %s", __PRETTY_FUNCTION__, VNULL(Str), Result);
+      log_info("called %s with %s, result of %s", __PRETTY_FUNCTION__, VNULL(Str), Result);
   }
 }
 
@@ -1273,7 +1249,7 @@ void eprintf(struct char_data *ch, char *Str, ...)
       if (ch && ch->desc != i && !i->connected)
 	write_to_q(Result, &i->output);
     if (DEBUG > 2)
-      dlog("called %s with %s, %s, result of %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(Str), Result);
+      log_info("called %s with %s, %s, result of %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(Str), Result);
   }
 }
 
@@ -1296,7 +1272,7 @@ void reprintf(int room, struct char_data *ch, char *Str, ...)
       if (i != ch && i->desc)
 	write_to_q(Result, &i->desc->output);
     if (DEBUG > 2)
-      dlog("called %s with %d, %s, %s, result of %s", __PRETTY_FUNCTION__, room, SAFE_NAME(ch), VNULL(Str), Result);
+      log_info("called %s with %d, %s, %s, result of %s", __PRETTY_FUNCTION__, room, SAFE_NAME(ch), VNULL(Str), Result);
   }
 }
 
@@ -1319,7 +1295,7 @@ void re2printf(int room, struct char_data *ch1, struct char_data *ch2, char *Str
       if (i != ch1 && i != ch2 && i->desc)
 	write_to_q(Result, &i->desc->output);
     if (DEBUG > 2)
-      dlog("called %s with %d, %s, %s, %s, result of %s", __PRETTY_FUNCTION__, room, SAFE_NAME(ch1), SAFE_NAME(ch2), VNULL(Str), Result);
+      log_info("called %s with %d, %s, %s, %s, result of %s", __PRETTY_FUNCTION__, room, SAFE_NAME(ch1), SAFE_NAME(ch2), VNULL(Str), Result);
   }
 }
 
@@ -1341,7 +1317,7 @@ void iprintf(char *Str, ...)
       if (!i->connected && i->character && IS_IMMORTAL(i->character))
 	write_to_q(Result, &i->output);
     if (DEBUG > 2)
-      dlog("called %s with %s, result of %s", __PRETTY_FUNCTION__, VNULL(Str), Result);
+      log_info("called %s with %s, result of %s", __PRETTY_FUNCTION__, VNULL(Str), Result);
   }
 }
 
@@ -1350,7 +1326,7 @@ void save_all()
   struct descriptor_data                 *i = NULL;
 
   if (DEBUG > 2)
-    dlog("called %s with no arguments", __PRETTY_FUNCTION__);
+    log_info("called %s with no arguments", __PRETTY_FUNCTION__);
 
   for (i = descriptor_list; i; i = i->next)
     if (i->character)
@@ -1371,7 +1347,7 @@ void act(char *Str, int hide_invisible, struct char_data *ch,
   va_list                                 arg;
 
   if (DEBUG > 2)
-    dlog("called %s with %s, %d, %s, %08x, %08x, %d", __PRETTY_FUNCTION__, VNULL(Str), hide_invisible, SAFE_NAME(ch), obj, vict_obj, type);
+    log_info("called %s with %s, %d, %s, %08x, %08x, %d", __PRETTY_FUNCTION__, VNULL(Str), hide_invisible, SAFE_NAME(ch), obj, vict_obj, type);
 
   if (!Str)
     return;
@@ -1386,8 +1362,8 @@ void act(char *Str, int hide_invisible, struct char_data *ch,
   va_end(arg);
 
   if (DEBUG > 1) {
-    dlog("act got: %s", Str);
-    dlog("act became: %s", str);
+    log_info("act got: %s", Str);
+    log_info("act became: %s", str);
   }
 
   /* Added checks to ensure ch and to are NOT NULL */
@@ -1467,7 +1443,7 @@ void act(char *Str, int hide_invisible, struct char_data *ch,
 	      i = "$";
 	      break;
 	    default:
-	      dlog("Illegal $-code to act(): %s", str);
+	      log_info("Illegal $-code to act(): %s", str);
 	      break;
 	  }
 
@@ -1485,7 +1461,7 @@ void act(char *Str, int hide_invisible, struct char_data *ch,
 
       write_to_q(CAP(buf), &to->desc->output);
       if (DEBUG > 1)
-        dlog("act sent: %s", buf);
+        log_info("act sent: %s", buf);
     }
     if ((type == TO_VICT) || (type == TO_CHAR))
       return;
@@ -1498,11 +1474,11 @@ void dump_player_list(void)
   int                                     i = 0;
 
   if (DEBUG > 2)
-    dlog("called %s with no arguments", __PRETTY_FUNCTION__);
+    log_info("called %s with no arguments", __PRETTY_FUNCTION__);
 
-  dlog("Dumping player list");
+  log_info("Dumping player list");
   if (!(pfd = fopen(PLAYER_FILE, "w"))) {
-    bug("Cannot save player data for new user!");
+    log_error("Cannot save player data for new user!");
   } else {
     fprintf(pfd, "%d\n", actual_players);
     for (i = 0; i < number_of_players; i++)
@@ -1511,3 +1487,11 @@ void dump_player_list(void)
     FCLOSE(pfd);
   }
 }
+
+void proper_exit(int exit_code)
+{
+  log_boot("Disconnecting from database!");
+  close_sql();
+  exit(exit_code);
+}
+

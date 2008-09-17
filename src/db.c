@@ -114,54 +114,54 @@ void boot_db(void)
   int                                     i = 0;
 
   if (DEBUG > 1)
-    dlog("called %s with no arguments", __PRETTY_FUNCTION__);
+    log_info("called %s with no arguments", __PRETTY_FUNCTION__);
 
-  dlog("Boot db -- BEGIN.");
+  log_boot("Boot db -- BEGIN.");
 
-  dlog("- Resetting game time and weather:");
+  log_boot("- Resetting game time and weather:");
   reset_time();
 
-  dlog("- Reading news");
+  log_boot("- Reading news");
   file_to_string(NEWS_FILE, news);
-  dlog("- Reading credits");
+  log_boot("- Reading credits");
   file_to_string(CREDITS_FILE, credits);
-  dlog("- Reading motd");
+  log_boot("- Reading motd");
   file_to_string(MOTD_FILE, motd);
-  dlog("- Reading help");
+  log_boot("- Reading help");
   file_to_string(HELP_PAGE_FILE, help);
-  dlog("- Reading info");
+  log_boot("- Reading info");
   file_to_string(INFO_FILE, info);
-  dlog("- Reading wizlist");
+  log_boot("- Reading wizlist");
   file_to_string(WIZLIST_FILE, wizlist);
-  dlog("- Reading wiz motd");
+  log_boot("- Reading wiz motd");
   file_to_string(WMOTD_FILE, wmotd);
-  dlog("- Reading greetings");
+  log_boot("- Reading greetings");
   file_to_string(GREETINGS_FILE, greetings);
-  dlog("- Reading login menu");
+  log_boot("- Reading login menu");
   file_to_prompt(LOGIN_MENU_FILE, login_menu);
-  dlog("- Reading sex menu");
+  log_boot("- Reading sex menu");
   file_to_prompt(SEX_MENU_FILE, sex_menu);
-  dlog("- Reading race menu");
+  log_boot("- Reading race menu");
   file_to_prompt(RACE_MENU_FILE, race_menu);
-  dlog("- Reading class menu");
+  log_boot("- Reading class menu");
   file_to_prompt(CLASS_MENU_FILE, class_menu);
-  dlog("- Reading race help");
+  log_boot("- Reading race help");
   file_to_prompt(RACE_HELP_FILE, race_help);
-  dlog("- Reading class help");
+  log_boot("- Reading class help");
   file_to_prompt(CLASS_HELP_FILE, class_help);
-  dlog("- Reading story");
+  log_boot("- Reading story");
   file_to_string(STORY_FILE, the_story);
-  dlog("- Reading suicide warning");
+  log_boot("- Reading suicide warning");
   file_to_prompt(SUICIDE_WARN_FILE, suicide_warn);
-  dlog("- Reading suicide result");
+  log_boot("- Reading suicide result");
   file_to_string(SUICIDE_DONE_FILE, suicide_done);
-  dlog("- Loading banned name list");
+  log_boot("- Loading banned name list");
   file_to_prompt(BANNED_NAME_FILE, banned_names);
-  dlog("- Loading rent mode");
+  log_boot("- Loading rent mode");
   if (!(pfd = fopen(RENTCOST_FILE, "r"))) {
-    dlog("Default rent cost of 1.0 used.");
+    log_boot("Default rent cost of 1.0 used.");
     if (!(pfd = fopen(RENTCOST_FILE, "w"))) {
-      dlog("Cannot save rent cost!");
+      log_error("Cannot save rent cost!");
     } else {
       fprintf(pfd, "%f\n", 1.0);
       FCLOSE(pfd);
@@ -170,9 +170,9 @@ void boot_db(void)
     double                                  it;
 
     if (fscanf(pfd, " %lf ", &it) != 1) {
-      dlog("Invalid rent cost.");
+      log_error("Invalid rent cost.");
       if (!(pfd = fopen(RENTCOST_FILE, "w"))) {
-	dlog("Cannot save rent cost!");
+	log_error("Cannot save rent cost!");
       } else {
 	fprintf(pfd, "%f\n", 1.0);
 	FCLOSE(pfd);
@@ -181,9 +181,9 @@ void boot_db(void)
     RENT_RATE = it;
     FCLOSE(pfd);
   }
-  dlog("- Loading player list");
+  log_boot("- Loading player list");
   if (!(pfd = fopen(PLAYER_FILE, "r"))) {
-    dlog("Cannot load accumulated player data\n\r");
+    log_error("Cannot load accumulated player data\n\r");
   } else {
     if (list_of_players) {
       for (i = 0; i < number_of_players; i++)
@@ -198,18 +198,18 @@ void boot_db(void)
     for (i = 0; i < number_of_players; i++) {
       fgets(tmpbufx, 255, pfd);
       if (!(list_of_players[i] = (char *)strdup(tmpbufx))) {
-	bug("Failed to get memory for player list element %d.\n\r", i);
-	exit(-1);
+	log_fatal("Failed to get memory for player list element %d.\n\r", i);
+	proper_exit(MUD_HALT);
       }
     }
   }
-  dlog("- Loading reboot times");
+  log_boot("- Loading reboot times");
   if (!(pfd = fopen(REBOOTTIME_FILE, "r"))) {
-    dlog("Default reboot times of 07:00 and 19:00 used.");
+    log_boot("Default reboot times of 07:00 and 19:00 used.");
     REBOOT_AT1 = 7;
     REBOOT_AT2 = 19;
     if (!(pfd = fopen(REBOOTTIME_FILE, "w"))) {
-      dlog("Cannot save reboot times!");
+      log_error("Cannot save reboot times!");
     } else {
       fprintf(pfd, "%d %d\n", REBOOT_AT1, REBOOT_AT2);
       FCLOSE(pfd);
@@ -219,11 +219,11 @@ void boot_db(void)
                                             that;
 
     if (fscanf(pfd, " %d %d ", &this, &that) != 2) {
-      dlog("Invalid reboot time.");
+      log_error("Invalid reboot time.");
       REBOOT_AT1 = 7;
       REBOOT_AT2 = 19;
       if (!(pfd = fopen(REBOOTTIME_FILE, "w"))) {
-	dlog("Cannot save reboot times!");
+	log_error("Cannot save reboot times!");
       } else {
 	fprintf(pfd, "%d %d\n", REBOOT_AT1, REBOOT_AT2);
 	FCLOSE(pfd);
@@ -234,61 +234,61 @@ void boot_db(void)
     FCLOSE(pfd);
   }
 
-  dlog("- Loading help files");
+  log_boot("- Loading help files");
   if (!(help_fl = fopen(HELP_KWRD_FILE, "r")))
-    dlog("   Could not open help file.");
+    log_error("   Could not open help file.");
   else
     help_index = build_help_index(help_fl, &top_of_helpt);
   if (!(wizhelp_fl = fopen(WIZHELP_KWRD_FILE, "r")))
-    dlog("   Could not open wizhelp file.");
+    log_error("   Could not open wizhelp file.");
   else
     wizhelp_index = build_help_index(wizhelp_fl, &top_of_wizhelpt);
 
-  dlog("- Loading fight messages");
+  log_boot("- Loading fight messages");
   load_messages();
-  dlog("- Loading social messages");
+  log_boot("- Loading social messages");
   boot_social_messages();
-  dlog("- Loading pose messages");
+  log_boot("- Loading pose messages");
   boot_pose_messages();
 
-  dlog("- Booting mobiles");
+  log_boot("- Booting mobiles");
   if (!(mob_f = fopen(MOB_FILE, "r"))) {
-    perror("boot mobiles");
-    exit(0);
+    log_fatal("boot mobiles");
+    proper_exit(MUD_HALT);
   }
-  dlog("- Booting objects");
+  log_boot("- Booting objects");
   if (!(obj_f = fopen(OBJ_FILE, "r"))) {
-    perror("boot objects");
-    exit(0);
+    log_fatal("boot objects");
+    proper_exit(MUD_HALT);
   }
-  dlog("- Booting zones");
+  log_boot("- Booting zones");
   boot_zones();
-  dlog("- Booting rooms");
+  log_boot("- Booting rooms");
   boot_world();
 
-  dlog("- Generating mobile index");
+  log_boot("- Generating mobile index");
   mob_index = generate_indices(mob_f, &top_of_mobt);
-  dlog("- Generating object index");
+  log_boot("- Generating object index");
   obj_index = generate_indices(obj_f, &top_of_objt);
-  dlog("- Renumbering zones");
+  log_boot("- Renumbering zones");
   renum_zone_table();
   if (!no_specials) {
-    dlog("- Assigining mobile functions");
+    log_boot("- Assigining mobile functions");
     assign_mobiles();
-    dlog("- Assigining object functions");
+    log_boot("- Assigining object functions");
     assign_objects();
-    dlog("- Assigining room functions");
+    log_boot("- Assigining room functions");
     assign_rooms();
   }
-  dlog("- Assigning command functions");
+  log_boot("- Assigning command functions");
   assign_command_pointers();
-  dlog("- Assigning spell functions");
+  log_boot("- Assigning spell functions");
   assign_spell_pointers();
 
   for (i = 0; i <= top_of_zone_table; i++)
     reset_zone(i);
   reset_q.head = reset_q.tail = 0;
-  dlog("Boot db -- DONE.");
+  log_boot("Boot db -- DONE.");
 }
 
 /* generate index table for object or monster file */
@@ -299,7 +299,7 @@ struct index_data                      *generate_indices(FILE * fl, int *top)
   char                                    buf[82] = "\0\0\0";
 
   if (DEBUG > 2)
-    dlog("called %s with %08x, %08x", __PRETTY_FUNCTION__, fl, top);
+    log_info("called %s with %08x, %08x", __PRETTY_FUNCTION__, fl, top);
 
   rewind(fl);
 
@@ -323,8 +323,8 @@ struct index_data                      *generate_indices(FILE * fl, int *top)
 	  break;
       }
     } else {
-      bug("generate indices");
-      exit(0);
+      log_fatal("generate indices");
+      proper_exit(MUD_HALT);
     }
   }
   *top = i - 2;
@@ -338,7 +338,7 @@ void cleanout_room(struct room_data *rp)
   struct extra_descr_data                *nptr = NULL;
 
   if (DEBUG > 2)
-    dlog("called %s with %08x", __PRETTY_FUNCTION__, rp);
+    log_info("called %s with %08x", __PRETTY_FUNCTION__, rp);
 
   DESTROY(rp->name);
   DESTROY(rp->description);
@@ -363,7 +363,7 @@ void completely_cleanout_room(struct room_data *rp)
   struct obj_data                        *obj = NULL;
 
   if (DEBUG > 2)
-    dlog("called %s with %08x", __PRETTY_FUNCTION__, rp);
+    log_info("called %s with %08x", __PRETTY_FUNCTION__, rp);
 
   while (rp->people) {
     ch = rp->people;
@@ -389,7 +389,7 @@ void load_one_room(FILE *fl, struct room_data *rp)
   struct extra_descr_data                *new_descr = NULL;
 
   if (DEBUG > 2)
-    dlog("called %s with %08x, %08x", __PRETTY_FUNCTION__, fl, rp);
+    log_info("called %s with %08x, %08x", __PRETTY_FUNCTION__, fl, rp);
 
   rp->name = fread_string(fl);
   rp->description = fread_string(fl);
@@ -403,8 +403,8 @@ void load_one_room(FILE *fl, struct room_data *rp)
      */
     for (zone = 0; rp->number > zone_table[zone].top && zone <= top_of_zone_table; zone++);
     if (zone > top_of_zone_table) {
-      bug("Room %d is outside of any zone.\n", rp->number);
-      exit(0);
+      log_fatal("Room %d is outside of any zone.\n", rp->number);
+      proper_exit(MUD_HALT);
     }
     rp->zone = zone;
   }
@@ -466,7 +466,7 @@ void load_one_room(FILE *fl, struct room_data *rp)
       case 'S':					       /* end of current room */
 	return;
       default:
-	dlog("unknown auxiliary code `%s' in room load of #%d", chk, rp->number);
+	log_error("unknown auxiliary code `%s' in room load of #%d", chk, rp->number);
 	break;
     }
   }
@@ -480,20 +480,19 @@ void boot_world(void)
   struct room_data                       *rp = NULL;
 
   if (DEBUG > 1)
-    dlog("called %s with no arguments", __PRETTY_FUNCTION__);
+    log_info("called %s with no arguments", __PRETTY_FUNCTION__);
 
   init_hash_table(&room_db, sizeof(struct room_data), 2048);
   character_list = 0;
   object_list = 0;
 
   if (!(fl = fopen(WORLD_FILE, "r"))) {
-    perror("fopen");
-    bug("boot_world: could not open world file.");
-    exit(0);
+    log_fatal("boot_world: could not open world file.");
+    proper_exit(MUD_HALT);
   }
   while (1 == fscanf(fl, " #%d\n", &virtual_nr)) {
     if (DEBUG && !(virtual_nr % 10))
-      dlog("Loading Room [#%d]\r", virtual_nr);
+      log_boot("Loading Room [#%d]\r", virtual_nr);
     allocate_room(virtual_nr);
     rp = real_roomp(virtual_nr);
     /*
@@ -503,19 +502,19 @@ void boot_world(void)
     load_one_room(fl, rp);
   }
   FCLOSE(fl);
-  dlog("- All Rooms loaded!");
+  log_boot("- All Rooms loaded!");
 }
 
 void allocate_room(int room_number)
 {
   if (DEBUG > 2)
-    dlog("called %s with %d", __PRETTY_FUNCTION__, room_number);
+    log_info("called %s with %d", __PRETTY_FUNCTION__, room_number);
 
   if (room_number > top_of_world)
     top_of_world = room_number;
   else {
-    bug("ERROR - room number %d is out of order\n", room_number);
-    exit(0);
+    log_fatal("ERROR - room number %d is out of order\n", room_number);
+    proper_exit(MUD_HALT);
   }
   hash_find_or_create(&room_db, room_number);
 }
@@ -528,7 +527,7 @@ void setup_dir(FILE *fl, int room, int dir)
   struct room_data                       *rp = NULL;
 
   if (DEBUG > 2)
-    dlog("called %s with %08x, %d, %d", __PRETTY_FUNCTION__, fl, room, dir);
+    log_info("called %s with %08x, %d, %d", __PRETTY_FUNCTION__, fl, room, dir);
 
   rp = real_roomp(room);
   CREATE(rp->dir_option[dir], struct room_direction_data, 1);
@@ -578,7 +577,7 @@ void renum_zone_table(void)
   struct reset_com                       *cmd = NULL;
 
   if (DEBUG > 2)
-    dlog("called %s with no arguments", __PRETTY_FUNCTION__);
+    log_info("called %s with no arguments", __PRETTY_FUNCTION__);
 
   for (zone = 0; zone <= top_of_zone_table; zone++)
     for (comm = 0; zone_table[zone].cmd[comm].command != 'S'; comm++)
@@ -652,11 +651,11 @@ void boot_zones(void)
   char                                    buf[81] = "\0\0\0";
 
   if (DEBUG > 1)
-    dlog("called %s with no arguments", __PRETTY_FUNCTION__);
+    log_info("called %s with no arguments", __PRETTY_FUNCTION__);
 
   if (!(fl = fopen(ZONE_FILE, "r"))) {
-    perror("boot_zones");
-    exit(0);
+    log_fatal("boot_zones");
+    proper_exit(MUD_HALT);
   }
   for (;;) {
     fscanf(fl, " #%*d\n");
@@ -736,7 +735,7 @@ void fread_dice(FILE * fp, long int *x, long int *y, long int *z)
   char                                    sign[2] = "\0";
 
   if (DEBUG > 2)
-    dlog("called %s with %08x, %08x, %08x, %08x", __PRETTY_FUNCTION__, fp, x, y, z);
+    log_info("called %s with %08x, %08x, %08x, %08x", __PRETTY_FUNCTION__, fp, x, y, z);
 
   if (!fp || !x || !y || !z || feof(fp))
     return;
@@ -763,7 +762,7 @@ struct char_data                       *read_mobile(int nr, int type)
   char                                    letter = '\0';
 
   if (DEBUG > 2)
-    dlog("called %s with %d, %d", __PRETTY_FUNCTION__, nr, type);
+    log_info("called %s with %d, %d", __PRETTY_FUNCTION__, nr, type);
 
   i = nr;
   if (type == VIRTUAL)
@@ -1102,7 +1101,7 @@ struct char_data                       *read_mobile(int nr, int type)
       }
       break;
     default:{
-	dlog("Unknown mobile type code '%c' in \"%s\"!  HELP!\n\r", letter, mob->player.name);
+	log_error("Unknown mobile type code '%c' in \"%s\"!  HELP!\n\r", letter, mob->player.name);
       }
       break;
   }
@@ -1135,7 +1134,7 @@ struct obj_data                        *read_object(int nr, int type)
   struct extra_descr_data                *new_descr = NULL;
 
   if (DEBUG > 2)
-    dlog("called %s with %d, %d", __PRETTY_FUNCTION__, nr, type);
+    log_info("called %s with %d, %d", __PRETTY_FUNCTION__, nr, type);
 
   i = nr;
   if (type == VIRTUAL) {
@@ -1238,7 +1237,7 @@ void zone_update(void)
   struct reset_q_element                 *tmp2 = NULL;
 
   if (DEBUG > 2)
-    dlog("called %s with no arguments", __PRETTY_FUNCTION__);
+    log_info("called %s with no arguments", __PRETTY_FUNCTION__);
 
   /*
    * enqueue zones 
@@ -1313,13 +1312,13 @@ void reset_zone(int zone)
   struct char_data                       *last_mob_loaded = NULL;
 
   if (DEBUG > 2)
-    dlog("called %s with %d", __PRETTY_FUNCTION__, zone);
+    log_info("called %s with %d", __PRETTY_FUNCTION__, zone);
 
-  dlog("Zone Reset - %s (%d-%d)", ZNAME, (zone ? (zone_table[zone - 1].top + 1) : 0),
+  log_info("Zone Reset - %s (%d-%d)", ZNAME, (zone ? (zone_table[zone - 1].top + 1) : 0),
       zone_table[zone].top);
   for (cmd_no = 0;; cmd_no++) {
     if (DEBUG)
-      dlog("Doing Command %d for %s: %c %d %d %d", cmd_no, ZNAME, ZCMD.command, ZCMD.arg1,
+      log_info("Doing Command %d for %s: %c %d %d %d", cmd_no, ZNAME, ZCMD.command, ZCMD.arg1,
 	  ZCMD.arg2, ZCMD.arg3);
 
     if (ZCMD.command == 'S')
@@ -1360,7 +1359,7 @@ void reset_zone(int zone)
 	      } else
 		last_cmd = 0;
 	    } else if ((obj = read_object(ZCMD.arg1, REAL))) {
-	      dlog("Error finding room #%d", ZCMD.arg3);
+	      log_error("Error finding room #%d", ZCMD.arg3);
 	      extract_obj(obj);
 	      last_cmd = 1;
 	    } else
@@ -1408,7 +1407,7 @@ void reset_zone(int zone)
 	case 'E':					       /* object to equipment list */
 	  if (obj_index[ZCMD.arg1].number < ZCMD.arg2 && (obj = read_object(ZCMD.arg1, REAL))) {
 	    if (ZCMD.arg3 > WIELD_TWOH)
-	      dlog("BAD EQUIP in zone reboot.");
+	      log_error("BAD EQUIP in zone reboot.");
 	    else
 	      equip_char(mob, obj, ZCMD.arg3);
 	    last_cmd = 1;
@@ -1442,7 +1441,7 @@ void reset_zone(int zone)
 	  break;
 
 	default:
-	  dlog("Undefd cmd in reset table; zone %d cmd %d.\n\r", zone, cmd_no);
+	  log_error("Undefd cmd in reset table; zone %d cmd %d.\n\r", zone, cmd_no);
 	  break;
     } else
       last_cmd = 0;
@@ -1456,7 +1455,7 @@ int is_empty(int zone_nr)
   struct descriptor_data                 *i = NULL;
 
   if (DEBUG > 2)
-    dlog("called %s with %d", __PRETTY_FUNCTION__, zone_nr);
+    log_info("called %s with %d", __PRETTY_FUNCTION__, zone_nr);
 
   for (i = descriptor_list; i; i = i->next)
     if (!i->connected)
@@ -1479,7 +1478,7 @@ int load_char(char *name, struct char_file_u *char_element)
   char                                   *t_ptr = NULL;
 
   if (DEBUG > 1)
-    dlog("called %s with %s, %08x", __PRETTY_FUNCTION__, VNULL(name), char_element);
+    log_info("called %s with %s, %08x", __PRETTY_FUNCTION__, VNULL(name), char_element);
 
   strcpy(tname, name);
   t_ptr = tname;
@@ -1505,7 +1504,7 @@ void store_to_char(struct char_file_u *st, struct char_data *ch)
   long                                    t = 0L;
 
   if (DEBUG > 2)
-    dlog("called %s with %08x, %s", __PRETTY_FUNCTION__, st, SAFE_NAME(ch));
+    log_info("called %s with %08x, %s", __PRETTY_FUNCTION__, st, SAFE_NAME(ch));
 
 /* This MIGHT be needed to do that strange password crap...
  * strcpy(ch->desc->pwd, st->pwd);
@@ -1609,7 +1608,7 @@ void char_to_store(struct char_data *ch, struct char_file_u *st)
   struct obj_data                        *char_eq[MAX_WEAR];
 
   if (DEBUG > 2)
-    dlog("called %s with %s, %08x", __PRETTY_FUNCTION__, SAFE_NAME(ch), st);
+    log_info("called %s with %s, %08x", __PRETTY_FUNCTION__, SAFE_NAME(ch), st);
 
 /* zero the structure.. hope this doesn't break things */
   bzero(st, sizeof(struct char_file_u));
@@ -1647,7 +1646,7 @@ void char_to_store(struct char_data *ch, struct char_file_u *st)
   }
 
   if ((i >= MAX_AFFECT) && af && af->next)
-    bug("WARNING: OUT OF STORE ROOM FOR AFFECTED TYPES!!!");
+    log_error("WARNING: OUT OF STORE ROOM FOR AFFECTED TYPES!!!");
 
   ch->tmpabilities = ch->abilities;
 
@@ -1752,7 +1751,7 @@ int create_entry(char *name)
   int                                     i = 0;
 
   if (DEBUG > 2)
-    dlog("called %s with %s", __PRETTY_FUNCTION__, VNULL(name));
+    log_info("called %s with %s", __PRETTY_FUNCTION__, VNULL(name));
 
   if (top_of_p_table == -1 || player_table == NULL) {
     CREATE(player_table, struct player_index_element, ((top_of_p_table = 0), 1));
@@ -1783,7 +1782,7 @@ void save_char(struct char_data *ch, short int load_room)
   char                                   *t_ptr = NULL;
 
   if (DEBUG > 1)
-    dlog("called %s with %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), load_room);
+    log_info("called %s with %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), load_room);
 
   if (IS_NPC(ch) || !ch->desc)
     return;
@@ -1811,7 +1810,7 @@ void save_char(struct char_data *ch, short int load_room)
   char                                    tmp[256] = "\0\0\0";
 
   if (DEBUG > 2)
-    dlog("called %s with %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), load_room);
+    log_info("called %s with %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), load_room);
 
 /* NPC followers will be saved in the character file, storing
  * vnum, hp, level, exp, and charm-duration (-1 for infinite)
@@ -1845,8 +1844,8 @@ void save_char(struct char_data *ch, short int load_room)
 
   sprintf(tmp, "ply/%c/%s.chr", name[0], name);
   if (!(fp = fopen(tmp, "w"))) {
-    perror("save char: cannot open output file");
-    exit(1);
+    log_fatal("save char: cannot open output file");
+    proper_exit(MUD_HALT);
   }
 
 /*
@@ -1916,11 +1915,11 @@ void new_save_char(struct char_file_u *ch, char *filename)
   int                                     i = 0;
 
   if (DEBUG > 2)
-    dlog("called %s with %08x, %s", __PRETTY_FUNCTION__, ch, VNULL(filename));
+    log_info("called %s with %08x, %s", __PRETTY_FUNCTION__, ch, VNULL(filename));
 
   if (!(fp = fopen(filename, "w"))) {
-    perror("new save char");
-    exit(1);
+    log_fatal("new save char");
+    proper_exit(MUD_HALT);
   }
   fprintf(fp, "#PLAYER\n");
   fprintf(fp, "Name               %s~\n", ch->name);
@@ -2010,7 +2009,7 @@ void new_save_char(struct char_file_u *ch, char *filename)
 int compare(struct player_index_element *arg1, struct player_index_element *arg2)
 {
   if (DEBUG > 2)
-    dlog("called %s with %08x, %08x", __PRETTY_FUNCTION__, arg1, arg2);
+    log_info("called %s with %08x, %08x", __PRETTY_FUNCTION__, arg1, arg2);
 
   /* Allow this to blow up on NULL's, it will aid in debugging */
   return (str_cmp(arg1->name, arg2->name));
@@ -2026,7 +2025,7 @@ void free_char(struct char_data *ch)
   struct affected_type                   *af = NULL;
 
   if (DEBUG > 2)
-    dlog("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
+    log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
 
   DESTROY(GET_NAME(ch));
 
@@ -2057,7 +2056,7 @@ void free_obj(struct obj_data *obj)
   struct extra_descr_data                *next_one = NULL;
 
   if (DEBUG > 2)
-    dlog("called %s with %s", __PRETTY_FUNCTION__, SAFE_ONAME(obj));
+    log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_ONAME(obj));
 
   DESTROY(obj->name);
   if (obj->description)
@@ -2086,12 +2085,12 @@ int file_to_string(char *name, char *buf)
   char                                    tmp[100] = "\0\0\0";
 
   if (DEBUG > 2)
-    dlog("called %s with %s, %s", __PRETTY_FUNCTION__, VNULL(name), VNULL(buf));
+    log_info("called %s with %s, %s", __PRETTY_FUNCTION__, VNULL(name), VNULL(buf));
 
   *buf = '\0';
 
   if (!(fl = fopen(name, "r"))) {
-    perror("file-to-string");
+    log_error("file-to-string");
     *buf = '\0';
     return (-1);
   }
@@ -2100,7 +2099,7 @@ int file_to_string(char *name, char *buf)
 
     if (!feof(fl)) {
       if (strlen(buf) + strlen(tmp) + 2 > MAX_STRING_LENGTH) {
-	dlog("fl->strng: string too big (db.c, file_to_string)");
+	log_error("fl->strng: string too big (db.c, file_to_string)");
 	*buf = '\0';
 	FCLOSE(fl);
 	return (-1);
@@ -2124,12 +2123,12 @@ int file_to_prompt(char *name, char *buf)
   char                                    tmp[100] = "\0\0\0";
 
   if (DEBUG > 2)
-    dlog("called %s with %s, %s", __PRETTY_FUNCTION__, VNULL(name), VNULL(buf));
+    log_info("called %s with %s, %s", __PRETTY_FUNCTION__, VNULL(name), VNULL(buf));
 
   *buf = '\0';
 
   if (!(fl = fopen(name, "r"))) {
-    perror("file-to-string");
+    log_error("file-to-string");
     *buf = '\0';
     return (-1);
   }
@@ -2138,7 +2137,7 @@ int file_to_prompt(char *name, char *buf)
 
     if (!feof(fl)) {
       if (strlen(buf) + strlen(tmp) + 2 > MAX_STRING_LENGTH) {
-	dlog("fl->strng: string too big (db.c, file_to_string)");
+	log_error("fl->strng: string too big (db.c, file_to_string)");
 	*buf = '\0';
 	FCLOSE(fl);
 	return (-1);
@@ -2164,7 +2163,7 @@ void reset_char(struct char_data *ch)
   int                                     i = 0;
 
   if (DEBUG > 2)
-    dlog("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
+    log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
 
   for (i = 0; i < MAX_WEAR; i++)			       /* Initializing */
     ch->equipment[i] = 0;
@@ -2250,10 +2249,10 @@ void reset_char(struct char_data *ch)
     GET_GOLD(ch) = 100000;
   }
   if (GET_BANK(ch) > 500000) {
-    dlog("%s has %d coins in bank.", GET_NAME(ch), GET_BANK(ch));
+    log_info("%s has %d coins in bank.", GET_NAME(ch), GET_BANK(ch));
   }
   if (GET_GOLD(ch) > 500000) {
-    dlog("%s has %d coins.", GET_NAME(ch), GET_GOLD(ch));
+    log_info("%s has %d coins.", GET_NAME(ch), GET_GOLD(ch));
   }
 }
 
@@ -2261,7 +2260,7 @@ void reset_char(struct char_data *ch)
 void clear_char(struct char_data *ch)
 {
   if (DEBUG > 2)
-    dlog("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
+    log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
 
   memset(ch, '\0', sizeof(struct char_data));
 
@@ -2279,7 +2278,7 @@ void clear_char(struct char_data *ch)
 void clear_object(struct obj_data *obj)
 {
   if (DEBUG > 2)
-    dlog("called %s with %s", __PRETTY_FUNCTION__, SAFE_ONAME(obj));
+    log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_ONAME(obj));
 
   memset(obj, '\0', sizeof(struct obj_data));
 
@@ -2293,7 +2292,7 @@ void init_char(struct char_data *ch)
   int                                     i = 0;
 
   if (DEBUG > 2)
-    dlog("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
+    log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
 
   /*
    * if this is our first player --- he be God
@@ -2398,7 +2397,7 @@ void init_char(struct char_data *ch)
 struct room_data                       *real_roomp(int virtual)
 {
   if (DEBUG > 3)
-    dlog("called %s with %d", __PRETTY_FUNCTION__, virtual);
+    log_info("called %s with %d", __PRETTY_FUNCTION__, virtual);
 
   return hash_find(&room_db, virtual);
 }
@@ -2411,7 +2410,7 @@ int real_mobile(int virtual)
   int                                     mid = 0;
 
   if (DEBUG > 2)
-    dlog("called %s with %d", __PRETTY_FUNCTION__, virtual);
+    log_info("called %s with %d", __PRETTY_FUNCTION__, virtual);
 
   top = top_of_mobt;
 
@@ -2440,7 +2439,7 @@ int real_object(int virtual)
   int                                     mid = 0;
 
   if (DEBUG > 2)
-    dlog("called %s with %d", __PRETTY_FUNCTION__, virtual);
+    log_info("called %s with %d", __PRETTY_FUNCTION__, virtual);
 
   top = top_of_objt;
 
@@ -2468,7 +2467,7 @@ char                                   *fix_string(const char *str)
   int                                     o = 0;
 
   if (DEBUG > 2)
-    dlog("called %s with %s", __PRETTY_FUNCTION__, VNULL(str));
+    log_info("called %s with %s", __PRETTY_FUNCTION__, VNULL(str));
 
   if (str) {
     for (i = o = 0; str[i + o]; i++) {
@@ -2497,21 +2496,20 @@ char                                   *fread_string(FILE * fl)
   int                                     flag = FALSE;
 
   if (DEBUG > 2)
-    dlog("called %s with %08x", __PRETTY_FUNCTION__, fl);
+    log_info("called %s with %08x", __PRETTY_FUNCTION__, fl);
 
   bzero(buf, sizeof(buf));
   bzero(tmp, sizeof(tmp));
 
   do {
     if (!fgets(tmp, MAX_STRING_LENGTH, fl)) {
-      perror("fread_str");
-      bug("File read error.");
+      log_error("fread_str");
       return ("Empty");
     }
     ack = tmp;
     if (strlen(ack) + strlen(buf) + 1 > MAX_STRING_LENGTH) {
       ack[MAX_STRING_LENGTH - strlen(buf) - 2] = '\0';
-      dlog("fread_string: string too long, truncating!\n%s\n", buf);
+      log_error("fread_string: string too long, truncating!\n%s\n", buf);
     }
     strcat(buf, ack);
 
@@ -2551,7 +2549,7 @@ char                                   *fread_word(FILE * fp)
   char                                    cEnd = '\0';
 
   if (DEBUG > 2)
-    dlog("called %s with %08x", __PRETTY_FUNCTION__, fp);
+    log_info("called %s with %08x", __PRETTY_FUNCTION__, fp);
 
   do {
     cEnd = getc(fp);
@@ -2575,7 +2573,7 @@ char                                   *fread_word(FILE * fp)
     }
   }
   word[MAX_INPUT_LENGTH - 1] = '\0';
-  bug("Fread_word: word too long.\n%s\n", word);
+  log_error("Fread_word: word too long.\n%s\n", word);
   return word;
 }
 
@@ -2589,7 +2587,7 @@ int fread_number(FILE * fp)
   char                                    c = '\0';
 
   if (DEBUG > 2)
-    dlog("called %s with %08x", __PRETTY_FUNCTION__, fp);
+    log_info("called %s with %08x", __PRETTY_FUNCTION__, fp);
 
   do {
     c = getc(fp);
@@ -2605,8 +2603,8 @@ int fread_number(FILE * fp)
     c = getc(fp);
   }
   if (!isdigit(c)) {
-    bug("Fread_number: bad format.\nOffending char = '%c'\n", c);
-    exit(1);
+    log_fatal("Fread_number: bad format.\nOffending char = '%c'\n", c);
+    proper_exit(MUD_HALT);
   }
   while (isdigit(c)) {
     num = num * 10 + c - '0';
@@ -2632,7 +2630,7 @@ void fread_to_eol(FILE * fp)
   char                                    c = '\0';
 
   if (DEBUG > 2)
-    dlog("called %s with %08x", __PRETTY_FUNCTION__, fp);
+    log_info("called %s with %08x", __PRETTY_FUNCTION__, fp);
 
   c = getc(fp);
   while (c != '\n' && c != '\r')
@@ -2654,7 +2652,7 @@ char                                   *new_fread_string(FILE * fp)
   char                                    c = '\0';
 
   if (DEBUG > 2)
-    dlog("called %s with %08x", __PRETTY_FUNCTION__, fp);
+    log_info("called %s with %08x", __PRETTY_FUNCTION__, fp);
 
   bzero(buf, MAX_STRING_LENGTH);
   ack = buf;
@@ -2668,7 +2666,7 @@ char                                   *new_fread_string(FILE * fp)
 
   for (;;) {
     if (ack > &buf[MAX_STRING_LENGTH - 1]) {
-      bug("new_fread_string: MAX_STRING %d exceeded, truncating.", MAX_STRING_LENGTH);
+      log_error("new_fread_string: MAX_STRING %d exceeded, truncating.", MAX_STRING_LENGTH);
       return buf;
     }
     switch (*ack = getc(fp)) {
@@ -2677,7 +2675,7 @@ char                                   *new_fread_string(FILE * fp)
 	ack++;
 	break;
       case EOF:
-	bug("Fread_string: EOF");
+	log_error("Fread_string: EOF");
 	return buf;
       case '\r':
 	break;
@@ -2712,7 +2710,7 @@ int fread_char(char *name, struct char_file_u *ch)
   char                                    buf[MAX_STRING_LENGTH] = "\0\0\0";
 
   if (DEBUG > 2)
-    dlog("called %s with %s, %08x", __PRETTY_FUNCTION__, VNULL(name), ch);
+    log_info("called %s with %s, %08x", __PRETTY_FUNCTION__, VNULL(name), ch);
 
   strcpy(tname, name);
   t_ptr = tname;
@@ -2879,23 +2877,22 @@ int fread_char(char *name, struct char_file_u *ch)
 	  if (*s == '\'')
 	    *s = '\0';
 	  if (!strlen(arg)) {
-	    dlog("Empty skill name:  %d\n", skill_number);
+	    log_error("Empty skill name:  %d\n", skill_number);
 	    break;
 	  }
 	  for (sn = -1, x = 0; x < MAX_SKILLS; x++)
 	    if (!str_cmp(arg, spell_info[x].name))
 	      sn = x;
 	  if (sn != skill_number) {
-	    dlog("Skill mismatch: %d read vs. %d lookup\n", skill_number, sn);
-	    dlog("Using lookup version.\n");
+	    log_error("Skill mismatch: %d read vs. %d lookup\nUsing lookup version.\n", skill_number, sn);
 	  }
 	  if (sn < 0) {
-	    dlog("Unknown skill name:  %d\n", skill_number);
+	    log_error("Unknown skill name:  %d\n", skill_number);
 	    if (skill_number < 0 || skill_number >= MAX_SKILLS) {
-	      dlog("Totally invalid skill... ignoring.\n");
+	      log_error("Totally invalid skill... ignoring.\n");
 	      break;
 	    } else {
-	      dlog("Using slot-number read in as a last resort.\n");
+	      log_error("Using slot-number read in as a last resort.\n");
 	      sn = skill_number;
 	    }
 	  }
@@ -2998,7 +2995,7 @@ int fread_char(char *name, struct char_file_u *ch)
     }
 
     if (!fMatch) {
-      bug("Fread_char: no match.");
+      log_error("Fread_char: no match.");
       if (!feof(fp))
 	fread_to_eol(fp);
     }

@@ -36,7 +36,7 @@
 void mobile_guardian(struct char_data *ch)
 {
   if (DEBUG > 2)
-    dlog("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
+    log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
 
   if (ch->in_room > -1) {
     if ((!ch->master) || (!IS_AFFECTED(ch, AFF_CHARM)))
@@ -62,7 +62,7 @@ void mobile_wander(struct char_data *ch)
   struct room_data                       *rp = NULL;
 
   if (DEBUG > 2)
-    dlog("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
+    log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
 
   if ((!(IS_AFFECTED(ch, AFF_CHARM))) && (ch->master))
     stop_follower(ch);
@@ -101,7 +101,7 @@ void MobScavenge(struct char_data *ch)
   int                                     max = 0;
 
   if (DEBUG > 2)
-    dlog("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
+    log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
 
   if ((real_roomp(ch->in_room))->contents && !number(0, 5)) {
     for (max = 1, best_obj = 0, obj = (real_roomp(ch->in_room))->contents;
@@ -150,7 +150,7 @@ void mobile_activity(void)
   int                                     k = 0;
 
   if (DEBUG > 2)
-    dlog("called %s with no arguments", __PRETTY_FUNCTION__);
+    log_info("called %s with no arguments", __PRETTY_FUNCTION__);
 
   for (ch = character_list; ch; ch = ch->next)
     if (IS_MOB(ch)) {
@@ -160,13 +160,13 @@ void mobile_activity(void)
        */
 
       if ((ch->in_room < 0) || !hash_find(&room_db, ch->in_room)) {
-	dlog("Char not in correct room.  moving to 3 ");
+	log_info("Char not in correct room.  moving to 3 ");
 	char_from_room(ch);
 	char_to_room(ch, 3);
       }
       if (IS_SET(ch->specials.act, ACT_SPEC) && !no_specials) {
 	if (!mob_index[ch->nr].func) {
-	  bug("Mob %s attempting to call a non-existing MOB func.", ch->player.name);
+	  log_error("Mob %s attempting to call a non-existing MOB func.", ch->player.name);
 	  REMOVE_BIT(ch->specials.act, ACT_SPEC);
 	} else {
 	  if ((*mob_index[ch->nr].func) (ch, 0, ""))
@@ -265,7 +265,7 @@ void mobile_activity(void)
 int SameRace(struct char_data *ch1, struct char_data *ch2)
 {
   if (DEBUG > 3)
-    dlog("called %s with %s, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch1), SAFE_NAME(ch2));
+    log_info("called %s with %s, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch1), SAFE_NAME(ch2));
 
   if ((!ch1) || (!ch2))
     return (FALSE);
@@ -297,7 +297,7 @@ void AssistFriend(struct char_data *ch)
   int                                     found = FALSE;
 
   if (DEBUG > 3)
-    dlog("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
+    log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
 
   if (check_peaceful(ch, ""))
     return;

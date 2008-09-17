@@ -34,7 +34,10 @@ EFENCE      = #-lpthread -lefence
 PROF_FLAG   = #-pg
 DEPS_FLAG   = -MMD
 
-CFLAGS      = $(MACHINE) $(W_FLAGS) $(DEBUG_FLAG) $(OPT_FLAG) $(PROF_FLAG) $(DEPS_FLAG) -Iinclude
+SQL_INC     = -DUSE_PGSQL #-I/usr/include/postgresql
+SQL_LIB     = -L/usr/lib/postgresql -lpq
+
+CFLAGS      = $(MACHINE) $(W_FLAGS) $(DEBUG_FLAG) $(OPT_FLAG) $(PROF_FLAG) $(DEPS_FLAG) -Iinclude $(SQL_INC)
 LDFLAGS     = $(DEBUG_FLAG) $(OPT_FLAG) $(PROF_FLAG)
 
 SRC =	act_comm.c act_info.c act_move.c act_obj.c act_off.c \
@@ -43,7 +46,7 @@ SRC =	act_comm.c act_info.c act_move.c act_obj.c act_off.c \
 	hash.c interpreter.c limits.c magic.c magic_utils.c \
 	modify.c multiclass.c opinion.c random.c reception.c \
 	shop.c signals.c sound.c spell_parser.c \
-	spells.c trap.c utils.c weather.c whod.c events.c
+	spells.c trap.c utils.c weather.c whod.c events.c sql.c
 OBJ =	$(addprefix obj/, $(SRC:.c=.o))
 TMP =	mob_actions.c spec_procs.c breath_weapons.c tracking.c
 SPOB =	$(addprefix obj/, $(TMP:.c=.o))
@@ -67,7 +70,7 @@ HDRS =	act_comm.h act_info.h act_move.h act_obj.h act_off.h \
 	modify.h multiclass.h opinion.h \
 	random.h reception.h shop.h sound.h spell_parser.h \
 	spells.h trap.h utils.h weather.h whod.h signals.h events.h \
-	mob_actions.h spec_procs.h breath_weapons.h tracking.h
+	mob_actions.h spec_procs.h breath_weapons.h tracking.h sql.h
 HDR =	$(addprefix include/, $(HDRS))
 VER =	$(addprefix include/, version.h)
 IDENTDIR = libident-0.19
@@ -76,7 +79,7 @@ IDENTSRC = $(addprefix $(IDENTDIR)/, id_close.c id_open.c id_parse.c \
 IDENTHDR = $(addprefix $(IDENTDIR)/, ident.h)
 IDENTOBJ = $(IDENTSRC:.c=.o)
 LIBS =	$(IDENTDIR)/libident.a
-LIB =	-L$(IDENTDIR) -lident $(NEED_CRYPT) $(NEED_COMPAT) $(EFENCE)
+LIB =	-L$(IDENTDIR) -lident $(NEED_CRYPT) $(NEED_COMPAT) $(EFENCE) $(SQL_LIB)
 AUX =	GNUmakefile .indent.pro HACKLOG version.proto .version.count
 
 ALLSRC = $(SRC) $(SPEC) $(SRC2) $(SRC3) $(SRC4) $(SRC5) $(IDENTSRC)

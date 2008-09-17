@@ -3,6 +3,6 @@
 #define _VERSION_H
 
 #define VERSION_STR \
-"\r\n*** Welcome to WileyMUD III, Quixadhal's Version 0.887w3-alpha (08.03.24) ***\r\n"
+"\r\n*** Welcome to WileyMUD III, Quixadhal's Version 0.902w3-alpha (08.09.16) ***\r\n"
 
 #endif

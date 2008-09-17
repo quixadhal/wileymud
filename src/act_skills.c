@@ -40,7 +40,7 @@ void do_disarm(struct char_data *ch, char *argument, int cmd)
   int                                     cost = 0;
 
   if (DEBUG)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
   if (check_peaceful(ch, "You feel too peaceful to contemplate violence.\n\r"))
     return;
@@ -157,7 +157,7 @@ void do_disarm(struct char_data *ch, char *argument, int cmd)
 void do_peer(struct char_data *ch, char *argument, int cmd)
 {
   if (DEBUG)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
   if (GET_MANA(ch) < (15 - GET_LEVEL(ch, BestThiefClass(ch)) / 4)) {
     cprintf(ch, "You don't really see anything...\n\r");
@@ -184,7 +184,7 @@ void do_peer(struct char_data *ch, char *argument, int cmd)
 int RideCheck(struct char_data *ch)
 {
   if (DEBUG > 2)
-    dlog("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
+    log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
 
   if (IS_AFFECTED(ch, AFF_RIDE)) {
     return (TRUE);
@@ -208,7 +208,7 @@ int RideCheck(struct char_data *ch)
 void FallOffMount(struct char_data *ch, struct char_data *h)
 {
   if (DEBUG > 2)
-    dlog("called %s with %s, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), SAFE_NAME(h));
+    log_info("called %s with %s, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), SAFE_NAME(h));
 
   act("$n loses control and falls off of $N", FALSE, ch, 0, h, TO_NOTVICT);
   act("$n loses control and falls off of you", FALSE, ch, 0, h, TO_VICT);
@@ -218,7 +218,7 @@ void FallOffMount(struct char_data *ch, struct char_data *h)
 void Dismount(struct char_data *ch, struct char_data *h, int pos)
 {
   if (DEBUG > 2)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), SAFE_NAME(h), pos);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), SAFE_NAME(h), pos);
 
   MOUNTED(ch) = 0;
   RIDDEN(h) = 0;
@@ -232,7 +232,7 @@ int MountEgoCheck(struct char_data *rider, struct char_data *mount)
   int                                     chance = 0;
 
   if (DEBUG > 2)
-    dlog("called %s with %s, %s", __PRETTY_FUNCTION__, SAFE_NAME(rider), SAFE_NAME(mount));
+    log_info("called %s with %s, %s", __PRETTY_FUNCTION__, SAFE_NAME(rider), SAFE_NAME(mount));
 
   diff = GET_ALIGNMENT(rider) - GET_ALIGNMENT(mount);
   if (diff < 0)
@@ -287,7 +287,7 @@ void do_mount(struct char_data *ch, char *argument, int cmd)
   struct char_data                       *horse = NULL;
 
   if (DEBUG)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
   if (IS_AFFECTED(ch, AFF_FLYING)) {
     cprintf(ch, "You can't, you are flying!\n\r");

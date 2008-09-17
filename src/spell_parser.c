@@ -146,7 +146,7 @@ int GetSpellByName(char *name)
   int                                     i = 0;
 
   if (DEBUG > 2)
-    dlog("called %s with %s", __PRETTY_FUNCTION__, VNULL(name));
+    log_info("called %s with %s", __PRETTY_FUNCTION__, VNULL(name));
 
   if (!name || !*name)
     return -1;
@@ -166,7 +166,7 @@ int GetSkillByName(char *name)
   int                                     i = 0;
 
   if (DEBUG > 2)
-    dlog("called %s with %s", __PRETTY_FUNCTION__, VNULL(name));
+    log_info("called %s with %s", __PRETTY_FUNCTION__, VNULL(name));
 
   if (!name || !*name)
     return -1;
@@ -183,7 +183,7 @@ int SPELL_LEVEL(struct char_data *ch, int sn)
   int                                     lowest = 0;
 
   if (DEBUG > 2)
-    dlog("called %s with %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), sn);
+    log_info("called %s with %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), sn);
 
   lowest = ABS_MAX_LVL;
   for (i = 0; i < ABS_MAX_CLASS; i++)
@@ -204,7 +204,7 @@ int CanCast(struct char_data *ch, int sn)
   int                                     lowclass = 0;
 
   if (DEBUG > 2)
-    dlog("called %s with %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), sn);
+    log_info("called %s with %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), sn);
 
   if (!ch || sn < 0 || sn >= MAX_SKILLS)
     return 0;
@@ -225,7 +225,7 @@ int CanCast(struct char_data *ch, int sn)
  int CanCastClass(struct char_data *ch, int sn, int cl)
 {
   if (DEBUG > 2)
-    dlog("called %s with %s, %d, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), sn, cl);
+    log_info("called %s with %s, %d, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), sn, cl);
 
   if (!ch || sn < 0 || sn >= MAX_SKILLS)
     return 0;
@@ -241,7 +241,7 @@ int CanUse(struct char_data *ch, int sn)
   int                                     lowclass = 0;
 
   if (DEBUG > 2)
-    dlog("called %s with %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), sn);
+    log_info("called %s with %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), sn);
 
   if (!ch || sn < 0 || sn >= MAX_SKILLS)
     return 0;
@@ -262,7 +262,7 @@ int CanUse(struct char_data *ch, int sn)
  int CanUseClass(struct char_data *ch, int sn, int cl)
 {
   if (DEBUG > 2)
-    dlog("called %s with %s, %d, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), sn, cl);
+    log_info("called %s with %s, %d, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), sn, cl);
 
   if (!ch || sn < 0 || sn >= MAX_SKILLS)
     return 0;
@@ -277,7 +277,7 @@ void affect_update(void)
   static struct char_data                *i;
 
   if (DEBUG > 2)
-    dlog("called %s with no arguments", __PRETTY_FUNCTION__);
+    log_info("called %s with no arguments", __PRETTY_FUNCTION__);
 
   for (i = character_list; i; i = i->next)
     for (af = i->affected; af; af = next_af_dude) {
@@ -325,7 +325,7 @@ void clone_char(struct char_data *ch)
   int                                     i = 0;
 
   if (DEBUG > 2)
-    dlog("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
+    log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
 
   CREATE(clone, struct char_data, 1);
 
@@ -388,7 +388,7 @@ void clone_obj(struct obj_data *obj)
   struct obj_data                        *clone = NULL;
 
   if (DEBUG > 2)
-    dlog("called %s with %s", __PRETTY_FUNCTION__, SAFE_ONAME(obj));
+    log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_ONAME(obj));
 
   CREATE(clone, struct obj_data, 1);
 
@@ -422,7 +422,7 @@ char circle_follow(struct char_data *ch, struct char_data *victim)
   struct char_data                       *k = NULL;
 
   if (DEBUG > 2)
-    dlog("called %s with %s, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), SAFE_NAME(victim));
+    log_info("called %s with %s, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), SAFE_NAME(victim));
 
   for (k = victim; k; k = k->master) {
     if (k == ch)
@@ -440,7 +440,7 @@ void stop_follower(struct char_data *ch)
   struct follow_type                     *k = NULL;
 
   if (DEBUG > 2)
-    dlog("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
+    log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
 
   if (!ch->master)
     return;
@@ -485,7 +485,7 @@ void die_follower(struct char_data *ch)
   struct follow_type                     *k = NULL;
 
   if (DEBUG > 2)
-    dlog("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
+    log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
 
   if (ch->master)
     stop_follower(ch);
@@ -503,7 +503,7 @@ void add_follower(struct char_data *ch, struct char_data *leader)
   struct follow_type                     *k = NULL;
 
   if (DEBUG > 2)
-    dlog("called %s with %s, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), SAFE_NAME(leader));
+    log_info("called %s with %s, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), SAFE_NAME(leader));
 
   if (ch->master)
     return;
@@ -591,7 +591,7 @@ void say_spell(struct char_data *ch, int si)
   };
 
   if (DEBUG > 2)
-    dlog("called %s with %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), si);
+    log_info("called %s with %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), si);
 
   strcpy(buf, "");
   strcpy(splwd, spell_info[si].name);
@@ -624,7 +624,7 @@ char saves_spell(struct char_data *ch, short int save_type)
   int                                     save = 0;
 
   if (DEBUG > 2)
-    dlog("called %s with %s, %hd", __PRETTY_FUNCTION__, SAFE_NAME(ch), save_type);
+    log_info("called %s with %s, %hd", __PRETTY_FUNCTION__, SAFE_NAME(ch), save_type);
 
   /*
    * Negative apply_saving_throw makes saving throw better! 
@@ -649,7 +649,7 @@ char ImpSaveSpell(struct char_data *ch, short int save_type, int mod)
   int                                     save = 0;
 
   if (DEBUG > 2)
-    dlog("called %s with %s, %hd, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), save_type, mod);
+    log_info("called %s with %s, %hd, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), save_type, mod);
 
   /*
    * Positive mod is better for save 
@@ -678,7 +678,7 @@ char ImpSaveSpell(struct char_data *ch, short int save_type, int mod)
  char                                   *skip_spaces(char *string)
 {
   if (DEBUG > 3)
-    dlog("called %s with %s", __PRETTY_FUNCTION__, VNULL(string));
+    log_info("called %s with %s", __PRETTY_FUNCTION__, VNULL(string));
 
   for (; *string && (*string) == ' '; string++);
 
@@ -700,7 +700,7 @@ void do_cast(struct char_data *ch, char *argument, int cmd)
   char                                    spell_name[MAX_INPUT_LENGTH] = "\0\0\0";
 
   if (DEBUG)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
   /*
    * if (IS_NPC(ch) && (IS_NOT_SET(ch->specials.act, ACT_POLYSELF))) return; 
@@ -953,7 +953,7 @@ void assign_spell_pointers(void)
   int                                     j = 0;
 
   if (DEBUG > 1)
-    dlog("called %s with no arguments");
+    log_info("called %s with no arguments");
 
   for (i = 0; i < MAX_SKILLS; i++) {
     spell_info[i].castable = spell_info[i].useable = 0;
@@ -1325,7 +1325,7 @@ void assign_spell_pointers(void)
 int splat(struct char_data *ch, struct room_data *rp, int height)
 {
   if (DEBUG > 2)
-    dlog("called %s with %s, %08x, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), rp, height);
+    log_info("called %s with %s, %08x, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), rp, height);
 
   if (height > 1) {
     cprintf(ch, "You are smashed into tiny bits!\n\r");
@@ -1346,7 +1346,7 @@ int splat(struct char_data *ch, struct room_data *rp, int height)
     GET_MOVE(ch) -= number(20, 60);
     update_pos(ch);
     if (GET_HIT(ch) < -10) {
-      dlog("%s has fallen to death", NAME(ch));
+      log_death(NULL, ch, "%s has fallen to death", NAME(ch));
       if (!ch->desc)
 	GET_GOLD(ch) = 0;
       die(ch);
@@ -1368,7 +1368,7 @@ int check_falling(struct char_data *ch)
   int                                     saved = FALSE;
 
   if (DEBUG > 2)
-    dlog("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
+    log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
 
   if (IS_AFFECTED(ch, AFF_FLYING))
     return (FALSE);
@@ -1408,7 +1408,7 @@ int check_falling(struct char_data *ch)
     }
   }
   if (count >= 100) {
-    bug("Someone fucked up an air room.");
+    log_error("Someone fucked up an air room.");
     char_from_room(ch);
     char_to_room(ch, GET_HOME(ch));
     do_look(ch, "", 0);
@@ -1422,7 +1422,7 @@ int check_drowning(struct char_data *ch)
   struct room_data                       *rp = NULL;
 
   if (DEBUG > 2)
-    dlog("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
+    log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
 
   if (IS_AFFECTED(ch, AFF_WATERBREATH))
     return FALSE;
@@ -1435,7 +1435,7 @@ int check_drowning(struct char_data *ch)
     GET_MOVE(ch) -= dice(5, 10);
     update_pos(ch);
     if (GET_HIT(ch) < -10) {
-      dlog("%s killed by drowning underwater", GET_NAME(ch));
+      log_death(NULL, ch, "%s killed by drowning underwater", GET_NAME(ch));
       if (!ch->desc)
 	GET_GOLD(ch) = 0;
       die(ch);
@@ -1453,7 +1453,7 @@ int check_drowning(struct char_data *ch)
 	  GET_GOLD(ch) = 0;
       }
       if (GET_HIT(ch) < -10) {
-	dlog("%s killed by drowning in rough water", NAME(ch));
+	log_death(NULL, ch, "%s killed by drowning in rough water", NAME(ch));
 	die(ch);
       }
       return TRUE;
@@ -1470,7 +1470,7 @@ int check_drowning(struct char_data *ch)
 	  GET_GOLD(ch) = 0;
       }
       if (GET_HIT(ch) < -10) {
-	dlog("%s killed by drowning in shallow water", NAME(ch));
+	log_death(NULL, ch, "%s killed by drowning in shallow water", NAME(ch));
 	die(ch);
       }
       return TRUE;
@@ -1487,10 +1487,10 @@ void check_falling_obj(struct obj_data *obj, int room)
   int                                     count = 0;
 
   if (DEBUG > 2)
-    dlog("called %s with %s, %d", __PRETTY_FUNCTION__, SAFE_ONAME(obj), room);
+    log_info("called %s with %s, %d", __PRETTY_FUNCTION__, SAFE_ONAME(obj), room);
 
   if (obj->in_room != room) {
-    bug("unusual object information in check_falling_obj");
+    log_error("unusual object information in check_falling_obj");
     return;
   }
   rp = real_roomp(room);
@@ -1578,7 +1578,7 @@ void check_falling_obj(struct obj_data *obj, int room)
   }
 
   if (count >= 100) {
-    bug("Someone fucked up an air room.");
+    log_error("Someone fucked up an air room.");
     obj_from_room(obj);
     obj_to_room(obj, 2);
     return;
@@ -1588,7 +1588,7 @@ void check_falling_obj(struct obj_data *obj, int room)
  int check_nature(struct char_data *i)
 {
   if (DEBUG > 3)
-    dlog("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(i));
+    log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(i));
 
   if (check_falling(i)) {
     return (TRUE);
@@ -1601,7 +1601,7 @@ void check_falling_obj(struct obj_data *obj, int room)
   struct char_data                       *i = NULL;
 
   if (DEBUG > 3)
-    dlog("called %s with %d", __PRETTY_FUNCTION__, current_pulse);
+    log_info("called %s with %d", __PRETTY_FUNCTION__, current_pulse);
 
   for (i = character_list; i; i = i->next)
     check_nature(i);

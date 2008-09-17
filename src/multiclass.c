@@ -28,7 +28,7 @@
 int GetClassLevel(struct char_data *ch, int class)
 {
   if (DEBUG > 2)
-    dlog("called %s with %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), class);
+    log_info("called %s with %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), class);
 
   if (IS_SET(ch->player.class, class)) {
     return (GET_LEVEL(ch, CountBits(class) - 1));
@@ -39,7 +39,7 @@ int GetClassLevel(struct char_data *ch, int class)
 int CountBits(int class)
 {
   if (DEBUG > 2)
-    dlog("called %s with %d", __PRETTY_FUNCTION__, class);
+    log_info("called %s with %d", __PRETTY_FUNCTION__, class);
 
   if (class == 1)
     return (1);
@@ -61,7 +61,7 @@ int OnlyClass(struct char_data *ch, int class)
   int                                     i = 0;
 
   if (DEBUG > 2)
-    dlog("called %s with %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), class);
+    log_info("called %s with %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), class);
 
   for (i = 1; i <= 32; i *= 2) {
     if (GetClassLevel(ch, i) != 0)
@@ -75,7 +75,7 @@ int OnlyClass(struct char_data *ch, int class)
  int HasClass(struct char_data *ch, int class)
 {
   if (DEBUG > 3)
-    dlog("called %s with %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), class);
+    log_info("called %s with %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), class);
 
   if (IS_SET(ch->player.class, class))
     return TRUE;
@@ -88,7 +88,7 @@ int OnlyClass(struct char_data *ch, int class)
   int                                     tot = 0;
 
   if (DEBUG > 3)
-    dlog("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
+    log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
 
   for (i = 0; i < ABS_MAX_CLASS; i++)
     if (HasClass(ch, 1 << i))
@@ -99,7 +99,7 @@ int OnlyClass(struct char_data *ch, int class)
 int BestFightingClass(struct char_data *ch)
 {
   if (DEBUG > 2)
-    dlog("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
+    log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
 
   if (GET_LEVEL(ch, WARRIOR_LEVEL_IND))
     return (WARRIOR_LEVEL_IND);
@@ -114,14 +114,14 @@ int BestFightingClass(struct char_data *ch)
   if (GET_LEVEL(ch, MAGE_LEVEL_IND))
     return (MAGE_LEVEL_IND);
 
-  bug("Massive error.. character %s has no recognized class.", GET_NAME(ch));
+  log_error("Massive error.. character %s has no recognized class.", GET_NAME(ch));
   return (1);
 }
 
 int BestThiefClass(struct char_data *ch)
 {
   if (DEBUG > 2)
-    dlog("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
+    log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
 
   if (GET_LEVEL(ch, THIEF_LEVEL_IND))
     return (THIEF_LEVEL_IND);
@@ -136,14 +136,14 @@ int BestThiefClass(struct char_data *ch)
   if (GET_LEVEL(ch, CLERIC_LEVEL_IND))
     return (CLERIC_LEVEL_IND);
 
-  bug("Massive error.. character %s has no recognized class.", GET_NAME(ch));
+  log_error("Massive error.. character %s has no recognized class.", GET_NAME(ch));
   return (1);
 }
 
 int BestMagicClass(struct char_data *ch)
 {
   if (DEBUG > 2)
-    dlog("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
+    log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
 
   if (GET_LEVEL(ch, MAGE_LEVEL_IND))
     return (MAGE_LEVEL_IND);
@@ -158,7 +158,7 @@ int BestMagicClass(struct char_data *ch)
   if (GET_LEVEL(ch, WARRIOR_LEVEL_IND))
     return (WARRIOR_LEVEL_IND);
 
-  bug("Massive error.. character %s has no recognized class.", GET_NAME(ch));
+  log_error("Massive error.. character %s has no recognized class.", GET_NAME(ch));
   return (1);
 }
 
@@ -170,7 +170,7 @@ int GetALevel(struct char_data *ch, int which)
   int                                     i = 0;
 
   if (DEBUG > 2)
-    dlog("called %s with %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), which);
+    log_info("called %s with %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), which);
 
   for (i = MAGE_LEVEL_IND; i <= DRUID_LEVEL_IND; i++) {
     ind[i] = GET_LEVEL(ch, i);
@@ -199,7 +199,7 @@ int GetALevel(struct char_data *ch, int which)
 int GetSecMaxLev(struct char_data *ch)
 {
   if (DEBUG > 2)
-    dlog("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
+    log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
 
   return (GetALevel(ch, 1));
 }
@@ -207,7 +207,7 @@ int GetSecMaxLev(struct char_data *ch)
 int GetThirdMaxLev(struct char_data *ch)
 {
   if (DEBUG > 2)
-    dlog("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
+    log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
 
   return (GetALevel(ch, 2));
 }
@@ -221,7 +221,7 @@ int GetMaxLevel(struct char_data *ch)
    * Cannot call things in bug.c from things bug.c calls!
    *
    * if (DEBUG > 2)
-   *   dlog("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
+   *   log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
    */
 
   for (i = MAGE_LEVEL_IND; i <= DRUID_LEVEL_IND; i++) {
@@ -238,7 +238,7 @@ int GetMinLevel(struct char_data *ch)
   int                                     i = 0;
 
   if (DEBUG > 2)
-    dlog("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
+    log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
 
   for (i = MAGE_LEVEL_IND; i <= DRUID_LEVEL_IND; i++) {
     if (GET_LEVEL(ch, i) > 0)
@@ -252,7 +252,7 @@ int GetMinLevel(struct char_data *ch)
 int GetTotLevel(struct char_data *ch)
 {
   if (DEBUG > 2)
-    dlog("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
+    log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
 
   return (GET_LEVEL(ch, 0) + GET_LEVEL(ch, 1) + GET_LEVEL(ch, 2)
 	  + GET_LEVEL(ch, 3) + GET_LEVEL(ch, 4) + GET_LEVEL(ch, 5));
@@ -262,7 +262,7 @@ int GetTotLevel(struct char_data *ch)
 void StartLevels(struct char_data *ch)
 {
   if (DEBUG > 2)
-    dlog("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
+    log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
 
   if (IS_SET(ch->player.class, CLASS_MAGIC_USER)) {
     advance_level(ch, MAGE_LEVEL_IND);
@@ -291,7 +291,7 @@ int BestClass(struct char_data *ch)
   int                                     i = 0;
 
   if (DEBUG > 2)
-    dlog("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
+    log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
 
   for (i = MAGE_LEVEL_IND; i <= DRUID_LEVEL_IND; i++)
     if (max < GET_LEVEL(ch, i)) {
@@ -299,8 +299,8 @@ int BestClass(struct char_data *ch)
       class = i;
     }
   if (max == 0) {					       /* eek */
-    bug("Massive error.. character %s has no recognized class.", GET_NAME(ch));
-    abort();
+    log_fatal("Massive error.. character %s has no recognized class.", GET_NAME(ch));
+    proper_exit(MUD_HALT);
   } else {
     return (class);
   }

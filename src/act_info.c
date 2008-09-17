@@ -44,7 +44,7 @@ void argument_split_2(char *argument, char *first_arg, char *second_arg)
   int                                     begin = 0;
 
   if (DEBUG > 2)
-    dlog("called %s with %s, %s, %s", __PRETTY_FUNCTION__, VNULL(argument), VNULL(first_arg), VNULL(second_arg));
+    log_info("called %s with %s, %s, %s", __PRETTY_FUNCTION__, VNULL(argument), VNULL(first_arg), VNULL(second_arg));
 
   /*
    * Find first non blank 
@@ -85,7 +85,7 @@ struct obj_data                        *get_object_in_equip_vis(struct char_data
 								int *j)
 {
   if (DEBUG > 2)
-    dlog("called %s with %s, %s, %08x, %08x", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(arg), equipment, j);
+    log_info("called %s with %s, %s, %08x, %08x", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(arg), equipment, j);
 
   for ((*j) = 0; (*j) < MAX_WEAR; (*j)++)
     if (equipment[(*j)])
@@ -102,7 +102,7 @@ char                                   *find_ex_description(char *word,
   struct extra_descr_data                *i = NULL;
 
   if (DEBUG > 2)
-    dlog("called %s with %s, %08x", __PRETTY_FUNCTION__, VNULL(word), list);
+    log_info("called %s with %s, %08x", __PRETTY_FUNCTION__, VNULL(word), list);
 
   for (i = list; i; i = i->next)
     if (isname(word, i->keyword))
@@ -116,7 +116,7 @@ void show_obj_to_char(struct obj_data *object, struct char_data *ch, int mode)
   char                                    buffer[MAX_STRING_LENGTH] = "\0\0\0";
 
   if (DEBUG > 2)
-    dlog("called %s with %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), mode);
+    log_info("called %s with %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), mode);
 
   if ((mode == 0) && object->description)
     strcpy(buffer, object->description);
@@ -178,7 +178,7 @@ void show_mult_obj_to_char(struct obj_data *object, struct char_data *ch, int mo
   char                                    tmp[10] = "\0\0\0";
 
   if (DEBUG > 2)
-    dlog("called %s with %s, %s, %d, %d", __PRETTY_FUNCTION__, SAFE_ONAME(object), SAFE_NAME(ch), mode, num);
+    log_info("called %s with %s, %s, %d, %d", __PRETTY_FUNCTION__, SAFE_ONAME(object), SAFE_NAME(ch), mode, num);
 
   if ((mode == 0) && object->description)
     strcpy(buffer, object->description);
@@ -237,7 +237,7 @@ void list_obj_in_room(struct obj_data *list, struct char_data *ch)
   int                                     cond_tot[50];
 
   if (DEBUG > 2)
-    dlog("called %s with %08x, %s", __PRETTY_FUNCTION__, list, SAFE_NAME(ch));
+    log_info("called %s with %08x, %s", __PRETTY_FUNCTION__, list, SAFE_NAME(ch));
 
   for (i = list; i; i = i->next_content) {
     if (CAN_SEE_OBJ(ch, i)) {
@@ -305,7 +305,7 @@ void list_obj_on_char(struct obj_data *list, struct char_data *ch)
   int                                     cond_tot[50];
 
   if (DEBUG > 2)
-    dlog("called %s with %08x, %s", __PRETTY_FUNCTION__, list, SAFE_NAME(ch));
+    log_info("called %s with %08x, %s", __PRETTY_FUNCTION__, list, SAFE_NAME(ch));
 
   if (!list) {
     cprintf(ch, "   Nothing\n\r");
@@ -355,7 +355,7 @@ void list_obj_to_char(struct obj_data *list, struct char_data *ch, int mode, cha
   int                                     found = FALSE;
 
   if (DEBUG > 2)
-    dlog("called %s with %08x, %s, %d, '%c'", __PRETTY_FUNCTION__, list, SAFE_NAME(ch), mode, show);
+    log_info("called %s with %08x, %s, %d, '%c'", __PRETTY_FUNCTION__, list, SAFE_NAME(ch), mode, show);
 
   for (i = list; i; i = i->next_content) {
     if (CAN_SEE_OBJ(ch, i)) {
@@ -378,7 +378,7 @@ void show_char_to_char(struct char_data *i, struct char_data *ch, int mode)
   struct obj_data                        *tmp_obj = NULL;
 
   if (DEBUG > 2)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(i), SAFE_NAME(ch), mode);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(i), SAFE_NAME(ch), mode);
 
   if (mode == 0) {
     if (IS_AFFECTED(i, AFF_HIDE) || !CAN_SEE(ch, i)) {
@@ -628,7 +628,7 @@ void show_mult_char_to_char(struct char_data *i, struct char_data *ch, int mode,
   char                                    tmp[10] = "\0\0\0";
 
   if (DEBUG > 2)
-    dlog("called %s with %s, %s, %d, %d", __PRETTY_FUNCTION__, SAFE_NAME(i), SAFE_NAME(ch), mode, num);
+    log_info("called %s with %s, %s, %d, %d", __PRETTY_FUNCTION__, SAFE_NAME(i), SAFE_NAME(ch), mode, num);
 
   if (mode == 0) {
     if (IS_AFFECTED(i, AFF_HIDE) || !CAN_SEE(ch, i)) {
@@ -847,7 +847,7 @@ void list_char_in_room(struct char_data *list, struct char_data *ch)
   struct char_data                       *cond_ptr[50];
 
   if (DEBUG > 2)
-    dlog("called %s with %08x, %s", __PRETTY_FUNCTION__, list, SAFE_NAME(ch));
+    log_info("called %s with %08x, %s", __PRETTY_FUNCTION__, list, SAFE_NAME(ch));
 
   for (i = list; i; i = i->next_in_room) {
     if ((ch != i) &&
@@ -897,7 +897,7 @@ void list_char_to_char(struct char_data *list, struct char_data *ch, int mode)
   struct char_data                       *i = NULL;
 
   if (DEBUG > 2)
-    dlog("called %s with %08x, %s, %d", __PRETTY_FUNCTION__, list, SAFE_NAME(ch), mode);
+    log_info("called %s with %08x, %s, %d", __PRETTY_FUNCTION__, list, SAFE_NAME(ch), mode);
 
   for (i = list; i; i = i->next_in_room) {
     if ((ch != i) && (IS_AFFECTED(ch, AFF_SENSE_LIFE) ||
@@ -936,7 +936,7 @@ void do_look(struct char_data *ch, char *argument, int cmd)
   };
 
   if (DEBUG > 1)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
   if (!ch->desc)
     return;
@@ -1328,7 +1328,7 @@ void do_read(struct char_data *ch, char *argument, int cmd)
   char                                    buf[100] = "\0\0\0";
 
   if (DEBUG)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
   /*
    * This is just for now - To be changed later.! 
@@ -1346,7 +1346,7 @@ void do_examine(struct char_data *ch, char *argument, int cmd)
   struct obj_data                        *tmp_object = NULL;
 
   if (DEBUG)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
   sprintf(buf, "at %s", argument);
   do_look(ch, buf, 15);
@@ -1385,7 +1385,7 @@ void do_search(struct char_data *ch, char *argument, int cmd)
   struct room_direction_data             *exitdata = NULL;
 
   if (DEBUG)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
   if (IS_DARK(ch->in_room)) {
     cprintf(ch, "It is far to dark to search...\n\r");
@@ -1438,7 +1438,7 @@ void do_exits(struct char_data *ch, char *argument, int cmd)
   struct room_direction_data             *exitdata = NULL;
 
   if (DEBUG)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
   for (door = 0; door < MAX_NUM_EXITS; door++) {
     exitdata = EXIT(ch, door);
@@ -1495,7 +1495,7 @@ void do_score(struct char_data *ch, char *argument, int cmd)
   target = ch;
 
   if (DEBUG)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
   if (IS_IMMORTAL(ch)) {
     one_argument(argument, tmpbuf);
@@ -1741,7 +1741,7 @@ void do_score(struct char_data *ch, char *argument, int cmd)
 void do_mystat(struct char_data *ch, char *argument, int cmd)
 {
   if (DEBUG)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
   cprintf(ch, "Use SCORE instead.\n\r");
 }
@@ -1758,7 +1758,7 @@ void do_time(struct char_data *ch, char *argument, int cmd)
   tm_info = localtime(&tc);
 
   if (DEBUG)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
   sprintf(buf, "It is %d o'clock %s, on ",
 	  ((time_info.hours % 12 == 0) ? 12 : ((time_info.hours) % 12)),
@@ -1805,7 +1805,7 @@ void do_weather(struct char_data *ch, char *argument, int cmd)
   };
 
   if (DEBUG)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
   if (IS_IMMORTAL(ch)) {
     cprintf(ch, "Sky Condit : %s\n\r", sky_words[weather_info.sky]);
@@ -1834,7 +1834,7 @@ void do_help(struct char_data *ch, char *argument, int cmd)
   char                                    buffer[MAX_STRING_LENGTH] = "\0\0\0";
 
   if (DEBUG)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
   if (!ch->desc)
     return;
@@ -1898,7 +1898,7 @@ void do_wizhelp(struct char_data *ch, char *argument, int cmd)
    * cmd_info[1] ~~ commando[0] 
    */
   if (DEBUG)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
   if (!ch->desc)
     return;
@@ -1968,7 +1968,7 @@ void do_allcommands(struct char_data *ch, char *argument, int cmd)
   char                                    buf[MAX_STRING_LENGTH] = "\0\0\0";
 
   if (DEBUG)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
   if (IS_NPC(ch))
     return;
@@ -2002,7 +2002,7 @@ void do_who(struct char_data *ch, char *argument, int cmd)
   char                                   *otmstr = NULL;
 
   if (DEBUG)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
 /*
  * if (IS_NPC(ch))
@@ -2094,7 +2094,7 @@ void do_users(struct char_data *ch, char *argument, int cmd)
   char                                    line[200] = "\0\0\0";
 
   if (DEBUG)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
   strcpy(buf, "Connections:\n\r------------\n\r");
 
@@ -2130,7 +2130,7 @@ void do_users(struct char_data *ch, char *argument, int cmd)
 void do_inventory(struct char_data *ch, char *argument, int cmd)
 {
   if (DEBUG)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
   cprintf(ch, "You are carrying:\n\r");
   list_obj_on_char(ch->carrying, ch);
@@ -2143,7 +2143,7 @@ void do_equipment(struct char_data *ch, char *argument, int cmd)
   int                                     found = FALSE;
 
   if (DEBUG)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
   cprintf(ch, "Equipment in use:\n\r");
   for (Worn_Index = j = 0; j < MAX_WEAR; j++) {
@@ -2167,7 +2167,7 @@ void do_equipment(struct char_data *ch, char *argument, int cmd)
 void do_credits(struct char_data *ch, char *argument, int cmd)
 {
   if (DEBUG)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
   page_string(ch->desc, credits, 0);
 }
@@ -2175,7 +2175,7 @@ void do_credits(struct char_data *ch, char *argument, int cmd)
 void do_news(struct char_data *ch, char *argument, int cmd)
 {
   if (DEBUG)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
   page_string(ch->desc, news, 0);
 }
@@ -2183,7 +2183,7 @@ void do_news(struct char_data *ch, char *argument, int cmd)
 void do_info(struct char_data *ch, char *argument, int cmd)
 {
   if (DEBUG)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
   page_string(ch->desc, info, 0);
 }
@@ -2191,7 +2191,7 @@ void do_info(struct char_data *ch, char *argument, int cmd)
 void do_wizlist(struct char_data *ch, char *argument, int cmd)
 {
   if (DEBUG)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
   page_string(ch->desc, wizlist, 0);
 }
@@ -2203,7 +2203,7 @@ static int which_number_mobile(struct char_data *ch, struct char_data *mob)
   int                                     the_number = 0;
 
   if (DEBUG > 2)
-    dlog("called %s with %s, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), SAFE_NAME(mob));
+    log_info("called %s with %s, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), SAFE_NAME(mob));
 
   name = fname(mob->player.name);
   for (i = character_list, the_number = 0; i; i = i->next) {
@@ -2222,7 +2222,7 @@ char                                   *numbered_person(struct char_data *ch,
   static char                             buf[MAX_STRING_LENGTH] = "\0\0\0";
 
   if (DEBUG > 2)
-    dlog("called %s with %s, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), SAFE_NAME(person));
+    log_info("called %s with %s, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), SAFE_NAME(person));
 
   if (IS_NPC(person) && IS_IMMORTAL(ch)) {
     sprintf(buf, "%d.%s", which_number_mobile(ch, person), fname(person->player.name));
@@ -2238,7 +2238,7 @@ static void    where_person(struct char_data *ch, struct char_data *person,
   char                                    buf[MAX_STRING_LENGTH] = "\0\0\0";
 
   if (DEBUG > 2)
-    dlog("called %s with %s, %s, %08x", __PRETTY_FUNCTION__, SAFE_NAME(ch), SAFE_NAME(person), sb);
+    log_info("called %s with %s, %s, %08x", __PRETTY_FUNCTION__, SAFE_NAME(ch), SAFE_NAME(person), sb);
 
   sprintf(buf, "%-30s- %s ", PERS(person, ch),
 	  (person->in_room > -1 ? real_roomp(person->in_room)->name : "Nowhere"));
@@ -2257,7 +2257,7 @@ static void    where_object(struct char_data *ch, struct obj_data *obj,
   char                                    buf[MAX_STRING_LENGTH] = "\0\0\0";
 
   if (DEBUG > 2)
-    dlog("called %s with %s, %s, %d, %08x", __PRETTY_FUNCTION__, SAFE_NAME(ch), SAFE_ONAME(obj), recurse, sb);
+    log_info("called %s with %s, %s, %d, %08x", __PRETTY_FUNCTION__, SAFE_NAME(ch), SAFE_ONAME(obj), recurse, sb);
 
   if (obj->in_room != NOWHERE) {			       /* object in a room */
     sprintf(buf, "%-30s- %s [%d]\n\r",
@@ -2301,7 +2301,7 @@ void do_where(struct char_data *ch, char *argument, int cmd)
   struct string_block                     sb;
 
   if (DEBUG)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
   only_argument(argument, name);
 
@@ -2400,7 +2400,7 @@ void do_levels(struct char_data *ch, char *argument, int cmd)
   char                                    buf[MAX_STRING_LENGTH] = "\0\0\0";
 
   if (DEBUG)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
   if (IS_NPC(ch))
     return;
@@ -2479,7 +2479,7 @@ void do_consider(struct char_data *ch, char *argument, int cmd)
   int                                     diff = 0;
 
   if (DEBUG)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
   only_argument(argument, name);
 
@@ -2557,7 +2557,7 @@ void do_spells(struct char_data *ch, char *argument, int cmd)
   char                                    buf[16384] = "\0\0\0";
 
   if (DEBUG)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
   if (IS_NPC(ch))
     return;
@@ -2587,7 +2587,7 @@ void do_world(struct char_data *ch, char *argument, int cmd)
   char                                   *otmstr = NULL;
 
   if (DEBUG)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
   ot = Uptime;
   otmstr = asctime(localtime(&ot));
@@ -2635,7 +2635,7 @@ void do_skills(struct char_data *ch, char *argument, int cmd)
   };
 
   if (DEBUG)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
   cprintf(ch, "You have %d practice sessions left.\n\r", ch->specials.pracs);
   for (i = 0; r_skills[i].skill_name[0] != '\n'; i++) {
@@ -2655,7 +2655,7 @@ void do_players(struct char_data *ch, char *argument, int cmd)
   int                                     i = 0;
 
   if (DEBUG)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
   cprintf(ch, "Player List for WileyMUD III\n\r\n\r");
   bzero(buf, MAX_STRING_LENGTH);
@@ -2681,7 +2681,7 @@ void do_ticks(struct char_data *ch, char *argument, int cmd)
   tm_info = localtime(&tc);
 
   if (DEBUG)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
   cprintf(ch, "Pulse Counter: %d\n\r", pulse);
   cprintf(ch, "  NEXT TICK:\t\t%1.2lf\n\r", pulse_update / (double)PULSE_PER_SECOND);
@@ -2732,7 +2732,7 @@ void do_map(struct char_data *ch, char *argument, int cmd)
   char                                    terrain[MAX_NUM_EXITS][13];
 
   if (DEBUG)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
   for (door = 0; door < MAX_NUM_EXITS; door++) {
     bzero(name[door], 21);

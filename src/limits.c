@@ -38,7 +38,7 @@ char                                   *ClassTitles(struct char_data *ch)
   static char                             buf[256] = "\0\0\0";
 
   if (DEBUG > 2)
-    dlog("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
+    log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
 
   for (i = MAGE_LEVEL_IND; i <= DRUID_LEVEL_IND; i++) {
     if (GET_LEVEL(ch, i)) {
@@ -62,7 +62,7 @@ char                                   *ClassTitles(struct char_data *ch)
 int graf(int char_age, int p0, int p1, int p2, int p3, int p4, int p5, int p6)
 {
   if (DEBUG > 2)
-    dlog("called %s with %d, %d, %d, %d, %d, %d, %d, %d", __PRETTY_FUNCTION__, char_age, p0, p1, p2, p3, p4, p5, p6);
+    log_info("called %s with %d, %d, %d, %d, %d, %d, %d, %d", __PRETTY_FUNCTION__, char_age, p0, p1, p2, p3, p4, p5, p6);
 
   if (char_age < 15)
     return (p0);					       /* < 15 */
@@ -87,7 +87,7 @@ int mana_limit(struct char_data *ch)
   int                                     cl = 0;
 
   if (DEBUG > 2)
-    dlog("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
+    log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
 
   if (IS_PC(ch)) {
     if (HasClass(ch, CLASS_MAGIC_USER))
@@ -116,7 +116,7 @@ int hit_limit(struct char_data *ch)
   int                                     max = 0;
 
   if (DEBUG > 2)
-    dlog("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
+    log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
 
   if (IS_PC(ch))
     max = (ch->points.max_hit) + (graf(age(ch).year, 2, 4, 17, 14, 8, 4, 3));
@@ -144,7 +144,7 @@ int move_limit(struct char_data *ch)
   int                                     max = 0;
 
   if (DEBUG > 2)
-    dlog("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
+    log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
 
   if (!IS_NPC(ch))
     max = 70 + age(ch).year + (int)GET_CON(ch) + GetTotLevel(ch);
@@ -173,7 +173,7 @@ int mana_gain(struct char_data *ch)
   int                                     gain = 0;
 
   if (DEBUG > 2)
-    dlog("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
+    log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
 
   if (IS_NPC(ch)) {
     /*
@@ -242,7 +242,7 @@ int hit_gain(struct char_data *ch)
   int                                     gain = 0;
 
   if (DEBUG > 2)
-    dlog("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
+    log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
 
   if (IS_NPC(ch)) {
     gain = 8;
@@ -329,7 +329,7 @@ int move_gain(struct char_data *ch)
   int                                     gain = 0;
 
   if (DEBUG > 2)
-    dlog("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
+    log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
 
   if (IS_NPC(ch))
     return (GetTotLevel(ch));
@@ -396,7 +396,7 @@ void advance_level(struct char_data *ch, int class)
   int                                     i = 0;
 
   if (DEBUG > 1)
-    dlog("called %s with %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), class);
+    log_info("called %s with %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), class);
 
   if (GET_LEVEL(ch, class) > 0 && GET_EXP(ch) <
 #ifdef MOB_LEVELING
@@ -408,7 +408,7 @@ void advance_level(struct char_data *ch, int class)
       titles[class][GET_LEVEL(ch, class) + 1].exp
 #endif
     ) {
-    dlog("Bad advance_level");
+    log_info("Bad advance_level");
     return;
   }
   GET_LEVEL(ch, class) += 1;
@@ -500,7 +500,7 @@ void advance_level(struct char_data *ch, int class)
   ch->points.max_move = GET_MAX_MOVE(ch);
   if (IS_PC(ch))
     update_player_list_entry(ch->desc);
-  dlog("%s advances to level %d.\n\r", GET_NAME(ch), GetMaxLevel(ch));
+  log_info("%s advances to level %d.\n\r", GET_NAME(ch), GetMaxLevel(ch));
 }
 
 /* Lose in various points */
@@ -514,7 +514,7 @@ void drop_level(struct char_data *ch, int class)
   int                                     lin_class = 0;
 
   if (DEBUG > 1)
-    dlog("called %s with %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), class);
+    log_info("called %s with %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), class);
 
 /*
  * if (GetMaxLevel(ch) >= LOW_IMMORTAL)
@@ -614,7 +614,7 @@ void drop_level(struct char_data *ch, int class)
   if (ch->points.exp < 0)
     ch->points.exp = 0;
   update_player_list_entry(ch->desc);
-  dlog("%s drops to level %d.\n\r", GET_NAME(ch), GetMaxLevel(ch));
+  log_info("%s drops to level %d.\n\r", GET_NAME(ch), GetMaxLevel(ch));
 }
 
 void set_title(struct char_data *ch)
@@ -622,7 +622,7 @@ void set_title(struct char_data *ch)
   char                                    buf[256] = "\0\0\0";
 
   if (DEBUG > 1)
-    dlog("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
+    log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
 
   sprintf(buf, "the %s %s", RaceName[ch->race], ClassTitles(ch));
   if (GET_TITLE(ch)) {
@@ -639,7 +639,7 @@ void gain_exp(struct char_data *ch, int gain)
   int                                     i = 0;
 
   if (DEBUG > 2)
-    dlog("called %s with %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), gain);
+    log_info("called %s with %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), gain);
 
 /*  save_char(ch,NOWHERE); */
 
@@ -717,7 +717,7 @@ void gain_exp_regardless(struct char_data *ch, int gain, int class)
   int                                     is_altered = FALSE;
 
   if (DEBUG > 2)
-    dlog("called %s with %s, %d, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), gain, class);
+    log_info("called %s with %s, %d, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), gain, class);
 
   save_char(ch, NOWHERE);
   if (!IS_NPC(ch)) {
@@ -748,7 +748,7 @@ void gain_condition(struct char_data *ch, int condition, int value)
   int                                     intoxicated = FALSE;
 
   if (DEBUG > 2)
-    dlog("called %s with %s, %d, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), condition, value);
+    log_info("called %s with %s, %d, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), condition, value);
 
   if (GET_COND(ch, condition) == -1)			       /* No change */
     return;
@@ -790,7 +790,7 @@ void check_idling(struct char_data *ch)
   struct obj_cost                         cost;
 
   if (DEBUG > 2)
-    dlog("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
+    log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
 
   ++(ch->specials.timer);
 
@@ -799,7 +799,7 @@ void check_idling(struct char_data *ch)
     return;
   }
   if (ch->specials.timer >= 10) {
-    dlog("LOG:%s AUTOSAVE:Timer %d.", GET_NAME(ch), ch->specials.timer);
+    log_info("LOG:%s AUTOSAVE:Timer %d.", GET_NAME(ch), ch->specials.timer);
 
     if (ch->specials.fighting) {
       stop_fighting(ch->specials.fighting);
@@ -825,7 +825,7 @@ void check_idling(struct char_data *ch)
 
     /* ch->desc = 0; already done inside close_socket, thanks valgrind! */
 
-    dlog("Done Auto-Saving.");
+    log_info("Done Auto-Saving.");
   }
 }
 
@@ -839,7 +839,7 @@ void point_update(int current_pulse)
   int                                     count = 0;
 
   if (DEBUG > 2)
-    dlog("called %s with %d", __PRETTY_FUNCTION__, current_pulse);
+    log_info("called %s with %d", __PRETTY_FUNCTION__, current_pulse);
 
   /*
    * characters 
@@ -1022,7 +1022,7 @@ int ObjFromCorpse(struct obj_data *c)
   struct obj_data                        *next_thing = NULL;
 
   if (DEBUG > 2)
-    dlog("called %s with %s", __PRETTY_FUNCTION__, SAFE_ONAME(c));
+    log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_ONAME(c));
 
   for (jj = c->contains; jj; jj = next_thing) {
     next_thing = jj->next_content;			       /* Next in inventory */
@@ -1043,7 +1043,7 @@ int ObjFromCorpse(struct obj_data *c)
        */
       c->contains = 0;
       extract_obj(c);
-      bug("Memory lost in ObjFromCorpse.");
+      log_error("Memory lost in ObjFromCorpse.");
       return (TRUE);
     }
   }

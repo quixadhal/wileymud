@@ -34,7 +34,7 @@ char *my_strdup(char *Str) {
 
   if(!Str) return ""; /* Note:  This works AROUND the bug! */
   if(!(tmp= (char *)strdup(Str)))
-    fatal("Cannot get memory to strdup(\"%s\")!",Str);
+    log_fatal("Cannot get memory to strdup(\"%s\")!",Str);
   return tmp;
 }
 
@@ -46,7 +46,7 @@ FILE *open_file(char *Filename, char *Mode) {
   FILE *fp;
 
   if(!(fp= fopen(Filename, Mode)))
-    fatal("Cannot open (%s) for (%s) access!",Filename,Mode);
+    log_fatal("Cannot open (%s) for (%s) access!",Filename,Mode);
   return fp;
 }
 
@@ -57,7 +57,7 @@ char *get_mem(long Count, long Size) {
   char *Memory;
 
   if(!(Memory= (char *)malloc(Count * Size)))
-    fatal("Cannot allocate %d bytes!",Count* Size);
+    log_fatal("Cannot allocate %d bytes!",Count* Size);
   return Memory;
 }
 
@@ -73,7 +73,7 @@ char *get_more_mem(char *Memory, long Count, long Size) {
  * I figured why make the get_mem() function inconsistant?
  */
   if(!(NewMemory= (char *)realloc(Memory, Count * Size)))
-    fatal("Cannot reallocate %d bytes!",Count* Size);
+    log_fatal("Cannot reallocate %d bytes!",Count* Size);
   return NewMemory;
 }
 

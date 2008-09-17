@@ -716,3 +716,13 @@ global.h:1144: warning: function declaration isn't a prototype
 041108	Quixadhal
   0406	Nope.  Adding I3 support will require either rewriting the I3 load/save routines, or
 	finally rewriting Wiley's entire ancient load/save code.
+080914	Quixadhal
+  1045	Fixed a LONG standing bug with a staff of weakness, thanks to a new warning by gcc 4.1.2
+  1230	Added SQL database support!  Very simple, will move logging to the database first I think.
+  1400	Added SQL to logging system.  Replaced dlog() with log_printf().
+  2330	Replaced bug() with log_bug() and renamed abug() to bug_logger().
+080915	Quixadhal
+  0100	Replaced log_bug() with log_error() and log_printf() with log_info().
+	Added log_fatal(), log_boot(), and log_auth().
+  0728	Added log_kill() and log_death().
+	Added a proper_exit() function and changed ALL cases of abort() or exit() to use it.

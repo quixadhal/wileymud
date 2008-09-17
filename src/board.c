@@ -27,7 +27,7 @@ struct Board                           *board_list = NULL;
 void InitBoards()
 {
   if (DEBUG > 2)
-    dlog("called %s with no arguments", __PRETTY_FUNCTION__);
+    log_info("called %s with no arguments", __PRETTY_FUNCTION__);
 
   /*
    * this is called at the very beginning, like shopkeepers 
@@ -42,7 +42,7 @@ void InitABoard(struct obj_data *obj)
   struct Board                           *tmp = NULL;
 
   if (DEBUG > 2)
-    dlog("called %s with %s", __PRETTY_FUNCTION__, SAFE_ONAME(obj));
+    log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_ONAME(obj));
 
   if (board_list) {
     /*
@@ -62,8 +62,8 @@ void InitABoard(struct obj_data *obj)
   /*
    * new_board = (struct Board *)malloc(sizeof(*new_board));
    * if (!new_board) {
-   *   perror("InitABoard(malloc)");
-   *   exit(0);
+   *   log_fatal("InitABoard(malloc)");
+   *   proper_exit(MUD_HALT);
    * }
    * bzero(new_board->head, sizeof(new_board->head));
    * bzero(new_board->msgs, sizeof(new_board->msgs));
@@ -90,26 +90,29 @@ void OpenBoardFile(struct Board *b)
   char                                    buf[500] = "\0\0\0";
 
   if (DEBUG > 2)
-    dlog("called %s with %08x", __PRETTY_FUNCTION__, b);
+    log_info("called %s with %08x", __PRETTY_FUNCTION__, b);
 
   sprintf(buf, "%s/%s", BOARD_FILE_PATH, b->filename);
   b->file = fopen(buf, "r+");
 
   if (!b || !b->file) {
-    perror("OpenBoardFile(fopen)");
-    exit(0);
+    log_fatal("OpenBoardFile(fopen)");
+    proper_exit(MUD_HALT);
   }
 }
 
 void CloseBoardFile(struct Board *b)
 {
   if (DEBUG > 2)
-    dlog("called %s with %08x", __PRETTY_FUNCTION__, b);
+    log_info("called %s with %08x", __PRETTY_FUNCTION__, b);
 
   if (!b || !b->file) {
-    bug("CloseBoardFile");
-    if (!b)
-      exit(0);
+    if (!b) {
+      log_fatal("CloseBoardFile");
+      proper_exit(MUD_HALT);
+    } else {
+      log_error("CloseBoardFile");
+    }
   }
   FCLOSE(b->file);
 }
@@ -120,7 +123,7 @@ struct Board                           *FindBoardInRoom(int room)
   struct Board                           *nb = NULL;
 
   if (DEBUG > 2)
-    dlog("called %s with %d", __PRETTY_FUNCTION__, room);
+    log_info("called %s with %d", __PRETTY_FUNCTION__, room);
 
   if (!real_roomp(room))
     return (NULL);
@@ -145,7 +148,7 @@ int board(struct char_data *ch, int cmd, char *arg)
   struct Board                           *nb = NULL;
 
   if (DEBUG > 2)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(arg), cmd);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(arg), cmd);
 
   nb = FindBoardInRoom(ch->in_room);
 
@@ -198,7 +201,7 @@ void board_write_msg(struct char_data *ch, char *arg, struct Board *b)
   time_t                                  tc;
 
   if (DEBUG > 2)
-    dlog("called %s with %s, %s, %08x", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(arg), b);
+    log_info("called %s with %s, %s, %08x", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(arg), b);
 
   if (b->msg_num > MAX_MSGS - 1) {
     cprintf(ch, "The board is full already.\n\r");
@@ -230,7 +233,7 @@ void board_write_msg(struct char_data *ch, char *arg, struct Board *b)
    * +4 is for a space and '()' around the character name. 
    */
   /*
-   * if(!TRY_TO_CREATE(b->head[b->msg_num], char, 70 + strlen(GET_NAME(ch)) + 4)) { bug("Malloc for board header
+   * if(!TRY_TO_CREATE(b->head[b->msg_num], char, 70 + strlen(GET_NAME(ch)) + 4)) { log_error("Malloc for board header
    * failed."); cprintf(ch, "The board is malfunctioning - sorry.\n\r"); return; } 
    */
   CREATE(b->head[b->msg_num], char, 70 + strlen(GET_NAME(ch)) + 4);
@@ -257,7 +260,7 @@ int board_remove_msg(struct char_data *ch, char *arg, struct Board *b)
   char                                    msg_number[MAX_INPUT_LENGTH] = "\0\0\0";
 
   if (DEBUG > 2)
-    dlog("called %s with %s, %s, %08x", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(arg), b);
+    log_info("called %s with %s, %s, %08x", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(arg), b);
 
   one_argument(arg, msg_number);
 
@@ -301,13 +304,13 @@ void board_save_board(struct Board *b)
   int                                     len = 0;
 
   if (DEBUG > 2)
-    dlog("called %s with %08x", __PRETTY_FUNCTION__, b);
+    log_info("called %s with %08x", __PRETTY_FUNCTION__, b);
 
   if (!b)
     return;
 
   if (!b->msg_num) {
-    dlog("No messages to save.\n\r");
+    log_info("No messages to save.\n\r");
     return;
   }
   OpenBoardFile(b);
@@ -339,7 +342,7 @@ void board_load_board(struct Board *b)
   int                                     len = 0;
 
   if (DEBUG > 2)
-    dlog("called %s with %08x", __PRETTY_FUNCTION__, b);
+    log_info("called %s with %08x", __PRETTY_FUNCTION__, b);
 
   OpenBoardFile(b);
   board_reset_board(b);
@@ -347,7 +350,7 @@ void board_load_board(struct Board *b)
   fread(&b->msg_num, sizeof(int), 1, b->file);
 
   if (b->msg_num < 1 || b->msg_num > MAX_MSGS || feof(b->file)) {
-    dlog("Board-message file corrupt or nonexistent.\n\r");
+    log_error("Board-message file corrupt or nonexistent.\n\r");
     CloseBoardFile(b);
     return;
   }
@@ -355,7 +358,7 @@ void board_load_board(struct Board *b)
     fread(&len, sizeof(int), 1, b->file);
 
     /*
-     * if(!TRY_TO_CREATE(b->head[ind], char, len + 1)) { bug("Malloc for board header failed."); board_reset_board(b);
+     * if(!TRY_TO_CREATE(b->head[ind], char, len + 1)) { log_error("Malloc for board header failed."); board_reset_board(b);
      * CloseBoardFile(b); return; } 
      */
     CREATE(b->head[ind], char, len + 1);
@@ -363,7 +366,7 @@ void board_load_board(struct Board *b)
     fread(&len, sizeof(int), 1, b->file);
 
     /*
-     * if(!TRY_TO_CREATE(b->msgs[ind], char, len + 1)) { bug("Malloc for board msg failed."); board_reset_board(b);
+     * if(!TRY_TO_CREATE(b->msgs[ind], char, len + 1)) { log_error("Malloc for board msg failed."); board_reset_board(b);
      * CloseBoardFile(b); return; } 
      */
     CREATE(b->msgs[ind], char, len + 1);
@@ -379,7 +382,7 @@ void board_reset_board(struct Board *b)
   int                                     ind = 0;
 
   if (DEBUG > 2)
-    dlog("called %s with %08x", __PRETTY_FUNCTION__, b);
+    log_info("called %s with %08x", __PRETTY_FUNCTION__, b);
 
   for (ind = 0; ind < MAX_MSGS; ind++) {
     /*
@@ -404,7 +407,7 @@ int board_display_msg(struct char_data *ch, char *arg, struct Board *b)
   int                                     msg = 0;
 
   if (DEBUG > 2)
-    dlog("called %s with %s, %s, %08x", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(arg), b);
+    log_info("called %s with %s, %s, %08x", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(arg), b);
 
   one_argument(arg, msg_number);
   if (!*msg_number || !isdigit(*msg_number))
@@ -430,7 +433,7 @@ int board_display_msg(struct char_data *ch, char *arg, struct Board *b)
 void board_fix_long_desc(struct Board *b)
 {
   if (DEBUG > 2)
-    dlog("called %s with %08x", __PRETTY_FUNCTION__, b);
+    log_info("called %s with %08x", __PRETTY_FUNCTION__, b);
 
   return;
 }
@@ -442,7 +445,7 @@ int board_show_board(struct char_data *ch, char *arg, struct Board *b)
   char                                    tmp[MAX_INPUT_LENGTH] = "\0\0\0";
 
   if (DEBUG > 2)
-    dlog("called %s with %s, %s, %08x", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(arg), b);
+    log_info("called %s with %s, %s, %08x", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(arg), b);
 
   one_argument(arg, tmp);
 

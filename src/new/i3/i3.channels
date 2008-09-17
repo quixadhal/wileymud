@@ -1,0 +1,45 @@
+#I3CHAN
+ChanName   dchat~
+ChanMud    Frontiers~
+ChanLocal  dchat~
+ChanLayM   &R[&W%s&R] &C%s@%s: &c%s~
+ChanLayE   &R[&W%s&R] &c%s~
+ChanLevel  2
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   imud_gossip~
+ChanMud    Frontiers~
+ChanLocal  igossip~
+ChanLayM   &R[&W%s&R] &C%s@%s: &c%s~
+ChanLayE   &R[&W%s&R] &c%s~
+ChanLevel  3
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   imud_code~
+ChanMud    Frontiers~
+ChanLocal  icode~
+ChanLayM   &R[&W%s&R] &C%s@%s: &c%s~
+ChanLayE   &R[&W%s&R] &c%s~
+ChanLevel  3
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   trivia_games~
+ChanMud    Emerald MUD~
+ChanLocal  trivia~
+ChanLayM   &R[&W%s&R] &C%s@%s: &c%s~
+ChanLayE   &R[&W%s&R] &c%s~
+ChanLevel  2
+ChanStatus 0
+ChanFlags  0
+End
+
+#END

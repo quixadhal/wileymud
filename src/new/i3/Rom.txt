@@ -1,0 +1,260 @@
+Installation for Rom
+--------------------
+
+1. In your Makefile, above the list of O_FILES,
+   include the following:
+
+#I3 - Comment out to disable I3 support
+I3 = 1
+
+   Then directly below the list of O_FILES, add the following:
+   [Note: BSD users - put a period in front of the word ifdef, and in front of the word endif]
+
+ifdef I3
+   O_FILES := i3.o $(O_FILES)
+   C_FLAGS := $(C_FLAGS) -DI3 -DI3ROM
+endif
+
+2. Open merc.h and locate the following code:
+
+#define IMPLEMENTOR		MAX_LEVEL
+#define	CREATOR			(MAX_LEVEL - 1)
+#define SUPREME			(MAX_LEVEL - 2)
+#define DEITY			(MAX_LEVEL - 3)
+#define GOD			(MAX_LEVEL - 4)
+#define IMMORTAL		(MAX_LEVEL - 5)
+#define DEMI			(MAX_LEVEL - 6)
+#define ANGEL			(MAX_LEVEL - 7)
+#define AVATAR			(MAX_LEVEL - 8)
+#define HERO			LEVEL_HERO
+
+   Directly below that, add the following:
+
+#ifdef I3
+   #include "i3.h"
+#endif
+
+3. Locate your pc_data struct, which should be in one of your main *.h files.
+
+   Add the following to the end of it:
+
+#ifdef I3
+    I3_CHARDATA *i3chardata;
+#endif
+
+4. Open interp.c and locate the following section:
+
+if ( !check_social( ch, command, argument )
+
+   Add the following condition to whatever series of ifchecks exist there:
+
+#ifdef I3
+	&&   !I3_command_hook( ch, command, argument )
+#endif
+
+5. Open comm.c and locate main():
+
+   A. If your mud uses copyover/hotboot, find this section( it may not look EXACTLY like this, adjust as needed ):
+	If your mud does NOT use copyover/hotboot, move to B.
+
+      if( argv[2] && argv[2][0] )
+      {
+         fCopyOver = TRUE;
+         control = atoi( argv[3] );
+      }
+      else
+         fCopyOver = FALSE;
+
+   Change it to read as( while adjusting as needed ):
+
+      if( argv[2] && argv[2][0] )
+      {
+         fCopyOver = TRUE;
+         control = atoi( argv[3] );
+#ifdef I3
+	   I3_socket = atoi( argv[4] );
+#endif
+      }
+      else
+         fCopyOver = FALSE;
+
+   This next part is somewhat tricky. If copyover_recover is called in db.c as is the usual case in
+   most default installs, you need to place the following BEFORE the boot_db call. If it is listed
+   somewhere here in comm.c, the following needs to be placed ABOVE it. Either way, I3_main needs
+   to be called BEFORE copyover_recover or your mud WILL crash every time you do a copyover.
+
+#ifdef I3
+   /* Initialize and connect to Intermud-3 */
+   I3_main( FALSE, port, fCopyOver );
+#endif
+
+   B. If your mud is NOT using copyover/hotboot:
+
+      Locate the following:
+
+#if defined(unix)
+    control = init_socket( port );
+    boot_db( );
+    sprintf( log_buf, "ROM is ready to rock on port %d.", port );
+    log_string( log_buf );
+
+   Add the following beneath that:
+
+#ifdef I3
+   /* Initialize and connect to Intermud-3 */
+   I3_main( FALSE, port, FALSE );
+#endif
+
+   C. ALL MUDS CONTINUE HERE:
+
+   Then further down in main(), locate the following:
+
+   close( control );
+
+   Add the following beneath that:
+
+#ifdef I3
+   I3_shutdown( 0 );
+#endif
+
+   Then in game_loop_unix(), locate the following:
+
+	/*
+	 * Autonomous game motion.
+	 */
+	update_handler( );
+
+   Directly ABOVE that, add the following:
+
+#ifdef I3
+	I3_loop();
+#endif
+
+   Then locate function act_new, and find the following code:
+
+      switch ( *str )
+      {
+      default:  log_error( "Act: bad code %c.", *str );
+		log_error( "Act: Bad code came from %s", ch->name );
+		i = " <@@@> ";						break;
+
+   Directly below that, add the following:
+
+#ifdef I3
+	case '$': 
+	    i = "$";
+	    break;
+#endif
+
+6. Open save.c and locate fread_char:
+
+   In the case 'I': section, and right before the final break; add the follwing:
+
+#ifdef I3
+	   if( ( fMatch = i3load_char( ch, fp, word ) ) )
+		break;
+#endif
+
+   Then in fwrite_char, locate:
+
+    fprintf( fp, "End\n\n" );
+
+   Directly ABOVE that, add:
+
+#ifdef I3
+    i3save_char( ch, fp );
+#endif
+
+   Then in load_char_obj(), locate the following:
+
+    found = FALSE;
+    fclose( fpReserve );
+    
+    #if defined(unix)
+    /* decompress if .gz file exists */
+
+   Directly ABOVE that, add the following:
+
+#ifdef I3
+    i3init_char( ch );
+#endif
+
+7. Open recycle.c
+
+   Locate free_char:
+
+   After this block of code:
+
+    free_string(ch->name);
+    free_string(ch->short_descr);
+    free_string(ch->long_descr);
+    free_string(ch->description);
+    free_string(ch->prompt);
+    free_string(ch->prefix);
+    free_note  (ch->pnote);
+
+   Add:
+
+#ifdef I3
+	free_i3chardata( ch );
+#endif
+
+8. For users of copyover only - Target code may not be exact:
+
+   In function do_copyover, locate the following code:
+
+    DESCRIPTOR_DATA *d, *de_next;
+    char buf [100], buf2[100], buf3[100], buf4[100], buf5[100];
+
+   Directly below that, add:
+
+    char buf6[100];
+
+   Then further down, find the following:
+
+    /* exec - descriptors are inherited */
+    sprintf( buf,  "%d", port );
+    sprintf( buf2, "%d", control );
+    sprintf( buf3, "%d", control2 );
+    sprintf( buf4, "%d", conclient );
+    sprintf( buf5, "%d", conjava );
+  
+    execl( EXE_FILE, "rom", buf, "hotboot",  buf2, buf3, buf4, buf5, (char *)NULL );
+
+   Change that to read as follows:
+
+#ifdef I3
+   if( I3_is_connected() )
+   {
+	I3_savechanlist();
+	I3_savemudlist();
+	I3_savehistory();
+   }
+#endif
+
+    /* exec - descriptors are inherited */
+    sprintf( buf,  "%d", port );
+    sprintf( buf2, "%d", control );
+    sprintf( buf3, "%d", control2 );
+    sprintf( buf4, "%d", conclient );
+    sprintf( buf5, "%d", conjava );
+#ifdef I3
+    snprintf( buf6, 100, "%d", I3_socket );
+#else
+    strncpy( buf6, "-1", 100 );
+#endif
+
+    execl( EXE_FILE, "rom", buf, "hotboot",  buf2, buf3, buf4, buf5, buf6, (char *)NULL );
+
+8b: Ember 0.99.47 ONLY:
+
+Refer to the i3ember.txt file.
+
+8c: Sunder 1.0 ONLY:
+
+In i3.c, remove the #include statement for tables.h from the #ifdef I3ROM section,
+this file is not in the Sundermud distro.
+
+8d. 
+Return to the main I3Install.txt file and continue where you left off.
+

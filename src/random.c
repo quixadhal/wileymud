@@ -80,7 +80,7 @@ void random_death_message(struct char_data *ch, struct char_data *victim)
   };
 
   if (DEBUG > 2)
-    dlog("called %s with %s, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), SAFE_NAME(victim));
+    log_info("called %s with %s, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), SAFE_NAME(victim));
 
   sprintf(tease, bugger[razz = number(0, bugcount - 1)],
 	  (IS_NPC(ch) ? ch->player.short_descr : GET_NAME(ch)), GET_NAME(victim));
@@ -136,7 +136,7 @@ void random_error_message(struct char_data *ch)
   static int                              howmany = 34;
 
   if (DEBUG > 2)
-    dlog("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
+    log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
 
   cprintf(ch, "%s\n\r", oops[number(1, howmany) - 1]);
 }
@@ -158,7 +158,7 @@ void random_miscast(struct char_data *ch, char *name)
   static int                              howmany = 9;
 
   if (DEBUG > 2)
-    dlog("called %s with %s, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(name));
+    log_info("called %s with %s, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(name));
 
   cprintf(ch, oops[number(1, howmany) - 1], name);
 }
@@ -180,7 +180,7 @@ void random_magic_failure(struct char_data *ch)
   static int                              howmany = 9;
 
   if (DEBUG > 2)
-    dlog("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
+    log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
 
   cprintf(ch, "%s\n\r", oops[number(1, howmany) - 1]);
 }

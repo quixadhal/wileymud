@@ -15,7 +15,7 @@
 void init_hash_table(struct hash_header *ht, int rec_size, int table_size)
 {
   if (DEBUG > 2)
-    dlog("called %s with %08x, %d, %d", __PRETTY_FUNCTION__, ht, rec_size, table_size);
+    log_info("called %s with %08x, %d, %d", __PRETTY_FUNCTION__, ht, rec_size, table_size);
 
   /*
    * int size; 
@@ -23,14 +23,14 @@ void init_hash_table(struct hash_header *ht, int rec_size, int table_size)
   ht->rec_size = rec_size;
   ht->table_size = table_size;
   /*
-   * if(!(ht->buckets = (void *)calloc(sizeof(struct hash_link **), table_size))) { bug("Cannot allocate hash bucket
-   * list"); exit(1); } 
+   * if(!(ht->buckets = (void *)calloc(sizeof(struct hash_link **), table_size))) { log_error("Cannot allocate hash bucket
+   * list"); proper_exit(MUD_HALT); } 
    */
   CREATE_VOID(ht->buckets, struct hash_link **, table_size);
 
   /*
-   * if(!(ht->keylist = (void *)malloc(sizeof(*ht->keylist) * (ht->klistsize = 128)))) { bug("Cannot allocate hash key
-   * list"); exit(1); } 
+   * if(!(ht->keylist = (void *)malloc(sizeof(*ht->keylist) * (ht->klistsize = 128)))) { log_error("Cannot allocate hash key
+   * list"); proper_exit(MUD_HALT); } 
    */
   ht->klistsize = 128;
   CREATE_VOID(ht->keylist, *ht->keylist, ht->klistsize);
@@ -44,7 +44,7 @@ void destroy_hash_table(struct hash_header *ht, funcp gman)
   struct hash_link                       *temp = NULL;
 
   if (DEBUG > 2)
-    dlog("called %s with %08x, %08x", __PRETTY_FUNCTION__, ht, gman);
+    log_info("called %s with %08x, %08x", __PRETTY_FUNCTION__, ht, gman);
 
   for (i = 0; i < ht->table_size; i++)
     for (scan = ht->buckets[i]; scan;) {
@@ -63,9 +63,9 @@ static void _hash_enter(struct hash_header *ht, int key, void *data)
   int                                     i = 0;
 
   if (DEBUG > 2)
-    dlog("called %s with %08x, %d, %08x", __PRETTY_FUNCTION__, ht, key, data);
+    log_info("called %s with %08x, %d, %08x", __PRETTY_FUNCTION__, ht, key, data);
   /*
-   * if(!(temp = (void *)malloc(sizeof(*temp)))) { bug("Cannot allocate hash entry"); exit(1); } 
+   * if(!(temp = (void *)malloc(sizeof(*temp)))) { log_error("Cannot allocate hash entry"); proper_exit(MUD_HALT); } 
    */
   CREATE_VOID(temp, *temp, 1);
   temp->key = key;
@@ -75,8 +75,8 @@ static void _hash_enter(struct hash_header *ht, int key, void *data)
   if (ht->klistlen >= ht->klistsize) {
     if (!(ht->keylist = (void *)realloc(ht->keylist, sizeof(*ht->keylist) *
 					(ht->klistsize *= 2)))) {
-      bug("Cannot grow hash entry");
-      exit(1);
+      log_fatal("Cannot grow hash entry");
+      proper_exit(MUD_HALT);
     }
   }
   for (i = ht->klistlen; i > 0; i--) {			       /* In empty lists, >= was causing access to element -1 */
@@ -94,7 +94,7 @@ void                                   *hash_find(struct hash_header *ht, int ke
   struct hash_link                       *scan = NULL;
 
   if (DEBUG > 3)
-    dlog("called %s with %08x, %d", __PRETTY_FUNCTION__, ht, key);
+    log_info("called %s with %08x, %d", __PRETTY_FUNCTION__, ht, key);
 
   scan = ht->buckets[HASH_KEY(ht, key)];
 
@@ -109,11 +109,11 @@ int hash_enter(struct hash_header *ht, int key, void *data)
   void                                   *temp = NULL;
 
   if (DEBUG > 2)
-    dlog("called %s with %08x, %d, %08x", __PRETTY_FUNCTION__, ht, key, data);
+    log_info("called %s with %08x, %d, %08x", __PRETTY_FUNCTION__, ht, key, data);
 
   temp = hash_find(ht, key);
   if (DEBUG)
-    dlog("hash_enter");
+    log_info("hash_enter");
   if (temp)
     return 0;
 
@@ -126,14 +126,14 @@ void                                   *hash_find_or_create(struct hash_header *
   void                                   *rval = NULL;
 
   if (DEBUG > 2)
-    dlog("called %s with %08x, %d", __PRETTY_FUNCTION__, ht, key);
+    log_info("called %s with %08x, %d", __PRETTY_FUNCTION__, ht, key);
 
   rval = hash_find(ht, key);
   if (rval)
     return rval;
 
   /*
-   * if(!(rval = (void *)malloc(ht->rec_size))) { bug("Cannot allocate return for hash search"); exit(1); } 
+   * if(!(rval = (void *)malloc(ht->rec_size))) { log_error("Cannot allocate return for hash search"); proper_exit(MUD_HALT); } 
    */
   CREATE_VOID(rval, char, ht->rec_size);
   _hash_enter(ht, key, rval);
@@ -145,7 +145,7 @@ void                                   *hash_remove(struct hash_header *ht, int 
   struct hash_link                      **scan = NULL;
 
   if (DEBUG > 2)
-    dlog("called %s with %08x, %d", __PRETTY_FUNCTION__, ht, key);
+    log_info("called %s with %08x, %d", __PRETTY_FUNCTION__, ht, key);
 
   scan = ht->buckets + HASH_KEY(ht, key);
 
@@ -181,7 +181,7 @@ void hash_iterate(struct hash_header *ht, funcp func, void *cdata)
   int                                     i = 0;
 
   if (DEBUG > 2)
-    dlog("called %s with %08x, %08x, %08x", __PRETTY_FUNCTION__, func, cdata);
+    log_info("called %s with %08x, %08x, %08x", __PRETTY_FUNCTION__, func, cdata);
 
   for (i = 0; i < ht->klistlen; i++) {
     void                                   *temp = NULL;

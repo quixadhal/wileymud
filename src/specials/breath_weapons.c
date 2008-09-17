@@ -49,7 +49,7 @@ struct breath_victim                   *choose_victims(struct char_data *ch,
   struct breath_victim                   *temp = NULL;
 
   if (DEBUG > 2)
-    dlog("called %s with %s, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), SAFE_NAME(first_victim));
+    log_info("called %s with %s, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), SAFE_NAME(first_victim));
 
   for (cons = real_roomp(ch->in_room)->people; cons; cons = cons->next_in_room) {
     CREATE_VOID(temp, struct breath_victim, 1);
@@ -83,7 +83,7 @@ void free_victims(struct breath_victim *head)
   struct breath_victim                   *temp = NULL;
 
   if (DEBUG > 2)
-    dlog("called %s with %08x", __PRETTY_FUNCTION__, head);
+    log_info("called %s with %08x", __PRETTY_FUNCTION__, head);
 
   while (head) {
     temp = head->next;
@@ -99,7 +99,7 @@ int breath_weapon(struct char_data *ch, struct char_data *target, int mana_cost,
   int                                     victim = 0;
 
   if (DEBUG > 2)
-    dlog("called %s with %s, %s, %d, %08x", __PRETTY_FUNCTION__, SAFE_NAME(ch), SAFE_NAME(target), mana_cost, func);
+    log_info("called %s with %s, %s, %d, %08x", __PRETTY_FUNCTION__, SAFE_NAME(ch), SAFE_NAME(target), mana_cost, func);
 
   hitlist = choose_victims(ch, target);
 
@@ -135,7 +135,7 @@ int breath_weapon(struct char_data *ch, struct char_data *target, int mana_cost,
 void use_breath_weapon(struct char_data *ch, struct char_data *target, int cost, funcp func)
 {
   if (DEBUG > 2)
-    dlog("called %s with %s, %s, %d, %08x", __PRETTY_FUNCTION__, SAFE_NAME(ch), SAFE_NAME(target), cost, func);
+    log_info("called %s with %s, %s, %d, %08x", __PRETTY_FUNCTION__, SAFE_NAME(ch), SAFE_NAME(target), cost, func);
 
   if (GET_MANA(ch) >= 0) {
     breath_weapon(ch, target, cost, func);
@@ -154,7 +154,7 @@ int BreathWeapon(struct char_data *ch, int cmd, char *arg)
   int                                     count = 0;
 
   if (DEBUG > 2)
-    dlog("called %s with %s, %d, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), cmd, VNULL(arg));
+    log_info("called %s with %s, %d, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), cmd, VNULL(arg));
 
   if (cmd)
     return FALSE;
@@ -165,13 +165,13 @@ int BreathWeapon(struct char_data *ch, int cmd, char *arg)
 	 scan->vnum >= 0 && scan->vnum != mob_index[ch->nr].virtual; scan++);
 
     if (scan->vnum < 0) {
-      dlog("monster %s tries to breath, but isn't listed.", ch->player.short_descr);
+      log_info("monster %s tries to breath, but isn't listed.", ch->player.short_descr);
       return FALSE;
     }
     for (count = 0; scan->breaths[count]; count++);
 
     if (count < 1) {
-      dlog("monster %s has no breath weapons", ch->player.short_descr);
+      log_info("monster %s has no breath weapons", ch->player.short_descr);
       return FALSE;
     }
     use_breath_weapon(ch, ch->specials.fighting, scan->cost, scan->breaths[dice(1, count) - 1]);

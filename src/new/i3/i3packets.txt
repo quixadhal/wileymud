@@ -1,0 +1,51 @@
+THE IMPLEMENTED PACKET-TYPES
+----------------------------
+
+This is a quick summary of the packet-types.
+An 'x' in front indicates it is currently implemented.
+A '*' in front means it is implemented, but not in publically available code.
+
+x	tell : send a message to a remote user 
+x	emoteto : send an emote to a remote user 
+x  	who-req : request a list of users on a remote mud 
+x  	who-reply : reply with a list of users on a remote mud 
+x  	finger-req : request finger information for a remote user 
+x  	finger-reply : reply with finger information for a remote user 
+x  	locate-req : request the location of a user 
+x  	locate-reply : reply with the location of a user 
+x  	chanlist-reply : reply with/update the list of available channels 
+x  	channel-m : send a message over a channel 
+x  	channel-e : send an emote over a channel 
+x  	channel-t : send a targeted emote over a channel 
+x	channel-add : register a new channel
+x	channel-remove : remove a channel from name server databases. 
+x	channel-admin : administrate the participants of a channel 
+x	chan-filter-req : filter a channel 
+x	chan-filter-reply : return filtered channel messages to the router 
+x  	chan-who-req : request a who list for people listening to a channel on a remote mud.
+x  	chan-who-reply : return a requested channel who list 
+x  	channel-listen : tune a mud as a whole into or out of a channel
+x	chan-user-req : request channel user's info 
+x	chan-user-reply : reply with channel user's info 
+x	ucache-update : update cached user information 
+x  	error : provide error information 
+x  	startup-req-3 : provide start up information to the router 
+x 	startup-reply : reply with/update the basic startup information
+x	shutdown : gracefully indicate shutdown 
+x  	mudlist : reply with/update the list of available muds 
+	oob-req : request setup for OOB connection 
+	oob-begin : begin OOB communication 
+	oob-end : end one side of an OOB process 
+	news-read-req : retrieve a news post from an OOB news server. 
+	news-post-req : post news to an OOB news server. 
+	news-grplist-req 
+	mail : deliver an item of mail 
+	mail-ack : acknowledge a mail 
+	file-list-req : request a list of files on a remote mud 
+	file-list-reply : reply with list list 
+	file-put : send a file to a remote mud 
+	file-put-ack : acknowledge a file-put 
+	file-get-req : get a file from a remote mud 
+	file-get-reply : reply with the requested file 
+	auth-mud-req : request a mud-level authorization token 
+	auth-mud-reply : reply with a mud-level authorization token

@@ -1176,7 +1176,7 @@ void dump_as_afk(zones *Zones, rooms *Rooms, shops *Shops, objects *Objects, mob
 	  continue;
 	if ( IS_ACT_FLAG( pMobIndex, ACT_DELETED ) )
 	{
-	   log_printf( "Mob Vnum %d skipped - flagged for deletion.", vnum );
+	   log_info( "Mob Vnum %d skipped - flagged for deletion.", vnum );
 	   continue;
 	}
 	if ( install )
@@ -1374,7 +1374,7 @@ warrior~
 	  continue;
 	if ( IS_OBJ_STAT( pObjIndex, ITEM_DELETED ) )
 	{
-	   log_printf( "Object Vnum %d skipped - flagged for deletion.", vnum );
+	   log_info( "Object Vnum %d skipped - flagged for deletion.", vnum );
 	   continue;
 	}
 	if ( install )

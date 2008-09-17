@@ -47,20 +47,20 @@ zones *load_zones(char *infile) {
     Pos= ZoneIndex->VNum[i].Pos;
     Zones->Zone[i].Number= ZoneIndex->VNum[i].Number;
     if(fseek(ifp, Pos, 0) < 0)
-      fatal("Cannot load Zone #%d from %s!",
+      log_fatal("Cannot load Zone #%d from %s!",
           Zones->Zone[i].Number, infile);
     if(!(tmp= get_line(ifp, &Line, &Pos, 1)))
-      fatal("Cannot get vnum for Zone #%d from %s!",
+      log_fatal("Cannot get vnum for Zone #%d from %s!",
           Zones->Zone[i].Number, infile);
     if(!(tmp= get_tilde_string(ifp, &Line, &Pos)))
-      fatal("Missing zone name at line %d of %s.",
+      log_fatal("Missing zone name at line %d of %s.",
           Line, infile);
     Zones->Zone[i].Name= my_strdup(tmp);
     if(!(tmp= get_line(ifp, &Line, &Pos, 1)))
-      fatal("Missing flag line in %s at %d.",infile,Line);
+      log_fatal("Missing flag line in %s at %d.",infile,Line);
     if(sscanf(tmp, " %d %d %d ", &(Zones->Zone[i].Top), &(Zones->Zone[i].Time),
            &(Zones->Zone[i].Mode))!= 3)
-      fatal("Corrupt flag line in %s at %d.",infile,Line);
+      log_fatal("Corrupt flag line in %s at %d.",infile,Line);
 
     Zones->Zone[i].Cmds= (zone_cmds *)get_mem(1, sizeof(zone_cmds));
     bzero(Zones->Zone[i].Cmds, sizeof(zone_cmds));
@@ -78,7 +78,7 @@ zones *load_zones(char *infile) {
                   &(Zones->Zone[i].Cmds[j].Arg[1]),
                   &(Zones->Zone[i].Cmds[j].Arg[2])) != 5) {
           if(Debug)
-            bug("Bad args to Zone command, %s at %d.",
+            log_error("Bad args to Zone command, %s at %d.",
                 infile,Line);
           continue;
         }
@@ -100,7 +100,7 @@ zones *load_zones(char *infile) {
                   &(Zones->Zone[i].Cmds[j].Arg[0]),
                   &(Zones->Zone[i].Cmds[j].Arg[1])) != 4) {
           if(Debug)
-            bug("Bad args to Zone command, %s at %d.",
+            log_error("Bad args to Zone command, %s at %d.",
                 infile,Line);
           continue;
         }
@@ -115,7 +115,7 @@ zones *load_zones(char *infile) {
           spin(stderr);
       } else {
         if(Debug)
-          bug("Unrecognized Zone command ignored, %s at %d.",
+          log_error("Unrecognized Zone command ignored, %s at %d.",
               infile,Line);
         continue;
       }
@@ -216,7 +216,7 @@ void fix_exit_vnums(rooms *Rooms) {
           Rooms->Room[i].Exit[j].Error= EXIT_DESCRIPTION_ONLY;
           Rooms->Room[i].Exit[j].RoomIndex= EXIT_INVALID;
           if(Debug)
-            bug("DESCRIPTION-ONLY exit found as %s exit of Room \"%s\"[#%d].",
+            log_error("DESCRIPTION-ONLY exit found as %s exit of Room \"%s\"[#%d].",
                 exit_name(Rooms->Room[i].Exit[j].Direction),
                 room_name(Rooms, Rooms->Room[i].Number),
                 Rooms->Room[i].Number);
@@ -243,7 +243,7 @@ void check_duplicate_rooms(rooms *Rooms) {
     Rooms->Room[i].Number = -1;
     if(remap_room_vnum(Rooms, tmp) >= 0)
       if(Debug)
-        bug("ROOM [#%d] is DUPLICATED!!!", tmp);
+        log_error("ROOM [#%d] is DUPLICATED!!!", tmp);
     Rooms->Room[i].Number = tmp;
   }
   if(!Quiet)
@@ -263,24 +263,24 @@ void verify_exits(rooms *Rooms) {
     if(Rooms->Room[i].ExitCount < 1) {
       if(Rooms->Room[i].Sector != SECT_TELEPORT) {
         if(Debug)
-          bug("NO-EXITS in Room \"%s\"[#%d]!",
+          log_error("NO-EXITS in Room \"%s\"[#%d]!",
               room_name(Rooms, Rooms->Room[i].Number),
               Rooms->Room[i].Number);
       } else {
         if(Rooms->Room[i].TeleportTime < 0) {
           if(Debug)
-            bug("TELEPORT TIME INVALID for Room \"%s\"[#%d]!",
+            log_error("TELEPORT TIME INVALID for Room \"%s\"[#%d]!",
                 room_name(Rooms, Rooms->Room[i].Number),
                 Rooms->Room[i].Number);
         } else {
           if(remap_room_vnum(Rooms, Rooms->Room[i].TeleportTo) < 0) {
             if(Debug)
-              bug("NO-EXITS in Room \"%s\"[#%d]!  INVALID TELEPORT TARGET.",
+              log_error("NO-EXITS in Room \"%s\"[#%d]!  INVALID TELEPORT TARGET.",
                   room_name(Rooms, Rooms->Room[i].Number),
                   Rooms->Room[i].Number);
           } else {
             if(Debug)
-              bug("TELEPORT-ONLY exit in Room \"%s\"[#%d].",
+              log_error("TELEPORT-ONLY exit in Room \"%s\"[#%d].",
                   room_name(Rooms, Rooms->Room[i].Number),
                   Rooms->Room[i].Number);
           }
@@ -289,14 +289,14 @@ void verify_exits(rooms *Rooms) {
     } else for(j= 0; j< Rooms->Room[i].ExitCount; j++) {
       if(Rooms->Room[i].Exit[j].Error /*Direction*/ != EXIT_OK) {
         if(Debug)
-          bug("Room \"%s\"[#%d] has an INVALID exit! REMOVING!",
+          log_error("Room \"%s\"[#%d] has an INVALID exit! REMOVING!",
               room_name(Rooms, Rooms->Room[i].Number),
               Rooms->Room[i].Number);
       } else {
         if((real= Rooms->Room[i].Exit[j].RoomIndex) < 0) {
           Rooms->Room[i].Exit[j].Error= EXIT_NO_TARGET;
           if(Debug)
-            bug("INVALID-TARGET Room #%d does not exist!  REMOVING %s exit from Room \"%s\"[#%d].",
+            log_error("INVALID-TARGET Room #%d does not exist!  REMOVING %s exit from Room \"%s\"[#%d].",
                 Rooms->Room[i].Exit[j].Room,
                 exit_name(Rooms->Room[i].Exit[j].Direction),
                 room_name(Rooms, Rooms->Room[i].Number),
@@ -305,7 +305,7 @@ void verify_exits(rooms *Rooms) {
         } else {
           if(Rooms->Room[real].ExitCount < 1) {
             if(Debug)
-              bug("NO-EXITS in Target Room \"%s\"[#%d]!",
+              log_error("NO-EXITS in Target Room \"%s\"[#%d]!",
                   room_name(Rooms, Rooms->Room[real].Number),
                   Rooms->Room[real].Number);
           } else {
@@ -318,7 +318,7 @@ void verify_exits(rooms *Rooms) {
             if(back < 0) {
               Rooms->Room[i].Exit[j].Error= EXIT_ONE_WAY;
               if(Debug)
-                bug("ONE-WAY %s exit in Room \"%s\"[#%d]!  No matching %s exit in Target Room \"%s\"[#%d].",
+                log_error("ONE-WAY %s exit in Room \"%s\"[#%d]!  No matching %s exit in Target Room \"%s\"[#%d].",
                     exit_name(Rooms->Room[i].Exit[j].Direction),
                     room_name(Rooms, Rooms->Room[i].Number),
                     Rooms->Room[i].Number,
@@ -329,7 +329,7 @@ void verify_exits(rooms *Rooms) {
               if(Rooms->Room[real].Exit[back].Room != Rooms->Room[i].Number) {
                 Rooms->Room[i].Exit[j].Error= EXIT_NON_EUCLIDEAN;
                 if(Debug)
-                  bug("NON-EUCLIDEAN mapping:  Room \"%s\"[#%d] %s -> Room \"%s\"[#%d] != Room \"%s\"[#%d] %s -> Room \"%s\"[#%d]!",
+                  log_error("NON-EUCLIDEAN mapping:  Room \"%s\"[#%d] %s -> Room \"%s\"[#%d] != Room \"%s\"[#%d] %s -> Room \"%s\"[#%d]!",
                       room_name(Rooms, Rooms->Room[i].Number),
                       Rooms->Room[i].Number,
                       exit_name(Rooms->Room[i].Exit[j].Direction),
@@ -370,13 +370,13 @@ void fix_zone_ids(zones *Zones, rooms *Rooms) {
         }
     if(CorrectZone == -1) {
       if(Verbose)
-        bug("Holy BatTurds!  I have NO IDEA what zone this room [#%d] "
+        log_error("Holy BatTurds!  I have NO IDEA what zone this room [#%d] "
             "belongs to!\nPutting it in Zone %d...\n",
             Rooms->Room[i].Number, Zones->Zone[0].Number);
       Rooms->Room[i].Zone= Zones->Zone[0].Number;
     } else if(Rooms->Room[i].Zone != CorrectZone) {
       if(Debug)
-        bug("Incorrect Zone ID of [#%d] for room \"%s\" [#%d],\n"
+        log_error("Incorrect Zone ID of [#%d] for room \"%s\" [#%d],\n"
             "Remapping to Zone [#%d].\n",
             Rooms->Room[i].Zone, Rooms->Room[i].Name,
             Rooms->Room[i].Number, CorrectZone);
@@ -399,7 +399,7 @@ void check_room_zone_mismatch(zones *Zones, rooms *Rooms) {
       spin(stderr);
     CorrectZone= Rooms->Room[i].Number / 100;
     if(Rooms->Room[i].Zone != CorrectZone) {
-      bug("Improper Zone ID of [#%d] for room \"%s\" [#%d],\n"
+      log_error("Improper Zone ID of [#%d] for room \"%s\" [#%d],\n"
           "Should belong to Zone [#%d].\n",
           Rooms->Room[i].Zone, Rooms->Room[i].Name,
           Rooms->Room[i].Number, CorrectZone);
@@ -443,14 +443,14 @@ rooms *load_rooms(char *infile, zones *Zones) {
     Pos= RoomIndex->VNum[i].Pos;
     Rooms->Room[i].Number= RoomIndex->VNum[i].Number;
     if(fseek(ifp, Pos, 0) < 0)
-      fatal("Cannot load Room $%d from %s!",
+      log_fatal("Cannot load Room $%d from %s!",
           Rooms->Room[i].Number, infile);
     if(!(tmp= get_line(ifp, &Line, &Pos, 1)))
-      fatal("Cannot get vnum for Room #%d from %s!",
+      log_fatal("Cannot get vnum for Room #%d from %s!",
           Rooms->Room[i].Number, infile);
     if((!(tmp= get_tilde_string(ifp, &Line, &Pos)))||
        (!(Rooms->Room[i].Name= my_strdup(tmp))))
-      fatal("Cannot get name for Room #%d, %s at %d.",
+      log_fatal("Cannot get name for Room #%d, %s at %d.",
           Rooms->Room[i].Number, infile, Line);
 
     if(Verbose)
@@ -461,18 +461,18 @@ rooms *load_rooms(char *infile, zones *Zones) {
 
     if((!(tmp= get_tilde_string(ifp, &Line, &Pos)))||
        (!(Rooms->Room[i].Description= my_strdup(tmp))))
-      fatal("Cannot get description for Room #%d, %s at %d.",
+      log_fatal("Cannot get description for Room #%d, %s at %d.",
           Rooms->Room[i].Number, infile, Line);
     if((!(tmp= get_line(ifp, &Line, &Pos, 1)))||
        (sscanf(tmp, " %d %d %d ", &(Rooms->Room[i].Zone),
                &(Rooms->Room[i].Flags), &(Rooms->Room[i].Sector)) != 3)) {
       if(Debug)
-        bug("Bug in MAIN flags for Room #%d, %s at %d!",
+        log_error("Bug in MAIN flags for Room #%d, %s at %d!",
             Rooms->Room[i].Number, infile, Line);
 /* If you get an error here, it means the room designer really FUCKED UP!
  * Nevertheless, we can fudge it provided that the person didn't add the
  * SOUND definitions and forget the sector types... if this is the case,
- * An error will happen down below which will, almost certainly be fatal
+ * An error will happen down below which will, almost certainly be log_fatal
  * and non-recoverable.
  * As it stands, we will TRY to jump inside the for() loop that scans for
  * doors and extra descriptions (and the terminating 'S') in the hopes that
@@ -499,7 +499,7 @@ rooms *load_rooms(char *infile, zones *Zones) {
                 &(Rooms->Room[i].TeleportLook),
                 &(Rooms->Room[i].TeleportSector)) != 7) {
         if(Debug)
-          bug("Bad teleport flags for Room #%d, %s at %d.",
+          log_error("Bad teleport flags for Room #%d, %s at %d.",
               Rooms->Room[i].Number, infile, Line);
 /* If teleport flags are munged, we need to make it default back to a plain
  * generic sector type, so that it can still be loaded...
@@ -514,19 +514,19 @@ rooms *load_rooms(char *infile, zones *Zones) {
         Rooms->Room[i].RiverSpeed= 0;
         Rooms->Room[i].RiverDirection= -1;
         if(Debug)
-          bug("Missing river flags for Room #%d, %s at %d.",
+          log_error("Missing river flags for Room #%d, %s at %d.",
               Rooms->Room[i].Number, infile, Line);
       }
     }
     if(Rooms->Room[i].Flags & ROOM_DEATH)
       if(Debug)
-        bug("Room #%d is a DEATH ROOM!", Rooms->Room[i].Number);
+        log_error("Room #%d is a DEATH ROOM!", Rooms->Room[i].Number);
     if(Rooms->Room[i].Flags & ROOM_SOUND) {
       Rooms->Room[i].SoundCount= 2;
       for(j= 0; j< Rooms->Room[i].SoundCount; j++)
         if((!(tmp= get_tilde_string(ifp, &Line, &Pos)))||
            (!(Rooms->Room[i].SoundText[j]= my_strdup(tmp))))
-          fatal("Missing sound %d for Room #%d, %s at %d.",
+          log_fatal("Missing sound %d for Room #%d, %s at %d.",
               j, Rooms->Room[i].Number, infile, Line);
 /* additional checks should be done, but I haven't the time... let's hope the
  * wileymud people did their jobs right! <grin>
@@ -547,14 +547,14 @@ HolyShit:
       if(*tmp == 'S') break;
       else if(*tmp == 'D') {
         if(sscanf(tmp+1, "%d", &(Rooms->Room[i].Exit[j].Direction)) != 1)
-          fatal("Corrupt Exit in Room #%d, %s at %d.",
+          log_fatal("Corrupt Exit in Room #%d, %s at %d.",
               Rooms->Room[i].Number, infile, Line);
         if((!(tmp= get_tilde_string(ifp, &Line, &Pos)))||
            (!(Rooms->Room[i].Exit[j].Description= my_strdup(tmp))))
-          fatal("No exit description for Room #%d, %s at %d.",
+          log_fatal("No exit description for Room #%d, %s at %d.",
               Rooms->Room[i].Number, infile, Line);
         if(!(tmp= get_tilde_string(ifp, &Line, &Pos)))
-          fatal("No exit keywords for Room #%d, %s at %d.",
+          log_fatal("No exit keywords for Room #%d, %s at %d.",
               Rooms->Room[i].Number, infile, Line);
         Rooms->Room[i].Exit[j].Keyword= make_keyword_list(tmp);
         if((!(tmp= get_line(ifp, &Line, &Pos, 1))) ||
@@ -562,7 +562,7 @@ HolyShit:
                    &(Rooms->Room[i].Exit[j].KeyNumber),
                    &(Rooms->Room[i].Exit[j].Room)) != 3)) {
           if(Debug)
-            bug("Bad exit type line in Room #%d, %s at %d.",
+            log_error("Bad exit type line in Room #%d, %s at %d.",
                 Rooms->Room[i].Number, infile, Line);
 /* This most often happens when someone was planning to add an area, and
  * got one half of the links done, but now the new room numbers...
@@ -585,18 +585,18 @@ HolyShit:
         }
       } else if(*tmp == 'E') {
         if(!(tmp= get_tilde_string(ifp, &Line, &Pos)))
-          fatal("No extra keywords for Room #%d, %s at %d.",
+          log_fatal("No extra keywords for Room #%d, %s at %d.",
               Rooms->Room[i].Number, infile, Line);
         Rooms->Room[i].Extra[e].Keyword= make_keyword_list(tmp);
         if((!(tmp= get_tilde_string(ifp, &Line, &Pos)))||
            (!(Rooms->Room[i].Extra[e].Description= my_strdup(tmp))))
-          fatal("No extra descriptions for Room #%d, %s of %d.",
+          log_fatal("No extra descriptions for Room #%d, %s of %d.",
               Rooms->Room[i].Number, infile, Line);
         e= ++Rooms->Room[i].ExtraCount;
         Rooms->Room[i].Extra= (extra *)
           get_more_mem((char *)Rooms->Room[i].Extra, e+1, sizeof(extra));
         bzero(&(Rooms->Room[i].Extra[e]), sizeof(extra));
-      } else fatal("Unknown line in Room #%d, %s at %d!",
+      } else log_fatal("Unknown line in Room #%d, %s at %d!",
                  Rooms->Room[i].Number, infile, Line);
     }
   }
@@ -755,30 +755,30 @@ shops *load_shops(char *infile) {
     Pos= ShopIndex->VNum[i].Pos;
     Shops->Shop[i].Number= ShopIndex->VNum[i].Number;
     if(fseek(ifp, Pos, 0) < 0)
-      fatal("Cannot load Shop #%d from %s!",
+      log_fatal("Cannot load Shop #%d from %s!",
           Shops->Shop[i].Number, infile);
     if(!(tmp= get_line(ifp, &Line, &Pos, 1)))
-      fatal("Cannot get vnum for Shop #%d from %s!",
+      log_fatal("Cannot get vnum for Shop #%d from %s!",
           Shops->Shop[i].Number, infile);
     for(j= Shops->Shop[i].SellCount= 0; j< SHOP_SELLCOUNT; j++) {
       if((!(tmp= get_line(ifp, &Line, &Pos, 1)))||
          (sscanf(tmp, " %d ", &(Shops->Shop[i].Sell[j])) != 1))
-        fatal("Cannot get item %d to sell, %s at %d.",
+        log_fatal("Cannot get item %d to sell, %s at %d.",
             j, infile, Line);
       if(Shops->Shop[i].Sell[j] > -1) Shops->Shop[i].SellCount++;
     }
     if((!(tmp= get_line(ifp, &Line, &Pos, 1)))||
        (sscanf(tmp, " %lf ", &(Shops->Shop[i].Selling)) != 1))
-      fatal("Cannot get Sell Profit Rate, %s at %d.",
+      log_fatal("Cannot get Sell Profit Rate, %s at %d.",
           infile, Line);
     if((!(tmp= get_line(ifp, &Line, &Pos, 1)))||
        (sscanf(tmp, " %lf ", &(Shops->Shop[i].Buying)) != 1))
-      fatal("Cannot get Buy Profit Rate, %s at %d.",
+      log_fatal("Cannot get Buy Profit Rate, %s at %d.",
           infile, Line);
     for(j= Shops->Shop[i].TradeCount= 0; j< SHOP_TRADECOUNT; j++) {
       if((!(tmp= get_line(ifp, &Line, &Pos, 1)))||
          (sscanf(tmp, " %d ", &(Shops->Shop[i].Trade[j])) != 1))
-        fatal("Cannot get trade type %d to sell, %s at %d.",
+        log_fatal("Cannot get trade type %d to sell, %s at %d.",
             j, infile, Line);
       if(Shops->Shop[i].Trade[j] > 0) Shops->Shop[i].TradeCount++;
     }
@@ -786,36 +786,36 @@ shops *load_shops(char *infile) {
     for(j= 0; j< Shops->Shop[i].MessageCount; j++) {
       if((!(tmp= get_tilde_string(ifp, &Line, &Pos)))||
          (!(Shops->Shop[i].Message[j]= my_strdup(tmp))))
-        fatal("Cannot get message %d, %s at %d.",
+        log_fatal("Cannot get message %d, %s at %d.",
             j, infile, Line);
     }
     if((!(tmp= get_line(ifp, &Line, &Pos, 1)))||
        (sscanf(tmp, " %d ", &(Shops->Shop[i].Attitude)) != 1))
-      fatal("Cannot get attitude (temper 0), %s at %d.",
+      log_fatal("Cannot get attitude (temper 0), %s at %d.",
           infile, Line);
     if((!(tmp= get_line(ifp, &Line, &Pos, 1)))||
        (sscanf(tmp, " %d ", &(Shops->Shop[i].Immortal)) != 1))
-      fatal("Cannot get immortal (temper 1), %s at %d.",
+      log_fatal("Cannot get immortal (temper 1), %s at %d.",
           infile, Line);
     if((!(tmp= get_line(ifp, &Line, &Pos, 1)))||
        (sscanf(tmp, " %d ", &(Shops->Shop[i].Keeper)) != 1))
-      fatal("Cannot get keeper vnum, %s at %d.",infile,Line);
+      log_fatal("Cannot get keeper vnum, %s at %d.",infile,Line);
     if((!(tmp= get_line(ifp, &Line, &Pos, 1)))||
        (sscanf(tmp, " %d ", &(Shops->Shop[i].Unused)) != 1))
-      fatal("Cannot get unused flag, %s at %d.",infile,Line);
+      log_fatal("Cannot get unused flag, %s at %d.",infile,Line);
     if((!(tmp= get_line(ifp, &Line, &Pos, 1)))||
        (sscanf(tmp, " %d ", &(Shops->Shop[i].Room)) != 1))
-      fatal("Cannot get room vnum, %s at %d.",infile,Line);
+      log_fatal("Cannot get room vnum, %s at %d.",infile,Line);
     if((!(tmp= get_line(ifp, &Line, &Pos, 1)))||
        (sscanf(tmp, " %d ", &(Shops->Shop[i].Open)) != 1))
-      fatal("Cannot get open hour, %s at %d.",infile,Line);
+      log_fatal("Cannot get open hour, %s at %d.",infile,Line);
     if((!(tmp= get_line(ifp, &Line, &Pos, 1)))||
        (sscanf(tmp, " %d ", &(Shops->Shop[i].Close)) != 1))
-      fatal("Cannot get close hour, %s at %d.",infile,Line);
+      log_fatal("Cannot get close hour, %s at %d.",infile,Line);
     for(j= 0; j< 2; j++) {
       if((!(tmp= get_line(ifp, &Line, &Pos, 1)))||
          (sscanf(tmp, " %d ", &(Shops->Shop[i].Unused2[j])) != 1))
-        fatal("Cannot get unused hour (1,%d), %s at %d.",
+        log_fatal("Cannot get unused hour (1,%d), %s at %d.",
             j,infile,Line);
     }
   }
@@ -1332,7 +1332,7 @@ void check_duplicate_objs(objects *Objects) {
     Objects->Object[i].Number = -1;
     if(remap_obj_vnum(Objects, tmp) >= 0)
       if(Debug)
-        bug("OBJECT [#%d] is DUPLICATED!!!", tmp);
+        log_error("OBJECT [#%d] is DUPLICATED!!!", tmp);
     Objects->Object[i].Number = tmp;
   }
   if(!Quiet)
@@ -1358,7 +1358,7 @@ void set_obj_zones(zones *Zones, objects *Objects) {
         }
     if(CorrectZone == -1) {
       if(Verbose)
-        bug("Holy BatTurds!  I have NO IDEA what zone this object [#%d] "
+        log_error("Holy BatTurds!  I have NO IDEA what zone this object [#%d] "
             "belongs to!\nPutting it in Zone %d...\n",
             Objects->Object[i].Number, Zones->Zone[0].Number);
       Objects->Object[i].Zone= Zones->Zone[0].Number;
@@ -1382,7 +1382,7 @@ void check_object_zone_mismatch(zones *Zones, objects *Objects) {
       spin(stderr);
     CorrectZone= Objects->Object[i].Number / 100;
     if(Objects->Object[i].Zone != CorrectZone) {
-      bug("Improper Zone ID of [#%d] for object \"%s\" [#%d],\n"
+      log_error("Improper Zone ID of [#%d] for object \"%s\" [#%d],\n"
           "Should belong to Zone [#%d].\n",
           Objects->Object[i].Zone, Objects->Object[i].Name,
           Objects->Object[i].Number, CorrectZone);
@@ -1425,14 +1425,14 @@ objects *load_objects(char *infile, zones *Zones) {
     Pos= ObjIndex->VNum[i].Pos;
     Objects->Object[i].Number= ObjIndex->VNum[i].Number;
     if(fseek(ifp, Pos, 0) < 0)
-      fatal("Cannot load Object $%d from %s!",
+      log_fatal("Cannot load Object $%d from %s!",
           Objects->Object[i].Number, infile);
     if(!(tmp= get_line(ifp, &Line, &Pos, 1)))
-      fatal("Cannot get vnum for Object #%d from %s!",
+      log_fatal("Cannot get vnum for Object #%d from %s!",
           Objects->Object[i].Number, infile);
     if((!(tmp= get_tilde_string(ifp, &Line, &Pos)))||
        (!(Objects->Object[i].Name= my_strdup(tmp))))
-      fatal("Cannot get name for Object #%d, %s at %d.",
+      log_fatal("Cannot get name for Object #%d, %s at %d.",
           Objects->Object[i].Number, infile, Line);
 
     if(Verbose)
@@ -1443,36 +1443,36 @@ objects *load_objects(char *infile, zones *Zones) {
 
     if((!(tmp= get_tilde_string(ifp, &Line, &Pos)))||
        (!(Objects->Object[i].ShortDesc= my_strdup(tmp))))
-      fatal("Cannot get short description for Object #%d, %s at %d.",
+      log_fatal("Cannot get short description for Object #%d, %s at %d.",
           Objects->Object[i].Number, infile, Line);
 
     if((!(tmp= get_tilde_string(ifp, &Line, &Pos)))||
        (!(Objects->Object[i].Description= my_strdup(tmp))))
-      fatal("Cannot get description for Object #%d, %s at %d.",
+      log_fatal("Cannot get description for Object #%d, %s at %d.",
           Objects->Object[i].Number, infile, Line);
 
     if((!(tmp= get_tilde_string(ifp, &Line, &Pos)))||
        (!(Objects->Object[i].ActionDesc= my_strdup(tmp))))
-      fatal("Cannot get action description for Object #%d, %s at %d.",
+      log_fatal("Cannot get action description for Object #%d, %s at %d.",
           Objects->Object[i].Number, infile, Line);
 
     if((!(tmp= get_line(ifp, &Line, &Pos, 1)))||
        (sscanf(tmp, " %d %d %d ", &(Objects->Object[i].Type),
                &(Objects->Object[i].Flags.Extra), &(Objects->Object[i].Flags.Wear)) != 3))
-      fatal("Cannot get main flags for Object #%d, %s at %d.",
+      log_fatal("Cannot get main flags for Object #%d, %s at %d.",
           Objects->Object[i].Number, infile, Line);
 
     if((!(tmp= get_line(ifp, &Line, &Pos, 1)))||
        (sscanf(tmp, " %d %d %d %d ", &(Objects->Object[i].Flags.Value[0]),
                &(Objects->Object[i].Flags.Value[1]), &(Objects->Object[i].Flags.Value[2]),
                &(Objects->Object[i].Flags.Value[3])) != 4))
-      fatal("Cannot get value flags for Object #%d, %s at %d.",
+      log_fatal("Cannot get value flags for Object #%d, %s at %d.",
           Objects->Object[i].Number, infile, Line);
 
     if((!(tmp= get_line(ifp, &Line, &Pos, 1)))||
        (sscanf(tmp, " %d %d %d ", &(Objects->Object[i].Weight),
                &(Objects->Object[i].Value), &(Objects->Object[i].Rent)) != 3))
-      fatal("Cannot get value flags for Object #%d, %s at %d.",
+      log_fatal("Cannot get value flags for Object #%d, %s at %d.",
           Objects->Object[i].Number, infile, Line);
 
     Objects->Object[i].Affect= (obj_affect *)get_mem(1, sizeof(obj_affect));
@@ -1492,7 +1492,7 @@ objects *load_objects(char *infile, zones *Zones) {
         if((!(tmp= get_line(ifp, &Line, &Pos, 1)))||
            (sscanf(tmp, " %d %d ", &(Objects->Object[i].Affect[j].location),
                    &(Objects->Object[i].Affect[j].modifier)) != 2))
-          fatal("Cannot get affect flags for Object #%d, %s at %d.",
+          log_fatal("Cannot get affect flags for Object #%d, %s at %d.",
               Objects->Object[i].Number, infile, Line);
         j= ++Objects->Object[i].AffectCount;
         Objects->Object[i].Affect= (obj_affect *)
@@ -1500,18 +1500,18 @@ objects *load_objects(char *infile, zones *Zones) {
         bzero(&(Objects->Object[i].Affect[j]), sizeof(obj_affect));
       } else if(*tmp == 'E') {
         if(!(tmp= get_tilde_string(ifp, &Line, &Pos)))
-          fatal("No extra keywords for Object #%d, %s at %d.",
+          log_fatal("No extra keywords for Object #%d, %s at %d.",
               Objects->Object[i].Number, infile, Line);
         Objects->Object[i].Extra[e].Keyword= make_keyword_list(tmp);
         if((!(tmp= get_tilde_string(ifp, &Line, &Pos)))||
            (!(Objects->Object[i].Extra[e].Description= my_strdup(tmp))))
-          fatal("No extra descriptions for Object #%d, %s of %d.",
+          log_fatal("No extra descriptions for Object #%d, %s of %d.",
               Objects->Object[i].Number, infile, Line);
         e= ++Objects->Object[i].ExtraCount;
         Objects->Object[i].Extra= (extra *)
           get_more_mem((char *)Objects->Object[i].Extra, e+1, sizeof(extra));
         bzero(&(Objects->Object[i].Extra[e]), sizeof(extra));
-      } else fatal("Unknown line in Object #%d, %s at %d!",
+      } else log_fatal("Unknown line in Object #%d, %s at %d!",
                  Objects->Object[i].Number, infile, Line);
     }
   }
@@ -1757,7 +1757,7 @@ void check_duplicate_mobs(mobs *Mobs) {
     Mobs->Mob[i].Number = -1;
     if(remap_mob_vnum(Mobs, tmp) >= 0)
       if(Debug)
-        bug("MOB [#%d] is DUPLICATED!!!", tmp);
+        log_error("MOB [#%d] is DUPLICATED!!!", tmp);
     Mobs->Mob[i].Number = tmp;
   }
   if(!Quiet)
@@ -1783,7 +1783,7 @@ void set_mob_zones(zones *Zones, mobs *Mobs) {
         }
     if(CorrectZone == -1) {
       if(Verbose)
-        bug("Holy BatTurds!  I have NO IDEA what zone this mob [#%d] "
+        log_error("Holy BatTurds!  I have NO IDEA what zone this mob [#%d] "
             "belongs to!\nPutting it in Zone %d...\n",
             Mobs->Mob[i].Number, Zones->Zone[0].Number);
       Mobs->Mob[i].Zone= Zones->Zone[0].Number;
@@ -1807,7 +1807,7 @@ void check_mob_zone_mismatch(zones *Zones, mobs *Mobs) {
       spin(stderr);
     CorrectZone= Mobs->Mob[i].Number / 100;
     if(Mobs->Mob[i].Zone != CorrectZone) {
-      bug("Improper Zone ID of [#%d] for mob \"%s\" [#%d],\n"
+      log_error("Improper Zone ID of [#%d] for mob \"%s\" [#%d],\n"
           "Should belong to Zone [#%d].\n",
           Mobs->Mob[i].Zone, Mobs->Mob[i].Name,
           Mobs->Mob[i].Number, CorrectZone);
@@ -1853,14 +1853,14 @@ mobs *load_mobs(char *infile, zones *Zones) {
     Pos= MobIndex->VNum[i].Pos;
     Mobs->Mob[i].Number= MobIndex->VNum[i].Number;
     if(fseek(ifp, Pos, 0) < 0)
-      fatal("Cannot load Mob $%d from %s!",
+      log_fatal("Cannot load Mob $%d from %s!",
           Mobs->Mob[i].Number, infile);
     if(!(tmp= get_line(ifp, &Line, &Pos, 1)))
-      fatal("Cannot get vnum for Mob #%d from %s!",
+      log_fatal("Cannot get vnum for Mob #%d from %s!",
           Mobs->Mob[i].Number, infile);
     if((!(tmp= get_tilde_string(ifp, &Line, &Pos)))||
        (!(Mobs->Mob[i].Name= my_strdup(tmp))))
-      fatal("Cannot get name for Mob #%d, %s at %d.",
+      log_fatal("Cannot get name for Mob #%d, %s at %d.",
           Mobs->Mob[i].Number, infile, Line);
 
     if(Verbose)
@@ -1871,24 +1871,24 @@ mobs *load_mobs(char *infile, zones *Zones) {
 
     if((!(tmp= get_tilde_string(ifp, &Line, &Pos)))||
        (!(Mobs->Mob[i].ShortDesc= my_strdup(tmp))))
-      fatal("Cannot get short description for Mob #%d, %s at %d.",
+      log_fatal("Cannot get short description for Mob #%d, %s at %d.",
           Mobs->Mob[i].Number, infile, Line);
 
     if((!(tmp= get_tilde_string(ifp, &Line, &Pos)))||
        (!(Mobs->Mob[i].LongDesc= my_strdup(tmp))))
-      fatal("Cannot get long description for Mob #%d, %s at %d.",
+      log_fatal("Cannot get long description for Mob #%d, %s at %d.",
           Mobs->Mob[i].Number, infile, Line);
 
     if((!(tmp= get_tilde_string(ifp, &Line, &Pos)))||
        (!(Mobs->Mob[i].Description= my_strdup(tmp))))
-      fatal("Cannot get description for Mob #%d, %s at %d.",
+      log_fatal("Cannot get description for Mob #%d, %s at %d.",
           Mobs->Mob[i].Number, infile, Line);
 
     if((!(tmp= get_line(ifp, &Line, &Pos, 1)))||
        ((ack = sscanf(tmp, " %d %d %d %c %d ", &(Mobs->Mob[i].ActFlags),
                &(Mobs->Mob[i].AffectedBy), &(Mobs->Mob[i].Alignment),
                &(Mobs->Mob[i].Type), &(Mobs->Mob[i].AttackCount))) < 4))
-      fatal("Cannot get main flags for Mob #%d, %s at %d.",
+      log_fatal("Cannot get main flags for Mob #%d, %s at %d.",
           Mobs->Mob[i].Number, infile, Line);
 
     Mobs->Mob[i].ActFlags |= ACT_ISNPC;
@@ -1909,7 +1909,7 @@ mobs *load_mobs(char *infile, zones *Zones) {
            (sscanf(tmp, " %d %d %d %s %s ", &(Mobs->Mob[i].Level),
                    &(Mobs->Mob[i].ToHit), &(Mobs->Mob[i].ArmourClass),
                    tmpa, tmpb) != 5))
-          fatal("Cannot get level flags for Mob #%d, %s at %d.",
+          log_fatal("Cannot get level flags for Mob #%d, %s at %d.",
               Mobs->Mob[i].Number, infile, Line);
         sscanf_dice(tmpa, &(Mobs->Mob[i].HitPoints.Rolls),
                     &(Mobs->Mob[i].HitPoints.Die),
@@ -1936,7 +1936,7 @@ mobs *load_mobs(char *infile, zones *Zones) {
            (sscanf(tmp, " %d %d %d %d ", &(Mobs->Mob[i].Gold.Modifier),
                    &(Mobs->Mob[i].Gold.Rolls), &(Mobs->Mob[i].Experience.Modifier),
                    &(Mobs->Mob[i].Race)) < 2))
-          fatal("Cannot get experience flags for Mob #%d, %s at %d.",
+          log_fatal("Cannot get experience flags for Mob #%d, %s at %d.",
               Mobs->Mob[i].Number, infile, Line);
 
         if(Mobs->Mob[i].Gold.Modifier < 0) {
@@ -1953,7 +1953,7 @@ mobs *load_mobs(char *infile, zones *Zones) {
                    &(Mobs->Mob[i].DefaultPosition), &(Mobs->Mob[i].Sex),
                    &(Mobs->Mob[i].Resistance), &(Mobs->Mob[i].Immunity),
                    &(Mobs->Mob[i].Susceptible)) < 3))
-          fatal("Cannot get position flags for Mob #%d, %s at %d.",
+          log_fatal("Cannot get position flags for Mob #%d, %s at %d.",
               Mobs->Mob[i].Number, infile, Line);
         if(Mobs->Mob[i].Sex < 3) {
           Mobs->Mob[i].Resistance=
@@ -1976,16 +1976,16 @@ mobs *load_mobs(char *infile, zones *Zones) {
         if(Mobs->Mob[i].Type == 'W') {
          if((!(tmp= get_tilde_string(ifp, &Line, &Pos)))||
             (!(Mobs->Mob[i].Sound= my_strdup(tmp))))
-           fatal("No local sound for Mob #%d, %s of %d.",
+           log_fatal("No local sound for Mob #%d, %s of %d.",
                Mobs->Mob[i].Number, infile, Line);
          if((!(tmp= get_tilde_string(ifp, &Line, &Pos)))||
             (!(Mobs->Mob[i].DistantSound= my_strdup(tmp))))
-           fatal("No local sound for Mob #%d, %s of %d.",
+           log_fatal("No local sound for Mob #%d, %s of %d.",
                Mobs->Mob[i].Number, infile, Line);
         }
       } break;
       case 'D': {
-        fatal("Type 'D' mob #%d, %s of %d are no longer supported.",
+        log_fatal("Type 'D' mob #%d, %s of %d are no longer supported.",
               Mobs->Mob[i].Number, infile, Line);
       } break;
       case 'C': {
@@ -1994,7 +1994,7 @@ mobs *load_mobs(char *infile, zones *Zones) {
                    &(Mobs->Mob[i].Class), &(Mobs->Mob[i].Sex),
                    &(Mobs->Mob[i].Height), &(Mobs->Mob[i].Weight),
                    tmpa) != 6))
-          fatal("Cannot get race flags for Mob #%d, %s at %d.",
+          log_fatal("Cannot get race flags for Mob #%d, %s at %d.",
               Mobs->Mob[i].Number, infile, Line);
         sscanf_dice(tmpa, &(Mobs->Mob[i].Gold.Rolls),
                     &(Mobs->Mob[i].Gold.Die),
@@ -2004,7 +2004,7 @@ mobs *load_mobs(char *infile, zones *Zones) {
                    &(Mobs->Mob[i].Level), tmpb,
                    &(Mobs->Mob[i].ArmourClass), &(Mobs->Mob[i].ToHit),
                    &(Mobs->Mob[i].AttackCount)) != 6))
-          fatal("Cannot get experience flags for Mob #%d, %s at %d.",
+          log_fatal("Cannot get experience flags for Mob #%d, %s at %d.",
               Mobs->Mob[i].Number, infile, Line);
         sscanf_dice(tmpa, &(Mobs->Mob[i].Experience.Rolls),
                     &(Mobs->Mob[i].Experience.Die),
@@ -2024,7 +2024,7 @@ mobs *load_mobs(char *infile, zones *Zones) {
           if((!(tmp= get_line(ifp, &Line, &Pos, 1)))||
              (sscanf(tmp, " %s %d ", tmpa,
                      &(Mobs->Mob[i].Attack[j].Type)) != 2))
-            fatal("Cannot get attack line %d for Mob #%d, %s at %d.",
+            log_fatal("Cannot get attack line %d for Mob #%d, %s at %d.",
                 j, Mobs->Mob[i].Number, infile, Line);
           sscanf_dice(tmpa, &(Mobs->Mob[i].Attack[j].Rolls),
                       &(Mobs->Mob[i].Attack[j].Die),
@@ -2033,11 +2033,11 @@ mobs *load_mobs(char *infile, zones *Zones) {
         if((!(tmp= get_line(ifp, &Line, &Pos, 1)))||
            (sscanf(tmp, " %d %d %d ", &(Mobs->Mob[i].Immunity),
                    &(Mobs->Mob[i].Resistance), &(Mobs->Mob[i].Susceptible)) != 3))
-          fatal("Cannot get immunity flags for Mob #%d, %s at %d.",
+          log_fatal("Cannot get immunity flags for Mob #%d, %s at %d.",
               Mobs->Mob[i].Number, infile, Line);
         if((!(tmp= get_line(ifp, &Line, &Pos, 1)))||
            (sscanf(tmp, " %s %s %s %s %s %s ", tmpa, tmpb, tmpc, tmpd, tmpe, tmpf) != 6))
-          fatal("Cannot get stat flags for Mob #%d, %s at %d.",
+          log_fatal("Cannot get stat flags for Mob #%d, %s at %d.",
               Mobs->Mob[i].Number, infile, Line);
         sscanf_dice(tmpa, &(Mobs->Mob[i].Strength.Rolls),
                     &(Mobs->Mob[i].Strength.Die),
@@ -2061,7 +2061,7 @@ mobs *load_mobs(char *infile, zones *Zones) {
            (sscanf(tmp, " %d %d %d %d %d ", &(Mobs->Mob[i].SavingThrow[0]),
                    &(Mobs->Mob[i].SavingThrow[1]), &(Mobs->Mob[i].SavingThrow[2]),
                    &(Mobs->Mob[i].SavingThrow[3]), &(Mobs->Mob[i].SavingThrow[4])) != 5))
-          fatal("Cannot get saving throws for Mob #%d, %s at %d.",
+          log_fatal("Cannot get saving throws for Mob #%d, %s at %d.",
               Mobs->Mob[i].Number, infile, Line);
         for(j= 0; j< 5; j++)
           if(!Mobs->Mob[i].SavingThrow[j])
@@ -2069,17 +2069,17 @@ mobs *load_mobs(char *infile, zones *Zones) {
         if((!(tmp= get_line(ifp, &Line, &Pos, 1)))||
            (sscanf(tmp, " %d %d %d %d ", &(Mobs->Mob[i].Position),
                    &(Mobs->Mob[i].DefaultPosition), &ack, &(Mobs->Mob[i].SkillCount)) < 2))
-          fatal("Cannot get position flags for Mob #%d, %s at %d.",
+          log_fatal("Cannot get position flags for Mob #%d, %s at %d.",
               Mobs->Mob[i].Number, infile, Line);
 
         if(ack) {
          if((!(tmp= get_tilde_string(ifp, &Line, &Pos)))||
             (!(Mobs->Mob[i].Sound= my_strdup(tmp))))
-           fatal("No local sound for Mob #%d, %s of %d.",
+           log_fatal("No local sound for Mob #%d, %s of %d.",
                Mobs->Mob[i].Number, infile, Line);
          if((!(tmp= get_tilde_string(ifp, &Line, &Pos)))||
             (!(Mobs->Mob[i].DistantSound= my_strdup(tmp))))
-           fatal("No local sound for Mob #%d, %s of %d.",
+           log_fatal("No local sound for Mob #%d, %s of %d.",
                Mobs->Mob[i].Number, infile, Line);
         }
         if(Mobs->Mob[i].SkillCount) {
@@ -2089,13 +2089,13 @@ mobs *load_mobs(char *infile, zones *Zones) {
             if((!(tmp= get_line(ifp, &Line, &Pos, 1)))||
                (sscanf(tmp, " %d %d %d ", &(Mobs->Mob[i].Skill[j].Number),
                        &(Mobs->Mob[i].Skill[j].Learned), &(Mobs->Mob[i].Skill[j].Recognise)) != 3))
-              fatal("Cannot get skill line %d for Mob #%d, %s at %d.",
+              log_fatal("Cannot get skill line %d for Mob #%d, %s at %d.",
                   j, Mobs->Mob[i].Number, infile, Line);
           }
         }
       } break;
       default:
-        fatal("I have NO clue what kind of mob #%d, %s of %d is.",
+        log_fatal("I have NO clue what kind of mob #%d, %s of %d is.",
               Mobs->Mob[i].Number, infile, Line);
         break;
     }

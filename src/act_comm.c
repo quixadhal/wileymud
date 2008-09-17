@@ -29,7 +29,7 @@ void do_say(struct char_data *ch, char *argument, int cmd)
   int                                     i = 0;
 
   if (DEBUG)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
   for (i = 0; *(argument + i) == ' '; i++);		       /* skip leading spaces */
 
@@ -72,7 +72,7 @@ void do_shout(struct char_data *ch, char *argument, int cmd)
 #endif
 
   if (DEBUG)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
   if (IS_SET(ch->specials.act, PLR_NOSHOUT)) {
     cprintf(ch, "You can't shout!!\n\r");
@@ -175,7 +175,7 @@ void do_commune(struct char_data *ch, char *argument, int cmd)
   struct descriptor_data                 *i = NULL;
 
   if (DEBUG)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
   for (; *argument == ' '; argument++);			       /* skip leading spaces */
 
@@ -200,7 +200,7 @@ void do_tell(struct char_data *ch, char *argument, int cmd)
   char                                    message[MAX_INPUT_LENGTH + 20] = "\0\0\0";
 
   if (DEBUG)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
   half_chop(argument, name, message);
 
@@ -258,7 +258,7 @@ void do_whisper(struct char_data *ch, char *argument, int cmd)
   char                                    message[MAX_INPUT_LENGTH] = "\0\0\0";
 
   if (DEBUG)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
   half_chop(argument, name, message);
 
@@ -286,7 +286,7 @@ void do_ask(struct char_data *ch, char *argument, int cmd)
   char                                    message[MAX_INPUT_LENGTH] = "\0\0\0";
 
   if (DEBUG)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
   half_chop(argument, name, message);
 
@@ -316,7 +316,7 @@ void do_write(struct char_data *ch, char *argument, int cmd)
   char                                    penname[MAX_INPUT_LENGTH] = "\0\0\0";
 
   if (DEBUG)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
   argument_interpreter(argument, papername, penname);
 
@@ -367,7 +367,7 @@ void do_group_tell(struct char_data *ch, char *argument, int cmd)
   struct follow_type                     *f = NULL;
 
   if (DEBUG)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
   if (!*argument) {
     cprintf(ch, "usage: gtell <mesg>.\n\r");
@@ -419,7 +419,7 @@ void do_group_report(struct char_data *ch, char *argument, int cmd)
   char                                    message[MAX_INPUT_LENGTH + 20] = "\0\0\0";
 
   if (DEBUG)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
   if (!IS_AFFECTED(ch, AFF_GROUP)) {
     cprintf(ch, "But you are a member of no group?!\n\r");
@@ -473,7 +473,7 @@ void do_split(struct char_data *ch, char *argument, int cmd)
   char                                    blah[256] = "\0\0\0";
 
   if (DEBUG)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
   if (!IS_AFFECTED(ch, AFF_GROUP)) {
     cprintf(ch, "You are a member of no group!\n\r");
@@ -525,7 +525,7 @@ void do_split(struct char_data *ch, char *argument, int cmd)
 void do_land(struct char_data *ch, char *argument, int cmd)
 {
   if (DEBUG)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
   if (IS_NOT_SET(ch->specials.affected_by, AFF_FLYING)) {
     cprintf(ch, "But you are not flying?\n\r");
@@ -544,7 +544,7 @@ void do_land(struct char_data *ch, char *argument, int cmd)
 void do_invis_off(struct char_data *ch, char *argument, int cmd)
 {
   if (DEBUG)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
   if (!IS_SET(ch->specials.affected_by, AFF_INVISIBLE)) {
     cprintf(ch, "But you are not invisible?\n\r");

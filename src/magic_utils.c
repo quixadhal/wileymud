@@ -29,7 +29,7 @@ void SwitchStuff(struct char_data *giver, struct char_data *taker)
   int                                     j = 0;
 
   if (DEBUG > 2)
-    dlog("called %s with %s, %s", __PRETTY_FUNCTION__, SAFE_NAME(giver), SAFE_NAME(taker));
+    log_info("called %s with %s, %s", __PRETTY_FUNCTION__, SAFE_NAME(giver), SAFE_NAME(taker));
 
   /*
    *  take all the stuff from the giver, put in on the
@@ -94,7 +94,7 @@ void SwitchStuff(struct char_data *giver, struct char_data *taker)
 void FailCharm(struct char_data *victim, struct char_data *ch)
 {
   if (DEBUG > 2)
-    dlog("called %s with %s, %s", __PRETTY_FUNCTION__, SAFE_NAME(victim), SAFE_NAME(ch));
+    log_info("called %s with %s, %s", __PRETTY_FUNCTION__, SAFE_NAME(victim), SAFE_NAME(ch));
 
   if (IS_NPC(victim)) {
     if (!victim->specials.fighting) {
@@ -108,7 +108,7 @@ void FailCharm(struct char_data *victim, struct char_data *ch)
 void FailSleep(struct char_data *victim, struct char_data *ch)
 {
   if (DEBUG > 2)
-    dlog("called %s with %s, %s", __PRETTY_FUNCTION__, SAFE_NAME(victim), SAFE_NAME(ch));
+    log_info("called %s with %s, %s", __PRETTY_FUNCTION__, SAFE_NAME(victim), SAFE_NAME(ch));
 
   cprintf(victim, "You feel sleepy for a moment,but then you recover\n\r");
   if (IS_NPC(victim))
@@ -119,7 +119,7 @@ void FailSleep(struct char_data *victim, struct char_data *ch)
 void FailPara(struct char_data *victim, struct char_data *ch)
 {
   if (DEBUG > 2)
-    dlog("called %s with %s, %s", __PRETTY_FUNCTION__, SAFE_NAME(victim), SAFE_NAME(ch));
+    log_info("called %s with %s, %s", __PRETTY_FUNCTION__, SAFE_NAME(victim), SAFE_NAME(ch));
 
   cprintf(victim, "You feel frozen for a moment,but then you recover\n\r");
   if (IS_NPC(victim))
@@ -130,7 +130,7 @@ void FailPara(struct char_data *victim, struct char_data *ch)
 void FailCalm(struct char_data *victim, struct char_data *ch)
 {
   if (DEBUG > 2)
-    dlog("called %s with %s, %s", __PRETTY_FUNCTION__, SAFE_NAME(victim), SAFE_NAME(ch));
+    log_info("called %s with %s, %s", __PRETTY_FUNCTION__, SAFE_NAME(victim), SAFE_NAME(ch));
 
   cprintf(victim, "You feel happy but the effect soon fades.\n\r");
   if (IS_NPC(victim))
@@ -145,7 +145,7 @@ void AreaEffectSpell(struct char_data *castor, int dam, int spell_type, int zfla
   struct char_data                       *next_victim = NULL;
 
   if (DEBUG > 2)
-    dlog("called %s with %s, %d, %d, %d, %s", __PRETTY_FUNCTION__, SAFE_NAME(castor), dam, spell_type, zflag, VNULL(zone_mesg));
+    log_info("called %s with %s, %d, %d, %d, %s", __PRETTY_FUNCTION__, SAFE_NAME(castor), dam, spell_type, zflag, VNULL(zone_mesg));
 
   for (victim = character_list; victim; victim = next_victim) {
     next_victim = victim->next;

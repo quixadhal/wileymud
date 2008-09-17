@@ -84,7 +84,7 @@ if (!str_cmp((word), (literal))) { \
 #define VIRTUAL 1
 
 #define LOG_ZONE_ERROR(ch, type, zone, cmd) {\
-  dlog("error in zone %s cmd %d (%c) resolving %s number", \
+  log_error("error in zone %s cmd %d (%c) resolving %s number", \
     zone_table[zone].name, cmd, ch, type); \
   }
 

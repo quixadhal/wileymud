@@ -28,7 +28,7 @@
   struct char_list                       *n = NULL;
 
   if (DEBUG > 2)
-    dlog("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
+    log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
 
   for (k = ch->hates.clist; k; k = n) {
     n = k->next;
@@ -37,7 +37,7 @@
 	if (!strcmp(n->valid, "AddHated")) {
 	  DESTROY(n);
 	} else {
-	  bug("Attempt to free invalid Hated chain");
+	  log_error("Attempt to free invalid Hated chain");
 	}
       }
   }
@@ -49,7 +49,7 @@
   struct char_list                       *n = NULL;
 
   if (DEBUG > 2)
-    dlog("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
+    log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
 
   for (k = ch->fears.clist; k; k = n) {
     n = k->next;
@@ -58,7 +58,7 @@
 	if (!strcmp(n->valid, "AddFeared")) {
 	  DESTROY(n);
 	} else {
-	  bug("Attempt to free invalid Feared chain");
+	  log_error("Attempt to free invalid Feared chain");
 	}
       }
   }
@@ -70,7 +70,7 @@ int RemHated(struct char_data *ch, struct char_data *pud)
   struct char_list                       *t = NULL;
 
   if (DEBUG > 2)
-    dlog("called %s with %s, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), SAFE_NAME(pud));
+    log_info("called %s with %s, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), SAFE_NAME(pud));
 
   if (pud) {
     for (oldpud = ch->hates.clist; oldpud; oldpud = oldpud->next) {
@@ -119,7 +119,7 @@ int AddHated(struct char_data *ch, struct char_data *pud)
   struct char_list                       *newpud = NULL;
 
   if (DEBUG > 2)
-    dlog("called %s with %s, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), SAFE_NAME(pud));
+    log_info("called %s with %s, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), SAFE_NAME(pud));
 
   if (ch == pud)
     return (FALSE);
@@ -145,7 +145,7 @@ int AddHated(struct char_data *ch, struct char_data *pud)
 int AddHatred(struct char_data *ch, int parm_type, int parm)
 {
   if (DEBUG > 2)
-    dlog("called %s with %s, %d, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), parm_type, parm);
+    log_info("called %s with %s, %d, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), parm_type, parm);
 
   switch (parm_type) {
     case OP_SEX:
@@ -193,7 +193,7 @@ int AddHatred(struct char_data *ch, int parm_type, int parm)
  int RemHatred(struct char_data *ch, unsigned short bitv)
 {
   if (DEBUG > 2)
-    dlog("called %s with %s, %04hx", __PRETTY_FUNCTION__, SAFE_NAME(ch), bitv);
+    log_info("called %s with %s, %04hx", __PRETTY_FUNCTION__, SAFE_NAME(ch), bitv);
 
   REMOVE_BIT(ch->hatefield, bitv);
   if (!ch->hatefield)
@@ -208,7 +208,7 @@ int RemFeared(struct char_data *ch, struct char_data *pud)
   struct char_list                       *tmp = NULL;
 
   if (DEBUG > 2)
-    dlog("called %s with %s, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), SAFE_NAME(pud));
+    log_info("called %s with %s, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), SAFE_NAME(pud));
 
   if (!IS_SET(ch->specials.act, ACT_AFRAID))
     return (FALSE);
@@ -262,7 +262,7 @@ int AddFeared(struct char_data *ch, struct char_data *pud)
   struct char_list                       *newpud = NULL;
 
   if (DEBUG > 2)
-    dlog("called %s with %s, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), SAFE_NAME(pud));
+    log_info("called %s with %s, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), SAFE_NAME(pud));
 
   if (ch == pud)
     return (FALSE);
@@ -290,7 +290,7 @@ int AddFeared(struct char_data *ch, struct char_data *pud)
 int AddFears(struct char_data *ch, int parm_type, int parm)
 {
   if (DEBUG > 2)
-    dlog("called %s with %s, %d, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), parm_type, parm);
+    log_info("called %s with %s, %d, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), parm_type, parm);
 
   switch (parm_type) {
     case OP_SEX:
@@ -341,7 +341,7 @@ int AddFears(struct char_data *ch, int parm_type, int parm)
   struct char_list                       *oldpud;
 
   if (DEBUG)
-    dlog("ZeroHatred");
+    log_info("ZeroHatred");
   for (oldpud = ch->hates.clist; oldpud; oldpud = oldpud->next) {
     if (oldpud) {
       if (oldpud->op_ch) {
@@ -358,7 +358,7 @@ int AddFears(struct char_data *ch, int parm_type, int parm)
   struct char_list                       *oldpud = NULL;
 
   if (DEBUG > 2)
-    dlog("called %s with %s, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), SAFE_NAME(v));
+    log_info("called %s with %s, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), SAFE_NAME(v));
 
   for (oldpud = ch->fears.clist; oldpud; oldpud = oldpud->next) {
     if (oldpud) {
@@ -376,7 +376,7 @@ int DoesHate(struct char_data *ch, struct char_data *v)
   struct char_list                       *i = NULL;
 
   if (DEBUG > 2)
-    dlog("called %s with %s, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), SAFE_NAME(v));
+    log_info("called %s with %s, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), SAFE_NAME(v));
 
   if (!ch->hatefield)
     return FALSE;
@@ -450,7 +450,7 @@ int DoesFear(struct char_data *ch, struct char_data *v)
   struct char_list                       *i = NULL;
 
   if (DEBUG > 2)
-    dlog("called %s with %s, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), SAFE_NAME(v));
+    log_info("called %s with %s, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), SAFE_NAME(v));
 
   if (!IS_SET(ch->specials.act, ACT_AFRAID))
     return (FALSE);
@@ -512,7 +512,7 @@ int DoesFear(struct char_data *ch, struct char_data *v)
  int CanFear(struct char_data *ch, struct char_data *v)
 {
   if (DEBUG > 2)
-    dlog("called %s with %s, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), SAFE_NAME(v));
+    log_info("called %s with %s, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), SAFE_NAME(v));
 
   if (ch == v)
     return FALSE;
@@ -530,7 +530,7 @@ struct char_data                       *FindAHatee(struct char_data *ch)
   struct char_data                       *tmp_ch = NULL;
 
   if (DEBUG > 2)
-    dlog("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
+    log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
 
   if (ch->in_room < 0)
     return NULL;
@@ -554,7 +554,7 @@ struct char_data                       *FindAFearee(struct char_data *ch)
   struct char_data                       *tmp_ch = NULL;
 
   if (DEBUG > 2)
-    dlog("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
+    log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
 
   if (ch->in_room < 0)
     return NULL;
@@ -581,7 +581,7 @@ struct char_data                       *FindAFearee(struct char_data *ch)
   struct char_data                       *i = NULL;
 
   if (DEBUG > 2)
-    dlog("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
+    log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
 
   for (i = character_list; i; i = i->next) {
     if (DoesHate(i, ch))
@@ -594,7 +594,7 @@ struct char_data                       *FindAFearee(struct char_data *ch)
   struct char_data                       *i = NULL;
 
   if (DEBUG > 2)
-    dlog("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
+    log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
 
   for (i = character_list; i; i = i->next) {
     if (DoesFear(i, ch))

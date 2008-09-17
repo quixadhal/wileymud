@@ -1,0 +1,310 @@
+SocketMUD IMC2 Installation
+---------------------------
+
+Copyrights available in source code.
+
+Terms of Use
+------------
+
+1. Read and comply with the terms of the LGPL, which is included in the file
+"COPYING.LGPL". LGPL licensing allows you to legally distribute this code
+with a Diku derived codebase.
+
+What this code does
+-------------------
+
+This code allows your mud to connect to an interlinked mud chat network.
+Decentralized hubs then route traffic between the various muds which are
+connected to them. This version is a cleaned up and enhanced version of the
+code. Security problems and some general ugliness have been fixed and the
+code consolidated down to these 3 files for easier maintenance. It now
+also compiles cleanly on many different codebases with a few simple compiler
+flag changes. Main drawbacks being that the protocol itself is largely
+undocumented.
+
+This code will peacefully coexist with the Intermud-3 code, and some of you
+may already be members of that network.
+
+No channels have been included with this package due to the ability to connect
+automatically with any appropriately configured network. Channel information
+will be delivered to your mud by the hub you connect to. Some networks may also
+have a premade channel file you can download.
+
+This code was last tested on SocketMUD 2.1
+
+Begin Installation:
+===================
+
+1. Under your root socketmud directory, make a directory named imc.
+   In this directory, place the following files:
+
+   imc.config, imc.channels, imc.ucache, imc.color, imc.commands, imc.help, and imc.ignores.
+   Transfer them as ASCII files.
+
+2. In your source code directory, place the imc.c, imc.h, sha256.c, sha256.h, and imccfg.h files.
+
+3. Open action_safe.c and in cmd_copyover, locate:
+
+  char buf[100];
+
+   Change that to:
+
+  char buf[100], buf2[100];
+
+  /* close any pending sockets */
+  recycle_sockets();
+
+   Below that, place:
+
+#ifdef IMC
+   imc_hotboot();
+#endif
+
+   Then locate:
+
+  /* exec - descriptors are inherited */
+  sprintf(buf, "%d", control);
+  execl(EXE_FILE, "SocketMud", "copyover", buf, (char *) NULL, (char *) NULL);
+
+   Change that to:
+
+  /* exec - descriptors are inherited */
+  sprintf(buf, "%d", control);
+#ifdef IMC
+   if( this_imcmud )
+      snprintf( buf2, 100, "%d", this_imcmud->desc );
+   else
+      strncpy( buf2, "-1", 100 );
+#else
+   strncpy( buf2, "-1", 100 );
+#endif
+  execl(EXE_FILE, "SocketMud", "copyover", buf, buf2, (char *) NULL, (char *) NULL);
+
+4. Open interpret.c and in handle_cmd_input, locate:
+
+  if( !found_cmd )
+    text_to_mobile(dMob, "No such command.\n\r");
+
+   Chage that to read as:
+
+  if( !found_cmd
+#ifdef IMC
+	&&   !imc_command_hook( dMob, command, arg )
+#endif
+     )
+    text_to_mobile(dMob, "No such command.\n\r");
+
+5. Open the Makefile
+
+   Above the list of O files, add:
+
+#IMC2 - Comment out to disable IMC2 support
+IMC = 1
+
+   Below the list of O files, add:
+
+ifdef IMC
+   O_FILES := imc.o sha256.o $(O_FILES)
+   C_FLAGS := $(C_FLAGS) -DIMC
+endif
+
+6. Open mud.h and locate:
+
+struct dMobile
+{
+  D_SOCKET      * socket;
+  LIST          * events;
+  char          * name;
+  char          * password;
+  sh_int          level;
+};
+
+   Change that to read as:
+
+#ifdef IMC
+   #include "imc.h"
+#endif
+
+struct dMobile
+{
+  D_SOCKET      * socket;
+  LIST          * events;
+  char          * name;
+  char          * password;
+  sh_int          level;
+#ifdef IMC
+    IMC_CHARDATA *imcchardata;
+#endif
+};
+
+7. Open save.c and in save_pfile, locate:
+
+  /* dump the players data into the file */
+  fprintf(fp, "Name            %s~\n", dMob->name);
+  fprintf(fp, "Level           %d\n",  dMob->level);
+  fprintf(fp, "Password        %s~\n", dMob->password);
+
+   Below that, add:
+
+#ifdef IMC
+    imc_savechar( dMob, fp );
+#endif
+
+   Then in load_player, locate:
+
+  /* create new mobile data */
+  if (StackSize(dmobile_free) <= 0)
+  {
+    if ((dMob = malloc(sizeof(*dMob))) == NULL)
+    {
+      bug("Load_player: Cannot allocate memory.");
+      proper_exit(42);
+    }
+  }
+  else
+  {
+    dMob = (D_MOBILE *) PopStack(dmobile_free);
+  }
+  clear_mobile(dMob);
+
+   Below that, add:
+
+#ifdef IMC
+    imc_initchar( dMob );
+#endif
+
+   Then locate:
+
+      case 'E':
+        if (!strcasecmp(word, "EOF")) {done = TRUE; found = TRUE; break;}
+        break;
+
+   Below that, add:
+
+      case 'I':
+#ifdef IMC
+           if( ( found = imc_loadchar( dMob, fp, word ) ) )
+                break;
+#endif
+        break;
+
+8. Then open socket.c and in main(), locate:
+
+  bool fCopyOver;
+
+   Below that, add:
+
+  int imcsocket = -1;
+
+   Then locate:
+
+  if (argc > 2 && atoi(argv[2]) > 0)
+  {
+    fCopyOver = TRUE;
+    control = atoi(argv[2]);
+  }
+
+   Make that read as so:
+
+  if (argc > 2 && atoi(argv[2]) > 0)
+  {
+    fCopyOver = TRUE;
+    control = atoi(argv[2]);
+#ifdef IMC
+    imcsocket = atoi(argv[3]);
+#endif
+  }
+
+#ifdef IMC
+    imc_startup( FALSE, imcsocket, fCopyOver );
+#endif
+
+  /* load all external data */
+  load_muddata(fCopyOver);
+
+   Then a little further down, locate:
+
+  /* close down the socket */
+  close(control);
+
+   Below that, add:
+
+#ifdef IMC
+   imc_shutdown( FALSE );
+#endif
+
+   Then in GameLoop, locate:
+
+    /* call the event queue */
+    heartbeat();
+
+   Below that, add:
+
+#ifdef IMC
+	imc_loop();
+#endif
+
+   Then in handle_new_connections, locate:
+
+    case STATE_VERIFY_PASSWORD:
+      if (!strcmp(crypt(arg, dsock->player->name), dsock->player->password))
+      {
+        text_to_buffer(dsock, (char *) do_echo);
+
+        /* put him in the list */
+        AttachToList(dsock->player, dmobile_list);
+
+        log_string("New player: %s has entered the game.", dsock->player->name);
+
+   Below that, add:
+
+#ifdef IMC
+        imc_initchar( dsock->player );
+#endif
+
+9. Open utils.c and in free_mobile, locate:
+
+  free(dMob->name);
+  free(dMob->password);
+
+   Below that, add:
+
+#ifdef IMC
+	imc_freechardata( dMob );
+#endif
+
+10. Make clean, then make.
+
+11. Assuming the compile went well, you're ready to configure your specifics.
+   Go to the imc directory you made in step 1 and open the imc.config file.
+   It should be fairly easy to see what needs changing.
+   This can also be done online via the imcconfig command if preferred.
+
+   You will need to obtain connection info for a router in order to join an IMC2
+   network. Router information can be found at http://www.imc2.org and at
+   http://www.mudworld.org/intermud
+
+12. Once configured, go ahead and reboot your mud. Try typing "imc" by itself on your
+command line. You should get back a list of commands. Try typing "imchelp" by itself
+on your command line. You should see a listing of help topics available. By default,
+these should also be in color. If all 3 of these conditions are met, you are ready!
+
+Type "imcconnect". Assuming you've got log channels visible, you should see some sort
+of confirmation that you've connected. If you don't have log channels visible,
+you'll need to read your log files or just have some faith :)
+
+If there are any problems with this installation, post your query to the
+IMC2 forum located at:
+
+http://www.imc2.org
+
+If you've obtained this code from someplace OTHER than my own site
+and you are encountering problems, go download it from my site before
+you contact me for help. I can only support what I work on.
+
+Adventure beckons in the lands of mystique....
+Samson, Implementor of Alsherok
+http://www.alsherok.net
+telnet://alsherok.net:5500
+
+Intermud-3 and IMC2 contact: Samson@Alsherok

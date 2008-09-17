@@ -38,16 +38,16 @@ extern struct descriptor_data *descriptor_list;
  * NOTE!  The calling interface is very ugly... it is designed to be very
  * versitle, not pretty... If you want it to be useful in your source code,
  * use a macro like this one:
- * #define bug(BugFile, ch, Str...) \
- *         abug(__FILE__, __FUNCTION__, __LINE__, BugFile, ch, Str, ## args)
+ * #define log_error(BugFile, ch, Str...) \
+ *         bug_logger(__FILE__, __FUNCTION__, __LINE__, BugFile, ch, Str, ## args)
  * which can then be used by simply saying:
- * bug(BUGLOG, ch, "You died %d times!\n", deaths);
+ * log_error(BUGLOG, ch, "You died %d times!\n", deaths);
  * producing as an example:
  * <: 950219.195642.037 (ack.c;barf,135) Quixadhal [#3001]:
  *  : You died 27 times!
  * The datestamp is YYMMDD.HHMMSS.MIL format.
  */
-void abug(char *File, char *Func, int Line,
+void bug_logger(char *File, char *Func, int Line,
 #ifdef DIKU_CRUD
           unsigned int Level,
 #endif

@@ -40,7 +40,7 @@ vnum_index *make_index(char *infile, char *outfile) {
       sscanf(tmp+1, "%d", &(VIndex->VNum[i].Number));
       VIndex->VNum[i].Line= Line; VIndex->VNum[i].Pos= Pos;
       if(!verify_pos(ifp, Pos, '#')) {
-        bug("Sanity check failed! Wrong byte position!");
+        log_error("Sanity check failed! Wrong byte position!");
         fclose(ofp); fclose(ifp);
         exit(__LINE__);
       }

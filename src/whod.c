@@ -37,7 +37,7 @@
  * In function run_the_game(int port):
  *   ...
  *   init_whod(port);
- *   dlog("Entering game loop.");
+ *   log_boot("Entering game loop.");
  *   game_loop(s);
  *   close_sockets(s);
  *   close_whod();
@@ -83,7 +83,7 @@ void do_whod(struct char_data *ch, char *arg, int cmd)
   };
 
   if (DEBUG)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(arg), cmd);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(arg), cmd);
 
   half_chop(arg, buf, tmp);
   if (!*buf) {
@@ -111,7 +111,7 @@ void do_whod(struct char_data *ch, char *arg, int cmd)
 	REMOVE_BIT(whod_mode, SHOW_OFF);
 	SET_BIT(whod_mode, SHOW_ON);
 	cprintf(ch, "WHOD turned on.\n\r");
-	dlog("WHOD turned on by %s.", GET_NAME(ch));
+	log_info("WHOD turned on by %s.", GET_NAME(ch));
       }
     }
   } else {
@@ -123,21 +123,21 @@ void do_whod(struct char_data *ch, char *arg, int cmd)
 	  REMOVE_BIT(whod_mode, SHOW_ON);
 	  SET_BIT(whod_mode, SHOW_OFF);
 	  cprintf(ch, "WHOD turned off.\n\r");
-	  dlog("WHOD turned off by %s.", GET_NAME(ch));
+	  log_info("WHOD turned off by %s.", GET_NAME(ch));
 	}
       }
     } else {
       if (IS_SET(whod_mode, 1 << bit)) {
 	cprintf(ch, "%c%s will not be shown on WHOD.\n\r",
 		toupper(modes[bit][0]), &modes[bit][1]);
-	dlog("%c%s removed from WHOD by %s.",
+	log_info("%c%s removed from WHOD by %s.",
 	    toupper(modes[bit][0]), &modes[bit][1], GET_NAME(ch));
 	REMOVE_BIT(whod_mode, 1 << bit);
 	return;
       } else {
 	cprintf(ch, "%c%s will now be shown on WHOD.\n\r",
 		toupper(modes[bit][0]), &modes[bit][1]);
-	dlog("%c%s added to WHOD by %s.", toupper(modes[bit][0]), &modes[bit][1], GET_NAME(ch));
+	log_info("%c%s added to WHOD by %s.", toupper(modes[bit][0]), &modes[bit][1], GET_NAME(ch));
 	SET_BIT(whod_mode, 1 << bit);
 	return;
       }
@@ -161,10 +161,10 @@ void do_whod(struct char_data *ch, char *arg, int cmd)
 void init_whod(int port)
 {
   if (DEBUG > 2)
-    dlog("called %s with %d", __PRETTY_FUNCTION__, port);
+    log_info("called %s with %d", __PRETTY_FUNCTION__, port);
 
   whod_port = port + 1;
-  dlog("WHOD port opened.");
+  log_boot("WHOD port opened.");
   s = init_socket(whod_port);
   state = WHOD_OPEN;
 }
@@ -180,12 +180,12 @@ void init_whod(int port)
 void close_whod(void)
 {
   if (DEBUG > 2)
-    dlog("called %s with no arguments", __PRETTY_FUNCTION__);
+    log_info("called %s with no arguments", __PRETTY_FUNCTION__);
 
   if (state != WHOD_CLOSED) {
     state = WHOD_CLOSED;
     close(s);
-    dlog("WHOD port closed.");
+    log_boot("WHOD port closed.");
   }
 }
 
@@ -226,13 +226,13 @@ void whod_loop(void)
   static int                              newdesc = 0;
 
   if (DEBUG > 2)
-    dlog("called %s with no arguments", __PRETTY_FUNCTION__);
+    log_info("called %s with no arguments", __PRETTY_FUNCTION__);
 
   switch (state) {
 /****************************************************************/
     case WHOD_OPENING:
       s = init_socket(whod_port);
-      dlog("WHOD port opened.");
+      log_boot("WHOD port opened.");
       state = WHOD_OPEN;
       break;
 
@@ -252,7 +252,7 @@ void whod_loop(void)
 	getsockname(s, (struct sockaddr *)&newaddr, &size);
 
 	if ((newdesc = accept(s, (struct sockaddr *)&newaddr, &size)) < 0) {
-	  perror("WHOD - Accept");
+	  log_error("WHOD - Accept");
 	  return;
 	}
 	if ((hent =
@@ -265,7 +265,7 @@ void whod_loop(void)
 		  (hostlong & 0x00ff0000) >> 16,
 		  (hostlong & 0x0000ff00) >> 8, (hostlong & 0x000000ff) >> 0);
 	}
-	dlog(buf);
+	log_info(buf);
 
 	sprintf(buf, VERSION_STR);
 	strcat(buf, "\n\r");

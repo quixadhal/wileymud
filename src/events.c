@@ -67,7 +67,7 @@ void do_event(struct char_data *ch, char *argument, int cmd)
   int                                     found = FALSE;
 
   if (DEBUG)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
   if (IS_NPC(ch))
     return;
@@ -92,7 +92,7 @@ void do_event(struct char_data *ch, char *argument, int cmd)
   if (!found)
     return;
   cprintf(ch, "Doing Event [#%d] %s\n\r", found, event_list[found]);
-  dlog("%s does Event [#%d] %s", GET_NAME(ch), found, event_list[found]);
+  log_info("%s does Event [#%d] %s", GET_NAME(ch), found, event_list[found]);
   event_code[found] (ch, argument);
 }
 
@@ -107,7 +107,7 @@ static void event_scatter_goodies_zone(int rnum, struct room_data *rp,
   struct obj_data                        *coins = NULL;
 
   if (DEBUG > 1)
-    dlog("called %s with %d, %08x, %08x", __PRETTY_FUNCTION__, rnum, rp, stuff);
+    log_info("called %s with %d, %08x, %08x", __PRETTY_FUNCTION__, rnum, rp, stuff);
 
   if (!rp || rp->number < stuff->bottom || rp->number > stuff->top)
     return;
@@ -162,7 +162,7 @@ static void event_fill_zone_with_mobs(int rnum, struct room_data *rp,
   struct obj_data                        *object = NULL;
 
   if (DEBUG > 1)
-    dlog("called %s with %d, %08x, %08x", __PRETTY_FUNCTION__, rnum, rp, mobs);
+    log_info("called %s with %d, %08x, %08x", __PRETTY_FUNCTION__, rnum, rp, mobs);
 
   if (!rp || rp->number < mobs->bottom || rp->number > mobs->top)
     return;
@@ -218,7 +218,7 @@ static void event_scatter_goodies(struct char_data *ch, char *arg)
   struct room_data                       *rp = NULL;
 
   if (DEBUG > 1)
-    dlog("called %s with %s, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(arg));
+    log_info("called %s with %s, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(arg));
 
   if ((rp = real_roomp(ch->in_room)))
     zone = rp->zone;
@@ -238,7 +238,7 @@ static void event_scatter_goodies(struct char_data *ch, char *arg)
   hash_iterate(&room_db, (funcp)event_scatter_goodies_zone, &junk);
   cprintf(ch, "You just added %d critters, %d things, and %d gold to %s [#%d].\n\r", mob_count,
 	  obj_count, gold_count, zone_table[zone].name, zone);
-  dlog("%s added %d critters, %d things, and %d gold to %s [#%d].\n\r", GET_NAME(ch), mob_count,
+  log_info("%s added %d critters, %d things, and %d gold to %s [#%d].\n\r", GET_NAME(ch), mob_count,
        obj_count, gold_count, zone_table[zone].name, zone);
 }
 
@@ -263,7 +263,7 @@ static void event_rats_invade_zone(struct char_data *ch, char *arg)
   struct room_data                       *rp = NULL;
 
   if (DEBUG > 1)
-    dlog("called %s with %s, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(arg));
+    log_info("called %s with %s, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(arg));
 
   if ((rp = real_roomp(ch->in_room)))
     zone = rp->zone;
@@ -283,7 +283,7 @@ static void event_rats_invade_zone(struct char_data *ch, char *arg)
   hash_iterate(&room_db, (funcp)event_fill_zone_with_mobs, &mobs);
   cprintf(ch, "You just added %d rats to %s [#%d].\n\r", mob_count,
 	  zone_table[zone].name, zone);
-  dlog("%s added %d rats to %s [#%d].", GET_NAME(ch), mob_count, zone_table[zone].name, zone);
+  log_info("%s added %d rats to %s [#%d].", GET_NAME(ch), mob_count, zone_table[zone].name, zone);
 }
 
 static void event_undead_invade_zone(struct char_data *ch, char *arg)
@@ -360,7 +360,7 @@ static void event_undead_invade_zone(struct char_data *ch, char *arg)
   struct room_data                       *rp = NULL;
 
   if (DEBUG > 1)
-    dlog("called %s with %s, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(arg));
+    log_info("called %s with %s, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(arg));
 
   if ((rp = real_roomp(ch->in_room)))
     zone = rp->zone;
@@ -388,7 +388,7 @@ static void event_undead_invade_zone(struct char_data *ch, char *arg)
   hash_iterate(&room_db, (funcp)event_fill_zone_with_mobs, &mobs);
   cprintf(ch, "You just added %d undead spirits to %s [#%d].\n\r", mob_count,
 	  zone_table[zone].name, zone);
-  dlog("%s added %d undead to %s [#%d].", GET_NAME(ch), mob_count, zone_table[zone].name, zone);
+  log_info("%s added %d undead to %s [#%d].", GET_NAME(ch), mob_count, zone_table[zone].name, zone);
 }
 
 static void event_zombie_master(struct char_data *ch, char *arg)
@@ -401,7 +401,7 @@ static void event_zombie_master(struct char_data *ch, char *arg)
   int                                     zone = 0;
 
   if (DEBUG > 1)
-    dlog("called %s with %s, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(arg));
+    log_info("called %s with %s, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(arg));
 
   if ((rp = real_roomp(ch->in_room))) {
     zone = rp->zone;

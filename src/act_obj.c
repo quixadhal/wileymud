@@ -35,7 +35,7 @@
 void get(struct char_data *ch, struct obj_data *obj_object, struct obj_data *sub_object)
 {
   if (DEBUG > 2)
-    dlog("called %s with %s, %s, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), SAFE_ONAME(obj_object), SAFE_ONAME(sub_object));
+    log_info("called %s with %s, %s, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), SAFE_ONAME(obj_object), SAFE_ONAME(sub_object));
 
   if (sub_object) {
     if (!IS_SET(sub_object->obj_flags.value[1], CONT_CLOSED)) {
@@ -51,7 +51,7 @@ void get(struct char_data *ch, struct obj_data *obj_object, struct obj_data *sub
 /*  jdb -- 11-9 */
     if (obj_object->in_room == NOWHERE) {
       obj_object->in_room = ch->in_room;
-      dlog("OBJ:%s got %s from room -1...", GET_NAME(ch), obj_object->name);
+      log_error("OBJ:%s got %s from room -1...", GET_NAME(ch), obj_object->name);
     }
     obj_from_room(obj_object);
     obj_to_char(obj_object, ch);
@@ -81,7 +81,7 @@ void do_get(struct char_data *ch, char *argument, int cmd)
   int                                     p = 0;
 
   if (DEBUG)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
   argument_interpreter(argument, arg1, arg2);
 
@@ -370,7 +370,7 @@ void do_drop(struct char_data *ch, char *argument, int cmd)
   int                                     p = 0;
 
   if (DEBUG)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
   s = one_argument(argument, arg);
   if (is_number(arg)) {
@@ -482,7 +482,7 @@ void do_put(struct char_data *ch, char *argument, int cmd)
   int                                     p = 0;
 
   if (DEBUG)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
   argument_interpreter(argument, arg1, arg2);
 
@@ -584,7 +584,7 @@ void do_give(struct char_data *ch, char *argument, int cmd)
   int                                     p = 0;
 
   if (DEBUG)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
   argument = one_argument(argument, obj_name);
   if (is_number(obj_name)) {
@@ -623,7 +623,7 @@ void do_give(struct char_data *ch, char *argument, int cmd)
       GET_GOLD(ch) -= amount;
     GET_GOLD(vict) += amount;
     if ((amount > 1000) && (GetMaxLevel(ch) >= DEMIGOD)) {     /* hmmm */
-      dlog("%s gave %d coins to %s", GET_NAME(ch), amount, GET_NAME(vict));
+      log_info("%s gave %d coins to %s", GET_NAME(ch), amount, GET_NAME(vict));
     }
     return;
   }
@@ -660,7 +660,7 @@ void do_give(struct char_data *ch, char *argument, int cmd)
       return;
     }
     if (vict == ch) {
-      dlog("%s just tried to give all.X to %s", GET_NAME(ch), GET_NAME(ch));
+      log_info("%s just tried to give all.X to %s", GET_NAME(ch), GET_NAME(ch));
       cprintf(ch, "Ok.\n\r");
       return;
     }
@@ -697,7 +697,7 @@ void weight_change_object(struct obj_data *obj, int weight)
   struct char_data                       *tmp_ch = NULL;
 
   if (DEBUG > 2)
-    dlog("called %s with %s, %d", __PRETTY_FUNCTION__, SAFE_ONAME(obj), weight);
+    log_info("called %s with %s, %d", __PRETTY_FUNCTION__, SAFE_ONAME(obj), weight);
 
   if (obj->in_room != NOWHERE) {
     GET_OBJ_WEIGHT(obj) += weight;
@@ -710,7 +710,7 @@ void weight_change_object(struct obj_data *obj, int weight)
     GET_OBJ_WEIGHT(obj) += weight;
     obj_to_obj(obj, tmp_obj);
   } else {
-    bug("Unknown attempt to subtract weight from an object.");
+    log_error("Unknown attempt to subtract weight from an object.");
   }
 }
 
@@ -721,7 +721,7 @@ void name_from_drinkcon(struct obj_data *obj)
   char                                   *new_name = NULL;
 
   if (DEBUG > 2)
-    dlog("called %s with %s", __PRETTY_FUNCTION__, SAFE_ONAME(obj));
+    log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_ONAME(obj));
 
   one_argument(obj->name, buf);
   new_name = strdup(buf);
@@ -743,7 +743,7 @@ void name_to_drinkcon(struct obj_data *obj, int type)
   char                                   *new_name = NULL;
 
   if (DEBUG > 2)
-    dlog("called %s with %s, %d", __PRETTY_FUNCTION__, SAFE_ONAME(obj), type);
+    log_info("called %s with %s, %d", __PRETTY_FUNCTION__, SAFE_ONAME(obj), type);
 
   CREATE(new_name, char, strlen           (obj->name) + strlen(drinknames[type]) + 2);
 
@@ -760,7 +760,7 @@ void do_drink(struct char_data *ch, char *argument, int cmd)
   struct affected_type                    af;
 
   if (DEBUG)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
   only_argument(argument, buf);
 
@@ -853,7 +853,7 @@ void do_puke(struct char_data *ch, char *argument, int cmd)
   struct char_data                       *vict = NULL;
 
   if (DEBUG)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
   one_argument(argument, buf);
 
@@ -887,7 +887,7 @@ void do_eat(struct char_data *ch, char *argument, int cmd)
   struct affected_type                    af;
 
   if (DEBUG)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
   one_argument(argument, buf);
 
@@ -942,7 +942,7 @@ void do_pour(struct char_data *ch, char *argument, int cmd)
   int                                     temp = 0;
 
   if (DEBUG)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
   argument_interpreter(argument, arg1, arg2);
 
@@ -1046,7 +1046,7 @@ void do_sip(struct char_data *ch, char *argument, int cmd)
   struct affected_type                    af;
 
   if (DEBUG)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
   one_argument(argument, arg);
 
@@ -1115,7 +1115,7 @@ void do_taste(struct char_data *ch, char *argument, int cmd)
   struct obj_data                        *temp = NULL;
 
   if (DEBUG)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
   one_argument(argument, arg);
 
@@ -1164,7 +1164,7 @@ void do_taste(struct char_data *ch, char *argument, int cmd)
 void perform_wear(struct char_data *ch, struct obj_data *obj_object, int keyword)
 {
   if (DEBUG > 2)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), SAFE_ONAME(obj_object), keyword);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), SAFE_ONAME(obj_object), keyword);
 
   switch (keyword) {
     case 0:
@@ -1223,7 +1223,7 @@ int IsRestricted(int Mask, int Class)
   int                                     i = 0;
 
   if (DEBUG > 2)
-    dlog("called %s with %d, %d", __PRETTY_FUNCTION__, Mask, Class);
+    log_info("called %s with %d, %d", __PRETTY_FUNCTION__, Mask, Class);
 
   for (i = CLASS_MAGIC_USER; i <= CLASS_DRUID; i *= 2) {
     if (IS_SET(Mask, i) && (IS_NOT_SET(i, Class))) {
@@ -1242,7 +1242,7 @@ void wear(struct char_data *ch, struct obj_data *obj_object, int keyword)
   int                                     BitMask = 0;
 
   if (DEBUG > 2)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), SAFE_ONAME(obj_object), keyword);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), SAFE_ONAME(obj_object), keyword);
 
   if (!IS_IMMORTAL(ch)) {
     BitMask = GetItemClassRestrictions(obj_object);
@@ -1553,7 +1553,7 @@ void wear(struct char_data *ch, struct obj_data *obj_object, int keyword)
       }
       break;
     default:{
-	bug("Unknown type called in wear.");
+	log_error("Unknown type called in wear.");
       }
       break;
   }
@@ -1583,7 +1583,7 @@ void do_wear(struct char_data *ch, char *argument, int cmd)
   };
 
   if (DEBUG)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
   argument_interpreter(argument, arg1, arg2);
   if (*arg1) {
@@ -1681,7 +1681,7 @@ void do_wield(struct char_data *ch, char *argument, int cmd)
   int                                     keyword = 12;
 
   if (DEBUG)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
   argument_interpreter(argument, arg1, arg2);
   if (*arg1) {
@@ -1728,7 +1728,7 @@ void do_grab(struct char_data *ch, char *argument, int cmd)
   struct obj_data                        *obj_object = NULL;
 
   if (DEBUG)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
   argument_interpreter(argument, arg1, arg2);
 
@@ -1758,7 +1758,7 @@ void do_remove(struct char_data *ch, char *argument, int cmd)
   int                                     j = 0;
 
   if (DEBUG)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
   one_argument(argument, arg1);
 
@@ -1862,7 +1862,7 @@ void do_bury(struct char_data *ch, char *argument, int cmd)
   int                                     experience = 0;
 
   if (DEBUG)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
   one_argument(argument, buf);
 
@@ -1907,7 +1907,7 @@ void do_desecrate(struct char_data *ch, char *argument, int cmd)
   int                                     experience = 0;
 
   if (DEBUG)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
   one_argument(argument, buf);
 

@@ -1,0 +1,91 @@
+#IMCCHAN
+ChanName   Hub02:test
+ChanLocal  test
+ChanRegF   ~R[~Ytest~R] ~C%s: ~c%s
+ChanEmoF   ~R[~Ytest~R] ~c%s %s
+ChanSocF   ~R[~Ytest~R] ~c%s
+ChanLevel  4
+End
+
+#IMCCHAN
+ChanName   Hub00:imusic
+ChanLocal  imusic
+ChanRegF   ~R[~Yimusic~R] ~C%s: ~c%s
+ChanEmoF   ~R[~Yimusic~R] ~c%s %s
+ChanSocF   ~R[~Yimusic~R] ~c%s
+ChanLevel  2
+End
+
+#IMCCHAN
+ChanName   hub00:ibuild
+ChanLocal  ibuild
+ChanRegF   ~R[~Yibuild~R] ~C%s: ~c%s
+ChanEmoF   ~R[~Yibuild~R] ~c%s %s
+ChanSocF   ~R[~Yibuild~R] ~c%s
+ChanLevel  4
+End
+
+#IMCCHAN
+ChanName   hub00:bitch
+ChanLocal  bitch
+ChanRegF   ~R[~Ybitch~R] ~C%s: ~c%s
+ChanEmoF   ~R[~Ybitch~R] ~c%s %s
+ChanSocF   ~R[~Ybitch~R] ~c%s
+ChanLevel  2
+End
+
+#IMCCHAN
+ChanName   Hub01:ichat
+ChanLocal  ichat
+ChanRegF   ~R[~Yichat~R] ~C%s: ~c%s
+ChanEmoF   ~R[~Yichat~R] ~c%s %s
+ChanSocF   ~R[~Yichat~R] ~c%s
+ChanLevel  3
+End
+
+#IMCCHAN
+ChanName   Hub01:icode
+ChanLocal  icode
+ChanRegF   ~R[~Yicode~R] ~C%s: ~c%s
+ChanEmoF   ~R[~Yicode~R] ~c%s %s
+ChanSocF   ~R[~Yicode~R] ~c%s
+ChanLevel  3
+End
+
+#IMCCHAN
+ChanName   Hub01:pchat
+ChanLocal  pchat
+ChanRegF   ~R[~Ypchat~R] ~C%s: ~c%s
+ChanEmoF   ~R[~Ypchat~R] ~c%s %s
+ChanSocF   ~R[~Ypchat~R] ~c%s
+ChanLevel  2
+End
+
+#IMCCHAN
+ChanName   Hub01:bridge1
+ChanLocal  bridge1
+ChanRegF   ~R[~Ybridge1~R] ~C%s: ~c%s
+ChanEmoF   ~R[~Ybridge1~R] ~c%s %s
+ChanSocF   ~R[~Ybridge1~R] ~c%s
+ChanLevel  2
+End
+
+#IMCCHAN
+ChanName   hub01:admin
+ChanLocal  admin
+ChanRegF   ~R[~Yadmin~R] ~C%s: ~c%s
+ChanEmoF   ~R[~Yadmin~R] ~c%s %s
+ChanSocF   ~R[~Yadmin~R] ~c%s
+ChanLevel  4
+End
+
+#IMCCHAN
+ChanName   hub01:bridge2
+ChanLocal  bridge2
+ChanRegF   ~R[~Ybridge2~R] ~C%s: ~c%s
+ChanEmoF   ~R[~Ybridge2~R] ~c%s %s
+ChanSocF   ~R[~Ybridge2~R] ~c%s
+ChanLevel  4
+End
+
+#END

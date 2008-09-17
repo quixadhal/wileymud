@@ -13,6 +13,9 @@
 #define GOLD_NEEDED(ch,cl) (IS_PC(ch)?((3*(16<<((int)GET_LEVEL(ch,cl)+1)/3)+((16<<((int)GET_LEVEL(ch,cl)+1)/3)*(((int)GET_LEVEL(ch,cl)+1)%3))) / (((int)GET_LEVEL(ch,cl)<8)?(((int)GET_LEVEL(ch,cl)<4)?8:2):1)):0)
 
 #define NAME(ch) ((ch)?(IS_NPC(ch)?(ch)->player.short_descr:(ch)->player.name):"")
+#define SOME_NAME(ch) ((ch)?(IS_NPC(ch)?(ch)->player.short_descr:(ch)->player.name):"(someone)")
+#define SOME_OBJ(obj) (((obj)&&((obj)->name))?((obj)->name):"(something)")
+#define SOME_ROOM(ch) (((ch)&&((ch)->in_room)>-1)?((real_roomp((ch)->in_room))->name):"(somewhere)")
 #ifndef MIN
 #define MIN(a,b) ((a)<=(b)?(a):(b))
 #define MAX(a,b) ((a)>=(b)?(a):(b))
@@ -29,7 +32,7 @@
 #define IF_STR(st) ((st) ? (st) : "\0")
 #define CAP(st)  (*(st) = UPPER(*(st)), st)
 
-/* bug(((failure) && *(failure))?(failure):"calloc failure"); */
+/* log_error(((failure) && *(failure))?(failure):"calloc failure"); */
 
 #define FCLOSE(fp) \
 do {               \
@@ -46,7 +49,7 @@ do									\
     perror("calloc failure");						\
     fprintf(stderr, "Calloc failure @ %s:%d\n", __FILE__, __LINE__ );	\
     fflush(stderr);                                                     \
-    abort();								\
+    proper_exit(42);							\
   }									\
 } while(0)
 
@@ -58,7 +61,7 @@ do									\
     perror("calloc failure");						\
     fprintf(stderr, "Calloc failure @ %s:%d\n", __FILE__, __LINE__ );	\
     fflush(stderr);                                                     \
-    abort();								\
+    proper_exit(42);							\
   }									\
 } while(0)
 
@@ -70,7 +73,7 @@ do									\
     perror("calloc failure");						\
     fprintf(stderr, "Calloc failure @ %s:%d\n", __FILE__, __LINE__ );	\
     fflush(stderr);                                                     \
-    abort();								\
+    proper_exit(42);							\
   }									\
   else									\
   {									\
@@ -86,7 +89,7 @@ do									\
     perror("realloc failure");						\
     fprintf(stderr, "Realloc failure @ %s:%d\n", __FILE__, __LINE__ );	\
     fflush(stderr);                                                     \
-    abort();								\
+    proper_exit(42);							\
   }									\
 } while(0)
 
@@ -132,7 +135,7 @@ do									\
 #define SA_AN(str) (index("aeiouyAEIOUY", *(str)) ? "an" : "a")
 #define MOUNTED(ch)  ((ch)->specials.mounted_on)
 #define RIDDEN(ch)	((ch)->specials.ridden_by)
-#define GET_ZONE(room)	(real_roomp(room)->zone)
+#define GET_ZONE(room)	(((room)>-1)?real_roomp((room))?real_roomp((room))->zone:-1:-1)
 #define GET_LEVEL(ch, i)   ((ch)->player.level[(int)(i)])
 #define GET_CLASS_TITLE(ch, class, lev)   ((ch)->player.sex ?  \
    (((ch)->player.sex == 1) ? titles[(int)(class)][(int)(lev)].title_m : \

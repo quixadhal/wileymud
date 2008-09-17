@@ -141,7 +141,7 @@ int search_block(char *arg, char **list, char exact)
   int                                     l = 0;
 
   if (DEBUG > 2)
-    dlog("called %s with %s, %08x, %d", __PRETTY_FUNCTION__, VNULL(arg), list, (int)exact);
+    log_info("called %s with %s, %08x, %d", __PRETTY_FUNCTION__, VNULL(arg), list, (int)exact);
 
   /*
    * Make into lower case, and get length of string 
@@ -170,7 +170,7 @@ int old_search_block(char *argument, int begin, int arglen, char **list, int mod
   int                                     search = 0;
 
   if (DEBUG > 2)
-    dlog("called %s with %s, %d, %08x, %d", __PRETTY_FUNCTION__, VNULL(argument), arglen, list, mode);
+    log_info("called %s with %s, %d, %08x, %d", __PRETTY_FUNCTION__, VNULL(argument), arglen, list, mode);
 
   /*
    * If the word contain 0 letters, then a match is already found 
@@ -208,7 +208,7 @@ void command_interpreter(struct char_data *ch, char *argument)
   int                                     begin = 0;
 
   if (DEBUG > 2)
-    dlog("called %s with %s, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument));
+    log_info("called %s with %s, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument));
 
   /*
    * extern int no_specials; 
@@ -288,7 +288,7 @@ void command_interpreter(struct char_data *ch, char *argument)
 	((*cmd_info[cmd].command_pointer) (ch, argument + begin + look_at, cmd));
 
 	if ((GetMaxLevel(ch) >= LOW_IMMORTAL) && (GetMaxLevel(ch) < IMPLEMENTOR))
-	  dlog("%s:%s", ch->player.name, argument);
+	  log_info("%s:%s", ch->player.name, argument);
       }
       return;
     } else {
@@ -312,7 +312,7 @@ void argument_interpreter(char *argument, char *first_arg, char *second_arg)
   int                                     begin = 0;
 
   if (DEBUG > 2)
-    dlog("called %s with %s, %s", __PRETTY_FUNCTION__, VNULL(argument), VNULL(second_arg));
+    log_info("called %s with %s, %s", __PRETTY_FUNCTION__, VNULL(argument), VNULL(second_arg));
 
   do {
     /*
@@ -360,7 +360,7 @@ int is_number(char *str)
   int                                     look_at = 0;
 
   if (DEBUG > 2)
-    dlog("called %s with %s", __PRETTY_FUNCTION__, VNULL(str));
+    log_info("called %s with %s", __PRETTY_FUNCTION__, VNULL(str));
 
   if (*str == '\0')
     return (0);
@@ -396,7 +396,7 @@ char                                   *one_argument(char *argument, char *first
   int                                     look_at = 0;
 
   if (DEBUG > 2)
-    dlog("called %s with %s, %s", __PRETTY_FUNCTION__, VNULL(argument), VNULL(first_arg));
+    log_info("called %s with %s, %s", __PRETTY_FUNCTION__, VNULL(argument), VNULL(first_arg));
 
   do {
     for (; isspace(*(argument + begin)); begin++);
@@ -414,7 +414,7 @@ char                                   *one_argument(char *argument, char *first
 void only_argument(char *argument, char *dest)
 {
   if (DEBUG > 2)
-    dlog("called %s with %s, %08x", __PRETTY_FUNCTION__, VNULL(argument), dest);
+    log_info("called %s with %s, %08x", __PRETTY_FUNCTION__, VNULL(argument), dest);
 
   while (*argument && isspace(*argument))
     argument++;
@@ -424,7 +424,7 @@ void only_argument(char *argument, char *dest)
  int fill_word(char *argument)
 {
   if (DEBUG > 2)
-    dlog("called %s with %s", __PRETTY_FUNCTION__, VNULL(argument));
+    log_info("called %s with %s", __PRETTY_FUNCTION__, VNULL(argument));
 
   return (search_block(argument, fill, TRUE) >= 0);
 }
@@ -443,7 +443,7 @@ void only_argument(char *argument, char *dest)
  int is_abbrev(const char *arg1, const char *arg2)
 {
   if (DEBUG > 2)
-    dlog("called %s with %s, %s", __PRETTY_FUNCTION__, VNULL(arg1), VNULL(arg2));
+    log_info("called %s with %s, %s", __PRETTY_FUNCTION__, VNULL(arg1), VNULL(arg2));
 
   if (!*arg1 || !*arg2)
     return 0;
@@ -459,7 +459,7 @@ void only_argument(char *argument, char *dest)
 void half_chop(char *string, char *arg1, char *arg2)
 {
   if (DEBUG > 2)
-    dlog("called %s with %s, %08x, %08x", __PRETTY_FUNCTION__, VNULL(string), arg1, arg2);
+    log_info("called %s with %s, %08x, %08x", __PRETTY_FUNCTION__, VNULL(string), arg1, arg2);
 
   for (; isspace(*string); string++);
   for (; !isspace(*arg1 = *string) && *string; string++, arg1++);
@@ -476,7 +476,7 @@ int special(struct char_data *ch, int cmd, char *arg)
   int                                     test = 0;
 
   if (DEBUG > 2)
-    dlog("called %s with %s, %d, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), cmd, VNULL(arg));
+    log_info("called %s with %s, %d, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), cmd, VNULL(arg));
 
   if (ch->in_room == NOWHERE) {
     char_to_room(ch, DEFAULT_HOME);
@@ -540,7 +540,7 @@ void assign_command_pointers(void)
   int                                     position = 0;
 
   if (DEBUG > 2)
-    dlog("called %s with no arguments", __PRETTY_FUNCTION__);
+    log_info("called %s with no arguments", __PRETTY_FUNCTION__);
 
   for (position = 0; position < MAX_CMD_LIST; position++)
     cmd_info[position].command_pointer = 0;
@@ -844,7 +844,7 @@ int find_name(char *name)
   int                                     i = 0;
 
   if (DEBUG > 2)
-    dlog("called %s with %s", __PRETTY_FUNCTION__, VNULL(name));
+    log_info("called %s with %s", __PRETTY_FUNCTION__, VNULL(name));
 
   for (i = 0; i <= top_of_p_table; i++) {
     if (!str_cmp((player_table + i)->name, name))
@@ -858,7 +858,7 @@ int _parse_name(char *arg, char *name)
   int                                     i = 0;
 
   if (DEBUG > 2)
-    dlog("called %s with %s, %08x", __PRETTY_FUNCTION__, VNULL(arg), name);
+    log_info("called %s with %s, %08x", __PRETTY_FUNCTION__, VNULL(arg), name);
 
   for (; isspace(*arg); arg++);
   for (i = 0; (*name = *arg); arg++, i++, name++)
@@ -879,7 +879,7 @@ int valid_parse_name(char *arg, char *name)
   char                                   *hard[] = { "god", "demigod", "myself", "me", NULL };
 
   if (DEBUG > 2)
-    dlog("called %s with %s, %08x", __PRETTY_FUNCTION__, VNULL(arg), name);
+    log_info("called %s with %s, %08x", __PRETTY_FUNCTION__, VNULL(arg), name);
 
   if (!arg || !*arg)
     return 0;
@@ -905,7 +905,7 @@ int already_mob_name(char *ack_name)
   char                                   *pfft = NULL;
 
   if (DEBUG > 2)
-    dlog("called %s with %s", __PRETTY_FUNCTION__, VNULL(ack_name));
+    log_info("called %s with %s", __PRETTY_FUNCTION__, VNULL(ack_name));
 
   for (blah = FALSE, ack = 0; ack < top_of_mobt && !blah; ack++) {
     strcpy(pfft_name, mob_index[ack].name);
@@ -934,7 +934,7 @@ int banned_name(char *ack_name)
   char                                   *pfft = NULL;
 
   if (DEBUG > 2)
-    dlog("called %s with %s", __PRETTY_FUNCTION__, VNULL(ack_name));
+    log_info("called %s with %s", __PRETTY_FUNCTION__, VNULL(ack_name));
 
   strcpy(ack, banned_names);
   if (!(pfft = (char *)strtok(ack, " \t\n\r")))
@@ -956,7 +956,7 @@ int check_reconnect(struct descriptor_data *d)
   struct char_data                       *tmp_ch = NULL;
 
   if (DEBUG > 2)
-    dlog("called %s with %08x", __PRETTY_FUNCTION__, d);
+    log_info("called %s with %08x", __PRETTY_FUNCTION__, d);
 
   for (tmp_ch = character_list; tmp_ch; tmp_ch = tmp_ch->next) {
     if (
@@ -990,7 +990,7 @@ int check_reconnect(struct descriptor_data *d)
 	  char_to_room(d->character, DEFAULT_HOME);
 	}
       }
-      dlog("%s[%s] has reconnected.", GET_NAME(d->character), d->host);
+      log_info("%s[%s] has reconnected.", GET_NAME(d->character), d->host);
       return TRUE;
     }
   }
@@ -1002,7 +1002,7 @@ int check_playing(struct descriptor_data *d, char *tmp_name)
   struct descriptor_data                 *k = NULL;
 
   if (DEBUG > 2)
-    dlog("called %s with %08x, %s", __PRETTY_FUNCTION__, d, VNULL(tmp_name));
+    log_info("called %s with %08x, %s", __PRETTY_FUNCTION__, d, VNULL(tmp_name));
 
   for (k = descriptor_list; k; k = k->next) {
     if ((k->character != d->character) && k->character) {
@@ -1035,7 +1035,7 @@ void nanny(struct descriptor_data *d, char *arg)
   char                                    cryptsalt[3] = { '\0', '\0', '\0' };
 
   if (DEBUG > 2)
-    dlog("called %s with %08x, %s", __PRETTY_FUNCTION__, d, VNULL(arg));
+    log_info("called %s with %08x, %s", __PRETTY_FUNCTION__, d, VNULL(arg));
 
   while (isspace(*arg))
     arg++;
@@ -1044,11 +1044,11 @@ void nanny(struct descriptor_data *d, char *arg)
 
   switch (STATE(d)) {
     default:
-      bug("Nanny:  illegal state %d.\n", STATE(d));
+      log_error("Nanny:  illegal state %d.\n", STATE(d));
       close_socket(d);
       return;
     case CON_GET_NAME:
-      dlog("Got Connection from: %s", d->host);
+      log_info("Got Connection from: %s", d->host);
       if (!d->character) {
 	CREATE(d->character, struct char_data, 1);
 
@@ -1084,7 +1084,7 @@ void nanny(struct descriptor_data *d, char *arg)
 	store_to_char(&tmp_store, d->character);
 	strcpy(d->oldpwd, tmp_store.oldpwd);
 	strcpy(d->pwd, tmp_store.pwd);
-	dlog("%s@%s loaded.", d->usr_name, d->host);
+	log_info("%s@%s loaded.", d->usr_name, d->host);
 	dcprintf(d, "\n\r%sWHAT is your Password? ", echo_off);
 	STATE(d) = CON_GET_PASSWORD;
       } else if (load_char(d->usr_name, &tmp_store) > -1) {
@@ -1094,7 +1094,7 @@ void nanny(struct descriptor_data *d, char *arg)
 	store_to_char(&tmp_store, d->character);
 	strcpy(d->oldpwd, tmp_store.oldpwd);
 	strcpy(d->pwd, tmp_store.pwd);
-	dlog("%s@%s loaded from old playerfile.", d->usr_name, d->host);
+	log_info("%s@%s loaded from old playerfile.", d->usr_name, d->host);
 	dcprintf(d, "\n\r%sWHAT is your Password? ", echo_off);
 	STATE(d) = CON_GET_PASSWORD;
       } else {
@@ -1110,7 +1110,8 @@ void nanny(struct descriptor_data *d, char *arg)
 	d->character->player.name[0] = toupper(d->character->player.name[0]);
 	dcprintf(d, "\n\r%sChoose a password for %s: ", echo_off, d->usr_name);
 	STATE(d) = CON_GET_NEW_PASWORD;
-	dlog("New player!");
+        /* log_info("New player!"); */
+        log_auth(d->character, "NEW PLAYER %s (%s@%s)!", GET_NAME(d->character), d->username, d->host);
       }
       return;
     case CON_GET_PASSWORD:
@@ -1127,12 +1128,13 @@ void nanny(struct descriptor_data *d, char *arg)
 	  dcprintf(d, "\r***BUZZ!*** Wrong password.\n\r%sGuess again: ", echo_off);
 	  return;
 	}
-	dlog("Allowing entry using unencrypted password.");
+	log_info("Allowing entry using unencrypted password.");
 	strcpy(d->pwd, crypt(d->oldpwd, cryptsalt));
       }
       if (check_reconnect(d))
 	return;
-      dlog("%s (%s@%s) has connected.", GET_NAME(d->character), d->username, d->host);
+      /* log_info("%s (%s@%s) has connected.", GET_NAME(d->character), d->username, d->host); */
+      log_auth(d->character, "WELCOME BACK %s (%s@%s)!", GET_NAME(d->character), d->username, d->host);
 
       if (GetMaxLevel(d->character) > LOW_IMMORTAL)
 	dcprintf(d, "\n\r%s", wmotd);
@@ -1317,7 +1319,7 @@ void nanny(struct descriptor_data *d, char *arg)
       }
 
       if (STATE(d) != CON_GET_CLASS) {
-	dlog("%s [%s] new player.", GET_NAME(d->character), d->host);
+	log_info("%s [%s] new player.", GET_NAME(d->character), d->host);
 	init_char(d->character);
 	d->pos = create_entry(GET_NAME(d->character));
 	save_char(d->character, NOWHERE);
@@ -1348,7 +1350,7 @@ void nanny(struct descriptor_data *d, char *arg)
 	  return;
 	case '1':
 	  reset_char(d->character);
-	  dlog("Loading %s's equipment", d->character->player.name);
+	  log_info("Loading %s's equipment", d->character->player.name);
 	  load_char_objs(d->character);
 	  save_char(d->character, NOWHERE);
 	  cprintf(d->character, "%s\n\r", WELC_MESSG);
@@ -1498,7 +1500,7 @@ void nanny(struct descriptor_data *d, char *arg)
 	      }
 	}
 	dump_player_list();
-	dlog("-- SUICIDE -- %s is no more!\n", name);
+	log_info("-- SUICIDE -- %s is no more!\n", name);
 	dcprintf(d, "%s", suicide_done);
 	STATE(d) = CON_WIZLOCK;
 	return;
@@ -1543,7 +1545,7 @@ void update_player_list_entry(struct descriptor_data *d)
   struct tm                              *now_part = NULL;
 
   if (DEBUG > 2)
-    dlog("called %s with %08x", __PRETTY_FUNCTION__, d);
+    log_info("called %s with %08x", __PRETTY_FUNCTION__, d);
 
   if ((!d) || d->connected)
     return;
@@ -1583,10 +1585,10 @@ void PutPasswd(struct descriptor_data *d)
   FILE                                   *pfd = NULL;
 
   if (DEBUG > 2)
-    dlog("called %s with %08x", __PRETTY_FUNCTION__, d);
+    log_info("called %s with %08x", __PRETTY_FUNCTION__, d);
 
   if ((pfd = fopen(PASSWD_NEW, "a")) == NULL) {
-    dlog("Cannot save password data for new user!\n\r");
+    log_info("Cannot save password data for new user!\n\r");
   } else {
     fprintf(pfd, "%s %s %s@%s %ld 1\n", d->usr_name,
 	    d->pwd, d->username, d->host, (long int)time(NULL));
@@ -1606,15 +1608,15 @@ int ValidPlayer(char *who, char *pwd, char *oldpwd)
   long                                    timestamp = 0L;
 
   if (DEBUG > 2)
-    dlog("called %s with %s, %s, %s", __PRETTY_FUNCTION__, VNULL(who), VNULL(pwd), VNULL(oldpwd));
+    log_info("called %s with %s, %s, %s", __PRETTY_FUNCTION__, VNULL(who), VNULL(pwd), VNULL(oldpwd));
 
   if (!(pwd_fd = fopen(PASSWD_FILE, "r"))) {
     strcpy(oldpwd, "NOT USED");
     strcpy(pwd, "NOT USED");
-    dlog("Password checking disabled!");
+    log_info("Password checking disabled!");
     return 1;
   }
-  dlog("Searching passwd file for %s...", who);
+  log_info("Searching passwd file for %s...", who);
 
   strcpy(tname, who);
   for (t_ptr = tname; *t_ptr; t_ptr++)
@@ -1622,7 +1624,7 @@ int ValidPlayer(char *who, char *pwd, char *oldpwd)
 
   while (fscanf(pwd_fd, " %s %s %s %ld\n", pname, passwd, email, &timestamp) > 1) {
     if (!strcmp(tname, pname)) {
-      dlog("Found %s in passwd file.", tname);
+      log_info("Found %s in passwd file.", tname);
       if (!strcmp(passwd, "*")) {
 	strcpy(oldpwd, "IS VALID");
 	strcpy(pwd, "IS VALID");
@@ -1644,7 +1646,7 @@ int GetPlayerFile(char *name, struct char_data *where)
   struct char_file_u                      tmp_store;
 
   if (DEBUG > 2)
-    dlog("called %s with %s, %s", __PRETTY_FUNCTION__, VNULL(name), SAFE_NAME(where));
+    log_info("called %s with %s, %s", __PRETTY_FUNCTION__, VNULL(name), SAFE_NAME(where));
 
   if ((load_char(name, &tmp_store)) > -1) {
     store_to_char(&tmp_store, where);

@@ -1,0 +1,236 @@
+Installation for ACK!MUD 4.3.1 ( As located at silverbridge.org )
+-----------------------------------------------------------------
+
+1. In your Makefile, someplace above the main list of C_FLAGS,
+   include the following:
+
+#I3 - Comment out to disable I3 support
+I3 = 1
+
+   Then directly below the list of O_FILES, add the following:
+   [Note: BSD users - put a period in front of the word ifdef, and in front of the word endif]
+
+ifdef I3
+   O_FILES := i3.o $(O_FILES)
+   C_FLAGS := $(C_FLAGS) -DI3 -DI3ACK
+endif
+
+2. Open ack.h and locate the following:
+
+#ifndef DEC_STRFUNS_H
+#include "strfuns.h"
+#endif
+
+#ifndef DEC_ACT_MOB_H
+#include "act_mob.h"
+#endif
+
+   Directly below that, add the following:
+
+#ifdef I3
+   #include "i3.h"
+#endif
+
+   Locate your pc_data struct,
+
+   Add the following to the end of it:
+
+#ifdef I3
+    I3_CHARDATA *i3chardata;
+#endif
+
+3. Open interp.c and locate the following section:
+
+if ( !check_social( ch, command, argument )
+
+   Add the following condition to whatever series of ifchecks exist there:
+
+#ifdef I3
+	&&   !I3_command_hook( ch, command, argument )
+#endif
+
+4. Open comm.c and locate main():
+
+   Find this section( it may not look EXACTLY like this, adjust as needed ):
+
+      if( argv[2] && argv[2][0] )
+      {
+         fCopyOver = TRUE;
+         control = atoi( argv[3] );
+      }
+      else
+         fCopyOver = FALSE;
+
+   Change it to read as( while adjusting as needed ):
+
+      if( argv[2] && argv[2][0] )
+      {
+         fCopyOver = TRUE;
+         control = atoi( argv[3] );
+#ifdef I3
+	   I3_socket = atoi( argv[4] );
+#endif
+      }
+      else
+         fCopyOver = FALSE;
+
+   This next part is somewhat tricky. If copyover_recover is called in db.c as is the usual case in
+   most default installs, you need to place the following BEFORE the boot_db call. If it is listed
+   somewhere here in comm.c, the following needs to be placed ABOVE it. Either way, I3_main needs
+   to be called BEFORE copyover_recover or your mud WILL crash every time you do a copyover.
+
+   For ACK, it should come out something like this:
+
+#ifdef I3
+   /* Initialize and connect to Intermud-3 */
+   I3_main( FALSE, port, fCopyOver );
+#endif
+
+    if ( fCopyOver )
+      abort_threshold = BOOT_DB_ABORT_THRESHOLD;
+    boot_db( fCopyOver );
+#ifndef WIN32
+    init_alarm_handler();
+#endif
+    sprintf( log_buf, "ACK! MUD is ready on port %d.", port );
+    log_string( log_buf );
+
+   Then further down in main(), locate the following:
+
+   close( control );
+
+   Add the following beneath that:
+
+#ifdef I3
+   I3_shutdown( 0 );
+#endif
+
+   Then in game_loop_unix(), locate the following:
+
+	/*
+	 * Autonomous game motion.
+	 */
+	update_handler( );
+
+   Directly ABOVE that, add the following:
+
+#ifdef I3
+	I3_loop();
+#endif
+
+   Then locate function act, and find the following code:
+
+      switch ( *str )
+      {
+      default:  log_error( "Act: bad code %c.", *str );
+		log_error( "Act: Bad code came from %s", ch->name );
+		i = " <@@@> ";						break;
+
+   Directly below that, add the following:
+
+#ifdef I3
+	case '$': 
+	    i = "$";
+	    break;
+#endif
+
+5. Open save.c and locate fread_char:
+
+   In the case 'I': section, and right before the final break; add the follwing:
+
+#ifdef I3
+           if( ( fMatch = i3load_char( ch, fp, word ) ) )
+                break;
+#endif
+
+   Then in fwrite_char, locate:
+
+    fprintf( fp, "End\n\n" );
+
+   Directly ABOVE that, add:
+
+#ifdef I3
+    i3save_char( ch, fp );
+#endif
+
+   Then in load_char_obj(), locate the following:
+
+    found = FALSE;
+    fclose( fpReserve );
+
+    /* parsed player file directories by Yaz of 4th Realm */
+    /* decompress if .gz file exists - Thx Alander */
+
+   Directly ABOVE that, add the following:
+
+#ifdef I3
+    i3init_char( ch );
+#endif
+
+6. Open db.c
+
+   Locate free_char:
+
+   Find the section that looks like this:
+
+    if ( ch->pcdata != NULL )
+    {
+      PUT_FREE(ch->pcdata, pcd_free);
+    }
+
+   Make it read as so:
+
+    if ( ch->pcdata != NULL )
+    {
+#ifdef I3
+	free_i3chardata( ch );
+#endif
+      PUT_FREE(ch->pcdata, pcd_free);
+    }
+
+7. In function do_copyover, locate the following code:
+
+    DESCRIPTOR_DATA *d, *de_next;
+    char buf [100], buf2[100], buf3[100], buf4[100], buf5[100];
+
+   Directly below that, add:
+
+    char buf6[100];
+
+   Then further down, find the following:
+
+    /* exec - descriptors are inherited */
+    sprintf( buf,  "%d", port );
+    sprintf( buf2, "%d", control );
+    sprintf( buf3, "%d", control2 );
+    sprintf( buf4, "%d", conclient );
+    sprintf( buf5, "%d", conjava );
+  
+    execl( EXE_FILE, "ack", buf, "hotboot",  buf2, buf3, buf4, buf5, (char *)NULL );
+
+   Change that to read as follows:
+
+#ifdef I3
+   if( I3_is_connected() )
+   {
+	I3_savechanlist();
+	I3_savemudlist();
+	I3_savehistory();
+   }
+#endif
+
+    /* exec - descriptors are inherited */
+    sprintf( buf,  "%d", port );
+    sprintf( buf2, "%d", control );
+    sprintf( buf3, "%d", control2 );
+    sprintf( buf4, "%d", conclient );
+    sprintf( buf5, "%d", conjava );
+#ifdef I3
+    snprintf( buf6, 100, "%d", I3_socket );
+#else
+    strncpy( buf6, "-1", 100 );
+#endif
+
+    execl( EXE_FILE, "ack", buf, "hotboot",  buf2, buf3, buf4, buf5, buf6, (char *)NULL );
+
+Return to the main I3.txt file and continue where you left off.

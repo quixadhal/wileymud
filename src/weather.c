@@ -35,7 +35,7 @@ char                                   *moon_names[] = {
  void weather_and_time(int mode)
 {
   if (DEBUG > 3)
-    dlog("called %s with %d", __PRETTY_FUNCTION__, mode);
+    log_info("called %s with %d", __PRETTY_FUNCTION__, mode);
 
   another_hour(mode);
   if (mode)
@@ -47,7 +47,7 @@ char                                   *moon_names[] = {
 void another_hour(int mode)
 {
   if (DEBUG > 2)
-    dlog("called %s with %d", __PRETTY_FUNCTION__, mode);
+    log_info("called %s with %d", __PRETTY_FUNCTION__, mode);
 
   time_info.hours++;
   if (time_info.hours >= HOURS_PER_MUD_DAY) {
@@ -111,7 +111,7 @@ void weather_change(void)
   int                                     change = 0;
 
   if (DEBUG > 2)
-    dlog("called %s with no arguments", __PRETTY_FUNCTION__);
+    log_info("called %s with no arguments", __PRETTY_FUNCTION__);
 
   if ((time_info.month >= 9) && (time_info.month <= 16))
     diff = (weather_info.pressure > 985 ? -2 : 2);
@@ -186,7 +186,7 @@ void weather_change(void)
 void ChangeWeather(int change)
 {
   if (DEBUG > 2)
-    dlog("called %s with %d", __PRETTY_FUNCTION__, change);
+    log_info("called %s with %d", __PRETTY_FUNCTION__, change);
 
   if (change < 0)
     change = 0;
@@ -252,7 +252,7 @@ void ChangeWeather(int change)
 void GetMonth(int month)
 {
   if (DEBUG > 2)
-    dlog("called %s with %d", __PRETTY_FUNCTION__, month);
+    log_info("called %s with %d", __PRETTY_FUNCTION__, month);
 
   if (month < 0)
     return;
@@ -302,7 +302,7 @@ void GetMonth(int month)
  void reset_weather(void)
 {
   if (DEBUG > 3)
-    dlog("called %s with no arguments", __PRETTY_FUNCTION__);
+    log_info("called %s with no arguments", __PRETTY_FUNCTION__);
 
   weather_info.pressure = 960;
   weather_info.change = 0;
@@ -319,14 +319,14 @@ void reset_time(void)
   long                                    current_time = 0L;
 
   if (DEBUG > 2)
-    dlog("called %s with no arguments", __PRETTY_FUNCTION__);
+    log_info("called %s with no arguments", __PRETTY_FUNCTION__);
 
   /*
    * struct time_info_data mud_time_passed(time_t t2, time_t t1); 
    */
 
   if (!(f1 = fopen(TIME_FILE, "r"))) {
-    dlog("Reset Time: Time file does not exist!\n");
+    log_info("Reset Time: Time file does not exist!\n");
     time_info = mud_time_passed(time(0), beginning_of_time);
     reset_weather();
   } else {
@@ -349,7 +349,7 @@ void reset_time(void)
 
   weather_and_time(1);
 
-  dlog("   Current Gametime: %dH %dD %dM %dY.",
+  log_info("   Current Gametime: %dH %dD %dM %dY.",
        time_info.hours, time_info.day, time_info.month, time_info.year);
 }
 
@@ -359,21 +359,21 @@ void update_time_and_weather(void)
   long                                    current_time = 0L;
 
   if (DEBUG > 2)
-    dlog("called %s with no arguments", __PRETTY_FUNCTION__);
+    log_info("called %s with no arguments", __PRETTY_FUNCTION__);
 
   if (!(f1 = fopen(TIME_FILE, "w"))) {
-    perror("update time");
+    log_error("update time");
     return;
   }
   current_time = time(0);
-  dlog("Time update.");
+  log_info("Time update.");
   fprintf(f1, "# Time -last,hours,day,month,year\n");
   fprintf(f1, "%ld\n", current_time);
   fprintf(f1, "%d\n", time_info.hours);
   fprintf(f1, "%d\n", time_info.day);
   fprintf(f1, "%d\n", time_info.month);
   fprintf(f1, "%d\n", time_info.year);
-  dlog("Weather update.");
+  log_info("Weather update.");
   fprintf(f1, "# Weather -pressure,change,sky,sunlight,windspeed,direction\n");
   fprintf(f1, "%d\n", weather_info.pressure);
   fprintf(f1, "%d\n", weather_info.change);

@@ -174,7 +174,7 @@ char                                   *how_good(int percent_known)
   static char                             buf[256] = "\0\0\0";
 
   if (DEBUG > 2)
-    dlog("called %s with %d", __PRETTY_FUNCTION__, percent_known);
+    log_info("called %s with %d", __PRETTY_FUNCTION__, percent_known);
 
   if (percent_known == 0)
     strcpy(buf, " (not learned)");
@@ -219,7 +219,7 @@ int GainLevel(struct char_data *master, struct char_data *ch, int class)
   char                                    buf[MAX_INPUT_LENGTH] = "\0\0\0";
 
   if (DEBUG > 2)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(master), SAFE_NAME(ch), class);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(master), SAFE_NAME(ch), class);
 
   if (GET_LEVEL(ch, class) < GetMaxLevel(master) - 20) {
     cprintf(ch, "%s snorts, 'I will not teach such a novice!'\n\r", NAME(master));
@@ -270,7 +270,7 @@ struct char_data                       *FindMobInRoomWithFunction(int room, ifun
   struct char_data                       *targ = NULL;
 
   if (DEBUG > 2)
-    dlog("called %s with %d, %08x", __PRETTY_FUNCTION__, room, func);
+    log_info("called %s with %d, %08x", __PRETTY_FUNCTION__, room, func);
 
   if (room > NOWHERE) {
     for (temp_char = real_roomp(room)->people; (!targ) && (temp_char);
@@ -296,7 +296,7 @@ int MageGuildMaster(struct char_data *ch, int cmd, char *arg)
   char                                    pagebuf[16384] = "\0\0\0";
 
   if (DEBUG > 2)
-    dlog("called %s with %s, %d, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), cmd, VNULL(arg));
+    log_info("called %s with %s, %d, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), cmd, VNULL(arg));
 
   if ((cmd != CMD_practice) && (cmd != CMD_gain))
     return FALSE;
@@ -373,7 +373,7 @@ int ClericGuildMaster(struct char_data *ch, int cmd, char *arg)
   char                                    pagebuf[16384] = "\0\0\0";
 
   if (DEBUG > 2)
-    dlog("called %s with %s, %d, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), cmd, VNULL(arg));
+    log_info("called %s with %s, %d, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), cmd, VNULL(arg));
 
   if ((cmd != CMD_practice) && (cmd != CMD_gain))
     return FALSE;
@@ -450,7 +450,7 @@ int ThiefGuildMaster(struct char_data *ch, int cmd, char *arg)
   char                                    pagebuf[16384] = "\0\0\0";
 
   if (DEBUG > 2)
-    dlog("called %s with %s, %d, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), cmd, VNULL(arg));
+    log_info("called %s with %s, %d, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), cmd, VNULL(arg));
 
   if ((cmd != CMD_practice) && (cmd != CMD_gain))
     return FALSE;
@@ -527,7 +527,7 @@ int FighterGuildMaster(struct char_data *ch, int cmd, char *arg)
   char                                    pagebuf[16384] = "\0\0\0";
 
   if (DEBUG > 2)
-    dlog("called %s with %s, %d, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), cmd, VNULL(arg));
+    log_info("called %s with %s, %d, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), cmd, VNULL(arg));
 
   if ((cmd != CMD_practice) && (cmd != CMD_gain))
     return FALSE;
@@ -606,7 +606,7 @@ int RangerGuildMaster(struct char_data *ch, int cmd, char *arg)
   int                                     spell_num = 0;
 
   if (DEBUG > 2)
-    dlog("called %s with %s, %d, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), cmd, VNULL(arg));
+    log_info("called %s with %s, %d, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), cmd, VNULL(arg));
 
   if ((cmd != CMD_practice) && (cmd != CMD_gain))
     return FALSE;
@@ -742,7 +742,7 @@ int GenericGuildMaster(struct char_data *ch, int cmd, char *arg)
   };
 
   if (DEBUG > 2)
-    dlog("called %s with %s, %d, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), cmd, VNULL(arg));
+    log_info("called %s with %s, %d, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), cmd, VNULL(arg));
 
   if ((cmd != 164) && (cmd != 243))
     return (FALSE);
@@ -816,7 +816,7 @@ int dump(struct char_data *ch, int cmd, char *arg)
   int                                     value = 0;
 
   if (DEBUG > 2)
-    dlog("called %s with %s, %d, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), cmd, VNULL(arg));
+    log_info("called %s with %s, %d, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), cmd, VNULL(arg));
 
   /*
    * char *fname(char *namelist); 
@@ -874,7 +874,7 @@ int mayor(struct char_data *ch, int cmd, char *arg)
   static char                             move = FALSE;
 
   if (DEBUG > 2)
-    dlog("called %s with %s, %d, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), cmd, VNULL(arg));
+    log_info("called %s with %s, %d, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), cmd, VNULL(arg));
 
   if (!move) {
     if (time_info.hours == 6) {
@@ -960,7 +960,7 @@ struct char_data                       *find_mobile_here_with_spec_proc(ifuncp f
   struct char_data                       *temp_char = NULL;
 
   if (DEBUG > 3)
-    dlog("called %s with %08x, %d", __PRETTY_FUNCTION__, fcn, rnumber);
+    log_info("called %s with %08x, %d", __PRETTY_FUNCTION__, fcn, rnumber);
 
   for (temp_char = real_roomp(rnumber)->people; temp_char; temp_char = temp_char->next_in_room)
     if (IS_MOB(temp_char) && mob_index[temp_char->nr].func == fcn)
@@ -1004,7 +1004,7 @@ void exec_social(struct char_data *npc, char *cmd, int next_line, int *cur_line,
   int                                     ok = FALSE;
 
   if (DEBUG > 3)
-    dlog("called %s with %s, %s, %d, %08x, %08x", __PRETTY_FUNCTION__, SAFE_NAME(npc), VNULL(cmd), next_line, cur_line, thing);
+    log_info("called %s with %s, %s, %d, %08x, %08x", __PRETTY_FUNCTION__, SAFE_NAME(npc), VNULL(cmd), next_line, cur_line, thing);
 
   if (GET_POS(npc) == POSITION_FIGHTING)
     return;
@@ -1101,7 +1101,7 @@ void npc_steal(struct char_data *ch, struct char_data *victim)
   int                                     gold = 0;
 
   if (DEBUG > 2)
-    dlog("called %s with %s, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), SAFE_NAME(victim));
+    log_info("called %s with %s, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), SAFE_NAME(victim));
 
   if (IS_NPC(victim))
     return;
@@ -1126,7 +1126,7 @@ void npc_steal(struct char_data *ch, struct char_data *victim)
 int snake(struct char_data *ch, int cmd, char *arg)
 {
   if (DEBUG > 2)
-    dlog("called %s with %s, %d, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), cmd, VNULL(arg));
+    log_info("called %s with %s, %d, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), cmd, VNULL(arg));
 
   if (cmd || !AWAKE(ch))
     return (FALSE);
@@ -1157,7 +1157,7 @@ int ninja_master(struct char_data *ch, int cmd, char *arg)
   int                                     mult = 0;
 
   if (DEBUG > 2)
-    dlog("called %s with %s, %d, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), cmd, VNULL(arg));
+    log_info("called %s with %s, %d, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), cmd, VNULL(arg));
 
   if (!AWAKE(ch))
     return (FALSE);
@@ -1204,7 +1204,7 @@ int ninja_master(struct char_data *ch, int cmd, char *arg)
 
 	  break;
 	default:
-	  dlog("Strangeness in ninjamaster (%d)", anumber);
+	  log_info("Strangeness in ninjamaster (%d)", anumber);
 	  return FALSE;
       }
     }
@@ -1240,7 +1240,7 @@ int ninja_master(struct char_data *ch, int cmd, char *arg)
 int PaladinGuildGuard(struct char_data *ch, int cmd, char *arg)
 {
   if (DEBUG > 2)
-    dlog("called %s with %s, %d, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), cmd, VNULL(arg));
+    log_info("called %s with %s, %d, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), cmd, VNULL(arg));
 
   if (cmd || !AWAKE(ch))
     return (FALSE);
@@ -1268,7 +1268,7 @@ int PaladinGuildGuard(struct char_data *ch, int cmd, char *arg)
 int AbyssGateKeeper(struct char_data *ch, int cmd, char *arg)
 {
   if (DEBUG > 2)
-    dlog("called %s with %s, %d, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), cmd, VNULL(arg));
+    log_info("called %s with %s, %d, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), cmd, VNULL(arg));
 
   if (cmd || !AWAKE(ch))
     return (FALSE);
@@ -1293,7 +1293,7 @@ int AbyssGateKeeper(struct char_data *ch, int cmd, char *arg)
 int blink(struct char_data *ch, int cmd, char *arg)
 {
   if (DEBUG > 2)
-    dlog("called %s with %s, %d, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), cmd, VNULL(arg));
+    log_info("called %s with %s, %d, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), cmd, VNULL(arg));
 
   if (cmd || !AWAKE(ch))
     return (FALSE);
@@ -1319,7 +1319,7 @@ int Ned_Nutsmith(struct char_data *ch, int cmd, char *arg)
   char                                    vict_name[80] = "\0\0\0";
 
   if (DEBUG > 2)
-    dlog("called %s with %s, %d, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), cmd, VNULL(arg));
+    log_info("called %s with %s, %d, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), cmd, VNULL(arg));
 
   if (!AWAKE(ch))
     return (FALSE);
@@ -1436,7 +1436,7 @@ int RepairGuy(struct char_data *ch, int cmd, char *arg)
   char                                    vict_name[80] = "\0\0\0";
 
   if (DEBUG > 2)
-    dlog("called %s with %s, %d, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), cmd, VNULL(arg));
+    log_info("called %s with %s, %d, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), cmd, VNULL(arg));
 
   if (!AWAKE(ch))
     return (FALSE);
@@ -1563,7 +1563,7 @@ int citizen(struct char_data *ch, int cmd, char *arg)
   int                                     lev = 0;
 
   if (DEBUG > 2)
-    dlog("called %s with %s, %d, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), cmd, VNULL(arg));
+    log_info("called %s with %s, %d, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), cmd, VNULL(arg));
 
   if (cmd || !AWAKE(ch))
     return (FALSE);
@@ -1657,7 +1657,7 @@ int shylar_guard(struct char_data *ch, int cmd, char *arg)
   };
 
   if (DEBUG > 2)
-    dlog("called %s with %s, %d, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), cmd, VNULL(arg));
+    log_info("called %s with %s, %d, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), cmd, VNULL(arg));
 
   if (cmd || (GET_POS(ch) < POSITION_SLEEPING))
     return FALSE;
@@ -1836,7 +1836,7 @@ int ghoul(struct char_data *ch, int cmd, char *arg)
   struct char_data                       *tar = NULL;
 
   if (DEBUG > 2)
-    dlog("called %s with %s, %d, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), cmd, VNULL(arg));
+    log_info("called %s with %s, %d, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), cmd, VNULL(arg));
 
   if (cmd || !AWAKE(ch))
     return (FALSE);
@@ -1862,7 +1862,7 @@ int WizardGuard(struct char_data *ch, int cmd, char *arg)
   int                                     max_evil = 0;
 
   if (DEBUG > 2)
-    dlog("called %s with %s, %d, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), cmd, VNULL(arg));
+    log_info("called %s with %s, %d, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), cmd, VNULL(arg));
 
   if (cmd || !AWAKE(ch))
     return (FALSE);
@@ -1898,7 +1898,7 @@ int WizardGuard(struct char_data *ch, int cmd, char *arg)
 int vampire(struct char_data *ch, int cmd, char *arg)
 {
   if (DEBUG > 2)
-    dlog("called %s with %s, %d, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), cmd, VNULL(arg));
+    log_info("called %s with %s, %d, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), cmd, VNULL(arg));
 
   if (cmd || !AWAKE(ch))
     return (FALSE);
@@ -1918,7 +1918,7 @@ int vampire(struct char_data *ch, int cmd, char *arg)
 int wraith(struct char_data *ch, int cmd, char *arg)
 {
   if (DEBUG > 2)
-    dlog("called %s with %s, %d, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), cmd, VNULL(arg));
+    log_info("called %s with %s, %d, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), cmd, VNULL(arg));
 
   if (cmd || !AWAKE(ch))
     return (FALSE);
@@ -1935,7 +1935,7 @@ int wraith(struct char_data *ch, int cmd, char *arg)
 int shadow(struct char_data *ch, int cmd, char *arg)
 {
   if (DEBUG > 2)
-    dlog("called %s with %s, %d, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), cmd, VNULL(arg));
+    log_info("called %s with %s, %d, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), cmd, VNULL(arg));
 
   if (cmd || !AWAKE(ch))
     return (FALSE);
@@ -1957,7 +1957,7 @@ int shadow(struct char_data *ch, int cmd, char *arg)
 int geyser(struct char_data *ch, int cmd, char *arg)
 {
   if (DEBUG > 2)
-    dlog("called %s with %s, %d, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), cmd, VNULL(arg));
+    log_info("called %s with %s, %d, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), cmd, VNULL(arg));
 
   if (cmd || !AWAKE(ch))
     return (FALSE);
@@ -1975,7 +1975,7 @@ int green_slime(struct char_data *ch, int cmd, char *arg)
   struct char_data                       *cons = NULL;
 
   if (DEBUG > 2)
-    dlog("called %s with %s, %d, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), cmd, VNULL(arg));
+    log_info("called %s with %s, %d, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), cmd, VNULL(arg));
 
   if (cmd || !AWAKE(ch))
     return (FALSE);
@@ -1989,21 +1989,21 @@ int green_slime(struct char_data *ch, int cmd, char *arg)
 int DracoLich(struct char_data *ch, int cmd, char *arg)
 {
   if (DEBUG > 2)
-    dlog("called %s with %s, %d, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), cmd, VNULL(arg));
+    log_info("called %s with %s, %d, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), cmd, VNULL(arg));
 
   return FALSE;
 }
 int Drow(struct char_data *ch, int cmd, char *arg)
 {
   if (DEBUG > 2)
-    dlog("called %s with %s, %d, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), cmd, VNULL(arg));
+    log_info("called %s with %s, %d, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), cmd, VNULL(arg));
 
   return FALSE;
 }
 int Leader(struct char_data *ch, int cmd, char *arg)
 {
   if (DEBUG > 2)
-    dlog("called %s with %s, %d, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), cmd, VNULL(arg));
+    log_info("called %s with %s, %d, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), cmd, VNULL(arg));
 
   return FALSE;
 }
@@ -2013,7 +2013,7 @@ int thief(struct char_data *ch, int cmd, char *arg)
   struct char_data                       *cons = NULL;
 
   if (DEBUG > 2)
-    dlog("called %s with %s, %d, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), cmd, VNULL(arg));
+    log_info("called %s with %s, %d, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), cmd, VNULL(arg));
 
   if (cmd || !AWAKE(ch))
     return (FALSE);
@@ -2034,7 +2034,7 @@ int magic_user(struct char_data *ch, int cmd, char *arg)
   int                                     lspell = 0;
 
   if (DEBUG > 2)
-    dlog("called %s with %s, %d, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), cmd, VNULL(arg));
+    log_info("called %s with %s, %d, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), cmd, VNULL(arg));
 
   if (cmd || !AWAKE(ch))
     return (FALSE);
@@ -2154,7 +2154,7 @@ int cleric(struct char_data *ch, int cmd, char *arg)
   int                                     healperc = 0;
 
   if (DEBUG > 2)
-    dlog("called %s with %s, %d, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), cmd, VNULL(arg));
+    log_info("called %s with %s, %d, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), cmd, VNULL(arg));
 
   if (cmd || !AWAKE(ch))
     return (FALSE);
@@ -2335,7 +2335,7 @@ int cleric(struct char_data *ch, int cmd, char *arg)
 int guild_guard(struct char_data *ch, int cmd, char *arg)
 {
   if (DEBUG > 2)
-    dlog("called %s with %s, %d, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), cmd, VNULL(arg));
+    log_info("called %s with %s, %d, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), cmd, VNULL(arg));
 
   if (cmd > 6 || cmd < 1)
     return FALSE;
@@ -2406,7 +2406,7 @@ static char                            *random_puff_message(void)
   static int                              howmany = 22;
 
   if (DEBUG > 3)
-    dlog("called %s with no arguments", __PRETTY_FUNCTION__);
+    log_info("called %s with no arguments", __PRETTY_FUNCTION__);
 
   return oops[number(1, howmany) - 1];
 }
@@ -2417,7 +2417,7 @@ int puff(struct char_data *ch, int cmd, char *arg)
   char                                    buf[80] = "\0\0\0";
 
   if (DEBUG > 2)
-    dlog("called %s with %s, %d, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), cmd, VNULL(arg));
+    log_info("called %s with %s, %d, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), cmd, VNULL(arg));
 
   if (cmd)
     return (0);
@@ -2551,7 +2551,7 @@ int puff(struct char_data *ch, int cmd, char *arg)
 int regenerator(struct char_data *ch, int cmd, char *arg)
 {
   if (DEBUG > 2)
-    dlog("called %s with %s, %d, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), cmd, VNULL(arg));
+    log_info("called %s with %s, %d, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), cmd, VNULL(arg));
 
   if (cmd)
     return (FALSE);
@@ -2571,7 +2571,7 @@ int replicant(struct char_data *ch, int cmd, char *arg)
   struct char_data                       *mob = NULL;
 
   if (DEBUG > 2)
-    dlog("called %s with %s, %d, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), cmd, VNULL(arg));
+    log_info("called %s with %s, %d, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), cmd, VNULL(arg));
 
   if (cmd)
     return FALSE;
@@ -2592,7 +2592,7 @@ int Tytan(struct char_data *ch, int cmd, char *arg)
   struct char_data                       *vict = NULL;
 
   if (DEBUG > 2)
-    dlog("called %s with %s, %d, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), cmd, VNULL(arg));
+    log_info("called %s with %s, %d, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), cmd, VNULL(arg));
 
   if (cmd || !AWAKE(ch))
     return (FALSE);
@@ -2663,7 +2663,7 @@ int AbbarachDragon(struct char_data *ch, int cmd, char *arg)
   struct char_data                       *targ = NULL;
 
   if (DEBUG > 2)
-    dlog("called %s with %s, %d, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), cmd, VNULL(arg));
+    log_info("called %s with %s, %d, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), cmd, VNULL(arg));
 
   if (cmd || !AWAKE(ch))
     return (FALSE);
@@ -2691,7 +2691,7 @@ int fido(struct char_data *ch, int cmd, char *arg)
   int                                     found = FALSE;
 
   if (DEBUG > 2)
-    dlog("called %s with %s, %d, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), cmd, VNULL(arg));
+    log_info("called %s with %s, %d, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), cmd, VNULL(arg));
 
   if (cmd || !AWAKE(ch))
     return (FALSE);
@@ -2728,7 +2728,7 @@ int janitor(struct char_data *ch, int cmd, char *arg)
   struct obj_data                        *i = NULL;
 
   if (DEBUG > 2)
-    dlog("called %s with %s, %d, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), cmd, VNULL(arg));
+    log_info("called %s with %s, %d, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), cmd, VNULL(arg));
 
   if (cmd || !AWAKE(ch))
     return (FALSE);
@@ -2749,7 +2749,7 @@ int janitor_eats(struct char_data *ch, int cmd, char *arg)
   struct obj_data                        *i = NULL;
 
   if (DEBUG > 2)
-    dlog("called %s with %s, %d, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), cmd, VNULL(arg));
+    log_info("called %s with %s, %d, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), cmd, VNULL(arg));
 
   if (cmd || !AWAKE(ch))
     return (FALSE);
@@ -2768,7 +2768,7 @@ int janitor_eats(struct char_data *ch, int cmd, char *arg)
 int tormentor(struct char_data *ch, int cmd, char *arg)
 {
   if (DEBUG > 2)
-    dlog("called %s with %s, %d, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), cmd, VNULL(arg));
+    log_info("called %s with %s, %d, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), cmd, VNULL(arg));
 
   if (!cmd)
     return (FALSE);
@@ -2782,7 +2782,7 @@ int tormentor(struct char_data *ch, int cmd, char *arg)
 int Fighter(struct char_data *ch, int cmd, char *arg)
 {
   if (DEBUG > 2)
-    dlog("called %s with %s, %d, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), cmd, VNULL(arg));
+    log_info("called %s with %s, %d, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), cmd, VNULL(arg));
 
   if (ch->specials.fighting) {
     if (GET_POS(ch) == POSITION_FIGHTING) {
@@ -2801,7 +2801,7 @@ int RustMonster(struct char_data *ch, int cmd, char *arg)
   int                                     t_pos = 0;
 
   if (DEBUG > 2)
-    dlog("called %s with %s, %d, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), cmd, VNULL(arg));
+    log_info("called %s with %s, %d, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), cmd, VNULL(arg));
 
   if (cmd || !AWAKE(ch))
     return (FALSE);
@@ -2870,7 +2870,7 @@ int RustMonster(struct char_data *ch, int cmd, char *arg)
 int temple_labrynth_liar(struct char_data *ch, int cmd, char *arg)
 {
   if (DEBUG > 2)
-    dlog("called %s with %s, %d, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), cmd, VNULL(arg));
+    log_info("called %s with %s, %d, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), cmd, VNULL(arg));
 
   if (cmd || !AWAKE(ch))
     return (0);
@@ -2915,7 +2915,7 @@ int temple_labrynth_sentry(struct char_data *ch, int cmd, char *arg)
   int                                     counter = 0;
 
   if (DEBUG > 2)
-    dlog("called %s with %s, %d, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), cmd, VNULL(arg));
+    log_info("called %s with %s, %d, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), cmd, VNULL(arg));
 
   if (cmd || !AWAKE(ch))
     return FALSE;
@@ -2955,7 +2955,7 @@ int Whirlwind(struct char_data *ch, int cmd, char *arg)
   int                                     i = 0;
 
   if (DEBUG > 2)
-    dlog("called %s with %s, %d, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), cmd, VNULL(arg));
+    log_info("called %s with %s, %d, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), cmd, VNULL(arg));
 
   if (ch->in_room == -1)
     return (FALSE);
@@ -2990,7 +2990,7 @@ int NudgeNudge(struct char_data *ch, int cmd, char *arg)
   struct char_data                       *vict = NULL;
 
   if (DEBUG > 2)
-    dlog("called %s with %s, %d, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), cmd, VNULL(arg));
+    log_info("called %s with %s, %d, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), cmd, VNULL(arg));
 
   if (cmd || !AWAKE(ch))
     return (FALSE);
@@ -3185,7 +3185,7 @@ int AGGRESSIVE(struct char_data *ch, int cmd, char *arg)
   struct char_data                       *next = NULL;
 
   if (DEBUG > 2)
-    dlog("called %s with %s, %d, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), cmd, VNULL(arg));
+    log_info("called %s with %s, %d, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), cmd, VNULL(arg));
 
   if (cmd || !AWAKE(ch))
     return (FALSE);
@@ -3209,7 +3209,7 @@ int cityguard(struct char_data *ch, int cmd, char *arg)
   int                                     max_evil = 0;
 
   if (DEBUG > 2)
-    dlog("called %s with %s, %d, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), cmd, VNULL(arg));
+    log_info("called %s with %s, %d, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), cmd, VNULL(arg));
 
   if (cmd || !AWAKE(ch))
     return (FALSE);
@@ -3268,7 +3268,7 @@ int WarrenGuard(struct char_data *ch, int cmd, char *arg)
   int                                     max_good = 0;
 
   if (DEBUG > 2)
-    dlog("called %s with %s, %d, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), cmd, VNULL(arg));
+    log_info("called %s with %s, %d, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), cmd, VNULL(arg));
 
   if (cmd || !AWAKE(ch))
     return (FALSE);
@@ -3308,7 +3308,7 @@ int WarrenGuard(struct char_data *ch, int cmd, char *arg)
 int zm_tired(struct char_data *zmaster)
 {
   if (DEBUG > 3)
-    dlog("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(zmaster));
+    log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(zmaster));
 
   return GET_HIT(zmaster) < GET_MAX_HIT(zmaster) / 2 || GET_MANA(zmaster) < 40;
 }
@@ -3318,7 +3318,7 @@ int zm_stunned_followers(struct char_data *zmaster)
   struct follow_type                     *fwr = NULL;
 
   if (DEBUG > 3)
-    dlog("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(zmaster));
+    log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(zmaster));
 
   for (fwr = zmaster->followers; fwr; fwr = fwr->next)
     if (GET_POS(fwr->follower) == POSITION_STUNNED)
@@ -3329,7 +3329,7 @@ int zm_stunned_followers(struct char_data *zmaster)
 void zm_zap_spell_at(struct char_data *ch, struct char_data *vict, int maxlevel)
 {
   if (DEBUG > 3)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), SAFE_NAME(vict), maxlevel);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), SAFE_NAME(vict), maxlevel);
 
   if (GET_POS(vict) <= POSITION_DEAD)
     return;
@@ -3396,7 +3396,7 @@ void zm_zap_spell_at(struct char_data *ch, struct char_data *vict, int maxlevel)
 void zm_zap_area_at(struct char_data *ch, int maxlevel)
 {
   if (DEBUG > 3)
-    dlog("called %s with %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), maxlevel);
+    log_info("called %s with %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), maxlevel);
 
   if (!ch->specials.fighting)
     return;
@@ -3429,7 +3429,7 @@ void zm_init_combat(struct char_data *zmaster, struct char_data *target)
   struct follow_type                     *fwr = NULL;
 
   if (DEBUG > 3)
-    dlog("called %s with %s, %s", __PRETTY_FUNCTION__, SAFE_NAME(zmaster), SAFE_NAME(target));
+    log_info("called %s with %s, %s", __PRETTY_FUNCTION__, SAFE_NAME(zmaster), SAFE_NAME(target));
 
   if (GET_POS(target) <= POSITION_DEAD)
     return;
@@ -3450,7 +3450,7 @@ int zm_kill_fidos(struct char_data *zmaster)
   struct char_data                       *fido_b = NULL;
 
   if (DEBUG > 3)
-    dlog("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(zmaster));
+    log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(zmaster));
 
   if (check_peaceful(zmaster, ""))
     return FALSE;
@@ -3473,7 +3473,7 @@ int zm_kill_aggressor(struct char_data *zmaster)
   int                                     maxlevel = 0;
 
   if (DEBUG > 3)
-    dlog("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(zmaster));
+    log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(zmaster));
 
   if (check_peaceful(zmaster, ""))
     return FALSE;
@@ -3526,7 +3526,7 @@ int zm_kill_wimps(struct char_data *zmaster)
   int                                     maxlevel = 0;
 
   if (DEBUG > 3)
-    dlog("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(zmaster));
+    log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(zmaster));
 
   if (check_peaceful(zmaster, ""))
     return FALSE;
@@ -3599,7 +3599,7 @@ int zombie_master(struct char_data *ch, int cmd, char *arg)
   int                                     dir = 0;
 
   if (DEBUG > 2)
-    dlog("called %s with %s, %d, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), cmd, VNULL(arg));
+    log_info("called %s with %s, %d, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), cmd, VNULL(arg));
 
   zmaster = find_mobile_here_with_spec_proc(zombie_master, ch->in_room);
 
@@ -3683,9 +3683,9 @@ int zombie_master(struct char_data *ch, int cmd, char *arg)
 	      top = zone_table[10].top;
 	      room = number(bottom, top);
 	      rp = real_roomp(room);
-	      dlog("Selecting zombie %d room... [#%d]\r", y, room);
+	      log_info("Selecting zombie %d room... [#%d]\r", y, room);
 	    } while (!rp || IS_SET(rp->room_flags, (NO_MOB | PEACEFUL | PRIVATE)));
-	    dlog("Got zombie %d room... [#%d]\n", y, room);
+	    log_info("Got zombie %d room... [#%d]\n", y, room);
 	    ack = zmaster->followers;
 	    if (!ack)
 	      break;
@@ -3727,7 +3727,7 @@ int pet_shops(struct char_data *ch, int cmd, char *arg)
   char                                    pet_name[256] = "\0\0\0";
 
   if (DEBUG > 2)
-    dlog("called %s with %s, %d, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), cmd, VNULL(arg));
+    log_info("called %s with %s, %d, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), cmd, VNULL(arg));
 
   pet_room = ch->in_room + 1;
 
@@ -3792,7 +3792,7 @@ int bank(struct char_data *ch, int cmd, char *arg)
   int                                     money = 0;
 
   if (DEBUG > 2)
-    dlog("called %s with %s, %d, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), cmd, VNULL(arg));
+    log_info("called %s with %s, %d, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), cmd, VNULL(arg));
 
   money = atoi(arg);
 
@@ -3815,7 +3815,7 @@ int bank(struct char_data *ch, int cmd, char *arg)
       GET_BANK(ch) = GET_BANK(ch) + money;
       cprintf(ch, "Your balance is %d.\n\r", GET_BANK(ch));
       if (GET_BANK(ch) > 200000) {
-	dlog("%s has %d coins in the bank.", GET_NAME(ch), GET_BANK(ch));
+	log_info("%s has %d coins in the bank.", GET_NAME(ch), GET_BANK(ch));
       }
       return (TRUE);
     }
@@ -3862,7 +3862,7 @@ int pray_for_items(struct char_data *ch, int cmd, char *arg)
   char                                    buf[256] = "\0\0\0";
 
   if (DEBUG > 2)
-    dlog("called %s with %s, %d, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), cmd, VNULL(arg));
+    log_info("called %s with %s, %d, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), cmd, VNULL(arg));
 
   if (cmd != CMD_pray)					       /* You must pray to get the stuff */
     return FALSE;
@@ -3916,7 +3916,7 @@ int chalice(struct char_data *ch, int cmd, char *arg)
   char                                    buf2[MAX_INPUT_LENGTH] = "\0\0\0";
 
   if (DEBUG > 2)
-    dlog("called %s with %s, %d, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), cmd, VNULL(arg));
+    log_info("called %s with %s, %d, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), cmd, VNULL(arg));
 
   if (chl < 1) {
     chl = real_object(222);
@@ -3980,7 +3980,7 @@ int chalice(struct char_data *ch, int cmd, char *arg)
 int kings_hall(struct char_data *ch, int cmd, char *arg)
 {
   if (DEBUG > 2)
-    dlog("called %s with %s, %d, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), cmd, VNULL(arg));
+    log_info("called %s with %s, %d, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), cmd, VNULL(arg));
 
   if (cmd != 176)
     return (0);
@@ -4008,7 +4008,7 @@ int House(struct char_data *ch, int cmd, char *arg)
   struct obj_cost                         cost;
 
   if (DEBUG > 2)
-    dlog("called %s with %s, %d, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), cmd, VNULL(arg));
+    log_info("called %s with %s, %d, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), cmd, VNULL(arg));
 
   if (IS_NPC(ch))
     return (FALSE);
@@ -4066,7 +4066,7 @@ int paramedics(struct char_data *ch, int cmd, char *arg)
   struct char_data                       *most_hurt = NULL;
 
   if (DEBUG > 2)
-    dlog("called %s with %s, %d, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), cmd, VNULL(arg));
+    log_info("called %s with %s, %d, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), cmd, VNULL(arg));
 
   if (!cmd) {
     if (ch->specials.fighting) {
@@ -4118,7 +4118,7 @@ int jugglernaut(struct char_data *ch, int cmd, char *arg)
   int                                     j = 0;
 
   if (DEBUG > 2)
-    dlog("called %s with %s, %d, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), cmd, VNULL(arg));
+    log_info("called %s with %s, %d, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), cmd, VNULL(arg));
 
   if (cmd)
     return (FALSE);
@@ -4164,7 +4164,7 @@ int delivery_beast(struct char_data *ch, int cmd, char *arg)
   struct obj_data                        *o = NULL;
 
   if (DEBUG > 2)
-    dlog("called %s with %s, %d, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), cmd, VNULL(arg));
+    log_info("called %s with %s, %d, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), cmd, VNULL(arg));
 
   if (cmd)
     return (FALSE);
@@ -4193,7 +4193,7 @@ int StormGiant(struct char_data *ch, int cmd, char *arg)
   struct char_data                       *vict = NULL;
 
   if (DEBUG > 2)
-    dlog("called %s with %s, %d, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), cmd, VNULL(arg));
+    log_info("called %s with %s, %d, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), cmd, VNULL(arg));
 
   if (cmd)
     return (FALSE);
@@ -4226,7 +4226,7 @@ int firenewt(struct char_data *ch, int cmd, char *arg)
   struct char_data                       *vict = NULL;
 
   if (DEBUG > 2)
-    dlog("called %s with %s, %d, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), cmd, VNULL(arg));
+    log_info("called %s with %s, %d, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), cmd, VNULL(arg));
 
   if (cmd)
     return FALSE;
@@ -4251,7 +4251,7 @@ int eli_priest(struct char_data *ch, int cmd, char *arg)
   int                                     which_spell = SPELL_BLESS;
 
   if (DEBUG > 2)
-    dlog("called %s with %s, %d, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), cmd, VNULL(arg));
+    log_info("called %s with %s, %d, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), cmd, VNULL(arg));
 
   if (cmd == CMD_register) {				       /* register */
     while (*arg && isspace(*arg))
@@ -4445,7 +4445,7 @@ int fountain(struct char_data *ch, int cmd, char *arg)
   char                                    tmp[MAX_INPUT_LENGTH] = "\0\0\0";
 
   if (DEBUG > 2)
-    dlog("called %s with %s, %d, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), cmd, VNULL(arg));
+    log_info("called %s with %s, %d, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), cmd, VNULL(arg));
 
   if (cmd != 11)
     return (0);
@@ -4596,7 +4596,7 @@ int mosquito(struct char_data *ch, int cmd, char *arg)
   int                                     most_blood = 0;
 
   if (DEBUG > 2)
-    dlog("called %s with %s, %d, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), cmd, VNULL(arg));
+    log_info("called %s with %s, %d, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), cmd, VNULL(arg));
 
   if (cmd || !AWAKE(ch))
     return (FALSE);
@@ -4663,7 +4663,7 @@ int BerserkerAxe(struct char_data *ch, int cmd, char *arg)
   char                                    tmp[MAX_INPUT_LENGTH] = "\0\0\0";
 
   if (DEBUG > 2)
-    dlog("called %s with %s, %d, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), cmd, VNULL(arg));
+    log_info("called %s with %s, %d, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), cmd, VNULL(arg));
 
   if (cmd == CMD_flee) {
     if (IS_IMMORTAL(ch))
@@ -4790,15 +4790,15 @@ void assign_mobiles(void)
   int                                     rnum = 0;
 
   if (DEBUG > 3)
-    dlog("called %s with no arguments", __PRETTY_FUNCTION__);
+    log_info("called %s with no arguments", __PRETTY_FUNCTION__);
 
   for (i = 0; specials_m[i].vnum >= 0; i++) {
     rnum = real_mobile(specials_m[i].vnum);
     if (rnum < 0) {
-      dlog("mobile_assign: Mobile %d not found in database.", specials_m[i].vnum);
+      log_info("mobile_assign: Mobile %d not found in database.", specials_m[i].vnum);
     } else {
       mob_index[rnum].func = specials_m[i].proc;
-/*      dlog("mobile_assign: Mobile %d assigned function %d.",
+/*      log_info("mobile_assign: Mobile %d assigned function %d.",
               specials_m[i].vnum,specials_m[i].proc); */
     }
   }
@@ -4814,12 +4814,12 @@ void assign_objects(void)
   int                                     onum = 0;
 
   if (DEBUG > 3)
-    dlog("called %s with no arguments", __PRETTY_FUNCTION__);
+    log_info("called %s with no arguments", __PRETTY_FUNCTION__);
 
   for (i = 0; specials_o[i].vnum >= 0; i++) {
     onum = real_object(specials_o[i].vnum);
     if (onum < 0) {
-      dlog("negative object index?");
+      log_info("negative object index?");
     } else {
       obj_index[onum].func = specials_o[i].proc;
     }
@@ -4834,12 +4834,12 @@ void assign_rooms(void)
   struct room_data                       *rp = NULL;
 
   if (DEBUG > 3)
-    dlog("called %s with no arguments", __PRETTY_FUNCTION__);
+    log_info("called %s with no arguments", __PRETTY_FUNCTION__);
 
   for (i = 0; specials_r[i].vnum >= 0; i++) {
     rp = real_roomp(specials_r[i].vnum);
     if (rp == NULL) {
-      dlog("assign_rooms: unknown room");
+      log_info("assign_rooms: unknown room");
     } else
       rp->funct = specials_r[i].proc;
   }
@@ -4851,7 +4851,7 @@ char                                   *name_special_proc(int type, int vnum)
   struct special_proc_entry              *spec = NULL;
 
   if (DEBUG > 3)
-    dlog("called %s with %d, %d", __PRETTY_FUNCTION__, type, vnum);
+    log_info("called %s with %d, %d", __PRETTY_FUNCTION__, type, vnum);
 
   if (vnum < 0)
     return "Invalid VNUM";
@@ -4888,7 +4888,7 @@ char                                   *name_special_proc(int type, int vnum)
 void gm_wrong_class(struct char_data *master, struct char_data *vict)
 {
   if (DEBUG > 3)
-    dlog("called %s with %s, %s", __PRETTY_FUNCTION__, SAFE_NAME(master), SAFE_NAME(vict));
+    log_info("called %s with %s, %s", __PRETTY_FUNCTION__, SAFE_NAME(master), SAFE_NAME(vict));
 
   if (IS_EVIL(master)) {
     if (IS_GOOD(vict)) {
@@ -4919,7 +4919,7 @@ void gm_wrong_class(struct char_data *master, struct char_data *vict)
 void gm_wrong_alignment(struct char_data *master, struct char_data *vict)
 {
   if (DEBUG > 3)
-    dlog("called %s with %s, %s", __PRETTY_FUNCTION__, SAFE_NAME(master), SAFE_NAME(vict));
+    log_info("called %s with %s, %s", __PRETTY_FUNCTION__, SAFE_NAME(master), SAFE_NAME(vict));
 
   if (IS_REALLY_VILE(master)) {
     if (IS_VERY_GOOD(vict)) {
@@ -4967,7 +4967,7 @@ void gm_wrong_alignment(struct char_data *master, struct char_data *vict)
 void gm_gain(struct char_data *master, struct char_data *vict, int target)
 {
   if (DEBUG > 3)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(master), SAFE_NAME(vict), target);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(master), SAFE_NAME(vict), target);
 
   if (GET_LEVEL(vict, target) < GetMaxLevel(master) - 20) {
     cprintf(vict, "%s snorts, 'I will not teach such a novice!'\n\r", NAME(master));
@@ -4985,7 +4985,7 @@ void gm_prac(struct char_data *master, struct char_data *vict, int target, char 
   char                                    buf[MAX_STRING_LENGTH] = "\0\0\0";
 
   if (DEBUG > 3)
-    dlog("called %s with %s, %s, %d, %s", __PRETTY_FUNCTION__, SAFE_NAME(master), SAFE_NAME(vict), target, VNULL(arg));
+    log_info("called %s with %s, %s, %d, %s", __PRETTY_FUNCTION__, SAFE_NAME(master), SAFE_NAME(vict), target, VNULL(arg));
 
   if (!*arg) {
     sprintf(buf, "You have got %d practice sessions left.\n\r", vict->specials.pracs);
@@ -5045,7 +5045,7 @@ int GuildMaster(struct char_data *ch, int cmd, char *arg)
   char                                    buf[MAX_INPUT_LENGTH] = "\0\0\0";
 
   if (DEBUG > 2)
-    dlog("called %s with %s, %d, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), cmd, VNULL(arg));
+    log_info("called %s with %s, %d, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), cmd, VNULL(arg));
 
   if (!cmd) {						       /* actions of the guildmaster himself */
     return FALSE;
@@ -5142,7 +5142,7 @@ int GuildMaster(struct char_data *ch, int cmd, char *arg)
 int k_tired(struct char_data *karrn)
 {
   if (DEBUG > 3)
-    dlog("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(karrn));
+    log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(karrn));
 
   return GET_HIT(karrn) < GET_MAX_HIT(karrn) / 3 || GET_MANA(karrn) < 20;
 }
@@ -5152,7 +5152,7 @@ int k_kill_aggressor(struct char_data *karrn)
   int                                     maxlevel = 0;
 
   if (DEBUG > 3)
-    dlog("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(karrn));
+    log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(karrn));
 
   if (check_peaceful(karrn, ""))
     return FALSE;
@@ -5190,7 +5190,7 @@ int k_kill_wimps(struct char_data *karrn)
   int                                     choice = 0;
 
   if (DEBUG > 3)
-    dlog("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(karrn));
+    log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(karrn));
 
   if (check_peaceful(karrn, ""))
     return FALSE;
@@ -5292,7 +5292,7 @@ int Karrn(struct char_data *ch, int cmd, char *arg)
   struct char_data                       *tmp = NULL;
 
   if (DEBUG > 2)
-    dlog("called %s with %s, %d, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), cmd, VNULL(arg));
+    log_info("called %s with %s, %d, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), cmd, VNULL(arg));
 
   karrn = find_mobile_here_with_spec_proc(Karrn, ch->in_room);
 
@@ -5378,7 +5378,7 @@ char                                   *MobFunctionNameByFunc(ifuncp func)
   static char                             mobname[256] = "\0\0\0";
 
   if (DEBUG > 3)
-    dlog("called %s with %08x", __PRETTY_FUNCTION__, func);
+    log_info("called %s with %08x", __PRETTY_FUNCTION__, func);
 
   mobname[0] = '\0';
   for (i = 0; specials_m[i].vnum > 0; i++)

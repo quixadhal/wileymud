@@ -3,46 +3,32 @@
 
 #undef DIKU_CRUD
 #ifdef DIKU_CRUD
-#define bug(Str, ...) \
-        abug(__FILE__, __FUNCTION__, __LINE__, \
+#define log_error(Str, ...) \
+        bug_logger(__FILE__, __FUNCTION__, __LINE__, \
 	     GREATER_GOD, 0, NULL, NULL, Str, ## __VA_ARGS__)
-#define log(Str, ...) \
-        abug(NULL, NULL, 0, GREATER_GOD, 0, NULL, NULL, Str, ## __VA_ARGS__)
-#define dlog(Str, ...) \
-	abug(NULL, NULL, 0, GREATER_GOD, 0, NULL, NULL, Str, ## __VA_ARGS__)
-#define fatal(Str, ...) \
+#define log_info(Str, ...) \
+	bug_logger(NULL, NULL, 0, GREATER_GOD, 0, NULL, NULL, Str, ## __VA_ARGS__)
+#define log_fatal(Str, ...) \
 	{\
-        abug(__FILE__, __FUNCTION__, __LINE__, \
+        bug_logger(__FILE__, __FUNCTION__, __LINE__, \
 	     GREATER_GOD, 0, NULL, NULL, Str, ## __VA_ARGS__);\
 	exit(-1);\
 	}
-#define oops(Str, ...) \
-	{\
-        abug(NULL, NULL, 0, GREATER_GOD, 0, NULL, NULL, Str, ## __VA_ARGS__);\
-	exit(-1);\
-	}
 #else
-#define bug(Str, ...) \
-        abug(__FILE__, __FUNCTION__, __LINE__, \
+#define log_error(Str, ...) \
+        bug_logger(__FILE__, __FUNCTION__, __LINE__, \
 	     0, NULL, Str, ## __VA_ARGS__)
-#define log(Str, ...) \
-        abug(NULL, NULL, 0, 0, NULL, Str, ## __VA_ARGS__)
-#define dlog(Str, ...) \
-	abug(NULL, NULL, 0, 0, NULL, Str, ## __VA_ARGS__)
-#define fatal(Str, ...) \
+#define log_info(Str, ...) \
+	bug_logger(NULL, NULL, 0, 0, NULL, Str, ## __VA_ARGS__)
+#define log_fatal(Str, ...) \
 	{\
-        abug(__FILE__, __FUNCTION__, __LINE__, \
+        bug_logger(__FILE__, __FUNCTION__, __LINE__, \
 	     0, NULL, Str, ## __VA_ARGS__);\
-	exit(-1);\
-	}
-#define oops(Str, ...) \
-	{\
-        abug(NULL, NULL, 0, 0, NULL, Str, ## __VA_ARGS__);\
 	exit(-1);\
 	}
 #endif
 
-void abug(char *File, char *Func, int Line,
+void bug_logger(char *File, char *Func, int Line,
 #ifdef DIKU_CRUD
           unsigned int Level,
 #endif

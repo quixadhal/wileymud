@@ -35,7 +35,7 @@
 void do_gain(struct char_data *ch, char *argument, int cmd)
 {
   if (DEBUG)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
   return;
 }
@@ -43,7 +43,7 @@ void do_gain(struct char_data *ch, char *argument, int cmd)
 void do_guard(struct char_data *ch, char *argument, int cmd)
 {
   if (DEBUG)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
   if (!IS_NPC(ch) || IS_SET(ch->specials.act, ACT_POLYSELF)) {
     cprintf(ch, "Sorry. you can't just put your brain on autopilot!\n\r");
@@ -72,7 +72,7 @@ void do_junk(struct char_data *ch, char *argument, int cmd)
   int                                     count = 0;
 
   if (DEBUG)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 /*
  *   get object name & verify
  */
@@ -121,7 +121,7 @@ void do_junk(struct char_data *ch, char *argument, int cmd)
 void do_qui(struct char_data *ch, char *argument, int cmd)
 {
   if (DEBUG)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
   cprintf(ch, "You have to write quit - no less, to quit!\n\r");
   return;
@@ -130,7 +130,7 @@ void do_qui(struct char_data *ch, char *argument, int cmd)
 void do_title(struct char_data *ch, char *argument, int cmd)
 {
   if (DEBUG)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
   if (IS_NPC(ch) || !ch->desc)
     return;
@@ -146,7 +146,7 @@ void do_title(struct char_data *ch, char *argument, int cmd)
 void do_quit(struct char_data *ch, char *argument, int cmd)
 {
   if (DEBUG)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
   if (IS_NPC(ch) || !ch->desc)
     return;
@@ -175,7 +175,7 @@ void do_save(struct char_data *ch, char *argument, int cmd)
   struct obj_cost                         cost;
 
   if (DEBUG)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
   if (IS_NPC(ch))
     return;
@@ -190,7 +190,7 @@ void do_save(struct char_data *ch, char *argument, int cmd)
 void do_not_here(struct char_data *ch, char *argument, int cmd)
 {
   if (DEBUG)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
   cprintf(ch, "Sorry, but you cannot do that here!\n\r");
 }
@@ -201,7 +201,7 @@ void do_sneak(struct char_data *ch, char *argument, int cmd)
   struct affected_type                    af;
 
   if (DEBUG)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
   if (IS_AFFECTED(ch, AFF_SNEAK)) {
     affect_from_char(ch, SKILL_SNEAK);
@@ -236,7 +236,7 @@ void do_hide(struct char_data *ch, char *argument, int cmd)
   struct affected_type                    af;
 
   if (DEBUG)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
   cprintf(ch, "Ok, you crawl into a dark corner and lurk.\n\r");
 
@@ -275,7 +275,7 @@ void do_steal(struct char_data *ch, char *argument, int cmd)
   struct room_data                       *rp = NULL;
 
   if (DEBUG)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
   if (check_peaceful(ch, "What if he caught you?\n\r"))
     return;
@@ -380,7 +380,7 @@ void do_steal(struct char_data *ch, char *argument, int cmd)
     if (IS_SET(victim->specials.act, ACT_NICE_THIEF)) {
       sprintf(buf, "%s is a damn thief!", GET_NAME(ch));
       do_shout(victim, buf, 0);
-      dlog(buf);
+      log_info(buf);
       cprintf(ch, "Don't you ever do that again!\n\r");
     } else {
       hit(victim, ch, TYPE_UNDEFINED);
@@ -402,7 +402,7 @@ void do_practice(struct char_data *ch, char *argument, int cmd)
   };
 
   if (DEBUG)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
   if (cmd != CMD_practice)
     return;
@@ -545,7 +545,7 @@ void do_idea(struct char_data *ch, char *argument, int cmd)
   char                                    str[MAX_INPUT_LENGTH + 20] = "\0\0\0";
 
   if (DEBUG)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
   if (IS_NPC(ch)) {
     cprintf(ch, "Monsters can't have ideas - Go away.\n\r");
@@ -561,7 +561,7 @@ void do_idea(struct char_data *ch, char *argument, int cmd)
     return;
   }
   if (!(fl = fopen(IDEA_FILE, "a"))) {
-    perror("do_idea");
+    log_error("do_idea");
     cprintf(ch, "Could not open the idea-file.\n\r");
     return;
   }
@@ -578,7 +578,7 @@ void do_typo(struct char_data *ch, char *argument, int cmd)
   char                                    str[MAX_INPUT_LENGTH + 20] = "\0\0\0";
 
   if (DEBUG)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
   if (IS_NPC(ch)) {
     cprintf(ch, "Monsters can't spell - leave me alone.\n\r");
@@ -594,7 +594,7 @@ void do_typo(struct char_data *ch, char *argument, int cmd)
     return;
   }
   if (!(fl = fopen(TYPO_FILE, "a"))) {
-    perror("do_typo");
+    log_error("do_typo");
     cprintf(ch, "Could not open the typo-file.\n\r");
     return;
   }
@@ -610,7 +610,7 @@ void do_bug(struct char_data *ch, char *argument, int cmd)
   char                                    str[MAX_INPUT_LENGTH + 20] = "\0\0\0";
 
   if (DEBUG)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
   if (IS_NPC(ch)) {
     cprintf(ch, "You are a monster! Bug off!\n\r");
@@ -626,7 +626,7 @@ void do_bug(struct char_data *ch, char *argument, int cmd)
     return;
   }
   if (!(fl = fopen(BUG_FILE, "a"))) {
-    perror("do_bug");
+    log_error("do_bug");
     cprintf(ch, "Could not open the bug-file.\n\r");
     return;
   }
@@ -639,7 +639,7 @@ void do_bug(struct char_data *ch, char *argument, int cmd)
 void do_brief(struct char_data *ch, char *argument, int cmd)
 {
   if (DEBUG)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
   if (IS_NPC(ch))
     return;
@@ -656,7 +656,7 @@ void do_brief(struct char_data *ch, char *argument, int cmd)
 void do_compact(struct char_data *ch, char *argument, int cmd)
 {
   if (DEBUG)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
   if (IS_NPC(ch))
     return;
@@ -681,7 +681,7 @@ void do_group(struct char_data *ch, char *argument, int cmd)
   int                                     chlvl = 0;
 
   if (DEBUG)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
   only_argument(argument, name);
 
@@ -796,7 +796,7 @@ void do_quaff(struct char_data *ch, char *argument, int cmd)
   int                                     equipped = FALSE;
 
   if (DEBUG)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
   only_argument(argument, buf);
 
@@ -872,7 +872,7 @@ void do_recite(struct char_data *ch, char *argument, int cmd)
   int                                     equipped = FALSE;
 
   if (DEBUG)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
   argument = one_argument(argument, buf);
 
@@ -930,7 +930,7 @@ void do_use(struct char_data *ch, char *argument, int cmd)
   int                                     bits = 0;
 
   if (DEBUG)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
   argument = one_argument(argument, buf);
 
@@ -992,7 +992,7 @@ void do_plr_noshout(struct char_data *ch, char *argument, int cmd)
   char                                    buf[128] = "\0\0\0";
 
   if (DEBUG)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
   if (IS_NPC(ch))
     return;
@@ -1017,7 +1017,7 @@ void do_plr_notell(struct char_data *ch, char *argument, int cmd)
   char                                    buf[128] = "\0\0\0";
 
   if (DEBUG)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
   if (IS_NPC(ch))
     return;
@@ -1035,7 +1035,7 @@ void do_plr_notell(struct char_data *ch, char *argument, int cmd)
 void do_plr_nosummon(struct char_data *ch, char *argument, int cmd)
 {
   if (DEBUG)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
   if (IS_NPC(ch))
     return;
@@ -1056,7 +1056,7 @@ void do_plr_nosummon(struct char_data *ch, char *argument, int cmd)
 void do_plr_noteleport(struct char_data *ch, char *argument, int cmd)
 {
   if (DEBUG)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
   if (IS_NPC(ch))
     return;

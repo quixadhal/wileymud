@@ -33,13 +33,13 @@ char                                   *fread_action(FILE * fl)
   char                                   *rslt = NULL;
 
   if (DEBUG > 2)
-    dlog("called %s with %08x", __PRETTY_FUNCTION__, fl);
+    log_info("called %s with %08x", __PRETTY_FUNCTION__, fl);
 
   for (;;) {
     fgets(buf, MAX_STRING_LENGTH, fl);
     if (feof(fl)) {
-      bug("Fread_action - unexpected EOF.");
-      exit(0);
+      log_fatal("Fread_action - unexpected EOF.");
+      proper_exit(MUD_HALT);
     }
     if (*buf == '#')
       return (0);
@@ -61,11 +61,11 @@ void boot_social_messages(void)
   int                                     min_pos = 0;
 
   if (DEBUG > 1)
-    dlog("called %s with no arguments", __PRETTY_FUNCTION__);
+    log_info("called %s with no arguments", __PRETTY_FUNCTION__);
 
   if (!(fl = fopen(SOCMESS_FILE, "r"))) {
-    perror("boot_social_messages");
-    exit(0);
+    log_fatal("boot_social_messages");
+    proper_exit(MUD_HALT);
   }
   for (;;) {
     fscanf(fl, " %d ", &tmp);
@@ -120,7 +120,7 @@ int find_action(int cmd)
   int                                     mid = 0;
 
   if (DEBUG > 2)
-    dlog("called %s with %d", __PRETTY_FUNCTION__, cmd);
+    log_info("called %s with %d", __PRETTY_FUNCTION__, cmd);
 
   top = list_top;
 
@@ -150,7 +150,7 @@ void do_action(struct char_data *ch, char *argument, int cmd)
   struct char_data                       *vict = NULL;
 
   if (DEBUG)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
   if ((act_nr = find_action(cmd)) < 0) {
     cprintf(ch, "That action is not supported.\n\r");
@@ -190,7 +190,7 @@ void do_insult(struct char_data *ch, char *argument, int cmd)
   struct char_data                       *victim = NULL;
 
   if (DEBUG)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
   only_argument(argument, arg);
 
@@ -245,13 +245,13 @@ void boot_pose_messages(void)
   int                                     class = 0;
 
   if (DEBUG > 1)
-    dlog("called %s with no arguments", __PRETTY_FUNCTION__);
+    log_info("called %s with no arguments", __PRETTY_FUNCTION__);
 
   return;
 
   if (!(fl = fopen(POSEMESS_FILE, "r"))) {
-    perror("boot_pose_messages");
-    exit(0);
+    log_fatal("boot_pose_messages");
+    proper_exit(MUD_HALT);
   }
   for (counter = 0;; counter++) {
     fscanf(fl, " %d ", &pose_messages[counter].level);
@@ -272,7 +272,7 @@ void do_pose(struct char_data *ch, char *argument, int cmd)
   int                                     counter = 0;
 
   if (DEBUG)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
   cprintf(ch, "Sorry Buggy command.\n\r");
   return;

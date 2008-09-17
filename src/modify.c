@@ -96,7 +96,7 @@ void string_add(struct descriptor_data *d, char *str)
   int                                     terminator = 0;
 
   if (DEBUG > 2)
-    dlog("called %s with %08x, %s", __PRETTY_FUNCTION__, d, VNULL(str));
+    log_info("called %s with %08x, %s", __PRETTY_FUNCTION__, d, VNULL(str));
 
   /*
    * determine if this is the terminal string, and truncate if so 
@@ -142,7 +142,7 @@ void quad_arg(char *arg, int *type, char *name, int *field, char *string)
   char                                    buf[MAX_STRING_LENGTH] = "\0\0\0";
 
   if (DEBUG > 2)
-    dlog("called %s with %s, %08x, %s, %08x, %s", __PRETTY_FUNCTION__, VNULL(arg), type, VNULL(name), field, VNULL(string));
+    log_info("called %s with %s, %08x, %s, %08x, %s", __PRETTY_FUNCTION__, VNULL(arg), type, VNULL(name), field, VNULL(string));
 
   /*
    * determine type 
@@ -190,7 +190,7 @@ void do_string(struct char_data *ch, char *arg, int cmd)
   struct obj_data                        *obj = NULL;
 
   if (DEBUG > 2)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(arg), cmd);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(arg), cmd);
 
   if (IS_NPC(ch))
     return;
@@ -387,7 +387,7 @@ void bisect_arg(char *arg, int *field, char *string)
   char                                    buf[MAX_INPUT_LENGTH] = "\0\0\0";
 
   if (DEBUG > 2)
-    dlog("called %s with %s, %08x, %s", __PRETTY_FUNCTION__, VNULL(arg), field, VNULL(string));
+    log_info("called %s with %s, %08x, %s", __PRETTY_FUNCTION__, VNULL(arg), field, VNULL(string));
 
   /*
    * field name and number 
@@ -436,7 +436,7 @@ void do_setskill(struct char_data *ch, char *arg, int cmd)
   };
 
   if (DEBUG)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(arg), cmd);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(arg), cmd);
 
   cprintf(ch, "This routine is disabled untill it fitts\n\r");
   cprintf(ch, "The new structures (sorry Quinn) ....Bombman\n\r");
@@ -523,7 +523,7 @@ char                                   *one_word(char *argument, char *first_arg
   int                                     look_at = 0;
 
   if (DEBUG > 2)
-    dlog("called %s with %s, %s", __PRETTY_FUNCTION__, VNULL(argument), VNULL(first_arg));
+    log_info("called %s with %s, %s", __PRETTY_FUNCTION__, VNULL(argument), VNULL(first_arg));
 
   do {
     for (; isspace(*(argument + begin)); begin++);
@@ -567,7 +567,7 @@ struct help_index_element              *build_help_index(FILE * fl, int *num)
   long                                    pos = 0L;
 
   if (DEBUG > 2)
-    dlog("called %s with %08x, %08x", __PRETTY_FUNCTION__, fl, num);
+    log_info("called %s with %08x, %08x", __PRETTY_FUNCTION__, fl, num);
 
   for (;;) {
     pos = ftell(fl);
@@ -626,7 +626,7 @@ struct help_index_element              *build_help_index(FILE * fl, int *num)
 void page_string(struct descriptor_data *d, char *str, int keep_internal)
 {
   if (DEBUG > 2)
-    dlog("called %s with %08x, %s, %d", __PRETTY_FUNCTION__, d, VNULL(str), keep_internal);
+    log_info("called %s with %08x, %s, %d", __PRETTY_FUNCTION__, d, VNULL(str), keep_internal);
 
   if (!d)
     return;
@@ -652,7 +652,7 @@ void show_string(struct descriptor_data *d, char *input)
   int                                     toggle = 1;
 
   if (DEBUG > 2)
-    dlog("called %s with %08x, %s", __PRETTY_FUNCTION__, d, VNULL(input));
+    log_info("called %s with %08x, %s", __PRETTY_FUNCTION__, d, VNULL(input));
 
   one_argument(input, buf);
 
@@ -699,7 +699,7 @@ void check_reboot(void)
   char                                   *tmstr = NULL;
 
   if (DEBUG > 2)
-    dlog("called %s with no arguments", __PRETTY_FUNCTION__);
+    log_info("called %s with no arguments", __PRETTY_FUNCTION__);
 
   tc = time(0);
   t_info = localtime(&tc);
@@ -710,12 +710,12 @@ void check_reboot(void)
        ((t_info->tm_hour + 1) == REBOOT_AT2)) && (t_info->tm_min > 30))
     if ((boot = fopen(REBOOT_FILE, "r"))) {
       if (t_info->tm_min > 55) {
-	dlog("**** Reboot exists ****");
+	log_info("**** Reboot exists ****");
 	fread(&dummy, sizeof(dummy), 1, boot);
 	if (!feof(boot)) {				       /* the file is nonepty */
-	  dlog("Reboot is nonempty.");
+	  log_info("Reboot is nonempty.");
 	  if (system(REBOOT_FILE)) {
-	    dlog("Reboot script terminated abnormally");
+	    log_info("Reboot script terminated abnormally");
 	    allprintf("The reboot was cancelled.\n\r");
 	    sprintf(buf, "mv %s %s.FAILED", REBOOT_FILE, REBOOT_FILE);
 	    system(buf);

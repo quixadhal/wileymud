@@ -36,7 +36,7 @@
  int MobVnum(struct char_data *c)
 {
   if (DEBUG > 3)
-    dlog("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(c));
+    log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(c));
 
   if (!c || IS_PC(c))
     return 0;
@@ -50,7 +50,7 @@
  int ObjVnum(struct obj_data *o)
 {
   if (DEBUG > 3)
-    dlog("called %s with %s", __PRETTY_FUNCTION__, SAFE_ONAME(o));
+    log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_ONAME(o));
 
   if (!o)
     return 0;
@@ -63,7 +63,7 @@
  int percent(int value, int total)
 {
   if (DEBUG > 3)
-    dlog("called %s with %d, %d", __PRETTY_FUNCTION__, value, total);
+    log_info("called %s with %d, %d", __PRETTY_FUNCTION__, value, total);
 
   if (!total)
     return 0;
@@ -73,7 +73,7 @@
  char                            *ordinal(int x)
 {
   if (DEBUG > 3)
-    dlog("called %s with %d", __PRETTY_FUNCTION__, x);
+    log_info("called %s with %d", __PRETTY_FUNCTION__, x);
 
   if (x < 14 && x > 10)
     x = 4;
@@ -96,7 +96,7 @@ int GetItemClassRestrictions(struct obj_data *obj)
   int                                     total = 0;
 
   if (DEBUG > 3)
-    dlog("called %s with %s", __PRETTY_FUNCTION__, SAFE_ONAME(obj));
+    log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_ONAME(obj));
 
   if (IS_SET(obj->obj_flags.extra_flags, ITEM_ANTI_MAGE))
     total += CLASS_MAGIC_USER;
@@ -115,7 +115,7 @@ int GetItemClassRestrictions(struct obj_data *obj)
 int CAN_SEE(struct char_data *s, struct char_data *o)
 {
   if (DEBUG > 3)
-    dlog("called %s with %s, %s", __PRETTY_FUNCTION__, SAFE_NAME(s), SAFE_NAME(o));
+    log_info("called %s with %s, %s", __PRETTY_FUNCTION__, SAFE_NAME(s), SAFE_NAME(o));
 
   if (!o || !s)
     return (FALSE);
@@ -156,7 +156,7 @@ int exit_ok(struct room_direction_data *room_exit, struct room_data **rpp)
   struct room_data                       *rp = NULL;
 
   if (DEBUG > 3)
-    dlog("called %s with %08x, %08x", __PRETTY_FUNCTION__, room_exit, rpp);
+    log_info("called %s with %08x, %08x", __PRETTY_FUNCTION__, room_exit, rpp);
 
   if (rpp == NULL)
     rpp = &rp;
@@ -171,7 +171,7 @@ int exit_ok(struct room_direction_data *room_exit, struct room_data **rpp)
  int IsImmune(struct char_data *ch, int bit)
 {
   if (DEBUG > 3)
-    dlog("called %s with %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), bit);
+    log_info("called %s with %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), bit);
 
   if (!ch)
     return 0;
@@ -181,7 +181,7 @@ int exit_ok(struct room_direction_data *room_exit, struct room_data **rpp)
  int IsResist(struct char_data *ch, int bit)
 {
   if (DEBUG > 3)
-    dlog("called %s with %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), bit);
+    log_info("called %s with %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), bit);
 
   if (!ch)
     return 0;
@@ -193,7 +193,7 @@ int exit_ok(struct room_direction_data *room_exit, struct room_data **rpp)
  int IsSusc(struct char_data *ch, int bit)
 {
   if (DEBUG > 3)
-    dlog("called %s with %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), bit);
+    log_info("called %s with %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), bit);
 
   if (!ch)
     return 0;
@@ -204,7 +204,7 @@ int exit_ok(struct room_direction_data *room_exit, struct room_data **rpp)
  int number(int from, int to)
 {
   if (DEBUG > 3)
-    dlog("called %s with %d, %d", __PRETTY_FUNCTION__, from, to);
+    log_info("called %s with %d, %d", __PRETTY_FUNCTION__, from, to);
 
   if (to - from + 1)
     return ((random() % (to - from + 1)) + from);
@@ -219,7 +219,7 @@ int exit_ok(struct room_direction_data *room_exit, struct room_data **rpp)
   int                                     sum = 0;
 
   if (DEBUG > 3)
-    dlog("called %s with %d, %d", __PRETTY_FUNCTION__, rolls, size);
+    log_info("called %s with %d, %d", __PRETTY_FUNCTION__, rolls, size);
 
   if (size < 1 || rolls < 1)
     return 0;
@@ -233,7 +233,7 @@ int exit_ok(struct room_direction_data *room_exit, struct room_data **rpp)
  int fuzz(int x)
 {
   if (DEBUG > 3)
-    dlog("called %s with %d", __PRETTY_FUNCTION__, x);
+    log_info("called %s with %d", __PRETTY_FUNCTION__, x);
 
   if (!x)
     return 0;
@@ -247,7 +247,7 @@ int scan_number(char *text, int *rval)
   int                                     length = 0;
 
   if (DEBUG > 3)
-    dlog("called %s with %s, %08x", __PRETTY_FUNCTION__, VNULL(text), rval);
+    log_info("called %s with %s, %08x", __PRETTY_FUNCTION__, VNULL(text), rval);
 
   if (!text || !*text)
     return 0;
@@ -261,7 +261,7 @@ int scan_number(char *text, int *rval)
  int str_cmp(const char *arg1, const char *arg2)
 {
   if (DEBUG > 3)
-    dlog("called %s with %s, %s", __PRETTY_FUNCTION__, VNULL(arg1), VNULL(arg2));
+    log_info("called %s with %s, %s", __PRETTY_FUNCTION__, VNULL(arg1), VNULL(arg2));
 
   if (!arg1 || !arg2)
     return 1;
@@ -271,7 +271,7 @@ int scan_number(char *text, int *rval)
  int strn_cmp(const char *arg1, const char *arg2, const int n)
 {
   if (DEBUG > 3)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, VNULL(arg1), VNULL(arg2), n);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, VNULL(arg1), VNULL(arg2), n);
 
   if (!arg1 || !arg2)
     return 1;
@@ -283,7 +283,7 @@ int scan_number(char *text, int *rval)
   long                                    nr = 0L;
 
   if (DEBUG > 3)
-    dlog("called %s with %lu, %08x, %08x", __PRETTY_FUNCTION__, vektor, names, result);
+    log_info("called %s with %lu, %08x, %08x", __PRETTY_FUNCTION__, vektor, names, result);
 
   *result = '\0';
   for (nr = 0; vektor; vektor >>= 1) {
@@ -308,7 +308,7 @@ int scan_number(char *text, int *rval)
   int                                     nr = 0;
 
   if (DEBUG > 3)
-    dlog("called %s with %d, %08x, %08x", __PRETTY_FUNCTION__, type, names, result);
+    log_info("called %s with %d, %08x, %08x", __PRETTY_FUNCTION__, type, names, result);
 
   for (nr = 0; (*names[nr] != '\n'); nr++);
   if (type < nr)
@@ -324,7 +324,7 @@ struct time_info_data real_time_passed(time_t t2, time_t t1)
   struct time_info_data                   now;
 
   if (DEBUG > 3)
-    dlog("called %s with %u, %u", __PRETTY_FUNCTION__, (long)t2, (long)t1);
+    log_info("called %s with %u, %u", __PRETTY_FUNCTION__, (long)t2, (long)t1);
 
   secs = (long)(t2 - t1);
   now.hours = (secs / SECS_PER_REAL_HOUR) % 24;		       /* 0..23 hours */
@@ -343,7 +343,7 @@ struct time_info_data mud_time_passed(time_t t2, time_t t1)
   struct time_info_data                   now;
 
   if (DEBUG > 3)
-    dlog("called %s with %u, %u", __PRETTY_FUNCTION__, (long)t2, (long)t1);
+    log_info("called %s with %u, %u", __PRETTY_FUNCTION__, (long)t2, (long)t1);
 
   secs = (long)(t2 - t1);
   now.hours = (secs / SECS_PER_MUD_HOUR) % 24;		       /* 0..23 hours */
@@ -361,7 +361,7 @@ struct time_info_data age(struct char_data *ch)
   struct time_info_data                   player_age;
 
   if (DEBUG > 3)
-    dlog("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
+    log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
 
   player_age = mud_time_passed(time(0), ch->player.time.birth);
   player_age.year += 17;				       /* All players start at 17 */
@@ -371,7 +371,7 @@ struct time_info_data age(struct char_data *ch)
 int in_group(struct char_data *ch1, struct char_data *ch2)
 {
   if (DEBUG > 3)
-    dlog("called %s with %s, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch1), SAFE_NAME(ch2));
+    log_info("called %s with %s, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch1), SAFE_NAME(ch2));
 
   /* 
    * three possibilities ->
@@ -420,7 +420,7 @@ int getall(char *name, char *newname)
   char                                    prd = '\0';
 
   if (DEBUG > 3)
-    dlog("called %s with %s, %s", __PRETTY_FUNCTION__, VNULL(name), VNULL(newname));
+    log_info("called %s with %s, %s", __PRETTY_FUNCTION__, VNULL(name), VNULL(newname));
 
   sscanf(name, "%s ", otname);				       /* reads up to first space */
 
@@ -451,7 +451,7 @@ int getabunch(char *name, char *newname)
   char                                    tmpname[80] = "\0\0\0";
 
   if (DEBUG > 3)
-    dlog("called %s with %s, %s", __PRETTY_FUNCTION__, VNULL(name), VNULL(newname));
+    log_info("called %s with %s, %s", __PRETTY_FUNCTION__, VNULL(name), VNULL(newname));
 
   sscanf(name, "%d*%s", &num, tmpname);
   if (tmpname[0] == '\0')
@@ -484,7 +484,7 @@ int DetermineExp(struct char_data *mob, int exp_flags)
    */
 
   if (DEBUG > 3)
-    dlog("called %s with %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(mob), exp_flags);
+    log_info("called %s with %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(mob), exp_flags);
 
   if (GetMaxLevel(mob) < 0)
     return (1);
@@ -699,7 +699,7 @@ void down_river(int current_pulse)
   struct room_data                       *rp = NULL;
 
   if (DEBUG > 3)
-    dlog("called %s with %d", __PRETTY_FUNCTION__, current_pulse);
+    log_info("called %s with %d", __PRETTY_FUNCTION__, current_pulse);
 
   if (current_pulse < 0)
     return;
@@ -773,7 +773,7 @@ void down_river(int current_pulse)
  int IsHumanoid(struct char_data *ch)
 {
   if (DEBUG > 3)
-    dlog("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
+    log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
 
   switch (GET_RACE(ch)) {
     case RACE_HALFBREED:
@@ -803,7 +803,7 @@ void down_river(int current_pulse)
  int IsAnimal(struct char_data *ch)
 {
   if (DEBUG > 3)
-    dlog("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
+    log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
 
   switch (GET_RACE(ch)) {
     case RACE_PREDATOR:
@@ -821,7 +821,7 @@ void down_river(int current_pulse)
  int IsUndead(struct char_data *ch)
 {
   if (DEBUG > 3)
-    dlog("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
+    log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
 
   switch (GET_RACE(ch)) {
     case RACE_UNDEAD:
@@ -835,7 +835,7 @@ void down_river(int current_pulse)
  int IsLycanthrope(struct char_data *ch)
 {
   if (DEBUG > 3)
-    dlog("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
+    log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
 
   switch (GET_RACE(ch)) {
     case RACE_LYCANTH:
@@ -848,7 +848,7 @@ void down_river(int current_pulse)
  int IsDiabolic(struct char_data *ch)
 {
   if (DEBUG > 3)
-    dlog("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
+    log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
 
   switch (GET_RACE(ch)) {
     case RACE_DEMON:
@@ -862,7 +862,7 @@ void down_river(int current_pulse)
  int IsReptile(struct char_data *ch)
 {
   if (DEBUG > 3)
-    dlog("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
+    log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
 
   switch (GET_RACE(ch)) {
     case RACE_REPTILE:
@@ -878,7 +878,7 @@ void down_river(int current_pulse)
  int IsDraconic(struct char_data *ch)
 {
   if (DEBUG > 3)
-    dlog("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
+    log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
 
   switch (GET_RACE(ch)) {
     case RACE_DRAGON:
@@ -891,7 +891,7 @@ void down_river(int current_pulse)
  int IsAvian(struct char_data *ch)
 {
   if (DEBUG > 3)
-    dlog("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
+    log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
 
   switch (GET_RACE(ch)) {
     case RACE_BIRD:
@@ -906,7 +906,7 @@ void down_river(int current_pulse)
  int IsExtraPlanar(struct char_data *ch)
 {
   if (DEBUG > 3)
-    dlog("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
+    log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
 
   switch (GET_RACE(ch)) {
     case RACE_DEMON:
@@ -922,7 +922,7 @@ void down_river(int current_pulse)
  int HasHands(struct char_data *ch)
 {
   if (DEBUG > 3)
-    dlog("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
+    log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
 
   if (IsHumanoid(ch) || IsDiabolic(ch) || IsDraconic(ch))
     return TRUE;
@@ -933,7 +933,7 @@ void down_river(int current_pulse)
  int IsPerson(struct char_data *ch)
 {
   if (DEBUG > 3)
-    dlog("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
+    log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
 
   switch (GET_RACE(ch)) {
     case RACE_HUMAN:
@@ -953,7 +953,7 @@ void SetHunting(struct char_data *ch, struct char_data *tch)
   int                                     dist = 0;
 
   if (DEBUG > 3)
-    dlog("called %s with %s, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), SAFE_NAME(tch));
+    log_info("called %s with %s, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), SAFE_NAME(tch));
 
   persist = GetMaxLevel(ch);
   /*   persist *= (int) GET_ALIGNMENT(ch) / 100; */
@@ -987,7 +987,7 @@ void CallForGuard(struct char_data *ch, struct char_data *vict, int lev)
   struct char_data                       *i = NULL;
 
   if (DEBUG > 3)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), SAFE_NAME(vict), lev);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), SAFE_NAME(vict), lev);
 
   if (lev == 0)
     lev = 3;
@@ -1016,7 +1016,7 @@ void CallForAGuard(struct char_data *ch, struct char_data *vict, int lev)
   struct char_data                       *point = NULL;
 
   if (DEBUG > 3)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), SAFE_NAME(vict), lev);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), SAFE_NAME(vict), lev);
 
   if (lev == 0)
     lev = 3;
@@ -1042,7 +1042,7 @@ void CallForAGuard(struct char_data *ch, struct char_data *vict, int lev)
 void StandUp(struct char_data *ch)
 {
   if (DEBUG > 3)
-    dlog("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
+    log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
 
   if ((GET_POS(ch) < POSITION_STANDING) && (GET_POS(ch) > POSITION_STUNNED)) {
     if (ch->points.hit > (ch->points.max_hit / 2))
@@ -1060,7 +1060,7 @@ void FighterMove(struct char_data *ch)
   int                                     num = 0;
 
   if (DEBUG > 3)
-    dlog("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
+    log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
 
   num = number(1, 4);
 
@@ -1093,7 +1093,7 @@ void FighterMove(struct char_data *ch)
 void DevelopHatred(struct char_data *ch, struct char_data *v)
 {
   if (DEBUG > 3)
-    dlog("called %s with %s, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), SAFE_NAME(v));
+    log_info("called %s with %s, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), SAFE_NAME(v));
 
   if (DoesHate(ch, v))
     return;
@@ -1131,7 +1131,7 @@ void Teleport(int current_pulse)
   struct room_data                       *dest = NULL;
 
   if (DEBUG > 3)
-    dlog("called %s with %d", __PRETTY_FUNCTION__, current_pulse);
+    log_info("called %s with %d", __PRETTY_FUNCTION__, current_pulse);
 
   if (current_pulse < 0)
     return;
@@ -1147,7 +1147,7 @@ void Teleport(int current_pulse)
 
       dest = real_roomp(rp->tele_targ);
       if (!dest) {
-	dlog("invalid tele_target:ROOM %s", rp->name);
+	log_error("invalid tele_target:ROOM %s", rp->name);
 	continue;
       }
       obj_object = (rp)->contents;
@@ -1227,7 +1227,7 @@ int HasObject(struct char_data *ch, int ob_num)
   struct obj_data                        *i = NULL;
 
   if (DEBUG > 3)
-    dlog("called %s with %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), ob_num);
+    log_info("called %s with %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), ob_num);
 
   /*
    * equipment too
@@ -1255,7 +1255,7 @@ int HasObject(struct char_data *ch, int ob_num)
 int room_of_object(struct obj_data *obj)
 {
   if (DEBUG > 3)
-    dlog("called %s with %s", __PRETTY_FUNCTION__, SAFE_ONAME(obj));
+    log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_ONAME(obj));
 
   if (obj->in_room != NOWHERE)
     return obj->in_room;
@@ -1272,7 +1272,7 @@ int room_of_object(struct obj_data *obj)
 struct char_data                       *char_holding(struct obj_data *obj)
 {
   if (DEBUG > 3)
-    dlog("called %s with %s", __PRETTY_FUNCTION__, SAFE_ONAME(obj));
+    log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_ONAME(obj));
 
   if (obj->in_room != NOWHERE)
     return NULL;
@@ -1292,7 +1292,7 @@ int RecCompObjNum(struct obj_data *o, int obj_num)
   struct obj_data                        *i = NULL;
 
   if (DEBUG > 3)
-    dlog("called %s with %s, %d", __PRETTY_FUNCTION__, SAFE_ONAME(o), obj_num);
+    log_info("called %s with %s, %d", __PRETTY_FUNCTION__, SAFE_ONAME(o), obj_num);
 
   if (obj_index[o->item_number].virtual == obj_num)
     total = 1;
@@ -1308,7 +1308,7 @@ int RecCompObjNum(struct obj_data *o, int obj_num)
 void RestoreChar(struct char_data *ch)
 {
   if (DEBUG > 3)
-    dlog("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
+    log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
 
   GET_MANA(ch) = GET_MAX_MANA(ch);
   GET_HIT(ch) = GET_MAX_HIT(ch);
@@ -1326,7 +1326,7 @@ void RestoreChar(struct char_data *ch)
  void RemAllAffects(struct char_data *ch)
 {
   if (DEBUG > 3)
-    dlog("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
+    log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
 
   spell_dispel_magic(IMPLEMENTOR, ch, ch, 0);
 }
@@ -1336,7 +1336,7 @@ void RestoreChar(struct char_data *ch)
   int                                     health_percent = 0;
 
   if (DEBUG > 3)
-    dlog("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
+    log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
 
   if (GET_MAX_HIT(ch) > 0)
     health_percent = (100 * GET_HIT(ch)) / GET_MAX_HIT(ch);
@@ -1363,7 +1363,7 @@ void RestoreChar(struct char_data *ch)
  int IsWizard(struct char_data *ch)
 {
   if (DEBUG > 3)
-    dlog("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
+    log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
 
   if (!ch)
     return 0;
@@ -1373,7 +1373,7 @@ void RestoreChar(struct char_data *ch)
  int IsPriest(struct char_data *ch)
 {
   if (DEBUG > 3)
-    dlog("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
+    log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
 
   if (!ch)
     return 0;
@@ -1383,7 +1383,7 @@ void RestoreChar(struct char_data *ch)
  int IsMagical(struct char_data *ch)
 {
   if (DEBUG > 3)
-    dlog("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
+    log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
 
   if (!ch)
     return 0;
@@ -1393,7 +1393,7 @@ void RestoreChar(struct char_data *ch)
  int IsFighter(struct char_data *ch)
 {
   if (DEBUG > 3)
-    dlog("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
+    log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
 
   if (!ch)
     return 0;
@@ -1403,7 +1403,7 @@ void RestoreChar(struct char_data *ch)
  int IsSneak(struct char_data *ch)
 {
   if (DEBUG > 3)
-    dlog("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
+    log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
 
   if (!ch)
     return 0;

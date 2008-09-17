@@ -19,7 +19,7 @@
 int RecGetObjRoom(struct obj_data *obj)
 {
   if (DEBUG > 2)
-    dlog("called %s with %s", __PRETTY_FUNCTION__, SAFE_ONAME(obj));
+    log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_ONAME(obj));
 
   if (obj->in_room != NOWHERE) {
     return (obj->in_room);
@@ -45,7 +45,7 @@ void MakeNoise(int room, char *local_snd, char *distant_snd)
   struct room_data                       *orp = NULL;
 
   if (DEBUG > 2)
-    dlog("called %s with %d, %s, %s", __PRETTY_FUNCTION__, room, VNULL(local_snd), VNULL(distant_snd));
+    log_info("called %s with %d, %s, %s", __PRETTY_FUNCTION__, room, VNULL(local_snd), VNULL(distant_snd));
 
   rp = real_roomp(room);
 
@@ -77,7 +77,7 @@ void MakeSound(int current_pulse)
   char                                    buffer[128] = "\0\0\0";
 
   if (DEBUG > 2)
-    dlog("called %s with %d", __PRETTY_FUNCTION__, current_pulse);
+    log_info("called %s with %d", __PRETTY_FUNCTION__, current_pulse);
 
   for (obj = object_list; obj; obj = obj->next) {
     if (ITEM_TYPE(obj) == ITEM_AUDIO) {

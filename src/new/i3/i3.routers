@@ -1,0 +1,19 @@
+#ROUTER
+Name *yatmim
+IP   149.152.218.102
+Port 23
+End
+
+#ROUTER
+Name *arthmoor
+IP   i3.intermud.us
+Port 9900
+End
+
+#ROUTER
+Name *gjs
+IP   us-1.i3.intermud.org
+Port 9000
+End
+
+#END

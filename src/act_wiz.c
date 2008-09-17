@@ -41,7 +41,7 @@
 void do_polymorph(struct char_data *ch, char *argument, int cmd)
 {
   if (DEBUG)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
   return;
 }
@@ -52,7 +52,7 @@ void do_highfive(struct char_data *ch, char *argument, int cmd)
   struct char_data                       *tch = NULL;
 
   if (DEBUG)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
   if (argument) {
     only_argument(argument, buf);
@@ -78,7 +78,7 @@ void do_rentmode(struct char_data *ch, char *argument, int cmd)
   FILE                                   *pfd = NULL;
 
   if (DEBUG)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
   if (IS_NPC(ch)) {
     cprintf(ch, "You cannot toggle rent costs.\n\r");
@@ -90,20 +90,20 @@ void do_rentmode(struct char_data *ch, char *argument, int cmd)
       RENT_RATE = it;
     sprintf(buf, "Rent now costs %f normal.", RENT_RATE);
     cprintf(ch, "%s\n\r", buf);
-    dlog(buf);
+    log_info(buf);
   } else {
     if (RENT_RATE != 0.0) {
       cprintf(ch, "Rent is now free!\n\r");
-      dlog("Rent cost is now ZERO.");
+      log_info("Rent cost is now ZERO.");
       RENT_RATE = 0.0;
     } else {
       cprintf(ch, "Rent is now normal.\n\r");
-      dlog("Rent cost is now normal.");
+      log_info("Rent cost is now normal.");
       RENT_RATE = 1.0;
     }
   }
   if (!(pfd = fopen(RENTCOST_FILE, "w"))) {
-    dlog("Cannot save rent cost!");
+    log_info("Cannot save rent cost!");
   } else {
     fprintf(pfd, "%f\n", RENT_RATE);
     FCLOSE(pfd);
@@ -113,7 +113,7 @@ void do_rentmode(struct char_data *ch, char *argument, int cmd)
 void do_wizlock(struct char_data *ch, char *argument, int cmd)
 {
   if (DEBUG)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
   if (IS_NPC(ch)) {
     cprintf(ch, "You cannot WizLock.\n\r");
@@ -121,11 +121,11 @@ void do_wizlock(struct char_data *ch, char *argument, int cmd)
   }
   if (WizLock) {
     cprintf(ch, "WizLock is now off\n\r");
-    dlog("Wizlock is now off.");
+    log_info("Wizlock is now off.");
     WizLock = FALSE;
   } else {
     cprintf(ch, "WizLock is now on\n\r");
-    dlog("WizLock is now on.");
+    log_info("WizLock is now on.");
     WizLock = TRUE;
   }
 }
@@ -135,7 +135,7 @@ void do_emote(struct char_data *ch, char *argument, int cmd)
   int                                     i = 0;
 
   if (DEBUG)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
   if (IS_NPC(ch) && (cmd != 0) && (cmd != 214))
     return;
@@ -157,7 +157,7 @@ void do_echo(struct char_data *ch, char *argument, int cmd)
   int                                     i = 0;
 
   if (DEBUG)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
   if (IS_NPC(ch))
     return;
@@ -185,7 +185,7 @@ void do_system(struct char_data *ch, char *argument, int cmd)
   int                                     i = 0;
 
   if (DEBUG)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
   if (IS_NPC(ch))
     return;
@@ -207,7 +207,7 @@ void do_trans(struct char_data *ch, char *argument, int cmd)
   short int                               target = 0;
 
   if (DEBUG)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
   if (IS_NPC(ch))
     return;
@@ -266,7 +266,7 @@ void do_at(struct char_data *ch, char *argument, int cmd)
   struct obj_data                        *target_obj = NULL;
 
   if (DEBUG)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
   if (IS_NPC(ch))
     return;
@@ -332,7 +332,7 @@ void do_form(struct char_data *ch, char *argument, int cmd)
   int                                     zone = 0;
 
   if (DEBUG)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
   if (IS_NPC(ch))
     return;
@@ -362,7 +362,7 @@ void do_form(struct char_data *ch, char *argument, int cmd)
   if (top_of_zone_table >= 0) {
     for (zone = 0; rp->number > zone_table[zone].top && zone <= top_of_zone_table; zone++);
     if (zone > top_of_zone_table) {
-      dlog("Room %d is outside of any zone.\n", rp->number);
+      log_info("Room %d is outside of any zone.\n", rp->number);
       zone--;
     }
     rp->zone = zone;
@@ -384,7 +384,7 @@ void do_goto(struct char_data *ch, char *argument, int cmd)
   struct obj_data                        *target_obj = NULL;
 
   if (DEBUG)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
   if (IS_NPC(ch))
     return;
@@ -420,7 +420,7 @@ void do_goto(struct char_data *ch, char *argument, int cmd)
    */
 
   if (!real_roomp(location)) {
-    bug("Massive error in do_goto. Everyone Off NOW.");
+    log_error("Massive error in do_goto. Everyone Off NOW.");
     return;
   }
   if (IS_SET(real_roomp(location)->room_flags, PRIVATE)) {
@@ -471,7 +471,7 @@ void do_home(struct char_data *ch, char *argument, int cmd)
   struct char_data                       *v = NULL;
 
   if (DEBUG)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
   if (IS_NPC(ch))
     return;
@@ -533,7 +533,7 @@ void do_apraise(struct char_data *ch, char *argument, int cmd)
   int                                     chance = 0;
 
   if (DEBUG)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
   if (IS_NPC(ch))
     return;
@@ -719,7 +719,7 @@ void do_stat(struct char_data *ch, char *argument, int cmd)
   int                                     anumber = 0;
 
   if (DEBUG)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
   if (IS_NPC(ch))
     return;
@@ -1305,7 +1305,7 @@ void do_pretitle(struct char_data *ch, char *argument, int cmd)
   struct char_data                       *vict = NULL;
 
   if (DEBUG)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
   argument = one_argument(argument, name);
   if (*argument == ' ')
@@ -1347,7 +1347,7 @@ void do_set(struct char_data *ch, char *argument, int cmd)
   };
 
   if (DEBUG)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
   if (IS_NPC(ch))
     return;
@@ -1627,7 +1627,7 @@ void do_set(struct char_data *ch, char *argument, int cmd)
 void do_shutdow(struct char_data *ch, char *argument, int cmd)
 {
   if (DEBUG)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
   cprintf(ch, "If you want to shut something down - say so!\n\r");
 }
@@ -1640,7 +1640,7 @@ void do_shutdown(struct char_data *ch, char *argument, int cmd)
   char                                    arg[MAX_INPUT_LENGTH] = "\0\0\0";
 
   if (DEBUG)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
   if (IS_NPC(ch))
     return;
@@ -1653,19 +1653,19 @@ void do_shutdown(struct char_data *ch, char *argument, int cmd)
   one_argument(argument, arg);
 
   if (!*arg) {
-    dlog("SHUTDOWN by %s at %d:%d", GET_NAME(ch), t_info->tm_hour + 1, t_info->tm_min);
+    log_boot("SHUTDOWN by %s at %d:%d", GET_NAME(ch), t_info->tm_hour + 1, t_info->tm_min);
     allprintf("\x007\n\rBroadcast message from %s (tty0) %s...\n\r\n\r", GET_NAME(ch), tmstr);
     allprintf("\x007The system is going down NOW !!\n\r\x007\n\r");
     diku_shutdown = 1;
     update_time_and_weather();
   } else if (!str_cmp(arg, "-k")) {
-    dlog("FAKE REBOOT by %s at %d:%d", GET_NAME(ch),
+    log_info("FAKE REBOOT by %s at %d:%d", GET_NAME(ch),
 	 t_info->tm_hour + 1, t_info->tm_min);
     allprintf("\x007\n\rBroadcast message from %s (tty0) %s...\n\r\n\r", GET_NAME(ch), tmstr);
     allprintf("\x007Rebooting.  Come back in a few minutes!\n\r");
     allprintf("\x007The system is going down NOW !!\n\r\n\r");
   } else if (!str_cmp(arg, "-r")) {
-    dlog("REBOOT by %s at %d:%d", GET_NAME(ch), t_info->tm_hour + 1, t_info->tm_min);
+    log_boot("REBOOT by %s at %d:%d", GET_NAME(ch), t_info->tm_hour + 1, t_info->tm_min);
     allprintf("\x007\n\rBroadcast message from %s (tty0) %s...\n\r\n\r", GET_NAME(ch), tmstr);
     allprintf("\x007Rebooting.  Come back in a few minutes!\n\r");
     allprintf("\x007The system is going down NOW !!\n\r\n\r");
@@ -1681,7 +1681,7 @@ void do_snoop(struct char_data *ch, char *argument, int cmd)
   struct char_data                       *victim = NULL;
 
   if (DEBUG)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
   if (!ch->desc)
     return;
@@ -1709,7 +1709,7 @@ void do_snoop(struct char_data *ch, char *argument, int cmd)
       if (ch->desc->snoop.snooping->desc)
 	ch->desc->snoop.snooping->desc->snoop.snoop_by = 0;
       else
-	dlog("caught %s snooping %s who didn't have a descriptor!",
+	log_info("caught %s snooping %s who didn't have a descriptor!",
 	     ch->player.name, ch->desc->snoop.snooping->player.name);
       ch->desc->snoop.snooping = 0;
     }
@@ -1740,7 +1740,7 @@ void do_switch(struct char_data *ch, char *argument, int cmd)
   struct char_data                       *victim = NULL;
 
   if (DEBUG)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
   if (IS_NPC(ch))
     return;
@@ -1787,7 +1787,7 @@ void do_return(struct char_data *ch, char *argument, int cmd)
   struct char_data                       *per = NULL;
 
   if (DEBUG)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
   if (!ch->desc)
     return;
@@ -1837,7 +1837,7 @@ void do_force(struct char_data *ch, char *argument, int cmd)
   char                                    to_force[100] = "\0\0\0";
 
   if (DEBUG)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
   if (IS_NPC(ch) && (cmd != 0))
     return;
@@ -1884,7 +1884,7 @@ void do_load(struct char_data *ch, char *argument, int cmd)
   int                                     anumber = 0;
 
   if (DEBUG)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
   if (IS_NPC(ch))
     return;
@@ -1947,7 +1947,7 @@ static void purge_one_room(int rnum, struct room_data *rp, int *range)
   struct obj_data                        *obj = NULL;
 
   if (DEBUG > 2)
-    dlog("called %s with %d, %08x, %08x", __PRETTY_FUNCTION__, rnum, rp, range);
+    log_info("called %s with %d, %08x, %08x", __PRETTY_FUNCTION__, rnum, rp, range);
 
   if (rnum == 0 || rnum < range[0] || rnum > range[1])
     return;
@@ -1981,7 +1981,7 @@ void do_purge(struct char_data *ch, char *argument, int cmd)
   char                                    name[100] = "\0\0\0";
 
   if (DEBUG)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
   if (IS_NPC(ch))
     return;
@@ -2078,7 +2078,7 @@ void roll_abilities(struct char_data *ch)
   unsigned char                           rools[4];
 
   if (DEBUG > 2)
-    dlog("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
+    log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
 
   for (i = 0; i < 5; table[i++] = 0);
 
@@ -2243,7 +2243,7 @@ void roll_abilities(struct char_data *ch)
       }
       break;
     default:
-      bug("Error on class");
+      log_error("Error on class");
   }
 
   switch (GET_RACE(ch)) {
@@ -2285,7 +2285,7 @@ void start_character(struct char_data *ch)
   int                                     r_num = 0;
 
   if (DEBUG > 2)
-    dlog("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
+    log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
 
   StartLevels(ch);
   GET_EXP(ch) = 1;
@@ -2363,7 +2363,7 @@ void do_advance(struct char_data *ch, char *argument, int cmd)
   int                                     lin_class = 0;
 
   if (DEBUG)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
   if (IS_NPC(ch))
     return;
@@ -2508,7 +2508,7 @@ void do_reroll(struct char_data *ch, char *argument, int cmd)
   char                                    buf[100] = "\0\0\0";
 
   if (DEBUG)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
   if (IS_NPC(ch))
     return;
@@ -2532,7 +2532,7 @@ void do_reroll(struct char_data *ch, char *argument, int cmd)
 void do_restore_all(struct char_data *ch, char *argument, int cmd)
 {
   if (DEBUG)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
   do_restore(ch, "all", 0);
 }
@@ -2542,7 +2542,7 @@ void restore_one_victim(struct char_data *victim)
   int                                     i = 0;
 
   if (DEBUG > 1)
-    dlog("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(victim));
+    log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(victim));
 
   GET_MANA(victim) = GET_MAX_MANA(victim);
   if (!affected_by_spell(victim, SPELL_AID)) {
@@ -2602,7 +2602,7 @@ void do_restore(struct char_data *ch, char *argument, int cmd)
   char                                    buf[256] = "\0\0\0";
 
   if (DEBUG)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
   only_argument(argument, buf);
   if (!*buf) {
@@ -2633,7 +2633,7 @@ void do_restore(struct char_data *ch, char *argument, int cmd)
 void do_show_logs(struct char_data *ch, char *argument, int cmd)
 {
   if (DEBUG)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
   if (IS_SET(ch->specials.act, PLR_LOGS)) {
     cprintf(ch, "You will no longer recieve the logs to your screen.\n\r");
@@ -2653,7 +2653,7 @@ void do_noshout(struct char_data *ch, char *argument, int cmd)
   char                                    buf[MAX_INPUT_LENGTH] = "\0\0\0";
 
   if (DEBUG)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
   if (IS_NPC(ch))
     return;
@@ -2689,7 +2689,7 @@ void do_noshout(struct char_data *ch, char *argument, int cmd)
 void do_pager(struct char_data *ch, char *argument, int cmd)
 {
   if (DEBUG)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
   if (IS_SET(ch->specials.act, PLR_PAGER)) {
     cprintf(ch, "You stop using the Wiley Pager.\n\r");
@@ -2707,7 +2707,7 @@ void do_nohassle(struct char_data *ch, char *argument, int cmd)
   char                                    buf[MAX_INPUT_LENGTH] = "\0\0\0";
 
   if (DEBUG)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
   if (IS_NPC(ch))
     return;
@@ -2738,7 +2738,7 @@ void do_stealth(struct char_data *ch, char *argument, int cmd)
   char                                    buf[MAX_INPUT_LENGTH] = "\0\0\0";
 
   if (DEBUG)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
   if (IS_NPC(ch))
     return;
@@ -2771,7 +2771,7 @@ static void print_room(int rnum, struct room_data *rp, struct string_block *sb)
   int                                     scan = 0;
 
   if (DEBUG > 2)
-    dlog("called %s with %d, %08x, %08x", __PRETTY_FUNCTION__, rnum, rp, sb);
+    log_info("called %s with %d, %08x, %08x", __PRETTY_FUNCTION__, rnum, rp, sb);
 
   sprintf(buf, "%5d %4d %-12s %s", rp->number, rnum, sector_types[rp->sector_type], rp->name);
   strcat(buf, " [");
@@ -2794,7 +2794,7 @@ static void print_room(int rnum, struct room_data *rp, struct string_block *sb)
 static void print_death_room(int rnum, struct room_data *rp, struct string_block *sb)
 {
   if (DEBUG > 2)
-    dlog("called %s with %d, %08x, %08x", __PRETTY_FUNCTION__, rnum, rp, sb);
+    log_info("called %s with %d, %08x, %08x", __PRETTY_FUNCTION__, rnum, rp, sb);
 
   if (rp && rp->room_flags & DEATH)
     print_room(rnum, rp, sb);
@@ -2803,7 +2803,7 @@ static void print_death_room(int rnum, struct room_data *rp, struct string_block
 static void print_private_room(int rnum, struct room_data *rp, struct string_block *sb)
 {
   if (DEBUG > 2)
-    dlog("called %s with %d, %08x, %08x", __PRETTY_FUNCTION__, rnum, rp, sb);
+    log_info("called %s with %d, %08x, %08x", __PRETTY_FUNCTION__, rnum, rp, sb);
 
   if (rp && rp->room_flags & PRIVATE)
     print_room(rnum, rp, sb);
@@ -2814,7 +2814,7 @@ static void show_room_zone(int rnum, struct room_data *rp, struct show_room_zone
   char                                    buf[MAX_STRING_LENGTH] = "\0\0\0";
 
   if (DEBUG > 2)
-    dlog("called %s with %d, %08x, %08x", __PRETTY_FUNCTION__, rnum, rp, srzs);
+    log_info("called %s with %d, %08x, %08x", __PRETTY_FUNCTION__, rnum, rp, srzs);
 
   if (!rp || rp->number < srzs->bottom || rp->number > srzs->top)
     return;						       /* optimize later */
@@ -2850,7 +2850,7 @@ void do_show(struct char_data *ch, char *argument, int cmd)
   struct string_block                     sb;
 
   if (DEBUG)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
   if (IS_NPC(ch))
     return;
@@ -2952,7 +2952,7 @@ void do_debug(struct char_data *ch, char *argument, int cmd)
   int                                     level = 0;
 
   if (DEBUG)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
   one_argument(argument, arg);
 
@@ -2989,7 +2989,7 @@ void do_invis(struct char_data *ch, char *argument, int cmd)
   int                                     level = 0;
 
   if (DEBUG)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
   if (scan_number(argument, &level)) {
     if (level <= 0)
@@ -3023,7 +3023,7 @@ void do_reset(struct char_data *ch, char *argument, int cmd)
   char                                    finish_level[256] = "\0\0\0";
 
   if (DEBUG)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
   if (IS_NPC(ch))
     return;
@@ -3061,10 +3061,10 @@ void do_reset(struct char_data *ch, char *argument, int cmd)
   }
   if (start != finish) {
     cprintf(ch, "You have reset Zones %d through %d.\n\r", start, finish);
-    dlog("Reset of Zones [#%d] to [#%d] by %s.", start, finish, GET_NAME(ch));
+    log_info("Reset of Zones [#%d] to [#%d] by %s.", start, finish, GET_NAME(ch));
   } else {
     cprintf(ch, "You have reset Zone %d.\n\r", start);
-    dlog("Reset of Zone [#%d] by %s.", start, GET_NAME(ch));
+    log_info("Reset of Zone [#%d] by %s.", start, GET_NAME(ch));
   }
 }
 
@@ -3076,7 +3076,7 @@ static void zone_purge_effect(int rnum, struct room_data *rp, int *zones)
   struct obj_data                        *next_o = NULL;
 
   if (DEBUG > 2)
-    dlog("called %s with %d, %08x, %08x", __PRETTY_FUNCTION__, rnum, rp, zones);
+    log_info("called %s with %d, %08x, %08x", __PRETTY_FUNCTION__, rnum, rp, zones);
 
   if (!rp || rp->zone < zones[0] || rp->zone > zones[1])
     return;
@@ -3101,7 +3101,7 @@ void do_zone_purge(struct char_data *ch, char *argument, int cmd)
   char                                    finish_level[256] = "\0\0\0";
 
   if (DEBUG)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
   if (IS_NPC(ch))
     return;
@@ -3135,17 +3135,17 @@ void do_zone_purge(struct char_data *ch, char *argument, int cmd)
   hash_iterate(&room_db, (funcp)zone_purge_effect, zones);
   if (zones[0] != zones[1]) {
     cprintf(ch, "You have cleaned Zones %d through %d.\n\r", zones[0], zones[1]);
-    dlog("Purge of Zones [#%d] to [#%d] by %s.", zones[0], zones[1], GET_NAME(ch));
+    log_info("Purge of Zones [#%d] to [#%d] by %s.", zones[0], zones[1], GET_NAME(ch));
   } else {
     cprintf(ch, "You have cleaned Zone %d.\n\r", zones[0]);
-    dlog("Purge of Zone [#%d] by %s.", zones[0], GET_NAME(ch));
+    log_info("Purge of Zone [#%d] by %s.", zones[0], GET_NAME(ch));
   }
 }
 
 void do_not_yet_implemented(struct char_data *ch, char *argument, int cmd)
 {
   if (DEBUG)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
   cprintf(ch, "This command is not yet implemented.\n\r");
 }
@@ -3159,7 +3159,7 @@ void do_setreboot(struct char_data *ch, char *argument, int cmd)
   char                                    second_str[256] = "\0\0\0";
 
   if (DEBUG)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
   if (IS_NPC(ch))
     return;
@@ -3187,11 +3187,11 @@ void do_setreboot(struct char_data *ch, char *argument, int cmd)
   REBOOT_AT1 = first;
   REBOOT_AT2 = second;
   if (!(pfd = fopen(REBOOTTIME_FILE, "w"))) {
-    dlog("Cannot save reboot times!");
+    log_info("Cannot save reboot times!");
   } else {
     fprintf(pfd, "%d %d\n", REBOOT_AT1, REBOOT_AT2);
     FCLOSE(pfd);
   }
   cprintf(ch, "You have set reboot times of %02d:00 and %02d:00.\n\r", REBOOT_AT1, REBOOT_AT2);
-  dlog("Reboot times %02d:00 and %02d:00 set by %s.", REBOOT_AT1, REBOOT_AT2, GET_NAME(ch));
+  log_info("Reboot times %02d:00 and %02d:00 set by %s.", REBOOT_AT1, REBOOT_AT2, GET_NAME(ch));
 }

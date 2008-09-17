@@ -274,29 +274,29 @@ int main(int argc, char **argv) {
   forest *Layout;
 
   if (!(ProgName = (char *) strdup(*argv)))
-    fatal("No memory!");
+    log_fatal("No memory!");
   parse_options(argc, argv);
   if(!InputFormat)
-    oops("No input format specified.");
+    log_fatal("No input format specified.");
   config_status();
   sprintf(tmp, "mkdir -p %s", OutputDir);
   system(tmp);
 
   sprintf(tmp, "%s/%s", InputDir, ZONE_FILE);
   if(!(Zones= load_zones(tmp)))
-    fatal("Cannot load zone file!");
+    log_fatal("Cannot load zone file!");
   sprintf(tmp, "%s/%s", InputDir, SHOP_FILE);
   if(!(Shops= load_shops(tmp)))
-    fatal("Cannot load shop file!");
+    log_fatal("Cannot load shop file!");
   sprintf(tmp, "%s/%s", InputDir, ROOM_FILE);
   if(!(Rooms= load_rooms(tmp, Zones)))
-    fatal("Cannot load room file!");
+    log_fatal("Cannot load room file!");
   sprintf(tmp, "%s/%s", InputDir, OBJ_FILE);
   if(!(Objects= load_objects(tmp, Zones)))
-    fatal("Cannot load object file!");
+    log_fatal("Cannot load object file!");
   sprintf(tmp, "%s/%s", InputDir, MOB_FILE);
   if(!(Mobs= load_mobs(tmp, Zones)))
-    fatal("Cannot load mob file!");
+    log_fatal("Cannot load mob file!");
 
   if(OutputFormat & of_mask("index")) {
     char ack[256];

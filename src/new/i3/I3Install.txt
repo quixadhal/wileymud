@@ -1,0 +1,217 @@
+AFKMud Intermud-3 Driver Code
+-----------------------------
+
+Original version written by Fatal Dimensions.
+Ported to Smaug 1.4a by Samson of Alsherok.
+Consolidated for cross-codebase compatibility by Samson of Alsherok.
+Permission to redistribute was granted by Fatal Dimensions.
+This code has been registered with the United States Copyright Office.
+Registration Number: TX 5-562-404
+
+Terms of Use
+------------
+
+1. You may use this snippet in your code provided that any included
+comment headers in the code are left intact. You may add your own, but
+do not take mine out.
+
+2. This snippet may not be posted for redistribution on any site
+without obtaining prior written consent from the Alsherok team.
+
+3. You must ALSO comply with the terms of the LICENSE file as well since this
+work was derived from the code covered by that license.
+
+If you can't agree to these terms, don't use this code, and don't expect
+me to help if something breaks while installing it. Harsh? Hardly. I'm
+tired of people who come crawling to whine and complain when they haven't
+bothered to comply with the terms first.
+
+What this code does
+-------------------
+
+A word of caution - this isn't intended for beginning coders.
+You have been warned.
+
+This code gives your mud the ability to connect to the Intermud-3 chat
+network, which is more or less the same idea as the IMC2 network some
+of you may already be familiar with or members of. This originally
+started off as simply a Smaug port of the code I began from, but once
+I had done that I realized this would be of use to far more than just
+Smaug. So once I had the Smaug code working to my satisfaction and
+cleaned up to be less cluttery than what I started with, I set about
+making it compile on several codebases as a standard package.
+The result is what you see here. This code is a vast improvement over
+the Fatal Dimensions code, as it now properly handles TCP exceptions
+and socket read/write errors. It also now supports color throughout.
+It has also been condensed down from the original 14 files to this
+set of 3 for ease of maintenance.
+
+This code should present no obstacles to use alongside a mud with an IMC2
+network connection.
+
+General channel guidelines:
+
+This code comes prepackaged with 5 I3 channels. These 5 channels are
+the existing set of publically accessable channels as of now that are
+intended for Diku based I3 muds.
+
+The chat channel, dchat, can be made available to your players if you
+see fit, but should not be available to newbies. This chanel is not bridged.
+
+The dimm channel should only be made available to your immortals.
+It is intended for the use of immortals only. This channel is not bridged.
+
+The dcode channel is mainly used for asking code related questions
+and should probably be limited to the use of your immortals.
+This channel is not bridged.
+
+The game channel is a fun diversion that can be made available to your players
+following similar guidelines to the dchat channel. This channel is host to
+a gaming bot that will from time to time be set to run certain games for
+people to play. This channel is currently bridged.
+
+The bchat channel is the bridged link between the IMC2 networks and the I3
+network. This channel should only be available to your immortals. It is also
+subject to partial regulation of the policies of those IMC2 networks it
+reaches. Such policies are known to change periodically, so keep up on them.
+ 
+Socials can also be sent over channels, but please try to keep this
+to a minimum. The social messages will be drawn from your mud's internal
+social tables.
+
+This code has been tested and works on the following STOCK codebases:
+
+Smaug 1.02a ( see Smaug102i3.txt ) + the following derivitives:
+  Smaug 1.4a
+  Star Wars Reality 1.0 and 2.0 - see swri3.txt
+  DOTD 2.2.8 - see i3dotd.txt
+  CalareyMud 1.0
+  CalareyMud 2.0 and 3.0 - see cm23.txt
+  ResortMud 4.0b
+
+Rom 2.4b6 + the following derivitives:
+  RoT 1.4
+  Rogue 2.1a
+  Wurm 2.8c
+  Tartarus 1.0
+  QuickMUD
+  Anatolia 2.1b2 - see anatoliai3.txt
+  Oblivion 1.2 Alpha - see oblivioni3.txt
+  Sundermud 1.0 - see sunderi3.txt
+  EmberMUD 0.9.47 - see i3ember.txt
+  Paradox - see i3paradox.txt
+  1stMUD 4.0c - see i31stmud.txt
+
+UltraEnvy 0.87j + the following derivitives:
+  Greed 0.99.14 - see i3greed.txt
+
+AckMUD! 4.3.1 ( downloaded from silverbridge.org )
+
+Merc 2.2 + the following derivitives:
+  Mythran 3.1.6b
+  Envy 2.2 - see envyi3.txt
+  EOS2 - see EOS2.txt
+  Nimud 4 - see i3nimud.txt
+  Godwars Dystopia 1.4 - see i3dystopia.txt
+  Godwars Deluxe - see i3godwars.txt
+  Mindcloud 1.1 - see i3dystopia.txt ( changes are the same )
+
+CircleMud 3.x ( Circle 2.x is not specifically supported )
+
+If your mud is derived from one of the above listed bases, it should
+work without much trouble. Hopefully. :)
+
+One small note - if your codebase comes with I3 preinstalled, and several do,
+you can usually upgrade with the files contained in here by simply dropping
+the source code files into your src directory. Usually i3.c and i3.h will be
+all you need - there should rarely be a reason to change the i3cfg.h file.
+If i3cfg.h needs updating, a notice will generally accompany the announcement
+of an official release on the support forum.
+
+DO NOT APPLY TO AFKMUD SOURCE! STOP NOW IF USING AFKMUD!
+DO NOT APPLY TO 1STMUD SOURCE! STOP NOW IF USING 1STMUD!
+
+I put that in bold letters since text files often refuse to allow me to use
+flashing red text to get your attention - AFKMud and 1stMUD codebases both
+contain customized installations of I3 which are tailored to the specifics
+of each. You should obtain updates from the official releases of each codebase.
+Attempting to update using the generic packges will result in compile errors.
+The AFKMud Team *WILL NOT* assist in correcting this - they will instead advise
+you to obtain the AFKMud version. One would assume the 1stMUD Team will insist
+on the same. So do yourself a favor and don't cost yourself alot of time.
+
+Begin Installation:
+===================
+
+1. In your main directory, create an 'i3' directory if it does not yet exist.
+   In that directory, place the i3.config, i3.channels, i3.bans, i3.commands,
+   i3.help, and i3.routers files. Transfer them as ASCII files.
+
+2. Place i3.c, i3.h, and i3cfg.h files in your src directory.
+
+3. To choose a color file, you need to know what color system ( if any ) your mud has.
+   For those tags the mud's color system does not support, standard ANSI tags will be used.
+
+   We provide the following color files:
+
+   i3.color.ansi = Straight ANSI
+      - Will use only I3 & codes and convert one way to ANSI codes.
+      - Users can simply enter I3 tokens directly for color.
+      - Ideal if your mud has no color system of its own or if it has no user selectable tokens.
+
+   i3.color.samson = Samson's Color Snippet
+      - For those of you who are running Samson's Custom ANSI from www.afkmud.com
+      - This is the color file you'd also pick if you are running Smaug 1.4aFUSS.
+
+   i3.color.smaug = Stock Smaug
+      - For those of you using sotck Smaug and any of its derivatives listed.
+
+   i3.color.lope = Lope's Color V2
+      - Seems to be the dominant choice in Rom muds.
+
+   i3.color.ack = Color profile for ACK muds.
+
+   When you pick what you want, rename the file simply as i3.color so the code will be able to load it.
+   Be sure your file is uploaded as ASCII.
+
+4. Refer to the file your codebase is most closely derived from and follow the directions within.
+   Any commonly known derivatives which have also been tested will have specific steps to complete in the file.
+
+When done, return here to finish.
+
+---------------------------------
+---------------------------------
+
+Almost there! Time to make clean and then compile and hope for the best.
+Assuming all went well, you should have a nicely compiled Intermud-3 install.
+
+Now you just need to configure it. I bet you thought this was over didn't you!
+
+Before you reboot, make sure the i3.config file has been placed in the proper directory
+and has been configured properly for your mud. The file should be fairly self explanitory.
+You will not be able to connect to the I3 router until this file is ready.
+
+Once configured, go ahead and reboot your mud. Try typing "I3" by itself on your
+command line. You should get back a list of commands. Try typing "i3help" by itself
+on your command line. You should see a listing of help topics available. By default,
+these should also be in color. If all 3 of these conditions are met, you are ready!
+
+Type "i3connect". Assuming you've got log channels visible, you should see some sort
+of confirmation that you've connected. If not, something went wrong and you need to
+check your logs for messages that indicate what.
+
+If there are any problems with this installation, post your query to the
+Intermud-3 forum located at:
+
+http://forums.alsherok.net
+
+If you've obtained this code from someplace OTHER than my own site
+and you are encountering problems, go download it from my site before
+you contact me for help. I can only support what I work on.
+
+Adventure beckons in the lands of mystique....
+Samson, Implementor of Alsherok
+http://www.alsherok.net
+telnet://alsherok.net:5500
+
+Intermud-3 and IMC2 contact: Samson@Alsherok

@@ -1,0 +1,164 @@
+AFKMud Intermud-3 Driver Code 2.40a: Changelog
+----------------------------------------------
+
+This was probably a long time overdue, but hey. It's here now and should start getting updated regularly.
+It is based off of diff files made to prepare the non-AFKMud package for distribution.
+
+Changes in 2.40a:
+
+* Minor fixes to address switched characters.
+* Crash fix in free_i3chardata.
+* Crash fix in I3_adjust_perms.
+* Socket closing bug in i3_connection_close.
+
+Changes in 2.40:
+
+* Help information for commands has been internalized.
+* Command table is now editable online.
+  - Internally replaced with a Smaug-style command lookup.
+  - Commands can have multiple aliases if desired.
+* Color table is now a config file which can be edited independently of code.
+  - i3ansi_conversion array has been removed.
+* Router list now loaded from separate file.
+* I3_DIR define added to make changing file locations easier.
+* All str_cmp calls replaced with strcasecmp.
+* All i3one_argument argument calls removed. Defers to codebase one_argument now.
+* Removed SO_KEEPALIVE from socket connection options.
+* Cleaned up waste loops in process_who_req.
+* Document files reorganized.
+* Color alignment functions removed. Centering now handled by i3centerline.
+* Condolidated permissions checking to reduce redundancy.
+* Local channel logging now strips colors for easier readability later.
+* i3fread_string removed. i3fread_line capable of handling tildes in strings now.
+* Adjusted buffers in the interfaces to mud-level output for users.
+* 1stMUD support removed. They have their own customized version installed now.
+* Channel flags value defined as long int now.
+* i3stats command now reports descriptor for router connection.
+* Added permission override to cancel automatic setting by level.
+* Removed the tabs from the I3KEY macro - caused problems on Debian machines.
+* Cleaned up organization of i3cfg.h file.
+* this_mud name changed to this_i3mud for compatibility purposes.
+* Adjustments made for better CirleMUD compatibility.
+* i3_strlen_color function removed.
+* i3_strnlen_color function removed.
+* Cleaned up several usage messages.
+* Oops: Missing i3afk command has been added.
+* BUG: Missing break in i3act_string caused fall-through in 'S' gender case.
+* BUG: Tell history was hooking str_dup instead of I3STRALLOC. Memory error.
+* BUG: Tell history was also being free'd with I3DISPOSE. Double error :P
+* BUG: Memory leak plugged with this_i3mud retaining data after shutdown.
+
+Changes in 2.33:
+
+* Addition of tell history for i3tell.
+* Reworked i3act_string using Xorith's improvements.
+
+Changes in 2.32:
+
+* Addition of support for filtered channels.
+
+Changes in 2.31a:
+
+* Adjustments for Circle 3.1 compatibility. ( 3.0x compatibility may be lost )
+* Corrected some missed i3_to_char statements.
+* Corrected some missed i3str_prefix statements.
+* Added chanlist filtering.
+* Corrected 2 missed direct calls to victim.
+
+Changes in 2.31:
+
+* All sprintf, strcpy, and strcat replaced with protected versions.
+* Removed a number of unnecessary temp buffers.
+* Trimmed the sizes of most other temp buffers to more reasonable levels.
+* Added i3stats command.
+* Added variable to count bytes received/sent for i3stats command.
+* Added warning messages to i3strncpy and i3strncat to display strings which overflow them.
+* i3tell now specifies sending and receving them as i3tells.
+* i3who no longer sends black "x" for space filler. Just uses a blank space.
+* Removed routerIP field from i3_mud struct. No longer needed.
+* Removed routerport field from i3_mud struct. No longer needed.
+* Removed the escape_smaug_color function that never seemed to work.
+* Removed a debug log message accidentally left in.
+* BUG: I3_send_error was not properly escaping quotes in messages.
+* BUG: I3_send_locate_req was not properly escaping quotes in user requests.
+* BUG: Current router connection name was wrong after a hotboot.
+
+Changes in 2.3:
+
+* Muds can now specify multiple routers to choose from to connect to.
+  - i3router command added for router configuration handling.
+* Channel subscriptions are no longer sent until starup-reply is confirmed.
+* Muds can now turn channels on or off at the mud level.
+* Adjusted lengths in i3mudlist command for better info fit.
+* Added ability to "i3listen all" and "i3listen none" for channels.
+* Newly created channel defaults to I3PERM_ADMIN now.
+* Support added for new chan-adminlist-reply and router-shutdown packets.
+* Support added for new chan-adminlist packet.
+* Initial connection to a router times out after 50 loops rather than wait for a socket error.
+* "Input received" message removed from packet debugging.
+* Connection shutdown no longer sends channel unsubscriptions.
+* Channels which have been purged from the router will no longer stay in the local chanlist.
+* Mudlist purging will not create entry for deleted mud first.
+* Support for 1stMUD 4.0c added.
+
+Changes in 2.25a:
+
+* Muds which have been purged from the router will no longer stay in the local mudlist.
+* i3mudlist command colorized.
+
+Changes in 2.25:
+
+* Global debugstring variable has been removed.
+* Output buffer using i3strncpy now to reduce overflow problems.
+* I3_write_packet using send() instead of write() so it can transmit NULLs.
+* I3_write_packet now sends NULL terminated packets to conform to router packets.
+* I3_read_packet now safeguards and places a NULL where any \r's are detected, and at the size boundary of a packet.
+
+Changes in 2.2:
+
+* I3_parse_packet disassembles the packet header before processing.
+* Processing functions now take the packet header as part of their arguments.
+* I3_BLOCKED renamed to I3_BAN. Call consolidated to I3_parse_packet.
+* Ucache related packets now only processed if the mud enables ucache.
+* String allocation now done with strdup and free instead of using hash tables.
+* All functions beginning with I3_process_ have been changed from int to void.
+* Created IPS and OPS definitions for inbound and outbound packet buffers.
+* ACKMUD! markfn stuff removed.
+* Defined LGST and SMST for string sizes to avoid conflict with codebase defines.
+* Added i3strncpy and i3strncat to handle strncpy/strncat calls.
+* Renamed FCLOSE as I3FCLOSE to avoid codebase conflicts.
+* Removed I3RECREATE macro. Never used.
+* Channel, ban, and ucache lists no longer externalized. Not used outside I3.
+* BUG: Incoming packet buffer raised to 128K. Boundary overflow. (!)
+* BUG: I3_send_locate was not properly terminating the packet it sent.
+* BUG: I3_process_locate_req was not properly terminating the packet it sent.
+* BUG: Memory leaks in destroy_I3_mud fixed.
+* BUG: Memory leak in process_chanlist_reply fixed.
+
+Version 2.1c and 2.1b skipped. Failed to operate successfully.
+
+Changes in 2.1a:
+
+* Shadowing warnings caused by gcc 3.3.1 fixed.
+* All macros now have I3 added to their names to avoid potential codebase conflicts.
+* Permission flags and player flags have I3 appended to their names to avoid conflicts.
+* Color display can now be turned on/off by users.
+* Security hole in i3permset fixed.
+* URL tags were being sent in the wrong part of the startup packet. Corrected.
+* Old URL tags sent in the wrong spot now stored in mud->web_wrong pointer.
+* Startup packet optimized to only send information it needs to send.
+* Several unnecessary fields removed from the Circlemud section.
+* i3mudinfo command will now display some of the optional keys found in packet sampling.
+* i3addchan menu options corrected.
+* i3block command can now be used offline just like i3ignore.
+* which_keyword function removed. No longer used.
+* Alterations to allow the code to compile using g++
+* BUG: An IS_IMMORTAL check was missed in rankbuffer. Replaced with an I3PERM check.
+* BUG: #ifdefs for Circlemud in i3init_char were removed to fix a crash.
+* BUG: #ifdefs for Circlemud in free_i3chardata removed to fix memory leak.
+* BUG: i3tell and i3emoteto could not send messages with quotes in them. Malformed packets.
+* BUG: i3_command_hook was not checking for connection before trying to use channels.
+
+Changes prior to 2.1a were numerous, but for the most part involved switching to a more
+codebase independent permissions system that doesn't rely on game levels and reworking the
+command structure in the form of a Merc style table.

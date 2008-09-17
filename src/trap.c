@@ -28,7 +28,7 @@
 void do_settrap(struct char_data *ch, char *argument, int cmd)
 {
   if (DEBUG)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
   /* parse for directions */
   /* trap that affects all directions is an AE trap */
@@ -41,7 +41,7 @@ int CheckForMoveTrap(struct char_data *ch, int dir)
   struct obj_data                        *i = NULL;
 
   if (DEBUG > 2)
-    dlog("called %s with %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), dir);
+    log_info("called %s with %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), dir);
 
   for (i = real_roomp(ch->in_room)->contents; i; i = i->next_content) {
     if ((ITEM_TYPE(i) == ITEM_TRAP) &&
@@ -57,7 +57,7 @@ int CheckForInsideTrap(struct char_data *ch, struct obj_data *i)
   struct obj_data                        *t = NULL;
 
   if (DEBUG > 2)
-    dlog("called %s with %s, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), SAFE_ONAME(i));
+    log_info("called %s with %s, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), SAFE_ONAME(i));
 
   for (t = i->contains; t; t = t->next_content) {
     if ((ITEM_TYPE(t) == ITEM_TRAP) &&
@@ -71,7 +71,7 @@ int CheckForInsideTrap(struct char_data *ch, struct obj_data *i)
 int CheckForAnyTrap(struct char_data *ch, struct obj_data *i)
 {
   if (DEBUG > 2)
-    dlog("called %s with %s, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), SAFE_ONAME(i));
+    log_info("called %s with %s, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), SAFE_ONAME(i));
 
   if ((ITEM_TYPE(i) == ITEM_TRAP) && (GET_TRAP_CHARGES(i) > 0))
     return (TriggerTrap(ch, i));
@@ -82,7 +82,7 @@ int CheckForAnyTrap(struct char_data *ch, struct obj_data *i)
 int CheckForGetTrap(struct char_data *ch, struct obj_data *i)
 {
   if (DEBUG > 2)
-    dlog("called %s with %s, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), SAFE_ONAME(i));
+    log_info("called %s with %s, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), SAFE_ONAME(i));
 
   if ((ITEM_TYPE(i) == ITEM_TRAP) &&
       (IS_SET(GET_TRAP_EFF(i), TRAP_EFF_OBJECT)) && (GET_TRAP_CHARGES(i) > 0)) {
@@ -99,7 +99,7 @@ int TriggerTrap(struct char_data *ch, struct obj_data *i)
   struct char_data                       *v = NULL;
 
   if (DEBUG > 2)
-    dlog("called %s with %s, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), SAFE_ONAME(i));
+    log_info("called %s with %s, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), SAFE_ONAME(i));
 
   if (ITEM_TYPE(i) == ITEM_TRAP) {
     if (i->obj_flags.value[TRAP_CHARGES]) {
@@ -128,7 +128,7 @@ int TriggerTrap(struct char_data *ch, struct obj_data *i)
 void FindTrapDamage(struct char_data *v, struct obj_data *i)
 {
   if (DEBUG > 2)
-    dlog("called %s with %s, %s", __PRETTY_FUNCTION__, SAFE_NAME(v), SAFE_ONAME(i));
+    log_info("called %s with %s, %s", __PRETTY_FUNCTION__, SAFE_NAME(v), SAFE_ONAME(i));
 
   /* trap types < 0 are special */
 
@@ -144,7 +144,7 @@ void TrapDamage(struct char_data *v, int damtype, int amnt, struct obj_data *t)
   struct char_data                       *tmp_ch = NULL;
 
   if (DEBUG > 2)
-    dlog("called %s with %s, %d, %d, %s", __PRETTY_FUNCTION__, SAFE_NAME(v), damtype, amnt, SAFE_ONAME(t));
+    log_info("called %s with %s, %d, %d, %s", __PRETTY_FUNCTION__, SAFE_NAME(v), damtype, amnt, SAFE_ONAME(t));
 
   amnt = SkipImmortals(v, amnt);
   if (amnt == -1)
@@ -167,7 +167,7 @@ void TrapDamage(struct char_data *v, int damtype, int amnt, struct obj_data *t)
   if (GET_POS(v) == POSITION_DEAD) {
     if (!IS_NPC(v)) {
       if (real_roomp(v->in_room)->name)
-	dlog("%s killed by a trap at %s", GET_NAME(v), real_roomp(v->in_room)->name);
+	log_info("%s killed by a trap at %s", GET_NAME(v), real_roomp(v->in_room)->name);
       /*
        * remove the hatreds of this character 
        */
@@ -186,7 +186,7 @@ void TrapDam(struct char_data *v, int damtype, int amnt, struct obj_data *t)
   char                                    desc[20] = "\0\0\0";
 
   if (DEBUG > 2)
-    dlog("called %s with %s, %d, %d, %s", __PRETTY_FUNCTION__, SAFE_NAME(v), damtype, amnt, SAFE_ONAME(t));
+    log_info("called %s with %s, %d, %d, %s", __PRETTY_FUNCTION__, SAFE_NAME(v), damtype, amnt, SAFE_ONAME(t));
 
   /*
    * easier than dealing with message(ug) 
@@ -246,7 +246,7 @@ void TrapTeleport(struct char_data *v)
   struct room_data                       *room = NULL;
 
   if (DEBUG > 2)
-    dlog("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(v));
+    log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(v));
 
   if (saves_spell(v, SAVING_SPELL)) {
     cprintf(v, "You feel strange, but the effect fades.\n\r");
@@ -280,7 +280,7 @@ void TrapSleep(struct char_data *v)
   struct affected_type                    af;
 
   if (DEBUG > 2)
-    dlog("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(v));
+    log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(v));
 
   if (!saves_spell(v, SAVING_SPELL)) {
     af.type = SPELL_SLEEP;
@@ -303,7 +303,7 @@ void TrapSleep(struct char_data *v)
 void InformMess(struct char_data *v)
 {
   if (DEBUG > 2)
-    dlog("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(v));
+    log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(v));
 
   switch (GET_POS(v)) {
     case POSITION_MORTALLYW:

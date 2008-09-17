@@ -38,7 +38,7 @@
 void NotLegalMove(struct char_data *ch)
 {
   if (DEBUG > 2)
-    dlog("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
+    log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
 
   cprintf(ch, "Alas, you cannot go that way...\n\r");
 }
@@ -53,7 +53,7 @@ int check_exit_alias(struct char_data *ch, char *argument)
 #endif
 
   if (DEBUG > 2)
-    dlog("called %s with %s, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument));
+    log_info("called %s with %s, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument));
 
   for (exit_index = 0; exit_index < MAX_NUM_EXITS; exit_index++) {
     if ((exitp = EXIT(ch, exit_index))) {
@@ -72,7 +72,7 @@ int ValidMove(struct char_data *ch, int cmd)
   struct char_data                       *v = NULL;
 
   if (DEBUG > 2)
-    dlog("called %s with %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), cmd);
+    log_info("called %s with %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), cmd);
 
   exitp = EXIT(ch, cmd);
 
@@ -148,7 +148,7 @@ int RawMove(struct char_data *ch, int dir)
   int                                     amount = 0;
 
   if (DEBUG > 2)
-    dlog("called %s with %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), dir);
+    log_info("called %s with %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), dir);
 
   if (special(ch, dir + 1, ""))				       /* Check for special routines(North is 1) */
     return (FALSE);
@@ -361,7 +361,7 @@ int MoveOne(struct char_data *ch, int dir)
   int                                     was_in = FALSE;
 
   if (DEBUG > 2)
-    dlog("called %s with %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), dir);
+    log_info("called %s with %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), dir);
 
   was_in = ch->in_room;
   if (RawMove(ch, dir)) {				       /* no error */
@@ -386,7 +386,7 @@ int MoveGroup(struct char_data *ch, int dir)
    */
 
   if (DEBUG > 2)
-    dlog("called %s with %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), dir);
+    log_info("called %s with %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), dir);
 
   was_in = ch->in_room;
   if (RawMove(ch, dir)) {				       /* no error */
@@ -431,7 +431,7 @@ int MoveGroup(struct char_data *ch, int dir)
 void DisplayOneMove(struct char_data *ch, int dir, int was_in)
 {
   if (DEBUG > 2)
-    dlog("called %s with %s, %d, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), dir, was_in);
+    log_info("called %s with %s, %d, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), dir, was_in);
 
   DisplayMove(ch, dir, was_in, 1);
 }
@@ -439,7 +439,7 @@ void DisplayOneMove(struct char_data *ch, int dir, int was_in)
 void DisplayGroupMove(struct char_data *ch, int dir, int was_in, int total)
 {
   if (DEBUG > 2)
-    dlog("called %s with %s, %d, %d, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), dir, was_in, total);
+    log_info("called %s with %s, %d, %d, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), dir, was_in, total);
 
   DisplayMove(ch, dir, was_in, total);
 }
@@ -448,7 +448,7 @@ void DisplayGroupMove(struct char_data *ch, int dir, int was_in, int total)
 int do_move(struct char_data *ch, char *argument, int cmd)
 {
   if (DEBUG > 1)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
   if (RIDDEN(ch)) {
     if (RideCheck(RIDDEN(ch))) {
@@ -501,7 +501,7 @@ void DisplayMove(struct char_data *ch, int dir, int was_in, int total)
   char                                    tmp[256] = "\0\0\0";
 
   if (DEBUG > 2)
-    dlog("called %s with %s, %d, %d, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), dir, was_in, total);
+    log_info("called %s with %s, %d, %d, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), dir, was_in, total);
 
   for (tmp_ch = real_roomp(was_in)->people; tmp_ch; tmp_ch = tmp_ch->next_in_room) {
     if ((!IS_AFFECTED(ch, AFF_SNEAK)) || (IS_IMMORTAL(tmp_ch))) {
@@ -603,7 +603,7 @@ void AddToCharHeap(struct char_data *heap[50], int *top, int total[50], struct c
   int                                     i = 0;
 
   if (DEBUG > 2)
-    dlog("called %s with %08x, %08x, %08x, %s", __PRETTY_FUNCTION__, heap, top, total, SAFE_NAME(k));
+    log_info("called %s with %08x, %08x, %08x, %s", __PRETTY_FUNCTION__, heap, top, total, SAFE_NAME(k));
 
   if (*top <= 50) {
     found = FALSE;
@@ -641,7 +641,7 @@ int find_door(struct char_data *ch, char *type, char *dir)
   struct room_direction_data             *exitp = NULL;
 
   if (DEBUG > 2)
-    dlog("called %s with %s, %s, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(type), VNULL(dir));
+    log_info("called %s with %s, %s, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(type), VNULL(dir));
 
   if (*dir) {						       /* a direction was specified */
     if ((door = search_block(dir, exit_dirs, FALSE)) == -1) {  /* Partial Match */
@@ -682,11 +682,11 @@ void open_door(struct char_data *ch, int dir)
   struct room_data                       *rp = NULL;
 
   if (DEBUG > 2)
-    dlog("called %s with %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), dir);
+    log_info("called %s with %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), dir);
 
   rp = real_roomp(ch->in_room);
   if (rp == NULL) {
-    dlog("NULL rp in open_door() for %s.", PERS(ch, ch));
+    log_error("NULL rp in open_door() for %s.", PERS(ch, ch));
   }
   exitp = rp->dir_option[dir];
 
@@ -724,11 +724,11 @@ void raw_open_door(struct char_data *ch, int dir)
   struct room_data                       *rp = NULL;
 
   if (DEBUG > 2)
-    dlog("called %s with %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), dir);
+    log_info("called %s with %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), dir);
 
   rp = real_roomp(ch->in_room);
   if (rp == NULL)
-    dlog("NULL rp in open_door() for %s.", PERS(ch, ch));
+    log_error("NULL rp in open_door() for %s.", PERS(ch, ch));
   exitp = rp->dir_option[dir];
 
   REMOVE_BIT(exitp->exit_info, EX_CLOSED);
@@ -757,7 +757,7 @@ void do_open(struct char_data *ch, char *argument, int cmd)
   struct room_direction_data             *exitp = NULL;
 
   if (DEBUG)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
   argument_interpreter(argument, type, dir);
 
@@ -810,7 +810,7 @@ void do_close(struct char_data *ch, char *argument, int cmd)
   struct room_data                       *rp = NULL;
 
   if (DEBUG)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
   argument_interpreter(argument, type, dir);
 
@@ -870,7 +870,7 @@ int has_key(struct char_data *ch, int key)
   struct obj_data                        *o = NULL;
 
   if (DEBUG > 2)
-    dlog("called %s with %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), key);
+    log_info("called %s with %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), key);
 
   for (o = ch->carrying; o; o = o->next_content)
     if (obj_index[o->item_number].virtual == key)
@@ -889,7 +889,7 @@ void raw_unlock_door(struct char_data *ch, struct room_direction_data *exitp, in
   struct room_direction_data             *back = NULL;
 
   if (DEBUG > 2)
-    dlog("called %s with %s, %08x, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), exitp, door);
+    log_info("called %s with %s, %08x, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), exitp, door);
 
   REMOVE_BIT(exitp->exit_info, EX_LOCKED);
   /*
@@ -899,7 +899,7 @@ void raw_unlock_door(struct char_data *ch, struct room_direction_data *exitp, in
   if (rp && (back = rp->dir_option[rev_dir[door]]) && back->to_room == ch->in_room) {
     REMOVE_BIT(back->exit_info, EX_LOCKED);
   } else {
-    dlog("Inconsistent door locks in rooms %d->%d", ch->in_room, exitp->to_room);
+    log_info("Inconsistent door locks in rooms %d->%d", ch->in_room, exitp->to_room);
   }
 }
 
@@ -909,7 +909,7 @@ void raw_lock_door(struct char_data *ch, struct room_direction_data *exitp, int 
   struct room_direction_data             *back = NULL;
 
   if (DEBUG > 2)
-    dlog("called %s with %s, %08x, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), exitp, door);
+    log_info("called %s with %s, %08x, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), exitp, door);
 
   SET_BIT(exitp->exit_info, EX_LOCKED);
   /*
@@ -919,7 +919,7 @@ void raw_lock_door(struct char_data *ch, struct room_direction_data *exitp, int 
   if (rp && (back = rp->dir_option[rev_dir[door]]) && back->to_room == ch->in_room) {
     SET_BIT(back->exit_info, EX_LOCKED);
   } else {
-    dlog("Inconsistent door locks in rooms %d->%d", ch->in_room, exitp->to_room);
+    log_info("Inconsistent door locks in rooms %d->%d", ch->in_room, exitp->to_room);
   }
 }
 
@@ -935,7 +935,7 @@ void do_lock(struct char_data *ch, char *argument, int cmd)
   struct room_data                       *rp = NULL;
 
   if (DEBUG)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
   argument_interpreter(argument, type, dir);
 
@@ -1008,7 +1008,7 @@ void do_unlock(struct char_data *ch, char *argument, int cmd)
   struct room_data                       *rp = NULL;
 
   if (DEBUG)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
   argument_interpreter(argument, type, dir);
 
@@ -1080,7 +1080,7 @@ void do_pick(struct char_data *ch, char *argument, int cmd)
   struct room_data                       *rp = NULL;
 
   if (DEBUG)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
   argument_interpreter(argument, type, dir);
 
@@ -1152,7 +1152,7 @@ void do_enter(struct char_data *ch, char *argument, int cmd)
   struct room_data                       *rp = NULL;
 
   if (DEBUG)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
   one_argument(argument, buf);
 
@@ -1187,7 +1187,7 @@ void do_leave(struct char_data *ch, char *argument, int cmd)
   struct room_data                       *rp = NULL;
 
   if (DEBUG)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
   if (!IS_SET(RM_FLAGS(ch->in_room), INDOORS))
     cprintf(ch, "You are outside.. where do you want to go?\n\r");
@@ -1205,7 +1205,7 @@ void do_leave(struct char_data *ch, char *argument, int cmd)
 void do_stand(struct char_data *ch, char *argument, int cmd)
 {
   if (DEBUG)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
   switch (GET_POS(ch)) {
     case POSITION_STANDING:{
@@ -1248,7 +1248,7 @@ void do_stand(struct char_data *ch, char *argument, int cmd)
 void do_sit(struct char_data *ch, char *argument, int cmd)
 {
   if (DEBUG)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
   switch (GET_POS(ch)) {
     case POSITION_STANDING:{
@@ -1290,7 +1290,7 @@ void do_sit(struct char_data *ch, char *argument, int cmd)
 void do_rest(struct char_data *ch, char *argument, int cmd)
 {
   if (DEBUG)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
   switch (GET_POS(ch)) {
     case POSITION_STANDING:{
@@ -1333,7 +1333,7 @@ void do_rest(struct char_data *ch, char *argument, int cmd)
 void do_sleep(struct char_data *ch, char *argument, int cmd)
 {
   if (DEBUG)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
   switch (GET_POS(ch)) {
     case POSITION_STANDING:
@@ -1370,7 +1370,7 @@ void do_wake(struct char_data *ch, char *argument, int cmd)
   char                                    arg[MAX_STRING_LENGTH] = "\0\0\0";
 
   if (DEBUG)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
   one_argument(argument, arg);
   if (*arg) {
@@ -1419,7 +1419,7 @@ void do_follow(struct char_data *ch, char *argument, int cmd)
   struct char_data                       *leader = NULL;
 
   if (DEBUG)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
   only_argument(argument, name);
 

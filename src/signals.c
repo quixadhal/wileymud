@@ -148,7 +148,7 @@ void signal_setup(void)
   };
 #else
   if (DEBUG > 2)
-    dlog("called %s with no arguments", __PRETTY_FUNCTION__);
+    log_info("called %s with no arguments", __PRETTY_FUNCTION__);
 
   signal(SIGHUP, SIG_IGN);
   signal(SIGINT, SIG_IGN);
@@ -196,17 +196,13 @@ void signal_setup(void)
 void checkpointing(int a)
 {
   if (DEBUG > 3)
-    dlog("called %s with %d", __PRETTY_FUNCTION__, a);
+    log_info("called %s with %d", __PRETTY_FUNCTION__, a);
 
   if (!tics) {
-    dlog("CHECKPOINT shutdown: tics not updated");
-    dlog("SHUTDOWN:now");
-    /*
-     * abort(0); 
-     */
+    log_fatal("CHECKPOINT shutdown: tics not updated");
     close_sockets(0);
     close_whod();
-    exit(42);
+    proper_exit(MUD_HALT);
   } else
     tics = 0;
 }
@@ -214,29 +210,29 @@ void checkpointing(int a)
 void shutdown_request(int a)
 {
   if (DEBUG > 3)
-    dlog("called %s with %d", __PRETTY_FUNCTION__, a);
+    log_info("called %s with %d", __PRETTY_FUNCTION__, a);
 
-  dlog("Received USR1 - shutdown request");
+  log_fatal("Received USR1 - shutdown request");
   close_sockets(0);
   close_whod();
-  exit(42);
+  proper_exit(MUD_HALT);
 }
 
 void hupsig(int a)
 {
   if (DEBUG > 3)
-    dlog("called %s with %d", __PRETTY_FUNCTION__, a);
+    log_info("called %s with %d", __PRETTY_FUNCTION__, a);
 
-  dlog("Received SIGHUP, or SIGTERM. Shutting down");
+  log_fatal("Received SIGHUP, or SIGTERM. Shutting down");
   close_sockets(0);
   close_whod();
-  exit(0);						       /* something more elegant should perhaps be substituted */
+  proper_exit(MUD_HALT);						       /* something more elegant should perhaps be substituted */
 }
 
 void logsig(int a)
 {
   if (DEBUG > 3)
-    dlog("called %s with %d", __PRETTY_FUNCTION__, a);
+    log_info("called %s with %d", __PRETTY_FUNCTION__, a);
 
-  dlog("Signal received. Ignoring.");
+  log_info("Signal received. Ignoring.");
 }

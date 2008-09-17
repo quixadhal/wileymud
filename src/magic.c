@@ -37,7 +37,7 @@ void spell_armor(char level, struct char_data *ch, struct char_data *victim,
   struct affected_type                    af;
 
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
+    log_info("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
 
   if (!victim || level < 0 || level > ABS_MAX_LVL)
     return;
@@ -63,7 +63,7 @@ void spell_teleport(char level, struct char_data *ch, struct char_data *victim,
   struct room_data                       *room = NULL;
 
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
+    log_info("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
 
   if (!ch || !victim)
     return;
@@ -133,7 +133,7 @@ void spell_bless(char level, struct char_data *ch, struct char_data *victim,
   struct affected_type                    af;
 
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
+    log_info("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
 
   if (!ch || (!victim && !obj) || level < 0 || level > ABS_MAX_LVL)
     return;
@@ -165,7 +165,7 @@ void spell_blindness(char level, struct char_data *ch, struct char_data *victim,
   struct affected_type                    af;
 
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
+    log_info("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
 
   if (!ch || !victim || level < 0 || level > ABS_MAX_LVL)
     return;
@@ -200,7 +200,7 @@ void spell_burning_hands(char level, struct char_data *ch, struct char_data *vic
   int                                     dam = 0;
 
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
+    log_info("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
 
   if (!ch || level < 0 || level > ABS_MAX_LVL)
     return;
@@ -221,7 +221,7 @@ void spell_call_lightning(char level, struct char_data *ch, struct char_data *vi
   int                                     added_dam = 0;
 
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
+    log_info("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
 
   if (!ch || !victim || level < 0 || level > ABS_MAX_LVL)
     return;
@@ -246,7 +246,7 @@ void spell_charm_person(char level, struct char_data *ch, struct char_data *vict
   struct affected_type                    af;
 
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
+    log_info("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
 
   if (!ch || !victim)
     return;
@@ -318,7 +318,7 @@ void spell_chill_touch(char level, struct char_data *ch, struct char_data *victi
   int                                     lvl = 0;
 
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
+    log_info("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
 
   if (!ch || !victim || level < 0 || level > ABS_MAX_LVL)
     return;
@@ -391,7 +391,7 @@ void spell_clone(char level, struct char_data *ch, struct char_data *victim,
   struct affected_type                    aff;
 
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
+    log_info("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
 
   if (!ch || (!victim && !obj) || level < 0 || level > ABS_MAX_LVL)
     return;
@@ -645,7 +645,7 @@ void spell_colour_spray(char level, struct char_data *ch, struct char_data *vict
   struct affected_type                    af;
 
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
+    log_info("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
 
   if (!ch || level < 0 || level > ABS_MAX_LVL)
     return;
@@ -711,7 +711,7 @@ void spell_control_weather(char level, struct char_data *ch, struct char_data *v
 			   struct obj_data *obj)
 {
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
+    log_info("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
   /*
    * Control Weather is not possible here!!! 
    */
@@ -726,7 +726,7 @@ void spell_create_food(char level, struct char_data *ch, struct char_data *victi
   struct obj_data                        *tmp_obj = NULL;
 
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
+    log_info("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
 
   if (!ch || level < 0 || level > ABS_MAX_LVL)
     return;
@@ -772,7 +772,7 @@ void spell_create_water(char level, struct char_data *ch, struct char_data *vict
   int                                     water = 0;
 
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
+    log_info("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
 
   if (!ch || !obj || level < 0 || level > ABS_MAX_LVL)
     return;
@@ -806,7 +806,7 @@ void spell_cure_blind(char level, struct char_data *ch, struct char_data *victim
 		      struct obj_data *obj)
 {
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
+    log_info("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
 
   if (!victim || level < 0 || level > ABS_MAX_LVL)
     return;
@@ -825,7 +825,7 @@ void spell_magic_missile(char level, struct char_data *ch, struct char_data *vic
   int                                     missiles = 0;
 
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
+    log_info("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
 
   if (!ch || !victim || level < 0 || level > ABS_MAX_LVL)
     return;
@@ -850,7 +850,7 @@ void spell_shocking_grasp(char level, struct char_data *ch, struct char_data *vi
   int                                     classes = 0;
 
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
+    log_info("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
 
   if (!ch || !victim || level < 0 || level > ABS_MAX_LVL)
     return;
@@ -879,7 +879,7 @@ void spell_lightning_bolt(char level, struct char_data *ch, struct char_data *vi
   int                                     high_die = 0;
 
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
+    log_info("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
 
   if (!ch || !victim || level < 0)
     return;
@@ -902,7 +902,7 @@ void spell_energy_drain(char level, struct char_data *ch, struct char_data *vict
   int                                     dam = 0;
 
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
+    log_info("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
 
   if (!ch || !victim || level < 0)
     return;
@@ -969,7 +969,7 @@ void spell_fireball(char level, struct char_data *ch, struct char_data *victim,
   int                                     high_die = 0;
 
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
+    log_info("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
 
   if (!ch || level < 0 || level > ABS_MAX_LVL)
     return;
@@ -994,7 +994,7 @@ void spell_new_earthquake(char level, struct char_data *ch, struct char_data *vi
   struct room_data                       *rp[MAX_NUM_EXITS];
 
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
+    log_info("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
 
   if (!ch || level < 0 || level > ABS_MAX_LVL)
     return;
@@ -1068,7 +1068,7 @@ void spell_earthquake(char level, struct char_data *ch, struct char_data *victim
   char                                    buf[128] = "\0\0\0";
 
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
+    log_info("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
 
   if (!ch || level < 0 || level > ABS_MAX_LVL)
     return;
@@ -1084,7 +1084,7 @@ void spell_dispel_evil(char level, struct char_data *ch, struct char_data *victi
 		       struct obj_data *obj)
 {
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
+    log_info("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
 
   if (!ch || !victim || level < 0 || level > ABS_MAX_LVL)
     return;
@@ -1121,7 +1121,7 @@ void spell_harm(char level, struct char_data *ch, struct char_data *victim,
   int                                     dam = 0;
 
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
+    log_info("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
 
   if (!ch || !victim || level < 0 || level > ABS_MAX_LVL)
     return;
@@ -1155,7 +1155,7 @@ void spell_shelter(char level, struct char_data *ch, struct char_data *victim,
   int                                     save_room = 0;
 
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
+    log_info("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
 
   if (!ch || level < 0 || level > ABS_MAX_LVL)
     return;
@@ -1199,7 +1199,7 @@ void spell_astral_walk(char level, struct char_data *ch, struct char_data *victi
   struct room_data                       *rp = NULL;
 
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
+    log_info("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
 
   if (!ch || !victim || level < 0 || level > ABS_MAX_LVL)
     return;
@@ -1233,7 +1233,7 @@ void spell_visions(char level, struct char_data *ch, struct char_data *victim,
   struct room_data                       *rp = NULL;
 
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
+    log_info("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
 
   if (!ch || !victim || level < 0 || level > ABS_MAX_LVL)
     return;
@@ -1265,7 +1265,7 @@ void spell_cure_critic(char level, struct char_data *ch, struct char_data *victi
   int                                     healpoints = 0;
 
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
+    log_info("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
 
   if (!victim || level < 0 || level > ABS_MAX_LVL)
     return;
@@ -1303,7 +1303,7 @@ void spell_cure_light(char level, struct char_data *ch, struct char_data *victim
   int                                     healpoints = 0;
 
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
+    log_info("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
 
   if (!victim || level < 0 || level > ABS_MAX_LVL)
     return;
@@ -1341,7 +1341,7 @@ void spell_curse(char level, struct char_data *ch, struct char_data *victim,
   struct affected_type                    af;
 
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
+    log_info("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
 
   if ((!victim && !obj) || level < 0 || level > ABS_MAX_LVL)
     return;
@@ -1391,7 +1391,7 @@ void spell_detect_evil(char level, struct char_data *ch, struct char_data *victi
   int                                     dur = 0;
 
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
+    log_info("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
 
   if (!victim || level < 0 || level > ABS_MAX_LVL)
     return;
@@ -1425,7 +1425,7 @@ void spell_detect_invisibility(char level, struct char_data *ch, struct char_dat
   struct affected_type                    af;
 
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
+    log_info("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
 
   if (!victim || level < 0 || level > ABS_MAX_LVL)
     return;
@@ -1449,7 +1449,7 @@ void spell_detect_magic(char level, struct char_data *ch, struct char_data *vict
   struct affected_type                    af;
 
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
+    log_info("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
 
   if (!victim || level < 0 || level > ABS_MAX_LVL)
     return;
@@ -1470,7 +1470,7 @@ void spell_detect_poison(char level, struct char_data *ch, struct char_data *vic
 			 struct obj_data *obj)
 {
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
+    log_info("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
 
   if (!ch || (!victim && !obj) || level < 0 || level > ABS_MAX_LVL)
     return;
@@ -1501,7 +1501,7 @@ void spell_enchant_weapon(char level, struct char_data *ch, struct char_data *vi
   int                                     i = 0;
 
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
+    log_info("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
 
   if (!ch || !obj)
     return;
@@ -1547,7 +1547,7 @@ void spell_heal(char level, struct char_data *ch, struct char_data *victim,
   int                                     dam = 0;
 
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
+    log_info("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
 
   if (!victim)
     return;
@@ -1580,7 +1580,7 @@ void spell_invisibility(char level, struct char_data *ch, struct char_data *vict
   struct affected_type                    af;
 
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
+    log_info("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
 
   if (!victim || (!ch && !obj))
     return;
@@ -1612,7 +1612,7 @@ void spell_locate_object(char level, struct char_data *ch, struct char_data *vic
   int                                     j = 0;
 
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), VNULL(obj));
+    log_info("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), VNULL(obj));
 
   if (!ch || !obj)
     return;
@@ -1650,7 +1650,7 @@ void spell_poison(char level, struct char_data *ch, struct char_data *victim,
   struct affected_type                    af;
 
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
+    log_info("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
 
   if (!victim && !obj)
     return;
@@ -1700,7 +1700,7 @@ void spell_protection_from_evil(char level, struct char_data *ch, struct char_da
   struct affected_type                    af;
 
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
+    log_info("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
 
   if (!victim)
     return;
@@ -1720,13 +1720,13 @@ void spell_remove_curse(char level, struct char_data *ch, struct char_data *vict
 			struct obj_data *obj)
 {
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
+    log_info("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
 
   if (!(ch && (victim || obj)))
     return;
 
   if (DEBUG)
-    dlog("spell_remove_curse");
+    log_info("spell_remove_curse");
   if (obj) {
     if (IS_SET(obj->obj_flags.extra_flags, ITEM_NODROP)) {
       act("$p briefly glows blue.", TRUE, ch, obj, 0, TO_CHAR);
@@ -1745,7 +1745,7 @@ void spell_remove_poison(char level, struct char_data *ch, struct char_data *vic
 			 struct obj_data *obj)
 {
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
+    log_info("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
 
   if(!(ch && (victim || obj)))
     return;
@@ -1770,7 +1770,7 @@ void spell_fireshield(char level, struct char_data *ch, struct char_data *victim
   struct affected_type                    af;
 
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
+    log_info("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
 
   if (!affected_by_spell(victim, SPELL_FIRESHIELD)) {
     act("$n is surrounded by a glowing red aura.", TRUE, victim, 0, 0, TO_ROOM);
@@ -1791,7 +1791,7 @@ void spell_sanctuary(char level, struct char_data *ch, struct char_data *victim,
   struct affected_type                    af;
 
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
+    log_info("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
 
   if (!affected_by_spell(victim, SPELL_SANCTUARY)) {
     act("$n is surrounded by a white aura.", TRUE, victim, 0, 0, TO_ROOM);
@@ -1812,7 +1812,7 @@ void spell_sleep(char level, struct char_data *ch, struct char_data *victim,
   struct affected_type                    af;
 
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
+    log_info("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
 
   if (!victim)
     return;
@@ -1859,7 +1859,7 @@ void spell_strength(char level, struct char_data *ch, struct char_data *victim,
   struct affected_type                    af;
 
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
+    log_info("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
 
   if (!victim)
     return;
@@ -1895,7 +1895,7 @@ void spell_ventriloquate(char level, struct char_data *ch, struct char_data *vic
 			 struct obj_data *obj)
 {
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
+    log_info("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
 
   /*
    * Not possible!! No argument! 
@@ -1908,7 +1908,7 @@ void spell_word_of_recall(char level, struct char_data *ch, struct char_data *vi
   int                                     location = 0;
 
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
+    log_info("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
 
   if (!victim)
     return;
@@ -1939,7 +1939,7 @@ void spell_summon(char level, struct char_data *ch, struct char_data *victim,
   struct char_data                       *tmp = NULL;
 
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
+    log_info("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
 
   if (!(ch && victim))
     return;
@@ -2003,7 +2003,7 @@ void spell_charm_monster(char level, struct char_data *ch, struct char_data *vic
   struct affected_type                    af;
 
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
+    log_info("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
 
   if (!(ch && victim))
     return;
@@ -2074,7 +2074,7 @@ void spell_sense_life(char level, struct char_data *ch, struct char_data *victim
   struct affected_type                    af;
 
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
+    log_info("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
 
   if (!victim)
     return;
@@ -2105,7 +2105,7 @@ void spell_identify(char level, struct char_data *ch, struct char_data *victim,
   int                                     val_index = 0;
 
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
+    log_info("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
 
   if (!(ch && (obj || victim)))
     return;
@@ -2195,7 +2195,7 @@ void spell_fire_breath(char level, struct char_data *ch, struct char_data *victi
   struct obj_data                        *burn = NULL;
 
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
+    log_info("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
 
   if (!(victim && ch))
     return;
@@ -2241,7 +2241,7 @@ void spell_frost_breath(char level, struct char_data *ch, struct char_data *vict
   struct obj_data                        *frozen = NULL;
 
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
+    log_info("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
 
   if (!(victim && ch))
     return;
@@ -2284,7 +2284,7 @@ void spell_acid_breath(char level, struct char_data *ch, struct char_data *victi
   int                                     hpch = 0;
 
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
+    log_info("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
 
   if (!(victim && ch))
     return;
@@ -2313,7 +2313,7 @@ void spell_gas_breath(char level, struct char_data *ch, struct char_data *victim
   int                                     hpch = 0;
 
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
+    log_info("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
 
   if (!(victim && ch))
     return;
@@ -2342,7 +2342,7 @@ void spell_lightning_breath(char level, struct char_data *ch, struct char_data *
   int                                     hpch = 0;
 
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
+    log_info("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
 
   if (!(victim && ch))
     return;
@@ -2389,7 +2389,7 @@ void spell_resurrection(char level, struct char_data *ch, struct char_data *vict
   FILE                                   *fl = NULL;
 
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
+    log_info("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
 
   if (!obj)
     return;
@@ -2453,8 +2453,8 @@ void spell_resurrection(char level, struct char_data *ch, struct char_data *vict
 
       fl = fopen(PLAYER_FILE, "r+");
       if (!fl) {
-	perror("player file");
-	exit(1);
+	log_fatal("player file");
+	proper_exit(MUD_HALT);
       }
       fseek(fl, obj->char_f_pos * sizeof(struct char_file_u), 0);
       fread(&st, sizeof(struct char_file_u), 1, fl);
@@ -2498,7 +2498,7 @@ void spell_cause_light(char level, struct char_data *ch, struct char_data *victi
   int                                     dam = 0;
 
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
+    log_info("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
 
   if (!(victim && ch))
     return;
@@ -2534,7 +2534,7 @@ void spell_cause_critical(char level, struct char_data *ch, struct char_data *vi
   int                                     dam = 0;
 
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
+    log_info("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
 
   if (!(victim && ch))
     return;
@@ -2569,7 +2569,7 @@ void spell_cause_serious(char level, struct char_data *ch, struct char_data *vic
   int                                     dam = 0;
 
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
+    log_info("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
 
   if (!(victim && ch))
     return;
@@ -2605,7 +2605,7 @@ void spell_cure_serious(char level, struct char_data *ch, struct char_data *vict
   int                                     dam = 0;
 
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
+    log_info("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
 
   if (!(victim && ch))
     return;
@@ -2646,7 +2646,7 @@ void spell_mana(char level, struct char_data *ch, struct char_data *victim,
   int                                     dam = 0;
 
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
+    log_info("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
 
   if (!ch)
     return;
@@ -2669,7 +2669,7 @@ void spell_second_wind(char level, struct char_data *ch, struct char_data *victi
   int                                     dam = 0;
 
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
+    log_info("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
 
   if (!(victim && ch))
     return;
@@ -2693,7 +2693,7 @@ void spell_flamestrike(char level, struct char_data *ch, struct char_data *victi
   int                                     dam = 0;
 
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
+    log_info("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
 
   if (!(victim && ch))
     return;
@@ -2715,7 +2715,7 @@ void spell_dispel_good(char level, struct char_data *ch, struct char_data *victi
 		       struct obj_data *obj)
 {
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
+    log_info("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
 
   if (!(victim && ch))
     return;
@@ -2755,7 +2755,7 @@ void spell_turn(char level, struct char_data *ch, struct char_data *victim,
   struct affected_type                    af;
 
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
+    log_info("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
 
   if (!(victim && ch))
     return;
@@ -2843,7 +2843,7 @@ void spell_remove_paralysis(char level, struct char_data *ch, struct char_data *
 			    struct obj_data *obj)
 {
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
+    log_info("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
 
   if (!(victim && ch))
     return;
@@ -2861,14 +2861,14 @@ void spell_holy_word(char level, struct char_data *ch, struct char_data *victim,
 		     struct obj_data *obj)
 {
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
+    log_info("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
 }
 
 void spell_unholy_word(char level, struct char_data *ch, struct char_data *victim,
 		       struct obj_data *obj)
 {
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
+    log_info("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
 }
 
 void spell_succor(char level, struct char_data *ch, struct char_data *victim,
@@ -2877,7 +2877,7 @@ void spell_succor(char level, struct char_data *ch, struct char_data *victim,
   struct obj_data                        *o = NULL;
 
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
+    log_info("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
 
   if (!ch)
     return;
@@ -2894,7 +2894,7 @@ void spell_detect_charm(char level, struct char_data *ch, struct char_data *vict
 			struct obj_data *obj)
 {
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
+    log_info("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
 }
 
 void spell_true_seeing(char level, struct char_data *ch, struct char_data *victim,
@@ -2903,7 +2903,7 @@ void spell_true_seeing(char level, struct char_data *ch, struct char_data *victi
   struct affected_type                    af;
 
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
+    log_info("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
 
   if (!(victim && ch))
     return;
@@ -2940,7 +2940,7 @@ void spell_poly_self(char level, struct char_data *ch, struct char_data *victim,
   /* victim is a prototype mob */
 
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
+    log_info("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
 
   if (!(victim && ch))
     return;
@@ -2973,7 +2973,7 @@ void spell_minor_create(char level, struct char_data *ch, struct char_data *vict
 			struct obj_data *obj)
 {
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
+    log_info("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
 
   if (!(obj && ch))
     return;
@@ -2994,7 +2994,7 @@ void spell_stone_skin(char level, struct char_data *ch, struct char_data *victim
   struct affected_type                    af;
 
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
+    log_info("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
 
   if (!ch)
     return;
@@ -3037,7 +3037,7 @@ void spell_infravision(char level, struct char_data *ch, struct char_data *victi
   struct affected_type                    af;
 
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
+    log_info("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
 
   if (!(victim && ch))
     return;
@@ -3068,7 +3068,7 @@ void spell_shield(char level, struct char_data *ch, struct char_data *victim,
   struct affected_type                    af;
 
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
+    log_info("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
 
   if (!(victim && ch))
     return;
@@ -3101,7 +3101,7 @@ void spell_weakness(char level, struct char_data *ch, struct char_data *victim,
   float                                   modifier = 0.0;
 
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
+    log_info("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
 
   if (!(victim && ch))
     return;
@@ -3136,7 +3136,7 @@ void spell_invis_group(char level, struct char_data *ch, struct char_data *victi
   struct affected_type                    af;
 
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
+    log_info("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
 
   if (!ch)
     return;
@@ -3170,7 +3170,7 @@ void spell_acid_blast(char level, struct char_data *ch, struct char_data *victim
   int                                     high_die = 0;
 
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
+    log_info("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
 
   if (!victim || !ch)
     return;
@@ -3211,7 +3211,7 @@ void spell_cone_of_cold(char level, struct char_data *ch, struct char_data *vict
   int                                     high_die = 0;
 
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
+    log_info("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
 
   if (!ch)
     return;
@@ -3249,7 +3249,7 @@ void spell_ice_storm(char level, struct char_data *ch, struct char_data *victim,
   int                                     dam = 0;
 
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
+    log_info("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
 
   if (!ch)
     return;
@@ -3268,49 +3268,49 @@ void spell_poison_cloud(char level, struct char_data *ch, struct char_data *vict
 			struct obj_data *obj)
 {
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
+    log_info("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
 }
 
 void spell_chain_lightning(char level, struct char_data *ch, struct char_data *victim,
 			   struct obj_data *obj)
 {
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
+    log_info("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
 }
 
 void spell_major_create(char level, struct char_data *ch, struct char_data *victim,
 			struct obj_data *obj)
 {
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
+    log_info("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
 }
 
 void spell_summon_obj(char level, struct char_data *ch, struct char_data *victim,
 		      struct obj_data *obj)
 {
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
+    log_info("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
 }
 
 void spell_pword_blind(char level, struct char_data *ch, struct char_data *victim,
 		       struct obj_data *obj)
 {
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
+    log_info("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
 }
 
 void spell_pword_kill(char level, struct char_data *ch, struct char_data *victim,
 		      struct obj_data *obj)
 {
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
+    log_info("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
 }
 
 void spell_sending(char level, struct char_data *ch, struct char_data *victim,
 		   struct obj_data *obj)
 {
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
+    log_info("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
 }
 
 void spell_meteor_swarm(char level, struct char_data *ch, struct char_data *victim,
@@ -3319,7 +3319,7 @@ void spell_meteor_swarm(char level, struct char_data *ch, struct char_data *vict
   int                                     dam = 0;
 
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
+    log_info("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
 
   if (!ch)
     return;
@@ -3342,7 +3342,7 @@ void spell_Create_Monster(char level, struct char_data *ch, struct char_data *vi
   int                                     rnum = 0;
 
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
+    log_info("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
 
   if (!ch)
     return;
@@ -3428,7 +3428,7 @@ void spell_light(char level, struct char_data *ch, struct char_data *victim,
   struct obj_data                        *tmp_obj = NULL;
 
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
+    log_info("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
 
   if (!ch)
     return;
@@ -3470,7 +3470,7 @@ void spell_fly(char level, struct char_data *ch, struct char_data *victim, struc
   int                                     dur = 0;
 
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
+    log_info("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
 
   if (!ch || !victim)
     return;
@@ -3524,7 +3524,7 @@ void spell_refresh(char level, struct char_data *ch, struct char_data *victim,
   int                                     dam = 0;
 
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
+    log_info("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
 
   if (!ch || !victim)
     return;
@@ -3551,7 +3551,7 @@ void spell_water_breath(char level, struct char_data *ch, struct char_data *vict
   struct affected_type                    af;
 
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
+    log_info("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
 
   if (!ch || !victim)
     return;
@@ -3581,7 +3581,7 @@ void spell_cont_light(char level, struct char_data *ch, struct char_data *victim
   struct obj_data                        *tmp_obj = NULL;
 
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
+    log_info("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
 
   if (!ch)
     return;
@@ -3626,7 +3626,7 @@ void spell_animate_dead(char level, struct char_data *ch, struct char_data *vict
   int                                     k = 0;
 
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(corpse));
+    log_info("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(corpse));
 
   if (!ch || !corpse)
     return;
@@ -3719,7 +3719,7 @@ void spell_know_alignment(char level, struct char_data *ch, struct char_data *vi
   char                                    name[100] = "\0\0\0";
 
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
+    log_info("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
 
   if (!ch || !victim)
     return;
@@ -3759,7 +3759,7 @@ void spell_dispel_magic(char level, struct char_data *ch, struct char_data *vict
   int                                     yes = 0;
 
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
+    log_info("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
 
   if (!ch || !victim)
     return;
@@ -3942,7 +3942,7 @@ void spell_paralyze(char level, struct char_data *ch, struct char_data *victim,
   struct affected_type                    af;
 
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
+    log_info("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
 
   if (!ch || !victim)
     return;
@@ -3991,7 +3991,7 @@ void spell_fear(char level, struct char_data *ch, struct char_data *victim,
 		struct obj_data *obj)
 {
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
+    log_info("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
 
   if (!ch || !victim)
     return;
@@ -4025,14 +4025,14 @@ void spell_prot_align_group(char level, struct char_data *ch, struct char_data *
 			    struct obj_data *obj)
 {
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
+    log_info("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
 }
 
 void spell_calm(char level, struct char_data *ch, struct char_data *victim,
 		struct obj_data *obj)
 {
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
+    log_info("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
 
   if (!ch || !victim)
     return;
@@ -4064,7 +4064,7 @@ void spell_conjure_elemental(char level, struct char_data *ch, struct char_data 
   struct affected_type                    af;
 
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
+    log_info("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
 
   if (!ch || !victim || !obj)
     return;
@@ -4114,7 +4114,7 @@ void spell_faerie_fire(char level, struct char_data *ch, struct char_data *victi
   struct affected_type                    af;
 
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
+    log_info("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
 
   if (!ch || !victim)
     return;
@@ -4149,7 +4149,7 @@ void spell_faerie_fog(char level, struct char_data *ch, struct char_data *victim
   struct char_data                       *tmp_victim = NULL;
 
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
+    log_info("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
 
   if (!ch)
     return;
@@ -4193,7 +4193,7 @@ void spell_cacaodemon(char level, struct char_data *ch, struct char_data *victim
   struct affected_type                    af;
 
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
+    log_info("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
 
   if (!ch || !victim || !obj)
     return;
@@ -4242,7 +4242,7 @@ void spell_improved_identify(char level, struct char_data *ch, struct char_data 
 			     struct obj_data *obj)
 {
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
+    log_info("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
 }
 
 void spell_geyser(char level, struct char_data *ch, struct char_data *victim,
@@ -4253,7 +4253,7 @@ void spell_geyser(char level, struct char_data *ch, struct char_data *victim,
   struct char_data                       *temp = NULL;
 
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
+    log_info("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
 
   if (!ch)
     return;
@@ -4287,7 +4287,7 @@ void spell_green_slime(char level, struct char_data *ch, struct char_data *victi
   int                                     hpch = 0;
 
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
+    log_info("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
 
   if (!ch || !victim)
     return;
@@ -4329,7 +4329,7 @@ void spell_fly_group(char level, struct char_data *ch, struct char_data *victim,
   int                                     dur = 0;
 
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
+    log_info("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
 
   if (!ch)
     return;
@@ -4384,7 +4384,7 @@ void spell_aid(char level, struct char_data *ch, struct char_data *victim, struc
   struct affected_type                    af;
 
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
+    log_info("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
 
   if (!ch || !victim)
     return;
@@ -4416,7 +4416,7 @@ void spell_goodberry(char level, struct char_data *ch, struct char_data *victim,
   struct obj_data                        *tmp_obj = NULL;
 
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
+    log_info("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
 
   if (!ch)
     return;
@@ -4469,7 +4469,7 @@ void spell_tree_travel(char level, struct char_data *ch, struct char_data *victi
   struct affected_type                    af;
 
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
+    log_info("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
 
   if (!ch)
     return;
@@ -4499,7 +4499,7 @@ void spell_transport_via_plant(char level, struct char_data *ch, struct char_dat
   struct obj_data                        *o = NULL;
 
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
+    log_info("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
 
   if (!ch || !obj)
     return;
@@ -4546,7 +4546,7 @@ void spell_speak_with_plants(char level, struct char_data *ch, struct char_data 
 			     struct obj_data *obj)
 {
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
+    log_info("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
 
   if (!ch || !obj)
     return;
@@ -4572,7 +4572,7 @@ void spell_changestaff(char level, struct char_data *ch, struct char_data *victi
   struct char_data                       *t = NULL;
 
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
+    log_info("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
 
   if (!ch)
     return;
@@ -4635,7 +4635,7 @@ void spell_pword_kill(char level, struct char_data *ch, struct char_data *victim
 		      struct obj_data *obj)
 {
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
+    log_info("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
 
   if (!victim)
     return;
@@ -4654,7 +4654,7 @@ void spell_pword_blind(char level, struct char_data *ch, struct char_data *victi
 		       struct obj_data *obj)
 {
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
+    log_info("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
 
   if (!victim)
     return;
@@ -4677,7 +4677,7 @@ void spell_chain_lightn(char level, struct char_data *ch, struct char_data *vict
   struct char_data                       *next = NULL;
 
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
+    log_info("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
 
   if (!victim)
     return;
@@ -4703,7 +4703,7 @@ void spell_scare(char level, struct char_data *ch, struct char_data *victim,
 		 struct obj_data *obj)
 {
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
+    log_info("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
 
   if (!victim)
     return;
@@ -4720,7 +4720,7 @@ void spell_haste(char level, struct char_data *ch, struct char_data *victim,
   struct affected_type                    af;
 
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
+    log_info("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
 
   if (!ch || !victim)
     return;
@@ -4771,7 +4771,7 @@ void spell_slow(char level, struct char_data *ch, struct char_data *victim,
   struct affected_type                    af;
 
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
+    log_info("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
 
   if (!ch || !victim)
     return;
@@ -4819,7 +4819,7 @@ void spell_familiar(char level, struct char_data *ch, struct char_data **victim,
   struct char_data                       *f = NULL;
 
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
+    log_info("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
 
   if (!ch)
     return;
@@ -4877,7 +4877,7 @@ void spell_holyword(char level, struct char_data *ch, struct char_data *victim,
   struct char_data                       *next = NULL;
 
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
+    log_info("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
 
   if (!ch)
     return;
@@ -4945,7 +4945,7 @@ void spell_golem(char level, struct char_data *ch, struct char_data *victim,
   struct room_data                       *rp = NULL;
 
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
+    log_info("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
 
   if (!ch)
     return;
@@ -5088,7 +5088,7 @@ void spell_feeblemind(char level, struct char_data *ch, struct char_data *victim
   int                                     i = 0;
 
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
+    log_info("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
 
   if (!ch || !victim)
     return;
@@ -5142,7 +5142,7 @@ void spell_shillelagh(char level, struct char_data *ch, struct char_data *victim
   int                                     count = 0;
 
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
+    log_info("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
 
   if (!ch || !obj)
     return;
@@ -5194,7 +5194,7 @@ void spell_flame_blade(char level, struct char_data *ch, struct char_data *victi
   struct obj_data                        *tmp_obj = NULL;
 
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
+    log_info("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
 
   if (!ch)
     return;
@@ -5248,7 +5248,7 @@ void spell_animal_growth(char level, struct char_data *ch, struct char_data *vic
   struct affected_type                    af;
 
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
+    log_info("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
 
   if (!ch || !victim)
     return;
@@ -5310,7 +5310,7 @@ void spell_insect_growth(char level, struct char_data *ch, struct char_data *vic
   struct affected_type                    af;
 
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
+    log_info("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
 
   if (!ch || !victim)
     return;
@@ -5373,7 +5373,7 @@ void spell_creeping_death(char level, struct char_data *ch, struct char_data *vi
   struct char_data                       *cd = NULL;
 
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
+    log_info("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
 
   if (!ch)
     return;
@@ -5437,7 +5437,7 @@ void spell_commune(char level, struct char_data *ch, struct char_data *victim,
   char                                    buffer[MAX_STRING_LENGTH] = "\0\0\0";
 
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
+    log_info("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
 
   if (!ch)
     return;
@@ -5491,7 +5491,7 @@ void spell_animal_summon(char level, struct char_data *ch, struct char_data *vic
   struct room_data                       *rp = NULL;
 
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
+    log_info("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
 
   if (!ch)
     return;
@@ -5596,7 +5596,7 @@ void spell_elemental_summoning(char level, struct char_data *ch, struct char_dat
   struct affected_type                    af;
 
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
+    log_info("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
 
   if (!ch)
     return;
@@ -5679,7 +5679,7 @@ void spell_reincarnate(char level, struct char_data *ch, struct char_data *victi
   FILE                                   *fl = NULL;
 
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
+    log_info("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
 
   if (!ch || !obj)
     return;
@@ -5704,8 +5704,7 @@ void spell_reincarnate(char level, struct char_data *ch, struct char_data *victi
 
       fl = fopen(PLAYER_FILE, "r+");
       if (!fl) {
-	perror("player file");
-	assert(0);
+	log_error("player file");
       }
       fseek(fl, obj->char_f_pos * sizeof(struct char_file_u), 0);
       fread(&st, sizeof(struct char_file_u), 1, fl);
@@ -5791,7 +5790,7 @@ void spell_charm_veggie(char level, struct char_data *ch, struct char_data *vict
   struct affected_type                    af;
 
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
+    log_info("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
 
   if (!ch || !victim)
     return;
@@ -5864,7 +5863,7 @@ void spell_veggie_growth(char level, struct char_data *ch, struct char_data *vic
   struct affected_type                    af;
 
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
+    log_info("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
 
   if (!ch || !victim)
     return;
@@ -5928,7 +5927,7 @@ void spell_tree(char level, struct char_data *ch, struct char_data *victim,
   int                                     mobn = 0;
 
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
+    log_info("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
 
   if (!ch)
     return;
@@ -5972,7 +5971,7 @@ void spell_animate_rock(char level, struct char_data *ch, struct char_data *vict
   int                                     mobn = LITTLE_ROCK;
 
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
+    log_info("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
 
   if (!ch || !obj)
     return;
@@ -6055,7 +6054,7 @@ void spell_travelling(char level, struct char_data *ch, struct char_data *victim
   struct affected_type                    af;
 
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
+    log_info("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
 
   if (!ch || !victim)
     return;
@@ -6082,7 +6081,7 @@ void spell_animal_friendship(char level, struct char_data *ch, struct char_data 
   struct affected_type                    af;
 
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
+    log_info("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
 
   if (!ch || !victim)
     return;
@@ -6149,7 +6148,7 @@ void spell_invis_to_animals(char level, struct char_data *ch, struct char_data *
   struct affected_type                    af;
 
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
+    log_info("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
 
   if (!ch || !victim)
     return;
@@ -6176,7 +6175,7 @@ void spell_slow_poison(char level, struct char_data *ch, struct char_data *victi
   struct affected_type                    af;
 
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
+    log_info("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
 
   if (!ch || !victim)
     return;
@@ -6201,7 +6200,7 @@ void spell_snare(char level, struct char_data *ch, struct char_data *victim,
 		 struct obj_data *obj)
 {
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
+    log_info("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
 
   if (!ch || !victim)
     return;
@@ -6234,7 +6233,7 @@ void spell_entangle(char level, struct char_data *ch, struct char_data *victim,
   struct affected_type                    af;
 
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
+    log_info("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
 
   if (!ch || !victim)
     return;
@@ -6274,7 +6273,7 @@ void spell_barkskin(char level, struct char_data *ch, struct char_data *victim,
   struct affected_type                    af;
 
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
+    log_info("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
 
   if (!ch || !victim)
     return;
@@ -6319,7 +6318,7 @@ void spell_gust_of_wind(char level, struct char_data *ch, struct char_data *vict
   struct char_data                       *temp = NULL;
 
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
+    log_info("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
 
   if (!ch)
     return;
@@ -6351,7 +6350,7 @@ void spell_silence(char level, struct char_data *ch, struct char_data *victim,
   struct affected_type                    af;
 
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
+    log_info("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
 
   if (!ch || !victim)
     return;
@@ -6388,7 +6387,7 @@ void spell_warp_weapon(char level, struct char_data *ch, struct char_data *victi
 {
 
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
+    log_info("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
 
   if (!(ch && (victim || obj)))
     return;
@@ -6417,7 +6416,7 @@ void spell_heat_stuff(char level, struct char_data *ch, struct char_data *victim
   struct affected_type                    af;
 
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
+    log_info("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
 
   if (!ch || !victim)
     return;
@@ -6463,7 +6462,7 @@ void spell_dust_devil(char level, struct char_data *ch, struct char_data *victim
   struct affected_type                    af;
 
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
+    log_info("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
 
   if (!ch)
     return;
@@ -6544,7 +6543,7 @@ void spell_sunray(char level, struct char_data *ch, struct char_data *victim,
   int                                     dam = 0;
 
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
+    log_info("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
 
   if (!ch || !victim)
     return;
@@ -6593,7 +6592,7 @@ void spell_know_monster(char level, struct char_data *ch, struct char_data *vict
   int                                     hits = 0;
 
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
+    log_info("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
 
   if (!ch || !victim)
     return;
@@ -6673,7 +6672,7 @@ void spell_find_traps(char level, struct char_data *ch, struct char_data *victim
   struct affected_type                    af;
 
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
+    log_info("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
 
   if (!ch)
     return;
@@ -6703,7 +6702,7 @@ void spell_firestorm(char level, struct char_data *ch, struct char_data *victim,
   struct char_data                       *temp = NULL;
 
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
+    log_info("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
 
   if (!ch)
     return;
@@ -6739,7 +6738,7 @@ void spell_teleport_wo_error(char level, struct char_data *ch, struct char_data 
   struct room_data                       *rp = NULL;
 
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
+    log_info("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
 
   if (!ch || !victim)
     return;
@@ -6803,7 +6802,7 @@ void spell_portal(char level, struct char_data *ch, struct char_data *tmp_ch,
   char                                    buf[512] = "\0\0\0";
 
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
+    log_info("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
 
   if (!ch)
     return;
@@ -6848,7 +6847,7 @@ void spell_mount(char level, struct char_data *ch, struct char_data *victim,
   int                                     mnr = 0;
 
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
+    log_info("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
 
   if (!ch)
     return;
@@ -6896,7 +6895,7 @@ void spell_dragon_ride(char level, struct char_data *ch, struct char_data *victi
   struct affected_type                    af;
 
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
+    log_info("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
 
   if (!ch)
     return;

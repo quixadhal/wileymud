@@ -84,6 +84,7 @@
 #define SECTOR			24
 #define ZONE			25
 #define DIG			26
+#define MAP			27
 #define HELP			90
 #define SAVE			91
 #define QUIT			98
@@ -112,6 +113,7 @@ struct commands_st {
   "link", LINK}, {
   "list", LIST}, {
   "make", MAKE}, {
+  "map", MAP}, {
   "north", NORTH}, {
   "quit", QUIT}, {
   "south", SOUTH}, {
@@ -252,6 +254,16 @@ typedef struct Room_struct {
   struct Room_struct                     *next;
 } Room;
 
+const char terrains[] = "#-+.:%^~~=~";
+const int terrain_colors[] = { 31,37,37,32,32,33,33,36,34,35,34 };
+/* const char terrains[] = "TicgfhmrOAU"; */
+/* Teleport, inside, city, field, forest, hill, mountain, river,
+ * ocean, air, underwater
+ */
+/* This is so we can use terrain[-1] and get it to work right */
+const char *terrain = &terrains[1];
+const int *terrain_color = &terrain_colors[1];
+
 void                                    Command_brief(void);
 void                                    Command_unlink(void);
 void                                    Command_change(void);
@@ -275,6 +287,7 @@ void                                    Command_title(void);
 void                                    Command_sector(void);
 void                                    Command_zone(void);
 void                                    Command_dig(void);
+void                                    Command_map(void);
 
 void                                    Display_A_Room(Room * ptr);
 void                                    trunc_string(char *ptr);
@@ -288,8 +301,8 @@ int                                     print_desc(void);
 int                                     direction_number(char *ptr);
 Room                                   *allocate_room(int temp_id);
 
-void                                    abug(char *File, char *Func, int Line, int Verbose,
-					     char *Str, ...);
+void                                    bug_logger(char *File, char *Func, int Line, int Verbose,
+					           char *Str, ...);
 int                                     scan_a_number(char *string, int *number);
 void                                    Load_Rooms(void);
 void                                    Link_World(void);
@@ -297,6 +310,8 @@ void                                    Main_Loop(void);
 void                                    Command_copy_sub(Room * ptr, Room * from_ptr);
 void                                    Command_flag_sub(Room * ptr, int idx);
 int                                     find_keyword(char *buffer);
+void					map_fill(Room *rp, int xpos, int ypos);
+void					bust_a_map(Room *rp);
 
 /* Global Variables */
 
@@ -317,11 +332,12 @@ Room                                   *bottom_of_world,
 
 int                                     Brief = FALSE;
 int                                     Light = FALSE;
+int					Map = FALSE;
 
-#define bug(Str, ...) abug(__FILE__, __FUNCTION__, __LINE__, 1, Str, ## __VA_ARGS__)
-#define log(Str, ...) abug(NULL, NULL, 0, 1, Str, ## __VA_ARGS__)
+#define log_error(Str, ...) bug_logger(__FILE__, __FUNCTION__, __LINE__, 1, Str, ## __VA_ARGS__)
+#define log_info(Str, ...) bug_logger(NULL, NULL, 0, 1, Str, ## __VA_ARGS__)
 
-void abug(char *File, char *Func, int Line, int Verbose, char *Str, ...)
+void bug_logger(char *File, char *Func, int Line, int Verbose, char *Str, ...)
 {
   va_list                                 arg;
   char                                    Result[PAGE_SIZE];
@@ -394,7 +410,7 @@ int main(int argc, char **argv)
     filename = (char *)strdup(argv[1]);
     printf("Using %s as input data file.\n", filename);
     if (argc > 2)
-      log("Extra arguments ignored.\n");
+      log_info("Extra arguments ignored.\n");
   } else {
     filename = (char *)strdup(DFLT_INPUT);
     printf("Using default input file, %s.\n", filename);
@@ -428,7 +444,7 @@ void Load_Rooms(void)
   int                                     done;
 
   if (!(fp = fopen(filename, "r"))) {
-    log("Cannot open %s for input!", filename);
+    log_info("Cannot open %s for input!", filename);
     exit(ERR_NOINPUT);
   }
   printf("Loading world from %s...\r", filename);
@@ -441,7 +457,7 @@ void Load_Rooms(void)
       break;
     }
     if (tmp_str[0] != '#' || (sscanf(tmp_str, "#%d", &temp_id) == 0)) {
-      log("Room %d: Expected Room ID of the form \"#%%d\", Got this instead:\n%s\n",
+      log_info("Room %d: Expected Room ID of the form \"#%%d\", Got this instead:\n%s\n",
 	  number_rooms, tmp_str);
       exit(ERR_BADROOMID);
     }
@@ -451,15 +467,15 @@ void Load_Rooms(void)
       fflush(stdout);
     }
     if (fgets(tmp_str, BUFFER_SIZE - 1, fp) == NULL) {
-      log("Room %d: Unexpected EOF reading room [#%d].", number_rooms, current->room_id);
+      log_info("Room %d: Unexpected EOF reading room [#%d].", number_rooms, current->room_id);
       exit(ERR_EOF);
     }
     if (tmp_str[0] == '~') {
-      log("Room %d: Empty title found in room [#%d].", number_rooms, current->room_id);
+      log_info("Room %d: Empty title found in room [#%d].", number_rooms, current->room_id);
       exit(ERR_NOTITLE);
     }
     if (tmp_str[strlen(tmp_str) - 2] != '~') {
-      log("Room %d: Expected [#%d]'s Title to be in the form \"%%s~\", Got this instead:\n%s\n",
+      log_info("Room %d: Expected [#%d]'s Title to be in the form \"%%s~\", Got this instead:\n%s\n",
 	  number_rooms, current->room_id, tmp_str);
       exit(ERR_BADTITLE);
     }
@@ -468,7 +484,7 @@ void Load_Rooms(void)
     get_desc(&current->desc_ptr);
 
     if (fgets(tmp_str, BUFFER_SIZE - 1, fp) == NULL) {
-      log("Room %d: Unexpected EOF reading flags for room [#%d].", number_rooms,
+      log_info("Room %d: Unexpected EOF reading flags for room [#%d].", number_rooms,
 	  current->room_id);
       exit(ERR_EOF);
     }
@@ -476,7 +492,7 @@ void Load_Rooms(void)
 		 &current->room_flag, &current->sector_type);
     if (idx < 3) {
       trunc_string(tmp_str);
-      log
+      log_info
 	("Room %d: Expected zone, flags and sector type for [#%d],\nFormat should have been \"%%d %%d %%d\", Got this instead:\n%s\n",
 	 number_rooms, current->room_id, tmp_str);
       exit(ERR_ROOMFLAGS);
@@ -492,7 +508,7 @@ void Load_Rooms(void)
 		   &current->teleport->do_look, &current->teleport->sector_type);
       if (idx < 7) {
 	trunc_string(tmp_str);
-	log
+	log_info
 	  ("Room %d: Invalid teleport flags in teleport room [#%d],\nExpected format \"%%d %%d -1 %%d %%d %%d %%d\", Got this:\n%s\n",
 	   number_rooms, current->room_id, tmp_str);
 	exit(ERR_TELEPORT);
@@ -504,7 +520,7 @@ void Load_Rooms(void)
 		   &current->sector_type, &current->river->speed, &current->river->direction);
       if (idx < 5) {
 	trunc_string(tmp_str);
-	log
+	log_info
 	  ("Room %d: River room [#%d] is missing parameters,\nExpected format \"%%d %%d 7 %%d %%d\", Got this:\n%s\n",
 	   number_rooms, current->room_id, tmp_str);
 	exit(ERR_RIVER);
@@ -519,7 +535,7 @@ void Load_Rooms(void)
     done = FALSE;
     while (!done) {
       if (fgets(tmp_str, BUFFER_SIZE - 1, fp) == NULL) {
-	log("Room %d: Unexpected EOF reading exits for room [#%d].",
+	log_info("Room %d: Unexpected EOF reading exits for room [#%d].",
 	    number_rooms, current->room_id);
 	exit(ERR_EOF);
       }
@@ -528,7 +544,7 @@ void Load_Rooms(void)
 	  idx2 = sscanf(tmp_str, "D%d", &idx);
 	  if (idx2 < 1 || idx < 0 || idx > 5) {
 	    trunc_string(tmp_str);
-	    log
+	    log_info
 	      ("Room %d: Expected direction in room [#%d] of the form \"D[0-5]\", Got this instead:\n%s\n",
 	       number_rooms, current->room_id, tmp_str);
 	    exit(ERR_BADEXIT);
@@ -537,13 +553,13 @@ void Load_Rooms(void)
 	  get_desc(&current->exit[idx].desc_ptr);
 
 	  if (fgets(tmp_str, BUFFER_SIZE - 1, fp) == NULL) {
-	    log("Room %d: Unexpected EOF reading exit keywords for room [#%d].",
+	    log_info("Room %d: Unexpected EOF reading exit keywords for room [#%d].",
 		number_rooms, current->room_id);
 	    exit(ERR_EOF);
 	  }
 	  trunc_string(tmp_str);
 	  if (tmp_str[strlen(tmp_str) - 1] != '~') {
-	    log
+	    log_info
 	      ("Room %d: Bad exit keywords in room [#%d]. Expected format \"%%s~\", Got:\n%s\n",
 	       number_rooms, current->room_id, tmp_str);
 	    exit(ERR_EXITKEY);
@@ -552,7 +568,7 @@ void Load_Rooms(void)
 	  current->exit[idx].keywords = (char *)strdup(tmp_str);
 
 	  if (fgets(tmp_str, BUFFER_SIZE - 1, fp) == NULL) {
-	    log("Room %d: Unexpected EOF reading exit data for room [#%d].",
+	    log_info("Room %d: Unexpected EOF reading exit data for room [#%d].",
 		number_rooms, current->room_id);
 	    exit(ERR_EOF);
 	  }
@@ -560,14 +576,14 @@ void Load_Rooms(void)
 			&current->exit[idx].key_number, &current->exit[idx].to_room);
 	  if (idx2 < 3) {
 	    trunc_string(tmp_str);
-	    log
+	    log_info
 	      ("Room %d: Exit door flags, key and target expected in [#%d] as \"%%d %%d %%d\", Got:\n%s\n",
 	       number_rooms, current->room_id, tmp_str);
 	    exit(ERR_DOORFLAGS);
 	  }
 	  if (current->exit[idx].door_flag < 0 || current->exit[idx].door_flag > 4) {
 	    trunc_string(tmp_str);
-	    log("Room %d: Door flags invalid in room [#%d], Must be [0-4], Got:\n%s\n",
+	    log_info("Room %d: Door flags invalid in room [#%d], Must be [0-4], Got:\n%s\n",
 		number_rooms, current->room_id, tmp_str);
 	    exit(ERR_DOORFLAGS);
 	  }
@@ -575,18 +591,18 @@ void Load_Rooms(void)
 
 	case 'E':
 	  if (fgets(tmp_str, BUFFER_SIZE - 1, fp) == NULL) {
-	    log("Room %d: Unexpected EOF reading extra keywords for room [#%d].",
+	    log_info("Room %d: Unexpected EOF reading extra keywords for room [#%d].",
 		number_rooms, current->room_id);
 	    exit(ERR_EOF);
 	  }
 	  trunc_string(tmp_str);
 	  if (tmp_str[0] == '~') {
-	    log("Room %d: Empty extra description keyword list in room [#%d].\n",
+	    log_info("Room %d: Empty extra description keyword list in room [#%d].\n",
 		number_rooms, current->room_id);
 	    exit(ERR_EXTRAKEY);
 	  }
 	  if (tmp_str[strlen(tmp_str) - 1] != '~') {
-	    log
+	    log_info
 	      ("Room %d: Invalid extra desc keyword list in room [#%d],\nExpected format \"%s~\", Got:\n%s\n",
 	       number_rooms, current->room_id, tmp_str);
 	    exit(ERR_EXTRAKEY);
@@ -608,7 +624,7 @@ void Load_Rooms(void)
 
 	default:
 	  trunc_string(tmp_str);
-	  log("Room %d: Unknown auxilliary code in room [#%d]:\n%s\n",
+	  log_info("Room %d: Unknown auxilliary code in room [#%d]:\n%s\n",
 	      number_rooms, current->room_id, tmp_str);
 	  exit(ERR_BADAUX);
 	  break;
@@ -647,7 +663,7 @@ void Link_World(void)
 	if (ptr->exit[idx2].real_to_room == NULL && ptr->exit[idx2].to_room != -1) {
 	  if (init_flag) {
 	    if (!(errfile = fopen(errname, "w"))) {
-	      log("Cannot open %s as error file!", errname);
+	      log_info("Cannot open %s as error file!", errname);
 	      exit(ERR_ERRLOG);
 	    }
 	    init_flag = FALSE;
@@ -766,6 +782,9 @@ void Main_Loop(void)
 	break;
       case DIG:
 	Command_dig();
+	break;
+      case MAP:
+	Command_map();
 	break;
       default:
 	printf("** Ummmm.... huh huh huh, you said %s!\n\n", inputs[0]);
@@ -1148,7 +1167,7 @@ void Command_desc(void)
   if (current->desc_ptr) {
     sprintf(tempfile, TMP_FILE, getpid());
     if (!(tfp = fopen(tempfile, "w"))) {
-      log("Cannot open %s for output!", tempfile);
+      log_info("Cannot open %s for output!", tempfile);
       exit(ERR_NOOUTPUT);
     }
     fprintf(tfp, "%s~\n", current->desc_ptr);
@@ -1735,7 +1754,7 @@ void Command_save(void)
   }
 
   if (!(out = fopen(outname, "w"))) {
-    log("Cannot open %s for output!", outname);
+    log_info("Cannot open %s for output!", outname);
     exit(ERR_NOOUTPUT);
   }
 
@@ -2151,6 +2170,74 @@ void Command_dig(void)
   printf("\n");
 }
 
+char					mapgrid[11][11];
+int					mapcolor[11][11];
+
+void map_fill(Room *rp, int xpos, int ypos)
+{
+  /* printf("DEBUG: xpos = %d, ypos = %d\n", xpos, ypos ); */
+
+  if( xpos < 0 || xpos > 10 || ypos < 0 || ypos > 10 || !rp )
+    return;
+  if( mapgrid[ypos][xpos] != ' ' )
+    return;
+
+  mapgrid[ypos][xpos] = terrain[rp->sector_type];
+  mapcolor[ypos][xpos] = terrain_color[rp->sector_type];
+
+  if( rp->exit[0].real_to_room )
+    map_fill( rp->exit[0].real_to_room, xpos, ypos - 1 );
+  if( rp->exit[1].real_to_room )
+    map_fill( rp->exit[1].real_to_room, xpos + 1, ypos );
+  if( rp->exit[2].real_to_room )
+    map_fill( rp->exit[2].real_to_room, xpos, ypos + 1);
+  if( rp->exit[3].real_to_room )
+    map_fill( rp->exit[3].real_to_room, xpos - 1, ypos );
+/*
+  if( rp->exit[4].real_to_room )
+    map_fill( rp->exit[4].real_to_room, xpos, ypos );
+  if( rp->exit[5].real_to_room )
+    map_fill( rp->exit[5].real_to_room, xpos, ypos );
+*/
+
+}
+
+void bust_a_map(Room *rp)
+{
+  int i,j;
+
+  for( i = 0; i < 11; i++ )
+    for( j = 0; j < 11; j++ )
+      mapgrid[i][j] = ' ';
+
+  map_fill( rp, 5, 5 );
+  mapgrid[5][5] = '@';
+
+  for( i = 0; i < 11; i++ )
+  {
+    for( j = 0; j < 11; j++ )
+    {
+      if( i == 5 && j == 5 )
+        printf( "%c[1m%c[37m%c%c[0m", (char)27, (char)27, mapgrid[i][j], (char)27 );
+      else
+        printf( "%c[%dm%c%c[0m", (char)27, mapcolor[i][j], mapgrid[i][j], (char)27 );
+    }
+    printf( "\n" );
+  }
+  printf( "\n" );
+}
+
+void Command_map(void)
+{
+  if (Map) {
+    printf(">> Map display turned off.\n\n");
+    Map = FALSE;
+  } else {
+    printf(">> Map display turned on.\n\n");
+    Map = TRUE;
+  }
+}
+
 void Display_A_Room(Room * ptr)
 {
   int                                     idx,
@@ -2230,6 +2317,8 @@ void Display_A_Room(Room * ptr)
       printf("%s\n", ptr->extra[idx].keywords);
   }
   printf("\n");
+  if (Map)
+    bust_a_map(ptr);
 }
 
 int direction_number(char *ptr)
@@ -2421,7 +2510,7 @@ void import_desc(char *title, char **ptr)
   sprintf(tempfile, TMP_FILE, getpid());
   if (!(tfp = fopen(tempfile, "r"))) {
     if (!(tfp = fopen(tempfile, "w"))) {
-      log("Cannot open %s for output!", tempfile);
+      log_info("Cannot open %s for output!", tempfile);
       exit(ERR_NOOUTPUT);
     }
     fprintf(tfp, "~\n");

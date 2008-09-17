@@ -1,0 +1,38 @@
+EmberMUD 0.9.47 Intermud 3
+--------------------------
+
+In step 3b, when asked to add the #include for i3.h, look in config.h
+and follow the directions accordingly. Then return to merc.h to continue.
+
+In the comm.c section, when looking for act_new, you need to find act_string
+instead and follow the directions accordingly.
+
+In i3.c, remove the #include segment for tables.h
+And in i3log, remove the code for the wiznet call since Ember doesn't have wiznet.
+
+In i3.c, directly above I3_find_social, add this:
+
+SOCIAL_DATA *find_social( char *name )
+{
+   SOCIAL_DATA *cmd;
+   
+   for ( cmd = social_first; cmd != NULL; cmd = cmd->next )
+   {
+      if ( ( is_name( name, cmd->name ) ) )       
+         return cmd;
+   }
+               
+   return NULL;
+}
+
+In i3cfg.h, in the #ifdef I3ROM section:
+
+Add:
+   #define PLAYER_DIR sysconfig.player_dir
+   #define SMAUGSOCIAL
+   #define SOCIAL_DATA SOCIALLIST_DATA
+
+Find:
+   #define CH_RANK(ch)          (title_table[(ch)->class][(ch)->level][(ch)->sex == SEX_FEMALE ? 1 : 0])
+Replace with:
+   #define CH_RANK(ch)        (class_table[(ch)->Class].who_name)

@@ -17,6 +17,9 @@
 
 #define DFLT_PORT 3000
 
+#define MUD_REBOOT	0
+#define MUD_HALT	42
+
 #define MAX_NAME_LENGTH 15
 #define MAX_HOSTNAME   256
 #define OPT_USEC 250000					       /* time delay corresponding to 4 passes/sec */
@@ -58,7 +61,7 @@ extern int                              mud_port;
 #endif
 
 int                                     main(int argc, char **argv);
-void                                    run_the_game(int port);
+int                                     run_the_game(int port);
 void                                    game_loop(int s);
 int                                     get_from_q(struct txt_q *queue, char *dest);
 void                                    write_to_q(char *txt, struct txt_q *queue);
@@ -101,5 +104,6 @@ void                                    act(char *str, int hide_invisible, struc
 					    struct obj_data *obj, void *vict_obj, int type, ...)
                                             __attribute__ ( ( format( printf, 1, 7 ) ) );
 void                                    dump_player_list(void);
+void					proper_exit(int exit_code);
 
 #endif

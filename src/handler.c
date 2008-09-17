@@ -35,7 +35,7 @@ char                                   *fname(char *namelist)
   char                                   *point = NULL;
 
   if (DEBUG > 2)
-    dlog("called %s with %s", __PRETTY_FUNCTION__, VNULL(namelist));
+    log_info("called %s with %s", __PRETTY_FUNCTION__, VNULL(namelist));
 
   for (point = holder; isalpha(*namelist); namelist++, point++)
     *point = *namelist;
@@ -54,7 +54,7 @@ int split_string(char *str, char *sep, char **argv)
   int                                     argc = 0;
 
   if (DEBUG > 2)
-    dlog("called %s with %s, %s, %08x", __PRETTY_FUNCTION__, VNULL(str), VNULL(sep), argv);
+    log_info("called %s with %s, %s, %08x", __PRETTY_FUNCTION__, VNULL(str), VNULL(sep), argv);
 
   s = strtok(str, sep);
   if (s)
@@ -84,7 +84,7 @@ int isname(char *str, char *namelist)
   char                                    *s = NULL;
 
   if (DEBUG > 2)
-    dlog("called %s with %s, %s", __PRETTY_FUNCTION__, VNULL(str), VNULL(namelist));
+    log_info("called %s with %s, %s", __PRETTY_FUNCTION__, VNULL(str), VNULL(namelist));
 
   strcpy(buf, str);
   argc = split_string(buf, "- \t\n\r,", argv);
@@ -125,7 +125,7 @@ int isname(char *str, char *namelist)
 void init_string_block(struct string_block *sb)
 {
   if (DEBUG > 2)
-    dlog("called %s with %08x", __PRETTY_FUNCTION__, sb);
+    log_info("called %s with %08x", __PRETTY_FUNCTION__, sb);
 
   CREATE(sb->data, char, sb->size = 128);
 
@@ -136,7 +136,7 @@ void init_string_block(struct string_block *sb)
   if ((sb->data = (char *)malloc(sb->size = * 128)))
     *sb->data = '\0';
   else {
-    bug("Malloc call to init_string_block failed.  Exiting.");
+    log_error("Malloc call to init_string_block failed.  Exiting.");
     kill(getpid(),14);
   } 
 #endif
@@ -147,7 +147,7 @@ void append_to_string_block(struct string_block *sb, char *str)
   int                                     len = 0;
 
   if (DEBUG > 2)
-    dlog("called %s with %08x, %s", __PRETTY_FUNCTION__, sb, VNULL(str));
+    log_info("called %s with %08x, %s", __PRETTY_FUNCTION__, sb, VNULL(str));
 
   len = strlen(sb->data) + strlen(str) + 1;
   if (len > sb->size) {
@@ -161,7 +161,7 @@ void append_to_string_block(struct string_block *sb, char *str)
 void page_string_block(struct string_block *sb, struct char_data *ch)
 {
   if (DEBUG > 2)
-    dlog("called %s with %08x, %s", __PRETTY_FUNCTION__, sb, SAFE_NAME(ch));
+    log_info("called %s with %08x, %s", __PRETTY_FUNCTION__, sb, SAFE_NAME(ch));
 
   page_string(ch->desc, sb->data, 1);
 }
@@ -169,7 +169,7 @@ void page_string_block(struct string_block *sb, struct char_data *ch)
 void destroy_string_block(struct string_block *sb)
 {
   if (DEBUG > 2)
-    dlog("called %s with %08x", __PRETTY_FUNCTION__, sb);
+    log_info("called %s with %08x", __PRETTY_FUNCTION__, sb);
 
   DESTROY(sb->data);
   sb->data = NULL;
@@ -181,7 +181,7 @@ void affect_modify(struct char_data *ch, char loc, char mod, long bitv, char add
   int                                     i = 0;
 
   if (DEBUG > 2)
-    dlog("called %s with %s, %d, %d, %ld, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), (int)loc, (int)mod, bitv, (int)add);
+    log_info("called %s with %s, %d, %d, %ld, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), (int)loc, (int)mod, bitv, (int)add);
 
   if (loc == APPLY_IMMUNE) {
     if (add) {
@@ -368,7 +368,7 @@ void affect_modify(struct char_data *ch, char loc, char mod, long bitv, char add
       break;
 
     default:
-      bug("Unknown apply adjust attempt by %s.", ch->player.name);
+      log_error("Unknown apply adjust attempt by %s.", ch->player.name);
       break;
 
   }							       /* switch */
@@ -384,7 +384,7 @@ void affect_total(struct char_data *ch)
   int                                     j = 0;
 
   if (DEBUG > 2)
-    dlog("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
+    log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
 
   for (i = 0; i < MAX_WEAR; i++) {
     if (ch->equipment[i])
@@ -431,7 +431,7 @@ void affect_to_char(struct char_data *ch, struct affected_type *af)
   struct affected_type                   *affected_alloc = NULL;
 
   if (DEBUG > 1)
-    dlog("called %s with %s, %08x", __PRETTY_FUNCTION__, SAFE_NAME(ch), af);
+    log_info("called %s with %s, %08x", __PRETTY_FUNCTION__, SAFE_NAME(ch), af);
 
   CREATE(affected_alloc, struct affected_type, 1);
 
@@ -451,7 +451,7 @@ void affect_remove(struct char_data *ch, struct affected_type *af)
   struct affected_type                   *hjp = NULL;
 
   if (DEBUG > 2)
-    dlog("called %s with %s, %08x", __PRETTY_FUNCTION__, SAFE_NAME(ch), af);
+    log_info("called %s with %s, %08x", __PRETTY_FUNCTION__, SAFE_NAME(ch), af);
 
   if (!ch->affected)
     return;
@@ -470,7 +470,7 @@ void affect_remove(struct char_data *ch, struct affected_type *af)
     for (hjp = ch->affected; (hjp->next) && (hjp->next != af); hjp = hjp->next);
 
     if (hjp->next != af) {
-      bug("Could not locate affected_type in ch->affected.");
+      log_error("Could not locate affected_type in ch->affected.");
       return;
     }
     hjp->next = af->next;				       /* skip the af element */
@@ -485,7 +485,7 @@ void affect_from_char(struct char_data *ch, short skill)
   struct affected_type                   *hjp = NULL;
 
   if (DEBUG > 1)
-    dlog("called %s with %s, %hd", __PRETTY_FUNCTION__, SAFE_NAME(ch), skill);
+    log_info("called %s with %s, %hd", __PRETTY_FUNCTION__, SAFE_NAME(ch), skill);
 
   for (hjp = ch->affected; hjp; hjp = hjp->next)
     if (hjp->type == skill)
@@ -500,7 +500,7 @@ char affected_by_spell(struct char_data *ch, short skill)
   struct affected_type                   *hjp = NULL;
 
   if (DEBUG > 2)
-    dlog("called %s with %s, %hd", __PRETTY_FUNCTION__, SAFE_NAME(ch), skill);
+    log_info("called %s with %s, %hd", __PRETTY_FUNCTION__, SAFE_NAME(ch), skill);
 
   for (hjp = ch->affected; hjp; hjp = hjp->next)
     if (hjp->type == skill)
@@ -515,7 +515,7 @@ void affect_join(struct char_data *ch, struct affected_type *af, char avg_dur, c
   char                                    found = FALSE;
 
   if (DEBUG > 2)
-    dlog("called %s with %s, %08x, %d, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), af, (int)avg_dur, (int)avg_mod);
+    log_info("called %s with %s, %08x, %d, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), af, (int)avg_dur, (int)avg_mod);
 
   for (hjp = ch->affected; !found && hjp; hjp = hjp->next) {
     if (hjp->type == af->type) {
@@ -544,10 +544,10 @@ void char_from_room(struct char_data *ch)
   struct room_data                       *rp = NULL;
 
   if (DEBUG > 1)
-    dlog("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
+    log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
 
   if (ch->in_room == NOWHERE) {
-    bug("NOWHERE extracting char from room");
+    log_error("NOWHERE extracting char from room");
     return;
   }
   if (ch->equipment[WEAR_LIGHT])
@@ -559,7 +559,7 @@ void char_from_room(struct char_data *ch)
       }
   rp = real_roomp(ch->in_room);
   if (rp == NULL) {
-    dlog("ERROR: char_from_room: %s was not in a valid room (%d)",
+    log_info("ERROR: char_from_room: %s was not in a valid room (%d)",
 	 (!IS_NPC(ch) ? (ch)->player.name : (ch)->player.short_descr), ch->in_room);
     return;
   }
@@ -571,7 +571,7 @@ void char_from_room(struct char_data *ch)
     if (i)
       i->next_in_room = ch->next_in_room;
     else {
-      dlog("SHIT, %s was not in people list of his room %d!",
+      log_error("SHIT, %s was not in people list of his room %d!",
 	   (!IS_NPC(ch) ? (ch)->player.name : (ch)->player.short_descr), ch->in_room);
     }
   }
@@ -586,14 +586,16 @@ void char_to_room(struct char_data *ch, int room)
   struct room_data                       *rp = NULL;
 
   if (DEBUG > 1)
-    dlog("called %s with %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), room);
+    log_info("called %s with %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), room);
 
   rp = real_roomp(room);
   if (!rp) {
     room = 0;
     rp = real_roomp(room);
-    if (!rp)
-      exit(0);
+    if (!rp) {
+      log_fatal("Cannot lookup room %d!", room);
+      proper_exit(MUD_HALT);
+    }
   }
   ch->next_in_room = rp->people;
   rp->people = ch;
@@ -612,7 +614,7 @@ void char_to_room(struct char_data *ch, int room)
 void obj_to_char(struct obj_data *object, struct char_data *ch)
 {
   if (DEBUG > 1)
-    dlog("called %s with %s, %s", __PRETTY_FUNCTION__, SAFE_ONAME(object), SAFE_NAME(ch));
+    log_info("called %s with %s, %s", __PRETTY_FUNCTION__, SAFE_ONAME(object), SAFE_NAME(ch));
 
   if (ch->carrying)
     object->next_content = ch->carrying;
@@ -632,7 +634,7 @@ void obj_from_char(struct obj_data *object)
   struct obj_data                        *tmp = NULL;
 
   if (DEBUG > 1)
-    dlog("called %s with %s", __PRETTY_FUNCTION__, SAFE_ONAME(object));
+    log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_ONAME(object));
 
   if (!object) {
     object = 0;
@@ -672,12 +674,12 @@ void obj_from_char(struct obj_data *object)
 int apply_ac(struct char_data *ch, int eq_pos)
 {
   if (DEBUG > 2)
-    dlog("called %s with %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), eq_pos);
+    log_info("called %s with %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), eq_pos);
 
   if (!ch->equipment[eq_pos])
     return 0;
   if (DEBUG)
-    dlog("apply_ac");
+    log_info("apply_ac");
   if (!(GET_ITEM_TYPE(ch->equipment[eq_pos]) == ITEM_ARMOR))
     return 0;
 
@@ -705,18 +707,18 @@ void equip_char(struct char_data *ch, struct obj_data *obj, int pos)
   int                                     j = 0;
 
   if (DEBUG > 2)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), SAFE_ONAME(obj), pos);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), SAFE_ONAME(obj), pos);
 
   if (pos < 0 || pos >= MAX_WEAR)
     return;
   if (DEBUG)
-    dlog("equip_char");
+    log_info("equip_char");
   if (obj->carried_by) {
-    dlog("EQUIP: Obj is carried_by when equip.");
+    log_info("EQUIP: Obj is carried_by when equip.");
     return;
   }
   if (obj->in_room != NOWHERE) {
-    dlog("EQUIP: Obj is in_room when equip.");
+    log_info("EQUIP: Obj is in_room when equip.");
     return;
   }
   if ((IS_OBJ_STAT(obj, ITEM_ANTI_EVIL) && IS_EVIL(ch)) ||
@@ -728,7 +730,7 @@ void equip_char(struct char_data *ch, struct obj_data *obj, int pos)
       obj_to_room(obj, ch->in_room);
       return;
     } else {
-      dlog("ch->in_room = NOWHERE when equipping char.");
+      log_info("ch->in_room = NOWHERE when equipping char.");
     }
   }
   ch->equipment[pos] = obj;
@@ -752,14 +754,14 @@ struct obj_data                        *unequip_char(struct char_data *ch, int p
   struct obj_data                        *obj = NULL;
 
   if (DEBUG > 2)
-    dlog("called %s with %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), pos);
+    log_info("called %s with %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), pos);
 
   if (pos < 0 || pos >= MAX_WEAR)
     return NULL;
   if (!ch->equipment[pos])
     return NULL;
   if (DEBUG)
-    dlog("unequip_char");
+    log_info("unequip_char");
   obj = ch->equipment[pos];
   if (GET_ITEM_TYPE(obj) == ITEM_ARMOR)
     GET_AC(ch) += apply_ac(ch, pos);
@@ -785,7 +787,7 @@ int get_number(char **name)
   char                                    spare[MAX_INPUT_LENGTH] = "\0\0\0";
 
   if (DEBUG > 2)
-    dlog("called %s with %08x", __PRETTY_FUNCTION__, name);
+    log_info("called %s with %08x", __PRETTY_FUNCTION__, name);
 
   if ((ppos = (char *)index(*name, '.')) && ppos[1]) {
     *ppos++ = '\0';
@@ -812,7 +814,7 @@ struct obj_data                        *get_obj_in_list(char *name, struct obj_d
   char                                   *tmp = NULL;
 
   if (DEBUG > 2)
-    dlog("called %s with %s, %08x", __PRETTY_FUNCTION__, VNULL(name), list);
+    log_info("called %s with %s, %08x", __PRETTY_FUNCTION__, VNULL(name), list);
 
   strcpy(tmpname, name);
   tmp = tmpname;
@@ -857,7 +859,7 @@ struct obj_data                        *get_obj_in_list_num(int num, struct obj_
   struct obj_data                        *i = NULL;
 
   if (DEBUG > 2)
-    dlog("called %s with %d, %08x", __PRETTY_FUNCTION__, num, list);
+    log_info("called %s with %d, %08x", __PRETTY_FUNCTION__, num, list);
 
   for (i = list; i; i = i->next_content)
     if (i->item_number == num)
@@ -876,7 +878,7 @@ struct obj_data                        *get_obj(char *name)
   char                                   *tmp = NULL;
 
   if (DEBUG > 2)
-    dlog("called %s with %s", __PRETTY_FUNCTION__, VNULL(name));
+    log_info("called %s with %s", __PRETTY_FUNCTION__, VNULL(name));
 
   strcpy(tmpname, name);
   tmp = tmpname;
@@ -898,7 +900,7 @@ struct obj_data                        *get_obj_num(int nr)
   struct obj_data                        *i = NULL;
 
   if (DEBUG > 2)
-    dlog("called %s with %d", __PRETTY_FUNCTION__, nr);
+    log_info("called %s with %d", __PRETTY_FUNCTION__, nr);
 
   for (i = object_list; i; i = i->next)
     if (i->item_number == nr)
@@ -917,7 +919,7 @@ struct char_data                       *get_char_room(char *name, int room)
   char                                   *tmp = NULL;
 
   if (DEBUG > 2)
-    dlog("called %s with %s, %d", __PRETTY_FUNCTION__, VNULL(name), room);
+    log_info("called %s with %s, %d", __PRETTY_FUNCTION__, VNULL(name), room);
 
   strcpy(tmpname, name);
   tmp = tmpname;
@@ -943,7 +945,7 @@ struct char_data                       *get_char(char *name)
   char                                   *tmp = NULL;
 
   if (DEBUG > 2)
-    dlog("called %s with %s", __PRETTY_FUNCTION__, VNULL(name));
+    log_info("called %s with %s", __PRETTY_FUNCTION__, VNULL(name));
 
   strcpy(tmpname, name);
   tmp = tmpname;
@@ -965,7 +967,7 @@ struct char_data                       *get_char_num(int nr)
   struct char_data                       *i = NULL;
 
   if (DEBUG > 2)
-    dlog("called %s with %d", __PRETTY_FUNCTION__, nr);
+    log_info("called %s with %d", __PRETTY_FUNCTION__, nr);
 
   for (i = character_list; i; i = i->next)
     if (i->nr == nr)
@@ -978,7 +980,7 @@ struct char_data                       *get_char_num(int nr)
 void obj_to_room(struct obj_data *object, int room)
 {
   if (DEBUG > 1)
-    dlog("called %s with %s, %d", __PRETTY_FUNCTION__, SAFE_ONAME(object), room);
+    log_info("called %s with %s, %d", __PRETTY_FUNCTION__, SAFE_ONAME(object), room);
 
   if (room == -1)
     room = 4;
@@ -996,7 +998,7 @@ void obj_from_room(struct obj_data *object)
   struct obj_data                        *i = NULL;
 
   if (DEBUG > 1)
-    dlog("called %s with %s", __PRETTY_FUNCTION__, SAFE_ONAME(object));
+    log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_ONAME(object));
   /*
    * remove object from room 
    */
@@ -1022,7 +1024,7 @@ void obj_to_obj(struct obj_data *obj, struct obj_data *obj_to)
   struct obj_data                        *tmp_obj = NULL;
 
   if (DEBUG > 1)
-    dlog("called %s with %s, %s", __PRETTY_FUNCTION__, SAFE_ONAME(obj), SAFE_ONAME(obj_to));
+    log_info("called %s with %s, %s", __PRETTY_FUNCTION__, SAFE_ONAME(obj), SAFE_ONAME(obj_to));
 
   obj->next_content = obj_to->contains;
   obj_to->contains = obj;
@@ -1043,7 +1045,7 @@ void obj_from_obj(struct obj_data *obj)
   struct obj_data                        *obj_from = NULL;
 
   if (DEBUG > 1)
-    dlog("called %s with %s", __PRETTY_FUNCTION__, SAFE_ONAME(obj));
+    log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_ONAME(obj));
 
   if (obj->in_obj) {
     obj_from = obj->in_obj;
@@ -1054,8 +1056,8 @@ void obj_from_obj(struct obj_data *obj)
 													 * previous */
 
       if (!tmp) {
-	perror("Fatal error in object structures.");
-	abort();
+	log_fatal("Fatal error in object structures.");
+	proper_exit(MUD_HALT);
       }
       tmp->next_content = obj->next_content;
     }
@@ -1077,8 +1079,8 @@ void obj_from_obj(struct obj_data *obj)
     obj->in_obj = 0;
     obj->next_content = 0;
   } else {
-    perror("Trying to object from object when in no object.");
-    abort();
+    log_fatal("Trying to object from object when in no object.");
+    proper_exit(MUD_HALT);
   }
 }
 
@@ -1086,7 +1088,7 @@ void obj_from_obj(struct obj_data *obj)
 void object_list_new_owner(struct obj_data *list, struct char_data *ch)
 {
   if (DEBUG > 2)
-    dlog("called %s with %08x, %s", __PRETTY_FUNCTION__, list, SAFE_NAME(ch));
+    log_info("called %s with %08x, %s", __PRETTY_FUNCTION__, list, SAFE_NAME(ch));
 
   if (list) {
     object_list_new_owner(list->contains, ch);
@@ -1102,7 +1104,7 @@ void extract_obj(struct obj_data *obj)
   struct obj_data                        *temp2 = NULL;
 
   if (DEBUG > 2)
-    dlog("called %s with %s", __PRETTY_FUNCTION__, SAFE_ONAME(obj));
+    log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_ONAME(obj));
 
   if (obj->in_room != NOWHERE)
     obj_from_room(obj);
@@ -1116,7 +1118,7 @@ void extract_obj(struct obj_data *obj)
       obj->equipped_by->equipment[(int)obj->eq_pos] = 0;
 
     } else {
-      dlog("Extract on equipped item in slot -1 on: %s %s",
+      log_error("Extract on equipped item in slot -1 on: %s %s",
            obj->equipped_by->player.name, obj->name);
       return;
     }
@@ -1155,7 +1157,7 @@ void extract_obj(struct obj_data *obj)
 void update_object(struct obj_data *obj, int use)
 {
   if (DEBUG > 2)
-    dlog("called %s with %s, %d", __PRETTY_FUNCTION__, SAFE_ONAME(obj), use);
+    log_info("called %s with %s, %d", __PRETTY_FUNCTION__, SAFE_ONAME(obj), use);
 
   if (obj->obj_flags.timer > 0)
     obj->obj_flags.timer -= use;
@@ -1171,7 +1173,7 @@ void update_char_objects(struct char_data *ch)
   int                                     i = 0;
 
   if (DEBUG > 2)
-    dlog("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
+    log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
 
   if (ch->equipment[WEAR_LIGHT])
     if (ch->equipment[WEAR_LIGHT]->obj_flags.type_flag == ITEM_LIGHT)
@@ -1199,7 +1201,7 @@ void extract_char(struct char_data *ch)
   int                                     j = 0;
 
   if (DEBUG > 2)
-    dlog("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
+    log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
 
   if (IS_PC(ch) && !ch->desc) {
     for (t_desc = descriptor_list; t_desc; t_desc = t_desc->next)
@@ -1207,7 +1209,7 @@ void extract_char(struct char_data *ch)
 	do_return(t_desc->character, "", 0);
   }
   if (ch->in_room == NOWHERE) {
-    bug("NOWHERE extracting char.");
+    log_error("NOWHERE extracting char.");
     /*
      **  problem from linkdeath
      */
@@ -1332,8 +1334,8 @@ void extract_char(struct char_data *ch)
     if (k)
       k->next = ch->next;
     else {
-      bug("Trying to remove NULL from character_list.");
-      /* abort(); */
+      log_error("Trying to remove NULL from character_list.");
+      /* proper_exit(MUD_HALT); */
     }
   }
 
@@ -1369,7 +1371,7 @@ struct char_data                       *get_char_room_vis(struct char_data *ch, 
   char                                   *tmp = NULL;
 
   if (DEBUG > 2)
-    dlog("called %s with %s, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(name));
+    log_info("called %s with %s, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(name));
 
   if ((!strcasecmp(name, "me") || !strcasecmp(name, "myself")) && CAN_SEE(ch, ch))
     return ch;
@@ -1401,7 +1403,7 @@ struct char_data                       *get_char_vis_world(struct char_data *ch,
   char                                   *tmp = NULL;
 
   if (DEBUG > 2)
-    dlog("called %s with %s, %s, %08x", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(name), count);
+    log_info("called %s with %s, %s, %08x", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(name), count);
 
   if ((!strcasecmp(name, "me") || !strcasecmp(name, "myself")) && CAN_SEE(ch, ch))
     return ch;
@@ -1429,7 +1431,7 @@ struct char_data                       *get_char_vis(struct char_data *ch, char 
   struct char_data                       *i = NULL;
 
   if (DEBUG > 2)
-    dlog("called %s with %s, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(name));
+    log_info("called %s with %s, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(name));
 
   /*
    * check location 
@@ -1450,7 +1452,7 @@ struct obj_data                        *get_obj_in_list_vis(struct char_data *ch
   char                                   *tmp = NULL;
 
   if (DEBUG > 2)
-    dlog("called %s with %s, %s, %08x", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(name), list);
+    log_info("called %s with %s, %s, %08x", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(name), list);
 
   strcpy(tmpname, name);
   tmp = tmpname;
@@ -1477,7 +1479,7 @@ struct obj_data                        *get_obj_vis_world(struct char_data *ch, 
   char                                   *tmp = NULL;
 
   if (DEBUG > 2)
-    dlog("called %s with %s, %s, %08x", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(name), count);
+    log_info("called %s with %s, %s, %08x", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(name), count);
 
   strcpy(tmpname, name);
   tmp = tmpname;
@@ -1507,7 +1509,7 @@ struct obj_data                        *get_obj_vis(struct char_data *ch, char *
   struct obj_data                        *i = NULL;
 
   if (DEBUG > 2)
-    dlog("called %s with %s, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(name));
+    log_info("called %s with %s, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(name));
 
   /*
    * scan items carried 
@@ -1533,7 +1535,7 @@ struct obj_data                        *get_obj_vis_accessible(struct char_data 
   char                                   *tmp = NULL;
 
   if (DEBUG > 2)
-    dlog("called %s with %s, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(name));
+    log_info("called %s with %s, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(name));
 
   strcpy(tmpname, name);
   tmp = tmpname;
@@ -1567,11 +1569,11 @@ struct obj_data                        *create_money(int amount)
   char                                    buf[80] = "\0\0\0";
 
   if (DEBUG > 2)
-    dlog("called %s with %d", __PRETTY_FUNCTION__, amount);
+    log_info("called %s with %d", __PRETTY_FUNCTION__, amount);
 
   if (amount <= 0) {
-    bug("ERROR: Try to create negative money.");
-    exit(1);
+    log_fatal("Trying to create negative money.");
+    proper_exit(MUD_HALT);
   }
   CREATE(obj, struct obj_data, 1);
   CREATE(new_descr, struct extra_descr_data, 1);
@@ -1652,7 +1654,7 @@ int generic_find(char *arg, int bitvector, struct char_data *ch,
   };
 
   if (DEBUG > 2)
-    dlog("called %s with %d, %s, %08x, %08x", __PRETTY_FUNCTION__, bitvector, SAFE_NAME(ch), tar_ch, tar_obj);
+    log_info("called %s with %d, %s, %08x, %08x", __PRETTY_FUNCTION__, bitvector, SAFE_NAME(ch), tar_ch, tar_obj);
 
   /*
    * Eliminate spaces and "ignore" words 

@@ -29,7 +29,7 @@ void cast_armor(char level, struct char_data *ch, char *arg, int type, struct ch
 		struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
+    log_info("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
 
   switch (type) {
     case SPELL_TYPE_SPELL:
@@ -64,7 +64,7 @@ void cast_armor(char level, struct char_data *ch, char *arg, int type, struct ch
       spell_armor(level, ch, ch, 0);
       break;
     default:
-      bug("Serious screw-up in armor!");
+      log_error("Serious screw-up in armor!");
       break;
   }
 }
@@ -73,7 +73,7 @@ void cast_teleport(char level, struct char_data *ch, char *arg, int type,
 		   struct char_data *victim, struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
+    log_info("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
 
   switch (type) {
     case SPELL_TYPE_SCROLL:
@@ -97,7 +97,7 @@ void cast_teleport(char level, struct char_data *ch, char *arg, int type,
       break;
 
     default:
-      bug("Serious screw-up in teleport!");
+      log_error("Serious screw-up in teleport!");
       break;
   }
 }
@@ -106,7 +106,7 @@ void cast_bless(char level, struct char_data *ch, char *arg, int type, struct ch
 		struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
+    log_info("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
 
   switch (type) {
     case SPELL_TYPE_SPELL:
@@ -161,7 +161,7 @@ void cast_bless(char level, struct char_data *ch, char *arg, int type, struct ch
       }
       break;
     default:
-      bug("Serious screw-up in bless!");
+      log_error("Serious screw-up in bless!");
       break;
   }
 }
@@ -170,7 +170,7 @@ void cast_blindness(char level, struct char_data *ch, char *arg, int type,
 		    struct char_data *victim, struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
+    log_info("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
 
   switch (type) {
     case SPELL_TYPE_SPELL:
@@ -210,7 +210,7 @@ void cast_blindness(char level, struct char_data *ch, char *arg, int type,
 	    spell_blindness(level, ch, victim, 0);
       break;
     default:
-      bug("Serious screw-up in blindness!");
+      log_error("Serious screw-up in blindness!");
       break;
   }
 }
@@ -219,7 +219,7 @@ void cast_burning_hands(char level, struct char_data *ch, char *arg, int type,
 			struct char_data *victim, struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
+    log_info("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
 
   switch (type) {
     case SPELL_TYPE_SPELL:
@@ -228,7 +228,7 @@ void cast_burning_hands(char level, struct char_data *ch, char *arg, int type,
       spell_burning_hands(level, ch, 0, 0);
       break;
     default:
-      bug("Serious screw-up in burning hands!");
+      log_error("Serious screw-up in burning hands!");
       break;
   }
 }
@@ -237,7 +237,7 @@ void cast_call_lightning(char level, struct char_data *ch, char *arg, int type,
 			 struct char_data *victim, struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
+    log_info("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
 
   switch (type) {
     case SPELL_TYPE_SPELL:
@@ -264,7 +264,7 @@ void cast_call_lightning(char level, struct char_data *ch, char *arg, int type,
       }
       break;
     default:
-      bug("Serious screw-up in call lightning!");
+      log_error("Serious screw-up in call lightning!");
       break;
   }
 }
@@ -273,7 +273,7 @@ void cast_charm_person(char level, struct char_data *ch, char *arg, int type,
 		       struct char_data *victim, struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
+    log_info("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
 
   switch (type) {
     case SPELL_TYPE_SPELL:
@@ -290,7 +290,7 @@ void cast_charm_person(char level, struct char_data *ch, char *arg, int type,
 	  spell_charm_person(level, ch, victim, 0);
       break;
     default:
-      bug("Serious screw-up in charm person!");
+      log_error("Serious screw-up in charm person!");
       break;
   }
 }
@@ -299,14 +299,14 @@ void cast_chill_touch(char level, struct char_data *ch, char *arg, int type,
 		      struct char_data *victim, struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
+    log_info("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
 
   switch (type) {
     case SPELL_TYPE_SPELL:
       spell_chill_touch(level, ch, victim, 0);
       break;
     default:
-      bug("Serious screw-up in chill touch!");
+      log_error("Serious screw-up in chill touch!");
       break;
   }
 }
@@ -321,7 +321,7 @@ void cast_clone(char level, struct char_data *ch, char *arg, int type, struct ch
   struct obj_data                        *sac = NULL;
 
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
+    log_info("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
 
   if (!ch->equipment[HOLD]) {
     cprintf(ch, "You must be holding the component for this spell.\n\r");
@@ -374,7 +374,7 @@ void cast_clone(char level, struct char_data *ch, char *arg, int type, struct ch
       }
       break;
     default:
-      bug("Serious screw-up in clone!");
+      log_error("Serious screw-up in clone!");
       break;
   }
 }
@@ -383,7 +383,7 @@ void cast_colour_spray(char level, struct char_data *ch, char *arg, int type,
 		       struct char_data *victim, struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
+    log_info("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
 
   switch (type) {
     case SPELL_TYPE_SPELL:
@@ -400,7 +400,7 @@ void cast_colour_spray(char level, struct char_data *ch, char *arg, int type,
 	spell_colour_spray(level, ch, victim, 0);
       break;
     default:
-      bug("Serious screw-up in colour spray!");
+      log_error("Serious screw-up in colour spray!");
       break;
   }
 }
@@ -411,7 +411,7 @@ void cast_control_weather(char level, struct char_data *ch, char *arg, int type,
   char                                    buffer[MAX_STRING_LENGTH] = "\0\0\0";
 
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
+    log_info("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
 
   switch (type) {
     case SPELL_TYPE_SPELL:
@@ -475,7 +475,7 @@ void cast_control_weather(char level, struct char_data *ch, char *arg, int type,
       break;
 
     default:
-      bug("Serious screw-up in control weather!");
+      log_error("Serious screw-up in control weather!");
       break;
   }
 }
@@ -484,7 +484,7 @@ void cast_create_food(char level, struct char_data *ch, char *arg, int type,
 		      struct char_data *victim, struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
+    log_info("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
 
   switch (type) {
     case SPELL_TYPE_SPELL:
@@ -499,7 +499,7 @@ void cast_create_food(char level, struct char_data *ch, char *arg, int type,
       spell_create_food(level, ch, 0, 0);
       break;
     default:
-      bug("Serious screw-up in create food!");
+      log_error("Serious screw-up in create food!");
       break;
   }
 }
@@ -508,7 +508,7 @@ void cast_create_water(char level, struct char_data *ch, char *arg, int type,
 		       struct char_data *victim, struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
+    log_info("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
 
   switch (type) {
     case SPELL_TYPE_SPELL:
@@ -519,7 +519,7 @@ void cast_create_water(char level, struct char_data *ch, char *arg, int type,
       spell_create_water(level, ch, 0, tar_obj);
       break;
     default:
-      bug("Serious screw-up in create water!");
+      log_error("Serious screw-up in create water!");
       break;
   }
 }
@@ -528,7 +528,7 @@ void cast_cure_blind(char level, struct char_data *ch, char *arg, int type,
 		     struct char_data *victim, struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
+    log_info("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
 
   switch (type) {
     case SPELL_TYPE_SPELL:
@@ -543,7 +543,7 @@ void cast_cure_blind(char level, struct char_data *ch, char *arg, int type,
 	  spell_cure_blind(level, ch, victim, 0);
       break;
     default:
-      bug("Serious screw-up in cure blind!");
+      log_error("Serious screw-up in cure blind!");
       break;
   }
 }
@@ -554,14 +554,14 @@ void cast_shocking_grasp(char level, struct char_data *ch, char *arg, int type,
 			 struct char_data *victim, struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
+    log_info("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
 
   switch (type) {
     case SPELL_TYPE_SPELL:
       spell_shocking_grasp(level, ch, victim, 0);
       break;
     default:
-      bug("Serious screw-up in shocking grasp!");
+      log_error("Serious screw-up in shocking grasp!");
       break;
   }
 }
@@ -578,7 +578,7 @@ void cast_new_earthquake(char level, struct char_data *ch, char *arg, int type,
   struct obj_data                        *sac = NULL;
 
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
+    log_info("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
 
   if (ch->equipment[HOLD]) {
     vnum = ObjVnum(ch->equipment[HOLD]);
@@ -629,7 +629,7 @@ void cast_new_earthquake(char level, struct char_data *ch, char *arg, int type,
       spell_new_earthquake(level, ch, 0, 0);
       break;
     default:
-      bug("Serious screw-up in new earthquake!");
+      log_error("Serious screw-up in new earthquake!");
       break;
   }
 }
@@ -638,7 +638,7 @@ void cast_earthquake(char level, struct char_data *ch, char *arg, int type,
 		     struct char_data *victim, struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
+    log_info("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
 
   switch (type) {
     case SPELL_TYPE_SPELL:
@@ -647,7 +647,7 @@ void cast_earthquake(char level, struct char_data *ch, char *arg, int type,
       spell_earthquake(level, ch, 0, 0);
       break;
     default:
-      bug("Serious screw-up in earthquake!");
+      log_error("Serious screw-up in earthquake!");
       break;
   }
 }
@@ -656,7 +656,7 @@ void cast_energy_drain(char level, struct char_data *ch, char *arg, int type,
 		       struct char_data *victim, struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
+    log_info("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
 
   switch (type) {
     case SPELL_TYPE_SPELL:
@@ -682,7 +682,7 @@ void cast_energy_drain(char level, struct char_data *ch, char *arg, int type,
 	    spell_energy_drain(level, ch, victim, 0);
       break;
     default:
-      bug("Serious screw-up in energy drain!");
+      log_error("Serious screw-up in energy drain!");
       break;
   }
 }
@@ -691,7 +691,7 @@ void cast_fireball(char level, struct char_data *ch, char *arg, int type,
 		   struct char_data *victim, struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
+    log_info("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
 
   switch (type) {
     case SPELL_TYPE_WAND:
@@ -701,7 +701,7 @@ void cast_fireball(char level, struct char_data *ch, char *arg, int type,
       spell_fireball(level, ch, 0, 0);
       break;
     default:
-      bug("Serious screw-up in fireball");
+      log_error("Serious screw-up in fireball");
       break;
   }
 
@@ -721,7 +721,7 @@ void cast_fireball(char level, struct char_data *ch, char *arg, int type,
  * spell_fireball(level, ch, victim, 0);
  * break;
  * default : 
- * bug("Serious screw-up in fireball!");
+ * log_error("Serious screw-up in fireball!");
  * break;
  * 
  * }
@@ -733,7 +733,7 @@ void cast_harm(char level, struct char_data *ch, char *arg, int type, struct cha
 	       struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
+    log_info("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
 
   switch (type) {
     case SPELL_TYPE_SPELL:
@@ -748,7 +748,7 @@ void cast_harm(char level, struct char_data *ch, char *arg, int type, struct cha
 	  spell_harm(level, ch, victim, 0);
       break;
     default:
-      bug("Serious screw-up in harm!");
+      log_error("Serious screw-up in harm!");
       break;
 
   }
@@ -758,7 +758,7 @@ void cast_lightning_bolt(char level, struct char_data *ch, char *arg, int type,
 			 struct char_data *victim, struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
+    log_info("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
 
   switch (type) {
     case SPELL_TYPE_SPELL:
@@ -775,7 +775,7 @@ void cast_lightning_bolt(char level, struct char_data *ch, char *arg, int type,
 	spell_lightning_bolt(level, ch, victim, 0);
       break;
     default:
-      bug("Serious screw-up in lightning bolt!");
+      log_error("Serious screw-up in lightning bolt!");
       break;
 
   }
@@ -785,7 +785,7 @@ void cast_acid_blast(char level, struct char_data *ch, char *arg, int type,
 		     struct char_data *victim, struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
+    log_info("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
 
   switch (type) {
     case SPELL_TYPE_SPELL:
@@ -802,7 +802,7 @@ void cast_acid_blast(char level, struct char_data *ch, char *arg, int type,
 	spell_acid_blast(level, ch, victim, 0);
       break;
     default:
-      bug("Serious screw-up in acid blast!");
+      log_error("Serious screw-up in acid blast!");
       break;
 
   }
@@ -812,7 +812,7 @@ void cast_cone_of_cold(char level, struct char_data *ch, char *arg, int type,
 		       struct char_data *victim, struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
+    log_info("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
 
   switch (type) {
     case SPELL_TYPE_SPELL:
@@ -822,7 +822,7 @@ void cast_cone_of_cold(char level, struct char_data *ch, char *arg, int type,
       break;
 
     default:
-      bug("Serious screw-up in cone of cold!");
+      log_error("Serious screw-up in cone of cold!");
       break;
 
   }
@@ -832,7 +832,7 @@ void cast_ice_storm(char level, struct char_data *ch, char *arg, int type,
 		    struct char_data *victim, struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
+    log_info("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
 
   switch (type) {
     case SPELL_TYPE_SPELL:
@@ -842,7 +842,7 @@ void cast_ice_storm(char level, struct char_data *ch, char *arg, int type,
       break;
 
     default:
-      bug("Serious screw-up in acid blast!");
+      log_error("Serious screw-up in acid blast!");
       break;
 
   }
@@ -852,7 +852,7 @@ void cast_meteor_swarm(char level, struct char_data *ch, char *arg, int type,
 		       struct char_data *victim, struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
+    log_info("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
 
   switch (type) {
     case SPELL_TYPE_SPELL:
@@ -869,7 +869,7 @@ void cast_meteor_swarm(char level, struct char_data *ch, char *arg, int type,
 	spell_meteor_swarm(level, ch, victim, 0);
       break;
     default:
-      bug("Serious screw-up in meteor swarm!");
+      log_error("Serious screw-up in meteor swarm!");
       break;
 
   }
@@ -879,7 +879,7 @@ void cast_flamestrike(char level, struct char_data *ch, char *arg, int type,
 		      struct char_data *victim, struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
+    log_info("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
 
   switch (type) {
     case SPELL_TYPE_SPELL:
@@ -896,7 +896,7 @@ void cast_flamestrike(char level, struct char_data *ch, char *arg, int type,
 	spell_flamestrike(level, ch, victim, 0);
       break;
     default:
-      bug("Serious screw-up in flamestrike!");
+      log_error("Serious screw-up in flamestrike!");
       break;
 
   }
@@ -906,7 +906,7 @@ void cast_magic_missile(char level, struct char_data *ch, char *arg, int type,
 			struct char_data *victim, struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
+    log_info("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
 
   switch (type) {
     case SPELL_TYPE_SPELL:
@@ -923,7 +923,7 @@ void cast_magic_missile(char level, struct char_data *ch, char *arg, int type,
 	spell_magic_missile(level, ch, victim, 0);
       break;
     default:
-      bug("Serious screw-up in magic missile!");
+      log_error("Serious screw-up in magic missile!");
       break;
 
   }
@@ -933,7 +933,7 @@ void cast_cause_light(char level, struct char_data *ch, char *arg, int type,
 		      struct char_data *victim, struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
+    log_info("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
 
   switch (type) {
     case SPELL_TYPE_SPELL:
@@ -948,7 +948,7 @@ void cast_cause_light(char level, struct char_data *ch, char *arg, int type,
 	  spell_cause_light(level, ch, victim, 0);
       break;
     default:
-      bug("Serious screw-up in cause light wounds!");
+      log_error("Serious screw-up in cause light wounds!");
       break;
 
   }
@@ -958,7 +958,7 @@ void cast_cause_serious(char level, struct char_data *ch, char *arg, int type,
 			struct char_data *victim, struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
+    log_info("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
 
   switch (type) {
     case SPELL_TYPE_SPELL:
@@ -979,7 +979,7 @@ void cast_cause_serious(char level, struct char_data *ch, char *arg, int type,
 	  spell_cause_serious(level, ch, victim, 0);
       break;
     default:
-      bug("Serious screw-up in cause serious wounds!");
+      log_error("Serious screw-up in cause serious wounds!");
       break;
 
   }
@@ -989,7 +989,7 @@ void cast_cause_critic(char level, struct char_data *ch, char *arg, int type,
 		       struct char_data *victim, struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
+    log_info("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
 
   switch (type) {
     case SPELL_TYPE_SPELL:
@@ -1004,7 +1004,7 @@ void cast_cause_critic(char level, struct char_data *ch, char *arg, int type,
 	  spell_cause_critical(level, ch, victim, 0);
       break;
     default:
-      bug("Serious screw-up in cause critical!");
+      log_error("Serious screw-up in cause critical!");
       break;
 
   }
@@ -1014,7 +1014,7 @@ void cast_geyser(char level, struct char_data *ch, char *arg, int type,
 		 struct char_data *victim, struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
+    log_info("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
 
   switch (type) {
     case SPELL_TYPE_SPELL:
@@ -1024,7 +1024,7 @@ void cast_geyser(char level, struct char_data *ch, char *arg, int type,
       spell_geyser(level, ch, 0, 0);
       break;
     default:
-      bug("Serious screw-up in geyser!");
+      log_error("Serious screw-up in geyser!");
       break;
   }
 }
@@ -1033,7 +1033,7 @@ void cast_green_slime(char level, struct char_data *ch, char *arg, int type,
 		      struct char_data *victim, struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
+    log_info("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
 
   switch (type) {
     case SPELL_TYPE_SPELL:
@@ -1050,7 +1050,7 @@ void cast_green_slime(char level, struct char_data *ch, char *arg, int type,
 	spell_green_slime(level, ch, victim, 0);
       break;
     default:
-      bug("Serious screw-up in green Slime!");
+      log_error("Serious screw-up in green Slime!");
       break;
   }
 }
@@ -1065,7 +1065,7 @@ void cast_resurrection(char level, struct char_data *ch, char *arg, int type,
 		       struct char_data *victim, struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
+    log_info("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
 
   switch (type) {
     case SPELL_TYPE_SPELL:
@@ -1079,7 +1079,7 @@ void cast_resurrection(char level, struct char_data *ch, char *arg, int type,
       spell_resurrection(level, ch, 0, tar_obj);
       break;
     default:
-      bug("Serious problem in 'resurrection'");
+      log_error("Serious problem in 'resurrection'");
       break;
   }
 
@@ -1089,7 +1089,7 @@ void cast_mana(char level, struct char_data *ch, char *arg, int type, struct cha
 	       struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
+    log_info("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
 
   switch (type) {
     case SPELL_TYPE_POTION:
@@ -1105,7 +1105,7 @@ void cast_mana(char level, struct char_data *ch, char *arg, int type, struct cha
 	if (victim != ch)
 	  spell_mana(level, ch, victim, 0);
     default:
-      bug("Serious problem in 'mana'");
+      log_error("Serious problem in 'mana'");
       break;
   }
 
@@ -1115,7 +1115,7 @@ void cast_stone_skin(char level, struct char_data *ch, char *arg, int type,
 		     struct char_data *victim, struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
+    log_info("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
 
   switch (type) {
     case SPELL_TYPE_SPELL:
@@ -1146,7 +1146,7 @@ void cast_stone_skin(char level, struct char_data *ch, char *arg, int type,
       spell_stone_skin(level, ch, ch, 0);
       break;
     default:
-      bug("Serious screw-up in stone_skin!");
+      log_error("Serious screw-up in stone_skin!");
       break;
   }
 }
@@ -1155,7 +1155,7 @@ void cast_astral_walk(char level, struct char_data *ch, char *arg, int type,
 		      struct char_data *victim, struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
+    log_info("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
 
   switch (type) {
     case SPELL_TYPE_WAND:
@@ -1170,7 +1170,7 @@ void cast_astral_walk(char level, struct char_data *ch, char *arg, int type,
       break;
 
     default:
-      bug("Serious screw-up in astral walk!");
+      log_error("Serious screw-up in astral walk!");
       break;
   }
 }
@@ -1179,7 +1179,7 @@ void cast_visions(char level, struct char_data *ch, char *arg, int type,
 		  struct char_data *victim, struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
+    log_info("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
 
   switch (type) {
     case SPELL_TYPE_WAND:
@@ -1194,7 +1194,7 @@ void cast_visions(char level, struct char_data *ch, char *arg, int type,
       break;
 
     default:
-      bug("Serious screw-up in visions!");
+      log_error("Serious screw-up in visions!");
       break;
   }
 }
@@ -1203,7 +1203,7 @@ void cast_infravision(char level, struct char_data *ch, char *arg, int type,
 		      struct char_data *victim, struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
+    log_info("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
 
   switch (type) {
     case SPELL_TYPE_SPELL:
@@ -1241,7 +1241,7 @@ void cast_infravision(char level, struct char_data *ch, char *arg, int type,
 	    spell_infravision(level, ch, victim, 0);
       break;
     default:
-      bug("Serious screw-up in infravision!");
+      log_error("Serious screw-up in infravision!");
       break;
   }
 
@@ -1251,7 +1251,7 @@ void cast_true_seeing(char level, struct char_data *ch, char *arg, int type,
 		      struct char_data *victim, struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
+    log_info("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
 
   switch (type) {
     case SPELL_TYPE_SPELL:
@@ -1289,7 +1289,7 @@ void cast_true_seeing(char level, struct char_data *ch, char *arg, int type,
 	    spell_true_seeing(level, ch, victim, 0);
       break;
     default:
-      bug("Serious screw-up in true_seeing!");
+      log_error("Serious screw-up in true_seeing!");
       break;
   }
 
@@ -1299,7 +1299,7 @@ void cast_light(char level, struct char_data *ch, char *arg, int type, struct ch
 		struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
+    log_info("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
 
   switch (type) {
     case SPELL_TYPE_SPELL:
@@ -1316,7 +1316,7 @@ void cast_light(char level, struct char_data *ch, char *arg, int type, struct ch
       spell_calm(level, ch, ch, 0);
       break;
     default:
-      bug("Serious screw-up in light!");
+      log_error("Serious screw-up in light!");
       break;
   }
 }
@@ -1325,7 +1325,7 @@ void cast_cont_light(char level, struct char_data *ch, char *arg, int type,
 		     struct char_data *victim, struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
+    log_info("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
 
   switch (type) {
     case SPELL_TYPE_SPELL:
@@ -1342,7 +1342,7 @@ void cast_cont_light(char level, struct char_data *ch, char *arg, int type,
       spell_cont_light(level, ch, ch, 0);
       break;
     default:
-      bug("Serious screw-up in continual light!");
+      log_error("Serious screw-up in continual light!");
       break;
   }
 }
@@ -1351,7 +1351,7 @@ void cast_calm(char level, struct char_data *ch, char *arg, int type, struct cha
 	       struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
+    log_info("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
 
   switch (type) {
     case SPELL_TYPE_SPELL:
@@ -1376,7 +1376,7 @@ void cast_calm(char level, struct char_data *ch, char *arg, int type, struct cha
 	spell_calm(level, ch, victim, 0);
       break;
     default:
-      bug("Serious screw-up in continual light!");
+      log_error("Serious screw-up in continual light!");
       break;
   }
 }
@@ -1385,7 +1385,7 @@ void cast_water_breath(char level, struct char_data *ch, char *arg, int type,
 		       struct char_data *victim, struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
+    log_info("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
 
   switch (type) {
     case SPELL_TYPE_SPELL:
@@ -1399,7 +1399,7 @@ void cast_water_breath(char level, struct char_data *ch, char *arg, int type,
       break;
 
     default:
-      bug("Serious screw-up in water breath");
+      log_error("Serious screw-up in water breath");
       break;
   }
 }
@@ -1408,7 +1408,7 @@ void cast_flying(char level, struct char_data *ch, char *arg, int type,
 		 struct char_data *victim, struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
+    log_info("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
 
   if (MOUNTED(ch)) {
     cprintf(ch, "Not while you are mounted!\n\r");
@@ -1430,7 +1430,7 @@ void cast_flying(char level, struct char_data *ch, char *arg, int type,
       break;
 
     default:
-      bug("Serious screw-up in fly");
+      log_error("Serious screw-up in fly");
       break;
   }
 }
@@ -1439,7 +1439,7 @@ void cast_goodberry(char level, struct char_data *ch, char *arg, int type,
 		    struct char_data *victim, struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
+    log_info("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
 
   switch (type) {
     case SPELL_TYPE_SPELL:
@@ -1456,7 +1456,7 @@ void cast_goodberry(char level, struct char_data *ch, char *arg, int type,
       spell_goodberry(level, ch, ch, 0);
       break;
     default:
-      bug("Serious screw-up in continual light!");
+      log_error("Serious screw-up in continual light!");
       break;
   }
 }
@@ -1465,7 +1465,7 @@ void cast_cure_critic(char level, struct char_data *ch, char *arg, int type,
 		      struct char_data *victim, struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
+    log_info("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
 
   switch (type) {
     case SPELL_TYPE_SPELL:
@@ -1485,7 +1485,7 @@ void cast_cure_critic(char level, struct char_data *ch, char *arg, int type,
 	  spell_cure_critic(level, ch, victim, 0);
       break;
     default:
-      bug("Serious screw-up in cure critic!");
+      log_error("Serious screw-up in cure critic!");
       break;
 
   }
@@ -1495,7 +1495,7 @@ void cast_cure_light(char level, struct char_data *ch, char *arg, int type,
 		     struct char_data *victim, struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
+    log_info("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
 
   switch (type) {
     case SPELL_TYPE_SPELL:
@@ -1515,7 +1515,7 @@ void cast_cure_light(char level, struct char_data *ch, char *arg, int type,
 	  spell_cure_light(level, ch, victim, 0);
       break;
     default:
-      bug("Serious screw-up in cure light!");
+      log_error("Serious screw-up in cure light!");
       break;
   }
 }
@@ -1524,7 +1524,7 @@ void cast_cure_serious(char level, struct char_data *ch, char *arg, int type,
 		       struct char_data *victim, struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
+    log_info("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
 
   switch (type) {
     case SPELL_TYPE_SPELL:
@@ -1544,7 +1544,7 @@ void cast_cure_serious(char level, struct char_data *ch, char *arg, int type,
 	  spell_cure_serious(level, ch, victim, 0);
       break;
     default:
-      bug("Serious screw-up in cure serious!");
+      log_error("Serious screw-up in cure serious!");
       break;
   }
 }
@@ -1553,7 +1553,7 @@ void cast_refresh(char level, struct char_data *ch, char *arg, int type,
 		  struct char_data *victim, struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
+    log_info("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
 
   switch (type) {
     case SPELL_TYPE_SPELL:
@@ -1573,7 +1573,7 @@ void cast_refresh(char level, struct char_data *ch, char *arg, int type,
 	  spell_refresh(level, ch, victim, 0);
       break;
     default:
-      bug("Serious screw-up in refresh!");
+      log_error("Serious screw-up in refresh!");
       break;
   }
 }
@@ -1582,7 +1582,7 @@ void cast_second_wind(char level, struct char_data *ch, char *arg, int type,
 		      struct char_data *victim, struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
+    log_info("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
 
   switch (type) {
     case SPELL_TYPE_SPELL:
@@ -1599,7 +1599,7 @@ void cast_second_wind(char level, struct char_data *ch, char *arg, int type,
 	  spell_second_wind(level, ch, victim, 0);
       break;
     default:
-      bug("Serious screw-up in second_wind!");
+      log_error("Serious screw-up in second_wind!");
       break;
   }
 }
@@ -1608,7 +1608,7 @@ void cast_shield(char level, struct char_data *ch, char *arg, int type,
 		 struct char_data *victim, struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
+    log_info("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
 
   switch (type) {
     case SPELL_TYPE_SPELL:
@@ -1632,7 +1632,7 @@ void cast_shield(char level, struct char_data *ch, char *arg, int type,
 	  spell_shield(level, ch, victim, 0);
       break;
     default:
-      bug("Serious screw-up in shield!");
+      log_error("Serious screw-up in shield!");
       break;
   }
 
@@ -1642,7 +1642,7 @@ void cast_curse(char level, struct char_data *ch, char *arg, int type, struct ch
 		struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
+    log_info("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
 
   switch (type) {
     case SPELL_TYPE_SPELL:
@@ -1670,7 +1670,7 @@ void cast_curse(char level, struct char_data *ch, char *arg, int type, struct ch
 	  spell_curse(level, ch, victim, 0);
       break;
     default:
-      bug("Serious screw-up in curse!");
+      log_error("Serious screw-up in curse!");
       break;
   }
 }
@@ -1679,7 +1679,7 @@ void cast_detect_evil(char level, struct char_data *ch, char *arg, int type,
 		      struct char_data *victim, struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
+    log_info("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
 
   switch (type) {
     case SPELL_TYPE_SPELL:
@@ -1701,7 +1701,7 @@ void cast_detect_evil(char level, struct char_data *ch, char *arg, int type,
 	    spell_detect_evil(level, ch, victim, 0);
       break;
     default:
-      bug("Serious screw-up in detect evil!");
+      log_error("Serious screw-up in detect evil!");
       break;
   }
 }
@@ -1710,7 +1710,7 @@ void cast_detect_invisibility(char level, struct char_data *ch, char *arg, int t
 			      struct char_data *victim, struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
+    log_info("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
 
   switch (type) {
     case SPELL_TYPE_SPELL:
@@ -1732,7 +1732,7 @@ void cast_detect_invisibility(char level, struct char_data *ch, char *arg, int t
 	    spell_detect_invisibility(level, ch, victim, 0);
       break;
     default:
-      bug("Serious screw-up in detect invisibility!");
+      log_error("Serious screw-up in detect invisibility!");
       break;
   }
 }
@@ -1741,7 +1741,7 @@ void cast_detect_magic(char level, struct char_data *ch, char *arg, int type,
 		       struct char_data *victim, struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
+    log_info("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
 
   switch (type) {
     case SPELL_TYPE_SPELL:
@@ -1763,7 +1763,7 @@ void cast_detect_magic(char level, struct char_data *ch, char *arg, int type,
 	    spell_detect_magic(level, ch, victim, 0);
       break;
     default:
-      bug("Serious screw-up in detect magic!");
+      log_error("Serious screw-up in detect magic!");
       break;
   }
 }
@@ -1772,7 +1772,7 @@ void cast_detect_poison(char level, struct char_data *ch, char *arg, int type,
 			struct char_data *victim, struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
+    log_info("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
 
   switch (type) {
     case SPELL_TYPE_SPELL:
@@ -1791,7 +1791,7 @@ void cast_detect_poison(char level, struct char_data *ch, char *arg, int type,
       spell_detect_poison(level, ch, victim, 0);
       break;
     default:
-      bug("Serious screw-up in detect poison!");
+      log_error("Serious screw-up in detect poison!");
       break;
   }
 }
@@ -1800,7 +1800,7 @@ void cast_dispel_evil(char level, struct char_data *ch, char *arg, int type,
 		      struct char_data *victim, struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
+    log_info("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
 
   switch (type) {
     case SPELL_TYPE_SPELL:
@@ -1827,7 +1827,7 @@ void cast_dispel_evil(char level, struct char_data *ch, char *arg, int type,
 	  spell_dispel_evil(level, ch, victim, 0);
       break;
     default:
-      bug("Serious screw-up in dispel evil!");
+      log_error("Serious screw-up in dispel evil!");
       break;
   }
 }
@@ -1836,7 +1836,7 @@ void cast_dispel_good(char level, struct char_data *ch, char *arg, int type,
 		      struct char_data *victim, struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
+    log_info("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
 
   switch (type) {
     case SPELL_TYPE_SPELL:
@@ -1863,7 +1863,7 @@ void cast_dispel_good(char level, struct char_data *ch, char *arg, int type,
 	  spell_dispel_good(level, ch, victim, 0);
       break;
     default:
-      bug("Serious screw-up in dispel good!");
+      log_error("Serious screw-up in dispel good!");
       break;
   }
 }
@@ -1872,7 +1872,7 @@ void cast_faerie_fire(char level, struct char_data *ch, char *arg, int type,
 		      struct char_data *victim, struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
+    log_info("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
 
   switch (type) {
     case SPELL_TYPE_SPELL:
@@ -1899,7 +1899,7 @@ void cast_faerie_fire(char level, struct char_data *ch, char *arg, int type,
 	  spell_faerie_fire(level, ch, victim, 0);
       break;
     default:
-      bug("Serious screw-up in dispel good!");
+      log_error("Serious screw-up in dispel good!");
       break;
   }
 }
@@ -1908,7 +1908,7 @@ void cast_enchant_weapon(char level, struct char_data *ch, char *arg, int type,
 			 struct char_data *victim, struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
+    log_info("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
 
   switch (type) {
     case SPELL_TYPE_SPELL:
@@ -1921,7 +1921,7 @@ void cast_enchant_weapon(char level, struct char_data *ch, char *arg, int type,
       spell_enchant_weapon(level, ch, 0, tar_obj);
       break;
     default:
-      bug("Serious screw-up in enchant weapon!");
+      log_error("Serious screw-up in enchant weapon!");
       break;
   }
 }
@@ -1930,7 +1930,7 @@ void cast_enchant_armor(char level, struct char_data *ch, char *arg, int type,
 			struct char_data *victim, struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
+    log_info("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
 
   switch (type) {
     case SPELL_TYPE_SPELL:
@@ -1943,7 +1943,7 @@ void cast_enchant_armor(char level, struct char_data *ch, char *arg, int type,
  * break;
  */
     default:
-      bug("Serious screw-up in enchant armor!");
+      log_error("Serious screw-up in enchant armor!");
       break;
   }
 }
@@ -1952,7 +1952,7 @@ void cast_heal(char level, struct char_data *ch, char *arg, int type, struct cha
 	       struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
+    log_info("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
 
   switch (type) {
     case SPELL_TYPE_SPELL:
@@ -1969,7 +1969,7 @@ void cast_heal(char level, struct char_data *ch, char *arg, int type, struct cha
 	  spell_heal(level, ch, victim, 0);
       break;
     default:
-      bug("Serious screw-up in heal!");
+      log_error("Serious screw-up in heal!");
       break;
   }
 }
@@ -1978,7 +1978,7 @@ void cast_invisibility(char level, struct char_data *ch, char *arg, int type,
 		       struct char_data *victim, struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
+    log_info("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
 
   switch (type) {
     case SPELL_TYPE_SPELL:
@@ -2026,7 +2026,7 @@ void cast_invisibility(char level, struct char_data *ch, char *arg, int type,
 	    spell_invisibility(level, ch, victim, 0);
       break;
     default:
-      bug("Serious screw-up in invisibility!");
+      log_error("Serious screw-up in invisibility!");
       break;
   }
 }
@@ -2035,14 +2035,14 @@ void cast_locate_object(char level, struct char_data *ch, char *arg, int type,
 			struct char_data *victim, struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
+    log_info("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
 
   switch (type) {
     case SPELL_TYPE_SPELL:
       spell_locate_object(level, ch, 0, (char *)tar_obj);
       break;
     default:
-      bug("Serious screw-up in locate object!");
+      log_error("Serious screw-up in locate object!");
       break;
   }
 }
@@ -2051,7 +2051,7 @@ void cast_poison(char level, struct char_data *ch, char *arg, int type,
 		 struct char_data *victim, struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
+    log_info("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
 
   switch (type) {
     case SPELL_TYPE_SPELL:
@@ -2066,7 +2066,7 @@ void cast_poison(char level, struct char_data *ch, char *arg, int type,
 	  spell_poison(level, ch, victim, 0);
       break;
     default:
-      bug("Serious screw-up in poison!");
+      log_error("Serious screw-up in poison!");
       break;
   }
 }
@@ -2075,7 +2075,7 @@ void cast_protection_from_evil(char level, struct char_data *ch, char *arg, int 
 			       struct char_data *victim, struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
+    log_info("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
 
   switch (type) {
     case SPELL_TYPE_SPELL:
@@ -2097,7 +2097,7 @@ void cast_protection_from_evil(char level, struct char_data *ch, char *arg, int 
 	  spell_protection_from_evil(level, ch, victim, 0);
       break;
     default:
-      bug("Serious screw-up in protection from evil!");
+      log_error("Serious screw-up in protection from evil!");
       break;
   }
 }
@@ -2106,7 +2106,7 @@ void cast_remove_curse(char level, struct char_data *ch, char *arg, int type,
 		       struct char_data *victim, struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
+    log_info("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
 
   switch (type) {
     case SPELL_TYPE_SPELL:
@@ -2130,7 +2130,7 @@ void cast_remove_curse(char level, struct char_data *ch, char *arg, int type,
 	  spell_remove_curse(level, ch, victim, 0);
       break;
     default:
-      bug("Serious screw-up in remove curse!");
+      log_error("Serious screw-up in remove curse!");
       break;
   }
 }
@@ -2139,7 +2139,7 @@ void cast_remove_poison(char level, struct char_data *ch, char *arg, int type,
 			struct char_data *victim, struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
+    log_info("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
 
   switch (type) {
     case SPELL_TYPE_SPELL:
@@ -2154,7 +2154,7 @@ void cast_remove_poison(char level, struct char_data *ch, char *arg, int type,
 	  spell_remove_poison(level, ch, victim, 0);
       break;
     default:
-      bug("Serious screw-up in remove poison!");
+      log_error("Serious screw-up in remove poison!");
       break;
   }
 }
@@ -2163,7 +2163,7 @@ void cast_remove_paralysis(char level, struct char_data *ch, char *arg, int type
 			   struct char_data *victim, struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
+    log_info("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
 
   switch (type) {
     case SPELL_TYPE_SPELL:
@@ -2183,7 +2183,7 @@ void cast_remove_paralysis(char level, struct char_data *ch, char *arg, int type
 	  spell_remove_paralysis(level, ch, victim, 0);
       break;
     default:
-      bug("Serious screw-up in remove paralysis!");
+      log_error("Serious screw-up in remove paralysis!");
       break;
   }
 }
@@ -2192,7 +2192,7 @@ void cast_sanctuary(char level, struct char_data *ch, char *arg, int type,
 		    struct char_data *victim, struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
+    log_info("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
 
   switch (type) {
     case SPELL_TYPE_SPELL:
@@ -2216,7 +2216,7 @@ void cast_sanctuary(char level, struct char_data *ch, char *arg, int type,
 	  spell_sanctuary(level, ch, victim, 0);
       break;
     default:
-      bug("Serious screw-up in sanctuary!");
+      log_error("Serious screw-up in sanctuary!");
       break;
   }
 }
@@ -2225,7 +2225,7 @@ void cast_fireshield(char level, struct char_data *ch, char *arg, int type,
 		     struct char_data *victim, struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
+    log_info("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
 
   switch (type) {
     case SPELL_TYPE_SPELL:
@@ -2249,7 +2249,7 @@ void cast_fireshield(char level, struct char_data *ch, char *arg, int type,
 	  spell_fireshield(level, ch, victim, 0);
       break;
     default:
-      bug("Serious screw-up in fireshield!");
+      log_error("Serious screw-up in fireshield!");
       break;
   }
 }
@@ -2258,7 +2258,7 @@ void cast_sleep(char level, struct char_data *ch, char *arg, int type, struct ch
 		struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
+    log_info("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
 
   switch (type) {
     case SPELL_TYPE_SPELL:
@@ -2285,7 +2285,7 @@ void cast_sleep(char level, struct char_data *ch, char *arg, int type, struct ch
 	  spell_sleep(level, ch, victim, 0);
       break;
     default:
-      bug("Serious screw-up in sleep!");
+      log_error("Serious screw-up in sleep!");
       break;
   }
 }
@@ -2294,7 +2294,7 @@ void cast_strength(char level, struct char_data *ch, char *arg, int type,
 		   struct char_data *victim, struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
+    log_info("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
 
   switch (type) {
     case SPELL_TYPE_SPELL:
@@ -2316,7 +2316,7 @@ void cast_strength(char level, struct char_data *ch, char *arg, int type,
 	  spell_strength(level, ch, victim, 0);
       break;
     default:
-      bug("Serious screw-up in strength!");
+      log_error("Serious screw-up in strength!");
       break;
   }
 }
@@ -2330,10 +2330,10 @@ void cast_ventriloquate(char level, struct char_data *ch, char *arg, int type,
   char                                    buf3[MAX_STRING_LENGTH] = "\0\0\0";
 
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
+    log_info("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
 
   if (type != SPELL_TYPE_SPELL) {
-    bug("Attempt to ventriloquate by non-cast-spell.");
+    log_error("Attempt to ventriloquate by non-cast-spell.");
     return;
   }
   for (; *arg && (*arg == ' '); arg++);
@@ -2366,7 +2366,7 @@ void cast_word_of_recall(char level, struct char_data *ch, char *arg, int type,
 			 struct char_data *victim, struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
+    log_info("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
 
   switch (type) {
     case SPELL_TYPE_SPELL:
@@ -2393,7 +2393,7 @@ void cast_word_of_recall(char level, struct char_data *ch, char *arg, int type,
 	  spell_word_of_recall(level, ch, victim, 0);
       break;
     default:
-      bug("Serious screw-up in word of recall!");
+      log_error("Serious screw-up in word of recall!");
       break;
   }
 }
@@ -2402,14 +2402,14 @@ void cast_summon(char level, struct char_data *ch, char *arg, int type,
 		 struct char_data *victim, struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
+    log_info("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
 
   switch (type) {
     case SPELL_TYPE_SPELL:
       spell_summon(level, ch, victim, 0);
       break;
     default:
-      bug("Serious screw-up in summon!");
+      log_error("Serious screw-up in summon!");
       break;
   }
 }
@@ -2418,7 +2418,7 @@ void cast_charm_monster(char level, struct char_data *ch, char *arg, int type,
 			struct char_data *victim, struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
+    log_info("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
 
   switch (type) {
     case SPELL_TYPE_SPELL:
@@ -2435,7 +2435,7 @@ void cast_charm_monster(char level, struct char_data *ch, char *arg, int type,
 	  spell_charm_monster(level, ch, victim, 0);
       break;
     default:
-      bug("Serious screw-up in charm monster!");
+      log_error("Serious screw-up in charm monster!");
       break;
   }
 }
@@ -2444,7 +2444,7 @@ void cast_sense_life(char level, struct char_data *ch, char *arg, int type,
 		     struct char_data *victim, struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
+    log_info("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
 
   switch (type) {
     case SPELL_TYPE_SPELL:
@@ -2459,7 +2459,7 @@ void cast_sense_life(char level, struct char_data *ch, char *arg, int type,
 	  spell_sense_life(level, ch, victim, 0);
       break;
     default:
-      bug("Serious screw-up in sense life!");
+      log_error("Serious screw-up in sense life!");
       break;
   }
 }
@@ -2468,14 +2468,14 @@ void cast_identify(char level, struct char_data *ch, char *arg, int type,
 		   struct char_data *victim, struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
+    log_info("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
 
   switch (type) {
     case SPELL_TYPE_SCROLL:
       spell_identify(level, ch, victim, tar_obj);
       break;
     default:
-      bug("Serious screw-up in identify!");
+      log_error("Serious screw-up in identify!");
       break;
   }
 }
@@ -2512,7 +2512,7 @@ void cast_dragon_breath(char level, struct char_data *ch, char *arg, int type,
   struct affected_type                    af;
 
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
+    log_info("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
 
   for (scan = breath_potions;
        scan->vnum && scan->vnum != obj_index[tar_obj->item_number].virtual; scan++);
@@ -2522,7 +2522,7 @@ void cast_dragon_breath(char level, struct char_data *ch, char *arg, int type,
     cprintf(ch, "Hey, this potion isn't in my list!\n\r");
     sprintf(buf, "unlisted breath potion %s %d", tar_obj->short_description,
 	    obj_index[tar_obj->item_number].virtual);
-    bug(buf);
+    log_error(buf);
     return;
   }
   for (i = 0; i < MAX_BREATHS && scan->spell[i]; i++) {
@@ -2553,14 +2553,14 @@ void cast_fire_breath(char level, struct char_data *ch, char *arg, int type,
 		      struct char_data *victim, struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
+    log_info("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
 
   switch (type) {
     case SPELL_TYPE_SPELL:
       spell_fire_breath(level, ch, victim, 0);
       break;						       /* It's a spell.. But people can'c cast it! */
     default:
-      bug("Serious screw-up in firebreath!");
+      log_error("Serious screw-up in firebreath!");
       break;
   }
 }
@@ -2569,14 +2569,14 @@ void cast_frost_breath(char level, struct char_data *ch, char *arg, int type,
 		       struct char_data *victim, struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
+    log_info("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
 
   switch (type) {
     case SPELL_TYPE_SPELL:
       spell_frost_breath(level, ch, victim, 0);
       break;						       /* It's a spell.. But people can'c cast it! */
     default:
-      bug("Serious screw-up in frostbreath!");
+      log_error("Serious screw-up in frostbreath!");
       break;
   }
 }
@@ -2585,14 +2585,14 @@ void cast_acid_breath(char level, struct char_data *ch, char *arg, int type,
 		      struct char_data *victim, struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
+    log_info("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
 
   switch (type) {
     case SPELL_TYPE_SPELL:
       spell_acid_breath(level, ch, victim, 0);
       break;						       /* It's a spell.. But people can'c cast it! */
     default:
-      bug("Serious screw-up in acidbreath!");
+      log_error("Serious screw-up in acidbreath!");
       break;
   }
 }
@@ -2601,7 +2601,7 @@ void cast_gas_breath(char level, struct char_data *ch, char *arg, int type,
 		     struct char_data *victim, struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
+    log_info("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
 
   switch (type) {
     case SPELL_TYPE_SPELL:
@@ -2611,7 +2611,7 @@ void cast_gas_breath(char level, struct char_data *ch, char *arg, int type,
        * THIS ONE HURTS!! 
        */
     default:
-      bug("Serious screw-up in gasbreath!");
+      log_error("Serious screw-up in gasbreath!");
       break;
   }
 }
@@ -2620,14 +2620,14 @@ void cast_lightning_breath(char level, struct char_data *ch, char *arg, int type
 			   struct char_data *victim, struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
+    log_info("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
 
   switch (type) {
     case SPELL_TYPE_SPELL:
       spell_lightning_breath(level, ch, victim, 0);
       break;						       /* It's a spell.. But people can'c cast it! */
     default:
-      bug("Serious screw-up in lightningbreath!");
+      log_error("Serious screw-up in lightningbreath!");
       break;
   }
 }
@@ -2645,7 +2645,7 @@ void cast_knock(char level, struct char_data *ch, char *arg, int type, struct ch
   struct char_data                       *this_victim = NULL;
 
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
+    log_info("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
 
   switch (type) {
     case SPELL_TYPE_SPELL:
@@ -2714,7 +2714,7 @@ void cast_knock(char level, struct char_data *ch, char *arg, int type, struct ch
       }
       break;
     default:
-      bug("serious error in Knock.");
+      log_error("serious error in Knock.");
       break;
   }
 }
@@ -2723,7 +2723,7 @@ void cast_know_alignment(char level, struct char_data *ch, char *arg, int type,
 			 struct char_data *victim, struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
+    log_info("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
 
   switch (type) {
     case SPELL_TYPE_SPELL:
@@ -2738,7 +2738,7 @@ void cast_know_alignment(char level, struct char_data *ch, char *arg, int type,
       spell_know_alignment(level, ch, victim, 0);
       break;
     default:
-      bug("Serious screw-up in know alignment!");
+      log_error("Serious screw-up in know alignment!");
       break;
   }
 }
@@ -2747,7 +2747,7 @@ void cast_weakness(char level, struct char_data *ch, char *arg, int type,
 		   struct char_data *victim, struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
+    log_info("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
 
   switch (type) {
     case SPELL_TYPE_SPELL:
@@ -2765,11 +2765,11 @@ void cast_weakness(char level, struct char_data *ch, char *arg, int type,
       break;
     case SPELL_TYPE_STAFF:
       for (victim = real_roomp(ch->in_room)->people; victim; victim = victim->next_in_room)
-	if (!in_group)
+	if (!in_group(victim, ch))
 	  spell_weakness(level, ch, victim, 0);
       break;
     default:
-      bug("Serious screw-up in weakness!");
+      log_error("Serious screw-up in weakness!");
       break;
   }
 }
@@ -2778,7 +2778,7 @@ void cast_dispel_magic(char level, struct char_data *ch, char *arg, int type,
 		       struct char_data *victim, struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
+    log_info("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
 
   switch (type) {
     case SPELL_TYPE_SPELL:
@@ -2804,7 +2804,7 @@ void cast_dispel_magic(char level, struct char_data *ch, char *arg, int type,
 	  spell_dispel_magic(level, ch, victim, 0);
       break;
     default:
-      bug("Serious screw-up in dispel magic");
+      log_error("Serious screw-up in dispel magic");
       break;
   }
 }
@@ -2815,7 +2815,7 @@ void cast_animate_dead(char level, struct char_data *ch, char *arg, int type,
   struct obj_data                        *i = NULL;
 
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
+    log_info("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
 
   switch (type) {
     case SPELL_TYPE_SPELL:
@@ -2845,7 +2845,7 @@ void cast_animate_dead(char level, struct char_data *ch, char *arg, int type,
       }
       break;
     default:
-      bug("Serious screw-up in animate_dead!");
+      log_error("Serious screw-up in animate_dead!");
       break;
   }
 }
@@ -2854,7 +2854,7 @@ void cast_succor(char level, struct char_data *ch, char *arg, int type,
 		 struct char_data *victim, struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
+    log_info("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
 
   switch (type) {
     case SPELL_TYPE_SPELL:
@@ -2869,7 +2869,7 @@ void cast_paralyze(char level, struct char_data *ch, char *arg, int type,
 		   struct char_data *victim, struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
+    log_info("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
 
   switch (type) {
     case SPELL_TYPE_SPELL:
@@ -2896,7 +2896,7 @@ void cast_paralyze(char level, struct char_data *ch, char *arg, int type,
 	  spell_paralyze(level, ch, victim, 0);
       break;
     default:
-      bug("Serious screw-up in paralyze");
+      log_error("Serious screw-up in paralyze");
       break;
   }
 }
@@ -2905,7 +2905,7 @@ void cast_fear(char level, struct char_data *ch, char *arg, int type, struct cha
 	       struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
+    log_info("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
 
   switch (type) {
     case SPELL_TYPE_SPELL:
@@ -2934,7 +2934,7 @@ void cast_fear(char level, struct char_data *ch, char *arg, int type, struct cha
 	  spell_fear(level, ch, victim, 0);
       break;
     default:
-      bug("Serious screw-up in fear");
+      log_error("Serious screw-up in fear");
       break;
   }
 }
@@ -2943,7 +2943,7 @@ void cast_turn(char level, struct char_data *ch, char *arg, int type, struct cha
 	       struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
+    log_info("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
 
   switch (type) {
     case SPELL_TYPE_SPELL:
@@ -2969,7 +2969,7 @@ void cast_turn(char level, struct char_data *ch, char *arg, int type, struct cha
 	  spell_turn(level, ch, victim, 0);
       break;
     default:
-      bug("Serious screw-up in turn");
+      log_error("Serious screw-up in turn");
       break;
   }
 }
@@ -2978,7 +2978,7 @@ void cast_faerie_fog(char level, struct char_data *ch, char *arg, int type,
 		     struct char_data *victim, struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
+    log_info("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
 
   switch (type) {
     case SPELL_TYPE_SPELL:
@@ -2987,7 +2987,7 @@ void cast_faerie_fog(char level, struct char_data *ch, char *arg, int type,
       spell_faerie_fog(level, ch, 0, 0);
       break;
     default:
-      bug("Serious screw-up in faerie fog!");
+      log_error("Serious screw-up in faerie fog!");
       break;
   }
 }
@@ -3045,7 +3045,7 @@ void cast_poly_self(char level, struct char_data *ch, char *arg, int type,
   struct char_data                       *mob = NULL;
 
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
+    log_info("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
 
   /*
    * one_argument(arg, buffer); 
@@ -3091,7 +3091,7 @@ void cast_poly_self(char level, struct char_data *ch, char *arg, int type,
       break;
 
     default:{
-	bug("Problem in poly_self");
+	log_error("Problem in poly_self");
       }
       break;
   }
@@ -3105,7 +3105,7 @@ void cast_shelter(char level, struct char_data *ch, char *arg, int type,
   struct obj_data                        *sac = NULL;
 
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
+    log_info("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
 
   if (!ch->equipment[HOLD]) {
     cprintf(ch, " You must be holding the component for this spell.\n\r");
@@ -3128,7 +3128,7 @@ void cast_shelter(char level, struct char_data *ch, char *arg, int type,
       spell_shelter(level, ch, ch, sac);
       break;
     default:
-      bug("serious screw-up in shelter.");
+      log_error("serious screw-up in shelter.");
       break;
   }
 }
@@ -3153,7 +3153,7 @@ void cast_minor_creation(char level, struct char_data *ch, char *arg, int type,
   struct obj_data                        *o = NULL;
 
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
+    log_info("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
 
   one_argument(arg, buffer);
 
@@ -3198,7 +3198,7 @@ void cast_minor_creation(char level, struct char_data *ch, char *arg, int type,
       spell_minor_create(level, ch, 0, o);
       break;
     default:
-      bug("serious screw-up in minor_create.");
+      log_error("serious screw-up in minor_create.");
       break;
   }
 
@@ -3224,7 +3224,7 @@ void cast_conjure_elemental(char level, struct char_data *ch, char *arg, int typ
   struct char_data                       *el= NULL;
 
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
+    log_info("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
 
   one_argument(arg, buffer);
 
@@ -3271,7 +3271,7 @@ void cast_conjure_elemental(char level, struct char_data *ch, char *arg, int typ
       spell_conjure_elemental(level, ch, el, sac);
       break;
     default:
-      bug("serious screw-up in conjure_elemental.");
+      log_error("serious screw-up in conjure_elemental.");
       break;
   }
 }
@@ -3300,7 +3300,7 @@ void cast_cacaodemon(char level, struct char_data *ch, char *arg, int type,
   struct char_data                       *el = NULL;
 
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
+    log_info("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
 
   one_argument(arg, buffer);
 
@@ -3353,7 +3353,7 @@ void cast_cacaodemon(char level, struct char_data *ch, char *arg, int type,
       spell_cacaodemon(level, ch, el, sac);
       break;
     default:
-      bug("serious screw-up in conjure_elemental.");
+      log_error("serious screw-up in conjure_elemental.");
       break;
   }
 
@@ -3363,7 +3363,7 @@ void cast_mon_sum1(char level, struct char_data *ch, char *arg, int type,
 		   struct char_data *victim, struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
+    log_info("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
 
   switch (type) {
     case SPELL_TYPE_SPELL:
@@ -3373,7 +3373,7 @@ void cast_mon_sum1(char level, struct char_data *ch, char *arg, int type,
       spell_Create_Monster(5, ch, 0, 0);
       break;
     default:
-      bug("Serious screw-up in monster_summoning_1");
+      log_error("Serious screw-up in monster_summoning_1");
       break;
   }
 }
@@ -3382,7 +3382,7 @@ void cast_mon_sum2(char level, struct char_data *ch, char *arg, int type,
 		   struct char_data *victim, struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
+    log_info("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
 
   switch (type) {
     case SPELL_TYPE_SPELL:
@@ -3392,7 +3392,7 @@ void cast_mon_sum2(char level, struct char_data *ch, char *arg, int type,
       spell_Create_Monster(7, ch, 0, 0);
       break;
     default:
-      bug("Serious screw-up in monster_summoning_1");
+      log_error("Serious screw-up in monster_summoning_1");
       break;
   }
 }
@@ -3401,7 +3401,7 @@ void cast_mon_sum3(char level, struct char_data *ch, char *arg, int type,
 		   struct char_data *victim, struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
+    log_info("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
 
   switch (type) {
     case SPELL_TYPE_SPELL:
@@ -3411,7 +3411,7 @@ void cast_mon_sum3(char level, struct char_data *ch, char *arg, int type,
       spell_Create_Monster(9, ch, 0, 0);
       break;
     default:
-      bug("Serious screw-up in monster_summoning_1");
+      log_error("Serious screw-up in monster_summoning_1");
       break;
   }
 }
@@ -3420,7 +3420,7 @@ void cast_mon_sum4(char level, struct char_data *ch, char *arg, int type,
 		   struct char_data *victim, struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
+    log_info("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
 
   switch (type) {
     case SPELL_TYPE_SPELL:
@@ -3430,7 +3430,7 @@ void cast_mon_sum4(char level, struct char_data *ch, char *arg, int type,
       spell_Create_Monster(11, ch, 0, 0);
       break;
     default:
-      bug("Serious screw-up in monster_summoning_1");
+      log_error("Serious screw-up in monster_summoning_1");
       break;
   }
 }
@@ -3439,7 +3439,7 @@ void cast_mon_sum5(char level, struct char_data *ch, char *arg, int type,
 		   struct char_data *victim, struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
+    log_info("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
 
   switch (type) {
     case SPELL_TYPE_SPELL:
@@ -3449,7 +3449,7 @@ void cast_mon_sum5(char level, struct char_data *ch, char *arg, int type,
       spell_Create_Monster(13, ch, 0, 0);
       break;
     default:
-      bug("Serious screw-up in monster_summoning_1");
+      log_error("Serious screw-up in monster_summoning_1");
       break;
   }
 }
@@ -3458,7 +3458,7 @@ void cast_mon_sum6(char level, struct char_data *ch, char *arg, int type,
 		   struct char_data *victim, struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
+    log_info("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
 
   switch (type) {
     case SPELL_TYPE_SPELL:
@@ -3468,7 +3468,7 @@ void cast_mon_sum6(char level, struct char_data *ch, char *arg, int type,
       spell_Create_Monster(15, ch, 0, 0);
       break;
     default:
-      bug("Serious screw-up in monster_summoning_1");
+      log_error("Serious screw-up in monster_summoning_1");
       break;
   }
 }
@@ -3477,7 +3477,7 @@ void cast_mon_sum7(char level, struct char_data *ch, char *arg, int type,
 		   struct char_data *victim, struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
+    log_info("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
 
   switch (type) {
     case SPELL_TYPE_SPELL:
@@ -3487,7 +3487,7 @@ void cast_mon_sum7(char level, struct char_data *ch, char *arg, int type,
       spell_Create_Monster(17, ch, 0, 0);
       break;
     default:
-      bug("Serious screw-up in monster_summoning_1");
+      log_error("Serious screw-up in monster_summoning_1");
       break;
   }
 }
@@ -3502,7 +3502,7 @@ void cast_fly_group(char level, struct char_data *ch, char *arg, int type,
 		    struct char_data *victim, struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
+    log_info("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
 
   switch (type) {
     case SPELL_TYPE_SPELL:
@@ -3514,7 +3514,7 @@ void cast_fly_group(char level, struct char_data *ch, char *arg, int type,
       spell_fly(level, ch, victim, 0);
       break;
     default:
-      bug("Serious screw-up in fly");
+      log_error("Serious screw-up in fly");
       break;
   }
 }
@@ -3523,7 +3523,7 @@ void cast_aid(char level, struct char_data *ch, char *arg, int type, struct char
 	      struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
-    dlog("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
+    log_info("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
 
   if (!victim)
     victim = ch;
@@ -3536,7 +3536,7 @@ void cast_aid(char level, struct char_data *ch, char *arg, int type, struct char
       spell_aid(level, ch, victim, 0);
       break;
     default:
-      bug("serious screw-up in scare.");
+      log_error("serious screw-up in scare.");
       break;
   }
 }

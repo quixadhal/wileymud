@@ -33,7 +33,7 @@ int                                     number_of_shops = 0;
 int is_ok(struct char_data *keeper, struct char_data *ch, int shop_nr)
 {
   if (DEBUG > 2)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(keeper), SAFE_NAME(ch), shop_nr);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(keeper), SAFE_NAME(ch), shop_nr);
 
   if (shop_index[shop_nr].open1 > time_info.hours) {
     do_say(keeper, "Come back later!", 17);
@@ -68,7 +68,7 @@ int trade_with(struct obj_data *item, int shop_nr)
   int                                     counter = 0;
 
   if (DEBUG > 2)
-    dlog("called %s with %s, %d", __PRETTY_FUNCTION__, SAFE_ONAME(item), shop_nr);
+    log_info("called %s with %s, %d", __PRETTY_FUNCTION__, SAFE_ONAME(item), shop_nr);
 
   if (item->obj_flags.cost < 1)
     return (FALSE);
@@ -84,7 +84,7 @@ int shop_producing(struct obj_data *item, int shop_nr)
   int                                     counter = 0;
 
   if (DEBUG > 2)
-    dlog("called %s with %s, %d", __PRETTY_FUNCTION__, SAFE_ONAME(item), shop_nr);
+    log_info("called %s with %s, %d", __PRETTY_FUNCTION__, SAFE_ONAME(item), shop_nr);
 
   if (item->item_number < 0)
     return (FALSE);
@@ -104,7 +104,7 @@ void shopping_buy(char *arg, struct char_data *ch, struct char_data *keeper, int
   struct obj_data                        *temp1 = NULL;
 
   if (DEBUG > 2)
-    dlog("called %s with %s, %s, %s, %d", __PRETTY_FUNCTION__, VNULL(arg), SAFE_NAME(ch), SAFE_NAME(keeper), shop_nr);
+    log_info("called %s with %s, %s, %s, %d", __PRETTY_FUNCTION__, VNULL(arg), SAFE_NAME(ch), SAFE_NAME(keeper), shop_nr);
 
   if (!(is_ok(keeper, ch, shop_nr)))
     return;
@@ -203,7 +203,7 @@ void shopping_sell(char *arg, struct char_data *ch, struct char_data *keeper, in
   struct obj_data                        *temp1 = NULL;
 
   if (DEBUG > 2)
-    dlog("called %s with %s, %s, %s, %d", __PRETTY_FUNCTION__, VNULL(arg), SAFE_NAME(ch), SAFE_NAME(keeper), shop_nr);
+    log_info("called %s with %s, %s, %s, %d", __PRETTY_FUNCTION__, VNULL(arg), SAFE_NAME(ch), SAFE_NAME(keeper), shop_nr);
 
   if (!(is_ok(keeper, ch, shop_nr)))
     return;
@@ -294,7 +294,7 @@ void shopping_value(char *arg, struct char_data *ch, struct char_data *keeper, i
   struct obj_data                        *temp1 = NULL;
 
   if (DEBUG > 2)
-    dlog("called %s with %s, %s, %s, %d", __PRETTY_FUNCTION__, VNULL(arg), SAFE_NAME(ch), SAFE_NAME(keeper), shop_nr);
+    log_info("called %s with %s, %s, %s, %d", __PRETTY_FUNCTION__, VNULL(arg), SAFE_NAME(ch), SAFE_NAME(keeper), shop_nr);
 
   if (!(is_ok(keeper, ch, shop_nr)))
     return;
@@ -332,7 +332,7 @@ void shopping_list(char *arg, struct char_data *ch, struct char_data *keeper, in
   int                                     found_obj = FALSE;
 
   if (DEBUG > 2)
-    dlog("called %s with %s, %s, %s, %d", __PRETTY_FUNCTION__, VNULL(arg), SAFE_NAME(ch), SAFE_NAME(keeper), shop_nr);
+    log_info("called %s with %s, %s, %s, %d", __PRETTY_FUNCTION__, VNULL(arg), SAFE_NAME(ch), SAFE_NAME(keeper), shop_nr);
 
   if (!(is_ok(keeper, ch, shop_nr)))
     return;
@@ -370,7 +370,7 @@ void shopping_kill(char *arg, struct char_data *ch, struct char_data *keeper, in
   char                                    buf[100] = "\0\0\0";
 
   if (DEBUG > 2)
-    dlog("called %s with %s, %s, %s, %d", __PRETTY_FUNCTION__, VNULL(arg), SAFE_NAME(ch), SAFE_NAME(keeper), shop_nr);
+    log_info("called %s with %s, %s, %s, %d", __PRETTY_FUNCTION__, VNULL(arg), SAFE_NAME(ch), SAFE_NAME(keeper), shop_nr);
 
   switch (shop_index[shop_nr].temper2) {
     case 0:
@@ -396,7 +396,7 @@ int shop_keeper(struct char_data *ch, int cmd, char *arg)
   int                                     shop_nr = 0;
 
   if (DEBUG > 2)
-    dlog("called %s with %s, %d, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), cmd, VNULL(arg));
+    log_info("called %s with %s, %d, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), cmd, VNULL(arg));
 
   for (temp_char = real_roomp(ch->in_room)->people; (!keeper) && (temp_char);
        temp_char = temp_char->next_in_room)
@@ -465,11 +465,11 @@ void boot_the_shops(void)
   FILE                                   *shop_f = NULL;
 
   if (DEBUG > 2)
-    dlog("called %s with no arguments");
+    log_info("called %s with no arguments");
 
   if (!(shop_f = fopen(SHOP_FILE, "r"))) {
-    perror("Error in boot shop\n");
-    exit(0);
+    log_fatal("Error in boot shop\n");
+    proper_exit(MUD_HALT);
   }
   number_of_shops = 0;
 
@@ -528,7 +528,7 @@ void assign_the_shopkeepers(void)
   int                                     temp1 = 0;
 
   if (DEBUG > 2)
-    dlog("called %s with no arguments");
+    log_info("called %s with no arguments");
 
   for (temp1 = 0; temp1 < number_of_shops; temp1++)
     mob_index[shop_index[temp1].keeper].func = shop_keeper;

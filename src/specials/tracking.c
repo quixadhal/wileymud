@@ -28,7 +28,7 @@
  int is_target_room_p(int room, void *tgt_room)
 {
   if (DEBUG > 3)
-    dlog("called %s with %d, %08x", __PRETTY_FUNCTION__, room, tgt_room);
+    log_info("called %s with %d, %08x", __PRETTY_FUNCTION__, room, tgt_room);
 
   return room == (int)tgt_room;
 }
@@ -38,7 +38,7 @@
   char                                   *name = c_data;
 
   if (DEBUG > 3)
-    dlog("called %s with %d, %08x", __PRETTY_FUNCTION__, room, c_data);
+    log_info("called %s with %d, %08x", __PRETTY_FUNCTION__, room, c_data);
 
   return NULL != get_obj_in_list(name, real_roomp(room)->contents);
 }
@@ -48,7 +48,7 @@
   struct char_data                       *scan = NULL;
 
   if (DEBUG > 3)
-    dlog("called %s with %d, %08x", __PRETTY_FUNCTION__, room, c_data);
+    log_info("called %s with %d, %08x", __PRETTY_FUNCTION__, room, c_data);
 
   for (scan = real_roomp(room)->people; scan; scan = scan->next_in_room)
     if (isname(c_data->name, scan->player.name)) {
@@ -69,23 +69,23 @@
 static void donothing(void)
 {
   if (DEBUG > 3)
-    dlog("called %s with no arguments", __PRETTY_FUNCTION__);
+    log_info("called %s with no arguments", __PRETTY_FUNCTION__);
 
   return;
 }
 
- int choose_exit(int in_room, int tgt_room, int depth)
+int choose_exit(int in_room, int tgt_room, int depth)
 {
   if (DEBUG > 3)
-    dlog("called %s with %d, %d, %d", __PRETTY_FUNCTION__, in_room, tgt_room, depth);
+    log_info("called %s with %d, %d, %d", __PRETTY_FUNCTION__, in_room, tgt_room, depth);
 
   return find_path(in_room, is_target_room_p, (void *)tgt_room, depth);
 }
 
- int go_direction(struct char_data *ch, int dir)
+int go_direction(struct char_data *ch, int dir)
 {
   if (DEBUG > 3)
-    dlog("called %s with %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), dir);
+    log_info("called %s with %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), dir);
 
   if (ch->specials.fighting)
     return 0;
@@ -113,7 +113,7 @@ int find_path(int in_room, ifuncp predicate, void *c_data, int depth)
   static struct hash_header               x_room;
 
   if (DEBUG > 2)
-    dlog("called %s with %d, %08x, %d", __PRETTY_FUNCTION__, in_room, c_data, depth);
+    log_info("called %s with %d, %08x, %d", __PRETTY_FUNCTION__, in_room, c_data, depth);
 
   /*
    * If start = destination we are done 
@@ -219,7 +219,7 @@ void MobHunt(struct char_data *ch)
   int                                     k = 0;
 
   if (DEBUG > 2)
-    dlog("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
+    log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
 
   if (ch->persist <= 0) {
     res = choose_exit(ch->in_room, ch->old_room, 2000);
@@ -272,7 +272,7 @@ int dir_track(struct char_data *ch, struct char_data *vict)
   int                                     code = 0;
 
   if (DEBUG > 2)
-    dlog("called %s with %s, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), SAFE_NAME(vict));
+    log_info("called %s with %s, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), SAFE_NAME(vict));
 
   if ((!ch) || (!vict))
     return (-1);
@@ -300,7 +300,7 @@ int track(struct char_data *ch, struct char_data *vict)
   int                                     code = 0;
 
   if (DEBUG > 2)
-    dlog("called %s with %s, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), SAFE_NAME(vict));
+    log_info("called %s with %s, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), SAFE_NAME(vict));
 
   if ((!ch) || (!vict))
     return (-1);
@@ -332,7 +332,7 @@ void do_track(struct char_data *ch, char *argument, int cmd)
   struct hunting_data                     huntd;
 
   if (DEBUG)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
   only_argument(argument, name);
 

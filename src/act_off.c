@@ -47,7 +47,7 @@ void do_swat(struct char_data *ch, char *argument, int cmd)
   struct char_data                       *vict = NULL;
 
   if (DEBUG)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
   if (IS_NPC(ch))
     return;
@@ -78,7 +78,7 @@ void do_hit(struct char_data *ch, char *argument, int cmd)
   struct char_data                       *victim = NULL;
 
   if (DEBUG)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
   if (check_peaceful(ch, "This is a place of peace.\n\r"))
     return;
@@ -119,7 +119,7 @@ void do_kill(struct char_data *ch, char *argument, int cmd)
   struct char_data                       *victim = NULL;
 
   if (DEBUG)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
   /*
    * if ((GetMaxLevel(ch) < GREATER_GOD) || IS_NPC(ch)) 
    */
@@ -162,7 +162,7 @@ void do_backstab(struct char_data *ch, char *argument, int cmd)
   int                                     base = 0;
 
   if (DEBUG)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
   if (check_peaceful(ch, "This is a place of peace.\n\r"))
     return;
@@ -260,7 +260,7 @@ void do_order(struct char_data *ch, char *argument, int cmd)
   struct follow_type                     *k = NULL;
 
   if (DEBUG)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
   half_chop(argument, name, message);
 
@@ -338,7 +338,7 @@ void do_flee(struct char_data *ch, char *argument, int cmd)
   int                                     percent_chance = 0;
 
   if (DEBUG)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
   if (IS_IMMORTAL(ch))					       /* gods should never flee! */
     return;
@@ -448,7 +448,7 @@ void do_bandage(struct char_data *ch, char *argument, int cmd)
   int                                     cost = 0;
 
   if (DEBUG)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
   only_argument(argument, name);
 
@@ -514,7 +514,7 @@ void slam_into_wall(struct char_data *ch, struct room_direction_data *exitp)
   char                                    doorname[128] = "\0\0\0";
 
   if (DEBUG > 2)
-    dlog("called %s with %s, %08x", __PRETTY_FUNCTION__, SAFE_NAME(ch), exitp);
+    log_info("called %s with %s, %08x", __PRETTY_FUNCTION__, SAFE_NAME(ch), exitp);
 
   if (exitp->keyword && *exitp->keyword) {
     if ((strcmp(fname(exitp->keyword), "secret") == 0) || (IS_SET(exitp->exit_info, EX_SECRET))) {
@@ -549,7 +549,7 @@ void do_doorbash(struct char_data *ch, char *argument, int cmd)
   char                                    direction[128] = "\0\0\0";
 
   if (DEBUG)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
   if (GET_MOVE(ch) < 10) {
     cprintf(ch, "You're too tired to do that\n\r");
@@ -688,7 +688,7 @@ void do_bash(struct char_data *ch, char *argument, int cmd)
   int                                     has_shield = FALSE;
 
   if (DEBUG)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
   if (check_peaceful(ch, "This is a place of peace.\n\r"))
     return;
@@ -788,7 +788,7 @@ void do_punch(struct char_data *ch, char *argument, int cmd)
   int                                     cost = 0;
 
   if (DEBUG)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
   if (check_peaceful(ch, "This is a place of peace.\n\r"))
     return;
@@ -878,7 +878,7 @@ void do_rescue(struct char_data *ch, char *argument, int cmd)
   char                                    victim_name[240] = "\0\0\0";
 
   if (DEBUG)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
   if (check_peaceful(ch, "No one should need rescuing here.\n\r"))
     return;
@@ -952,7 +952,7 @@ void do_assist(struct char_data *ch, char *argument, int cmd)
   char                                    victim_name[240] = "\0\0\0";
 
   if (DEBUG)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
   if (check_peaceful(ch, "This is a place of peace.\n\r"))
     return;
@@ -997,7 +997,7 @@ void do_kick(struct char_data *ch, char *argument, int cmd)
   int                                     cost = 0;
 
   if (DEBUG)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
   if (check_peaceful(ch, "This is a place of peace.\n\r"))
     return;
@@ -1070,7 +1070,7 @@ void do_wimp(struct char_data *ch, char *argument, int cmd)
    * sets the character in wimpy mode.  
    */
   if (DEBUG)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
   if (IS_SET(ch->specials.act, PLR_WIMPY)) {
     REMOVE_BIT(ch->specials.act, PLR_WIMPY);
@@ -1093,7 +1093,7 @@ void do_breath(struct char_data *ch, char *argument, int cmd)
   funcp                                   weapon = NULL;
 
   if (DEBUG)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
   if (check_peaceful(ch, "That wouldn't be nice at all.\n\r"))
     return;
@@ -1116,7 +1116,7 @@ void do_breath(struct char_data *ch, char *argument, int cmd)
     for (count = 0; scan->breaths[count]; count++);
 
     if (count < 1) {
-      dlog("monster %s has no breath weapons", ch->player.short_descr);
+      log_info("monster %s has no breath weapons", ch->player.short_descr);
       cprintf(ch, "Why don't you have any breath weapons!?\n\r");
       return;
     }
@@ -1151,7 +1151,7 @@ void do_shoot(struct char_data *ch, char *argument, int cmd)
   struct char_data                       *victim = NULL;
 
   if (DEBUG)
-    dlog("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
   if (check_peaceful(ch, "You feel too peaceful to contemplate violence.\n\r"))
     return;

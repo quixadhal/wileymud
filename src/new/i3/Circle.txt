@@ -1,0 +1,437 @@
+Installation for CircleMud
+--------------------------
+
+1. In the Makefile.in file, find:
+
+#flags for profiling (see hacker.doc for more information)
+PROFILE =
+
+Directly below that, add:
+
+#I3 - Comment out to disable I3 support
+I3 = 1
+
+Below the CXREF_FILES section, add the following:
+   [Note: BSD users - put a period in front of the word ifdef, and in front of the word endif]
+
+ifdef I3
+   CXREF_FILES += i3.c
+   OBJFILES += i3.o
+   CFLAGS += -DI3 -DI3CIRCLE
+endif
+
+Directly below the following:
+
+weather.o: weather.c conf.h sysdep.h structs.h utils.h comm.h handler.h \
+  interpreter.h db.h
+	$(CC) -c $(CFLAGS) weather.c
+
+Add the following:
+
+i3.o: i3.c conf.h sysdep.h structs.h utils.h comm.h db.h handler.h \
+  interpreter.h i3.h i3cfg.h
+	$(CC) -c $(CFLAGS) i3.c
+
+2. Open act.social.c and find the following:
+
+struct social_messg {
+  int act_nr;
+  int hide;
+  int min_victim_position;      /* Position of victim */
+
+  /* No argument was supplied */
+  char *char_no_arg;
+  char *others_no_arg;  
+
+  /* An argument was there, and a victim was found */
+  char *char_found;             /* if NULL, read no further, ignore args */
+  char *others_found;
+  char *vict_found;
+
+  /* An argument was there, but no victim was found */
+  char *not_found;
+
+  /* The victim turned out to be the character */
+  char *char_auto;
+  char *others_auto;
+} *soc_mess_list;
+
+Below that, add the following:
+
+/* For I3 */
+struct social_messg *find_social( const char *name )
+{
+   int cmd, socidx;
+
+   if( ( cmd = find_command( name ) ) < 0 )
+      return NULL;
+
+   if( ( socidx = find_action( cmd ) ) < 0 )
+      return NULL;
+
+   return &soc_mess_list[socidx];
+}
+
+3. Open comm.c and locate the following:
+
+#ifdef HAVE_ARPA_TELNET_H
+#include <arpa/telnet.h>
+#else 
+#include "telnet.h"
+#endif
+
+
+Directly below that, add the following:
+
+#ifdef I3
+#include "i3.h"
+#endif
+
+Locate function init_game, and find the following:
+
+  log("Opening mother connection.");
+  mother_desc = init_socket(port);
+
+  boot_db();
+
+Directly below that, add the following:
+
+#ifdef I3
+   /* Initialize and connect to Intermud-3 */
+   I3_main( FALSE, port, FALSE );
+#endif
+
+Locate the following:
+
+  CLOSE_SOCKET(mother_desc);
+  fclose(player_fl);
+
+Directly below that, add the following:
+
+#ifdef I3
+  I3_shutdown( 0 );
+#endif
+
+Locate game_loop and find the following:
+
+    /* If we missed more than 30 seconds worth of pulses, just do 30 secs */
+    if (missed_pulses > 30 RL_SEC) { 
+      log("SYSERR: Missed %d seconds worth of pulses.", missed_pulses / PASSES_PER_SEC);
+      missed_pulses = 30 RL_SEC;
+    }
+
+Directly below that, add the following:
+
+#ifdef I3
+    I3_loop();
+#endif
+
+*** For Circle 3.1 compatibility only *** - Support conjured by Rogel
+
+In game_loop, find:
+
+   /* Sleep if we don't have any connections */
+   if (descriptor_list == NULL) {
+      log("No connections.  Going to sleep.");
+      FD_ZERO(&input_set);
+      FD_SET(mother_desc, &input_set);
+      if (select(mother_desc + 1, &input_set, (fd_set *) 0, (fd_set *) 0, NULL) < 0) {
+
+Replace with:
+
+    /* Sleep if we don't have any connections */
+    if (descriptor_list == NULL) {
+#ifdef I3
+      int top_desc = this_i3mud != NULL ? MAX( mother_desc, this_i3mud->desc ) : mother_desc;
+#else
+      int top_desc = mother_desc;
+#endif
+      log("No connections.  Going to sleep.");
+      FD_ZERO(&input_set);
+      FD_SET(mother_desc, &input_set);
+#ifdef I3
+      if ( this_i3mud != NULL )
+         FD_SET(this_i3mud->desc, &input_set);
+#endif
+      if (select(top_desc + 1, &input_set, (fd_set *) 0, (fd_set *) 0, NULL) < 0) {
+
+4. Open db.c and find the following:
+
+#include "interpreter.h"
+#include "house.h"
+#include "constants.h"
+
+Directly below that, add:
+
+#ifdef I3
+#include "i3.h"
+#endif
+
+Locate the following:
+
+void log_zone_error(zone_rnum zone, int cmd_no, const char *message);
+void reset_time(void);
+long get_ptable_by_name(char *name);
+
+Directly below that, add the following:
+
+#ifdef I3
+void load_i3_pfile( struct char_data *ch );
+char *i3_fread_word( char *buf, size_t len, FILE *fp );
+#endif
+
+Locate the following:
+
+char *get_name_by_id(long id)
+{
+  int i;
+
+  for (i = 0; i <= top_of_p_table; i++)
+    if (player_table[i].id == id)
+      return (player_table[i].name);
+
+  return (NULL);
+}
+
+Directly below that, add the following:
+
+#ifdef I3
+void save_i3_pfile(struct char_data *ch)
+{
+  FILE *fl;
+  char filename[PATH_MAX];
+  
+#if _CIRCLEMUD < CIRCLEMUD_VERSION(3,0,21)
+  if (!get_filename(GET_PC_NAME(ch), filename, I3_FILE))
+    return;
+#else
+  if (!get_filename(filename, sizeof(filename), I3_FILE, GET_PC_NAME(ch)))
+    return;
+#endif
+
+  if (!(fl = fopen(filename, "w")))
+  {
+    if (errno != ENOENT)
+      log("SYSERR: opening I3 file '%s' for writing: %s", filename, strerror(errno));
+    return;
+  }
+ 
+  i3_savechar(ch, fl);
+  fclose(fl);
+}
+
+void load_i3_pfile(struct char_data *ch)
+{
+  FILE *fl;
+  char filename[PATH_MAX];
+  char word[READ_SIZE];
+  
+#if _CIRCLEMUD < CIRCLEMUD_VERSION(3,0,21)
+  if (!get_filename(GET_PC_NAME(ch), filename, I3_FILE))
+    return;
+#else
+  if (!get_filename(filename, sizeof(filename), I3_FILE, GET_PC_NAME(ch)))
+    return;
+#endif
+  if (!(fl = fopen(filename, "r")))
+  {
+    if (errno != ENOENT)
+      log("SYSERR: opening I3 file '%s' for reading: %s", filename, strerror(errno));
+    return;
+  }
+ 
+  for (;;)
+  {
+    i3_fread_word(word, sizeof(word), fl);
+    if (*word != 'I')
+      break;
+    i3load_char(ch, fl, word);
+  }
+  fclose(fl);
+}
+#endif
+
+Locate the following code in store_to_char:
+
+  /* Add all spell effects */
+  for (i = 0; i < MAX_AFFECT; i++) {
+    if (st->affected[i].type)
+      affect_to_char(ch, &st->affected[i]);
+  }
+
+Directly below that, add:
+
+#ifdef I3
+  i3init_char( ch );
+  load_i3_pfile(ch);
+#endif
+
+Locate the following in char_to_store:
+
+  if (GET_TITLE(ch))
+    strcpy(st->title, GET_TITLE(ch));
+  else
+    *st->title = '\0';
+
+Directly below that, add:
+
+#ifdef I3
+  save_i3_pfile(ch);
+#endif
+
+Locate the following in free_char:
+
+  int i;
+  struct alias_data *a;
+      
+  if (ch->player_specials != NULL && ch->player_specials != &dummy_mob) {
+
+Directly below that, add:
+
+#ifdef I3
+    free_i3chardata( ch );
+#endif
+
+Scroll to the end of db.c and add the following function:
+
+#ifdef I3
+/*
+ * Grab one word, ignoring preceding whitespace. Will
+ * eat a single whitespace immediately after the word.
+ */
+char *i3_fread_word( char *buf, size_t len, FILE *fp )
+{
+   size_t copied = 0;
+   char cur_char;
+
+   if( !buf || len == 0 )
+      return buf;
+
+   *buf = '\0';
+
+   do
+   {
+      cur_char = fgetc( fp );
+   }
+   while( isspace( cur_char ) );
+
+   if( cur_char == EOF )
+      return buf;
+
+   do
+   {
+      buf[copied++] = cur_char;
+      cur_char = fgetc( fp );
+   }
+   while( copied < len && !isspace( cur_char ) && cur_char != EOF );
+
+   return buf;
+}
+#endif
+
+5. Open db.h and locate the following:
+
+#define LIB_PLROBJS     ":plrobjs:"
+#define LIB_PLRALIAS    ":plralias:"
+
+Directly below that, add:
+
+#define LIB_PLRI3      ":plri3:"
+
+Then locate the following:
+
+#define LIB_PLROBJS     "plrobjs/"
+#define LIB_PLRALIAS    "plralias/"
+
+Directly below that, add:
+
+#define LIB_PLRI3      "plri3/"
+
+Then locate the following:
+
+#define SUF_OBJS        "objs"
+#define SUF_TEXT        "text"  
+#define SUF_ALIAS       "alias"
+
+Directly below that, add:
+
+#define SUF_I3 "i3"
+
+6. Open interpreter.c and locate the following:
+
+#include "handler.h"
+#include "mail.h"
+#include "screen.h"
+
+Directly below that, add:
+
+#ifdef I3
+#include "i3.h"
+#endif
+
+Then locate the following in command_interpreter:
+
+  if (*cmd_info[cmd].command == '\n')
+    send_to_char("Huh?!?\r\n", ch);
+
+Change it to read as follows:
+
+  if ( *cmd_info[cmd].command == '\n' )
+#ifdef I3
+  {
+    if( !I3_command_hook(ch, arg, line) )
+#endif
+       send_to_char("WTF?!?\r\n", ch);
+#ifdef I3
+  } 
+#endif
+
+7. Open structs.h and locate the following:
+
+   char *poofin;                /* Description on arrival of a god.     */
+   char *poofout;               /* Description upon a god's exit.       */
+   struct alias_data *aliases;  /* Character's aliases                  */
+   long last_tell;              /* idnum of last tell from              */
+   void *last_olc_targ;         /* olc control                          */
+   int last_olc_mode;           /* olc control                          */
+
+Directly below that, add:
+
+#ifdef I3
+   struct i3char_data *i3chardata;
+#endif
+
+8. Open utils.c and locate the following:
+
+  case ETEXT_FILE:  
+    prefix = LIB_PLRTEXT;
+    suffix = SUF_TEXT;
+    break;
+
+Directly below that, add:
+
+  case I3_FILE:
+    prefix = LIB_PLRI3;
+    suffix = SUF_I3;
+    break;
+
+9. Open utils.h and locate the following:
+
+/* get_filename() */
+#define CRASH_FILE      0
+#define ETEXT_FILE      1
+#define ALIAS_FILE      2
+
+Directly below that, add:
+
+#define I3_FILE        3
+
+10. From the main directory, under lib, make a directory named plri3
+
+Inside the plri3 directory, issue the following command:
+
+mkdir A-E F-J K-O P-T U-Z ZZZ
+
+11. Run your configure script according to the directions that came with Circle.
+
+Return to the main I3.txt file and continue where you left off.
