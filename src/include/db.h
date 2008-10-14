@@ -50,7 +50,6 @@
 #define PASSWD_FILE       "adm/passwd"
 #define PASSWD_NEW        "adm/passwd.new"
 #define PASSWD_OFF        "adm/passwd.off"
-#define BANNED_NAME_FILE  "adm/banned"
 #define RENTCOST_FILE     "adm/rent"
 
 #define DEFAULT_HOME		3001			       /* when a player is created */
@@ -204,7 +203,6 @@ extern char                             class_help[MAX_STRING_LENGTH];
 extern char                             the_story[MAX_STRING_LENGTH];
 extern char                             suicide_warn[MAX_STRING_LENGTH];
 extern char                             suicide_done[MAX_STRING_LENGTH];
-extern char                             banned_names[MAX_STRING_LENGTH];
 
 extern FILE                            *mob_f;
 extern FILE                            *obj_f;
@@ -236,7 +234,8 @@ extern int                              actual_players;
 
 #endif
 
-void                                    boot_db(void);
+void                                    load_db(void);
+void                                    unload_db(void);
 
 #if 0
 void                                    build_player_index(void);

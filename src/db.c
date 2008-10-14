@@ -33,6 +33,7 @@
 #include "multiclass.h"
 #include "board.h"
 #include "interpreter.h"
+#include "ban.h"
 
 #define _DB_C
 #include "db.h"
@@ -73,7 +74,6 @@ char                                    class_help[MAX_STRING_LENGTH] = "\0\0\0"
 char                                    the_story[MAX_STRING_LENGTH] = "\0\0\0";	/* how Wiley was saved */
 char                                    suicide_warn[MAX_STRING_LENGTH] = "\0\0\0";	/* are you sure? */
 char                                    suicide_done[MAX_STRING_LENGTH] = "\0\0\0";	/* goodbye */
-char                                    banned_names[MAX_STRING_LENGTH] = "\0\0\0";	/* dumbfuck asshole and friends */
 
 FILE                                   *mob_f = NULL;	       /* file containing mob prototypes */
 FILE                                   *obj_f = NULL;	       /* obj prototypes */
@@ -107,7 +107,7 @@ int                                     actual_players = 0;
 *  routines for booting the system                                       *
 *********************************************************************** */
 
-void boot_db(void)
+void load_db(void)
 {
   FILE                                   *pfd = NULL;
   char                                    tmpbufx[256] = "\0\0\0";
@@ -155,8 +155,9 @@ void boot_db(void)
   file_to_prompt(SUICIDE_WARN_FILE, suicide_warn);
   log_boot("- Reading suicide result");
   file_to_string(SUICIDE_DONE_FILE, suicide_done);
-  log_boot("- Loading banned name list");
-  file_to_prompt(BANNED_NAME_FILE, banned_names);
+
+  load_bans();
+
   log_boot("- Loading rent mode");
   if (!(pfd = fopen(RENTCOST_FILE, "r"))) {
     log_boot("Default rent cost of 1.0 used.");
@@ -289,6 +290,14 @@ void boot_db(void)
     reset_zone(i);
   reset_q.head = reset_q.tail = 0;
   log_boot("Boot db -- DONE.");
+}
+
+void unload_db(void)
+{
+  if (DEBUG > 1)
+    log_info("called %s with no arguments", __PRETTY_FUNCTION__);
+
+  unload_bans();
 }
 
 /* generate index table for object or monster file */
@@ -1314,7 +1323,7 @@ void reset_zone(int zone)
   if (DEBUG > 2)
     log_info("called %s with %d", __PRETTY_FUNCTION__, zone);
 
-  log_info("Zone Reset - %s (%d-%d)", ZNAME, (zone ? (zone_table[zone - 1].top + 1) : 0),
+  log_reset("Zone Reset - %s (%d-%d)", ZNAME, (zone ? (zone_table[zone - 1].top + 1) : 0),
       zone_table[zone].top);
   for (cmd_no = 0;; cmd_no++) {
     if (DEBUG)
@@ -2128,7 +2137,7 @@ int file_to_prompt(char *name, char *buf)
   *buf = '\0';
 
   if (!(fl = fopen(name, "r"))) {
-    log_error("file-to-string");
+    log_error("file-to-prompt");
     *buf = '\0';
     return (-1);
   }

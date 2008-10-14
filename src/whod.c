@@ -336,6 +336,8 @@ void whod_loop(void)
 	      if (IS_SET(SHOW_SITE, whod_mode)) {
 		if (ch->desc->host != NULL)
 		  sprintf(buf + strlen(buf), "(%s)", ch->desc->host);
+                else if (ch->desc->ip != NULL)
+		  sprintf(buf + strlen(buf), "(%s)", ch->desc->ip);
 	      }
 	      strcat(buf, "\n\r");
 	      WRITE(newdesc, buf);

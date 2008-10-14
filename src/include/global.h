@@ -1131,6 +1131,7 @@ struct descriptor_data {
   int                                     descriptor;	       /* file descriptor for socket */
   long                                    idle_time;	       /* for ilde time duh */
   char                                    host[50];	       /* hostname */
+  char                                    ip[20];	       /* ip address */
   char                                    usr_name[20];	       /* user name */
   char                                    oldpwd[12];	       /* password */
   char                                    pwd[17];	       /* password */

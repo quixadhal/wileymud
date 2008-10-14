@@ -9,6 +9,7 @@
 #define	LOG_AUTH	4
 #define	LOG_KILL	5
 #define	LOG_DEATH	6
+#define	LOG_RESET	7
 
 #ifndef _BUG_C
 extern char * LogNames[];
@@ -55,6 +56,12 @@ extern char * LogNames[];
                    NULL, NULL, 0, \
                    NULL, 0, \
                    (Ch), (Victim), \
+                   GREATER_GOD, (Str), ## __VA_ARGS__ )
+#define log_reset(Str, ...) \
+        bug_logger(LOG_RESET, NULL, \
+                   NULL, NULL, 0, \
+                   NULL, 0, \
+                   NULL, NULL, \
                    GREATER_GOD, (Str), ## __VA_ARGS__ )
 
 void                                    bug_logger(unsigned int Type, const char *BugFile,

@@ -2069,6 +2069,8 @@ void do_who(struct char_data *ch, char *argument, int cmd)
     if (IS_SET(SHOW_SITE, whod_mode)) {
       if (person->desc->host != NULL)
 	sprintf(buf + strlen(buf), "(%s)", person->desc->host);
+      else if (person->desc->ip != NULL)
+	sprintf(buf + strlen(buf), "(%s)", person->desc->ip);
     }
     strcat(buf, "\n\r");
     cprintf(ch, "%s", buf);
@@ -2115,12 +2117,8 @@ void do_users(struct char_data *ch, char *argument, int cmd)
       strcat(line, "\n\r");
     }
 
-    if (flag) {
-      if (d->host)
-	sprintf(line + strlen(line), "[%s@%s]\n\r", d->username, d->host);
-      else
-	strcat(line, "[Hostname unknown]\n\r");
-    }
+    if (flag)
+      sprintf(line + strlen(line), "[%s@%s/%s]\n\r", d->username, d->host ? d->host: "unknown", d->ip ? d-> ip : "unknown");
     if (flag)
       strcat(buf, line);
   }

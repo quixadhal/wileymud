@@ -78,7 +78,11 @@ void                                    close_sockets(int s);
 void                                    close_socket(struct descriptor_data *d);
 void                                    nonblock(int s);
 
+void                                    socket_printf(int desc, char *Str, ...)
+                                                 __attribute__ ( ( format( printf, 2, 3 ) ) );
 void                                    dcprintf(struct descriptor_data *d, char *Str, ...)
+                                                 __attribute__ ( ( format( printf, 2, 3 ) ) );
+void                                    page_printf(struct descriptor_data *d, char *Str, ...)
                                                  __attribute__ ( ( format( printf, 2, 3 ) ) );
 void                                    cprintf(struct char_data *ch, char *Str, ...)
                                                  __attribute__ ( ( format( printf, 2, 3 ) ) );

@@ -726,3 +726,23 @@ global.h:1144: warning: function declaration isn't a prototype
 	Added log_fatal(), log_boot(), and log_auth().
   0728	Added log_kill() and log_death().
 	Added a proper_exit() function and changed ALL cases of abort() or exit() to use it.
+080924	Quixadhal
+  1314	Added a log_reset type and converted the zone reset functions to use it.
+	This should help reduce space, since you can now filter them out.
+080928	Quixadhal
+  1730	Fixed a bug I introduced with the log_reset addition, oops.
+	Totally removed and rewrote my SQL code.  It works the same, but we're now using
+	ECPG to pre-process embedded SQL statements, right in the code.  You'll want to add
+
+	au! BufRead,BufNewFile *.pgc    set filetype=esqlc
+
+	to your .vimrc file so you can get syntax highlighting on your new .pgc files.
+	For now, you edit the .pgc file and it generates a .c file to compile... At some point,
+	I'll muck with the makefile to keep things tidy.
+081002	Quixadhal
+  1432	Working with ban system to integrate SQL and add do_ban/do_unban commands.
+	Modified check_playing() so you can pass it a NULL descriptor... if we're just checking
+	a name, we don't have a character structure to compare against, but we still want to loop
+	through all the existing descriptors to compare their character names.
+  1533	Got ban system working with do_ban and do_unban adding and removing names on the fly.
+	IP Address banning is not yet implemented.

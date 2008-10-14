@@ -3061,10 +3061,10 @@ void do_reset(struct char_data *ch, char *argument, int cmd)
   }
   if (start != finish) {
     cprintf(ch, "You have reset Zones %d through %d.\n\r", start, finish);
-    log_info("Reset of Zones [#%d] to [#%d] by %s.", start, finish, GET_NAME(ch));
+    log_reset("Reset of Zones [#%d] to [#%d] by %s.", start, finish, GET_NAME(ch));
   } else {
     cprintf(ch, "You have reset Zone %d.\n\r", start);
-    log_info("Reset of Zone [#%d] by %s.", start, GET_NAME(ch));
+    log_reset("Reset of Zone [#%d] by %s.", start, GET_NAME(ch));
   }
 }
 
@@ -3135,10 +3135,10 @@ void do_zone_purge(struct char_data *ch, char *argument, int cmd)
   hash_iterate(&room_db, (funcp)zone_purge_effect, zones);
   if (zones[0] != zones[1]) {
     cprintf(ch, "You have cleaned Zones %d through %d.\n\r", zones[0], zones[1]);
-    log_info("Purge of Zones [#%d] to [#%d] by %s.", zones[0], zones[1], GET_NAME(ch));
+    log_reset("Purge of Zones [#%d] to [#%d] by %s.", zones[0], zones[1], GET_NAME(ch));
   } else {
     cprintf(ch, "You have cleaned Zone %d.\n\r", zones[0]);
-    log_info("Purge of Zone [#%d] by %s.", zones[0], GET_NAME(ch));
+    log_reset("Purge of Zone [#%d] by %s.", zones[0], GET_NAME(ch));
   }
 }
 

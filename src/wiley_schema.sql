@@ -5,12 +5,6 @@
 -- can appear in the logfile table.
 --
 
---   LOG_NORMAL, LOG_ALWAYS, LOG_NEVER, LOG_BUILD, LOG_HIGH, LOG_COMM,
---   LOG_WARN, LOG_ALL
-
--- CHANNEL_LOG, CHANNEL_HIGHGOD, CHANNEL_BUILD, CHANNEL_HIGH,
--- CHANNEL_COMM, CHANNEL_AUTH
-
 CREATE TABLE log_types (
   log_type_id		INTEGER NOT NULL PRIMARY KEY,
   name			TEXT NOT NULL UNIQUE,
@@ -30,6 +24,7 @@ COPY log_types (log_type_id, name, description) FROM stdin;
 4	AUTH	Login events
 5	KILL	Player or NPC killed something
 6	DEATH	Player or NPC died to something
+7	RESET	Zone reset messages go here
 \.
 
 --
@@ -73,4 +68,22 @@ COMMENT ON COLUMN	logfile.log_npc_victim			IS 'Mobile that the event happened to
 COMMENT ON COLUMN	logfile.log_obj				IS 'Object which caused the error';
 COMMENT ON COLUMN	logfile.log_area			IS 'Area the actor was in when the error happened';
 COMMENT ON COLUMN	logfile.log_room			IS 'Room the actor was in when the error happened';
+
+CREATE INDEX ix_logfile_date ON logfile (log_date);
+
+CREATE VIEW log_today AS 
+       SELECT   to_char(date_trunc('second', log_date), 'HH24:MI:SS') AS log_date, log_types.name AS log_type, log_entry
+       FROM     logfile join log_types USING (log_type_id)
+       WHERE    logfile.log_date > now() - interval '1 day'
+       ORDER BY logfile.log_date DESC;
+
+CREATE TABLE banned (
+  banned_name		TEXT,
+  banned_ip		INET UNIQUE,
+  banned_by		TEXT DEFAULT 'SYSTEM',
+  banned_date		TIMESTAMP DEFAULT now()
+);
+
+CREATE INDEX ix_banned_name on banned (banned_name); 
+CREATE UNIQUE INDEX ix_banned_name_lc on banned (lower(banned_name)); 
 

@@ -21,7 +21,7 @@
 #define MAX_CMD_LIST 288
 
 /* Here we Go!  The monster command list.... ewwwwwww! */
-/* 282 is the current maximum */
+/* 284 is the current maximum */
 #define CMD_EMOTE	214
 #define CMD_GTELL	177
 #define CMD_INTERNAL	0				       /* NOT initiated from the command line */
@@ -39,7 +39,8 @@
 #define CMD_at		85
 #define CMD_backstab	154
 #define CMD_balance	221
-#define CMD_bandage	264
+#define CMD_ban		264
+#define CMD_bandage	283
 #define CMD_bash	157
 #define CMD_beg		178				       /* social */
 #define CMD_bleed	179				       /* social */
@@ -272,6 +273,7 @@
 #define CMD_transfer	48
 #define CMD_twiddle	142				       /* social */
 #define CMD_typo	81
+#define CMD_unban	284
 #define CMD_unlock	102
 #define CMD_up		5
 #define CMD_use		172
@@ -349,6 +351,5 @@ void                                    nanny(struct descriptor_data *d, char *a
 void                                    update_player_list_entry(struct descriptor_data *ch);
 void                                    PutPasswd(struct descriptor_data *d);
 int                                     ValidPlayer(char *who, char *pwd, char *oldpwd);
-int                                     banned_name(char *ack_name);
 
 #endif

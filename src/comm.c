@@ -196,7 +196,7 @@ int main(int argc, char **argv)
 
   if (init_sql()) {
     log_boot("Connected to database!");
-    log_boot("%s\n", version_pgsql());
+    log_boot("%s\n", version_sql());
   } else {
     log_fatal("%s\n", "Couldn't open Database Connection!  Aborting!");
     return MUD_HALT;
@@ -224,7 +224,7 @@ int run_the_game(int port)
 
   log_boot("Opening mother connection.");
   s = init_socket(port);
-  boot_db();
+  load_db();
 
   init_whod(port);
   log_boot("Entering game loop.");
@@ -233,6 +233,7 @@ int run_the_game(int port)
   close_sockets(s);
   close_whod();
 
+  unload_db();
   if (diku_reboot) {
     log_boot("Rebooting.");
     return MUD_REBOOT;
@@ -260,6 +261,10 @@ void game_loop(int s)
   struct room_data                       *rm = NULL;
   struct char_data                       *mount = NULL;
   int                                     mask = 0;
+  /*
+   * sigset_t				  newmask;
+   * sigset_t				  oldmask;
+   */
 
   if (DEBUG > 1)
     log_info("called %s with %d", __PRETTY_FUNCTION__, s);
@@ -304,6 +309,8 @@ void game_loop(int s)
       last_time.tv_usec -= 1000000;
       last_time.tv_sec++;
     }
+
+    /* sigprocmask(SIG_SETMASK, newmask, oldmask); */
     sigsetmask(mask);
     whod_loop();
     if (select(maxdesc + 1, &input_set, &output_set, &exc_set, &null_time) < 0) {
@@ -317,6 +324,7 @@ void game_loop(int s)
        */
     }
     sigsetmask(0);
+    /* sigprocmask(SIG_SETMASK, oldmask, NULL); */
 
     /*
      * Respond to whatever might be happening 
@@ -361,7 +369,7 @@ void game_loop(int s)
 	  char_to_room(point->character, point->character->specials.was_in_room);
 	  point->character->specials.was_in_room = NOWHERE;
 	  act("$n has returned.", TRUE, point->character, 0, 0, TO_ROOM);
-          log_auth(point->character, "RECONNECTED %s (%s@%s)!", GET_NAME(point->character), point->username, point->host);
+          log_auth(point->character, "RECONNECTED %s (%s@%s/%s)!", GET_NAME(point->character), point->username, point->host, point->ip);
 	}
 	point->wait = 1;
 	if (point->character)
@@ -700,9 +708,11 @@ int new_descriptor(int s)
     "\n"
   };
 
+/*
   char                                   *bannished[] = {
     "\n"
   };
+*/
 
   if (DEBUG > 2)
     log_info("called %s with %d", __PRETTY_FUNCTION__, s);
@@ -730,7 +740,7 @@ int new_descriptor(int s)
   CREATE(newd, struct descriptor_data, 1);
 
   remote_port = ntohs(isa.sin_port);
-  remote_addr = isa.sin_addr.s_addr;
+  remote_addr = htonl(isa.sin_addr.s_addr);
 
   newd->username[0] = '\0';
 #ifdef RFC1413
@@ -746,11 +756,13 @@ int new_descriptor(int s)
   if (!newd->username[0])
     strcpy(newd->username, "adork");
 
-  if (!(host = gethostbyaddr((char *)&remote_addr, sizeof(remote_addr), AF_INET)))
-    sprintf(newd->host, "%u.%u.%u.%u",
-	    (int)(((char *)&remote_addr)[0]) & 255, (int)(((char *)&remote_addr)[1]) & 255,
-	    (int)(((char *)&remote_addr)[2]) & 255, (int)(((char *)&remote_addr)[3]) & 255);
-  else
+  sprintf(newd->ip, "%lu.%lu.%lu.%lu",
+	  (remote_addr & 0xff000000) >> 24,
+	  (remote_addr & 0x00ff0000) >> 16,
+	  (remote_addr & 0x0000ff00) >> 8,
+	  (remote_addr & 0x000000ff) >> 0);
+
+  if (host = gethostbyaddr((char *)&isa.sin_addr, sizeof(isa.sin_addr), AF_INET))
     strncpy(newd->host, host->h_name, 49);
 
   /*
@@ -794,35 +806,32 @@ int new_descriptor(int s)
 
   if (((t_info->tm_hour + 1) > 8) && ((t_info->tm_hour + 1) < 21))
     for (desc_index = 0; timed_con[desc_index] != "\n"; desc_index++) {
-      if (!strncmp(timed_con[desc_index], newd->host, 49)) {
-	log_info("TIMED site connecting:%s\n", newd->host);
-	sprintf(buf, "\n\rThis site is blocked from : 9 am - 9 pm\n\r");
-	write_to_descriptor(desc, buf);
-	sprintf(buf, "You may connect after 9 pm from :[%s]\n\r", newd->host);
-	write_to_descriptor(desc, buf);
+      if (!strncmp(timed_con[desc_index], newd->ip, 19)) {
+	log_info("TIMED site connecting:%s", newd->ip);
+	socket_printf(desc, "\n\rYour site is blocked from: 9 am - 9 pm EST\n\r");
+	socket_printf(desc, "You may connect after 9 pm from: [%s]\n\r", newd->ip);
 	maxdesc = old_maxdesc;
 	DESTROY(newd);
 	close(desc);
 	return (0);
       }
     }
-  for (desc_index = 0; bannished[desc_index] != "\n"; desc_index++) {
-    if (!strncmp(bannished[desc_index], newd->host, 49)) {
-      log_info("BANNISHED site connecting:%s\n", newd->host);
-      sprintf(buf, "\n\rDue to your System Administrators request, or for some\n\r");
-      write_to_descriptor(desc, buf);
-      sprintf(buf, "other reason, we are refusing all connections from:[%s]\n\r", newd->host);
-      write_to_descriptor(desc, buf);
+  /* for (desc_index = 0; bannished[desc_index] != "\n"; desc_index++) { */
+    /* if (!strncmp(bannished[desc_index], newd->ip, 19)) */
+    if (banned_ip(newd->ip)) {
+      log_info("BAN site connecting: %s", newd->ip);
+      socket_printf(desc, "\n\rYour site has been blocked by administrative request.\n\r");
+      socket_printf(desc, "We are refusing all connections from: [%s]\n\r", newd->ip);
       maxdesc = old_maxdesc;
       DESTROY(newd);
       close(desc);
       return (0);
     }
-  }
+  /* } */
 
   descriptor_list = newd;
-  SEND_TO_Q(greetings, newd);
-  SEND_TO_Q("By what name do you wish to be known? ", newd);
+  dcprintf(newd, greetings);
+  dcprintf(newd, "By what name do you wish to be known? ");
   return (0);
 }
 
@@ -1043,7 +1052,7 @@ void close_socket(struct descriptor_data *d)
       do_save(d->character, "", 0);
       act("$n has lost $s link.", TRUE, d->character, 0, 0, TO_ROOM);
       /* log_info("Closing link to: %s.", GET_NAME(d->character)); */
-      log_auth(d->character, "LINKDEAD %s (%s@%s)!", GET_NAME(d->character), d->username, d->host);
+      log_auth(d->character, "LINKDEAD %s (%s@%s/%s)!", GET_NAME(d->character), d->username, d->host, d->ip);
       if (IS_NPC(d->character)) {
 	if (d->character->desc)
 	  d->character->orig = d->character->desc->original;
@@ -1052,7 +1061,7 @@ void close_socket(struct descriptor_data *d)
     } else {
       if (GET_NAME(d->character)) {
 	/* log_info("Losing player: %s.", GET_NAME(d->character)); */
-        log_auth(d->character, "GOODBYE %s (%s@%s)!", GET_NAME(d->character), d->username, d->host);
+        log_auth(d->character, "GOODBYE %s (%s@%s/%s)!", GET_NAME(d->character), d->username, d->host, d->ip);
       }
       free_char(d->character);
       d->character = NULL; /* need to wipe this out so we don't pick at it! */
@@ -1095,6 +1104,26 @@ void nonblock(int s)
  */
 
 /*
+ * This is a varargs routine that acts as an interface to
+ * he direct socket output method, write_to_descriptor().
+ */
+void socket_printf(int desc, char *Str, ...)
+{
+  va_list                                 arg;
+  char                                    Result[MAX_STRING_LENGTH];
+
+  if (Str && *Str) {
+    bzero(Result, MAX_STRING_LENGTH);
+    va_start(arg, Str);
+    vsprintf(Result, Str, arg);
+    va_end(arg);
+    write_to_descriptor(desc, Result);
+    if (DEBUG > 2)
+      log_info("called %s with %d, %s, result of %s", __PRETTY_FUNCTION__, desc, VNULL(Str), Result);
+  }
+}
+
+/*
  * This acts as an interface to write_to_q(), but it uses variable arguments
  * to eliminate multiple calls to sprintf().
  */
@@ -1109,6 +1138,26 @@ void dcprintf(struct descriptor_data *d, char *Str, ...)
     vsprintf(Result, Str, arg);
     va_end(arg);
     write_to_q(Result, &d->output);
+    if (DEBUG > 2)
+      log_info("called %s with %08x, %s, result of %s", __PRETTY_FUNCTION__, d, VNULL(Str), Result);
+  }
+}
+
+/*
+ * This acts as an interface to page_string(), but it uses variable arguments
+ * to eliminate multiple calls to sprintf().
+ */
+void page_printf(struct descriptor_data *d, char *Str, ...)
+{
+  va_list                                 arg;
+  char                                    Result[MAX_STRING_LENGTH];
+
+  if (Str && *Str && d) {
+    bzero(Result, MAX_STRING_LENGTH);
+    va_start(arg, Str);
+    vsprintf(Result, Str, arg);
+    va_end(arg);
+    page_string(d, Result, 1);
     if (DEBUG > 2)
       log_info("called %s with %08x, %s, result of %s", __PRETTY_FUNCTION__, d, VNULL(Str), Result);
   }

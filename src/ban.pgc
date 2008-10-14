@@ -1,0 +1,413 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stdarg.h>
+#include <assert.h>
+
+#include "global.h"
+#include "utils.h"
+#include "comm.h"
+#include "bug.h"
+
+#define __BAN_C__
+#include "ban.h"
+
+EXEC SQL INCLUDE sqlca;
+
+static char                                    old_banned_names[MAX_STRING_LENGTH] = "\0\0\0";	/* dumbfuck asshole and friends */
+EXEC SQL BEGIN DECLARE SECTION;
+static char                                  **banned_names = NULL;
+static char                                  **banned_ips = NULL;
+EXEC SQL END DECLARE SECTION;
+static int                                     banned_names_count = 0;
+static int                                     banned_ips_count = 0;
+
+/*
+ * Make sure they are not being stupid.
+ */
+int old_banned_name(char *name)
+{
+  char                                    ack[MAX_STRING_LENGTH] = "\0\0\0";
+  char                                   *pfft = NULL;
+
+  if (DEBUG > 2)
+    log_info("called %s with %s", __PRETTY_FUNCTION__, VNULL(name));
+
+  strcpy(ack, old_banned_names);
+  if (!(pfft = (char *)strtok(ack, " \t\n\r")))
+    return FALSE;
+  if (!strcasecmp(pfft, name))
+    return TRUE;
+  while ((pfft = (char *)strtok(NULL, " \t\n\r"))) {
+    if (!strcasecmp(pfft, name))
+      return TRUE;
+  }
+  return FALSE;
+}
+
+int banned_name(char *name)
+{
+/*
+EXEC SQL BEGIN DECLARE SECTION;
+  int is_banned = 0;
+  char check_name[MAX_STRING_LENGTH] = "\0\0\0";
+EXEC SQL END DECLARE SECTION;
+*/
+
+  int i;
+
+  if (DEBUG > 2)
+    log_info("called %s with %s", __PRETTY_FUNCTION__, VNULL(name));
+
+  if (banned_names_count < 1)
+    return FALSE;
+
+  for(i = 0; i < banned_names_count; i++) {
+    if (!str_cmp(banned_names[i], name))
+      return TRUE;
+  }
+
+  return FALSE;
+
+/*
+  strcpy(check_name, name);
+  EXEC SQL SELECT 1
+             INTO :is_banned
+             FROM banned
+            WHERE lower(banned_name) = lower(:check_name)
+              AND banned_ip IS NULL;
+  if (sqlca.sqlcode < 0) {
+    fprintf(stderr, "error code %ld, message %s, rows %ld, warning %c\n",
+            sqlca.sqlcode, sqlca.sqlerrm.sqlerrmc, sqlca.sqlerrd[2],
+            sqlca.sqlwarn[0]);
+  }
+
+  return is_banned;
+*/
+}
+
+int banned_ip(char *ip)
+{
+/*
+EXEC SQL BEGIN DECLARE SECTION;
+  int is_banned = 0;
+  char check_ip[MAX_STRING_LENGTH] = "\0\0\0";
+EXEC SQL END DECLARE SECTION;
+*/
+
+  int i;
+
+  if (DEBUG > 2)
+    log_info("called %s with %s", __PRETTY_FUNCTION__, VNULL(ip));
+
+  if (banned_ips_count < 1)
+    return FALSE;
+
+  for(i = 0; i < banned_ips_count; i++) {
+    if (!str_cmp(banned_ips[i], ip))
+      return TRUE;
+  }
+
+  return FALSE;
+
+/*
+  strcpy(check_ip, ip);
+  EXEC SQL SELECT 1
+             INTO :is_banned
+             FROM banned
+            WHERE host(banned_ip) = lower(:check_ip)
+              AND banned_name IS NULL;
+  if (sqlca.sqlcode < 0) {
+    fprintf(stderr, "error code %ld, message %s, rows %ld, warning %c\n",
+            sqlca.sqlcode, sqlca.sqlerrm.sqlerrmc, sqlca.sqlerrd[2],
+            sqlca.sqlwarn[0]);
+  }
+
+  return is_banned;
+*/
+}
+
+void load_bans(void)
+{
+  /* Only load from the file if it's newer than our SQL data */
+  if( compare_dates_file_sql( BANNED_NAME_FILE, "banned", "banned_date" ) > 0 ) {
+    log_boot("- Loading banned name list from file");
+    file_to_prompt(BANNED_NAME_FILE, old_banned_names);
+    bans_to_sql();
+  }
+
+  log_boot("- Loading banned name list from SQL");
+  EXEC SQL SELECT banned_name
+             INTO :banned_names
+             FROM banned
+            WHERE banned_ip IS NULL
+         ORDER BY banned_name;
+  if (sqlca.sqlcode < 0) {
+    fprintf(stderr, "error code %ld, message %s, rows %ld, warning %c\n",
+            sqlca.sqlcode, sqlca.sqlerrm.sqlerrmc, sqlca.sqlerrd[2],
+            sqlca.sqlwarn[0]);
+  } else {
+    banned_names_count = sqlca.sqlerrd[2]; /* row count */
+  }
+
+  log_boot("- Loading banned ip list from SQL");
+  EXEC SQL SELECT host(banned_ip)
+             INTO :banned_ips
+             FROM banned
+            WHERE banned_name IS NULL
+         ORDER BY banned_ip;
+  if (sqlca.sqlcode < 0) {
+    fprintf(stderr, "error code %ld, message %s, rows %ld, warning %c\n",
+            sqlca.sqlcode, sqlca.sqlerrm.sqlerrmc, sqlca.sqlerrd[2],
+            sqlca.sqlwarn[0]);
+  } else {
+    banned_ips_count = sqlca.sqlerrd[2]; /* row count */
+  }
+
+}
+
+void unload_bans(void)
+{
+  if(banned_names) {
+    log_boot("- Unloading banned name list");
+    free(banned_names);
+    banned_names = NULL;
+    banned_names_count = 0;
+  }
+  if(banned_ips) {
+    log_boot("- Unloading banned ip list");
+    free(banned_ips);
+    banned_ips = NULL;
+    banned_ips_count = 0;
+  }
+}
+
+void bans_to_sql(void)
+{
+EXEC SQL BEGIN DECLARE SECTION;
+  char                                    tmp[MAX_STRING_LENGTH];
+EXEC SQL END DECLARE SECTION;
+  char                                    ack[MAX_STRING_LENGTH] = "\0\0\0";
+  char                                   *pfft = NULL;
+
+  strcpy(ack, old_banned_names);
+  pfft = (char *)strtok(ack, " \t\n\r");
+  while(pfft) {
+    strcpy(tmp, pfft);
+    EXEC SQL BEGIN WORK;
+    EXEC SQL INSERT INTO banned ( banned_name ) VALUES ( :tmp );
+    if (sqlca.sqlcode < 0) {
+      fprintf(stderr, "error code %ld, message %s, rows %ld, warning %c\n",
+             sqlca.sqlcode, sqlca.sqlerrm.sqlerrmc, sqlca.sqlerrd[2],
+             sqlca.sqlwarn[0]);
+      EXEC SQL ROLLBACK WORK;
+    } else {
+      EXEC SQL COMMIT WORK;
+    }
+    pfft = (char *)strtok(NULL, " \t\n\r");
+  }
+}
+
+void do_ban(struct char_data *ch, char *argument, int cmd)
+{
+  char                                    ban_type[MAX_STRING_LENGTH] = "\0\0\0";
+  int                                     i = 0;
+EXEC SQL BEGIN DECLARE SECTION;
+  char                                    buf[MAX_STRING_LENGTH] = "\0\0\0";
+EXEC SQL END DECLARE SECTION;
+
+  if (DEBUG)
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+
+  if (IS_NPC(ch)) {
+    cprintf(ch, "You're a mob, you can't ban anyone.\n\r");
+    return;
+  }
+  if (argument && *argument) {
+    argument = one_argument(argument, ban_type);
+    only_argument(argument, buf);
+    if (*ban_type) {
+      if (!str_cmp(ban_type, "name")) {
+        if (*buf) {
+          /* First, we need to make sure it isn't already a mob or player.
+           * then we can try adding it to the ban table.
+           */
+          if(!acceptable_name(buf)) {
+            cprintf(ch, "%s is already an invalid choice.\n\r", buf);
+            return;
+          }
+          /* Now, we can actually do the ban. */
+          EXEC SQL BEGIN WORK;
+          EXEC SQL INSERT INTO banned ( banned_name ) VALUES ( :buf );
+          if (sqlca.sqlcode < 0) {
+            fprintf(stderr, "error code %ld, message %s, rows %ld, warning %c\n",
+                   sqlca.sqlcode, sqlca.sqlerrm.sqlerrmc, sqlca.sqlerrd[2],
+                   sqlca.sqlwarn[0]);
+            EXEC SQL ROLLBACK WORK;
+          } else {
+            EXEC SQL COMMIT WORK;
+            cprintf(ch, "%s is now banned!\n\r", buf);
+            log_auth(ch, "BAN %s has been banned by %s!", buf, GET_NAME(ch));
+          }
+          /* Now we need to refresh the ban lists */
+          unload_bans();
+          load_bans();
+          return;
+        } else {
+          page_printf(ch->desc, "Banned names:\n\r");
+          for(i = 0; i < banned_names_count; i++) {
+            page_printf(ch->desc, "%-20s\n\r", banned_names[i]);
+          }
+          return;
+        }
+      } else if (!str_cmp(ban_type, "ip") || !str_cmp(ban_type, "address") || !str_cmp(ban_type, "site")) {
+        if (*buf) {
+          /* No banning localhost! */
+          if(!str_cmp("127.0.0.1", buf)) {
+            cprintf(ch, "You cannot ban localhost!\n\r");
+            return;
+          }
+          /* Now, we can actually do the ban. */
+          EXEC SQL BEGIN WORK;
+          EXEC SQL INSERT INTO banned ( banned_ip ) VALUES ( :buf );
+          if (sqlca.sqlcode < 0) {
+            fprintf(stderr, "error code %ld, message %s, rows %ld, warning %c\n",
+                   sqlca.sqlcode, sqlca.sqlerrm.sqlerrmc, sqlca.sqlerrd[2],
+                   sqlca.sqlwarn[0]);
+            EXEC SQL ROLLBACK WORK;
+          } else {
+            EXEC SQL COMMIT WORK;
+            cprintf(ch, "%s is now banned!\n\r", buf);
+            log_auth(ch, "BAN %s has been banned by %s!", buf, GET_NAME(ch));
+          }
+          /* Now we need to refresh the ban lists */
+          unload_bans();
+          load_bans();
+          return;
+        } else {
+          page_printf(ch->desc, "Banned IP addresses:\n\r");
+          for(i = 0; i < banned_ips_count; i++) {
+            page_printf(ch->desc, "%-20s\n\r", banned_ips[i]);
+          }
+          return;
+        }
+      }
+    }
+  }
+  cprintf(ch, "Usage: ban < name|ip > [ name|address ]\n\r");
+}
+
+void do_unban(struct char_data *ch, char *argument, int cmd)
+{
+  char                                    ban_type[MAX_STRING_LENGTH] = "\0\0\0";
+  int                                     i = 0;
+EXEC SQL BEGIN DECLARE SECTION;
+  char                                    buf[MAX_STRING_LENGTH] = "\0\0\0";
+EXEC SQL END DECLARE SECTION;
+
+  if (DEBUG)
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+
+  if (IS_NPC(ch)) {
+    cprintf(ch, "You're a mob, you can't ban anyone.\n\r");
+    return;
+  }
+  if (argument && *argument) {
+    argument = one_argument(argument, ban_type);
+    only_argument(argument, buf);
+    if (*ban_type) {
+      if (!str_cmp(ban_type, "name")) {
+        if (*buf) {
+          /* Are they actually banned? */
+          if(!banned_name(buf)) {
+            cprintf(ch, "%s is not currently banned.\n\r", buf);
+            return;
+          }
+          /* OK, yank 'em. */
+          EXEC SQL BEGIN WORK;
+          EXEC SQL DELETE FROM banned WHERE lower(banned_name) = lower(:buf);
+          if (sqlca.sqlcode < 0) {
+            fprintf(stderr, "error code %ld, message %s, rows %ld, warning %c\n",
+                   sqlca.sqlcode, sqlca.sqlerrm.sqlerrmc, sqlca.sqlerrd[2],
+                   sqlca.sqlwarn[0]);
+            EXEC SQL ROLLBACK WORK;
+          } else {
+            EXEC SQL COMMIT WORK;
+            cprintf(ch, "%s is now unbanned.\n\r", buf);
+            log_auth(ch, "BAN %s has been unbanned by %s!", buf, GET_NAME(ch));
+          }
+          /* Now we need to refresh the ban lists */
+          unload_bans();
+          load_bans();
+          return;
+        } else {
+          page_printf(ch->desc, "Banned names:\n\r");
+          for(i = 0; i < banned_names_count; i++) {
+            page_printf(ch->desc, "%-20s\n\r", banned_names[i]);
+          }
+          return;
+        }
+      } else if (!str_cmp(ban_type, "ip") || !str_cmp(ban_type, "address") || !str_cmp(ban_type, "site")) {
+        if (*buf) {
+          /* Are they actually banned? */
+          if(!banned_ip(buf)) {
+            cprintf(ch, "%s is not currently banned.\n\r", buf);
+            return;
+          }
+          /* OK, yank 'em. */
+          EXEC SQL BEGIN WORK;
+          EXEC SQL DELETE FROM banned WHERE host(banned_ip) = lower(:buf);
+          if (sqlca.sqlcode < 0) {
+            fprintf(stderr, "error code %ld, message %s, rows %ld, warning %c\n",
+                   sqlca.sqlcode, sqlca.sqlerrm.sqlerrmc, sqlca.sqlerrd[2],
+                   sqlca.sqlwarn[0]);
+            EXEC SQL ROLLBACK WORK;
+          } else {
+            EXEC SQL COMMIT WORK;
+            cprintf(ch, "%s is now unbanned.\n\r", buf);
+            log_auth(ch, "BAN %s has been unbanned by %s!", buf, GET_NAME(ch));
+          }
+          /* Now we need to refresh the ban lists */
+          unload_bans();
+          load_bans();
+          return;
+        } else {
+          page_printf(ch->desc, "Banned IP addresses:\n\r");
+          for(i = 0; i < banned_ips_count; i++) {
+            page_printf(ch->desc, "%-20s\n\r", banned_ips[i]);
+          }
+          return;
+        }
+      }
+    }
+  }
+  cprintf(ch, "Usage: unban < name|ip > [ name|address ]\n\r");
+}
+
+/* Returns TRUE if this character name would be acceptable for a
+ * new player.
+ * Returns FALSE if it fails any checks, including being an
+ * already existing character or mob, an illegal name, banned, etc.
+ */
+int acceptable_name( char *name )
+{
+  char                                    tmp_name[20] = "\0\0\0";
+  struct char_file_u                      tmp_store;
+
+  if (!valid_parse_name(name, tmp_name))
+    return FALSE;
+  if (check_playing(NULL, tmp_name))
+    return FALSE;
+  /* We don't check ValidPlayer here */
+  if (fread_char(tmp_name, &tmp_store) > -1)
+    return FALSE;
+  if (load_char(tmp_name, &tmp_store) > -1)
+    return FALSE;
+  if (already_mob_name(tmp_name))
+    return FALSE;
+  if (banned_name(tmp_name))
+    return FALSE;
+
+  return TRUE;
+}
+

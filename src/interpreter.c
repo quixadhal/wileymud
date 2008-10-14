@@ -50,6 +50,7 @@ extern char                            *crypt(const char *key, const char *salt)
 #include "handler.h"
 #include "reception.h"
 #include "tracking.h"
+#include "ban.h"
 #define _INTERPRETER_C
 #include "interpreter.h"
 
@@ -116,11 +117,11 @@ char                                   *command[] = {
   "bonk", "wiznet", "rentmode", "gtell", "pretitle",
   "allcommands", "grep", "pager", "appear", "logs",
   "sethome", "register", "send", "whod", "split",
-  "notell", "scribe", "apraise", "bandage", "search",
+  "notell", "scribe", "apraise", "ban", "search",
   "skills", "doorbash", "restoreall", "mount", "dismount",
   "land", "nosummon", "noteleport", "players", "reset",
   "event", "zpurge", "ticks", "bury", "desecrate",
-  "setreboot", "home",
+  "setreboot", "home", "bandage", "unban",
   "\n"
 };
 
@@ -548,6 +549,7 @@ void assign_command_pointers(void)
 /* whizz commands */
   COMMANDO(CMD_WIZNET, POSITION_DEAD, do_commune, 51);
   COMMANDO(CMD_advance, POSITION_DEAD, do_advance, 58);
+  COMMANDO(CMD_ban, POSITION_DEAD, do_ban, 54);
   COMMANDO(CMD_debug, POSITION_DEAD, do_debug, 59);
   COMMANDO(CMD_event, POSITION_DEAD, do_event, 55);
   COMMANDO(CMD_force, POSITION_SLEEPING, do_force, 55);
@@ -583,6 +585,7 @@ void assign_command_pointers(void)
   COMMANDO(CMD_ticks, POSITION_DEAD, do_ticks, 51);
   COMMANDO(CMD_title, POSITION_DEAD, do_title, 30);
   COMMANDO(CMD_transfer, POSITION_SLEEPING, do_trans, 52);
+  COMMANDO(CMD_unban, POSITION_DEAD, do_unban, 54);
   COMMANDO(CMD_users, POSITION_DEAD, do_users, 51);
   COMMANDO(CMD_wall, POSITION_DEAD, do_system, 55);
   COMMANDO(CMD_whod, POSITION_DEAD, do_whod, 59);
@@ -926,29 +929,6 @@ int already_mob_name(char *ack_name)
 }
 
 /*
- * Make sure they are not being stupid.
- */
-int banned_name(char *ack_name)
-{
-  char                                    ack[MAX_STRING_LENGTH] = "\0\0\0";
-  char                                   *pfft = NULL;
-
-  if (DEBUG > 2)
-    log_info("called %s with %s", __PRETTY_FUNCTION__, VNULL(ack_name));
-
-  strcpy(ack, banned_names);
-  if (!(pfft = (char *)strtok(ack, " \t\n\r")))
-    return FALSE;
-  if (!strcasecmp(pfft, ack_name))
-    return TRUE;
-  while ((pfft = (char *)strtok(NULL, " \t\n\r"))) {
-    if (!strcasecmp(pfft, ack_name))
-      return TRUE;
-  }
-  return FALSE;
-}
-
-/*
  * See if the player has lost his link
  */
 int check_reconnect(struct descriptor_data *d)
@@ -1005,7 +985,11 @@ int check_playing(struct descriptor_data *d, char *tmp_name)
     log_info("called %s with %08x, %s", __PRETTY_FUNCTION__, d, VNULL(tmp_name));
 
   for (k = descriptor_list; k; k = k->next) {
-    if ((k->character != d->character) && k->character) {
+    if (k->character == NULL)
+      continue;
+    if (d && (k->character == d->character))
+      continue;
+    /* if ((k->character != d->character) && k->character) { */
       if (k->original) {
 	if (GET_NAME(k->original) && !str_cmp(GET_NAME(k->original), tmp_name)) {
 	  return 1;
@@ -1015,7 +999,7 @@ int check_playing(struct descriptor_data *d, char *tmp_name)
 	  return 1;
 	}
       }
-    }
+    /* } */
   }
   return 0;
 }
@@ -1111,7 +1095,7 @@ void nanny(struct descriptor_data *d, char *arg)
 	dcprintf(d, "\n\r%sChoose a password for %s: ", echo_off, d->usr_name);
 	STATE(d) = CON_GET_NEW_PASWORD;
         /* log_info("New player!"); */
-        log_auth(d->character, "NEW PLAYER %s (%s@%s)!", GET_NAME(d->character), d->username, d->host);
+        log_auth(d->character, "NEW PLAYER %s (%s@%s/%s)!", GET_NAME(d->character), d->username, d->host, d->ip);
       }
       return;
     case CON_GET_PASSWORD:
@@ -1134,7 +1118,7 @@ void nanny(struct descriptor_data *d, char *arg)
       if (check_reconnect(d))
 	return;
       /* log_info("%s (%s@%s) has connected.", GET_NAME(d->character), d->username, d->host); */
-      log_auth(d->character, "WELCOME BACK %s (%s@%s)!", GET_NAME(d->character), d->username, d->host);
+      log_auth(d->character, "WELCOME BACK %s (%s@%s/%s)!", GET_NAME(d->character), d->username, d->host, d->ip);
 
       if (GetMaxLevel(d->character) > LOW_IMMORTAL)
 	dcprintf(d, "\n\r%s", wmotd);
