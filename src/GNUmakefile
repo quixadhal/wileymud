@@ -1,325 +1,297 @@
 # Must be GNU Make!
 
-DATESTAMP=$(shell /bin/date "+%y.%m.%d")
-OLDVERSION=$(shell cat .version.count)
-VERSION=$(shell echo $(OLDVERSION) + 1 | bc)
-DEPLINE=$(shell /bin/grep -n -e '^\#--- Comment for make deps ---' GNUmakefile | awk -F: '{print $$1}')
+DATESTAMP	= $(shell /bin/date "+%y.%m.%d")
+DEPLINE		= $(shell /bin/grep -n -e '^\#--- Comment for make deps ---' GNUmakefile | awk -F: '{print $$1}')
 
-CC          = gcc #g++
-MACHINE     = #-mcpu=pentium2 -march=pentium2
+CC		= gcc #g++
+MAKE		= make #gmake
 
-NEED_CRYPT  = -lcrypt #Linux needs this
-#NEED_COMPAT = -lcompat #BSD needs this
+BINDIR		= bin
+IDENTDIR	= libident-0.19
 
-W_FORMAT    = ##-Wformat -Wformat-security #-Wmissing-format-attribute
-W_NITPICK   = ##-Wpointer-arith -Winline
-W_MESSY     = ##-Wmissing-braces -Wparentheses -Wshadow #-Wredundant-decls
-W_FUNC      = ###-Wstrict-prototypes #-Wmissing-prototypes
-W_TYPE      = ##-Wcast-qual -Wcast-align -Wchar-subscripts -Wreturn-type -Wswitch #-Wwrite-strings
-W_EXTRA     = ##-Wunused #-Wunreachable-code
-W_C_ONLY    = ##-Wmissing-declarations -Wimplicit-int -Wimplicit-function-declaration #-Wsequence-point -Wnonnull
-W_ANSI      = ###-pedantic
-W_UBER      = ##-Wall #-W
-W_ERROR     = ##-Werror
+NEED_CRYPT	= -lcrypt #Linux needs this
+#NEED_COMPAT	= -lcompat #BSD needs this
+SQL_INC		= -DUSE_PGSQL -I/usr/include/postgresql
+SQL_LIB		= -L/usr/lib/postgresql -lpq -lecpg
+ID_DEP		= $(IDENTDIR)/libident.a
+ID_INC		= #
+ID_LIB		= -L$(IDENTDIR) -lident
 
-W_ALL       = $(W_ANSI) $(W_UBER) $(W_FORMAT) $(W_MESSY) $(W_FUNC) $(W_TYPE) $(W_EXTRA) $(W_NITPICK) $(W_ERROR)
-W_CLANG     = $(W_C_ONLY)
+W_FORMAT	= ##-Wformat -Wformat-security #-Wmissing-format-attribute
+W_NITPICK	= ##-Wpointer-arith -Winline
+W_MESSY		= ##-Wmissing-braces -Wparentheses -Wshadow #-Wredundant-decls
+W_FUNC		= ###-Wstrict-prototypes #-Wmissing-prototypes
+W_TYPE		= ##-Wcast-qual -Wcast-align -Wchar-subscripts -Wreturn-type -Wswitch #-Wwrite-strings
+W_EXTRA		= ##-Wunused #-Wunreachable-code
+W_C_ONLY	= ##-Wmissing-declarations -Wimplicit-int -Wimplicit-function-declaration #-Wsequence-point -Wnonnull
+W_ANSI		= ###-pedantic
+W_UBER		= ##-Wall #-W
+W_ERROR		= ##-Werror
 
-W_FLAGS     = $(W_ALL) $(W_CLANG)
+W_ALL		= $(W_ANSI) $(W_UBER) $(W_FORMAT) $(W_MESSY) $(W_FUNC) $(W_TYPE) $(W_EXTRA) $(W_NITPICK) $(W_ERROR)
+W_CLANG		= $(W_C_ONLY)
 
-OPT_FLAG    = -pipe -O3 #-Wuninitialized
+W_FLAGS		= $(W_ALL) $(W_CLANG)
 
-DEBUG_FLAG  = -ggdb
-EFENCE      = #-lpthread -lefence
-PROF_FLAG   = #-pg
-DEPS_FLAG   = -MMD
+OPT_FLAG	= -pipe -O3 #-Wuninitialized
 
-SQL_INC     = -DUSE_PGSQL #-I/usr/include/postgresql
-SQL_LIB     = -L/usr/lib/postgresql -lpq
+DEBUG_FLAG	= -ggdb
+EFENCE		= #-lpthread -lefence
+PROF_FLAG	= #-pg
 
-CFLAGS      = $(MACHINE) $(W_FLAGS) $(DEBUG_FLAG) $(OPT_FLAG) $(PROF_FLAG) $(DEPS_FLAG) -Iinclude $(SQL_INC)
-LDFLAGS     = $(DEBUG_FLAG) $(OPT_FLAG) $(PROF_FLAG)
+INC		= -Iinclude $(SQL_INC) $(ID_INC)
+LIB		= $(ID_LIB) $(NEED_CRYPT) $(NEED_COMPAT) $(EFENCE) $(SQL_LIB)
 
-SRC =	act_comm.c act_info.c act_move.c act_obj.c act_off.c \
-	act_other.c act_skills.c act_social.c act_wiz.c \
-	board.c bug.c comm.c constants.c db.c fight.c handler.c \
-	hash.c interpreter.c limits.c magic.c magic_utils.c \
-	modify.c multiclass.c opinion.c random.c reception.c \
-	shop.c signals.c sound.c spell_parser.c \
-	spells.c trap.c utils.c weather.c whod.c events.c sql.c
-OBJ =	$(addprefix obj/, $(SRC:.c=.o))
-TMP =	mob_actions.c spec_procs.c breath_weapons.c tracking.c
-SPOB =	$(addprefix obj/, $(TMP:.c=.o))
-SPEC =	$(addprefix specials/, $(TMP))
-TMP2 =	sign.c
-OBJ2 =	$(addprefix obj/, $(TMP2:.c=.o))
-SRC2 =	$(addprefix aux/, $(TMP2))
-TMP3 =	mkworld.c
-OBJ3 =	$(addprefix obj/, $(TMP3:.c=.o))
-SRC3 =	$(addprefix aux/, $(TMP3))
-TMP4 =	genpasswd.c
-OBJ4 =	$(addprefix obj/, $(TMP4:.c=.o))
-SRC4 =	$(addprefix aux/, $(TMP4))
-TMP5 =	bounce.c
-OBJ5 =	$(addprefix obj/, $(TMP5:.c=.o))
-SRC5 =	$(addprefix aux/, $(TMP5))
-HDRS =	act_comm.h act_info.h act_move.h act_obj.h act_off.h \
-	act_other.h act_skills.h act_social.h act_wiz.h \
-	board.h bug.h comm.h constants.h db.h fight.h global.h \
-	handler.h hash.h interpreter.h magic_utils.h \
-	modify.h multiclass.h opinion.h \
-	random.h reception.h shop.h sound.h spell_parser.h \
-	spells.h trap.h utils.h weather.h whod.h signals.h events.h \
-	mob_actions.h spec_procs.h breath_weapons.h tracking.h sql.h
-HDR =	$(addprefix include/, $(HDRS))
-VER =	$(addprefix include/, version.h)
-IDENTDIR = libident-0.19
-IDENTSRC = $(addprefix $(IDENTDIR)/, id_close.c id_open.c id_parse.c \
-	id_query.c ident.c support.c version.c)
-IDENTHDR = $(addprefix $(IDENTDIR)/, ident.h)
-IDENTOBJ = $(IDENTSRC:.c=.o)
-LIBS =	$(IDENTDIR)/libident.a
-LIB =	-L$(IDENTDIR) -lident $(NEED_CRYPT) $(NEED_COMPAT) $(EFENCE) $(SQL_LIB)
-AUX =	GNUmakefile .indent.pro HACKLOG version.proto .version.count
+CFLAGS		= $(W_FLAGS) $(DEBUG_FLAG) $(OPT_FLAG) $(PROF_FLAG) $(INC)
+LDFLAGS		= $(DEBUG_FLAG) $(OPT_FLAG) $(PROF_FLAG)
 
-ALLSRC = $(SRC) $(SPEC) $(SRC2) $(SRC3) $(SRC4) $(SRC5) $(IDENTSRC)
-ALLOBJ = $(OBJ) $(SPOB) $(OBJ2) $(OBJ3) $(OBJ4) $(OBJ5) $(IDENTOBJ)
-ALLHDR = $(HDR)
-ALLDEP = $(ALLOBJ:.o=.d)
+VER		= $(addprefix include/, version.h)
+OLDV		= $(shell perl -ne '$$i = $$1 if /Version\s+\d\.(\d+)w3-alpha/i; END { $$i = 0 if !defined $$i; print "$$i\n";}' < $(VER))
+VERSION		= $(shell echo $(OLDV) + 1 | bc)
 
-BINDIR = bin
-BININSTDIR = ../bin
-ETCDIR = etc
-ETCINSTDIR = ../etc
-INITDIR = etc/init.d
-INITINSTDIR = ../etc
+tOBJ =	mob_actions.o spec_procs.o breath_weapons.o tracking.o \
+	act_comm.o act_info.o act_move.o act_obj.o act_off.o \
+	act_other.o act_skills.o act_social.o act_wiz.o \
+	board.o bug.o comm.o constants.o db.o fight.o handler.o \
+	hash.o interpreter.o limits.o magic.o magic_utils.o \
+	modify.o multiclass.o opinion.o random.o reception.o \
+	shop.o signals.o sound.o spell_parser.o \
+	spells.o trap.o utils.o weather.o whod.o events.o \
+	sql.o ban.o
+OBJ =	$(addprefix obj/, $(tOBJ))
 
-BIN = wileyloop wileymud sign mkworld genpasswd bounce
-ETC = down.time
-INIT = wiley
+tIDOBJ		= id_close.o id_open.o id_parse.o \
+		  id_query.o ident.o support.o version.o
+IDOBJ		= $(addprefix obj/, $(tIDOBJ))
 
-ALLBIN = $(addprefix $(BINDIR)/, $(BIN))
-ALLETC = $(addprefix $(ETCDIR)/, $(ETC))
-ALLINIT = $(addprefix $(INITDIR)/, $(INIT))
+all : version depend bin
 
-ALLBININST = $(addprefix $(BININSTDIR)/, $(BIN))
-ALLETCINST = $(addprefix $(ETCINSTDIR)/, $(ETC))
-ALLINITINST = $(addprefix $(INITINSTDIR)/, $(INIT))
-INSTDIRS = $(BININSTDIR) $(ETCINSTDIR) $(INITINSTDIR)
+bin : $(BINDIR)/sign $(BINDIR)/bounce $(BINDIR)/genpasswd $(BINDIR)/mkworld $(BINDIR)/wileymud 
 
-all : $(ALLBIN)
-
-.PHONY : .installing
-
-.installing :
-	@echo 'Installing WileyMUD binaries!'
-
-$(ALLBININST) : .installing $(ALLBIN)
-	install -D -b -g divine -m 0750 $(addprefix $(BINDIR)/, $(notdir $@)) $(addprefix $(BININSTDIR)/, $(notdir $@))
-
-$(ALLETCINST) : .installing $(ALLETC)
-	install -D -b -g divine -m 0640 $(addprefix $(ETCDIR)/, $(notdir $@)) $(addprefix $(ETCINSTDIR)/, $(notdir $@))
-
-$(ALLINITINST) : .installing $(ALLINIT)
-	install -D -b -g divine -m 0750 $(addprefix $(INITDIR)/, $(notdir $@)) $(addprefix $(INITINSTDIR)/, $(notdir $@))
-
-$(INSTDIRS) : .installing
-	mkdir -p -m 750 $@
-
-install : $(INSTDIRS) $(ALLBININST) $(ALLETCINST) $(ALLINITINST)
-
-#.deps/%.d: %.c
-#	set -e; $(CC) -M $(CFLAGS) $< \
-#		| sed 's!\($*\)\.o[ :]*!\1.o $@ : !g' > $@; \
-#		[ -s $@ ] || rm -f $@
-#
-#include $(addprefix .deps/, $(ALLSRC:.c=.d))
-
-$(VER) : version.proto .version.count
-	@echo '/* Auto-generated from version.proto -- DO NOT EDIT */' > $@
-	@echo 's/XxX/$(VERSION)/' >.sed.cmds
-	@echo 's/YyY/$(DATESTAMP)/' >>.sed.cmds
-	@sed -f .sed.cmds <version.proto >>$@
-	@rm -f .sed.cmds
-	@echo New version file generated.
-
-$(BINDIR)/wileyloop : wileyloop.sh
-	@cp -p $< $@
-
-$(BINDIR)/wileymud : $(OBJ) $(SPOB) $(LIBS) $(VER)
+$(BINDIR)/wileymud : $(ID_DEP) $(OBJ)
 	@echo Heave Ho!  Load the beastie!
-	$(CC) $(LDFLAGS) -o $@ $(OBJ) $(SPOB) $(LIB)
-	@echo $(VERSION) >.version.count
-	@ls -l $@
+	$(CC) $(LDFLAGS) -o $@ $(OBJ) $(LIB)
+	@ls -l $(BINDIR)
 
-$(BINDIR)/sign : $(OBJ2)
-	@echo Make the downtime notice program...
-	$(CC) $(LDFLAGS) -o $@ $(OBJ2) $(LIB)
-	@ls -l $@
-
-$(BINDIR)/mkworld : $(OBJ3)
+$(BINDIR)/mkworld : obj/mkworld.o
 	@echo Make the world editing program...
-	$(CC) $(LDFLAGS) -o $@ $(OBJ3) $(LIB)
-	@ls -l $@
+	$(CC) $(LDFLAGS) -o $@ $< $(LIB)
 
-$(BINDIR)/genpasswd : $(OBJ4)
+$(BINDIR)/sign : obj/sign.o
+	@echo Make the downtime notice program...
+	$(CC) $(LDFLAGS) -o $@ $< $(LIB)
+
+$(BINDIR)/genpasswd : obj/genpasswd.o
 	@echo Make the password generation program...
-	$(CC) $(LDFLAGS) -o $@ $(OBJ4) $(LIB)
-	@ls -l $@
+	$(CC) $(LDFLAGS) -o $@ $< $(LIB)
 
-$(BINDIR)/bounce : $(OBJ5)
+$(BINDIR)/bounce : obj/bounce.o
 	@echo Make the port bouncer program...
-	$(CC) $(LDFLAGS) -o $@ $(OBJ5) $(LIB)
-	@ls -l $@
+	$(CC) $(LDFLAGS) -o $@ $< $(LIB)
 
-$(OBJ): obj/%o : %c
-	$(CC) $(CFLAGS) -c $< -o $@
+$(ID_DEP): $(IDOBJ)
+	(cd $(IDENTDIR);$(MAKE) linux)
 
-$(SPOB): obj/%o : specials/%c
-	$(CC) $(CFLAGS) -c $< -o $@
+.PHONY : depend
 
-$(OBJ2): obj/%o : aux/%c
-	$(CC) $(CFLAGS) -c $< -o $@
-
-$(OBJ3): obj/%o : aux/%c
-	$(CC) $(CFLAGS) -c $< -o $@
-
-$(OBJ4): obj/%o : aux/%c
-	$(CC) $(CFLAGS) -c $< -o $@
-
-$(OBJ5): obj/%o : aux/%c
-	$(CC) $(CFLAGS) -c $< -o $@
-
-$(IDENTDIR)/libident.a: $(IDENTSRC) $(IDENTHDR)
-	(cd libident-0.19;make linux)
-
-.deps : $(OBJ) $(SPOB) $(OBJ2) $(OBJ3) $(OBJ4) $(OBJ5)
+depend :
 	@echo 'Building dependancies'
-	@cat obj/*.d >.deps
-
-.PHONY : deps
-
-deps : .deps GNUmakefile
+	@find . -name \*.c -a -type f -print0 | grep -z -Z -v attic | xargs -0 -P 1 -r $(CC) $(CFLAGS) -MM >.deps
 	@echo 'Self-Modifying GNUmakefile'
 	@head -$(DEPLINE) GNUmakefile >.new_makefile
-	@cat .deps >>.new_makefile
+	@cat .deps | perl -ne '{ s!^([^:]+):!obj/$$1:!; print $$_; }' >>.new_makefile
 	@mv -f GNUmakefile .old_makefile
 	@mv -f .new_makefile GNUmakefile
+	@echo 'Now do "make bin"!'
+
+.PHONY : version
+
+version :
+	@echo '/* Auto-generated -- DO NOT EDIT */' > $(VER)
+	@echo '#ifndef _VERSION_H' >> $(VER)
+	@echo '#define _VERSION_H' >> $(VER)
+	@echo '' >> $(VER)
+	@echo "#define VERSION_STR \\" >> $(VER)
+	@echo "\"\r\n*** Welcome to WileyMUD III, Quixadhal's Version 0.$(VERSION)w3-alpha ($(DATESTAMP)) ***\r\n\"" >> $(VER)
+	@echo '#endif /* _VERSION_H */' >> $(VER)
+	@echo New version file generated.
 
 .PHONY : clean
 
 clean :
 	@echo -n Wiping away intermediate clutter...
-	@rm -f $(ALLOBJ) $(ALLDEP) *.bak *~
-	@find . -name \*.d -a -type f | xargs rm -f
+	@find . -name \*.o -a -type f -print0 | xargs -0 -P 1 -r rm -f
+	@rm -f tags
 	@echo done.
 
-spotless : clean
-	@echo -n Destroying the world and all those within it...
-	@rm -f $(ALLBIN)
-	@rm -f tags refs
-	@rm -f $(LIBS)
-	@echo done!
+.PHONY : tags
 
-tags : $(SRC) $(SPEC) $(VER) $(HDR)
+tags :
 	@echo -n Making tag files...
-	@ctags $(SRC) $(SPEC) $(VER) $(HDR)
+	@find . -name \*.[ch] -a -type f -print0 | grep -z -Z -v attic | xargs -0 -P 1 -r ctags
 	@echo done.
+
+%c : %pgc
+	ecpg $(INC) -c $< -o $@
+
+obj/%o : %c
+	$(CC) $(CFLAGS) -c $< -o $@
+
+obj/sign.o obj/mkworld.o obj/genpasswd.o obj/bounce.o : obj/%o : aux/%c
+	$(CC) $(CFLAGS) -c $< -o $@
 
 #--- Comment for make deps ---
+obj/breath_weapons.o: breath_weapons.c include/global.h include/bug.h \
+  include/utils.h include/act_off.h include/comm.h include/db.h \
+  include/mudlimits.h include/multiclass.h include/spells.h \
+  include/breath_weapons.h
+obj/sound.o: sound.c include/global.h include/bug.h include/comm.h \
+  include/interpreter.h include/handler.h include/db.h include/spells.h \
+  include/trap.h include/utils.h include/sound.h
+obj/random.o: random.c include/global.h include/bug.h include/utils.h \
+  include/comm.h include/random.h
+obj/act_obj.o: act_obj.c include/global.h include/bug.h include/utils.h \
+  include/comm.h include/interpreter.h include/handler.h include/db.h \
+  include/spells.h include/trap.h include/constants.h \
+  include/spell_parser.h include/multiclass.h include/mudlimits.h \
+  include/fight.h include/act_info.h include/act_obj.h
+obj/weather.o: weather.c include/global.h include/bug.h include/utils.h \
+  include/comm.h include/handler.h include/interpreter.h include/db.h \
+  include/weather.h
+obj/spell_parser.o: spell_parser.c include/global.h include/bug.h \
+  include/utils.h include/comm.h include/db.h include/interpreter.h \
+  include/handler.h include/spells.h include/constants.h \
+  include/act_off.h include/random.h include/multiclass.h include/fight.h \
+  include/act_info.h include/spell_parser.h
+obj/db.o: db.c include/global.h include/bug.h include/utils.h include/comm.h \
+  include/handler.h include/mudlimits.h include/opinion.h include/hash.h \
+  include/constants.h include/spells.h include/spell_parser.h \
+  include/reception.h include/weather.h include/modify.h include/fight.h \
+  include/act_social.h include/spec_procs.h include/multiclass.h \
+  include/board.h include/interpreter.h include/ban.h include/db.h
+obj/events.o: events.c include/global.h include/bug.h include/utils.h \
+  include/comm.h include/interpreter.h include/handler.h include/db.h \
+  include/spells.h include/mudlimits.h include/constants.h \
+  include/spell_parser.h include/fight.h include/spec_procs.h \
+  include/opinion.h include/hash.h include/events.h
+obj/multiclass.o: multiclass.c include/global.h include/bug.h include/utils.h \
+  include/comm.h include/db.h include/interpreter.h include/handler.h \
+  include/spells.h include/mudlimits.h include/opinion.h \
+  include/constants.h include/multiclass.h
+obj/whod.o: whod.c include/version.h include/global.h include/bug.h \
+  include/db.h include/comm.h include/utils.h include/interpreter.h \
+  include/multiclass.h include/whod.h
+obj/constants.o: constants.c include/global.h include/bug.h \
+  include/mudlimits.h include/trap.h include/constants.h
+obj/limits.o: limits.c include/global.h include/bug.h include/spells.h \
+  include/comm.h include/db.h include/spell_parser.h include/constants.h \
+  include/utils.h include/multiclass.h include/fight.h \
+  include/reception.h include/interpreter.h include/handler.h \
+  include/act_obj.h include/act_other.h include/mudlimits.h
+obj/spells.o: spells.c include/global.h include/bug.h include/utils.h \
+  include/comm.h include/db.h include/interpreter.h include/handler.h \
+  include/constants.h include/multiclass.h include/act_move.h \
+  include/spells.h include/spell_parser.h include/fight.h
+obj/board.o: board.c include/global.h include/bug.h include/utils.h \
+  include/comm.h include/db.h include/interpreter.h include/multiclass.h \
+  include/modify.h include/handler.h include/act_info.h include/board.h
+obj/opinion.o: opinion.c include/global.h include/bug.h include/utils.h \
+  include/spells.h include/constants.h include/comm.h include/db.h \
+  include/multiclass.h include/opinion.h
+obj/signals.o: signals.c include/global.h include/bug.h include/utils.h \
+  include/comm.h include/whod.h include/signals.h
+obj/act_skills.o: act_skills.c include/global.h include/bug.h include/utils.h \
+  include/comm.h include/constants.h include/db.h include/handler.h \
+  include/interpreter.h include/multiclass.h include/spells.h \
+  include/spell_parser.h include/fight.h include/spec_procs.h \
+  include/act_info.h include/act_skills.h
+obj/act_social.o: act_social.c include/global.h include/bug.h include/utils.h \
+  include/comm.h include/interpreter.h include/handler.h include/db.h \
+  include/spells.h include/multiclass.h include/act_social.h
+obj/utils.o: utils.c include/global.h include/bug.h include/spells.h \
+  include/constants.h include/db.h include/opinion.h include/comm.h \
+  include/hash.h include/multiclass.h include/handler.h include/fight.h \
+  include/act_info.h include/reception.h include/act_off.h \
+  include/magic_utils.h include/mudlimits.h include/act_skills.h \
+  include/utils.h
+obj/magic.o: magic.c include/global.h include/bug.h include/utils.h \
+  include/comm.h include/handler.h include/mudlimits.h include/db.h \
+  include/constants.h include/spells.h include/spell_parser.h \
+  include/multiclass.h include/fight.h include/opinion.h \
+  include/reception.h include/magic_utils.h include/act_off.h \
+  include/act_obj.h include/act_info.h
+obj/modify.o: modify.c include/global.h include/bug.h include/utils.h \
+  include/interpreter.h include/handler.h include/db.h include/comm.h \
+  include/multiclass.h include/modify.h
 obj/act_comm.o: act_comm.c include/global.h include/bug.h include/utils.h \
   include/comm.h include/interpreter.h include/handler.h include/db.h \
   include/spells.h include/constants.h include/mudlimits.h \
   include/multiclass.h include/act_comm.h
-obj/act_info.o: act_info.c include/global.h include/bug.h \
-  include/version.h include/utils.h include/comm.h include/interpreter.h \
-  include/handler.h include/db.h include/spells.h include/mudlimits.h \
-  include/trap.h include/hash.h include/constants.h \
-  include/spell_parser.h include/whod.h include/multiclass.h \
-  include/modify.h include/act_wiz.h include/act_skills.h \
-  include/spec_procs.h include/tracking.h include/act_info.h
+obj/spec_procs.o: spec_procs.c include/global.h include/bug.h include/utils.h \
+  include/act_comm.h include/act_info.h include/act_move.h \
+  include/act_obj.h include/act_off.h include/act_social.h \
+  include/act_wiz.h include/board.h include/comm.h include/constants.h \
+  include/db.h include/handler.h include/hash.h include/interpreter.h \
+  include/mudlimits.h include/modify.h include/multiclass.h \
+  include/opinion.h include/reception.h include/shop.h include/spells.h \
+  include/spell_parser.h include/fight.h include/breath_weapons.h \
+  include/mob_actions.h include/tracking.h include/spec_procs.h
+obj/act_other.o: act_other.c include/global.h include/bug.h include/utils.h \
+  include/comm.h include/interpreter.h include/handler.h include/db.h \
+  include/spells.h include/mudlimits.h include/constants.h \
+  include/spell_parser.h include/reception.h include/multiclass.h \
+  include/fight.h include/spec_procs.h include/act_skills.h \
+  include/act_comm.h include/modify.h include/act_other.h
 obj/act_move.o: act_move.c include/global.h include/utils.h include/bug.h \
   include/comm.h include/interpreter.h include/handler.h include/db.h \
   include/spells.h include/trap.h include/constants.h include/whod.h \
   include/multiclass.h include/fight.h include/reception.h \
   include/magic_utils.h include/spell_parser.h include/act_info.h \
   include/act_skills.h include/act_move.h
-obj/act_obj.o: act_obj.c include/global.h include/bug.h include/utils.h \
-  include/comm.h include/interpreter.h include/handler.h include/db.h \
-  include/spells.h include/trap.h include/constants.h \
-  include/spell_parser.h include/multiclass.h include/mudlimits.h \
-  include/fight.h include/act_info.h include/act_obj.h
-obj/act_off.o: act_off.c include/global.h include/bug.h include/utils.h \
-  include/comm.h include/interpreter.h include/handler.h include/db.h \
-  include/spells.h include/mudlimits.h include/opinion.h \
-  include/multiclass.h include/constants.h include/spec_procs.h \
-  include/fight.h include/act_skills.h include/act_move.h \
-  include/spell_parser.h include/act_info.h include/breath_weapons.h \
-  include/act_off.h
-obj/act_other.o: act_other.c include/global.h include/bug.h \
-  include/utils.h include/comm.h include/interpreter.h include/handler.h \
-  include/db.h include/spells.h include/mudlimits.h include/constants.h \
-  include/spell_parser.h include/reception.h include/multiclass.h \
-  include/fight.h include/spec_procs.h include/act_skills.h \
-  include/act_comm.h include/modify.h include/act_other.h
-obj/act_skills.o: act_skills.c include/global.h include/bug.h \
-  include/utils.h include/comm.h include/constants.h include/db.h \
-  include/fight.h include/handler.h include/interpreter.h \
-  include/multiclass.h include/spell_parser.h include/spells.h \
-  include/spec_procs.h include/act_info.h include/act_skills.h
-obj/act_social.o: act_social.c include/global.h include/bug.h \
-  include/utils.h include/comm.h include/interpreter.h include/handler.h \
-  include/db.h include/spells.h include/multiclass.h include/act_social.h
-obj/act_wiz.o: act_wiz.c include/global.h include/bug.h include/utils.h \
-  include/comm.h include/interpreter.h include/handler.h include/db.h \
-  include/spells.h include/mudlimits.h include/constants.h \
-  include/spell_parser.h include/board.h include/whod.h \
-  include/reception.h include/spec_procs.h include/multiclass.h \
-  include/act_skills.h include/act_info.h include/fight.h include/hash.h \
-  include/weather.h include/modify.h include/act_wiz.h
-obj/board.o: board.c include/global.h include/bug.h include/utils.h \
-  include/comm.h include/db.h include/interpreter.h include/multiclass.h \
-  include/modify.h include/handler.h include/act_info.h include/board.h
-obj/bounce.o: aux/bounce.c
-obj/breath_weapons.o: specials/breath_weapons.c include/global.h \
-  include/bug.h include/utils.h include/act_off.h include/comm.h \
-  include/db.h include/mudlimits.h include/multiclass.h include/spells.h \
-  include/breath_weapons.h
-obj/bug.o: bug.c include/global.h include/utils.h include/comm.h \
-  include/multiclass.h include/bug.h
-obj/comm.o: comm.c include/global.h include/bug.h include/utils.h \
-  include/interpreter.h include/handler.h include/db.h include/modify.h \
-  include/whod.h include/multiclass.h include/weather.h \
-  include/mudlimits.h include/spell_parser.h include/sound.h \
-  include/fight.h include/mob_actions.h include/act_other.h \
-  include/comm.h
-obj/constants.o: constants.c include/global.h include/bug.h \
-  include/mudlimits.h include/trap.h include/constants.h
-obj/db.o: db.c include/global.h include/bug.h include/utils.h \
-  include/comm.h include/handler.h include/mudlimits.h include/opinion.h \
-  include/hash.h include/constants.h include/spells.h \
-  include/spell_parser.h include/reception.h include/weather.h \
-  include/modify.h include/fight.h include/act_social.h \
-  include/spec_procs.h include/multiclass.h include/board.h \
-  include/interpreter.h include/db.h
-obj/events.o: events.c include/global.h include/bug.h include/utils.h \
-  include/comm.h include/interpreter.h include/handler.h include/db.h \
-  include/spells.h include/mudlimits.h include/constants.h \
-  include/spell_parser.h include/fight.h include/spec_procs.h \
-  include/opinion.h include/hash.h include/events.h
-obj/fight.o: fight.c include/global.h include/bug.h include/utils.h \
-  include/comm.h include/handler.h include/interpreter.h include/db.h \
-  include/constants.h include/spells.h include/spell_parser.h \
-  include/mudlimits.h include/random.h include/act_move.h \
-  include/reception.h include/multiclass.h include/act_wiz.h \
-  include/act_skills.h include/opinion.h include/spec_procs.h \
-  include/mob_actions.h include/act_off.h include/fight.h
+obj/reception.o: reception.c include/global.h include/bug.h include/comm.h \
+  include/handler.h include/db.h include/interpreter.h include/utils.h \
+  include/spells.h include/multiclass.h include/act_social.h \
+  include/spec_procs.h include/reception.h
 obj/genpasswd.o: aux/genpasswd.c
-obj/handler.o: handler.c include/global.h include/bug.h include/utils.h \
-  include/comm.h include/db.h include/interpreter.h include/spells.h \
-  include/spell_parser.h include/constants.h include/fight.h \
-  include/modify.h include/multiclass.h include/opinion.h \
-  include/act_wiz.h include/handler.h
+obj/sign.o: aux/sign.c include/global.h include/bug.h
+obj/bounce.o: aux/bounce.c
+obj/mkworld.o: aux/mkworld.c
+obj/dump_afk.o: convert/dump_afk.c convert/include/structs.h \
+  convert/include/main.h convert/include/utils.h \
+  convert/include/parse_wiley.h convert/include/dump_afk.h \
+  convert/include/afk_skills.h
+obj/parse_wiley.o: convert/parse_wiley.c convert/include/bug.h \
+  convert/include/structs.h convert/include/main.h \
+  convert/include/utils.h convert/include/make_index.h \
+  convert/include/parse_wiley.h
+obj/dump_report.o: convert/dump_report.c convert/include/structs.h \
+  convert/include/main.h convert/include/utils.h \
+  convert/include/parse_wiley.h convert/include/dump_report.h
+obj/make_index.o: convert/make_index.c convert/include/bug.h \
+  convert/include/structs.h convert/include/main.h \
+  convert/include/utils.h convert/include/make_index.h
+obj/getopt.o: convert/getopt.c
+obj/utils.o: convert/utils.c convert/include/bug.h convert/include/structs.h \
+  convert/include/main.h convert/include/utils.h
+obj/formats.o: convert/formats.c convert/include/formats.h
+obj/main.o: convert/main.c convert/include/getopt.h convert/include/bug.h \
+  convert/include/formats.h convert/include/structs.h \
+  convert/include/main.h convert/include/utils.h \
+  convert/include/make_index.h convert/include/parse_wiley.h \
+  convert/include/dump_map.h convert/include/dump_report.h \
+  convert/include/dump_isles.h convert/include/dump_fr.h \
+  convert/include/dump_afk.h
+obj/bug.o: convert/bug.c convert/include/bug.h
+obj/dump_map.o: convert/dump_map.c convert/include/structs.h \
+  convert/include/main.h convert/include/utils.h \
+  convert/include/parse_wiley.h convert/include/dump_map.h
+obj/dump_isles.o: convert/dump_isles.c convert/include/structs.h \
+  convert/include/main.h convert/include/utils.h \
+  convert/include/parse_wiley.h convert/include/dump_isles.h
+obj/dump_fr.o: convert/dump_fr.c convert/include/structs.h \
+  convert/include/main.h convert/include/utils.h \
+  convert/include/parse_wiley.h convert/include/dump_fr.h
+obj/getopt1.o: convert/getopt1.c convert/include/getopt.h
 obj/hash.o: hash.c include/global.h include/bug.h include/comm.h \
   include/utils.h include/hash.h
 obj/interpreter.o: interpreter.c include/global.h include/bug.h \
@@ -330,95 +302,79 @@ obj/interpreter.o: interpreter.c include/global.h include/bug.h \
   include/act_social.h include/act_wiz.h include/spells.h \
   include/spell_parser.h include/modify.h include/whod.h include/events.h \
   include/random.h include/board.h include/multiclass.h include/handler.h \
-  include/reception.h include/tracking.h include/interpreter.h
-obj/limits.o: limits.c include/global.h include/bug.h include/spells.h \
-  include/comm.h include/db.h include/spell_parser.h include/constants.h \
-  include/utils.h include/multiclass.h include/fight.h \
-  include/reception.h include/interpreter.h include/handler.h \
-  include/act_obj.h include/act_other.h include/mudlimits.h
-obj/magic.o: magic.c include/global.h include/bug.h include/utils.h \
-  include/comm.h include/handler.h include/mudlimits.h include/db.h \
+  include/reception.h include/tracking.h include/ban.h \
+  include/interpreter.h
+obj/fight.o: fight.c include/global.h include/bug.h include/utils.h \
+  include/comm.h include/handler.h include/interpreter.h include/db.h \
   include/constants.h include/spells.h include/spell_parser.h \
-  include/multiclass.h include/fight.h include/opinion.h \
-  include/reception.h include/magic_utils.h include/act_off.h \
-  include/act_obj.h include/act_info.h
-obj/magic_utils.o: magic_utils.c include/global.h include/bug.h \
-  include/utils.h include/comm.h include/db.h include/spells.h \
-  include/handler.h include/mudlimits.h include/fight.h \
-  include/spell_parser.h include/multiclass.h include/magic_utils.h
-obj/mkworld.o: aux/mkworld.c
-obj/mob_actions.o: specials/mob_actions.c include/global.h include/bug.h \
-  include/utils.h include/act_obj.h include/act_off.h include/comm.h \
-  include/constants.h include/db.h include/fight.h include/handler.h \
-  include/hash.h include/mudlimits.h include/multiclass.h \
-  include/opinion.h include/spell_parser.h include/trap.h \
-  include/act_skills.h include/spec_procs.h include/tracking.h \
-  include/mob_actions.h
-obj/modify.o: modify.c include/global.h include/bug.h include/utils.h \
-  include/interpreter.h include/handler.h include/db.h include/comm.h \
-  include/multiclass.h include/modify.h
-obj/multiclass.o: multiclass.c include/global.h include/bug.h \
-  include/utils.h include/comm.h include/db.h include/interpreter.h \
-  include/handler.h include/spells.h include/mudlimits.h \
-  include/opinion.h include/constants.h include/multiclass.h
-obj/opinion.o: opinion.c include/global.h include/bug.h include/utils.h \
-  include/spells.h include/constants.h include/comm.h include/db.h \
-  include/multiclass.h include/opinion.h
-obj/random.o: random.c include/global.h include/utils.h include/comm.h \
-  include/random.h
-obj/reception.o: reception.c include/global.h include/bug.h \
-  include/comm.h include/handler.h include/db.h include/interpreter.h \
-  include/utils.h include/spells.h include/multiclass.h \
-  include/act_social.h include/spec_procs.h include/reception.h
-obj/shop.o: shop.c include/global.h include/bug.h include/comm.h \
-  include/handler.h include/db.h include/interpreter.h include/utils.h \
-  include/constants.h include/act_comm.h include/multiclass.h \
-  include/act_social.h include/act_wiz.h include/spec_procs.h \
-  include/shop.h
-obj/sign.o: aux/sign.c include/global.h include/bug.h
-obj/signals.o: signals.c include/global.h include/bug.h include/utils.h \
-  include/comm.h include/whod.h include/signals.h
-obj/sound.o: sound.c include/global.h include/bug.h include/comm.h \
-  include/interpreter.h include/handler.h include/db.h include/spells.h \
-  include/trap.h include/utils.h include/sound.h
-obj/spec_procs.o: specials/spec_procs.c include/global.h include/bug.h \
-  include/utils.h include/act_comm.h include/act_info.h \
-  include/act_move.h include/act_obj.h include/act_off.h \
-  include/act_social.h include/act_wiz.h include/board.h include/comm.h \
-  include/constants.h include/db.h include/fight.h include/handler.h \
-  include/hash.h include/interpreter.h include/mudlimits.h \
-  include/modify.h include/multiclass.h include/opinion.h \
-  include/reception.h include/shop.h include/spell_parser.h \
-  include/spells.h include/breath_weapons.h include/mob_actions.h \
-  include/tracking.h include/spec_procs.h
-obj/spell_parser.o: spell_parser.c include/global.h include/bug.h \
-  include/utils.h include/comm.h include/db.h include/interpreter.h \
-  include/handler.h include/spells.h include/constants.h \
-  include/act_off.h include/random.h include/multiclass.h include/fight.h \
-  include/act_info.h include/spell_parser.h
-obj/spells.o: spells.c include/global.h include/bug.h include/utils.h \
-  include/comm.h include/db.h include/interpreter.h include/handler.h \
-  include/constants.h include/multiclass.h include/fight.h \
-  include/act_move.h include/spells.h include/spell_parser.h
-obj/tracking.o: specials/tracking.c include/global.h include/bug.h \
-  include/utils.h include/act_move.h include/comm.h include/constants.h \
-  include/db.h include/fight.h include/handler.h include/hash.h \
-  include/interpreter.h include/multiclass.h include/opinion.h \
-  include/spells.h include/tracking.h
+  include/mudlimits.h include/random.h include/act_move.h \
+  include/reception.h include/multiclass.h include/act_wiz.h \
+  include/act_skills.h include/opinion.h include/spec_procs.h \
+  include/mob_actions.h include/act_off.h include/fight.h
 obj/trap.o: trap.c include/global.h include/bug.h include/utils.h \
   include/spells.h include/comm.h include/db.h include/opinion.h \
   include/constants.h include/fight.h include/reception.h \
   include/spell_parser.h include/multiclass.h include/handler.h \
   include/act_info.h include/trap.h
-obj/utils.o: utils.c include/global.h include/bug.h include/spells.h \
-  include/constants.h include/db.h include/opinion.h include/comm.h \
-  include/hash.h include/multiclass.h include/handler.h include/fight.h \
-  include/act_info.h include/reception.h include/act_off.h \
-  include/magic_utils.h include/mudlimits.h include/act_skills.h \
-  include/utils.h
-obj/weather.o: weather.c include/global.h include/bug.h include/utils.h \
-  include/comm.h include/handler.h include/interpreter.h include/db.h \
-  include/weather.h
-obj/whod.o: whod.c include/version.h include/global.h include/bug.h \
-  include/db.h include/comm.h include/utils.h include/interpreter.h \
-  include/multiclass.h include/whod.h
+obj/comm.o: comm.c include/global.h include/bug.h include/utils.h \
+  include/interpreter.h include/handler.h include/db.h include/modify.h \
+  include/whod.h include/multiclass.h include/weather.h \
+  include/mudlimits.h include/spells.h include/spell_parser.h \
+  include/sound.h include/fight.h include/mob_actions.h \
+  include/act_other.h include/signals.h include/sql.h include/comm.h
+obj/magic_utils.o: magic_utils.c include/global.h include/bug.h \
+  include/utils.h include/comm.h include/db.h include/spells.h \
+  include/handler.h include/mudlimits.h include/fight.h \
+  include/spell_parser.h include/multiclass.h include/magic_utils.h
+obj/act_off.o: act_off.c include/global.h include/bug.h include/utils.h \
+  include/comm.h include/interpreter.h include/handler.h include/db.h \
+  include/spells.h include/mudlimits.h include/opinion.h \
+  include/multiclass.h include/constants.h include/spec_procs.h \
+  include/fight.h include/act_skills.h include/act_move.h \
+  include/spell_parser.h include/act_info.h include/breath_weapons.h \
+  include/act_off.h
+obj/shop.o: shop.c include/global.h include/bug.h include/comm.h \
+  include/handler.h include/db.h include/interpreter.h include/utils.h \
+  include/constants.h include/act_comm.h include/multiclass.h \
+  include/act_social.h include/act_wiz.h include/spec_procs.h \
+  include/shop.h
+obj/act_wiz.o: act_wiz.c include/global.h include/bug.h include/utils.h \
+  include/comm.h include/interpreter.h include/handler.h include/db.h \
+  include/spells.h include/mudlimits.h include/constants.h \
+  include/spell_parser.h include/board.h include/whod.h \
+  include/reception.h include/spec_procs.h include/multiclass.h \
+  include/act_skills.h include/act_info.h include/fight.h include/hash.h \
+  include/weather.h include/modify.h include/act_wiz.h
+obj/act_info.o: act_info.c include/global.h include/bug.h include/version.h \
+  include/utils.h include/comm.h include/interpreter.h include/handler.h \
+  include/db.h include/spells.h include/mudlimits.h include/trap.h \
+  include/hash.h include/constants.h include/spell_parser.h \
+  include/whod.h include/multiclass.h include/modify.h include/act_wiz.h \
+  include/act_skills.h include/spec_procs.h include/tracking.h \
+  include/act_info.h
+obj/mob_actions.o: mob_actions.c include/global.h include/bug.h \
+  include/utils.h include/act_obj.h include/act_off.h include/comm.h \
+  include/constants.h include/db.h include/handler.h include/hash.h \
+  include/mudlimits.h include/multiclass.h include/opinion.h \
+  include/spells.h include/spell_parser.h include/fight.h include/trap.h \
+  include/act_skills.h include/spec_procs.h include/tracking.h \
+  include/mob_actions.h
+obj/handler.o: handler.c include/global.h include/bug.h include/utils.h \
+  include/comm.h include/db.h include/interpreter.h include/spells.h \
+  include/spell_parser.h include/constants.h include/fight.h \
+  include/modify.h include/multiclass.h include/opinion.h \
+  include/act_wiz.h include/handler.h
+obj/id_open.o: libident-0.19/id_open.c libident-0.19/ident.h
+obj/id_parse.o: libident-0.19/id_parse.c libident-0.19/ident.h
+obj/ident.o: libident-0.19/ident.c libident-0.19/ident.h
+obj/ident-tester.o: libident-0.19/ident-tester.c libident-0.19/ident.h
+obj/lookup-tester.o: libident-0.19/lookup-tester.c libident-0.19/ident.h
+obj/id_close.o: libident-0.19/id_close.c libident-0.19/ident.h
+obj/id_query.o: libident-0.19/id_query.c libident-0.19/ident.h
+obj/version.o: libident-0.19/version.c
+obj/support.o: libident-0.19/support.c libident-0.19/ident.h
+obj/tracking.o: tracking.c include/global.h include/bug.h include/utils.h \
+  include/act_move.h include/comm.h include/constants.h include/db.h \
+  include/handler.h include/hash.h include/interpreter.h \
+  include/multiclass.h include/opinion.h include/spells.h include/fight.h \
+  include/tracking.h
