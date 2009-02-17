@@ -47,11 +47,11 @@ extern struct pose_type                 pose_messages[MAX_MESSAGES];
 char                                   *fread_action(FILE * fl);
 void                                    boot_social_messages(void);
 int                                     find_action(int cmd);
-void                                    do_action(struct char_data *ch, char *argument,
+void                                    do_action(struct char_data *ch, const char *argument,
 						  int cmd);
-void                                    do_insult(struct char_data *ch, char *argument,
+void                                    do_insult(struct char_data *ch, const char *argument,
 						  int cmd);
 void                                    boot_pose_messages(void);
-void                                    do_pose(struct char_data *ch, char *argument, int cmd);
+void                                    do_pose(struct char_data *ch, const char *argument, int cmd);
 
 #endif

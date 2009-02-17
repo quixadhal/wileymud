@@ -184,7 +184,7 @@ void load_db(void)
   }
   log_boot("- Loading player list");
   if (!(pfd = fopen(PLAYER_FILE, "r"))) {
-    log_error("Cannot load accumulated player data\n\r");
+    log_error("Cannot load accumulated player data\r\n");
   } else {
     if (list_of_players) {
       for (i = 0; i < number_of_players; i++)
@@ -199,7 +199,7 @@ void load_db(void)
     for (i = 0; i < number_of_players; i++) {
       fgets(tmpbufx, 255, pfd);
       if (!(list_of_players[i] = (char *)strdup(tmpbufx))) {
-	log_fatal("Failed to get memory for player list element %d.\n\r", i);
+	log_fatal("Failed to get memory for player list element %d.\r\n", i);
 	proper_exit(MUD_HALT);
       }
     }
@@ -306,9 +306,10 @@ struct index_data                      *generate_indices(FILE * fl, int *top)
   int                                     i = 0;
   struct index_data                      *indexp = NULL;
   char                                    buf[82] = "\0\0\0";
+  static char                             omega[6] = "omega";
 
   if (DEBUG > 2)
-    log_info("called %s with %08x, %08x", __PRETTY_FUNCTION__, fl, top);
+    log_info("called %s with %08zx, %08zx", __PRETTY_FUNCTION__, (size_t)fl, (size_t)top);
 
   rewind(fl);
 
@@ -325,7 +326,7 @@ struct index_data                      *generate_indices(FILE * fl, int *top)
 	indexp[i].pos = ftell(fl);
 	indexp[i].number = 0;
 	indexp[i].func = 0;
-	indexp[i].name = (indexp[i].virtual < 99999) ? fread_string(fl) : "omega";
+	indexp[i].name = (indexp[i].virtual < 99999) ? fread_string(fl) : omega;
 	i++;
       } else {
 	if (*buf == '$')				       /* EOF */
@@ -347,7 +348,7 @@ void cleanout_room(struct room_data *rp)
   struct extra_descr_data                *nptr = NULL;
 
   if (DEBUG > 2)
-    log_info("called %s with %08x", __PRETTY_FUNCTION__, rp);
+    log_info("called %s with %08zx", __PRETTY_FUNCTION__, (size_t)rp);
 
   DESTROY(rp->name);
   DESTROY(rp->description);
@@ -372,7 +373,7 @@ void completely_cleanout_room(struct room_data *rp)
   struct obj_data                        *obj = NULL;
 
   if (DEBUG > 2)
-    log_info("called %s with %08x", __PRETTY_FUNCTION__, rp);
+    log_info("called %s with %08zx", __PRETTY_FUNCTION__, (size_t)rp);
 
   while (rp->people) {
     ch = rp->people;
@@ -398,7 +399,7 @@ void load_one_room(FILE *fl, struct room_data *rp)
   struct extra_descr_data                *new_descr = NULL;
 
   if (DEBUG > 2)
-    log_info("called %s with %08x, %08x", __PRETTY_FUNCTION__, fl, rp);
+    log_info("called %s with %08zx, %08zx", __PRETTY_FUNCTION__, (size_t)fl, (size_t)rp);
 
   rp->name = fread_string(fl);
   rp->description = fread_string(fl);
@@ -536,7 +537,7 @@ void setup_dir(FILE *fl, int room, int dir)
   struct room_data                       *rp = NULL;
 
   if (DEBUG > 2)
-    log_info("called %s with %08x, %d, %d", __PRETTY_FUNCTION__, fl, room, dir);
+    log_info("called %s with %08zx, %d, %d", __PRETTY_FUNCTION__, (size_t)fl, room, dir);
 
   rp = real_roomp(room);
   CREATE(rp->dir_option[dir], struct room_direction_data, 1);
@@ -744,7 +745,7 @@ void fread_dice(FILE * fp, long int *x, long int *y, long int *z)
   char                                    sign[2] = "\0";
 
   if (DEBUG > 2)
-    log_info("called %s with %08x, %08x, %08x, %08x", __PRETTY_FUNCTION__, fp, x, y, z);
+    log_info("called %s with %08zx, %08zx, %08zx, %08zx", __PRETTY_FUNCTION__, (size_t)fp, (size_t)x, (size_t)y, (size_t)z);
 
   if (!fp || !x || !y || !z || feof(fp))
     return;
@@ -1110,7 +1111,7 @@ struct char_data                       *read_mobile(int nr, int type)
       }
       break;
     default:{
-	log_error("Unknown mobile type code '%c' in \"%s\"!  HELP!\n\r", letter, mob->player.name);
+	log_error("Unknown mobile type code '%c' in \"%s\"!  HELP!\r\n", letter, mob->player.name);
       }
       break;
   }
@@ -1450,7 +1451,7 @@ void reset_zone(int zone)
 	  break;
 
 	default:
-	  log_error("Undefd cmd in reset table; zone %d cmd %d.\n\r", zone, cmd_no);
+	  log_error("Undefd cmd in reset table; zone %d cmd %d.\r\n", zone, cmd_no);
 	  break;
     } else
       last_cmd = 0;
@@ -1487,7 +1488,7 @@ int load_char(char *name, struct char_file_u *char_element)
   char                                   *t_ptr = NULL;
 
   if (DEBUG > 1)
-    log_info("called %s with %s, %08x", __PRETTY_FUNCTION__, VNULL(name), char_element);
+    log_info("called %s with %s, %08zx", __PRETTY_FUNCTION__, VNULL(name), (size_t)char_element);
 
   strcpy(tname, name);
   t_ptr = tname;
@@ -1513,7 +1514,7 @@ void store_to_char(struct char_file_u *st, struct char_data *ch)
   long                                    t = 0L;
 
   if (DEBUG > 2)
-    log_info("called %s with %08x, %s", __PRETTY_FUNCTION__, st, SAFE_NAME(ch));
+    log_info("called %s with %08zx, %s", __PRETTY_FUNCTION__, (size_t)st, SAFE_NAME(ch));
 
 /* This MIGHT be needed to do that strange password crap...
  * strcpy(ch->desc->pwd, st->pwd);
@@ -1617,7 +1618,7 @@ void char_to_store(struct char_data *ch, struct char_file_u *st)
   struct obj_data                        *char_eq[MAX_WEAR];
 
   if (DEBUG > 2)
-    log_info("called %s with %s, %08x", __PRETTY_FUNCTION__, SAFE_NAME(ch), st);
+    log_info("called %s with %s, %08zx", __PRETTY_FUNCTION__, SAFE_NAME(ch), (size_t)st);
 
 /* zero the structure.. hope this doesn't break things */
   bzero(st, sizeof(struct char_file_u));
@@ -1924,7 +1925,7 @@ void new_save_char(struct char_file_u *ch, char *filename)
   int                                     i = 0;
 
   if (DEBUG > 2)
-    log_info("called %s with %08x, %s", __PRETTY_FUNCTION__, ch, VNULL(filename));
+    log_info("called %s with %08zx, %s", __PRETTY_FUNCTION__, (size_t)ch, VNULL(filename));
 
   if (!(fp = fopen(filename, "w"))) {
     log_fatal("new save char");
@@ -2018,7 +2019,7 @@ void new_save_char(struct char_file_u *ch, char *filename)
 int compare(struct player_index_element *arg1, struct player_index_element *arg2)
 {
   if (DEBUG > 2)
-    log_info("called %s with %08x, %08x", __PRETTY_FUNCTION__, arg1, arg2);
+    log_info("called %s with %08zx, %08zx", __PRETTY_FUNCTION__, (size_t)arg1, (size_t)arg2);
 
   /* Allow this to blow up on NULL's, it will aid in debugging */
   return (str_cmp(arg1->name, arg2->name));
@@ -2088,7 +2089,7 @@ void free_obj(struct obj_data *obj)
 }
 
 /* read contents of a text file, and place in buf */
-int file_to_string(char *name, char *buf)
+int file_to_string(const char *name, char *buf)
 {
   FILE                                   *fl = NULL;
   char                                    tmp[100] = "\0\0\0";
@@ -2126,7 +2127,7 @@ int file_to_string(char *name, char *buf)
 }
 
 /* read contents of a text file, and place in buf */
-int file_to_prompt(char *name, char *buf)
+int file_to_prompt(const char *name, char *buf)
 {
   FILE                                   *fl = NULL;
   char                                    tmp[100] = "\0\0\0";
@@ -2196,7 +2197,7 @@ void reset_char(struct char_data *ch)
   }
   if ((ch->player.class == 3) && (GET_LEVEL(ch, THIEF_LEVEL_IND))) {
     ch->player.class = 8;
-    cprintf(ch, "Setting your class to THIEF only.\n\r");
+    cprintf(ch, "Setting your class to THIEF only.\r\n");
   }
   for (i = 0; i < ABS_MAX_CLASS; i++) {
     if (GET_LEVEL(ch, i) > LOKI) {
@@ -2503,9 +2504,10 @@ char                                   *fread_string(FILE * fl)
   char                                    buf[MAX_STRING_LENGTH] = "\0\0\0";
   char                                    tmp[MAX_STRING_LENGTH] = "\0\0\0";
   int                                     flag = FALSE;
+  static char                             Empty[6] = "Empty";
 
   if (DEBUG > 2)
-    log_info("called %s with %08x", __PRETTY_FUNCTION__, fl);
+    log_info("called %s with %08zx", __PRETTY_FUNCTION__, (size_t)fl);
 
   bzero(buf, sizeof(buf));
   bzero(tmp, sizeof(tmp));
@@ -2513,7 +2515,7 @@ char                                   *fread_string(FILE * fl)
   do {
     if (!fgets(tmp, MAX_STRING_LENGTH, fl)) {
       log_error("fread_str");
-      return ("Empty");
+      return (Empty);
     }
     ack = tmp;
     if (strlen(ack) + strlen(buf) + 1 > MAX_STRING_LENGTH) {
@@ -2558,7 +2560,7 @@ char                                   *fread_word(FILE * fp)
   char                                    cEnd = '\0';
 
   if (DEBUG > 2)
-    log_info("called %s with %08x", __PRETTY_FUNCTION__, fp);
+    log_info("called %s with %08zx", __PRETTY_FUNCTION__, (size_t)fp);
 
   do {
     cEnd = getc(fp);
@@ -2596,7 +2598,7 @@ int fread_number(FILE * fp)
   char                                    c = '\0';
 
   if (DEBUG > 2)
-    log_info("called %s with %08x", __PRETTY_FUNCTION__, fp);
+    log_info("called %s with %08zx", __PRETTY_FUNCTION__, (size_t)fp);
 
   do {
     c = getc(fp);
@@ -2639,7 +2641,7 @@ void fread_to_eol(FILE * fp)
   char                                    c = '\0';
 
   if (DEBUG > 2)
-    log_info("called %s with %08x", __PRETTY_FUNCTION__, fp);
+    log_info("called %s with %08zx", __PRETTY_FUNCTION__, (size_t)fp);
 
   c = getc(fp);
   while (c != '\n' && c != '\r')
@@ -2659,9 +2661,10 @@ char                                   *new_fread_string(FILE * fp)
   char                                   *ack = NULL;
   int                                     flag = FALSE;
   char                                    c = '\0';
+  static char                             Empty[1] = "";
 
   if (DEBUG > 2)
-    log_info("called %s with %08x", __PRETTY_FUNCTION__, fp);
+    log_info("called %s with %08zx", __PRETTY_FUNCTION__, (size_t)fp);
 
   bzero(buf, MAX_STRING_LENGTH);
   ack = buf;
@@ -2671,7 +2674,7 @@ char                                   *new_fread_string(FILE * fp)
   } while (isspace(c));
 
   if ((*ack++ = c) == '~')
-    return "";
+    return Empty;
 
   for (;;) {
     if (ack > &buf[MAX_STRING_LENGTH - 1]) {
@@ -2717,9 +2720,10 @@ int fread_char(char *name, struct char_file_u *ch)
   unsigned char                           fMatch = FALSE;
   char                                    tname[40] = "\0\0\0";
   char                                    buf[MAX_STRING_LENGTH] = "\0\0\0";
+  static char                             End[4] = "End";
 
   if (DEBUG > 2)
-    log_info("called %s with %s, %08x", __PRETTY_FUNCTION__, VNULL(name), ch);
+    log_info("called %s with %s, %08zx", __PRETTY_FUNCTION__, VNULL(name), (size_t)ch);
 
   strcpy(tname, name);
   t_ptr = tname;
@@ -2732,7 +2736,7 @@ int fread_char(char *name, struct char_file_u *ch)
 
   bzero(ch, sizeof(struct char_file_u));
   for (;;) {
-    word = feof(fp) ? "End" : fread_word(fp);
+    word = feof(fp) ? End : fread_word(fp);
     fMatch = FALSE;
 
     switch (toupper(word[0])) {
@@ -2868,8 +2872,9 @@ int fread_char(char *name, struct char_file_u *ch)
 	  int                                     learned = 0;
 	  int                                     recognise = 0;
 	  int                                     sn = 0;
-	  char                                   *s = NULL;
-	  char                                   *arg = NULL;
+	  const char                             *arg = NULL;
+          char                                    tmparg[MAX_INPUT_LENGTH];
+          char                                   *t = tmparg;
 	  int                                     x = 0;
 
 	  skill_number = fread_number(fp);
@@ -2879,18 +2884,19 @@ int fread_char(char *name, struct char_file_u *ch)
 	  if (!arg || !(*arg))
 	    break;
 	  arg = skip_spaces(arg);
-	  if (*arg == '\'')
-	    arg++;
-	  for (s = arg; *s && *s != '\''; *s = tolower(*s))
-	    s++;
-	  if (*s == '\'')
-	    *s = '\0';
-	  if (!strlen(arg)) {
+          strncpy(tmparg, arg, MAX_INPUT_LENGTH);
+	  if (*t == '\'')
+	    t++;
+	  for (; *t && *t != '\''; *t = tolower(*t))
+	    t++;
+	  if (*t == '\'')
+	    *t = '\0';
+	  if (!strlen(t)) {
 	    log_error("Empty skill name:  %d\n", skill_number);
 	    break;
 	  }
 	  for (sn = -1, x = 0; x < MAX_SKILLS; x++)
-	    if (!str_cmp(arg, spell_info[x].name))
+	    if (!str_cmp(t, spell_info[x].name))
 	      sn = x;
 	  if (sn != skill_number) {
 	    log_error("Skill mismatch: %d read vs. %d lookup\nUsing lookup version.\n", skill_number, sn);

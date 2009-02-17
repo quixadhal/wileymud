@@ -30,7 +30,7 @@
  * **  Disarm:
  */
 
-void do_disarm(struct char_data *ch, char *argument, int cmd)
+void do_disarm(struct char_data *ch, const char *argument, int cmd)
 {
   char                                    name[30] = "\0\0\0";
   int                                     percent_chance = 0;
@@ -42,7 +42,7 @@ void do_disarm(struct char_data *ch, char *argument, int cmd)
   if (DEBUG)
     log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
-  if (check_peaceful(ch, "You feel too peaceful to contemplate violence.\n\r"))
+  if (check_peaceful(ch, "You feel too peaceful to contemplate violence.\r\n"))
     return;
 
   only_argument(argument, name);
@@ -50,29 +50,29 @@ void do_disarm(struct char_data *ch, char *argument, int cmd)
     if (ch->specials.fighting) {
       victim = ch->specials.fighting;
     } else {
-      cprintf(ch, "Disarm who?\n\r");
+      cprintf(ch, "Disarm who?\r\n");
       return;
     }
   }
   if (victim == ch) {
-    cprintf(ch, "Aren't we funny today...\n\r");
+    cprintf(ch, "Aren't we funny today...\r\n");
     return;
   }
   if (!CheckKill(ch, victim))
     return;
 
   if (ch->attackers > 3) {
-    cprintf(ch, "There is no room to disarm!\n\r");
+    cprintf(ch, "There is no room to disarm!\r\n");
     return;
   }
   if (victim->attackers > 3) {
-    cprintf(ch, "There is no room to disarm!\n\r");
+    cprintf(ch, "There is no room to disarm!\r\n");
     return;
   }
   cost = 25 - (GET_LEVEL(ch, BestFightingClass(ch)) / 10);
 
   if (GET_MANA(ch) < cost) {
-    cprintf(ch, "You trip and fall while trying to disarm.\n\r");
+    cprintf(ch, "You trip and fall while trying to disarm.\r\n");
     return;
   }
   percent_chance = number(1, 101);			       /* 101% is a complete failure */
@@ -90,13 +90,13 @@ void do_disarm(struct char_data *ch, char *argument, int cmd)
     GET_MANA(ch) -= 10;
     act("You try to disarm $N, but fail miserably.", TRUE, ch, 0, victim, TO_CHAR);
     if ((ch->equipment[WIELD]) && (number(1, 10) > 8)) {
-      cprintf(ch, "Your weapon flies from your hand while trying!\n\r");
+      cprintf(ch, "Your weapon flies from your hand while trying!\r\n");
       w = unequip_char(ch, WIELD);
       obj_from_char(w);
       obj_to_room(w, ch->in_room);
       act("$n tries to disarm $N, but $n loses his weapon!", TRUE, ch, 0, victim, TO_ROOM);
     } else if ((ch->equipment[WIELD_TWOH]) && (number(1, 10) > 9)) {
-      cprintf(ch, "Your weapon slips from your hands while trying!\n\r");
+      cprintf(ch, "Your weapon slips from your hands while trying!\r\n");
       w = unequip_char(ch, WIELD_TWOH);
       obj_from_char(w);
       obj_to_room(w, ch->in_room);
@@ -154,17 +154,17 @@ void do_disarm(struct char_data *ch, char *argument, int cmd)
   }
 }
 
-void do_peer(struct char_data *ch, char *argument, int cmd)
+void do_peer(struct char_data *ch, const char *argument, int cmd)
 {
   if (DEBUG)
     log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
   if (GET_MANA(ch) < (15 - GET_LEVEL(ch, BestThiefClass(ch)) / 4)) {
-    cprintf(ch, "You don't really see anything...\n\r");
+    cprintf(ch, "You don't really see anything...\r\n");
     return;
   }
   if (!*argument) {
-    cprintf(ch, "You must peer in a direction...\n\r");
+    cprintf(ch, "You must peer in a direction...\r\n");
     return;
   }
   if (ch->skills[SKILL_PEER].learned < number(1, 101)) {
@@ -280,7 +280,7 @@ int MountEgoCheck(struct char_data *rider, struct char_data *mount)
   return (chance);
 }
 
-void do_mount(struct char_data *ch, char *argument, int cmd)
+void do_mount(struct char_data *ch, const char *argument, int cmd)
 {
   char                                    name[112] = "\0\0\0";
   int                                     check = FALSE;
@@ -290,30 +290,30 @@ void do_mount(struct char_data *ch, char *argument, int cmd)
     log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
   if (IS_AFFECTED(ch, AFF_FLYING)) {
-    cprintf(ch, "You can't, you are flying!\n\r");
+    cprintf(ch, "You can't, you are flying!\r\n");
     return;
   }
   if (cmd == 269) {
     only_argument(argument, name);
     if (!(horse = get_char_room_vis(ch, name))) {
-      cprintf(ch, "Mount what?\n\r");
+      cprintf(ch, "Mount what?\r\n");
       return;
     }
     if (!IsHumanoid(ch)) {
-      cprintf(ch, "You can't ride things!\n\r");
+      cprintf(ch, "You can't ride things!\r\n");
       return;
     }
     if (IS_SET(horse->specials.act, ACT_MOUNT)) {
       if (GET_POS(horse) < POSITION_STANDING) {
-	cprintf(ch, "Your mount must be standing\n\r");
+	cprintf(ch, "Your mount must be standing\r\n");
 	return;
       }
       if (RIDDEN(horse)) {
-	cprintf(ch, "Already ridden\n\r");
+	cprintf(ch, "Already ridden\r\n");
 	return;
       }
       if (MOUNTED(ch)) {
-	cprintf(ch, "Already riding\n\r");
+	cprintf(ch, "Already riding\r\n");
 	return;
       }
       if (GetMaxLevel(horse) > 3)
@@ -352,7 +352,7 @@ void do_mount(struct char_data *ch, char *argument, int cmd)
 	WAIT_STATE(ch, PULSE_VIOLENCE * 2);
       }
     } else {
-      cprintf(ch, "You can't ride that!\n\r");
+      cprintf(ch, "You can't ride that!\r\n");
       return;
     }
   } else if (cmd == 270) {
@@ -363,6 +363,6 @@ void do_mount(struct char_data *ch, char *argument, int cmd)
     Dismount(ch, MOUNTED(ch), POSITION_STANDING);
     return;
   } else {
-    cprintf(ch, "Hmmmmmm, don't think you mounted on anything?\n\r");
+    cprintf(ch, "Hmmmmmm, don't think you mounted on anything?\r\n");
   }
 }

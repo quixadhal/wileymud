@@ -35,7 +35,7 @@
 #define GET_TRAP_CHARGES(obj) (obj)->obj_flags.value[TRAP_CHARGES]
 #define GET_TRAP_DAM_TYPE(obj) (obj)->obj_flags.value[TRAP_DAM_TYPE]
 
-void                                    do_settrap(struct char_data *ch, char *argument, int cmd);
+void                                    do_settrap(struct char_data *ch, const char *argument, int cmd);
 int                                     CheckForMoveTrap(struct char_data *ch, int dir);
 int                                     CheckForInsideTrap(struct char_data *ch,
 							   struct obj_data *i);

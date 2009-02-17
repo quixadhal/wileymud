@@ -35,7 +35,7 @@ IDENT *ident_lookup __P2(int, fd,
 			 int, timeout)
 {
     struct sockaddr_in localaddr, remoteaddr;
-    int len;
+    unsigned int len;
     
     len = sizeof(remoteaddr);
     if (getpeername(fd, (struct sockaddr*) &remoteaddr, &len) < 0)

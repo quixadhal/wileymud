@@ -90,7 +90,7 @@
 #define QUIT			98
 
 struct commands_st {
-  char                                   *name;
+  const char                             *name;
   int                                     num;
 } commands[] = {
   {
@@ -128,7 +128,7 @@ struct commands_st {
 };
 
 struct dir_st {
-  char                                   *name;
+  const char                             *name;
   int                                     num;
 } directions[] = {
   {
@@ -161,7 +161,7 @@ const int                               rev_dir[] = {
 };
 
 struct room_flg_st {
-  char                                   *name;
+  const char                             *name;
   int                                     mask;
 } room_flags[] = {
   {
@@ -180,7 +180,7 @@ struct room_flg_st {
 };
 
 struct door_st {
-  char                                   *name;
+  const char                             *name;
   int                                     num;
 } door_states[] = {
   {
@@ -193,7 +193,7 @@ struct door_st {
 };
 
 struct sector_st {
-  char                                   *name;
+  const char                             *name;
   int                                     num;
 } sector_types[] = {
   {
@@ -294,15 +294,15 @@ void                                    trunc_string(char *ptr);
 Room                                   *find_room(Room * current, int search_id);
 void                                    get_inputs(void);
 void                                    get_desc(char **ptr);
-void                                    input_desc(char *title, char **ptr);
-void                                    import_desc(char *title, char **ptr);
+void                                    input_desc(const char *title, char **ptr);
+void                                    import_desc(const char *title, char **ptr);
 void                                    put_desc(void);
 int                                     print_desc(void);
 int                                     direction_number(char *ptr);
 Room                                   *allocate_room(int temp_id);
 
 void                                    bug_logger(char *File, char *Func, int Line, int Verbose,
-					           char *Str, ...);
+                                                   const char *Str, ...) __attribute__ ( ( format( printf, 5, 6 ) ) );
 int                                     scan_a_number(char *string, int *number);
 void                                    Load_Rooms(void);
 void                                    Link_World(void);
@@ -337,7 +337,7 @@ int					Map = FALSE;
 #define log_error(Str, ...) bug_logger(__FILE__, __FUNCTION__, __LINE__, 1, Str, ## __VA_ARGS__)
 #define log_info(Str, ...) bug_logger(NULL, NULL, 0, 1, Str, ## __VA_ARGS__)
 
-void bug_logger(char *File, char *Func, int Line, int Verbose, char *Str, ...)
+void bug_logger(char *File, char *Func, int Line, int Verbose, const char *Str, ...)
 {
   va_list                                 arg;
   char                                    Result[PAGE_SIZE];
@@ -604,7 +604,7 @@ void Load_Rooms(void)
 	  if (tmp_str[strlen(tmp_str) - 1] != '~') {
 	    log_info
 	      ("Room %d: Invalid extra desc keyword list in room [#%d],\nExpected format \"%s~\", Got:\n%s\n",
-	       number_rooms, current->room_id, tmp_str);
+	       number_rooms, current->room_id, tmp_str, tmp_str);
 	    exit(ERR_EXTRAKEY);
 	  }
 	  idx2 = current->number_extras;
@@ -2459,7 +2459,7 @@ void get_desc(char **ptr)
   strcpy(*ptr, tmp_str);
 }
 
-void input_desc(char *title, char **ptr)
+void input_desc(const char *title, char **ptr)
 {
   int                                     idx = 0,
     idx2,
@@ -2500,7 +2500,7 @@ void input_desc(char *title, char **ptr)
   *ptr = (char *)strdup(tmp_str);
 }
 
-void import_desc(char *title, char **ptr)
+void import_desc(const char *title, char **ptr)
 {
   int                                     idx = 0,
     idx2;

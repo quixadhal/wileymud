@@ -40,7 +40,7 @@ void add_obj_cost(struct char_data *ch, struct char_data *re,
   int                                     temp = 0;
 
   if (DEBUG > 2)
-    log_info("called %s with %s, %s, %s, %08x", __PRETTY_FUNCTION__, SAFE_NAME(ch), SAFE_NAME(re), SAFE_ONAME(obj), cost);
+    log_info("called %s with %s, %s, %s, %08zx", __PRETTY_FUNCTION__, SAFE_NAME(ch), SAFE_NAME(re), SAFE_ONAME(obj), (size_t)cost);
 
   /*
    * Add cost for an item and it's contents, and next->contents 
@@ -51,7 +51,7 @@ void add_obj_cost(struct char_data *ch, struct char_data *re,
       temp = MAX(0, (int)(obj->obj_flags.cost_per_day * RENT_RATE));
       cost->total_cost += temp;
       if (re) {
-	cprintf(ch, "%30s : %d coins/day\n\r", obj->short_description, temp);
+	cprintf(ch, "%30s : %d coins/day\r\n", obj->short_description, temp);
       }
       cost->no_carried++;
       add_obj_cost(ch, re, obj->contains, cost);
@@ -71,7 +71,7 @@ char recep_offer(struct char_data *ch, struct char_data *recep_mob, struct obj_c
   int                                     i = 0;
 
   if (DEBUG > 2)
-    log_info("called %s with %s, %s, %08x", __PRETTY_FUNCTION__, SAFE_NAME(ch), SAFE_NAME(recep_mob), cost);
+    log_info("called %s with %s, %s, %08zx", __PRETTY_FUNCTION__, SAFE_NAME(ch), SAFE_NAME(recep_mob), (size_t)cost);
 
   cost->total_cost = 0;					       /* Minimum cost */
   cost->no_carried = 0;
@@ -125,7 +125,7 @@ void update_file(FILE * fl, char *name, struct obj_file_u *st)
   int                                     nlength = 0;
 
   if (DEBUG > 2)
-    log_info("called %s with %08x, %s, %08x", __PRETTY_FUNCTION__, fl, VNULL(name), st);
+    log_info("called %s with %08zx, %s, %08zx", __PRETTY_FUNCTION__, (size_t)fl, VNULL(name), (size_t)st);
 
   if (st->nobjects == 0) {
     rh.inuse = 0;
@@ -154,7 +154,7 @@ void obj_store_to_char(struct char_data *ch, struct obj_file_u *st)
   int                                     j = 0;
 
   if (DEBUG > 2)
-    log_info("called %s with %s, %08x", __PRETTY_FUNCTION__, SAFE_NAME(ch), st);
+    log_info("called %s with %s, %08zx", __PRETTY_FUNCTION__, SAFE_NAME(ch), (size_t)st);
 
   for (i = 0; i < st->nobjects; i++) {
     if (st->objects[i].item_number > -1 && real_object(st->objects[i].item_number) > -1) {
@@ -230,7 +230,7 @@ void load_char_objs(struct char_data *ch)
       timegold = (int)(((double)(st->total_cost) *
 			(((double)(time(0) - st->last_update)) / ((double)SECS_PER_REAL_DAY))));
       log_info("Char ran up charges of %g gold in rent", timegold);
-      cprintf(ch, "You ran up charges of %g gold in rent.\n\r", timegold);
+      cprintf(ch, "You ran up charges of %g gold in rent.\r\n", timegold);
 /*
  * Sedna's hack begins here.
  * The butler is now friends with the banker.
@@ -242,12 +242,12 @@ void load_char_objs(struct char_data *ch)
 	GET_BANK(ch) -= difference;
 	if (GET_BANK(ch) < 0) {
 	  log_info("Char ran out of money in rent-is flat broke");
-	  cprintf(ch, "You ran out of money, you deadbeat.\n\r");
+	  cprintf(ch, "You ran out of money, you deadbeat.\r\n");
 	  GET_GOLD(ch) = 0;
 	  GET_BANK(ch) = 0;
 	} else {
 	  log_info("Char ran out of money in rent-withdrew from bank");
-	  cprintf(ch, "You ran out of money, and had to make a quick trip to the bank.\n\r");
+	  cprintf(ch, "You ran out of money, and had to make a quick trip to the bank.\r\n");
 	  GET_GOLD(ch) = 0;
 	}
       }
@@ -276,7 +276,7 @@ void put_obj_in_store(struct obj_data *obj, struct obj_file_u *st)
   struct obj_file_elem                   *oe = NULL;
 
   if (DEBUG > 2)
-    log_info("called %s with %s, %08x", __PRETTY_FUNCTION__, SAFE_ONAME(obj), st);
+    log_info("called %s with %s, %08zx", __PRETTY_FUNCTION__, SAFE_ONAME(obj), (size_t)st);
 
   if (st->nobjects >= MAX_OBJ_SAVE) {
     log_info("you want to rent more than %d items?!\n", st->nobjects);
@@ -317,7 +317,7 @@ static int contained_weight(struct obj_data *container)
 void obj_to_store(struct obj_data *obj, struct obj_file_u *st, struct char_data *ch, int delete)
 {
   if (DEBUG > 2)
-    log_info("called %s with %s, %08x, %s, %d", __PRETTY_FUNCTION__, SAFE_ONAME(obj), st, SAFE_NAME(ch), delete);
+    log_info("called %s with %s, %08zx, %s, %d", __PRETTY_FUNCTION__, SAFE_ONAME(obj), (size_t)st, SAFE_NAME(ch), delete);
 
   if (!obj)
     return;
@@ -327,7 +327,7 @@ void obj_to_store(struct obj_data *obj, struct obj_file_u *st, struct char_data 
 
   if ((obj->obj_flags.timer < 0) && (obj->obj_flags.timer != OBJ_NOTIMER)) {
     if (delete) {
-      cprintf(ch, "You're told: '%s is just old junk, I'll throw it away for you.'\n\r",
+      cprintf(ch, "You're told: '%s is just old junk, I'll throw it away for you.'\r\n",
 	      obj->short_description);
       if (obj->in_obj)
 	obj_from_obj(obj);
@@ -336,7 +336,7 @@ void obj_to_store(struct obj_data *obj, struct obj_file_u *st, struct char_data 
     }
   } else if (obj->obj_flags.cost_per_day < 0) {
     if (delete) {
-      cprintf(ch, "You're told: '%s is just old junk, I'll throw it away for you.'\n\r",
+      cprintf(ch, "You're told: '%s is just old junk, I'll throw it away for you.'\r\n",
 	      obj->short_description);
       if (obj->in_obj)
 	obj_from_obj(obj);
@@ -375,7 +375,7 @@ void save_obj(struct char_data *ch, struct obj_cost *cost, int delete)
   static struct obj_file_u                st;
 
   if (DEBUG > 2)
-    log_info("called %s with %s, %08x, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), cost, delete);
+    log_info("called %s with %s, %08zx, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), (size_t)cost, delete);
 
   zero_rent(ch);
 
@@ -418,7 +418,7 @@ void fwrite_obj(struct obj_data *obj, FILE * fp, int ObjId, int ContainedBy)
   struct extra_descr_data                *ex = NULL;
 
   if (DEBUG > 2)
-    log_info("called %s with %s, %08x, %d, %d", __PRETTY_FUNCTION__, SAFE_ONAME(obj), fp, ObjId, ContainedBy);
+    log_info("called %s with %s, %08zx, %d, %d", __PRETTY_FUNCTION__, SAFE_ONAME(obj), (size_t)fp, ObjId, ContainedBy);
 
   fprintf(fp, "#ITEM\n");
   fprintf(fp, "ObjId              %d\n", ObjId);
@@ -451,7 +451,7 @@ int new_save_obj(struct char_data *ch, struct obj_data *obj, FILE * fp, int dele
 		 int ContainedBy)
 {
   if (DEBUG > 2)
-    log_info("called %s with %s, %s, %08x, %d, %d, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), SAFE_ONAME(obj), fp, delete, ObjId, ContainedBy);
+    log_info("called %s with %s, %s, %08zx, %d, %d, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), SAFE_ONAME(obj), (size_t)fp, delete, ObjId, ContainedBy);
 
   if (!obj)
     return ObjId - 1;
@@ -461,7 +461,7 @@ int new_save_obj(struct char_data *ch, struct obj_data *obj, FILE * fp, int dele
 
   if ((obj->obj_flags.timer < 0) && (obj->obj_flags.timer != OBJ_NOTIMER)) {
     if (delete) {
-      cprintf(ch, "You think %s is just old junk and throw it away.\n\r", OBJS(obj, ch));
+      cprintf(ch, "You think %s is just old junk and throw it away.\r\n", OBJS(obj, ch));
       if (obj->in_obj)
 	obj_from_obj(obj);
       obj_from_char(obj);
@@ -470,7 +470,7 @@ int new_save_obj(struct char_data *ch, struct obj_data *obj, FILE * fp, int dele
     return ObjId - 1;
   } else if (obj->obj_flags.cost_per_day < 0) {
     if (delete) {
-      cprintf(ch, "You think %s is just old junk and throw it away.\n\r", OBJS(obj, ch));
+      cprintf(ch, "You think %s is just old junk and throw it away.\r\n", OBJS(obj, ch));
       if (obj->in_obj)
 	obj_from_obj(obj);
       obj_from_char(obj);
@@ -510,7 +510,7 @@ void new_save_equipment(struct char_data *ch, struct obj_cost *cost, int delete)
   int                                     ObjId = 0;
 
   if (DEBUG > 2)
-    log_info("called %s with %s, %08x, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), cost, delete);
+    log_info("called %s with %s, %08zx, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), (size_t)cost, delete);
 
   strcpy(name, GET_NAME(ch));
   t_ptr = name;
@@ -557,12 +557,13 @@ int fread_object(struct obj_data *obj, FILE * fp)
   int                                     fMatch = FALSE;
   int                                     done = FALSE;
   char                                   *word;
+  static char                             End[4] = "End";
 
   if (DEBUG > 2)
-    log_info("called %s with %s, %08x", __PRETTY_FUNCTION__, SAFE_ONAME(obj), fp);
+    log_info("called %s with %s, %08zx", __PRETTY_FUNCTION__, SAFE_ONAME(obj), (size_t)fp);
 
   for (;;) {						       /* Get equipment slot information */
-    word = feof(fp) ? "End" : fread_word(fp);
+    word = feof(fp) ? End : fread_word(fp);
     fMatch = FALSE;
 
     switch (toupper(word[0])) {
@@ -575,7 +576,7 @@ int fread_object(struct obj_data *obj, FILE * fp)
 	fread_to_eol(fp);
 	break;
       case 'E':
-	if (!str_cmp(word, "End")) {
+	if (!str_cmp(word, End)) {
 	  fMatch = 1;
 	  done = 1;
 	  break;
@@ -598,6 +599,7 @@ int new_load_equipment(struct char_data *ch, struct obj_cost *cost)
   char                                    name[40] = "\0\0\0";
   char                                    filename[256] = "\0\0\0";
   char                                   *t_ptr = NULL;
+  static char                             End[4] = "End";
 
 #if 0
   double                                  charges = 0.0;
@@ -615,7 +617,7 @@ int new_load_equipment(struct char_data *ch, struct obj_cost *cost)
   char                                   *word = NULL;
 
   if (DEBUG > 2)
-    log_info("called %s with %s, %08x", __PRETTY_FUNCTION__, SAFE_NAME(ch), cost);
+    log_info("called %s with %s, %08zx", __PRETTY_FUNCTION__, SAFE_NAME(ch), (size_t)cost);
 
   strcpy(name, GET_NAME(ch));
   t_ptr = name;
@@ -645,7 +647,7 @@ int new_load_equipment(struct char_data *ch, struct obj_cost *cost)
   }
   done = 0;
   for (;;) {						       /* Get rental information */
-    word = feof(fp) ? "End" : fread_word(fp);
+    word = feof(fp) ? End : fread_word(fp);
     fMatch = FALSE;
 
     switch (toupper(word[0])) {
@@ -658,7 +660,7 @@ int new_load_equipment(struct char_data *ch, struct obj_cost *cost)
 	fread_to_eol(fp);
 	break;
       case 'E':
-	if (!str_cmp(word, "End")) {
+	if (!str_cmp(word, End)) {
 	  fMatch = 1;
 	  done = 1;
 	  break;
@@ -736,7 +738,7 @@ int receptionist(struct char_data *ch, int cmd, char *arg)
 	recep = temp_char;
 
   if (!recep) {
-    log_fatal("No receptionist.\n\r");
+    log_fatal("No receptionist.\r\n");
     proper_exit(MUD_HALT);
   }
   if (IS_NPC(ch))
@@ -765,7 +767,7 @@ int receptionist(struct char_data *ch, int cmd, char *arg)
       {							       /* Rent */
 	if (recep_offer(ch, recep, &cost)) {
 	  GET_HOME(ch) = ch->in_room;
-	  cprintf(ch, "Your home has been set to this room, %s\n\r",
+	  cprintf(ch, "Your home has been set to this room, %s\r\n",
 		  real_roomp(ch->in_room)->name);
 
 	  act("$n stores your stuff in the safe, and helps you into your chamber.",
@@ -791,7 +793,7 @@ int receptionist(struct char_data *ch, int cmd, char *arg)
       {							       /* sethome */
 	GET_HOME(ch) = ch->in_room;
 	save_char(ch, ch->in_room);
-	cprintf(ch, "Your home has been set to this room, %s\n\r",
+	cprintf(ch, "Your home has been set to this room, %s\r\n",
 		real_roomp(ch->in_room)->name);
       }
       break;

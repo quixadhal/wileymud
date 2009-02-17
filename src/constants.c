@@ -471,7 +471,7 @@ const int RacialMax[][4] =
 
 /*  fire cold elec blow acid */
 
-int ItemSaveThrows[22][5] =
+const int ItemSaveThrows[22][5] =
 {
   {15, 2, 10, 10, 10},
   {19, 2, 16, 2, 7},
@@ -1478,7 +1478,7 @@ const char backstab_mult[ABS_MAX_LVL] =
 };
 
 /* [dex] apply (all) */
-struct dex_app_type dex_app[26] =
+const struct dex_app_type dex_app[26] =
 {
   {-7, -7, 60},			       /* 0 */
   {-6, -6, 50},			       /* 1 */
@@ -1509,7 +1509,7 @@ struct dex_app_type dex_app[26] =
 };
 
 /* [con] apply (all) */
-struct con_app_type con_app[26] =
+const struct con_app_type con_app[26] =
 {
   {-4, 20},			       /* 0 */
   {-3, 25},			       /* 1 */
@@ -1540,7 +1540,7 @@ struct con_app_type con_app[26] =
 };
 
 /* [int] apply (all) */
-struct int_app_type int_app[26] =
+const struct int_app_type int_app[26] =
 {
   {1},
   {2},				       /* 1 */
@@ -1571,7 +1571,7 @@ struct int_app_type int_app[26] =
 };
 
 /* [wis] apply (all) */
-struct wis_app_type wis_app[26] =
+const struct wis_app_type wis_app[26] =
 {
   {0},				       /* 0 */
   {1},				       /* 1 */

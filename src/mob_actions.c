@@ -193,7 +193,7 @@ void mobile_activity(void)
 	  if (IS_SET(ch->specials.act, ACT_HATEFUL)) {
 	    tmp_ch = FindAHatee(ch);
 	    if (tmp_ch) {
-	      if (check_peaceful(ch, "You ask your enemy to step outside.\n\r")) {
+	      if (check_peaceful(ch, "You ask your enemy to step outside.\r\n")) {
 		if (IsHumanoid(ch))
 		  act("$n growls '$N, would you care to step outside?'",
 		      TRUE, ch, 0, tmp_ch, TO_ROOM);
@@ -225,7 +225,7 @@ void mobile_activity(void)
 	      if (IS_SET(ch->specials.act, ACT_HATEFUL)) {
 		tmp_ch = FindAHatee(ch);
 		if (tmp_ch) {
-		  if (check_peaceful(ch, "You ask your enemy to step outside.\n\r")) {
+		  if (check_peaceful(ch, "You ask your enemy to step outside.\r\n")) {
 		    act("$n growls '$N, would you care to step outside?'",
 			TRUE, ch, 0, tmp_ch, TO_ROOM);
 		  } else {
@@ -246,7 +246,7 @@ void mobile_activity(void)
 	  for (k = 0; k <= 5; k++) {
 	    tmp_ch = FindVictim(ch);
 	    if (tmp_ch) {
-	      if (check_peaceful(ch, "You can't seem to exercise your violent tendencies.\n\r")) {
+	      if (check_peaceful(ch, "You can't seem to exercise your violent tendencies.\r\n")) {
 		act("$n growls impotently", TRUE, ch, 0, 0, TO_ROOM);
 		return;
 	      }

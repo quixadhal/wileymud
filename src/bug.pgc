@@ -138,7 +138,7 @@ void bug_logger( unsigned int Type, const char *BugFile,
     if (!(fp = fopen(BugFile, "a"))) {
       perror(BugFile);
       if (ch)
-	send_to_char("Could not open the file!\n\r", ch);
+	send_to_char("Could not open the file!\r\n", ch);
     } else {
       fprintf(fp, "%s\n", Result);
       FCLOSE(fp);

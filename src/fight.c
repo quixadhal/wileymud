@@ -180,7 +180,7 @@ void update_pos(struct char_data *victim)
     GET_POS(victim) = POSITION_STUNNED;
 }
 
-int check_peaceful(struct char_data *ch, char *msg)
+int check_peaceful(struct char_data *ch, const char *msg)
 {
   struct room_data                       *rp = NULL;
 
@@ -455,9 +455,9 @@ void raw_kill(struct char_data *ch)
     extract_char(ch);
   } else {
     if (IS_IMMORTAL(ch)) {
-      cprintf(ch, "\nYou have been FORCED from this plane!\n\r");
+      cprintf(ch, "\nYou have been FORCED from this plane!\r\n");
       rprintf(ch->in_room,
-	      "The Immortal %s dissolves and fades from sight!\n\rA dead body hits the ground and begins to rot.\n\r",
+	      "The Immortal %s dissolves and fades from sight!\r\nA dead body hits the ground and begins to rot.\r\n",
 	      GET_NAME(ch));
       make_corpse(ch);
       zero_rent(ch);
@@ -467,9 +467,9 @@ void raw_kill(struct char_data *ch)
       GET_POS(ch) = POSITION_STANDING;
       save_char(ch, NOWHERE);
     } else {
-      cprintf(ch, "\nYou have DIED!, your spirit flees in terror!\n\r");
+      cprintf(ch, "\nYou have DIED!, your spirit flees in terror!\r\n");
       rprintf(ch->in_room,
-	      "The spirit of %s flashes away!\n\rA dead body hits the ground and begins to rot.\n\r",
+	      "The spirit of %s flashes away!\r\nA dead body hits the ground and begins to rot.\r\n",
 	      GET_NAME(ch));
       make_corpse(ch);
       zero_rent(ch);
@@ -478,7 +478,7 @@ void raw_kill(struct char_data *ch)
       GET_HIT(ch) = 1;
       GET_POS(ch) = POSITION_SLEEPING;
       save_char(ch, NOWHERE);
-      rprintf(ch->in_room, "A terrified %s appears in a flash of light!\n\r", GET_NAME(ch));
+      rprintf(ch->in_room, "A terrified %s appears in a flash of light!\r\n", GET_NAME(ch));
     }
   }
 }
@@ -690,7 +690,7 @@ void group_gain(struct char_data *ch, struct char_data *victim)
   }
 }
 
-char                                   *replace_string(char *str, char *weapon, char *weapon_s)
+char                                   *replace_string(const char *str, const char *weapon, const char *weapon_s)
 {
   static char                             buf[256] = "\0\0\0";
   char                                   *cp = NULL;
@@ -729,9 +729,9 @@ void dam_message(int dam, struct char_data *ch, struct char_data *victim, int w_
   char                                   *buf = NULL;
   int                                     snum = 0;
   static struct dam_weapon_type {
-    char                                   *to_room;
-    char                                   *to_char;
-    char                                   *to_victim;
+    const char                                   *to_room;
+    const char                                   *to_char;
+    const char                                   *to_victim;
   } dam_weapons[] = {
     {
       "$n misses $N.",					       /* 0 */
@@ -796,7 +796,6 @@ void dam_message(int dam, struct char_data *ch, struct char_data *victim, int w_
 
 int damage(struct char_data *ch, struct char_data *victim, int dam, int attacktype)
 {
-  char                                    buf[MAX_INPUT_LENGTH] = "\0\0\0";
   struct obj_data                        *wield_ptr = NULL;
   struct message_type                    *messages = NULL;
   int                                     i = 0;
@@ -1082,11 +1081,11 @@ void hit(struct char_data *ch, struct char_data *victim, int type)
   }
   if (!IS_IMMORTAL(ch)) {
     if (victim->attackers >= 6 && ch->specials.fighting != victim) {
-      cprintf(ch, "You can't attack them,  no room!\n\r");
+      cprintf(ch, "You can't attack them,  no room!\r\n");
       return;
     }
     if ((ch->attackers >= 6) && (victim->specials.fighting != ch)) {
-      cprintf(ch, "There are too many other people in the way.\n\r");
+      cprintf(ch, "There are too many other people in the way.\r\n");
       return;
     }
   }
@@ -1810,7 +1809,7 @@ int DamageOneItem(struct char_data *ch, int dam_type, struct obj_data *obj)
 
   num = DamagedByAttack(obj, dam_type);
   if (num != 0) {
-    cprintf(ch, "%s is %s.\n\r", obj->short_description, ItemDamType[dam_type - 1]);
+    cprintf(ch, "%s is %s.\r\n", obj->short_description, ItemDamType[dam_type - 1]);
     if (num == -1) {					       /* destroy object if fail one last save */
       if (!ItemSave(obj, dam_type)) {
 	return (TRUE);
@@ -2136,7 +2135,7 @@ int SkipImmortals(struct char_data *v, int amnt)
   return (amnt);
 }
 
-int CanKill(struct char_data *ch, struct char_data *vict, char *msg)
+int CanKill(struct char_data *ch, struct char_data *vict, const char *msg)
 {
   if (DEBUG > 2)
     log_info("called %s with %s, %s, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), SAFE_NAME(vict), VNULL(msg));
@@ -2165,7 +2164,7 @@ int CanKill(struct char_data *ch, struct char_data *vict, char *msg)
   if (DEBUG > 2)
     log_info("called %s with %s, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), SAFE_NAME(vict));
 
-  return CanKill(ch, vict, "It doesn't affect %s.\n\r");
+  return CanKill(ch, vict, "It doesn't affect %s.\r\n");
 }
 
 void WeaponSpell(struct char_data *c, struct char_data *v, int type)
@@ -2368,12 +2367,12 @@ void shoot(struct char_data *ch, struct char_data *victim)
   arrow = ch->equipment[WIELD];
 
   if (!bow) {
-    cprintf(ch, "You need a bow-like weapon\n\r");
+    cprintf(ch, "You need a bow-like weapon\r\n");
     return;
   } else if (!arrow) {
-    cprintf(ch, "You need a projectile to shoot!\n\r");
+    cprintf(ch, "You need a projectile to shoot!\r\n");
   } else if (!bow && !arrow) {
-    cprintf(ch, "You need a bow-like item, and a projectile to shoot!\n\r");
+    cprintf(ch, "You need a bow-like item, and a projectile to shoot!\r\n");
   } else {
     arrowVnum = ObjVnum(arrow);
     found = FALSE;
@@ -2383,7 +2382,7 @@ void shoot(struct char_data *ch, struct char_data *victim)
       }
     }
     if (!found) {
-      cprintf(ch, "That projectile does not fit in that projector.\n\r");
+      cprintf(ch, "That projectile does not fit in that projector.\r\n");
       return;
     }
     /*
@@ -2416,7 +2415,7 @@ int SwitchTargets(struct char_data *ch, struct char_data *vict)
   }
   if (ch->specials.fighting != vict) {
     if (ch->specials.fighting->specials.fighting == ch) {
-      cprintf(ch, "You can't shoot weapons at close range!\n\r");
+      cprintf(ch, "You can't shoot weapons at close range!\r\n");
       return (FALSE);
     } else {
       stop_fighting(ch);

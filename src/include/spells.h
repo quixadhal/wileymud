@@ -25,8 +25,8 @@
 /* Attacktypes with grammar */
 
 struct attack_hit_type {
-  char                                   *singular;
-  char                                   *plural;
+  const char                                   *singular;
+  const char                                   *plural;
 };
 
 #define TAR_IGNORE	 (1<< 0)
@@ -47,9 +47,9 @@ struct attack_hit_type {
 struct spell_info_type {
   char                                    castable;	       /* Is it a castable spell? */
   char                                    useable;	       /* Is it a useable skill? */
-  char                                   *name;		       /* Text name of spell */
+  const char                             *name;		       /* Text name of spell */
   void                                    (*spell_pointer) (char level, struct char_data * ch,
-							    char *arg, int type,
+							    const char *arg, int type,
 							    struct char_data * tar_ch,
 							    struct obj_data * tar_obj);
   char                                    delay;	       /* Heartbeats until ready for next */
@@ -92,7 +92,7 @@ struct PolyType {
 void                                    spell_armor(char level, struct char_data *ch,
 						    struct char_data *victim,
 						    struct obj_data *obj);
-void                                    cast_armor(char level, struct char_data *ch, char *arg,
+void                                    cast_armor(char level, struct char_data *ch, const char *arg,
 						   int type, struct char_data *tar_ch,
 						   struct obj_data *tar_obj);
 
@@ -101,7 +101,7 @@ void                                    spell_teleport(char level, struct char_d
 						       struct char_data *victim,
 						       struct obj_data *obj);
 void                                    cast_teleport(char level, struct char_data *ch,
-						      char *arg, int type,
+						      const char *arg, int type,
 						      struct char_data *tar_ch,
 						      struct obj_data *tar_obj);
 
@@ -109,7 +109,7 @@ void                                    cast_teleport(char level, struct char_da
 void                                    spell_bless(char level, struct char_data *ch,
 						    struct char_data *victim,
 						    struct obj_data *obj);
-void                                    cast_bless(char level, struct char_data *ch, char *arg,
+void                                    cast_bless(char level, struct char_data *ch, const char *arg,
 						   int type, struct char_data *tar_ch,
 						   struct obj_data *tar_obj);
 
@@ -118,7 +118,7 @@ void                                    spell_blindness(char level, struct char_
 							struct char_data *victim,
 							struct obj_data *obj);
 void                                    cast_blindness(char level, struct char_data *ch,
-						       char *arg, int type,
+						       const char *arg, int type,
 						       struct char_data *tar_ch,
 						       struct obj_data *tar_obj);
 
@@ -127,7 +127,7 @@ void                                    spell_burning_hands(char level, struct c
 							    struct char_data *victim,
 							    struct obj_data *obj);
 void                                    cast_burning_hands(char level, struct char_data *ch,
-							   char *arg, int type,
+							   const char *arg, int type,
 							   struct char_data *victim,
 							   struct obj_data *tar_obj);
 
@@ -136,7 +136,7 @@ void                                    spell_call_lightning(char level, struct 
 							     struct char_data *victim,
 							     struct obj_data *obj);
 void                                    cast_call_lightning(char level, struct char_data *ch,
-							    char *arg, int type,
+							    const char *arg, int type,
 							    struct char_data *victim,
 							    struct obj_data *tar_obj);
 
@@ -145,7 +145,7 @@ void                                    spell_charm_person(char level, struct ch
 							   struct char_data *victim,
 							   struct obj_data *obj);
 void                                    cast_charm_person(char level, struct char_data *ch,
-							  char *arg, int type,
+							  const char *arg, int type,
 							  struct char_data *tar_ch,
 							  struct obj_data *tar_obj);
 
@@ -154,7 +154,7 @@ void                                    spell_chill_touch(char level, struct cha
 							  struct char_data *victim,
 							  struct obj_data *obj);
 void                                    cast_chill_touch(char level, struct char_data *ch,
-							 char *arg, int type,
+							 const char *arg, int type,
 							 struct char_data *victim,
 							 struct obj_data *tar_obj);
 
@@ -162,7 +162,7 @@ void                                    cast_chill_touch(char level, struct char
 void                                    spell_clone(char level, struct char_data *ch,
 						    struct char_data *victim,
 						    struct obj_data *obj);
-void                                    cast_clone(char level, struct char_data *ch, char *arg,
+void                                    cast_clone(char level, struct char_data *ch, const char *arg,
 						   int type, struct char_data *tar_ch,
 						   struct obj_data *tar_obj);
 
@@ -171,7 +171,7 @@ void                                    spell_colour_spray(char level, struct ch
 							   struct char_data *victim,
 							   struct obj_data *obj);
 void                                    cast_colour_spray(char level, struct char_data *ch,
-							  char *arg, int type,
+							  const char *arg, int type,
 							  struct char_data *victim,
 							  struct obj_data *tar_obj);
 
@@ -180,7 +180,7 @@ void                                    spell_control_weather(char level, struct
 							      struct char_data *victim,
 							      struct obj_data *obj);
 void                                    cast_control_weather(char level, struct char_data *ch,
-							     char *arg, int type,
+							     const char *arg, int type,
 							     struct char_data *tar_ch,
 							     struct obj_data *tar_obj);
 
@@ -189,7 +189,7 @@ void                                    spell_create_food(char level, struct cha
 							  struct char_data *victim,
 							  struct obj_data *obj);
 void                                    cast_create_food(char level, struct char_data *ch,
-							 char *arg, int type,
+							 const char *arg, int type,
 							 struct char_data *tar_ch,
 							 struct obj_data *tar_obj);
 
@@ -198,7 +198,7 @@ void                                    spell_create_water(char level, struct ch
 							   struct char_data *victim,
 							   struct obj_data *obj);
 void                                    cast_create_water(char level, struct char_data *ch,
-							  char *arg, int type,
+							  const char *arg, int type,
 							  struct char_data *tar_ch,
 							  struct obj_data *tar_obj);
 
@@ -207,7 +207,7 @@ void                                    spell_cure_blind(char level, struct char
 							 struct char_data *victim,
 							 struct obj_data *obj);
 void                                    cast_cure_blind(char level, struct char_data *ch,
-							char *arg, int type,
+							const char *arg, int type,
 							struct char_data *tar_ch,
 							struct obj_data *tar_obj);
 
@@ -216,7 +216,7 @@ void                                    spell_cure_critic(char level, struct cha
 							  struct char_data *victim,
 							  struct obj_data *obj);
 void                                    cast_cure_critic(char level, struct char_data *ch,
-							 char *arg, int type,
+							 const char *arg, int type,
 							 struct char_data *tar_ch,
 							 struct obj_data *tar_obj);
 
@@ -225,7 +225,7 @@ void                                    spell_cure_light(char level, struct char
 							 struct char_data *victim,
 							 struct obj_data *obj);
 void                                    cast_cure_light(char level, struct char_data *ch,
-							char *arg, int type,
+							const char *arg, int type,
 							struct char_data *tar_ch,
 							struct obj_data *tar_obj);
 
@@ -233,7 +233,7 @@ void                                    cast_cure_light(char level, struct char_
 void                                    spell_curse(char level, struct char_data *ch,
 						    struct char_data *victim,
 						    struct obj_data *obj);
-void                                    cast_curse(char level, struct char_data *ch, char *arg,
+void                                    cast_curse(char level, struct char_data *ch, const char *arg,
 						   int type, struct char_data *tar_ch,
 						   struct obj_data *tar_obj);
 
@@ -242,7 +242,7 @@ void                                    spell_detect_evil(char level, struct cha
 							  struct char_data *victim,
 							  struct obj_data *obj);
 void                                    cast_detect_evil(char level, struct char_data *ch,
-							 char *arg, int type,
+							 const char *arg, int type,
 							 struct char_data *tar_ch,
 							 struct obj_data *tar_obj);
 
@@ -253,7 +253,7 @@ void                                    spell_detect_invisibility(char level,
 								  struct obj_data *obj);
 void                                    cast_detect_invisibility(char level,
 								 struct char_data *ch,
-								 char *arg, int type,
+								 const char *arg, int type,
 								 struct char_data *tar_ch,
 								 struct obj_data *tar_obj);
 
@@ -262,7 +262,7 @@ void                                    spell_detect_magic(char level, struct ch
 							   struct char_data *victim,
 							   struct obj_data *obj);
 void                                    cast_detect_magic(char level, struct char_data *ch,
-							  char *arg, int type,
+							  const char *arg, int type,
 							  struct char_data *tar_ch,
 							  struct obj_data *tar_obj);
 
@@ -271,7 +271,7 @@ void                                    spell_detect_poison(char level, struct c
 							    struct char_data *victim,
 							    struct obj_data *obj);
 void                                    cast_detect_poison(char level, struct char_data *ch,
-							   char *arg, int type,
+							   const char *arg, int type,
 							   struct char_data *tar_ch,
 							   struct obj_data *tar_obj);
 
@@ -280,7 +280,7 @@ void                                    spell_dispel_evil(char level, struct cha
 							  struct char_data *victim,
 							  struct obj_data *obj);
 void                                    cast_dispel_evil(char level, struct char_data *ch,
-							 char *arg, int type,
+							 const char *arg, int type,
 							 struct char_data *tar_ch,
 							 struct obj_data *tar_obj);
 
@@ -289,14 +289,14 @@ void                                    spell_earthquake(char level, struct char
 							 struct char_data *victim,
 							 struct obj_data *obj);
 void                                    cast_earthquake(char level, struct char_data *ch,
-							char *arg, int type,
+							const char *arg, int type,
 							struct char_data *victim,
 							struct obj_data *tar_obj);
 void                                    spell_new_earthquake(char level, struct char_data *ch,
 							     struct char_data *victim,
 							     struct obj_data *obj);
 void                                    cast_new_earthquake(char level, struct char_data *ch,
-							    char *arg, int type,
+							    const char *arg, int type,
 							    struct char_data *victim,
 							    struct obj_data *tar_obj);
 
@@ -305,11 +305,11 @@ void                                    spell_enchant_weapon(char level, struct 
 							     struct char_data *victim,
 							     struct obj_data *obj);
 void                                    cast_enchant_weapon(char level, struct char_data *ch,
-							    char *arg, int type,
+							    const char *arg, int type,
 							    struct char_data *tar_ch,
 							    struct obj_data *tar_obj);
 void                                    cast_enchant_armor(char level, struct char_data *ch,
-							   char *arg, int type,
+							   const char *arg, int type,
 							   struct char_data *tar_ch,
 							   struct obj_data *tar_obj);
 
@@ -318,7 +318,7 @@ void                                    spell_energy_drain(char level, struct ch
 							   struct char_data *victim,
 							   struct obj_data *obj);
 void                                    cast_energy_drain(char level, struct char_data *ch,
-							  char *arg, int type,
+							  const char *arg, int type,
 							  struct char_data *victim,
 							  struct obj_data *tar_obj);
 
@@ -327,7 +327,7 @@ void                                    spell_fireball(char level, struct char_d
 						       struct char_data *victim,
 						       struct obj_data *obj);
 void                                    cast_fireball(char level, struct char_data *ch,
-						      char *arg, int type,
+						      const char *arg, int type,
 						      struct char_data *victim,
 						      struct obj_data *tar_obj);
 
@@ -335,7 +335,7 @@ void                                    cast_fireball(char level, struct char_da
 void                                    spell_harm(char level, struct char_data *ch,
 						   struct char_data *victim,
 						   struct obj_data *obj);
-void                                    cast_harm(char level, struct char_data *ch, char *arg,
+void                                    cast_harm(char level, struct char_data *ch, const char *arg,
 						  int type, struct char_data *victim,
 						  struct obj_data *tar_obj);
 
@@ -343,7 +343,7 @@ void                                    cast_harm(char level, struct char_data *
 void                                    spell_heal(char level, struct char_data *ch,
 						   struct char_data *victim,
 						   struct obj_data *obj);
-void                                    cast_heal(char level, struct char_data *ch, char *arg,
+void                                    cast_heal(char level, struct char_data *ch, const char *arg,
 						  int type, struct char_data *tar_ch,
 						  struct obj_data *tar_obj);
 
@@ -352,7 +352,7 @@ void                                    spell_invisibility(char level, struct ch
 							   struct char_data *victim,
 							   struct obj_data *obj);
 void                                    cast_invisibility(char level, struct char_data *ch,
-							  char *arg, int type,
+							  const char *arg, int type,
 							  struct char_data *tar_ch,
 							  struct obj_data *tar_obj);
 
@@ -361,7 +361,7 @@ void                                    spell_lightning_bolt(char level, struct 
 							     struct char_data *victim,
 							     struct obj_data *obj);
 void                                    cast_lightning_bolt(char level, struct char_data *ch,
-							    char *arg, int type,
+							    const char *arg, int type,
 							    struct char_data *victim,
 							    struct obj_data *tar_obj);
 
@@ -370,7 +370,7 @@ void                                    spell_locate_object(char level, struct c
 							    struct char_data *victim,
 							    char *obj);
 void                                    cast_locate_object(char level, struct char_data *ch,
-							   char *arg, int type,
+							   const char *arg, int type,
 							   struct char_data *tar_ch,
 							   struct obj_data *tar_obj);
 
@@ -379,7 +379,7 @@ void                                    spell_magic_missile(char level, struct c
 							    struct char_data *victim,
 							    struct obj_data *obj);
 void                                    cast_magic_missile(char level, struct char_data *ch,
-							   char *arg, int type,
+							   const char *arg, int type,
 							   struct char_data *victim,
 							   struct obj_data *tar_obj);
 
@@ -387,7 +387,7 @@ void                                    cast_magic_missile(char level, struct ch
 void                                    spell_poison(char level, struct char_data *ch,
 						     struct char_data *victim,
 						     struct obj_data *obj);
-void                                    cast_poison(char level, struct char_data *ch, char *arg,
+void                                    cast_poison(char level, struct char_data *ch, const char *arg,
 						    int type, struct char_data *tar_ch,
 						    struct obj_data *tar_obj);
 
@@ -398,7 +398,7 @@ void                                    spell_protection_from_evil(char level,
 								   struct obj_data *obj);
 void                                    cast_protection_from_evil(char level,
 								  struct char_data *ch,
-								  char *arg, int type,
+								  const char *arg, int type,
 								  struct char_data *tar_ch,
 								  struct obj_data *tar_obj);
 
@@ -407,7 +407,7 @@ void                                    spell_remove_curse(char level, struct ch
 							   struct char_data *victim,
 							   struct obj_data *obj);
 void                                    cast_remove_curse(char level, struct char_data *ch,
-							  char *arg, int type,
+							  const char *arg, int type,
 							  struct char_data *tar_ch,
 							  struct obj_data *tar_obj);
 
@@ -416,7 +416,7 @@ void                                    spell_sanctuary(char level, struct char_
 							struct char_data *victim,
 							struct obj_data *obj);
 void                                    cast_sanctuary(char level, struct char_data *ch,
-						       char *arg, int type,
+						       const char *arg, int type,
 						       struct char_data *tar_ch,
 						       struct obj_data *tar_obj);
 
@@ -425,7 +425,7 @@ void                                    spell_shocking_grasp(char level, struct 
 							     struct char_data *victim,
 							     struct obj_data *obj);
 void                                    cast_shocking_grasp(char level, struct char_data *ch,
-							    char *arg, int type,
+							    const char *arg, int type,
 							    struct char_data *victim,
 							    struct obj_data *tar_obj);
 
@@ -433,7 +433,7 @@ void                                    cast_shocking_grasp(char level, struct c
 void                                    spell_sleep(char level, struct char_data *ch,
 						    struct char_data *victim,
 						    struct obj_data *obj);
-void                                    cast_sleep(char level, struct char_data *ch, char *arg,
+void                                    cast_sleep(char level, struct char_data *ch, const char *arg,
 						   int type, struct char_data *tar_ch,
 						   struct obj_data *tar_obj);
 
@@ -442,7 +442,7 @@ void                                    spell_strength(char level, struct char_d
 						       struct char_data *victim,
 						       struct obj_data *obj);
 void                                    cast_strength(char level, struct char_data *ch,
-						      char *arg, int type,
+						      const char *arg, int type,
 						      struct char_data *tar_ch,
 						      struct obj_data *tar_obj);
 
@@ -450,7 +450,7 @@ void                                    cast_strength(char level, struct char_da
 void                                    spell_summon(char level, struct char_data *ch,
 						     struct char_data *victim,
 						     struct obj_data *obj);
-void                                    cast_summon(char level, struct char_data *ch, char *arg,
+void                                    cast_summon(char level, struct char_data *ch, const char *arg,
 						    int type, struct char_data *tar_ch,
 						    struct obj_data *tar_obj);
 
@@ -459,7 +459,7 @@ void                                    spell_ventriloquate(char level, struct c
 							    struct char_data *victim,
 							    struct obj_data *obj);
 void                                    cast_ventriloquate(char level, struct char_data *ch,
-							   char *arg, int type,
+							   const char *arg, int type,
 							   struct char_data *tar_ch,
 							   struct obj_data *tar_obj);
 
@@ -468,7 +468,7 @@ void                                    spell_word_of_recall(char level, struct 
 							     struct char_data *victim,
 							     struct obj_data *obj);
 void                                    cast_word_of_recall(char level, struct char_data *ch,
-							    char *arg, int type,
+							    const char *arg, int type,
 							    struct char_data *tar_ch,
 							    struct obj_data *tar_obj);
 
@@ -477,7 +477,7 @@ void                                    spell_remove_poison(char level, struct c
 							    struct char_data *victim,
 							    struct obj_data *obj);
 void                                    cast_remove_poison(char level, struct char_data *ch,
-							   char *arg, int type,
+							   const char *arg, int type,
 							   struct char_data *tar_ch,
 							   struct obj_data *tar_obj);
 
@@ -486,7 +486,7 @@ void                                    spell_sense_life(char level, struct char
 							 struct char_data *victim,
 							 struct obj_data *obj);
 void                                    cast_sense_life(char level, struct char_data *ch,
-							char *arg, int type,
+							const char *arg, int type,
 							struct char_data *tar_ch,
 							struct obj_data *tar_obj);
 
@@ -507,7 +507,7 @@ void                                    spell_identify(char level, struct char_d
 						       struct char_data *victim,
 						       struct obj_data *obj);
 void                                    cast_identify(char level, struct char_data *ch,
-						      char *arg, int type,
+						      const char *arg, int type,
 						      struct char_data *tar_ch,
 						      struct obj_data *tar_obj);
 
@@ -516,7 +516,7 @@ void                                    spell_infravision(char level, struct cha
 							  struct char_data *victim,
 							  struct obj_data *obj);
 void                                    cast_infravision(char level, struct char_data *ch,
-							 char *arg, int type,
+							 const char *arg, int type,
 							 struct char_data *tar_ch,
 							 struct obj_data *tar_obj);
 
@@ -525,7 +525,7 @@ void                                    spell_cause_light(char level, struct cha
 							  struct char_data *victim,
 							  struct obj_data *obj);
 void                                    cast_cause_light(char level, struct char_data *ch,
-							 char *arg, int type,
+							 const char *arg, int type,
 							 struct char_data *victim,
 							 struct obj_data *tar_obj);
 
@@ -534,7 +534,7 @@ void                                    spell_cause_critical(char level, struct 
 							     struct char_data *victim,
 							     struct obj_data *obj);
 void                                    cast_cause_critic(char level, struct char_data *ch,
-							  char *arg, int type,
+							  const char *arg, int type,
 							  struct char_data *victim,
 							  struct obj_data *tar_obj);
 
@@ -543,7 +543,7 @@ void                                    spell_flamestrike(char level, struct cha
 							  struct char_data *victim,
 							  struct obj_data *obj);
 void                                    cast_flamestrike(char level, struct char_data *ch,
-							 char *arg, int type,
+							 const char *arg, int type,
 							 struct char_data *victim,
 							 struct obj_data *tar_obj);
 
@@ -552,7 +552,7 @@ void                                    spell_dispel_good(char level, struct cha
 							  struct char_data *victim,
 							  struct obj_data *obj);
 void                                    cast_dispel_good(char level, struct char_data *ch,
-							 char *arg, int type,
+							 const char *arg, int type,
 							 struct char_data *tar_ch,
 							 struct obj_data *tar_obj);
 
@@ -561,7 +561,7 @@ void                                    spell_weakness(char level, struct char_d
 						       struct char_data *victim,
 						       struct obj_data *obj);
 void                                    cast_weakness(char level, struct char_data *ch,
-						      char *arg, int type,
+						      const char *arg, int type,
 						      struct char_data *tar_ch,
 						      struct obj_data *tar_obj);
 
@@ -570,12 +570,12 @@ void                                    spell_dispel_magic(char level, struct ch
 							   struct char_data *victim,
 							   struct obj_data *obj);
 void                                    cast_dispel_magic(char level, struct char_data *ch,
-							  char *arg, int type,
+							  const char *arg, int type,
 							  struct char_data *tar_ch,
 							  struct obj_data *tar_obj);
 
 #define SPELL_KNOCK                  61
-void                                    cast_knock(char level, struct char_data *ch, char *arg,
+void                                    cast_knock(char level, struct char_data *ch, const char *arg,
 						   int type, struct char_data *tar_ch,
 						   struct obj_data *tar_obj);
 
@@ -584,7 +584,7 @@ void                                    spell_know_alignment(char level, struct 
 							     struct char_data *victim,
 							     struct obj_data *obj);
 void                                    cast_know_alignment(char level, struct char_data *ch,
-							    char *arg, int type,
+							    const char *arg, int type,
 							    struct char_data *tar_ch,
 							    struct obj_data *tar_obj);
 
@@ -593,7 +593,7 @@ void                                    spell_animate_dead(char level, struct ch
 							   struct char_data *victim,
 							   struct obj_data *corpse);
 void                                    cast_animate_dead(char level, struct char_data *ch,
-							  char *arg, int type,
+							  const char *arg, int type,
 							  struct char_data *tar_ch,
 							  struct obj_data *tar_obj);
 
@@ -602,7 +602,7 @@ void                                    spell_paralyze(char level, struct char_d
 						       struct char_data *victim,
 						       struct obj_data *obj);
 void                                    cast_paralyze(char level, struct char_data *ch,
-						      char *arg, int type,
+						      const char *arg, int type,
 						      struct char_data *tar_ch,
 						      struct obj_data *tar_obj);
 
@@ -611,7 +611,7 @@ void                                    spell_remove_paralysis(char level, struc
 							       struct char_data *victim,
 							       struct obj_data *obj);
 void                                    cast_remove_paralysis(char level, struct char_data *ch,
-							      char *arg, int type,
+							      const char *arg, int type,
 							      struct char_data *tar_ch,
 							      struct obj_data *tar_obj);
 
@@ -619,7 +619,7 @@ void                                    cast_remove_paralysis(char level, struct
 void                                    spell_fear(char level, struct char_data *ch,
 						   struct char_data *victim,
 						   struct obj_data *obj);
-void                                    cast_fear(char level, struct char_data *ch, char *arg,
+void                                    cast_fear(char level, struct char_data *ch, const char *arg,
 						  int type, struct char_data *tar_ch,
 						  struct obj_data *tar_obj);
 
@@ -628,7 +628,7 @@ void                                    spell_acid_blast(char level, struct char
 							 struct char_data *victim,
 							 struct obj_data *obj);
 void                                    cast_acid_blast(char level, struct char_data *ch,
-							char *arg, int type,
+							const char *arg, int type,
 							struct char_data *victim,
 							struct obj_data *tar_obj);
 
@@ -637,7 +637,7 @@ void                                    spell_water_breath(char level, struct ch
 							   struct char_data *victim,
 							   struct obj_data *obj);
 void                                    cast_water_breath(char level, struct char_data *ch,
-							  char *arg, int type,
+							  const char *arg, int type,
 							  struct char_data *tar_ch,
 							  struct obj_data *tar_obj);
 
@@ -645,7 +645,7 @@ void                                    cast_water_breath(char level, struct cha
 void                                    spell_fly(char level, struct char_data *ch,
 						  struct char_data *victim,
 						  struct obj_data *obj);
-void                                    cast_flying(char level, struct char_data *ch, char *arg,
+void                                    cast_flying(char level, struct char_data *ch, const char *arg,
 						    int type, struct char_data *tar_ch,
 						    struct obj_data *tar_obj);
 
@@ -654,7 +654,7 @@ void                                    spell_cone_of_cold(char level, struct ch
 							   struct char_data *victim,
 							   struct obj_data *obj);
 void                                    cast_cone_of_cold(char level, struct char_data *ch,
-							  char *arg, int type,
+							  const char *arg, int type,
 							  struct char_data *victim,
 							  struct obj_data *tar_obj);
 
@@ -663,7 +663,7 @@ void                                    spell_meteor_swarm(char level, struct ch
 							   struct char_data *victim,
 							   struct obj_data *obj);
 void                                    cast_meteor_swarm(char level, struct char_data *ch,
-							  char *arg, int type,
+							  const char *arg, int type,
 							  struct char_data *victim,
 							  struct obj_data *tar_obj);
 
@@ -672,7 +672,7 @@ void                                    spell_ice_storm(char level, struct char_
 							struct char_data *victim,
 							struct obj_data *obj);
 void                                    cast_ice_storm(char level, struct char_data *ch,
-						       char *arg, int type,
+						       const char *arg, int type,
 						       struct char_data *victim,
 						       struct obj_data *tar_obj);
 
@@ -680,7 +680,7 @@ void                                    cast_ice_storm(char level, struct char_d
 void                                    spell_shield(char level, struct char_data *ch,
 						     struct char_data *victim,
 						     struct obj_data *obj);
-void                                    cast_shield(char level, struct char_data *ch, char *arg,
+void                                    cast_shield(char level, struct char_data *ch, const char *arg,
 						    int type, struct char_data *tar_ch,
 						    struct obj_data *tar_obj);
 
@@ -689,43 +689,43 @@ void                                    spell_Create_Monster(char level, struct 
 							     struct char_data *victim,
 							     struct obj_data *obj);
 void                                    cast_mon_sum1(char level, struct char_data *ch,
-						      char *arg, int type,
+						      const char *arg, int type,
 						      struct char_data *tar_ch,
 						      struct obj_data *tar_obj);
 
 #define SPELL_MON_SUM_2              75
 void                                    cast_mon_sum2(char level, struct char_data *ch,
-						      char *arg, int type,
+						      const char *arg, int type,
 						      struct char_data *tar_ch,
 						      struct obj_data *tar_obj);
 
 #define SPELL_MON_SUM_3              76
 void                                    cast_mon_sum3(char level, struct char_data *ch,
-						      char *arg, int type,
+						      const char *arg, int type,
 						      struct char_data *tar_ch,
 						      struct obj_data *tar_obj);
 
 #define SPELL_MON_SUM_4              77
 void                                    cast_mon_sum4(char level, struct char_data *ch,
-						      char *arg, int type,
+						      const char *arg, int type,
 						      struct char_data *tar_ch,
 						      struct obj_data *tar_obj);
 
 #define SPELL_MON_SUM_5              78
 void                                    cast_mon_sum5(char level, struct char_data *ch,
-						      char *arg, int type,
+						      const char *arg, int type,
 						      struct char_data *tar_ch,
 						      struct obj_data *tar_obj);
 
 #define SPELL_MON_SUM_6              79
 void                                    cast_mon_sum6(char level, struct char_data *ch,
-						      char *arg, int type,
+						      const char *arg, int type,
 						      struct char_data *tar_ch,
 						      struct obj_data *tar_obj);
 
 #define SPELL_MON_SUM_7              80
 void                                    cast_mon_sum7(char level, struct char_data *ch,
-						      char *arg, int type,
+						      const char *arg, int type,
 						      struct char_data *tar_ch,
 						      struct obj_data *tar_obj);
 
@@ -734,7 +734,7 @@ void                                    spell_fireshield(char level, struct char
 							 struct char_data *victim,
 							 struct obj_data *obj);
 void                                    cast_fireshield(char level, struct char_data *ch,
-							char *arg, int type,
+							const char *arg, int type,
 							struct char_data *tar_ch,
 							struct obj_data *tar_obj);
 
@@ -743,7 +743,7 @@ void                                    spell_charm_monster(char level, struct c
 							    struct char_data *victim,
 							    struct obj_data *obj);
 void                                    cast_charm_monster(char level, struct char_data *ch,
-							   char *arg, int type,
+							   const char *arg, int type,
 							   struct char_data *tar_ch,
 							   struct obj_data *tar_obj);
 
@@ -752,7 +752,7 @@ void                                    spell_cure_serious(char level, struct ch
 							   struct char_data *victim,
 							   struct obj_data *obj);
 void                                    cast_cure_serious(char level, struct char_data *ch,
-							  char *arg, int type,
+							  const char *arg, int type,
 							  struct char_data *tar_ch,
 							  struct obj_data *tar_obj);
 
@@ -761,7 +761,7 @@ void                                    spell_cause_serious(char level, struct c
 							    struct char_data *victim,
 							    struct obj_data *obj);
 void                                    cast_cause_serious(char level, struct char_data *ch,
-							   char *arg, int type,
+							   const char *arg, int type,
 							   struct char_data *victim,
 							   struct obj_data *tar_obj);
 
@@ -770,7 +770,7 @@ void                                    spell_refresh(char level, struct char_da
 						      struct char_data *victim,
 						      struct obj_data *obj);
 void                                    cast_refresh(char level, struct char_data *ch,
-						     char *arg, int type,
+						     const char *arg, int type,
 						     struct char_data *tar_ch,
 						     struct obj_data *tar_obj);
 
@@ -779,7 +779,7 @@ void                                    spell_second_wind(char level, struct cha
 							  struct char_data *victim,
 							  struct obj_data *obj);
 void                                    cast_second_wind(char level, struct char_data *ch,
-							 char *arg, int type,
+							 const char *arg, int type,
 							 struct char_data *tar_ch,
 							 struct obj_data *tar_obj);
 
@@ -787,7 +787,7 @@ void                                    cast_second_wind(char level, struct char
 void                                    spell_turn(char level, struct char_data *ch,
 						   struct char_data *victim,
 						   struct obj_data *obj);
-void                                    cast_turn(char level, struct char_data *ch, char *arg,
+void                                    cast_turn(char level, struct char_data *ch, const char *arg,
 						  int type, struct char_data *tar_ch,
 						  struct obj_data *tar_obj);
 
@@ -795,7 +795,7 @@ void                                    cast_turn(char level, struct char_data *
 void                                    spell_succor(char level, struct char_data *ch,
 						     struct char_data *victim,
 						     struct obj_data *obj);
-void                                    cast_succor(char level, struct char_data *ch, char *arg,
+void                                    cast_succor(char level, struct char_data *ch, const char *arg,
 						    int type, struct char_data *tar_ch,
 						    struct obj_data *tar_obj);
 
@@ -803,7 +803,7 @@ void                                    cast_succor(char level, struct char_data
 void                                    spell_light(char level, struct char_data *ch,
 						    struct char_data *victim,
 						    struct obj_data *obj);
-void                                    cast_light(char level, struct char_data *ch, char *arg,
+void                                    cast_light(char level, struct char_data *ch, const char *arg,
 						   int type, struct char_data *tar_ch,
 						   struct obj_data *tar_obj);
 
@@ -812,7 +812,7 @@ void                                    spell_cont_light(char level, struct char
 							 struct char_data *victim,
 							 struct obj_data *obj);
 void                                    cast_cont_light(char level, struct char_data *ch,
-							char *arg, int type,
+							const char *arg, int type,
 							struct char_data *tar_ch,
 							struct obj_data *tar_obj);
 
@@ -820,7 +820,7 @@ void                                    cast_cont_light(char level, struct char_
 void                                    spell_calm(char level, struct char_data *ch,
 						   struct char_data *victim,
 						   struct obj_data *obj);
-void                                    cast_calm(char level, struct char_data *ch, char *arg,
+void                                    cast_calm(char level, struct char_data *ch, const char *arg,
 						  int type, struct char_data *tar_ch,
 						  struct obj_data *tar_obj);
 
@@ -829,7 +829,7 @@ void                                    spell_stone_skin(char level, struct char
 							 struct char_data *victim,
 							 struct obj_data *obj);
 void                                    cast_stone_skin(char level, struct char_data *ch,
-							char *arg, int type,
+							const char *arg, int type,
 							struct char_data *tar_ch,
 							struct obj_data *tar_obj);
 
@@ -839,7 +839,7 @@ void                                    spell_conjure_elemental(char level,
 								struct char_data *victim,
 								struct obj_data *obj);
 void                                    cast_conjure_elemental(char level, struct char_data *ch,
-							       char *arg, int type,
+							       const char *arg, int type,
 							       struct char_data *tar_ch,
 							       struct obj_data *tar_obj);
 
@@ -848,7 +848,7 @@ void                                    spell_true_seeing(char level, struct cha
 							  struct char_data *victim,
 							  struct obj_data *obj);
 void                                    cast_true_seeing(char level, struct char_data *ch,
-							 char *arg, int type,
+							 const char *arg, int type,
 							 struct char_data *tar_ch,
 							 struct obj_data *tar_obj);
 
@@ -857,7 +857,7 @@ void                                    spell_minor_create(char level, struct ch
 							   struct char_data *victim,
 							   struct obj_data *obj);
 void                                    cast_minor_creation(char level, struct char_data *ch,
-							    char *arg, int type,
+							    const char *arg, int type,
 							    struct char_data *tar_ch,
 							    struct obj_data *tar_obj);
 
@@ -866,7 +866,7 @@ void                                    spell_faerie_fire(char level, struct cha
 							  struct char_data *victim,
 							  struct obj_data *obj);
 void                                    cast_faerie_fire(char level, struct char_data *ch,
-							 char *arg, int type,
+							 const char *arg, int type,
 							 struct char_data *tar_ch,
 							 struct obj_data *tar_obj);
 
@@ -875,7 +875,7 @@ void                                    spell_faerie_fog(char level, struct char
 							 struct char_data *victim,
 							 struct obj_data *obj);
 void                                    cast_faerie_fog(char level, struct char_data *ch,
-							char *arg, int type,
+							const char *arg, int type,
 							struct char_data *victim,
 							struct obj_data *tar_obj);
 
@@ -884,7 +884,7 @@ void                                    spell_cacaodemon(char level, struct char
 							 struct char_data *victim,
 							 struct obj_data *obj);
 void                                    cast_cacaodemon(char level, struct char_data *ch,
-							char *arg, int type,
+							const char *arg, int type,
 							struct char_data *tar_ch,
 							struct obj_data *tar_obj);
 
@@ -893,7 +893,7 @@ void                                    spell_poly_self(char level, struct char_
 							struct char_data *mob,
 							struct obj_data *obj);
 void                                    cast_poly_self(char level, struct char_data *ch,
-						       char *arg, int type,
+						       const char *arg, int type,
 						       struct char_data *tar_ch,
 						       struct obj_data *tar_obj);
 
@@ -901,7 +901,7 @@ void                                    cast_poly_self(char level, struct char_d
 void                                    spell_mana(char level, struct char_data *ch,
 						   struct char_data *victim,
 						   struct obj_data *obj);
-void                                    cast_mana(char level, struct char_data *ch, char *arg,
+void                                    cast_mana(char level, struct char_data *ch, const char *arg,
 						  int type, struct char_data *tar_ch,
 						  struct obj_data *tar_obj);
 
@@ -910,7 +910,7 @@ void                                    spell_astral_walk(char level, struct cha
 							  struct char_data *victim,
 							  struct obj_data *obj);
 void                                    cast_astral_walk(char level, struct char_data *ch,
-							 char *arg, int type,
+							 const char *arg, int type,
 							 struct char_data *tar_ch,
 							 struct obj_data *tar_obj);
 
@@ -919,7 +919,7 @@ void                                    spell_fly_group(char level, struct char_
 							struct char_data *victim,
 							struct obj_data *obj);
 void                                    cast_fly_group(char level, struct char_data *ch,
-						       char *arg, int type,
+						       const char *arg, int type,
 						       struct char_data *tar_ch,
 						       struct obj_data *tar_obj);
 
@@ -927,7 +927,7 @@ void                                    cast_fly_group(char level, struct char_d
 void                                    spell_aid(char level, struct char_data *ch,
 						  struct char_data *victim,
 						  struct obj_data *obj);
-void                                    cast_aid(char level, struct char_data *ch, char *arg,
+void                                    cast_aid(char level, struct char_data *ch, const char *arg,
 						 int type, struct char_data *tar_ch,
 						 struct obj_data *tar_obj);
 
@@ -936,13 +936,13 @@ void                                    spell_shelter(char level, struct char_da
 						      struct char_data *victim,
 						      struct obj_data *obj);
 void                                    cast_shelter(char level, struct char_data *ch,
-						     char *arg, int type,
+						     const char *arg, int type,
 						     struct char_data *tar_ch,
 						     struct obj_data *tar_obj);
 
 #define SPELL_DRAGON_BREATH         105
 void                                    cast_dragon_breath(char level, struct char_data *ch,
-							   char *arg, int type,
+							   const char *arg, int type,
 							   struct char_data *tar_ch,
 							   struct obj_data *potion);
 
@@ -951,7 +951,7 @@ void                                    spell_goodberry(char level, struct char_
 							struct char_data *victim,
 							struct obj_data *obj);
 void                                    cast_goodberry(char level, struct char_data *ch,
-						       char *arg, int type,
+						       const char *arg, int type,
 						       struct char_data *tar_ch,
 						       struct obj_data *tar_obj);
 
@@ -960,7 +960,7 @@ void                                    spell_visions(char level, struct char_da
 						      struct char_data *victim,
 						      struct obj_data *obj);
 void                                    cast_visions(char level, struct char_data *ch,
-						     char *arg, int type,
+						     const char *arg, int type,
 						     struct char_data *tar_ch,
 						     struct obj_data *tar_obj);
 
@@ -1078,7 +1078,7 @@ void                                    spell_resurrection(char level, struct ch
 							   struct char_data *victim,
 							   struct obj_data *obj);
 void                                    cast_resurrection(char level, struct char_data *ch,
-							  char *arg, int type,
+							  const char *arg, int type,
 							  struct char_data *tar_ch,
 							  struct obj_data *tar_obj);
 
@@ -1247,7 +1247,7 @@ void                                    spell_green_slime(char level, struct cha
 							  struct char_data *victim,
 							  struct obj_data *obj);
 void                                    cast_green_slime(char level, struct char_data *ch,
-							 char *arg, int type,
+							 const char *arg, int type,
 							 struct char_data *victim,
 							 struct obj_data *tar_obj);
 
@@ -1255,7 +1255,7 @@ void                                    cast_green_slime(char level, struct char
 void                                    spell_geyser(char level, struct char_data *ch,
 						     struct char_data *victim,
 						     struct obj_data *obj);
-void                                    cast_geyser(char level, struct char_data *ch, char *arg,
+void                                    cast_geyser(char level, struct char_data *ch, const char *arg,
 						    int type, struct char_data *victim,
 						    struct obj_data *tar_obj);
 
@@ -1264,7 +1264,7 @@ void                                    spell_fire_breath(char level, struct cha
 							  struct char_data *victim,
 							  struct obj_data *obj);
 void                                    cast_fire_breath(char level, struct char_data *ch,
-							 char *arg, int type,
+							 const char *arg, int type,
 							 struct char_data *tar_ch,
 							 struct obj_data *tar_obj);
 
@@ -1273,7 +1273,7 @@ void                                    spell_gas_breath(char level, struct char
 							 struct char_data *victim,
 							 struct obj_data *obj);
 void                                    cast_gas_breath(char level, struct char_data *ch,
-							char *arg, int type,
+							const char *arg, int type,
 							struct char_data *tar_ch,
 							struct obj_data *tar_obj);
 
@@ -1282,7 +1282,7 @@ void                                    spell_frost_breath(char level, struct ch
 							   struct char_data *victim,
 							   struct obj_data *obj);
 void                                    cast_frost_breath(char level, struct char_data *ch,
-							  char *arg, int type,
+							  const char *arg, int type,
 							  struct char_data *tar_ch,
 							  struct obj_data *tar_obj);
 
@@ -1291,7 +1291,7 @@ void                                    spell_acid_breath(char level, struct cha
 							  struct char_data *victim,
 							  struct obj_data *obj);
 void                                    cast_acid_breath(char level, struct char_data *ch,
-							 char *arg, int type,
+							 const char *arg, int type,
 							 struct char_data *tar_ch,
 							 struct obj_data *tar_obj);
 
@@ -1300,7 +1300,7 @@ void                                    spell_lightning_breath(char level, struc
 							       struct char_data *victim,
 							       struct obj_data *obj);
 void                                    cast_lightning_breath(char level, struct char_data *ch,
-							      char *arg, int type,
+							      const char *arg, int type,
 							      struct char_data *tar_ch,
 							      struct obj_data *tar_obj);
 

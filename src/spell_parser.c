@@ -137,7 +137,7 @@ const char
    }
 };
 
-int GetSpellByName(char *name)
+int GetSpellByName(const char *name)
 {
 /*
  * for now it must be a linear search... later we might make a btree or
@@ -157,7 +157,7 @@ int GetSpellByName(char *name)
   return -1;
 }
 
-int GetSkillByName(char *name)
+int GetSkillByName(const char *name)
 {
 /*
  * for now it must be a linear search... later we might make a btree or
@@ -286,14 +286,14 @@ void affect_update(void)
 	af->duration--;
 	if (af->duration == 0) {
 	  if (*spell_wear_off_soon_msg[af->type]) {
-	    cprintf(i, "%s\n\r", spell_wear_off_soon_msg[af->type]);
+	    cprintf(i, "%s\r\n", spell_wear_off_soon_msg[af->type]);
 	  }
 	}
       } else {
 	if ((af->type > 0) && (af->type <= MAX_SKILLS /* MAX_EXIST_SPELL */ )) {
 	  if (!af->next || (af->next->type != af->type) || (af->next->duration > 0)) {
 	    if (*spell_wear_off_msg[af->type]) {
-	      cprintf(i, "%s\n\r", spell_wear_off_msg[af->type]);
+	      cprintf(i, "%s\r\n", spell_wear_off_msg[af->type]);
 
 	      /*
 	       * check to see if the exit down is connected, if so make the person 
@@ -675,7 +675,7 @@ char ImpSaveSpell(struct char_data *ch, short int save_type, int mod)
   return (MAX(1, save) < number(1, 20));
 }
 
- char                                   *skip_spaces(char *string)
+const char                                   *skip_spaces(const char *string)
 {
   if (DEBUG > 3)
     log_info("called %s with %s", __PRETTY_FUNCTION__, VNULL(string));
@@ -687,7 +687,7 @@ char ImpSaveSpell(struct char_data *ch, short int save_type, int mod)
 
 /* Assumes that *argument does start with first letter of chopped string */
 
-void do_cast(struct char_data *ch, char *argument, int cmd)
+void do_cast(struct char_data *ch, const char *argument, int cmd)
 {
   struct room_data                       *rp = NULL;
   struct obj_data                        *tar_obj = NULL;
@@ -707,32 +707,37 @@ void do_cast(struct char_data *ch, char *argument, int cmd)
    */
 
   if (!IsHumanoid(ch) && GET_RACE(ch) != RACE_DRAGON) {
-    cprintf(ch, "You try to form the words, but you can only growl.\n\r");
+    cprintf(ch, "You try to form the words, but you can only growl.\r\n");
     return;
   }
   if (IsNonMagical(ch)) {
-    cprintf(ch, "Maybe you should leave the hocus pocus to the bookworms, eh?\n\r");
+    cprintf(ch, "Maybe you should leave the hocus pocus to the bookworms, eh?\r\n");
     return;
   }
   rp = real_roomp(ch->in_room);
   if (IS_SET(rp->room_flags, NO_MAGIC) && !IS_IMMORTAL(ch)) {
-    cprintf(ch, "Your mystical power seems feeble and useless here.\n\r");
+    cprintf(ch, "Your mystical power seems feeble and useless here.\r\n");
     return;
   }
   argument = skip_spaces(argument);
 
   if (!(*argument)) {
-    cprintf(ch, "cast 'spell name' <target>\n\r");
+    cprintf(ch, "cast 'spell name' <target>\r\n");
     return;
   }
   if (*argument != '\'') {
-    cprintf(ch, "Magic must always be enclosed by single quotes: '\n\r");
+    cprintf(ch, "Magic must always be enclosed by single quotes: '\r\n");
     return;
   }
   for (qend = 1; *(argument + qend) && (*(argument + qend) != '\''); qend++)
-    *(argument + qend) = LOWER(*(argument + qend));
+    ;
+/*
+ * No need for this, is_abbrev() already compares without case.
+ * *(argument + qend) = LOWER(*(argument + qend));
+ */
+
   if (*(argument + qend) != '\'') {
-    cprintf(ch, "Magic must always be enclosed by single quotes: '\n\r");
+    cprintf(ch, "Magic must always be enclosed by single quotes: '\r\n");
     return;
   }
   /*
@@ -741,30 +746,30 @@ void do_cast(struct char_data *ch, char *argument, int cmd)
   bzero(spell_name, MAX_INPUT_LENGTH);
   strncpy(spell_name, argument + 1, qend - 1);
   if (!strlen(spell_name)) {
-    cprintf(ch, "You successfully cast Nothing!\n\r");
+    cprintf(ch, "You successfully cast Nothing!\r\n");
     return;
   }
   if ((spl = GetSpellByName(spell_name)) < 0) {
-    cprintf(ch, "You reconsider your attempt to summon the demon %s!\n\r", spell_name);
+    cprintf(ch, "You reconsider your attempt to summon the demon %s!\r\n", spell_name);
     return;
   }
   if (CanCast(ch, spl)) {
     if (GET_POS(ch) < spell_info[spl].minimum_position) {
       switch (GET_POS(ch)) {
 	case POSITION_SLEEPING:
-	  cprintf(ch, "You dream about your great magical powers.\n\r");
+	  cprintf(ch, "You dream about your great magical powers.\r\n");
 	  break;
 	case POSITION_RESTING:
-	  cprintf(ch, "You lazily think about how wonderful magic is.\n\r");
+	  cprintf(ch, "You lazily think about how wonderful magic is.\r\n");
 	  break;
 	case POSITION_SITTING:
-	  cprintf(ch, "You start to incant and then your butt falls asleep!\n\r");
+	  cprintf(ch, "You start to incant and then your butt falls asleep!\r\n");
 	  break;
 	case POSITION_FIGHTING:
-	  cprintf(ch, "You start to incant and your book is knocked away!.\n\r");
+	  cprintf(ch, "You start to incant and your book is knocked away!.\r\n");
 	  break;
 	default:
-	  cprintf(ch, "If only you had thought of that earlier!\n\r");
+	  cprintf(ch, "If only you had thought of that earlier!\r\n");
 	  break;
       }
     } else {
@@ -792,7 +797,7 @@ void do_cast(struct char_data *ch, char *argument, int cmd)
 		  tar_char->attackers < MAX_ATTACKERS || tar_char->specials.fighting == ch)
 		target_ok = TRUE;
 	      else {
-		cprintf(ch, "You wish everyone would stop for a moment...\n\r");
+		cprintf(ch, "You wish everyone would stop for a moment...\r\n");
 		return;
 	      }
 	    }
@@ -862,34 +867,34 @@ void do_cast(struct char_data *ch, char *argument, int cmd)
       if (!target_ok) {
 	if (*name) {
 	  if (IS_SET(spell_info[spl].targets, TAR_CHAR_ROOM))
-	    cprintf(ch, "I have no clue where %s might be.\n\r", name);
+	    cprintf(ch, "I have no clue where %s might be.\r\n", name);
 	  else if (IS_SET(spell_info[spl].targets, TAR_CHAR_WORLD))
-	    cprintf(ch, "I don't think %s is playing now.\n\r", name);
+	    cprintf(ch, "I don't think %s is playing now.\r\n", name);
 	  else if (IS_SET(spell_info[spl].targets, TAR_OBJ_INV))
-	    cprintf(ch, "You have a %s?  Where is it???\n\r", name);
+	    cprintf(ch, "You have a %s?  Where is it???\r\n", name);
 	  else if (IS_SET(spell_info[spl].targets, TAR_OBJ_ROOM))
-	    cprintf(ch, "I don't see any %s here...\n\r", name);
+	    cprintf(ch, "I don't see any %s here...\r\n", name);
 	  else if (IS_SET(spell_info[spl].targets, TAR_OBJ_WORLD))
-	    cprintf(ch, "Sorry, I can't find any %s.\n\r", name);
+	    cprintf(ch, "Sorry, I can't find any %s.\r\n", name);
 	  else if (IS_SET(spell_info[spl].targets, TAR_OBJ_EQUIP))
-	    cprintf(ch, "You wish you were wearing a %s...\n\r", name);
+	    cprintf(ch, "You wish you were wearing a %s...\r\n", name);
 	} else {					       /* Nothing was given as argument */
 	  if (spell_info[spl].targets < TAR_OBJ_INV)
-	    cprintf(ch, "And just who deserves a %s?\n\r", spell_info[spl].name);
+	    cprintf(ch, "And just who deserves a %s?\r\n", spell_info[spl].name);
 	  else
-	    cprintf(ch, "What would you like to cast %s at?\n\r", spell_info[spl].name);
+	    cprintf(ch, "What would you like to cast %s at?\r\n", spell_info[spl].name);
 	}
 	return;
       } else {						       /* TARGET IS OK */
 
 	if ((tar_char == ch) && IS_SET(spell_info[spl].targets, TAR_SELF_NONO)) {
-	  cprintf(ch, "You can't cast %s on yourself!\n\r", spell_info[spl].name);
+	  cprintf(ch, "You can't cast %s on yourself!\r\n", spell_info[spl].name);
 	  return;
 	} else if ((tar_char != ch) && IS_SET(spell_info[spl].targets, TAR_SELF_ONLY)) {
-	  cprintf(ch, "Only you are worthy of the %s spell.\n\r", spell_info[spl].name);
+	  cprintf(ch, "Only you are worthy of the %s spell.\r\n", spell_info[spl].name);
 	  return;
 	} else if (IS_AFFECTED(ch, AFF_CHARM) && (ch->master == tar_char)) {
-	  cprintf(ch, "No!  Casting %s might harm your beloved master!\n\r",
+	  cprintf(ch, "No!  Casting %s might harm your beloved master!\r\n",
 		  spell_info[spl].name);
 	  return;
 	}
@@ -899,7 +904,7 @@ void do_cast(struct char_data *ch, char *argument, int cmd)
        * if (GetMaxLevel(ch) < LOW_IMMORTAL) 
        */
       if (GET_MANA(ch) < USE_MANA(ch, spl)) {
-	cprintf(ch, "You mutter and wave your hands tiredly as the spell fails.\n\r");
+	cprintf(ch, "You mutter and wave your hands tiredly as the spell fails.\r\n");
 	return;
       }
       if (spl != SPELL_VENTRILOQUATE)			       /* :-) */
@@ -909,7 +914,7 @@ void do_cast(struct char_data *ch, char *argument, int cmd)
 	WAIT_STATE(ch, spell_info[spl].delay);
 
       if ((spell_info[spl].spell_pointer == 0) && spl > 0)
-	cprintf(ch, "Sorry, this magic has not yet been implemented\n\r");
+	cprintf(ch, "Sorry, this magic has not yet been implemented\r\n");
       else {
 	if (number(1, 100) > (ch->skills[spl].learned + (GetMaxLevel(ch) / 5))) {	/* 101% is failure */
 	  random_miscast(ch, spell_info[spl].name);
@@ -924,7 +929,7 @@ void do_cast(struct char_data *ch, char *argument, int cmd)
 	    GET_MANA(ch) -= MAX(1, (USE_MANA(ch, spl) / 2));
 	  return;
 	}
-	cprintf(ch, "You mutter and wave and suddenly Cast %s!\n\r", spell_info[spl].name);
+	cprintf(ch, "You mutter and wave and suddenly Cast %s!\r\n", spell_info[spl].name);
 	if (ch->skills[spl].learned < 60) {
 	  if (ch->skills[SKILL_SPELLCRAFT].learned > number(1, 101))
 	    ch->skills[spl].learned += 5;
@@ -953,7 +958,7 @@ void assign_spell_pointers(void)
   int                                     j = 0;
 
   if (DEBUG > 1)
-    log_info("called %s with no arguments");
+    log_info("called %s with no arguments", __PRETTY_FUNCTION__);
 
   for (i = 0; i < MAX_SKILLS; i++) {
     spell_info[i].castable = spell_info[i].useable = 0;
@@ -1325,18 +1330,18 @@ void assign_spell_pointers(void)
 int splat(struct char_data *ch, struct room_data *rp, int height)
 {
   if (DEBUG > 2)
-    log_info("called %s with %s, %08x, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), rp, height);
+    log_info("called %s with %s, %08zx, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), (size_t)rp, height);
 
   if (height > 1) {
-    cprintf(ch, "You are smashed into tiny bits!\n\r");
+    cprintf(ch, "You are smashed into tiny bits!\r\n");
     act("$n smashes into the ground at high speed", FALSE, ch, 0, 0, TO_ROOM);
     act("You are drenched with blood and gore", FALSE, ch, 0, 0, TO_ROOM);
   } else {
     if (rp->sector_type >= SECT_WATER_SWIM) {
-      cprintf(ch, "You PLUNGE into the water... PAIN!\n\r");
+      cprintf(ch, "You PLUNGE into the water... PAIN!\r\n");
       act("$n disappears into the water... SPLASH!", FALSE, ch, 0, 0, TO_ROOM);
     } else {
-      cprintf(ch, "You SLAM into the ground... PAIN!\n\r");
+      cprintf(ch, "You SLAM into the ground... PAIN!\r\n");
       act("$n lands with a sickening THUMP!", FALSE, ch, 0, 0, TO_ROOM);
     }
   }
@@ -1391,7 +1396,7 @@ int check_falling(struct char_data *ch)
     else
       return splat(ch, rp, count);
     act("$n plunges towards oblivion", FALSE, ch, 0, 0, TO_ROOM);
-    cprintf(ch, "You plunge from the sky\n\r");
+    cprintf(ch, "You plunge from the sky\r\n");
     char_from_room(ch);
     char_to_room(ch, rp->dir_option[DOWN]->to_room);
     act("$n falls from the sky", FALSE, ch, 0, 0, TO_ROOM);
@@ -1430,7 +1435,7 @@ int check_drowning(struct char_data *ch)
     return FALSE;
 
   if (rp->sector_type == SECT_UNDERWATER) {
-    cprintf(ch, "PANIC!  You're drowning!!!!!!\n\r");
+    cprintf(ch, "PANIC!  You're drowning!!!!!!\r\n");
     GET_HIT(ch) -= dice(6, 6);
     GET_MOVE(ch) -= dice(5, 10);
     update_pos(ch);
@@ -1443,7 +1448,7 @@ int check_drowning(struct char_data *ch)
     return TRUE;
   } else if (rp->sector_type == SECT_WATER_NOSWIM) {
     if (number(1, 101) < ch->skills[SKILL_SWIMMING].learned / 3) {
-      cprintf(ch, "GAK!  You swallow some water and gasp for air!\n\r");
+      cprintf(ch, "GAK!  You swallow some water and gasp for air!\r\n");
       GET_HIT(ch) -= dice(3, 6);
       GET_MOVE(ch) -= dice(2, 12);
       update_pos(ch);
@@ -1460,7 +1465,7 @@ int check_drowning(struct char_data *ch)
     }
   } else if (rp->sector_type == SECT_WATER_SWIM) {
     if (number(1, 101) < ch->skills[SKILL_SWIMMING].learned) {
-      cprintf(ch, "GAK!  You swallow some water and gasp for air!\n\r");
+      cprintf(ch, "GAK!  You swallow some water and gasp for air!\r\n");
       GET_HIT(ch) -= dice(1, 8);
       GET_MOVE(ch) -= dice(2, 6);
       update_pos(ch);

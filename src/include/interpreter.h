@@ -310,7 +310,7 @@
 
 struct command_info {
   void                                    (*command_pointer) (struct char_data * ch,
-							      char *argument, int cmd);
+							      const char *argument, int cmd);
   char                                    minimum_position;
   char                                    minimum_level;
 };
@@ -325,20 +325,20 @@ extern char                            *fill[];
 
 #endif
 
-int                                     search_block(char *arg, char **list, char exact);
-int                                     old_search_block(char *argument, int begin, int arglen,
-							 char **list, int mode);
+int                                     search_block(const char *arg, const char **list, char exact);
+int                                     old_search_block(const char *argument, int begin, int arglen,
+							 const char **list, int mode);
 void                                    command_interpreter(struct char_data *ch,
 							    char *argument);
-void                                    argument_interpreter(char *argument, char *first_arg,
+void                                    argument_interpreter(const char *argument, char *first_arg,
 							     char *second_arg);
-int                                     is_number(char *str);
-char                                   *one_argument(char *argument, char *first_arg);
-void                                    only_argument(char *argument, char *dest);
+int                                     is_number(const char *str);
+const char                             *one_argument(const char *argument, char *first_arg);
+void                                    only_argument(const char *argument, char *dest);
  int                              fill_word(char *argument);
  int                              is_abbrev(const char *arg1, const char *arg2);
-void                                    half_chop(char *string, char *arg1, char *arg2);
-int                                     special(struct char_data *ch, int cmd, char *arg);
+void                                    half_chop(const char *string, char *arg1, char *arg2);
+int                                     special(struct char_data *ch, int cmd, const char *arg);
 void                                    assign_command_pointers(void);
 int                                     find_name(char *name);
 int                                     _parse_name(char *arg, char *name);

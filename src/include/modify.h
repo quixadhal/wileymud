@@ -22,11 +22,11 @@ extern int                              max_value[];
 #endif
 
 void                                    string_add(struct descriptor_data *d, char *str);
-void                                    quad_arg(char *arg, int *type, char *name, int *field,
+void                                    quad_arg(const char *arg, int *type, char *name, int *field,
 						 char *string);
-void                                    do_string(struct char_data *ch, char *arg, int cmd);
-void                                    bisect_arg(char *arg, int *field, char *string);
-void                                    do_setskill(struct char_data *ch, char *arg, int cmd);
+void                                    do_string(struct char_data *ch, const char *arg, int cmd);
+void                                    bisect_arg(const char *arg, int *field, char *string);
+void                                    do_setskill(struct char_data *ch, const char *arg, int cmd);
 char                                   *one_word(char *argument, char *first_arg);
 struct help_index_element              *build_help_index(FILE * fl, int *num);
 void                                    page_string(struct descriptor_data *d, char *str,

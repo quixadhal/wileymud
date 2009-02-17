@@ -151,11 +151,11 @@ void shopping_buy(char *arg, struct char_data *ch, struct char_data *keeper, int
     }
   }
   if ((IS_CARRYING_N(ch) + num) > (CAN_CARRY_N(ch))) {
-    cprintf(ch, "%s : You can't carry that many items.\n\r", fname(temp1->name));
+    cprintf(ch, "%s : You can't carry that many items.\r\n", fname(temp1->name));
     return;
   }
   if ((IS_CARRYING_W(ch) + (num * temp1->obj_flags.weight)) > CAN_CARRY_W(ch)) {
-    cprintf(ch, "%s : You can't carry that much weight.\n\r", fname(temp1->name));
+    cprintf(ch, "%s : You can't carry that much weight.\r\n", fname(temp1->name));
     return;
   }
   act("$n buys $p.", FALSE, ch, temp1, 0, TO_ROOM);
@@ -166,7 +166,7 @@ void shopping_buy(char *arg, struct char_data *ch, struct char_data *keeper, int
 
   do_tell(keeper, buf, 19);
 
-  cprintf(ch, "You now have %s (*%d).\n\r", temp1->short_description, num);
+  cprintf(ch, "You now have %s (*%d).\r\n", temp1->short_description, num);
 
   while (num-- > 0) {
 
@@ -183,7 +183,7 @@ void shopping_buy(char *arg, struct char_data *ch, struct char_data *keeper, int
     else {
       obj_from_char(temp1);
       if (temp1 == NULL) {
-	cprintf(ch, "Sorry, I just ran out of those.\n\r");
+	cprintf(ch, "Sorry, I just ran out of those.\r\n");
 	GET_GOLD(ch) += (int)(temp1->obj_flags.cost * shop_index[shop_nr].profit_buy);
 	return;
       }
@@ -264,7 +264,7 @@ void shopping_sell(char *arg, struct char_data *ch, struct char_data *keeper, in
 
   do_tell(keeper, buf, 19);
 
-  cprintf(ch, "The shopkeeper now has %s.\n\r", temp1->short_description);
+  cprintf(ch, "The shopkeeper now has %s.\r\n", temp1->short_description);
 
   if (GET_GOLD(keeper) < (int)(temp1->obj_flags.cost * shop_index[shop_nr].profit_sell)) {
     sprintf(buf, shop_index[shop_nr].missing_cash1, GET_NAME(ch));
@@ -276,7 +276,7 @@ void shopping_sell(char *arg, struct char_data *ch, struct char_data *keeper, in
 
   obj_from_char(temp1);
   if (temp1 == NULL) {
-    cprintf(ch, "As far as I am concerned, you are out..\n\r");
+    cprintf(ch, "As far as I am concerned, you are out..\r\n");
     return;
   }
   if ((get_obj_in_list(argm, keeper->carrying)) || (GET_ITEM_TYPE(temp1) == ITEM_TRASH)) {
@@ -337,14 +337,14 @@ void shopping_list(char *arg, struct char_data *ch, struct char_data *keeper, in
   if (!(is_ok(keeper, ch, shop_nr)))
     return;
 
-  strcpy(buf, "You can buy:\n\r");
+  strcpy(buf, "You can buy:\r\n");
   found_obj = FALSE;
   if (keeper->carrying)
     for (temp1 = keeper->carrying; temp1; temp1 = temp1->next_content)
       if ((CAN_SEE_OBJ(ch, temp1)) && (temp1->obj_flags.cost > 0)) {
 	found_obj = TRUE;
 	if (temp1->obj_flags.type_flag != ITEM_DRINKCON)
-	  sprintf(buf2, "%s for %d gold coins.\n\r", (temp1->short_description)
+	  sprintf(buf2, "%s for %d gold coins.\r\n", (temp1->short_description)
 		  , (int)(temp1->obj_flags.cost * shop_index[shop_nr].profit_buy));
 	else {
 	  if (temp1->obj_flags.value[1])
@@ -352,14 +352,14 @@ void shopping_list(char *arg, struct char_data *ch, struct char_data *keeper, in
 		    , drinks[temp1->obj_flags.value[2]]);
 	  else
 	    sprintf(buf3, "%s", (temp1->short_description));
-	  sprintf(buf2, "%s for %d gold coins.\n\r", buf3,
+	  sprintf(buf2, "%s for %d gold coins.\r\n", buf3,
 		  (int)(temp1->obj_flags.cost * shop_index[shop_nr].profit_buy));
 	}
 	strcat(buf, CAP(buf2));
       };
 
   if (!found_obj)
-    strcat(buf, "Nothing!\n\r");
+    strcat(buf, "Nothing!\r\n");
 
   cprintf(ch, "%s", buf);
   return;
@@ -465,7 +465,7 @@ void boot_the_shops(void)
   FILE                                   *shop_f = NULL;
 
   if (DEBUG > 2)
-    log_info("called %s with no arguments");
+    log_info("called %s with no arguments", __PRETTY_FUNCTION__);
 
   if (!(shop_f = fopen(SHOP_FILE, "r"))) {
     log_fatal("Error in boot shop\n");
@@ -528,7 +528,7 @@ void assign_the_shopkeepers(void)
   int                                     temp1 = 0;
 
   if (DEBUG > 2)
-    log_info("called %s with no arguments");
+    log_info("called %s with no arguments", __PRETTY_FUNCTION__);
 
   for (temp1 = 0; temp1 < number_of_shops; temp1++)
     mob_index[shop_index[temp1].keeper].func = shop_keeper;

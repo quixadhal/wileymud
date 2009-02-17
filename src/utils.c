@@ -156,7 +156,7 @@ int exit_ok(struct room_direction_data *room_exit, struct room_data **rpp)
   struct room_data                       *rp = NULL;
 
   if (DEBUG > 3)
-    log_info("called %s with %08x, %08x", __PRETTY_FUNCTION__, room_exit, rpp);
+    log_info("called %s with %08zx, %08zx", __PRETTY_FUNCTION__, room_exit, rpp);
 
   if (rpp == NULL)
     rpp = &rp;
@@ -242,12 +242,12 @@ int exit_ok(struct room_direction_data *room_exit, struct room_data **rpp)
   return ((random() % ((2 * x) + 1)) - x);
 }
 
-int scan_number(char *text, int *rval)
+int scan_number(const char *text, int *rval)
 {
   int                                     length = 0;
 
   if (DEBUG > 3)
-    log_info("called %s with %s, %08x", __PRETTY_FUNCTION__, VNULL(text), rval);
+    log_info("called %s with %s, %08zx", __PRETTY_FUNCTION__, VNULL(text), rval);
 
   if (!text || !*text)
     return 0;
@@ -283,7 +283,7 @@ int scan_number(char *text, int *rval)
   long                                    nr = 0L;
 
   if (DEBUG > 3)
-    log_info("called %s with %lu, %08x, %08x", __PRETTY_FUNCTION__, vektor, names, result);
+    log_info("called %s with %lu, %08zx, %08zx", __PRETTY_FUNCTION__, vektor, names, result);
 
   *result = '\0';
   for (nr = 0; vektor; vektor >>= 1) {
@@ -308,7 +308,7 @@ int scan_number(char *text, int *rval)
   int                                     nr = 0;
 
   if (DEBUG > 3)
-    log_info("called %s with %d, %08x, %08x", __PRETTY_FUNCTION__, type, names, result);
+    log_info("called %s with %d, %08zx, %08zx", __PRETTY_FUNCTION__, type, names, result);
 
   for (nr = 0; (*names[nr] != '\n'); nr++);
   if (type < nr)
@@ -732,7 +732,7 @@ void down_river(int current_pulse)
 		    if (ch->specials.fighting) {
 		      stop_fighting(ch);
 		    }
-		    cprintf(ch, "You drift %s...\n\r", dirs[rd]);
+		    cprintf(ch, "You drift %s...\r\n", dirs[rd]);
 		    if (MOUNTED(ch)) {
 		      or = ch->in_room;
 		      char_from_room(ch);
@@ -977,7 +977,7 @@ void SetHunting(struct char_data *ch, struct char_data *tch)
   ch->old_room = ch->in_room;
 
   if (GetMaxLevel(tch) >= IMMORTAL) {
-    cprintf(tch, ">>%s is hunting you from %s\n\r",
+    cprintf(tch, ">>%s is hunting you from %s\r\n",
 	    ch->player.short_descr, (real_roomp(ch->in_room))->name);
   }
 }

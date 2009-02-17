@@ -498,9 +498,9 @@ void advance_level(struct char_data *ch, int class)
       ch->specials.conditions[i] = -1;
 
   ch->points.max_move = GET_MAX_MOVE(ch);
-  if (IS_PC(ch))
-    update_player_list_entry(ch->desc);
-  log_info("%s advances to level %d.\n\r", GET_NAME(ch), GetMaxLevel(ch));
+//  if (IS_PC(ch))
+//    update_player_list_entry(ch->desc);
+  log_info("%s advances to level %d.\r\n", GET_NAME(ch), GetMaxLevel(ch));
 }
 
 /* Lose in various points */
@@ -613,8 +613,8 @@ void drop_level(struct char_data *ch, int class)
  */
   if (ch->points.exp < 0)
     ch->points.exp = 0;
-  update_player_list_entry(ch->desc);
-  log_info("%s drops to level %d.\n\r", GET_NAME(ch), GetMaxLevel(ch));
+//  update_player_list_entry(ch->desc);
+  log_info("%s drops to level %d.\r\n", GET_NAME(ch), GetMaxLevel(ch));
 }
 
 void set_title(struct char_data *ch)
@@ -673,7 +673,7 @@ void gain_exp(struct char_data *ch, int gain)
 	for (i = MAGE_LEVEL_IND; i <= DRUID_LEVEL_IND; i++) {
 	  if (GET_LEVEL(ch, i)) {
 	    if (GET_EXP(ch) >= titles[i][GET_LEVEL(ch, i) + 2].exp) {
-	      cprintf(ch, "You will not gain anymore exp until you practice at a guild.\n\r");
+	      cprintf(ch, "You will not gain anymore exp until you practice at a guild.\r\n");
 	      GET_EXP(ch) = titles[i][GET_LEVEL(ch, i) + 2].exp - 1;
 	      return;
 	    } else if (GET_EXP(ch) >= titles[i][GET_LEVEL(ch, i) + 1].exp) {
@@ -681,9 +681,9 @@ void gain_exp(struct char_data *ch, int gain)
 	       * do nothing..this is cool 
 	       */
 	    } else if (GET_EXP(ch) + gain >= titles[i][GET_LEVEL(ch, i) + 1].exp) {
-	      cprintf(ch, "You have gained enough to be a(n) %s\n\r",
+	      cprintf(ch, "You have gained enough to be a(n) %s\r\n",
 		      GET_CLASS_TITLE(ch, i, GET_LEVEL(ch, i) + 1));
-	      cprintf(ch, "You will not gain anymore exp until you practice at a guild.\n\r");
+	      cprintf(ch, "You will not gain anymore exp until you practice at a guild.\r\n");
 	      if (GET_EXP(ch) + gain >= titles[i][GET_LEVEL(ch, i) + 2].exp) {
 		GET_EXP(ch) = titles[i][GET_LEVEL(ch, i) + 2].exp - 1;
 		return;
@@ -726,7 +726,7 @@ void gain_exp_regardless(struct char_data *ch, int gain, int class)
 
       for (i = 0; (i < ABS_MAX_LVL) && (titles[class][i].exp <= GET_EXP(ch)); i++) {
 	if (i > GET_LEVEL(ch, class)) {
-	  cprintf(ch, "You raise a level\n\r");
+	  cprintf(ch, "You raise a level\r\n");
 /*        GET_LEVEL(ch,class) = i; */
 	  advance_level(ch, class);
 	  is_altered = TRUE;
@@ -766,18 +766,18 @@ void gain_condition(struct char_data *ch, int condition, int value)
   switch (condition) {
     case FULL:
       {
-	cprintf(ch, "You are hungry.\n\r");
+	cprintf(ch, "You are hungry.\r\n");
 	return;
       }
     case THIRST:
       {
-	cprintf(ch, "You are thirsty.\n\r");
+	cprintf(ch, "You are thirsty.\r\n");
 	return;
       }
     case DRUNK:
       {
 	if (intoxicated)
-	  cprintf(ch, "You are now sober.\n\r");
+	  cprintf(ch, "You are now sober.\r\n");
 	return;
       }
     default:
@@ -963,10 +963,10 @@ void point_update(int current_pulse)
 	    strcpy(newtmp, j->short_description);
 	    if (!strncmp(newtmp, "the corpse of ", 14)) {
 	      newtmp[14] = tolower(newtmp[14]);
-	      sprintf(newbuffer, "%s of %s has arisen to KILL!\n\r",
+	      sprintf(newbuffer, "%s of %s has arisen to KILL!\r\n",
 		      GET_SDESC(mob), &newtmp[14]);
 	    } else {
-	      sprintf(newbuffer, "%s has recently risen to KILL!\n\r", GET_SDESC(mob));
+	      sprintf(newbuffer, "%s has recently risen to KILL!\r\n", GET_SDESC(mob));
 	    }
 	    /*
 	     * this loses memory... can we free it first? 

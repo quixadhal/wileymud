@@ -87,55 +87,55 @@ void do_whod(struct char_data *ch, char *arg, int cmd)
 
   half_chop(arg, buf, tmp);
   if (!*buf) {
-    cprintf(ch, "Current WHOD mode:\n\r------------------\n\r");
+    cprintf(ch, "Current WHOD mode:\r\n------------------\r\n");
     sprintbit((long)whod_mode, (const char **)modes, buf);
-    cprintf(ch, "%s\n\r", buf);
+    cprintf(ch, "%s\r\n", buf);
     return;
   }
   if ((bit = old_search_block(buf, 0, strlen(buf), modes, FALSE)) == -1) {
-    cprintf(ch, "That mode does not exist.\n\rAvailable modes are:\n\r");
+    cprintf(ch, "That mode does not exist.\r\nAvailable modes are:\r\n");
     *buf = '\0';
     for (bit = 0; *modes[bit] != '\n'; bit++) {
       strcat(buf, modes[bit]);
       strcat(buf, " ");
     }
-    cprintf(ch, "%s\n\r", buf);
+    cprintf(ch, "%s\r\n", buf);
     return;
   }
   bit--;						       /* Is bit no + 1 */
   if (SHOW_ON == 1 << bit) {
     if (IS_SET(whod_mode, SHOW_ON))
-      cprintf(ch, "WHOD already turned on.\n\r");
+      cprintf(ch, "WHOD already turned on.\r\n");
     else {
       if (IS_SET(whod_mode, SHOW_OFF)) {
 	REMOVE_BIT(whod_mode, SHOW_OFF);
 	SET_BIT(whod_mode, SHOW_ON);
-	cprintf(ch, "WHOD turned on.\n\r");
+	cprintf(ch, "WHOD turned on.\r\n");
 	log_info("WHOD turned on by %s.", GET_NAME(ch));
       }
     }
   } else {
     if (SHOW_OFF == 1 << bit) {
       if (IS_SET(whod_mode, SHOW_OFF))
-	cprintf(ch, "WHOD already turned off.\n\r");
+	cprintf(ch, "WHOD already turned off.\r\n");
       else {
 	if (IS_SET(whod_mode, SHOW_ON)) {
 	  REMOVE_BIT(whod_mode, SHOW_ON);
 	  SET_BIT(whod_mode, SHOW_OFF);
-	  cprintf(ch, "WHOD turned off.\n\r");
+	  cprintf(ch, "WHOD turned off.\r\n");
 	  log_info("WHOD turned off by %s.", GET_NAME(ch));
 	}
       }
     } else {
       if (IS_SET(whod_mode, 1 << bit)) {
-	cprintf(ch, "%c%s will not be shown on WHOD.\n\r",
+	cprintf(ch, "%c%s will not be shown on WHOD.\r\n",
 		toupper(modes[bit][0]), &modes[bit][1]);
 	log_info("%c%s removed from WHOD by %s.",
 	    toupper(modes[bit][0]), &modes[bit][1], GET_NAME(ch));
 	REMOVE_BIT(whod_mode, 1 << bit);
 	return;
       } else {
-	cprintf(ch, "%c%s will now be shown on WHOD.\n\r",
+	cprintf(ch, "%c%s will now be shown on WHOD.\r\n",
 		toupper(modes[bit][0]), &modes[bit][1]);
 	log_info("%c%s added to WHOD by %s.", toupper(modes[bit][0]), &modes[bit][1], GET_NAME(ch));
 	SET_BIT(whod_mode, 1 << bit);
@@ -268,7 +268,7 @@ void whod_loop(void)
 	log_info(buf);
 
 	sprintf(buf, VERSION_STR);
-	strcat(buf, "\n\r");
+	strcat(buf, "\r\n");
 
 	players = 0;
 	gods = 0;
@@ -339,13 +339,13 @@ void whod_loop(void)
                 else if (ch->desc->ip != NULL)
 		  sprintf(buf + strlen(buf), "(%s)", ch->desc->ip);
 	      }
-	      strcat(buf, "\n\r");
+	      strcat(buf, "\r\n");
 	      WRITE(newdesc, buf);
 	      *buf = '\0';
 	    }
 	  }
 	}
-	sprintf(buf + strlen(buf), "\n\rVisible Players: %d\tVisible Gods: %d\n\r", players,
+	sprintf(buf + strlen(buf), "\r\nVisible Players: %d\tVisible Gods: %d\r\n", players,
 		gods);
 	ot = Uptime;
 	otmstr = asctime(localtime(&ot));

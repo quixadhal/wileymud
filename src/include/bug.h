@@ -68,6 +68,7 @@ void                                    bug_logger(unsigned int Type, const char
                                                    const char *File, const char *Func, int Line,
                                                    const char *AreaFile, int AreaLine,
 	                                           struct char_data *ch, struct char_data *victim,
-					           unsigned int Level, const char *Str, ...);
+					           unsigned int Level, const char *Str, ...)
+                                                   __attribute__ ( ( format( printf, 11, 12 ) ) );;
 
 #endif

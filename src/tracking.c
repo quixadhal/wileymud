@@ -28,7 +28,7 @@
  int is_target_room_p(int room, void *tgt_room)
 {
   if (DEBUG > 3)
-    log_info("called %s with %d, %08x", __PRETTY_FUNCTION__, room, tgt_room);
+    log_info("called %s with %d, %08zx", __PRETTY_FUNCTION__, room, (size_t)tgt_room);
 
   return room == (int)tgt_room;
 }
@@ -38,7 +38,7 @@
   char                                   *name = c_data;
 
   if (DEBUG > 3)
-    log_info("called %s with %d, %08x", __PRETTY_FUNCTION__, room, c_data);
+    log_info("called %s with %d, %08zx", __PRETTY_FUNCTION__, room, (size_t)c_data);
 
   return NULL != get_obj_in_list(name, real_roomp(room)->contents);
 }
@@ -48,7 +48,7 @@
   struct char_data                       *scan = NULL;
 
   if (DEBUG > 3)
-    log_info("called %s with %d, %08x", __PRETTY_FUNCTION__, room, c_data);
+    log_info("called %s with %d, %08zx", __PRETTY_FUNCTION__, room, (size_t)c_data);
 
   for (scan = real_roomp(room)->people; scan; scan = scan->next_in_room)
     if (isname(c_data->name, scan->player.name)) {
@@ -79,7 +79,7 @@ int choose_exit(int in_room, int tgt_room, int depth)
   if (DEBUG > 3)
     log_info("called %s with %d, %d, %d", __PRETTY_FUNCTION__, in_room, tgt_room, depth);
 
-  return find_path(in_room, is_target_room_p, (void *)tgt_room, depth);
+  return find_path(in_room, is_target_room_p, (const void *)tgt_room, depth);
 }
 
 int go_direction(struct char_data *ch, int dir)
@@ -98,7 +98,7 @@ int go_direction(struct char_data *ch, int dir)
   return 0;
 }
 
-int find_path(int in_room, ifuncp predicate, void *c_data, int depth)
+int find_path(int in_room, ifuncp predicate, const void *c_data, int depth)
 {
   struct room_q                          *tmp_q = NULL;
   struct room_q                          *q_head = NULL;
@@ -113,7 +113,7 @@ int find_path(int in_room, ifuncp predicate, void *c_data, int depth)
   static struct hash_header               x_room;
 
   if (DEBUG > 2)
-    log_info("called %s with %d, %08x, %d", __PRETTY_FUNCTION__, in_room, c_data, depth);
+    log_info("called %s with %d, %08zx, %d", __PRETTY_FUNCTION__, in_room, (size_t)c_data, depth);
 
   /*
    * If start = destination we are done 
@@ -230,7 +230,7 @@ void MobHunt(struct char_data *ch)
 	if (ch->specials.hunting->in_room == ch->in_room) {
 	  if (CanHate(ch, ch->specials.hunting) &&
 	      (!IS_AFFECTED(ch->specials.hunting, AFF_HIDE))) {
-	    if (check_peaceful(ch, "You CAN'T fight here!\n\r")) {
+	    if (check_peaceful(ch, "You CAN'T fight here!\r\n")) {
 	      act("$n fumes at $N", TRUE, ch, 0, ch->specials.hunting, TO_ROOM);
 	    } else {
 	      if (IsHumanoid(ch)) {
@@ -284,13 +284,13 @@ int dir_track(struct char_data *ch, struct char_data *vict)
 
   if (code == -1) {
     if (ch->in_room == vict->in_room) {
-      cprintf(ch, "\n\rTrack -> You have found your target!\n\r");
+      cprintf(ch, "\r\nTrack -> You have found your target!\r\n");
     } else {
-      cprintf(ch, "\n\rTrack -> You have lost the trail.\n\r");
+      cprintf(ch, "\r\nTrack -> You have lost the trail.\r\n");
     }
     return (-1);					       /* false to continue the hunt */
   } else {
-    cprintf(ch, "\n\rTrack -> You see a faint trail %sward\n\r", dirs[code]);
+    cprintf(ch, "\r\nTrack -> You see a faint trail %sward\r\n", dirs[code]);
     return (code);
   }
 }
@@ -311,19 +311,19 @@ int track(struct char_data *ch, struct char_data *vict)
     return (-1);
 
   if (ch->in_room == vict->in_room) {
-    cprintf(ch, "\n\rTrack -> You have found your target!\n\r");
+    cprintf(ch, "\r\nTrack -> You have found your target!\r\n");
     return (FALSE);					       /* false to continue the hunt */
   }
   if (code == -1) {
-    cprintf(ch, "\n\rTrack -> You have lost the trail.\n\r");
+    cprintf(ch, "\r\nTrack -> You have lost the trail.\r\n");
     return (FALSE);
   } else {
-    cprintf(ch, "\n\rTrack -> You see a faint trail %sward\n\r", dirs[code]);
+    cprintf(ch, "\r\nTrack -> You see a faint trail %sward\r\n", dirs[code]);
     return (TRUE);
   }
 }
 
-void do_track(struct char_data *ch, char *argument, int cmd)
+void do_track(struct char_data *ch, const char *argument, int cmd)
 {
   int                                     dist = 0;
   int                                     code = 0;
@@ -350,11 +350,11 @@ void do_track(struct char_data *ch, char *argument, int cmd)
   }
 
   if (!dist) {
-    cprintf(ch, "You do not know of this skill yet!\n\r");
+    cprintf(ch, "You do not know of this skill yet!\r\n");
     return;
   }
   if (GET_MANA(ch) < cost) {
-    cprintf(ch, "You can not seem to concentrate on the trail...\n\r");
+    cprintf(ch, "You can not seem to concentrate on the trail...\r\n");
     return;
   }
   GET_MANA(ch) -= cost;
@@ -384,17 +384,17 @@ void do_track(struct char_data *ch, char *argument, int cmd)
   WAIT_STATE(ch, PULSE_VIOLENCE * 1);
 
   if (code == -1) {
-    cprintf(ch, "You are unable to find traces of one.\n\r");
+    cprintf(ch, "You are unable to find traces of one.\r\n");
     return;
   } else {
     if (IS_LIGHT(ch->in_room)) {
       SET_BIT(ch->specials.act, PLR_HUNTING);
-      cprintf(ch, "You see traces of your quarry to the %s\n\r", dirs[code]);
+      cprintf(ch, "You see traces of your quarry to the %s\r\n", dirs[code]);
       if (ch->skills[SKILL_TRACK].learned < 50)
 	ch->skills[SKILL_TRACK].learned += 2;
     } else {
       ch->specials.hunting = 0;
-      cprintf(ch, "It's too dark in here to track...\n\r");
+      cprintf(ch, "It's too dark in here to track...\r\n");
       return;
     }
   }

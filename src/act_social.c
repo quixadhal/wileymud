@@ -33,7 +33,7 @@ char                                   *fread_action(FILE * fl)
   char                                   *rslt = NULL;
 
   if (DEBUG > 2)
-    log_info("called %s with %08x", __PRETTY_FUNCTION__, fl);
+    log_info("called %s with %08zx", __PRETTY_FUNCTION__, (size_t)fl);
 
   for (;;) {
     fgets(buf, MAX_STRING_LENGTH, fl);
@@ -142,7 +142,7 @@ int find_action(int cmd)
   }
 }
 
-void do_action(struct char_data *ch, char *argument, int cmd)
+void do_action(struct char_data *ch, const char *argument, int cmd)
 {
   int                                     act_nr = 0;
   char                                    buf[MAX_INPUT_LENGTH] = "\0\0\0";
@@ -153,7 +153,7 @@ void do_action(struct char_data *ch, char *argument, int cmd)
     log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
   if ((act_nr = find_action(cmd)) < 0) {
-    cprintf(ch, "That action is not supported.\n\r");
+    cprintf(ch, "That action is not supported.\r\n");
     return;
   }
   action = &soc_mess_list[act_nr];
@@ -164,14 +164,14 @@ void do_action(struct char_data *ch, char *argument, int cmd)
     *buf = '\0';
 
   if (!*buf) {
-    cprintf(ch, "%s\n\r", action->char_no_arg);
+    cprintf(ch, "%s\r\n", action->char_no_arg);
     act("%s", action->hide, ch, 0, 0, TO_ROOM, action->others_no_arg);
     return;
   }
   if (!(vict = get_char_room_vis(ch, buf))) {
-    cprintf(ch, "%s\n\r", action->not_found);
+    cprintf(ch, "%s\r\n", action->not_found);
   } else if (vict == ch) {
-    cprintf(ch, "%s\n\r", action->char_auto);
+    cprintf(ch, "%s\r\n", action->char_auto);
     act("%s", action->hide, ch, 0, 0, TO_ROOM, action->others_auto);
   } else {
     if (GET_POS(vict) < action->min_victim_position) {
@@ -184,7 +184,7 @@ void do_action(struct char_data *ch, char *argument, int cmd)
   }
 }
 
-void do_insult(struct char_data *ch, char *argument, int cmd)
+void do_insult(struct char_data *ch, const char *argument, int cmd)
 {
   static char                             arg[MAX_STRING_LENGTH] = "\0\0\0";
   struct char_data                       *victim = NULL;
@@ -196,10 +196,10 @@ void do_insult(struct char_data *ch, char *argument, int cmd)
 
   if (*arg) {
     if (!(victim = get_char_room_vis(ch, arg))) {
-      cprintf(ch, "Can't hear you!\n\r");
+      cprintf(ch, "Can't hear you!\r\n");
     } else {
       if (victim != ch) {
-	cprintf(ch, "You insult %s.\n\r", GET_NAME(victim));
+	cprintf(ch, "You insult %s.\r\n", GET_NAME(victim));
 
 	switch (random() % 3) {
 	  case 0:{
@@ -231,11 +231,11 @@ void do_insult(struct char_data *ch, char *argument, int cmd)
 
 	act("$n insults $N.", TRUE, ch, 0, victim, TO_NOTVICT);
       } else {						       /* ch == victim */
-	cprintf(ch, "You feel insulted.\n\r");
+	cprintf(ch, "You feel insulted.\r\n");
       }
     }
   } else
-    cprintf(ch, "Sure you don't want to insult everybody.\n\r");
+    cprintf(ch, "Sure you don't want to insult everybody.\r\n");
 }
 
 void boot_pose_messages(void)
@@ -266,7 +266,7 @@ void boot_pose_messages(void)
   FCLOSE(fl);
 }
 
-void do_pose(struct char_data *ch, char *argument, int cmd)
+void do_pose(struct char_data *ch, const char *argument, int cmd)
 {
   int                                     to_pose = 0;
   int                                     counter = 0;
@@ -274,11 +274,11 @@ void do_pose(struct char_data *ch, char *argument, int cmd)
   if (DEBUG)
     log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
-  cprintf(ch, "Sorry Buggy command.\n\r");
+  cprintf(ch, "Sorry Buggy command.\r\n");
   return;
 
   if ((GetMaxLevel(ch) < pose_messages[0].level) || IS_NPC(ch)) {
-    cprintf(ch, "You can't do that.\n\r");
+    cprintf(ch, "You can't do that.\r\n");
     return;
   }
   for (counter = 0; (pose_messages[counter].level < GetMaxLevel(ch)) &&

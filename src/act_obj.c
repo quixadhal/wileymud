@@ -60,13 +60,13 @@ void get(struct char_data *ch, struct obj_data *obj_object, struct obj_data *sub
   }
   if ((obj_object->obj_flags.type_flag == ITEM_MONEY) && (obj_object->obj_flags.value[0] >= 1)) {
     obj_from_char(obj_object);
-    cprintf(ch, "There was %d coins.\n\r", obj_object->obj_flags.value[0]);
+    cprintf(ch, "There was %d coins.\r\n", obj_object->obj_flags.value[0]);
     GET_GOLD(ch) += obj_object->obj_flags.value[0];
     extract_obj(obj_object);
   }
 }
 
-void do_get(struct char_data *ch, char *argument, int cmd)
+void do_get(struct char_data *ch, const char *argument, int cmd)
 {
   char                                    arg1[MAX_STRING_LENGTH] = "\0\0\0";
   char                                    arg2[MAX_STRING_LENGTH] = "\0\0\0";
@@ -115,7 +115,7 @@ void do_get(struct char_data *ch, char *argument, int cmd)
        * get 
        */
     case 0:{
-	cprintf(ch, "Get what?\n\r");
+	cprintf(ch, "Get what?\r\n");
       }
       break;
       /*
@@ -140,26 +140,26 @@ void do_get(struct char_data *ch, char *argument, int cmd)
 		  get(ch, obj_object, sub_object);
 		  found = TRUE;
 		} else {
-		  cprintf(ch, "You can't take that\n\r");
+		  cprintf(ch, "You can't take that\r\n");
 		  fail = TRUE;
 		}
 	      } else {
-		cprintf(ch, "%s : You can't carry that much weight.\n\r",
+		cprintf(ch, "%s : You can't carry that much weight.\r\n",
 			obj_object->short_description);
 		fail = TRUE;
 	      }
 	    } else {
-	      cprintf(ch, "%s : You can't carry that many items.\n\r",
+	      cprintf(ch, "%s : You can't carry that many items.\r\n",
 		      obj_object->short_description);
 	      fail = TRUE;
 	    }
 	  }
 	}
 	if (found) {
-	  cprintf(ch, "OK.\n\r");
+	  cprintf(ch, "OK.\r\n");
 	} else {
 	  if (!fail)
-	    cprintf(ch, "You see nothing here.\n\r");
+	    cprintf(ch, "You see nothing here.\r\n");
 	}
       }
       break;
@@ -194,25 +194,25 @@ void do_get(struct char_data *ch, char *argument, int cmd)
 		  get(ch, obj_object, sub_object);
 		  found = TRUE;
 		} else {
-		  cprintf(ch, "You can't take that\n\r");
+		  cprintf(ch, "You can't take that\r\n");
 		  fail = TRUE;
 		  num = 0;
 		}
 	      } else {
-		cprintf(ch, "%s : You can't carry that much weight.\n\r",
+		cprintf(ch, "%s : You can't carry that much weight.\r\n",
 			obj_object->short_description);
 		fail = TRUE;
 		num = 0;
 	      }
 	    } else {
-	      cprintf(ch, "%s : You can't carry that many items.\n\r",
+	      cprintf(ch, "%s : You can't carry that many items.\r\n",
 		      obj_object->short_description);
 	      fail = TRUE;
 	      num = 0;
 	    }
 	  } else {
 	    if (num > 0) {
-	      cprintf(ch, "You do not see a %s here.\n\r", arg1);
+	      cprintf(ch, "You do not see a %s here.\r\n", arg1);
 	    }
 	    num = 0;
 	    fail = TRUE;
@@ -227,7 +227,7 @@ void do_get(struct char_data *ch, char *argument, int cmd)
        */
     case 3:
       {
-	cprintf(ch, "You must be joking?!\n\r");
+	cprintf(ch, "You must be joking?!\r\n");
       }
       break;
       /*
@@ -252,37 +252,37 @@ void do_get(struct char_data *ch, char *argument, int cmd)
 		      get(ch, obj_object, sub_object);
 		      found = TRUE;
 		    } else {
-		      cprintf(ch, "You can't take that\n\r");
+		      cprintf(ch, "You can't take that\r\n");
 		      fail = TRUE;
 		    }
 		  } else {
-		    cprintf(ch, "%s : You can't carry that much weight.\n\r",
+		    cprintf(ch, "%s : You can't carry that much weight.\r\n",
 			    obj_object->short_description);
 		    fail = TRUE;
 		  }
 		} else {
-		  cprintf(ch, "%s : You can't carry that many items.\n\r",
+		  cprintf(ch, "%s : You can't carry that many items.\r\n",
 			  obj_object->short_description);
 		  fail = TRUE;
 		}
 	      }
 	    }
 	    if (!found && !fail) {
-	      cprintf(ch, "You do not see anything in %s.\n\r", sub_object->short_description);
+	      cprintf(ch, "You do not see anything in %s.\r\n", sub_object->short_description);
 	      fail = TRUE;
 	    }
 	  } else {
-	    cprintf(ch, "%s is not a container.\n\r", sub_object->short_description);
+	    cprintf(ch, "%s is not a container.\r\n", sub_object->short_description);
 	    fail = TRUE;
 	  }
 	} else {
-	  cprintf(ch, "You do not see or have the %s.\n\r", arg2);
+	  cprintf(ch, "You do not see or have the %s.\r\n", arg2);
 	  fail = TRUE;
 	}
       }
       break;
     case 5:{
-	cprintf(ch, "You can't take a thing from more than one container.\n\r");
+	cprintf(ch, "You can't take a thing from more than one container.\r\n");
       }
       break;
 /*  
@@ -317,25 +317,25 @@ void do_get(struct char_data *ch, char *argument, int cmd)
 		      get(ch, obj_object, sub_object);
 		      found = TRUE;
 		    } else {
-		      cprintf(ch, "You can't take that\n\r");
+		      cprintf(ch, "You can't take that\r\n");
 		      fail = TRUE;
 		      num = 0;
 		    }
 		  } else {
-		    cprintf(ch, "%s : You can't carry that much weight.\n\r",
+		    cprintf(ch, "%s : You can't carry that much weight.\r\n",
 			    obj_object->short_description);
 		    fail = TRUE;
 		    num = 0;
 		  }
 		} else {
-		  cprintf(ch, "%s : You can't carry that many items.\n\r",
+		  cprintf(ch, "%s : You can't carry that many items.\r\n",
 			  obj_object->short_description);
 		  fail = TRUE;
 		  num = 0;
 		}
 	      } else {
 		if (num > 0) {
-		  cprintf(ch, "%s does not contain the %s.\n\r", sub_object->short_description,
+		  cprintf(ch, "%s does not contain the %s.\r\n", sub_object->short_description,
 			  arg1);
 		}
 		num = 0;
@@ -345,11 +345,11 @@ void do_get(struct char_data *ch, char *argument, int cmd)
 		num--;
 	    }
 	  } else {
-	    cprintf(ch, "%s is not a container.\n\r", sub_object->short_description);
+	    cprintf(ch, "%s is not a container.\r\n", sub_object->short_description);
 	    fail = TRUE;
 	  }
 	} else {
-	  cprintf(ch, "You do not see or have the %s.\n\r", arg2);
+	  cprintf(ch, "You do not see or have the %s.\r\n", arg2);
 	  fail = TRUE;
 	}
       }
@@ -357,11 +357,11 @@ void do_get(struct char_data *ch, char *argument, int cmd)
   }
 }
 
-void do_drop(struct char_data *ch, char *argument, int cmd)
+void do_drop(struct char_data *ch, const char *argument, int cmd)
 {
   struct obj_data                        *tmp_object = NULL;
   struct obj_data                        *next_obj = NULL;
-  char                                   *s = NULL;
+  const char                             *s = NULL;
   char                                    arg[MAX_INPUT_LENGTH] = "\0\0\0";
   char                                    newarg[100] = "\0\0\0";
   int                                     test = FALSE;
@@ -379,20 +379,20 @@ void do_drop(struct char_data *ch, char *argument, int cmd)
 
     /*
      * if (0!=str_cmp("coins",arg) && 0!=str_cmp("coin",arg))  {
-     * cprintf(ch, "Sorry, you can't do that (yet)...\n\r");
+     * cprintf(ch, "Sorry, you can't do that (yet)...\r\n");
      * return;
      * }
      */
 
     if (amount < 0) {
-      cprintf(ch, "Sorry, you can't do that!\n\r");
+      cprintf(ch, "Sorry, you can't do that!\r\n");
       return;
     }
     if (GET_GOLD(ch) < amount) {
-      cprintf(ch, "You haven't got that many coins!\n\r");
+      cprintf(ch, "You haven't got that many coins!\r\n");
       return;
     }
-    cprintf(ch, "OK.\n\r");
+    cprintf(ch, "OK.\r\n");
     if (amount == 0)
       return;
 
@@ -411,9 +411,9 @@ void do_drop(struct char_data *ch, char *argument, int cmd)
 	next_obj = tmp_object->next_content;
 	if (!IS_SET(tmp_object->obj_flags.extra_flags, ITEM_NODROP) || IS_IMMORTAL(ch)) {
 	  if (CAN_SEE_OBJ(ch, tmp_object)) {
-	    cprintf(ch, "You drop %s.\n\r", tmp_object->short_description);
+	    cprintf(ch, "You drop %s.\r\n", tmp_object->short_description);
 	  } else {
-	    cprintf(ch, "You drop something.\n\r");
+	    cprintf(ch, "You drop something.\r\n");
 	  }
 	  act("$n drops $p.", 1, ch, tmp_object, 0, TO_ROOM);
 	  obj_from_char(tmp_object);
@@ -421,14 +421,14 @@ void do_drop(struct char_data *ch, char *argument, int cmd)
 	  test = TRUE;
 	} else {
 	  if (CAN_SEE_OBJ(ch, tmp_object)) {
-	    cprintf(ch, "You can't drop  %s, it must be CURSED!\n\r",
+	    cprintf(ch, "You can't drop  %s, it must be CURSED!\r\n",
 		    tmp_object->short_description);
 	    test = TRUE;
 	  }
 	}
       }
       if (!test) {
-	cprintf(ch, "You do not seem to have anything.\n\r");
+	cprintf(ch, "You do not seem to have anything.\r\n");
       }
     } else {
       /*
@@ -447,17 +447,17 @@ void do_drop(struct char_data *ch, char *argument, int cmd)
 	tmp_object = get_obj_in_list_vis(ch, arg, ch->carrying);
 	if (tmp_object) {
 	  if (!IS_SET(tmp_object->obj_flags.extra_flags, ITEM_NODROP) || IS_IMMORTAL(ch)) {
-	    cprintf(ch, "You drop %s.\n\r", tmp_object->short_description);
+	    cprintf(ch, "You drop %s.\r\n", tmp_object->short_description);
 	    act("$n drops $p.", 1, ch, tmp_object, 0, TO_ROOM);
 	    obj_from_char(tmp_object);
 	    obj_to_room(tmp_object, ch->in_room);
 	  } else {
-	    cprintf(ch, "You can't drop it, it must be CURSED!\n\r");
+	    cprintf(ch, "You can't drop it, it must be CURSED!\r\n");
 	    num = 0;
 	  }
 	} else {
 	  if (num > 0)
-	    cprintf(ch, "You do not have that item.\n\r");
+	    cprintf(ch, "You do not have that item.\r\n");
 	  num = 0;
 	}
 	if (num > 0)
@@ -465,11 +465,11 @@ void do_drop(struct char_data *ch, char *argument, int cmd)
       }
     }
   } else {
-    cprintf(ch, "Drop what?\n\r");
+    cprintf(ch, "Drop what?\r\n");
   }
 }
 
-void do_put(struct char_data *ch, char *argument, int cmd)
+void do_put(struct char_data *ch, const char *argument, int cmd)
 {
   struct obj_data                        *obj_object = NULL;
   struct obj_data                        *sub_object = NULL;
@@ -501,7 +501,7 @@ void do_put(struct char_data *ch, char *argument, int cmd)
 
       if (!strcmp(arg1, "all")) {
 
-	cprintf(ch, "sorry, you can't do that (yet)\n\r");
+	cprintf(ch, "sorry, you can't do that (yet)\r\n");
 	return;
 
       } else {
@@ -518,7 +518,7 @@ void do_put(struct char_data *ch, char *argument, int cmd)
 	      if (GET_ITEM_TYPE(sub_object) == ITEM_CONTAINER) {
 		if (!IS_SET(sub_object->obj_flags.value[1], CONT_CLOSED)) {
 		  if (obj_object == sub_object) {
-		    cprintf(ch, "You attempt to fold it into itself, but fail.\n\r");
+		    cprintf(ch, "You attempt to fold it into itself, but fail.\r\n");
 		    return;
 		  }
 		  if (((sub_object->obj_flags.weight) +
@@ -540,38 +540,38 @@ void do_put(struct char_data *ch, char *argument, int cmd)
 		    act("$n puts $p in $P", TRUE, ch, obj_object, sub_object, TO_ROOM);
 		    num--;
 		  } else {
-		    cprintf(ch, "It won't fit.\n\r");
+		    cprintf(ch, "It won't fit.\r\n");
 		    num = 0;
 		  }
 		} else {
-		  cprintf(ch, "It seems to be closed.\n\r");
+		  cprintf(ch, "It seems to be closed.\r\n");
 		  num = 0;
 		}
 	      } else {
-		cprintf(ch, "%s is not a container.\n\r", sub_object->short_description);
+		cprintf(ch, "%s is not a container.\r\n", sub_object->short_description);
 		num = 0;
 	      }
 	    } else {
-	      cprintf(ch, "You don't have the %s.\n\r", arg2);
+	      cprintf(ch, "You don't have the %s.\r\n", arg2);
 	      num = 0;
 	    }
 	  } else {
 	    if ((num > 0) || (num == -1)) {
-	      cprintf(ch, "You don't have the %s.\n\r", arg1);
+	      cprintf(ch, "You don't have the %s.\r\n", arg1);
 	    }
 	    num = 0;
 	  }
 	}
       }
     } else {
-      cprintf(ch, "Put %s in what?\n\r", arg1);
+      cprintf(ch, "Put %s in what?\r\n", arg1);
     }
   } else {
-    cprintf(ch, "Put what in what?\n\r");
+    cprintf(ch, "Put what in what?\r\n");
   }
 }
 
-void do_give(struct char_data *ch, char *argument, int cmd)
+void do_give(struct char_data *ch, const char *argument, int cmd)
 {
   struct char_data                       *vict = NULL;
   struct obj_data                        *obj = NULL;
@@ -593,31 +593,31 @@ void do_give(struct char_data *ch, char *argument, int cmd)
 /*
  * if (str_cmp("coins",arg) && str_cmp("coin",arg))        
  * {
- * cprintf(ch, "Sorry, you can't do that (yet)...\n\r");
+ * cprintf(ch, "Sorry, you can't do that (yet)...\r\n");
  * return;
  * }
  */
 
     if (amount < 0) {
-      cprintf(ch, "Sorry, you can't do that!\n\r");
+      cprintf(ch, "Sorry, you can't do that!\r\n");
       return;
     }
     if ((GET_GOLD(ch) < amount) && (IS_NPC(ch) || (GetMaxLevel(ch) < DEMIGOD))) {
-      cprintf(ch, "You haven't got that many coins!\n\r");
+      cprintf(ch, "You haven't got that many coins!\r\n");
       return;
     }
     argument = one_argument(argument, vict_name);
 
     if (!*vict_name) {
-      cprintf(ch, "To who?\n\r");
+      cprintf(ch, "To who?\r\n");
       return;
     }
     if (!(vict = get_char_room_vis(ch, vict_name))) {
-      cprintf(ch, "To who?\n\r");
+      cprintf(ch, "To who?\r\n");
       return;
     }
-    cprintf(ch, "Ok.\n\r");
-    cprintf(vict, "%s gives you %d gold coins.\n\r", PERS(ch, vict), amount);
+    cprintf(ch, "Ok.\r\n");
+    cprintf(vict, "%s gives you %d gold coins.\r\n", PERS(ch, vict), amount);
     act("$n gives some gold to $N.", 1, ch, 0, vict, TO_NOTVICT);
     if (IS_NPC(ch) || (GetMaxLevel(ch) < DEMIGOD))
       GET_GOLD(ch) -= amount;
@@ -629,7 +629,7 @@ void do_give(struct char_data *ch, char *argument, int cmd)
   }
   argument = one_argument(argument, vict_name);
   if (!*obj_name || !*vict_name) {
-    cprintf(ch, "Give what to who?\n\r");
+    cprintf(ch, "Give what to who?\r\n");
     return;
   }
   /*
@@ -648,20 +648,20 @@ void do_give(struct char_data *ch, char *argument, int cmd)
   while (num != 0) {
     if (!(obj = get_obj_in_list_vis(ch, obj_name, ch->carrying))) {
       if (num >= -1)
-	cprintf(ch, "You do not seem to have anything like that.\n\r");
+	cprintf(ch, "You do not seem to have anything like that.\r\n");
       return;
     }
     if (IS_SET(obj->obj_flags.extra_flags, ITEM_NODROP) && !IS_IMMORTAL(ch)) {
-      cprintf(ch, "You can't let go of it! Yeech!!\n\r");
+      cprintf(ch, "You can't let go of it! Yeech!!\r\n");
       return;
     }
     if (!(vict = get_char_room_vis(ch, vict_name))) {
-      cprintf(ch, "No one by that name around here.\n\r");
+      cprintf(ch, "No one by that name around here.\r\n");
       return;
     }
     if (vict == ch) {
       log_info("%s just tried to give all.X to %s", GET_NAME(ch), GET_NAME(ch));
-      cprintf(ch, "Ok.\n\r");
+      cprintf(ch, "Ok.\r\n");
       return;
     }
     if ((1 + IS_CARRYING_N(vict)) > CAN_CARRY_N(vict)) {
@@ -752,7 +752,7 @@ void name_to_drinkcon(struct obj_data *obj, int type)
   obj->name = new_name;
 }
 
-void do_drink(struct char_data *ch, char *argument, int cmd)
+void do_drink(struct char_data *ch, const char *argument, int cmd)
 {
   struct obj_data                        *temp = NULL;
   char                                    buf[255] = "\0\0\0";
@@ -785,7 +785,7 @@ void do_drink(struct char_data *ch, char *argument, int cmd)
   if (temp->obj_flags.type_flag == ITEM_DRINKCON) {
     if (temp->obj_flags.value[1] > 0) {			       /* Not empty */
       act("$n drinks %s from $p", TRUE, ch, temp, 0, TO_ROOM, drinks[temp->obj_flags.value[2]]);
-      cprintf(ch, "You drink the %s.\n\r", drinks[temp->obj_flags.value[2]]);
+      cprintf(ch, "You drink the %s.\r\n", drinks[temp->obj_flags.value[2]]);
 
       if (drink_aff[temp->obj_flags.value[2]][DRUNK] > 0)
 	amount = (25 - GET_COND(ch, THIRST)) / drink_aff[temp->obj_flags.value[2]][DRUNK];
@@ -847,7 +847,7 @@ void do_drink(struct char_data *ch, char *argument, int cmd)
   }
 }
 
-void do_puke(struct char_data *ch, char *argument, int cmd)
+void do_puke(struct char_data *ch, const char *argument, int cmd)
 {
   char                                    buf[100] = "\0\0\0";
   struct char_data                       *vict = NULL;
@@ -861,7 +861,7 @@ void do_puke(struct char_data *ch, char *argument, int cmd)
     act("$n blows chunks all over the room!", FALSE, ch, 0, 0, TO_ROOM);
     act("You puke and spew filth all over the place.", FALSE, ch, 0, 0, TO_CHAR);
   } else if (!(vict = get_char_room_vis(ch, buf))) {
-    cprintf(ch, "You can't puke on someone who isn't here.\n\r");
+    cprintf(ch, "You can't puke on someone who isn't here.\r\n");
     return;
   } else {
     act("$n walks up to $N and pukes up sickly green ichor all over them!", FALSE, ch, 0, vict,
@@ -878,7 +878,7 @@ void do_puke(struct char_data *ch, char *argument, int cmd)
   return;
 }
 
-void do_eat(struct char_data *ch, char *argument, int cmd)
+void do_eat(struct char_data *ch, const char *argument, int cmd)
 {
   char                                    buf[100] = "\0\0\0";
   int                                     j = 0;
@@ -933,7 +933,7 @@ void do_eat(struct char_data *ch, char *argument, int cmd)
   extract_obj(temp);
 }
 
-void do_pour(struct char_data *ch, char *argument, int cmd)
+void do_pour(struct char_data *ch, const char *argument, int cmd)
 {
   char                                    arg1[132] = "\0\0\0";
   char                                    arg2[132] = "\0\0\0";
@@ -1039,7 +1039,7 @@ void do_pour(struct char_data *ch, char *argument, int cmd)
   return;
 }
 
-void do_sip(struct char_data *ch, char *argument, int cmd)
+void do_sip(struct char_data *ch, const char *argument, int cmd)
 {
   char                                    arg[MAX_STRING_LENGTH] = "\0\0\0";
   struct obj_data                        *temp = NULL;
@@ -1068,7 +1068,7 @@ void do_sip(struct char_data *ch, char *argument, int cmd)
     return;
   }
   act("$n sips from the $o", TRUE, ch, temp, 0, TO_ROOM);
-  cprintf(ch, "It tastes like %s.\n\r", drinks[temp->obj_flags.value[2]]);
+  cprintf(ch, "It tastes like %s.\r\n", drinks[temp->obj_flags.value[2]]);
 
   gain_condition(ch, DRUNK, (int)(drink_aff[temp->obj_flags.value[2]][DRUNK] / 4));
 
@@ -1108,7 +1108,7 @@ void do_sip(struct char_data *ch, char *argument, int cmd)
 
 }
 
-void do_taste(struct char_data *ch, char *argument, int cmd)
+void do_taste(struct char_data *ch, const char *argument, int cmd)
 {
   struct affected_type                    af;
   char                                    arg[80] = "\0\0\0";
@@ -1248,13 +1248,13 @@ void wear(struct char_data *ch, struct obj_data *obj_object, int keyword)
     BitMask = GetItemClassRestrictions(obj_object);
     if (IsRestricted(BitMask, ch->player.class) &&
 	(IS_PC(ch) || IS_SET(ch->specials.act, ACT_POLYSELF))) {
-      cprintf(ch, "You are forbidden to do that.\n\r");
+      cprintf(ch, "You are forbidden to do that.\r\n");
       return;
     }
   }
   if (!IsHumanoid(ch)) {
     if ((keyword != 13) || (!HasHands(ch))) {
-      cprintf(ch, "You can't wear things!\n\r");
+      cprintf(ch, "You can't wear things!\r\n");
       return;
     }
   }
@@ -1262,9 +1262,9 @@ void wear(struct char_data *ch, struct obj_data *obj_object, int keyword)
     case 0:
       {							       /* LIGHT SOURCE */
 	if (ch->equipment[WEAR_LIGHT])
-	  cprintf(ch, "You are already holding a light source.\n\r");
+	  cprintf(ch, "You are already holding a light source.\r\n");
 	else {
-	  cprintf(ch, "Ok.\n\r");
+	  cprintf(ch, "Ok.\r\n");
 	  perform_wear(ch, obj_object, keyword);
 	  obj_from_char(obj_object);
 	  equip_char(ch, obj_object, WEAR_LIGHT);
@@ -1278,22 +1278,22 @@ void wear(struct char_data *ch, struct obj_data *obj_object, int keyword)
       {
 	if (CAN_WEAR(obj_object, ITEM_WEAR_FINGER)) {
 	  if ((ch->equipment[WEAR_FINGER_L]) && (ch->equipment[WEAR_FINGER_R])) {
-	    cprintf(ch, "You are already wearing something on your fingers.\n\r");
+	    cprintf(ch, "You are already wearing something on your fingers.\r\n");
 	  } else {
 	    perform_wear(ch, obj_object, keyword);
 	    if (ch->equipment[WEAR_FINGER_L]) {
-	      cprintf(ch, "You put %s on your right finger.\n\r",
+	      cprintf(ch, "You put %s on your right finger.\r\n",
 		      obj_object->short_description);
 	      obj_from_char(obj_object);
 	      equip_char(ch, obj_object, WEAR_FINGER_R);
 	    } else {
-	      cprintf(ch, "You put %s on your left finger.\n\r", obj_object->short_description);
+	      cprintf(ch, "You put %s on your left finger.\r\n", obj_object->short_description);
 	      obj_from_char(obj_object);
 	      equip_char(ch, obj_object, WEAR_FINGER_L);
 	    }
 	  }
 	} else {
-	  cprintf(ch, "You can't wear that on your finger.\n\r");
+	  cprintf(ch, "You can't wear that on your finger.\r\n");
 	}
       }
       break;
@@ -1301,9 +1301,9 @@ void wear(struct char_data *ch, struct obj_data *obj_object, int keyword)
       {
 	if (CAN_WEAR(obj_object, ITEM_WEAR_NECK)) {
 	  if ((ch->equipment[WEAR_NECK_1]) && (ch->equipment[WEAR_NECK_2])) {
-	    cprintf(ch, "You can't wear any more around your neck.\n\r");
+	    cprintf(ch, "You can't wear any more around your neck.\r\n");
 	  } else {
-	    cprintf(ch, "OK.\n\r");
+	    cprintf(ch, "OK.\r\n");
 	    perform_wear(ch, obj_object, keyword);
 	    if (ch->equipment[WEAR_NECK_1]) {
 	      obj_from_char(obj_object);
@@ -1314,7 +1314,7 @@ void wear(struct char_data *ch, struct obj_data *obj_object, int keyword)
 	    }
 	  }
 	} else {
-	  cprintf(ch, "You can't wear that around your neck.\n\r");
+	  cprintf(ch, "You can't wear that around your neck.\r\n");
 	}
       }
       break;
@@ -1322,15 +1322,15 @@ void wear(struct char_data *ch, struct obj_data *obj_object, int keyword)
       {
 	if (CAN_WEAR(obj_object, ITEM_WEAR_BODY)) {
 	  if (ch->equipment[WEAR_BODY]) {
-	    cprintf(ch, "You already wear something on your body.\n\r");
+	    cprintf(ch, "You already wear something on your body.\r\n");
 	  } else {
-	    cprintf(ch, "OK.\n\r");
+	    cprintf(ch, "OK.\r\n");
 	    perform_wear(ch, obj_object, keyword);
 	    obj_from_char(obj_object);
 	    equip_char(ch, obj_object, WEAR_BODY);
 	  }
 	} else {
-	  cprintf(ch, "You can't wear that on your body.\n\r");
+	  cprintf(ch, "You can't wear that on your body.\r\n");
 	}
       }
       break;
@@ -1338,127 +1338,127 @@ void wear(struct char_data *ch, struct obj_data *obj_object, int keyword)
       {
 	if (CAN_WEAR(obj_object, ITEM_WEAR_HEAD)) {
 	  if (ch->equipment[WEAR_HEAD]) {
-	    cprintf(ch, "You already wear something on your head.\n\r");
+	    cprintf(ch, "You already wear something on your head.\r\n");
 	  } else {
-	    cprintf(ch, "OK.\n\r");
+	    cprintf(ch, "OK.\r\n");
 	    perform_wear(ch, obj_object, keyword);
 	    obj_from_char(obj_object);
 	    equip_char(ch, obj_object, WEAR_HEAD);
 	  }
 	} else {
-	  cprintf(ch, "You can't wear that on your head.\n\r");
+	  cprintf(ch, "You can't wear that on your head.\r\n");
 	}
       }
       break;
     case 5:{
 	if (CAN_WEAR(obj_object, ITEM_WEAR_LEGS)) {
 	  if (ch->equipment[WEAR_LEGS]) {
-	    cprintf(ch, "You already wear something on your legs.\n\r");
+	    cprintf(ch, "You already wear something on your legs.\r\n");
 	  } else {
-	    cprintf(ch, "OK.\n\r");
+	    cprintf(ch, "OK.\r\n");
 	    perform_wear(ch, obj_object, keyword);
 	    obj_from_char(obj_object);
 	    equip_char(ch, obj_object, WEAR_LEGS);
 	  }
 	} else {
-	  cprintf(ch, "You can't wear that on your legs.\n\r");
+	  cprintf(ch, "You can't wear that on your legs.\r\n");
 	}
       }
       break;
     case 6:{
 	if (CAN_WEAR(obj_object, ITEM_WEAR_FEET)) {
 	  if (ch->equipment[WEAR_FEET]) {
-	    cprintf(ch, "You already wear something on your feet.\n\r");
+	    cprintf(ch, "You already wear something on your feet.\r\n");
 	  } else {
-	    cprintf(ch, "OK.\n\r");
+	    cprintf(ch, "OK.\r\n");
 	    perform_wear(ch, obj_object, keyword);
 	    obj_from_char(obj_object);
 	    equip_char(ch, obj_object, WEAR_FEET);
 	  }
 	} else {
-	  cprintf(ch, "You can't wear that on your feet.\n\r");
+	  cprintf(ch, "You can't wear that on your feet.\r\n");
 	}
       }
       break;
     case 7:{
 	if (CAN_WEAR(obj_object, ITEM_WEAR_HANDS)) {
 	  if (ch->equipment[WEAR_HANDS]) {
-	    cprintf(ch, "You already wear something on your hands.\n\r");
+	    cprintf(ch, "You already wear something on your hands.\r\n");
 	  } else {
-	    cprintf(ch, "OK.\n\r");
+	    cprintf(ch, "OK.\r\n");
 	    perform_wear(ch, obj_object, keyword);
 	    obj_from_char(obj_object);
 	    equip_char(ch, obj_object, WEAR_HANDS);
 	  }
 	} else {
-	  cprintf(ch, "You can't wear that on your hands.\n\r");
+	  cprintf(ch, "You can't wear that on your hands.\r\n");
 	}
       }
       break;
     case 8:{
 	if (CAN_WEAR(obj_object, ITEM_WEAR_ARMS)) {
 	  if (ch->equipment[WEAR_ARMS]) {
-	    cprintf(ch, "You already wear something on your arms.\n\r");
+	    cprintf(ch, "You already wear something on your arms.\r\n");
 	  } else {
-	    cprintf(ch, "OK.\n\r");
+	    cprintf(ch, "OK.\r\n");
 	    perform_wear(ch, obj_object, keyword);
 	    obj_from_char(obj_object);
 	    equip_char(ch, obj_object, WEAR_ARMS);
 	  }
 	} else {
-	  cprintf(ch, "You can't wear that on your arms.\n\r");
+	  cprintf(ch, "You can't wear that on your arms.\r\n");
 	}
       }
       break;
     case 9:{
 	if (CAN_WEAR(obj_object, ITEM_WEAR_ABOUT)) {
 	  if (ch->equipment[WEAR_ABOUT]) {
-	    cprintf(ch, "You already wear something about your body.\n\r");
+	    cprintf(ch, "You already wear something about your body.\r\n");
 	  } else {
-	    cprintf(ch, "OK.\n\r");
+	    cprintf(ch, "OK.\r\n");
 	    perform_wear(ch, obj_object, keyword);
 	    obj_from_char(obj_object);
 	    equip_char(ch, obj_object, WEAR_ABOUT);
 	  }
 	} else {
-	  cprintf(ch, "You can't wear that about your body.\n\r");
+	  cprintf(ch, "You can't wear that about your body.\r\n");
 	}
       }
       break;
     case 10:{
 	if (CAN_WEAR(obj_object, ITEM_WEAR_WAISTE)) {
 	  if (ch->equipment[WEAR_WAISTE]) {
-	    cprintf(ch, "You already wear something about your waist.\n\r");
+	    cprintf(ch, "You already wear something about your waist.\r\n");
 	  } else {
-	    cprintf(ch, "OK.\n\r");
+	    cprintf(ch, "OK.\r\n");
 	    perform_wear(ch, obj_object, keyword);
 	    obj_from_char(obj_object);
 	    equip_char(ch, obj_object, WEAR_WAISTE);
 	  }
 	} else {
-	  cprintf(ch, "You can't wear that about your waist.\n\r");
+	  cprintf(ch, "You can't wear that about your waist.\r\n");
 	}
       }
       break;
     case 11:{
 	if (CAN_WEAR(obj_object, ITEM_WEAR_WRIST)) {
 	  if ((ch->equipment[WEAR_WRIST_L]) && (ch->equipment[WEAR_WRIST_R])) {
-	    cprintf(ch, "You already wear something around both your wrists.\n\r");
+	    cprintf(ch, "You already wear something around both your wrists.\r\n");
 	  } else {
 	    perform_wear(ch, obj_object, keyword);
 	    obj_from_char(obj_object);
 	    if (ch->equipment[WEAR_WRIST_L]) {
-	      cprintf(ch, "You wear the %s around your right wrist.\n\r",
+	      cprintf(ch, "You wear the %s around your right wrist.\r\n",
 		      obj_object->short_description);
 	      equip_char(ch, obj_object, WEAR_WRIST_R);
 	    } else {
-	      cprintf(ch, "You wear the %s around your left wrist.\n\r",
+	      cprintf(ch, "You wear the %s around your left wrist.\r\n",
 		      obj_object->short_description);
 	      equip_char(ch, obj_object, WEAR_WRIST_L);
 	    }
 	  }
 	} else {
-	  cprintf(ch, "You can't wear that around your wrist.\n\r");
+	  cprintf(ch, "You can't wear that around your wrist.\r\n");
 	}
       }
       break;
@@ -1466,57 +1466,57 @@ void wear(struct char_data *ch, struct obj_data *obj_object, int keyword)
     case 12:
       if (CAN_WEAR(obj_object, ITEM_WIELD)) {
 	if (ch->equipment[WIELD] || ch->equipment[WIELD_TWOH]) {
-	  cprintf(ch, "You are already wielding something.\n\r");
+	  cprintf(ch, "You are already wielding something.\r\n");
 	} else {
 	  if (GET_OBJ_WEIGHT(obj_object) > str_app[STRENGTH_APPLY_INDEX(ch)].wield_w) {
-	    cprintf(ch, "It is too heavy for you to use.\n\r");
+	    cprintf(ch, "It is too heavy for you to use.\r\n");
 	  } else {
-	    cprintf(ch, "OK.\n\r");
+	    cprintf(ch, "OK.\r\n");
 	    perform_wear(ch, obj_object, keyword);
 	    obj_from_char(obj_object);
 	    equip_char(ch, obj_object, WIELD);
 	  }
 	}
       } else {
-	cprintf(ch, "You can't wield that.\n\r");
+	cprintf(ch, "You can't wield that.\r\n");
       }
       break;
 
     case 13:
       if (CAN_WEAR(obj_object, ITEM_HOLD)) {
 	if (ch->equipment[HOLD]) {
-	  cprintf(ch, "You are already holding something.\n\r");
+	  cprintf(ch, "You are already holding something.\r\n");
 	} else if (ch->equipment[WIELD_TWOH]) {
-	  cprintf(ch, "You are wielding a two handed blade, you can't hold things!\n\r");
+	  cprintf(ch, "You are wielding a two handed blade, you can't hold things!\r\n");
 	} else if (ch->equipment[WEAR_SHIELD]) {
-	  cprintf(ch, "Your hands are full already, you loser.\n\r");
+	  cprintf(ch, "Your hands are full already, you loser.\r\n");
 	} else {
-	  cprintf(ch, "OK.\n\r");
+	  cprintf(ch, "OK.\r\n");
 	  perform_wear(ch, obj_object, keyword);
 	  obj_from_char(obj_object);
 	  equip_char(ch, obj_object, HOLD);
 	}
       } else {
-	cprintf(ch, "You can't hold this.\n\r");
+	cprintf(ch, "You can't hold this.\r\n");
       }
       break;
     case 14:
       {
 	if (CAN_WEAR(obj_object, ITEM_WEAR_SHIELD)) {
 	  if ((ch->equipment[WEAR_SHIELD])) {
-	    cprintf(ch, "You are already using a shield\n\r");
+	    cprintf(ch, "You are already using a shield\r\n");
 	  } else if (ch->equipment[WIELD_TWOH]) {
-	    cprintf(ch, "You can not use a shield while wielding a two handed weapon!\n\r");
+	    cprintf(ch, "You can not use a shield while wielding a two handed weapon!\r\n");
 	  } else if (ch->equipment[HOLD]) {
-	    cprintf(ch, "Your hands are full already, you are holding something.\n\r");
+	    cprintf(ch, "Your hands are full already, you are holding something.\r\n");
 	  } else {
 	    perform_wear(ch, obj_object, keyword);
-	    cprintf(ch, "You start using the %s.\n\r", obj_object->short_description);
+	    cprintf(ch, "You start using the %s.\r\n", obj_object->short_description);
 	    obj_from_char(obj_object);
 	    equip_char(ch, obj_object, WEAR_SHIELD);
 	  }
 	} else {
-	  cprintf(ch, "You can't use that as a shield.\n\r");
+	  cprintf(ch, "You can't use that as a shield.\r\n");
 	}
       }
       break;
@@ -1524,32 +1524,32 @@ void wear(struct char_data *ch, struct obj_data *obj_object, int keyword)
     case 15:
       if (CAN_WEAR(obj_object, ITEM_WIELD_TWOH)) {
 	if ((ch->equipment[WIELD]) || (ch->equipment[WIELD_TWOH])) {
-	  cprintf(ch, "You are already wielding something.\n\r");
+	  cprintf(ch, "You are already wielding something.\r\n");
 	} else if (ch->equipment[WEAR_SHIELD]) {
-	  cprintf(ch, "You can not wield two handed weapons and use a shield!\n\r");
+	  cprintf(ch, "You can not wield two handed weapons and use a shield!\r\n");
 	} else if (ch->equipment[HOLD]) {
-	  cprintf(ch, "But you are holding something!\n\r");
+	  cprintf(ch, "But you are holding something!\r\n");
 	} else {
 	  if (GET_OBJ_WEIGHT(obj_object) > str_app[STRENGTH_APPLY_INDEX(ch)].wield_w) {
-	    cprintf(ch, "It is too heavy for you to use.\n\r");
+	    cprintf(ch, "It is too heavy for you to use.\r\n");
 	  } else {
-	    cprintf(ch, "OK.\n\r");
+	    cprintf(ch, "OK.\r\n");
 	    perform_wear(ch, obj_object, keyword);
 	    obj_from_char(obj_object);
 	    equip_char(ch, obj_object, WIELD_TWOH);
 	  }
 	}
       } else {
-	cprintf(ch, "You can't wield that two handed.\n\r");
+	cprintf(ch, "You can't wield that two handed.\r\n");
       }
       break;
 
     case -1:{
-	cprintf(ch, "Wear %s where?.\n\r", obj_object->short_description);
+	cprintf(ch, "Wear %s where?.\r\n", obj_object->short_description);
       }
       break;
     case -2:{
-	cprintf(ch, "You can't wear %s.\n\r", obj_object->short_description);
+	cprintf(ch, "You can't wear %s.\r\n", obj_object->short_description);
       }
       break;
     default:{
@@ -1559,14 +1559,14 @@ void wear(struct char_data *ch, struct obj_data *obj_object, int keyword)
   }
 }
 
-void do_wear(struct char_data *ch, char *argument, int cmd)
+void do_wear(struct char_data *ch, const char *argument, int cmd)
 {
   char                                    arg1[MAX_INPUT_LENGTH] = "\0\0\0";
   char                                    arg2[MAX_INPUT_LENGTH] = "\0\0\0";
   struct obj_data                        *obj_object = NULL;
   struct obj_data                        *next_obj = NULL;
   int                                     keyword = 0;
-  static char                            *keywords[] = {
+  static const char                      *keywords[] = {
     "finger",
     "neck",
     "body",
@@ -1632,7 +1632,7 @@ void do_wear(struct char_data *ch, char *argument, int cmd)
 	if (*arg2) {
 	  keyword = search_block(arg2, keywords, FALSE);       /* Partial Match */
 	  if (keyword == -1) {
-	    cprintf(ch, "%s is an unknown body location.\n\r", arg2);
+	    cprintf(ch, "%s is an unknown body location.\r\n", arg2);
 	  } else {
 	    wear(ch, obj_object, keyword + 1);
 	  }
@@ -1665,15 +1665,15 @@ void do_wear(struct char_data *ch, char *argument, int cmd)
 	  wear(ch, obj_object, keyword);
 	}
       } else {
-	cprintf(ch, "You do not seem to have the '%s'.\n\r", arg1);
+	cprintf(ch, "You do not seem to have the '%s'.\r\n", arg1);
       }
     }
   } else {
-    cprintf(ch, "Wear what?\n\r");
+    cprintf(ch, "Wear what?\r\n");
   }
 }
 
-void do_wield(struct char_data *ch, char *argument, int cmd)
+void do_wield(struct char_data *ch, const char *argument, int cmd)
 {
   char                                    arg1[MAX_STRING_LENGTH] = "\0\0\0";
   char                                    arg2[MAX_STRING_LENGTH] = "\0\0\0";
@@ -1693,10 +1693,10 @@ void do_wield(struct char_data *ch, char *argument, int cmd)
 	    keyword = 15;
 	    wear(ch, obj_object, keyword);
 	  } else {
-	    cprintf(ch, "That is not a two handed weapon!\n\r");
+	    cprintf(ch, "That is not a two handed weapon!\r\n");
 	  }
 	} else {
-	  cprintf(ch, "You do not seem to have the '%s'.\n\r", arg2);
+	  cprintf(ch, "You do not seem to have the '%s'.\r\n", arg2);
 	}
       } else {						       /* no arg2, check if they can wield it one handed, arg1 */
 	obj_object = get_obj_in_list_vis(ch, arg1, ch->carrying);
@@ -1704,7 +1704,7 @@ void do_wield(struct char_data *ch, char *argument, int cmd)
 	  keyword = 12;
 	  wear(ch, obj_object, keyword);
 	} else {
-	  cprintf(ch, "You do not seem to have the '%s'.\n\r", arg1);
+	  cprintf(ch, "You do not seem to have the '%s'.\r\n", arg1);
 	}
       }
     } else {
@@ -1713,15 +1713,15 @@ void do_wield(struct char_data *ch, char *argument, int cmd)
 	keyword = 12;
 	wear(ch, obj_object, keyword);
       } else {
-	cprintf(ch, "You do not seem to have the '%s'.\n\r", arg1);
+	cprintf(ch, "You do not seem to have the '%s'.\r\n", arg1);
       }
     }
   } else {
-    cprintf(ch, "Wield what?\n\r");
+    cprintf(ch, "Wield what?\r\n");
   }
 }
 
-void do_grab(struct char_data *ch, char *argument, int cmd)
+void do_grab(struct char_data *ch, const char *argument, int cmd)
 {
   char                                    arg1[128] = "\0\0\0";
   char                                    arg2[128] = "\0\0\0";
@@ -1740,14 +1740,14 @@ void do_grab(struct char_data *ch, char *argument, int cmd)
       else
 	wear(ch, obj_object, 13);
     } else {
-      cprintf(ch, "You do not seem to have the '%s'.\n\r", arg1);
+      cprintf(ch, "You do not seem to have the '%s'.\r\n", arg1);
     }
   } else {
-    cprintf(ch, "Hold what?\n\r");
+    cprintf(ch, "Hold what?\r\n");
   }
 }
 
-void do_remove(struct char_data *ch, char *argument, int cmd)
+void do_remove(struct char_data *ch, const char *argument, int cmd)
 {
   char                                    arg1[128] = "\0\0\0";
   char                                    *T = NULL;
@@ -1779,7 +1779,7 @@ void do_remove(struct char_data *ch, char *argument, int cmd)
 	    }
 	  }
 	} else {
-	  cprintf(ch, "You can't carry any more stuff.\n\r");
+	  cprintf(ch, "You can't carry any more stuff.\r\n");
 	  j = MAX_WEAR;
 	}
       }
@@ -1816,11 +1816,11 @@ void do_remove(struct char_data *ch, char *argument, int cmd)
 	      }
 	    }
 	  } else {
-	    cprintf(ch, "You can't carry any more stuff.\n\r");
+	    cprintf(ch, "You can't carry any more stuff.\r\n");
 	    j = MAX_WEAR;
 	  }
 	} else {
-	  cprintf(ch, "You dont seem to have the %s\n\r", T);
+	  cprintf(ch, "You dont seem to have the %s\r\n", T);
 	}
 
 	if (T != P)
@@ -1842,18 +1842,18 @@ void do_remove(struct char_data *ch, char *argument, int cmd)
 	  act("$n stops using $p.", TRUE, ch, obj_object, 0, TO_ROOM);
 
 	} else {
-	  cprintf(ch, "You can't carry that many items.\n\r");
+	  cprintf(ch, "You can't carry that many items.\r\n");
 	}
       } else {
-	cprintf(ch, "You are not using it.\n\r");
+	cprintf(ch, "You are not using it.\r\n");
       }
     }
   } else {
-    cprintf(ch, "Remove what?\n\r");
+    cprintf(ch, "Remove what?\r\n");
   }
 }
 
-void do_bury(struct char_data *ch, char *argument, int cmd)
+void do_bury(struct char_data *ch, const char *argument, int cmd)
 {
   char                                    buf[256] = "\0\0\0";
   struct obj_data                        *vict = NULL;
@@ -1871,10 +1871,10 @@ void do_bury(struct char_data *ch, char *argument, int cmd)
     act("You do a nice imitation of Stalin.", FALSE, ch, 0, 0, TO_CHAR);
     return;
   } else if (!(vict = get_obj_vis_accessible(ch, buf))) {
-    cprintf(ch, "You feel you should go TO the %s first.\n\r", buf);
+    cprintf(ch, "You feel you should go TO the %s first.\r\n", buf);
     return;
   } else if (!IS_CORPSE(vict)) {
-    cprintf(ch, "You consider burying %s, but what if you can't find it again?\n\r", buf);
+    cprintf(ch, "You consider burying %s, but what if you can't find it again?\r\n", buf);
     return;
   }
 
@@ -1888,7 +1888,7 @@ void do_bury(struct char_data *ch, char *argument, int cmd)
   extract_obj(vict);
   if (IS_MORTAL(ch)) {
     experience = number(1, 50);
-    cprintf(ch, "You gain %d experience for your charity!\n\r", experience);
+    cprintf(ch, "You gain %d experience for your charity!\r\n", experience);
     GET_EXP(ch) += experience;
     GET_ALIGNMENT(ch) += number(0, 5);
     if (GET_ALIGNMENT(ch) > 999)
@@ -1898,7 +1898,7 @@ void do_bury(struct char_data *ch, char *argument, int cmd)
   return;
 }
 
-void do_desecrate(struct char_data *ch, char *argument, int cmd)
+void do_desecrate(struct char_data *ch, const char *argument, int cmd)
 {
   char                                    buf[256] = "\0\0\0";
   struct obj_data                        *vict = NULL;
@@ -1916,10 +1916,10 @@ void do_desecrate(struct char_data *ch, char *argument, int cmd)
     act("You can't seem to find anything worth desecrating.", FALSE, ch, 0, 0, TO_CHAR);
     return;
   } else if (!(vict = get_obj_vis_accessible(ch, buf))) {
-    cprintf(ch, "You feel you should go TO the %s first.\n\r", buf);
+    cprintf(ch, "You feel you should go TO the %s first.\r\n", buf);
     return;
   } else if (!IS_CORPSE(vict)) {
-    cprintf(ch, "You consider desecrating %s, but it just doesn't seem worth the bother.\n\r",
+    cprintf(ch, "You consider desecrating %s, but it just doesn't seem worth the bother.\r\n",
 	    buf);
     return;
   }
@@ -1935,7 +1935,7 @@ void do_desecrate(struct char_data *ch, char *argument, int cmd)
   extract_obj(vict);
   if (IS_MORTAL(ch)) {
     experience = number(1, 50);
-    cprintf(ch, "You gain %d experience for your depravity!\n\r", experience);
+    cprintf(ch, "You gain %d experience for your depravity!\r\n", experience);
     GET_EXP(ch) += experience;
     GET_ALIGNMENT(ch) -= number(0, 5);
     if (GET_ALIGNMENT(ch) < -999)

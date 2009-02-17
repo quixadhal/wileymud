@@ -23,7 +23,7 @@ void                                    watch(int port, char *text);
 void                                    wave(int sock, char *text, int port);
 int                                     new_connection(int s, int port);
 int                                     init_socket(int port);
-int                                     write_to_descriptor(int desc, char *txt);
+int                                     write_to_descriptor(int desc, const char *txt);
 void                                    nonblock(int s);
 
 int main(int argc, char **argv)
@@ -98,10 +98,10 @@ int new_connection(int s, int port)
   struct sockaddr_in                      isa,
                                           ident;
   struct hostent                         *host;
-  int                                     i,
+  unsigned int                            i,
+                                          len,
                                           t;
   int                                     fd,
-                                          len,
                                           remote_port;
   long                                    remote_addr;
   FILE                                   *ifp,
@@ -212,11 +212,11 @@ int init_socket(int port)
   return (s);
 }
 
-int write_to_descriptor(int desc, char *txt)
+int write_to_descriptor(int desc, const char *txt)
 {
-  int                                     sofar,
-                                          thisround,
-                                          total;
+  int                                     sofar;
+  int                                     thisround;
+  int                                     total;
 
   total = strlen(txt);
   sofar = 0;

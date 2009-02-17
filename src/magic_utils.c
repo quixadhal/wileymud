@@ -101,7 +101,7 @@ void FailCharm(struct char_data *victim, struct char_data *ch)
       set_fighting(victim, ch);
     }
   } else {
-    cprintf(victim, "You feel charmed, but the feeling fades.\n\r");
+    cprintf(victim, "You feel charmed, but the feeling fades.\r\n");
   }
 }
 
@@ -110,7 +110,7 @@ void FailSleep(struct char_data *victim, struct char_data *ch)
   if (DEBUG > 2)
     log_info("called %s with %s, %s", __PRETTY_FUNCTION__, SAFE_NAME(victim), SAFE_NAME(ch));
 
-  cprintf(victim, "You feel sleepy for a moment,but then you recover\n\r");
+  cprintf(victim, "You feel sleepy for a moment,but then you recover\r\n");
   if (IS_NPC(victim))
     if ((!victim->specials.fighting) && (GET_POS(victim) > POSITION_SLEEPING))
       set_fighting(victim, ch);
@@ -121,7 +121,7 @@ void FailPara(struct char_data *victim, struct char_data *ch)
   if (DEBUG > 2)
     log_info("called %s with %s, %s", __PRETTY_FUNCTION__, SAFE_NAME(victim), SAFE_NAME(ch));
 
-  cprintf(victim, "You feel frozen for a moment,but then you recover\n\r");
+  cprintf(victim, "You feel frozen for a moment,but then you recover\r\n");
   if (IS_NPC(victim))
     if ((!victim->specials.fighting) && (GET_POS(victim) > POSITION_SLEEPING))
       set_fighting(victim, ch);
@@ -132,14 +132,14 @@ void FailCalm(struct char_data *victim, struct char_data *ch)
   if (DEBUG > 2)
     log_info("called %s with %s, %s", __PRETTY_FUNCTION__, SAFE_NAME(victim), SAFE_NAME(ch));
 
-  cprintf(victim, "You feel happy but the effect soon fades.\n\r");
+  cprintf(victim, "You feel happy but the effect soon fades.\r\n");
   if (IS_NPC(victim))
     if (!victim->specials.fighting)
       set_fighting(victim, ch);
 }
 
 void AreaEffectSpell(struct char_data *castor, int dam, int spell_type, int zflag,
-		     char *zone_mesg)
+		     const char *zone_mesg)
 {
   struct char_data                       *victim = NULL;
   struct char_data                       *next_victim = NULL;
@@ -161,12 +161,12 @@ void AreaEffectSpell(struct char_data *castor, int dam, int spell_type, int zfla
       switch (spell_type) {
 	case SPELL_EARTHQUAKE:
 	  damage(castor, victim, dam, spell_type);
-	  act("You fall and hurt yourself!!\n\r", FALSE, castor, 0, victim, TO_VICT);
+	  act("You fall and hurt yourself!!\r\n", FALSE, castor, 0, victim, TO_VICT);
 	  GET_POS(victim) = POSITION_SITTING;
 	  WAIT_STATE(victim, (PULSE_VIOLENCE * 3));
 	  break;
 	case SPELL_BURNING_HANDS:
-	  act("You are seared by the burning flame!\n\r", FALSE, castor, 0, victim, TO_VICT);
+	  act("You are seared by the burning flame!\r\n", FALSE, castor, 0, victim, TO_VICT);
 	  if (saves_spell(victim, SAVING_SPELL))
 	    dam >>= 1;
 	  damage(castor, victim, dam, spell_type);
@@ -177,24 +177,24 @@ void AreaEffectSpell(struct char_data *castor, int dam, int spell_type, int zfla
 	  damage(castor, victim, dam, spell_type);
 	  break;
 	case SPELL_CONE_OF_COLD:
-	  act("You are chilled to the bone!\n\r", FALSE, castor, 0, victim, TO_VICT);
+	  act("You are chilled to the bone!\r\n", FALSE, castor, 0, victim, TO_VICT);
 	  if (saves_spell(victim, SAVING_SPELL))
 	    dam >>= 1;
 	  damage(castor, victim, dam, spell_type);
 	  break;
 	case SPELL_ICE_STORM:
-	  act("You are blasted by the storm\n\r", FALSE, castor, 0, victim, TO_VICT);
+	  act("You are blasted by the storm\r\n", FALSE, castor, 0, victim, TO_VICT);
 	  if (saves_spell(victim, SAVING_SPELL))
 	    dam >>= 1;
 	  damage(castor, victim, dam, SPELL_ICE_STORM);
 	  break;
 	case SPELL_METEOR_SWARM:
 	  if (saves_spell(victim, SAVING_SPELL)) {
-	    act("You dive for cover but are still burned by the flames all around you.\n\r",
+	    act("You dive for cover but are still burned by the flames all around you.\r\n",
 		FALSE, castor, 0, victim, TO_VICT);
 	    damage(castor, victim, dam / 2, spell_type);
 	  } else {
-	    act("You scream in agony as a ball of flame goes through you!\n\r", FALSE, castor,
+	    act("You scream in agony as a ball of flame goes through you!\r\n", FALSE, castor,
 		0, victim, TO_VICT);
 	    damage(castor, victim, dam, spell_type);
 	  }

@@ -14,7 +14,7 @@ extern struct attack_hit_type           attack_hit_text[];
 void                                    appear(struct char_data *ch);
 void                                    load_messages(void);
 void                                    update_pos(struct char_data *victim);
-int                                     check_peaceful(struct char_data *ch, char *msg);
+int                                     check_peaceful(struct char_data *ch, const char *msg);
 void                                    set_fighting(struct char_data *ch,
 						     struct char_data *vict);
 void                                    stop_fighting(struct char_data *ch);
@@ -26,7 +26,7 @@ void                                    raw_kill(struct char_data *ch);
 void                                    die(struct char_data *ch);
 void                                    group_gain(struct char_data *ch,
 						   struct char_data *victim);
-char                                   *replace_string(char *str, char *weapon, char *weapon_s);
+char                                   *replace_string(const char *str, const char *weapon, const char *weapon_s);
 void                                    dam_message(int dam, struct char_data *ch,
 						    struct char_data *victim, int w_type);
 int                                     damage(struct char_data *ch, struct char_data *victim,
@@ -51,7 +51,7 @@ void                                    DamageStuff(struct char_data *v, int typ
 int                                     GetItemDamageType(int type);
 int                                     SkipImmortals(struct char_data *v, int amnt);
 int                                     CanKill(struct char_data *ch, struct char_data *vict,
-						char *msg);
+						const char *msg);
  int                              CheckKill(struct char_data *ch, struct char_data *vict);
 void                                    WeaponSpell(struct char_data *c, struct char_data *v,
 						    int type);

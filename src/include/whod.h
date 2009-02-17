@@ -2,8 +2,8 @@
 #define _WHOD_H
 
 #define MUDNAME		"WileyMUD"
-#define START_TIME	"Wiley start time was: %s\n\r"
-#define GAME_TIME	"Quixadhal's time is:  %s\n\r"
+#define START_TIME	"Wiley start time was: %s\r\n"
+#define GAME_TIME	"Quixadhal's time is:  %s\r\n"
 
 /*
  * *** The following statement indicates the WHOD default mode 
@@ -56,7 +56,7 @@ extern int                              whod_mode;
 /* static int whod_port; */
 #endif
 
-void                                    do_whod(struct char_data *ch, char *arg, int cmd);
+void                                    do_whod(struct char_data *ch, const char *arg, int cmd);
 void                                    init_whod(int port);
 void                                    close_whod(void);
 void                                    whod_loop(void);

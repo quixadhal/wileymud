@@ -272,7 +272,7 @@ int                                     exit_ok(struct room_direction_data *room
  int                              number(int from, int to);
  int                              dice(int rolls, int size);
 extern  int                              fuzz(int x);
-int                                     scan_number(char *text, int *rval);
+int                                     scan_number(const char *text, int *rval);
 
  void                             sprintbit(unsigned long vektor, const char *names[],
 						  char *result);

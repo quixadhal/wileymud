@@ -90,7 +90,7 @@ void OpenBoardFile(struct Board *b)
   char                                    buf[500] = "\0\0\0";
 
   if (DEBUG > 2)
-    log_info("called %s with %08x", __PRETTY_FUNCTION__, b);
+    log_info("called %s with %08zx", __PRETTY_FUNCTION__, (size_t)b);
 
   sprintf(buf, "%s/%s", BOARD_FILE_PATH, b->filename);
   b->file = fopen(buf, "r+");
@@ -104,7 +104,7 @@ void OpenBoardFile(struct Board *b)
 void CloseBoardFile(struct Board *b)
 {
   if (DEBUG > 2)
-    log_info("called %s with %08x", __PRETTY_FUNCTION__, b);
+    log_info("called %s with %08zx", __PRETTY_FUNCTION__, (size_t)b);
 
   if (!b || !b->file) {
     if (!b) {
@@ -201,14 +201,14 @@ void board_write_msg(struct char_data *ch, char *arg, struct Board *b)
   time_t                                  tc;
 
   if (DEBUG > 2)
-    log_info("called %s with %s, %s, %08x", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(arg), b);
+    log_info("called %s with %s, %s, %08zx", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(arg), (size_t)b);
 
   if (b->msg_num > MAX_MSGS - 1) {
-    cprintf(ch, "The board is full already.\n\r");
+    cprintf(ch, "The board is full already.\r\n");
     return;
   }
   if (board_kludge_char) {
-    cprintf(ch, "Sorry, but someone has stolen the pen.. wait a few minutes.\n\r");
+    cprintf(ch, "Sorry, but someone has stolen the pen.. wait a few minutes.\r\n");
     return;
   }
   /*
@@ -218,7 +218,7 @@ void board_write_msg(struct char_data *ch, char *arg, struct Board *b)
   for (; isspace(*arg); arg++);
 
   if (!*arg) {
-    cprintf(ch, "We must have a headline!\n\r");
+    cprintf(ch, "We must have a headline!\r\n");
     return;
   }
   board_kludge_char = ch;
@@ -234,7 +234,7 @@ void board_write_msg(struct char_data *ch, char *arg, struct Board *b)
    */
   /*
    * if(!TRY_TO_CREATE(b->head[b->msg_num], char, 70 + strlen(GET_NAME(ch)) + 4)) { log_error("Malloc for board header
-   * failed."); cprintf(ch, "The board is malfunctioning - sorry.\n\r"); return; } 
+   * failed."); cprintf(ch, "The board is malfunctioning - sorry.\r\n"); return; } 
    */
   CREATE(b->head[b->msg_num], char, 70 + strlen(GET_NAME(ch)) + 4);
 
@@ -244,7 +244,7 @@ void board_write_msg(struct char_data *ch, char *arg, struct Board *b)
   sprintf(b->head[b->msg_num], "%s (%s) %s", new_arg, GET_NAME(ch), time_str);
   b->msgs[b->msg_num] = NULL;
 
-  cprintf(ch, "Write your message. Terminate with an @.\n\r\n\r");
+  cprintf(ch, "Write your message. Terminate with an @.\r\n\r\n");
   act("$n starts to write a message.", TRUE, ch, 0, 0, TO_ROOM);
 
   ch->desc->str = &b->msgs[b->msg_num];
@@ -260,7 +260,7 @@ int board_remove_msg(struct char_data *ch, char *arg, struct Board *b)
   char                                    msg_number[MAX_INPUT_LENGTH] = "\0\0\0";
 
   if (DEBUG > 2)
-    log_info("called %s with %s, %s, %08x", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(arg), b);
+    log_info("called %s with %s, %s, %08zx", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(arg), (size_t)b);
 
   one_argument(arg, msg_number);
 
@@ -269,16 +269,16 @@ int board_remove_msg(struct char_data *ch, char *arg, struct Board *b)
   if (!(msg = atoi(msg_number)))
     return (0);
   if (!b->msg_num) {
-    cprintf(ch, "The board is empty!\n\r");
+    cprintf(ch, "The board is empty!\r\n");
     return (1);
   }
   if (msg < 1 || msg > b->msg_num) {
-    cprintf(ch, "That message exists only in your imagination..\n\r");
+    cprintf(ch, "That message exists only in your imagination..\r\n");
     return (1);
   }
   if (GetMaxLevel(ch) < 19) {
-    cprintf(ch, "Due to misuse of the REMOVE command, only 19th level\n\r");
-    cprintf(ch, "and above can remove messages.\n\r");
+    cprintf(ch, "Due to misuse of the REMOVE command, only 19th level\r\n");
+    cprintf(ch, "and above can remove messages.\r\n");
     return 1;
   }
   ind = msg;
@@ -293,7 +293,7 @@ int board_remove_msg(struct char_data *ch, char *arg, struct Board *b)
     b->msgs[ind] = b->msgs[ind + 1];
   }
   b->msg_num--;
-  cprintf(ch, "Message removed.\n\r");
+  cprintf(ch, "Message removed.\r\n");
   board_save_board(b);
   return (1);
 }
@@ -304,13 +304,13 @@ void board_save_board(struct Board *b)
   int                                     len = 0;
 
   if (DEBUG > 2)
-    log_info("called %s with %08x", __PRETTY_FUNCTION__, b);
+    log_info("called %s with %08zx", __PRETTY_FUNCTION__, (size_t)b);
 
   if (!b)
     return;
 
   if (!b->msg_num) {
-    log_info("No messages to save.\n\r");
+    log_info("No messages to save.\r\n");
     return;
   }
   OpenBoardFile(b);
@@ -342,7 +342,7 @@ void board_load_board(struct Board *b)
   int                                     len = 0;
 
   if (DEBUG > 2)
-    log_info("called %s with %08x", __PRETTY_FUNCTION__, b);
+    log_info("called %s with %08zx", __PRETTY_FUNCTION__, (size_t)b);
 
   OpenBoardFile(b);
   board_reset_board(b);
@@ -350,7 +350,7 @@ void board_load_board(struct Board *b)
   fread(&b->msg_num, sizeof(int), 1, b->file);
 
   if (b->msg_num < 1 || b->msg_num > MAX_MSGS || feof(b->file)) {
-    log_error("Board-message file corrupt or nonexistent.\n\r");
+    log_error("Board-message file corrupt or nonexistent.\r\n");
     CloseBoardFile(b);
     return;
   }
@@ -382,7 +382,7 @@ void board_reset_board(struct Board *b)
   int                                     ind = 0;
 
   if (DEBUG > 2)
-    log_info("called %s with %08x", __PRETTY_FUNCTION__, b);
+    log_info("called %s with %08zx", __PRETTY_FUNCTION__, (size_t)b);
 
   for (ind = 0; ind < MAX_MSGS; ind++) {
     /*
@@ -407,7 +407,7 @@ int board_display_msg(struct char_data *ch, char *arg, struct Board *b)
   int                                     msg = 0;
 
   if (DEBUG > 2)
-    log_info("called %s with %s, %s, %08x", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(arg), b);
+    log_info("called %s with %s, %s, %08zx", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(arg), (size_t)b);
 
   one_argument(arg, msg_number);
   if (!*msg_number || !isdigit(*msg_number))
@@ -415,17 +415,17 @@ int board_display_msg(struct char_data *ch, char *arg, struct Board *b)
   if (!(msg = atoi(msg_number)))
     return (0);
   if (!b->msg_num) {
-    cprintf(ch, "The board is empty!\n\r");
+    cprintf(ch, "The board is empty!\r\n");
     return (1);
   }
   if (msg < 1 || msg > b->msg_num) {
-    cprintf(ch, "That message exists only in your imagination..\n\r");
+    cprintf(ch, "That message exists only in your imagination..\r\n");
     return (1);
   }
   /*
    * Bad news 
    */
-  sprintf(buffer, "Message %d : %s\n\r\n\r%s", msg, b->head[msg - 1], b->msgs[msg - 1]);
+  sprintf(buffer, "Message %d : %s\r\n\r\n%s", msg, b->head[msg - 1], b->msgs[msg - 1]);
   page_string(ch->desc, buffer, 1);
   return (1);
 }
@@ -433,7 +433,7 @@ int board_display_msg(struct char_data *ch, char *arg, struct Board *b)
 void board_fix_long_desc(struct Board *b)
 {
   if (DEBUG > 2)
-    log_info("called %s with %08x", __PRETTY_FUNCTION__, b);
+    log_info("called %s with %08zx", __PRETTY_FUNCTION__, (size_t)b);
 
   return;
 }
@@ -445,7 +445,7 @@ int board_show_board(struct char_data *ch, char *arg, struct Board *b)
   char                                    tmp[MAX_INPUT_LENGTH] = "\0\0\0";
 
   if (DEBUG > 2)
-    log_info("called %s with %s, %s, %08x", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(arg), b);
+    log_info("called %s with %s, %s, %08zx", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(arg), (size_t)b);
 
   one_argument(arg, tmp);
 
@@ -453,19 +453,19 @@ int board_show_board(struct char_data *ch, char *arg, struct Board *b)
     return (0);
 
   if (board_kludge_char) {
-    cprintf(ch, "Sorry, but someone is writing a message\n\r");
+    cprintf(ch, "Sorry, but someone is writing a message\r\n");
     return (0);
   }
-  strcpy(buf, "This is a bulletin board. Usage: READ/REMOVE <messg #>, WRITE <header>\n\r");
+  strcpy(buf, "This is a bulletin board. Usage: READ/REMOVE <messg #>, WRITE <header>\r\n");
   if (!b->msg_num) {
-    strcat(buf, "The board is empty.\n\r");
+    strcat(buf, "The board is empty.\r\n");
   } else if (b->msg_num == 1) {
-    sprintf(buf + strlen(buf), "There is 1 message on the board.\n\r");
+    sprintf(buf + strlen(buf), "There is 1 message on the board.\r\n");
   } else {
-    sprintf(buf + strlen(buf), "There are %d messages on the board.\n\r", b->msg_num);
+    sprintf(buf + strlen(buf), "There are %d messages on the board.\r\n", b->msg_num);
   }
   for (i = 0; i < b->msg_num; i++)
-    sprintf(buf + strlen(buf), "%-2d : %s\n\r", i + 1, b->head[i]);
+    sprintf(buf + strlen(buf), "%-2d : %s\r\n", i + 1, b->head[i]);
 
   page_string(ch->desc, buf, 1);
 

@@ -100,7 +100,7 @@ void signal_setup(void)
 #ifdef __OpenBSD__
     {{SIG_DFL}, 0, SA_NODEFER | SA_RESETHAND},
     {{SIG_IGN}, SIGHUP, SA_NODEFER},
-    {{SIG_IGN}, SIGINT, SA_NODEFER},
+    {{shutdown_request}, SIGINT, SA_NODEFER},
     {{SIG_IGN}, SIGQUIT, SA_NODEFER},
     {{SIG_DFL}, SIGILL, SA_NODEFER | SA_RESETHAND},
     {{SIG_DFL}, SIGTRAP, SA_NODEFER | SA_RESETHAND},
@@ -132,7 +132,7 @@ void signal_setup(void)
 #else
     {{SIG_DFL}, {{0}}, SA_NODEFER | SA_RESETHAND, NULL},
     {{SIG_IGN}, {{SIGHUP}}, SA_NODEFER, NULL},
-    {{SIG_IGN}, {{SIGINT}}, SA_NODEFER, NULL},
+    {{shutdown_request}, {{SIGINT}}, SA_NODEFER, NULL},
     {{SIG_IGN}, {{SIGQUIT}}, SA_NODEFER, NULL},
     {{SIG_DFL}, {{SIGILL}}, SA_NODEFER | SA_RESETHAND, NULL},
     {{SIG_DFL}, {{SIGTRAP}}, SA_NODEFER | SA_RESETHAND, NULL},
@@ -169,7 +169,7 @@ void signal_setup(void)
     log_info("called %s with no arguments", __PRETTY_FUNCTION__);
 
   signal(SIGHUP, SIG_IGN);
-  signal(SIGINT, SIG_IGN);
+  signal(SIGINT, shutdown_request);
   signal(SIGQUIT, SIG_IGN);
   signal(SIGUSR1, shutdown_request);
   signal(SIGUSR2, SIG_IGN);

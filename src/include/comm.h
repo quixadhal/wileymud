@@ -60,11 +60,11 @@ extern int                              mud_port;
 
 #endif
 
-int                                     main(int argc, char **argv);
+int                                     main(int argc, const char **argv);
 int                                     run_the_game(int port);
 void                                    game_loop(int s);
 int                                     get_from_q(struct txt_q *queue, char *dest);
-void                                    write_to_q(char *txt, struct txt_q *queue);
+void                                    write_to_q(const char *txt, struct txt_q *queue);
 struct timeval                          timediff(struct timeval *a, struct timeval *b);
 void                                    flush_queues(struct descriptor_data *d);
 int                                     init_socket(int port);
@@ -72,39 +72,35 @@ int                                     new_connection(int s);
 
 int                                     new_descriptor(int s);
 int                                     process_output(struct descriptor_data *t);
-int                                     write_to_descriptor(int desc, char *txt);
+int                                     write_to_descriptor(int desc, const char *txt);
 int                                     process_input(struct descriptor_data *t);
 void                                    close_sockets(int s);
 void                                    close_socket(struct descriptor_data *d);
 void                                    nonblock(int s);
 
-void                                    socket_printf(int desc, char *Str, ...)
+void                                    dcprintf(struct descriptor_data *d, const char *Str, ...)
                                                  __attribute__ ( ( format( printf, 2, 3 ) ) );
-void                                    dcprintf(struct descriptor_data *d, char *Str, ...)
+void                                    cprintf(struct char_data *ch, const char *Str, ...)
                                                  __attribute__ ( ( format( printf, 2, 3 ) ) );
-void                                    page_printf(struct descriptor_data *d, char *Str, ...)
+void                                    rprintf(int room, const char *Str, ...)
                                                  __attribute__ ( ( format( printf, 2, 3 ) ) );
-void                                    cprintf(struct char_data *ch, char *Str, ...)
+void                                    zprintf(int zone, const char *Str, ...)
                                                  __attribute__ ( ( format( printf, 2, 3 ) ) );
-void                                    rprintf(int room, char *Str, ...)
-                                                 __attribute__ ( ( format( printf, 2, 3 ) ) );
-void                                    zprintf(int zone, char *Str, ...)
-                                                 __attribute__ ( ( format( printf, 2, 3 ) ) );
-void                                    allprintf(char *Str, ...)
+void                                    allprintf(const char *Str, ...)
                                                  __attribute__ ( ( format( printf, 1, 2 ) ) );
-void                                    oprintf(char *Str, ...)
+void                                    oprintf(const char *Str, ...)
                                                  __attribute__ ( ( format( printf, 1, 2 ) ) );
-void                                    eprintf(struct char_data *ch, char *Str, ...)
+void                                    eprintf(struct char_data *ch, const char *Str, ...)
                                                  __attribute__ ( ( format( printf, 2, 3 ) ) );
-void                                    reprintf(int room, struct char_data *ch, char *Str,
+void                                    reprintf(int room, struct char_data *ch, const char *Str,
 						 ...) __attribute__ ( ( format( printf, 3, 4 ) ) );
 void                                    re2printf(int room, struct char_data *ch1,
-						  struct char_data *ch2, char *Str, ...)
+						  struct char_data *ch2, const char *Str, ...)
                                                  __attribute__ ( ( format( printf, 4, 5 ) ) );
-void                                    iprintf(char *Str, ...)
+void                                    iprintf(const char *Str, ...)
                                                  __attribute__ ( ( format( printf, 1, 2 ) ) );
 void                                    save_all(void);
-void                                    act(char *str, int hide_invisible, struct char_data *ch,
+void                                    act(const char *str, int hide_invisible, struct char_data *ch,
 					    struct obj_data *obj, void *vict_obj, int type, ...)
                                             __attribute__ ( ( format( printf, 1, 7 ) ) );
 void                                    dump_player_list(void);

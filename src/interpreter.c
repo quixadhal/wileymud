@@ -64,7 +64,7 @@ char                                    echo_off[] = {
 };
 int                                     WizLock = FALSE;
 
-char                                   *command[] = {
+const char                             *command[] = {
   "north", "east", "south", "west", "up",
   "down", "enter", "exits", "kill", "get",
   "drink", "eat", "wear", "wield", "look",
@@ -125,7 +125,7 @@ char                                   *command[] = {
   "\n"
 };
 
-char                                   *fill[] = {
+const char                                   *fill[] = {
   "in",
   "from",
   "with",
@@ -136,42 +136,44 @@ char                                   *fill[] = {
   "\n"
 };
 
-int search_block(char *arg, char **list, char exact)
+int search_block(const char *arg, const char **list, char exact)
 {
   int                                     i = 0;
   int                                     l = 0;
 
   if (DEBUG > 2)
-    log_info("called %s with %s, %08x, %d", __PRETTY_FUNCTION__, VNULL(arg), list, (int)exact);
+    log_info("called %s with %s, %08zx, %d", __PRETTY_FUNCTION__, VNULL(arg), (size_t)list, (int)exact);
 
   /*
    * Make into lower case, and get length of string 
    */
-  for (l = 0; *(arg + l); l++)
-    *(arg + l) = LOWER(*(arg + l));
+  /* for (l = 0; *(arg + l); l++)
+   * *(arg + l) = LOWER(*(arg + l));
+   */
+  l = strlen(arg);
 
   if (exact) {
     for (i = 0; **(list + i) != '\n'; i++)
-      if (!strcmp(arg, *(list + i)))
+      if (!strcasecmp(arg, *(list + i)))
 	return (i);
   } else {
     if (!l)
       l = 1;						       /* Avoid "" to match the first available string */
     for (i = 0; **(list + i) != '\n'; i++)
-      if (!strncmp(arg, *(list + i), l))
+      if (!strncasecmp(arg, *(list + i), l))
 	return (i);
   }
   return (-1);
 }
 
-int old_search_block(char *argument, int begin, int arglen, char **list, int mode)
+int old_search_block(const char *argument, int begin, int arglen, const char **list, int mode)
 {
   int                                     guess = 0;
   int                                     found = 0;
   int                                     search = 0;
 
   if (DEBUG > 2)
-    log_info("called %s with %s, %d, %08x, %d", __PRETTY_FUNCTION__, VNULL(argument), arglen, list, mode);
+    log_info("called %s with %s, %d, %08zx, %d", __PRETTY_FUNCTION__, VNULL(argument), arglen, (size_t)list, mode);
 
   /*
    * If the word contain 0 letters, then a match is already found 
@@ -258,27 +260,27 @@ void command_interpreter(struct char_data *ch, char *argument)
       if (GET_POS(ch) < cmd_info[cmd].minimum_position) {
 	switch (GET_POS(ch)) {
 	  case POSITION_DEAD:
-	    cprintf(ch, "Lie still; you are DEAD!!! :-( \n\r");
+	    cprintf(ch, "Lie still; you are DEAD!!! :-( \r\n");
 	    break;
 	  case POSITION_INCAP:
 	  case POSITION_MORTALLYW:
-	    cprintf(ch, "You are in a pretty bad shape, unable to do anything!\n\r");
+	    cprintf(ch, "You are in a pretty bad shape, unable to do anything!\r\n");
 	    break;
 
 	  case POSITION_STUNNED:
-	    cprintf(ch, "All you can do right now, is think about the stars!\n\r");
+	    cprintf(ch, "All you can do right now, is think about the stars!\r\n");
 	    break;
 	  case POSITION_SLEEPING:
-	    cprintf(ch, "In your dreams, or what?\n\r");
+	    cprintf(ch, "In your dreams, or what?\r\n");
 	    break;
 	  case POSITION_RESTING:
-	    cprintf(ch, "Nah... You feel too relaxed to do that..\n\r");
+	    cprintf(ch, "Nah... You feel too relaxed to do that..\r\n");
 	    break;
 	  case POSITION_SITTING:
-	    cprintf(ch, "Maybe you should get on your feet first?\n\r");
+	    cprintf(ch, "Maybe you should get on your feet first?\r\n");
 	    break;
 	  case POSITION_FIGHTING:
-	    cprintf(ch, "No way! You are fighting for your life!\n\r");
+	    cprintf(ch, "No way! You are fighting for your life!\r\n");
 	    break;
 	}
       } else {
@@ -293,7 +295,7 @@ void command_interpreter(struct char_data *ch, char *argument)
       }
       return;
     } else {
-      cprintf(ch, " You are paralyzed, you can't do much of anything!\n\r");
+      cprintf(ch, " You are paralyzed, you can't do much of anything!\r\n");
       return;
     }
   }
@@ -301,13 +303,13 @@ void command_interpreter(struct char_data *ch, char *argument)
     return;
 
   if (cmd > 0 && (cmd_info[cmd].command_pointer == 0))
-    cprintf(ch, "Sorry, that command has yet to be implemented...\n\r");
+    cprintf(ch, "Sorry, that command has yet to be implemented...\r\n");
   else {
     random_error_message(ch);
   }
 }
 
-void argument_interpreter(char *argument, char *first_arg, char *second_arg)
+void argument_interpreter(const char *argument, char *first_arg, char *second_arg)
 {
   int                                     look_at = 0;
   int                                     begin = 0;
@@ -356,7 +358,7 @@ void argument_interpreter(char *argument, char *first_arg, char *second_arg)
   } while (fill_word(second_arg));
 }
 
-int is_number(char *str)
+int is_number(const char *str)
 {
   int                                     look_at = 0;
 
@@ -391,7 +393,7 @@ int is_number(char *str)
  * find the first sub-argument of a string, return pointer to first char in
  * primary argument, following the sub-arg                  
  */
-char                                   *one_argument(char *argument, char *first_arg)
+const char                             *one_argument(const char *argument, char *first_arg)
 {
   int                                     begin = 0;
   int                                     look_at = 0;
@@ -412,10 +414,10 @@ char                                   *one_argument(char *argument, char *first
   return (argument + begin);
 }
 
-void only_argument(char *argument, char *dest)
+void only_argument(const char *argument, char *dest)
 {
   if (DEBUG > 2)
-    log_info("called %s with %s, %08x", __PRETTY_FUNCTION__, VNULL(argument), dest);
+    log_info("called %s with %s, %08zx", __PRETTY_FUNCTION__, VNULL(argument), (size_t)dest);
 
   while (*argument && isspace(*argument))
     argument++;
@@ -457,10 +459,10 @@ void only_argument(char *argument, char *dest)
 /*
  * return first 'word' plus trailing substring of input string 
  */
-void half_chop(char *string, char *arg1, char *arg2)
+void half_chop(const char *string, char *arg1, char *arg2)
 {
   if (DEBUG > 2)
-    log_info("called %s with %s, %08x, %08x", __PRETTY_FUNCTION__, VNULL(string), arg1, arg2);
+    log_info("called %s with %s, %08zx, %08zx", __PRETTY_FUNCTION__, VNULL(string), (size_t)arg1, (size_t)arg2);
 
   for (; isspace(*string); string++);
   for (; !isspace(*arg1 = *string) && *string; string++, arg1++);
@@ -469,7 +471,7 @@ void half_chop(char *string, char *arg1, char *arg2)
   for (; (*arg2 = *string); string++, arg2++);
 }
 
-int special(struct char_data *ch, int cmd, char *arg)
+int special(struct char_data *ch, int cmd, const char *arg)
 {
   struct obj_data                        *i = NULL;
   struct char_data                       *k = NULL;
@@ -861,7 +863,7 @@ int _parse_name(char *arg, char *name)
   int                                     i = 0;
 
   if (DEBUG > 2)
-    log_info("called %s with %s, %08x", __PRETTY_FUNCTION__, VNULL(arg), name);
+    log_info("called %s with %s, %08zx", __PRETTY_FUNCTION__, VNULL(arg), (size_t)name);
 
   for (; isspace(*arg); arg++);
   for (i = 0; (*name = *arg); arg++, i++, name++)
@@ -879,10 +881,10 @@ int _parse_name(char *arg, char *name)
 int valid_parse_name(char *arg, char *name)
 {
   int                                     i = 0;
-  char                                   *hard[] = { "god", "demigod", "myself", "me", NULL };
+  const char                             *hard[] = { "god", "demigod", "myself", "me", NULL };
 
   if (DEBUG > 2)
-    log_info("called %s with %s, %08x", __PRETTY_FUNCTION__, VNULL(arg), name);
+    log_info("called %s with %s, %08zx", __PRETTY_FUNCTION__, VNULL(arg), (size_t)name);
 
   if (!arg || !*arg)
     return 0;
@@ -936,7 +938,7 @@ int check_reconnect(struct descriptor_data *d)
   struct char_data                       *tmp_ch = NULL;
 
   if (DEBUG > 2)
-    log_info("called %s with %08x", __PRETTY_FUNCTION__, d);
+    log_info("called %s with %08zx", __PRETTY_FUNCTION__, (size_t)d);
 
   for (tmp_ch = character_list; tmp_ch; tmp_ch = tmp_ch->next) {
     if (
@@ -960,7 +962,7 @@ int check_reconnect(struct descriptor_data *d)
 	tmp_ch->orig = 0;
       }
       STATE(d) = CON_PLAYING;
-      dcprintf(d, "\n\r%sReconnecting to %s.\n\r", echo_on, GET_NAME(d->character));
+      dcprintf(d, "\r\n%sReconnecting to %s.\r\n", echo_on, GET_NAME(d->character));
       act("$n has reconnected.", TRUE, tmp_ch, 0, 0, TO_ROOM);
       if (d->character->in_room == NOWHERE)
 	char_to_room(d->character, DEFAULT_HOME);
@@ -982,7 +984,7 @@ int check_playing(struct descriptor_data *d, char *tmp_name)
   struct descriptor_data                 *k = NULL;
 
   if (DEBUG > 2)
-    log_info("called %s with %08x, %s", __PRETTY_FUNCTION__, d, VNULL(tmp_name));
+    log_info("called %s with %08zx, %s", __PRETTY_FUNCTION__, (size_t)d, VNULL(tmp_name));
 
   for (k = descriptor_list; k; k = k->next) {
     if (k->character == NULL)
@@ -1019,7 +1021,7 @@ void nanny(struct descriptor_data *d, char *arg)
   char                                    cryptsalt[3] = { '\0', '\0', '\0' };
 
   if (DEBUG > 2)
-    log_info("called %s with %08x, %s", __PRETTY_FUNCTION__, d, VNULL(arg));
+    log_info("called %s with %08zx, %s", __PRETTY_FUNCTION__, (size_t)d, VNULL(arg));
 
   while (isspace(*arg))
     arg++;
@@ -1044,18 +1046,18 @@ void nanny(struct descriptor_data *d, char *arg)
 	return;
       }
       if (!valid_parse_name(arg, tmp_name)) {
-	dcprintf(d, "\rIllegal name, please try another.\n\rWHAT is your Name? ");
+	dcprintf(d, "\rIllegal name, please try another.\r\nWHAT is your Name? ");
 	return;
       }
       if (check_playing(d, tmp_name)) {
 	dcprintf(d,
-		 "\rSorry, %s is already playing... you might be cheating!\n\rWhat is YOUR Name? ",
+		 "\rSorry, %s is already playing... you might be cheating!\r\nWhat is YOUR Name? ",
 		 tmp_name);
 	return;
       }
       if (!ValidPlayer(tmp_name, d->pwd, d->oldpwd)) {
 	dcprintf(d,
-		 "\n\rWileyMUD is currently in registration-only mode.\n\rPlease email quixadhal@shadowlord.org for a character!\n\r");
+		 "\r\nWileyMUD is currently in registration-only mode.\r\nPlease email quixadhal@shadowlord.org for a character!\r\n");
 	STATE(d) = CON_WIZLOCK;
 	return;
       }
@@ -1069,7 +1071,7 @@ void nanny(struct descriptor_data *d, char *arg)
 	strcpy(d->oldpwd, tmp_store.oldpwd);
 	strcpy(d->pwd, tmp_store.pwd);
 	log_info("%s@%s loaded.", d->usr_name, d->host);
-	dcprintf(d, "\n\r%sWHAT is your Password? ", echo_off);
+	dcprintf(d, "\r\n%sWHAT is your Password? ", echo_off);
 	STATE(d) = CON_GET_PASSWORD;
       } else if (load_char(d->usr_name, &tmp_store) > -1) {
 	/*
@@ -1079,20 +1081,20 @@ void nanny(struct descriptor_data *d, char *arg)
 	strcpy(d->oldpwd, tmp_store.oldpwd);
 	strcpy(d->pwd, tmp_store.pwd);
 	log_info("%s@%s loaded from old playerfile.", d->usr_name, d->host);
-	dcprintf(d, "\n\r%sWHAT is your Password? ", echo_off);
+	dcprintf(d, "\r\n%sWHAT is your Password? ", echo_off);
 	STATE(d) = CON_GET_PASSWORD;
       } else {
 	if (already_mob_name(d->usr_name)) {
-	  dcprintf(d, "\rBut you'd be confused with a MONSTER!.\n\rWHAT is your Name? ");
+	  dcprintf(d, "\rBut you'd be confused with a MONSTER!.\r\nWHAT is your Name? ");
 	  return;
 	}
 	if (banned_name(d->usr_name)) {
-	  dcprintf(d, "\rSorry, that is a STUPID name... Try another.\n\rWHAT is your Name? ");
+	  dcprintf(d, "\rSorry, that is a STUPID name... Try another.\r\nWHAT is your Name? ");
 	  return;
 	}
 	GET_NAME(d->character) = (char *)strdup(d->usr_name);
 	d->character->player.name[0] = toupper(d->character->player.name[0]);
-	dcprintf(d, "\n\r%sChoose a password for %s: ", echo_off, d->usr_name);
+	dcprintf(d, "\r\n%sChoose a password for %s: ", echo_off, d->usr_name);
 	STATE(d) = CON_GET_NEW_PASWORD;
         /* log_info("New player!"); */
         log_auth(d->character, "NEW PLAYER %s (%s@%s/%s)!", GET_NAME(d->character), d->username, d->host, d->ip);
@@ -1109,7 +1111,7 @@ void nanny(struct descriptor_data *d, char *arg)
       strcpy(cryptbuf, crypt(arg, cryptsalt));
       if (strcmp(cryptbuf, d->pwd)) {
 	if (strncmp(arg, d->oldpwd, 10)) {
-	  dcprintf(d, "\r***BUZZ!*** Wrong password.\n\r%sGuess again: ", echo_off);
+	  dcprintf(d, "\r***BUZZ!*** Wrong password.\r\n%sGuess again: ", echo_off);
 	  return;
 	}
 	log_info("Allowing entry using unencrypted password.");
@@ -1121,26 +1123,26 @@ void nanny(struct descriptor_data *d, char *arg)
       log_auth(d->character, "WELCOME BACK %s (%s@%s/%s)!", GET_NAME(d->character), d->username, d->host, d->ip);
 
       if (GetMaxLevel(d->character) > LOW_IMMORTAL)
-	dcprintf(d, "\n\r%s", wmotd);
+	dcprintf(d, "\r\n%s", wmotd);
       else
-	dcprintf(d, "\n\r%s", motd);
+	dcprintf(d, "\r\n%s", motd);
       dcprintf(d, "*** Press Return: ");
       STATE(d) = CON_READ_MOTD;
       return;
     case CON_GET_NEW_PASWORD:
       if (!*arg || strlen(arg) < 3) {
-	dcprintf(d, "\rIllegal password.\n\r%sChoose a password for %s: ", echo_off,
+	dcprintf(d, "\rIllegal password.\r\n%sChoose a password for %s: ", echo_off,
 		 d->usr_name);
 	return;
       }
       strncpy(d->oldpwd, arg, 10);
       *(d->oldpwd + 10) = '\0';
-      dcprintf(d, "\n\r%sPlease retype your password: ", echo_off);
+      dcprintf(d, "\r\n%sPlease retype your password: ", echo_off);
       STATE(d) = CON_CONFIRM_NEW_PASSWORD;
       return;
     case CON_CONFIRM_NEW_PASSWORD:
       if (strncmp(arg, d->oldpwd, 10)) {
-	dcprintf(d, "\n\rBut those don't match!\n\r%sTry your password again: ", echo_off);
+	dcprintf(d, "\r\nBut those don't match!\r\n%sTry your password again: ", echo_off);
 	STATE(d) = CON_GET_NEW_PASWORD;
 	return;
       }
@@ -1158,7 +1160,7 @@ void nanny(struct descriptor_data *d, char *arg)
       }
       switch (*arg) {
 	default:
-	  dcprintf(d, "\rThat's not a race.\n\r%s", race_menu);
+	  dcprintf(d, "\rThat's not a race.\r\n%s", race_menu);
 	  STATE(d) = CON_GET_RACE;
 	  break;
 	case '?':
@@ -1200,7 +1202,7 @@ void nanny(struct descriptor_data *d, char *arg)
     case CON_GET_SEX:
       switch (*arg) {
 	default:
-	  dcprintf(d, "But how will you mate???\n\r%s", sex_menu);
+	  dcprintf(d, "But how will you mate???\r\n%s", sex_menu);
 	  return;
 	case 'm':
 	case 'M':
@@ -1222,7 +1224,7 @@ void nanny(struct descriptor_data *d, char *arg)
       for (; *arg && count < 3 && !oops; arg++) {
 	switch (*arg) {
 	  default:
-	    dcprintf(d, "I wish *I* could be a \"%s\" too!\n\r%s", arg, class_menu);
+	    dcprintf(d, "I wish *I* could be a \"%s\" too!\r\n%s", arg, class_menu);
 	    STATE(d) = CON_GET_CLASS;
 	    oops = TRUE;
 	    break;
@@ -1296,7 +1298,7 @@ void nanny(struct descriptor_data *d, char *arg)
 	}
 
 	if ((count > 1) && IS_SET(d->character->player.class, CLASS_RANGER)) {
-	  dcprintf(d, "Rangers may only be single classed.\n\r%s", class_menu);
+	  dcprintf(d, "Rangers may only be single classed.\r\n%s", class_menu);
 	  STATE(d) = CON_GET_CLASS;
 	  oops = TRUE;
 	}
@@ -1307,7 +1309,7 @@ void nanny(struct descriptor_data *d, char *arg)
 	init_char(d->character);
 	d->pos = create_entry(GET_NAME(d->character));
 	save_char(d->character, NOWHERE);
-	dcprintf(d, "\n\r%s\n\r*** PRESS RETURN: ", motd);
+	dcprintf(d, "\r\n%s\r\n*** PRESS RETURN: ", motd);
 	STATE(d) = CON_READ_MOTD;
       }
       return;
@@ -1316,7 +1318,7 @@ void nanny(struct descriptor_data *d, char *arg)
       STATE(d) = CON_MENU_SELECT;
       if (WizLock) {
 	if (GetMaxLevel(d->character) < LOW_IMMORTAL) {
-	  dcprintf(d, "\n\rSorry, the game is locked so the whizz's can break stuff!\n\r");
+	  dcprintf(d, "\r\nSorry, the game is locked so the whizz's can break stuff!\r\n");
 	  STATE(d) = CON_WIZLOCK;
 	}
       }
@@ -1327,7 +1329,7 @@ void nanny(struct descriptor_data *d, char *arg)
     case CON_MENU_SELECT:
       switch (*arg) {
 	default:
-	  dcprintf(d, "Wrong option.\n\r%s", login_menu);
+	  dcprintf(d, "Wrong option.\r\n%s", login_menu);
 	  return;
 	case '0':
 	  close_socket(d);
@@ -1337,7 +1339,7 @@ void nanny(struct descriptor_data *d, char *arg)
 	  log_info("Loading %s's equipment", d->character->player.name);
 	  load_char_objs(d->character);
 	  save_char(d->character, NOWHERE);
-	  cprintf(d->character, "%s\n\r", WELC_MESSG);
+	  cprintf(d->character, "%s\r\n", WELC_MESSG);
 	  d->character->next = character_list;
 	  character_list = d->character;
 	  if (d->character->in_room == NOWHERE) {
@@ -1363,7 +1365,7 @@ void nanny(struct descriptor_data *d, char *arg)
 	    if ((strcasecmp(GET_NAME(d->character), "Quixadhal"))) {
 	      int                                     x = 0;
 
-	      cprintf(d->character, "Fool!  You DARE challenge the Dread Lord?\n\r");
+	      cprintf(d->character, "Fool!  You DARE challenge the Dread Lord?\r\n");
 	      for (x = 0; x < ABS_MAX_CLASS; x++)
 		if (HasClass(d->character, 1 << x))
 		  GET_LEVEL(d->character, x) = LOW_IMMORTAL;
@@ -1377,7 +1379,7 @@ void nanny(struct descriptor_data *d, char *arg)
 	      REMOVE_BIT(d->character->specials.act, PLR_STEALTH);
 	    d->character->invis_level = 0;
 	    if (GetMaxLevel(d->character) < LOKI)
-	      iprintf("Comrade %s has entered the world.\n\r", NAME(d->character));
+	      iprintf("Comrade %s has entered the world.\r\n", NAME(d->character));
 	  }
 
 	  if (!IS_SET(d->character->specials.affected_by, AFF_GROUP))
@@ -1385,7 +1387,7 @@ void nanny(struct descriptor_data *d, char *arg)
 	  STATE(d) = CON_PLAYING;
 	  if (!GetMaxLevel(d->character))
 	    start_character(d->character);
-	  update_player_list_entry(d);
+	  //update_player_list_entry(d);
 	  do_look(d->character, "", 15);
 	  d->prompt_mode = 1;
 	  {
@@ -1399,9 +1401,9 @@ void nanny(struct descriptor_data *d, char *arg)
 	  return;
 	case '2':
 	  dcprintf(d,
-		   "Enter a text you'd like others to see when they look at you.\n\rTerminate with a '@'.\n\r");
+		   "Enter a text you'd like others to see when they look at you.\r\nTerminate with a '@'.\r\n");
 	  if (d->character->player.description) {
-	    dcprintf(d, "Old description :\n\r%s", d->character->player.description);
+	    dcprintf(d, "Old description :\r\n%s", d->character->player.description);
 	    DESTROY(d->character->player.description);
 	    d->character->player.description = 0;
 	  }
@@ -1423,18 +1425,18 @@ void nanny(struct descriptor_data *d, char *arg)
 	    struct char_data                       *person;
 	    int                                     lcount = 0;
 
-	    dcprintf(d, "Players Connected.\n\r\n\r");
+	    dcprintf(d, "Players Connected.\r\n\r\n");
 	    for (dd = descriptor_list; dd; dd = dd->next)
 	      if (!dd->connected) {
 		person = dd->character;
 		if (!IS_IMMORTAL(person) || IS_IMMORTAL(d->character)) {
 		  lcount++;
-		  dcprintf(d, "%s %s %s\n\r",
+		  dcprintf(d, "%s %s %s\r\n",
 			   (person->player.pre_title ? person->player.pre_title : "")
 			   , GET_NAME(person), person->player.title);
 		}
 	      }
-	    dcprintf(d, "Total Connected %d\n\r", lcount);
+	    dcprintf(d, "Total Connected %d\r\n", lcount);
 	    STATE(d) = CON_READ_MOTD;
 	    break;
 	  }
@@ -1442,7 +1444,7 @@ void nanny(struct descriptor_data *d, char *arg)
 	case '6':
 	  if (IS_IMMORTAL(d->character)) {
 	    dcprintf(d,
-		     "\n\rSorry, you are a slave to the source...  There is no escape for you!\n\r%s",
+		     "\r\nSorry, you are a slave to the source...  There is no escape for you!\r\n%s",
 		     login_menu);
 	    break;
 	  }
@@ -1483,28 +1485,28 @@ void nanny(struct descriptor_data *d, char *arg)
 		actual_players--;
 	      }
 	}
-	dump_player_list();
+	//dump_player_list();
 	log_info("-- SUICIDE -- %s is no more!\n", name);
 	dcprintf(d, "%s", suicide_done);
 	STATE(d) = CON_WIZLOCK;
 	return;
       }
-      dcprintf(d, "You are SAVED!\n\r%s", login_menu);
+      dcprintf(d, "You are SAVED!\r\n%s", login_menu);
       STATE(d) = CON_MENU_SELECT;
       return;
     case CON_GET_CHANGE_PASSWORD:
       if (!*arg || strlen(arg) < 3) {
-	dcprintf(d, "\rIllegal password.\n\r%sPassword: ", echo_off);
+	dcprintf(d, "\rIllegal password.\r\n%sPassword: ", echo_off);
 	return;
       }
       strncpy(d->oldpwd, arg, 10);
       *(d->oldpwd + 10) = '\0';
-      dcprintf(d, "\n\r%sPlease retype password: ", echo_off);
+      dcprintf(d, "\r\n%sPlease retype password: ", echo_off);
       STATE(d) = CON_CONFIRM_CHANGE_PASSWORD;
       return;
     case CON_CONFIRM_CHANGE_PASSWORD:
       if (strncmp(arg, d->oldpwd, 10)) {
-	dcprintf(d, "\rPasswords don't match.\n\r%sRetype password: ", echo_off);
+	dcprintf(d, "\rPasswords don't match.\r\n%sRetype password: ", echo_off);
 	STATE(d) = CON_GET_CHANGE_PASSWORD;
 	return;
       }
@@ -1512,7 +1514,7 @@ void nanny(struct descriptor_data *d, char *arg)
       cryptsalt[1] = d->character->player.name[1];
       strcpy(d->pwd, crypt(d->oldpwd, cryptsalt));
       PutPasswd(d);
-      dcprintf(d, "%s\n\rDone. You must enter the game to make the change final\n\r%s", echo_on,
+      dcprintf(d, "%s\r\nDone. You must enter the game to make the change final\r\n%s", echo_on,
 	       login_menu);
       STATE(d) = CON_MENU_SELECT;
       return;
@@ -1529,7 +1531,7 @@ void update_player_list_entry(struct descriptor_data *d)
   struct tm                              *now_part = NULL;
 
   if (DEBUG > 2)
-    log_info("called %s with %08x", __PRETTY_FUNCTION__, d);
+    log_info("called %s with %08zx", __PRETTY_FUNCTION__, (size_t)d);
 
   if ((!d) || d->connected)
     return;
@@ -1549,9 +1551,8 @@ void update_player_list_entry(struct descriptor_data *d)
     if (list_of_players[i])
       if (!(strncasecmp(list_of_players[i], buf, strlen(tmpbuf) + 1))) {
 	found = 1;
-	RECREATE(list_of_players[i], char, strlen(buf) + 1);
-
-	strcpy(list_of_players[i], buf);
+        DESTROY(list_of_players[i]);
+        STRDUP(list_of_players[i], buf);
       }
   }
   if (!found) {
@@ -1561,7 +1562,7 @@ void update_player_list_entry(struct descriptor_data *d)
     number_of_players++;
     actual_players++;
   }
-  dump_player_list();
+  //dump_player_list();
 }
 
 void PutPasswd(struct descriptor_data *d)
@@ -1569,16 +1570,16 @@ void PutPasswd(struct descriptor_data *d)
   FILE                                   *pfd = NULL;
 
   if (DEBUG > 2)
-    log_info("called %s with %08x", __PRETTY_FUNCTION__, d);
+    log_info("called %s with %08zx", __PRETTY_FUNCTION__, (size_t)d);
 
   if ((pfd = fopen(PASSWD_NEW, "a")) == NULL) {
-    log_info("Cannot save password data for new user!\n\r");
+    log_info("Cannot save password data for new user!\r\n");
   } else {
     fprintf(pfd, "%s %s %s@%s %ld 1\n", d->usr_name,
 	    d->pwd, d->username, d->host, (long int)time(NULL));
     FCLOSE(pfd);
   }
-  update_player_list_entry(d);
+  //update_player_list_entry(d);
 }
 
 int ValidPlayer(char *who, char *pwd, char *oldpwd)

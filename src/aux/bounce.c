@@ -19,18 +19,18 @@
 
 int                                     LISTEN_ON = 23;
 int                                     JUMP_TO = 3000;
-char                                   *JUMP_ADDR = "127.0.0.1";
+const char                             *JUMP_ADDR = "127.0.0.1";
 
 char                                    sbuf[2048],
                                         cbuf[2048];
 void                                    telcli(int source);
 void                                    communicate(int sfd, int cfd);
 
-int main(int argc, char **argv)
+int main(int argc, const char **argv)
 {
   int                                     srv_fd,
-                                          rem_fd,
-                                          rem_len;	       /* , opt = 1; */
+                                          rem_fd;
+  unsigned int                            rem_len;	       /* , opt = 1; */
   struct sockaddr_in                      rem_addr,
                                           srv_addr;
 

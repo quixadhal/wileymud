@@ -170,6 +170,13 @@ struct help_index_element {
   long                                    pos;
 };
 
+struct player_list_entry {
+  char                                  name[80];
+  char                                  last_site[80];
+  char                                  last_login[80];
+  int                                   max_level;
+};
+
 #ifndef _DB_C
 extern int                              top_of_world;
 extern struct hash_header               room_db;
@@ -269,8 +276,8 @@ int                                     compare(struct player_index_element *arg
 						struct player_index_element *arg2);
 void                                    free_char(struct char_data *ch);
 void                                    free_obj(struct obj_data *obj);
-int                                     file_to_string(char *name, char *buf);
-int                                     file_to_prompt(char *name, char *buf);
+int                                     file_to_string(const char *name, char *buf);
+int                                     file_to_prompt(const char *name, char *buf);
 void                                    reset_char(struct char_data *ch);
 void                                    clear_char(struct char_data *ch);
 void                                    clear_object(struct obj_data *obj);

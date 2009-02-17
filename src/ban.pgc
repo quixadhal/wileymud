@@ -34,11 +34,11 @@ int old_banned_name(char *name)
     log_info("called %s with %s", __PRETTY_FUNCTION__, VNULL(name));
 
   strcpy(ack, old_banned_names);
-  if (!(pfft = (char *)strtok(ack, " \t\n\r")))
+  if (!(pfft = (char *)strtok(ack, " \t\r\n")))
     return FALSE;
   if (!strcasecmp(pfft, name))
     return TRUE;
-  while ((pfft = (char *)strtok(NULL, " \t\n\r"))) {
+  while ((pfft = (char *)strtok(NULL, " \t\r\n"))) {
     if (!strcasecmp(pfft, name))
       return TRUE;
   }
@@ -191,7 +191,7 @@ EXEC SQL END DECLARE SECTION;
   char                                   *pfft = NULL;
 
   strcpy(ack, old_banned_names);
-  pfft = (char *)strtok(ack, " \t\n\r");
+  pfft = (char *)strtok(ack, " \t\r\n");
   while(pfft) {
     strcpy(tmp, pfft);
     EXEC SQL BEGIN WORK;
@@ -204,13 +204,14 @@ EXEC SQL END DECLARE SECTION;
     } else {
       EXEC SQL COMMIT WORK;
     }
-    pfft = (char *)strtok(NULL, " \t\n\r");
+    pfft = (char *)strtok(NULL, " \t\r\n");
   }
 }
 
 void do_ban(struct char_data *ch, char *argument, int cmd)
 {
   char                                    ban_type[MAX_STRING_LENGTH] = "\0\0\0";
+  char                                    tmp_page[MAX_STRING_LENGTH] = "\0\0\0";
   int                                     i = 0;
 EXEC SQL BEGIN DECLARE SECTION;
   char                                    buf[MAX_STRING_LENGTH] = "\0\0\0";
@@ -220,7 +221,7 @@ EXEC SQL END DECLARE SECTION;
     log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
   if (IS_NPC(ch)) {
-    cprintf(ch, "You're a mob, you can't ban anyone.\n\r");
+    cprintf(ch, "You're a mob, you can't ban anyone.\r\n");
     return;
   }
   if (argument && *argument) {
@@ -233,7 +234,7 @@ EXEC SQL END DECLARE SECTION;
            * then we can try adding it to the ban table.
            */
           if(!acceptable_name(buf)) {
-            cprintf(ch, "%s is already an invalid choice.\n\r", buf);
+            cprintf(ch, "%s is already an invalid choice.\r\n", buf);
             return;
           }
           /* Now, we can actually do the ban. */
@@ -246,7 +247,7 @@ EXEC SQL END DECLARE SECTION;
             EXEC SQL ROLLBACK WORK;
           } else {
             EXEC SQL COMMIT WORK;
-            cprintf(ch, "%s is now banned!\n\r", buf);
+            cprintf(ch, "%s is now banned!\r\n", buf);
             log_auth(ch, "BAN %s has been banned by %s!", buf, GET_NAME(ch));
           }
           /* Now we need to refresh the ban lists */
@@ -254,17 +255,17 @@ EXEC SQL END DECLARE SECTION;
           load_bans();
           return;
         } else {
-          page_printf(ch->desc, "Banned names:\n\r");
+          cprintf(ch, "Banned names:\r\n");
           for(i = 0; i < banned_names_count; i++) {
-            page_printf(ch->desc, "%-20s\n\r", banned_names[i]);
+            cprintf(ch, "%-20s\r\n", banned_names[i]);
           }
           return;
         }
       } else if (!str_cmp(ban_type, "ip") || !str_cmp(ban_type, "address") || !str_cmp(ban_type, "site")) {
         if (*buf) {
           /* No banning localhost! */
-          if(!str_cmp("127.0.0.1", buf)) {
-            cprintf(ch, "You cannot ban localhost!\n\r");
+          if(str_cmp("127.0.0.1", buf)) {
+            cprintf(ch, "You cannot ban localhost!\r\n");
             return;
           }
           /* Now, we can actually do the ban. */
@@ -277,7 +278,7 @@ EXEC SQL END DECLARE SECTION;
             EXEC SQL ROLLBACK WORK;
           } else {
             EXEC SQL COMMIT WORK;
-            cprintf(ch, "%s is now banned!\n\r", buf);
+            cprintf(ch, "%s is now banned!\r\n", buf);
             log_auth(ch, "BAN %s has been banned by %s!", buf, GET_NAME(ch));
           }
           /* Now we need to refresh the ban lists */
@@ -285,21 +286,22 @@ EXEC SQL END DECLARE SECTION;
           load_bans();
           return;
         } else {
-          page_printf(ch->desc, "Banned IP addresses:\n\r");
+          cprintf(ch, "Banned IP addresses:\r\n");
           for(i = 0; i < banned_ips_count; i++) {
-            page_printf(ch->desc, "%-20s\n\r", banned_ips[i]);
+            cprintf(ch, "%-20s\r\n", banned_ips[i]);
           }
           return;
         }
       }
     }
   }
-  cprintf(ch, "Usage: ban < name|ip > [ name|address ]\n\r");
+  cprintf(ch, "Usage: ban < name|ip > [ name|address ]\r\n");
 }
 
 void do_unban(struct char_data *ch, char *argument, int cmd)
 {
   char                                    ban_type[MAX_STRING_LENGTH] = "\0\0\0";
+  char                                    tmp_page[MAX_STRING_LENGTH] = "\0\0\0";
   int                                     i = 0;
 EXEC SQL BEGIN DECLARE SECTION;
   char                                    buf[MAX_STRING_LENGTH] = "\0\0\0";
@@ -309,7 +311,7 @@ EXEC SQL END DECLARE SECTION;
     log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
   if (IS_NPC(ch)) {
-    cprintf(ch, "You're a mob, you can't ban anyone.\n\r");
+    cprintf(ch, "You're a mob, you can't ban anyone.\r\n");
     return;
   }
   if (argument && *argument) {
@@ -320,7 +322,7 @@ EXEC SQL END DECLARE SECTION;
         if (*buf) {
           /* Are they actually banned? */
           if(!banned_name(buf)) {
-            cprintf(ch, "%s is not currently banned.\n\r", buf);
+            cprintf(ch, "%s is not currently banned.\r\n", buf);
             return;
           }
           /* OK, yank 'em. */
@@ -333,7 +335,7 @@ EXEC SQL END DECLARE SECTION;
             EXEC SQL ROLLBACK WORK;
           } else {
             EXEC SQL COMMIT WORK;
-            cprintf(ch, "%s is now unbanned.\n\r", buf);
+            cprintf(ch, "%s is now unbanned.\r\n", buf);
             log_auth(ch, "BAN %s has been unbanned by %s!", buf, GET_NAME(ch));
           }
           /* Now we need to refresh the ban lists */
@@ -341,9 +343,11 @@ EXEC SQL END DECLARE SECTION;
           load_bans();
           return;
         } else {
-          page_printf(ch->desc, "Banned names:\n\r");
+          sprintf(tmp_page, "Banned names:\r\n");
+          page_string(ch->desc, tmp_page, 1);
           for(i = 0; i < banned_names_count; i++) {
-            page_printf(ch->desc, "%-20s\n\r", banned_names[i]);
+            sprintf(tmp_page, "%-20s\r\n", banned_names[i]);
+            page_string(ch->desc, tmp_page, 1);
           }
           return;
         }
@@ -351,7 +355,7 @@ EXEC SQL END DECLARE SECTION;
         if (*buf) {
           /* Are they actually banned? */
           if(!banned_ip(buf)) {
-            cprintf(ch, "%s is not currently banned.\n\r", buf);
+            cprintf(ch, "%s is not currently banned.\r\n", buf);
             return;
           }
           /* OK, yank 'em. */
@@ -364,7 +368,7 @@ EXEC SQL END DECLARE SECTION;
             EXEC SQL ROLLBACK WORK;
           } else {
             EXEC SQL COMMIT WORK;
-            cprintf(ch, "%s is now unbanned.\n\r", buf);
+            cprintf(ch, "%s is now unbanned.\r\n", buf);
             log_auth(ch, "BAN %s has been unbanned by %s!", buf, GET_NAME(ch));
           }
           /* Now we need to refresh the ban lists */
@@ -372,16 +376,18 @@ EXEC SQL END DECLARE SECTION;
           load_bans();
           return;
         } else {
-          page_printf(ch->desc, "Banned IP addresses:\n\r");
+          sprintf(tmp_page, "Banned IP addresses:\r\n");
+          page_string(ch->desc, tmp_page, 1);
           for(i = 0; i < banned_ips_count; i++) {
-            page_printf(ch->desc, "%-20s\n\r", banned_ips[i]);
+            sprintf(tmp_page, "%-20s\r\n", banned_ips[i]);
+            page_string(ch->desc, tmp_page, 1);
           }
           return;
         }
       }
     }
   }
-  cprintf(ch, "Usage: unban < name|ip > [ name|address ]\n\r");
+  cprintf(ch, "Usage: unban < name|ip > [ name|address ]\r\n");
 }
 
 /* Returns TRUE if this character name would be acceptable for a

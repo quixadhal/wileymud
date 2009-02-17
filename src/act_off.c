@@ -42,7 +42,7 @@ funcp                                   bweapons[] = {
   (void *)cast_lightning_breath
 };
 
-void do_swat(struct char_data *ch, char *argument, int cmd)
+void do_swat(struct char_data *ch, const char *argument, int cmd)
 {
   struct char_data                       *vict = NULL;
 
@@ -54,17 +54,17 @@ void do_swat(struct char_data *ch, char *argument, int cmd)
 
   for (; isspace(*argument); argument++);
   if (!*argument) {
-    cprintf(ch, "You must say who you want to switch to!\n\r");
+    cprintf(ch, "You must say who you want to switch to!\r\n");
     return;
   }
   vict = get_char_room_vis(ch, argument);
 
   if (vict == ch->specials.fighting) {
-    cprintf(ch, "You are already fighting them!\n\r");
+    cprintf(ch, "You are already fighting them!\r\n");
     return;
   }
   if (vict == NULL) {
-    cprintf(ch, "I dont see them here?\n\r");
+    cprintf(ch, "I dont see them here?\r\n");
     return;
   }
   stop_fighting(ch);
@@ -72,7 +72,7 @@ void do_swat(struct char_data *ch, char *argument, int cmd)
   return;
 }
 
-void do_hit(struct char_data *ch, char *argument, int cmd)
+void do_hit(struct char_data *ch, const char *argument, int cmd)
 {
   char                                    arg[80] = "\0\0\0";
   struct char_data                       *victim = NULL;
@@ -80,7 +80,7 @@ void do_hit(struct char_data *ch, char *argument, int cmd)
   if (DEBUG)
     log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
-  if (check_peaceful(ch, "This is a place of peace.\n\r"))
+  if (check_peaceful(ch, "This is a place of peace.\r\n"))
     return;
 
   only_argument(argument, arg);
@@ -89,7 +89,7 @@ void do_hit(struct char_data *ch, char *argument, int cmd)
     victim = get_char_room_vis(ch, arg);
     if (victim) {
       if (victim == ch) {
-	cprintf(ch, "You hit yourself..OUCH!.\n\r");
+	cprintf(ch, "You hit yourself..OUCH!.\r\n");
 	act("$n hits $mself, and says OUCH!", FALSE, ch, 0, victim, TO_ROOM);
 	return;
       }
@@ -105,15 +105,15 @@ void do_hit(struct char_data *ch, char *argument, int cmd)
 	hit(ch, victim, TYPE_UNDEFINED);
 	WAIT_STATE(ch, PULSE_VIOLENCE + 1);
       } else
-	cprintf(ch, "You do the best you can!\n\r");
+	cprintf(ch, "You do the best you can!\r\n");
     } else
-      cprintf(ch, "They aren't here.\n\r");
+      cprintf(ch, "They aren't here.\r\n");
   } else {
-    cprintf(ch, "Hit who?\n\r");
+    cprintf(ch, "Hit who?\r\n");
   }
 }
 
-void do_kill(struct char_data *ch, char *argument, int cmd)
+void do_kill(struct char_data *ch, const char *argument, int cmd)
 {
   static char                             arg[MAX_INPUT_LENGTH] = "\0\0\0";
   struct char_data                       *victim = NULL;
@@ -129,12 +129,12 @@ void do_kill(struct char_data *ch, char *argument, int cmd)
   }
   only_argument(argument, arg);
   if (!*arg) {
-    cprintf(ch, "Kill who?\n\r");
+    cprintf(ch, "Kill who?\r\n");
   } else {
     if (!(victim = get_char_room_vis(ch, arg)))
-      cprintf(ch, "They aren't here.\n\r");
+      cprintf(ch, "They aren't here.\r\n");
     else if (ch == victim)
-      cprintf(ch, "Self-inflicted wounds are not allowed\n\r");
+      cprintf(ch, "Self-inflicted wounds are not allowed\r\n");
     else if (GetMaxLevel(ch) < GetMaxLevel(victim)) {
       do_hit(ch, argument, 0);
       return;
@@ -154,7 +154,7 @@ void do_kill(struct char_data *ch, char *argument, int cmd)
   }
 }
 
-void do_backstab(struct char_data *ch, char *argument, int cmd)
+void do_backstab(struct char_data *ch, const char *argument, int cmd)
 {
   struct char_data                       *victim = NULL;
   char                                    name[256] = "\0\0\0";
@@ -164,50 +164,50 @@ void do_backstab(struct char_data *ch, char *argument, int cmd)
   if (DEBUG)
     log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
-  if (check_peaceful(ch, "This is a place of peace.\n\r"))
+  if (check_peaceful(ch, "This is a place of peace.\r\n"))
     return;
 
   only_argument(argument, name);
 
   if (!(victim = get_char_room_vis(ch, name))) {
-    cprintf(ch, "Backstab who?\n\r");
+    cprintf(ch, "Backstab who?\r\n");
     return;
   }
   if (victim == ch) {
-    cprintf(ch, "How can you sneak up on yourself?\n\r");
+    cprintf(ch, "How can you sneak up on yourself?\r\n");
     return;
   }
   if (!ch->equipment[WIELD]) {
-    cprintf(ch, "You need to wield a one handed weapon, to make it a succes.\n\r");
+    cprintf(ch, "You need to wield a one handed weapon, to make it a succes.\r\n");
     return;
   }
   if (MOUNTED(ch)) {
-    cprintf(ch, "Not while your mounted!\n\r");
+    cprintf(ch, "Not while your mounted!\r\n");
     return;
   }
   if (MOUNTED(victim)) {
-    cprintf(ch, "Not while they are mounted!\n\r");
+    cprintf(ch, "Not while they are mounted!\r\n");
     return;
   }
   if (ch->attackers) {
-    cprintf(ch, "There's no way to reach that back while you're fighting!\n\r");
+    cprintf(ch, "There's no way to reach that back while you're fighting!\r\n");
     return;
   }
   if (!CheckKill(ch, victim))
     return;
 
   if (victim->attackers >= 3) {
-    cprintf(ch, "You can't get close enough to them to backstab!\n\r");
+    cprintf(ch, "You can't get close enough to them to backstab!\r\n");
     return;
   }
   if (ch->equipment[WIELD]->obj_flags.value[3] != 11 &&
       ch->equipment[WIELD]->obj_flags.value[3] != 1 &&
       ch->equipment[WIELD]->obj_flags.value[3] != 10) {
-    cprintf(ch, "Only piercing or stabbing weapons can be used for backstabbing.\n\r");
+    cprintf(ch, "Only piercing or stabbing weapons can be used for backstabbing.\r\n");
     return;
   }
   if (ch->specials.fighting) {
-    cprintf(ch, "You're too busy to backstab\n\r");
+    cprintf(ch, "You're too busy to backstab\r\n");
     return;
   }
   if (victim->specials.fighting) {
@@ -245,7 +245,7 @@ void do_backstab(struct char_data *ch, char *argument, int cmd)
   WAIT_STATE(ch, PULSE_VIOLENCE * 2);
 }
 
-void do_order(struct char_data *ch, char *argument, int cmd)
+void do_order(struct char_data *ch, const char *argument, int cmd)
 {
   char                                    name[100] = "\0\0\0";
   char                                    message[256] = "\0\0\0";
@@ -267,16 +267,16 @@ void do_order(struct char_data *ch, char *argument, int cmd)
   strcpy(message2, message);
 
   if (!*name || !*message)
-    cprintf(ch, "Order who to do what?\n\r");
+    cprintf(ch, "Order who to do what?\r\n");
   else if (!(victim = get_char_room_vis(ch, name)) &&
 	   str_cmp("part", name) &&
 	   str_cmp("party", name) && str_cmp("follower", name) && str_cmp("followers", name))
-    cprintf(ch, "That person isn't here.\n\r");
+    cprintf(ch, "That person isn't here.\r\n");
   else if (ch == victim)
-    cprintf(ch, "You order yourself, very good.\n\r");
+    cprintf(ch, "You order yourself, very good.\r\n");
   else {
     if (IS_AFFECTED(ch, AFF_CHARM)) {
-      cprintf(ch, "Your superior would not aprove of you giving orders.\n\r");
+      cprintf(ch, "Your superior would not aprove of you giving orders.\r\n");
       return;
     }
     argument_interpreter(message2, action, onwho);
@@ -293,7 +293,7 @@ void do_order(struct char_data *ch, char *argument, int cmd)
 	is_abbrev("disarm", action) || is_abbrev("steal", action) || is_abbrev("hit", action)) {
       if ((onwho_ptr = get_char_room_vis(ch, onwho))) {
 	if (!CheckKill(ch, onwho_ptr)) {
-	  cprintf(ch, "You can't order other to do your dirty work.\n\r");
+	  cprintf(ch, "You can't order other to do your dirty work.\r\n");
 	  return;
 	}
       }
@@ -306,7 +306,7 @@ void do_order(struct char_data *ch, char *argument, int cmd)
 	  && ((victim->master != ch) || !IS_AFFECTED(victim, AFF_CHARM)))
 	act("$n has an indifferent look.", FALSE, victim, 0, 0, TO_ROOM);
       else {
-	cprintf(ch, "Ok.\n\r");
+	cprintf(ch, "Ok.\r\n");
 	command_interpreter(victim, message);
       }
     } else {						       /* This is order "followers" */
@@ -322,14 +322,14 @@ void do_order(struct char_data *ch, char *argument, int cmd)
 	  }
       }
       if (found)
-	cprintf(ch, "Ok.\n\r");
+	cprintf(ch, "Ok.\r\n");
       else
-	cprintf(ch, "Nobody here is a loyal subject of yours!\n\r");
+	cprintf(ch, "Nobody here is a loyal subject of yours!\r\n");
     }
   }
 }
 
-void do_flee(struct char_data *ch, char *argument, int cmd)
+void do_flee(struct char_data *ch, const char *argument, int cmd)
 {
   int                                     i = 0;
   int                                     attempt = 0;
@@ -366,7 +366,7 @@ void do_flee(struct char_data *ch, char *argument, int cmd)
 	  /*
 	   * The escape has succeded 
 	   */
-	  cprintf(ch, "You flee head over heels.\n\r");
+	  cprintf(ch, "You flee head over heels.\r\n");
 	  return;
 	} else {
 	  if (!flee_dir)
@@ -378,7 +378,7 @@ void do_flee(struct char_data *ch, char *argument, int cmd)
     /*
      * No exits was found 
      */
-    cprintf(ch, "PANIC! You couldn't escape!\n\r");
+    cprintf(ch, "PANIC! You couldn't escape!\r\n");
     return;
   }
   for (i = 0; i < MAX_NUM_EXITS; i++) {
@@ -420,7 +420,7 @@ void do_flee(struct char_data *ch, char *argument, int cmd)
 	if (!IS_NPC(ch))
 	  gain_exp(ch, -loose);
 
-	cprintf(ch, "You flee head over heels.\n\r");
+	cprintf(ch, "You flee head over heels.\r\n");
 	if (ch->specials.fighting->specials.fighting == ch)
 	  stop_fighting(ch->specials.fighting);
 	if (ch->specials.fighting)
@@ -437,10 +437,10 @@ void do_flee(struct char_data *ch, char *argument, int cmd)
   /*
    * No exits were found 
    */
-  cprintf(ch, "PANIC! You couldn't escape!\n\r");
+  cprintf(ch, "PANIC! You couldn't escape!\r\n");
 }
 
-void do_bandage(struct char_data *ch, char *argument, int cmd)
+void do_bandage(struct char_data *ch, const char *argument, int cmd)
 {
   struct char_data                       *victim = NULL;
   char                                    name[256] = "\0\0\0";
@@ -453,33 +453,33 @@ void do_bandage(struct char_data *ch, char *argument, int cmd)
   only_argument(argument, name);
 
   if (!(victim = get_char_room_vis(ch, name))) {
-    cprintf(ch, "Bandage who?\n\r");
+    cprintf(ch, "Bandage who?\r\n");
     return;
   }
   if (victim == ch) {
-    cprintf(ch, "Aren't we funny today...\n\r");
+    cprintf(ch, "Aren't we funny today...\r\n");
     return;
   }
   if (MOUNTED(ch)) {
-    cprintf(ch, "You can't reach them from your mounts back!\n\r");
+    cprintf(ch, "You can't reach them from your mounts back!\r\n");
     return;
   }
   if (ch->attackers > 3) {
-    cprintf(ch, "There's no room to use Bandage!\n\r");
+    cprintf(ch, "There's no room to use Bandage!\r\n");
     return;
   }
   if (victim->attackers >= 4) {
-    cprintf(ch, "You can't get close enough to them to use bandage!\n\r");
+    cprintf(ch, "You can't get close enough to them to use bandage!\r\n");
     return;
   }
   if (GET_HIT(victim) > 0) {
-    cprintf(ch, "You don't need to do this, they look stable.\n\r");
+    cprintf(ch, "You don't need to do this, they look stable.\r\n");
     return;
   }
   cost = 10 - (GetMaxLevel(ch) / 10);
 
   if (GET_MANA(ch) < cost) {
-    cprintf(ch, "You can't seem to concentrate enough to bandage!\n\r");
+    cprintf(ch, "You can't seem to concentrate enough to bandage!\r\n");
     return;
   }
   act("$n quickly bandages $N.", FALSE, ch, 0, victim, TO_NOTVICT);
@@ -494,7 +494,7 @@ void do_bandage(struct char_data *ch, char *argument, int cmd)
     if (GET_HIT(victim) <= 0)
       GET_HIT(victim) += 1;
     update_pos(victim);
-    cprintf(ch, "They are still in need of help....\n\r");
+    cprintf(ch, "They are still in need of help....\r\n");
     GET_MANA(ch) -= cost / 2;
     act("$N is trying to save you, bandages have been put on your wounds!", FALSE, victim, 0,
 	ch, TO_CHAR);
@@ -502,7 +502,7 @@ void do_bandage(struct char_data *ch, char *argument, int cmd)
     if (GET_HIT(victim) <= 0)
       GET_HIT(victim) = 1;
     update_pos(victim);
-    cprintf(ch, "They should live...\n\r");
+    cprintf(ch, "They should live...\r\n");
     GET_MANA(ch) -= cost;
     act("$N has saved you, bandages have been put on your wounds!", FALSE, victim, 0, ch,
 	TO_CHAR);
@@ -514,7 +514,7 @@ void slam_into_wall(struct char_data *ch, struct room_direction_data *exitp)
   char                                    doorname[128] = "\0\0\0";
 
   if (DEBUG > 2)
-    log_info("called %s with %s, %08x", __PRETTY_FUNCTION__, SAFE_NAME(ch), exitp);
+    log_info("called %s with %s, %08zx", __PRETTY_FUNCTION__, SAFE_NAME(ch), (size_t)exitp);
 
   if (exitp->keyword && *exitp->keyword) {
     if ((strcmp(fname(exitp->keyword), "secret") == 0) || (IS_SET(exitp->exit_info, EX_SECRET))) {
@@ -526,8 +526,8 @@ void slam_into_wall(struct char_data *ch, struct room_direction_data *exitp)
     strcpy(doorname, "barrier");
   }
 
-  cprintf(ch, "You slam your body against the %s with no effect\n\r", doorname);
-  act("$n slams against the %s.\n\r", FALSE, ch, 0, 0, TO_ROOM, doorname);
+  cprintf(ch, "You slam your body against the %s with no effect\r\n", doorname);
+  act("$n slams against the %s.\r\n", FALSE, ch, 0, 0, TO_ROOM, doorname);
 
   GET_HIT(ch) -= number(1, 4);
 
@@ -538,7 +538,7 @@ void slam_into_wall(struct char_data *ch, struct room_direction_data *exitp)
   return;
 }
 
-void do_doorbash(struct char_data *ch, char *argument, int cmd)
+void do_doorbash(struct char_data *ch, const char *argument, int cmd)
 {
   int                                     dir = -1;
   int                                     ok = 0;
@@ -552,11 +552,11 @@ void do_doorbash(struct char_data *ch, char *argument, int cmd)
     log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
   if (GET_MOVE(ch) < 10) {
-    cprintf(ch, "You're too tired to do that\n\r");
+    cprintf(ch, "You're too tired to do that\r\n");
     return;
   }
   if (MOUNTED(ch)) {
-    cprintf(ch, "You can't bash a door from the back of a mount? fool.\n\r");
+    cprintf(ch, "You can't bash a door from the back of a mount? fool.\r\n");
     return;
   }
 /*
@@ -575,23 +575,23 @@ void do_doorbash(struct char_data *ch, char *argument, int cmd)
   }
 
   if (!ok) {
-    cprintf(ch, "Error in doorbash please report\n\r");
+    cprintf(ch, "Error in doorbash please report\r\n");
     return;
   }
   exitp = EXIT(ch, dir);
 
   if (!exitp) {
-    cprintf(ch, "Error in doorbash please report\n\r");
+    cprintf(ch, "Error in doorbash please report\r\n");
     return;
   }
   if (dir == 5) {
     if (real_roomp(exitp->to_room)->sector_type == SECT_AIR && !IS_AFFECTED(ch, AFF_FLYING)) {
-      cprintf(ch, "You have no way of getting there!\n\r");
+      cprintf(ch, "You have no way of getting there!\r\n");
       return;
     }
   }
   act("$n flings their body %swards", FALSE, ch, 0, 0, TO_ROOM, dirs[dir]);
-  cprintf(ch, "You fling your body %swards\n\r", dirs[dir]);
+  cprintf(ch, "You fling your body %swards\r\n", dirs[dir]);
 
   if (IS_NOT_SET(exitp->exit_info, EX_CLOSED)) {
     was_in = ch->in_room;
@@ -640,7 +640,7 @@ void do_doorbash(struct char_data *ch, char *argument, int cmd)
 	 */
 	act("$n slams into the %s, and smashes it down", FALSE, ch, 0, 0, TO_ROOM,
             fname(exitp->keyword));
-	cprintf(ch, "You slam into the %s, and smashes open!\n\r", fname(exitp->keyword));
+	cprintf(ch, "You slam into the %s, and smashes open!\r\n", fname(exitp->keyword));
 	raw_unlock_door(ch, exitp, dir);
 	raw_open_door(ch, dir);
 	/*
@@ -670,7 +670,7 @@ void do_doorbash(struct char_data *ch, char *argument, int cmd)
 	}
       }
     } else {
-      cprintf(ch, "You do not know this well enough yet.\n\r");
+      cprintf(ch, "You do not know this well enough yet.\r\n");
       slam_into_wall(ch, exitp);
       return;
     }
@@ -679,7 +679,7 @@ void do_doorbash(struct char_data *ch, char *argument, int cmd)
   }
 }
 
-void do_bash(struct char_data *ch, char *argument, int cmd)
+void do_bash(struct char_data *ch, const char *argument, int cmd)
 {
   struct char_data                       *victim = NULL;
   char                                    name[256] = "\0\0\0";
@@ -690,7 +690,7 @@ void do_bash(struct char_data *ch, char *argument, int cmd)
   if (DEBUG)
     log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
-  if (check_peaceful(ch, "This is a place of peace.\n\r"))
+  if (check_peaceful(ch, "This is a place of peace.\r\n"))
     return;
 
   only_argument(argument, name);
@@ -699,16 +699,16 @@ void do_bash(struct char_data *ch, char *argument, int cmd)
     if (ch->specials.fighting) {
       victim = ch->specials.fighting;
     } else {
-      cprintf(ch, "Bash who?\n\r");
+      cprintf(ch, "Bash who?\r\n");
       return;
     }
   }
   if (victim == ch) {
-    cprintf(ch, "Aren't we funny today...\n\r");
+    cprintf(ch, "Aren't we funny today...\r\n");
     return;
   }
   if (MOUNTED(ch)) {
-    cprintf(ch, "You can't bash while mounted!\n\r");
+    cprintf(ch, "You can't bash while mounted!\r\n");
     return;
   }
   if (!CheckKill(ch, victim))
@@ -719,17 +719,17 @@ void do_bash(struct char_data *ch, char *argument, int cmd)
     has_shield = 1;
 
   if (ch->attackers > 3) {
-    cprintf(ch, "There's no room to bash!\n\r");
+    cprintf(ch, "There's no room to bash!\r\n");
     return;
   }
   if (victim->attackers >= 4) {
-    cprintf(ch, "You can't get close enough to them to bash!\n\r");
+    cprintf(ch, "You can't get close enough to them to bash!\r\n");
     return;
   }
   cost = 10 - (GET_LEVEL(ch, BestFightingClass(ch)) / 10);
 
   if (GET_MANA(ch) < cost) {
-    cprintf(ch, "You can't seem to concentrate enought to bash!\n\r");
+    cprintf(ch, "You can't seem to concentrate enought to bash!\r\n");
     return;
   }
   GET_MANA(ch) -= cost;
@@ -779,7 +779,7 @@ void do_bash(struct char_data *ch, char *argument, int cmd)
   WAIT_STATE(ch, PULSE_VIOLENCE * 2);
 }
 
-void do_punch(struct char_data *ch, char *argument, int cmd)
+void do_punch(struct char_data *ch, const char *argument, int cmd)
 {
   struct char_data                       *victim = NULL;
   char                                    name[256] = "\0\0\0";
@@ -790,7 +790,7 @@ void do_punch(struct char_data *ch, char *argument, int cmd)
   if (DEBUG)
     log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
-  if (check_peaceful(ch, "This is a place of peace.\n\r"))
+  if (check_peaceful(ch, "This is a place of peace.\r\n"))
     return;
 
   only_argument(argument, name);
@@ -799,37 +799,37 @@ void do_punch(struct char_data *ch, char *argument, int cmd)
     if (ch->specials.fighting) {
       victim = ch->specials.fighting;
     } else {
-      cprintf(ch, "Punch who?\n\r");
+      cprintf(ch, "Punch who?\r\n");
       return;
     }
   }
   if (victim == ch) {
-    cprintf(ch, "Aren't we funny today...\n\r");
+    cprintf(ch, "Aren't we funny today...\r\n");
     return;
   }
   if (MOUNTED(ch)) {
-    cprintf(ch, "You can't punch while mounted!\n\r");
+    cprintf(ch, "You can't punch while mounted!\r\n");
     return;
   }
   if (!CheckKill(ch, victim))
     return;
 
   if (ch->attackers > 3) {
-    cprintf(ch, "There's no room to punch!\n\r");
+    cprintf(ch, "There's no room to punch!\r\n");
     return;
   }
   if (victim->attackers >= 3) {
-    cprintf(ch, "You can't get close enough to them to punch!\n\r");
+    cprintf(ch, "You can't get close enough to them to punch!\r\n");
     return;
   }
   if (ch->equipment[WIELD_TWOH]) {
-    cprintf(ch, "You can't do this while wielding two handed!\n\r");
+    cprintf(ch, "You can't do this while wielding two handed!\r\n");
     return;
   }
   cost = 20 - (GET_LEVEL(ch, BestFightingClass(ch)) / 6);
 
   if (GET_MANA(ch) < cost) {
-    cprintf(ch, "You can't seem to concentrate enough to punch!\n\r");
+    cprintf(ch, "You can't seem to concentrate enough to punch!\r\n");
     return;
   }
   GET_MANA(ch) -= cost;
@@ -869,7 +869,7 @@ void do_punch(struct char_data *ch, char *argument, int cmd)
   WAIT_STATE(ch, PULSE_VIOLENCE * 2);
 }
 
-void do_rescue(struct char_data *ch, char *argument, int cmd)
+void do_rescue(struct char_data *ch, const char *argument, int cmd)
 {
   struct char_data                       *victim = NULL;
   struct char_data                       *tmp_ch = NULL;
@@ -880,35 +880,35 @@ void do_rescue(struct char_data *ch, char *argument, int cmd)
   if (DEBUG)
     log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
-  if (check_peaceful(ch, "No one should need rescuing here.\n\r"))
+  if (check_peaceful(ch, "No one should need rescuing here.\r\n"))
     return;
 
   only_argument(argument, victim_name);
 
   if (!(victim = get_char_room_vis(ch, victim_name))) {
-    cprintf(ch, "Who do you want to rescue?\n\r");
+    cprintf(ch, "Who do you want to rescue?\r\n");
     return;
   }
   if (victim == ch) {
-    cprintf(ch, "What about fleeing instead?\n\r");
+    cprintf(ch, "What about fleeing instead?\r\n");
     return;
   }
   if (ch->specials.fighting == victim) {
-    cprintf(ch, "How can you rescue someone you are trying to kill?\n\r");
+    cprintf(ch, "How can you rescue someone you are trying to kill?\r\n");
     return;
   }
   if (MOUNTED(ch)) {
-    cprintf(ch, "You can't rescue while mounted!\n\r");
+    cprintf(ch, "You can't rescue while mounted!\r\n");
     return;
   }
   if (victim->attackers >= 4) {
-    cprintf(ch, "You can't get close enough to them to rescue!\n\r");
+    cprintf(ch, "You can't get close enough to them to rescue!\r\n");
     return;
   }
   cost = 15 - (GET_LEVEL(ch, BestFightingClass(ch)) / 10);
 
   if (GET_MANA(ch) < cost) {
-    cprintf(ch, "You trip while trying to rescue!\n\r");
+    cprintf(ch, "You trip while trying to rescue!\r\n");
     return;
   }
   GET_MANA(ch) -= cost;
@@ -925,10 +925,10 @@ void do_rescue(struct char_data *ch, char *argument, int cmd)
   else {
     percent_chance = number(1, 101);			       /* 101% is a complete failure */
     if (percent_chance > ch->skills[SKILL_RESCUE].learned) {
-      cprintf(ch, "You fail the rescue.\n\r");
+      cprintf(ch, "You fail the rescue.\r\n");
       return;
     }
-    cprintf(ch, "Huzzay! To the rescue...\n\r");
+    cprintf(ch, "Huzzay! To the rescue...\r\n");
     act("You are rescued by $N, you are confused!", FALSE, victim, 0, ch, TO_CHAR);
     act("$n heroically rescues $N.", FALSE, ch, 0, victim, TO_NOTVICT);
     if (victim->specials.fighting == tmp_ch)
@@ -945,7 +945,7 @@ void do_rescue(struct char_data *ch, char *argument, int cmd)
   }
 }
 
-void do_assist(struct char_data *ch, char *argument, int cmd)
+void do_assist(struct char_data *ch, const char *argument, int cmd)
 {
   struct char_data                       *victim = NULL;
   struct char_data                       *tmp_ch = NULL;
@@ -954,29 +954,29 @@ void do_assist(struct char_data *ch, char *argument, int cmd)
   if (DEBUG)
     log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
-  if (check_peaceful(ch, "This is a place of peace.\n\r"))
+  if (check_peaceful(ch, "This is a place of peace.\r\n"))
     return;
 
   only_argument(argument, victim_name);
 
   if (!(victim = get_char_room_vis(ch, victim_name))) {
-    cprintf(ch, "Who do you want to assist?\n\r");
+    cprintf(ch, "Who do you want to assist?\r\n");
     return;
   }
   if (victim == ch) {
-    cprintf(ch, "Oh, by all means, help yourself...\n\r");
+    cprintf(ch, "Oh, by all means, help yourself...\r\n");
     return;
   }
   if (ch->specials.fighting == victim) {
-    cprintf(ch, "That would be very confusing!\n\r");
+    cprintf(ch, "That would be very confusing!\r\n");
     return;
   }
   if (ch->specials.fighting) {
-    cprintf(ch, "You have your hands full right now\n\r");
+    cprintf(ch, "You have your hands full right now\r\n");
     return;
   }
   if (victim->attackers >= 4) {
-    cprintf(ch, "You can't get close enough to them to assist!\n\r");
+    cprintf(ch, "You can't get close enough to them to assist!\r\n");
     return;
   }
   tmp_ch = victim->specials.fighting;
@@ -989,7 +989,7 @@ void do_assist(struct char_data *ch, char *argument, int cmd)
   WAIT_STATE(victim, PULSE_VIOLENCE + 2);		       /* same as hit */
 }
 
-void do_kick(struct char_data *ch, char *argument, int cmd)
+void do_kick(struct char_data *ch, const char *argument, int cmd)
 {
   struct char_data                       *victim = NULL;
   char                                    name[256] = "\0\0\0";
@@ -999,7 +999,7 @@ void do_kick(struct char_data *ch, char *argument, int cmd)
   if (DEBUG)
     log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
-  if (check_peaceful(ch, "This is a place of peace.\n\r"))
+  if (check_peaceful(ch, "This is a place of peace.\r\n"))
     return;
 
   only_argument(argument, name);
@@ -1008,37 +1008,37 @@ void do_kick(struct char_data *ch, char *argument, int cmd)
     if (ch->specials.fighting) {
       victim = ch->specials.fighting;
     } else {
-      cprintf(ch, "Kick who?\n\r");
+      cprintf(ch, "Kick who?\r\n");
       return;
     }
   }
   if (victim == ch) {
-    cprintf(ch, "Aren't we funny today...\n\r");
+    cprintf(ch, "Aren't we funny today...\r\n");
     return;
   }
   if (MOUNTED(ch)) {
-    cprintf(ch, "You can't kick while mounted!\n\r");
+    cprintf(ch, "You can't kick while mounted!\r\n");
     return;
   }
   if (MOUNTED(victim)) {
-    cprintf(ch, "You've been watching to much kung-fu!\n\r");
+    cprintf(ch, "You've been watching to much kung-fu!\r\n");
     return;
   }
   if (!CheckKill(ch, victim))
     return;
 
   if (ch->attackers > 3) {
-    cprintf(ch, "There's no room to kick!\n\r");
+    cprintf(ch, "There's no room to kick!\r\n");
     return;
   }
   if (victim->attackers >= 3) {
-    cprintf(ch, "You can't get close enough to them to kick!\n\r");
+    cprintf(ch, "You can't get close enough to them to kick!\r\n");
     return;
   }
   cost = 10 - (GET_LEVEL(ch, BestFightingClass(ch)) / 10);
 
   if (GET_MANA(ch) < cost) {
-    cprintf(ch, "You trip while trying to kick!\n\r");
+    cprintf(ch, "You trip while trying to kick!\r\n");
     return;
   }
   GET_MANA(ch) -= cost;
@@ -1064,7 +1064,7 @@ void do_kick(struct char_data *ch, char *argument, int cmd)
   WAIT_STATE(ch, PULSE_VIOLENCE * 3);
 }
 
-void do_wimp(struct char_data *ch, char *argument, int cmd)
+void do_wimp(struct char_data *ch, const char *argument, int cmd)
 {
   /*
    * sets the character in wimpy mode.  
@@ -1074,17 +1074,17 @@ void do_wimp(struct char_data *ch, char *argument, int cmd)
 
   if (IS_SET(ch->specials.act, PLR_WIMPY)) {
     REMOVE_BIT(ch->specials.act, PLR_WIMPY);
-    cprintf(ch, "You are no longer a wimp.\n\r");
+    cprintf(ch, "You are no longer a wimp.\r\n");
   } else {
     if (GetMaxLevel(ch) < 4) {
       SET_BIT(ch->specials.act, PLR_WIMPY);
-      cprintf(ch, "You are now a wimp.\n\r");
+      cprintf(ch, "You are now a wimp.\r\n");
     } else
-      cprintf(ch, "You are an adult now, no need for wimpy mode.\n\r");
+      cprintf(ch, "You are an adult now, no need for wimpy mode.\r\n");
   }
 }
 
-void do_breath(struct char_data *ch, char *argument, int cmd)
+void do_breath(struct char_data *ch, const char *argument, int cmd)
 {
   struct char_data                       *victim = NULL;
   char                                    name[MAX_STRING_LENGTH] = "\0\0\0";
@@ -1095,7 +1095,7 @@ void do_breath(struct char_data *ch, char *argument, int cmd)
   if (DEBUG)
     log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
-  if (check_peaceful(ch, "That wouldn't be nice at all.\n\r"))
+  if (check_peaceful(ch, "That wouldn't be nice at all.\r\n"))
     return;
 
   only_argument(argument, name);
@@ -1110,14 +1110,14 @@ void do_breath(struct char_data *ch, char *argument, int cmd)
 	 scan->vnum >= 0 && scan->vnum != mob_index[ch->nr].virtual; scan++);
 
     if (scan->vnum < 0) {
-      cprintf(ch, "You don't have a breath weapon.\n\r");
+      cprintf(ch, "You don't have a breath weapon.\r\n");
       return;
     }
     for (count = 0; scan->breaths[count]; count++);
 
     if (count < 1) {
       log_info("monster %s has no breath weapons", ch->player.short_descr);
-      cprintf(ch, "Why don't you have any breath weapons!?\n\r");
+      cprintf(ch, "Why don't you have any breath weapons!?\r\n");
       return;
     }
     weapon = scan->breaths[dice(1, count) - 1];
@@ -1135,7 +1135,7 @@ void do_breath(struct char_data *ch, char *argument, int cmd)
     if (ch->specials.fighting) {
       victim = ch->specials.fighting;
     } else {
-      cprintf(ch, "Breath on who?\n\r");
+      cprintf(ch, "Breath on who?\r\n");
       return;
     }
   }
@@ -1145,7 +1145,7 @@ void do_breath(struct char_data *ch, char *argument, int cmd)
 }
 
 #if 0
-void do_shoot(struct char_data *ch, char *argument, int cmd)
+void do_shoot(struct char_data *ch, const char *argument, int cmd)
 {
   char                                    arg[80] = "\0\0\0";
   struct char_data                       *victim = NULL;
@@ -1153,7 +1153,7 @@ void do_shoot(struct char_data *ch, char *argument, int cmd)
   if (DEBUG)
     log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
-  if (check_peaceful(ch, "You feel too peaceful to contemplate violence.\n\r"))
+  if (check_peaceful(ch, "You feel too peaceful to contemplate violence.\r\n"))
     return;
 
   only_argument(argument, arg);
@@ -1173,10 +1173,10 @@ void do_shoot(struct char_data *ch, char *argument, int cmd)
 	shoot(ch, victim);
       }
     } else {
-      cprintf(ch, "They aren't here.\n\r");
+      cprintf(ch, "They aren't here.\r\n");
     }
   } else {
-    cprintf(ch, "Shoot who?\n\r");
+    cprintf(ch, "Shoot who?\r\n");
   }
 }
 #endif

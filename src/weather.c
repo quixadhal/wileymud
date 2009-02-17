@@ -71,32 +71,32 @@ void another_hour(int mode)
   if (mode) {
     switch (time_info.hours) {
       case 0:
-	oprintf("The moon rises high overhead.\n\r");
+	oprintf("The moon rises high overhead.\r\n");
 	break;
       case 4:
-	oprintf("The moon sets.\n\r");
+	oprintf("The moon sets.\r\n");
 	break;
       case 6:
 	weather_info.sunlight = SUN_RISE;
-	oprintf("The sun rises in the east.\n\r");
+	oprintf("The sun rises in the east.\r\n");
 	break;
       case 7:
 	weather_info.sunlight = SUN_LIGHT;
-	oprintf("The day has begun.\n\r");
+	oprintf("The day has begun.\r\n");
 	break;
       case 12:
-	oprintf("It is noon.\n\r");
+	oprintf("It is noon.\r\n");
 	break;
       case 18:
 	weather_info.sunlight = SUN_SET;
-	oprintf("The sun slowly disappears in the west.\n\r");
+	oprintf("The sun slowly disappears in the west.\r\n");
 	break;
       case 19:
 	weather_info.sunlight = SUN_DARK;
-	oprintf("The night has begun.\n\r");
+	oprintf("The night has begun.\r\n");
 	break;
       case 21:
-	oprintf("A %s moon rises in the eastern sky.\n\r",
+	oprintf("A %s moon rises in the eastern sky.\r\n",
 		moon_names[(weather_info.moon - 1) / 4]);
 	break;
       default:
@@ -198,49 +198,49 @@ void ChangeWeather(int change)
       break;
     case 1:
       {
-	oprintf("The sky is getting cloudy.\n\r");
+	oprintf("The sky is getting cloudy.\r\n");
 	weather_info.sky = SKY_CLOUDY;
 	break;
       }
     case 2:
       {
 	if ((time_info.month > 3) && (time_info.month < 14))
-	  oprintf("It starts to rain.\n\r");
+	  oprintf("It starts to rain.\r\n");
 	else
-	  oprintf("It starts to drizzle. \n\r");
+	  oprintf("It starts to drizzle. \r\n");
 	weather_info.sky = SKY_RAINING;
 	break;
       }
     case 3:
       {
-	oprintf("The clouds disappear.\n\r");
+	oprintf("The clouds disappear.\r\n");
 	weather_info.sky = SKY_CLOUDLESS;
 	break;
       }
     case 4:
       {
 	if ((time_info.month > 3) && (time_info.month < 14))
-	  oprintf("You are caught in lightning storm.\n\r");
+	  oprintf("You are caught in lightning storm.\r\n");
 	else
-	  oprintf("You are caught in a layer of fog. \n\r");
+	  oprintf("You are caught in a layer of fog. \r\n");
 	weather_info.sky = SKY_LIGHTNING;
 	break;
       }
     case 5:
       {
 	if ((time_info.month > 3) && (time_info.month < 14))
-	  oprintf("The rain has stopped.\n\r");
+	  oprintf("The rain has stopped.\r\n");
 	else
-	  oprintf("The drizzle has stopped. \n\r");
+	  oprintf("The drizzle has stopped. \r\n");
 	weather_info.sky = SKY_CLOUDY;
 	break;
       }
     case 6:
       {
 	if ((time_info.month > 3) && (time_info.month < 14))
-	  oprintf("The lightning has gone, but it is still raining.\n\r");
+	  oprintf("The lightning has gone, but it is still raining.\r\n");
 	else
-	  oprintf("The fog has lifted, but it is still drizzling.\n\r");
+	  oprintf("The fog has lifted, but it is still drizzling.\r\n");
 	weather_info.sky = SKY_RAINING;
 	break;
       }
@@ -260,17 +260,17 @@ void GetMonth(int month)
   switch (month) {
     case 0:
     case 1:
-      oprintf(" It is bitterly cold outside\n\r");
+      oprintf(" It is bitterly cold outside\r\n");
       break;
     case 2:
-      oprintf(" It is very cold \n\r");
+      oprintf(" It is very cold \r\n");
       break;
     case 3:
     case 4:
-      oprintf(" It is chilly outside \n\r");
+      oprintf(" It is chilly outside \r\n");
       break;
     case 5:
-      oprintf(" The flowers start to bloom \n\r");
+      oprintf(" The flowers start to bloom \r\n");
       break;
     case 6:
     case 7:
@@ -278,23 +278,23 @@ void GetMonth(int month)
     case 9:
     case 10:
     case 11:
-      oprintf(" It is warm and humid. \n\r");
+      oprintf(" It is warm and humid. \r\n");
       break;
     case 12:
-      oprintf(" It starts to get a little windy \n\r");
+      oprintf(" It starts to get a little windy \r\n");
       break;
     case 13:
-      oprintf(" The air is getting chilly \n\r");
+      oprintf(" The air is getting chilly \r\n");
       break;
     case 14:
-      oprintf(" The leaves start to change colors. \n\r");
+      oprintf(" The leaves start to change colors. \r\n");
       break;
     case 15:
-      oprintf(" It starts to get cold \n\r");
+      oprintf(" It starts to get cold \r\n");
       break;
     case 16:
     case 17:
-      oprintf(" It is bitterly cold outside \n\r");
+      oprintf(" It is bitterly cold outside \r\n");
       break;
   }
 }

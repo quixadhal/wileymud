@@ -25,7 +25,7 @@
 #include "spell_parser.h"
 #include "fight.h"
 
-void cast_armor(char level, struct char_data *ch, char *arg, int type, struct char_data *victim,
+void cast_armor(char level, struct char_data *ch, const char *arg, int type, struct char_data *victim,
 		struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
@@ -34,7 +34,7 @@ void cast_armor(char level, struct char_data *ch, char *arg, int type, struct ch
   switch (type) {
     case SPELL_TYPE_SPELL:
       if (affected_by_spell(victim, SPELL_ARMOR) || affected_by_spell(victim, SPELL_STONE_SKIN)) {
-	cprintf(ch, "Nothing seems to happen.\n\r");
+	cprintf(ch, "Nothing seems to happen.\r\n");
 	return;
       }
       if (ch != victim)
@@ -69,7 +69,7 @@ void cast_armor(char level, struct char_data *ch, char *arg, int type, struct ch
   }
 }
 
-void cast_teleport(char level, struct char_data *ch, char *arg, int type,
+void cast_teleport(char level, struct char_data *ch, const char *arg, int type,
 		   struct char_data *victim, struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
@@ -102,7 +102,7 @@ void cast_teleport(char level, struct char_data *ch, char *arg, int type,
   }
 }
 
-void cast_bless(char level, struct char_data *ch, char *arg, int type, struct char_data *victim,
+void cast_bless(char level, struct char_data *ch, const char *arg, int type, struct char_data *victim,
 		struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
@@ -112,7 +112,7 @@ void cast_bless(char level, struct char_data *ch, char *arg, int type, struct ch
     case SPELL_TYPE_SPELL:
       if (tar_obj) {					       /* It's an object */
 	if (IS_SET(tar_obj->obj_flags.extra_flags, ITEM_BLESS)) {
-	  cprintf(ch, "Nothing seems to happen.\n\r");
+	  cprintf(ch, "Nothing seems to happen.\r\n");
 	  return;
 	}
 	spell_bless(level, ch, 0, tar_obj);
@@ -120,7 +120,7 @@ void cast_bless(char level, struct char_data *ch, char *arg, int type, struct ch
       } else {						       /* Then it is a PC | NPC */
 
 	if (affected_by_spell(victim, SPELL_BLESS) || (GET_POS(victim) == POSITION_FIGHTING)) {
-	  cprintf(ch, "Nothing seems to happen.\n\r");
+	  cprintf(ch, "Nothing seems to happen.\r\n");
 	  return;
 	}
 	spell_bless(level, ch, victim, 0);
@@ -166,7 +166,7 @@ void cast_bless(char level, struct char_data *ch, char *arg, int type, struct ch
   }
 }
 
-void cast_blindness(char level, struct char_data *ch, char *arg, int type,
+void cast_blindness(char level, struct char_data *ch, const char *arg, int type,
 		    struct char_data *victim, struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
@@ -175,7 +175,7 @@ void cast_blindness(char level, struct char_data *ch, char *arg, int type,
   switch (type) {
     case SPELL_TYPE_SPELL:
       if (IS_AFFECTED(victim, AFF_BLIND)) {
-	cprintf(ch, "Nothing seems to happen.\n\r");
+	cprintf(ch, "Nothing seems to happen.\r\n");
 	return;
       }
       spell_blindness(level, ch, victim, 0);
@@ -215,7 +215,7 @@ void cast_blindness(char level, struct char_data *ch, char *arg, int type,
   }
 }
 
-void cast_burning_hands(char level, struct char_data *ch, char *arg, int type,
+void cast_burning_hands(char level, struct char_data *ch, const char *arg, int type,
 			struct char_data *victim, struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
@@ -233,7 +233,7 @@ void cast_burning_hands(char level, struct char_data *ch, char *arg, int type,
   }
 }
 
-void cast_call_lightning(char level, struct char_data *ch, char *arg, int type,
+void cast_call_lightning(char level, struct char_data *ch, const char *arg, int type,
 			 struct char_data *victim, struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
@@ -269,7 +269,7 @@ void cast_call_lightning(char level, struct char_data *ch, char *arg, int type,
   }
 }
 
-void cast_charm_person(char level, struct char_data *ch, char *arg, int type,
+void cast_charm_person(char level, struct char_data *ch, const char *arg, int type,
 		       struct char_data *victim, struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
@@ -295,7 +295,7 @@ void cast_charm_person(char level, struct char_data *ch, char *arg, int type,
   }
 }
 
-void cast_chill_touch(char level, struct char_data *ch, char *arg, int type,
+void cast_chill_touch(char level, struct char_data *ch, const char *arg, int type,
 		      struct char_data *victim, struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
@@ -313,7 +313,7 @@ void cast_chill_touch(char level, struct char_data *ch, char *arg, int type,
 
 #define GLASS_MIRROR	1133
 
-void cast_clone(char level, struct char_data *ch, char *arg, int type, struct char_data *victim,
+void cast_clone(char level, struct char_data *ch, const char *arg, int type, struct char_data *victim,
 		struct obj_data *tar_obj)
 {
   struct char_data                       *this_victim = NULL;
@@ -324,23 +324,23 @@ void cast_clone(char level, struct char_data *ch, char *arg, int type, struct ch
     log_info("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
 
   if (!ch->equipment[HOLD]) {
-    cprintf(ch, "You must be holding the component for this spell.\n\r");
+    cprintf(ch, "You must be holding the component for this spell.\r\n");
     return;
   }
   sac = unequip_char(ch, HOLD);
   if (sac) {
     obj_to_char(sac, ch);
     if (ObjVnum(sac) != GLASS_MIRROR) {
-      cprintf(ch, "That is not the correct item.\n\r");
+      cprintf(ch, "That is not the correct item.\r\n");
       return;
     }
   } else {
-    cprintf(ch, "You must be holding the component for this spell.\n\r");
+    cprintf(ch, "You must be holding the component for this spell.\r\n");
     return;
   }
-  cprintf(ch, "You shatter %s %s into thousands of tiny shards.\n\r", SANA(sac),
+  cprintf(ch, "You shatter %s %s into thousands of tiny shards.\r\n", SANA(sac),
 	  sac->short_description);
-  act("$n shatters %s %s into thousands of tiny shards.\n\r", FALSE, ch, 0, 0,
+  act("$n shatters %s %s into thousands of tiny shards.\r\n", FALSE, ch, 0, 0,
       TO_ROOM, SANA(sac), sac->short_description);
   obj_from_char(sac);
   extract_obj(sac);
@@ -351,12 +351,12 @@ void cast_clone(char level, struct char_data *ch, char *arg, int type, struct ch
       if (IS_IMMORTAL(this_victim))
 	continue;
       if (affected_by_spell(this_victim, SPELL_SHIELD)) {
-	act("Tiny shards of glass knife through the air bouncing off your shield!\n\r",
+	act("Tiny shards of glass knife through the air bouncing off your shield!\r\n",
 	    FALSE, ch, 0, this_victim, TO_VICT);
 	continue;
       }
       damage(this_victim, this_victim, dice(2, 4), TYPE_SUFFERING);
-      act("Tiny shards of glass knife through the air and strike you!\n\r",
+      act("Tiny shards of glass knife through the air and strike you!\r\n",
 	  FALSE, ch, 0, this_victim, TO_VICT);
     }
   }
@@ -366,9 +366,9 @@ void cast_clone(char level, struct char_data *ch, char *arg, int type, struct ch
       if (victim) {
 	spell_clone(level, ch, victim, 0);
       } else {
-	cprintf(ch, "You create a duplicate of %s %s.\n\r", SANA(tar_obj),
+	cprintf(ch, "You create a duplicate of %s %s.\r\n", SANA(tar_obj),
 		tar_obj->short_description);
-	act("$n creates a duplicate of %s %s,\n\r", FALSE, ch, 0, 0,
+	act("$n creates a duplicate of %s %s,\r\n", FALSE, ch, 0, 0,
             TO_ROOM, SANA(tar_obj), tar_obj->short_description);
 	spell_clone(level, ch, 0, tar_obj);
       }
@@ -379,7 +379,7 @@ void cast_clone(char level, struct char_data *ch, char *arg, int type, struct ch
   }
 }
 
-void cast_colour_spray(char level, struct char_data *ch, char *arg, int type,
+void cast_colour_spray(char level, struct char_data *ch, const char *arg, int type,
 		       struct char_data *victim, struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
@@ -405,7 +405,7 @@ void cast_colour_spray(char level, struct char_data *ch, char *arg, int type,
   }
 }
 
-void cast_control_weather(char level, struct char_data *ch, char *arg, int type,
+void cast_control_weather(char level, struct char_data *ch, const char *arg, int type,
 			  struct char_data *victim, struct obj_data *tar_obj)
 {
   char                                    buffer[MAX_STRING_LENGTH] = "\0\0\0";
@@ -419,52 +419,52 @@ void cast_control_weather(char level, struct char_data *ch, char *arg, int type,
       one_argument(arg, buffer);
 
       if (str_cmp("better", buffer) && str_cmp("worse", buffer)) {
-	cprintf(ch, "Do you want it to get better or worse?\n\r");
+	cprintf(ch, "Do you want it to get better or worse?\r\n");
 	return;
       }
       if (!OUTSIDE(ch)) {
-	cprintf(ch, "You need to be outside.\n\r");
+	cprintf(ch, "You need to be outside.\r\n");
       }
       if (!str_cmp("better", buffer)) {
 	if (weather_info.sky == SKY_CLOUDLESS)
 	  return;
 	if (weather_info.sky == SKY_CLOUDY) {
-	  oprintf("The clouds disappear.\n\r");
+	  oprintf("The clouds disappear.\r\n");
 	  weather_info.sky = SKY_CLOUDLESS;
 	}
 	if (weather_info.sky == SKY_RAINING) {
 	  if ((time_info.month > 3) && (time_info.month < 14))
-	    oprintf("The rain has stopped.\n\r");
+	    oprintf("The rain has stopped.\r\n");
 	  else
-	    oprintf("The snow has stopped. \n\r");
+	    oprintf("The snow has stopped. \r\n");
 	  weather_info.sky = SKY_CLOUDY;
 	}
 	if (weather_info.sky == SKY_LIGHTNING) {
 	  if ((time_info.month > 3) && (time_info.month < 14))
-	    oprintf("The lightning has gone, but it is still raining.\n\r");
+	    oprintf("The lightning has gone, but it is still raining.\r\n");
 	  else
-	    oprintf("The blizzard is over, but it is still snowing.\n\r");
+	    oprintf("The blizzard is over, but it is still snowing.\r\n");
 	  weather_info.sky = SKY_RAINING;
 	}
 	return;
       } else {
 	if (weather_info.sky == SKY_CLOUDLESS) {
-	  oprintf("The sky is getting cloudy.\n\r");
+	  oprintf("The sky is getting cloudy.\r\n");
 	  weather_info.sky = SKY_CLOUDY;
 	  return;
 	}
 	if (weather_info.sky == SKY_CLOUDY) {
 	  if ((time_info.month > 3) && (time_info.month < 14))
-	    oprintf("It starts to rain.\n\r");
+	    oprintf("It starts to rain.\r\n");
 	  else
-	    oprintf("It starts to snow. \n\r");
+	    oprintf("It starts to snow. \r\n");
 	  weather_info.sky = SKY_RAINING;
 	}
 	if (weather_info.sky == SKY_RAINING) {
 	  if ((time_info.month > 3) && (time_info.month < 14))
-	    oprintf("You are caught in lightning storm.\n\r");
+	    oprintf("You are caught in lightning storm.\r\n");
 	  else
-	    oprintf("You are caught in a blizzard. \n\r");
+	    oprintf("You are caught in a blizzard. \r\n");
 	  weather_info.sky = SKY_LIGHTNING;
 	}
 	if (weather_info.sky == SKY_LIGHTNING) {
@@ -480,7 +480,7 @@ void cast_control_weather(char level, struct char_data *ch, char *arg, int type,
   }
 }
 
-void cast_create_food(char level, struct char_data *ch, char *arg, int type,
+void cast_create_food(char level, struct char_data *ch, const char *arg, int type,
 		      struct char_data *victim, struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
@@ -504,7 +504,7 @@ void cast_create_food(char level, struct char_data *ch, char *arg, int type,
   }
 }
 
-void cast_create_water(char level, struct char_data *ch, char *arg, int type,
+void cast_create_water(char level, struct char_data *ch, const char *arg, int type,
 		       struct char_data *victim, struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
@@ -513,7 +513,7 @@ void cast_create_water(char level, struct char_data *ch, char *arg, int type,
   switch (type) {
     case SPELL_TYPE_SPELL:
       if (tar_obj->obj_flags.type_flag != ITEM_DRINKCON) {
-	cprintf(ch, "It is unable to hold water.\n\r");
+	cprintf(ch, "It is unable to hold water.\r\n");
 	return;
       }
       spell_create_water(level, ch, 0, tar_obj);
@@ -524,7 +524,7 @@ void cast_create_water(char level, struct char_data *ch, char *arg, int type,
   }
 }
 
-void cast_cure_blind(char level, struct char_data *ch, char *arg, int type,
+void cast_cure_blind(char level, struct char_data *ch, const char *arg, int type,
 		     struct char_data *victim, struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
@@ -550,7 +550,7 @@ void cast_cure_blind(char level, struct char_data *ch, char *arg, int type,
 
 /* Offensive */
 
-void cast_shocking_grasp(char level, struct char_data *ch, char *arg, int type,
+void cast_shocking_grasp(char level, struct char_data *ch, const char *arg, int type,
 			 struct char_data *victim, struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
@@ -570,7 +570,7 @@ void cast_shocking_grasp(char level, struct char_data *ch, char *arg, int type,
 #define HAMMER_2	5932
 #define HAMMER_3	9713
 
-void cast_new_earthquake(char level, struct char_data *ch, char *arg, int type,
+void cast_new_earthquake(char level, struct char_data *ch, const char *arg, int type,
 			 struct char_data *victim, struct obj_data *tar_obj)
 {
   int                                     vnum = 0;
@@ -612,12 +612,12 @@ void cast_new_earthquake(char level, struct char_data *ch, char *arg, int type,
     }
   }
   if (!done) {
-    cprintf(ch, "You must have the component for this spell ready.\n\r");
+    cprintf(ch, "You must have the component for this spell ready.\r\n");
     return;
   }
-  act("You smash $o into the ground and cause it to split asunder!\n\r",
+  act("You smash $o into the ground and cause it to split asunder!\r\n",
       FALSE, ch, sac, 0, TO_VICT);
-  act("$n smashes $o into the ground and the earth splits open!\n\r",
+  act("$n smashes $o into the ground and the earth splits open!\r\n",
       FALSE, ch, sac, 0, TO_ROOM);
   obj_from_char(sac);
   extract_obj(sac);
@@ -634,7 +634,7 @@ void cast_new_earthquake(char level, struct char_data *ch, char *arg, int type,
   }
 }
 
-void cast_earthquake(char level, struct char_data *ch, char *arg, int type,
+void cast_earthquake(char level, struct char_data *ch, const char *arg, int type,
 		     struct char_data *victim, struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
@@ -652,7 +652,7 @@ void cast_earthquake(char level, struct char_data *ch, char *arg, int type,
   }
 }
 
-void cast_energy_drain(char level, struct char_data *ch, char *arg, int type,
+void cast_energy_drain(char level, struct char_data *ch, const char *arg, int type,
 		       struct char_data *victim, struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
@@ -687,7 +687,7 @@ void cast_energy_drain(char level, struct char_data *ch, char *arg, int type,
   }
 }
 
-void cast_fireball(char level, struct char_data *ch, char *arg, int type,
+void cast_fireball(char level, struct char_data *ch, const char *arg, int type,
 		   struct char_data *victim, struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
@@ -729,7 +729,7 @@ void cast_fireball(char level, struct char_data *ch, char *arg, int type,
 
 }
 
-void cast_harm(char level, struct char_data *ch, char *arg, int type, struct char_data *victim,
+void cast_harm(char level, struct char_data *ch, const char *arg, int type, struct char_data *victim,
 	       struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
@@ -754,7 +754,7 @@ void cast_harm(char level, struct char_data *ch, char *arg, int type, struct cha
   }
 }
 
-void cast_lightning_bolt(char level, struct char_data *ch, char *arg, int type,
+void cast_lightning_bolt(char level, struct char_data *ch, const char *arg, int type,
 			 struct char_data *victim, struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
@@ -781,7 +781,7 @@ void cast_lightning_bolt(char level, struct char_data *ch, char *arg, int type,
   }
 }
 
-void cast_acid_blast(char level, struct char_data *ch, char *arg, int type,
+void cast_acid_blast(char level, struct char_data *ch, const char *arg, int type,
 		     struct char_data *victim, struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
@@ -808,7 +808,7 @@ void cast_acid_blast(char level, struct char_data *ch, char *arg, int type,
   }
 }
 
-void cast_cone_of_cold(char level, struct char_data *ch, char *arg, int type,
+void cast_cone_of_cold(char level, struct char_data *ch, const char *arg, int type,
 		       struct char_data *victim, struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
@@ -828,7 +828,7 @@ void cast_cone_of_cold(char level, struct char_data *ch, char *arg, int type,
   }
 }
 
-void cast_ice_storm(char level, struct char_data *ch, char *arg, int type,
+void cast_ice_storm(char level, struct char_data *ch, const char *arg, int type,
 		    struct char_data *victim, struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
@@ -848,7 +848,7 @@ void cast_ice_storm(char level, struct char_data *ch, char *arg, int type,
   }
 }
 
-void cast_meteor_swarm(char level, struct char_data *ch, char *arg, int type,
+void cast_meteor_swarm(char level, struct char_data *ch, const char *arg, int type,
 		       struct char_data *victim, struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
@@ -875,7 +875,7 @@ void cast_meteor_swarm(char level, struct char_data *ch, char *arg, int type,
   }
 }
 
-void cast_flamestrike(char level, struct char_data *ch, char *arg, int type,
+void cast_flamestrike(char level, struct char_data *ch, const char *arg, int type,
 		      struct char_data *victim, struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
@@ -902,7 +902,7 @@ void cast_flamestrike(char level, struct char_data *ch, char *arg, int type,
   }
 }
 
-void cast_magic_missile(char level, struct char_data *ch, char *arg, int type,
+void cast_magic_missile(char level, struct char_data *ch, const char *arg, int type,
 			struct char_data *victim, struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
@@ -929,7 +929,7 @@ void cast_magic_missile(char level, struct char_data *ch, char *arg, int type,
   }
 }
 
-void cast_cause_light(char level, struct char_data *ch, char *arg, int type,
+void cast_cause_light(char level, struct char_data *ch, const char *arg, int type,
 		      struct char_data *victim, struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
@@ -954,7 +954,7 @@ void cast_cause_light(char level, struct char_data *ch, char *arg, int type,
   }
 }
 
-void cast_cause_serious(char level, struct char_data *ch, char *arg, int type,
+void cast_cause_serious(char level, struct char_data *ch, const char *arg, int type,
 			struct char_data *victim, struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
@@ -985,7 +985,7 @@ void cast_cause_serious(char level, struct char_data *ch, char *arg, int type,
   }
 }
 
-void cast_cause_critic(char level, struct char_data *ch, char *arg, int type,
+void cast_cause_critic(char level, struct char_data *ch, const char *arg, int type,
 		       struct char_data *victim, struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
@@ -1010,7 +1010,7 @@ void cast_cause_critic(char level, struct char_data *ch, char *arg, int type,
   }
 }
 
-void cast_geyser(char level, struct char_data *ch, char *arg, int type,
+void cast_geyser(char level, struct char_data *ch, const char *arg, int type,
 		 struct char_data *victim, struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
@@ -1029,7 +1029,7 @@ void cast_geyser(char level, struct char_data *ch, char *arg, int type,
   }
 }
 
-void cast_green_slime(char level, struct char_data *ch, char *arg, int type,
+void cast_green_slime(char level, struct char_data *ch, const char *arg, int type,
 		      struct char_data *victim, struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
@@ -1061,7 +1061,7 @@ void cast_green_slime(char level, struct char_data *ch, char *arg, int type,
  * Copyright (C) 1990, 1991 - see 'license.doc' for complete information.
  */
 
-void cast_resurrection(char level, struct char_data *ch, char *arg, int type,
+void cast_resurrection(char level, struct char_data *ch, const char *arg, int type,
 		       struct char_data *victim, struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
@@ -1085,7 +1085,7 @@ void cast_resurrection(char level, struct char_data *ch, char *arg, int type,
 
 }
 
-void cast_mana(char level, struct char_data *ch, char *arg, int type, struct char_data *victim,
+void cast_mana(char level, struct char_data *ch, const char *arg, int type, struct char_data *victim,
 	       struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
@@ -1111,7 +1111,7 @@ void cast_mana(char level, struct char_data *ch, char *arg, int type, struct cha
 
 }
 
-void cast_stone_skin(char level, struct char_data *ch, char *arg, int type,
+void cast_stone_skin(char level, struct char_data *ch, const char *arg, int type,
 		     struct char_data *victim, struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
@@ -1121,7 +1121,7 @@ void cast_stone_skin(char level, struct char_data *ch, char *arg, int type,
     case SPELL_TYPE_SPELL:
       if (affected_by_spell(ch, SPELL_STONE_SKIN) ||
 	  affected_by_spell(ch, SPELL_ARMOR) || affected_by_spell(ch, SPELL_SHIELD)) {
-	cprintf(ch, "Nothing seems to happen.\n\r");
+	cprintf(ch, "Nothing seems to happen.\r\n");
 	return;
       }
       spell_stone_skin(level, ch, ch, 0);
@@ -1151,7 +1151,7 @@ void cast_stone_skin(char level, struct char_data *ch, char *arg, int type,
   }
 }
 
-void cast_astral_walk(char level, struct char_data *ch, char *arg, int type,
+void cast_astral_walk(char level, struct char_data *ch, const char *arg, int type,
 		      struct char_data *victim, struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
@@ -1175,7 +1175,7 @@ void cast_astral_walk(char level, struct char_data *ch, char *arg, int type,
   }
 }
 
-void cast_visions(char level, struct char_data *ch, char *arg, int type,
+void cast_visions(char level, struct char_data *ch, const char *arg, int type,
 		  struct char_data *victim, struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
@@ -1199,7 +1199,7 @@ void cast_visions(char level, struct char_data *ch, char *arg, int type,
   }
 }
 
-void cast_infravision(char level, struct char_data *ch, char *arg, int type,
+void cast_infravision(char level, struct char_data *ch, const char *arg, int type,
 		      struct char_data *victim, struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
@@ -1208,7 +1208,7 @@ void cast_infravision(char level, struct char_data *ch, char *arg, int type,
   switch (type) {
     case SPELL_TYPE_SPELL:
       if (IS_AFFECTED(victim, AFF_INFRAVISION)) {
-	cprintf(ch, "Nothing seems to happen.\n\r");
+	cprintf(ch, "Nothing seems to happen.\r\n");
 	return;
       }
       spell_infravision(level, ch, victim, 0);
@@ -1247,7 +1247,7 @@ void cast_infravision(char level, struct char_data *ch, char *arg, int type,
 
 }
 
-void cast_true_seeing(char level, struct char_data *ch, char *arg, int type,
+void cast_true_seeing(char level, struct char_data *ch, const char *arg, int type,
 		      struct char_data *victim, struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
@@ -1256,7 +1256,7 @@ void cast_true_seeing(char level, struct char_data *ch, char *arg, int type,
   switch (type) {
     case SPELL_TYPE_SPELL:
       if (IS_AFFECTED(victim, AFF_TRUE_SIGHT)) {
-	cprintf(ch, "Nothing seems to happen.\n\r");
+	cprintf(ch, "Nothing seems to happen.\r\n");
 	return;
       }
       spell_true_seeing(level, ch, victim, 0);
@@ -1295,7 +1295,7 @@ void cast_true_seeing(char level, struct char_data *ch, char *arg, int type,
 
 }
 
-void cast_light(char level, struct char_data *ch, char *arg, int type, struct char_data *victim,
+void cast_light(char level, struct char_data *ch, const char *arg, int type, struct char_data *victim,
 		struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
@@ -1321,7 +1321,7 @@ void cast_light(char level, struct char_data *ch, char *arg, int type, struct ch
   }
 }
 
-void cast_cont_light(char level, struct char_data *ch, char *arg, int type,
+void cast_cont_light(char level, struct char_data *ch, const char *arg, int type,
 		     struct char_data *victim, struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
@@ -1347,7 +1347,7 @@ void cast_cont_light(char level, struct char_data *ch, char *arg, int type,
   }
 }
 
-void cast_calm(char level, struct char_data *ch, char *arg, int type, struct char_data *victim,
+void cast_calm(char level, struct char_data *ch, const char *arg, int type, struct char_data *victim,
 	       struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
@@ -1381,7 +1381,7 @@ void cast_calm(char level, struct char_data *ch, char *arg, int type, struct cha
   }
 }
 
-void cast_water_breath(char level, struct char_data *ch, char *arg, int type,
+void cast_water_breath(char level, struct char_data *ch, const char *arg, int type,
 		       struct char_data *victim, struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
@@ -1404,18 +1404,18 @@ void cast_water_breath(char level, struct char_data *ch, char *arg, int type,
   }
 }
 
-void cast_flying(char level, struct char_data *ch, char *arg, int type,
+void cast_flying(char level, struct char_data *ch, const char *arg, int type,
 		 struct char_data *victim, struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
     log_info("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
 
   if (MOUNTED(ch)) {
-    cprintf(ch, "Not while you are mounted!\n\r");
+    cprintf(ch, "Not while you are mounted!\r\n");
     return;
   }
   if (MOUNTED(victim)) {
-    cprintf(ch, "Not while they are mounted!\n\r");
+    cprintf(ch, "Not while they are mounted!\r\n");
     return;
   }
   switch (type) {
@@ -1435,7 +1435,7 @@ void cast_flying(char level, struct char_data *ch, char *arg, int type,
   }
 }
 
-void cast_goodberry(char level, struct char_data *ch, char *arg, int type,
+void cast_goodberry(char level, struct char_data *ch, const char *arg, int type,
 		    struct char_data *victim, struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
@@ -1461,7 +1461,7 @@ void cast_goodberry(char level, struct char_data *ch, char *arg, int type,
   }
 }
 
-void cast_cure_critic(char level, struct char_data *ch, char *arg, int type,
+void cast_cure_critic(char level, struct char_data *ch, const char *arg, int type,
 		      struct char_data *victim, struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
@@ -1491,7 +1491,7 @@ void cast_cure_critic(char level, struct char_data *ch, char *arg, int type,
   }
 }
 
-void cast_cure_light(char level, struct char_data *ch, char *arg, int type,
+void cast_cure_light(char level, struct char_data *ch, const char *arg, int type,
 		     struct char_data *victim, struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
@@ -1520,7 +1520,7 @@ void cast_cure_light(char level, struct char_data *ch, char *arg, int type,
   }
 }
 
-void cast_cure_serious(char level, struct char_data *ch, char *arg, int type,
+void cast_cure_serious(char level, struct char_data *ch, const char *arg, int type,
 		       struct char_data *victim, struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
@@ -1549,7 +1549,7 @@ void cast_cure_serious(char level, struct char_data *ch, char *arg, int type,
   }
 }
 
-void cast_refresh(char level, struct char_data *ch, char *arg, int type,
+void cast_refresh(char level, struct char_data *ch, const char *arg, int type,
 		  struct char_data *victim, struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
@@ -1578,7 +1578,7 @@ void cast_refresh(char level, struct char_data *ch, char *arg, int type,
   }
 }
 
-void cast_second_wind(char level, struct char_data *ch, char *arg, int type,
+void cast_second_wind(char level, struct char_data *ch, const char *arg, int type,
 		      struct char_data *victim, struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
@@ -1604,7 +1604,7 @@ void cast_second_wind(char level, struct char_data *ch, char *arg, int type,
   }
 }
 
-void cast_shield(char level, struct char_data *ch, char *arg, int type,
+void cast_shield(char level, struct char_data *ch, const char *arg, int type,
 		 struct char_data *victim, struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
@@ -1613,7 +1613,7 @@ void cast_shield(char level, struct char_data *ch, char *arg, int type,
   switch (type) {
     case SPELL_TYPE_SPELL:
       if (affected_by_spell(victim, SPELL_STONE_SKIN)) {
-	cprintf(ch, "Nothing seems to happen.\n\r");
+	cprintf(ch, "Nothing seems to happen.\r\n");
 	return;
       }
       spell_shield(level, ch, victim, 0);
@@ -1638,7 +1638,7 @@ void cast_shield(char level, struct char_data *ch, char *arg, int type,
 
 }
 
-void cast_curse(char level, struct char_data *ch, char *arg, int type, struct char_data *victim,
+void cast_curse(char level, struct char_data *ch, const char *arg, int type, struct char_data *victim,
 		struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
@@ -1675,7 +1675,7 @@ void cast_curse(char level, struct char_data *ch, char *arg, int type, struct ch
   }
 }
 
-void cast_detect_evil(char level, struct char_data *ch, char *arg, int type,
+void cast_detect_evil(char level, struct char_data *ch, const char *arg, int type,
 		      struct char_data *victim, struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
@@ -1684,7 +1684,7 @@ void cast_detect_evil(char level, struct char_data *ch, char *arg, int type,
   switch (type) {
     case SPELL_TYPE_SPELL:
       if (affected_by_spell(victim, SPELL_DETECT_EVIL)) {
-	cprintf(victim, "Nothing seems to happen.\n\r");
+	cprintf(victim, "Nothing seems to happen.\r\n");
 	return;
       }
       spell_detect_evil(level, ch, victim, 0);
@@ -1706,7 +1706,7 @@ void cast_detect_evil(char level, struct char_data *ch, char *arg, int type,
   }
 }
 
-void cast_detect_invisibility(char level, struct char_data *ch, char *arg, int type,
+void cast_detect_invisibility(char level, struct char_data *ch, const char *arg, int type,
 			      struct char_data *victim, struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
@@ -1715,7 +1715,7 @@ void cast_detect_invisibility(char level, struct char_data *ch, char *arg, int t
   switch (type) {
     case SPELL_TYPE_SPELL:
       if (IS_AFFECTED(victim, AFF_DETECT_INVISIBLE)) {
-	cprintf(victim, "Nothing seems to happen.\n\r");
+	cprintf(victim, "Nothing seems to happen.\r\n");
 	return;
       }
       spell_detect_invisibility(level, ch, victim, 0);
@@ -1737,7 +1737,7 @@ void cast_detect_invisibility(char level, struct char_data *ch, char *arg, int t
   }
 }
 
-void cast_detect_magic(char level, struct char_data *ch, char *arg, int type,
+void cast_detect_magic(char level, struct char_data *ch, const char *arg, int type,
 		       struct char_data *victim, struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
@@ -1746,7 +1746,7 @@ void cast_detect_magic(char level, struct char_data *ch, char *arg, int type,
   switch (type) {
     case SPELL_TYPE_SPELL:
       if (affected_by_spell(victim, SPELL_DETECT_MAGIC)) {
-	cprintf(victim, "Nothing seems to happen.\n\r");
+	cprintf(victim, "Nothing seems to happen.\r\n");
 	return;
       }
       spell_detect_magic(level, ch, victim, 0);
@@ -1768,7 +1768,7 @@ void cast_detect_magic(char level, struct char_data *ch, char *arg, int type,
   }
 }
 
-void cast_detect_poison(char level, struct char_data *ch, char *arg, int type,
+void cast_detect_poison(char level, struct char_data *ch, const char *arg, int type,
 			struct char_data *victim, struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
@@ -1796,7 +1796,7 @@ void cast_detect_poison(char level, struct char_data *ch, char *arg, int type,
   }
 }
 
-void cast_dispel_evil(char level, struct char_data *ch, char *arg, int type,
+void cast_dispel_evil(char level, struct char_data *ch, const char *arg, int type,
 		      struct char_data *victim, struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
@@ -1832,7 +1832,7 @@ void cast_dispel_evil(char level, struct char_data *ch, char *arg, int type,
   }
 }
 
-void cast_dispel_good(char level, struct char_data *ch, char *arg, int type,
+void cast_dispel_good(char level, struct char_data *ch, const char *arg, int type,
 		      struct char_data *victim, struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
@@ -1868,7 +1868,7 @@ void cast_dispel_good(char level, struct char_data *ch, char *arg, int type,
   }
 }
 
-void cast_faerie_fire(char level, struct char_data *ch, char *arg, int type,
+void cast_faerie_fire(char level, struct char_data *ch, const char *arg, int type,
 		      struct char_data *victim, struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
@@ -1904,7 +1904,7 @@ void cast_faerie_fire(char level, struct char_data *ch, char *arg, int type,
   }
 }
 
-void cast_enchant_weapon(char level, struct char_data *ch, char *arg, int type,
+void cast_enchant_weapon(char level, struct char_data *ch, const char *arg, int type,
 			 struct char_data *victim, struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
@@ -1926,7 +1926,7 @@ void cast_enchant_weapon(char level, struct char_data *ch, char *arg, int type,
   }
 }
 
-void cast_enchant_armor(char level, struct char_data *ch, char *arg, int type,
+void cast_enchant_armor(char level, struct char_data *ch, const char *arg, int type,
 			struct char_data *victim, struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
@@ -1948,7 +1948,7 @@ void cast_enchant_armor(char level, struct char_data *ch, char *arg, int type,
   }
 }
 
-void cast_heal(char level, struct char_data *ch, char *arg, int type, struct char_data *victim,
+void cast_heal(char level, struct char_data *ch, const char *arg, int type, struct char_data *victim,
 	       struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
@@ -1974,7 +1974,7 @@ void cast_heal(char level, struct char_data *ch, char *arg, int type, struct cha
   }
 }
 
-void cast_invisibility(char level, struct char_data *ch, char *arg, int type,
+void cast_invisibility(char level, struct char_data *ch, const char *arg, int type,
 		       struct char_data *victim, struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
@@ -1984,12 +1984,12 @@ void cast_invisibility(char level, struct char_data *ch, char *arg, int type,
     case SPELL_TYPE_SPELL:
       if (tar_obj) {
 	if (IS_SET(tar_obj->obj_flags.extra_flags, ITEM_INVISIBLE))
-	  cprintf(ch, "Nothing new seems to happen.\n\r");
+	  cprintf(ch, "Nothing new seems to happen.\r\n");
 	else
 	  spell_invisibility(level, ch, 0, tar_obj);
       } else {						       /* victim */
 	if (IS_AFFECTED(victim, AFF_INVISIBLE))
-	  cprintf(ch, "Nothing new seems to happen.\n\r");
+	  cprintf(ch, "Nothing new seems to happen.\r\n");
 	else
 	  spell_invisibility(level, ch, victim, 0);
       }
@@ -2031,7 +2031,7 @@ void cast_invisibility(char level, struct char_data *ch, char *arg, int type,
   }
 }
 
-void cast_locate_object(char level, struct char_data *ch, char *arg, int type,
+void cast_locate_object(char level, struct char_data *ch, const char *arg, int type,
 			struct char_data *victim, struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
@@ -2047,7 +2047,7 @@ void cast_locate_object(char level, struct char_data *ch, char *arg, int type,
   }
 }
 
-void cast_poison(char level, struct char_data *ch, char *arg, int type,
+void cast_poison(char level, struct char_data *ch, const char *arg, int type,
 		 struct char_data *victim, struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
@@ -2071,7 +2071,7 @@ void cast_poison(char level, struct char_data *ch, char *arg, int type,
   }
 }
 
-void cast_protection_from_evil(char level, struct char_data *ch, char *arg, int type,
+void cast_protection_from_evil(char level, struct char_data *ch, const char *arg, int type,
 			       struct char_data *victim, struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
@@ -2102,7 +2102,7 @@ void cast_protection_from_evil(char level, struct char_data *ch, char *arg, int 
   }
 }
 
-void cast_remove_curse(char level, struct char_data *ch, char *arg, int type,
+void cast_remove_curse(char level, struct char_data *ch, const char *arg, int type,
 		       struct char_data *victim, struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
@@ -2135,7 +2135,7 @@ void cast_remove_curse(char level, struct char_data *ch, char *arg, int type,
   }
 }
 
-void cast_remove_poison(char level, struct char_data *ch, char *arg, int type,
+void cast_remove_poison(char level, struct char_data *ch, const char *arg, int type,
 			struct char_data *victim, struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
@@ -2159,7 +2159,7 @@ void cast_remove_poison(char level, struct char_data *ch, char *arg, int type,
   }
 }
 
-void cast_remove_paralysis(char level, struct char_data *ch, char *arg, int type,
+void cast_remove_paralysis(char level, struct char_data *ch, const char *arg, int type,
 			   struct char_data *victim, struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
@@ -2188,7 +2188,7 @@ void cast_remove_paralysis(char level, struct char_data *ch, char *arg, int type
   }
 }
 
-void cast_sanctuary(char level, struct char_data *ch, char *arg, int type,
+void cast_sanctuary(char level, struct char_data *ch, const char *arg, int type,
 		    struct char_data *victim, struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
@@ -2221,7 +2221,7 @@ void cast_sanctuary(char level, struct char_data *ch, char *arg, int type,
   }
 }
 
-void cast_fireshield(char level, struct char_data *ch, char *arg, int type,
+void cast_fireshield(char level, struct char_data *ch, const char *arg, int type,
 		     struct char_data *victim, struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
@@ -2254,7 +2254,7 @@ void cast_fireshield(char level, struct char_data *ch, char *arg, int type,
   }
 }
 
-void cast_sleep(char level, struct char_data *ch, char *arg, int type, struct char_data *victim,
+void cast_sleep(char level, struct char_data *ch, const char *arg, int type, struct char_data *victim,
 		struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
@@ -2290,7 +2290,7 @@ void cast_sleep(char level, struct char_data *ch, char *arg, int type, struct ch
   }
 }
 
-void cast_strength(char level, struct char_data *ch, char *arg, int type,
+void cast_strength(char level, struct char_data *ch, const char *arg, int type,
 		   struct char_data *victim, struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
@@ -2321,7 +2321,7 @@ void cast_strength(char level, struct char_data *ch, char *arg, int type,
   }
 }
 
-void cast_ventriloquate(char level, struct char_data *ch, char *arg, int type,
+void cast_ventriloquate(char level, struct char_data *ch, const char *arg, int type,
 			struct char_data *victim, struct obj_data *tar_obj)
 {
   struct char_data                       *tmp_ch = NULL;
@@ -2338,15 +2338,15 @@ void cast_ventriloquate(char level, struct char_data *ch, char *arg, int type,
   }
   for (; *arg && (*arg == ' '); arg++);
   if (tar_obj) {
-    sprintf(buf1, "The %s says '%s'\n\r", fname(tar_obj->name), arg);
-    sprintf(buf2, "Someone makes it sound like the %s says '%s'.\n\r",
+    sprintf(buf1, "The %s says '%s'\r\n", fname(tar_obj->name), arg);
+    sprintf(buf2, "Someone makes it sound like the %s says '%s'.\r\n",
 	    fname(tar_obj->name), arg);
   } else {
-    sprintf(buf1, "%s says '%s'\n\r", GET_NAME(victim), arg);
-    sprintf(buf2, "Someone makes it sound like %s says '%s'\n\r", GET_NAME(victim), arg);
+    sprintf(buf1, "%s says '%s'\r\n", GET_NAME(victim), arg);
+    sprintf(buf2, "Someone makes it sound like %s says '%s'\r\n", GET_NAME(victim), arg);
   }
 
-  sprintf(buf3, "Someone says, '%s'\n\r", arg);
+  sprintf(buf3, "Someone says, '%s'\r\n", arg);
 
   for (tmp_ch = real_roomp(ch->in_room)->people; tmp_ch; tmp_ch = tmp_ch->next_in_room) {
 
@@ -2362,7 +2362,7 @@ void cast_ventriloquate(char level, struct char_data *ch, char *arg, int type,
   }
 }
 
-void cast_word_of_recall(char level, struct char_data *ch, char *arg, int type,
+void cast_word_of_recall(char level, struct char_data *ch, const char *arg, int type,
 			 struct char_data *victim, struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
@@ -2398,7 +2398,7 @@ void cast_word_of_recall(char level, struct char_data *ch, char *arg, int type,
   }
 }
 
-void cast_summon(char level, struct char_data *ch, char *arg, int type,
+void cast_summon(char level, struct char_data *ch, const char *arg, int type,
 		 struct char_data *victim, struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
@@ -2414,7 +2414,7 @@ void cast_summon(char level, struct char_data *ch, char *arg, int type,
   }
 }
 
-void cast_charm_monster(char level, struct char_data *ch, char *arg, int type,
+void cast_charm_monster(char level, struct char_data *ch, const char *arg, int type,
 			struct char_data *victim, struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
@@ -2440,7 +2440,7 @@ void cast_charm_monster(char level, struct char_data *ch, char *arg, int type,
   }
 }
 
-void cast_sense_life(char level, struct char_data *ch, char *arg, int type,
+void cast_sense_life(char level, struct char_data *ch, const char *arg, int type,
 		     struct char_data *victim, struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
@@ -2464,7 +2464,7 @@ void cast_sense_life(char level, struct char_data *ch, char *arg, int type,
   }
 }
 
-void cast_identify(char level, struct char_data *ch, char *arg, int type,
+void cast_identify(char level, struct char_data *ch, const char *arg, int type,
 		   struct char_data *victim, struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
@@ -2504,7 +2504,7 @@ struct pbreath {
   }, {
 0},};
 
-void cast_dragon_breath(char level, struct char_data *ch, char *arg, int type,
+void cast_dragon_breath(char level, struct char_data *ch, const char *arg, int type,
 			struct char_data *victim, struct obj_data *tar_obj)
 {
   struct pbreath                         *scan = NULL;
@@ -2519,7 +2519,7 @@ void cast_dragon_breath(char level, struct char_data *ch, char *arg, int type,
   if (scan->vnum == 0) {
     char                                    buf[MAX_STRING_LENGTH];
 
-    cprintf(ch, "Hey, this potion isn't in my list!\n\r");
+    cprintf(ch, "Hey, this potion isn't in my list!\r\n");
     sprintf(buf, "unlisted breath potion %s %d", tar_obj->short_description,
 	    obj_index[tar_obj->item_number].virtual);
     log_error(buf);
@@ -2531,12 +2531,12 @@ void cast_dragon_breath(char level, struct char_data *ch, char *arg, int type,
       af.duration = 1 + dice(1, 2);
       if (GET_CON(ch) < 4) {
 	cprintf(ch,
-		"You are too weak to stomach the potion and spew it all over the floor.\n\r");
+		"You are too weak to stomach the potion and spew it all over the floor.\r\n");
 	act("$n gags and pukes glowing goop all over the floor.", FALSE, ch, 0, ch, TO_NOTVICT);
 	break;
       }
       if (level > MIN(GET_CON(ch) - 1, GetMaxLevel(ch))) {
-	cprintf(ch, "!GACK! You are too weak to handle the full power of the potion.\n\r");
+	cprintf(ch, "!GACK! You are too weak to handle the full power of the potion.\r\n");
 	act("$n gags and flops around on the floor a bit.", FALSE, ch, 0, ch, TO_NOTVICT);
 	level = MIN(GET_CON(ch) - 1, GetMaxLevel(ch));
       }
@@ -2544,12 +2544,12 @@ void cast_dragon_breath(char level, struct char_data *ch, char *arg, int type,
       af.location = APPLY_CON;
       af.bitvector = 0;
       affect_to_char(ch, &af);
-      cprintf(ch, "You feel powerful forces build within your stomach...\n\r");
+      cprintf(ch, "You feel powerful forces build within your stomach...\r\n");
     }
   }
 }
 
-void cast_fire_breath(char level, struct char_data *ch, char *arg, int type,
+void cast_fire_breath(char level, struct char_data *ch, const char *arg, int type,
 		      struct char_data *victim, struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
@@ -2565,7 +2565,7 @@ void cast_fire_breath(char level, struct char_data *ch, char *arg, int type,
   }
 }
 
-void cast_frost_breath(char level, struct char_data *ch, char *arg, int type,
+void cast_frost_breath(char level, struct char_data *ch, const char *arg, int type,
 		       struct char_data *victim, struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
@@ -2581,7 +2581,7 @@ void cast_frost_breath(char level, struct char_data *ch, char *arg, int type,
   }
 }
 
-void cast_acid_breath(char level, struct char_data *ch, char *arg, int type,
+void cast_acid_breath(char level, struct char_data *ch, const char *arg, int type,
 		      struct char_data *victim, struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
@@ -2597,7 +2597,7 @@ void cast_acid_breath(char level, struct char_data *ch, char *arg, int type,
   }
 }
 
-void cast_gas_breath(char level, struct char_data *ch, char *arg, int type,
+void cast_gas_breath(char level, struct char_data *ch, const char *arg, int type,
 		     struct char_data *victim, struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
@@ -2616,7 +2616,7 @@ void cast_gas_breath(char level, struct char_data *ch, char *arg, int type,
   }
 }
 
-void cast_lightning_breath(char level, struct char_data *ch, char *arg, int type,
+void cast_lightning_breath(char level, struct char_data *ch, const char *arg, int type,
 			   struct char_data *victim, struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
@@ -2632,7 +2632,7 @@ void cast_lightning_breath(char level, struct char_data *ch, char *arg, int type
   }
 }
 
-void cast_knock(char level, struct char_data *ch, char *arg, int type, struct char_data *victim,
+void cast_knock(char level, struct char_data *ch, const char *arg, int type, struct char_data *victim,
 		struct obj_data *tar_obj)
 {
   int                                     door = 0;
@@ -2655,46 +2655,46 @@ void cast_knock(char level, struct char_data *ch, char *arg, int type, struct ch
 	argument_interpreter(arg, otype, dir);
 
 	if (!otype) {
-	  cprintf(ch, "Knock on what?\n\r");
+	  cprintf(ch, "Knock on what?\r\n");
 	  return;
 	}
 	if (generic_find(arg, FIND_OBJ_INV | FIND_OBJ_ROOM, ch, &this_victim, &obj)) {
 	  if (obj->obj_flags.type_flag != ITEM_CONTAINER) {
-	    sprintf(buf, " %s is not a container.\n\r ", obj->name);
+	    sprintf(buf, " %s is not a container.\r\n ", obj->name);
 	  } else if (!IS_SET(obj->obj_flags.value[1], CONT_CLOSED)) {
-	    sprintf(buf, " Silly! %s isn't even closed!\n\r ", obj->name);
+	    sprintf(buf, " Silly! %s isn't even closed!\r\n ", obj->name);
 	  } else if (obj->obj_flags.value[2] < 0) {
-	    sprintf(buf, "%s doesn't have a lock...\n\r", obj->name);
+	    sprintf(buf, "%s doesn't have a lock...\r\n", obj->name);
 	  } else if (!IS_SET(obj->obj_flags.value[1], CONT_LOCKED)) {
-	    sprintf(buf, "Hehe.. %s wasn't even locked.\n\r", obj->name);
+	    sprintf(buf, "Hehe.. %s wasn't even locked.\r\n", obj->name);
 	  } else
 /*
  * if (IS_SET(obj->obj_flags.value[1], CONT_PICKPROOF)) 
  * {
- * sprintf(buf,"%s resists your magic.\n\r",obj->name);
+ * sprintf(buf,"%s resists your magic.\r\n",obj->name);
  * }
  * else
  */
 	  {
 	    REMOVE_BIT(obj->obj_flags.value[1], CONT_LOCKED);
-	    sprintf(buf, "<Click>\n\r");
+	    sprintf(buf, "<Click>\r\n");
 	    act("$n magically opens $p", FALSE, ch, obj, 0, TO_ROOM);
 	  }
 	  cprintf(ch, "%s", buf);
 	  return;
 	} else if ((door = find_door(ch, otype, dir)) >= 0) {
 	  if (!IS_SET(EXIT(ch, door)->exit_info, EX_ISDOOR))
-	    cprintf(ch, "That's absurd.\n\r");
+	    cprintf(ch, "That's absurd.\r\n");
 	  else if (!IS_SET(EXIT(ch, door)->exit_info, EX_CLOSED))
-	    cprintf(ch, "You realize that the door is already open.\n\r");
+	    cprintf(ch, "You realize that the door is already open.\r\n");
 	  else if (EXIT(ch, door)->key < 0)
-	    cprintf(ch, "You can't seem to spot any lock to knock.\n\r");
+	    cprintf(ch, "You can't seem to spot any lock to knock.\r\n");
 	  else if (!IS_SET(EXIT(ch, door)->exit_info, EX_LOCKED))
-	    cprintf(ch, "Oh.. it wasn't locked at all.\n\r");
+	    cprintf(ch, "Oh.. it wasn't locked at all.\r\n");
 	  else
 /*
  * if (IS_SET(EXIT(ch, door)->exit_info, EX_PICKPROOF))
- * cprintf(ch, "You seem to be unable to knock this...\n\r");
+ * cprintf(ch, "You seem to be unable to knock this...\r\n");
  * else
  */
 	  {
@@ -2704,7 +2704,7 @@ void cast_knock(char level, struct char_data *ch, char *arg, int type, struct ch
 		  EXIT(ch, door)->keyword, TO_ROOM);
 	    else
 	      act("$n magically opens the lock.", TRUE, ch, 0, 0, TO_ROOM);
-	    cprintf(ch, "The lock quickly yields to your skills.\n\r");
+	    cprintf(ch, "The lock quickly yields to your skills.\r\n");
 	    if ((other_room = EXIT(ch, door)->to_room) != NOWHERE)
 	      if ((back = real_roomp(other_room)->dir_option[rev_dir[door]]))
 		if (back->to_room == ch->in_room)
@@ -2719,7 +2719,7 @@ void cast_knock(char level, struct char_data *ch, char *arg, int type, struct ch
   }
 }
 
-void cast_know_alignment(char level, struct char_data *ch, char *arg, int type,
+void cast_know_alignment(char level, struct char_data *ch, const char *arg, int type,
 			 struct char_data *victim, struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
@@ -2743,7 +2743,7 @@ void cast_know_alignment(char level, struct char_data *ch, char *arg, int type,
   }
 }
 
-void cast_weakness(char level, struct char_data *ch, char *arg, int type,
+void cast_weakness(char level, struct char_data *ch, const char *arg, int type,
 		   struct char_data *victim, struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
@@ -2774,7 +2774,7 @@ void cast_weakness(char level, struct char_data *ch, char *arg, int type,
   }
 }
 
-void cast_dispel_magic(char level, struct char_data *ch, char *arg, int type,
+void cast_dispel_magic(char level, struct char_data *ch, const char *arg, int type,
 		       struct char_data *victim, struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
@@ -2809,7 +2809,7 @@ void cast_dispel_magic(char level, struct char_data *ch, char *arg, int type,
   }
 }
 
-void cast_animate_dead(char level, struct char_data *ch, char *arg, int type,
+void cast_animate_dead(char level, struct char_data *ch, const char *arg, int type,
 		       struct char_data *victim, struct obj_data *tar_obj)
 {
   struct obj_data                        *i = NULL;
@@ -2825,16 +2825,16 @@ void cast_animate_dead(char level, struct char_data *ch, char *arg, int type,
 	if (IS_CORPSE(tar_obj)) {
 	  spell_animate_dead(level, ch, 0, tar_obj);
 	} else {
-	  cprintf(ch, "That's not a corpse!\n\r");
+	  cprintf(ch, "That's not a corpse!\r\n");
 	  return;
 	}
       } else {
-	cprintf(ch, "That isn't a corpse!\n\r");
+	cprintf(ch, "That isn't a corpse!\r\n");
 	return;
       }
       break;
     case SPELL_TYPE_POTION:
-      cprintf(ch, "Your body revolts against the magic liquid.\n\r");
+      cprintf(ch, "Your body revolts against the magic liquid.\r\n");
       ch->points.hit = 0;
       break;
     case SPELL_TYPE_STAFF:
@@ -2850,7 +2850,7 @@ void cast_animate_dead(char level, struct char_data *ch, char *arg, int type,
   }
 }
 
-void cast_succor(char level, struct char_data *ch, char *arg, int type,
+void cast_succor(char level, struct char_data *ch, const char *arg, int type,
 		 struct char_data *victim, struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
@@ -2865,7 +2865,7 @@ void cast_succor(char level, struct char_data *ch, char *arg, int type,
 
 }
 
-void cast_paralyze(char level, struct char_data *ch, char *arg, int type,
+void cast_paralyze(char level, struct char_data *ch, const char *arg, int type,
 		   struct char_data *victim, struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
@@ -2901,7 +2901,7 @@ void cast_paralyze(char level, struct char_data *ch, char *arg, int type,
   }
 }
 
-void cast_fear(char level, struct char_data *ch, char *arg, int type, struct char_data *victim,
+void cast_fear(char level, struct char_data *ch, const char *arg, int type, struct char_data *victim,
 	       struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
@@ -2939,7 +2939,7 @@ void cast_fear(char level, struct char_data *ch, char *arg, int type, struct cha
   }
 }
 
-void cast_turn(char level, struct char_data *ch, char *arg, int type, struct char_data *victim,
+void cast_turn(char level, struct char_data *ch, const char *arg, int type, struct char_data *victim,
 	       struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
@@ -2974,7 +2974,7 @@ void cast_turn(char level, struct char_data *ch, char *arg, int type, struct cha
   }
 }
 
-void cast_faerie_fog(char level, struct char_data *ch, char *arg, int type,
+void cast_faerie_fog(char level, struct char_data *ch, const char *arg, int type,
 		     struct char_data *victim, struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
@@ -3035,7 +3035,7 @@ const struct PolyType                   PolyList[] = {
 
 #define LAST_POLY_MOB 37
 
-void cast_poly_self(char level, struct char_data *ch, char *arg, int type,
+void cast_poly_self(char level, struct char_data *ch, const char *arg, int type,
 		    struct char_data *victim, struct obj_data *tar_obj)
 {
   char                                    buffer[40] = "\0\0\0";
@@ -3052,7 +3052,7 @@ void cast_poly_self(char level, struct char_data *ch, char *arg, int type,
    */
   only_argument(arg, buffer);
   if (IS_NPC(ch)) {
-    cprintf(ch, "You don't really want to do that.\n\r");
+    cprintf(ch, "You don't really want to do that.\r\n");
     return;
   }
   switch (type) {
@@ -3082,7 +3082,7 @@ void cast_poly_self(char level, struct char_data *ch, char *arg, int type,
 	  if (mob) {
 	    spell_poly_self(level, ch, mob, 0);
 	  } else {
-	    cprintf(ch, "You couldn't summon an image of that creature\n\r");
+	    cprintf(ch, "You couldn't summon an image of that creature\r\n");
 	  }
 	  return;
 	}
@@ -3099,7 +3099,7 @@ void cast_poly_self(char level, struct char_data *ch, char *arg, int type,
 
 #define NUT_CRACKED 1131
 
-void cast_shelter(char level, struct char_data *ch, char *arg, int type,
+void cast_shelter(char level, struct char_data *ch, const char *arg, int type,
 		  struct char_data *victim, struct obj_data *tar_obj)
 {
   struct obj_data                        *sac = NULL;
@@ -3108,18 +3108,18 @@ void cast_shelter(char level, struct char_data *ch, char *arg, int type,
     log_info("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
 
   if (!ch->equipment[HOLD]) {
-    cprintf(ch, " You must be holding the component for this spell.\n\r");
+    cprintf(ch, " You must be holding the component for this spell.\r\n");
     return;
   }
   sac = unequip_char(ch, HOLD);
   if (sac) {
     obj_to_char(sac, ch);
     if (ObjVnum(sac) != NUT_CRACKED) {
-      cprintf(ch, "That is not the correct item.\n\r");
+      cprintf(ch, "That is not the correct item.\r\n");
       return;
     }
   } else {
-    cprintf(ch, "You must be holding the component for this spell.\n\r");
+    cprintf(ch, "You must be holding the component for this spell.\r\n");
     return;
   }
 
@@ -3145,7 +3145,7 @@ void cast_shelter(char level, struct char_data *ch, char *arg, int type,
 #define GOOD_WALNUT  1130
 #define BAD_WALNUT   1132
 
-void cast_minor_creation(char level, struct char_data *ch, char *arg, int type,
+void cast_minor_creation(char level, struct char_data *ch, const char *arg, int type,
 			 struct char_data *victim, struct obj_data *tar_obj)
 {
   char                                    buffer[40] = "\0\0\0";
@@ -3183,13 +3183,13 @@ void cast_minor_creation(char level, struct char_data *ch, char *arg, int type,
   } else if (!str_cmp(buffer, "pen")) {
     obj = PEN;
   } else {
-    cprintf(ch, "There is nothing of that available\n\r");
+    cprintf(ch, "There is nothing of that available\r\n");
     return;
   }
 
   o = read_object(obj, VIRTUAL);
   if (!o) {
-    cprintf(ch, "There is nothing of that available\n\r");
+    cprintf(ch, "There is nothing of that available\r\n");
     return;
   }
   switch (type) {
@@ -3214,7 +3214,7 @@ void cast_minor_creation(char level, struct char_data *ch, char *arg, int type,
 #define CLEAR_STONE     1125
 #define GREY_STONE      1126
 
-void cast_conjure_elemental(char level, struct char_data *ch, char *arg, int type,
+void cast_conjure_elemental(char level, struct char_data *ch, const char *arg, int type,
 			    struct char_data *victim, struct obj_data *tar_obj)
 {
   char                                    buffer[40] = "\0\0\0";
@@ -3241,27 +3241,27 @@ void cast_conjure_elemental(char level, struct char_data *ch, char *arg, int typ
     mob = EARTH_ELEMENTAL;
     obj = GREY_STONE;
   } else {
-    cprintf(ch, "There are no elementals of that type available\n\r");
+    cprintf(ch, "There are no elementals of that type available\r\n");
     return;
   }
   if (!ch->equipment[HOLD]) {
-    cprintf(ch, " You must be holding the correct stone\n\r");
+    cprintf(ch, " You must be holding the correct stone\r\n");
     return;
   }
   sac = unequip_char(ch, HOLD);
   if (sac) {
     obj_to_char(sac, ch);
     if (ObjVnum(sac) != obj) {
-      cprintf(ch, "You must have the correct item to sacrifice.\n\r");
+      cprintf(ch, "You must have the correct item to sacrifice.\r\n");
       return;
     }
     el = read_mobile(mob, VIRTUAL);
     if (!el) {
-      cprintf(ch, "There are no elementals of that type available\n\r");
+      cprintf(ch, "There are no elementals of that type available\r\n");
       return;
     }
   } else {
-    cprintf(ch, "You must be holding the correct item to sacrifice.\n\r");
+    cprintf(ch, "You must be holding the correct item to sacrifice.\r\n");
     return;
   }
 
@@ -3290,7 +3290,7 @@ void cast_conjure_elemental(char level, struct char_data *ch, char *arg, int typ
 #define JEWELLED_DAGGER  25019
 #define SWORD_SHARPNESS  25017
 
-void cast_cacaodemon(char level, struct char_data *ch, char *arg, int type,
+void cast_cacaodemon(char level, struct char_data *ch, const char *arg, int type,
 		     struct char_data *victim, struct obj_data *tar_obj)
 {
   char                                    buffer[40] = "\0\0\0";
@@ -3323,27 +3323,27 @@ void cast_cacaodemon(char level, struct char_data *ch, char *arg, int type,
     mob = DEMON_TYPE_VI;
     obj = SWORD_ANCIENTS;
   } else {
-    cprintf(ch, "There are no demons of that type available\n\r");
+    cprintf(ch, "There are no demons of that type available\r\n");
     return;
   }
   if (!ch->equipment[WIELD]) {
-    cprintf(ch, " You must be wielding the correct item\n\r");
+    cprintf(ch, " You must be wielding the correct item\r\n");
     return;
   }
   sac = unequip_char(ch, WIELD);
   if (sac) {
     obj_to_char(sac, ch);
     if (ObjVnum(sac) != obj) {
-      cprintf(ch, "You must have the correct item to sacrifice.\n\r");
+      cprintf(ch, "You must have the correct item to sacrifice.\r\n");
       return;
     }
     el = read_mobile(mob, VIRTUAL);
     if (!el) {
-      cprintf(ch, "There are no demons of that type available\n\r");
+      cprintf(ch, "There are no demons of that type available\r\n");
       return;
     }
   } else {
-    cprintf(ch, "You must be holding the correct item to sacrifice.\n\r");
+    cprintf(ch, "You must be holding the correct item to sacrifice.\r\n");
     return;
   }
 
@@ -3359,7 +3359,7 @@ void cast_cacaodemon(char level, struct char_data *ch, char *arg, int type,
 
 }
 
-void cast_mon_sum1(char level, struct char_data *ch, char *arg, int type,
+void cast_mon_sum1(char level, struct char_data *ch, const char *arg, int type,
 		   struct char_data *victim, struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
@@ -3378,7 +3378,7 @@ void cast_mon_sum1(char level, struct char_data *ch, char *arg, int type,
   }
 }
 
-void cast_mon_sum2(char level, struct char_data *ch, char *arg, int type,
+void cast_mon_sum2(char level, struct char_data *ch, const char *arg, int type,
 		   struct char_data *victim, struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
@@ -3397,7 +3397,7 @@ void cast_mon_sum2(char level, struct char_data *ch, char *arg, int type,
   }
 }
 
-void cast_mon_sum3(char level, struct char_data *ch, char *arg, int type,
+void cast_mon_sum3(char level, struct char_data *ch, const char *arg, int type,
 		   struct char_data *victim, struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
@@ -3416,7 +3416,7 @@ void cast_mon_sum3(char level, struct char_data *ch, char *arg, int type,
   }
 }
 
-void cast_mon_sum4(char level, struct char_data *ch, char *arg, int type,
+void cast_mon_sum4(char level, struct char_data *ch, const char *arg, int type,
 		   struct char_data *victim, struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
@@ -3435,7 +3435,7 @@ void cast_mon_sum4(char level, struct char_data *ch, char *arg, int type,
   }
 }
 
-void cast_mon_sum5(char level, struct char_data *ch, char *arg, int type,
+void cast_mon_sum5(char level, struct char_data *ch, const char *arg, int type,
 		   struct char_data *victim, struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
@@ -3454,7 +3454,7 @@ void cast_mon_sum5(char level, struct char_data *ch, char *arg, int type,
   }
 }
 
-void cast_mon_sum6(char level, struct char_data *ch, char *arg, int type,
+void cast_mon_sum6(char level, struct char_data *ch, const char *arg, int type,
 		   struct char_data *victim, struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
@@ -3473,7 +3473,7 @@ void cast_mon_sum6(char level, struct char_data *ch, char *arg, int type,
   }
 }
 
-void cast_mon_sum7(char level, struct char_data *ch, char *arg, int type,
+void cast_mon_sum7(char level, struct char_data *ch, const char *arg, int type,
 		   struct char_data *victim, struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
@@ -3498,7 +3498,7 @@ void cast_mon_sum7(char level, struct char_data *ch, char *arg, int type,
  * Copyright (C) 1990, 1991 - see 'license.doc' for complete information.
  */
 
-void cast_fly_group(char level, struct char_data *ch, char *arg, int type,
+void cast_fly_group(char level, struct char_data *ch, const char *arg, int type,
 		    struct char_data *victim, struct obj_data *tar_obj)
 {
   if (DEBUG > 1)
@@ -3519,7 +3519,7 @@ void cast_fly_group(char level, struct char_data *ch, char *arg, int type,
   }
 }
 
-void cast_aid(char level, struct char_data *ch, char *arg, int type, struct char_data *victim,
+void cast_aid(char level, struct char_data *ch, const char *arg, int type, struct char_data *victim,
 	      struct obj_data *tar_obj)
 {
   if (DEBUG > 1)

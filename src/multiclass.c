@@ -301,6 +301,7 @@ int BestClass(struct char_data *ch)
   if (max == 0) {					       /* eek */
     log_fatal("Massive error.. character %s has no recognized class.", GET_NAME(ch));
     proper_exit(MUD_HALT);
+    return -1;
   } else {
     return (class);
   }

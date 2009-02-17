@@ -41,8 +41,8 @@ extern const char
 
 #endif
 
-int                                     GetSpellByName(char *name);
-int                                     GetSkillByName(char *name);
+int                                     GetSpellByName(const char *name);
+int                                     GetSkillByName(const char *name);
 int                                     SPELL_LEVEL(struct char_data *ch, int sn);
  int                              SKILL_LEVEL(struct char_data *ch, int sn);
 int                                     CanCast(struct char_data *ch, int sn);
@@ -62,8 +62,8 @@ void                                    say_spell(struct char_data *ch, int si);
 char                                    saves_spell(struct char_data *ch, short int save_type);
 char                                    ImpSaveSpell(struct char_data *ch, short int save_type,
 						     int mod);
- char                            *skip_spaces(char *string);
-void                                    do_cast(struct char_data *ch, char *argument, int cmd);
+const char                            *skip_spaces(const char *string);
+void                                    do_cast(struct char_data *ch, const char *argument, int cmd);
 void                                    assign_spell_pointers(void);
 int                                     splat(struct char_data *ch, struct room_data *rp,
 					      int height);

@@ -7,11 +7,12 @@
 /* extern char                             banned_names[MAX_STRING_LENGTH]; */	/* dumbfuck asshole and friends */
 #endif
 
+int                                     banned_ip(char *ip);
 int                                     banned_name(char *name);
 void					load_bans(void);
 void					unload_bans(void);
 void                                    bans_to_sql(void);
-void                                    do_ban(struct char_data *ch, char *argument, int cmd);
-void                                    do_unban(struct char_data *ch, char *argument, int cmd);
+void                                    do_ban(struct char_data *ch, const char *argument, int cmd);
+void                                    do_unban(struct char_data *ch, const char *argument, int cmd);
 
 #endif

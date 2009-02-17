@@ -29,7 +29,7 @@
 #define _HANDLER_C
 #include "handler.h"
 
-char                                   *fname(char *namelist)
+char                                   *fname(const char *namelist)
 {
   static char                             holder[30] = "\0\0\0";
   char                                   *point = NULL;
@@ -48,13 +48,13 @@ char                                   *fname(char *namelist)
 /*
  * str must be writable 
  */
-int split_string(char *str, char *sep, char **argv)
+int split_string(char *str, const char *sep, char **argv)
 {
   char                                   *s = NULL;
   int                                     argc = 0;
 
   if (DEBUG > 2)
-    log_info("called %s with %s, %s, %08x", __PRETTY_FUNCTION__, VNULL(str), VNULL(sep), argv);
+    log_info("called %s with %s, %s, %08zx", __PRETTY_FUNCTION__, VNULL(str), VNULL(sep), (size_t)argv);
 
   s = strtok(str, sep);
   if (s)
@@ -70,7 +70,7 @@ int split_string(char *str, char *sep, char **argv)
   return argc;
 }
 
-int isname(char *str, char *namelist)
+int isname(const char *str, const char *namelist)
 {
   char                                   *argv[30];
   char                                   *xargv[30];
@@ -87,10 +87,10 @@ int isname(char *str, char *namelist)
     log_info("called %s with %s, %s", __PRETTY_FUNCTION__, VNULL(str), VNULL(namelist));
 
   strcpy(buf, str);
-  argc = split_string(buf, "- \t\n\r,", argv);
+  argc = split_string(buf, "- \t\r\n,", argv);
 
   strcpy(names, namelist);
-  xargc = split_string(names, "- \t\n\r,", xargv);
+  xargc = split_string(names, "- \t\r\n,", xargv);
 
   s = argv[argc - 1];
   s += strlen(s);
@@ -125,7 +125,7 @@ int isname(char *str, char *namelist)
 void init_string_block(struct string_block *sb)
 {
   if (DEBUG > 2)
-    log_info("called %s with %08x", __PRETTY_FUNCTION__, sb);
+    log_info("called %s with %08zx", __PRETTY_FUNCTION__, (size_t)sb);
 
   CREATE(sb->data, char, sb->size = 128);
 
@@ -147,7 +147,7 @@ void append_to_string_block(struct string_block *sb, char *str)
   int                                     len = 0;
 
   if (DEBUG > 2)
-    log_info("called %s with %08x, %s", __PRETTY_FUNCTION__, sb, VNULL(str));
+    log_info("called %s with %08zx, %s", __PRETTY_FUNCTION__, (size_t)sb, VNULL(str));
 
   len = strlen(sb->data) + strlen(str) + 1;
   if (len > sb->size) {
@@ -161,7 +161,7 @@ void append_to_string_block(struct string_block *sb, char *str)
 void page_string_block(struct string_block *sb, struct char_data *ch)
 {
   if (DEBUG > 2)
-    log_info("called %s with %08x, %s", __PRETTY_FUNCTION__, sb, SAFE_NAME(ch));
+    log_info("called %s with %08zx, %s", __PRETTY_FUNCTION__, (size_t)sb, SAFE_NAME(ch));
 
   page_string(ch->desc, sb->data, 1);
 }
@@ -169,7 +169,7 @@ void page_string_block(struct string_block *sb, struct char_data *ch)
 void destroy_string_block(struct string_block *sb)
 {
   if (DEBUG > 2)
-    log_info("called %s with %08x", __PRETTY_FUNCTION__, sb);
+    log_info("called %s with %08zx", __PRETTY_FUNCTION__, (size_t)sb);
 
   DESTROY(sb->data);
   sb->data = NULL;
@@ -431,7 +431,7 @@ void affect_to_char(struct char_data *ch, struct affected_type *af)
   struct affected_type                   *affected_alloc = NULL;
 
   if (DEBUG > 1)
-    log_info("called %s with %s, %08x", __PRETTY_FUNCTION__, SAFE_NAME(ch), af);
+    log_info("called %s with %s, %08zx", __PRETTY_FUNCTION__, SAFE_NAME(ch), (size_t)af);
 
   CREATE(affected_alloc, struct affected_type, 1);
 
@@ -451,7 +451,7 @@ void affect_remove(struct char_data *ch, struct affected_type *af)
   struct affected_type                   *hjp = NULL;
 
   if (DEBUG > 2)
-    log_info("called %s with %s, %08x", __PRETTY_FUNCTION__, SAFE_NAME(ch), af);
+    log_info("called %s with %s, %08zx", __PRETTY_FUNCTION__, SAFE_NAME(ch), (size_t)af);
 
   if (!ch->affected)
     return;
@@ -515,7 +515,7 @@ void affect_join(struct char_data *ch, struct affected_type *af, char avg_dur, c
   char                                    found = FALSE;
 
   if (DEBUG > 2)
-    log_info("called %s with %s, %08x, %d, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), af, (int)avg_dur, (int)avg_mod);
+    log_info("called %s with %s, %08zx, %d, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), (size_t)af, (int)avg_dur, (int)avg_mod);
 
   for (hjp = ch->affected; !found && hjp; hjp = hjp->next) {
     if (hjp->type == af->type) {
@@ -555,7 +555,7 @@ void char_from_room(struct char_data *ch)
       if (ch->equipment[WEAR_LIGHT]->obj_flags.value[2]) {     /* Light is ON */
 	real_roomp(ch->in_room)->light--;
 	if (real_roomp(ch->in_room)->light < 1)
-	  reprintf(ch->in_room, ch, "A source of light leaves the room....\n\r");
+	  reprintf(ch->in_room, ch, "A source of light leaves the room....\r\n");
       }
   rp = real_roomp(ch->in_room);
   if (rp == NULL) {
@@ -605,7 +605,7 @@ void char_to_room(struct char_data *ch, int room)
     if (ch->equipment[WEAR_LIGHT]->obj_flags.type_flag == ITEM_LIGHT)
       if (ch->equipment[WEAR_LIGHT]->obj_flags.value[2]) {     /* Light is ON */
 	if ((rp->light < 1) && (ch->in_room))
-	  reprintf(ch->in_room, ch, "A source of light enters the room...\n\r");
+	  reprintf(ch->in_room, ch, "A source of light enters the room...\r\n");
 	rp->light++;
       }
 }
@@ -787,7 +787,7 @@ int get_number(char **name)
   char                                    spare[MAX_INPUT_LENGTH] = "\0\0\0";
 
   if (DEBUG > 2)
-    log_info("called %s with %08x", __PRETTY_FUNCTION__, name);
+    log_info("called %s with %08zx", __PRETTY_FUNCTION__, (size_t)name);
 
   if ((ppos = (char *)index(*name, '.')) && ppos[1]) {
     *ppos++ = '\0';
@@ -805,7 +805,7 @@ int get_number(char **name)
 }
 
 /* Search a given list for an object, and return a pointer to that object */
-struct obj_data                        *get_obj_in_list(char *name, struct obj_data *list)
+struct obj_data                        *get_obj_in_list(const char *name, struct obj_data *list)
 {
   struct obj_data                        *i = NULL;
   int                                     j = 0;
@@ -814,7 +814,7 @@ struct obj_data                        *get_obj_in_list(char *name, struct obj_d
   char                                   *tmp = NULL;
 
   if (DEBUG > 2)
-    log_info("called %s with %s, %08x", __PRETTY_FUNCTION__, VNULL(name), list);
+    log_info("called %s with %s, %08zx", __PRETTY_FUNCTION__, VNULL(name), (size_t)list);
 
   strcpy(tmpname, name);
   tmp = tmpname;
@@ -859,7 +859,7 @@ struct obj_data                        *get_obj_in_list_num(int num, struct obj_
   struct obj_data                        *i = NULL;
 
   if (DEBUG > 2)
-    log_info("called %s with %d, %08x", __PRETTY_FUNCTION__, num, list);
+    log_info("called %s with %d, %08zx", __PRETTY_FUNCTION__, num, (size_t)list);
 
   for (i = list; i; i = i->next_content)
     if (i->item_number == num)
@@ -869,7 +869,7 @@ struct obj_data                        *get_obj_in_list_num(int num, struct obj_
 }
 
 /*search the entire world for an object, and return a pointer  */
-struct obj_data                        *get_obj(char *name)
+struct obj_data                        *get_obj(const char *name)
 {
   struct obj_data                        *i = NULL;
   int                                     j = 0;
@@ -910,7 +910,7 @@ struct obj_data                        *get_obj_num(int nr)
 }
 
 /* search a room for a char, and return a pointer if found..  */
-struct char_data                       *get_char_room(char *name, int room)
+struct char_data                       *get_char_room(const char *name, int room)
 {
   struct char_data                       *i = NULL;
   int                                     j = 0;
@@ -936,7 +936,7 @@ struct char_data                       *get_char_room(char *name, int room)
 }
 
 /* search all over the world for a char, and return a pointer if found */
-struct char_data                       *get_char(char *name)
+struct char_data                       *get_char(const char *name)
 {
   struct char_data                       *i = NULL;
   int                                     j = 0;
@@ -1088,7 +1088,7 @@ void obj_from_obj(struct obj_data *obj)
 void object_list_new_owner(struct obj_data *list, struct char_data *ch)
 {
   if (DEBUG > 2)
-    log_info("called %s with %08x, %s", __PRETTY_FUNCTION__, list, SAFE_NAME(ch));
+    log_info("called %s with %08zx, %s", __PRETTY_FUNCTION__, (size_t)list, SAFE_NAME(ch));
 
   if (list) {
     object_list_new_owner(list->contains, ch);
@@ -1226,7 +1226,7 @@ void extract_char(struct char_data *ch)
       ch->desc->snoop.snooping->desc->snoop.snoop_by = 0;
 
     if (ch->desc->snoop.snoop_by) {
-      cprintf(ch->desc->snoop.snoop_by, "Your victim is no longer among us.\n\r");
+      cprintf(ch->desc->snoop.snoop_by, "Your victim is no longer among us.\r\n");
       ch->desc->snoop.snoop_by->desc->snoop.snooping = 0;
     }
     ch->desc->snoop.snooping = ch->desc->snoop.snoop_by = 0;
@@ -1258,7 +1258,7 @@ void extract_char(struct char_data *ch)
 	i->in_room = ch->in_room;
       }
     } else {
-      cprintf(ch, "Here, you dropped some stuff, let me help you get rid of that.\n\r");
+      cprintf(ch, "Here, you dropped some stuff, let me help you get rid of that.\r\n");
       for (i = ch->carrying; i; i = o) {
 	o = i->next_content;
 	extract_obj(i);
@@ -1362,7 +1362,7 @@ void extract_char(struct char_data *ch)
  * which incorporate the actual player-data.
  * *********************************************************************** */
 
-struct char_data                       *get_char_room_vis(struct char_data *ch, char *name)
+struct char_data                       *get_char_room_vis(struct char_data *ch, const char *name)
 {
   struct char_data                       *i = NULL;
   int                                     j = 0;
@@ -1393,7 +1393,7 @@ struct char_data                       *get_char_room_vis(struct char_data *ch, 
 
 /* get a character from anywhere in the world, doesn't care much about
  * being in the same room... */
-struct char_data                       *get_char_vis_world(struct char_data *ch, char *name,
+struct char_data                       *get_char_vis_world(struct char_data *ch, const char *name,
 							   int *count)
 {
   struct char_data                       *i = NULL;
@@ -1403,7 +1403,7 @@ struct char_data                       *get_char_vis_world(struct char_data *ch,
   char                                   *tmp = NULL;
 
   if (DEBUG > 2)
-    log_info("called %s with %s, %s, %08x", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(name), count);
+    log_info("called %s with %s, %s, %08zx", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(name), (size_t)count);
 
   if ((!strcasecmp(name, "me") || !strcasecmp(name, "myself")) && CAN_SEE(ch, ch))
     return ch;
@@ -1426,7 +1426,7 @@ struct char_data                       *get_char_vis_world(struct char_data *ch,
   return 0;
 }
 
-struct char_data                       *get_char_vis(struct char_data *ch, char *name)
+struct char_data                       *get_char_vis(struct char_data *ch, const char *name)
 {
   struct char_data                       *i = NULL;
 
@@ -1442,7 +1442,7 @@ struct char_data                       *get_char_vis(struct char_data *ch, char 
   return get_char_vis_world(ch, name, NULL);
 }
 
-struct obj_data                        *get_obj_in_list_vis(struct char_data *ch, char *name,
+struct obj_data                        *get_obj_in_list_vis(struct char_data *ch, const char *name,
 							    struct obj_data *list)
 {
   struct obj_data                        *i = NULL;
@@ -1452,7 +1452,7 @@ struct obj_data                        *get_obj_in_list_vis(struct char_data *ch
   char                                   *tmp = NULL;
 
   if (DEBUG > 2)
-    log_info("called %s with %s, %s, %08x", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(name), list);
+    log_info("called %s with %s, %s, %08zx", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(name), (size_t)list);
 
   strcpy(tmpname, name);
   tmp = tmpname;
@@ -1469,7 +1469,7 @@ struct obj_data                        *get_obj_in_list_vis(struct char_data *ch
   return (0);
 }
 
-struct obj_data                        *get_obj_vis_world(struct char_data *ch, char *name,
+struct obj_data                        *get_obj_vis_world(struct char_data *ch, const char *name,
 							  int *count)
 {
   struct obj_data                        *i = NULL;
@@ -1479,7 +1479,7 @@ struct obj_data                        *get_obj_vis_world(struct char_data *ch, 
   char                                   *tmp = NULL;
 
   if (DEBUG > 2)
-    log_info("called %s with %s, %s, %08x", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(name), count);
+    log_info("called %s with %s, %s, %08zx", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(name), (size_t)count);
 
   strcpy(tmpname, name);
   tmp = tmpname;
@@ -1504,7 +1504,7 @@ struct obj_data                        *get_obj_vis_world(struct char_data *ch, 
 }
 
 /*search the entire world for an object, and return a pointer  */
-struct obj_data                        *get_obj_vis(struct char_data *ch, char *name)
+struct obj_data                        *get_obj_vis(struct char_data *ch, const char *name)
 {
   struct obj_data                        *i = NULL;
 
@@ -1526,7 +1526,7 @@ struct obj_data                        *get_obj_vis(struct char_data *ch, char *
   return get_obj_vis_world(ch, name, NULL);
 }
 
-struct obj_data                        *get_obj_vis_accessible(struct char_data *ch, char *name)
+struct obj_data                        *get_obj_vis_accessible(struct char_data *ch, const char *name)
 {
   struct obj_data                        *i = NULL;
   int                                     j = 0;
@@ -1639,13 +1639,13 @@ struct obj_data                        *create_money(int amount)
 /* The routine returns a pointer to the next word in *arg (just like the  */
 /* one_argument routine).                                                 */
 
-int generic_find(char *arg, int bitvector, struct char_data *ch,
+int generic_find(const char *arg, int bitvector, struct char_data *ch,
 		 struct char_data **tar_ch, struct obj_data **tar_obj)
 {
   char                                    name[256] = "\0\0\0";
   int                                     i = 0;
   int                                     found = FALSE;
-  static char                            *ignore[] = {
+  static const char                      *ignore[] = {
     "the",
     "in",
     "on",
@@ -1654,7 +1654,7 @@ int generic_find(char *arg, int bitvector, struct char_data *ch,
   };
 
   if (DEBUG > 2)
-    log_info("called %s with %d, %s, %08x, %08x", __PRETTY_FUNCTION__, bitvector, SAFE_NAME(ch), tar_ch, tar_obj);
+    log_info("called %s with %d, %s, %08zx, %08zx", __PRETTY_FUNCTION__, bitvector, SAFE_NAME(ch), (size_t)tar_ch, (size_t)tar_obj);
 
   /*
    * Eliminate spaces and "ignore" words 

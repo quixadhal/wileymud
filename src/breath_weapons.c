@@ -83,7 +83,7 @@ void free_victims(struct breath_victim *head)
   struct breath_victim                   *temp = NULL;
 
   if (DEBUG > 2)
-    log_info("called %s with %08x", __PRETTY_FUNCTION__, head);
+    log_info("called %s with %08zx", __PRETTY_FUNCTION__, (size_t)head);
 
   while (head) {
     temp = head->next;
@@ -99,7 +99,7 @@ int breath_weapon(struct char_data *ch, struct char_data *target, int mana_cost,
   int                                     victim = 0;
 
   if (DEBUG > 2)
-    log_info("called %s with %s, %s, %d, %08x", __PRETTY_FUNCTION__, SAFE_NAME(ch), SAFE_NAME(target), mana_cost, func);
+    log_info("called %s with %s, %s, %d, %08zx", __PRETTY_FUNCTION__, SAFE_NAME(ch), SAFE_NAME(target), mana_cost, (size_t)func);
 
   hitlist = choose_victims(ch, target);
 
@@ -135,7 +135,7 @@ int breath_weapon(struct char_data *ch, struct char_data *target, int mana_cost,
 void use_breath_weapon(struct char_data *ch, struct char_data *target, int cost, funcp func)
 {
   if (DEBUG > 2)
-    log_info("called %s with %s, %s, %d, %08x", __PRETTY_FUNCTION__, SAFE_NAME(ch), SAFE_NAME(target), cost, func);
+    log_info("called %s with %s, %s, %d, %08zx", __PRETTY_FUNCTION__, SAFE_NAME(ch), SAFE_NAME(target), cost, (size_t)func);
 
   if (GET_MANA(ch) >= 0) {
     breath_weapon(ch, target, cost, func);
@@ -148,7 +148,7 @@ void use_breath_weapon(struct char_data *ch, struct char_data *target, int cost,
   }
 }
 
-int BreathWeapon(struct char_data *ch, int cmd, char *arg)
+int BreathWeapon(struct char_data *ch, int cmd, const char *arg)
 {
   struct breather                        *scan = NULL;
   int                                     count = 0;

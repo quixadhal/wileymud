@@ -13,6 +13,6 @@ void                                    FailCalm(struct char_data *victim,
 						 struct char_data *ch);
 void                                    AreaEffectSpell(struct char_data *castor, int dam,
 							int spell_type, int zflag,
-							char *zone_mesg);
+							const char *zone_mesg);
 
 #endif

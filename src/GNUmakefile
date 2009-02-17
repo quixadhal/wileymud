@@ -17,21 +17,19 @@ ID_DEP		= $(IDENTDIR)/libident.a
 ID_INC		= #
 ID_LIB		= -L$(IDENTDIR) -lident
 
-W_FORMAT	= ##-Wformat -Wformat-security #-Wmissing-format-attribute
-W_NITPICK	= ##-Wpointer-arith -Winline
-W_MESSY		= ##-Wmissing-braces -Wparentheses -Wshadow #-Wredundant-decls
-W_FUNC		= ###-Wstrict-prototypes #-Wmissing-prototypes
-W_TYPE		= ##-Wcast-qual -Wcast-align -Wchar-subscripts -Wreturn-type -Wswitch #-Wwrite-strings
-W_EXTRA		= ##-Wunused #-Wunreachable-code
-W_C_ONLY	= ##-Wmissing-declarations -Wimplicit-int -Wimplicit-function-declaration #-Wsequence-point -Wnonnull
-W_ANSI		= ###-pedantic
-W_UBER		= ##-Wall #-W
-W_ERROR		= ##-Werror
+W_ERROR         = -Werror
+W_ANSI          = #-pedantic
+W_UBER          = -Wall
+W_FORMAT        = -Wformat -Wformat-security -Wmissing-format-attribute
+W_MESSY         = -Wmissing-braces -Wparentheses -Wshadow -Wredundant-decls
+W_TYPE          = -Wcast-qual -Wcast-align -Wchar-subscripts -Wreturn-type -Wswitch -Wwrite-strings
+W_EXTRA         = -Wunused -Wuninitialized #-Wunreachable-code
+W_NITPICK       = -Wpointer-arith -Winline
+ifeq ($(CC), gcc)
+W_CONLY		= -Wmissing-declarations -Wmissing-prototypes -Wstrict-prototypes 
+endif
 
-W_ALL		= $(W_ANSI) $(W_UBER) $(W_FORMAT) $(W_MESSY) $(W_FUNC) $(W_TYPE) $(W_EXTRA) $(W_NITPICK) $(W_ERROR)
-W_CLANG		= $(W_C_ONLY)
-
-W_FLAGS		= $(W_ALL) $(W_CLANG)
+W_FLAGS		= $(W_ERROR) $(W_ANSI) $(W_UBER) $(W_FORMAT) $(W_MESSY) $(W_TYPE) $(W_EXTRA) $(W_NITPICK) $(W_CONLY)
 
 OPT_FLAG	= -pipe -O3 #-Wuninitialized
 
@@ -321,7 +319,8 @@ obj/comm.o: comm.c include/global.h include/bug.h include/utils.h \
   include/whod.h include/multiclass.h include/weather.h \
   include/mudlimits.h include/spells.h include/spell_parser.h \
   include/sound.h include/fight.h include/mob_actions.h \
-  include/act_other.h include/signals.h include/sql.h include/comm.h
+  include/act_other.h include/signals.h include/sql.h include/ban.h \
+  include/comm.h
 obj/magic_utils.o: magic_utils.c include/global.h include/bug.h \
   include/utils.h include/comm.h include/db.h include/spells.h \
   include/handler.h include/mudlimits.h include/fight.h \

@@ -137,7 +137,7 @@ int AddHated(struct char_data *ch, struct char_data *pud)
     if (!IS_SET(ch->hatefield, HATE_CHAR))
       SET_BIT(ch->hatefield, HATE_CHAR);
     if (IS_IMMORTAL(pud))
-      cprintf(pud, "%s HATES you!\n\r", NAME(ch));
+      cprintf(pud, "%s HATES you!\r\n", NAME(ch));
   }
   return ((pud) ? TRUE : FALSE);
 }
@@ -282,7 +282,7 @@ int AddFeared(struct char_data *ch, struct char_data *pud)
       SET_BIT(ch->fearfield, FEAR_CHAR);
     }
     if (IS_IMMORTAL(pud))
-      cprintf(pud, "%s fears you, as well they should.\n\r", NAME(ch));
+      cprintf(pud, "%s fears you, as well they should.\r\n", NAME(ch));
   }
   return ((pud) ? TRUE : FALSE);
 }
@@ -423,7 +423,7 @@ int DoesHate(struct char_data *ch, struct char_data *v)
   if (IS_SET(ch->hatefield, HATE_RICH)) {
     if (GET_GOLD(v) > ch->hates.gold) {
       act("$n charges $N, screaming 'I must have your GOLD!'", TRUE, ch, 0, v, TO_ROOM);
-      cprintf(v, "%s charges, screaming 'I must have your GOLD!'\n\r", NAME(ch));
+      cprintf(v, "%s charges, screaming 'I must have your GOLD!'\r\n", NAME(ch));
       return (TRUE);
     }
   }

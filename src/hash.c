@@ -15,7 +15,7 @@
 void init_hash_table(struct hash_header *ht, int rec_size, int table_size)
 {
   if (DEBUG > 2)
-    log_info("called %s with %08x, %d, %d", __PRETTY_FUNCTION__, ht, rec_size, table_size);
+    log_info("called %s with %08zx, %d, %d", __PRETTY_FUNCTION__, (size_t)ht, rec_size, table_size);
 
   /*
    * int size; 
@@ -44,7 +44,7 @@ void destroy_hash_table(struct hash_header *ht, funcp gman)
   struct hash_link                       *temp = NULL;
 
   if (DEBUG > 2)
-    log_info("called %s with %08x, %08x", __PRETTY_FUNCTION__, ht, gman);
+    log_info("called %s with %08zx, %08zx", __PRETTY_FUNCTION__, (size_t)ht, (size_t)gman);
 
   for (i = 0; i < ht->table_size; i++)
     for (scan = ht->buckets[i]; scan;) {
@@ -63,7 +63,7 @@ static void _hash_enter(struct hash_header *ht, int key, void *data)
   int                                     i = 0;
 
   if (DEBUG > 2)
-    log_info("called %s with %08x, %d, %08x", __PRETTY_FUNCTION__, ht, key, data);
+    log_info("called %s with %08zx, %d, %08zx", __PRETTY_FUNCTION__, (size_t)ht, key, (size_t)data);
   /*
    * if(!(temp = (void *)malloc(sizeof(*temp)))) { log_error("Cannot allocate hash entry"); proper_exit(MUD_HALT); } 
    */
@@ -94,7 +94,7 @@ void                                   *hash_find(struct hash_header *ht, int ke
   struct hash_link                       *scan = NULL;
 
   if (DEBUG > 3)
-    log_info("called %s with %08x, %d", __PRETTY_FUNCTION__, ht, key);
+    log_info("called %s with %08zx, %d", __PRETTY_FUNCTION__, (size_t)ht, key);
 
   scan = ht->buckets[HASH_KEY(ht, key)];
 
@@ -109,7 +109,7 @@ int hash_enter(struct hash_header *ht, int key, void *data)
   void                                   *temp = NULL;
 
   if (DEBUG > 2)
-    log_info("called %s with %08x, %d, %08x", __PRETTY_FUNCTION__, ht, key, data);
+    log_info("called %s with %08zx, %d, %08zx", __PRETTY_FUNCTION__, (size_t)ht, key, (size_t)data);
 
   temp = hash_find(ht, key);
   if (DEBUG)
@@ -126,7 +126,7 @@ void                                   *hash_find_or_create(struct hash_header *
   void                                   *rval = NULL;
 
   if (DEBUG > 2)
-    log_info("called %s with %08x, %d", __PRETTY_FUNCTION__, ht, key);
+    log_info("called %s with %08zx, %d", __PRETTY_FUNCTION__, (size_t)ht, key);
 
   rval = hash_find(ht, key);
   if (rval)
@@ -145,7 +145,7 @@ void                                   *hash_remove(struct hash_header *ht, int 
   struct hash_link                      **scan = NULL;
 
   if (DEBUG > 2)
-    log_info("called %s with %08x, %d", __PRETTY_FUNCTION__, ht, key);
+    log_info("called %s with %08zx, %d", __PRETTY_FUNCTION__, (size_t)ht, key);
 
   scan = ht->buckets + HASH_KEY(ht, key);
 
@@ -181,7 +181,7 @@ void hash_iterate(struct hash_header *ht, funcp func, void *cdata)
   int                                     i = 0;
 
   if (DEBUG > 2)
-    log_info("called %s with %08x, %08x, %08x", __PRETTY_FUNCTION__, func, cdata);
+    log_info("called %s with %08zx, %08zx, %08zx", __PRETTY_FUNCTION__, (size_t)ht, (size_t)func, (size_t)cdata);
 
   for (i = 0; i < ht->klistlen; i++) {
     void                                   *temp = NULL;

@@ -21,6 +21,6 @@ int                                     breath_weapon(struct char_data *ch,
 void                                    use_breath_weapon(struct char_data *ch,
 							  struct char_data *target, int cost,
 							  funcp func);
-int                                     BreathWeapon(struct char_data *ch, int cmd, char *arg);
+int                                     BreathWeapon(struct char_data *ch, int cmd, const char *arg);
 
 #endif

@@ -13,9 +13,9 @@
 #define FIND_OBJ_WORLD    16
 #define FIND_OBJ_EQUIP    32
 
-char                                   *fname(char *namelist);
-int                                     split_string(char *str, char *sep, char **argv);
-int                                     isname(char *str, char *namelist);
+char                                   *fname(const char *namelist);
+int                                     split_string(char *str, const char *sep, char **argv);
+int                                     isname(const char *str, const char *namelist);
 void                                    init_string_block(struct string_block *sb);
 void                                    append_to_string_block(struct string_block *sb,
 							       char *str);
@@ -44,12 +44,12 @@ void                                    equip_char(struct char_data *ch, struct 
 						   int pos);
 struct obj_data                        *unequip_char(struct char_data *ch, int pos);
 int                                     get_number(char **name);
-struct obj_data                        *get_obj_in_list(char *name, struct obj_data *list);
+struct obj_data                        *get_obj_in_list(const char *name, struct obj_data *list);
 struct obj_data                        *get_obj_in_list_num(int num, struct obj_data *list);
-struct obj_data                        *get_obj(char *name);
+struct obj_data                        *get_obj(const char *name);
 struct obj_data                        *get_obj_num(int nr);
-struct char_data                       *get_char_room(char *name, int room);
-struct char_data                       *get_char(char *name);
+struct char_data                       *get_char_room(const char *name, int room);
+struct char_data                       *get_char(const char *name);
 struct char_data                       *get_char_num(int nr);
 void                                    obj_to_room(struct obj_data *object, int room);
 void                                    obj_from_room(struct obj_data *object);
@@ -62,19 +62,19 @@ void                                    extract_obj(struct obj_data *obj);
 void                                    update_object(struct obj_data *obj, int use);
 void                                    update_char_objects(struct char_data *ch);
 void                                    extract_char(struct char_data *ch);
-struct char_data                       *get_char_room_vis(struct char_data *ch, char *name);
-struct char_data                       *get_char_vis_world(struct char_data *ch, char *name,
+struct char_data                       *get_char_room_vis(struct char_data *ch, const char *name);
+struct char_data                       *get_char_vis_world(struct char_data *ch, const char *name,
 							   int *count);
-struct char_data                       *get_char_vis(struct char_data *ch, char *name);
-struct obj_data                        *get_obj_in_list_vis(struct char_data *ch, char *name,
+struct char_data                       *get_char_vis(struct char_data *ch, const char *name);
+struct obj_data                        *get_obj_in_list_vis(struct char_data *ch, const char *name,
 							    struct obj_data *list);
-struct obj_data                        *get_obj_vis_world(struct char_data *ch, char *name,
+struct obj_data                        *get_obj_vis_world(struct char_data *ch, const char *name,
 							  int *count);
-struct obj_data                        *get_obj_vis(struct char_data *ch, char *name);
+struct obj_data                        *get_obj_vis(struct char_data *ch, const char *name);
 struct obj_data                        *get_obj_vis_accessible(struct char_data *ch,
-							       char *name);
+							       const char *name);
 struct obj_data                        *create_money(int amount);
-int                                     generic_find(char *arg, int bitvector,
+int                                     generic_find(const char *arg, int bitvector,
 						     struct char_data *ch,
 						     struct char_data **tar_ch,
 						     struct obj_data **tar_obj);

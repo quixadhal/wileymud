@@ -249,7 +249,7 @@ void TrapTeleport(struct char_data *v)
     log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(v));
 
   if (saves_spell(v, SAVING_SPELL)) {
-    cprintf(v, "You feel strange, but the effect fades.\n\r");
+    cprintf(v, "You feel strange, but the effect fades.\r\n");
     return;
   }
   do {
@@ -296,7 +296,7 @@ void TrapSleep(struct char_data *v)
       GET_POS(v) = POSITION_SLEEPING;
     }
   } else {
-    cprintf(v, "You feel sleepy, but you recover\n\r");
+    cprintf(v, "You feel sleepy, but you recover\r\n");
   }
 }
 

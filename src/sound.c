@@ -123,8 +123,10 @@ void MakeSound(int current_pulse)
 	if (GET_POS(ch) > POSITION_SLEEPING) {
 	  MakeNoise(ch->in_room, ch->player.sounds, ch->player.distant_snds);
 	} else if (GET_POS(ch) == POSITION_SLEEPING) {
-	  sprintf(buffer, "%s snores loudly.\n\r", ch->player.short_descr);
-	  MakeNoise(ch->in_room, buffer, "You hear a loud snore nearby.\n\r");
+          static char Snore[] = "You hear a loud snore nearby.\r\n";
+
+	  sprintf(buffer, "%s snores loudly.\r\n", ch->player.short_descr);
+	  MakeNoise(ch->in_room, buffer, Snore);
 	}
       } else if (GET_POS(ch) == ch->specials.default_pos) {
 	MakeNoise(ch->in_room, ch->player.sounds, ch->player.distant_snds);
