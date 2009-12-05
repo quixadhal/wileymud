@@ -141,7 +141,7 @@ void random_error_message(struct char_data *ch)
   cprintf(ch, "%s\r\n", oops[number(1, howmany) - 1]);
 }
 
-void random_miscast(struct char_data *ch, char *name)
+void random_miscast(struct char_data *ch, const char *name)
 {
   static const char                            *oops[] = {
     "You just can't seem to concentrate on %s...\r\n",

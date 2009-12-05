@@ -21,7 +21,7 @@
 #define _WEATHER_C
 #include "weather.h"
 
-char                                   *moon_names[] = {
+const char                                   *moon_names[] = {
   "new",
   "waxing cresent",
   "waxing half",

@@ -88,7 +88,7 @@ void bug_logger( unsigned int Type, const char *BugFile,
     for (i = descriptor_list; i; i = i->next)
       if ((!i->connected) && (GetMaxLevel(i->character) >= Level) &&
 	  (IS_SET(i->character->specials.act, PLR_LOGS)))
-	write_to_q(Result, &i->output);
+	write_to_q(Result, &i->output, 1);
     bzero(Result, MAX_STRING_LENGTH);
   } else
     strcpy(Temp, "PING!");
@@ -145,7 +145,7 @@ void bug_logger( unsigned int Type, const char *BugFile,
     }
   }
 
-  if (db_connected) {
+  if (db_logging && db_connected) {
 EXEC SQL BEGIN DECLARE SECTION;
   int	log_type_id		= LOG_INFO;
   char	log_entry[MAX_STRING_LENGTH];

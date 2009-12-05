@@ -271,7 +271,7 @@ void                                    char_to_store(struct char_data *ch,
 						      struct char_file_u *st);
 int                                     create_entry(char *name);
 void                                    save_char(struct char_data *ch, short int load_room);
-void                                    new_save_char(struct char_file_u *ch, char *filename);
+void                                    new_save_char(struct char_file_u *ch, char *filename, struct char_data *xch);
 int                                     compare(struct player_index_element *arg1,
 						struct player_index_element *arg2);
 void                                    free_char(struct char_data *ch);
@@ -292,7 +292,8 @@ char                                   *fread_word(FILE * fp);
 int                                     fread_number(FILE * fp);
 void                                    fread_to_eol(FILE * fp);
 int                                     fread_char(char *name,
-						   struct char_file_u *char_element);
+						   struct char_file_u *char_element,
+                                                   struct char_data *xch);
 char                                   *new_fread_string(FILE * fp);
 
 #endif

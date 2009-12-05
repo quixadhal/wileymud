@@ -70,7 +70,7 @@
   return ((value * 100) / total);
 }
 
- char                            *ordinal(int x)
+ const char                            *ordinal(int x)
 {
   if (DEBUG > 3)
     log_info("called %s with %d", __PRETTY_FUNCTION__, x);
@@ -156,7 +156,7 @@ int exit_ok(struct room_direction_data *room_exit, struct room_data **rpp)
   struct room_data                       *rp = NULL;
 
   if (DEBUG > 3)
-    log_info("called %s with %08zx, %08zx", __PRETTY_FUNCTION__, room_exit, rpp);
+    log_info("called %s with %08zx, %08zx", __PRETTY_FUNCTION__, (size_t)room_exit, (size_t)rpp);
 
   if (rpp == NULL)
     rpp = &rp;
@@ -247,7 +247,7 @@ int scan_number(const char *text, int *rval)
   int                                     length = 0;
 
   if (DEBUG > 3)
-    log_info("called %s with %s, %08zx", __PRETTY_FUNCTION__, VNULL(text), rval);
+    log_info("called %s with %s, %08zx", __PRETTY_FUNCTION__, VNULL(text), (size_t)rval);
 
   if (!text || !*text)
     return 0;
@@ -283,7 +283,7 @@ int scan_number(const char *text, int *rval)
   long                                    nr = 0L;
 
   if (DEBUG > 3)
-    log_info("called %s with %lu, %08zx, %08zx", __PRETTY_FUNCTION__, vektor, names, result);
+    log_info("called %s with %lu, %08zx, %08zx", __PRETTY_FUNCTION__, vektor, (size_t)names, (size_t)result);
 
   *result = '\0';
   for (nr = 0; vektor; vektor >>= 1) {
@@ -308,7 +308,7 @@ int scan_number(const char *text, int *rval)
   int                                     nr = 0;
 
   if (DEBUG > 3)
-    log_info("called %s with %d, %08zx, %08zx", __PRETTY_FUNCTION__, type, names, result);
+    log_info("called %s with %d, %08zx, %08zx", __PRETTY_FUNCTION__, type, (size_t)names, (size_t)result);
 
   for (nr = 0; (*names[nr] != '\n'); nr++);
   if (type < nr)
@@ -324,7 +324,7 @@ struct time_info_data real_time_passed(time_t t2, time_t t1)
   struct time_info_data                   now;
 
   if (DEBUG > 3)
-    log_info("called %s with %u, %u", __PRETTY_FUNCTION__, (long)t2, (long)t1);
+    log_info("called %s with %ld, %ld", __PRETTY_FUNCTION__, t2, t1);
 
   secs = (long)(t2 - t1);
   now.hours = (secs / SECS_PER_REAL_HOUR) % 24;		       /* 0..23 hours */
@@ -343,7 +343,7 @@ struct time_info_data mud_time_passed(time_t t2, time_t t1)
   struct time_info_data                   now;
 
   if (DEBUG > 3)
-    log_info("called %s with %u, %u", __PRETTY_FUNCTION__, (long)t2, (long)t1);
+    log_info("called %s with %ld, %ld", __PRETTY_FUNCTION__, t2, t1);
 
   secs = (long)(t2 - t1);
   now.hours = (secs / SECS_PER_MUD_HOUR) % 24;		       /* 0..23 hours */
@@ -1331,7 +1331,7 @@ void RestoreChar(struct char_data *ch)
   spell_dispel_magic(IMPLEMENTOR, ch, ch, 0);
 }
 
- char                            *pain_level(struct char_data *ch)
+ const char                            *pain_level(struct char_data *ch)
 {
   int                                     health_percent = 0;
 

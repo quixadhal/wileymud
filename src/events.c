@@ -44,7 +44,7 @@ static void                             event_scatter_goodies_zone(int rnum,
 								   struct event_goodies *stuff);
 static void                             event_scatter_goodies(struct char_data *ch, char *arg);
 
-void do_event(struct char_data *ch, char *argument, int cmd)
+void do_event(struct char_data *ch, const char *argument, int cmd)
 {
   static const char                      *event_list[] = {
     NULL,
@@ -107,7 +107,7 @@ static void event_scatter_goodies_zone(int rnum, struct room_data *rp,
   struct obj_data                        *coins = NULL;
 
   if (DEBUG > 1)
-    log_info("called %s with %d, %08zx, %08zx", __PRETTY_FUNCTION__, rnum, rp, stuff);
+    log_info("called %s with %d, %08zx, %08zx", __PRETTY_FUNCTION__, rnum, (size_t)rp, (size_t)stuff);
 
   if (!rp || rp->number < stuff->bottom || rp->number > stuff->top)
     return;
@@ -162,7 +162,7 @@ static void event_fill_zone_with_mobs(int rnum, struct room_data *rp,
   struct obj_data                        *object = NULL;
 
   if (DEBUG > 1)
-    log_info("called %s with %d, %08zx, %08zx", __PRETTY_FUNCTION__, rnum, rp, mobs);
+    log_info("called %s with %d, %08zx, %08zx", __PRETTY_FUNCTION__, rnum, (size_t)rp, (size_t)mobs);
 
   if (!rp || rp->number < mobs->bottom || rp->number > mobs->top)
     return;

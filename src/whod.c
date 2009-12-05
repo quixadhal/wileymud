@@ -21,6 +21,7 @@
 #include <signal.h>
 #include <string.h>
 #include <ctype.h>
+#include <fcntl.h>
 
 #include "version.h"
 #include "global.h"
@@ -65,20 +66,21 @@ static int                              whod_port = 0;
  *              to the command string.                                  
  */
 
-void do_whod(struct char_data *ch, char *arg, int cmd)
+void do_whod(struct char_data *ch, const char *arg, int cmd)
 {
   char                                    buf[256] = "\0\0\0";
   char                                    tmp[MAX_INPUT_LENGTH] = "\0\0\0";
   int                                     bit = 0;
-  char                                   *modes[] = {
-    "name",
-    "title",
-    "site",
+  const char                                   *modes[] = {
     "on",
     "off",
-    "level",
     "idle",
+    "level",
+    "name",
+    "title",
     "room",
+    "site",
+    "room_ingame",
     "\n"
   };
 
@@ -190,6 +192,296 @@ void close_whod(void)
 }
 
 /*
+ * Function   : whod_text
+ * Parameters : --
+ * Returns    : a static string
+ * Description: Generates plain-text output for telnet.
+ */
+char * whod_text(void)
+{
+  /* This is 32K, in case we have 250 players, yeah right! */
+  static char                             buf[32768] = "\0\0\0\0\0\0\0";
+  int                                     players = 0;
+  int                                     gods = 0;
+  int                                     char_index = 0;
+  struct char_data                       *ch = NULL;
+  long                                    ttime = 0L;
+  long                                    thour = 0L;
+  long                                    tmin = 0L;
+  long                                    tsec = 0L;
+  time_t                                  now;
+  char                                    uptimebuf[100];
+  char                                    nowtimebuf[100];
+
+  now = time( (time_t*) 0 );
+  strftime( nowtimebuf, sizeof(nowtimebuf), RFC1123FMT, localtime( &now ) );
+  strftime( uptimebuf, sizeof(uptimebuf), RFC1123FMT, localtime( (time_t *) &Uptime ) );
+
+  sprintf(buf, VERSION_STR);
+  strcat(buf, "\r\n");
+
+  players = 0;
+  gods = 0;
+  char_index = 0;
+  
+  for (ch = character_list; ch; ch = ch->next) {
+    if (IS_PC(ch)) {
+      if ((INVIS_LEVEL(ch) < 2) && (GetMaxLevel(ch) <= WIZ_MAX_LEVEL) &&
+          !IS_AFFECTED(ch, AFF_HIDE) && !IS_AFFECTED(ch, AFF_INVISIBLE)) {
+        if (GetMaxLevel(ch) >= WIZ_MIN_LEVEL)
+          gods++;
+        else
+          players++;
+  
+        char_index++;
+  
+        if (IS_SET(SHOW_IDLE, whod_mode)) {
+          if (!(ch->desc)) {
+            strcat(buf, "linkdead ");
+          } else {
+            ttime = GET_IDLE_TIME(ch);
+            thour = ttime / 3600;
+            ttime -= thour * 3600;
+            tmin = ttime / 60;
+            ttime -= tmin * 60;
+            tsec = ttime;
+            if (!thour && !tmin && (tsec <= 15))
+              strcat(buf, " playing ");
+            else
+              sprintf(buf + strlen(buf), "%02ld:%02ld:%02ld ", thour, tmin, tsec);
+          }
+        }
+  
+        if (IS_SET(SHOW_LEVEL, whod_mode)) {
+          if (GetMaxLevel(ch) >= WIZ_MAX_LEVEL)
+            sprintf(buf + strlen(buf), "[ God ] ");
+          else if (GetMaxLevel(ch) == WIZ_MAX_LEVEL - 1)
+            sprintf(buf + strlen(buf), "[Power] ");
+          else if (GetMaxLevel(ch) >= WIZ_MIN_LEVEL)
+            sprintf(buf + strlen(buf), "[Whizz] ");
+          else
+            sprintf(buf + strlen(buf), "[ %3d ] ", GetMaxLevel(ch));
+        }
+  
+        if (IS_SET(SHOW_TITLE, whod_mode))
+          if (GET_PRETITLE(ch))
+            sprintf(buf + strlen(buf), "%s ", GET_PRETITLE(ch));
+  
+        if (IS_SET(SHOW_NAME, whod_mode))
+          sprintf(buf + strlen(buf), "%s ", GET_NAME(ch));
+  
+        if (IS_SET(SHOW_TITLE, whod_mode))
+          sprintf(buf + strlen(buf), "%s ", GET_TITLE(ch));
+  
+  /*
+   * This is bad for the external whod... it pinpoints people too easily.
+   * Make them enter the game to see where people are.
+   */
+        if (IS_SET(SHOW_ROOM, whod_mode)) {
+          sprintf(buf + strlen(buf), "- %s ", real_roomp(ch->in_room)->name);
+        }
+  
+        if (IS_SET(SHOW_SITE, whod_mode)) {
+          if (ch->desc->host != NULL)
+            sprintf(buf + strlen(buf), "(%s)", ch->desc->host);
+          else if (ch->desc->ip != NULL)
+            sprintf(buf + strlen(buf), "(%s)", ch->desc->ip);
+        }
+        strcat(buf, "\r\n");
+        /* WRITE(newdesc, buf); */
+        /* *buf = '\0'; */
+      }
+    }
+  }
+  sprintf(buf + strlen(buf), "\r\nVisible Players: %d\tVisible Gods: %d\r\n", players, gods);
+  sprintf(buf + strlen(buf), "Wiley start time was: %s\r\n", uptimebuf);
+  sprintf(buf + strlen(buf), "Quixadhal's time is:  %s\r\n", nowtimebuf);
+
+  return buf;
+}
+
+/*
+ * Function   : whod_html
+ * Parameters : --
+ * Returns    : a static string
+ * Description: Generates HTML output for the web.
+ */
+char * whod_html(void)
+{
+  /* This is 32K, in case we have 250 players, yeah right! */
+  char                                    buf[32768] = "\0\0\0\0\0\0\0";
+  int                                     players = 0;
+  int                                     gods = 0;
+  int                                     char_index = 0;
+  struct char_data                       *ch = NULL;
+  long                                    ttime = 0L;
+  long                                    thour = 0L;
+  long                                    tmin = 0L;
+  long                                    tsec = 0L;
+  time_t                                  now;
+  char                                    timebuf[100];
+  char                                    uptimebuf[100];
+  char                                    nowtimebuf[100];
+  static char                             headers[40960];
+  int                                     table_width = 0;
+  struct timeval                          now_bits;
+  struct timeval                          later_bits;
+
+  now = time( (time_t*) 0 );
+  gettimeofday(&now_bits, NULL);
+  strftime( timebuf, sizeof(timebuf), RFC1123FMT, gmtime( &now ) );
+  strftime( nowtimebuf, sizeof(nowtimebuf), RFC1123FMT, localtime( &now ) );
+  strftime( uptimebuf, sizeof(uptimebuf), RFC1123FMT, localtime( (time_t *) &Uptime ) );
+
+  sprintf(headers, "HTTP/1.1 200 OK\r\n");
+  sprintf(headers + strlen(headers), "Server: %s\r\n", MUDNAME);
+  sprintf(headers + strlen(headers), "Date: %s\r\n", timebuf );
+  sprintf(headers + strlen(headers), "Content-Type: %s\r\n", "text/html; charset=iso-8859-1" );
+  
+  sprintf(buf, "<html>\r\n");
+  sprintf(buf + strlen(buf), "<head><title>Welcome to %s!</title></head>\r\n", MUDNAME);
+  sprintf(buf + strlen(buf), "<body>\r\n");
+  sprintf(buf + strlen(buf), "<div align=\"center\"><h3><a href=\"telnet://wiley.shadowlord.org:3000/\">%s</a></h3></div>\r\n", VERSION_STR);
+
+  players = 0;
+  gods = 0;
+  char_index = 0;
+  
+  if (IS_SET(SHOW_IDLE, whod_mode))	table_width += 100;
+  if (IS_SET(SHOW_LEVEL, whod_mode))	table_width += 100;
+  table_width += 400;
+  if (IS_SET(SHOW_ROOM, whod_mode))	table_width += 100;
+  if (IS_SET(SHOW_SITE, whod_mode))	table_width += 200;
+
+  sprintf(buf + strlen(buf), "<div align=\"center\">\r\n");
+  sprintf(buf + strlen(buf), "<table border=\"0\" cellspacing=\"0\" cellpadding=\"1\" width=\"%d\">\r\n", table_width);
+  sprintf(buf + strlen(buf), "<tr bgcolor=\"#E7E7E7\">\r\n");
+  if (IS_SET(SHOW_IDLE, whod_mode))
+    sprintf(buf + strlen(buf), "<th align=\"center\" width=\"100\">%s</th>\r\n", "Idle");
+
+  if (IS_SET(SHOW_LEVEL, whod_mode))
+    sprintf(buf + strlen(buf), "<th align=\"center\" width=\"100\">%s</th>\r\n", "Level");
+
+  sprintf(buf + strlen(buf), "<th align=\"left\" width=\"400\">%s</th>\r\n", "Name");
+
+  if (IS_SET(SHOW_ROOM, whod_mode))
+    sprintf(buf + strlen(buf), "<th align=\"center\" width=\"100\">%s</th>\r\n", "Room");
+
+  if (IS_SET(SHOW_SITE, whod_mode))
+    sprintf(buf + strlen(buf), "<th align=\"left\" width=\"200\">%s</th>\r\n", "Site");
+  sprintf(buf + strlen(buf), "</tr>\r\n");
+
+  for (ch = character_list; ch; ch = ch->next) {
+    if (IS_PC(ch)) {
+      if ((INVIS_LEVEL(ch) < 2) && (GetMaxLevel(ch) <= WIZ_MAX_LEVEL) &&
+          !IS_AFFECTED(ch, AFF_HIDE) && !IS_AFFECTED(ch, AFF_INVISIBLE)) {
+        if (GetMaxLevel(ch) >= WIZ_MIN_LEVEL)
+          gods++;
+        else
+          players++;
+  
+        char_index++;
+  
+        sprintf(buf + strlen(buf), "<tr bgcolor=\"%s\">\r\n", char_index%2 ? "#E7FFE7": "#FFFFE7");
+        if (IS_SET(SHOW_IDLE, whod_mode)) {
+          if (!(ch->desc)) {
+            sprintf(buf + strlen(buf), "<td align=\"center\">%s</td>\r\n", "linkdead");
+          } else {
+            ttime = GET_IDLE_TIME(ch);
+            thour = ttime / 3600;
+            ttime -= thour * 3600;
+            tmin = ttime / 60;
+            ttime -= tmin * 60;
+            tsec = ttime;
+            if (!thour && !tmin && (tsec <= 15))
+              sprintf(buf + strlen(buf), "<td align=\"center\">%s</td>\r\n", "playing");
+            else
+              sprintf(buf + strlen(buf), "<td align=\"center\">%02ld:%02ld:%02ld</td>\r\n", thour, tmin, tsec);
+          }
+        }
+  
+        if (IS_SET(SHOW_LEVEL, whod_mode)) {
+          if (GetMaxLevel(ch) >= WIZ_MAX_LEVEL)
+            sprintf(buf + strlen(buf), "<td align=\"center\">%s</td>\r\n", "God");
+          else if (GetMaxLevel(ch) == WIZ_MAX_LEVEL - 1)
+            sprintf(buf + strlen(buf), "<td align=\"center\">%s</td>\r\n", "Power");
+          else if (GetMaxLevel(ch) >= WIZ_MIN_LEVEL)
+            sprintf(buf + strlen(buf), "<td align=\"center\">%s</td>\r\n", "Whizz");
+          else
+            sprintf(buf + strlen(buf), "<td align=\"center\">%3d</td>\r\n", GetMaxLevel(ch));
+        }
+  
+        sprintf(buf + strlen(buf), "<td align=\"left\">");
+        if (IS_SET(SHOW_TITLE, whod_mode))
+          if (GET_PRETITLE(ch))
+            sprintf(buf + strlen(buf), "%s ", GET_PRETITLE(ch));
+  
+        if (IS_SET(SHOW_NAME, whod_mode))
+          sprintf(buf + strlen(buf), "%s", GET_NAME(ch));
+  
+        if (IS_SET(SHOW_TITLE, whod_mode))
+          sprintf(buf + strlen(buf), " %s", GET_TITLE(ch));
+        sprintf(buf + strlen(buf), "</td>\r\n");
+  
+  /*
+   * This is bad for the external whod... it pinpoints people too easily.
+   * Make them enter the game to see where people are.
+   */
+        if (IS_SET(SHOW_ROOM, whod_mode)) {
+          sprintf(buf + strlen(buf), "<td align=\"center\">%s</td>\r\n", real_roomp(ch->in_room)->name);
+        }
+  
+        if (IS_SET(SHOW_SITE, whod_mode)) {
+          if (ch->desc->host != NULL)
+            sprintf(buf + strlen(buf), "<td align=\"left\">%s</td>\r\n", ch->desc->host);
+          else if (ch->desc->ip != NULL)
+            sprintf(buf + strlen(buf), "<td align=\"left\">%s</td>\r\n", ch->desc->ip);
+        }
+        sprintf(buf + strlen(buf), "</tr>\r\n");
+      }
+    }
+  }
+  sprintf(buf + strlen(buf), "</table>\r\n");
+
+  sprintf(buf + strlen(buf), "<br />\r\n");
+  sprintf(buf + strlen(buf), "<table border=\"0\" cellspacing=\"0\" cellpadding=\"1\" width=\"%d\">\r\n", table_width);
+  sprintf(buf + strlen(buf), "<tr>\r\n");
+  sprintf(buf + strlen(buf), "<td align=\"right\" width=\"%d\">%s</td>\r\n", table_width/2, "Visible&nbsp;Players:&nbsp;");
+  sprintf(buf + strlen(buf), "<td align=\"left\" width=\"%d\">%d</td>\r\n", table_width/2, players);
+  sprintf(buf + strlen(buf), "</tr>\r\n");
+  sprintf(buf + strlen(buf), "<tr>\r\n");
+  sprintf(buf + strlen(buf), "<td align=\"right\" width=\"%d\">%s</td>\r\n", table_width/2, "Visible&nbsp;Gods:&nbsp;");
+  sprintf(buf + strlen(buf), "<td align=\"left\" width=\"%d\">%d</td>\r\n", table_width/2, gods);
+  sprintf(buf + strlen(buf), "</tr>\r\n");
+  sprintf(buf + strlen(buf), "<tr>\r\n");
+  sprintf(buf + strlen(buf), "<td align=\"right\" width=\"%d\">%s</td>\r\n", table_width/2, "Wiley&nbsp;start&nbsp;time&nbsp;was:&nbsp;");
+  sprintf(buf + strlen(buf), "<td align=\"left\" width=\"%d\">%s</td>\r\n", table_width/2, uptimebuf);
+  sprintf(buf + strlen(buf), "</tr>\r\n");
+  sprintf(buf + strlen(buf), "<tr>\r\n");
+  sprintf(buf + strlen(buf), "<td align=\"right\" width=\"%d\">%s</td>\r\n", table_width/2, "Quixadhal's&nbsp;time&nbsp;is:&nbsp;");
+  sprintf(buf + strlen(buf), "<td align=\"left\" width=\"%d\">%s</td>\r\n", table_width/2, nowtimebuf);
+  sprintf(buf + strlen(buf), "</tr>\r\n");
+  sprintf(buf + strlen(buf), "</table>\r\n");
+
+  sprintf(buf + strlen(buf), "</div>\r\n");
+
+  gettimeofday(&later_bits, NULL);
+  sprintf(buf + strlen(buf),
+  "<div align=\"right\"><font size=\"-1\" color=\"#DDDDDD\">Page took %01d.%06d seconds to render.</font></div>\r\n",
+  (int)(later_bits.tv_sec - now_bits.tv_sec), (int)(later_bits.tv_usec - now_bits.tv_usec));
+
+  sprintf(buf + strlen(buf), "</body>\r\n");
+  sprintf(buf + strlen(buf), "</html>\r\n");
+
+  sprintf(headers + strlen(headers), "Content-Length: %d\r\n", strlen(buf));
+  sprintf(headers + strlen(headers), "Connection: %s\r\n", "close");
+  sprintf(headers + strlen(headers), "\r\n");
+  strcat(headers, buf);
+
+  return headers;
+}
+
+/*
  * Function   : whod_loop
  * Parameters : --
  * Returns    : --
@@ -199,25 +491,12 @@ void close_whod(void)
 void whod_loop(void)
 {
   int                                     nfound = 0;
-  int                                     size = 0;
-  int                                     players = 0;
-  int                                     gods = 0;
-  int                                     char_index = 0;
+  unsigned int                            size = 0;
   fd_set                                  in;
   unsigned long                           hostlong = 0L;
   struct timeval                          timeout;
   struct sockaddr_in                      newaddr;
-  char                                    buf[MAX_STRING_LENGTH] = "\0\0\0";
-  struct char_data                       *ch = NULL;
   struct hostent                         *hent = NULL;
-  time_t                                  ct;
-  time_t                                  ot;
-  char                                   *tmstr = NULL;
-  char                                   *otmstr = NULL;
-  long                                    ttime = 0L;
-  long                                    thour = 0L;
-  long                                    tmin = 0L;
-  long                                    tsec = 0L;
 
   /*
    * extern long Uptime; 
@@ -257,107 +536,22 @@ void whod_loop(void)
 	}
 	if ((hent =
 	     gethostbyaddr((char *)&newaddr.sin_addr, sizeof(newaddr.sin_addr), AF_INET)))
-	  sprintf(buf, "WHO request from %s served.", hent->h_name);
+	  log_info("WHO request from %s served.", hent->h_name);
 	else {
 	  hostlong = htonl(newaddr.sin_addr.s_addr);
-	  sprintf(buf, "WHO request from %lu.%lu.%lu.%lu served.",
+	  log_info("WHO request from %lu.%lu.%lu.%lu served.",
 		  (hostlong & 0xff000000) >> 24,
 		  (hostlong & 0x00ff0000) >> 16,
 		  (hostlong & 0x0000ff00) >> 8, (hostlong & 0x000000ff) >> 0);
 	}
-	log_info(buf);
 
-	sprintf(buf, VERSION_STR);
-	strcat(buf, "\r\n");
-
-	players = 0;
-	gods = 0;
-	char_index = 0;
-
-	for (ch = character_list; ch; ch = ch->next) {
-	  if (IS_PC(ch)) {
-	    if ((INVIS_LEVEL(ch) < 2) && (GetMaxLevel(ch) <= WIZ_MAX_LEVEL) &&
-		!IS_AFFECTED(ch, AFF_HIDE) && !IS_AFFECTED(ch, AFF_INVISIBLE)) {
-	      if (GetMaxLevel(ch) >= WIZ_MIN_LEVEL)
-		gods++;
-	      else
-		players++;
-
-	      char_index++;
-
-	      if (IS_SET(SHOW_IDLE, whod_mode)) {
-		if (!(ch->desc)) {
-		  strcat(buf, "linkdead ");
-		} else {
-		  ttime = GET_IDLE_TIME(ch);
-		  thour = ttime / 3600;
-		  ttime -= thour * 3600;
-		  tmin = ttime / 60;
-		  ttime -= tmin * 60;
-		  tsec = ttime;
-		  if (!thour && !tmin && (tsec <= 15))
-		    strcat(buf, " playing ");
-		  else
-		    sprintf(buf + strlen(buf), "%02ld:%02ld:%02ld ", thour, tmin, tsec);
-		}
-	      }
-
-	      if (IS_SET(SHOW_LEVEL, whod_mode)) {
-		if (GetMaxLevel(ch) >= WIZ_MAX_LEVEL)
-		  sprintf(buf + strlen(buf), "[ God ] ");
-		else if (GetMaxLevel(ch) == WIZ_MAX_LEVEL - 1)
-		  sprintf(buf + strlen(buf), "[Power] ");
-		else if (GetMaxLevel(ch) >= WIZ_MIN_LEVEL)
-		  sprintf(buf + strlen(buf), "[Whizz] ");
-		else
-		  sprintf(buf + strlen(buf), "[ %3d ] ", GetMaxLevel(ch));
-	      }
-
-	      if (IS_SET(SHOW_TITLE, whod_mode))
-		if (GET_PRETITLE(ch))
-		  sprintf(buf + strlen(buf), "%s ", GET_PRETITLE(ch));
-
-	      if (IS_SET(SHOW_NAME, whod_mode))
-		sprintf(buf + strlen(buf), "%s ", GET_NAME(ch));
-
-	      if (IS_SET(SHOW_TITLE, whod_mode))
-		sprintf(buf + strlen(buf), "%s ", GET_TITLE(ch));
-
-/*
- * This is bad for the external whod... it pinpoints people too easily.
- * Make them enter the game to see where people are.
- *
- *          if (IS_SET(SHOW_ROOM, whod_mode)) {
- *            sprintf(buf + strlen(buf), "- %s ",
- *                    real_roomp(ch->in_room)->name);
- *          }
- */
-
-	      if (IS_SET(SHOW_SITE, whod_mode)) {
-		if (ch->desc->host != NULL)
-		  sprintf(buf + strlen(buf), "(%s)", ch->desc->host);
-                else if (ch->desc->ip != NULL)
-		  sprintf(buf + strlen(buf), "(%s)", ch->desc->ip);
-	      }
-	      strcat(buf, "\r\n");
-	      WRITE(newdesc, buf);
-	      *buf = '\0';
-	    }
-	  }
-	}
-	sprintf(buf + strlen(buf), "\r\nVisible Players: %d\tVisible Gods: %d\r\n", players,
-		gods);
-	ot = Uptime;
-	otmstr = asctime(localtime(&ot));
-	*(otmstr + strlen(otmstr) - 1) = '\0';
-	sprintf(buf + strlen(buf), START_TIME, otmstr);
-
-	ct = time(0);
-	tmstr = asctime(localtime(&ct));
-	*(tmstr + strlen(tmstr) - 1) = '\0';
-	sprintf(buf + strlen(buf), GAME_TIME, tmstr);
-
-	WRITE(newdesc, buf);
+        /* Do we really need to sink input here before sending output? */
+/*        if (fcntl(s, F_SETFL, O_NDELAY) != -1) {
+          char junk[256];
+          while(read(newdesc, junk, 256) > 0);
+        }
+*/
+	WRITE(newdesc, whod_html());
 
 	disconnect_time = time(NULL) + WHOD_DELAY_TIME;
 	state = WHOD_DELAY;

@@ -47,16 +47,16 @@ extern struct descriptor_data *descriptor_list;
  *  : You died 27 times!
  * The datestamp is YYMMDD.HHMMSS.MIL format.
  */
-void bug_logger(char *File, char *Func, int Line,
+void bug_logger(const char *File, const char *Func, int Line,
 #ifdef DIKU_CRUD
           unsigned int Level,
 #endif
           unsigned int Type,
-	  char *BugFile,
+	  const char *BugFile,
 #ifdef DIKU_CRUD
           struct char_data *ch,
 #endif
-          char *Str,...)
+          const char *Str,...)
 {
   va_list arg;
   char Result[MAX_STRING_LENGTH];

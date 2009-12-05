@@ -84,6 +84,34 @@ CREATE TABLE banned (
   banned_date		TIMESTAMP DEFAULT now()
 );
 
-CREATE INDEX ix_banned_name on banned (banned_name); 
-CREATE UNIQUE INDEX ix_banned_name_lc on banned (lower(banned_name)); 
+CREATE INDEX ix_banned_name ON banned (banned_name); 
+CREATE UNIQUE INDEX ix_banned_name_lc ON banned (lower(banned_name)); 
+
+COMMENT ON TABLE	banned					IS 'IP and Name bans';
+COMMENT ON COLUMN	banned.banned_name			IS 'Text name that has been banned';
+COMMENT ON COLUMN	banned.banned_ip			IS 'IP address that has been banned';
+COMMENT ON COLUMN	banned.banned_by			IS 'Wizard that added this ban record';
+COMMENT ON COLUMN	banned.banned_date			IS 'Time the ban was implemented';
+
+CREATE TABLE alignment (
+  alignment_id		INTEGER NOT NULL PRIMARY KEY,
+  lower_bound		INTEGER,
+  upper_bound		INTEGER,
+  name			TEXT NOT NULL,
+  description		TEXT
+);
+
+COPY alignment (alignment_id, lower_bound, upper_bound, name, description) FROM stdin;
+0	\N	-1000	REALLY VILE	\N
+1	-999	-900	VILE	\N
+2	-899	-700	VERY EVIL	\N
+3	-699	-350	EVIL	\N
+4	-349	-100	WICKED	\N
+5	-99	99	NEUTRAL	\N
+6	100	349	NICE	\N
+7	350	699	GOOD	\N
+8	700	899	VERY GOOD	\N
+9	900	999	HOLY	\N
+10	1000	\N	REALLY HOLY	\N
+\.
 

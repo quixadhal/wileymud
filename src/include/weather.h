@@ -7,7 +7,7 @@
 #define MAX_MOON_PHASES	32
 
 #ifndef _WEATHER_C
-extern char                            *moon_names[];
+extern const char                            *moon_names[];
 #endif
 
  void                             weather_and_time(int mode);

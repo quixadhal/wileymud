@@ -410,7 +410,7 @@ void do_practice(struct char_data *ch, const char *argument, int cmd)
   for (; isspace(*argument); argument++);
   half_chop(argument, first_arg, sec_arg);
 
-  if (!first_arg) {
+  if (!*first_arg) {
     cprintf(ch, "You need to supply a class for that.");
     return;
   }

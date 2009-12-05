@@ -296,7 +296,7 @@ EXT_BV afk_convert_imm(int OldValue) {
   return NewValue;
 }
 
-const int afk_convertsex(int Sex) {
+int afk_convertsex(int Sex) {
   switch(Sex) {
     case SEX_NEUTER: return get_sex("neuter");
     case SEX_MALE: return get_sex("male");
@@ -305,7 +305,7 @@ const int afk_convertsex(int Sex) {
   }
 }
 
-const int afk_convertposition(int Position) {
+int afk_convertposition(int Position) {
   switch(Position) {
     case POSITION_DEAD:  return get_position("dead");
     case POSITION_MORTALLYW: return get_position("mortal");
@@ -321,7 +321,7 @@ const int afk_convertposition(int Position) {
   }
 }
 
-const int afk_convertobjtype(int Type) {
+int afk_convertobjtype(int Type) {
   switch(Type) {
     case ITEM_LIGHT: return get_otype("light");
     case ITEM_SCROLL: return get_otype("scroll");
@@ -764,7 +764,7 @@ char *strip_cr( char *str )
 }
 
 
-const int afk_convert_spell(int SpellNum) {
+int afk_convert_spell(int SpellNum) {
   switch(SpellNum) {
     case SPELL_RESERVED_DBC:
       return -1;
@@ -775,11 +775,11 @@ const int afk_convert_spell(int SpellNum) {
   }
 }
 
-const int afk_convert_skill(int SkillNum) {
+int afk_convert_skill(int SkillNum) {
   return SkillNum;
 }
 
-const int afk_convert_liquid(int Liquid) {
+int afk_convert_liquid(int Liquid) {
   /* No conversion needed */
   return Liquid;
 }

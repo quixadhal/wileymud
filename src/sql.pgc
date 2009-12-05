@@ -16,6 +16,7 @@
 EXEC SQL INCLUDE sqlca;
 
 int db_connected = 0;
+int db_logging = 0;
 
 int init_sql()
 {
@@ -44,7 +45,6 @@ void close_sql( void )
     EXEC SQL DISCONNECT ALL;
 
   db_connected = 0;
-  return 1;
 }
 
 char *version_sql( void )
@@ -67,7 +67,7 @@ char *version_sql( void )
   return version;
 }
 
-int compare_dates_file_sql( char *filename, char *tablename, char *fieldname )
+int compare_dates_file_sql( const char *filename, const char *tablename, const char *fieldname )
 {
   EXEC SQL BEGIN DECLARE SECTION;
   char statement[MAX_STRING_LENGTH];
@@ -76,16 +76,20 @@ int compare_dates_file_sql( char *filename, char *tablename, char *fieldname )
   struct stat statbuf;
   int file_time = 0;
 
-  sprintf(statement, "SELECT floor(extract(epoch FROM %s))::int FROM %s ORDER BY %s DESC LIMIT 1",
-          fieldname, tablename, fieldname);
-  EXEC SQL PREPARE stmt FROM :statement;
-  EXEC SQL EXECUTE stmt INTO :sql_time;
-  EXEC SQL DEALLOCATE PREPARE stmt;
-
-  if(!stat(filename, &statbuf)) {
-    file_time = (int)statbuf.st_mtime;
+  if (db_connected) {
+    sprintf(statement, "SELECT floor(extract(epoch FROM %s))::int FROM %s ORDER BY %s DESC LIMIT 1",
+            fieldname, tablename, fieldname);
+    EXEC SQL PREPARE stmt FROM :statement;
+    EXEC SQL EXECUTE stmt INTO :sql_time;
+    EXEC SQL DEALLOCATE PREPARE stmt;
+  
+    if(!stat(filename, &statbuf)) {
+      file_time = (int)statbuf.st_mtime;
+    }
+  
+    return file_time < sql_time ? -1 : (file_time == sql_time ? 0 : 1);
+  } else {
+    return 1; /* If SQL isn't available, the file IS the newest */
   }
-
-  return file_time < sql_time ? -1 : (file_time == sql_time ? 0 : 1);
 }
 

@@ -1,0 +1,10 @@
+#!/bin/bash
+
+cd ~wiley/bin
+mv wileymud wileymud.old
+cd -
+cp bin/wileymud ~wiley/bin/
+cd -
+chown wiley.divine wileymud
+cd -
+

@@ -950,7 +950,8 @@ void point_update(int current_pulse)
 	  act("$p biodegrades in your hands.", FALSE, j->carried_by, j, 0, TO_CHAR);
 	  ObjFromCorpse(j);
 	} else if (j->in_room != NOWHERE) {
-	  if ((number(0, 99) < 40) && (real_roomp(j->in_room)->zone != 10)) {
+	  if ((number(0, 99) < 40) && (real_roomp(j->in_room)->zone != 10)
+	                           && (real_roomp(j->in_room)->zone != 11)) {
 	    struct char_data                       *mob;
 	    struct obj_data                        *obj_object,
 	                                           *next_obj;

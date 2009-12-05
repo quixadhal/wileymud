@@ -27,6 +27,9 @@
 #include <sys/resource.h>
 
 #include "global.h"
+#ifdef IMC
+#include "imc.h"
+#endif
 #include "bug.h"
 #include "utils.h"
 #include "interpreter.h"
@@ -227,10 +230,20 @@ int run_the_game(int port)
   s = init_socket(port);
   load_db();
 
+  log_boot("Opening WHO port.");
   init_whod(port);
+
+#ifdef IMC
+  log_boot("Opening IMC2 connection.");
+  imc_startup( FALSE, -1, FALSE );
+#endif
+
   log_boot("Entering game loop.");
   game_loop(s);
 
+#ifdef IMC
+  imc_shutdown( FALSE );
+#endif
   close_sockets(s);
   close_whod();
 
@@ -389,13 +402,23 @@ void game_loop(int s)
 	if (point->str)
 	  string_add(point, comm);
 	else if (!point->connected)
+#if 0
 	  if (point->showstr_point)
 	    show_string(point, comm);
+#endif
+          if (point->page_first)
+	    control_page(point, comm);
 	  else
 	    command_interpreter(point->character, comm);
 	else
 	  nanny(point, comm);
       }
+    }
+
+    for (point = descriptor_list; point; point = next_point) {
+      next_point = point->next;
+      if(point->page_first)
+        show_page(point);
     }
 
     for (point = descriptor_list; point; point = next_point) {
@@ -416,7 +439,11 @@ void game_loop(int s)
 	if (point->str)
 	  write_to_descriptor(point->descriptor, "] ");
 	else if (!point->connected) {
+#if 0
 	  if (point->showstr_point)
+	    write_to_descriptor(point->descriptor, "*** Press return or q ***");
+#endif
+	  if (point->page_first)
 	    write_to_descriptor(point->descriptor, "*** Press return or q ***");
 	  else {
 	    bzero(promptbuf, 256);
@@ -530,6 +557,9 @@ void game_loop(int s)
       pulse_dump = PULSE_DUMP;
       //dump_player_list();
     }
+#ifdef IMC
+    imc_loop();
+#endif
     tics++;						       /* tics since last checkpoint signal */
   }
 }
@@ -558,9 +588,13 @@ int get_from_q(struct txt_q *queue, char *dest)
   return 1;
 }
 
-void write_to_q(const char *txt, struct txt_q *queue)
+void write_to_q(const char *txt, struct txt_q *queue, int do_timestamp)
 {
   struct txt_block                       *new = NULL;
+#ifdef TIME_DEBUG
+  struct timeval                          now;
+  char                                    nowtime[26];
+#endif
 
   /*
    * Cannot call things in bug.c from things bug.c calls!
@@ -573,10 +607,34 @@ void write_to_q(const char *txt, struct txt_q *queue)
     log_info("Output message to non-existant queue");
     return;
   }
-  CREATE(new, struct txt_block, 1);
-  CREATE(new->text, char, strlen          (txt) + 1);
 
+#ifdef TIME_DEBUG
+/* This is purely for debugging timing... don't leave this enabled! */
+/* "Wed Jun 30 21:49:08 1993\n" */
+/*             ^      ^         */
+/*  0          11     18        */
+  if(do_timestamp) {
+    gettimeofday(&now, (struct timezone *)0);
+    ctime_r((time_t *)&(now.tv_sec), nowtime);
+  }
+#endif
+
+  CREATE(new, struct txt_block, 1);
+
+#ifdef TIME_DEBUG
+  if(do_timestamp) {
+    CREATE(new->text, char, strlen          (txt) + 1 + 14);
+    strncpy(new->text, nowtime + 11, 8);
+    sprintf(new->text + 8, ".%03ld: ", now.tv_usec / 1000);
+    strcat(new->text, txt);
+  } else {
+    CREATE(new->text, char, strlen          (txt) + 1);
+    strcpy(new->text, txt);
+  }
+#else
+  CREATE(new->text, char, strlen          (txt) + 1);
   strcpy(new->text, txt);
+#endif
 
   if (!queue->head) {
     new->next = NULL;
@@ -785,6 +843,9 @@ int new_descriptor(int s)
   newd->str = 0;
   newd->showstr_head = 0;
   newd->showstr_point = 0;
+  newd->page_first = NULL;
+  newd->page_last = NULL;
+  newd->page_control = ' '; /* show the first page! */
   *newd->last_input = '\0';
   newd->output.head = NULL;
   newd->input.head = NULL;
@@ -814,7 +875,7 @@ int new_descriptor(int s)
    */
 
   if (((t_info->tm_hour + 1) > 8) && ((t_info->tm_hour + 1) < 21))
-    for (desc_index = 0; timed_con[desc_index] != "\n"; desc_index++) {
+    for (desc_index = 0; strcmp(timed_con[desc_index], "\n"); desc_index++) {
       if (!strncmp(timed_con[desc_index], newd->ip, 19)) {
 	log_info("TIMED site connecting:%s\n", newd->ip);
 	dcprintf(newd, "\r\nThis site is blocked from : 9 am - 9 pm\r\n");
@@ -860,8 +921,8 @@ int process_output(struct descriptor_data *t)
    */
   while (get_from_q(&t->output, i)) {
     if ((t->snoop.snoop_by) && (t->snoop.snoop_by->desc)) {
-      write_to_q("S* ", &t->snoop.snoop_by->desc->output);
-      write_to_q(i, &t->snoop.snoop_by->desc->output);
+      write_to_q("S* ", &t->snoop.snoop_by->desc->output, 1);
+      write_to_q(i, &t->snoop.snoop_by->desc->output, 0);
     }
     if (write_to_descriptor(t->descriptor, i))
       return (-1);
@@ -982,14 +1043,14 @@ int process_input(struct descriptor_data *t)
       else
 	strcpy(t->last_input, tmp);
 
-      write_to_q(tmp, &t->input);
+      write_to_q(tmp, &t->input, 0);
 
       now_time = time(0);
       t->idle_time = now_time;
       if ((t->snoop.snoop_by) && (t->snoop.snoop_by->desc)) {
-	write_to_q("% ", &t->snoop.snoop_by->desc->output);
-	write_to_q(tmp, &t->snoop.snoop_by->desc->output);
-	write_to_q("\r\n", &t->snoop.snoop_by->desc->output);
+	write_to_q("% ", &t->snoop.snoop_by->desc->output, 1);
+	write_to_q(tmp, &t->snoop.snoop_by->desc->output, 0);
+	write_to_q("\r\n", &t->snoop.snoop_by->desc->output, 0);
       }
       if (flag) {
 	sprintf(buffer, "Line too long. Truncated to:\r\n%s\r\n", tmp);
@@ -1126,7 +1187,7 @@ void dcprintf(struct descriptor_data *d, const char *Str, ...)
     va_start(arg, Str);
     vsprintf(Result, Str, arg);
     va_end(arg);
-    write_to_q(Result, &d->output);
+    write_to_q(Result, &d->output, 1);
     if (DEBUG > 2)
       log_info("called %s with %08zx, %s, result of %s", __PRETTY_FUNCTION__, (size_t)d, VNULL(Str), Result);
   }
@@ -1146,7 +1207,7 @@ void cprintf(struct char_data *ch, const char *Str, ...)
     va_start(arg, Str);
     vsprintf(Result, Str, arg);
     va_end(arg);
-    write_to_q(Result, &ch->desc->output);
+    write_to_q(Result, &ch->desc->output, 1);
     /*
      * Cannot call things in bug.c from things bug.c calls!
      *
@@ -1173,7 +1234,7 @@ void rprintf(int room, const char *Str, ...)
     va_end(arg);
     for (i = rr->people; i; i = i->next_in_room)
       if (i->desc)
-	write_to_q(Result, &i->desc->output);
+	write_to_q(Result, &i->desc->output, 1);
     if (DEBUG > 2)
       log_info("called %s with %d, %s, result of %s", __PRETTY_FUNCTION__, room, VNULL(Str), Result);
   }
@@ -1199,7 +1260,7 @@ void zprintf(int zone, const char *Str, ...)
 	if (i->character)
 	  if ((rr = real_roomp(i->character->in_room)))
 	    if (rr->zone == zone)
-	      write_to_q(Result, &i->output);
+	      write_to_q(Result, &i->output, 1);
     if (DEBUG > 2)
       log_info("called %s with %d, %s, result of %s", __PRETTY_FUNCTION__, zone, VNULL(Str), Result);
   }
@@ -1221,7 +1282,7 @@ void allprintf(const char *Str, ...)
     va_end(arg);
     for (i = descriptor_list; i; i = i->next)
       if (!i->connected)
-	write_to_q(Result, &i->output);
+	write_to_q(Result, &i->output, 1);
     if (DEBUG > 2)
       log_info("called %s with %s, result of %s", __PRETTY_FUNCTION__, VNULL(Str), Result);
   }
@@ -1243,7 +1304,7 @@ void oprintf(const char *Str, ...)
     va_end(arg);
     for (i = descriptor_list; i; i = i->next)
       if (!i->connected && i->character && OUTSIDE(i->character))
-	write_to_q(Result, &i->output);
+	write_to_q(Result, &i->output, 1);
     if (DEBUG > 2)
       log_info("called %s with %s, result of %s", __PRETTY_FUNCTION__, VNULL(Str), Result);
   }
@@ -1265,7 +1326,7 @@ void eprintf(struct char_data *ch, const char *Str, ...)
     va_end(arg);
     for (i = descriptor_list; i; i = i->next)
       if (ch && ch->desc != i && !i->connected)
-	write_to_q(Result, &i->output);
+	write_to_q(Result, &i->output, 1);
     if (DEBUG > 2)
       log_info("called %s with %s, %s, result of %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(Str), Result);
   }
@@ -1288,7 +1349,7 @@ void reprintf(int room, struct char_data *ch, const char *Str, ...)
     va_end(arg);
     for (i = rr->people; i; i = i->next_in_room)
       if (i != ch && i->desc)
-	write_to_q(Result, &i->desc->output);
+	write_to_q(Result, &i->desc->output, 1);
     if (DEBUG > 2)
       log_info("called %s with %d, %s, %s, result of %s", __PRETTY_FUNCTION__, room, SAFE_NAME(ch), VNULL(Str), Result);
   }
@@ -1311,7 +1372,7 @@ void re2printf(int room, struct char_data *ch1, struct char_data *ch2, const cha
     va_end(arg);
     for (i = rr->people; i; i = i->next_in_room)
       if (i != ch1 && i != ch2 && i->desc)
-	write_to_q(Result, &i->desc->output);
+	write_to_q(Result, &i->desc->output, 1);
     if (DEBUG > 2)
       log_info("called %s with %d, %s, %s, %s, result of %s", __PRETTY_FUNCTION__, room, SAFE_NAME(ch1), SAFE_NAME(ch2), VNULL(Str), Result);
   }
@@ -1333,7 +1394,7 @@ void iprintf(const char *Str, ...)
     va_end(arg);
     for (i = descriptor_list; i; i = i->next)
       if (!i->connected && i->character && IS_IMMORTAL(i->character))
-	write_to_q(Result, &i->output);
+	write_to_q(Result, &i->output, 1);
     if (DEBUG > 2)
       log_info("called %s with %s, result of %s", __PRETTY_FUNCTION__, VNULL(Str), Result);
   }
@@ -1477,7 +1538,7 @@ void act(const char *Str, int hide_invisible, struct char_data *ch,
       *(++point) = '\r';
       *(++point) = '\0';
 
-      write_to_q(CAP(buf), &to->desc->output);
+      write_to_q(CAP(buf), &to->desc->output, 1);
       if (DEBUG > 1)
         log_info("act sent: %s", buf);
     }

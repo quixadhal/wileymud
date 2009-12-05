@@ -323,7 +323,7 @@ void affect_modify(struct char_data *ch, char loc, char mod, long bitv, char add
 
     case APPLY_SAVE_ALL:
       {
-	for (i = 0; i <= 4; i++)
+	for (i = 0; i < 5; i++)
 	  ch->specials.apply_saving_throw[i] += mod;
       }
       break;

@@ -23,6 +23,9 @@
 extern char                            *crypt(const char *key, const char *salt);
 
 #include "global.h"
+#ifdef IMC
+#include "imc.h"
+#endif
 #include "bug.h"
 #include "comm.h"
 #include "version.h"
@@ -56,10 +59,10 @@ extern char                            *crypt(const char *key, const char *salt)
 
 struct command_info                     cmd_info[MAX_CMD_LIST];
 
-char                                    echo_on[] = {
+const char                                    echo_on[] = {
   IAC, WONT, TELOPT_ECHO, '\0'
 };
-char                                    echo_off[] = {
+const char                                    echo_off[] = {
   IAC, WILL, TELOPT_ECHO, '\0'
 };
 int                                     WizLock = FALSE;
@@ -209,6 +212,7 @@ void command_interpreter(struct char_data *ch, char *argument)
   int                                     look_at = 0;
   int                                     cmd = 0;
   int                                     begin = 0;
+  const char                             *hack;
 
   if (DEBUG > 2)
     log_info("called %s with %s, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument));
@@ -245,10 +249,8 @@ void command_interpreter(struct char_data *ch, char *argument)
       *(argument + begin + look_at) = LOWER(*(argument + begin + look_at));
     }
 
+  hack = argument;
   cmd = old_search_block(argument, begin, look_at, command, 0);
-
-  if (!cmd)
-    return;
 
   if (cmd > 0 && GetMaxLevel(ch) < cmd_info[cmd].minimum_level) {
     random_error_message(ch);
@@ -302,11 +304,27 @@ void command_interpreter(struct char_data *ch, char *argument)
   if (check_exit_alias(ch, argument))
     return;
 
-  if (cmd > 0 && (cmd_info[cmd].command_pointer == 0))
+  if (cmd > 0 && (cmd_info[cmd].command_pointer == 0)) {
     cprintf(ch, "Sorry, that command has yet to be implemented...\r\n");
-  else {
-    random_error_message(ch);
   }
+
+/* DO ALL NORMAL PARSING ABOVE HERE! */
+
+  if (cmd < 0) {
+    int got_args = 0;
+
+    if(*(hack + begin + look_at)) {
+      got_args = 1;
+      *(argument + begin + look_at) = '\0'; /* BLACK MAGIC */
+      log_info("char here is (%d)\r\n", (int)*(hack+begin+look_at));
+    }
+#ifdef IMC
+    if( imc_command_hook( ch, (hack + begin), (hack + begin + look_at + got_args) ) )
+      return;
+#endif
+    log_error("command(%s), argument(%s), cmd(%d)\r\n", (hack+begin), (hack+begin+look_at+got_args), cmd);
+  }
+  random_error_message(ch);
 }
 
 void argument_interpreter(const char *argument, char *first_arg, char *second_arg)
@@ -878,7 +896,7 @@ int _parse_name(char *arg, char *name)
 /*
  * An improved version of _parse_name()
  */
-int valid_parse_name(char *arg, char *name)
+int valid_parse_name(const char *arg, char *name)
 {
   int                                     i = 0;
   const char                             *hard[] = { "god", "demigod", "myself", "me", NULL };
@@ -1061,9 +1079,12 @@ void nanny(struct descriptor_data *d, char *arg)
 	STATE(d) = CON_WIZLOCK;
 	return;
       }
+#ifdef IMC
+      imc_initchar( d->character );
+#endif
       strcpy(d->usr_name, tmp_name);
 /*  GET_NAME(d->character) = (char *)strdup(d->usr_name); */
-      if (fread_char(d->usr_name, &tmp_store) > -1) {
+      if (fread_char(d->usr_name, &tmp_store, d->character) > -1) {
 	/*
 	 * if (GetPlayerFile(d->usr_name, d->character)) 
 	 */
@@ -1121,7 +1142,6 @@ void nanny(struct descriptor_data *d, char *arg)
 	return;
       /* log_info("%s (%s@%s) has connected.", GET_NAME(d->character), d->username, d->host); */
       log_auth(d->character, "WELCOME BACK %s (%s@%s/%s)!", GET_NAME(d->character), d->username, d->host, d->ip);
-
       if (GetMaxLevel(d->character) > LOW_IMMORTAL)
 	dcprintf(d, "\r\n%s", wmotd);
       else

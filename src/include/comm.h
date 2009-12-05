@@ -26,7 +26,7 @@
 
 #define STATE(d) ((d)->connected)
 #define PROFILE(x)
-#define SEND_TO_Q(messg, desc)  write_to_q((messg), &(desc)->output)
+#define SEND_TO_Q(messg, desc)  write_to_q((messg), &(desc)->output, 1)
 
 #define TO_ROOM    0
 #define TO_VICT    1
@@ -64,7 +64,7 @@ int                                     main(int argc, const char **argv);
 int                                     run_the_game(int port);
 void                                    game_loop(int s);
 int                                     get_from_q(struct txt_q *queue, char *dest);
-void                                    write_to_q(const char *txt, struct txt_q *queue);
+void                                    write_to_q(const char *txt, struct txt_q *queue, int do_timestamp);
 struct timeval                          timediff(struct timeval *a, struct timeval *b);
 void                                    flush_queues(struct descriptor_data *d);
 int                                     init_socket(int port);

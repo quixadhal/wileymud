@@ -2522,7 +2522,7 @@ void cast_dragon_breath(char level, struct char_data *ch, const char *arg, int t
     cprintf(ch, "Hey, this potion isn't in my list!\r\n");
     sprintf(buf, "unlisted breath potion %s %d", tar_obj->short_description,
 	    obj_index[tar_obj->item_number].virtual);
-    log_error(buf);
+    log_error("%s", buf);
     return;
   }
   for (i = 0; i < MAX_BREATHS && scan->spell[i]; i++) {
@@ -2654,7 +2654,7 @@ void cast_knock(char level, struct char_data *ch, const char *arg, int type, str
 
 	argument_interpreter(arg, otype, dir);
 
-	if (!otype) {
+	if (!*otype) {
 	  cprintf(ch, "Knock on what?\r\n");
 	  return;
 	}

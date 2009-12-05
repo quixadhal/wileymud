@@ -4,6 +4,7 @@
  * Copyright (C) 1990, 1991 - see 'license.doc' for complete information.
  */
 
+#include <stdio.h>
 #include <stdlib.h>
 /* #include <unistd.h> */
 #include <sys/types.h>

@@ -317,11 +317,11 @@ struct command_info {
 
 #ifndef _INTERPRETER_C
 extern struct command_info              cmd_info[MAX_CMD_LIST];
-extern char                             echo_on[];
-extern char                             echo_off[];
+extern const char                             echo_on[];
+extern const char                             echo_off[];
 extern int                              WizLock;
-extern char                            *command[];
-extern char                            *fill[];
+extern const char                            *command[];
+extern const char                            *fill[];
 
 #endif
 
@@ -342,7 +342,7 @@ int                                     special(struct char_data *ch, int cmd, c
 void                                    assign_command_pointers(void);
 int                                     find_name(char *name);
 int                                     _parse_name(char *arg, char *name);
-int                                     valid_parse_name(char *arg, char *name);
+int                                     valid_parse_name(const char *arg, char *name);
 int                                     already_mob_name(char *ack_name);
 int                                     check_reconnect(struct descriptor_data *d);
 int                                     check_playing(struct descriptor_data *d,

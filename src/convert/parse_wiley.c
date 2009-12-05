@@ -862,6 +862,7 @@ char *equip_name(int Position) {
     case WEAR_NECK_2:		return "Worn on Neck (2)";
     case WEAR_BODY:		return "Worn on Body";
     case WEAR_HEAD:		return "Worn on Head";
+    case WEAR_FEET:		return "Worn on Feet";
     case WEAR_LEGS:		return "Worn on Legs";
     case WEAR_HANDS:		return "Worn on Hands";
     case WEAR_ARMS:		return "Worn on Arms";
@@ -1152,6 +1153,7 @@ char *item_equip_name(int Position) {
     case WEAR_NECK_2:		return "Worn on Neck (2)";
     case WEAR_BODY:		return "Worn on Body";
     case WEAR_HEAD:		return "Worn on Head";
+    case WEAR_FEET:		return "Worn on Feet";
     case WEAR_LEGS:		return "Worn on Legs";
     case WEAR_HANDS:		return "Worn on Hands";
     case WEAR_ARMS:		return "Worn on Arms";

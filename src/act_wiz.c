@@ -2961,7 +2961,7 @@ void do_debug(struct char_data *ch, const char *argument, int cmd)
 
   one_argument(argument, arg);
 
-  if (!arg || !*arg) {
+  if (!*arg) {
     if (DEBUG) {
       DEBUG = FALSE;
       cprintf(ch, "Debug is now off.\r\n");

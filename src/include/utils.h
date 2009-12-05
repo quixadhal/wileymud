@@ -103,6 +103,63 @@ do									\
   }									\
 } while(0)
 
+/* double-linked list handling macros -Thoric ( From the Smaug codebase ) */
+/* Updated by Scion 8/6/1999 */
+#define LINK(link, first, last, next, prev)  \
+do                                              \
+{                                               \
+   if ( !(first) )                              \
+   {                                            \
+      (first) = (link);                         \
+      (last) = (link);                          \
+   }                                            \
+   else                                         \
+      (last)->next = (link);                    \
+   (link)->next = NULL;                         \
+   if ((first) == (link))                       \
+      (link)->prev = NULL;                      \
+   else                                         \
+      (link)->prev = (last);                    \
+   (last) = (link);                             \
+} while(0)
+
+#define INSERT(link, insert, first, next, prev)    \
+do                                                    \
+{                                                     \
+   (link)->prev = (insert)->prev;                     \
+   if ( !(insert)->prev )                             \
+      (first) = (link);                               \
+   else                                               \
+      (insert)->prev->next = (link);                  \
+   (insert)->prev = (link);                           \
+   (link)->next = (insert);                           \
+} while(0)
+
+#define UNLINK(link, first, last, next, prev) \
+do                                               \
+{                                                \
+   if ( !(link)->prev )                          \
+   {                                             \
+      (first) = (link)->next;                    \
+	if((first))                                \
+	   (first)->prev = NULL;                   \
+   }                                             \
+   else                                          \
+   {                                             \
+      (link)->prev->next = (link)->next;         \
+   }                                             \
+   if( !(link)->next )                           \
+   {                                             \
+      (last) = (link)->prev;                     \
+	if((last))                                 \
+	   (last)->next = NULL;                    \
+   }                                             \
+   else                                          \
+   {                                             \
+      (link)->next->prev = (link)->prev;         \
+   }                                             \
+} while(0)
+
 #define IS_SET(flag,bit)  ((flag) & (bit))
 #define IS_NOT_SET(flag,bit)  (!IS_SET(flag,bit))
 #define IS_AFFECTED(ch,skill) ( IS_SET((ch)->specials.affected_by, (skill)) )
@@ -261,7 +318,7 @@ do									\
  int                              MobVnum(struct char_data *c);
  int                              ObjVnum(struct obj_data *o);
  int                              percent(int value, int total);
- char                            *ordinal(int x);
+ const char                            *ordinal(int x);
 int                                     GetItemClassRestrictions(struct obj_data *obj);
 int                                     CAN_SEE(struct char_data *s, struct char_data *o);
 int                                     exit_ok(struct room_direction_data *room_exit,
@@ -312,7 +369,7 @@ struct char_data                       *char_holding(struct obj_data *obj);
 int                                     RecCompObjNum(struct obj_data *o, int obj_num);
 void                                    RestoreChar(struct char_data *ch);
  void                             RemAllAffects(struct char_data *ch);
- char                            *pain_level(struct char_data *ch);
+ const char                            *pain_level(struct char_data *ch);
  int                              IsWizard(struct char_data *ch);
  int                              IsPriest(struct char_data *ch);
  int                              IsMagical(struct char_data *ch);

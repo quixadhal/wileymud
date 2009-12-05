@@ -14,7 +14,7 @@
 void make_zone_report(zones *Zones, rooms *Rooms, objects *Objects, mobs *Mobs, char *outfile) {
   FILE *ofp;
   register int i, j;
-  int LastMob, LastLoc;
+  int LeaderMob, LastMob, LastLoc;
 
   if(outfile && *outfile) {
     if(!Quiet) {
@@ -28,7 +28,7 @@ void make_zone_report(zones *Zones, rooms *Rooms, objects *Objects, mobs *Mobs, 
     for(i= 0; i< Zones->Count; i++) {
       if(!Quiet)
         spin(stderr);
-      LastMob= LastLoc= -1;
+      LastMob= LastLoc= LeaderMob= -1;
       fprintf(ofp, "Zone \"%s\"[#%d] spans rooms (#%d,#%d)\n",
               Zones->Zone[i].Name, Zones->Zone[i].Number, 
               (!i? 0: Zones->Zone[i-1].Top+1), Zones->Zone[i].Top);
@@ -52,6 +52,7 @@ void make_zone_report(zones *Zones, rooms *Rooms, objects *Objects, mobs *Mobs, 
           case ZONE_CMD_MOBILE:
             LastMob= Zones->Zone[i].Cmds[j].Arg[ZONE_MOBILE];
             LastLoc= Zones->Zone[i].Cmds[j].Arg[ZONE_ROOM];
+            LeaderMob= LastMob;
             fprintf(ofp, "Load Mobile \"%s\"[#%d] to \"%s\"[#%d]\n",
                     mob_name(Mobs, Zones->Zone[i].Cmds[j].Arg[ZONE_MOBILE]),
                     Zones->Zone[i].Cmds[j].Arg[ZONE_MOBILE],
@@ -104,8 +105,8 @@ void make_zone_report(zones *Zones, rooms *Rooms, objects *Objects, mobs *Mobs, 
                     mob_name(Mobs, Zones->Zone[i].Cmds[j].Arg[ZONE_MOBILE]),
                     Zones->Zone[i].Cmds[j].Arg[ZONE_MOBILE],
                     room_name(Rooms, LastLoc), LastLoc,
-                    mob_name(Mobs, LastMob), LastMob);
-            /* LastMob= Zones->Zone[i].Cmds[j].Arg[ZONE_MOBILE]; */
+                    mob_name(Mobs, LeaderMob), LeaderMob);
+            LastMob= Zones->Zone[i].Cmds[j].Arg[ZONE_MOBILE];
             break;
           case ZONE_CMD_HATE:
             fprintf(ofp, "Cause Mobile \"%s\"[#%d] in \"%s\"[#%d] to HATE %s\n",

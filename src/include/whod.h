@@ -2,8 +2,8 @@
 #define _WHOD_H
 
 #define MUDNAME		"WileyMUD"
-#define START_TIME	"Wiley start time was: %s\r\n"
-#define GAME_TIME	"Quixadhal's time is:  %s\r\n"
+#define OLDRFC1123FMT	"%a, %d %b %Y %H:%M:%S GMT"
+#define RFC1123FMT	"%a, %d %b %Y %H:%M:%S %Z"
 
 /*
  * *** The following statement indicates the WHOD default mode 
@@ -18,7 +18,7 @@
  * SHOW_ROOM
  */
 
-#define DEFAULT_MODE ( SHOW_NAME | SHOW_TITLE | SHOW_IDLE | SHOW_ROOM | SHOW_ON )
+#define DEFAULT_MODE ( SHOW_ON | SHOW_IDLE | SHOW_NAME | SHOW_TITLE | SHOW_ROOM_INGAME )
 
 #define INVIS_LEVEL(ch) ((ch)->invis_level)
 
@@ -35,14 +35,15 @@
 #define WHOD_CLOSED  5
 #define WHOD_CLOSING 6
 
-#define SHOW_NAME	0x00000001
-#define SHOW_TITLE	0x00000002
-#define SHOW_SITE	0x00000004
-#define SHOW_ON		0x00000008
-#define SHOW_OFF	0x00000010
-#define SHOW_LEVEL	0x00000020
-#define SHOW_IDLE	0x00000040
-#define SHOW_ROOM	0x00000080
+#define SHOW_ON			0x00000001
+#define SHOW_OFF		0x00000002
+#define SHOW_IDLE		0x00000004
+#define SHOW_LEVEL		0x00000008
+#define SHOW_NAME		0x00000010
+#define SHOW_TITLE		0x00000020
+#define SHOW_ROOM		0x00000040
+#define SHOW_SITE		0x00000080
+#define SHOW_ROOM_INGAME	0x00000100
 
 #define WRITE(d,msg) if((write((d),(msg),strlen(msg)))<0){\
                             perror("whod.c - write");}

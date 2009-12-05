@@ -1996,11 +1996,10 @@ void do_who(struct char_data *ch, const char *argument, int cmd)
   long                                    thour = 0;
   long                                    tmin = 0;
   long                                    tsec = 0;
-  char                                    buf[256] = "\0\0\0";
-  time_t                                  ct = (time_t) 0;
-  time_t                                  ot = 0;
-  char                                   *tmstr = NULL;
-  char                                   *otmstr = NULL;
+  char                                    buf[256] = "\0\0\0\0\0\0\0";
+  time_t                                  now;
+  char                                    uptimebuf[100];
+  char                                    nowtimebuf[100];
 
   if (DEBUG)
     log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
@@ -2010,7 +2009,11 @@ void do_who(struct char_data *ch, const char *argument, int cmd)
  *   return;
  */
 
-  cprintf(ch, "%s\r\n", VERSION_STR);
+  now = time( (time_t*) 0 );
+  strftime( nowtimebuf, sizeof(nowtimebuf), RFC1123FMT, localtime( &now ) );
+  strftime( uptimebuf, sizeof(uptimebuf), RFC1123FMT, localtime( (time_t *) &Uptime ) );
+
+  page_printf(ch, "%s\r\n", VERSION_STR);
 
   for (d = descriptor_list; d; d = d->next) {
     person = d->character;
@@ -2062,7 +2065,7 @@ void do_who(struct char_data *ch, const char *argument, int cmd)
     if (IS_SET(SHOW_TITLE, whod_mode))
       sprintf(buf + strlen(buf), "%s ", GET_TITLE(person));
 
-    if (IS_SET(SHOW_ROOM, whod_mode)) {
+    if (IS_SET(SHOW_ROOM_INGAME, whod_mode)) {
       sprintf(buf + strlen(buf), "- %s ", real_roomp(person->in_room)->name);
       if (GetMaxLevel(ch) >= LOW_IMMORTAL)
 	sprintf(buf + strlen(buf), "[#%d]", person->in_room);
@@ -2074,19 +2077,12 @@ void do_who(struct char_data *ch, const char *argument, int cmd)
 	sprintf(buf + strlen(buf), "(%s)", person->desc->ip);
     }
     strcat(buf, "\r\n");
-    cprintf(ch, "%s", buf);
+    page_printf(ch, "%s", buf);
   }
   sprintf(buf, "\r\nTotal visible players on %s: %d\r\n", MUDNAME, count);
-  ot = Uptime;
-  otmstr = asctime(localtime(&ot));
-  *(otmstr + strlen(otmstr) - 1) = '\0';
-  sprintf(buf + strlen(buf), START_TIME, otmstr);
-
-  ct = time(0);
-  tmstr = asctime(localtime(&ct));
-  *(tmstr + strlen(tmstr) - 1) = '\0';
-  sprintf(buf + strlen(buf), GAME_TIME, tmstr);
-  cprintf(ch, "%s", buf);
+  sprintf(buf + strlen(buf), "Wiley start time was: %s\r\n", uptimebuf);
+  sprintf(buf + strlen(buf), "Quixadhal's time is:  %s\r\n", nowtimebuf);
+  page_printf(ch, "%s", buf);
 }
 
 void do_users(struct char_data *ch, const char *argument, int cmd)

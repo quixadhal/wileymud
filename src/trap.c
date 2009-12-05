@@ -25,7 +25,7 @@
 #define _TRAP_C
 #include "trap.h"
 
-void do_settrap(struct char_data *ch, char *argument, int cmd)
+void do_settrap(struct char_data *ch, const char *argument, int cmd)
 {
   if (DEBUG)
     log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);

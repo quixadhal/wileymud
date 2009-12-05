@@ -6,6 +6,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdarg.h>
 /* #include <unistd.h> */
 #include <sys/types.h>
 #include <signal.h>
@@ -623,6 +624,158 @@ struct help_index_element              *build_help_index(FILE * fl, int *num)
   return (list);
 }
 
+void page_printf(struct char_data *ch, const char *Str, ...)
+{
+  va_list                                 arg;
+  char                                    Result[MAX_STRING_LENGTH];
+
+  if (Str && *Str && ch && ch->desc) {
+    bzero(Result, MAX_STRING_LENGTH);
+    va_start(arg, Str);
+    vsprintf(Result, Str, arg);
+    va_end(arg);
+    page_string(ch->desc, Result, 1);
+  }
+}
+
+void page_string(struct descriptor_data *d, char *str, int keep_internal)
+{
+  char buffer[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
+  struct pager_data *p = NULL;
+  char *nl = NULL;
+  char *sp = NULL;
+
+  if (DEBUG > 2)
+    log_info("called %s with %08zx, %s, %d", __PRETTY_FUNCTION__, (size_t)d, VNULL(str), keep_internal);
+    /* log_info("called %s with %08zx, %s", __PRETTY_FUNCTION__, (size_t)d, VNULL(str)); */
+
+  if (!d)
+    return;
+
+  for(sp = str; (nl = strpbrk(sp, "\n")); sp = nl + 1) {
+    if(!nl)
+      break;
+    if(nl - sp < 1) {
+      /* This means we are ON a "\n", blank line! */
+      if(!d->page_last || d->page_last->complete_line == TRUE) {
+        CREATE(p, struct pager_data, 1);
+        p->str = strdup("");
+        p->complete_line = TRUE;
+        LINK(p, d->page_first, d->page_last, next, prev);
+      } else {
+        d->page_last->complete_line = TRUE;
+      }
+      continue;
+    }
+
+    *buffer = '\0';
+
+    /* We know we have a complete line, but we may be adding
+     * onto an incomplete line from earlier.
+     */
+    if(d->page_last && d->page_last->complete_line == FALSE)
+      strcpy(buffer, d->page_last->str);
+
+    if(*(nl - 1) == '\r') {
+      /* We had a "\r\n" sequence, don't keep the "\r". */
+      strncat(buffer, sp, nl - sp - 1);
+      buffer[nl - sp - 1] = '\0';
+    } else if(*sp == '\r') {
+      /* We had a "\n\r" diku-sequence, don't keep the "\r". */
+      strncat(buffer, sp + 1, nl - sp - 1);
+      buffer[nl - sp - 1] = '\0';
+    } else {
+      strncat(buffer, sp, nl - sp);
+      buffer[nl - sp] = '\0';
+    }
+    if(d->page_last && d->page_last->complete_line == FALSE) {
+      DESTROY(d->page_last->str);
+      d->page_last->str = strdup(buffer);
+      d->page_last->complete_line = TRUE;
+    } else {
+      CREATE(p, struct pager_data, 1);
+      p->str = strdup(buffer);
+      p->complete_line = TRUE;
+      LINK(p, d->page_first, d->page_last, next, prev);
+    }
+    *buffer = '\0';
+  }
+  if(*sp == '\r') sp++;
+  if(*sp) {
+    int l = 0;
+
+    strcpy(buffer, sp);
+    l = strlen(buffer);
+    if(l > 0 && buffer[l - 1] == '\r')
+      buffer[l - 1] = '\0';
+    CREATE(p, struct pager_data, 1);
+    p->str = strdup(buffer);
+    p->complete_line = FALSE;
+    LINK(p, d->page_first, d->page_last, next, prev);
+    *buffer = '\0';
+  }
+}
+
+void show_page(struct descriptor_data *d)
+{
+  char                                    buffer[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
+  struct pager_data                      *p = NULL;
+  int                                     i = 0;
+  int                                     page_size = 23;
+  int                                     use_pager = IS_SET(d->character->specials.act, PLR_PAGER);
+
+  if (DEBUG > 2)
+    log_info("called %s with %08zx", __PRETTY_FUNCTION__, (size_t)d);
+
+  switch(d->page_control) {
+    default:
+      break;
+    case ' ':
+    case 'n': /* next */
+    case 'N':
+    case 'f': /* forward */
+    case 'F':
+      for( i = 0, p = d->page_first; p && (i < page_size || !use_pager); i++, p = d->page_first ) {
+        UNLINK(p, d->page_first, d->page_last, next, prev);
+        strcpy(buffer, p->str);
+        if(p->complete_line)
+          strcat(buffer, "\r\n");
+        SEND_TO_Q(buffer, d);
+        DESTROY(p->str);
+        DESTROY(p);
+      }
+      d->page_control = d->page_first ? '\0' : ' ';
+      break;
+    case 'q': /* quit */
+    case 'Q':
+      for( p = d->page_first; p; p = d->page_first ) {
+        UNLINK(p, d->page_first, d->page_last, next, prev);
+        DESTROY(p->str);
+        DESTROY(p);
+      }
+      d->page_control = ' ';
+      break;
+  }
+}
+
+void control_page(struct descriptor_data *d, char *input)
+{
+  char                                    buffer[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
+
+  if (DEBUG > 2)
+    log_info("called %s with %08zx, %s", __PRETTY_FUNCTION__, (size_t)d, VNULL(input));
+
+  if(input) {
+    one_argument(input, buffer);
+    if(*buffer) {
+      d->page_control = *buffer;
+    } else {
+      d->page_control = ' ';
+    }
+  }
+}
+
+#if 0
 void page_string(struct descriptor_data *d, char *str, int keep_internal)
 {
   static char Empty[1] = "";
@@ -651,7 +804,6 @@ void show_string(struct descriptor_data *d, char *input)
   char                                   *scan = NULL;
   char                                   *chk = NULL;
   int                                     lines = 0;
-  int                                     toggle = 1;
 
   if (DEBUG > 2)
     log_info("called %s with %08zx, %s", __PRETTY_FUNCTION__, (size_t)d, VNULL(input));
@@ -669,8 +821,11 @@ void show_string(struct descriptor_data *d, char *input)
   /*
    * show a chunk 
    */
-  for (scan = buffer;; scan++, d->showstr_point++)
-    if ((((*scan = *d->showstr_point) == '\n') || (*scan == '\r')) && ((toggle = -toggle) < 0))
+  for (scan = buffer;; scan++, d->showstr_point++) {
+    *scan = *d->showstr_point;
+    if(*scan == '\r')
+      continue;
+    if(*scan == '\n')
       lines++;
     else if (!*scan || ((lines >= 22) && IS_SET(d->character->specials.act, PLR_PAGER))) {
       *scan = '\0';
@@ -689,7 +844,9 @@ void show_string(struct descriptor_data *d, char *input)
       }
       return;
     }
+  }
 }
+#endif
 
 void check_reboot(void)
 {

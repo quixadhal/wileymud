@@ -746,3 +746,8 @@ global.h:1144: warning: function declaration isn't a prototype
 	through all the existing descriptors to compare their character names.
   1533	Got ban system working with do_ban and do_unban adding and removing names on the fly.
 	IP Address banning is not yet implemented.
+090605	Quixadhal
+  0513	Been doing some cleanup stuff, made logging NOT go to the database by default.
+	Fixed a bug I introduced in the last const char * crap, nobody noticed.
+	Merged IMC2 support in, except for socials!
+

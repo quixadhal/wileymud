@@ -626,6 +626,10 @@ char saves_spell(struct char_data *ch, short int save_type)
   if (DEBUG > 2)
     log_info("called %s with %s, %hd", __PRETTY_FUNCTION__, SAFE_NAME(ch), save_type);
 
+  if (save_type < 0 || save_type > 4) {
+    save_type = 4;
+  }
+
   /*
    * Negative apply_saving_throw makes saving throw better! 
    */
@@ -650,6 +654,10 @@ char ImpSaveSpell(struct char_data *ch, short int save_type, int mod)
 
   if (DEBUG > 2)
     log_info("called %s with %s, %hd, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), save_type, mod);
+
+  if (save_type < 0 || save_type > 4) {
+    save_type = 4;
+  }
 
   /*
    * Positive mod is better for save 

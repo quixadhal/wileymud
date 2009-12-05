@@ -14,5 +14,6 @@ void					unload_bans(void);
 void                                    bans_to_sql(void);
 void                                    do_ban(struct char_data *ch, const char *argument, int cmd);
 void                                    do_unban(struct char_data *ch, const char *argument, int cmd);
+int                                     acceptable_name( const char *name );
 
 #endif

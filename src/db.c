@@ -14,6 +14,9 @@
 #include <time.h>
 
 #include "global.h"
+#ifdef IMC
+#include "imc.h"
+#endif
 #include "bug.h"
 #include "utils.h"
 #include "comm.h"
@@ -1591,7 +1594,7 @@ void store_to_char(struct char_file_u *st, struct char_data *ch)
   /*
    * Not used as far as I can see (Michael) 
    */
-  for (i = 0; i <= MAX_SAVING_THROWS; i++)
+  for (i = 0; i < MAX_SAVING_THROWS; i++)
     ch->specials.apply_saving_throw[i] = st->apply_saving_throw[i];
 
   for (i = 0; i <= 2; i++)
@@ -1726,10 +1729,10 @@ void char_to_store(struct char_data *ch, struct char_file_u *st)
 
   strcpy(st->name, GET_NAME(ch));
 
-  for (i = 0; i <= 4; i++)
+  for (i = 0; i < 5; i++)
     st->apply_saving_throw[i] = ch->specials.apply_saving_throw[i];
 
-  for (i = 0; i <= 2; i++)
+  for (i = 0; i < 3; i++)
     st->conditions[i] = GET_COND(ch, i);
 
   for (af = ch->affected, i = 0; i < MAX_AFFECT; i++) {
@@ -1809,7 +1812,7 @@ void save_char(struct char_data *ch, short int load_room)
     *t_ptr = LOWER(*t_ptr);
 
   sprintf(buf, "ply/%c/%s.chr", name[0], name);
-  new_save_char(&st, buf);
+  new_save_char(&st, buf, ch);
 #else
   int                                     i = 0;
   struct obj_data                        *char_equip[MAX_WEAR];
@@ -1876,7 +1879,7 @@ void save_char(struct char_data *ch, short int load_room)
 #endif
 }
 
-void new_save_char(struct char_file_u *ch, char *filename)
+void new_save_char(struct char_file_u *ch, char *filename, struct char_data *xch)
 {
 #if 0
   struct char_file_u {
@@ -2011,6 +2014,9 @@ void new_save_char(struct char_file_u *ch, char *filename)
 	    (int)(ch->affected[i].modifier),
 	    (int)(ch->affected[i].location),
 	    ch->affected[i].bitvector, (unsigned long)(ch->affected[i].next));
+#ifdef IMC
+  imc_savechar( xch, fp );
+#endif
   fprintf(fp, "End\n");
   FCLOSE(fp);
 }
@@ -2056,6 +2062,11 @@ void free_char(struct char_data *ch)
 
   for (af = ch->affected; af; af = af->next)
     affect_remove(ch, af);
+
+#ifdef IMC
+  imc_freechardata( ch );
+#endif
+
   DESTROY(ch);
 }
 
@@ -2712,7 +2723,7 @@ char                                   *new_fread_string(FILE * fp)
   }
 }
 
-int fread_char(char *name, struct char_file_u *ch)
+int fread_char(char *name, struct char_file_u *ch, struct char_data *xch)
 {
   FILE                                   *fp = NULL;
   char                                   *t_ptr = NULL;
@@ -2846,6 +2857,13 @@ int fread_char(char *name, struct char_file_u *ch)
 	}
 	break;
 
+      case 'I':
+#ifdef IMC
+        if( ( fMatch = imc_loadchar( xch, fp, word ) ) )
+          break;
+#endif
+	break;
+
       case 'L':
 	CKEY("LastSite", ch->last_connect_site, new_fread_string(fp));
 	KEY("LastLogin", ch->last_logon, fread_number(fp));
@@ -2873,7 +2891,7 @@ int fread_char(char *name, struct char_file_u *ch)
 	  int                                     recognise = 0;
 	  int                                     sn = 0;
 	  const char                             *arg = NULL;
-          char                                    tmparg[MAX_INPUT_LENGTH];
+          char                                    tmparg[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
           char                                   *t = tmparg;
 	  int                                     x = 0;
 
@@ -2884,20 +2902,36 @@ int fread_char(char *name, struct char_file_u *ch)
 	  if (!arg || !(*arg))
 	    break;
 	  arg = skip_spaces(arg);
+#if 1
+	  if (*arg == '\'')
+	    arg++;
           strncpy(tmparg, arg, MAX_INPUT_LENGTH);
-	  if (*t == '\'')
-	    t++;
-	  for (; *t && *t != '\''; *t = tolower(*t))
+	  for (t = tmparg; *t && *t != '\''; *t = tolower(*t))
 	    t++;
 	  if (*t == '\'')
 	    *t = '\0';
-	  if (!strlen(t)) {
+	  if (!strlen(tmparg)) {
 	    log_error("Empty skill name:  %d\n", skill_number);
 	    break;
 	  }
 	  for (sn = -1, x = 0; x < MAX_SKILLS; x++)
-	    if (!str_cmp(t, spell_info[x].name))
+	    if (!str_cmp(tmparg, spell_info[x].name))
 	      sn = x;
+#else
+	  if (*arg == '\'')
+	    arg++;
+	  for (s = arg; *s && *s != '\''; *s = tolower(*s))
+	    s++;
+	  if (*s == '\'')
+	    *s = '\0';
+	  if (!strlen(arg)) {
+	    dlog("Empty skill name:  %d\n", skill_number);
+	    break;
+	  }
+	  for (sn = -1, x = 0; x < MAX_SKILLS; x++)
+	    if (!str_cmp(arg, spell_info[x].name))
+	      sn = x;
+#endif
 	  if (sn != skill_number) {
 	    log_error("Skill mismatch: %d read vs. %d lookup\nUsing lookup version.\n", skill_number, sn);
 	  }

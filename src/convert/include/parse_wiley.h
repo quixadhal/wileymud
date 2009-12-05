@@ -111,16 +111,17 @@ extern const int RevDir[];
 #define WEAR_BODY	5
 #define WEAR_HEAD	6
 #define WEAR_LEGS	7
-#define WEAR_HANDS	8
-#define WEAR_ARMS	9
-#define WEAR_SHIELD	10
-#define WEAR_ABOUT	11
-#define WEAR_WAIST	12
-#define WEAR_WRIST_R	13
-#define WEAR_WRIST_L	14
-#define WIELD		15
-#define HOLD		16
-#define TWOH		17
+#define WEAR_FEET	8
+#define WEAR_HANDS	9
+#define WEAR_ARMS	10
+#define WEAR_SHIELD	11
+#define WEAR_ABOUT	12
+#define WEAR_WAIST	13
+#define WEAR_WRIST_R	14
+#define WEAR_WRIST_L	15
+#define WIELD		16
+#define HOLD		17
+#define TWOH		18
 
 #define DOOR_OPEN	0
 #define DOOR_CLOSED	1

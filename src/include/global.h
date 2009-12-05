@@ -4,6 +4,9 @@
  * It is meant to be included by every source file in the program.
  */
 
+#ifndef _GLOBAL_H_
+#define _GLOBAL_H_ 1
+
 #if	!defined(FALSE)
 #define FALSE	 0
 #endif
@@ -929,7 +932,12 @@ struct char_data {
   struct follow_type                     *followers;	       /* List of chars followers */
   struct char_data                       *master;	       /* Who is char following? */
   int                                     invis_level;	       /* visibility of gods */
-
+#ifdef I3
+  struct i3_chardata                     *i3chardata;          /* I3 network data */
+#endif
+#ifdef IMC
+  struct imcchar_data                    *imcchardata;         /* IMC network data */
+#endif
 };
 
 /* ======================================================================== */
@@ -1127,6 +1135,13 @@ struct snoop_data {
    */
 };
 
+struct pager_data {
+  char                                   *str;
+  int                                     complete_line;
+  struct pager_data                      *next;
+  struct pager_data                      *prev;
+};
+
 struct descriptor_data {
   int                                     descriptor;	       /* file descriptor for socket */
   long                                    idle_time;	       /* for ilde time duh */
@@ -1152,6 +1167,9 @@ struct descriptor_data {
   struct char_data                       *original;	       /* original char */
   struct snoop_data                       snoop;	       /* to snoop people.  */
   struct descriptor_data                 *next;		       /* link to next descriptor */
+  struct pager_data                      *page_first;
+  struct pager_data                      *page_last;
+  char                                    page_control;
 };
 
 struct msg_type {
@@ -1225,3 +1243,5 @@ struct title_type {
   const char                             *title_f;
   int                                     exp;
 };
+
+#endif

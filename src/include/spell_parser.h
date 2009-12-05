@@ -35,7 +35,7 @@
 #ifndef _SPELL_PARSER_C
 extern struct spell_info_type           spell_info[MAX_SKILLS];
 
-/* extern char *spells[]; */
+/* extern const char *spells[]; */
 extern const char                      
   saving_throws[ABS_MAX_CLASS][MAX_SAVING_THROWS][ABS_MAX_LVL];
 
