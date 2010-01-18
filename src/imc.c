@@ -113,6 +113,47 @@ const char *const imcperm_names[] = {
    "Notset", "None", "Mort", "Imm", "Admin", "Imp"
 };
 
+#define IMC_SPEAKER_COLOURS 13
+const char *const imc_colour_symbols[] = {
+   "~r", "~g", "~Y", "~B", "~W", "~m", "~C", "~R", "~G", "~M", "~z", "^B~W", "^r~Y"
+
+//ichat ~rdarkred~gdarkgreen~Yyellow~Bblue~Wwhite~mdarkmagenta~Ccyan~Rred~Ggreen~Mmagenta~zgrey^B~Wwhiteonblue^r~Yyellowonred~! 13 colours before it loops.
+
+//ichat ~gdark~Ggreen~rdark~Rred~ydark~Yyellow~mdark~Mmagenta~wdark~Wwhite~cdark~Ccyan~bdark~Bblue~xdark~zblack~!
+};
+
+
+IMC_SPEAKER *first_speaker;
+IMC_SPEAKER *last_speaker;
+
+const char * imc_speaker_colour( const char *name )
+{
+   IMC_SPEAKER *p;
+   IMC_SPEAKER *i;
+   int last_colour = -1;
+
+   for( i = first_speaker; i; i = i->next ) {
+      if( !strcasecmp( i->name, name ) )
+         return imc_colour_symbols[i->colour];
+      else
+         last_colour = i->colour;
+   }
+
+   IMCCREATE( p, IMC_SPEAKER, 1 );
+   p->name = IMCSTRALLOC( name );
+   p->colour = ( last_colour + 1 ) % IMC_SPEAKER_COLOURS;
+   IMCLINK( p, first_speaker, last_speaker, next, prev );
+   imclog("Assigned colour %d to %s", p->colour, p->name);
+   return imc_colour_symbols[p->colour];
+}
+
+const char *imc_speaker_name( const char *name ) {
+   static char buf[LGST];
+
+   snprintf( buf, LGST, "%s%s~!", imc_speaker_colour( name ), name );
+   return buf;
+}
+
 SITEINFO *this_imcmud;
 IMC_CHANNEL *first_imc_channel;
 IMC_CHANNEL *last_imc_channel;
@@ -1027,19 +1068,19 @@ void imcformat_channel( CHAR_DATA * ch, IMC_CHANNEL * d, int format, bool all )
 
          if( format == 1 || format == 4 )
          {
-            snprintf( buf, LGST, "~R[~Y%s~R] ~C%%s: ~c%%s", c->local_name );
+            snprintf( buf, LGST, "~R[~Y%s~R]~! %%s~c: %%s", c->local_name );
             IMCSTRFREE( c->regformat );
             c->regformat = IMCSTRALLOC( buf );
          }
          if( format == 2 || format == 4 )
          {
-            snprintf( buf, LGST, "~R[~Y%s~R] ~c%%s %%s", c->local_name );
+            snprintf( buf, LGST, "~R[~Y%s~R]~! %%s ~c%%s", c->local_name );
             IMCSTRFREE( c->emoteformat );
             c->emoteformat = IMCSTRALLOC( buf );
          }
          if( format == 3 || format == 4 )
          {
-            snprintf( buf, LGST, "~R[~Y%s~R] ~c%%s", c->local_name );
+            snprintf( buf, LGST, "~R[~Y%s~R]~! ~c%%s", c->local_name );
             IMCSTRFREE( c->socformat );
             c->socformat = IMCSTRALLOC( buf );
          }
@@ -1055,19 +1096,19 @@ void imcformat_channel( CHAR_DATA * ch, IMC_CHANNEL * d, int format, bool all )
 
       if( format == 1 || format == 4 )
       {
-         snprintf( buf, LGST, "~R[~Y%s~R] ~C%%s: ~c%%s", d->local_name );
+         snprintf( buf, LGST, "~R[~Y%s~R]~! %%s~c: %%s", d->local_name );
          IMCSTRFREE( d->regformat );
          d->regformat = IMCSTRALLOC( buf );
       }
       if( format == 2 || format == 4 )
       {
-         snprintf( buf, LGST, "~R[~Y%s~R] ~c%%s %%s", d->local_name );
+         snprintf( buf, LGST, "~R[~Y%s~R]~! %%s ~c%%s", d->local_name );
          IMCSTRFREE( d->emoteformat );
          d->emoteformat = IMCSTRALLOC( buf );
       }
       if( format == 3 || format == 4 )
       {
-         snprintf( buf, LGST, "~R[~Y%s~R] ~c%%s", d->local_name );
+         snprintf( buf, LGST, "~R[~Y%s~R]~! ~c%%s", d->local_name );
          IMCSTRFREE( d->socformat );
          d->socformat = IMCSTRALLOC( buf );
       }
@@ -1712,7 +1753,7 @@ PFUN( imc_recv_tell )
    if( reply == 2 )
       snprintf( buf, LGST, "~WImctell: ~c%s\r\n", txt );
    else
-      snprintf( buf, LGST, "~C%s ~cimctells you ~c'~W%s~c'~!\r\n", imcgetname( q->from ), txt );
+      snprintf( buf, LGST, "%s ~cimctells you ~c'~W%s~c'~!\r\n", imc_speaker_name( imcgetname( q->from ) ), txt );
    imc_to_char( buf, vic );
    imc_update_tellhistory( vic, buf );
 }
@@ -1735,7 +1776,7 @@ PFUN( imc_recv_emote )
    {
       if( d->connected == CON_PLAYING && ( ch = d->original ? d->original : d->character ) != NULL
           && IMCPERM( ch ) >= level )
-         imc_printf( ch, "~p[~GIMC~p] %s %s\r\n", imcgetname( q->from ), txt );
+         imc_printf( ch, "~p[~GIMC~p]~! %s ~c%s\r\n", imc_speaker_name( imcgetname( q->from ) ), txt );
    }
 }
 
@@ -1835,7 +1876,7 @@ void imc_display_channel( IMC_CHANNEL * c, const char *from, char *txt, int emot
       return;
 
    if( emote < 2 )
-      snprintf( buf, LGST, emote ? c->emoteformat : c->regformat, from, txt );
+      snprintf( buf, LGST, emote ? c->emoteformat : c->regformat, imc_speaker_name( from ), txt );
    else
       snprintf( buf, LGST, c->socformat, txt );
 
@@ -5157,6 +5198,15 @@ void free_imcdata( bool complete )
    IMC_COLOR *color, *color_next;
    IMC_PHANDLER *ph, *ph_next;
    IMC_CHANNEL *c, *c_next;
+   IMC_SPEAKER *sp, *sp_next;
+
+   for( sp = first_speaker; sp; sp = sp_next )
+   {
+      sp_next = sp->next;
+      IMCSTRFREE( sp->name );
+      IMCUNLINK( sp, first_speaker, last_speaker, next, prev );
+      IMCDISPOSE( sp );
+   }
 
    for( c = first_imc_channel; c; c = c_next )
    {
@@ -5269,6 +5319,7 @@ void imc_shutdown( bool reconnect )
    this_imcmud->desc = -1;
 
    imc_savehistory(  );
+   imc_save_speakers(  );
    free_imcdata( FALSE );
 
    this_imcmud->state = IMC_OFFLINE;
@@ -5396,6 +5447,7 @@ void imc_startup( bool force, int desc, bool connected )
          imc_loadhistory(  );
          imc_readbans(  );
          imc_load_ucache(  );
+         imc_load_speakers(  );
       }
    }
 }
@@ -7414,13 +7466,13 @@ IMC_CMD( imchedit )
 
    if( !found )
    {
-      imc_printf( ch, "~gNo help exists for topic ~W%s~g. You will need to add it to the helpfile manually.\r\n", name );
+      imc_printf( ch, "~gNo help exists for topic ~W%s~g. You will need to add it to the helpfile manually.~!\r\n", name );
       return;
    }
 
    if( !strcasecmp( cmd, "name" ) )
    {
-      imc_printf( ch, "~W%s ~ghas been renamed to ~W%s.\r\n", help->name, argument );
+      imc_printf( ch, "~W%s ~ghas been renamed to ~W%s.~!\r\n", help->name, argument );
       IMCSTRFREE( help->name );
       help->name = IMCSTRALLOC( argument );
       imc_savehelps(  );
@@ -7434,7 +7486,7 @@ IMC_CMD( imchedit )
       if( !imccheck_permissions( ch, permvalue, help->level, FALSE ) )
          return;
 
-      imc_printf( ch, "~gPermission level for ~W%s ~ghas been changed to ~W%s.\r\n", help->name, imcperm_names[permvalue] );
+      imc_printf( ch, "~gPermission level for ~W%s ~ghas been changed to ~W%s.~!\r\n", help->name, imcperm_names[permvalue] );
       help->level = permvalue;
       imc_savehelps(  );
       return;
@@ -7496,7 +7548,7 @@ IMC_CMD( imc_other )
          imcstrlcat( buf, "\r\n", LGST );
    }
    imc_to_pager( buf, ch );
-   imc_to_pager( "\r\n~gFor information about a specific command, see ~Wimchelp <command>~g.\r\n", ch );
+   imc_to_pager( "\r\n~gFor information about a specific command, see ~Wimchelp <command>~g.~!\r\n", ch );
 }
 
 #if defined(IMCSTANDALONE)
@@ -7528,7 +7580,7 @@ const char *imc_find_social( CHAR_DATA * ch, const char *sname, const char *pers
 
    if( ( social = find_social( lcSocName ) ) == NULL )
    {
-      imc_printf( ch, "~YSocial ~W%s~Y does not exist on this mud.\r\n", sname );
+      imc_printf( ch, "~YSocial ~W%s~Y does not exist on this mud.~!\r\n", sname );
       return socname;
    }
 
@@ -7539,7 +7591,7 @@ const char *imc_find_social( CHAR_DATA * ch, const char *sname, const char *pers
       {
          if( !social->others_auto )
          {
-            imc_printf( ch, "~YSocial ~W%s~Y: Missing others_auto.\r\n", sname );
+            imc_printf( ch, "~YSocial ~W%s~Y: Missing others_auto.~!\r\n", sname );
             return socname;
          }
          imcstrlcpy( socname, social->others_auto, LGST );
@@ -7550,7 +7602,7 @@ const char *imc_find_social( CHAR_DATA * ch, const char *sname, const char *pers
          {
             if( !social->others_found )
             {
-               imc_printf( ch, "~YSocial ~W%s~Y: Missing others_found.\r\n", sname );
+               imc_printf( ch, "~YSocial ~W%s~Y: Missing others_found.~!\r\n", sname );
                return socname;
             }
             imcstrlcpy( socname, social->others_found, LGST );
@@ -7559,7 +7611,7 @@ const char *imc_find_social( CHAR_DATA * ch, const char *sname, const char *pers
          {
             if( !social->vict_found )
             {
-               imc_printf( ch, "~YSocial ~W%s~Y: Missing vict_found.\r\n", sname );
+               imc_printf( ch, "~YSocial ~W%s~Y: Missing vict_found.~!\r\n", sname );
                return socname;
             }
             imcstrlcpy( socname, social->vict_found, LGST );
@@ -7568,7 +7620,7 @@ const char *imc_find_social( CHAR_DATA * ch, const char *sname, const char *pers
          {
             if( !social->char_found )
             {
-               imc_printf( ch, "~YSocial ~W%s~Y: Missing char_found.\r\n", sname );
+               imc_printf( ch, "~YSocial ~W%s~Y: Missing char_found.~!\r\n", sname );
                return socname;
             }
             imcstrlcpy( socname, social->char_found, LGST );
@@ -7581,7 +7633,7 @@ const char *imc_find_social( CHAR_DATA * ch, const char *sname, const char *pers
       {
          if( !social->others_no_arg )
          {
-            imc_printf( ch, "~YSocial ~W%s~Y: Missing others_no_arg.\r\n", sname );
+            imc_printf( ch, "~YSocial ~W%s~Y: Missing others_no_arg.~!\r\n", sname );
             return socname;
          }
          imcstrlcpy( socname, social->others_no_arg, LGST );
@@ -7590,14 +7642,14 @@ const char *imc_find_social( CHAR_DATA * ch, const char *sname, const char *pers
       {
          if( !social->char_no_arg )
          {
-            imc_printf( ch, "~YSocial ~W%s~Y: Missing char_no_arg.\r\n", sname );
+            imc_printf( ch, "~YSocial ~W%s~Y: Missing char_no_arg.~!\r\n", sname );
             return socname;
          }
          imcstrlcpy( socname, social->char_no_arg, LGST );
       }
    }
 #elif defined(IMCWILEY)
-   imc_printf( ch, "~YSocial ~W%s~Y does not exist on this mud.\r\n", sname );
+   imc_printf( ch, "~YSocial ~W%s~Y does not exist on this mud.~!\r\n", sname );
    return socname;
 #else
    found = FALSE;
@@ -7612,7 +7664,7 @@ const char *imc_find_social( CHAR_DATA * ch, const char *sname, const char *pers
 
    if( !found )
    {
-      imc_printf( ch, "~YSocial ~W%s~Y does not exist on this mud.\r\n", sname );
+      imc_printf( ch, "~YSocial ~W%s~Y does not exist on this mud.~!\r\n", sname );
       return socname;
    }
 
@@ -7623,7 +7675,7 @@ const char *imc_find_social( CHAR_DATA * ch, const char *sname, const char *pers
       {
          if( !social_table[cmd].others_auto )
          {
-            imc_printf( ch, "~YSocial ~W%s~Y: Missing others_auto.\r\n", sname );
+            imc_printf( ch, "~YSocial ~W%s~Y: Missing others_auto.~!\r\n", sname );
             return socname;
          }
          imcstrlcpy( socname, social_table[cmd].others_auto, LGST );
@@ -7634,7 +7686,7 @@ const char *imc_find_social( CHAR_DATA * ch, const char *sname, const char *pers
          {
             if( !social_table[cmd].others_found )
             {
-               imc_printf( ch, "~YSocial ~W%s~Y: Missing others_found.\r\n", sname );
+               imc_printf( ch, "~YSocial ~W%s~Y: Missing others_found.~!\r\n", sname );
                return socname;
             }
             imcstrlcpy( socname, social_table[cmd].others_found, LGST );
@@ -7643,7 +7695,7 @@ const char *imc_find_social( CHAR_DATA * ch, const char *sname, const char *pers
          {
             if( !social_table[cmd].vict_found )
             {
-               imc_printf( ch, "~YSocial ~W%s~Y: Missing vict_found.\r\n", sname );
+               imc_printf( ch, "~YSocial ~W%s~Y: Missing vict_found.~!\r\n", sname );
                return socname;
             }
             imcstrlcpy( socname, social_table[cmd].vict_found, LGST );
@@ -7652,7 +7704,7 @@ const char *imc_find_social( CHAR_DATA * ch, const char *sname, const char *pers
          {
             if( !social_table[cmd].char_found )
             {
-               imc_printf( ch, "~YSocial ~W%s~Y: Missing char_found.\r\n", sname );
+               imc_printf( ch, "~YSocial ~W%s~Y: Missing char_found.~!\r\n", sname );
                return socname;
             }
             imcstrlcpy( socname, social_table[cmd].char_found, LGST );
@@ -7665,7 +7717,7 @@ const char *imc_find_social( CHAR_DATA * ch, const char *sname, const char *pers
       {
          if( !social_table[cmd].others_no_arg )
          {
-            imc_printf( ch, "~YSocial ~W%s~Y: Missing others_no_arg.\r\n", sname );
+            imc_printf( ch, "~YSocial ~W%s~Y: Missing others_no_arg.~!\r\n", sname );
             return socname;
          }
          imcstrlcpy( socname, social_table[cmd].others_no_arg, LGST );
@@ -7674,7 +7726,7 @@ const char *imc_find_social( CHAR_DATA * ch, const char *sname, const char *pers
       {
          if( !social_table[cmd].char_no_arg )
          {
-            imc_printf( ch, "~YSocial ~W%s~Y: Missing char_no_arg.\r\n", sname );
+            imc_printf( ch, "~YSocial ~W%s~Y: Missing char_no_arg.~!\r\n", sname );
             return socname;
          }
          imcstrlcpy( socname, social_table[cmd].char_no_arg, LGST );
@@ -8160,14 +8212,15 @@ bool imc_command_hook( CHAR_DATA * ch, const char *command, const char *argument
    {
       int y;
 
-      imc_printf( ch, "~cThe last %d %s messages:\r\n", MAX_IMCHISTORY, c->local_name );
+      imcpager_printf( ch, "~cThe last %d %s messages:\r\n", MAX_IMCHISTORY, c->local_name );
       for( y = 0; y < MAX_IMCHISTORY; y++ )
       {
          if( c->history[y] != NULL )
-            imc_printf( ch, "%s\r\n", c->history[y] );
+            imcpager_printf( ch, "%s\r\n", c->history[y] );
          else
             break;
       }
+      imcpager_printf( ch, "~!\r\n" );
       return TRUE;
    }
 
@@ -8176,13 +8229,13 @@ bool imc_command_hook( CHAR_DATA * ch, const char *command, const char *argument
       if( !IMCIS_SET( c->flags, IMCCHAN_LOG ) )
       {
          IMCSET_BIT( c->flags, IMCCHAN_LOG );
-         imc_printf( ch, "~RFile logging enabled for %s, PLEASE don't forget to undo this when it isn't needed!\r\n",
+         imc_printf( ch, "~RFile logging enabled for %s, PLEASE don't forget to undo this when it isn't needed!~!\r\n",
                      c->local_name );
       }
       else
       {
          IMCREMOVE_BIT( c->flags, IMCCHAN_LOG );
-         imc_printf( ch, "~GFile logging disabled for %s.\r\n", c->local_name );
+         imc_printf( ch, "~GFile logging disabled for %s.~!\r\n", c->local_name );
       }
       imc_save_channels(  );
       return TRUE;
@@ -8190,7 +8243,7 @@ bool imc_command_hook( CHAR_DATA * ch, const char *command, const char *argument
 
    if( !imc_hasname( IMC_LISTEN( ch ), c->local_name ) )
    {
-      imc_printf( ch, "You are not currently listening to %s. Use the imclisten command to listen to this channel.\r\n",
+      imc_printf( ch, "You are not currently listening to %s. Use the imclisten command to listen to this channel.~!\r\n",
                   c->local_name );
       return TRUE;
    }
@@ -8225,6 +8278,119 @@ bool imc_command_hook( CHAR_DATA * ch, const char *command, const char *argument
    }
    return TRUE;
 }
+
+void imc_save_speakers( void )
+{
+   FILE *fp;
+   IMC_SPEAKER *i;
+
+   if( !( fp = fopen( IMC_SPEAKER_FILE, "w" ) ) )
+   {
+      imcbug( "Can't write to %s", IMC_SPEAKER_FILE );
+      return;
+   }
+
+   for( i = first_speaker; i; i = i->next )
+   {
+      fprintf( fp, "%s", "#IMCSPEAKER\n" );
+      fprintf( fp, "SpeakerName         %s\n", i->name );
+      fprintf( fp, "SpeakerColour       %d\n", i->colour );
+      fprintf( fp, "%s", "End\n\n" );
+   }
+   fprintf( fp, "%s", "#END\n" );
+   IMCFCLOSE( fp );
+}
+
+void imc_load_speakers( void )
+{
+   FILE *fp;
+   IMC_SPEAKER *p;
+
+   first_speaker = NULL;
+   last_speaker = NULL;
+
+   imclog( "%s", "Loading speakers..." );
+
+   if( !( fp = fopen( IMC_SPEAKER_FILE, "r" ) ) )
+   {
+      imcbug( "%s", "Can't open imc speakers file" );
+      return;
+   }
+
+   for( ;; )
+   {
+      char letter;
+      char *word;
+
+      letter = imcfread_letter( fp );
+      if( letter == '*' )
+      {
+         imcfread_to_eol( fp );
+         continue;
+      }
+
+      if( letter != '#' )
+      {
+         imcbug( "%s", "imc_load_speakers: # not found." );
+         break;
+      }
+
+      word = imcfread_word( fp );
+      if( !strcasecmp( word, "IMCSPEAKER" ) )
+      {
+         IMCCREATE( p, IMC_SPEAKER, 1 );
+         imc_read_speaker( p, fp );
+
+         IMCLINK( p, first_speaker, last_speaker, next, prev );
+         imclog( "restored %s", p->name );
+         continue;
+      }
+      else if( !strcasecmp( word, "END" ) )
+         break;
+      else
+      {
+         imcbug( "imc_load_speakers: bad section: %s.", word );
+         continue;
+      }
+   }
+   IMCFCLOSE( fp );
+}
+
+void imc_read_speaker( IMC_SPEAKER * p, FILE * fp )
+{
+   const char *word;
+   bool fMatch;
+
+   for( ;; )
+   {
+      word = feof( fp ) ? "End" : imcfread_word( fp );
+      fMatch = FALSE;
+
+      switch ( word[0] )
+      {
+         case '*':
+            fMatch = TRUE;
+            imcfread_to_eol( fp );
+            break;
+
+         case 'S':
+            IMCKEY( "SpeakerName", p->name, imcfread_line( fp ) );
+            IMCKEY( "SpeakerColour", p->colour, imcfread_number( fp ) );
+            break;
+
+         case 'E':
+            if( !strcasecmp( word, "End" ) )
+            {
+               return;
+            }
+            break;
+      }
+
+      if( !fMatch )
+         imcbug( "imc_read_speaker: no match: %s", word );
+   }
+}
+
 
 #if defined(IMCSTANDALONE)
 int main( int argc, char **argv )

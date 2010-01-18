@@ -124,7 +124,8 @@ const char                             *command[] = {
   "skills", "doorbash", "restoreall", "mount", "dismount",
   "land", "nosummon", "noteleport", "players", "reset",
   "event", "zpurge", "ticks", "bury", "desecrate",
-  "setreboot", "home", "bandage", "unban",
+  "setreboot", "home", "bandage", "unban", "immtrack",
+  "ansimap",
   "\n"
 };
 
@@ -614,6 +615,8 @@ void assign_command_pointers(void)
   COMMANDO(CMD_wiznet, POSITION_DEAD, do_commune, 51);
   COMMANDO(CMD_world, POSITION_DEAD, do_world, 51);
   COMMANDO(CMD_zpurge, POSITION_DEAD, do_zone_purge, 58);
+  COMMANDO(CMD_immtrack, POSITION_DEAD, do_immtrack, 51);
+  COMMANDO(CMD_ansimap, POSITION_RESTING, do_ansimap, 51);
 
 /* mortal commands */
   COMMANDO(CMD_EMOTE, POSITION_SLEEPING, do_emote, 0);

@@ -2776,3 +2776,243 @@ void do_map(struct char_data *ch, const char *argument, int cmd)
 	  vnum[WEST], terrain[WEST], name[SOUTH], vnum[SOUTH],
 	  terrain[SOUTH], name[DOWN], vnum[DOWN], terrain[DOWN]);
 }
+
+char *get_ansi_sector(struct room_data *this_room)
+{
+    static char buf[12];
+    const char *symbols = "..-%^^~~$~";
+    const char *colours = "0322774464";
+    const char *bolds   = "9939399393";
+
+    strcpy(buf, " ");
+
+    if(!this_room)
+        return buf;
+
+    if(this_room->sector_type >= 0) {
+        int x = this_room->sector_type;
+
+        sprintf(buf, "%c[%c%cm%c%c[0m", 27, bolds[x], colours[x], symbols[x], 27);
+    } else {
+        sprintf(buf, "%c[%c%cm%c%c[0m", 27, '4', '5', '?', 27);
+    }
+
+    return buf;
+}
+
+struct room_data *walk_room_path(struct room_data *this_room, const char *path)
+{
+    int i;
+    int dir = -1;
+    struct room_data *next_room = NULL;
+    struct room_data *orig_room = NULL;
+    struct room_data *targ_room = NULL;
+    char *rotated = NULL;
+    int r = 1;
+    int found = 1;
+
+    if(!this_room)
+        return NULL;
+    if(!path || !*path)
+        return NULL;
+    if(strspn(path, "nNeEsSwWuUdD") < strlen(path))
+        return NULL;
+
+    rotated = malloc(strlen(path)+1);
+    rotated[strlen(path)] = '\0';
+    orig_room = this_room;
+
+    for(r = 0; r < strlen(path); r++) {
+        memcpy(rotated, path+r, strlen(path)-r);
+        if(r>0) memcpy(rotated+strlen(path)-r, path, r);
+        found = 1;
+        this_room = orig_room;
+        for(i = 0; i < strlen(path); i++) {
+            switch(rotated[i]) {
+                case 'n':
+                case 'N':
+                    dir = 0;
+                    break;
+                case 'e':
+                case 'E':
+                    dir = 1;
+                    break;
+                case 's':
+                case 'S':
+                    dir = 2;
+                    break;
+                case 'w':
+                case 'W':
+                    dir = 3;
+                    break;
+                case 'u':
+                case 'U':
+                    dir = 4;
+                    break;
+                case 'd':
+                case 'D':
+                    dir = 5;
+                    break;
+            }
+            if( this_room->dir_option[dir] && 
+                this_room->dir_option[dir]->to_room >= 0 &&
+                ( next_room = real_roomp(this_room->dir_option[dir]->to_room) ) ) {
+                this_room = next_room;
+            } else {
+                found = 0;
+                break;
+            }
+        }
+        if(found) {
+            targ_room = this_room;
+            break;
+        }
+    }
+
+    free(rotated);
+    return targ_room;
+}
+
+void do_ansimap(struct char_data *ch, const char *argument, int cmd)
+{
+  struct room_data                       *this_room = NULL;
+  char *map[9][9];
+  int i,j;
+  char tmp[256];
+
+  if (DEBUG)
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+
+  if (IS_NPC(ch)) {
+    cprintf(ch, "You don't need a map.\r\n");
+    return;
+  }
+
+  this_room = real_roomp(ch->in_room);
+  if(!this_room)
+      return;
+
+  for(i= 0; i < 9; i++)
+      for(j= 0; j< 9; j++)
+          map[i][j] = NULL;
+
+  sprintf(tmp, "\x1b[44m");
+  strcat(tmp, get_ansi_sector(this_room));
+  map[4][4] = strdup(tmp);
+
+#define WRP(x) walk_room_path(this_room, x)
+
+  /* Ring 1 */
+  map[3][4] = strdup(get_ansi_sector(WRP("n")));
+  map[3][5] = strdup(get_ansi_sector(WRP("ne")));
+  map[4][5] = strdup(get_ansi_sector(WRP("e")));
+  map[5][5] = strdup(get_ansi_sector(WRP("es")));
+  map[5][4] = strdup(get_ansi_sector(WRP("s")));
+  map[5][3] = strdup(get_ansi_sector(WRP("sw")));
+  map[4][3] = strdup(get_ansi_sector(WRP("w")));
+  map[3][3] = strdup(get_ansi_sector(WRP("wn")));
+
+  /* Ring 2 */
+  map[2][4] = strdup(get_ansi_sector(WRP("nn")));
+  map[2][3] = strdup(get_ansi_sector(WRP("nnw")));
+  map[2][5] = strdup(get_ansi_sector(WRP("nne")));
+  map[2][6] = strdup(get_ansi_sector(WRP("nnee")));
+
+  map[4][6] = strdup(get_ansi_sector(WRP("ee")));
+  map[3][6] = strdup(get_ansi_sector(WRP("een")));
+  map[5][6] = strdup(get_ansi_sector(WRP("ees")));
+  map[6][6] = strdup(get_ansi_sector(WRP("eess")));
+
+  map[6][4] = strdup(get_ansi_sector(WRP("ss")));
+  map[6][3] = strdup(get_ansi_sector(WRP("ssw")));
+  map[6][5] = strdup(get_ansi_sector(WRP("sse")));
+  map[6][6] = strdup(get_ansi_sector(WRP("ssww")));
+
+  map[4][2] = strdup(get_ansi_sector(WRP("ww")));
+  map[3][2] = strdup(get_ansi_sector(WRP("wwn")));
+  map[5][2] = strdup(get_ansi_sector(WRP("wws")));
+  map[2][2] = strdup(get_ansi_sector(WRP("wwnn")));
+
+  /* Ring 3 */
+  map[1][4] = strdup(get_ansi_sector(WRP("nnn")));
+  map[1][3] = strdup(get_ansi_sector(WRP("nnnw")));
+  map[1][5] = strdup(get_ansi_sector(WRP("nnne")));
+  map[1][2] = strdup(get_ansi_sector(WRP("nnnww")));
+  map[1][6] = strdup(get_ansi_sector(WRP("nnnee")));
+  map[1][7] = strdup(get_ansi_sector(WRP("nnneee")));
+
+  map[4][7] = strdup(get_ansi_sector(WRP("eee")));
+  map[3][7] = strdup(get_ansi_sector(WRP("eeen")));
+  map[5][7] = strdup(get_ansi_sector(WRP("eees")));
+  map[6][7] = strdup(get_ansi_sector(WRP("eeess")));
+  map[2][7] = strdup(get_ansi_sector(WRP("eeenn")));
+  map[7][7] = strdup(get_ansi_sector(WRP("eeesss")));
+
+  map[7][4] = strdup(get_ansi_sector(WRP("sss")));
+  map[7][3] = strdup(get_ansi_sector(WRP("sssw")));
+  map[7][5] = strdup(get_ansi_sector(WRP("ssse")));
+  map[7][6] = strdup(get_ansi_sector(WRP("sssww")));
+  map[7][2] = strdup(get_ansi_sector(WRP("sssee")));
+  map[7][1] = strdup(get_ansi_sector(WRP("ssswww")));
+
+  map[4][1] = strdup(get_ansi_sector(WRP("www")));
+  map[3][1] = strdup(get_ansi_sector(WRP("wwwn")));
+  map[5][1] = strdup(get_ansi_sector(WRP("wwws")));
+  map[2][1] = strdup(get_ansi_sector(WRP("wwwnn")));
+  map[6][1] = strdup(get_ansi_sector(WRP("wwwss")));
+  map[1][1] = strdup(get_ansi_sector(WRP("wwwnnn")));
+
+  /* Ring 4 */
+  map[0][4] = strdup(get_ansi_sector(WRP("nnnn")));
+  map[0][3] = strdup(get_ansi_sector(WRP("nnnnw")));
+  map[0][5] = strdup(get_ansi_sector(WRP("nnnne")));
+  map[0][2] = strdup(get_ansi_sector(WRP("nnnnww")));
+  map[0][6] = strdup(get_ansi_sector(WRP("nnnnee")));
+  map[0][7] = strdup(get_ansi_sector(WRP("nnnneee")));
+  map[0][1] = strdup(get_ansi_sector(WRP("nnnnwww")));
+  map[0][8] = strdup(get_ansi_sector(WRP("nnnneeee")));
+
+  map[4][8] = strdup(get_ansi_sector(WRP("eeee")));
+  map[3][8] = strdup(get_ansi_sector(WRP("eeeen")));
+  map[5][8] = strdup(get_ansi_sector(WRP("eeees")));
+  map[6][8] = strdup(get_ansi_sector(WRP("eeeess")));
+  map[2][8] = strdup(get_ansi_sector(WRP("eeeenn")));
+  map[7][8] = strdup(get_ansi_sector(WRP("eeeesss")));
+  map[1][8] = strdup(get_ansi_sector(WRP("eeeennn")));
+  map[8][8] = strdup(get_ansi_sector(WRP("eeeessss")));
+
+  map[8][4] = strdup(get_ansi_sector(WRP("ssss")));
+  map[8][3] = strdup(get_ansi_sector(WRP("ssssw")));
+  map[8][5] = strdup(get_ansi_sector(WRP("sssse")));
+  map[8][6] = strdup(get_ansi_sector(WRP("ssssww")));
+  map[8][2] = strdup(get_ansi_sector(WRP("ssssee")));
+  map[8][1] = strdup(get_ansi_sector(WRP("sssswww")));
+  map[8][7] = strdup(get_ansi_sector(WRP("sssseee")));
+  map[8][0] = strdup(get_ansi_sector(WRP("sssswwww")));
+
+  map[4][0] = strdup(get_ansi_sector(WRP("wwww")));
+  map[3][0] = strdup(get_ansi_sector(WRP("wwwwn")));
+  map[5][0] = strdup(get_ansi_sector(WRP("wwwws")));
+  map[2][0] = strdup(get_ansi_sector(WRP("wwwwnn")));
+  map[6][0] = strdup(get_ansi_sector(WRP("wwwwss")));
+  map[1][0] = strdup(get_ansi_sector(WRP("wwwwnnn")));
+  map[7][0] = strdup(get_ansi_sector(WRP("wwwwsss")));
+  map[0][0] = strdup(get_ansi_sector(WRP("wwwwnnnn")));
+
+  cprintf(ch, "   ---- ++++\n");
+  cprintf(ch, "   432101234\n");
+  for(i= 0; i < 9; i++) {
+      cprintf(ch, "%s%d ", i < 4 ? "" : (i == 4 ? " " : "+"), i-4);
+      for(j= 0; j< 9; j++) {
+          cprintf(ch, "%s", map[i][j] == NULL ? " " : map[i][j]);
+      }
+      cprintf(ch, "\n");
+  }
+
+  for(i= 0; i < 9; i++)
+      for(j= 0; j< 9; j++)
+          if(map[i][j])
+              free(map[i][j]);
+
+}
+

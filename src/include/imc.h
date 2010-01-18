@@ -19,8 +19,8 @@
 #define IMC_VERSION 2
 
 /* Number of entries to keep in the channel histories */
-#define MAX_IMCHISTORY 20
-#define MAX_IMCTELLHISTORY 20
+#define MAX_IMCHISTORY 250
+#define MAX_IMCTELLHISTORY 250
 
 /* Remcon: Ask and ye shall receive. */
 #define IMC_DIR          "imc/"
@@ -34,6 +34,8 @@
 #define IMC_CMD_FILE     IMC_DIR "imc.commands"
 #define IMC_HOTBOOT_FILE IMC_DIR "imc.hotboot"
 #define IMC_WHO_FILE     IMC_DIR "imc.who"
+#define IMC_SPEAKER_FILE IMC_DIR "imc.speakers"
+#define IMC_HISTORY_FILE IMC_DIR "imc.history"
 
 /* Make sure you set the macros in the imccfg.h file properly or things get ugly from here. */
 #include "imccfg.h"
@@ -194,6 +196,7 @@ do                                               \
 /* No real functional difference in alot of this, but double linked lists DO seem to handle better,
  * and they look alot neater too. Yes, readability IS important! - Samson
  */
+typedef struct imc_speaker IMC_SPEAKER;   /* Name to colour mapping */
 typedef struct imc_channel IMC_CHANNEL;   /* Channels, both local and non-local */
 typedef struct imc_packet IMC_PACKET;  /* It's a packet! */
 typedef struct imc_packet_data IMC_PDATA; /* Extra data fields for packets */
@@ -294,6 +297,14 @@ struct imcchar_data
    long imcflag;  /* Flags set on the player */
    int icq; /* Person's ICQ UIN Number - Samson 3-21-04 */
    int imcperm;   /* Permission level for the player */
+};
+
+struct imc_speaker
+{
+   IMC_SPEAKER *next;
+   IMC_SPEAKER *prev;
+   char *name; /* name of speaker */
+   int colour; /* colour index to use */
 };
 
 struct imc_channel
@@ -412,6 +423,8 @@ struct who_template
    char *master;
 };
 
+const char * imc_speaker_colour( const char *name );
+const char *imc_speaker_name( const char *name );
 bool imc_command_hook( CHAR_DATA * ch, const char *command, const char *argument );
 void imc_hotboot( void );
 void imc_startup( bool force, int desc, bool connected );
@@ -431,6 +444,9 @@ CHAR_DATA *imc_find_user( const char *name );
 char *imc_nameof( const char *src );
 char *imc_mudof( const char *src );
 void imc_send_tell( const char *from, const char *to, const char *txt, int reply );
+void imc_save_speakers( void );
+void imc_load_speakers( void );
+void imc_read_speaker( IMC_SPEAKER * p, FILE * fp );
 
 #if defined(_DISKIO_H_)
 void imc_load_pfile( CHAR_DATA * ch, char *tag, int num, char *line );

@@ -3,6 +3,7 @@
 #include <unistd.h>
 #include <string.h>
 #include <signal.h>
+#include <ctype.h>
 
 #include "global.h"
 #include "bug.h"
@@ -19,6 +20,7 @@
 #include "opinion.h"
 #include "spells.h"
 #include "fight.h"
+#include "modify.h"
 
 #define _TRACKING_C
 #include "tracking.h"
@@ -399,3 +401,133 @@ void do_track(struct char_data *ch, const char *argument, int cmd)
     }
   }
 }
+
+void do_immtrack(struct char_data *ch, const char *argument, int cmd)
+{
+  char                                    buf[MAX_INPUT_LENGTH] = "\0\0\0";
+  int                                     loc_nr = 0;
+  int                                     location = 0;
+  struct room_data                       *target_room = NULL;
+  struct char_data                       *target_mob = NULL;
+  struct obj_data                        *target_obj = NULL;
+  int                                     type_of_thing = 0;
+
+  if (DEBUG)
+    log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+
+  if (IS_NPC(ch)) {
+    cprintf(ch, "You cannot cheat like this.\r\n");
+    return;
+  }
+
+  only_argument(argument, buf);
+  if (!*buf) {
+    cprintf(ch, "You must supply a room number or a name.\r\n");
+    return;
+  }
+  if (isdigit(*buf) && NULL == index(buf, '.')) {
+    loc_nr = atoi(buf);
+    if ((target_room = real_roomp(loc_nr))) {
+      location = loc_nr;
+      type_of_thing = 1;
+    } else {
+      cprintf(ch, "No room exists with that number.\r\n");
+      return;
+    }
+  } else if ((target_mob = get_char_vis_world(ch, buf, NULL))) {
+    if (target_mob->in_room != NOWHERE) {
+      location = target_mob->in_room;
+      type_of_thing = 2;
+    } else {
+      cprintf(ch, "The mob is not available.\r\n");
+      cprintf(ch, "Try where #.mob to nail its room number.\r\n");
+      return;
+    }
+  } else if ((target_obj = get_obj_vis_world(ch, buf, NULL))) {
+    if (target_obj->in_room != NOWHERE) {
+      location = target_obj->in_room;
+      type_of_thing = 3;
+    } else {
+      cprintf(ch, "The object is not available.\r\n");
+      cprintf(ch, "Try where #.object to nail its room number.\r\n");
+      return;
+    }
+  } else {
+    cprintf(ch, "No such creature or object around.\r\n");
+    return;
+  }
+
+  /*
+   * a location has been found. 
+   */
+
+  if (!real_roomp(location)) {
+    log_error("Massive error in do_goto. Everyone Off NOW.");
+    return;
+  }
+
+  switch(type_of_thing) {
+      case 1:
+          page_printf(ch, "Route to [#%d] %s:\r\n", target_room->number, target_room->name);
+          break;
+      case 2:
+          page_printf(ch, "Route to [#%d] %s:\r\n", MobVnum(target_mob), SAFE_NAME(target_mob));
+          break;
+      case 3:
+          page_printf(ch, "Route to [#%d] %s:\r\n", ObjVnum(target_obj), SAFE_ONAME(target_obj));
+          break;
+  }
+
+  int this_room = ch->in_room;
+  int dest_room = location;
+  int next_room;
+  int dir = -1;
+  int dx = 0, dy = 0, dz = 0;;
+  int i = 0;
+
+  if ( ( dir = choose_exit( this_room, dest_room, -MAX_ROOMS ) ) < 0 ) {
+      page_printf(ch, "Rats!  Can't find a route!\r\n");
+      return;
+  } else {
+    page_printf(ch, "Starting in      [#%5d] %s...\r\n", this_room, real_roomp(this_room)->name);
+    while( ( dir = choose_exit( this_room, dest_room, -MAX_ROOMS ) ) > -1 ) {
+      struct room_data                       *from_here = NULL;
+      struct room_data                       *to_here = NULL;
+      from_here = real_roomp( this_room );
+      next_room = from_here->dir_option[dir]->to_room;
+      to_here = real_roomp( next_room );
+  
+      if( !to_here ) {
+          page_printf(ch, "OOPS!\r\n");
+          return;
+      }
+      page_printf(ch, "  %2d %-8s -> [#%5d] %s\r\n", ++i, dirs[dir], next_room, to_here->name);
+      switch(dir) {
+          case 0:
+              dy++;
+              break;
+          case 1:
+              dx++;
+              break;
+          case 2:
+              dy--;
+              break;
+          case 3:
+              dx--;
+              break;
+          case 4:
+              dz++;
+              break;
+          case 5:
+              dz--;
+              break;
+      }
+      this_room = next_room;
+    }
+    page_printf(ch, "Distance: (%d%s, %d%s, %d%s)\r\n",
+                abs(dx), dx < 0 ? "w" : "e",
+                abs(dy), dy < 0 ? "s" : "n",
+                abs(dz), dz < 0 ? "d" : "u" );
+  }
+}
+

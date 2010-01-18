@@ -18,7 +18,7 @@
 #define WELC_MESSG VERSION_STR
 
 #define STATE(d) ((d)->connected)
-#define MAX_CMD_LIST 288
+#define MAX_CMD_LIST 290
 
 /* Here we Go!  The monster command list.... ewwwwwww! */
 /* 284 is the current maximum */
@@ -31,6 +31,7 @@
 #define CMD_accuse	96				       /* social */
 #define CMD_advance	95
 #define CMD_allcommands	251
+#define CMD_ansimap	286
 #define CMD_appear	254
 #define CMD_applaud	104				       /* social */
 #define CMD_apraise	263
@@ -128,6 +129,7 @@
 #define CMD_hop		184				       /* social */
 #define CMD_hug		49				       /* social */
 #define CMD_idea	80
+#define CMD_immtrack	285
 #define CMD_info	168
 #define CMD_insult	33				       /* social */
 #define CMD_inventory	20

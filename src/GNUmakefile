@@ -359,4 +359,4 @@ obj/tracking.o: tracking.c include/global.h include/bug.h include/utils.h \
   include/act_move.h include/comm.h include/constants.h include/db.h \
   include/handler.h include/hash.h include/interpreter.h \
   include/multiclass.h include/opinion.h include/spells.h include/fight.h \
-  include/tracking.h
+  include/modify.h include/tracking.h

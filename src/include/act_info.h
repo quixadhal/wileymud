@@ -79,5 +79,6 @@ void                                    do_players(struct char_data *ch, const c
 						   int cmd);
 void                                    do_ticks(struct char_data *ch, const char *argument, int cmd);
 void                                    do_map(struct char_data *ch, const char *argument, int cmd);
+void                                    do_ansimap(struct char_data *ch, const char *argument, int cmd);
 
 #endif
