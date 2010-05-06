@@ -24,7 +24,8 @@ COPY log_types (log_type_id, name, description) FROM stdin;
 4	AUTH	Login events
 5	KILL	Player or NPC killed something
 6	DEATH	Player or NPC died to something
-7	RESET	Zone reset messages go here
+7	RESET	Zone reset event
+8	IMC	Message from the IMC2 network
 \.
 
 --
@@ -77,6 +78,9 @@ CREATE VIEW log_today AS
        WHERE    logfile.log_date > now() - interval '1 day'
        ORDER BY logfile.log_date DESC;
 
+
+
+
 CREATE TABLE banned (
   banned_name		TEXT,
   banned_ip		INET UNIQUE,
@@ -92,6 +96,23 @@ COMMENT ON COLUMN	banned.banned_name			IS 'Text name that has been banned';
 COMMENT ON COLUMN	banned.banned_ip			IS 'IP address that has been banned';
 COMMENT ON COLUMN	banned.banned_by			IS 'Wizard that added this ban record';
 COMMENT ON COLUMN	banned.banned_date			IS 'Time the ban was implemented';
+
+COPY banned (banned_name, banned_ip, banned_by, banned_date) FROM stdin;
+fuck	\N	SYSTEM	2008-10-02 05:07:09.606346
+shit	\N	SYSTEM	2008-10-02 05:07:09.606346
+asshole	\N	SYSTEM	2008-10-02 05:07:09.606346
+fucker	\N	SYSTEM	2008-10-02 05:07:09.606346
+\.
+
+-- banned_name():  SELECT 1 FROM banned WHERE lower(banned_name) = lower(?) AND banned_ip IS NULL;
+-- banned_ip():    SELECT 1 FROM banned WHERE host(banned_ip) = lower(?) AND banned_name IS NULL;
+-- banned_at():    SELECT 1 FROM banned WHERE lower(banned_name) = lower(?) AND host(banned_ip) = lower(?);
+-- is_banned():    banned_name(name) OR banned_ip(ip) OR banned_at(name,ip)
+--
+-- Wiley doesn't support specific name@ip bans, but it could easily enough by reworking using is_banned().
+
+
+
 
 CREATE TABLE alignment (
   alignment_id		INTEGER NOT NULL PRIMARY KEY,

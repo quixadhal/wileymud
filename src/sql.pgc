@@ -16,7 +16,15 @@
 EXEC SQL INCLUDE sqlca;
 
 int db_connected = 0;
-int db_logging = 0;
+int db_logging = 1;
+
+int db_log_info = 0;
+int db_log_errors = 1;
+int db_log_boot = 1;
+int db_log_auth = 1;
+int db_log_kills = 0;
+int db_log_resets = 0;
+int db_log_imc = 1;
 
 int init_sql()
 {

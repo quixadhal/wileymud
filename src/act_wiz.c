@@ -35,6 +35,7 @@
 #include "hash.h"
 #include "weather.h"
 #include "modify.h"
+#include "tracking.h"
 #define _ACT_WIZ_C
 #include "act_wiz.h"
 
@@ -2905,14 +2906,22 @@ void do_show(struct char_data *ch, const char *argument, int cmd)
       bottom = zone ? (zone_table[zone - 1].top + 1) : 0;
       top = zone_table[zone].top;
     }
-    sprintf(buf, "VNUM  rnum count names\r\n");
+    sprintf(buf, "%5s %4s %5s %-40s %-16s %s\r\n", "VNUM", "rnum", "count", "names", "distance", "room");
     append_to_string_block(&sb, buf);
     for (objn = 0; objn <= topi; objn++) {
+      struct char_data *target_mob = NULL;
+      struct room_data *target_room = NULL;
+      char tbuf[MAX_INPUT_LENGTH] = "\0\0\0";
+
       oi = which_i + objn;
       if ((zone >= 0 && (oi->virtual < bottom || oi->virtual > top)) ||
 	  (zone < 0 && !isname(zonenum, oi->name)))
 	continue;					       /* optimize later */
-      sprintf(buf, "%5d %4d %3d  %s\r\n", oi->virtual, objn, oi->number, oi->name);
+      target_mob = get_char_vis_world(ch, oi->name, NULL);
+      if(target_mob) target_room = real_roomp( target_mob->in_room );
+      if(target_mob && target_room) sprintf(tbuf, "[#%5d] %s", target_mob->in_room, target_room->name);
+      sprintf(buf, "%5d %4d %5d %-40s %-16s %s\r\n", oi->virtual, objn, oi->number, oi->name,
+                   target_mob ? track_distance(ch, oi->name): "", target_room ? tbuf : "");
       append_to_string_block(&sb, buf);
     }
   } else if (is_abbrev(buf, "rooms")) {

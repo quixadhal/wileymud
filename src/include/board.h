@@ -38,5 +38,6 @@ int                                     board_display_msg(struct char_data *ch, 
 void                                    board_fix_long_desc(struct Board *b);
 int                                     board_show_board(struct char_data *ch, char *arg,
 							 struct Board *b);
+void                                    boards_to_sql(void);
 
 #endif

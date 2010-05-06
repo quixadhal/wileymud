@@ -18,6 +18,7 @@
 #define ISLES_SUBDIR	"isles"
 #define AFK_SUBDIR	"afk"
 #define FR_SUBDIR	"fr"
+#define SMAUG_SUBDIR	"smaug"
 
 #define MAP_FILE	"map.out"
 #define PPM_FILE	"map-%03d.ppm"

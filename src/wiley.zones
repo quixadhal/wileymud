@@ -1,0 +1,1018 @@
+Zone   name                 |         lifespan age     rooms     reset
+ 0 Limbo                    |             0m    0m      0-10     never
+ 1 Immortal Realms          |             0m    0m     11-1150   never
+ 2 Woodland Glade           |            41m   30m   1151-1349   always
+ 3 Feather Folk             |            19m   10m   1350-1399   ifempty
+ 4 Hills                    |            45m   29m   1400-1510   always
+ 5 Redspine Mountains       |            61m   30m   1511-1949   always
+ 6 Monastery                |            63m   29m   1950-1999   ifempty
+ 7 Oaken Forest             |            44m   30m   2000-2400   always
+ 8 Eastern River            |             0m    2m   2401-2897   never
+ 9 Northern River           |             0m    1m   2898-2946   never
+10 Shylar                   |            14m    1m   2947-3099   always
+11 Grasslands near Shylar   |            32m   31m   3100-3230   always
+12 Deserted Mansion         |            11m   10m   3231-3499   ifempty
+13 Necromancer's Tower      |            26m    3m   3500-4699   ifempty
+14 Dwarven Kingdown         |            44m   30m   4700-4779   always
+15 City of Highstaff        |            47m   30m   4780-5215   always
+16 Highstaff Keep           |            49m   29m   5216-5254   ifempty
+17 Highstaff Arena          |            33m   31m   5255-5281   ifempty
+18 Sewers below Highstaff   |            28m    2m   5282-5338   ifempty
+19 Ogre Havens              |            36m   29m   5339-5499   ifempty
+20 Drenth Temple            |            34m   29m   5500-5999   ifempty
+21 Hidden Valley            |            41m   31m   6000-6064   always
+22 Beach                    |             0m    2m   6065-6093   never
+23 Gredth                   |            42m   31m   6094-6199   always
+24 Temple of the Snake God  |            55m   31m   6200-6299   ifempty
+25 Valley of Midgaard       |            43m   29m   6300-6399   always
+26 Ruined Midgaard          |            37m   31m   6400-6499   ifempty
+27 Locathah                 |            38m   30m   6500-6599   ifempty
+28 Drow Outpost             |            31m   31m   6600-7099   always
+29 Temple of Asgard         |            62m   31m   7100-9076   ifempty
+30 Kobold Lair              |            27m    4m   9077-9618   ifempty
+31 Grugnik's Camp           |            53m   29m   9619-9651   ifempty
+32 Orc Caves                |            29m    0m   9652-9799   always
+33 Slaadi Temple            |            31m   31m   9800-9899   ifempty
+34 Eastern Hills            |             0m    2m   9900-10428  never
+35 Temple of Lovitar        |            39m   30m  10429-10702  ifempty
+36 Faerie Village           |            27m    5m  10703-10799  ifempty
+37 Centaur Village          |            17m   14m  10800-11599  ifempty
+38 Serpent's Reach          |            59m   30m  11600-15999  always
+39 Grasslands               |            26m    4m  16000-20072  always
+40 Giant Keep               |            38m   31m  20073-20178  always
+41 Jungles of Nesthar       |            54m   31m  20179-20771  always
+42 Ant Mound                |            23m    6m  20772-20862  always
+43 Swamps                   |            47m   31m  20863-20986  ifempty
+44 Tribal Village           |            34m   30m  20987-21019  ifempty
+45 Halfling village         |            30m   30m  21020-21108  ifempty
+46 The Castle of Bazzak     |            60m   30m  21109-25200  ifempty
+47 Cemetary of Shylar       |             7m    4m  25201-32000  always
+48 Mortal Keeps             |            48m    1m  32001-33000  never
+
+
+
+# <>--show mob 0
+   ZONE                       VNUM rnum count names                                    distance           room
+ 0 Limbo                         1    0     1 Astral traveler                          (  1w,  15s,   1d) [#    1] Limbo
+ 0 Limbo                         2    1     0 animate corpse                                            
+ 0 Limbo                         3    2     1 blacksmith smith                         (  4w,  11s,   1d) [# 5181] Blacksmiths
+ 0 Limbo                         4    3     0 dark elf blacksmith smith                                 
+ 0 Limbo                        10    4     3 fire elemental                           (  4w,  11s,   1d) [#    1] Limbo
+
+
+
+# <>--show mob 1
+   ZONE                       VNUM rnum count names                                    distance           room
+ 1 Immortal Realms              11    5     3 water elemental                          (  4w,  11s,   1d) [#    1] Limbo
+ 1 Immortal Realms              12    6     3 earth elemental                          (  4w,  11s,   1d) [#    1] Limbo
+ 1 Immortal Realms              13    7     3 air elemental                            (  4w,  11s,   1d) [#    1] Limbo
+ 1 Immortal Realms             100    8     0 zombie                                   (  1w,   1n,   0u) [#30009] Limestone Path
+ 1 Immortal Realms             200    9     0 worm                                     (  6e,  17s,   2d) [# 4720] Unfinished shaft
+ 1 Immortal Realms             201   10     0 goblin                                   ( 17w,  12s,   0u) [# 1218] Shamans Hut
+ 1 Immortal Realms             202   11     0 orc                                      ( 10w,  10s,   1d) [# 9717] Orc home
+ 1 Immortal Realms             203   12     0 badger                                                    
+ 1 Immortal Realms             204   13     0 fire beetle                                               
+ 1 Immortal Realms             205   14     0 troglodyte trog                                           
+ 1 Immortal Realms             206   15     0 cow                                      (  5e,   0n,   0u) [# 3043] Field
+ 1 Immortal Realms             207   16     1 dog wild                                 (  5e,   0n,   0u) [# 5183] Cages
+ 1 Immortal Realms             208   17     0 frog giant                                                
+ 1 Immortal Realms             209   18     0 hobgoblin                                                 
+ 1 Immortal Realms             210   19     0 spider large                             ( 15w,  14s,   5d) [# 6038] Gnarled woods
+ 1 Immortal Realms             211   20     0 gnoll                                                     
+ 1 Immortal Realms             212   21     0 beetle giant                                              
+ 1 Immortal Realms             213   22     0 ant                                      ( 15w,  14s,   5d) [#20860] Queen's nest
+ 1 Immortal Realms             214   23     1 war dog                                  ( 15w,  14s,   5d) [# 3036] Cages
+ 1 Immortal Realms             215   24     0 frog giant                                                
+ 1 Immortal Realms             216   25     0 lemure                                                    
+ 1 Immortal Realms             217   26     0 toad giant                                                
+ 1 Immortal Realms             218   27     0 stirge                                                    
+ 1 Immortal Realms             219   28     0 troglodyte trog                                           
+ 1 Immortal Realms             220   29     0 human fighter                                             
+ 1 Immortal Realms             221   30     0 bugbear                                                   
+ 1 Immortal Realms             222   31     0 beetle boring giant                                       
+ 1 Immortal Realms             223   32     0 ghoul                                    (  0e,   9s,   0u) [# 9007] Graveyard
+ 1 Immortal Realms             224   33     0 lizard giant                                              
+ 1 Immortal Realms             225   34     0 wererat                                                   
+ 1 Immortal Realms             226   35     0 ogre                                     (  5w,  11s,   1d) [# 9797] Orcs Throne Room
+ 1 Immortal Realms             227   36     0 spider huge                              (  5w,  11s,   1d) [# 3036] Cages
+ 1 Immortal Realms             228   37     0 tick giant                                                
+ 1 Immortal Realms             229   38     0 weasel giant                                              
+ 1 Immortal Realms             230   39     0 dragon black baby                                         
+ 1 Immortal Realms             231   40     1 ape carniverous                          (  5w,  11s,   1d) [# 5183] Cages
+ 1 Immortal Realms             232   41     0 blink dog                                                 
+ 1 Immortal Realms             233   42     0 dragon blue                                               
+ 1 Immortal Realms             234   43     0 dwarf cleric                                              
+ 1 Immortal Realms             235   44     0 gargoyle                                 (  1e,  15s,   1u) [# 5054] Dome
+ 1 Immortal Realms             236   45     0 ghast                                                     
+ 1 Immortal Realms             237   46     0 werewolf wolfman                                          
+ 1 Immortal Realms             238   47     0 owlbear                                                   
+ 1 Immortal Realms             239   48     0 shadow                                   (  4w,   1n,   3u) [# 4648] Shadow Hall
+ 1 Immortal Realms             240   49     0 toad poisonous                                            
+ 1 Immortal Realms             241   50     0 elf assassin elven                                        
+ 1 Immortal Realms             242   51     0 displacer beast                                           
+ 1 Immortal Realms             243   52     0 white dragon                                              
+ 1 Immortal Realms             244   53     0 leucrotta                                                 
+ 1 Immortal Realms             245   54     0 lizard giant subterranean                                 
+ 1 Immortal Realms             246   55     0 wereboar                                                  
+ 1 Immortal Realms             247   56     0 minotaur                                                  
+ 1 Immortal Realms             248   57     0 snake twoheaded                                           
+ 1 Immortal Realms             249   58     0 snake poisonous rattle                                    
+ 1 Immortal Realms             250   59     0 spider giant                             (  9w,  10s,   0u) [# 7034] Cavern
+ 1 Immortal Realms             251   60     0 carrion crawler                                           
+ 1 Immortal Realms             252   61     0 erinyes                                                   
+ 1 Immortal Realms             253   62     0 hydra                                                     
+ 1 Immortal Realms             254   63     0 jackalwere                                                
+ 1 Immortal Realms             255   64     0 weretiger                                                 
+ 1 Immortal Realms             256   65     0 manticore                                                 
+ 1 Immortal Realms             257   66     0 ogre magi                                                 
+ 1 Immortal Realms             258   67     0 otyugh                                                    
+ 1 Immortal Realms             261   68     0 hill giant                               ( 13w,  11n,   0u) [#20165] Giant guard post
+ 1 Immortal Realms             262   69     0 troll                                    (  9e,  10n,   1d) [#20153] Troll lair
+ 1 Immortal Realms             666   70     0 xenthia zombie lady                                       
+ 1 Immortal Realms             667   71     0 mosquito bug                                              
+ 1 Immortal Realms            1000   72     1 master hunt                              (  9e,  10n,   1d) [# 1005] Essence
+ 1 Immortal Realms            1001   73    10 wolf pack                                (  9e,  10n,   1d) [# 1005] Essence
+ 1 Immortal Realms            1002   74     0 strider spider                                            
+ 1 Immortal Realms            1020   75     0 testbeast test creature                                   
+ 1 Immortal Realms            1022   76     1 naga spirit                              (  9e,  10n,   1d) [# 1022] Entrance to the temple of Highlander
+
+
+
+# <>--show mob 2
+   ZONE                       VNUM rnum count names                                    distance           room
+ 2 Woodland Glade             1200   77     6 goblin                                   ( 17w,  12s,   0u) [# 1218] Shamans Hut
+ 2 Woodland Glade             1201   78     1 goblin shaman                            ( 17w,  12s,   0u) [# 1218] Shamans Hut
+ 2 Woodland Glade             1202   79     3 Goblin guard                             ( 17w,   9s,   0u) [# 1215] Goblin Encampment
+ 2 Woodland Glade             1203   80     1 brown bear                               ( 23w,   8n,   0u) [# 2216] Forest
+ 2 Woodland Glade             1204   81     1 Eli                                      ( 23w,   8n,   0u) [# 3000] Travelers road
+ 2 Woodland Glade             1205   82     0 firenewt                                                  
+ 2 Woodland Glade             1206   83     1 grassland master ranger                  (  7e,   3n,   0u) [# 3213] Grassland
+ 2 Woodland Glade             1207   84    10 squirrel                                 ( 33w,   5n,   0u) [# 2263] Forest
+ 2 Woodland Glade             1208   85     1 man woodland ranger master               (  9w,   2n,   0u) [# 1250] Grassland
+ 2 Woodland Glade             1209   86     1 stag white                               (  9w,   2s,   0u) [# 1283] Darkened wood
+ 2 Woodland Glade             1300   87    10 featherfolk folk male                    ( 12w,   1s,   2u) [# 1363] Rope bridge
+ 2 Woodland Glade             1301   88    10 featherfolk folk female                  ( 10w,   1s,   2u) [# 1352] Rope bridge
+ 2 Woodland Glade             1302   89    10 featherfolk folk child                   (  9w,   0n,   2u) [# 1355] Rope bridge
+ 2 Woodland Glade             1303   90     4 featherfolk folk guard                   (  9w,   5s,   4u) [# 1383] Platform
+ 2 Woodland Glade             1304   91    12 featherfolk folk guard                   (  9w,   5s,   4u) [# 1383] Platform
+ 2 Woodland Glade             1305   92     6 featherfolk folk elder                   (  8w,   5s,   4u) [# 1384] Woodland hut
+ 2 Woodland Glade             1306   93     5 featherfolk folk elder                   (  8w,   5s,   4u) [# 1384] Woodland hut
+ 2 Woodland Glade             1307   94     7 bird sparrow                             ( 11w,   5s,   4u) [# 1381] Platform
+ 2 Woodland Glade             1308   95     7 bird finch                               (  9w,   5s,   4u) [# 1383] Platform
+ 2 Woodland Glade             1309   96     1 featherfolk folk elder                   (  8w,   5s,   4u) [# 1384] Woodland hut
+ 2 Woodland Glade             1310   97     1 featherfolk folk child                   (  9w,   0n,   2u) [# 1355] Rope bridge
+ 2 Woodland Glade             1311   98     1 featherfolk folk child                   (  9w,   0n,   2u) [# 1355] Rope bridge
+ 2 Woodland Glade             1312   99     1 featherfolk folk child                   (  9w,   0n,   2u) [# 1355] Rope bridge
+ 2 Woodland Glade             1313  100     1 featherfolk folk child                   (  9w,   0n,   2u) [# 1355] Rope bridge
+
+
+
+# <>--show mob 3
+#  VNUM rnum count names                                    distance         room
+
+
+
+# <>--show mob 4
+#  VNUM rnum count names                                    distance         room
+#  1400  101     5 half-orc orc                             (  2w,   7s,   0u) [# 1469] Hills
+#  1401  102     5 orc                                      ( 10w,  10s,   1d) [# 9717] Orc home
+#  1402  103     3 hill giant huge man                      (  9e,  14s,   0u) [# 1535] Valley
+#  1403  104    10 gopher                                   ( 10e,   4s,   0u) [# 1411] Grassland
+
+
+
+# <>--show mob 5
+#  VNUM rnum count names                                    distance         room
+#  1600  105     6 giant mountain                           ( 10e,   4s,   0u) [#20176] Kitchen
+#  1601  106     1 mountain man ranger                      (  4w,  17s,   0u) [# 1895] Redspine mountains
+#  1900  107     5 monk                                     (  1w,  14s,   1d) [# 5140] Crossway
+#  1901  108     1 monk                                     (  1w,  14s,   1d) [# 5140] Crossway
+#  1902  109     5 monk                                     (  1w,  14s,   1d) [# 5140] Crossway
+#  1903  110     4 monk                                     (  1w,  14s,   1d) [# 5140] Crossway
+#  1904  111     1 monk                                     (  1w,  14s,   1d) [# 5140] Crossway
+
+
+
+# <>--show mob 6
+#  VNUM rnum count names                                    distance         room
+
+
+
+# <>--show mob 7
+#  VNUM rnum count names                                    distance         room
+#  2100  112     8 rabbit brown grey                        ( 13w,  11n,   0u) [# 2178] Forest Riverbank
+#  2101  113     4 fox red                                  ( 26w,   5n,   0u) [# 2270] Forest
+#  2102  114     5 fox grey                                 ( 16w,  15n,   0u) [# 2125] Forest
+#  2103  115     1 raccoon hidingraccoon                    ( 21w,   8n,   0u) [# 2218] Forest
+#  2104  116     1 raccoon large                            ( 29w,   6n,   0u) [# 2245] Forest
+#  2105  117     4 deer doe                                 ( 32w,   3n,   0u) [# 2025] Travelers road
+#  2106  118     3 deer stag                                ( 20w,  14n,   0u) [# 2132] Forested Highlands
+#  2107  119     1 stag deer large                          ( 20w,  14n,   0u) [# 2132] Forested Highlands
+#  2108  120     1 grouse ruffed bird                       ( 29w,   6n,   0u) [# 2245] Forest
+#  2109  121     4 grouse ruffed bird                       ( 29w,   6n,   0u) [# 2245] Forest
+#  2110  122     2 owl                                      ( 22w,   4n,   0u) [# 2294] Forest
+#  2111  123     0 vulture black bird                                        
+#  2112  124     1 rattlesnake rattler rattle snake         ( 26w,   2n,   0u) [# 2316] Forest
+#  2113  125     2 snake                                    ( 20w,  58n,   0u) [#20624] The jungles of Nesthar
+#  2114  126     3 bobcat                                   ( 19w,   9n,   0u) [# 2204] Forest
+#  2115  127     2 cougar mountain lion                     ( 14w,  11n,   0u) [# 2177] Forest
+#  2116  128     8 squirrel grey                            ( 33w,   5n,   0u) [# 2263] Forest
+#  2117  129     7 chipmunk                                 ( 15w,  14n,   0u) [# 2137] Forest
+#  2119  130     2 boar wild                                ( 24w,  10n,   0u) [# 2183] Forest
+#  2120  131     4 wolf timber                              ( 17w,  14n,   0u) [# 2135] Forest
+#  2121  132     1 bear brown                               ( 23w,   8n,   0u) [# 2216] Forest
+
+
+
+# <>--show mob 8
+#  VNUM rnum count names                                    distance         room
+
+
+
+# <>--show mob 9
+#  VNUM rnum count names                                    distance         room
+
+
+
+# <>--show mob 10
+#  VNUM rnum count names                                    distance         room
+#  3000  133     1 buck barkeep                             (  1e,   0n,   0u) [# 3001] Griffin's Tale
+#  3001  134     1 punice baker                             (  1w,   1s,   0u) [# 3010] Bakery
+#  3002  135     1 jaspine supply official                  (  1w,   0n,   0u) [# 3009] Supply house
+#  3003  136     1 jake cutler                              (  1e,   2n,   0u) [# 3024] Jakes' Cutlery
+#  3004  137     1 sass leatherworker                       (  1e,   1s,   0u) [# 3012] House of leathers
+#  3005  138     1 butler                                   (  2e,   0n,   0u) [# 3008] Griffins' Inn
+#  3006  139     7 villager                                 (  3e,   0n,   0u) [# 3029] Grassland
+#  3007  140     2 leper                                    (  2w,   2s,   0u) [# 3023] Grassland
+#  3008  141     4 dog small                                (  6w,  15s,   1d) [# 5109] Littleton
+#  3009  142     1 warrior umbro                            (  7w,  17s,   5d) [# 6203] Hall
+#  3010  143     1 tracker kiele                            (  7w,  17s,   5d) [# 6203] Hall
+#  3011  144     1 scythe pincer                            (  7w,  17s,   5d) [# 6203] Hall
+#  3012  145     1 yentile adept                            (  7w,  17s,   5d) [# 6203] Hall
+#  3013  146     1 undrea scribe                            (  7w,  17s,   5d) [# 6203] Hall
+#  3014  147     1 griffeth man                             (  1w,   1s,   0u) [# 3035] Griffeths abode
+#  3015  148     4 villager                                 (  3e,   0n,   0u) [# 3029] Grassland
+#  3016  149     6 villager                                 (  3e,   0n,   0u) [# 3029] Grassland
+#  3017  150     2 acolyte                                  (  4e,   4n,   0u) [#10684] The altar of Lovitar
+#  3018  151     5 boy small                                (  1e,   2s,   0u) [# 3004] Travelers road
+#  3019  152     5 woman large                              (  3w,  11s,   1d) [# 5170] Rosemary's Kitchen
+#  3020  153     1 jessica                                  (  1w,   1n,   0u) [# 3017] Jessica's home
+#  3021  154     1 pastue                                   (  3w,   2s,   0u) [# 3034] Sanctuary of Pastue
+#  3022  155     1 tate                                     (  1w,   2s,   0u) [# 3011] Dark home
+#  3023  156     1 old man kark                             (  3e,   2n,   0u) [# 3026] Karks' home
+#  3024  157     0 squirrel glowing                                          
+#  3025  158     5 chicken                                  (  4e,   2n,   0u) [# 3040] Coop
+#  3026  159     3 chicken perched                          (  4e,   2n,   0u) [# 3040] Coop
+#  3027  160     2 chicken feeding                          (  4e,   2n,   0u) [# 3040] Coop
+#  3028  161     3 chicken nesting                          (  4e,   2n,   0u) [# 3040] Coop
+#  3029  162     1 woman wife                               (  5e,   1n,   0u) [# 3041] Farm house
+#  3030  163     1 pig                                      (  4e,   0n,   0u) [# 3042] Barn
+#  3031  164     1 cow                                      (  5e,   0n,   0u) [# 3043] Field
+#  3032  165     1 calf                                     (  5e,   0n,   0u) [# 3043] Field
+#  3033  166     1 bull                                     (  6e,   1s,   0u) [# 3045] Field
+#  3034  167     8 lamb                                     (  6e,   1n,   0u) [# 3047] Hill
+#  3035  168     1 goat                                     (  6e,   1n,   0u) [# 3047] Hill
+#  3036  169     1 farmer man                               (  6e,   0n,   0u) [# 3046] Field
+#  3037  170     1 priest                                   (  6e,   0n,   0u) [#20175] Giants Temple
+#  3038  171     1 wolf coated                              (  6e,   0n,   0u) [# 3036] Cages
+#  3039  172     1 spider white huge                        (  6e,   0n,   0u) [# 3036] Cages
+#  3040  173     1 spider grey huge                         (  6e,   0n,   0u) [# 3036] Cages
+#  3041  174     1 spider black huge                        (  6e,   0n,   0u) [# 3036] Cages
+#  3042  175     1 nester keeper                            (  1e,   1s,   0u) [# 3049] Ned's place
+#  3043  176     1 nedrick ned nutsmith                     (  1e,   1s,   0u) [# 3049] Ned's place
+#  3044  177     0 barney dinosaur it                                        
+#  3045  178     4 girl villager                            (  1e,   1s,   0u) [#10700] Cell
+#  3046  179     3 girl villager                            (  1e,   1s,   0u) [#10700] Cell
+#  3047  180     1 village guard                            (  2e,   2s,   0u) [# 3005] Travelers road
+
+
+
+# <>--show mob 11
+#  VNUM rnum count names                                    distance         room
+#  3100  181    10 stryder bird small                       (  6e,   0n,   0u) [# 3174] Grassland
+#  3101  182     6 wolf grassland                           (  1e,   4s,   0u) [# 3191] Grassland
+#  3102  183     1 zorn mage man old                        (  0e,   3n,   0u) [# 3121] Arcanus
+#  3103  184    10 rabbit                                   (  2e,   4n,   0u) [# 3166] Grassland
+#  3104  185     5 deer                                     (  7w,   4n,   0u) [# 3113] Grassland
+#  3105  186     4 deer buck                                (  7w,   4n,   0u) [# 3113] Grassland
+
+
+
+# <>--show mob 12
+#  VNUM rnum count names                                    distance         room
+#  3432  187     7 large rat                                (  1w,   0n,   1d) [# 4670] Cell
+#  3433  188     5 giant rat                                (  5w,   7n,   1d) [# 3455] Rat lair
+#  3434  189     4 large spider                             ( 14w,  14s,   5d) [# 6039] Gnarled woods
+#  3435  190     1 bat giant giantbat                       (  1w,   8n,   2u) [# 3436] The Attic
+#  3436  191     5 giant centipede                          (  6w,   7n,   1u) [# 3439] Bedroom
+#  3437  192     1 giant rat                                (  5w,   7n,   1d) [# 3455] Rat lair
+
+
+
+# <>--show mob 13
+#  VNUM rnum count names                                    distance         room
+#  4000  193     0 cave vines                                                
+#  4001  194     0 cave vines creeping                                       
+#  4002  195     0 cave spider small                                         
+#  4003  196     0 cave spider large                                         
+#  4004  197     0 cave rat small                                            
+#  4005  198     0 cave rat large                                            
+#  4006  199     0 cave worm glowing                                         
+#  4600  200     6 snake                                    ( 20w,  58n,   0u) [#20624] The jungles of Nesthar
+#  4601  201     1 snake giant                              ( 20w,  58n,   0u) [#20624] The jungles of Nesthar
+#  4602  202     6 worm bookworm                            (  3w,   1s,   3u) [# 4653] Personal Library
+#  4603  203    11 skeleton small                           (  2w,   1n,   2u) [# 4631] Spiral Stair
+#  4604  204     3 imp small                                (  0e,   3n,   1u) [# 4622] Closet
+#  4605  205     3 doppleganger                             (  3w,   2n,   2u) [# 4633] Western Hall
+#  4606  206     4 gargoyle                                 (  1e,  15s,   1u) [# 5054] Dome
+#  4607  207     2 quasit tiny                              (  0e,   0n,   1u) [# 4623] Laboratory
+#  4608  208     1 dragon small psuedodragon                (  0e,   1s,   1u) [# 4625] Library
+#  4609  209     1 stalker invisible                        (  3w,   0n,   2u) [# 4634] Western Hall
+#  4610  210     2 naga large                               (  3w,   1n,   1u) [# 4629] Nest
+#  4611  211     3 jelly ochre blob                         (  3w,   1n,   2u) [# 4632] Western Hall
+#  4612  212     2 cube geletanious                         (  1w,   2n,   2u) [# 4636] Great Library
+#  4613  213     1 poltergeist                              (  4w,   2n,   3u) [# 4650] Library
+#  4614  214     3 pudding black                            (  2w,   1n,   3u) [# 4655] Black Room
+#  4615  215     4 shadow                                   (  3w,   1n,   3u) [# 4649] Shadow Hall
+#  4616  216     4 banshee ghostly                          (  3w,   1n,   3u) [# 4660] Western Edge
+#  4617  217     8 hellhound flaming                        (  3w,   1n,   3u) [# 4660] Western Edge
+#  4618  218     5 rat large                                (  1w,   0n,   1d) [# 4670] Cell
+#  4619  219     7 spider giant                             (  9w,  10s,   0u) [# 7034] Cavern
+#  4620  220     2 kobold disfigured                        (  2w,   2n,   1d) [# 4669] Cell
+#  4621  221     1 apparition                               (  0e,   2n,   1d) [# 4667] End of the Tunnel
+#  4622  222     1 xytheus master                           (  0e,   2n,   1d) [# 4662] Circle of Sanctuary
+#  4623  223     1 fallath ancient                          (  0e,   2n,   1d) [# 4673] Tomb
+#  4624  224     3 angry ghostly spirit                     (  0e,   2n,   1d) [# 4673] Tomb
+
+
+
+# <>--show mob 14
+#  VNUM rnum count names                                    distance         room
+#  4700  225    10 dwarf small                              (  2e,  11s,   1d) [# 5175] Weaponsmith
+#  4701  226     6 dwarf small                              (  2e,  11s,   1d) [# 5175] Weaponsmith
+#  4702  227    11 dwarf guard                              (  2e,  15s,   2d) [# 4749] Temple of Juargan
+#  4703  228     1 dwarf yentle                             (  3e,  15s,   2d) [# 4743] Rock Garden
+#  4704  229     1 juargan dwarf king                       (  2e,  15s,   2d) [# 4749] Temple of Juargan
+#  4705  230    10 duergar dwarf                            (  5e,  17s,   2d) [# 4717] Dwarven mines
+#  4706  231     1 grimdale ancient king dwarf              (  1e,  17s,   2d) [# 4769] Ancients Tomb
+#  4707  232     1 rock worm dreaded                        (  6e,  17s,   2d) [# 4720] Unfinished shaft
+#  4708  233     3 spirit dwarf                             (  1e,  17s,   2d) [# 4769] Ancients Tomb
+#  4709  234     1 dwarf blacksmith                         (  1w,  13s,   2d) [# 4752] Blacksmith's Home
+#  4710  235     1 dwarf mage                               (  1w,  15s,   2d) [# 4771] Siven's Stone
+#  4711  236     1 dwarf stout                              (  1w,  15s,   2d) [# 6105] Slave pits
+#  4712  237     1 dwarf leatherbie                         (  0e,  18s,   2d) [# 4764] Leatherbies Home
+#  4713  238     1 dwarf jeweler                            (  1e,  18s,   2d) [# 4765] The Stone Jewel
+
+
+
+# <>--show mob 15
+#  VNUM rnum count names                                    distance         room
+#  5000  239     1 small old man                            (  8w,  11s,   0u) [# 5002] Customs Office
+#  5001  240     1 valture man short                        ( 10w,  10s,   0u) [# 5004] Valtures Fine Wine
+#  5002  241     1 barbol burly man barkeep                 (  7w,  10s,   0u) [# 5012] Dragon's Bar
+#  5003  242     1 jacques cook man                         (  6w,  10s,   0u) [# 5013] Dragon's Kitchen
+#  5004  243     1 yanta weaponsmith dwarf                  (  8w,   8s,   0u) [# 5023] Yanta's Fine Weapons
+#  5005  244     1 small elf woman potter                   (  0e,  16s,   1d) [# 5058] Pottery Store
+#  5006  245     1 small sneaky halfling michael            (  2w,  16s,   1d) [# 5085] The Dagger Shop
+#  5007  246     1 large dirty man xygoran                  (  3e,  17s,   1d) [# 5076] Blacksmith
+#  5008  247     1 tathius small gnome                      (  1w,  15s,   1d) [# 5129] Armourers
+#  5009  248     1 young man steven steve                   (  2e,  13s,   1d) [# 5153] Times Around Store
+#  5010  249     1 yaranth old elf                          (  0e,  13s,   1d) [# 5155] Green Ferns
+#  5011  250     1 small old woman bellea                   (  3e,  13s,   1d) [# 5158] Wooden Store
+#  5012  251     1 rosemarie big large woman                (  3w,  11s,   1d) [# 5170] Rosemary's Kitchen
+#  5013  252     1 dwarf small old                          (  2e,  11s,   1d) [# 5175] Weaponsmith
+#  5014  253     1 keeper syythe lizardman lizard man       (  3e,  11s,   1d) [# 5180] Small Point Shop
+#  5015  254     1 cleric monk old man joshua               (  4w,  14s,   1d) [# 5210] Entrance Hall
+#  5016  255     6 highstaff guard gateguard                (  0e,  16s,   1d) [# 5026] High Gate
+#  5017  256    15 highstaff guard                          (  4w,  14s,   1d) [# 5188] Keeps Way
+#  5018  257    10 citizen man                              (  0e,  13s,   1d) [# 5136] North Processional
+#  5019  258     6 elf woman elven                          ( 10e,  15s,   0u) [# 6117] Market place
+#  5020  259     4 dwarf citizen                            (  5w,  15s,   1d) [# 5193] Keeps Way
+#  5021  260     4 halfling citizen                         (  5w,  17s,   1d) [# 5105] Littleton
+#  5022  261     2 halfling child                           (  6w,  15s,   1d) [# 5109] Littleton
+#  5023  262     2 turtle                                   (  5w,  15s,   1d) [# 5115] Race Area
+#  5024  263     4 drunk man                                (  5w,  15s,   1d) [#25026] Banquet Hall
+#  5025  264     3 man occupant                             (  8w,   8s,   1u) [# 5020] Room
+#  5026  265     1 homoculous devil demon gargoyle          (  1e,  15s,   1u) [# 5054] Dome
+#  5027  266     1 incubad man                              (  1e,  15s,   0u) [# 5049] Study
+#  5028  267     5 poor commoner                            (  3w,  15s,   1d) [# 5124] Commons
+#  5029  268     1 master man                               (  0e,  15s,   1d) [# 5133] Masters Office
+#  5030  269     1 dragon                                   ( 17w,  26n,   0u) [#20950] Dense fog
+#  5031  270     1 ahkrain man dark master                  ( 10w,  13s,   0u) [# 5071] Back Room
+#  5032  271     1 ulrick master man                        (  1w,  11s,   1d) [# 5176] Master's Chamber
+#  5033  272     1 delaron bishop man holy                  (  4w,  12s,   1d) [# 5212] Inner Sanctum
+#  5034  273     1 maid woman                               (  9w,   7s,   1u) [# 5021] Open Room
+#  5035  274     1 belle woman                              (  3w,  11s,   1d) [# 5182] Companions place
+#  5036  275     5 merchantman merchant man                 (  1w,  16s,   1d) [# 5055] Highstaff
+#  5037  276     5 merchantwoman merchant woman             (  1w,  15s,   1d) [# 5042] Highstaff
+#  5038  277     4 elven trader elf                         (  1w,  17s,   1d) [# 5056] Southern Highstaff
+#  5039  278     4 dwarven trader dwarf                     (  3w,  17s,   1d) [# 5038] Northern Highstaff
+#  5040  279     3 adventurer                               (  2w,  15s,   1d) [# 5086] Fountain
+#  5041  280     5 youngster                                (  2w,  17s,   1d) [# 5030] Northern Highstaff
+#  5042  281     3 small girl                               (  9w,  11s,   0u) [# 5001] South Processional
+#  5043  282     3 young lass                               (  1w,  17s,   1d) [# 5028] Northern Highstaff
+#  5044  283     2 mountaineer                              (  1w,  15s,   1d) [# 5042] Highstaff
+#  5045  284     3 large dog                                (  1w,  13s,   1d) [# 5039] Northern Highstaff
+#  5046  285     4 mangy cat                                ( 10w,  11s,   0u) [# 5060] Southern Highstaff
+#  5047  286     1 dancing gypsy                            (  0e,  17s,   1d) [# 5024] Bazaar
+#  5048  287     1 man drum player                          (  0e,  17s,   1d) [# 5024] Bazaar
+#  5049  288     1 man flute player                         (  0e,  17s,   1d) [# 5024] Bazaar
+#  5050  289     2 gypsy guard                              (  0e,  17s,   1d) [# 5024] Bazaar
+#  5051  290     1 banker                                   (  1w,  18s,   1d) [# 5029] Highstaff Depository
+#  5052  291     2 depository guard                         (  1w,  18s,   1d) [# 5029] Highstaff Depository
+#  5053  292     4 dark complected man                      ( 10w,  12s,   0u) [# 5066] Backside
+#  5054  293     6 young thief                              (  3e,  16s,   1d) [# 5073] Dirty Fountain
+#  5055  294     3 assassin                                 (  2e,  17s,   1d) [# 5074] Backside
+#  5056  295     5 black cat                                ( 11w,  12s,   0u) [# 5065] Backside
+#  5057  296     4 old woman                                ( 13e,  17s,   0u) [# 6126] Hut
+#  5058  297     1 training thief                           ( 10w,  14s,   0u) [# 5070] Dark Building
+#  5059  298     1 headsman thief                           ( 10w,  14s,   0u) [# 5070] Dark Building
+#  5060  299     6 male halfling                            (  5w,  14s,   1d) [# 5112] Littleton
+#  5061  300     6 halfling woman                           (  6w,  15s,   1d) [# 5109] Littleton
+#  5062  301     6 halfling child                           (  6w,  15s,   1d) [# 5109] Littleton
+#  5063  302     4 small bird                               (  3w,  17s,   1d) [# 5038] Northern Highstaff
+#  5064  303     6 young halfling girl                      (  6w,  17s,   1d) [# 5107] Littleton
+#  5065  304     4 fat halfling wife                        (  5w,  13s,   1d) [# 5113] Small Home
+#  5066  305     4 small dog                                (  5w,  14s,   1d) [# 5112] Littleton
+#  5067  306     3 huge dog                                 (  4w,  16s,   1d) [# 5103] Guard House
+#  5068  307     1 halfling militia                         (  4w,  16s,   1d) [# 5103] Guard House
+#  5069  308     1 halfling captain                         (  4w,  16s,   1d) [# 5103] Guard House
+#  5070  309     5 wealty man                               (  1w,  15s,   1d) [# 5132] Crossway
+#  5071  310     5 wealthy merchant                         (  2w,  14s,   1d) [# 5122] East Wing
+#  5072  311     5 noble man nobleman                       (  0e,  12s,   1d) [# 5162] Processional
+#  5073  312     5 rich man                                 (  0e,  12s,   1d) [# 5144] North Processional
+#  5074  313     5 rich merchant                            (  2w,  12s,   1d) [# 5160] Processional
+#  5075  314     5 robed man                                (  1e,  14s,   1d) [# 5119] East Wing
+#  5076  315     5 priest male                              (  1w,  15s,   1d) [# 5132] Crossway
+#  5077  316     5 monk                                     (  1w,  14s,   1d) [# 5140] Crossway
+#  5078  317     3 high priest                              (  1w,  14s,   1d) [# 5915] Chamber
+#  5079  318     5 arcane man                               (  1w,  14s,   1d) [# 5140] Crossway
+#  5080  319     5 sector guard                             (  2w,  14s,   1d) [# 5122] East Wing
+#  5081  320     5 elders scout                             (  1e,  12s,   1d) [# 5163] Processional
+#  5082  321     5 wealthy lad                              (  2w,  14s,   1d) [# 5139] Crossway
+#  5083  322     5 wealthy woman                            (  1e,  14s,   1d) [# 5119] East Wing
+#  5084  323     5 rich woman                               (  0e,  14s,   1d) [# 5120] East Wing
+#  5085  324     5 noble woman                              (  0e,  14s,   1d) [# 5117] North Processional
+#  5086  325     5 robed lady                               (  0e,  13s,   1d) [# 5136] North Processional
+#  5087  326     5 priestess                                (  0e,  13s,   1d) [# 7024] Drow Altar
+#  5088  327     5 mistress                                 ( 11w,  13s,   1d) [# 5251] Mistress's chamber
+#  5089  328     5 wealthy lass                             (  0e,  15s,   1d) [# 5116] North Processional
+#  5090  329     3 highstaff captain                        (  1w,  15s,   1d) [# 5132] Crossway
+#  5091  330     3 high sect guard                          (  1w,  15s,   1d) [# 5132] Crossway
+#  5100  331     7 guard wall                               (  9w,  13s,   1d) [# 5232] Wall
+#  5101  332     4 guard imperial                           ( 10w,  11s,   1d) [# 5240] Throne chamber
+#  5102  333     1 guard periel                             (  9w,  13s,   1d) [# 5245] Guard chamber
+#  5103  334     1 baby child                               ( 11w,  11s,   1d) [# 5250] Children's chamber
+#  5104  335     1 woman mistress jessena                   ( 11w,  13s,   1d) [# 5251] Mistress's chamber
+#  5105  336     1 elder man                                (  1e,  19n,   0u) [#20391] The jungles of Nesthar
+#  5200  337     1 master ya'vell                           (  1w,  15s,   1d) [# 5261] Stands
+#  5201  338     4 gladiator                                (  1w,  15s,   1d) [# 5268] Arena
+#  5202  339     2 lion                                     (  3w,   7n,   0u) [#20157] Mountain lion den
+#  5203  340     7 bystander                                (  1w,  16s,   1d) [# 5265] Stands
+#  5204  341     7 on-looker looker onlooker on             (  1w,  16s,   1d) [# 5265] Stands
+#  5205  342     7 excited watcher                          (  1w,  16s,   1d) [# 5265] Stands
+#  5206  343     7 man large                                ( 10e,  14s,   0u) [# 6122] Small tent
+#  5207  344     7 gamesman                                 (  1w,  15s,   1d) [# 5261] Stands
+#  5208  345     7 boy seedy                                (  1w,  16s,   1d) [# 5265] Stands
+#  5209  346     1 chimera                                  (  1w,  16s,   1d) [# 5280] Cage
+
+
+
+# <>--show mob 16
+#  VNUM rnum count names                                    distance         room
+
+
+
+# <>--show mob 17
+#  VNUM rnum count names                                    distance         room
+
+
+
+# <>--show mob 18
+#  VNUM rnum count names                                    distance         room
+#  5300  347     6 skeleton                                 (  1e,   2n,   0u) [#30016] Dirt Path
+#  5301  348    10 lump black leech                         (  0e,  17s,   2d) [# 5305] Sewers
+#  5302  349     1 lythandair old skeleton                  (  6w,  15s,   2d) [# 5338] Tomb
+#  5303  350     3 skeleton skeletal warrior                (  6w,  15s,   2d) [# 5338] Tomb
+
+
+
+# <>--show mob 19
+#  VNUM rnum count names                                    distance         room
+#  5400  351     2 ogre huge guard                          (  6w,  15s,   2d) [# 5463] Feasting cave
+#  5401  352     2 ogre guard                               (  6w,  15s,   2d) [# 5476] Cavern cell
+#  5402  353     1 ogre captain                             (  3w,  15s,   0u) [# 5402] Rock shed
+#  5403  354     2 ogre luetenant                           (  3w,  15s,   0u) [# 5402] Rock shed
+#  5404  355    20 ogre huge                                (  3w,  15s,   0u) [# 5463] Feasting cave
+#  5405  356     0 ogre                                     (  5w,  11s,   1d) [# 9797] Orcs Throne Room
+#  5406  357    10 ogre young                               (  5w,  11s,   1d) [# 5441] Adjoining cave
+#  5407  358    12 ogre fat                                 (  5w,  11s,   1d) [# 5453] Adjoining cave
+#  5408  359    15 ogre female                              (  5w,  11s,   1d) [# 5420] Rock cave
+#  5409  360     8 ogre guardian                            (  5w,  11s,   1d) [# 5433] Ahrani cave
+#  5410  361     5 ahrani clansogre ogre                    (  5w,  11s,   1d) [# 5434] Ahrani cave
+#  5411  362     5 ogre ahrani                              (  5w,  11s,   1d) [# 5433] Ahrani cave
+#  5412  363     1 slog ahrani                              (  5w,  11s,   1d) [# 5434] Ahrani cave
+#  5413  364     1 ahrani shaman                            (  5w,  11s,   1d) [# 5434] Ahrani cave
+#  5414  365     3 ahrani guardian ogre                     (  5w,  11s,   1d) [# 5433] Ahrani cave
+#  5415  366     4 gunchi clansogre ogre                    (  5w,  11s,   1d) [# 5449] Gunchi cave
+#  5416  367     4 gunchi ogre                              (  5w,  11s,   1d) [# 5448] Gunchi cave
+#  5417  368     1 gunchi slog                              (  5w,  11s,   1d) [# 5448] Gunchi cave
+#  5418  369     4 gunchi youth                             (  5w,  11s,   1d) [# 5449] Gunchi cave
+#  5419  370     1 gunchi shaman ogre                       (  5w,  11s,   1d) [# 5448] Gunchi cave
+#  5420  371     3 ogre guard                               (  5w,  11s,   1d) [# 5476] Cavern cell
+#  5421  372     1 ogre marshall                            (  5w,  11s,   1d) [# 5461] Shack
+#  5422  373     3 ogre huge guard                          (  5w,  11s,   1d) [# 5463] Feasting cave
+#  5423  374     1 ogre huge                                (  5w,  11s,   1d) [# 5463] Feasting cave
+#  5424  375     1 ogre huge                                (  5w,  11s,   1d) [# 5463] Feasting cave
+#  5425  376     1 serving wench ogre                       (  5w,  11s,   1d) [# 5463] Feasting cave
+#  5426  377     1 ogre huge                                (  5w,  11s,   1d) [# 5463] Feasting cave
+#  5427  378     1 ogre huge                                (  5w,  11s,   1d) [# 5463] Feasting cave
+#  5428  379     1 ogre huge                                (  5w,  11s,   1d) [# 5463] Feasting cave
+#  5429  380     1 ogre huge                                (  5w,  11s,   1d) [# 5463] Feasting cave
+#  5430  381     1 ogre huge                                (  5w,  11s,   1d) [# 5463] Feasting cave
+#  5431  382     1 ogre huge guard                          (  5w,  11s,   1d) [# 5463] Feasting cave
+#  5432  383     1 ogre slog                                (  5w,  11s,   1d) [# 5466] Huge cavern
+#  5433  384     6 ogre guard                               (  5w,  11s,   1d) [# 5476] Cavern cell
+#  5434  385     3 ogre guard                               (  5w,  11s,   1d) [# 5476] Cavern cell
+#  5435  386     1 ogre skullsmasher                        (  5w,  11s,   1d) [# 5476] Cavern cell
+#  5436  387     1 small man                                ( 27e,  16s,   0u) [# 6414] Square covered in rubble
+#  5437  388     1 noble man                                ( 27e,  16s,   0u) [# 5481] Cavern cell
+#  5438  389     1 strong man                               ( 27e,  16s,   0u) [# 5482] Cavern cell
+#  5439  390     1 small man                                ( 27e,  16s,   0u) [# 6414] Square covered in rubble
+#  5440  391     1 bearded man                              ( 27e,  16s,   0u) [# 5483] Cavern cell
+#  5441  392     1 troll                                    (  9e,  10n,   1d) [#20153] Troll lair
+
+
+
+# <>--show mob 20
+#  VNUM rnum count names                                    distance         room
+#  5900  393     2 guard temple                             ( 11w,  11s,   0u) [# 5900] A large gate
+#  5901  394     1 priest temple drenth                     ( 11w,  11s,   0u) [# 5900] A large gate
+#  5902  395     6 cleric drenth                            ( 11w,  11s,   0u) [# 5911] Hall
+#  5903  396     6 priest drenth                            ( 11w,  11s,   0u) [# 5915] Chamber
+#  5904  397     8 cleric drenth                            ( 11w,  11s,   0u) [# 5911] Hall
+#  5905  398     1 priest drenth                            ( 11w,  11s,   0u) [# 5915] Chamber
+#  5906  399     1 page boy                                 ( 11w,  11s,   0u) [# 5908] Hall
+#  5907  400     1 priest drenth high                       ( 11w,  11s,   0u) [# 5915] Chamber
+#  5908  401     1 drenth smith                             ( 11w,  11s,   0u) [# 5924] Forge
+#  5909  402     1 lizard man locathah                      ( 11w,  11s,   0u) [# 5925] Cell
+
+
+
+# <>--show mob 21
+#  VNUM rnum count names                                    distance         room
+#  6000  403    12 lizardman lizard green                   ( 14w,  13s,   5d) [# 6035] Gnarled woods
+#  6001  404     6 snake huge                               ( 15w,  17s,   5d) [# 6058] Beach
+#  6002  405     6 spider large                             ( 15w,  13s,   5d) [# 6034] Gnarled woods
+
+
+
+# <>--show mob 22
+#  VNUM rnum count names                                    distance         room
+
+
+
+# <>--show mob 23
+#  VNUM rnum count names                                    distance         room
+#  6100  406     1 boatman barnel man                       (  7e,  17s,   0u) [# 6107] Boatyard
+#  6101  407     1 merchant                                 ( 39e,   4n,   0u) [#15214] Rug Merchant
+#  6102  408     1 slaver                                   (  8e,  16s,   0u) [# 6102] Sandy path
+#  6103  409     1 slave man large                          (  8e,  16s,   0u) [# 6105] Slave pits
+#  6104  410     1 slave dwarf stout                        (  8e,  16s,   0u) [# 6105] Slave pits
+#  6105  411     1 slave elf elven woman                    (  8e,  16s,   0u) [# 6105] Slave pits
+#  6106  412     1 halfling slave                           (  8e,  16s,   0u) [# 6105] Slave pits
+#  6107  413     1 large man warrior                        ( 10e,  14s,   0u) [# 6122] Small tent
+#  6108  414     1 small man thief                          ( 28e,  16s,   0u) [# 6415] Rubble strewn street
+#  6109  415     1 mage thin man                            ( 12e,  14s,   0u) [# 6124] Small tent
+#  6110  416     1 man old priest                           ( 13e,  15s,   0u) [# 6125] Cave
+#  6111  417     1 witch woman old hag                      ( 13e,  17s,   0u) [# 6126] Hut
+#  6112  418     6 slaver man                               (  8e,  16s,   0u) [# 6102] Sandy path
+#  6113  419     2 slaver man                               (  8e,  16s,   0u) [# 6102] Sandy path
+#  6114  420    10 slaver man                               (  8e,  16s,   0u) [# 6102] Sandy path
+#  6115  421    10 townsman man                             ( 11e,  16s,   0u) [# 6121] Market place
+#  6116  422     4 man bidder                               (  8e,  15s,   0u) [# 6103] Sandy path
+#  6117  423     6 sailor drunken                           (  9e,  16s,   0u) [# 6119] Market place
+#  6118  424     5 drunk man                                (  9e,  16s,   0u) [#25027] Banquet Hall
+#  6119  425     6 woman young                              (  8e,  16s,   0u) [# 6102] Sandy path
+#  6120  426     1 merchant                                 ( 39e,   4n,   0u) [#15214] Rug Merchant
+#  6121  427     1 merchant                                 ( 39e,   4n,   0u) [#15214] Rug Merchant
+#  6122  428     1 merchant                                 ( 39e,   4n,   0u) [#15214] Rug Merchant
+#  6123  429     1 merchant                                 ( 39e,   4n,   0u) [#15214] Rug Merchant
+#  6124  430     1 merchant                                 ( 39e,   4n,   0u) [#15214] Rug Merchant
+#  6125  431     1 merchant                                 ( 39e,   4n,   0u) [#15214] Rug Merchant
+#  6126  432     1 merchant                                 ( 39e,   4n,   0u) [#15214] Rug Merchant
+#  6127  433     6 man elven                                ( 10e,  15s,   0u) [# 6117] Market place
+#  6128  434     6 merchant man                             (  8e,  16s,   0u) [# 6102] Sandy path
+#  6129  435     5 whore slut woman                         (  9e,  15s,   0u) [# 6118] Market place
+#  6130  436     2 bard man                                 ( 10e,  15s,   0u) [# 6117] Market place
+#  6131  437     2 elf elven woman                          ( 10e,  15s,   0u) [# 6117] Market place
+#  6132  438     5 hermit                                   ( 10e,  15s,   0u) [# 9623] Inside the Main Gate
+
+
+
+# <>--show mob 24
+#  VNUM rnum count names                                    distance         room
+#  6200  439    10 brown lizard brown-skinned               (  4w,  15s,   4d) [# 6210] Mural
+#  6201  440     1 black lizard black-skinned               (  6w,  16s,   5d) [# 6206] Altar
+#  6202  441     1 woman hurt injured                       (  6w,  16s,   5d) [# 6206] Altar
+#  6203  442     1 green lizard green-skinned               (  6w,  16s,   5d) [# 6206] Altar
+#  6204  443     1 grey lizard grey-skinned                 (  6w,  16s,   5d) [# 6206] Altar
+#  6205  444     1 dark green-skinned lizard                (  6w,  16s,   5d) [# 6206] Altar
+#  6206  445     1 blue blue-skinned lizard                 (  6w,  16s,   5d) [# 6206] Altar
+#  6207  446     1 steel lizard steel-skinned               (  6w,  16s,   5d) [# 6206] Altar
+#  6208  447     3 small lizard                             (  4w,  15s,   4d) [# 6210] Mural
+#  6209  448     1 reddish reddish-skinned lizard           (  4w,  15s,   4d) [# 6219] Temple
+#  6210  449     1 girl young naked                         (  4w,  15s,   4d) [# 6219] Temple
+#  6211  450     2 spirit                                   (  4w,  15s,   4d) [# 6219] Temple
+
+
+
+# <>--show mob 25
+#  VNUM rnum count names                                    distance         room
+#  6300  451    15 man dirty famine                         ( 23e,  12s,   0u) [# 6336] Valley
+
+
+
+# <>--show mob 26
+#  VNUM rnum count names                                    distance         room
+#  6400  452    11 man starving                             ( 29e,  17s,   0u) [# 6445] Destroyed street
+#  6401  453     7 man famine starved                       ( 27e,  18s,   0u) [# 6430] Pile of decay
+#  6402  454    10 thief shady small man                    ( 28e,  16s,   0u) [# 6415] Rubble strewn street
+#  6403  455    16 man aklan warrior                        ( 28e,  17s,   0u) [# 6431] Destroyed building
+#  6404  456    15 follower aklan man                       ( 27e,  17s,   0u) [# 6425] Destroyed square
+#  6405  457    15 wolf guardian                            ( 28e,  18s,   0u) [# 6427] Destroyed building
+#  6406  458     5 aklan guard                              ( 27e,  13s,   0u) [# 6454] Destroyed altar
+#  6407  459     1 stone golem                              (  5e,   4n,   1d) [#10672] Landing
+#  6408  460     1 priest man aklan                         ( 28e,  13s,   0u) [# 6441] Destroyed worship
+#  6409  461     2 lesser priest man aklan                  ( 28e,  13s,   0u) [# 6441] Destroyed worship
+#  6410  462     2 lesser priest man aklan                  ( 28e,  13s,   0u) [# 6441] Destroyed worship
+#  6411  463     2 lesser priest man aklan                  ( 28e,  13s,   0u) [# 6441] Destroyed worship
+#  6412  464     2 lesser priest man aklan                  ( 28e,  13s,   0u) [# 6441] Destroyed worship
+#  6413  465     2 lesser priest man aklan                  ( 28e,  13s,   0u) [# 6441] Destroyed worship
+#  6414  466     1 old man mage                             ( 25e,  15s,   0u) [# 6433] Destroyed building
+#  6415  467     1 old man baker                            ( 26e,  15s,   0u) [# 6409] Destroyed building
+#  6416  468     1 old man weaponsmith                      ( 29e,  15s,   0u) [# 6411] Destroyed building
+#  6417  469     1 old man grocer                           ( 28e,  15s,   0u) [# 6410] Demolished building
+#  6418  470     1 man old armourer                         ( 26e,  17s,   0u) [# 6420] Destroyed building
+
+
+
+# <>--show mob 27
+#  VNUM rnum count names                                    distance         room
+#  6500  471     1 fish perch                               ( 12w,  12s,   7d) [# 6505] Small lake
+#  6501  472     1 fish sunfish                             ( 13w,  12s,   7d) [# 6504] Small lake
+#  6502  473     1 fish blue gill                           ( 13w,  13s,   7d) [# 6503] Small lake
+#  6503  474     1 fish bass                                ( 13w,  13s,   8d) [# 6507] Small lake
+#  6504  475     1 hag sea                                  ( 12w,  13s,  10d) [# 6511] Cavern
+#  6505  476     1 hag sea                                  ( 12w,  13s,  10d) [# 6511] Cavern
+#  6506  477     1 hag sea                                  ( 12w,  13s,  10d) [# 6511] Cavern
+#  6507  478    10 eel coral                                ( 12w,  13s,  10d) [# 6529] Underwater cavern
+#  6508  479     6 eel wolf                                 ( 12w,  13s,  10d) [# 6536] Underwater cavern
+#  6509  480     7 trigger huma                             ( 12w,  13s,  10d) [# 6536] Underwater cavern
+#  6510  481     5 octopus small                            ( 12w,  13s,  10d) [# 6545] Underwater cavern
+#  6511  482     6 sailfin fish                             ( 12w,  13s,  10d) [# 6524] Underwater cavern
+#  6512  483     8 kelpie                                   ( 12w,  13s,  10d) [# 6549] Underwater cavern
+#  6513  484     3 slug giant                               ( 12w,  13s,  10d) [# 6548] Underwater cavern
+#  6514  485     8 locathah                                 ( 12w,  13s,  10d) [#32265] Cavern
+#  6515  486     4 eel black huge                           ( 12w,  13s,  10d) [# 6562] Deep coral
+#  6516  487     1 octopus gigantic                         ( 12w,  13s,  10d) [# 6566] Deep coral
+#  6517  488     7 locathah robed                           ( 12w,  13s,  10d) [# 6574] Stone hall
+#  6518  489     4 locathah resting                         ( 12w,  13s,  10d) [#32265] Cavern
+#  6519  490     5 locathah dark scaled                     ( 12w,  13s,  10d) [# 6574] Stone hall
+#  6520  491     1 ulthac locathah                          ( 12w,  13s,  10d) [# 6585] Stone shaft
+#  6521  492     1 obelith gigantic squid                   ( 12w,  13s,  10d) [# 6590] Water chamber
+#  6522  493     1 locathah black                           ( 12w,  13s,  10d) [# 6591] Water filled chamber
+#  6523  494     1 locathah small                           ( 12w,  13s,  10d) [# 6591] Water filled chamber
+#  6524  495     1 locathah small                           ( 12w,  13s,  10d) [# 6591] Water filled chamber
+#  6525  496     1 man                                      ( 12w,  13s,  10d) [#25026] Banquet Hall
+#  6526  497     1 man                                      ( 12w,  13s,  10d) [#25026] Banquet Hall
+#  6527  498     1 man                                      ( 12w,  13s,  10d) [#25026] Banquet Hall
+#  6528  499     1 man                                      ( 12w,  13s,  10d) [#25026] Banquet Hall
+#  6529  500     1 man                                      ( 12w,  13s,  10d) [#25026] Banquet Hall
+
+
+
+# <>--show mob 28
+#  VNUM rnum count names                                    distance         room
+#  6910  501     1 isha elf                                 ( 10w,   1s,   0u) [# 1290] Darkened wood
+#  6999  502     0 death reaper                                              
+#  7000  503     4 drow fighter                             (  7w,  12s,   0u) [# 7030] Cave
+#  7001  504     2 drow warrior                             (  7w,  12s,   0u) [# 7021] Large Cavern
+#  7002  505     2 drow priestess                           (  7w,  12s,   0u) [# 7024] Drow Altar
+#  7003  506     1 drow mage                                (  7w,  12s,   0u) [# 7024] Drow Altar
+#  7020  507     2 drider                                   (  7w,  12s,   0u) [# 7060] Large Cavern
+#  7050  508     0 nightmare                                                 
+
+
+
+# <>--show mob 29
+#  VNUM rnum count names                                    distance         room
+#  9000  509     1 asgard the lich                          (  7w,  12s,   0u) [# 9073] The Throne Room
+#  9001  510     4 juju zombie                              (  1e,   9s,   0u) [# 9008] Graveyard
+#  9002  511     3 ghoul                                    (  0e,   9s,   0u) [# 9007] Graveyard
+#  9003  512     4 skeleton                                 (  1e,   2n,   0u) [#30016] Dirt Path
+#  9004  513     1 wraith                                   (  1w,   6s,   0u) [# 9020] The Altar
+#  9005  514    18 wight                                    (  1w,   0n,   1d) [# 9071] Wight Warrens
+#  9006  515     1 ghost                                    (  2w,   7s,   0u) [# 9019] West wing
+#  9007  516     3 warrior skeletal                         (  2w,   7s,   0u) [# 9074] The Library
+#  9008  517     1 scribe spectral form                     (  2w,   7s,   0u) [# 9074] The Library
+
+
+
+# <>--show mob 30
+#  VNUM rnum count names                                    distance         room
+#  9600  518     1 grugnik                                  (  2w,   7s,   0u) [# 9643] Council Chamber
+#  9601  519    10 bandit                                   (  3w,  15n,   1u) [#20704] Tomb
+#  9602  520     3 bandit captain                           (  3w,  15n,   1u) [# 9644] Meeting Room
+#  9603  521     3 watchdog dog                             (  3w,  15n,   1u) [# 9631] Canyon Wall
+#  9604  522     4 bandit guard                             (  3w,  15n,   1u) [# 9626] Inner Gate
+#  9618  523    10 kobold                                   (  5w,  12s,   0u) [# 9606] Small tunnel
+
+
+
+# <>--show mob 31
+#  VNUM rnum count names                                    distance         room
+#  9619  524     1 kobold chief                             (  8w,  11s,   0u) [# 9618] Throne Room
+#  9620  525     4 kobold guard                             (  7w,  11s,   0u) [# 9615] End of the Tunnel
+#  9638  526     2 giant weasal                             (  4w,  14s,   0u) [# 9603] Weasel Lair
+
+
+
+# <>--show mob 32
+#  VNUM rnum count names                                    distance         room
+#  9700  527    10 orc guard                                (  4w,  15s,   1d) [# 9701] Room of bones
+#  9701  528    10 orc                                      ( 10w,  11s,   1d) [# 9716] Cave
+#  9702  529     1 chief orc                                (  5w,  11s,   1d) [# 9797] Orcs Throne Room
+#  9703  530     1 ogre                                     (  5w,  11s,   1d) [# 9797] Orcs Throne Room
+#  9710  531     8 Orc Warrior                              ( 11w,  11s,   1d) [# 9718] Orc home
+#  9711  532    16 Orc                                      ( 10w,  11s,   1d) [# 9716] Cave
+#  9712  533     1 Orc Chief                                (  5w,  11s,   1d) [# 9797] Orcs Throne Room
+#  9713  534     2 Ogre                                     (  5w,  11s,   1d) [# 9797] Orcs Throne Room
+#  9715  535    10 orc child                                ( 10w,  11s,   1d) [# 9716] Cave
+#  9716  536     0 orc woman                                                 
+#  9717  537     4 orc warrior                              ( 11w,  11s,   1d) [# 9718] Orc home
+#  9718  538     5 orc                                      ( 10w,  11s,   1d) [# 9716] Cave
+
+
+
+# <>--show mob 33
+#  VNUM rnum count names                                    distance         room
+#  9800  539    10 red slaadi                               ( 10w,  11s,   1d) [# 9873] Temple Hall
+#  9801  540    10 red slaadi guard                         ( 10w,  11s,   1d) [# 9873] Temple Hall
+#  9802  541     2 death slaadi                             ( 10w,  11s,   1d) [# 9886] Altar
+#  9803  542     6 grey slaadi                              (  1e,  16s,   5d) [# 9862] Flooded Courtyard
+#  9804  543     1 ygorl slaadi lord                        (  1e,  16s,   5d) [# 9887] Small Room
+#  9805  544     1 prisoner                                 (  1e,  16s,   5d) [#10697] Cell
+#  9806  545     1 prisoner                                 (  1e,  16s,   5d) [#10697] Cell
+#  9807  546     1 prisoner                                 (  1e,  16s,   5d) [#10697] Cell
+#  9808  547     4 dove bird                                (  7e,   0n,   0u) [# 9805] Grassy Field
+#  9809  548     2 pegasus                                  (  7e,   1n,   0u) [# 9808] Grassy Field
+
+
+
+# <>--show mob 34
+#  VNUM rnum count names                                    distance         room
+# 10001  549     7 acolyte                                  (  4e,   4n,   0u) [#10684] The altar of Lovitar
+# 10002  550     4 priestess                                (  4e,   4n,   0u) [# 7024] Drow Altar
+# 10003  551     1 priestess high                           (  4e,   4n,   0u) [#10684] The altar of Lovitar
+# 10004  552     1 golem stone                              (  5e,   4n,   1d) [#10672] Landing
+# 10005  553     5 priestess                                (  5e,   4n,   1d) [# 7024] Drow Altar
+# 10006  554     6 wardog dog                               (  5e,   4n,   1d) [#10698] Cell
+# 10007  555     3 prisoner                                 (  5e,   4n,   1d) [#10697] Cell
+# 10008  556     4 girl villager                            (  5e,   4n,   1d) [#10700] Cell
+# 10009  557     1 elf elven bard Joran                     (  5e,   4n,   1d) [#10702] Cell
+# 10010  558     1 cook                                     (  5e,   1n,   0u) [#10689] The kitchen
+# 10011  559     6 acolyte                                  (  4e,   4n,   0u) [#10684] The altar of Lovitar
+# 10012  560     4 acolyte                                  (  4e,   4n,   0u) [#10684] The altar of Lovitar
+# 10013  561     0 faerie child                                              
+# 10014  562     0 faerie male                                               
+# 10015  563     0 faerie lady                                               
+# 10016  564     0 torgak small                                              
+# 10017  565     0 torgak big~                                               
+# 10018  566     1 alek keeper                              ( 32e,   9s,   0u) [#10276] The Travelers Rest
+
+
+
+# <>--show mob 35
+#  VNUM rnum count names                                    distance         room
+
+
+
+# <>--show mob 36
+#  VNUM rnum count names                                    distance         room
+
+
+
+# <>--show mob 37
+#  VNUM rnum count names                                    distance         room
+
+
+
+# <>--show mob 38
+#  VNUM rnum count names                                    distance         room
+# 15000  567     1 brabas baker                             ( 38e,   4s,   0u) [#15183] Bakery
+# 15001  568     1 gunther bringlestone dwarf               ( 35e,   3s,   0u) [#15184] Gunther's Fine Dwarven Armor
+# 15002  569     1 tulina elf                               ( 35e,   4s,   0u) [#15185] Tulina's Treasures
+# 15003  570     1 moria                                    ( 35e,   5s,   0u) [#15186] Moria's Weapons
+# 15004  571     1 big horn dude                            ( 36e,   5s,   0u) [#15187] School of Martial Arts
+# 15005  572     1 aragorn ranger                           ( 37e,   6s,   0u) [#15189] Wildland's Outfitters
+# 15006  573     1 artos bard                               ( 36e,   6s,   0u) [#15188] The Dancing Troll
+# 15007  574     1 boeregard                                ( 37e,   4s,   0u) [#15190] Boeregard's Fine Blades
+# 15008  575     1 cobb ogreskull dwarf                     ( 38e,   4s,   0u) [#15191] The Bloodied Axe
+# 15009  576     1 maggie                                   ( 38e,   4s,   0u) [#15192] Maggies Cafe
+# 15010  577     1 malcolm                                  ( 38e,   6s,   0u) [#15193] Malcolm's Menagerie
+# 15011  578     1 herman gnome                             ( 40e,   6s,   0u) [#15194] Herman's Herbs
+# 15012  579     1 koffman butcher                          ( 41e,   6s,   0u) [#15195] Butcher Shop
+# 15013  580     1 dunkal black blacksmith                  ( 41e,   5s,   0u) [#15196] Blacksmith
+# 15014  581     1 frumpton                                 ( 41e,   2s,   0u) [#15197] Pilgrim's Rest
+# 15015  582     1 kahmil                                   ( 42e,   2s,   0u) [#15198] Spice Emporium
+# 15016  583     1 rathos                                   ( 42e,   5s,   0u) [#15199] The Laughing Parrot Toy Shop
+# 15017  584     1 lockston jeweler                         ( 42e,   6s,   0u) [#15200] Jeweler
+# 15018  585     1 vail priest                              ( 43e,   4s,   0u) [#15201] Temple of Helm
+# 15019  586     1 elias priest                             ( 45e,   3s,   0u) [#15202] Temple of Eldath
+# 15020  587     1 cael priest druid                        ( 45e,   3s,   0u) [# 7024] Drow Altar
+# 15021  588     1 reever priest                            ( 43e,   1s,   0u) [#15204] Temple of Tymora
+# 15022  589     0 bachman                                                   
+# 15023  590     1 abraham barkeep                          ( 35e,   1n,   0u) [#15209] Cider Works
+# 15024  591     1 bob boatman                              ( 42e,   2s,   0u) [#15206] The Crusty Barnacle
+# 15025  592     1 bribbens                                 ( 42e,   2s,   0u) [#15207] Sea-Going Vessels
+# 15026  593     1 spindle                                  ( 43e,   1s,   0u) [#15208] River Crafts
+# 15027  594     1 kachico barkeep                          ( 35e,   2n,   0u) [#15210] The Succubus Club
+# 15028  595     1 oswald                                   ( 37e,   4n,   0u) [#15211] Oswald's Oddities
+# 15029  596     1 aahz                                     ( 37e,   3n,   0u) [#15212] Arcanum
+# 15030  597     1 tucker                                   ( 37e,   2n,   0u) [#15213] Apothecary
+# 15031  598     1 abdul merchant rug                       ( 39e,   4n,   0u) [#15214] Rug Merchant
+# 15032  599     1 ahrman                                   ( 39e,   0n,   0u) [#15215] Theater of the Vampires
+# 15033  600     1 tessal                                   ( 41e,   4n,   0u) [#15216] Pawn Shop
+# 15034  601     1 reficul                                  ( 41e,   2n,   0u) [#15217] Needful Things
+# 15035  602     1 one thumb                                ( 42e,   2n,   0u) [#15219] The Wooden Nickel
+# 15036  603     1 finnly thief guildmaster                 ( 42e,   1n,   0u) [#15218] The Vulgar Unicorn
+# 15037  604     1 madam lorna                              ( 41e,   4n,   0u) [#15220] The Red Lantern
+# 15038  605     1 attendant                                ( 42e,   2n,   0u) [#15221] Public Baths
+# 15039  606     0 mangy dog                                                 
+# 15040  607     0 alley cat                                                 
+# 15041  608     0 guard sentry                             ( 42e,   2n,   0u) [#25045] Central Hallway
+# 15042  609     0 guard cityguard guardsman                                 
+# 15043  610     0 elite guard guardsman                                     
+# 15044  611     0 commoner dwarf                                            
+# 15045  612     0 commoner elf                                              
+# 15046  613     0 commoner man                                              
+# 15047  614     0 street ruffian thug                                       
+# 15048  615     0 street urchin child                                       
+# 15049  616     0 beggar                                                    
+# 15050  617     0 fat merchant man                                          
+# 15051  618     0 bodyguard guard man                                       
+# 15052  619     0 swordsmaster                                              
+# 15053  620     0 priest                                   ( 42e,   2n,   0u) [#20175] Giants Temple
+# 15054  621     1 tutor ilrand aged man                    (  2e,   0n,   0u) [# 3037] Behind the Inn
+# 15055  622     0 fighter wizened                                           
+# 15056  623     0 brigand                                                   
+# 15057  624     0 soldier warrior youth                                     
+# 15058  625     0 woman mage wizard                                         
+# 15059  626     0 urchin street child                                       
+# 15060  627     0 urchin street child                                       
+# 15061  628     0 trader merchant man lizard lizardman                      
+# 15062  629     0 sailor fisherman                                          
+# 15063  630     0 trader merchant                                           
+# 15084  631     0 thief criminal                                            
+# 15085  632     0 traveler tourist woman                                    
+# 15086  633     0 traveler tourist man                                      
+# 15087  634     0 constable sloppy guard pig fascist                        
+# 15088  635     0 priest aklan                             ( 28e,  13s,   0u) [# 6441] Destroyed worship
+# 15089  636     0 priest guard tyken                                        
+# 15090  637     0 troll ugly mercenary                                      
+# 15091  638     0 warrior ogre old                                          
+# 15092  639     0 warrior ogre                                              
+# 15093  640     0 warrior orc half-orc                                      
+# 15094  641     0 bard singer                                               
+# 15095  642     0 barmaid maid waitress                                     
+# 15096  643     0 man fat old dirty                                         
+# 15097  644     0 lady woman young                                          
+# 15098  645     0 man young                                (  2e,  13s,   1d) [# 5153] Times Around Store
+
+
+
+# <>--show mob 39
+#  VNUM rnum count names                                    distance         room
+# 20000  646     2 worker ant                               ( 10w,   2n,   2d) [#20845] Small cavern
+# 20001  647    15 worker ant                               ( 10w,   2n,   2d) [#20845] Small cavern
+# 20002  648    13 warrior ant                              ( 11w,   5n,   2d) [#20856] Large cavern
+# 20003  649     3 guardian ant                             ( 11w,   5n,   2d) [#20861] Queen's nest
+# 20004  650     1 queen ant                                ( 11w,   5n,   2d) [#20860] Queen's nest
+# 20005  651     4 porcupine small                          ( 14w,   7n,   0u) [#20056] Entrance to mountains
+# 20006  652     1 large porcupine                          (  4w,   1s,   0u) [#20044] Grasslands
+# 20007  653     1 roc bird                                 (  8e,   7n,   0u) [#20101] Roc's nest
+# 20008  654     9 troll green large                        (  6e,  10n,   0u) [#20147] Worn path in troll mountains
+# 20009  655     6 troll large grey female                  (  7e,  10n,   0u) [#20148] Top of stairway
+# 20010  656     1 troll two-headed large                   (  9e,  10n,   1d) [#20153] Troll lair
+# 20011  657     1 mountain lion                            (  3w,   7n,   0u) [#20157] Mountain lion den
+# 20012  658     3 cub lion                                 (  3w,   7n,   0u) [#20157] Mountain lion den
+# 20013  659     2 giant mountain                           (  3w,   7n,   0u) [#20176] Kitchen
+# 20014  660     2 giant juvenile                           (  3w,   7n,   0u) [#20174] Playroom
+# 20015  661     2 giant hill                               ( 13w,  11n,   0u) [#20165] Giant guard post
+# 20016  662     1 giant mountain priest                    ( 13w,  11n,   0u) [#20175] Giants Temple
+# 20017  663     1 giant mountain                           ( 13w,  11n,   0u) [#20176] Kitchen
+# 20018  664     1 giant mountain chef                      ( 13w,  11n,   0u) [#20176] Kitchen
+
+
+
+# <>--show mob 40
+#  VNUM rnum count names                                    distance         room
+
+
+
+# <>--show mob 41
+#  VNUM rnum count names                                    distance         room
+# 20220  665    16 baboon monkey                            ( 20w,  13n,   0u) [#20540] The jungles of Nesthar
+# 20221  666     9 baboon monkey                            ( 20w,  13n,   0u) [#20540] The jungles of Nesthar
+# 20222  667     9 ape carnivorous                          ( 20w,  58n,   0u) [#20624] The jungles of Nesthar
+# 20223  668     3 bullywug frog                            ( 11w,  21n,   0u) [#20427] The jungles of Nesthar
+# 20224  669     3 bullywug subleader frog                  ( 11w,  21n,   0u) [#20427] The jungles of Nesthar
+# 20225  670     1 bullywug leader frog                     ( 11w,  21n,   0u) [#20427] The jungles of Nesthar
+# 20226  671     8 jaguar cat                               ( 19w,  41n,   0u) [#20569] The jungles of Nesthar
+# 20227  672     5 constrictor snake                        ( 18w,  58n,   0u) [#20623] The jungles of Nesthar
+# 20228  673     6 bandit zombie human                      (  6w,  14n,   1u) [#20279] Hut
+# 20229  674     1 bandit king spectre saad                 (  3w,  15n,   1u) [#20704] Tomb
+# 20230  675     5 giant constrictor snake                  ( 18w,  58n,   0u) [#20623] The jungles of Nesthar
+# 20231  676     1 jungleman elder man old                  (  0e,  19n,   0u) [#20392] The jungles of Nesthar
+# 20232  677     5 tiger cat                                ( 20w,  34n,   0u) [#20675] Travelers Road
+# 20233  678     5 large bat                                ( 17w,  16n,   0u) [#20326] The jungles of Nesthar
+# 20234  679    10 jungle tribesmen man                     (  0e,  19n,   2u) [#21010] Small catwalk
+# 20235  680     1 jungle tribeleader man                   (  0e,  19n,   3u) [#21019] Tribesmen leaders' quarters
+# 20237  681     4 jungle tribeswoman woman                 (  2w,  18n,   2u) [#21018] Tribesmen hut
+# 20238  682     7 guard jungle tribesguard man             (  2w,  18n,   2u) [#21018] Tribesmen hut
+# 20239  683     4 jungle tribeskid kid                     (  1e,  18n,   1u) [#21002] Small catwalk
+# 20700  684     6 piranha fish small                       (  3w,  21n,   0u) [#20763] Great River of Nesthar
+
+
+
+# <>--show mob 42
+#  VNUM rnum count names                                    distance         room
+
+
+
+# <>--show mob 43
+#  VNUM rnum count names                                    distance         room
+# 20901  685     1 catoblepas buffalo                       ( 12w,  24n,   0u) [#20930] Murky Swamp
+# 20902  686     1 catoblepas buffalo                       ( 12w,  24n,   0u) [#20930] Murky Swamp
+# 20903  687     1 catoblepas buffalo young                 ( 12w,  24n,   0u) [#20930] Murky Swamp
+# 20904  688     1 karrn dragon black                       ( 17w,  26n,   0u) [#20950] Dense fog
+# 20905  689     3 leech giant                              (  9w,  26n,   0u) [#20958] Dense fog
+# 20906  690     3 leech giant                              (  9w,  26n,   0u) [#20958] Dense fog
+# 20907  691     3 leech giant                              (  9w,  26n,   0u) [#20958] Dense fog
+# 20908  692     2 Leech giant                              (  9w,  26n,   0u) [#20958] Dense fog
+
+
+
+# <>--show mob 44
+#  VNUM rnum count names                                    distance         room
+
+
+
+# <>--show mob 45
+#  VNUM rnum count names                                    distance         room
+
+
+
+# <>--show mob 46
+#  VNUM rnum count names                                    distance         room
+# 22000  693     0 wanderer hermit man                                       
+# 22005  694     0 sand worm                                                 
+# 22010  695     0 dust devil swirling                                       
+# 22200  696     0 sha'ir man mage                                           
+# 22205  697     0 djinni djinn guard                                        
+# 22210  698     0 Wind Guardian                                             
+# 25000  699     4 guard bazzak gate                        (  9w,  26n,   0u) [#25041] Foyer
+# 25001  700    15 guard interior                           (  9w,  26n,   0u) [#25077] Gymnasium
+# 25002  701     4 arsenal guard bazzak                     (  9w,  26n,   0u) [#25071] Arsenal
+# 25003  702    10 jester                                   (  9w,  26n,   0u) [#25028] Banquet Hall
+# 25004  703     6 buxom teenager girl                      (  9w,  26n,   0u) [#25025] Hallway Corner
+# 25005  704     3 dirty old man                            (  9w,  26n,   0u) [#25017] Banquet Hall
+# 25006  705     4 boy teenage                              (  9w,  26n,   0u) [#25055] Central Hallway
+# 25007  706     9 drunk drunken warrior man                (  9w,  26n,   0u) [#25026] Banquet Hall
+# 25008  707     4 front guard                              (  9w,  26n,   0u) [#25050] Eastern Tower
+# 25009  708     6 waitress wench                           (  9w,  26n,   0u) [#25028] Banquet Hall
+# 25010  709    12 warrior practicing                       (  9w,  26n,   0u) [#25078] Gymnasium
+# 25011  710     2 sentry king guard                        (  9w,  26n,   0u) [#25045] Central Hallway
+# 25012  711     6 kings guard king                         (  9w,  26n,   0u) [#25047] The King's Chambers
+# 25013  712     1 prince bazzak                            (  9w,  26n,   0u) [#25048] The King's Chambers
+# 25014  713     1 mage bazzak                              (  9w,  26n,   0u) [#25073] Mage's Quarters
+
+
+
+# <>--show mob 47
+#  VNUM rnum count names                                    distance         room
+# 30000  714     3 skeleton moore                           (  1w,   2n,   0u) [#30014] Dirt Path
+# 30001  715     3 zombie                                   (  1w,   1n,   0u) [#30009] Limestone Path
+# 30002  716     3 rotting corpse                           (  2w,   1s,   0u) [#30027] Dirt Path
+# 30003  717     1 grave corpse                             (  1e,   1n,   1d) [#30033] Grave
+# 32000  718     0 spirit                                   (  1e,   1n,   1d) [# 6219] Temple
+
+
+
+# <>--show mob 48
+#  VNUM rnum count names                                    distance         room
+# 32001  719     0 troll                                    (  9e,  10n,   1d) [#20153] Troll lair
+# 32050  720     0 rock troll                                                
+# 32051  721     0 cavern crawler                                            
+# 32300  722     1 jennifer sex slave                       ( 37w,   4n,   5d) [#32305] Dorn's Digs

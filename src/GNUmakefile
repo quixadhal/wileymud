@@ -41,7 +41,7 @@ PROF_FLAG	= #-pg
 
 INC		= -Iinclude $(SQL_INC) $(ID_INC) $(IMC_INC)
 LIB		= $(ID_LIB) $(NEED_CRYPT) $(NEED_COMPAT) $(EFENCE) $(SQL_LIB)
-AUXLIB		= $(NEED_CRYPT) $(NEED_COMPAT) $(EFENCE)
+UTILSLIB	= $(NEED_CRYPT) $(NEED_COMPAT) $(EFENCE)
 
 CFLAGS		= $(W_FLAGS) $(DEBUG_FLAG) $(OPT_FLAG) $(PROF_FLAG) $(INC)
 LDFLAGS		= $(DEBUG_FLAG) $(OPT_FLAG) $(PROF_FLAG)
@@ -76,19 +76,19 @@ $(BINDIR)/wileymud : $(ID_DEP) $(OBJ)
 
 $(BINDIR)/mkworld : obj/mkworld.o
 	@echo Make the world editing program...
-	$(CC) $(LDFLAGS) -o $@ $< $(AUXLIB)
+	$(CC) $(LDFLAGS) -o $@ $< $(UTILSLIB)
 
 $(BINDIR)/sign : obj/sign.o
 	@echo Make the downtime notice program...
-	$(CC) $(LDFLAGS) -o $@ $< $(AUXLIB)
+	$(CC) $(LDFLAGS) -o $@ $< $(UTILSLIB)
 
 $(BINDIR)/genpasswd : obj/genpasswd.o
 	@echo Make the password generation program...
-	$(CC) $(LDFLAGS) -o $@ $< $(AUXLIB)
+	$(CC) $(LDFLAGS) -o $@ $< $(UTILSLIB)
 
 $(BINDIR)/bounce : obj/bounce.o
 	@echo Make the port bouncer program...
-	$(CC) $(LDFLAGS) -o $@ $< $(AUXLIB)
+	$(CC) $(LDFLAGS) -o $@ $< $(UTILSLIB)
 
 $(ID_DEP): $(IDOBJ)
 	(cd $(IDENTDIR);$(MAKE) linux)
@@ -149,7 +149,7 @@ tags :
 obj/%o : %c
 	$(CC) $(CFLAGS) -c $< -o $@
 
-obj/sign.o obj/mkworld.o obj/genpasswd.o obj/bounce.o : obj/%o : aux/%c
+obj/sign.o obj/mkworld.o obj/genpasswd.o obj/bounce.o : obj/%o : utils/%c
 	$(CC) $(CFLAGS) -c $< -o $@
 
 #--- Comment for make deps ---
@@ -269,10 +269,10 @@ obj/reception.o: reception.c include/global.h include/bug.h include/comm.h \
   include/handler.h include/db.h include/interpreter.h include/utils.h \
   include/spells.h include/multiclass.h include/act_social.h \
   include/spec_procs.h include/reception.h
-obj/genpasswd.o: aux/genpasswd.c
-obj/sign.o: aux/sign.c include/global.h include/bug.h
-obj/bounce.o: aux/bounce.c
-obj/mkworld.o: aux/mkworld.c
+obj/genpasswd.o: utils/genpasswd.c
+obj/sign.o: utils/sign.c include/global.h include/bug.h
+obj/bounce.o: utils/bounce.c
+obj/mkworld.o: utils/mkworld.c
 obj/hash.o: hash.c include/global.h include/bug.h include/comm.h \
   include/utils.h include/hash.h
 obj/interpreter.o: interpreter.c include/global.h include/imc.h \
@@ -326,7 +326,7 @@ obj/act_wiz.o: act_wiz.c include/global.h include/bug.h include/utils.h \
   include/spell_parser.h include/board.h include/whod.h \
   include/reception.h include/spec_procs.h include/multiclass.h \
   include/act_skills.h include/act_info.h include/fight.h include/hash.h \
-  include/weather.h include/modify.h include/act_wiz.h
+  include/weather.h include/modify.h include/tracking.h include/act_wiz.h
 obj/act_info.o: act_info.c include/global.h include/bug.h include/version.h \
   include/utils.h include/comm.h include/interpreter.h include/handler.h \
   include/db.h include/spells.h include/mudlimits.h include/trap.h \

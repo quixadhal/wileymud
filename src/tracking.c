@@ -402,6 +402,58 @@ void do_track(struct char_data *ch, const char *argument, int cmd)
   }
 }
 
+char *track_distance(struct char_data *ch, char *mob_name)
+{
+  static char                           buf[MAX_STRING_LENGTH] = "No route";
+
+  if(!ch) return buf;
+  int this_room = ch->in_room;
+  struct char_data *target_mob = get_char_vis_world(ch, mob_name, NULL);
+  if(!target_mob) return buf;
+  int dest_room = target_mob->in_room;
+  int next_room;
+  int dir = -1;
+  int dx = 0, dy = 0, dz = 0;;
+
+  if ( ( dir = choose_exit( this_room, dest_room, -MAX_ROOMS ) ) >= 0 ) {
+    while( ( dir = choose_exit( this_room, dest_room, -MAX_ROOMS ) ) > -1 ) {
+      struct room_data                       *from_here = NULL;
+      struct room_data                       *to_here = NULL;
+      from_here = real_roomp( this_room );
+      next_room = from_here->dir_option[dir]->to_room;
+      to_here = real_roomp( next_room );
+  
+      if( !to_here ) return buf;
+      switch(dir) {
+          case 0:
+              dy++;
+              break;
+          case 1:
+              dx++;
+              break;
+          case 2:
+              dy--;
+              break;
+          case 3:
+              dx--;
+              break;
+          case 4:
+              dz++;
+              break;
+          case 5:
+              dz--;
+              break;
+      }
+      this_room = next_room;
+    }
+    sprintf(buf, "(%3d%s, %3d%s, %3d%s)",
+                 abs(dx), dx < 0 ? "w" : "e",
+                 abs(dy), dy < 0 ? "s" : "n",
+                 abs(dz), dz < 0 ? "d" : "u" );
+  }
+  return buf;
+}
+
 void do_immtrack(struct char_data *ch, const char *argument, int cmd)
 {
   char                                    buf[MAX_INPUT_LENGTH] = "\0\0\0";

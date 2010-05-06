@@ -10,6 +10,7 @@
 #define	LOG_KILL	5
 #define	LOG_DEATH	6
 #define	LOG_RESET	7
+#define	LOG_IMC         8
 
 #ifndef _BUG_C
 extern char * LogNames[];
@@ -59,6 +60,12 @@ extern char * LogNames[];
                    GREATER_GOD, (Str), ## __VA_ARGS__ )
 #define log_reset(Str, ...) \
         bug_logger(LOG_RESET, NULL, \
+                   NULL, NULL, 0, \
+                   NULL, 0, \
+                   NULL, NULL, \
+                   GREATER_GOD, (Str), ## __VA_ARGS__ )
+#define log_imc(Str, ...) \
+        bug_logger(LOG_IMC, NULL, \
                    NULL, NULL, 0, \
                    NULL, 0, \
                    NULL, NULL, \

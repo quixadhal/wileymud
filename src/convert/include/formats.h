@@ -3,7 +3,7 @@
 
 #define IF_COUNT	1
 #define IF_ALL		((1<<IF_COUNT)-1)
-#define OF_COUNT	6
+#define OF_COUNT	7
 #define OF_ALL		((1<<OF_COUNT)-1)
 
 typedef struct s_name {

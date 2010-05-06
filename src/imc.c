@@ -1575,6 +1575,7 @@ void imc_write_packet( IMC_PACKET * p )
    IMC_PDATA *data;
    char txt[IMC_BUFF_SIZE];
 
+   if(!p) return;
    /*
     * Assemble your buffer, and at the same time disassemble the packet struct to free the memory 
     */
@@ -1775,8 +1776,9 @@ PFUN( imc_recv_emote )
    for( d = first_descriptor; d; d = d->next )
    {
       if( d->connected == CON_PLAYING && ( ch = d->original ? d->original : d->character ) != NULL
-          && IMCPERM( ch ) >= level )
+          && IMCPERM( ch ) >= level ) {
          imc_printf( ch, "~p[~GIMC~p]~! %s ~c%s\r\n", imc_speaker_name( imcgetname( q->from ) ), txt );
+      }
    }
 }
 
@@ -1807,6 +1809,7 @@ void update_imchistory( IMC_CHANNEL * channel, char *message )
          snprintf( buf, LGST, "~R[%-2.2d/%-2.2d %-2.2d:%-2.2d] ~G%s",
                    local->tm_mon + 1, local->tm_mday, local->tm_hour, local->tm_min, msg );
          channel->history[x] = IMCSTRALLOC( buf );
+         log_imc( "%s", imc_strip_colors( channel->history[x] ) );
 
          if( IMCIS_SET( channel->flags, IMCCHAN_LOG ) )
          {
@@ -1846,6 +1849,7 @@ void update_imchistory( IMC_CHANNEL * channel, char *message )
                    local->tm_mon + 1, local->tm_mday, local->tm_hour, local->tm_min, msg );
          IMCSTRFREE( channel->history[x] );
          channel->history[x] = IMCSTRALLOC( buf );
+         log_imc( "%s", imc_strip_colors( channel->history[x] ) );
 
          if( IMCIS_SET( channel->flags, IMCCHAN_LOG ) )
          {

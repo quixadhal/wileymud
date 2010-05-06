@@ -34,11 +34,11 @@ LDFLAGS     = $(DEBUG_FLAG) $(OPT_FLAG) $(PROF_FLAG)
 SRC =	bug.c utils.c make_index.c main.c formats.c \
 	getopt.c getopt1.c \
 	parse_wiley.c \
-	dump_report.c dump_map.c dump_isles.c dump_fr.c dump_afk.c
+	dump_report.c dump_map.c dump_isles.c dump_fr.c dump_afk.c dump_smaug.c
 OBJ =	$(addprefix obj/, $(SRC:.c=.o))
 HDRS =	bug.h utils.h make_index.h main.h formats.h getopt.h \
 	parse_wiley.h \
-	dump_report.h dump_map.h dump_isles.h dump_fr.h dump_afk.h
+	dump_report.h dump_map.h dump_isles.h dump_fr.h dump_afk.h dump_smaug.h
 HDR =	$(addprefix include/, $(HDRS))
 LIB =	$(NEED_CRYPT) $(NEED_COMPAT) $(EFENCE)
 AUX = GNUmakefile

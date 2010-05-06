@@ -27,7 +27,8 @@ const char * LogNames[] = {
 "AUTH",
 "KILL",
 "DEATH",
-"RESET"
+"RESET",
+"IMC"
 };
 
 /* Handy query for checking logs:
@@ -146,6 +147,14 @@ void bug_logger( unsigned int Type, const char *BugFile,
   }
 
   if (db_logging && db_connected) {
+  if ( (db_log_info   && Type == LOG_INFO)  ||
+       (db_log_errors && (Type == LOG_ERROR || Type == LOG_FATAL) ) ||
+       (db_log_boot   && Type == LOG_BOOT)  ||
+       (db_log_auth   && Type == LOG_AUTH)  ||
+       (db_log_kills  && (Type == LOG_KILL  || Type == LOG_DEATH) ) ||
+       (db_log_resets && Type == LOG_RESET) ||
+       (db_log_imc    && Type == LOG_IMC)
+     ) {
 EXEC SQL BEGIN DECLARE SECTION;
   int	log_type_id		= LOG_INFO;
   char	log_entry[MAX_STRING_LENGTH];
@@ -255,6 +264,7 @@ EXEC SQL END DECLARE SECTION;
     } else {
       EXEC SQL COMMIT WORK;
     }
+  }
   }
   
   if(stderr) {

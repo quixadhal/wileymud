@@ -18,8 +18,11 @@
 #include "modify.h"
 #include "handler.h"
 #include "act_info.h"
+#include "sql.h"
 #define _BOARD_C
 #include "board.h"
+
+EXEC SQL INCLUDE sqlca;
 
 struct char_data                       *board_kludge_char = NULL;
 struct Board                           *board_list = NULL;

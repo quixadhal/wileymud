@@ -25,6 +25,7 @@ void                                    MobHunt(struct char_data *ch);
 int                                     dir_track(struct char_data *ch, struct char_data *vict);
 int                                     track(struct char_data *ch, struct char_data *vict);
 void                                    do_track(struct char_data *ch, const char *argument, int cmd);
+char                                    *track_distance(struct char_data *ch, char *mob_name);
 void                                    do_immtrack(struct char_data *ch, const char *argument, int cmd);
 
 #endif

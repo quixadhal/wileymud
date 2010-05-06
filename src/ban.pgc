@@ -22,9 +22,12 @@ static char                                    old_banned_names[MAX_STRING_LENGT
 EXEC SQL BEGIN DECLARE SECTION;
 static char                                  **banned_names = NULL;
 static char                                  **banned_ips = NULL;
+static char                                  **banned_at_names = NULL;
+static char                                  **banned_at_ips = NULL;
 EXEC SQL END DECLARE SECTION;
 static int                                     banned_names_count = 0;
 static int                                     banned_ips_count = 0;
+static int                                     banned_at_count = 0;
 
 /*
  * Make sure they are not being stupid.
@@ -131,6 +134,49 @@ EXEC SQL END DECLARE SECTION;
 */
 }
 
+int banned_at(char *name, char *ip)
+{
+/*
+EXEC SQL BEGIN DECLARE SECTION;
+  int is_banned = 0;
+  char check_ip[MAX_STRING_LENGTH] = "\0\0\0";
+  char check_name[MAX_STRING_LENGTH] = "\0\0\0";
+EXEC SQL END DECLARE SECTION;
+*/
+
+  int i;
+
+  if (DEBUG > 2)
+    log_info("called %s with %s", __PRETTY_FUNCTION__, VNULL(ip));
+
+  if (banned_ips_count < 1)
+    return FALSE;
+
+  for(i = 0; i < banned_at_count; i++) {
+    if (!str_cmp(banned_at_name[i], ip) && !str_cmp(banned_at_ip[i]))
+      return TRUE;
+  }
+
+  return FALSE;
+
+/*
+  strcpy(check_ip, ip);
+  strcpy(check_name, name);
+  EXEC SQL SELECT 1
+             INTO :is_banned
+             FROM banned
+            WHERE host(banned_ip) = lower(:check_ip)
+              AND lower(banned_name) = lower(:check_name);
+  if (sqlca.sqlcode < 0) {
+    fprintf(stderr, "error code %ld, message %s, rows %ld, warning %c\n",
+            sqlca.sqlcode, sqlca.sqlerrm.sqlerrmc, sqlca.sqlerrd[2],
+            sqlca.sqlwarn[0]);
+  }
+
+  return is_banned;
+*/
+}
+
 void load_bans(void)
 {
   if( !db_connected ) {
@@ -173,6 +219,22 @@ void load_bans(void)
             sqlca.sqlwarn[0]);
   } else {
     banned_ips_count = sqlca.sqlerrd[2]; /* row count */
+    EXEC SQL COMMIT;
+  }
+
+  log_boot("- Loading banned name@ip list from SQL");
+  EXEC SQL SELECT banned_at_name, banned_at_ip
+             INTO :banned_atnames, :banned_at_ip
+             FROM banned
+            WHERE banned_name IS NOT NULL
+              AND banned_ip IS NOT NULL
+         ORDER BY banned_name, banned_ip;
+  if (sqlca.sqlcode < 0) {
+    fprintf(stderr, "error code %ld, message %s, rows %ld, warning %c\n",
+            sqlca.sqlcode, sqlca.sqlerrm.sqlerrmc, sqlca.sqlerrd[2],
+            sqlca.sqlwarn[0]);
+  } else {
+    banned_at_count = sqlca.sqlerrd[2]; /* row count */
     EXEC SQL COMMIT;
   }
 
