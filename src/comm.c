@@ -49,6 +49,7 @@
 #include "signals.h"
 #include "sql.h"
 #include "ban.h"
+#include "board.h"
 #define _COMM_C
 #include "comm.h"
 
@@ -237,6 +238,9 @@ int run_the_game(int port)
   log_boot("Opening IMC2 connection.");
   imc_startup( FALSE, -1, FALSE );
 #endif
+
+  log_boot("Moving old board files to SQL.");
+  boards_to_sql();
 
   log_boot("Entering game loop.");
   game_loop(s);

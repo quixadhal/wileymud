@@ -10,7 +10,7 @@ struct Board {
   int                                     msg_num;
   char                                    filename[40];
   FILE                                   *file;		       /* file that is opened */
-  int                                     Rnum;		       /* Real # of object that this board hooks to */
+  int                                     Vnum;		       /* Virtual # of object that this board hooks to */
   struct Board                           *next;
 };
 
@@ -31,11 +31,13 @@ void                                    board_write_msg(struct char_data *ch, ch
 int                                     board_remove_msg(struct char_data *ch, char *arg,
 							 struct Board *b);
 void                                    board_save_board(struct Board *b);
+void                                    new_save_board(struct Board *bp);
 void                                    board_load_board(struct Board *b);
+void                                    new_load_board(struct Board *bp);
 void                                    board_reset_board(struct Board *b);
 int                                     board_display_msg(struct char_data *ch, char *arg,
 							  struct Board *b);
-void                                    board_fix_long_desc(struct Board *b);
+/* void                                    board_fix_long_desc(struct Board *b); */
 int                                     board_show_board(struct char_data *ch, char *arg,
 							 struct Board *b);
 void                                    boards_to_sql(void);

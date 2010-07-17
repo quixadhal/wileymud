@@ -15,6 +15,7 @@ while [ -x $DAEMON ]; do
   LOGFILE=`/bin/date "+$MUDDIR/lib/log/runlog.%y%m%d-%H%M%S"`
   touch $LOGFILE
   chmod 640 $LOGFILE
+  export MALLOC_CHECK=2
   $DAEMON -P $PIDFILE -L $LOGFILE $PORT
   STATUS=$?
   rm -f $PIDFILE

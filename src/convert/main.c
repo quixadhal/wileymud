@@ -24,6 +24,7 @@
 #include "include/dump_isles.h"
 #include "include/dump_fr.h"
 #include "include/dump_afk.h"
+#include "include/dump_smaug.h"
 
 char *ProgName;
 int Debug = 0;
@@ -410,6 +411,18 @@ int main(int argc, char **argv) {
            of_type(of_mask("fr")),
            if_type(InputFormat));
     dump_as_final_realms(Zones, Rooms, Shops);
+  }
+
+  if(OutputFormat & of_mask("smaug")) {
+    fprintf(stderr, "Dumping Format %s from %s\n",
+           of_type(of_mask("smaug")),
+           if_type(InputFormat));
+    printf("Dumping Format %s from %s\n",
+           of_type(of_mask("smaug")),
+           if_type(InputFormat));
+    sprintf(tmp, "mkdir -p %s/%s", OutputDir, SMAUG_SUBDIR);
+    system(tmp);
+    dump_as_smaug(Zones, Rooms, Shops, Objects, Mobs);
   }
 
   return 0;

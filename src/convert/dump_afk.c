@@ -1021,15 +1021,15 @@ void dump_as_afk(zones *Zones, rooms *Rooms, shops *Shops, objects *Objects, mob
 /* ZONE */
 
     fprintf( ofp, "#AREA   %s~\n\n", Zones->Zone[i].Name);
-    fprintf( ofp, "#VERSION %d\n\n", AREA_VERSION_WRITE );
+    fprintf( ofp, "#VERSION %d\n\n", AFK_AREA_VERSION_WRITE );
     fprintf( ofp, "#AUTHOR %s~\n\n", "The Wiley Gang");
     fprintf( ofp, "#VNUMS %d %d\n\n", LowRoom, HighRoom);
 
     /* Wiley has no level ranges */
 #if 0
     fprintf( ofp, "#RANGES\n%d %d %d %d\n$\n\n",
-             AREA_LEVEL_LIMIT_LOWER, AREA_LEVEL_LIMIT_UPPER,   /* SOFT (displayed) limits */
-             AREA_LEVEL_LIMIT_LOWER, AREA_LEVEL_LIMIT_UPPER ); /* HARD (driver enforced) limits */
+             AFK_AREA_LEVEL_LIMIT_LOWER, AFK_AREA_LEVEL_LIMIT_UPPER,   /* SOFT (displayed) limits */
+             AFK_AREA_LEVEL_LIMIT_LOWER, AFK_AREA_LEVEL_LIMIT_UPPER ); /* HARD (driver enforced) limits */
 #endif
 
     /* Wiley doesn't give players hints about zone resets! */
@@ -1062,9 +1062,9 @@ void dump_as_afk(zones *Zones, rooms *Rooms, shops *Shops, objects *Objects, mob
 
     /* Wiley doesn't have climate per zone, so all are normal */
     fprintf( ofp, "#CLIMATE %d %d %d\n\n",
-             CLIMATE_TEMP_NORMAL,
-             CLIMATE_PRECIP_NORMAL,
-             CLIMATE_WIND_NORMAL );
+             AFK_CLIMATE_TEMP_NORMAL,
+             AFK_CLIMATE_PRECIP_NORMAL,
+             AFK_CLIMATE_WIND_NORMAL );
 
     /* Wiley doesn't have neighboring zones */
 #if 0

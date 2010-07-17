@@ -226,7 +226,8 @@ void command_interpreter(struct char_data *ch, char *argument)
   REMOVE_BIT(ch->specials.affected_by, AFF_HIDE);
 
   if (ch == board_kludge_char) {
-    board_save_board(FindBoardInRoom(ch->in_room));
+    /* board_save_board(FindBoardInRoom(ch->in_room)); */
+    new_save_board(FindBoardInRoom(ch->in_room));
     board_kludge_char = 0;
   }
   /*
@@ -1172,7 +1173,7 @@ void nanny(struct descriptor_data *d, char *arg)
       cryptsalt[0] = d->character->player.name[0];
       cryptsalt[1] = d->character->player.name[1];
       strcpy(d->pwd, crypt(d->oldpwd, cryptsalt));
-      PutPasswd(d);
+      /* PutPasswd(d); */
       dcprintf(d, "\r%s", race_menu);
       STATE(d) = CON_GET_RACE;
       return;
@@ -1536,7 +1537,7 @@ void nanny(struct descriptor_data *d, char *arg)
       cryptsalt[0] = d->character->player.name[0];
       cryptsalt[1] = d->character->player.name[1];
       strcpy(d->pwd, crypt(d->oldpwd, cryptsalt));
-      PutPasswd(d);
+      /* PutPasswd(d); */
       dcprintf(d, "%s\r\nDone. You must enter the game to make the change final\r\n%s", echo_on,
 	       login_menu);
       STATE(d) = CON_MENU_SELECT;
@@ -1588,6 +1589,7 @@ void update_player_list_entry(struct descriptor_data *d)
   //dump_player_list();
 }
 
+#if 0
 void PutPasswd(struct descriptor_data *d)
 {
   FILE                                   *pfd = NULL;
@@ -1604,6 +1606,7 @@ void PutPasswd(struct descriptor_data *d)
   }
   //update_player_list_entry(d);
 }
+#endif
 
 int ValidPlayer(char *who, char *pwd, char *oldpwd)
 {

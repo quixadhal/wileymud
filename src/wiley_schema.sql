@@ -112,6 +112,35 @@ fucker	\N	SYSTEM	2008-10-02 05:07:09.606346
 -- Wiley doesn't support specific name@ip bans, but it could easily enough by reworking using is_banned().
 
 
+--CREATE TABLE boards (
+--	board_id		INTEGER NOT NULL PRIMARY KEY,
+--	board_name		TEXT,
+--	room_vnum		INTEGER
+--);
+
+CREATE TABLE board_messages (
+	board_id		INTEGER NOT NULL, -- REFERENCES( boards.board_id ),
+	message_id		INTEGER NOT NULL,
+	message_date	TIMESTAMP NOT NULL DEFAULT now(),
+	message_sender	TEXT NOT NULL,
+	message_header	TEXT NOT NULL,
+	message_text	TEXT NOT NULL
+);
+
+CREATE UNIQUE INDEX ix_board_messages ON board_messages (board_id, message_id); 
+
+-- Normally, one doesn't like to have wide tables, but in this case it's much
+-- easier than using key/value pairs and having to parse them!
+CREATE TABLE config (
+	rent_cost		FLOAT,
+	reboot_hour		INTEGER,
+);
+
+
+
+
+
+
 
 
 CREATE TABLE alignment (

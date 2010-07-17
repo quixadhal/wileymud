@@ -351,7 +351,7 @@ int                                     check_playing(struct descriptor_data *d,
 						      char *tmp_name);
 void                                    nanny(struct descriptor_data *d, char *arg);
 void                                    update_player_list_entry(struct descriptor_data *ch);
-void                                    PutPasswd(struct descriptor_data *d);
+/* void                                    PutPasswd(struct descriptor_data *d); */
 int                                     ValidPlayer(char *who, char *pwd, char *oldpwd);
 
 #endif
