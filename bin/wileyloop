@@ -1,22 +1,31 @@
-#!/usr/bin/bash
+#!/bin/bash
 # 42 is our magic number for not rebooting,
 # otherwise we assume it crashed or we said reboot.
 
-#echo $$ >/var/run/wiley.pid
-cd /home/wiley/wiley/bin
-while [ -x ./wileymud ]; do
-  LOG=`/bin/date "+../lib/log/runlog.%y%m%d-%H%M%S"`
-  touch $LOG
-  #chown wiley.wiley $LOG
-  chmod 640 $LOG
-  ./wileymud 3000 >$LOG 2>&1 </dev/null
+PORT=3000
+MUDDIR=/home/wiley
+PATH=$MUDDIR/bin:/bin:/usr/bin:/sbin:/usr/sbin
+DAEMON=$MUDDIR/bin/wileymud
+SCRIPT=$MUDDIR/bin/wileyloop
+PIDFILE=$MUDDIR/etc/wileymud.pid
+STARTDIR=$MUDDIR/bin
+
+cd $STARTDIR
+while [ -x $DAEMON ]; do
+  LOGFILE=`/bin/date "+$MUDDIR/lib/log/runlog.%y%m%d-%H%M%S"`
+  touch $LOGFILE
+  chmod 640 $LOGFILE
+  export MALLOC_CHECK=2
+  $DAEMON -P $PIDFILE -L $LOGFILE $PORT
   STATUS=$?
-  bzip2 -9 $LOG
-  #chown wiley.wiley $LOG.bz2
-  chmod 640 $LOG.bz2
+  rm -f $PIDFILE
+  sync
+  bzip2 -9q $LOGFILE
   sync
   if [ $STATUS = 42 ]; then
     exit
   fi
+  echo "Status was $STATUS"
   sleep 240
 done
+

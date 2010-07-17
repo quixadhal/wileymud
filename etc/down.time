@@ -3,8 +3,6 @@ A demon of WileyMUD MASSACRES you with its CRUNCH!
 
 Sorry for the inconvience, but WileyMUD III is down for the moment.
 
-It appears that there is a nasty bug in some routine.  I shall endeavour to
-recompile the WileyBeast with debugging on in the hope of catching the
-demon bug red-handed and squash her.  In the mean time, be patient.
+System is being upgraded from OpenBSD 3.1 to Debian "sarge"
 
-					- Sedna
+					- Quixadhal

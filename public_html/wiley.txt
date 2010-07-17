@@ -1,4 +1,4 @@
-Dread Quixadhal welcomes you back to                        141.218.40.78 3000
+Dread Quixadhal welcomes you back to                 wiley.shadowlord.org 3000
   __      __.__.__                  _____   ____ ___________    .___.___.___ 
  /  \    /  \__|  |   ____ ___.__. /     \ |    |   \______ \   |   |   |   |
  \   \/\/   /  |  | _/ __ <   |  |/  \ /  \|    |   /|    |  \  |   |   |   |
@@ -72,7 +72,7 @@ files and coding standards.  All WileyMUD files follow a fixed format, so
 each subsection will describe the file directly instead of in prose.
 
    I.  The World File, tinyworld.wld  ...............................   83
-  II.  The Mob File, tinyworld.mob  ................................. 1111
+  II.  The Mob File, tinyworld.mob  .................................  363
  III.  The Object File, tinyworld.obj  .............................. 1111
   IV.  The Zone File, tinyworld.zon  ................................ 1111
    V.  The Shop File, tinyworld.shp  ................................ 1111
@@ -517,6 +517,8 @@ Basic template of a mobile:
          M to designate how many attacks the mob shall have.  ie.  M 2
   'W'  - Mob can have multiple attacks and make sounds.  Attacks apply to the
          same rule as M mobs.  Sound is handled at the end of the template.
+  'C'  - Most recent mob structure.  See special details on building C mobs
+         in the section below.
 
 <level>:
   This is the level of the monster, and is used for the 'consider' command
@@ -648,6 +650,67 @@ Basic template of a mobile:
 <sound_two>:
   This is the sound you will hear if you are standing one room away from the
   mob that emits the sound.  Only 'W' type mobs are allows to have this field.
+
+*******************************************************************************
+The 'C' mob structure
+
+Standard WileyIII mobs are very primitive and limited.  All attributes, such
+as str, int, wis, dex, con, and class are defaulted.  All objects simply "hit",
+rather than using special attacks which are normal for their species.  Instead
+of a clawed attack, such as from a Slaadi, the mob simply "hits" you.  
+
+The C mob structure was developed to overcome that limitation and offer greater
+flexibility to the builder.
+
+Here is the layout for the C-type mob structure.
+
+<#virtual_number>
+<name_list>~
+<short_description>~
+<long_description>
+~
+<description>
+~
+<action_flags affects_flags alignment type(='C')>
+<race class sex height weight gold(dice)>
+<exp(dice) level hit(dice) AC thac0 #attacks>
+<damage(dice) dam_type>
+... continues for each attack.
+<resistance immunities susceptibilities>
+<str stradd dex con intel wis>
+<sav1 sav2 sav3 sav4 sav5>
+<position def_position sounds skills>
+<local_sound>      (if sounds=1)
+~
+<distant_sound>    (if sounds=1)
+~
+<skill_type learned recognized>  (for skills from 0 to n in skills database)
+...
+
+The different specifications from the normal mobs are broken into:
+
+race: same as above.
+class: which class.  Mobs can multiclass.  Here is a list of the class values
+to add together:
+
+   CLASS_MAGIC_USER    1
+   CLASS_CLERIC        2
+   CLASS_WARRIOR       4
+   CLASS_THIEF         8
+   CLASS_RANGER       16
+   CLASS_DRUID        32  (note: not implemented)
+
+sex: same as above.
+height: how tall a mob is.  It does nothing that we know of.  Old default is
+137.
+weight: how much the mob wieghs.  Also does nothing.  Old default is 235.
+gold(dice): amount of gold mob will have.  Specified in dice format (i.e.
+<#die>d<die_size>+<added_value>).
+experience: also in dice roll.
+level: mob level.  Applied to all classes mob belongs to.
+hit: specified in dice.
+AC, thac0: Same as above.
+<#attacks>: number of attacks the mob is allowed.  
 
 =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 

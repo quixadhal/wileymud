@@ -9,36 +9,35 @@ WHAT:
 -->
 <head>
 <title> WileyMUD III, the sickness of Dread Quixadhal. </title>
-<link rev="made" href="mailto:wiley@yakko.cs.wmich.edu">
+<link rev="made" href="mailto:quixadhal@shadowlord.org">
 </head>
-<body background="pics/background.jpg" bgcolor="#505050" text="#d0d0d0" link="#ffffbf" vlink="#ffa040">
+<body background="gfx/marble_background.jpg" bgcolor="#505050" text="#d0d0d0" link="#ffffbf" vlink="#ffa040">
 <table border=0 cellspacing=5 cellpadding=5 width=100%>
 <tr> <td>
-<a href="/linux.txt">
-<img src="pics/linux95.jpg" border=0 align=center width=111 height=80
+<a href="linux.txt">
+<img src="gfx/linux95.jpg" border=0 align=center width=111 height=80
  alt="(Linux95!)">
 </a> </td>
 <td align=center>
-<center>Dread Quixadhal welcomes you to<br>
-<a href="mailto:chris@yakko.cs.wmich.edu">
-WileyMUD III!<br></center>
-</a> </td>
-<td align=right>
-<a href="telnet://yakko.cs.wmich.edu:3000">
-<img src="pics/orc.jpg" border=0 align=center width=116 height=163
- alt="(telnet)">
-</td> </tr>
-</table>
 <center>
-An ominous <a href="http://www.vtw.org/speech">shadow</a> hangs over the
-world as free speech is <I>SMOTHERED</I> by the buerocrats, yet again.
-<p>
-</center>
+  <a href="mailto:quixadhal@shadowlord.org">Dread Quixadhal</a> welcomes you to<br>
+<a href="telnet://wiley.shadowlord.org:3000/">
+WileyMUD III!<br>
+</a></center>
+ </td>
+<td align=right>
+<a href="telnet://wiley.shadowlord.org:3000/">
+<img src="gfx/orc.jpg" border=0 align=center width=116 height=163
+ alt="(telnet)">
+</a></td> 
+</tr>
+</table>
+<p></p>
      As you finish your last sip of dark Nestharian Ale, the clash of steel
 interrupts your dreamy repose yet again.  Running to the door, you see some
 poor besotted elf trying to cast as the villager he just tried to rob brings
 a thick wooden club down on his head.
-<p>
+     <p>
      "Get out of MY town you bastard!"  The sorry excuse that is Shylar's
 only cityguard runs up and starts beating on the villager... blissfully
 unaware that the fool elf started the fight in the first place.  You know
@@ -79,24 +78,56 @@ After trying several other muds recently, I have to say this is still true.
 So, if you would like to see an ALL original world that is NOT a cakewalk...
 Please stop on by!
 <p>
+<table border=1 cellspacing=5 cellpadding=5 width=100%>
+  <tr>
+    <td>
+      <center><h2>10 Most Popular KILLS!</h2></center>
+    </td>
+    <td>
+      <center><h2>10 Most Recent DEATHS!</h2></center>
+    </td>
+  </tr>
+  <tr>
+    <td align="center">
+      <font size="-1">
+      <pre>
+      <?php
+      $handle = popen("/usr/bin/head -10 /home/wiley/killcount.log", "r");
+      if ($handle) {
+        printf("\n%-24s %-5s\n","Victim","Count");
+        printf("%-24s %-5s\n","------------------------","-----");
+        while (!feof($handle)) {
+          $buffer = fgets($handle, 4096);
+          echo $buffer;
+        }
+        fclose($handle);
+      }
+      ?>
+      </pre>
+      </font>
+    </td>
+    <td align="center">
+      <font size="-1">
+      <pre>
+      <?php
+      $handle = popen("/usr/bin/tail -10 /home/wiley/death.log", "r");
+      if ($handle) {
+        printf("\n%-19s %-16s %-24s %-24s\n","Date","Victim","Perp","Location");
+        printf("%-19s %-16s %-24s %-24s\n","-------------------","----------------","------------------------","------------------------");
+        while (!feof($handle)) {
+          $buffer = fgets($handle, 4096);
+          echo $buffer;
+        }
+        fclose($handle);
+      }
+      ?>
+      </pre>
+      </font>
+    </td>
+  </tr>
+</table>
 <a href="wiley.txt">
-<img src="pics/clouds.gif" border=0 align=center width=177 height=115
- alt="(docs)"> Building</a> information IS available!
-<p>
-<center>
-<h4 align=center>Visit the
-<a href="http://yakko.cs.wmich.edu/">
-<img src="/pics/cclub.gif" border=0 align=center width=96 height=48
- alt="Computer Club"></a>
-of <a href="http://www.wmich.edu">
-<img src="/pics/wmulogo.gif" border=0 align=center width=86 height=79
- alt="Western Michigan University">
-</a>and <a href="telnet://yakko.cs.wmich.edu:3000">
-<img src="pics/wiley.gif" border=0 align=center width= 116 height=72
- alt="WileyMUD III!"></a>
-</h4>
-</center>
-Any complaints?  No?  Well, you can whip one up quickly
-<a href="http://www-csag.cs.uiuc.edu/individual/pakin/complaint">here</a>!
+<img src="gfx/clouds.gif" border=0 align=center width=177 height=115
+     alt="(docs)"> Building</a> information IS available!
 </body>
 </html>
