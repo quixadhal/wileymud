@@ -35,7 +35,7 @@ void InitBoards()
   /*
    * this is called at the very beginning, like shopkeepers 
    */
-  board_list = 0;
+  board_list = NULL;
 
 }
 
@@ -52,11 +52,12 @@ void InitABoard(struct obj_data *obj)
      **  try to match a board with an existing board in the game
      */
     for (tmp = board_list; tmp; tmp = tmp->next) {
-      if (tmp->Rnum == obj->item_number) {
+      if (tmp->Vnum == obj->item_number) {
 	/*
 	 **  board has been matched, load and ignore it.
 	 */
-	board_load_board(tmp);
+	/* board_load_board(tmp); */
+        new_load_board(tmp);
 	return;
       }
     }
@@ -73,10 +74,15 @@ void InitABoard(struct obj_data *obj)
    */
 
   CREATE(new_board, struct Board, 1);
-  new_board->Rnum = obj->item_number;
+  new_board->Vnum = obj_index[obj->item_number].virtual;
   sprintf(new_board->filename, "%d.messages", obj_index[obj->item_number].virtual);
-  OpenBoardFile(new_board);
-  board_load_board(new_board);
+
+  /*
+   * OpenBoardFile(new_board);
+   * board_load_board(new_board);
+   */
+
+  new_load_board(new_board);
 
   /*
    **  add our new board to the beginning of the list
@@ -85,7 +91,7 @@ void InitABoard(struct obj_data *obj)
   tmp = board_list;
   new_board->next = tmp;
   board_list = new_board;
-  CloseBoardFile(new_board);
+  /* CloseBoardFile(new_board); */
 }
 
 void OpenBoardFile(struct Board *b)
@@ -134,7 +140,7 @@ struct Board                           *FindBoardInRoom(int room)
   for (o = real_roomp(room)->contents; o; o = o->next_content) {
     if (obj_index[o->item_number].func == (ifuncp)board) {
       for (nb = board_list; nb; nb = nb->next) {
-	if (nb->Rnum == o->item_number)
+	if (nb->Vnum == obj_index[o->item_number].virtual)
 	  return (nb);
       }
       return (NULL);
@@ -297,7 +303,8 @@ int board_remove_msg(struct char_data *ch, char *arg, struct Board *b)
   }
   b->msg_num--;
   cprintf(ch, "Message removed.\r\n");
-  board_save_board(b);
+  /* board_save_board(b); */
+  new_save_board(b);
   return (1);
 }
 
@@ -335,8 +342,90 @@ void board_save_board(struct Board *b)
     fwrite(b->msgs[ind], sizeof(char), len, b->file);
   }
   CloseBoardFile(b);
-  board_fix_long_desc(b);
+  /* board_fix_long_desc(b); */
   return;
+}
+
+void new_save_board(struct Board *bp)
+{
+EXEC SQL BEGIN DECLARE SECTION;
+  int message_exists;
+  int board_id;
+  int message_id;
+  /* timestamp message_date; Sun Jul 25 00:35:39 2004 at end of header... */
+  char message_date[25];
+  char message_sender[MAX_STRING_LENGTH];
+  char message_header[MAX_STRING_LENGTH];
+  char message_text[MAX_STRING_LENGTH];
+EXEC SQL END DECLARE SECTION;
+
+  int i;
+  char *mp;
+
+  if (DEBUG > 2)
+    log_info("called %s with %08zx", __PRETTY_FUNCTION__, (size_t)bp);
+
+  if (!bp)
+    return;
+
+  if (!bp->msg_num) {
+    log_info("No messages to save.\r\n");
+    return;
+  }
+
+  board_id = bp->Vnum;
+  for(i = 0; i < bp->msg_num; i++) {
+    message_id = i;
+    /* message_date = PGTYPEStimestamp_from_asc(bp->head[i] + strlen(bp->head[i]) - 24, NULL); */
+    strcpy(message_date, bp->head[i] + strlen(bp->head[i]) - 24);
+    strcpy(message_header, bp->head[i]);
+    /* Adventurers WANTED! (Quixadhal) Sun Jul 25 00:35:39 2004 */
+    message_header[strlen(message_header) - 26] = '\0';
+    mp = strrchr(message_header, '(');
+    if (mp) {
+      strcpy(message_sender, mp + 1);
+      *(mp - 1) = '\0';
+    } else {
+      *message_sender = '\0';
+    }
+    if (!bp->msgs[i]) {
+      CREATE(bp->msgs[i], char, 50);			       /* Quixadhal: Why 50? */
+      strcpy(bp->msgs[i], "Generic Message");
+    }
+    strcpy(message_text, bp->msgs[i]);
+    EXEC SQL BEGIN WORK;
+    message_exists = 0;
+    EXEC SQL SELECT 1 INTO :message_exists FROM board_messages WHERE board_id = :board_id AND message_id = :message_id;
+    if (sqlca.sqlcode < 0) {
+      fprintf(stderr, "error code %ld, message %s, rows %ld, warning %c\n",
+             sqlca.sqlcode, sqlca.sqlerrm.sqlerrmc, sqlca.sqlerrd[2],
+             sqlca.sqlwarn[0]);
+      EXEC SQL ROLLBACK WORK;
+    } else {
+      EXEC SQL COMMIT WORK;
+    }
+    if(message_exists) {
+      EXEC SQL UPDATE board_messages SET message_date = :message_date,
+                                         message_sender = :message_sender,
+                                         message_header = :message_header,
+                                         message_text = :message_text
+               WHERE board_id = :board_id AND message_id = :message_id;
+    } else {
+      EXEC SQL INSERT INTO board_messages ( board_id, message_id, message_date, message_sender, message_header, message_text )
+               VALUES ( :board_id, :message_id, to_timestamp( :message_date, 'Dy Mon DD HH24:MI:SS YYYY'),
+               :message_sender, :message_header, :message_text );
+
+    }
+    if (sqlca.sqlcode < 0) {
+      fprintf(stderr, "error code %ld, message %s, rows %ld, warning %c\n",
+             sqlca.sqlcode, sqlca.sqlerrm.sqlerrmc, sqlca.sqlerrd[2],
+             sqlca.sqlwarn[0]);
+      EXEC SQL ROLLBACK WORK;
+    } else {
+      EXEC SQL COMMIT WORK;
+    }
+  }
+  /* board_fix_long_desc(bp); */
 }
 
 void board_load_board(struct Board *b)
@@ -376,8 +465,83 @@ void board_load_board(struct Board *b)
     fread(b->msgs[ind], sizeof(char), len, b->file);
   }
   CloseBoardFile(b);
-  board_fix_long_desc(b);
+  /* board_fix_long_desc(b); */
   return;
+}
+
+void new_load_board(struct Board *bp)
+{
+EXEC SQL BEGIN DECLARE SECTION;
+  int message_count;
+  int board_id;
+  int message_id;
+  /* timestamp message_date; Sun Jul 25 00:35:39 2004 at end of header... */
+  char message_date[25];
+  char message_sender[MAX_STRING_LENGTH];
+  char message_header[MAX_STRING_LENGTH];
+  char message_text[MAX_STRING_LENGTH];
+EXEC SQL END DECLARE SECTION;
+
+  int i;
+  char full_header[MAX_STRING_LENGTH];
+  char board_filename[MAX_STRING_LENGTH];
+
+  if (DEBUG > 2)
+    log_info("called %s with %08zx", __PRETTY_FUNCTION__, (size_t)bp);
+
+  if (!bp)
+    return;
+
+  board_reset_board(bp);
+  board_id = bp->Vnum;
+
+  /* Only load from the file if it's newer than our SQL data */
+  sprintf(board_filename, "%s/%d.messages", BOARD_FILE_PATH, board_id);
+  if( compare_dates_file_sql( board_filename, "board_messages", "message_date" ) > 0 ) {
+    log_boot("- Loading board %d from file", board_id);
+    board_load_board(bp);
+    log_boot("- Loaded!");
+  } else {
+    log_boot("- Loading board %d from SQL", board_id);
+    EXEC SQL BEGIN WORK;
+    message_count = 0;
+    EXEC SQL SELECT count(*) INTO :message_count FROM board_messages WHERE board_id = :board_id;
+    if (sqlca.sqlcode < 0) {
+      fprintf(stderr, "error code %ld, message %s, rows %ld, warning %c\n",
+              sqlca.sqlcode, sqlca.sqlerrm.sqlerrmc, sqlca.sqlerrd[2],
+              sqlca.sqlwarn[0]);
+      EXEC SQL ROLLBACK WORK;
+    } else {
+      EXEC SQL COMMIT WORK;
+    }
+    bp->msg_num = message_count;
+  
+    for(i = 0; i < message_count; i++) {
+      message_id = i;
+      EXEC SQL BEGIN WORK;
+      EXEC SQL SELECT to_char(message_date, 'Dy Mon DD HH24:MI:SS YYYY'), message_sender, message_header, message_text
+               INTO :message_date, :message_sender, :message_header, :message_text
+               FROM board_messages WHERE board_id = :board_id AND message_id = :message_id;
+      if (sqlca.sqlcode < 0) {
+        fprintf(stderr, "error code %ld, message %s, rows %ld, warning %c\n",
+               sqlca.sqlcode, sqlca.sqlerrm.sqlerrmc, sqlca.sqlerrd[2],
+               sqlca.sqlwarn[0]);
+        EXEC SQL ROLLBACK WORK;
+      } else {
+        EXEC SQL COMMIT WORK;
+      }
+      strcpy(full_header, message_header);
+      strcat(full_header, " (");
+      strcat(full_header, message_sender);
+      strcat(full_header, ") ");
+      strcat(full_header, message_date);
+      CREATE(bp->head[i], char, strlen(full_header) + 1);
+      strcpy(bp->head[i], full_header);
+      CREATE(bp->msgs[i], char, strlen(message_text) + 1);
+      strcpy(bp->msgs[i], message_text);
+    }
+    log_boot("- Loaded!");
+  }
 }
 
 void board_reset_board(struct Board *b)
@@ -399,7 +563,7 @@ void board_reset_board(struct Board *b)
     b->head[ind] = b->msgs[ind] = NULL;
   }
   b->msg_num = 0;
-  board_fix_long_desc(b);
+  /* board_fix_long_desc(b); */
   return;
 }
 
@@ -433,6 +597,7 @@ int board_display_msg(struct char_data *ch, char *arg, struct Board *b)
   return (1);
 }
 
+#if 0
 void board_fix_long_desc(struct Board *b)
 {
   if (DEBUG > 2)
@@ -440,6 +605,7 @@ void board_fix_long_desc(struct Board *b)
 
   return;
 }
+#endif
 
 int board_show_board(struct char_data *ch, char *arg, struct Board *b)
 {
@@ -474,3 +640,54 @@ int board_show_board(struct char_data *ch, char *arg, struct Board *b)
 
   return (1);
 }
+
+void boards_to_sql(void)
+{
+EXEC SQL BEGIN DECLARE SECTION;
+  int board_id;
+  int message_id;
+  /* timestamp message_date; Sun Jul 25 00:35:39 2004 at end of header... */
+  char message_date[25];
+  char message_sender[MAX_STRING_LENGTH];
+  char message_header[MAX_STRING_LENGTH];
+  char message_text[MAX_STRING_LENGTH];
+EXEC SQL END DECLARE SECTION;
+
+  struct Board *bp = board_list;
+  int i;
+  char *mp;
+
+  while(bp) {
+    board_id = bp->Vnum;
+    for(i = 0; i < bp->msg_num; i++) {
+      message_id = i;
+      /* message_date = PGTYPEStimestamp_from_asc(bp->head[i] + strlen(bp->head[i]) - 24, NULL); */
+      strcpy(message_date, bp->head[i] + strlen(bp->head[i]) - 24);
+      strcpy(message_header, bp->head[i]);
+      /* Adventurers WANTED! (Quixadhal) Sun Jul 25 00:35:39 2004 */
+      message_header[strlen(message_header) - 26] = '\0';
+      mp = strrchr(message_header, '(');
+      if (mp) {
+        strcpy(message_sender, mp + 1);
+        *(mp - 1) = '\0';
+      } else {
+        *message_sender = '\0';
+      }
+      strcpy(message_text, bp->msgs[i]);
+      EXEC SQL BEGIN WORK;
+      EXEC SQL INSERT INTO board_messages ( board_id, message_id, message_date, message_sender, message_header, message_text )
+               VALUES ( :board_id, :message_id, to_timestamp( :message_date, 'Dy Mon DD HH24:MI:SS YYYY'),
+               :message_sender, :message_header, :message_text );
+      if (sqlca.sqlcode < 0) {
+        fprintf(stderr, "error code %ld, message %s, rows %ld, warning %c\n",
+               sqlca.sqlcode, sqlca.sqlerrm.sqlerrmc, sqlca.sqlerrd[2],
+               sqlca.sqlwarn[0]);
+        EXEC SQL ROLLBACK WORK;
+      } else {
+        EXEC SQL COMMIT WORK;
+      }
+    }
+    bp = bp->next;
+  }
+}
+

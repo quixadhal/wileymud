@@ -153,7 +153,7 @@ EXEC SQL END DECLARE SECTION;
     return FALSE;
 
   for(i = 0; i < banned_at_count; i++) {
-    if (!str_cmp(banned_at_name[i], ip) && !str_cmp(banned_at_ip[i]))
+    if (!str_cmp(banned_at_names[i], name) && !str_cmp(banned_at_ips[i], ip))
       return TRUE;
   }
 
@@ -223,8 +223,8 @@ void load_bans(void)
   }
 
   log_boot("- Loading banned name@ip list from SQL");
-  EXEC SQL SELECT banned_at_name, banned_at_ip
-             INTO :banned_atnames, :banned_at_ip
+  EXEC SQL SELECT banned_name, banned_ip
+             INTO :banned_at_names, :banned_at_ips
              FROM banned
             WHERE banned_name IS NOT NULL
               AND banned_ip IS NOT NULL
