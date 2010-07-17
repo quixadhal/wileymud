@@ -1,0 +1,143 @@
+Ok, the final release of Linux'95, also known among those in the know as
+"v1.2.0" is now out.  After the extensive beta-release-period, Linux'95
+is reality. 
+
+Before you get Linux'95, I'd like to outline the Licensing stuff, and
+remind you that copyright infringement is a crime. 
+
+Linux'95 has several types of licenses, including, but not limited, to:
+
+* End-User License Agreement - Applications
+
+  This is an application-specific license, which is intended for a
+  single application running on your Linux'95-authorized computer.  The
+  license agreement rules differ depending on the application.  See
+  appendix 'H'. 
+
+* End-User License Agreement - Systems
+
+  This agreement is intended for singe system product use, such as the
+  Linux'95 kernel license.  It's important to note that the Systems
+  product licenses do not permit concurrent, or second copies.  There is
+  a special Multi-License upgrade program for those that want to start
+  out with a single license but later expand their setup. 
+
+* Multi-License Pak
+
+  This agreement is intended for sites with multiple systems, which want
+  to run multiple copies of the Linux'95 system concurrently and/or on
+  several machines.  This license is available as a 10, 50 or 100-unit
+  license depending on the size of your installation.
+
+* Logo License
+
+  This agreement is intended for hardware and software vendors wishing
+  to show that their product is Linux'95-aware, and has special features
+  taking advantage of the Linux'95 environment.
+
+* Linux'95 Stamp of Approval
+
+  This stamp of approval is available for systems that have been
+  certified at our extensive testing facility as being able to run the
+  Linux'95 system. 
+
+* The "I've got too much money" License
+
+  Contact us for details on this exclusive licensing deal, we'll work
+  something out.  Please contact "ivemoney@linux.Helsinki.FI" directly. 
+
+Large institutions that want to possibly combine several licenses can do
+so, with a standard licensing fee reduction.  Please contact our
+licensing department for further details. 
+
+
+	End-User License Agreement - Systems (EULAS)
+
+This license allows full use of the Linux'95 base system on a single
+computer or workstation.  Any number of people can use that single
+system, but only one at a time.  This is the license of choice for
+stand-alone systems, or for secure installations with a very restrictive
+network connection. 
+
+EULAS allows making and unlimited number of backup copies, and allows
+further distribution of the system under the terms of the GPL.  Please
+see appendix 'G' for further details of the GPL. 
+
+
+	Multi-License Pak - MPAK
+
+MPAK offers you all of the Linux'95 single system License, while also
+allowing you to extend the use of Linux'95 to multiple systems and/or
+multiple users concurrently on a single system.  Thus your Linux'95
+system can become a full departemental mail server, or act as a internet
+gateway to the rest of the world.
+
+Like the single-user license, the MPAK license allows further
+distribution of Linux'95 copies according to the GPL. 
+
+
+	Logo License and Stamp of Approval
+
+The exclusive Linux'95 License and Stamp of Approval can be used to show
+that your hardware and/or software is not limited to the more primitive
+systems available today, but is able to run the full Linux'95 system. 
+To apply for a Logo License, you must show that your product does indeed
+work under Linux'95, and uses any of the extensive Linux'95 environment
+services (see also: Stevens, Advanced Unix Programming). 
+
+The Linux'95 Stamp of Approval requires that your product has gone
+through the rigorous compatibility testing at LT-labs.  To ensure that
+your product continues to be compatible even with new versions of the
+Linux'95 system, you are also advised not to expect it back ("we got it,
+and we ain't giving it back"). 
+
+The DEC AlphaPC 2000/300 is currently under extensive Stamp of Approval
+testing.  Other hardware manufacturers, please contact out hardware
+department at "hardware@linux.helsinki.fi". 
+
+
+	How to Apply for a License
+
+To actually apply for the licenses, please find the nearest Linux'95
+distributor.  The official Linux'95 kernel distribution is available at
+'ftp://ftp.cs.helsinki.fi/pub/Software/Linux/Kernel/v1.2' and at
+'ftp://ftp.funet.fi/pub/OS/Linux/PEOPLE/Linus/v1.2'.  Other suppliers
+are expected to pick it up within days. 
+
+After having aquired the Linux'95 distribution, you will have
+automatically applied for a single-user license (the distribution
+outlets will do all the necessary paperwork for you, no need to fill in
+registration forms).  When you expand the license, the revolutionary
+"Linux'95 Auto-Licensing" software will automatically send in a expanded
+license request and deduct the licensing fee from your bank account. 
+
+To apply for the Stamp of Approval, please contact our Approval
+department electronically at "approval@linux.Helsinki.FI" for further
+details. 
+
+
+	Why do I want to upgrade?
+
+The beta-testers of Linux'95 can upgrade to the final Linux'95 from
+their current setup for no extra licensing fees by applying the
+"v1.1.95-1.2.0.patch.gz" system-specific patch set.  That patch set
+mainly corrects a few cosmetic problems with the beta-version of
+Linux'95, namely spelling.  It also modifies the behaviour of a few
+system-specific undocumented features. 
+
+Users of the older Linux'94 system release (aka 1.0.9) will find the
+extensive new features of Linux'95 a new exciting world of wonder.  Our
+beta-testing community has extensively tested the new features, while at
+the same time ensuring full backwards compatibility with most major
+software packages.  Updated versions for packages that have broken are
+available at all major Linux sites. 
+
+We thank you for using Linux'95,
+
+			Linus
+
+--
+Send submissions for comp.os.linux.announce to: linux-announce@news.ornl.gov
+PLEASE remember Keywords: and a short description of the software.
+
+
