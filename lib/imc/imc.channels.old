@@ -1,0 +1,109 @@
+#IMCCHAN
+ChanName   Server01:ichat
+ChanLocal  ichat
+ChanRegF   ~R[~Yichat~R] ~C%s: ~c%s
+ChanEmoF   ~R[~Yichat~R] ~c%s %s
+ChanSocF   ~R[~Yichat~R] ~c%s
+ChanLevel  3
+End
+
+#IMCCHAN
+ChanName   Server01:pchat
+ChanLocal  pchat
+ChanRegF   ~R[~Ypchat~R] ~C%s: ~c%s
+ChanEmoF   ~R[~Ypchat~R] ~c%s %s
+ChanSocF   ~R[~Ypchat~R] ~c%s
+ChanLevel  2
+End
+
+#IMCCHAN
+ChanName   Server01:ibuild
+ChanLocal  ibuild
+ChanRegF   ~R[~Yibuild~R] ~C%s: ~c%s
+ChanEmoF   ~R[~Yibuild~R] ~c%s %s
+ChanSocF   ~R[~Yibuild~R] ~c%s
+ChanLevel  3
+End
+
+#IMCCHAN
+ChanName   Server01:ievennia
+ChanLocal  ievennia
+ChanRegF   ~R[~Yievennia~R] ~C%s: ~c%s
+ChanEmoF   ~R[~Yievennia~R] ~c%s %s
+ChanSocF   ~R[~Yievennia~R] ~c%s
+ChanLevel  4
+End
+
+#IMCCHAN
+ChanName   Server02:icode
+ChanLocal  icode
+ChanRegF   ~R[~Yicode~R] ~C%s: ~c%s
+ChanEmoF   ~R[~Yicode~R] ~c%s %s
+ChanSocF   ~R[~Yicode~R] ~c%s
+ChanLevel  3
+End
+
+#IMCCHAN
+ChanName   Server02:igame
+ChanLocal  igame
+ChanRegF   ~R[~Yigame~R] ~C%s: ~c%s
+ChanEmoF   ~R[~Yigame~R] ~c%s %s
+ChanSocF   ~R[~Yigame~R] ~c%s
+ChanLevel  2
+End
+
+#IMCCHAN
+ChanName   Server02:irc
+ChanLocal  irc
+ChanRegF   ~R[~Yirc~R] ~C%s: ~c%s
+ChanEmoF   ~R[~Yirc~R] ~c%s %s
+ChanSocF   ~R[~Yirc~R] ~c%s
+ChanLevel  3
+End
+
+#IMCCHAN
+ChanName   Server02:inews
+ChanLocal  inews
+ChanRegF   ~R[~Yinews~R] ~C%s: ~c%s
+ChanEmoF   ~R[~Yinews~R] ~c%s %s
+ChanSocF   ~R[~Yinews~R] ~c%s
+ChanLevel  3
+End
+
+#IMCCHAN
+ChanName   Server02:imusic
+ChanLocal  imusic
+ChanRegF   ~R[~Yimusic~R] ~C%s: ~c%s
+ChanEmoF   ~R[~Yimusic~R] ~c%s %s
+ChanSocF   ~R[~Yimusic~R] ~c%s
+ChanLevel  3
+End
+
+#IMCCHAN
+ChanName   Server02:imudnews
+ChanLocal  imudnews
+ChanRegF   ~R[~Yimudnews~R] ~C%s: ~c%s
+ChanEmoF   ~R[~Yimudnews~R] ~c%s %s
+ChanSocF   ~R[~Yimudnews~R] ~c%s
+ChanLevel  3
+End
+
+#IMCCHAN
+ChanName   Server02:ifree
+ChanLocal  ifree
+ChanRegF   ~R[~Yifree~R] ~C%s: ~c%s
+ChanEmoF   ~R[~Yifree~R] ~c%s %s
+ChanSocF   ~R[~Yifree~R] ~c%s
+ChanLevel  3
+End
+
+#IMCCHAN
+ChanName   Server02:iruby
+ChanLocal  iruby
+ChanRegF   ~R[~Yiruby~R] ~C%s: ~c%s
+ChanEmoF   ~R[~Yiruby~R] ~c%s %s
+ChanSocF   ~R[~Yiruby~R] ~c%s
+ChanLevel  3
+End
+
+#END

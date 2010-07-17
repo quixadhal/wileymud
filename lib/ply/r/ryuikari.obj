@@ -2,12 +2,14 @@
 Owner              Ryuikari~
 Gold               0
 TotalCost          0
-LastUpdate         1212248145
+LastUpdate         1273781776
 MinimumStay        0
 End
 #EQUIPMENT
+End
+#CARRIED
 #ITEM
-ObjId              0
+ObjId              7
 ContainedBy        -1
 Name               club wooden~
 Description
@@ -17,7 +19,7 @@ a wooden club~
 ActionDescr
 (null)~
 VNum               3048
-EquippedAt         16
+EquippedAt         0
 Values             0 1 6 7
 ExtraFlags         0
 Weight             5
@@ -31,7 +33,7 @@ Affect             0 0
 Affect             0 0
 End
 #ITEM
-ObjId              1
+ObjId              7
 ContainedBy        -1
 Name               bottle water~
 Description
@@ -41,7 +43,7 @@ a bottle~
 ActionDescr
 (null)~
 VNum               3003
-EquippedAt         17
+EquippedAt         0
 Values             16 16 0 0
 ExtraFlags         0
 Weight             2
@@ -54,8 +56,6 @@ CostPerDay         1
 Affect             0 0
 Affect             0 0
 End
-End
-#CARRIED
 #ITEM
 ObjId              7
 ContainedBy        -1

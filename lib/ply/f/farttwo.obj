@@ -1,0 +1,248 @@
+#RENT
+Owner              Farttwo~
+Gold               0
+TotalCost          0
+LastUpdate         1229290375
+MinimumStay        0
+End
+#EQUIPMENT
+End
+#CARRIED
+#ITEM
+ObjId              7
+ContainedBy        -1
+Name               heafty loaf bread~
+Description
+A heafty loaf of bread rests here.~
+ShortDescr
+a heafty loaf of bread~
+ActionDescr
+(null)~
+VNum               5016
+EquippedAt         0
+Values             7 0 0 0
+ExtraFlags         0
+Weight             1
+Timer              0
+BitVector          0
+Type               19
+WearFlags          1
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              7
+ContainedBy        -1
+Name               heafty loaf bread~
+Description
+A heafty loaf of bread rests here.~
+ShortDescr
+a heafty loaf of bread~
+ActionDescr
+(null)~
+VNum               5016
+EquippedAt         0
+Values             7 0 0 0
+ExtraFlags         0
+Weight             1
+Timer              0
+BitVector          0
+Type               19
+WearFlags          1
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              7
+ContainedBy        -1
+Name               bottle water~
+Description
+A bottle of clear liquid has been left here.~
+ShortDescr
+a bottle~
+ActionDescr
+(null)~
+VNum               3003
+EquippedAt         0
+Values             16 16 0 0
+ExtraFlags         0
+Weight             2
+Timer              0
+BitVector          0
+Type               17
+WearFlags          16385
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              7
+ContainedBy        -1
+Name               bottle water~
+Description
+A bottle of clear liquid has been left here.~
+ShortDescr
+a bottle~
+ActionDescr
+(null)~
+VNum               3003
+EquippedAt         0
+Values             16 16 0 0
+ExtraFlags         0
+Weight             2
+Timer              0
+BitVector          0
+Type               17
+WearFlags          16385
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              7
+ContainedBy        -1
+Name               club wooden~
+Description
+A wooden club lies here.~
+ShortDescr
+a wooden club~
+ActionDescr
+(null)~
+VNum               3048
+EquippedAt         0
+Values             0 1 6 7
+ExtraFlags         0
+Weight             5
+Timer              0
+BitVector          0
+Type               5
+WearFlags          8193
+Cost               2
+CostPerDay         2
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              7
+ContainedBy        -1
+Name               map shlyar~
+Description
+A map lies here.~
+ShortDescr
+a map~
+ActionDescr
+(null)~
+VNum               3050
+EquippedAt         0
+Values             0 0 0 0
+ExtraFlags         0
+Weight             2
+Timer              0
+BitVector          0
+Type               12
+WearFlags          1
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+ExtraDescr         map shylar~
+                         -= Grassland =-
+
+     -= Mansion =-           
+           +              -= Arcanus =-
+   	       	         	+
+         * * * * *  *  *  *  *  *+ -= Jakes =-  +-= Kark =-
+   
+                 -= Jessica =- +*                -= Farm =-
+
+                 -= Supply =-  +*+ -= Griffons =-      
+      +
++-= Chapel =-+   -= Bakery =-  +*  -= Sass =-
+      +            		       +	
+ -= Pastue =-     -= Tate =-   +*  *  *  *  *  *  *  *  *  *
+-= Cemetary =-                         + 
+      +                            -= Home =-
+
+                         -= Grassland =-
+~
+End
+#ITEM
+ObjId              7
+ContainedBy        -1
+Name               letter newbie~
+Description
+A letter to newbies lies here, begging to be read.~
+ShortDescr
+a letter to newbies~
+ActionDescr
+(null)~
+VNum               3105
+EquippedAt         0
+Values             0 0 0 0
+ExtraFlags         0
+Weight             2
+Timer              0
+BitVector          0
+Type               12
+WearFlags          1
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+ExtraDescr         letter newbie~
+Welcome to WileyMUD III
+
+Death is commonplace here.  If you wish to die infrequenly, consider a few
+pointers:
+ 1> Use the consider command.
+    This command will help you by giving you a fairly good idea how well you
+    can take a mob.  Remember that the consider command will not factor in
+    damage from a mob's weapon.  Look and see if the mob has a weapon and
+    consider not attacking a mob.
+ 2> Set wimp mode.
+    Entering the wimp command will automatically cause you to flee for the
+    first three levels of the game if your hit points drop too low.
+ 3> Be aware that almost all mobs will remember you and some will track you.
+    If you attack a mob and have to flee, the mob will frequently attempt to
+    track you and kill you when it finds you.  If you must, duck into Griffin's
+    Tale, where no fighting is allowed.  When fleeing, move away a few rooms
+    to try to lose the trail of any mob which is following you.
+ 4> Stay really close to Shylar for the first few levels, or leave in groups.
+    Most of the mobs in Shylar are fairly easy (except the shopkeepers,
+    guildmasters, and Eli).  Outside of Shylar, you are TOAST!
+ 5> The most important item: Expect to die!
+ -Sedna
+~
+End
+#ITEM
+ObjId              7
+ContainedBy        -1
+Name               torch~
+Description
+A large torch.~
+ShortDescr
+a torch~
+ActionDescr
+(null)~
+VNum               3015
+EquippedAt         0
+Values             0 0 24 0
+ExtraFlags         0
+Weight             3
+Timer              0
+BitVector          0
+Type               1
+WearFlags          1
+Cost               10
+CostPerDay         3
+Affect             0 0
+Affect             0 0
+End
+End
+#END_RENT

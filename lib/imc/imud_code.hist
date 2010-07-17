@@ -1,0 +1,35 @@
+~R[07/10 21:47] ~G~R[~Yimud_code~R]~! ~gCratylus@Dead_Souls_Dev~!~c: chump card moarliek
+~R[07/10 21:47] ~G~R[~Yimud_code~R]~! ~gCratylus@Dead_Souls_Dev~!~c: mischan
+~R[07/10 21:47] ~G~R[~Yimud_code~R]~! ~rKalinash@Fire_and_Ice~!~c: inorite
+~R[07/14 08:55] ~G~R[~Yimud_code~R]~! ^r~YSilenus@DGDhub~!~c: how do profilers generally work is the code instrumented in some way?
+~R[07/14 08:55] ~G~R[~Yimud_code~R]~! ~rKalinash@Fire_and_Ice~!~c: yar
+~R[07/14 08:55] ~G~R[~Yimud_code~R]~! ~gCratylus@Dead_Souls_Dev~!~c: does that affect performance?
+~R[07/14 08:55] ~G~R[~Yimud_code~R]~! ~MQwer@Archipelago~!~c: yes and yes
+~R[07/14 08:56] ~G~R[~Yimud_code~R]~! ^r~YSilenus@DGDhub~!~c: what kind of instrumentation is added?
+~R[07/14 08:56] ~G~R[~Yimud_code~R]~! ~rKalinash@Fire_and_Ice~!~c: typically, function enter and exit tags
+~R[07/14 08:56] ~G~R[~Yimud_code~R]~! ^r~YSilenus@DGDhub~!~c: and how do these tags dump data?
+~R[07/14 08:57] ~G~R[~Yimud_code~R]~! ^r~YSilenus@DGDhub~!~c: Crat- even if i knew i ain't tellin u nuttin :P
+~R[07/14 08:57] ~G~R[~Yimud_code~R]~! ~MQwer@Archipelago~!~c: in the simplest case, by incrementing a counter
+~R[07/14 08:57] ~G~R[~Yimud_code~R]~! ~rKalinash@Fire_and_Ice~!~c: some sort of file that gets processed... they're usually looking for blocks that take a long time
+~R[07/14 08:57] ~G~R[~Yimud_code~R]~! ~rKalinash@Fire_and_Ice~!~c: some may also tag loops and things like that
+~R[07/14 08:58] ~G~R[~Yimud_code~R]~! ^r~YSilenus@DGDhub~!~c: ic thanks
+~R[07/15 03:07] ~G~R[~Yimud_code~R]~! ~CTyler@Legion_of_Knowledge~!~c: test
+~R[07/15 03:31] ~G~R[~Yimud_code~R]~! ~MAvatar@OuterSpace~!~c: Morning Tyler.
+~R[07/15 03:31] ~G~R[~Yimud_code~R]~! ~CTyler@Legion_of_Knowledge~!~c: hello! im a nweb admin
+~R[07/15 03:34] ~G~R[~Yimud_code~R]~! ~CTyler@Legion_of_Knowledge~!~c: newb
+~R[07/15 03:45] ~G~R[~Yimud_code~R]~! ~MAvatar@OuterSpace~!~c: I am just a wage slave who could not resist reconnecting to some muds while at work. :)
+~R[07/15 03:45] ~G~R[~Yimud_code~R]~! ~mQuixadhal@Bloodlines~!~c: N00bs are indeed hard to administrate.
+~R[07/15 03:45] ~G~R[~Yimud_code~R]~! ~CTyler@Legion_of_Knowledge~!~c: this mudlib looks pretty awesome though
+~R[07/15 03:45] ~G~R[~Yimud_code~R]~! ~mQuixadhal@Bloodlines~!~c: Which one, DS?
+~R[07/15 03:45] ~G~R[~Yimud_code~R]~! ~CTyler@Legion_of_Knowledge~!~c: yes
+~R[07/15 03:45] ~G~R[~Yimud_code~R]~! ~mQuixadhal@Bloodlines~!~c: Yep, Crat's done a nice job with it.
+~R[07/15 03:45] ~G~R[~Yimud_code~R]~! ~mQuixadhal@Bloodlines~!~c: Discworld is pretty nice too, although it's a bit grumpy to get it up and running.
+~R[07/15 03:45] ~G~R[~Yimud_code~R]~! ~CTyler@Legion_of_Knowledge~!~c: anyone know help command for the 'pager'?
+~R[07/15 03:45] ~G~R[~Yimud_code~R]~! ~mQuixadhal@Bloodlines~!~c: Back in the day, I loved the FR mudlib.  I still like the layout and ideas, but it's even harder to get working these days (very old).
+~R[07/15 03:45] ~G~R[~Yimud_code~R]~! ~CTyler@Legion_of_Knowledge~!~c: FR?
+~R[07/15 03:45] ~G~R[~Yimud_code~R]~! ~mQuixadhal@Bloodlines~!~c: Forgotten Realms
+~R[07/15 03:45] ~G~R[~Yimud_code~R]~! ~CTyler@Legion_of_Knowledge~!~c: don't know if i ever played that lib. my favorite lpmud of all time was looney
+~R[07/15 03:45] ~G~R[~Yimud_code~R]~! ~mQuixadhal@Bloodlines~!~c: I see the mud is still up and running, but they haven't relased a mudlib for a decade.
+~R[07/15 03:45] ~G~R[~Yimud_code~R]~! ~mQuixadhal@Bloodlines~!~c: Mine was BatMUD.  I don't think they've ever released any version of their mudlib to the public though.
+~R[07/15 03:45] ~G~R[~Yimud_code~R]~! ~mQuixadhal@Bloodlines~!~c: Too bad, the LDMUD driver needs a good solid mudlib.
+~R[07/15 03:45] ~G~R[~Yimud_code~R]~! ~CTyler@Legion_of_Knowledge~!~c: anyone know help command for the 'pager'?

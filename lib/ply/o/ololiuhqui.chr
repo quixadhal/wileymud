@@ -1,39 +1,42 @@
 #PLAYER
 Name               Ololiuhqui~
-Passwd             Olsu4B4AeR.v.~
+Passwd             Olix1H5lZ7DAo~
 Whizz              0
 PreTitle           ~
-Title              the Human ~
+Title              the Human Swordpupil~
 Description
+A tall, angular redhead with a pair of tsurugi and a gleam in her eye...
+She looks like a MUDding MADWOMAN!
 ~
-LastSite           adork@24-247-112-219.dhcp.klmz.mi.charter.com~
-LastLogin          1144106829
+LastSite           adork@goneril.shadowlord.org~
+LastLogin          1250026120
 Birth              1144106829
-Played             0
+Played             58
 Sex                2
 Race               1
 Class              4
 Alignment          0
-Exp                0
+Exp                1
+Level              warrior 1
 HeightWeight       169 110
 Gold               0 0
-HomeTown           3001
+HomeTown           3008
 LoadRoom           -1
 PoofIn             ~
 PoofOut            ~
-AbilityScores      0 0 0 0 0 0
+AbilityScores      17 0 12 13 10 11
 AbilityPad         0 0 0 0
-HpManaMove         6 0 100 0 96 0
+HpManaMove         24 20 101 0 199 0
 AC                 100
 ToHitDamage        0 0
 SaveApply          0 0 0 0 0
-Conditions         24 24 24 0 0 0
+Conditions         0 24 24 0 0 0
 PointsPad1         0 0 0
 PointsPad2         0 0 0 0
 PointsPad3         0 0 0
 ShortSavePad       0 0 0 0
 SavePad            0 0 0 0
-Pracs              0
+Pracs              3
 SkillsToLearn      0
 NamedSkill         1 0 0 armour~
 NamedSkill         2 0 0 teleport~
@@ -205,4 +208,6 @@ Affect             21 0 0 0 0 0 0
 Affect             22 0 0 0 0 0 0
 Affect             23 0 0 0 0 0 0
 Affect             24 0 0 0 0 0 0
+IMCPerm      1
+IMCFlags     256
 End

@@ -1,0 +1,122 @@
+~R[07/13 17:56] ~G~R[~Ydead_souls~R]~! ~BChaos@Nuclear_War_Mud_2~!~c: hrm
+~R[07/15 03:07] ~G~R[~Ydead_souls~R]~! ~CTyler@Legion_of_Knowledge~!~c: test
+~R[07/15 04:01] ~G~R[~Ydead_souls~R]~! ~CTyler@Legion_of_Knowledge~!~c: how do i set the pager amount?
+~R[07/15 04:01] ~G~R[~Ydead_souls~R]~! ~mQuixadhal@Bloodlines~!~c: Ahhhh, I think it's the command 'screen'
+~R[07/15 04:02] ~G~R[~Ydead_souls~R]~! ~mQuixadhal@Bloodlines~!~c: I think it takes width/height parameters
+~R[07/15 04:02] ~G~R[~Ydead_souls~R]~! ~CTyler@Legion_of_Knowledge~!~c: thanks
+~R[07/15 05:24] ~G~R[~Ydead_souls~R]~! ~CTyler@Legion_of_Knowledge~!~c: how do i fix gunshot wounds?
+~R[07/15 05:26] ~G~R[~Ydead_souls~R]~! ~CTyler@Legion_of_Knowledge~!~c: AddLead('foo',negative amount) figured it out
+~R[07/15 10:03] ~G~R[~Ydead_souls~R]~! ~BChaos@Nuclear_War_Mud_2~!~c: i am looking to remove all currency but dollars. where is the money defined as what it uses as default in ds?
+~R[07/15 10:06] ~G~R[~Ydead_souls~R]~! ~YSys@BlackHole~!~c: rtfm it's definitely in there somewhere, I read it once
+~R[07/15 10:06] ~G~R[~Ydead_souls~R]~! ~YSys@BlackHole~!~c: I think it's in the faq
+~R[07/15 10:08] ~G~R[~Ydead_souls~R]~! ~BChaos@Nuclear_War_Mud_2~!~c: k
+~R[07/15 10:08] ~G~R[~Ydead_souls~R]~! ~BChaos@Nuclear_War_Mud_2~!~c: look at faq didn't see it but i will look again
+~R[07/15 12:02] ~G~R[~Ydead_souls~R]~! ~gCratylus@Dead_Souls_Dev~!~c: http://dead-souls.net/ds-admin-faq.html#128
+~R[07/15 12:02] ~G~R[~Ydead_souls~R]~! ~gCratylus@Dead_Souls_Dev~!~c: you should prolly just add it, rather than remove everything else
+~R[07/15 12:02] ~G~R[~Ydead_souls~R]~! ~gCratylus@Dead_Souls_Dev~!~c: yer liable to break things if you remove currency
+~R[07/15 12:03] ~G~R[~Ydead_souls~R]~! ~gCratylus@Dead_Souls_Dev~!~c: just dont use the other currencies
+~R[07/15 12:03] ~G~R[~Ydead_souls~R]~! ~BChaos@Nuclear_War_Mud_2~!~c: gotcha
+~R[07/15 12:03] ~G~R[~Ydead_souls~R]~! ~BChaos@Nuclear_War_Mud_2~!~c: thanks
+~R[07/15 12:04] ~G~R[~Ydead_souls~R]~! ~gCratylus@Dead_Souls_Dev~!~c: np
+~R[07/15 12:04] ~G~R[~Ydead_souls~R]~! ~BChaos@Nuclear_War_Mud_2~!~c: trying stuff if i break it i can put it back :) making sure i back up alot i am in the learning stages i guess
+~R[07/15 14:26] ~G~R[~Ydead_souls~R]~! ~BChaos@Nuclear_War_Mud_2~!~c: hrm any reason i am getting a 404 for the web part?
+~R[07/15 14:26] ~G~R[~Ydead_souls~R]~! ~BChaos@Nuclear_War_Mud_2~!~c: i followed the guide that told me to enable dir disable http and re enable it etc
+~R[07/15 14:28] ~G~R[~Ydead_souls~R]~! ~BChaos@Nuclear_War_Mud_2~!~c: nevermind got it working :)
+~R[07/15 17:31] ~G~R[~Ydead_souls~R]~! ~BChaos@Nuclear_War_Mud_2~!~c: what i am looking at in dslib drinks doesn't have a healing property?
+~R[07/15 17:32] ~G~R[~Ydead_souls~R]~! ~gCratylus@Dead_Souls_Dev~!~c: huh?
+~R[07/15 17:33] ~G~R[~Ydead_souls~R]~! ~rKalinash@Fire_and_Ice~!~c: i thought drink restored MP
+~R[07/15 17:33] ~G~R[~Ydead_souls~R]~! ~rKalinash@Fire_and_Ice~!~c: but that was in the olden days
+~R[07/15 17:33] ~G~R[~Ydead_souls~R]~! ~BChaos@Nuclear_War_Mud_2~!~c: hmm
+~R[07/15 17:33] ~G~R[~Ydead_souls~R]~! ~gCratylus@Dead_Souls_Dev~!~c: are you guise hugh?
+~R[07/15 17:33] ~G~R[~Ydead_souls~R]~! ~gCratylus@Dead_Souls_Dev~!~c: high?
+~R[07/15 17:33] ~G~R[~Ydead_souls~R]~! ~BChaos@Nuclear_War_Mud_2~!~c: lol
+~R[07/15 17:33] ~G~R[~Ydead_souls~R]~! ~rKalinash@Fire_and_Ice~!~c: getting there
+~R[07/15 17:33] ~G~R[~Ydead_souls~R]~! ~BChaos@Nuclear_War_Mud_2~!~c: me?
+~R[07/15 17:33] ~G~R[~Ydead_souls~R]~! ~gCratylus@Dead_Souls_Dev~!~c: oh it's definitely mfbt, but what im sayin is that drinking water dont heal you
+~R[07/15 17:33] ~G~R[~Ydead_souls~R]~! ~BChaos@Nuclear_War_Mud_2~!~c: looking at the drink it only sets str looks like
+~R[07/15 17:34] ~G~R[~Ydead_souls~R]~! ~gCratylus@Dead_Souls_Dev~!~c: it DOES make you heal *faster* if you're not thirsty
+~R[07/15 17:34] ~G~R[~Ydead_souls~R]~! ~BChaos@Nuclear_War_Mud_2~!~c: gotcha
+~R[07/15 17:34] ~G~R[~Ydead_souls~R]~! ~rKalinash@Fire_and_Ice~!~c: alcoholic drinks used to restore MP faster
+~R[07/15 17:34] ~G~R[~Ydead_souls~R]~! ~gCratylus@Dead_Souls_Dev~!~c: just like a full stomach makes you regen faster
+~R[07/15 17:34] ~G~R[~Ydead_souls~R]~! ~gCratylus@Dead_Souls_Dev~!~c: if you want magical healing drinks you'll want a potion
+~R[07/15 17:34] ~G~R[~Ydead_souls~R]~! ~BChaos@Nuclear_War_Mud_2~!~c: can just use the potion part to make you heal faster
+~R[07/15 17:34] ~G~R[~Ydead_souls~R]~! ~gCratylus@Dead_Souls_Dev~!~c: there's examples of healing potions in the lib
+~R[07/15 17:34] ~G~R[~Ydead_souls~R]~! ~rKalinash@Fire_and_Ice~!~c: in NM3 :)
+~R[07/15 17:34] ~G~R[~Ydead_souls~R]~! ~gCratylus@Dead_Souls_Dev~!~c: also strength potions and wutnot
+~R[07/15 17:34] ~G~R[~Ydead_souls~R]~! ~BChaos@Nuclear_War_Mud_2~!~c: yes looking at that :)
+~R[07/15 17:35] ~G~R[~Ydead_souls~R]~! ~rKalinash@Fire_and_Ice~!~c: are there any magical crat potions?
+~R[07/15 17:35] ~G~R[~Ydead_souls~R]~! ~BChaos@Nuclear_War_Mud_2~!~c: yeah water has str to it
+~R[07/15 17:35] ~G~R[~Ydead_souls~R]~! ~gCratylus@Dead_Souls_Dev~!~c: are you high?
+~R[07/15 17:35] ~G~R[~Ydead_souls~R]~! ~rKalinash@Fire_and_Ice~!~c: i want a drink that makes me be more like you
+~R[07/15 17:35] ~G~R[~Ydead_souls~R]~! ~BChaos@Nuclear_War_Mud_2~!~c: nah
+~R[07/15 17:35] ~G~R[~Ydead_souls~R]~! ~gCratylus@Dead_Souls_Dev~!~c: it's called guinness
+~R[07/15 17:35] ~G~R[~Ydead_souls~R]~! ~gCratylus@Dead_Souls_Dev~!~c: and i think i have all of it, sry
+~R[07/15 17:36] ~G~R[~Ydead_souls~R]~! ~rKalinash@Fire_and_Ice~!~c: i'm bottling my new booze this weekend
+~R[07/15 17:36] ~G~R[~Ydead_souls~R]~! ~BChaos@Nuclear_War_Mud_2~!~c: thanks for the help. just add it as potion instead of drink
+~R[07/15 17:36] ~G~R[~Ydead_souls~R]~! ~gCratylus@Dead_Souls_Dev~!~c: np
+~R[07/15 17:38] ~G~R[~Ydead_souls~R]~! ~gCratylus@Dead_Souls_Dev~!~c: what was the resolution to the 404 thing, by the way
+~R[07/15 17:39] ~G~R[~Ydead_souls~R]~! ~BChaos@Nuclear_War_Mud_2~!~c: i went to faq online
+~R[07/15 17:39] ~G~R[~Ydead_souls~R]~! ~BChaos@Nuclear_War_Mud_2~!~c: it had more info in it
+~R[07/15 17:39] ~G~R[~Ydead_souls~R]~! ~gCratylus@Dead_Souls_Dev~!~c: huh
+~R[07/15 17:39] ~G~R[~Ydead_souls~R]~! ~gCratylus@Dead_Souls_Dev~!~c: go fig
+~R[07/15 17:39] ~G~R[~Ydead_souls~R]~! ~BChaos@Nuclear_War_Mud_2~!~c: more stuff that you need to enable
+~R[07/15 17:39] ~G~R[~Ydead_souls~R]~! ~BChaos@Nuclear_War_Mud_2~!~c: helps if i read more i guess
+~R[07/15 17:40] ~G~R[~Ydead_souls~R]~! ~BChaos@Nuclear_War_Mud_2~!~c: one file told me to enable the dir_list disable http and re-enable it. other one had me enable cgi and few other things
+~R[07/15 18:03] ~G~R[~Ydead_souls~R]~! ~mQuixadhal@Bloodlines~!~c: Guinness should count as both food and drink.
+~R[07/15 18:05] ~G~R[~Ydead_souls~R]~! ~YSys@BlackHole~!~c: why
+~R[07/15 18:05] ~G~R[~Ydead_souls~R]~! ~GDavidHaley@Dead_Souls_Dev~!~c: guiness hardly has any calories in it compared to other beer
+~R[07/15 18:06] ~G~R[~Ydead_souls~R]~! ~GDavidHaley@Dead_Souls_Dev~!~c: *guinness
+~R[07/15 18:06] ~G~R[~Ydead_souls~R]~! ~YSys@BlackHole~!~c: and not as much body as a good broth
+~R[07/15 18:06] ~G~R[~Ydead_souls~R]~! ~mQuixadhal@Bloodlines~!~c: Because it tastes like liquid bread (a good thing). :)
+~R[07/15 18:07] ~G~R[~Ydead_souls~R]~! ~YSys@BlackHole~!~c: you need tastebud realignment surgery
+~R[07/15 18:07] ~G~R[~Ydead_souls~R]~! ~mQuixadhal@Bloodlines~!~c: You need to eat darker breads.
+~R[07/15 18:10] ~G~R[~Ydead_souls~R]~! ~YSys@BlackHole~!~c: I've eaten all sorts of bread and none of tastes like beer of any kind even stout
+~R[07/15 18:10] ~G~R[~Ydead_souls~R]~! ~YSys@BlackHole~!~c: +it
+~R[07/15 18:10] ~G~R[~Ydead_souls~R]~! ~YSys@BlackHole~!~c: and prolly some punctuations
+~R[07/15 18:28] ~G~R[~Ydead_souls~R]~! ~CTyler@Legion_of_Knowledge~!~c: howdo you wear poleepkwa suit?
+~R[07/15 18:42] ~G~R[~Ydead_souls~R]~! ~CTyler@Legion_of_Knowledge~!~c: do you just 'wear' worn storage or is there a separate command?
+~R[07/15 19:04] ~G~R[~Ydead_souls~R]~! ~gCratylus@Dead_Souls_Dev~!~c: poleepkwa suit is for poleepkwa
+~R[07/15 19:04] ~G~R[~Ydead_souls~R]~! ~gCratylus@Dead_Souls_Dev~!~c: if you're not poleepkwa, it's nto a suit for you
+~R[07/15 19:06] ~G~R[~Ydead_souls~R]~! ~CTyler@Legion_of_Knowledge~!~c: thanks
+~R[07/15 19:11] ~G~R[~Ydead_souls~R]~! ~CTyler@Legion_of_Knowledge~!~c: is there a main mud that runs dead souls that *isn't* dev?
+~R[07/15 19:12] ~G~R[~Ydead_souls~R]~! ~gCratylus@Dead_Souls_Dev~!~c: dead souls prime
+~R[07/15 19:12] ~G~R[~Ydead_souls~R]~! ~rKalinash@Fire_and_Ice~!~c: aka 'CratMUD'
+~R[07/15 19:12] ~G~R[~Ydead_souls~R]~! ~mQuixadhal@Bloodlines~!~c: Cratopia
+~R[07/15 19:13] ~G~R[~Ydead_souls~R]~! ~gSinistrad@Dead_Souls_Dev~!~c: Cratakastan
+~R[07/15 19:26] ~G~R[~Ydead_souls~R]~! ~CTyler@Legion_of_Knowledge~!~c: dang i can't remeber that command to make mobs report damage, anyone know?
+~R[07/15 19:26] ~G~R[~Ydead_souls~R]~! ~gCratylus@Dead_Souls_Dev~!~c: look at the jade ring
+~R[07/15 19:27] ~G~R[~Ydead_souls~R]~! ~CTyler@Legion_of_Knowledge~!~c: thanks
+~R[07/15 19:27] ~G~R[~Ydead_souls~R]~! ~gCratylus@Dead_Souls_Dev~!~c: np
+~R[07/15 19:42] ~G~R[~Ydead_souls~R]~! ~CTyler@Legion_of_Knowledge~!~c: hrmm... You cannot wear a jade ring on your right hand.
+~R[07/15 19:47] ~G~R[~Ydead_souls~R]~! ~gCratylus@Dead_Souls_Dev~!~c: are you poleepkwa?
+~R[07/15 19:47] ~G~R[~Ydead_souls~R]~! ~CTyler@Legion_of_Knowledge~!~c: yes
+~R[07/15 19:47] ~G~R[~Ydead_souls~R]~! ~gSinistrad@Dead_Souls_Dev~!~c: popka popka
+~R[07/15 19:47] ~G~R[~Ydead_souls~R]~! ~gCratylus@Dead_Souls_Dev~!~c: trying to wear a human ring?
+~R[07/15 19:47] ~G~R[~Ydead_souls~R]~! ~CTyler@Legion_of_Knowledge~!~c: blah why is an admin device race specific?
+~R[07/15 19:48] ~G~R[~Ydead_souls~R]~! ~gSinistrad@Dead_Souls_Dev~!~c: because admins must belong to the master race?
+~R[07/15 19:48] ~G~R[~Ydead_souls~R]~! ~gSinistrad@Dead_Souls_Dev~!~c: oh wait this is the srs channel
+~R[07/15 19:48] ~G~R[~Ydead_souls~R]~! ~gCratylus@Dead_Souls_Dev~!~c: make a ring that does the same but fits a poleepkwa
+~R[07/15 19:48] ~G~R[~Ydead_souls~R]~! ~gCratylus@Dead_Souls_Dev~!~c: nobody is stopping you
+~R[07/15 19:48] ~G~R[~Ydead_souls~R]~! ~CTyler@Legion_of_Knowledge~!~c: i am stopping myself with ignorance of the subject, but i plan to liberate myself of said dilemma
+~R[07/15 19:49] ~G~R[~Ydead_souls~R]~! ~gCratylus@Dead_Souls_Dev~!~c: if that means you agree with me, then you're right
+~R[07/15 19:50] ~G~R[~Ydead_souls~R]~! ~CTyler@Legion_of_Knowledge~!~c: then i guess im right ;) btw, i don't see anything that says human in the ring lpc file
+~R[07/15 19:51] ~G~R[~Ydead_souls~R]~! ~gCratylus@Dead_Souls_Dev~!~c: then the mystery will be all the more rewarding when you solve it
+~R[07/15 19:52] ~G~R[~Ydead_souls~R]~! ~CTyler@Legion_of_Knowledge~!~c: its like a real-world quest
+~R[07/15 19:54] ~G~R[~Ydead_souls~R]~! ~CTyler@Legion_of_Knowledge~!~c: can i have a quest hint? ;)
+~R[07/15 19:55] ~G~R[~Ydead_souls~R]~! ~gCratylus@Dead_Souls_Dev~!~c: i've found that the reward of solving mud quests tends to pale in comparison to solving making-a-mud quests
+~R[07/15 19:55] ~G~R[~Ydead_souls~R]~! ~gCratylus@Dead_Souls_Dev~!~c: well that would be a spoiler
+~R[07/15 19:55] ~G~R[~Ydead_souls~R]~! ~gCratylus@Dead_Souls_Dev~!~c: so i will say it on the spoiler channel
+~R[07/15 19:56] ~G~R[~Ydead_souls~R]~! ~gCratylus@Dead_Souls_Dev~!~c: type: chan add bsg
+~R[07/15 19:56] ~G~R[~Ydead_souls~R]~! ~CTyler@Legion_of_Knowledge~!~c: added
+~R[07/15 20:01] ~G~R[~Ydead_souls~R]~! ~CTyler@Legion_of_Knowledge~!~c: hrm... is the size inside A_RING?
+~R[07/15 20:01] ~G~R[~Ydead_souls~R]~! ~CTyler@Legion_of_Knowledge~!~c: doh
+~R[07/15 21:01] ~G~R[~Ydead_souls~R]~! ~CTyler@Legion_of_Knowledge~!~c: how do you turn on debugging?
+~R[07/15 21:02] ~G~R[~Ydead_souls~R]~! ~rKalinash@Fire_and_Ice~!~c: TRON
+~R[07/15 21:02] ~G~R[~Ydead_souls~R]~! ~CTyler@Legion_of_Knowledge~!~c: nevermind heh typing random commands solved it
+~R[07/15 22:32] ~G~R[~Ydead_souls~R]~! ~CTyler@Legion_of_Knowledge~!~c: is there a way to find cloned objects similar to 'find'?
+~R[07/15 22:49] ~G~R[~Ydead_souls~R]~! ~gCratylus@Dead_Souls_Dev~!~c: findobj
+~R[07/16 01:05] ~G~R[~Ydead_souls~R]~! ~CTyler@Legion_of_Knowledge~!~c: thnx again
+~R[07/16 03:52] ~G~R[~Ydead_souls~R]~! ~CTyler@Legion_of_Knowledge~!~c: hey crat just wanted to say thanks for all the works you've done over the years for our enjoyment
+~R[07/16 03:52] ~G~R[~Ydead_souls~R]~! ~WNafe@The_Pussy_Cat_Forest~!~c: ds rox
+~R[07/16 13:04] ~G~R[~Ydead_souls~R]~! ~rKalinash@Fire_and_Ice~!~c: can anyone reach lpmuds.net? it seems to be down for me...
+~R[07/16 17:33] ~G~R[~Ydead_souls~R]~! ~gChaos@Nuclear_War_2~!~c: kewl now on lunix instead of windows :) woohoo

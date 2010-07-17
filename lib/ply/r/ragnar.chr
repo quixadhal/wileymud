@@ -6,10 +6,10 @@ PreTitle           ~
 Title              the Human Swordpupil~
 Description
 ~
-LastSite           adork@adsl-76-236-183-102.dsl.klmzmi.sbcglobal.n~
-LastLogin          1213725364
+LastSite           adork@24-180-141-193.dhcp.aldl-nbb.mi.charter.co~
+LastLogin          1249964166
 Birth              1213725315
-Played             44
+Played             217
 Sex                1
 Race               1
 Class              4
@@ -24,7 +24,7 @@ PoofIn             ~
 PoofOut            ~
 AbilityScores      14 0 9 13 7 8
 AbilityPad         0 0 0 0
-HpManaMove         26 20 101 0 101 101
+HpManaMove         33 20 101 0 134 0
 AC                 100
 ToHitDamage        0 0
 SaveApply          0 0 0 0 0
@@ -206,4 +206,6 @@ Affect             21 0 0 0 0 0 0
 Affect             22 0 0 0 0 0 0
 Affect             23 0 0 0 0 0 0
 Affect             24 0 0 0 0 0 0
+IMCPerm      0
+IMCFlags     256
 End

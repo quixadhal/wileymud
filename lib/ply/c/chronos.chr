@@ -1,52 +1,51 @@
 #PLAYER
 Name               Chronos~
-Passwd             ChJn3xm2j.9hk~
+Passwd             Ch2o/pPil8j0A~
 Whizz              0
 PreTitle           ~
-Title              the Human Gypsy~
+Title              the Human Supplicant~
 Description
-She looks back at you with a cold stare which makes you shudder.
 ~
-LastSite           tmiley@yakko.cs.wmich.edu~
-LastLogin          847227824
-Birth              804046105
-Played             1526197
+LastSite           adork@yakko.cs.wmich.edu~
+LastLogin          1233438885
+Birth              1233436194
+Played             2553
 Sex                2
 Race               1
 Class              1
-Alignment          815
-Exp                50226
-Level              mage 10
-HeightWeight       164 117
-Gold               442 0
+Alignment          7
+Exp                329
+Level              mage 1
+HeightWeight       180 133
+Gold               0 0
 HomeTown           3008
-LoadRoom           3008
+LoadRoom           -1
 PoofIn             ~
 PoofOut            ~
-AbilityScores      16 0 15 17 17 17
+AbilityScores      9 0 11 8 13 11
 AbilityPad         0 0 0 0
-HpManaMove         63 84 129 0 74 0
+HpManaMove         -7 20 88 0 70 0
 AC                 100
 ToHitDamage        0 0
 SaveApply          0 0 0 0 0
-Conditions         0 6 6 0 0 0
+Conditions         0 0 2 0 0 0
 PointsPad1         0 0 0
 PointsPad2         0 0 0 0
 PointsPad3         0 0 0
 ShortSavePad       0 0 0 0
 SavePad            0 0 0 0
-Pracs              -4
+Pracs              3
 SkillsToLearn      0
-NamedSkill         1 60 0 armour~
-NamedSkill         2 35 0 teleport~
+NamedSkill         1 0 0 armour~
+NamedSkill         2 0 0 teleport~
 NamedSkill         3 0 0 bless~
 NamedSkill         4 0 0 blindness~
-NamedSkill         5 60 0 burning hands~
+NamedSkill         5 0 0 burning hands~
 NamedSkill         6 0 0 call lightning~
 NamedSkill         7 0 0 charm person~
 NamedSkill         8 0 0 chill touch~
 NamedSkill         9 0 0 clone~
-NamedSkill         10 61 0 colour spray~
+NamedSkill         10 0 0 colour spray~
 NamedSkill         11 0 0 control weather~
 NamedSkill         12 0 0 create food~
 NamedSkill         13 0 0 create water~
@@ -55,27 +54,27 @@ NamedSkill         15 0 0 cure critical~
 NamedSkill         16 0 0 cure light~
 NamedSkill         17 0 0 curse~
 NamedSkill         18 0 0 detect evil~
-NamedSkill         19 61 0 detect invisible~
-NamedSkill         20 60 0 detect magic~
+NamedSkill         19 0 0 detect invisible~
+NamedSkill         20 0 0 detect magic~
 NamedSkill         21 0 0 detect poison~
 NamedSkill         22 0 0 dispel evil~
 NamedSkill         23 0 0 earthquake~
-NamedSkill         24 61 0 enchant weapon~
+NamedSkill         24 0 0 enchant weapon~
 NamedSkill         25 0 0 energy drain~
 NamedSkill         26 0 0 fireball~
 NamedSkill         27 0 0 harm~
 NamedSkill         28 0 0 heal~
-NamedSkill         29 60 0 invisibility~
-NamedSkill         30 61 0 lightning bolt~
+NamedSkill         29 0 0 invisibility~
+NamedSkill         30 0 0 lightning bolt~
 NamedSkill         31 0 0 locate object~
-NamedSkill         32 95 0 magic missile~
+NamedSkill         32 0 0 magic missile~
 NamedSkill         33 0 0 poison~
 NamedSkill         34 0 0 protection from evil~
 NamedSkill         35 0 0 remove curse~
 NamedSkill         36 0 0 sanctuary~
 NamedSkill         37 0 0 shocking grasp~
-NamedSkill         38 61 0 sleep~
-NamedSkill         39 61 0 strength~
+NamedSkill         38 0 0 sleep~
+NamedSkill         39 0 0 strength~
 NamedSkill         40 0 0 summon~
 NamedSkill         41 0 0 ventriloquate~
 NamedSkill         42 0 0 word of recall~
@@ -86,8 +85,8 @@ NamedSkill         46 0 0 hide~
 NamedSkill         47 0 0 steal~
 NamedSkill         48 0 0 backstab~
 NamedSkill         49 0 0 pick lock~
-NamedSkill         50 54 0 kick~
-NamedSkill         51 54 0 bash~
+NamedSkill         50 0 0 kick~
+NamedSkill         51 0 0 bash~
 NamedSkill         52 0 0 rescue~
 NamedSkill         53 0 0 IDENTIFY~
 NamedSkill         54 0 0 infravision~
@@ -95,52 +94,52 @@ NamedSkill         55 0 0 cause light~
 NamedSkill         56 0 0 cause critical~
 NamedSkill         57 0 0 flamestrike~
 NamedSkill         58 0 0 dispel good~
-NamedSkill         59 61 0 weakness~
-NamedSkill         60 59 0 dispel magic~
-NamedSkill         61 61 0 knock~
-NamedSkill         62 2 0 know alignment~
+NamedSkill         59 0 0 weakness~
+NamedSkill         60 0 0 dispel magic~
+NamedSkill         61 0 0 knock~
+NamedSkill         62 0 0 know alignment~
 NamedSkill         63 0 0 animate dead~
 NamedSkill         64 0 0 paralyze~
 NamedSkill         65 0 0 remove paralysis~
-NamedSkill         66 61 0 fear~
-NamedSkill         67 61 0 acid blast~
+NamedSkill         66 0 0 fear~
+NamedSkill         67 0 0 acid blast~
 NamedSkill         68 0 0 water breath~
-NamedSkill         69 85 0 fly~
-NamedSkill         70 59 0 cone of cold~
+NamedSkill         69 0 0 fly~
+NamedSkill         70 0 0 cone of cold~
 NamedSkill         71 0 0 meteor swarm~
-NamedSkill         72 61 0 ice storm~
-NamedSkill         73 60 0 shield~
-NamedSkill         74 61 0 monsum one~
+NamedSkill         72 0 0 ice storm~
+NamedSkill         73 0 0 shield~
+NamedSkill         74 0 0 monsum one~
 NamedSkill         75 0 0 monsum two~
-NamedSkill         76 61 0 monsum three~
-NamedSkill         77 61 0 monsum four~
+NamedSkill         76 0 0 monsum three~
+NamedSkill         77 0 0 monsum four~
 NamedSkill         78 0 0 monsum five~
 NamedSkill         79 0 0 monsum six~
 NamedSkill         80 0 0 monsum seven~
 NamedSkill         81 0 0 fireshield~
-NamedSkill         82 60 0 charm monster~
+NamedSkill         82 0 0 charm monster~
 NamedSkill         83 0 0 cure serious~
 NamedSkill         84 0 0 cause serious~
-NamedSkill         85 61 0 refresh~
+NamedSkill         85 0 0 refresh~
 NamedSkill         86 0 0 second wind~
 NamedSkill         87 0 0 turn~
 NamedSkill         88 0 0 succor~
 NamedSkill         89 0 0 create light~
-NamedSkill         90 60 0 continual light~
+NamedSkill         90 0 0 continual light~
 NamedSkill         91 0 0 calm~
 NamedSkill         92 0 0 stoneskin~
 NamedSkill         93 0 0 conjure elemental~
 NamedSkill         94 0 0 true sight~
-NamedSkill         95 41 0 minor creation~
-NamedSkill         96 41 0 faerie fire~
+NamedSkill         95 0 0 minor creation~
+NamedSkill         96 0 0 faerie fire~
 NamedSkill         97 0 0 faerie fog~
 NamedSkill         98 0 0 cacaodemon~
-NamedSkill         99 61 0 polymorph self~
+NamedSkill         99 0 0 polymorph self~
 NamedSkill         100 0 0 MANA~
 NamedSkill         101 0 0 astral walk~
 NamedSkill         102 0 0 group fly~
 NamedSkill         103 0 0 aid~
-NamedSkill         104 61 0 shelter~
+NamedSkill         104 0 0 shelter~
 NamedSkill         105 0 0 DRAGON BREATH~
 NamedSkill         106 0 0 goodberry~
 NamedSkill         107 0 0 visions~
@@ -180,9 +179,9 @@ NamedSkill         181 0 0 locate trap~
 NamedSkill         182 0 0 disarm trap~
 NamedSkill         183 0 0 disarm~
 NamedSkill         184 0 0 shield bash~
-NamedSkill         185 2 0 riding~
-ActFlags           4 1
-Affect             0 69 12 0 0 2048 0
+NamedSkill         185 0 0 riding~
+ActFlags           0 0
+Affect             0 0 0 0 0 0 0
 Affect             1 0 0 0 0 0 0
 Affect             2 0 0 0 0 0 0
 Affect             3 0 0 0 0 0 0

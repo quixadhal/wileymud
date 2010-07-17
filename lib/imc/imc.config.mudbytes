@@ -1,0 +1,32 @@
+$IMCCONFIG
+
+# Diku Alfa (IMC2 Freedom CL-2.2) config file.
+# This file can now support the use of tildes in your strings.
+# This information can be edited online using the 'imcconfig' command.
+LocalName      WileyMUD
+Autoconnect    1
+MinPlayerLevel 2
+MinImmLevel    3
+AdminLevel     51
+Implevel       60
+InfoName       WileyMUD III
+InfoHost       wiley.shadowlord.org
+InfoPort       3000
+InfoEmail      quixadhal@shadowlord.org
+InfoWWW        http://wiley.shadowlord.org:8088/
+InfoBase       Diku Alfa
+InfoDetails    Based on the old school system of pain and suffering, our game was pretty fun, but never easy.
+
+# Your server connection information goes here.
+# This information should be available from the network you plan to join.
+ServerAddr     www.mudbytes.net
+ServerPort     5000
+ClientPwd      tardis
+ServerPwd      tardis69
+#SHA256 auth: 0 = disabled, 1 = enabled
+SHA256         0
+#Your server is expecting SHA256 authentication now. Do not remove this line unless told to do so.
+#SHA256Pwd      0
+End
+
+$END
