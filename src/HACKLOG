@@ -750,4 +750,20 @@ global.h:1144: warning: function declaration isn't a prototype
   0513	Been doing some cleanup stuff, made logging NOT go to the database by default.
 	Fixed a bug I introduced in the last const char * crap, nobody noticed.
 	Merged IMC2 support in, except for socials!
+100718  Quixadhal
+  1440  Naughy... not keeping the HACKLOG up to date!
+
+	Well, let's see.
+
+	Restored old WileyMUD characer files from archives.
+	Restored old WileyMUD board messages from archives.
+	Revamped board code to fully use SQL and abandoned flat file support.
+
+	Moved WileyMUD into a git repository, so as much of the development
+	history as I have is now in place.  All future development will utilize
+	git, making it easier to backup everything, and giving us a better
+	safety net.
+
+	Hopefully fixed a long-standing socket reuse bug that kept us from
+	rebooting quickly.
 

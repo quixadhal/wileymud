@@ -6405,7 +6405,8 @@ IMC_CMD( imcconnect )
    }
    imcconnect_attempts = 0;
    imcwait = 0;
-   imc_startup( TRUE, -1, FALSE );
+   imc_shutdown( FALSE );
+   imc_startup( FALSE, -1, FALSE );
 }
 
 IMC_CMD( imcdisconnect )
@@ -6413,9 +6414,9 @@ IMC_CMD( imcdisconnect )
    if( this_imcmud && this_imcmud->state == IMC_OFFLINE )
    {
       imc_to_char( "The IMC2 network connection does not appear to be engaged!\r\n", ch );
-      return;
    }
    imc_shutdown( FALSE );
+   return;
 }
 
 IMC_CMD( imcconfig )

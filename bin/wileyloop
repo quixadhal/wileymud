@@ -26,6 +26,6 @@ while [ -x $DAEMON ]; do
     exit
   fi
   echo "Status was $STATUS"
-  sleep 240
+  sleep 120
 done
 

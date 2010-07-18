@@ -2383,4 +2383,9 @@ SpeakerName         Chaos@Nuclear_War_2
 SpeakerColour       1
 End
 
+#IMCSPEAKER
+SpeakerName         Parhelion@DGDhub
+SpeakerColour       2
+End
+
 #END

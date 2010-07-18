@@ -686,7 +686,7 @@ void flush_queues(struct descriptor_data *d)
 
 int init_socket(int port)
 {
-  char                                   *opt = NULL;
+  int                                     opt = 1;
   char                                    hostname[MAX_HOSTNAME + 1] = "\0\0\0";
   struct sockaddr_in                      sa;
   struct hostent                         *hp = NULL;
@@ -712,7 +712,7 @@ int init_socket(int port)
     log_fatal("Init-socket");
     proper_exit(MUD_HALT);
   }
-  if (setsockopt(s, SOL_SOCKET, SO_REUSEADDR, (char *)&opt, sizeof(opt)) < 0) {
+  if (setsockopt(s, SOL_SOCKET, SO_REUSEADDR, (int *)&opt, sizeof(opt)) < 0) {
     log_fatal("setsockopt REUSEADDR");
     proper_exit(MUD_HALT);
   }
