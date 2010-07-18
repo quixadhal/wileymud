@@ -6,6 +6,10 @@ DEPLINE		= $(shell /bin/grep -n -e '^\#--- Comment for make deps ---' GNUmakefil
 CC		= gcc #g++
 MAKE		= make #gmake
 
+PRODBIN		= ../bin
+PRODOWN		= wiley.divine
+PRODMODE	= 0750
+
 BINDIR		= bin
 IDENTDIR	= libident-0.19
 
@@ -145,8 +149,12 @@ tags :
 
 .PHONY : install
 
-install :
+install : bin
 	@echo -n Installing into production environment...
+	@mv $(PRODBIN)/wileymud $(PRODBIN)/wileymud.old
+	@cp -p $(BINDIR)/wileymud $(BINDIR)/sign $(BINDIR)/bounce $(BINDIR)/genpasswd $(BINDIR)/mkworld $(PRODBIN)/
+	@chown $(PRODOWN) $(PRODBIN)/wileymud $(PRODBIN)/sign $(PRODBIN)/bounce $(PRODBIN)/genpasswd $(PRODBIN)/mkworld
+	@chmod $(PRODMODE) $(PRODBIN)/wileymud $(PRODBIN)/sign $(PRODBIN)/bounce $(PRODBIN)/genpasswd $(PRODBIN)/mkworld
 	@echo done.
 
 %c : %pgc

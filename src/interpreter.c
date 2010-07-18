@@ -226,8 +226,7 @@ void command_interpreter(struct char_data *ch, char *argument)
   REMOVE_BIT(ch->specials.affected_by, AFF_HIDE);
 
   if (ch == board_kludge_char) {
-    /* board_save_board(FindBoardInRoom(ch->in_room)); */
-    new_save_board(FindBoardInRoom(ch->in_room));
+    board_save_board(FindBoardInRoom(ch->in_room));
     board_kludge_char = 0;
   }
   /*

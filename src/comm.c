@@ -239,9 +239,6 @@ int run_the_game(int port)
   imc_startup( FALSE, -1, FALSE );
 #endif
 
-  log_boot("Moving old board files to SQL.");
-  boards_to_sql();
-
   log_boot("Entering game loop.");
   game_loop(s);
 
