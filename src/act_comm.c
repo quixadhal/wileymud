@@ -95,7 +95,9 @@ void do_shout(struct char_data *ch, const char *argument, int cmd)
     for (i = descriptor_list; i; i = i->next)
       if (i->character != ch && !i->connected &&
 	  !IS_SET(i->character->specials.act, PLR_NOSHOUT) &&
-	  !IS_SET(i->character->specials.act, PLR_DEAF))
+	  !IS_SET(i->character->specials.act, PLR_DEAF) &&
+	  (rp = real_roomp(i->character->in_room)) &&
+          (!FindBoardInRoom(i->character->in_room)))
 	act("$n shouts '%s'", 0, ch, 0, i->character, TO_VICT, argument);
   } else {
 #ifdef OLD_SHOUT
