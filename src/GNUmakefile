@@ -194,7 +194,7 @@ obj/sha256.o: sha256.c include/sha256.h
 obj/act_comm.o: act_comm.c include/global.h include/bug.h include/utils.h \
  include/comm.h include/interpreter.h include/handler.h include/db.h \
  include/spells.h include/constants.h include/mudlimits.h \
- include/multiclass.h include/act_comm.h
+ include/multiclass.h include/board.h include/act_comm.h
 obj/sound.o: sound.c include/global.h include/bug.h include/comm.h \
  include/interpreter.h include/handler.h include/db.h include/spells.h \
  include/trap.h include/utils.h include/sound.h

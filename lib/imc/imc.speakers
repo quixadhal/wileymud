@@ -2388,4 +2388,29 @@ SpeakerName         Parhelion@DGDhub
 SpeakerColour       2
 End
 
+#IMCSPEAKER
+SpeakerName         George@YOURMUDNAME
+SpeakerColour       3
+End
+
+#IMCSPEAKER
+SpeakerName         Judge@Dot_Hack_Eclipse
+SpeakerColour       4
+End
+
+#IMCSPEAKER
+SpeakerName         Bigd@BreakingLP
+SpeakerColour       5
+End
+
+#IMCSPEAKER
+SpeakerName         Phaeton@Dead_Souls_phaeton
+SpeakerColour       6
+End
+
+#IMCSPEAKER
+SpeakerName         Ashley@Carrier
+SpeakerColour       7
+End
+
 #END

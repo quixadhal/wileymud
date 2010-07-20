@@ -21,6 +21,7 @@
 #include "constants.h"
 #include "mudlimits.h"
 #include "multiclass.h"
+#include "board.h"
 #define _ACT_COMM_C
 #include "act_comm.h"
 
@@ -119,7 +120,8 @@ void do_shout(struct char_data *ch, const char *argument, int cmd)
       if (i->character != ch && !i->connected &&
 	  !IS_SET(i->character->specials.act, PLR_NOSHOUT) &&
 	  !IS_SET(i->character->specials.act, PLR_DEAF) &&
-	  (rp = real_roomp(i->character->in_room)) && (mrp = real_roomp(ch->in_room)))
+	  (rp = real_roomp(i->character->in_room)) && (mrp = real_roomp(ch->in_room)) &&
+          (!FindBoardInRoom(i->character->in_room)))
 	act("$n shouts '%s'", 0, ch, 0, i->character, TO_VICT, argument);
 #endif
 #ifdef ZONE_SHOUT
@@ -145,7 +147,8 @@ void do_shout(struct char_data *ch, const char *argument, int cmd)
 	  !IS_SET(i->character->specials.act, PLR_NOSHOUT) &&
 	  !IS_SET(i->character->specials.act, PLR_DEAF) &&
 	  (rp = real_roomp(i->character->in_room)) &&
-	  (mrp = real_roomp(ch->in_room)) && (rp->zone == mrp->zone))
+	  (mrp = real_roomp(ch->in_room)) && (rp->zone == mrp->zone) &&
+          (!FindBoardInRoom(i->character->in_room)))
 	act("$n shouts '%s'", 0, ch, 0, i->character, TO_VICT, argument);
 #endif
 #ifdef RADIUS_SHOUT
@@ -160,7 +163,7 @@ void do_shout(struct char_data *ch, const char *argument, int cmd)
 	act("$n shouts '%s'", 0, ch, 0, v, TO_VICT, argument);
     for (x = 0; x < MAX_NUM_EXITS; x++)
       if ((exitp = EXIT(ch, x)) && exit_ok(exitp, mrp))
-	if ((rp = real_roomp(exitp->to_room)) && (rp != mrp)) {
+	if ((rp = real_roomp(exitp->to_room)) && (rp != mrp) && (!FindBoardInRoom(v->in_room))) {
 	  for (v = rp->people; v; v = v->next_in_room)
 	    if (v != ch && v->desc &&
 		!IS_SET(v->specials.act, PLR_NOSHOUT) && !IS_SET(v->specials.act, PLR_DEAF))
