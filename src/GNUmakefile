@@ -152,10 +152,10 @@ tags :
 install : bin
 	@echo -n Installing into production environment...
 	@mv $(PRODBIN)/wileymud $(PRODBIN)/wileymud.old
-	@cp -p $(BINDIR)/wileymud $(BINDIR)/sign $(BINDIR)/bounce $(BINDIR)/genpasswd $(BINDIR)/mkworld $(PRODBIN)/
+	@cp -vp $(BINDIR)/wileymud $(BINDIR)/sign $(BINDIR)/bounce $(BINDIR)/genpasswd $(BINDIR)/mkworld $(PRODBIN)/
 	@chown $(PRODOWN) $(PRODBIN)/wileymud $(PRODBIN)/sign $(PRODBIN)/bounce $(PRODBIN)/genpasswd $(PRODBIN)/mkworld
 	@chmod $(PRODMODE) $(PRODBIN)/wileymud $(PRODBIN)/sign $(PRODBIN)/bounce $(PRODBIN)/genpasswd $(PRODBIN)/mkworld
-	@cp -p utils/wileyloop.sh $(PRODBIN)/wileyloop
+	@cp -vp utils/wileyloop.sh $(PRODBIN)/wileyloop
 	@chown $(PRODOWN) $(PRODBIN)/wileyloop
 	@chmod $(PRODMODE) $(PRODBIN)/wileyloop 
 	@echo done.

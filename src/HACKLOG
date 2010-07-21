@@ -766,4 +766,11 @@ global.h:1144: warning: function declaration isn't a prototype
 
 	Hopefully fixed a long-standing socket reuse bug that kept us from
 	rebooting quickly.
+100720  Quixadhal
+  2242  Fixed a bug with NPC shouts not being blocked for people in message board rooms.
+        Also added local copies of the gitweb CGI script to our web directory so the
+        local git repository can be browsed.  Had to make the git files world readable
+        since we don't have ACL's.
 
+        This is a security concern (mild), since all the player files ARE in git.
+        Not a big deal, IMHO, but there ya go.
