@@ -1875,14 +1875,25 @@ void imc_display_channel( IMC_CHANNEL * c, const char *from, char *txt, int emot
    DESCRIPTOR_DATA *d;
    CHAR_DATA *ch;
    char buf[LGST], name[SMST];
+  struct tm                              *tm_info = NULL;
+  time_t                                  tc = (time_t) 0;
+  char format[SMST];
 
    if( !c->local_name || c->local_name[0] == '\0' || !c->refreshed )
       return;
 
+  tc = time(0);
+  tm_info = localtime(&tc);
+  sprintf(format, "%02d:%02d ", tm_info->tm_hour, tm_info->tm_min);
+  if( emote < 2 )
+      strcat(format, emote ? c->emoteformat : c->regformat);
+  else
+      strcat(format, c->socformat);
+
    if( emote < 2 )
-      snprintf( buf, LGST, emote ? c->emoteformat : c->regformat, imc_speaker_name( from ), txt );
+      snprintf( buf, LGST, format, imc_speaker_name( from ), txt );
    else
-      snprintf( buf, LGST, c->socformat, txt );
+      snprintf( buf, LGST, format, txt );
 
    for( d = first_descriptor; d; d = d->next )
    {

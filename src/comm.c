@@ -277,6 +277,7 @@ void game_loop(int s)
   struct char_data                       *mount = NULL;
   /* int                                     mask = 0; */
   sigset_t                                mask;
+  //int                                     sql_reconnect;
 
   if (DEBUG > 1)
     log_info("called %s with %d", __PRETTY_FUNCTION__, s);
@@ -379,6 +380,10 @@ void game_loop(int s)
 	if (process_input(point) < 0)
 	  close_socket(point);
     }
+
+#ifdef IMC
+    imc_loop();
+#endif
 
     /*
      * process_commands; 
@@ -558,9 +563,21 @@ void game_loop(int s)
       pulse_dump = PULSE_DUMP;
       //dump_player_list();
     }
-#ifdef IMC
-    imc_loop();
+
+#if 0
+    // This now verifies our connection is active, so we call it in
+    // the loop to ensure we can reconnect if the db bounces.
+    for(sql_reconnect = 0; 1; sql_reconnect++) {
+        if(verify_sql())
+            break;
+        if(sql_reconnect > 10) {
+            log_fatal("%s\n", "Database Connection LOST!  Aborting!");
+            proper_exit(MUD_HALT);
+        }
+        sleep(1);
+    }
 #endif
+
     tics++;						       /* tics since last checkpoint signal */
   }
 }

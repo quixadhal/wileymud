@@ -15,10 +15,11 @@ t_name OutputData[OF_COUNT] = {
   { "report", "Text Report" },
   { "map", "PGM bitmap" },
   { "isles", "The Isles DikuMUD" },
-/*  { "nightmare", "Nightmare IVr2.5 LpMUD" }, */
+  { "nightmare", "Nightmare IVr2.5 LpMUD" },
   { "fr", "Final Realms 2.1b4 LpMUD" },
   { "afk", "AFKMUD (Diku Derivative)" },
-  { "smaug", "Smaug (Diku Derivative)" }
+  { "smaug", "Smaug (Diku Derivative)" },
+  { "ds", "Dead Souls 3.0 LpMUD" }
 };
 
 char *if_name(unsigned long InputFormat) {

@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <limits.h>
+#include <string.h>
+#include "include/structs.h"
 #include "include/main.h"
 #include "include/utils.h"
 #include "include/make_index.h"
@@ -10,19 +12,11 @@
 #define _DUMP_NIGHTMARE_C
 #include "include/dump_nightmare.h"
 
-#ifdef NIGHTMARE_DUMP
-
-typedef struct pair {
-  int x;
-  int y;
-} pair;
-
 void dump_as_nightmare(zones *Zones, rooms *Rooms, shops *Shops) {
   FILE *ofp, *fp2;
   char filename[256], domainname[256], dirname[256], subdirname[256];
   char mudpath[256], roomname[256], mudname[256], doorname[256], outpath[256];
   int i, j, k, x;
-  int LastMob, LastLoc;
   int LowRoom, HighRoom;
   pair *ZoneSort;
   char *TmpDesc, *HackDesc;
@@ -32,7 +26,7 @@ void dump_as_nightmare(zones *Zones, rooms *Rooms, shops *Shops) {
   bzero(ZoneSort, sizeof(pair)*Zones->Count);
   for(i= 0; i< Zones->Count; i++) {
     sprintf(domainname, "%s_%d", remap_name(Zones->Zone[i].Name), Zones->Zone[i].Number);
-    sprintf(dirname, "%s%s/%s", NIGHTMARE_DIR, NIGHTMARE_DOMAIN, domainname);
+    sprintf(dirname, "%s/%s%s/%s", OutputDir, NIGHTMARE_SUBDIR, NIGHTMARE_DOMAIN, domainname);
     sprintf(filename, "mkdir -p %s", dirname);
     system(filename);
     sprintf(filename, "%s/README", dirname);
@@ -365,11 +359,8 @@ void dump_as_nightmare(zones *Zones, rooms *Rooms, shops *Shops) {
          ((Rooms->Room[j].Number >= (!i? 0: Zones->Zone[i-1].Top+1)) &&
           (Rooms->Room[j].Number <= Zones->Zone[i].Top)
       )) {
-        long OldValue = 0,
-             NewValue = 0;
-
-        sprintf(roomname, "%s_%d%s", remap_name(Rooms->Room[j].Name),
-                Rooms->Room[j].Number, NIGHTMARE_EXT);
+        sprintf(roomname, "%s_%d.c", remap_name(Rooms->Room[j].Name),
+                Rooms->Room[j].Number);
         sprintf(filename, "%s/%s", subdirname, roomname);
         sprintf(mudname, "%s/%s", mudpath, roomname);
         ofp= open_file(filename, "w");
@@ -424,7 +415,7 @@ void dump_as_nightmare(zones *Zones, rooms *Rooms, shops *Shops) {
           fprintf(ofp, "    SetLong(\"%s\");\n", TmpDesc);
         else {
           fprintf(ofp, "    SetLong(\"%s\"\n", HackDesc);
-          while(HackDesc = (char *)strtok(NULL, "\n"))
+          while((HackDesc = (char *)strtok(NULL, "\n")))
             if(HackDesc)
               fprintf(ofp, "        \" %s\"\n", HackDesc);
           fprintf(ofp, "        );\n");
@@ -465,7 +456,7 @@ void dump_as_nightmare(zones *Zones, rooms *Rooms, shops *Shops) {
                 fprintf(ofp, "        \"%s\"\n", TmpDesc);
               else {
                 fprintf(ofp, "        \"%s\"\n", HackDesc);
-                while(HackDesc = (char *)strtok(NULL, "\n"))
+                while((HackDesc = (char *)strtok(NULL, "\n")))
                   if(HackDesc)
                     fprintf(ofp, "        \" %s\"\n", HackDesc);
               }
@@ -582,4 +573,3 @@ void dump_as_nightmare(zones *Zones, rooms *Rooms, shops *Shops) {
     }
   }
 }
-#endif

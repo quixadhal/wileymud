@@ -26,16 +26,18 @@ int db_log_kills = 0;
 int db_log_resets = 0;
 int db_log_imc = 1;
 
-int init_sql()
+int init_sql( void )
 {
   EXEC SQL BEGIN DECLARE SECTION;
   const char *sql_connect = "tcp:postgresql://localhost:5432/wiley";
-  const char *sql_user = "quixadhal";
+  const char *sql_user = "wiley";
   const char *sql_passwd = "tardis69";
   EXEC SQL END DECLARE SECTION;
 
-  if (db_connected)
-    return 1;
+  if (ECPGstatus(__LINE__, NULL)) {
+    db_connected = 1;
+    return db_connected;
+  }
 
   EXEC SQL CONNECT TO :sql_connect AS :sql_user USER :sql_user IDENTIFIED BY :sql_passwd;
   if (sqlca.sqlcode == 0 )
@@ -43,7 +45,7 @@ int init_sql()
   else
     db_connected = 0;
 
-  assert(sqlca.sqlcode == 0);
+  //assert(sqlca.sqlcode == 0);
   return db_connected;
 }
 
@@ -53,6 +55,21 @@ void close_sql( void )
     EXEC SQL DISCONNECT ALL;
 
   db_connected = 0;
+}
+
+int verify_sql( void )
+{
+  EXEC SQL BEGIN DECLARE SECTION;
+  int is_connected;
+  EXEC SQL END DECLARE SECTION;
+
+  is_connected = 0;
+
+  if (ECPGstatus(__LINE__, NULL)) {
+      EXEC SQL SELECT 1 INTO :is_connected;
+  }
+
+  return is_connected;
 }
 
 char *version_sql( void )

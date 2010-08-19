@@ -19,6 +19,8 @@
 #define AFK_SUBDIR	"afk"
 #define FR_SUBDIR	"fr"
 #define SMAUG_SUBDIR	"smaug"
+#define NIGHTMARE_SUBDIR	"nightmare"
+#define DS_SUBDIR	"ds"
 
 #define MAP_FILE	"map.out"
 #define PPM_FILE	"map-%03d.ppm"
