@@ -23,6 +23,9 @@
 extern char                            *crypt(const char *key, const char *salt);
 
 #include "global.h"
+#ifdef I3
+#include "i3.h"
+#endif
 #ifdef IMC
 #include "imc.h"
 #endif
@@ -319,6 +322,10 @@ void command_interpreter(struct char_data *ch, char *argument)
       *(argument + begin + look_at) = '\0'; /* BLACK MAGIC */
       log_info("char here is (%d)\r\n", (int)*(hack+begin+look_at));
     }
+#ifdef I3
+    if( i3_command_hook( ch, (hack + begin), (hack + begin + look_at + got_args) ) )
+      return;
+#endif
 #ifdef IMC
     if( imc_command_hook( ch, (hack + begin), (hack + begin + look_at + got_args) ) )
       return;
@@ -1082,6 +1089,9 @@ void nanny(struct descriptor_data *d, char *arg)
 	STATE(d) = CON_WIZLOCK;
 	return;
       }
+#ifdef I3
+      i3_initchar( d->character );
+#endif
 #ifdef IMC
       imc_initchar( d->character );
 #endif

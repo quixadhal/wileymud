@@ -21,6 +21,7 @@ ID_DEP		= $(IDENTDIR)/libident.a
 ID_INC		= #
 ID_LIB		= -L$(IDENTDIR) -lident
 IMC_INC		= -DIMC -DIMCWILEY
+I3_INC		= -DI3
 
 W_ERROR         = -Werror
 W_ANSI          = #-pedantic
@@ -43,7 +44,7 @@ DEBUG_FLAG	= -ggdb3
 EFENCE		= #-lpthread -lefence
 PROF_FLAG	= #-pg
 
-INC		= -Iinclude $(SQL_INC) $(ID_INC) $(IMC_INC)
+INC		= -Iinclude $(SQL_INC) $(ID_INC) $(IMC_INC) $(I3_INC)
 LIB		= $(ID_LIB) $(NEED_CRYPT) $(NEED_COMPAT) $(EFENCE) $(SQL_LIB)
 UTILSLIB	= $(NEED_CRYPT) $(NEED_COMPAT) $(EFENCE)
 
@@ -62,7 +63,7 @@ tOBJ =	mob_actions.o spec_procs.o breath_weapons.o tracking.o \
 	modify.o multiclass.o opinion.o random.o reception.o \
 	shop.o signals.o sound.o spell_parser.o \
 	spells.o trap.o utils.o weather.o whod.o events.o \
-	sql.o ban.o sha256.o imc.o #i3.o
+	sql.o ban.o sha256.o imc.o i3.o
 OBJ =	$(addprefix obj/, $(tOBJ))
 
 tIDOBJ		= id_close.o id_open.o id_parse.o \
@@ -118,6 +119,8 @@ version :
 	@echo '' >> $(VER)
 	@echo "#define VERSION_STR \\\\" >> $(VER)
 	@echo "\"\\\\r\\\\n*** Welcome to WileyMUD III, Quixadhal's Version 1.$(VERSION)w3-beta ($(DATESTAMP)) ***\\\\r\\\\n\"" >> $(VER)
+	@echo "#define VERSION_BASE \"WileyMUD III\"" >> $(VER)
+	@echo "#define VERSION_BUILD \"1.$(VERSION)b\"" >> $(VER)
 	@echo '#endif /* _VERSION_H */' >> $(VER)
 	@echo New version file generated.
 
@@ -249,11 +252,11 @@ obj/fight.o: fight.c include/global.h include/bug.h include/utils.h \
  include/reception.h include/multiclass.h include/act_wiz.h \
  include/act_skills.h include/opinion.h include/spec_procs.h \
  include/mob_actions.h include/act_off.h include/fight.h
-obj/comm.o: comm.c include/global.h include/imc.h include/imccfg.h \
- include/bug.h include/utils.h include/interpreter.h include/handler.h \
- include/db.h include/modify.h include/whod.h include/multiclass.h \
- include/weather.h include/mudlimits.h include/spells.h \
- include/spell_parser.h include/sound.h include/fight.h \
+obj/comm.o: comm.c include/global.h include/i3.h include/imc.h \
+ include/imccfg.h include/bug.h include/utils.h include/interpreter.h \
+ include/handler.h include/db.h include/modify.h include/whod.h \
+ include/multiclass.h include/weather.h include/mudlimits.h \
+ include/spells.h include/spell_parser.h include/sound.h include/fight.h \
  include/mob_actions.h include/act_other.h include/signals.h \
  include/sql.h include/ban.h include/board.h include/comm.h
 obj/limits.o: limits.c include/global.h include/bug.h include/spells.h \
@@ -278,7 +281,7 @@ obj/trap.o: trap.c include/global.h include/bug.h include/utils.h \
 obj/whod.o: whod.c include/version.h include/global.h include/bug.h \
  include/db.h include/comm.h include/utils.h include/interpreter.h \
  include/multiclass.h include/whod.h
-obj/interpreter.o: interpreter.c include/global.h include/imc.h \
+obj/interpreter.o: interpreter.c include/global.h include/i3.h include/imc.h \
  include/imccfg.h include/bug.h include/comm.h include/version.h \
  include/db.h include/utils.h include/mudlimits.h include/constants.h \
  include/act_comm.h include/act_info.h include/act_move.h \
@@ -329,6 +332,9 @@ obj/reception.o: reception.c include/global.h include/bug.h include/comm.h \
  include/handler.h include/db.h include/interpreter.h include/utils.h \
  include/spells.h include/multiclass.h include/act_social.h \
  include/spec_procs.h include/reception.h
+obj/i3.o: i3.c include/global.h include/bug.h include/utils.h \
+ include/multiclass.h include/comm.h include/constants.h include/modify.h \
+ include/interpreter.h include/version.h include/i3.h
 obj/tracking.o: tracking.c include/global.h include/bug.h include/utils.h \
  include/act_move.h include/comm.h include/constants.h include/db.h \
  include/handler.h include/hash.h include/interpreter.h \
@@ -361,11 +367,11 @@ obj/spec_procs.o: spec_procs.c include/global.h include/bug.h include/utils.h \
  include/opinion.h include/reception.h include/shop.h include/spells.h \
  include/spell_parser.h include/fight.h include/breath_weapons.h \
  include/mob_actions.h include/tracking.h include/spec_procs.h
-obj/db.o: db.c include/global.h include/imc.h include/imccfg.h include/bug.h \
- include/utils.h include/comm.h include/handler.h include/mudlimits.h \
- include/opinion.h include/hash.h include/constants.h include/spells.h \
- include/spell_parser.h include/reception.h include/weather.h \
- include/modify.h include/fight.h include/act_social.h \
+obj/db.o: db.c include/global.h include/i3.h include/imc.h include/imccfg.h \
+ include/bug.h include/utils.h include/comm.h include/handler.h \
+ include/mudlimits.h include/opinion.h include/hash.h include/constants.h \
+ include/spells.h include/spell_parser.h include/reception.h \
+ include/weather.h include/modify.h include/fight.h include/act_social.h \
  include/spec_procs.h include/multiclass.h include/board.h \
  include/interpreter.h include/ban.h include/db.h
 obj/spells.o: spells.c include/global.h include/bug.h include/utils.h \

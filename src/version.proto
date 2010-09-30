@@ -1,7 +1,0 @@
-#ifndef _VERSION_H
-#define _VERSION_H
-
-#define VERSION_STR \
-"\r\n*** Welcome to WileyMUD III, Quixadhal's Version 0.XxXw3-alpha (YyY) ***\r\n"
-
-#endif

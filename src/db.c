@@ -14,6 +14,9 @@
 #include <time.h>
 
 #include "global.h"
+#ifdef I3
+#include "i3.h"
+#endif
 #ifdef IMC
 #include "imc.h"
 #endif
@@ -2014,6 +2017,9 @@ void new_save_char(struct char_file_u *ch, char *filename, struct char_data *xch
 	    (int)(ch->affected[i].modifier),
 	    (int)(ch->affected[i].location),
 	    ch->affected[i].bitvector, (unsigned long)(ch->affected[i].next));
+#ifdef I3
+  i3_savechar( xch, fp );
+#endif
 #ifdef IMC
   imc_savechar( xch, fp );
 #endif
@@ -2063,6 +2069,9 @@ void free_char(struct char_data *ch)
   for (af = ch->affected; af; af = af->next)
     affect_remove(ch, af);
 
+#ifdef I3
+  i3_freechardata( ch );
+#endif
 #ifdef IMC
   imc_freechardata( ch );
 #endif
@@ -2858,6 +2867,10 @@ int fread_char(char *name, struct char_file_u *ch, struct char_data *xch)
 	break;
 
       case 'I':
+#ifdef I3
+        if( ( fMatch = i3_loadchar( xch, fp, word ) ) )
+          break;
+#endif
 #ifdef IMC
         if( ( fMatch = imc_loadchar( xch, fp, word ) ) )
           break;

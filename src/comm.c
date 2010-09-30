@@ -27,6 +27,9 @@
 #include <sys/resource.h>
 
 #include "global.h"
+#ifdef I3
+#include "i3.h"
+#endif
 #ifdef IMC
 #include "imc.h"
 #endif
@@ -235,6 +238,10 @@ int run_the_game(int port)
   init_whod(port);
 
 #ifdef IMC
+  log_boot("Opening I3 connection.");
+  i3_startup( FALSE, -1, FALSE );
+#endif
+#ifdef IMC
   log_boot("Opening IMC2 connection.");
   imc_startup( FALSE, -1, FALSE );
 #endif
@@ -244,6 +251,9 @@ int run_the_game(int port)
 
 #ifdef IMC
   imc_shutdown( FALSE );
+#endif
+#ifdef I3
+  i3_shutdown( 0 );
 #endif
   close_sockets(s);
   close_whod();
@@ -381,6 +391,9 @@ void game_loop(int s)
 	  close_socket(point);
     }
 
+#ifdef I3
+    i3_loop();
+#endif
 #ifdef IMC
     imc_loop();
 #endif

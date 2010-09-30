@@ -151,8 +151,11 @@ DESCRIPTOR_DATA *last_descriptor;
 
 #ifdef IMCWILEY
 
+#ifndef __IMUD_KLUDGE
+#define __IMUD_KLUDGE
 typedef unsigned char bool;
 typedef struct descriptor_data DESCRIPTOR_DATA;
+#endif
 
 #define first_descriptor descriptor_list
 #define URANGE(a, b, c)          ((b) < (a) ? (a) : ((b) > (c) ? (c) : (b)))

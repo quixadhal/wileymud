@@ -1,0 +1,13 @@
+#ROUTER
+Name *i4
+IP   204.209.44.3
+Port 8080
+End
+
+#ROUTER
+Name *wpr
+IP   195.242.99.94
+Port 8080
+End
+
+#END

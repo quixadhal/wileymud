@@ -94,8 +94,12 @@ typedef enum
 
 /* Should not need to edit anything below this point */
 
+#ifndef LGST
 #define LGST 4096 /* Large String */
+#endif
+#ifndef SMST
 #define SMST 1024 /* Small String */
+#endif
 
 /* Macro taken from DOTD codebase. Fcloses a file, then nulls its pointer for safety. */
 #define IMCFCLOSE(fp)  fclose((fp)); (fp)=NULL;
