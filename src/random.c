@@ -18,7 +18,7 @@
 
 void random_death_message(struct char_data *ch, struct char_data *victim)
 {
-  char                                    tease[256] = "\0\0\0";
+  char                                    tease[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
   int                                     razz = 0;
   int                                     bugcount = 25;
   struct descriptor_data                 *xx = NULL;

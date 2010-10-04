@@ -68,8 +68,8 @@ static int                              whod_port = 0;
 
 void do_whod(struct char_data *ch, const char *arg, int cmd)
 {
-  char                                    buf[256] = "\0\0\0";
-  char                                    tmp[MAX_INPUT_LENGTH] = "\0\0\0";
+  char                                    buf[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
+  char                                    tmp[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
   int                                     bit = 0;
   const char                                   *modes[] = {
     "on",
@@ -547,8 +547,8 @@ void whod_loop(void)
 
         /* Do we really need to sink input here before sending output? */
 /*        if (fcntl(s, F_SETFL, O_NDELAY) != -1) {
-          char junk[256];
-          while(read(newdesc, junk, 256) > 0);
+          char junk[MAX_INPUT_LENGTH];
+          while(read(newdesc, junk, MAX_INPUT_LENGTH) > 0);
         }
 */
 	WRITE(newdesc, whod_html());

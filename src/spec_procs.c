@@ -171,7 +171,7 @@ static struct special_proc_entry        specials_r[] = {
 
 char                                   *how_good(int percent_known)
 {
-  static char                             buf[256] = "\0\0\0";
+  static char                             buf[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
 
   if (DEBUG > 2)
     log_info("called %s with %d", __PRETTY_FUNCTION__, percent_known);
@@ -216,7 +216,7 @@ char                                   *how_good(int percent_known)
 
 int GainLevel(struct char_data *master, struct char_data *ch, int class)
 {
-  char                                    buf[MAX_INPUT_LENGTH] = "\0\0\0";
+  char                                    buf[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
 
   if (DEBUG > 2)
     log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(master), SAFE_NAME(ch), class);
@@ -293,7 +293,7 @@ int MageGuildMaster(struct char_data *ch, int cmd, const const char *arg)
   int                                     i = 0;
   int                                     target = MAGE_LEVEL_IND;
   struct char_data                       *master = NULL;
-  char                                    pagebuf[16384] = "\0\0\0";
+  char                                    pagebuf[16384] = "\0\0\0\0\0\0\0";
 
   if (DEBUG > 2)
     log_info("called %s with %s, %d, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), cmd, VNULL(arg));
@@ -370,7 +370,7 @@ int ClericGuildMaster(struct char_data *ch, int cmd, const const char *arg)
   int                                     i = 0;
   int                                     target = CLERIC_LEVEL_IND;
   struct char_data                       *master = NULL;
-  char                                    pagebuf[16384] = "\0\0\0";
+  char                                    pagebuf[16384] = "\0\0\0\0\0\0\0";
 
   if (DEBUG > 2)
     log_info("called %s with %s, %d, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), cmd, VNULL(arg));
@@ -447,7 +447,7 @@ int ThiefGuildMaster(struct char_data *ch, int cmd, const const char *arg)
   int                                     i = 0;
   int                                     target = THIEF_LEVEL_IND;
   struct char_data                       *master = NULL;
-  char                                    pagebuf[16384] = "\0\0\0";
+  char                                    pagebuf[16384] = "\0\0\0\0\0\0\0";
 
   if (DEBUG > 2)
     log_info("called %s with %s, %d, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), cmd, VNULL(arg));
@@ -524,7 +524,7 @@ int FighterGuildMaster(struct char_data *ch, int cmd, const const char *arg)
   int                                     i = 0;
   int                                     target = WARRIOR_LEVEL_IND;
   struct char_data                       *master = NULL;
-  char                                    pagebuf[16384] = "\0\0\0";
+  char                                    pagebuf[16384] = "\0\0\0\0\0\0\0";
 
   if (DEBUG > 2)
     log_info("called %s with %s, %d, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), cmd, VNULL(arg));
@@ -601,7 +601,7 @@ int RangerGuildMaster(struct char_data *ch, int cmd, const const char *arg)
   int                                     i = 0;
   int                                     target = RANGER_LEVEL_IND;
   struct char_data                       *master = NULL;
-  char                                    pagebuf[16384] = "\0\0\0";
+  char                                    pagebuf[16384] = "\0\0\0\0\0\0\0";
   int                                     skill_num = 0;
   int                                     spell_num = 0;
 
@@ -1315,8 +1315,8 @@ int Ned_Nutsmith(struct char_data *ch, int cmd, const char *arg)
   struct obj_data                        *new_obj = NULL;
   ifuncp                                  neddy = Ned_Nutsmith;	/* special procedure for this mob/obj */
   int                                     Obj = 0;
-  char                                    obj_name[80] = "\0\0\0";
-  char                                    vict_name[80] = "\0\0\0";
+  char                                    obj_name[80] = "\0\0\0\0\0\0\0";
+  char                                    vict_name[80] = "\0\0\0\0\0\0\0";
 
   if (DEBUG > 2)
     log_info("called %s with %s, %d, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), cmd, VNULL(arg));
@@ -1432,8 +1432,8 @@ int RepairGuy(struct char_data *ch, int cmd, const char *arg)
   struct char_data                       *vict = NULL;
   struct obj_data                        *obj = NULL;
   ifuncp                                  rep_guy = RepairGuy; /* special procedure for this mob/obj */
-  char                                    obj_name[80] = "\0\0\0";
-  char                                    vict_name[80] = "\0\0\0";
+  char                                    obj_name[80] = "\0\0\0\0\0\0\0";
+  char                                    vict_name[80] = "\0\0\0\0\0\0\0";
 
   if (DEBUG > 2)
     log_info("called %s with %s, %d, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), cmd, VNULL(arg));
@@ -2414,7 +2414,7 @@ static const char                            *random_puff_message(void)
 int puff(struct char_data *ch, int cmd, const char *arg)
 {
   struct char_data                       *i = NULL;
-  char                                    buf[80] = "\0\0\0";
+  char                                    buf[80] = "\0\0\0\0\0\0\0";
 
   if (DEBUG > 2)
     log_info("called %s with %s, %d, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), cmd, VNULL(arg));
@@ -3723,8 +3723,8 @@ int pet_shops(struct char_data *ch, int cmd, const char *arg)
 {
   int                                     pet_room = 0;
   struct char_data                       *pet = NULL;
-  char                                    buf[MAX_STRING_LENGTH] = "\0\0\0";
-  char                                    pet_name[256] = "\0\0\0";
+  char                                    buf[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
+  char                                    pet_name[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
 
   if (DEBUG > 2)
     log_info("called %s with %s, %d, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), cmd, VNULL(arg));
@@ -3859,7 +3859,7 @@ int pray_for_items(struct char_data *ch, int cmd, const char *arg)
   struct obj_data                        *tmp_obj = NULL;
   struct obj_data                        *obj = NULL;
   struct extra_descr_data                *ext = NULL;
-  char                                    buf[256] = "\0\0\0";
+  char                                    buf[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
 
   if (DEBUG > 2)
     log_info("called %s with %s, %d, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), cmd, VNULL(arg));
@@ -3912,8 +3912,8 @@ int chalice(struct char_data *ch, int cmd, const char *arg)
   struct obj_data                        *chalice_obj = NULL;
   static int                              chl = -1;
   static int                              achl = -1;
-  char                                    buf1[MAX_INPUT_LENGTH] = "\0\0\0";
-  char                                    buf2[MAX_INPUT_LENGTH] = "\0\0\0";
+  char                                    buf1[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
+  char                                    buf2[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
 
   if (DEBUG > 2)
     log_info("called %s with %s, %d, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), cmd, VNULL(arg));
@@ -4442,7 +4442,7 @@ int eli_priest(struct char_data *ch, int cmd, const char *arg)
 
 int fountain(struct char_data *ch, int cmd, const char *arg)
 {
-  char                                    tmp[MAX_INPUT_LENGTH] = "\0\0\0";
+  char                                    tmp[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
 
   if (DEBUG > 2)
     log_info("called %s with %s, %d, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), cmd, VNULL(arg));
@@ -4660,7 +4660,7 @@ int mosquito(struct char_data *ch, int cmd, const char *arg)
 int BerserkerAxe(struct char_data *ch, int cmd, const char *arg)
 {
   struct char_data                       *victim = NULL;
-  char                                    tmp[MAX_INPUT_LENGTH] = "\0\0\0";
+  char                                    tmp[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
 
   if (DEBUG > 2)
     log_info("called %s with %s, %d, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), cmd, VNULL(arg));
@@ -4982,7 +4982,7 @@ void gm_prac(struct char_data *master, struct char_data *vict, int target, const
 {
   int                                     i = 0;
   int                                     anumber = 0;
-  char                                    buf[MAX_STRING_LENGTH] = "\0\0\0";
+  char                                    buf[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
 
   if (DEBUG > 3)
     log_info("called %s with %s, %s, %d, %s", __PRETTY_FUNCTION__, SAFE_NAME(master), SAFE_NAME(vict), target, VNULL(arg));
@@ -5042,7 +5042,7 @@ int GuildMaster(struct char_data *ch, int cmd, const char *arg)
   int                                     yourclasses = 0;
   int                                     targetclass = 0;
   const char                             *argument = NULL;
-  char                                    buf[MAX_INPUT_LENGTH] = "\0\0\0";
+  char                                    buf[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
 
   if (DEBUG > 2)
     log_info("called %s with %s, %d, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), cmd, VNULL(arg));
@@ -5375,7 +5375,7 @@ int Karrn(struct char_data *ch, int cmd, const char *arg)
 char                                   *MobFunctionNameByFunc(ifuncp func)
 {
   int                                     i = 0;
-  static char                             mobname[256] = "\0\0\0";
+  static char                             mobname[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
 
   if (DEBUG > 3)
     log_info("called %s with %08zx", __PRETTY_FUNCTION__, (size_t)func);
@@ -5383,6 +5383,6 @@ char                                   *MobFunctionNameByFunc(ifuncp func)
   mobname[0] = '\0';
   for (i = 0; specials_m[i].vnum > 0; i++)
     if (specials_m[i].proc == func)
-      strncpy(mobname, specials_m[i].name, 255);
+      strncpy(mobname, specials_m[i].name, MAX_INPUT_LENGTH-1);
   return mobname;
 }

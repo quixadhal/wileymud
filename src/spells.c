@@ -408,7 +408,7 @@ void cast_colour_spray(char level, struct char_data *ch, const char *arg, int ty
 void cast_control_weather(char level, struct char_data *ch, const char *arg, int type,
 			  struct char_data *victim, struct obj_data *tar_obj)
 {
-  char                                    buffer[MAX_STRING_LENGTH] = "\0\0\0";
+  char                                    buffer[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
 
   if (DEBUG > 1)
     log_info("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
@@ -2325,9 +2325,9 @@ void cast_ventriloquate(char level, struct char_data *ch, const char *arg, int t
 			struct char_data *victim, struct obj_data *tar_obj)
 {
   struct char_data                       *tmp_ch = NULL;
-  char                                    buf1[MAX_STRING_LENGTH] = "\0\0\0";
-  char                                    buf2[MAX_STRING_LENGTH] = "\0\0\0";
-  char                                    buf3[MAX_STRING_LENGTH] = "\0\0\0";
+  char                                    buf1[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
+  char                                    buf2[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
+  char                                    buf3[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
 
   if (DEBUG > 1)
     log_info("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type, SAFE_NAME(victim), SAFE_ONAME(tar_obj));
@@ -2637,9 +2637,9 @@ void cast_knock(char level, struct char_data *ch, const char *arg, int type, str
 {
   int                                     door = 0;
   int                                     other_room = 0;
-  char                                    dir[MAX_INPUT_LENGTH] = "\0\0\0";
-  char                                    buf[MAX_STRING_LENGTH] = "\0\0\0";
-  char                                    otype[MAX_INPUT_LENGTH] = "\0\0\0";
+  char                                    dir[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
+  char                                    buf[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
+  char                                    otype[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
   struct room_direction_data             *back = NULL;
   struct obj_data                        *obj = NULL;
   struct char_data                       *this_victim = NULL;
@@ -3038,7 +3038,7 @@ const struct PolyType                   PolyList[] = {
 void cast_poly_self(char level, struct char_data *ch, const char *arg, int type,
 		    struct char_data *victim, struct obj_data *tar_obj)
 {
-  char                                    buffer[40] = "\0\0\0";
+  char                                    buffer[40] = "\0\0\0\0\0\0\0";
   int                                     mobn = 0;
   int                                     X = LAST_POLY_MOB;
   int                                     found = FALSE;
@@ -3148,7 +3148,7 @@ void cast_shelter(char level, struct char_data *ch, const char *arg, int type,
 void cast_minor_creation(char level, struct char_data *ch, const char *arg, int type,
 			 struct char_data *victim, struct obj_data *tar_obj)
 {
-  char                                    buffer[40] = "\0\0\0";
+  char                                    buffer[40] = "\0\0\0\0\0\0\0";
   int                                     obj = 0;
   struct obj_data                        *o = NULL;
 
@@ -3217,7 +3217,7 @@ void cast_minor_creation(char level, struct char_data *ch, const char *arg, int 
 void cast_conjure_elemental(char level, struct char_data *ch, const char *arg, int type,
 			    struct char_data *victim, struct obj_data *tar_obj)
 {
-  char                                    buffer[40] = "\0\0\0";
+  char                                    buffer[40] = "\0\0\0\0\0\0\0";
   int                                     mob = 0;
   int                                     obj = 0;
   struct obj_data                        *sac= NULL;
@@ -3293,7 +3293,7 @@ void cast_conjure_elemental(char level, struct char_data *ch, const char *arg, i
 void cast_cacaodemon(char level, struct char_data *ch, const char *arg, int type,
 		     struct char_data *victim, struct obj_data *tar_obj)
 {
-  char                                    buffer[40] = "\0\0\0";
+  char                                    buffer[40] = "\0\0\0\0\0\0\0";
   int                                     mob = 0;
   int                                     obj = 0;
   struct obj_data                        *sac = NULL;

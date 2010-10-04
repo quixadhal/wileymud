@@ -183,7 +183,7 @@ void TrapDamage(struct char_data *v, int damtype, int amnt, struct obj_data *t)
 
 void TrapDam(struct char_data *v, int damtype, int amnt, struct obj_data *t)
 {
-  char                                    desc[20] = "\0\0\0";
+  char                                    desc[20] = "\0\0\0\0\0\0\0";
 
   if (DEBUG > 2)
     log_info("called %s with %s, %d, %d, %s", __PRETTY_FUNCTION__, SAFE_NAME(v), damtype, amnt, SAFE_ONAME(t));

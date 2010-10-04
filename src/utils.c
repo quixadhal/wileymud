@@ -414,9 +414,9 @@ int in_group(struct char_data *ch1, struct char_data *ch2)
 
 int getall(char *name, char *newname)
 {
-  char                                    arg[40] = "\0\0\0";
-  char                                    tmpname[80] = "\0\0\0";
-  char                                    otname[80] = "\0\0\0";
+  char                                    arg[40] = "\0\0\0\0\0\0\0";
+  char                                    tmpname[80] = "\0\0\0\0\0\0\0";
+  char                                    otname[80] = "\0\0\0\0\0\0\0";
   char                                    prd = '\0';
 
   if (DEBUG > 3)
@@ -448,7 +448,7 @@ int getall(char *name, char *newname)
 int getabunch(char *name, char *newname)
 {
   int                                     num = 0;
-  char                                    tmpname[80] = "\0\0\0";
+  char                                    tmpname[80] = "\0\0\0\0\0\0\0";
 
   if (DEBUG > 3)
     log_info("called %s with %s, %s", __PRETTY_FUNCTION__, VNULL(name), VNULL(newname));

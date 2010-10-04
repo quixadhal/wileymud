@@ -201,8 +201,8 @@ void do_commune(struct char_data *ch, const char *argument, int cmd)
 void do_tell(struct char_data *ch, const char *argument, int cmd)
 {
   struct char_data                       *vict = NULL;
-  char                                    name[100] = "\0\0\0";
-  char                                    message[MAX_INPUT_LENGTH + 20] = "\0\0\0";
+  char                                    name[100] = "\0\0\0\0\0\0\0";
+  char                                    message[MAX_INPUT_LENGTH + 20] = "\0\0\0\0\0\0\0";
 
   if (DEBUG)
     log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
@@ -259,8 +259,8 @@ void do_tell(struct char_data *ch, const char *argument, int cmd)
 void do_whisper(struct char_data *ch, const char *argument, int cmd)
 {
   struct char_data                       *vict = NULL;
-  char                                    name[100] = "\0\0\0";
-  char                                    message[MAX_INPUT_LENGTH] = "\0\0\0";
+  char                                    name[100] = "\0\0\0\0\0\0\0";
+  char                                    message[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
 
   if (DEBUG)
     log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
@@ -287,8 +287,8 @@ void do_whisper(struct char_data *ch, const char *argument, int cmd)
 void do_ask(struct char_data *ch, const char *argument, int cmd)
 {
   struct char_data                       *vict = NULL;
-  char                                    name[100] = "\0\0\0";
-  char                                    message[MAX_INPUT_LENGTH] = "\0\0\0";
+  char                                    name[100] = "\0\0\0\0\0\0\0";
+  char                                    message[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
 
   if (DEBUG)
     log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
@@ -317,8 +317,8 @@ void do_write(struct char_data *ch, const char *argument, int cmd)
 {
   struct obj_data                        *paper = NULL;
   struct obj_data                        *pen = NULL;
-  char                                    papername[MAX_INPUT_LENGTH] = "\0\0\0";
-  char                                    penname[MAX_INPUT_LENGTH] = "\0\0\0";
+  char                                    papername[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
+  char                                    penname[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
 
   if (DEBUG)
     log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
@@ -421,7 +421,7 @@ void do_group_report(struct char_data *ch, const char *argument, int cmd)
   struct char_data                       *k = NULL;
   struct char_data                       *vict = NULL;
   struct follow_type                     *f = NULL;
-  char                                    message[MAX_INPUT_LENGTH + 20] = "\0\0\0";
+  char                                    message[MAX_INPUT_LENGTH + 20] = "\0\0\0\0\0\0\0";
 
   if (DEBUG)
     log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
@@ -475,7 +475,7 @@ void do_split(struct char_data *ch, const char *argument, int cmd)
   int                                     amount = 0;
   int                                     count = 0;
   int                                     share = 0;
-  char                                    blah[256] = "\0\0\0";
+  char                                    blah[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
 
   if (DEBUG)
     log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);

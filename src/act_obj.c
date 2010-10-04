@@ -68,15 +68,15 @@ void get(struct char_data *ch, struct obj_data *obj_object, struct obj_data *sub
 
 void do_get(struct char_data *ch, const char *argument, int cmd)
 {
-  char                                    arg1[MAX_STRING_LENGTH] = "\0\0\0";
-  char                                    arg2[MAX_STRING_LENGTH] = "\0\0\0";
+  char                                    arg1[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
+  char                                    arg2[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
   struct obj_data                        *sub_object = NULL;
   struct obj_data                        *obj_object = NULL;
   struct obj_data                        *next_obj = NULL;
   char                                    found = FALSE;
   char                                    fail = FALSE;
   int                                     type = 3;
-  char                                    newarg[100] = "\0\0\0";
+  char                                    newarg[100] = "\0\0\0\0\0\0\0";
   int                                     num = 0;
   int                                     p = 0;
 
@@ -362,8 +362,8 @@ void do_drop(struct char_data *ch, const char *argument, int cmd)
   struct obj_data                        *tmp_object = NULL;
   struct obj_data                        *next_obj = NULL;
   const char                             *s = NULL;
-  char                                    arg[MAX_INPUT_LENGTH] = "\0\0\0";
-  char                                    newarg[100] = "\0\0\0";
+  char                                    arg[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
+  char                                    newarg[100] = "\0\0\0\0\0\0\0";
   int                                     test = FALSE;
   int                                     amount = 0;
   int                                     num = 0;
@@ -474,9 +474,9 @@ void do_put(struct char_data *ch, const char *argument, int cmd)
   struct obj_data                        *obj_object = NULL;
   struct obj_data                        *sub_object = NULL;
   struct char_data                       *tmp_char = NULL;
-  char                                    arg1[128] = "\0\0\0";
-  char                                    arg2[128] = "\0\0\0";
-  char                                    newarg[100] = "\0\0\0";
+  char                                    arg1[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
+  char                                    arg2[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
+  char                                    newarg[100] = "\0\0\0\0\0\0\0";
   int                                     bits = 0;
   int                                     num = 0;
   int                                     p = 0;
@@ -575,10 +575,10 @@ void do_give(struct char_data *ch, const char *argument, int cmd)
 {
   struct char_data                       *vict = NULL;
   struct obj_data                        *obj = NULL;
-  char                                    obj_name[80] = "\0\0\0";
-  char                                    vict_name[80] = "\0\0\0";
-  char                                    arg[80] = "\0\0\0";
-  char                                    newarg[100] = "\0\0\0";
+  char                                    obj_name[80] = "\0\0\0\0\0\0\0";
+  char                                    vict_name[80] = "\0\0\0\0\0\0\0";
+  char                                    arg[80] = "\0\0\0\0\0\0\0";
+  char                                    newarg[100] = "\0\0\0\0\0\0\0";
   int                                     amount = 0;
   int                                     num = 0;
   int                                     p = 0;
@@ -717,7 +717,7 @@ void weight_change_object(struct obj_data *obj, int weight)
 void name_from_drinkcon(struct obj_data *obj)
 {
   int                                     i = 0;
-  char                                    buf[100] = "\0\0\0";
+  char                                    buf[100] = "\0\0\0\0\0\0\0";
   char                                   *new_name = NULL;
 
   if (DEBUG > 2)
@@ -755,7 +755,7 @@ void name_to_drinkcon(struct obj_data *obj, int type)
 void do_drink(struct char_data *ch, const char *argument, int cmd)
 {
   struct obj_data                        *temp = NULL;
-  char                                    buf[255] = "\0\0\0";
+  char                                    buf[255] = "\0\0\0\0\0\0\0";
   int                                     amount = 0;
   struct affected_type                    af;
 
@@ -849,7 +849,7 @@ void do_drink(struct char_data *ch, const char *argument, int cmd)
 
 void do_puke(struct char_data *ch, const char *argument, int cmd)
 {
-  char                                    buf[100] = "\0\0\0";
+  char                                    buf[100] = "\0\0\0\0\0\0\0";
   struct char_data                       *vict = NULL;
 
   if (DEBUG)
@@ -880,7 +880,7 @@ void do_puke(struct char_data *ch, const char *argument, int cmd)
 
 void do_eat(struct char_data *ch, const char *argument, int cmd)
 {
-  char                                    buf[100] = "\0\0\0";
+  char                                    buf[100] = "\0\0\0\0\0\0\0";
   int                                     j = 0;
   int                                     num = 0;
   struct obj_data                        *temp = NULL;
@@ -935,8 +935,8 @@ void do_eat(struct char_data *ch, const char *argument, int cmd)
 
 void do_pour(struct char_data *ch, const char *argument, int cmd)
 {
-  char                                    arg1[132] = "\0\0\0";
-  char                                    arg2[132] = "\0\0\0";
+  char                                    arg1[132] = "\0\0\0\0\0\0\0";
+  char                                    arg2[132] = "\0\0\0\0\0\0\0";
   struct obj_data                        *from_obj = NULL;
   struct obj_data                        *to_obj = NULL;
   int                                     temp = 0;
@@ -1041,7 +1041,7 @@ void do_pour(struct char_data *ch, const char *argument, int cmd)
 
 void do_sip(struct char_data *ch, const char *argument, int cmd)
 {
-  char                                    arg[MAX_STRING_LENGTH] = "\0\0\0";
+  char                                    arg[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
   struct obj_data                        *temp = NULL;
   struct affected_type                    af;
 
@@ -1111,7 +1111,7 @@ void do_sip(struct char_data *ch, const char *argument, int cmd)
 void do_taste(struct char_data *ch, const char *argument, int cmd)
 {
   struct affected_type                    af;
-  char                                    arg[80] = "\0\0\0";
+  char                                    arg[80] = "\0\0\0\0\0\0\0";
   struct obj_data                        *temp = NULL;
 
   if (DEBUG)
@@ -1561,8 +1561,8 @@ void wear(struct char_data *ch, struct obj_data *obj_object, int keyword)
 
 void do_wear(struct char_data *ch, const char *argument, int cmd)
 {
-  char                                    arg1[MAX_INPUT_LENGTH] = "\0\0\0";
-  char                                    arg2[MAX_INPUT_LENGTH] = "\0\0\0";
+  char                                    arg1[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
+  char                                    arg2[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
   struct obj_data                        *obj_object = NULL;
   struct obj_data                        *next_obj = NULL;
   int                                     keyword = 0;
@@ -1675,8 +1675,8 @@ void do_wear(struct char_data *ch, const char *argument, int cmd)
 
 void do_wield(struct char_data *ch, const char *argument, int cmd)
 {
-  char                                    arg1[MAX_STRING_LENGTH] = "\0\0\0";
-  char                                    arg2[MAX_STRING_LENGTH] = "\0\0\0";
+  char                                    arg1[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
+  char                                    arg2[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
   struct obj_data                        *obj_object = NULL;
   int                                     keyword = 12;
 
@@ -1723,8 +1723,8 @@ void do_wield(struct char_data *ch, const char *argument, int cmd)
 
 void do_grab(struct char_data *ch, const char *argument, int cmd)
 {
-  char                                    arg1[128] = "\0\0\0";
-  char                                    arg2[128] = "\0\0\0";
+  char                                    arg1[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
+  char                                    arg2[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
   struct obj_data                        *obj_object = NULL;
 
   if (DEBUG)
@@ -1749,7 +1749,7 @@ void do_grab(struct char_data *ch, const char *argument, int cmd)
 
 void do_remove(struct char_data *ch, const char *argument, int cmd)
 {
-  char                                    arg1[128] = "\0\0\0";
+  char                                    arg1[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
   char                                    *T = NULL;
   char                                    *P = NULL;
   int                                     Rem_List[20];
@@ -1855,7 +1855,7 @@ void do_remove(struct char_data *ch, const char *argument, int cmd)
 
 void do_bury(struct char_data *ch, const char *argument, int cmd)
 {
-  char                                    buf[256] = "\0\0\0";
+  char                                    buf[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
   struct obj_data                        *vict = NULL;
   struct obj_data                        *obj = NULL;
   struct obj_data                        *next = NULL;
@@ -1900,7 +1900,7 @@ void do_bury(struct char_data *ch, const char *argument, int cmd)
 
 void do_desecrate(struct char_data *ch, const char *argument, int cmd)
 {
-  char                                    buf[256] = "\0\0\0";
+  char                                    buf[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
   struct obj_data                        *vict = NULL;
   struct obj_data                        *obj = NULL;
   struct obj_data                        *next = NULL;

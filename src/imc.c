@@ -401,7 +401,7 @@ const char *imcone_argument( const char *argument, char *arg_first )
    if( *argument == '\'' || *argument == '"' )
       cEnd = *argument++;
 
-   while( *argument != '\0' && ++count <= 255 )
+   while( *argument != '\0' && ++count <= MAX_INPUT_LENGTH-1 )
    {
       if( *argument == cEnd )
       {
@@ -2181,7 +2181,7 @@ char *break_newlines( char *argument, char *arg_first )
    if( *argument == '\'' || *argument == '"' )
       cEnd = *argument++;
 
-   while( *argument != '\0' && ++count <= 255 )
+   while( *argument != '\0' && ++count <= MAX_INPUT_LENGTH-1 )
    {
       if( *argument == cEnd )
       {
@@ -3839,7 +3839,7 @@ void imc_initchar( CHAR_DATA * ch )
 
 void imc_loadhistory( void )
 {
-   char filename[256];
+   char filename[MAX_INPUT_LENGTH];
    FILE *tempfile;
    IMC_CHANNEL *tempchan = NULL;
    int x;
@@ -3849,7 +3849,7 @@ void imc_loadhistory( void )
       if( !tempchan->local_name )
          continue;
 
-      snprintf( filename, 256, "%s%s.hist", IMC_DIR, tempchan->local_name );
+      snprintf( filename, MAX_INPUT_LENGTH, "%s%s.hist", IMC_DIR, tempchan->local_name );
 
       if( !( tempfile = fopen( filename, "r" ) ) )
          continue;
@@ -3868,7 +3868,7 @@ void imc_loadhistory( void )
 
 void imc_savehistory( void )
 {
-   char filename[256];
+   char filename[MAX_INPUT_LENGTH];
    FILE *tempfile;
    IMC_CHANNEL *tempchan = NULL;
    int x;
@@ -3881,7 +3881,7 @@ void imc_savehistory( void )
       if( !tempchan->history[0] )
          continue;
 
-      snprintf( filename, 256, "%s%s.hist", IMC_DIR, tempchan->local_name );
+      snprintf( filename, MAX_INPUT_LENGTH, "%s%s.hist", IMC_DIR, tempchan->local_name );
 
       if( !( tempfile = fopen( filename, "w" ) ) )
          continue;

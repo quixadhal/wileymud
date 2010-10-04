@@ -250,9 +250,8 @@ struct opinion {
 #define WAIT_SEC       4
 #define WAIT_ROUND     4
 
-#define MAX_STRING_LENGTH   8192
-#define NORMAL_BUFFER_SIZE   512
-#define MAX_INPUT_LENGTH     256
+#define MAX_STRING_LENGTH  16384
+#define MAX_INPUT_LENGTH    1024 
 #define MAX_MESSAGES          60
 #define MAX_ITEMS            153
 

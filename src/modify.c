@@ -140,7 +140,7 @@ void string_add(struct descriptor_data *d, char *str)
 /* interpret an argument for do_string */
 void quad_arg(const char *arg, int *type, char *name, int *field, char *string)
 {
-  char                                    buf[MAX_STRING_LENGTH] = "\0\0\0";
+  char                                    buf[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
 
   if (DEBUG > 2)
     log_info("called %s with %s, %08zx, %s, %08zx, %s", __PRETTY_FUNCTION__, VNULL(arg), (size_t)type, VNULL(name), (size_t)field, VNULL(string));
@@ -181,8 +181,8 @@ void quad_arg(const char *arg, int *type, char *name, int *field, char *string)
 void do_string(struct char_data *ch, const char *arg, int cmd)
 {
 
-  char                                    name[MAX_STRING_LENGTH] = "\0\0\0";
-  char                                    string[MAX_STRING_LENGTH] = "\0\0\0";
+  char                                    name[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
+  char                                    string[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
   struct extra_descr_data                *ed = NULL;
   struct extra_descr_data                *tmp = NULL;
   int                                     field = 0;
@@ -385,7 +385,7 @@ void do_string(struct char_data *ch, const char *arg, int cmd)
 
 void bisect_arg(const char *arg, int *field, char *string)
 {
-  char                                    buf[MAX_INPUT_LENGTH] = "\0\0\0";
+  char                                    buf[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
 
   if (DEBUG > 2)
     log_info("called %s with %s, %08zx, %s", __PRETTY_FUNCTION__, VNULL(arg), (size_t)field, VNULL(string));
@@ -413,10 +413,10 @@ void bisect_arg(const char *arg, int *field, char *string)
 void do_setskill(struct char_data *ch, const char *arg, int cmd)
 {
   struct char_data                       *vict = NULL;
-  char                                    name[100] = "\0\0\0";
-  char                                    num[100] = "\0\0\0";
-  char                                    buf[100] = "\0\0\0";
-  char                                    helpstr[MAX_STRING_LENGTH] = "\0\0\0";
+  char                                    name[100] = "\0\0\0\0\0\0\0";
+  char                                    num[100] = "\0\0\0\0\0\0\0";
+  char                                    buf[100] = "\0\0\0\0\0\0\0";
+  char                                    helpstr[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
   int                                     skill = 0;
   int                                     field = 0;
   int                                     value = 0;
@@ -562,8 +562,8 @@ struct help_index_element              *build_help_index(FILE * fl, int *num)
   int                                     i = 0;
   struct help_index_element              *list = NULL;
   struct help_index_element               mem;
-  char                                    buf[81] = "\0\0\0";
-  char                                    tmp[81] = "\0\0\0";
+  char                                    buf[81] = "\0\0\0\0\0\0\0";
+  char                                    tmp[81] = "\0\0\0\0\0\0\0";
   char                                   *scan = NULL;
   long                                    pos = 0L;
 
@@ -799,8 +799,8 @@ void page_string(struct descriptor_data *d, char *str, int keep_internal)
 
 void show_string(struct descriptor_data *d, char *input)
 {
-  char                                    buffer[MAX_STRING_LENGTH] = "\0\0\0";
-  char                                    buf[MAX_INPUT_LENGTH] = "\0\0\0";
+  char                                    buffer[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
+  char                                    buf[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
   char                                   *scan = NULL;
   char                                   *chk = NULL;
   int                                     lines = 0;
@@ -854,7 +854,7 @@ void check_reboot(void)
   struct tm                              *t_info = NULL;
   char                                    dummy = '\0';
   FILE                                   *boot = NULL;
-  char                                    buf[512] = "\0\0\0";
+  char                                    buf[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
   char                                   *tmstr = NULL;
 
   if (DEBUG > 2)

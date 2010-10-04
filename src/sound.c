@@ -74,7 +74,7 @@ void MakeSound(int current_pulse)
   int                                     room = -1;	       /* default is bad value */
   struct obj_data                        *obj = NULL;
   struct char_data                       *ch = NULL;
-  char                                    buffer[128] = "\0\0\0";
+  char                                    buffer[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
 
   if (DEBUG > 2)
     log_info("called %s with %d", __PRETTY_FUNCTION__, current_pulse);

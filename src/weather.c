@@ -314,7 +314,7 @@ void GetMonth(int month)
 void reset_time(void)
 {
   FILE                                   *f1 = NULL;
-  char                                    buf[80] = "\0\0\0";
+  char                                    buf[80] = "\0\0\0\0\0\0\0";
   long                                    beginning_of_time = 650336715; /* Fri Aug 10 21:05:15 1990 */
   long                                    current_time = 0L;
 

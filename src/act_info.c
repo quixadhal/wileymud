@@ -113,7 +113,7 @@ char                                   *find_ex_description(char *word,
 
 void show_obj_to_char(struct obj_data *object, struct char_data *ch, int mode)
 {
-  char                                    buffer[MAX_STRING_LENGTH] = "\0\0\0";
+  char                                    buffer[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
 
   if (DEBUG > 2)
     log_info("called %s with %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), mode);
@@ -174,8 +174,8 @@ void show_obj_to_char(struct obj_data *object, struct char_data *ch, int mode)
 
 void show_mult_obj_to_char(struct obj_data *object, struct char_data *ch, int mode, int num)
 {
-  char                                    buffer[MAX_STRING_LENGTH] = "\0\0\0";
-  char                                    tmp[10] = "\0\0\0";
+  char                                    buffer[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
+  char                                    tmp[10] = "\0\0\0\0\0\0\0";
 
   if (DEBUG > 2)
     log_info("called %s with %s, %s, %d, %d", __PRETTY_FUNCTION__, SAFE_ONAME(object), SAFE_NAME(ch), mode, num);
@@ -374,7 +374,7 @@ void show_char_to_char(struct char_data *i, struct char_data *ch, int mode)
   int                                     j = 0;
   int                                     found = FALSE;
   int                                     health_percent = 0;
-  char                                    buffer[MAX_STRING_LENGTH] = "\0\0\0";
+  char                                    buffer[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
   struct obj_data                        *tmp_obj = NULL;
 
   if (DEBUG > 2)
@@ -624,8 +624,8 @@ void show_mult_char_to_char(struct char_data *i, struct char_data *ch, int mode,
   int                                     found = FALSE;
   int                                     health_percent = 0;
   struct obj_data                        *tmp_obj = NULL;
-  char                                    buffer[MAX_STRING_LENGTH] = "\0\0\0";
-  char                                    tmp[10] = "\0\0\0";
+  char                                    buffer[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
+  char                                    tmp[10] = "\0\0\0\0\0\0\0";
 
   if (DEBUG > 2)
     log_info("called %s with %s, %s, %d, %d", __PRETTY_FUNCTION__, SAFE_NAME(i), SAFE_NAME(ch), mode, num);
@@ -908,9 +908,9 @@ void list_char_to_char(struct char_data *list, struct char_data *ch, int mode)
 
 void do_look(struct char_data *ch, const char *argument, int cmd)
 {
-  char                                    buffer[MAX_STRING_LENGTH] = "\0\0\0";
-  char                                    arg1[MAX_INPUT_LENGTH] = "\0\0\0";
-  char                                    arg2[MAX_INPUT_LENGTH] = "\0\0\0";
+  char                                    buffer[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
+  char                                    arg1[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
+  char                                    arg2[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
   int                                     keyword_no = 0;
   int                                     res = 0;
   int                                     j = 0;
@@ -1325,7 +1325,7 @@ void do_look(struct char_data *ch, const char *argument, int cmd)
 
 void do_read(struct char_data *ch, const char *argument, int cmd)
 {
-  char                                    buf[100] = "\0\0\0";
+  char                                    buf[100] = "\0\0\0\0\0\0\0";
 
   if (DEBUG)
     log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
@@ -1339,8 +1339,8 @@ void do_read(struct char_data *ch, const char *argument, int cmd)
 
 void do_examine(struct char_data *ch, const char *argument, int cmd)
 {
-  char                                    name[100] = "\0\0\0";
-  char                                    buf[100] = "\0\0\0";
+  char                                    name[100] = "\0\0\0\0\0\0\0";
+  char                                    buf[100] = "\0\0\0\0\0\0\0";
   int                                     bits = 0;
   struct char_data                       *tmp_char = NULL;
   struct obj_data                        *tmp_object = NULL;
@@ -1373,7 +1373,7 @@ void do_examine(struct char_data *ch, const char *argument, int cmd)
 void do_search(struct char_data *ch, const char *argument, int cmd)
 {
   int                                     door = -1;
-  char                                    buf[256] = "\0\0\0";
+  char                                    buf[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
   const char                             *exits[] = {
     "North",
     "East ",
@@ -1426,7 +1426,7 @@ void do_search(struct char_data *ch, const char *argument, int cmd)
 void do_exits(struct char_data *ch, const char *argument, int cmd)
 {
   int                                     door = -1;
-  char                                    buf[256] = "\0\0\0";
+  char                                    buf[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
   const char                             *exits[] = {
     "North",
     "East ",
@@ -1480,8 +1480,8 @@ void do_exits(struct char_data *ch, const char *argument, int cmd)
 
 void do_score(struct char_data *ch, const char *argument, int cmd)
 {
-  static char                             buf[1024] = "\0\0\0";
-  static char                             tmpbuf[256] = "\0\0\0";
+  static char                             buf[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
+  static char                             tmpbuf[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
   static int                              ack = 0;
   struct affected_type                   *aff = NULL;
   struct char_data                       *target = NULL;
@@ -1751,7 +1751,7 @@ void do_time(struct char_data *ch, const char *argument, int cmd)
 {
   struct tm                              *tm_info = NULL;
   time_t                                  tc = (time_t) 0;
-  char                                    buf[100] = "\0\0\0";
+  char                                    buf[100] = "\0\0\0\0\0\0\0";
   int                                     weekday = 0;
   int                                     day = 0;
 
@@ -1831,8 +1831,8 @@ void do_help(struct char_data *ch, const char *argument, int cmd)
   int                                     top = 0;
   int                                     mid = 0;
   int                                     minlen = 0;
-  char                                    buf[MAX_STRING_LENGTH] = "\0\0\0";
-  char                                    buffer[MAX_STRING_LENGTH] = "\0\0\0";
+  char                                    buf[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
+  char                                    buffer[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
 
   if (DEBUG)
     log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
@@ -1891,8 +1891,8 @@ void do_wizhelp(struct char_data *ch, const char *argument, int cmd)
   int                                     top = 0;
   int                                     mid = 0;
   int                                     minlen = 0;
-  char                                    buf[MAX_STRING_LENGTH] = "\0\0\0";
-  char                                    buffer[MAX_STRING_LENGTH] = "\0\0\0";
+  char                                    buf[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
+  char                                    buffer[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
 
   /*
    * First command is command[0] 
@@ -1966,7 +1966,7 @@ void do_allcommands(struct char_data *ch, const char *argument, int cmd)
 {
   int                                     no = 0;
   int                                     i = 0;
-  char                                    buf[MAX_STRING_LENGTH] = "\0\0\0";
+  char                                    buf[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
 
   if (DEBUG)
     log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
@@ -1996,7 +1996,7 @@ void do_who(struct char_data *ch, const char *argument, int cmd)
   long                                    thour = 0;
   long                                    tmin = 0;
   long                                    tsec = 0;
-  char                                    buf[256] = "\0\0\0\0\0\0\0";
+  char                                    buf[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
   time_t                                  now;
   char                                    uptimebuf[100];
   char                                    nowtimebuf[100];
@@ -2027,7 +2027,7 @@ void do_who(struct char_data *ch, const char *argument, int cmd)
     if (cmd == 234 && real_roomp(person->in_room)->zone != real_roomp(ch->in_room)->zone)
       continue;
     count++;
-    bzero(buf, 256);
+    bzero(buf, MAX_INPUT_LENGTH);
 
     if (IS_SET(SHOW_IDLE, whod_mode)) {
       if (!(person->desc)) {
@@ -2089,8 +2089,8 @@ void do_users(struct char_data *ch, const char *argument, int cmd)
 {
   struct descriptor_data                 *d = NULL;
   int                                     flag = 0;
-  char                                    buf[MAX_STRING_LENGTH] = "\0\0\0";
-  char                                    line[200] = "\0\0\0";
+  char                                    buf[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
+  char                                    line[200] = "\0\0\0\0\0\0\0";
 
   if (DEBUG)
     log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
@@ -2214,7 +2214,7 @@ static int which_number_mobile(struct char_data *ch, struct char_data *mob)
 char                                   *numbered_person(struct char_data *ch,
 							struct char_data *person)
 {
-  static char                             buf[MAX_STRING_LENGTH] = "\0\0\0";
+  static char                             buf[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
 
   if (DEBUG > 2)
     log_info("called %s with %s, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), SAFE_NAME(person));
@@ -2230,7 +2230,7 @@ char                                   *numbered_person(struct char_data *ch,
 static void    where_person(struct char_data *ch, struct char_data *person,
 			    struct string_block *sb)
 {
-  char                                    buf[MAX_STRING_LENGTH] = "\0\0\0";
+  char                                    buf[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
 
   if (DEBUG > 2)
     log_info("called %s with %s, %s, %08zx", __PRETTY_FUNCTION__, SAFE_NAME(ch), SAFE_NAME(person), (size_t)sb);
@@ -2249,7 +2249,7 @@ static void    where_person(struct char_data *ch, struct char_data *person,
 static void    where_object(struct char_data *ch, struct obj_data *obj,
 			    int recurse, struct string_block *sb)
 {
-  char                                    buf[MAX_STRING_LENGTH] = "\0\0\0";
+  char                                    buf[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
 
   if (DEBUG > 2)
     log_info("called %s with %s, %s, %d, %08zx", __PRETTY_FUNCTION__, SAFE_NAME(ch), SAFE_ONAME(obj), recurse, (size_t)sb);
@@ -2291,8 +2291,8 @@ void do_where(struct char_data *ch, const char *argument, int cmd)
   char                                   *nameonly = NULL;
   int                                     which_number = 0;
   int                                     count = 0;
-  char                                    name[MAX_INPUT_LENGTH] = "\0\0\0";
-  char                                    buf[MAX_STRING_LENGTH] = "\0\0\0";
+  char                                    name[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
+  char                                    buf[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
   struct string_block                     sb;
 
   if (DEBUG)
@@ -2393,7 +2393,7 @@ void do_levels(struct char_data *ch, const char *argument, int cmd)
   int                                     i = 0;
   int                                     RaceMax = 0;
   int                                     class = 0;
-  char                                    buf[MAX_STRING_LENGTH] = "\0\0\0";
+  char                                    buf[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
 
   if (DEBUG)
     log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
@@ -2471,7 +2471,7 @@ void do_levels(struct char_data *ch, const char *argument, int cmd)
 void do_consider(struct char_data *ch, const char *argument, int cmd)
 {
   struct char_data                       *victim = NULL;
-  char                                    name[256] = "\0\0\0";
+  char                                    name[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
   int                                     diff = 0;
 
   if (DEBUG)
@@ -2550,7 +2550,7 @@ void do_consider(struct char_data *ch, const char *argument, int cmd)
 void do_spells(struct char_data *ch, const char *argument, int cmd)
 {
   int                                     i = 0;
-  char                                    buf[16384] = "\0\0\0";
+  char                                    buf[16384] = "\0\0\0\0\0\0\0";
 
   if (DEBUG)
     log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
@@ -2647,7 +2647,7 @@ void do_skills(struct char_data *ch, const char *argument, int cmd)
 
 void do_players(struct char_data *ch, const char *argument, int cmd)
 {
-  char                                    buf[MAX_STRING_LENGTH] = "\0\0\0";
+  char                                    buf[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
   int                                     i = 0;
 
   if (DEBUG)
@@ -2878,7 +2878,7 @@ void do_ansimap(struct char_data *ch, const char *argument, int cmd)
   struct room_data                       *this_room = NULL;
   char *map[9][9];
   int i,j;
-  char tmp[256];
+  char tmp[MAX_INPUT_LENGTH];
 
   if (DEBUG)
     log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);

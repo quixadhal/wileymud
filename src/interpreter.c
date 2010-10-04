@@ -934,7 +934,7 @@ int already_mob_name(char *ack_name)
 {
   int                                     ack = 0;
   int                                     blah = 0;
-  char                                    pfft_name[80] = "\0\0\0";
+  char                                    pfft_name[80] = "\0\0\0\0\0\0\0";
   char                                   *pfft = NULL;
 
   if (DEBUG > 2)
@@ -1041,11 +1041,11 @@ void nanny(struct descriptor_data *d, char *arg)
 {
   int                                     count = 0;
   int                                     oops = FALSE;
-  char                                    tmp_name[20] = "\0\0\0";
+  char                                    tmp_name[20] = "\0\0\0\0\0\0\0";
   struct char_file_u                      tmp_store;
   struct char_data                       *ch = NULL;
   int                                     i = 0;
-  char                                    cryptbuf[17] = "\0\0\0";
+  char                                    cryptbuf[17] = "\0\0\0\0\0\0\0";
   char                                    cryptsalt[3] = { '\0', '\0', '\0' };
 
   if (DEBUG > 2)
@@ -1556,8 +1556,8 @@ void nanny(struct descriptor_data *d, char *arg)
 
 void update_player_list_entry(struct descriptor_data *d)
 {
-  char                                    buf[256] = "\0\0\0";
-  char                                    tmpbuf[80] = "\0\0\0";
+  char                                    buf[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
+  char                                    tmpbuf[80] = "\0\0\0\0\0\0\0";
   int                                     i = 0;
   int                                     found = 0;
   struct timeb                            right_now;
@@ -1620,11 +1620,11 @@ void PutPasswd(struct descriptor_data *d)
 int ValidPlayer(char *who, char *pwd, char *oldpwd)
 {
   FILE                                   *pwd_fd = NULL;
-  char                                    tname[40] = "\0\0\0";
+  char                                    tname[40] = "\0\0\0\0\0\0\0";
   char                                   *t_ptr = NULL;
-  char                                    pname[40] = "\0\0\0";
-  char                                    passwd[40] = "\0\0\0";
-  char                                    email[80] = "\0\0\0";
+  char                                    pname[40] = "\0\0\0\0\0\0\0";
+  char                                    passwd[40] = "\0\0\0\0\0\0\0";
+  char                                    email[80] = "\0\0\0\0\0\0\0";
   long                                    timestamp = 0L;
 
   if (DEBUG > 2)

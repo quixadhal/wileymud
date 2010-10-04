@@ -87,7 +87,7 @@ void load_messages(void)
   int                                     i = 0;
   int                                     type = 0;
   struct message_type                    *messages = NULL;
-  char                                    chk[100] = "\0\0\0";
+  char                                    chk[100] = "\0\0\0\0\0\0\0";
 
   if (DEBUG > 2)
     log_info("called %s with no arguments", __PRETTY_FUNCTION__);
@@ -265,7 +265,7 @@ void make_corpse(struct char_data *ch)
   struct obj_data                        *o = NULL;
   struct obj_data                        *food = NULL;
   struct obj_data                        *money = NULL;
-  char                                    buf[MAX_INPUT_LENGTH] = "\0\0\0";
+  char                                    buf[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
   int                                     i = 0;
   int                                     ADeadBody = FALSE;
   int                                     r_num = 0;
@@ -547,7 +547,7 @@ void die(struct char_data *ch)
 
 void group_gain(struct char_data *ch, struct char_data *victim)
 {
-  char                                    buf[256] = "\0\0\0";
+  char                                    buf[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
   int                                     no_members = 0;
   int                                     member_count = 0;
   double                                  leftover = 0.0;
@@ -692,7 +692,7 @@ void group_gain(struct char_data *ch, struct char_data *victim)
 
 char                                   *replace_string(const char *str, const char *weapon, const char *weapon_s)
 {
-  static char                             buf[256] = "\0\0\0";
+  static char                             buf[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
   char                                   *cp = NULL;
 
   if (DEBUG > 2)
@@ -1825,7 +1825,7 @@ int DamageOneItem(struct char_data *ch, int dam_type, struct obj_data *obj)
 
 void MakeScrap(struct char_data *ch, struct obj_data *obj)
 {
-  char                                    buf[200] = "\0\0\0";
+  char                                    buf[200] = "\0\0\0\0\0\0\0";
   struct obj_data                        *t = NULL;
 
   if (DEBUG > 2)

@@ -29,7 +29,7 @@ static int                              list_top = -1;
 
 char                                   *fread_action(FILE * fl)
 {
-  char                                    buf[MAX_STRING_LENGTH] = "\0\0\0";
+  char                                    buf[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
   char                                   *rslt = NULL;
 
   if (DEBUG > 2)
@@ -145,7 +145,7 @@ int find_action(int cmd)
 void do_action(struct char_data *ch, const char *argument, int cmd)
 {
   int                                     act_nr = 0;
-  char                                    buf[MAX_INPUT_LENGTH] = "\0\0\0";
+  char                                    buf[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
   struct social_messg                    *action = NULL;
   struct char_data                       *vict = NULL;
 
@@ -186,7 +186,7 @@ void do_action(struct char_data *ch, const char *argument, int cmd)
 
 void do_insult(struct char_data *ch, const char *argument, int cmd)
 {
-  static char                             arg[MAX_STRING_LENGTH] = "\0\0\0";
+  static char                             arg[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
   struct char_data                       *victim = NULL;
 
   if (DEBUG)

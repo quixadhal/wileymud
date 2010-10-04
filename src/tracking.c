@@ -330,7 +330,7 @@ void do_track(struct char_data *ch, const char *argument, int cmd)
   int                                     dist = 0;
   int                                     code = 0;
   int                                     cost = 0;
-  char                                    name[256] = "\0";
+  char                                    name[MAX_INPUT_LENGTH] = "\0";
   struct hunting_data                     huntd;
 
   if (DEBUG)
@@ -456,7 +456,7 @@ char *track_distance(struct char_data *ch, char *mob_name)
 
 void do_immtrack(struct char_data *ch, const char *argument, int cmd)
 {
-  char                                    buf[MAX_INPUT_LENGTH] = "\0\0\0";
+  char                                    buf[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
   int                                     loc_nr = 0;
   int                                     location = 0;
   struct room_data                       *target_room = NULL;

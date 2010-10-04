@@ -387,7 +387,7 @@ void spell_clone(char level, struct char_data *ch, struct char_data *victim,
   struct affected_type                   *af = NULL;
   struct obj_data                        *tobj = NULL;
   struct follow_type                     *k = NULL;
-  char                                    buf[MAX_STRING_LENGTH] = "\0\0\0";
+  char                                    buf[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
   struct affected_type                    aff;
 
   if (DEBUG > 1)
@@ -1606,7 +1606,7 @@ void spell_invisibility(char level, struct char_data *ch, struct char_data *vict
 void spell_locate_object(char level, struct char_data *ch, struct char_data *victim, char *obj)
 {
   struct obj_data                        *i = NULL;
-  char                                    name[256] = "\0\0\0";
+  char                                    name[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
   int                                     j = 0;
 
   if (DEBUG > 1)
@@ -2096,8 +2096,8 @@ void spell_sense_life(char level, struct char_data *ch, struct char_data *victim
 void spell_identify(char level, struct char_data *ch, struct char_data *victim,
 		    struct obj_data *obj)
 {
-  char                                    buf[256] = "\0\0\0";
-  char                                    buf2[256] = "\0\0\0";
+  char                                    buf[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
+  char                                    buf2[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
   int                                     i = 0;
   int                                     found = FALSE;
   int                                     val_index = 0;
@@ -3619,7 +3619,7 @@ void spell_animate_dead(char level, struct char_data *ch, struct char_data *vict
   struct char_data                       *mob = NULL;
   struct obj_data                        *obj_object = NULL;
   struct obj_data                        *next_obj = NULL;
-  char                                    buf[MAX_STRING_LENGTH] = "\0\0\0";
+  char                                    buf[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
   int                                     r_num = 100;	       /* virtual # for zombie */
   int                                     k = 0;
 
@@ -3714,7 +3714,7 @@ void spell_know_alignment(char level, struct char_data *ch, struct char_data *vi
 			  struct obj_data *obj)
 {
   int                                     ap = 0;
-  char                                    name[100] = "\0\0\0";
+  char                                    name[100] = "\0\0\0\0\0\0\0";
 
   if (DEBUG > 1)
     log_info("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
@@ -5431,8 +5431,8 @@ void spell_commune(char level, struct char_data *ch, struct char_data *victim,
   struct char_data                       *c = NULL;
   struct room_data                       *rp = NULL;
   struct room_data                       *dp = NULL;
-  char                                    buf[MAX_STRING_LENGTH] = "\0\0\0";
-  char                                    buffer[MAX_STRING_LENGTH] = "\0\0\0";
+  char                                    buf[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
+  char                                    buffer[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
 
   if (DEBUG > 1)
     log_info("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));
@@ -6583,8 +6583,8 @@ void spell_sunray(char level, struct char_data *ch, struct char_data *victim,
 void spell_know_monster(char level, struct char_data *ch, struct char_data *victim,
 			struct obj_data *obj)
 {
-  char                                    buf[256] = "\0\0\0";
-  char                                    buf2[256] = "\0\0\0";
+  char                                    buf[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
+  char                                    buf2[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
   int                                     exp = 0;
   int                                     lev = 0;
   int                                     hits = 0;
@@ -6797,7 +6797,7 @@ void spell_portal(char level, struct char_data *ch, struct char_data *tmp_ch,
   struct obj_data                        *tmp_obj = NULL;
   struct extra_descr_data                *ed = NULL;
   struct room_data                       *rp = NULL;
-  char                                    buf[512] = "\0\0\0";
+  char                                    buf[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
 
   if (DEBUG > 1)
     log_info("called %s with %d, %s, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), SAFE_NAME(victim), SAFE_ONAME(obj));

@@ -97,9 +97,9 @@ int shop_producing(struct obj_data *item, int shop_nr)
 
 void shopping_buy(char *arg, struct char_data *ch, struct char_data *keeper, int shop_nr)
 {
-  char                                    argm[100] = "\0\0\0";
-  char                                    buf[MAX_STRING_LENGTH] = "\0\0\0";
-  char                                    newarg[100] = "\0\0\0";
+  char                                    argm[100] = "\0\0\0\0\0\0\0";
+  char                                    buf[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
+  char                                    newarg[100] = "\0\0\0\0\0\0\0";
   int                                     num = 1;
   struct obj_data                        *temp1 = NULL;
 
@@ -197,8 +197,8 @@ void shopping_buy(char *arg, struct char_data *ch, struct char_data *keeper, int
 
 void shopping_sell(char *arg, struct char_data *ch, struct char_data *keeper, int shop_nr)
 {
-  char                                    argm[100]= "\0\0\0";
-  char                                    buf[MAX_STRING_LENGTH]= "\0\0\0";
+  char                                    argm[100]= "\0\0\0\0\0\0\0";
+  char                                    buf[MAX_STRING_LENGTH]= "\0\0\0\0\0\0\0";
   int                                     cost = 0;
   struct obj_data                        *temp1 = NULL;
 
@@ -289,8 +289,8 @@ void shopping_sell(char *arg, struct char_data *ch, struct char_data *keeper, in
 
 void shopping_value(char *arg, struct char_data *ch, struct char_data *keeper, int shop_nr)
 {
-  char                                    argm[100] = "\0\0\0";
-  char                                    buf[MAX_STRING_LENGTH] = "\0\0\0";
+  char                                    argm[100] = "\0\0\0\0\0\0\0";
+  char                                    buf[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
   struct obj_data                        *temp1 = NULL;
 
   if (DEBUG > 2)
@@ -325,9 +325,9 @@ void shopping_value(char *arg, struct char_data *ch, struct char_data *keeper, i
 
 void shopping_list(char *arg, struct char_data *ch, struct char_data *keeper, int shop_nr)
 {
-  char                                    buf[MAX_STRING_LENGTH] = "\0\0\0";
-  char                                    buf2[100] = "\0\0\0";
-  char                                    buf3[100] = "\0\0\0";
+  char                                    buf[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
+  char                                    buf2[100] = "\0\0\0\0\0\0\0";
+  char                                    buf3[100] = "\0\0\0\0\0\0\0";
   struct obj_data                        *temp1 = NULL;
   int                                     found_obj = FALSE;
 
@@ -367,7 +367,7 @@ void shopping_list(char *arg, struct char_data *ch, struct char_data *keeper, in
 
 void shopping_kill(char *arg, struct char_data *ch, struct char_data *keeper, int shop_nr)
 {
-  char                                    buf[100] = "\0\0\0";
+  char                                    buf[100] = "\0\0\0\0\0\0\0";
 
   if (DEBUG > 2)
     log_info("called %s with %s, %s, %s, %d", __PRETTY_FUNCTION__, VNULL(arg), SAFE_NAME(ch), SAFE_NAME(keeper), shop_nr);
@@ -390,7 +390,7 @@ void shopping_kill(char *arg, struct char_data *ch, struct char_data *keeper, in
 
 int shop_keeper(struct char_data *ch, int cmd, char *arg)
 {
-  char                                    argm[100] = "\0\0\0";
+  char                                    argm[100] = "\0\0\0\0\0\0\0";
   struct char_data                       *temp_char = NULL;
   struct char_data                       *keeper = NULL;
   int                                     shop_nr = 0;

@@ -32,7 +32,7 @@
 
 void do_disarm(struct char_data *ch, const char *argument, int cmd)
 {
-  char                                    name[30] = "\0\0\0";
+  char                                    name[30] = "\0\0\0\0\0\0\0";
   int                                     percent_chance = 0;
   struct char_data                       *victim = NULL;
   struct obj_data                        *w = NULL;
@@ -282,7 +282,7 @@ int MountEgoCheck(struct char_data *rider, struct char_data *mount)
 
 void do_mount(struct char_data *ch, const char *argument, int cmd)
 {
-  char                                    name[112] = "\0\0\0";
+  char                                    name[112] = "\0\0\0\0\0\0\0";
   int                                     check = FALSE;
   struct char_data                       *horse = NULL;
 

@@ -49,7 +49,7 @@ void do_polymorph(struct char_data *ch, const char *argument, int cmd)
 
 void do_highfive(struct char_data *ch, const char *argument, int cmd)
 {
-  char                                    buf[80] = "\0\0\0";
+  char                                    buf[80] = "\0\0\0\0\0\0\0";
   struct char_data                       *tch = NULL;
 
   if (DEBUG)
@@ -74,7 +74,7 @@ void do_highfive(struct char_data *ch, const char *argument, int cmd)
 
 void do_rentmode(struct char_data *ch, const char *argument, int cmd)
 {
-  char                                    buf[MAX_STRING_LENGTH] = "\0\0\0";
+  char                                    buf[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
   double                                  it = 0.0;
   FILE                                   *pfd = NULL;
 
@@ -204,7 +204,7 @@ void do_trans(struct char_data *ch, const char *argument, int cmd)
 {
   struct descriptor_data                 *i = NULL;
   struct char_data                       *victim = NULL;
-  char                                    buf[100] = "\0\0\0";
+  char                                    buf[100] = "\0\0\0\0\0\0\0";
   short int                               target = 0;
 
   if (DEBUG)
@@ -259,8 +259,8 @@ void do_trans(struct char_data *ch, const char *argument, int cmd)
 
 void do_at(struct char_data *ch, const char *argument, int cmd)
 {
-  char                                    command_str[MAX_INPUT_LENGTH] = "\0\0\0";
-  char                                    loc_str[MAX_INPUT_LENGTH] = "\0\0\0";
+  char                                    command_str[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
+  char                                    loc_str[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
   int                                     location = 0;
   int                                     original_loc = 0;
   struct char_data                       *target_mob = NULL;
@@ -327,7 +327,7 @@ void do_at(struct char_data *ch, const char *argument, int cmd)
 
 void do_form(struct char_data *ch, const char *argument, int cmd)
 {
-  char                                    buf[MAX_INPUT_LENGTH] = "\0\0\0";
+  char                                    buf[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
   int                                     loc_nr = 0;
   struct room_data                       *rp = NULL;
   int                                     zone = 0;
@@ -375,7 +375,7 @@ void do_form(struct char_data *ch, const char *argument, int cmd)
 
 void do_goto(struct char_data *ch, const char *argument, int cmd)
 {
-  char                                    buf[MAX_INPUT_LENGTH] = "\0\0\0";
+  char                                    buf[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
   int                                     loc_nr = 0;
   int                                     location = 0;
   int                                     i = 0;
@@ -467,7 +467,7 @@ void do_goto(struct char_data *ch, const char *argument, int cmd)
 
 void do_home(struct char_data *ch, const char *argument, int cmd)
 {
-  char                                    buf[MAX_INPUT_LENGTH] = "\0\0\0";
+  char                                    buf[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
   int                                     location = 0;
   struct char_data                       *v = NULL;
 
@@ -526,8 +526,8 @@ void do_home(struct char_data *ch, const char *argument, int cmd)
 
 void do_apraise(struct char_data *ch, const char *argument, int cmd)
 {
-  char                                    arg1[MAX_STRING_LENGTH] = "\0\0\0";
-  char                                    buf[MAX_STRING_LENGTH] = "\0\0\0";
+  char                                    arg1[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
+  char                                    buf[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
   struct obj_data                        *j = NULL;
   int                                     i = 0;
   int                                     found_one = FALSE;
@@ -708,10 +708,10 @@ void do_stat(struct char_data *ch, const char *argument, int cmd)
   struct extra_descr_data                *desc = NULL;
   struct follow_type                     *fol = NULL;
   struct room_data                       *rp = NULL;
-  char                                    type[MAX_STRING_LENGTH] = "\0\0\0";
-  char                                    num[MAX_STRING_LENGTH] = "\0\0\0";
-  char                                    buf[MAX_STRING_LENGTH] = "\0\0\0";
-  char                                    buf2[MAX_STRING_LENGTH] = "\0\0\0";
+  char                                    type[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
+  char                                    num[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
+  char                                    buf[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
+  char                                    buf2[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
   int                                     i = 0;
   int                                     virtual = 0;
   int                                     i2 = 0;
@@ -1301,8 +1301,8 @@ void do_stat(struct char_data *ch, const char *argument, int cmd)
 
 void do_pretitle(struct char_data *ch, const char *argument, int cmd)
 {
-  char                                    name[20] = "\0\0\0";
-  char                                    pretitle[50] = "\0\0\0";
+  char                                    name[20] = "\0\0\0\0\0\0\0";
+  char                                    pretitle[50] = "\0\0\0\0\0\0\0";
   struct char_data                       *vict = NULL;
 
   if (DEBUG)
@@ -1328,11 +1328,11 @@ void do_pretitle(struct char_data *ch, const char *argument, int cmd)
 void do_set(struct char_data *ch, const char *argument, int cmd)
 {
   struct char_data                       *mob = NULL;
-  char                                    field[20] = "\0\0\0";
-  char                                    name[20] = "\0\0\0";
-  char                                    parmstr[50] = "\0\0\0";
-  char                                    tmp[80] = "\0\0\0";
-  char                                    buf[MAX_STRING_LENGTH] = "\0\0\0";
+  char                                    field[20] = "\0\0\0\0\0\0\0";
+  char                                    name[20] = "\0\0\0\0\0\0\0";
+  char                                    parmstr[50] = "\0\0\0\0\0\0\0";
+  char                                    tmp[80] = "\0\0\0\0\0\0\0";
+  char                                    buf[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
   int                                     index_value = 0;
   int                                     parm = 0;
   int                                     i = 0;
@@ -1638,7 +1638,7 @@ void do_shutdown(struct char_data *ch, const char *argument, int cmd)
   time_t                                  tc = (time_t) 0;
   struct tm                              *t_info = NULL;
   char                                   *tmstr = NULL;
-  char                                    arg[MAX_INPUT_LENGTH] = "\0\0\0";
+  char                                    arg[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
 
   if (DEBUG)
     log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
@@ -1678,7 +1678,7 @@ void do_shutdown(struct char_data *ch, const char *argument, int cmd)
 
 void do_snoop(struct char_data *ch, const char *argument, int cmd)
 {
-  static char                             arg[MAX_STRING_LENGTH] = "\0\0\0";
+  static char                             arg[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
   struct char_data                       *victim = NULL;
 
   if (DEBUG)
@@ -1737,7 +1737,7 @@ void do_snoop(struct char_data *ch, const char *argument, int cmd)
 
 void do_switch(struct char_data *ch, const char *argument, int cmd)
 {
-  static char                             arg[80] = "\0\0\0";
+  static char                             arg[80] = "\0\0\0\0\0\0\0";
   struct char_data                       *victim = NULL;
 
   if (DEBUG)
@@ -1834,8 +1834,8 @@ void do_force(struct char_data *ch, const char *argument, int cmd)
 {
   struct descriptor_data                 *i = NULL;
   struct char_data                       *vict = NULL;
-  char                                    name[100] = "\0\0\0";
-  char                                    to_force[100] = "\0\0\0";
+  char                                    name[100] = "\0\0\0\0\0\0\0";
+  char                                    to_force[100] = "\0\0\0\0\0\0\0";
 
   if (DEBUG)
     log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
@@ -1880,8 +1880,8 @@ void do_load(struct char_data *ch, const char *argument, int cmd)
 {
   struct char_data                       *mob = NULL;
   struct obj_data                        *obj = NULL;
-  char                                    type[100] = "\0\0\0";
-  char                                    num[100] = "\0\0\0";
+  char                                    type[100] = "\0\0\0\0\0\0\0";
+  char                                    num[100] = "\0\0\0\0\0\0\0";
   int                                     anumber = 0;
 
   if (DEBUG)
@@ -1979,7 +1979,7 @@ void do_purge(struct char_data *ch, const char *argument, int cmd)
   struct char_data                       *next_v = NULL;
   struct obj_data                        *obj = NULL;
   struct obj_data                        *next_o = NULL;
-  char                                    name[100] = "\0\0\0";
+  char                                    name[100] = "\0\0\0\0\0\0\0";
 
   if (DEBUG)
     log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
@@ -2356,9 +2356,9 @@ void start_character(struct char_data *ch)
 void do_advance(struct char_data *ch, const char *argument, int cmd)
 {
   struct char_data                       *victim = NULL;
-  char                                    name[100] = "\0\0\0";
-  char                                    level[100] = "\0\0\0";
-  char                                    class[100] = "\0\0\0";
+  char                                    name[100] = "\0\0\0\0\0\0\0";
+  char                                    level[100] = "\0\0\0\0\0\0\0";
+  char                                    class[100] = "\0\0\0\0\0\0\0";
   int                                     adv = 0;
   int                                     newlevel = 0;
   int                                     lin_class = 0;
@@ -2506,7 +2506,7 @@ void do_advance(struct char_data *ch, const char *argument, int cmd)
 void do_reroll(struct char_data *ch, const char *argument, int cmd)
 {
   struct char_data                       *victim = NULL;
-  char                                    buf[100] = "\0\0\0";
+  char                                    buf[100] = "\0\0\0\0\0\0\0";
 
   if (DEBUG)
     log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
@@ -2600,7 +2600,7 @@ void do_restore(struct char_data *ch, const char *argument, int cmd)
 {
   struct char_data                       *victim = NULL;
   struct descriptor_data                 *i = NULL;
-  char                                    buf[256] = "\0\0\0";
+  char                                    buf[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
 
   if (DEBUG)
     log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
@@ -2651,7 +2651,7 @@ void do_noshout(struct char_data *ch, const char *argument, int cmd)
 {
   struct char_data                       *vict = NULL;
   struct obj_data                        *dummy = NULL;
-  char                                    buf[MAX_INPUT_LENGTH] = "\0\0\0";
+  char                                    buf[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
 
   if (DEBUG)
     log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
@@ -2705,7 +2705,7 @@ void do_nohassle(struct char_data *ch, const char *argument, int cmd)
 {
   struct char_data                       *vict = NULL;
   struct obj_data                        *dummy = NULL;
-  char                                    buf[MAX_INPUT_LENGTH] = "\0\0\0";
+  char                                    buf[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
 
   if (DEBUG)
     log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
@@ -2736,7 +2736,7 @@ void do_stealth(struct char_data *ch, const char *argument, int cmd)
 {
   struct char_data                       *vict = NULL;
   struct obj_data                        *dummy = NULL;
-  char                                    buf[MAX_INPUT_LENGTH] = "\0\0\0";
+  char                                    buf[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
 
   if (DEBUG)
     log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
@@ -2766,7 +2766,7 @@ void do_stealth(struct char_data *ch, const char *argument, int cmd)
 
 static void print_room(int rnum, struct room_data *rp, struct string_block *sb)
 {
-  char                                    buf[MAX_STRING_LENGTH] = "\0\0\0";
+  char                                    buf[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
   int                                     dink = 0;
   int                                     bits = 0;
   int                                     scan = 0;
@@ -2812,7 +2812,7 @@ static void print_private_room(int rnum, struct room_data *rp, struct string_blo
 
 static void show_room_zone(int rnum, struct room_data *rp, struct show_room_zone_struct *srzs)
 {
-  char                                    buf[MAX_STRING_LENGTH] = "\0\0\0";
+  char                                    buf[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
 
   if (DEBUG > 2)
     log_info("called %s with %d, %08zx, %08zx", __PRETTY_FUNCTION__, rnum, (size_t)rp, (size_t)srzs);
@@ -2841,8 +2841,8 @@ static void show_room_zone(int rnum, struct room_data *rp, struct show_room_zone
 
 void do_show(struct char_data *ch, const char *argument, int cmd)
 {
-  char                                    buf[MAX_STRING_LENGTH] = "\0\0\0";
-  char                                    zonenum[MAX_INPUT_LENGTH] = "\0\0\0";
+  char                                    buf[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
+  char                                    zonenum[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
   int                                     zone = 0;
   int                                     bottom = 0;
   int                                     top = 0;
@@ -2911,7 +2911,7 @@ void do_show(struct char_data *ch, const char *argument, int cmd)
     for (objn = 0; objn <= topi; objn++) {
       struct char_data *target_mob = NULL;
       struct room_data *target_room = NULL;
-      char tbuf[MAX_INPUT_LENGTH] = "\0\0\0";
+      char tbuf[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
 
       oi = which_i + objn;
       if ((zone >= 0 && (oi->virtual < bottom || oi->virtual > top)) ||
@@ -2962,7 +2962,7 @@ void do_show(struct char_data *ch, const char *argument, int cmd)
 
 void do_debug(struct char_data *ch, const char *argument, int cmd)
 {
-  char                                    arg[MAX_INPUT_LENGTH] = "\0\0\0";
+  char                                    arg[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
   int                                     level = 0;
 
   if (DEBUG)
@@ -3033,8 +3033,8 @@ void do_reset(struct char_data *ch, const char *argument, int cmd)
   int                                     finish = 0;
   int                                     i = 0;
   struct room_data                       *rp = NULL;
-  char                                    start_level[256] = "\0\0\0";
-  char                                    finish_level[256] = "\0\0\0";
+  char                                    start_level[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
+  char                                    finish_level[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
 
   if (DEBUG)
     log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
@@ -3111,8 +3111,8 @@ void do_zone_purge(struct char_data *ch, const char *argument, int cmd)
 {
   int                                     zones[2];
   struct room_data                       *rp = NULL;
-  char                                    start_level[256] = "\0\0\0";
-  char                                    finish_level[256] = "\0\0\0";
+  char                                    start_level[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
+  char                                    finish_level[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
 
   if (DEBUG)
     log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
@@ -3169,8 +3169,8 @@ void do_setreboot(struct char_data *ch, const char *argument, int cmd)
   FILE                                   *pfd = NULL;
   int                                     first = 0;
   int                                     second = 0;
-  char                                    first_str[256] = "\0\0\0";
-  char                                    second_str[256] = "\0\0\0";
+  char                                    first_str[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
+  char                                    second_str[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
 
   if (DEBUG)
     log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);

@@ -182,9 +182,9 @@ void load_char_objs(struct char_data *ch)
   float                                   timegold = 0.0;
   int                                     difference = 0;
   struct obj_file_u                      *st = NULL;
-  char                                    name[40] = "\0\0\0";
+  char                                    name[40] = "\0\0\0\0\0\0\0";
   char                                   *t_ptr = NULL;
-  char                                    path[256] = "\0\0\0";
+  char                                    path[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
   struct rental_header                    rh;
 
   if (DEBUG > 2)
@@ -369,9 +369,9 @@ void save_obj(struct char_data *ch, struct obj_cost *cost, int delete)
 {
   FILE                                   *fl = NULL;
   int                                     i = 0;
-  char                                    name[40] = "\0\0\0";
+  char                                    name[40] = "\0\0\0\0\0\0\0";
   char                                   *t_ptr = NULL;
-  char                                    path[256] = "\0\0\0";
+  char                                    path[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
   static struct obj_file_u                st;
 
   if (DEBUG > 2)
@@ -503,8 +503,8 @@ int new_save_obj(struct char_data *ch, struct obj_data *obj, FILE * fp, int dele
 void new_save_equipment(struct char_data *ch, struct obj_cost *cost, int delete)
 {
   FILE                                   *fp = NULL;
-  char                                    name[40] = "\0\0\0";
-  char                                    filename[256] = "\0\0\0";
+  char                                    name[40] = "\0\0\0\0\0\0\0";
+  char                                    filename[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
   char                                   *t_ptr = NULL;
   int                                     i = 0;
   int                                     ObjId = 0;
@@ -596,8 +596,8 @@ int fread_object(struct obj_data *obj, FILE * fp)
 int new_load_equipment(struct char_data *ch, struct obj_cost *cost)
 {
   FILE                                   *fp = NULL;
-  char                                    name[40] = "\0\0\0";
-  char                                    filename[256] = "\0\0\0";
+  char                                    name[40] = "\0\0\0\0\0\0\0";
+  char                                    filename[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
   char                                   *t_ptr = NULL;
   static char                             End[4] = "End";
 
@@ -806,9 +806,9 @@ void zero_rent(struct char_data *ch)
 {
   struct rental_header                    rh;
   FILE                                   *fl = NULL;
-  char                                    name[40] = "\0\0\0";
+  char                                    name[40] = "\0\0\0\0\0\0\0";
   char                                   *t_ptr = NULL;
-  char                                    path[256] = "\0\0\0";
+  char                                    path[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
 
   if (DEBUG > 2)
     log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));

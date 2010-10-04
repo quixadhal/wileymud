@@ -6,7 +6,7 @@
 #ifndef _RECEPTION_H
 #define _RECEPTION_H
 
-#define OBJ_FILE_FREE "\0\0\0"
+#define OBJ_FILE_FREE "\0\0\0\0\0\0\0"
 
 #define MAX_OBJ_SAVE 200				       /* Used in OBJ_FILE_U *DO*NOT*CHANGE* */
 

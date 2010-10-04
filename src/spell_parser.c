@@ -525,8 +525,8 @@ void add_follower(struct char_data *ch, struct char_data *leader)
 
 void say_spell(struct char_data *ch, int si)
 {
-  char                                    buf[MAX_STRING_LENGTH] = "\0\0\0";
-  char                                    splwd[MAX_BUF_LENGTH] = "\0\0\0";
+  char                                    buf[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
+  char                                    splwd[MAX_BUF_LENGTH] = "\0\0\0\0\0\0\0";
   int                                     j = 0;
   int                                     offs = 0;
   struct char_data                       *temp_char = NULL;
@@ -700,12 +700,12 @@ void do_cast(struct char_data *ch, const char *argument, int cmd)
   struct room_data                       *rp = NULL;
   struct obj_data                        *tar_obj = NULL;
   struct char_data                       *tar_char = NULL;
-  char                                    name[MAX_INPUT_LENGTH] = "\0\0\0";
+  char                                    name[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
   int                                     qend = 0;
   int                                     spl = 0;
   int                                     i = 0;
   int                                     target_ok = FALSE;
-  char                                    spell_name[MAX_INPUT_LENGTH] = "\0\0\0";
+  char                                    spell_name[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
 
   if (DEBUG)
     log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);

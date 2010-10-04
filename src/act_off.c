@@ -74,7 +74,7 @@ void do_swat(struct char_data *ch, const char *argument, int cmd)
 
 void do_hit(struct char_data *ch, const char *argument, int cmd)
 {
-  char                                    arg[80] = "\0\0\0";
+  char                                    arg[80] = "\0\0\0\0\0\0\0";
   struct char_data                       *victim = NULL;
 
   if (DEBUG)
@@ -115,7 +115,7 @@ void do_hit(struct char_data *ch, const char *argument, int cmd)
 
 void do_kill(struct char_data *ch, const char *argument, int cmd)
 {
-  static char                             arg[MAX_INPUT_LENGTH] = "\0\0\0";
+  static char                             arg[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
   struct char_data                       *victim = NULL;
 
   if (DEBUG)
@@ -157,7 +157,7 @@ void do_kill(struct char_data *ch, const char *argument, int cmd)
 void do_backstab(struct char_data *ch, const char *argument, int cmd)
 {
   struct char_data                       *victim = NULL;
-  char                                    name[256] = "\0\0\0";
+  char                                    name[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
   int                                     percent_chance = 0;
   int                                     base = 0;
 
@@ -247,11 +247,11 @@ void do_backstab(struct char_data *ch, const char *argument, int cmd)
 
 void do_order(struct char_data *ch, const char *argument, int cmd)
 {
-  char                                    name[100] = "\0\0\0";
-  char                                    message[256] = "\0\0\0";
-  char                                    message2[256] = "\0\0\0";
-  char                                    action[256] = "\0\0\0";
-  char                                    onwho[256] = "\0\0\0";
+  char                                    name[100] = "\0\0\0\0\0\0\0";
+  char                                    message[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
+  char                                    message2[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
+  char                                    action[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
+  char                                    onwho[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
 
   int                                     found = FALSE;
   int                                     org_room = 0;
@@ -443,7 +443,7 @@ void do_flee(struct char_data *ch, const char *argument, int cmd)
 void do_bandage(struct char_data *ch, const char *argument, int cmd)
 {
   struct char_data                       *victim = NULL;
-  char                                    name[256] = "\0\0\0";
+  char                                    name[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
   int                                     percent_chance = 0;
   int                                     cost = 0;
 
@@ -511,7 +511,7 @@ void do_bandage(struct char_data *ch, const char *argument, int cmd)
 
 void slam_into_wall(struct char_data *ch, struct room_direction_data *exitp)
 {
-  char                                    doorname[128] = "\0\0\0";
+  char                                    doorname[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
 
   if (DEBUG > 2)
     log_info("called %s with %s, %08zx", __PRETTY_FUNCTION__, SAFE_NAME(ch), (size_t)exitp);
@@ -545,8 +545,8 @@ void do_doorbash(struct char_data *ch, const char *argument, int cmd)
   struct room_direction_data             *exitp = NULL;
   int                                     was_in = FALSE;
   int                                     roll = 0;
-  char                                    type[128] = "\0\0\0";
-  char                                    direction[128] = "\0\0\0";
+  char                                    type[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
+  char                                    direction[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
 
   if (DEBUG)
     log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
@@ -682,7 +682,7 @@ void do_doorbash(struct char_data *ch, const char *argument, int cmd)
 void do_bash(struct char_data *ch, const char *argument, int cmd)
 {
   struct char_data                       *victim = NULL;
-  char                                    name[256] = "\0\0\0";
+  char                                    name[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
   int                                     percent_chance = 0;
   int                                     cost = 0;
   int                                     has_shield = FALSE;
@@ -782,7 +782,7 @@ void do_bash(struct char_data *ch, const char *argument, int cmd)
 void do_punch(struct char_data *ch, const char *argument, int cmd)
 {
   struct char_data                       *victim = NULL;
-  char                                    name[256] = "\0\0\0";
+  char                                    name[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
   int                                     percent_chance = 0;
   int                                     dam = 0;
   int                                     cost = 0;
@@ -875,7 +875,7 @@ void do_rescue(struct char_data *ch, const char *argument, int cmd)
   struct char_data                       *tmp_ch = NULL;
   int                                     percent_chance = 0;
   int                                     cost = 0;
-  char                                    victim_name[240] = "\0\0\0";
+  char                                    victim_name[240] = "\0\0\0\0\0\0\0";
 
   if (DEBUG)
     log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
@@ -949,7 +949,7 @@ void do_assist(struct char_data *ch, const char *argument, int cmd)
 {
   struct char_data                       *victim = NULL;
   struct char_data                       *tmp_ch = NULL;
-  char                                    victim_name[240] = "\0\0\0";
+  char                                    victim_name[240] = "\0\0\0\0\0\0\0";
 
   if (DEBUG)
     log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
@@ -992,7 +992,7 @@ void do_assist(struct char_data *ch, const char *argument, int cmd)
 void do_kick(struct char_data *ch, const char *argument, int cmd)
 {
   struct char_data                       *victim = NULL;
-  char                                    name[256] = "\0\0\0";
+  char                                    name[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
   int                                     percent_chance = 0;
   int                                     cost = 0;
 
@@ -1087,7 +1087,7 @@ void do_wimp(struct char_data *ch, const char *argument, int cmd)
 void do_breath(struct char_data *ch, const char *argument, int cmd)
 {
   struct char_data                       *victim = NULL;
-  char                                    name[MAX_STRING_LENGTH] = "\0\0\0";
+  char                                    name[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
   int                                     count = 0;
   int                                     manacost = 0;
   funcp                                   weapon = NULL;
@@ -1147,7 +1147,7 @@ void do_breath(struct char_data *ch, const char *argument, int cmd)
 #if 0
 void do_shoot(struct char_data *ch, const char *argument, int cmd)
 {
-  char                                    arg[80] = "\0\0\0";
+  char                                    arg[80] = "\0\0\0\0\0\0\0";
   struct char_data                       *victim = NULL;
 
   if (DEBUG)

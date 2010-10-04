@@ -63,8 +63,8 @@ void do_guard(struct char_data *ch, const char *argument, int cmd)
 
 void do_junk(struct char_data *ch, const char *argument, int cmd)
 {
-  char                                    arg[100] = "\0\0\0";
-  char                                    newarg[100] = "\0\0\0";
+  char                                    arg[100] = "\0\0\0\0\0\0\0";
+  char                                    newarg[100] = "\0\0\0\0\0\0\0";
   struct obj_data                        *tmp_object = NULL;
   struct obj_data                        *old_object = NULL;
   int                                     num = 0;
@@ -265,9 +265,9 @@ void do_steal(struct char_data *ch, const char *argument, int cmd)
 {
   struct char_data                       *victim = NULL;
   struct obj_data                        *obj = NULL;
-  char                                    victim_name[240] = "\0\0\0";
-  char                                    obj_name[240] = "\0\0\0";
-  char                                    buf[240] = "\0\0\0";
+  char                                    victim_name[240] = "\0\0\0\0\0\0\0";
+  char                                    obj_name[240] = "\0\0\0\0\0\0\0";
+  char                                    buf[240] = "\0\0\0\0\0\0\0";
   int                                     percent_chance = 0;
   int                                     gold = 0;
   int                                     eq_pos = 0;
@@ -390,10 +390,10 @@ void do_steal(struct char_data *ch, const char *argument, int cmd)
 
 void do_practice(struct char_data *ch, const char *argument, int cmd)
 {
-  char                                    buf[MAX_STRING_LENGTH] = "\0\0\0";
+  char                                    buf[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
   int                                     i = 0;
-  char                                    first_arg[100] = "\0\0\0";
-  char                                    sec_arg[100] = "\0\0\0";
+  char                                    first_arg[100] = "\0\0\0\0\0\0\0";
+  char                                    sec_arg[100] = "\0\0\0\0\0\0\0";
   int                                     flag = FALSE;
 
   struct skill_struct {
@@ -542,7 +542,7 @@ void do_practice(struct char_data *ch, const char *argument, int cmd)
 void do_idea(struct char_data *ch, const char *argument, int cmd)
 {
   FILE                                   *fl = NULL;
-  char                                    str[MAX_INPUT_LENGTH + 20] = "\0\0\0";
+  char                                    str[MAX_INPUT_LENGTH + 20] = "\0\0\0\0\0\0\0";
 
   if (DEBUG)
     log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
@@ -575,7 +575,7 @@ void do_idea(struct char_data *ch, const char *argument, int cmd)
 void do_typo(struct char_data *ch, const char *argument, int cmd)
 {
   FILE                                   *fl = NULL;
-  char                                    str[MAX_INPUT_LENGTH + 20] = "\0\0\0";
+  char                                    str[MAX_INPUT_LENGTH + 20] = "\0\0\0\0\0\0\0";
 
   if (DEBUG)
     log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
@@ -607,7 +607,7 @@ void do_typo(struct char_data *ch, const char *argument, int cmd)
 void do_bug(struct char_data *ch, const char *argument, int cmd)
 {
   FILE                                   *fl = NULL;
-  char                                    str[MAX_INPUT_LENGTH + 20] = "\0\0\0";
+  char                                    str[MAX_INPUT_LENGTH + 20] = "\0\0\0\0\0\0\0";
 
   if (DEBUG)
     log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
@@ -672,7 +672,7 @@ void do_compact(struct char_data *ch, const char *argument, int cmd)
 
 void do_group(struct char_data *ch, const char *argument, int cmd)
 {
-  char                                    name[256] = "\0\0\0";
+  char                                    name[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
   struct char_data                       *victim = NULL;
   struct char_data                       *k = NULL;
   struct follow_type                     *f = NULL;
@@ -790,7 +790,7 @@ void do_group(struct char_data *ch, const char *argument, int cmd)
 
 void do_quaff(struct char_data *ch, const char *argument, int cmd)
 {
-  char                                    buf[100] = "\0\0\0";
+  char                                    buf[100] = "\0\0\0\0\0\0\0";
   struct obj_data                        *temp = NULL;
   int                                     i = 0;
   int                                     equipped = FALSE;
@@ -863,7 +863,7 @@ void do_quaff(struct char_data *ch, const char *argument, int cmd)
 
 void do_recite(struct char_data *ch, const char *argument, int cmd)
 {
-  char                                    buf[100] = "\0\0\0";
+  char                                    buf[100] = "\0\0\0\0\0\0\0";
   struct obj_data                        *scroll = NULL;
   struct obj_data                        *obj = NULL;
   struct char_data                       *victim = NULL;
@@ -923,7 +923,7 @@ void do_recite(struct char_data *ch, const char *argument, int cmd)
 
 void do_use(struct char_data *ch, const char *argument, int cmd)
 {
-  char                                    buf[100] = "\0\0\0";
+  char                                    buf[100] = "\0\0\0\0\0\0\0";
   struct char_data                       *tmp_char = NULL;
   struct obj_data                        *tmp_object = NULL;
   struct obj_data                        *stick = NULL;
@@ -989,7 +989,7 @@ void do_use(struct char_data *ch, const char *argument, int cmd)
 
 void do_plr_noshout(struct char_data *ch, const char *argument, int cmd)
 {
-  char                                    buf[128] = "\0\0\0";
+  char                                    buf[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
 
   if (DEBUG)
     log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
@@ -1014,7 +1014,7 @@ void do_plr_noshout(struct char_data *ch, const char *argument, int cmd)
 
 void do_plr_notell(struct char_data *ch, const char *argument, int cmd)
 {
-  char                                    buf[128] = "\0\0\0";
+  char                                    buf[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
 
   if (DEBUG)
     log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);

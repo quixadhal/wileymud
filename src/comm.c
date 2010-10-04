@@ -279,8 +279,8 @@ void game_loop(int s)
   struct timeval                          timeout;
   struct timeval                          null_time;
   static struct timeval                   opt_time;
-  char                                    comm[MAX_INPUT_LENGTH] = "\0\0\0";
-  char                                    promptbuf[256] = "\0\0\0";
+  char                                    comm[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
+  char                                    promptbuf[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
   struct descriptor_data                 *point = NULL;
   struct descriptor_data                 *next_point = NULL;
   struct room_data                       *rm = NULL;
@@ -465,7 +465,7 @@ void game_loop(int s)
 	  if (point->page_first)
 	    write_to_descriptor(point->descriptor, "*** Press return or q ***");
 	  else {
-	    bzero(promptbuf, 256);
+	    bzero(promptbuf, MAX_INPUT_LENGTH);
 	    if (IS_IMMORTAL(point->character) && IS_PC(point->character)) {
 	      if (MOUNTED(point->character)) {
 		mount = MOUNTED(point->character);
@@ -701,7 +701,7 @@ struct timeval timediff(struct timeval *a, struct timeval *b)
 /* Empty the queues before closing connection */
 void flush_queues(struct descriptor_data *d)
 {
-  char                                    dummy[MAX_STRING_LENGTH] = "\0\0\0";
+  char                                    dummy[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
 
   if (DEBUG > 2)
     log_info("called %s with %08zx", __PRETTY_FUNCTION__, (size_t)d);
@@ -717,7 +717,7 @@ void flush_queues(struct descriptor_data *d)
 int init_socket(int port)
 {
   int                                     opt = 1;
-  char                                    hostname[MAX_HOSTNAME + 1] = "\0\0\0";
+  char                                    hostname[MAX_HOSTNAME + 1] = "\0\0\0\0\0\0\0";
   struct sockaddr_in                      sa;
   struct hostent                         *hp = NULL;
   int                                     s = 0;
@@ -938,7 +938,7 @@ int new_descriptor(int s)
 
 int process_output(struct descriptor_data *t)
 {
-  char                                    i[MAX_STRING_LENGTH + 1] = "\0\0\0";
+  char                                    i[MAX_STRING_LENGTH + 1] = "\0\0\0\0\0\0\0";
 
   if (DEBUG > 2)
     log_info("called %s with %08zx", __PRETTY_FUNCTION__, (size_t)t);
@@ -1003,8 +1003,8 @@ int process_input(struct descriptor_data *t)
   int                                     k = 0;
   int                                     flag = FALSE;
   long                                    now_time = 0L;
-  char                                    tmp[MAX_INPUT_LENGTH + 2] = "\0\0\0";
-  char                                    buffer[MAX_INPUT_LENGTH + 60] = "\0\0\0";
+  char                                    tmp[MAX_INPUT_LENGTH + 2] = "\0\0\0\0\0\0\0";
+  char                                    buffer[MAX_INPUT_LENGTH + 60] = "\0\0\0\0\0\0\0";
 
   if (DEBUG > 2)
     log_info("called %s with %08zx", __PRETTY_FUNCTION__, (size_t)t);
@@ -1452,8 +1452,8 @@ void act(const char *Str, int hide_invisible, struct char_data *ch,
   char                                   *point = NULL;
   const char                             *i = NULL;
   struct char_data                       *to = NULL;
-  char                                    buf[MAX_STRING_LENGTH] = "\0\0\0";
-  char                                    str[MAX_STRING_LENGTH] = "\0\0\0";
+  char                                    buf[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
+  char                                    str[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
   va_list                                 arg;
 
   if (DEBUG > 2)

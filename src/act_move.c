@@ -498,7 +498,7 @@ int do_move(struct char_data *ch, const char *argument, int cmd)
 void DisplayMove(struct char_data *ch, int dir, int was_in, int total)
 {
   struct char_data                       *tmp_ch = NULL;
-  char                                    tmp[256] = "\0\0\0";
+  char                                    tmp[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
 
   if (DEBUG > 2)
     log_info("called %s with %s, %d, %d, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), dir, was_in, total);
@@ -750,8 +750,8 @@ void raw_open_door(struct char_data *ch, int dir)
 void do_open(struct char_data *ch, const char *argument, int cmd)
 {
   int                                     door = -1;
-  char                                    type[MAX_INPUT_LENGTH] = "\0\0\0";
-  char                                    dir[MAX_INPUT_LENGTH] = "\0\0\0";
+  char                                    type[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
+  char                                    dir[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
   struct obj_data                        *obj = NULL;
   struct char_data                       *victim = NULL;
   struct room_direction_data             *exitp = NULL;
@@ -801,8 +801,8 @@ void do_open(struct char_data *ch, const char *argument, int cmd)
 void do_close(struct char_data *ch, const char *argument, int cmd)
 {
   int                                     door = -1;
-  char                                    type[MAX_INPUT_LENGTH] = "\0\0\0";
-  char                                    dir[MAX_INPUT_LENGTH] = "\0\0\0";
+  char                                    type[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
+  char                                    dir[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
   struct room_direction_data             *back = NULL;
   struct room_direction_data             *exitp = NULL;
   struct obj_data                        *obj = NULL;
@@ -926,8 +926,8 @@ void raw_lock_door(struct char_data *ch, struct room_direction_data *exitp, int 
 void do_lock(struct char_data *ch, const char *argument, int cmd)
 {
   int                                     door = -1;
-  char                                    type[MAX_INPUT_LENGTH] = "\0\0\0";
-  char                                    dir[MAX_INPUT_LENGTH] = "\0\0\0";
+  char                                    type[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
+  char                                    dir[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
   struct room_direction_data             *back = NULL;
   struct room_direction_data             *exitp = NULL;
   struct obj_data                        *obj = NULL;
@@ -999,8 +999,8 @@ void do_lock(struct char_data *ch, const char *argument, int cmd)
 void do_unlock(struct char_data *ch, const char *argument, int cmd)
 {
   int                                     door = -1;
-  char                                    type[MAX_INPUT_LENGTH] = "\0\0\0";
-  char                                    dir[MAX_INPUT_LENGTH] = "\0\0\0";
+  char                                    type[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
+  char                                    dir[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
   struct room_direction_data             *back = NULL;
   struct room_direction_data             *exitp = NULL;
   struct obj_data                        *obj = NULL;
@@ -1071,8 +1071,8 @@ void do_pick(struct char_data *ch, const char *argument, int cmd)
 {
   int                                     percent_chance = 0;
   int                                     door = -1;
-  char                                    type[MAX_INPUT_LENGTH] = "\0\0\0";
-  char                                    dir[MAX_INPUT_LENGTH] = "\0\0\0";
+  char                                    type[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
+  char                                    dir[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
   struct room_direction_data             *back = NULL;
   struct room_direction_data             *exitp = NULL;
   struct obj_data                        *obj = NULL;
@@ -1147,7 +1147,7 @@ void do_pick(struct char_data *ch, const char *argument, int cmd)
 void do_enter(struct char_data *ch, const char *argument, int cmd)
 {
   int                                     door = -1;
-  char                                    buf[MAX_INPUT_LENGTH] = "\0\0\0";
+  char                                    buf[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
   struct room_direction_data             *exitp = NULL;
   struct room_data                       *rp = NULL;
 
@@ -1367,7 +1367,7 @@ void do_sleep(struct char_data *ch, const char *argument, int cmd)
 void do_wake(struct char_data *ch, const char *argument, int cmd)
 {
   struct char_data                       *tmp_char = NULL;
-  char                                    arg[MAX_STRING_LENGTH] = "\0\0\0";
+  char                                    arg[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
 
   if (DEBUG)
     log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
@@ -1415,7 +1415,7 @@ void do_wake(struct char_data *ch, const char *argument, int cmd)
 
 void do_follow(struct char_data *ch, const char *argument, int cmd)
 {
-  char                                    name[MAX_INPUT_LENGTH] = "\0\0\0";
+  char                                    name[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
   struct char_data                       *leader = NULL;
 
   if (DEBUG)

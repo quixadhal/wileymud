@@ -35,7 +35,7 @@ char                                   *ClassTitles(struct char_data *ch)
 {
   int                                     i = 0;
   int                                     count = 0;
-  static char                             buf[256] = "\0\0\0";
+  static char                             buf[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
 
   if (DEBUG > 2)
     log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
@@ -619,7 +619,7 @@ void drop_level(struct char_data *ch, int class)
 
 void set_title(struct char_data *ch)
 {
-  char                                    buf[256] = "\0\0\0";
+  char                                    buf[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
 
   if (DEBUG > 1)
     log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
@@ -957,8 +957,8 @@ void point_update(int current_pulse)
 	                                           *next_obj;
 	    int                                     mobset[] =
 	      { 9002, 9001, 4616, 4615, 4613, 9003, 4603 };
-	    char                                    newbuffer[256],
-	                                            newtmp[256];
+	    char                                    newbuffer[MAX_INPUT_LENGTH],
+	                                            newtmp[MAX_INPUT_LENGTH];
 
 	    mob = read_mobile(mobset[number(0, 6)], VIRTUAL);
 	    strcpy(newtmp, j->short_description);

@@ -62,24 +62,24 @@ struct player_index_element            *player_table = 0;      /* index to playe
 int                                     top_of_p_table = 0;    /* ref to top of table */
 int                                     top_of_p_file = 0;
 
-char                                    credits[MAX_STRING_LENGTH] = "\0\0\0";	/* the Credits List */
-char                                    news[MAX_STRING_LENGTH] = "\0\0\0";	/* the news */
-char                                    motd[MAX_STRING_LENGTH] = "\0\0\0";	/* the messages of today */
-char                                    help[MAX_STRING_LENGTH] = "\0\0\0";	/* the main help page */
-char                                    wizhelp[MAX_STRING_LENGTH] = "\0\0\0";	/* the main wizhelp page */
-char                                    info[MAX_STRING_LENGTH] = "\0\0\0";	/* the info text */
-char                                    wizlist[MAX_STRING_LENGTH] = "\0\0\0";	/* the wizlist */
-char                                    wmotd[MAX_STRING_LENGTH] = "\0\0\0";	/* the wizard motd */
-char                                    greetings[MAX_STRING_LENGTH] = "\0\0\0";	/* greetings upon connection */
-char                                    login_menu[MAX_STRING_LENGTH] = "\0\0\0";	/* login menu of choices */
-char                                    sex_menu[MAX_STRING_LENGTH] = "\0\0\0";	/* login menu of sex perversions */
-char                                    race_menu[MAX_STRING_LENGTH] = "\0\0\0";	/* login menu of races */
-char                                    class_menu[MAX_STRING_LENGTH] = "\0\0\0";	/* login menu of classes */
-char                                    race_help[MAX_STRING_LENGTH] = "\0\0\0";	/* descriptions of races */
-char                                    class_help[MAX_STRING_LENGTH] = "\0\0\0";	/* descriptions of classes */
-char                                    the_story[MAX_STRING_LENGTH] = "\0\0\0";	/* how Wiley was saved */
-char                                    suicide_warn[MAX_STRING_LENGTH] = "\0\0\0";	/* are you sure? */
-char                                    suicide_done[MAX_STRING_LENGTH] = "\0\0\0";	/* goodbye */
+char                                    credits[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";	/* the Credits List */
+char                                    news[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";	/* the news */
+char                                    motd[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";	/* the messages of today */
+char                                    help[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";	/* the main help page */
+char                                    wizhelp[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";	/* the main wizhelp page */
+char                                    info[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";	/* the info text */
+char                                    wizlist[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";	/* the wizlist */
+char                                    wmotd[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";	/* the wizard motd */
+char                                    greetings[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";	/* greetings upon connection */
+char                                    login_menu[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";	/* login menu of choices */
+char                                    sex_menu[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";	/* login menu of sex perversions */
+char                                    race_menu[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";	/* login menu of races */
+char                                    class_menu[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";	/* login menu of classes */
+char                                    race_help[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";	/* descriptions of races */
+char                                    class_help[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";	/* descriptions of classes */
+char                                    the_story[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";	/* how Wiley was saved */
+char                                    suicide_warn[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";	/* are you sure? */
+char                                    suicide_done[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";	/* goodbye */
 
 FILE                                   *mob_f = NULL;	       /* file containing mob prototypes */
 FILE                                   *obj_f = NULL;	       /* obj prototypes */
@@ -99,7 +99,7 @@ int                                     top_of_wizhelpt = 0;      /* top of wizh
 struct time_info_data                   time_info;	       /* the infomation about the time */
 struct weather_data                     weather_info;	       /* the infomation about the weather */
 
-char                                    TMPbuff[1620] = "\0\0\0";
+char                                    TMPbuff[1620] = "\0\0\0\0\0\0\0";
 int                                     TMPbuff_ptr = 0;
 int                                     ROOMcount = 0;
 int                                     GLINEcount = 0;
@@ -116,7 +116,7 @@ int                                     actual_players = 0;
 void load_db(void)
 {
   FILE                                   *pfd = NULL;
-  char                                    tmpbufx[256] = "\0\0\0";
+  char                                    tmpbufx[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
   int                                     i = 0;
 
   if (DEBUG > 1)
@@ -203,7 +203,7 @@ void load_db(void)
     CREATE(list_of_players, char *, number_of_players);
 
     for (i = 0; i < number_of_players; i++) {
-      fgets(tmpbufx, 255, pfd);
+      fgets(tmpbufx, MAX_INPUT_LENGTH-1, pfd);
       if (!(list_of_players[i] = (char *)strdup(tmpbufx))) {
 	log_fatal("Failed to get memory for player list element %d.\r\n", i);
 	proper_exit(MUD_HALT);
@@ -311,7 +311,7 @@ struct index_data                      *generate_indices(FILE * fl, int *top)
 {
   int                                     i = 0;
   struct index_data                      *indexp = NULL;
-  char                                    buf[82] = "\0\0\0";
+  char                                    buf[82] = "\0\0\0\0\0\0\0";
   static char                             omega[6] = "omega";
 
   if (DEBUG > 2)
@@ -400,7 +400,7 @@ void completely_cleanout_room(struct room_data *rp)
 
 void load_one_room(FILE *fl, struct room_data *rp)
 {
-  char                                    chk[50] = "\0\0\0";
+  char                                    chk[50] = "\0\0\0\0\0\0\0";
   int                                     tmp = 0;
   struct extra_descr_data                *new_descr = NULL;
 
@@ -664,7 +664,7 @@ void boot_zones(void)
   int                                     expand = 0;
   int                                     tmp = 0;
   char                                   *check = NULL;
-  char                                    buf[81] = "\0\0\0";
+  char                                    buf[81] = "\0\0\0\0\0\0\0";
 
   if (DEBUG > 1)
     log_info("called %s with no arguments", __PRETTY_FUNCTION__);
@@ -774,7 +774,7 @@ struct char_data                       *read_mobile(int nr, int type)
   long                                    tmp4 = 0L;
   long                                    tmp5 = 0L;
   struct char_data                       *mob = NULL;
-  char                                    buf[100] = "\0\0\0";
+  char                                    buf[100] = "\0\0\0\0\0\0\0";
   char                                    letter = '\0';
 
   if (DEBUG > 2)
@@ -1145,8 +1145,8 @@ struct obj_data                        *read_object(int nr, int type)
   struct obj_data                        *obj = NULL;
   int                                     tmp = 0;
   int                                     i = 0;
-  char                                    chk[50] = "\0\0\0";
-  char                                    buf[100] = "\0\0\0";
+  char                                    chk[50] = "\0\0\0\0\0\0\0";
+  char                                    buf[100] = "\0\0\0\0\0\0\0";
   struct extra_descr_data                *new_descr = NULL;
 
   if (DEBUG > 2)
@@ -1489,8 +1489,8 @@ int is_empty(int zone_nr)
 int load_char(char *name, struct char_file_u *char_element)
 {
   FILE                                   *fl = NULL;
-  char                                    buf[256] = "\0\0\0";
-  char                                    tname[40] = "\0\0\0";
+  char                                    buf[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
+  char                                    tname[40] = "\0\0\0\0\0\0\0";
   char                                   *t_ptr = NULL;
 
   if (DEBUG > 1)
@@ -1713,7 +1713,7 @@ void char_to_store(struct char_data *ch, struct char_file_u *st)
   if (ch->desc)
     if (ch->desc->host)
       if (ch->desc->username) {
-	char                                    ackpfft[256];
+	char                                    ackpfft[MAX_INPUT_LENGTH];
 
 	sprintf(ackpfft, "%s@%s", ch->desc->username, ch->desc->host);
 	strncpy(st->last_connect_site, ackpfft, 48);
@@ -1793,8 +1793,8 @@ void save_char(struct char_data *ch, short int load_room)
 {
 #if 1
   struct char_file_u                      st;
-  char                                    buf[256] = "\0\0\0";
-  char                                    name[40] = "\0\0\0";
+  char                                    buf[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
+  char                                    name[40] = "\0\0\0\0\0\0\0";
   char                                   *t_ptr = NULL;
 
   if (DEBUG > 1)
@@ -1823,7 +1823,7 @@ void save_char(struct char_data *ch, short int load_room)
   struct affected_type                   *affect = NULL;
   int                                     naf = 0;
   FILE                                   *fp = NULL;
-  char                                    tmp[256] = "\0\0\0";
+  char                                    tmp[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
 
   if (DEBUG > 2)
     log_info("called %s with %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), load_room);
@@ -2112,7 +2112,7 @@ void free_obj(struct obj_data *obj)
 int file_to_string(const char *name, char *buf)
 {
   FILE                                   *fl = NULL;
-  char                                    tmp[100] = "\0\0\0";
+  char                                    tmp[100] = "\0\0\0\0\0\0\0";
 
   if (DEBUG > 2)
     log_info("called %s with %s, %s", __PRETTY_FUNCTION__, VNULL(name), VNULL(buf));
@@ -2150,7 +2150,7 @@ int file_to_string(const char *name, char *buf)
 int file_to_prompt(const char *name, char *buf)
 {
   FILE                                   *fl = NULL;
-  char                                    tmp[100] = "\0\0\0";
+  char                                    tmp[100] = "\0\0\0\0\0\0\0";
 
   if (DEBUG > 2)
     log_info("called %s with %s, %s", __PRETTY_FUNCTION__, VNULL(name), VNULL(buf));
@@ -2492,7 +2492,7 @@ int real_object(int virtual)
 
 char                                   *fix_string(const char *str)
 {
-  static char                             strfix[MAX_STRING_LENGTH] = "\0\0\0";
+  static char                             strfix[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
   int                                     i = 0;
   int                                     o = 0;
 
@@ -2521,8 +2521,8 @@ char                                   *fread_string(FILE * fl)
   char                                   *point = NULL;
   char                                   *ack = NULL;
   char                                   *rslt = NULL;
-  char                                    buf[MAX_STRING_LENGTH] = "\0\0\0";
-  char                                    tmp[MAX_STRING_LENGTH] = "\0\0\0";
+  char                                    buf[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
+  char                                    tmp[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
   int                                     flag = FALSE;
   static char                             Empty[6] = "Empty";
 
@@ -2575,7 +2575,7 @@ char                                   *fread_string(FILE * fl)
  */
 char                                   *fread_word(FILE * fp)
 {
-  static char                             word[MAX_INPUT_LENGTH] = "\0\0\0";
+  static char                             word[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
   char                                   *pword = NULL;
   char                                    cEnd = '\0';
 
@@ -2677,7 +2677,7 @@ void fread_to_eol(FILE * fp)
  */
 char                                   *new_fread_string(FILE * fp)
 {
-  static char                             buf[MAX_STRING_LENGTH] = "\0\0\0";
+  static char                             buf[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
   char                                   *ack = NULL;
   int                                     flag = FALSE;
   char                                    c = '\0';
@@ -2738,8 +2738,8 @@ int fread_char(char *name, struct char_file_u *ch, struct char_data *xch)
   char                                   *t_ptr = NULL;
   char                                   *word = NULL;
   unsigned char                           fMatch = FALSE;
-  char                                    tname[40] = "\0\0\0";
-  char                                    buf[MAX_STRING_LENGTH] = "\0\0\0";
+  char                                    tname[40] = "\0\0\0\0\0\0\0";
+  char                                    buf[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
   static char                             End[4] = "End";
 
   if (DEBUG > 2)

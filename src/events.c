@@ -63,7 +63,7 @@ void do_event(struct char_data *ch, const char *argument, int cmd)
     NULL
   };
   int                                     i = 0;
-  char                                    buf[256] = "\0\0\0";
+  char                                    buf[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
   int                                     found = FALSE;
 
   if (DEBUG)

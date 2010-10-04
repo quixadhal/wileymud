@@ -145,13 +145,6 @@ typedef enum
 #define CH_I3AFK(ch)          ( I3IS_SET( I3FLAG((ch)), I3_AFK ) )
 #define I3ISINVIS(ch)         ( I3INVIS((ch)) )
 
-#ifndef LGST
-#define LGST 8192 /* Large String */
-#endif
-#ifndef SMST
-#define SMST 1024 /* Small String */
-#endif
-
 typedef struct I3_channel I3_CHANNEL;
 typedef struct I3_mud I3_MUD;
 typedef struct I3_header I3_HEADER;
@@ -262,10 +255,10 @@ struct i3_chardata
 
 struct I3_header
 {
-   char originator_mudname[256];
-   char originator_username[256];
-   char target_mudname[256];
-   char target_username[256];
+   char originator_mudname[MAX_INPUT_LENGTH];
+   char originator_username[MAX_INPUT_LENGTH];
+   char target_mudname[MAX_INPUT_LENGTH];
+   char target_username[MAX_INPUT_LENGTH];
 };
 
 struct I3_channel

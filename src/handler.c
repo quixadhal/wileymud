@@ -31,7 +31,7 @@
 
 char                                   *fname(const char *namelist)
 {
-  static char                             holder[30] = "\0\0\0";
+  static char                             holder[30] = "\0\0\0\0\0\0\0";
   char                                   *point = NULL;
 
   if (DEBUG > 2)
@@ -79,8 +79,8 @@ int isname(const char *str, const char *namelist)
   int                                     i = 0;
   int                                     j = 0;
   int                                     exact = FALSE;
-  char                                    buf[MAX_INPUT_LENGTH] = "\0\0\0";
-  char                                    names[MAX_INPUT_LENGTH] = "\0\0\0";
+  char                                    buf[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
+  char                                    names[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
   char                                    *s = NULL;
 
   if (DEBUG > 2)
@@ -783,8 +783,8 @@ int get_number(char **name)
 {
   int                                     i = 0;
   char                                   *ppos = NULL;
-  char                                    anumber[MAX_INPUT_LENGTH] = "\0\0\0";
-  char                                    spare[MAX_INPUT_LENGTH] = "\0\0\0";
+  char                                    anumber[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
+  char                                    spare[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
 
   if (DEBUG > 2)
     log_info("called %s with %08zx", __PRETTY_FUNCTION__, (size_t)name);
@@ -810,7 +810,7 @@ struct obj_data                        *get_obj_in_list(const char *name, struct
   struct obj_data                        *i = NULL;
   int                                     j = 0;
   int                                     anumber = 0;
-  char                                    tmpname[MAX_INPUT_LENGTH] = "\0\0\0";
+  char                                    tmpname[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
   char                                   *tmp = NULL;
 
   if (DEBUG > 2)
@@ -874,7 +874,7 @@ struct obj_data                        *get_obj(const char *name)
   struct obj_data                        *i = NULL;
   int                                     j = 0;
   int                                     anumber = 0;
-  char                                    tmpname[MAX_INPUT_LENGTH] = "\0\0\0";
+  char                                    tmpname[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
   char                                   *tmp = NULL;
 
   if (DEBUG > 2)
@@ -915,7 +915,7 @@ struct char_data                       *get_char_room(const char *name, int room
   struct char_data                       *i = NULL;
   int                                     j = 0;
   int                                     anumber = 0;
-  char                                    tmpname[MAX_INPUT_LENGTH] = "\0\0\0";
+  char                                    tmpname[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
   char                                   *tmp = NULL;
 
   if (DEBUG > 2)
@@ -941,7 +941,7 @@ struct char_data                       *get_char(const char *name)
   struct char_data                       *i = NULL;
   int                                     j = 0;
   int                                     anumber = 0;
-  char                                    tmpname[MAX_INPUT_LENGTH] = "\0\0\0";
+  char                                    tmpname[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
   char                                   *tmp = NULL;
 
   if (DEBUG > 2)
@@ -1367,7 +1367,7 @@ struct char_data                       *get_char_room_vis(struct char_data *ch, 
   struct char_data                       *i = NULL;
   int                                     j = 0;
   int                                     anumber = 0;
-  char                                    tmpname[MAX_INPUT_LENGTH] = "\0\0\0";
+  char                                    tmpname[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
   char                                   *tmp = NULL;
 
   if (DEBUG > 2)
@@ -1399,7 +1399,7 @@ struct char_data                       *get_char_vis_world(struct char_data *ch,
   struct char_data                       *i = NULL;
   int                                     j = 0;
   int                                     anumber = 0;
-  char                                    tmpname[MAX_INPUT_LENGTH] = "\0\0\0";
+  char                                    tmpname[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
   char                                   *tmp = NULL;
 
   if (DEBUG > 2)
@@ -1448,7 +1448,7 @@ struct obj_data                        *get_obj_in_list_vis(struct char_data *ch
   struct obj_data                        *i = NULL;
   int                                     j = 0;
   int                                     anumber = 0;
-  char                                    tmpname[MAX_INPUT_LENGTH] = "\0\0\0";
+  char                                    tmpname[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
   char                                   *tmp = NULL;
 
   if (DEBUG > 2)
@@ -1475,7 +1475,7 @@ struct obj_data                        *get_obj_vis_world(struct char_data *ch, 
   struct obj_data                        *i = NULL;
   int                                     j = 0;
   int                                     anumber = 0;
-  char                                    tmpname[MAX_INPUT_LENGTH] = "\0\0\0";
+  char                                    tmpname[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
   char                                   *tmp = NULL;
 
   if (DEBUG > 2)
@@ -1531,7 +1531,7 @@ struct obj_data                        *get_obj_vis_accessible(struct char_data 
   struct obj_data                        *i = NULL;
   int                                     j = 0;
   int                                     anumber = 0;
-  char                                    tmpname[MAX_INPUT_LENGTH] = "\0\0\0";
+  char                                    tmpname[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
   char                                   *tmp = NULL;
 
   if (DEBUG > 2)
@@ -1566,7 +1566,7 @@ struct obj_data                        *create_money(int amount)
 {
   struct obj_data                        *obj = NULL;
   struct extra_descr_data                *new_descr = NULL;
-  char                                    buf[80] = "\0\0\0";
+  char                                    buf[80] = "\0\0\0\0\0\0\0";
 
   if (DEBUG > 2)
     log_info("called %s with %d", __PRETTY_FUNCTION__, amount);
@@ -1642,7 +1642,7 @@ struct obj_data                        *create_money(int amount)
 int generic_find(const char *arg, int bitvector, struct char_data *ch,
 		 struct char_data **tar_ch, struct obj_data **tar_obj)
 {
-  char                                    name[256] = "\0\0\0";
+  char                                    name[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
   int                                     i = 0;
   int                                     found = FALSE;
   static const char                      *ignore[] = {
