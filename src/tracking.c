@@ -32,7 +32,8 @@
   if (DEBUG > 3)
     log_info("called %s with %d, %08zx", __PRETTY_FUNCTION__, room, (size_t)tgt_room);
 
-  return room == (int)tgt_room;
+  //return room == (int)tgt_room;
+  return room == (int)(size_t)tgt_room;
 }
 
  int named_object_on_ground(int room, void *c_data)
@@ -81,7 +82,8 @@ int choose_exit(int in_room, int tgt_room, int depth)
   if (DEBUG > 3)
     log_info("called %s with %d, %d, %d", __PRETTY_FUNCTION__, in_room, tgt_room, depth);
 
-  return find_path(in_room, is_target_room_p, (const void *)tgt_room, depth);
+  //return find_path(in_room, is_target_room_p, (const void *)tgt_room, depth);
+  return find_path(in_room, is_target_room_p, (const void *)(size_t)tgt_room, depth);
 }
 
 int go_direction(struct char_data *ch, int dir)
@@ -179,9 +181,12 @@ int find_path(int in_room, ifuncp predicate, const void *c_data, int depth)
 	    /*
 	     * ancestor for first layer is the direction 
 	     */
-	    hash_enter(&x_room, tmp_room,
+	    /*hash_enter(&x_room, tmp_room,
 		       ((int)hash_find(&x_room, q_head->room_nr) == -1) ?
-		       (void *)(i + 1) : hash_find(&x_room, q_head->room_nr));
+		       (void *)(i + 1) : hash_find(&x_room, q_head->room_nr)); */
+	    hash_enter(&x_room, tmp_room,
+		       ((int)(size_t)hash_find(&x_room, q_head->room_nr) == -1) ?
+		       (void *)(size_t)(i + 1) : hash_find(&x_room, q_head->room_nr));
 	  }
 	} else {
 	  /*
@@ -195,10 +200,12 @@ int find_path(int in_room, ifuncp predicate, const void *c_data, int depth)
 	  /*
 	   * return direction if first layer 
 	   */
-	  if ((int)hash_find(&x_room, tmp_room) == -1)
+	  //if ((int)hash_find(&x_room, tmp_room) == -1)
+	  if ((int)(size_t)hash_find(&x_room, tmp_room) == -1)
 	    return (i);
 	  else						       /* else return the ancestor */
-	    return (-1 + (int)hash_find(&x_room, tmp_room));
+	    //return (-1 + (int)hash_find(&x_room, tmp_room));
+	    return (-1 + (int)(size_t)hash_find(&x_room, tmp_room));
 	}
       }
     }

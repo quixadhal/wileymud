@@ -473,7 +473,7 @@ char * whod_html(void)
   sprintf(buf + strlen(buf), "</body>\r\n");
   sprintf(buf + strlen(buf), "</html>\r\n");
 
-  sprintf(headers + strlen(headers), "Content-Length: %d\r\n", strlen(buf));
+  sprintf(headers + strlen(headers), "Content-Length: %d\r\n", (int)strlen(buf));
   sprintf(headers + strlen(headers), "Connection: %s\r\n", "close");
   sprintf(headers + strlen(headers), "\r\n");
   strcat(headers, buf);

@@ -1735,7 +1735,8 @@ int shylar_guard(struct char_data *ch, int cmd, const const char *arg)
     if (ch->in_room != home_room) {
       if (GET_POS(ch) < POSITION_STANDING)
 	GET_POS(ch) = POSITION_STANDING;
-      if (0 <= (dir = find_path(ch->in_room, is_target_room_p, (void *)home_room, -200))) {
+      //if (0 <= (dir = find_path(ch->in_room, is_target_room_p, (void *)home_room, -200))) {
+      if (0 <= (dir = find_path(ch->in_room, is_target_room_p, (const void *)(size_t)home_room, -200))) {
 	go_direction(ch, dir);
 	return TRUE;
       } else {
@@ -1811,8 +1812,8 @@ int shylar_guard(struct char_data *ch, int cmd, const const char *arg)
     } else {						       /* go to room number */
       if (number(0, 99) > 55) {
 	if (ch->in_room != the_path[path_index]) {
-	  if (0 <= (dir = find_path(ch->in_room,
-				    is_target_room_p, (void *)(the_path[path_index]), -200))) {
+	  //if (0 <= (dir = find_path(ch->in_room, is_target_room_p, (void *)(the_path[path_index]), -200))) {
+	  if (0 <= (dir = find_path(ch->in_room, is_target_room_p, (const void *)(size_t)(the_path[path_index]), -200))) {
 	    go_direction(ch, dir);
 	    return TRUE;
 	  } else {
