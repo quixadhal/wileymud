@@ -64,4 +64,741 @@ ChanStatus 0
 ChanFlags  0
 End
 
+#I3CHAN
+ChanName   mychannel
+ChanMud    shadowmuddevdev
+ChanLocal  (null)
+ChanLayM   &R[&W%s&R] &C%s@%s: &c%s
+ChanLayE   &R[&W%s&R] &c%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   newbie
+ChanMud    Dragon War
+ChanLocal  (null)
+ChanLayM   &R[&W%s&R] &C%s@%s: &c%s
+ChanLayE   &R[&W%s&R] &c%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   skylib
+ChanMud    Divided Sky
+ChanLocal  (null)
+ChanLayM   &R[&W%s&R] &C%s@%s: &c%s
+ChanLayE   &R[&W%s&R] &c%s
+ChanLevel  0
+ChanStatus 2
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   narrator
+ChanMud    Galaxy
+ChanLocal  (null)
+ChanLayM   &R[&W%s&R] &C%s@%s: &c%s
+ChanLayE   &R[&W%s&R] &c%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   urlbot
+ChanMud    Bloodlines
+ChanLocal  (null)
+ChanLayM   &R[&W%s&R] &C%s@%s: &c%s
+ChanLayE   &R[&W%s&R] &c%s
+ChanLevel  0
+ChanStatus 2
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   sport
+ChanMud    Rock the Halo
+ChanLocal  (null)
+ChanLayM   &R[&W%s&R] &C%s@%s: &c%s
+ChanLayE   &R[&W%s&R] &c%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   trivia_games
+ChanMud    Emerald MUD
+ChanLocal  (null)
+ChanLayM   &R[&W%s&R] &C%s@%s: &c%s
+ChanLayE   &R[&W%s&R] &c%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   Arch
+ChanMud    Testmud
+ChanLocal  (null)
+ChanLayM   &R[&W%s&R] &C%s@%s: &c%s
+ChanLayE   &R[&W%s&R] &c%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   plea
+ChanMud    FusuMOO
+ChanLocal  (null)
+ChanLayM   &R[&W%s&R] &C%s@%s: &c%s
+ChanLayE   &R[&W%s&R] &c%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   JammsTest
+ChanMud    Jamms-Dev
+ChanLocal  (null)
+ChanLayM   &R[&W%s&R] &C%s@%s: &c%s
+ChanLayE   &R[&W%s&R] &c%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   ascii_art
+ChanMud    Dead Souls
+ChanLocal  (null)
+ChanLayM   &R[&W%s&R] &C%s@%s: &c%s
+ChanLayE   &R[&W%s&R] &c%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   insomnia-chat
+ChanMud    Insomnia
+ChanLocal  (null)
+ChanLayM   &R[&W%s&R] &C%s@%s: &c%s
+ChanLayE   &R[&W%s&R] &c%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   coffeemud_universe
+ChanMud    CoffeeMud Dev
+ChanLocal  (null)
+ChanLayM   &R[&W%s&R] &C%s@%s: &c%s
+ChanLayE   &R[&W%s&R] &c%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   ichat
+ChanMud    Dead Souls Dev
+ChanLocal  (null)
+ChanLayM   &R[&W%s&R] &C%s@%s: &c%s
+ChanLayE   &R[&W%s&R] &c%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   1
+ChanMud    Testmud
+ChanLocal  (null)
+ChanLayM   &R[&W%s&R] &C%s@%s: &c%s
+ChanLayE   &R[&W%s&R] &c%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   dutch
+ChanMud    OuterSpace
+ChanLocal  (null)
+ChanLayM   &R[&W%s&R] &C%s@%s: &c%s
+ChanLayE   &R[&W%s&R] &c%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   intergossip
+ChanMud    Dead_Souls_stoli
+ChanLocal  (null)
+ChanLayM   &R[&W%s&R] &C%s@%s: &c%s
+ChanLayE   &R[&W%s&R] &c%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   cleric
+ChanMud    Dead_Souls_ihsahn
+ChanLocal  (null)
+ChanLayM   &R[&W%s&R] &C%s@%s: &c%s
+ChanLayE   &R[&W%s&R] &c%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   zblah
+ChanMud    shadowmuddevdev
+ChanLocal  (null)
+ChanLayM   &R[&W%s&R] &C%s@%s: &c%s
+ChanLayE   &R[&W%s&R] &c%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   3d-space
+ChanMud    TrekVerse
+ChanLocal  (null)
+ChanLayM   &R[&W%s&R] &C%s@%s: &c%s
+ChanLayE   &R[&W%s&R] &c%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   ravenloft
+ChanMud    Legend of Ravenloft
+ChanLocal  (null)
+ChanLayM   &R[&W%s&R] &C%s@%s: &c%s
+ChanLayE   &R[&W%s&R] &c%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   nschat
+ChanMud    Elanathia
+ChanLocal  (null)
+ChanLayM   &R[&W%s&R] &C%s@%s: &c%s
+ChanLayE   &R[&W%s&R] &c%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   church
+ChanMud    Chaos Realm
+ChanLocal  (null)
+ChanLayM   &R[&W%s&R] &C%s@%s: &c%s
+ChanLayE   &R[&W%s&R] &c%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   nscre
+ChanMud    Elanathia
+ChanLocal  (null)
+ChanLayM   &R[&W%s&R] &C%s@%s: &c%s
+ChanLayE   &R[&W%s&R] &c%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   3dspace
+ChanMud    TrekVerse
+ChanLocal  (null)
+ChanLayM   &R[&W%s&R] &C%s@%s: &c%s
+ChanLayE   &R[&W%s&R] &c%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   dreamverse_gossip
+ChanMud    Dreamverse
+ChanLocal  (null)
+ChanLayM   &R[&W%s&R] &C%s@%s: &c%s
+ChanLayE   &R[&W%s&R] &c%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   nakki
+ChanMud    Dead_Souls_koopa
+ChanLocal  (null)
+ChanLayM   &R[&W%s&R] &C%s@%s: &c%s
+ChanLayE   &R[&W%s&R] &c%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   dreamverse-gossip
+ChanMud    Dreamverse
+ChanLocal  (null)
+ChanLayM   &R[&W%s&R] &C%s@%s: &c%s
+ChanLayE   &R[&W%s&R] &c%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   mage
+ChanMud    Second Nightmare
+ChanLocal  (null)
+ChanLayM   &R[&W%s&R] &C%s@%s: &c%s
+ChanLayE   &R[&W%s&R] &c%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   fluffos
+ChanMud    Dead Souls
+ChanLocal  (null)
+ChanLayM   &R[&W%s&R] &C%s@%s: &c%s
+ChanLayE   &R[&W%s&R] &c%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   bsg
+ChanMud    Dead Souls
+ChanLocal  (null)
+ChanLayM   &R[&W%s&R] &C%s@%s: &c%s
+ChanLayE   &R[&W%s&R] &c%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   lpuni
+ChanMud    Frontiers
+ChanLocal  (null)
+ChanLayM   &R[&W%s&R] &C%s@%s: &c%s
+ChanLayE   &R[&W%s&R] &c%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   bofh
+ChanMud    Anarres II
+ChanLocal  (null)
+ChanLayM   &R[&W%s&R] &C%s@%s: &c%s
+ChanLayE   &R[&W%s&R] &c%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   french
+ChanMud    Dead Souls
+ChanLocal  (null)
+ChanLayM   &R[&W%s&R] &C%s@%s: &c%s
+ChanLayE   &R[&W%s&R] &c%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   test
+ChanMud    OuterSpace
+ChanLocal  (null)
+ChanLayM   &R[&W%s&R] &C%s@%s: &c%s
+ChanLayE   &R[&W%s&R] &c%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   blah
+ChanMud    shadowmuddevdev
+ChanLocal  (null)
+ChanLayM   &R[&W%s&R] &C%s@%s: &c%s
+ChanLayE   &R[&W%s&R] &c%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   avatar
+ChanMud    Second Nightmare
+ChanLocal  (null)
+ChanLayM   &R[&W%s&R] &C%s@%s: &c%s
+ChanLayE   &R[&W%s&R] &c%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   discworld_chat
+ChanMud    Anarres II
+ChanLocal  (null)
+ChanLayM   &R[&W%s&R] &C%s@%s: &c%s
+ChanLayE   &R[&W%s&R] &c%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   elephant_link
+ChanMud    Elephant
+ChanLocal  (null)
+ChanLayM   &R[&W%s&R] &C%s@%s: &c%s
+ChanLayE   &R[&W%s&R] &c%s
+ChanLevel  0
+ChanStatus 1
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   inews
+ChanMud    Rock the Halo
+ChanLocal  (null)
+ChanLayM   &R[&W%s&R] &C%s@%s: &c%s
+ChanLayE   &R[&W%s&R] &c%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   discworld-cre
+ChanMud    Discworld
+ChanLocal  (null)
+ChanLayM   &R[&W%s&R] &C%s@%s: &c%s
+ChanLayE   &R[&W%s&R] &c%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   mychannel6
+ChanMud    shadowmuddevdev
+ChanLocal  (null)
+ChanLayM   &R[&W%s&R] &C%s@%s: &c%s
+ChanLayE   &R[&W%s&R] &c%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   pray
+ChanMud    FusuMOO
+ChanLocal  (null)
+ChanLayM   &R[&W%s&R] &C%s@%s: &c%s
+ChanLayE   &R[&W%s&R] &c%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   mychannel4
+ChanMud    shadowmuddevdev
+ChanLocal  (null)
+ChanLayM   &R[&W%s&R] &C%s@%s: &c%s
+ChanLayE   &R[&W%s&R] &c%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   mychannel3
+ChanMud    shadowmuddevdev
+ChanLocal  (null)
+ChanLayM   &R[&W%s&R] &C%s@%s: &c%s
+ChanLayE   &R[&W%s&R] &c%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   dead_test4
+ChanMud    Frontiers
+ChanLocal  (null)
+ChanLayM   &R[&W%s&R] &C%s@%s: &c%s
+ChanLayE   &R[&W%s&R] &c%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   mychannel2
+ChanMud    shadowmuddevdev
+ChanLocal  (null)
+ChanLayM   &R[&W%s&R] &C%s@%s: &c%s
+ChanLayE   &R[&W%s&R] &c%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   xblah
+ChanMud    shadowmuddevdev
+ChanLocal  (null)
+ChanLayM   &R[&W%s&R] &C%s@%s: &c%s
+ChanLayE   &R[&W%s&R] &c%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   mystic_dev
+ChanMud    Mystic
+ChanLocal  (null)
+ChanLayM   &R[&W%s&R] &C%s@%s: &c%s
+ChanLayE   &R[&W%s&R] &c%s
+ChanLevel  0
+ChanStatus 1
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   mudnews
+ChanMud    Rock the Halo
+ChanLocal  (null)
+ChanLayM   &R[&W%s&R] &C%s@%s: &c%s
+ChanLayE   &R[&W%s&R] &c%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   german
+ChanMud    OuterSpace
+ChanLocal  (null)
+ChanLayM   &R[&W%s&R] &C%s@%s: &c%s
+ChanLayE   &R[&W%s&R] &c%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   game
+ChanMud    Pyloros
+ChanLocal  (null)
+ChanLayM   &R[&W%s&R] &C%s@%s: &c%s
+ChanLayE   &R[&W%s&R] &c%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   ifree
+ChanMud    Dead Souls Dev
+ChanLocal  (null)
+ChanLayM   &R[&W%s&R] &C%s@%s: &c%s
+ChanLayE   &R[&W%s&R] &c%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   serenity
+ChanMud    Firefly Mud
+ChanLocal  (null)
+ChanLayM   &R[&W%s&R] &C%s@%s: &c%s
+ChanLayE   &R[&W%s&R] &c%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   another_channel
+ChanMud    shadowmuddevdev
+ChanLocal  (null)
+ChanLayM   &R[&W%s&R] &C%s@%s: &c%s
+ChanLayE   &R[&W%s&R] &c%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   ooc
+ChanMud    Rhykil Beta
+ChanLocal  (null)
+ChanLayM   &R[&W%s&R] &C%s@%s: &c%s
+ChanLayE   &R[&W%s&R] &c%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   wizard
+ChanMud    Iain's Test
+ChanLocal  (null)
+ChanLayM   &R[&W%s&R] &C%s@%s: &c%s
+ChanLayE   &R[&W%s&R] &c%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   havenlib
+ChanMud    Haven
+ChanLocal  (null)
+ChanLayM   &R[&W%s&R] &C%s@%s: &c%s
+ChanLayE   &R[&W%s&R] &c%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   igossip
+ChanMud    AndroDSWin
+ChanLocal  (null)
+ChanLayM   &R[&W%s&R] &C%s@%s: &c%s
+ChanLayE   &R[&W%s&R] &c%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   monk
+ChanMud    Second Nightmare
+ChanLocal  (null)
+ChanLayM   &R[&W%s&R] &C%s@%s: &c%s
+ChanLayE   &R[&W%s&R] &c%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   discworld-chat
+ChanMud    Discworld
+ChanLocal  (null)
+ChanLayM   &R[&W%s&R] &C%s@%s: &c%s
+ChanLayE   &R[&W%s&R] &c%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   lima
+ChanMud    Dragonfire
+ChanLocal  (null)
+ChanLayM   &R[&W%s&R] &C%s@%s: &c%s
+ChanLayE   &R[&W%s&R] &c%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   dragon
+ChanMud    Dragonfire
+ChanLocal  (null)
+ChanLayM   &R[&W%s&R] &C%s@%s: &c%s
+ChanLayE   &R[&W%s&R] &c%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   pvp
+ChanMud    Dragonfire
+ChanLocal  (null)
+ChanLayM   &R[&W%s&R] &C%s@%s: &c%s
+ChanLayE   &R[&W%s&R] &c%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   pkiller
+ChanMud    Dragonfire
+ChanLocal  (null)
+ChanLayM   &R[&W%s&R] &C%s@%s: &c%s
+ChanLayE   &R[&W%s&R] &c%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   rp-pve
+ChanMud    Dragonfire
+ChanLocal  (null)
+ChanLayM   &R[&W%s&R] &C%s@%s: &c%s
+ChanLayE   &R[&W%s&R] &c%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   roleplaying
+ChanMud    Dragonfire
+ChanLocal  (null)
+ChanLayM   &R[&W%s&R] &C%s@%s: &c%s
+ChanLayE   &R[&W%s&R] &c%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
 #END

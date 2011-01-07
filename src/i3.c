@@ -2852,8 +2852,9 @@ void I3_process_channel_m( I3_HEADER * header, char *s )
    char *ps = s, *next_ps;
    DESCRIPTOR_DATA *d;
    CHAR_DATA *vch = NULL;
-   char visname[MAX_INPUT_LENGTH], buf[MAX_STRING_LENGTH];
+   char visname[MAX_INPUT_LENGTH], buf[MAX_STRING_LENGTH], format[MAX_INPUT_LENGTH];
    I3_CHANNEL *channel;
+   struct tm *local = localtime( &i3_time );
 
    I3_get_field( ps, &next_ps );
    I3_remove_quotes( &ps );
@@ -2876,7 +2877,10 @@ void I3_process_channel_m( I3_HEADER * header, char *s )
    I3_get_field( ps, &next_ps );
    I3_remove_quotes( &ps );
 
-   snprintf( buf, MAX_STRING_LENGTH, channel->layout_m, channel->local_name, visname, header->originator_mudname, ps );
+   //snprintf( buf, MAX_STRING_LENGTH, "~R[%-2.2d:%-2.2d] %s", local->tm_hour, local->tm_min, ps );
+   strcpy(format, "&G%-2.2d&W:&G%-2.2d&d ");
+   strcat(format, channel->layout_m);
+   snprintf( buf, MAX_STRING_LENGTH, format, local->tm_hour, local->tm_min, channel->local_name, visname, header->originator_mudname, ps );
    for( d = first_descriptor; d; d = d->next )
    {
       vch = d->original ? d->original : d->character;
@@ -2899,8 +2903,9 @@ void I3_process_channel_e( I3_HEADER * header, char *s )
    char *ps = s, *next_ps;
    DESCRIPTOR_DATA *d;
    CHAR_DATA *vch = NULL;
-   char visname[MAX_INPUT_LENGTH], msg[MAX_STRING_LENGTH], buf[MAX_STRING_LENGTH];
+   char visname[MAX_INPUT_LENGTH], msg[MAX_STRING_LENGTH], buf[MAX_STRING_LENGTH], format[MAX_INPUT_LENGTH];
    I3_CHANNEL *channel;
+   struct tm *local = localtime( &i3_time );
 
    I3_get_field( ps, &next_ps );
    I3_remove_quotes( &ps );
@@ -2924,7 +2929,9 @@ void I3_process_channel_e( I3_HEADER * header, char *s )
    I3_remove_quotes( &ps );
 
    snprintf( msg, MAX_STRING_LENGTH, "%s", I3_convert_channel_message( ps, visname, visname ) );
-   snprintf( buf, MAX_STRING_LENGTH, channel->layout_e, channel->local_name, msg );
+   strcpy(format, "&G%-2.2d&W:&G%-2.2d&d ");
+   strcat(format, channel->layout_e);
+   snprintf( buf, MAX_STRING_LENGTH, format, local->tm_hour, local->tm_min, channel->local_name, msg );
 
    for( d = first_descriptor; d; d = d->next )
    {
@@ -5579,6 +5586,18 @@ void I3_loadchannels( void )
          I3CREATE( channel, I3_CHANNEL, 1 );
          I3_readchannel( channel, fin );
 
+        if(channel->local_name && !strcmp(channel->local_name, "(null)")) {
+            I3STRFREE( channel->local_name );
+            channel->local_name = NULL;
+        }
+        if(channel->layout_m && !strcmp(channel->layout_m, "(null)")) {
+            I3STRFREE( channel->layout_m );
+            channel->layout_m = I3STRALLOC( "&R[&W%s&R] &C%s@%s: &c%s" );
+        }
+        if(channel->layout_e && !strcmp(channel->layout_e, "(null)")) {
+            I3STRFREE( channel->layout_e );
+            channel->layout_e = I3STRALLOC( "&R[&W%s&R] &c%s" );
+        }
          for( x = 0; x < MAX_I3HISTORY; x++ )
             channel->history[x] = NULL;
          I3LINK( channel, first_I3chan, last_I3chan, next, prev );
@@ -5609,8 +5628,8 @@ void I3_write_channel_config( void )
 
    for( channel = first_I3chan; channel; channel = channel->next )
    {
-      if( channel->local_name )
-      {
+      //if( channel->local_name )
+      //{
          fprintf( fout, "%s", "#I3CHAN\n" );
          fprintf( fout, "ChanName   %s\n", channel->I3_name );
          fprintf( fout, "ChanMud    %s\n", channel->host_mud );
@@ -5621,7 +5640,7 @@ void I3_write_channel_config( void )
          fprintf( fout, "ChanStatus %d\n", channel->status );
          fprintf( fout, "ChanFlags  %ld\n", ( long int )channel->flags );
          fprintf( fout, "%s", "End\n\n" );
-      }
+      //}
    }
    fprintf( fout, "%s", "#END\n" );
    I3FCLOSE( fout );
