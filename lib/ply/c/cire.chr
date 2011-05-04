@@ -6,10 +6,10 @@ PreTitle           ~
 Title              the Elven Believer/Swordpupil/Pilferess~
 Description
 ~
-LastSite           adork@c-98-250-183-240.hsd1.mi.comcast.net~
-LastLogin          1270261141
+LastSite           adork@mudconnector.com~
+LastLogin          1300334582
 Birth              1232132507
-Played             2312
+Played             2456
 Sex                2
 Race               2
 Class              14
@@ -26,11 +26,11 @@ PoofIn             ~
 PoofOut            ~
 AbilityScores      17 0 16 12 14 16
 AbilityPad         0 0 0 0
-HpManaMove         32 20 102 0 147 0
+HpManaMove         18 20 94 0 149 0
 AC                 100
 ToHitDamage        0 0
 SaveApply          0 0 0 0 0
-Conditions         0 9 5 0 0 0
+Conditions         0 7 0 0 0 0
 PointsPad1         0 0 0
 PointsPad2         0 0 0 0
 PointsPad3         0 0 0
@@ -208,6 +208,8 @@ Affect             21 0 0 0 0 0 0
 Affect             22 0 0 0 0 0 0
 Affect             23 0 0 0 0 0 0
 Affect             24 0 0 0 0 0 0
+i3perm       1
+i3flags      256
 IMCPerm      1
 IMCFlags     256
 End

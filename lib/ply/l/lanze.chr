@@ -1,30 +1,31 @@
 #PLAYER
-Name               Jandice~
-Passwd             JaNAQvcLaNm/I~
+Name               Lanze~
+Passwd             LaT0n1DJKv9R2~
 Whizz              0
 PreTitle           ~
-Title              the Elven Runneress~
+Title              the Human Swordpupil~
 Description
+A small man of unremarkable features.
 ~
-LastSite           adork@localhost~
-LastLogin          1303280259
-Birth              1274159468
-Played             7670
-Sex                2
-Race               2
-Class              16
-Alignment          -15
-Exp                249
-Level              ranger 1
-HeightWeight       174 177
+LastSite           adork@doc-24-32-68-60.ftsill.ok.cebridge.net~
+LastLogin          1296335746
+Birth              1296335570
+Played             64
+Sex                1
+Race               1
+Class              4
+Alignment          0
+Exp                1
+Level              warrior 1
+HeightWeight       193 172
 Gold               0 0
-HomeTown           3008
+HomeTown           3001
 LoadRoom           -1
 PoofIn             ~
 PoofOut            ~
-AbilityScores      12 0 12 8 9 11
+AbilityScores      12 0 11 12 9 10
 AbilityPad         0 0 0 0
-HpManaMove         37 20 102 0 133 0
+HpManaMove         26 20 101 0 98 100
 AC                 100
 ToHitDamage        0 0
 SaveApply          0 0 0 0 0
@@ -34,7 +35,7 @@ PointsPad2         0 0 0 0
 PointsPad3         0 0 0
 ShortSavePad       0 0 0 0
 SavePad            0 0 0 0
-Pracs              0
+Pracs              3
 SkillsToLearn      0
 NamedSkill         1 0 0 armour~
 NamedSkill         2 0 0 teleport~
@@ -80,8 +81,8 @@ NamedSkill         41 0 0 ventriloquate~
 NamedSkill         42 0 0 word of recall~
 NamedSkill         43 0 0 remove poison~
 NamedSkill         44 0 0 sense life~
-NamedSkill         45 11 0 sneak~
-NamedSkill         46 11 0 hide~
+NamedSkill         45 0 0 sneak~
+NamedSkill         46 0 0 hide~
 NamedSkill         47 0 0 steal~
 NamedSkill         48 0 0 backstab~
 NamedSkill         49 0 0 pick lock~
@@ -147,7 +148,7 @@ NamedSkill         149 0 0 doorbash~
 NamedSkill         150 0 0 read magic~
 NamedSkill         151 0 0 scribe~
 NamedSkill         152 0 0 brewing~
-NamedSkill         153 9 0 punch~
+NamedSkill         153 0 0 punch~
 NamedSkill         154 0 0 two handed~
 NamedSkill         155 0 0 dual wield~
 NamedSkill         156 0 0 bandage~
@@ -174,13 +175,13 @@ NamedSkill         176 0 0 barter~
 NamedSkill         177 0 0 knockout~
 NamedSkill         178 0 0 spellcraft~
 NamedSkill         179 0 0 meditation~
-NamedSkill         180 21 0 track~
+NamedSkill         180 0 0 track~
 NamedSkill         181 0 0 locate trap~
 NamedSkill         182 0 0 disarm trap~
-NamedSkill         183 7 0 disarm~
+NamedSkill         183 0 0 disarm~
 NamedSkill         184 0 0 shield bash~
 NamedSkill         185 0 0 riding~
-ActFlags           16 0
+ActFlags           0 0
 Affect             0 0 0 0 0 0 0
 Affect             1 0 0 0 0 0 0
 Affect             2 0 0 0 0 0 0
@@ -206,9 +207,8 @@ Affect             21 0 0 0 0 0 0
 Affect             22 0 0 0 0 0 0
 Affect             23 0 0 0 0 0 0
 Affect             24 0 0 0 0 0 0
-i3perm       1
+i3perm       0
 i3flags      256
-IMCPerm      4
-IMCFlags     768
-IMCListen    ichat pchat ibuild ievennia icode igame irc inews imusic imudnews ifree iruby
+IMCPerm      0
+IMCFlags     256
 End

@@ -801,4 +801,37 @@ ChanStatus 0
 ChanFlags  0
 End
 
+#I3CHAN
+ChanName   firefly
+ChanMud    Firefly Devmud
+ChanLocal  (null)
+ChanLayM   &R[&W%s&R] &C%s@%s: &c%s
+ChanLayE   &R[&W%s&R] &c%s
+ChanLevel  0
+ChanStatus 1
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   tinyurl
+ChanMud    TimMUD
+ChanLocal  (null)
+ChanLayM   &R[&W%s&R] &C%s@%s: &c%s
+ChanLayE   &R[&W%s&R] &c%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   pants
+ChanMud    TimMUD
+ChanLocal  (null)
+ChanLayM   &R[&W%s&R] &C%s@%s: &c%s
+ChanLayE   &R[&W%s&R] &c%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
 #END

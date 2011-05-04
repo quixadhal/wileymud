@@ -1,13 +1,15 @@
 #RENT
 Owner              Jandice~
-Gold               5
+Gold               0
 TotalCost          44
-LastUpdate         1274166976
+LastUpdate         1303280187
 MinimumStay        0
 End
 #EQUIPMENT
+End
+#CARRIED
 #ITEM
-ObjId              0
+ObjId              6
 ContainedBy        -1
 Name               torch~
 Description
@@ -31,7 +33,7 @@ Affect             0 0
 Affect             0 0
 End
 #ITEM
-ObjId              1
+ObjId              6
 ContainedBy        -1
 Name               staff black coral~
 Description
@@ -41,7 +43,7 @@ a black coral staff~
 ActionDescr
 (null)~
 VNum               6525
-EquippedAt         18
+EquippedAt         0
 Values             0 1 10 7
 ExtraFlags         64
 Weight             9
@@ -54,8 +56,6 @@ CostPerDay         432
 Affect             40 2
 Affect             26 12
 End
-End
-#CARRIED
 #ITEM
 ObjId              6
 ContainedBy        -1
@@ -68,7 +68,7 @@ ActionDescr
   It could be a leg bone of a man.
 ~
 VNum               1400
-EquippedAt         -1
+EquippedAt         0
 Values             0 1 4 7
 ExtraFlags         0
 Weight             1
@@ -184,7 +184,7 @@ a dagger~
 ActionDescr
 (null)~
 VNum               3020
-EquippedAt         -1
+EquippedAt         0
 Values             0 1 4 11
 ExtraFlags         0
 Weight             1

@@ -123,6 +123,7 @@ void I3_saveconfig( void );
 void to_channel( const char *argument, char *xchannel, int level );
 void I3_connection_close( bool reconnect );
 char *i3rankbuffer( CHAR_DATA * ch );
+char *I3_nameescape( const char *ps );
 
 #define I3KEY( literal, field, value ) \
 if( !strcasecmp( word, literal ) )     \
@@ -777,6 +778,11 @@ char *I3_escape( const char *ps )
          pnew[0] = '\\';
          pnew++;
       }
+      if( ps[0] == '\r' || ps[0] == '\n' )
+      {
+          ps++;
+          continue;
+      }
       pnew[0] = ps[0];
       pnew++;
       ps++;
@@ -1360,7 +1366,7 @@ void I3_write_header( const char *identifier, const char *originator_mudname, co
    if( originator_username )
    {
       I3_write_buffer( "\"" );
-      I3_write_buffer( originator_username );
+      I3_write_buffer( I3_nameescape(originator_username) );
       I3_write_buffer( "\"," );
    }
    else
@@ -9478,4 +9484,60 @@ bool i3_command_hook( CHAR_DATA * ch, const char *lcommand, const char *argument
          break;
    }
    return TRUE;
+}
+
+void i3_npc_chat( const char *chan_name, const char *actor, const char *message ) {
+    I3_CHANNEL *channel;
+    //char buf[MAX_STRING_LENGTH];
+
+    if( !i3_is_connected(  ) ) {
+        i3log("Not connected!");
+        return;
+    }
+    if( !( channel = find_I3_channel_by_localname( chan_name ) ) ) {
+        i3log("Can't find local channel %s.", chan_name);
+        return;
+    }
+
+    while( isspace( *message ) )
+        message++;
+    i3log("Sending [%s] from %s to %s.", message, actor, chan_name);
+    I3_send_channel_emote( channel, actor, message );
+
+#if 0
+    if( strstr( message, "$N" ) == NULL )
+        snprintf( buf, MAX_STRING_LENGTH, "$N %s", message );
+    else
+        i3strlcpy( buf, message, MAX_STRING_LENGTH );
+
+    I3_write_header( "channel-e", I3_THISMUD, actor, NULL, NULL );
+    I3_write_buffer( "\"" );
+    I3_write_buffer( channel->I3_name );
+    I3_write_buffer( "\",\"" );
+    I3_write_buffer( actor );
+    I3_write_buffer( "\",\"" );
+    send_to_i3( I3_escape( buf ) );
+    I3_write_buffer( "\",})\r" );
+    I3_send_packet(  );
+    i3log("Sending [%s] from %s to %s.", buf, actor, channel->I3_name);
+#endif
+}
+
+char *I3_nameescape( const char *ps )
+{
+   static char xnew[MAX_STRING_LENGTH];
+   char *pnew = xnew;
+   char c;
+
+   while( ps[0] )
+   {
+      c = (char) tolower((int)*ps);
+      ps++;
+      if(c < 'a' || c > 'z')
+           continue;
+      pnew[0] = c;
+      pnew++;
+   }
+   pnew[0] = '\0';
+   return xnew;
 }

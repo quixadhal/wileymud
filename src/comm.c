@@ -239,7 +239,7 @@ int run_the_game(int port)
 
 #ifdef IMC
   log_boot("Opening I3 connection.");
-  i3_startup( FALSE, -1, FALSE );
+  i3_startup( FALSE, 3000, FALSE );
 #endif
 #ifdef IMC
   log_boot("Opening IMC2 connection.");

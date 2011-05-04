@@ -11,6 +11,9 @@
 #include "bug.h"
 #include "utils.h"
 #include "comm.h"
+#ifdef I3
+#include "i3.h"
+#endif
 #define _RANDOM_C
 #include "random.h"
 
@@ -82,15 +85,22 @@ void random_death_message(struct char_data *ch, struct char_data *victim)
   if (DEBUG > 2)
     log_info("called %s with %s, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), SAFE_NAME(victim));
 
-  sprintf(tease, bugger[razz = number(0, bugcount - 1)],
-	  (IS_NPC(ch) ? ch->player.short_descr : GET_NAME(ch)), GET_NAME(victim));
+  //sprintf(tease, bugger[razz = number(0, bugcount - 1)],
+//	  (IS_NPC(ch) ? ch->player.short_descr : GET_NAME(ch)), GET_NAME(victim));
+  sprintf(tease, bugger[razz = number(0, bugcount - 1)], NAME(ch), GET_NAME(victim));
   for (xx = descriptor_list; xx; xx = xx->next)
     if (xx->character != ch && !xx->connected &&
 	!IS_SET(xx->character->specials.act, PLR_NOSHOUT) &&
 	!IS_SET(xx->character->specials.act, PLR_DEAF))
       act("%s", 0, ch, 0, xx->character, TO_VICT, tease);
   cprintf(victim, "%s", tease);
-  sprintf(tease, mybugger[razz], GET_NAME(victim));
+
+#ifdef I3
+  sprintf(tease, bugger[razz], "", GET_NAME(victim));
+  i3_npc_chat( "free_speech", NAME(ch), tease);
+#endif
+
+  sprintf(tease, mybugger[razz], NAME(victim));
   cprintf(ch, "%s", tease);
 }
 
