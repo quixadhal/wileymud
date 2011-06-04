@@ -2,10 +2,24 @@
 
 NOW=`date "+%Y%m%d"`
 SQL="backups/${NOW}_wiley.sql.bz2"
+
 TAR="backups/${NOW}_wiley.tar.bz2"
 FILES='.git .gitignore README WileyREADME attic bin docs etc lib public_html src'
-EXCLUDE='lib/log/[12r]*'
+EXCLUDE='--exclude=lib/log/[12r]* --exclude=wileymud* --exclude=*.[oa]'
 
+DISTTAR="backups/${NOW}_wiley_dist.tar.bz2"
+DISTFILES='README WileyREADME attic bin docs etc lib public_html src'
+DISTEXCLUDE='--exclude=.git* --exclude=lib/log/[12r]* --exclude=wileymud* --exclude=*.[oa] --exclude=attic --exclude=lib/imc/*.hist --exclude=lib/i3/*.hist --exclude=lib/ply --exclude=src/convert/output'
+
+echo -en "Staring Database Backup..."
 pg_dump wiley | bzip2 -9 >$SQL
-tar --exclude=$EXCLUDE -jcf $TAR $FILES
+echo -en "done.\n"
+
+echo -en "Starting Stripped Backup..."
+tar $DISTEXCLUDE -jcf $DISTTAR $DISTFILES
+echo -en "done.\n"
+
+echo -en "Staring Full Backup..."
+tar $EXCLUDE -jcf $TAR $FILES
+echo -en "done.\n"
 
