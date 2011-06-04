@@ -1,40 +1,41 @@
 #PLAYER
-Name               Blarghy~
-Passwd             BleEZzJegzNGw~
+Name               Aster~
+Passwd             As92KAR2U7kfY~
 Whizz              0
 PreTitle           ~
-Title              the Dwarven Swordpupil~
+Title              the Human Supplicant/Pilferer~
 Description
 ~
-LastSite           adork@localhost~
-LastLogin          1306302437
-Birth              1294448240
-Played             12215
+LastSite           adork@d60-65-13-224.col.wideopenwest.com~
+LastLogin          1307166168
+Birth              1307165383
+Played             679
 Sex                1
-Race               3
-Class              4
-Alignment          -29
-Exp                553
-Level              warrior 1
-HeightWeight       139 159
-Gold               0 0
+Race               1
+Class              9
+Alignment          2
+Exp                244
+Level              mage 1
+Level              thief 1
+HeightWeight       161 140
+Gold               3 0
 HomeTown           3008
-LoadRoom           -1
+LoadRoom           3008
 PoofIn             ~
 PoofOut            ~
-AbilityScores      17 0 12 16 9 11
+AbilityScores      10 0 12 8 14 8
 AbilityPad         0 0 0 0
-HpManaMove         24 20 101 0 100 0
+HpManaMove         8 20 102 0 95 97
 AC                 100
 ToHitDamage        0 0
 SaveApply          0 0 0 0 0
-Conditions         0 19 19 0 0 0
+Conditions         0 15 15 0 0 0
 PointsPad1         0 0 0
 PointsPad2         0 0 0 0
 PointsPad3         0 0 0
 ShortSavePad       0 0 0 0
 SavePad            0 0 0 0
-Pracs              3
+Pracs              6
 SkillsToLearn      0
 NamedSkill         1 0 0 armour~
 NamedSkill         2 0 0 teleport~
@@ -80,11 +81,11 @@ NamedSkill         41 0 0 ventriloquate~
 NamedSkill         42 0 0 word of recall~
 NamedSkill         43 0 0 remove poison~
 NamedSkill         44 0 0 sense life~
-NamedSkill         45 0 0 sneak~
-NamedSkill         46 0 0 hide~
-NamedSkill         47 0 0 steal~
-NamedSkill         48 0 0 backstab~
-NamedSkill         49 0 0 pick lock~
+NamedSkill         45 1 0 sneak~
+NamedSkill         46 13 0 hide~
+NamedSkill         47 7 0 steal~
+NamedSkill         48 1 0 backstab~
+NamedSkill         49 1 0 pick lock~
 NamedSkill         50 0 0 kick~
 NamedSkill         51 0 0 bash~
 NamedSkill         52 0 0 rescue~
@@ -180,7 +181,7 @@ NamedSkill         182 0 0 disarm trap~
 NamedSkill         183 0 0 disarm~
 NamedSkill         184 0 0 shield bash~
 NamedSkill         185 0 0 riding~
-ActFlags           0 0
+ActFlags           16 0
 Affect             0 0 0 0 0 0 0
 Affect             1 0 0 0 0 0 0
 Affect             2 0 0 0 0 0 0
@@ -206,8 +207,8 @@ Affect             21 0 0 0 0 0 0
 Affect             22 0 0 0 0 0 0
 Affect             23 0 0 0 0 0 0
 Affect             24 0 0 0 0 0 0
-i3perm       1
+i3perm       0
 i3flags      256
-IMCPerm      1
+IMCPerm      0
 IMCFlags     256
 End
