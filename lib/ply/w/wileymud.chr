@@ -1,44 +1,44 @@
 #PLAYER
-Name               Blarghy~
-Passwd             BleEZzJegzNGw~
+Name               Wileymud~
+Passwd             Wi1LhycaMLukQ~
 Whizz              0
 PreTitle           ~
-Title              the Dwarven Swordpupil~
+Title              the Human Novice~
 Description
 ~
-LastSite           adork@localhost~
-LastLogin          1316184951
-Birth              1294448240
-Played             13009
+LastSite           adork@c-68-84-211-254.hsd1.pa.comcast.net~
+LastLogin          1307543646
+Birth              1307469895
+Played             10447
 Sex                1
-Race               3
-Class              4
-Alignment          -29
-Exp                385
-Level              warrior 1
-HeightWeight       139 159
-Gold               0 0
+Race               1
+Class              2
+Alignment          236
+Exp                7872
+Level              cleric 4
+HeightWeight       190 137
+Gold               10 0
 HomeTown           3008
 LoadRoom           -1
 PoofIn             ~
 PoofOut            ~
-AbilityScores      17 0 12 16 9 11
+AbilityScores      14 0 10 9 15 17
 AbilityPad         0 0 0 0
-HpManaMove         37 20 101 0 109 0
+HpManaMove         44 42 116 0 91 0
 AC                 100
 ToHitDamage        0 0
 SaveApply          0 0 0 0 0
-Conditions         0 11 11 0 0 0
+Conditions         0 24 24 0 0 0
 PointsPad1         0 0 0
 PointsPad2         0 0 0 0
 PointsPad3         0 0 0
 ShortSavePad       0 0 0 0
 SavePad            0 0 0 0
-Pracs              3
+Pracs              5
 SkillsToLearn      0
-NamedSkill         1 0 0 armour~
+NamedSkill         1 54 0 armour~
 NamedSkill         2 0 0 teleport~
-NamedSkill         3 0 0 bless~
+NamedSkill         3 32 0 bless~
 NamedSkill         4 0 0 blindness~
 NamedSkill         5 0 0 burning hands~
 NamedSkill         6 0 0 call lightning~
@@ -47,8 +47,8 @@ NamedSkill         8 0 0 chill touch~
 NamedSkill         9 0 0 clone~
 NamedSkill         10 0 0 colour spray~
 NamedSkill         11 0 0 control weather~
-NamedSkill         12 0 0 create food~
-NamedSkill         13 0 0 create water~
+NamedSkill         12 25 0 create food~
+NamedSkill         13 19 0 create water~
 NamedSkill         14 0 0 cure blindness~
 NamedSkill         15 0 0 cure critical~
 NamedSkill         16 0 0 cure light~
@@ -120,12 +120,12 @@ NamedSkill         81 0 0 fireshield~
 NamedSkill         82 0 0 charm monster~
 NamedSkill         83 0 0 cure serious~
 NamedSkill         84 0 0 cause serious~
-NamedSkill         85 0 0 refresh~
+NamedSkill         85 19 0 refresh~
 NamedSkill         86 0 0 second wind~
 NamedSkill         87 0 0 turn~
 NamedSkill         88 0 0 succor~
-NamedSkill         89 0 0 create light~
-NamedSkill         90 0 0 continual light~
+NamedSkill         89 20 0 create light~
+NamedSkill         90 18 0 continual light~
 NamedSkill         91 0 0 calm~
 NamedSkill         92 0 0 stoneskin~
 NamedSkill         93 0 0 conjure elemental~
@@ -153,8 +153,8 @@ NamedSkill         155 0 0 dual wield~
 NamedSkill         156 0 0 bandage~
 NamedSkill         157 0 0 search~
 NamedSkill         158 0 0 swimming~
-NamedSkill         159 0 0 endurance~
-NamedSkill         160 0 0 barehand~
+NamedSkill         159 19 0 endurance~
+NamedSkill         160 19 0 barehand~
 NamedSkill         161 0 0 blind fighting~
 NamedSkill         162 0 0 parry~
 NamedSkill         163 0 0 appraise~
@@ -174,7 +174,7 @@ NamedSkill         176 0 0 barter~
 NamedSkill         177 0 0 knockout~
 NamedSkill         178 0 0 spellcraft~
 NamedSkill         179 0 0 meditation~
-NamedSkill         180 0 0 track~
+NamedSkill         180 19 0 track~
 NamedSkill         181 0 0 locate trap~
 NamedSkill         182 0 0 disarm trap~
 NamedSkill         183 0 0 disarm~

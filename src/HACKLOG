@@ -774,3 +774,12 @@ global.h:1144: warning: function declaration isn't a prototype
 
         This is a security concern (mild), since all the player files ARE in git.
         Not a big deal, IMHO, but there ya go.
+110701  Quixadhal
+  0259  Many of the logs aren't here now since I started using git, lazy.
+        In any case, one new thing is a proper backup script.  It does full backups
+        of the SQL database and the entire codebase + data files.  It also makes a
+        somewhat smaller distribution set which is what I now hand out to anyone
+        wanting a copy.  Among other things, this means if you do want to start up
+        your own FooMUD from this, you'll need to copy the admin player files
+        from src/lib/ply to the matching spot in lib/ply.
+

@@ -1,44 +1,44 @@
 #PLAYER
-Name               Blarghy~
-Passwd             BleEZzJegzNGw~
+Name               Healer~
+Passwd             HeFGpe2FHVCN2~
 Whizz              0
 PreTitle           ~
-Title              the Dwarven Swordpupil~
+Title              the Human Acolyte~
 Description
 ~
-LastSite           adork@localhost~
-LastLogin          1316184951
-Birth              1294448240
-Played             13009
-Sex                1
-Race               3
-Class              4
-Alignment          -29
-Exp                385
-Level              warrior 1
-HeightWeight       139 159
-Gold               0 0
+LastSite           adork@c-69-242-42-82.hsd1.nj.comcast.net~
+LastLogin          1310478004
+Birth              1308336177
+Played             5513
+Sex                2
+Race               1
+Class              2
+Alignment          188
+Exp                4043
+Level              cleric 3
+HeightWeight       174 151
+Gold               3 0
 HomeTown           3008
 LoadRoom           -1
 PoofIn             ~
 PoofOut            ~
-AbilityScores      17 0 12 16 9 11
+AbilityScores      12 0 8 5 12 13
 AbilityPad         0 0 0 0
-HpManaMove         37 20 101 0 109 0
+HpManaMove         23 29 112 0 44 0
 AC                 100
 ToHitDamage        0 0
 SaveApply          0 0 0 0 0
-Conditions         0 11 11 0 0 0
+Conditions         0 19 19 0 0 0
 PointsPad1         0 0 0
 PointsPad2         0 0 0 0
 PointsPad3         0 0 0
 ShortSavePad       0 0 0 0
 SavePad            0 0 0 0
-Pracs              3
+Pracs              0
 SkillsToLearn      0
-NamedSkill         1 0 0 armour~
+NamedSkill         1 14 0 armour~
 NamedSkill         2 0 0 teleport~
-NamedSkill         3 0 0 bless~
+NamedSkill         3 14 0 bless~
 NamedSkill         4 0 0 blindness~
 NamedSkill         5 0 0 burning hands~
 NamedSkill         6 0 0 call lightning~
@@ -47,16 +47,16 @@ NamedSkill         8 0 0 chill touch~
 NamedSkill         9 0 0 clone~
 NamedSkill         10 0 0 colour spray~
 NamedSkill         11 0 0 control weather~
-NamedSkill         12 0 0 create food~
-NamedSkill         13 0 0 create water~
+NamedSkill         12 12 0 create food~
+NamedSkill         13 14 0 create water~
 NamedSkill         14 0 0 cure blindness~
 NamedSkill         15 0 0 cure critical~
 NamedSkill         16 0 0 cure light~
 NamedSkill         17 0 0 curse~
-NamedSkill         18 0 0 detect evil~
+NamedSkill         18 13 0 detect evil~
 NamedSkill         19 0 0 detect invisible~
-NamedSkill         20 0 0 detect magic~
-NamedSkill         21 0 0 detect poison~
+NamedSkill         20 13 0 detect magic~
+NamedSkill         21 12 0 detect poison~
 NamedSkill         22 0 0 dispel evil~
 NamedSkill         23 0 0 earthquake~
 NamedSkill         24 0 0 enchant weapon~
@@ -97,7 +97,7 @@ NamedSkill         58 0 0 dispel good~
 NamedSkill         59 0 0 weakness~
 NamedSkill         60 0 0 dispel magic~
 NamedSkill         61 0 0 knock~
-NamedSkill         62 0 0 know alignment~
+NamedSkill         62 14 0 know alignment~
 NamedSkill         63 0 0 animate dead~
 NamedSkill         64 0 0 paralyze~
 NamedSkill         65 0 0 remove paralysis~
@@ -120,7 +120,7 @@ NamedSkill         81 0 0 fireshield~
 NamedSkill         82 0 0 charm monster~
 NamedSkill         83 0 0 cure serious~
 NamedSkill         84 0 0 cause serious~
-NamedSkill         85 0 0 refresh~
+NamedSkill         85 14 0 refresh~
 NamedSkill         86 0 0 second wind~
 NamedSkill         87 0 0 turn~
 NamedSkill         88 0 0 succor~

@@ -1,34 +1,39 @@
 #PLAYER
-Name               Blarghy~
-Passwd             BleEZzJegzNGw~
+Name               Albeito~
+Passwd             Al2q7eozxwQO6~
 Whizz              0
 PreTitle           ~
-Title              the Dwarven Swordpupil~
+Title              the Elven Pilferess~
 Description
+pale white soulless eyes
+long raven black hair
+a white handprint on the face
+pale skin
+
 ~
-LastSite           adork@localhost~
-LastLogin          1316184951
-Birth              1294448240
-Played             13009
-Sex                1
-Race               3
-Class              4
-Alignment          -29
-Exp                385
-Level              warrior 1
-HeightWeight       139 159
+LastSite           adork@mudconnector.com~
+LastLogin          1311969533
+Birth              1311969250
+Played             125
+Sex                2
+Race               2
+Class              8
+Alignment          0
+Exp                1
+Level              thief 1
+HeightWeight       152 144
 Gold               0 0
-HomeTown           3008
+HomeTown           3001
 LoadRoom           -1
 PoofIn             ~
 PoofOut            ~
-AbilityScores      17 0 12 16 9 11
+AbilityScores      13 0 17 12 16 8
 AbilityPad         0 0 0 0
-HpManaMove         37 20 101 0 109 0
+HpManaMove         25 20 102 0 110 110
 AC                 100
 ToHitDamage        0 0
 SaveApply          0 0 0 0 0
-Conditions         0 11 11 0 0 0
+Conditions         0 23 23 0 0 0
 PointsPad1         0 0 0
 PointsPad2         0 0 0 0
 PointsPad3         0 0 0
@@ -80,11 +85,11 @@ NamedSkill         41 0 0 ventriloquate~
 NamedSkill         42 0 0 word of recall~
 NamedSkill         43 0 0 remove poison~
 NamedSkill         44 0 0 sense life~
-NamedSkill         45 0 0 sneak~
-NamedSkill         46 0 0 hide~
-NamedSkill         47 0 0 steal~
-NamedSkill         48 0 0 backstab~
-NamedSkill         49 0 0 pick lock~
+NamedSkill         45 1 0 sneak~
+NamedSkill         46 13 0 hide~
+NamedSkill         47 7 0 steal~
+NamedSkill         48 1 0 backstab~
+NamedSkill         49 1 0 pick lock~
 NamedSkill         50 0 0 kick~
 NamedSkill         51 0 0 bash~
 NamedSkill         52 0 0 rescue~
@@ -206,8 +211,8 @@ Affect             21 0 0 0 0 0 0
 Affect             22 0 0 0 0 0 0
 Affect             23 0 0 0 0 0 0
 Affect             24 0 0 0 0 0 0
-i3perm       1
+i3perm       0
 i3flags      256
-IMCPerm      1
+IMCPerm      0
 IMCFlags     256
 End

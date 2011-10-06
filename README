@@ -41,3 +41,7 @@ know what becomes of it.
 
                                                       -Dread Quixadhal
                                               quixadhal@shadowlord.org
+
+PS:  If admin's password doesn't work, you may want to either copy the
+spare from src/lib/ply/a/, or use the password gen utility to make a new
+one and copy it into lib/ply/a/admin.chr.

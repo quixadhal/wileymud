@@ -834,4 +834,37 @@ ChanStatus 0
 ChanFlags  0
 End
 
+#I3CHAN
+ChanName   imud_imud_sgz
+ChanMud    ThreeKingdomChina
+ChanLocal  (null)
+ChanLayM   &R[&W%s&R] &C%s@%s: &c%s
+ChanLayE   &R[&W%s&R] &c%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   imud_sgz
+ChanMud    ThreeKingdomChina
+ChanLocal  (null)
+ChanLayM   &R[&W%s&R] &C%s@%s: &c%s
+ChanLayE   &R[&W%s&R] &c%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   smblah
+ChanMud    ShadowMUDii Dev
+ChanLocal  (null)
+ChanLayM   &R[&W%s&R] &C%s@%s: &c%s
+ChanLayE   &R[&W%s&R] &c%s
+ChanLevel  0
+ChanStatus 2
+ChanFlags  0
+End
+
 #END

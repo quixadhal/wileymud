@@ -11,9 +11,9 @@ reaching out to...
      hand you a HUGE glass of the blackest beer you've ever seen!
 ~
 LastSite           adork@brezhnev.shadowlord.org~
-LastLogin          1303776894
+LastLogin          1317723438
 Birth              803755990
-Played             29445203
+Played             35271721
 Sex                1
 Race               2
 Class              63
@@ -33,7 +33,7 @@ PoofIn             ~
 PoofOut            ~
 AbilityScores      25 100 25 25 25 25
 AbilityPad         0 0 0 0
-HpManaMove         10002 9999 266 0 941 0
+HpManaMove         10002 9999 266 0 948 0
 AC                 100
 ToHitDamage        0 0
 SaveApply          0 0 0 0 0
@@ -217,7 +217,7 @@ Affect             23 0 0 0 0 0 0
 Affect             24 0 0 0 0 0 0
 i3perm       5
 i3flags      768
-i3listen     dchat intergossip free_speech
+i3listen     dchat intergossip free_speech ds
 IMCPerm      5
 IMCFlags     768
 IMCListen    dgd intergossip dchat free_speech imud_code

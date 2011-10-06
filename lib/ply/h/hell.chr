@@ -1,40 +1,40 @@
 #PLAYER
-Name               Blarghy~
-Passwd             BleEZzJegzNGw~
+Name               Hell~
+Passwd             He9EsIOgVwVLg~
 Whizz              0
 PreTitle           ~
-Title              the Dwarven Swordpupil~
+Title              the Human Courser~
 Description
 ~
-LastSite           adork@localhost~
-LastLogin          1316184951
-Birth              1294448240
-Played             13009
+LastSite           adork@c-68-84-211-254.hsd1.pa.comcast.net~
+LastLogin          1307552573
+Birth              1307484984
+Played             14705
 Sex                1
-Race               3
-Class              4
-Alignment          -29
-Exp                385
-Level              warrior 1
-HeightWeight       139 159
-Gold               0 0
+Race               1
+Class              16
+Alignment          241
+Exp                8055
+Level              ranger 4
+HeightWeight       165 155
+Gold               10009 0
 HomeTown           3008
 LoadRoom           -1
 PoofIn             ~
 PoofOut            ~
-AbilityScores      17 0 12 16 9 11
+AbilityScores      14 0 12 10 9 12
 AbilityPad         0 0 0 0
-HpManaMove         37 20 101 0 109 0
+HpManaMove         53 46 110 0 101 101
 AC                 100
 ToHitDamage        0 0
 SaveApply          0 0 0 0 0
-Conditions         0 11 11 0 0 0
+Conditions         0 7 6 0 0 0
 PointsPad1         0 0 0
 PointsPad2         0 0 0 0
 PointsPad3         0 0 0
 ShortSavePad       0 0 0 0
 SavePad            0 0 0 0
-Pracs              3
+Pracs              10
 SkillsToLearn      0
 NamedSkill         1 0 0 armour~
 NamedSkill         2 0 0 teleport~
@@ -153,8 +153,8 @@ NamedSkill         155 0 0 dual wield~
 NamedSkill         156 0 0 bandage~
 NamedSkill         157 0 0 search~
 NamedSkill         158 0 0 swimming~
-NamedSkill         159 0 0 endurance~
-NamedSkill         160 0 0 barehand~
+NamedSkill         159 10 0 endurance~
+NamedSkill         160 10 0 barehand~
 NamedSkill         161 0 0 blind fighting~
 NamedSkill         162 0 0 parry~
 NamedSkill         163 0 0 appraise~
@@ -174,10 +174,10 @@ NamedSkill         176 0 0 barter~
 NamedSkill         177 0 0 knockout~
 NamedSkill         178 0 0 spellcraft~
 NamedSkill         179 0 0 meditation~
-NamedSkill         180 0 0 track~
+NamedSkill         180 33 0 track~
 NamedSkill         181 0 0 locate trap~
 NamedSkill         182 0 0 disarm trap~
-NamedSkill         183 0 0 disarm~
+NamedSkill         183 7 0 disarm~
 NamedSkill         184 0 0 shield bash~
 NamedSkill         185 0 0 riding~
 ActFlags           0 0
