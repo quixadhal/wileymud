@@ -140,7 +140,8 @@ Please stop on by!</p>
     </td>
     <td width="40%"> &nbsp; </td>
     <td width="30%" align="center">
-      <a href="gitweb.cgi?p=.git;a=summary">
+      <!-- <a href="gitweb.cgi?p=.git;a=summary"> -->
+      <a href="https://github.com/quixadhal/wileymud">
         <img src="/gitweb/git-logo.png" border=0 align="center" width=72 height=27 alt="(git)">
         <br />
         GIT Repository

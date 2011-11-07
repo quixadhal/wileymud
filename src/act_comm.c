@@ -39,21 +39,21 @@ void do_say(struct char_data *ch, const char *argument, int cmd)
   else {
     switch (argument[strlen(argument) - 1]) {
       case '!':
-	act("$n exclaims '%s'", FALSE, ch, 0, 0, TO_ROOM, argument + i);
+	act("\x1b[0;32m$n exclaims '%s'\x1b[0m", FALSE, ch, 0, 0, TO_ROOM, argument + i);
 	if (IS_NPC(ch) || (IS_SET(ch->specials.act, PLR_ECHO))) {
-	  cprintf(ch, "You exclaim '%s'\r\n", argument + i);
+	  cprintf(ch, "\x1b[0;32mYou exclaim '%s'\x1b[0m\r\n", argument + i);
 	}
 	break;
       case '?':
-	act("$n asks '%s'", FALSE, ch, 0, 0, TO_ROOM, argument + i);
+	act("\x1b[0;32m$n asks '%s'\x1b[0m", FALSE, ch, 0, 0, TO_ROOM, argument + i);
 	if (IS_NPC(ch) || (IS_SET(ch->specials.act, PLR_ECHO))) {
-	  cprintf(ch, "You ask '%s'\r\n", argument + i);
+	  cprintf(ch, "\x1b[0;32mYou ask '%s'\x1b[0m\r\n", argument + i);
 	}
 	break;
       default:
-	act("$n says '%s'", FALSE, ch, 0, 0, TO_ROOM, argument + i);
+	act("\x1b[0;32m$n says '%s'\x1b[0m", FALSE, ch, 0, 0, TO_ROOM, argument + i);
 	if (IS_NPC(ch) || (IS_SET(ch->specials.act, PLR_ECHO))) {
-	  cprintf(ch, "You say '%s'\r\n", argument + i);
+	  cprintf(ch, "\x1b[0;32mYou say '%s'\x1b[0m\r\n", argument + i);
 	}
 	break;
     }
@@ -91,14 +91,14 @@ void do_shout(struct char_data *ch, const char *argument, int cmd)
   }
 
   if (IS_IMMORTAL(ch) || IS_NPC(ch)) {
-    cprintf(ch, "You shout '%s'\r\n", argument);
+    cprintf(ch, "\x1b[1;32mYou shout '%s'\x1b[0m\r\n", argument);
     for (i = descriptor_list; i; i = i->next)
       if (i->character != ch && !i->connected &&
 	  !IS_SET(i->character->specials.act, PLR_NOSHOUT) &&
 	  !IS_SET(i->character->specials.act, PLR_DEAF) &&
 	  (rp = real_roomp(i->character->in_room)) &&
           (!FindBoardInRoom(i->character->in_room)))
-	act("$n shouts '%s'", 0, ch, 0, i->character, TO_VICT, argument);
+	act("\x1b[1;32m$n shouts '%s'\x1b[0m", 0, ch, 0, i->character, TO_VICT, argument);
   } else {
 #ifdef OLD_SHOUT
     if (GET_MOVE(ch) < (GET_MAX_MOVE(ch) / 10)) {
@@ -117,14 +117,14 @@ void do_shout(struct char_data *ch, const char *argument, int cmd)
     GET_MANA(ch) -= (GET_MAX_MANA(ch) / 15);
     GET_COND(ch, THIRST) -= 4;
     if (IS_SET(ch->specials.act, PLR_ECHO))
-      cprintf(ch, "You shout '%s'\r\n", argument);
+      cprintf(ch, "\x1b[1;32mYou shout '%s'\x1b[0m\r\n", argument);
     for (i = descriptor_list; i; i = i->next)
       if (i->character != ch && !i->connected &&
 	  !IS_SET(i->character->specials.act, PLR_NOSHOUT) &&
 	  !IS_SET(i->character->specials.act, PLR_DEAF) &&
 	  (rp = real_roomp(i->character->in_room)) && (mrp = real_roomp(ch->in_room)) &&
           (!FindBoardInRoom(i->character->in_room)))
-	act("$n shouts '%s'", 0, ch, 0, i->character, TO_VICT, argument);
+	act("\x1b[1;32m$n shouts '%s'\x1b[0m", 0, ch, 0, i->character, TO_VICT, argument);
 #endif
 #ifdef ZONE_SHOUT
     if (GET_MOVE(ch) < (GET_MAX_MOVE(ch) / 10)) {
@@ -143,7 +143,7 @@ void do_shout(struct char_data *ch, const char *argument, int cmd)
     GET_MANA(ch) -= (GET_MAX_MANA(ch) / 15);
     GET_COND(ch, THIRST) -= 4;
     if (IS_SET(ch->specials.act, PLR_ECHO))
-      cprintf(ch, "You shout '%s'\r\n", argument);
+      cprintf(ch, "\x1b[1;32mYou shout '%s'\x1b[0m\r\n", argument);
     for (i = descriptor_list; i; i = i->next)
       if (i->character != ch && !i->connected &&
 	  !IS_SET(i->character->specials.act, PLR_NOSHOUT) &&
@@ -151,7 +151,7 @@ void do_shout(struct char_data *ch, const char *argument, int cmd)
 	  (rp = real_roomp(i->character->in_room)) &&
 	  (mrp = real_roomp(ch->in_room)) && (rp->zone == mrp->zone) &&
           (!FindBoardInRoom(i->character->in_room)))
-	act("$n shouts '%s'", 0, ch, 0, i->character, TO_VICT, argument);
+	act("\x1b[1;32m$n shouts '%s'\x1b[0m", 0, ch, 0, i->character, TO_VICT, argument);
 #endif
 #ifdef RADIUS_SHOUT
 /* This is a buggy... it corrupts memory someplace */
@@ -162,14 +162,14 @@ void do_shout(struct char_data *ch, const char *argument, int cmd)
     for (v = mrp->people; v; v = v->next_in_room)
       if (v != ch && v->desc &&
 	  !IS_SET(v->specials.act, PLR_NOSHOUT) && !IS_SET(v->specials.act, PLR_DEAF))
-	act("$n shouts '%s'", 0, ch, 0, v, TO_VICT, argument);
+	act("\x1b[1;32m$n shouts '%s'\x1b[0m", 0, ch, 0, v, TO_VICT, argument);
     for (x = 0; x < MAX_NUM_EXITS; x++)
       if ((exitp = EXIT(ch, x)) && exit_ok(exitp, mrp))
 	if ((rp = real_roomp(exitp->to_room)) && (rp != mrp) && (!FindBoardInRoom(v->in_room))) {
 	  for (v = rp->people; v; v = v->next_in_room)
 	    if (v != ch && v->desc &&
 		!IS_SET(v->specials.act, PLR_NOSHOUT) && !IS_SET(v->specials.act, PLR_DEAF))
-	      act("$n shouts %s '%s'", 0, ch, 0, v, TO_VICT, dir_from[rev_dir[x]], argument);
+	      act("\x1b[1;32m$n shouts %s '%s'\x1b[0m", 0, ch, 0, v, TO_VICT, dir_from[rev_dir[x]], argument);
 	}
 #endif
   }
@@ -239,19 +239,19 @@ void do_tell(struct char_data *ch, const char *argument, int cmd)
   }
   switch (message[strlen(message) - 1]) {
     case '!':
-      cprintf(vict, "%s exclaims to you '%s'\r\n", NAME(ch), message);
+      cprintf(vict, "\x1b[1;33m%s exclaims to you '%s'\x1b[0m\r\n", NAME(ch), message);
       if (IS_NPC(ch) || IS_SET(ch->specials.act, PLR_ECHO))
-	cprintf(ch, "You exclaim to %s '%s'\r\n", NAME(vict), message);
+	cprintf(ch, "\x1b[1;33mYou exclaim to %s '%s'\x1b[0m\r\n", NAME(vict), message);
       break;
     case '?':
-      cprintf(vict, "%s asks you '%s'\r\n", NAME(ch), message);
+      cprintf(vict, "\x1b[1;33m%s asks you '%s'\x1b[0m\r\n", NAME(ch), message);
       if (IS_NPC(ch) || IS_SET(ch->specials.act, PLR_ECHO))
-	cprintf(ch, "You ask %s '%s'\r\n", NAME(vict), message);
+	cprintf(ch, "\x1b[1;33mYou ask %s '%s'\x1b[0m\r\n", NAME(vict), message);
       break;
     default:
-      cprintf(vict, "%s tells you '%s'\r\n", NAME(ch), message);
+      cprintf(vict, "\x1b[1;33m%s tells you '%s'\x1b[0m\r\n", NAME(ch), message);
       if (IS_NPC(ch) || IS_SET(ch->specials.act, PLR_ECHO))
-	cprintf(ch, "You tell %s '%s'\r\n", NAME(vict), message);
+	cprintf(ch, "\x1b[1;33mYou tell %s '%s'\x1b[0m\r\n", NAME(vict), message);
       break;
   }
 }
@@ -275,12 +275,12 @@ void do_whisper(struct char_data *ch, const char *argument, int cmd)
     act("$n whispers quietly to $mself.", FALSE, ch, 0, 0, TO_ROOM);
     cprintf(ch, "You can't seem to get your mouth close enough to your ear...\r\n");
   } else {
-    act("$n whispers to you, '%s'", FALSE, ch, 0, vict, TO_VICT, message);
+    act("\x1b[35m$n whispers to you, '%s'\x1b[0m", FALSE, ch, 0, vict, TO_VICT, message);
     if (IS_NPC(ch) || (IS_SET(ch->specials.act, PLR_ECHO))) {
-      cprintf(ch, "You whisper to %s, '%s'\r\n",
+      cprintf(ch, "\x1b[35mYou whisper to %s, '%s'\x1b[0m\r\n",
 	      (IS_NPC(vict) ? vict->player.name : GET_NAME(vict)), message);
     }
-    act("$n whispers something to $N.", FALSE, ch, 0, vict, TO_NOTVICT);
+    act("\x1b[35m$n whispers something to $N.\x1b[0m", FALSE, ch, 0, vict, TO_NOTVICT);
   }
 }
 
@@ -396,7 +396,7 @@ void do_group_tell(struct char_data *ch, const char *argument, int cmd)
     k = ch->master;
     if (IS_AFFECTED(k, AFF_GROUP))
       if ((GET_POS(k) != POSITION_SLEEPING) && (k->desc) && (k != ch))
-	cprintf(k, "%s tells the group '%s'\r\n",
+	cprintf(k, "\x1b[0;33m%s tells the group '%s'\x1b[0m\r\n",
 		(IS_NPC(ch) ? ch->player.short_descr : GET_NAME(ch)), argument);
   }
 
@@ -408,12 +408,12 @@ void do_group_tell(struct char_data *ch, const char *argument, int cmd)
     vict = f->follower;
     if (IS_AFFECTED(vict, AFF_GROUP))
       if ((GET_POS(vict) != POSITION_SLEEPING) && (vict->desc) && (vict != ch))
-	cprintf(vict, "%s tells the group '%s'\r\n",
+	cprintf(vict, "\x1b[0;33m%s tells the group '%s'\x1b[0m\r\n",
 		(IS_NPC(ch) ? ch->player.short_descr : GET_NAME(ch)), argument);
   }
 
   if (IS_NPC(ch) || IS_SET(ch->specials.act, PLR_ECHO))
-    cprintf(ch, "You tell the group '%s'\r\n", argument);
+    cprintf(ch, "\x1b[0;33mYou tell the group '%s'\x1b[0m\r\n", argument);
 }
 
 void do_group_report(struct char_data *ch, const char *argument, int cmd)

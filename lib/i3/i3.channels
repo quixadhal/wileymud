@@ -867,4 +867,15 @@ ChanStatus 2
 ChanFlags  0
 End
 
+#I3CHAN
+ChanName   wileymud
+ChanMud    WileyMUD
+ChanLocal  wiley
+ChanLayM   &R[&Y%s&R] &C%s@%s: &c%s
+ChanLayE   &R[&Y%s&R] &c%s
+ChanLevel  2
+ChanStatus 0
+ChanFlags  0
+End
+
 #END

@@ -954,7 +954,7 @@ void do_look(struct char_data *ch, const char *argument, int cmd)
     }
   } else if ((IS_DARKOUT(ch->in_room)) && (!IS_IMMORTAL(ch)) &&
 	     (!IS_AFFECTED(ch, AFF_TRUE_SIGHT))) {
-    cprintf(ch, "%s", real_roomp(ch->in_room)->name);
+    cprintf(ch, "\x1b[0;36m%s\x1b[0m\r\n", real_roomp(ch->in_room)->name); /* ANSI CYAN */
     cprintf(ch, "\r\nIt is quite dark here...\r\n");
     if ((IS_AFFECTED(ch, AFF_INFRAVISION)) || BRIGHT_MOON(ch->in_room)) {
       list_char_in_room(real_roomp(ch->in_room)->people, ch);
@@ -1228,7 +1228,7 @@ void do_look(struct char_data *ch, const char *argument, int cmd)
 	 * look '' 
 	 */
       case 8:{
-	  cprintf(ch, "%s\r\n", real_roomp(ch->in_room)->name);
+          cprintf(ch, "\x1b[0;36m%s\x1b[0m\r\n", real_roomp(ch->in_room)->name); /* ANSI CYAN */
 	  if (!IS_SET(ch->specials.act, PLR_BRIEF))
 	    cprintf(ch, "%s", real_roomp(ch->in_room)->description);
 	  if (IS_PC(ch)) {
@@ -1279,7 +1279,7 @@ void do_look(struct char_data *ch, const char *argument, int cmd)
 	 */
       case 9:{
 
-	  cprintf(ch, "%s\r\n", real_roomp(ch->in_room)->name);
+          cprintf(ch, "\x1b[0;36m%s\x1b[0m\r\n", real_roomp(ch->in_room)->name); /* ANSI CYAN */
 	  cprintf(ch, "%s", real_roomp(ch->in_room)->description);
 
 	  if (!IS_NPC(ch)) {
