@@ -357,4 +357,6 @@ bool i3_command_hook( CHAR_DATA * ch, const char *command, const char *argument 
 void i3_startup( bool forced, int mudport, bool isconnected );
 void i3_shutdown( int delay );
 void i3_npc_chat( const char *chan_name, const char *actor, const char *message );
+void I3_listen_channel( CHAR_DATA *ch, const char *argument);
+bool I3_hasname( char *list, const char *name );
 #endif

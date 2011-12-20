@@ -1,13 +1,109 @@
 #RENT
-Owner              Ryuikari~
+Owner              Telliri~
 Gold               0
 TotalCost          0
-LastUpdate         1321138802
+LastUpdate         1322602490
 MinimumStay        0
 End
 #EQUIPMENT
 End
 #CARRIED
+#ITEM
+ObjId              7
+ContainedBy        -1
+Name               heafty loaf bread~
+Description
+A heafty loaf of bread rests here.~
+ShortDescr
+a heafty loaf of bread~
+ActionDescr
+(null)~
+VNum               5016
+EquippedAt         0
+Values             7 0 0 0
+ExtraFlags         0
+Weight             1
+Timer              0
+BitVector          0
+Type               19
+WearFlags          1
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              7
+ContainedBy        -1
+Name               heafty loaf bread~
+Description
+A heafty loaf of bread rests here.~
+ShortDescr
+a heafty loaf of bread~
+ActionDescr
+(null)~
+VNum               5016
+EquippedAt         0
+Values             7 0 0 0
+ExtraFlags         0
+Weight             1
+Timer              0
+BitVector          0
+Type               19
+WearFlags          1
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              7
+ContainedBy        -1
+Name               bottle water~
+Description
+A bottle of clear liquid has been left here.~
+ShortDescr
+a bottle~
+ActionDescr
+(null)~
+VNum               3003
+EquippedAt         0
+Values             16 16 0 0
+ExtraFlags         0
+Weight             2
+Timer              0
+BitVector          0
+Type               17
+WearFlags          16385
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              7
+ContainedBy        -1
+Name               bottle water~
+Description
+A bottle of clear liquid has been left here.~
+ShortDescr
+a bottle~
+ActionDescr
+(null)~
+VNum               3003
+EquippedAt         0
+Values             16 16 0 0
+ExtraFlags         0
+Weight             2
+Timer              0
+BitVector          0
+Type               17
+WearFlags          16385
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
 #ITEM
 ObjId              7
 ContainedBy        -1
@@ -29,102 +125,6 @@ Type               5
 WearFlags          8193
 Cost               2
 CostPerDay         2
-Affect             0 0
-Affect             0 0
-End
-#ITEM
-ObjId              7
-ContainedBy        -1
-Name               bottle water~
-Description
-A bottle of clear liquid has been left here.~
-ShortDescr
-a bottle~
-ActionDescr
-(null)~
-VNum               3003
-EquippedAt         0
-Values             16 16 0 0
-ExtraFlags         0
-Weight             2
-Timer              0
-BitVector          0
-Type               17
-WearFlags          16385
-Cost               5
-CostPerDay         1
-Affect             0 0
-Affect             0 0
-End
-#ITEM
-ObjId              7
-ContainedBy        -1
-Name               heafty loaf bread~
-Description
-A heafty loaf of bread rests here.~
-ShortDescr
-a heafty loaf of bread~
-ActionDescr
-(null)~
-VNum               5016
-EquippedAt         0
-Values             7 0 0 0
-ExtraFlags         0
-Weight             1
-Timer              0
-BitVector          0
-Type               19
-WearFlags          1
-Cost               5
-CostPerDay         1
-Affect             0 0
-Affect             0 0
-End
-#ITEM
-ObjId              7
-ContainedBy        -1
-Name               heafty loaf bread~
-Description
-A heafty loaf of bread rests here.~
-ShortDescr
-a heafty loaf of bread~
-ActionDescr
-(null)~
-VNum               5016
-EquippedAt         0
-Values             7 0 0 0
-ExtraFlags         0
-Weight             1
-Timer              0
-BitVector          0
-Type               19
-WearFlags          1
-Cost               5
-CostPerDay         1
-Affect             0 0
-Affect             0 0
-End
-#ITEM
-ObjId              7
-ContainedBy        -1
-Name               bottle water~
-Description
-A bottle of clear liquid has been left here.~
-ShortDescr
-a bottle~
-ActionDescr
-(null)~
-VNum               3003
-EquippedAt         0
-Values             16 16 0 0
-ExtraFlags         0
-Weight             2
-Timer              0
-BitVector          0
-Type               17
-WearFlags          16385
-Cost               5
-CostPerDay         1
 Affect             0 0
 Affect             0 0
 End

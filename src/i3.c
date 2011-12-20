@@ -4193,7 +4193,7 @@ void i3_initchar( CHAR_DATA * ch )
    I3SET_BIT( I3FLAG( ch ), I3_COLORFLAG );  /* Default color to on. People can turn this off if they hate it. */
    FIRST_I3IGNORE( ch ) = NULL;
    LAST_I3IGNORE( ch ) = NULL;
-   I3PERM( ch ) = I3PERM_NOTSET;
+   I3PERM( ch ) = I3PERM_MORT;
 
    return;
 }

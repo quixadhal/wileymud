@@ -2,7 +2,7 @@
 Owner              Saraneth~
 Gold               29
 TotalCost          0
-LastUpdate         1320602808
+LastUpdate         1323011830
 MinimumStay        0
 End
 #EQUIPMENT
@@ -19,7 +19,7 @@ a wooden club~
 ActionDescr
 (null)~
 VNum               3048
-EquippedAt         -1
+EquippedAt         0
 Values             0 1 6 7
 ExtraFlags         0
 Weight             5
@@ -43,7 +43,7 @@ a lantern~
 ActionDescr
 ~               ~
 VNum               3016
-EquippedAt         -1
+EquippedAt         0
 Values             0 0 57 0
 ExtraFlags         0
 Weight             1

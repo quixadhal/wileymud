@@ -1,31 +1,30 @@
 #PLAYER
-Name               Saraneth~
-Passwd             Sai7FY3YGOp6k~
+Name               Telliri~
+Passwd             TeXOmsOUNOV0s~
 Whizz              0
 PreTitle           ~
-Title              the Elven Apprentice~
+Title              the Elven Supplicant~
 Description
-is totally awesome
 ~
-LastSite           adork@CPE-123-211-147-157.lnse3.woo.bigpond.net.~
-LastLogin          1323011051
-Birth              1320570142
-Played             27949
-Sex                2
+LastSite           adork@ip72-198-28-89.ok.ok.cox.net~
+LastLogin          1322602491
+Birth              1322602063
+Played             378
+Sex                1
 Race               2
 Class              1
-Alignment          213
-Exp                2631
-Level              mage 2
-HeightWeight       177 174
-Gold               29 0
+Alignment          0
+Exp                1
+Level              mage 1
+HeightWeight       183 130
+Gold               0 0
 HomeTown           3008
 LoadRoom           -1
 PoofIn             ~
 PoofOut            ~
-AbilityScores      11 0 15 7 17 14
+AbilityScores      11 0 13 10 15 13
 AbilityPad         0 0 0 0
-HpManaMove         33 26 110 0 108 0
+HpManaMove         25 20 105 0 108 108
 AC                 100
 ToHitDamage        0 0
 SaveApply          0 0 0 0 0
@@ -35,7 +34,7 @@ PointsPad2         0 0 0 0
 PointsPad3         0 0 0
 ShortSavePad       0 0 0 0
 SavePad            0 0 0 0
-Pracs              4
+Pracs              3
 SkillsToLearn      0
 NamedSkill         1 0 0 armour~
 NamedSkill         2 0 0 teleport~
@@ -68,7 +67,7 @@ NamedSkill         28 0 0 heal~
 NamedSkill         29 0 0 invisibility~
 NamedSkill         30 0 0 lightning bolt~
 NamedSkill         31 0 0 locate object~
-NamedSkill         32 50 0 magic missile~
+NamedSkill         32 0 0 magic missile~
 NamedSkill         33 0 0 poison~
 NamedSkill         34 0 0 protection from evil~
 NamedSkill         35 0 0 remove curse~
@@ -109,7 +108,7 @@ NamedSkill         69 0 0 fly~
 NamedSkill         70 0 0 cone of cold~
 NamedSkill         71 0 0 meteor swarm~
 NamedSkill         72 0 0 ice storm~
-NamedSkill         73 22 0 shield~
+NamedSkill         73 0 0 shield~
 NamedSkill         74 0 0 monsum one~
 NamedSkill         75 0 0 monsum two~
 NamedSkill         76 0 0 monsum three~
@@ -155,7 +154,7 @@ NamedSkill         156 0 0 bandage~
 NamedSkill         157 0 0 search~
 NamedSkill         158 0 0 swimming~
 NamedSkill         159 0 0 endurance~
-NamedSkill         160 23 0 barehand~
+NamedSkill         160 0 0 barehand~
 NamedSkill         161 0 0 blind fighting~
 NamedSkill         162 0 0 parry~
 NamedSkill         163 0 0 appraise~
@@ -208,8 +207,8 @@ Affect             22 0 0 0 0 0 0
 Affect             23 0 0 0 0 0 0
 Affect             24 0 0 0 0 0 0
 i3perm       2
-i3flags      768
-i3listen     intergossip wiley
-IMCPerm      1
+i3flags      256
+i3listen     wiley
+IMCPerm      0
 IMCFlags     256
 End

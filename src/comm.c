@@ -391,11 +391,13 @@ void game_loop(int s)
 	  close_socket(point);
     }
 
+#if 0
 #ifdef I3
     i3_loop();
 #endif
 #ifdef IMC
     imc_loop();
+#endif
 #endif
 
     /*
@@ -589,6 +591,15 @@ void game_loop(int s)
         }
         sleep(1);
     }
+#endif
+
+#if 1
+#ifdef I3
+    i3_loop();
+#endif
+#ifdef IMC
+    imc_loop();
+#endif
 #endif
 
     tics++;						       /* tics since last checkpoint signal */

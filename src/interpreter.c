@@ -1423,6 +1423,10 @@ void nanny(struct descriptor_data *d, char *arg)
 	  //update_player_list_entry(d);
 	  do_look(d->character, "", 15);
 	  d->prompt_mode = 1;
+#ifdef I3
+          if( !I3_hasname( I3LISTEN( d->character ), "wiley") )
+            I3_listen_channel(d->character, "wiley");
+#endif
 	  {
 	    struct obj_cost                         cost;
 

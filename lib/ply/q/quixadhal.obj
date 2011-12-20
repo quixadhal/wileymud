@@ -2,35 +2,11 @@
 Owner              Quixadhal~
 Gold               100000
 TotalCost          0
-LastUpdate         1320656342
+LastUpdate         1322458761
 MinimumStay        0
 End
 #EQUIPMENT
 End
 #CARRIED
-#ITEM
-ObjId              0
-ContainedBy        -1
-Name               bread~
-Description
-A loaf of bread has been left here.~
-ShortDescr
-a bread~
-ActionDescr
-(null)~
-VNum               3010
-EquippedAt         0
-Values             10 0 0 0
-ExtraFlags         0
-Weight             3
-Timer              0
-BitVector          0
-Type               19
-WearFlags          1
-Cost               5
-CostPerDay         1
-Affect             0 0
-Affect             0 0
-End
 End
 #END_RENT

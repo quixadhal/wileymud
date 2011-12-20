@@ -4,7 +4,7 @@ ChanMud    Frontiers
 ChanLocal  dchat
 ChanLayM   &R[&W%s&R] &C%s@%s: &c%s
 ChanLayE   &R[&W%s&R] &c%s
-ChanLevel  2
+ChanLevel  3
 ChanStatus 0
 ChanFlags  0
 End
@@ -15,7 +15,7 @@ ChanMud    Frontiers
 ChanLocal  icode
 ChanLayM   &R[&W%s&R] &C%s@%s: &c%s
 ChanLayE   &R[&W%s&R] &c%s
-ChanLevel  2
+ChanLevel  3
 ChanStatus 0
 ChanFlags  0
 End
@@ -48,7 +48,7 @@ ChanMud    Way of the Force
 ChanLocal  dgd
 ChanLayM   &R[&W%s&R] &C%s@%s: &c%s
 ChanLayE   &R[&W%s&R] &c%s
-ChanLevel  2
+ChanLevel  3
 ChanStatus 0
 ChanFlags  0
 End
@@ -59,7 +59,7 @@ ChanMud    Frontiers
 ChanLocal  ds
 ChanLayM   &R[&W%s&R] &C%s@%s: &c%s
 ChanLayE   &R[&W%s&R] &c%s
-ChanLevel  2
+ChanLevel  3
 ChanStatus 0
 ChanFlags  0
 End
@@ -874,6 +874,17 @@ ChanLocal  wiley
 ChanLayM   &R[&Y%s&R] &C%s@%s: &c%s
 ChanLayE   &R[&Y%s&R] &c%s
 ChanLevel  2
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   jengatest
+ChanMud    JengaMUD
+ChanLocal  (null)
+ChanLayM   &R[&W%s&R] &C%s@%s: &c%s
+ChanLayE   &R[&W%s&R] &c%s
+ChanLevel  0
 ChanStatus 0
 ChanFlags  0
 End

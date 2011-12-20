@@ -6,10 +6,10 @@ PreTitle           ~
 Title              the Dwarven Swordpupil~
 Description
 ~
-LastSite           adork@brezhnev.shadowlord.org~
-LastLogin          1319325546
+LastSite           adork@localhost~
+LastLogin          1321173189
 Birth              1294448240
-Played             16365
+Played             16461
 Sex                1
 Race               3
 Class              4
@@ -206,8 +206,9 @@ Affect             21 0 0 0 0 0 0
 Affect             22 0 0 0 0 0 0
 Affect             23 0 0 0 0 0 0
 Affect             24 0 0 0 0 0 0
-i3perm       1
-i3flags      256
+i3perm       2
+i3flags      768
+i3listen     wiley
 IMCPerm      1
 IMCFlags     256
 End
