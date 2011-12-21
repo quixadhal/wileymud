@@ -1043,7 +1043,6 @@ void nanny(struct descriptor_data *d, char *arg)
   int                                     oops = FALSE;
   char                                    tmp_name[20] = "\0\0\0\0\0\0\0";
   struct char_file_u                      tmp_store;
-  struct char_data                       *ch = NULL;
   int                                     i = 0;
   char                                    cryptbuf[17] = "\0\0\0\0\0\0\0";
   char                                    cryptsalt[3] = { '\0', '\0', '\0' };
@@ -1053,7 +1052,6 @@ void nanny(struct descriptor_data *d, char *arg)
 
   while (isspace(*arg))
     arg++;
-  ch = d->character;
   write(d->descriptor, echo_on, strlen(echo_on));
 
   switch (STATE(d)) {

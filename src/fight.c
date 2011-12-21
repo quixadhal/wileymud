@@ -803,7 +803,7 @@ int damage(struct char_data *ch, struct char_data *victim, int dam, int attackty
   int                                     nr = 0;
   int                                     max_hit = 0;
   int                                     experience = 0;
-  struct room_data                       *rp = NULL;
+  /* struct room_data                       *rp = NULL; */
 
   if (DEBUG > 2)
     log_info("called %s with %s, %s, %d, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), SAFE_NAME(victim), dam, attacktype);
@@ -811,7 +811,7 @@ int damage(struct char_data *ch, struct char_data *victim, int dam, int attackty
 /*  assert(GET_POS(victim) > POSITION_DEAD); */
   if (GET_POS(victim) <= POSITION_DEAD)
     return FALSE;
-  rp = real_roomp(ch->in_room);
+  /* rp = real_roomp(ch->in_room); */
 
 /*
  * if (rp && rp->room_flags & PEACEFUL && attacktype != SPELL_POISON &&
@@ -1051,9 +1051,12 @@ int damage(struct char_data *ch, struct char_data *victim, int dam, int attackty
 void hit(struct char_data *ch, struct char_data *victim, int type)
 {
   struct obj_data                        *wielded = NULL;
-  struct obj_data                        *held = NULL;
   struct obj_data                        *obj = NULL;
+#if 0
+  struct obj_data                        *held = NULL;
   struct room_data                       *rp = NULL;
+  int                                     two_handed = 0;
+#endif
   int                                     w_type = 0;
   int                                     s_type = 0;
   int                                     victim_ac = 0;
@@ -1061,13 +1064,14 @@ void hit(struct char_data *ch, struct char_data *victim, int type)
   int                                     dam = 0;
   int                                     dead = 0;
   int                                     diceroll = 0;
-  int                                     two_handed = 0;
   int                                     chance = 0;
 
   if (DEBUG > 2)
     log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), SAFE_NAME(victim), type);
 
+#if 0
   rp = real_roomp(ch->in_room);
+#endif
   if (check_peaceful(ch, "")) {
     log_info("hit() called in PEACEFUL room");
     stop_fighting(ch);
@@ -1105,16 +1109,20 @@ void hit(struct char_data *ch, struct char_data *victim, int type)
     }
     return;
   }
+#if 0
   if (ch->equipment[HOLD])
     held = ch->equipment[HOLD];
 
   two_handed = 0;
+#endif
 
   if (ch->equipment[WIELD] && (ch->equipment[WIELD]->obj_flags.type_flag == ITEM_WEAPON))
     wielded = ch->equipment[WIELD];
   else if (ch->equipment[WIELD_TWOH] &&
 	   (ch->equipment[WIELD_TWOH]->obj_flags.type_flag == ITEM_WEAPON)) {
+#if 0
     two_handed = 1;
+#endif
     wielded = ch->equipment[WIELD_TWOH];
   }
   if (wielded) {
@@ -1341,8 +1349,6 @@ void perform_violence(int current_pulse)
     log_info("called %s with %d", __PRETTY_FUNCTION__, current_pulse);
 
   for (ch = combat_list; ch; ch = combat_next_dude) {
-    struct room_data                       *rp = NULL;
-
     combat_next_dude = ch->next_fighting;
     /* assert(ch->specials.fighting); */
     if(!(ch->specials.fighting)) {
@@ -1350,7 +1356,6 @@ void perform_violence(int current_pulse)
       proper_exit(MUD_HALT);
     }
 
-    rp = real_roomp(ch->in_room);
     if (check_peaceful(ch, "")) {
       log_info("perform_violence found %s fighting in a PEACEFUL room.", ch->player.name);
       stop_fighting(ch);
@@ -1933,11 +1938,18 @@ int ItemSave(struct obj_data *i, int dam_type)
 	(i->affected[j].location == APPLY_SAVE_ALL)) {
       num -= i->affected[j].modifier;
     }
-  if (i->affected[j].location != APPLY_NONE) {
+/*
+ * Interesting bug.  gcc 4.6 found this as, at this point, j == MAX_OBJ_AFFECT
+ * which puts it outside the array boundry.  That's obviously wrong.
+ * The question is, were they meant to be affected[0] or affected[MAX-1]?
+ * I'll choose 0 for now, and see if anyone can tell.
+ */
+
+  if (i->affected[0].location != APPLY_NONE) {
     num += 1;
   }
-  if (i->affected[j].location == APPLY_HITROLL) {
-    num += i->affected[j].modifier;
+  if (i->affected[0].location == APPLY_HITROLL) {
+    num += i->affected[0].modifier;
   }
   if (ITEM_TYPE(i) != ITEM_ARMOR)
     num += 1;

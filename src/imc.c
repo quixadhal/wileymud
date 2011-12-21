@@ -261,7 +261,12 @@ size_t imcstrlcat( char *dst, const char *src, size_t siz )
 void imclog( const char *format, ... )
 {
    char buf[LGST], buf2[LGST];
+#if defined(IMCWILEY)
+#elif defined(IMCSMAUG)
+#elif defined(IMCACK)
+#else
    char *strtime;
+#endif
    va_list ap;
 
    va_start( ap, format );
@@ -270,7 +275,6 @@ void imclog( const char *format, ... )
 
    snprintf( buf2, LGST, "IMC: %s", buf );
 
-   strtime = ctime( &imc_time );
 #if defined(IMCWILEY)
    log_info( "%s", buf2 );
 #elif defined(IMCSMAUG)
@@ -278,6 +282,7 @@ void imclog( const char *format, ... )
 #elif defined(IMCACK)
    monitor_chan( buf2, MONITOR_IMC );
 #else
+   strtime = ctime( &imc_time );
    strtime[strlen( strtime ) - 1] = '\0';
    fprintf( stderr, "%s :: %s\n", strtime, buf2 );
 #endif
@@ -287,7 +292,12 @@ void imclog( const char *format, ... )
 void imcbug( const char *format, ... )
 {
    char buf[LGST], buf2[LGST];
+#if defined(IMCWILEY)
+#elif defined(IMCSMAUG)
+#elif defined(IMCACK)
+#else
    char *strtime;
+#endif
    va_list ap;
 
    va_start( ap, format );
@@ -296,7 +306,6 @@ void imcbug( const char *format, ... )
 
    snprintf( buf2, LGST, " IMC: %s", buf );
 
-   strtime = ctime( &imc_time );
 #if defined(IMCWILEY)
    log_error( "%s", buf2 );
 #elif defined(IMCSMAUG)
@@ -304,6 +313,7 @@ void imcbug( const char *format, ... )
 #elif defined(IMCACK)
    monitor_chan( buf2, MONITOR_IMC );
 #else
+   strtime = ctime( &imc_time );
    strtime[strlen( strtime ) - 1] = '\0';
    fprintf( stderr, "%s :: ***BUG*** %s\n", strtime, buf2 );
 #endif

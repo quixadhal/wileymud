@@ -1126,7 +1126,6 @@ void Teleport(int current_pulse)
   struct char_data                       *pers = NULL;
   struct obj_data                        *obj_object = NULL;
   struct obj_data                        *temp_obj = NULL;
-  int                                     or = 0;
   struct room_data                       *rp = NULL;
   struct room_data                       *dest = NULL;
 
@@ -1171,7 +1170,6 @@ void Teleport(int current_pulse)
 	if (tmp == NULL)
 	  break;					       /* we've run out of NPCs */
 
-	or = tmp->in_room;
 	char_from_room(tmp);				       /* the list of people in the room has changed */
 	char_to_room(tmp, rp->tele_targ);
 	if (IS_SET(dest->room_flags, DEATH)) {
@@ -1192,7 +1190,6 @@ void Teleport(int current_pulse)
 	  extract_char(tmp);
 	}
       }
-      or = ch->in_room;
       char_from_room(ch);
       char_to_room(ch, rp->tele_targ);
       if (rp->tele_look) {

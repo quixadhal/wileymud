@@ -512,6 +512,7 @@ void drop_level(struct char_data *ch, int class)
 {
   int                                     add_hp = 0;
   int                                     lin_class = 0;
+  int                                     old_style = 0;
 
   if (DEBUG > 1)
     log_info("called %s with %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), class);
@@ -607,10 +608,11 @@ void drop_level(struct char_data *ch, int class)
 
   ch->specials.pracs -= MAX(3, wis_app[(int)GET_WIS(ch)].bonus);
 
-/*
- *ch->points.exp =
- *  MIN(titles[lin_class][GET_LEVEL(ch, lin_class)].exp, GET_EXP(ch));
- */
+  if(old_style) {
+    ch->points.exp =
+      MIN(titles[lin_class][(int)GET_LEVEL(ch, lin_class)].exp, GET_EXP(ch));
+  }
+
   if (ch->points.exp < 0)
     ch->points.exp = 0;
 //  update_player_list_entry(ch->desc);

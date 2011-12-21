@@ -805,7 +805,7 @@ int new_descriptor(int s)
   struct tm                              *t_info = NULL;
   long                                    remote_addr = 0L;
   socklen_t                               i = 0;
-  int                                     remote_port = 0;
+  /* int                                     remote_port = 0; */
   int                                     desc = 0;
   int                                     old_maxdesc = 0;
   int                                     desc_index = 0;
@@ -848,7 +848,7 @@ int new_descriptor(int s)
 
   CREATE(newd, struct descriptor_data, 1);
 
-  remote_port = ntohs(isa.sin_port);
+  /* remote_port = ntohs(isa.sin_port); */
   remote_addr = htonl(isa.sin_addr.s_addr);
 
   newd->username[0] = '\0';

@@ -1378,7 +1378,6 @@ int check_falling(struct char_data *ch)
   struct room_data                       *targ = NULL;
   int                                     done = FALSE;
   int                                     count = 0;
-  int                                     saved = FALSE;
 
   if (DEBUG > 2)
     log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
@@ -1394,7 +1393,6 @@ int check_falling(struct char_data *ch)
     return (FALSE);
 
   act("The world spins, and you plummet out of control", TRUE, ch, 0, 0, TO_CHAR);
-  saved = FALSE;
   done = FALSE;
   count = 0;
 

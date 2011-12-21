@@ -268,7 +268,7 @@ void boot_pose_messages(void)
 
 void do_pose(struct char_data *ch, const char *argument, int cmd)
 {
-  int                                     to_pose = 0;
+  /* int                                     to_pose = 0; */
   int                                     counter = 0;
 
   if (DEBUG)
@@ -285,7 +285,7 @@ void do_pose(struct char_data *ch, const char *argument, int cmd)
        (pose_messages[counter].level > 0); counter++);
   counter--;
 
-  to_pose = number(0, counter);
+  /* to_pose = number(0, counter); */
 /*
  * **  find highest level, use that.
  */

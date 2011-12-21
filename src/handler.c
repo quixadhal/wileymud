@@ -177,7 +177,6 @@ void destroy_string_block(struct string_block *sb)
 
 void affect_modify(struct char_data *ch, char loc, char mod, long bitv, char add)
 {
-  int                                     maxabil = 0;
   int                                     i = 0;
 
   if (DEBUG > 2)
@@ -218,8 +217,6 @@ void affect_modify(struct char_data *ch, char loc, char mod, long bitv, char add
       mod = -mod;
     }
   }
-
-  maxabil = (IS_NPC(ch) ? 25 : 18);
 
   switch (loc) {
     case APPLY_NONE:

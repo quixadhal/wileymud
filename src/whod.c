@@ -490,7 +490,6 @@ char * whod_html(void)
 
 void whod_loop(void)
 {
-  int                                     nfound = 0;
   unsigned int                            size = 0;
   fd_set                                  in;
   unsigned long                           hostlong = 0L;
@@ -524,7 +523,7 @@ void whod_loop(void)
       FD_ZERO(&in);
       FD_SET(s, &in);
 
-      nfound = select(s + 1, &in, (fd_set *) 0, (fd_set *) 0, &timeout);
+      select(s + 1, &in, (fd_set *) 0, (fd_set *) 0, &timeout);
 
       if (FD_ISSET(s, &in)) {
 	size = sizeof(newaddr);

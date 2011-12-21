@@ -1560,15 +1560,11 @@ int RepairGuy(struct char_data *ch, int cmd, const char *arg)
 
 int citizen(struct char_data *ch, int cmd, const const char *arg)
 {
-  int                                     lev = 0;
-
   if (DEBUG > 2)
     log_info("called %s with %s, %d, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), cmd, VNULL(arg));
 
   if (cmd || !AWAKE(ch))
     return (FALSE);
-
-  lev = 3;
 
   if (ch->specials.fighting) {
     if (GET_POS(ch) == POSITION_FIGHTING) {
@@ -4410,11 +4406,11 @@ int eli_priest(struct char_data *ch, int cmd, const char *arg)
     }
     return TRUE;
   }
-#if 0
   if (is_evil) {
+#if 0
     GET_ALIGNMENT(vict) += number(20, 100);
-  }
 #endif
+  }
   switch (which_spell) {
     case SPELL_BLESS:
       say_spell(ch, SPELL_BLESS);

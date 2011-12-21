@@ -398,13 +398,11 @@ static void event_zombie_master(struct char_data *ch, char *arg)
   struct char_data                       *mob = NULL;
   int                                     i = 0;
   int                                     j = 0;
-  int                                     zone = 0;
 
   if (DEBUG > 1)
     log_info("called %s with %s, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(arg));
 
   if ((rp = real_roomp(ch->in_room))) {
-    zone = rp->zone;
     master = read_mobile(666, VIRTUAL);			       /* xenthia, lady of the dead */
     j = dice(1, 4) + 3;
     if (IS_SET(ch->specials.act, PLR_STEALTH))

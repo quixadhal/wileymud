@@ -559,7 +559,7 @@ void do_apraise(struct char_data *ch, const char *argument, int cmd)
     return;
   } else {
     if (ch->skills[SKILL_APRAISE].learned < 50)
-      ch->skills[SKILL_APRAISE].learned = MIN(50, ch->skills[SKILL_APRAISE].learned++);
+      ch->skills[SKILL_APRAISE].learned++;
 
     /*
      * apraise on object 

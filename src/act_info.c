@@ -1341,7 +1341,6 @@ void do_examine(struct char_data *ch, const char *argument, int cmd)
 {
   char                                    name[100] = "\0\0\0\0\0\0\0";
   char                                    buf[100] = "\0\0\0\0\0\0\0";
-  int                                     bits = 0;
   struct char_data                       *tmp_char = NULL;
   struct obj_data                        *tmp_object = NULL;
 
@@ -1357,8 +1356,7 @@ void do_examine(struct char_data *ch, const char *argument, int cmd)
     cprintf(ch, "Examine what?\r\n");
     return;
   }
-  bits = generic_find(name, FIND_OBJ_INV | FIND_OBJ_ROOM |
-		      FIND_OBJ_EQUIP, ch, &tmp_char, &tmp_object);
+  generic_find(name, FIND_OBJ_INV | FIND_OBJ_ROOM | FIND_OBJ_EQUIP, ch, &tmp_char, &tmp_object);
 
   if (tmp_object) {
     if ((GET_ITEM_TYPE(tmp_object) == ITEM_DRINKCON) ||
@@ -1482,7 +1480,9 @@ void do_score(struct char_data *ch, const char *argument, int cmd)
 {
   static char                             buf[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
   static char                             tmpbuf[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
+#if 0
   static int                              ack = 0;
+#endif
   struct affected_type                   *aff = NULL;
   struct char_data                       *target = NULL;
   const char                             *tmpstr = NULL;
@@ -1500,12 +1500,14 @@ void do_score(struct char_data *ch, const char *argument, int cmd)
   if (IS_IMMORTAL(ch)) {
     one_argument(argument, tmpbuf);
     if (*tmpbuf) {
-      ack = 1;
       if (!(target = get_char_room_vis(ch, tmpbuf))) {
-	/*
-	 * if(!(target= get_char_vis_world(ch, tmpbuf, &ack))) 
-	 */
-	if (!(target = get_char(tmpbuf))) {
+#if 0
+        ack = 1;
+	if(!(target= get_char_vis_world(ch, tmpbuf, &ack))) 
+#else
+	if (!(target = get_char(tmpbuf)))
+#endif
+	{
 	  cprintf(ch, "You can't seem to find %s.\r\n", tmpbuf);
 	  return;
 	}

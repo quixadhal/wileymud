@@ -66,7 +66,7 @@ void do_junk(struct char_data *ch, const char *argument, int cmd)
   char                                    arg[100] = "\0\0\0\0\0\0\0";
   char                                    newarg[100] = "\0\0\0\0\0\0\0";
   struct obj_data                        *tmp_object = NULL;
-  struct obj_data                        *old_object = NULL;
+  /* struct obj_data                        *old_object = NULL; */
   int                                     num = 0;
   int                                     p = 0;
   int                                     count = 0;
@@ -93,7 +93,7 @@ void do_junk(struct char_data *ch, const char *argument, int cmd)
     while (num != 0) {
       tmp_object = get_obj_in_list_vis(ch, arg, ch->carrying);
       if (tmp_object) {
-	old_object = tmp_object;
+	/* old_object = tmp_object; */
 	obj_from_char(tmp_object);
 	extract_obj(tmp_object);
 	if (num > 0)
