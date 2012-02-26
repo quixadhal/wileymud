@@ -1,5 +1,5 @@
-#ifndef _DUMP_FR_H
-#define _DUMP_FR_H
+#ifndef _DUMP_DS_H
+#define _DUMP_DS_H
 
 #define DS_DOMAIN		"/domains"
 #define DS_MEGA_DOMAIN		"/wiley"

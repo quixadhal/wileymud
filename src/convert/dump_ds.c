@@ -14,7 +14,7 @@
 char *DS_WelcomeMsg =
 "Welcome to the WileyMUD III conversion project!\n"
 "\n"
-"  The easiest way to get your old WileyMUD area into the Final-Realms mudlib\n"
+"  The easiest way to get your old WileyMUD area into the Dead Souls mudlib\n"
 "is to log into your FR mud with a lord and use the new_domain command to add\n"
 "the wileymud zones.  You can either create a single mega-domain like /d/wiley,\n"
 "and then place each zone's output into its own subdirectory, or keep each zone\n"
@@ -81,11 +81,11 @@ char *DS_WeaponMsg =
             OneBigDomain?"/"x:"", *domainname?"/":"", domainname, OneBigDomain?"":"/"x); \
   sprintf(filename, "mkdir -p %s/%s%s", OutputDir, DS_SUBDIR, muddir); \
   system(filename); \
-  if(m) { \
+  if(m != NULL) { \
     sprintf(filename, "%s/%s%s/README", OutputDir, DS_SUBDIR, muddir);\
     ofp= open_file(filename, "w"); \
-    if(n) { \
-      fprintf(ofp, "%s", m, muddir, n); \
+    if(n != NULL) { \
+      fprintf(ofp, m, muddir, n); \
     } else { \
       fprintf(ofp, "%s", m); \
     } \
@@ -107,7 +107,7 @@ char *DS_WeaponMsg =
     } \
 }
 
-void setup_dirs(zones *Zones, rooms *Rooms) {
+void ds_setup_dirs(zones *Zones, rooms *Rooms) {
   register int i,j;
   FILE *ofp;
   char domainname[256], muddir[256], filename[256];
@@ -139,6 +139,7 @@ void setup_dirs(zones *Zones, rooms *Rooms) {
     if(!Quiet) spin(stderr);
     sub_dir("weapons", DS_WeaponMsg, "wiley");
   } else for(i= 0; i< Zones->Count; i++) {
+    sprintf(domainname, "%s_%d", remap_name(Zones->Zone[i].Name), Zones->Zone[i].Number);
     if(!Quiet) spin(stderr);
     sub_dir("", DS_WelcomeMsg, NULL);
 
@@ -171,7 +172,7 @@ void setup_dirs(zones *Zones, rooms *Rooms) {
     }
     sprintf(domainname, "%s_%d", remap_name(Zones->Zone[i].Name), Zones->Zone[i].Number);
     if(!Quiet) spin(stderr);
-    sub_dir("rooms", NULL, NULL);
+    /* sub_dir("rooms", NULL, NULL); */
     sprintf(filename, "%s/%s%s/README", OutputDir, DS_SUBDIR, muddir);
     ofp= open_file(filename, "a");
     fprintf(ofp, DS_ZoneDataMsg, Zones->Zone[i].Name, LowRoom, HighRoom,
@@ -190,13 +191,13 @@ void dump_as_dead_souls(zones *Zones, rooms *Rooms, shops *Shops) {
   /* int LastMob, LastLoc; */
   char *TmpDesc, *HackDesc, *BigHack;
 
-  setup_dirs(Zones, Rooms);
+  ds_setup_dirs(Zones, Rooms);
 
   for(i= 0; i< Zones->Count; i++) {
     sprintf(domainname, "%s_%d", remap_name(Zones->Zone[i].Name), Zones->Zone[i].Number);
    
     dump_msg(i+1, domainname);
-    sub_dir("rooms");
+    /* sub_dir("rooms"); */
     for(j= 0; j< Rooms->Count; j++) {
       if((remap_zone_vnum(Zones, Rooms->Room[j].Zone) == i) ||
          ((Rooms->Room[j].Number >= (!i? 0: Zones->Zone[i-1].Top+1)) &&
@@ -240,6 +241,31 @@ void dump_as_dead_souls(zones *Zones, rooms *Rooms, shops *Shops) {
           fprintf(ofp, "    SetClimate(\"outdoors\");\n");
         fprintf(ofp, "\n");
         //fprintf(ofp, "    set_zone(\"%s\");\n", domainname);
+        
+        if(Rooms->Room[j].Flags & ROOM_DARK)
+          fprintf(ofp, "    SetAmbientLight(%d); // Normally dark.  If really PITCH BLACK, use 0.\n",
+                  PitchBlack?0:5);
+        else if(Rooms->Room[j].Flags & ROOM_INDOORS)
+          fprintf(ofp, "    SetAmbientLight(80);\n");
+        else switch(Rooms->Room[j].Sector) {
+          case SECT_INDOORS:
+          case SECT_CITY:
+            fprintf(ofp, "    SetAmbientLight(80);\n");
+            break;
+          case SECT_FOREST:
+            fprintf(ofp, "    SetAmbientLight(60);\n");
+            break;
+          case SECT_AIR:
+            fprintf(ofp, "    SetAmbientLight(120);\n");
+            break;
+          case SECT_UNDERWATER:
+            fprintf(ofp, "    SetAmbientLight(20);\n");
+            break;
+          default:
+            fprintf(ofp, "    SetAmbientLight(100);\n");
+            break;
+        }
+    
         fprintf(ofp, "    SetShort(\"%s\");\n", Rooms->Room[j].Name);
 
 /*
@@ -298,79 +324,57 @@ void dump_as_dead_souls(zones *Zones, rooms *Rooms, shops *Shops) {
         free(TmpDesc);
         fprintf(ofp, "\n");
 
-        if(Rooms->Room[j].Flags & ROOM_DARK)
-          fprintf(ofp, "    set_light(%d); // Normally dark.  If really PITCH BLACK, use 0.\n",
-                  PitchBlack?0:5);
-        else if(Rooms->Room[j].Flags & ROOM_INDOORS)
-          fprintf(ofp, "    set_light(80);\n");
-        else switch(Rooms->Room[j].Sector) {
-          case SECT_INDOORS:
-          case SECT_CITY:
-            fprintf(ofp, "    set_light(80);\n");
-            break;
-          case SECT_FOREST:
-            fprintf(ofp, "    set_light(60);\n");
-            break;
-          case SECT_AIR:
-            fprintf(ofp, "    set_light(120);\n");
-            break;
-          case SECT_UNDERWATER:
-            fprintf(ofp, "    set_light(20);\n");
-            break;
-          default:
-            fprintf(ofp, "    set_light(100);\n");
-            break;
-        }
-    
-        for(k= 0; k< Rooms->Room[j].ExtraCount; k++) {
-          if(Rooms->Room[j].Extra[k].Keyword->Count > 0) {
-            fprintf(ofp, "    add_item( ");
-            if(Rooms->Room[j].Extra[k].Keyword->Count > 1)
-              fprintf(ofp, "({ \"%s\"",
-                      Rooms->Room[j].Extra[k].Keyword->Word[0]);
-            else
-              fprintf(ofp, "\"%s\"",
-                      Rooms->Room[j].Extra[k].Keyword->Word[0]);
-            for(x= 1; x< Rooms->Room[j].Extra[k].Keyword->Count; x++)
-              fprintf(ofp, ", \"%s\"", Rooms->Room[j].Extra[k].Keyword->Word[x]);
-            if(Rooms->Room[j].Extra[k].Keyword->Count > 1)
-              fprintf(ofp, " }),\n");
-            else
-              fprintf(ofp, " ,\n");
-    
-/*
- * ARGH!  We have to escape all " characters inside our descriptions because
- * we're now using LPC....  HACK ALERT!
- */
-            BigHack = my_strdup(Rooms->Room[j].Extra[k].Description);
-            for(x= y= 0; x< strlen(BigHack); x++)
-              if(BigHack[x] == '\"')
-                y++;
-            TmpDesc = get_mem(strlen(BigHack)+y+1, sizeof(char));
-            bzero(TmpDesc, strlen(BigHack)+y+1);
-            for(x= y= 0; x< strlen(BigHack); x++, y++) {
-              if(BigHack[x] == '\"')
-                TmpDesc[y++]= '\\';
-              TmpDesc[y]= BigHack[x];
-            }
-            free(BigHack);
-            if(!(HackDesc = (char *)strtok(TmpDesc, "\n")))
-              fprintf(ofp, "        \"%s\"\n", TmpDesc);
-            else {
-              fprintf(ofp, "        \"%s\"\n", HackDesc);
-              while((HackDesc = (char *)strtok(NULL, "\n")))
-                if(HackDesc) {
-                  if(*HackDesc == ' ')
-                    fprintf(ofp, "        \"\\n%s\"\n", HackDesc);
-                  else
-                    fprintf(ofp, "        \" %s\"\n", HackDesc);
+        if(Rooms->Room[j].ExtraCount > 0) {
+            fprintf(ofp, "    SetItems( ([ ");
+            for(k= 0; k< Rooms->Room[j].ExtraCount; k++) {
+              if(Rooms->Room[j].Extra[k].Keyword->Count > 0) {
+                if(Rooms->Room[j].Extra[k].Keyword->Count > 1)
+                  fprintf(ofp, "({ \"%s\"",
+                          Rooms->Room[j].Extra[k].Keyword->Word[0]);
+                else
+                  fprintf(ofp, "\"%s\"",
+                          Rooms->Room[j].Extra[k].Keyword->Word[0]);
+                for(x= 1; x< Rooms->Room[j].Extra[k].Keyword->Count; x++)
+                  fprintf(ofp, ", \"%s\"", Rooms->Room[j].Extra[k].Keyword->Word[x]);
+                if(Rooms->Room[j].Extra[k].Keyword->Count > 1)
+                  fprintf(ofp, " }) : ");
+                else
+                  fprintf(ofp, " : ");
+        
+    /*
+     * ARGH!  We have to escape all " characters inside our descriptions because
+     * we're now using LPC....  HACK ALERT!
+     */
+                BigHack = my_strdup(Rooms->Room[j].Extra[k].Description);
+                for(x= y= 0; x< strlen(BigHack); x++)
+                  if(BigHack[x] == '\"')
+                    y++;
+                TmpDesc = get_mem(strlen(BigHack)+y+1, sizeof(char));
+                bzero(TmpDesc, strlen(BigHack)+y+1);
+                for(x= y= 0; x< strlen(BigHack); x++, y++) {
+                  if(BigHack[x] == '\"')
+                    TmpDesc[y++]= '\\';
+                  TmpDesc[y]= BigHack[x];
                 }
+                free(BigHack);
+                if(!(HackDesc = (char *)strtok(TmpDesc, "\n")))
+                  fprintf(ofp, "        \"%s\"\n", TmpDesc);
+                else {
+                  fprintf(ofp, "        \"%s\"\n", HackDesc);
+                  while((HackDesc = (char *)strtok(NULL, "\n")))
+                    if(HackDesc) {
+                      if(*HackDesc == ' ')
+                        fprintf(ofp, "        \"\\n%s\"\n", HackDesc);
+                      else
+                        fprintf(ofp, "        \" %s\"\n", HackDesc);
+                    }
+                }
+                fprintf(ofp, "        \"\\n\", \n");
+                free(TmpDesc);
+              }
             }
-            fprintf(ofp, "        \"\\n\" );\n");
-            free(TmpDesc);
-          }
+            fprintf(ofp, "    ]) );\n");
         }
-        fprintf(ofp, "\n");
     
         for(k= 0; k< Rooms->Room[j].ExitCount; k++) {
     /*

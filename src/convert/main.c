@@ -26,7 +26,7 @@
 #include "include/dump_afk.h"
 #include "include/dump_smaug.h"
 #include "include/dump_nightmare.h"
-//#include "include/dump_ds.h"
+#include "include/dump_ds.h"
 
 char *ProgName;
 int Debug = 0;
