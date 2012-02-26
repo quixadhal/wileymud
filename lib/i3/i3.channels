@@ -889,4 +889,26 @@ ChanStatus 0
 ChanFlags  0
 End
 
+#I3CHAN
+ChanName   animechat
+ChanMud    Bleached InuYasha Galaxy
+ChanLocal  (null)
+ChanLayM   &R[&W%s&R] &C%s@%s: &c%s
+ChanLayE   &R[&W%s&R] &c%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   CrossMUD
+ChanMud    BIYG_dev
+ChanLocal  (null)
+ChanLayM   &R[&W%s&R] &C%s@%s: &c%s
+ChanLayE   &R[&W%s&R] &c%s
+ChanLevel  0
+ChanStatus 1
+ChanFlags  0
+End
+
 #END
