@@ -198,7 +198,7 @@ void make_room_report(zones *Zones, rooms *Rooms, char *outfile) {
       fprintf(ofp, "Room \"%s\"[#%d] belongs to zone \"%s\"[#%d]\n",
               room_name(Rooms, Rooms->Room[i].Number), Rooms->Room[i].Number,
               zone_name(Zones, Rooms->Room[i].Zone), Rooms->Room[i].Zone);
-      fprintf(ofp, "    It is a \"%s\" room, with a %d byte description\n",
+      fprintf(ofp, "    It is a \"%s\" room, with a %zd byte description\n",
               sector_name(Rooms->Room[i].Sector),
               strlen(Rooms->Room[i].Description));
       if(Rooms->Room[i].ExtraCount) {
@@ -306,10 +306,10 @@ void make_obj_report(zones *Zones, objects *Objects, char *outfile) {
         fprintf(ofp, "    It weighs %d units and is worth %d gold, costing %d to rent.\n",
                 Objects->Object[i].Weight, Objects->Object[i].Value, Objects->Object[i].Rent);
       if(Objects->Object[i].Description && *(Objects->Object[i].Description))
-        fprintf(ofp, "    It has a %d byte long description\n        \"%s\"\n",
+        fprintf(ofp, "    It has a %zd byte long description\n        \"%s\"\n",
                 strlen(Objects->Object[i].Description), Objects->Object[i].Description);
       if(Objects->Object[i].ActionDesc && *(Objects->Object[i].ActionDesc))
-        fprintf(ofp, "    It has a %d byte action description\n        \"%s\"\n",
+        fprintf(ofp, "    It has a %zd byte action description\n        \"%s\"\n",
                 strlen(Objects->Object[i].ActionDesc), Objects->Object[i].ActionDesc);
       if(Objects->Object[i].ExtraCount) {
         for(j= Sum= 0; j< Objects->Object[i].ExtraCount; j++)
@@ -484,10 +484,10 @@ void make_mob_report(zones *Zones, mobs *Mobs, char *outfile) {
       fprintf(ofp, "    It belongs to zone \"%s\"[#%d]\n",
               zone_name(Zones, Mobs->Mob[i].Zone), Mobs->Mob[i].Zone);
       if(Mobs->Mob[i].LongDesc && *(Mobs->Mob[i].LongDesc))
-        fprintf(ofp, "    It has a %d byte long (room) description\n        \"%s\"\n",
+        fprintf(ofp, "    It has a %zd byte long (room) description\n        \"%s\"\n",
                 strlen(Mobs->Mob[i].LongDesc), Mobs->Mob[i].LongDesc);
       if(Mobs->Mob[i].Description && *(Mobs->Mob[i].Description))
-        fprintf(ofp, "    It has a %d byte look-at description\n        \"%s\"\n",
+        fprintf(ofp, "    It has a %zd byte look-at description\n        \"%s\"\n",
                 strlen(Mobs->Mob[i].Description), Mobs->Mob[i].Description);
       fprintf(ofp, "    It is a %s %s %s, standing %dcm tall and weighing %dlbs\n",
               alignment_name(Mobs->Mob[i].Alignment),

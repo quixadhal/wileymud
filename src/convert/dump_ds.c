@@ -14,7 +14,7 @@
 char *DS_WelcomeMsg =
 "Welcome to the WileyMUD III conversion project!\n"
 "\n"
-"  The easiest way to get your old WileyMUD area into the Dead Souls mudlib\n"
+"  The easiest way to get your old WileyMUD area into the Final-Realms mudlib\n"
 "is to log into your FR mud with a lord and use the new_domain command to add\n"
 "the wileymud zones.  You can either create a single mega-domain like /d/wiley,\n"
 "and then place each zone's output into its own subdirectory, or keep each zone\n"
@@ -42,11 +42,11 @@ char *DS_ArmourMsg =
 "This is the directory where all armour objects are defined for the\n"
 "%s domain.  Only armour should go in here!\n";
 
-char *DS_ObjMsg =
+char *DS_MiscMsg =
 "%s/\n"
 "\n"
-"This is the directory for things that don't have anywhere else to live\n"
-"in the %s domain.  Especially generic objects...\n";
+"This is the directory where things that don't have anywhere else to live\n"
+"in the %s domain.  Especially objects...\n";
 
 char *DS_MonsterMsg =
 "%s/\n"
@@ -72,7 +72,7 @@ char *DS_WeaponMsg =
 "This is the directory where all weapon objects are defined for the\n"
 "%s domain.  Only weapons should go in here!\n";
 
-#define sub_dir(x,m,n) { \
+#define sub_dir(x) { \
   if(!strcmp("",x)) \
     sprintf(muddir, "%s%s%s%s", DS_DOMAIN, OneBigDomain?DS_MEGA_DOMAIN:"", \
             OneBigDomain?"":"/", OneBigDomain?"":domainname); \
@@ -81,30 +81,6 @@ char *DS_WeaponMsg =
             OneBigDomain?"/"x:"", *domainname?"/":"", domainname, OneBigDomain?"":"/"x); \
   sprintf(filename, "mkdir -p %s/%s%s", OutputDir, DS_SUBDIR, muddir); \
   system(filename); \
-  if(m != NULL) { \
-    sprintf(filename, "%s/%s%s/README", OutputDir, DS_SUBDIR, muddir);\
-    ofp= open_file(filename, "w"); \
-    if(n != NULL) { \
-      fprintf(ofp, m, muddir, n); \
-    } else { \
-      fprintf(ofp, "%s", m); \
-    } \
-    fclose(ofp); \
-  } \
-}
-
-#define dump_msg(id, name) { \
-    if(Verbose) \
-        fprintf(stderr, "Dump of Domain \"%s\"...\n", name); \
-    else if(!Quiet) { \
-        sprintf(tmpstr, "#%d Dump of Domain \"%s\"...", id+1, name); \
-        fprintf(stderr, "%s", tmpstr); \
-        for(x= strlen(tmpstr); x< 79; x++) \
-            fprintf(stderr, " "); \
-        for(x= strlen(tmpstr); x< 79; x++) \
-            fprintf(stderr, "\b"); \
-        fflush(stderr); \
-    } \
 }
 
 void ds_setup_dirs(zones *Zones, rooms *Rooms) {
@@ -122,41 +98,81 @@ void ds_setup_dirs(zones *Zones, rooms *Rooms) {
   bzero(filename, 256);
   if(OneBigDomain) {
     if(!Quiet) spin(stderr);
-    sub_dir("", DS_WelcomeMsg, NULL);
+    sub_dir("");
+    sprintf(filename, "%s/%s%s/README", OutputDir, DS_SUBDIR, muddir);
+    ofp= open_file(filename, "w");
+    fprintf(ofp, "%s", DS_WelcomeMsg);
+    fclose(ofp);
 
     if(!Quiet) spin(stderr);
-    sub_dir("armor", DS_ArmourMsg, "wiley");
-
+    sub_dir("armours");
+    sprintf(filename, "%s/%s%s/README", OutputDir, DS_SUBDIR, muddir);
+    ofp= open_file(filename, "w");
+    fprintf(ofp, DS_ArmourMsg, muddir, "wiley");
+    fclose(ofp);
     if(!Quiet) spin(stderr);
-    sub_dir("obj", DS_ObjMsg, "wiley");
-
+    sub_dir("misc");
+    sprintf(filename, "%s/%s%s/README", OutputDir, DS_SUBDIR, muddir);
+    ofp= open_file(filename, "w");
+    fprintf(ofp, DS_MiscMsg, muddir, "wiley");
+    fclose(ofp);
     if(!Quiet) spin(stderr);
-    sub_dir("monsters", DS_MonsterMsg, "wiley");
-
+    sub_dir("monsters");
+    sprintf(filename, "%s/%s%s/README", OutputDir, DS_SUBDIR, muddir);
+    ofp= open_file(filename, "w");
+    fprintf(ofp, DS_MonsterMsg, muddir, "wiley");
+    fclose(ofp);
     if(!Quiet) spin(stderr);
-    sub_dir("rooms", DS_RoomMsg, "wiley");
-
+    sub_dir("rooms");
+    sprintf(filename, "%s/%s%s/README", OutputDir, DS_SUBDIR, muddir);
+    ofp= open_file(filename, "w");
+    fprintf(ofp, DS_RoomMsg, muddir, "wiley");
+    fclose(ofp);
     if(!Quiet) spin(stderr);
-    sub_dir("weapons", DS_WeaponMsg, "wiley");
+    sub_dir("weapons");
+    sprintf(filename, "%s/%s%s/README", OutputDir, DS_SUBDIR, muddir);
+    ofp= open_file(filename, "w");
+    fprintf(ofp, DS_WeaponMsg, muddir, "wiley");
+    fclose(ofp);
   } else for(i= 0; i< Zones->Count; i++) {
     sprintf(domainname, "%s_%d", remap_name(Zones->Zone[i].Name), Zones->Zone[i].Number);
     if(!Quiet) spin(stderr);
-    sub_dir("", DS_WelcomeMsg, NULL);
+    sub_dir("");
+    sprintf(filename, "%s/%s%s/README", OutputDir, DS_SUBDIR, muddir);
+    ofp= open_file(filename, "w");
+    fprintf(ofp, "%s", DS_WelcomeMsg);
+    fclose(ofp);
 
     if(!Quiet) spin(stderr);
-    sub_dir("armor", DS_ArmourMsg, domainname);
-
+    sub_dir("armours");
+    sprintf(filename, "%s/%s%s/README", OutputDir, DS_SUBDIR, muddir);
+    ofp= open_file(filename, "w");
+    fprintf(ofp, DS_ArmourMsg, muddir, domainname);
+    fclose(ofp);
     if(!Quiet) spin(stderr);
-    sub_dir("obj", DS_ObjMsg, domainname);
-
+    sub_dir("misc");
+    sprintf(filename, "%s/%s%s/README", OutputDir, DS_SUBDIR, muddir);
+    ofp= open_file(filename, "w");
+    fprintf(ofp, DS_MiscMsg, muddir, domainname);
+    fclose(ofp);
     if(!Quiet) spin(stderr);
-    sub_dir("monsters", DS_MonsterMsg, domainname);
-
+    sub_dir("monsters");
+    sprintf(filename, "%s/%s%s/README", OutputDir, DS_SUBDIR, muddir);
+    ofp= open_file(filename, "w");
+    fprintf(ofp, DS_MonsterMsg, muddir, domainname);
+    fclose(ofp);
     if(!Quiet) spin(stderr);
-    sub_dir("rooms", DS_RoomMsg, domainname);
-
+    sub_dir("rooms");
+    sprintf(filename, "%s/%s%s/README", OutputDir, DS_SUBDIR, muddir);
+    ofp= open_file(filename, "w");
+    fprintf(ofp, DS_RoomMsg, muddir, domainname);
+    fclose(ofp);
     if(!Quiet) spin(stderr);
-    sub_dir("weapons", DS_WeaponMsg, domainname);
+    sub_dir("weapons");
+    sprintf(filename, "%s/%s%s/README", OutputDir, DS_SUBDIR, muddir);
+    ofp= open_file(filename, "w");
+    fprintf(ofp, DS_WeaponMsg, muddir, domainname);
+    fclose(ofp);
   }
   for(i= 0; i< Zones->Count; i++) {
     LowRoom = INT_MAX;
@@ -172,7 +188,7 @@ void ds_setup_dirs(zones *Zones, rooms *Rooms) {
     }
     sprintf(domainname, "%s_%d", remap_name(Zones->Zone[i].Name), Zones->Zone[i].Number);
     if(!Quiet) spin(stderr);
-    /* sub_dir("rooms", NULL, NULL); */
+    sub_dir("rooms");
     sprintf(filename, "%s/%s%s/README", OutputDir, DS_SUBDIR, muddir);
     ofp= open_file(filename, "a");
     fprintf(ofp, DS_ZoneDataMsg, Zones->Zone[i].Name, LowRoom, HighRoom,
@@ -196,8 +212,18 @@ void dump_as_dead_souls(zones *Zones, rooms *Rooms, shops *Shops) {
   for(i= 0; i< Zones->Count; i++) {
     sprintf(domainname, "%s_%d", remap_name(Zones->Zone[i].Name), Zones->Zone[i].Number);
    
-    dump_msg(i+1, domainname);
-    /* sub_dir("rooms"); */
+    if(Verbose)
+      fprintf(stderr, "Dump of Domain \"%s\"...\n", domainname);
+    else if(!Quiet) {
+      sprintf(tmpstr, "#%d Dump of Domain \"%s\"...", i+1, domainname);
+      fprintf(stderr, "%s", tmpstr);
+      for(x= strlen(tmpstr); x< 79; x++)
+        fprintf(stderr, " ");
+      for(x= strlen(tmpstr); x< 79; x++)
+        fprintf(stderr, "\b");
+      fflush(stderr);
+    }
+    sub_dir("rooms");
     for(j= 0; j< Rooms->Count; j++) {
       if((remap_zone_vnum(Zones, Rooms->Room[j].Zone) == i) ||
          ((Rooms->Room[j].Number >= (!i? 0: Zones->Zone[i-1].Top+1)) &&
@@ -220,7 +246,7 @@ void dump_as_dead_souls(zones *Zones, rooms *Rooms, shops *Shops) {
         fprintf(ofp, "// Automated conversion of WileyMUD by Quixadhal\n");
         fprintf(ofp, "// Original:   WileyMUD III, Room [#%d]\n",
                 Rooms->Room[j].Number);
-        fprintf(ofp, "// Target:     Dead Souls 3.0, %s/%s\n", muddir, roomname);
+        fprintf(ofp, "// Target:     Dead Souls 3.6, %s/%s\n", muddir, roomname);
         fprintf(ofp, "// Performed:  %s\n", timestamp());
         fprintf(ofp, "\n");
 
@@ -241,7 +267,7 @@ void dump_as_dead_souls(zones *Zones, rooms *Rooms, shops *Shops) {
           fprintf(ofp, "    SetClimate(\"outdoors\");\n");
         fprintf(ofp, "\n");
         //fprintf(ofp, "    set_zone(\"%s\");\n", domainname);
-        
+
         if(Rooms->Room[j].Flags & ROOM_DARK)
           fprintf(ofp, "    SetAmbientLight(%d); // Normally dark.  If really PITCH BLACK, use 0.\n",
                   PitchBlack?0:5);
@@ -268,6 +294,11 @@ void dump_as_dead_souls(zones *Zones, rooms *Rooms, shops *Shops) {
     
         fprintf(ofp, "    SetShort(\"%s\");\n", Rooms->Room[j].Name);
 
+
+
+
+
+
 /*
  * This needs work..... /std/not_allowed is a start...
  *
@@ -287,7 +318,6 @@ void dump_as_dead_souls(zones *Zones, rooms *Rooms, shops *Shops) {
  *      }
  */
     
-
 /*
  * ARGH!  We have to escape all " characters inside our descriptions because
  * we're now using LPC....  HACK ALERT!
@@ -323,7 +353,7 @@ void dump_as_dead_souls(zones *Zones, rooms *Rooms, shops *Shops) {
         fprintf(ofp, "        \"\\n\" );\n");
         free(TmpDesc);
         fprintf(ofp, "\n");
-
+    
         if(Rooms->Room[j].ExtraCount > 0) {
             fprintf(ofp, "    SetItems( ([ ");
             for(k= 0; k< Rooms->Room[j].ExtraCount; k++) {
@@ -375,7 +405,15 @@ void dump_as_dead_souls(zones *Zones, rooms *Rooms, shops *Shops) {
             }
             fprintf(ofp, "    ]) );\n");
         }
+        fprintf(ofp, "\n");
     
+        
+
+
+
+
+
+
         for(k= 0; k< Rooms->Room[j].ExitCount; k++) {
     /*
      * Unlike extra descriptions, exits have an implied keyword of their direction.

@@ -416,6 +416,16 @@ int main(int argc, char **argv) {
     dump_as_final_realms(Zones, Rooms, Shops);
   }
 
+  if(OutputFormat & of_mask("ds")) {
+    fprintf(stderr, "Dumping Format %s from %s\n",
+           of_type(of_mask("ds")),
+           if_type(InputFormat));
+    printf("Dumping Format %s from %s\n",
+           of_type(of_mask("ds")),
+           if_type(InputFormat));
+    dump_as_dead_souls(Zones, Rooms, Shops);
+  }
+
   if(OutputFormat & of_mask("smaug")) {
     fprintf(stderr, "Dumping Format %s from %s\n",
            of_type(of_mask("smaug")),
@@ -426,16 +436,6 @@ int main(int argc, char **argv) {
     sprintf(tmp, "mkdir -p %s/%s", OutputDir, SMAUG_SUBDIR);
     system(tmp);
     dump_as_smaug(Zones, Rooms, Shops, Objects, Mobs);
-  }
-
-  if(OutputFormat & of_mask("ds")) {
-    fprintf(stderr, "Dumping Format %s from %s\n",
-           of_type(of_mask("ds")),
-           if_type(InputFormat));
-    printf("Dumping Format %s from %s\n",
-           of_type(of_mask("ds")),
-           if_type(InputFormat));
-    dump_as_dead_souls(Zones, Rooms, Shops);
   }
 
   return 0;

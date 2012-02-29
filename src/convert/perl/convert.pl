@@ -18,7 +18,7 @@ our $VERSION_DATE  = '$Date: 2003/12/16 15:53:13 $'; $VERSION_DATE =~ s/^\D+//; 
 $| = 1;
 
 printf "--- %s ---\n",   center("Mud Converter Project, Version $VERSION ($VERSION_DATE)", 70);
-printf "--- %s ---\n\n", center("Running as PID $PID under perl ".($PERL_VERSION+0)." on $OSNAME", 70);
+printf "--- %s ---\n\n", center("Running as PID $PID under perl ".$PERL_VERSION." on $OSNAME", 70);
 my $cfg = parse_options();
 print STDERR Dumper($cfg) if $cfg->{'debug'};
 
