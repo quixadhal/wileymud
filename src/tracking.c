@@ -569,11 +569,13 @@ void do_immtrack(struct char_data *ch, const char *argument, int cmd)
   int dir = -1;
   int dx = 0, dy = 0, dz = 0;;
   int i = 0;
+  int count = 0;
 
   if ( ( dir = choose_exit( this_room, dest_room, -MAX_ROOMS ) ) < 0 ) {
       page_printf(ch, "Rats!  Can't find a route!\r\n");
       return;
   } else {
+    count = 0;
     page_printf(ch, "Starting in      [#%5d] %s...\r\n", this_room, real_roomp(this_room)->name);
     while( ( dir = choose_exit( this_room, dest_room, -MAX_ROOMS ) ) > -1 ) {
       struct room_data                       *from_here = NULL;
@@ -586,6 +588,7 @@ void do_immtrack(struct char_data *ch, const char *argument, int cmd)
           page_printf(ch, "OOPS!\r\n");
           return;
       }
+      count++;
       page_printf(ch, "  %2d %-8s -> [#%5d] %s\r\n", ++i, dirs[dir], next_room, to_here->name);
       switch(dir) {
           case 0:
@@ -609,7 +612,8 @@ void do_immtrack(struct char_data *ch, const char *argument, int cmd)
       }
       this_room = next_room;
     }
-    page_printf(ch, "Distance: (%d%s, %d%s, %d%s) (%d room lengths at a heading of %d degrees.\r\n",
+    page_printf(ch, "Path is %d rooms long, with a distance of (%d%s, %d%s, %d%s),\r\nwhich is roughly %d room lengths away on a heading of %d degrees.\r\n",
+                count,
                 abs(dx), dx < 0 ? "w" : "e",
                 abs(dy), dy < 0 ? "s" : "n",
                 abs(dz), dz < 0 ? "d" : "u",
