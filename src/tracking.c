@@ -4,6 +4,7 @@
 #include <string.h>
 #include <signal.h>
 #include <ctype.h>
+#include <math.h>
 
 #include "global.h"
 #include "bug.h"
@@ -461,6 +462,31 @@ char *track_distance(struct char_data *ch, char *mob_name)
   return buf;
 }
 
+double heading(double x, double y)
+{
+    double val = 0.0;
+
+    if( y == 0.0 ) {
+        if( x > 0.0 )
+            return 90.0;
+        else if( x == 0.0 )
+            return 0.0;
+        else
+            return 270.0;
+    }
+
+    val = atan2(x,y) * 180.0 / 3.14159;
+
+    if(val > 90.0)
+        return 450.0 - val;
+    else if(val > 0.0)
+        return 90.0 - val;
+    else if(val < -90.0)
+        return (0.0 - val) + 90.0;
+    else
+        return 90.0 - val;
+}
+
 void do_immtrack(struct char_data *ch, const char *argument, int cmd)
 {
   char                                    buf[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
@@ -583,10 +609,13 @@ void do_immtrack(struct char_data *ch, const char *argument, int cmd)
       }
       this_room = next_room;
     }
-    page_printf(ch, "Distance: (%d%s, %d%s, %d%s)\r\n",
+    page_printf(ch, "Distance: (%d%s, %d%s, %d%s) (%d room lengths at a heading of %d degrees.\r\n",
                 abs(dx), dx < 0 ? "w" : "e",
                 abs(dy), dy < 0 ? "s" : "n",
-                abs(dz), dz < 0 ? "d" : "u" );
+                abs(dz), dz < 0 ? "d" : "u",
+                (int)sqrt((double)dx * (double)dx + (double)dy * (double)dy),
+                (int)heading(dx, dy)
+            );
   }
 }
 
