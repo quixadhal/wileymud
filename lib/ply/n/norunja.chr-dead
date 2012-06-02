@@ -1,40 +1,39 @@
 #PLAYER
-Name               Axolotl~
-Passwd             AxbsYwNMu0sIE~
+Name               Norunja~
+Passwd             NonfaLhWZKADI~
 Whizz              0
 PreTitle           ~
-Title              the Dwarven Swordpupil~
+Title              the Dwarven ~
 Description
 ~
-LastSite           adork@S01060026f3e31aaf.ed.shawcable.net~
-LastLogin          1338597691
-Birth              1277171669
-Played             1921
+LastSite           adork@82-210-69-208.skybeam.com~
+LastLogin          1336149349
+Birth              1336149349
+Played             0
 Sex                1
 Race               3
 Class              4
-Alignment          -15
-Exp                1570
-Level              warrior 1
-HeightWeight       134 162
+Alignment          0
+Exp                0
+HeightWeight       150 123
 Gold               0 0
 HomeTown           3001
 LoadRoom           -1
 PoofIn             ~
 PoofOut            ~
-AbilityScores      13 0 13 14 7 8
+AbilityScores      0 0 0 0 0 0
 AbilityPad         0 0 0 0
-HpManaMove         1 20 101 0 18 0
+HpManaMove         6 0 100 0 81 0
 AC                 100
 ToHitDamage        0 0
 SaveApply          0 0 0 0 0
-Conditions         0 20 20 0 0 0
+Conditions         24 24 24 0 0 0
 PointsPad1         0 0 0
 PointsPad2         0 0 0 0
 PointsPad3         0 0 0
 ShortSavePad       0 0 0 0
 SavePad            0 0 0 0
-Pracs              3
+Pracs              0
 SkillsToLearn      0
 NamedSkill         1 0 0 armour~
 NamedSkill         2 0 0 teleport~
@@ -208,7 +207,6 @@ Affect             23 0 0 0 0 0 0
 Affect             24 0 0 0 0 0 0
 i3perm       2
 i3flags      256
-i3listen     wiley
-IMCPerm      1
+IMCPerm      0
 IMCFlags     256
 End

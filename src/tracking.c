@@ -475,7 +475,7 @@ double heading(double x, double y)
             return 270.0;
     }
 
-    val = atan2(x,y) * 180.0 / 3.14159;
+    val = atan2(y,x) * 180.0 / 3.14159;
 
     if(val > 90.0)
         return 450.0 - val;

@@ -1,34 +1,34 @@
 #PLAYER
-Name               Axolotl~
-Passwd             AxbsYwNMu0sIE~
+Name               Quang~
+Passwd             Qu6rjuGnH6IQQ~
 Whizz              0
 PreTitle           ~
-Title              the Dwarven Swordpupil~
+Title              the Human Swordpupil~
 Description
 ~
-LastSite           adork@S01060026f3e31aaf.ed.shawcable.net~
-LastLogin          1338597691
-Birth              1277171669
-Played             1921
+LastSite           adork@mudconnector.com~
+LastLogin          1336246209
+Birth              1336246098
+Played             43
 Sex                1
-Race               3
+Race               1
 Class              4
-Alignment          -15
-Exp                1570
+Alignment          0
+Exp                1
 Level              warrior 1
-HeightWeight       134 162
+HeightWeight       184 152
 Gold               0 0
-HomeTown           3001
+HomeTown           3008
 LoadRoom           -1
 PoofIn             ~
 PoofOut            ~
-AbilityScores      13 0 13 14 7 8
+AbilityScores      13 0 11 12 9 10
 AbilityPad         0 0 0 0
-HpManaMove         1 20 101 0 18 0
+HpManaMove         26 20 101 0 96 100
 AC                 100
 ToHitDamage        0 0
 SaveApply          0 0 0 0 0
-Conditions         0 20 20 0 0 0
+Conditions         0 23 23 0 0 0
 PointsPad1         0 0 0
 PointsPad2         0 0 0 0
 PointsPad3         0 0 0
@@ -209,6 +209,6 @@ Affect             24 0 0 0 0 0 0
 i3perm       2
 i3flags      256
 i3listen     wiley
-IMCPerm      1
+IMCPerm      0
 IMCFlags     256
 End

@@ -1,34 +1,35 @@
 #PLAYER
-Name               Axolotl~
-Passwd             AxbsYwNMu0sIE~
+Name               Logan~
+Passwd             Loa.zgtc.nAos~
 Whizz              0
 PreTitle           ~
-Title              the Dwarven Swordpupil~
+Title              the Human Swordpupil~
 Description
+Gruff little runt. Coarse, wild black hair, blue eyes, wicked awesome sideburns. You know the drill.
 ~
-LastSite           adork@S01060026f3e31aaf.ed.shawcable.net~
-LastLogin          1338597691
-Birth              1277171669
-Played             1921
+LastSite           adork@c-76-123-168-48.hsd1.ms.comcast.net~
+LastLogin          1334525685
+Birth              1334525293
+Played             318
 Sex                1
-Race               3
+Race               1
 Class              4
-Alignment          -15
-Exp                1570
+Alignment          0
+Exp                1
 Level              warrior 1
-HeightWeight       134 162
+HeightWeight       198 137
 Gold               0 0
 HomeTown           3001
 LoadRoom           -1
 PoofIn             ~
 PoofOut            ~
-AbilityScores      13 0 13 14 7 8
+AbilityScores      17 0 12 13 10 12
 AbilityPad         0 0 0 0
-HpManaMove         1 20 101 0 18 0
+HpManaMove         13 20 101 0 99 101
 AC                 100
 ToHitDamage        0 0
 SaveApply          0 0 0 0 0
-Conditions         0 20 20 0 0 0
+Conditions         0 19 19 0 0 0
 PointsPad1         0 0 0
 PointsPad2         0 0 0 0
 PointsPad3         0 0 0
@@ -209,6 +210,6 @@ Affect             24 0 0 0 0 0 0
 i3perm       2
 i3flags      256
 i3listen     wiley
-IMCPerm      1
+IMCPerm      0
 IMCFlags     256
 End

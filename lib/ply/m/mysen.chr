@@ -1,40 +1,41 @@
 #PLAYER
-Name               Axolotl~
-Passwd             AxbsYwNMu0sIE~
+Name               Mysen~
+Passwd             Mylxzk6aQCF6o~
 Whizz              0
 PreTitle           ~
-Title              the Dwarven Swordpupil~
+Title              the Human Supplicant/Swordpupil~
 Description
 ~
-LastSite           adork@S01060026f3e31aaf.ed.shawcable.net~
-LastLogin          1338597691
-Birth              1277171669
-Played             1921
+LastSite           adork@2.64.9.191.mobile.tre.se~
+LastLogin          1334927743
+Birth              1334926520
+Played             542
 Sex                1
-Race               3
-Class              4
-Alignment          -15
-Exp                1570
+Race               1
+Class              5
+Alignment          0
+Exp                1
+Level              mage 1
 Level              warrior 1
-HeightWeight       134 162
+HeightWeight       185 159
 Gold               0 0
-HomeTown           3001
+HomeTown           3008
 LoadRoom           -1
 PoofIn             ~
 PoofOut            ~
-AbilityScores      13 0 13 14 7 8
+AbilityScores      11 0 10 10 11 10
 AbilityPad         0 0 0 0
-HpManaMove         1 20 101 0 18 0
+HpManaMove         25 20 102 0 91 0
 AC                 100
 ToHitDamage        0 0
 SaveApply          0 0 0 0 0
-Conditions         0 20 20 0 0 0
+Conditions         0 18 18 0 0 0
 PointsPad1         0 0 0
 PointsPad2         0 0 0 0
 PointsPad3         0 0 0
 ShortSavePad       0 0 0 0
 SavePad            0 0 0 0
-Pracs              3
+Pracs              6
 SkillsToLearn      0
 NamedSkill         1 0 0 armour~
 NamedSkill         2 0 0 teleport~
@@ -206,9 +207,8 @@ Affect             21 0 0 0 0 0 0
 Affect             22 0 0 0 0 0 0
 Affect             23 0 0 0 0 0 0
 Affect             24 0 0 0 0 0 0
-i3perm       2
+i3perm       1
 i3flags      256
-i3listen     wiley
 IMCPerm      1
 IMCFlags     256
 End
