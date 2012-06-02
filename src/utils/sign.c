@@ -45,7 +45,7 @@ int main(int argc, char **argv)
     exit(-1);
   }
   for (;;) {
-    fgets(buf, 81, fl);
+    (void) fgets(buf, 81, fl);
     if (feof(fl))
       break;
     strcat(buf, "\r");
