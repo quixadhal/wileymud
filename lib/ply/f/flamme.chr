@@ -6,34 +6,35 @@ PreTitle           ~
 Title              the Halfling Swordpupil~
 Description
 ~
-LastSite           adork@c-98-232-30-130.hsd1.wa.comcast.net~
-LastLogin          1307963213
+LastSite           adork@c-98-232-26-203.hsd1.wa.comcast.net~
+LastLogin          1341521689
 Birth              1307963213
-Played             0
+Played             95
 Sex                2
 Race               4
 Class              4
 Alignment          0
-Exp                0
+Exp                1
+Level              warrior 1
 HeightWeight       172 106
 Gold               0 0
-HomeTown           3001
+HomeTown           3008
 LoadRoom           -1
 PoofIn             ~
 PoofOut            ~
-AbilityScores      0 0 0 0 0 0
+AbilityScores      14 0 16 15 8 12
 AbilityPad         0 0 0 0
-HpManaMove         6 0 100 0 101 0
+HpManaMove         34 20 101 0 137 139
 AC                 100
 ToHitDamage        0 0
 SaveApply          0 0 0 0 0
-Conditions         24 24 24 0 0 0
+Conditions         0 23 23 0 0 0
 PointsPad1         0 0 0
 PointsPad2         0 0 0 0
 PointsPad3         0 0 0
 ShortSavePad       0 0 0 0
 SavePad            0 0 0 0
-Pracs              0
+Pracs              3
 SkillsToLearn      0
 NamedSkill         1 0 0 armour~
 NamedSkill         2 0 0 teleport~
@@ -205,8 +206,8 @@ Affect             21 0 0 0 0 0 0
 Affect             22 0 0 0 0 0 0
 Affect             23 0 0 0 0 0 0
 Affect             24 0 0 0 0 0 0
-i3perm       0
+i3perm       1
 i3flags      256
-IMCPerm      0
+IMCPerm      1
 IMCFlags     256
 End

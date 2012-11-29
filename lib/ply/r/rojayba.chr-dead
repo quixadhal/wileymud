@@ -1,42 +1,39 @@
 #PLAYER
-Name               Renras~
-Passwd             Reukmn466WMSo~
+Name               Rojayba~
+Passwd             RotutZ9VnlYDY~
 Whizz              0
 PreTitle           ~
-Title              the Human Supplicant/Believer/Swordpupil~
+Title              the Dwarven Supplicant~
 Description
 ~
-LastSite           adork@d50-92-168-159.bchsia.telus.net~
-LastLogin          1344683590
-Birth              1228495531
-Played             111
+LastSite           adork@71-211-179-181.hlrn.qwest.net~
+LastLogin          1347204467
+Birth              1347204467
+Played             0
 Sex                1
-Race               1
-Class              7
+Race               3
+Class              4
 Alignment          0
-Exp                13
-Level              mage 1
-Level              cleric 1
-Level              warrior 1
-HeightWeight       191 160
+Exp                0
+HeightWeight       128 141
 Gold               0 0
-HomeTown           3008
+HomeTown           3001
 LoadRoom           -1
 PoofIn             ~
 PoofOut            ~
-AbilityScores      15 0 14 12 14 16
+AbilityScores      0 0 0 0 0 0
 AbilityPad         0 0 0 0
-HpManaMove         23 20 102 0 193 210
+HpManaMove         6 0 100 0 81 0
 AC                 100
 ToHitDamage        0 0
 SaveApply          0 0 0 0 0
-Conditions         0 23 23 0 0 0
+Conditions         24 24 24 0 0 0
 PointsPad1         0 0 0
 PointsPad2         0 0 0 0
 PointsPad3         0 0 0
 ShortSavePad       0 0 0 0
 SavePad            0 0 0 0
-Pracs              9
+Pracs              0
 SkillsToLearn      0
 NamedSkill         1 0 0 armour~
 NamedSkill         2 0 0 teleport~
@@ -210,7 +207,6 @@ Affect             23 0 0 0 0 0 0
 Affect             24 0 0 0 0 0 0
 i3perm       2
 i3flags      256
-i3listen     wiley
 IMCPerm      0
 IMCFlags     256
 End

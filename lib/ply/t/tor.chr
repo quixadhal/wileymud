@@ -1,42 +1,40 @@
 #PLAYER
-Name               Renras~
-Passwd             Reukmn466WMSo~
+Name               Tor~
+Passwd             ToI5WC7GwsIUw~
 Whizz              0
 PreTitle           ~
-Title              the Human Supplicant/Believer/Swordpupil~
+Title              the Human Swordpupil~
 Description
 ~
-LastSite           adork@d50-92-168-159.bchsia.telus.net~
-LastLogin          1344683590
-Birth              1228495531
-Played             111
+LastSite           adork@c-69-242-42-155.hsd1.nj.comcast.net~
+LastLogin          1347917735
+Birth              1347916867
+Played             865
 Sex                1
 Race               1
-Class              7
+Class              4
 Alignment          0
-Exp                13
-Level              mage 1
-Level              cleric 1
+Exp                1
 Level              warrior 1
-HeightWeight       191 160
+HeightWeight       177 175
 Gold               0 0
 HomeTown           3008
 LoadRoom           -1
 PoofIn             ~
 PoofOut            ~
-AbilityScores      15 0 14 12 14 16
+AbilityScores      14 0 13 14 12 13
 AbilityPad         0 0 0 0
-HpManaMove         23 20 102 0 193 210
+HpManaMove         26 20 101 0 102 102
 AC                 100
 ToHitDamage        0 0
 SaveApply          0 0 0 0 0
-Conditions         0 23 23 0 0 0
+Conditions         0 15 15 0 0 0
 PointsPad1         0 0 0
 PointsPad2         0 0 0 0
 PointsPad3         0 0 0
 ShortSavePad       0 0 0 0
 SavePad            0 0 0 0
-Pracs              9
+Pracs              3
 SkillsToLearn      0
 NamedSkill         1 0 0 armour~
 NamedSkill         2 0 0 teleport~

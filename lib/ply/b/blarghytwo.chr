@@ -1,32 +1,30 @@
 #PLAYER
-Name               Renras~
-Passwd             Reukmn466WMSo~
+Name               Blarghytwo~
+Passwd             BleEZzJegzNGw~
 Whizz              0
 PreTitle           ~
-Title              the Human Supplicant/Believer/Swordpupil~
+Title              the Halfling Swordpupil~
 Description
 ~
-LastSite           adork@d50-92-168-159.bchsia.telus.net~
-LastLogin          1344683590
-Birth              1228495531
-Played             111
+LastSite           adork@97-83-21-66.dhcp.aldl.mi.charter.com~
+LastLogin          1341522937
+Birth              1341522847
+Played             84
 Sex                1
-Race               1
-Class              7
-Alignment          0
-Exp                13
-Level              mage 1
-Level              cleric 1
+Race               4
+Class              4
+Alignment          -5
+Exp                294
 Level              warrior 1
-HeightWeight       191 160
-Gold               0 0
+HeightWeight       185 165
+Gold               2 0
 HomeTown           3008
-LoadRoom           -1
+LoadRoom           3008
 PoofIn             ~
 PoofOut            ~
-AbilityScores      15 0 14 12 14 16
+AbilityScores      17 78 13 16 9 10
 AbilityPad         0 0 0 0
-HpManaMove         23 20 102 0 193 210
+HpManaMove         26 20 101 0 103 109
 AC                 100
 ToHitDamage        0 0
 SaveApply          0 0 0 0 0
@@ -36,7 +34,7 @@ PointsPad2         0 0 0 0
 PointsPad3         0 0 0
 ShortSavePad       0 0 0 0
 SavePad            0 0 0 0
-Pracs              9
+Pracs              3
 SkillsToLearn      0
 NamedSkill         1 0 0 armour~
 NamedSkill         2 0 0 teleport~
