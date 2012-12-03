@@ -1,0 +1,87 @@
+&R[11/29 02:40] &G&G02&W:&G40&d &R[&Wds&R] &CNafe@The Pussy Cat Forest: &cyo hells, that php telnet client code, do i need to do something other than make it a .html file? do i put it soehow in DS or on a php "server" on my server? sry ive never implimented DS
+&R[11/29 02:40] &G&G02&W:&G40&d &R[&Wds&R] &CNafe@The Pussy Cat Forest: &cimplimented php i mean
+&R[11/29 02:40] &G&G02&W:&G40&d &R[&Wds&R] &CNafe@The Pussy Cat Forest: &cdo i need to use a php capable webserver or something?
+&R[11/29 02:40] &G&G02&W:&G40&d &R[&Wds&R] &CNafe@The Pussy Cat Forest: &cor the inbuilt DS webserver?
+&R[11/29 13:39] &G&G13&W:&G39&d &R[&Wds&R] &CHells@The Savage Soul: &cI use it with an apache web server running php5
+&R[11/29 15:30] &G&G15&W:&G30&d &R[&Wds&R] &CHells@The Savage Soul: &chow do you reset a users password?
+&R[11/29 15:31] &G&G15&W:&G31&d &R[&Wds&R] &CQuixadhal@Bloodlines-bkp: &cDelete their player file?
+&R[11/29 15:31] &G&G15&W:&G31&d &R[&Wds&R] &CHells@The Savage Soul: &clol
+&R[11/29 15:42] &G&G15&W:&G42&d &R[&Wds&R] &CCratylus@Dead Souls Dev: &chelp resetpasswd
+&R[11/29 15:50] &G&G15&W:&G50&d &R[&Wds&R] &CHells@The Savage Soul: &c:D
+&R[11/29 15:51] &G&G15&W:&G51&d &R[&Wds&R] &CHells@The Savage Soul: &cWhat is a common way folks use email for password resets?
+&R[11/29 15:52] &G&G15&W:&G52&d &R[&Wds&R] &CCratylus@Dead Souls Dev: &cone more time please, but in english
+&R[11/29 15:53] &G&G15&W:&G53&d &R[&Wds&R] &CHells@The Savage Soul: &cAre there any DS muds using password for self-reset on passwords?
+&R[11/29 15:53] &G&G15&W:&G53&d &R[&Wds&R] &CHells@The Savage Soul: &cAre there any DS muds using email* for self-reset on passwords?
+&R[11/29 15:54] &G&G15&W:&G54&d &R[&Wds&R] &CCratylus@Dead Souls Dev: &caha
+&R[11/29 15:54] &G&G15&W:&G54&d &R[&Wds&R] &CCratylus@Dead Souls Dev: &cso what you want is an automated password reset system that uses email
+&R[11/29 15:54] &G&G15&W:&G54&d &R[&Wds&R] &CCratylus@Dead Souls Dev: &cthat sounds like a good idea
+&R[11/29 15:54] &G&G15&W:&G54&d &R[&Wds&R] &CHells@The Savage Soul: &cIndeed, I can create one, but would rather ride on someone elses coat tails.
+&R[11/29 15:55] &G&G15&W:&G55&d &R[&Wds&R] &CCratylus@Dead Souls Dev: &cwhyncha grep for HELO in the DS code
+&R[11/29 15:55] &G&G15&W:&G55&d &R[&Wds&R] &CCratylus@Dead Souls Dev: &cand if ya dont see it, get to codin
+&R[11/29 15:57] &G&G15&W:&G57&d &R[&Wds&R] &CHells@The Savage Soul: &ctime to get to codin
+&R[11/29 16:00] &G&G16&W:&G00&d &R[&Wds&R] &CHells@The Savage Soul: &calmost done with my turn-based combat system interface: http://pastebin.com/zfmcQMjA
+&R[12/02 03:19] &G&G03&W:&G19&d &R[&Wds&R] &CHells@The Savage Soul: &cis there something like chr(100) to convert decimal numbers into ascii?
+&R[12/02 03:20] &G&G03&W:&G20&d &R[&Wds&R] &CHells@The Savage Soul: &chmm sprintf maybe?
+&R[12/02 03:22] &G&G03&W:&G22&d &R[&Wds&R] &CHamlet@WWC: &chere there be dragons, but...  eval string foo = "  ";  foo[0] = 100;  foo[1] = 101;  tell_object(this_player(), foo + "\n");
+&R[12/02 03:23] &G&G03&W:&G23&d &R[&Wds&R] &CHells@The Savage Soul: &cOk, got it the whole string is an array of char thing like in delphi / pascal
+&R[12/02 04:56] &G&G04&W:&G56&d &R[&Wds&R] &CHells@The Savage Soul: &chmm trying to save a new property to a player object in the connect.c but it isn't saving. I must be missing something just not sure what.
+&R[12/02 05:00] &G&G05&W:&G00&d &R[&Wds&R] &CQuixadhal@Bloodlines-bkp: &cAre you talking about decimal numbers in string form, or ascii key codes in bytes?
+&R[12/02 05:00] &G&G05&W:&G00&d &R[&Wds&R] &CHamlet@WWC: &cwelcome to two hours ago, Quix.
+&R[12/02 05:00] &G&G05&W:&G00&d &R[&Wds&R] &CHells@The Savage Soul: &cascii key codes in bytes
+&R[12/02 05:01] &G&G05&W:&G01&d &R[&Wds&R] &CHells@The Savage Soul: &cbut Hamlet got me what i needed :)
+&R[12/02 05:01] &G&G05&W:&G01&d &R[&Wds&R] &CQuixadhal@Bloodlines-bkp: &cYou're trying to mess with terminal codes, aren't you?
+&R[12/02 05:01] &G&G05&W:&G01&d &R[&Wds&R] &CHells@The Savage Soul: &cnothing so interesting, was just using random to grab some ascii chars for a email reset code
+&R[12/02 05:02] &G&G05&W:&G02&d &R[&Wds&R] &CQuixadhal@Bloodlines-bkp: &cWhy mess with keycodes for that?
+&R[12/02 05:02] &G&G05&W:&G02&d &R[&Wds&R] &CHells@The Savage Soul: &cJust needed a randomized 16 character code mixed case and numbers
+&R[12/02 05:02] &G&G05&W:&G02&d &R[&Wds&R] &CHells@The Savage Soul: &clooks like this now: N7Dy3Y7525mP755A
+&R[12/02 05:02] &G&G05&W:&G02&d &R[&Wds&R] &CQuixadhal@Bloodlines-bkp: &cRight, but why use keycodes?
+&R[12/02 05:03] &G&G05&W:&G03&d &R[&Wds&R] &CHells@The Savage Soul: &crandom returns numbres
+&R[12/02 05:04] &G&G05&W:&G04&d &R[&Wds&R] &CQuixadhal@Bloodlines-bkp: &cSeems much simpler to make a string of your valid characters, and then explode("", $charset)[random(sizeof($charset))]
+&R[12/02 05:04] &G&G05&W:&G04&d &R[&Wds&R] &CHells@The Savage Soul: &cthis was the result http://pastebin.com/UGwP8Gac
+&R[12/02 05:05] &G&G05&W:&G05&d &R[&Wds&R] &CHells@The Savage Soul: &cthat prevents duplicates, i prefer each digit to have 60 possible values
+&R[12/02 05:05] &G&G05&W:&G05&d &R[&Wds&R] &CQuixadhal@Bloodlines-bkp: &cMight not even need the explode, since I think fluffos indexes strings as arrays of characters.
+&R[12/02 05:05] &G&G05&W:&G05&d &R[&Wds&R] &CQuixadhal@Bloodlines-bkp: &cThat doesn't prevent duplicates... that returns one character.
+&R[12/02 05:06] &G&G05&W:&G06&d &R[&Wds&R] &CQuixadhal@Bloodlines-bkp: &cThen just add them together in a loop for whatever length you want.
+&R[12/02 05:06] &G&G05&W:&G06&d &R[&Wds&R] &CHells@The Savage Soul: &cahh, opps. A bit preoccupied with this SetProperty not setting unless I manage to log in
+&R[12/02 05:06] &G&G05&W:&G06&d &R[&Wds&R] &CQuixadhal@Bloodlines-bkp: &cI just dislike messing with keycodes which will vary from one client to the next. :)
+&R[12/02 05:07] &G&G05&W:&G07&d &R[&Wds&R] &CHells@The Savage Soul: &cthey don't get to select this, it is generated on the server and sent to their email address. Just grabs the decimal value of the ascii characters and puts it in a string
+&R[12/02 05:08] &G&G05&W:&G08&d &R[&Wds&R] &CQuixadhal@Bloodlines-bkp: &cYep, and are you 100% sure they'll read properly on their bizzaro utf-16 email client?
+&R[12/02 05:08] &G&G05&W:&G08&d &R[&Wds&R] &CHells@The Savage Soul: &cConsidering the driver is converting them into a string ahead of time. Yes.
+&R[12/02 05:09] &G&G05&W:&G09&d &R[&Wds&R] &CHells@The Savage Soul: &cPlus it is ascii, Single width no fuss no muss < 255 characters
+&R[12/02 05:09] &G&G05&W:&G09&d &R[&Wds&R] &CHells@The Savage Soul: &cand Postfix is handling the encoding so I am confident there will be no issues.
+&R[12/02 05:10] &G&G05&W:&G10&d &R[&Wds&R] &CQuixadhal@Bloodlines-bkp: &cOk, hope you remember what it's doing in 10 years when you have to change it. :)
+&R[12/02 05:12] &G&G05&W:&G12&d &R[&Wds&R] &CHells@The Savage Soul: &cWe shall see eh?
+&R[12/02 05:12] &G&G05&W:&G12&d &R[&Wds&R] &CHells@The Savage Soul: &cthe wonders of logging chat let us reach back and laugh at how stupid we were in the past.
+&R[12/02 05:13] &G&G05&W:&G13&d &R[&Wds&R] &CQuixadhal@Bloodlines-bkp: &cIt reminds me of the clever bit of code I wrote in my old Diku, dealing with terrain types, and using -1 for "teleport".
+&R[12/02 05:15] &G&G05&W:&G15&d &R[&Wds&R] &CQuixadhal@Bloodlines-bkp: &cint move_cost[] = { 1,2,1,1,2,etc...}; int *move_costs = move_cost+1;
+&R[12/02 05:15] &G&G05&W:&G15&d &R[&Wds&R] &CQuixadhal@Bloodlines-bkp: &cYay, so now you can index by terrain type, and move_costs[-1] works as expected....
+&R[12/02 05:16] &G&G05&W:&G16&d &R[&Wds&R] &CQuixadhal@Bloodlines-bkp: &cTerrible stuff.
+&R[12/02 05:17] &G&G05&W:&G17&d &R[&Wds&R] &CHells@The Savage Soul: &clooks like my terrain generator :)
+&R[12/02 05:17] &G&G05&W:&G17&d &R[&Wds&R] &CHells@The Savage Soul: &cAt least the output is sane, didn't put a lot of beauty into the generator though
+&R[12/02 05:49] &G&G05&W:&G49&d &R[&Wds&R] &CQuixadhal@Bloodlines-bkp: &cAnyways, here's what I was suggesting.  The boilerplate is so it can be a command, which makes it easier to test. :)
+&R[12/02 05:49] &G&G05&W:&G49&d &R[&Wds&R] &CQuixadhal@Bloodlines-bkp: &chttp://pastebin.com/atgCLdZp
+&R[12/02 05:50] &G&G05&W:&G50&d &R[&Wds&R] &CQuixadhal@Bloodlines-bkp: &cYou could easily decide to add _ or - to your possible characters, or weigh the numbers heavier just by changing the charset string.
+&R[12/02 05:51] &G&G05&W:&G51&d &R[&Wds&R] &CQuixadhal@Bloodlines-bkp: &cAnd I really had to delete $'s from all the variables.. been programming perl too long.
+&R[12/02 05:52] &G&G05&W:&G52&d &R[&Wds&R] &CHells@The Savage Soul: &cnice, that is much prettier and lets me customize a bit so I can easily do things like remove O and 0 to avoid confusion and I and l
+&R[12/02 05:52] &G&G05&W:&G52&d &R[&Wds&R] &CQuixadhal@Bloodlines-bkp: &cYep, that's a good idea actually.
+&R[12/02 05:52] &G&G05&W:&G52&d &R[&Wds&R] &CJohnnyWalker@KeepWalking: &cYea those things can get confusing.
+&R[12/02 05:52] &G&G05&W:&G52&d &R[&Wds&R] &CQuixadhal@Bloodlines-bkp: &c1lI always annoy me in those capcha things.
+&R[12/02 05:53] &G&G05&W:&G53&d &R[&Wds&R] &CHells@The Savage Soul: &cit never fails that I have to get email on one computer and type into another. Considering how little it weakens an algo those chars should be avoided.
+&R[12/02 05:54] &G&G05&W:&G54&d &R[&Wds&R] &CQuixadhal@Bloodlines-bkp: &cIf it were something you used frequently, you could move the explode part to an array outside the loop, so it didn't have to evaluate 16 times, but... I suspect it won't get used more than once a month, unless you get a discworld-sized playerbase.
+&R[12/02 05:55] &G&G05&W:&G55&d &R[&Wds&R] &CHells@The Savage Soul: &ceven then I am still just using it for forgotten passwords
+&R[12/02 05:55] &G&G05&W:&G55&d &R[&Wds&R] &CHells@The Savage Soul: &conce a year :D
+&R[12/02 05:57] &G&G05&W:&G57&d &R[&Wds&R] &CHells@The Savage Soul: &cmy current issue is with call_other.  Should this work? http://pastebin.com/dU5xa27k
+&R[12/02 05:57] &G&G05&W:&G57&d &R[&Wds&R] &CHells@The Savage Soul: &cI can move it to a lib but I wanted it as an object for other things
+&R[12/02 05:58] &G&G05&W:&G58&d &R[&Wds&R] &CHells@The Savage Soul: &cit doesn't complain. It doesn't do anything at all :)
+&R[12/02 06:01] &G&G06&W:&G01&d &R[&Wds&R] &CQuixadhal@Bloodlines-bkp: &cWhy not just emailclient->set_code("fjdkljfal"); ?
+&R[12/02 06:02] &G&G06&W:&G02&d &R[&Wds&R] &CQuixadhal@Bloodlines-bkp: &cAlso, did you remember to update -r /secure/lib/neet/email_client ?
+&R[12/02 06:03] &G&G06&W:&G03&d &R[&Wds&R] &CHells@The Savage Soul: &cright on both accounts, 3am is starting to weigh on my brain
+&R[12/02 06:04] &G&G06&W:&G04&d &R[&Wds&R] &CQuixadhal@Bloodlines-bkp: &cOne of the features of lpc (which it shares with objective-c) is that calling a function that doesn't exist isn't an error.
+&R[12/02 06:04] &G&G06&W:&G04&d &R[&Wds&R] &CHells@The Savage Soul: &cright, cause who would want strongly associated functions
+&R[12/02 06:04] &G&G06&W:&G04&d &R[&Wds&R] &CQuixadhal@Bloodlines-bkp: &cIn objective-C, that lets you delegate, so if somebody tries to call foo, and you don't have one, you can try to pass the request to another object which might.
+&R[12/02 06:05] &G&G06&W:&G05&d &R[&Wds&R] &CQuixadhal@Bloodlines-bkp: &cNot sure if LPC allows you to catch such things, but that's why you'll see code waking up objects by calling the function "???" on occasion.
+&R[12/02 06:05] &G&G06&W:&G05&d &R[&Wds&R] &CHells@The Savage Soul: &cI'm up to 13 downloads for my iphone app :)
+&R[12/02 06:05] &G&G06&W:&G05&d &R[&Wds&R] &CQuixadhal@Bloodlines-bkp: &cGrats!
+&R[12/02 06:11] &G&G06&W:&G11&d &R[&Wds&R] &CHells@The Savage Soul: &cYay! Email password reset is working :D
+&R[12/02 06:28] &G&G06&W:&G28&d &R[&Wds&R] &CHells@The Savage Soul: &cok, passes all of the tests time to zzzz
+&R[12/02 06:37] &G&G06&W:&G37&d &R[&Wds&R] &CCratylus@Dead Souls Dev: &cwut, r u in australia
