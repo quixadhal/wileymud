@@ -69,34 +69,32 @@
  * Sector types.
  * Used in #ROOMS.
  */
-#define DIKU_SECT_INSIDE                   0	/* cant see weather        */
-#define DIKU_SECT_CITY                     1	/* outdoor mv as inside    */
-#define DIKU_SECT_FIELD                    2	/* illuminated by moon     */
-#define DIKU_SECT_FOREST                   3	/* not illuminated         */
-#define DIKU_SECT_HILLS                    4	/* slower moving           */
-#define DIKU_SECT_MOUNTAIN                 5	/* requires grapple        */
-#define DIKU_SECT_WATER_SWIM               6	/* dropped objs float away */
-#define DIKU_SECT_WATER_NOSWIM             7	/* 4 pulse time on objs    */
-#define DIKU_SECT_UNDERWATER               8	/* needs breathing help    */
-#define DIKU_SECT_AIR                      9	/* requires FLY or vehicle */
-#define DIKU_SECT_DESERT                  10	/* hmm. no recall zone     */
-#define DIKU_SECT_ICELAND                 11	/* colder                  */
+#define DIKU_SECT_INSIDE                   0		       /* cant see weather */
+#define DIKU_SECT_CITY                     1		       /* outdoor mv as inside */
+#define DIKU_SECT_FIELD                    2		       /* illuminated by moon */
+#define DIKU_SECT_FOREST                   3		       /* not illuminated */
+#define DIKU_SECT_HILLS                    4		       /* slower moving */
+#define DIKU_SECT_MOUNTAIN                 5		       /* requires grapple */
+#define DIKU_SECT_WATER_SWIM               6		       /* dropped objs float away */
+#define DIKU_SECT_WATER_NOSWIM             7		       /* 4 pulse time on objs */
+#define DIKU_SECT_UNDERWATER               8		       /* needs breathing help */
+#define DIKU_SECT_AIR                      9		       /* requires FLY or vehicle */
+#define DIKU_SECT_DESERT                  10		       /* hmm. no recall zone */
+#define DIKU_SECT_ICELAND                 11		       /* colder */
 #define DIKU_SECT_MAX                     12
 
 /*
  * Sector types.
  * Used in #ROOMS.
  */
-typedef enum
-{
-  SECT_INSIDE, SECT_CITY, SECT_FIELD, SECT_FOREST, SECT_HILLS, SECT_MOUNTAIN,
-  SECT_WATER_SWIM, SECT_WATER_NOSWIM, SECT_UNDERWATER, SECT_AIR, SECT_DESERT,
-  SECT_DUNNO, SECT_OCEANFLOOR, SECT_UNDERGROUND, SECT_TREE, SECT_FIRE,
-  SECT_QUICKSAND, SECT_ETHER, SECT_GLACIER, SECT_EARTH,
-  SECT_MAX
+typedef enum {
+    SECT_INSIDE, SECT_CITY, SECT_FIELD, SECT_FOREST, SECT_HILLS, SECT_MOUNTAIN,
+    SECT_WATER_SWIM, SECT_WATER_NOSWIM, SECT_UNDERWATER, SECT_AIR, SECT_DESERT,
+    SECT_DUNNO, SECT_OCEANFLOOR, SECT_UNDERGROUND, SECT_TREE, SECT_FIRE,
+    SECT_QUICKSAND, SECT_ETHER, SECT_GLACIER, SECT_EARTH,
+    SECT_MAX
 } sector_types;
 
-
-void dump_as_dotd(zones *Zones, rooms *Rooms, shops *Shops);
+void                                    dump_as_dotd(zones *Zones, rooms *Rooms, shops *Shops);
 
 #endif

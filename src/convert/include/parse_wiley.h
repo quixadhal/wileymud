@@ -44,14 +44,13 @@
 #define EXIT_SECRET			3
 #define EXIT_SECRET_NOPICK		4
 #define EXIT_ALIAS_MAGIC		4
-#define EXIT_OPEN_ALIAS			5 /* contradiction?  the docs say
-					   * add 4... */
+#define EXIT_OPEN_ALIAS			5		       /* contradiction? the docs say add 4... */
 #define EXIT_DOOR_ALIAS			6
 #define EXIT_NOPICK_ALIAS		7
 #define EXIT_SECRET_ALIAS		8
 #define EXIT_SECRET_NOPICK_ALIAS	9
 
-#define EXIT_INVALID		-1 /* exit was corrupted somehow */
+#define EXIT_INVALID		-1			       /* exit was corrupted somehow */
 #define EXIT_NORTH		0
 #define EXIT_EAST		1
 #define EXIT_SOUTH		2
@@ -91,8 +90,8 @@
 #define SECT_UNDERWATER		9
 
 #ifndef _PARSE_WILEY_C
-extern const int SectorCosts[];
-extern const int RevDir[];
+extern const int                        SectorCosts[];
+extern const int                        RevDir[];
 #endif
 
 /*
@@ -175,16 +174,16 @@ extern const int RevDir[];
 #define PULSE_UPDATE	(70 * PULSE_PER_SECOND)
 #define PULSE_VARIABLE	(30 * PULSE_PER_SECOND)
 
-#define PULSE_VIOLENCE    6 /* combat rounds */
-#define PULSE_RIVER      10 /* These two must be 10 to make the timings */
-#define PULSE_TELEPORT   10 /* in the world files come out right. */
-#define PULSE_NATURE     19 /* This is checks for falling/drowning */
-#define PULSE_MOBILE     25 /* mob movement/specials/etc */
-#define PULSE_SOUND      33 /* room sounds */
-#define PULSE_ZONE      239 /* zone updates */
-#define PULSE_REBOOT    599 /* reboot checking */
-#define PULSE_SHOUT    1203 /* replacement for the astral traveller */
-#define PULSE_DUMP     3601 /* dump player list */
+#define PULSE_VIOLENCE    6				       /* combat rounds */
+#define PULSE_RIVER      10				       /* These two must be 10 to make the timings */
+#define PULSE_TELEPORT   10				       /* in the world files come out right. */
+#define PULSE_NATURE     19				       /* This is checks for falling/drowning */
+#define PULSE_MOBILE     25				       /* mob movement/specials/etc */
+#define PULSE_SOUND      33				       /* room sounds */
+#define PULSE_ZONE      239				       /* zone updates */
+#define PULSE_REBOOT    599				       /* reboot checking */
+#define PULSE_SHOUT    1203				       /* replacement for the astral traveller */
+#define PULSE_DUMP     3601				       /* dump player list */
 #define PULSE_MAX    999999
 
 #define WAIT_SEC       4
@@ -285,9 +284,9 @@ extern const int RevDir[];
 #define ITEM_SCROLL     2
 #define ITEM_WAND       3
 #define ITEM_STAFF      4
-#define ITEM_WEAPON     5 /* These are not correct, flipped for sanity */
+#define ITEM_WEAPON     5				       /* These are not correct, flipped for sanity */
 #define ITEM_FIREWEAPON 6
-#define ITEM_MISSILE    7 /* These are not correct, flipped for sanity */
+#define ITEM_MISSILE    7				       /* These are not correct, flipped for sanity */
 #define ITEM_TREASURE   8
 #define ITEM_ARMOR      9
 #define ITEM_POTION    10
@@ -333,16 +332,16 @@ extern const int RevDir[];
 
 #define ITEM_GLOW            1
 #define ITEM_HUM             2
-#define ITEM_METAL           4	       /* undefined...  */
-#define ITEM_MINERAL         8	       /* undefined?    */
-#define ITEM_ORGANIC        16	       /* undefined?    */
+#define ITEM_METAL           4				       /* undefined...  */
+#define ITEM_MINERAL         8				       /* undefined? */
+#define ITEM_ORGANIC        16				       /* undefined? */
 #define ITEM_INVISIBLE      32
 #define ITEM_MAGIC          64
 #define ITEM_NODROP        128
 #define ITEM_BLESS         256
-#define ITEM_ANTI_GOOD     512	       /* not usable by good people    */
-#define ITEM_ANTI_EVIL    1024	       /* not usable by evil people    */
-#define ITEM_ANTI_NEUTRAL 2048	       /* not usable by neutral people */
+#define ITEM_ANTI_GOOD     512				       /* not usable by good people */
+#define ITEM_ANTI_EVIL    1024				       /* not usable by evil people */
+#define ITEM_ANTI_NEUTRAL 2048				       /* not usable by neutral people */
 #define ITEM_ANTI_CLERIC  4096
 #define ITEM_ANTI_MAGE    8192
 #define ITEM_ANTI_THIEF   16384
@@ -387,7 +386,7 @@ extern const int RevDir[];
 #define AFF_DETECT_INVISIBLE  0x00000008
 #define AFF_DETECT_MAGIC      0x00000010
 #define AFF_SENSE_LIFE        0x00000020
-#define AFF_SILENCED          0x00000040	/* this may have to go */
+#define AFF_SILENCED          0x00000040		       /* this may have to go */
 #define AFF_SANCTUARY         0x00000080
 #define AFF_GROUP             0x00000100
 
@@ -400,15 +399,15 @@ extern const int RevDir[];
 #define AFF_INFRAVISION       0x00008000
 #define AFF_WATERBREATH       0x00010000
 #define AFF_SLEEP             0x00020000
-#define AFF_DRUG_FREE         0x00040000	/* i.e. can't be stoned */
+#define AFF_DRUG_FREE         0x00040000		       /* i.e. can't be stoned */
 #define AFF_SNEAK             0x00080000
 #define AFF_HIDE              0x00100000
-#define AFF_FEAR              0x00200000	/* this may have to go */
+#define AFF_FEAR              0x00200000		       /* this may have to go */
 #define AFF_CHARM             0x00400000
 #define AFF_FOLLOW            0x00800000
-#define AFF_UNDEF_1           0x01000000	/* saved objects?? */
+#define AFF_UNDEF_1           0x01000000		       /* saved objects?? */
 #define AFF_TRUE_SIGHT        0x02000000
-#define AFF_SCRYING           0x04000000	/* seeing other rooms */
+#define AFF_SCRYING           0x04000000		       /* seeing other rooms */
 #define AFF_FIRESHIELD        0x08000000
 #define AFF_RIDE              0x10000000
 #define AFF_UNDEF_6           0x20000000
@@ -474,40 +473,49 @@ extern const int RevDir[];
 #define POSITION_MOUNTED    9
 
 /* for mobile actions: specials.act */
-#define ACT_SPEC       (1<<0)	       /* special routine to be called if exist   */
-#define ACT_SENTINEL   (1<<1)	       /* this mobile not to be moved             */
-#define ACT_SCAVENGER  (1<<2)	       /* pick up stuff lying around              */
-#define ACT_ISNPC      (1<<3)	       /* This bit is set for use with IS_NPC()   */
-#define ACT_NICE_THIEF (1<<4)	       /* Set if a thief should NOT be killed     */
-#define ACT_AGGRESSIVE (1<<5)	       /* Set if automatic attack on NPC's        */
-#define ACT_STAY_ZONE  (1<<6)	       /* MOB Must stay inside its own zone       */
-#define ACT_WIMPY      (1<<7)	       /* MOB Will flee when injured, and if      */
-			       /* aggressive only attack sleeping players */
-#define ACT_ANNOYING   (1<<8)	       /* MOB is so utterly irritating that other */
-			       /* monsters will attack it...              */
-#define ACT_HATEFUL    (1<<9)	       /* MOB will attack a PC or NPC matching a  */
-			       /* specified name                          */
-#define ACT_AFRAID    (1<<10)	       /* MOB is afraid of a certain PC or NPC,   */
-			       /* and will always run away ....           */
-#define ACT_IMMORTAL  (1<<11)	       /* MOB is a natural event, can't be kiled  */
-#define ACT_HUNTING   (1<<12)	       /* MOB is hunting someone                  */
-#define ACT_DEADLY    (1<<13)	       /* MOB has deadly poison                   */
-#define ACT_POLYSELF  (1<<14)	       /* MOB is a polymorphed person             */
-#define ACT_POLYOTHER (1<<15)	       /* MOB is a polymorphed person             */
-#define ACT_GUARDIAN  (1<<16)	       /* MOB will guard master                   */
-#define ACT_USE_ITEM  (1<<17)	       /* Will use an item when picked up         */
-#define ACT_FIGHTER_MOVES (1<<18)      /* mob will attack like a fighter */
+#define ACT_SPEC       (1<<0)				       /* special routine to be called if exist */
+#define ACT_SENTINEL   (1<<1)				       /* this mobile not to be moved */
+#define ACT_SCAVENGER  (1<<2)				       /* pick up stuff lying around */
+#define ACT_ISNPC      (1<<3)				       /* This bit is set for use with IS_NPC() */
+#define ACT_NICE_THIEF (1<<4)				       /* Set if a thief should NOT be killed */
+#define ACT_AGGRESSIVE (1<<5)				       /* Set if automatic attack on NPC's */
+#define ACT_STAY_ZONE  (1<<6)				       /* MOB Must stay inside its own zone */
+#define ACT_WIMPY      (1<<7)				       /* MOB Will flee when injured, and if */
+			       /*
+			        * aggressive only attack sleeping players 
+			        */
+#define ACT_ANNOYING   (1<<8)				       /* MOB is so utterly irritating that other */
+			       /*
+			        * monsters will attack it...  
+			        */
+#define ACT_HATEFUL    (1<<9)				       /* MOB will attack a PC or NPC matching a */
+			       /*
+			        * specified name 
+			        */
+#define ACT_AFRAID    (1<<10)				       /* MOB is afraid of a certain PC or NPC, */
+			       /*
+			        * and will always run away ....  
+			        */
+#define ACT_IMMORTAL  (1<<11)				       /* MOB is a natural event, can't be kiled */
+#define ACT_HUNTING   (1<<12)				       /* MOB is hunting someone */
+#define ACT_DEADLY    (1<<13)				       /* MOB has deadly poison */
+#define ACT_POLYSELF  (1<<14)				       /* MOB is a polymorphed person */
+#define ACT_POLYOTHER (1<<15)				       /* MOB is a polymorphed person */
+#define ACT_GUARDIAN  (1<<16)				       /* MOB will guard master */
+#define ACT_USE_ITEM  (1<<17)				       /* Will use an item when picked up */
+#define ACT_FIGHTER_MOVES (1<<18)			       /* mob will attack like a fighter */
 #define ACT_FOOD_PROVIDE (1<<19)
-#define ACT_PROTECTOR (1<<20)	       /* mob will come to aid those that call */
-				 /* this is inter zonal only             */
-#define ACT_MOUNT     (1<<21)	       /* mobile can act as a mount      */
-#define ACT_SWITCH    (1<<22)    /* we are a wizard switch to a mob */
+#define ACT_PROTECTOR (1<<20)				       /* mob will come to aid those that call */
+				 /*
+				  * this is inter zonal only 
+				  */
+#define ACT_MOUNT     (1<<21)				       /* mobile can act as a mount */
+#define ACT_SWITCH    (1<<22)				       /* we are a wizard switch to a mob */
 
 #define MAX_ACT 23
 
-/**/
-
-#define SPELL_RESERVED_DBC            0		/* SKILL NUMBER ZERO */
+ /**/
+#define SPELL_RESERVED_DBC            0			       /* SKILL NUMBER ZERO */
 #define SPELL_ARMOR                   1
 #define SPELL_TELEPORT                2
 #define SPELL_BLESS                   3
@@ -626,7 +634,7 @@ extern const int RevDir[];
 #define SPELL_CHAIN_LIGHTNING       116
 #define SPELL_SCARE                 117
 #define SPELL_COMMAND               119
-#define SPELL_CHANGE_FORM           120		/* druid... */
+#define SPELL_CHANGE_FORM           120			       /* druid... */
 #define SPELL_FEEBLEMIND            121
 #define SPELL_SHILLELAGH            122
 /* 123? */
@@ -634,7 +642,7 @@ extern const int RevDir[];
 #define SPELL_ANIMAL_GROWTH         125
 #define SPELL_INSECT_GROWTH         126
 #define SPELL_CREEPING_DEATH        127
-#define SPELL_COMMUNE               128		/* whatzone */
+#define SPELL_COMMUNE               128			       /* whatzone */
 #define SPELL_ANIMAL_SUM_1          129
 #define SPELL_ANIMAL_SUM_2          130
 #define SPELL_ANIMAL_SUM_3          131
@@ -648,7 +656,7 @@ extern const int RevDir[];
 #define SPELL_TREE                  139
 #define SPELL_ANIMATE_ROCK          140
 #define SPELL_TREE_TRAVEL           141
-#define SPELL_TRAVELLING            142		/* faster move outdoors */
+#define SPELL_TRAVELLING            142			       /* faster move outdoors */
 #define SPELL_ANIMAL_FRIENDSHIP     143
 #define SPELL_INVIS_TO_ANIMALS      144
 #define SPELL_SLOW_POISON           145
@@ -661,7 +669,7 @@ extern const int RevDir[];
 #define SPELL_HEAT_STUFF            152
 #define SPELL_FIND_TRAPS            153
 #define SPELL_FIRESTORM             154
-#define SPELL_HASTE                 155		/* other */
+#define SPELL_HASTE                 155			       /* other */
 #define SPELL_SLOW                  156
 #define SPELL_DUST_DEVIL            157
 #define SPELL_KNOW_MONSTER          158
@@ -680,31 +688,30 @@ extern const int RevDir[];
 #define SPELL_FROST_BREATH           203
 #define SPELL_ACID_BREATH            204
 #define SPELL_LIGHTNING_BREATH       205
-
-#define SKILL_SNEAK             45     /* r,t */
-#define SKILL_HIDE              46     /* r,t */
-#define SKILL_STEAL             47     /* t */
-#define SKILL_BACKSTAB          48     /* t */
-#define SKILL_PICK_LOCK         49     /* t */
-#define SKILL_KICK              50     /* f */
-#define SKILL_BASH              51     /* f */
-#define SKILL_RESCUE            52     /* f,r */
-#define SKILL_DOOR_BASH	 	149    /* f,r */
-#define SKILL_READ_MAGIC 	150    /* f,m,c,t,r */
-#define SKILL_SCRIBE		151    /* m,c */
-#define SKILL_BREW		152    /* m,c */
-#define SKILL_PUNCH		153    /* f,c,r */
-#define SKILL_TWO_HANDED	154    /* f,m,c,t,r */
-#define SKILL_TWO_WEAPON	155    /* NONE */
-#define SKILL_BANDAGE		156    /* f,m,c,t,r */
-#define SKILL_SEARCH		157    /* t,r */
-#define SKILL_SWIMMING		158    /* f,m,c,t,r */
-#define SKILL_ENDURANCE		159    /* f,m,c,r,t */
-#define SKILL_BARE_HAND		160    /* f,m,c,t,r */
-#define SKILL_BLIND_FIGHTING	161    /* f,c,m,r,t */
-#define SKILL_PARRY		162    /* f,r,t NOT PUT IN */
-#define SKILL_APRAISE		163    /* f,m,c,t,r */
-#define SKILL_SPEC_SMITE	164    /* f */
+#define SKILL_SNEAK             45			       /* r,t */
+#define SKILL_HIDE              46			       /* r,t */
+#define SKILL_STEAL             47			       /* t */
+#define SKILL_BACKSTAB          48			       /* t */
+#define SKILL_PICK_LOCK         49			       /* t */
+#define SKILL_KICK              50			       /* f */
+#define SKILL_BASH              51			       /* f */
+#define SKILL_RESCUE            52			       /* f,r */
+#define SKILL_DOOR_BASH	 	149			       /* f,r */
+#define SKILL_READ_MAGIC 	150			       /* f,m,c,t,r */
+#define SKILL_SCRIBE		151			       /* m,c */
+#define SKILL_BREW		152			       /* m,c */
+#define SKILL_PUNCH		153			       /* f,c,r */
+#define SKILL_TWO_HANDED	154			       /* f,m,c,t,r */
+#define SKILL_TWO_WEAPON	155			       /* NONE */
+#define SKILL_BANDAGE		156			       /* f,m,c,t,r */
+#define SKILL_SEARCH		157			       /* t,r */
+#define SKILL_SWIMMING		158			       /* f,m,c,t,r */
+#define SKILL_ENDURANCE		159			       /* f,m,c,r,t */
+#define SKILL_BARE_HAND		160			       /* f,m,c,t,r */
+#define SKILL_BLIND_FIGHTING	161			       /* f,c,m,r,t */
+#define SKILL_PARRY		162			       /* f,r,t NOT PUT IN */
+#define SKILL_APRAISE		163			       /* f,m,c,t,r */
+#define SKILL_SPEC_SMITE	164			       /* f */
 #define SKILL_SPEC_STAB		165
 #define SKILL_SPEC_WHIP		166
 #define SKILL_SPEC_SLASH	167
@@ -712,102 +719,104 @@ extern const int RevDir[];
 #define SKILL_SPEC_CLEAVE	169
 #define SKILL_SPEC_CRUSH	170
 #define SKILL_SPEC_BLUDGE	171
-#define SKILL_SPEC_PIERCE	172    /* f */
-#define SKILL_PEER		173    /* t,r */
-#define SKILL_DETECT_NOISE	174    /* t,r */
-#define SKILL_DODGE		175    /* m,c,t,r NOT PUT IN */
-#define SKILL_BARTER		176    /* m,c,t */
-#define SKILL_KNOCK_OUT		177    /* m,c,t NOT PUT IN */
-#define SKILL_SPELLCRAFT	178    /* m,c */
-#define SKILL_MEDITATION	179    /* m,c */
-#define SKILL_TRACK             180    /* r,t */
-#define SKILL_FIND_TRAP         181    /* t */
-#define SKILL_DISARM_TRAP       182    /* t */
-#define SKILL_DISARM            183    /* f,r */
-#define SKILL_BASH_W_SHIELD     184    /* not a useable skill, but included with bash */
+#define SKILL_SPEC_PIERCE	172			       /* f */
+#define SKILL_PEER		173			       /* t,r */
+#define SKILL_DETECT_NOISE	174			       /* t,r */
+#define SKILL_DODGE		175			       /* m,c,t,r NOT PUT IN */
+#define SKILL_BARTER		176			       /* m,c,t */
+#define SKILL_KNOCK_OUT		177			       /* m,c,t NOT PUT IN */
+#define SKILL_SPELLCRAFT	178			       /* m,c */
+#define SKILL_MEDITATION	179			       /* m,c */
+#define SKILL_TRACK             180			       /* r,t */
+#define SKILL_FIND_TRAP         181			       /* t */
+#define SKILL_DISARM_TRAP       182			       /* t */
+#define SKILL_DISARM            183			       /* f,r */
+#define SKILL_BASH_W_SHIELD     184			       /* not a useable skill, but included with bash */
 #define SKILL_RIDE		185
 #define TYPE_HIT                     206
 #define TYPE_BLUDGEON                207
 #define TYPE_PIERCE                  208
 #define TYPE_SLASH                   209
-#define TYPE_WHIP                    210	/* EXAMPLE */
-#define TYPE_CLAW                    211	/* NO MESSAGES WRITTEN YET! */
-#define TYPE_BITE                    212	/* NO MESSAGES WRITTEN YET! */
-#define TYPE_STING                   213	/* NO MESSAGES WRITTEN YET! */
-#define TYPE_CRUSH                   214	/* NO MESSAGES WRITTEN YET! */
+#define TYPE_WHIP                    210		       /* EXAMPLE */
+#define TYPE_CLAW                    211		       /* NO MESSAGES WRITTEN YET! */
+#define TYPE_BITE                    212		       /* NO MESSAGES WRITTEN YET! */
+#define TYPE_STING                   213		       /* NO MESSAGES WRITTEN YET! */
+#define TYPE_CRUSH                   214		       /* NO MESSAGES WRITTEN YET! */
 #define TYPE_CLEAVE                  215
 #define TYPE_STAB                    216
 #define TYPE_SMASH                   217
 #define TYPE_SMITE                   218
 #define TYPE_SUFFERING               220
 #define TYPE_HUNGER                  221
+zones                                  *load_zones(char *infile);
+char                                   *zone_reset_name(int Reset);
+int                                     remap_zone_vnum(zones *Zones, int VNum);
+char                                   *zone_name(zones *Zones, int VNum);
 
-zones * load_zones(char *infile);
-char * zone_reset_name(int Reset);
-int remap_zone_vnum(zones *Zones, int VNum);
-char * zone_name(zones *Zones, int VNum);
+char                                   *exit_name(int Direction);
+char                                   *exit_name_lower(int Direction);
+int                                     remap_room_vnum(rooms *Rooms, int VNum);
+char                                   *room_name(rooms *Rooms, int VNum);
+void                                    fix_exit_vnums(rooms *Rooms);
+void                                    check_duplicate_rooms(rooms *Rooms);
+void                                    verify_exits(rooms *Rooms);
+void                                    fix_zone_ids(zones *Zones, rooms *Rooms);
+rooms                                  *load_rooms(char *infile, zones *Zones);
+char                                   *room_flag_name(int Flag);
+char                                   *sector_name(int Sector);
+char                                   *exittype_name(int Type);
+char                                   *room_flags(int Flags);
 
-char * exit_name(int Direction);
-char * exit_name_lower(int Direction);
-int remap_room_vnum(rooms *Rooms, int VNum);
-char * room_name(rooms *Rooms, int VNum);
-void fix_exit_vnums(rooms *Rooms);
-void check_duplicate_rooms(rooms *Rooms);
-void verify_exits(rooms *Rooms);
-void fix_zone_ids(zones *Zones, rooms *Rooms);
-rooms * load_rooms(char *infile, zones *Zones);
-char *room_flag_name(int Flag);
-char *sector_name(int Sector);
-char *exittype_name(int Type);
-char * room_flags(int Flags);
+shops                                  *load_shops(char *infile);
+char                                   *shop_attitude_name(int Attitude);
+char                                   *shop_immortal_name(int Immortal);
+int                                     remap_shop_vnum(shops *Shops, int VNum);
 
-shops * load_shops(char *infile);
-char * shop_attitude_name(int Attitude);
-char * shop_immortal_name(int Immortal);
-int remap_shop_vnum(shops *Shops, int VNum);
+char                                   *equip_name(int Position);
+char                                   *doorstate_name(int State);
+char                                   *sex_name(int State);
+char                                   *race_name(int Race);
 
-char * equip_name(int Position);
-char * doorstate_name(int State);
-char * sex_name(int State);
-char * race_name(int Race);
+char                                   *alignment_name(int Alignment);
+char                                   *damage_type_name(int Type);
+char                                   *class_name(int Class); /* returns ALL classes of a character */
+char                                   *hate_name(int Type, int Value);
 
-char * alignment_name(int Alignment);
-char * damage_type_name(int Type);
-char *class_name(int Class); /* returns ALL classes of a character */
-char * hate_name(int Type, int Value);
 #define fear_name(x,y) hate_name((x),(y))
-char *immunity_name(int Imms);
-char * item_type_name(int Type);
-char *item_equip_name(int Position);
-char * item_flag_name(int Type);
-char *liquid_name(int Type);
-char *container_closeable(int Value);
-char *affected_by_name(int Flag);
-char *apply_name(int Flag);
-char *position_name(int Flag);
-char *act_name(int Flag);
-char *item_wear_name(int Type);
+char                                   *immunity_name(int Imms);
+char                                   *item_type_name(int Type);
+char                                   *item_equip_name(int Position);
+char                                   *item_flag_name(int Type);
+char                                   *liquid_name(int Type);
+char                                   *container_closeable(int Value);
+char                                   *affected_by_name(int Flag);
+char                                   *apply_name(int Flag);
+char                                   *position_name(int Flag);
+char                                   *act_name(int Flag);
+char                                   *item_wear_name(int Type);
 
-int remap_obj_vnum(objects *Objects, int VNum);
-char *obj_name(objects *Objects, int VNum);
-void check_duplicate_objs(objects *Objects);
-void set_obj_zones(zones *Zones, objects *Objects);
-objects *load_objects(char *infile, zones *Zones);
-char *spell_name(int Spell);
+int                                     remap_obj_vnum(objects *Objects, int VNum);
+char                                   *obj_name(objects *Objects, int VNum);
+void                                    check_duplicate_objs(objects *Objects);
+void                                    set_obj_zones(zones *Zones, objects *Objects);
+objects                                *load_objects(char *infile, zones *Zones);
+char                                   *spell_name(int Spell);
+
 #define skill_name(x) spell_name(x)
 #define MAX_SKILLS 222
 #define ASSIGN_SPELL( num, a, b, name, c, d, e, f, g, h, i, j, k, l, m, n, o, p ) { spell[(num)]= my_strdup(name); }
 
-char *damage_name(int Type);
+char                                   *damage_name(int Type);
 
-int remap_mob_vnum(mobs *Mobs, int VNum);
-char *mob_name(mobs *Mobs, int VNum);
-void check_duplicate_mobs(mobs *Mobs);
-void set_mob_zones(zones *Zones, mobs *Mobs);
-mobs *load_mobs(char *infile, zones *Zones);
+int                                     remap_mob_vnum(mobs *Mobs, int VNum);
+char                                   *mob_name(mobs *Mobs, int VNum);
+void                                    check_duplicate_mobs(mobs *Mobs);
+void                                    set_mob_zones(zones *Zones, mobs *Mobs);
+mobs                                   *load_mobs(char *infile, zones *Zones);
 
-void check_room_zone_mismatch(zones *Zones, rooms *Rooms);
-void check_object_zone_mismatch(zones *Zones, objects *Objects);
-void check_mob_zone_mismatch(zones *Zones, mobs *Mobs);
+void                                    check_room_zone_mismatch(zones *Zones, rooms *Rooms);
+void                                    check_object_zone_mismatch(zones *Zones,
+								   objects *Objects);
+void                                    check_mob_zone_mismatch(zones *Zones, mobs *Mobs);
 
 #endif

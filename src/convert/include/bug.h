@@ -28,14 +28,14 @@
 	}
 #endif
 
-void bug_logger(const char *File, const char *Func, int Line,
+void                                    bug_logger(const char *File, const char *Func, int Line,
 #ifdef DIKU_CRUD
-          unsigned int Level,
+						   unsigned int Level,
 #endif
-          unsigned int Type, const char *BugFile,
+						   unsigned int Type, const char *BugFile,
 #ifdef DIKU_CRUD
-          struct char_data *ch,
+						   struct char_data *ch,
 #endif
-          const char *Str, ...);
+						   const char *Str, ...);
 
 #endif

@@ -2,9 +2,9 @@
 
 --line-length96					/* Overall width of code */
 --comment-line-length120			/* width of comment lines */
---indent-level2					/* indent N spaces per level */
---case-indentation2				/* indent case statements */
---parameter-indentation2			/* indent old-style parameter declarations */
+--indent-level4					/* indent N spaces per level */
+--case-indentation4				/* indent case statements */
+--parameter-indentation4			/* indent old-style parameter declarations */
 --declaration-indentation40			/* variable declarations line up here */
 --tab-size8					/* tabs get expanded into N characters */
 
@@ -35,6 +35,117 @@
 
 /* Various typedefs used in our code */
 
+-T UBYTE
+-T BYTE
+-T USHORT
+-T SHORT
+-T UINT
+-T INT
+-T ULONG
+-T LONG
+-T CHAR_DATA
 -T funcp
 -T ifuncp
 
+-T bool
+-T DESCRIPTOR_DATA
+-T permissions
+-T I3_CHANNEL
+-T I3_MUD
+-T I3_HEADER
+-T I3_IGNORE
+-T I3_BAN
+-T UCACHE_DATA
+-T I3_CHARDATA
+-T ROUTER_DATA
+-T I3_COLOR
+-T I3_CMD_DATA
+-T I3_HELP_DATA
+-T I3_ALIAS
+-T I3_FUN
+
+-T imc_permissions
+-T IMC_SPEAKER
+-T IMC_CHANNEL
+-T IMC_PACKET
+-T IMC_PDATA
+-T SITEINFO
+-T REMOTEINFO
+-T IMC_BAN
+-T IMC_CHARDATA
+-T IMC_IGNORE
+-T IMCUCACHE_DATA
+-T IMC_COLOR
+-T IMC_CMD_DATA
+-T IMC_HELP_DATA
+-T IMC_ALIAS
+-T IMC_PHANDLER
+-T WHO_TEMPLATE
+-T IMC_FUN
+-T PACKET_FUN
+
+-T SOCIAL_DATA
+-T CHAR_DATA
+-T DESCRIPTOR_DATA
+-T genders
+
+-T SHA256Context
+
+-T ident_t
+-T IDENT
+
+-T Teleport_t
+-T River_t
+-T Exit_t
+-T Extra_t
+-T Room
+
+-T afk_room_flags
+-T afk_exit_flags
+-T afk_sector_types
+-T afk_item_types
+-T afk_extra_flags
+
+-T sector_types
+
+-T ppmcolour
+-T mapnode
+-T coord_group
+-T tree
+-T forest
+-T maptemplate
+
+-T smaug_room_flags
+-T smaug_exit_flags
+-T smaug_sector_types
+-T smaug_item_types
+-T smaug_item_extra_flags
+
+-T t_name
+
+-T sh_int
+-T EXT_BV
+
+-T vnum
+-T vnum_index
+-T pair
+-T keyword
+-T zone_cmds
+-T zone
+-T zones
+-T EXIT
+-T extra
+-T coordinate
+-T room
+-T rooms
+-T shop
+-T shops
+-T obj_flags
+-T obj_affect
+-T object
+-T objects
+-T dice
+-T attack
+-T skill
+-T mob
+-T mobs

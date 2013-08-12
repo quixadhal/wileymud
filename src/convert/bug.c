@@ -19,7 +19,7 @@
 #include "include/bug.h"
 
 #ifdef DIKU_CRUD
-extern struct descriptor_data *descriptor_list;
+extern struct descriptor_data          *descriptor_list;
 #else
 #define MAX_STRING_LENGTH 2048
 #endif
@@ -49,83 +49,81 @@ extern struct descriptor_data *descriptor_list;
  */
 void bug_logger(const char *File, const char *Func, int Line,
 #ifdef DIKU_CRUD
-          unsigned int Level,
+		unsigned int Level,
 #endif
-          unsigned int Type,
-	  const char *BugFile,
+		unsigned int Type, const char *BugFile,
 #ifdef DIKU_CRUD
-          struct char_data *ch,
+		struct char_data *ch,
 #endif
-          const char *Str,...)
+		const char *Str, ...)
 {
-  va_list arg;
-  char Result[MAX_STRING_LENGTH];
-  char Temp[MAX_STRING_LENGTH];
-  FILE *fp;
-  struct timeb right_now;
-  struct tm *now_part;
+    va_list                                 arg;
+    char                                    Result[MAX_STRING_LENGTH];
+    char                                    Temp[MAX_STRING_LENGTH];
+    FILE                                   *fp;
+    struct timeb                            right_now;
+    struct tm                              *now_part;
 
-  bzero(Result, MAX_STRING_LENGTH);
-  va_start(arg, Str);
-  if (Str && *Str) {
-#ifdef DIKU_CRUD
-    struct descriptor_data *i;
-
-    strcpy(Result, "Notify> ");
-#endif
-    vsprintf(Temp, Str, arg);
-#ifdef DIKU_CRUD
-    strcat(Result, Temp);
-    for (i = descriptor_list; i; i = i->next)
-      if ((!i->connected) && (GetMaxLevel(i->character) >= Level) &&
-	  (IS_SET(i->character->specials.act, PLR_LOGS)))
-	write_to_q(Result, &i->output);
     bzero(Result, MAX_STRING_LENGTH);
-#endif
-  } else
-    strcpy(Temp, "PING!");
-  va_end(arg);
-  ftime(&right_now);
-  now_part= localtime((const time_t *)&right_now);
-  sprintf(Result, "<: %02d%02d%02d.%02d%02d%02d.%03d",
-          now_part->tm_year, now_part->tm_mon+1, now_part->tm_mday,
-          now_part->tm_hour, now_part->tm_min, now_part->tm_sec,
-          right_now.millitm);
-  if (File || Func || Line) {
-    strcat(Result, " (");
-    if (File && *File) {
-      strcat(Result, File);
-    }
-    if (Func && *Func)
-      sprintf(Result + strlen(Result), ";%s", Func);
-    if (Line)
-      sprintf(Result + strlen(Result), ",%d)", Line);
-    else
-      strcat(Result, ")");
-  }
+    va_start(arg, Str);
+    if (Str && *Str) {
 #ifdef DIKU_CRUD
-  if (ch && !IS_NPC(ch))
-    sprintf(Result + strlen(Result), " %s [#%d]\n",
-	    ch->player.name, ch->in_room ? ch->in_room : 0);
-  else
+	struct descriptor_data                 *i;
+
+	strcpy(Result, "Notify> ");
+#endif
+	vsprintf(Temp, Str, arg);
+#ifdef DIKU_CRUD
+	strcat(Result, Temp);
+	for (i = descriptor_list; i; i = i->next)
+	    if ((!i->connected) && (GetMaxLevel(i->character) >= Level) &&
+		(IS_SET(i->character->specials.act, PLR_LOGS)))
+		write_to_q(Result, &i->output);
+	bzero(Result, MAX_STRING_LENGTH);
+#endif
+    } else
+	strcpy(Temp, "PING!");
+    va_end(arg);
+    ftime(&right_now);
+    now_part = localtime((const time_t *)&right_now);
+    sprintf(Result, "<: %02d%02d%02d.%02d%02d%02d.%03d",
+	    now_part->tm_year, now_part->tm_mon + 1, now_part->tm_mday,
+	    now_part->tm_hour, now_part->tm_min, now_part->tm_sec, right_now.millitm);
+    if (File || Func || Line) {
+	strcat(Result, " (");
+	if (File && *File) {
+	    strcat(Result, File);
+	}
+	if (Func && *Func)
+	    sprintf(Result + strlen(Result), ";%s", Func);
+	if (Line)
+	    sprintf(Result + strlen(Result), ",%d)", Line);
+	else
+	    strcat(Result, ")");
+    }
+#ifdef DIKU_CRUD
+    if (ch && !IS_NPC(ch))
+	sprintf(Result + strlen(Result), " %s [#%d]\n",
+		ch->player.name, ch->in_room ? ch->in_room : 0);
+    else
 #endif
     if (File || Func || Line)
-      strcat(Result, "\n");
+	strcat(Result, "\n");
 
-  strcat(Result, " : ");
-  strcat(Result, Temp);
+    strcat(Result, " : ");
+    strcat(Result, Temp);
 
-  if (BugFile && *BugFile) {
-    if (!(fp = fopen(BugFile, "a"))) {
-      perror(BugFile);
+    if (BugFile && *BugFile) {
+	if (!(fp = fopen(BugFile, "a"))) {
+	    perror(BugFile);
 #ifdef DIKU_CRUD
-      if (ch)
-	send_to_char("Could not open the file!\n\r", ch);
+	    if (ch)
+		send_to_char("Could not open the file!\n\r", ch);
 #endif
-    } else {
-      fprintf(fp, "%s\n", Result);
-      fclose(fp);
+	} else {
+	    fprintf(fp, "%s\n", Result);
+	    fclose(fp);
+	}
     }
-  }
-  fprintf(stderr, "%s\n", Result);
+    fprintf(stderr, "%s\n", Result);
 }

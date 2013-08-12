@@ -6,9 +6,9 @@
 #define LOWER(c)              ((c) >= 'A' && (c) <= 'Z' ? (c)+'a'-'A' : (c))
 #define IS_SET(flag, bit)     ((flag) & (bit))
 
-typedef int				sh_int;
-typedef int				bool;
-typedef struct	extended_bitvector	EXT_BV;
+typedef int sh_int;
+typedef int bool;
+typedef struct extended_bitvector EXT_BV;
 
 /*
  * Defines for extended bitvectors
@@ -16,29 +16,28 @@ typedef struct	extended_bitvector	EXT_BV;
 #ifndef INTBITS
 #define INTBITS	32
 #endif
-#define XBM		31	/* extended bitmask   ( INTBITS - 1 )	*/
-#define RSV		5	/* right-shift value  ( sqrt(XBM+1) )	*/
-#define XBI		4	/* integers in an extended bitvector	*/
+#define XBM		31				       /* extended bitmask ( INTBITS - 1 ) */
+#define RSV		5				       /* right-shift value ( sqrt(XBM+1) ) */
+#define XBI		4				       /* integers in an extended bitvector */
 #define MAX_BITS	XBI * INTBITS
 /*
  * Structure for extended bitvectors -- Thoric
  */
-struct extended_bitvector
-{
-    unsigned int		bits[XBI]; /* Needs to be unsigned to compile in Redhat 6 - Samson */
+struct extended_bitvector {
+    unsigned int                            bits[XBI];	       /* Needs to be unsigned to compile in Redhat 6 - Samson */
 };
 
 /*
  * The functions for these prototypes can be found in misc.c
  * They are up here because they are used by the macros below
  */
-bool ext_is_empty( EXT_BV *bits );
-void ext_clear_bits( EXT_BV *bits );
-int ext_has_bits( EXT_BV *var, EXT_BV *bits );
-bool ext_same_bits( EXT_BV *var, EXT_BV *bits );
-void ext_set_bits( EXT_BV *var, EXT_BV *bits );
-void ext_remove_bits( EXT_BV *var, EXT_BV *bits );
-void ext_toggle_bits( EXT_BV *var, EXT_BV *bits );
+bool                                    ext_is_empty(EXT_BV *bits);
+void                                    ext_clear_bits(EXT_BV *bits);
+int                                     ext_has_bits(EXT_BV *var, EXT_BV *bits);
+bool                                    ext_same_bits(EXT_BV *var, EXT_BV *bits);
+void                                    ext_set_bits(EXT_BV *var, EXT_BV *bits);
+void                                    ext_remove_bits(EXT_BV *var, EXT_BV *bits);
+void                                    ext_toggle_bits(EXT_BV *var, EXT_BV *bits);
 
 /*
  * Here are the extended bitvector macros:

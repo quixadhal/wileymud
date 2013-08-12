@@ -7,20 +7,20 @@
 #define OF_ALL		((1<<OF_COUNT)-1)
 
 typedef struct s_name {
-  char *Name;
-  char *Type;
+    char                                   *Name;
+    char                                   *Type;
 } t_name;
 
 #ifndef _FORMATS_C
-extern t_name *InputData;
-extern t_name *OutputData;
+extern t_name                          *InputData;
+extern t_name                          *OutputData;
 #endif
 
-char *if_name(unsigned long InputFormat);
-char *of_name(unsigned long InputFormat);
-char *if_type(unsigned long InputFormat);
-char *of_type(unsigned long InputFormat);
-unsigned long if_mask(char *InputName);
-unsigned long of_mask(char *OutputName);
+char                                   *if_name(unsigned long InputFormat);
+char                                   *of_name(unsigned long InputFormat);
+char                                   *if_type(unsigned long InputFormat);
+char                                   *of_type(unsigned long InputFormat);
+unsigned long                           if_mask(char *InputName);
+unsigned long                           of_mask(char *OutputName);
 
 #endif

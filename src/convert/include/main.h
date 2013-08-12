@@ -6,11 +6,11 @@
 #define MAX_LINE_LEN 256
 #define MAX_PAGE_LEN 8192
 
-#define ROOM_FILE	"tinyworld.wld" /* room definitions           */
-#define MOB_FILE	"tinyworld.mob" /* monster prototypes         */
-#define OBJ_FILE	"tinyworld.obj" /* object prototypes          */
-#define ZONE_FILE	"tinyworld.zon" /* zone defs & command tables */
-#define SHOP_FILE	"tinyworld.shp" /* shop file                  */
+#define ROOM_FILE	"tinyworld.wld"			       /* room definitions */
+#define MOB_FILE	"tinyworld.mob"			       /* monster prototypes */
+#define OBJ_FILE	"tinyworld.obj"			       /* object prototypes */
+#define ZONE_FILE	"tinyworld.zon"			       /* zone defs & command tables */
+#define SHOP_FILE	"tinyworld.shp"			       /* shop file */
 
 #define INDEX_SUBDIR	"index"
 #define REPORT_SUBDIR	"report"
@@ -26,20 +26,20 @@
 #define PPM_FILE	"map-%03d.ppm"
 
 #ifndef _MAIN_C
-extern char *Progname;
-extern int Debug;
-extern int Quiet;
-extern int Verbose;
-extern unsigned long InputFormat;
-extern unsigned long OutputFormat;
-extern char *InputDir;
-extern char *OutputDir;
+extern char                            *Progname;
+extern int                              Debug;
+extern int                              Quiet;
+extern int                              Verbose;
+extern unsigned long                    InputFormat;
+extern unsigned long                    OutputFormat;
+extern char                            *InputDir;
+extern char                            *OutputDir;
 
-extern int IncludeShortInLong;
-extern int ObviousExits;
-extern int HardReturns;
-extern int OneBigDomain;
-extern int PitchBlack;
+extern int                              IncludeShortInLong;
+extern int                              ObviousExits;
+extern int                              HardReturns;
+extern int                              OneBigDomain;
+extern int                              PitchBlack;
 #endif
 
 #endif
