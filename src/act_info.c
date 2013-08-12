@@ -954,7 +954,8 @@ void do_look(struct char_data *ch, const char *argument, int cmd)
     }
   } else if ((IS_DARKOUT(ch->in_room)) && (!IS_IMMORTAL(ch)) &&
 	     (!IS_AFFECTED(ch, AFF_TRUE_SIGHT))) {
-    cprintf(ch, "\x1b[0;36m%s\x1b[0m\r\n", real_roomp(ch->in_room)->name); /* ANSI CYAN */
+    //cprintf(ch, "\x1b[0;36m%s\x1b[0m\r\n", real_roomp(ch->in_room)->name); /* ANSI CYAN */
+    cprintf(ch, "%s\r\n", real_roomp(ch->in_room)->name); /* ANSI CYAN */
     cprintf(ch, "\r\nIt is quite dark here...\r\n");
     if ((IS_AFFECTED(ch, AFF_INFRAVISION)) || BRIGHT_MOON(ch->in_room)) {
       list_char_in_room(real_roomp(ch->in_room)->people, ch);
@@ -1228,7 +1229,8 @@ void do_look(struct char_data *ch, const char *argument, int cmd)
 	 * look '' 
 	 */
       case 8:{
-          cprintf(ch, "\x1b[0;36m%s\x1b[0m\r\n", real_roomp(ch->in_room)->name); /* ANSI CYAN */
+          //cprintf(ch, "\x1b[0;36m%s\x1b[0m\r\n", real_roomp(ch->in_room)->name); /* ANSI CYAN */
+          cprintf(ch, "%s\r\n", real_roomp(ch->in_room)->name); /* ANSI CYAN */
 	  if (!IS_SET(ch->specials.act, PLR_BRIEF))
 	    cprintf(ch, "%s", real_roomp(ch->in_room)->description);
 	  if (IS_PC(ch)) {
@@ -1279,7 +1281,8 @@ void do_look(struct char_data *ch, const char *argument, int cmd)
 	 */
       case 9:{
 
-          cprintf(ch, "\x1b[0;36m%s\x1b[0m\r\n", real_roomp(ch->in_room)->name); /* ANSI CYAN */
+          //cprintf(ch, "\x1b[0;36m%s\x1b[0m\r\n", real_roomp(ch->in_room)->name); /* ANSI CYAN */
+          cprintf(ch, "%s\r\n", real_roomp(ch->in_room)->name); /* ANSI CYAN */
 	  cprintf(ch, "%s", real_roomp(ch->in_room)->description);
 
 	  if (!IS_NPC(ch)) {
@@ -1550,13 +1553,13 @@ void do_score(struct char_data *ch, const char *argument, int cmd)
     }
   }
   if (!IS_IMMORTAL(target) && (!IS_NPC(target))) {
-    if (GET_COND(target, DRUNK) > 10) {
+    if (IS_HOPELESSLY_DRUNK(target)) {
       cprintf(ch, "You are hopelessly DRUNK!\r\n");
     }
     strcpy(buf, "You are");
-    if (GET_COND(target, FULL) < 6) {
-      if (GET_COND(target, FULL) < 4) {
-	if (GET_COND(target, FULL) < 2) {
+    if (IS_GETTING_HUNGRY(target)) {
+      if (IS_HUNGRY(target)) {
+	if (IS_STARVING(target)) {
 	  strcat(buf, " starving");
 	  isneedy = 1;
 	} else {
@@ -1568,9 +1571,9 @@ void do_score(struct char_data *ch, const char *argument, int cmd)
 	isneedy = 1;
       }
     }
-    if (GET_COND(target, THIRST) < 6) {
-      if (GET_COND(target, THIRST) < 4) {
-	if (GET_COND(target, THIRST) < 2) {
+    if (IS_GETTING_THIRSTY(target)) {
+      if (IS_THIRSTY(target)) {
+	if (IS_PARCHED(target)) {
 	  if (isneedy)
 	    strcat(buf, " and");
 	  strcat(buf, " parched");

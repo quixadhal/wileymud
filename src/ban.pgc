@@ -202,6 +202,9 @@ void load_bans(void)
     fprintf(stderr, "error code %ld, message %s, rows %ld, warning %c\n",
             sqlca.sqlcode, sqlca.sqlerrm.sqlerrmc, sqlca.sqlerrd[2],
             sqlca.sqlwarn[0]);
+      if (sqlca.sqlcode == -400) {
+        init_sql();
+      }
   } else {
     banned_names_count = sqlca.sqlerrd[2]; /* row count */
     EXEC SQL COMMIT;
@@ -217,6 +220,9 @@ void load_bans(void)
     fprintf(stderr, "error code %ld, message %s, rows %ld, warning %c\n",
             sqlca.sqlcode, sqlca.sqlerrm.sqlerrmc, sqlca.sqlerrd[2],
             sqlca.sqlwarn[0]);
+      if (sqlca.sqlcode == -400) {
+        init_sql();
+      }
   } else {
     banned_ips_count = sqlca.sqlerrd[2]; /* row count */
     EXEC SQL COMMIT;
@@ -233,6 +239,9 @@ void load_bans(void)
     fprintf(stderr, "error code %ld, message %s, rows %ld, warning %c\n",
             sqlca.sqlcode, sqlca.sqlerrm.sqlerrmc, sqlca.sqlerrd[2],
             sqlca.sqlwarn[0]);
+      if (sqlca.sqlcode == -400) {
+        init_sql();
+      }
   } else {
     banned_at_count = sqlca.sqlerrd[2]; /* row count */
     EXEC SQL COMMIT;
@@ -275,6 +284,9 @@ EXEC SQL END DECLARE SECTION;
              sqlca.sqlcode, sqlca.sqlerrm.sqlerrmc, sqlca.sqlerrd[2],
              sqlca.sqlwarn[0]);
       EXEC SQL ROLLBACK WORK;
+      if (sqlca.sqlcode == -400) {
+        init_sql();
+      }
     } else {
       EXEC SQL COMMIT WORK;
     }
@@ -318,6 +330,9 @@ EXEC SQL END DECLARE SECTION;
                    sqlca.sqlcode, sqlca.sqlerrm.sqlerrmc, sqlca.sqlerrd[2],
                    sqlca.sqlwarn[0]);
             EXEC SQL ROLLBACK WORK;
+      if (sqlca.sqlcode == -400) {
+        init_sql();
+      }
           } else {
             EXEC SQL COMMIT WORK;
             cprintf(ch, "%s is now banned!\r\n", buf);
@@ -349,6 +364,9 @@ EXEC SQL END DECLARE SECTION;
                    sqlca.sqlcode, sqlca.sqlerrm.sqlerrmc, sqlca.sqlerrd[2],
                    sqlca.sqlwarn[0]);
             EXEC SQL ROLLBACK WORK;
+      if (sqlca.sqlcode == -400) {
+        init_sql();
+      }
           } else {
             EXEC SQL COMMIT WORK;
             cprintf(ch, "%s is now banned!\r\n", buf);
@@ -406,6 +424,9 @@ EXEC SQL END DECLARE SECTION;
                    sqlca.sqlcode, sqlca.sqlerrm.sqlerrmc, sqlca.sqlerrd[2],
                    sqlca.sqlwarn[0]);
             EXEC SQL ROLLBACK WORK;
+      if (sqlca.sqlcode == -400) {
+        init_sql();
+      }
           } else {
             EXEC SQL COMMIT WORK;
             cprintf(ch, "%s is now unbanned.\r\n", buf);
@@ -439,6 +460,9 @@ EXEC SQL END DECLARE SECTION;
                    sqlca.sqlcode, sqlca.sqlerrm.sqlerrmc, sqlca.sqlerrd[2],
                    sqlca.sqlwarn[0]);
             EXEC SQL ROLLBACK WORK;
+      if (sqlca.sqlcode == -400) {
+        init_sql();
+      }
           } else {
             EXEC SQL COMMIT WORK;
             cprintf(ch, "%s is now unbanned.\r\n", buf);

@@ -391,15 +391,6 @@ void game_loop(int s)
 	  close_socket(point);
     }
 
-#if 0
-#ifdef I3
-    i3_loop();
-#endif
-#ifdef IMC
-    imc_loop();
-#endif
-#endif
-
     /*
      * process_commands; 
      */
@@ -416,17 +407,13 @@ void game_loop(int s)
           log_auth(point->character, "RECONNECTED %s (%s@%s/%s)!", GET_NAME(point->character), point->username, point->host, point->ip);
 	}
 	point->wait = 1;
-	if (point->character)
+	if (point->character) /* This updates the idle ticker to say we're not idle */
 	  point->character->specials.timer = 0;
 	point->prompt_mode = 1;
 
 	if (point->str)
 	  string_add(point, comm);
 	else if (!point->connected)
-#if 0
-	  if (point->showstr_point)
-	    show_string(point, comm);
-#endif
           if (point->page_first)
 	    control_page(point, comm);
 	  else
@@ -434,6 +421,17 @@ void game_loop(int s)
 	else
 	  nanny(point, comm);
       }
+#if 0
+      else {
+          if( point->character &&
+              (GET_POS(point->character) != POSITION_FIGHTING) &&
+              (GET_HIT(point->character) >= GET_MAX_HIT(point->character)) &&
+              (GET_MANA(point->character) >= GET_MAX_MANA(point->character)) &&
+              (GET_MOVE(point->character) >= GET_MAX_MOVE(point->character))
+            )
+	    point->prompt_mode = 0; /* This might only show prompts if a command was processed */
+      }
+#endif
     }
 
     for (point = descriptor_list; point; point = next_point) {
@@ -457,6 +455,7 @@ void game_loop(int s)
      */
     for (point = descriptor_list; point; point = point->next) {
       if (point->prompt_mode) {
+        /* Maybe we can somewhow not do prompts if nothing has happened (IE: no command entered */
 	if (point->str)
 	  write_to_descriptor(point->descriptor, "] ");
 	else if (!point->connected) {

@@ -12,12 +12,9 @@
 #include "comm.h"
 #include "multiclass.h"
 #include "db.h"
-#include "sql.h"
 
 #define _BUG_C
 #include "bug.h"
-
-EXEC SQL INCLUDE sqlca;
 
 const char * LogNames[] = {
 "INFO",
@@ -146,129 +143,9 @@ void bug_logger( unsigned int Type, const char *BugFile,
     }
   }
 
-  if (db_logging && db_connected) {
-  if ( (db_log_info   && Type == LOG_INFO)  ||
-       (db_log_errors && (Type == LOG_ERROR || Type == LOG_FATAL) ) ||
-       (db_log_boot   && Type == LOG_BOOT)  ||
-       (db_log_auth   && Type == LOG_AUTH)  ||
-       (db_log_kills  && (Type == LOG_KILL  || Type == LOG_DEATH) ) ||
-       (db_log_resets && Type == LOG_RESET) ||
-       (db_log_imc    && Type == LOG_IMC)
-     ) {
-EXEC SQL BEGIN DECLARE SECTION;
-  int	log_type_id		= LOG_INFO;
-  char	log_entry[MAX_STRING_LENGTH];
-  char	log_file[80];				int	log_file_ind		= -1;
-  char	log_function[80];			int	log_function_ind	= -1;
-  int	log_line		= 0;		int	log_line_ind		= -1;
-  char	log_areafile[80];			int	log_areafile_ind	= -1;
-  int	log_arealine		= 0;		int	log_arealine_ind	= -1;
-  char	log_pc_actor[80];			int	log_pc_actor_ind	= -1;
-  char	log_pc_victim[80];			int	log_pc_victim_ind	= -1;
-  int	log_npc_actor		= 0;		int	log_npc_actor_ind	= -1;
-  int	log_npc_victim		= 0;		int	log_npc_victim_ind	= -1;
-  int	log_obj			= 0;		int	log_obj_ind		= -1;
-  int	log_area		= 0;		int	log_area_ind		= -1;
-  int	log_room		= 0;		int	log_room_ind		= -1;
-EXEC SQL END DECLARE SECTION;
-
-    log_type_id = Type;
-    strcpy(log_entry, Temp);
-    if (File || Func) {
-      if (File && *File) {
-        strcpy(log_file, File);
-        log_file_ind = 0;
-      }
-      if (Func && *Func) {
-        strcpy(log_function, Func);
-        log_function_ind = 0;
-      }
-      log_line = Line;
-      log_line_ind = 0;
-    }
-    if (AreaFile) {
-      if (AreaFile && *AreaFile) {
-        strcpy(log_areafile, AreaFile);
-        log_areafile_ind = 0;
-      }
-      log_arealine = AreaLine;
-      log_arealine_ind = 0;
-    }
-    if (ch) {
-      if (IS_MOB(ch)) {
-        log_npc_actor = mob_index[(int)ch->nr].virtual;
-        log_npc_actor_ind = 0;
-      } else {
-        strcpy(log_pc_actor, NAME(ch));
-        log_pc_actor_ind = 0;
-      }
-      if(ch->in_room > -1) {
-        log_room = ch->in_room;
-        log_room_ind = 0;
-        log_area = GET_ZONE(ch->in_room);
-        log_area_ind = 0;
-      }
-    }
-    if (victim) {
-      if (IS_MOB(victim)) {
-        log_npc_victim = mob_index[(int)victim->nr].virtual;
-        log_npc_victim_ind = 0;
-      } else {
-        strcpy(log_pc_victim, NAME(victim));
-        log_pc_victim_ind = 0;
-      }
-      if (!ch || ch->in_room < 0) {
-        if(victim->in_room > -1) {
-          log_room = victim->in_room;
-          log_room_ind = 0;
-          log_area = GET_ZONE(victim->in_room);
-          log_area_ind = 0;
-        }
-      }
-    }
-/*
-    if (obj) {
-      log_obj = obj_index[(int)obj->item_number].virtual);
-      log_obj_ind = 0;
-      if (!room) {
-        log_room = obj->in_room;
-        log_room_ind = 0;
-      }
-    }
-    if (room) {
-      log_room = room->number;
-      log_room_ind = 0;
-      log_area = room->zone;
-      log_area_ind = 0;
-    }
-*/
-
-    EXEC SQL BEGIN WORK;
-    EXEC SQL INSERT INTO logfile (	log_type_id, log_entry,
-					log_file, log_function, log_line,
-					log_areafile, log_arealine,
-					log_pc_actor, log_pc_victim, log_npc_actor, log_npc_victim,
-					log_obj, log_area, log_room
-			) VALUES (	:log_type_id, :log_entry,
-					:log_file :log_file_ind, :log_function :log_function_ind, :log_line :log_line_ind,
-					:log_areafile :log_areafile_ind, :log_arealine :log_arealine_ind,
-					:log_pc_actor :log_pc_actor_ind, :log_pc_victim :log_pc_victim_ind,
-					:log_npc_actor :log_npc_actor_ind, :log_npc_victim :log_npc_victim_ind,
-					:log_obj :log_obj_ind, :log_area :log_area_ind, :log_room :log_room_ind
-			);
-    if (sqlca.sqlcode < 0) {
-      fprintf(stderr, "error code %ld, message %s, rows %ld, warning %c\n",
-             sqlca.sqlcode, sqlca.sqlerrm.sqlerrmc, sqlca.sqlerrd[2],
-             sqlca.sqlwarn[0]);
-      EXEC SQL ROLLBACK WORK;
-    } else {
-      EXEC SQL COMMIT WORK;
-    }
-  }
-  }
-  
   if(stderr) {
     fprintf(stderr, "%s\n", Result);
     fflush(stderr);
   }
+
 }

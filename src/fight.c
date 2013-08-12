@@ -817,20 +817,20 @@ int damage(struct char_data *ch, struct char_data *victim, int dam, int attackty
  * if (rp && rp->room_flags & PEACEFUL && attacktype != SPELL_POISON &&
  *     attacktype != TYPE_HUNGER )
  */
-  if (check_peaceful(ch, "") && attacktype != SPELL_POISON && attacktype != TYPE_HUNGER) {
+  if (attacktype != SPELL_POISON && attacktype != TYPE_HUNGER && attacktype != TYPE_SUFFERING && check_peaceful(ch, "")) {
     log_info("damage(,,,%d) called in PEACEFUL room", attacktype);
     return FALSE;
   }
   if (ch->in_room != victim->in_room)
-    return (FALSE);
+    return FALSE;
 
   if ((dam = SkipImmortals(victim, dam)) == -1)
-    return (FALSE);
+    return FALSE;
 
   appear(ch);
 
-  if (!CheckKill(ch, victim))
-    return (FALSE);
+  if (attacktype != SPELL_POISON && attacktype != TYPE_HUNGER && attacktype != TYPE_SUFFERING && !CheckKill(ch, victim))
+    return FALSE;
 
   if (victim != ch) {
     if (GET_POS(victim) > POSITION_STUNNED) {
@@ -841,7 +841,7 @@ int damage(struct char_data *ch, struct char_data *victim, int dam, int attackty
 	    GET_POS(victim) = POSITION_FIGHTING;
 	  }
 	} else {
-	  return (FALSE);
+	  return FALSE;
 	}
       }
     }
@@ -851,7 +851,7 @@ int damage(struct char_data *ch, struct char_data *victim, int dam, int attackty
 	  set_fighting(ch, victim);
 	  GET_POS(ch) = POSITION_FIGHTING;
 	} else {
-	  return (FALSE);
+	  return FALSE;
 	}
       }
     }
@@ -866,7 +866,7 @@ int damage(struct char_data *ch, struct char_data *victim, int dam, int attackty
     if (ch->specials.fighting)
       stop_fighting(ch);
     hit(ch, victim->master, TYPE_UNDEFINED);
-    return (FALSE);
+    return FALSE;
   }
   if (victim->master == ch)
     stop_follower(victim);
@@ -882,7 +882,12 @@ int damage(struct char_data *ch, struct char_data *victim, int dam, int attackty
 
   dam = MAX(dam, 0);
 
+  cprintf(victim, "You should be taking %d damage!\r\n", dam);
+  cprintf(victim, "Your pre-damage hit points were %d.\r\n", GET_HIT(victim));
+
   GET_HIT(victim) -= dam;
+
+  cprintf(victim, "Your post-damage hit points are %d.\r\n", GET_HIT(victim));
 
   if (IS_AFFECTED(victim, AFF_FIRESHIELD) && !IS_AFFECTED(ch, AFF_FIRESHIELD)) {
     affect_from_char(victim, SPELL_FIRESHIELD);
@@ -902,7 +907,7 @@ int damage(struct char_data *ch, struct char_data *victim, int dam, int attackty
     } else {
       dam_message(dam, ch, victim, attacktype);
     }
-  } else {
+  } else if (attacktype != TYPE_HUNGER && attacktype != TYPE_SUFFERING) {
     if (ch->equipment[WIELD_TWOH])
       wield_ptr = ch->equipment[WIELD_TWOH];
     else
@@ -940,6 +945,8 @@ int damage(struct char_data *ch, struct char_data *victim, int dam, int attackty
       }
     }
   }
+
+  cprintf(victim, "You are getting to the point where damage messages should happen.\r\n");
 
   if ((GET_POS(victim) <= POSITION_STUNNED) && MOUNTED(victim)) {
     FallOffMount(victim, MOUNTED(victim));
@@ -979,7 +986,7 @@ int damage(struct char_data *ch, struct char_data *victim, int dam, int attackty
   max_hit = hit_limit(victim);
   if (GET_HIT(victim) <= (max_hit / 4) && (GET_POS(victim) > POSITION_STUNNED)) {
     if (IS_NPC(victim)) {
-      if (IS_SET(victim->specials.act, ACT_WIMPY))
+      if (IS_SET(victim->specials.act, ACT_WIMPY) && attacktype != TYPE_SUFFERING && attacktype != TYPE_HUNGER)
 	do_flee(victim, "", 0);
     } else {
       if (IS_SET(victim->specials.act, PLR_WIMPY)) {
@@ -2171,7 +2178,7 @@ int CanKill(struct char_data *ch, struct char_data *vict, const char *msg)
     return (TRUE);
 }
 
- int CheckKill(struct char_data *ch, struct char_data *vict)
+int CheckKill(struct char_data *ch, struct char_data *vict)
 {
   if (DEBUG > 2)
     log_info("called %s with %s, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), SAFE_NAME(vict));

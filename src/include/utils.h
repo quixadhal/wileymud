@@ -315,6 +315,14 @@ do                                               \
 #define IS_NEUTRAL(ch) (!IS_GOOD(ch) && !IS_EVIL(ch))
 #define ITEM_TYPE(obj)  ((int)(obj)->obj_flags.type_flag)
 
+#define IS_GETTING_HUNGRY(ch)   (GET_COND(ch, FULL) < 6)
+#define IS_HUNGRY(ch)           (GET_COND(ch, FULL) < 4)
+#define IS_STARVING(ch)         (GET_COND(ch, FULL) < 2)
+#define IS_GETTING_THIRSTY(ch)  (GET_COND(ch, THIRST) < 6)
+#define IS_THIRSTY(ch)          (GET_COND(ch, THIRST) < 4)
+#define IS_PARCHED(ch)          (GET_COND(ch, THIRST) < 2)
+#define IS_HOPELESSLY_DRUNK(ch) (GET_COND(ch, DRUNK) > 10)
+
  int                              MobVnum(struct char_data *c);
  int                              ObjVnum(struct obj_data *o);
  int                              percent(int value, int total);

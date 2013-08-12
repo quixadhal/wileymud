@@ -6,10 +6,10 @@ PreTitle           ~
 Title              the Human Woodland Squire~
 Description
 ~
-LastSite           adork@c-69-242-42-155.hsd1.nj.comcast.net~
-LastLogin          1349281441
+LastSite           adork@localhost~
+LastLogin          1364069243
 Birth              1307647507
-Played             112573
+Played             112934
 Sex                1
 Race               1
 Class              16
@@ -24,11 +24,11 @@ PoofIn             ~
 PoofOut            ~
 AbilityScores      18 100 18 18 18 18
 AbilityPad         0 0 0 0
-HpManaMove         122 108 125 0 150 0
+HpManaMove         112 108 119 0 167 0
 AC                 100
 ToHitDamage        0 0
 SaveApply          0 0 0 0 0
-Conditions         0 2 16 0 0 0
+Conditions         0 0 12 0 0 0
 PointsPad1         0 0 0
 PointsPad2         0 0 0 0
 PointsPad3         0 0 0

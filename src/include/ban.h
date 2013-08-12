@@ -1,20 +1,18 @@
 #ifndef _BAN_H
 #define _BAN_H
 
-#define BANNED_NAME_FILE  "adm/banned"
+#define BANNED_NAME_FILE  "adm/banned_names"
+#define BANNED_IP_FILE    "adm/banned_ips"
 
-#ifndef __BAN_C__
-/* extern char                             banned_names[MAX_STRING_LENGTH]; */	/* dumbfuck asshole and friends */
-#endif
+void					unload_bans(void);
+void					load_bans(void);
+int                                     acceptable_name( const char *name );
+void                                    do_ban(struct char_data *ch, const char *argument, int cmd);
+void                                    do_unban(struct char_data *ch, const char *argument, int cmd);
 
 int                                     banned_ip(char *ip);
 int                                     banned_name(char *name);
 int                                     banned_at(char *name, char *ip);
-void									load_bans(void);
-void									unload_bans(void);
 void                                    bans_to_sql(void);
-void                                    do_ban(struct char_data *ch, const char *argument, int cmd);
-void                                    do_unban(struct char_data *ch, const char *argument, int cmd);
-int                                     acceptable_name( const char *name );
 
 #endif

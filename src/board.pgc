@@ -297,6 +297,9 @@ EXEC SQL END DECLARE SECTION;
              sqlca.sqlcode, sqlca.sqlerrm.sqlerrmc, sqlca.sqlerrd[2],
              sqlca.sqlwarn[0]);
       EXEC SQL ROLLBACK WORK;
+      if (sqlca.sqlcode == -400) {
+        init_sql();
+      }
     } else {
       EXEC SQL COMMIT WORK;
     }
@@ -318,6 +321,9 @@ EXEC SQL END DECLARE SECTION;
              sqlca.sqlcode, sqlca.sqlerrm.sqlerrmc, sqlca.sqlerrd[2],
              sqlca.sqlwarn[0]);
       EXEC SQL ROLLBACK WORK;
+      if (sqlca.sqlcode == -400) {
+        init_sql();
+      }
     } else {
       EXEC SQL COMMIT WORK;
     }
@@ -331,6 +337,9 @@ EXEC SQL END DECLARE SECTION;
            sqlca.sqlcode, sqlca.sqlerrm.sqlerrmc, sqlca.sqlerrd[2],
            sqlca.sqlwarn[0]);
     EXEC SQL ROLLBACK WORK;
+      if (sqlca.sqlcode == -400) {
+        init_sql();
+      }
   } else {
     EXEC SQL COMMIT WORK;
   }
@@ -370,6 +379,9 @@ EXEC SQL END DECLARE SECTION;
             sqlca.sqlcode, sqlca.sqlerrm.sqlerrmc, sqlca.sqlerrd[2],
             sqlca.sqlwarn[0]);
     EXEC SQL ROLLBACK WORK;
+      if (sqlca.sqlcode == -400) {
+        init_sql();
+      }
   } else {
     EXEC SQL COMMIT WORK;
   }
@@ -388,6 +400,9 @@ EXEC SQL END DECLARE SECTION;
              sqlca.sqlcode, sqlca.sqlerrm.sqlerrmc, sqlca.sqlerrd[2],
              sqlca.sqlwarn[0]);
       EXEC SQL ROLLBACK WORK;
+      if (sqlca.sqlcode == -400) {
+        init_sql();
+      }
     } else {
       EXEC SQL COMMIT WORK;
     }
@@ -520,6 +535,9 @@ EXEC SQL END DECLARE SECTION;
                sqlca.sqlcode, sqlca.sqlerrm.sqlerrmc, sqlca.sqlerrd[2],
                sqlca.sqlwarn[0]);
         EXEC SQL ROLLBACK WORK;
+      if (sqlca.sqlcode == -400) {
+        init_sql();
+      }
       } else {
         EXEC SQL COMMIT WORK;
       }

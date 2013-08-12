@@ -6,10 +6,10 @@ PreTitle           ~
 Title              the Human Guide~
 Description
 ~
-LastSite           adork@goprimal.com~
-LastLogin          1152803488
+LastSite           adork@c-69-242-46-44.hsd1.nj.comcast.net~
+LastLogin          1364067042
 Birth              1141333488
-Played             59658
+Played             59725
 Sex                1
 Race               1
 Class              16
@@ -24,7 +24,7 @@ PoofIn             ~
 PoofOut            ~
 AbilityScores      16 0 15 11 10 15
 AbilityPad         0 0 0 0
-HpManaMove         28 66 115 0 32 0
+HpManaMove         28 66 115 0 26 0
 AC                 100
 ToHitDamage        0 0
 SaveApply          0 0 0 0 0
@@ -206,4 +206,9 @@ Affect             21 0 0 0 0 0 0
 Affect             22 0 0 0 0 0 0
 Affect             23 0 0 0 0 0 0
 Affect             24 0 0 0 0 0 0
+i3perm       2
+i3flags      256
+i3listen     wiley
+IMCPerm      0
+IMCFlags     256
 End

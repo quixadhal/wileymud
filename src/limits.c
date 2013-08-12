@@ -222,17 +222,17 @@ int mana_gain(struct char_data *ch)
       gain += gain;
   }
 
-  if (IS_AFFECTED(ch, AFF_POISON))
-    gain >>= 2;
-
   if (number(1, 101) < ch->skills[SKILL_MEDITATION].learned)
     gain += 10;
 
-  if ((GET_COND(ch, FULL) == 0) || (GET_COND(ch, THIRST) == 0))
-    /*
-     * gain >>= 2; 
-     */
-    gain = -number(1, 4);
+  if (IS_AFFECTED(ch, AFF_POISON))
+    gain >>= 2;
+
+  if (GET_COND(ch, FULL) < 2) /* starving */
+    gain >>= 2;
+
+  if (GET_COND(ch, THIRST) < 2) /* parched */
+    gain >>= 2;
 
   return (gain);
 }
@@ -305,18 +305,21 @@ int hit_gain(struct char_data *ch)
     gain >>= 2;
     damage(ch, ch, 15, SPELL_POISON);
   }
+
+  if (IS_PC(ch) && IS_STARVING(ch)) {
+    gain >>= 2;
+    damage(ch, ch, number(1,3), TYPE_HUNGER); 
+  }
+
+  if (IS_PC(ch) && IS_PARCHED(ch)) {
+    gain >>= 2;
+    damage(ch, ch, number(1,3), TYPE_HUNGER); 
+  }
+
   gain = MAX(gain, 1);
 
-  if ((GET_COND(ch, FULL) == 0) || (GET_COND(ch, THIRST) == 0)) {
-    gain = 0;
-    /*
-     * damage(ch, ch, number(2,5), TYPE_HUNGER); 
-     */
-    /*
-     * damage(i, i, 0, TYPE_SUFFERING); 
-     */
-    gain = -number(2, 5);
-  }
+  if (IS_PC(ch))
+      cprintf(ch, "You should be gaining %d hit points.\r\n", gain);
 
   return (gain);
 }
@@ -371,19 +374,16 @@ int move_gain(struct char_data *ch)
   if (GET_RACE(ch) == RACE_ELVEN)
     gain += 1;
 
-  if (IS_AFFECTED(ch, AFF_POISON))
-    gain >>= 2;
-
   if (number(1, 101) < ch->skills[SKILL_ENDURANCE].learned)
     gain += 5;
 
-  if ((GET_COND(ch, FULL) == 0) || (GET_COND(ch, THIRST) == 0))
-    /*
-     * gain >>= 2; 
-     */
-    /*
-     * gain= -number(1,8); 
-     */
+  if (IS_AFFECTED(ch, AFF_POISON))
+    gain >>= 2;
+
+  if (GET_COND(ch, FULL) < 2) /* starving */
+    gain = 1;
+
+  if (GET_COND(ch, THIRST) < 2) /* parched */
     gain = 1;
 
   return (gain);
@@ -762,26 +762,46 @@ void gain_condition(struct char_data *ch, int condition, int value)
   GET_COND(ch, condition) = MAX(0, GET_COND(ch, condition));
   GET_COND(ch, condition) = MIN(24, GET_COND(ch, condition));
 
+  /*
   if (GET_COND(ch, condition))
     return;
+   */
 
   switch (condition) {
     case FULL:
-      {
-	cprintf(ch, "You are hungry.\r\n");
-	return;
-      }
+        if (IS_GETTING_HUNGRY(ch)) {
+            if (IS_HUNGRY(ch)) {
+                if (IS_STARVING(ch)) {
+	            cprintf(ch, "You are starving!\r\n");
+                } else {
+	            cprintf(ch, "You are hungry.\r\n");
+                }
+            } else {
+	        cprintf(ch, "You are getting hungry.\r\n");
+            }
+        }
+
+	break;
     case THIRST:
-      {
-	cprintf(ch, "You are thirsty.\r\n");
-	return;
-      }
+        if (IS_GETTING_THIRSTY(ch)) {
+            if (IS_THIRSTY(ch)) {
+                if (IS_PARCHED(ch)) {
+	            cprintf(ch, "You are parched!\r\n");
+                } else {
+	            cprintf(ch, "You are thirsty.\r\n");
+                }
+            } else {
+	        cprintf(ch, "You are getting thirsty.\r\n");
+            }
+        }
+	break;
     case DRUNK:
-      {
-	if (intoxicated)
-	  cprintf(ch, "You are now sober.\r\n");
-	return;
-      }
+        if (IS_HOPELESSLY_DRUNK(ch)) {
+	    cprintf(ch, "You are homelessly DRUNK!\r\n");
+        } else if (intoxicated && GET_COND(ch, DRUNK) < 1) {
+	    cprintf(ch, "You are now sober.\r\n");
+        }
+	break;
     default:
       break;
   }
@@ -796,11 +816,12 @@ void check_idling(struct char_data *ch)
 
   ++(ch->specials.timer);
 
-  if (ch->specials.timer > 5 && ch->specials.timer < 10) {
+  /* if (ch->specials.timer > 5 && ch->specials.timer < 10) { */
+  if (!ch->specials.timer % 5) {
     do_save(ch, "", 0);
     return;
   }
-  if (ch->specials.timer >= 10) {
+  if (ch->specials.timer >= 15) {
     log_info("LOG:%s AUTOSAVE:Timer %d.", GET_NAME(ch), ch->specials.timer);
 
     if (ch->specials.fighting) {

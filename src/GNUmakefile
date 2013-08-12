@@ -205,6 +205,9 @@ obj/comm.o: comm.c include/global.h include/i3.h include/imc.h \
 obj/i3.o: i3.c include/global.h include/bug.h include/utils.h \
  include/multiclass.h include/comm.h include/constants.h include/modify.h \
  include/interpreter.h include/version.h include/i3.h
+obj/redone-ban.o: redone-ban.c include/global.h include/utils.h \
+ include/comm.h include/modify.h include/interpreter.h include/db.h \
+ include/bug.h include/ban.h
 obj/act_off.o: act_off.c include/global.h include/bug.h include/utils.h \
  include/comm.h include/interpreter.h include/handler.h include/db.h \
  include/spells.h include/mudlimits.h include/opinion.h \

@@ -1,6 +1,6 @@
 #PLAYER
 Name               Quixadhal~
-Passwd             QuYMJlfjsZ6W6~
+Passwd             QuAlX6uMLw/ws~
 Whizz              0
 PreTitle           Dread~
 Title              is the Dark Lord of VI~
@@ -11,13 +11,13 @@ reaching out to...
      hand you a HUGE glass of the blackest beer you've ever seen!
 ~
 LastSite           adork@localhost~
-LastLogin          1354537424
+LastLogin          1376267107
 Birth              803755990
-Played             38886480
+Played             39418176
 Sex                1
 Race               2
 Class              63
-Alignment          -998
+Alignment          -1000
 Exp                75000001
 Level              mage 60
 Level              cleric 60
@@ -33,7 +33,7 @@ PoofIn             ~
 PoofOut            ~
 AbilityScores      25 100 25 25 25 25
 AbilityPad         0 0 0 0
-HpManaMove         10002 9999 266 0 989 0
+HpManaMove         10002 9999 266 0 1009 0
 AC                 100
 ToHitDamage        0 0
 SaveApply          0 0 0 0 0
@@ -217,7 +217,7 @@ Affect             23 0 0 0 0 0 0
 Affect             24 0 0 0 0 0 0
 i3perm       5
 i3flags      768
-i3listen     dchat intergossip free_speech ds icode wiley
+i3listen     dchat intergossip free_speech ds icode wiley dgd
 IMCPerm      5
 IMCFlags     768
 IMCListen    dgd intergossip dchat free_speech imud_code

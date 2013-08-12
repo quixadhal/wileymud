@@ -34,16 +34,20 @@ int init_sql( void )
   const char *sql_passwd = "tardis69";
   EXEC SQL END DECLARE SECTION;
 
-  if (ECPGstatus(__LINE__, NULL)) {
-    db_connected = 1;
-    return db_connected;
-  }
+//  if (ECPGstatus(__LINE__, NULL)) {
+//    db_connected = 1;
+//    return db_connected;
+//  }
+  fprintf(stderr, "Connecting to database server...");
 
   EXEC SQL CONNECT TO :sql_connect AS :sql_user USER :sql_user IDENTIFIED BY :sql_passwd;
-  if (sqlca.sqlcode == 0 )
+  if (sqlca.sqlcode == 0 ) {
     db_connected = 1;
-  else
+    fprintf(stderr, "success!\n");
+  } else {
     db_connected = 0;
+    fprintf(stderr, "failed!\n");
+  }
 
   //assert(sqlca.sqlcode == 0);
   return db_connected;
