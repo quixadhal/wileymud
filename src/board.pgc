@@ -265,10 +265,8 @@ EXEC SQL END DECLARE SECTION;
     return;
   }
 
-  if(!db_connected) {
-    log_error("No database connection, cannot save boards!");
-    return;
-  }
+  init_sql();
+
   board_id = bp->Vnum;
   for(i = 0; i < bp->msg_num; i++) {
     message_id = i;
@@ -343,6 +341,8 @@ EXEC SQL END DECLARE SECTION;
   } else {
     EXEC SQL COMMIT WORK;
   }
+
+  close_sql();
 }
 
 void board_load_board(struct Board *bp)
@@ -366,6 +366,8 @@ EXEC SQL END DECLARE SECTION;
 
   if (!bp)
     return;
+
+  init_sql();
 
   board_reset_board(bp);
   board_id = bp->Vnum;
@@ -417,6 +419,8 @@ EXEC SQL END DECLARE SECTION;
     strcpy(bp->msgs[i], message_text);
   }
   log_boot("- Loaded!");
+
+  close_sql();
 }
 
 void board_reset_board(struct Board *b)
@@ -508,7 +512,8 @@ EXEC SQL END DECLARE SECTION;
   int i;
   char *mp;
 
-  if(!db_connected) return;
+  init_sql();
+
   while(bp) {
     board_id = bp->Vnum;
     for(i = 0; i < bp->msg_num; i++) {
@@ -544,5 +549,7 @@ EXEC SQL END DECLARE SECTION;
     }
     bp = bp->next;
   }
+
+  close_sql();
 }
 

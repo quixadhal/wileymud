@@ -1,250 +1,250 @@
-&R[12/01 10:52] &G&G10&W:&G52&d &R[&Wintergossip&R] &CMaw@Epitaph Black Ops: &cIt sounded like the first one
-&R[12/01 10:52] &G&G10&W:&G52&d &R[&Wintergossip&R] &CMaw@Epitaph Black Ops: &cBut who can say?
-&R[12/01 10:52] &G&G10&W:&G52&d &R[&Wintergossip&R] &CMaw@Epitaph Black Ops: &c(Ninja can)
-&R[12/01 10:53] &G&G10&W:&G53&d &R[&Wintergossip&R] &CQuixadhal@Bloodlines-bkp: &cOf course, if he's using Windows and wants to route an X program to there... that's mostly easy, but the hard part is FINDING THE DOWNLOAD LINK on this page:  http://www.straightrunning.com/XmingNotes/
-&R[12/01 10:55] &G&G10&W:&G55&d &R[&Wintergossip&R] &CMaw@Epitaph Black Ops: &cTrick question there isn't one :(
-&R[12/01 10:56] &G&G10&W:&G56&d &R[&Wintergossip&R] &CQuixadhal@Bloodlines-bkp: &cThere is, but it requires that you've sent in a "donation"... which is kinda funny.
-&R[12/01 10:56] &G&G10&W:&G56&d &R[&Wintergossip&R] &CMaw@Epitaph Black Ops: &cI don't think donation means what they think it means
-&R[12/01 10:56] &G&G10&W:&G56&d &R[&Wintergossip&R] &CQuixadhal@Bloodlines-bkp: &cI guess you brits have a different definition of "donation", which sounds a lot more like our word "purchase".
-&R[12/01 10:56] &G&G10&W:&G56&d &R[&Wintergossip&R] &CAvatar@OuterSpace: &chttp://sourceforge.net/projects/xming/files/Xming/6.9.0.31/Xming-6-9-0-31-setup.exe/download
-&R[12/01 10:57] &G&G10&W:&G57&d &R[&Wintergossip&R] &CAvatar@OuterSpace: &c[4
-&R[12/01 10:57] &G&G10&W:&G57&d &R[&Wintergossip&R] &CAvatar@OuterSpace: &cBut it took me a minutes to find it
-&R[12/01 10:57] &G&G10&W:&G57&d &R[&Wintergossip&R] &CMaw@Epitaph Black Ops: &cNormally donation means donation
-&R[12/01 10:57] &G&G10&W:&G57&d &R[&Wintergossip&R] &CMaw@Epitaph Black Ops: &cAt worst it'll be SUGGESTED
-&R[12/01 10:57] &G&G10&W:&G57&d &R[&Wintergossip&R] &CQuixadhal@Bloodlines-bkp: &cEven tricksier... they let you grab OLD versions from free if you can find them.
-&R[12/01 10:58] &G&G10&W:&G58&d &R[&Wintergossip&R] &CMaw@Epitaph Black Ops: &cWhich to our inbuilt british sense of obligation means we have to donate
-&R[12/01 10:59] &G&G10&W:&G59&d &R[&Wintergossip&R] &CQuixadhal@Bloodlines-bkp: &cOn the web site Avatar, the current version is 7.5.0.60, from Nov 20th 2012... The one file that hasn't changed since 6.9.0.31 is the mesa file, from May 4, 2007.
-&R[12/01 11:00] &G&G11&W:&G00&d &R[&Wintergossip&R] &CQuixadhal@Bloodlines-bkp: &cSo, perhaps it used to be free and now requires a "donation" for newer versions.
-&R[12/01 11:04] &G&G11&W:&G04&d &R[&Wintergossip&R] &CWodan@Discworld: &cwhat is the license for X anyway? if it's GPL you could just ask the latest source and compile it :)
-&R[12/01 11:05] &G&G11&W:&G05&d &R[&Wintergossip&R] &CQuixadhal@Bloodlines-bkp: &cX, yes, but whatever changes are made to make it windows-ified, could be configured as a module in some way, and thus NOT released under GPL.
-&R[12/01 11:19] &G&G11&W:&G19&d &R[&Wintergossip&R] &CNinja@Dead Souls Dev: &cnot a full login screen...just run a particular program on say, a non-gui server, but be able to see it's output and control it via a window on a gui machine.
-&R[12/01 11:32] &G&G11&W:&G32&d &R[&Wintergossip&R] &CQuixadhal@Bloodlines-bkp: &cI believe it's just -display targetmachine:0 then, and the target machine needs to be running X and have "xhost +" configured
-&R[12/01 11:32] &G&G11&W:&G32&d &R[&Wintergossip&R] &CQuixadhal@Bloodlines-bkp: &c(or, of coure, a more locked-down X security setting, but nobody cares for home machines)
-&R[12/01 11:33] &G&G11&W:&G33&d &R[&Wintergossip&R] &CQuixadhal@Bloodlines-bkp: &c(and also, the :0 might be different if yer X is weird.  I think Xming uses :1 for example)
-&R[12/01 11:36] &G&G11&W:&G36&d &R[&Wintergossip&R] &CNinja@Dead Souls Dev: &cquix, used to be.
-&R[12/01 11:36] &G&G11&W:&G36&d &R[&Wintergossip&R] &CNinja@Dead Souls Dev: &chosts + to let anyone in...
-&R[12/01 11:37] &G&G11&W:&G37&d &R[&Wintergossip&R] &CNinja@Dead Souls Dev: &cDISPLAY=targetmachine:0.0
-&R[12/01 11:37] &G&G11&W:&G37&d &R[&Wintergossip&R] &CNinja@Dead Souls Dev: &cthe in unity the display manager blocks tcp/ip requests by default from the X Server
-&R[12/01 11:37] &G&G11&W:&G37&d &R[&Wintergossip&R] &CNinja@Dead Souls Dev: &c*then
-&R[12/01 11:38] &G&G11&W:&G38&d &R[&Wintergossip&R] &CNinja@Dead Souls Dev: &coh, u get the point.
-&R[12/01 11:38] &G&G11&W:&G38&d &R[&Wintergossip&R] &CQuixadhal@Bloodlines-bkp: &c*snicker*
-&R[12/01 11:38] &G&G11&W:&G38&d &R[&Wintergossip&R] &CNinja@Dead Souls Dev: &cthere's a conf file that needs to override that.
-&R[12/01 11:38] &G&G11&W:&G38&d &R[&Wintergossip&R] &CNinja@Dead Souls Dev: &cXOpenDisplay on 0.0 uses unix sockets.
-&R[12/01 11:38] &G&G11&W:&G38&d &R[&Wintergossip&R] &CNinja@Dead Souls Dev: &cXOpenDisplay on hostname:0.0 uses TCP/IP sockets
-&R[12/01 11:39] &G&G11&W:&G39&d &R[&Wintergossip&R] &CNinja@Dead Souls Dev: &ctook me long time to find that out and how to work with it.
-&R[12/01 11:39] &G&G11&W:&G39&d &R[&Wintergossip&R] &CQuixadhal@Bloodlines-bkp: &cGo! Go! Commitee-driven Linux Distro, Activate!
-&R[12/01 11:39] &G&G11&W:&G39&d &R[&Wintergossip&R] &CQuixadhal@Bloodlines-bkp: &cThat kind of nonsesne is why I hate C++, BTW.
-&R[12/01 11:40] &G&G11&W:&G40&d &R[&Wintergossip&R] &CNinja@Dead Souls Dev: &cI like C++, now that I got the hang of it.
-&R[12/01 11:40] &G&G11&W:&G40&d &R[&Wintergossip&R] &CNinja@Dead Souls Dev: &cyears of C and Java helped pave the way.
-&R[12/01 11:40] &G&G11&W:&G40&d &R[&Wintergossip&R] &CQuixadhal@Bloodlines-bkp: &cWrite any Windows software in it?
-&R[12/01 11:40] &G&G11&W:&G40&d &R[&Wintergossip&R] &CNinja@Dead Souls Dev: &chell no.
-&R[12/01 11:40] &G&G11&W:&G40&d &R[&Wintergossip&R] &CQuixadhal@Bloodlines-bkp: &cI suppose it's easier now that Visual C++ is actually visual...
-&R[12/01 11:40] &G&G11&W:&G40&d &R[&Wintergossip&R] &CNinja@Dead Souls Dev: &cactually, I wrote windows software long ago...royal pain.
-&R[12/01 11:40] &G&G11&W:&G40&d &R[&Wintergossip&R] &CNinja@Dead Souls Dev: &cespecially socket related stuff.
-&R[12/01 11:41] &G&G11&W:&G41&d &R[&Wintergossip&R] &CQuixadhal@Bloodlines-bkp: &cBut back in the old days of VC++ 6, the compiler had to fill in a ginormous template file for you to just get a hello world program going.
-&R[12/01 11:41] &G&G11&W:&G41&d &R[&Wintergossip&R] &CNinja@Dead Souls Dev: &cthat's one of the reason I'm writing my own widget library.
-&R[12/01 11:41] &G&G11&W:&G41&d &R[&Wintergossip&R] &CNinja@Dead Souls Dev: &cthe widget library is rough going, but using it is really simple.
-&R[12/01 11:41] &G&G11&W:&G41&d &R[&Wintergossip&R] &CQuixadhal@Bloodlines-bkp: &cAnd I'm thinking, Holy Crap!  If you need this much boiler plate just for a console app, what the hell were the C++ committee guys smoking, and where can I get some?
-&R[12/01 11:42] &G&G11&W:&G42&d &R[&Wintergossip&R] &CNinja@Dead Souls Dev: &cYeah, hello world wasn't simple on windoz
-&R[12/01 11:42] &G&G11&W:&G42&d &R[&Wintergossip&R] &CNinja@Dead Souls Dev: &cI expect they're all dead now.
-&R[12/01 11:43] &G&G11&W:&G43&d &R[&Wintergossip&R] &CQuixadhal@Bloodlines-bkp: &cI hope so.  I haven't properly cleaned the 30'6 in years and it would be a pain to have to drag it out now.
-&R[12/01 11:43] &G&G11&W:&G43&d &R[&Wintergossip&R] &CNinja@Dead Souls Dev: &cOh, deer.
-&R[12/01 11:43] &G&G11&W:&G43&d &R[&Wintergossip&R] &CNinja@Dead Souls Dev: &cthat 30 ought to be cleaned regularly.
-&R[12/01 11:44] &G&G11&W:&G44&d &R[&Wintergossip&R] &CNinja@Dead Souls Dev: &c*pun intended*
-&R[12/01 11:46] &G&G11&W:&G46&d &R[&Wintergossip&R] &CNinja@Dead Souls Dev: &cspeaking of cleaning...found in an old toolbox a pair of hefty pliers with diagonal wire cutters...not sure wot exactly to call them
-&R[12/01 11:46] &G&G11&W:&G46&d &R[&Wintergossip&R] &CNinja@Dead Souls Dev: &crusted solid...hit it with WD-40 daily for a few days, wiping it clean then respraying...finally got it working.
-&R[12/01 11:46] &G&G11&W:&G46&d &R[&Wintergossip&R] &CNinja@Dead Souls Dev: &cwiped it clean again, oiled it with machine oil.
-&R[12/01 11:47] &G&G11&W:&G47&d &R[&Wintergossip&R] &CNinja@Dead Souls Dev: &cmade me think I outta pull some rifles outta storage and do the same for them.
-&R[12/01 12:30] &G&G12&W:&G30&d &R[&Wintergossip&R] &CXyzzy@Dead Souls Dev: &cguns
-&R[12/01 12:30] &G&G12&W:&G30&d &R[&Wintergossip&R] &CMaw@Epitaph Black Ops: &cBullets bang bang
-&R[12/01 12:32] &G&G12&W:&G32&d &R[&Wintergossip&R] &CXyzzy@Dead Souls Dev: &cpchew! pchew!
-&R[12/01 12:43] &G&G12&W:&G43&d &R[&Wintergossip&R] &CCratylus@Dead Souls Dev: &ccurve that shit yall
-&R[12/01 12:47] &G&G12&W:&G47&d &R[&Wintergossip&R] &cMaw@Epitaph Black Ops pumps an invisible shotgun
-&R[12/01 12:47] &G&G12&W:&G47&d &R[&Wintergossip&R] &CMaw@Epitaph Black Ops: &cNOT NOW HAVING FUN
-&R[12/01 12:47] &G&G12&W:&G47&d &R[&Wintergossip&R] &CXyzzy@Dead Souls Dev: &ci saw Invisible Shotgun in concert
-&R[12/01 13:59] &G&G13&W:&G59&d &R[&Wintergossip&R] &CCratylus@Dead Souls Dev: &chttp://lpmuds.net/invisible_president.jpg
-&R[12/01 14:37] &G&G14&W:&G37&d &R[&Wintergossip&R] &CDuuk@Haven: &clol
-&R[12/01 15:08] &G&G15&W:&G08&d &R[&Wintergossip&R] &CNinja@Dead Souls Dev: &cDick Cheney :(
-&R[12/01 15:09] &G&G15&W:&G09&d &R[&Wintergossip&R] &CNinja@Dead Souls Dev: &cayup - insert "still alive?" question between this and previous i3 statements.
-&R[12/01 16:10] &G&G16&W:&G10&d &R[&Wintergossip&R] &CCratylus@Dead Souls Dev: &cthe blizz phone message voice sounds like they just asked the receptionist to read those phrases on her lunch break
-&R[12/01 16:10] &G&G16&W:&G10&d &R[&Wintergossip&R] &CCratylus@Dead Souls Dev: &cat her desk
-&R[12/01 16:11] &G&G16&W:&G11&d &R[&Wintergossip&R] &CCratylus@Dead Souls Dev: &ccouldnt they get the pandaria voice guy to do it
-&R[12/01 16:11] &G&G16&W:&G11&d &R[&Wintergossip&R] &CCratylus@Dead Souls Dev: &ci mean he's THEIRS
-&R[12/01 16:11] &G&G16&W:&G11&d &R[&Wintergossip&R] &CCratylus@Dead Souls Dev: &ccan they not afford themSELVES
-&R[12/01 16:11] &G&G16&W:&G11&d &R[&Wintergossip&R] &CDuuk@Haven: &cWhat's wrong with their VooooICe?
-&R[12/01 16:13] &G&G16&W:&G13&d &R[&Wintergossip&R] &CCratylus@Dead Souls Dev: &ccouldnt even get her to do a reverbed protoss voice
-&R[12/01 16:13] &G&G16&W:&G13&d &R[&Wintergossip&R] &CCratylus@Dead Souls Dev: &cjust sandy from accountemps
-&R[12/01 16:13] &G&G16&W:&G13&d &R[&Wintergossip&R] &CDuuk@Haven: &cthat would be awesome
-&R[12/01 16:13] &G&G16&W:&G13&d &R[&Wintergossip&R] &CCratylus@Dead Souls Dev: &cguess i should count my blessings, at least she's not cracking her gum and filing her nails
-&R[12/01 16:14] &G&G16&W:&G14&d &R[&Wintergossip&R] &CQuixadhal@Bloodlines-bkp: &cIn a WORLD... where customers suck, press 1 to conTINue, press 2 for espanOL, or STAY on the line for a repreSENtiTIVE.
-&R[12/01 16:14] &G&G16&W:&G14&d &R[&Wintergossip&R] &CCratylus@Dead Souls Dev: &cthats more liek it
-&R[12/01 16:15] &G&G16&W:&G15&d &R[&Wintergossip&R] &CCratylus@Dead Souls Dev: &cmaybe she's dressed in a leopard print skirt
-&R[12/01 16:15] &G&G16&W:&G15&d &R[&Wintergossip&R] &CCratylus@Dead Souls Dev: &cthat kinda counts maybe
-&R[12/01 16:16] &G&G16&W:&G16&d &R[&Wintergossip&R] &CQuixadhal@Bloodlines-bkp: &cWhen you finally get a human (if you do), you could ask.
-&R[12/01 16:17] &G&G16&W:&G17&d &R[&Wintergossip&R] &CQuixadhal@Bloodlines-bkp: &cIt's always a good way to start a customer service experience.  "How can I help you?" "I want to know what the woman who recorded the phone messages was wearing *breath deeply*"
-&R[12/01 16:21] &G&G16&W:&G21&d &R[&Wintergossip&R] &CCratylus@Dead Souls Dev: &cheh the guy sounded like a recording when he answered
-&R[12/01 16:21] &G&G16&W:&G21&d &R[&Wintergossip&R] &CCratylus@Dead Souls Dev: &ci guess if you do it all day you just...phone it in
-&R[12/01 16:22] &G&G16&W:&G22&d &R[&Wintergossip&R] &CCratylus@Dead Souls Dev: &cwow really triumphant hold music now while he's checking my info
-&R[12/01 16:22] &G&G16&W:&G22&d &R[&Wintergossip&R] &CCratylus@Dead Souls Dev: &cwonder if thats on purpoe
-&R[12/01 16:22] &G&G16&W:&G22&d &R[&Wintergossip&R] &CQuixadhal@Bloodlines-bkp: &c"Sir, you're not in Australia, obviously you can't play your Australian WoW account in the US..."
-&R[12/01 16:22] &G&G16&W:&G22&d &R[&Wintergossip&R] &CCratylus@Dead Souls Dev: &cboy would that piss me off
-&R[12/01 16:23] &G&G16&W:&G23&d &R[&Wintergossip&R] &CCratylus@Dead Souls Dev: &cthey do ask you where you plan to play starcraft
-&R[12/01 16:23] &G&G16&W:&G23&d &R[&Wintergossip&R] &CNinja@Dead Souls Dev: &cand...the "woman" that recorded that messages was really an 82 year old man.
-&R[12/01 16:23] &G&G16&W:&G23&d &R[&Wintergossip&R] &CNinja@Dead Souls Dev: &c-s
-&R[12/01 16:23] &G&G16&W:&G23&d &R[&Wintergossip&R] &CCratylus@Dead Souls Dev: &ci can only hope they dont actually region lock you
-&R[12/01 16:24] &G&G16&W:&G24&d &R[&Wintergossip&R] &CCratylus@Dead Souls Dev: &cthat would be almost as stupid as the bug where you can't play offline if you're offline
-&R[12/01 16:24] &G&G16&W:&G24&d &R[&Wintergossip&R] &CNinja@Dead Souls Dev: &cDoes WoW have players in Syria?
-&R[12/01 16:24] &G&G16&W:&G24&d &R[&Wintergossip&R] &CCratylus@Dead Souls Dev: &cit's annoying enough that i have to call my bank to ask permission to travel
-&R[12/01 16:24] &G&G16&W:&G24&d &R[&Wintergossip&R] &CCratylus@Dead Souls Dev: &cbut blizzard? ffs
-&R[12/01 16:25] &G&G16&W:&G25&d &R[&Wintergossip&R] &CQuixadhal@Bloodlines-bkp: &cI think WoW has players in every country... maybe not antarctica, as the lag over satellite is kinda bad, and you only get like an hour to play each day.
-&R[12/01 16:25] &G&G16&W:&G25&d &R[&Wintergossip&R] &CCratylus@Dead Souls Dev: &cwtf did this guy go to australia to check my records
-&R[12/01 16:26] &G&G16&W:&G26&d &R[&Wintergossip&R] &CQuixadhal@Bloodlines-bkp: &c"We're trying to connect to the Australian service office, but they seem to be closed.  Try calling them when they open on Monday."
-&R[12/01 16:27] &G&G16&W:&G27&d &R[&Wintergossip&R] &CCratylus@Dead Souls Dev: &ci didnt ask about the hold girl
-&R[12/01 16:27] &G&G16&W:&G27&d &R[&Wintergossip&R] &CCratylus@Dead Souls Dev: &ci have stuff to do, dint feel like flirting with the blizz drone
-&R[12/01 16:28] &G&G16&W:&G28&d &R[&Wintergossip&R] &CQuixadhal@Bloodlines-bkp: &cIt might have woken him up, as an interesting question not asked by the usual sclubs.
-&R[12/01 16:28] &G&G16&W:&G28&d &R[&Wintergossip&R] &CCratylus@Dead Souls Dev: &ctho they should make them say "more work?!?"
-&R[12/01 16:29] &G&G16&W:&G29&d &R[&Wintergossip&R] &CNinja@Dead Souls Dev: &cso, can you tunnel elsewhere to play blizzard?
-&R[12/01 16:29] &G&G16&W:&G29&d &R[&Wintergossip&R] &CNinja@Dead Souls Dev: &cor does that lag you beyond usefullness?
-&R[12/01 16:29] &G&G16&W:&G29&d &R[&Wintergossip&R] &CCratylus@Dead Souls Dev: &cnot worth the effort to circumvent them
-&R[12/01 16:29] &G&G16&W:&G29&d &R[&Wintergossip&R] &CQuixadhal@Bloodlines-bkp: &cLike when you buy something different and the girl at the checkout lane perks up and actuallys works faster because it jolted her out of her stupor.
-&R[12/01 16:29] &G&G16&W:&G29&d &R[&Wintergossip&R] &CCratylus@Dead Souls Dev: &c"glopta!"
-&R[12/01 16:29] &G&G16&W:&G29&d &R[&Wintergossip&R] &CNinja@Dead Souls Dev: &cthat's cause she wants to get rid of you faster.
-&R[12/01 16:30] &G&G16&W:&G30&d &R[&Wintergossip&R] &CQuixadhal@Bloodlines-bkp: &cThat's true Ninja, but the result is a win-win. :)
-&R[12/01 16:31] &G&G16&W:&G31&d &R[&Wintergossip&R] &CQuixadhal@Bloodlines-bkp: &cAt least there's a crappy football game you can watch while you're on hold.
-&R[12/01 16:33] &G&G16&W:&G33&d &R[&Wintergossip&R] &CCratylus@Dead Souls Dev: &che said he sent the reset flare to the account demigods
-&R[12/01 16:33] &G&G16&W:&G33&d &R[&Wintergossip&R] &CCratylus@Dead Souls Dev: &cim off to take a shower and will later see if he lied
-&R[12/01 16:40] &G&G16&W:&G40&d &R[&Wintergossip&R] &CQuixadhal@Bloodlines-bkp: &cThe phone support guy breathes a sigh of relief at being able to pass the buck upstream, knowing when you call back you'll get one of the other 3,000 tier 1 support people.
-&R[12/01 16:42] &G&G16&W:&G42&d &R[&Wintergossip&R] &CDuuk@Haven: &cfuck cross realming with spanish speakers
-&R[12/01 16:42] &G&G16&W:&G42&d &R[&Wintergossip&R] &CDuuk@Haven: &cfuck it right in the ear
-&R[12/01 16:43] &G&G16&W:&G43&d &R[&Wintergossip&R] &CQuixadhal@Bloodlines-bkp: &cNo burrito for you?
-&R[12/01 16:43] &G&G16&W:&G43&d &R[&Wintergossip&R] &CDuuk@Haven: &cIf el tanko no habla ingles, quando I talko to himo?
-&R[12/01 16:44] &G&G16&W:&G44&d &R[&Wintergossip&R] &CQuixadhal@Bloodlines-bkp: &cYou *talk* to the tank?  How weird.
-&R[12/01 16:44] &G&G16&W:&G44&d &R[&Wintergossip&R] &CCratylus@Dead Souls Dev: &cdo you hablo....Frostmourne?
-&R[12/01 16:44] &G&G16&W:&G44&d &R[&Wintergossip&R] &CDuuk@Haven: &cAnd say things like, "Why are you wearing all vendor gear?"
-&R[12/01 16:44] &G&G16&W:&G44&d &R[&Wintergossip&R] &CQuixadhal@Bloodlines-bkp: &cI usually only "talk" to the healers, telling them they suck for rezzing the tank instead of me.
-&R[12/01 16:45] &G&G16&W:&G45&d &R[&Wintergossip&R] &CQuixadhal@Bloodlines-bkp: &cHey, everyone has to start somewhere.
-&R[12/01 16:46] &G&G16&W:&G46&d &R[&Wintergossip&R] &CQuixadhal@Bloodlines-bkp: &cIt sucks when you have raid gear and the dungeon grinder stuffs you into a group with n00bs (like me) who still have all their blues from questing.... but that's how n00bs get gear these days.
-&R[12/01 16:47] &G&G16&W:&G47&d &R[&Wintergossip&R] &CQuixadhal@Bloodlines-bkp: &cI'm only 88, so I haven't even bothered with the pandaria dungeons yet.
-&R[12/01 16:48] &G&G16&W:&G48&d &R[&Wintergossip&R] &CQuixadhal@Bloodlines-bkp: &cFapius tells me I should be able to solo the Crataclysm dungeons, which cut out at 87 for the dungeon grinder.
-&R[12/01 17:18] &G&G17&W:&G18&d &R[&Wintergossip&R] &CCratylus@Dead Souls Dev: &cfapius tells many people many things
-&R[12/01 17:28] &G&G17&W:&G28&d &R[&Wintergossip&R] &CCratylus@Dead Souls Dev: &clooks like the blizzbot fixed it
-&R[12/01 18:09] &G&G18&W:&G09&d &R[&Wintergossip&R] &CQuixadhal@Bloodlines-bkp: &cWhere's that Kayle fellow?  His server and mine are in the same WvW tier, which means I have the chance to KILL him. *grin*
-&R[12/01 18:11] &G&G18&W:&G11&d &R[&Wintergossip&R] &CKayle@SithWars: &cBusy killing Vanu, and securing Indar for the glory of the Republic
-&R[12/01 18:30] &G&G18&W:&G30&d &R[&Wintergossip&R] &CQuixadhal@Bloodlines-bkp: &cThere's still people playing TOR?
-&R[12/01 18:33] &G&G18&W:&G33&d &R[&Wintergossip&R] &CQuixadhal@Bloodlines-bkp: &cI logged into GW2, as they are doing a roster wipe this weekend (already done, have to ask for a reinvite).  ArenaNet hasn't added a "last online" column to the guild roster/friends list yet, and they're trying to avoid having to make a third guild when they open recruitment.
-&R[12/01 18:33] &G&G18&W:&G33&d &R[&Wintergossip&R] &CQuixadhal@Bloodlines-bkp: &cAlso, I figured at level 64, I should probably catch up on some of my story-mode stuff from level 40. :)
-&R[12/01 18:42] &G&G18&W:&G42&d &R[&Wintergossip&R] &CKayle@SithWars: &cNot TOR, Planetside 2
-&R[12/01 18:42] &G&G18&W:&G42&d &R[&Wintergossip&R] &CKayle@SithWars: &chttp://i.imgur.com/iotdo.jpg
-&R[12/01 18:43] &G&G18&W:&G43&d &R[&Wintergossip&R] &CQuixadhal@Bloodlines-bkp: &cHeh
-&R[12/01 18:43] &G&G18&W:&G43&d &R[&Wintergossip&R] &CQuixadhal@Bloodlines-bkp: &cCrat should play that one... I think he'd enjoy it.
-&R[12/01 18:43] &G&G18&W:&G43&d &R[&Wintergossip&R] &CKayle@SithWars: &cNo little sisters, and too many other players.
-&R[12/01 18:44] &G&G18&W:&G44&d &R[&Wintergossip&R] &CKayle@SithWars: &cHe'd never play it after the first 20 seconds.
-&R[12/01 18:44] &G&G18&W:&G44&d &R[&Wintergossip&R] &CQuixadhal@Bloodlines-bkp: &cA first person shooter, but with a few hundred people on a giant world-sized map, instead of a half dozen on city block sized map.
-&R[12/01 18:49] &G&G18&W:&G49&d &R[&Wintergossip&R] &CQuixadhal@Bloodlines-bkp: &cSo you went with the human faction instead of the one with ray guns?
-&R[12/01 18:58] &G&G18&W:&G58&d &R[&Wintergossip&R] &CQuixadhal@Bloodlines-bkp: &cHmmmm, which server you on... probably not Matherson huh?
-&R[12/01 18:58] &G&G18&W:&G58&d &R[&Wintergossip&R] &CQuixadhal@Bloodlines-bkp: &cHeh, looks like OTG is playing New Conglomerate.
-&R[12/01 19:01] &G&G19&W:&G01&d &R[&Wintergossip&R] &CKayle@SithWars: &cHe'd never play it after the first 20 seconds.
-&R[12/01 19:01] &G&G19&W:&G01&d &R[&Wintergossip&R] &CKayle@SithWars: &cBah
-&R[12/01 19:01] &G&G19&W:&G01&d &R[&Wintergossip&R] &CKayle@SithWars: &cI'm on Connery
-&R[12/01 19:04] &G&G19&W:&G04&d &R[&Wintergossip&R] &CQuixadhal@Bloodlines-bkp: &cI really wish these game companies would realize that multiple servers is a stupid idea.
-&R[12/01 19:19] &G&G19&W:&G19&d &R[&Wintergossip&R] &CQuixadhal@Bloodlines-bkp: &cSam Adams "Harvest Pumpkin Ale" isn't actually bad.  It came in a variety pack with several others I liked, so I figured I'd try it.
-&R[12/01 19:20] &G&G19&W:&G20&d &R[&Wintergossip&R] &CQuixadhal@Bloodlines-bkp: &cIt's a little like their Cherry Wheat, but not as sweet.  Unlike other horrible pumpkin beers I've had over the years, this one is subtle enough to still taste like beer.
-&R[12/01 19:21] &G&G19&W:&G21&d &R[&Wintergossip&R] &CQuixadhal@Bloodlines-bkp: &cPS2 is about 2/3 downloaded... I think I'll play XCOM while I wait. :)
-&R[12/02 06:40] &G&G06&W:&G40&d &R[&Wintergossip&R] &CQuixadhal@Bloodlines-bkp: &cSo, City of Heroes shutdown on Friday.  So sad... doubly so because it was still making a profit (just not ENOUGH of one for NCSoft)
-&R[12/02 06:42] &G&G06&W:&G42&d &R[&Wintergossip&R] &CCratylus@Dead Souls Dev: &chttp://www.cnn.com/2012/11/29/world/meast/mustache-transplants-middle-east
-&R[12/02 06:43] &G&G06&W:&G43&d &R[&Wintergossip&R] &CNinja@Dead Souls Dev: &c10 PRINT CHR$ (205.5 + RND (1)); : GOTO 10
-&R[12/02 06:44] &G&G06&W:&G44&d &R[&Wintergossip&R] &CNinja@Dead Souls Dev: &cnew book
-&R[12/02 06:44] &G&G06&W:&G44&d &R[&Wintergossip&R] &CNinja@Dead Souls Dev: &chttp://www.slate.com/articles/technology/books/2012/11/computer_programming_10_print_chr_205_5_rnd_1_goto_10_from_mit_press_reviewed.html
-&R[12/02 06:44] &G&G06&W:&G44&d &R[&Wintergossip&R] &CCratylus@Dead Souls Dev: &camazeing
-&R[12/02 06:44] &G&G06&W:&G44&d &R[&Wintergossip&R] &CNinja@Dead Souls Dev: &cICWOTUDIDTHERE
-&R[12/02 06:46] &G&G06&W:&G46&d &R[&Wintergossip&R] &CQuixadhal@Bloodlines-bkp: &cAt least if they transplant butt hair folicles, the juinor execs won't have to wash after working their way up the ladder.
-&R[12/02 07:05] &G&G07&W:&G05&d &R[&Wintergossip&R] &CNinja@Dead Souls Dev: &csleep deprivation?
-&R[12/02 07:18] &G&G07&W:&G18&d &R[&Wintergossip&R] &CQuixadhal@Bloodlines-bkp: &cSleep is overrated. *yawn*
-&R[12/02 07:19] &G&G07&W:&G19&d &R[&Wintergossip&R] &CCratylus@Dead Souls Dev: &chttp://www.theonion.com/video/after-obama-victory-shrieking-whitehot-sphere-of-p,30284/
-&R[12/02 07:23] &G&G07&W:&G23&d &R[&Wintergossip&R] &CQuixadhal@Bloodlines-bkp: &cVote Magical Ark of Empty Promises, 2016!  Woooot!!!!!
-&R[12/02 07:28] &G&G07&W:&G28&d &R[&Wintergossip&R] &cNinja@Dead Souls Dev dusts off his holey undergarments.
-&R[12/02 07:29] &G&G07&W:&G29&d &R[&Wintergossip&R] &CXyzzy@Dead Souls Dev: &choley undergarments, batman!
-&R[12/02 07:44] &G&G07&W:&G44&d &R[&Wintergossip&R] &CQuixadhal@Bloodlines-bkp: &chttp://www.youtube.com/watch?v=_JoZS6LgqYI
-&R[12/02 08:40] &G&G08&W:&G40&d &R[&Wintergossip&R] &CCratylus@Dead Souls Dev: &cheh apollo 18 is on tv right now
-&R[12/02 08:40] &G&G08&W:&G40&d &R[&Wintergossip&R] &CCratylus@Dead Souls Dev: &con one of my showtimes
-&R[12/02 08:41] &G&G08&W:&G41&d &R[&Wintergossip&R] &CCratylus@Dead Souls Dev: &cbut i cant watch it :(
-&R[12/02 08:41] &G&G08&W:&G41&d &R[&Wintergossip&R] &CCratylus@Dead Souls Dev: &cthere's a bunch of kids here :(
-&R[12/02 08:41] &G&G08&W:&G41&d &R[&Wintergossip&R] &CWodan@Discworld: &cso?
-&R[12/02 08:42] &G&G08&W:&G42&d &R[&Wintergossip&R] &CCratylus@Dead Souls Dev: &cit has space spiders
-&R[12/02 08:42] &G&G08&W:&G42&d &R[&Wintergossip&R] &CCratylus@Dead Souls Dev: &ci dont need to have my sleep interrupted by my kids waking up in the middle of the night screaming about space spiders
-&R[12/02 09:12] &G&G09&W:&G12&d &R[&Wintergossip&R] &CQuixadhal@Bloodlines-bkp: &cTell them they're spiderman's pets.
-&R[12/02 09:13] &G&G09&W:&G13&d &R[&Wintergossip&R] &CQuixadhal@Bloodlines-bkp: &cIt's getting darker again... it was looking like a normal overcast day at 8am, now at 9:15am it's looking really dark.  I'm thinking rain may be in the near future.
-&R[12/02 09:28] &G&G09&W:&G28&d &R[&Wintergossip&R] &CNinja@Dead Souls Dev: &cYay Christmas Spiders!
-&R[12/02 09:29] &G&G09&W:&G29&d &R[&Wintergossip&R] &CDuuk@Haven: &cChristmas Spiders are proof Santa loves you!
-&R[12/02 09:30] &G&G09&W:&G30&d &R[&Wintergossip&R] &CLyanic@7thplane: &cSpidermas
-&R[12/02 09:30] &G&G09&W:&G30&d &R[&Wintergossip&R] &CLyanic@7thplane: &cThe day we set aside each year to celebrate the birth of our savior, Spiderman
-&R[12/02 09:30] &G&G09&W:&G30&d &R[&Wintergossip&R] &CNinja@Dead Souls Dev: &cKal El was jewish - was he the second coming?
-&R[12/02 09:31] &G&G09&W:&G31&d &R[&Wintergossip&R] &CCratylus@Dead Souls Dev: &ckal el bar jor
-&R[12/02 09:31] &G&G09&W:&G31&d &R[&Wintergossip&R] &CLyanic@7thplane: &cWouldn't that mean Jor El is God?
-&R[12/02 09:31] &G&G09&W:&G31&d &R[&Wintergossip&R] &CNinja@Dead Souls Dev: &cJor El was Jo Seph
-&R[12/02 10:06] &G&G10&W:&G06&d &R[&Wintergossip&R] &CQuixadhal@Bloodlines-bkp: &cDebian still doesn't have ACL as a default option when doing the install disk partitioning... Is this still 1995?
-&R[12/02 10:07] &G&G10&W:&G07&d &R[&Wintergossip&R] &CQuixadhal@Bloodlines-bkp: &cIt can't be... an 800G /home partition would cost a year's salary if it were... oh wait!
-&R[12/02 10:11] &G&G10&W:&G11&d &R[&Wintergossip&R] &cNinja@Dead Souls Dev sees you.
-&R[12/02 13:34] &G&G13&W:&G34&d &R[&Wintergossip&R] &CDuuk@Haven: &cTOUCHDOWN DETROIT LIONS! 
-&R[12/02 13:35] &G&G13&W:&G35&d &R[&Wintergossip&R] &CScoyn@SithWars: &chttp://goo.gl/JIzx2
-&R[12/02 13:47] &G&G13&W:&G47&d &R[&Wintergossip&R] &CDuuk@Haven: &cTOUCHDOWN DETROIT LIONS! 
-&R[12/02 13:47] &G&G13&W:&G47&d &R[&Wintergossip&R] &CDuuk@Haven: &cdammit, incomplete
-&R[12/02 13:48] &G&G13&W:&G48&d &R[&Wintergossip&R] &CDuuk@Haven: &cTOUCHDOWN DETROIT LIONS! 
-&R[12/02 13:48] &G&G13&W:&G48&d &R[&Wintergossip&R] &CDuuk@Haven: &cfor real this time
-&R[12/02 14:51] &G&G14&W:&G51&d &R[&Wintergossip&R] &CCratylus@Dead Souls Dev: &cOAG looks different now
-&R[12/02 14:51] &G&G14&W:&G51&d &R[&Wintergossip&R] &CCratylus@Dead Souls Dev: &cbut when she smiles and you see the teeth, it's her\
-&R[12/02 16:23] &G&G16&W:&G23&d &R[&Wintergossip&R] &CLyanic@7thplane: &cI was playing a game just now, and there was a character named Kali, Dark Lord...asked for a sacrifice, then killed me for my faithful service
-&R[12/02 16:23] &G&G16&W:&G23&d &R[&Wintergossip&R] &CLyanic@7thplane: &cKali :(
-&R[12/02 16:24] &G&G16&W:&G24&d &R[&Wintergossip&R] &CMaw@Epitaph Black Ops: &cGHOST IN THE MACHINE
-&R[12/02 16:25] &G&G16&W:&G25&d &R[&Wintergossip&R] &CNinja@Dead Souls Dev: &cBones.
-&R[12/02 16:26] &G&G16&W:&G26&d &R[&Wintergossip&R] &CCratylus@Dead Souls Dev: &cwhen he is truly needed, he shall return
-&R[12/02 16:26] &G&G16&W:&G26&d &R[&Wintergossip&R] &CNinja@Dead Souls Dev: &c"Ghost in the Machine" is the title of the Bones episode that's gona premiere tomorrow
-&R[12/02 16:26] &G&G16&W:&G26&d &R[&Wintergossip&R] &CLyanic@7thplane: &cI love how you're perpetually 3 years behind, Ninja
-&R[12/02 16:27] &G&G16&W:&G27&d &R[&Wintergossip&R] &CLyanic@7thplane: &cYou're like I3's time capsule
-&R[12/02 16:28] &G&G16&W:&G28&d &R[&Wintergossip&R] &CNinja@Dead Souls Dev: &coh, like yer gonna claim that title's been used before?
-&R[12/02 16:28] &G&G16&W:&G28&d &R[&Wintergossip&R] &CLyanic@7thplane: &c:-p
-&R[12/02 16:31] &G&G16&W:&G31&d &R[&Wintergossip&R] &CCratylus@Dead Souls Dev: &che's a spirit
-&R[12/02 16:31] &G&G16&W:&G31&d &R[&Wintergossip&R] &CCratylus@Dead Souls Dev: &cin the material world
-&R[12/02 16:32] &G&G16&W:&G32&d &R[&Wintergossip&R] &CMaw@Epitaph Black Ops: &cIs he a material girl?
-&R[12/02 16:33] &G&G16&W:&G33&d &R[&Wintergossip&R] &CCratylus@Dead Souls Dev: &cin the prime material plane
-&R[12/02 16:34] &G&G16&W:&G34&d &R[&Wintergossip&R] &CNinja@Dead Souls Dev: &cAnd there's SNAKES on that PLANE!!!!!
-&R[12/02 16:34] &G&G16&W:&G34&d &R[&Wintergossip&R] &CCratylus@Dead Souls Dev: &csmiles everyone, smiles
-&R[12/02 16:35] &G&G16&W:&G35&d &R[&Wintergossip&R] &CAvatar@OuterSpace: &cprime material snakes?  Over here we just call them Wall street brokers
-&R[12/02 16:35] &G&G16&W:&G35&d &R[&Wintergossip&R] &CCratylus@Dead Souls Dev: &ctraders
-&R[12/02 16:35] &G&G16&W:&G35&d &R[&Wintergossip&R] &CCratylus@Dead Souls Dev: &cbrokering is a lot less glamourous than it sounds
-&R[12/02 16:36] &G&G16&W:&G36&d &R[&Wintergossip&R] &CAvatar@OuterSpace: &cMaybe. But it was an open door. And I tend to kick in open doors.
-&R[12/02 16:36] &G&G16&W:&G36&d &R[&Wintergossip&R] &CCratylus@Dead Souls Dev: &ccall a trader a broker and you'll get a regular education on the matter
-&R[12/02 16:37] &G&G16&W:&G37&d &R[&Wintergossip&R] &CMaw@Epitaph Black Ops: &cYou should just walk through open doors
-&R[12/02 16:42] &G&G16&W:&G42&d &R[&Wintergossip&R] &CCratylus@Dead Souls Dev: &care the balto ravens a real team or is this just a made for tv thing
-&R[12/02 16:44] &G&G16&W:&G44&d &R[&Wintergossip&R] &CQuixadhal@Bloodlines-bkp: &cIn through the out door.
-&R[12/02 16:46] &G&G16&W:&G46&d &R[&Wintergossip&R] &CCratylus@Dead Souls Dev: &cheh, apparently they didnt go to "keep the ball in your hands" class so i guess they're normally in the lingerie league
-&R[12/02 17:21] &G&G17&W:&G21&d &R[&Wintergossip&R] &CNinja@Dead Souls Dev: &cBaltimore - 9 wins, 2 losses.
-&R[12/02 17:43] &G&G17&W:&G43&d &R[&Wintergossip&R] &CCratylus@Dead Souls Dev: &clooks like the steelers now have a bad case of the dropsies
-&R[12/02 17:44] &G&G17&W:&G44&d &R[&Wintergossip&R] &CCratylus@Dead Souls Dev: &cthey do get paid to hang on to the ball rite
-&R[12/02 17:45] &G&G17&W:&G45&d &R[&Wintergossip&R] &CCratylus@Dead Souls Dev: &cmaybe they should get a bonus, if that helps
-&R[12/02 17:49] &G&G17&W:&G49&d &R[&Wintergossip&R] &CNinja@Dead Souls Dev: &cCrat - having a brain fart here...what's the name of tha movie actress with the nice boobs?
-&R[12/02 17:54] &G&G17&W:&G54&d &R[&Wintergossip&R] &cNinja@Dead Souls Dev . o O ("Darn, he can't remember either.").
-&R[12/02 17:56] &G&G17&W:&G56&d &R[&Wintergossip&R] &CCratylus@Dead Souls Dev: &cmae victoria i think
-&R[12/02 18:00] &G&G18&W:&G00&d &R[&Wintergossip&R] &CLyanic@7thplane: &cporn star
-&R[12/02 18:01] &G&G18&W:&G01&d &R[&Wintergossip&R] &CCratylus@Dead Souls Dev: &cadmittedly her name does sound liek a porn name
-&R[12/02 18:02] &G&G18&W:&G02&d &R[&Wintergossip&R] &CLyanic@7thplane: &cgoogle Mae Victoria, porn star....imdb Mae Victoria, no "actress" found with that name
-&R[12/02 18:02] &G&G18&W:&G02&d &R[&Wintergossip&R] &CCratylus@Dead Souls Dev: &cis there anything you can't ruin
-&R[12/02 18:03] &G&G18&W:&G03&d &R[&Wintergossip&R] &CLyanic@7thplane: &cThere are some things...things that only Kali has the power to ruin :(
-&R[12/02 18:10] &G&G18&W:&G10&d &R[&Wintergossip&R] &CCratylus@Dead Souls Dev: &ci think you can gay marry him now in washington state, if you love him so much
-&R[12/02 18:12] &G&G18&W:&G12&d &R[&Wintergossip&R] &CLyanic@7thplane: &cHe's already taken! Why do you think he disappeared right after that law was passed!?
-&R[12/02 18:56] &G&G18&W:&G56&d &R[&Wintergossip&R] &CCratylus@Dead Souls Dev: &chey i have an idea
-&R[12/02 18:56] &G&G18&W:&G56&d &R[&Wintergossip&R] &CCratylus@Dead Souls Dev: &cif they can display those blue and yellow lines on the field
-&R[12/02 18:56] &G&G18&W:&G56&d &R[&Wintergossip&R] &CCratylus@Dead Souls Dev: &cmaybe they can also display a good televeision show down there
-&R[12/02 18:57] &G&G18&W:&G57&d &R[&Wintergossip&R] &CHells@The Savage Soul: &cOhhh, now were talking. I think after watching that Lions game I would hate whatever TV show was on.
-&R[12/02 19:04] &G&G19&W:&G04&d &R[&Wintergossip&R] &CCratylus@Dead Souls Dev: &chm. i'm out of beer
-&R[12/02 19:05] &G&G19&W:&G05&d &R[&Wintergossip&R] &CCratylus@Dead Souls Dev: &cwatching foozball with wine doesnt feel the saem
-&R[12/02 19:44] &G&G19&W:&G44&d &R[&Wintergossip&R] &CCratylus@Dead Souls Dev: &cmeh. fuck a steeler.
-&R[12/02 23:20] &G&G23&W:&G20&d &R[&Wintergossip&R] &CSinistrad@Dead Souls Dev: &csnaek
-&R[12/02 23:28] &G&G23&W:&G28&d &R[&Wintergossip&R] &CScoyn@SithWars: &chide
-&R[12/02 23:37] &G&G23&W:&G37&d &R[&Wintergossip&R] &CSinistrad@Dead Souls Dev: &chai Scoun
-&R[12/02 23:37] &G&G23&W:&G37&d &R[&Wintergossip&R] &CScoyn@SithWars: &cHai
-&R[12/02 23:40] &G&G23&W:&G40&d &R[&Wintergossip&R] &CSinistrad@Dead Souls Dev: &cwhere do you live theae days?
-&R[12/02 23:40] &G&G23&W:&G40&d &R[&Wintergossip&R] &CSinistrad@Dead Souls Dev: &cphonemudding scuse the typos
-&R[12/03 00:10] &G&G00&W:&G10&d &R[&Wintergossip&R] &CCratylus@Dead Souls Dev: &chttp://insidemovies.ew.com/2012/12/02/star-wars-rick-mccallum-leaving-lucasfilm/
-&R[12/03 00:27] &G&G00&W:&G27&d &R[&Wintergossip&R] &CSinistrad@Dead Souls Dev: &cit's like we just can't help ourselves
-&R[12/03 05:24] &G&G05&W:&G24&d &R[&Wintergossip&R] &CNinja@Dead Souls Dev: &cYay, Day of Mon (extended)!
+&R[08/11 03:56] &G&G03&W:&G56&d &R[&Wintergossip&R] &CQuixadhal@Bloodlines: &cFor values from 0 to 63, and -1 to -64, you could save yourself 56 bits... (one for sign, one for "extended").
+&R[08/11 03:56] &G&G03&W:&G56&d &R[&Wintergossip&R] &CShentino@Ulario: &cit's a tradeoff.  Character data is small valued so often it pays to compress it with a bittish encoding.  Numbers are used differently, and may even be packed into a structure that is fixed in size.
+&R[08/11 03:56] &G&G03&W:&G56&d &R[&Wintergossip&R] &CQuixadhal@Bloodlines: &cAh yes, padding bytes... remember those?
+&R[08/11 03:56] &G&G03&W:&G56&d &R[&Wintergossip&R] &CShentino@Ulario: &cyes, and that encoding is exactly how midi encodes delays between music events
+&R[08/11 03:56] &G&G03&W:&G56&d &R[&Wintergossip&R] &CShentino@Ulario: &cI'm not talking about padding.
+&R[08/11 03:57] &G&G03&W:&G57&d &R[&Wintergossip&R] &CShentino@Ulario: &cbecause that's an alignment issue
+&R[08/11 03:57] &G&G03&W:&G57&d &R[&Wintergossip&R] &CQuixadhal@Bloodlines: &cYou declare a strucutre with a 16-bit int and a 32-bit int and it actually takes up 64-bits, because the compiler pads the 16-bit one to the CPU's word size anyways.
+&R[08/11 03:58] &G&G03&W:&G58&d &R[&Wintergossip&R] &CShentino@Ulario: &cthat's not what I'm talking about >_<
+&R[08/11 03:58] &G&G03&W:&G58&d &R[&Wintergossip&R] &CQuixadhal@Bloodlines: &cNo, but it's another example of the very same thing.
+&R[08/11 03:58] &G&G03&W:&G58&d &R[&Wintergossip&R] &CShentino@Ulario: &cand you know it :P
+&R[08/11 03:59] &G&G03&W:&G59&d &R[&Wintergossip&R] &CShentino@Ulario: &cnot quite.  Character data is inherently variable, so it's inherently more complicated to deal with than numbers, which means bit packing pays off more in space savings.  Numbers, are singletons usually, so it's not quite so amenable to similiar tradeoffs
+&R[08/11 03:59] &G&G03&W:&G59&d &R[&Wintergossip&R] &CQuixadhal@Bloodlines: &cYou have to remember, the CPU doesn't know about "characters" or "integers".. it knows bits.  It only cares about "fetch a word from this address to this register"  "do this operation on it"  "push a word from this register to this address".
+&R[08/11 03:59] &G&G03&W:&G59&d &R[&Wintergossip&R] &CShentino@Ulario: &canyway I'm tired of arguing for one day.
+&R[08/11 04:01] &G&G04&W:&G01&d &R[&Wintergossip&R] &CQuixadhal@Bloodlines: &cLiterally, when you add 2 8 bit integers together, the CPU does a word fetch, mask+shift to get the value the right size, another fetch/mask/shift to another register, call operator, push result back, which might involve another fetch to ensure the other N-8 bits aren't changed (depends on the CPU). :)
+&R[08/11 04:02] &G&G04&W:&G02&d &R[&Wintergossip&R] &CShentino@Ulario: &cwhoa, time out.  Something's wrong on bloodlines...or wiley.  I just logged in and it bounced me off one of the channels.
+&R[08/11 04:03] &G&G04&W:&G03&d &R[&Wintergossip&R] &CQuixadhal@Bloodlines: &cDid it?  Which one?
+&R[08/11 04:03] &G&G04&W:&G03&d &R[&Wintergossip&R] &CShentino@Ulario: &cthe one shentino is logged in on
+&R[08/11 04:04] &G&G04&W:&G04&d &R[&Wintergossip&R] &CQuixadhal@Bloodlines: &cI'm supposed to know what my other MUD is doing when I'm not logged into it???  Good grief.
+&R[08/11 04:04] &G&G04&W:&G04&d &R[&Wintergossip&R] &CShentino@Ulario: &cyou apparently are logged in
+&R[08/11 04:04] &G&G04&W:&G04&d &R[&Wintergossip&R] &CShentino@Ulario: &cthe "who" command says so anyway
+&R[08/11 04:04] &G&G04&W:&G04&d &R[&Wintergossip&R] &CQuixadhal@WileyMUD: &cI just logged in.
+&R[08/11 04:05] &G&G04&W:&G05&d &R[&Wintergossip&R] &CQuixadhal@WileyMUD: &cWut's yer problem?
+&R[08/11 04:05] &G&G04&W:&G05&d &R[&Wintergossip&R] &CShentino@Ulario: &cSomething about "insufficient privilege for wiley channel" or somethign like that
+&R[08/11 04:05] &G&G04&W:&G05&d &R[&Wintergossip&R] &CShentino@Ulario: &cit was like I got demoted or something
+&R[08/11 04:05] &G&G04&W:&G05&d &R[&Wintergossip&R] &CQuixadhal@WileyMUD: &cHmmmm, maybe.  It's possible your character didn't save with the right flags last time.
+&R[08/11 04:06] &G&G04&W:&G06&d &R[&Wintergossip&R] &CQuixadhal@WileyMUD: &cDikuMUD I3/IMC stuff has level-based permissions and it's a bit fiddly...
+&R[08/11 04:06] &G&G04&W:&G06&d &R[&Wintergossip&R] &CQuixadhal@WileyMUD: &cLemme see if I remember how to reset that
+&R[08/11 04:06] &G&G04&W:&G06&d &R[&Wintergossip&R] &CShentino@Ulario: &cheehee
+&R[08/11 04:09] &G&G04&W:&G09&d &R[&Wintergossip&R] &CQuixadhal@WileyMUD: &cTry that.
+&R[08/11 04:09] &G&G04&W:&G09&d &R[&Wintergossip&R] &CQuixadhal@WileyMUD: &cLater, I'll check your player file and see if it actually saved like it should have.
+&R[08/11 04:10] &G&G04&W:&G10&d &R[&Wintergossip&R] &CQuixadhal@WileyMUD: &cI set some code to give it a default value on creation, but I bet something else stomped on it in the I3 code itself.
+&R[08/11 04:30] &G&G04&W:&G30&d &R[&Wintergossip&R] &CAidil@Way of the Force: &cah, another word size/64bit rant from Quix.
+&R[08/11 04:30] &G&G04&W:&G30&d &R[&Wintergossip&R] &CShentino@Ulario: &coho!  you're a repeat offender quix?!
+&R[08/11 04:30] &G&G04&W:&G30&d &R[&Wintergossip&R] &CQuixadhal@WileyMUD: &c*grin*
+&R[08/11 04:30] &G&G04&W:&G30&d &R[&Wintergossip&R] &CAidil@Way of the Force: &cfor silly rants? its more a matter of trying to find the moments when Quix isn't having a silly rant.
+&R[08/11 04:30] &G&G04&W:&G30&d &R[&Wintergossip&R] &CMaw@Epitaph Black Ops: &cHe'll never learn, either
+&R[08/11 04:31] &G&G04&W:&G31&d &R[&Wintergossip&R] &CMaw@Epitaph Black Ops: &cHe will basically forget anything you've said the next time you have the argument
+&R[08/11 04:31] &G&G04&W:&G31&d &R[&Wintergossip&R] &CShentino@Ulario: &cwell I think I held my own pretty well :)
+&R[08/11 04:31] &G&G04&W:&G31&d &R[&Wintergossip&R] &CShentino@Ulario: &cIr eally enjoyed chewing him out for misunderstanding
+&R[08/11 04:31] &G&G04&W:&G31&d &R[&Wintergossip&R] &CQuixadhal@WileyMUD: &cA good argument never needs to retain state info.
+&R[08/11 04:32] &G&G04&W:&G32&d &R[&Wintergossip&R] &CShentino@Ulario: &cbut good ebates do
+&R[08/11 04:32] &G&G04&W:&G32&d &R[&Wintergossip&R] &CShentino@Ulario: &cthis, therefore, was an argument and not a debate
+&R[08/11 05:32] &G&G05&W:&G32&d &R[&Wintergossip&R] &CNinja@Dead Souls Dev: &cdang, missed an Epic Battle while napping.
+&R[08/11 05:33] &G&G05&W:&G33&d &R[&Wintergossip&R] &CQuixadhal@Bloodlines: &cIt was fun... I won through attrition, as usual.  The other party simply lacked the intestinal fortitude to keep fighting. :)
+&R[08/11 05:35] &G&G05&W:&G35&d &R[&Wintergossip&R] &CQuixadhal@Bloodlines: &cAlthough Shentino did incidentally help me find a 15 year old bug in WileyMUD's code, so perhaps I'll call it a draw.
+&R[08/11 05:36] &G&G05&W:&G36&d &R[&Wintergossip&R] &CMaw@Epitaph Black Ops: &cI don't think anyone but you would consider it a victory
+&R[08/11 05:36] &G&G05&W:&G36&d &R[&Wintergossip&R] &CMaw@Epitaph Black Ops: &cAny more than watching a toddler fight a grown adult until the adult gets bored and goes away counts as the toddler's victory
+&R[08/11 06:24] &G&G06&W:&G24&d &R[&Wintergossip&R] &CNinja@Dead Souls Dev: &c!vote Maw
+&R[08/11 06:24] &G&G06&W:&G24&d &R[&Wintergossip&R] &Cgribbles@Rock the Halo: &cmaw: 1
+&R[08/11 06:24] &G&G06&W:&G24&d &R[&Wintergossip&R] &CMaw@Epitaph Black Ops: &c:D
+&R[08/11 06:26] &G&G06&W:&G26&d &R[&Wintergossip&R] &CNinja@Dead Souls Dev: &cQ winning a debate is like an Italian shopgirl in a Swiss shop refusing to show Oprah a $38,000 handback because the poor woman wouldn't be able to afford it.
+&R[08/11 06:26] &G&G06&W:&G26&d &R[&Wintergossip&R] &CNinja@Dead Souls Dev: &c"YAY! I saved the poor woman from being embarrassed!".
+&R[08/11 07:21] &G&G07&W:&G21&d &R[&Wintergossip&R] &CDexter@Nanvaent: &cdarn, I missed a discussion about character encodings. My pet subject
+&R[08/11 07:22] &G&G07&W:&G22&d &R[&Wintergossip&R] &CDexter@Nanvaent: &ca great way of detecting a newbie programmer: they tell you character encodings are an easy subject and a solved problem
+&R[08/11 07:24] &G&G07&W:&G24&d &R[&Wintergossip&R] &CDexter@Nanvaent: &cI haven't heard the old '7 bit ascii should be enough for everybody' in a while though
+&R[08/11 07:47] &G&G07&W:&G47&d &R[&Wintergossip&R] &CNinja@Dead Souls Dev: &c@cratypus, oh THAT "joe".
+&R[08/11 07:50] &G&G07&W:&G50&d &R[&Wintergossip&R] &CDuuk@Haven?: &cis it morning already?
+&R[08/11 08:11] &G&G08&W:&G11&d &R[&Wintergossip&R] &CNinja@Dead Souls Dev: &ceither that or something big exploded 'up there'.
+&R[08/11 09:15] &G&G09&W:&G15&d &R[&Wintergossip&R] &CAidil@Way of the Force: &cthere is always something big exploding 'up there' right now.
+&R[08/11 09:16] &G&G09&W:&G16&d &R[&Wintergossip&R] &CAidil@Way of the Force: &cits just that usually its so far 'up there' that we won't notice.
+&R[08/11 09:21] &G&G09&W:&G21&d &R[&Wintergossip&R] &CAidil@Way of the Force: &chmm, and Dexter, from a programmers point of view, character encoding is a solved problem, as it guarantees job security for every programmer who actually knows how to deal with it properly.
+&R[08/11 09:25] &G&G09&W:&G25&d &R[&Wintergossip&R] &CKalinice@Dead Souls Dev: &cthe proper solution, of course, is to teach everyone English.
+&R[08/11 09:26] &G&G09&W:&G26&d &R[&Wintergossip&R] &CAidil@Way of the Force: &cthat depends on what problem you want to solve.
+&R[08/11 09:44] &G&G09&W:&G44&d &R[&Wintergossip&R] &CNinja@Dead Souls Dev: &c"character encoding" isn't a problem - it's a solution.
+&R[08/11 10:16] &G&G10&W:&G16&d &R[&Wintergossip&R] &CCratylus@Dead Souls Dev: &care we still slapfighting over utf hate
+&R[08/11 10:16] &G&G10&W:&G16&d &R[&Wintergossip&R] &CDuuk@Haven?: &cIs this i3?
+&R[08/11 10:16] &G&G10&W:&G16&d &R[&Wintergossip&R] &CDuuk@Haven?: &cBecause we're always fighting about something dumb.
+&R[08/11 10:18] &G&G10&W:&G18&d &R[&Wintergossip&R] &CCratylus@Dead Souls Dev: &cto answer shentino's concern: the protocol afaik doesnt forbid empty strings as a channel name, and it doesnt really pose a risk since it's only going to pollute the channel list once
+&R[08/11 10:18] &G&G10&W:&G18&d &R[&Wintergossip&R] &CCratylus@Dead Souls Dev: &cas a counterexample, consider this:
+&R[08/11 10:18] &G&G10&W:&G18&d &R[&Wintergossip&R] &CCratylus@Dead Souls Dev: &cone time some prankster created a channel with the integer 0 as the name
+&R[08/11 10:19] &G&G10&W:&G19&d &R[&Wintergossip&R] &CCratylus@Dead Souls Dev: &cthe protocol doesnt support this, and it *did* cause problems. since i'm not paid to make things pretty, i dont care about "". since i like it better when my hobby *works* right, i care about 0
+&R[08/11 10:19] &G&G10&W:&G19&d &R[&Wintergossip&R] &CCratylus@Dead Souls Dev: &cthats the main difference there
+&R[08/11 11:05] &G&G11&W:&G05&d &R[&Wintergossip&R] &CAidil@Way of the Force: &cI'm afraid one of the things about i3 is that it sort of works.. good enough to not worry about what doesn't work.. unless you are me or some kind of perfectionist :-)
+&R[08/11 11:06] &G&G11&W:&G06&d &R[&Wintergossip&R] &CAidil@Way of the Force: &csolution, write your own router, or stop being a perfectionist :-)
+&R[08/11 12:28] &G&G12&W:&G28&d &R[&Wintergossip&R] &CKalinice@Dead Souls Dev: &cyou know what's worse than character encodings?  time zones.
+&R[08/11 12:33] &G&G12&W:&G33&d &R[&Wintergossip&R] &CStyxx@Split Infinity: &cUTC ALL THE THINGS
+&R[08/11 12:33] &G&G12&W:&G33&d &R[&Wintergossip&R] &CSalius@Haven?: &cfapzones
+&R[08/11 12:34] &G&G12&W:&G34&d &R[&Wintergossip&R] &CKalinice@Dead Souls Dev: &csali
+&R[08/11 12:34] &G&G12&W:&G34&d &R[&Wintergossip&R] &CKalinice@Dead Souls Dev: &cwere you drunk-dialing me last night?
+&R[08/11 12:34] &G&G12&W:&G34&d &R[&Wintergossip&R] &CSalius@Haven?: &cuh
+&R[08/11 12:34] &G&G12&W:&G34&d &R[&Wintergossip&R] &CSalius@Haven?: &cdont think so
+&R[08/11 12:34] &G&G12&W:&G34&d &R[&Wintergossip&R] &CKalinice@Dead Souls Dev: &ci had a missed call from somewhere in central texas
+&R[08/11 12:35] &G&G12&W:&G35&d &R[&Wintergossip&R] &CSalius@Haven?: &ci don't see any outbound calls to you last night
+&R[08/11 13:03] &G&G13&W:&G03&d &R[&Wintergossip&R] &CDuuk@Haven?: &cIt was me.
+&R[08/11 14:48] &G&G14&W:&G48&d &R[&Wintergossip&R] &CViriato@Iberia MUD: &chmm... good evening
+&R[08/11 14:48] &G&G14&W:&G48&d &R[&Wintergossip&R] &CViriato@Iberia MUD: &cthe good evening is should not be connected to hmm
+&R[08/11 14:48] &G&G14&W:&G48&d &R[&Wintergossip&R] &CViriato@Iberia MUD: &cthe hmm is about mudportal... does it worth one forum more about muds?
+&R[08/11 14:49] &G&G14&W:&G49&d &R[&Wintergossip&R] &CCratylus@Dead Souls Dev: &cwat
+&R[08/11 14:49] &G&G14&W:&G49&d &R[&Wintergossip&R] &CCratylus@Dead Souls Dev: &cwhy dnt you ask on the forums where they talk abotu it
+&R[08/11 14:52] &G&G14&W:&G52&d &R[&Wintergossip&R] &CViriato@Iberia MUD: &cI like you
+&R[08/11 14:52] &G&G14&W:&G52&d &R[&Wintergossip&R] &CViriato@Iberia MUD: &cneed to register in such forums first
+&R[08/11 14:53] &G&G14&W:&G53&d &R[&Wintergossip&R] &CViriato@Iberia MUD: &cmore seriously, I consider some of your opinions
+&R[08/11 14:54] &G&G14&W:&G54&d &R[&Wintergossip&R] &CViriato@Iberia MUD: &cwont say whom, but I consider whoever online now that wants to answer
+&R[08/11 14:55] &G&G14&W:&G55&d &R[&Wintergossip&R] &CCratylus@Dead Souls Dev: &cthe guy who is setting up that new site is a serious guy
+&R[08/11 14:55] &G&G14&W:&G55&d &R[&Wintergossip&R] &CViriato@Iberia MUD: &cfor instance, crat, the multiplier I give to your opinion is around 1.2 at the moment
+&R[08/11 14:55] &G&G14&W:&G55&d &R[&Wintergossip&R] &CCratylus@Dead Souls Dev: &cwhat that means for the future of that site, i have no idea
+&R[08/11 14:58] &G&G14&W:&G58&d &R[&Wintergossip&R] &CViriato@Iberia MUD: &cis icculus being pressed by that?
+&R[08/11 15:02] &G&G15&W:&G02&d &R[&Wintergossip&R] &CCratylus@Dead Souls Dev: &ci doubt icculus cares very much
+&R[08/11 15:04] &G&G15&W:&G04&d &R[&Wintergossip&R] &CViriato@Iberia MUD: &chmm... another portal, even than more modern than most, will probably divide a little more the community. Which I guess is something we dont need. Tijer should buy TMC :) Or TMC forum be the new portal... considering that TMC has the most consistent MUD listing
+&R[08/11 15:08] &G&G15&W:&G08&d &R[&Wintergossip&R] &CNinja@Dead Souls Dev: &cWhy can't we all just get along?
+&R[08/11 15:10] &G&G15&W:&G10&d &R[&Wintergossip&R] &CViriato@Iberia MUD: &cI need a main/reference forum!
+&R[08/11 15:10] &G&G15&W:&G10&d &R[&Wintergossip&R] &CDuuk@Haven?: &cthe best forum out there is 4chan
+&R[08/11 15:10] &G&G15&W:&G10&d &R[&Wintergossip&R] &CViriato@Iberia MUD: &cbut please, organize all of you so I can decide
+&R[08/11 15:10] &G&G15&W:&G10&d &R[&Wintergossip&R] &CDuuk@Haven?: &cYou shoudl check it out
+&R[08/11 15:10] &G&G15&W:&G10&d &R[&Wintergossip&R] &CViriato@Iberia MUD: &cHaven?
+&R[08/11 15:11] &G&G15&W:&G11&d &R[&Wintergossip&R] &CDuuk@Haven?: &cNo thanks, we're not a good forum.
+&R[08/11 15:11] &G&G15&W:&G11&d &R[&Wintergossip&R] &CViriato@Iberia MUD: &cfigured out how MCCP can be useful in my holydays in morocco
+&R[08/11 15:13] &G&G15&W:&G13&d &R[&Wintergossip&R] &CCratylus@Dead Souls Dev: &cthats the best dead kennedys album
+&R[08/11 15:37] &G&G15&W:&G37&d &R[&Wintergossip&R] &CNinja@Dead Souls Dev: &cHaven? not forum, more againstum.
+&R[08/11 15:38] &G&G15&W:&G38&d &R[&Wintergossip&R] &CDexter@Nanvaent: &cit's a holiday in Morocco, it's tough kid, but it's life
+&R[08/11 15:39] &G&G15&W:&G39&d &R[&Wintergossip&R] &CDexter@Nanvaent: &cdon't forget to pack a wife
+&R[08/11 15:46] &G&G15&W:&G46&d &R[&Wintergossip&R] &CGimlet@Old Sol IV: &call aboard the train... all aboard the train
+&R[08/11 15:47] &G&G15&W:&G47&d &R[&Wintergossip&R] &CGimlet@Old Sol IV: &cWouldn't you know we're riding on the Marrakesh Express
+&R[08/11 15:47] &G&G15&W:&G47&d &R[&Wintergossip&R] &CGimlet@Old Sol IV: &cThey're taking me to Marrakesh
+&R[08/11 16:13] &G&G16&W:&G13&d &R[&Wintergossip&R] &CDuuk@Haven?: &cRivera blows two saves in two attempts on the Tigers
+&R[08/11 16:15] &G&G16&W:&G15&d &R[&Wintergossip&R] &CKalinice@Dead Souls Dev: &cblowing tigers is dangerous business
+&R[08/11 17:08] &G&G17&W:&G08&d &R[&Wintergossip&R] &CShentino@Ulario: &cWriting your own router is only part of the solution, becuase you aren't the only one.  If another router in the network accepts something, you have to treat it as gospel, iirc.
+&R[08/11 17:08] &G&G17&W:&G08&d &R[&Wintergossip&R] &CAidil@Way of the Force: &cthat depends.
+&R[08/11 17:10] &G&G17&W:&G10&d &R[&Wintergossip&R] &CShentino@Ulario: &chow so?
+&R[08/11 17:10] &G&G17&W:&G10&d &R[&Wintergossip&R] &CAidil@Way of the Force: &cessentially, for known packet types, the router is supposed to convert them to the version of the i3 protocol that a connected mud understands, and additionally impose your own rules on what can appear on channels.
+&R[08/11 17:11] &G&G17&W:&G11&d &R[&Wintergossip&R] &CAidil@Way of the Force: &canything between muds directly should be protocol converted, but left untouched otherwise.
+&R[08/11 17:12] &G&G17&W:&G12&d &R[&Wintergossip&R] &CAidil@Way of the Force: &cbut since channels go through the router and are subject to rules, there is nothing stopping a router admin from accepting utf8 in messages but filter it out for every mud unless the mud indicated in its startup packet that it supports this.
+&R[08/11 17:13] &G&G17&W:&G13&d &R[&Wintergossip&R] &CShentino@Ulario: &cI know, but I mean that once one router accepts state, other routers have to honor it :)
+&R[08/11 17:13] &G&G17&W:&G13&d &R[&Wintergossip&R] &CShentino@Ulario: &cI think, anyway.
+&R[08/11 17:13] &G&G17&W:&G13&d &R[&Wintergossip&R] &CAidil@Way of the Force: &cchannel messages are not considered state.
+&R[08/11 17:13] &G&G17&W:&G13&d &R[&Wintergossip&R] &CShentino@Ulario: &ci.e., channel creation and mud connection.  The router's colleagues can't "veto" it, right?
+&R[08/11 17:13] &G&G17&W:&G13&d &R[&Wintergossip&R] &CShentino@Ulario: &cnot messages, channels
+&R[08/11 17:13] &G&G17&W:&G13&d &R[&Wintergossip&R] &CAidil@Way of the Force: &cthey are multicast messages.
+&R[08/11 17:17] &G&G17&W:&G17&d &R[&Wintergossip&R] &CQuixadhal@Bloodlines: &cHeh, check the mudlist... there are two chinese muds at the bottom of the sort with names that my keyboard and client won't let me type. :)
+&R[08/11 17:17] &G&G17&W:&G17&d &R[&Wintergossip&R] &CQuixadhal@Bloodlines: &cTo me, they show up as ?*7"R; and H}9zV>2bJT
+&R[08/11 17:17] &G&G17&W:&G17&d &R[&Wintergossip&R] &CAidil@Way of the Force: &cwhat I can say from back when I was running a router, that both cratylus and me took the liberty to maintain our own channel and ban lists.
+&R[08/11 17:17] &G&G17&W:&G17&d &R[&Wintergossip&R] &CQuixadhal@Bloodlines: &cI'm sure to them, they have sensible names in an approprite character set.
+&R[08/11 17:18] &G&G17&W:&G18&d &R[&Wintergossip&R] &CAidil@Way of the Force: &cthrough I don't think we ever actually had different channels.
+&R[08/11 17:18] &G&G17&W:&G18&d &R[&Wintergossip&R] &CQuixadhal@Bloodlines: &cWhat that ALSO means, is that I can never initiate contact with anyone on those muds... the only way I could communicate with them is if somebody on one sent me a tell, in which case I might be able to use reply.
+&R[08/11 17:19] &G&G17&W:&G19&d &R[&Wintergossip&R] &CAidil@Way of the Force: &cso rewrite your imud code to allow aliassing and refering to muds by number from the mudlist :-)
+&R[08/11 17:19] &G&G17&W:&G19&d &R[&Wintergossip&R] &CQuixadhal@Bloodlines: &cChannel names would be similar... a channel name some subset of users can't type or somehow enter, is one that's exclusive to that group of people.
+&R[08/11 17:20] &G&G17&W:&G20&d &R[&Wintergossip&R] &CShentino@Ulario: &cNot again what I meant
+&R[08/11 17:20] &G&G17&W:&G20&d &R[&Wintergossip&R] &CQuixadhal@Bloodlines: &cI'd rather not.  It's much like my suggestion to yahoo mail.
+&R[08/11 17:20] &G&G17&W:&G20&d &R[&Wintergossip&R] &CShentino@Ulario: &cWhat if one router accepts crap from a mud, does that mean the other routers have to honor the first router?
+&R[08/11 17:21] &G&G17&W:&G21&d &R[&Wintergossip&R] &CQuixadhal@Bloodlines: &cI cannot read chinese, and yahoo lets me specify what language I CAN understand in their preferences... yet they still refuse to catagorize messages I CANNOT READ, as spam.
+&R[08/11 17:21] &G&G17&W:&G21&d &R[&Wintergossip&R] &CAidil@Way of the Force: &cthat depends on what kind of crap, Shentino.
+&R[08/11 17:22] &G&G17&W:&G22&d &R[&Wintergossip&R] &CAidil@Way of the Force: &cchannel messages are the routers concern, so no, it doesn't.
+&R[08/11 17:22] &G&G17&W:&G22&d &R[&Wintergossip&R] &CQuixadhal@Bloodlines: &cI don't mind receiving them, but I'd like to put them in the spam folder automatically, since they will never be readable by me unless I change my preferences to say I know can read chinese as well as english. :)
+&R[08/11 17:22] &G&G17&W:&G22&d &R[&Wintergossip&R] &CAidil@Way of the Force: &cit can refuse those for a whole variety of reasons, including router specific bans on muds or whatever.
+&R[08/11 17:22] &G&G17&W:&G22&d &R[&Wintergossip&R] &CNinja@Dead Souls Dev: &cHey, married dudes...any of you have a wife whose feet do NOT taste like feet?
+&R[08/11 17:22] &G&G17&W:&G22&d &R[&Wintergossip&R] &CShentino@Ulario: &cwhaaaaa?!
+&R[08/11 17:22] &G&G17&W:&G22&d &R[&Wintergossip&R] &CAidil@Way of the Force: &cother packets? not the routers concern except for specific protocol conversions.
+&R[08/11 17:23] &G&G17&W:&G23&d &R[&Wintergossip&R] &CShentino@Ulario: &cnice derail ninja
+&R[08/11 17:23] &G&G17&W:&G23&d &R[&Wintergossip&R] &CQuixadhal@Bloodlines: &cNinja, you have to par-boil them and then put spices on them BEFORE you grill them.
+&R[08/11 17:23] &G&G17&W:&G23&d &R[&Wintergossip&R] &CXyzzy@Dead Souls Dev: &c"You will save 50% off the final price by buying into the early alpha now."
+&R[08/11 17:23] &G&G17&W:&G23&d &R[&Wintergossip&R] &CXyzzy@Dead Souls Dev: &coh please, may i pay you to do alpha testing for you?
+&R[08/11 17:24] &G&G17&W:&G24&d &R[&Wintergossip&R] &CQuixadhal@Bloodlines: &cYes, yes you may.
+&R[08/11 17:24] &G&G17&W:&G24&d &R[&Wintergossip&R] &CXyzzy@Dead Souls Dev: &coh THANK you sir!
+&R[08/11 17:24] &G&G17&W:&G24&d &R[&Wintergossip&R] &CShentino@Ulario: &cok, so if one router accepts a channel creation command, do the other routers have to accept it?
+&R[08/11 17:24] &G&G17&W:&G24&d &R[&Wintergossip&R] &CXyzzy@Dead Souls Dev: &cam i missing somethign, here, though?
+&R[08/11 17:24] &G&G17&W:&G24&d &R[&Wintergossip&R] &CQuixadhal@Bloodlines: &cYou may pay me any amount to help me alpha-test the MUD I haven't started working on yet!  I accept paypal.
+&R[08/11 17:24] &G&G17&W:&G24&d &R[&Wintergossip&R] &CShentino@Ulario: &ctry kickstarter
+&R[08/11 17:24] &G&G17&W:&G24&d &R[&Wintergossip&R] &CXyzzy@Dead Souls Dev: &ci can understand "buy early access game now, you get the features/fixes/full version when they come out"
+&R[08/11 17:25] &G&G17&W:&G25&d &R[&Wintergossip&R] &CXyzzy@Dead Souls Dev: &cbut "buy early access now, and then re-buy full version later" sounds kinda... i dunno
+&R[08/11 17:25] &G&G17&W:&G25&d &R[&Wintergossip&R] &CQuixadhal@Bloodlines: &cI make no promise that I will actually ever start working on it... it's just a really cool idea that I know you want to see happen, so please pay me to show that.
+&R[08/11 17:25] &G&G17&W:&G25&d &R[&Wintergossip&R] &CXyzzy@Dead Souls Dev: &clike i siad - mebbe im missing something
+&R[08/11 17:25] &G&G17&W:&G25&d &R[&Wintergossip&R] &CXyzzy@Dead Souls Dev: &chow much control does Steam do on these things?
+&R[08/11 17:25] &G&G17&W:&G25&d &R[&Wintergossip&R] &CXyzzy@Dead Souls Dev: &c"hey, man, as long as we make a buck off it"?
+&R[08/11 17:26] &G&G17&W:&G26&d &R[&Wintergossip&R] &CQuixadhal@Bloodlines: &cI don't know if kickstarter has any actual requirements that the project TRY to move forward, or not.
+&R[08/11 17:27] &G&G17&W:&G27&d &R[&Wintergossip&R] &CQuixadhal@Bloodlines: &cIn theory, I really could just write up a really cool idea, make a video talking about how cool it is, and beg for money, and then take a nice vacation and enjoy fanning myself with your money.
+&R[08/11 17:28] &G&G17&W:&G28&d &R[&Wintergossip&R] &CQuixadhal@Bloodlines: &cThe only limitation on that would be if the kickstarter thing itself had a fee for listing your project  with them.
+&R[08/11 17:30] &G&G17&W:&G30&d &R[&Wintergossip&R] &CShentino@Ulario: &cyou could probably be banned from kickstarter for flopping too badly
+&R[08/11 17:33] &G&G17&W:&G33&d &R[&Wintergossip&R] &CQuixadhal@Bloodlines: &cSure... but if you raise $50K, that's a year to setup a new identity to use to do it again.
+&R[08/11 17:34] &G&G17&W:&G34&d &R[&Wintergossip&R] &CQuixadhal@Bloodlines: &cIf you live like me, that'd probaby give you a couple years. :)
+&R[08/11 19:44] &G&G19&W:&G44&d &R[&Wintergossip&R] &CShentino@Ulario: &cUTF-8 still rocks more than the present combination of charsets it replaces :)
+&R[08/11 19:46] &G&G19&W:&G46&d &R[&Wintergossip&R] &CShentino@Ulario: &cand the best part?  ascii is 100 percent forward compatible with it
+&R[08/11 19:46] &G&G19&W:&G46&d &R[&Wintergossip&R] &CQuixadhal@Bloodlines: &c7-bit ASCII, true.
+&R[08/11 19:50] &G&G19&W:&G50&d &R[&Wintergossip&R] &CQuixadhal@Bloodlines: &cHeh, fixing the hunger damage issue in Wiley is actually quite a bit more involved that I thought. :)
+&R[08/11 19:51] &G&G19&W:&G51&d &R[&Wintergossip&R] &CShentino@Ulario: &cascii IS 7 bit
+&R[08/11 19:52] &G&G19&W:&G52&d &R[&Wintergossip&R] &CShentino@Ulario: &calas though character sets are a political minefield.  Everyone likes their own pet encoding so much, and switching to utf-8 would blow up document sizes for many of them
+&R[08/11 19:52] &G&G19&W:&G52&d &R[&Wintergossip&R] &CShentino@Ulario: &cplus the whole han unification kerfuffle
+&R[08/11 19:52] &G&G19&W:&G52&d &R[&Wintergossip&R] &CShentino@Ulario: &cwhere the koreans, japanese, chinese, etc threw a huge hissy fit over
+&R[08/11 19:53] &G&G19&W:&G53&d &R[&Wintergossip&R] &CShentino@Ulario: &csince it's a political temper tantrum, I find it has no merit.  it is however a reality that pro-utf8'ers must accept.  A stubborn boulder is still a boulder that is too heavy to move.
+&R[08/11 19:54] &G&G19&W:&G54&d &R[&Wintergossip&R] &CShentino@Ulario: &cand technical problems can waylay progress just as surely as political problems
+&R[08/11 19:55] &G&G19&W:&G55&d &R[&Wintergossip&R] &CShentino@Ulario: &cbottom line, if someone wants to dig in, throw a tizzy, and refuse to cooperate, you can't really force them to
+&R[08/11 20:05] &G&G20&W:&G05&d &R[&Wintergossip&R] &CQuixadhal@Bloodlines: &cSo far, I see we're NOW recognizing being starving and parched, and damage() is being called, and it's getting to the point where it is subtracting hit points.. and the amount being subtracted is indeed higher than the amount regenrated per tick... yet somehow, it still doesn't actually do the damage. :)
+&R[08/11 20:05] &G&G20&W:&G05&d &R[&Wintergossip&R] &CShentino@Ulario: &cso how come I still go into the negatives?
+&R[08/11 20:06] &G&G20&W:&G06&d &R[&Wintergossip&R] &CShentino@Ulario: &cand see, this is why I like dgd.  Everything's in lpc, and you can recompile in place.  Also, now that you can hotboot, you can even add new kfuns without downtime.
+&R[08/11 20:07] &G&G20&W:&G07&d &R[&Wintergossip&R] &CQuixadhal@Bloodlines: &cWell, if you want to convert my DikuMUD to LPC, I'd be happy to use it. :)
+&R[08/11 20:07] &G&G20&W:&G07&d &R[&Wintergossip&R] &CQuixadhal@Bloodlines: &cIn fact, if anyone made an LPC mudlib that actually had the same general mechanics and feel of a DikuMUD, I suspect we'd have a good sized group of converts.
+&R[08/11 20:07] &G&G20&W:&G07&d &R[&Wintergossip&R] &CShentino@Ulario: &cFirst I need a crash course on how dikumuds work :)
+&R[08/11 20:08] &G&G20&W:&G08&d &R[&Wintergossip&R] &CQuixadhal@Bloodlines: &c"crash course" is a very appropriate term.
+&R[08/11 20:08] &G&G20&W:&G08&d &R[&Wintergossip&R] &CQuixadhal@Bloodlines: &cHowever, think backwards from how every LPMUD mudlib works.
+&R[08/11 20:10] &G&G20&W:&G10&d &R[&Wintergossip&R] &CQuixadhal@Bloodlines: &cIn an LP, usually each combatant handles their own attacks, calling functions in the victim(s) to receive damage.  On a Diku, there would be a combat daemon that controls combat actions.  Likewise for other systems.
+&R[08/11 20:37] &G&G20&W:&G37&d &R[&Wintergossip&R] &CKalinice@Dead Souls Dev: &cGhost Shark.  Fuck yeah.
+&R[08/11 20:38] &G&G20&W:&G38&d &R[&Wintergossip&R] &CGimlet@Old Sol IV: &cno sharks, no bacon
+&R[08/11 20:39] &G&G20&W:&G39&d &R[&Wintergossip&R] &CKalinice@Dead Souls Dev: &c"If you're wet, you're dead."
+&R[08/11 20:40] &G&G20&W:&G40&d &R[&Wintergossip&R] &CGimlet@Old Sol IV: &cwear your Depends, then
+&R[08/11 20:44] &G&G20&W:&G44&d &R[&Wintergossip&R] &CMaw@Epitaph Black Ops: &cGhost Shark?!
+&R[08/11 20:47] &G&G20&W:&G47&d &R[&Wintergossip&R] &CCratylus@Dead Souls Dev: &cfuck yeah
+&R[08/11 21:01] &G&G21&W:&G01&d &R[&Wintergossip&R] &CShentino@Ulario: &cI prefer ghost peppers
+&R[08/11 21:01] &G&G21&W:&G01&d &R[&Wintergossip&R] &CShentino@Ulario: &cHey quix, can you upload your source somewhere?
+&R[08/11 21:02] &G&G21&W:&G02&d &R[&Wintergossip&R] &CQuixadhal@Bloodlines: &cI'll check the current change set in after dinner. :)
+&R[08/11 21:05] &G&G21&W:&G05&d &R[&Wintergossip&R] &CQuixadhal@Bloodlines: &cActually, the current checkin is with the semi-broken hunger code... https://github.com/quixadhal/wileymud
+&R[08/11 21:05] &G&G21&W:&G05&d &R[&Wintergossip&R] &CQuixadhal@Bloodlines: &cYou can pull the previous tagged version if you want it as it was before I mucked with it last. *grin*
+&R[08/11 21:06] &G&G21&W:&G06&d &R[&Wintergossip&R] &CQuixadhal@Bloodlines: &cI should probably re-indent it with 4 spaces instead of 2... I used to work on vt220 terminals most of the time.
+&R[08/11 21:08] &G&G21&W:&G08&d &R[&Wintergossip&R] &CKayle@SithWars: &cAnyone watching The International?
+&R[08/11 21:18] &G&G21&W:&G18&d &R[&Wintergossip&R] &CShentino@Ulario: &cI actually prefer 8-char indents, full tabs
+&R[08/11 21:18] &G&G21&W:&G18&d &R[&Wintergossip&R] &CCratylus@Dead Souls Dev: &c2
+&R[08/11 21:18] &G&G21&W:&G18&d &R[&Wintergossip&R] &CCratylus@Dead Souls Dev: &c2 is best
+&R[08/11 21:19] &G&G21&W:&G19&d &R[&Wintergossip&R] &CCratylus@Dead Souls Dev: &c4 is acceptable
+&R[08/11 21:19] &G&G21&W:&G19&d &R[&Wintergossip&R] &CCratylus@Dead Souls Dev: &c5 is right out
+&R[08/11 21:21] &G&G21&W:&G21&d &R[&Wintergossip&R] &CShentino@Ulario: &cK&R call you a blasphemer
+&R[08/11 21:22] &G&G21&W:&G22&d &R[&Wintergossip&R] &CShentino@Ulario: &c8 chars is the way to go!
+&R[08/11 21:22] &G&G21&W:&G22&d &R[&Wintergossip&R] &CShentino@Ulario: &cbut I agree that 4 is better than 2
+&R[08/11 21:22] &G&G21&W:&G22&d &R[&Wintergossip&R] &CShentino@Ulario: &cbut it absolutely has to be a power of two, at a bare minimum.  3, 5, 6, 7 are BUTT UGLY
+&R[08/11 21:54] &G&G21&W:&G54&d &R[&Wintergossip&R] &CArdneh@Ardneh's World: &cre-indent with freaking tab characters, you wuss, and get a program that can support displaying them.
+&R[08/11 22:05] &G&G22&W:&G05&d &R[&Wintergossip&R] &CQuixadhal@Bloodlines: &cThe only langauge where 3 is acceptable is perl... and that's becuase of "my $variable"... but it's still ugly.
+&R[08/11 22:06] &G&G22&W:&G06&d &R[&Wintergossip&R] &CQuixadhal@Bloodlines: &cTabs are evil, because you never align everything on a tab spot.  So when you mix tabs and spaces, if your tabs aren't the original tab size, it looks dumb.
+&R[08/11 22:09] &G&G22&W:&G09&d &R[&Wintergossip&R] &CStyxx@Split Infinity: &cyou have to make sure to use only tabs to indent, and use tabs to indent *only*. Then it will work.
+&R[08/11 22:09] &G&G22&W:&G09&d &R[&Wintergossip&R] &cStyxx@Split Infinity uses tabs in C, C++ and spaces in most everything else.
+&R[08/11 22:09] &G&G22&W:&G09&d &R[&Wintergossip&R] &CShentino@Ulario: &cdon't mix tabs and spaces in the first place!
+&R[08/11 22:09] &G&G22&W:&G09&d &R[&Wintergossip&R] &CShentino@Ulario: &chell, even git will bitch at you if you try it
+&R[08/11 22:17] &G&G22&W:&G17&d &R[&Wintergossip&R] &CKalinice@Dead Souls Dev: &cinsert spaces for tabs
+&R[08/11 22:42] &G&G22&W:&G42&d &R[&Wintergossip&R] &CQuixadhal@Bloodlines: &cSorry n00bs, I like to indent properly, which means aligning long expressions across multiple lines.  Inserting extra whitespace JUST to match up to some arbitrary tab stop looks worse than not bothering at all.
+&R[08/11 22:45] &G&G22&W:&G45&d &R[&Wintergossip&R] &CQuixadhal@Bloodlines: &cif( stupidly_long->microsoft_API.camelCaseFunction( parameter22, parameter3244), other_silly_long_API.with_even_more( parameter8472, parameter123332 )), where maybe I want the parameters to line up to each other, not some silly 8-space-tab-nazi ideal.
+&R[08/11 22:51] &G&G22&W:&G51&d &R[&Wintergossip&R] &CArdneh@Ardneh's World: &ctabs are only for the beginning of a line, yo
+&R[08/11 22:51] &G&G22&W:&G51&d &R[&Wintergossip&R] &CArdneh@Ardneh's World: &c(for programming purposes, at least)
+&R[08/11 22:52] &G&G22&W:&G52&d &R[&Wintergossip&R] &CArdneh@Ardneh's World: &cany other applications, use spaces
+&R[08/11 23:00] &G&G23&W:&G00&d &R[&Wintergossip&R] &CQuixadhal@Bloodlines: &cArdneh....
+&R[08/11 23:01] &G&G23&W:&G01&d &R[&Wintergossip&R] &CQuixadhal@Bloodlines: &cif( jfkdljfkldsjflkjdslkfjsdklj.fjdkjflkdsjfkldsjkld( fjdklsjfldskaj, fjdksjfkldsa, fjdksjflkdsj,
+&R[08/11 23:01] &G&G23&W:&G01&d &R[&Wintergossip&R] &CQuixadhal@Bloodlines: &c                                                      ruewioruewiouriowe, urieowuroiewu ) {
+&R[08/11 23:01] &G&G23&W:&G01&d &R[&Wintergossip&R] &CQuixadhal@Bloodlines: &c    do_stuff();
+&R[08/11 23:02] &G&G23&W:&G02&d &R[&Wintergossip&R] &CQuixadhal@Bloodlines: &c}
+&R[08/11 23:05] &G&G23&W:&G05&d &R[&Wintergossip&R] &CQuixadhal@Bloodlines: &cNow, with spaces, that always lines up right.  With tabs, your parameter list might have anywehre from 1 to 7 spaces after the left paren.... ugly.
+&R[08/11 23:11] &G&G23&W:&G11&d &R[&Wintergossip&R] &CKalinice@Dead Souls Dev: &ctabs are the whitespace of the devil
+&R[08/11 23:12] &G&G23&W:&G12&d &R[&Wintergossip&R] &CShentino@Ulario: &cyou should know, since you're his right hand man
+&R[08/11 23:12] &G&G23&W:&G12&d &R[&Wintergossip&R] &CShentino@Ulario: &cand quix, tabs are standard at 8 spaces
+&R[08/11 23:16] &G&G23&W:&G16&d &R[&Wintergossip&R] &CKalinice@Dead Souls Dev: &cprogrammers don't use tabs, we use indents
+&R[08/11 23:17] &G&G23&W:&G17&d &R[&Wintergossip&R] &CQuixadhal@Bloodlines: &cNo, tabs are whatever the viewer has their editor set to be.  They haven't been "standard" since the days of electric typewriters, and even then many people slid the tabstops around.
+&R[08/11 23:17] &G&G23&W:&G17&d &R[&Wintergossip&R] &CQuixadhal@Bloodlines: &cIf *YOU* assume they're 8 spaces wide, don't be surprised when other people complain about how ugly your code looks. :)
+&R[08/11 23:17] &G&G23&W:&G17&d &R[&Wintergossip&R] &CKalinice@Dead Souls Dev: &cit was pretty nifty having multiple variably spaced tabstops on a mechanical typewriter
+&R[08/11 23:18] &G&G23&W:&G18&d &R[&Wintergossip&R] &CKalinice@Dead Souls Dev: &chigh fucking tech yo
+&R[08/11 23:18] &G&G23&W:&G18&d &R[&Wintergossip&R] &CQuixadhal@Bloodlines: &cHeh, most of the youngsters don't even know why it's called a "tab stop".
+&R[08/11 23:18] &G&G23&W:&G18&d &R[&Wintergossip&R] &CKalinice@Dead Souls Dev: &cprobably not
+&R[08/11 23:19] &G&G23&W:&G19&d &R[&Wintergossip&R] &CKalinice@Dead Souls Dev: &cthey probably also don't konw what a floppy disk is and why those hard 3.5" ones were still floppy
+&R[08/11 23:19] &G&G23&W:&G19&d &R[&Wintergossip&R] &CQuixadhal@Bloodlines: &cI remember those old IBM selectric II's where the tab stops and the carriage return would make the desk wobble.
+&R[08/11 23:19] &G&G23&W:&G19&d &R[&Wintergossip&R] &CKalinice@Dead Souls Dev: &cwe had a line printer that would walk across the room
+&R[08/11 23:20] &G&G23&W:&G20&d &R[&Wintergossip&R] &CQuixadhal@Bloodlines: &cI miss line printers.
+&R[08/11 23:20] &G&G23&W:&G20&d &R[&Wintergossip&R] &CKalinice@Dead Souls Dev: &clp0 on fire
+&R[08/11 23:20] &G&G23&W:&G20&d &R[&Wintergossip&R] &CQuixadhal@Bloodlines: &cNothing like having your code printed out and taking up most of a box, so the guy at the lab just gave you the box to carry it in. :)
+&R[08/11 23:23] &G&G23&W:&G23&d &R[&Wintergossip&R] &CQuixadhal@Bloodlines: &cI had one instructor who was being annoying about me not commenting the way he liked comments formatted... so the next program I turned in was written, indented, and commented EXACTLY as his example showed... It was a 2 inch thick printout of pascal, with comments surrounded by BOXES of (*********************).
+&R[08/11 23:24] &G&G23&W:&G24&d &R[&Wintergossip&R] &CQuixadhal@Bloodlines: &cSeriously, like a one-line function with an 8 line comment box above the function header, and another 4 line one below the END statement.
+&R[08/11 23:25] &G&G23&W:&G25&d &R[&Wintergossip&R] &CQuixadhal@Bloodlines: &cMy classmates said he didn't complain about style to anyone for the rest of the semester.
+&R[08/11 23:26] &G&G23&W:&G26&d &R[&Wintergossip&R] &CQuixadhal@Bloodlines: &c(In an auditorium class with 100+ students, he probably didn't want to risk having ALL of us do that... he'd have to carry the stack of printouts to his office)

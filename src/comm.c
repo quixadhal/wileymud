@@ -205,15 +205,14 @@ int main(int argc, const char **argv)
   if (init_sql()) {
     log_boot("Connected to database!");
     log_boot("%s\n", version_sql());
+    log_boot("Disconnecting from database!");
+    close_sql();
   } else {
     log_fatal("%s\n", "Couldn't open Database Connection!  Aborting!");
     return MUD_HALT;
   }
 
   exit_code = run_the_game(port);
-
-  log_boot("Disconnecting from database!");
-  close_sql();
   return exit_code;
 }
 

@@ -179,11 +179,13 @@ EXEC SQL END DECLARE SECTION;
 
 void load_bans(void)
 {
+/*
   if( !db_connected ) {
     log_boot("- Loading banned name list from file");
     file_to_prompt(BANNED_NAME_FILE, old_banned_names);
     return;
   }
+*/
 
   /* Only load from the file if it's newer than our SQL data */
   if( compare_dates_file_sql( BANNED_NAME_FILE, "banned", "banned_date" ) > 0 ) {
@@ -193,6 +195,7 @@ void load_bans(void)
   }
 
   log_boot("- Loading banned name list from SQL");
+  init_sql();
   EXEC SQL SELECT banned_name
              INTO :banned_names
              FROM banned
@@ -202,9 +205,6 @@ void load_bans(void)
     fprintf(stderr, "error code %ld, message %s, rows %ld, warning %c\n",
             sqlca.sqlcode, sqlca.sqlerrm.sqlerrmc, sqlca.sqlerrd[2],
             sqlca.sqlwarn[0]);
-      if (sqlca.sqlcode == -400) {
-        init_sql();
-      }
   } else {
     banned_names_count = sqlca.sqlerrd[2]; /* row count */
     EXEC SQL COMMIT;
@@ -220,9 +220,6 @@ void load_bans(void)
     fprintf(stderr, "error code %ld, message %s, rows %ld, warning %c\n",
             sqlca.sqlcode, sqlca.sqlerrm.sqlerrmc, sqlca.sqlerrd[2],
             sqlca.sqlwarn[0]);
-      if (sqlca.sqlcode == -400) {
-        init_sql();
-      }
   } else {
     banned_ips_count = sqlca.sqlerrd[2]; /* row count */
     EXEC SQL COMMIT;
@@ -239,14 +236,12 @@ void load_bans(void)
     fprintf(stderr, "error code %ld, message %s, rows %ld, warning %c\n",
             sqlca.sqlcode, sqlca.sqlerrm.sqlerrmc, sqlca.sqlerrd[2],
             sqlca.sqlwarn[0]);
-      if (sqlca.sqlcode == -400) {
-        init_sql();
-      }
   } else {
     banned_at_count = sqlca.sqlerrd[2]; /* row count */
     EXEC SQL COMMIT;
   }
 
+  close_sql();
 }
 
 void unload_bans(void)
@@ -273,6 +268,8 @@ EXEC SQL END DECLARE SECTION;
   char                                    ack[MAX_STRING_LENGTH] = "\0\0\0";
   char                                   *pfft = NULL;
 
+  init_sql();
+
   strcpy(ack, old_banned_names);
   pfft = (char *)strtok(ack, " \t\r\n");
   while(pfft) {
@@ -292,6 +289,8 @@ EXEC SQL END DECLARE SECTION;
     }
     pfft = (char *)strtok(NULL, " \t\r\n");
   }
+
+  close_sql();
 }
 
 void do_ban(struct char_data *ch, const char *argument, int cmd)
@@ -323,6 +322,7 @@ EXEC SQL END DECLARE SECTION;
             return;
           }
           /* Now, we can actually do the ban. */
+          init_sql();
           EXEC SQL BEGIN WORK;
           EXEC SQL INSERT INTO banned ( banned_name ) VALUES ( :buf );
           if (sqlca.sqlcode < 0) {
@@ -330,14 +330,12 @@ EXEC SQL END DECLARE SECTION;
                    sqlca.sqlcode, sqlca.sqlerrm.sqlerrmc, sqlca.sqlerrd[2],
                    sqlca.sqlwarn[0]);
             EXEC SQL ROLLBACK WORK;
-      if (sqlca.sqlcode == -400) {
-        init_sql();
-      }
           } else {
             EXEC SQL COMMIT WORK;
             cprintf(ch, "%s is now banned!\r\n", buf);
             log_auth(ch, "BAN %s has been banned by %s!", buf, GET_NAME(ch));
           }
+          close_sql();
           /* Now we need to refresh the ban lists */
           unload_bans();
           load_bans();
@@ -357,6 +355,7 @@ EXEC SQL END DECLARE SECTION;
             return;
           }
           /* Now, we can actually do the ban. */
+          init_sql();
           EXEC SQL BEGIN WORK;
           EXEC SQL INSERT INTO banned ( banned_ip ) VALUES ( :buf );
           if (sqlca.sqlcode < 0) {
@@ -364,14 +363,12 @@ EXEC SQL END DECLARE SECTION;
                    sqlca.sqlcode, sqlca.sqlerrm.sqlerrmc, sqlca.sqlerrd[2],
                    sqlca.sqlwarn[0]);
             EXEC SQL ROLLBACK WORK;
-      if (sqlca.sqlcode == -400) {
-        init_sql();
-      }
           } else {
             EXEC SQL COMMIT WORK;
             cprintf(ch, "%s is now banned!\r\n", buf);
             log_auth(ch, "BAN %s has been banned by %s!", buf, GET_NAME(ch));
           }
+          close_sql();
           /* Now we need to refresh the ban lists */
           unload_bans();
           load_bans();
@@ -417,6 +414,7 @@ EXEC SQL END DECLARE SECTION;
             return;
           }
           /* OK, yank 'em. */
+          init_sql();
           EXEC SQL BEGIN WORK;
           EXEC SQL DELETE FROM banned WHERE lower(banned_name) = lower(:buf);
           if (sqlca.sqlcode < 0) {
@@ -424,14 +422,12 @@ EXEC SQL END DECLARE SECTION;
                    sqlca.sqlcode, sqlca.sqlerrm.sqlerrmc, sqlca.sqlerrd[2],
                    sqlca.sqlwarn[0]);
             EXEC SQL ROLLBACK WORK;
-      if (sqlca.sqlcode == -400) {
-        init_sql();
-      }
           } else {
             EXEC SQL COMMIT WORK;
             cprintf(ch, "%s is now unbanned.\r\n", buf);
             log_auth(ch, "BAN %s has been unbanned by %s!", buf, GET_NAME(ch));
           }
+          close_sql();
           /* Now we need to refresh the ban lists */
           unload_bans();
           load_bans();
@@ -453,6 +449,7 @@ EXEC SQL END DECLARE SECTION;
             return;
           }
           /* OK, yank 'em. */
+          init_sql();
           EXEC SQL BEGIN WORK;
           EXEC SQL DELETE FROM banned WHERE host(banned_ip) = lower(:buf);
           if (sqlca.sqlcode < 0) {
@@ -460,14 +457,12 @@ EXEC SQL END DECLARE SECTION;
                    sqlca.sqlcode, sqlca.sqlerrm.sqlerrmc, sqlca.sqlerrd[2],
                    sqlca.sqlwarn[0]);
             EXEC SQL ROLLBACK WORK;
-      if (sqlca.sqlcode == -400) {
-        init_sql();
-      }
           } else {
             EXEC SQL COMMIT WORK;
             cprintf(ch, "%s is now unbanned.\r\n", buf);
             log_auth(ch, "BAN %s has been unbanned by %s!", buf, GET_NAME(ch));
           }
+          close_sql();
           /* Now we need to refresh the ban lists */
           unload_bans();
           load_bans();
