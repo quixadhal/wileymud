@@ -31,6 +31,8 @@
 #define _DIKU_LIMITS_C
 #include "mudlimits.h"
 
+#undef BOOT_IDLE    /* define this to kick idle people, undefine to let them stay idle all day */
+
 char                                   *ClassTitles(struct char_data *ch)
 {
     int                                     i = 0;
@@ -293,6 +295,7 @@ int hit_gain(struct char_data *ch)
 
     if (GET_RACE(ch) == RACE_DWARF)
 	gain += 5;
+
     if (GET_RACE(ch) == RACE_HALFLING)
 	gain += 2;
 
@@ -304,23 +307,22 @@ int hit_gain(struct char_data *ch)
 
     if (IS_AFFECTED(ch, AFF_POISON)) {
 	gain >>= 2;
-	damage(ch, ch, 15, SPELL_POISON);
+	/* damage(ch, ch, 15, SPELL_POISON); */
     }
 
     if (IS_PC(ch) && IS_STARVING(ch)) {
 	gain >>= 2;
-	damage(ch, ch, number(1, 3), TYPE_HUNGER);
+	/* damage(ch, ch, number(1, 3), TYPE_HUNGER); */
     }
 
     if (IS_PC(ch) && IS_PARCHED(ch)) {
 	gain >>= 2;
-	damage(ch, ch, number(1, 3), TYPE_HUNGER);
+	/* damage(ch, ch, number(1, 3), TYPE_HUNGER); */
     }
 
     gain = MAX(gain, 1);
 
-    if (IS_PC(ch))
-	cprintf(ch, "You should be gaining %d hit points.\r\n", gain);
+    //if (IS_PC(ch)) cprintf(ch, "You should be gaining %d hit points.\r\n", gain);
 
     return (gain);
 }
@@ -813,7 +815,9 @@ void gain_condition(struct char_data *ch, int condition, int value)
 
 void check_idling(struct char_data *ch)
 {
+#ifdef BOOT_IDLE
     struct obj_cost                         cost;
+#endif
 
     if (DEBUG > 2)
 	log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
@@ -827,6 +831,7 @@ void check_idling(struct char_data *ch)
 	do_save(ch, "", 0);
 	return;
     }
+#ifdef BOOT_IDLE
     if (ch->specials.timer >= 15) {
 	log_info("LOG:%s AUTOSAVE:Timer %d.", GET_NAME(ch), ch->specials.timer);
 
@@ -858,6 +863,7 @@ void check_idling(struct char_data *ch)
 
 	log_info("Done Auto-Saving.");
     }
+#endif
 }
 
 /* Update both PC's & NPC's and objects */
@@ -877,8 +883,32 @@ void point_update(int current_pulse)
      */
     for (i = character_list; i; i = next_dude) {
 	next_dude = i->next;
+        /* So, the first thing we need to do is apply damage() effects
+         * so that poison, hunger, thirst, or other spells can do their
+         * periodic damage BEFORE all the calculations below happen.
+         */
+        if (IS_AFFECTED(i, AFF_POISON)) {
+	    damage(i, i, 15, SPELL_POISON);
+        }
+
+        if (IS_PC(i) && IS_STARVING(i)) {
+	    damage(i, i, number(1, 3), TYPE_HUNGER);
+        }
+
+        if (IS_PC(i) && IS_PARCHED(i)) {
+	    damage(i, i, number(1, 3), TYPE_HUNGER);
+        }
+
 	if (GET_POS(i) >= POSITION_STUNNED) {
 	    if (!affected_by_spell(i, SPELL_AID)) {
+                /* A problem here... damage() calls within hit_gain() are being
+                 * overridden, because this code calls GET_HIT() before the call to
+                 * hit_gain(), and thus no damage can happen.
+                 *
+                 * Basically, the damage() calls for spells/poison/hunger need
+                 * to be moved in here, so they happen BEFORE hit_gain() is
+                 * calculated.
+                 */
 		GET_HIT(i) = MIN(GET_HIT(i) + hit_gain(i), hit_limit(i));
 	    } else {
 		if (GET_HIT(i) < hit_limit(i)) {
@@ -897,17 +927,21 @@ void point_update(int current_pulse)
 	     */
 	    GET_HIT(i) += 1;
 	    update_pos(i);
-	} else if (IS_PC(i) && (GET_POS(i) == POSITION_MORTALLYW))
+	} else if (IS_PC(i) && (GET_POS(i) == POSITION_MORTALLYW)) {
 	    damage(i, i, 1, TYPE_SUFFERING);
+        }
 
 	if (!IS_NPC(i)) {
 	    update_char_objects(i);
 	    if (GetMaxLevel(i) < CREATOR)
 		check_idling(i);
 	}
-	gain_condition(i, FULL, -1);
-	gain_condition(i, DRUNK, -1);
-	gain_condition(i, THIRST, -1);
+
+        if (GET_POS(i) != POSITION_DEAD) {
+	    gain_condition(i, FULL, -1);
+	    gain_condition(i, DRUNK, -1);
+	    gain_condition(i, THIRST, -1);
+        }
     }
 
     /*

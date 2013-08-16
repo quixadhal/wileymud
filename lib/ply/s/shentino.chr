@@ -8,9 +8,9 @@ Description
 A nerd with thick glasses, black slacks, and a white lab coat.
 ~
 LastSite           adork@71-84-184-93.dhcp.mdfd.or.charter.com~
-LastLogin          1376212940
+LastLogin          1376294492
 Birth              1375152949
-Played             7326
+Played             11666
 Sex                1
 Race               2
 Class              2
@@ -25,11 +25,11 @@ PoofIn             ~
 PoofOut            ~
 AbilityScores      8 0 9 6 11 11
 AbilityPad         0 0 0 0
-HpManaMove         25 20 104 0 104 0
+HpManaMove         26 20 104 0 105 0
 AC                 100
 ToHitDamage        0 0
 SaveApply          0 0 0 0 0
-Conditions         0 4 4 0 0 0
+Conditions         0 0 0 0 0 0
 PointsPad1         0 0 0
 PointsPad2         0 0 0 0
 PointsPad3         0 0 0

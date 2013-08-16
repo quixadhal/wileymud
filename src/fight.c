@@ -899,12 +899,12 @@ int damage(struct char_data *ch, struct char_data *victim, int dam, int attackty
 
     dam = MAX(dam, 0);
 
-    cprintf(victim, "You should be taking %d damage!\r\n", dam);
-    cprintf(victim, "Your pre-damage hit points were %d.\r\n", GET_HIT(victim));
+    //cprintf(victim, "You should be taking %d damage!\r\n", dam);
+    //cprintf(victim, "Your pre-damage hit points were %d.\r\n", GET_HIT(victim));
 
     GET_HIT(victim) -= dam;
 
-    cprintf(victim, "Your post-damage hit points are %d.\r\n", GET_HIT(victim));
+    //cprintf(victim, "Your post-damage hit points are %d.\r\n", GET_HIT(victim));
 
     if (IS_AFFECTED(victim, AFF_FIRESHIELD) && !IS_AFFECTED(ch, AFF_FIRESHIELD)) {
 	affect_from_char(victim, SPELL_FIRESHIELD);
@@ -972,7 +972,7 @@ int damage(struct char_data *ch, struct char_data *victim, int dam, int attackty
 	}
     }
 
-    cprintf(victim, "You are getting to the point where damage messages should happen.\r\n");
+    //cprintf(victim, "You are getting to the point where damage messages should happen.\r\n");
 
     if ((GET_POS(victim) <= POSITION_STUNNED) && MOUNTED(victim)) {
 	FallOffMount(victim, MOUNTED(victim));
