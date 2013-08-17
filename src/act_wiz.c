@@ -3251,32 +3251,43 @@ void do_setreboot(struct char_data *ch, const char *argument, int cmd)
 	first = atoi(first_str);
 	if (first < 0)
 	    first = 0;
-	if (first > 23)
-	    first = 23;
 	argument = one_argument(argument, second_str);
 	if (*second_str) {
 	    second = atoi(second_str);
 	    if (second < 0)
 		second = 0;
-	    if (second > 23)
-		second = 23;
+	    if (second > 59)
+		second = 59;
 	} else {
 	    second = first;
 	}
     } else {
-	first = 7;
-	second = 19;
+	first = 23;
+	second = 0;
     }
-    REBOOT_AT1 = first;
-    REBOOT_AT2 = second;
-    if (!(pfd = fopen(REBOOTTIME_FILE, "w"))) {
-	log_info("Cannot save reboot times!");
+
+    if (first > 0) {
+        REBOOT_HOUR = first;
+        REBOOT_MIN = second;
+        REBOOT_FREQ = (REBOOT_HOUR * 60 * 60 ) + (REBOOT_MIN * 60);
+        REBOOT_LASTCHECK = time(0);
+        REBOOT_LEFT = REBOOT_FREQ;
+
+        if (!(pfd = fopen(REBOOTTIME_FILE, "w"))) {
+            log_info("Cannot save reboot times!");
+        } else {
+            fprintf(pfd, "%d %d\n", REBOOT_HOUR, REBOOT_MIN);
+            FCLOSE(pfd);
+        }
+        cprintf(ch, "You have set the reboot frequency to %2d hours and %2d minutes.\r\n", REBOOT_HOUR, REBOOT_MIN);
+        log_info("Reboot frequency set to %2d hours and %2d minutes by %s.\r\n", REBOOT_HOUR, REBOOT_MIN, GET_NAME(ch));
     } else {
-	fprintf(pfd, "%d %d\n", REBOOT_AT1, REBOOT_AT2);
-	FCLOSE(pfd);
+        if (!(pfd = fopen(REBOOTTIME_FILE, "w"))) {
+            log_info("Cannot save reboot times!");
+        } else {
+            fprintf(pfd, "%d %d\n", 0, 0);
+            FCLOSE(pfd);
+        }
     }
-    cprintf(ch, "You have set reboot times of %02d:00 and %02d:00.\r\n", REBOOT_AT1,
-	    REBOOT_AT2);
-    log_info("Reboot times %02d:00 and %02d:00 set by %s.", REBOOT_AT1, REBOOT_AT2,
-	     GET_NAME(ch));
+
 }

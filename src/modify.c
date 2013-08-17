@@ -25,8 +25,11 @@
 #define _MODIFY_C
 #include "modify.h"
 
-int                                     REBOOT_AT1 = 0;
-int                                     REBOOT_AT2 = 0;	       /* 0-23, time of optional reboot if -e lib/reboot */
+int                                     REBOOT_HOUR = 23;
+int                                     REBOOT_MIN  = 0;	       /* 0-N, 0-59, time of optional reboot if -e lib/reboot */
+int                                     REBOOT_FREQ = 0;
+int                                     REBOOT_LEFT = 0;
+int                                     REBOOT_LASTCHECK = 0;
 struct room_data                       *world = NULL;	       /* dyn alloc'ed array of rooms */
 
 const char                             *string_fields[] = {
@@ -875,6 +878,51 @@ void check_reboot(void)
 {
     time_t                                  tc;
     struct tm                              *t_info = NULL;
+    char                                   *tmstr = NULL;
+
+    if (DEBUG > 2)
+	log_info("called %s with no arguments", __PRETTY_FUNCTION__);
+
+    tc = time(0);
+
+    //log_info("REBOOT_FREQ: %d\nREBOOT_LEFT: %d", REBOOT_FREQ, REBOOT_LEFT);
+    if (REBOOT_FREQ > 0) {
+        REBOOT_LEFT -= (tc - REBOOT_LASTCHECK);
+        REBOOT_LASTCHECK = tc;
+
+        if (REBOOT_LEFT <= 0) {
+            t_info = localtime(&tc);
+            tmstr = asctime(t_info);
+            *(tmstr + strlen(tmstr) - 1) = '\0';
+
+            allprintf("\x007\r\nBroadcast message from Quixadhal (tty0) %s...\r\n\r\n", tmstr);
+            allprintf("Automatic reboot.  Come back in a few minutes!\r\n");
+            allprintf("\x007The system is going down NOW !!\r\n\x007\r\n");
+            diku_shutdown = diku_reboot = 1;
+        } else if (REBOOT_LEFT <= 60 * 60) {
+            if (((REBOOT_LEFT/60) < 10) && ((REBOOT_LEFT % 60) == 0)) {
+                WizLock = 1;
+                allprintf("\x007\r\nBroadcast message from Quixadhal (tty0) %s...\r\n\r\n", tmstr);
+                allprintf("Automatic reboot.  Game is now Whizz-Locked!\r\n");
+                allprintf("\x007The system is going DOWN in %d minutes !!\r\n\x007\r\n", (REBOOT_LEFT/60));
+            } else if (((REBOOT_LEFT/60) <= 30) && ((REBOOT_LEFT % 300) == 0)) {
+                allprintf("\x007\r\nBroadcast message from Quixadhal (tty0) %s...\r\n\r\n", tmstr);
+                allprintf("Automatic reboot.  Game is now Whizz-Locked!\r\n");
+                allprintf("\x007The system is going DOWN in %d minutes !!\r\n\x007\r\n", (REBOOT_LEFT/60));
+            } else if (((REBOOT_LEFT/60) <= 60) && ((REBOOT_LEFT % 600) == 0)) {
+                allprintf("\x007\r\nBroadcast message from Quixadhal (tty0) %s...\r\n\r\n", tmstr);
+                allprintf("Automatic reboot.  Game is now Whizz-Locked!\r\n");
+                allprintf("\x007The system is going DOWN in %d minutes !!\r\n\x007\r\n", (REBOOT_LEFT/60));
+            }
+        }
+    }
+}
+
+#if 0
+void check_reboot(void)
+{
+    time_t                                  tc;
+    struct tm                              *t_info = NULL;
     char                                    dummy = '\0';
     FILE                                   *boot = NULL;
     char                                    buf[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
@@ -926,3 +974,5 @@ void check_reboot(void)
 	    FCLOSE(boot);
 	}
 }
+#endif
+

@@ -216,34 +216,40 @@ void load_db(void)
 	    }
 	}
     }
-    log_boot("- Loading reboot times");
+    log_boot("- Loading reboot frequency");
     if (!(pfd = fopen(REBOOTTIME_FILE, "r"))) {
-	log_boot("Default reboot times of 07:00 and 19:00 used.");
-	REBOOT_AT1 = 7;
-	REBOOT_AT2 = 19;
+        log_boot("Default reboot is every 23 hours");
+        REBOOT_HOUR = 23;
+        REBOOT_MIN = 0;
+        REBOOT_FREQ = (REBOOT_HOUR * 60 * 60 ) + (REBOOT_MIN * 60);
+        REBOOT_LASTCHECK = time(0);
+        REBOOT_LEFT = REBOOT_FREQ;
 	if (!(pfd = fopen(REBOOTTIME_FILE, "w"))) {
 	    log_error("Cannot save reboot times!");
 	} else {
-	    fprintf(pfd, "%d %d\n", REBOOT_AT1, REBOOT_AT2);
+	    fprintf(pfd, "%d %d\n", REBOOT_HOUR, REBOOT_MIN);
 	    FCLOSE(pfd);
 	}
     } else {
-	int                                     this,
-	                                        that;
+	int                                     hour_count,
+	                                        min_count;
 
-	if (fscanf(pfd, " %d %d ", &this, &that) != 2) {
-	    log_error("Invalid reboot time.");
-	    REBOOT_AT1 = 7;
-	    REBOOT_AT2 = 19;
+	if ((fscanf(pfd, " %d %d ", &hour_count, &min_count) != 2) || (hour_count <= 0 || min_count < 0 || min_count > 59)) {
+	    log_error("Invalid reboot frequency.");
+            REBOOT_HOUR = 23;
+            REBOOT_MIN = 0;
 	    if (!(pfd = fopen(REBOOTTIME_FILE, "w"))) {
 		log_error("Cannot save reboot times!");
 	    } else {
-		fprintf(pfd, "%d %d\n", REBOOT_AT1, REBOOT_AT2);
+		fprintf(pfd, "%d %d\n", REBOOT_HOUR, REBOOT_MIN);
 		FCLOSE(pfd);
 	    }
 	}
-	REBOOT_AT1 = this;
-	REBOOT_AT2 = that;
+	REBOOT_HOUR = hour_count;
+	REBOOT_MIN  = min_count;
+        REBOOT_FREQ = (REBOOT_HOUR * 60 * 60 ) + (REBOOT_MIN * 60);
+        REBOOT_LASTCHECK = time(0);
+        REBOOT_LEFT = REBOOT_FREQ;
 	FCLOSE(pfd);
     }
 

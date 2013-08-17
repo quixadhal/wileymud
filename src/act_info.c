@@ -1802,6 +1802,7 @@ void do_time(struct char_data *ch, const char *argument, int cmd)
     char                                    buf[100] = "\0\0\0\0\0\0\0";
     int                                     weekday = 0;
     int                                     day = 0;
+    char                                    nowtimebuf[100];
 
     tc = time(0);
     tm_info = localtime(&tc);
@@ -1837,10 +1838,16 @@ void do_time(struct char_data *ch, const char *argument, int cmd)
     else
 	sprintf(buf, "It is %2d:%2.2dam in the Land of RL.\r\n", tm_info->tm_hour,
 		tm_info->tm_min);
-    cprintf(ch, "%sThe next scheduled REBOOT is at %02d:00 RLT.\r\n", buf,
-	    (((tm_info->tm_hour + 1) <
-	      REBOOT_AT1) ? REBOOT_AT1 : (((tm_info->tm_hour + 1) <
-					   REBOOT_AT2) ? REBOOT_AT2 : REBOOT_AT1)));
+
+    if (REBOOT_FREQ > 0) {
+        tc = time(0);
+        tc = tc + REBOOT_LEFT - (tc - REBOOT_LASTCHECK);
+        tm_info = localtime(&tc);
+        strftime(nowtimebuf, sizeof(nowtimebuf), RFC1123FMT, tm_info);
+        cprintf(ch, "%sThe next scheduled REBOOT is at %s RLT.\r\n", buf, nowtimebuf);
+    } else {
+        cprintf(ch, "%s", buf);
+    }
 }
 
 void do_weather(struct char_data *ch, const char *argument, int cmd)
@@ -2744,12 +2751,6 @@ void do_players(struct char_data *ch, const char *argument, int cmd)
 
 void do_ticks(struct char_data *ch, const char *argument, int cmd)
 {
-    struct tm                              *tm_info = NULL;
-    time_t                                  tc = (time_t) 0;
-
-    tc = time(0);
-    tm_info = localtime(&tc);
-
     if (DEBUG)
 	log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch),
 		 VNULL(argument), cmd);
@@ -2764,9 +2765,9 @@ void do_ticks(struct char_data *ch, const char *argument, int cmd)
     cprintf(ch, "  Next Sound tick:\t%1.2lf\r\n", pulse_sound / (double)PULSE_PER_SECOND);
     cprintf(ch, "  Next Reboot tick:\t%1.2lf\r\n", pulse_reboot / (double)PULSE_PER_SECOND);
     cprintf(ch, "  Next Dump tick:\t%1.2lf\r\n", pulse_dump / (double)PULSE_PER_SECOND);
-    cprintf(ch, "  Next REBOOT at:\t%02d:00\r\n",
-	    (((tm_info->tm_hour + 1) < REBOOT_AT1) ? REBOOT_AT1 :
-	     (((tm_info->tm_hour + 1) < REBOOT_AT2) ? REBOOT_AT2 : REBOOT_AT1)));
+    if (REBOOT_FREQ > 0) {
+        cprintf(ch, "  Next REBOOT in:\t%d\r\n", REBOOT_LEFT - ((int)time(0) - REBOOT_LASTCHECK));
+    }
 }
 
 void do_map(struct char_data *ch, const char *argument, int cmd)
