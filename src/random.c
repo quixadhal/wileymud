@@ -22,6 +22,7 @@
 void random_death_message(struct char_data *ch, struct char_data *victim)
 {
     char                                    tease[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
+    char                                    perp[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
     int                                     razz = 0;
     int                                     bugcount = 25;
     struct descriptor_data                 *xx = NULL;
@@ -87,14 +88,18 @@ void random_death_message(struct char_data *ch, struct char_data *victim)
 	log_info("called %s with %s, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch),
 		 SAFE_NAME(victim));
 
-    // sprintf(tease, bugger[razz = number(0, bugcount - 1)],
-//        (IS_NPC(ch) ? ch->player.short_descr : GET_NAME(ch)), GET_NAME(victim));
-    sprintf(tease, bugger[razz = number(0, bugcount - 1)], NAME(ch), GET_NAME(victim));
+    if (ch == victim) {
+        strcpy(perp, "Death");
+    } else {
+        strcpy(perp, NAME(ch));
+    }
+
+    sprintf(tease, bugger[razz = number(0, bugcount - 1)], perp, GET_NAME(victim));
     for (xx = descriptor_list; xx; xx = xx->next)
-	if (xx->character != ch && !xx->connected &&
-	    !IS_SET(xx->character->specials.act, PLR_NOSHOUT) &&
-	    !IS_SET(xx->character->specials.act, PLR_DEAF))
-	    act("%s", 0, ch, 0, xx->character, TO_VICT, tease);
+        if (xx->character != ch && !xx->connected &&
+            !IS_SET(xx->character->specials.act, PLR_NOSHOUT) &&
+            !IS_SET(xx->character->specials.act, PLR_DEAF))
+            act("%s", 0, ch, 0, xx->character, TO_VICT, tease);
     cprintf(victim, "%s", tease);
 
 #ifdef I3
@@ -102,8 +107,10 @@ void random_death_message(struct char_data *ch, struct char_data *victim)
     i3_npc_chat("wiley", NAME(ch), tease);
 #endif
 
-    sprintf(tease, mybugger[razz], NAME(victim));
-    cprintf(ch, "%s", tease);
+    if (ch != victim) {
+        sprintf(tease, mybugger[razz], NAME(victim));
+        cprintf(ch, "%s", tease);
+    }
 }
 
 void random_error_message(struct char_data *ch)

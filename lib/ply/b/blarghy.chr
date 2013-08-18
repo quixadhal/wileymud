@@ -7,14 +7,14 @@ Title              the Dwarven Swordpupil~
 Description
 ~
 LastSite           adork@localhost~
-LastLogin          1376654284
+LastLogin          1376723042
 Birth              1294448240
-Played             31404
+Played             57961
 Sex                1
 Race               3
 Class              4
 Alignment          -29
-Exp                964
+Exp                3333
 Level              warrior 1
 HeightWeight       139 159
 Gold               0 0
@@ -24,11 +24,11 @@ PoofIn             ~
 PoofOut            ~
 AbilityScores      17 0 12 16 9 11
 AbilityPad         0 0 0 0
-HpManaMove         13 20 101 0 165 0
+HpManaMove         14 20 101 0 165 0
 AC                 100
 ToHitDamage        0 0
 SaveApply          0 0 0 0 0
-Conditions         0 18 18 0 0 0
+Conditions         0 0 0 0 0 0
 PointsPad1         0 0 0
 PointsPad2         0 0 0 0
 PointsPad3         0 0 0
