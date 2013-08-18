@@ -104,7 +104,7 @@ void random_death_message(struct char_data *ch, struct char_data *victim)
 
 #ifdef I3
     sprintf(tease, bugger[razz], "", GET_NAME(victim));
-    i3_npc_chat("wiley", NAME(ch), tease);
+    i3_npc_chat("wiley", perp, tease);
 #endif
 
     if (ch != victim) {

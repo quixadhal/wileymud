@@ -919,17 +919,18 @@ void point_update(int current_pulse)
 	    GET_MANA(i) = MIN(GET_MANA(i) + mana_gain(i), mana_limit(i));
 	    GET_MOVE(i) = MIN(GET_MOVE(i) + move_gain(i), move_limit(i));
 
-	    if (GET_POS(i) == POSITION_STUNNED)
-		update_pos(i);
+	    //if (GET_POS(i) == POSITION_STUNNED)
+		//update_pos(i);
 	} else if (GET_POS(i) == POSITION_INCAP) {
 	    /*
 	     * damage(i, i, 0, TYPE_SUFFERING); 
 	     */
 	    GET_HIT(i) += 1;
-	    update_pos(i);
+	    //update_pos(i);
 	} else if (IS_PC(i) && (GET_POS(i) == POSITION_MORTALLYW)) {
 	    damage(i, i, 1, TYPE_SUFFERING);
         }
+	update_pos(i);
 
 	if (!IS_NPC(i)) {
 	    update_char_objects(i);
