@@ -1,42 +1,40 @@
 #PLAYER
-Name               Solar~
-Passwd             So4fEzEf1oQQQ~
+Name               Piranah~
+Passwd             Pic31PmXl9xgE~
 Whizz              0
 PreTitle           ~
-Title              the Elven Believer/Swordpupil/Pilferess~
+Title              the Elven Supplicant~
 Description
 ~
-LastSite           adork@~
-LastLogin          1379646956
-Birth              1232633798
-Played             1021
-Sex                2
+LastSite           adork@mudconnector.com~
+LastLogin          1392165347
+Birth              1392164879
+Played             425
+Sex                1
 Race               2
-Class              14
+Class              1
 Alignment          0
-Exp                11
-Level              cleric 1
-Level              warrior 1
-Level              thief 1
-HeightWeight       169 149
+Exp                1
+Level              mage 1
+HeightWeight       170 135
 Gold               0 0
 HomeTown           3008
 LoadRoom           -1
 PoofIn             ~
 PoofOut            ~
-AbilityScores      15 0 13 6 9 15
+AbilityScores      10 0 12 9 14 11
 AbilityPad         0 0 0 0
-HpManaMove         23 20 102 0 69 0
+HpManaMove         3 20 105 0 96 0
 AC                 100
 ToHitDamage        0 0
 SaveApply          0 0 0 0 0
-Conditions         0 12 12 0 0 0
+Conditions         0 19 19 0 0 0
 PointsPad1         0 0 0
 PointsPad2         0 0 0 0
 PointsPad3         0 0 0
 ShortSavePad       0 0 0 0
 SavePad            0 0 0 0
-Pracs              7
+Pracs              3
 SkillsToLearn      0
 NamedSkill         1 0 0 armour~
 NamedSkill         2 0 0 teleport~

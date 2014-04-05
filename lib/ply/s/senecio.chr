@@ -1,42 +1,40 @@
 #PLAYER
-Name               Solar~
-Passwd             So4fEzEf1oQQQ~
+Name               Senecio~
+Passwd             Seej8eanyH192~
 Whizz              0
 PreTitle           ~
-Title              the Elven Believer/Swordpupil/Pilferess~
+Title              the Elven Runneress~
 Description
 ~
-LastSite           adork@~
-LastLogin          1379646956
-Birth              1232633798
-Played             1021
+LastSite           adork@mudconnector.com~
+LastLogin          1387853722
+Birth              1387853670
+Played             26
 Sex                2
 Race               2
-Class              14
+Class              16
 Alignment          0
-Exp                11
-Level              cleric 1
-Level              warrior 1
-Level              thief 1
-HeightWeight       169 149
+Exp                1
+Level              ranger 1
+HeightWeight       161 122
 Gold               0 0
-HomeTown           3008
+HomeTown           3001
 LoadRoom           -1
 PoofIn             ~
 PoofOut            ~
-AbilityScores      15 0 13 6 9 15
+AbilityScores      14 0 14 7 7 13
 AbilityPad         0 0 0 0
-HpManaMove         23 20 102 0 69 0
+HpManaMove         27 20 102 0 105 105
 AC                 100
 ToHitDamage        0 0
 SaveApply          0 0 0 0 0
-Conditions         0 12 12 0 0 0
+Conditions         0 23 23 0 0 0
 PointsPad1         0 0 0
 PointsPad2         0 0 0 0
 PointsPad3         0 0 0
 ShortSavePad       0 0 0 0
 SavePad            0 0 0 0
-Pracs              7
+Pracs              3
 SkillsToLearn      0
 NamedSkill         1 0 0 armour~
 NamedSkill         2 0 0 teleport~
@@ -176,10 +174,10 @@ NamedSkill         176 0 0 barter~
 NamedSkill         177 0 0 knockout~
 NamedSkill         178 0 0 spellcraft~
 NamedSkill         179 0 0 meditation~
-NamedSkill         180 0 0 track~
+NamedSkill         180 13 0 track~
 NamedSkill         181 0 0 locate trap~
 NamedSkill         182 0 0 disarm trap~
-NamedSkill         183 0 0 disarm~
+NamedSkill         183 7 0 disarm~
 NamedSkill         184 0 0 shield bash~
 NamedSkill         185 0 0 riding~
 ActFlags           0 0

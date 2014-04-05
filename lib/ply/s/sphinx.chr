@@ -1,42 +1,41 @@
 #PLAYER
-Name               Solar~
-Passwd             So4fEzEf1oQQQ~
+Name               Sphinx~
+Passwd             SpkKX0yl42QOw~
 Whizz              0
 PreTitle           ~
-Title              the Elven Believer/Swordpupil/Pilferess~
+Title              the Elven Supplicant/Believer~
 Description
 ~
-LastSite           adork@~
-LastLogin          1379646956
-Birth              1232633798
-Played             1021
-Sex                2
+LastSite           adork@24-176-47-141.dhcp.klmz.mi.charter.com~
+LastLogin          1391193390
+Birth              1391193049
+Played             265
+Sex                1
 Race               2
-Class              14
+Class              3
 Alignment          0
-Exp                11
+Exp                1
+Level              mage 1
 Level              cleric 1
-Level              warrior 1
-Level              thief 1
-HeightWeight       169 149
+HeightWeight       195 123
 Gold               0 0
 HomeTown           3008
 LoadRoom           -1
 PoofIn             ~
 PoofOut            ~
-AbilityScores      15 0 13 6 9 15
+AbilityScores      11 0 13 9 12 17
 AbilityPad         0 0 0 0
-HpManaMove         23 20 102 0 69 0
+HpManaMove         25 20 103 0 106 108
 AC                 100
 ToHitDamage        0 0
 SaveApply          0 0 0 0 0
-Conditions         0 12 12 0 0 0
+Conditions         0 21 21 0 0 0
 PointsPad1         0 0 0
 PointsPad2         0 0 0 0
 PointsPad3         0 0 0
 ShortSavePad       0 0 0 0
 SavePad            0 0 0 0
-Pracs              7
+Pracs              6
 SkillsToLearn      0
 NamedSkill         1 0 0 armour~
 NamedSkill         2 0 0 teleport~

@@ -1,42 +1,39 @@
 #PLAYER
-Name               Solar~
-Passwd             So4fEzEf1oQQQ~
+Name               Baclarci~
+Passwd             Bal/9zMQCDGN6~
 Whizz              0
 PreTitle           ~
-Title              the Elven Believer/Swordpupil/Pilferess~
+Title              the Dwarven ~
 Description
 ~
-LastSite           adork@~
-LastLogin          1379646956
-Birth              1232633798
-Played             1021
-Sex                2
-Race               2
-Class              14
+LastSite           adork@184-96-178-87.hlrn.qwest.net~
+LastLogin          1383784963
+Birth              1383784963
+Played             0
+Sex                1
+Race               3
+Class              4
 Alignment          0
-Exp                11
-Level              cleric 1
-Level              warrior 1
-Level              thief 1
-HeightWeight       169 149
+Exp                0
+HeightWeight       128 139
 Gold               0 0
-HomeTown           3008
+HomeTown           3001
 LoadRoom           -1
 PoofIn             ~
 PoofOut            ~
-AbilityScores      15 0 13 6 9 15
+AbilityScores      0 0 0 0 0 0
 AbilityPad         0 0 0 0
-HpManaMove         23 20 102 0 69 0
+HpManaMove         6 0 100 0 81 0
 AC                 100
 ToHitDamage        0 0
 SaveApply          0 0 0 0 0
-Conditions         0 12 12 0 0 0
+Conditions         24 24 24 0 0 0
 PointsPad1         0 0 0
 PointsPad2         0 0 0 0
 PointsPad3         0 0 0
 ShortSavePad       0 0 0 0
 SavePad            0 0 0 0
-Pracs              7
+Pracs              0
 SkillsToLearn      0
 NamedSkill         1 0 0 armour~
 NamedSkill         2 0 0 teleport~
@@ -210,7 +207,6 @@ Affect             23 0 0 0 0 0 0
 Affect             24 0 0 0 0 0 0
 i3perm       2
 i3flags      256
-i3listen     wiley
 IMCPerm      0
 IMCFlags     256
 End

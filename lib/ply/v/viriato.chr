@@ -1,42 +1,41 @@
 #PLAYER
-Name               Solar~
-Passwd             So4fEzEf1oQQQ~
+Name               Viriato~
+Passwd             ViVO.HFsA4OSE~
 Whizz              0
 PreTitle           ~
-Title              the Elven Believer/Swordpupil/Pilferess~
+Title              the Dwarven Swordpupil/Pilferer~
 Description
 ~
-LastSite           adork@~
-LastLogin          1379646956
-Birth              1232633798
-Played             1021
-Sex                2
-Race               2
-Class              14
+LastSite           adork@a85-138-112-144.cpe.netcabo.pt~
+LastLogin          1396733553
+Birth              1396687831
+Played             45658
+Sex                1
+Race               3
+Class              12
 Alignment          0
-Exp                11
-Level              cleric 1
+Exp                2291
 Level              warrior 1
 Level              thief 1
-HeightWeight       169 149
+HeightWeight       141 142
 Gold               0 0
-HomeTown           3008
+HomeTown           3001
 LoadRoom           -1
 PoofIn             ~
 PoofOut            ~
-AbilityScores      15 0 13 6 9 15
+AbilityScores      18 0 17 18 10 11
 AbilityPad         0 0 0 0
-HpManaMove         23 20 102 0 69 0
+HpManaMove         25 20 101 0 92 92
 AC                 100
 ToHitDamage        0 0
 SaveApply          0 0 0 0 0
-Conditions         0 12 12 0 0 0
+Conditions         0 14 14 0 0 0
 PointsPad1         0 0 0
 PointsPad2         0 0 0 0
 PointsPad3         0 0 0
 ShortSavePad       0 0 0 0
 SavePad            0 0 0 0
-Pracs              7
+Pracs              6
 SkillsToLearn      0
 NamedSkill         1 0 0 armour~
 NamedSkill         2 0 0 teleport~
@@ -82,11 +81,11 @@ NamedSkill         41 0 0 ventriloquate~
 NamedSkill         42 0 0 word of recall~
 NamedSkill         43 0 0 remove poison~
 NamedSkill         44 0 0 sense life~
-NamedSkill         45 0 0 sneak~
-NamedSkill         46 0 0 hide~
-NamedSkill         47 0 0 steal~
-NamedSkill         48 0 0 backstab~
-NamedSkill         49 0 0 pick lock~
+NamedSkill         45 1 0 sneak~
+NamedSkill         46 13 0 hide~
+NamedSkill         47 7 0 steal~
+NamedSkill         48 1 0 backstab~
+NamedSkill         49 1 0 pick lock~
 NamedSkill         50 0 0 kick~
 NamedSkill         51 0 0 bash~
 NamedSkill         52 0 0 rescue~
@@ -208,9 +207,8 @@ Affect             21 0 0 0 0 0 0
 Affect             22 0 0 0 0 0 0
 Affect             23 0 0 0 0 0 0
 Affect             24 0 0 0 0 0 0
-i3perm       2
+i3perm       1
 i3flags      256
-i3listen     wiley
-IMCPerm      0
+IMCPerm      1
 IMCFlags     256
 End
