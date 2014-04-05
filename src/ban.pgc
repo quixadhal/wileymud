@@ -242,6 +242,7 @@ void load_bans(void)
   }
 
   close_sql();
+  save_bans();
 }
 
 void unload_bans(void)
@@ -508,5 +509,30 @@ int acceptable_name( const char *name )
     return FALSE;
 
   return TRUE;
+}
+
+void save_bans(void)
+{
+    FILE                                   *fp = NULL;
+    int i;
+
+    if(!(fp = fopen(BAN_FILE, "w"))) {
+        log_error("Cannot open %s for writing!\n", BAN_FILE);
+        return;
+    }
+    log_boot("- Saving ban data to %s", BAN_FILE);
+    fprintf(fp, "%d\n", banned_names_count);
+    for (i = 0; i < banned_names_count; i++) {
+        fprintf(fp, "%s\n", banned_names[i]);
+    }
+    fprintf(fp, "%d\n", banned_ips_count);
+    for (i = 0; i < banned_ips_count; i++) {
+        fprintf(fp, "%s\n", banned_ips[i]);
+    }
+    fprintf(fp, "%d\n", banned_at_count);
+    for (i = 0; i < banned_at_count; i++) {
+        fprintf(fp, "%s\n%s\n", banned_at_names[i], banned_at_ips[i]);
+    }
+    fclose(fp);
 }
 
