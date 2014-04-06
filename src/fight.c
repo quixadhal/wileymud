@@ -843,6 +843,10 @@ int damage(struct char_data *ch, struct char_data *victim, int dam, int attackty
     if ((dam = SkipImmortals(victim, dam)) == -1)
 	return FALSE;
 
+    /* Stop annoying immortals about hunger/thirst/etc... but leave them vulnerable to other damage */
+    if (IS_IMMORTAL(victim) && (attacktype == TYPE_HUNGER || attacktype == TYPE_SUFFERING))
+        return FALSE;
+
     appear(ch);
 
     if (attacktype != SPELL_POISON && attacktype != TYPE_HUNGER && attacktype != TYPE_SUFFERING
