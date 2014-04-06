@@ -50,7 +50,6 @@
 #include "mob_actions.h"
 #include "act_other.h"
 #include "signals.h"
-#include "sql.h"
 #include "ban.h"
 #include "board.h"
 #define _COMM_C
@@ -202,6 +201,7 @@ int main(int argc, const char **argv)
 
     srandom(time(0));
 
+#if 0
     if (init_sql()) {
 	log_boot("Connected to database!");
 	log_boot("%s\n", version_sql());
@@ -211,6 +211,7 @@ int main(int argc, const char **argv)
 	log_fatal("%s\n", "Couldn't open Database Connection!  Aborting!");
 	return MUD_HALT;
     }
+#endif
 
     exit_code = run_the_game(port);
     return exit_code;
@@ -1655,7 +1656,9 @@ void dump_player_list(void)
 
 void proper_exit(int exit_code)
 {
+#if 0
     log_boot("Disconnecting from database!");
     close_sql();
+#endif
     exit(exit_code);
 }

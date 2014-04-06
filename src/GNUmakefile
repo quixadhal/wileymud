@@ -15,6 +15,7 @@ IDENTDIR	= libident-0.19
 
 NEED_CRYPT	= -lcrypt #Linux needs this
 #NEED_COMPAT	= -lcompat #BSD needs this
+NEED_MATH	= -lm #math for tracking and such
 SQL_INC		= -DUSE_PGSQL -I/usr/include/postgresql
 SQL_LIB		= -L/usr/lib/postgresql -lpq -lecpg
 ID_DEP		= $(IDENTDIR)/libident.a
@@ -51,9 +52,9 @@ DEBUG_FLAG	= -ggdb3
 EFENCE		= #-lpthread -lefence
 PROF_FLAG	= #-pg
 
-INC		= -Iinclude $(SQL_INC) $(ID_INC) $(IMC_INC) $(I3_INC)
-LIB		= $(ID_LIB) $(NEED_CRYPT) $(NEED_COMPAT) $(EFENCE) $(SQL_LIB)
-UTILSLIB	= $(NEED_CRYPT) $(NEED_COMPAT) $(EFENCE)
+INC		= -Iinclude $(ID_INC) $(IMC_INC) $(I3_INC) #$(SQL_INC)
+LIB		= $(ID_LIB) $(NEED_MATH) $(NEED_CRYPT) $(NEED_COMPAT) $(EFENCE) #$(SQL_LIB)
+UTILSLIB	= $(NEED_MATH) $(NEED_CRYPT) $(NEED_COMPAT) $(EFENCE)
 
 CFLAGS		= $(W_FLAGS) $(DEBUG_FLAG) $(OPT_FLAG) $(PROF_FLAG) $(M_ARCH) $(INC)
 LDFLAGS		= $(DEBUG_FLAG) $(OPT_FLAG) $(PROF_FLAG)
@@ -70,7 +71,7 @@ tOBJ =	mob_actions.o spec_procs.o breath_weapons.o tracking.o \
 	modify.o multiclass.o opinion.o random.o reception.o \
 	shop.o signals.o sound.o spell_parser.o \
 	spells.o trap.o utils.o weather.o whod.o events.o \
-	sql.o ban.o sha256.o imc.o i3.o
+	ban.o sha256.o imc.o i3.o
 OBJ =	$(addprefix obj/, $(tOBJ))
 
 tIDOBJ		= id_close.o id_open.o id_parse.o \
@@ -201,7 +202,7 @@ obj/comm.o: comm.c include/global.h include/i3.h include/imc.h \
  include/multiclass.h include/weather.h include/mudlimits.h \
  include/spells.h include/spell_parser.h include/sound.h include/fight.h \
  include/mob_actions.h include/act_other.h include/signals.h \
- include/sql.h include/ban.h include/board.h include/comm.h
+ include/ban.h include/board.h include/comm.h
 obj/i3.o: i3.c include/global.h include/bug.h include/utils.h \
  include/multiclass.h include/comm.h include/constants.h include/modify.h \
  include/interpreter.h include/version.h include/i3.h
@@ -241,6 +242,9 @@ obj/act_comm.o: act_comm.c include/global.h include/bug.h include/utils.h \
  include/comm.h include/interpreter.h include/handler.h include/db.h \
  include/spells.h include/constants.h include/mudlimits.h \
  include/multiclass.h include/board.h include/act_comm.h
+obj/board.o: board.c include/global.h include/bug.h include/utils.h \
+ include/comm.h include/db.h include/interpreter.h include/multiclass.h \
+ include/modify.h include/handler.h include/act_info.h include/board.h
 obj/sound.o: sound.c include/global.h include/bug.h include/comm.h \
  include/interpreter.h include/handler.h include/db.h include/spells.h \
  include/trap.h include/utils.h include/sound.h

@@ -1,0 +1,397 @@
+36
+0
+Tue Feb 02 20:55:32 1993~
+Cyric~
+Titles~
+Please don't give titles that are misleading to a characters
+level, avatar is rather high on my list :) even if it is for a
+piece of tail...grin
+
+Cyric
+~
+1
+Thu Feb 04 12:06:43 1993~
+Harlequin~
+titles~
+*cackle* I know, I was not aware of the Reserved status of Avatar
+until Tim mentioned it to me.  I was going to change it next time
+I was on, but ya beat me to it...:)
+~
+2
+Thu Feb 04 13:55:46 1993~
+Cyric~
+Tail~
+well, did you get it :)
+~
+3
+Thu Feb 04 17:11:54 1993~
+Harlequin~
+Re: Tail~
+Hell no.  You know me, I never get anythng anymore.  Hey, I
+noticed an odd thing.  I was polymorphed in the shape of a giant
+tick and was killed by succubus.  I just returned to my original
+body.  Is this because I'm an immort, or will that happen to
+players also?  Shouldn't they die if they die in polymorphed
+form?
+~
+4
+Mon Feb 08 23:04:32 1993~
+Muth~
+Who/Pager~
+Suggestion:
+Cyric, could you please put a page break in the command 'who'.
+So many people now it scrolls off.  8)
+
+Thanks!
+<M>
+~
+5
+Thu Feb 11 00:24:07 1993~
+Muidnar~
+names~
+Well I was on and I had person come on the game as *sshole. the
+site number is rs6007.esc.rpi.edu put when I tried to finger it I
+couldn't?? What do you do in this case? purge <name> didn;t work
+and well... um slay killed him ;)
+
+                          See ya
+~
+6
+Fri Feb 12 00:15:08 1993~
+Muidnar~
+Charm?~
+You know I've only been a Wiz for a little while and it seems I'm
+going drive you nuts. Well here we go.
+1. What do you do about mutli char by one person.
+2. Charm person works. Goodwind is running around using it. On a
+   lot of people.
+3. MUTH people LUV Drenth!  just though you should know :)
+
+                                 Later 
+~
+7
+Fri Feb 12 09:31:49 1993~
+Muth~
+Charm~
+-= People with multiple characters must quit with one or more
+   leaving only one on the game.  Players are given 3 warnings on
+   this subject, each time a warning is given out post it to the
+   board here so we all know what the situation is if we catch that
+   same person later.  Help rules explains what the warnings mean i
+   think.
+-= Charm person works?  Cyrics department sorry.  cackle
+-= People love drenth?  Great!  I was cackling to to myself
+   working on it hoping it would cause mass suffrage, and a bit of a
+   challenge.  8)
+
+<M>
+~
+8
+Sat Feb 13 16:49:45 1993~
+Muidnar~
+board~
+well there I saw a character on today 11/11/11 his name is
+aladdin and is character is only 17 years old 1 month so that
+would mean the char has been around for a not even a week??? Just
+general info
+~
+9
+Sat Feb 13 18:12:56 1993~
+Muidnar~
+Grrrrr~
+Well I gave Xavier,Malrot,Beldore,Voytek there first warning for
+mulit char playing. I must admit it was a very nice killing group
+:)
+~
+10
+Sat Feb 13 22:21:05 1993~
+Daisy~
+Re; board~
+:)  I set up a character on Friday for taking small groups of
+newer payers out on Friday [Aladdin].   Or even large groups.  :)
+Didn't mean to make it  all 11th level but was too lazy to drain
+it back down.  It's not going to be used for anything but this
+purpose.  I seem to recall Cyric saying this was okay to do.
+Correct me if I'm wrong...
+
+Daisy
+~
+11
+Sun Feb 14 13:18:26 1993~
+Muidnar~
+board~
+I didn't know that Daisy :) I just came on and saw aladdin with
+11/11/11 and I had never seen him before.  So then you are the
+one that plays aladdin :) Thats cool. I though it was kind of
+funny that the char was only 17 and 11/11/11. (grin)
+~
+12
+Sun Feb 14 15:45:10 1993~
+Cyric~
+Aladdin2~
+It is okay to play characters that Immorts jack up, I talked with
+aladdin and asked that he not play this character anymore.  His
+excuse what that he was using this character for helping newbies
+out. But when I found him he was adventuring by himself going to
+areas that his normal character could not have reached.
+~
+13
+Sat Nov 18 23:59:59 1995~
+Quixadhal~
+ADMIN: GAP~
+There appears to be a gap in the board file records here.
+Some weeks were lost.
+~
+14
+Sun Nov 19 01:05:31 1995~
+Quixadhal~
+group spells and resets~
+First, I figured out the reason that most DikuMUDs reboot at
+least once a day.  LpMUDs reboot to free lost memory... dikus
+reboot because the reset code is broken!
+
+I need a volunteer to look at how the zone resets happen, and
+possibly rewrite part or all of it, so that it works as one
+expects it to.  The game is less fun if chests filled with
+magical items are empty because someone sold the item and thus it
+won't create another one.
+~
+15
+Wed Dec 20 05:03:09 1995~
+Quixadhal~
+Meeting Results...~
+Hmmmm... results?  Were there any?  We DID kill off Malistrum and
+cripple Zar.  I think I outlined what we had done and what was in
+the works fairly well.  Now, who is working on what?  Highlander
+has his drow area in place.  A little more work to spruce it up
+would be nice... and maybe a few more wandering critters.. but
+good job so far!
+
+Zar claims to be working on a paladin keep to be put in Serpent's
+Reach... and Dirk claims to be working on Serpent's Reach when he
+gets back from Old People's Land.
+
+Sedna and Zar will hopefully be getting together soon with me to
+has out details about Nesthar.
+
+Highlander has also considered the idea of extending the
+Underdark which would link into my own Faerie Village when I get
+that done.
+
+Muidnar... Muidnar...  What is HE doing?
+Past glories are nice bub, but they don't buy the burger!  You
+need to start hacking on something too.  Think about it and
+suggest something.
+
+What am I doing?  Besides my twisted evil reincarnation of the
+Faerie Village from Smurfdom into a true Realm of the Fey... I've
+also been and will continue to hack the code so we can add those
+new classes (Paladins, Druids, Clerics of Good, Clerics of
+Evil...) and new spells (silence, entangle, insect swarm,
+etc...).
+
+Cheers!  Hope to hear from some of you!
+~
+16
+Fri Dec 22 05:22:57 1995~
+Quixadhal~
+New BUGS, er... Features!~
+I've been doing ALOT of hacking over break.  This is primarily to
+install the low-level support that will allow us to extend
+WileyMUD in major ways such as adding new classes.  I'm also
+changing things to be more balanced, and adding new features as I
+see opportunities in my editing.  As a result, it is more than
+likely I've buggered it up in a few places.  If anyone sees
+things they think are bugs, PLEASE report them to any immortal
+online or using the bug command.  I'm trying to get this thing
+upgraded while I have the time to code all day, but I need help
+to spot the places where I got too tired at 6am. :)
+~
+17
+Mon Feb 05 18:52:13 1996~
+Quixadhal~
+Dumbass wizards~
+Hey Buttknockers!
+
+Let's not leave the game whizz locked unless something really
+neat is being done eh?  Geez.... like we're being SWAMPED with
+players....
+~
+18
+Thu Feb 08 17:33:16 1996~
+Muidnar~
+????~
+wizlocked??? how many high level wizards do you have that can do
+that???  by the way 5 players are on now.
+May you rot in hell!
+
+Muidnar
+~
+19
+Mon Feb 12 09:47:00 1996~
+Muidnar~
+Grimwell~
+An old wizard Grimwell wants to build again. I was reading the
+ideas and typoo logs and saw his message. Yes people do read
+those! Well those of us who know where they are at. Anyway Quix
+what do you think. His areas are good and need little changing
+when finished. and he will build unlike the rest. Well with the
+execption of the drow area that was placed in by Highlander.
+Unlike wizards like Zar??? I think he is a wizard? when was the
+last time he logged in????
+
+Also why am I still 59th?
+
+Why do I not have access to the world file?
+It has only been about 6 months. I provided 3500 rooms to restore
+this mud to its current condition how much longer do I have to
+wait?
+
+I also hate your typo lines. This is NOT MTV it is a mud with a
+mid-evil setting, If I'm not mistaken I believe that is what we
+where going to work on??? or am I wrong.
+
+Have a Day?
+
+                 Muidnar Hopes you rot in Hell
+~
+20
+Wed Feb 14 03:45:51 1996~
+Dirk~
+typos~
+Oh c'mon Muidnar, lighten up. There's only one or two that say
+anything like MTV ;^) The rest are pretty funny, and are much
+more interesting than the standard error message
+~
+21
+Wed Feb 14 18:19:18 1996~
+Quixadhal~
+RE: Grimwell~
+Sure.  A wizard who actually builds areas... what a unique
+concept!  Is THAT what they were supposed to do?  I thought they
+just logged in and harassed the players every so often like me...
+ok.
+
+Feel free  to whizzify him if he ever comes back :)
+~
+22
+Thu Feb 15 17:36:43 1996~
+Muidnar~
+Grimwell~
+We can give him the Reach back being that was his original job,
+and no one else seems to be working on it. We need guild masters
+for 15-20 for rangers.
+~
+23
+Thu Aug 08 12:26:16 1996~
+Muidnar~
+wow~
+No one has put anything up here  in a while.
+~
+24
+Wed Sep 11 00:41:36 1996~
+Quixadhal~
+RE:wow~
+You're right!  By the gods... oh, there aren't anymore...
+~
+25
+Sat Sep 21 14:28:45 1996~
+Muidnar~
+sigh~
+still no access to the database.......????  oooo Quix!!!!!
+~
+26
+Fri Sep 27 18:24:38 1996~
+Muidnar~
+QUIX~
+Still no access to the database....??? hmmmm do you not like me
+anymore????
+
+            Muhahahahahahahahahahahaha!!!
+~
+27
+Tue Oct 08 19:14:01 1996~
+Muidnar~
+HEY!!!~
+Hey does anyone read this anymore???? You know the WIZARD BOARD!!
+
+                     may you all rot in HELL
+~
+28
+Tue Oct 08 21:06:07 1996~
+Quixadhal~
+RE:HEY!!!~
+Yeah, you suck too.
+~
+29
+Mon Oct 28 21:25:41 1996~
+Muidnar~
+biteme~
+Hey I think you should delete all wizards who don't reply to my
+message!!!  All you wizards can kiss my ass!!!!
+
+      Vile Muidnar the Dark One!
+
+NO comment?????
+figures!!!!
+~
+30
+Wed Oct 30 19:35:01 1996~
+Muidnar~
+Blowme~
+Why do still not have access to the data base???? I modified
+karrn sorry chris!! hahahah
+~
+31
+Wed Oct 30 19:36:09 1996~
+Quixadhal~
+RE:Blowme~
+Yeah, so did I... hope you like him.
+smirk.
+~
+32
+Mon Nov 04 19:04:29 1996~
+Muidnar~
+mud~
+Tim has posted a note to send dot mud players that dot is dead.
+They may move here if they can hack it.... 
+
+Chris you need to see who is and is not a immort on the is game
+and explain to them unlike dot this mud is hard and immorts if
+not building or testing should not be FUCKING with the players..
+or we will loose them. I also think you should make people who
+want to be immorts at least make it to level 15 here so they
+understand how hard it really is!!!  Yes I know that you didn't
+even make it level 15 but then again you have the code and I have
+the world file together they will suffer!!
+
+                                     Chris
+~
+33
+Tue Mar 30 16:33:42 1999~
+Quixadhal~
+The Land is Dead.~
+Hello fellow immortals.
+
+I am surely speaking mostly to myself, but perhaps a few of you
+have survived.  I am sorry this place has been neglected for so
+long, and I fear it will never be what it once was.  But perhaps
+we can carry someof it with us to a new place.
+
+Farewell.
+~
+34
+Sun Jul 25 00:33:27 2004~
+Quixadhal~
+The Land is Empty~
+The land of WileyMUD is empty, but perhaps you can bring life
+back to it?  It waits only for a firm hand to force order back
+into the chaos!
+~
+35
+Sun Jul 18 01:04:35 2010~
+Quixadhal~
+SQL boards!~
+So, I've now removed normal file-based boards and moved
+everything into SQL.  Hopefully, it works ok. :)
+~
