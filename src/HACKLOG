@@ -782,4 +782,14 @@ global.h:1144: warning: function declaration isn't a prototype
         wanting a copy.  Among other things, this means if you do want to start up
         your own FooMUD from this, you'll need to copy the admin player files
         from src/lib/ply to the matching spot in lib/ply.
+140406  Quixadhal
+  0738  Still not updating this log as I should... anyways, the big changes are
+        the removal of SQL entirely.  It never worked quite right, and since it was
+        never a full conversion, it made more sense to get rid of it, than to try and
+        debug it and STILL not fully use it.
+
+        I also tried to fix hunger/thirst a bit.  Apparently at some point, they stopped
+        killing people.  I fixed that, but then it killed everyone including immortals.
+
+        I think it works almost right now, except maybe in peaceful rooms.
 
