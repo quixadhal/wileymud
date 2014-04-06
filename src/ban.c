@@ -17,16 +17,19 @@
 
 static char                           **banned_names = NULL;
 static char                           **banned_ips = NULL;
-static char                           **banned_at = NULL;
+static char                           **banned_at_names = NULL;
+static char                           **banned_at_ips = NULL;
 static int                              banned_names_count = 0;
 static int                              banned_ips_count = 0;
 static int                              banned_at_count = 0;
 
 void unload_bans(void)
 {
+    int                                     i;
+
     if (banned_names) {
 	log_boot("- Unloading banned name list");
-	for (int i = 0; i < banned_names_count; i++)
+	for (i = 0; i < banned_names_count; i++)
 	    if (banned_names[i])
 		free(banned_names[i]);
 
@@ -36,7 +39,7 @@ void unload_bans(void)
     }
     if (banned_ips) {
 	log_boot("- Unloading banned ip list");
-	for (int i = 0; i < banned_ips_count; i++)
+	for (i = 0; i < banned_ips_count; i++)
 	    if (banned_ips[i])
 		free(banned_ips[i]);
 
@@ -44,14 +47,19 @@ void unload_bans(void)
 	banned_ips = NULL;
 	banned_ips_count = 0;
     }
-    if (banned_at) {
+    if (banned_at_names && banned_at_ips) {
 	log_boot("- Unloading banned name@ip list");
-	for (int i = 0; i < banned_at_count; i++)
-	    if (banned_at[i])
-		free(banned_at[i]);
+	for (i = 0; i < banned_at_count; i++) {
+	    if (banned_at_names[i])
+		free(banned_at_names[i]);
+	    if (banned_at_ips[i])
+		free(banned_at_ips[i]);
+        }
 
-	free(banned_at);
-	banned_at = NULL;
+	free(banned_at_names);
+	free(banned_at_ips);
+	banned_at_names = NULL;
+	banned_at_ips = NULL;
 	banned_at_count = 0;
     }
 }
@@ -59,43 +67,32 @@ void unload_bans(void)
 void load_bans(void)
 {
     FILE                                   *fp = NULL;
+    int                                     i;
 
     unload_bans();
 
     log_boot("- Loading banned name list from %s", BAN_FILE);
-    if (fp = fopen(BAN_FILE, "r")) {
-	fscanf(fp, "% d", &banned_names_count);
-
+    if ((fp = fopen(BAN_FILE, "r"))) {
+        banned_names_count = fread_number(fp);
 	banned_names = calloc(banned_names_count, sizeof(char *));
-	for (int i = 0; i < banned_names_count; i++) {
-	    char                                    tmp[MAX_STRING_LENGTH];
-
-	    fscanf(fp, "% s", &tmp);
-	    banned_names[i] = strdup(tmp);
+	for (i = 0; i < banned_names_count; i++) {
+            banned_names[i] = fread_string(fp);
 	}
 
         log_boot("- Loading banned ip list from %s", BAN_FILE);
-	fscanf(fp, "% d", &banned_ips_count);
-
+        banned_ips_count = fread_number(fp);
 	banned_ips = calloc(banned_ips_count, sizeof(char *));
-	for (int i = 0; i < banned_ips_count; i++) {
-	    char                                    tmp[MAX_STRING_LENGTH];
-
-	    fscanf(fp, "% s", &tmp);
-	    banned_ips[i] = strdup(tmp);
+	for (i = 0; i < banned_ips_count; i++) {
+            banned_ips[i] = fread_string(fp);
 	}
 
         log_boot("- Loading banned name@ip list from %s", BAN_FILE);
-	fscanf(fp, "% d", &banned_at_count);
-
-	banned_at = calloc(banned_at_count, sizeof(char *));
-	for (int i = 0; i < banned_at_count; i++) {
-	    char                                    tmp[MAX_STRING_LENGTH];
-
-	    fscanf(fp, "% s", &tmp);
-	    banned_at_names[i] = strdup(tmp);
-	    fscanf(fp, "% s", &tmp);
-	    banned_at_ips[i] = strdup(tmp);
+        banned_at_count = fread_number(fp);
+	banned_at_names = calloc(banned_at_count, sizeof(char *));
+	banned_at_ips = calloc(banned_at_count, sizeof(char *));
+	for (i = 0; i < banned_at_count; i++) {
+            banned_at_names[i] = fread_string(fp);
+            banned_at_ips[i] = fread_string(fp);
 	}
 	fclose(fp);
     }
@@ -104,23 +101,24 @@ void load_bans(void)
 void save_bans(void)
 {
     FILE                                   *fp = NULL;
+    int                                     i;
 
     if(!(fp = fopen(BAN_FILE, "w"))) {
-        bug("Cannot open %s for writing!\n", BAN_FILE);
+        log_error("Cannot open %s for writing!\n", BAN_FILE);
         return;
     }
     log_boot("- Saving ban data to %s", BAN_FILE);
     fprintf(fp, "%d\n", banned_names_count);
-    for (int i = 0; i < banned_names_count; i++) {
-        fprintf(fp, "%s\n", banned_names[i]);
+    for (i = 0; i < banned_names_count; i++) {
+        fprintf(fp, "%s~\n", banned_names[i]);
     }
     fprintf(fp, "%d\n", banned_ips_count);
-    for (int i = 0; i < banned_ips_count; i++) {
-        fprintf(fp, "%s\n", banned_ips[i]);
+    for (i = 0; i < banned_ips_count; i++) {
+        fprintf(fp, "%s~\n", banned_ips[i]);
     }
     fprintf(fp, "%d\n", banned_at_count);
-    for (int i = 0; i < banned_at_count; i++) {
-        fprintf(fp, "%s\n%s\n", banned_at_names[i], banned_at_ips[i]);
+    for (i = 0; i < banned_at_count; i++) {
+        fprintf(fp, "%s~\n%s~\n", banned_at_names[i], banned_at_ips[i]);
     }
     fclose(fp);
 }
@@ -212,7 +210,8 @@ int acceptable_name(const char *name)
 
 void do_ban(struct char_data *ch, const char *argument, int cmd)
 {
-    char                                    ban_type[MAX_STRING_LENGTH] = "\0\0\0";
+    char                                    ban_type[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
+    char                                    buf[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
     int                                     i = 0;
 
     if (DEBUG)
@@ -285,6 +284,7 @@ void do_ban(struct char_data *ch, const char *argument, int cmd)
 void do_unban(struct char_data *ch, const char *argument, int cmd)
 {
     char                                    ban_type[MAX_STRING_LENGTH] = "\0\0\0";
+    char                                    buf[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
     int                                     i = 0;
 
     if (DEBUG)
@@ -312,13 +312,14 @@ void do_unban(struct char_data *ch, const char *argument, int cmd)
                     for (i = 0; i < banned_names_count; i++) {
                         if (!str_cmp(banned_names[i], buf)) {
                             char **tmp_foo = calloc(banned_names_count - 1, sizeof(char *));
-                            for( int j = 0; j < i; j++ ) {
+                            int j = 0;
+                            for( j = 0; j < i; j++ ) {
                                 tmp_foo[j] = banned_names[j];
                             }
-                            for( int j = i + 1; j < banned_names_count; j++ ) {
+                            for( j = i + 1; j < banned_names_count; j++ ) {
                                 tmp_foo[j-1] = banned_names[j];
                             }
-                            free(banned_names[i];
+                            free(banned_names[i]);
                             banned_names_count--;
                             free(banned_names);
                             banned_names = tmp_foo;
@@ -349,13 +350,14 @@ void do_unban(struct char_data *ch, const char *argument, int cmd)
                     for (i = 0; i < banned_names_count; i++) {
                         if (!str_cmp(banned_ips[i], buf)) {
                             char **tmp_foo = calloc(banned_ips_count - 1, sizeof(char *));
-                            for( int j = 0; j < i; j++ ) {
+                            int j = 0;
+                            for( j = 0; j < i; j++ ) {
                                 tmp_foo[j] = banned_ips[j];
                             }
-                            for( int j = i + 1; j < banned_ips_count; j++ ) {
+                            for( j = i + 1; j < banned_ips_count; j++ ) {
                                 tmp_foo[j-1] = banned_ips[j];
                             }
-                            free(banned_ips[i];
+                            free(banned_ips[i]);
                             banned_ips_count--;
                             free(banned_ips);
                             banned_ips = tmp_foo;
