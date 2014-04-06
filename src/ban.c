@@ -76,14 +76,14 @@ void load_bans(void)
         banned_names_count = fread_number(fp);
 	banned_names = calloc(banned_names_count, sizeof(char *));
 	for (i = 0; i < banned_names_count; i++) {
-            banned_names[i] = fread_string(fp);
+            banned_names[i] = strdup(new_fread_string(fp));
 	}
 
         log_boot("- Loading banned ip list from %s", BAN_FILE);
         banned_ips_count = fread_number(fp);
 	banned_ips = calloc(banned_ips_count, sizeof(char *));
 	for (i = 0; i < banned_ips_count; i++) {
-            banned_ips[i] = fread_string(fp);
+            banned_ips[i] = strdup(new_fread_string(fp));
 	}
 
         log_boot("- Loading banned name@ip list from %s", BAN_FILE);
@@ -91,8 +91,8 @@ void load_bans(void)
 	banned_at_names = calloc(banned_at_count, sizeof(char *));
 	banned_at_ips = calloc(banned_at_count, sizeof(char *));
 	for (i = 0; i < banned_at_count; i++) {
-            banned_at_names[i] = fread_string(fp);
-            banned_at_ips[i] = fread_string(fp);
+            banned_at_names[i] = strdup(new_fread_string(fp));
+            banned_at_ips[i] = strdup(new_fread_string(fp));
 	}
 	fclose(fp);
     }

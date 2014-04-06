@@ -403,10 +403,10 @@ void board_load_board(struct Board *bp)
         char full_header[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
         
         message_id = fread_number(fp);
-        message_date = fread_string(fp);
-        message_sender = fread_string(fp);
-        message_header = fread_string(fp);
-        message_text = fread_string(fp);
+        message_date = strdup(new_fread_string(fp));
+        message_sender = strdup(new_fread_string(fp));
+        message_header = strdup(new_fread_string(fp));
+        message_text = strdup(new_fread_string(fp));
 
         /* Adventurers WANTED! (Quixadhal) Sun Jul 25 00:35:39 2004 */
         strcpy(full_header, message_header);
