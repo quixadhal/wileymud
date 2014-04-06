@@ -1,250 +1,48 @@
-&R[08/06 20:29] &G&G20&W:&G29&d &R[&Wdchat&R] &CKalinice@Dead Souls Dev: &cC-C-C-C-Cratty and the Jetsssssssssssss
-&R[08/06 20:30] &G&G20&W:&G30&d &R[&Wdchat&R] &CGimlet@Old Sol IV: &cthey're weird and they're wonderful
-&R[08/06 20:31] &G&G20&W:&G31&d &R[&Wdchat&R] &CGimlet@Old Sol IV: &cI had funnies to add, but, y'know ig -->
-&R[08/06 21:11] &G&G21&W:&G11&d &R[&Wdchat&R] &CHamlet@Final Realms: &chey Kali, i have a story to tell.
-&R[08/06 21:13] &G&G21&W:&G13&d &R[&Wdchat&R] &CCratylus@Dead Souls Dev: &cYOU LIVE
-&R[08/06 21:14] &G&G21&W:&G14&d &R[&Wdchat&R] &CSinistrad@Dead Souls Dev: &cpity
-&R[08/06 21:14] &G&G21&W:&G14&d &R[&Wdchat&R] &CCratylus@Dead Souls Dev: &chammy's all right
-&R[08/06 21:15] &G&G21&W:&G15&d &R[&Wdchat&R] &CCratylus@Dead Souls Dev: &cFOR ME TO POOP ON
-&R[08/06 21:15] &G&G21&W:&G15&d &R[&Wdchat&R] &CHamlet@Final Realms: &caw.
-&R[08/06 21:16] &G&G21&W:&G16&d &R[&Wdchat&R] &CHamlet@Final Realms: &ci only made it to CT today :(
-&R[08/06 21:18] &G&G21&W:&G18&d &R[&Wdchat&R] &CHamlet@Final Realms: &cbut i still have a story for Kali,
-&R[08/06 21:21] &G&G21&W:&G21&d &R[&Wdchat&R] &CHamlet@Final Realms: &cCrat, your interstate better not give me more flat tires.
-&R[08/06 21:22] &G&G21&W:&G22&d &R[&Wdchat&R] &CCratylus@Dead Souls Dev: &cour judgments are harsh and swift
-&R[08/06 21:23] &G&G21&W:&G23&d &R[&Wdchat&R] &CHamlet@Final Realms: &cand unwarranted.  i was minding my own bidnese.
-&R[08/06 21:23] &G&G21&W:&G23&d &R[&Wdchat&R] &CCratylus@Dead Souls Dev: &cjustice is a cruel mistress
-&R[08/06 21:25] &G&G21&W:&G25&d &R[&Wdchat&R] &CHamlet@Final Realms: &ci need my phone in braille
-&R[08/06 22:44] &G&G22&W:&G44&d &R[&Wdchat&R] &CKalinice@Dead Souls Dev: &cohai hammy
-&R[08/06 22:44] &G&G22&W:&G44&d &R[&Wdchat&R] &CKalinice@Dead Souls Dev: &ci knew crat wouldn't really kill you
-&R[08/06 22:44] &G&G22&W:&G44&d &R[&Wdchat&R] &CKalinice@Dead Souls Dev: &cand why on god's green earth are you in the unconstituional state?
-&R[08/07 02:26] &G&G02&W:&G26&d &R[&Wdchat&R] &CAthena@Dead_Souls_athena: &cis there a way to program a menu system if i wanted one at any point in my mud? for example, when expanding character descriptions? Was reading over coding manuals and read all the beginners' book then started reading about mapping and setting global vs local variables
-&R[08/07 02:43] &G&G02&W:&G43&d &R[&Wdchat&R] &CShentino@Ulario: &cdo you mean the set of options, the ui stuff, or both?
-&R[08/07 03:09] &G&G03&W:&G09&d &R[&Wdchat&R] &CQuixadhal@Bloodlines: &cMenus are a pain to code generically... the basic idea in an LPMUD is to use input_to() to send the next player input to a specific function.  You would need to preserve state information between calls (probably saving it in the player object somewhere).
-&R[08/07 03:38] &G&G03&W:&G38&d &R[&Wdchat&R] &CAthena@Dead_Souls_athena: &chey there back
-&R[08/07 04:25] &G&G04&W:&G25&d &R[&Wdchat&R] &CLunch@DragonballMUD: &cOh hey Quixadhal, found out that mud you found was a knock off version.. With colors as you mentioned before lol.. Burnz your eyes -_-
-&R[08/07 04:29] &G&G04&W:&G29&d &R[&Wdchat&R] &CAthena@Dead_Souls_athena: &cI haven't started up my linux vm in ages
-&R[08/07 04:29] &G&G04&W:&G29&d &R[&Wdchat&R] &CAthena@Dead_Souls_athena: &clol
-&R[08/07 04:29] &G&G04&W:&G29&d &R[&Wdchat&R] &CQuixadhal@Bloodlines: &capt-get update && apt-get dist-upgrade
-&R[08/07 05:06] &G&G05&W:&G06&d &R[&Wdchat&R] &CAthena@Dead_Souls_athena: &csounds right to me
-&R[08/07 05:59] &G&G05&W:&G59&d &R[&Wdchat&R] &CQuixadhal@Bloodlines: &cWow, Crusader Kings II is a nicely complex game, whose tutorial is making my brain hurt. :)
-&R[08/07 06:03] &G&G06&W:&G03&d &R[&Wdchat&R] &cNinja@Dead Souls Dev bites his tongue.
-&R[08/07 06:03] &G&G06&W:&G03&d &R[&Wdchat&R] &CAthena@Dead_Souls_athena: &cahaahahahahaaa! oh come on you love it
-&R[08/07 07:49] &G&G07&W:&G49&d &R[&Wdchat&R] &CAidil@Way of the Force: &cQuix brain hurts?
-&R[08/07 07:49] &G&G07&W:&G49&d &R[&Wdchat&R] &CAidil@Way of the Force: &c.......
-&R[08/07 08:32] &G&G08&W:&G32&d &R[&Wdchat&R] &CNinja@Dead Souls Dev: &cstop pounding nails into it?
-&R[08/07 09:48] &G&G09&W:&G48&d &R[&Wdchat&R] &CJoshua@Dead Souls Dev: &cDo the drivers have decent SQL support now?
-&R[08/07 09:48] &G&G09&W:&G48&d &R[&Wdchat&R] &CJoshua@Dead Souls Dev: &cI remember there used to be an old mysql package that was super questionable
-&R[08/07 10:03] &G&G10&W:&G03&d &R[&Wdchat&R] &CNinja@Dead Souls Dev: &cFirefox is ditching <BLINK>?
-&R[08/07 10:03] &G&G10&W:&G03&d &R[&Wdchat&R] &CJoshua@Dead Souls Dev: &cand your tags shall blink until the end of days
-&R[08/07 10:04] &G&G10&W:&G04&d &R[&Wdchat&R] &CJoshua@Dead Souls Dev: &cwhich says something totally different now
-&R[08/07 10:05] &G&G10&W:&G05&d &R[&Wdchat&R] &CJoshua@Dead Souls Dev: &chttp://www.mozilla.org/en-US/book/
-&R[08/07 10:07] &G&G10&W:&G07&d &R[&Wdchat&R] &CNinja@Dead Souls Dev: &cwell, I still use a blink tag on my home page - makes it easier to find my tv listings link.
-&R[08/07 10:07] &G&G10&W:&G07&d &R[&Wdchat&R] &CJoshua@Dead Souls Dev: &cnice
-&R[08/07 10:07] &G&G10&W:&G07&d &R[&Wdchat&R] &CNinja@Dead Souls Dev: &chowever, it never blinks when I print it.
-&R[08/07 10:07] &G&G10&W:&G07&d &R[&Wdchat&R] &CNinja@Dead Souls Dev: &cmust be that my printer is too old or sumpin.
-&R[08/07 10:07] &G&G10&W:&G07&d &R[&Wdchat&R] &CNinja@Dead Souls Dev: &cfwiw, my "home page" is a file on my computer.
-&R[08/07 10:08] &G&G10&W:&G08&d &R[&Wdchat&R] &CNinja@Dead Souls Dev: &call it has are links to other sites, like newspapers, my hardware (dsl modem, router, CUPS), library, stock accounts, etc
-&R[08/07 10:13] &G&G10&W:&G13&d &R[&Wdchat&R] &CJoshua@Dead Souls Dev: &cright
-&R[08/07 10:13] &G&G10&W:&G13&d &R[&Wdchat&R] &CJoshua@Dead Souls Dev: &cthose are nice to have
-&R[08/07 10:13] &G&G10&W:&G13&d &R[&Wdchat&R] &CJoshua@Dead Souls Dev: &cbeen a long time since i've made one
-&R[08/07 11:27] &G&G11&W:&G27&d &R[&Wdchat&R] &CKalinice@Dead Souls Dev: &cBig hair, short skirts, and service with a smile!
-&R[08/07 11:52] &G&G11&W:&G52&d &R[&Wdchat&R] &CNinja@Dead Souls Dev: &cWot, you changed jobs again?
-&R[08/07 11:53] &G&G11&W:&G53&d &R[&Wdchat&R] &CKalinice@Dead Souls Dev: &cjust moonlighting
-&R[08/07 12:04] &G&G12&W:&G04&d &R[&Wdchat&R] &CGimlet@Old Sol IV: &cjust make sure your short skirt is long enough to cover the parts we can't talk about on dchat
-&R[08/07 12:04] &G&G12&W:&G04&d &R[&Wdchat&R] &CKalinice@Dead Souls Dev: &cmy knees?
-&R[08/07 12:21] &G&G12&W:&G21&d &R[&Wdchat&R] &CQuixadhal@Bloodlines: &cIronic... I can install an older version of virtualbox via debian's apt repository, but if I install the latest one from whoracle, I have to install an OLDER version of gcc for it.
-&R[08/07 12:22] &G&G12&W:&G22&d &R[&Wdchat&R] &CKalinice@Dead Souls Dev: &clol open sores
-&R[08/07 12:22] &G&G12&W:&G22&d &R[&Wdchat&R] &CSinistrad@Dead Souls Dev: &copen sores remind us we're still alive
-&R[08/07 12:22] &G&G12&W:&G22&d &R[&Wdchat&R] &CSinistrad@Dead Souls Dev: &cSuperman's problem? He's never felt pain in his life
-&R[08/07 12:22] &G&G12&W:&G22&d &R[&Wdchat&R] &CSinistrad@Dead Souls Dev: &che is weak
-&R[08/07 12:23] &G&G12&W:&G23&d &R[&Wdchat&R] &CSinistrad@Dead Souls Dev: &cmentally, a child
-&R[08/07 12:23] &G&G12&W:&G23&d &R[&Wdchat&R] &CQuixadhal@Bloodlines: &cSuperboooiiiiizzzzz
-&R[08/07 12:24] &G&G12&W:&G24&d &R[&Wdchat&R] &CQuixadhal@Bloodlines: &cI figured I should try setting up virtualbox under linux, so I can run an old copy of slackware in a VM on my linux box.
-&R[08/07 12:24] &G&G12&W:&G24&d &R[&Wdchat&R] &CKalinice@Dead Souls Dev: &cthus destroying reality
-&R[08/07 12:24] &G&G12&W:&G24&d &R[&Wdchat&R] &CNinja@Dead Souls Dev: &c...as we know it.
-&R[08/07 12:25] &G&G12&W:&G25&d &R[&Wdchat&R] &CQuixadhal@Bloodlines: &cHey, if we're gonna work with MUDz, we need to use the tools they used in the Golden Age of MUDding!
-&R[08/07 12:25] &G&G12&W:&G25&d &R[&Wdchat&R] &CNinja@Dead Souls Dev: &cwhen I updated the gcc that came with FC4 to the one that came with Ubuntu 11.10, I got hammered with warning messages from the new version that the old one didn't kick out.
-&R[08/07 12:25] &G&G12&W:&G25&d &R[&Wdchat&R] &CNinja@Dead Souls Dev: &cso maybe an older gcc has merit.
-&R[08/07 12:26] &G&G12&W:&G26&d &R[&Wdchat&R] &CQuixadhal@Bloodlines: &cYes Ninja, that's called actually enforcing the standard, rather than not bothering to check things. :)
-&R[08/07 12:27] &G&G12&W:&G27&d &R[&Wdchat&R] &CQuixadhal@Bloodlines: &cEvery version of gcc has gradually added actual error checking to make people code in C, rather than the sloppy mess they used to think was C before The Committee corrected it.  All hail The Committee!
-&R[08/07 13:27] &G&G13&W:&G27&d &R[&Wdchat&R] &CKalinice@Dead Souls Dev: &cGOJIRA!!
-&R[08/07 13:28] &G&G13&W:&G28&d &R[&Wdchat&R] &CGimlet@Old Sol IV: &cBlue Oyster Cult!
-&R[08/07 13:28] &G&G13&W:&G28&d &R[&Wdchat&R] &CKalinice@Dead Souls Dev: &cfires of unknown origin
-&R[08/07 13:29] &G&G13&W:&G29&d &R[&Wdchat&R] &CSinistrad@Dead Souls Dev: &cthey're making a new GOJIRA movie
-&R[08/07 13:30] &G&G13&W:&G30&d &R[&Wdchat&R] &CSinistrad@Dead Souls Dev: &cin this one, GOJIRA is actually from another dimension, and comes to earth through a rift deep in the Pacific
-&R[08/07 13:30] &G&G13&W:&G30&d &R[&Wdchat&R] &CSinistrad@Dead Souls Dev: &chumans create these robots to fight him, but GOJIRA prevails
-&R[08/07 13:30] &G&G13&W:&G30&d &R[&Wdchat&R] &CKalinice@Dead Souls Dev: &csounds like a job in the pacific rim
-&R[08/07 13:30] &G&G13&W:&G30&d &R[&Wdchat&R] &CSinistrad@Dead Souls Dev: &cnah, that's a different movie
-&R[08/07 13:30] &G&G13&W:&G30&d &R[&Wdchat&R] &CGimlet@Old Sol IV: &cnot seen PR
-&R[08/07 13:31] &G&G13&W:&G31&d &R[&Wdchat&R] &CSinistrad@Dead Souls Dev: &cthis one's Godzilla: How He affects the cities bordering the Pacific
-&R[08/07 13:31] &G&G13&W:&G31&d &R[&Wdchat&R] &CKalinice@Dead Souls Dev: &cthe bikini atoll diaries
-&R[08/07 17:15] &G&G17&W:&G15&d &R[&Wdchat&R] &CKalinice@Dead Souls Dev: &cthe trick to eternal life is to not be encased in a rotting meat sack
-&R[08/07 17:57] &G&G17&W:&G57&d &R[&Wdchat&R] &CLunch@DragonballMUD: &cGood evening.
-&R[08/07 17:58] &G&G17&W:&G58&d &R[&Wdchat&R] &CQuixadhal@Bloodlines: &cProve it!
-&R[08/07 18:01] &G&G18&W:&G01&d &R[&Wdchat&R] &CNinja@Dead Souls Dev: &cYou got a pulse, then it's a good evening.
-&R[08/07 21:13] &G&G21&W:&G13&d &R[&Wdchat&R] &CQuixadhal@Bloodlines: &chttp://www.youtube.com/watch?v=Y53_GV2aAg8
-&R[08/07 23:26] &G&G23&W:&G26&d &R[&Wdchat&R] &CKalinice@Dead Souls Dev: &cHammy
-&R[08/07 23:26] &G&G23&W:&G26&d &R[&Wdchat&R] &CKalinice@Dead Souls Dev: &cThe Eagle has Landed
-&R[08/08 02:24] &G&G02&W:&G24&d &R[&Wdchat&R] &CAthena@Dead_Souls_athena: &cI set my shirt armor type to a_shirt but it still wont let me wear it. why?
-&R[08/08 02:24] &G&G02&W:&G24&d &R[&Wdchat&R] &CAthena@Dead_Souls_athena: &cafter I set all the stuff like descriptions and stuff
-&R[08/08 03:11] &G&G03&W:&G11&d &R[&Wdchat&R] &CLunch@DragonballMUD: &cLater folks.
-&R[08/08 08:58] &G&G08&W:&G58&d &R[&Wdchat&R] &CKalinice@Dead Souls Dev: &chttp://delimiter.com.au/2013/08/07/banned-qld-govt-outlaws-new-ibm-contracts/
-&R[08/08 11:36] &G&G11&W:&G36&d &R[&Wdchat&R] &CKalinice@Dead Souls Dev: &chttp://arstechnica.com/security/2013/08/hand-of-thief-banking-trojan-doesnt-do-windows-but-it-does-linux/
-&R[08/08 12:17] &G&G12&W:&G17&d &R[&Wdchat&R] &CCratylus@Dead Souls Dev: &cwill probly do some i3 maintenance tonight/tomorrow
-&R[08/08 12:48] &G&G12&W:&G48&d &R[&Wdchat&R] &CKalinice@Dead Souls Dev: &cfinally going to purge the DIKU menace from the intertubes?
-&R[08/08 13:02] &G&G13&W:&G02&d &R[&Wdchat&R] &CCratylus@Dead Souls Dev: &celysium looks gewd
-&R[08/08 13:02] &G&G13&W:&G02&d &R[&Wdchat&R] &CCratylus@Dead Souls Dev: &ci want me sum elysium
-&R[08/08 13:02] &G&G13&W:&G02&d &R[&Wdchat&R] &CKalinice@Dead Souls Dev: &c$40
-&R[08/08 13:02] &G&G13&W:&G02&d &R[&Wdchat&R] &CKalinice@Dead Souls Dev: &ci'll hook you up
-&R[08/08 13:03] &G&G13&W:&G03&d &R[&Wdchat&R] &CCratylus@Dead Souls Dev: &ci thought you sold crystal twist
-&R[08/08 13:05] &G&G13&W:&G05&d &R[&Wdchat&R] &CKalinice@Dead Souls Dev: &ci sell what people want
-&R[08/08 13:06] &G&G13&W:&G06&d &R[&Wdchat&R] &CCratylus@Dead Souls Dev: &chttp://www.youtube.com/watch?v=7fFt7TnZdMU
-&R[08/08 16:15] &G&G16&W:&G15&d &R[&Wdchat&R] &CKalinice@Dead Souls Dev: &chttp://pbfcomics.com/153/
-&R[08/08 19:43] &G&G19&W:&G43&d &R[&Wdchat&R] &CQuixadhal@Bloodlines: &chttp://www.youtube.com/watch?v=eNs1rdSkUi8&hd=1
-&R[08/08 21:45] &G&G21&W:&G45&d &R[&Wdchat&R] &CDartal@DeadThrone: &clist
-&R[08/08 21:45] &G&G21&W:&G45&d &R[&Wdchat&R] &CDuuk@Haven?: &cDuuk, Torak, Victis
-&R[08/08 21:51] &G&G21&W:&G51&d &R[&Wdchat&R] &CKalinice@Dead Souls Dev: &clol
-&R[08/08 22:02] &G&G22&W:&G02&d &R[&Wdchat&R] &CKalinice@Dead Souls Dev: &chttp://www.youtube.com/watch?v=oGhH4FlKE-U
-&R[08/08 22:23] &G&G22&W:&G23&d &R[&Wdchat&R] &CCratylus@Dead Souls Dev: &cconfutatis
-&R[08/08 22:23] &G&G22&W:&G23&d &R[&Wdchat&R] &CCratylus@Dead Souls Dev: &ctorakvictis
-&R[08/08 22:23] &G&G22&W:&G23&d &R[&Wdchat&R] &CCratylus@Dead Souls Dev: &cflammis duukibus addictis
-&R[08/08 22:26] &G&G22&W:&G26&d &R[&Wdchat&R] &CCratylus@Dead Souls Dev: &cintermud getting a reboot tonight sometime
-&R[08/09 01:34] &G&G01&W:&G34&d &R[&Wdchat&R] &CQuixadhal@Bloodlines: &cSo, I've now had my FOURTH linksys quality product die like a dog, in the last 6 years or so.  That makes one 16 port switch (expensive back then!), one 8 port switch, one wireless router, and an old 5 port switch.  The last two were prior to cisco buying them, so... fsck linksys, and fsck cisco.
-&R[08/09 01:39] &G&G01&W:&G39&d &R[&Wdchat&R] &CCozminsky@EotL: &cbetter than extreme
-&R[08/09 01:40] &G&G01&W:&G40&d &R[&Wdchat&R] &CQuixadhal@Bloodlines: &cIt's annoying enough when a port dies on a switch, but the entire switch going poof is very inconvenient.
-&R[08/09 01:41] &G&G01&W:&G41&d &R[&Wdchat&R] &CCozminsky@EotL: &chow big is the sample that you've had 6 failures in?
-&R[08/09 01:41] &G&G01&W:&G41&d &R[&Wdchat&R] &CCozminsky@EotL: &care we talking 6/6 or 6/100
-&R[08/09 01:42] &G&G01&W:&G42&d &R[&Wdchat&R] &CCozminsky@EotL: &c4/4 even
-&R[08/09 01:42] &G&G01&W:&G42&d &R[&Wdchat&R] &CQuixadhal@Bloodlines: &cHmmm, I guess it would be about 6/9.
-&R[08/09 01:43] &G&G01&W:&G43&d &R[&Wdchat&R] &CQuixadhal@Bloodlines: &cMy ASUS router is still working (or I'd not be online), one OLD linksys switch I ressurected for the PS3 is still working (10/100, probably about 10 years old).
-&R[08/09 01:43] &G&G01&W:&G43&d &R[&Wdchat&R] &CFizban@Dead Souls Dev: &conly bought one linksys router ever
-&R[08/09 01:43] &G&G01&W:&G43&d &R[&Wdchat&R] &CFizban@Dead Souls Dev: &cit's hmm, 7 years old and works fine
-&R[08/09 01:44] &G&G01&W:&G44&d &R[&Wdchat&R] &CFizban@Dead Souls Dev: &cthough never had any router die
-&R[08/09 01:44] &G&G01&W:&G44&d &R[&Wdchat&R] &CQuixadhal@Bloodlines: &cI'll never buy another one.  I've never had any NON linksys switch die on me.
-&R[08/09 01:44] &G&G01&W:&G44&d &R[&Wdchat&R] &CQuixadhal@Bloodlines: &cI used to recommend their NIC's, back in the old LNE100 days.
-&R[08/09 01:45] &G&G01&W:&G45&d &R[&Wdchat&R] &CFizban@Dead Souls Dev: &cthough less from personal experience (since I've personally had no issues with any brands really) I've always heard ASUS or Amped Wireless were generally the best options
-&R[08/09 01:47] &G&G01&W:&G47&d &R[&Wdchat&R] &CQuixadhal@Bloodlines: &cIt just makes me sad, because a switch is NOT a complicated device to make.  The fact that I've had multiple linksys ones fail, and never had any other brand of switch (not even $10 generic no-name ones) fail, tells me something.
-&R[08/09 01:48] &G&G01&W:&G48&d &R[&Wdchat&R] &CQuixadhal@Bloodlines: &cI think this was a $70 8-port, and it's probably only 2 years old.  It was the newest switch I had (only gigabit one), except for the built-in ports on my router itself (which is what I'm using now).
-&R[08/09 01:49] &G&G01&W:&G49&d &R[&Wdchat&R] &CQuixadhal@Bloodlines: &cI kindof don't like plugging things into the router directly.  I like to keep stuff segregated, so touching one thing is less likely to mess up anything else. :)
-&R[08/09 01:58] &G&G01&W:&G58&d &R[&Wdchat&R] &CQuixadhal@Bloodlines: &cHardware failure is one of the downsides of unemployment... instead of "Darn, I have to skip lunch to go pick up a new whatever", it's "Darn, if I want a new whatever, I need to skip lunch for several weeks". *chuckle*
-&R[08/09 02:03] &G&G02&W:&G03&d &R[&Wdchat&R] &CQuixadhal@Bloodlines: &cIt's not like I install my network switches inside heating ducts, or fireplace chimneys... they should last longer, darnit.
-&R[08/09 02:43] &G&G02&W:&G43&d &R[&Wdchat&R] &CShentino@Ulario: &c@_@
-&R[08/09 02:44] &G&G02&W:&G44&d &R[&Wdchat&R] &CShentino@Ulario: &cinsomnia, yaaaaaay
-&R[08/09 02:45] &G&G02&W:&G45&d &R[&Wdchat&R] &CFizban@Dead Souls Dev: &cindeed
-&R[08/09 02:45] &G&G02&W:&G45&d &R[&Wdchat&R] &CFizban@Dead Souls Dev: &calmost 3 am, yet can't sleep
-&R[08/09 02:45] &G&G02&W:&G45&d &R[&Wdchat&R] &CQuixadhal@Bloodlines: &cWhat, people are supposed to sleep when it's dark out?
-&R[08/09 02:47] &G&G02&W:&G47&d &R[&Wdchat&R] &CShentino@Ulario: &calmost 11:00 pm here
-&R[08/09 02:47] &G&G02&W:&G47&d &R[&Wdchat&R] &CShentino@Ulario: &cor 2300 hours
-&R[08/09 02:48] &G&G02&W:&G48&d &R[&Wdchat&R] &CQuixadhal@Bloodlines: &c2013.08.09 02:49 -- Almost porn o'clock.
-&R[08/09 02:52] &G&G02&W:&G52&d &R[&Wdchat&R] &CShentino@Ulario: &char har
-&R[08/09 02:54] &G&G02&W:&G54&d &R[&Wdchat&R] &CQuixadhal@Bloodlines: &cThat's pretty much all that's on TV at this hour.  Informercials, ads for boner pills, and softcore nonsense on the movie channels. *chuckle*
-&R[08/09 03:18] &G&G03&W:&G18&d &R[&Wdchat&R] &CQuixadhal@Bloodlines: &chttps://www.youtube.com/watch?feature=player_embedded&v=rtXV34Py2fI&hd=1
-&R[08/09 03:19] &G&G03&W:&G19&d &R[&Wdchat&R] &CQuixadhal@Bloodlines: &cI have to say, I'm impressed with egosoft for making a whole "how to play our game that's not yet released, using an xbox controller" video. :)
-&R[08/09 03:20] &G&G03&W:&G20&d &R[&Wdchat&R] &CQuixadhal@Bloodlines: &cI also like that many new games are going with the "stylized cartoon" approach, rather than the "molded plastic" approach.  It seems to work better, and not require an SLI setup with 4 $750 cards and a liquid nitrogen cooling system.
-&R[08/09 03:23] &G&G03&W:&G23&d &R[&Wdchat&R] &CQuixadhal@Bloodlines: &chttps://www.youtube.com/watch?feature=player_embedded&v=NEbL1p5vZpw&hd=1 is a more interesting video about the game.
-&R[08/09 04:35] &G&G04&W:&G35&d &R[&Wdchat&R] &CNinja@Dead Souls Dev: &cLego graphics.
-&R[08/09 07:17] &G&G07&W:&G17&d &R[&Wdchat&R] &CCozminsky@Dead_Souls_cozminsky: &c/who
-&R[08/09 12:06] &G&G12&W:&G06&d &R[&Wdchat&R] &CKalinice@Dead Souls Dev: &chttp://pbfcomics.com/72
-&R[08/09 12:07] &G&G12&W:&G07&d &R[&Wdchat&R] &CCratylus@Dead Souls Dev: &c:(
-&R[08/09 12:10] &G&G12&W:&G10&d &R[&Wdchat&R] &CKalinice@Dead Souls Dev: &chttp://pbfcomics.com/40
-&R[08/09 12:10] &G&G12&W:&G10&d &R[&Wdchat&R] &CKalinice@Dead Souls Dev: &cbetter?
-&R[08/09 12:28] &G&G12&W:&G28&d &R[&Wdchat&R] &CSinistrad@Dead Souls Dev: &chttp://pbfcomics.com/252/
-&R[08/09 13:59] &G&G13&W:&G59&d &R[&Wdchat&R] &CQuixadhal@Bloodlines: &cHmmm, well, intermud connection thingy bounced again, and no corresponding "link up/down" messages in my server log, so this time, I have to blame crat. :)
-&R[08/09 14:00] &G&G14&W:&G00&d &R[&Wdchat&R] &CCratylus@Dead Souls Dev: &chmm
-&R[08/09 14:33] &G&G14&W:&G33&d &R[&Wdchat&R] &CCratylus@Dead Souls Dev: &ctesting a thing on the router
-&R[08/09 14:33] &G&G14&W:&G33&d &R[&Wdchat&R] &CCratylus@Dead Souls Dev: &cyou may experience turbulence
-&R[08/09 14:37] &G&G14&W:&G37&d &R[&Wdchat&R] &CKalinice@Dead Souls Dev: &clike an off-balance washing machine on the spin cycle
-&R[08/09 14:54] &G&G14&W:&G54&d &R[&Wdchat&R] &CNinja@Dead Souls Dev: &cwheeeeeeee...*thud*
-&R[08/09 14:54] &G&G14&W:&G54&d &R[&Wdchat&R] &CNinja@Dead Souls Dev: &cagain, please.
-&R[08/09 20:21] &G&G20&W:&G21&d &R[&Wdchat&R] &CKalinice@Dead Souls Dev: &ccrat
-&R[08/09 20:21] &G&G20&W:&G21&d &R[&Wdchat&R] &CKalinice@Dead Souls Dev: &cwhy you remove post?
-&R[08/09 20:21] &G&G20&W:&G21&d &R[&Wdchat&R] &CKalinice@Dead Souls Dev: &ci has funny response
-&R[08/09 20:29] &G&G20&W:&G29&d &R[&Wdchat&R] &CNinja@Dead Souls Dev: &chaha funny or ewwwwww funny?
-&R[08/09 20:30] &G&G20&W:&G30&d &R[&Wdchat&R] &CNinja@Dead Souls Dev: &cnm...you funny.
-&R[08/09 20:30] &G&G20&W:&G30&d &R[&Wdchat&R] &CKalinice@Dead Souls Dev: &c:)
-&R[08/09 20:40] &G&G20&W:&G40&d &R[&Wdchat&R] &CGimlet@Old Sol IV: &ceverybody funny... now you funny, too...
-&R[08/09 20:41] &G&G20&W:&G41&d &R[&Wdchat&R] &CCratylus@Dead Souls Dev: &csry, i posted it then remembered i got it form someone and needed to share it
-&R[08/09 20:41] &G&G20&W:&G41&d &R[&Wdchat&R] &CCratylus@Dead Souls Dev: &cso i deleted it and was gona share it with proper attribution
-&R[08/09 20:41] &G&G20&W:&G41&d &R[&Wdchat&R] &CKalinice@Dead Souls Dev: &cone burgon, one scotch, one beer
-&R[08/09 20:41] &G&G20&W:&G41&d &R[&Wdchat&R] &CCratylus@Dead Souls Dev: &cthen got distracted by screaming chidrens
-&R[08/09 20:41] &G&G20&W:&G41&d &R[&Wdchat&R] &CKalinice@Dead Souls Dev: &cburbon
-&R[08/09 20:45] &G&G20&W:&G45&d &R[&Wdchat&R] &CKalinice@Dead Souls Dev: &chttp://www.youtube.com/watch?v=lRUHVFQxbE4
-&R[08/09 20:46] &G&G20&W:&G46&d &R[&Wdchat&R] &CGimlet@Old Sol IV: &cbourbon
-&R[08/09 20:46] &G&G20&W:&G46&d &R[&Wdchat&R] &CKalinice@Dead Souls Dev: &ci kill u nao
-&R[08/09 20:46] &G&G20&W:&G46&d &R[&Wdchat&R] &CGimlet@Old Sol IV: &cdon't start drinking until you finish writing
-&R[08/09 20:47] &G&G20&W:&G47&d &R[&Wdchat&R] &CKalinice@Dead Souls Dev: &clet's get dangerous
-&R[08/09 20:47] &G&G20&W:&G47&d &R[&Wdchat&R] &CGimlet@Old Sol IV: &cunless you're Bukowski or somebody
-&R[08/09 20:56] &G&G20&W:&G56&d &R[&Wdchat&R] &CKalinice@Dead Souls Dev: &chttp://www.youtube.com/watch?v=HVfh0UqvOzE
-&R[08/09 20:57] &G&G20&W:&G57&d &R[&Wdchat&R] &CKalinice@Dead Souls Dev: &cher crazy train needs more distortion
-&R[08/09 21:10] &G&G21&W:&G10&d &R[&Wdchat&R] &CGimlet@Old Sol IV: &csomewhere is a vid of a cute little Japanese kid covering Crazy Train... Ozzie actually invited him to play at some of his shows
-&R[08/09 21:11] &G&G21&W:&G11&d &R[&Wdchat&R] &CGimlet@Old Sol IV: &ccan't be bothered to search, though... and it was a few years back... cute little kid is prolly mainlining Mr. Sparkle now and begging outside Pachinko parlors
-&R[08/09 22:55] &G&G22&W:&G55&d &R[&Wdchat&R] &CCratylus@Dead Souls Dev: &cwhy is peoples h8 dubstep so mutch
-&R[08/09 23:00] &G&G23&W:&G00&d &R[&Wdchat&R] &CLyanic@7thplane: &cwubwubwubwubwubwubwubwubwubwubwubwubwubwubwubwubwubwubwubwubwub...DROP!
-&R[08/09 23:07] &G&G23&W:&G07&d &R[&Wdchat&R] &CQuixadhal@Bloodlines: &cIt was soooooo annoying when Claptrap did that in Borderlands 2. *chuckle*
-&R[08/10 10:06] &G&G10&W:&G06&d &R[&Wdchat&R] &CCratylus@Dead Souls Dev: &chttp://www.youtube.com/watch?v=vwc9_nqX6Zc
-&R[08/10 12:05] &G&G12&W:&G05&d &R[&Wdchat&R] &CSinistrad@Dead Souls Dev: &cthere's one more thing
-&R[08/10 12:05] &G&G12&W:&G05&d &R[&Wdchat&R] &CNinja@Dead Souls Dev: &cYa know, if you gamers spent the same amount of time learning to like, juse a real sword....
-&R[08/10 12:05] &G&G12&W:&G05&d &R[&Wdchat&R] &CNinja@Dead Souls Dev: &chmmm.
-&R[08/10 12:05] &G&G12&W:&G05&d &R[&Wdchat&R] &CNinja@Dead Souls Dev: &cstick with the games, please.
-&R[08/10 12:05] &G&G12&W:&G05&d &R[&Wdchat&R] &CDuuk@Haven?: &cBut
-&R[08/10 12:05] &G&G12&W:&G05&d &R[&Wdchat&R] &CDuuk@Haven?: &cswords
-&R[08/10 12:05] &G&G12&W:&G05&d &R[&Wdchat&R] &CNinja@Dead Souls Dev: &cno buts.
-&R[08/10 12:06] &G&G12&W:&G06&d &R[&Wdchat&R] &CNinja@Dead Souls Dev: &cthe sharpest thing you need is yer wit.
-&R[08/10 12:15] &G&G12&W:&G15&d &R[&Wdchat&R] &CNewt@ShadowMUDii Dev: &cspoons only?
-&R[08/10 12:17] &G&G12&W:&G17&d &R[&Wdchat&R] &CKalinice@Dead Souls Dev: &cHow appropriate, you fight like a cow!
-&R[08/10 12:50] &G&G12&W:&G50&d &R[&Wdchat&R] &CArdneh@Ardneh's World: &cmoo?
-&R[08/10 13:00] &G&G13&W:&G00&d &R[&Wdchat&R] &CKalinice@Dead Souls Dev: &cmr. brown?
-&R[08/10 13:00] &G&G13&W:&G00&d &R[&Wdchat&R] &CDuuk@Haven?: &cmr brownstone
-&R[08/10 13:00] &G&G13&W:&G00&d &R[&Wdchat&R] &CKalinice@Dead Souls Dev: &ci don't dance
-&R[08/10 13:01] &G&G13&W:&G01&d &R[&Wdchat&R] &CKalinice@Dead Souls Dev: &cwith mr. brownstone
-&R[08/10 13:03] &G&G13&W:&G03&d &R[&Wdchat&R] &CKalinice@Dead Souls Dev: &cbut he won't leave me alone
-&R[08/10 13:17] &G&G13&W:&G17&d &R[&Wdchat&R] &CArdneh@Ardneh's World: &cKalinice, I'd like to raise an issue with you about certain issues people seem to have with Windows 8.  Its interface keeps jumping around when no user input is indicated.  Not flickery-jumping-around, but seeming to make decisions about what is to be done /for the user/.
-&R[08/10 13:22] &G&G13&W:&G22&d &R[&Wdchat&R] &CArdneh@Ardneh's World: &cAlso rather than having actual-help it sends you to useless KB articles on the web.
-&R[08/10 13:23] &G&G13&W:&G23&d &R[&Wdchat&R] &CJandice@SithWars: &c... well... why is that an issue?
-&R[08/10 13:23] &G&G13&W:&G23&d &R[&Wdchat&R] &CArdneh@Ardneh's World: &cNone of them actually provide help for Win8.
-&R[08/10 13:23] &G&G13&W:&G23&d &R[&Wdchat&R] &CJandice@SithWars: &cThat is actually written on the design draft.
-&R[08/10 13:24] &G&G13&W:&G24&d &R[&Wdchat&R] &CJandice@SithWars: &cThat seems to be a recurring process with Windows.
-&R[08/10 13:24] &G&G13&W:&G24&d &R[&Wdchat&R] &CArdneh@Ardneh's World: &cMaybe things would be better if the KB articles weren't quite so useless.
-&R[08/10 13:26] &G&G13&W:&G26&d &R[&Wdchat&R] &CJandice@SithWars: &cAre you volunteering?
-&R[08/10 13:26] &G&G13&W:&G26&d &R[&Wdchat&R] &CArdneh@Ardneh's World: &cBut it's a problem if internet access is spotty for the user.
-&R[08/10 16:58] &G&G16&W:&G58&d &R[&Wdchat&R] &CQuixadhal@Bloodlines: &cThe Arch Room loudspeaker announces: "Intermud connection is OFFLINE."
-&R[08/10 16:58] &G&G16&W:&G58&d &R[&Wdchat&R] &CCratylus@Dead Souls Dev: &cyep, seems to be happening once a day, for no reason at all
-&R[08/10 16:59] &G&G16&W:&G59&d &R[&Wdchat&R] &CCratylus@Dead Souls Dev: &ci'm starting to suspect the OS itself at this point
-&R[08/10 16:59] &G&G16&W:&G59&d &R[&Wdchat&R] &CQuixadhal@Bloodlines: &cOh, there's a reason allright.
-&R[08/10 16:59] &G&G16&W:&G59&d &R[&Wdchat&R] &CCratylus@Dead Souls Dev: &cbut i'll keep peering into it
-&R[08/10 17:01] &G&G17&W:&G01&d &R[&Wdchat&R] &CDuuk@Haven?: &cI blame CratCode
-&R[08/10 17:01] &G&G17&W:&G01&d &R[&Wdchat&R] &CQuixadhal@Bloodlines: &cselect speaker, count(*) from chanlogs where msg_date >= now() - '1 day'::interval group by speaker order by count desc limit 10;
-&R[08/10 17:01] &G&G17&W:&G01&d &R[&Wdchat&R] &CQuixadhal@Bloodlines: &cThe top non-bot speaker is Kalinice.... that should answer your questions.  Clearly, he's overflowing the hate buffers.
-&R[08/10 17:03] &G&G17&W:&G03&d &R[&Wdchat&R] &CQuixadhal@Bloodlines: &cThe top speakers are actually (in order), SkySports, JournalRecord, BBCSport, FOXNews, Kalinice, Slashdot, Ardneh, Cratylus, MudBytes, and Quixadhal.
-&R[08/10 17:12] &G&G17&W:&G12&d &R[&Wdchat&R] &CCratylus@Dead Souls Dev: &csomethings wrong when im not the top speaker
-&R[08/10 17:13] &G&G17&W:&G13&d &R[&Wdchat&R] &CCratylus@Dead Souls Dev: &cobviously i need to reevaluate how much time i spend working
-&R[08/10 17:19] &G&G17&W:&G19&d &R[&Wdchat&R] &CCratylus@Dead Souls Dev: &chttp://buzzfeed.tumblr.com/post/53370722762/this-lemur-just-found-out-how-good-cupcakes-are
-&R[08/10 19:06] &G&G19&W:&G06&d &R[&Wdchat&R] &CArdneh@Ardneh's World: &cit would be more amusing if Kalinice were ahead of the bots for frequency but nobody else
-&R[08/10 19:07] &G&G19&W:&G07&d &R[&Wdchat&R] &CShentino@Ulario: &chas anyone seen silenus?
-&R[08/10 19:08] &G&G19&W:&G08&d &R[&Wdchat&R] &CQuixadhal@Bloodlines: &cNot since May... http://www.shadowlord.org/~bloodlines/i3log.php?sf=silenus
-&R[08/10 19:10] &G&G19&W:&G10&d &R[&Wdchat&R] &CShentino@Ulario: &cphooey
-&R[08/10 19:10] &G&G19&W:&G10&d &R[&Wdchat&R] &CQuixadhal@Bloodlines: &cHmmmm, he disappeared not long after Nafe left us...
-&R[08/10 19:10] &G&G19&W:&G10&d &R[&Wdchat&R] &CShentino@Ulario: &cwas nafe = silenus?
-&R[08/10 19:10] &G&G19&W:&G10&d &R[&Wdchat&R] &CAidil@Way of the Force: &cI hope not!
-&R[08/10 19:10] &G&G19&W:&G10&d &R[&Wdchat&R] &CShentino@Ulario: &cwhy hope not?
-&R[08/10 19:11] &G&G19&W:&G11&d &R[&Wdchat&R] &CQuixadhal@Bloodlines: &cMaybe he killed Nafe and went into hiding.
-&R[08/10 19:11] &G&G19&W:&G11&d &R[&Wdchat&R] &CAidil@Way of the Force: &cnafe was an **** silenus not :-)
-&R[08/10 19:11] &G&G19&W:&G11&d &R[&Wdchat&R] &CShentino@Ulario: &cah
-&R[08/10 19:11] &G&G19&W:&G11&d &R[&Wdchat&R] &CQuixadhal@Bloodlines: &cHeh, just compare their output in the logs, Shentino.
-&R[08/10 19:11] &G&G19&W:&G11&d &R[&Wdchat&R] &CAidil@Way of the Force: &cdon't.
-&R[08/10 19:11] &G&G19&W:&G11&d &R[&Wdchat&R] &CShentino@Ulario: &cah.  I miss silenus
-&R[08/10 19:12] &G&G19&W:&G12&d &R[&Wdchat&R] &CQuixadhal@Bloodlines: &cIf they were the same person, I don't think either personality was aware of the other.
-&R[08/10 19:12] &G&G19&W:&G12&d &R[&Wdchat&R] &CAidil@Way of the Force: &creading nafe is not good for your mental health.
-&R[08/10 19:12] &G&G19&W:&G12&d &R[&Wdchat&R] &CShentino@Ulario: &cdid nafe get banned from i3?
-&R[08/10 19:27] &G&G19&W:&G27&d &R[&Wdchat&R] &CNinja@Dead Souls Dev: &csilenus has been on within the past week...alive and well.
-&R[08/10 19:35] &G&G19&W:&G35&d &R[&Wdchat&R] &CShentino@Ulario: &cooh, where at?
-&R[08/10 19:36] &G&G19&W:&G36&d &R[&Wdchat&R] &CNinja@Dead Souls Dev: &chere, of course!
-&R[08/10 19:36] &G&G19&W:&G36&d &R[&Wdchat&R] &CShentino@Ulario: &cnice ^^
-&R[08/10 19:36] &G&G19&W:&G36&d &R[&Wdchat&R] &CShentino@Ulario: &cI shall have to visit
-&R[08/10 19:37] &G&G19&W:&G37&d &R[&Wdchat&R] &CQuixadhal@Bloodlines: &cI went there once.  There was no punch and pie. :(
-&R[08/10 19:37] &G&G19&W:&G37&d &R[&Wdchat&R] &CNinja@Dead Souls Dev: &cmusta been an off day.
-&R[08/10 19:44] &G&G19&W:&G44&d &R[&Wdchat&R] &CQuixadhal@Bloodlines: &cI think Kali ate it all... again.
-&R[08/10 19:48] &G&G19&W:&G48&d &R[&Wdchat&R] &CHamlet@Final Realms: &cWith Humira, remission /is/ possible.
-&R[08/10 19:51] &G&G19&W:&G51&d &R[&Wdchat&R] &CHamlet@Final Realms: &cjust saying.
-&R[08/10 19:56] &G&G19&W:&G56&d &R[&Wdchat&R] &CHamlet@Final Realms: &chttp://www.geeksaresexy.net/2013/08/10/game-launch-rock-or-why-you-shouldnt-buy-a-console-at-launch-video/
-&R[08/11 00:31] &G&G00&W:&G31&d &R[&Wdchat&R] &CShentino@Ulario: &cyap yap
+&R[04/05 07:44] &G&G07&W:&G44&d &R[&Wdchat&R] &CHamlet@WWC: &cSo when's the Roslyn linux port come out?
+&R[04/05 10:25] &G&G10&W:&G25&d &R[&Wdchat&R] &CKalinash@Crat's Agony: &ci got cobbled once :(
+&R[04/05 10:30] &G&G10&W:&G30&d &R[&Wdchat&R] &CDuuk@Haven?: &cYou normally have to pay extra for that.
+&R[04/05 14:24] &G&G14&W:&G24&d &R[&Wdchat&R] &CCratylus@Dead Souls Dev: &chttp://crappytaxidermy.com/
+&R[04/05 14:26] &G&G14&W:&G26&d &R[&Wdchat&R] &CKalinash@Crat's Agony: &chttp://www.npr.org/blogs/13.7/2014/04/03/297853835/the-joys-and-ethics-of-insect-eating
+&R[04/05 17:52] &G&G17&W:&G52&d &R[&Wdchat&R] &CKalinash@Crat's Agony: &chttp://www.tmz.com/2014/04/05/richard-donner-goonies-sequel-finally-happening/
+&R[04/05 17:59] &G&G17&W:&G59&d &R[&Wdchat&R] &CHamlet@WWC: &cgod.  why?
+&R[04/05 18:03] &G&G18&W:&G03&d &R[&Wdchat&R] &CCratylus@Dead Souls Dev: &cwell, could be worse
+&R[04/05 18:03] &G&G18&W:&G03&d &R[&Wdchat&R] &CCratylus@Dead Souls Dev: &ccould be a gritty reboot
+&R[04/05 18:06] &G&G18&W:&G06&d &R[&Wdchat&R] &CHamlet@WWC: &cdo you know it's not?  sometimes a "sequel" is really nearly that.
+&R[04/05 18:06] &G&G18&W:&G06&d &R[&Wdchat&R] &CNinja@Dead Souls Dev: &cTMNT reboot, FTW!
+&R[04/05 18:07] &G&G18&W:&G07&d &R[&Wdchat&R] &CHamlet@WWC: &cis that why you're Ninja?
+&R[04/05 18:07] &G&G18&W:&G07&d &R[&Wdchat&R] &CHamlet@WWC: &cyou're a mutant and like turtles?
+&R[04/05 18:07] &G&G18&W:&G07&d &R[&Wdchat&R] &CHamlet@WWC: &cwas that insensitive of me?
+&R[04/05 18:08] &G&G18&W:&G08&d &R[&Wdchat&R] &CHamlet@WWC: &cI didn't mean to say "turtle".  I meant, "shelled americans."
+&R[04/05 18:12] &G&G18&W:&G12&d &R[&Wdchat&R] &CWodan@Discworld: &cbut that story had an end, a sequel would be something like 'friends'
+&R[04/05 18:13] &G&G18&W:&G13&d &R[&Wdchat&R] &CKalinash@Crat's Agony: &ccrat can play sloth
+&R[04/05 18:13] &G&G18&W:&G13&d &R[&Wdchat&R] &CKalinash@Crat's Agony: &ca little edgy but short of full-retard
+&R[04/05 18:15] &G&G18&W:&G15&d &R[&Wdchat&R] &CHamlet@WWC: &cit would be the performance of a lifetime.
+&R[04/05 18:16] &G&G18&W:&G16&d &R[&Wdchat&R] &CHamlet@WWC: &chm.  everything but the cable bill paid.
+&R[04/05 18:16] &G&G18&W:&G16&d &R[&Wdchat&R] &CHamlet@WWC: &cneed to figure out whether I'm dropping Time Warner or not.
+&R[04/05 18:16] &G&G18&W:&G16&d &R[&Wdchat&R] &CHamlet@WWC: &cneed to, that's for sure.
+&R[04/05 18:16] &G&G18&W:&G16&d &R[&Wdchat&R] &CCratylus@Dead Souls Dev: &ci herd the new turtles is directed by that guy that does horrible dumb explodey movies
+&R[04/05 18:17] &G&G18&W:&G17&d &R[&Wdchat&R] &CHamlet@WWC: &cuh.
+&R[04/05 18:17] &G&G18&W:&G17&d &R[&Wdchat&R] &CHamlet@WWC: &cQuenton Tarantula?
+&R[04/05 18:17] &G&G18&W:&G17&d &R[&Wdchat&R] &CHamlet@WWC: &cor the other dumb explodey guy?
+&R[04/05 18:17] &G&G18&W:&G17&d &R[&Wdchat&R] &CCratylus@Dead Souls Dev: &ci dont guess people consume tmnt for highbrow reasons but my guess is thees going to be epic butthurt from people who love the story universe
+&R[04/05 18:18] &G&G18&W:&G18&d &R[&Wdchat&R] &CCratylus@Dead Souls Dev: &cno, one of those that makes buildings splode and the whole movie is shaky camera of confusing metal monsters
+&R[04/05 18:20] &G&G18&W:&G20&d &R[&Wdchat&R] &CCratylus@Dead Souls Dev: &cah called it
+&R[04/05 18:20] &G&G18&W:&G20&d &R[&Wdchat&R] &CNinja@Dead Souls Dev: &cHmmm...."Captain Turtle", "Super Turtle", "Wonder Turtle", "Green Turtle", and "Aqua Turtle".
+&R[04/05 18:20] &G&G18&W:&G20&d &R[&Wdchat&R] &CCratylus@Dead Souls Dev: &che directed battle: LA
+&R[04/05 18:20] &G&G18&W:&G20&d &R[&Wdchat&R] &CNinja@Dead Souls Dev: &ctrained by "Ratman".
+&R[04/05 18:21] &G&G18&W:&G21&d &R[&Wdchat&R] &CHamlet@WWC: &cmichael guy?  uh...
+&R[04/05 18:21] &G&G18&W:&G21&d &R[&Wdchat&R] &CNinja@Dead Souls Dev: &cTony Shalhoub as Splinter? heh.
+&R[04/05 18:21] &G&G18&W:&G21&d &R[&Wdchat&R] &CHamlet@WWC: &c+1 Ninja
+&R[04/05 18:23] &G&G18&W:&G23&d &R[&Wdchat&R] &CCratylus@Dead Souls Dev: &chttp://www.cracked.com/video_18260_which-ninja-turtle-are-you-lifes-most-important-question.html
+&R[04/05 20:52] &G&G20&W:&G52&d &R[&Wdchat&R] &CArdneh@Ardneh's World: &chttp://i.imgur.com/c2YDP.jpg
+&R[04/05 20:53] &G&G20&W:&G53&d &R[&Wdchat&R] &CKalinash@Crat's Agony: &cheh
+&R[04/05 22:07] &G&G22&W:&G07&d &R[&Wdchat&R] &CArdneh@Ardneh's World: &cHas the Jetsons had a gritty Michael Bay reboot yet?
+&R[04/05 22:35] &G&G22&W:&G35&d &R[&Wdchat&R] &CKalinash@Crat's Agony: &cnot before the snorks
+&R[04/05 22:37] &G&G22&W:&G37&d &R[&Wdchat&R] &CDuuk@Haven?: &cSnorks rule.
+&R[04/05 23:43] &G&G23&W:&G43&d &R[&Wdchat&R] &CArdneh@Ardneh's World: &cGritty Michael Bay Snorks reboot?
+&R[04/05 23:44] &G&G23&W:&G44&d &R[&Wdchat&R] &CArdneh@Ardneh's World: &c...
+&R[04/05 23:44] &G&G23&W:&G44&d &R[&Wdchat&R] &CArdneh@Ardneh's World: &cOk, fund it.
+&R[04/05 23:45] &G&G23&W:&G45&d &R[&Wdchat&R] &CKalinash@Crat's Agony: &cthey're not mermaids
+&R[04/05 23:45] &G&G23&W:&G45&d &R[&Wdchat&R] &CArdneh@Ardneh's World: &cI know.
+&R[04/06 00:41] &G&G00&W:&G41&d &R[&Wdchat&R] &CKalinash@Crat's Agony: &cyou know what it's like to snork a mermaid?
+&R[04/06 04:13] &G&G04&W:&G13&d &R[&Wdchat&R] &CCratylus@Dead Souls Dev: &cpearls before snorks

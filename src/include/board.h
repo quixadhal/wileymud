@@ -3,6 +3,7 @@
 
 #define MAX_MSGS 250					       /* Max number of messages.  */
 #define MAX_MESSAGE_LENGTH 2048				       /* that should be enough */
+#define BOARD_DIR  "boards"
 
 struct Board {
   char                                   *msgs[MAX_MSGS];
@@ -33,5 +34,6 @@ int                                     board_display_msg(struct char_data *ch, 
 							  struct Board *b);
 int                                     board_show_board(struct char_data *ch, char *arg,
 							 struct Board *b);
+void                                    save_board(struct Board *b);
 
 #endif

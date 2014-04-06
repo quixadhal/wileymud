@@ -54,6 +54,7 @@ void InitABoard(struct obj_data *obj)
     for (tmp = board_list; tmp; tmp = tmp->next) {
       if (tmp->Vnum == obj->item_number) {
         board_load_board(tmp);
+        save_board(tmp);
 	return;
       }
     }
@@ -62,6 +63,7 @@ void InitABoard(struct obj_data *obj)
   CREATE(new_board, struct Board, 1);
   new_board->Vnum = obj_index[obj->item_number].virtual;
   board_load_board(new_board);
+  save_board(new_board);
 
   tmp = board_list;
   new_board->next = tmp;
@@ -553,3 +555,119 @@ EXEC SQL END DECLARE SECTION;
   close_sql();
 }
 
+void save_board(struct Board *bp)
+{
+    FILE *fp = NULL;
+    int board_id = 0;
+    int message_id = 0;
+    char board_filename[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
+    int i = 0;
+
+    if (DEBUG > 2)
+        log_info("called %s with %08zx", __PRETTY_FUNCTION__, (size_t)bp);
+
+    if (!bp)
+        return;
+
+    if (!bp->msg_num) {
+        log_info("No messages to save.\r\n");
+        return;
+    }
+
+    board_id = bp->Vnum;
+    sprintf(board_filename, "%s/%d.data", BOARD_DIR, board_id);
+    if(!(fp = fopen(board_filename, "w"))) {
+        log_error("Cannot open %s for writing!", board_filename);
+        return;
+    }
+
+    fprintf(fp, "%d\n", bp->msg_num);
+    for (i = 0; i < bp->msg_num; i++) {
+        char message_date[25] = "\0\0\0\0\0\0\0";
+        char message_header[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
+        char message_sender[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
+        char message_text[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
+        char *mp = NULL;
+        
+        message_id = i;
+
+        /* Adventurers WANTED! (Quixadhal) Sun Jul 25 00:35:39 2004 */
+        strcpy(message_date, bp->head[i] + strlen(bp->head[i]) - 24);
+        strcpy(message_header, bp->head[i]);
+        message_header[strlen(message_header) - 26] = '\0';
+
+        mp = strrchr(message_header, '(');
+        if (mp) {
+            strcpy(message_sender, mp + 1);
+            *(mp - 1) = '\0';
+        } else {
+            *message_sender = '\0';
+        }
+
+        if (!bp->msgs[i]) {
+            CREATE(bp->msgs[i], char, 50);			       /* Quixadhal: Why 50? */
+            strcpy(bp->msgs[i], "Generic Message");
+        }
+        strcpy(message_text, bp->msgs[i]);
+
+        fprintf(fp, "%d\n%s~\n%s~\n%s~\n%s~\n", message_id, message_date, message_sender, message_header, message_text);
+    }
+    fclose(fp);
+}
+
+void load_board(struct Board *bp)
+{
+    FILE *fp = NULL;
+    int board_id = 0;
+    int message_id = 0;
+    char board_filename[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
+    int message_count = 0;
+    int i = 0;
+
+    if (DEBUG > 2)
+        log_info("called %s with %08zx", __PRETTY_FUNCTION__, (size_t)bp);
+
+    if (!bp)
+        return;
+
+    board_id = bp->Vnum;
+    sprintf(board_filename, "%s/%d.data", BOARD_DIR, board_id);
+    if(!(fp = fopen(board_filename, "r"))) {
+        log_error("Cannot open %s for reading!", board_filename);
+        return;
+    }
+
+    message_count = fread_number(fp);
+    bp->msg_num = MIN(MAX_MSGS, message_count);
+    if(message_count >= MAX_MSGS)
+        log_error("BOARD %d IS FULL!", board_id);
+
+    for (i = 0; i < bp->msg_num; i++) {
+        char *message_date = NULL;
+        char *message_header = NULL;
+        char *message_sender = NULL;
+        char *message_text = NULL;
+        char full_header[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
+        
+        message_id = fread_number(fp);
+        message_date = fread_string(fp);
+        message_sender = fread_string(fp);
+        message_header = fread_string(fp);
+        message_text = fread_string(fp);
+
+        /* Adventurers WANTED! (Quixadhal) Sun Jul 25 00:35:39 2004 */
+        strcpy(full_header, message_header);
+        strcat(full_header, " (");
+        strcat(full_header, message_sender);
+        strcat(full_header, ") ");
+        strcat(full_header, message_date);
+
+        free(message_date);
+        free(message_header);
+        free(message_sender);
+        CREATE(bp->head[message_id], char, strlen(full_header) + 1);
+        strcpy(bp->head[message_id], full_header);
+        bp->msgs[message_id] = message_text;
+    }
+    fclose(fp);
+}
