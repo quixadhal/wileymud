@@ -116,6 +116,14 @@ EOM
     exit 1;
 }
 
+=back
+
+=head1 METHODS
+
+=over 8
+
+=cut
+
 =item new()
 
 Constructor.  WHen we create a new instance, we parse the ARGV
@@ -127,13 +135,13 @@ functions refer to.
 sub new {
     my $class = shift;
     my $self = { 
-        '_wizlock'  => $wizlock,
-        '_debug'    => $debug,
-        '_logfile'  => $logfile,
-        '_pidfile'  => $pidfile,
-        '_libdir'   => $libdir,
-        '_specials' => $specials,
-        '_gameport' => $gameport,
+        _wizlock    => $wizlock,
+        _debug      => $debug,
+        _logfile    => $logfile,
+        _pidfile    => $pidfile,
+        _libdir     => $libdir,
+        _specials   => $specials,
+        _gameport   => $gameport,
     };
     GetOptions(
         'pod'               => sub { pod2usage(
@@ -143,13 +151,13 @@ sub new {
                                  ); exit;
                              },
         'help|h|?'          => sub { usage(1); },
-        'wizlock|w'         => \$self->{'_wizlock'},
-        'debug|D'           => \$self->{'_debug'},
-        'log|L=s'           => \$self->{'_logfile'},
-        'pid|P=s'           => \$self->{'_pidfile'},
-        'dir|d=s'           => \$self->{'_libdir'},
-        'specials!'         => \$self->{'_specials'},
-        "port|p:$gameport"  => \$self->{'_gameport'},
+        'wizlock|w'         => \$self->{_wizlock},
+        'debug|D'           => \$self->{_debug},
+        'log|L=s'           => \$self->{_logfile},
+        'pid|P=s'           => \$self->{_pidfile},
+        'dir|d=s'           => \$self->{_libdir},
+        'specials!'         => \$self->{_specials},
+        "port|p:$gameport"  => \$self->{_gameport},
     ) or usage(0);
 #    ) or pod2usage( '-input'       => pod_where({'-inc' => 1}, __PACKAGE__),
 #                    '-verbose'     => 0) && exit;
@@ -169,8 +177,8 @@ set the wizlock.
 
 sub wizlock {
     my ($self, $setting) = @_;
-    $self->{'_wizlock'} = $setting if defined $setting;
-    return $self->{'_wizlock'};
+    $self->{_wizlock} = $setting if defined $setting;
+    return $self->{_wizlock};
 }
 
 =item debug()
@@ -185,8 +193,8 @@ set the debug level.
 
 sub debug {
     my ($self, $setting) = @_;
-    $self->{'_debug'} = $setting if defined $setting;
-    return $self->{'_debug'};
+    $self->{_debug} = $setting if defined $setting;
+    return $self->{_debug};
 }
 
 =item logfile()
@@ -203,8 +211,8 @@ set the logfile to that filename.
 
 sub logfile {
     my ($self, $setting) = @_;
-    $self->{'_logfile'} = $setting if defined $setting;
-    return $self->{'_logfile'};
+    $self->{_logfile} = $setting if defined $setting;
+    return $self->{_logfile};
 }
 
 =item pidfile()
@@ -222,8 +230,8 @@ set the pidfile to that filename.
 
 sub pidfile {
     my ($self, $setting) = @_;
-    $self->{'_pidfile'} = $setting if defined $setting;
-    return $self->{'_pidfile'};
+    $self->{_pidfile} = $setting if defined $setting;
+    return $self->{_pidfile};
 }
 
 =item libdir()
@@ -262,8 +270,8 @@ all NPC's to use a generic behavior routine that is
 
 sub specials {
     my ($self, $setting) = @_;
-    $self->{'_specials'} = $setting if defined $setting;
-    return $self->{'_specials'};
+    $self->{_specials} = $setting if defined $setting;
+    return $self->{_specials};
 }
 
 =item gameport()
@@ -278,8 +286,8 @@ value.  Giving it an argument will set the gameport.
 
 sub gameport {
     my ($self, $setting) = @_;
-    $self->{'_gameport'} = $setting if defined $setting;
-    return $self->{'_gameport'};
+    $self->{_gameport} = $setting if defined $setting;
+    return $self->{_gameport};
 }
 
 =back

@@ -48,7 +48,8 @@ use IO::Socket::INET;
 use Mud::Options;
 use Mud::Logger qw(log_boot log_info log_warn log_error log_fatal switch_logfile);
 use Mud::Signals;
-use Mud::Weather qw(mud_time_passed);
+use Mud::GameTime;
+use Mud::Weather;
 
 my $options = Mud::Options->new(@ARGV);
 
@@ -79,7 +80,57 @@ my @descriptor_list = ();
 
 log_boot "Boot DB -- BEGIN.";
 
+my $time_info = Mud::GameTime->new();
 my $weather = Mud::Weather->new();
+
+#    reset_time()
+#    log_boot("- Reading news");
+#    file_to_string(NEWS_FILE, news);
+#    log_boot("- Reading credits");
+#    file_to_string(CREDITS_FILE, credits);
+#    log_boot("- Reading motd");
+#    file_to_string(MOTD_FILE, motd);
+#    log_boot("- Reading help");
+#    file_to_string(HELP_PAGE_FILE, help);
+#    log_boot("- Reading info");
+#    file_to_string(INFO_FILE, info);
+#    log_boot("- Reading wizlist");
+#    file_to_string(WIZLIST_FILE, wizlist);
+#    log_boot("- Reading wiz motd");
+#    file_to_string(WMOTD_FILE, wmotd);
+#    log_boot("- Reading greetings");
+#    file_to_string(GREETINGS_FILE, greetings);
+#    log_boot("- Reading login menu");
+#    file_to_prompt(LOGIN_MENU_FILE, login_menu);
+#    log_boot("- Reading sex menu");
+#    file_to_prompt(SEX_MENU_FILE, sex_menu);
+#    log_boot("- Reading race menu");
+#    file_to_prompt(RACE_MENU_FILE, race_menu);
+#    log_boot("- Reading class menu");
+#    file_to_prompt(CLASS_MENU_FILE, class_menu);
+#    log_boot("- Reading race help");
+#    file_to_prompt(RACE_HELP_FILE, race_help);
+#    log_boot("- Reading class help");
+#    file_to_prompt(CLASS_HELP_FILE, class_help);
+#    log_boot("- Reading story");
+#    file_to_string(STORY_FILE, the_story);
+#    log_boot("- Reading suicide warning");
+#    file_to_prompt(SUICIDE_WARN_FILE, suicide_warn);
+#    log_boot("- Reading suicide result");
+#    file_to_string(SUICIDE_DONE_FILE, suicide_done);
+
+#    log_boot("- Loading rent mode");
+#    log_boot("- Loading player list");
+#    log_boot("- Loading reboot frequency");
+#    log_boot("- Loading help files");
+
+#    log_boot("- Loading fight messages");
+#    load_messages();
+#    log_boot("- Loading social messages");
+#    boot_social_messages();
+#    log_boot("- Loading pose messages");
+#    boot_pose_messages();
+
 
 log_boot "Opening mother connection.";
 

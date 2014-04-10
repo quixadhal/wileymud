@@ -99,7 +99,7 @@ all log functions.
 =cut
 
 sub logging {
-    my $now = time();
+    my $now = time;
     my $level = shift;
     my $fmt = shift;
     my $timestamp = strftime("%Y-%m-%d %H:%M:%S", localtime($now)) . sprintf("%.03f", ($now - int $now));
