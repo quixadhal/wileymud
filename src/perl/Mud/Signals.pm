@@ -19,10 +19,10 @@ signal handlers for the MUD.
 
 use strict;
 use warnings;
-use English;
+use English -no_match_vars;
 use Data::Dumper;
 
-use Mud::Logger qw(log_boot log_fatal);
+use Mud::Logger;
 
 use Exporter qw(import);
 our @EXPORT_OK = qw(checkpoint shutdown_request reboot_request);

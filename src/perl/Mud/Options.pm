@@ -69,7 +69,7 @@ mud.
 
 use strict;
 use warnings;
-use English;
+use English -no_match_vars;
 use Data::Dumper;
 
 use Pod::Usage;

@@ -21,7 +21,7 @@ in-game.
 
 use strict;
 use warnings;
-use English;
+use English -no_match_vars;
 use Data::Dumper;
 
 use Time::HiRes qw( time sleep alarm );
@@ -29,7 +29,8 @@ use POSIX qw(strftime);
 
 use Exporter qw(import);
 our @EXPORT_OK = qw(switch_logfile buffer clear_buffer buffer_limit);
-our @EXPORT = qw(log_boot log_info log_warn log_error log_fatal);
+our @EXPORT = qw(log_boot log_info log_debug log_warn log_error log_fatal);
+our %EXPORT_TAGS = (all => [ @EXPORT, @EXPORT_OK ]);
 
 my $self = { 
     _logfile        => 'STDERR',
@@ -102,13 +103,22 @@ sub logging {
     my $now = time;
     my $level = shift;
     my $fmt = shift;
-    my $timestamp = strftime("%Y-%m-%d %H:%M:%S", localtime($now)) . sprintf("%.03f", ($now - int $now));
+    my $fraction = sprintf("%.03f", ($now - int $now));
+    $fraction =~ s/\b0\./\./;
+    my $timestamp = strftime("%Y-%m-%d %H:%M:%S", localtime($now)) . $fraction;
     my $message = sprintf $fmt, @_;
     my $padlen = (length $timestamp) + (length $level) + 4;
     my $pad = " " x $padlen;
+    my $debug_info = "";
+
+    if ($level eq 'DEBUG') {
+        my ($package, $filename, $line) = caller(1);
+        my (undef, undef, undef, $subroutine) = caller(2);
+        $debug_info = sprintf " (%s, line %d, in %s)", $filename, $line, $subroutine;
+    }
 
     $message = join "\n$pad", (split /[\r\n]+/, $message) if $message =~ /\n/gsmix;
-    print STDERR "$timestamp [$level] $message\n";
+    print STDERR "$timestamp [$level] $message$debug_info\n";
     push @{ $self->{_buffer} }, { timestamp => $timestamp, level => $level, message => $message };
     pop @{ $self->{_buffer} } until scalar @{ $self->{_buffer} } < $self->{_buffer_limit};
 }
@@ -132,6 +142,18 @@ an admin might want to review.
 
 sub log_info {
     logging 'INFO', @_;
+}
+
+=item log_debug()
+
+This function is like log_info, but is used for
+debugging purposes.  It prints additional information
+showing the program location.
+
+=cut
+
+sub log_debug {
+    logging 'DEBUG', @_;
 }
 
 =item log_warn()

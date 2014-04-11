@@ -34,7 +34,7 @@ perl.  So, this project is born.
 
 use strict;
 use warnings;
-use English;
+use English -no_match_vars;
 use Data::Dumper;
 
 use Getopt::Long qw(:config no_ignore_case bundling no_pass_through);
@@ -46,7 +46,7 @@ use IO::Select;
 use IO::Socket::INET;
 
 use Mud::Options;
-use Mud::Logger qw(log_boot log_info log_warn log_error log_fatal switch_logfile);
+use Mud::Logger qw(:all);
 use Mud::Signals;
 use Mud::GameTime;
 use Mud::Weather;
@@ -80,8 +80,8 @@ my @descriptor_list = ();
 
 log_boot "Boot DB -- BEGIN.";
 
-my $time_info = Mud::GameTime->new();
-my $weather = Mud::Weather->new();
+my $time_daemon = Mud::GameTime->new();
+my $weather_daemon = Mud::Weather->new($time_daemon);
 
 #    reset_time()
 #    log_boot("- Reading news");
@@ -172,7 +172,12 @@ tweak_socket($listening_socket);
 #log_boot("Normal termination of game.");
 #return MUD_HALT;					       /* what's so great about HHGTTG, anyhow? */
 
-sleep 30;
+for( my $i = 0; $i < 60; $i++ ) {
+    $time_daemon->update;
+    $weather_daemon->update;
+    log_info "Tick! Hour: %d, Month: %d", $time_daemon->hour, $time_daemon->month;
+    sleep 5;
+}
 
 END { log_fatal "System Halted."; }
 

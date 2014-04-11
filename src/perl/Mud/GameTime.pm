@@ -19,13 +19,14 @@ provides functions to manipulate it.
 
 use strict;
 use warnings;
-use English;
+use English -no_match_vars;
 use Data::Dumper;
 
 use Time::HiRes qw( time sleep alarm );
 use Lingua::EN::Numbers::Ordinate;
+use POSIX qw(floor);
 
-use Mud::Logger qw(log_boot log_info log_warn log_error log_fatal);
+use Mud::Logger;
 
 use Exporter qw(import);
 our @EXPORT_OK = ();
@@ -85,10 +86,10 @@ my %time_of_day_names = (
         "the small hours",
         "the small hours",
         "the small hours",
-        "the small hours",
-        "dawn", #6am
-        "morning",
-        "morning",
+        "false dawn",       # 5am
+        "dawn",             # 6am
+        "early morning",
+        "early morning",
         "morning",
         "morning",
         "morning",
@@ -98,10 +99,10 @@ my %time_of_day_names = (
         "afternoon",
         "afternoon",
         "afternoon",
-        "evening", # 6pm
+        "late afternoon",   # 6pm
+        "late afternoon",
+        "dusk",             # 8pm
         "evening",
-        "dusk", # 8pm
-        "night",
         "night",
         "night",
     ],
@@ -110,10 +111,10 @@ my %time_of_day_names = (
         "the small hours",
         "the small hours",
         "the small hours",
-        "the small hours",
-        "dawn", # 5am
-        "morning",
-        "morning",
+        "false dawn",       # 4am
+        "dawn",             # 5am
+        "early morning",
+        "early morning",
         "morning",
         "morning",
         "morning",
@@ -125,10 +126,10 @@ my %time_of_day_names = (
         "afternoon",
         "afternoon",
         "afternoon",
-        "evening", # 7pm
+        "late afternoon",   # 7pm
+        "late afternoon",
+        "dusk",             # 9pm
         "evening",
-        "dusk", # 9pm
-        "night",
         "night",
     ],
     fall    => [
@@ -137,10 +138,10 @@ my %time_of_day_names = (
         "the small hours",
         "the small hours",
         "the small hours",
-        "the small hours",
-        "dawn", # 6am
-        "morning",
-        "morning",
+        "false dawn",       # 5am
+        "dawn",             # 6am
+        "early morning",
+        "early morning",
         "morning",
         "morning",
         "morning",
@@ -150,10 +151,10 @@ my %time_of_day_names = (
         "afternoon",
         "afternoon",
         "afternoon",
-        "evening", # 6pm
+        "late afternoon",   # 6pm
+        "late afternoon",
+        "dusk",             # 8pm
         "evening",
-        "dusk", # 8pm
-        "night",
         "night",
         "night",
     ],
@@ -164,21 +165,21 @@ my %time_of_day_names = (
         "the small hours",
         "the small hours",
         "the small hours",
-        "the small hours",
-        "dawn", # 7am
-        "morning",
-        "morning",
+        "false dawn",       # 6am
+        "dawn",             # 7am
+        "early morning",
+        "early morning",
         "morning",
         "morning",
         "noon",
         "afternoon",
         "afternoon",
         "afternoon",
-        "evening", # 4pm
+        "late afternoon",   # 4pm
+        "late afternoon",
+        "dusk",             # 6pm
         "evening",
-        "dusk", # 6pm
-        "night",
-        "night",
+        "evening",
         "night",
         "night",
         "night",
@@ -203,21 +204,23 @@ a way to restore previous values, otherwise we use defaults.
 sub new {
     my $class = shift;
     my $self = { 
-        _last_updated   => undef,
-        _current_time   => time,
-        _hour           => 0,
-        _day            => 0,
-        _month          => 0,
-        _year           => 0,
+        _new_time_of_day    => undef,
+        _new_month          => undef,
+        _last_updated       => undef,
+        _current_time       => time,
+        _hour               => 0,
+        _day                => 0,
+        _month              => 0,
+        _year               => 0,
     };
 
     #log_info("   Current Gametime: %dH %dD %dM %dY.", time_info.hours, time_info.day, time_info.month, time_info.year);
 
     log_boot "- Resetting game time";
     bless $self, $class;
-    $self->update();
-    log_boot $self->game_time;
-    log_boot "There is a %s moon in the sky.", $self->moon_phase;
+    $self->update;
+    log_boot "TIME_D: %s", $self->game_time;
+    log_boot "TIME_D: There is a %s moon in the sky.", $self->moon_phase;
 
     return $self;
 }
@@ -233,7 +236,7 @@ the weather state back to disk.
 sub DESTROY {
     my $self = shift;
 
-    log_warn "- Time data should be saved here";
+    log_warn "Time daemon shut down.";
 }
 
 =back
@@ -353,14 +356,14 @@ sub mud_time_passed {
         $t1 = $t2;
         $t2 = $tmp;
     }
-    my $diff = (int $t2) - (int $t1);
-    my $hours = int ($diff / $secs_per_mud_hour) % $hours_per_mud_day;
+    my $diff = (floor $t2) - (floor $t1);
+    my $hours = floor ($diff / $secs_per_mud_hour) % $hours_per_mud_day;
     $diff -= ($secs_per_mud_hour * $hours);
-    my $days = int ($diff / $secs_per_mud_day) % $days_per_mud_month;
+    my $days = floor ($diff / $secs_per_mud_day) % $days_per_mud_month;
     $diff -= ($secs_per_mud_day * $days);
-    my $months = int ($diff / $secs_per_mud_month) % $months_per_mud_year;
+    my $months = floor ($diff / $secs_per_mud_month) % $months_per_mud_year;
     $diff -= ($secs_per_mud_month * $months);
-    my $years = int ($diff / $secs_per_mud_year);
+    my $years = floor ($diff / $secs_per_mud_year);
 
     return {
         hours   => $hours,
@@ -391,8 +394,13 @@ sub update {
     my $now = shift || time;
 
     my $raw_hour = int $now / $secs_per_mud_hour;
+    log_debug "RAW HOUR: %d", $raw_hour;
+    $self->{_new_time_of_day} = undef;
+    $self->{_new_month} = undef;
     return if defined $self->{_last_updated} and $raw_hour <= $self->{_last_updated};
 
+    my $old_tod = $self->time_of_day;
+    my $old_month = $self->{_month};
     my $diff = $self->mud_time_passed($now);
     $self->{_last_updated} = $raw_hour;
     $self->{_current_time} = $now;
@@ -400,6 +408,13 @@ sub update {
     $self->{_day} = $diff->{days};
     $self->{_month} = $diff->{months};
     $self->{_year} = $diff->{years};
+
+    $self->{_new_time_of_day} = 1 if $self->time_of_day ne $old_tod;
+    $self->{_new_month} = 1 if $self->{_month} != $old_month;
+    log_debug "tod %s", $self->time_of_day;
+    log_debug "month %d", $self->month;
+    log_debug "New tod" if $self->is_new_time_of_day;
+    log_debug "New month" if $self->is_new_month;
 }
 
 =item weekday()
@@ -494,6 +509,49 @@ sub game_time {
     my $year = $self->year;
 
     return "It is $tod on the day of $weekday, the $ordinal day of $month_name, in the year $year.";
+}
+
+
+=item is_new_time_of_day()
+
+A simple method to return the state of the time_of_day.
+
+In WileyMUD, the day is broken up into segments which vary in
+length by the season.  Each "time of day" period is meant to
+be used to control various aspects of game behavior, as well
+as to help indicate the passing of time to the players.
+
+On each call to update(), the new_time_of_day status is either
+true (meaning the time of day category just changed in this
+most recent call to update) or false (meaning it has not changed
+during this update).
+
+This is used to print notifications to players only when the
+change happens.
+
+=cut
+
+sub is_new_time_of_day {
+    my $self = shift;
+
+    return $self->{_new_time_of_day};
+}
+
+=item is_new_month()
+
+A simple method to return the state of the month.
+
+In WileyMUD, some events happen only at the start of each
+month.  The most obvious is a simple message printed to
+anyone outdoors at that time, telling them about the shift
+in seasonal weather that's coming.
+
+=cut
+
+sub is_new_month {
+    my $self = shift;
+
+    return $self->{_new_month};
 }
 
 1;
