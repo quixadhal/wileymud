@@ -22,13 +22,17 @@ use warnings;
 use English -no_match_vars;
 use Data::Dumper;
 
-use Time::HiRes qw( time sleep alarm );
+use Time::HiRes qw(time sleep alarm);
 use JSON;
+use List::Util qw(min max);
 
 use Mud::Logger;
+use Mud::Utils qw(:all);
 
 use Exporter qw(import);
 our @EXPORT_OK = ();
+our @EXPORT = ();
+our %EXPORT_TAGS = (all => [ @EXPORT, @EXPORT_OK ]);
 
 my @sky_conditions = (
     'clear',
@@ -49,23 +53,63 @@ my $filename = 'weather.dat';
 
 # These get printed when the month changes.
 my @month_messages = (
-    "It is bitterly cold outside.",
-    "It is bitterly cold outside.",
-    "It is bitterly cold outside.",
-    "It is very cold.",
-    "It is chilly outside.",
-    "The flowers start to bloom.",
-    "It is warm and pleasent.",
-    "It is very warm.",
-    "It is hot and humid.",
-    "It is hot and humid.",
-    "It is warm and humid.",
-    "It starts to get alittle windy.",
-    "The air is getting chilly.",
-    "The leaves start to change colors.",
-    "It starts to get cold.",
-    "It is very cold.",
-    "It is bitterly cold outside.",
+    'It is bitterly cold outside.',
+    'It is bitterly cold outside.',
+    'It is bitterly cold outside.',
+    'It is very cold.',
+    'It is chilly outside.',
+    'The flowers start to bloom.',
+    'It is warm and pleasent.',
+    'It is very warm.',
+    'It is hot and humid.',
+    'It is hot and humid.',
+    'It is warm and humid.',
+    'It starts to get alittle windy.',
+    'The air is getting chilly.',
+    'The leaves start to change colors.',
+    'It starts to get cold.',
+    'It is very cold.',
+    'It is bitterly cold outside.',
+);
+
+# These get printed when the weather shifts.
+my %weather_messages = (
+    'spring' => [
+        '',
+        'The sky is getting cloudy.',
+        'It starts to rain.',
+        'The clouds disappear.',
+        'You are caught in a lightning storm!',
+        'The rain has stopped.',
+        'The storm seems to calm, but it is still raining.',
+    ],
+    'summer' => [
+        '',
+        'The sky is getting cloudy.',
+        'It starts to rain.',
+        'The clouds disappear.',
+        'You are caught in a lightning storm!',
+        'The rain has stopped.',
+        'The storm seems to calm, but it is still raining.',
+    ],
+    'fall' => [
+        '',
+        'The sky is getting cloudy.',
+        'It starts to rain.',
+        'The clouds disappear.',
+        'You are caught in a lightning storm!',
+        'The rain has stopped.',
+        'The storm seems to calm, but it is still raining.',
+    ],
+    'winter' => [
+        '',
+        'The sky is getting cloudy.',
+        'It starts to drizzle.',
+        'The clouds disappear.',
+        'You are in a layer of dense fog.',
+        'The drizzle has stopped.',
+        'The fog thins and lifts away, but it continues to drizzle.',
+    ],
 );
 
 =item new()
@@ -87,12 +131,7 @@ sub new {
     log_boot "- Resetting game weather";
 
     if( -r $filename ) {
-        my $data = '';
-        open FP, "<$filename" or die "Cannot open $filename: $!";
-        while(<FP>) {
-            $data .= $_;
-        }
-        close FP;
+        my $data = load_file $filename;
         $self = decode_json $data;
         $self->{_time_daemon} = $time_daemon;
     } else {
@@ -103,6 +142,7 @@ sub new {
             _sky            => 'clear',
             _wind_speed     => 0,
             _wind_direction => 'calm',
+            _category_shift => 0,
         };
     }
 
@@ -207,8 +247,114 @@ month changes, to help players recognize the passage of time.
 sub update {
     my $self = shift;
 
-    log_info $self->time_of_day_message if $self->{_time_daemon}->is_new_time_of_day;
-    log_info $self->month_message if $self->{_time_daemon}->is_new_month;
+    $self->change_weather;
+
+    log_info "WEATHER_D: %s", $self->time_of_day_message if $self->{_time_daemon}->is_new_time_of_day;
+    log_info "WEATHER_D: %s", $self->month_message if $self->{_time_daemon}->is_new_month;
+    log_info "WEATHER_D: %s", $self->change_message if $self->has_weather_changed;
+}
+
+=item change_weather()
+
+This method randomly adjusts the global weather conditions to (poorly)
+simulate weather conditions.
+
+=cut
+
+sub change_weather {
+    my $self = shift;
+
+    my $diff = 0;
+    my $change = 0;
+    my $season = $self->{_time_daemon}->season;
+    my $tod = $self->{_time_daemon}->time_of_day;
+
+    $self->{_category_shift} = 0;
+
+    if ($season eq 'summer' or $season eq 'fall') {
+        $diff = $self->{_pressure} > 985 ? -2 : 2;
+    } else {
+        $diff = $self->{_pressure} > 1015 ? -2 : 2;
+    }
+
+    $self->{_change} += dice('1d4') * $diff + dice('2d6') - dice('2d6');
+    $self->{_change} = min $self->{_change}, 12;
+    $self->{_change} = max $self->{_change}, -12;
+    $self->{_pressure} += $self->{_change};
+    $self->{_pressure} = min $self->{_pressure}, 1040;
+    $self->{_pressure} = max $self->{_pressure}, 960;
+
+    if( $self->{_sky} eq 'clear' ) {
+        $self->{_category_shift} = 1 if $self->{_pressure} < 1010 and dice('1d4') == 1;
+        $self->{_category_shift} = 1 if $self->{_pressure} < 990;
+    } elsif( $self->{_sky} eq 'cloudy' ) {
+        $self->{_category_shift} = 3 if $self->{_pressure} < 1030 and dice('1d4') == 1;
+        $self->{_category_shift} = 2 if $self->{_pressure} < 990 and dice('1d4') == 1;
+        $self->{_category_shift} = 2 if $self->{_pressure} < 970;
+    } elsif( $self->{_sky} eq 'raining' ) {
+        $self->{_category_shift} = 4 if $self->{_pressure} < 970 and dice('1d4') == 1;
+        $self->{_category_shift} = 5 if $self->{_pressure} > 1010 and dice('1d4') == 1;
+        $self->{_category_shift} = 5 if $self->{_pressure} > 1030;
+    } elsif( $self->{_sky} eq 'stormy' ) {
+        $self->{_category_shift} = 6 if $self->{_pressure} > 990 and dice('1d4') == 1;
+        $self->{_category_shift} = 6 if $self->{_pressure} > 1010;
+    } else {
+        $self->{_category_shift} = 0;
+        $self->{_sky} = 'clear';
+    }
+
+    $self->{_category_shift} = min $self->{_category_shift}, 6;
+    $self->{_category_shift} = max $self->{_category_shift}, 0;
+
+    if ($self->{_category_shift} == 1) {
+        $self->{_sky} = 'cloudy';
+    } elsif ($self->{_category_shift} == 2) {
+        $self->{_sky} = 'raining';
+    } elsif ($self->{_category_shift} == 3) {
+        $self->{_sky} = 'clear';
+    } elsif ($self->{_category_shift} == 4) {
+        $self->{_sky} = 'stormy';
+    } elsif ($self->{_category_shift} == 5) {
+        $self->{_sky} = 'cloudy';
+    } elsif ($self->{_category_shift} == 6) {
+        $self->{_sky} = 'raining';
+    }
+
+    log_debug "season: %s", $season;
+    log_debug "tod: %s", $tod;
+    log_debug "diff: %d", $diff;
+    log_debug "change: %d", $self->{_change};
+    log_debug "pressure: %d", $self->{_pressure};
+    log_debug "category_shift: %d", $self->{_category_shift};
+    log_debug "sky: %s", $self->{_sky};
+}
+
+=item change_message()
+
+This method figures out the appropriate message to inform the user
+of the weather shifting.  In the change_weather method, the weather
+system details are manipulated and an overall shift is determined.
+
+=cut
+
+sub change_message {
+    my $self = shift;
+
+    return undef if ! defined $self->{_category_shift} or $self->{_category_shift} < 1 or $self->{_category_shift} > 6;
+    return $weather_messages{$self->{_time_daemon}->season}->[$self->{_category_shift}];
+}
+
+=item has_weather_changed()
+
+A tiny convenience method to show that the last update caused
+the weather to shift... cosmetic.
+
+=cut
+
+sub has_weather_changed {
+    my $self = shift;
+
+    return $self->{_category_shift} > 0 ? 1 : undef;
 }
 
 =back

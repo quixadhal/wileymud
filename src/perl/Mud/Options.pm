@@ -78,6 +78,8 @@ use Getopt::Long qw(:config no_ignore_case bundling no_pass_through);
 
 use Exporter qw(import);
 our @EXPORT_OK = (); #qw(wizlock debug logfile pidfile libdir specials gameport);
+our @EXPORT = ();
+our %EXPORT_TAGS = (all => [ @EXPORT, @EXPORT_OK ]);
 
 my $wizlock     = undef;
 my $debug       = undef;

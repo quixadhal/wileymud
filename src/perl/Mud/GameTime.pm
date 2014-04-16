@@ -30,6 +30,8 @@ use Mud::Logger;
 
 use Exporter qw(import);
 our @EXPORT_OK = ();
+our @EXPORT = ();
+our %EXPORT_TAGS = (all => [ @EXPORT, @EXPORT_OK ]);
 
 my $beginning_of_time = 650336715; # Fri Aug 10 21:05:15 1990
 
@@ -61,22 +63,22 @@ my @weekday_names = (
 );
 
 my @moon_phase_names = (
-    "new", "new", "new", "new",
-    "waxing crescent", "waxing crescent", "waxing crescent", "waxing crescent",
-    "waxing half", "waxing half", "waxing half", "waxing half",
-    "waxing gibbus", "waxing gibbus", "waxing gibbus", "waxing gibbus",
-    "full", "full", "full", "full",
-    "waning gibbus", "waning gibbus", "waning gibbus", "waning gibbus",
-    "waning half", "waning half", "waning half", "waning half",
-    "waning crescent", "waning crescent", "waning crescent", "waning crescent",
+    'new', 'new', 'new', 'new',
+    'waxing crescent', 'waxing crescent', 'waxing crescent', 'waxing crescent',
+    'waxing half', 'waxing half', 'waxing half', 'waxing half',
+    'waxing gibbus', 'waxing gibbus', 'waxing gibbus', 'waxing gibbus',
+    'full', 'full', 'full', 'full',
+    'waning gibbus', 'waning gibbus', 'waning gibbus', 'waning gibbus',
+    'waning half', 'waning half', 'waning half', 'waning half',
+    'waning crescent', 'waning crescent', 'waning crescent', 'waning crescent',
 );
 
 my @season_names = (
-    "winter", "winter", "winter", "winter",
-    "spring", "spring", "spring",
-    "summer", "summer", "summer", "summer", "summer",
-    "fall", "fall",
-    "winter", "winter", "winter",
+    'winter', 'winter', 'winter', 'winter',
+    'spring', 'spring', 'spring',
+    'summer', 'summer', 'summer', 'summer', 'summer',
+    'fall', 'fall',
+    'winter', 'winter', 'winter',
 );
 
 my %time_of_day_names = (
@@ -393,8 +395,8 @@ sub update {
     my $self = shift;
     my $now = shift || time;
 
-    my $raw_hour = int $now / $secs_per_mud_hour;
-    log_debug "RAW HOUR: %d", $raw_hour;
+    my $raw_hour = floor $now / $secs_per_mud_hour;
+    #log_debug "RAW HOUR: %d", $raw_hour;
     $self->{_new_time_of_day} = undef;
     $self->{_new_month} = undef;
     return if defined $self->{_last_updated} and $raw_hour <= $self->{_last_updated};
@@ -457,7 +459,7 @@ powers, clerical abilities, or anything else.
 sub moon_phase {
     my $self = shift;
 
-    my $raw_day = int $self->{_current_time} / $secs_per_mud_day;
+    my $raw_day = floor $self->{_current_time} / $secs_per_mud_day;
     my $phase = $raw_day % scalar @moon_phase_names;
     return $moon_phase_names[$phase];
 }

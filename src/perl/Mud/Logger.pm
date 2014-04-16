@@ -28,15 +28,33 @@ use Time::HiRes qw( time sleep alarm );
 use POSIX qw(strftime);
 
 use Exporter qw(import);
-our @EXPORT_OK = qw(switch_logfile buffer clear_buffer buffer_limit);
+our @EXPORT_OK = qw(switch_logfile buffer clear_buffer buffer_limit setup_options);
 our @EXPORT = qw(log_boot log_info log_debug log_warn log_error log_fatal);
-our %EXPORT_TAGS = (all => [ @EXPORT, @EXPORT_OK ]);
+our %EXPORT_TAGS = (all => [ @EXPORT, @EXPORT_OK ], logging => [ @EXPORT ]);
 
 my $self = { 
     _logfile        => 'STDERR',
     _buffer         => [],
     _buffer_limit   => 200,
+    _options        => undef,
 };
+
+=item setup_options()
+
+This function is used to pass an instance of the Mud::Options object
+into the Mud::Logger namespace, which allows things like log_debug()
+to only log if the debug flag is enabled.
+
+If the options data is not available, sensible defaults will be assumed.
+
+=cut
+
+sub setup_options {
+    my $options = shift;
+
+    die "Cannot initialize logging options without a valid Mud::Options object!" unless $options->isa('Mud::Options');
+    $self->{_options} = $options;
+}
 
 =item buffer()
 
@@ -153,6 +171,7 @@ showing the program location.
 =cut
 
 sub log_debug {
+    return if defined $self->{_options} and ! $self->{_options}->debug;
     logging 'DEBUG', @_;
 }
 

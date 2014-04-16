@@ -53,6 +53,8 @@ use Mud::Weather;
 
 my $options = Mud::Options->new(@ARGV);
 
+Mud::Logger::setup_options($options);
+
 my $start_time = time();
 
 if (defined $options->libdir) {
@@ -83,7 +85,6 @@ log_boot "Boot DB -- BEGIN.";
 my $time_daemon = Mud::GameTime->new();
 my $weather_daemon = Mud::Weather->new($time_daemon);
 
-#    reset_time()
 #    log_boot("- Reading news");
 #    file_to_string(NEWS_FILE, news);
 #    log_boot("- Reading credits");

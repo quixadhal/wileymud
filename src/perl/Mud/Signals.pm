@@ -26,6 +26,8 @@ use Mud::Logger;
 
 use Exporter qw(import);
 our @EXPORT_OK = qw(checkpoint shutdown_request reboot_request);
+our @EXPORT = ();
+our %EXPORT_TAGS = (all => [ @EXPORT, @EXPORT_OK ]);
 
 my $ticks = 0;
 my $MUD_REBOOT = 0;
