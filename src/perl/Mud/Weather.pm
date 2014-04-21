@@ -27,7 +27,7 @@ use JSON;
 use List::Util qw(min max);
 
 use Mud::Logger;
-use Mud::Utils qw(:all);
+use Mud::Utils;
 
 use Exporter qw(import);
 our @EXPORT_OK = ();

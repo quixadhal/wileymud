@@ -28,7 +28,7 @@ use Scalar::Util qw(looks_like_number);
 
 use Exporter qw(import);
 our @EXPORT_OK = qw();
-our @EXPORT = qw(dice load_file);
+our @EXPORT = qw(dice load_file trim);
 our %EXPORT_TAGS = (all => [ @EXPORT, @EXPORT_OK ]);
 
 =item dice()
@@ -83,6 +83,22 @@ sub load_file {
     }
     close FP;
     return $data;
+}
+
+=item trim()
+
+A function that removes leading or trailing whitespace from
+a given string.
+
+=cut
+
+sub trim {
+    my $msg = shift;
+
+    return undef if !defined $msg;
+    $msg =~ s/^\s+//;
+    $msg =~ s/\s+$//;
+    return $msg;
 }
 
 =back
