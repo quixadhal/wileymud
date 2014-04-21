@@ -124,6 +124,7 @@ sub logging {
     my $fraction = sprintf("%.03f", ($now - int $now));
     $fraction =~ s/\b0\./\./;
     my $timestamp = strftime("%Y-%m-%d %H:%M:%S", localtime($now)) . $fraction;
+    $fmt =~ s/\%\^/\%\%\^/g;
     my $message = sprintf $fmt, @_;
     my $padlen = (length $timestamp) + (length $level) + 4;
     my $pad = " " x $padlen;

@@ -28,7 +28,7 @@ use Scalar::Util qw(looks_like_number);
 
 use Exporter qw(import);
 our @EXPORT_OK = qw();
-our @EXPORT = qw(dice load_file trim);
+our @EXPORT = qw(dice load_file trim lines );
 our %EXPORT_TAGS = (all => [ @EXPORT, @EXPORT_OK ]);
 
 =item dice()
@@ -99,6 +99,22 @@ sub trim {
     $msg =~ s/^\s+//;
     $msg =~ s/\s+$//;
     return $msg;
+}
+
+=item lines()
+
+This function takes a string and returns an array of lines.
+It removes any line endings, no matter what combination of CR
+and LF they might be.
+
+=cut
+
+sub lines {
+    my $msg = shift;
+
+    return undef if !defined $msg;
+    return $msg if length $msg < 1;
+    return split /\n|\r|(\r\n)|(\n\r)/, $msg;
 }
 
 =back

@@ -51,6 +51,7 @@ use Mud::Signals;
 use Mud::GameTime;
 use Mud::Weather;
 use Mud::Terminal;
+use Mud::Theme;
 
 my $options = Mud::Options->new(@ARGV);
 
@@ -86,8 +87,10 @@ log_boot "Boot DB -- BEGIN.";
 my $time_daemon = Mud::GameTime->new();
 my $weather_daemon = Mud::Weather->new($time_daemon);
 my $term = Mud::Terminal->new('ansi');
+my $theme = Mud::Theme->new('default', $term);
 
-log_info $term->colorize( "%^RED%^Hello%^RESET%^\n" );
+log_info $theme->colorize( "%^RED%^Hello%^RESET%^\n" );
+log_info $theme->colorize( "%^DAMAGE%^Heal me!%^RESET%^  %^HEALING%^Done.%^RESET%^\n" );
 exit 1;
 
 #    log_boot("- Reading news");

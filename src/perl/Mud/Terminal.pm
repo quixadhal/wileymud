@@ -25,9 +25,6 @@ use warnings;
 use English -no_match_vars;
 use Data::Dumper;
 
-use POSIX qw(floor);
-use Scalar::Util qw(looks_like_number);
-
 use Mud::Logger;
 use Mud::Utils;
 use Mud::ColorCodes qw( %color_map @terminal_types @color_tokens );
