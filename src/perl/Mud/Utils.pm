@@ -114,7 +114,7 @@ sub lines {
     my $msg = shift;
 
     return undef if !defined $msg;
-    return $msg if length $msg < 1;
+    return [ $msg ] if length $msg < 1;
     return [ split /\n|\r|\r\n|\n\r/, $msg ];
     #my @stuff = split /\n|\r|\r\n|\n\r/, $msg, -1;
     #pop @stuff if length $stuff[-1] < 1;
