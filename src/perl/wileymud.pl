@@ -52,6 +52,7 @@ use Mud::GameTime;
 use Mud::Weather;
 use Mud::Terminal;
 use Mud::Theme;
+use Mud::Docs;
 
 my $options = Mud::Options->new(@ARGV);
 
@@ -86,19 +87,23 @@ log_boot "Boot DB -- BEGIN.";
 
 my $time_daemon = Mud::GameTime->new();
 my $weather_daemon = Mud::Weather->new($time_daemon);
-my $term = Mud::Terminal->new('ansi');
+my $term = Mud::Terminal->new('ansi', 132, 40);
 my $theme = Mud::Theme->new('default', $term);
 
-log_info $theme->colorize( "%^RED%^Hello%^RESET%^\n" );
-log_info $theme->colorize( "%^DAMAGE%^Heal me!%^RESET%^  %^HEALING%^Done.%^RESET%^\n" );
+log_debug $theme->colorize( "%^RED%^Hello%^RESET%^\n" );
+log_debug $theme->colorize( "%^DAMAGE%^Heal me!%^RESET%^  %^HEALING%^Done.%^RESET%^\n" );
+log_debug $theme->terminal_type;
+log_debug $theme->width;
+log_debug $theme->height;
+
+my $docs = Mud::Docs->new();
+
+log_info "News: %s\n", Dumper($docs->news);
+log_info "Credits: %s\n", Dumper($docs->credits);
+log_info "MOTD: %s\n", Dumper($docs->motd);
+
 exit 1;
 
-#    log_boot("- Reading news");
-#    file_to_string(NEWS_FILE, news);
-#    log_boot("- Reading credits");
-#    file_to_string(CREDITS_FILE, credits);
-#    log_boot("- Reading motd");
-#    file_to_string(MOTD_FILE, motd);
 #    log_boot("- Reading help");
 #    file_to_string(HELP_PAGE_FILE, help);
 #    log_boot("- Reading info");

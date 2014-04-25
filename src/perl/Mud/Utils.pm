@@ -114,7 +114,14 @@ sub lines {
 
     return undef if !defined $msg;
     return $msg if length $msg < 1;
-    return split /\n|\r|(\r\n)|(\n\r)/, $msg;
+    return split /\n|\r|\r\n|\n\r/, $msg;
+    #my @stuff = split /\n|\r|\r\n|\n\r/, $msg, -1;
+    #pop @stuff if length $stuff[-1] < 1;
+    # The pop is to get rid of the single extra delimiter
+    # that appears when the last line ends in a proper line ending.
+    # split /\n/, "a\nb\n" yields ("a", "b", "") which is
+    # correct, but not what one expects ("a", "b").
+    #return @stuff;
 }
 
 =back

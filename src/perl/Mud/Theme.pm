@@ -167,6 +167,54 @@ sub colorize {
     return join '', @bits;
 }
 
+=item terminal_type()
+
+This method either falls through to the terminal object that
+was passed in, or it returns "unknown" as a default.
+
+If given an argument, it will set the terminal type in the
+terminal object, or ignore the option.
+
+=cut
+
+sub terminal_type {
+    my ($self, $setting) = @_;
+
+    return "unknown" if !defined $self->{_terminal};
+    $self->{_terminal}->terminal_type($setting) if defined $setting;
+    return $self->{_terminal}->terminal_type;
+}
+
+=item width()
+
+This either falls through to the provided terminal object,
+or uses the fixed default of 80 columns.
+
+=cut
+
+sub width {
+    my ($self, $setting) = @_;
+
+    return 80 if !defined $self->{_terminal};
+    $self->{_terminal}->width($setting) if defined $setting;
+    return $self->{_terminal}->width;
+}
+
+=item height()
+
+This either falls through to the provided terminal object,
+or uses the fixed default of 24 rows.
+
+=cut
+
+sub height {
+    my ($self, $setting) = @_;
+
+    return 24 if !defined $self->{_terminal};
+    $self->{_terminal}->height($setting) if defined $setting;
+    return $self->{_terminal}->height;
+}
+
 =back
 
 =cut

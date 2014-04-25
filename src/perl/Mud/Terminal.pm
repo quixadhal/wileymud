@@ -37,20 +37,27 @@ our %EXPORT_TAGS = (all => [ @EXPORT, @EXPORT_OK ]);
 =item new()
 
 Constructor.  Initializes the color subsystem.
+You can pass in a terminal type, width, and height, if you wish.
 
 =cut
 
 sub new {
     my $class = shift;
     my $ttype = shift;
+    my $width = shift;
+    my $height = shift;
 
     my $self = { 
         _terminal_type  => "unknown",
+        _width          => 80,
+        _height         => 24,
     };
 
     bless $self, $class;
     $self->terminal_type( $ttype ) if defined $ttype;
-    log_info "TERMINAL_D: %s", $self->terminal_type;
+    $self->width( $width ) if defined $width;
+    $self->height( $height ) if defined $height;
+    log_info "TERMINAL_D: %s (%d x %d)", $self->terminal_type, $self->width, $self->height;
     return $self;
 }
 
@@ -96,6 +103,32 @@ sub terminal_type {
         $self->{_terminal_type} = $setting if $self->valid_terminal( $setting );
     }
     return $self->{_terminal_type};
+}
+
+=item width()
+
+This gets or sets the terminal width.  Eventually,
+we'll use NAWS for TELNET negotition of this value.
+
+=cut
+
+sub width {
+    my ($self, $setting) = @_;
+    $self->{_width} = $setting if defined $setting;
+    return $self->{_width};
+}
+
+=item height()
+
+This gets or sets the terminal height.  Eventually,
+we'll use NAWS for TELNET negotition of this value.
+
+=cut
+
+sub height {
+    my ($self, $setting) = @_;
+    $self->{_height} = $setting if defined $setting;
+    return $self->{_height};
 }
 
 =item valid_token()

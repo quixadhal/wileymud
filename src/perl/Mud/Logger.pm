@@ -133,7 +133,9 @@ sub logging {
     if ($level eq 'DEBUG') {
         my ($package, $filename, $line) = caller(1);
         my (undef, undef, undef, $subroutine) = caller(2);
-        $debug_info = sprintf " (%s, line %d, in %s)", $filename, $line, $subroutine;
+        $debug_info = sprintf " (%s, line %d", $filename, $line;
+        $debug_info .= sprintf ", in %s", $subroutine if defined $subroutine;
+        $debug_info .= ")";
     }
 
     $message = join "\n$pad", (split /[\r\n]+/, $message) if $message =~ /\n/gsmix;
