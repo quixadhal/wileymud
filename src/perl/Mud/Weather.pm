@@ -49,7 +49,7 @@ my @wind_directions = (
     'calm',
 );
 
-my $filename = 'weather.dat';
+my $filename = 'weather.json';
 
 # These get printed when the month changes.
 my @month_messages = (

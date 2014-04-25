@@ -105,7 +105,8 @@ sub trim {
 
 This function takes a string and returns an array of lines.
 It removes any line endings, no matter what combination of CR
-and LF they might be.
+and LF they might be.  The return is an array ref, for ease
+of handling.
 
 =cut
 
@@ -114,7 +115,7 @@ sub lines {
 
     return undef if !defined $msg;
     return $msg if length $msg < 1;
-    return split /\n|\r|\r\n|\n\r/, $msg;
+    return [ split /\n|\r|\r\n|\n\r/, $msg ];
     #my @stuff = split /\n|\r|\r\n|\n\r/, $msg, -1;
     #pop @stuff if length $stuff[-1] < 1;
     # The pop is to get rid of the single extra delimiter

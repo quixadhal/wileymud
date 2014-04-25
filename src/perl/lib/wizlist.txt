@@ -1,0 +1,53 @@
+The Immortal Pantheon of WileyMUD Creators is split into three great segments.
+
+     *** Respect and Admiration go the the Ancient Dead of WileyMUD II ***
+
+--- Mad Cyric, the Destroyer.
+    The implementor and head of the Old Gods.  Cyric brought forth the
+    world from nothingness, and almost abolished it to nothingness again.
+--- Muthaarin'akya, Essence of the World.
+    God of the Map, it was He who created much of what remains.
+--- Harlequin, God of the Mortal Realm.
+    A God who walked the lands of Wiley, keeping order.
+--- Grimwell, God of Mists and Deception.
+    Devious in coding, random in nature.
+--- Derkhil, Overlord of the West.
+    He has taken control of much of Harlequin's western domain.
+--- Elcid, Lord of the Heavens.
+    One of the most ancient Gods.
+--- Daisy, Mistress of the Link.
+    A friend of all the Gods, it is She who binds the world in place.
+--- Muidnar, the Dark Necromancer.
+    Powerful and arrogant, He strives to improve the world through pain.
+
+     *** Scorn and revile the demotion of these wretched idle spectres! ***
+
+>>> Zar the (N)ever Present.
+    Despite having the longest playing time on WileyMUD II, the Master of 43
+    days seldom shows his face in the New World.
+>>> Highlander the God of the Underdark.
+    When the wine doth flow, so doth the generosity of Highlander... But if
+    it be dry in the lands, wretched shall be the mortal who disturbs him!
+>>> Malistrum the Shadowlord.
+    Lest ye fail to notice the movement behind you, let me point to the
+    Patron of the Fey.  A God of quick imagination and corrupt wit, Malistrum
+    seeks to twist the world with magic of a dark and foreign source.
+>>> Sedna the Lady of the Deep Realms.
+    A goddess of quick temper, but generous heart.  Her recent coup attempt
+    succeeded until she realized what she had gotten herself into and
+    surrendered control back to the Dread Lord.
+>>> Dirk the Daring.
+    Seldom seen these days, this God once noted and fixed many of the
+    little mistakes and oversights that plagued the world.  He now tries
+    to follow his idol, Zar, into the oblivion of the idle.
+
+          *** All MUST acknowledge the New Order of WileyMUD III ***
+
+>>> Dread Quixadhal, Lord of VI.
+    The driving force (whip?) behind everything you see, and much that
+    you do not.  Quixadhal dragged the source of All back from the clutches
+    of the Modem God, and has harnessed its powers anew.
+>>> Vile Muidnar, the Dark One.
+    The arrogant bastard whelp of WileyMUD II has returned, intent of
+    bringing back the pain and suffering that the original game once
+    had.  He corrupts with the blessings of Dread Quixadhal.

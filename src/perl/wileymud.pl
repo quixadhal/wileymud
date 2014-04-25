@@ -101,11 +101,15 @@ my $docs = Mud::Docs->new();
 log_info "News: %s\n", Dumper($docs->news);
 log_info "Credits: %s\n", Dumper($docs->credits);
 log_info "MOTD: %s\n", Dumper($docs->motd);
+log_info "WIZMOTD: %s\n", Dumper($docs->wizmotd);
+log_info "wizlist: %s\n", Dumper($docs->wizlist);
+log_info "Info: %s\n", Dumper($docs->info);
+log_info "Story: %s\n", Dumper($docs->story);
+log_info "License: %s\n", Dumper($docs->license);
+log_info "Greeting: %s\n", Dumper($docs->greeting);
 
 exit 1;
 
-#    log_boot("- Reading help");
-#    file_to_string(HELP_PAGE_FILE, help);
 #    log_boot("- Reading info");
 #    file_to_string(INFO_FILE, info);
 #    log_boot("- Reading wizlist");
@@ -113,8 +117,10 @@ exit 1;
 #    log_boot("- Reading wiz motd");
 #    file_to_string(WMOTD_FILE, wmotd);
 #    log_boot("- Reading greetings");
+
 #    file_to_string(GREETINGS_FILE, greetings);
 #    log_boot("- Reading login menu");
+
 #    file_to_prompt(LOGIN_MENU_FILE, login_menu);
 #    log_boot("- Reading sex menu");
 #    file_to_prompt(SEX_MENU_FILE, sex_menu);
@@ -132,6 +138,8 @@ exit 1;
 #    file_to_prompt(SUICIDE_WARN_FILE, suicide_warn);
 #    log_boot("- Reading suicide result");
 #    file_to_string(SUICIDE_DONE_FILE, suicide_done);
+#    log_boot("- Reading help");
+#    file_to_string(HELP_PAGE_FILE, help);
 
 #    log_boot("- Loading rent mode");
 #    log_boot("- Loading player list");

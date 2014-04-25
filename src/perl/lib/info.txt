@@ -1,0 +1,81 @@
+               WileyMUD III:  The world at a secretive glance.
+Levels 1-4:
+ o The Village of Shylar is where you start, and it offers lots of little
+   children for those who walk the dark path.
+ o A small farm lies just east of the town, and provides food to those
+   who can kill their own.
+ o The Shylar Mansion is overrun with rats, spiders, and other nasty
+   creatures who are just waiting to be eaten by newbies.  Look to the
+   northwest of Shylar.
+ o The more adventurous newbie may find a wealth of experience in the
+   Lair of the Kobolds, in the southern hills.  However, they may also
+   find the sharp scimitars of the orcs that wander there.
+ o The dead of Shylar may profit the living who dare to go into the
+   Shylar Moore cemetary.  Southeast of Pastue's chapel, the moans of
+   the restless dead can be heard.
+ o The forest, west of Shylar, has many small animals who can be fought
+   by those who are careful.  Ware the Goblins to the south though!
+
+Levels 4-8:
+ o Giant ants have formed a great colony to the northwest, and many poor
+   newbies have failed to return from the depths of their caverns.
+ o The maidens of Pain make their home in the Temple of Lovitar, far to
+   the northeast of Shylar.  Beautiful and cold, these ladies do not take
+   kindly to male intruders.
+ o Goblins wander the forests to the southwest of Shylar, and they are said
+   to have a small encampment in that area.
+ o The tower of Necromancy can yield many mysterious rewards to those who
+   are resourceful enough to penetrate the depths, and heights.  Hidden in
+   the Troll Mountains, north of Shylar, it awaits plundering.
+
+Levels 8-12:
+ o An evil encampment of Drow has been rumored to exist somewhere along
+   the northwestern river.  Enter the dark forests and try to find them
+   if you feel like slaughtering the creatures of darkness.
+ o The city of Highstaff has denzies, both fair and foul.  An arena offers
+   the intrepid player a chance to pit his or her strength against the
+   gladiators, or even the ferocious beasts of mythology!
+ o Unfortunately, a bandit camp has grown to strength in the Redspine
+   Mountains.  The Evil Grugnik attempts to waylay travellers between
+   Highstaff and Shylar.
+ o A dwarven kingdom is hidden somewhere in the southern hills.  It has
+   riches and special items of great power, available nowhere else in the
+   known world!
+ o The port city of Gredth, whose slavers have captured many a foolish
+   newbie, can offer great rewards to those who travel the dangerous
+   path to get there.
+ o The jungles around Nesthar, far to the west, have many strange and
+   exotic beasts which can be wrestled with.
+ o A monostary is nestled deep in the south-eastern mountains, betwen the
+   Redspine and the Black ranges.  A brave soul might challenge some of
+   these simple people to unarmed combat, if he dare!
+ o Lizards and other strange beasts walk the gnarled woods that lie west
+   of Gredth.  Beware!  There are also powerful slaadi who share this
+   region of the world!
+
+Levels 12+
+ o The ruins of Ancient Midgaard can be found in a desolate and isolated
+   valley, far to the south.  It is rumored that a cult has developed there
+   to worship the dark god Aklan.
+ o Orc caves dot the redspine, and offer great rewards to those who can
+   find and subdue them.
+ o Trolls have made their home in the northern mountains, and stories of
+   a gigantic bird, who can lift entire houses in his talons, also come
+   from this area.
+ o The horrible slaadi make their home and temple deep in the gnarled woods.
+ o A new underwater species has been found below the cliffs of Highstaff.
+   It is rumored that the thieves and lowlives of the city know the way.
+ o The temple of Drenth has gained in power and now is a major force in
+   Eastern Highstaff.  Visitors would be well advised to get permission
+   before entering their shrine.
+ o Giants make their home in the western Troll mountains.
+ o A nest of Great Lizards can be found in the gnarled woods.
+ o The Ogre Havens have expended and threaten Highstaff itself!  Several
+   powerful guildmasters have been captured and are being held prisoner.
+ o The Legendary Asgard lives at the top of the world.  A powerful Lich,
+   Asgard is not troubled by many mortals... at least, they don't trouble
+   him for long.
+ o Rumors of a great Black Drake, sleeping deep within the jungles of
+   Nesthar, refuse to be quelled.
+
+					-Dread Quixadhal, Dark Lord of VI.
