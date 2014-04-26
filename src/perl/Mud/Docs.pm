@@ -25,7 +25,6 @@ use warnings;
 use English -no_match_vars;
 use Data::Dumper;
 
-use POSIX qw(strftime);
 use JSON;
 use Pod::POM;
 

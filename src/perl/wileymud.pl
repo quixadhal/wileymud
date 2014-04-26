@@ -37,14 +37,7 @@ use warnings;
 use English -no_match_vars;
 use Data::Dumper;
 
-use Getopt::Long qw(:config no_ignore_case bundling no_pass_through);
 use Time::HiRes qw( time sleep alarm );
-use POSIX qw(strftime);
-use Socket qw(IPPROTO_TCP TCP_NODELAY);
-use Fcntl qw(F_GETFL F_SETFL O_NONBLOCK O_NDELAY);
-use IO::Select;
-use IO::Socket::INET;
-use Net::Telnet::Options;
 
 use Mud::Options;
 use Mud::Logger qw(:all);

@@ -22,7 +22,6 @@ use warnings;
 use English -no_match_vars;
 use Data::Dumper;
 
-use Time::HiRes qw(time sleep alarm);
 use JSON;
 use List::Util qw(min max);
 
