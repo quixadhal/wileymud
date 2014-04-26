@@ -44,6 +44,7 @@ use Socket qw(IPPROTO_TCP TCP_NODELAY);
 use Fcntl qw(F_GETFL F_SETFL O_NONBLOCK O_NDELAY);
 use IO::Select;
 use IO::Socket::INET;
+use Net::Telnet::Options;
 
 use Mud::Options;
 use Mud::Logger qw(:all);
@@ -53,6 +54,7 @@ use Mud::Weather;
 use Mud::Terminal;
 use Mud::Theme;
 use Mud::Docs;
+use Mud::Comm;
 
 my $options = Mud::Options->new(@ARGV);
 
@@ -108,19 +110,9 @@ log_info "Story: %s\n", Dumper($docs->story);
 log_info "License: %s\n", Dumper($docs->license);
 log_info "Greeting: %s\n", Dumper($docs->greeting);
 
-exit 1;
+my $comm = Mud::Comm->new($options);
 
-#    log_boot("- Reading info");
-#    file_to_string(INFO_FILE, info);
-#    log_boot("- Reading wizlist");
-#    file_to_string(WIZLIST_FILE, wizlist);
-#    log_boot("- Reading wiz motd");
-#    file_to_string(WMOTD_FILE, wmotd);
-#    log_boot("- Reading greetings");
-
-#    file_to_string(GREETINGS_FILE, greetings);
 #    log_boot("- Reading login menu");
-
 #    file_to_prompt(LOGIN_MENU_FILE, login_menu);
 #    log_boot("- Reading sex menu");
 #    file_to_prompt(SEX_MENU_FILE, sex_menu);
@@ -152,29 +144,6 @@ exit 1;
 #    boot_social_messages();
 #    log_boot("- Loading pose messages");
 #    boot_pose_messages();
-
-
-log_boot "Opening mother connection.";
-
-sub tweak_socket {
-    my $socket = shift;
-    
-    my $flags = fcntl($socket, F_GETFL, 0) or warn "Cannot get flags for socket: $!";
-    fcntl($socket, F_SETFL, $flags | O_NONBLOCK) or warn "Cannot set socket to nonblocking: $!";
-    setsockopt($socket,SOL_SOCKET,SO_LINGER,pack("l*",0,0)) or warn "Cannot set SO_LINGER option for socket: $!";
-    setsockopt($socket,IPPROTO_TCP,TCP_NODELAY,1) or warn "Cannot disable Nagle for socket: $!";
-}
-
-my $listening_socket = IO::Socket::INET->new(
-    Listen      => 5,
-    LocalPort   => $options->gameport,
-    ReuseAddr   => 1,
-) or die "Cannot bind main socket: $!";
-tweak_socket($listening_socket);
-
-
-
-
 
 #load_db();
 #log_boot("Opening WHO port.");
