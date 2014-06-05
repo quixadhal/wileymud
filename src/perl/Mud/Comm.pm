@@ -30,6 +30,7 @@ use IO::Select;
 use IO::Socket::INET;
 use Net::Telnet::Options;
 use JSON;
+use Scalar::Util qw(looks_like_number);
 
 use Mud::Logger;
 use Mud::Utils;
@@ -81,7 +82,7 @@ sub new {
         _warmboot       => undef,
         _listener       => undef,
         _selector       => undef,
-        _connections    => [],
+        _connections    => {},
     };
 
     die "Cannot initialize socket system without a valid Mud::Options object!" unless $options->isa('Mud::Options');
@@ -176,6 +177,20 @@ sub listener {
     return $self->{_listener};
 }
 
+=item selector()
+
+This returns the selector object.  Mostly it's as a shorthand
+to avoid having to dig into the hash to get it, but maybe an
+external module in the future will need it.
+
+=cut
+
+sub selector {
+    my $self = shift;
+
+    return $self->{_selector};
+}
+
 =item connections()
 
 This method returns the list of connected sockets.
@@ -185,7 +200,7 @@ This method returns the list of connected sockets.
 sub connections {
     my $self = shift;
 
-    return @{ $self->{_connections} };
+    return keys %{ $self->{_connections} };
 }
 
 =item warmboot()
@@ -200,6 +215,52 @@ sub warmboot {
     my ($self, $setting) = @_;
     $self->{_warmboot} = 1 if $setting;
     return $self->{_warmboot};
+}
+
+=item poll()
+
+A method which polls the connections for data to read, and returns the list
+of connection objects which have data ready to be processed.  You can pass
+in a timeout value, or the default of 0 will be used (non-blocking, returns
+immediately if no data is ready).
+
+=cut
+
+sub poll {
+    my ($self, $setting) = @_;
+
+    $setting = 0 if !defined $setting or !looks_like_number $setting;
+
+    my @ready = $self->selector->can_read( $setting );
+    foreach (@ready) {
+        if( $_ == $self->listener ) {
+            my $new_socket = $_->accept;
+            tweak_socket $new_socket;
+            $self->selector->add($new_socket);
+            $self->{_connections}->{$new_socket} = 1;
+            log_debug "New connection on socket %s!", $new_socket;
+            last;
+        }
+    }
+    return ( grep { $_ != $self->listener } @ready );
+}
+
+=item close()
+
+This method allows something outside the comm module to request that
+the socket passed in be closed, with the appropriate cleanup done
+to ensure we stop trying to poll it, or keep track of it.
+
+=cut
+
+sub close {
+    my ($self, $socket) = @_;
+
+    return if !defined $socket;
+    die "Cannot close non-socket object!" unless $socket->isa('IO::Socket::INET');
+    delete $self->{_connections}->{$socket};
+    $self->selector->remove($socket);
+    shutdown $socket, 2;
 }
 
 =back

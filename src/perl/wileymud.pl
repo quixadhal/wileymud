@@ -161,6 +161,18 @@ for( my $i = 0; $i < 60; $i++ ) {
     $weather_daemon->update;
     log_info "Tick! Hour: %d, Month: %d", $time_daemon->hour, $time_daemon->month;
     sleep 5;
+    foreach my $sock ($comm->poll) {
+        my $message = '';
+        my $rv = -1;
+
+        $rv = sysread($sock, $message, 4096, length $message) while $rv;
+        log_info "Socket %s said \"%s\"", $sock, $message if length $message > 0;
+        log_info "Socket %s closed by remote end.", $sock if defined $rv and $rv == 0;
+        log_info "Socket %s closed by user request.", $sock if $message =~ /^quit\b/i;
+        $comm->close($sock) if defined $rv and $rv == 0;
+        $comm->close($sock) if $message =~ /^quit\b/i;
+    }
+    log_info "%d connections", scalar $comm->connections;
 }
 
 END { log_fatal "System Halted."; }
