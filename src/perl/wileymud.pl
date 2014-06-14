@@ -1,5 +1,7 @@
 #!/usr/bin/perl -w
 
+package main;
+
 =head1 NAME
 
 wileymud - The venerable WileyMUD III, rewritten in perl.
@@ -54,6 +56,7 @@ my $options = Mud::Options->new(@ARGV);
 Mud::Logger::setup_options($options);
 
 my $start_time = time();
+my $done = undef;
 
 if (defined $options->libdir) {
     my $libdir = $options->libdir;
@@ -91,7 +94,7 @@ log_debug $theme->terminal_type;
 log_debug $theme->width;
 log_debug $theme->height;
 
-my $docs = Mud::Docs->new();
+our $docs = Mud::Docs->new();
 
 log_info "News: %s\n", Dumper($docs->news);
 log_info "Credits: %s\n", Dumper($docs->credits);
@@ -156,7 +159,7 @@ my $comm = Mud::Comm->new($options);
 #log_boot("Normal termination of game.");
 #return MUD_HALT;					       /* what's so great about HHGTTG, anyhow? */
 
-for( my $i = 0; $i < 60; $i++ ) {
+until($done) {
     $time_daemon->update;
     $weather_daemon->update;
     log_info "Tick! Hour: %d, Month: %d", $time_daemon->hour, $time_daemon->month;
@@ -166,11 +169,13 @@ for( my $i = 0; $i < 60; $i++ ) {
         my $rv = -1;
 
         $rv = sysread($sock, $message, 4096, length $message) while $rv;
+        log_info "Socket %s has object %s", $sock, ref $comm->object($sock) if ref $comm->object($sock);
         log_info "Socket %s said \"%s\"", $sock, $message if length $message > 0;
         log_info "Socket %s closed by remote end.", $sock if defined $rv and $rv == 0;
         log_info "Socket %s closed by user request.", $sock if $message =~ /^quit\b/i;
         $comm->close($sock) if defined $rv and $rv == 0;
         $comm->close($sock) if $message =~ /^quit\b/i;
+        $done = 1 if $message =~ /^shutdown\b/i;
     }
     log_info "%d connections", scalar $comm->connections;
 }

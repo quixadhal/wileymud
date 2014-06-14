@@ -31,9 +31,11 @@ use IO::Socket::INET;
 use Net::Telnet::Options;
 use JSON;
 use Scalar::Util qw(looks_like_number);
+use Tie::RefHash;
 
 use Mud::Logger;
 use Mud::Utils;
+use Mud::Login;
 
 use Exporter qw(import);
 our @EXPORT_OK = qw();
@@ -77,12 +79,14 @@ sub new {
     my $class = shift;
     my $options = shift;
 
+    tie my %connections, 'Tie::RefHash';
+
     my $self = { 
         _options        => undef,
         _warmboot       => undef,
         _listener       => undef,
         _selector       => undef,
-        _connections    => {},
+        _connections    => \%connections,
     };
 
     die "Cannot initialize socket system without a valid Mud::Options object!" unless $options->isa('Mud::Options');
@@ -149,9 +153,8 @@ sub DESTROY {
         log_info "Shutting down comm system";
         $self->selector->remove($self->listener);
         shutdown $self->listener, 2;
-        foreach ($self->connections) {
-            $self->selector->remove($_);
-            shutdown $_, 2;
+        foreach (keys %{ $self->{_connections} }) {
+            $_->close;
         }
     }
 
@@ -203,6 +206,21 @@ sub connections {
     return keys %{ $self->{_connections} };
 }
 
+=item object()
+
+This method returns the object (if any) associated with
+a given socket.  Typically, this will be used to handle
+parsing input from the socket.
+
+=cut
+
+sub object {
+    my $self = shift;
+    my $sock = shift;
+
+    return $self->{_connections}->{$sock};
+}
+
 =item warmboot()
 
 This method either sets the warmboot status (true or false), or returns that
@@ -237,8 +255,7 @@ sub poll {
             my $new_socket = $_->accept;
             tweak_socket $new_socket;
             $self->selector->add($new_socket);
-            $self->{_connections}->{$new_socket} = 1;
-            log_debug "New connection on socket %s!", $new_socket;
+            $self->{_connections}->{$new_socket} = Mud::Login->new($new_socket);
             last;
         }
     }
