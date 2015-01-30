@@ -1806,7 +1806,7 @@ void I3_ucache_update(char *name, int gender)
     return;
 }
 
-void I3_send_ucache_update(char *visname, int gender)
+void I3_send_ucache_update(const char *visname, int gender)
 {
     char                                    buf[10];
 
@@ -2290,7 +2290,7 @@ void I3_send_channel_emote(I3_CHANNEL *channel, const char *name, const char *me
     return;
 }
 
-void I3_send_channel_t(I3_CHANNEL *channel, char *name, char *tmud, char *tuser, char *msg_o,
+void I3_send_channel_t(I3_CHANNEL *channel, const char *name, char *tmud, char *tuser, char *msg_o,
 		       char *msg_t, char *tvis)
 {
     if (!i3_is_connected())

@@ -3,38 +3,38 @@ Name               Ahti~
 Passwd             AhtoSjco7X5LI~
 Whizz              0
 PreTitle           ~
-Title              the Dwarven Swordpupil~
+Title              the Dwarven Sentry~
 Description
 ~
-LastSite           adork@host-213-153-163-194.reverse.superonline.n~
-LastLogin          1396780645
+LastSite           adork@host-212-252-166-86.reverse.superonline.ne~
+LastLogin          1413790572
 Birth              1396720029
-Played             3718
+Played             46216
 Sex                1
 Race               3
 Class              4
-Alignment          1
-Exp                2494
-Level              warrior 1
+Alignment          231
+Exp                4775
+Level              warrior 3
 HeightWeight       136 139
-Gold               28 0
+Gold               0 0
 HomeTown           3008
-LoadRoom           3008
+LoadRoom           -1
 PoofIn             ~
 PoofOut            ~
 AbilityScores      17 0 12 14 9 11
 AbilityPad         0 0 0 0
-HpManaMove         26 20 83 0 30 0
+HpManaMove         62 43 104 0 104 0
 AC                 100
 ToHitDamage        0 0
 SaveApply          0 0 0 0 0
-Conditions         0 11 11 0 0 0
+Conditions         0 8 8 0 0 0
 PointsPad1         0 0 0
 PointsPad2         0 0 0 0
 PointsPad3         0 0 0
 ShortSavePad       0 0 0 0
 SavePad            0 0 0 0
-Pracs              3
+Pracs              0
 SkillsToLearn      0
 NamedSkill         1 0 0 armour~
 NamedSkill         2 0 0 teleport~
@@ -164,8 +164,8 @@ NamedSkill         166 0 0 whip spec~
 NamedSkill         167 0 0 slash spec~
 NamedSkill         168 0 0 smash spec~
 NamedSkill         169 0 0 cleave spec~
-NamedSkill         170 0 0 crush spec~
-NamedSkill         171 0 0 bludgeon spec~
+NamedSkill         170 10 0 crush spec~
+NamedSkill         171 95 0 bludgeon spec~
 NamedSkill         172 0 0 pierce spec~
 NamedSkill         173 0 0 peer~
 NamedSkill         174 0 0 hear noise~
@@ -180,7 +180,7 @@ NamedSkill         182 0 0 disarm trap~
 NamedSkill         183 0 0 disarm~
 NamedSkill         184 0 0 shield bash~
 NamedSkill         185 0 0 riding~
-ActFlags           16 12
+ActFlags           0 12
 Affect             0 0 0 0 0 0 0
 Affect             1 0 0 0 0 0 0
 Affect             2 0 0 0 0 0 0

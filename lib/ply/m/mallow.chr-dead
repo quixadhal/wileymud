@@ -1,40 +1,39 @@
 #PLAYER
-Name               Davion~
-Passwd             DaM6HZXJfn2yQ~
+Name               Mallow~
+Passwd             Ma8WGLvDJzR1w~
 Whizz              0
 PreTitle           ~
-Title              the Dwarven Believer~
+Title              the Human ~
 Description
 ~
-LastSite           adork@S01061859339e3b5c.vc.shawcable.net~
-LastLogin          1408295036
-Birth              1228690001
-Played             29332
+LastSite           adork@localhost~
+LastLogin          1399480730
+Birth              1399480730
+Played             0
 Sex                1
-Race               3
-Class              2
+Race               1
+Class              1
 Alignment          0
-Exp                2084
-Level              cleric 1
-HeightWeight       118 127
+Exp                0
+HeightWeight       162 163
 Gold               0 0
-HomeTown           3008
+HomeTown           3001
 LoadRoom           -1
 PoofIn             ~
 PoofOut            ~
-AbilityScores      15 0 14 14 15 17
+AbilityScores      0 0 0 0 0 0
 AbilityPad         0 0 0 0
-HpManaMove         23 20 104 0 254 0
+HpManaMove         5 0 100 0 96 0
 AC                 100
 ToHitDamage        0 0
 SaveApply          0 0 0 0 0
-Conditions         0 8 8 0 0 0
+Conditions         24 24 24 0 0 0
 PointsPad1         0 0 0
 PointsPad2         0 0 0 0
 PointsPad3         0 0 0
 ShortSavePad       0 0 0 0
 SavePad            0 0 0 0
-Pracs              3
+Pracs              0
 SkillsToLearn      0
 NamedSkill         1 0 0 armour~
 NamedSkill         2 0 0 teleport~
@@ -206,9 +205,8 @@ Affect             21 0 0 0 0 0 0
 Affect             22 0 0 0 0 0 0
 Affect             23 0 0 0 0 0 0
 Affect             24 0 0 0 0 0 0
-i3perm       3
-i3flags      768
-i3listen     wiley pyom
-IMCPerm      1
+i3perm       2
+i3flags      256
+IMCPerm      0
 IMCFlags     256
 End

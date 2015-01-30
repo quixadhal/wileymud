@@ -91,7 +91,7 @@ typedef struct descriptor_data DESCRIPTOR_DATA;
 #define URANGE(a, b, c)         ((b) < (a) ? (a) : ((b) > (c) ? (c) : (b)))
 #define CH_I3DATA(ch)		((ch)->i3chardata)
 #define CH_I3LEVEL(ch)          (GetMaxLevel((ch)))
-#define CH_I3NAME(ch)           (GET_NAME((ch)))
+#define CH_I3NAME(ch)           (SAFE_NAME((ch)))
 #define CH_I3SEX(ch)            (GET_SEX((ch)))
 #define CH_I3TITLE(ch)          (GET_TITLE((ch)))
 #define CH_I3RANK(ch)           (GET_CLASS_TITLE((ch), BestClass((ch)), GetMaxLevel((ch))))

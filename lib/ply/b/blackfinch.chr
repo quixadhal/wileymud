@@ -7,9 +7,9 @@ Title              the Gnome Healer of the Mission/Leader of the Shadow~
 Description
 ~
 LastSite           adork@localhost~
-LastLogin          1231105091
+LastLogin          1405978936
 Birth              1193955442
-Played             7753
+Played             7970
 Sex                1
 Race               5
 Class              10
@@ -25,7 +25,7 @@ PoofIn             ~
 PoofOut            ~
 AbilityScores      15 0 17 12 18 17
 AbilityPad         0 0 0 0
-HpManaMove         359 347 208 0 204 0
+HpManaMove         346 347 208 0 199 0
 AC                 100
 ToHitDamage        0 0
 SaveApply          0 0 0 0 0
@@ -207,4 +207,8 @@ Affect             21 0 0 0 0 0 0
 Affect             22 0 0 0 0 0 0
 Affect             23 0 0 0 0 0 0
 Affect             24 0 0 0 0 0 0
+i3perm       1
+i3flags      256
+IMCPerm      1
+IMCFlags     256
 End
