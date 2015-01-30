@@ -1,0 +1,24 @@
+     Once upon a time, there was a little mud named Wiley.  He was just
+your typical DikuMUD, and a few people got together to play around with
+some code.  They hacked the code for some length of time, occasionally
+screaming obscenities, or saying things like, \"Huh, huh, huh... This
+bubble sort is COOL!\"  Eventually, they opened it to the mud-starved
+people of WMU and called it Wiley II.  A poor little Sun 3/60 was found
+and managed to keep 30 to 40 people amused with its antics for almost
+two years.  At this point, Cyric the Destroyer took the game down for
+renovations.  There was much anticipation of Wiley III's return, and it
+seemed like we would soon be in for a new experience in mudding!  Alas,
+it was not to be.  For Cyric had lost interest in the project and took
+his Source with him.  The half-finished Wiley III was released to the
+internet via anonymous FTP for a half-hearted month before being buried
+forever.
+    But wait!  An old packrat hacker who went by the subtle name Dread
+Quixadhal, Lord of VI, had snagged a copy and left it buried on his hard
+drive for several years.  After playing with several broken LpMUDs and
+even a different DikuMUD, he dragged the Wiley III source out and forced
+it to learn to like Linux.
+    You have here the result of nearly 4 years of ad-hoc development!
+      PLEASE read the wizlist to find out more about these jokers!
+      Cyric, Harlequin, Muth, Grimwell, Derkhil, Elcid and Muidnar.
+      Dread Quixadhal, Muidnar, Dirk, Malistrum, Zar, Highlander,
+      and Sedna.
