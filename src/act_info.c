@@ -2659,6 +2659,9 @@ void do_world(struct char_data *ch, const char *argument, int cmd)
     time_t                                  ot = (time_t) 0;
     char                                   *tmstr = NULL;
     char                                   *otmstr = NULL;
+    int                                     i = 0;
+    int                                     mob_count = 0;
+    int                                     obj_count = 0;
 
     if (DEBUG)
 	log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch),
@@ -2672,10 +2675,28 @@ void do_world(struct char_data *ch, const char *argument, int cmd)
     ct = time(0);
     tmstr = asctime(localtime(&ct));
     *(tmstr + strlen(tmstr) - 1) = '\0';
+
+    for (i = 0; i <= top_of_mobt; i++) {
+        struct index_data                      *oi;
+
+        oi = mob_index + i;
+        if(oi)
+            mob_count += oi->number;
+
+    }
+
+    for (i = 0; i <= top_of_objt; i++) {
+        struct index_data                      *oi;
+
+        oi = obj_index + i;
+        if(oi)
+            obj_count += oi->number;
+    }
+
     cprintf(ch, "Wiley's time is: %s\r\n", tmstr);
     cprintf(ch, "Total number of rooms: %d\r\n", room_db.klistlen);
-    cprintf(ch, "Total number of objects: %d\r\n", top_of_objt + 1);
-    cprintf(ch, "Total number of mobiles: %d\r\n", top_of_mobt + 1);
+    cprintf(ch, "Total number of objects: %d (%d instances)\r\n", top_of_objt + 1, obj_count);
+    cprintf(ch, "Total number of mobiles: %d (%d instances)\r\n", top_of_mobt + 1, mob_count);
     cprintf(ch, "Total number of players: %d\r\n", number_of_players);
 }
 
