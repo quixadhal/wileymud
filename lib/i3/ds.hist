@@ -1,0 +1,250 @@
+&R[06/24 11:20] &G&G11&W:&G20&d &R[&Wds&R] &CUmbrella Wizard@Testsokyo: &cNow that you put it like that, I have a really simple idea.
+&R[06/24 11:20] &G&G11&W:&G20&d &R[&Wds&R] &CQuixadhal@Bloodlines: &cIf the first option sounds like too much digging, I'd go look up say and make another version of that.
+&R[06/24 11:21] &G&G11&W:&G21&d &R[&Wds&R] &CUmbrella Wizard@Testsokyo: &cJust make a command that calls say and appends something like <OOC> in front of the line.
+&R[06/24 11:21] &G&G11&W:&G21&d &R[&Wds&R] &CQuixadhal@Bloodlines: &cUgly.
+&R[06/24 11:21] &G&G11&W:&G21&d &R[&Wds&R] &CQuixadhal@Bloodlines: &cAlso pollutes the say history.
+&R[06/24 11:21] &G&G11&W:&G21&d &R[&Wds&R] &CUmbrella Wizard@Testsokyo: &cGood point.
+&R[06/24 11:21] &G&G11&W:&G21&d &R[&Wds&R] &CQuixadhal@Bloodlines: &cAnd makes it impossible to toggle OOC on and off without also toggling say.
+&R[06/24 11:22] &G&G11&W:&G22&d &R[&Wds&R] &CUmbrella Wizard@Testsokyo: &cBut the general idea is the same for making another say, so I'll look into that.
+&R[06/24 11:23] &G&G11&W:&G23&d &R[&Wds&R] &CQuixadhal@Bloodlines: &cSay is a good introduction to the verb system for you. :)
+&R[06/24 11:23] &G&G11&W:&G23&d &R[&Wds&R] &CQuixadhal@Bloodlines: &c/verbs/common/say.c
+&R[06/24 11:23] &G&G11&W:&G23&d &R[&Wds&R] &CUmbrella Wizard@Testsokyo: &cAlready looking at it.
+&R[06/24 11:25] &G&G11&W:&G25&d &R[&Wds&R] &CQuixadhal@Bloodlines: &cHeh, another interesting way to do it would be to repurpose the "common" language.
+&R[06/24 11:26] &G&G11&W:&G26&d &R[&Wds&R] &CQuixadhal@Bloodlines: &cIf you're an RPI mud, you probably don't really want "common" anyways... and you could modify the "speak" command to not allow you to set your language to common unless you're in the right location.
+&R[06/24 11:26] &G&G11&W:&G26&d &R[&Wds&R] &CQuixadhal@Bloodlines: &cAnd make an exit function so when the player leaves that location, it sets their language back to whatever their normal default is.
+&R[06/24 11:27] &G&G11&W:&G27&d &R[&Wds&R] &CUmbrella Wizard@Testsokyo: &cRPI?
+&R[06/24 11:27] &G&G11&W:&G27&d &R[&Wds&R] &CQuixadhal@Bloodlines: &c"role play intensive" I think it stands for.
+&R[06/24 11:27] &G&G11&W:&G27&d &R[&Wds&R] &CUmbrella Wizard@Testsokyo: &cGotcha. That makes sense.
+&R[06/24 11:27] &G&G11&W:&G27&d &R[&Wds&R] &CQuixadhal@Bloodlines: &cIt's the TLA most often used by people wanting to make non-combat muds. :)
+&R[06/24 11:28] &G&G11&W:&G28&d &R[&Wds&R] &CUmbrella Wizard@Testsokyo: &cHmm, I need to figure out what else includes the talk_type.h header.
+&R[06/24 11:29] &G&G11&W:&G29&d &R[&Wds&R] &CUmbrella Wizard@Testsokyo: &cCombat may be an element at some stage, but it's very much on the back burner.
+&R[06/24 11:30] &G&G11&W:&G30&d &R[&Wds&R] &CUmbrella Wizard@Testsokyo: &cCommon is used mostly for system messages and the like, I take it?
+&R[06/24 11:37] &G&G11&W:&G37&d &R[&Wds&R] &CUmbrella Wizard@Testsokyo: &cThanks for the help, I have a good idea of what to do now. Back to reverse engineering code.
+&R[06/24 11:37] &G&G11&W:&G37&d &R[&Wds&R] &CQuixadhal@Bloodlines: &cNo, languages are only used by say/tell/whisper/etc.
+&R[06/24 11:38] &G&G11&W:&G38&d &R[&Wds&R] &CQuixadhal@Bloodlines: &csystem messsages are a different beast entirely.... of course, it all eventually ends up in the player object's eventReceive() or whatever. :)
+&R[06/24 11:39] &G&G11&W:&G39&d &R[&Wds&R] &CQuixadhal@Bloodlines: &cMost modern games have a "common" language because players are too lazy to bother learning each other's racial languages.
+&R[06/24 11:40] &G&G11&W:&G40&d &R[&Wds&R] &CQuixadhal@Bloodlines: &cSame reason most modern games only have a single currency... the joys of exchange rates and having NPC's refuse service if you don't have the local coinage to pay are lost on the min-maxer.
+&R[06/24 11:41] &G&G11&W:&G41&d &R[&Wds&R] &CQuixadhal@Bloodlines: &cHave fun! :)
+&R[06/24 11:41] &G&G11&W:&G41&d &R[&Wds&R] &CUmbrella Wizard@Testsokyo: &cWill do.
+&R[06/24 16:34] &G&G16&W:&G34&d &R[&Wds&R] &CUmbrella Wizard@Testsokyo: &cI take it that there is a different command other than hist to display the backlog from say, whisper, etc?
+&R[06/24 16:34] &G&G16&W:&G34&d &R[&Wds&R] &CUmbrella Wizard@Testsokyo: &cSince those are verbs and not channels, hist complains that you are not listening to them
+&R[06/24 16:35] &G&G16&W:&G35&d &R[&Wds&R] &CQuixadhal@Bloodlines: &cNot on my mud... "hist say" shows me all the things *I* have said.
+&R[06/24 16:35] &G&G16&W:&G35&d &R[&Wds&R] &CQuixadhal@Bloodlines: &cIt might also show what other people say... but since there are no other people, I can't test that.
+&R[06/24 16:35] &G&G16&W:&G35&d &R[&Wds&R] &CUmbrella Wizard@Testsokyo: &cOdd, let me reload the default ds package and try.
+&R[06/24 16:35] &G&G16&W:&G35&d &R[&Wds&R] &CAhti@Dead Souls Dev: &c2014.11.24-19.37,16 Beggar says in Common, "Hi, Ahti.
+&R[06/24 16:36] &G&G16&W:&G36&d &R[&Wds&R] &CQuixadhal@Bloodlines: &cSee?  You have beggers there too... as per our intergossip discussion, they should be put to work!
+&R[06/24 16:37] &G&G16&W:&G37&d &R[&Wds&R] &CUmbrella Wizard@Testsokyo: &cIt behaves the same on default, has there been an update to dead souls in the last week or something?
+&R[06/24 16:37] &G&G16&W:&G37&d &R[&Wds&R] &CUmbrella Wizard@Testsokyo: &chist say
+&R[06/24 16:37] &G&G16&W:&G37&d &R[&Wds&R] &CQuixadhal@Bloodlines: &cI hope not... I haven't applied any official updates in a couple years.
+&R[06/24 16:37] &G&G16&W:&G37&d &R[&Wds&R] &CUmbrella Wizard@Testsokyo: &cRetrieving history...You are not listening to channel: say
+&R[06/24 16:38] &G&G16&W:&G38&d &R[&Wds&R] &CUmbrella Wizard@Testsokyo: &cOh, hold on.
+&R[06/24 16:38] &G&G16&W:&G38&d &R[&Wds&R] &CQuixadhal@Bloodlines: &cI do try to keep github up to date, but since Crat never reminds me when he releases a patch, I can't be sure it actually is. :)
+&R[06/24 16:40] &G&G16&W:&G40&d &R[&Wds&R] &CUmbrella Wizard@Testsokyo: &cNo, even after generating a brand new admin character on a fresh copy extracted from the zip downloaded from the website, it still complains that I am not listening.
+&R[06/24 16:41] &G&G16&W:&G41&d &R[&Wds&R] &CUmbrella Wizard@Testsokyo: &cCould this have anything to do with running ds on Windows?
+&R[06/24 16:41] &G&G16&W:&G41&d &R[&Wds&R] &CUmbrella Wizard@Testsokyo: &cPossibly having a space in your display name?
+&R[06/24 16:43] &G&G16&W:&G43&d &R[&Wds&R] &CUmbrella Wizard@Testsokyo: &cJust tested the space in name theory, it's not that.
+&R[06/24 16:44] &G&G16&W:&G44&d &R[&Wds&R] &CQuixadhal@Bloodlines: &cIt looks like everything except "tell" is considered a channel.  Did you disable all channels or something?
+&R[06/24 16:44] &G&G16&W:&G44&d &R[&Wds&R] &CUmbrella Wizard@Testsokyo: &cNo, I am currently running stock default with a brand new admin. Only change I've made is the server name.
+&R[06/24 16:45] &G&G16&W:&G45&d &R[&Wds&R] &CQuixadhal@Bloodlines: &chttps://github.com/quixadhal/bloodlines/blob/bloodlines/lib/secure/cmds/players/hist.c
+&R[06/24 16:45] &G&G16&W:&G45&d &R[&Wds&R] &CQuixadhal@Bloodlines: &cIt doesn't actually treat say/whisper/etc any different, so they must be implemented as local channels. "tell" is the only thing with any special case code.
+&R[06/24 16:46] &G&G16&W:&G46&d &R[&Wds&R] &CQuixadhal@Bloodlines: &cMy version is slightly modified because I hated the default channel display format. :)
+&R[06/24 16:46] &G&G16&W:&G46&d &R[&Wds&R] &CHells@The Savage Soul: &chist should work for all channels you are subscribed to
+&R[06/24 16:46] &G&G16&W:&G46&d &R[&Wds&R] &CHells@The Savage Soul: &cit will only show history for what you have actually been online for
+&R[06/24 16:47] &G&G16&W:&G47&d &R[&Wds&R] &CQuixadhal@Bloodlines: &cWhich is probably why "tell" is special cased, because it remembers across logins.
+&R[06/24 16:47] &G&G16&W:&G47&d &R[&Wds&R] &CUmbrella Wizard@Testsokyo: &c"You are not listening to channel: say"
+&R[06/24 16:47] &G&G16&W:&G47&d &R[&Wds&R] &CUmbrella Wizard@Testsokyo: &cThis even after using your hist code.
+&R[06/24 16:48] &G&G16&W:&G48&d &R[&Wds&R] &CHells@The Savage Soul: &ctry doing "hist ds"
+&R[06/24 16:48] &G&G16&W:&G48&d &R[&Wds&R] &CUmbrella Wizard@Testsokyo: &cAm I just misunderstanding the syntax? I'm typing: hist say
+&R[06/24 16:48] &G&G16&W:&G48&d &R[&Wds&R] &CUmbrella Wizard@Testsokyo: &chist ds works.
+&R[06/24 16:48] &G&G16&W:&G48&d &R[&Wds&R] &CHells@The Savage Soul: &cthat is the correct syntax, hist say returns all the things for me.
+&R[06/24 16:49] &G&G16&W:&G49&d &R[&Wds&R] &CUmbrella Wizard@Testsokyo: &cAre you running a Windows or Unix server?
+&R[06/24 16:49] &G&G16&W:&G49&d &R[&Wds&R] &CHells@The Savage Soul: &cthis server runs on both Ubuntu and Mac
+&R[06/24 16:49] &G&G16&W:&G49&d &R[&Wds&R] &CHells@The Savage Soul: &cnot sure that I have tested it on windows
+&R[06/24 16:50] &G&G16&W:&G50&d &R[&Wds&R] &CUmbrella Wizard@Testsokyo: &cAt this point, the only difference between the code I'm running and you is the OS I'm running the server on.
+&R[06/24 16:50] &G&G16&W:&G50&d &R[&Wds&R] &CQuixadhal@Bloodlines: &cThe only real difference is in the networking and file I/O code.
+&R[06/24 16:50] &G&G16&W:&G50&d &R[&Wds&R] &CQuixadhal@Bloodlines: &cI could see a problem trying to get history from log files if the format is different, but not in memory things.
+&R[06/24 16:50] &G&G16&W:&G50&d &R[&Wds&R] &CHells@The Savage Soul: &cpermissions maybe??
+&R[06/24 16:50] &G&G16&W:&G50&d &R[&Wds&R] &CQuixadhal@Bloodlines: &csay itself works?
+&R[06/24 16:50] &G&G16&W:&G50&d &R[&Wds&R] &CUmbrella Wizard@Testsokyo: &cDo either of you have means to test it on Windows anyways?
+&R[06/24 16:50] &G&G16&W:&G50&d &R[&Wds&R] &CUmbrella Wizard@Testsokyo: &cYes
+&R[06/24 16:50] &G&G16&W:&G50&d &R[&Wds&R] &CHells@The Savage Soul: &cinterestingly hist keeps history for say across sessions for me
+&R[06/24 16:50] &G&G16&W:&G50&d &R[&Wds&R] &CQuixadhal@Bloodlines: &cIE: If you type "say foo", do you see what you expect?
+&R[06/24 16:51] &G&G16&W:&G51&d &R[&Wds&R] &CUmbrella Wizard@Testsokyo: &cYou say in Common, "Foo."
+&R[06/24 16:51] &G&G16&W:&G51&d &R[&Wds&R] &CQuixadhal@Bloodlines: &cHmmmm
+&R[06/24 16:52] &G&G16&W:&G52&d &R[&Wds&R] &CUmbrella Wizard@Testsokyo: &cOk now I feel silly. I could have sworn I tried after saying something.
+&R[06/24 16:52] &G&G16&W:&G52&d &R[&Wds&R] &CUmbrella Wizard@Testsokyo: &cThe message it was giving threw me off.
+&R[06/24 16:52] &G&G16&W:&G52&d &R[&Wds&R] &CQuixadhal@Bloodlines: &cTry eval return LOG_LOCAL_CHANS;
+&R[06/24 16:52] &G&G16&W:&G52&d &R[&Wds&R] &CHells@The Savage Soul: &cahh so it works as long as you have data?
+&R[06/24 16:52] &G&G16&W:&G52&d &R[&Wds&R] &CUmbrella Wizard@Testsokyo: &cAfter saying foo, it displays the history instead of claiming I am not listening to the channel.
+&R[06/24 16:52] &G&G16&W:&G52&d &R[&Wds&R] &CHells@The Savage Soul: &cguessing it was complaining because it couldn't find the log file
+&R[06/24 16:52] &G&G16&W:&G52&d &R[&Wds&R] &CUmbrella Wizard@Testsokyo: &cYes, it's just that the message you get when there's no data is misleading
+&R[06/24 16:52] &G&G16&W:&G52&d &R[&Wds&R] &CQuixadhal@Bloodlines: &cAh, an example of a fallthrough error message that doesn't fit the actual error.
+&R[06/24 16:53] &G&G16&W:&G53&d &R[&Wds&R] &CUmbrella Wizard@Testsokyo: &cYep.
+&R[06/24 16:53] &G&G16&W:&G53&d &R[&Wds&R] &CQuixadhal@Bloodlines: &cThat's why Microsoft uses cryptic numbers for all their errors.
+&R[06/24 16:53] &G&G16&W:&G53&d &R[&Wds&R] &CQuixadhal@Bloodlines: &cNobody has the patience to go look them up, so they don't have to bother making sure each error condition has a proper message.
+&R[06/24 16:54] &G&G16&W:&G54&d &R[&Wds&R] &CHells@The Savage Soul: &chehe sing the praise brother!
+&R[06/24 16:54] &G&G16&W:&G54&d &R[&Wds&R] &CHells@The Savage Soul: &cgetError() <- stupid
+&R[06/24 16:54] &G&G16&W:&G54&d &R[&Wds&R] &CHells@The Savage Soul: &cor is that getLastError()
+&R[06/24 16:54] &G&G16&W:&G54&d &R[&Wds&R] &CUmbrella Wizard@Testsokyo: &cIn the meantime, I got some of my first work with verbs working.
+&R[06/24 16:54] &G&G16&W:&G54&d &R[&Wds&R] &CHells@The Savage Soul: &cit's been too long since I used the win apis
+&R[06/24 16:54] &G&G16&W:&G54&d &R[&Wds&R] &CQuixadhal@Bloodlines: &cI love that the last couple years they've done that with updates too...
+&R[06/24 16:55] &G&G16&W:&G55&d &R[&Wds&R] &CQuixadhal@Bloodlines: &c"This is an important update to Windows.  For details see KB387472984823743298342."
+&R[06/24 16:57] &G&G16&W:&G57&d &R[&Wds&R] &CHells@The Savage Soul: &cERROR_INVALID_ACCESS is the most evil of errors. If you try to do any networking or mess with anything kernel level this comes back for about half the situations with no clue why
+&R[06/24 16:57] &G&G16&W:&G57&d &R[&Wds&R] &CUmbrella Wizard@Testsokyo: &cI basically made a shorthand forwarder for a channel name. I'll probably use expand the general code for other substitutions.
+&R[06/24 16:58] &G&G16&W:&G58&d &R[&Wds&R] &CUmbrella Wizard@Testsokyo: &cAlso added a mapping and some code to get the verb shortcut working in hist.
+&R[06/24 17:07] &G&G17&W:&G07&d &R[&Wds&R] &CQuixadhal@Bloodlines: &cDo check out the alias command
+&R[06/24 17:07] &G&G17&W:&G07&d &R[&Wds&R] &CQuixadhal@Bloodlines: &cFor example "alias dw discworld-chat $*"
+&R[06/24 17:08] &G&G17&W:&G08&d &R[&Wds&R] &CHells@The Savage Soul: &calso if you want aliases setup for users you can do that as part of the creation process
+&R[06/24 17:08] &G&G17&W:&G08&d &R[&Wds&R] &CHells@The Savage Soul: &cI would have to look it up but it's in there somewheres
+&R[06/24 17:08] &G&G17&W:&G08&d &R[&Wds&R] &CQuixadhal@Bloodlines: &cAnd the special one-character aliai like "$'" that lets you type "'foo bar" to expand to "say foo bar" (note the lack of space)
+&R[06/24 17:11] &G&G17&W:&G11&d &R[&Wds&R] &CQuixadhal@Bloodlines: &c%^FLASH%^%^RED%^!DANGER!%^RESET%^  %^RED%^A dangerous toy.  This toy is being made for the extreme priority the good looks.  The little part which suffocates when the sharp part that gets hurt is swallowed is contained generously.  Only the person who can take responsibility by itself is to play.%^RESET%^
+&R[06/24 17:13] &G&G17&W:&G13&d &R[&Wds&R] &CUmbrella Wizard@Testsokyo: &cSo basically I coded something that already exists. :P
+&R[06/24 17:13] &G&G17&W:&G13&d &R[&Wds&R] &CQuixadhal@Bloodlines: &cWOOT!
+&R[06/24 17:13] &G&G17&W:&G13&d &R[&Wds&R] &CHells@The Savage Soul: &cnyahahah I am on a regular client your blinks don't cause a stroke
+&R[06/24 17:13] &G&G17&W:&G13&d &R[&Wds&R] &CUmbrella Wizard@Testsokyo: &cIt was a good learning process at least.
+&R[06/24 17:13] &G&G17&W:&G13&d &R[&Wds&R] &CQuixadhal@Bloodlines: &cNow you're a REAL MUD programmer!
+&R[06/24 17:14] &G&G17&W:&G14&d &R[&Wds&R] &CQuixadhal@Bloodlines: &cOh yeah?  Don't make me assume my ultimate form!
+&R[06/24 17:15] &G&G17&W:&G15&d &R[&Wds&R] &CHells@The Savage Soul: &cI am on an ssh -> telnet -> tt++ -> mud
+&R[06/24 17:15] &G&G17&W:&G15&d &R[&Wds&R] &CQuixadhal@Bloodlines: &c%^ORANGE%^!%^BOLD%^%^MAGENTA%^D%^MAGENTA%^A%^FLASH%^%^MAGENTA%^N%^RESET%^%^BOLD%^%^GREEN%^G%^RESET%^%^GREEN%^E%^RESET%^%^BOLD%^%^B_RED%^%^GREEN%^R%^RESET%^%^BOLD%^%^MAGENTA%^!%^RESET%^%^MAGENTA%^ %^RESET%^%^RED%^ %^RESET%^%^BOLD%^%^B_ORANGE%^%^FLASH%^%^BLUE%^A%^RESET%^%^BOLD%^%^BOLD%^%^WHITE%^%^B_BLACK%^ %^RESET%^%^BOLD%^%^FLASH%^%^YELLOW%^d%^RESET%^%^BOLD%^%^B_RED%^%^MAGENTA%^a%^RESET%^%^RED%^n%^RESET%^%^BOLD%^%^B_MAGENTA%^%^FLASH%^%^ORANGE%^g%^RESET%^%^B_CYAN%^%^BOLD%^%^WHITE%^%^B_BLACK%^e%^RESET%^%^BOLD%^%^FLASH%^%^BLUE%^r%^RESET%^%^GREEN%^o%^RESET%^%^GREEN%^u%^RESET%^%^YELLOW%^s%^RESET%^%^BOLD%^%^WHITE%^%^B_BLACK%^ %^RESET%^%^GREEN%^t%^RESET%^%^BOLD%^%^ORANGE%^o%^RESET%^%^BOLD%^%^ORANGE%^y%^RESET%^%^BOLD%^%^B_YELLOW%^%^MAGENTA%^.%^RESET%^%^BLUE%^ %^RESET%^%^BOLD%^%^BLUE%^ %^RESET%^%^B_YELLOW%^%^FLASH%^%^YELLOW%^T%^RESET%^%^MAGENTA%^h%^RESET%^%^ORANGE%^i%^RESET%^%^BOLD%^%^B_YELLOW%^%^GREEN%^s%^RESET%^%^BOLD%^%^MAGENTA%^ %^RESET%^%^BOLD%^%^B_RED%^%^RED%^t%^RESET%^%^B_RED%^%^ORANGE%^o%^RESET%^%^FLASH%^%^BLUE%^y%^RESET%^%^MAGENTA%^ %^RESET%^%^FLASH%^%^BOLD%^%^WHITE%^%^B_BLACK%^i%^RESET%^%^BOLD%^%^B_CYAN%^%^CYAN%^s%^RESET%^%^BOLD%^%^CYAN%^ %^RESET%^%^BOLD%^%^B_YELLOW%^%^YELLOW%^b%^RESET%^%^B_BLUE%^%^RED%^e%^RESET%^%^BOLD%^%^B_YELLOW%^%^BLUE%^i%^RESET%^%^ORANGE%^n%^RESET%^%^B_MAGENTA%^%^YELLOW%^g%^RESET%^%^RED%^ %^RESET%^%^B_YELLOW%^%^RED%^m%^RESET%^%^MAGENTA%^a%^RESET%^%^BOLD%^%^BOLD%^%^WHITE%^%^B_BLACK%^d%^RESET%^%^BOLD%^%^GREEN%^e%^RESET%^%^BLUE%^ %^RESET%^%^BOLD%^%^BLUE%^f%^RESET%^%^BOLD%^%^FLASH%^%^BOLD%^%^WHITE%^%^B_BLACK%^o%^RESET%^%^BOLD%^%^B_CYAN%^%^BLUE%^r%^RESET%^%^RED%^ %^RESET%^%^GREEN%^t%^RESET%^%^BOLD%^%^GREEN%^h%^RESET%^%^B_MAGENTA%^%^RED%^e%^RESET%^%^BOLD%^%^GREEN%^ %^RESET%^%^B_MAGENTA%^%^BOLD%^%^WHITE%^%^B_BLACK%^e%^RESET%^%^ORANGE%^x%^RESET%^%^B_YELLOW%^%^BOLD%^%^WHITE%^%^B_BLACK%^t%^RESET%^%^B_CYAN%^%^FLASH%^%^RED%^r%^RESET%^%^MAGENTA%^e%^RESET%^%^BOLD%^%^ORANGE%^m%^RESET%^%^RED%^e%^RESET%^%^YELLOW%^ %^RESET%^%^BOLD%^%^B_BLUE%^%^FLASH%^%^YELLOW%^p%^RESET%^%^B_ORANGE%^%^ORANGE%^r%^RESET%^%^BOLD%^%^ORANGE%^i%^RESET%^%^FLASH%^%^BOLD%^%^WHITE%^%^B_BLACK%^o%^RESET%^%^BOLD%^%^MAGENTA%^r%^RESET%^%^BOLD%^%^WHITE%^%^B_BLACK%^i%^RESET%^%^GREEN%^t%^RESET%^%^FLASH%^%^GREEN%^y%^RESET%^%^BOLD%^%^RED%^ %^RESET%^%^FLASH%^%^MAGENTA%^t%^RESET%^%^BOLD%^%^B_BLUE%^%^ORANGE%^h%^RESET%^%^B_ORANGE%^%^FLASH%^%^CYAN%^e%^RESET%^%^BLUE%^ %^RESET%^%^YELLOW%^g%^RESET%^%^BOLD%^%^B_BLUE%^%^RED%^o%^RESET%^%^BOLD%^%^BLUE%^o%^RESET%^%^BOLD%^%^B_YELLOW%^%^FLASH%^%^BOLD%^%^WHITE%^%^B_BLACK%^d%^RESET%^%^BOLD%^%^ORANGE%^ %^RESET%^%^CYAN%^l%^RESET%^%^ORANGE%^o%^RESET%^%^B_CYAN%^%^CYAN%^o%^RESET%^%^ORANGE%^k%^RESET%^%^BOLD%^%^ORANGE%^s%^RESET%^%^BOLD%^%^RED%^.%^RESET%^%^YELLOW%^ %^RESET%^%^BOLD%^%^ORANGE%^ %^RESET%^%^BOLD%^%^BOLD%^%^WHITE%^%^B_BLACK%^T%^RESET%^%^MAGENTA%^h%^RESET%^%^FLASH%^%^CYAN%^e%^RESET%^%^BOLD%^%^RED%^ %^RESET%^%^GREEN%^l%^RESET%^%^FLASH%^%^YELLOW%^i%^RESET%^%^B_ORANGE%^%^BOLD%^%^WHITE%^%^B_BLACK%^t%^RESET%^%^CYAN%^t%^RESET%^%^GREEN%^l%^RESET%^%^BOLD%^%^MAGENTA%^e%^RESET%^%^BOLD%^%^RED%^ %^RESET%^%^BOLD%^%^FLASH%^%^YELLOW%^p%^RESET%^%^BOLD%^%^GREEN%^a%^RESET%^%^B_RED%^%^FLASH%^%^BOLD%^%^WHITE%^%^B_BLACK%^r%^RESET%^%^BOLD%^%^FLASH%^%^GREEN%^t%^RESET%^%^MAGENTA%^ %^RESET%^%^BOLD%^%^B_MAGENTA%^%^BLUE%^w%^RESET%^%^FLASH%^%^MAGENTA%^h%^RESET%^%^YELLOW%^i%^RESET%^%^BOLD%^%^FLASH%^%^MAGENTA%^c%^RESET%^%^BOLD%^%^FLASH%^%^CYAN%^h%^RESET%^%^RED%^ %^RESET%^%^BOLD%^%^ORANGE%^s%^RESET%^%^BOLD%^%^CYAN%^u%^RESET%^%^BOLD%^%^GREEN%^f%^RESET%^%^B_ORANGE%^%^ORANGE%^f%^RESET%^%^YELLOW%^o%^RESET%^%^BOLD%^%^GREEN%^c%^RESET%^%^B_RED%^%^ORANGE%^a%^RESET%^%^BOLD%^%^B_ORANGE%^%^GREEN%^t%^RESET%^%^YELLOW%^e%^RESET%^%^BOLD%^%^B_BLUE%^%^YELLOW%^s%^RESET%^%^BLUE%^ %^RESET%^%^B_BLUE%^%^BLUE%^w%^RESET%^%^BOLD%^%^BOLD%^%^WHITE%^%^B_BLACK%^h%^RESET%^%^BOLD%^%^BLUE%^e%^RESET%^%^MAGENTA%^n%^RESET%^%^BOLD%^%^ORANGE%^ %^RESET%^%^BOLD%^%^B_CYAN%^%^BOLD%^%^WHITE%^%^B_BLACK%^t%^RESET%^%^BOLD%^%^B_CYAN%^%^RED%^h%^RESET%^%^BLUE%^e%^RESET%^%^BOLD%^%^BLUE%^ %^RESET%^%^FLASH%^%^BOLD%^%^WHITE%^%^B_BLACK%^s%^RESET%^%^BOLD%^%^FLASH%^%^CYAN%^h%^RESET%^%^BOLD%^%^B_CYAN%^%^MAGENTA%^a%^RESET%^%^BOLD%^%^B_RED%^%^BOLD%^%^WHITE%^%^B_BLACK%^r%^RESET%^%^RED%^p%^RESET%^%^BOLD%^%^CYAN%^ %^RESET%^%^B_CYAN%^%^YELLOW%^p%^RESET%^%^BOLD%^%^RED%^a%^RESET%^%^BOLD%^%^FLASH%^%^BLUE%^r%^RESET%^%^B_ORANGE%^%^BLUE%^t%^RESET%^%^RED%^ %^RESET%^%^BLUE%^t%^RESET%^%^BOLD%^%^BLUE%^h%^RESET%^%^BOLD%^%^B_ORANGE%^%^CYAN%^a%^RESET%^%^MAGENTA%^t%^RESET%^%^BOLD%^%^BOLD%^%^WHITE%^%^B_BLACK%^ %^RESET%^%^B_BLUE%^%^FLASH%^%^RED%^g%^RESET%^%^CYAN%^e%^RESET%^%^BOLD%^%^B_YELLOW%^%^BOLD%^%^WHITE%^%^B_BLACK%^t%^RESET%^%^B_YELLOW%^%^YELLOW%^s%^RESET%^%^BOLD%^%^CYAN%^ %^RESET%^%^MAGENTA%^h%^RESET%^%^ORANGE%^u%^RESET%^%^CYAN%^r%^RESET%^%^BOLD%^%^FLASH%^%^CYAN%^t%^RESET%^%^GREEN%^ %^RESET%^%^B_BLUE%^%^ORANGE%^i%^RESET%^%^MAGENTA%^s%^RESET%^%^ORANGE%^ %^RESET%^%^BOLD%^%^MAGENTA%^s%^RESET%^%^BOLD%^%^MAGENTA%^w%^RESET%^%^BOLD%^%^B_ORANGE%^%^GREEN%^a%^RESET%^%^B_MAGENTA%^%^CYAN%^l%^RESET%^%^B_CYAN%^%^GREEN%^l%^RESET%^%^CYAN%^o%^RESET%^%^BOLD%^%^RED%^w%^RESET%^%^CYAN%^e%^RESET%^%^FLASH%^%^CYAN%^d%^RESET%^%^CYAN%^ %^RESET%^%^FLASH%^%^BLUE%^i%^RESET%^%^GREEN%^s%^RESET%^%^MAGENTA%^ %^RESET%^%^BOLD%^%^FLASH%^%^BOLD%^%^WHITE%^%^B_BLACK%^c%^RESET%^%^BOLD%^%^FLASH%^%^YELLOW%^o%^RESET%^%^RED%^n%^RESET%^%^YELLOW%^t%^RESET%^%^RED%^a%^RESET%^%^BOLD%^%^B_CYAN%^%^ORANGE%^i%^RESET%^%^B_YELLOW%^%^BLUE%^n%^RESET%^%^CYAN%^e%^RESET%^%^FLASH%^%^ORANGE%^d%^RESET%^%^BOLD%^%^WHITE%^%^B_BLACK%^ %^RESET%^%^B_RED%^%^BLUE%^g%^RESET%^%^B_MAGENTA%^%^ORANGE%^e%^RESET%^%^BOLD%^%^B_RED%^%^MAGENTA%^n%^RESET%^%^MAGENTA%^e%^RESET%^%^YELLOW%^r%^RESET%^%^RED%^o%^RESET%^%^B_ORANGE%^%^MAGENTA%^u%^RESET%^%^BOLD%^%^BLUE%^s%^RESET%^%^YELLOW%^l%^RESET%^%^B_MAGENTA%^%^RED%^y%^RESET%^%^FLASH%^%^BOLD%^%^WHITE%^%^B_BLACK%^.%^RESET%^%^BOLD%^%^CYAN%^ %^RESET%^%^BOLD%^%^ORANGE%^ %^RESET%^%^BOLD%^%^ORANGE%^O%^RESET%^%^RED%^n%^RESET%^%^BOLD%^%^B_CYAN%^%^MAGENTA%^l%^RESET%^%^BOLD%^%^B_YELLOW%^%^BLUE%^y%^RESET%^%^MAGENTA%^ %^RESET%^%^B_RED%^%^ORANGE%^t%^RESET%^%^CYAN%^h%^RESET%^%^B_ORANGE%^%^CYAN%^e%^RESET%^%^BOLD%^%^WHITE%^%^B_BLACK%^ %^RESET%^%^BOLD%^%^BLUE%^p%^RESET%^%^GREEN%^e%^RESET%^%^B_YELLOW%^%^GREEN%^r%^RESET%^%^CYAN%^s%^RESET%^%^B_RED%^%^BLUE%^o%^RESET%^%^BOLD%^%^B_YELLOW%^%^FLASH%^%^BLUE%^n%^RESET%^%^RED%^ %^RESET%^%^CYAN%^w%^RESET%^%^BOLD%^%^B_MAGENTA%^%^CYAN%^h%^RESET%^%^B_BLUE%^%^MAGENTA%^o%^RESET%^%^BOLD%^%^MAGENTA%^ %^RESET%^%^FLASH%^%^GREEN%^c%^RESET%^%^B_RED%^%^CYAN%^a%^RESET%^%^BOLD%^%^B_ORANGE%^%^RED%^n%^RESET%^%^BOLD%^%^RED%^ %^RESET%^%^BOLD%^%^ORANGE%^t%^RESET%^%^B_RED%^%^MAGENTA%^a%^RESET%^%^BOLD%^%^B_ORANGE%^%^RED%^k%^RESET%^%^BOLD%^%^RED%^e%^RESET%^%^BOLD%^%^MAGENTA%^ %^RESET%^%^B_RED%^%^GREEN%^r%^RESET%^%^GREEN%^e%^RESET%^%^BOLD%^%^YELLOW%^s%^RESET%^%^B_MAGENTA%^%^ORANGE%^p%^RESET%^%^BOLD%^%^BLUE%^o%^RESET%^%^FLASH%^%^GREEN%^n%^RESET%^%^BOLD%^%^FLASH%^%^GREEN%^s%^RESET%^%^RED%^i%^RESET%^%^BOLD%^%^FLASH%^%^BOLD%^%^WHITE%^%^B_BLACK%^b%^RESET%^%^RED%^i%^RESET%^%^BOLD%^%^RED%^l%^RESET%^%^YELLOW%^i%^RESET%^%^B_YELLOW%^%^CYAN%^t%^RESET%^%^BOLD%^%^B_CYAN%^%^ORANGE%^y%^RESET%^%^BOLD%^%^CYAN%^ %^RESET%^%^BOLD%^%^RED%^b%^RESET%^%^BOLD%^%^B_YELLOW%^%^CYAN%^y%^RESET%^%^BOLD%^%^MAGENTA%^ %^RESET%^%^BOLD%^%^BOLD%^%^WHITE%^%^B_BLACK%^i%^RESET%^%^CYAN%^t%^RESET%^%^BOLD%^%^RED%^s%^RESET%^%^BOLD%^%^B_RED%^%^BOLD%^%^WHITE%^%^B_BLACK%^e%^RESET%^%^BOLD%^%^ORANGE%^l%^RESET%^%^B_ORANGE%^%^RED%^f%^RESET%^%^BOLD%^%^YELLOW%^ %^RESET%^%^BOLD%^%^BLUE%^i%^RESET%^%^BOLD%^%^FLASH%^%^ORANGE%^s%^RESET%^%^BOLD%^%^RED%^ %^RESET%^%^B_RED%^%^BLUE%^t%^RESET%^%^YELLOW%^o%^RESET%^%^ORANGE%^ %^RESET%^%^MAGENTA%^p%^RESET%^%^RED%^l%^RESET%^%^BOLD%^%^B_YELLOW%^%^ORANGE%^a%^RESET%^%^GREEN%^y%^RESET%^%^BOLD%^%^WHITE%^%^B_BLACK%^.%^RESET%^%^RESET%^
+&R[06/24 17:15] &G&G17&W:&G15&d &R[&Wds&R] &CHells@The Savage Soul: &cI have no fear
+&R[06/24 17:15] &G&G17&W:&G15&d &R[&Wds&R] &CCratylus@Dead Souls Dev: &cahem
+&R[06/24 17:15] &G&G17&W:&G15&d &R[&Wds&R] &CHells@The Savage Soul: &cmuahaha, it appears as regular text
+&R[06/24 17:15] &G&G17&W:&G15&d &R[&Wds&R] &CQuixadhal@Bloodlines: &cHe made me do it....
+&R[06/24 17:15] &G&G17&W:&G15&d &R[&Wds&R] &CCratylus@Dead Souls Dev: &ci dont normally rouse from my thousand year slumber
+&R[06/24 17:15] &G&G17&W:&G15&d &R[&Wds&R] &CQuixadhal@Bloodlines: &cYou saw him provoke me! :)
+&R[06/24 17:16] &G&G17&W:&G16&d &R[&Wds&R] &CCratylus@Dead Souls Dev: &ci hope you kids dont make me turn this channel around
+&R[06/24 17:16] &G&G17&W:&G16&d &R[&Wds&R] &CHells@The Savage Soul: &cwe were just explaining how to do alias for special characters to Umbrella
+&R[06/24 17:17] &G&G17&W:&G17&d &R[&Wds&R] &CUmbrella Wizard@Testsokyo: &cYes, that.
+&R[06/24 17:20] &G&G17&W:&G20&d &R[&Wds&R] &CQuixadhal@Bloodlines: &cFor some reason, many DBZ muds seem to like to print stuff in colors with every other character alternting between bold and not bold.
+&R[06/24 17:21] &G&G17&W:&G21&d &R[&Wds&R] &CQuixadhal@Bloodlines: &c%^RED%^Y%^RESET%^%^BOLD%^%^RED%^o%^RESET%^%^RED%^u%^RESET%^%^BOLD%^%^RED%^ %^RESET%^%^RED%^a%^RESET%^%^BOLD%^%^RED%^r%^RESET%^%^RED%^e%^RESET%^%^BOLD%^%^RED%^ %^RESET%^%^RED%^h%^RESET%^%^BOLD%^%^RED%^u%^RESET%^%^RED%^r%^RESET%^%^BOLD%^%^RED%^t%^RESET%^%^RED%^.%^RESET%^
+&R[06/24 17:21] &G&G17&W:&G21&d &R[&Wds&R] &CUmbrella Wizard@Testsokyo: &cSomething tells me that you're not joking.
+&R[06/24 17:21] &G&G17&W:&G21&d &R[&Wds&R] &CQuixadhal@Bloodlines: &cI'm not sure I even get why that's supposed to get your attention.
+&R[06/24 17:22] &G&G17&W:&G22&d &R[&Wds&R] &CQuixadhal@Bloodlines: &c%^GREEN%^F%^RESET%^%^BOLD%^%^GREEN%^o%^RESET%^%^GREEN%^o%^RESET%^%^BOLD%^%^GREEN%^b%^RESET%^%^GREEN%^a%^RESET%^%^BOLD%^%^GREEN%^r%^RESET%^%^GREEN%^ %^RESET%^%^BOLD%^%^GREEN%^h%^RESET%^%^GREEN%^e%^RESET%^%^BOLD%^%^GREEN%^a%^RESET%^%^GREEN%^l%^RESET%^%^BOLD%^%^GREEN%^s%^RESET%^%^GREEN%^ %^RESET%^%^BOLD%^%^GREEN%^y%^RESET%^%^GREEN%^o%^RESET%^%^BOLD%^%^GREEN%^u%^RESET%^%^GREEN%^ %^RESET%^%^BOLD%^%^GREEN%^f%^RESET%^%^GREEN%^o%^RESET%^%^BOLD%^%^GREEN%^r%^RESET%^%^GREEN%^ %^RESET%^%^BOLD%^%^GREEN%^9%^RESET%^%^GREEN%^0%^RESET%^%^BOLD%^%^GREEN%^0%^RESET%^%^GREEN%^1%^RESET%^%^BOLD%^%^GREEN%^ %^RESET%^%^GREEN%^h%^RESET%^%^BOLD%^%^GREEN%^i%^RESET%^%^GREEN%^t%^RESET%^%^BOLD%^%^GREEN%^ %^RESET%^%^GREEN%^p%^RESET%^%^BOLD%^%^GREEN%^o%^RESET%^%^GREEN%^i%^RESET%^%^BOLD%^%^GREEN%^n%^RESET%^%^GREEN%^t%^RESET%^%^BOLD%^%^GREEN%^s%^RESET%^%^GREEN%^!%^RESET%^
+&R[06/24 17:22] &G&G17&W:&G22&d &R[&Wds&R] &CQuixadhal@Bloodlines: &cWhat's extra amusing is that many clients render color, but not bold.
+&R[06/24 17:23] &G&G17&W:&G23&d &R[&Wds&R] &CQuixadhal@Bloodlines: &cAnd some render it as different colors (ANSI 16 == green or light-green), but some actually make it a bolded font of the same color (xterm == thicker lines in the characters)
+&R[06/24 17:24] &G&G17&W:&G24&d &R[&Wds&R] &CQuixadhal@Bloodlines: &cSo I'm not even sure what it's *supposed* to look like.
+&R[06/24 17:24] &G&G17&W:&G24&d &R[&Wds&R] &CQuixadhal@Bloodlines: &cBut it's amusing enough that I coded chat aliases to do it, so I can taunt DBZ people on here.
+&R[06/24 21:09] &G&G21&W:&G09&d &R[&Wds&R] &CAbulia@ExplorerMud: &croom
+&R[06/24 21:09] &G&G21&W:&G09&d &R[&Wds&R] &CAbulia@ExplorerMud: &croom/
+&R[06/24 21:10] &G&G21&W:&G10&d &R[&Wds&R] &CAbulia@ExplorerMud: &carmor/
+&R[06/24 21:19] &G&G21&W:&G19&d &R[&Wds&R] &CAbulia@ExplorerMud: &cnpc/
+&R[06/24 21:19] &G&G21&W:&G19&d &R[&Wds&R] &CQuixadhal@Bloodlines: &cpoopshelf/
+&R[06/24 21:24] &G&G21&W:&G24&d &R[&Wds&R] &CKalinash@Crat's Agony: &cuse of the poopshelf is 1 cp. deposit payment into can. do not trick the can.
+&R[06/24 23:16] &G&G23&W:&G16&d &R[&Wds&R] &CUmbrella Wizard@Testsokyo: &cI got the OOC channel implemented. ooc "message here" displays as <OOC> Player name: Player message to everyone in the same room. hist ooc also correctly pulls up ooc messages you have heard, including yours.
+&R[07/01 09:20] &G&G09&W:&G20&d &R[&Wds&R] &CUmbrella Wizard@Testsokyo: &cAny idea why setting an ANSI color on text output causes everything after the call, even after sending the reset call, to ignore the output of sprintf?
+&R[07/01 09:22] &G&G09&W:&G22&d &R[&Wds&R] &CUmbrella Wizard@Testsokyo: &cNevermind, I think I found my answer. The ansi call is included with the string length of whatever text you're changing the color on.
+&R[07/01 23:29] &G&G23&W:&G29&d &R[&Wds&R] &CUmbrella Wizard@Testsokyo: &cTo what function/where does the driver return to after a player has logged in? I've traced out exactly where all connect moves, but the details on what calls connect in the first place are hazy.
+&R[07/01 23:35] &G&G23&W:&G35&d &R[&Wds&R] &CUmbrella Wizard@Testsokyo: &cLong story short, something after the connect object is destructed updates the savefile with the data the pointers SetCapName, SetGender, and others point to. I'm importing characters, but logging in as my admin after I'm done importing. If the server is kept up, all is well when I log into the new characters. But if the server is taken down before logging in, the pointers to the gender and capname data are lost, resulting in neuter gendered, spaceless named characters.
+&R[07/02 00:24] &G&G00&W:&G24&d &R[&Wds&R] &CUmbrella Wizard@Testsokyo: &chttp://lpmuds.net/smf/index.php?topic=1588.0
+&R[07/02 00:44] &G&G00&W:&G44&d &R[&Wds&R] &CQuixadhal@Bloodlines: &chttp://lpmuds.net/smf/index.php?topic=584.0
+&R[07/02 00:45] &G&G00&W:&G45&d &R[&Wds&R] &CQuixadhal@Bloodlines: &cThe driver doesn't ever "return" to anything.  More accurately, the driver calls a registered LPC function whenever input arrives at the socket and sends that data to the function in the object associated with that socket.  You set which function that is via input_to().
+&R[07/02 00:46] &G&G00&W:&G46&d &R[&Wds&R] &CQuixadhal@Bloodlines: &cIf you haven't ever called input_to(), there's a default that's assumed, but I forget what it's called.
+&R[07/02 00:47] &G&G00&W:&G47&d &R[&Wds&R] &CUmbrella Wizard@Testsokyo: &cMy question then, what happens after call_out( (: destruct(this_object()) :), 10); in the default connect.c?
+&R[07/02 00:48] &G&G00&W:&G48&d &R[&Wds&R] &CUmbrella Wizard@Testsokyo: &cconnect.c is unloaded...and then what happens to the Player object?
+&R[07/02 00:48] &G&G00&W:&G48&d &R[&Wds&R] &CQuixadhal@Bloodlines: &cWell, that sets a callout to happen 10 seconds later which destroys the object.
+&R[07/02 00:49] &G&G00&W:&G49&d &R[&Wds&R] &CQuixadhal@Bloodlines: &cIn roughly 10 seconds, the driver will see that callout at the top of its list of things to do and execute destruct() on the object given, which is an efun that destroys the object.
+&R[07/02 00:50] &G&G00&W:&G50&d &R[&Wds&R] &CUmbrella Wizard@Testsokyo: &cRight, the object being the loaded connect.c. But we're now in active control of the Player object, what causes the news output and moving of player to the start room that you see as the player?
+&R[07/02 00:50] &G&G00&W:&G50&d &R[&Wds&R] &CQuixadhal@Bloodlines: &c(It may be overridden by an sefun, to slap security stuff on it)
+&R[07/02 00:51] &G&G00&W:&G51&d &R[&Wds&R] &CQuixadhal@Bloodlines: &cThat would be a call to exec().
+&R[07/02 00:51] &G&G00&W:&G51&d &R[&Wds&R] &CQuixadhal@Bloodlines: &cexec - switches a user (interactive) connection from one object to another
+&R[07/02 00:52] &G&G00&W:&G52&d &R[&Wds&R] &CUmbrella Wizard@Testsokyo: &cI get that much, but after that, is it interactive that's called? What makes this mean anything?
+&R[07/02 00:53] &G&G00&W:&G53&d &R[&Wds&R] &CUmbrella Wizard@Testsokyo: &cWhat exactly is exec doing internally?
+&R[07/02 00:54] &G&G00&W:&G54&d &R[&Wds&R] &CUmbrella Wizard@Testsokyo: &cEverything makes sense until I've traced things back to driver efuns, and then nothing makes sense.
+&R[07/02 00:55] &G&G00&W:&G55&d &R[&Wds&R] &CUmbrella Wizard@Testsokyo: &cMore to what I'm trying to do, what writes the values stored in CapNamen and Gendre set in connect.c? It doesn't happen in connect.c.
+&R[07/02 00:56] &G&G00&W:&G56&d &R[&Wds&R] &CUmbrella Wizard@Testsokyo: &cWhat writes them to the player save, rather?
+&R[07/02 00:58] &G&G00&W:&G58&d &R[&Wds&R] &CQuixadhal@Bloodlines: &cThe player save files are written by the driver, which is doing a variable dump of the player object.
+&R[07/02 00:58] &G&G00&W:&G58&d &R[&Wds&R] &CQuixadhal@Bloodlines: &cIn LPC, it's very rare to *EVER* manipulate files by hand.
+&R[07/02 00:58] &G&G00&W:&G58&d &R[&Wds&R] &CQuixadhal@Bloodlines: &cUsually, you use save_object() and restore_object() to save and reload variables between instances of objects.
+&R[07/02 00:59] &G&G00&W:&G59&d &R[&Wds&R] &CUmbrella Wizard@Testsokyo: &cI'm not doing that, but it sounds like what I am doing would require access to automated driver functions.
+&R[07/02 01:00] &G&G01&W:&G00&d &R[&Wds&R] &CQuixadhal@Bloodlines: &cI can suggest a fairly simple way to accomplish what you're trying to do, if you have firewall level control of your machine.
+&R[07/02 01:00] &G&G01&W:&G00&d &R[&Wds&R] &CQuixadhal@Bloodlines: &cIt sounds like you want to pre-generate characters based on some feedback from a new player, rather than letting them make them for themselves.
+&R[07/02 01:01] &G&G01&W:&G01&d &R[&Wds&R] &CUmbrella Wizard@Testsokyo: &cIf you create a player save file in connect.c, but do not exec to that object, the save file does not update with your provided capname and gender. Ideally, I want it to update these without requiring an exec
+&R[07/02 01:01] &G&G01&W:&G01&d &R[&Wds&R] &CUmbrella Wizard@Testsokyo: &cIs that something that the LPC driver is not really built for? If not, I've thought of a workaround.
+&R[07/02 01:01] &G&G01&W:&G01&d &R[&Wds&R] &CQuixadhal@Bloodlines: &cThe simplest way to semi-automate that process would be to open a second port and set it to call an alternate connection object, and firewall that port so it's only accessible from your machine (IE: localhost).
+&R[07/02 01:02] &G&G01&W:&G02&d &R[&Wds&R] &CUmbrella Wizard@Testsokyo: &cAnd no, I'm doing a rather non-typical implementation of a MUD.
+&R[07/02 01:02] &G&G01&W:&G02&d &R[&Wds&R] &CQuixadhal@Bloodlines: &cMost people say that. :)
+&R[07/02 01:02] &G&G01&W:&G02&d &R[&Wds&R] &CUmbrella Wizard@Testsokyo: &cActually, sorry you're right. I'm tired.
+&R[07/02 01:02] &G&G01&W:&G02&d &R[&Wds&R] &CUmbrella Wizard@Testsokyo: &cThat is the gist of what I'm doing.
+&R[07/02 01:04] &G&G01&W:&G04&d &R[&Wds&R] &CQuixadhal@Bloodlines: &cHowever, if you were to make an alternate connection object on another port, it could do what the current one does without actually asking any questions... just feed it the answers at the first prompt.  So, you'd connect, create the new player, enter the password, then cut/paste a string to fill out the rest of the stuff, and it would then do whate the regular system does, but save/quit/etc at the end of the sequence.
+&R[07/02 01:04] &G&G01&W:&G04&d &R[&Wds&R] &CQuixadhal@Bloodlines: &cIE: Instead of fighting the way the current system works, exploit it.
+&R[07/02 01:05] &G&G01&W:&G05&d &R[&Wds&R] &CUmbrella Wizard@Testsokyo: &cI'll try the workaround I just thought of: writing out the capname and gender to a file and matching a first time imported character login to the data in the file, setting capname and gender in connect.c again, then removing that line from the file
+&R[07/02 01:05] &G&G01&W:&G05&d &R[&Wds&R] &CQuixadhal@Bloodlines: &cYou just need to ensure that alternate port is only accessible by you and your staff.
+&R[07/02 01:07] &G&G01&W:&G07&d &R[&Wds&R] &CQuixadhal@Bloodlines: &cI don't know the details of why it works the way it does, but I'd be willing to bet you are effectively trying to circumvent security that was placed that way from the days when MUD's typically ran on shared servers. :)
+&R[07/02 01:07] &G&G01&W:&G07&d &R[&Wds&R] &CUmbrella Wizard@Testsokyo: &cI'm not sure your suggestion would get around my problem, as it happens only when the server is shut off before logging in for the first time, thus losing the saved capname and gender data per object
+&R[07/02 01:07] &G&G01&W:&G07&d &R[&Wds&R] &CQuixadhal@Bloodlines: &cWell, first question... why do you ever shut your server off?
+&R[07/02 01:07] &G&G01&W:&G07&d &R[&Wds&R] &CUmbrella Wizard@Testsokyo: &cIf I keep the server up between importing, and logging into the character, all is well
+&R[07/02 01:07] &G&G01&W:&G07&d &R[&Wds&R] &CQuixadhal@Bloodlines: &cMy server only goes off if the power is off long enough for the UPS battery to die.... typically about 10 minutes.
+&R[07/02 01:07] &G&G01&W:&G07&d &R[&Wds&R] &CUmbrella Wizard@Testsokyo: &cThings happen, I like to account for possible scenarios and code to handle them neatly
+&R[07/02 01:08] &G&G01&W:&G08&d &R[&Wds&R] &CQuixadhal@Bloodlines: &cIn the last 20 years, I can't remember having an LPMUD driver crash unless I was actively developing something in the driver itself.
+&R[07/02 01:08] &G&G01&W:&G08&d &R[&Wds&R] &CUmbrella Wizard@Testsokyo: &cThe way I look at it, if I'm putting the work into something to do work for me, why stop halfway?
+&R[07/02 01:08] &G&G01&W:&G08&d &R[&Wds&R] &CQuixadhal@Bloodlines: &cThat's part of the point... you do everything in the sandboxed LPC system.  If the driver crashes, it's actually a big deal. :)
+&R[07/02 01:10] &G&G01&W:&G10&d &R[&Wds&R] &CUmbrella Wizard@Testsokyo: &cAlso, for now I shut my server off because none of it's actually ready to truly be served. :P
+&R[07/02 01:11] &G&G01&W:&G11&d &R[&Wds&R] &CQuixadhal@Bloodlines: &cI just don't forward the login port from the router to the server, if I don't want people logging in.
+&R[07/02 01:11] &G&G01&W:&G11&d &R[&Wds&R] &CQuixadhal@Bloodlines: &cBloodlines has been up for 42w 5d 2h 41m 1s.
+&R[07/02 01:11] &G&G01&W:&G11&d &R[&Wds&R] &CUmbrella Wizard@Testsokyo: &cI can't port forward from here anyways, my isp runs me through a second router on their end.
+&R[07/02 01:12] &G&G01&W:&G12&d &R[&Wds&R] &CUmbrella Wizard@Testsokyo: &cWhen it's ready, hosting will be lined up.
+&R[07/02 01:12] &G&G01&W:&G12&d &R[&Wds&R] &CUmbrella Wizard@Testsokyo: &cFor as much work as I've put into this already, this actually isn't my project.
+&R[07/02 01:12] &G&G01&W:&G12&d &R[&Wds&R] &CQuixadhal@Bloodlines: &cYou can always port forward... it's just a question of what ports they leave open for you. :)
+&R[07/02 01:13] &G&G01&W:&G13&d &R[&Wds&R] &CQuixadhal@Bloodlines: &cMy ISP used to block port 80 because they had the silly idea that people running web servers should pay extra.
+&R[07/02 01:13] &G&G01&W:&G13&d &R[&Wds&R] &CUmbrella Wizard@Testsokyo: &cYou can port forward, but you can't always forward your port forward.
+&R[07/02 01:13] &G&G01&W:&G13&d &R[&Wds&R] &CQuixadhal@Bloodlines: &cSo, I just forwarded port 8888 to port 80 internally.  Annoying for folks outside, but no changes on my end.
+&R[07/02 01:14] &G&G01&W:&G14&d &R[&Wds&R] &CQuixadhal@Bloodlines: &cWhen they stopped doing that, I just removed the forwarding rule.
+&R[07/02 01:14] &G&G01&W:&G14&d &R[&Wds&R] &CUmbrella Wizard@Testsokyo: &cI spent a very long time attempting such things in the past. I may have missed something, but I couldn't get even that to work.
+&R[07/02 01:14] &G&G01&W:&G14&d &R[&Wds&R] &CQuixadhal@Bloodlines: &cI really should get a reaspberry pi 2 and move my MUD to that.
+&R[07/02 01:15] &G&G01&W:&G15&d &R[&Wds&R] &CQuixadhal@Bloodlines: &cMy machine is way overkill for it, and I don't run minecraft on it anymore... so it mostly sits idle and eats electricity.
+&R[07/02 01:15] &G&G01&W:&G15&d &R[&Wds&R] &CUmbrella Wizard@Testsokyo: &cMight be windows intercepting certain kinds of packets and determining what's fit for port 80 or not.
+&R[07/02 01:16] &G&G01&W:&G16&d &R[&Wds&R] &CQuixadhal@Bloodlines: &cYou could always buy a raspberry pi 2 and run it on that.
+&R[07/02 01:16] &G&G01&W:&G16&d &R[&Wds&R] &CQuixadhal@Bloodlines: &c$35 for the the pi, and probably $15 for a switch if you don't already have one for your LAN.
+&R[07/02 01:16] &G&G01&W:&G16&d &R[&Wds&R] &CUmbrella Wizard@Testsokyo: &cEither way, I'm not really in a good setup to serve. The best kind of internet I can get here is wireless
+&R[07/02 01:16] &G&G01&W:&G16&d &R[&Wds&R] &CUmbrella Wizard@Testsokyo: &cIt's wireless or dialup.
+&R[07/02 01:18] &G&G01&W:&G18&d &R[&Wds&R] &CQuixadhal@Bloodlines: &cI've always set up my home with a LAN and kept all the connection point stuff on the other side of a router.
+&R[07/02 01:19] &G&G01&W:&G19&d &R[&Wds&R] &CQuixadhal@Bloodlines: &cThat way, switching from dialup to ISDN to DSL to cable is just changing that one piece of equipment and a little setup nonsense.  Nothing behind my router needs to know or care.
+&R[07/02 01:19] &G&G01&W:&G19&d &R[&Wds&R] &CQuixadhal@Bloodlines: &cYears ago, I had another computer as the router, with two network cards and running OpenBSD.
+&R[07/02 01:20] &G&G01&W:&G20&d &R[&Wds&R] &CQuixadhal@Bloodlines: &cToday, it's a little ASUS box that sits on the shelf next to the cable modem.
+&R[07/02 01:21] &G&G01&W:&G21&d &R[&Wds&R] &CUmbrella Wizard@Testsokyo: &cBy wireless, I mean there's an antenna on the roof that's pointed line of sight with a ground tower.
+&R[07/02 01:22] &G&G01&W:&G22&d &R[&Wds&R] &CQuixadhal@Bloodlines: &cWell, however you connect.  The idea is, a router eliminates all that nonsense from your LAN and lets you connect whatever you want behind it.
+&R[07/02 01:23] &G&G01&W:&G23&d &R[&Wds&R] &CQuixadhal@Bloodlines: &cHow much effort it takes to get your router to do what you want is another story. :)
+&R[07/02 01:24] &G&G01&W:&G24&d &R[&Wds&R] &CQuixadhal@Bloodlines: &cBut most ISP's don't really do much other than hook up the firehose.  If you put your PC directly on their stuff, it usually means your virtual genitals are hanging out in the wind. *chuckle*
+&R[07/02 01:25] &G&G01&W:&G25&d &R[&Wds&R] &CUmbrella Wizard@Testsokyo: &cI well familiar with routers and use one. I may have stopped prematurely in the past with trying to forward whatever port through port 80 with one, by the time I definately determined I was limited to port 80 and 53 by my isp, I was no longer interested in whatever I needed it for anymore.
+&R[07/02 01:26] &G&G01&W:&G26&d &R[&Wds&R] &CUmbrella Wizard@Testsokyo: &cAlso, I confirmed I'm limited to port 80 and 53 by doing just that
+&R[07/02 01:26] &G&G01&W:&G26&d &R[&Wds&R] &CUmbrella Wizard@Testsokyo: &cConnected my computer directly to the ethernet cablke from the antenna.
+&R[07/02 01:27] &G&G01&W:&G27&d &R[&Wds&R] &CUmbrella Wizard@Testsokyo: &cIt's possible the other router is in the antenna equipment itself. I've never bothered climbing on the roof to determine for sure.
+&R[07/02 01:27] &G&G01&W:&G27&d &R[&Wds&R] &CQuixadhal@Bloodlines: &cHuh... wonder why they allow DNS queries INTO your LAN.
+&R[07/02 01:28] &G&G01&W:&G28&d &R[&Wds&R] &CUmbrella Wizard@Testsokyo: &cDon't ask me
+&R[07/02 01:28] &G&G01&W:&G28&d &R[&Wds&R] &CQuixadhal@Bloodlines: &cNever ceases to amaze me what some ISP's do... most still block SMTP, even though their arguments don't make any sense.
+&R[07/02 01:28] &G&G01&W:&G28&d &R[&Wds&R] &CQuixadhal@Bloodlines: &cBlocking my mail server doesn't stop me from SENDING spam, it just means I have to use some other service to receive it.
+&R[07/02 01:32] &G&G01&W:&G32&d &R[&Wds&R] &CQuixadhal@Bloodlines: &cBut anyways, I leave my server up all the time becuase I have no reason to take it down.
+&R[07/02 01:33] &G&G01&W:&G33&d &R[&Wds&R] &CQuixadhal@Bloodlines: &cIf I ran it on my desktop machine (which it sounds like you do), I'd probably have to reboot it every couple weeks... as Windows likes to force me to reboot for updates every so often. :(
+&R[07/02 01:34] &G&G01&W:&G34&d &R[&Wds&R] &CUmbrella Wizard@Testsokyo: &cI'm looking at running in off a *nix server when it's ready.
+&R[07/02 01:36] &G&G01&W:&G36&d &R[&Wds&R] &CUmbrella Wizard@Testsokyo: &cSay, would you happen to know why the timestamp sefun returns timestamps that are 6 hours off?
+&R[07/02 01:36] &G&G01&W:&G36&d &R[&Wds&R] &CUmbrella Wizard@Testsokyo: &cI've set the server timezone and all
+&R[07/02 01:37] &G&G01&W:&G37&d &R[&Wds&R] &CUmbrella Wizard@Testsokyo: &c...or why it outputs the odd string that it does?
+&R[07/02 01:37] &G&G01&W:&G37&d &R[&Wds&R] &CUmbrella Wizard@Testsokyo: &cI already found unfinished code in hist.c that incorrectly tries to parse it and display it in a meaningful way
+&R[07/02 01:41] &G&G01&W:&G41&d &R[&Wds&R] &CQuixadhal@Bloodlines: &cYeah, the offset is some wacky timezone thing... there are two settings you have to mess with to get it to do it right.  I don't remember which, but I remember having to fight with them when I first setup DS.
+&R[07/02 01:41] &G&G01&W:&G41&d &R[&Wds&R] &CQuixadhal@Bloodlines: &cEssentially, some part of the system still thinks it's GMT or whatever.
+&R[07/02 01:42] &G&G01&W:&G42&d &R[&Wds&R] &CQuixadhal@Bloodlines: &cThe time format on the internal stuff, like "2015.07.01-14.38,17" is YYYY.MM.DD-HH.MM,SS
+&R[07/02 01:43] &G&G01&W:&G43&d &R[&Wds&R] &CUmbrella Wizard@Testsokyo: &cIs the - . and , for easy of getting just each of those values with sscanf?
+&R[07/02 01:48] &G&G01&W:&G48&d &R[&Wds&R] &CCratylus@Dead Souls Dev: &csometimes timestamps are used for filenames, and windows cant handle ':' in filenames
+&R[07/02 01:49] &G&G01&W:&G49&d &R[&Wds&R] &CUmbrella Wizard@Testsokyo: &cAh, that makes sense.
+&R[07/02 02:42] &G&G02&W:&G42&d &R[&Wds&R] &CUmbrella Wizard@Testsokyo: &cThe workaround is a success.
+&R[07/06 03:47] &G&G03&W:&G47&d &R[&Wds&R] &CUmbrella Wizard@Testsokyo: &cI can't for the life of me figure out how to read the messages on the boards. I'm running stock default, and there is no board in my admin wizroom. There is one in the arch room, but any attempt to read it results in "You can't read that on that.", while "look board" claims that there are no messages on it which is contrary to what the messages command claims. Am I missing something here?
+&R[07/06 03:48] &G&G03&W:&G48&d &R[&Wds&R] &CCratylus@Dead Souls Dev: &cread 1
+&R[07/06 03:48] &G&G03&W:&G48&d &R[&Wds&R] &CCratylus@Dead Souls Dev: &cread 2
+&R[07/06 03:48] &G&G03&W:&G48&d &R[&Wds&R] &CUmbrella Wizard@Testsokyo: &c"There is no 1 here"
+&R[07/06 03:48] &G&G03&W:&G48&d &R[&Wds&R] &CCratylus@Dead Souls Dev: &cweird
+&R[07/06 03:49] &G&G03&W:&G49&d &R[&Wds&R] &CCratylus@Dead Souls Dev: &ccome here nd see if it works
+&R[07/06 03:49] &G&G03&W:&G49&d &R[&Wds&R] &CUmbrella Wizard@Testsokyo: &cWhere's here?
+&R[07/06 03:51] &G&G03&W:&G51&d &R[&Wds&R] &CUmbrella Wizard@Testsokyo: &cAlso, "arch board" or "Arch Board" don't find any object, despite the arch room description stating "The Arch Board is here." However, "board" does.
+&R[07/06 03:51] &G&G03&W:&G51&d &R[&Wds&R] &CCratylus@Dead Souls Dev: &c mudinfo dead souls dev
+&R[07/06 03:55] &G&G03&W:&G55&d &R[&Wds&R] &CUmbrella Wizard@Testsokyo: &cOk I was in the wrong room for the admin board, and I guess I've confused the arch and admin boards as being seperate things?
+&R[07/06 03:56] &G&G03&W:&G56&d &R[&Wds&R] &CUmbrella Wizard@Testsokyo: &cI was looking at the "Arch Board" in the arch room (/secure/room/arch).
+&R[07/06 03:58] &G&G03&W:&G58&d &R[&Wds&R] &CUmbrella Wizard@Testsokyo: &cHmm, I still can't get that one to work, and boards shows it as having a message after readin everything on the one in the creator's hall.
+&R[07/13 11:19] &G&G11&W:&G19&d &R[&Wds&R] &CCratylus@Dead Souls Dev: &cfuck austrian airlines
+&R[07/13 11:19] &G&G11&W:&G19&d &R[&Wds&R] &CCratylus@Dead Souls Dev: &coh
+&R[07/13 11:19] &G&G11&W:&G19&d &R[&Wds&R] &CCratylus@Dead Souls Dev: &coh dear
+&R[07/13 11:19] &G&G11&W:&G19&d &R[&Wds&R] &CAhti@Dead Souls Dev: &chahahahaha
+&R[07/13 11:19] &G&G11&W:&G19&d &R[&Wds&R] &CCratylus@Dead Souls Dev: &ci am so sorry
+&R[07/13 11:20] &G&G11&W:&G20&d &R[&Wds&R] &CJoshua@Dead Souls Dev: &cRED CARD
+&R[07/13 11:20] &G&G11&W:&G20&d &R[&Wds&R] &CCratylus@Dead Souls Dev: &cautoban 30 minutes
+&R[07/14 08:31] &G&G08&W:&G31&d &R[&Wds&R] &CAdmin@Dead_Souls_admin: &cHi!
+&R[07/14 09:46] &G&G09&W:&G46&d &R[&Wds&R] &CCratylus@Dead Souls Dev: &chi

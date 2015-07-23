@@ -1,0 +1,162 @@
+&R[07/04 23:40] &G&G23&W:&G40&d &R[&Wpyom&R] &CSyn@Bloodlines: &cboo
+&R[07/04 23:41] &G&G23&W:&G41&d &R[&Wpyom&R] &CQuixadhal@Bloodlines: &cShhhh, don't wake people on this channel. :)
+&R[07/04 23:41] &G&G23&W:&G41&d &R[&Wpyom&R] &CSyn@Bloodlines: &cseems it fell apart huh?
+&R[07/04 23:42] &G&G23&W:&G42&d &R[&Wpyom&R] &CQuixadhal@Bloodlines: &cBTW, there's a url channel you might like, run by some tinyfugue triggers.
+&R[07/04 23:42] &G&G23&W:&G42&d &R[&Wpyom&R] &CSyn@Bloodlines: &csorry, by the way for my long disappearance, life kinda bitch slapped me for about a year
+&R[07/04 23:43] &G&G23&W:&G43&d &R[&Wpyom&R] &CQuixadhal@Bloodlines: &cI really should finish my python I3 client someday... I started one and got distracted. :)
+&R[07/04 23:43] &G&G23&W:&G43&d &R[&Wpyom&R] &CQuixadhal@Bloodlines: &cYeah, that happens.  Or a new game comes out... either way. *grin*
+&R[07/04 23:43] &G&G23&W:&G43&d &R[&Wpyom&R] &CSyn@Bloodlines: &chaha
+&R[07/04 23:44] &G&G23&W:&G44&d &R[&Wpyom&R] &CSyn@Bloodlines: &ci missed working on the game but stuff just got out of control and i had no time for bein online anymore
+&R[07/04 23:45] &G&G23&W:&G45&d &R[&Wpyom&R] &CQuixadhal@Bloodlines: &cStill no new Discworld mudlib.  I'm poking them to try and release one before Hitlery gets elected in 2016, and the internet explodes.
+&R[07/04 23:45] &G&G23&W:&G45&d &R[&Wpyom&R] &CSyn@Bloodlines: &cgood call
+&R[07/04 23:46] &G&G23&W:&G46&d &R[&Wpyom&R] &CSyn@Bloodlines: &ci was toying with the idea of trying to simplify what we had done, or perhaps just use the bare bare bones to create a general rom flavored base or something
+&R[07/04 23:46] &G&G23&W:&G46&d &R[&Wpyom&R] &CSyn@Bloodlines: &cmaybe start getting back into python, i really enjoyed working in it
+&R[07/04 23:47] &G&G23&W:&G47&d &R[&Wpyom&R] &CQuixadhal@Bloodlines: &cYeah, the thing I've toyed with a bit eschews files entirely.
+&R[07/04 23:47] &G&G23&W:&G47&d &R[&Wpyom&R] &CQuixadhal@Bloodlines: &cI'm playing with SQLAlchemy and Alembic.
+&R[07/04 23:47] &G&G23&W:&G47&d &R[&Wpyom&R] &CSyn@Bloodlines: &ci actually used python a few times for work to make a lot of my repetitive things easier, it was fun got me thinking again of pyom
+&R[07/04 23:48] &G&G23&W:&G48&d &R[&Wpyom&R] &CQuixadhal@Bloodlines: &cAlembic is kindof a pain in the ass, but I figured I should learn how it works until I want to do something it can't figure out.
+&R[07/04 23:48] &G&G23&W:&G48&d &R[&Wpyom&R] &CSyn@Bloodlines: &cyeah i never really got into the SQL stuff after you kinda pointed me away from it before we started into pyom, at the time it made little sense for me to use it in what i was doing
+&R[07/04 23:49] &G&G23&W:&G49&d &R[&Wpyom&R] &CQuixadhal@Bloodlines: &c*nod*  SQL and files don't really mix well, and it seemed like Davion wanted to stay in the file mode
+&R[07/04 23:50] &G&G23&W:&G50&d &R[&Wpyom&R] &CQuixadhal@Bloodlines: &cAfter doing the serialization, I think it was kindof pointless because nobody will ever hand edit JSON anyways... but I guess it's slightly easier to drop a new file into place than import data from an SQL dump.
+&R[07/04 23:50] &G&G23&W:&G50&d &R[&Wpyom&R] &CSyn@Bloodlines: &ci always hated the files to be honest, it always felt poor compared to other options but i think at the time it was more of an agreement that it wasnt worth the headache to re-construct how everything works for it
+&R[07/04 23:51] &G&G23&W:&G51&d &R[&Wpyom&R] &CSyn@Bloodlines: &ci convinced an old mud friend of mine to drop c and start learning python
+&R[07/04 23:52] &G&G23&W:&G52&d &R[&Wpyom&R] &CQuixadhal@Bloodlines: &cThe main thing I wanted (and still want) to avoid is to ever have to use raw SQL queries in code, because that's just asking for trouble. :)
+&R[07/04 23:52] &G&G23&W:&G52&d &R[&Wpyom&R] &CQuixadhal@Bloodlines: &cSQLAlchemy is... different.  I've never used an ORM system before.
+&R[07/04 23:52] &G&G23&W:&G52&d &R[&Wpyom&R] &CSyn@Bloodlines: &cwell that would be great, i dont know near enough about that yet to use it
+&R[07/04 23:54] &G&G23&W:&G54&d &R[&Wpyom&R] &CQuixadhal@Bloodlines: &cThis isn't much, but it's the barebones of how to use SQLAlchemy for simple objects and keep the database updated with Alembic.
+&R[07/04 23:54] &G&G23&W:&G54&d &R[&Wpyom&R] &CQuixadhal@Bloodlines: &chttps://github.com/quixadhal/PykuMUD
+&R[07/04 23:54] &G&G23&W:&G54&d &R[&Wpyom&R] &CSyn@Bloodlines: &cmy mind has been craving the learning and logic lately, i miss all the stuff we did, i learned a lot from you
+&R[07/04 23:55] &G&G23&W:&G55&d &R[&Wpyom&R] &CQuixadhal@Bloodlines: &cconfig.py is a simple table with one row.
+&R[07/04 23:55] &G&G23&W:&G55&d &R[&Wpyom&R] &CSyn@Bloodlines: &cha that project was exactly what was kicking around in the back of my head, not specifically an old diku but that line of thought
+&R[07/04 23:55] &G&G23&W:&G55&d &R[&Wpyom&R] &CQuixadhal@Bloodlines: &cBasically, you'd add a new column for a new setting, and then use alembic to create a new snapshot of the schema.
+&R[07/04 23:56] &G&G23&W:&G56&d &R[&Wpyom&R] &CSyn@Bloodlines: &ci recently tried to help out on a c mud, and i looked at the code and wanted to throw my monitor out the window
+&R[07/04 23:56] &G&G23&W:&G56&d &R[&Wpyom&R] &CQuixadhal@Bloodlines: &cIf I ever get ambitious enough to work on it more, the eventual goal is to replace my old WileyMUD C codebase with it.
+&R[07/04 23:56] &G&G23&W:&G56&d &R[&Wpyom&R] &CSyn@Bloodlines: &chmm that sounds interesting
+&R[07/04 23:56] &G&G23&W:&G56&d &R[&Wpyom&R] &CQuixadhal@Bloodlines: &cBecause while I liked WileyMUD, I can't stand working in C anymore.  Too annoying.
+&R[07/04 23:57] &G&G23&W:&G57&d &R[&Wpyom&R] &CQuixadhal@Bloodlines: &cAnd since nobody works on it, nobody plays it, so it just sits there eating up a few pennies of electricity every day. *chuckle*
+&R[07/04 23:57] &G&G23&W:&G57&d &R[&Wpyom&R] &CSyn@Bloodlines: &cyeah i mean i saw the pointers for, everything, and i remembered the first time i got pycharm to give me a true map of object contents as represented in python and wanted to throw up heh
+&R[07/04 23:58] &G&G23&W:&G58&d &R[&Wpyom&R] &CQuixadhal@Bloodlines: &cRom is a little worse, because they tried to abstract more things, which meant more pointers.
+&R[07/04 23:58] &G&G23&W:&G58&d &R[&Wpyom&R] &CQuixadhal@Bloodlines: &cAlso.... memory recycling.
+&R[07/04 23:59] &G&G23&W:&G59&d &R[&Wpyom&R] &CSyn@Bloodlines: &cyeah it is gross, digging back into the c
+&R[07/04 23:59] &G&G23&W:&G59&d &R[&Wpyom&R] &CSyn@Bloodlines: &cthen i kept slipping and adding in python syntax and formatting
+&R[07/04 23:59] &G&G23&W:&G59&d &R[&Wpyom&R] &CSyn@Bloodlines: &cit was a mess hehe
+&R[07/05 00:00] &G&G00&W:&G00&d &R[&Wpyom&R] &CQuixadhal@Bloodlines: &cWileyMUD is a little nicer, because I spent a couple years in college cleaning it up.
+&R[07/05 00:00] &G&G00&W:&G00&d &R[&Wpyom&R] &CSyn@Bloodlines: &cthe other thing was the lack of any formatting control i forgot how god aweful sloppy c was
+&R[07/05 00:00] &G&G00&W:&G00&d &R[&Wpyom&R] &CQuixadhal@Bloodlines: &cIt is, IMO, one of the most stable DikuMUD's out there because I actually did spent a lot of time fixing things.
+&R[07/05 00:01] &G&G00&W:&G01&d &R[&Wpyom&R] &CQuixadhal@Bloodlines: &cAnd it's fairly clean looking because I ran everything through indent and was the only one who accepted code for it for a while... meaning it's at least consistent.
+&R[07/05 00:01] &G&G00&W:&G01&d &R[&Wpyom&R] &CSyn@Bloodlines: &ci did find and fix a long standing oversight to the write_to_descriptor code though, i mean back in the day it would have made sense, but now its kinda silly not to fix it
+&R[07/05 00:01] &G&G00&W:&G01&d &R[&Wpyom&R] &CQuixadhal@Bloodlines: &cFor example:  https://github.com/quixadhal/wileymud/blob/master/src/act_skills.c#L33
+&R[07/05 00:02] &G&G00&W:&G02&d &R[&Wpyom&R] &CSyn@Bloodlines: &cha, nice, i looked at the stuff in here and its just soooo sloppy, after all that python it has been driving me nuts
+&R[07/05 00:02] &G&G00&W:&G02&d &R[&Wpyom&R] &CQuixadhal@Bloodlines: &cEvery variable initialized to a known value, explicitly.
+&R[07/05 00:03] &G&G00&W:&G03&d &R[&Wpyom&R] &CSyn@Bloodlines: &chaha yeah i turned up the warnings on this base and there were at least 120 variables initialized either to nothing, and/or unused without any purpose not like they were used later on in the function
+&R[07/05 00:03] &G&G00&W:&G03&d &R[&Wpyom&R] &CSyn@Bloodlines: &cits just a rats nest of the various hands that touched it and changed one thing, negating another, and leaving the slop
+&R[07/05 00:04] &G&G00&W:&G04&d &R[&Wpyom&R] &CSyn@Bloodlines: &cat some point someone added mccp, then someone else tried to remove it mostly by commenting it out, sloppily, but left half the variables it was to use initialized for no reason
+&R[07/05 00:05] &G&G00&W:&G05&d &R[&Wpyom&R] &CQuixadhal@Bloodlines: &cYeah, we never bothered with that.  We were never in a position to have to pay for bandwidth.
+&R[07/05 00:06] &G&G00&W:&G06&d &R[&Wpyom&R] &CQuixadhal@Bloodlines: &cWhen it ran at the university, it was free.  When I moved it to my house, the only cost is the electricity for the machine.
+&R[07/05 00:06] &G&G00&W:&G06&d &R[&Wpyom&R] &CSyn@Bloodlines: &canywho, i got into c, it made my head hurt, and i have wanted to dive back into something python
+&R[07/05 00:07] &G&G00&W:&G07&d &R[&Wpyom&R] &CSyn@Bloodlines: &ci got back into c*
+&R[07/05 00:07] &G&G00&W:&G07&d &R[&Wpyom&R] &CQuixadhal@Bloodlines: &cHeh, cat + keyboard == LOL.
+&R[07/05 00:07] &G&G00&W:&G07&d &R[&Wpyom&R] &CSyn@Bloodlines: &clol
+&R[07/05 00:08] &G&G00&W:&G08&d &R[&Wpyom&R] &CQuixadhal@Bloodlines: &cI should go poke my scardy cat.  He's been under the bed for about 4 hours now, ever since the firework people started in.
+&R[07/05 00:08] &G&G00&W:&G08&d &R[&Wpyom&R] &CSyn@Bloodlines: &cill have to read up on alchemy and alembic
+&R[07/05 00:09] &G&G00&W:&G09&d &R[&Wpyom&R] &CSyn@Bloodlines: &cyou think itll be a better approach overall?
+&R[07/05 00:09] &G&G00&W:&G09&d &R[&Wpyom&R] &CQuixadhal@Bloodlines: &cOne cat is hiding, one is seeking attention, the other's asleep and coudl care less. :)
+&R[07/05 00:09] &G&G00&W:&G09&d &R[&Wpyom&R] &CSyn@Bloodlines: &chaha that sounds pretty familiar
+&R[07/05 00:09] &G&G00&W:&G09&d &R[&Wpyom&R] &CQuixadhal@Bloodlines: &cWell, checkout a copy of that thing I linked and see what you think.
+&R[07/05 00:10] &G&G00&W:&G10&d &R[&Wpyom&R] &CQuixadhal@Bloodlines: &cIt uses SQLite so once you have the prereqs installed via pip, you don't need to mess around with setting up a full database server.
+&R[07/05 00:10] &G&G00&W:&G10&d &R[&Wpyom&R] &CQuixadhal@Bloodlines: &cIf that makes sense, go read up on SQLAlchemy and go from there. :)
+&R[07/05 00:10] &G&G00&W:&G10&d &R[&Wpyom&R] &CSyn@Bloodlines: &cwhat python version you using, 3.2 still or have you moved up to the latest greatest 3.4?
+&R[07/05 00:13] &G&G00&W:&G13&d &R[&Wpyom&R] &CQuixadhal@Bloodlines: &cLooks like 3.4.3
+&R[07/05 00:14] &G&G00&W:&G14&d &R[&Wpyom&R] &CQuixadhal@Bloodlines: &cMy linux box is still on 3.2.  I doubt it matters much.
+&R[07/05 00:15] &G&G00&W:&G15&d &R[&Wpyom&R] &CSyn@Bloodlines: &ccool, setting up now, or trying to
+&R[07/05 00:19] &G&G00&W:&G19&d &R[&Wpyom&R] &CSyn@Bloodlines: &chmm first error
+&R[07/05 00:22] &G&G00&W:&G22&d &R[&Wpyom&R] &CSyn@Bloodlines: &cok well i got it to boot up and it gives me the greeting, so theres a win
+&R[07/05 00:25] &G&G00&W:&G25&d &R[&Wpyom&R] &CSyn@Bloodlines: &cill have to give this some serious reading
+&R[07/05 00:26] &G&G00&W:&G26&d &R[&Wpyom&R] &CSyn@Bloodlines: &ci am very interested about no files, im not sure how diku handled all of the tables and lists and things that rom had, or if it was very similar
+&R[07/05 00:51] &G&G00&W:&G51&d &R[&Wpyom&R] &CSyn@Bloodlines: &cwell im heading to bed but ill be around, thanks for the link to your project it looks really interesting
+&R[07/05 21:52] &G&G21&W:&G52&d &R[&Wpyom&R] &CSyn@Bloodlines: &ci read a little about alembic and have been reading through your code, alembic effectively adds functionality to sqlite?
+&R[07/05 21:53] &G&G21&W:&G53&d &R[&Wpyom&R] &CSyn@Bloodlines: &cor any *alchemy db, so it says
+&R[07/05 21:53] &G&G21&W:&G53&d &R[&Wpyom&R] &CQuixadhal@Bloodlines: &cNah, sqlite is just the backend.  You could replace it with postgresql or mysql by changing one line. :)
+&R[07/05 21:53] &G&G21&W:&G53&d &R[&Wpyom&R] &CQuixadhal@Bloodlines: &calembic is a schema migration tool.  It (tries to) detects changes in your ORM schema and create upgrade scripts that can be applied to migrate database versions.
+&R[07/05 21:55] &G&G21&W:&G55&d &R[&Wpyom&R] &CQuixadhal@Bloodlines: &cThe first time you run the code, it will generate a current sqlite schema that fits the current ORM code.  When you update your code (IE: add new columns, tables, relations, etc), you run alembic again and it tries to spit out a migration script.
+&R[07/05 21:56] &G&G21&W:&G56&d &R[&Wpyom&R] &CSyn@Bloodlines: &cwhat is the script used for, to keep you from having to code in sql queries manually?
+&R[07/05 21:56] &G&G21&W:&G56&d &R[&Wpyom&R] &CSyn@Bloodlines: &cor do them by hand, i guess
+&R[07/05 21:56] &G&G21&W:&G56&d &R[&Wpyom&R] &CQuixadhal@Bloodlines: &cUsing an ORM system, you should almost never need to touch SQL by hand.
+&R[07/05 21:57] &G&G21&W:&G57&d &R[&Wpyom&R] &CSyn@Bloodlines: &coh, yeah i dont really know anything about ORM stuff, i barely know much about SQL beyond surface basics
+&R[07/05 21:57] &G&G21&W:&G57&d &R[&Wpyom&R] &CQuixadhal@Bloodlines: &cFor example, the config.py class is mapped (by SQLAlchemy) to a table in sqlite called option
+&R[07/05 21:58] &G&G21&W:&G58&d &R[&Wpyom&R] &CQuixadhal@Bloodlines: &cTo query the table, you just create a new Option class instance and specify the criteria of the query.
+&R[07/05 21:58] &G&G21&W:&G58&d &R[&Wpyom&R] &CQuixadhal@Bloodlines: &cIn that special case, there's only one row ever, so it's just options = session.query(Option).first()
+&R[07/05 21:58] &G&G21&W:&G58&d &R[&Wpyom&R] &CQuixadhal@Bloodlines: &cThen the options variable is a class object that has members corresponding to each column and values from the row returned.
+&R[07/05 21:58] &G&G21&W:&G58&d &R[&Wpyom&R] &CSyn@Bloodlines: &coh hm thats pretty neat
+&R[07/05 21:59] &G&G21&W:&G59&d &R[&Wpyom&R] &CSyn@Bloodlines: &cthats actually really cool
+&R[07/05 21:59] &G&G21&W:&G59&d &R[&Wpyom&R] &CQuixadhal@Bloodlines: &cThe fun part is, to update the SQL table, you just change the variable in the object and it commits it back.
+&R[07/05 21:59] &G&G21&W:&G59&d &R[&Wpyom&R] &CSyn@Bloodlines: &coh wow
+&R[07/05 21:59] &G&G21&W:&G59&d &R[&Wpyom&R] &CQuixadhal@Bloodlines: &cEffectively, the objects are persistent in the data storage without you having to do very much.
+&R[07/05 21:59] &G&G21&W:&G59&d &R[&Wpyom&R] &CSyn@Bloodlines: &cthat would make things so much easier..
+&R[07/05 21:59] &G&G21&W:&G59&d &R[&Wpyom&R] &CSyn@Bloodlines: &cwow thats wicked cool
+&R[07/05 22:00] &G&G22&W:&G00&d &R[&Wpyom&R] &CSyn@Bloodlines: &cand powerful
+&R[07/05 22:00] &G&G22&W:&G00&d &R[&Wpyom&R] &CQuixadhal@Bloodlines: &cThat's why I'm avoiding files almost entirely.
+&R[07/05 22:00] &G&G22&W:&G00&d &R[&Wpyom&R] &CQuixadhal@Bloodlines: &cThere's really no need for them.  You can create interfaces to modify objects from inside the game and just save them out.
+&R[07/05 22:01] &G&G22&W:&G01&d &R[&Wpyom&R] &CQuixadhal@Bloodlines: &cAnd if I get CherryPI working properly with it, you can have a web interface to do that.
+&R[07/05 22:01] &G&G22&W:&G01&d &R[&Wpyom&R] &CSyn@Bloodlines: &cso you just wind up with X sqlite 'dbs' and then they load in as a class anyway with persistence, and you can make changes which trickle down to the db
+&R[07/05 22:01] &G&G22&W:&G01&d &R[&Wpyom&R] &CSyn@Bloodlines: &cah cherrypi i really liked that when i was playing with it
+&R[07/05 22:01] &G&G22&W:&G01&d &R[&Wpyom&R] &CQuixadhal@Bloodlines: &cIdeally, the only disk file used will be a single sqlite database, unless there are performance issues.
+&R[07/05 22:02] &G&G22&W:&G02&d &R[&Wpyom&R] &CSyn@Bloodlines: &cah
+&R[07/05 22:02] &G&G22&W:&G02&d &R[&Wpyom&R] &CQuixadhal@Bloodlines: &cIt might be convenient to have some of the web interface on disk, just because it can associate a directory with a path, so stuff like graphics and css and all that might be normal disk files.
+&R[07/05 22:02] &G&G22&W:&G02&d &R[&Wpyom&R] &CQuixadhal@Bloodlines: &cWe'll see how that works out.
+&R[07/05 22:02] &G&G22&W:&G02&d &R[&Wpyom&R] &CSyn@Bloodlines: &cright
+&R[07/05 22:03] &G&G22&W:&G03&d &R[&Wpyom&R] &CQuixadhal@Bloodlines: &cSince I'm not trying to sell this as a binary-only executable, there's no real impertive to NOT ever use files.  I just want to make things mostly configurable without having to pull up a text editor.
+&R[07/05 22:04] &G&G22&W:&G04&d &R[&Wpyom&R] &CSyn@Bloodlines: &cso you would just save everything to the single db, then just load it all in and have it sorted out elsewhere?
+&R[07/05 22:04] &G&G22&W:&G04&d &R[&Wpyom&R] &CQuixadhal@Bloodlines: &cThere's no real sorting out... that's what the ORM is for.  It maps objects to relations in the database.
+&R[07/05 22:04] &G&G22&W:&G04&d &R[&Wpyom&R] &CSyn@Bloodlines: &cohhhhh
+&R[07/05 22:04] &G&G22&W:&G04&d &R[&Wpyom&R] &CSyn@Bloodlines: &ci hadnt realized
+&R[07/05 22:05] &G&G22&W:&G05&d &R[&Wpyom&R] &CQuixadhal@Bloodlines: &cI have a few things I haven't checked in yet that explore a couple of ideas.
+&R[07/05 22:05] &G&G22&W:&G05&d &R[&Wpyom&R] &CSyn@Bloodlines: &cwow thatd make things so much easier and completely negates everything we did on pyom if i understand it right
+&R[07/05 22:06] &G&G22&W:&G06&d &R[&Wpyom&R] &CQuixadhal@Bloodlines: &cI made a "pulse" object to try and simulate the DikuMUD tick/pulse system so I can see how to make objects where some members are backed by SQL columns, and others are not.
+&R[07/05 22:07] &G&G22&W:&G07&d &R[&Wpyom&R] &CSyn@Bloodlines: &cyah i had it running and saw the pulses ticking away
+&R[07/05 22:07] &G&G22&W:&G07&d &R[&Wpyom&R] &CSyn@Bloodlines: &ci hadnt realized the intricacies of what this could really do though
+&R[07/05 22:08] &G&G22&W:&G08&d &R[&Wpyom&R] &CQuixadhal@Bloodlines: &cThe decorator @orm.reconstructor is special code that gets run whenever the object is refreshed from the backing store.
+&R[07/05 22:08] &G&G22&W:&G08&d &R[&Wpyom&R] &CQuixadhal@Bloodlines: &cIt's a little tricky... lots of google searching and whatnot.  The docs for SQLAlchemy are decent, but it's hard to go from what you want to do to what they call it, so you can see HOW. :)
+&R[07/05 22:09] &G&G22&W:&G09&d &R[&Wpyom&R] &CSyn@Bloodlines: &cyeah some of python's tricks we found i had a really hard time unearthing
+&R[07/05 22:11] &G&G22&W:&G11&d &R[&Wpyom&R] &CQuixadhal@Bloodlines: &cThe stuff I haven't checked in yet is the start of a login object.
+&R[07/05 22:11] &G&G22&W:&G11&d &R[&Wpyom&R] &CSyn@Bloodlines: &cso this may be a stupid question but, can you take an existing class, or, build a class, and turn that into a table in the database which is then mapped to the class or is it different/more complicated than that?
+&R[07/05 22:12] &G&G22&W:&G12&d &R[&Wpyom&R] &CQuixadhal@Bloodlines: &cYou can, however as with JSON, the sql table can only store basic types.  No arrays, no hashes, no pointers, no objects.
+&R[07/05 22:13] &G&G22&W:&G13&d &R[&Wpyom&R] &CQuixadhal@Bloodlines: &cSo you have to usually rethink the class structure a bit, or be careful about how you define the ORM for it so relations take the place of pointers and so forth.
+&R[07/05 22:14] &G&G22&W:&G14&d &R[&Wpyom&R] &CSyn@Bloodlines: &chm
+&R[07/05 22:14] &G&G22&W:&G14&d &R[&Wpyom&R] &CQuixadhal@Bloodlines: &cFor example, my login object will persist a user_id, character_id, and file descriptor to a database row, but the actual pointer to the socket and Miniboa object, of course, can't be persisted.
+&R[07/05 22:15] &G&G22&W:&G15&d &R[&Wpyom&R] &CQuixadhal@Bloodlines: &cSo when loading a login row, you have to do some reconstruction if you want the end result to make sense.
+&R[07/05 22:15] &G&G22&W:&G15&d &R[&Wpyom&R] &CSyn@Bloodlines: &cso theres parts of what i had done/we had imagined as far as removing as much pointers as possible or object contains object scenarios in this?
+&R[07/05 22:16] &G&G22&W:&G16&d &R[&Wpyom&R] &CSyn@Bloodlines: &ceffectively provide unique identifiers, then build the basic classes and have them do whatever overlord system you have to either reconnect, or find eachother?
+&R[07/05 22:16] &G&G22&W:&G16&d &R[&Wpyom&R] &CQuixadhal@Bloodlines: &cThink of it this way.  Every place you would have a pointer to another object instance, that would be a foreign key in SQL.
+&R[07/05 22:17] &G&G22&W:&G17&d &R[&Wpyom&R] &CQuixadhal@Bloodlines: &cAnywhere you had an array would be a one-to-many reference that SQL would treat as a subquery.
+&R[07/05 22:17] &G&G22&W:&G17&d &R[&Wpyom&R] &CSyn@Bloodlines: &cok i think i understand that
+&R[07/05 22:18] &G&G22&W:&G18&d &R[&Wpyom&R] &CQuixadhal@Bloodlines: &cThat's not to say you can't have arrays or pointers in your objects... but you may have to hand-describe the ORM metadata so the system knows how to generate SQL to access them.
+&R[07/05 22:19] &G&G22&W:&G19&d &R[&Wpyom&R] &CSyn@Bloodlines: &chm
+&R[07/05 22:20] &G&G22&W:&G20&d &R[&Wpyom&R] &CSyn@Bloodlines: &chow would it handle class inheritence? just recreate the layers?
+&R[07/05 22:20] &G&G22&W:&G20&d &R[&Wpyom&R] &CQuixadhal@Bloodlines: &cFor example... if I had a inventory in my character, and that inventory was an array of items... in SQL that would be three tables.  A character table, where one row was MY character data.  An Item table that stored all the instances of items in the game.  And an Inventory junction table which would have rows that stored character_id and item_id, to map multiple items to the same character.
+&R[07/05 22:21] &G&G22&W:&G21&d &R[&Wpyom&R] &CQuixadhal@Bloodlines: &cIn an ORM, you have to make sure that relationship betwen character and items is described, so it can do all that behind the scenes.
+&R[07/05 22:22] &G&G22&W:&G22&d &R[&Wpyom&R] &CSyn@Bloodlines: &cah
+&R[07/05 22:22] &G&G22&W:&G22&d &R[&Wpyom&R] &CSyn@Bloodlines: &cso it can get complex to map the elements, but the payoff is a more coherent structure and persistence engine that doesnt require the ridiculous reams of files/code we had to implement?
+&R[07/05 22:22] &G&G22&W:&G22&d &R[&Wpyom&R] &CQuixadhal@Bloodlines: &cSo when you load a character object, the ORM would issue the first select to get the character data from the main table, then it would see the relationship for inventory and issue another query to get all the inventory rows.
+&R[07/05 22:23] &G&G22&W:&G23&d &R[&Wpyom&R] &CQuixadhal@Bloodlines: &cCorrect.
+&R[07/05 22:23] &G&G22&W:&G23&d &R[&Wpyom&R] &CSyn@Bloodlines: &csounds like a no brainer, provided you intelligently construct and map it
+&R[07/05 22:23] &G&G22&W:&G23&d &R[&Wpyom&R] &CQuixadhal@Bloodlines: &cAnd by not using raw SQL unless there's no other way to do it, you allow people to change data stores without changing code.
+&R[07/05 22:23] &G&G22&W:&G23&d &R[&Wpyom&R] &CSyn@Bloodlines: &cyou meaning, whomever
+&R[07/05 22:24] &G&G22&W:&G24&d &R[&Wpyom&R] &CSyn@Bloodlines: &cthat part in particular sounds pretty awesome
+&R[07/05 22:24] &G&G22&W:&G24&d &R[&Wpyom&R] &CQuixadhal@Bloodlines: &cSQLite is the easiest and simplest way to keep things working nicely.  But on a product game, I might switch the postgresql for performance.
+&R[07/05 22:25] &G&G22&W:&G25&d &R[&Wpyom&R] &CQuixadhal@Bloodlines: &cOne thing to be careful of... you have to do everything through the ORM.
+&R[07/05 22:25] &G&G22&W:&G25&d &R[&Wpyom&R] &CSyn@Bloodlines: &csounds like if i want to really try and dive in i got a lot of new learning to do haha
+&R[07/05 22:26] &G&G22&W:&G26&d &R[&Wpyom&R] &CQuixadhal@Bloodlines: &cSo, while you can have cherrypi access your database, if you hook it into the ORM's data stream, changes made on one side might not be visible to the other.
+&R[07/05 22:28] &G&G22&W:&G28&d &R[&Wpyom&R] &CSyn@Bloodlines: &cwell i am pretty interested in learning this so im going to follow along, perhaps i can even contribute something valuable at some point haha
+&R[07/05 22:30] &G&G22&W:&G30&d &R[&Wpyom&R] &CQuixadhal@Bloodlines: &cYep, no hurry on my end.  I haven't done much with this for a few months.
+&R[07/05 22:30] &G&G22&W:&G30&d &R[&Wpyom&R] &CQuixadhal@Bloodlines: &cBut I like the concept and direction I'm headed with it, so I'll probably poke at it again at some point.
+&R[07/05 22:31] &G&G22&W:&G31&d &R[&Wpyom&R] &CSyn@Bloodlines: &ci smiled looking at the serialization stuff in there
+&R[07/05 22:32] &G&G22&W:&G32&d &R[&Wpyom&R] &CQuixadhal@Bloodlines: &cYep... I figured I'd put that in, in case it ends up being useful.
+&R[07/05 22:32] &G&G22&W:&G32&d &R[&Wpyom&R] &CQuixadhal@Bloodlines: &cA seperate (for now) project is an I3 client in python.
+&R[07/05 22:33] &G&G22&W:&G33&d &R[&Wpyom&R] &CQuixadhal@Bloodlines: &cI was originally thinking of borrowing the serialization stuff for mudmode, but I ended up doing it differently.
+&R[07/05 22:33] &G&G22&W:&G33&d &R[&Wpyom&R] &CSyn@Bloodlines: &chaha cool
+&R[07/05 22:33] &G&G22&W:&G33&d &R[&Wpyom&R] &CQuixadhal@Bloodlines: &chttps://github.com/quixadhal/i3/blob/master/packet.py
+&R[07/05 22:34] &G&G22&W:&G34&d &R[&Wpyom&R] &CQuixadhal@Bloodlines: &cPyParsing is kinda fun.
+&R[07/05 22:35] &G&G22&W:&G35&d &R[&Wpyom&R] &CSyn@Bloodlines: &coh that is neat
+&R[07/05 23:01] &G&G23&W:&G01&d &R[&Wpyom&R] &CSyn@Bloodlines: &clater quix, thanks for the chat
+&R[07/08 21:41] &G&G21&W:&G41&d &R[&Wpyom&R] &CSyn@Bloodlines: &cdoing some sqlalchemy tutorials, its pretty neat

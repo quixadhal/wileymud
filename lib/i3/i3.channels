@@ -198,7 +198,7 @@ End
 
 #I3CHAN
 ChanName   coffeemud_universe
-ChanMud    CoffeeMud Dev
+ChanMud    Unnamed_CoffeeMUD#1609673558
 ChanLocal  (null)
 ChanLayM   &R[&W%s&R] &C%s@%s: &c%s
 ChanLayE   &R[&W%s&R] &c%s
@@ -727,10 +727,10 @@ End
 #I3CHAN
 ChanName   discworld-chat
 ChanMud    Discworld
-ChanLocal  (null)
+ChanLocal  dwchat
 ChanLayM   &R[&W%s&R] &C%s@%s: &c%s
 ChanLayE   &R[&W%s&R] &c%s
-ChanLevel  0
+ChanLevel  2
 ChanStatus 0
 ChanFlags  0
 End
@@ -2565,8 +2565,217 @@ End
 ChanName   CoffeeMud
 ChanMud    RobertMUD
 ChanLocal  (null)
-ChanLayM   (null)
-ChanLayE   (null)
+ChanLayM   &R[&W%s&R] &C%s@%s: &c%s
+ChanLayE   &R[&W%s&R] &c%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   ChanMud    Ulario
+ChanMud    (null)
+ChanLocal  (null)
+ChanLayM   &R[&W%s&R] &C%s@%s: &c%s
+ChanLayE   &R[&W%s&R] &c%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   ChanMud    Ulario
+ChanMud    (null)
+ChanLocal  (null)
+ChanLayM   &R[&W%s&R] &C%s@%s: &c%s
+ChanLayE   &R[&W%s&R] &c%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   ChanMud    Ulario
+ChanMud    (null)
+ChanLocal  (null)
+ChanLayM   &R[&W%s&R] &C%s@%s: &c%s
+ChanLayE   &R[&W%s&R] &c%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   ROME_CHAT
+ChanMud    Rome
+ChanLocal  (null)
+ChanLayM   &R[&W%s&R] &C%s@%s: &c%s
+ChanLayE   &R[&W%s&R] &c%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   ROMECHAT
+ChanMud    Rome
+ChanLocal  (null)
+ChanLayM   &R[&W%s&R] &C%s@%s: &c%s
+ChanLayE   &R[&W%s&R] &c%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   coffeemud_university
+ChanMud    Unnamed_CoffeeMUD#1851705742
+ChanLocal  (null)
+ChanLayM   &R[&W%s&R] &C%s@%s: &c%s
+ChanLayE   &R[&W%s&R] &c%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   ChanMud    Ulario
+ChanMud    (null)
+ChanLocal  (null)
+ChanLayM   &R[&W%s&R] &C%s@%s: &c%s
+ChanLayE   &R[&W%s&R] &c%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   ChanMud    Ulario
+ChanMud    (null)
+ChanLocal  (null)
+ChanLayM   &R[&W%s&R] &C%s@%s: &c%s
+ChanLayE   &R[&W%s&R] &c%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   ADR
+ChanMud    Aadarian_Realms
+ChanLocal  (null)
+ChanLayM   &R[&W%s&R] &C%s@%s: &c%s
+ChanLayE   &R[&W%s&R] &c%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   ChanMud    Ulario
+ChanMud    (null)
+ChanLocal  (null)
+ChanLayM   &R[&W%s&R] &C%s@%s: &c%s
+ChanLayE   &R[&W%s&R] &c%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   ChanMud    Ulario
+ChanMud    (null)
+ChanLocal  (null)
+ChanLayM   &R[&W%s&R] &C%s@%s: &c%s
+ChanLayE   &R[&W%s&R] &c%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   ChanMud    Ulario
+ChanMud    (null)
+ChanLocal  (null)
+ChanLayM   &R[&W%s&R] &C%s@%s: &c%s
+ChanLayE   &R[&W%s&R] &c%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   TestMud
+ChanMud    CoffeeMudESP
+ChanLocal  (null)
+ChanLayM   &R[&W%s&R] &C%s@%s: &c%s
+ChanLayE   &R[&W%s&R] &c%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   felixfelicis
+ChanMud    CoffeeMudESP
+ChanLocal  (null)
+ChanLayM   &R[&W%s&R] &C%s@%s: &c%s
+ChanLayE   &R[&W%s&R] &c%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   coffeemudesp
+ChanMud    FelixFelicis
+ChanLocal  (null)
+ChanLayM   &R[&W%s&R] &C%s@%s: &c%s
+ChanLayE   &R[&W%s&R] &c%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   url
+ChanMud    Bloodlines
+ChanLocal  (null)
+ChanLayM   &R[&W%s&R] &C%s@%s: &c%s
+ChanLayE   &R[&W%s&R] &c%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   Iberia Mud
+ChanMud    CoffeeMudESP
+ChanLocal  (null)
+ChanLayM   &R[&W%s&R] &C%s@%s: &c%s
+ChanLayE   &R[&W%s&R] &c%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   ChanMud    Ulario
+ChanMud    (null)
+ChanLocal  (null)
+ChanLayM   &R[&W%s&R] &C%s@%s: &c%s
+ChanLayE   &R[&W%s&R] &c%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   ChanMud    Ulario
+ChanMud    (null)
+ChanLocal  (null)
+ChanLayM   &R[&W%s&R] &C%s@%s: &c%s
+ChanLayE   &R[&W%s&R] &c%s
 ChanLevel  0
 ChanStatus 0
 ChanFlags  0

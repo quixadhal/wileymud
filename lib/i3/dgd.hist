@@ -1,0 +1,67 @@
+&R[06/04 01:15] &G&G01&W:&G15&d &R[&Wdgd&R] &CThe Ethereal Presence@Ulario: &cfoo
+&R[06/04 02:26] &G&G02&W:&G26&d &R[&Wdgd&R] &CThe Ethereal Presence@Ulario: &ctest
+&R[06/11 18:38] &G&G18&W:&G38&d &R[&Wdgd&R] &CAlphoen@Eden2: &cef
+&R[06/16 02:01] &G&G02&W:&G01&d &R[&Wdgd&R] &CGithub@Way of the Force: &cGurbalib: Sirdude changed 1 paths: Updated the INSTALL doc to make sure your (https://github.com/sirdude/gurbalib)
+&R[06/17 14:55] &G&G14&W:&G55&d &R[&Wdgd&R] &CGithub@Way of the Force: &cGurbalib: Sirdude changed 16 paths: Added afun new_object from Aidil (https://github.com/sirdude/gurbalib)
+&R[06/22 21:36] &G&G21&W:&G36&d &R[&Wdgd&R] &CShentino@Way of the Force: &cshut up shentino O-o
+&R[06/25 21:56] &G&G21&W:&G56&d &R[&Wdgd&R] &CKalinash@Crat's Agony: &ci'm disappointed that i can't do this with dgd: #define FUNCTION(name, a) int fun_##name() { return a;}
+&R[06/25 21:56] &G&G21&W:&G56&d &R[&Wdgd&R] &CKalinash@Crat's Agony: &cthat is all
+&R[07/02 09:37] &G&G09&W:&G37&d &R[&Wdgd&R] &CAidil@Way of the Force: &c20963 bart      20   0 4612m 3.8g 1108 D    3 48.7  16:04.55 dgd
+&R[07/02 09:37] &G&G09&W:&G37&d &R[&Wdgd&R] &CAidil@Way of the Force: &clooks like this rdbm stuff is a bit memory hungry...
+&R[07/09 16:54] &G&G16&W:&G54&d &R[&Wdgd&R] &CGithub@Way of the Force: &cGurbalib: Sirdude changed 1 paths: Fixes a big in call_trace (https://github.com/sirdude/gurbalib)
+&R[07/10 15:21] &G&G15&W:&G21&d &R[&Wdgd&R] &CAidil@Way of the Force: &cheh, that changes the bug, but doesn't fix it.
+&R[07/10 15:51] &G&G15&W:&G51&d &R[&Wdgd&R] &CSirdude@SirDudesGurbaLib: &cbummer
+&R[07/10 15:53] &G&G15&W:&G53&d &R[&Wdgd&R] &CSirdude@SirDudesGurbaLib: &cah just read your email... will fix
+&R[07/10 15:58] &G&G15&W:&G58&d &R[&Wdgd&R] &CGithub@Way of the Force: &cGurbalib: Sirdude changed 1 paths: Was off by 1 in the loop. (https://github.com/sirdude/gurbalib)
+&R[07/10 16:05] &G&G16&W:&G05&d &R[&Wdgd&R] &CAidil@Way of the Force: &chey :-)
+&R[07/10 16:05] &G&G16&W:&G05&d &R[&Wdgd&R] &CAidil@Way of the Force: &cgood to see you on here again.
+&R[07/10 16:05] &G&G16&W:&G05&d &R[&Wdgd&R] &CSirdude@SirDudesGurbaLib: &cyeah been too long. :)
+&R[07/10 16:06] &G&G16&W:&G06&d &R[&Wdgd&R] &CAhti@Dead Souls Dev: &cya
+&R[07/10 16:06] &G&G16&W:&G06&d &R[&Wdgd&R] &CAidil@Way of the Force: &chehe. well, I have long periods of inactivity here, so often difficult to catch me on here anyway.
+&R[07/10 16:07] &G&G16&W:&G07&d &R[&Wdgd&R] &CAidil@Way of the Force: &cjust finished the initial implementation of version 2 of my lpcsql interpreter :-)
+&R[07/10 16:08] &G&G16&W:&G08&d &R[&Wdgd&R] &CSirdude@SirDudesGurbaLib: &cI'm working on a bnf for lpc.
+&R[07/10 16:08] &G&G16&W:&G08&d &R[&Wdgd&R] &CAidil@Way of the Force: &cah :-)
+&R[07/10 16:09] &G&G16&W:&G09&d &R[&Wdgd&R] &CAidil@Way of the Force: &ciirc Felix did publish a parse_string grammar for DGD's lpc dialect, which should get you more then halfway.
+&R[07/10 16:09] &G&G16&W:&G09&d &R[&Wdgd&R] &CAidil@Way of the Force: &cI have a slightly older version of it in the download section of wotf.org
+&R[07/10 16:11] &G&G16&W:&G11&d &R[&Wdgd&R] &CQuixadhal@Bloodlines: &cbnf brings back memories of hot summer afternoons trying to stay awake in compiler design class, and trying to not use the dragon book as a pillow...
+&R[07/10 16:18] &G&G16&W:&G18&d &R[&Wdgd&R] &CSirdude@SirDudesGurbaLib: &cthis? http://wotf.org/downloads/lpc/   (the happy.c or colorize.c or something else?)
+&R[07/10 16:18] &G&G16&W:&G18&d &R[&Wdgd&R] &CAidil@Way of the Force: &cthe happy.c
+&R[07/10 17:00] &G&G17&W:&G00&d &R[&Wdgd&R] &CAidil@Way of the Force: &cyay, v2 of my lpcsql interpreter works... now for getting the sql implementation a little bit more complete, and fix a storage bug that I've been ignoring for a while now :-)
+&R[07/10 17:04] &G&G17&W:&G04&d &R[&Wdgd&R] &CQuixadhal@Bloodlines: &cHere's a test query for ya! :)  https://docs.google.com/document/d/1XWyGmC_P0x8zy-spTpoa7Wwi0MlY-umcoDbs5vwZ9vw/edit?usp=sharing
+&R[07/10 17:06] &G&G17&W:&G06&d &R[&Wdgd&R] &CQuixadhal@Bloodlines: &c(Back when I played EVE-Online, our guild was looking for a new home system, and CCP provided sanitized SQL dumps of their database, so that tried to find a system with nice high quality agents, ordered by their distance from our then home system)
+&R[07/10 17:11] &G&G17&W:&G11&d &R[&Wdgd&R] &CKalinash@Crat's Agony: &cthere's nothing happy about happy code
+&R[07/10 17:29] &G&G17&W:&G29&d &R[&Wdgd&R] &CAidil@Way of the Force: &cheh, no need for test queries for now :-)
+&R[07/10 17:30] &G&G17&W:&G30&d &R[&Wdgd&R] &CSirdude@SirDudesGurbaLib: &cI'm off have a good weekend all.
+&R[07/10 17:31] &G&G17&W:&G31&d &R[&Wdgd&R] &CAidil@Way of the Force: &csame to you!
+&R[07/10 17:32] &G&G17&W:&G32&d &R[&Wdgd&R] &CAidil@Way of the Force: &cplaying with parse trees and an interpreter.. especially the interpreter part.
+&R[07/10 17:33] &G&G17&W:&G33&d &R[&Wdgd&R] &CAidil@Way of the Force: &cwriting an efficient interpreter in lpc is kinda fun :-)
+&R[07/10 17:33] &G&G17&W:&G33&d &R[&Wdgd&R] &CAidil@Way of the Force: &cmanaged to avoid the typical giant switch statement solution.
+&R[07/10 19:23] &G&G19&W:&G23&d &R[&Wdgd&R] &CAidil@Way of the Force: &coh Kal, there is nothing happy about happycode indeed... but that happycode.c is a fun little bit of code that implements an lpc to lpc 'compiler'
+&R[07/11 02:31] &G&G02&W:&G31&d &R[&Wdgd&R] &CMaw@Dead Souls Dev: &chappycode is the best code
+&R[07/11 04:27] &G&G04&W:&G27&d &R[&Wdgd&R] &CCratylus@Dead Souls Dev: &chttps://i.imgur.com/hXhZsvX.webm
+&R[07/11 11:09] &G&G11&W:&G09&d &R[&Wdgd&R] &CGithub@Way of the Force: &cGurbalib: Sirdude changed 6 paths: Add some basic stats (https://github.com/sirdude/gurbalib)
+&R[07/11 11:34] &G&G11&W:&G34&d &R[&Wdgd&R] &CGithub@Way of the Force: &cGurbalib: Sirdude changed 1 paths: Add some extra debugging so workroom will work if ... (https://github.com/sirdude/gurbalib)
+&R[07/13 02:35] &G&G02&W:&G35&d &R[&Wdgd&R] &CGithub@Way of the Force: &cGurbalib: Sirdude changed 1 paths: Fix some of the basic logic of a standard object. (https://github.com/sirdude/gurbalib)
+&R[07/13 02:50] &G&G02&W:&G50&d &R[&Wdgd&R] &CGithub@Way of the Force: &cGurbalib: Sirdude changed 2 paths: Again make a simple default to avoid errors. (https://github.com/sirdude/gurbalib)
+&R[07/13 15:30] &G&G15&W:&G30&d &R[&Wdgd&R] &CGithub@Way of the Force: &cGurbalib: Sirdude changed 23 paths: Clean up std a little bit. (https://github.com/sirdude/gurbalib)
+&R[07/13 15:30] &G&G15&W:&G30&d &R[&Wdgd&R] &CKalinash@Crat's Agony: &cyou have STDs in your code?!
+&R[07/13 15:33] &G&G15&W:&G33&d &R[&Wdgd&R] &CWodan@Discworld: &ceww!
+&R[07/13 15:34] &G&G15&W:&G34&d &R[&Wdgd&R] &CSirdude@SirDudesGurbaLib: &cnot anymore ;)
+&R[07/13 15:34] &G&G15&W:&G34&d &R[&Wdgd&R] &CSirdude@SirDudesGurbaLib: &cit only itches a little.
+&R[07/13 15:34] &G&G15&W:&G34&d &R[&Wdgd&R] &CKalinash@Crat's Agony: &cthank god for antibiotics
+&R[07/13 22:49] &G&G22&W:&G49&d &R[&Wdgd&R] &CGithub@Way of the Force: &cGurbalib: Sirdude changed 57 paths: It's annoying to have to add a / when cutting and ... (https://github.com/sirdude/gurbalib)
+&R[07/14 10:14] &G&G10&W:&G14&d &R[&Wdgd&R] &CGithub@Way of the Force: &cGurbalib: Sirdude changed 1 paths: Removed an unused function. (https://github.com/sirdude/gurbalib)
+&R[07/16 15:15] &G&G15&W:&G15&d &R[&Wdgd&R] &CGithub@Way of the Force: &cGurbalib: Sirdude changed 14 paths: First step at combining look command and this_play... (https://github.com/sirdude/gurbalib)
+&R[07/16 21:53] &G&G21&W:&G53&d &R[&Wdgd&R] &CGithub@Way of the Force: &cGurbalib: Sirdude changed 2 paths: Add some basic checks to the monster spell system. (https://github.com/sirdude/gurbalib)
+&R[07/18 19:40] &G&G19&W:&G40&d &R[&Wdgd&R] &CShentino@Ulario: &cfoo
+&R[07/19 18:18] &G&G18&W:&G18&d &R[&Wdgd&R] &CAidil@Way of the Force: &chmm. this thing is a bit memory hungry. 18308 bart      20   0 5748m 5.2g 1100 R    3 66.1  87:39.51 dgd
+&R[07/19 19:50] &G&G19&W:&G50&d &R[&Wdgd&R] &CShentino@Ulario: &cYO!
+&R[07/20 10:36] &G&G10&W:&G36&d &R[&Wdgd&R] &CGithub@Way of the Force: &cGurbalib: Sirdude changed 2 paths: Removed a define that isn't really needed. (https://github.com/sirdude/gurbalib)
+&R[07/20 18:24] &G&G18&W:&G24&d &R[&Wdgd&R] &CGithub@Way of the Force: &cGurbalib: Sirdude changed 21 paths: More doc work. (https://github.com/sirdude/gurbalib)
+&R[07/20 22:49] &G&G22&W:&G49&d &R[&Wdgd&R] &CGithub@Way of the Force: &cGurbalib: Sirdude changed 57 paths: Yet more documentation work. (https://github.com/sirdude/gurbalib)
+&R[07/21 07:27] &G&G07&W:&G27&d &R[&Wdgd&R] &CGithub@Way of the Force: &cGurbalib: Sirdude changed 1 paths: Fixed return in the wrong location, also cleaned u... (https://github.com/sirdude/gurbalib)
+&R[07/21 12:33] &G&G12&W:&G33&d &R[&Wdgd&R] &CGithub@Way of the Force: &cGurbalib: Sirdude changed 1 paths: small cleanup of the driver. (https://github.com/sirdude/gurbalib)
+&R[07/22 17:35] &G&G17&W:&G35&d &R[&Wdgd&R] &CShentino@Ulario: &cyo
+&R[07/23 06:04] &G&G06&W:&G04&d &R[&Wdgd&R] &CGithub@Way of the Force: &cGurbalib: Sirdude changed 8 paths: Change the quest to depend on the room not leo. (https://github.com/sirdude/gurbalib)
+&R[07/23 06:11] &G&G06&W:&G11&d &R[&Wdgd&R] &CGithub@Way of the Force: &cGurbalib: Sirdude changed 1 paths: remove lowercase call (https://github.com/sirdude/gurbalib)
+&R[07/23 06:23] &G&G06&W:&G23&d &R[&Wdgd&R] &CGithub@Way of the Force: &cGurbalib: Sirdude changed 1 paths: small cleanup of event_d. (https://github.com/sirdude/gurbalib)
