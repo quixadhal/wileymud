@@ -358,7 +358,6 @@ void do_track(struct char_data *ch, const char *argument, int cmd)
 	cost = 15 - (GET_LEVEL(ch, RANGER_LEVEL_IND) / 10);
     } else if (IS_SET(ch->player.class, CLASS_THIEF)) {
 	cost = 50 - GET_LEVEL(ch, THIEF_LEVEL_IND);
-	dist = dist;
     } else {
 	dist = dist / 2;
 	cost = 50 - (GET_LEVEL(ch, BestThiefClass(ch)) / 2);

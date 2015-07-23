@@ -239,7 +239,7 @@ void command_interpreter(struct char_data *ch, char *argument)
     /*
      * Find first non blank 
      */
-    for (begin = 0; (*(argument + begin) == ' '); begin++);
+    for (begin = 0; *(argument + begin) == ' '; begin++);
 
     /*
      * Find length of first word 
