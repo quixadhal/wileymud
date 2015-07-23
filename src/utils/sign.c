@@ -99,9 +99,9 @@ int new_connection(int s, int port)
                                             ident;
     struct hostent                         *host;
     unsigned int                            i,
-                                            len,
-                                            t;
+                                            len;
     int                                     fd,
+                                            t,
                                             remote_port;
     long                                    remote_addr;
     FILE                                   *ifp,

@@ -782,7 +782,7 @@ int GenericGuildMaster(struct char_data *ch, int cmd, const const char *arg)
 	for (; isspace(*arg); arg++);
 	anumber = search_block(arg, rl_skills, FALSE);
 
-	if ((anumber == -1)) {
+	if (anumber == -1) {
 	    cprintf(ch, "You do not have ability to practice this skill!\r\n");
 	    return (TRUE);
 	}
@@ -1182,7 +1182,7 @@ int ninja_master(struct char_data *ch, int cmd, const const char *arg)
 
     for (; *arg == ' '; arg++);				       /* ditch spaces */
 
-    if ((cmd == 164)) {
+    if (cmd == 164) {
 	/*
 	 * So far, just track 
 	 */

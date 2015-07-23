@@ -364,7 +364,7 @@ void cast_clone(char level, struct char_data *ch, const char *arg, int type,
 
     for (this_victim = character_list; this_victim; this_victim = next_victim) {
 	next_victim = this_victim->next;
-	if ((ch->in_room == this_victim->in_room)) {
+	if (ch->in_room == this_victim->in_room) {
 	    if (IS_IMMORTAL(this_victim))
 		continue;
 	    if (affected_by_spell(this_victim, SPELL_SHIELD)) {
