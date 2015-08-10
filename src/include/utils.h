@@ -75,10 +75,7 @@ do									\
     fflush(stderr);                                                     \
     proper_exit(42);							\
   }									\
-  else									\
-  {									\
-    strcpy((result), (string));						\
-  }									\
+  strcpy((result), (string));						\
 } while(0)
 
 #define RECREATE(result,type,number)					\
