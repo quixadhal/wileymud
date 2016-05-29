@@ -863,7 +863,7 @@ ChanLocal  (null)
 ChanLayM   &R[&W%s&R] &C%s@%s: &c%s
 ChanLayE   &R[&W%s&R] &c%s
 ChanLevel  0
-ChanStatus 0
+ChanStatus 2
 ChanFlags  0
 End
 
@@ -2740,6 +2740,17 @@ End
 #I3CHAN
 ChanName   url
 ChanMud    Bloodlines
+ChanLocal  url
+ChanLayM   &R[&W%s&R] &C%s@%s: &c%s
+ChanLayE   &R[&W%s&R] &c%s
+ChanLevel  2
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   Iberia Mud
+ChanMud    CoffeeMudESP
 ChanLocal  (null)
 ChanLayM   &R[&W%s&R] &C%s@%s: &c%s
 ChanLayE   &R[&W%s&R] &c%s
@@ -2749,8 +2760,228 @@ ChanFlags  0
 End
 
 #I3CHAN
-ChanName   Iberia Mud
-ChanMud    CoffeeMudESP
+ChanName   ChanMud    Ulario
+ChanMud    (null)
+ChanLocal  (null)
+ChanLayM   &R[&W%s&R] &C%s@%s: &c%s
+ChanLayE   &R[&W%s&R] &c%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   ChanMud    Ulario
+ChanMud    (null)
+ChanLocal  (null)
+ChanLayM   &R[&W%s&R] &C%s@%s: &c%s
+ChanLayE   &R[&W%s&R] &c%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   ChanMud    Ulario
+ChanMud    (null)
+ChanLocal  (null)
+ChanLayM   &R[&W%s&R] &C%s@%s: &c%s
+ChanLayE   &R[&W%s&R] &c%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   ChanMud    Ulario
+ChanMud    (null)
+ChanLocal  (null)
+ChanLayM   &R[&W%s&R] &C%s@%s: &c%s
+ChanLayE   &R[&W%s&R] &c%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   ChanMud    Ulario
+ChanMud    (null)
+ChanLocal  (null)
+ChanLayM   &R[&W%s&R] &C%s@%s: &c%s
+ChanLayE   &R[&W%s&R] &c%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   ChanMud    Ulario
+ChanMud    (null)
+ChanLocal  (null)
+ChanLayM   &R[&W%s&R] &C%s@%s: &c%s
+ChanLayE   &R[&W%s&R] &c%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   ChanMud    Ulario
+ChanMud    (null)
+ChanLocal  (null)
+ChanLayM   &R[&W%s&R] &C%s@%s: &c%s
+ChanLayE   &R[&W%s&R] &c%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   ChanMud    Ulario
+ChanMud    (null)
+ChanLocal  (null)
+ChanLayM   &R[&W%s&R] &C%s@%s: &c%s
+ChanLayE   &R[&W%s&R] &c%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   ChanMud    Ulario
+ChanMud    (null)
+ChanLocal  (null)
+ChanLayM   &R[&W%s&R] &C%s@%s: &c%s
+ChanLayE   &R[&W%s&R] &c%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   ChanMud    Ulario
+ChanMud    (null)
+ChanLocal  (null)
+ChanLayM   &R[&W%s&R] &C%s@%s: &c%s
+ChanLayE   &R[&W%s&R] &c%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   ChanMud    Ulario
+ChanMud    (null)
+ChanLocal  (null)
+ChanLayM   &R[&W%s&R] &C%s@%s: &c%s
+ChanLayE   &R[&W%s&R] &c%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   ChanMud    Ulario
+ChanMud    (null)
+ChanLocal  (null)
+ChanLayM   &R[&W%s&R] &C%s@%s: &c%s
+ChanLayE   &R[&W%s&R] &c%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   ChanMud    Ulario
+ChanMud    (null)
+ChanLocal  (null)
+ChanLayM   &R[&W%s&R] &C%s@%s: &c%s
+ChanLayE   &R[&W%s&R] &c%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   ChanMud    Ulario
+ChanMud    (null)
+ChanLocal  (null)
+ChanLayM   &R[&W%s&R] &C%s@%s: &c%s
+ChanLayE   &R[&W%s&R] &c%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   ChanMud    Ulario
+ChanMud    (null)
+ChanLocal  (null)
+ChanLayM   &R[&W%s&R] &C%s@%s: &c%s
+ChanLayE   &R[&W%s&R] &c%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   4Liberty
+ChanMud    4liberty
+ChanLocal  (null)
+ChanLayM   &R[&W%s&R] &C%s@%s: &c%s
+ChanLayE   &R[&W%s&R] &c%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   DaysofDragons
+ChanMud    Days of Dragons
+ChanLocal  (null)
+ChanLayM   &R[&W%s&R] &C%s@%s: &c%s
+ChanLayE   &R[&W%s&R] &c%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   Days_of_Dragons
+ChanMud    4liberty
+ChanLocal  (null)
+ChanLayM   &R[&W%s&R] &C%s@%s: &c%s
+ChanLayE   &R[&W%s&R] &c%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   dod
+ChanMud    Days of Dragons
+ChanLocal  (null)
+ChanLayM   &R[&W%s&R] &C%s@%s: &c%s
+ChanLayE   &R[&W%s&R] &c%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   6d
+ChanMud    4liberty
+ChanLocal  (null)
+ChanLayM   &R[&W%s&R] &C%s@%s: &c%s
+ChanLayE   &R[&W%s&R] &c%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   lords&legends
+ChanMud    Days of Dragons
 ChanLocal  (null)
 ChanLayM   &R[&W%s&R] &C%s@%s: &c%s
 ChanLayE   &R[&W%s&R] &c%s

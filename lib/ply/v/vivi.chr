@@ -1,40 +1,40 @@
 #PLAYER
-Name               Ahti~
-Passwd             AhtoSjco7X5LI~
+Name               Vivi~
+Passwd             Via8nooFSZ9GY~
 Whizz              0
 PreTitle           ~
-Title              the Dwarven Sentry~
+Title              the Human Pilferer~
 Description
 ~
-LastSite           adork@host-212-253-112-26.reverse.superonline.ne~
-LastLogin          1456177107
-Birth              1396720029
-Played             46504
+LastSite           adork@ip174-66-176-144.sd.sd.cox.net~
+LastLogin          1450743976
+Birth              1450743324
+Played             643
 Sex                1
-Race               3
-Class              4
-Alignment          231
-Exp                4775
-Level              warrior 3
-HeightWeight       136 139
+Race               1
+Class              8
+Alignment          0
+Exp                43
+Level              thief 1
+HeightWeight       194 153
 Gold               0 0
 HomeTown           3008
 LoadRoom           -1
 PoofIn             ~
 PoofOut            ~
-AbilityScores      17 0 12 14 9 11
+AbilityScores      11 0 17 8 13 6
 AbilityPad         0 0 0 0
-HpManaMove         21 43 104 0 101 0
+HpManaMove         25 20 102 0 96 96
 AC                 100
 ToHitDamage        0 0
 SaveApply          0 0 0 0 0
-Conditions         0 5 24 0 0 0
+Conditions         0 16 16 0 0 0
 PointsPad1         0 0 0
 PointsPad2         0 0 0 0
 PointsPad3         0 0 0
 ShortSavePad       0 0 0 0
 SavePad            0 0 0 0
-Pracs              0
+Pracs              3
 SkillsToLearn      0
 NamedSkill         1 0 0 armour~
 NamedSkill         2 0 0 teleport~
@@ -80,11 +80,11 @@ NamedSkill         41 0 0 ventriloquate~
 NamedSkill         42 0 0 word of recall~
 NamedSkill         43 0 0 remove poison~
 NamedSkill         44 0 0 sense life~
-NamedSkill         45 0 0 sneak~
-NamedSkill         46 0 0 hide~
-NamedSkill         47 0 0 steal~
-NamedSkill         48 0 0 backstab~
-NamedSkill         49 0 0 pick lock~
+NamedSkill         45 1 0 sneak~
+NamedSkill         46 13 0 hide~
+NamedSkill         47 7 0 steal~
+NamedSkill         48 1 0 backstab~
+NamedSkill         49 1 0 pick lock~
 NamedSkill         50 0 0 kick~
 NamedSkill         51 0 0 bash~
 NamedSkill         52 0 0 rescue~
@@ -164,8 +164,8 @@ NamedSkill         166 0 0 whip spec~
 NamedSkill         167 0 0 slash spec~
 NamedSkill         168 0 0 smash spec~
 NamedSkill         169 0 0 cleave spec~
-NamedSkill         170 10 0 crush spec~
-NamedSkill         171 95 0 bludgeon spec~
+NamedSkill         170 0 0 crush spec~
+NamedSkill         171 0 0 bludgeon spec~
 NamedSkill         172 0 0 pierce spec~
 NamedSkill         173 0 0 peer~
 NamedSkill         174 0 0 hear noise~
@@ -180,7 +180,7 @@ NamedSkill         182 0 0 disarm trap~
 NamedSkill         183 0 0 disarm~
 NamedSkill         184 0 0 shield bash~
 NamedSkill         185 0 0 riding~
-ActFlags           0 12
+ActFlags           0 0
 Affect             0 0 0 0 0 0 0
 Affect             1 0 0 0 0 0 0
 Affect             2 0 0 0 0 0 0
@@ -206,8 +206,9 @@ Affect             21 0 0 0 0 0 0
 Affect             22 0 0 0 0 0 0
 Affect             23 0 0 0 0 0 0
 Affect             24 0 0 0 0 0 0
-i3perm       1
+i3perm       2
 i3flags      256
-IMCPerm      1
+i3listen     wiley
+IMCPerm      0
 IMCFlags     256
 End

@@ -287,9 +287,9 @@ char                                   *whod_text(void)
 		}
 
 		if (IS_SET(SHOW_SITE, whod_mode)) {
-		    if (ch->desc->host != NULL)
+		    if (ch->desc->host[0] != '\0')
 			sprintf(buf + strlen(buf), "(%s)", ch->desc->host);
-		    else if (ch->desc->ip != NULL)
+		    else if (ch->desc->ip[0] != '\0')
 			sprintf(buf + strlen(buf), "(%s)", ch->desc->ip);
 		}
 		strcat(buf, "\r\n");
@@ -457,10 +457,10 @@ char                                   *whod_html(void)
 		}
 
 		if (IS_SET(SHOW_SITE, whod_mode)) {
-		    if (ch->desc->host != NULL)
+		    if (ch->desc->host[0] != '\0')
 			sprintf(buf + strlen(buf), "<td align=\"left\">%s</td>\r\n",
 				ch->desc->host);
-		    else if (ch->desc->ip != NULL)
+		    else if (ch->desc->ip[0] != '\0')
 			sprintf(buf + strlen(buf), "<td align=\"left\">%s</td>\r\n",
 				ch->desc->ip);
 		}

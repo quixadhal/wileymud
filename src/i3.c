@@ -2320,7 +2320,7 @@ void I3_send_channel_t(I3_CHANNEL *channel, const char *name, char *tmud, char *
 int I3_token(char type, char *string, char *oname, char *tname)
 {
     char                                    code[50];
-    char                                   *p = '\0';
+    char                                   *p;
 
     switch (type) {
 	default:
@@ -2756,6 +2756,8 @@ void I3_process_channel_t(I3_HEADER *header, char *s)
     return;
 }
 
+#define I3_ALLCHAN_LOG  I3_DIR "i3.allchan.log"
+
 void I3_process_channel_m(I3_HEADER *header, char *s)
 {
     char                                   *ps = s,
@@ -2767,6 +2769,7 @@ void I3_process_channel_m(I3_HEADER *header, char *s)
                                             format[MAX_INPUT_LENGTH];
     I3_CHANNEL                             *channel;
     struct tm                              *local = localtime(&i3_time);
+    FILE                                   *fp = NULL;
 
     I3_get_field(ps, &next_ps);
     I3_remove_quotes(&ps);
@@ -2793,6 +2796,23 @@ void I3_process_channel_m(I3_HEADER *header, char *s)
     strcat(format, channel->layout_m);
     snprintf(buf, MAX_STRING_LENGTH, format, local->tm_hour, local->tm_min, channel->local_name,
 	     visname, header->originator_mudname, ps);
+
+    if(!(fp = fopen(I3_ALLCHAN_LOG, "a"))) {
+        perror(buf);
+        i3bug("Could not open file %s!", buf);
+    } else {
+        fprintf(fp, "%04d.%02d.%02d-%02d.%02d,%02d%03d\t%s\t%s@%s\t%s\n",
+                local->tm_year + 1900, local->tm_mon + 1, local->tm_mday,
+                local->tm_hour, local->tm_min, local->tm_sec,
+                0,
+                channel->local_name,
+                visname,
+                header->originator_mudname,
+                ps
+               );
+        I3FCLOSE(fp);
+    }
+
     for (d = first_descriptor; d; d = d->next) {
 	vch = d->original ? d->original : d->character;
 
@@ -4451,7 +4471,8 @@ void I3_savehelps(void)
 	fprintf(fp, "%s", "#HELP\n");
 	fprintf(fp, "Name %s\n", help->name);
 	fprintf(fp, "Perm %s\n", perm_names[help->level]);
-	fprintf(fp, "Text %s¢\n", help->text);
+	//fprintf(fp, "Text %s¢\n", help->text);
+	fprintf(fp, "Text %s%c\n", help->text, '\0xA2');
 	fprintf(fp, "%s", "End\n\n");
     }
     fprintf(fp, "%s", "#END\n");
@@ -4506,7 +4527,8 @@ void I3_readhelp(I3_HELP_DATA *help, FILE * fp)
 		if (!strcasecmp(word, "Text")) {
 		    int                                     num = 0;
 
-		    while ((hbuf[num] = fgetc(fp)) != EOF && hbuf[num] != '¢'
+		    //while ((hbuf[num] = fgetc(fp)) != EOF && hbuf[num] != '¢'
+		    while ((hbuf[num] = fgetc(fp)) != EOF && (int) hbuf[num] != (int) '\0xA2'
 			   && num < (MAX_STRING_LENGTH - 2))
 			num++;
 		    hbuf[num] = '\0';
@@ -9176,3 +9198,184 @@ char                                   *I3_nameescape(const char *ps)
     pnew[0] = '\0';
     return xnew;
 }
+
+
+#if 0
+varargs void eventSendChannel(string who, string ch, string msg, int emote,
+        string target, string targmsg) {
+    object channeler = find_player(lower_case(who));
+    int terminal;
+    string prev = base_name(previous_object());
+    string pchan,pmsg;
+    string *whobits;
+    string *msgbits;
+    string *cmsgbits;
+    string cmsg;
+    string bit;
+    string tstamp;
+    string output;
+    int i;
+
+    //tn("CHAT_D->eventSendChannel: "+identify(who)+", "+identify(ch)+", "+identify(msg), "green");
+
+    if(prev == INSTANCES_D){
+        terminal = 1;
+    }
+    if(prev == SERVICES_D) terminal = 1;
+    if(prev == IMC2_D) terminal = 1;
+    if(!terminal){
+        string rch = GetRemoteChannel(ch);
+        if(member_array(rch, remote_chans) == -1){
+            //tn("CHAT_D->eventSendChannel: handing off to INSTANCES_D.", "green");
+            INSTANCES_D->eventSendChannel(who,ch,msg,emote,target,targmsg);
+        }
+    }
+
+    pchan=ch;
+    if(!channeler) channeler = this_player();
+    if(!strsrch(msg,"-.--. . -. -.-. --- -.. . -.. -.--.- ---...")) msg = unmorse(msg);
+    if(targmsg && !strsrch(targmsg,"-.--. . -. -.-. --- -.. . -.. -.--.- ---..."))
+        targmsg = unmorse(targmsg);
+
+    if(this_player() && this_player() != channeler) channeler = this_player();
+
+    if(!strsrch(base_name(previous_object()), "/realms/") ||
+            !strsrch(base_name(previous_object()), "/open/")) {
+        return 0;
+    }
+
+    if(member_array(ch, syschans) != -1) {
+        //tn("CHAT_D->eventSendChannel: emote = 0 due to syschans.", "green");
+        emote = 0;
+    }
+    if(channeler){
+        if(!CanTalk(channeler, ch) && member_array(ch, syschans) == -1){
+            //tn("CHAT_D->eventSendChannel: !CanTalk(ch)", "green");
+            return;
+        }
+    }
+    if( file_name(previous_object()) == SERVICES_D || 
+            file_name(previous_object()) == IMC2_D) {
+        ch = GetLocalChannel(ch);
+        if( emote && sizeof(who)) {
+            //msg = replace_string(msg, "$N", who);
+            //tn("CHAT_D->eventSendChannel: emote + who + SERVICES: "+identify(ch), "green");
+            //DEBUG
+            //msg = replace_string(msg, "$N", getColorSpeakerName(who, "<SERV_IMC2:", ":SERV_IMC2>"));
+            msg = replace_string(msg, "$N", getColorSpeakerName(who));
+            pmsg = replace_string(msg, "$N", who);
+        }
+    }
+    else
+    {
+        if( origin() != ORIGIN_LOCAL &&
+            previous_object() != master() &&
+            file_name(previous_object()) != PARTY_D && 
+            file_name(previous_object()) != UPDATE_D && 
+            file_name(previous_object()) != INSTANCES_D && 
+            member_array(ch, syschans) == -1)
+        {
+            //tn("CHAT_D->eventSendChannel: ORIGIN_LOCAL/master/etc check.", "green");
+            return;
+        }
+    }
+    //tn("CHAT_D->eventSendChannel: after SERVICES check.", "green");
+    prev = file_name(previous_object());
+    if(!Channels[ch] && prev != SERVICES_D && prev != INSTANCES_D){
+        //tn("CHAT_D->eventSendChannel: Channels[ch] check.", "green");
+        return;
+    }
+    if( emote ) {
+        object ob;
+        string *results;
+
+        //tn("CHAT_D->eventSendChannel: in emote.", "green");
+        if( target && (ob = find_player(convert_name(target))) ) {
+            //tn("CHAT_D->eventSendChannel: target && find_player.", "green");
+            target = ob->GetName();
+        }
+
+        //tn("CHAT_D->eventSendChannel: just before formEmoteString.", "green");
+        results = formEmoteString(ch, who, msg, target, targmsg);
+        //tn("CHAT_D->eventSendChannel: just after formEmoteString.", "green");
+        msg = results[0];
+        targmsg = results[1];
+        pmsg = results[2];
+
+        //tn("CHAT_D->eventSendChannel: emote code: "+identify(results)+", "+identify(who)+", "+identify(ch)
+        //        +", "+identify(msg)+", "+identify(emote)+", "+identify(target)+", "
+        //        +identify(targmsg), "green");
+
+        tn("CHAT_D->eventSendChannel: in emote, just before strip_colours(pmsg); \"" + pmsg + "\"", "green");
+        pmsg = strip_colours(pmsg);
+        tn("CHAT_D->eventSendChannel: in emote, just after strip_colours(pmsg); \"" + pmsg + "\"", "green");
+        //pmsg = TERMINAL_D->no_colours(pmsg);
+        eventAddLast(ch, msg, pchan, pmsg);
+        eventChannelMsgToListeners(who, ch, msg, emote, target, targmsg);
+
+        if (check_for_url(ch, msg)) {
+            // got one!
+            // tn("CHAT_D->eventSendChannel: found emote url", "green");
+            // SERVICES_D->eventSendChannel(who, "wileymud", "Found url", 0, "", "");
+        } else {
+            // tn("CHAT_D->eventSendChannel: NOT found emote url", "red");
+        }
+    }
+    else
+    {
+        pmsg = msg;
+        cmsg = msg;
+
+        msg = formChatString(ch, who, msg);
+        //tn("CHAT_D->eventSendChannel: not emote?", "green");
+        pmsg = strip_colours(pmsg);
+        //pmsg = TERMINAL_D->no_colours(pmsg);
+        eventAddLast(ch, msg, pchan, pmsg, who);
+        eventChannelMsgToListeners(who, ch, msg, emote, target, targmsg);
+
+        if (check_for_url(ch, msg)) {
+            // got one!
+            // tn("CHAT_D->eventSendChannel: found url", "green");
+            // SERVICES_D->eventSendChannel("CHAT_D", "url", "Found url", 0, "", "");
+        } else {
+            // tn("CHAT_D->eventSendChannel: NOT found url", "red");
+        }
+    }
+    whobits = explode(who, "@");
+    if(sizeof(whobits) < 2) {
+        if(sizeof(whobits) < 1) {
+            whobits += ({ "Someone" });
+        }
+        whobits += ({ mud_name() });
+    }
+    who = implode(whobits, "@");
+    msgbits = rexplode(pmsg, "\n");
+    cmsgbits = rexplode(cmsg, "\n");
+    tstamp = timestamp();
+
+    i = 0;
+    foreach(bit in msgbits) {
+        output = sprintf("%s%03d\t%s\t%s\t%s\n", tstamp, i, ch, who, bit);
+        i++;
+        LogIt(output, "/secure/log/allchan.log", ch);
+    }
+    i = 0;
+    foreach(bit in cmsgbits) {
+        output = sprintf("%s%03d\t%s\t%s\t%s\n", tstamp, i, ch, who, bit);
+        i++;
+        LogIt(output, "/secure/log/allchan_color.log", ch);
+    }
+    
+    //LogIt(timestamp()+"\t"+ch+"\t"+who+"\t"+pmsg+"\n", "/secure/log/allchan.log", ch);
+    //tn("CHAT_D->eventSendChannel: return?", "green");
+}
+
+message timestamp YYYY.MM.DD-HH.MM,SS
+message sequence NNN
+message channel
+message origin (speaker@mud)
+message text
+
+2016.02.21-11.55,10000	intergossip	Quixadhal@Bloodlines	Fine.  you all fucking win.  Go to hell, fuckers.
+#endif
+

@@ -2133,9 +2133,9 @@ void do_who(struct char_data *ch, const char *argument, int cmd)
 		sprintf(buf + strlen(buf), "[#%d]", person->in_room);
 	}
 	if (IS_SET(SHOW_SITE, whod_mode)) {
-	    if (person->desc->host != NULL)
+	    if (person->desc->host[0] != '\0')
 		sprintf(buf + strlen(buf), "(%s)", person->desc->host);
-	    else if (person->desc->ip != NULL)
+	    else if (person->desc->ip[0] != '\0')
 		sprintf(buf + strlen(buf), "(%s)", person->desc->ip);
 	}
 	strcat(buf, "\r\n");

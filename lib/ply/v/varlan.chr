@@ -1,40 +1,40 @@
 #PLAYER
-Name               Ahti~
-Passwd             AhtoSjco7X5LI~
+Name               Varlan~
+Passwd             Va9rafJmerU6M~
 Whizz              0
 PreTitle           ~
-Title              the Dwarven Sentry~
+Title              the Human Swordpupil~
 Description
 ~
-LastSite           adork@host-212-253-112-26.reverse.superonline.ne~
-LastLogin          1456177107
-Birth              1396720029
-Played             46504
+LastSite           adork@host-72-174-17-148.msl-mt.client.bresnan.n~
+LastLogin          1449202101
+Birth              1449201932
+Played             121
 Sex                1
-Race               3
+Race               1
 Class              4
-Alignment          231
-Exp                4775
-Level              warrior 3
-HeightWeight       136 139
+Alignment          0
+Exp                1
+Level              warrior 1
+HeightWeight       186 134
 Gold               0 0
 HomeTown           3008
 LoadRoom           -1
 PoofIn             ~
 PoofOut            ~
-AbilityScores      17 0 12 14 9 11
+AbilityScores      14 0 12 12 6 11
 AbilityPad         0 0 0 0
-HpManaMove         21 43 104 0 101 0
+HpManaMove         26 20 101 0 100 100
 AC                 100
 ToHitDamage        0 0
 SaveApply          0 0 0 0 0
-Conditions         0 5 24 0 0 0
+Conditions         0 22 22 0 0 0
 PointsPad1         0 0 0
 PointsPad2         0 0 0 0
 PointsPad3         0 0 0
 ShortSavePad       0 0 0 0
 SavePad            0 0 0 0
-Pracs              0
+Pracs              3
 SkillsToLearn      0
 NamedSkill         1 0 0 armour~
 NamedSkill         2 0 0 teleport~
@@ -164,8 +164,8 @@ NamedSkill         166 0 0 whip spec~
 NamedSkill         167 0 0 slash spec~
 NamedSkill         168 0 0 smash spec~
 NamedSkill         169 0 0 cleave spec~
-NamedSkill         170 10 0 crush spec~
-NamedSkill         171 95 0 bludgeon spec~
+NamedSkill         170 0 0 crush spec~
+NamedSkill         171 0 0 bludgeon spec~
 NamedSkill         172 0 0 pierce spec~
 NamedSkill         173 0 0 peer~
 NamedSkill         174 0 0 hear noise~
@@ -180,7 +180,7 @@ NamedSkill         182 0 0 disarm trap~
 NamedSkill         183 0 0 disarm~
 NamedSkill         184 0 0 shield bash~
 NamedSkill         185 0 0 riding~
-ActFlags           0 12
+ActFlags           0 0
 Affect             0 0 0 0 0 0 0
 Affect             1 0 0 0 0 0 0
 Affect             2 0 0 0 0 0 0
@@ -206,8 +206,9 @@ Affect             21 0 0 0 0 0 0
 Affect             22 0 0 0 0 0 0
 Affect             23 0 0 0 0 0 0
 Affect             24 0 0 0 0 0 0
-i3perm       1
+i3perm       2
 i3flags      256
-IMCPerm      1
+i3listen     wiley
+IMCPerm      0
 IMCFlags     256
 End
