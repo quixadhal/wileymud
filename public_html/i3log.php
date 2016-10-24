@@ -12,13 +12,40 @@ global $CHAT_TEXT_FILE;
 global $CHAT_DATA_FILE;
 global $file_lines;
 global $bg;
+global $dump;
 
 $CHAT_COLOR_FILE    = "/home/bloodlines/lib/secure/save/chat.o";
 $CHAT_TEXT_FILE     = "/home/wiley/lib/i3/i3.allchan.log";
 $CHAT_DATA_FILE     = "/home/wiley/lib/i3/i3.speakers.json";
 
-function get_pinkfish_map() {
-    $colors = array(
+function numbered_source($filename)
+{
+    $lines = implode(range(1, count(file($filename))), '<br />');
+    $content = highlight_file($filename, true);
+    $style = '
+    <style type="text/css"> 
+        .num { 
+        float: left; 
+        color: gray; 
+        font-size: 13px;    
+        font-family: monospace; 
+        text-align: right; 
+        margin-right: 6pt; 
+        padding-right: 6pt; 
+        border-right: 1px solid gray;} 
+
+        body {margin: 0px; margin-left: 5px;} 
+        td {vertical-align: top; white-space: normal;} 
+        code {white-space: nowrap;} 
+    </style>
+    '; 
+    return "$style\n<table><tr><td class=\"num\">\n$lines\n</td><td>\n$content\n</td></tr></table>"; 
+}
+
+function init_pinkfish_map() {
+    global $pinkfishMap;
+
+    $pinkfishMap = array(
         '%^RESET%^'                 => '',                              // 00
 
         '%^BLACK%^'                 => '<SPAN style="color: #000000">',
@@ -77,7 +104,6 @@ function get_pinkfish_map() {
         '%^B_RED%^%^GREEN%^'        => '<SPAN style="background-color: #bb0000; color: #00bb00">',
         '%^B_RED%^%^LIGHTGREEN%^'   => '<SPAN style="background-color: #bb0000; color: #00ff00">'
     );
-    return $colors;
 }
 
 function get_hour_colors() {
@@ -168,6 +194,7 @@ function get_chatter_colors() {
     global $pinkfishMap;
     global $CHAT_COLOR_FILE;
     global $CHAT_DATA_FILE;
+    global $dump;
 
     $colors = array ();
 
@@ -275,6 +302,7 @@ function get_speaker_color($who, $where) {
     global $pinkfishMap;
     global $colorMap;
     global $CHAT_DATA_FILE;
+    global $dump;
 
     $whoLow = strtolower($who);
     $speakerColor = $colorMap["default"];
@@ -282,6 +310,7 @@ function get_speaker_color($who, $where) {
         $speakerColor = $colorMap[$whoLow];
     } else {
         // Add a new entry!
+        $colorMap[$whoLow] = $speakerColor;
         $chatCounter = count( $colorMap ) - 1;
         $colorIndex = $chatCounter % count( $pinkfishMap );
         $speakerColor = $pinkfishMap[$colorIndex];
@@ -296,7 +325,7 @@ function get_speaker_color($who, $where) {
 
 $isLocal = is_local_ip();
 
-$pinkfishMap = get_pinkfish_map();
+init_pinkfish_map();
 $hourColors = get_hour_colors();
 $channelColors = get_channel_colors();
 $colorMap = get_chatter_colors();
@@ -309,118 +338,136 @@ $bg = 0;
 ?>
 <html>
     <head>
-    <script type="text/javascript">
-        var current = 0;
-        var pagesize = 30;
-        var count = 0;
-
-        function toggle_row( row ) {
-            r = document.getElementById("row_" + row);
-            if(r !== null) {
-                if(r.style.display !== "none") {
-                    r.style.display = "none";
+        <script language="javascript">
+            function toggleDiv(divID) {
+                if(document.getElementById(divID).style.display == 'none') {
+                    document.getElementById(divID).style.display = 'block';
                 } else {
-                    r.style.display = "table-row";
+                    document.getElementById(divID).style.display = 'none';
                 }
             }
-        }
-        function row_on( row ) {
-            r = document.getElementById("row_" + row);
-            if(r !== null) {
-                if(r.style.display == "none") {
-                    r.style.display = "table-row";
+        </script>
+        <script type="text/javascript">
+            var current = 0;
+            var pagesize = 30;
+            var count = 0;
+
+            function toggle_row( row ) {
+                r = document.getElementById("row_" + row);
+                if(r !== null) {
+                    if(r.style.display !== "none") {
+                        r.style.display = "none";
+                    } else {
+                        r.style.display = "table-row";
+                    }
                 }
             }
-        }
-        function row_off( row ) {
-            r = document.getElementById("row_" + row);
-            if(r !== null) {
-                if(r.style.display !== "none") {
-                    r.style.display = "none";
+            function row_on( row ) {
+                r = document.getElementById("row_" + row);
+                if(r !== null) {
+                    if(r.style.display == "none") {
+                        r.style.display = "table-row";
+                    }
                 }
             }
-        }
-        function page_forward() {
-            for(var i = current; i < current + pagesize; i++) {
-                row_off(i);
+            function row_off( row ) {
+                r = document.getElementById("row_" + row);
+                if(r !== null) {
+                    if(r.style.display !== "none") {
+                        r.style.display = "none";
+                    }
+                }
             }
-            if (current + pagesize < count) {
-                current = current + pagesize;
+            function page_forward() {
+                for(var i = current; i < current + pagesize; i++) {
+                    row_off(i);
+                }
+                if (current + pagesize < count) {
+                    current = current + pagesize;
+                    document.getElementById("current_button").value=Math.trunc(current/pagesize)+1;
+                }
+                for(var i = current; i < current + pagesize; i++) {
+                    row_on(i);
+                }
+            }
+            function page_forward_ten() {
+                for(var i = current; i < current + pagesize; i++) {
+                    row_off(i);
+                }
+                if (current + (pagesize * 10) < count) {
+                    current = current + (pagesize * 10);
+                    document.getElementById("current_button").value=Math.trunc(current/pagesize)+1;
+                }
+                for(var i = current; i < current + pagesize; i++) {
+                    row_on(i);
+                }
+            }
+            function page_backward() {
+                for(var i = current; i < current + pagesize; i++) {
+                    row_off(i);
+                }
+                if (current - pagesize >= 0) {
+                    current = current - pagesize;
+                } else {
+                    current = 0;
+                }
                 document.getElementById("current_button").value=Math.trunc(current/pagesize)+1;
+                for(var i = current; i < current + pagesize; i++) {
+                    row_on(i);
+                }
             }
-            for(var i = current; i < current + pagesize; i++) {
-                row_on(i);
-            }
-        }
-        function page_forward_ten() {
-            for(var i = current; i < current + pagesize; i++) {
-                row_off(i);
-            }
-            if (current + (pagesize * 10) < count) {
-                current = current + (pagesize * 10);
+            function page_backward_ten() {
+                for(var i = current; i < current + pagesize; i++) {
+                    row_off(i);
+                }
+                if (current - (pagesize * 10) >= 0) {
+                    current = current - (pagesize * 10);
+                } else {
+                    current = 0;
+                }
                 document.getElementById("current_button").value=Math.trunc(current/pagesize)+1;
+                for(var i = current; i < current + pagesize; i++) {
+                    row_on(i);
+                }
             }
-            for(var i = current; i < current + pagesize; i++) {
-                row_on(i);
-            }
-        }
-        function page_backward() {
-            for(var i = current; i < current + pagesize; i++) {
-                row_off(i);
-            }
-            if (current - pagesize >= 0) {
-                current = current - pagesize;
-            } else {
+            function first_page() {
+                for(var i = current; i < current + pagesize; i++) {
+                    row_off(i);
+                }
                 current = 0;
+                document.getElementById("current_button").value=Math.trunc(current/pagesize)+1;
+                for(var i = current; i < current + pagesize; i++) {
+                    row_on(i);
+                }
             }
-            document.getElementById("current_button").value=Math.trunc(current/pagesize)+1;
-            for(var i = current; i < current + pagesize; i++) {
-                row_on(i);
+            function last_page() {
+                for(var i = current; i < current + pagesize; i++) {
+                    row_off(i);
+                }
+                current = count - pagesize;
+                document.getElementById("current_button").value=Math.trunc(current/pagesize)+1;
+                for(var i = current; i < current + pagesize; i++) {
+                    row_on(i);
+                }
             }
-        }
-        function page_backward_ten() {
-            for(var i = current; i < current + pagesize; i++) {
-                row_off(i);
+            function setup() {
+                count = document.getElementById("content").getElementsByTagName("tr").length;
+                first_date = document.getElementById("row_0").getElementsByTagName("td")[0].innerHTML;
+                last_date = document.getElementById("content").getElementsByTagName("tr")[count-1].getElementsByTagName("td")[0].innerHTML;
+                document.getElementById("end_button").value=Math.trunc(count/pagesize);
+                document.getElementById("start_button").title=first_date;
+                document.getElementById("end_button").title=last_date;
+                for(var i = current; i < current + pagesize; i++) {
+                    row_on(i);
+                }
+                last_page();
             }
-            if (current - (pagesize * 10) >= 0) {
-                current = current - (pagesize * 10);
-            } else {
-                current = 0;
-            }
-            document.getElementById("current_button").value=Math.trunc(current/pagesize)+1;
-            for(var i = current; i < current + pagesize; i++) {
-                row_on(i);
-            }
-        }
-        function first_page() {
-            for(var i = current; i < current + pagesize; i++) {
-                row_off(i);
-            }
-            current = 0;
-            document.getElementById("current_button").value=Math.trunc(current/pagesize)+1;
-            for(var i = current; i < current + pagesize; i++) {
-                row_on(i);
-            }
-        }
-        function last_page() {
-            for(var i = current; i < current + pagesize; i++) {
-                row_off(i);
-            }
-            current = count - pagesize;
-            document.getElementById("current_button").value=Math.trunc(current/pagesize)+1;
-            for(var i = current; i < current + pagesize; i++) {
-                row_on(i);
-            }
-        }
-        function setup() {
-            count = document.getElementById("content").getElementsByTagName("tr").length;
-            document.getElementById("end_button").value=Math.trunc(count/pagesize);
-            for(var i = current; i < current + pagesize; i++) {
-                row_on(i);
-            }
-            last_page();
-        }
-    </script>
+        </script>
+        <style>
+            html, body { max-width: 100%; overflow-x: hidden; word-wrap: break-word; text-overflow: ellipsis; }
+            a { text-decoration:none; }
+            a:hover { text-decoration:underline; }
+        </style>
     </head>
     <body bgcolor="black" text="#d0d0d0" link="#ffffbf" vlink="#ffa040" onload="setup();">
         <table id="navbar" width="100%">
@@ -434,14 +481,16 @@ $bg = 0;
                     <input id="forward_ten_button" type="button" value=">>" onclick="page_forward_ten();">
                     <input id="end_button" type="button" value="end" onclick="last_page();">
                 </td>
-                <td align="right" width="50%">
-                    <span id="pagegen" style="color: #1F1F1F">
-                        &nbsp;Page generated in 
-                        <span id="timespent" style="color: #1F1F1F">
-                            <?php $time_end = microtime(true); $time_spent = $time_end - $time_start; printf( "%7.3f", $time_spent); ?>
+                <td align="right" width="50%" onmouseover="pagegen.style.color='#00FF00'; timespent.style.color='#00FF00';" onmouseout="pagegen.style.color='#1F1F1F'; timespent.style.color='#1F1F1F';">
+                    <a href="javascript:;" onmousedown="toggleDiv('dump');">
+                        <span id="pagegen" style="color: #1F1F1F">
+                            &nbsp;Page generated in 
+                            <span id="timespent" style="color: #1F1F1F">
+                                <?php $time_end = microtime(true); $time_spent = $time_end - $time_start; printf( "%7.3f", $time_spent); ?>
+                            </span>
+                             seconds.
                         </span>
-                         seconds.
-                    </span>
+                    </a>
                 </td>
             </tr>
         </table>
@@ -487,5 +536,7 @@ $bg = 0;
             }
             ?>
         </table>
+        <div id="source" style="display: none; vertical-align: bottom; background-color: white;"> <?php echo numbered_source(__FILE__); ?> </div>
+        <div id="dump" style="display: none; vertical-align: bottom; background-color: white;"> <?php echo json_encode($colorMap, JSON_PRETTY_PRINT); ?> </div>
     </body>
 </html>

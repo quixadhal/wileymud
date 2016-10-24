@@ -134,6 +134,7 @@ void                                    to_channel(const char *argument, char *x
 void                                    I3_connection_close(bool reconnect);
 char                                   *i3rankbuffer(CHAR_DATA *ch);
 char                                   *I3_nameescape(const char *ps);
+char                                   *I3_nameremap(const char *ps);
 
 #define I3KEY( literal, field, value ) \
 if( !strcasecmp( word, literal ) )     \
@@ -2256,7 +2257,7 @@ void I3_send_channel_message(I3_CHANNEL *channel, const char *name, const char *
     I3_write_buffer("\"");
     I3_write_buffer(channel->I3_name);
     I3_write_buffer("\",\"");
-    I3_write_buffer(name);
+    I3_write_buffer(I3_nameremap(name));
     I3_write_buffer("\",\"");
     send_to_i3(I3_escape(message));
     I3_write_buffer("\",})\r");
@@ -2281,7 +2282,7 @@ void I3_send_channel_emote(I3_CHANNEL *channel, const char *name, const char *me
     I3_write_buffer("\"");
     I3_write_buffer(channel->I3_name);
     I3_write_buffer("\",\"");
-    I3_write_buffer(name);
+    I3_write_buffer(I3_nameremap(name));
     I3_write_buffer("\",\"");
     send_to_i3(I3_escape(buf));
     I3_write_buffer("\",})\r");
@@ -2308,7 +2309,7 @@ void I3_send_channel_t(I3_CHANNEL *channel, const char *name, char *tmud, char *
     I3_write_buffer("\",\"");
     send_to_i3(I3_escape(msg_t));
     I3_write_buffer("\",\"");
-    I3_write_buffer(name);
+    I3_write_buffer(I3_nameremap(name));
     I3_write_buffer("\",\"");
     I3_write_buffer(tvis);
     I3_write_buffer("\",})\r");
@@ -6278,6 +6279,9 @@ void i3_loop(void)
                                             null_time;
     bool                                    rfound = FALSE;
 
+    struct tm                              *tm_info = NULL;
+    time_t                                  tc = (time_t) 0;
+
     gettimeofday(&last_time, NULL);
     i3_time = (time_t) last_time.tv_sec;
 
@@ -6296,6 +6300,18 @@ void i3_loop(void)
 	}
     }
 
+    tc = time(0);
+    tm_info = localtime(&tc);
+
+    /* We reboot our router every Monday, Wedensday, and Friday, at 4:45AM.  This makes the I3
+     * connection die, but we can't seem to recognize this, so bounce I3 at 5AM on those days.
+     */
+    if ((tm_info->tm_wday == 1) || (tm_info->tm_wday == 3) || (tm_info->tm_wday == 5)) {
+        if ((tm_info->tm_hour == 5) && (tm_info->tm_min == 0) && (tm_info->tm_sec == 0)) {
+            I3_connection_close(TRUE);
+            return;
+        }
+    }
     /*
      * This condition can only occur if you were previously connected and the socket was closed.
      * * Tries 3 times, then attempts connection to an alternate router, if it has one.
@@ -9196,6 +9212,18 @@ char                                   *I3_nameescape(const char *ps)
 	pnew++;
     }
     pnew[0] = '\0';
+    return xnew;
+}
+
+char                                   *I3_nameremap(const char *ps)
+{
+    static char                             xnew[MAX_STRING_LENGTH];
+
+    if(!strcasecmp(ps, "quixadhal")) {
+        strcpy(xnew, "Ghost of Quixadhal");
+    } else {
+        strcpy(xnew, ps);
+    }
     return xnew;
 }
 

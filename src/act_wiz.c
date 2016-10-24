@@ -3288,6 +3288,8 @@ void do_setreboot(struct char_data *ch, const char *argument, int cmd)
             fprintf(pfd, "%d %d\n", 0, 0);
             FCLOSE(pfd);
         }
+        cprintf(ch, "You have disabled automatic reboots.\r\n");
+        log_info("Automatic reboot disabled by %s.\r\n", GET_NAME(ch));
     }
 
 }
