@@ -3272,6 +3272,7 @@ void do_setreboot(struct char_data *ch, const char *argument, int cmd)
         REBOOT_FREQ = (REBOOT_HOUR * 60 * 60 ) + (REBOOT_MIN * 60);
         REBOOT_LASTCHECK = time(0);
         REBOOT_LEFT = REBOOT_FREQ;
+        REBOOT_DISABLED = 0;
 
         if (!(pfd = fopen(REBOOTTIME_FILE, "w"))) {
             log_info("Cannot save reboot times!");
@@ -3288,6 +3289,7 @@ void do_setreboot(struct char_data *ch, const char *argument, int cmd)
             fprintf(pfd, "%d %d\n", 0, 0);
             FCLOSE(pfd);
         }
+        REBOOT_DISABLED = 1;
         cprintf(ch, "You have disabled automatic reboots.\r\n");
         log_info("Automatic reboot disabled by %s.\r\n", GET_NAME(ch));
     }

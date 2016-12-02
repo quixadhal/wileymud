@@ -434,7 +434,7 @@ int getall(char *name, char *newname)
 
     if (prd != '.')
 	return (FALSE);
-    if (tmpname == NULL)
+    if (!*tmpname)
 	return (FALSE);
     if (strcmp(arg, "all"))
 	return (FALSE);

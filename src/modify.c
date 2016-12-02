@@ -30,6 +30,7 @@ int                                     REBOOT_MIN  = 0;	       /* 0-N, 0-59, ti
 int                                     REBOOT_FREQ = 0;
 int                                     REBOOT_LEFT = 0;
 int                                     REBOOT_LASTCHECK = 0;
+int                                     REBOOT_DISABLED = 0;
 struct room_data                       *world = NULL;	       /* dyn alloc'ed array of rooms */
 
 const char                             *string_fields[] = {
@@ -886,7 +887,7 @@ void check_reboot(void)
     tc = time(0);
 
     //log_info("REBOOT_FREQ: %d\nREBOOT_LEFT: %d", REBOOT_FREQ, REBOOT_LEFT);
-    if (REBOOT_FREQ > 0) {
+    if (REBOOT_FREQ > 0 && REBOOT_DISABLED == 0) {
         REBOOT_LEFT -= (tc - REBOOT_LASTCHECK);
         REBOOT_LASTCHECK = tc;
 
@@ -898,6 +899,7 @@ void check_reboot(void)
             allprintf("\x007\r\nBroadcast message from Quixadhal (tty0) %s...\r\n\r\n", tmstr);
             allprintf("Automatic reboot.  Come back in a few minutes!\r\n");
             allprintf("\x007The system is going down NOW !!\r\n\x007\r\n");
+            log_info("Rebooting!");
             diku_shutdown = diku_reboot = 1;
         } else if (REBOOT_LEFT <= 60 * 60) {
             if (((REBOOT_LEFT/60) < 10) && ((REBOOT_LEFT % 60) == 0)) {

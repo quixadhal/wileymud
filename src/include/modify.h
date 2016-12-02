@@ -9,11 +9,12 @@
 #define NEW
 
 #ifndef _MODIFY_C
-extern int                              REBOOT_HOUR,
-                                        REBOOT_MIN,
-                                        REBOOT_FREQ,
-                                        REBOOT_LASTCHECK,
-                                        REBOOT_LEFT;	       /* 0-N, 0-59, time of optional reboot if -e lib/reboot */
+extern int                              REBOOT_HOUR;
+extern int                              REBOOT_MIN;
+extern int                              REBOOT_FREQ;
+extern int                              REBOOT_LASTCHECK;
+extern int                              REBOOT_LEFT;	       /* 0-N, 0-59, time of optional reboot if -e lib/reboot */
+extern int                              REBOOT_DISABLED;
 extern struct room_data                *world;
 extern const char                            *string_fields[];
 extern const char                            *room_fields[];

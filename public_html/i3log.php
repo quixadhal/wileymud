@@ -157,6 +157,7 @@ function get_channel_colors() {
         "newbie"      => "%^B_YELLOW%^%^BLACK%^",
         "gossip"      => "%^B_BLUE%^%^YELLOW%^",
 
+        "wiley"       => "%^YELLOW%^",
         "ds"          => "%^YELLOW%^",
         "dchat"	      => "%^CYAN%^",
         "intergossip" => "%^GREEN%^",
@@ -164,6 +165,7 @@ function get_channel_colors() {
         "pyom"        => "%^FLASH%^%^LIGHTGREEN%^",
         "free_speech" => "%^PINK%^",
         "url"         => "%^WHITE%^",
+        "wileymud"    => "%^FLASH%^%^CYAN%^",
 
         "ibuild"      => "%^B_RED%^%^YELLOW%^",
         "ichat"       => "%^B_RED%^%^GREEN%^",
@@ -333,7 +335,7 @@ $colorMap = get_chatter_colors();
 //2016.04.13-06.14,33000	intergossip	Cratylus@Dead Souls Dev	the problem with listening to music in the client office
 
 //$file_lines = explode( "\n", file_get_contents( $CHAT_TEXT_FILE ) );
-$file_lines = explode( "\n", file_tail( $CHAT_TEXT_FILE, 3000 ) );
+$file_lines = explode( "\n", file_tail( $CHAT_TEXT_FILE, 2500 ) );
 $bg = 0;
 ?>
 <html>
@@ -349,7 +351,7 @@ $bg = 0;
         </script>
         <script type="text/javascript">
             var current = 0;
-            var pagesize = 30;
+            var pagesize = 25;
             var count = 0;
 
             function toggle_row( row ) {
@@ -460,6 +462,16 @@ $bg = 0;
                 for(var i = current; i < current + pagesize; i++) {
                     row_on(i);
                 }
+                r = document.getElementById("hidden_time");
+                if(r !== null) {
+                    if(r.style.display !== "none") {
+                        r.style.display = "none";
+                    }
+                    t = document.getElementById("timespent");
+                    if(t !== null) {
+                        t.innerHTML = r.innerHTML;
+                    }
+                }
                 last_page();
             }
         </script>
@@ -482,11 +494,11 @@ $bg = 0;
                     <input id="end_button" type="button" value="end" onclick="last_page();">
                 </td>
                 <td align="right" width="50%" onmouseover="pagegen.style.color='#00FF00'; timespent.style.color='#00FF00';" onmouseout="pagegen.style.color='#1F1F1F'; timespent.style.color='#1F1F1F';">
-                    <a href="javascript:;" onmousedown="toggleDiv('dump');">
+                    <a href="javascript:;" onmousedown="toggleDiv('source');">
                         <span id="pagegen" style="color: #1F1F1F">
                             &nbsp;Page generated in 
                             <span id="timespent" style="color: #1F1F1F">
-                                <?php $time_end = microtime(true); $time_spent = $time_end - $time_start; printf( "%7.3f", $time_spent); ?>
+                                00.0000
                             </span>
                              seconds.
                         </span>
@@ -525,11 +537,21 @@ $bg = 0;
                     <td bgcolor="<?php echo $bgColor; ?>"><?php echo $speaker; ?></td>
 
                     <?php
-                    $tmp_msg = preg_replace("/\x1b\[[0-9]+(;[0-9]+)*m/", "", $line_data[3]);
-                    $message = htmlentities($tmp_msg,0,'UTF-8');
+                    //$tmp_msg = preg_replace("/\x1b\[[0-9]+(;[0-9]+)*m/", "", $line_data[3]);
+                    //$message = htmlentities($tmp_msg,0,'UTF-8');
+                    $message = htmlentities($line_data[3], ENT_QUOTES|ENT_SUBSTITUTE, 'UTF-8');
                     $message = preg_replace( '/((?:http|https|ftp)\:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(?::[a-zA-Z0-9]*)?\/?(?:[a-zA-Z0-9\-\._\?\,\'\/\\\+&amp;%\$#\=~])*)/', '<a href="$1" target="I3-link">$1</a>', $message);
+                    $message = preg_replace("/\%\^RESET\%\^/", "</span>", $message);
+                    $message = preg_replace("/\%\^RED\%\^/", "<span style=\"color: #ff5555;\">", $message);
+                    $message = preg_replace("/\%\^GREEN\%\^/", "<span style=\"color: #55ff55;\">", $message);
+                    $message = preg_replace("/\%\^BLUE\%\^/", "<span style=\"color: #5555ff;\">", $message);
+                    $message = preg_replace("/\%\^YELLOW\%\^/", "<span style=\"color: #ffff55;\">", $message);
+                    $message = preg_replace("/\%\^CYAN\%\^/", "<span style=\"color: #55ffff;\">", $message);
+                    $message = preg_replace("/\%\^MAGENTA\%\^/", "<span style=\"color: #ff55ff;\">", $message);
+                    $message = preg_replace("/\%\^WHITE\%\^/", "<span style=\"color: #ffffff;\">", $message);
+                    $message = preg_replace("/\%\^BOLD\%\^/", "", $message);
                     ?>
-                    <td bgcolor="<?php echo $bgColor; ?>"><font face="monospace"><?php echo $message; ?></font></td>
+                    <td bgcolor="<?php echo $bgColor; ?>"><span style="font-family: monospace;"><?php echo $message; ?></span></td>
                 </tr>
                 <?php 
                 $bg++;
@@ -538,5 +560,7 @@ $bg = 0;
         </table>
         <div id="source" style="display: none; vertical-align: bottom; background-color: white;"> <?php echo numbered_source(__FILE__); ?> </div>
         <div id="dump" style="display: none; vertical-align: bottom; background-color: white;"> <?php echo json_encode($colorMap, JSON_PRETTY_PRINT); ?> </div>
+        <?php $time_end = microtime(true); $time_spent = $time_end - $time_start; ?>
+        <div id="hidden_time" style="display: none;"> <?php printf( "%7.3f", $time_spent); ?> </div>
     </body>
 </html>

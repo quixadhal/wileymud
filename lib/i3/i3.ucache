@@ -1,529 +1,1261 @@
 #UCACHE
-Name Argust@Aadarian_Realms
+Name (someone)@WileyMUD
 Sex  0
-Time 1464295277
+Time 1478564568
 End
 
 #UCACHE
-Name Nurian@Aadarian_Realms
+Name Agent@MultiMUD
+Sex  0
+Time 1478575201
+End
+
+#UCACHE
+Name Kamrina@Aadarian_Realms
 Sex  1
-Time 1464390054
+Time 1480569793
 End
 
 #UCACHE
-Name Kalissa@Aadarian_Realms
+Name Theseus@MultiMUD
 Sex  0
-Time 1464445738
+Time 1478576562
 End
 
 #UCACHE
-Name Winterwind@Dark City
+Name Krion@Aadarian_Realms
+Sex  0
+Time 1478629956
+End
+
+#UCACHE
+Name Manu@Aadarian_Realms
+Sex  0
+Time 1478641384
+End
+
+#UCACHE
+Name Malorn@Aadarian_Realms
+Sex  0
+Time 1478642557
+End
+
+#UCACHE
+Name Penelope@Aadarian_Realms
+Sex  0
+Time 1478720455
+End
+
+#UCACHE
+Name Greystar@Aadarian_Realms
+Sex  0
+Time 1478790692
+End
+
+#UCACHE
+Name Kuran@Aadarian_Realms
+Sex  0
+Time 1478796816
+End
+
+#UCACHE
+Name Jasa@Aadarian_Realms
+Sex  0
+Time 1478806843
+End
+
+#UCACHE
+Name Merik@Aadarian_Realms
+Sex  0
+Time 1478813753
+End
+
+#UCACHE
+Name Zyrian@Aadarian_Realms
+Sex  0
+Time 1478817490
+End
+
+#UCACHE
+Name Horus@Aadarian_Realms
+Sex  0
+Time 1478822344
+End
+
+#UCACHE
+Name Kind@War of Legend
+Sex  0
+Time 1478829036
+End
+
+#UCACHE
+Name Root@War of Legend
+Sex  0
+Time 1478840449
+End
+
+#UCACHE
+Name Cygnus@War of Legend
+Sex  0
+Time 1478840449
+End
+
+#UCACHE
+Name Toor@War of Legend
+Sex  0
+Time 1478840519
+End
+
+#UCACHE
+Name Testchar@Star Wars: Jedi vs Sith
 Sex  1
-Time 1462030839
-End
-
-#UCACHE
-Name Guido@Aadarian_Realms
-Sex  0
-Time 1462048714
-End
-
-#UCACHE
-Name Jelfrin@Aadarian_Realms
-Sex  0
-Time 1462050925
-End
-
-#UCACHE
-Name Faye@Aadarian_Realms
-Sex  0
-Time 1463943452
-End
-
-#UCACHE
-Name Sylpha@Aadarian_Realms
-Sex  0
-Time 1462107692
-End
-
-#UCACHE
-Name Oarien@SotU
-Sex  0
-Time 1462220583
-End
-
-#UCACHE
-Name Zxcv@SotU
-Sex  0
-Time 1462256911
-End
-
-#UCACHE
-Name Tijer@Legends of Hatred
-Sex  0
-Time 1462303137
-End
-
-#UCACHE
-Name Jindrak@Legends of Hatred
-Sex  0
-Time 1462303363
-End
-
-#UCACHE
-Name Guise@Aadarian_Realms
-Sex  0
-Time 1462325129
-End
-
-#UCACHE
-Name Qwer@SotU
-Sex  0
-Time 1462412866
-End
-
-#UCACHE
-Name Jman@Legends of Hatred
-Sex  0
-Time 1462569461
-End
-
-#UCACHE
-Name Chakotay@Legends of Hatred
-Sex  0
-Time 1462627575
-End
-
-#UCACHE
-Name Cruithear@Aadarian_Realms
-Sex  0
-Time 1462640173
-End
-
-#UCACHE
-Name Sosuke@Aadarian_Realms
-Sex  0
-Time 1462670933
-End
-
-#UCACHE
-Name Synthor@Legends of Hatred
-Sex  0
-Time 1462745714
-End
-
-#UCACHE
-Name Aryllis@Aadarian_Realms
-Sex  0
-Time 1462825420
-End
-
-#UCACHE
-Name Tavreth@Legends of Hatred
-Sex  0
-Time 1462832052
-End
-
-#UCACHE
-Name Ander@SotU
-Sex  0
-Time 1462845429
-End
-
-#UCACHE
-Name QAZ@SotU
-Sex  0
-Time 1462855446
-End
-
-#UCACHE
-Name Addiktion@Aadarian_Realms
-Sex  0
-Time 1462954754
-End
-
-#UCACHE
-Name Troublerazor@Legends of Hatred
-Sex  0
-Time 1463008043
-End
-
-#UCACHE
-Name Jindrak@SotU
-Sex  0
-Time 1463017938
-End
-
-#UCACHE
-Name Drohita@Legends of Hatred
-Sex  0
-Time 1463037545
-End
-
-#UCACHE
-Name Asheron@Aadarian_Realms
-Sex  0
-Time 1463098425
-End
-
-#UCACHE
-Name Atan@Aadarian_Realms
-Sex  0
-Time 1463098425
-End
-
-#UCACHE
-Name Butchera@Aadarian_Realms
-Sex  0
-Time 1463098426
-End
-
-#UCACHE
-Name Chekhu@Aadarian_Realms
-Sex  0
-Time 1463098426
-End
-
-#UCACHE
-Name Faern@Aadarian_Realms
-Sex  0
-Time 1463098426
-End
-
-#UCACHE
-Name Groke@Aadarian_Realms
-Sex  0
-Time 1463098427
-End
-
-#UCACHE
-Name Haggis@Aadarian_Realms
-Sex  0
-Time 1463098427
-End
-
-#UCACHE
-Name Jayde@Aadarian_Realms
-Sex  0
-Time 1463098427
-End
-
-#UCACHE
-Name Keelim@Aadarian_Realms
-Sex  0
-Time 1463098427
-End
-
-#UCACHE
-Name Jupiter@Economic Collapse
-Sex  0
-Time 1463151305
-End
-
-#UCACHE
-Name Gaffar@Aadarian_Realms
-Sex  0
-Time 1463161233
-End
-
-#UCACHE
-Name Oaralin@SotU
-Sex  0
-Time 1463192488
-End
-
-#UCACHE
-Name Tijer@Aadarian_Realms-Dev
-Sex  0
-Time 1463330718
-End
-
-#UCACHE
-Name Hanzo@Legends of Hatred
-Sex  0
-Time 1463374810
-End
-
-#UCACHE
-Name Zaq@SotU
-Sex  0
-Time 1463387588
-End
-
-#UCACHE
-Name Shin@Legends of Hatred
-Sex  0
-Time 1463457992
-End
-
-#UCACHE
-Name Duncan@Legends of Hatred
-Sex  0
-Time 1463462323
-End
-
-#UCACHE
-Name Greed@SotU
-Sex  0
-Time 1463498706
-End
-
-#UCACHE
-Name Jupiter@4liberty
-Sex  0
-Time 1463531594
-End
-
-#UCACHE
-Name Jupiter@Collapse of America
-Sex  0
-Time 1463532173
-End
-
-#UCACHE
-Name Labrat@Aadarian_Realms
-Sex  0
-Time 1463559833
-End
-
-#UCACHE
-Name Dampyiel@Aadarian_Realms-Dev
-Sex  0
-Time 1463615377
-End
-
-#UCACHE
-Name Tijer@Dark City
-Sex  0
-Time 1463670550
-End
-
-#UCACHE
-Name Hecubis@Aadarian_Realms
-Sex  0
-Time 1463698906
-End
-
-#UCACHE
-Name Svirthin@Legends of Hatred
-Sex  0
-Time 1463785594
-End
-
-#UCACHE
-Name Testchar@Legends of Hatred
-Sex  0
-Time 1463794270
-End
-
-#UCACHE
-Name Mistest@Aadarian_Realms-Dev
-Sex  0
-Time 1463794685
-End
-
-#UCACHE
-Name Arnald@Legends of Hatred
-Sex  0
-Time 1463848138
-End
-
-#UCACHE
-Name Benden@MultiMUD
-Sex  0
-Time 1463947003
-End
-
-#UCACHE
-Name Multibot@MultiMUD
-Sex  1
-Time 1463947003
-End
-
-#UCACHE
-Name Kana@MultiMUD
-Sex  1
-Time 1463951560
-End
-
-#UCACHE
-Name Xyianth@SotU
-Sex  0
-Time 1463961399
-End
-
-#UCACHE
-Name Enkidu@Aadarian_Realms
-Sex  0
-Time 1463998135
-End
-
-#UCACHE
-Name Marina@MultiMUD
-Sex  1
-Time 1464017445
-End
-
-#UCACHE
-Name Connor@MultiMUD
-Sex  0
-Time 1464019988
-End
-
-#UCACHE
-Name Gyran@Legends of Hatred
-Sex  0
-Time 1464030048
-End
-
-#UCACHE
-Name Blarg@Legends of Hatred
-Sex  0
-Time 1464037540
-End
-
-#UCACHE
-Name Narumi@MultiMUD
-Sex  0
-Time 1464049530
-End
-
-#UCACHE
-Name Ayane@MultiMUD
-Sex  1
-Time 1464049617
-End
-
-#UCACHE
-Name Agailia@Aadarian_Realms
-Sex  0
-Time 1464056155
-End
-
-#UCACHE
-Name Morbis@MultiMUD
-Sex  0
-Time 1464096918
-End
-
-#UCACHE
-Name Ruark@Legends of Hatred
-Sex  0
-Time 1464102269
-End
-
-#UCACHE
-Name Karnok@Legends of Hatred
-Sex  0
-Time 1464130777
-End
-
-#UCACHE
-Name Jupiter@JellyBean III
-Sex  0
-Time 1464137719
-End
-
-#UCACHE
-Name Vharuk@Aadarian_Realms
-Sex  0
-Time 1464186668
-End
-
-#UCACHE
-Name Horus@Legends of Hatred
-Sex  0
-Time 1464186974
-End
-
-#UCACHE
-Name Raz@Legends of Hatred
-Sex  0
-Time 1464227249
-End
-
-#UCACHE
-Name Syous@Aadarian_Realms
-Sex  0
-Time 1464252320
-End
-
-#UCACHE
-Name Xajin@Legends of Hatred
-Sex  0
-Time 1464260906
-End
-
-#UCACHE
-Name Muftuk@Aadarian_Realms
-Sex  0
-Time 1464324434
-End
-
-#UCACHE
-Name Moridin@Legends of Hatred
-Sex  0
-Time 1464350698
-End
-
-#UCACHE
-Name Tijer@Aadarian_Realms
-Sex  0
-Time 1464377705
-End
-
-#UCACHE
-Name Daemyan@Aadarian_Realms
-Sex  0
-Time 1464445738
-End
-
-#UCACHE
-Name Kiro@Aadarian_Realms
-Sex  0
-Time 1464445739
-End
-
-#UCACHE
-Name Lazarus@Aadarian_Realms
-Sex  0
-Time 1464445739
-End
-
-#UCACHE
-Name Zilba@Legends of Hatred
-Sex  0
-Time 1464482287
-End
-
-#UCACHE
-Name Thox@Aadarian_Realms
-Sex  0
-Time 1464502736
+Time 1478881433
 End
 
 #UCACHE
 Name Diablo@Star Wars: Jedi vs Sith
 Sex  0
-Time 1464519650
+Time 1478887341
 End
 
 #UCACHE
-Name Jonoic@Star Wars: Jedi vs Sith
+Name Jopin@MultiMUD
 Sex  0
-Time 1464521173
+Time 1478903440
 End
 
 #UCACHE
-Name Rondel@Aadarian_Realms
+Name Faye@Aadarian_Realms
 Sex  0
-Time 1464523539
+Time 1480273040
 End
 
 #UCACHE
-Name Fizpan@Aadarian_Realms
+Name Adaephon@Aadarian_Realms
 Sex  0
-Time 1464532353
+Time 1478922766
+End
+
+#UCACHE
+Name Adanedhel@Aadarian_Realms
+Sex  0
+Time 1478922766
+End
+
+#UCACHE
+Name Adrian@Aadarian_Realms
+Sex  0
+Time 1478922766
+End
+
+#UCACHE
+Name Aegis@Aadarian_Realms
+Sex  0
+Time 1478922767
+End
+
+#UCACHE
+Name Aeliana@Aadarian_Realms
+Sex  0
+Time 1478922767
+End
+
+#UCACHE
+Name Aelrindel@Aadarian_Realms
+Sex  0
+Time 1478922767
+End
+
+#UCACHE
+Name Aeodos@Aadarian_Realms
+Sex  0
+Time 1478922767
+End
+
+#UCACHE
+Name Aeryn@Aadarian_Realms
+Sex  0
+Time 1478922768
+End
+
+#UCACHE
+Name Agailia@Aadarian_Realms
+Sex  0
+Time 1478922768
+End
+
+#UCACHE
+Name Aleister@Aadarian_Realms
+Sex  0
+Time 1478922768
+End
+
+#UCACHE
+Name Greed@SotU
+Sex  0
+Time 1478968525
+End
+
+#UCACHE
+Name Nihilus@SotU
+Sex  0
+Time 1478969636
+End
+
+#UCACHE
+Name Bane@SotU
+Sex  0
+Time 1478974148
+End
+
+#UCACHE
+Name Khasius@SotU
+Sex  0
+Time 1478994496
+End
+
+#UCACHE
+Name Sion@SotU
+Sex  0
+Time 1478994920
+End
+
+#UCACHE
+Name Ensnare@SotU
+Sex  0
+Time 1479001839
+End
+
+#UCACHE
+Name Katrina@War of Legend
+Sex  1
+Time 1479004408
+End
+
+#UCACHE
+Name Xvirthul@War of Legend
+Sex  0
+Time 1479020808
+End
+
+#UCACHE
+Name Garph@Aadarian_Realms
+Sex  0
+Time 1479041512
+End
+
+#UCACHE
+Name Lisp@Aadarian_Realms
+Sex  0
+Time 1479172155
+End
+
+#UCACHE
+Name Madriel@Aadarian_Realms
+Sex  0
+Time 1479361862
+End
+
+#UCACHE
+Name Morgana@Aadarian_Realms
+Sex  0
+Time 1480379369
+End
+
+#UCACHE
+Name Vladaar@6Dragons
+Sex  0
+Time 1479250423
+End
+
+#UCACHE
+Name Azmodeus@SotU
+Sex  0
+Time 1479270265
+End
+
+#UCACHE
+Name Oaralin@SotU
+Sex  0
+Time 1479333406
+End
+
+#UCACHE
+Name Eol@SotU
+Sex  0
+Time 1479333422
+End
+
+#UCACHE
+Name Oarien@SotU
+Sex  0
+Time 1479339184
+End
+
+#UCACHE
+Name Cairuh@Aadarian_Realms
+Sex  0
+Time 1479359261
+End
+
+#UCACHE
+Name Kurian@Aadarian_Realms
+Sex  0
+Time 1479359313
+End
+
+#UCACHE
+Name Erin@Aadarian_Realms
+Sex  0
+Time 1480379367
+End
+
+#UCACHE
+Name Kalissa@Aadarian_Realms
+Sex  0
+Time 1479361862
+End
+
+#UCACHE
+Name Malleus@Aadarian_Realms
+Sex  0
+Time 1479361863
+End
+
+#UCACHE
+Name Marcus@Aadarian_Realms
+Sex  0
+Time 1479361863
+End
+
+#UCACHE
+Name Maril@Aadarian_Realms
+Sex  0
+Time 1479361863
+End
+
+#UCACHE
+Name Rysah@Aadarian_Realms
+Sex  0
+Time 1479361864
+End
+
+#UCACHE
+Name Qwer@SotU
+Sex  0
+Time 1479436057
+End
+
+#UCACHE
+Name Zaq@SotU
+Sex  0
+Time 1479436076
+End
+
+#UCACHE
+Name Qwera@SotU
+Sex  0
+Time 1479436426
+End
+
+#UCACHE
+Name Willa@Aadarian_Realms
+Sex  0
+Time 1480379370
+End
+
+#UCACHE
+Name Argust@Aadarian_Realms
+Sex  0
+Time 1480379367
+End
+
+#UCACHE
+Name @War of Legend
+Sex  1
+Time 1480602506
+End
+
+#UCACHE
+Name Zcomponents@War of Legend
+Sex  0
+Time 1479557262
+End
+
+#UCACHE
+Name Zrecipes@War of Legend
+Sex  0
+Time 1479557262
+End
+
+#UCACHE
+Name Zmisc@War of Legend
+Sex  0
+Time 1479557262
+End
+
+#UCACHE
+Name Xuix@Aadarian_Realms
+Sex  0
+Time 1479577532
+End
+
+#UCACHE
+Name Jagg@Aadarian_Realms
+Sex  0
+Time 1479621534
+End
+
+#UCACHE
+Name Halenbane@Aadarian_Realms
+Sex  0
+Time 1479662725
+End
+
+#UCACHE
+Name Tywind@Aadarian_Realms
+Sex  0
+Time 1479676942
+End
+
+#UCACHE
+Name Rayal@Aadarian_Realms
+Sex  0
+Time 1479679046
+End
+
+#UCACHE
+Name Zakatar@War of Legend
+Sex  0
+Time 1479694160
+End
+
+#UCACHE
+Name Krocek@War of Legend
+Sex  0
+Time 1479705579
+End
+
+#UCACHE
+Name Talen@SotU
+Sex  0
+Time 1479705686
+End
+
+#UCACHE
+Name Leradine@War of Legend
+Sex  0
+Time 1479705968
+End
+
+#UCACHE
+Name Azeruk@War of Legend
+Sex  0
+Time 1479706094
+End
+
+#UCACHE
+Name Grieffels@War of Legend
+Sex  0
+Time 1479706188
+End
+
+#UCACHE
+Name Ravana@War of Legend
+Sex  0
+Time 1479711206
+End
+
+#UCACHE
+Name Grief@War of Legend
+Sex  0
+Time 1479787910
+End
+
+#UCACHE
+Name Rayal@Aadarian_Realms-Dev
+Sex  0
+Time 1479822434
+End
+
+#UCACHE
+Name Naicul@War of Legend
+Sex  0
+Time 1479907785
+End
+
+#UCACHE
+Name Guts@War of Legend
+Sex  0
+Time 1480027544
+End
+
+#UCACHE
+Name Squall@War of Legend
+Sex  0
+Time 1480027896
+End
+
+#UCACHE
+Name Squalls@War of Legend
+Sex  0
+Time 1480028353
+End
+
+#UCACHE
+Name Pepsi@War of Legend
+Sex  0
+Time 1480028353
+End
+
+#UCACHE
+Name Deloth@War of Legend
+Sex  0
+Time 1480098038
+End
+
+#UCACHE
+Name Thera@Star Wars: Jedi vs Sith
+Sex  1
+Time 1480105235
+End
+
+#UCACHE
+Name Desync@War of Legend
+Sex  0
+Time 1480135954
+End
+
+#UCACHE
+Name Sirex@War of Legend
+Sex  0
+Time 1480176989
+End
+
+#UCACHE
+Name Elrohir@War of Legend
+Sex  0
+Time 1480281232
+End
+
+#UCACHE
+Name Merik@War of Legend
+Sex  0
+Time 1480283734
+End
+
+#UCACHE
+Name Draugluin@War of Legend
+Sex  0
+Time 1480285508
+End
+
+#UCACHE
+Name Arvaxus@War of Legend
+Sex  0
+Time 1480297727
+End
+
+#UCACHE
+Name Mommy@War of Legend
+Sex  0
+Time 1480306019
+End
+
+#UCACHE
+Name Attis@War of Legend
+Sex  0
+Time 1480310577
+End
+
+#UCACHE
+Name Muftuk@Aadarian_Realms
+Sex  0
+Time 1480312789
+End
+
+#UCACHE
+Name Remmy@Aadarian_Realms
+Sex  0
+Time 1480340873
+End
+
+#UCACHE
+Name Illyanna@SotU
+Sex  1
+Time 1480348428
+End
+
+#UCACHE
+Name Tijer@Aadarian_Realms
+Sex  0
+Time 1480348838
+End
+
+#UCACHE
+Name Tijer@War of Legend
+Sex  0
+Time 1480366718
+End
+
+#UCACHE
+Name Meridius@War of Legend
+Sex  0
+Time 1480366718
+End
+
+#UCACHE
+Name Fangs@War of Legend
+Sex  0
+Time 1480366719
+End
+
+#UCACHE
+Name Claws@War of Legend
+Sex  0
+Time 1480366719
+End
+
+#UCACHE
+Name Hogan@War of Legend
+Sex  0
+Time 1480366719
+End
+
+#UCACHE
+Name Shady@War of Legend
+Sex  0
+Time 1480366719
+End
+
+#UCACHE
+Name Heisenberg@War of Legend
+Sex  0
+Time 1480366720
+End
+
+#UCACHE
+Name Noob@War of Legend
+Sex  0
+Time 1480366720
+End
+
+#UCACHE
+Name Aaerin@Aadarian_Realms
+Sex  0
+Time 1480379366
+End
+
+#UCACHE
+Name Alcyer@Aadarian_Realms
+Sex  0
+Time 1480379366
+End
+
+#UCACHE
+Name Caerin@Aadarian_Realms
+Sex  0
+Time 1480379367
+End
+
+#UCACHE
+Name Jagang@Aadarian_Realms
+Sex  0
+Time 1480379367
+End
+
+#UCACHE
+Name Kain@Aadarian_Realms
+Sex  0
+Time 1480379368
+End
+
+#UCACHE
+Name Keiichi@Aadarian_Realms
+Sex  0
+Time 1480379368
+End
+
+#UCACHE
+Name Krilantis@Aadarian_Realms
+Sex  0
+Time 1480379368
+End
+
+#UCACHE
+Name Kurag@Aadarian_Realms
+Sex  0
+Time 1480379369
+End
+
+#UCACHE
+Name Nantuko@Aadarian_Realms
+Sex  0
+Time 1480379369
+End
+
+#UCACHE
+Name Nurian@Aadarian_Realms
+Sex  0
+Time 1480379369
+End
+
+#UCACHE
+Name Nyrian@Aadarian_Realms
+Sex  0
+Time 1480379370
+End
+
+#UCACHE
+Name Odomus@Aadarian_Realms
+Sex  0
+Time 1480379370
+End
+
+#UCACHE
+Name Taryn@Aadarian_Realms
+Sex  0
+Time 1480379370
+End
+
+#UCACHE
+Name Smiff@War of Legend
+Sex  0
+Time 1480426472
+End
+
+#UCACHE
+Name Voyour@War of Legend
+Sex  0
+Time 1480426573
+End
+
+#UCACHE
+Name Olek@SotU
+Sex  0
+Time 1480434842
+End
+
+#UCACHE
+Name Acererak@Aadarian_Realms
+Sex  0
+Time 1480442271
+End
+
+#UCACHE
+Name Addiktion@Aadarian_Realms
+Sex  0
+Time 1480442271
+End
+
+#UCACHE
+Name Alzorn@Aadarian_Realms
+Sex  0
+Time 1480442271
+End
+
+#UCACHE
+Name Arcady@Aadarian_Realms
+Sex  0
+Time 1480442271
+End
+
+#UCACHE
+Name Aryllis@Aadarian_Realms
+Sex  0
+Time 1480442272
+End
+
+#UCACHE
+Name Atan@Aadarian_Realms
+Sex  0
+Time 1480442272
+End
+
+#UCACHE
+Name Becalkirad@Aadarian_Realms
+Sex  0
+Time 1480442272
+End
+
+#UCACHE
+Name Cruithear@Aadarian_Realms
+Sex  0
+Time 1480442272
+End
+
+#UCACHE
+Name Dib@Aadarian_Realms
+Sex  0
+Time 1480442273
+End
+
+#UCACHE
+Name Draven@Aadarian_Realms
+Sex  0
+Time 1480442273
+End
+
+#UCACHE
+Name Firesong@Aadarian_Realms
+Sex  0
+Time 1480442273
+End
+
+#UCACHE
+Name Multibot@MultiMUD
+Sex  1
+Time 1480447504
+End
+
+#UCACHE
+Name Benden@MultiMUD
+Sex  0
+Time 1480447504
+End
+
+#UCACHE
+Name Ashet@Aadarian_Realms
+Sex  0
+Time 1480450935
+End
+
+#UCACHE
+Name Seyfullah@MultiMUD
+Sex  0
+Time 1480456378
+End
+
+#UCACHE
+Name Ander@SotU
+Sex  0
+Time 1480457734
+End
+
+#UCACHE
+Name Pariah@War of Legend
+Sex  0
+Time 1480479617
+End
+
+#UCACHE
+Name Wutschi@MultiMUD
+Sex  1
+Time 1480485036
+End
+
+#UCACHE
+Name Morwen@War of Legend
+Sex  1
+Time 1480565577
+End
+
+#UCACHE
+Name Weakling@War of Legend
+Sex  0
+Time 1480568653
+End
+
+#UCACHE
+Name Mourningstar@War of Legend
+Sex  0
+Time 1480570730
+End
+
+#UCACHE
+Name Osheh@War of Legend
+Sex  1
+Time 1480574833
+End
+
+#UCACHE
+Name Shemhazai@War of Legend
+Sex  0
+Time 1480578791
+End
+
+#UCACHE
+Name Hroumeh@War of Legend
+Sex  1
+Time 1480584780
+End
+
+#UCACHE
+Name Ayane@MultiMUD
+Sex  1
+Time 1480596705
+End
+
+#UCACHE
+Name Betrayu@War of Legend
+Sex  0
+Time 1480600361
+End
+
+#UCACHE
+Name Atreyu@War of Legend
+Sex  0
+Time 1480600361
+End
+
+#UCACHE
+Name Kronos@War of Legend
+Sex  0
+Time 1480600361
+End
+
+#UCACHE
+Name Shadowmaster@War of Legend
+Sex  0
+Time 1480600362
+End
+
+#UCACHE
+Name Asrai@War of Legend
+Sex  0
+Time 1480600362
+End
+
+#UCACHE
+Name Serpentis@War of Legend
+Sex  0
+Time 1480600362
+End
+
+#UCACHE
+Name Kratos@War of Legend
+Sex  0
+Time 1480600362
+End
+
+#UCACHE
+Name Stormbringer@War of Legend
+Sex  0
+Time 1480600363
+End
+
+#UCACHE
+Name Vortex@War of Legend
+Sex  0
+Time 1480600363
+End
+
+#UCACHE
+Name Shadowdancer@War of Legend
+Sex  0
+Time 1480600470
+End
+
+#UCACHE
+Name Marin@MultiMUD
+Sex  1
+Time 1480602099
+End
+
+#UCACHE
+Name Velma@MultiMUD
+Sex  1
+Time 1480602114
+End
+
+#UCACHE
+Name Narumi@MultiMUD
+Sex  0
+Time 1480602185
+End
+
+#UCACHE
+Name Hyatt@MultiMUD
+Sex  1
+Time 1480602219
+End
+
+#UCACHE
+Name Ino@MultiMUD
+Sex  1
+Time 1480602243
+End
+
+#UCACHE
+Name Karu@MultiMUD
+Sex  0
+Time 1480602267
+End
+
+#UCACHE
+Name Tenma@MultiMUD
+Sex  1
+Time 1480602472
+End
+
+#UCACHE
+Name Ebony@MultiMUD
+Sex  1
+Time 1480602487
+End
+
+#UCACHE
+Name Reika@MultiMUD
+Sex  1
+Time 1480602507
+End
+
+#UCACHE
+Name Rucca@MultiMUD
+Sex  1
+Time 1480602519
+End
+
+#UCACHE
+Name Sito@MultiMUD
+Sex  0
+Time 1480602538
+End
+
+#UCACHE
+Name Zeros@MultiMUD
+Sex  0
+Time 1480602615
+End
+
+#UCACHE
+Name Jimmy@MultiMUD
+Sex  0
+Time 1480602643
+End
+
+#UCACHE
+Name Sakura@MultiMUD
+Sex  1
+Time 1480602718
+End
+
+#UCACHE
+Name Yuki@MultiMUD
+Sex  1
+Time 1480602748
+End
+
+#UCACHE
+Name Genra@MultiMUD
+Sex  0
+Time 1480602780
+End
+
+#UCACHE
+Name Kana@MultiMUD
+Sex  1
+Time 1480602801
+End
+
+#UCACHE
+Name Kasumi@MultiMUD
+Sex  1
+Time 1480602822
+End
+
+#UCACHE
+Name Roxy@MultiMUD
+Sex  1
+Time 1480602844
+End
+
+#UCACHE
+Name Exie@MultiMUD
+Sex  1
+Time 1480602936
+End
+
+#UCACHE
+Name Mio@MultiMUD
+Sex  1
+Time 1480602960
+End
+
+#UCACHE
+Name Bechorath@MultiMUD
+Sex  0
+Time 1480616895
+End
+
+#UCACHE
+Name Burko@MultiMUD
+Sex  0
+Time 1480616943
+End
+
+#UCACHE
+Name Buriyaki@MultiMUD
+Sex  0
+Time 1480617137
+End
+
+#UCACHE
+Name Sven@MultiMUD
+Sex  0
+Time 1480617174
+End
+
+#UCACHE
+Name Bisandyria@MultiMUD
+Sex  1
+Time 1480617202
+End
+
+#UCACHE
+Name Gilgamesh@MultiMUD
+Sex  0
+Time 1480617218
+End
+
+#UCACHE
+Name Bubba@MultiMUD
+Sex  0
+Time 1480617306
+End
+
+#UCACHE
+Name Beliam@MultiMUD
+Sex  0
+Time 1480617347
+End
+
+#UCACHE
+Name Gregoriam@MultiMUD
+Sex  0
+Time 1480617372
+End
+
+#UCACHE
+Name Sajlur@MultiMUD
+Sex  0
+Time 1480617400
+End
+
+#UCACHE
+Name Burton@MultiMUD
+Sex  0
+Time 1480617418
+End
+
+#UCACHE
+Name Mithrandir@MultiMUD
+Sex  0
+Time 1480617461
+End
+
+#UCACHE
+Name Boh@MultiMUD
+Sex  0
+Time 1480617547
+End
+
+#UCACHE
+Name Zwaafghroll@MultiMUD
+Sex  0
+Time 1480620077
+End
+
+#UCACHE
+Name Kassh@MultiMUD
+Sex  0
+Time 1480620109
+End
+
+#UCACHE
+Name Aarsith@MultiMUD
+Sex  0
+Time 1480620128
+End
+
+#UCACHE
+Name Hortensia@MultiMUD
+Sex  0
+Time 1480620144
+End
+
+#UCACHE
+Name Aargolyn@MultiMUD
+Sex  1
+Time 1480620229
+End
+
+#UCACHE
+Name Marmorn@MultiMUD
+Sex  0
+Time 1480620771
+End
+
+#UCACHE
+Name Phalero@MultiMUD
+Sex  0
+Time 1480620992
+End
+
+#UCACHE
+Name Mjah@MultiMUD
+Sex  0
+Time 1480621096
+End
+
+#UCACHE
+Name Nemesis@MultiMUD
+Sex  0
+Time 1480625576
+End
+
+#UCACHE
+Name Macros@MultiMUD
+Sex  0
+Time 1480625588
+End
+
+#UCACHE
+Name Loki@MultiMUD
+Sex  0
+Time 1480625600
+End
+
+#UCACHE
+Name Anubis@MultiMUD
+Sex  0
+Time 1480625632
+End
+
+#UCACHE
+Name Azumi@MultiMUD
+Sex  1
+Time 1480625665
+End
+
+#UCACHE
+Name Milo@MultiMUD
+Sex  0
+Time 1480625689
+End
+
+#UCACHE
+Name Brock@MultiMUD
+Sex  0
+Time 1480625703
+End
+
+#UCACHE
+Name Escalla@MultiMUD
+Sex  1
+Time 1480625739
+End
+
+#UCACHE
+Name Tityos@MultiMUD
+Sex  0
+Time 1480628644
+End
+
+#UCACHE
+Name Menteith@MultiMUD
+Sex  0
+Time 1480629204
 End
 
 #END

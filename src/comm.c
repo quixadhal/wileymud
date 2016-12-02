@@ -25,6 +25,8 @@
 #include <signal.h>
 #include <sys/un.h>
 #include <sys/resource.h>
+#include <stddef.h>
+#include <locale.h>
 
 #include "global.h"
 #ifdef I3
@@ -100,6 +102,8 @@ int main(int argc, const char **argv)
     port = DFLT_PORT;
     dir = DFLT_DIR;
     WizLock = FALSE;
+
+    setlocale(LC_ALL, "en_US.utf8");
 
     while ((pos < argc) && (*(argv[pos]) == '-')) {
 	switch (*(argv[pos] + 1)) {
@@ -1031,7 +1035,153 @@ int write_to_descriptor(int desc, const char *txt)
     return (0);
 }
 
+#define TELNET_SB   250
+#define TELNET_SE   240
+#define TELNET_WILL 0xFB
+#define TELNET_WONT 0xFC
+#define TELNET_DO   0xFD
+#define TELNET_DONT 0xFE
+#define TELNET_IAC  0xFF
+
 int process_input(struct descriptor_data *t)
+{
+    int                                     i = 0;
+    int                                     j = 0;
+    int                                     in_iac = 0;
+    int                                     in_sub = 0;
+    int                                     begin = 0;
+    int                                     new_data = 0;
+    char                                    *line_marker = NULL;
+    char                                    buffer[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
+    char                                    tmp[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
+
+    if (DEBUG > 2)
+	log_info("called %s with %08zx", __PRETTY_FUNCTION__, (size_t) t);
+
+    begin = strlen(t->buf);
+    new_data = read(t->descriptor, t->buf + begin, MAX_STRING_LENGTH - (begin) - 2); // Leave an extra byte for two-character newline processing.
+    if( new_data < 0 ) {
+        if (errno != EWOULDBLOCK) {
+            log_error("Socket READ error.");
+            return( -1 );
+        } else {
+            // If blocking, pick it up next time.
+            return( 0 );
+        }
+    } else if( new_data == 0 ) {
+        log_error("EOF on socket read.");
+        return( -1 );
+    }
+    *(t->buf + begin + new_data) = 0; // Add NUL to end of newly extended string
+    if( !(line_marker = strpbrk((t->buf + begin), "\r\n")) ) {
+        // If no newline (or partial newline) was found, process next time.
+        return( 0 );
+    }
+
+    // At this point we have valid input to process.
+
+    // Copy up to (but not including) the first newline marker, and NUL the position it would be in.
+    strncpy(buffer, t->buf, line_marker - t->buf);
+    buffer[line_marker - t->buf] = '\0';
+    while( *line_marker && ISNEWL(*line_marker) ) {
+        line_marker++; // Skip newline characters, however many there are.
+    }
+    strcpy(tmp, line_marker); // Copy unprocessed buffer aside.
+
+    if( strlen(buffer) > MAX_INPUT_LENGTH - 1) {
+        buffer[MAX_INPUT_LENGTH - 1] = '\0';
+        // report the truncated line to the user.
+        if( write_to_descriptor(t->descriptor, "Line too long.  Truncated to:\r\n") >= 0 ) {
+            write_to_descriptor(t->descriptor, buffer);
+            write_to_descriptor(t->descriptor, "\r\n");
+        } else {
+            return( -1 );
+        }
+    }
+
+    // Move the unprocessed content to the front of t->buf for future processing.
+    strcpy(t->buf, tmp);
+
+    // At this point, we want to strip out any TELNET sequences, since we don't support them.
+    for(i = 0, j = 0; i < strlen(buffer);) {
+        if( !in_iac ) {
+            if( (unsigned char) buffer[i] != TELNET_IAC ) {
+                // Normal processing
+                tmp[j] = buffer[i];
+                i++;
+                j++;
+            } else {
+                in_iac = 1;
+                i++;
+            }
+        } else {
+            if( in_sub ) {
+                if( (unsigned char) buffer[i] == TELNET_SE ) {
+                    // done!
+                    i++;
+                    in_sub = 0;
+                    in_iac = 0;
+                } else {
+                    // Part of the SB sub... skip it all.
+                    i++;
+                }
+            } else {
+                switch( (unsigned char) buffer[i] ) {
+                    case TELNET_SB:
+                        // Sub-negotiation
+                        i++;
+                        in_sub = 1;
+                    case TELNET_WILL:
+                    case TELNET_WONT:
+                    case TELNET_DO:
+                    case TELNET_DONT:
+                        i++;            // Skip the OP
+                        i++;            // Skip whatever it tried to do or ask
+                        in_iac = 0;     // done
+                        break;
+                    case TELNET_IAC:
+                        in_iac = 0;     // Double IAC, escaped!
+                    default:
+                        // Unknown
+                        tmp[j] = buffer[i];
+                        i++;
+                        j++;
+                }
+            }
+        }
+    }
+    tmp[j] = '\0';
+
+    if( *tmp == '!' ) {
+        // This means do the last command again, so... swap!
+        strcpy(tmp, t->last_input);
+    } else {
+        // Save an extra copy as our last command.
+        strcpy(t->last_input, tmp);
+    }
+    // Send to actual command queue for processing.
+    write_to_q(tmp, &t->input, 0);
+    t->idle_time = time(0);
+
+    if( (t->snoop.snoop_by) && (t->snoop.snoop_by->desc) ) {
+        // If we're being snooped, send our input to the snooper.
+        write_to_q("% ", &t->snoop.snoop_by->desc->output, 1);
+        write_to_q(tmp, &t->snoop.snoop_by->desc->output, 0);
+        write_to_q("\r\n", &t->snoop.snoop_by->desc->output, 0);
+    }
+
+    // Debugging... turn it off unless there are... issues.
+    //for(i = 0; i < strlen(tmp); i++) {
+    //    if( !isprint( tmp[i] ) ) {
+    //        log_info("Tossing character %02.2X \"%c\"", tmp[i], tmp[i]);
+    //        log_info("Tossed from \"%s\"", tmp);
+    //    }
+    //}
+
+    return( 1 );
+}
+
+int old_process_input(struct descriptor_data *t)
 {
     int                                     sofar = 0;
     int                                     thisround = 0;
@@ -1087,22 +1237,32 @@ int process_input(struct descriptor_data *t)
 	if (!ISNEWL(*(t->buf + i)) && !(flag = (k >= (MAX_INPUT_LENGTH - 2))))
 	    if (*(t->buf + i) == '\b') {		       /* backspace */
 		if (k) {				       /* more than one char ? */
+#if 0
 		    if (*(tmp + --k) == '$')
 			k--;
+#endif
 		    i++;
 		} else {
 		    i++;				       /* no or just one char.. Skip backsp */
 		}
 	    } else {
-		if (isascii(*(t->buf + i)) && isprint(*(t->buf + i))) {
+		/* if (isascii(*(t->buf + i)) && isprint(*(t->buf + i))) { */
+		if (isprint(*(t->buf + i))) {
 		    /*
 		     * trans char, double for '$' (printf)        
 		     */
-		    if ((*(tmp + k) = *(t->buf + i)) == '$')
-			*(tmp + ++k) = '$';
+
+		    /* if ((*(tmp + k) = *(t->buf + i)) == '$') */
+
+		    *(tmp + k) = *(t->buf + i);
+#if 0
+		    if ((*(tmp + k)) == '$')
+                        *(tmp + ++k) = '$';
+#endif
 		    k++;
 		    i++;
 		} else {
+	            log_info("Tossing character %02.2X \"%c\"", *(t->buf + i), *(t->buf + i));
 		    i++;
 		}
 	} else {

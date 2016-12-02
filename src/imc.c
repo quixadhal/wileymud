@@ -4097,7 +4097,8 @@ void imc_savehelps(void)
 	fprintf(fp, "%s", "#HELP\n");
 	fprintf(fp, "Name %s\n", help->name);
 	fprintf(fp, "Perm %s\n", imcperm_names[help->level]);
-	fprintf(fp, "Text %s¢\n", help->text);
+	/* fprintf(fp, "Text %s¢\n", help->text); */
+	fprintf(fp, "Text %s%c\n", help->text, 0xA2);
 	fprintf(fp, "%s", "End\n\n");
     }
     fprintf(fp, "%s", "#END\n");
@@ -4107,7 +4108,7 @@ void imc_savehelps(void)
 void imc_readhelp(IMC_HELP_DATA *help, FILE * fp)
 {
     const char                             *word;
-    char                                    hbuf[LGST];
+    unsigned char                           hbuf[LGST];
     int                                     permvalue;
     bool                                    fMatch;
 
@@ -4151,11 +4152,11 @@ void imc_readhelp(IMC_HELP_DATA *help, FILE * fp)
 		if (!strcasecmp(word, "Text")) {
 		    int                                     num = 0;
 
-		    while ((hbuf[num] = fgetc(fp)) != EOF && hbuf[num] != '¢'
+		    while ((int)(hbuf[num] = fgetc(fp)) != EOF && hbuf[num] != (unsigned char) 0xA2
 			   && num < (LGST - 2))
 			num++;
 		    hbuf[num] = '\0';
-		    help->text = IMCSTRALLOC(hbuf);
+		    help->text = IMCSTRALLOC((const char *)hbuf);
 		    fMatch = TRUE;
 		    break;
 		}
@@ -4733,7 +4734,7 @@ void imc_delete_who_template(void)
 void imc_load_who_template(void)
 {
     FILE                                   *fp;
-    char                                    hbuf[LGST];
+    unsigned char                           hbuf[LGST];
     char                                   *word;
     int                                     num;
 
@@ -4755,40 +4756,40 @@ void imc_load_who_template(void)
 	num = 0;
 
 	if (!strcasecmp(word, "Head:")) {
-	    while ((hbuf[num] = fgetc(fp)) != EOF && hbuf[num] != '¢' && num < (LGST - 2))
+	    while ((int)(hbuf[num] = fgetc(fp)) != EOF && hbuf[num] != (unsigned char) 0xA2 && num < (LGST - 2))
 		++num;
 	    hbuf[num] = '\0';
-	    whot->head = IMCSTRALLOC(parse_who_header(hbuf));
+	    whot->head = IMCSTRALLOC(parse_who_header((char *)hbuf));
 	} else if (!strcasecmp(word, "Tail:")) {
-	    while ((hbuf[num] = fgetc(fp)) != EOF && hbuf[num] != '¢' && num < (LGST - 2))
+	    while ((int)(hbuf[num] = fgetc(fp)) != EOF && hbuf[num] != (unsigned char) 0xA2 && num < (LGST - 2))
 		++num;
 	    hbuf[num] = '\0';
-	    whot->tail = IMCSTRALLOC(parse_who_tail(hbuf));
+	    whot->tail = IMCSTRALLOC(parse_who_tail((char *)hbuf));
 	} else if (!strcasecmp(word, "Plrline:")) {
-	    while ((hbuf[num] = fgetc(fp)) != EOF && hbuf[num] != '¢' && num < (LGST - 2))
+	    while ((int)(hbuf[num] = fgetc(fp)) != EOF && hbuf[num] != (unsigned char) 0xA2 && num < (LGST - 2))
 		++num;
 	    hbuf[num] = '\0';
-	    whot->plrline = IMCSTRALLOC(hbuf);
+	    whot->plrline = IMCSTRALLOC((const char *)hbuf);
 	} else if (!strcasecmp(word, "Immline:")) {
-	    while ((hbuf[num] = fgetc(fp)) != EOF && hbuf[num] != '¢' && num < (LGST - 2))
+	    while ((int)(hbuf[num] = fgetc(fp)) != EOF && hbuf[num] != (unsigned char) 0xA2 && num < (LGST - 2))
 		++num;
 	    hbuf[num] = '\0';
-	    whot->immline = IMCSTRALLOC(hbuf);
+	    whot->immline = IMCSTRALLOC((const char *)hbuf);
 	} else if (!strcasecmp(word, "Immheader:")) {
-	    while ((hbuf[num] = fgetc(fp)) != EOF && hbuf[num] != '¢' && num < (LGST - 2))
+	    while ((int)(hbuf[num] = fgetc(fp)) != EOF && hbuf[num] != (unsigned char) 0xA2 && num < (LGST - 2))
 		++num;
 	    hbuf[num] = '\0';
-	    whot->immheader = IMCSTRALLOC(hbuf);
+	    whot->immheader = IMCSTRALLOC((const char *)hbuf);
 	} else if (!strcasecmp(word, "Plrheader:")) {
-	    while ((hbuf[num] = fgetc(fp)) != EOF && hbuf[num] != '¢' && num < (LGST - 2))
+	    while ((int)(hbuf[num] = fgetc(fp)) != EOF && hbuf[num] != (unsigned char) 0xA2 && num < (LGST - 2))
 		++num;
 	    hbuf[num] = '\0';
-	    whot->plrheader = IMCSTRALLOC(hbuf);
+	    whot->plrheader = IMCSTRALLOC((const char *)hbuf);
 	} else if (!strcasecmp(word, "Master:")) {
-	    while ((hbuf[num] = fgetc(fp)) != EOF && hbuf[num] != '¢' && num < (LGST - 2))
+	    while ((int)(hbuf[num] = fgetc(fp)) != EOF && hbuf[num] != (unsigned char) 0xA2 && num < (LGST - 2))
 		++num;
 	    hbuf[num] = '\0';
-	    whot->master = IMCSTRALLOC(hbuf);
+	    whot->master = IMCSTRALLOC((const char *)hbuf);
 	}
     }
     while (!feof(fp));

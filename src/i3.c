@@ -2309,7 +2309,7 @@ void I3_send_channel_t(I3_CHANNEL *channel, const char *name, char *tmud, char *
     I3_write_buffer("\",\"");
     send_to_i3(I3_escape(msg_t));
     I3_write_buffer("\",\"");
-    I3_write_buffer(I3_nameremap(name));
+    I3_write_buffer(name);
     I3_write_buffer("\",\"");
     I3_write_buffer(tvis);
     I3_write_buffer("\",})\r");
@@ -6308,6 +6308,7 @@ void i3_loop(void)
      */
     if ((tm_info->tm_wday == 1) || (tm_info->tm_wday == 3) || (tm_info->tm_wday == 5)) {
         if ((tm_info->tm_hour == 5) && (tm_info->tm_min == 0) && (tm_info->tm_sec == 0)) {
+	    i3log("Client is rebooting for weekly router reboot.");
             I3_connection_close(TRUE);
             return;
         }

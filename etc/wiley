@@ -18,6 +18,8 @@ SCRIPT=$MUDDIR/bin/wileyloop
 PIDFILE=$MUDDIR/etc/wileymud.pid
 STARTDIR=$MUDDIR/bin
 LOGFILE=`/bin/date "+$MUDDIR/lib/log/runlog.%y%m%d-%H%M%S"`
+export LANG="en_US.utf8"
+export LC_ALL="en_US.utf8"
 
 test -x $DAEMON || exit 0
 

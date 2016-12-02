@@ -289,7 +289,7 @@ struct char_data                       *FindMobInRoomWithFunction(int room, ifun
 
 }
 
-int MageGuildMaster(struct char_data *ch, int cmd, const const char *arg)
+int MageGuildMaster(struct char_data *ch, int cmd, const char *arg)
 {
     int                                     anumber = 0;
     int                                     i = 0;
@@ -367,7 +367,7 @@ int MageGuildMaster(struct char_data *ch, int cmd, const const char *arg)
     return TRUE;
 }
 
-int ClericGuildMaster(struct char_data *ch, int cmd, const const char *arg)
+int ClericGuildMaster(struct char_data *ch, int cmd, const char *arg)
 {
     int                                     anumber = 0;
     int                                     i = 0;
@@ -445,7 +445,7 @@ int ClericGuildMaster(struct char_data *ch, int cmd, const const char *arg)
     return TRUE;
 }
 
-int ThiefGuildMaster(struct char_data *ch, int cmd, const const char *arg)
+int ThiefGuildMaster(struct char_data *ch, int cmd, const char *arg)
 {
     int                                     anumber = 0;
     int                                     i = 0;
@@ -523,7 +523,7 @@ int ThiefGuildMaster(struct char_data *ch, int cmd, const const char *arg)
     return TRUE;
 }
 
-int FighterGuildMaster(struct char_data *ch, int cmd, const const char *arg)
+int FighterGuildMaster(struct char_data *ch, int cmd, const char *arg)
 {
     int                                     anumber = 0;
     int                                     i = 0;
@@ -601,7 +601,7 @@ int FighterGuildMaster(struct char_data *ch, int cmd, const const char *arg)
     return TRUE;
 }
 
-int RangerGuildMaster(struct char_data *ch, int cmd, const const char *arg)
+int RangerGuildMaster(struct char_data *ch, int cmd, const char *arg)
 {
     int                                     anumber = 0;
     int                                     i = 0;
@@ -697,7 +697,7 @@ int RangerGuildMaster(struct char_data *ch, int cmd, const const char *arg)
     return TRUE;
 }
 
-int GenericGuildMaster(struct char_data *ch, int cmd, const const char *arg)
+int GenericGuildMaster(struct char_data *ch, int cmd, const char *arg)
 {
     int                                     anumber = 0;
     int                                     i = 0;
@@ -819,7 +819,7 @@ int GenericGuildMaster(struct char_data *ch, int cmd, const const char *arg)
     return TRUE;
 }
 
-int dump(struct char_data *ch, int cmd, const const char *arg)
+int dump(struct char_data *ch, int cmd, const char *arg)
 {
     struct obj_data                        *k = NULL;
     struct char_data                       *tmp_char = NULL;
@@ -872,7 +872,7 @@ int dump(struct char_data *ch, int cmd, const const char *arg)
     return TRUE;
 }
 
-int mayor(struct char_data *ch, int cmd, const const char *arg)
+int mayor(struct char_data *ch, int cmd, const char *arg)
 {
     static const char                       open_path[] =
 	"W3a3003b33000c111d0d111Oe333333Oe22c222112212111a1S.";
@@ -1139,7 +1139,7 @@ void npc_steal(struct char_data *ch, struct char_data *victim)
     }
 }
 
-int snake(struct char_data *ch, int cmd, const const char *arg)
+int snake(struct char_data *ch, int cmd, const char *arg)
 {
     if (DEBUG > 2)
 	log_info("called %s with %s, %d, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), cmd,
@@ -1160,7 +1160,7 @@ int snake(struct char_data *ch, int cmd, const const char *arg)
     return FALSE;
 }
 
-int ninja_master(struct char_data *ch, int cmd, const const char *arg)
+int ninja_master(struct char_data *ch, int cmd, const char *arg)
 {
     static const char                      *n_skills[] = {
 	"track",					       /* No. 180 */
@@ -1579,7 +1579,7 @@ int RepairGuy(struct char_data *ch, int cmd, const char *arg)
     }
 }
 
-int citizen(struct char_data *ch, int cmd, const const char *arg)
+int citizen(struct char_data *ch, int cmd, const char *arg)
 {
     if (DEBUG > 2)
 	log_info("called %s with %s, %d, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), cmd,
@@ -1609,7 +1609,7 @@ int citizen(struct char_data *ch, int cmd, const const char *arg)
     }
 }
 
-int shylar_guard(struct char_data *ch, int cmd, const const char *arg)
+int shylar_guard(struct char_data *ch, int cmd, const char *arg)
 {
     static struct obj_data                 *i = NULL;
     static struct char_data                *tch = NULL;
