@@ -204,8 +204,8 @@ struct i3_color_table
    I3_COLOR *prev;
    char *name; /* the name of the color */
    char *mudtag;  /* What the mud uses for the raw tag */
-   char *i3tag;   /* This client's internal code that represents the mudtag to the network */
-   char *i3fish;  /* The Pinkfish code for this color - bleh at having to do this twice! */
+   char *imctag;  /* This client's internal code that represents the mudtag to the network */
+   char *i3tag;   /* The Pinkfish code for this color - bleh at having to do this twice! */
 };
 
 struct router_data

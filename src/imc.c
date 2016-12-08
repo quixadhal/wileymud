@@ -1,3 +1,5 @@
+#ifdef IMC
+
 /* IMC2 Freedom Client - Developed by Mud Domain.
  *
  * Copyright ©2004-2008 by Roger Libiez ( Samson )
@@ -8001,4 +8003,7 @@ int main(int argc, char **argv)
     exit(0);
     return 0;
 }
+#endif
+
+/* IMC */
 #endif

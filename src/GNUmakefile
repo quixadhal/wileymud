@@ -21,7 +21,7 @@ SQL_LIB		= -L/usr/lib/postgresql -lpq -lecpg
 ID_DEP		= $(IDENTDIR)/libident.a
 ID_INC		= #
 ID_LIB		= -L$(IDENTDIR) -lident
-IMC_INC		= -DIMC -DIMCWILEY
+IMC_INC		= #-DIMC -DIMCWILEY
 I3_INC		= -DI3
 
 HOSTTYPE	= $(shell arch)
@@ -197,13 +197,13 @@ obj/shop.o: shop.c include/global.h include/bug.h include/comm.h \
 obj/opinion.o: opinion.c include/global.h include/bug.h include/utils.h \
   include/spells.h include/constants.h include/comm.h include/db.h \
   include/multiclass.h include/opinion.h
-obj/comm.o: comm.c include/global.h include/i3.h include/imc.h \
-  include/imccfg.h include/bug.h include/utils.h include/interpreter.h \
-  include/handler.h include/db.h include/modify.h include/whod.h \
-  include/multiclass.h include/weather.h include/mudlimits.h \
-  include/spells.h include/spell_parser.h include/sound.h \
-  include/fight.h include/mob_actions.h include/act_other.h \
-  include/signals.h include/ban.h include/board.h include/comm.h
+obj/comm.o: comm.c include/global.h include/i3.h include/bug.h \
+  include/utils.h include/interpreter.h include/handler.h include/db.h \
+  include/modify.h include/whod.h include/multiclass.h include/weather.h \
+  include/mudlimits.h include/spells.h include/spell_parser.h \
+  include/sound.h include/fight.h include/mob_actions.h \
+  include/act_other.h include/signals.h include/ban.h include/board.h \
+  include/comm.h
 obj/i3.o: i3.c include/global.h include/bug.h include/utils.h \
   include/multiclass.h include/comm.h include/constants.h \
   include/modify.h include/interpreter.h include/version.h include/i3.h
@@ -359,16 +359,14 @@ obj/act_obj.o: act_obj.c include/global.h include/bug.h include/utils.h \
   include/spells.h include/trap.h include/constants.h \
   include/spell_parser.h include/multiclass.h include/mudlimits.h \
   include/fight.h include/act_info.h include/act_obj.h
-obj/imc.o: imc.c include/sha256.h include/global.h include/bug.h \
-  include/utils.h include/multiclass.h include/comm.h \
-  include/constants.h include/modify.h include/imc.h include/imccfg.h
-obj/db.o: db.c include/global.h include/i3.h include/imc.h include/imccfg.h \
-  include/bug.h include/utils.h include/comm.h include/handler.h \
-  include/mudlimits.h include/opinion.h include/hash.h \
-  include/constants.h include/spells.h include/spell_parser.h \
-  include/reception.h include/weather.h include/modify.h include/fight.h \
-  include/act_social.h include/spec_procs.h include/multiclass.h \
-  include/board.h include/interpreter.h include/ban.h include/db.h
+obj/imc.o: imc.c
+obj/db.o: db.c include/global.h include/i3.h include/bug.h include/utils.h \
+  include/comm.h include/handler.h include/mudlimits.h include/opinion.h \
+  include/hash.h include/constants.h include/spells.h \
+  include/spell_parser.h include/reception.h include/weather.h \
+  include/modify.h include/fight.h include/act_social.h \
+  include/spec_procs.h include/multiclass.h include/board.h \
+  include/interpreter.h include/ban.h include/db.h
 obj/spells.o: spells.c include/global.h include/bug.h include/utils.h \
   include/comm.h include/db.h include/interpreter.h include/handler.h \
   include/constants.h include/multiclass.h include/act_move.h \
@@ -380,16 +378,16 @@ obj/act_skills.o: act_skills.c include/global.h include/bug.h include/utils.h \
   include/interpreter.h include/multiclass.h include/spells.h \
   include/spell_parser.h include/fight.h include/spec_procs.h \
   include/act_info.h include/act_skills.h
-obj/interpreter.o: interpreter.c include/global.h include/i3.h include/imc.h \
-  include/imccfg.h include/bug.h include/comm.h include/version.h \
-  include/db.h include/utils.h include/mudlimits.h include/constants.h \
-  include/act_comm.h include/act_info.h include/act_move.h \
-  include/act_obj.h include/act_off.h include/act_other.h \
-  include/act_skills.h include/act_social.h include/act_wiz.h \
-  include/spells.h include/spell_parser.h include/modify.h \
-  include/whod.h include/events.h include/random.h include/board.h \
-  include/multiclass.h include/handler.h include/reception.h \
-  include/tracking.h include/ban.h include/interpreter.h
+obj/interpreter.o: interpreter.c include/global.h include/i3.h include/bug.h \
+  include/comm.h include/version.h include/db.h include/utils.h \
+  include/mudlimits.h include/constants.h include/act_comm.h \
+  include/act_info.h include/act_move.h include/act_obj.h \
+  include/act_off.h include/act_other.h include/act_skills.h \
+  include/act_social.h include/act_wiz.h include/spells.h \
+  include/spell_parser.h include/modify.h include/whod.h \
+  include/events.h include/random.h include/board.h include/multiclass.h \
+  include/handler.h include/reception.h include/tracking.h include/ban.h \
+  include/interpreter.h
 obj/trap.o: trap.c include/global.h include/bug.h include/utils.h \
   include/spells.h include/comm.h include/db.h include/opinion.h \
   include/constants.h include/fight.h include/reception.h \

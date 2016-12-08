@@ -241,7 +241,7 @@ int run_the_game(int port)
     log_boot("Opening WHO port.");
     init_whod(port);
 
-#ifdef IMC
+#ifdef I3
     log_boot("Opening I3 connection.");
     i3_startup(FALSE, 3000, FALSE);
 #endif
@@ -610,13 +610,11 @@ void game_loop(int s)
 	}
 #endif
 
-#if 1
 #ifdef I3
 	i3_loop();
 #endif
 #ifdef IMC
 	imc_loop();
-#endif
 #endif
 
 	tics++;						       /* tics since last checkpoint signal */
@@ -1051,6 +1049,7 @@ int process_input(struct descriptor_data *t)
     int                                     in_sub = 0;
     int                                     begin = 0;
     int                                     new_data = 0;
+    int                                     loop_data = 0;
     char                                    *line_marker = NULL;
     char                                    buffer[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
     char                                    tmp[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
@@ -1059,19 +1058,26 @@ int process_input(struct descriptor_data *t)
 	log_info("called %s with %08zx", __PRETTY_FUNCTION__, (size_t) t);
 
     begin = strlen(t->buf);
-    new_data = read(t->descriptor, t->buf + begin, MAX_STRING_LENGTH - (begin) - 2); // Leave an extra byte for two-character newline processing.
-    if( new_data < 0 ) {
-        if (errno != EWOULDBLOCK) {
-            log_error("Socket READ error.");
+
+    do {
+        loop_data = read(t->descriptor, t->buf + begin + new_data, MAX_STRING_LENGTH - (begin + new_data) - 2); // Leave an extra byte for two-character newline processing.
+        if( loop_data < 0 ) {
+            if (errno != EWOULDBLOCK) {
+                log_error("Socket READ error.");
+                return( -1 );
+            } else {
+                // Blocking means no more data available, yet.
+                break;
+            }
+        } else if( loop_data == 0 ) {
+            log_error("EOF on socket read.");
             return( -1 );
         } else {
-            // If blocking, pick it up next time.
-            return( 0 );
+            new_data += loop_data;
         }
-    } else if( new_data == 0 ) {
-        log_error("EOF on socket read.");
-        return( -1 );
-    }
+    } while(!ISNEWL( *( t->buf + begin + new_data - 1) ));
+    // If we find the end of line, we're done for now, even if there is more to read.
+
     *(t->buf + begin + new_data) = 0; // Add NUL to end of newly extended string
     if( !(line_marker = strpbrk((t->buf + begin), "\r\n")) ) {
         // If no newline (or partial newline) was found, process next time.

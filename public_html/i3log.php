@@ -540,8 +540,6 @@ $bg = 0;
                     //$tmp_msg = preg_replace("/\x1b\[[0-9]+(;[0-9]+)*m/", "", $line_data[3]);
                     //$message = htmlentities($tmp_msg,0,'UTF-8');
                     $message = htmlentities($line_data[3], ENT_QUOTES|ENT_SUBSTITUTE, 'UTF-8');
-                    $message = preg_replace( '/((?:http|https|ftp)\:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(?::[a-zA-Z0-9]*)?\/?(?:[a-zA-Z0-9\-\._\?\,\'\/\\\+&amp;%\$#\=~])*)/', '<a href="$1" target="I3-link">$1</a>', $message);
-                    $message = preg_replace("/\%\^RESET\%\^/", "</span>", $message);
                     $message = preg_replace("/\%\^RED\%\^/", "<span style=\"color: #ff5555;\">", $message);
                     $message = preg_replace("/\%\^GREEN\%\^/", "<span style=\"color: #55ff55;\">", $message);
                     $message = preg_replace("/\%\^BLUE\%\^/", "<span style=\"color: #5555ff;\">", $message);
@@ -550,6 +548,8 @@ $bg = 0;
                     $message = preg_replace("/\%\^MAGENTA\%\^/", "<span style=\"color: #ff55ff;\">", $message);
                     $message = preg_replace("/\%\^WHITE\%\^/", "<span style=\"color: #ffffff;\">", $message);
                     $message = preg_replace("/\%\^BOLD\%\^/", "", $message);
+                    $message = preg_replace("/\%\^RESET\%\^/", "</span>", $message);
+                    $message = preg_replace( '/((?:http|https|ftp)\:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(?::[a-zA-Z0-9]*)?\/?(?:[a-zA-Z0-9\-\._\?\,\'\/\\\+&amp;%\$#\=~])*)/', '<a href="$1" target="I3-link">$1</a>', $message);
                     ?>
                     <td bgcolor="<?php echo $bgColor; ?>"><span style="font-family: monospace;"><?php echo $message; ?></span></td>
                 </tr>

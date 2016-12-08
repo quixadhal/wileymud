@@ -90,6 +90,7 @@ int                                     i3wait;		       /* Number of game loops 
 							        * reconnect when a socket dies */
 int                                     i3timeout;	       /* Number of loops to wait before giving up on an
 							        * initial router connection */
+int                                     i3justconnected = 0;    // So we can say something for the logs.
 time_t                                  ucache_clock;	       /* Timer for pruning the ucache */
 long                                    bytes_received;
 long                                    bytes_sent;
@@ -135,6 +136,8 @@ void                                    I3_connection_close(bool reconnect);
 char                                   *i3rankbuffer(CHAR_DATA *ch);
 char                                   *I3_nameescape(const char *ps);
 char                                   *I3_nameremap(const char *ps);
+void                                    i3_npc_chat(const char *chan_name, const char *actor, const char *message);
+void                                    i3_npc_speak(const char *chan_name, const char *actor, const char *message);
 
 #define I3KEY( literal, field, value ) \
 if( !strcasecmp( word, literal ) )     \
@@ -147,6 +150,18 @@ if( !strcasecmp( word, literal ) )     \
 const char                             *perm_names[] = {
     "Notset", "None", "Mort", "Imm", "Admin", "Imp"
 };
+
+/* creates a random number in interval [from;to] */
+int i3number(int from, int to)
+{
+    if (DEBUG > 3)
+	log_info("called %s with %d, %d", __PRETTY_FUNCTION__, from, to);
+
+    if (to - from + 1)
+	return ((random() % (to - from + 1)) + from);
+    else
+	return from;
+}
 
 /*******************************************
  * String buffering and logging functions. *
@@ -377,10 +392,12 @@ char                                   *i3_strip_colors(const char *txt)
     i3strlcpy(tbuf, txt, MAX_STRING_LENGTH);
 
     for (color = first_i3_color; color; color = color->next)
-	i3strlcpy(tbuf, i3strrep(tbuf, color->i3fish, ""), MAX_STRING_LENGTH);
-
-    for (color = first_i3_color; color; color = color->next)
 	i3strlcpy(tbuf, i3strrep(tbuf, color->i3tag, ""), MAX_STRING_LENGTH);
+
+#ifdef IMC
+    for (color = first_i3_color; color; color = color->next)
+	i3strlcpy(tbuf, i3strrep(tbuf, color->imctag, ""), MAX_STRING_LENGTH);
+#endif
 
     for (color = first_i3_color; color; color = color->next)
 	i3strlcpy(tbuf, i3strrep(tbuf, color->mudtag, ""), MAX_STRING_LENGTH);
@@ -388,7 +405,7 @@ char                                   *i3_strip_colors(const char *txt)
     return tbuf;
 }
 
-char                                   *I3_mudtofish(const char *txt)
+char                                   *I3_mudtag_to_i3tag(const char *txt)
 {
     I3_COLOR                               *color;
     static char                             tbuf[MAX_STRING_LENGTH];
@@ -399,12 +416,12 @@ char                                   *I3_mudtofish(const char *txt)
 
     i3strlcpy(tbuf, txt, MAX_STRING_LENGTH);
     for (color = first_i3_color; color; color = color->next)
-	i3strlcpy(tbuf, i3strrep(tbuf, color->mudtag, color->i3fish), MAX_STRING_LENGTH);
+	i3strlcpy(tbuf, i3strrep(tbuf, color->mudtag, color->i3tag), MAX_STRING_LENGTH);
 
     return tbuf;
 }
 
-char                                   *I3_codetofish(const char *txt)
+char                                   *I3_imctag_to_i3tag(const char *txt)
 {
     I3_COLOR                               *color;
     static char                             tbuf[MAX_STRING_LENGTH];
@@ -415,12 +432,31 @@ char                                   *I3_codetofish(const char *txt)
 
     i3strlcpy(tbuf, txt, MAX_STRING_LENGTH);
     for (color = first_i3_color; color; color = color->next)
-	i3strlcpy(tbuf, i3strrep(tbuf, color->i3tag, color->i3fish), MAX_STRING_LENGTH);
+	i3strlcpy(tbuf, i3strrep(tbuf, color->imctag, color->i3tag), MAX_STRING_LENGTH);
 
     return tbuf;
 }
 
-char                                   *I3_codetomud(CHAR_DATA *ch, const char *txt)
+char                                   *I3_imctag_to_mudtag(CHAR_DATA *ch, const char *txt)
+{
+    I3_COLOR                               *color;
+    static char                             tbuf[MAX_STRING_LENGTH];
+
+    *tbuf = '\0';
+    if (!txt || *txt == '\0')
+	return tbuf;
+
+    if (I3IS_SET(I3FLAG(ch), I3_COLORFLAG)) {
+	i3strlcpy(tbuf, txt, MAX_STRING_LENGTH);
+	for (color = first_i3_color; color; color = color->next)
+	    i3strlcpy(tbuf, i3strrep(tbuf, color->imctag, color->mudtag), MAX_STRING_LENGTH);
+    } else
+	i3strlcpy(tbuf, i3_strip_colors(txt), MAX_STRING_LENGTH);
+
+    return tbuf;
+}
+
+char                                   *I3_i3tag_to_mudtag(CHAR_DATA *ch, const char *txt)
 {
     I3_COLOR                               *color;
     static char                             tbuf[MAX_STRING_LENGTH];
@@ -439,25 +475,6 @@ char                                   *I3_codetomud(CHAR_DATA *ch, const char *
     return tbuf;
 }
 
-char                                   *I3_fishtomud(CHAR_DATA *ch, const char *txt)
-{
-    I3_COLOR                               *color;
-    static char                             tbuf[MAX_STRING_LENGTH];
-
-    *tbuf = '\0';
-    if (!txt || *txt == '\0')
-	return tbuf;
-
-    if (I3IS_SET(I3FLAG(ch), I3_COLORFLAG)) {
-	i3strlcpy(tbuf, txt, MAX_STRING_LENGTH);
-	for (color = first_i3_color; color; color = color->next)
-	    i3strlcpy(tbuf, i3strrep(tbuf, color->i3fish, color->mudtag), MAX_STRING_LENGTH);
-    } else
-	i3strlcpy(tbuf, i3_strip_colors(txt), MAX_STRING_LENGTH);
-
-    return tbuf;
-}
-
 /********************************
  * User level output functions. *
  *******************************/
@@ -465,12 +482,18 @@ char                                   *I3_fishtomud(CHAR_DATA *ch, const char *
 /* Generic substitute for send_to_char with color support */
 void i3_to_char(const char *txt, CHAR_DATA *ch)
 {
-    char                                    buf[MAX_STRING_LENGTH],
-                                            buf2[MAX_STRING_LENGTH];
+    char                                    buf[MAX_STRING_LENGTH];
+#ifdef IMC
+    char                                    buf2[MAX_STRING_LENGTH];
+#endif
 
-    i3strlcpy(buf, I3_fishtomud(ch, txt), MAX_STRING_LENGTH);
-    i3strlcpy(buf2, I3_codetomud(ch, buf), MAX_STRING_LENGTH);
+    i3strlcpy(buf, I3_i3tag_to_mudtag(ch, txt), MAX_STRING_LENGTH);
+#ifdef IMC
+    i3strlcpy(buf2, I3_imctag_to_mudtag(ch, buf), MAX_STRING_LENGTH);
     cprintf(ch, "%s\033[0m", buf2);
+#else
+    cprintf(ch, "%s\033[0m", buf);
+#endif
     return;
 }
 
@@ -490,12 +513,18 @@ void i3_printf(CHAR_DATA *ch, const char *fmt, ...)
 /* Generic send_to_pager type function to send to the proper code for each codebase */
 void i3send_to_pager(const char *txt, CHAR_DATA *ch)
 {
-    char                                    buf[MAX_STRING_LENGTH],
-                                            buf2[MAX_STRING_LENGTH];
+    char                                    buf[MAX_STRING_LENGTH];
+#ifdef IMC
+    char                                    buf2[MAX_STRING_LENGTH];
+#endif
 
-    i3strlcpy(buf, I3_fishtomud(ch, txt), MAX_STRING_LENGTH);
-    i3strlcpy(buf2, I3_codetomud(ch, buf), MAX_STRING_LENGTH);
+    i3strlcpy(buf, I3_i3tag_to_mudtag(ch, txt), MAX_STRING_LENGTH);
+#ifdef IMC
+    i3strlcpy(buf2, I3_imctag_to_mudtag(ch, buf), MAX_STRING_LENGTH);
     page_printf(ch, "%s\033[0m", buf2);
+#else
+    page_printf(ch, "%s\033[0m", buf);
+#endif
     return;
 }
 
@@ -1286,7 +1315,7 @@ void send_to_i3(const char *text)
 {
     char                                    buf[MAX_STRING_LENGTH];
 
-    snprintf(buf, MAX_STRING_LENGTH, "%s", I3_codetofish(text));
+    snprintf(buf, MAX_STRING_LENGTH, "%s", I3_mudtag_to_i3tag(text));
     I3_write_buffer(buf);
 }
 
@@ -1653,6 +1682,7 @@ void I3_process_startup_reply(I3_HEADER *header, char *s)
     }
     i3wait = 0;
     i3timeout = 0;
+    i3justconnected = 1;
     i3log("%s", "Intermud-3 Network connection complete.");
 
     for (channel = first_I3chan; channel; channel = channel->next) {
@@ -1676,7 +1706,7 @@ void I3_process_chanack(I3_HEADER *header, char *s)
     if (!(ch = I3_find_user(header->target_username)))
 	i3log("%s", ps);
     else
-	i3_printf(ch, "&G%s\n\r", ps);
+	i3_printf(ch, "%%^GREEN%%^%%^BOLD%%^%s%%^RESET%%^\n\r", ps);
     return;
 }
 
@@ -1723,7 +1753,7 @@ void I3_process_error(I3_HEADER *header, char *s)
     if (!(ch = I3_find_user(header->target_username)))
 	i3log("%s", error);
     else
-	i3_printf(ch, "&R%s\n\r", error);
+	i3_printf(ch, "%%^RED%%^%%^BOLD%%^%s%%^RESET%%^\n\r", error);
 }
 
 int I3_get_ucache_gender(char *name)
@@ -2423,8 +2453,8 @@ void update_chanhistory(I3_CHANNEL *channel, char *message)
 	if (channel->history[x] == NULL) {
 	    t = time(NULL);
 	    local = localtime(&t);
-	    snprintf(buf, MAX_STRING_LENGTH, "&R[%-2.2d/%-2.2d %-2.2d:%-2.2d] &G%s",
-		     local->tm_mon + 1, local->tm_mday, local->tm_hour, local->tm_min, msg);
+	    snprintf(buf, MAX_STRING_LENGTH, "%%^RED%%^%%^BOLD%%^[%-4.4d-%-2.2d-%-2.2d %-2.2d:%-2.2d]%%^RESET%%^ %%^GREEN%%^%%^BOLD%%^%s",
+		     local->tm_year + 1900, local->tm_mon + 1, local->tm_mday, local->tm_hour, local->tm_min, msg);
 	    channel->history[x] = I3STRALLOC(buf);
 
 	    if (I3IS_SET(channel->flags, I3CHAN_LOG)) {
@@ -2456,8 +2486,8 @@ void update_chanhistory(I3_CHANNEL *channel, char *message)
 
 	    t = time(NULL);
 	    local = localtime(&t);
-	    snprintf(buf, MAX_STRING_LENGTH, "&R[%-2.2d/%-2.2d %-2.2d:%-2.2d] &G%s",
-		     local->tm_mon + 1, local->tm_mday, local->tm_hour, local->tm_min, msg);
+	    snprintf(buf, MAX_STRING_LENGTH, "%%^RED%%^%%^BOLD%%^[%-4.4d-%-2.2d-%-2.2d %-2.2d:%-2.2d]%%^RESET%%^ %%^GREEN%%^%%^BOLD%%^%s",
+		     local->tm_year + 1900, local->tm_mon + 1, local->tm_mday, local->tm_hour, local->tm_min, msg);
 	    I3STRFREE(channel->history[x]);
 	    channel->history[x] = I3STRALLOC(buf);
 
@@ -2793,7 +2823,7 @@ void I3_process_channel_m(I3_HEADER *header, char *s)
     I3_remove_quotes(&ps);
 
     // snprintf( buf, MAX_STRING_LENGTH, "~R[%-2.2d:%-2.2d] %s", local->tm_hour, local->tm_min, ps );
-    strcpy(format, "&G%-2.2d&W:&G%-2.2d&d ");
+    strcpy(format, "%%^GREEN%%^%%^BOLD%%^%-2.2d%%^WHITE%%^%%^BOLD%%^:%%^GREEN%%^%%^BOLD%%^%-2.2d%%^RESET%%^ ");
     strcat(format, channel->layout_m);
     snprintf(buf, MAX_STRING_LENGTH, format, local->tm_hour, local->tm_min, channel->local_name,
 	     visname, header->originator_mudname, ps);
@@ -2865,7 +2895,7 @@ void I3_process_channel_e(I3_HEADER *header, char *s)
     I3_remove_quotes(&ps);
 
     snprintf(msg, MAX_STRING_LENGTH, "%s", I3_convert_channel_message(ps, visname, visname));
-    strcpy(format, "&G%-2.2d&W:&G%-2.2d&d ");
+    strcpy(format, "%%^GREEN%%^%%^BOLD%%^%-2.2d%%^WHITE%%^%%^BOLD%%^:%%^GREEN%%^%%^BOLD%%^%-2.2d%%^RESET%%^ ");
     strcat(format, channel->layout_e);
     snprintf(buf, MAX_STRING_LENGTH, format, local->tm_hour, local->tm_min, channel->local_name,
 	     msg);
@@ -2960,19 +2990,19 @@ void I3_process_chan_who_reply(I3_HEADER *header, char *s)
 
     I3_get_field(ps, &next_ps);
     I3_remove_quotes(&ps);
-    i3_printf(ch, "&WUsers listening to %s on %s:\n\r\n\r", ps, header->originator_mudname);
+    i3_printf(ch, "%%^WHITE%%^%%^BOLD%%^Users listening to %s on %s:%%^RESET%%^\n\r\n\r", ps, header->originator_mudname);
 
     ps = next_ps;
     I3_get_field(ps, &next_ps);
     ps += 2;
     while (1) {
 	if (ps[0] == '}') {
-	    i3_to_char("&cNo information returned or no people listening.\n\r", ch);
+	    i3_to_char("%%^CYAN%%^No information returned or no people listening.%%^RESET%%^\n\r", ch);
 	    return;
 	}
 	I3_get_field(ps, &next_ps);
 	I3_remove_quotes(&ps);
-	i3_printf(ch, "&c%s\n\r", ps);
+	i3_printf(ch, "%%^CYAN%%^%s%%^RESET%%^\n\r", ps);
 
 	ps = next_ps;
 	if (ps[0] == '}')
@@ -3051,7 +3081,7 @@ void I3_process_beep(I3_HEADER *header, char *s)
     I3_get_field(ps, &next_ps);
     I3_remove_quotes(&ps);
 
-    i3_printf(ch, "&Y\a%s@%s i3beeps you.\n\r", ps, header->originator_mudname);
+    i3_printf(ch, "%%^YELLOW%%^\a%s@%s i3beeps you.%%^RESET%%^\n\r", ps, header->originator_mudname);
     return;
 }
 
@@ -3079,7 +3109,7 @@ void i3_update_tellhistory(CHAR_DATA *ch, const char *msg)
     struct tm                              *local = localtime(&t);
     int                                     x;
 
-    snprintf(new_msg, MAX_STRING_LENGTH, "&R[%-2.2d:%-2.2d] %s", local->tm_hour, local->tm_min,
+    snprintf(new_msg, MAX_STRING_LENGTH, "%%^RED%%^%%^BOLD%%^[%-2.2d:%-2.2d] %s", local->tm_hour, local->tm_min,
 	     msg);
 
     for (x = 0; x < MAX_I3TELLHISTORY; x++) {
@@ -3160,7 +3190,7 @@ void I3_process_tell(I3_HEADER *header, char *s)
     I3_get_field(ps, &next_ps);
     I3_remove_quotes(&ps);
 
-    snprintf(buf, MAX_INPUT_LENGTH, "&Y%s i3tells you: &c%s", usr, ps);
+    snprintf(buf, MAX_INPUT_LENGTH, "%%^YELLOW%%^%s i3tells you: %%^CYAN%%^%s%%^RESET%%^", usr, ps);
     i3_printf(ch, "%s\n\r", buf);
     i3_update_tellhistory(ch, buf);
     return;
@@ -3208,12 +3238,12 @@ char                                   *i3rankbuffer(CHAR_DATA *ch)
 	i3strlcpy(rbuf, "~YStaff", MAX_INPUT_LENGTH);
 
 	if (CH_I3RANK(ch) && CH_I3RANK(ch)[0] != '\0')
-	    snprintf(rbuf, MAX_INPUT_LENGTH, "~Y%s", I3_mudtofish(CH_I3RANK(ch)));
+	    snprintf(rbuf, MAX_INPUT_LENGTH, "~Y%s", I3_mudtag_to_i3tag(CH_I3RANK(ch)));
     } else {
 	i3strlcpy(rbuf, "~BPlayer", MAX_INPUT_LENGTH);
 
 	if (CH_I3RANK(ch) && CH_I3RANK(ch)[0] != '\0')
-	    snprintf(rbuf, MAX_INPUT_LENGTH, "~B%s", I3_mudtofish(CH_I3RANK(ch)));
+	    snprintf(rbuf, MAX_INPUT_LENGTH, "~B%s", I3_mudtag_to_i3tag(CH_I3RANK(ch)));
     }
     return rbuf;
 }
@@ -3245,7 +3275,7 @@ void I3_process_who_req(I3_HEADER *header, char *s)
     I3_write_buffer("({");
 
     I3_write_buffer("({\"");
-    snprintf(buf, 300, "&R-=[ &WPlayers on %s &R]=-", I3_THISMUD);
+    snprintf(buf, 300, "%%^RED%%^%%^BOLD%%^-=[ %%^WHITE%%^%%^BOLD%%^Players on %s %%^RED%%^%%^BOLD%%^]=-", I3_THISMUD);
     i3strlcpy(outbuf, i3centerline(buf, 78), 400);
     send_to_i3(I3_escape(outbuf));
 
@@ -3254,7 +3284,7 @@ void I3_process_who_req(I3_HEADER *header, char *s)
     I3_write_buffer(smallbuf);
 
     I3_write_buffer(",\" \",}),({\"");
-    snprintf(buf, 300, "&Y-=[ &Wtelnet://%s:%d &Y]=-", this_i3mud->telnet,
+    snprintf(buf, 300, "%%^YELLOW%%^-=[ %%^WHITE%%^%%^BOLD%%^telnet://%s:%d %%^YELLOW%%^]=-", this_i3mud->telnet,
 	     this_i3mud->player_port);
     i3strlcpy(outbuf, i3centerline(buf, 78), 400);
     send_to_i3(I3_escape(outbuf));
@@ -3279,7 +3309,7 @@ void I3_process_who_req(I3_HEADER *header, char *s)
 	    if (xx == 0) {
 		I3_write_buffer("({\"");
 		send_to_i3(I3_escape
-			   ("&B--------------------------------=[ &WPlayers &B]=---------------------------------"));
+			   ("%%^BLUE%%^%%^BOLD%%^--------------------------------=[ %%^WHITE%%^%%^BOLD%%^Players %%^BLUE%%^%%^BOLD%%^]=---------------------------------"));
 		I3_write_buffer("\",");
 		snprintf(smallbuf, 50, "%ld", bogusidle);
 		I3_write_buffer(smallbuf);
@@ -3302,7 +3332,7 @@ void I3_process_who_req(I3_HEADER *header, char *s)
 		i3strlcat(stats, "AFK", 200);
 	    else
 		i3strlcat(stats, "---", 200);
-	    i3strlcat(stats, "]&G", 200);
+	    i3strlcat(stats, "]%%^GREEN%%^%%^BOLD%%^", 200);
 
 	    snprintf(personbuf, MAX_STRING_LENGTH, "%s %s%s", stats, CH_I3NAME(person),
 		     CH_I3TITLE(person));
@@ -3325,7 +3355,7 @@ void I3_process_who_req(I3_HEADER *header, char *s)
 	    if (yy == 0) {
 		I3_write_buffer("({\"");
 		send_to_i3(I3_escape
-			   ("&R-------------------------------=[ &WImmortals &R]=--------------------------------"));
+			   ("%%^RED%%^%%^BOLD%%^-------------------------------=[ %%^WHITE%%^%%^BOLD%%^Immortals %%^RED%%^%%^BOLD%%^]=--------------------------------"));
 		I3_write_buffer("\",");
 		if (xx > 0)
 		    snprintf(smallbuf, 50, "%ld", bogusidle * 3);
@@ -3350,7 +3380,7 @@ void I3_process_who_req(I3_HEADER *header, char *s)
 		i3strlcat(stats, "AFK", 200);
 	    else
 		i3strlcat(stats, "---", 200);
-	    i3strlcat(stats, "]&G", 200);
+	    i3strlcat(stats, "]%%^GREEN%%^%%^BOLD%%^", 200);
 
 	    snprintf(personbuf, MAX_STRING_LENGTH, "%s %s%s", stats, CH_I3NAME(person),
 		     CH_I3TITLE(person));
@@ -3361,19 +3391,19 @@ void I3_process_who_req(I3_HEADER *header, char *s)
     }
 
     I3_write_buffer("({\"");
-    snprintf(tailbuf, MAX_STRING_LENGTH, "&Y[&W%d Player%s&Y]", pcount, pcount == 1 ? "" : "s");
+    snprintf(tailbuf, MAX_STRING_LENGTH, "%%^YELLOW%%^[%%^WHITE%%^%%^BOLD%%^%d Player%s%%^YELLOW%%^]", pcount, pcount == 1 ? "" : "s");
     send_to_i3(I3_escape(tailbuf));
     I3_write_buffer("\",");
     snprintf(smallbuf, 50, "%ld", bogusidle * 2);
     I3_write_buffer(smallbuf);
     I3_write_buffer(",\"");
-    snprintf(tailbuf, MAX_STRING_LENGTH, "&Y[&WHomepage: %s&Y] [&W%d Max Since Reboot&Y]",
+    snprintf(tailbuf, MAX_STRING_LENGTH, "%%^YELLOW%%^[%%^WHITE%%^%%^BOLD%%^Homepage: %s%%^YELLOW%%^] [%%^WHITE%%^%%^BOLD%%^%d Max Since Reboot%%^YELLOW%%^]",
 	     HTTP_PLACEHOLDER, MAXPLAYERS_PLACEHOLDER);
     send_to_i3(I3_escape(tailbuf));
     I3_write_buffer("\",}),");
 
     I3_write_buffer("({\"");
-    snprintf(tailbuf, MAX_STRING_LENGTH, "&Y[&W%d logins since last reboot on %s&Y]",
+    snprintf(tailbuf, MAX_STRING_LENGTH, "%%^YELLOW%%^[%%^WHITE%%^%%^BOLD%%^%d logins since last reboot on %s%%^YELLOW%%^]",
 	     NUMLOGINS_PLACEHOLDER, boottimebuf);
     send_to_i3(I3_escape(tailbuf));
     I3_write_buffer("\",");
@@ -3415,7 +3445,7 @@ void I3_process_who_reply(I3_HEADER *header, char *s)
 
     while (1) {
 	if (ps[0] == '}') {
-	    i3_to_char("&WNo information returned.\n\r", ch);
+	    i3_to_char("%%^WHITE%%^%%^BOLD%%^No information returned.%%^RESET%%^\n\r", ch);
 	    return;
 	}
 
@@ -3516,7 +3546,7 @@ void I3_process_emoteto(I3_HEADER *header, char *s)
     I3_get_field(ps, &next_ps);
     I3_remove_quotes(&ps);
 
-    snprintf(msg, MAX_STRING_LENGTH, "&c%s\n\r",
+    snprintf(msg, MAX_STRING_LENGTH, "%%^CYAN%%^%s%%^RESET%%^\n\r",
 	     I3_convert_channel_message(ps, visname, visname));
     i3_to_char(msg, ch);
     return;
@@ -3554,8 +3584,8 @@ void I3_process_finger_reply(I3_HEADER *header, char *s)
 
     I3_get_field(ps, &next_ps);
     I3_remove_quotes(&ps);
-    i3_printf(ch, "&wI3FINGER information for &G%s@%s\n\r", ps, header->originator_mudname);
-    i3_to_char("&w-------------------------------------------------\n\r", ch);
+    i3_printf(ch, "%%^WHITE%%^I3FINGER information for %%^GREEN%%^%%^BOLD%%^%s@%s%%^RESET%%^\n\r", ps, header->originator_mudname);
+    i3_to_char("%%^WHITE%%^-------------------------------------------------%%^RESET%%^\n\r", ch);
     ps = next_ps;
 
     I3_get_field(ps, &next_ps);
@@ -3592,11 +3622,11 @@ void I3_process_finger_reply(I3_HEADER *header, char *s)
     I3_get_field(ps, &next_ps);
     I3_remove_quotes(&ps);
 
-    i3_printf(ch, "&wTitle: &G%s\n\r", title);
-    i3_printf(ch, "&wLevel: &G%s\n\r", level);
-    i3_printf(ch, "&wEmail: &G%s\n\r", email);
-    i3_printf(ch, "&wHTTP : &G%s\n\r", ps);
-    i3_printf(ch, "&wLast on: &G%s\n\r", last);
+    i3_printf(ch, "%%^WHITE%%^Title: %%^GREEN%%^%%^BOLD%%^%s%%^RESET%%^\n\r", title);
+    i3_printf(ch, "%%^WHITE%%^Level: %%^GREEN%%^%%^BOLD%%^%s%%^RESET%%^\n\r", level);
+    i3_printf(ch, "%%^WHITE%%^Email: %%^GREEN%%^%%^BOLD%%^%s%%^RESET%%^\n\r", email);
+    i3_printf(ch, "%%^WHITE%%^HTTP : %%^GREEN%%^%%^BOLD%%^%s%%^RESET%%^\n\r", ps);
+    i3_printf(ch, "%%^WHITE%%^Last on: %%^GREEN%%^%%^BOLD%%^%s%%^RESET%%^\n\r", last);
 
     return;
 }
@@ -3737,7 +3767,7 @@ void I3_process_locate_reply(I3_HEADER *header, char *s)
     if (!strcasecmp(status, "exists, but not logged on"))
 	i3strlcpy(status, "Offline", MAX_INPUT_LENGTH);
 
-    i3_printf(ch, "&RI3 Locate: &Y%s@%s: &c%s.\n\r", user_name, mud_name, status);
+    i3_printf(ch, "%%^RED%%^%%^BOLD%%^I3 Locate: %%^YELLOW%%^%s@%s: %%^CYAN%%^%s.%%^RESET%%^\n\r", user_name, mud_name, status);
     return;
 }
 
@@ -3833,7 +3863,7 @@ void I3_process_channel_adminlist_reply(I3_HEADER *header, char *s)
 	      ps);
 	return;
     }
-    i3_printf(ch, "&RThe following muds are %s %s:\n\r\n\r",
+    i3_printf(ch, "%%^RED%%^%%^BOLD%%^The following muds are %s %s:%%^RESET%%^\n\r\n\r",
 	      channel->status == 0 ? "banned from" : "invited to", channel->local_name);
 
     ps = next_ps;
@@ -3841,13 +3871,13 @@ void I3_process_channel_adminlist_reply(I3_HEADER *header, char *s)
     ps += 2;
     while (1) {
 	if (ps[0] == '}') {
-	    i3_to_char("&YNo entries found.\n\r", ch);
+	    i3_to_char("%%^YELLOW%%^No entries found.%%^RESET%%^\n\r", ch);
 	    return;
 	}
 
 	I3_get_field(ps, &next_ps);
 	I3_remove_quotes(&ps);
-	i3_printf(ch, "&Y%s\n\r", ps);
+	i3_printf(ch, "%%^YELLOW%%^%s%%^RESET%%^\n\r", ps);
 
 	ps = next_ps;
 	if (ps[0] == '}')
@@ -4227,7 +4257,7 @@ void I3_char_login(CHAR_DATA *ch)
     if (!i3_is_connected()) {
 	if (I3PERM(ch) >= I3PERM_IMM && i3wait == -2)
 	    i3_to_char
-		("&RThe Intermud-3 connection is down. Attempts to reconnect were abandoned due to excessive failures.\n\r",
+		("%%^RED%%^%%^BOLD%%^The Intermud-3 connection is down. Attempts to reconnect were abandoned due to excessive failures.%%^RESET%%^\n\r",
 		 ch);
 	return;
     }
@@ -4364,8 +4394,8 @@ void I3_savecolor(void)
 	fprintf(fp, "%s", "#COLOR\n");
 	fprintf(fp, "Name   %s\n", color->name);
 	fprintf(fp, "Mudtag %s\n", color->mudtag);
+	fprintf(fp, "IMCtag %s\n", color->imctag);
 	fprintf(fp, "I3tag  %s\n", color->i3tag);
-	fprintf(fp, "I3fish %s\n", color->i3fish);
 	fprintf(fp, "%s", "End\n\n");
     }
     fprintf(fp, "%s", "#END\n");
@@ -4394,8 +4424,8 @@ void I3_readcolor(I3_COLOR *color, FILE * fp)
 		break;
 
 	    case 'I':
+		I3KEY("IMCtag", color->imctag, i3fread_line(fp));
 		I3KEY("I3tag", color->i3tag, i3fread_line(fp));
-		I3KEY("I3fish", color->i3fish, i3fread_line(fp));
 		break;
 
 	    case 'M':
@@ -5476,11 +5506,11 @@ void I3_loadchannels(void)
 	    }
 	    if (channel->layout_m && !strcmp(channel->layout_m, "(null)")) {
 		I3STRFREE(channel->layout_m);
-		channel->layout_m = I3STRALLOC("&R[&W%s&R] &C%s@%s: &c%s");
+		channel->layout_m = I3STRALLOC("%%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^] %%^CYAN%%^%%^BOLD%%^%s@%s: %%^CYAN%%^%s");
 	    }
 	    if (channel->layout_e && !strcmp(channel->layout_e, "(null)")) {
 		I3STRFREE(channel->layout_e);
-		channel->layout_e = I3STRALLOC("&R[&W%s&R] &c%s");
+		channel->layout_e = I3STRALLOC("%%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^] %%^CYAN%%^%s");
 	    }
 	    for (x = 0; x < MAX_I3HISTORY; x++)
 		channel->history[x] = NULL;
@@ -6107,8 +6137,8 @@ void free_i3data(bool complete)
 	    color_next = color->next;
 	    I3STRFREE(color->name);
 	    I3STRFREE(color->mudtag);
+	    I3STRFREE(color->imctag);
 	    I3STRFREE(color->i3tag);
-	    I3STRFREE(color->i3fish);
 	    I3UNLINK(color, first_i3_color, last_i3_color, next, prev);
 	    I3DISPOSE(color);
 	}
@@ -6281,6 +6311,64 @@ void i3_loop(void)
 
     struct tm                              *tm_info = NULL;
     time_t                                  tc = (time_t) 0;
+    char                                    taunt[MAX_STRING_LENGTH];
+    int                                     chan_choice = 0;
+    const char                             *chan_list[] = {
+        "wiley",
+        "wiley",
+        "wiley",
+        "wiley",
+        "wiley",
+        "wiley",
+        "wiley",
+        "wiley",
+        "wiley",
+        "wiley",
+        "intergossip",
+        "intergossip",
+        "free_speech",
+        "dchat",
+        "dwchat"
+    };
+    int                                     taunt_choice = 0;
+    const char                             *taunt_list[] = {
+        "https://www.youtube.com/watch?v=WhVW7RLuCkE", // C-ute HAPPY
+        "https://www.youtube.com/watch?v=XLJ0ztflapI", // Sakura Gakuin - Hana Hana
+        "https://www.youtube.com/watch?v=KGG0t-psqNo", // Mini-Patissier Miracle Patiful Humberger
+        "https://www.youtube.com/watch?v=7AlUAMpcQis", // BABYMETAL - Megitsune (Black Night Live) 1080p
+        "https://www.youtube.com/watch?v=T5LJIpC_vB4", // Buono - Ice Mermaid [Legendado]
+        "https://www.youtube.com/watch?v=-MJqoc_Rp2c", // C-ute "bubbles song"
+        "https://www.youtube.com/watch?v=HkiJwtU8zMQ", // Otomegokoro
+        "https://www.youtube.com/watch?v=BBzOvDz-HWU", // Sleep Wonder
+        "https://www.youtube.com/watch?v=IuRDa4vi_Sc", // BABYMETAL "Doki Doki * Morning" (LIVE AT BUDOKAN - BLACK NIGHT 14 of 15)
+        "https://www.youtube.com/watch?v=KUDFVBhBPo0", // Rider Buono!
+        "https://www.youtube.com/watch?v=duuRAomjxNI", // Everquest 2 Soundtrack -2- Isle of Refuge
+        "https://www.youtube.com/watch?v=Vz-zcW2CsLE", // Everquest 2 Soundtrack 3 Qeynos
+        "https://www.youtube.com/watch?v=OV360NGEihM", // Everquest 2 Soundtrack 7 Antonica
+        "https://www.youtube.com/watch?v=eETHc8LpY2M", // Everquest 2 Soundtrack -5- Freeport
+        "https://www.youtube.com/watch?v=HlDPAnoyOFo", // Everquest 2 Soundtrack -8- Commonlands
+        "https://www.youtube.com/watch?v=Okx9y7y0FEw", // Muto Ayami Sora Live Rebirth
+        "https://www.youtube.com/watch?v=fvyXOXbi8kE", // Crypt of the NecroDancer OST - Disco Descent (1-1)
+        "https://www.youtube.com/watch?v=ZqJfqIwpXZ8", // Crypt of the NecroDancer OST - Crypteque (1-2)
+        "https://www.youtube.com/watch?v=I3Yy6c0Tlvk", // Arcadia (Duran Duran)-Election Day (Long Video) HQ
+        "https://www.youtube.com/watch?v=H0QhECqmTZM", // Black Sugar - Understanding FUNK 1970
+        "https://www.youtube.com/watch?v=Z5CPsssPOcw", // Dire Straits - Down to the Waterline [Rockpalast -79 ~ HD]
+        "https://www.youtube.com/watch?v=6NeQ1h6lzLI", // Gustav Holst - The Planets Op.32 Mars, the Bringer of War
+
+	"You hear a faint click behind you.",
+	"Uhhhh..... Shutup!",
+	"Maybe later...",
+	"No.",
+	"Ummmm.. go away, we already got one.",
+	"Connection closed by foreign host",
+	"NO CARRIER",
+        "I wish this connection would stay open.",
+        "I hate you!",
+        "Why will you not die?",
+        "WTF are you still doing here?",
+        "I hate ALL of you!",
+        "When I am dictator, things will run smoothly..."
+    };
 
     gettimeofday(&last_time, NULL);
     i3_time = (time_t) last_time.tv_sec;
@@ -6295,6 +6383,7 @@ void i3_loop(void)
     if (i3timeout > 0) {
 	i3timeout--;
 	if (i3timeout == 0) {				       /* Time's up baby! */
+	    i3log("I3 Client timeout.");
 	    I3_connection_close(TRUE);
 	    return;
 	}
@@ -6308,11 +6397,12 @@ void i3_loop(void)
      */
     if ((tm_info->tm_wday == 1) || (tm_info->tm_wday == 3) || (tm_info->tm_wday == 5)) {
         if ((tm_info->tm_hour == 5) && (tm_info->tm_min == 0) && (tm_info->tm_sec == 0)) {
-	    i3log("Client is rebooting for weekly router reboot.");
+	    i3log("I3 Client is rebooting for weekly router reboot.");
             I3_connection_close(TRUE);
             return;
         }
     }
+
     /*
      * This condition can only occur if you were previously connected and the socket was closed.
      * * Tries 3 times, then attempts connection to an alternate router, if it has one.
@@ -6330,7 +6420,7 @@ void i3_loop(void)
 
 	if (!rfound) {
 	    i3wait = -2;
-	    i3log("%s", "Unable to reconnect. No routers responding.");
+	    i3log("%s", "I3 Unable to reconnect. No routers responding.");
 	    return;
 	}
 	I3_socket = I3_connection_open(router);
@@ -6353,6 +6443,23 @@ void i3_loop(void)
     if (!i3_is_connected())
 	return;
 
+    // A version of keepalive...
+    if (i3justconnected) {
+        i3justconnected = 0;
+        snprintf(taunt, MAX_STRING_LENGTH, "%%^RED%%^%%^BOLD%%^[%-4.4d-%-2.2d-%-2.2d %-2.2d:%-2.2d]%%^RESET%%^ %%^GREEN%%^%%^BOLD%%^%s%%^RESET%%^ %%^YELLOW%%^%s%%^RESET%%^",
+                tm_info->tm_year + 1900, tm_info->tm_mon + 1, tm_info->tm_mday, tm_info->tm_hour, tm_info->tm_min, "It's ALIVE!\r\n", VERSION_STR);
+        i3_npc_speak("wiley", "Cron", taunt);
+    }
+
+    if ( ((tm_info->tm_min == 0) || (tm_info->tm_min == 30)) && 
+            (tm_info->tm_sec == 0) && (!(tics % PULSE_PER_SECOND)) ) {
+        taunt_choice = i3number(0, (sizeof(taunt_list) / sizeof(taunt_list[0])) - 1);
+        snprintf(taunt, MAX_STRING_LENGTH, "%%^RED%%^%%^BOLD%%^[%-4.4d-%-2.2d-%-2.2d %-2.2d:%-2.2d]%%^RESET%%^ %%^GREEN%%^%%^BOLD%%^%s%%^RESET%%^",
+                tm_info->tm_year + 1900, tm_info->tm_mon + 1, tm_info->tm_mday, tm_info->tm_hour, tm_info->tm_min, taunt_list[taunt_choice]);
+        chan_choice = i3number(0, (sizeof(chan_list) / sizeof(chan_list[0])) - 1);
+        i3_npc_speak(chan_list[chan_choice], "Cron", taunt);
+    }
+
     /*
      * Will prune the cache once every 24hrs after bootup time 
      */
@@ -6374,7 +6481,7 @@ void i3_loop(void)
     if (FD_ISSET(I3_socket, &exc_set)) {
 	FD_CLR(I3_socket, &in_set);
 	FD_CLR(I3_socket, &out_set);
-	i3log("%s", "Exception raised on socket.");
+	i3log("%s", "Exception raised on I3 socket.");
 	I3_connection_close(TRUE);
 	return;
     }
@@ -6384,9 +6491,9 @@ void i3_loop(void)
 	if (!ret || (ret < 0 && errno != EAGAIN && errno != EWOULDBLOCK)) {
 	    FD_CLR(I3_socket, &out_set);
 	    if (ret < 0)
-		i3log("%s", "Read error on socket.");
+		i3log("%s", "Read error on I3 socket.");
 	    else
-		i3log("%s", "EOF encountered on socket read.");
+		i3log("%s", "EOF encountered on I3 socket read.");
 	    I3_connection_close(TRUE);
 	    return;
 	}
@@ -6421,18 +6528,18 @@ I3_CMD(I3_show_ucache_contents)
     UCACHE_DATA                            *user;
     int                                     users = 0;
 
-    i3send_to_pager("&wCached user information\n\r", ch);
+    i3send_to_pager("%%^WHITE%%^Cached user information%%^RESET%%^\n\r", ch);
     i3send_to_pager
-	("&wUser                          | Gender ( 0 = Male, 1 = Female, 2 = Neuter )\n\r",
+	("%%^WHITE%%^User                          | Gender ( 0 = Male, 1 = Female, 2 = Neuter )%%^RESET%%^\n\r",
 	 ch);
     i3send_to_pager
-	("&w---------------------------------------------------------------------------\n\r",
+	("%%^WHITE%%^---------------------------------------------------------------------------%%^RESET%%^\n\r",
 	 ch);
     for (user = first_ucache; user; user = user->next) {
-	i3page_printf(ch, "&w%-30s %d\n\r", user->name, user->gender);
+	i3page_printf(ch, "%%^WHITE%%^%-30s %d%%^RESET%%^\n\r", user->name, user->gender);
 	users++;
     }
-    i3page_printf(ch, "&w%d users being cached.\n\r", users);
+    i3page_printf(ch, "%%^WHITE%%^%d users being cached.%%^RESET%%^\n\r", users);
     return;
 }
 
@@ -6448,8 +6555,8 @@ I3_CMD(I3_beep)
     }
 
     if (!argument || argument[0] == '\0') {
-	i3_to_char("&wUsage: i3beep user@mud\n\r", ch);
-	i3_to_char("&wUsage: i3beep [on]/[off]\n\r", ch);
+	i3_to_char("%%^WHITE%%^Usage: i3beep user@mud%%^RESET%%^\n\r", ch);
+	i3_to_char("%%^WHITE%%^Usage: i3beep [on]/[off]%%^RESET%%^\n\r", ch);
 	return;
     }
 
@@ -6478,8 +6585,8 @@ I3_CMD(I3_beep)
     ps = strchr(argument, '@');
 
     if (!argument || argument[0] == '\0' || ps == NULL) {
-	i3_to_char("&YYou should specify a person@mud.\n\r"
-		   "(use &Wi3mudlist&Y to get an overview of the muds available)\n\r", ch);
+	i3_to_char("%%^YELLOW%%^You should specify a person@mud.%%^RESET%%^\n\r"
+		   "(use %%^WHITE%%^%%^BOLD%%^i3mudlist%%^YELLOW%%^ to get an overview of the muds available)%%^RESET%%^\n\r", ch);
 	return;
     }
 
@@ -6488,8 +6595,8 @@ I3_CMD(I3_beep)
     i3strlcpy(mud, ps, MAX_INPUT_LENGTH);
 
     if (!(pmud = find_I3_mud_by_name(mud))) {
-	i3_to_char("&YNo such mud known.\n\r"
-		   "(use &Wi3mudlist&Y to get an overview of the muds available)\n\r", ch);
+	i3_to_char("%%^YELLOW%%^No such mud known.%%^RESET%%^\n\r"
+		   "(use %%^WHITE%%^%%^BOLD%%^i3mudlist%%^YELLOW%%^ to get an overview of the muds available)%%^RESET%%^\n\r", ch);
 	return;
     }
 
@@ -6508,7 +6615,7 @@ I3_CMD(I3_beep)
 		  pmud->name);
 
     I3_send_beep(ch, argument, pmud);
-    i3_printf(ch, "&YYou i3beep %s@%s.\n\r", i3capitalize(argument), pmud->name);
+    i3_printf(ch, "%%^YELLOW%%^You i3beep %s@%s.%%^RESET%%^\n\r", i3capitalize(argument), pmud->name);
 }
 
 I3_CMD(I3_tell)
@@ -6526,9 +6633,9 @@ I3_CMD(I3_tell)
     if (!argument || argument[0] == '\0') {
 	int                                     x;
 
-	i3_to_char("&wUsage: i3tell <user@mud> <message>\n\r", ch);
-	i3_to_char("&wUsage: i3tell [on]/[off]\n\r\n\r", ch);
-	i3_printf(ch, "&cThe last %d things you were told over I3:\n\r", MAX_I3TELLHISTORY);
+	i3_to_char("%%^WHITE%%^Usage: i3tell <user@mud> <message>%%^RESET%%^\n\r", ch);
+	i3_to_char("%%^WHITE%%^Usage: i3tell [on]/[off]%%^RESET%%^\n\r\n\r", ch);
+	i3_printf(ch, "%%^CYAN%%^The last %d things you were told over I3:%%^RESET%%^\n\r", MAX_I3TELLHISTORY);
 
 	for (x = 0; x < MAX_I3TELLHISTORY; x++) {
 	    if (I3TELLHISTORY(ch, x) == NULL)
@@ -6564,8 +6671,8 @@ I3_CMD(I3_tell)
     ps = strchr(to, '@');
 
     if (to[0] == '\0' || argument[0] == '\0' || ps == NULL) {
-	i3_to_char("&YYou should specify a person and a mud.\n\r"
-		   "(use &Wi3mudlist&Y to get an overview of the muds available)\n\r", ch);
+	i3_to_char("%%^YELLOW%%^You should specify a person and a mud.%%^RESET%%^\n\r"
+		   "(use %%^WHITE%%^%%^BOLD%%^i3mudlist%%^YELLOW%%^ to get an overview of the muds available)%%^RESET%%^\n\r", ch);
 	return;
     }
 
@@ -6574,8 +6681,8 @@ I3_CMD(I3_tell)
     i3strlcpy(mud, ps, MAX_INPUT_LENGTH);
 
     if (!(pmud = find_I3_mud_by_name(mud))) {
-	i3_to_char("&YNo such mud known.\n\r"
-		   "(use &Wi3mudlist&Y to get an overview of the muds available)\n\r", ch);
+	i3_to_char("%%^YELLOW%%^No such mud known.%%^RESET%%^\n\r"
+		   "(use %%^WHITE%%^%%^BOLD%%^i3mudlist%%^YELLOW%%^ to get an overview of the muds available)%%^RESET%%^\n\r", ch);
 	return;
     }
 
@@ -6595,7 +6702,7 @@ I3_CMD(I3_tell)
     }
 
     I3_send_tell(ch, to, pmud, argument);
-    snprintf(mud, MAX_INPUT_LENGTH, "&YYou i3tell %s@%s: &c%s", i3capitalize(to), pmud->name,
+    snprintf(mud, MAX_INPUT_LENGTH, "%%^YELLOW%%^You i3tell %s@%s: %%^CYAN%%^%s", i3capitalize(to), pmud->name,
 	     argument);
     i3_printf(ch, "%s\n\r", mud);
     i3_update_tellhistory(ch, mud);
@@ -6641,8 +6748,8 @@ I3_CMD(I3_mudlisten)
     char                                    arg[MAX_INPUT_LENGTH];
 
     if (!argument || argument[0] == '\0') {
-	i3_to_char("&wUsage: i3mudlisten [all/none]\n\r", ch);
-	i3_to_char("&wUsage: i3mudlisten <localchannel> [on/off]\n\r", ch);
+	i3_to_char("%%^WHITE%%^Usage: i3mudlisten [all/none]%%^RESET%%^\n\r", ch);
+	i3_to_char("%%^WHITE%%^Usage: i3mudlisten <localchannel> [on/off]%%^RESET%%^\n\r", ch);
 	return;
     }
 
@@ -6654,7 +6761,7 @@ I3_CMD(I3_mudlisten)
 	    i3_printf(ch, "Subscribing to %s.\n\r", channel->local_name);
 	    I3_send_channel_listen(channel, TRUE);
 	}
-	i3_to_char("&YThe mud is now subscribed to all available local I3 channels.\n\r", ch);
+	i3_to_char("%%^YELLOW%%^The mud is now subscribed to all available local I3 channels.%%^RESET%%^\n\r", ch);
 	return;
     }
 
@@ -6666,7 +6773,7 @@ I3_CMD(I3_mudlisten)
 	    i3_printf(ch, "Unsubscribing from %s.\n\r", channel->local_name);
 	    I3_send_channel_listen(channel, FALSE);
 	}
-	i3_to_char("&YThe mud is now unsubscribed from all available local I3 channels.\n\r",
+	i3_to_char("%%^YELLOW%%^The mud is now unsubscribed from all available local I3 channels.%%^RESET%%^\n\r",
 		   ch);
 	return;
     }
@@ -6711,7 +6818,7 @@ I3_CMD(I3_mudlist)
 	return;
     }
 
-    i3page_printf(ch, "&W%-30s%-10.10s%-25.25s%-15.15s %s\n\r", "Name", "Type", "Mudlib",
+    i3page_printf(ch, "%%^WHITE%%^%%^BOLD%%^%-30s%-10.10s%-25.25s%-15.15s %s%%^RESET%%^\n\r", "Name", "Type", "Mudlib",
 		  "Address", "Port");
     for (mud = first_mud; mud; mud = mud->next) {
 	if (mud == NULL) {
@@ -6737,20 +6844,20 @@ I3_CMD(I3_mudlist)
 
 	switch (mud->status) {
 	    case -1:
-		i3page_printf(ch, "&c%-30s%-10.10s%-25.25s%-15.15s %d\n\r",
+		i3page_printf(ch, "%%^CYAN%%^%-30s%-10.10s%-25.25s%-15.15s %d%%^RESET%%^\n\r",
 			      mud->name, mud->mud_type, mud->mudlib, mud->ipaddress,
 			      mud->player_port);
 		break;
 	    case 0:
-		i3page_printf(ch, "&R%-26s(down)\n\r", mud->name);
+		i3page_printf(ch, "%%^RED%%^%%^BOLD%%^%-26s(down)%%^RESET%%^\n\r", mud->name);
 		break;
 	    default:
-		i3page_printf(ch, "&Y%-26s(rebooting, back in %d seconds)\n\r", mud->name,
+		i3page_printf(ch, "%%^YELLOW%%^%-26s(rebooting, back in %d seconds)%%^RESET%%^\n\r", mud->name,
 			      mud->status);
 		break;
 	}
     }
-    i3page_printf(ch, "&W%d total muds listed.\n\r", mudcount);
+    i3page_printf(ch, "%%^WHITE%%^%%^BOLD%%^%d total muds listed.%%^RESET%%^\n\r", mudcount);
     return;
 }
 
@@ -6767,14 +6874,14 @@ I3_CMD(I3_chanlist)
     if (!strcasecmp(filter, "all") && i3_is_connected()) {
 	all = TRUE;
 	argument = i3one_argument(argument, filter);
-	i3send_to_pager("&cShowing ALL known channels.\n\r\n\r", ch);
+	i3send_to_pager("%%^CYAN%%^Showing ALL known channels.%%^RESET%%^\n\r\n\r", ch);
     }
 
     i3send_to_pager
-	("&cLocal name          Perm    I3 Name             Hosted at           Status\n\r",
+	("%%^CYAN%%^Local name          Perm    I3 Name             Hosted at           Status%%^RESET%%^\n\r",
 	 ch);
     i3send_to_pager
-	("&c-------------------------------------------------------------------------------\n\r",
+	("%%^CYAN%%^-------------------------------------------------------------------------------%%^RESET%%^\n\r",
 	 ch);
     for (channel = first_I3chan; channel; channel = channel->next) {
 	found = FALSE;
@@ -6795,13 +6902,13 @@ I3_CMD(I3_chanlist)
 	if (channel->local_name && I3_hasname(I3LISTEN(ch), channel->local_name))
 	    found = TRUE;
 
-	i3page_printf(ch, "&C%c &W%-18s&Y%-8s&B%-20s&P%-20s%-8s\n\r",
+	i3page_printf(ch, "%%^CYAN%%^%%^BOLD%%^%c %%^WHITE%%^%%^BOLD%%^%-18s%%^YELLOW%%^%-8s%%^BLUE%%^%%^BOLD%%^%-20s%%^MAGENTA%%^%%^BOLD%%^%-20s%-8s%%^RESET%%^\n\r",
 		      found ? '*' : ' ',
 		      channel->local_name ? channel->local_name : "Not configured",
 		      perm_names[channel->i3perm], channel->I3_name, channel->host_mud,
-		      channel->status == 0 ? "&GPublic" : "&RPrivate");
+		      channel->status == 0 ? "%%^GREEN%%^%%^BOLD%%^Public" : "%%^RED%%^%%^BOLD%%^Private");
     }
-    i3send_to_pager("&C*: You are listening to these channels.\n\r", ch);
+    i3send_to_pager("%%^CYAN%%^%%^BOLD%%^*: You are listening to these channels.%%^RESET%%^\n\r", ch);
     return;
 }
 
@@ -6824,14 +6931,14 @@ I3_CMD(I3_setup_channel)
     argument = i3one_argument(argument, localname);
 
     if (!(channel = find_I3_channel_by_name(I3_name))) {
-	i3_to_char("&YUnknown channel\n\r"
-		   "(use &Wi3chanlist&Y to get an overview of the channels available)\n\r", ch);
+	i3_to_char("%%^YELLOW%%^Unknown channel%%^RESET%%^\n\r"
+		   "(use %%^WHITE%%^%%^BOLD%%^i3chanlist%%^YELLOW%%^ to get an overview of the channels available)%%^RESET%%^\n\r", ch);
 	return;
     }
 
     if (localname[0] == '\0') {
 	if (!channel->local_name) {
-	    i3_printf(ch, "Channel %s@%s isn't configured.\n\r", channel->I3_name,
+	    i3_printf(ch, "Channel %s@%s isn't configured.%%^RESET%%^\n\r", channel->I3_name,
 		      channel->host_mud);
 	    return;
 	}
@@ -6885,8 +6992,8 @@ I3_CMD(I3_setup_channel)
 	channel->i3perm = permvalue;
 	I3STRFREE(channel->layout_m);
 	I3STRFREE(channel->layout_e);
-	channel->layout_m = I3STRALLOC("&R[&W%s&R] &C%s@%s: &c%s");
-	channel->layout_e = I3STRALLOC("&R[&W%s&R] &c%s");
+	channel->layout_m = I3STRALLOC("%%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^] %%^CYAN%%^%%^BOLD%%^%s@%s: %%^CYAN%%^%s");
+	channel->layout_e = I3STRALLOC("%%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^] %%^CYAN%%^%s");
 	i3_printf(ch, "%s@%s is now locally known as %s\n\r", channel->I3_name,
 		  channel->host_mud, channel->local_name);
 	i3log("setup_channel: setting up %s@%s as %s", channel->I3_name, channel->host_mud,
@@ -6903,16 +7010,16 @@ I3_CMD(I3_edit_channel)
     I3_CHANNEL                             *channel;
 
     if (!argument || argument[0] == '\0') {
-	i3_to_char("&wUsage: i3 editchan <localname> localname <new localname>\n\r", ch);
-	i3_to_char("&wUsage: i3 editchan <localname> perm <type>\n\r", ch);
+	i3_to_char("%%^WHITE%%^Usage: i3 editchan <localname> localname <new localname>%%^RESET%%^\n\r", ch);
+	i3_to_char("%%^WHITE%%^Usage: i3 editchan <localname> perm <type>%%^RESET%%^\n\r", ch);
 	return;
     }
 
     argument = i3one_argument(argument, localname);
 
     if ((channel = find_I3_channel_by_localname(localname)) == NULL) {
-	i3_to_char("&YUnknown local channel\n\r"
-		   "(use &Wi3chanlist&Y to get an overview of the channels available)\n\r", ch);
+	i3_to_char("%%^YELLOW%%^Unknown local channel%%^RESET%%^\n\r"
+		   "(use %%^WHITE%%^%%^BOLD%%^i3chanlist%%^YELLOW%%^ to get an overview of the channels available)%%^RESET%%^\n\r", ch);
 	return;
     }
 
@@ -6970,14 +7077,14 @@ I3_CMD(I3_chan_who)
     }
 
     if ((channel = find_I3_channel_by_localname(channel_name)) == NULL) {
-	i3_to_char("&YUnknown channel.\n\r"
-		   "(use &Wi3chanlist&Y to get an overview of the channels available)\n\r", ch);
+	i3_to_char("%%^YELLOW%%^Unknown channel.%%^RESET%%^\n\r"
+		   "(use %%^WHITE%%^%%^BOLD%%^i3chanlist%%^YELLOW%%^ to get an overview of the channels available)%%^RESET%%^\n\r", ch);
 	return;
     }
 
     if (!(mud = find_I3_mud_by_name(argument))) {
-	i3_to_char("&YUnknown mud.\n\r"
-		   "(use &Wi3mudlist&Y to get an overview of the muds available)\n\r", ch);
+	i3_to_char("%%^YELLOW%%^Unknown mud.%%^RESET%%^\n\r"
+		   "(use %%^WHITE%%^%%^BOLD%%^i3mudlist%%^YELLOW%%^ to get an overview of the muds available)%%^RESET%%^\n\r", ch);
 	return;
     }
 
@@ -6994,8 +7101,8 @@ I3_CMD(I3_listen_channel)
     I3_CHANNEL                             *channel;
 
     if (!argument || argument[0] == '\0') {
-	i3_to_char("&cCurrently tuned into:\n\r", ch);
-	i3_printf(ch, "&W%s\n\r",
+	i3_to_char("%%^CYAN%%^Currently tuned into:%%^RESET%%^\n\r", ch);
+	i3_printf(ch, "%%^WHITE%%^%%^BOLD%%^%s%%^RESET%%^\n\r",
 		  (I3LISTEN(ch) && I3LISTEN(ch)[0] != '\0') ? I3LISTEN(ch) : "None");
 	return;
     }
@@ -7008,7 +7115,7 @@ I3_CMD(I3_listen_channel)
 	    if (I3PERM(ch) >= channel->i3perm && !I3_hasname(I3LISTEN(ch), channel->local_name))
 		I3_flagchan(&I3LISTEN(ch), channel->local_name);
 	}
-	i3_to_char("&YYou are now listening to all available I3 channels.\n\r", ch);
+	i3_to_char("%%^YELLOW%%^You are now listening to all available I3 channels.%%^RESET%%^\n\r", ch);
 	return;
     }
 
@@ -7020,13 +7127,13 @@ I3_CMD(I3_listen_channel)
 	    if (I3_hasname(I3LISTEN(ch), channel->local_name))
 		I3_unflagchan(&I3LISTEN(ch), channel->local_name);
 	}
-	i3_to_char("&YYou no longer listen to any available I3 channels.\n\r", ch);
+	i3_to_char("%%^YELLOW%%^You no longer listen to any available I3 channels.%%^RESET%%^\n\r", ch);
 	return;
     }
 
     if ((channel = find_I3_channel_by_localname(argument)) == NULL) {
-	i3_to_char("&YUnknown channel.\n\r"
-		   "(use &Wi3chanlist&Y to get an overview of the channels available)\n\r", ch);
+	i3_to_char("%%^YELLOW%%^Unknown channel.%%^RESET%%^\n\r"
+		   "(use %%^WHITE%%^%%^BOLD%%^i3chanlist%%^YELLOW%%^ to get an overview of the channels available)%%^RESET%%^\n\r", ch);
 	return;
     }
 
@@ -7054,8 +7161,8 @@ I3_CMD(I3_deny_channel)
     argument = i3one_argument(argument, vic_name);
 
     if (vic_name[0] == '\0' || !argument || argument[0] == '\0') {
-	i3_to_char("&wUsage: i3deny <person> <local channel name>\n\r", ch);
-	i3_to_char("&wUsage: i3deny <person> [tell/beep/finger]\n\r", ch);
+	i3_to_char("%%^WHITE%%^Usage: i3deny <person> <local channel name>%%^RESET%%^\n\r", ch);
+	i3_to_char("%%^WHITE%%^Usage: i3deny <person> [tell/beep/finger]%%^RESET%%^\n\r", ch);
 	return;
     }
 
@@ -7103,8 +7210,8 @@ I3_CMD(I3_deny_channel)
     }
 
     if (!(channel = find_I3_channel_by_localname(argument))) {
-	i3_to_char("&YUnknown channel.\n\r"
-		   "(use &Wi3chanlist&Y to get an overview of the channels available)\n\r", ch);
+	i3_to_char("%%^YELLOW%%^Unknown channel.%%^RESET%%^\n\r"
+		   "(use %%^WHITE%%^%%^BOLD%%^i3chanlist%%^YELLOW%%^ to get an overview of the channels available)%%^RESET%%^\n\r", ch);
 	return;
     }
 
@@ -7129,78 +7236,78 @@ I3_CMD(I3_mudinfo)
     }
 
     if (!(mud = find_I3_mud_by_name(argument))) {
-	i3_to_char("&YUnknown mud.\n\r"
-		   "(use &Wi3mudlist&Y to get an overview of the muds available)\n\r", ch);
+	i3_to_char("%%^YELLOW%%^Unknown mud.%%^RESET%%^\n\r"
+		   "(use %%^WHITE%%^%%^BOLD%%^i3mudlist%%^YELLOW%%^ to get an overview of the muds available)%%^RESET%%^\n\r", ch);
 	return;
     }
 
-    i3_printf(ch, "&WInformation about %s\n\r\n\r", mud->name);
+    i3_printf(ch, "%%^WHITE%%^%%^BOLD%%^Information about %s%%^RESET%%^\n\r\n\r", mud->name);
     if (mud->status == 0)
-	i3_to_char("&wStatus     : Currently down\n\r", ch);
+	i3_to_char("%%^WHITE%%^Status     : Currently down%%^RESET%%^\n\r", ch);
     else if (mud->status > 0)
-	i3_printf(ch, "&wStatus     : Currently rebooting, back in %d seconds\n\r",
+	i3_printf(ch, "%%^WHITE%%^Status     : Currently rebooting, back in %d seconds%%^RESET%%^\n\r",
 		  mud->status);
-    i3_printf(ch, "&wMUD port   : %s %d\n\r", mud->ipaddress, mud->player_port);
-    i3_printf(ch, "&wBase mudlib: %s\n\r", mud->base_mudlib);
-    i3_printf(ch, "&wMudlib     : %s\n\r", mud->mudlib);
-    i3_printf(ch, "&wDriver     : %s\n\r", mud->driver);
-    i3_printf(ch, "&wType       : %s\n\r", mud->mud_type);
-    i3_printf(ch, "&wOpen status: %s\n\r", mud->open_status);
-    i3_printf(ch, "&wAdmin      : %s\n\r", mud->admin_email);
+    i3_printf(ch, "%%^WHITE%%^MUD port   : %s %d%%^RESET%%^\n\r", mud->ipaddress, mud->player_port);
+    i3_printf(ch, "%%^WHITE%%^Base mudlib: %s%%^RESET%%^\n\r", mud->base_mudlib);
+    i3_printf(ch, "%%^WHITE%%^Mudlib     : %s%%^RESET%%^\n\r", mud->mudlib);
+    i3_printf(ch, "%%^WHITE%%^Driver     : %s%%^RESET%%^\n\r", mud->driver);
+    i3_printf(ch, "%%^WHITE%%^Type       : %s%%^RESET%%^\n\r", mud->mud_type);
+    i3_printf(ch, "%%^WHITE%%^Open status: %s%%^RESET%%^\n\r", mud->open_status);
+    i3_printf(ch, "%%^WHITE%%^Admin      : %s%%^RESET%%^\n\r", mud->admin_email);
     if (mud->web)
-	i3_printf(ch, "&wURL        : %s\n\r", mud->web);
+	i3_printf(ch, "%%^WHITE%%^URL        : %s%%^RESET%%^\n\r", mud->web);
     if (mud->web_wrong && !mud->web)
-	i3_printf(ch, "&wURL        : %s\n\r", mud->web_wrong);
+	i3_printf(ch, "%%^WHITE%%^URL        : %s%%^RESET%%^\n\r", mud->web_wrong);
     if (mud->daemon)
-	i3_printf(ch, "&wDaemon     : %s\n\r", mud->daemon);
+	i3_printf(ch, "%%^WHITE%%^Daemon     : %s%%^RESET%%^\n\r", mud->daemon);
     if (mud->time)
-	i3_printf(ch, "&wTime       : %s\n\r", mud->time);
+	i3_printf(ch, "%%^WHITE%%^Time       : %s%%^RESET%%^\n\r", mud->time);
     if (mud->banner)
-	i3_printf(ch, "&wBanner:\n\r%s\n\r", mud->banner);
+	i3_printf(ch, "%%^WHITE%%^Banner:%%^RESET%%^\n\r%s\n\r", mud->banner);
 
-    i3_to_char("&wSupports   : ", ch);
+    i3_to_char("%%^WHITE%%^Supports   : ", ch);
     if (mud->tell)
-	i3_to_char("&wtell, ", ch);
+	i3_to_char("%%^WHITE%%^tell, ", ch);
     if (mud->beep)
-	i3_to_char("&wbeep, ", ch);
+	i3_to_char("%%^WHITE%%^beep, ", ch);
     if (mud->emoteto)
-	i3_to_char("&wemoteto, ", ch);
+	i3_to_char("%%^WHITE%%^emoteto, ", ch);
     if (mud->who)
-	i3_to_char("&wwho, ", ch);
+	i3_to_char("%%^WHITE%%^who, ", ch);
     if (mud->finger)
-	i3_to_char("&wfinger, ", ch);
+	i3_to_char("%%^WHITE%%^finger, ", ch);
     if (mud->locate)
-	i3_to_char("&wlocate, ", ch);
+	i3_to_char("%%^WHITE%%^locate, ", ch);
     if (mud->channel)
-	i3_to_char("&wchannel, ", ch);
+	i3_to_char("%%^WHITE%%^channel, ", ch);
     if (mud->news)
-	i3_to_char("&wnews, ", ch);
+	i3_to_char("%%^WHITE%%^news, ", ch);
     if (mud->mail)
-	i3_to_char("&wmail, ", ch);
+	i3_to_char("%%^WHITE%%^mail, ", ch);
     if (mud->file)
-	i3_to_char("&wfile, ", ch);
+	i3_to_char("%%^WHITE%%^file, ", ch);
     if (mud->auth)
-	i3_to_char("&wauth, ", ch);
+	i3_to_char("%%^WHITE%%^auth, ", ch);
     if (mud->ucache)
-	i3_to_char("&wucache, ", ch);
-    i3_to_char("\n\r", ch);
+	i3_to_char("%%^WHITE%%^ucache, ", ch);
+    i3_to_char("%%^RESET%%^\n\r", ch);
 
-    i3_to_char("&wSupports   : ", ch);
+    i3_to_char("%%^WHITE%%^Supports   : ", ch);
     if (mud->smtp)
-	i3_printf(ch, "&wsmtp (port %d), ", mud->smtp);
+	i3_printf(ch, "%%^WHITE%%^smtp (port %d), ", mud->smtp);
     if (mud->http)
-	i3_printf(ch, "&whttp (port %d), ", mud->http);
+	i3_printf(ch, "%%^WHITE%%^http (port %d), ", mud->http);
     if (mud->ftp)
-	i3_printf(ch, "&wftp  (port %d), ", mud->ftp);
+	i3_printf(ch, "%%^WHITE%%^ftp  (port %d), ", mud->ftp);
     if (mud->pop3)
-	i3_printf(ch, "&wpop3 (port %d), ", mud->pop3);
+	i3_printf(ch, "%%^WHITE%%^pop3 (port %d), ", mud->pop3);
     if (mud->nntp)
-	i3_printf(ch, "&wnntp (port %d), ", mud->nntp);
+	i3_printf(ch, "%%^WHITE%%^nntp (port %d), ", mud->nntp);
     if (mud->rcp)
-	i3_printf(ch, "&wrcp  (port %d), ", mud->rcp);
+	i3_printf(ch, "%%^WHITE%%^rcp  (port %d), ", mud->rcp);
     if (mud->amrcp)
-	i3_printf(ch, "&wamrcp (port %d), ", mud->amrcp);
-    i3_to_char("\n\r", ch);
+	i3_printf(ch, "%%^WHITE%%^amrcp (port %d), ", mud->amrcp);
+    i3_to_char("%%^RESET%%^\n\r", ch);
 }
 
 I3_CMD(I3_chanlayout)
@@ -7210,10 +7317,10 @@ I3_CMD(I3_chanlayout)
                                             arg2[MAX_INPUT_LENGTH];
 
     if (!argument || argument[0] == '\0') {
-	i3_to_char("&wUsage: i3chanlayout <localchannel|all> <layout> <format...>\n\r", ch);
-	i3_to_char("&wLayout can be one of these: layout_e layout_m\n\r", ch);
+	i3_to_char("%%^WHITE%%^Usage: i3chanlayout <localchannel|all> <layout> <format...>%%^RESET%%^\n\r", ch);
+	i3_to_char("%%^WHITE%%^Layout can be one of these: layout_e layout_m%%^RESET%%^\n\r", ch);
 	i3_to_char
-	    ("&wFormat can be any way you want it to look, provided you have the proper number of %s tags in it.\n\r",
+	    ("%%^WHITE%%^Format can be any way you want it to look, provided you have the proper number of %s tags in it.%%^RESET%%^\n\r",
 	     ch);
 	return;
     }
@@ -7235,8 +7342,8 @@ I3_CMD(I3_chanlayout)
     }
 
     if (!(channel = find_I3_channel_by_localname(arg1))) {
-	i3_to_char("&YUnknown channel.\n\r"
-		   "(use &Wi3chanlist&Y to get an overview of the channels available)\n\r", ch);
+	i3_to_char("%%^YELLOW%%^Unknown channel.%%^RESET%%^\n\r"
+		   "(use %%^WHITE%%^%%^BOLD%%^i3chanlist%%^YELLOW%%^ to get an overview of the channels available)%%^RESET%%^\n\r", ch);
 	return;
     }
 
@@ -7272,25 +7379,25 @@ I3_CMD(I3_bancmd)
     I3_BAN                                 *temp;
 
     if (!argument || argument[0] == '\0') {
-	i3_to_char("&GThe mud currently has the following ban list:\n\r\n\r", ch);
+	i3_to_char("%%^GREEN%%^%%^BOLD%%^The mud currently has the following ban list:%%^RESET%%^\n\r\n\r", ch);
 
 	if (!first_i3ban)
-	    i3_to_char("&YNothing\n\r", ch);
+	    i3_to_char("%%^YELLOW%%^Nothing%%^RESET%%^\n\r", ch);
 	else {
 	    for (temp = first_i3ban; temp; temp = temp->next)
-		i3_printf(ch, "&Y\t  - %s\n\r", temp->name);
+		i3_printf(ch, "%%^YELLOW%%^\t  - %s%%^RESET%%^\n\r", temp->name);
 	}
 	i3_to_char
-	    ("\n\r&YTo add a ban, just specify a target. Suggested targets being user@mud or IP:Port\n\r",
+	    ("\n\r%%^YELLOW%%^To add a ban, just specify a target. Suggested targets being user@mud or IP:Port\n\r",
 	     ch);
 	i3_to_char
-	    ("&YUser@mud bans can also have wildcard specifiers, such as *@Mud or User@*\n\r",
+	    ("%%^YELLOW%%^User@mud bans can also have wildcard specifiers, such as *@Mud or User@*%%^RESET%%^\n\r",
 	     ch);
 	return;
     }
 
     if (!fnmatch(argument, I3_THISMUD, 0)) {
-	i3_to_char("&YYou don't really want to do that....\n\r", ch);
+	i3_to_char("%%^YELLOW%%^You don't really want to do that....%%^RESET%%^\n\r", ch);
 	return;
     }
 
@@ -7300,7 +7407,7 @@ I3_CMD(I3_bancmd)
 	    I3UNLINK(temp, first_i3ban, last_i3ban, next, prev);
 	    I3DISPOSE(temp);
 	    I3_write_bans();
-	    i3_printf(ch, "&YThe mud no longer bans %s.\n\r", argument);
+	    i3_printf(ch, "%%^YELLOW%%^The mud no longer bans %s.%%^RESET%%^\n\r", argument);
 	    return;
 	}
     }
@@ -7308,7 +7415,7 @@ I3_CMD(I3_bancmd)
     temp->name = I3STRALLOC(argument);
     I3LINK(temp, first_i3ban, last_i3ban, next, prev);
     I3_write_bans();
-    i3_printf(ch, "&YThe mud now bans all incoming traffic from %s.\n\r", temp->name);
+    i3_printf(ch, "%%^YELLOW%%^The mud now bans all incoming traffic from %s.%%^RESET%%^\n\r", temp->name);
 }
 
 I3_CMD(I3_ignorecmd)
@@ -7317,32 +7424,32 @@ I3_CMD(I3_ignorecmd)
     char                                    buf[MAX_INPUT_LENGTH];
 
     if (!argument || argument[0] == '\0') {
-	i3_to_char("&GYou are currently ignoring the following:\n\r\n\r", ch);
+	i3_to_char("%%^GREEN%%^%%^BOLD%%^You are currently ignoring the following:%%^RESET%%^\n\r\n\r", ch);
 
 	if (!FIRST_I3IGNORE(ch)) {
-	    i3_to_char("&YNobody\n\r\n\r", ch);
+	    i3_to_char("%%^YELLOW%%^Nobody%%^RESET%%^\n\r\n\r", ch);
 	    i3_to_char
-		("&YTo add an ignore, just specify a target. Suggested targets being user@mud or IP:Port\n\r",
+		("%%^YELLOW%%^To add an ignore, just specify a target. Suggested targets being user@mud or IP:Port%%^RESET%%^\n\r",
 		 ch);
 	    i3_to_char
-		("&YUser@mud ignores can also have wildcard specifiers, such as *@Mud or User@*\n\r",
+		("%%^YELLOW%%^User@mud ignores can also have wildcard specifiers, such as *@Mud or User@*%%^RESET%%^\n\r",
 		 ch);
 	    return;
 	}
 	for (temp = FIRST_I3IGNORE(ch); temp; temp = temp->next)
-	    i3_printf(ch, "&Y\t  - %s\n\r", temp->name);
+	    i3_printf(ch, "%%^YELLOW%%^\t  - %s%%^RESET%%^\n\r", temp->name);
 
 	return;
     }
 
     snprintf(buf, MAX_INPUT_LENGTH, "%s@%s", CH_I3NAME(ch), I3_THISMUD);
     if (!strcasecmp(buf, argument)) {
-	i3_to_char("&YYou don't really want to do that....\n\r", ch);
+	i3_to_char("%%^YELLOW%%^You don't really want to do that....%%^RESET%%^\n\r", ch);
 	return;
     }
 
     if (!fnmatch(argument, I3_THISMUD, 0)) {
-	i3_to_char("&YIgnoring your own mud would be silly.\n\r", ch);
+	i3_to_char("%%^YELLOW%%^Ignoring your own mud would be silly.%%^RESET%%^\n\r", ch);
 	return;
     }
 
@@ -7351,7 +7458,7 @@ I3_CMD(I3_ignorecmd)
 	    I3STRFREE(temp->name);
 	    I3UNLINK(temp, FIRST_I3IGNORE(ch), LAST_I3IGNORE(ch), next, prev);
 	    I3DISPOSE(temp);
-	    i3_printf(ch, "&YYou are no longer ignoring %s.\n\r", argument);
+	    i3_printf(ch, "%%^YELLOW%%^You are no longer ignoring %s.%%^RESET%%^\n\r", argument);
 	    return;
 	}
     }
@@ -7359,7 +7466,7 @@ I3_CMD(I3_ignorecmd)
     I3CREATE(temp, I3_IGNORE, 1);
     temp->name = I3STRALLOC(argument);
     I3LINK(temp, FIRST_I3IGNORE(ch), LAST_I3IGNORE(ch), next, prev);
-    i3_printf(ch, "&YYou now ignore %s.\n\r", temp->name);
+    i3_printf(ch, "%%^YELLOW%%^You now ignore %s.%%^RESET%%^\n\r", temp->name);
 }
 
 I3_CMD(I3_invis)
@@ -7394,13 +7501,13 @@ I3_CMD(I3_send_user_req)
     I3_MUD                                 *pmud;
 
     if (!argument || argument[0] == '\0') {
-	i3_to_char("&YQuery who at which mud?\n\r"
-		   "(use &Wi3mudlist&Y to get an overview of the muds available)\n\r", ch);
+	i3_to_char("%%^YELLOW%%^Query who at which mud?%%^RESET%%^\n\r"
+		   "(use %%^WHITE%%^%%^BOLD%%^i3mudlist%%^YELLOW%%^ to get an overview of the muds available)%%^RESET%%^\n\r", ch);
 	return;
     }
     if (!(ps = strchr(argument, '@'))) {
-	i3_to_char("&YYou should specify a person and a mud.\n\r"
-		   "(use &Wi3mudlist&Y to get an overview of the muds available)\n\r", ch);
+	i3_to_char("%%^YELLOW%%^You should specify a person and a mud.%%^RESET%%^\n\r"
+		   "(use %%^WHITE%%^%%^BOLD%%^i3mudlist%%^YELLOW%%^ to get an overview of the muds available)%%^RESET%%^\n\r", ch);
 	return;
     }
 
@@ -7409,14 +7516,14 @@ I3_CMD(I3_send_user_req)
     i3strlcpy(mud, ps + 1, MAX_INPUT_LENGTH);
 
     if (user[0] == '\0' || mud[0] == '\0') {
-	i3_to_char("&YYou should specify a person and a mud.\n\r"
-		   "(use &Wi3mudlist&Y to get an overview of the muds available)\n\r", ch);
+	i3_to_char("%%^YELLOW%%^You should specify a person and a mud.%%^RESET%%^\n\r"
+		   "(use %%^WHITE%%^%%^BOLD%%^i3mudlist%%^YELLOW%%^ to get an overview of the muds available)%%^RESET%%^\n\r", ch);
 	return;
     }
 
     if (!(pmud = find_I3_mud_by_name(mud))) {
-	i3_to_char("&YNo such mud known.\n\r"
-		   "(use &Wi3mudlist&Y to get an overview of the muds available)\n\r", ch);
+	i3_to_char("%%^YELLOW%%^No such mud known.%%^RESET%%^\n\r"
+		   "(use %%^WHITE%%^%%^BOLD%%^i3mudlist%%^YELLOW%%^ to get an overview of the muds available)%%^RESET%%^\n\r", ch);
 	return;
     }
 
@@ -7437,8 +7544,8 @@ I3_CMD(I3_admin_channel)
                                             buf[MAX_STRING_LENGTH];
 
     if (!argument || argument[0] == '\0') {
-	i3_to_char("&wUsage: i3adminchan <localchannel> <add|remove> <mudname>\n\r", ch);
-	i3_to_char("&wUsage: i3adminchan <localchannel> list\n\r", ch);
+	i3_to_char("%%^WHITE%%^Usage: i3adminchan <localchannel> <add|remove> <mudname>%%^RESET%%^\n\r", ch);
+	i3_to_char("%%^WHITE%%^Usage: i3adminchan <localchannel> list%%^RESET%%^\n\r", ch);
 	return;
     }
     argument = i3one_argument(argument, arg1);
@@ -7561,41 +7668,41 @@ I3_CMD(I3_addchan)
     argument = i3one_argument(argument, arg2);
 
     if (!argument || argument[0] == '\0' || arg[0] == '\0' || arg2[0] == '\0') {
-	i3_to_char("&wUsage: i3addchan <channelname> <localname> <type>\n\r\n\r", ch);
-	i3_to_char("&wChannelname should be the name seen on 'chanlist all'\n\r", ch);
-	i3_to_char("&wLocalname should be the local name you want it listed as.\n\r", ch);
-	i3_to_char("&wType can be one of the following:\n\r\n\r", ch);
-	i3_to_char("&w0: selectively banned\n\r", ch);
-	i3_to_char("&w1: selectively admitted\n\r", ch);
-	i3_to_char("&w2: filtered - valid for selectively admitted ONLY\n\r", ch);
+	i3_to_char("%%^WHITE%%^Usage: i3addchan <channelname> <localname> <type>%%^RESET%%^\n\r\n\r", ch);
+	i3_to_char("%%^WHITE%%^Channelname should be the name seen on 'chanlist all'%%^RESET%%^\n\r", ch);
+	i3_to_char("%%^WHITE%%^Localname should be the local name you want it listed as.%%^RESET%%^\n\r", ch);
+	i3_to_char("%%^WHITE%%^Type can be one of the following:%%^RESET%%^\n\r\n\r", ch);
+	i3_to_char("%%^WHITE%%^0: selectively banned%%^RESET%%^\n\r", ch);
+	i3_to_char("%%^WHITE%%^1: selectively admitted%%^RESET%%^\n\r", ch);
+	i3_to_char("%%^WHITE%%^2: filtered - valid for selectively admitted ONLY%%^RESET%%^\n\r", ch);
 	return;
     }
 
     if ((channel = find_I3_channel_by_name(arg)) != NULL) {
-	i3_printf(ch, "&R%s is already hosted by %s.\n\r", channel->I3_name, channel->host_mud);
+	i3_printf(ch, "%%^RED%%^%%^BOLD%%^%s is already hosted by %s.%%^RESET%%^\n\r", channel->I3_name, channel->host_mud);
 	return;
     }
 
     if ((channel = find_I3_channel_by_localname(arg2)) != NULL) {
-	i3_printf(ch, "&RChannel %s@%s is already locally configured as %s.\n\r",
+	i3_printf(ch, "%%^RED%%^%%^BOLD%%^Channel %s@%s is already locally configured as %s.%%^RESET%%^\n\r",
 		  channel->I3_name, channel->host_mud, channel->local_name);
 	return;
     }
 
     if (!isdigit(argument[0])) {
-	i3_to_char("&RInvalid type. Must be numerical.\n\r", ch);
+	i3_to_char("%%^RED%%^%%^BOLD%%^Invalid type. Must be numerical.%%^RESET%%^\n\r", ch);
 	I3_addchan(ch, "");
 	return;
     }
 
     type = atoi(argument);
     if (type < 0 || type > 2) {
-	i3_to_char("&RInvalid channel type.\n\r", ch);
+	i3_to_char("%%^RED%%^%%^BOLD%%^Invalid channel type.%%^RESET%%^\n\r", ch);
 	I3_addchan(ch, "");
 	return;
     }
 
-    i3_printf(ch, "&GAdding channel to router: &W%s\n\r", arg);
+    i3_printf(ch, "%%^GREEN%%^%%^BOLD%%^Adding channel to router: %%^WHITE%%^%%^BOLD%%^%s%%^RESET%%^\n\r", arg);
     I3_send_channel_add(ch, arg, type);
 
     I3CREATE(channel, I3_CHANNEL, 1);
@@ -7603,8 +7710,8 @@ I3_CMD(I3_addchan)
     channel->host_mud = I3STRALLOC(I3_THISMUD);
     channel->local_name = I3STRALLOC(arg2);
     channel->i3perm = I3PERM_ADMIN;
-    channel->layout_m = I3STRALLOC("&R[&W%s&R] &C%s@%s: &c%s");
-    channel->layout_e = I3STRALLOC("&R[&W%s&R] &c%s");
+    channel->layout_m = I3STRALLOC("%%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^] %%^CYAN%%^%%^BOLD%%^%s@%s: %%^CYAN%%^%s");
+    channel->layout_e = I3STRALLOC("%%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^] %%^CYAN%%^%s");
     for (x = 0; x < MAX_I3HISTORY; x++)
 	channel->history[x] = NULL;
     I3LINK(channel, first_I3chan, last_I3chan, next, prev);
@@ -7612,10 +7719,10 @@ I3_CMD(I3_addchan)
     if (type != 0) {
 	snprintf(buf, MAX_STRING_LENGTH, "({\"%s\",}),({}),", I3_THISMUD);
 	I3_send_channel_admin(ch, channel->I3_name, buf);
-	i3_printf(ch, "&GSending command to add %s to the invite list.\n\r", I3_THISMUD);
+	i3_printf(ch, "%%^GREEN%%^%%^BOLD%%^Sending command to add %s to the invite list.%%^RESET%%^\n\r", I3_THISMUD);
     }
 
-    i3_printf(ch, "&Y%s@%s &Wis now locally known as &Y%s\n\r", channel->I3_name,
+    i3_printf(ch, "%%^YELLOW%%^%s@%s %%^WHITE%%^%%^BOLD%%^is now locally known as %%^YELLOW%%^%s%%^RESET%%^\n\r", channel->I3_name,
 	      channel->host_mud, channel->local_name);
     I3_send_channel_listen(channel, TRUE);
     I3_write_channel_config();
@@ -7628,25 +7735,25 @@ I3_CMD(I3_removechan)
     I3_CHANNEL                             *channel = NULL;
 
     if (!argument || argument[0] == '\0') {
-	i3_to_char("&wUsage: i3removechan <channel>\n\r", ch);
-	i3_to_char("&wChannelname should be the name seen on 'chanlist all'\n\r", ch);
+	i3_to_char("%%^WHITE%%^Usage: i3removechan <channel>%%^RESET%%^\n\r", ch);
+	i3_to_char("%%^WHITE%%^Channelname should be the name seen on 'chanlist all'%%^RESET%%^\n\r", ch);
 	return;
     }
 
     if ((channel = find_I3_channel_by_name(argument)) == NULL) {
-	i3_to_char("&RNo channel by that name exists.\n\r", ch);
+	i3_to_char("%%^RED%%^%%^BOLD%%^No channel by that name exists.%%^RESET%%^\n\r", ch);
 	return;
     }
 
     if (strcasecmp(channel->host_mud, I3_THISMUD)) {
-	i3_printf(ch, "&R%s does not host this channel and cannot remove it.\n\r", I3_THISMUD);
+	i3_printf(ch, "%%^RED%%^%%^BOLD%%^%s does not host this channel and cannot remove it.%%^RESET%%^\n\r", I3_THISMUD);
 	return;
     }
 
-    i3_printf(ch, "&YRemoving channel from router: &W%s\n\r", channel->I3_name);
+    i3_printf(ch, "%%^YELLOW%%^Removing channel from router: %%^WHITE%%^%%^BOLD%%^%s%%^RESET%%^\n\r", channel->I3_name);
     I3_send_channel_remove(ch, channel);
 
-    i3_printf(ch, "&RDestroying local channel entry for &W%s\n\r", channel->I3_name);
+    i3_printf(ch, "%%^RED%%^%%^BOLD%%^Destroying local channel entry for %%^WHITE%%^%%^BOLD%%^%s%%^RESET%%^\n\r", channel->I3_name);
     destroy_I3_channel(channel);
     I3_write_channel_config();
 
@@ -7660,56 +7767,56 @@ I3_CMD(I3_setconfig)
     argument = i3one_argument(argument, arg);
 
     if (arg[0] == '\0') {
-	i3_to_char("&GConfiguration info for your mud. Changes save when edited.\n\r", ch);
-	i3_to_char("&GYou can set the following:\n\r\n\r", ch);
-	i3_to_char("&wShow       : &GDisplays your current congfiguration.\n\r", ch);
+	i3_to_char("%%^GREEN%%^%%^BOLD%%^Configuration info for your mud. Changes save when edited.%%^RESET%%^\n\r", ch);
+	i3_to_char("%%^GREEN%%^%%^BOLD%%^You can set the following:%%^RESET%%^\n\r\n\r", ch);
+	i3_to_char("%%^WHITE%%^Show       : %%^GREEN%%^%%^BOLD%%^Displays your current congfiguration.%%^RESET%%^\n\r", ch);
 	i3_to_char
-	    ("&wAutoconnect: &GA toggle. Either on or off. Your mud will connect automatically with it on.\n\r",
+	    ("%%^WHITE%%^Autoconnect: %%^GREEN%%^%%^BOLD%%^A toggle. Either on or off. Your mud will connect automatically with it on.%%^RESET%%^\n\r",
 	     ch);
-	i3_to_char("&wMudname    : &GThe name you want displayed on I3 for your mud.\n\r", ch);
+	i3_to_char("%%^WHITE%%^Mudname    : %%^GREEN%%^%%^BOLD%%^The name you want displayed on I3 for your mud.%%^RESET%%^\n\r", ch);
 	i3_to_char
-	    ("&wTelnet     : &GThe telnet address for your mud. Do not include the port number.\n\r",
-	     ch);
-	i3_to_char
-	    ("&wWeb        : &GThe website address for your mud. In the form of: www.address.com\n\r",
+	    ("%%^WHITE%%^Telnet     : %%^GREEN%%^%%^BOLD%%^The telnet address for your mud. Do not include the port number.%%^RESET%%^\n\r",
 	     ch);
 	i3_to_char
-	    ("&wEmail      : &GThe email address of your mud's administrator. Needs to be valid!!\n\r",
+	    ("%%^WHITE%%^Web        : %%^GREEN%%^%%^BOLD%%^The website address for your mud. In the form of: www.address.com%%^RESET%%^\n\r",
 	     ch);
 	i3_to_char
-	    ("&wStatus     : &GThe open status of your mud. IE: Public, Development, etc.\n\r",
+	    ("%%^WHITE%%^Email      : %%^GREEN%%^%%^BOLD%%^The email address of your mud's administrator. Needs to be valid!!%%^RESET%%^\n\r",
 	     ch);
-	i3_to_char("&wMudtype    : &GWhat you call the basic type of your codebase.\n\r", ch);
-	i3_to_char("&wMudlib     : &GWhat you call the current version of your codebase.\n\r",
+	i3_to_char
+	    ("%%^WHITE%%^Status     : %%^GREEN%%^%%^BOLD%%^The open status of your mud. IE: Public, Development, etc.%%^RESET%%^\n\r",
+	     ch);
+	i3_to_char("%%^WHITE%%^Mudtype    : %%^GREEN%%^%%^BOLD%%^What you call the basic type of your codebase.%%^RESET%%^\n\r", ch);
+	i3_to_char("%%^WHITE%%^Mudlib     : %%^GREEN%%^%%^BOLD%%^What you call the current version of your codebase.%%^RESET%%^\n\r",
 		   ch);
 	i3_to_char
-	    ("&wMinlevel   : &GMinimum level at which I3 will recognize your players.\n\r", ch);
+	    ("%%^WHITE%%^Minlevel   : %%^GREEN%%^%%^BOLD%%^Minimum level at which I3 will recognize your players.%%^RESET%%^\n\r", ch);
 	i3_to_char
-	    ("&wImmlevel   : &GThe level at which immortal commands become available.\n\r", ch);
+	    ("%%^WHITE%%^Immlevel   : %%^GREEN%%^%%^BOLD%%^The level at which immortal commands become available.%%^RESET%%^\n\r", ch);
 	i3_to_char
-	    ("&wAdminlevel : &GThe level at which administrative commands become available.\n\r",
+	    ("%%^WHITE%%^Adminlevel : %%^GREEN%%^%%^BOLD%%^The level at which administrative commands become available.%%^RESET%%^\n\r",
 	     ch);
 	i3_to_char
-	    ("&wImplevel   : &GThe level at which implementor commands become available.\n\r",
+	    ("%%^WHITE%%^Implevel   : %%^GREEN%%^%%^BOLD%%^The level at which implementor commands become available.%%^RESET%%^\n\r",
 	     ch);
 	return;
     }
 
     if (!strcasecmp(arg, "show")) {
-	i3_printf(ch, "&wMudname       : &G%s\n\r", this_i3mud->name);
-	i3_printf(ch, "&wAutoconnect   : &G%s\n\r",
+	i3_printf(ch, "%%^WHITE%%^Mudname       : %%^GREEN%%^%%^BOLD%%^%s%%^RESET%%^\n\r", this_i3mud->name);
+	i3_printf(ch, "%%^WHITE%%^Autoconnect   : %%^GREEN%%^%%^BOLD%%^%s%%^RESET%%^\n\r",
 		  this_i3mud->autoconnect == TRUE ? "Enabled" : "Disabled");
-	i3_printf(ch, "&wTelnet        : &G%s:%d\n\r", this_i3mud->telnet,
+	i3_printf(ch, "%%^WHITE%%^Telnet        : %%^GREEN%%^%%^BOLD%%^%s:%d%%^RESET%%^\n\r", this_i3mud->telnet,
 		  this_i3mud->player_port);
-	i3_printf(ch, "&wWeb           : &G%s\n\r", this_i3mud->web);
-	i3_printf(ch, "&wEmail         : &G%s\n\r", this_i3mud->admin_email);
-	i3_printf(ch, "&wStatus        : &G%s\n\r", this_i3mud->open_status);
-	i3_printf(ch, "&wMudtype       : &G%s\n\r", this_i3mud->mud_type);
-	i3_printf(ch, "&wMudlib        : &G%s\n\r", this_i3mud->mudlib);
-	i3_printf(ch, "&wMinlevel      : &G%d\n\r", this_i3mud->minlevel);
-	i3_printf(ch, "&wImmlevel      : &G%d\n\r", this_i3mud->immlevel);
-	i3_printf(ch, "&wAdminlevel    : &G%d\n\r", this_i3mud->adminlevel);
-	i3_printf(ch, "&wImplevel      : &G%d\n\r", this_i3mud->implevel);
+	i3_printf(ch, "%%^WHITE%%^Web           : %%^GREEN%%^%%^BOLD%%^%s%%^RESET%%^\n\r", this_i3mud->web);
+	i3_printf(ch, "%%^WHITE%%^Email         : %%^GREEN%%^%%^BOLD%%^%s%%^RESET%%^\n\r", this_i3mud->admin_email);
+	i3_printf(ch, "%%^WHITE%%^Status        : %%^GREEN%%^%%^BOLD%%^%s%%^RESET%%^\n\r", this_i3mud->open_status);
+	i3_printf(ch, "%%^WHITE%%^Mudtype       : %%^GREEN%%^%%^BOLD%%^%s%%^RESET%%^\n\r", this_i3mud->mud_type);
+	i3_printf(ch, "%%^WHITE%%^Mudlib        : %%^GREEN%%^%%^BOLD%%^%s%%^RESET%%^\n\r", this_i3mud->mudlib);
+	i3_printf(ch, "%%^WHITE%%^Minlevel      : %%^GREEN%%^%%^BOLD%%^%d%%^RESET%%^\n\r", this_i3mud->minlevel);
+	i3_printf(ch, "%%^WHITE%%^Immlevel      : %%^GREEN%%^%%^BOLD%%^%d%%^RESET%%^\n\r", this_i3mud->immlevel);
+	i3_printf(ch, "%%^WHITE%%^Adminlevel    : %%^GREEN%%^%%^BOLD%%^%d%%^RESET%%^\n\r", this_i3mud->adminlevel);
+	i3_printf(ch, "%%^WHITE%%^Implevel      : %%^GREEN%%^%%^BOLD%%^%d%%^RESET%%^\n\r", this_i3mud->implevel);
 	return;
     }
 
@@ -7846,13 +7953,13 @@ I3_CMD(I3_permstats)
     }
 
     if (I3PERM(victim) < 0 || I3PERM(victim) > I3PERM_IMP) {
-	i3_printf(ch, "&R%s has an invalid permission setting!\n\r", CH_I3NAME(victim));
+	i3_printf(ch, "%%^RED%%^%%^BOLD%%^%s has an invalid permission setting!%%^RESET%%^\n\r", CH_I3NAME(victim));
 	return;
     }
 
-    i3_printf(ch, "&GPermissions for %s: %s\n\r", CH_I3NAME(victim),
+    i3_printf(ch, "%%^GREEN%%^%%^BOLD%%^Permissions for %s: %s%%^RESET%%^\n\r", CH_I3NAME(victim),
 	      perm_names[I3PERM(victim)]);
-    i3_printf(ch, "&gThese permissions were obtained %s.\n\r",
+    i3_printf(ch, "%%^GREEN%%^These permissions were obtained %s.%%^RESET%%^\n\r",
 	      I3IS_SET(I3FLAG(victim),
 		       I3_PERMOVERRIDE) ? "manually via i3permset" : "automatically by level");
     return;
@@ -7867,8 +7974,8 @@ I3_CMD(I3_permset)
     argument = i3one_argument(argument, arg);
 
     if (arg[0] == '\0') {
-	i3_to_char("&wUsage: i3permset <user> <permission>\n\r", ch);
-	i3_to_char("&wPermission can be one of: None, Mort, Imm, Admin, Imp\n\r", ch);
+	i3_to_char("%%^WHITE%%^Usage: i3permset <user> <permission>%%^RESET%%^\n\r", ch);
+	i3_to_char("%%^WHITE%%^Permission can be one of: None, Mort, Imm, Admin, Imp%%^RESET%%^\n\r", ch);
 	return;
     }
 
@@ -7897,7 +8004,7 @@ I3_CMD(I3_permset)
 
     if (permvalue == -1) {
 	I3REMOVE_BIT(I3FLAG(victim), I3_PERMOVERRIDE);
-	i3_printf(ch, "&YPermission flag override has been removed from %s\n\r",
+	i3_printf(ch, "%%^YELLOW%%^Permission flag override has been removed from %s%%^RESET%%^\n\r",
 		  CH_I3NAME(victim));
 	return;
     }
@@ -7905,7 +8012,7 @@ I3_CMD(I3_permset)
     I3PERM(victim) = permvalue;
     I3SET_BIT(I3FLAG(victim), I3_PERMOVERRIDE);
 
-    i3_printf(ch, "&YPermission level for %s has been changed to %s\n\r", CH_I3NAME(victim),
+    i3_printf(ch, "%%^YELLOW%%^Permission level for %s has been changed to %s%%^RESET%%^\n\r", CH_I3NAME(victim),
 	      perm_names[permvalue]);
     /*
      * Channel Clean-Up added by Xorith 9-24-03 
@@ -7927,7 +8034,7 @@ I3_CMD(I3_permset)
 	    if (channel && I3PERM(victim) < channel->i3perm) {
 		I3_unflagchan(&I3LISTEN(victim), arg);
 		i3_printf(ch,
-			  "&WRemoving '%s' level channel: '%s', exceeding new permission of '%s'\n\r",
+			  "%%^WHITE%%^%%^BOLD%%^Removing '%s' level channel: '%s', exceeding new permission of '%s'%%^RESET%%^\n\r",
 			  perm_names[channel->i3perm], channel->local_name,
 			  perm_names[I3PERM(victim)]);
 	    }
@@ -7946,8 +8053,8 @@ I3_CMD(I3_who)
     }
 
     if (!(mud = find_I3_mud_by_name(argument))) {
-	i3_to_char("&YNo such mud known.\n\r"
-		   "(use &Wi3mudlist&Y to get an overview of the muds available)\n\r", ch);
+	i3_to_char("%%^YELLOW%%^No such mud known.%%^RESET%%^\n\r"
+		   "(use %%^WHITE%%^%%^BOLD%%^i3mudlist%%^YELLOW%%^ to get an overview of the muds available)%%^RESET%%^\n\r", ch);
 	return;
     }
 
@@ -7984,8 +8091,8 @@ I3_CMD(I3_finger)
     }
 
     if (!argument || argument[0] == '\0') {
-	i3_to_char("&wUsage: i3finger <user@mud>\n\r", ch);
-	i3_to_char("&wUsage: i3finger privacy\n\r", ch);
+	i3_to_char("%%^WHITE%%^Usage: i3finger <user@mud>%%^RESET%%^\n\r", ch);
+	i3_to_char("%%^WHITE%%^Usage: i3finger privacy%%^RESET%%^\n\r", ch);
 	return;
     }
 
@@ -8006,8 +8113,8 @@ I3_CMD(I3_finger)
     }
 
     if ((ps = strchr(argument, '@')) == NULL) {
-	i3_to_char("&YYou should specify a person and a mud.\n\r"
-		   "(use &Wi3mudlist&Y to get an overview of the muds available)\n\r", ch);
+	i3_to_char("%%^YELLOW%%^You should specify a person and a mud.%%^RESET%%^\n\r"
+		   "(use %%^WHITE%%^%%^BOLD%%^i3mudlist%%^YELLOW%%^ to get an overview of the muds available)%%^RESET%%^\n\r", ch);
 	return;
     }
 
@@ -8016,14 +8123,14 @@ I3_CMD(I3_finger)
     i3strlcpy(mud, ps + 1, MAX_INPUT_LENGTH);
 
     if (user[0] == '\0' || mud[0] == '\0') {
-	i3_to_char("&YYou should specify a person and a mud.\n\r"
-		   "(use &Wi3mudlist&Y to get an overview of the muds available)\n\r", ch);
+	i3_to_char("%%^YELLOW%%^You should specify a person and a mud.%%^RESET%%^\n\r"
+		   "(use %%^WHITE%%^%%^BOLD%%^i3mudlist%%^YELLOW%%^ to get an overview of the muds available)%%^RESET%%^\n\r", ch);
 	return;
     }
 
     if (!(pmud = find_I3_mud_by_name(mud))) {
-	i3_to_char("&YNo such mud known.\n\r"
-		   "(use &Wi3mudlist&Y to get an overview of the muds available)\n\r", ch);
+	i3_to_char("%%^YELLOW%%^No such mud known.%%^RESET%%^\n\r"
+		   "(use %%^WHITE%%^%%^BOLD%%^i3mudlist%%^YELLOW%%^ to get an overview of the muds available)%%^RESET%%^\n\r", ch);
 	return;
     }
 
@@ -8065,8 +8172,8 @@ I3_CMD(I3_emote)
     ps = strchr(to, '@');
 
     if (to[0] == '\0' || argument[0] == '\0' || ps == NULL) {
-	i3_to_char("&YYou should specify a person and a mud.\n\r"
-		   "(use &Wi3mudlist&Y to get an overview of the muds available)\n\r", ch);
+	i3_to_char("%%^YELLOW%%^You should specify a person and a mud.%%^RESET%%^\n\r"
+		   "(use %%^WHITE%%^%%^BOLD%%^i3mudlist%%^YELLOW%%^ to get an overview of the muds available)%%^RESET%%^\n\r", ch);
 	return;
     }
 
@@ -8075,8 +8182,8 @@ I3_CMD(I3_emote)
     i3strlcpy(mud, ps, MAX_INPUT_LENGTH);
 
     if (!(pmud = find_I3_mud_by_name(mud))) {
-	i3_to_char("&YNo such mud known.\n\r"
-		   "( use &Wi3mudlist&Y to get an overview of the muds available)\n\r", ch);
+	i3_to_char("%%^YELLOW%%^No such mud known.%%^RESET%%^\n\r"
+		   "( use %%^WHITE%%^%%^BOLD%%^i3mudlist%%^YELLOW%%^ to get an overview of the muds available)%%^RESET%%^\n\r", ch);
 	return;
     }
 
@@ -8098,18 +8205,18 @@ I3_CMD(I3_router)
     char                                    cmd[MAX_INPUT_LENGTH];
 
     if (!argument || argument[0] == '\0') {
-	i3_to_char("&wUsage: i3router add <router_name> <router_ip> <router_port>\n\r", ch);
-	i3_to_char("&wUsage: i3router remove <router_name>\n\r", ch);
-	i3_to_char("&wUsage: i3router list\n\r", ch);
+	i3_to_char("%%^WHITE%%^Usage: i3router add <router_name> <router_ip> <router_port>%%^RESET%%^\n\r", ch);
+	i3_to_char("%%^WHITE%%^Usage: i3router remove <router_name>%%^RESET%%^\n\r", ch);
+	i3_to_char("%%^WHITE%%^Usage: i3router list%%^RESET%%^\n\r", ch);
 	return;
     }
     argument = i3one_argument(argument, cmd);
 
     if (!strcasecmp(cmd, "list")) {
-	i3_to_char("&RThe mud has the following routers configured:\n\r", ch);
-	i3_to_char("&WRouter Name     Router IP/DNS                  Router Port\n\r", ch);
+	i3_to_char("%%^RED%%^%%^BOLD%%^The mud has the following routers configured:%%^RESET%%^\n\r", ch);
+	i3_to_char("%%^WHITE%%^%%^BOLD%%^Router Name     Router IP/DNS                  Router Port%%^RESET%%^\n\r", ch);
 	for (router = first_router; router; router = router->next)
-	    i3_printf(ch, "&c%-15.15s &c%-30.30s %d\n\r", router->name, router->ip,
+	    i3_printf(ch, "%%^CYAN%%^%-15.15s %%^CYAN%%^%-30.30s %d%%^RESET%%^\n\r", router->name, router->ip,
 		      router->port);
 	return;
     }
@@ -8126,13 +8233,13 @@ I3_CMD(I3_router)
 		I3STRFREE(router->ip);
 		I3UNLINK(router, first_router, last_router, next, prev);
 		I3DISPOSE(router);
-		i3_printf(ch, "&YRouter &W%s&Y has been removed from your configuration.\n\r",
+		i3_printf(ch, "%%^YELLOW%%^Router %%^WHITE%%^%%^BOLD%%^%s%%^YELLOW%%^ has been removed from your configuration.%%^RESET%%^\n\r",
 			  argument);
 		I3_saverouters();
 		return;
 	    }
 	}
-	i3_printf(ch, "&YNo router named &W%s&Y exists in your configuration.\n\r", argument);
+	i3_printf(ch, "%%^YELLOW%%^No router named %%^WHITE%%^%%^BOLD%%^%s%%^YELLOW%%^ exists in your configuration.%%^RESET%%^\n\r", argument);
 	return;
     }
 
@@ -8151,26 +8258,26 @@ I3_CMD(I3_router)
 	}
 
 	if (rtname[0] != '*') {
-	    i3_to_char("&YA router name must begin with a &W*&Y to be valid.\n\r", ch);
+	    i3_to_char("%%^YELLOW%%^A router name must begin with a %%^WHITE%%^%%^BOLD%%^*%%^YELLOW%%^ to be valid.%%^RESET%%^\n\r", ch);
 	    return;
 	}
 
 	for (temp = first_router; temp; temp = temp->next) {
 	    if (!strcasecmp(temp->name, rtname)) {
-		i3_printf(ch, "&YA router named &W%s&Y is already in your configuration.\n\r",
+		i3_printf(ch, "%%^YELLOW%%^A router named %%^WHITE%%^%%^BOLD%%^%s%%^YELLOW%%^ is already in your configuration.%%^RESET%%^\n\r",
 			  rtname);
 		return;
 	    }
 	}
 
 	if (!is_number(argument)) {
-	    i3_to_char("&YPort must be a numerical value.\n\r", ch);
+	    i3_to_char("%%^YELLOW%%^Port must be a numerical value.%%^RESET%%^\n\r", ch);
 	    return;
 	}
 
 	rtport = atoi(argument);
 	if (rtport < 1 || rtport > 65535) {
-	    i3_to_char("&YInvalid port value specified.\n\r", ch);
+	    i3_to_char("%%^YELLOW%%^Invalid port value specified.%%^RESET%%^\n\r", ch);
 	    return;
 	}
 
@@ -8181,7 +8288,7 @@ I3_CMD(I3_router)
 	router->reconattempts = 0;
 	I3LINK(router, first_router, last_router, next, prev);
 
-	i3_printf(ch, "&YRouter: &W%s %s %d&Y has been added to your configuration.\n\r",
+	i3_printf(ch, "%%^YELLOW%%^Router: %%^WHITE%%^%%^BOLD%%^%s %s %d%%^YELLOW%%^ has been added to your configuration.%%^RESET%%^\n\r",
 		  router->name, router->ip, router->port);
 	I3_saverouters();
 	return;
@@ -8203,15 +8310,15 @@ I3_CMD(I3_stats)
     for (channel = first_I3chan; channel; channel = channel->next)
 	chan_count++;
 
-    i3_to_char("&cGeneral Statistics:\n\r\n\r", ch);
-    i3_printf(ch, "&cCurrently connected to: &W%s\n\r",
+    i3_to_char("%%^CYAN%%^General Statistics:%%^RESET%%^\n\r\n\r", ch);
+    i3_printf(ch, "%%^CYAN%%^Currently connected to: %%^WHITE%%^%%^BOLD%%^%s%%^RESET%%^\n\r",
 	      i3_is_connected()? I3_ROUTER_NAME : "Nowhere!");
     if (i3_is_connected())
-	i3_printf(ch, "&cConnected on descriptor: &W%d\n\r", I3_socket);
-    i3_printf(ch, "&cBytes sent    : &W%ld\n\r", bytes_sent);
-    i3_printf(ch, "&cBytes received: &W%ld\n\r", bytes_received);
-    i3_printf(ch, "&cKnown muds    : &W%d\n\r", mud_count);
-    i3_printf(ch, "&cKnown channels: &W%d\n\r", chan_count);
+	i3_printf(ch, "%%^CYAN%%^Connected on descriptor: %%^WHITE%%^%%^BOLD%%^%d%%^RESET%%^\n\r", I3_socket);
+    i3_printf(ch, "%%^CYAN%%^Bytes sent    : %%^WHITE%%^%%^BOLD%%^%ld%%^RESET%%^\n\r", bytes_sent);
+    i3_printf(ch, "%%^CYAN%%^Bytes received: %%^WHITE%%^%%^BOLD%%^%ld%%^RESET%%^\n\r", bytes_received);
+    i3_printf(ch, "%%^CYAN%%^Known muds    : %%^WHITE%%^%%^BOLD%%^%d%%^RESET%%^\n\r", mud_count);
+    i3_printf(ch, "%%^CYAN%%^Known channels: %%^WHITE%%^%%^BOLD%%^%d%%^RESET%%^\n\r", chan_count);
     return;
 }
 
@@ -8223,14 +8330,14 @@ I3_CMD(i3_help)
                                             perm;
 
     if (!argument || argument[0] == '\0') {
-	i3strlcpy(buf, "&gHelp is available for the following commands:\n\r",
+	i3strlcpy(buf, "%^GREEN%^Help is available for the following commands:%^RESET%^\n\r",
 		  MAX_STRING_LENGTH);
-	i3strlcat(buf, "&G---------------------------------------------\n\r",
+	i3strlcat(buf, "%^GREEN%^%^BOLD%^---------------------------------------------%^RESET%^\n\r",
 		  MAX_STRING_LENGTH);
 	for (perm = I3PERM_MORT; perm <= I3PERM(ch); perm++) {
 	    col = 0;
 	    snprintf(buf + strlen(buf), MAX_STRING_LENGTH - strlen(buf),
-		     "\n\r&g%s helps:&G\n\r", perm_names[perm]);
+		     "%%^RESET%%^\n\r%%^GREEN%%^%s helps:%%^GREEN%%^%%^BOLD%%^\n\r", perm_names[perm]);
 	    for (help = first_i3_help; help; help = help->next) {
 		if (help->level != perm)
 		    continue;
@@ -8238,10 +8345,10 @@ I3_CMD(i3_help)
 		snprintf(buf + strlen(buf), MAX_STRING_LENGTH - strlen(buf), "%-15s",
 			 help->name);
 		if (++col % 6 == 0)
-		    i3strlcat(buf, "\n\r", MAX_STRING_LENGTH);
+		    i3strlcat(buf, "%^RESET%^\n\r", MAX_STRING_LENGTH);
 	    }
 	    if (col % 6 != 0)
-		i3strlcat(buf, "\n\r", MAX_STRING_LENGTH);
+		i3strlcat(buf, "%^RESET%^\n\r", MAX_STRING_LENGTH);
 	}
 	i3send_to_pager(buf, ch);
 	return;
@@ -8250,13 +8357,13 @@ I3_CMD(i3_help)
     for (help = first_i3_help; help; help = help->next) {
 	if (!strcasecmp(help->name, argument)) {
 	    if (!help->text || help->text[0] == '\0')
-		i3_printf(ch, "&gNo inforation available for topic &W%s&g.\n\r", help->name);
+		i3_printf(ch, "%%^GREEN%%^No inforation available for topic %%^WHITE%%^%%^BOLD%%^%s%%^GREEN%%^.%%^RESET%%^\n\r", help->name);
 	    else
-		i3_printf(ch, "&g%s\n\r", help->text);
+		i3_printf(ch, "%%^GREEN%%^%s%%^RESET%%^\n\r", help->text);
 	    return;
 	}
     }
-    i3_printf(ch, "&gNo help exists for topic &W%s&g.\n\r", argument);
+    i3_printf(ch, "%%^GREEN%%^No help exists for topic %%^WHITE%%^%%^BOLD%%^%s%%^GREEN%%^.%%^RESET%%^\n\r", argument);
     return;
 }
 
@@ -8271,8 +8378,8 @@ I3_CMD(i3_hedit)
     argument = i3one_argument(argument, cmd);
 
     if (name[0] == '\0' || cmd[0] == '\0' || !argument || argument[0] == '\0') {
-	i3_to_char("&wUsage: i3hedit <topic> [name|perm] <field>\n\r", ch);
-	i3_to_char("&wWhere <field> can be either name, or permission level.\n\r", ch);
+	i3_to_char("%%^WHITE%%^Usage: i3hedit <topic> [name|perm] <field>%%^RESET%%^\n\r", ch);
+	i3_to_char("%%^WHITE%%^Where <field> can be either name, or permission level.%%^RESET%%^\n\r", ch);
 	return;
     }
 
@@ -8285,13 +8392,13 @@ I3_CMD(i3_hedit)
 
     if (!found) {
 	i3_printf(ch,
-		  "&gNo help exists for topic &W%s&g. You will need to add it to the helpfile manually.\n\r",
+		  "%%^GREEN%%^No help exists for topic %%^WHITE%%^%%^BOLD%%^%s%%^GREEN%%^. You will need to add it to the helpfile manually.%%^RESET%%^\n\r",
 		  name);
 	return;
     }
 
     if (!strcasecmp(cmd, "name")) {
-	i3_printf(ch, "&W%s &ghas been renamed to &W%s.\n\r", help->name, argument);
+	i3_printf(ch, "%%^WHITE%%^%%^BOLD%%^%s %%^GREEN%%^has been renamed to %%^WHITE%%^%%^BOLD%%^%s.%%^RESET%%^\n\r", help->name, argument);
 	I3STRFREE(help->name);
 	help->name = I3STRALLOC(argument);
 	I3_savehelps();
@@ -8304,7 +8411,7 @@ I3_CMD(i3_hedit)
 	if (!i3check_permissions(ch, permvalue, help->level, FALSE))
 	    return;
 
-	i3_printf(ch, "&gPermission level for &W%s &ghas been changed to &W%s.\n\r", help->name,
+	i3_printf(ch, "%%^GREEN%%^Permission level for %%^WHITE%%^%%^BOLD%%^%s %%^GREEN%%^has been changed to %%^WHITE%%^%%^BOLD%%^%s.%%^RESET%%^\n\r", help->name,
 		  perm_names[permvalue]);
 	help->level = permvalue;
 	I3_savehelps();
@@ -8321,11 +8428,11 @@ I3_CMD(I3_other)
     int                                     col,
                                             perm;
 
-    i3strlcpy(buf, "&gThe following commands are available:\n\r", MAX_STRING_LENGTH);
-    i3strlcat(buf, "&G-------------------------------------\n\r", MAX_STRING_LENGTH);
+    i3strlcpy(buf, "%%^GREEN%%^The following commands are available:%%^RESET%%^\n\r", MAX_STRING_LENGTH);
+    i3strlcat(buf, "%%^GREEN%%^%%^BOLD%%^-------------------------------------%%^RESET%%^\n\r", MAX_STRING_LENGTH);
     for (perm = I3PERM_MORT; perm <= I3PERM(ch); perm++) {
 	col = 0;
-	snprintf(buf + strlen(buf), MAX_STRING_LENGTH - strlen(buf), "\n\r&g%s commands:&G\n\r",
+	snprintf(buf + strlen(buf), MAX_STRING_LENGTH - strlen(buf), "%%^RESET%%^\n\r%%^GREEN%%^%s commands:%%^GREEN%%^%%^BOLD%%^\n\r",
 		 perm_names[perm]);
 	for (cmd = first_i3_command; cmd; cmd = cmd->next) {
 	    if (cmd->level != perm)
@@ -8333,14 +8440,14 @@ I3_CMD(I3_other)
 
 	    snprintf(buf + strlen(buf), MAX_STRING_LENGTH - strlen(buf), "%-15s", cmd->name);
 	    if (++col % 6 == 0)
-		i3strlcat(buf, "\n\r", MAX_STRING_LENGTH);
+		i3strlcat(buf, "%%^RESET%%^\n\r", MAX_STRING_LENGTH);
 	}
 	if (col % 6 != 0)
-	    i3strlcat(buf, "\n\r", MAX_STRING_LENGTH);
+	    i3strlcat(buf, "%%^RESET%%^\n\r", MAX_STRING_LENGTH);
     }
     i3send_to_pager(buf, ch);
     i3send_to_pager
-	("\n\r&gFor information about a specific command, see &Wi3help <command>&g.\n\r", ch);
+	("%%^RESET%%^\n\r%%^GREEN%%^For information about a specific command, see %%^WHITE%%^%%^BOLD%%^i3help <command>%%^GREEN%%^.%%^RESET%%^\n\r", ch);
     return;
 }
 
@@ -8363,7 +8470,7 @@ I3_CMD(I3_color)
 	i3_to_char("I3 color is now off.\n\r", ch);
     } else {
 	I3SET_BIT(I3FLAG(ch), I3_COLORFLAG);
-	i3_to_char("&RI3 c&Yo&Gl&Bo&Pr &Ris now on. Enjoy :)\n\r", ch);
+	i3_to_char("%%^RED%%^%%^BOLD%%^I3 c%%^YELLOW%%^o%%^GREEN%%^%%^BOLD%%^l%%^BLUE%%^%%^BOLD%%^o%%^MAGENTA%%^%%^BOLD%%^r %%^RED%%^%%^BOLD%%^is now on. Enjoy :)%%^RESET%%^\n\r", ch);
     }
     return;
 }
@@ -8402,12 +8509,12 @@ I3_CMD(i3_cedit)
 
     if (!strcasecmp(option, "create")) {
 	if (found) {
-	    i3_printf(ch, "&gA command named &W%s &galready exists.\n\r", name);
+	    i3_printf(ch, "%%^GREEN%%^A command named %%^WHITE%%^%%^BOLD%%^%s %%^GREEN%%^already exists.%%^RESET%%^\n\r", name);
 	    return;
 	}
 
 	if (aliasfound) {
-	    i3_printf(ch, "&g%s already exists as an alias for another command.\n\r", name);
+	    i3_printf(ch, "%%^GREEN%%^%s already exists as an alias for another command.%%^RESET%%^\n\r", name);
 	    return;
 	}
 
@@ -8415,13 +8522,13 @@ I3_CMD(i3_cedit)
 	cmd->name = I3STRALLOC(name);
 	cmd->level = I3PERM(ch);
 	cmd->connected = FALSE;
-	i3_printf(ch, "&gCommand &W%s &gcreated.\n\r", cmd->name);
+	i3_printf(ch, "%%^GREEN%%^Command %%^WHITE%%^%%^BOLD%%^%s %%^GREEN%%^created.%%^RESET%%^\n\r", cmd->name);
 	if (argument && argument[0] != '\0') {
 	    cmd->function = i3_function(argument);
 	    if (cmd->function == NULL)
-		i3_printf(ch, "&gFunction &W%s &gdoes not exist - set to NULL.\n\r", argument);
+		i3_printf(ch, "%%^GREEN%%^Function %%^WHITE%%^%%^BOLD%%^%s %%^GREEN%%^does not exist - set to NULL.%%^RESET%%^\n\r", argument);
 	} else {
-	    i3_to_char("&gFunction set to NULL.\n\r", ch);
+	    i3_to_char("%%^GREEN%%^Function set to NULL.%%^RESET%%^\n\r", ch);
 	    cmd->function = NULL;
 	}
 	I3LINK(cmd, first_i3_command, last_i3_command, next, prev);
@@ -8430,7 +8537,7 @@ I3_CMD(i3_cedit)
     }
 
     if (!found) {
-	i3_printf(ch, "&gNo command named &W%s &gexists.\n\r", name);
+	i3_printf(ch, "%%^GREEN%%^No command named %%^WHITE%%^%%^BOLD%%^%s %%^GREEN%%^exists.%%^RESET%%^\n\r", name);
 	return;
     }
 
@@ -8438,7 +8545,7 @@ I3_CMD(i3_cedit)
 	return;
 
     if (!strcasecmp(option, "delete")) {
-	i3_printf(ch, "&gCommand &W%s &ghas been deleted.\n\r", cmd->name);
+	i3_printf(ch, "%%^GREEN%%^Command %%^WHITE%%^%%^BOLD%%^%s %%^GREEN%%^has been deleted.%%^RESET%%^\n\r", cmd->name);
 	for (alias = cmd->first_alias; alias; alias = alias_next) {
 	    alias_next = alias->next;
 
@@ -8461,7 +8568,7 @@ I3_CMD(i3_cedit)
 	    alias_next = alias->next;
 
 	    if (!strcasecmp(alias->name, argument)) {
-		i3_printf(ch, "&W%s &ghas been removed as an alias for &W%s\n\r", argument,
+		i3_printf(ch, "%%^WHITE%%^%%^BOLD%%^%s %%^GREEN%%^has been removed as an alias for %%^WHITE%%^%%^BOLD%%^%s%%^RESET%%^\n\r", argument,
 			  cmd->name);
 		I3UNLINK(alias, cmd->first_alias, cmd->last_alias, next, prev);
 		I3STRFREE(alias->name);
@@ -8473,12 +8580,12 @@ I3_CMD(i3_cedit)
 
 	for (tmp = first_i3_command; tmp; tmp = tmp->next) {
 	    if (!strcasecmp(tmp->name, argument)) {
-		i3_printf(ch, "&W%s &gis already a command name.\n\r", argument);
+		i3_printf(ch, "%%^WHITE%%^%%^BOLD%%^%s %%^GREEN%%^is already a command name.%%^RESET%%^\n\r", argument);
 		return;
 	    }
 	    for (alias = tmp->first_alias; alias; alias = alias->next) {
 		if (!strcasecmp(argument, alias->name)) {
-		    i3_printf(ch, "&W%s &gis already an alias for &W%s\n\r", argument,
+		    i3_printf(ch, "%%^WHITE%%^%%^BOLD%%^%s %%^GREEN%%^is already an alias for %%^WHITE%%^%%^BOLD%%^%s%%^RESET%%^\n\r", argument,
 			      tmp->name);
 		    return;
 		}
@@ -8488,7 +8595,7 @@ I3_CMD(i3_cedit)
 	I3CREATE(alias, I3_ALIAS, 1);
 	alias->name = I3STRALLOC(argument);
 	I3LINK(alias, cmd->first_alias, cmd->last_alias, next, prev);
-	i3_printf(ch, "&W%s &ghas been added as an alias for &W%s\n\r", alias->name, cmd->name);
+	i3_printf(ch, "%%^WHITE%%^%%^BOLD%%^%s %%^GREEN%%^has been added as an alias for %%^WHITE%%^%%^BOLD%%^%s%%^RESET%%^\n\r", alias->name, cmd->name);
 	I3_savecommands();
 	return;
     }
@@ -8497,11 +8604,11 @@ I3_CMD(i3_cedit)
 	cmd->connected = !cmd->connected;
 
 	if (cmd->connected)
-	    i3_printf(ch, "&gCommand &W%s &gwill now require a connection to I3 to use.\n\r",
+	    i3_printf(ch, "%%^GREEN%%^Command %%^WHITE%%^%%^BOLD%%^%s %%^GREEN%%^will now require a connection to I3 to use.%%^RESET%%^\n\r",
 		      cmd->name);
 	else
 	    i3_printf(ch,
-		      "&gCommand &W%s &gwill no longer require a connection to I3 to use.\n\r",
+		      "%%^GREEN%%^Command %%^WHITE%%^%%^BOLD%%^%s %%^GREEN%%^will no longer require a connection to I3 to use.%%^RESET%%^\n\r",
 		      cmd->name);
 	I3_savecommands();
 	return;
@@ -8510,22 +8617,22 @@ I3_CMD(i3_cedit)
     if (!strcasecmp(option, "show")) {
 	char                                    buf[MAX_STRING_LENGTH];
 
-	i3_printf(ch, "&gCommand       : &W%s\n\r", cmd->name);
-	i3_printf(ch, "&gPermission    : &W%s\n\r", perm_names[cmd->level]);
-	i3_printf(ch, "&gFunction      : &W%s\n\r", i3_funcname(cmd->function));
-	i3_printf(ch, "&gConnection Req: &W%s\n\r", cmd->connected ? "Yes" : "No");
+	i3_printf(ch, "%%^GREEN%%^Command       : %%^WHITE%%^%%^BOLD%%^%s%%^RESET%%^\n\r", cmd->name);
+	i3_printf(ch, "%%^GREEN%%^Permission    : %%^WHITE%%^%%^BOLD%%^%s%%^RESET%%^\n\r", perm_names[cmd->level]);
+	i3_printf(ch, "%%^GREEN%%^Function      : %%^WHITE%%^%%^BOLD%%^%s%%^RESET%%^\n\r", i3_funcname(cmd->function));
+	i3_printf(ch, "%%^GREEN%%^Connection Req: %%^WHITE%%^%%^BOLD%%^%s%%^RESET%%^\n\r", cmd->connected ? "Yes" : "No");
 	if (cmd->first_alias) {
 	    int                                     col = 0;
 
-	    i3strlcpy(buf, "&gAliases       : &W", MAX_STRING_LENGTH);
+	    i3strlcpy(buf, "%%^GREEN%%^Aliases       : %%^WHITE%%^%%^BOLD%%^", MAX_STRING_LENGTH);
 	    for (alias = cmd->first_alias; alias; alias = alias->next) {
 		snprintf(buf + strlen(buf), MAX_STRING_LENGTH - strlen(buf), "%s ",
 			 alias->name);
 		if (++col % 10 == 0)
-		    i3strlcat(buf, "\n\r", MAX_STRING_LENGTH);
+		    i3strlcat(buf, "%%^RESET%%^\n\r", MAX_STRING_LENGTH);
 	    }
 	    if (col % 10 != 0)
-		i3strlcat(buf, "\n\r", MAX_STRING_LENGTH);
+		i3strlcat(buf, "%%^RESET%%^\n\r", MAX_STRING_LENGTH);
 	    i3_to_char(buf, ch);
 	}
 	return;
@@ -8538,7 +8645,7 @@ I3_CMD(i3_cedit)
     }
 
     if (!strcasecmp(option, "rename")) {
-	i3_printf(ch, "&gCommand &W%s &ghas been renamed to &W%s.\n\r", cmd->name, argument);
+	i3_printf(ch, "%%^GREEN%%^Command %%^WHITE%%^%%^BOLD%%^%s %%^GREEN%%^has been renamed to %%^WHITE%%^%%^BOLD%%^%s.%%^RESET%%^\n\r", cmd->name, argument);
 	I3STRFREE(cmd->name);
 	cmd->name = I3STRALLOC(argument);
 	I3_savecommands();
@@ -8548,9 +8655,9 @@ I3_CMD(i3_cedit)
     if (!strcasecmp(option, "code")) {
 	cmd->function = i3_function(argument);
 	if (cmd->function == NULL)
-	    i3_printf(ch, "&gFunction &W%s &gdoes not exist - set to NULL.\n\r", argument);
+	    i3_printf(ch, "%%^GREEN%%^Function %%^WHITE%%^%%^BOLD%%^%s %%^GREEN%%^does not exist - set to NULL.%%^RESET%%^\n\r", argument);
 	else
-	    i3_printf(ch, "&gFunction set to &W%s.\n\r", argument);
+	    i3_printf(ch, "%%^GREEN%%^Function set to %%^WHITE%%^%%^BOLD%%^%s.%%^RESET%%^\n\r", argument);
 	I3_savecommands();
 	return;
     }
@@ -8562,7 +8669,7 @@ I3_CMD(i3_cedit)
 	    return;
 
 	cmd->level = permvalue;
-	i3_printf(ch, "&gCommand &W%s &gpermission level has been changed to &W%s.\n\r",
+	i3_printf(ch, "%%^GREEN%%^Command %%^WHITE%%^%%^BOLD%%^%s %%^GREEN%%^permission level has been changed to %%^WHITE%%^%%^BOLD%%^%s.%%^RESET%%^\n\r",
 		  cmd->name, perm_names[permvalue]);
 	I3_savecommands();
 	return;
@@ -8588,7 +8695,7 @@ char                                   *I3_find_social(CHAR_DATA *ch, char *snam
     for (c = sname; *c; *c = tolower(*c), c++);
 
     if (!(social = find_social(sname))) {
-	i3_printf(ch, "&YSocial &W%s&Y does not exist on this mud.\n\r", sname);
+	i3_printf(ch, "%%^YELLOW%%^Social %%^WHITE%%^%%^BOLD%%^%s%%^YELLOW%%^ does not exist on this mud.%%^RESET%%^\n\r", sname);
 	return socname;
     }
 
@@ -8596,20 +8703,20 @@ char                                   *I3_find_social(CHAR_DATA *ch, char *snam
 	if (person && person[0] != '\0' && !strcasecmp(person, CH_I3NAME(ch))
 	    && mud && mud[0] != '\0' && !strcasecmp(mud, I3_THISMUD)) {
 	    if (!social->others_auto) {
-		i3_printf(ch, "&YSocial &W%s&Y: Missing others_auto.\n\r", social->name);
+		i3_printf(ch, "%%^YELLOW%%^Social %%^WHITE%%^%%^BOLD%%^%s%%^YELLOW%%^: Missing others_auto.%%^RESET%%^\n\r", social->name);
 		return socname;
 	    }
 	    i3strlcpy(socname, social->others_auto, MAX_STRING_LENGTH);
 	} else {
 	    if (!victim) {
 		if (!social->others_found) {
-		    i3_printf(ch, "&YSocial &W%s&Y: Missing others_found.\n\r", social->name);
+		    i3_printf(ch, "%%^YELLOW%%^Social %%^WHITE%%^%%^BOLD%%^%s%%^YELLOW%%^: Missing others_found.%%^RESET%%^\n\r", social->name);
 		    return socname;
 		}
 		i3strlcpy(socname, social->others_found, MAX_STRING_LENGTH);
 	    } else {
 		if (!social->vict_found) {
-		    i3_printf(ch, "&YSocial &W%s&Y: Missing vict_found.\n\r", social->name);
+		    i3_printf(ch, "%%^YELLOW%%^Social %%^WHITE%%^%%^BOLD%%^%s%%^YELLOW%%^: Missing vict_found.%%^RESET%%^\n\r", social->name);
 		    return socname;
 		}
 		i3strlcpy(socname, social->vict_found, MAX_STRING_LENGTH);
@@ -8617,7 +8724,7 @@ char                                   *I3_find_social(CHAR_DATA *ch, char *snam
 	}
     } else {
 	if (!social->others_no_arg) {
-	    i3_printf(ch, "&YSocial &W%s&Y: Missing others_no_arg.\n\r", social->name);
+	    i3_printf(ch, "%%^YELLOW%%^Social %%^WHITE%%^%%^BOLD%%^%s%%^YELLOW%%^: Missing others_no_arg.%%^RESET%%^\n\r", social->name);
 	    return socname;
 	}
 	i3strlcpy(socname, social->others_no_arg, MAX_STRING_LENGTH);
@@ -9096,10 +9203,10 @@ bool i3_command_hook(CHAR_DATA *ch, const char *lcommand, const char *argument)
     }
 
     if (!argument || argument[0] == '\0') {
-	i3_printf(ch, "&cThe last %d %s messages:\n\r", MAX_I3HISTORY, channel->local_name);
+	i3_printf(ch, "%%^CYAN%%^The last %d %s messages:%%^RESET%%^\n\r", MAX_I3HISTORY, channel->local_name);
 	for (x = 0; x < MAX_I3HISTORY; x++) {
 	    if (channel->history[x] != NULL)
-		i3_printf(ch, "%s\n\r", channel->history[x]);
+		i3_printf(ch, "%s%%^RESET%%^\n\r", channel->history[x]);
 	    else
 		break;
 	}
@@ -9115,20 +9222,20 @@ bool i3_command_hook(CHAR_DATA *ch, const char *lcommand, const char *argument)
 	if (!I3IS_SET(channel->flags, I3CHAN_LOG)) {
 	    I3SET_BIT(channel->flags, I3CHAN_LOG);
 	    i3_printf(ch,
-		      "&RFile logging enabled for %s, PLEASE don't forget to undo this when it isn't needed!\n\r",
+		      "%%^RED%%^%%^BOLD%%^File logging enabled for %s, PLEASE don't forget to undo this when it isn't needed!%%^RESET%%^\n\r",
 		      channel->local_name);
 	} else {
 	    I3REMOVE_BIT(channel->flags, I3CHAN_LOG);
-	    i3_printf(ch, "&GFile logging disabled for %s.\n\r", channel->local_name);
+	    i3_printf(ch, "%%^GREEN%%^%%^BOLD%%^File logging disabled for %s.%%^RESET%%^\n\r", channel->local_name);
 	}
 	I3_write_channel_config();
 	return TRUE;
     }
 
     if (!I3_hasname(I3LISTEN(ch), channel->local_name)) {
-	i3_printf(ch, "&YYou were trying to send something to an I3 "
-		  "channel but you're not listening to it.\n\rPlease use the command "
-		  "'&Wi3listen %s&Y' to listen to it.\n\r", channel->local_name);
+	i3_printf(ch, "%%^YELLOW%%^You were trying to send something to an I3 "
+		  "channel but you're not listening to it.%%^RESET%%^\n\rPlease use the command "
+		  "'%%^WHITE%%^%%^BOLD%%^i3listen %s%%^YELLOW%%^' to listen to it.%%^RESET%%^\n\r", channel->local_name);
 	return TRUE;
     }
 
@@ -9157,6 +9264,27 @@ bool i3_command_hook(CHAR_DATA *ch, const char *lcommand, const char *argument)
 	    break;
     }
     return TRUE;
+}
+
+void i3_npc_speak(const char *chan_name, const char *actor, const char *message)
+{
+    I3_CHANNEL                             *channel;
+
+    // char buf[MAX_STRING_LENGTH];
+
+    if (!i3_is_connected()) {
+	i3log("Not connected!");
+	return;
+    }
+    if (!(channel = find_I3_channel_by_localname(chan_name))) {
+	i3log("Can't find local channel %s.", chan_name);
+	return;
+    }
+
+    while (isspace(*message))
+	message++;
+    i3log("Sending [%s] from %s to %s.", message, actor, chan_name);
+    I3_send_channel_message(channel, actor, message);
 }
 
 void i3_npc_chat(const char *chan_name, const char *actor, const char *message)
