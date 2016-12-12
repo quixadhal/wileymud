@@ -325,6 +325,21 @@ function get_speaker_color($who, $where) {
     return $fancyLad;
 }
 
+function is_bot_line($line) {
+    $result = false;
+    $result = preg_match("/\tCron\@WileyMUD\t.*It\'s\s+ALIVE\!/", $line) ? $line : false;
+    if( $result ) {
+        return $result;
+    } else {
+        $result = preg_match("/\turl\tGhost\s+of\s+Quixadhal\@WileyMUD\t.*<wiley>/", $line);
+        if ($result) {
+            return false;
+        } else {
+            return $result = preg_match("/\twiley\tCron\@WileyMUD\t/", $line) ? false : $line;
+        }
+    }
+}
+
 $isLocal = is_local_ip();
 
 init_pinkfish_map();
@@ -335,7 +350,8 @@ $colorMap = get_chatter_colors();
 //2016.04.13-06.14,33000	intergossip	Cratylus@Dead Souls Dev	the problem with listening to music in the client office
 
 //$file_lines = explode( "\n", file_get_contents( $CHAT_TEXT_FILE ) );
-$file_lines = explode( "\n", file_tail( $CHAT_TEXT_FILE, 2500 ) );
+//$file_lines = explode( "\n", file_tail( $CHAT_TEXT_FILE, 2500 ) );
+$file_lines = array_filter(explode( "\n", file_tail( $CHAT_TEXT_FILE, 2500 ) ), "is_bot_line");
 $bg = 0;
 ?>
 <html>

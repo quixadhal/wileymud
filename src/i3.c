@@ -115,6 +115,8 @@ I3_CMD_DATA                            *last_i3_command;
 I3_HELP_DATA                           *first_i3_help;
 I3_HELP_DATA                           *last_i3_help;
 
+int                                     tics_since_last_message = PULSE_PER_SECOND * 60 * 30; /* 30 minutes worth */
+
 void                                    i3_printf(CHAR_DATA *ch, const char *fmt, ...)
     __attribute__ ((format(printf, 2, 3)));
 void                                    i3page_printf(CHAR_DATA *ch, const char *fmt, ...)
@@ -2844,6 +2846,12 @@ void I3_process_channel_m(I3_HEADER *header, char *s)
         I3FCLOSE(fp);
     }
 
+
+    // Here is the point we want to use pregexp to scan for urls and do the
+    // logic of untiny.pl
+
+
+
     for (d = first_descriptor; d; d = d->next) {
 	vch = d->original ? d->original : d->character;
 
@@ -2858,6 +2866,7 @@ void I3_process_channel_m(I3_HEADER *header, char *s)
 	    i3_printf(vch, "%s\n\r", buf);
     }
     update_chanhistory(channel, buf);
+    tics_since_last_message = PULSE_PER_SECOND * 60 * 30; /* 30 minutes worth */
     return;
 }
 
@@ -6320,18 +6329,24 @@ void i3_loop(void)
         "wiley",
         "wiley",
         "wiley",
-        "wiley",
-        "wiley",
-        "wiley",
-        "wiley",
         "intergossip",
-        "intergossip",
-        "free_speech",
-        "dchat",
+        "wiley",
+        "wiley",
+        "wiley",
+        "wiley",
+        "wiley",
+        "wiley",
         "dwchat"
+        "wiley",
+        "wiley",
+        "wiley",
+        "wiley",
+        "wiley",
+        "wiley"
     };
     int                                     taunt_choice = 0;
     const char                             *taunt_list[] = {
+        /*
         "https://www.youtube.com/watch?v=WhVW7RLuCkE", // C-ute HAPPY
         "https://www.youtube.com/watch?v=XLJ0ztflapI", // Sakura Gakuin - Hana Hana
         "https://www.youtube.com/watch?v=KGG0t-psqNo", // Mini-Patissier Miracle Patiful Humberger
@@ -6354,7 +6369,14 @@ void i3_loop(void)
         "https://www.youtube.com/watch?v=H0QhECqmTZM", // Black Sugar - Understanding FUNK 1970
         "https://www.youtube.com/watch?v=Z5CPsssPOcw", // Dire Straits - Down to the Waterline [Rockpalast -79 ~ HD]
         "https://www.youtube.com/watch?v=6NeQ1h6lzLI", // Gustav Holst - The Planets Op.32 Mars, the Bringer of War
+        "https://www.youtube.com/watch?v=usL6riajMy8", // Buono! - Urahara [Legendado]
+        "https://www.youtube.com/watch?v=Eml3UgKyZbM", // Buono! - Rottara
+        "https://www.youtube.com/watch?v=6M4_Ommfvv0", // Van Halen - "Hot For Teacher" (Official Music Video)
+        "https://www.youtube.com/watch?v=BjsQ6FAjmnY", // Buono!- Hatsukoi Cider [german sub & Romanji]
+        "https://www.youtube.com/watch?v=XWe3rYveISo", // C-ute Exciting Fight!
+        */
 
+        "Salius hates urls.",
 	"You hear a faint click behind you.",
 	"Uhhhh..... Shutup!",
 	"Maybe later...",
@@ -6449,8 +6471,21 @@ void i3_loop(void)
         snprintf(taunt, MAX_STRING_LENGTH, "%%^RED%%^%%^BOLD%%^[%-4.4d-%-2.2d-%-2.2d %-2.2d:%-2.2d]%%^RESET%%^ %%^GREEN%%^%%^BOLD%%^%s%%^RESET%%^ %%^YELLOW%%^%s%%^RESET%%^",
                 tm_info->tm_year + 1900, tm_info->tm_mon + 1, tm_info->tm_mday, tm_info->tm_hour, tm_info->tm_min, "It's ALIVE!\r\n", VERSION_STR);
         i3_npc_speak("wiley", "Cron", taunt);
+        tics_since_last_message = PULSE_PER_SECOND * 60 * 30; /* 30 minutes worth */
     }
 
+    tics_since_last_message--;
+
+    if ( tics_since_last_message <= 0 ) {
+        tics_since_last_message = PULSE_PER_SECOND * 60 * 30; /* 30 minutes worth */
+        taunt_choice = i3number(0, (sizeof(taunt_list) / sizeof(taunt_list[0])) - 1);
+        snprintf(taunt, MAX_STRING_LENGTH, "%%^RED%%^%%^BOLD%%^[%-4.4d-%-2.2d-%-2.2d %-2.2d:%-2.2d]%%^RESET%%^ %%^GREEN%%^%%^BOLD%%^%s%%^RESET%%^",
+                tm_info->tm_year + 1900, tm_info->tm_mon + 1, tm_info->tm_mday, tm_info->tm_hour, tm_info->tm_min, taunt_list[taunt_choice]);
+        chan_choice = i3number(0, (sizeof(chan_list) / sizeof(chan_list[0])) - 1);
+        i3_npc_speak(chan_list[chan_choice], "Cron", taunt);
+    }
+
+    /*
     if ( ((tm_info->tm_min == 0) || (tm_info->tm_min == 30)) && 
             (tm_info->tm_sec == 0) && (!(tics % PULSE_PER_SECOND)) ) {
         taunt_choice = i3number(0, (sizeof(taunt_list) / sizeof(taunt_list[0])) - 1);
@@ -6459,6 +6494,7 @@ void i3_loop(void)
         chan_choice = i3number(0, (sizeof(chan_list) / sizeof(chan_list[0])) - 1);
         i3_npc_speak(chan_list[chan_choice], "Cron", taunt);
     }
+    */
 
     /*
      * Will prune the cache once every 24hrs after bootup time 
@@ -9355,184 +9391,4 @@ char                                   *I3_nameremap(const char *ps)
     }
     return xnew;
 }
-
-
-#if 0
-varargs void eventSendChannel(string who, string ch, string msg, int emote,
-        string target, string targmsg) {
-    object channeler = find_player(lower_case(who));
-    int terminal;
-    string prev = base_name(previous_object());
-    string pchan,pmsg;
-    string *whobits;
-    string *msgbits;
-    string *cmsgbits;
-    string cmsg;
-    string bit;
-    string tstamp;
-    string output;
-    int i;
-
-    //tn("CHAT_D->eventSendChannel: "+identify(who)+", "+identify(ch)+", "+identify(msg), "green");
-
-    if(prev == INSTANCES_D){
-        terminal = 1;
-    }
-    if(prev == SERVICES_D) terminal = 1;
-    if(prev == IMC2_D) terminal = 1;
-    if(!terminal){
-        string rch = GetRemoteChannel(ch);
-        if(member_array(rch, remote_chans) == -1){
-            //tn("CHAT_D->eventSendChannel: handing off to INSTANCES_D.", "green");
-            INSTANCES_D->eventSendChannel(who,ch,msg,emote,target,targmsg);
-        }
-    }
-
-    pchan=ch;
-    if(!channeler) channeler = this_player();
-    if(!strsrch(msg,"-.--. . -. -.-. --- -.. . -.. -.--.- ---...")) msg = unmorse(msg);
-    if(targmsg && !strsrch(targmsg,"-.--. . -. -.-. --- -.. . -.. -.--.- ---..."))
-        targmsg = unmorse(targmsg);
-
-    if(this_player() && this_player() != channeler) channeler = this_player();
-
-    if(!strsrch(base_name(previous_object()), "/realms/") ||
-            !strsrch(base_name(previous_object()), "/open/")) {
-        return 0;
-    }
-
-    if(member_array(ch, syschans) != -1) {
-        //tn("CHAT_D->eventSendChannel: emote = 0 due to syschans.", "green");
-        emote = 0;
-    }
-    if(channeler){
-        if(!CanTalk(channeler, ch) && member_array(ch, syschans) == -1){
-            //tn("CHAT_D->eventSendChannel: !CanTalk(ch)", "green");
-            return;
-        }
-    }
-    if( file_name(previous_object()) == SERVICES_D || 
-            file_name(previous_object()) == IMC2_D) {
-        ch = GetLocalChannel(ch);
-        if( emote && sizeof(who)) {
-            //msg = replace_string(msg, "$N", who);
-            //tn("CHAT_D->eventSendChannel: emote + who + SERVICES: "+identify(ch), "green");
-            //DEBUG
-            //msg = replace_string(msg, "$N", getColorSpeakerName(who, "<SERV_IMC2:", ":SERV_IMC2>"));
-            msg = replace_string(msg, "$N", getColorSpeakerName(who));
-            pmsg = replace_string(msg, "$N", who);
-        }
-    }
-    else
-    {
-        if( origin() != ORIGIN_LOCAL &&
-            previous_object() != master() &&
-            file_name(previous_object()) != PARTY_D && 
-            file_name(previous_object()) != UPDATE_D && 
-            file_name(previous_object()) != INSTANCES_D && 
-            member_array(ch, syschans) == -1)
-        {
-            //tn("CHAT_D->eventSendChannel: ORIGIN_LOCAL/master/etc check.", "green");
-            return;
-        }
-    }
-    //tn("CHAT_D->eventSendChannel: after SERVICES check.", "green");
-    prev = file_name(previous_object());
-    if(!Channels[ch] && prev != SERVICES_D && prev != INSTANCES_D){
-        //tn("CHAT_D->eventSendChannel: Channels[ch] check.", "green");
-        return;
-    }
-    if( emote ) {
-        object ob;
-        string *results;
-
-        //tn("CHAT_D->eventSendChannel: in emote.", "green");
-        if( target && (ob = find_player(convert_name(target))) ) {
-            //tn("CHAT_D->eventSendChannel: target && find_player.", "green");
-            target = ob->GetName();
-        }
-
-        //tn("CHAT_D->eventSendChannel: just before formEmoteString.", "green");
-        results = formEmoteString(ch, who, msg, target, targmsg);
-        //tn("CHAT_D->eventSendChannel: just after formEmoteString.", "green");
-        msg = results[0];
-        targmsg = results[1];
-        pmsg = results[2];
-
-        //tn("CHAT_D->eventSendChannel: emote code: "+identify(results)+", "+identify(who)+", "+identify(ch)
-        //        +", "+identify(msg)+", "+identify(emote)+", "+identify(target)+", "
-        //        +identify(targmsg), "green");
-
-        tn("CHAT_D->eventSendChannel: in emote, just before strip_colours(pmsg); \"" + pmsg + "\"", "green");
-        pmsg = strip_colours(pmsg);
-        tn("CHAT_D->eventSendChannel: in emote, just after strip_colours(pmsg); \"" + pmsg + "\"", "green");
-        //pmsg = TERMINAL_D->no_colours(pmsg);
-        eventAddLast(ch, msg, pchan, pmsg);
-        eventChannelMsgToListeners(who, ch, msg, emote, target, targmsg);
-
-        if (check_for_url(ch, msg)) {
-            // got one!
-            // tn("CHAT_D->eventSendChannel: found emote url", "green");
-            // SERVICES_D->eventSendChannel(who, "wileymud", "Found url", 0, "", "");
-        } else {
-            // tn("CHAT_D->eventSendChannel: NOT found emote url", "red");
-        }
-    }
-    else
-    {
-        pmsg = msg;
-        cmsg = msg;
-
-        msg = formChatString(ch, who, msg);
-        //tn("CHAT_D->eventSendChannel: not emote?", "green");
-        pmsg = strip_colours(pmsg);
-        //pmsg = TERMINAL_D->no_colours(pmsg);
-        eventAddLast(ch, msg, pchan, pmsg, who);
-        eventChannelMsgToListeners(who, ch, msg, emote, target, targmsg);
-
-        if (check_for_url(ch, msg)) {
-            // got one!
-            // tn("CHAT_D->eventSendChannel: found url", "green");
-            // SERVICES_D->eventSendChannel("CHAT_D", "url", "Found url", 0, "", "");
-        } else {
-            // tn("CHAT_D->eventSendChannel: NOT found url", "red");
-        }
-    }
-    whobits = explode(who, "@");
-    if(sizeof(whobits) < 2) {
-        if(sizeof(whobits) < 1) {
-            whobits += ({ "Someone" });
-        }
-        whobits += ({ mud_name() });
-    }
-    who = implode(whobits, "@");
-    msgbits = rexplode(pmsg, "\n");
-    cmsgbits = rexplode(cmsg, "\n");
-    tstamp = timestamp();
-
-    i = 0;
-    foreach(bit in msgbits) {
-        output = sprintf("%s%03d\t%s\t%s\t%s\n", tstamp, i, ch, who, bit);
-        i++;
-        LogIt(output, "/secure/log/allchan.log", ch);
-    }
-    i = 0;
-    foreach(bit in cmsgbits) {
-        output = sprintf("%s%03d\t%s\t%s\t%s\n", tstamp, i, ch, who, bit);
-        i++;
-        LogIt(output, "/secure/log/allchan_color.log", ch);
-    }
-    
-    //LogIt(timestamp()+"\t"+ch+"\t"+who+"\t"+pmsg+"\n", "/secure/log/allchan.log", ch);
-    //tn("CHAT_D->eventSendChannel: return?", "green");
-}
-
-message timestamp YYYY.MM.DD-HH.MM,SS
-message sequence NNN
-message channel
-message origin (speaker@mud)
-message text
-
-2016.02.21-11.55,10000	intergossip	Quixadhal@Bloodlines	Fine.  you all fucking win.  Go to hell, fuckers.
-#endif
 
