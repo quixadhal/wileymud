@@ -192,7 +192,7 @@ function get_channel_colors() {
     return $colors;
 }
 
-function get_chatter_colors() {
+function get_lpc_chatter_colors() {
     global $pinkfishMap;
     global $CHAT_COLOR_FILE;
     global $CHAT_DATA_FILE;
@@ -227,9 +227,35 @@ function get_chatter_colors() {
         //echo "colors[$mapname] = ".htmlentities($colors[$mapname])."<br>";
     }
 
-    $dump = json_encode( $colors );
+    $dump = json_encode( $colors, JSON_PARTIAL_OUTPUT_ON_ERROR|JSON_PRETTY_PRINT );
+    //echo "<hr>$dump<br>";
     file_put_contents($CHAT_DATA_FILE, $dump);
     return $colors;
+}
+
+function get_json_chatter_colors() {
+    global $CHAT_DATA_FILE;
+    global $dump;
+
+    if( file_exists( $CHAT_DATA_FILE ) ) {
+        $colors = array ();
+        $dump = file_get_contents( $CHAT_DATA_FILE );
+        //$dump = utf8_encode( $dump );
+        $colors = json_decode( $dump );
+        if( json_last_error() === JSON_ERROR_NONE ) {
+            return $colors;
+        } else {
+            $colors = array ();
+            return $colors;
+        }
+    } else {
+        return get_lpc_chatter_colors();
+    }
+}
+
+function get_chatter_colors() {
+    return get_lpc_chatter_colors();
+    return get_json_chatter_colors();
 }
 
 function is_local_ip() {
@@ -312,13 +338,19 @@ function get_speaker_color($who, $where) {
         $speakerColor = $colorMap[$whoLow];
     } else {
         // Add a new entry!
-        $colorMap[$whoLow] = $speakerColor;
+        //$colorMap[$whoLow] = $speakerColor;
         $chatCounter = count( $colorMap ) - 1;
         $colorIndex = $chatCounter % count( $pinkfishMap );
-        $speakerColor = $pinkfishMap[$colorIndex];
+        $colorKey = array_keys($pinkfishMap)[$colorIndex];
+        if( $colorKey == '%^RESET%^' ) {
+            $colorIndex++;
+            $colorKey = array_keys($pinkfishMap)[$colorIndex];
+        }
+        $speakerColor = $pinkfishMap[$colorKey];
         $colorMap[$whoLow] = $speakerColor;
+        //echo "<br>colorMap[$whoLow] = pinkfishMap[$colorKey];<br>";
         // Save data here...
-        $dump = json_encode( $colorMap );
+        $dump = json_encode( $colorMap, JSON_PARTIAL_OUTPUT_ON_ERROR|JSON_PRETTY_PRINT );
         file_put_contents($CHAT_DATA_FILE, $dump);
     }
     $fancyLad = "$speakerColor" . $who . "@" . $where . "</SPAN>";
@@ -564,6 +596,9 @@ $bg = 0;
                     $message = preg_replace("/\%\^MAGENTA\%\^/", "<span style=\"color: #ff55ff;\">", $message);
                     $message = preg_replace("/\%\^WHITE\%\^/", "<span style=\"color: #ffffff;\">", $message);
                     $message = preg_replace("/\%\^BOLD\%\^/", "", $message);
+                    $message = preg_replace("/\%\^BOLD/", "", $message); // Silly Pinkfish uses delimiters, rather than full tokens, sometimes.
+                    $message = preg_replace("/\%\^FLASH\%\^/", "", $message);
+                    $message = preg_replace("/\%\^FLASH/", "", $message); // Silly Pinkfish uses delimiters, rather than full tokens, sometimes.
                     $message = preg_replace("/\%\^RESET\%\^/", "</span>", $message);
                     $message = preg_replace( '/((?:http|https|ftp)\:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(?::[a-zA-Z0-9]*)?\/?(?:[a-zA-Z0-9\-\._\?\,\'\/\\\+&amp;%\$#\=~])*)/', '<a href="$1" target="I3-link">$1</a>', $message);
                     ?>

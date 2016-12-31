@@ -380,6 +380,33 @@ sub get_page_title {
     return $funky;
 }
 
+sub get_imdb_id {
+    my $page = shift;
+
+    $page =~ /<meta\s+property=\"pageId\"\s+content=\"(tt\d\d\d\d\d\d\d)\"\s+\/>/;
+    my ($id) =  ($1);
+    return $id;
+}
+
+sub get_imdb_title {
+    my $page = shift;
+
+    $page =~ /<meta\s+name=\"title\"\s+content=\"([^\"]*)\"\s+\/>/;
+    my ($title) =  ($1);
+    $title = decode_entities($title) if defined $title;
+    return $title;
+}
+
+sub get_imdb_duration {
+    my $page = shift;
+
+    $page =~ /<time\s+itemprop=\"duration\"\s+datetime=\"PT(\d+)M\">/;
+    my ($minutes) = ($1);
+    my $hours = int( $minutes / 60 );
+    $minutes = $minutes % 60;
+    return sprintf "%d:%02d", $hours, $minutes;
+}
+
 my $random_annoyance = undef;
 my $prog = $0;
 my $update_all = undef;
@@ -431,6 +458,10 @@ my $RED = "%^RED%^";
 $RED = pinkfish_to_ansi($RED) if $style eq "ansi";
 $RED = '<SPAN style="color: #ff5555">' if $style eq "html";
 
+my $CYAN= "%^CYAN%^";
+$YELLOW = pinkfish_to_ansi($CYAN) if $style eq "ansi";
+$YELLOW = '<SPAN style="color: #55ffff">' if $style eq "html";
+
 my $FLASH = "%^FLASH%^";
 $FLASH = pinkfish_to_ansi($FLASH) if $style eq "ansi";
 $FLASH = '<SPAN class="blink;">' if $style eq "html";
@@ -440,6 +471,9 @@ my $youtube_title = get_youtube_title($page) if defined $youtube_id;
 my $youtube_duration = get_youtube_duration($page) if defined $youtube_id;
 my $chan_color = channel_color($channel, $style) if defined $channel;
 my $page_title = get_page_title($page) if defined $page;
+my $imdb_id = get_imdb_id($page) if defined $page;
+my $imdb_title = get_imdb_title($page) if defined $imdb_id;
+my $imdb_duration = get_imdb_duration($page) if defined $imdb_id;
 
 #my $youtube_desc = get_youtube_desc($page);
 #my $youtube_keywords = get_youtube_keywords($page);
@@ -527,6 +561,9 @@ $channel = "" if !defined $channel;
 $youtube_id = "${YELLOW}[$youtube_id]$RESET" if defined $youtube_id;
 $youtube_duration = " ${RED}($youtube_duration)$RESET" if defined $youtube_duration;
 
+$imdb_id = "${YELLOW}[$imdb_id]$RESET" if defined $imdb_id;
+$imdb_duration = " ${RED}($imdb_duration)$RESET" if defined $imdb_duration;
+
 my $output = "";
 my $annoyed = "";
 
@@ -536,6 +573,12 @@ if (defined $youtube_id and defined $youtube_title and defined $youtube_duration
 } elsif (defined $youtube_id and defined $youtube_title) {
     $output .= "${RESET}YouTube $youtube_id$channel is $youtube_title\n";
     $annoyed .= "${RESET}${FLASH}YouTube $youtube_id$channel$FLASH was $youtube_title$FLASH but may have been taken down for POTENTIAL copyright infringement.$RESET\n";
+} elsif (defined $imdb_id and defined $imdb_title and defined $imdb_duration) {
+    $output .= "${RESET}IMDB $imdb_id$channel is $imdb_title$imdb_duration\n";
+    $annoyed .= "${RESET}${FLASH}IMDB $imdb_id$channel$FLASH was $imdb_title$FLASH$imdb_duration$FLASH but may have been taken down for POTENTIAL copyright infringement.$RESET\n";
+} elsif (defined $imdb_id and defined $imdb_title) {
+    $output .= "${RESET}IMDB $imdb_id$channel is $imdb_title\n";
+    $annoyed .= "${RESET}${FLASH}IMDB $imdb_id$channel$FLASH was $imdb_title$FLASH but may have been taken down for POTENTIAL copyright infringement.$RESET\n";
 } elsif (defined $origin) {
     if (defined $page_title) {
         $output .= ${RESET} . $given_host . " URL$channel is $YELLOW$page_title$RESET from " . $origin->host . "\n";

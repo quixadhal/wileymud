@@ -2882,6 +2882,7 @@ void I3_process_channel_e(I3_HEADER *header, char *s)
                                             format[MAX_INPUT_LENGTH];
     I3_CHANNEL                             *channel;
     struct tm                              *local = localtime(&i3_time);
+    FILE                                   *fp = NULL;
 
     I3_get_field(ps, &next_ps);
     I3_remove_quotes(&ps);
@@ -2908,6 +2909,22 @@ void I3_process_channel_e(I3_HEADER *header, char *s)
     strcat(format, channel->layout_e);
     snprintf(buf, MAX_STRING_LENGTH, format, local->tm_hour, local->tm_min, channel->local_name,
 	     msg);
+
+    if(!(fp = fopen(I3_ALLCHAN_LOG, "a"))) {
+        perror(buf);
+        i3bug("Could not open file %s!", buf);
+    } else {
+        fprintf(fp, "%04d.%02d.%02d-%02d.%02d,%02d%03d\t%s\t%s@%s\t%s\n",
+                local->tm_year + 1900, local->tm_mon + 1, local->tm_mday,
+                local->tm_hour, local->tm_min, local->tm_sec,
+                0,
+                channel->local_name,
+                visname,
+                header->originator_mudname,
+                msg
+               );
+        I3FCLOSE(fp);
+    }
 
     for (d = first_descriptor; d; d = d->next) {
 	vch = d->original ? d->original : d->character;
@@ -4175,6 +4192,7 @@ void I3_read_packet(void)
 
 void i3_initchar(CHAR_DATA *ch)
 {
+    log_info("Setting up I3 data");
     if (IS_NPC(ch))
 	return;
 
@@ -4189,6 +4207,7 @@ void i3_initchar(CHAR_DATA *ch)
     LAST_I3IGNORE(ch) = NULL;
     I3PERM(ch) = I3PERM_MORT;
 
+    log_info("Done");
     return;
 }
 

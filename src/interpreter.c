@@ -1077,20 +1077,24 @@ void nanny(struct descriptor_data *d, char *arg)
 	case CON_GET_NAME:
 	    log_info("Got Connection from: %s", d->host);
 	    if (!d->character) {
+	        log_info("Creating new character structure: %s", d->host);
 		CREATE(d->character, struct char_data, 1);
 
 		clear_char(d->character);
 		d->character->desc = d;
 	    }
 	    if (!*arg) {
+	        log_info("Kicking connection: %s", d->host);
 		close_socket(d);
 		return;
 	    }
 	    if (!valid_parse_name(arg, tmp_name)) {
+	        log_info("Illegal name: \"%s\" from %s", arg, d->host);
 		dcprintf(d, "\rIllegal name, please try another.\r\nWHAT is your Name? ");
 		return;
 	    }
 	    if (check_playing(d, tmp_name)) {
+	        log_info("Already playing %s, new connection %s", tmp_name, d->host);
 		dcprintf(d,
 			 "\rSorry, %s is already playing... you might be cheating!\r\nWhat is YOUR Name? ",
 			 tmp_name);
@@ -1109,6 +1113,7 @@ void nanny(struct descriptor_data *d, char *arg)
 	    imc_initchar(d->character);
 #endif
 	    strcpy(d->usr_name, tmp_name);
+	    log_info("Loading user: %s", d->usr_name);
 /*  GET_NAME(d->character) = (char *)strdup(d->usr_name); */
 	    if (fread_char(d->usr_name, &tmp_store, d->character) > -1) {
 		/*

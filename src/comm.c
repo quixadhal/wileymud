@@ -279,6 +279,8 @@ void game_loop(int s)
     fd_set                                  exc_set;
     struct timeval                          last_time;
     struct timeval                          now;
+    time_t                                  tc = (time_t) 0;
+    struct tm                              *t_info = NULL;
     struct timeval                          timespent;
     struct timeval                          timeout;
     struct timeval                          null_time;
@@ -498,8 +500,10 @@ void game_loop(int s)
 				sprintf(promptbuf + strlen(promptbuf), "I=%d: ",
 					point->character->invis_level);
 			    rm = real_roomp(point->character->in_room);
+                            tc = time(0);
+                            t_info = localtime(&tc);
 			    sprintf(promptbuf + strlen(promptbuf),
-				    "#%d - %s [#%d]> ", rm->zone, zone_table[rm->zone].name,
+				    "%02d:%02d #%d - %s [#%d]> ", t_info->tm_hour, t_info->tm_min, rm->zone, zone_table[rm->zone].name,
 				    rm->number);
 			    write_to_descriptor(point->descriptor, promptbuf);
 /* OLD mobs didn't have classes.. this doesn't work anymore */
