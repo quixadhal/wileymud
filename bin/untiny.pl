@@ -16,21 +16,24 @@
 #
 # 00:45 <intergossip> Kalinash@Fire and Ice: http://www.youtube.com/watch?v=IleiqUDYpFQ
 #
-#/def -mregexp -p2 -t"<([\w-]+)>.*(https?://tinyurl.com/[^&\?\.\s]+)" check_tiny_chan = /quote -0 url !~/bin/untiny.pl '%P2' '%P1'
-#/def -mregexp -p2 -t"<([\w-]+)>.*(https?://bit.ly/[^&\?\.\s]+)" check_bitly_chan = /quote -0 url !~/bin/untiny.pl '%P2' '%P1'
-#/def -mregexp -p2 -t"<([\w-]+)>.*(https?://goo.gl/[^&\?\.\s]+)" check_googl_chan = /quote -0 url !~/bin/untiny.pl '%P2' '%P1'
-#/def -mregexp -p2 -t"<([\w-]+)>.*(https?://mcaf.ee/[^&\?\.\s]+)" check_mcafee_chan = /quote -0 url !~/bin/untiny.pl '%P2' '%P1'
-#/def -mregexp -p2 -t"<([\w-]+)>.*(https?://migre.me/[^&\?\.\s]+)" check_migreme_chan = /quote -0 url !~/bin/untiny.pl '%P2' '%P1'
-#/def -mregexp -p2 -t"<([\w-]+)>.*(https?://durl.me/[^&\?\.\s]+)" check_durlme_chan = /quote -0 url !~/bin/untiny.pl '%P2' '%P1'
-#/def -mregexp -p2 -t"<([\w-]+)>.*(https?://is.gd/[^&\?\.\s]+)" check_isgd_chan = /quote -0 url !~/bin/untiny.pl '%P2' '%P1'
-#/def -mregexp -p2 -t"<([\w-]+)>.*(https?://dailym.ai/[^&\?\.\s]+)" check_daily_chan = /quote -0 url !~/bin/untiny.pl '%P2' '%P1'
-#/def -mregexp -p2 -t"<([\w-]+)>.*(https?://ebay.to/[^&\?\.\s]+)" check_ebay_chan = /quote -0 url !~/bin/untiny.pl '%P2' '%P1'
-#/def -mregexp -p2 -t"<([\w-]+)>.*(https?://youtu.be/[^&\?\.\s]+)" check_yout_chan = /quote -0 url !~/bin/untiny.pl '%P2' '%P1'
-#/def -mregexp -p2 -t"<([\w-]+)>.*(https?://onforb.es/[^&\?\.\s]+)" check_forbs_chan = /quote -0 url !~/bin/untiny.pl '%P2' '%P1'
-##/def -mregexp -p2 -t"<([\w-]+)>.*(https?://www.youtube.com/watch\?v=[^&\?\.\s]+)" check_youtube_chan = /if (%P1 !~ "url") /quote -0 url !~/bin/untiny.pl '%P2' '%P1'%; /endif
-#/def -mregexp -p2 -t"<([\w-]+)>.*(https?://www.youtube.com/watch\?.*?v=[^&\?\.\s]+)" check_youtube_chan = /if (%P1 !~ "url") /quote -0 url !~/bin/untiny.pl '%P2' '%P1'%; /endif
-#/def -mregexp -p2 -t"<([\w-]+)>.*(https?://imgur.com/[^&\>\.\s]+)" check_imgur_chan = /quote -0 url !~/bin/untiny.pl '%P2' '%P1'
-#/def -mregexp -p2 -t"<([\w-]+)>.*(https?://amzn.to/[^&\?\.\s]+)" check_amzon_chan = /quote -0 url !~/bin/untiny.pl '%P2' '%P1'
+#/def -mregexp -p2 -t"\[([\w-]+)\].*(https?://www.youtube.com/watch\?.*?v=[^&\?\.\s]+)" check_youtube_chan = /if (%P1 !~ "url") /quote -0 url !~/bin/untiny.pl '%P2' '%P1'%; /endif
+#/def -mregexp -p2 -t"\[([\w-]+)\].*(https?://tinyurl.com/[^&\?\.\s]+)" check_tiny_chan = /quote -0 url !~/bin/untiny.pl '%P2' '%P1'
+#/def -mregexp -p2 -t"\[([\w-]+)\].*(https?://bit.ly/[^&\?\.\s]+)" check_bitly_chan = /quote -0 url !~/bin/untiny.pl '%P2' '%P1'
+#/def -mregexp -p2 -t"\[([\w-]+)\].*(https?://goo.gl/[^&\?\.\s]+)" check_googl_chan = /quote -0 url !~/bin/untiny.pl '%P2' '%P1'
+#/def -mregexp -p2 -t"\[([\w-]+)\].*(https?://mcaf.ee/[^&\?\.\s]+)" check_mcafee_chan = /quote -0 url !~/bin/untiny.pl '%P2' '%P1'
+#/def -mregexp -p2 -t"\[([\w-]+)\].*(https?://migre.me/[^&\?\.\s]+)" check_migreme_chan = /quote -0 url !~/bin/untiny.pl '%P2' '%P1'
+#/def -mregexp -p2 -t"\[([\w-]+)\].*(https?://durl.me/[^&\?\.\s]+)" check_durlme_chan = /quote -0 url !~/bin/untiny.pl '%P2' '%P1'
+#/def -mregexp -p2 -t"\[([\w-]+)\].*(https?://is.gd/[^&\?\.\s]+)" check_isgd_chan = /quote -0 url !~/bin/untiny.pl '%P2' '%P1'
+#/def -mregexp -p2 -t"\[([\w-]+)\].*(https?://dailym.ai/[^&\?\.\s]+)" check_daily_chan = /quote -0 url !~/bin/untiny.pl '%P2' '%P1'
+#/def -mregexp -p2 -t"\[([\w-]+)\].*(https?://ebay.to/[^&\?\.\s]+)" check_ebay_chan = /quote -0 url !~/bin/untiny.pl '%P2' '%P1'
+#/def -mregexp -p2 -t"\[([\w-]+)\].*(https?://youtu.be/[^&\?\.\s]+)" check_yout_chan = /quote -0 url !~/bin/untiny.pl '%P2' '%P1'
+#/def -mregexp -p2 -t"\[([\w-]+)\].*(https?://onforb.es/[^&\?\.\s]+)" check_forbs_chan = /quote -0 url !~/bin/untiny.pl '%P2' '%P1'
+#/def -mregexp -p2 -t"\[([\w-]+)\].*(https?://imgur.com/[^&\>\.\s]+)" check_imgur_chan = /quote -0 url !~/bin/untiny.pl '%P2' '%P1'
+#/def -mregexp -p2 -t"\[([\w-]+)\].*(https?://amzn.to/[^&\?\.\s]+)" check_amzon_chan = /quote -0 url !~/bin/untiny.pl '%P2' '%P1'
+#/def -mregexp -p2 -t"\[([\w-]+)\].*(https?://on.fb.me/[^&\?\.\ ]+)" check_fbme_chan = /quote -0 url !~/bin/untiny.pl '%P2' '%P1'
+#/def -mregexp -p2 -t"\[([\w-]+)\].*(https?://qr.ae/[^&\?\.\ ]+)" check_qrae_chan = /quote -0 url !~/bin/untiny.pl '%P2' '%P1'
+#/def -mregexp -p2 -t"\[([\w-]+)\].*(https?://imdb.to/[^&\?\.\s]+)" check_imdb_chan = /quote -0 url !~/bin/untiny.pl '%P2' '%P1'
+#/def -mregexp -p2 -t"\[([\w-]+)\].*(https?://www.imdb.com/title/[^&\?\.\s]+)" check_imdbfull_chan = /if (%P1 !~ "url") /quote -0 url !~/bin/untiny.pl '%P2' '%P1'%; /endif
 
 use strict;
 use English;
@@ -321,7 +324,7 @@ sub get_url {
 sub get_youtube_id {
     my $page = shift;
 
-    $page =~ /<link\s+rel=\"canonical\"\s+href=\".*?\/watch\?v=([^\"\&]*)\">/;
+    $page =~ /<link\s+rel=\"canonical\"\s+href=\".*?\/watch\?v=([^\"\&]*)\">/i;
     my ($id) =  ($1);
     return $id;
 }
@@ -329,7 +332,7 @@ sub get_youtube_id {
 sub get_youtube_title {
     my $page = shift;
 
-    $page =~ /<meta\s+name=\"title\"\s+content=\"([^\"]*)\">/;
+    $page =~ /<meta\s+name=\"title\"\s+content=\"([^\"]*)\">/i;
     my ($title) =  ($1);
     $title = decode_entities($title) if defined $title;
     return $title;
@@ -338,7 +341,7 @@ sub get_youtube_title {
 sub get_youtube_desc {
     my $page = shift;
 
-    $page =~ /<meta\s+name=\"description\"\s+content=\"([^\"]*)\">/;
+    $page =~ /<meta\s+name=\"description\"\s+content=\"([^\"]*)\">/i;
     my ($desc) =  ($1);
     $desc = decode_entities($desc) if defined $desc;
     return $desc;
@@ -347,7 +350,7 @@ sub get_youtube_desc {
 sub get_youtube_keywords {
     my $page = shift;
 
-    $page =~ /<meta\s+name=\"keywords\"\s+content=\"([^\"]*)\">/;
+    $page =~ /<meta\s+name=\"keywords\"\s+content=\"([^\"]*)\">/i;
     my @keywords = (split /,\s+/, $1);
     return \@keywords;
 }
@@ -355,7 +358,7 @@ sub get_youtube_keywords {
 sub get_youtube_duration {
     my $page = shift;
 
-    $page =~ /<meta\s+itemprop=\"duration\"\s+content=\"([^\"]*)\">/;
+    $page =~ /<meta\s+itemprop=\"duration\"\s+content=\"([^\"]*)\">/i;
     my ($funky) = ($1);
     $funky =~ /.*?(\d+)M(\d+)S/;
     my ($minutes, $seconds) = ($1, $2);
@@ -365,7 +368,7 @@ sub get_youtube_duration {
 sub get_youtube_length {
     my $page = shift;
 
-    $page =~ /<meta\s+itemprop=\"duration\"\s+content=\"([^\"]*)\">/;
+    $page =~ /<meta\s+itemprop=\"duration\"\s+content=\"([^\"]*)\">/i;
     my ($funky) = ($1);
     $funky =~ /.*?(\d+)M(\d+)S/;
     my ($minutes, $seconds) = ($1, $2);
@@ -375,7 +378,7 @@ sub get_youtube_length {
 sub get_page_title {
     my $page = shift;
 
-    $page =~ /<title>\s+([^\<]*?)<\/title>/;
+    $page =~ /<title>\s*([^\<]*?)\s*<\/title>/i;
     my ($funky) = ($1);
     return $funky;
 }
@@ -383,7 +386,7 @@ sub get_page_title {
 sub get_imdb_id {
     my $page = shift;
 
-    $page =~ /<meta\s+property=\"pageId\"\s+content=\"(tt\d\d\d\d\d\d\d)\"\s+\/>/;
+    $page =~ /<meta\s+property=\"pageId\"\s+content=\"(tt\d\d\d\d\d\d\d)\"\s+\/>/i;
     my ($id) =  ($1);
     return $id;
 }
@@ -391,7 +394,7 @@ sub get_imdb_id {
 sub get_imdb_title {
     my $page = shift;
 
-    $page =~ /<meta\s+name=\"title\"\s+content=\"([^\"]*)\"\s+\/>/;
+    $page =~ /<meta\s+name=\"title\"\s+content=\"([^\"]*)\"\s+\/>/i;
     my ($title) =  ($1);
     $title = decode_entities($title) if defined $title;
     return $title;
@@ -400,11 +403,28 @@ sub get_imdb_title {
 sub get_imdb_duration {
     my $page = shift;
 
-    $page =~ /<time\s+itemprop=\"duration\"\s+datetime=\"PT(\d+)M\">/;
+    $page =~ /<time\s+itemprop=\"duration\"\s+datetime=\"PT(\d+)M\">/i;
     my ($minutes) = ($1);
     my $hours = int( $minutes / 60 );
     $minutes = $minutes % 60;
     return sprintf "%d:%02d", $hours, $minutes;
+}
+
+sub get_steam_id {
+    my $page = shift;
+
+    $page =~ /<link\s+rel=\"canonical\"\s+href=\".*?\/app\/([^\"\&]*)\/\">/i;
+    my ($id) =  ($1);
+    return $id;
+}
+
+sub get_steam_desc {
+    my $page = shift;
+
+    $page =~ /<meta\s+name=\"Description\"\s+content=\"([^\"]*)\">/i;
+    my ($desc) =  ($1);
+    $desc = decode_entities($desc) if defined $desc;
+    return $desc;
 }
 
 my $random_annoyance = undef;
@@ -466,14 +486,20 @@ my $FLASH = "%^FLASH%^";
 $FLASH = pinkfish_to_ansi($FLASH) if $style eq "ansi";
 $FLASH = '<SPAN class="blink;">' if $style eq "html";
 
-my $youtube_id = get_youtube_id($page) if defined $page;
-my $youtube_title = get_youtube_title($page) if defined $youtube_id;
-my $youtube_duration = get_youtube_duration($page) if defined $youtube_id;
 my $chan_color = channel_color($channel, $style) if defined $channel;
 my $page_title = get_page_title($page) if defined $page;
-my $imdb_id = get_imdb_id($page) if defined $page;
+
+my $youtube_id = get_youtube_id($page) if defined $page and $origin->host =~ /youtube/i;
+my $youtube_title = get_youtube_title($page) if defined $youtube_id;
+my $youtube_duration = get_youtube_duration($page) if defined $youtube_id;
+
+my $imdb_id = get_imdb_id($page) if defined $page and $origin->host =~ /imdb/i;
 my $imdb_title = get_imdb_title($page) if defined $imdb_id;
 my $imdb_duration = get_imdb_duration($page) if defined $imdb_id;
+
+my $steam_id = get_steam_id($page) if defined $page and $origin->host =~ /steam/i;
+my $steam_title = $page_title;
+#my $steam_desc = get_steam_desc($page) if defined $steam_id;
 
 #my $youtube_desc = get_youtube_desc($page);
 #my $youtube_keywords = get_youtube_keywords($page);
@@ -564,6 +590,8 @@ $youtube_duration = " ${RED}($youtube_duration)$RESET" if defined $youtube_durat
 $imdb_id = "${YELLOW}[$imdb_id]$RESET" if defined $imdb_id;
 $imdb_duration = " ${RED}($imdb_duration)$RESET" if defined $imdb_duration;
 
+$steam_id = "${YELLOW}[$steam_id]$RESET" if defined $steam_id;
+
 my $output = "";
 my $annoyed = "";
 
@@ -579,6 +607,10 @@ if (defined $youtube_id and defined $youtube_title and defined $youtube_duration
 } elsif (defined $imdb_id and defined $imdb_title) {
     $output .= "${RESET}IMDB $imdb_id$channel is $imdb_title\n";
     $annoyed .= "${RESET}${FLASH}IMDB $imdb_id$channel$FLASH was $imdb_title$FLASH but may have been taken down for POTENTIAL copyright infringement.$RESET\n";
+} elsif (defined $steam_id and defined $steam_title) {
+    $output .= "${RESET}Steam $steam_id$channel is $steam_title\n";
+    $annoyed .= "${RESET}${FLASH}Steam $steam_id$channel$FLASH was $steam_title$FLASH but may have been taken down for POTENTIAL copyright infringement.$RESET\n";
+
 } elsif (defined $origin) {
     if (defined $page_title) {
         $output .= ${RESET} . $given_host . " URL$channel is $YELLOW$page_title$RESET from " . $origin->host . "\n";

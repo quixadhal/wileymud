@@ -532,7 +532,7 @@ $bg = 0;
     <body bgcolor="black" text="#d0d0d0" link="#ffffbf" vlink="#ffa040" onload="setup();">
         <table id="navbar" width="100%">
             <tr>
-                <td align="left" width="50%">
+                <td align="left" width="40%">
                     <input id="start_button" type="button" value="1" onclick="first_page();">
                     <input id="back_ten_button" type="button" value="<<" onclick="page_backward_ten();">
                     <input id="back_button" type="button" value="back" onclick="page_backward();">
@@ -541,7 +541,10 @@ $bg = 0;
                     <input id="forward_ten_button" type="button" value=">>" onclick="page_forward_ten();">
                     <input id="end_button" type="button" value="end" onclick="last_page();">
                 </td>
-                <td align="right" width="50%" onmouseover="pagegen.style.color='#00FF00'; timespent.style.color='#00FF00';" onmouseout="pagegen.style.color='#1F1F1F'; timespent.style.color='#1F1F1F';">
+                <td align="center" width="20%">
+                    <a href="https://i3.themud.org/chanhist.php#Channel=all">Logs!</a>
+                </td>
+                <td align="right" width="40%" onmouseover="pagegen.style.color='#00FF00'; timespent.style.color='#00FF00';" onmouseout="pagegen.style.color='#1F1F1F'; timespent.style.color='#1F1F1F';">
                     <a href="javascript:;" onmousedown="toggleDiv('source');">
                         <span id="pagegen" style="color: #1F1F1F">
                             &nbsp;Page generated in 
@@ -600,7 +603,10 @@ $bg = 0;
                     $message = preg_replace("/\%\^FLASH\%\^/", "", $message);
                     $message = preg_replace("/\%\^FLASH/", "", $message); // Silly Pinkfish uses delimiters, rather than full tokens, sometimes.
                     $message = preg_replace("/\%\^RESET\%\^/", "</span>", $message);
-                    $message = preg_replace( '/((?:http|https|ftp)\:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(?::[a-zA-Z0-9]*)?\/?(?:[a-zA-Z0-9\-\._\?\,\'\/\\\+&amp;%\$#\=~])*)/', '<a href="$1" target="I3-link">$1</a>', $message);
+                    $message = preg_replace('/((?:http|https|ftp)\:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(?::[a-zA-Z0-9]*)?\/?(?:[a-zA-Z0-9\-\._\?\,\'\/\\\+&amp;%\$#\=~])*)/', '<a href="$1" target="I3-link">$1</a>', $message);
+                    $message = preg_replace('/YouTube\s+(<span.*?>)\s*\[([^\]]*)\]/', 'YouTube $1 <a href="https://youtu.be/$2" target="I3-link">[$2]</a>', $message);
+                    $message = preg_replace('/IMDB\s+(<span.*?>)\s*\[([^\]]*)\]/', 'IMDB $1 <a href="https://www.imdb.com/title/$2/" target="I3-link">[$2]</a>', $message);
+                    $message = preg_replace('/Steam\s+(<span.*?>)\s*\[([^\]]*)\]/', 'Steam $1 <a href="http://store.steampowered.com/app/$2/" target="I3-link">[$2]</a>', $message);
                     ?>
                     <td bgcolor="<?php echo $bgColor; ?>"><span style="font-family: monospace;"><?php echo $message; ?></span></td>
                 </tr>
