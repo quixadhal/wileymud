@@ -61,12 +61,6 @@ mud.
 
 =cut
 
-=head1 FUNCTIONS
-
-=over 8
-
-=cut
-
 use strict;
 use warnings;
 use English -no_match_vars;
@@ -76,18 +70,16 @@ use Pod::Usage;
 use Pod::Find qw(pod_where);
 use Getopt::Long qw(:config no_ignore_case bundling no_pass_through);
 
+use Mud::DB::Option;
+
 use Exporter qw(import);
 our @EXPORT_OK = (); #qw(wizlock debug logfile pidfile libdir specials gameport);
 our @EXPORT = ();
 our %EXPORT_TAGS = (all => [ @EXPORT, @EXPORT_OK ]);
 
-my $wizlock     = undef;
-my $debug       = undef;
-my $logfile     = undef;
-my $pidfile     = undef;
-my $libdir      = "./lib";
-my $specials    = 1;
-my $gameport    = 7000;
+=head1 FUNCTIONS
+
+=over 8
 
 =item usage()
 
@@ -137,37 +129,54 @@ functions refer to.
 sub new {
     my $class = shift;
     my $self = { 
-        _wizlock    => $wizlock,
-        _debug      => $debug,
-        _logfile    => $logfile,
-        _pidfile    => $pidfile,
-        _libdir     => $libdir,
-        _specials   => $specials,
-        _gameport   => $gameport,
+        _db         => undef,
+        wizlock     => undef,
+        debug       => undef,
+        logfile     => undef,
+        pidfile     => undef,
+        libdir      => undef,
+        specials    => undef,
+        gameport    => undef,
     };
+    my $o = Mud::DB::Option->new( id => 'live' );
+    $self->{_db} = $o if $o->load( speculative => 1 );
+    if( !defined $self->{_db} ) {
+        $o->save();
+        $self->{_db} = $o;
+    }
+    die "Error in creating Mud::DB::Option database object: $!" if !defined $self->{_db};
+
     GetOptions(
-        'pod'               => sub { pod2usage(
-                                     '-input'       => pod_where({'-inc' => 1}, __PACKAGE__),
-                                     '-verbose'     => 1,
-                                     #'-noperldoc'   => 1,
-                                 ); exit;
-                             },
-        'help|h|?'          => sub { usage(1); },
-        'wizlock|w'         => \$self->{_wizlock},
-        'debug|D'           => \$self->{_debug},
-        'log|L=s'           => \$self->{_logfile},
-        'pid|P=s'           => \$self->{_pidfile},
-        'dir|d=s'           => \$self->{_libdir},
-        'specials!'         => \$self->{_specials},
-        "port|p:$gameport"  => \$self->{_gameport},
+        'pod'                           => sub { pod2usage(
+                                                '-input'       => pod_where( {'-inc' => 1}, __PACKAGE__ ),
+                                                '-verbose'     => 1,
+                                                #'-noperldoc'   => 1,
+                                            ); exit;
+                                        },
+        'help|h|?'                      => sub { usage(1); },
+        'wizlock|w'                     => \$self->{wizlock},
+        'debug|D'                       => \$self->{debug},
+        'log|L=s'                       => \$self->{logfile},
+        'pid|P=s'                       => \$self->{pidfile},
+        'dir|d=s'                       => \$self->{libdir},
+        'specials!'                     => \$self->{specials},
+        "port|p:".$o->gameport          => \$self->{gameport},
     ) or usage(0);
-#    ) or pod2usage( '-input'       => pod_where({'-inc' => 1}, __PACKAGE__),
-#                    '-verbose'     => 0) && exit;
+
+    $o->wizlock( $self->{wizlock} )     if defined $self->{wizlock};
+    $o->debug( $self->{debug} )         if defined $self->{debug};
+    $o->logfile( $self->{logfile} )     if defined $self->{logfile};
+    $o->pidfile( $self->{pidfile} )     if defined $self->{pidfile};
+    $o->libdir( $self->{libdir} )       if defined $self->{libdir};
+    $o->specials( $self->{specials} )   if defined $self->{specials};
+    $o->gameport( $self->{gameport} )   if defined $self->{gameport} and $self->{gameport} > 0;
+
+    $self->{_db}->save();
     bless $self, $class;
     return $self;
 }
 
-=item wizlock()
+=item wizlock( [true|false] )
 
 Wizlock prevents players from logging in.
 
@@ -179,11 +188,14 @@ set the wizlock.
 
 sub wizlock {
     my ($self, $setting) = @_;
-    $self->{_wizlock} = $setting if defined $setting;
-    return $self->{_wizlock};
+    if( defined $setting ) {
+        $self->{_db}->wizlock($setting);
+        $self->{_db}->save();
+    }
+    return $self->{_db}->wizlock;
 }
 
-=item debug()
+=item debug( [<integer>|false] )
 
 Debug mode enables extra debugging output.  
 
@@ -195,11 +207,14 @@ set the debug level.
 
 sub debug {
     my ($self, $setting) = @_;
-    $self->{_debug} = $setting if defined $setting;
-    return $self->{_debug};
+    if( defined $setting ) {
+        $self->{_db}->debug($setting);
+        $self->{_db}->save();
+    }
+    return $self->{_db}->debug;
 }
 
-=item logfile()
+=item logfile( [<filename>] )
 
 Logfile is simply the filename that logging output
 is currently being sent to.  The default is STDERR,
@@ -213,11 +228,14 @@ set the logfile to that filename.
 
 sub logfile {
     my ($self, $setting) = @_;
-    $self->{_logfile} = $setting if defined $setting;
-    return $self->{_logfile};
+    if( defined $setting ) {
+        $self->{_db}->logfile($setting);
+        $self->{_db}->save();
+    }
+    return $self->{_db}->logfile;
 }
 
-=item pidfile()
+=item pidfile( [<filename>] )
 
 The pidfile is an optional file that the driver will
 use to store the current process ID.  This is used
@@ -232,11 +250,14 @@ set the pidfile to that filename.
 
 sub pidfile {
     my ($self, $setting) = @_;
-    $self->{_pidfile} = $setting if defined $setting;
-    return $self->{_pidfile};
+    if( defined $setting ) {
+        $self->{_db}->pidfile($setting);
+        $self->{_db}->save();
+    }
+    return $self->{_db}->pidfile;
 }
 
-=item libdir()
+=item libdir( [<pathname>] )
 
 The libdir is the data directory used by the MUD to
 store and retrieve game data.  Normally, this is left
@@ -252,11 +273,14 @@ Note that the pathname should NOT end in a slash.
 
 sub libdir {
     my ($self, $setting) = @_;
-    $self->{'_libdir'} = $setting if defined $setting;
-    return $self->{'_libdir'};
+    if( defined $setting ) {
+        $self->{_db}->libdir($setting);
+        $self->{_db}->save();
+    }
+    return $self->{_db}->libdir;
 }
 
-=item specials()
+=item specials( [true|false] )
 
 The specials parameter controls NPC behavior.  When
 special routines are enabled (the default), each NPC
@@ -272,11 +296,14 @@ all NPC's to use a generic behavior routine that is
 
 sub specials {
     my ($self, $setting) = @_;
-    $self->{_specials} = $setting if defined $setting;
-    return $self->{_specials};
+    if( defined $setting ) {
+        $self->{_db}->specials($setting);
+        $self->{_db}->save();
+    }
+    return $self->{_db}->specials;
 }
 
-=item gameport()
+=item gameport( [<integer>] )
 
 The gameport is simply the port number which the driver
 will open and use to listen for new connections.
@@ -288,8 +315,11 @@ value.  Giving it an argument will set the gameport.
 
 sub gameport {
     my ($self, $setting) = @_;
-    $self->{_gameport} = $setting if defined $setting;
-    return $self->{_gameport};
+    if( defined $setting ) {
+        $self->{_db}->gameport($setting);
+        $self->{_db}->save();
+    }
+    return $self->{_db}->gameport;
 }
 
 =back

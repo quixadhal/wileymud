@@ -13,10 +13,6 @@ system so that the rest of the game only needs to get
 the descriptors and read/write to them, without having
 to care about any socket-related stuff.
 
-=head1 FUNCTIONS
-
-=over 8
-
 =cut
 
 use strict;
@@ -43,6 +39,10 @@ our @EXPORT = qw();
 our %EXPORT_TAGS = (all => [ @EXPORT, @EXPORT_OK ]);
 
 my $filename = "warmboot.json";
+
+=head1 FUNCTIONS
+
+=over 8
 
 =item tweak_socket()
 

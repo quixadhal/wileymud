@@ -48,12 +48,14 @@ use Mud::GameTime;
 use Mud::Weather;
 use Mud::Terminal;
 use Mud::Theme;
-use Mud::Docs;
+use Mud::Documents;
 use Mud::Comm;
 
 my $options = Mud::Options->new(@ARGV);
 
 Mud::Logger::setup_options($options);
+
+warn "Testing";
 
 my $start_time = time();
 my $done = undef;
@@ -94,17 +96,17 @@ log_debug $theme->terminal_type;
 log_debug $theme->width;
 log_debug $theme->height;
 
-our $docs = Mud::Docs->new();
+our $documents = Mud::Documents->new();
 
-log_info "News: %s\n", Dumper($docs->news);
-log_info "Credits: %s\n", Dumper($docs->credits);
-log_info "MOTD: %s\n", Dumper($docs->motd);
-log_info "WIZMOTD: %s\n", Dumper($docs->wizmotd);
-log_info "wizlist: %s\n", Dumper($docs->wizlist);
-log_info "Info: %s\n", Dumper($docs->info);
-log_info "Story: %s\n", Dumper($docs->story);
-log_info "License: %s\n", Dumper($docs->license);
-log_info "Greeting: %s\n", Dumper($docs->greeting);
+log_info "News: %s\n", Dumper($documents->news);
+log_info "Credits: %s\n", Dumper($documents->credits);
+log_info "MOTD: %s\n", Dumper($documents->motd);
+log_info "WIZMOTD: %s\n", Dumper($documents->wizmotd);
+log_info "wizlist: %s\n", Dumper($documents->wizlist);
+log_info "Info: %s\n", Dumper($documents->info);
+log_info "Story: %s\n", Dumper($documents->story);
+log_info "License: %s\n", Dumper($documents->license);
+log_info "Greeting: %s\n", Dumper($documents->greeting);
 
 my $comm = Mud::Comm->new($options);
 
@@ -160,10 +162,10 @@ my $comm = Mud::Comm->new($options);
 #return MUD_HALT;					       /* what's so great about HHGTTG, anyhow? */
 
 until($done) {
+    my $loop_start_time = time();
     $time_daemon->update;
     $weather_daemon->update;
     log_info "Tick! Hour: %d, Month: %d", $time_daemon->hour, $time_daemon->month;
-    sleep 5;
     foreach my $sock ($comm->poll) {
         my $message = '';
         my $rv = -1;
@@ -178,6 +180,8 @@ until($done) {
         $done = 1 if $message =~ /^shutdown\b/i;
     }
     log_info "%d connections", scalar $comm->connections;
+    my $loop_duration = time() - $loop_start_time;
+    sleep( 0.2 - $loop_duration ) if $loop_duration < 0.2;
 }
 
 END { log_fatal "System Halted."; }

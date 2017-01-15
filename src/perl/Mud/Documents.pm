@@ -1,10 +1,10 @@
 #!/usr/bin/perl -w
 
-package Mud::Docs;
+package Mud::Documents;
 
 =head1 NAME
 
-Mud::Docs - The documentation system for PikuMUD
+Mud::Documents - The documentation system for PikuMUD
 
 =head1 OVERVIEW
 

@@ -11,10 +11,6 @@ Mud::ColorThemes - The raw color theme mappings, used by Mud::Theme
 This is the list of theme maps, which convert symbolic tokens
 like %^ROOM_DESC%^ into actual color tokens, such as %^RED%^.
 
-=head1 FUNCTIONS
-
-=over 8
-
 =cut
 
 use strict;
@@ -34,8 +30,8 @@ our @themes = sort(qw(
 ));
 
 our @theme_tokens = sort(qw(
-    DAMAGE HEALING POISON
-    ROOM_TITLE ROOM_DESC
+    DAMAGE HEALING POISON ROOM_TITLE ROOM_DESC
+    EXIT
 ));
 
 $theme_map{$_} = {} foreach @themes;
@@ -46,11 +42,7 @@ $theme_map{default} = {
     POISON              => "%^GREEN%^",
     ROOM_TITLE          => "%^CYAN%^",
     ROOM_DESC           => "",
+    EXIT                => "%^YELLOW%^",
 };
 
-=back
-
-=cut
-
 1;
-

@@ -56,12 +56,12 @@ sub new {
     };
 
     die "Cannot login without a valid IO::Socket::INET object!" unless $socket->isa('IO::Socket::INET');
-    die "Cannot login without a valid Mud::Docs object initialized in main package!" unless defined $main::docs;
+    die "Cannot login without a valid Mud::Documents object initialized in main package!" unless defined $main::documents;
     $self->{_socket} = $socket;
 
     bless $self, $class;
     log_info "New connection from %s!", $socket->peerhost;
-    syswrite($socket, join("\n\r", @{ $main::docs->greeting }) . "\n\r");
+    syswrite($socket, join("\n\r", @{ $main::documents->greeting }) . "\n\r");
     return $self;
 }
 

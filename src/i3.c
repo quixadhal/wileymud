@@ -2786,6 +2786,7 @@ void I3_process_channel_t(I3_HEADER *header, char *s)
 	}
     }
     update_chanhistory(channel, omsg);
+    tics_since_last_message = PULSE_PER_SECOND * 60 * 30; /* 30 minutes worth */
     return;
 }
 
@@ -2940,6 +2941,7 @@ void I3_process_channel_e(I3_HEADER *header, char *s)
 	    i3_printf(vch, "%s\n\r", buf);
     }
     update_chanhistory(channel, buf);
+    tics_since_last_message = PULSE_PER_SECOND * 60 * 30; /* 30 minutes worth */
     return;
 }
 

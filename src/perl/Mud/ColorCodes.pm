@@ -23,10 +23,6 @@ to allow future code to determine if a token is valid, possibly
 to support custom color preferences, or defining a whole new
 terminal type on the fly.
 
-=head1 FUNCTIONS
-
-=over 8
-
 =cut
 
 use strict;
@@ -42,7 +38,7 @@ our %EXPORT_TAGS = (all => [ @EXPORT, @EXPORT_OK ]);
 our %color_map = ();
 
 #our @terminal_types = sort (qw( unknown ansi imc2 i3 mxp xterm-256color xterm-grey));
-our @terminal_types = sort(qw( unknown ansi imc2 i3 mxp ));
+our @terminal_types = sort(qw( unknown ansi imc2 i3 mxp html ));
 
 our @color_tokens = sort(qw(
     BOLD FLASH ITALIC RESET REVERSE STRIKETHRU UNDERLINE
@@ -290,9 +286,62 @@ $color_map{mxp} = {
     B_WHITE             => "<COLOR BACK=\"#ffffff\">",
 };
 
-=back
+$color_map{html} = {
+    BOLD                => "<span style=\"font-weight: bold;\">",
+    FLASH               => "",
+    ITALIC              => "<span style=\"font-style: italic;\">",
+    RESET               => "</span>",
+    REVERSE             => "",
+    STRIKETHRU          => "<span style=\"text-decoration: line-through;\">",
+    UNDERLINE           => "<span style=\"text-decoration: underline;\">",
 
-=cut
+    CLEARLINE           => "",
+    CURS_DOWN           => "",
+    CURS_LEFT           => "",
+    CURS_RIGHT          => "",
+    CURS_UP             => "",
+
+    ENDTERM             => "",
+    HOME                => "",
+    INITTERM            => "",
+    RESTORE             => "",
+    SAVE                => "",
+
+    BLACK               => "<span style=\"color: #000000;\">",
+    RED                 => "<span style=\"color: #bb0000;\">",
+    GREEN               => "<span style=\"color: #00bb00;\">",
+    ORANGE              => "<span style=\"color: #bbbb00;\">",
+    BLUE                => "<span style=\"color: #0000bb;\">",
+    MAGENTA             => "<span style=\"color: #bb00bb;\">",
+    CYAN                => "<span style=\"color: #00bbbb;\">",
+    GREY                => "<span style=\"color: #bbbbbb;\">",
+
+    DARKGREY            => "<span style=\"color: #555555;\">",
+    LIGHTRED            => "<span style=\"color: #ff5555;\">",
+    LIGHTGREEN          => "<span style=\"color: #55ff55;\">",
+    YELLOW              => "<span style=\"color: #ffff55;\">",
+    LIGHTBLUE           => "<span style=\"color: #5555ff;\">",
+    PINK                => "<span style=\"color: #ff55ff;\">",
+    LIGHTCYAN           => "<span style=\"color: #55ffff;\">",
+    WHITE               => "<span style=\"color: #ffffff;\">",
+
+    B_BLACK             => "<span style=\"background-color: #000000;\">",
+    B_RED               => "<span style=\"background-color: #bb0000;\">",
+    B_GREEN             => "<span style=\"background-color: #00bb00;\">",
+    B_ORANGE            => "<span style=\"background-color: #bbbb00;\">",
+    B_BLUE              => "<span style=\"background-color: #0000bb;\">",
+    B_MAGENTA           => "<span style=\"background-color: #bb00bb;\">",
+    B_CYAN              => "<span style=\"background-color: #00bbbb;\">",
+    B_GREY              => "<span style=\"background-color: #bbbbbb;\">",
+                                                      
+    B_DARKGREY          => "<span style=\"background-color: #555555;\">",
+    B_LIGHTRED          => "<span style=\"background-color: #ff5555;\">",
+    B_LIGHTGREEN        => "<span style=\"background-color: #55ff55;\">",
+    B_YELLOW            => "<span style=\"background-color: #ffff55;\">",
+    B_LIGHTBLUE         => "<span style=\"background-color: #5555ff;\">",
+    B_PINK              => "<span style=\"background-color: #ff55ff;\">",
+    B_LIGHTCYAN         => "<span style=\"background-color: #55ffff;\">",
+    B_WHITE             => "<span style=\"background-color: #ffffff;\">",
+};
 
 1;
-
