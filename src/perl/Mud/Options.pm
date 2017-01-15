@@ -66,10 +66,12 @@ use warnings;
 use English -no_match_vars;
 use Data::Dumper;
 
+use JSON;
 use Pod::Usage;
 use Pod::Find qw(pod_where);
 use Getopt::Long qw(:config no_ignore_case bundling no_pass_through);
 
+use Mud::Logger qw(:all);
 use Mud::DB::Option;
 
 use Exporter qw(import);
@@ -128,8 +130,18 @@ functions refer to.
 
 sub new {
     my $class = shift;
-    my $self = { 
+    my $self = {};
+    my $filename = 'options.json';
+
+    if( -r $filename ) {
+        log_info "$filename exists.";
+    } else {
+        log_info "$filename not found.";
+    }
+
+    $self = { 
         _db         => undef,
+        _json       => $filename,
         wizlock     => undef,
         debug       => undef,
         logfile     => undef,
@@ -145,6 +157,14 @@ sub new {
         $self->{_db} = $o;
     }
     die "Error in creating Mud::DB::Option database object: $!" if !defined $self->{_db};
+
+    $self->{wizlock} = $o->wizlock      if defined $o->wizlock;
+    $self->{debug} = $o->debug          if defined $o->debug;
+    $self->{logfile} = $o->logfile      if defined $o->logfile;
+    $self->{pidfile} = $o->pidfile      if defined $o->pidfile;
+    $self->{libdir} = $o->libdir        if defined $o->libdir;
+    $self->{specials} = $o->specials    if defined $o->specials;
+    $self->{gameport} = $o->gameport    if defined $o->gameport;
 
     GetOptions(
         'pod'                           => sub { pod2usage(
@@ -174,6 +194,43 @@ sub new {
     $self->{_db}->save();
     bless $self, $class;
     return $self;
+}
+
+=item TO_JSON()
+
+This method is called by the JSON package to convert a blessed reference
+into a normal hashref that can be encoded directly with JSON.  We take
+advantage of this to omit fields we don't want to save.
+
+=cut
+
+sub TO_JSON {
+    my $self = shift;
+
+    my $obj = {};
+    $obj->{$_} = $self->{$_} foreach grep { ! /^(_\w+)$/ } (keys %$self);
+    return $obj;
+}
+
+=item DESTROY()
+
+A special function called when an object is destroyed.
+Normally this will happen during shutdown.
+This code should save our current options to disk.
+
+=cut
+
+sub DESTROY {
+    my $self = shift;
+
+    my $filename = $self->{_json};
+    log_info "Saving to $filename.";
+    my $json = JSON->new->allow_blessed(1)->convert_blessed(1);
+    my $data = $json->encode($self) or die "Invalid JSON conversion: $!";
+    open FP, ">$filename" or die "Cannot open $filename: $!";
+    print FP "$data\n";
+    close FP;
+    log_warn "Option daemon shut down.";
 }
 
 =item wizlock( [true|false] )
