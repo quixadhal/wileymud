@@ -31,6 +31,7 @@
 #include "utils.h"
 #include "interpreter.h"
 #include "multiclass.h"
+#include "i3.h"
 #define _WHOD_C
 #include "whod.h"
 
@@ -319,7 +320,7 @@ char                                   *whod_html(void)
     /*
      * This is 32K, in case we have 250 players, yeah right! 
      */
-    char                                    buf[32768] = "\0\0\0\0\0\0\0";
+    char                                    buf[262144] = "\0\0\0\0\0\0\0";
     int                                     players = 0;
     int                                     gods = 0;
     int                                     char_index = 0;
@@ -333,9 +334,12 @@ char                                   *whod_html(void)
     char                                    uptimebuf[100];
     char                                    nowtimebuf[100];
     static char                             headers[40960];
-    int                                     table_width = 0;
     struct timeval                          now_bits;
     struct timeval                          later_bits;
+    int                                     row_counter = 0;
+#ifdef I3
+    I3_MUD                                 *mud;
+#endif
 
     now = time((time_t *) 0);
     gettimeofday(&now_bits, NULL);
@@ -352,27 +356,15 @@ char                                   *whod_html(void)
     sprintf(buf + strlen(buf), "<head><title>Welcome to %s!</title></head>\r\n", MUDNAME);
     sprintf(buf + strlen(buf), "<body>\r\n");
     sprintf(buf + strlen(buf),
-	    "<div align=\"center\"><h3><a href=\"telnet://wiley.shadowlord.org:3000/\">%s</a></h3></div>\r\n",
+	    "<div align=\"center\"><h3><a href=\"telnet://wiley.the-firebird.net:3000/\">%s</a></h3></div>\r\n",
 	    VERSION_STR);
 
     players = 0;
     gods = 0;
     char_index = 0;
 
-    if (IS_SET(SHOW_IDLE, whod_mode))
-	table_width += 100;
-    if (IS_SET(SHOW_LEVEL, whod_mode))
-	table_width += 100;
-    table_width += 400;
-    if (IS_SET(SHOW_ROOM, whod_mode))
-	table_width += 100;
-    if (IS_SET(SHOW_SITE, whod_mode))
-	table_width += 200;
-
     sprintf(buf + strlen(buf), "<div align=\"center\">\r\n");
-    sprintf(buf + strlen(buf),
-	    "<table border=\"0\" cellspacing=\"0\" cellpadding=\"1\" width=\"%d\">\r\n",
-	    table_width);
+    sprintf(buf + strlen(buf), "<table border=\"0\" cellspacing=\"0\" cellpadding=\"1\" width=\"%s\">\r\n", "80%");
     sprintf(buf + strlen(buf), "<tr bgcolor=\"#E7E7E7\">\r\n");
     if (IS_SET(SHOW_IDLE, whod_mode))
 	sprintf(buf + strlen(buf), "<th align=\"center\" width=\"100\">%s</th>\r\n", "Idle");
@@ -380,7 +372,7 @@ char                                   *whod_html(void)
     if (IS_SET(SHOW_LEVEL, whod_mode))
 	sprintf(buf + strlen(buf), "<th align=\"center\" width=\"100\">%s</th>\r\n", "Level");
 
-    sprintf(buf + strlen(buf), "<th align=\"left\" width=\"400\">%s</th>\r\n", "Name");
+    sprintf(buf + strlen(buf), "<th align=\"left\" >%s</th>\r\n", "Name");
 
     if (IS_SET(SHOW_ROOM, whod_mode))
 	sprintf(buf + strlen(buf), "<th align=\"center\" width=\"100\">%s</th>\r\n", "Room");
@@ -469,36 +461,62 @@ char                                   *whod_html(void)
 	}
     }
     sprintf(buf + strlen(buf), "</table>\r\n");
-
     sprintf(buf + strlen(buf), "<br />\r\n");
-    sprintf(buf + strlen(buf),
-	    "<table border=\"0\" cellspacing=\"0\" cellpadding=\"1\" width=\"%d\">\r\n",
-	    table_width);
-    sprintf(buf + strlen(buf), "<tr>\r\n");
-    sprintf(buf + strlen(buf), "<td align=\"right\" width=\"%d\">%s</td>\r\n", table_width / 2,
-	    "Visible&nbsp;Players:&nbsp;");
-    sprintf(buf + strlen(buf), "<td align=\"left\" width=\"%d\">%d</td>\r\n", table_width / 2,
-	    players);
+
+    sprintf(buf + strlen(buf), "<table border=\"0\" cellspacing=\"0\" cellpadding=\"1\" width=\"%s\">\r\n", "80%");
+    sprintf(buf + strlen(buf), "<tr bgcolor=\"#E7E7E7\">\r\n");
+    sprintf(buf + strlen(buf), "<th align=\"center\" >%s</th>\r\n", "Boot Time");
+    sprintf(buf + strlen(buf), "<th align=\"center\" >%s</th>\r\n", "Current Time");
+    sprintf(buf + strlen(buf), "<th align=\"center\" width=\"100\">%s</th>\r\n", "Players");
+    sprintf(buf + strlen(buf), "<th align=\"center\" width=\"100\">%s</th>\r\n", "Gods");
     sprintf(buf + strlen(buf), "</tr>\r\n");
-    sprintf(buf + strlen(buf), "<tr>\r\n");
-    sprintf(buf + strlen(buf), "<td align=\"right\" width=\"%d\">%s</td>\r\n", table_width / 2,
-	    "Visible&nbsp;Gods:&nbsp;");
-    sprintf(buf + strlen(buf), "<td align=\"left\" width=\"%d\">%d</td>\r\n", table_width / 2,
-	    gods);
-    sprintf(buf + strlen(buf), "</tr>\r\n");
-    sprintf(buf + strlen(buf), "<tr>\r\n");
-    sprintf(buf + strlen(buf), "<td align=\"right\" width=\"%d\">%s</td>\r\n", table_width / 2,
-	    "Wiley&nbsp;start&nbsp;time&nbsp;was:&nbsp;");
-    sprintf(buf + strlen(buf), "<td align=\"left\" width=\"%d\">%s</td>\r\n", table_width / 2,
-	    uptimebuf);
-    sprintf(buf + strlen(buf), "</tr>\r\n");
-    sprintf(buf + strlen(buf), "<tr>\r\n");
-    sprintf(buf + strlen(buf), "<td align=\"right\" width=\"%d\">%s</td>\r\n", table_width / 2,
-	    "Quixadhal's&nbsp;time&nbsp;is:&nbsp;");
-    sprintf(buf + strlen(buf), "<td align=\"left\" width=\"%d\">%s</td>\r\n", table_width / 2,
-	    nowtimebuf);
+    sprintf(buf + strlen(buf), "<tr bgcolor=\"%s\">\r\n", "#E7FFE7");
+    sprintf(buf + strlen(buf), "<td align=\"center\" >%s</td>\r\n", uptimebuf);
+    sprintf(buf + strlen(buf), "<td align=\"center\" >%s</td>\r\n", nowtimebuf);
+    sprintf(buf + strlen(buf), "<td align=\"center\" >%d</td>\r\n", players);
+    sprintf(buf + strlen(buf), "<td align=\"center\" >%d</td>\r\n", gods);
     sprintf(buf + strlen(buf), "</tr>\r\n");
     sprintf(buf + strlen(buf), "</table>\r\n");
+
+#ifdef I3
+    sprintf(buf + strlen(buf), "<br />\r\n");
+
+    sprintf(buf + strlen(buf), "<table border=\"0\" cellspacing=\"0\" cellpadding=\"1\" width=\"%s\">\r\n", "80%");
+    sprintf(buf + strlen(buf), "<tr bgcolor=\"#E7E7E7\">\r\n");
+    /* name, type, mudlib, address, port */
+    sprintf(buf + strlen(buf), "<th align=\"center\" >%s</th>\r\n", "Name");
+    sprintf(buf + strlen(buf), "<th align=\"center\" width=\"100\">%s</th>\r\n", "Type");
+    sprintf(buf + strlen(buf), "<th align=\"center\" width=\"200\">%s</th>\r\n", "Mudlib");
+    sprintf(buf + strlen(buf), "<th align=\"center\" width=\"150\">%s</th>\r\n", "Address");
+    sprintf(buf + strlen(buf), "<th align=\"center\" width=\"50\">%s</th>\r\n", "Port");
+    sprintf(buf + strlen(buf), "</tr>\r\n");
+    for (mud = first_mud; mud; mud = mud->next) {
+        if( mud == NULL )
+            continue;
+        if( mud->name == NULL )
+            continue;
+        if( mud->mud_type == NULL )
+            continue;
+        if( mud->mudlib == NULL )
+            continue;
+        if( mud->ipaddress == NULL )
+            continue;
+        if( mud->status == -1 ) {
+            sprintf(buf + strlen(buf), "<tr bgcolor=\"%s\">\r\n", row_counter % 2 ? "#FFFFE7" : "#E7FFE7");
+            sprintf(buf + strlen(buf), "<td align=\"left\" >%s</td>\r\n", mud->name);
+            sprintf(buf + strlen(buf), "<td align=\"left\" >%s</td>\r\n", mud->mud_type);
+            sprintf(buf + strlen(buf), "<td align=\"left\" >%s</td>\r\n", mud->mudlib);
+            sprintf(buf + strlen(buf), "<td align=\"left\" >%s</td>\r\n", mud->ipaddress);
+            sprintf(buf + strlen(buf), "<td align=\"right\" >%d</td>\r\n", mud->player_port);
+            sprintf(buf + strlen(buf), "</tr>\r\n");
+            row_counter++;
+        }
+    }
+    sprintf(buf + strlen(buf), "<tr bgcolor=\"#E7E7E7\">\r\n");
+    sprintf(buf + strlen(buf), "<td align=\"center\" colspan=\"5\">%d total muds listed.</td>\r\n", row_counter);
+    sprintf(buf + strlen(buf), "</tr>\r\n");
+    sprintf(buf + strlen(buf), "</table>\r\n");
+#endif
 
     sprintf(buf + strlen(buf), "</div>\r\n");
 
