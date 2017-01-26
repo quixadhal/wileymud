@@ -15,7 +15,7 @@ class Option(DataBase):
     id = Column(Integer, primary_key=True)
     date_created = Column(DateTime, default=func.now())
     version = Column(String)
-    port = Column(Integer, default=4400)
+    gameport = Column(Integer, default=4400)
     wizlock = Column(Boolean, default=False)
     debug = Column(Boolean, default=False)
     specials = Column(Boolean, default=True)

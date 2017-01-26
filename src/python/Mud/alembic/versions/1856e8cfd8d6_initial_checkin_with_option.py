@@ -22,7 +22,7 @@ def upgrade():
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('date_created', sa.DateTime(), nullable=True),
     sa.Column('version', sa.String(), nullable=True),
-    sa.Column('port', sa.Integer(), nullable=True),
+    sa.Column('gameport', sa.Integer(), nullable=True),
     sa.Column('wizlock', sa.Boolean(), nullable=True),
     sa.PrimaryKeyConstraint('id')
     )

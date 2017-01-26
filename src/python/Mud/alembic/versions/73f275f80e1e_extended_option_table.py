@@ -23,14 +23,14 @@ def upgrade():
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('date_created', sa.DateTime(), nullable=True),
     sa.Column('version', sa.String(), nullable=True),
-    sa.Column('port', sa.Integer(), nullable=True),
+    sa.Column('gameport', sa.Integer(), nullable=True),
     sa.Column('wizlock', sa.Boolean(), nullable=True),
     sa.Column('debug', sa.Boolean(), nullable=True),
     sa.Column('specials', sa.Boolean(), nullable=True),
     sa.Column('pidfile', sa.String(), nullable=True),
     sa.PrimaryKeyConstraint('id')
     )
-    op.execute('INSERT INTO option(id, date_created, version, port, wizlock) SELECT id, date_created, version, port, wizlock FROM option_orig')
+    op.execute('INSERT INTO option(id, date_created, version, gameport, wizlock) SELECT id, date_created, version, gameport, wizlock FROM option_orig')
     op.drop_table('option_orig')
 
     # SQLite doesn't handle adding constraints outside of table creation.

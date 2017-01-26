@@ -28,7 +28,7 @@ if __name__ == '__main__':
         sys.exit()
 
     logger.boot('Using database version %s, created on %s', options.version, options.date_created)
-    logger.boot('Port number is %d', options.port)
+    logger.boot('Port number is %d', options.gameport)
     logger.boot('Wizlock is %s', options.wizlock)
 
     logger.critical('System halted.')
