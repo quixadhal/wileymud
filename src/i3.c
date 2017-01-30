@@ -4532,7 +4532,7 @@ void I3_savehelps(void)
 	fprintf(fp, "%s", "#HELP\n");
 	fprintf(fp, "Name %s\n", help->name);
 	fprintf(fp, "Perm %s\n", perm_names[help->level]);
-	//fprintf(fp, "Text %s�\n", help->text);
+	//fprintf(fp, "Text %s¢\n", help->text);
 	fprintf(fp, "Text %s%c\n", help->text, '\0xA2');
 	fprintf(fp, "%s", "End\n\n");
     }
@@ -4588,7 +4588,7 @@ void I3_readhelp(I3_HELP_DATA *help, FILE * fp)
 		if (!strcasecmp(word, "Text")) {
 		    int                                     num = 0;
 
-		    //while ((hbuf[num] = fgetc(fp)) != EOF && hbuf[num] != '�'
+		    //while ((hbuf[num] = fgetc(fp)) != EOF && hbuf[num] != '¢'
 		    while ((hbuf[num] = fgetc(fp)) != EOF && (int) hbuf[num] != (int) '\0xA2'
 			   && num < (MAX_STRING_LENGTH - 2))
 			num++;
@@ -8790,7 +8790,7 @@ char                                   *I3_find_social(CHAR_DATA *ch, char *snam
     return socname;
 }
 
-/* Revised 10/10/03 by Xorith: Recognize the need to capitalize for a new�sentence. */
+/* Revised 10/10/03 by Xorith: Recognize the need to capitalize for a new sentence. */
 char                                   *i3act_string(const char *format, CHAR_DATA *ch,
 						     CHAR_DATA *vic)
 {
@@ -9406,7 +9406,9 @@ char                                   *I3_nameremap(const char *ps)
     static char                             xnew[MAX_STRING_LENGTH];
 
     if(!strcasecmp(ps, "quixadhal")) {
-        strcpy(xnew, "Ghost of Quixadhal");
+        /* strcpy(xnew, "Quixadhal, the Lost"); */
+        /* strcpy(xnew, "きけさだる"); */
+        strcpy(xnew, "Dread Lord Quixadhal");
     } else {
         strcpy(xnew, ps);
     }

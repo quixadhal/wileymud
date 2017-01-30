@@ -206,30 +206,37 @@ function get_lpc_chatter_colors() {
     $line = substr($line, 11, -3);
     $mapping = explode(",", $line);
     $colors = array();
-    $colors['default'] = "%^GREY%^";
-    //foreach ($pinkfishMap as $k => $v) {
-    //    echo "pinkfishMap[$k] = ".htmlentities($v)."<br>";
-    //}
+    $colors['default'] = $pinkfishMap["%^GREY%^"];
     for($i = 0; $i < sizeof($mapping); $i++ ) {
         $map = explode(":", $mapping[$i]);
         if(sizeof($map) < 2) {
-            //echo "WARNING: Invalid entry for color map \"";
-            //print_r($map);
-            //echo "\".<br>";
             continue;
         }
         $mapname = substr($map[0], 1, -1); // Strip quotes
         $mapcolor = substr($map[1], 1, -1); // Strip quotes
         if(array_key_exists($mapcolor, $pinkfishMap)) {
-            $colors[$mapname] = $pinkfishMap[$mapcolor];
+            $checking = array();
+            $checking[$mapname] = $pinkfishMap[$mapcolor];
+            $check = json_encode( $checking, JSON_PRETTY_PRINT );
+            if( json_last_error() != JSON_ERROR_NONE ) {
+                //echo "<hr>".json_last_error_msg()."<br>";
+                //echo "Mapname $i is: \"$mapname\"<br>";
+                //echo "Mapcolor $i is: \"$mapcolor\"<br><hr>";
+            } else {
+                $colors[$mapname] = $pinkfishMap[$mapcolor];
+            }
         }
-
         //echo "colors[$mapname] = ".htmlentities($colors[$mapname])."<br>";
     }
+    $colors['default'] = $pinkfishMap["%^GREY%^"];
 
-    $dump = json_encode( $colors, JSON_PARTIAL_OUTPUT_ON_ERROR|JSON_PRETTY_PRINT );
-    //echo "<hr>$dump<br>";
-    file_put_contents($CHAT_DATA_FILE, $dump);
+    $dump = json_encode( $colors, JSON_PRETTY_PRINT );
+    if( json_last_error() != JSON_ERROR_NONE ) {
+        echo "<hr>".json_last_error_msg()."<br><hr>";
+    } else {
+        file_put_contents($CHAT_DATA_FILE, $dump);
+    }
+    //echo "<hr>".count($colors)." colors<br><hr>";
     return $colors;
 }
 
@@ -238,24 +245,22 @@ function get_json_chatter_colors() {
     global $dump;
 
     if( file_exists( $CHAT_DATA_FILE ) ) {
-        $colors = array ();
+        $colors = array();
         $dump = file_get_contents( $CHAT_DATA_FILE );
-        //$dump = utf8_encode( $dump );
-        $colors = json_decode( $dump );
-        if( json_last_error() === JSON_ERROR_NONE ) {
-            return $colors;
-        } else {
-            $colors = array ();
-            return $colors;
+        $colors = json_decode( $dump, true );
+        if( json_last_error() != JSON_ERROR_NONE ) {
+            echo "<hr>".json_last_error_msg()."<br>";
         }
+        //echo "<hr>".count($colors)." colors<br><hr>";
+        return $colors;
     } else {
         return get_lpc_chatter_colors();
     }
 }
 
 function get_chatter_colors() {
-    return get_lpc_chatter_colors();
     return get_json_chatter_colors();
+    //return get_lpc_chatter_colors();
 }
 
 function is_local_ip() {
@@ -338,7 +343,6 @@ function get_speaker_color($who, $where) {
         $speakerColor = $colorMap[$whoLow];
     } else {
         // Add a new entry!
-        //$colorMap[$whoLow] = $speakerColor;
         $chatCounter = count( $colorMap ) - 1;
         $colorIndex = $chatCounter % count( $pinkfishMap );
         $colorKey = array_keys($pinkfishMap)[$colorIndex];
@@ -346,12 +350,23 @@ function get_speaker_color($who, $where) {
             $colorIndex++;
             $colorKey = array_keys($pinkfishMap)[$colorIndex];
         }
+        if( $colorKey == '%^BLACK%^' ) {
+            $colorIndex++;
+            $colorKey = array_keys($pinkfishMap)[$colorIndex];
+        }
+        if( $colorKey == '%^DARKGREY%^' ) {
+            $colorIndex++;
+            $colorKey = array_keys($pinkfishMap)[$colorIndex];
+        }
         $speakerColor = $pinkfishMap[$colorKey];
         $colorMap[$whoLow] = $speakerColor;
-        //echo "<br>colorMap[$whoLow] = pinkfishMap[$colorKey];<br>";
-        // Save data here...
-        $dump = json_encode( $colorMap, JSON_PARTIAL_OUTPUT_ON_ERROR|JSON_PRETTY_PRINT );
-        file_put_contents($CHAT_DATA_FILE, $dump);
+        $dump = json_encode( $colorMap, JSON_PRETTY_PRINT );
+        if( json_last_error() != JSON_ERROR_NONE ) {
+            echo "<hr>".json_last_error_msg()."<br>";
+            echo "whoLow $chatCounter is: \"$whoLow\"<br>";
+        } else {
+            file_put_contents($CHAT_DATA_FILE, $dump);
+        }
     }
     $fancyLad = "$speakerColor" . $who . "@" . $where . "</SPAN>";
     return $fancyLad;
@@ -362,14 +377,16 @@ function is_bot_line($line) {
     $result = preg_match("/\tCron\@WileyMUD\t.*It\'s\s+ALIVE\!/", $line) ? $line : false;
     if( $result ) {
         return $result;
-    } else {
-        $result = preg_match("/\turl\tGhost\s+of\s+Quixadhal\@WileyMUD\t.*<wiley>/", $line);
-        if ($result) {
-            return false;
-        } else {
-            return $result = preg_match("/\twiley\tCron\@WileyMUD\t/", $line) ? false : $line;
-        }
     }
+    $result = preg_match("/\twiley\tCron\@WileyMUD\t/", $line);
+    if ($result) {
+        return false;
+    }
+    $result = preg_match("/\twiley\tfortune\@lpcdb\-dev\t/", $line);
+    if ($result) {
+        return false;
+    }
+    return $line;
 }
 
 $isLocal = is_local_ip();
