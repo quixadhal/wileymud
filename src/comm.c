@@ -291,6 +291,7 @@ void game_loop(int s)
     struct descriptor_data                 *next_point = NULL;
     struct room_data                       *rm = NULL;
     struct char_data                       *mount = NULL;
+    int                                     input_flag = 0;
 
     /*
      * int mask = 0; 
@@ -401,8 +402,13 @@ void game_loop(int s)
 	for (point = descriptor_list; point; point = next_point) {
 	    next_point = point->next;
 	    if (FD_ISSET(point->descriptor, &input_set))
-		if (process_input(point) < 0)
-		    close_socket(point);
+                do {
+		    input_flag = process_input(point);
+                    if( input_flag < 0 ) {
+                        close_socket(point);
+                        break;
+                    }
+                } while( input_flag > 0);
 	}
 
 	/*
