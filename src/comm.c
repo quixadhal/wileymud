@@ -1052,8 +1052,8 @@ int process_input(struct descriptor_data *t)
     int                                     in_iac = 0;
     int                                     in_sub = 0;
     int                                     begin = 0;
-    int                                     new_data = 0;
-    int                                     loop_data = 0;
+    int                                     sofar = 0;
+    int                                     thisround = 0;
     char                                    *line_marker = NULL;
     char                                    buffer[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
     char                                    tmp[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
@@ -1064,8 +1064,10 @@ int process_input(struct descriptor_data *t)
     begin = strlen(t->buf);
 
     do {
-        loop_data = read(t->descriptor, t->buf + begin + new_data, MAX_STRING_LENGTH - (begin + new_data) - 2); // Leave an extra byte for two-character newline processing.
-        if( loop_data < 0 ) {
+        thisround = read(t->descriptor, t->buf + begin + sofar, MAX_STRING_LENGTH - (begin + sofar) - 1); // Leave an extra byte for two-character newline processing.
+        if( thisround > 0 ) {
+            sofar += thisround;
+        } else if( thisround < 0 ) {
             if (errno != EWOULDBLOCK) {
                 log_error("Socket READ error.");
                 return( -1 );
@@ -1073,17 +1075,18 @@ int process_input(struct descriptor_data *t)
                 // Blocking means no more data available, yet.
                 break;
             }
-        } else if( loop_data == 0 ) {
+        } else if( thisround == 0 ) {
             log_error("EOF on socket read.");
             return( -1 );
-        } else {
-            new_data += loop_data;
         }
-    } while(!ISNEWL( *( t->buf + begin + new_data - 1) ));
+    } while(1);
+    // } while(!ISNEWL( *( t->buf + begin + sofar - 1) ));
     // If we find the end of line, we're done for now, even if there is more to read.
 
-    *(t->buf + begin + new_data) = 0; // Add NUL to end of newly extended string
-    if( !(line_marker = strpbrk((t->buf + begin), "\r\n")) ) {
+    *(t->buf + begin + sofar) = 0; // Add NUL to end of newly extended string
+
+    //if( !(line_marker = strpbrk((t->buf + begin), "\r\n")) ) {
+    if( !(line_marker = strpbrk((t->buf), "\r\n")) ) {
         // If no newline (or partial newline) was found, process next time.
         return( 0 );
     }
