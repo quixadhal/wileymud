@@ -11,9 +11,9 @@ sys.path.append(os.path.join(os.getcwd(), "Mud"))
 # path, so we'll trust nothing will explode in os or sys at the top
 # level here.
 
-from log_system import Logger
+from Mud.log_system import Logger
 logger = Logger()
-from db_system import Database
+from Mud.db_system import Database
 db = Database()
 
 
@@ -21,7 +21,7 @@ if __name__ == '__main__':
     logger.boot('System booting.')
     session = db.Session()
 
-    from option import Option
+    from Mud.option import Option
     options = session.query(Option).first()
     if options is None:
         logger.critical('Database failed to initialize!')
