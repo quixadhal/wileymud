@@ -353,7 +353,13 @@ char                                   *whod_html(void)
     sprintf(headers + strlen(headers), "Content-Type: %s\r\n", "text/html; charset=iso-8859-1");
 
     sprintf(buf, "<html>\r\n");
-    sprintf(buf + strlen(buf), "<head><title>Welcome to %s!</title></head>\r\n", MUDNAME);
+    sprintf(buf + strlen(buf), "<head>\r\n");
+    sprintf(buf + strlen(buf), "<title>Welcome to %s!</title>\r\n", MUDNAME);
+    sprintf(buf + strlen(buf), "<style>\r\n");
+    sprintf(buf + strlen(buf), "a { text-decoration:none; }\r\n");
+    sprintf(buf + strlen(buf), "a:hover { text-decoration:underline; }\r\n");
+    sprintf(buf + strlen(buf), "</style>\r\n");
+    sprintf(buf + strlen(buf), "</head>\r\n");
     sprintf(buf + strlen(buf), "<body>\r\n");
     sprintf(buf + strlen(buf),
 	    "<div align=\"center\"><h3><a href=\"telnet://wiley.the-firebird.net:3000/\">%s</a></h3></div>\r\n",
@@ -503,10 +509,11 @@ char                                   *whod_html(void)
             continue;
         if( mud->status == -1 ) {
             sprintf(buf + strlen(buf), "<tr bgcolor=\"%s\">\r\n", row_counter % 2 ? "#FFFFE7" : "#E7FFE7");
-            sprintf(buf + strlen(buf), "<td align=\"left\" >%s</td>\r\n", mud->name);
+            sprintf(buf + strlen(buf), "<td align=\"left\"><a target=\"I3 mudlist\" href=\"http://%s/\">%s</a></td>\r\n", mud->ipaddress, mud->name);
             sprintf(buf + strlen(buf), "<td align=\"left\" >%s</td>\r\n", mud->mud_type);
             sprintf(buf + strlen(buf), "<td align=\"left\" >%s</td>\r\n", mud->mudlib);
-            sprintf(buf + strlen(buf), "<td align=\"left\" >%s</td>\r\n", mud->ipaddress);
+            sprintf(buf + strlen(buf), "<a href=\"telnet://%s:%d/\" >\r\n", mud->ipaddress, mud->player_port);
+            sprintf(buf + strlen(buf), "<td align=\"left\" ><a href=\"telnet://%s:%d/\">%s</a></td>\r\n", mud->ipaddress, mud->player_port, mud->ipaddress);
             sprintf(buf + strlen(buf), "<td align=\"right\" >%d</td>\r\n", mud->player_port);
             sprintf(buf + strlen(buf), "</tr>\r\n");
             row_counter++;

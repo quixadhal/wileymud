@@ -61,6 +61,10 @@
 #include <fnmatch.h>
 #include <sys/time.h>
 #include <time.h>
+#if 0
+#include <sys/types.h>
+#include <regex.h>
+#endif
 #include "global.h"
 #include "bug.h"
 #include "utils.h"
@@ -289,7 +293,7 @@ void i3log(const char *format, ...)
 {
     char                                    buf[MAX_STRING_LENGTH],
                                             buf2[MAX_STRING_LENGTH];
-    char                                   *strtime;
+    //char                                   *strtime;
     va_list                                 ap;
 
     va_start(ap, format);
@@ -298,8 +302,8 @@ void i3log(const char *format, ...)
 
     snprintf(buf2, MAX_STRING_LENGTH, "I3: %s", buf);
 
-    strtime = ctime(&i3_time);
-    fprintf(stderr, "%s :: %s\n", strtime, buf2);
+    //strtime = ctime(&i3_time);
+    //fprintf(stderr, "%s :: %s\n", strtime, buf2);
 
     log_info("%s", buf2);
     return;
@@ -397,8 +401,8 @@ char                                   *i3_strip_colors(const char *txt)
 	i3strlcpy(tbuf, i3strrep(tbuf, color->i3tag, ""), MAX_STRING_LENGTH);
 
 #ifdef IMC
-    for (color = first_i3_color; color; color = color->next)
-	i3strlcpy(tbuf, i3strrep(tbuf, color->imctag, ""), MAX_STRING_LENGTH);
+//    for (color = first_i3_color; color; color = color->next)
+//	i3strlcpy(tbuf, i3strrep(tbuf, color->imctag, ""), MAX_STRING_LENGTH);
 #endif
 
     for (color = first_i3_color; color; color = color->next)
@@ -486,13 +490,13 @@ void i3_to_char(const char *txt, CHAR_DATA *ch)
 {
     char                                    buf[MAX_STRING_LENGTH];
 #ifdef IMC
-    char                                    buf2[MAX_STRING_LENGTH];
+//    char                                    buf2[MAX_STRING_LENGTH];
 #endif
 
     i3strlcpy(buf, I3_i3tag_to_mudtag(ch, txt), MAX_STRING_LENGTH);
 #ifdef IMC
-    i3strlcpy(buf2, I3_imctag_to_mudtag(ch, buf), MAX_STRING_LENGTH);
-    cprintf(ch, "%s\033[0m", buf2);
+//    i3strlcpy(buf2, I3_imctag_to_mudtag(ch, buf), MAX_STRING_LENGTH);
+//    cprintf(ch, "%s\033[0m", buf2);
 #else
     cprintf(ch, "%s\033[0m", buf);
 #endif
@@ -517,13 +521,13 @@ void i3send_to_pager(const char *txt, CHAR_DATA *ch)
 {
     char                                    buf[MAX_STRING_LENGTH];
 #ifdef IMC
-    char                                    buf2[MAX_STRING_LENGTH];
+//    char                                    buf2[MAX_STRING_LENGTH];
 #endif
 
     i3strlcpy(buf, I3_i3tag_to_mudtag(ch, txt), MAX_STRING_LENGTH);
 #ifdef IMC
-    i3strlcpy(buf2, I3_imctag_to_mudtag(ch, buf), MAX_STRING_LENGTH);
-    page_printf(ch, "%s\033[0m", buf2);
+//    i3strlcpy(buf2, I3_imctag_to_mudtag(ch, buf), MAX_STRING_LENGTH);
+//    page_printf(ch, "%s\033[0m", buf2);
 #else
     page_printf(ch, "%s\033[0m", buf);
 #endif
@@ -1289,6 +1293,66 @@ void i3fread_to_eol(FILE * fp)
 
     ungetc(c, fp);
     return;
+}
+
+/*
+ * Read and allocate space for a string from a file.
+ */
+char                                   *i3fread_string(FILE * fp)
+{
+    static char                             buf[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
+    char                                   *ack = NULL;
+    int                                     flag = FALSE;
+    int                                     c = 0;
+    static char                             Empty[1] = "";
+
+    bzero(buf, MAX_STRING_LENGTH);
+    ack = buf;
+    flag = 0;
+    do {
+	c = getc(fp);
+    } while (isspace(c));
+
+    if ((*ack++ = c) == '~')
+	return Empty;
+    if (((int)(*ack++ = c)) == '\0xA2')
+	return Empty;
+
+    for (;;) {
+	if (ack > &buf[MAX_STRING_LENGTH - 1]) {
+	    log_error("new_fread_string: MAX_STRING %d exceeded, truncating.", MAX_STRING_LENGTH);
+	    return buf;
+	}
+	switch ((int)(*ack = getc(fp))) {
+	    default:
+		flag = 0;
+		ack++;
+		break;
+	    case EOF:
+		log_error("Fread_string: EOF");
+		return buf;
+	    case '\r':
+		break;
+	    case '~':
+	    case '\0xA2':
+		ack++;
+		flag = 1;
+		break;
+	    case '\n':
+		if (flag) {
+		    if (ack > buf) {
+			ack--;
+			*ack = '\0';
+		    }
+		    return buf;
+		} else {
+		    flag = 0;
+		    ack++;
+		    *ack++ = '\r';
+		}
+		break;
+	}
+    }
 }
 
 /******************************************
@@ -2282,18 +2346,27 @@ void I3_process_chanlist_reply(I3_HEADER *header, char *s)
 
 void I3_send_channel_message(I3_CHANNEL *channel, const char *name, const char *message)
 {
+    char                                    buf[MAX_STRING_LENGTH];
+
     if (!i3_is_connected())
 	return;
 
+    i3strlcpy(buf, message, MAX_STRING_LENGTH);
+
+    log_info("I3_send_channel(%s@%s, %s, %s)", channel->I3_name, channel->host_mud, name, message);
     I3_write_header("channel-m", I3_THISMUD, name, NULL, NULL);
+    log_info("I3_send_channel() header setup.");
     I3_write_buffer("\"");
     I3_write_buffer(channel->I3_name);
     I3_write_buffer("\",\"");
     I3_write_buffer(I3_nameremap(name));
+    log_info("I3_send_channel() name remap %s to %s.", name, I3_nameremap(name));
     I3_write_buffer("\",\"");
-    send_to_i3(I3_escape(message));
+    send_to_i3(I3_escape(buf));
+    log_info("I3_send_channel() escaped buffer.");
     I3_write_buffer("\",})\r");
     I3_send_packet();
+    log_info("I3_send_channel() done.");
 
     return;
 }
@@ -2847,11 +2920,29 @@ void I3_process_channel_m(I3_HEADER *header, char *s)
         I3FCLOSE(fp);
     }
 
-
+#if 0
     // Here is the point we want to use pregexp to scan for urls and do the
     // logic of untiny.pl
 
+    {
+        regex_t *preg_buf;
+        char *regexp;
+        regmatch_t *matches;
+        int max_matches;
+        int rx;
 
+        const char *regexp[] = {
+            "\[([\w-]+)\].*(https?://www.youtube.com/watch\?.*?v=[^&\?\.\s]+)", # check_youtube_chan = /if (%P1 !~ "url") /quote -0 url !~/bin/untiny.pl '%P2' '%P1'%; /endif
+            "\[([\w-]+)\].*(https?://youtu.be/[^&\?\.\s]+)",                    # check_yout_chan = /quote -0 url !~/bin/untiny.pl '%P2' '%P1'
+            NULL
+        };
+
+        for (rx = 0; regexp[rx] != NULL; rx++) {
+            if(! recomp(preg_buf, regexp[rx], REG_EXTENDED|REG_ICASE)) {
+            }
+        }
+    }
+#endif
 
     for (d = first_descriptor; d; d = d->next) {
 	vch = d->original ? d->original : d->character;
@@ -3209,7 +3300,8 @@ void I3_process_tell(I3_HEADER *header, char *s)
     I3_remove_quotes(&ps);
 
     snprintf(usr, MAX_INPUT_LENGTH, "%s@%s", ps, header->originator_mudname);
-    snprintf(buf, MAX_INPUT_LENGTH, "'%s@%s'", ps, header->originator_mudname);
+    //snprintf(buf, MAX_INPUT_LENGTH, "'%s@%s'", ps, header->originator_mudname);
+    snprintf(buf, MAX_INPUT_LENGTH, "'%s@%s'", header->originator_username, header->originator_mudname);
 
     I3STRFREE(I3REPLY(ch));
     I3REPLY(ch) = I3STRALLOC(buf);
@@ -4544,7 +4636,7 @@ void I3_savehelps(void)
 void I3_readhelp(I3_HELP_DATA *help, FILE * fp)
 {
     const char                             *word;
-    char                                    hbuf[MAX_STRING_LENGTH];
+    //char                                    hbuf[MAX_STRING_LENGTH];
     int                                     permvalue;
     bool                                    fMatch;
 
@@ -4586,6 +4678,12 @@ void I3_readhelp(I3_HELP_DATA *help, FILE * fp)
 
 	    case 'T':
 		if (!strcasecmp(word, "Text")) {
+		    help->text = I3STRALLOC(i3fread_string(fp));
+		    fMatch = TRUE;
+		    break;
+                }
+                /*
+		if (!strcasecmp(word, "Text")) {
 		    int                                     num = 0;
 
 		    //while ((hbuf[num] = fgetc(fp)) != EOF && hbuf[num] != '¢'
@@ -4598,6 +4696,7 @@ void I3_readhelp(I3_HELP_DATA *help, FILE * fp)
 		    break;
 		}
 		I3KEY("Text", help->text, i3fread_line(fp));
+                */
 		break;
 	}
 	if (!fMatch)
@@ -6934,12 +7033,8 @@ I3_CMD(I3_chanlist)
 	i3send_to_pager("%%^CYAN%%^Showing ALL known channels.%%^RESET%%^\n\r\n\r", ch);
     }
 
-    i3send_to_pager
-	("%%^CYAN%%^Local name          Perm    I3 Name             Hosted at           Status%%^RESET%%^\n\r",
-	 ch);
-    i3send_to_pager
-	("%%^CYAN%%^-------------------------------------------------------------------------------%%^RESET%%^\n\r",
-	 ch);
+    i3page_printf(ch, "%s", "%%^CYAN%%^Local name          Perm    I3 Name             Hosted at           Status%%^RESET%%^\n\r");
+    i3page_printf(ch, "%s", "%%^CYAN%%^-------------------------------------------------------------------------------%%^RESET%%^\n\r");
     for (channel = first_I3chan; channel; channel = channel->next) {
 	found = FALSE;
 
@@ -6965,7 +7060,7 @@ I3_CMD(I3_chanlist)
 		      perm_names[channel->i3perm], channel->I3_name, channel->host_mud,
 		      channel->status == 0 ? "%%^GREEN%%^%%^BOLD%%^Public" : "%%^RED%%^%%^BOLD%%^Private");
     }
-    i3send_to_pager("%%^CYAN%%^%%^BOLD%%^*: You are listening to these channels.%%^RESET%%^\n\r", ch);
+    i3page_printf(ch, "%s", "%%^CYAN%%^%%^BOLD%%^*: You are listening to these channels.%%^RESET%%^\n\r");
     return;
 }
 
@@ -9408,7 +9503,8 @@ char                                   *I3_nameremap(const char *ps)
     if(!strcasecmp(ps, "quixadhal")) {
         /* strcpy(xnew, "Quixadhal, the Lost"); */
         /* strcpy(xnew, "きけさだる"); */
-        strcpy(xnew, "Dread Lord Quixadhal");
+        /* strcpy(xnew, "Dread Lord Quixadhal"); */
+        strcpy(xnew, "Off-Topic Quixadhal");
     } else {
         strcpy(xnew, ps);
     }
