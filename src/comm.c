@@ -401,14 +401,17 @@ void game_loop(int s)
 
 	for (point = descriptor_list; point; point = next_point) {
 	    next_point = point->next;
-	    if (FD_ISSET(point->descriptor, &input_set))
+	    if (FD_ISSET(point->descriptor, &input_set)) {
                 do {
-		    input_flag = process_input(point);
+                    input_flag = process_input(point);
                     if( input_flag < 0 ) {
                         close_socket(point);
                         break;
                     }
+                    if( input_flag > 0 )
+		        point->prompt_mode = 1;
                 } while( input_flag > 0);
+            }
 	}
 
 	/*
@@ -431,7 +434,7 @@ void game_loop(int s)
 		point->wait = 1;
 		if (point->character)			       /* This updates the idle ticker to say we're not idle */
 		    point->character->specials.timer = 0;
-		point->prompt_mode = 1;
+		/* point->prompt_mode = 1; */
 
 		if (point->str)
 		    string_add(point, comm);
@@ -443,18 +446,6 @@ void game_loop(int s)
 		else
 		    nanny(point, comm);
 	    }
-#if 0
-	    else {
-		if (point->character &&
-		    (GET_POS(point->character) != POSITION_FIGHTING) &&
-		    (GET_HIT(point->character) >= GET_MAX_HIT(point->character)) &&
-		    (GET_MANA(point->character) >= GET_MAX_MANA(point->character)) &&
-		    (GET_MOVE(point->character) >= GET_MAX_MOVE(point->character))
-		    )
-		    point->prompt_mode = 0;		       /* This might only show prompts if a command was
-							        * processed */
-	    }
-#endif
 	}
 
 	for (point = descriptor_list; point; point = next_point) {
@@ -468,95 +459,89 @@ void game_loop(int s)
 	    if (FD_ISSET(point->descriptor, &output_set) && point->output.head) {
 		if (process_output(point) < 0)
 		    close_socket(point);
-		else
-		    point->prompt_mode = 1;
 	    }
 	}
 
 	/*
 	 * give the people some prompts 
 	 */
-	for (point = descriptor_list; point; point = point->next) {
-	    if (point->prompt_mode) {
-		/*
-		 * Maybe we can somewhow not do prompts if nothing has happened (IE: no command entered 
-		 */
-		if (point->str)
-		    write_to_descriptor(point->descriptor, "] ");
-		else if (!point->connected) {
-#if 0
-		    if (point->showstr_point)
-			write_to_descriptor(point->descriptor, "*** Press return or q ***");
-#endif
-		    if (point->page_first)
-			write_to_descriptor(point->descriptor, "*** Press return or q ***");
-		    else {
-			bzero(promptbuf, MAX_INPUT_LENGTH);
-			if (IS_IMMORTAL(point->character) && IS_PC(point->character)) {
-			    if (MOUNTED(point->character)) {
-				mount = MOUNTED(point->character);
-				sprintf(promptbuf, "[%s has %d/%dh %d/%dv]\r\n",
-					GET_SDESC(mount),
-					GET_HIT(mount), GET_MAX_HIT(mount),
-					GET_MOVE(mount), GET_MAX_MOVE(mount));
-			    }
-			    if (IS_SET(point->character->specials.act, PLR_STEALTH))
-				sprintf(promptbuf + strlen(promptbuf), "S");
-			    if (point->character->invis_level > 0)
-				sprintf(promptbuf + strlen(promptbuf), "I=%d: ",
-					point->character->invis_level);
-			    rm = real_roomp(point->character->in_room);
+        for (point = descriptor_list; point; point = point->next) {
+            /*
+             * Maybe we can somewhow not do prompts if nothing has happened (IE: no command entered 
+             */
+            if (point->str) {
+                write_to_descriptor(point->descriptor, "] ");
+            } else if (!point->connected) {
+                if (point->page_first) {
+                    write_to_descriptor(point->descriptor, "*** Press return or q ***");
+                } else {
+                    if (point->prompt_mode) {
+                        point->prompt_mode = 0;
+                        bzero(promptbuf, MAX_INPUT_LENGTH);
+                        if (IS_IMMORTAL(point->character) && IS_PC(point->character)) {
+                            if (MOUNTED(point->character)) {
+                                mount = MOUNTED(point->character);
+                                sprintf(promptbuf, "[%s has %d/%dh %d/%dv]\r\n",
+                                        GET_SDESC(mount),
+                                        GET_HIT(mount), GET_MAX_HIT(mount),
+                                        GET_MOVE(mount), GET_MAX_MOVE(mount));
+                            }
+                            if (IS_SET(point->character->specials.act, PLR_STEALTH))
+                                sprintf(promptbuf + strlen(promptbuf), "S");
+                            if (point->character->invis_level > 0)
+                                sprintf(promptbuf + strlen(promptbuf), "I=%d: ",
+                                        point->character->invis_level);
+                            rm = real_roomp(point->character->in_room);
                             tc = time(0);
                             t_info = localtime(&tc);
-			    sprintf(promptbuf + strlen(promptbuf),
-				    "%02d:%02d #%d - %s [#%d]> ", t_info->tm_hour, t_info->tm_min, rm->zone, zone_table[rm->zone].name,
-				    rm->number);
-			    write_to_descriptor(point->descriptor, promptbuf);
-/* OLD mobs didn't have classes.. this doesn't work anymore */
-			} else if (IS_NPC(point->character) &&
-				   (IS_SET(point->character->specials.act, ACT_POLYSELF) ||
-				    IS_SET(point->character->specials.act, ACT_POLYOTHER))) {
-			    sprintf(promptbuf, "P %d/%dh %d/%dv > ",
-				    GET_HIT(point->character),
-				    GET_MAX_HIT(point->character),
-				    GET_MOVE(point->character), GET_MAX_MOVE(point->character));
-			    write_to_descriptor(point->descriptor, promptbuf);
-			} else if (IS_NPC(point->character) &&
-				   IS_SET(point->character->specials.act, ACT_SWITCH)) {
-			    sprintf(promptbuf, "*%s[#%d] in [#%d] %d/%dh %d/%dm %d/%dv > ",
-				    NAME(point->character),
-				    MobVnum(point->character),
-				    point->character->in_room,
-				    GET_HIT(point->character),
-				    GET_MAX_HIT(point->character),
-				    GET_MANA(point->character),
-				    GET_MAX_MANA(point->character),
-				    GET_MOVE(point->character), GET_MAX_MOVE(point->character));
-			    write_to_descriptor(point->descriptor, promptbuf);
-			} else {
-			    if (MOUNTED(point->character)) {
-				if (HasClass(point->character, CLASS_RANGER) ||
-				    IS_AFFECTED(MOUNTED(point->character), AFF_CHARM)) {
-				    mount = MOUNTED(point->character);
-				    sprintf(promptbuf, "[%s has %d/%dh %d/%dv]\r\n",
-					    GET_SDESC(mount),
-					    GET_HIT(mount), GET_MAX_HIT(mount),
-					    GET_MOVE(mount), GET_MAX_MOVE(mount));
-				}
-			    }
-			    sprintf(promptbuf + strlen(promptbuf), "%d/%dh %d/%dm %d/%dv > ",
-				    GET_HIT(point->character),
-				    GET_MAX_HIT(point->character),
-				    GET_MANA(point->character),
-				    GET_MAX_MANA(point->character),
-				    GET_MOVE(point->character), GET_MAX_MOVE(point->character));
-			    write_to_descriptor(point->descriptor, promptbuf);
-			}
-		    }
-		}
-		point->prompt_mode = 0;
-	    }
-	}
+                            sprintf(promptbuf + strlen(promptbuf),
+                                    "%02d:%02d #%d - %s [#%d]> ", t_info->tm_hour, t_info->tm_min, rm->zone, zone_table[rm->zone].name,
+                                    rm->number);
+                            write_to_descriptor(point->descriptor, promptbuf);
+                        /* OLD mobs didn't have classes.. this doesn't work anymore */
+                        } else if (IS_NPC(point->character) &&
+                                   (IS_SET(point->character->specials.act, ACT_POLYSELF) ||
+                                    IS_SET(point->character->specials.act, ACT_POLYOTHER))) {
+                            sprintf(promptbuf, "P %d/%dh %d/%dv > ",
+                                    GET_HIT(point->character),
+                                    GET_MAX_HIT(point->character),
+                                    GET_MOVE(point->character), GET_MAX_MOVE(point->character));
+                            write_to_descriptor(point->descriptor, promptbuf);
+                        } else if (IS_NPC(point->character) &&
+                                   IS_SET(point->character->specials.act, ACT_SWITCH)) {
+                            sprintf(promptbuf, "*%s[#%d] in [#%d] %d/%dh %d/%dm %d/%dv > ",
+                                    NAME(point->character),
+                                    MobVnum(point->character),
+                                    point->character->in_room,
+                                    GET_HIT(point->character),
+                                    GET_MAX_HIT(point->character),
+                                    GET_MANA(point->character),
+                                    GET_MAX_MANA(point->character),
+                                    GET_MOVE(point->character), GET_MAX_MOVE(point->character));
+                            write_to_descriptor(point->descriptor, promptbuf);
+                        } else {
+                            if (MOUNTED(point->character)) {
+                                if (HasClass(point->character, CLASS_RANGER) ||
+                                    IS_AFFECTED(MOUNTED(point->character), AFF_CHARM)) {
+                                    mount = MOUNTED(point->character);
+                                    sprintf(promptbuf, "[%s has %d/%dh %d/%dv]\r\n",
+                                            GET_SDESC(mount),
+                                            GET_HIT(mount), GET_MAX_HIT(mount),
+                                            GET_MOVE(mount), GET_MAX_MOVE(mount));
+                                }
+                            }
+                            sprintf(promptbuf + strlen(promptbuf), "%d/%dh %d/%dm %d/%dv > ",
+                                    GET_HIT(point->character),
+                                    GET_MAX_HIT(point->character),
+                                    GET_MANA(point->character),
+                                    GET_MAX_MANA(point->character),
+                                    GET_MOVE(point->character), GET_MAX_MOVE(point->character));
+                            write_to_descriptor(point->descriptor, promptbuf);
+                        }
+                    }
+                }
+            }
+        }
 /*
  * PULSE handling.... periodic events
  */
@@ -606,19 +591,6 @@ void game_loop(int s)
 	    pulse_dump = PULSE_DUMP;
 	    // dump_player_list();
 	}
-#if 0
-	// This now verifies our connection is active, so we call it in
-	// the loop to ensure we can reconnect if the db bounces.
-	for (sql_reconnect = 0; 1; sql_reconnect++) {
-	    if (verify_sql())
-		break;
-	    if (sql_reconnect > 10) {
-		log_fatal("%s\n", "Database Connection LOST!  Aborting!");
-		proper_exit(MUD_HALT);
-	    }
-	    sleep(1);
-	}
-#endif
 
 #ifdef I3
 	i3_loop();
@@ -913,7 +885,7 @@ int new_descriptor(int s)
     newd->descriptor = desc;
     newd->connected = 1;
     newd->wait = 1;
-    newd->prompt_mode = 0;
+    newd->prompt_mode = 1;
     *newd->buf = '\0';
     newd->str = 0;
     newd->showstr_head = 0;
