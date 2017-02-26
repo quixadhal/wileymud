@@ -61,8 +61,8 @@
 #include <fnmatch.h>
 #include <sys/time.h>
 #include <time.h>
-#if 0
 #include <sys/types.h>
+#if 0
 #include <regex.h>
 #endif
 #include "global.h"
@@ -119,7 +119,8 @@ I3_CMD_DATA                            *last_i3_command;
 I3_HELP_DATA                           *first_i3_help;
 I3_HELP_DATA                           *last_i3_help;
 
-int                                     tics_since_last_message = PULSE_PER_SECOND * 60 * 30; /* 30 minutes worth */
+#define TAUNT_DELAY                     PULSE_PER_SECOND * 60 * 30; /* 30 minutes worth */
+int                                     tics_since_last_message = TAUNT_DELAY;
 
 void                                    i3_printf(CHAR_DATA *ch, const char *fmt, ...)
     __attribute__ ((format(printf, 2, 3)));
@@ -2859,7 +2860,7 @@ void I3_process_channel_t(I3_HEADER *header, char *s)
 	}
     }
     update_chanhistory(channel, omsg);
-    tics_since_last_message = PULSE_PER_SECOND * 60 * 30; /* 30 minutes worth */
+    tics_since_last_message = TAUNT_DELAY;
     return;
 }
 
@@ -2969,7 +2970,7 @@ void I3_process_channel_m(I3_HEADER *header, char *s)
 	    /* i3_printf(vch, "%s\r\n", buf); */
     }
     update_chanhistory(channel, buf);
-    tics_since_last_message = PULSE_PER_SECOND * 60 * 30; /* 30 minutes worth */
+    tics_since_last_message = TAUNT_DELAY;
     return;
 }
 
@@ -3043,7 +3044,7 @@ void I3_process_channel_e(I3_HEADER *header, char *s)
 	    i3_printf(vch, "%s\r\n", buf);
     }
     update_chanhistory(channel, buf);
-    tics_since_last_message = PULSE_PER_SECOND * 60 * 30; /* 30 minutes worth */
+    tics_since_last_message = TAUNT_DELAY;
     return;
 }
 
@@ -6436,6 +6437,88 @@ void i3_startup(bool forced, int mudport, bool isconnected)
 	i3bug("i3_startup: %s", "Configuration failed!");
 }
 
+#define I3_TAUNT_FILE   I3_DIR "i3.taunts"
+
+char *i3_taunt_line()
+{
+    FILE            *fp = NULL;
+    struct stat      fst;
+    static int       taunt_count = 0;
+    static char    **taunt_list = NULL;
+    static int       last_changed = 0;
+    static int       already_using_defaults = 0;
+    int              i = 0;
+    char             line[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0\0";
+
+    if (stat(I3_TAUNT_FILE, &fst) != -1) {
+        if( fst.st_mtime > last_changed ) {
+            /* File has been updated, so reload it */
+            last_changed = fst.st_mtime;
+
+            if (taunt_list) {
+                for (i = 0; i < taunt_count; i++) {
+                    if (taunt_list[i]) {
+                        free(taunt_list[i]);
+                        taunt_list[i] = NULL;
+                    }
+                }
+                free(taunt_list);
+                taunt_list = NULL;
+                taunt_count = 0;
+            }
+            if(!(fp = fopen(I3_TAUNT_FILE, "r"))) {
+                log_error("Cannot open I3 taunt file: %s!", I3_TAUNT_FILE);
+                already_using_defaults = 0;
+                goto no_taunt_file;
+            } else {
+                while( fgets(line, MAX_STRING_LENGTH-2, fp) ) {
+                    taunt_count++;
+                }
+                rewind(fp);
+                taunt_list = calloc(taunt_count, sizeof(char *));
+                for( i = 0; i < taunt_count; i++ ) {
+                    taunt_list[i] = strdup( fgets(line, MAX_STRING_LENGTH-2, fp) );
+                }
+                fclose(fp);
+                already_using_defaults = 0;
+            }
+        }
+    } else {
+no_taunt_file:
+        /* No file, so use a small set of built-in taunts. */
+        if( !already_using_defaults ) {
+            if (taunt_list) {
+                for (i = 0; i < taunt_count; i++) {
+                    if (taunt_list[i]) {
+                        free(taunt_list[i]);
+                        taunt_list[i] = NULL;
+                    }
+                }
+                free(taunt_list);
+                taunt_list = NULL;
+                taunt_count = 0;
+            }
+
+            taunt_count = 10;
+            taunt_list = calloc(taunt_count, sizeof(char *));
+            taunt_list[0] = strdup("Ummmm.. go away, we already got one.");
+            taunt_list[1] = strdup("Connection closed by foreign host");
+            taunt_list[2] = strdup("NO CARRIER");
+            taunt_list[3] = strdup("I wish this connection would stay open.");
+            taunt_list[4] = strdup("I hate you!");
+            taunt_list[5] = strdup("Why will you not die?");
+            taunt_list[6] = strdup("WTF are you still doing here?");
+            taunt_list[7] = strdup("I hate ALL of you!");
+            taunt_list[8] = strdup("When I am dictator, things will run smoothly...");
+            taunt_list[9] = strdup("SUFFER!  You will all SUFFER!");
+            already_using_defaults = 1;
+        }
+    }
+
+    /* We should have taunt data now */
+    return (taunt_list[i3number(0, taunt_count-1)]);
+}
+
 /*
  * Check for a packet and if one available read it and parse it.
  * Also checks to see if the mud should attempt to reconnect to the router.
@@ -6613,30 +6696,26 @@ void i3_loop(void)
         snprintf(taunt, MAX_STRING_LENGTH, "%%^RED%%^%%^BOLD%%^[%-4.4d-%-2.2d-%-2.2d %-2.2d:%-2.2d]%%^RESET%%^ %%^GREEN%%^%%^BOLD%%^%s%%^RESET%%^ %%^YELLOW%%^%s%%^RESET%%^",
                 tm_info->tm_year + 1900, tm_info->tm_mon + 1, tm_info->tm_mday, tm_info->tm_hour, tm_info->tm_min, "It's ALIVE!\r\n", VERSION_STR);
         i3_npc_speak("wiley", "Cron", taunt);
-        tics_since_last_message = PULSE_PER_SECOND * 60 * 30; /* 30 minutes worth */
+        tics_since_last_message = TAUNT_DELAY;
     }
 
     tics_since_last_message--;
 
     if ( tics_since_last_message <= 0 ) {
-        tics_since_last_message = PULSE_PER_SECOND * 60 * 30; /* 30 minutes worth */
-        taunt_choice = i3number(0, (sizeof(taunt_list) / sizeof(taunt_list[0])) - 1);
-        snprintf(taunt, MAX_STRING_LENGTH, "%%^RED%%^%%^BOLD%%^[%-4.4d-%-2.2d-%-2.2d %-2.2d:%-2.2d]%%^RESET%%^ %%^GREEN%%^%%^BOLD%%^%s%%^RESET%%^",
-                tm_info->tm_year + 1900, tm_info->tm_mon + 1, tm_info->tm_mday, tm_info->tm_hour, tm_info->tm_min, taunt_list[taunt_choice]);
-        chan_choice = i3number(0, (sizeof(chan_list) / sizeof(chan_list[0])) - 1);
-        i3_npc_speak(chan_list[chan_choice], "Cron", taunt);
-    }
+        tics_since_last_message = TAUNT_DELAY;
 
-    /*
-    if ( ((tm_info->tm_min == 0) || (tm_info->tm_min == 30)) && 
-            (tm_info->tm_sec == 0) && (!(tics % PULSE_PER_SECOND)) ) {
         taunt_choice = i3number(0, (sizeof(taunt_list) / sizeof(taunt_list[0])) - 1);
+#if 0
         snprintf(taunt, MAX_STRING_LENGTH, "%%^RED%%^%%^BOLD%%^[%-4.4d-%-2.2d-%-2.2d %-2.2d:%-2.2d]%%^RESET%%^ %%^GREEN%%^%%^BOLD%%^%s%%^RESET%%^",
                 tm_info->tm_year + 1900, tm_info->tm_mon + 1, tm_info->tm_mday, tm_info->tm_hour, tm_info->tm_min, taunt_list[taunt_choice]);
+#else
+        snprintf(taunt, MAX_STRING_LENGTH, "%%^RED%%^%%^BOLD%%^[%-4.4d-%-2.2d-%-2.2d %-2.2d:%-2.2d]%%^RESET%%^ %%^GREEN%%^%%^BOLD%%^%s%%^RESET%%^",
+                tm_info->tm_year + 1900, tm_info->tm_mon + 1, tm_info->tm_mday, tm_info->tm_hour, tm_info->tm_min, i3_taunt_line());
+#endif
+
         chan_choice = i3number(0, (sizeof(chan_list) / sizeof(chan_list[0])) - 1);
         i3_npc_speak(chan_list[chan_choice], "Cron", taunt);
     }
-    */
 
     /*
      * Will prune the cache once every 24hrs after bootup time 
