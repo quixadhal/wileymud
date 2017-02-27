@@ -33,6 +33,15 @@
 #define TO_NOTVICT 2
 #define TO_CHAR    3
 
+#define TELNET_GA   249
+#define TELNET_SB   250
+#define TELNET_SE   240
+#define TELNET_WILL 0xFB
+#define TELNET_WONT 0xFC
+#define TELNET_DO   0xFD
+#define TELNET_DONT 0xFE
+#define TELNET_IAC  0xFF
+
 #ifndef _COMM_C
 extern struct descriptor_data          *descriptor_list;
 extern struct descriptor_data          *next_to_process;
@@ -62,6 +71,7 @@ extern int                              mud_port;
 
 int                                     main(int argc, const char **argv);
 int                                     run_the_game(int port);
+void                                    emit_prompt(struct descriptor_data *point);
 void                                    game_loop(int s);
 int                                     get_from_q(struct txt_q *queue, char *dest);
 void                                    write_to_q(const char *txt, struct txt_q *queue, int do_timestamp);

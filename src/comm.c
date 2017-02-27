@@ -271,6 +271,95 @@ int run_the_game(int port)
     return MUD_HALT;					       /* what's so great about HHGTTG, anyhow? */
 }
 
+void emit_prompt(struct descriptor_data *point)
+{
+    char                                    promptbuf[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
+    struct char_data                       *mount = NULL;
+    struct room_data                       *rm = NULL;
+    time_t                                  tc = (time_t) 0;
+    struct tm                              *t_info = NULL;
+
+    if (point->str) {
+        write_to_descriptor(point->descriptor, "] ");
+    } else if (!point->connected) {
+        if (point->page_first) {
+            if (point->prompt_mode) {
+                point->prompt_mode = 0;
+                write_to_descriptor(point->descriptor, "\r\n*** Press return or q ***");
+            }
+        } else {
+            if (point->prompt_mode) {
+                point->prompt_mode = 0;
+                bzero(promptbuf, MAX_INPUT_LENGTH);
+                if (IS_IMMORTAL(point->character) && IS_PC(point->character)) {
+                    if (MOUNTED(point->character)) {
+                        mount = MOUNTED(point->character);
+                        sprintf(promptbuf, "[%s has %d/%dh %d/%dv]\r\n",
+                                GET_SDESC(mount),
+                                GET_HIT(mount), GET_MAX_HIT(mount),
+                                GET_MOVE(mount), GET_MAX_MOVE(mount));
+                    }
+                    if (IS_SET(point->character->specials.act, PLR_STEALTH))
+                        sprintf(promptbuf + strlen(promptbuf), "S");
+                    if (point->character->invis_level > 0)
+                        sprintf(promptbuf + strlen(promptbuf), "I=%d: ",
+                                point->character->invis_level);
+                    rm = real_roomp(point->character->in_room);
+                    tc = time(0);
+                    t_info = localtime(&tc);
+                    sprintf(promptbuf + strlen(promptbuf),
+                            "%02d:%02d #%d - %s [#%d]> ", t_info->tm_hour, t_info->tm_min, rm->zone, zone_table[rm->zone].name,
+                            rm->number);
+                    sprintf(promptbuf + strlen(promptbuf), "%c%c", TELNET_IAC, TELNET_GA);
+                    write_to_descriptor(point->descriptor, promptbuf);
+                /* OLD mobs didn't have classes.. this doesn't work anymore */
+                } else if (IS_NPC(point->character) &&
+                           (IS_SET(point->character->specials.act, ACT_POLYSELF) ||
+                            IS_SET(point->character->specials.act, ACT_POLYOTHER))) {
+                    sprintf(promptbuf, "P %d/%dh %d/%dv > ",
+                            GET_HIT(point->character),
+                            GET_MAX_HIT(point->character),
+                            GET_MOVE(point->character), GET_MAX_MOVE(point->character));
+                    sprintf(promptbuf + strlen(promptbuf), "%c%c", TELNET_IAC, TELNET_GA);
+                    write_to_descriptor(point->descriptor, promptbuf);
+                } else if (IS_NPC(point->character) &&
+                           IS_SET(point->character->specials.act, ACT_SWITCH)) {
+                    sprintf(promptbuf, "*%s[#%d] in [#%d] %d/%dh %d/%dm %d/%dv > ",
+                            NAME(point->character),
+                            MobVnum(point->character),
+                            point->character->in_room,
+                            GET_HIT(point->character),
+                            GET_MAX_HIT(point->character),
+                            GET_MANA(point->character),
+                            GET_MAX_MANA(point->character),
+                            GET_MOVE(point->character), GET_MAX_MOVE(point->character));
+                    sprintf(promptbuf + strlen(promptbuf), "%c%c", TELNET_IAC, TELNET_GA);
+                    write_to_descriptor(point->descriptor, promptbuf);
+                } else {
+                    if (MOUNTED(point->character)) {
+                        if (HasClass(point->character, CLASS_RANGER) ||
+                            IS_AFFECTED(MOUNTED(point->character), AFF_CHARM)) {
+                            mount = MOUNTED(point->character);
+                            sprintf(promptbuf, "[%s has %d/%dh %d/%dv]\r\n",
+                                    GET_SDESC(mount),
+                                    GET_HIT(mount), GET_MAX_HIT(mount),
+                                    GET_MOVE(mount), GET_MAX_MOVE(mount));
+                        }
+                    }
+                    sprintf(promptbuf + strlen(promptbuf), "%d/%dh %d/%dm %d/%dv > ",
+                            GET_HIT(point->character),
+                            GET_MAX_HIT(point->character),
+                            GET_MANA(point->character),
+                            GET_MAX_MANA(point->character),
+                            GET_MOVE(point->character), GET_MAX_MOVE(point->character));
+                    sprintf(promptbuf + strlen(promptbuf), "%c%c", TELNET_IAC, TELNET_GA);
+                    write_to_descriptor(point->descriptor, promptbuf);
+                }
+            }
+        }
+    }
+}
+
 /* Accept new connects, relay commands, and call 'heartbeat-functs' */
 void game_loop(int s)
 {
@@ -279,18 +368,13 @@ void game_loop(int s)
     fd_set                                  exc_set;
     struct timeval                          last_time;
     struct timeval                          now;
-    time_t                                  tc = (time_t) 0;
-    struct tm                              *t_info = NULL;
     struct timeval                          timespent;
     struct timeval                          timeout;
     struct timeval                          null_time;
     static struct timeval                   opt_time;
     char                                    comm[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
-    char                                    promptbuf[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
     struct descriptor_data                 *point = NULL;
     struct descriptor_data                 *next_point = NULL;
-    struct room_data                       *rm = NULL;
-    struct char_data                       *mount = NULL;
     int                                     input_flag = 0;
 
     /*
@@ -414,6 +498,13 @@ void game_loop(int s)
             }
 	}
 
+#ifdef I3
+	i3_loop();
+#endif
+#ifdef IMC
+	imc_loop();
+#endif
+
 	/*
 	 * process_commands; 
 	 */
@@ -434,7 +525,6 @@ void game_loop(int s)
 		point->wait = 1;
 		if (point->character)			       /* This updates the idle ticker to say we're not idle */
 		    point->character->specials.timer = 0;
-		/* point->prompt_mode = 1; */
 
 		if (point->str)
 		    string_add(point, comm);
@@ -448,6 +538,9 @@ void game_loop(int s)
 	    }
 	}
 
+        /*
+         * Process all output.
+         */
 	for (point = descriptor_list; point; point = next_point) {
 	    next_point = point->next;
 	    if (point->page_first)
@@ -457,6 +550,7 @@ void game_loop(int s)
 	for (point = descriptor_list; point; point = next_point) {
 	    next_point = point->next;
 	    if (FD_ISSET(point->descriptor, &output_set) && point->output.head) {
+                //point->prompt_mode = 1;
 		if (process_output(point) < 0)
 		    close_socket(point);
 	    }
@@ -465,86 +559,12 @@ void game_loop(int s)
 	/*
 	 * give the people some prompts 
 	 */
-        for (point = descriptor_list; point; point = point->next) {
-            /*
-             * Maybe we can somewhow not do prompts if nothing has happened (IE: no command entered 
-             */
-            if (point->str) {
-                write_to_descriptor(point->descriptor, "] ");
-            } else if (!point->connected) {
-                if (point->page_first) {
-                    write_to_descriptor(point->descriptor, "*** Press return or q ***");
-                } else {
-                    if (point->prompt_mode) {
-                        point->prompt_mode = 0;
-                        bzero(promptbuf, MAX_INPUT_LENGTH);
-                        if (IS_IMMORTAL(point->character) && IS_PC(point->character)) {
-                            if (MOUNTED(point->character)) {
-                                mount = MOUNTED(point->character);
-                                sprintf(promptbuf, "[%s has %d/%dh %d/%dv]\r\n",
-                                        GET_SDESC(mount),
-                                        GET_HIT(mount), GET_MAX_HIT(mount),
-                                        GET_MOVE(mount), GET_MAX_MOVE(mount));
-                            }
-                            if (IS_SET(point->character->specials.act, PLR_STEALTH))
-                                sprintf(promptbuf + strlen(promptbuf), "S");
-                            if (point->character->invis_level > 0)
-                                sprintf(promptbuf + strlen(promptbuf), "I=%d: ",
-                                        point->character->invis_level);
-                            rm = real_roomp(point->character->in_room);
-                            tc = time(0);
-                            t_info = localtime(&tc);
-                            sprintf(promptbuf + strlen(promptbuf),
-                                    "%02d:%02d #%d - %s [#%d]> ", t_info->tm_hour, t_info->tm_min, rm->zone, zone_table[rm->zone].name,
-                                    rm->number);
-                            write_to_descriptor(point->descriptor, promptbuf);
-                        /* OLD mobs didn't have classes.. this doesn't work anymore */
-                        } else if (IS_NPC(point->character) &&
-                                   (IS_SET(point->character->specials.act, ACT_POLYSELF) ||
-                                    IS_SET(point->character->specials.act, ACT_POLYOTHER))) {
-                            sprintf(promptbuf, "P %d/%dh %d/%dv > ",
-                                    GET_HIT(point->character),
-                                    GET_MAX_HIT(point->character),
-                                    GET_MOVE(point->character), GET_MAX_MOVE(point->character));
-                            write_to_descriptor(point->descriptor, promptbuf);
-                        } else if (IS_NPC(point->character) &&
-                                   IS_SET(point->character->specials.act, ACT_SWITCH)) {
-                            sprintf(promptbuf, "*%s[#%d] in [#%d] %d/%dh %d/%dm %d/%dv > ",
-                                    NAME(point->character),
-                                    MobVnum(point->character),
-                                    point->character->in_room,
-                                    GET_HIT(point->character),
-                                    GET_MAX_HIT(point->character),
-                                    GET_MANA(point->character),
-                                    GET_MAX_MANA(point->character),
-                                    GET_MOVE(point->character), GET_MAX_MOVE(point->character));
-                            write_to_descriptor(point->descriptor, promptbuf);
-                        } else {
-                            if (MOUNTED(point->character)) {
-                                if (HasClass(point->character, CLASS_RANGER) ||
-                                    IS_AFFECTED(MOUNTED(point->character), AFF_CHARM)) {
-                                    mount = MOUNTED(point->character);
-                                    sprintf(promptbuf, "[%s has %d/%dh %d/%dv]\r\n",
-                                            GET_SDESC(mount),
-                                            GET_HIT(mount), GET_MAX_HIT(mount),
-                                            GET_MOVE(mount), GET_MAX_MOVE(mount));
-                                }
-                            }
-                            sprintf(promptbuf + strlen(promptbuf), "%d/%dh %d/%dm %d/%dv > ",
-                                    GET_HIT(point->character),
-                                    GET_MAX_HIT(point->character),
-                                    GET_MANA(point->character),
-                                    GET_MAX_MANA(point->character),
-                                    GET_MOVE(point->character), GET_MAX_MOVE(point->character));
-                            write_to_descriptor(point->descriptor, promptbuf);
-                        }
-                    }
-                }
-            }
-        }
-/*
- * PULSE handling.... periodic events
- */
+        for (point = descriptor_list; point; point = point->next)
+            emit_prompt(point);
+
+        /*
+         * PULSE handling.... periodic events
+         */
 
 	if ((++pulse) > PULSE_MAX)
 	    pulse = 0;
@@ -591,13 +611,6 @@ void game_loop(int s)
 	    pulse_dump = PULSE_DUMP;
 	    // dump_player_list();
 	}
-
-#ifdef I3
-	i3_loop();
-#endif
-#ifdef IMC
-	imc_loop();
-#endif
 
 	tics++;						       /* tics since last checkpoint signal */
     }
@@ -965,7 +978,8 @@ int process_output(struct descriptor_data *t)
     if (DEBUG > 2)
 	log_info("called %s with %08zx", __PRETTY_FUNCTION__, (size_t) t);
 
-    if (!t->prompt_mode && !t->connected)
+    //if (!t->prompt_mode && !t->connected)
+    if (t->prompt_mode && !t->connected)
 	if (write_to_descriptor(t->descriptor, "\r\n") < 0)
 	    return (-1);
 
@@ -977,14 +991,15 @@ int process_output(struct descriptor_data *t)
 	    write_to_q("S* ", &t->snoop.snoop_by->desc->output, 1);
 	    write_to_q(i, &t->snoop.snoop_by->desc->output, 0);
 	}
-	if (write_to_descriptor(t->descriptor, i))
+	if (write_to_descriptor(t->descriptor, i) < 0)
 	    return (-1);
     }
 
     if (!t->connected && !(t->character && !IS_NPC(t->character) &&
-			   IS_SET(t->character->specials.act, PLR_COMPACT)))
+			   IS_SET(t->character->specials.act, PLR_COMPACT))) {
 	if (write_to_descriptor(t->descriptor, "\r\n") < 0)
 	    return (-1);
+    }
 
     return (1);
 }
@@ -1014,14 +1029,6 @@ int write_to_descriptor(int desc, const char *txt)
 
     return (0);
 }
-
-#define TELNET_SB   250
-#define TELNET_SE   240
-#define TELNET_WILL 0xFB
-#define TELNET_WONT 0xFC
-#define TELNET_DO   0xFD
-#define TELNET_DONT 0xFE
-#define TELNET_IAC  0xFF
 
 int process_input(struct descriptor_data *t)
 {

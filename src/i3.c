@@ -499,7 +499,8 @@ void i3_to_char(const char *txt, CHAR_DATA *ch)
 //    i3strlcpy(buf2, I3_imctag_to_mudtag(ch, buf), MAX_STRING_LENGTH);
 //    cprintf(ch, "%s\033[0m", buf2);
 #else
-    cprintf(ch, "%s\033[0m", buf);
+    //cprintf(ch, "%s\033[0m", buf);
+    cprintf(ch, "%s", buf);
 #endif
     return;
 }
@@ -2965,9 +2966,9 @@ void I3_process_channel_m(I3_HEADER *header, char *s)
 	    || I3_hasname(I3DENY(vch), channel->local_name))
 	    continue;
 
-	if (d->connected == CON_PLAYING && !i3ignoring(vch, visname))
-	    i3_printf(vch, "%s", buf);
-	    /* i3_printf(vch, "%s\r\n", buf); */
+	if (d->connected == CON_PLAYING && !i3ignoring(vch, visname)) {
+	    i3_printf(vch, "%s%%^RESET%%^\r\n", buf);
+        }
     }
     update_chanhistory(channel, buf);
     tics_since_last_message = TAUNT_DELAY;
