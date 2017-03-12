@@ -18,6 +18,9 @@ $CHAT_COLOR_FILE    = "/home/bloodlines/lib/secure/save/chat.o";
 $CHAT_TEXT_FILE     = "/home/wiley/lib/i3/i3.allchan.log";
 $CHAT_DATA_FILE     = "/home/wiley/lib/i3/i3.speakers.json";
 
+$LINES_TO_READ      = 2500;
+$PAGE_SIZE          = 25;
+
 function numbered_source($filename)
 {
     $lines = implode(range(1, count(file($filename))), '<br />');
@@ -305,7 +308,7 @@ function file_tail($filepath, $lines = 1, $adaptive = true) {
     }
 
     fclose($f);
-    return trim($output);
+    return $output;
 }
 
 function get_time_color($time) {
@@ -400,7 +403,7 @@ $colorMap = get_chatter_colors();
 
 //$file_lines = explode( "\n", file_get_contents( $CHAT_TEXT_FILE ) );
 //$file_lines = explode( "\n", file_tail( $CHAT_TEXT_FILE, 2500 ) );
-$file_lines = array_filter(explode( "\n", file_tail( $CHAT_TEXT_FILE, 2500 ) ), "is_bot_line");
+$file_lines = array_filter(explode( "\n", file_tail( $CHAT_TEXT_FILE, $LINES_TO_READ ) ), "is_bot_line");
 $bg = 0;
 ?>
 <html>
@@ -415,9 +418,12 @@ $bg = 0;
             }
         </script>
         <script type="text/javascript">
+            var windowlen = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
             var current = 0;
-            var pagesize = 25;
+            var pagesize = Math.max(parseInt(windowlen / 40), 10);
             var count = 0;
+            var loops = 0;
+            var refreshMe;
 
             function toggle_row( row ) {
                 r = document.getElementById("row_" + row);
@@ -517,7 +523,11 @@ $bg = 0;
                     row_on(i);
                 }
             }
-            function setup() {
+            function setup_work() {
+                loops++;
+                //if(loops > 50) { // Shouldn't be infinite, adjust number accordingly
+                //    clearInterval(refreshMe)
+                //}
                 count = document.getElementById("content").getElementsByTagName("tr").length;
                 first_date = document.getElementById("row_0").getElementsByTagName("td")[0].innerHTML;
                 last_date = document.getElementById("content").getElementsByTagName("tr")[count-1].getElementsByTagName("td")[0].innerHTML;
@@ -534,10 +544,41 @@ $bg = 0;
                     }
                     t = document.getElementById("timespent");
                     if(t !== null) {
-                        t.innerHTML = r.innerHTML;
+                        //t.innerHTML = r.innerHTML;
+                        t.innerHTML = pagesize;
                     }
                 }
                 last_page();
+                //t = document.getElementById("timespent");
+                //if(t !== null) {
+                //    t.innerHTML = (t1 - t0).toFixed(3);
+                //}
+            }
+            function refill_the_table() {
+                t0 = performance.now();
+                w = document.getElementById("pagegen_word");
+                if(w !== null) {
+                    w.innerHTML = "refreshed";
+                }
+                //t = document.getElementById("content");
+                //oldbody = t.getElementsByTagName("tbody")[0];
+                //newbody = document.createElement("tbody");
+                
+                // Do file_tail in javascript to get new content.
+                // Then format it like the PHP version.
+                // Fille the new table body with the results.
+
+                //t.replaceChild(newbody, oldbody);
+                spent = performance.now() - t0;
+                w = document.getElementById("timespent");
+                if(w !== null) {
+                    w.innerHTML = (spent/1000).toFixed(3);
+                }
+            }
+            function setup() {
+                setup_work();
+                refreshMe = setTimeout(refill_the_table, 10000);
+                //refreshMe = setInterval(setup_work, 10000);
             }
         </script>
         <style>
@@ -562,9 +603,12 @@ $bg = 0;
                     <a href="https://i3.themud.org/chanhist.php#Channel=all">Logs!</a>
                 </td>
                 <td align="right" width="40%" onmouseover="pagegen.style.color='#00FF00'; timespent.style.color='#00FF00';" onmouseout="pagegen.style.color='#1F1F1F'; timespent.style.color='#1F1F1F';">
+                    &nbsp;
                     <a href="javascript:;" onmousedown="toggleDiv('source');">
                         <span id="pagegen" style="color: #1F1F1F">
-                            &nbsp;Page generated in 
+                            Page 
+                            <span id="pagegen_word">generated</span>
+                            in 
                             <span id="timespent" style="color: #1F1F1F">
                                 00.0000
                             </span>
@@ -575,6 +619,7 @@ $bg = 0;
             </tr>
         </table>
         <table id="content" width="100%">
+            <thead>
             <tr>
                 <th id="dateheader" align="left" width="80px" style="color: #DDDDDD; min-width: 80px;">Date</th>
                 <th id="timeheader" align="left" width="40px" style="color: #DDDDDD; min-width: 40px;">Time</th>
@@ -582,6 +627,8 @@ $bg = 0;
                 <th id="speakerheader" align="left" width="200px" style="color: #DDDDDD; min-width: 200px;">Speaker</th>
                 <th align="left">&nbsp;</th>
             </tr>
+            </thead>
+            <tbody>
             <?php
             foreach ($file_lines as $line) {
                 $bgColor = ($bg % 2) ? "#000000" : "#1F1F1F";
@@ -620,17 +667,20 @@ $bg = 0;
                     $message = preg_replace("/\%\^FLASH\%\^/", "", $message);
                     $message = preg_replace("/\%\^FLASH/", "", $message); // Silly Pinkfish uses delimiters, rather than full tokens, sometimes.
                     $message = preg_replace("/\%\^RESET\%\^/", "</span>", $message);
+                    # Putty:  ((((https?|ftp):\/\/)|www\.)(([0-9]+\.[0-9]+\.[0-9]+\.[0-9]+)|(([a-zA-Z0-9\-]+\.)*[a-zA-Z0-9\-]+\.(aero|asia|biz|cat|com|coop|info|int|jobs|mobi|museum|name|net|org|post|pro|tel|travel|xxx|edu|gov|mil|[a-zA-Z][a-zA-Z]))|([a-z]+[0-9]*))(:[0-9]+)?((\/|\?)[^ "]*[^ ,;\.:">)])?)|(spotify:[^ ]+:[^ ]+)
+                    # Mine:   ((?:http|https|ftp)\:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(?::[a-zA-Z0-9]*)?\/?(?:[a-zA-Z0-9\-\._\?\,\'\/\\\+&amp;%\$#\=~])*)
                     $message = preg_replace('/((?:http|https|ftp)\:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(?::[a-zA-Z0-9]*)?\/?(?:[a-zA-Z0-9\-\._\?\,\'\/\\\+&amp;%\$#\=~])*)/', '<a href="$1" target="I3-link">$1</a>', $message);
                     $message = preg_replace('/YouTube\s+(<span.*?>)\s*\[([^\]]*)\]/', 'YouTube $1 <a href="https://youtu.be/$2" target="I3-link">[$2]</a>', $message);
                     $message = preg_replace('/IMDB\s+(<span.*?>)\s*\[([^\]]*)\]/', 'IMDB $1 <a href="https://www.imdb.com/title/$2/" target="I3-link">[$2]</a>', $message);
                     $message = preg_replace('/Steam\s+(<span.*?>)\s*\[([^\]]*)\]/', 'Steam $1 <a href="http://store.steampowered.com/app/$2/" target="I3-link">[$2]</a>', $message);
                     ?>
-                    <td bgcolor="<?php echo $bgColor; ?>"><span style="font-family: monospace;"><?php echo $message; ?></span></td>
+                    <td bgcolor="<?php echo $bgColor; ?>"><span style="font-family: monospace; white-space: pre-wrap;"><?php echo $message; ?></span></td>
                 </tr>
                 <?php 
                 $bg++;
             }
             ?>
+            </tbody>
         </table>
         <div id="source" style="display: none; vertical-align: bottom; background-color: white;"> <?php echo numbered_source(__FILE__); ?> </div>
         <div id="dump" style="display: none; vertical-align: bottom; background-color: white;"> <?php echo json_encode($colorMap, JSON_PRETTY_PRINT); ?> </div>

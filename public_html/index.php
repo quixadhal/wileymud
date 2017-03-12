@@ -9,7 +9,7 @@ WHAT:
 -->
 <head>
 <title> WileyMUD III, the sickness of Dread Quixadhal. </title>
-<link rev="made" href="mailto:quixadhal@shadowlord.org">
+<link rev="made" href="mailto:quixadhal@gmail.com">
 </head>
 <body background="gfx/marble_background.jpg" bgcolor="#505050" text="#d0d0d0" link="#ffffbf" vlink="#ffa040">
 <table border=0 cellspacing=5 cellpadding=5 width=100%>
@@ -20,13 +20,13 @@ WHAT:
 </a> </td>
 <td align=center>
 <center>
-  <a href="mailto:quixadhal@shadowlord.org">Dread Quixadhal</a> welcomes you to<br>
-<a href="telnet://wiley.shadowlord.org:3000/">
+  <a href="mailto:quixadhal@gmail.com">Dread Quixadhal</a> welcomes you to<br>
+<a href="telnet://wiley.the-firebird.net:3000/">
 WileyMUD III!<br>
 </a></center>
  </td>
 <td align=right>
-<a href="telnet://wiley.shadowlord.org:3000/">
+<a href="telnet://wiley.the-firebird.net:3000/">
 <img src="gfx/orc.jpg" border=0 align=center width=116 height=163
  alt="(telnet)">
 </a></td> 
@@ -142,7 +142,7 @@ Please stop on by!</p>
     <td width="30%" align="center">
       <!-- <a href="gitweb.cgi?p=.git;a=summary"> -->
       <a href="https://github.com/quixadhal/wileymud">
-        <img src="/gitweb/git-logo.png" border=0 align="center" width=72 height=27 alt="(git)">
+        <img src="gfx/git-logo.png" border=0 align="center" width=72 height=27 alt="(git)">
         <br />
         GIT Repository
       </a>
