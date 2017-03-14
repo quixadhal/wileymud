@@ -33,7 +33,12 @@
 #/def -mregexp -p2 -t"\[([\w-]+)\].*(https?://on.fb.me/[^&\?\.\ ]+)" check_fbme_chan = /quote -0 url !~/bin/untiny.pl '%P2' '%P1'
 #/def -mregexp -p2 -t"\[([\w-]+)\].*(https?://qr.ae/[^&\?\.\ ]+)" check_qrae_chan = /quote -0 url !~/bin/untiny.pl '%P2' '%P1'
 #/def -mregexp -p2 -t"\[([\w-]+)\].*(https?://imdb.to/[^&\?\.\s]+)" check_imdb_chan = /quote -0 url !~/bin/untiny.pl '%P2' '%P1'
-#/def -mregexp -p2 -t"\[([\w-]+)\].*(https?://www.imdb.com/title/[^&\?\.\s]+)" check_imdbfull_chan = /if (%P1 !~ "url") /quote -0 url !~/bin/untiny.pl '%P2' '%P1'%; /endif
+#/def -mregexp -p2 -t"\[([\w-]+)\].*(https?://.*?imdb.com/title/[^&\?\.\s]+)" check_imdbfull_chan = /if (%P1 !~ "url") /quote -0 url !~/bin/untiny.pl '%P2' '%P1'%; /endif
+#/def -mregexp -p2 -t"\[([\w-]+)\].*(https?://store.steampowered.com/app/[^&\?\.\s]+)" check_steamfull_chan = /if (%P1 !~ "url") /quote -0 url !~/bin/untiny.pl '%P2' '%P1'%; /endif
+#
+#Just use this one now...
+#
+#/def -mregexp -p2 -t"\[([\w-]+)\].* (https?\:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(?::[a-zA-Z0-9]*)?\/?(?:[a-zA-Z0-9\-\._\?\,\'\/\\\+&amp;%\$#\=~])*)" check_generic_url = /if (%P1 !~ "url") /quote -0 url !~/bin/untiny.pl '%P2' '%P1'%; /endif
 
 use strict;
 use English;
@@ -42,9 +47,7 @@ use HTTP::Request::Common qw(POST);
 use HTML::Entities;
 use LWP::UserAgent;
 use URI;
-use DBI;
-
-my $CHATTER = '/home/bloodlines/lib/secure/save/chat.o';
+use WWW::Shorten::TinyURL qw(makeashorterlink);
 
 sub channel_color {
     my $channel = shift;
@@ -427,44 +430,13 @@ sub get_steam_desc {
     return $desc;
 }
 
-my $random_annoyance = undef;
 my $prog = $0;
-my $update_all = undef;
-my $is_for_db = undef;
 my $url = shift;
+my $style = "wiley";
 
-$update_all = 1 if $url eq '--all';
-
-if ( $update_all ) {
-    my $dbc = DBI->connect('DBI:Pg:dbname=i3log2;host=localhost;port=5432;sslmode=prefer', 'bloodlines', 'tardis69', { AutoCommit => 0, PrintError => 0, });
-    my $video_list = $dbc->selectall_arrayref(qq!
-        SELECT * 
-          FROM videos
-      ORDER BY video_id ASC
-         !, { Slice => {} } );
-    print STDERR $DBI::errstr."\n" if defined $DBI::errstr and !defined $video_list;
-    $dbc->disconnect();
-    foreach (@$video_list) {
-        next if $_->{'disabled'};
-        my $id = $_->{'video_id'};
-        system "$prog --db https://www.youtube.com/watch?v=$id" if defined $id;
-        sleep 1;
-    }
-    exit 1;
-}
-
-$is_for_db = 1 if $url eq '--db';
-$url = shift if $is_for_db;
-
-my $given_uri = URI->new($url);
-my $given_host = $given_uri->host;
-
-my $channel = shift;
-my ($origin, $page) = get_url($url);
-#print STDERR "DEBUG: $page\n";
-
-my $style = shift;
-$style = "wiley" if !defined $style;
+$style = "ansi" if $url eq '--ansi';
+$style = "html" if $url eq '--html';
+$url = shift if $style ne "wiley";
 
 my $RESET = "%^RESET%^";
 $RESET = pinkfish_to_ansi($RESET) if $style eq "ansi";
@@ -478,6 +450,10 @@ my $RED = "%^RED%^";
 $RED = pinkfish_to_ansi($RED) if $style eq "ansi";
 $RED = '<SPAN style="color: #ff5555">' if $style eq "html";
 
+my $GREEN = "%^GREEN%^";
+$GREEN = pinkfish_to_ansi($GREEN) if $style eq "ansi";
+$GREEN = '<SPAN style="color: #55ff55">' if $style eq "html";
+
 my $CYAN= "%^CYAN%^";
 $YELLOW = pinkfish_to_ansi($CYAN) if $style eq "ansi";
 $YELLOW = '<SPAN style="color: #55ffff">' if $style eq "html";
@@ -485,6 +461,18 @@ $YELLOW = '<SPAN style="color: #55ffff">' if $style eq "html";
 my $FLASH = "%^FLASH%^";
 $FLASH = pinkfish_to_ansi($FLASH) if $style eq "ansi";
 $FLASH = '<SPAN class="blink;">' if $style eq "html";
+
+
+
+my $given_uri = URI->new($url);
+my $given_host = $given_uri->host;
+
+my $channel = shift;
+my ($origin, $page) = get_url($url);
+#print STDERR "DEBUG: $page\n";
+my $tinyurl = makeashorterlink($origin);
+
+
 
 my $chan_color = channel_color($channel, $style) if defined $channel;
 my $page_title = get_page_title($page) if defined $page;
@@ -504,127 +492,46 @@ my $steam_title = $page_title;
 #my $youtube_desc = get_youtube_desc($page);
 #my $youtube_keywords = get_youtube_keywords($page);
 
-
-if( $is_for_db ) {
-=head1 SQL
-
-CREATE TABLE videos (
-    video_id    TEXT PRIMARY KEY NOT NULL,
-    video_len   INTEGER NOT NULL,
-    description TEXT,
-    plays       INTEGER DEFAULT 0,
-    disabled    BOOLEAN DEFAULT false,
-    last_viewer TEXT
-);
-
-=cut
-
-    if( defined $youtube_id and defined $youtube_duration and defined $youtube_title) {
-        my $dbc = DBI->connect('DBI:Pg:dbname=i3log2;host=localhost;port=5432;sslmode=prefer', 'bloodlines', 'tardis69', { AutoCommit => 0, PrintError => 0, });
-        my $add_entry_sql = $dbc->prepare( qq!
-            INSERT INTO videos (video_id, video_len, description, plays)
-            VALUES (trim(?),?,trim(?),?)
-            !);
-        my $update_entry_sql = $dbc->prepare( qq!
-            UPDATE videos
-               SET video_len = ?,
-                   description = trim(?),
-                   plays = ?,
-                   disabled = 'f',
-                   last_viewer = NULL
-             WHERE video_id = trim(?)
-            !);
-
-        my $min_count = 0;
-        my $res = $dbc->selectrow_hashref(qq!
-            SELECT MIN(plays) AS plays
-              FROM videos
-             !, undef);
-        print STDERR $DBI::errstr."\n" if defined $DBI::errstr and !defined $res;
-        if ( $res && defined $res->{'plays'} ) {
-            $min_count = $res->{'plays'};
-        }
-
-        $res = $dbc->selectrow_hashref(qq!
-            SELECT *
-              FROM videos
-             WHERE video_id = trim(?)
-             LIMIT 1
-             !, undef, ($youtube_id));
-        print STDERR $DBI::errstr."\n" if defined $DBI::errstr and !defined $res;
-        if ( $res && $res->{'video_id'} && $res->{'video_id'} eq $youtube_id ) {
-            # Already there, update to new values
-            my ($min, $sec) = get_youtube_length($page);
-            my $video_len = $min * 60 + $sec;
-            my $rv = $update_entry_sql->execute($video_len, $youtube_title, $min_count, $youtube_id);
-            if($rv) {
-                #print STDERR "Database updated.\n";
-                $dbc->commit;
-            } else {
-                print STDERR $DBI::errstr."\n";
-                $dbc->rollback;
-            }
-        } else {
-            my ($min, $sec) = get_youtube_length($page);
-            my $video_len = $min * 60 + $sec;
-            my $rv = $add_entry_sql->execute($youtube_id, $video_len, $youtube_title, $min_count);
-            if($rv) {
-                #print STDERR "Added to database.\n";
-                $dbc->commit;
-            } else {
-                print STDERR $DBI::errstr."\n";
-                $dbc->rollback;
-            }
-        }
-        $dbc->disconnect();
-    }
-}
-
-$channel = " from $chan_color<$channel>$RESET" if defined $channel and defined $chan_color;
+$channel = " from $chan_color<$channel>${RESET}" if defined $channel and defined $chan_color;
 $channel = " from <$channel>" if defined $channel and !defined $chan_color;
 $channel = "" if !defined $channel;
 
-$youtube_id = "${YELLOW}[$youtube_id]$RESET" if defined $youtube_id;
-$youtube_duration = " ${RED}($youtube_duration)$RESET" if defined $youtube_duration;
+$youtube_id = "${YELLOW}[$youtube_id]${RESET}" if defined $youtube_id;
+$youtube_duration = " ${RED}($youtube_duration)${RESET}" if defined $youtube_duration;
 
-$imdb_id = "${YELLOW}[$imdb_id]$RESET" if defined $imdb_id;
-$imdb_duration = " ${RED}($imdb_duration)$RESET" if defined $imdb_duration;
+$imdb_id = "${YELLOW}[$imdb_id]${RESET}" if defined $imdb_id;
+$imdb_duration = " ${RED}($imdb_duration)${RESET}" if defined $imdb_duration;
 
-$steam_id = "${YELLOW}[$steam_id]$RESET" if defined $steam_id;
+$steam_id = "${YELLOW}[$steam_id]${RESET}" if defined $steam_id;
 
 my $output = "";
-my $annoyed = "";
+
+$output .= "${RESET}${GREEN}$tinyurl ::${RESET} " if defined $tinyurl;
 
 if (defined $youtube_id and defined $youtube_title and defined $youtube_duration) {
     $output .= "${RESET}YouTube $youtube_id$channel is $youtube_title$youtube_duration\n";
-    $annoyed .= "${RESET}${FLASH}YouTube $youtube_id$channel$FLASH was $youtube_title$FLASH$youtube_duration$FLASH but may have been taken down for POTENTIAL copyright infringement.$RESET\n";
 } elsif (defined $youtube_id and defined $youtube_title) {
     $output .= "${RESET}YouTube $youtube_id$channel is $youtube_title\n";
-    $annoyed .= "${RESET}${FLASH}YouTube $youtube_id$channel$FLASH was $youtube_title$FLASH but may have been taken down for POTENTIAL copyright infringement.$RESET\n";
 } elsif (defined $imdb_id and defined $imdb_title and defined $imdb_duration) {
     $output .= "${RESET}IMDB $imdb_id$channel is $imdb_title$imdb_duration\n";
-    $annoyed .= "${RESET}${FLASH}IMDB $imdb_id$channel$FLASH was $imdb_title$FLASH$imdb_duration$FLASH but may have been taken down for POTENTIAL copyright infringement.$RESET\n";
 } elsif (defined $imdb_id and defined $imdb_title) {
     $output .= "${RESET}IMDB $imdb_id$channel is $imdb_title\n";
-    $annoyed .= "${RESET}${FLASH}IMDB $imdb_id$channel$FLASH was $imdb_title$FLASH but may have been taken down for POTENTIAL copyright infringement.$RESET\n";
 } elsif (defined $steam_id and defined $steam_title) {
     $output .= "${RESET}Steam $steam_id$channel is $steam_title\n";
-    $annoyed .= "${RESET}${FLASH}Steam $steam_id$channel$FLASH was $steam_title$FLASH but may have been taken down for POTENTIAL copyright infringement.$RESET\n";
-
 } elsif (defined $origin) {
-    if (defined $page_title) {
-        $output .= ${RESET} . $given_host . " URL$channel is $YELLOW$page_title$RESET from " . $origin->host . "\n";
-        $annoyed .= "${RESET}$FLASH" . $given_host . " URL$channel$FLASH was $YELLOW$page_title$RESET$FLASH from " . $origin->host . " but may have been taken down for POTENTIAL copyright infringement.$RESET\n";
-    } else {
-        #print STDERR "DEBUG: " . Dumper($origin) . "\n";
-        $output .= ${RESET} . $given_host . " URL$channel goes to " . $origin->host . "\n";
-        $annoyed .= "${RESET}$FLASH" . $given_host . " URL$channel$FLASH used to go to " . $origin->host . " but may have been taken down for POTENTIAL copyright infringement.$RESET\n";
-    }
+    my $origin_host = $origin->host;
+    my $title_bit = "";
+    $title_bit = " is ${YELLOW}$page_title${RESET}" if defined $page_title;
+    my $given_bit = "URL";
+    $given_bit = "$given_host URL" if $given_host ne $origin_host;
+    my $from_bit = " goes to $origin_host";
+    $from_bit = " from $origin_host" if defined $page_title;
+    
+    $output .= "${RESET}$given_bit$channel$title_bit$from_bit\n";
+    #print STDERR "DEBUG: " . Dumper($origin) . "\n";
 }
 
-$output = $annoyed if $random_annoyance && rand(10) < 1;
-
-if ( $is_for_db ) {
+if ( $style eq "ansi" ) {
     print pinkfish_to_ansi($output);
 } else {
     print $output;

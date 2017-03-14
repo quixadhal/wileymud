@@ -420,7 +420,7 @@ $bg = 0;
         <script type="text/javascript">
             var windowlen = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
             var current = 0;
-            var pagesize = Math.max(parseInt(windowlen / 40), 10);
+            var pagesize = Math.max(parseInt(windowlen / 36), 10);
             var count = 0;
             var loops = 0;
             var refreshMe;

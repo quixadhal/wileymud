@@ -6610,58 +6610,6 @@ void i3_loop(void)
         "wiley",
         "wiley"
     };
-    int                                     taunt_choice = 0;
-    const char                             *taunt_list[] = {
-        /*
-        "https://www.youtube.com/watch?v=WhVW7RLuCkE", // C-ute HAPPY
-        "https://www.youtube.com/watch?v=XLJ0ztflapI", // Sakura Gakuin - Hana Hana
-        "https://www.youtube.com/watch?v=KGG0t-psqNo", // Mini-Patissier Miracle Patiful Humberger
-        "https://www.youtube.com/watch?v=7AlUAMpcQis", // BABYMETAL - Megitsune (Black Night Live) 1080p
-        "https://www.youtube.com/watch?v=T5LJIpC_vB4", // Buono - Ice Mermaid [Legendado]
-        "https://www.youtube.com/watch?v=-MJqoc_Rp2c", // C-ute "bubbles song"
-        "https://www.youtube.com/watch?v=HkiJwtU8zMQ", // Otomegokoro
-        "https://www.youtube.com/watch?v=BBzOvDz-HWU", // Sleep Wonder
-        "https://www.youtube.com/watch?v=IuRDa4vi_Sc", // BABYMETAL "Doki Doki * Morning" (LIVE AT BUDOKAN - BLACK NIGHT 14 of 15)
-        "https://www.youtube.com/watch?v=KUDFVBhBPo0", // Rider Buono!
-        "https://www.youtube.com/watch?v=duuRAomjxNI", // Everquest 2 Soundtrack -2- Isle of Refuge
-        "https://www.youtube.com/watch?v=Vz-zcW2CsLE", // Everquest 2 Soundtrack 3 Qeynos
-        "https://www.youtube.com/watch?v=OV360NGEihM", // Everquest 2 Soundtrack 7 Antonica
-        "https://www.youtube.com/watch?v=eETHc8LpY2M", // Everquest 2 Soundtrack -5- Freeport
-        "https://www.youtube.com/watch?v=HlDPAnoyOFo", // Everquest 2 Soundtrack -8- Commonlands
-        "https://www.youtube.com/watch?v=Okx9y7y0FEw", // Muto Ayami Sora Live Rebirth
-        "https://www.youtube.com/watch?v=fvyXOXbi8kE", // Crypt of the NecroDancer OST - Disco Descent (1-1)
-        "https://www.youtube.com/watch?v=ZqJfqIwpXZ8", // Crypt of the NecroDancer OST - Crypteque (1-2)
-        "https://www.youtube.com/watch?v=I3Yy6c0Tlvk", // Arcadia (Duran Duran)-Election Day (Long Video) HQ
-        "https://www.youtube.com/watch?v=H0QhECqmTZM", // Black Sugar - Understanding FUNK 1970
-        "https://www.youtube.com/watch?v=Z5CPsssPOcw", // Dire Straits - Down to the Waterline [Rockpalast -79 ~ HD]
-        "https://www.youtube.com/watch?v=6NeQ1h6lzLI", // Gustav Holst - The Planets Op.32 Mars, the Bringer of War
-        "https://www.youtube.com/watch?v=usL6riajMy8", // Buono! - Urahara [Legendado]
-        "https://www.youtube.com/watch?v=Eml3UgKyZbM", // Buono! - Rottara
-        "https://www.youtube.com/watch?v=6M4_Ommfvv0", // Van Halen - "Hot For Teacher" (Official Music Video)
-        "https://www.youtube.com/watch?v=BjsQ6FAjmnY", // Buono!- Hatsukoi Cider [german sub & Romanji]
-        "https://www.youtube.com/watch?v=XWe3rYveISo", // C-ute Exciting Fight!
-        */
-
-        "Suppose you were an idiot and suppose you were a member of Congress... But I repeat myself.",
-        "A national political campaign is better than the best circus ever heard of, with a mass baptism and a couple of hangings thrown in.",
-        "Which came first, the chicken or the egg?  The chicken, obviously.  It takes longer to cook.",
-        "Our enemies are innovative and resourceful, and so are we. They never stop thinking about new ways to harm our country and our people, and neither do we.",
-        "If a liberal cries in the forest, and nobody hears him, is the forest his safe space?",
-        "Salius hates urls.",
-	"You hear a faint click behind you.",
-	"Uhhhh..... Shutup!",
-	"Maybe later...",
-	"No.",
-	"Ummmm.. go away, we already got one.",
-	"Connection closed by foreign host",
-	"NO CARRIER",
-        "I wish this connection would stay open.",
-        "I hate you!",
-        "Why will you not die?",
-        "WTF are you still doing here?",
-        "I hate ALL of you!",
-        "When I am dictator, things will run smoothly..."
-    };
 
     gettimeofday(&last_time, NULL);
     i3_time = (time_t) last_time.tv_sec;
@@ -6750,14 +6698,8 @@ void i3_loop(void)
     if ( tics_since_last_message <= 0 ) {
         tics_since_last_message = TAUNT_DELAY;
 
-        taunt_choice = i3number(0, (sizeof(taunt_list) / sizeof(taunt_list[0])) - 1);
-#if 0
-        snprintf(taunt, MAX_STRING_LENGTH, "%%^RED%%^%%^BOLD%%^[%-4.4d-%-2.2d-%-2.2d %-2.2d:%-2.2d]%%^RESET%%^ %%^GREEN%%^%%^BOLD%%^%s%%^RESET%%^",
-                tm_info->tm_year + 1900, tm_info->tm_mon + 1, tm_info->tm_mday, tm_info->tm_hour, tm_info->tm_min, taunt_list[taunt_choice]);
-#else
         snprintf(taunt, MAX_STRING_LENGTH, "%%^RED%%^%%^BOLD%%^[%-4.4d-%-2.2d-%-2.2d %-2.2d:%-2.2d]%%^RESET%%^ %%^GREEN%%^%%^BOLD%%^%s%%^RESET%%^",
                 tm_info->tm_year + 1900, tm_info->tm_mon + 1, tm_info->tm_mday, tm_info->tm_hour, tm_info->tm_min, i3_taunt_line());
-#endif
 
         chan_choice = i3number(0, (sizeof(chan_list) / sizeof(chan_list[0])) - 1);
         i3_npc_speak(chan_list[chan_choice], "Cron", taunt);
@@ -8583,7 +8525,7 @@ I3_CMD(i3_help)
 	for (perm = I3PERM_MORT; perm <= I3PERM(ch); perm++) {
 	    col = 0;
 	    snprintf(buf + strlen(buf), MAX_STRING_LENGTH - strlen(buf),
-		     "%%^RESET%%^\r\n%%^GREEN%%^%s helps:%%^GREEN%%^%%^BOLD%%^\r\n", perm_names[perm]);
+		     "%%^RESET%%^\r\n%%^GREEN%%^%s helps:%%^RESET%%^\r\n", perm_names[perm]);
 	    for (help = first_i3_help; help; help = help->next) {
 		if (help->level != perm)
 		    continue;
@@ -9596,7 +9538,8 @@ char                                   *I3_nameremap(const char *ps)
         /* strcpy(xnew, "Quixadhal, the Lost"); */
         /* strcpy(xnew, "きけさだる"); */
         /* strcpy(xnew, "Dread Lord Quixadhal"); */
-        strcpy(xnew, "Off-Topic Quixadhal");
+        /* strcpy(xnew, "Off-Topic Quixadhal"); */
+        strcpy(xnew, "Cromulent Quixadhal");
     } else {
         strcpy(xnew, ps);
     }

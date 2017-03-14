@@ -6,7 +6,7 @@ Text See these general commands: I3TELL, I3FINGER, I3EMOTE, I3LOCATE, I3WHO, I3I
 See these administrative commands: I3UCACHE, I3USER, I3BAN,
 I3SETUP, I3CHANEDIT, I3CHANLAYOUT, I3ADDCHAN, I3REMOVECHAN, I3CHANADMIN,
 I3CONNECT, I3DISCONNECT, I3PACKETDEBUG, I3CONFIG
-¢
+~
 End
 
 #HELP
@@ -19,7 +19,7 @@ This command allows you to selectively ban certain users from using channels,
 tells, beeps, and finger commands. Multiple denials can be imposed, but if you
 should find you need to deny all of these options, it might well be worth looking
 at setting their permissions to None instead.
-¢
+~
 End
 
 #HELP
@@ -28,7 +28,7 @@ Perm Mort
 Text Syntax: i3listen <local channel>
 
 This command toggles your listening state for a configured I3 channel.
-¢
+~
 End
 
 #HELP
@@ -43,7 +43,7 @@ filter value in their names or host muds.
 
 Specifying all will show you every I3 channel available on the router the
 mud is connected to.
-¢
+~
 End
 
 #HELP
@@ -58,7 +58,7 @@ contain the filter value will be shown.
 
 If all is specified, then all connections whether up or down will be shown.
 This can be a very spammy listing.
-¢
+~
 End
 
 #HELP
@@ -70,7 +70,7 @@ Displays a list of users who are listening to a particular channel on the
 specified mud. This command will not display such a listing for the entire
 network due to the sheer number of connected muds. Such a display would
 constitute screens full of scrolling.
-¢
+~
 End
 
 #HELP
@@ -80,7 +80,7 @@ Text Syntax: i3mudinfo <mudname>
 
 Displays information about a mud on the network. They do not need to be
 connected for this to work.
-¢
+~
 End
 
 #HELP
@@ -97,7 +97,7 @@ This toggle is also unrelated to your local invisibility flags as a player.
 
 As an immortal, this state acts separately from your wizinvis state. If you
 are also wizinvis, that will take priority over i3invis.
-¢
+~
 End
 
 #HELP
@@ -108,7 +108,7 @@ Text Syntax: i3color
 Toggles your ability to see color on I3. This acts apart from your mud's
 ANSI state, so if your mud has no inbuilt color system, you will still be
 able to see colors on I3 if this has been enabled.
-¢
+~
 End
 
 #HELP
@@ -120,7 +120,7 @@ Syntax: i3mudlisten <localchannel> [on/off]
 This command will toggle the listening state of the entire mud for a selected
 channel, or for all channels. For a specific channel, you need to specify on
 or off when issuing the command.
-¢
+~
 End
 
 #HELP
@@ -132,7 +132,7 @@ Displays statistical information about the mud and the network connection.
 Information includes how many bytes have been sent and received, what descriptor
 the connection is using, how many muds are known, how many channels are known,
 and which router the mud is connected to.
-¢
+~
 End
 
 #HELP
@@ -144,7 +144,7 @@ Allows minor editing of helps.
 Option can be either "name" or "perm".
 
 Editing the text of the topic itself is not possible - yet.
-¢
+~
 End
 
 #HELP
@@ -157,7 +157,7 @@ and delete commands.
 
 When creating, you can optionally specify the name of the function the command will use.
 If the function named does not exist, the command will not work.
-¢
+~
 End
 
 #HELP
@@ -169,7 +169,7 @@ Syntax: i3router list
 
 This command allows you to add new routers to your connection choices,
 delete existing routers, or just see which ones are already configured.
-¢
+~
 End
 
 #HELP
@@ -178,7 +178,7 @@ Perm Mort
 Text Syntax: imchelp <topic>
 
 The command used to get help about other commands. Assuming the command has help information.
-¢
+~
 End
 
 #HELP
@@ -207,7 +207,7 @@ subscribed. As noted, this CANNOT be done on a public channel ( yet ).
 New channels default to "Mort" permission.
 
 See I3PERMSET for more information on what permissions do.
-¢
+~
 End
 
 #HELP
@@ -221,7 +221,7 @@ When used with a public channel, "add" bans them from using it, and "remove" unb
 When used with a private channel, "add" allows them to use it, and "remove" disallows them.
 
 This is all handled on a per mud basis.
-¢
+~
 End
 
 #HELP
@@ -241,7 +241,7 @@ if the problem is channel related, or directly to the router administration for
 the router you are connected to if it's something else. Be prepared to provide
 any necessary documentation of incidents if the administrator you contact should
 request them.
-¢
+~
 End
 
 #HELP
@@ -258,7 +258,7 @@ the local beep command.
 
 Using on or off as an argument will enable or disable your ability
 to send and receive i3beeps.
-¢
+~
 End
 
 #HELP
@@ -275,7 +275,7 @@ layout_m designs require 4 %s tags. One for the channel localname, one for the u
 the mudname, and one for the message itself.
 
 Formats with incorrect amounts of tags will be rejected.
-¢
+~
 End
 
 #HELP
@@ -290,7 +290,7 @@ connected to I3 and they will inform you of this.
 'i3config show' will list the details of what you can currently change with this
 command. If something is not listed, then the only means to change it is to edit it
 in shell. The output of the command should be fairly self explainitory.
-¢
+~
 End
 
 #HELP
@@ -303,7 +303,7 @@ Does more or less what it implies: Connects the mud to the I3 network.
 If a router is specified, then that router will be the one connected to.
 If no router is specified, then the router listed first in the mud's router
 configuration will be used.
-¢
+~
 End
 
 #HELP
@@ -312,7 +312,7 @@ Perm Imm
 Text Syntax: i3disconnect
 
 Does more or less what it implies: Disconnects the mud from the I3 network.
-¢
+~
 End
 
 #HELP
@@ -327,7 +327,7 @@ new features that have yet to be implemented. It is not to be used lightly, for
 it spams and is a gross invasion of privacy for anyone on the mud who may be
 using tells. Responsible admins should either inform their users ahead of time or
 use this option on a development port.
-¢
+~
 End
 
 #HELP
@@ -341,7 +341,7 @@ level at which players can begin using it.
 
 Available permissions are: None, Mort, Imm, Admin, and Imp. See I3PERMSET for more
 information on what permissions do.
-¢
+~
 End
 
 #HELP
@@ -350,7 +350,7 @@ Perm Mort
 Text Syntax: i3emote <person@mud> <message>
 
 Sends a private emote to a person on another mud.
-¢
+~
 End
 
 #HELP
@@ -366,7 +366,7 @@ Will only reveal information the target mud feels is appropriate.
 Using the privacy argument will disable your information from being
 sent to a requesting user on another mud. You will not be told anyone
 has tried.
-¢
+~
 End
 
 #HELP
@@ -394,7 +394,7 @@ an ignore work for you. If the particular person is still causing problems or is
 making a nuisance of themselves to several people, advise your mud administration
 that they may need to pursue an I3BAN against the person or mud in question.
 Be prepared to show proper documentation of any incidents to support your case.
-¢
+~
 End
 
 #HELP
@@ -406,7 +406,7 @@ Asks all the muds on the Intermud-3 network if a person
 known by the name is there. Be patient when using this command,
 there are a lot of muds on the network to search through, so
 a response may take some time to come back.
-¢
+~
 End
 
 #HELP
@@ -415,7 +415,7 @@ Perm Imm
 Text Syntax: i3perms <user>
 
 Displays the permission level for the target user on the mud.
-¢
+~
 End
 
 #HELP
@@ -434,7 +434,7 @@ Admin  - Allows access to additional channels and commands for administrative st
 Imp    - Allows access to additional channels and commands for implementors.
 
 These permission values are also used when setting channels up for access.
-¢
+~
 End
 
 #HELP
@@ -447,7 +447,7 @@ Channelname should be the name seen on 'i3chanlist all'
 Removed the indicated channel from the router, and deletes the local copy from the
 mud as well. This does NOT send a broadcast to subscribed muds to delete their local
 copies, so they will need to do that themselves upon noticing the channel is gone.
-¢
+~
 End
 
 #HELP
@@ -468,7 +468,7 @@ i3setchan diku_chat dchat mort
 
 Available permissions are: None, Mort, Imm, Admin, and Imp. See I3PERMSET for more
 information on what permissions do.
-¢
+~
 End
 
 #HELP
@@ -484,7 +484,7 @@ Otherwise this command operates in much the same way as the local tell command.
 
 Using the on or off arguments will enable or disable your ability to send
 and receive i3tells.
-¢
+~
 End
 
 #HELP
@@ -496,7 +496,7 @@ To reply to the last i3tell you received, simply type 'i3reply'
 followed by your message and it will be sent back to the last
 person on I3 who sent a tell to you. Works in the same manner
 as the local reply command.
-¢
+~
 End
 
 #HELP
@@ -507,7 +507,7 @@ Text Syntax: i3ucache
 Displays the current content of the mud's ucache data. This is a very spammy list
 since multiple muds support this information and send packets out regularly.
 Ucache data is used for gender targetting of socials.
-¢
+~
 End
 
 #HELP
@@ -517,7 +517,7 @@ Text Syntax: i3user@mud
 
 Sends out a specific request for the target user's ucache data and updates the
 data tables accordingly.
-¢
+~
 End
 
 #HELP
@@ -527,7 +527,7 @@ Text Syntax: i3who <mud>
 
 Requests an overview of players on a different mud.
 Operates similarly to the local who command.
-¢
+~
 End
 
 #END
