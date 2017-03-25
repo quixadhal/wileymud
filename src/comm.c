@@ -257,7 +257,7 @@ int run_the_game(int port)
     imc_shutdown(FALSE);
 #endif
 #ifdef I3
-    i3_shutdown(0);
+    i3_shutdown(0, NULL);
 #endif
     close_sockets(s);
     close_whod();
