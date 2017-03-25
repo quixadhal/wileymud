@@ -1675,5 +1675,10 @@
     "durak": "<SPAN style=\"background-color: #ffffff; color: #0000bb\">",
     "cromulent quixadhal": "<SPAN style=\"background-color: #550055; color: #ffffff\">",
     "brog": "<SPAN style=\"background-color: #ffffff; color: #00bb00\">",
-    "evil mog": "<SPAN style=\"color: #55ff55\">"
+    "evil mog": "<SPAN style=\"color: #55ff55\">",
+    "davroar": "<SPAN style=\"color: #bbbbbb\">",
+    "ddread quixadhal": "<SPAN style=\"color: #ffffff\">",
+    "dread quixadhal": "<SPAN style=\"background-color: #550055; color: #ffffff\">",
+    "scathach": "<SPAN style=\"background-color: #bb0000; color: #00ff00\">",
+    "emma": "<SPAN style=\"color: #bb0000\">"
 }

@@ -286,7 +286,8 @@ sub get_url {
     my $timeout = 90;
     my $lwp = LWP::UserAgent->new();
        $lwp->timeout($timeout/2);
-       $lwp->agent("User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.5) Gecko/20031007 Firebird/0.7");
+       #$lwp->agent("User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.5) Gecko/20031007 Firebird/0.7");
+       $lwp->agent('User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36');
        $URI::ABS_ALLOW_RELATIVE_SCHEME = 1;
        $URI::ABS_REMOTE_LEADING_DOTS = 1; 
     my $request = HTTP::Request->new(GET => $url);
@@ -470,8 +471,9 @@ my $given_host = $given_uri->host;
 my $channel = shift;
 my ($origin, $page) = get_url($url);
 #print STDERR "DEBUG: $page\n";
-my $tinyurl = makeashorterlink($origin);
 
+$origin = $given_uri if !defined $origin;
+my $tinyurl = makeashorterlink($origin);
 
 
 my $chan_color = channel_color($channel, $style) if defined $channel;

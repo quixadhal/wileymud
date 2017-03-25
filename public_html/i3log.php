@@ -582,13 +582,14 @@ $bg = 0;
             }
         </script>
         <style>
-            html, body { max-width: 100%; overflow-x: hidden; word-wrap: break-word; text-overflow: ellipsis; }
+            html, body { table-layout: fixed; max-width: 100%; overflow-x: hidden; word-wrap: break-word; text-overflow: ellipsis; }
+            table { table-layout: fixed; max-width: 99%; overflow-x: hidden; word-wrap: break-word; text-overflow: ellipsis; }
             a { text-decoration:none; }
             a:hover { text-decoration:underline; }
         </style>
     </head>
     <body bgcolor="black" text="#d0d0d0" link="#ffffbf" vlink="#ffa040" onload="setup();">
-        <table id="navbar" width="100%">
+        <table id="navbar" width="99%" align="center">
             <tr>
                 <td align="left" width="40%">
                     <input id="start_button" type="button" value="1" onclick="first_page();">
@@ -618,12 +619,12 @@ $bg = 0;
                 </td>
             </tr>
         </table>
-        <table id="content" width="100%">
+        <table id="content" width="99%" align="center">
             <thead>
             <tr>
                 <th id="dateheader" align="left" width="80px" style="color: #DDDDDD; min-width: 80px;">Date</th>
-                <th id="timeheader" align="left" width="40px" style="color: #DDDDDD; min-width: 40px;">Time</th>
-                <th id="channelheader" align="left" width="100px" style="color: #DDDDDD; min-width: 100px;">Channel</th>
+                <th id="timeheader" align="left" width="60px" style="color: #DDDDDD; min-width: 40px;">Time</th>
+                <th id="channelheader" align="left" width="80px" style="color: #DDDDDD; min-width: 100px;">Channel</th>
                 <th id="speakerheader" align="left" width="200px" style="color: #DDDDDD; min-width: 200px;">Speaker</th>
                 <th align="left">&nbsp;</th>
             </tr>
@@ -669,6 +670,7 @@ $bg = 0;
                     $message = preg_replace("/\%\^RESET\%\^/", "</span>", $message);
                     # Putty:  ((((https?|ftp):\/\/)|www\.)(([0-9]+\.[0-9]+\.[0-9]+\.[0-9]+)|(([a-zA-Z0-9\-]+\.)*[a-zA-Z0-9\-]+\.(aero|asia|biz|cat|com|coop|info|int|jobs|mobi|museum|name|net|org|post|pro|tel|travel|xxx|edu|gov|mil|[a-zA-Z][a-zA-Z]))|([a-z]+[0-9]*))(:[0-9]+)?((\/|\?)[^ "]*[^ ,;\.:">)])?)|(spotify:[^ ]+:[^ ]+)
                     # Mine:   ((?:http|https|ftp)\:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(?::[a-zA-Z0-9]*)?\/?(?:[a-zA-Z0-9\-\._\?\,\'\/\\\+&amp;%\$#\=~])*)
+                    #$message = preg_replace("/(https?\:\/\/[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+)/", '<a href="$1" target="I3-link">$1</a>', $message);
                     $message = preg_replace('/((?:http|https|ftp)\:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(?::[a-zA-Z0-9]*)?\/?(?:[a-zA-Z0-9\-\._\?\,\'\/\\\+&amp;%\$#\=~])*)/', '<a href="$1" target="I3-link">$1</a>', $message);
                     $message = preg_replace('/YouTube\s+(<span.*?>)\s*\[([^\]]*)\]/', 'YouTube $1 <a href="https://youtu.be/$2" target="I3-link">[$2]</a>', $message);
                     $message = preg_replace('/IMDB\s+(<span.*?>)\s*\[([^\]]*)\]/', 'IMDB $1 <a href="https://www.imdb.com/title/$2/" target="I3-link">[$2]</a>', $message);
