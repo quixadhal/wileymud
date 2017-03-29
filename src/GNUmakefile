@@ -21,6 +21,7 @@ SQL_LIB		= -L/usr/lib/postgresql -lpq -lecpg
 ID_DEP		= $(IDENTDIR)/libident.a
 ID_INC		= #
 ID_LIB		= -L$(IDENTDIR) -lident
+PCRE_LIB	= -lpcre
 IMC_INC		= #-DIMC -DIMCWILEY
 I3_INC		= -DI3
 
@@ -54,7 +55,7 @@ EFENCE		= #-lpthread -lefence
 PROF_FLAG	= #-pg
 
 INC		= -Iinclude $(ID_INC) $(IMC_INC) $(I3_INC) #$(SQL_INC)
-LIB		= $(ID_LIB) $(NEED_MATH) $(NEED_CRYPT) $(NEED_COMPAT) $(EFENCE) #$(SQL_LIB)
+LIB		= $(ID_LIB) $(NEED_MATH) $(NEED_CRYPT) $(NEED_COMPAT) $(EFENCE) $(PCRE_LIB) #$(SQL_LIB)
 UTILSLIB	= $(NEED_MATH) $(NEED_CRYPT) $(NEED_COMPAT) $(EFENCE)
 
 CFLAGS		= $(W_FLAGS) $(DEBUG_FLAG) $(OPT_FLAG) $(PROF_FLAG) $(M_ARCH) $(INC)

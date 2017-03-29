@@ -470,6 +470,13 @@ my $given_host = $given_uri->host;
 
 my $channel = shift;
 my ($origin, $page) = get_url($url);
+
+# Give it a second try, because sometimes it fails from DNS stupidity.
+if( !defined $page ) {
+    sleep 0.5;
+    ($origin, $page) = get_url($url);
+}
+
 #print STDERR "DEBUG: $page\n";
 
 $origin = $given_uri if !defined $origin;

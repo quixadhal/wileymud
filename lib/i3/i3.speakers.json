@@ -1680,5 +1680,7 @@
     "ddread quixadhal": "<SPAN style=\"color: #ffffff\">",
     "dread quixadhal": "<SPAN style=\"background-color: #550055; color: #ffffff\">",
     "scathach": "<SPAN style=\"background-color: #bb0000; color: #00ff00\">",
-    "emma": "<SPAN style=\"color: #bb0000\">"
+    "emma": "<SPAN style=\"color: #bb0000\">",
+    "urlbot": "<SPAN style=\"background-color: #000055; color: #ffff55\">",
+    "capita": "<SPAN style=\"color: #bb0000\">"
 }

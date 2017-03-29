@@ -10,6 +10,8 @@
 #include <sys/types.h>
 #include <signal.h>
 #include <sys/time.h>
+#include <sys/wait.h>
+
 
 #include "global.h"
 #include "bug.h"
@@ -119,7 +121,7 @@ void signal_setup(void)
 	{{SIG_IGN}, SIGSTOP, SA_NODEFER},
 	{{SIG_IGN}, SIGTSTP, SA_NODEFER},
 	{{SIG_IGN}, SIGCONT, SA_NODEFER},
-	{{SIG_IGN}, SIGCHLD, SA_NODEFER},
+	{{reaper}, SIGCHLD, SA_NODEFER},
 	{{SIG_IGN}, SIGTTIN, SA_NODEFER},
 	{{SIG_IGN}, SIGTTOU, SA_NODEFER},
 	{{SIG_IGN}, SIGIO, SA_NODEFER},
@@ -148,7 +150,7 @@ void signal_setup(void)
 	{{SIG_IGN}, {{SIGALRM}}, SA_NODEFER, NULL},
 	{{SIG_IGN}, {{SIGTERM}}, SA_NODEFER, NULL},
 	{{SIG_DFL}, {{0}}, SA_NODEFER | SA_RESETHAND, NULL},   /* Not listed by kill -l ??? */
-	{{SIG_IGN}, {{SIGCHLD}}, SA_NODEFER, NULL},
+	{{reaper}, {{SIGCHLD}}, SA_NODEFER, NULL},
 	{{SIG_IGN}, {{SIGCONT}}, SA_NODEFER, NULL},
 	{{SIG_IGN}, {{SIGSTOP}}, SA_NODEFER, NULL},
 	{{SIG_IGN}, {{SIGTSTP}}, SA_NODEFER, NULL},
@@ -177,7 +179,7 @@ void signal_setup(void)
     signal(SIGPIPE, SIG_IGN);
     signal(SIGALRM, SIG_IGN);
     signal(SIGTERM, SIG_IGN);
-    signal(SIGCHLD, SIG_IGN);
+    signal(SIGCHLD, reaper);
     signal(SIGCONT, SIG_IGN);
     signal(SIGSTOP, SIG_IGN);
     signal(SIGTSTP, SIG_IGN);
@@ -255,3 +257,18 @@ void logsig(int a)
 
     log_info("Signal received. Ignoring.");
 }
+
+void reaper(int a)
+{
+    pid_t pid;
+    int status;
+
+    if (DEBUG > 3)
+	log_info("called %s with %d", __PRETTY_FUNCTION__, a);
+
+    log_info("Child died. Reaping.");
+    while((pid = waitpid(-1, &status, WNOHANG)) > 0)
+        ;
+    log_info("Child reaped.");
+}
+

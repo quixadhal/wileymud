@@ -62,9 +62,8 @@
 #include <sys/time.h>
 #include <time.h>
 #include <sys/types.h>
-#if 0
-#include <regex.h>
-#endif
+#include <pcre.h>
+#include <signal.h>
 #include "global.h"
 #include "bug.h"
 #include "utils.h"
@@ -2385,20 +2384,20 @@ void I3_send_channel_message(I3_CHANNEL *channel, const char *name, const char *
 
     i3strlcpy(buf, message, MAX_STRING_LENGTH);
 
-    log_info("I3_send_channel(%s@%s, %s, %s)", channel->I3_name, channel->host_mud, name, message);
+    //log_info("I3_send_channel(%s@%s, %s, %s)", channel->I3_name, channel->host_mud, name, message);
     I3_write_header("channel-m", I3_THISMUD, name, NULL, NULL);
-    log_info("I3_send_channel() header setup.");
+    //log_info("I3_send_channel() header setup.");
     I3_write_buffer("\"");
     I3_write_buffer(channel->I3_name);
     I3_write_buffer("\",\"");
     I3_write_buffer(I3_nameremap(name));
-    log_info("I3_send_channel() name remap %s to %s.", name, I3_nameremap(name));
+    //log_info("I3_send_channel() name remap %s to %s.", name, I3_nameremap(name));
     I3_write_buffer("\",\"");
     send_to_i3(I3_escape(buf));
-    log_info("I3_send_channel() escaped buffer.");
+    //log_info("I3_send_channel() escaped buffer.");
     I3_write_buffer("\",})\r");
     I3_send_packet();
-    log_info("I3_send_channel() done.");
+    //log_info("I3_send_channel() done.");
 
     return;
 }
@@ -2938,6 +2937,10 @@ void I3_process_channel_t(I3_HEADER *header, char *s)
     return;
 }
 
+#define UNTINY      "../bin/untiny.pl"
+#define PERL        "/usr/bin/perl"
+#define I3_URL_DUMP I3_DIR "i3.urldump"
+
 void I3_process_channel_m(I3_HEADER *header, char *s)
 {
     char                                   *ps = s;
@@ -2952,6 +2955,18 @@ void I3_process_channel_m(I3_HEADER *header, char *s)
     struct tm                              *local = localtime(&i3_time);
     FILE                                   *fp = NULL;
     int                                     len;
+
+    const char          *regexp_pattern     = "(https?\\:\\/\\/[\\w.-]+(?:\\.[\\w\\.-]+)+[\\w\\-\\._~:/?#[\\]@!\\$&'\\(\\)\\*\\+,;=.]+)";
+    int                  regexp_opts        = PCRE_CASELESS|PCRE_MULTILINE;
+    static pcre         *regexp_compiled    = NULL;
+    static pcre_extra   *regexp_studied     = NULL;
+    const char          *regexp_error       = NULL;
+    int                  regexp_err_offset  = 0;
+    const char          *regexp_match       = NULL;
+    static int           regexp_broken      = 0;
+    int                  regexp_rv;
+    int                  regexp_matchpos[30];
+    int                  regexp_pid;
 
     I3_get_field(ps, &next_ps);
     I3_remove_quotes(&ps);
@@ -2981,12 +2996,6 @@ void I3_process_channel_m(I3_HEADER *header, char *s)
         len--;
     }
 
-    // snprintf( buf, MAX_STRING_LENGTH, "~R[%-2.2d:%-2.2d] %s", local->tm_hour, local->tm_min, ps );
-    //strcpy(format, "%%^GREEN%%^%%^BOLD%%^%-2.2d%%^WHITE%%^%%^BOLD%%^:%%^GREEN%%^%%^BOLD%%^%-2.2d%%^RESET%%^ ");
-    //strcat(format, channel->layout_m);
-    //snprintf(buf, MAX_STRING_LENGTH, format, local->tm_hour, local->tm_min, channel->local_name,
-//	     visname, header->originator_mudname, tps);
-
     strcpy(format, "%s ");
     strcat(format, channel->layout_m);
     snprintf(buf, MAX_STRING_LENGTH, format, color_time(local), channel->local_name, visname, header->originator_mudname, tps);
@@ -3007,30 +3016,74 @@ void I3_process_channel_m(I3_HEADER *header, char *s)
         I3FCLOSE(fp);
     }
 
-#if 0
-    // Here is the point we want to use pregexp to scan for urls and do the
-    // logic of untiny.pl
+    if(strcasecmp(channel->local_name, "url")) {
+        // Never process url's from the url channel, recursion lurks here!
 
-    {
-        regex_t *preg_buf;
-        char *regexp;
-        regmatch_t *matches;
-        int max_matches;
-        int rx;
+        //i3log("I3 regexp checking starts...");
+        if(regexp_broken) {
+            i3log("I3 regexp checking skipped");
+            goto skip_regexp;
+        }
 
-        const char *regexp[] = {
-            "\[([\w-]+)\].*(https?://www.youtube.com/watch\?.*?v=[^&\?\.\s]+)", # check_youtube_chan = /if (%P1 !~ "url") /quote -0 url !~/bin/untiny.pl '%P2' '%P1'%; /endif
-            "\[([\w-]+)\].*(https?://youtu.be/[^&\?\.\s]+)",                    # check_yout_chan = /quote -0 url !~/bin/untiny.pl '%P2' '%P1'
-            NULL
-        };
-
-        for (rx = 0; regexp[rx] != NULL; rx++) {
-            if(! recomp(preg_buf, regexp[rx], REG_EXTENDED|REG_ICASE)) {
+        if(!regexp_compiled) { // Haven't compiled yet
+            regexp_compiled = pcre_compile(regexp_pattern, regexp_opts, &regexp_error, &regexp_err_offset, NULL);
+            i3log("I3 regexp: /%s/", regexp_pattern);
+            if(!regexp_compiled) {
+                i3bug("regexp failed to compile");
+                regexp_broken = 1;
+                goto skip_regexp;
+            }
+            regexp_studied = pcre_study(regexp_compiled, 0, &regexp_error);
+            if(regexp_error != NULL) {
+                i3bug("regexp study failed");
+                regexp_broken = 1;
+                goto skip_regexp;
             }
         }
-    }
-#endif
 
+        regexp_rv = pcre_exec(regexp_compiled, regexp_studied,
+                              tps, strlen(tps),
+                              0, 0, // START POS, OPTIONS
+                              regexp_matchpos, 30);
+
+        if(regexp_rv < 0) {
+            switch(regexp_rv) {
+                case PCRE_ERROR_NOMATCH:
+                    //i3log("No match");
+                    break;
+                case PCRE_ERROR_NULL:
+                    i3bug("NULL Error in regexp handling");
+                    break;
+                default:
+                    i3bug("Error in regexp handling");
+                    break;
+            }
+        } else {
+            while( regexp_rv > 0 ) {
+                if (pcre_get_substring(tps, regexp_matchpos, regexp_rv, 0, &regexp_match) >= 0) {
+                    i3log("Found URL ( %s ) in channel ( %s )", regexp_match, channel->local_name);
+                    regexp_pid = fork();
+                    if( regexp_pid == 0 ) {
+                        // We are the new kid, so go run our perl script.
+                        //i3log("Launching %s -w %s %s %s", PERL, UNTINY, regexp_match, channel->local_name);
+                        freopen(I3_URL_DUMP, "a", stdout);
+                        execl(PERL, PERL, "-w", UNTINY, regexp_match, channel->local_name, (char *)NULL);
+                        i3bug("It is not possible to be here!");
+                    } else {
+                        // Normally, we need to track the child pid, but we're already
+                        // ignoring SIGCHLD in signals.c, and doing so prevents zombies.
+                    }
+                }
+                regexp_rv = pcre_exec(regexp_compiled, regexp_studied,
+                                      tps, strlen(tps),
+                                      regexp_matchpos[1], 0,
+                                      regexp_matchpos, 30);
+            }
+        }
+        //i3log("I3 regexp checking ends.");
+    }
+
+skip_regexp:
     for (d = first_descriptor; d; d = d->next) {
 	vch = d->original ? d->original : d->character;
 
@@ -6696,6 +6749,46 @@ char *I3_nameremap(const char *ps)
     return remapped;
 }
 
+void i3_check_urls() {
+    FILE            *fp = NULL;
+    struct stat      fst;
+    char             line[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0\0";
+    static int       last_changed = 0;
+    int              i = 0;
+    int              j = 0;
+
+    if(stat(I3_URL_DUMP, &fst) != -1) {
+        if( fst.st_mtime > last_changed ) {
+            i3log("URL file is ready to process!");
+            /* File has been updated, so reload it */
+            last_changed = fst.st_mtime;
+
+            if(!(fp = fopen(I3_URL_DUMP, "r"))) {
+                log_error("No URL DUMP file: %s!", I3_URL_DUMP);
+            } else {
+                while( fgets(line, MAX_STRING_LENGTH-2, fp) ) {
+                    /*
+                    while(*line && ((i = strlen(line)) > 0)) {
+                        if(ISNEWL(line[i-1])) {
+                            line[i-1] = '\0';
+                        }
+                    }
+                    */
+                    i++;
+                    if(*line) {
+                        i3_npc_speak("url", "URLbot", line);
+                        j++;
+                    }
+                }
+                fclose(fp);
+                fp = NULL;
+                truncate(I3_URL_DUMP, 0);
+                i3log("%d lines read, %d results sent, from URL file %s.", i, j, I3_URL_DUMP);
+            }
+        }
+    }
+}
+
 /*
  * Check for a packet and if one available read it and parse it.
  * Also checks to see if the mud should attempt to reconnect to the router.
@@ -6835,6 +6928,9 @@ void i3_loop(void)
         chan_choice = i3number(0, (sizeof(chan_list) / sizeof(chan_list[0])) - 1);
         i3_npc_speak(chan_list[chan_choice], "Cron", taunt);
     }
+
+    // Check for urls that our external process prepared for us.
+    i3_check_urls();
 
     /*
      * Will prune the cache once every 24hrs after bootup time 
