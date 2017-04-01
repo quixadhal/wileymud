@@ -139,7 +139,8 @@ typedef enum
 #define LAST_I3IGNORE(ch)     (CH_I3DATA((ch))->i3last_ignore)
 #define I3LISTEN(ch)          (CH_I3DATA((ch))->i3_listen)
 #define I3DENY(ch)            (CH_I3DATA((ch))->i3_denied)
-#define I3REPLY(ch)           (CH_I3DATA((ch))->i3_replyname)
+#define I3REPLYNAME(ch)       (CH_I3DATA((ch))->i3_replyname)
+#define I3REPLYMUD(ch)        (CH_I3DATA((ch))->i3_replymud)
 #define I3TELLHISTORY(ch,x)   (CH_I3DATA((ch))->i3_tellhistory[(x)])
 #define I3INVIS(ch)           ( I3IS_SET( I3FLAG((ch)), I3_INVIS ) )
 #define CH_I3AFK(ch)          ( I3IS_SET( I3FLAG((ch)), I3_AFK ) )
@@ -246,6 +247,7 @@ struct i3_chardata
    I3_IGNORE *i3first_ignore; /* List of people to ignore stuff from - Samson 2-7-01 */
    I3_IGNORE *i3last_ignore;
    char *i3_replyname;  /* Target for reply - Samson 1-23-01 */
+   char *i3_replymud;  /* Target for reply - Quixadhal 3-31-17 */
    char *i3_listen;  /* The I3 channels someone is listening to - Samson 1-30-01 */
    char *i3_denied;  /* The I3 channels someone is forbidden to use - Samson 6-16-03 */
    char *i3_tellhistory[MAX_I3TELLHISTORY];  /* History of received i3tells - Samson 1-21-04 */

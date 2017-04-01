@@ -829,6 +829,38 @@ void I3_remove_quotes(char **ps)
     ps1[0] = '\0';
 }
 
+/*
+ * Adds "'s at begin/end of string.
+ * Also escapes any " or ' characters inside the string.
+ */
+char *I3_add_quotes(char *s)
+{
+    static char          buf[MAX_STRING_LENGTH];
+    char                *ps = buf;
+    int                  i;
+
+    if(s[0] != '"') {
+        *ps++ = '"';
+    }
+    for(i = 0; i < strlen(s); i++) {
+        switch( s[i] ) {
+            case '"':
+            case '\'': 
+                *ps++ = '\\';
+                *ps++ = s[i];
+                break;
+            default:
+                *ps++ = s[i];
+                break;
+        }
+    }
+    if(s[strlen(s)-1] != '"') {
+        *ps++ = '"';
+    }
+    *ps = '\0';
+    return buf;
+}
+
 /* Searches through the channel list to see if one exists with the localname supplied to it. */
 I3_CHANNEL                             *find_I3_channel_by_localname(const char *name)
 {
@@ -3358,13 +3390,13 @@ void I3_process_beep(I3_HEADER *header, char *s)
     return;
 }
 
-void I3_send_tell(CHAR_DATA *ch, const char *to, I3_MUD *mud, const char *message)
+void I3_send_tell(CHAR_DATA *ch, const char *to, const char *mud, const char *message)
 {
     if (!i3_is_connected())
 	return;
 
     I3_escape(to);
-    I3_write_header("tell", I3_THISMUD, CH_I3NAME(ch), mud->name, to);
+    I3_write_header("tell", I3_THISMUD, CH_I3NAME(ch), mud, to);
     I3_write_buffer("\"");
     I3_write_buffer(CH_I3NAME(ch));
     I3_write_buffer("\",\"");
@@ -3456,16 +3488,18 @@ void I3_process_tell(I3_HEADER *header, char *s)
 
     snprintf(usr, MAX_INPUT_LENGTH, "%s@%s", ps, header->originator_mudname);
     //snprintf(buf, MAX_INPUT_LENGTH, "'%s@%s'", ps, header->originator_mudname);
-    snprintf(buf, MAX_INPUT_LENGTH, "'%s@%s'", header->originator_username, header->originator_mudname);
+    //snprintf(buf, MAX_INPUT_LENGTH, "%s@%s", header->originator_username, header->originator_mudname);
 
-    I3STRFREE(I3REPLY(ch));
-    I3REPLY(ch) = I3STRALLOC(buf);
+    I3STRFREE(I3REPLYNAME(ch));
+    I3STRFREE(I3REPLYMUD(ch));
+    I3REPLYNAME(ch) = I3STRALLOC(header->originator_username);
+    I3REPLYMUD(ch) = I3STRALLOC(header->originator_mudname);
 
     ps = next_ps;
     I3_get_field(ps, &next_ps);
     I3_remove_quotes(&ps);
 
-    snprintf(buf, MAX_INPUT_LENGTH, "%%^CYAN%%^%%^BOLD%%^%s%%^RESET%%^ %%^YELLOW%%^%s i3tells you: %%^RESET%%^%s", color_time(local), usr, ps);
+    snprintf(buf, MAX_INPUT_LENGTH, "%s %%^CYAN%%^%%^BOLD%%^%s%%^RESET%%^ %%^YELLOW%%^i3tells you: %%^RESET%%^%s", color_time(local), usr, ps);
     i3_printf(ch, "%s%%^RESET%%^\r\n", buf);
     i3_update_tellhistory(ch, buf);
     return;
@@ -4446,7 +4480,8 @@ void i3_initchar(CHAR_DATA *ch)
     I3CREATE(CH_I3DATA(ch), I3_CHARDATA, 1);
     I3LISTEN(ch) = NULL;
     I3DENY(ch) = NULL;
-    I3REPLY(ch) = NULL;
+    I3REPLYNAME(ch) = NULL;
+    I3REPLYMUD(ch) = NULL;
     I3FLAG(ch) = 0;
     I3SET_BIT(I3FLAG(ch), I3_COLORFLAG);		       /* Default color to on. People can turn this off if they 
 							        * hate it. */
@@ -4472,7 +4507,8 @@ void i3_freechardata(CHAR_DATA *ch)
 
     I3STRFREE(I3LISTEN(ch));
     I3STRFREE(I3DENY(ch));
-    I3STRFREE(I3REPLY(ch));
+    I3STRFREE(I3REPLYNAME(ch));
+    I3STRFREE(I3REPLYMUD(ch));
 
     if (FIRST_I3IGNORE(ch)) {
 	for (temp = FIRST_I3IGNORE(ch); temp; temp = next) {
@@ -7094,6 +7130,7 @@ I3_CMD(I3_tell)
                                            *ps;
     char                                    mud[MAX_INPUT_LENGTH];
     I3_MUD                                 *pmud;
+    struct tm                              *local = localtime(&i3_time);
 
     if (I3IS_SET(I3FLAG(ch), I3_DENYTELL)) {
 	i3_printf(ch, "You are not allowed to use i3tells.\r\n");
@@ -7169,16 +7206,20 @@ I3_CMD(I3_tell)
 	return;
     }
 
-    I3_send_tell(ch, to, pmud, argument);
-    snprintf(mud, MAX_INPUT_LENGTH, "%%^YELLOW%%^You i3tell %s@%s: %%^CYAN%%^%s", i3capitalize(to), pmud->name,
-	     argument);
-    i3_printf(ch, "%s\r\n", mud);
+    I3_send_tell(ch, to, pmud->name, argument);
+    snprintf(mud, MAX_INPUT_LENGTH, "%s %%^YELLOW%%^You i3tell %%^CYAN%%^%%^BOLD%%^%s@%s%%^RESET%%^%%^YELLOW%%^: %%^RESET%%^%s", color_time(local), i3capitalize(to), pmud->name, argument);
+    i3_printf(ch, "%s%%^RESET%%^\r\n", mud);
     i3_update_tellhistory(ch, mud);
 }
 
 I3_CMD(I3_reply)
 {
-    char                                    buf[MAX_STRING_LENGTH];
+    char                                     buf[MAX_STRING_LENGTH];
+    char                                     to[MAX_INPUT_LENGTH];
+    char                                     mud[MAX_INPUT_LENGTH];
+    char                                    *ps;
+    I3_MUD                                  *pmud;
+    struct tm                               *local = localtime(&i3_time);
 
     if (I3IS_SET(I3FLAG(ch), I3_DENYTELL)) {
 	i3_printf(ch, "You are not allowed to use i3tells.\r\n");
@@ -7200,13 +7241,73 @@ I3_CMD(I3_reply)
 	return;
     }
 
-    if (!I3REPLY(ch)) {
+    if (!i3_str_prefix("set ", argument)) {
+        argument += 4;
+        argument = i3one_argument(argument, to);
+
+        i3_printf(ch, "%%^GREEN%%^DEBUG: argument == %s\r\n", argument);
+        i3_printf(ch, "%%^GREEN%%^DEBUG: to == %s\r\n", to);
+
+        ps = strchr(to, '@');
+        if (to[0] == '\0' || ps == NULL) {
+            i3_printf(ch, "%%^YELLOW%%^You should specify a person and a mud.%%^RESET%%^\r\n" "(use %%^WHITE%%^%%^BOLD%%^i3mudlist%%^YELLOW%%^ to get an overview of the muds available)%%^RESET%%^\r\n");
+            return;
+        }
+        ps[0] = '\0';
+        ps++;
+        i3strlcpy(mud, ps, MAX_INPUT_LENGTH);
+
+        i3_printf(ch, "%%^GREEN%%^DEBUG: to == %s\r\n", to);
+        i3_printf(ch, "%%^GREEN%%^DEBUG: mud == %s\r\n", mud);
+
+        if (!(pmud = find_I3_mud_by_name(mud))) {
+            i3_printf(ch, "%%^YELLOW%%^No such mud known.%%^RESET%%^\r\n" "(use %%^WHITE%%^%%^BOLD%%^i3mudlist%%^YELLOW%%^ to get an overview of the muds available)%%^RESET%%^\r\n");
+            return;
+        }
+
+        if (!strcasecmp(I3_THISMUD, pmud->name)) {
+            i3_printf(ch, "Use your mud's own internal system for that.\r\n");
+            return;
+        }
+
+        if (pmud->status >= 0) {
+            i3_printf(ch, "%s is marked as down.\r\n", pmud->name);
+            return;
+        }
+
+        if (pmud->tell == 0) {
+            i3_printf(ch, "%s does not support the 'tell' command.\r\n", pmud->name);
+            return;
+        }
+
+        snprintf(buf, MAX_INPUT_LENGTH, "%s@%s", to, pmud->name);
+        I3STRFREE(I3REPLYNAME(ch));
+        I3STRFREE(I3REPLYMUD(ch));
+        I3REPLYNAME(ch) = I3STRALLOC(to);
+        I3REPLYMUD(ch) = I3STRALLOC(pmud->name);
+        i3_printf(ch, "i3reply target set to %s@%s.\r\n", I3REPLYNAME(ch), I3REPLYMUD(ch));
+        return;
+    }
+
+    if (!I3REPLYNAME(ch) || !I3REPLYMUD(ch)) {
 	i3_printf(ch, "You have not yet received an i3tell?!?\r\n");
 	return;
     }
 
+    if (!strcasecmp(argument, "show")) {
+	i3_printf(ch, "The last i3tell you received was from %s@%s.\r\n", I3REPLYNAME(ch), I3REPLYMUD(ch));
+        return;
+    }
+
+    I3_send_tell(ch, I3REPLYNAME(ch), I3REPLYMUD(ch), argument);
+    snprintf(buf, MAX_STRING_LENGTH, "%s %%^YELLOW%%^You i3reply to %%^CYAN%%^%%^BOLD%%^%s@%s%%^RESET%%^%%^YELLOW%%^: %%^RESET%%^%s", color_time(local), i3capitalize(I3REPLYNAME(ch)), I3REPLYMUD(ch), argument);
+    i3_printf(ch, "%s%%^RESET%%^\r\n", buf);
+    i3_update_tellhistory(ch, buf);
+
+    /*
     snprintf(buf, MAX_STRING_LENGTH, "%s %s", I3REPLY(ch), argument);
     I3_tell(ch, buf);
+    */
     return;
 }
 
