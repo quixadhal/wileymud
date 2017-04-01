@@ -3502,6 +3502,7 @@ void I3_process_tell(I3_HEADER *header, char *s)
     snprintf(buf, MAX_INPUT_LENGTH, "%s %%^CYAN%%^%%^BOLD%%^%s%%^RESET%%^ %%^YELLOW%%^i3tells you: %%^RESET%%^%s", color_time(local), usr, ps);
     i3_printf(ch, "%s%%^RESET%%^\r\n", buf);
     i3_update_tellhistory(ch, buf);
+    tics_since_last_message = TAUNT_DELAY;
     return;
 }
 
