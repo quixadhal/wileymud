@@ -431,6 +431,41 @@ sub get_steam_desc {
     return $desc;
 }
 
+sub get_dailymotion_id {
+    my $page = shift;
+
+    $page =~ /<meta\s+property=\"og:url\"\s+content=\"([^\"]*)\"\/>/i;
+    my ($url) =  ($1);
+    $url =~ /\/(\w\w\w\w\w\w\w)$/i;
+    my ($id) =  ($1);
+    return $id;
+}
+
+sub get_dailymotion_title {
+    my $page = shift;
+
+    $page =~ /<meta\s+property=\"og:title\"\s+content=\"([^\"]*)\"\/>/i;
+    my ($title) =  ($1);
+    $title = decode_entities($title) if defined $title;
+    return $title;
+}
+
+sub get_dailymotion_duration {
+    my $page = shift;
+
+    $page =~ /<meta\s+property=\"video:duration\"\s+content=\"([^\"]*)\"\/>/i;
+    my ($seconds) = ($1);
+    my $minutes = int( $seconds / 60 );
+    my $hours = int( $minutes / 60 );
+    $seconds = $seconds % 60;
+    $minutes = $minutes % 60;
+    if( defined $hours and $hours > 0 ) {
+        return sprintf "%d:%02d:%02d", $hours, $minutes, $seconds;
+    } else {
+        return sprintf "%d:%02d", $minutes, $seconds;
+    }
+}
+
 my $prog = $0;
 my $url = shift;
 my $style = "wiley";
@@ -480,8 +515,19 @@ if( !defined $page ) {
 #print STDERR "DEBUG: $page\n";
 
 $origin = $given_uri if !defined $origin;
-my $tinyurl = makeashorterlink($origin);
+my $tinyurl = undef;
 
+if ($given_uri =~ /tinyurl\.com\/\w\w\w\w\w\w\w$/i) {
+    $tinyurl = $given_uri;
+} elsif ($given_uri =~ /bit\.ly\/\w\w\w\w\w\w\w$/i) {
+    $tinyurl = $given_uri;
+} elsif ($origin =~ /tinyurl\.com\/\w\w\w\w\w\w\w$/i) {
+    $tinyurl = $origin;
+} elsif ($origin =~ /bit\.ly\/\w\w\w\w\w\w\w$/i) {
+    $tinyurl = $origin;
+} else {
+    $tinyurl = makeashorterlink($origin);
+}
 
 my $chan_color = channel_color($channel, $style) if defined $channel;
 my $page_title = get_page_title($page) if defined $page;
@@ -501,6 +547,15 @@ my $steam_title = $page_title;
 #my $youtube_desc = get_youtube_desc($page);
 #my $youtube_keywords = get_youtube_keywords($page);
 
+my $dailymotion_id = get_dailymotion_id($page) if defined $page and $origin->host =~ /dailymotion/i;
+my $dailymotion_title = get_dailymotion_title($page) if defined $dailymotion_id;
+my $dailymotion_duration = get_dailymotion_duration($page) if defined $dailymotion_id;
+
+#print STDERR "DEBUG: " . Dumper($dailymotion_id) . "\n";
+#print STDERR "DEBUG: " . Dumper($dailymotion_title) . "\n";
+#print STDERR "DEBUG: " . Dumper($dailymotion_duration) . "\n";
+
+
 $channel = " from $chan_color<$channel>${RESET}" if defined $channel and defined $chan_color;
 $channel = " from <$channel>" if defined $channel and !defined $chan_color;
 $channel = "" if !defined $channel;
@@ -512,6 +567,9 @@ $imdb_id = "${YELLOW}[$imdb_id]${RESET}" if defined $imdb_id;
 $imdb_duration = " ${RED}($imdb_duration)${RESET}" if defined $imdb_duration;
 
 $steam_id = "${YELLOW}[$steam_id]${RESET}" if defined $steam_id;
+
+$dailymotion_id = "${YELLOW}[$dailymotion_id]${RESET}" if defined $dailymotion_id;
+$dailymotion_duration = " ${RED}($dailymotion_duration)${RESET}" if defined $dailymotion_duration;
 
 my $output = "";
 
@@ -527,6 +585,10 @@ if (defined $youtube_id and defined $youtube_title and defined $youtube_duration
     $output .= "${RESET}IMDB $imdb_id$channel is $imdb_title\n";
 } elsif (defined $steam_id and defined $steam_title) {
     $output .= "${RESET}Steam $steam_id$channel is $steam_title\n";
+} elsif (defined $dailymotion_id and defined $dailymotion_title and defined $dailymotion_duration) {
+    $output .= "${RESET}Dailymotion $dailymotion_id$channel is $dailymotion_title$dailymotion_duration\n";
+} elsif (defined $dailymotion_id and defined $dailymotion_title) {
+    $output .= "${RESET}Dailymotion $dailymotion_id$channel is $dailymotion_title\n";
 } elsif (defined $origin) {
     my $origin_host = $origin->host;
     my $title_bit = "";

@@ -675,6 +675,7 @@ $bg = 0;
                     $message = preg_replace('/YouTube\s+(<span.*?>)\s*\[([^\]]*)\]/', 'YouTube $1 <a href="https://youtu.be/$2" target="I3-link">[$2]</a>', $message);
                     $message = preg_replace('/IMDB\s+(<span.*?>)\s*\[([^\]]*)\]/', 'IMDB $1 <a href="https://www.imdb.com/title/$2/" target="I3-link">[$2]</a>', $message);
                     $message = preg_replace('/Steam\s+(<span.*?>)\s*\[([^\]]*)\]/', 'Steam $1 <a href="http://store.steampowered.com/app/$2/" target="I3-link">[$2]</a>', $message);
+                    $message = preg_replace('/Dailymotion\s+(<span.*?>)\s*\[([^\]]*)\]/', 'Dailymotion $1 <a href="https://www.dailymotion.com/video/$2" target="I3-link">[$2]</a>', $message);
                     ?>
                     <td bgcolor="<?php echo $bgColor; ?>"><span style="font-family: monospace; white-space: pre-wrap;"><?php echo $message; ?></span></td>
                 </tr>
