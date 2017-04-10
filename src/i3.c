@@ -3057,6 +3057,11 @@ void I3_process_channel_m(I3_HEADER *header, char *s)
             goto skip_regexp;
         }
 
+        if(!strcasecmp(visname, "cron") && !strcasecmp(header->originator_mudname, "wileymud")) {
+            // Also don't process things from Cron@WileyMUD...
+            goto skip_regexp;
+        }
+
         if(!regexp_compiled) { // Haven't compiled yet
             regexp_compiled = pcre_compile(regexp_pattern, regexp_opts, &regexp_error, &regexp_err_offset, NULL);
             i3log("I3 regexp: /%s/", regexp_pattern);
@@ -6615,6 +6620,79 @@ void i3_startup(bool forced, int mudport, bool isconnected)
 	i3bug("i3_startup: %s", "Configuration failed!");
 }
 
+void do_taunt_from_log(void)
+{
+    FILE                                   *fp = NULL;
+    int                                     taunt_count = 0;
+    char                                    line[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0\0";
+    char                                    taunt[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0\0";
+    int                                     taunt_pid = 0;
+    int                                     i = 0;
+    int                                     taunt_selection = 0;
+    char                                    year[5] = "\0\0\0\0";
+    char                                    month[3] = "\0\0";
+    char                                    day[3] = "\0\0";
+    char                                    hour[3] = "\0\0";
+    char                                    minute[3] = "\0\0";
+    char                                    second[3] = "\0\0";
+    char                                    speaker[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0\0";
+    char                                    message[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0\0";
+    char                                   *s = NULL;
+    char                                   *t = NULL;
+
+    taunt_pid = fork();
+    if( taunt_pid == 0 ) {
+        // We're up!  Do the needful!
+        if(!(fp = fopen(I3_ALLCHAN_LOG, "r"))) {
+            log_error("Cannot open I3 log file: %s!", I3_ALLCHAN_LOG);
+            exit(1);
+        } else {
+            while( fgets(line, MAX_STRING_LENGTH-2, fp) ) {
+                taunt_count++;
+            }
+            rewind(fp);
+            taunt_selection = random() % taunt_count;
+            for( i = taunt_selection; i > 0; i-- ) {
+                fgets(line, MAX_STRING_LENGTH-2, fp);
+            }
+            fclose(fp);
+/* 2009.09.21-12.10,28000  imud_gossip     Sinistrad@Dead Souls Dev        Not out yet tho */
+            strncpy(year, &line[0], 4);
+            strncpy(month, &line[5], 2);
+            strncpy(day, &line[8], 2);
+            strncpy(hour, &line[11], 2);
+            strncpy(minute, &line[14], 2);
+            strncpy(second, &line[17], 2);
+            s = strchr(line, '\t');
+            if(!s || !*s) {
+                exit(1);
+            }
+            s++;
+            s = strchr(s, '\t');
+            if(!s || !*s) {
+                exit(1);
+            }
+            s++;
+            t = strchr(s, '\t');
+            if(!t || !*t) {
+                exit(1);
+            }
+            bzero(speaker, MAX_STRING_LENGTH);
+            strncpy(speaker, s, (t-s));
+            t++;
+            bzero(message, MAX_STRING_LENGTH);
+            strncpy(message, t, MAX_STRING_LENGTH);
+            snprintf(taunt, MAX_STRING_LENGTH, "%%^RED%%^%%^BOLD%%^[%-s-%s-%s %s:%s]%%^RESET%%^ %%^YELLOW%%^%s%%^RESET%%^ said %%^GREEN%%^%%^BOLD%%^%s%%^RESET%%^",
+                     year, month, day, hour, minute, speaker, message);
+            i3_npc_speak("wiley", "Cron", taunt);
+            exit(0);
+        }
+    } else {
+        // Zombie patrol should be handled by ignoring SIGCHLD
+    }
+}
+
+
 #define I3_TAUNT_FILE   I3_DIR "i3.taunts"
 
 char *i3_taunt_line()
@@ -6848,6 +6926,7 @@ void i3_loop(void)
     struct tm                              *tm_info = NULL;
     time_t                                  tc = (time_t) 0;
     char                                    taunt[MAX_STRING_LENGTH];
+    /*
     int                                     chan_choice = 0;
     const char                             *chan_list[] = {
         "wiley",
@@ -6871,6 +6950,7 @@ void i3_loop(void)
         "wiley",
         "wiley"
     };
+    */
 
     gettimeofday(&last_time, NULL);
     i3_time = (time_t) last_time.tv_sec;
@@ -6959,11 +7039,15 @@ void i3_loop(void)
     if ( tics_since_last_message <= 0 ) {
         tics_since_last_message = TAUNT_DELAY;
 
+        do_taunt_from_log();
+
+        /*
         snprintf(taunt, MAX_STRING_LENGTH, "%%^RED%%^%%^BOLD%%^[%-4.4d-%-2.2d-%-2.2d %-2.2d:%-2.2d]%%^RESET%%^ %%^GREEN%%^%%^BOLD%%^%s%%^RESET%%^",
                 tm_info->tm_year + 1900, tm_info->tm_mon + 1, tm_info->tm_mday, tm_info->tm_hour, tm_info->tm_min, i3_taunt_line());
 
         chan_choice = i3number(0, (sizeof(chan_list) / sizeof(chan_list[0])) - 1);
         i3_npc_speak(chan_list[chan_choice], "Cron", taunt);
+        */
     }
 
     // Check for urls that our external process prepared for us.
@@ -9464,6 +9548,12 @@ void I3_send_social(I3_CHANNEL *channel, CHAR_DATA *ch, const char *argument)
     return;
 }
 
+I3_CMD(I3_taunt)
+{
+    do_taunt_from_log();
+    return;
+}
+
 const char                             *i3_funcname(I3_FUN *func)
 {
     if (func == I3_other)
@@ -9546,6 +9636,8 @@ const char                             *i3_funcname(I3_FUN *func)
 	return ("i3_help");
     if (func == i3_cedit)
 	return ("i3_cedit");
+    if (func == I3_taunt)
+	return ("I3_taunt");
 
     return "";
 }
@@ -9632,6 +9724,8 @@ I3_FUN                                 *i3_function(const char *func)
 	return i3_cedit;
     if (!strcasecmp(func, "i3_hedit"))
 	return i3_hedit;
+    if (!strcasecmp(func, "I3_taunt"))
+	return I3_taunt;
 
     return NULL;
 }

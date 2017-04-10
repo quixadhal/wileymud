@@ -229,6 +229,7 @@ obj/whod.o: whod.c include/version.h include/global.h include/bug.h \
 obj/bounce.o: utils/bounce.c
 obj/genpasswd.o: utils/genpasswd.c
 obj/mkworld.o: utils/mkworld.c
+obj/randline.o: utils/randline.c
 obj/sign.o: utils/sign.c include/global.h include/bug.h
 obj/utils.o: utils.c include/global.h include/bug.h include/spells.h \
   include/constants.h include/db.h include/opinion.h include/comm.h \
