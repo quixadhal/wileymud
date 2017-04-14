@@ -656,13 +656,38 @@ $bg = 0;
                     //$tmp_msg = preg_replace("/\x1b\[[0-9]+(;[0-9]+)*m/", "", $line_data[3]);
                     //$message = htmlentities($tmp_msg,0,'UTF-8');
                     $message = htmlentities($line_data[3], ENT_QUOTES|ENT_SUBSTITUTE, 'UTF-8');
-                    $message = preg_replace("/\%\^RED\%\^/", "<span style=\"color: #ff5555;\">", $message);
-                    $message = preg_replace("/\%\^GREEN\%\^/", "<span style=\"color: #55ff55;\">", $message);
-                    $message = preg_replace("/\%\^BLUE\%\^/", "<span style=\"color: #5555ff;\">", $message);
+                    $message = preg_replace("/\%\^RED\%\^\%\^BOLD\%\^/", "<span style=\"color: #ff5555;\">", $message);
+                    $message = preg_replace("/\%\^RED\%\^BOLD\%\^/", "<span style=\"color: #ff5555;\">", $message);
+                    $message = preg_replace("/\%\^RED\%\^/", "<span style=\"color: #bb0000;\">", $message);
+
+                    $message = preg_replace("/\%\^ORANGE\%\^/", "<span style=\"color: #bbbb00;\">", $message);
                     $message = preg_replace("/\%\^YELLOW\%\^/", "<span style=\"color: #ffff55;\">", $message);
-                    $message = preg_replace("/\%\^CYAN\%\^/", "<span style=\"color: #55ffff;\">", $message);
+
+                    $message = preg_replace("/\%\^GREEN\%\^\%\^BOLD\%\^/", "<span style=\"color: #55ff55;\">", $message);
+                    $message = preg_replace("/\%\^GREEN\%\^BOLD\%\^/", "<span style=\"color: #55ff55;\">", $message);
+                    $message = preg_replace("/\%\^GREEN\%\^/", "<span style=\"color: #00bb00;\">", $message);
+
+                    $message = preg_replace("/\%\^WHITE\%\^\%\^BOLD\%\^/", "<span style=\"color: #ffffff;\">", $message);
+                    $message = preg_replace("/\%\^WHITE\%\^BOLD\%\^/", "<span style=\"color: #ffffff;\">", $message);
+                    $message = preg_replace("/\%\^WHITE\%\^/", "<span style=\"color: #bbbbbb;\">", $message);
+
+                    $message = preg_replace("/\%\^CYAN\%\^\%\^BOLD\%\^/", "<span style=\"color: #55ffff;\">", $message);
+                    $message = preg_replace("/\%\^CYAN\%\^BOLD\%\^/", "<span style=\"color: #55ffff;\">", $message);
+                    $message = preg_replace("/\%\^CYAN\%\^/", "<span style=\"color: #00bbbb;\">", $message);
+
+                    $message = preg_replace("/\%\^BLUE\%\^\%\^BOLD\%\^/", "<span style=\"color: #5555ff;\">", $message);
+                    $message = preg_replace("/\%\^BLUE\%\^BOLD\%\^/", "<span style=\"color: #5555ff;\">", $message);
+                    $message = preg_replace("/\%\^BLUE\%\^/", "<span style=\"color: #0000bb;\">", $message);
+
+                    $message = preg_replace("/\%\^BLACK\%\^\%\^BOLD\%\^/", "<span style=\"color: #bbbbbb;\">", $message);
+                    $message = preg_replace("/\%\^BLACK\%\^BOLD\%\^/", "<span style=\"color: #bbbbbb;\">", $message);
+                    $message = preg_replace("/\%\^BLACK\%\^/", "<span style=\"color: #555555;\">", $message);
+
+                    $message = preg_replace("/\%\^MAGENTA\%\^\%\^BOLD\%\^/", "<span style=\"color: #bb00bb;\">", $message);
+                    $message = preg_replace("/\%\^MAGENTA\%\^BOLD\%\^/", "<span style=\"color: #ff55ff;\">", $message);
                     $message = preg_replace("/\%\^MAGENTA\%\^/", "<span style=\"color: #ff55ff;\">", $message);
-                    $message = preg_replace("/\%\^WHITE\%\^/", "<span style=\"color: #ffffff;\">", $message);
+
+
                     $message = preg_replace("/\%\^BOLD\%\^/", "", $message);
                     $message = preg_replace("/\%\^BOLD/", "", $message); // Silly Pinkfish uses delimiters, rather than full tokens, sometimes.
                     $message = preg_replace("/\%\^FLASH\%\^/", "", $message);

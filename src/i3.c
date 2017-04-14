@@ -6682,7 +6682,7 @@ void do_taunt_from_log(void)
             t++;
             bzero(message, MAX_STRING_LENGTH);
             strncpy(message, t, MAX_STRING_LENGTH);
-            snprintf(taunt, MAX_STRING_LENGTH, "%%^RED%%^%%^BOLD%%^[%-s-%s-%s %s:%s]%%^RESET%%^ %%^YELLOW%%^%s%%^RESET%%^ said %%^GREEN%%^%%^BOLD%%^%s%%^RESET%%^",
+            snprintf(taunt, MAX_STRING_LENGTH, "%%^RED%%^%%^BOLD%%^[%-s-%s-%s %s:%s]%%^RESET%%^ %%^YELLOW%%^%s%%^RESET%%^ once said %%^GREEN%%^%%^BOLD%%^%s%%^RESET%%^",
                      year, month, day, hour, minute, speaker, message);
             i3_npc_speak("wiley", "Cron", taunt);
             exit(0);
@@ -9740,7 +9740,29 @@ bool i3_command_hook(CHAR_DATA *ch, const char *lcommand, const char *argument)
     I3_CMD_DATA                            *cmd;
     I3_ALIAS                               *alias;
     I3_CHANNEL                             *channel;
-    int                                     x;
+    int                                     x = 0;
+    char                                    buffer[MAX_STRING_LENGTH];
+    const char                             *s = NULL;
+    char                                   *b = buffer;
+    int                                     token_count = 15;
+    const char                             *token[] = {
+        "%^RESET%^%^RED%^",
+        "%^RESET%^%^RED%^%^BOLD%^",
+        "%^RESET%^%^ORANGE%^",
+        "%^RESET%^%^YELLOW%^",
+        "%^RESET%^%^GREEN%^",
+        "%^RESET%^%^GREEN%^%^BOLD%^",
+        "%^RESET%^%^WHITE%^",
+        "%^RESET%^%^WHITE%^%^BOLD%^",
+        "%^RESET%^%^CYAN%^%^BOLD%^",
+        "%^RESET%^%^CYAN%^",
+        "%^RESET%^%^BLUE%^%^BOLD%^",
+        "%^RESET%^%^BLUE%^",
+        "%^RESET%^%^BLACK%^%^BOLD%^",
+        "%^RESET%^%^MAGENTA%^",
+        "%^RESET%^%^MAGENTA%^%^BOLD%^",
+    };
+    int                                     color = 0;
 
     if (IS_NPC(ch))
 	return FALSE;
@@ -9868,6 +9890,59 @@ bool i3_command_hook(CHAR_DATA *ch, const char *lcommand, const char *argument)
 		argument++;
 	    I3_send_social(channel, ch, argument);
 	    break;
+        case '!':
+            argument++;
+	    while (isspace(*argument))
+		argument++;
+            if(!strncasecmp(argument, "colorize", 8)) {
+                argument += 8;
+                while (isspace(*argument))
+                    argument++;
+                bzero(buffer, MAX_STRING_LENGTH);
+                color = random() % token_count;
+                strncpy(b, token[color], strlen(token[color]));
+                b += strlen(token[color]);
+                for(s = argument, b = buffer; *s && strlen(b) < (MAX_STRING_LENGTH - 10); s++) {
+                    if(isspace(*s) || ispunct(*s)) {
+                        *b = *s;
+                        b++;
+                        color = random() % token_count;
+                        strncpy(b, token[color], strlen(token[color]));
+                        b += strlen(token[color]);
+                    } else {
+                        *b = *s;
+                        b++;
+                    }
+                }
+                strcpy(b, "%^RESET%^");
+	        I3_send_channel_message(channel, CH_I3NAME(ch), buffer);
+            } else if(!strncasecmp(argument, "rainbow", 7)) {
+                argument += 7;
+                while (isspace(*argument))
+                    argument++;
+                bzero(buffer, MAX_STRING_LENGTH);
+                color = 0;
+                strncpy(b, token[color], strlen(token[color]));
+                b += strlen(token[color]);
+                for(s = argument, b = buffer; *s && strlen(b) < (MAX_STRING_LENGTH - 10); s++) {
+                    if(isspace(*s)) {
+                        *b = *s;
+                        b++;
+                    } else {
+                        *b = *s;
+                        b++;
+                        color++;
+                        color = color % token_count;
+                        strncpy(b, token[color], strlen(token[color]));
+                        b += strlen(token[color]);
+                    }
+                }
+                strcpy(b, "%^RESET%^");
+	        I3_send_channel_message(channel, CH_I3NAME(ch), buffer);
+            } else {
+	        I3_send_channel_message(channel, CH_I3NAME(ch), argument);
+            }
+            break;
 	default:
 	    I3_send_channel_message(channel, CH_I3NAME(ch), argument);
 	    break;
