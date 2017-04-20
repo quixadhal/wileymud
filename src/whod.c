@@ -676,3 +676,240 @@ void whod_loop(void)
  * might then want to shut down the daemon for 15 minutes or so.
  * #
  */
+
+#define MUDLIST_PAGE "../public_html/" "mudlist.html"
+
+void                                    generate_mudlist(void)
+{
+    FILE                                   *fp = NULL;
+    int                                     players = 0;
+    int                                     gods = 0;
+    int                                     char_index = 0;
+    struct char_data                       *ch = NULL;
+    long                                    ttime = 0L;
+    long                                    thour = 0L;
+    long                                    tmin = 0L;
+    long                                    tsec = 0L;
+    time_t                                  now;
+    char                                    timebuf[100];
+    char                                    uptimebuf[100];
+    char                                    nowtimebuf[100];
+    struct timeval                          now_bits;
+    struct timeval                          later_bits;
+    int                                     row_counter = 0;
+#ifdef I3
+    I3_MUD                                 *mud;
+#endif
+
+    now = time((time_t *) 0);
+    gettimeofday(&now_bits, NULL);
+    strftime(timebuf, sizeof(timebuf), RFC1123FMT, gmtime(&now));
+    strftime(nowtimebuf, sizeof(nowtimebuf), RFC1123FMT, localtime(&now));
+    strftime(uptimebuf, sizeof(uptimebuf), RFC1123FMT, localtime((time_t *) & Uptime));
+
+    if(!(fp = fopen(MUDLIST_PAGE, "w"))) {
+        log_error("Cannot open %s!", MUDLIST_PAGE);
+        return;
+    }
+
+    fprintf(fp, "<html>\r\n");
+
+    fprintf(fp, "<head>\r\n");
+    fprintf(fp, "<title>Welcome to %s!</title>\r\n", MUDNAME);
+    fprintf(fp, "<style>\r\n");
+    fprintf(fp, "a { text-decoration:none; }\r\n");
+    fprintf(fp, "a:hover { text-decoration:underline; }\r\n");
+    fprintf(fp, "</style>\r\n");
+    fprintf(fp, "</head>\r\n");
+
+    fprintf(fp, "<body bgcolor=\"black\" text=\"#d0d0d0\" link=\"#ffffbf\" vlink=\"#ffa040\">\r\n");
+
+    fprintf(fp, "<table border=\"0\" cellspacing=\"0\" cellpadding=\"1\" width=\"%s\">\r\n", "99%");
+    fprintf(fp, "<tr valign=\"middle\" bgcolor=\"#000000\">\r\n");
+#ifdef I3
+    fprintf(fp, "<td valign=\"middle\" align=\"center\" width=\"75\"><a href=\"%s\">i3 logs</a></td>\r\n",
+            "http://wiley.the-firebird.net/~wiley/i3log.php");
+#endif
+    fprintf(fp, "<td valign=\"middle\" align=\"center\"><h3><a href=\"%s\">%s</a></h3></td>\r\n",
+	    "telnet://wiley.the-firebird.net:3000/", VERSION_STR);
+#ifdef I3
+    fprintf(fp, "<td valign=\"middle\" align=\"center\" width=\"75\">&nbsp;</td>\r\n");
+#endif
+    fprintf(fp, "</tr>\r\n");
+    fprintf(fp, "</table>\r\n");
+
+    players = 0;
+    gods = 0;
+    char_index = 0;
+
+    fprintf(fp, "<div align=\"center\">\r\n");
+    fprintf(fp, "<table border=\"0\" cellspacing=\"0\" cellpadding=\"1\" width=\"%s\">\r\n", "80%");
+    fprintf(fp, "<tr bgcolor=\"#2f0000\">\r\n");
+    if (IS_SET(SHOW_IDLE, whod_mode))
+	fprintf(fp, "<th align=\"center\" width=\"100\">%s</th>\r\n", "Idle");
+
+    if (IS_SET(SHOW_LEVEL, whod_mode))
+	fprintf(fp, "<th align=\"center\" width=\"100\">%s</th>\r\n", "Level");
+
+    fprintf(fp, "<th align=\"left\" >%s</th>\r\n", "Name");
+
+    if (IS_SET(SHOW_ROOM, whod_mode))
+	fprintf(fp, "<th align=\"center\" width=\"100\">%s</th>\r\n", "Room");
+
+    if (IS_SET(SHOW_SITE, whod_mode))
+	fprintf(fp, "<th align=\"left\" width=\"200\">%s</th>\r\n", "Site");
+    fprintf(fp, "</tr>\r\n");
+
+    for (ch = character_list; ch; ch = ch->next) {
+	if (IS_PC(ch)) {
+	    if ((INVIS_LEVEL(ch) < 2) && (GetMaxLevel(ch) <= WIZ_MAX_LEVEL) &&
+		!IS_AFFECTED(ch, AFF_HIDE) && !IS_AFFECTED(ch, AFF_INVISIBLE)) {
+		if (GetMaxLevel(ch) >= WIZ_MIN_LEVEL)
+		    gods++;
+		else
+		    players++;
+
+		char_index++;
+
+		fprintf(fp, "<tr bgcolor=\"%s\">\r\n", char_index % 2 ? "#000000" : "#1f1f1f");
+		if (IS_SET(SHOW_IDLE, whod_mode)) {
+		    if (!(ch->desc)) {
+			fprintf(fp, "<td align=\"center\">%s</td>\r\n",
+				"linkdead");
+		    } else {
+			ttime = GET_IDLE_TIME(ch);
+			thour = ttime / 3600;
+			ttime -= thour * 3600;
+			tmin = ttime / 60;
+			ttime -= tmin * 60;
+			tsec = ttime;
+			if (!thour && !tmin && (tsec <= 15))
+			    fprintf(fp, "<td align=\"center\">%s</td>\r\n",
+				    "playing");
+			else
+			    fprintf(fp,
+				    "<td align=\"center\">%02ld:%02ld:%02ld</td>\r\n", thour,
+				    tmin, tsec);
+		    }
+		}
+
+		if (IS_SET(SHOW_LEVEL, whod_mode)) {
+		    if (GetMaxLevel(ch) >= WIZ_MAX_LEVEL)
+			fprintf(fp, "<td align=\"center\">%s</td>\r\n", "God");
+		    else if (GetMaxLevel(ch) == WIZ_MAX_LEVEL - 1)
+			fprintf(fp, "<td align=\"center\">%s</td>\r\n", "Power");
+		    else if (GetMaxLevel(ch) >= WIZ_MIN_LEVEL)
+			fprintf(fp, "<td align=\"center\">%s</td>\r\n", "Whizz");
+		    else
+			fprintf(fp, "<td align=\"center\">%3d</td>\r\n",
+				GetMaxLevel(ch));
+		}
+
+		fprintf(fp, "<td align=\"left\">");
+		if (IS_SET(SHOW_TITLE, whod_mode))
+		    if (GET_PRETITLE(ch))
+			fprintf(fp, "%s ", GET_PRETITLE(ch));
+
+		if (IS_SET(SHOW_NAME, whod_mode))
+		    fprintf(fp, "%s", GET_NAME(ch));
+
+		if (IS_SET(SHOW_TITLE, whod_mode))
+		    fprintf(fp, " %s", GET_TITLE(ch));
+		fprintf(fp, "</td>\r\n");
+
+		/*
+		 * This is bad for the external whod... it pinpoints people too easily.
+		 * Make them enter the game to see where people are.
+		 */
+		if (IS_SET(SHOW_ROOM, whod_mode)) {
+		    fprintf(fp, "<td align=\"center\">%s</td>\r\n",
+			    real_roomp(ch->in_room)->name);
+		}
+
+		if (IS_SET(SHOW_SITE, whod_mode)) {
+		    if (ch->desc->host[0] != '\0')
+			fprintf(fp, "<td align=\"left\">%s</td>\r\n",
+				ch->desc->host);
+		    else if (ch->desc->ip[0] != '\0')
+			fprintf(fp, "<td align=\"left\">%s</td>\r\n",
+				ch->desc->ip);
+		}
+		fprintf(fp, "</tr>\r\n");
+	    }
+	}
+    }
+    fprintf(fp, "</table>\r\n");
+    fprintf(fp, "<br />\r\n");
+
+    fprintf(fp, "<table border=\"0\" cellspacing=\"0\" cellpadding=\"1\" width=\"%s\">\r\n", "80%");
+    fprintf(fp, "<tr bgcolor=\"#002f00\">\r\n");
+    fprintf(fp, "<th align=\"center\" >%s</th>\r\n", "Boot Time");
+    fprintf(fp, "<th align=\"center\" >%s</th>\r\n", "Current Time");
+    fprintf(fp, "<th align=\"center\" width=\"100\">%s</th>\r\n", "Players");
+    fprintf(fp, "<th align=\"center\" width=\"100\">%s</th>\r\n", "Gods");
+    fprintf(fp, "</tr>\r\n");
+    fprintf(fp, "<tr bgcolor=\"%s\">\r\n", "#1f1f1f");
+    fprintf(fp, "<td align=\"center\" >%s</td>\r\n", uptimebuf);
+    fprintf(fp, "<td align=\"center\" >%s</td>\r\n", nowtimebuf);
+    fprintf(fp, "<td align=\"center\" >%d</td>\r\n", players);
+    fprintf(fp, "<td align=\"center\" >%d</td>\r\n", gods);
+    fprintf(fp, "</tr>\r\n");
+    fprintf(fp, "</table>\r\n");
+
+#ifdef I3
+    fprintf(fp, "<br />\r\n");
+
+    fprintf(fp, "<table border=\"0\" cellspacing=\"0\" cellpadding=\"1\" width=\"%s\">\r\n", "80%");
+    fprintf(fp, "<tr bgcolor=\"#00002f\">\r\n");
+    /* name, type, mudlib, address, port */
+    fprintf(fp, "<th align=\"center\" >%s</th>\r\n", "Name");
+    fprintf(fp, "<th align=\"center\" width=\"100\">%s</th>\r\n", "Type");
+    fprintf(fp, "<th align=\"center\" width=\"200\">%s</th>\r\n", "Mudlib");
+    fprintf(fp, "<th align=\"center\" width=\"150\">%s</th>\r\n", "Address");
+    fprintf(fp, "<th align=\"center\" width=\"50\">%s</th>\r\n", "Port");
+    fprintf(fp, "</tr>\r\n");
+    for (mud = first_mud; mud; mud = mud->next) {
+        if( mud == NULL )
+            continue;
+        if( mud->name == NULL )
+            continue;
+        if( mud->mud_type == NULL )
+            continue;
+        if( mud->mudlib == NULL )
+            continue;
+        if( mud->ipaddress == NULL )
+            continue;
+        if( mud->status == -1 ) {
+            fprintf(fp, "<tr bgcolor=\"%s\">\r\n", row_counter % 2 ? "#000000" : "#1f1f1f");
+            fprintf(fp, "<td align=\"left\"><a target=\"I3 mudlist\" href=\"http://%s/\">%s</a></td>\r\n", mud->ipaddress, mud->name);
+            fprintf(fp, "<td align=\"left\" >%s</td>\r\n", mud->mud_type);
+            fprintf(fp, "<td align=\"left\" >%s</td>\r\n", mud->mudlib);
+            fprintf(fp, "<a href=\"telnet://%s:%d/\" >\r\n", mud->ipaddress, mud->player_port);
+            fprintf(fp, "<td align=\"left\" ><a href=\"telnet://%s:%d/\">%s</a></td>\r\n", mud->ipaddress, mud->player_port, mud->ipaddress);
+            fprintf(fp, "<td align=\"right\" >%d</td>\r\n", mud->player_port);
+            fprintf(fp, "</tr>\r\n");
+            row_counter++;
+        }
+    }
+    fprintf(fp, "<tr bgcolor=\"#00002f\">\r\n");
+    fprintf(fp, "<td align=\"center\" colspan=\"5\">%d total muds listed.</td>\r\n", row_counter);
+    fprintf(fp, "</tr>\r\n");
+    fprintf(fp, "</table>\r\n");
+#endif
+
+    fprintf(fp, "</div>\r\n");
+
+    gettimeofday(&later_bits, NULL);
+    fprintf(fp,
+	    "<div align=\"right\"><font size=\"-1\" color=\"#1f1f1f\">page took %01d.%06d seconds to render.</font></div>\r\n",
+	    (int)(later_bits.tv_sec - now_bits.tv_sec),
+	    (int)(later_bits.tv_usec - now_bits.tv_usec));
+
+    fprintf(fp, "</body>\r\n");
+    fprintf(fp, "</html>\r\n");
+
+    fclose(fp);
+    fp = NULL;
+    return;
+}
+

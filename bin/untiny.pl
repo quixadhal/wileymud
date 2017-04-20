@@ -510,6 +510,11 @@ my ($origin, $page) = get_url($url);
 if( !defined $page ) {
     sleep 0.5;
     ($origin, $page) = get_url($url);
+    # Give it a third try, because sometimes it fails for unknown reasons.
+    if( !defined $page ) {
+        sleep 4.5;
+        ($origin, $page) = get_url($url);
+    }
 }
 
 #print STDERR "DEBUG: $page\n";

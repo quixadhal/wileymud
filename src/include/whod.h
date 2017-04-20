@@ -61,5 +61,6 @@ void                                    do_whod(struct char_data *ch, const char
 void                                    init_whod(int port);
 void                                    close_whod(void);
 void                                    whod_loop(void);
+void                                    generate_mudlist(void);
 
 #endif

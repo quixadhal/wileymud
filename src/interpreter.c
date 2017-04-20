@@ -341,6 +341,143 @@ void command_interpreter(struct char_data *ch, char *argument)
     random_error_message(ch);
 }
 
+void new_command_interpreter(struct char_data *ch, char *argument)
+{
+    const char                              *s = argument;
+    char                                     token = '\0';
+    char                                     arg[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
+    char                                    *a = arg;
+    int                                      cmd = 0;
+
+    if (DEBUG > 2)
+	log_info("called %s with %s, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument));
+
+    // If you did something, you stopped hiding.  Someday, this should really be
+    // only in-game actions.
+    REMOVE_BIT(ch->specials.affected_by, AFF_HIDE);
+
+    if (ch == board_kludge_char) {
+	board_save_board(FindBoardInRoom(ch->in_room));
+	board_kludge_char = 0;
+    }
+
+    if( !s || !*s ) {
+        log_error("Empty command passed to interpreter?");
+        return;
+    }
+
+    // Skip over whitespace
+    while(*s && isspace(*s)) {
+        s++;
+    }
+
+    // Save aside leading tokens, which might be special.
+    switch(*s) {
+        case '\'':
+        case ':':
+        case '"':
+        case ',':
+        case '@':
+            token = *s;
+            s++;
+            break;
+        default:
+            break;
+    }
+
+    // Grab the first word
+    while(*s && !isspace(*s)) {
+        *a = LOWER(*s);
+        s++;
+        a++;
+    }
+    *a = '\0';
+
+    // Look for a match against a command
+    cmd = old_search_block(a, 0, strlen(a), command, 0);
+
+    // If a match, but not allowed to use that command...
+    if (cmd > 0 && GetMaxLevel(ch) < cmd_info[cmd].minimum_level) {
+	random_error_message(ch);
+	return;
+    }
+
+    // If a match and there is actually a command to be run...
+    if (cmd > 0 && (cmd_info[cmd].command_pointer != 0)) {
+	if ((!IS_AFFECTED(ch, AFF_PARALYSIS))
+	    || (cmd_info[cmd].minimum_position <= POSITION_STUNNED)) {
+	    if (GET_POS(ch) < cmd_info[cmd].minimum_position) {
+		switch (GET_POS(ch)) {
+		    case POSITION_DEAD:
+			cprintf(ch, "Lie still; you are DEAD!!! :-( \r\n");
+			break;
+		    case POSITION_INCAP:
+		    case POSITION_MORTALLYW:
+			cprintf(ch,
+				"You are in a pretty bad shape, unable to do anything!\r\n");
+			break;
+
+		    case POSITION_STUNNED:
+			cprintf(ch, "All you can do right now, is think about the stars!\r\n");
+			break;
+		    case POSITION_SLEEPING:
+			cprintf(ch, "In your dreams, or what?\r\n");
+			break;
+		    case POSITION_RESTING:
+			cprintf(ch, "Nah... You feel too relaxed to do that..\r\n");
+			break;
+		    case POSITION_SITTING:
+			cprintf(ch, "Maybe you should get on your feet first?\r\n");
+			break;
+		    case POSITION_FIGHTING:
+			cprintf(ch, "No way! You are fighting for your life!\r\n");
+			break;
+		}
+	    } else {
+                // Check for special procedures, if enabled.
+		if (!no_specials && special(ch, cmd, s))
+		    return;
+
+                // Actually do the special we found.
+		((*cmd_info[cmd].command_pointer) (ch, s, cmd));
+
+		if ((GetMaxLevel(ch) >= LOW_IMMORTAL) && (GetMaxLevel(ch) < IMPLEMENTOR))
+		    log_info("%s:%s", ch->player.name, argument);
+	    }
+	    return;
+	} else {
+	    cprintf(ch, " You are paralyzed, you can't do much of anything!\r\n");
+	    return;
+	}
+    }
+
+    // Exit aliai are handled elsewhere?
+    if (check_exit_alias(ch, argument))
+	return;
+
+    // A command was found, but is not yet useable.
+    if (cmd > 0 && (cmd_info[cmd].command_pointer == 0)) {
+	cprintf(ch, "Sorry, that command has yet to be implemented...\r\n");
+        return;
+    }
+
+    // No normal commands found, so let's check the intermud!
+    if (cmd < 0 ) {
+#ifdef I3
+        if(i3_command_hook(ch, a, s))
+            return;
+#endif
+#ifdef IMC
+        if(imc_command_hook(ch, a, s))
+            return;
+#endif
+	log_error("command(%s), argument(%s), cmd(%d)\r\n", a, s, cmd);
+    }
+
+    // We got nothing...
+    random_error_message(ch);
+}
+
 void argument_interpreter(const char *argument, char *first_arg, char *second_arg)
 {
     int                                     look_at = 0;

@@ -65,6 +65,7 @@ extern int                              pulse_mobile;
 extern int                              pulse_violence;
 extern int                              pulse_reboot;
 extern int                              pulse_dump;
+extern int                              pulse_mudlist;
 extern int                              mud_port;
 
 #endif

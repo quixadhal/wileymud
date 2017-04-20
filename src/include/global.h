@@ -232,8 +232,10 @@ struct opinion {
 
 #define PULSE_PER_SECOND	4
 /* #define PULSE_UPDATE	(75 * 5) */
-#define PULSE_UPDATE	(70 * PULSE_PER_SECOND)
-#define PULSE_VARIABLE	(30 * PULSE_PER_SECOND)
+#define PULSE_UPDATE        (70 * PULSE_PER_SECOND)
+#define PULSE_VARIABLE      (30 * PULSE_PER_SECOND)
+
+#define PULSE_PER_MINUTE    (60 * PULSE_PER_SECOND)
 
 #define PULSE_VIOLENCE    6				       /* combat rounds */
 #define PULSE_RIVER      10				       /* These two must be 10 to make the timings */
@@ -242,6 +244,7 @@ struct opinion {
 #define PULSE_MOBILE     25				       /* mob movement/specials/etc */
 #define PULSE_SOUND      33				       /* room sounds */
 #define PULSE_ZONE      239				       /* zone updates */
+#define PULSE_MUDLIST   (5 * PULSE_PER_MINUTE)                 /* generate mudlist html page */
 #define PULSE_REBOOT    599				       /* reboot checking */
 #define PULSE_SHOUT    1203				       /* replacement for the astral traveller */
 #define PULSE_DUMP     3601				       /* dump player list */

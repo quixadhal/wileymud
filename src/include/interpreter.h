@@ -330,6 +330,8 @@ extern const char                            *fill[];
 int                                     search_block(const char *arg, const char **list, char exact);
 int                                     old_search_block(const char *argument, int begin, int arglen,
 							 const char **list, int mode);
+void                                    old_command_interpreter(struct char_data *ch,
+							    char *argument);
 void                                    command_interpreter(struct char_data *ch,
 							    char *argument);
 void                                    argument_interpreter(const char *argument, char *first_arg,

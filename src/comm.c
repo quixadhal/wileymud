@@ -86,6 +86,7 @@ int                                     pulse_mobile = PULSE_MOBILE;
 int                                     pulse_violence = PULSE_VIOLENCE;
 int                                     pulse_reboot = PULSE_REBOOT;
 int                                     pulse_dump = PULSE_DUMP;
+int                                     pulse_mudlist = PULSE_MUDLIST;
 
 int main(int argc, const char **argv)
 {
@@ -239,7 +240,7 @@ int run_the_game(int port)
     load_db();
 
     log_boot("Opening WHO port.");
-    init_whod(port);
+    //init_whod(port);
 
 #ifdef I3
     log_boot("Opening I3 connection.");
@@ -260,7 +261,7 @@ int run_the_game(int port)
     i3_shutdown(0, NULL);
 #endif
     close_sockets(s);
-    close_whod();
+    //close_whod();
 
     unload_db();
     if (diku_reboot) {
@@ -444,7 +445,7 @@ void game_loop(int s)
 	 * sigsetmask(mask); 
 	 */
 	sigprocmask(SIG_BLOCK, &mask, NULL);
-	whod_loop();
+	//whod_loop();
 	if (select(maxdesc + 1, &input_set, &output_set, &exc_set, &null_time) < 0) {
 	    log_error("Select poll");
 	    return;
@@ -610,6 +611,10 @@ void game_loop(int s)
 	if ((--pulse_dump) <= 0) {
 	    pulse_dump = PULSE_DUMP;
 	    // dump_player_list();
+	}
+	if ((--pulse_mudlist) <= 0) {
+	    pulse_mudlist = PULSE_MUDLIST;
+            generate_mudlist();
 	}
 
 	tics++;						       /* tics since last checkpoint signal */

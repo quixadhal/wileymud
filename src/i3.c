@@ -144,6 +144,8 @@ char                                   *I3_nameescape(const char *ps);
 char                                   *I3_nameremap(const char *ps);
 void                                    i3_npc_chat(const char *chan_name, const char *actor, const char *message);
 void                                    i3_npc_speak(const char *chan_name, const char *actor, const char *message);
+void                                    i3_nuke_url_file(void);
+void                                    i3_check_urls(void);
 
 #define I3KEY( literal, field, value ) \
 if( !strcasecmp( word, literal ) )     \
@@ -959,6 +961,72 @@ I3_MUD                                 *new_I3_mud(char *name)
     return cnew;
 }
 
+I3_MUD *create_I3_mud()
+{
+    I3_MUD *mud = NULL;
+
+    I3CREATE(mud, I3_MUD, 1);
+
+    /* make sure string pointers are NULL */
+    mud->name = NULL;
+    mud->ipaddress = NULL;
+    mud->mudlib = NULL;
+    mud->base_mudlib = NULL;
+    mud->driver = NULL;
+    mud->mud_type = NULL;
+    mud->open_status = NULL;
+    mud->admin_email = NULL;
+    mud->telnet = NULL;
+    mud->web_wrong = NULL;
+
+    mud->banner = NULL;
+    mud->web = NULL;
+    mud->time = NULL;
+    mud->daemon = NULL;
+
+    mud->routerName = NULL;
+
+    /* default values */
+    mud->status = -1;
+    mud->player_port = 0;
+    mud->imud_tcp_port = 0;
+    mud->imud_udp_port = 0;
+
+    mud->tell = FALSE;
+    mud->beep = FALSE;
+    mud->emoteto = FALSE;
+    mud->who = FALSE;
+    mud->finger = FALSE;
+    mud->locate = FALSE;
+    mud->channel = FALSE;
+    mud->news = FALSE;
+    mud->mail = FALSE;
+    mud->file = FALSE;
+    mud->auth = FALSE;
+    mud->ucache = FALSE;
+
+    mud->smtp = 0;
+    mud->ftp = 0;
+    mud->nntp = 0;
+    mud->http = 0;
+    mud->pop3 = 0;
+    mud->rcp = 0;
+    mud->amrcp = 0;
+
+    mud->jeamland = 0;
+
+    mud->autoconnect = FALSE;
+    mud->password = 0;
+    mud->mudlist_id = 0;
+    mud->chanlist_id = 0;
+    mud->minlevel = 1;      /* Minimum default level before I3 will acknowledge you exist */
+    mud->immlevel = 2;      /* Default immortal level */
+    mud->adminlevel = 51;   /* Default administration level */
+    mud->implevel = 60;     /* Default implementor level */
+
+    return mud;
+}
+
 void destroy_I3_mud(I3_MUD *mud)
 {
     if (mud == NULL) {
@@ -976,10 +1044,12 @@ void destroy_I3_mud(I3_MUD *mud)
     I3STRFREE(mud->admin_email);
     I3STRFREE(mud->telnet);
     I3STRFREE(mud->web_wrong);
+
     I3STRFREE(mud->banner);
     I3STRFREE(mud->web);
     I3STRFREE(mud->time);
     I3STRFREE(mud->daemon);
+
     I3STRFREE(mud->routerName);
     if (mud != this_i3mud)
 	I3UNLINK(mud, first_mud, last_mud, next, prev);
@@ -1649,7 +1719,7 @@ void I3_startup_packet(void)
 
     i3log("Sending startup_packet to %s", I3_ROUTER_NAME);
 
-    I3_write_header("startup-req-3", I3_THISMUD, NULL, I3_ROUTER_NAME, NULL);
+    I3_write_header("startup-req-3", this_i3mud->name, NULL, I3_ROUTER_NAME, NULL);
 
     snprintf(s, MAX_INPUT_LENGTH, "%d", this_i3mud->password);
     I3_write_buffer(s);
@@ -1844,7 +1914,7 @@ void I3_send_error(const char *mud, const char *user, const char *code, const ch
     if (!i3_is_connected())
 	return;
 
-    I3_write_header("error", I3_THISMUD, 0, mud, user);
+    I3_write_header("error", this_i3mud->name, 0, mud, user);
     I3_write_buffer("\"");
     I3_write_buffer(code);
     I3_write_buffer("\",\"");
@@ -1973,7 +2043,7 @@ void I3_send_ucache_update(const char *visname, int gender)
     if (!i3_is_connected())
 	return;
 
-    I3_write_header("ucache-update", I3_THISMUD, NULL, NULL, NULL);
+    I3_write_header("ucache-update", this_i3mud->name, NULL, NULL, NULL);
     I3_write_buffer("\"");
     I3_write_buffer(visname);
     I3_write_buffer("\",\"");
@@ -2027,7 +2097,7 @@ void I3_send_chan_user_req(char *targetmud, char *targetuser)
     if (!i3_is_connected())
 	return;
 
-    I3_write_header("chan-user-req", I3_THISMUD, NULL, targetmud, NULL);
+    I3_write_header("chan-user-req", this_i3mud->name, NULL, targetmud, NULL);
     I3_write_buffer("\"");
     I3_write_buffer(targetuser);
     I3_write_buffer("\",})\r");
@@ -2046,7 +2116,7 @@ void I3_process_chan_user_req(I3_HEADER *header, char *s)
     I3_get_field(ps, &next_ps);
     I3_remove_quotes(&ps);
 
-    snprintf(buf, MAX_STRING_LENGTH, "%s@%s", header->target_username, I3_THISMUD);
+    snprintf(buf, MAX_STRING_LENGTH, "%s@%s", header->target_username, this_i3mud->name);
     gender = I3_get_ucache_gender(buf);
 
     /*
@@ -2055,7 +2125,7 @@ void I3_process_chan_user_req(I3_HEADER *header, char *s)
     if (gender == -1)
 	return;
 
-    I3_write_header("chan-user-reply", I3_THISMUD, NULL, header->originator_mudname, NULL);
+    I3_write_header("chan-user-reply", this_i3mud->name, NULL, header->originator_mudname, NULL);
     I3_write_buffer("\"");
     I3_write_buffer(ps);
     I3_write_buffer("\",\"");
@@ -2417,7 +2487,7 @@ void I3_send_channel_message(I3_CHANNEL *channel, const char *name, const char *
     i3strlcpy(buf, message, MAX_STRING_LENGTH);
 
     //log_info("I3_send_channel(%s@%s, %s, %s)", channel->I3_name, channel->host_mud, name, message);
-    I3_write_header("channel-m", I3_THISMUD, name, NULL, NULL);
+    I3_write_header("channel-m", this_i3mud->name, name, NULL, NULL);
     //log_info("I3_send_channel() header setup.");
     I3_write_buffer("\"");
     I3_write_buffer(channel->I3_name);
@@ -2446,7 +2516,7 @@ void I3_send_channel_emote(I3_CHANNEL *channel, const char *name, const char *me
     else
 	i3strlcpy(buf, message, MAX_STRING_LENGTH);
 
-    I3_write_header("channel-e", I3_THISMUD, name, NULL, NULL);
+    I3_write_header("channel-e", this_i3mud->name, name, NULL, NULL);
     I3_write_buffer("\"");
     I3_write_buffer(channel->I3_name);
     I3_write_buffer("\",\"");
@@ -2465,7 +2535,7 @@ void I3_send_channel_t(I3_CHANNEL *channel, const char *name, char *tmud, char *
     if (!i3_is_connected())
 	return;
 
-    I3_write_header("channel-t", I3_THISMUD, name, NULL, NULL);
+    I3_write_header("channel-t", this_i3mud->name, name, NULL, NULL);
     I3_write_buffer("\"");
     I3_write_buffer(channel->I3_name);
     I3_write_buffer("\",\"");
@@ -2666,7 +2736,7 @@ void I3_chan_filter_m(I3_CHANNEL *channel, I3_HEADER *header, char *s)
     i3strlcpy(newmsg, ps, MAX_STRING_LENGTH);
     snprintf(newmsg, MAX_STRING_LENGTH, "%s%s", ps, " (filtered M)");
 
-    I3_write_header("chan-filter-reply", I3_THISMUD, NULL, I3_ROUTER_NAME, NULL);
+    I3_write_header("chan-filter-reply", this_i3mud->name, NULL, I3_ROUTER_NAME, NULL);
     I3_write_buffer("\"");
     I3_write_buffer(channel->I3_name);
     I3_write_buffer("\",({\"channel-m\",5,\"");
@@ -2704,7 +2774,7 @@ void I3_chan_filter_e(I3_CHANNEL *channel, I3_HEADER *header, char *s)
     I3_remove_quotes(&ps);
     snprintf(newmsg, MAX_STRING_LENGTH, "%s%s", ps, " (filtered E)");
 
-    I3_write_header("chan-filter-reply", I3_THISMUD, NULL, I3_ROUTER_NAME, NULL);
+    I3_write_header("chan-filter-reply", this_i3mud->name, NULL, I3_ROUTER_NAME, NULL);
     I3_write_buffer("\"");
     I3_write_buffer(channel->I3_name);
     I3_write_buffer("\",({\"channel-e\",5,\"");
@@ -2764,7 +2834,7 @@ void I3_chan_filter_t(I3_CHANNEL *channel, I3_HEADER *header, char *s)
     I3_get_field(ps, &next_ps);
     I3_remove_quotes(&ps);
 
-    I3_write_header("chan-filter-reply", I3_THISMUD, NULL, I3_ROUTER_NAME, NULL);
+    I3_write_header("chan-filter-reply", this_i3mud->name, NULL, I3_ROUTER_NAME, NULL);
     I3_write_buffer("\"");
     I3_write_buffer(channel->I3_name);
     I3_write_buffer("\",({\"channel-t\",5,\"");
@@ -2952,7 +3022,7 @@ void I3_process_channel_t(I3_HEADER *header, char *s)
 	    || I3_hasname(I3DENY(vch), channel->local_name))
 	    continue;
 
-	snprintf(lname, MAX_INPUT_LENGTH, "%s@%s", CH_I3NAME(vch), I3_THISMUD);
+	snprintf(lname, MAX_INPUT_LENGTH, "%s@%s", CH_I3NAME(vch), this_i3mud->name);
 
 	if (d->connected == CON_PLAYING && !i3ignoring(vch, sname)) {
 	    if (!strcasecmp(lname, tname)) {
@@ -3245,7 +3315,7 @@ void I3_process_chan_who_req(I3_HEADER *header, char *s)
 
     if (!(channel = find_I3_channel_by_name(ps))) {
 	snprintf(buf, MAX_STRING_LENGTH, "The channel you specified (%s) is unknown at %s", ps,
-		 I3_THISMUD);
+		 this_i3mud->name);
 	I3_send_error(header->originator_mudname, header->originator_username, "unk-channel",
 		      buf);
 	i3log("chan_who_req: received unknown channel (%s)", ps);
@@ -3254,13 +3324,13 @@ void I3_process_chan_who_req(I3_HEADER *header, char *s)
 
     if (!channel->local_name) {
 	snprintf(buf, MAX_STRING_LENGTH,
-		 "The channel you specified (%s) is not registered at %s", ps, I3_THISMUD);
+		 "The channel you specified (%s) is not registered at %s", ps, this_i3mud->name);
 	I3_send_error(header->originator_mudname, header->originator_username, "unk-channel",
 		      buf);
 	return;
     }
 
-    I3_write_header("chan-who-reply", I3_THISMUD, NULL, header->originator_mudname,
+    I3_write_header("chan-who-reply", this_i3mud->name, NULL, header->originator_mudname,
 		    header->originator_username);
     I3_write_buffer("\"");
     I3_write_buffer(channel->I3_name);
@@ -3326,7 +3396,7 @@ void I3_send_chan_who(CHAR_DATA *ch, I3_CHANNEL *channel, I3_MUD *mud)
     if (!i3_is_connected())
 	return;
 
-    I3_write_header("chan-who-req", I3_THISMUD, CH_I3NAME(ch), mud->name, NULL);
+    I3_write_header("chan-who-req", this_i3mud->name, CH_I3NAME(ch), mud->name, NULL);
     I3_write_buffer("\"");
     I3_write_buffer(channel->I3_name);
     I3_write_buffer("\",})\r");
@@ -3341,7 +3411,7 @@ void I3_send_beep(CHAR_DATA *ch, const char *to, I3_MUD *mud)
 	return;
 
     I3_escape(to);
-    I3_write_header("beep", I3_THISMUD, CH_I3NAME(ch), mud->name, to);
+    I3_write_header("beep", this_i3mud->name, CH_I3NAME(ch), mud->name, to);
     I3_write_buffer("\"");
     I3_write_buffer(CH_I3NAME(ch));
     I3_write_buffer("\",})\r");
@@ -3401,7 +3471,7 @@ void I3_send_tell(CHAR_DATA *ch, const char *to, const char *mud, const char *me
 	return;
 
     I3_escape(to);
-    I3_write_header("tell", I3_THISMUD, CH_I3NAME(ch), mud, to);
+    I3_write_header("tell", this_i3mud->name, CH_I3NAME(ch), mud, to);
     I3_write_buffer("\"");
     I3_write_buffer(CH_I3NAME(ch));
     I3_write_buffer("\",\"");
@@ -3517,7 +3587,7 @@ void I3_send_who(CHAR_DATA *ch, char *mud)
 	return;
 
     I3_escape(mud);
-    I3_write_header("who-req", I3_THISMUD, CH_I3NAME(ch), mud, NULL);
+    I3_write_header("who-req", this_i3mud->name, CH_I3NAME(ch), mud, NULL);
     I3_write_buffer("})\r");
     I3_send_packet();
 
@@ -3585,12 +3655,12 @@ void I3_process_who_req(I3_HEADER *header, char *s)
     snprintf(ibuf, MAX_INPUT_LENGTH, "%s@%s", header->originator_username,
 	     header->originator_mudname);
 
-    I3_write_header("who-reply", I3_THISMUD, NULL, header->originator_mudname,
+    I3_write_header("who-reply", this_i3mud->name, NULL, header->originator_mudname,
 		    header->originator_username);
     I3_write_buffer("({");
 
     I3_write_buffer("({\"");
-    snprintf(buf, 300, "%%^RED%%^%%^BOLD%%^-=[ %%^WHITE%%^%%^BOLD%%^Players on %s %%^RED%%^%%^BOLD%%^]=-", I3_THISMUD);
+    snprintf(buf, 300, "%%^RED%%^%%^BOLD%%^-=[ %%^WHITE%%^%%^BOLD%%^Players on %s %%^RED%%^%%^BOLD%%^]=-", this_i3mud->name);
     i3strlcpy(outbuf, i3centerline(buf, 78), 400);
     send_to_i3(I3_escape(outbuf));
 
@@ -3808,7 +3878,7 @@ void I3_send_emoteto(CHAR_DATA *ch, const char *to, I3_MUD *mud, const char *mes
 	i3strlcpy(buf, message, MAX_STRING_LENGTH);
 
     I3_escape(to);
-    I3_write_header("emoteto", I3_THISMUD, CH_I3NAME(ch), mud->name, to);
+    I3_write_header("emoteto", this_i3mud->name, CH_I3NAME(ch), mud->name, to);
     I3_write_buffer("\"");
     I3_write_buffer(CH_I3NAME(ch));
     I3_write_buffer("\",\"");
@@ -3872,7 +3942,7 @@ void I3_send_finger(CHAR_DATA *ch, char *user, char *mud)
 
     I3_escape(mud);
 
-    I3_write_header("finger-req", I3_THISMUD, CH_I3NAME(ch), mud, NULL);
+    I3_write_header("finger-req", this_i3mud->name, CH_I3NAME(ch), mud, NULL);
     I3_write_buffer("\"");
     I3_write_buffer(I3_escape(user));
     I3_write_buffer("\",})\r");
@@ -3989,7 +4059,7 @@ void I3_process_finger_req(I3_HEADER *header, char *s)
     i3_printf(ch, "%s@%s has requested your i3finger information.\r\n",
 	      header->originator_username, header->originator_mudname);
 
-    I3_write_header("finger-reply", I3_THISMUD, NULL, header->originator_mudname,
+    I3_write_header("finger-reply", this_i3mud->name, NULL, header->originator_mudname,
 		    header->originator_username);
     I3_write_buffer("\"");
     I3_write_buffer(I3_escape(CH_I3NAME(ch)));
@@ -4036,7 +4106,7 @@ void I3_send_locate(CHAR_DATA *ch, const char *user)
     if (!i3_is_connected())
 	return;
 
-    I3_write_header("locate-req", I3_THISMUD, CH_I3NAME(ch), NULL, NULL);
+    I3_write_header("locate-req", this_i3mud->name, CH_I3NAME(ch), NULL, NULL);
     I3_write_buffer("\"");
     I3_write_buffer(I3_escape(user));
     I3_write_buffer("\",})\r");
@@ -4117,10 +4187,10 @@ void I3_process_locate_req(I3_HEADER *header, char *s)
 	    choffline = TRUE;
     }
 
-    I3_write_header("locate-reply", I3_THISMUD, NULL, header->originator_mudname,
+    I3_write_header("locate-reply", this_i3mud->name, NULL, header->originator_mudname,
 		    header->originator_username);
     I3_write_buffer("\"");
-    I3_write_buffer(I3_THISMUD);
+    I3_write_buffer(this_i3mud->name);
     I3_write_buffer("\",\"");
     if (!choffline)
 	I3_write_buffer(CH_I3NAME(ch));
@@ -4143,7 +4213,7 @@ void I3_send_channel_listen(I3_CHANNEL *channel, bool lconnect)
     if (!i3_is_connected())
 	return;
 
-    I3_write_header("channel-listen", I3_THISMUD, NULL, I3_ROUTER_NAME, NULL);
+    I3_write_header("channel-listen", this_i3mud->name, NULL, I3_ROUTER_NAME, NULL);
     I3_write_buffer("\"");
     I3_write_buffer(channel->I3_name);
     I3_write_buffer("\",");
@@ -4204,7 +4274,7 @@ void I3_send_channel_adminlist(CHAR_DATA *ch, char *chan_name)
     if (!i3_is_connected())
 	return;
 
-    I3_write_header("chan-adminlist", I3_THISMUD, CH_I3NAME(ch), I3_ROUTER_NAME, NULL);
+    I3_write_header("chan-adminlist", this_i3mud->name, CH_I3NAME(ch), I3_ROUTER_NAME, NULL);
     I3_write_buffer("\"");
     I3_write_buffer(chan_name);
     I3_write_buffer("\",})\r");
@@ -4218,7 +4288,7 @@ void I3_send_channel_admin(CHAR_DATA *ch, char *chan_name, char *list)
     if (!i3_is_connected())
 	return;
 
-    I3_write_header("channel-admin", I3_THISMUD, CH_I3NAME(ch), I3_ROUTER_NAME, NULL);
+    I3_write_header("channel-admin", this_i3mud->name, CH_I3NAME(ch), I3_ROUTER_NAME, NULL);
     I3_write_buffer("\"");
     I3_write_buffer(chan_name);
     I3_write_buffer("\",");
@@ -4234,7 +4304,7 @@ void I3_send_channel_add(CHAR_DATA *ch, char *arg, int type)
     if (!i3_is_connected())
 	return;
 
-    I3_write_header("channel-add", I3_THISMUD, CH_I3NAME(ch), I3_ROUTER_NAME, NULL);
+    I3_write_header("channel-add", this_i3mud->name, CH_I3NAME(ch), I3_ROUTER_NAME, NULL);
     I3_write_buffer("\"");
     I3_write_buffer(arg);
     I3_write_buffer("\",");
@@ -4261,7 +4331,7 @@ void I3_send_channel_remove(CHAR_DATA *ch, I3_CHANNEL *channel)
     if (!i3_is_connected())
 	return;
 
-    I3_write_header("channel-remove", I3_THISMUD, CH_I3NAME(ch), I3_ROUTER_NAME, NULL);
+    I3_write_header("channel-remove", this_i3mud->name, CH_I3NAME(ch), I3_ROUTER_NAME, NULL);
     I3_write_buffer("\"");
     I3_write_buffer(channel->I3_name);
     I3_write_buffer("\",})\r");
@@ -4282,7 +4352,7 @@ void I3_send_shutdown(int delay)
 	    I3_send_channel_listen(channel, FALSE);
     }
 
-    I3_write_header("shutdown", I3_THISMUD, NULL, I3_ROUTER_NAME, NULL);
+    I3_write_header("shutdown", this_i3mud->name, NULL, I3_ROUTER_NAME, NULL);
     snprintf(s, 50, "%d", delay);
     I3_write_buffer(s);
     I3_write_buffer(",})\r");
@@ -4581,7 +4651,7 @@ void I3_char_login(CHAR_DATA *ch)
 	return;
 
     if (this_i3mud->ucache == TRUE) {
-	snprintf(buf, MAX_INPUT_LENGTH, "%s@%s", CH_I3NAME(ch), I3_THISMUD);
+	snprintf(buf, MAX_INPUT_LENGTH, "%s@%s", CH_I3NAME(ch), this_i3mud->name);
 	gender = I3_get_ucache_gender(buf);
 	sex = dikutoi3gender(CH_I3SEX(ch));
 
@@ -5559,20 +5629,8 @@ bool I3_read_config(int mudport)
 
 	word = i3fread_word(fin);
 	if (!strcasecmp(word, "I3CONFIG") && this_i3mud == NULL) {
-	    I3CREATE(this_i3mud, I3_MUD, 1);
-
-	    this_i3mud->status = -1;
-	    this_i3mud->autoconnect = 0;
+            this_i3mud = create_I3_mud();
 	    this_i3mud->player_port = mudport;		       /* Passed in from the mud's startup script */
-	    this_i3mud->password = 0;
-	    this_i3mud->mudlist_id = 0;
-	    this_i3mud->chanlist_id = 0;
-	    this_i3mud->minlevel = 1;			       /* Minimum default level before I3 will acknowledge you
-							        * exist */
-	    this_i3mud->immlevel = 2;			       /* Default immortal level */
-	    this_i3mud->adminlevel = 51;		       /* Default administration level */
-	    this_i3mud->implevel = 60;			       /* Default implementor level */
-
 	    I3_fread_config_file(fin);
 	    continue;
 	} else if (!strcasecmp(word, "END"))
@@ -6614,6 +6672,7 @@ void router_connect(const char *router_name, bool forced, int mudport, bool isco
 /* Wrapper for router_connect now - so we don't need to force older client installs to adjust. */
 void i3_startup(bool forced, int mudport, bool isconnected)
 {
+    i3_nuke_url_file();
     if (I3_read_config(mudport))
 	router_connect(NULL, forced, mudport, isconnected);
     else
@@ -6864,6 +6923,14 @@ char *I3_nameremap(const char *ps)
     return remapped;
 }
 
+void i3_nuke_url_file() {
+    struct stat      fst;
+
+    if(stat(I3_URL_DUMP, &fst) != -1) {
+        truncate(I3_URL_DUMP, 0);
+    }
+}
+
 void i3_check_urls() {
     FILE            *fp = NULL;
     struct stat      fst;
@@ -6871,6 +6938,7 @@ void i3_check_urls() {
     static int       last_changed = 0;
     int              i = 0;
     int              j = 0;
+    //int              x = 0;
 
     if(stat(I3_URL_DUMP, &fst) != -1) {
         if( fst.st_mtime > last_changed ) {
@@ -6883,10 +6951,21 @@ void i3_check_urls() {
             } else {
                 while( fgets(line, MAX_STRING_LENGTH-2, fp) ) {
                     /*
-                    while(*line && ((i = strlen(line)) > 0)) {
-                        if(ISNEWL(line[i-1])) {
-                            line[i-1] = '\0';
+                    // Remove trailing newlines, if any
+                    while(*line && ((x = strlen(line)) > 0)) {
+                        if(ISNEWL(line[x-1])) {
+                            line[x-1] = '\0';
                         }
+                    }
+                    // If anything is left, add a proper newline
+                    if(*line && x > 0 && !ISNEWL(line[x-1])) {
+                        line[x-1] = '\r';
+                        line[x] = '\n';
+                        line[x+1] = '\0';
+                    }
+                    if(*line || strlen(line) < 3) {
+                        // Nothing but the newline is here, skip it
+                        continue;
                     }
                     */
                     i++;
@@ -7191,7 +7270,7 @@ I3_CMD(I3_beep)
 	return;
     }
 
-    if (!strcasecmp(I3_THISMUD, pmud->name)) {
+    if (!strcasecmp(this_i3mud->name, pmud->name)) {
 	i3_printf(ch, "Use your mud's own internal system for that.\r\n");
 	return;
     }
@@ -7276,7 +7355,7 @@ I3_CMD(I3_tell)
 	return;
     }
 
-    if (!strcasecmp(I3_THISMUD, pmud->name)) {
+    if (!strcasecmp(this_i3mud->name, pmud->name)) {
 	i3_printf(ch, "Use your mud's own internal system for that.\r\n");
 	return;
     }
@@ -7350,7 +7429,7 @@ I3_CMD(I3_reply)
             return;
         }
 
-        if (!strcasecmp(I3_THISMUD, pmud->name)) {
+        if (!strcasecmp(this_i3mud->name, pmud->name)) {
             i3_printf(ch, "Use your mud's own internal system for that.\r\n");
             return;
         }
@@ -8031,7 +8110,7 @@ I3_CMD(I3_bancmd)
 	return;
     }
 
-    if (!fnmatch(argument, I3_THISMUD, 0)) {
+    if (!fnmatch(argument, this_i3mud->name, 0)) {
 	i3_printf(ch, "%%^YELLOW%%^You don't really want to do that....%%^RESET%%^\r\n");
 	return;
     }
@@ -8073,13 +8152,13 @@ I3_CMD(I3_ignorecmd)
 	return;
     }
 
-    snprintf(buf, MAX_INPUT_LENGTH, "%s@%s", CH_I3NAME(ch), I3_THISMUD);
+    snprintf(buf, MAX_INPUT_LENGTH, "%s@%s", CH_I3NAME(ch), this_i3mud->name);
     if (!strcasecmp(buf, argument)) {
 	i3_printf(ch, "%%^YELLOW%%^You don't really want to do that....%%^RESET%%^\r\n");
 	return;
     }
 
-    if (!fnmatch(argument, I3_THISMUD, 0)) {
+    if (!fnmatch(argument, this_i3mud->name, 0)) {
 	i3_printf(ch, "%%^YELLOW%%^Ignoring your own mud would be silly.%%^RESET%%^\r\n");
 	return;
     }
@@ -8333,7 +8412,7 @@ I3_CMD(I3_addchan)
 
     I3CREATE(channel, I3_CHANNEL, 1);
     channel->I3_name = I3STRALLOC(arg);
-    channel->host_mud = I3STRALLOC(I3_THISMUD);
+    channel->host_mud = I3STRALLOC(this_i3mud->name);
     channel->local_name = I3STRALLOC(arg2);
     channel->i3perm = I3PERM_ADMIN;
     channel->layout_m = I3STRALLOC("%%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^] %%^CYAN%%^%%^BOLD%%^%s@%s: %%^CYAN%%^%s");
@@ -8343,9 +8422,9 @@ I3_CMD(I3_addchan)
     I3LINK(channel, first_I3chan, last_I3chan, next, prev);
 
     if (type != 0) {
-	snprintf(buf, MAX_STRING_LENGTH, "({\"%s\",}),({}),", I3_THISMUD);
+	snprintf(buf, MAX_STRING_LENGTH, "({\"%s\",}),({}),", this_i3mud->name);
 	I3_send_channel_admin(ch, channel->I3_name, buf);
-	i3_printf(ch, "%%^GREEN%%^%%^BOLD%%^Sending command to add %s to the invite list.%%^RESET%%^\r\n", I3_THISMUD);
+	i3_printf(ch, "%%^GREEN%%^%%^BOLD%%^Sending command to add %s to the invite list.%%^RESET%%^\r\n", this_i3mud->name);
     }
 
     i3_printf(ch, "%%^YELLOW%%^%s@%s %%^WHITE%%^%%^BOLD%%^is now locally known as %%^YELLOW%%^%s%%^RESET%%^\r\n", channel->I3_name,
@@ -8371,8 +8450,8 @@ I3_CMD(I3_removechan)
 	return;
     }
 
-    if (strcasecmp(channel->host_mud, I3_THISMUD)) {
-	i3_printf(ch, "%%^RED%%^%%^BOLD%%^%s does not host this channel and cannot remove it.%%^RESET%%^\r\n", I3_THISMUD);
+    if (strcasecmp(channel->host_mud, this_i3mud->name)) {
+	i3_printf(ch, "%%^RED%%^%%^BOLD%%^%s does not host this channel and cannot remove it.%%^RESET%%^\r\n", this_i3mud->name);
 	return;
     }
 
@@ -8737,7 +8816,7 @@ I3_CMD(I3_finger)
 	return;
     }
 
-    if (!strcasecmp(I3_THISMUD, pmud->name)) {
+    if (!strcasecmp(this_i3mud->name, pmud->name)) {
 	i3_printf(ch, "Use your mud's own internal system for that.\r\n");
 	return;
     }
@@ -9300,7 +9379,7 @@ char                                   *I3_find_social(CHAR_DATA *ch, char *snam
 
     if (person && person[0] != '\0' && mud && mud[0] != '\0') {
 	if (person && person[0] != '\0' && !strcasecmp(person, CH_I3NAME(ch))
-	    && mud && mud[0] != '\0' && !strcasecmp(mud, I3_THISMUD)) {
+	    && mud && mud[0] != '\0' && !strcasecmp(mud, this_i3mud->name)) {
 	    if (!social->others_auto) {
 		i3_printf(ch, "%%^YELLOW%%^Social %%^WHITE%%^%%^BOLD%%^%s%%^YELLOW%%^: Missing others_auto.%%^RESET%%^\r\n", social->name);
 		return socname;
@@ -9483,7 +9562,7 @@ void I3_send_social(I3_CHANNEL *channel, CHAR_DATA *ch, const char *argument)
      */
     argument = i3one_argument(argument, arg1);
 
-    snprintf(user, MAX_INPUT_LENGTH, "%s@%s", CH_I3NAME(ch), I3_THISMUD);
+    snprintf(user, MAX_INPUT_LENGTH, "%s@%s", CH_I3NAME(ch), this_i3mud->name);
     if (!strcasecmp(user, argument)) {
 	i3_printf(ch, "Cannot target yourself due to the nature of I3 socials.\r\n");
 	return;
@@ -9997,7 +10076,7 @@ void i3_npc_chat(const char *chan_name, const char *actor, const char *message)
     else
 	i3strlcpy(buf, message, MAX_STRING_LENGTH);
 
-    I3_write_header("channel-e", I3_THISMUD, actor, NULL, NULL);
+    I3_write_header("channel-e", this_i3mud->name, actor, NULL, NULL);
     I3_write_buffer("\"");
     I3_write_buffer(channel->I3_name);
     I3_write_buffer("\",\"");
