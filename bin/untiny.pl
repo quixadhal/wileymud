@@ -510,11 +510,6 @@ my ($origin, $page) = get_url($url);
 if( !defined $page ) {
     sleep 0.5;
     ($origin, $page) = get_url($url);
-    # Give it a third try, because sometimes it fails for unknown reasons.
-    if( !defined $page ) {
-        sleep 4.5;
-        ($origin, $page) = get_url($url);
-    }
 }
 
 #print STDERR "DEBUG: $page\n";
@@ -532,6 +527,12 @@ if ($given_uri =~ /tinyurl\.com\/\w\w\w\w\w\w\w$/i) {
     $tinyurl = $origin;
 } else {
     $tinyurl = makeashorterlink($origin);
+}
+
+# Give it a third try, because sometimes it fails for unknown reasons.
+if( !defined $page ) {
+    sleep 0.5;
+    ($origin, $page) = get_url($tinyurl);
 }
 
 my $chan_color = channel_color($channel, $style) if defined $channel;
