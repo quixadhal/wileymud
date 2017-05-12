@@ -1,7 +1,4 @@
 <?php
-global $time_start;
-$time_start = microtime(true);
-
 global $isLocal;
 global $pinkfishMap;
 global $hourColors;
@@ -26,36 +23,13 @@ function isMobile() {
     return preg_match("/(android|avantgo|blackberry|bolt|boost|cricket|docomo|fone|hiptop|mini|mobi|palm|phone|pie|tablet|up\.browser|up\.link|webos|wos)/i", $_SERVER["HTTP_USER_AGENT"]);
 }
 
-if( isMobile() || ( isset($_REQUEST) && isset($_REQUEST["m"]) ) ) {
-    header("Location: http://wileymud.i3.themud.org/~wiley/i3log_m.php");
+if( ! isMobile() ) {
+    //header("Location: http://wiley.the-firebird.net/~wiley/i3log.php");
+    //header("Location: http://wileymud.i3.themud.org/~wiley/i3log.php");
 }
 
 if( isset($_REQUEST) && isset($_REQUEST["url"]) ) {
     $URL_ONLY = 1;
-}
-
-function numbered_source($filename)
-{
-    $lines = implode(range(1, count(file($filename))), '<br />');
-    $content = highlight_file($filename, true);
-    $style = '
-    <style type="text/css"> 
-        .num { 
-        float: left; 
-        color: gray; 
-        font-size: 13px;    
-        font-family: monospace; 
-        text-align: right; 
-        margin-right: 6pt; 
-        padding-right: 6pt; 
-        border-right: 1px solid gray;} 
-
-        body {margin: 0px; margin-left: 5px;} 
-        td {vertical-align: top; white-space: normal;} 
-        code {white-space: nowrap;} 
-    </style>
-    '; 
-    return "$style\n<table><tr><td class=\"num\">\n$lines\n</td><td>\n$content\n</td></tr></table>"; 
 }
 
 function init_pinkfish_map() {
@@ -384,7 +358,12 @@ function get_speaker_color($who, $where) {
             file_put_contents($CHAT_DATA_FILE, $dump);
         }
     }
-    $fancyLad = "$speakerColor" . $who . "@" . $where . "</SPAN>";
+    //$fancyLad = "$speakerColor" . $who . "@" . $where . "</SPAN>";
+    $who_bits = array();
+    $who_bits = explode(" ", $who);
+    $who = $who_bits[sizeof($who_bits) - 1];
+
+    $fancyLad = "$speakerColor" . $who . "</SPAN>";
     return $fancyLad;
 }
 
@@ -565,22 +544,7 @@ $bg = 0;
                 for(var i = current; i < current + pagesize; i++) {
                     row_on(i);
                 }
-                r = document.getElementById("hidden_time");
-                if(r !== null) {
-                    if(r.style.display !== "none") {
-                        r.style.display = "none";
-                    }
-                    t = document.getElementById("timespent");
-                    if(t !== null) {
-                        //t.innerHTML = r.innerHTML;
-                        t.innerHTML = pagesize;
-                    }
-                }
                 last_page();
-                //t = document.getElementById("timespent");
-                //if(t !== null) {
-                //    t.innerHTML = (t1 - t0).toFixed(3);
-                //}
             }
             function refill_the_table() {
                 t0 = performance.now();
@@ -598,10 +562,6 @@ $bg = 0;
 
                 //t.replaceChild(newbody, oldbody);
                 spent = performance.now() - t0;
-                w = document.getElementById("timespent");
-                if(w !== null) {
-                    w.innerHTML = (spent/1000).toFixed(3);
-                }
             }
             function setup() {
                 setup_work();
@@ -614,12 +574,14 @@ $bg = 0;
             table { table-layout: fixed; max-width: 99%; overflow-x: hidden; word-wrap: break-word; text-overflow: ellipsis; }
             a { text-decoration:none; }
             a:hover { text-decoration:underline; }
+            th,td { font-size: 40px; }
+            input { font-size: 60px; }
         </style>
     </head>
     <body bgcolor="black" text="#d0d0d0" link="#ffffbf" vlink="#ffa040" onload="setup();">
         <table id="navbar" width="99%" align="center">
             <tr>
-                <td align="left" width="35%">
+                <td align="center" width="100%">
                     <input id="start_button" type="button" value="1" onclick="first_page();">
                     <input id="back_ten_button" type="button" value="<<" onclick="page_backward_ten();">
                     <input id="back_button" type="button" value="back" onclick="page_backward();">
@@ -628,38 +590,13 @@ $bg = 0;
                     <input id="forward_ten_button" type="button" value=">>" onclick="page_forward_ten();">
                     <input id="end_button" type="button" value="end" onclick="last_page();">
                 </td>
-                <td align="center" width="10%">
-                    &nbsp;
-                </td>
-                <td align="center" width="10%">
-                    <a href="mudlist.html">Mudlist</a>
-                </td>
-                <td align="center" width="10%">
-                    <a href="https://i3.themud.org/chanhist.php#Channel=all">Other Logs</a>
-                </td>
-                <td align="right" width="35%" onmouseover="pagegen.style.color='#00FF00'; timespent.style.color='#00FF00';" onmouseout="pagegen.style.color='#1F1F1F'; timespent.style.color='#1F1F1F';">
-                    &nbsp;
-                    <a href="javascript:;" onmousedown="toggleDiv('source');">
-                        <span id="pagegen" style="color: #1F1F1F">
-                            Page 
-                            <span id="pagegen_word">generated</span>
-                            in 
-                            <span id="timespent" style="color: #1F1F1F">
-                                00.0000
-                            </span>
-                             seconds.
-                        </span>
-                    </a>
-                </td>
             </tr>
         </table>
         <table id="content" width="99%" align="center">
             <thead>
             <tr>
-                <th id="dateheader" align="left" width="80px" style="color: #DDDDDD; min-width: 80px;">Date</th>
-                <th id="timeheader" align="left" width="60px" style="color: #DDDDDD; min-width: 40px;">Time</th>
-                <th id="channelheader" align="left" width="80px" style="color: #DDDDDD; min-width: 100px;">Channel</th>
-                <th id="speakerheader" align="left" width="200px" style="color: #DDDDDD; min-width: 200px;">Speaker</th>
+                <th id="timeheader" align="left" width="170mm" style="color: #DDDDDD; min-width: 170mm;">Time</th>
+                <th id="speakerheader" align="left" width="250mm" style="color: #DDDDDD; min-width: 250mm;">Speaker</th>
                 <th align="left">&nbsp;</th>
             </tr>
             </thead>
@@ -675,20 +612,13 @@ $bg = 0;
                 $date = substr( $line_data[0], 0, 10 ); // YYYY.MM.DD
                 ?>
                 <tr id="row_<?php echo $bg;?>" style="display:none">
-                    <td bgcolor="<?php echo $bgColor; ?>"><?php echo $date; ?></td>
-
                     <?php $time = get_time_color( $line_data[0] ); ?>
                     <td bgcolor="<?php echo $bgColor; ?>"><?php echo $time; ?></td>
-
-                    <?php $channel = get_channel_color( $line_data[1] ); ?>
-                    <td bgcolor="<?php echo $bgColor; ?>"><?php echo $channel; ?></td>
 
                     <?php $speaker = get_speaker_color( $who[0], $who[1] ); ?>
                     <td bgcolor="<?php echo $bgColor; ?>"><?php echo $speaker; ?></td>
 
                     <?php
-                    //$tmp_msg = preg_replace("/\x1b\[[0-9]+(;[0-9]+)*m/", "", $line_data[3]);
-                    //$message = htmlentities($tmp_msg,0,'UTF-8');
                     $message = htmlentities($line_data[3], ENT_QUOTES|ENT_SUBSTITUTE, 'UTF-8');
                     $message = preg_replace("/\%\^RED\%\^\%\^BOLD\%\^/", "<span style=\"color: #ff5555;\">", $message);
                     $message = preg_replace("/\%\^RED\%\^BOLD\%\^/", "<span style=\"color: #ff5555;\">", $message);
@@ -744,9 +674,5 @@ $bg = 0;
             ?>
             </tbody>
         </table>
-        <div id="source" style="display: none; vertical-align: bottom; background-color: white;"> <?php echo numbered_source(__FILE__); ?> </div>
-        <div id="dump" style="display: none; vertical-align: bottom; background-color: white;"> <?php echo json_encode($colorMap, JSON_PRETTY_PRINT); ?> </div>
-        <?php $time_end = microtime(true); $time_spent = $time_end - $time_start; ?>
-        <div id="hidden_time" style="display: none;"> <?php printf( "%7.3f", $time_spent); ?> </div>
     </body>
 </html>
