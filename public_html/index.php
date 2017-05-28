@@ -21,12 +21,12 @@ WHAT:
 <td align=center>
 <center>
   <a href="mailto:quixadhal@gmail.com">Dread Quixadhal</a> welcomes you to<br>
-<a href="telnet://wileymud.i3.themud.org:3000/">
+<a href="telnet://wileymud.lpmud.org:3000/">
 WileyMUD III!<br>
 </a></center>
  </td>
 <td align=right>
-<a href="telnet://wileymud.i3.themud.org:3000/">
+<a href="telnet://wileymud.lpmud.org:3000/">
 <img src="gfx/orc.jpg" border=0 align=center width=116 height=163
  alt="(telnet)">
 </a></td> 

@@ -22,12 +22,23 @@ $LINES_TO_READ      = 2500;
 $PAGE_SIZE          = 25;
 $URL_ONLY           = 0;
 
+//header("Location: http://wiley.the-firebird.net/~wiley/i3log.php");
+//header("Location: http://wileymud.i3.themud.org/~wiley/i3log.php");
+$DESKTOP_URL        = "http://wileymud.i3.themud.org/~wiley/i3log.php";
+$MOBILE_URL         = "http://wileymud.i3.themud.org/~wiley/i3log_m.php";
+
 function isMobile() {
-    return preg_match("/(android|avantgo|blackberry|bolt|boost|cricket|docomo|fone|hiptop|mini|mobi|palm|phone|pie|tablet|up\.browser|up\.link|webos|wos)/i", $_SERVER["HTTP_USER_AGENT"]);
+    if( isset($_REQUEST) && isset($_REQUEST["m"]) ) {
+        return true;
+    }
+    if( true === preg_match("/(android|avantgo|blackberry|bolt|boost|cricket|docomo|fone|hiptop|mini|mobi|palm|phone|pie|tablet|up\.browser|up\.link|webos|wos)/i", $_SERVER["HTTP_USER_AGENT"]) ) {
+        return true;
+    }
+    return false;
 }
 
-if( isMobile() || ( isset($_REQUEST) && isset($_REQUEST["m"]) ) ) {
-    header("Location: http://wileymud.i3.themud.org/~wiley/i3log_m.php");
+if( isMobile() ) {
+    header("Location: $MOBILE_URL");
 }
 
 if( isset($_REQUEST) && isset($_REQUEST["url"]) ) {
@@ -181,6 +192,8 @@ function get_channel_colors() {
         "pyom"        => "%^FLASH%^%^LIGHTGREEN%^",
         "free_speech" => "%^PINK%^",
         "url"         => "%^WHITE%^",
+        "dwchat"      => "%^LIGHTBLUE%^",
+        "dgd"         => "%^MAGENTA%^",
         "wileymud"    => "%^FLASH%^%^CYAN%^",
 
         "ibuild"      => "%^B_RED%^%^YELLOW%^",
@@ -330,7 +343,8 @@ function get_time_color($time) {
     $hour = substr( $time, 11, 2 );
     $min  = substr( $time, 14, 2 );
     $sec  = substr( $time, 17, 2 );
-    $fancyLad = $hourColors[$hour] . "$hour:$min.$sec" . "</SPAN>";
+    $timestr = "$hour:$min.$sec";
+    $fancyLad = $hourColors[$hour] . $timestr . "</SPAN>";
     return $fancyLad;
 }
 
@@ -386,6 +400,41 @@ function get_speaker_color($who, $where) {
     }
     $fancyLad = "$speakerColor" . $who . "@" . $where . "</SPAN>";
     return $fancyLad;
+}
+
+function get_background_color($channel, $counter) {
+    $hi_colors = array(
+        "default"       => "#1F1F1F",
+        "wiley"         => "#2F1F00",
+        "ds"            => "#2F1F00",
+        "dchat"         => "#002F2F",
+        "intergossip"   => "#002F00",
+        "intercre"      => "#2F1F00",
+        "free_speech"   => "#2F0000",
+        "dwchat"        => "#00002F",
+        "dgd"           => "#1F002F",
+    );
+    $lo_colors = array(
+        "default"       => "#000000",
+        "wiley"         => "#0F0700",
+        "ds"            => "#0F0F00",
+        "dchat"         => "#000F0F",
+        "intergossip"   => "#000F00",
+        "intercre"      => "#0F0700",
+        "free_speech"   => "#0F0000",
+        "dwchat"        => "#00000F",
+        "dgd"           => "#07000F",
+    );
+
+    if( $counter % 2 ) {
+        $choice = array_key_exists( $channel, $lo_colors) ? $lo_colors[$channel] : $lo_colors["default"];
+    } else {
+        $choice = array_key_exists( $channel, $hi_colors) ? $hi_colors[$channel] : $hi_colors["default"];
+    }
+
+    //echo "<br>Channel: $channel, Counter: $counter, Choice: $choice<br>";
+    $choice = ($counter % 2) ? "#000000" : "#1F1F1F";
+    return $choice;
 }
 
 function is_bot_line($line) {
@@ -666,11 +715,11 @@ $bg = 0;
             <tbody>
             <?php
             foreach ($file_lines as $line) {
-                $bgColor = ($bg % 2) ? "#000000" : "#1F1F1F";
                 $line_data = explode( "\t", $line );
                 if ( sizeof( $line_data ) != 4 ) {
                     continue;
                 }
+                $bgColor = get_background_color( $line_data[1], $bg );
                 $who = explode( "@", $line_data[2] );
                 $date = substr( $line_data[0], 0, 10 ); // YYYY.MM.DD
                 ?>

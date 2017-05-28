@@ -19,13 +19,23 @@ $LINES_TO_READ      = 2500;
 $PAGE_SIZE          = 25;
 $URL_ONLY           = 0;
 
+//header("Location: http://wiley.the-firebird.net/~wiley/i3log.php");
+//header("Location: http://wileymud.i3.themud.org/~wiley/i3log.php");
+$DESKTOP_URL        = "http://wileymud.i3.themud.org/~wiley/i3log.php";
+$MOBILE_URL         = "http://wileymud.i3.themud.org/~wiley/i3log_m.php";
+
 function isMobile() {
-    return preg_match("/(android|avantgo|blackberry|bolt|boost|cricket|docomo|fone|hiptop|mini|mobi|palm|phone|pie|tablet|up\.browser|up\.link|webos|wos)/i", $_SERVER["HTTP_USER_AGENT"]);
+    if( isset($_REQUEST) && isset($_REQUEST["m"]) ) {
+        return true;
+    }
+    if( true === preg_match("/(android|avantgo|blackberry|bolt|boost|cricket|docomo|fone|hiptop|mini|mobi|palm|phone|pie|tablet|up\.browser|up\.link|webos|wos)/i", $_SERVER["HTTP_USER_AGENT"]) ) {
+        return true;
+    }
+    return false;
 }
 
 if( ! isMobile() ) {
-    //header("Location: http://wiley.the-firebird.net/~wiley/i3log.php");
-    //header("Location: http://wileymud.i3.themud.org/~wiley/i3log.php");
+    //header("Location: $DESKTOP_URL");
 }
 
 if( isset($_REQUEST) && isset($_REQUEST["url"]) ) {
@@ -155,6 +165,8 @@ function get_channel_colors() {
         "pyom"        => "%^FLASH%^%^LIGHTGREEN%^",
         "free_speech" => "%^PINK%^",
         "url"         => "%^WHITE%^",
+        "dwchat"      => "%^LIGHTBLUE%^",
+        "dgd"         => "%^MAGENTA%^",
         "wileymud"    => "%^FLASH%^%^CYAN%^",
 
         "ibuild"      => "%^B_RED%^%^YELLOW%^",
@@ -304,7 +316,8 @@ function get_time_color($time) {
     $hour = substr( $time, 11, 2 );
     $min  = substr( $time, 14, 2 );
     $sec  = substr( $time, 17, 2 );
-    $fancyLad = $hourColors[$hour] . "$hour:$min.$sec" . "</SPAN>";
+    $timestr = "$hour:$min";
+    $fancyLad = $hourColors[$hour] . $timestr . "</SPAN>";
     return $fancyLad;
 }
 
@@ -365,6 +378,41 @@ function get_speaker_color($who, $where) {
 
     $fancyLad = "$speakerColor" . $who . "</SPAN>";
     return $fancyLad;
+}
+
+function get_background_color($channel, $counter) {
+    $hi_colors = array(
+        "default"       => "#2F2F2F",
+        "wiley"         => "#3F2F00",
+        "ds"            => "#3F3F00",
+        "dchat"         => "#003F3F",
+        "intergossip"   => "#003F00",
+        "intercre"      => "#3F2F00",
+        "free_speech"   => "#3F0000",
+        "dwchat"        => "#00003F",
+        "dgd"           => "#2F003F",
+    );
+    $lo_colors = array(
+        "default"       => "#000000",
+        "wiley"         => "#1F0F00",
+        "ds"            => "#1F1F00",
+        "dchat"         => "#001F1F",
+        "intergossip"   => "#001F00",
+        "intercre"      => "#1F0F00",
+        "free_speech"   => "#1F0000",
+        "dwchat"        => "#00001F",
+        "dgd"           => "#0F001F",
+    );
+
+    if( $counter % 2 ) {
+        $choice = array_key_exists( $channel, $lo_colors) ? $lo_colors[$channel] : $lo_colors["default"];
+    } else {
+        $choice = array_key_exists( $channel, $hi_colors) ? $hi_colors[$channel] : $hi_colors["default"];
+    }
+
+    //echo "<br>Channel: $channel, Counter: $counter, Choice: $choice<br>";
+    //$choice = ($counter % 2) ? "#000000" : "#2F2F2F";
+    return $choice;
 }
 
 function is_bot_line($line) {
@@ -595,7 +643,7 @@ $bg = 0;
         <table id="content" width="99%" align="center">
             <thead>
             <tr>
-                <th id="timeheader" align="left" width="170mm" style="color: #DDDDDD; min-width: 170mm;">Time</th>
+                <th id="timeheader" align="left" width="120mm" style="color: #DDDDDD; min-width: 170mm;">Time</th>
                 <th id="speakerheader" align="left" width="250mm" style="color: #DDDDDD; min-width: 250mm;">Speaker</th>
                 <th align="left">&nbsp;</th>
             </tr>
@@ -603,11 +651,11 @@ $bg = 0;
             <tbody>
             <?php
             foreach ($file_lines as $line) {
-                $bgColor = ($bg % 2) ? "#000000" : "#1F1F1F";
                 $line_data = explode( "\t", $line );
                 if ( sizeof( $line_data ) != 4 ) {
                     continue;
                 }
+                $bgColor = get_background_color( $line_data[1], $bg );
                 $who = explode( "@", $line_data[2] );
                 $date = substr( $line_data[0], 0, 10 ); // YYYY.MM.DD
                 ?>
