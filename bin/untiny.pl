@@ -48,6 +48,7 @@ use HTML::Entities;
 use LWP::UserAgent;
 use URI;
 use WWW::Shorten::TinyURL qw(makeashorterlink);
+use WWW::Mechanize;
 
 sub channel_color {
     my $channel = shift;
@@ -205,7 +206,10 @@ sub channel_color {
 sub pinkfish_to {
     my $string = shift;
     my $style = shift;
-    $style = "wiley" if !defined $style;
+    $style = "ansi" if !defined $style;
+
+    return $string if $style eq "debug";
+    return $string if $style eq "wiley";
 
     my $conversion = {
         "ansi"  => {
@@ -221,7 +225,7 @@ sub pinkfish_to {
             '%^BLUE%^'                  => "\033[34m",
             '%^MAGENTA%^'               => "\033[35m",
             '%^CYAN%^'                  => "\033[36m",
-            #'%^WHITE%^'                 => "\033[37m",
+            '%^DARKGREY%^'              => "\033[37m",
 
             '%^GREY%^'                  => "\033[1;30m",
             '%^PINK%^'                  => "\033[1;31m",
@@ -233,12 +237,33 @@ sub pinkfish_to {
             '%^LIGHTCYAN%^'             => "\033[1;36m",
             '%^WHITE%^'                 => "\033[1;37m",
         },
-        "wiley" => {
-        },
         "html" => {
+            '%^RESET%^'                 => '</SPAN>',
+
+            '%^BOLD%^'                  => '<SPAN style="bold;">',
+            '%^FLASH%^'                 => '<SPAN class="blink;">',
+
+            '%^BLACK%^'                 => '<SPAN style="color: #555555">',
+            '%^RED%^'                   => '<SPAN style="color: #ff5555">',
+            '%^GREEN%^'                 => '<SPAN style="color: #55ff55">',
+            '%^ORANGE%^'                => '<SPAN style="color: #ffaa55">',
+            '%^BLUE%^'                  => '<SPAN style="color: #5555ff">',
+            '%^MAGENTA%^'               => '<SPAN style="color: #ff55ff">',
+            '%^CYAN%^'                  => '<SPAN style="color: #55ffff">',
+            '%^DARKGREY%^'              => '<SPAN style="color: #aaaaaa">',
+
+            '%^GREY%^'                  => '<SPAN style="color: #aaaaaa">',
+            '%^PINK%^'                  => '<SPAN style="color: #ffaaaa">',
+            '%^LIGHTRED%^'              => '<SPAN style="color: #ffaaaa">',
+            '%^LIGHTGREEN%^'            => '<SPAN style="color: #aaffaa">',
+            '%^YELLOW%^'                => '<SPAN style="color: #ffff55">',
+            '%^LIGHTBLUE%^'             => '<SPAN style="color: #aaaaff">',
+            '%^LIGHTMAGENTA%^'          => '<SPAN style="color: #ffaaff">',
+            '%^LIGHTCYAN%^'             => '<SPAN style="color: #aaffff">',
+            '%^WHITE%^'                 => '<SPAN style="color: #ffffff">',
         },
     };
-    foreach my $k (keys(%${ $conversion->{$style} })) {
+    foreach my $k ( keys( %{ $conversion->{$style} } ) ) {
         my $v = $conversion->{$style}{$k};
         $string =~ s/\Q$k\E/$v/gsmx;
     }
@@ -261,6 +286,7 @@ sub pinkfish_to_ansi {
         '%^MAGENTA%^'               => "\033[35m",
         '%^CYAN%^'                  => "\033[36m",
         #'%^WHITE%^'                 => "\033[37m",
+        '%^DARKGREY%^'              => "\033[37m",
 
         '%^GREY%^'                  => "\033[1;30m",
         '%^PINK%^'                  => "\033[1;31m",
@@ -279,12 +305,52 @@ sub pinkfish_to_ansi {
     return $string;
 }
 
+#my $testvar = "%^RESET%^%^GREEN%^http://tinyurl.com/lhs9rts ::%^RESET%^ %^RESET%^YouTube %^YELLOW%^[CW-gdyJJBII]%^RESET%^ is Duran Duran - RIO 35th Anniversary: An oral history with Roger, Nick, John & Simon %^RED%^(15:29)%^RESET%^\n";
+#print pinkfish_to_ansi($testvar);
+#exit 1;
+
+sub new_get_url {
+    my $url = shift;
+
+    return undef if !defined $url;
+    my $timeout = 90;
+    my $lwp = WWW::Mechanize->new();
+       $lwp->agent('User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36');
+       $URI::ABS_ALLOW_RELATIVE_SCHEME = 1;
+       $URI::ABS_REMOTE_LEADING_DOTS = 1; 
+
+    my $given_uri = URI->new($url);
+    my $given_host = $given_uri->host;
+    my $origin_uri = undef;
+
+    #print STDERR "DEBUG: given URL:  $given_uri\n";
+    #print STDERR "DEBUG: given HOST: $given_host\n";
+
+    my $response = undef;
+
+    eval {
+        local $SIG{ALRM} = sub { die "Exceeded Timeout of $timeout for $url\n" };
+        alarm $timeout;
+        $response = $lwp->get($url);
+        alarm 0;
+    };
+    warn "Timeout" if($EVAL_ERROR and ($EVAL_ERROR =~ /^Exceeded Timeout/));
+
+    if( (defined $response) and $response->is_success ) {
+        my $origin = $response->uri();
+        $origin_uri = (defined $origin) ? URI->new($origin) : $given_uri->clone;
+        return ($origin_uri, $response->content);
+    }
+    return ($given_uri, undef);
+}
+
 sub get_url {
     my $url = shift;
 
     return undef if !defined $url;
     my $timeout = 90;
-    my $lwp = LWP::UserAgent->new();
+    my $lwp = LWP::UserAgent->new( cookie_jar => {} );
+    #my $lwp = WWW::Mechanize->new();
        $lwp->timeout($timeout/2);
        #$lwp->agent("User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.5) Gecko/20031007 Firebird/0.7");
        $lwp->agent('User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36');
@@ -325,16 +391,47 @@ sub get_url {
     return undef;
 }
 
-sub get_youtube_id {
+sub get_page_title {
     my $page = shift;
 
-    $page =~ /<link\s+rel=\"canonical\"\s+href=\".*?\/watch\?v=([^\"\&]*)\">/i;
-    my ($id) =  ($1);
-    return $id;
+    return undef if !defined $page;
+    #<meta name="robots" content="noindex">
+    $page =~ /<meta\s+name=\"robots\"\s+content=\"([^\"]*)\">/i;
+    my ($robot) =  ($1);
+    return "Robot Error" if defined $robot;
+
+    $page =~ /<title>\s*([^\<]*?)\s*<\/title>/i;
+    my ($funky) = ($1);
+    return $funky;
+}
+
+sub get_youtube_id {
+    my $page = shift;
+    my $xurl = shift;
+
+    if( defined $xurl ) {
+        $xurl =~ /watch\?v=([^\"\&]*)\">/i;
+        my ($id) =  ($1);
+        return $id if defined $id;
+    }
+
+    if( defined $page ) {
+        $page =~ /<link\s+rel=\"canonical\"\s+href=\".*?\/watch\?v=([^\"\&]*)\">/i;
+        my ($id) =  ($1);
+        return $id if defined $id;
+    }
+
+    return undef;
 }
 
 sub get_youtube_title {
     my $page = shift;
+
+    return undef if !defined $page;
+    #<meta name="robots" content="noindex">
+    $page =~ /<meta\s+name=\"robots\"\s+content=\"([^\"]*)\">/i;
+    my ($robot) =  ($1);
+    return "Robot Error" if defined $robot;
 
     $page =~ /<meta\s+name=\"title\"\s+content=\"([^\"]*)\">/i;
     my ($title) =  ($1);
@@ -342,62 +439,43 @@ sub get_youtube_title {
     return $title;
 }
 
-sub get_youtube_desc {
-    my $page = shift;
-
-    $page =~ /<meta\s+name=\"description\"\s+content=\"([^\"]*)\">/i;
-    my ($desc) =  ($1);
-    $desc = decode_entities($desc) if defined $desc;
-    return $desc;
-}
-
-sub get_youtube_keywords {
-    my $page = shift;
-
-    $page =~ /<meta\s+name=\"keywords\"\s+content=\"([^\"]*)\">/i;
-    my @keywords = (split /,\s+/, $1);
-    return \@keywords;
-}
-
 sub get_youtube_duration {
     my $page = shift;
 
+    return undef if !defined $page;
     $page =~ /<meta\s+itemprop=\"duration\"\s+content=\"([^\"]*)\">/i;
     my ($funky) = ($1);
+    return undef if !defined $funky;
+
     $funky =~ /.*?(\d+)M(\d+)S/;
     my ($minutes, $seconds) = ($1, $2);
     return sprintf "%d:%02d", $minutes, $seconds;
 }
 
-sub get_youtube_length {
-    my $page = shift;
-
-    $page =~ /<meta\s+itemprop=\"duration\"\s+content=\"([^\"]*)\">/i;
-    my ($funky) = ($1);
-    $funky =~ /.*?(\d+)M(\d+)S/;
-    my ($minutes, $seconds) = ($1, $2);
-    return ($minutes, $seconds);
-}
-
-sub get_page_title {
-    my $page = shift;
-
-    $page =~ /<title>\s*([^\<]*?)\s*<\/title>/i;
-    my ($funky) = ($1);
-    return $funky;
-}
-
 sub get_imdb_id {
     my $page = shift;
+    my $xurl = shift;
 
-    $page =~ /<meta\s+property=\"pageId\"\s+content=\"(tt\d\d\d\d\d\d\d)\"\s+\/>/i;
-    my ($id) =  ($1);
-    return $id;
+    #http://www.imdb.com/title/tt5171438/?ref_=nv_sr_1
+    if( defined $xurl ) {
+        $xurl =~ /\/title\/(tt\d\d\d\d\d\d\d)\//i;
+        my ($id) =  ($1);
+        return $id if defined $id;
+    }
+
+    if( defined $page ) {
+        $page =~ /<meta\s+property=\"pageId\"\s+content=\"(tt\d\d\d\d\d\d\d)\"\s+\/>/i;
+        my ($id) =  ($1);
+        return $id if defined $id;
+    }
+
+    return undef;
 }
 
 sub get_imdb_title {
     my $page = shift;
 
+    return undef if !defined $page;
     $page =~ /<meta\s+name=\"title\"\s+content=\"([^\"]*)\"\s+\/>/i;
     my ($title) =  ($1);
     $title = decode_entities($title) if defined $title;
@@ -407,43 +485,42 @@ sub get_imdb_title {
 sub get_imdb_duration {
     my $page = shift;
 
+    return undef if !defined $page;
     $page =~ /<time\s+itemprop=\"duration\"\s+datetime=\"PT(\d+)M\">/i;
     my ($minutes) = ($1);
+    return undef if !defined $minutes;
+
     my $hours = int( $minutes / 60 );
     $minutes = $minutes % 60;
     return sprintf "%d:%02d", $hours, $minutes;
 }
 
-sub get_steam_id {
-    my $page = shift;
-
-    $page =~ /<link\s+rel=\"canonical\"\s+href=\".*?\/app\/([^\"\&]*)\/\">/i;
-    my ($id) =  ($1);
-    return $id;
-}
-
-sub get_steam_desc {
-    my $page = shift;
-
-    $page =~ /<meta\s+name=\"Description\"\s+content=\"([^\"]*)\">/i;
-    my ($desc) =  ($1);
-    $desc = decode_entities($desc) if defined $desc;
-    return $desc;
-}
-
 sub get_dailymotion_id {
     my $page = shift;
+    my $xurl = shift;
 
-    $page =~ /<meta\s+property=\"og:url\"\s+content=\"([^\"]*)\"\/>/i;
-    my ($url) =  ($1);
-    $url =~ /\/(\w\w\w\w\w\w\w)$/i;
-    my ($id) =  ($1);
-    return $id;
+    if( defined $xurl ) {
+        # https://www.dailymotion.com/video/x59wnvy
+        $xurl =~ /\/video\/(\w\w\w\w\w\w\w)$/i;
+        my ($id) =  ($1);
+        return $id if defined $id;
+    }
+
+    if( defined $page ) {
+        $page =~ /<meta\s+property=\"og:url\"\s+content=\"([^\"]*)\"\/>/i;
+        my ($url) =  ($1);
+        $url =~ /\/(\w\w\w\w\w\w\w)$/i;
+        my ($id) =  ($1);
+        return $id if defined $id;
+    }
+
+    return undef;
 }
 
 sub get_dailymotion_title {
     my $page = shift;
 
+    return undef if !defined $page;
     $page =~ /<meta\s+property=\"og:title\"\s+content=\"([^\"]*)\"\/>/i;
     my ($title) =  ($1);
     $title = decode_entities($title) if defined $title;
@@ -453,8 +530,11 @@ sub get_dailymotion_title {
 sub get_dailymotion_duration {
     my $page = shift;
 
+    return undef if !defined $page;
     $page =~ /<meta\s+property=\"video:duration\"\s+content=\"([^\"]*)\"\/>/i;
     my ($seconds) = ($1);
+    return undef if !defined $seconds;
+
     my $minutes = int( $seconds / 60 );
     my $hours = int( $minutes / 60 );
     $seconds = $seconds % 60;
@@ -466,39 +546,43 @@ sub get_dailymotion_duration {
     }
 }
 
+sub get_steam_id {
+    my $page = shift;
+    my $xurl = shift;
+
+    return undef if !defined $page;
+    $page =~ /<link\s+rel=\"canonical\"\s+href=\".*?\/app\/([^\"\&]*)\/\">/i;
+    my ($id) =  ($1);
+    return $id;
+}
+
+sub get_steam_desc {
+    my $page = shift;
+
+    return undef if !defined $page;
+    $page =~ /<meta\s+name=\"Description\"\s+content=\"([^\"]*)\">/i;
+    my ($desc) =  ($1);
+    $desc = decode_entities($desc) if defined $desc;
+    return $desc;
+}
+
 my $prog = $0;
 my $url = shift;
-my $style = "wiley";
+my $style = undef;
 
-$style = "ansi" if $url eq '--ansi';
-$style = "html" if $url eq '--html';
-$url = shift if $style ne "wiley";
+$style = "wiley"    if $url eq '--wiley';
+$style = "ansi"     if $url eq '--ansi';
+$style = "html"     if $url eq '--html';
+$style = "debug"    if $url eq '--debug';
+$url = shift        if defined $style;
+$style = "wiley"    if !defined $style;
 
-my $RESET = "%^RESET%^";
-$RESET = pinkfish_to_ansi($RESET) if $style eq "ansi";
-$RESET = "</SPAN>" if $style eq "html";
-
-my $YELLOW = "%^YELLOW%^";
-$YELLOW = pinkfish_to_ansi($YELLOW) if $style eq "ansi";
-$YELLOW = '<SPAN style="color: #ffff55">' if $style eq "html";
-
-my $RED = "%^RED%^";
-$RED = pinkfish_to_ansi($RED) if $style eq "ansi";
-$RED = '<SPAN style="color: #ff5555">' if $style eq "html";
-
-my $GREEN = "%^GREEN%^";
-$GREEN = pinkfish_to_ansi($GREEN) if $style eq "ansi";
-$GREEN = '<SPAN style="color: #55ff55">' if $style eq "html";
-
-my $CYAN= "%^CYAN%^";
-$YELLOW = pinkfish_to_ansi($CYAN) if $style eq "ansi";
-$YELLOW = '<SPAN style="color: #55ffff">' if $style eq "html";
-
-my $FLASH = "%^FLASH%^";
-$FLASH = pinkfish_to_ansi($FLASH) if $style eq "ansi";
-$FLASH = '<SPAN class="blink;">' if $style eq "html";
-
-
+my $RESET   = pinkfish_to( "%^RESET%^", $style );
+my $YELLOW  = pinkfish_to( "%^YELLOW%^", $style );
+my $RED     = pinkfish_to( "%^RED%^", $style );
+my $GREEN   = pinkfish_to( "%^GREEN%^", $style );
+my $CYAN    = pinkfish_to( "%^CYAN%^", $style );
+my $FLASH   = pinkfish_to( "%^FLASH%^", $style );
 
 my $given_uri = URI->new($url);
 my $given_host = $given_uri->host;
@@ -509,24 +593,26 @@ my ($origin, $page) = get_url($url);
 # Give it a second try, because sometimes it fails from DNS stupidity.
 if( !defined $page ) {
     sleep 0.5;
-    ($origin, $page) = get_url($url);
+    ($origin, $page) = get_url($given_uri);
 }
 
 #print STDERR "DEBUG: $page\n";
 
-$origin = $given_uri if !defined $origin;
+#$origin = $given_uri if !defined $origin;
 my $tinyurl = undef;
 
 if ($given_uri =~ /tinyurl\.com\/\w\w\w\w\w\w\w$/i) {
     $tinyurl = $given_uri;
 } elsif ($given_uri =~ /bit\.ly\/\w\w\w\w\w\w\w$/i) {
     $tinyurl = $given_uri;
-} elsif ($origin =~ /tinyurl\.com\/\w\w\w\w\w\w\w$/i) {
+} elsif ((defined $origin) and $origin =~ /tinyurl\.com\/\w\w\w\w\w\w\w$/i) {
     $tinyurl = $origin;
-} elsif ($origin =~ /bit\.ly\/\w\w\w\w\w\w\w$/i) {
+} elsif ((defined $origin) and $origin =~ /bit\.ly\/\w\w\w\w\w\w\w$/i) {
     $tinyurl = $origin;
-} else {
+} elsif (defined $origin) {
     $tinyurl = makeashorterlink($origin);
+} else {
+    $tinyurl = makeashorterlink($given_uri);
 }
 
 # Give it a third try, because sometimes it fails for unknown reasons.
@@ -535,82 +621,79 @@ if( !defined $page ) {
     ($origin, $page) = get_url($tinyurl);
 }
 
+my $origin_host = $origin->host if defined $origin;
+my $the_url = (defined $origin_host) ? $origin_host : $given_uri;
+
 my $chan_color = channel_color($channel, $style) if defined $channel;
-my $page_title = get_page_title($page) if defined $page;
 
-my $youtube_id = get_youtube_id($page) if defined $page and $origin->host =~ /youtube/i;
-my $youtube_title = get_youtube_title($page) if defined $youtube_id;
-my $youtube_duration = get_youtube_duration($page) if defined $youtube_id;
+my $source = undef;
+my $id = undef;
+my $title = undef;
+my $duration = undef;
 
-my $imdb_id = get_imdb_id($page) if defined $page and $origin->host =~ /imdb/i;
-my $imdb_title = get_imdb_title($page) if defined $imdb_id;
-my $imdb_duration = get_imdb_duration($page) if defined $imdb_id;
+$source = "YouTube"     if $origin_host =~ /youtube/i;
+$source = "IMDB"        if $origin_host =~ /imdb/i;
+$source = "Dailymotion" if $origin_host =~ /dailymotion/i;
+$source = "Steam"       if $origin_host =~ /steam/i;
+$source = ""            if !defined $source;
 
-my $steam_id = get_steam_id($page) if defined $page and $origin->host =~ /steam/i;
-my $steam_title = $page_title;
-#my $steam_desc = get_steam_desc($page) if defined $steam_id;
+$id = get_youtube_id($page, $the_url)     if $source eq "YouTube";
+$id = get_imdb_id($page, $the_url)        if $source eq "IMDB";
+$id = get_dailymotion_id($page, $the_url) if $source eq "Dailymotion";
+$id = get_steam_id($page, $the_url)       if $source eq "Steam";
 
-#my $youtube_desc = get_youtube_desc($page);
-#my $youtube_keywords = get_youtube_keywords($page);
+$title = get_youtube_title($page)       if $source eq "YouTube";
+$title = get_imdb_title($page)          if $source eq "IMDB";
+$title = get_dailymotion_title($page)   if $source eq "Dailymotion";
+$title = get_page_title($page)          if !defined $title and defined $page;
 
-my $dailymotion_id = get_dailymotion_id($page) if defined $page and $origin->host =~ /dailymotion/i;
-my $dailymotion_title = get_dailymotion_title($page) if defined $dailymotion_id;
-my $dailymotion_duration = get_dailymotion_duration($page) if defined $dailymotion_id;
+$duration = get_youtube_duration($page)     if $source eq "YouTube";
+$duration = get_imdb_duration($page)        if $source eq "IMDB";
+$duration = get_dailymotion_duration($page) if $source eq "Dailymotion";
 
-#print STDERR "DEBUG: " . Dumper($dailymotion_id) . "\n";
-#print STDERR "DEBUG: " . Dumper($dailymotion_title) . "\n";
-#print STDERR "DEBUG: " . Dumper($dailymotion_duration) . "\n";
+if( defined $channel ) {
+    if( defined $chan_color ) {
+        $channel = " from ${chan_color}<${channel}>${RESET}";
+    } else {
+        $channel = " from <${channel}>";
+    }
+} else {
+    $channel = "";
+}
 
-
-$channel = " from $chan_color<$channel>${RESET}" if defined $channel and defined $chan_color;
-$channel = " from <$channel>" if defined $channel and !defined $chan_color;
-$channel = "" if !defined $channel;
-
-$youtube_id = "${YELLOW}[$youtube_id]${RESET}" if defined $youtube_id;
-$youtube_duration = " ${RED}($youtube_duration)${RESET}" if defined $youtube_duration;
-
-$imdb_id = "${YELLOW}[$imdb_id]${RESET}" if defined $imdb_id;
-$imdb_duration = " ${RED}($imdb_duration)${RESET}" if defined $imdb_duration;
-
-$steam_id = "${YELLOW}[$steam_id]${RESET}" if defined $steam_id;
-
-$dailymotion_id = "${YELLOW}[$dailymotion_id]${RESET}" if defined $dailymotion_id;
-$dailymotion_duration = " ${RED}($dailymotion_duration)${RESET}" if defined $dailymotion_duration;
+$id = "${YELLOW}[${id}]${RESET}"            if defined $id;
+$duration = "${RED}(${duration})${RESET}"   if defined $duration;
+$title = "${RESET}${title}"                 if defined $title;
 
 my $output = "";
 
-$output .= "${RESET}${GREEN}$tinyurl ::${RESET} " if defined $tinyurl;
+$output .= "${RESET}${GREEN}$tinyurl :: "   if defined $tinyurl;
 
-if (defined $youtube_id and defined $youtube_title and defined $youtube_duration) {
-    $output .= "${RESET}YouTube $youtube_id$channel is $youtube_title$youtube_duration\n";
-} elsif (defined $youtube_id and defined $youtube_title) {
-    $output .= "${RESET}YouTube $youtube_id$channel is $youtube_title\n";
-} elsif (defined $imdb_id and defined $imdb_title and defined $imdb_duration) {
-    $output .= "${RESET}IMDB $imdb_id$channel is $imdb_title$imdb_duration\n";
-} elsif (defined $imdb_id and defined $imdb_title) {
-    $output .= "${RESET}IMDB $imdb_id$channel is $imdb_title\n";
-} elsif (defined $steam_id and defined $steam_title) {
-    $output .= "${RESET}Steam $steam_id$channel is $steam_title\n";
-} elsif (defined $dailymotion_id and defined $dailymotion_title and defined $dailymotion_duration) {
-    $output .= "${RESET}Dailymotion $dailymotion_id$channel is $dailymotion_title$dailymotion_duration\n";
-} elsif (defined $dailymotion_id and defined $dailymotion_title) {
-    $output .= "${RESET}Dailymotion $dailymotion_id$channel is $dailymotion_title\n";
-} elsif (defined $origin) {
-    my $origin_host = $origin->host;
-    my $title_bit = "";
-    $title_bit = " is ${YELLOW}$page_title${RESET}" if defined $page_title;
-    my $given_bit = "URL";
-    $given_bit = "$given_host URL" if $given_host ne $origin_host;
-    my $from_bit = " goes to $origin_host";
-    $from_bit = " from $origin_host" if defined $page_title;
-    
-    $output .= "${RESET}$given_bit$channel$title_bit$from_bit\n";
-    #print STDERR "DEBUG: " . Dumper($origin) . "\n";
+if( $source ne "" ) {
+    $output .= "${RESET}${source}";
+    $output .= " $id$channel is" if defined $id;
+    $output .= " $title" if defined $title;
+    $output .= " $duration" if defined $duration;
+} elsif( defined $origin_host ) {
+    $output .= "${RESET}";
+    $output .= "${given_host} " if $given_host ne $origin_host;
+    $output .= "URL";
+
+    $output .= "${channel}";
+    $output .= "${title} from ${origin_host}" if defined $title;
+
+    $output .= " goes to ${origin_host}" if !defined $title;
+} else {
+    $output .= "${RESET}${channel}";
 }
 
-if ( $style eq "ansi" ) {
-    print pinkfish_to_ansi($output);
-} else {
-    print $output;
+$output .= "\n";
+
+print pinkfish_to( $output, $style );
+
+if ( $style eq "debug" ) {
+    print "\n";
+    print Dumper({ 'page' => $page, });
+    print "\n";
 }
 
