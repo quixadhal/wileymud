@@ -45,9 +45,7 @@ char                                   *fread_action(FILE * fl)
 	    return (0);
 	else {
 	    *(buf + strlen(buf) - 1) = '\0';
-	    CREATE(rslt, char, strlen               (buf) + 1);
-
-	    strcpy(rslt, buf);
+            rslt = strdup(buf);
 	    return (rslt);
 	}
     }

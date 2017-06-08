@@ -65,8 +65,8 @@ void do_guard(struct char_data *ch, const char *argument, int cmd)
 
 void do_junk(struct char_data *ch, const char *argument, int cmd)
 {
-    char                                    arg[100] = "\0\0\0\0\0\0\0";
-    char                                    newarg[100] = "\0\0\0\0\0\0\0";
+    char                                    arg[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
+    char                                    newarg[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
     struct obj_data                        *tmp_object = NULL;
 
     /*
@@ -87,10 +87,10 @@ void do_junk(struct char_data *ch, const char *argument, int cmd)
     if (*arg) {
 	if (getall(arg, newarg) != FALSE) {
 	    num = -1;
-	    strcpy(arg, newarg);
+	    strlcpy(arg, newarg, MAX_INPUT_LENGTH);
 	} else if ((p = getabunch(arg, newarg)) != FALSE) {
 	    num = p;
-	    strcpy(arg, newarg);
+	    strlcpy(arg, newarg, MAX_INPUT_LENGTH);
 	} else {
 	    num = 1;
 	}
@@ -282,9 +282,9 @@ void do_steal(struct char_data *ch, const char *argument, int cmd)
 {
     struct char_data                       *victim = NULL;
     struct obj_data                        *obj = NULL;
-    char                                    victim_name[240] = "\0\0\0\0\0\0\0";
-    char                                    obj_name[240] = "\0\0\0\0\0\0\0";
-    char                                    buf[240] = "\0\0\0\0\0\0\0";
+    char                                    victim_name[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
+    char                                    obj_name[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
+    char                                    buf[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
     int                                     percent_chance = 0;
     int                                     gold = 0;
     int                                     eq_pos = 0;
@@ -397,7 +397,7 @@ void do_steal(struct char_data *ch, const char *argument, int cmd)
 
     if (ohoh && IS_NPC(victim) && AWAKE(victim)) {
 	if (IS_SET(victim->specials.act, ACT_NICE_THIEF)) {
-	    sprintf(buf, "%s is a damn thief!", GET_NAME(ch));
+	    snprintf(buf, MAX_INPUT_LENGTH, "%s is a damn thief!", GET_NAME(ch));
 	    do_shout(victim, buf, 0);
 	    log_info("%s", buf);
 	    cprintf(ch, "Don't you ever do that again!\r\n");
@@ -411,14 +411,16 @@ void do_practice(struct char_data *ch, const char *argument, int cmd)
 {
     char                                    buf[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
     int                                     i = 0;
-    char                                    first_arg[100] = "\0\0\0\0\0\0\0";
-    char                                    sec_arg[100] = "\0\0\0\0\0\0\0";
+    char                                    first_arg[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
+    char                                    sec_arg[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
     int                                     flag = FALSE;
 
+    /*
     struct skill_struct {
 	char                                    skill_name[40];
 	int                                     skill_numb;
     };
+    */
 
     if (DEBUG)
 	log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch),
@@ -444,10 +446,10 @@ void do_practice(struct char_data *ch, const char *argument, int cmd)
 		    cprintf(ch, "I bet you wish you were a warrior.\r\n");
 		    return;
 		}
-		sprintf(buf, "You can practise any of these MANLY skills:\r\n");
+		snprintf(buf, MAX_STRING_LENGTH, "You can practise any of these MANLY skills:\r\n");
 		for (i = 0; i < MAX_SKILLS; i++) {
 		    if (CanUseClass(ch, i, WARRIOR_LEVEL_IND))
-			sprintf(buf + strlen(buf), "%s%s\r\n", spell_info[i].name,
+			scprintf(buf, MAX_STRING_LENGTH, "%s%s\r\n", spell_info[i].name,
 				how_good(ch->skills[i].learned));
 		}
 		page_string(ch->desc, buf, 1);
@@ -461,16 +463,16 @@ void do_practice(struct char_data *ch, const char *argument, int cmd)
 		    cprintf(ch, "I wish I was a Ranger too!\r\n");
 		    return;
 		}
-		sprintf(buf, "You can practise any of these outdoor skills:\r\n");
+		snprintf(buf, MAX_STRING_LENGTH, "You can practise any of these outdoor skills:\r\n");
 		for (i = 0; i < MAX_SKILLS; i++) {
 		    if (CanUseClass(ch, i, RANGER_LEVEL_IND))
-			sprintf(buf + strlen(buf), "%s%s\r\n", spell_info[i].name,
+			scprintf(buf, MAX_STRING_LENGTH, "%s%s\r\n", spell_info[i].name,
 				how_good(ch->skills[i].learned));
 		}
-		sprintf(buf + strlen(buf), "Or these leaf-and-twig charms:\r\n");
+		scprintf(buf, MAX_STRING_LENGTH, "Or these leaf-and-twig charms:\r\n");
 		for (i = 0; i < MAX_SKILLS; i++) {
 		    if (CanCastClass(ch, i, RANGER_LEVEL_IND))
-			sprintf(buf + strlen(buf), "%s%s\r\n", spell_info[i].name,
+			scprintf(buf, MAX_STRING_LENGTH, "%s%s\r\n", spell_info[i].name,
 				how_good(ch->skills[i].learned));
 		}
 		page_string(ch->desc, buf, 1);
@@ -484,10 +486,10 @@ void do_practice(struct char_data *ch, const char *argument, int cmd)
 		    cprintf(ch, "A voice whispers, 'You are not a thief.'\r\n");
 		    return;
 		}
-		sprintf(buf, "You can practice any of these sneaky skills:\r\n");
+		snprintf(buf, MAX_STRING_LENGTH, "You can practice any of these sneaky skills:\r\n");
 		for (i = 0; i < MAX_SKILLS; i++) {
 		    if (CanUseClass(ch, i, THIEF_LEVEL_IND))
-			sprintf(buf + strlen(buf), "%s%s\r\n", spell_info[i].name,
+			scprintf(buf, MAX_STRING_LENGTH, "%s%s\r\n", spell_info[i].name,
 				how_good(ch->skills[i].learned));
 		}
 		page_string(ch->desc, buf, 1);
@@ -504,16 +506,16 @@ void do_practice(struct char_data *ch, const char *argument, int cmd)
 		flag = 0;
 		if (is_abbrev(sec_arg, "known"))
 		    flag = 1;
-		sprintf(buf, "Your heavy spellbook contains these spells:\r\n");
+		snprintf(buf, MAX_STRING_LENGTH, "Your heavy spellbook contains these spells:\r\n");
 		for (i = 0; i < MAX_SKILLS; i++)
 		    if (CanCastClass(ch, i, MAGE_LEVEL_IND)) {
 			if (!flag) {
-			    sprintf(buf + strlen(buf), "[%2d] %s%s\r\n",
+			    scprintf(buf, MAX_STRING_LENGTH, "[%2d] %s%s\r\n",
 				    spell_info[i].min_level[MAGE_LEVEL_IND],
 				    spell_info[i].name, how_good(ch->skills[i].learned));
 			} else {
 			    if (ch->skills[i].learned > 0) {
-				sprintf(buf + strlen(buf), "[%2d] %s%s\r\n",
+				scprintf(buf, MAX_STRING_LENGTH, "[%2d] %s%s\r\n",
 					spell_info[i].min_level[MAGE_LEVEL_IND],
 					spell_info[i].name, how_good(ch->skills[i].learned));
 			    }
@@ -532,19 +534,19 @@ void do_practice(struct char_data *ch, const char *argument, int cmd)
 		    cprintf(ch, "You feel that impersonating a cleric might be bad.\r\n");
 		    return;
 		}
-		sprintf(buf, "You can pray for any of these miracles:\r\n");
+		snprintf(buf, MAX_STRING_LENGTH, "You can pray for any of these miracles:\r\n");
 		flag = 0;
 		if (is_abbrev(sec_arg, "known"))
 		    flag = 1;
 		for (i = 0; i < MAX_SKILLS; i++)
 		    if (CanCastClass(ch, i, CLERIC_LEVEL_IND)) {
 			if (!flag) {
-			    sprintf(buf + strlen(buf), "[%2d] %s%s\r\n",
+			    scprintf(buf, MAX_STRING_LENGTH, "[%2d] %s%s\r\n",
 				    spell_info[i].min_level[CLERIC_LEVEL_IND],
 				    spell_info[i].name, how_good(ch->skills[i].learned));
 			} else {
 			    if (ch->skills[i].learned > 0) {
-				sprintf(buf + strlen(buf), "[%2d] %s%s\r\n",
+				scprintf(buf, MAX_STRING_LENGTH, "[%2d] %s%s\r\n",
 					spell_info[i].min_level[CLERIC_LEVEL_IND],
 					spell_info[i].name, how_good(ch->skills[i].learned));
 			    }
@@ -562,7 +564,7 @@ void do_practice(struct char_data *ch, const char *argument, int cmd)
 void do_idea(struct char_data *ch, const char *argument, int cmd)
 {
     FILE                                   *fl = NULL;
-    char                                    str[MAX_INPUT_LENGTH + 20] = "\0\0\0\0\0\0\0";
+    char                                    str[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
 
     if (DEBUG)
 	log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch),
@@ -586,7 +588,7 @@ void do_idea(struct char_data *ch, const char *argument, int cmd)
 	cprintf(ch, "Could not open the idea-file.\r\n");
 	return;
     }
-    sprintf(str, "**%s: %s\n", GET_NAME(ch), argument);
+    snprintf(str, MAX_INPUT_LENGTH, "**%s: %s\n", GET_NAME(ch), argument);
 
     fputs(str, fl);
     FCLOSE(fl);
@@ -596,7 +598,7 @@ void do_idea(struct char_data *ch, const char *argument, int cmd)
 void do_typo(struct char_data *ch, const char *argument, int cmd)
 {
     FILE                                   *fl = NULL;
-    char                                    str[MAX_INPUT_LENGTH + 20] = "\0\0\0\0\0\0\0";
+    char                                    str[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
 
     if (DEBUG)
 	log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch),
@@ -620,7 +622,7 @@ void do_typo(struct char_data *ch, const char *argument, int cmd)
 	cprintf(ch, "Could not open the typo-file.\r\n");
 	return;
     }
-    sprintf(str, "**%s[%d]: %s\n", GET_NAME(ch), ch->in_room, argument);
+    snprintf(str, MAX_INPUT_LENGTH, "**%s[%d]: %s\n", GET_NAME(ch), ch->in_room, argument);
     fputs(str, fl);
     FCLOSE(fl);
     cprintf(ch, "No problem.  We can send a whizzling to fix it.\r\n");
@@ -629,7 +631,7 @@ void do_typo(struct char_data *ch, const char *argument, int cmd)
 void do_bug(struct char_data *ch, const char *argument, int cmd)
 {
     FILE                                   *fl = NULL;
-    char                                    str[MAX_INPUT_LENGTH + 20] = "\0\0\0\0\0\0\0";
+    char                                    str[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
 
     if (DEBUG)
 	log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch),
@@ -653,7 +655,7 @@ void do_bug(struct char_data *ch, const char *argument, int cmd)
 	cprintf(ch, "Could not open the bug-file.\r\n");
 	return;
     }
-    sprintf(str, "**%s[%d]: %s\n", GET_NAME(ch), ch->in_room, argument);
+    snprintf(str, MAX_INPUT_LENGTH, "**%s[%d]: %s\n", GET_NAME(ch), ch->in_room, argument);
     fputs(str, fl);
     FCLOSE(fl);
     cprintf(ch, "Really?  Ok, we'll send someone to have a look.\r\n");
@@ -822,7 +824,7 @@ void do_group(struct char_data *ch, const char *argument, int cmd)
 
 void do_quaff(struct char_data *ch, const char *argument, int cmd)
 {
-    char                                    buf[100] = "\0\0\0\0\0\0\0";
+    char                                    buf[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
     struct obj_data                        *temp = NULL;
     int                                     i = 0;
     int                                     equipped = FALSE;
@@ -896,7 +898,7 @@ void do_quaff(struct char_data *ch, const char *argument, int cmd)
 
 void do_recite(struct char_data *ch, const char *argument, int cmd)
 {
-    char                                    buf[100] = "\0\0\0\0\0\0\0";
+    char                                    buf[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
     struct obj_data                        *scroll = NULL;
     struct obj_data                        *obj = NULL;
     struct char_data                       *victim = NULL;
@@ -957,7 +959,7 @@ void do_recite(struct char_data *ch, const char *argument, int cmd)
 
 void do_use(struct char_data *ch, const char *argument, int cmd)
 {
-    char                                    buf[100] = "\0\0\0\0\0\0\0";
+    char                                    buf[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
     struct char_data                       *tmp_char = NULL;
     struct obj_data                        *tmp_object = NULL;
     struct obj_data                        *stick = NULL;

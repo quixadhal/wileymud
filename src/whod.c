@@ -35,6 +35,10 @@
 #define _WHOD_C
 #include "whod.h"
 
+// #define WILEY_ADDRESS "wiley.the-firebird.net"
+#define WILEY_ADDRESS "wileymud.i3.themud.org"
+// #define WILEY_ADDRESS "wileymud.lpmud.org"
+
 /*
  * In function run_the_game(int port):
  *   ...
@@ -362,8 +366,8 @@ char                                   *whod_html(void)
     sprintf(buf + strlen(buf), "</head>\r\n");
     sprintf(buf + strlen(buf), "<body>\r\n");
     sprintf(buf + strlen(buf),
-	    "<div align=\"center\"><h3><a href=\"telnet://wiley.the-firebird.net:3000/\">%s</a></h3></div>\r\n",
-	    VERSION_STR);
+	    "<div align=\"center\"><h3><a href=\"telnet://%s:3000/\">%s</a></h3></div>\r\n",
+	    WILEY_ADDRESS, VERSION_STR);
 
     players = 0;
     gods = 0;
@@ -727,11 +731,11 @@ void                                    generate_mudlist(void)
     fprintf(fp, "<table border=\"0\" cellspacing=\"0\" cellpadding=\"1\" width=\"%s\">\r\n", "99%");
     fprintf(fp, "<tr valign=\"middle\" bgcolor=\"#000000\">\r\n");
 #ifdef I3
-    fprintf(fp, "<td valign=\"middle\" align=\"center\" width=\"75\"><a href=\"%s\">i3 logs</a></td>\r\n",
-            "http://wiley.the-firebird.net/~wiley/i3log.php");
+    fprintf(fp, "<td valign=\"middle\" align=\"center\" width=\"75\"><a href=\"http://%s/~wiley/i3log.php\">i3 logs</a></td>\r\n",
+            WILEY_ADDRESS);
 #endif
-    fprintf(fp, "<td valign=\"middle\" align=\"center\"><h3><a href=\"%s\">%s</a></h3></td>\r\n",
-	    "telnet://wiley.the-firebird.net:3000/", VERSION_STR);
+    fprintf(fp, "<td valign=\"middle\" align=\"center\"><h3><a href=\"telnet://%s:3000\">%s</a></h3></td>\r\n",
+	    WILEY_ADDRESS, VERSION_STR);
 #ifdef I3
     fprintf(fp, "<td valign=\"middle\" align=\"center\" width=\"75\">&nbsp;</td>\r\n");
 #endif

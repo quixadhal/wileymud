@@ -1193,7 +1193,7 @@ void nanny(struct descriptor_data *d, char *arg)
 {
     int                                     count = 0;
     int                                     oops = FALSE;
-    char                                    tmp_name[20] = "\0\0\0\0\0\0\0";
+    char                                    tmp_name[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
     struct char_file_u                      tmp_store;
     int                                     i = 0;
     char                                    cryptbuf[17] = "\0\0\0\0\0\0\0";
@@ -1243,13 +1243,16 @@ void nanny(struct descriptor_data *d, char *arg)
 		STATE(d) = CON_WIZLOCK;
 		return;
 	    }
+	    strncpy(d->usr_name, tmp_name, 20);
+            d->usr_name[19] = '\0';
+
 #ifdef I3
 	    i3_initchar(d->character);
 #endif
 #ifdef IMC
 	    imc_initchar(d->character);
 #endif
-	    strcpy(d->usr_name, tmp_name);
+
 	    log_info("Loading user: %s", d->usr_name);
 /*  GET_NAME(d->character) = (char *)strdup(d->usr_name); */
 	    if (fread_char(d->usr_name, &tmp_store, d->character) > -1) {

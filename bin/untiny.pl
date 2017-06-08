@@ -668,23 +668,22 @@ $title = "${RESET}${title}"                 if defined $title;
 my $output = "";
 
 $output .= "${RESET}${GREEN}$tinyurl :: "   if defined $tinyurl;
+$output .= "${RESET}";
 
 if( $source ne "" ) {
-    $output .= "${RESET}${source}";
+    $output .= "${source}";
     $output .= " $id$channel is" if defined $id;
     $output .= " $title" if defined $title;
     $output .= " $duration" if defined $duration;
 } elsif( defined $origin_host ) {
-    $output .= "${RESET}";
     $output .= "${given_host} " if $given_host ne $origin_host;
     $output .= "URL";
-
-    $output .= "${channel}";
-    $output .= "${title} from ${origin_host}" if defined $title;
+    $output .= " ${channel}";
+    $output .= " ${title} from ${origin_host}" if defined $title;
 
     $output .= " goes to ${origin_host}" if !defined $title;
 } else {
-    $output .= "${RESET}${channel}";
+    $output .= "${channel}";
 }
 
 $output .= "\n";

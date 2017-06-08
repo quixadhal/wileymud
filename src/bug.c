@@ -80,61 +80,61 @@ void bug_logger(unsigned int Type, const char *BugFile,
     if (Str && *Str) {
 	struct descriptor_data                 *i;
 
-	sprintf(Result, "%s> ", LogNames[Type]);
-	vsprintf(Temp, Str, arg);
-	strcat(Result, Temp);
+	snprintf(Result, MAX_STRING_LENGTH, "%s> ", LogNames[Type]);
+	vsnprintf(Temp, MAX_STRING_LENGTH, Str, arg);
+	strlcat(Result, Temp, MAX_STRING_LENGTH);
 	for (i = descriptor_list; i; i = i->next)
 	    if ((!i->connected) && (GetMaxLevel(i->character) >= Level) &&
 		(IS_SET(i->character->specials.act, PLR_LOGS)))
 		write_to_q(Result, &i->output, 1);
 	bzero(Result, MAX_STRING_LENGTH);
     } else
-	strcpy(Temp, "PING!");
+	strlcpy(Temp, "PING!", MAX_STRING_LENGTH);
     va_end(arg);
     ftime(&right_now);
     now_part = localtime((const time_t *)&right_now);
-    sprintf(Result, "<: %02d%02d%02d.%02d%02d%02d.%03d",
+    snprintf(Result, MAX_STRING_LENGTH, "<: %02d%02d%02d.%02d%02d%02d.%03d",
 	    now_part->tm_year, now_part->tm_mon + 1, now_part->tm_mday,
 	    now_part->tm_hour, now_part->tm_min, now_part->tm_sec, right_now.millitm);
-    sprintf(Result + strlen(Result), " - %s -", LogNames[Type]);
+    scprintf(Result, MAX_STRING_LENGTH, " - %s -", LogNames[Type]);
     if (File || Func || Line) {
-	strcat(Result, " (");
+	strlcat(Result, " (", MAX_STRING_LENGTH);
 	if (File && *File) {
-	    strcat(Result, File);
+	    strlcat(Result, File, MAX_STRING_LENGTH);
 	}
 	if (Func && *Func)
-	    sprintf(Result + strlen(Result), ";%s", Func);
+	    scprintf(Result, MAX_STRING_LENGTH, ";%s", Func);
 	if (Line)
-	    sprintf(Result + strlen(Result), ",%d)", Line);
+	    scprintf(Result, MAX_STRING_LENGTH, ",%d)", Line);
 	else
-	    strcat(Result, ")");
+	    strlcat(Result, ")", MAX_STRING_LENGTH);
     }
     if (ch || victim) {
 	if (ch)
-	    sprintf(Result + strlen(Result), " ch \"%s\" [#%d]", NAME(ch), ch->in_room);
+	    scprintf(Result, MAX_STRING_LENGTH, " ch \"%s\" [#%d]", NAME(ch), ch->in_room);
 	if (victim)
-	    sprintf(Result + strlen(Result), " victim \"%s\" [#%d]",
+	    scprintf(Result, MAX_STRING_LENGTH, " victim \"%s\" [#%d]",
 		    NAME(victim), victim->in_room);
 /*
     if (obj)
-      sprintf(Result + strlen(Result), " obj \"%s\" [#%d]",
+      scprintf(Result, MAX_STRING_LENGTH, " obj \"%s\" [#%d]",
               SAFE_ONAME(obj), obj->in_room);
     if (room)
-      sprintf(Result + strlen(Result), " room \"%s\" [#%d]",
+      scprintf(Result, MAX_STRING_LENGTH, " room \"%s\" [#%d]",
               room->name?room->name:"", room->number);
 */
-	strcat(Result, "\n");
+	strlcat(Result, "\n", MAX_STRING_LENGTH);
     } else if (File || Func || Line)
-	strcat(Result, "\n");
+	strlcat(Result, "\n", MAX_STRING_LENGTH);
 
-    strcat(Result, " : ");
-    strcat(Result, Temp);
+    strlcat(Result, " : ", MAX_STRING_LENGTH);
+    strlcat(Result, Temp, MAX_STRING_LENGTH);
 
     if (BugFile && *BugFile) {
 	if (!(fp = fopen(BugFile, "a"))) {
 	    perror(BugFile);
 	    if (ch)
-		send_to_char("Could not open the file!\r\n", ch);
+		cprintf(ch, "Could not open the file!\r\n");
 	} else {
 	    fprintf(fp, "%s\n", Result);
 	    FCLOSE(fp);

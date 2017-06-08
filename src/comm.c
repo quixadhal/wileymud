@@ -295,37 +295,37 @@ void emit_prompt(struct descriptor_data *point)
                 if (IS_IMMORTAL(point->character) && IS_PC(point->character)) {
                     if (MOUNTED(point->character)) {
                         mount = MOUNTED(point->character);
-                        sprintf(promptbuf, "[%s has %d/%dh %d/%dv]\r\n",
+                        snprintf(promptbuf, MAX_INPUT_LENGTH, "[%s has %d/%dh %d/%dv]\r\n",
                                 GET_SDESC(mount),
                                 GET_HIT(mount), GET_MAX_HIT(mount),
                                 GET_MOVE(mount), GET_MAX_MOVE(mount));
                     }
                     if (IS_SET(point->character->specials.act, PLR_STEALTH))
-                        sprintf(promptbuf + strlen(promptbuf), "S");
+                        scprintf(promptbuf, MAX_INPUT_LENGTH, "S");
                     if (point->character->invis_level > 0)
-                        sprintf(promptbuf + strlen(promptbuf), "I=%d: ",
+                        scprintf(promptbuf, MAX_INPUT_LENGTH, "I=%d: ",
                                 point->character->invis_level);
                     rm = real_roomp(point->character->in_room);
                     tc = time(0);
                     t_info = localtime(&tc);
-                    sprintf(promptbuf + strlen(promptbuf),
+                    scprintf(promptbuf, MAX_INPUT_LENGTH,
                             "%02d:%02d #%d - %s [#%d]> ", t_info->tm_hour, t_info->tm_min, rm->zone, zone_table[rm->zone].name,
                             rm->number);
-                    sprintf(promptbuf + strlen(promptbuf), "%c%c", TELNET_IAC, TELNET_GA);
+                    scprintf(promptbuf, MAX_INPUT_LENGTH, "%c%c", TELNET_IAC, TELNET_GA);
                     write_to_descriptor(point->descriptor, promptbuf);
                 /* OLD mobs didn't have classes.. this doesn't work anymore */
                 } else if (IS_NPC(point->character) &&
                            (IS_SET(point->character->specials.act, ACT_POLYSELF) ||
                             IS_SET(point->character->specials.act, ACT_POLYOTHER))) {
-                    sprintf(promptbuf, "P %d/%dh %d/%dv > ",
+                    snprintf(promptbuf, MAX_INPUT_LENGTH, "P %d/%dh %d/%dv > ",
                             GET_HIT(point->character),
                             GET_MAX_HIT(point->character),
                             GET_MOVE(point->character), GET_MAX_MOVE(point->character));
-                    sprintf(promptbuf + strlen(promptbuf), "%c%c", TELNET_IAC, TELNET_GA);
+                    scprintf(promptbuf, MAX_INPUT_LENGTH, "%c%c", TELNET_IAC, TELNET_GA);
                     write_to_descriptor(point->descriptor, promptbuf);
                 } else if (IS_NPC(point->character) &&
                            IS_SET(point->character->specials.act, ACT_SWITCH)) {
-                    sprintf(promptbuf, "*%s[#%d] in [#%d] %d/%dh %d/%dm %d/%dv > ",
+                    snprintf(promptbuf, MAX_INPUT_LENGTH, "*%s[#%d] in [#%d] %d/%dh %d/%dm %d/%dv > ",
                             NAME(point->character),
                             MobVnum(point->character),
                             point->character->in_room,
@@ -334,26 +334,26 @@ void emit_prompt(struct descriptor_data *point)
                             GET_MANA(point->character),
                             GET_MAX_MANA(point->character),
                             GET_MOVE(point->character), GET_MAX_MOVE(point->character));
-                    sprintf(promptbuf + strlen(promptbuf), "%c%c", TELNET_IAC, TELNET_GA);
+                    scprintf(promptbuf, MAX_INPUT_LENGTH, "%c%c", TELNET_IAC, TELNET_GA);
                     write_to_descriptor(point->descriptor, promptbuf);
                 } else {
                     if (MOUNTED(point->character)) {
                         if (HasClass(point->character, CLASS_RANGER) ||
                             IS_AFFECTED(MOUNTED(point->character), AFF_CHARM)) {
                             mount = MOUNTED(point->character);
-                            sprintf(promptbuf, "[%s has %d/%dh %d/%dv]\r\n",
+                            snprintf(promptbuf, MAX_INPUT_LENGTH, "[%s has %d/%dh %d/%dv]\r\n",
                                     GET_SDESC(mount),
                                     GET_HIT(mount), GET_MAX_HIT(mount),
                                     GET_MOVE(mount), GET_MAX_MOVE(mount));
                         }
                     }
-                    sprintf(promptbuf + strlen(promptbuf), "%d/%dh %d/%dm %d/%dv > ",
+                    scprintf(promptbuf, MAX_INPUT_LENGTH, "%d/%dh %d/%dm %d/%dv > ",
                             GET_HIT(point->character),
                             GET_MAX_HIT(point->character),
                             GET_MANA(point->character),
                             GET_MAX_MANA(point->character),
                             GET_MOVE(point->character), GET_MAX_MOVE(point->character));
-                    sprintf(promptbuf + strlen(promptbuf), "%c%c", TELNET_IAC, TELNET_GA);
+                    scprintf(promptbuf, MAX_INPUT_LENGTH, "%c%c", TELNET_IAC, TELNET_GA);
                     write_to_descriptor(point->descriptor, promptbuf);
                 }
             }
@@ -652,6 +652,7 @@ void write_to_q(const char *txt, struct txt_q *queue, int do_timestamp)
 #ifdef TIME_DEBUG
     struct timeval                          now;
     char                                    nowtime[26];
+    int                                     buflen;
 #endif
 
     /*
@@ -680,20 +681,20 @@ void write_to_q(const char *txt, struct txt_q *queue, int do_timestamp)
 
 #ifdef TIME_DEBUG
     if (do_timestamp) {
-	CREATE(new->text, char, strlen          (txt) + 1 + 14);
+        buflen = strlen(txt) + 1 + 14;
+	CREATE(new->text, char, buflen);
 
-	strncpy(new->text, nowtime + 11, 8);
-	sprintf(new->text + 8, ".%03ld: ", now.tv_usec / 1000);
-	strcat(new->text, txt);
+	strlcpy(new->text, nowtime + 11, 8);
+	scprintf(new->text, ".%03ld: ", buflen, now.tv_usec / 1000);
+	strlcat(new->text, txt, buflen);
     } else {
-	CREATE(new->text, char, strlen          (txt) + 1);
-
-	strcpy(new->text, txt);
+        buflen = strlen(txt) + 1;
+	CREATE(new->text, char, buflen);
+	strlcpy(new->text, txt, buflen);
     }
 #else
-    CREATE(new->text, char, strlen          (txt) + 1);
-
-    strcpy(new->text, txt);
+    CREATE(new->text, char, strlen(txt) + 1);
+    strlcpy(new->text, txt, strlen(txt) + 1);
 #endif
 
     if (!queue->head) {
@@ -881,21 +882,21 @@ int new_descriptor(int s)
 	char                                   *ack = NULL;
 
 	if ((ack = ident_id(desc, 10)))
-	    strncpy(newd->username, ack, 16);
+	    strlcpy(newd->username, ack, 17);
 	else
 	    badger = 2;
     }
 #endif
     if (!newd->username[0])
-	strcpy(newd->username, "adork");
+	strlcpy(newd->username, "adork", 17);
 
-    sprintf(newd->ip, "%lu.%lu.%lu.%lu",
+    snprintf(newd->ip, 20, "%lu.%lu.%lu.%lu",
 	    (remote_addr & 0xff000000) >> 24,
 	    (remote_addr & 0x00ff0000) >> 16,
 	    (remote_addr & 0x0000ff00) >> 8, (remote_addr & 0x000000ff) >> 0);
 
     if ((host = gethostbyaddr((char *)&isa.sin_addr, sizeof(isa.sin_addr), AF_INET)))
-	strncpy(newd->host, host->h_name, 49);
+	strlcpy(newd->host, host->h_name, 50);
 
     /*
      * init desc data 
@@ -1089,7 +1090,7 @@ int process_input(struct descriptor_data *t)
     while( *line_marker && ISNEWL(*line_marker) ) {
         line_marker++; // Skip newline characters, however many there are.
     }
-    strcpy(tmp, line_marker); // Copy unprocessed buffer aside.
+    strlcpy(tmp, line_marker, MAX_STRING_LENGTH); // Copy unprocessed buffer aside.
 
     if( strlen(buffer) > MAX_INPUT_LENGTH - 1) {
         buffer[MAX_INPUT_LENGTH - 1] = '\0';
@@ -1103,7 +1104,7 @@ int process_input(struct descriptor_data *t)
     }
 
     // Move the unprocessed content to the front of t->buf for future processing.
-    strcpy(t->buf, tmp);
+    strlcpy(t->buf, tmp, MAX_STRING_LENGTH);
 
     // At this point, we want to strip out any TELNET sequences, since we don't support them.
     for(i = 0, j = 0; i < strlen(buffer);) {
@@ -1157,10 +1158,10 @@ int process_input(struct descriptor_data *t)
 
     if( *tmp == '!' ) {
         // This means do the last command again, so... swap!
-        strcpy(tmp, t->last_input);
+        strlcpy(tmp, t->last_input, MAX_INPUT_LENGTH);
     } else {
         // Save an extra copy as our last command.
-        strcpy(t->last_input, tmp);
+        strlcpy(t->last_input, tmp, MAX_INPUT_LENGTH);
     }
     // Send to actual command queue for processing.
     write_to_q(tmp, &t->input, 0);
@@ -1271,9 +1272,9 @@ int old_process_input(struct descriptor_data *t)
 	} else {
 	    *(tmp + k) = 0;
 	    if (*tmp == '!')
-		strcpy(tmp, t->last_input);
+		strlcpy(tmp, t->last_input, MAX_INPUT_LENGTH);
 	    else
-		strcpy(t->last_input, tmp);
+		strlcpy(t->last_input, tmp, MAX_INPUT_LENGTH);
 
 	    write_to_q(tmp, &t->input, 0);
 
@@ -1285,7 +1286,7 @@ int old_process_input(struct descriptor_data *t)
 		write_to_q("\r\n", &t->snoop.snoop_by->desc->output, 0);
 	    }
 	    if (flag) {
-		sprintf(buffer, "Line too long. Truncated to:\r\n%s\r\n", tmp);
+		snprintf(buffer, MAX_INPUT_LENGTH + 60, "Line too long. Truncated to:\r\n%s\r\n", tmp);
 		if (write_to_descriptor(t->descriptor, buffer) < 0)
 		    return (-1);
 
@@ -1423,7 +1424,7 @@ void dcprintf(struct descriptor_data *d, const char *Str, ...)
     if (Str && *Str && d) {
 	bzero(Result, MAX_STRING_LENGTH);
 	va_start(arg, Str);
-	vsprintf(Result, Str, arg);
+	vsnprintf(Result, MAX_STRING_LENGTH, Str, arg);
 	va_end(arg);
 	write_to_q(Result, &d->output, 1);
 	if (DEBUG > 2)
@@ -1444,7 +1445,7 @@ void cprintf(struct char_data *ch, const char *Str, ...)
     if (Str && *Str && ch && ch->desc) {
 	bzero(Result, MAX_STRING_LENGTH);
 	va_start(arg, Str);
-	vsprintf(Result, Str, arg);
+	vsnprintf(Result, MAX_STRING_LENGTH, Str, arg);
 	va_end(arg);
 	write_to_q(Result, &ch->desc->output, 1);
 	/*
@@ -1469,7 +1470,7 @@ void rprintf(int room, const char *Str, ...)
     if (Str && *Str && room >= 0 && (rr = real_roomp(room))) {
 	bzero(Result, MAX_STRING_LENGTH);
 	va_start(arg, Str);
-	vsprintf(Result, Str, arg);
+	vsnprintf(Result, MAX_STRING_LENGTH, Str, arg);
 	va_end(arg);
 	for (i = rr->people; i; i = i->next_in_room)
 	    if (i->desc)
@@ -1493,7 +1494,7 @@ void zprintf(int zone, const char *Str, ...)
     if (Str && *Str && zone >= 0) {
 	bzero(Result, MAX_STRING_LENGTH);
 	va_start(arg, Str);
-	vsprintf(Result, Str, arg);
+	vsnprintf(Result, MAX_STRING_LENGTH, Str, arg);
 	va_end(arg);
 	for (i = descriptor_list; i; i = i->next)
 	    if (!i->connected)
@@ -1519,7 +1520,7 @@ void allprintf(const char *Str, ...)
     if (Str && *Str) {
 	bzero(Result, MAX_STRING_LENGTH);
 	va_start(arg, Str);
-	vsprintf(Result, Str, arg);
+	vsnprintf(Result, MAX_STRING_LENGTH, Str, arg);
 	va_end(arg);
 	for (i = descriptor_list; i; i = i->next)
 	    if (!i->connected)
@@ -1542,7 +1543,7 @@ void oprintf(const char *Str, ...)
     if (Str && *Str) {
 	bzero(Result, MAX_STRING_LENGTH);
 	va_start(arg, Str);
-	vsprintf(Result, Str, arg);
+	vsnprintf(Result, MAX_STRING_LENGTH, Str, arg);
 	va_end(arg);
 	for (i = descriptor_list; i; i = i->next)
 	    if (!i->connected && i->character && OUTSIDE(i->character))
@@ -1565,7 +1566,7 @@ void eprintf(struct char_data *ch, const char *Str, ...)
     if (Str && *Str) {
 	bzero(Result, MAX_STRING_LENGTH);
 	va_start(arg, Str);
-	vsprintf(Result, Str, arg);
+	vsnprintf(Result, MAX_STRING_LENGTH, Str, arg);
 	va_end(arg);
 	for (i = descriptor_list; i; i = i->next)
 	    if (ch && ch->desc != i && !i->connected)
@@ -1589,7 +1590,7 @@ void reprintf(int room, struct char_data *ch, const char *Str, ...)
     if (Str && *Str && room >= 0 && (rr = real_roomp(room))) {
 	bzero(Result, MAX_STRING_LENGTH);
 	va_start(arg, Str);
-	vsprintf(Result, Str, arg);
+	vsnprintf(Result, MAX_STRING_LENGTH, Str, arg);
 	va_end(arg);
 	for (i = rr->people; i; i = i->next_in_room)
 	    if (i != ch && i->desc)
@@ -1613,7 +1614,7 @@ void re2printf(int room, struct char_data *ch1, struct char_data *ch2, const cha
     if (Str && *Str && room >= 0 && (rr = real_roomp(room))) {
 	bzero(Result, MAX_STRING_LENGTH);
 	va_start(arg, Str);
-	vsprintf(Result, Str, arg);
+	vsnprintf(Result, MAX_STRING_LENGTH, Str, arg);
 	va_end(arg);
 	for (i = rr->people; i; i = i->next_in_room)
 	    if (i != ch1 && i != ch2 && i->desc)
@@ -1636,7 +1637,7 @@ void iprintf(const char *Str, ...)
     if (Str && *Str) {
 	bzero(Result, MAX_STRING_LENGTH);
 	va_start(arg, Str);
-	vsprintf(Result, Str, arg);
+	vsnprintf(Result, MAX_STRING_LENGTH, Str, arg);
 	va_end(arg);
 	for (i = descriptor_list; i; i = i->next)
 	    if (!i->connected && i->character && IS_IMMORTAL(i->character))
@@ -1685,7 +1686,7 @@ void act(const char *Str, int hide_invisible, struct char_data *ch,
     bzero(str, MAX_STRING_LENGTH);
 
     va_start(arg, type);
-    vsprintf(str, Str, arg);
+    vsnprintf(str, MAX_STRING_LENGTH, Str, arg);
     va_end(arg);
 
     if (DEBUG > 1) {

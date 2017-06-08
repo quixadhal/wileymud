@@ -24,6 +24,7 @@ $URL_ONLY           = 0;
 
 //header("Location: http://wiley.the-firebird.net/~wiley/i3log.php");
 //header("Location: http://wileymud.i3.themud.org/~wiley/i3log.php");
+//header("Location: http://wileymud.lpmud.org/~wiley/i3log.php");
 $DESKTOP_URL        = "http://wileymud.i3.themud.org/~wiley/i3log.php";
 $MOBILE_URL         = "http://wileymud.i3.themud.org/~wiley/i3log_m.php";
 

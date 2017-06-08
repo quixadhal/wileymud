@@ -68,7 +68,7 @@ do									\
 #define STRDUP(result, string)						\
 do									\
 {									\
-  if (!((result) = (char *) calloc (strlen(string), sizeof(char))))	\
+  if (!((result) = (char *) calloc (strlen(string)+1, sizeof(char))))	\
   {									\
     perror("calloc failure");						\
     fprintf(stderr, "Calloc failure @ %s:%d\n", __FILE__, __LINE__ );	\
@@ -382,5 +382,9 @@ void                                    RestoreChar(struct char_data *ch);
  int                              IsSneak(struct char_data *ch);
 
 #define IsNonMagical(ch) (!IsMagical(ch))
+
+size_t strlcpy(char *dst, const char *src, size_t siz);
+size_t strlcat(char *dst, const char *src, size_t siz);
+int    scprintf(char *buf, size_t limit, const char *Str, ...) __attribute__ ( ( format( printf, 3, 4 ) ) );
 
 #endif

@@ -530,4 +530,15 @@ Operates similarly to the local who command.
 ~
 End
 
+#HELP
+Name i3taunt
+Perm Admin
+Text Syntax: i3taunt
+
+Prints the idle taunt we use as a keepalive when no I3 traffic has happend for
+a half hour.  This is mostly to debug the taunt selection, but also just to be
+annoying to anyone watching the wiley channel.
+~
+End
+
 #END

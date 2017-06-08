@@ -517,10 +517,10 @@ void DisplayMove(struct char_data *ch, int dir, int was_in, int total)
 	    if ((ch != tmp_ch) && (AWAKE(tmp_ch)) && (CAN_SEE(tmp_ch, ch))) {
 		if (total > 1) {
 		    if (IS_NPC(ch)) {
-			sprintf(tmp, "%s leaves %s. [%d]\r\n", ch->player.short_descr,
+			snprintf(tmp, MAX_INPUT_LENGTH, "%s leaves %s. [%d]\r\n", ch->player.short_descr,
 				dirs[dir], total);
 		    } else {
-			sprintf(tmp, "%s leaves %s.[%d]\r\n", GET_NAME(ch), dirs[dir], total);
+			snprintf(tmp, MAX_INPUT_LENGTH, "%s leaves %s.[%d]\r\n", GET_NAME(ch), dirs[dir], total);
 		    }
 		} else {
 		    if (IS_NPC(ch)) {
@@ -528,19 +528,19 @@ void DisplayMove(struct char_data *ch, int dir, int was_in, int total)
 			    struct char_data                       *mount;
 
 			    mount = MOUNTED(ch);
-			    sprintf(tmp, "%s leaves %s, riding on %s\r\n",
+			    snprintf(tmp, MAX_INPUT_LENGTH, "%s leaves %s, riding on %s\r\n",
 				    ch->player.short_descr, dirs[dir],
 				    mount->player.short_descr);
 			} else {
-			    sprintf(tmp, "%s leaves %s.\r\n", ch->player.short_descr,
+			    snprintf(tmp, MAX_INPUT_LENGTH, "%s leaves %s.\r\n", ch->player.short_descr,
 				    dirs[dir]);
 			}
 		    } else {
 			if (MOUNTED(ch)) {
-			    sprintf(tmp, "%s leaves %s, riding on %s\r\n",
+			    snprintf(tmp, MAX_INPUT_LENGTH, "%s leaves %s, riding on %s\r\n",
 				    GET_NAME(ch), dirs[dir], MOUNTED(ch)->player.short_descr);
 			} else {
-			    sprintf(tmp, "%s leaves %s\r\n", GET_NAME(ch), dirs[dir]);
+			    snprintf(tmp, MAX_INPUT_LENGTH, "%s leaves %s\r\n", GET_NAME(ch), dirs[dir]);
 			}
 		    }
 		}
@@ -556,56 +556,56 @@ void DisplayMove(struct char_data *ch, int dir, int was_in, int total)
 		if (dir < 4) {
 		    if (total == 1) {
 			if (MOUNTED(ch)) {
-			    sprintf(tmp, "%s has arrived from the %s, riding on %s",
+			    snprintf(tmp, MAX_INPUT_LENGTH, "%s has arrived from the %s, riding on %s",
 				    PERS(ch, tmp_ch), dirs[rev_dir[dir]], PERS(MOUNTED(ch),
 									       tmp_ch));
 			} else {
-			    sprintf(tmp, "%s has arrived from the %s.", PERS(ch, tmp_ch),
+			    snprintf(tmp, MAX_INPUT_LENGTH, "%s has arrived from the %s.", PERS(ch, tmp_ch),
 				    dirs[rev_dir[dir]]);
 			}
 		    } else {
-			sprintf(tmp, "%s has arrived from the %s.", PERS(ch, tmp_ch),
+			snprintf(tmp, MAX_INPUT_LENGTH, "%s has arrived from the %s.", PERS(ch, tmp_ch),
 				dirs[rev_dir[dir]]);
 		    }
 		} else if (dir == 4) {
 		    if (total == 1) {
 			if (MOUNTED(ch)) {
-			    sprintf(tmp, "%s has arrived from below, riding on %s",
+			    snprintf(tmp, MAX_INPUT_LENGTH, "%s has arrived from below, riding on %s",
 				    PERS(ch, tmp_ch), PERS(MOUNTED(ch), tmp_ch));
 			} else {
-			    sprintf(tmp, "%s has arrived from below.", PERS(ch, tmp_ch));
+			    snprintf(tmp, MAX_INPUT_LENGTH, "%s has arrived from below.", PERS(ch, tmp_ch));
 			}
 		    } else {
-			sprintf(tmp, "%s has arrived from below.", PERS(ch, tmp_ch));
+			snprintf(tmp, MAX_INPUT_LENGTH, "%s has arrived from below.", PERS(ch, tmp_ch));
 		    }
 		} else if (dir == 5) {
 		    if (total == 1) {
 			if (MOUNTED(ch)) {
-			    sprintf(tmp, "%s has arrived from above, riding on %s",
+			    snprintf(tmp, MAX_INPUT_LENGTH, "%s has arrived from above, riding on %s",
 				    PERS(ch, tmp_ch), PERS(MOUNTED(ch), tmp_ch));
 			} else {
-			    sprintf(tmp, "%s has arrived from above", PERS(ch, tmp_ch));
+			    snprintf(tmp, MAX_INPUT_LENGTH, "%s has arrived from above", PERS(ch, tmp_ch));
 			}
 		    } else {
-			sprintf(tmp, "%s has arrived from above.", PERS(ch, tmp_ch));
+			snprintf(tmp, MAX_INPUT_LENGTH, "%s has arrived from above.", PERS(ch, tmp_ch));
 		    }
 		} else {
 		    if (total == 1) {
 			if (MOUNTED(ch)) {
-			    sprintf(tmp, "%s has arrived from somewhere, riding on %s",
+			    snprintf(tmp, MAX_INPUT_LENGTH, "%s has arrived from somewhere, riding on %s",
 				    PERS(ch, tmp_ch), PERS(MOUNTED(ch), tmp_ch));
 			} else {
-			    sprintf(tmp, "%s has arrived from somewhere.", PERS(ch, tmp_ch));
+			    snprintf(tmp, MAX_INPUT_LENGTH, "%s has arrived from somewhere.", PERS(ch, tmp_ch));
 			}
 		    } else {
-			sprintf(tmp, "%s has arrived from somewhere.", PERS(ch, tmp_ch));
+			snprintf(tmp, MAX_INPUT_LENGTH, "%s has arrived from somewhere.", PERS(ch, tmp_ch));
 		    }
 		}
 
 		if (total > 1) {
-		    sprintf(tmp + strlen(tmp), " [%d]", total);
+		    scprintf(tmp, MAX_INPUT_LENGTH, " [%d]", total);
 		}
-		strcat(tmp, "\r\n");
+		strlcat(tmp, "\r\n", MAX_INPUT_LENGTH);
 		cprintf(tmp_ch, "%s", tmp);
 	    }
 	}

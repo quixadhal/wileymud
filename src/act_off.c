@@ -75,7 +75,7 @@ void do_swat(struct char_data *ch, const char *argument, int cmd)
 
 void do_hit(struct char_data *ch, const char *argument, int cmd)
 {
-    char                                    arg[80] = "\0\0\0\0\0\0\0";
+    char                                    arg[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
     struct char_data                       *victim = NULL;
 
     if (DEBUG)
@@ -254,7 +254,7 @@ void do_backstab(struct char_data *ch, const char *argument, int cmd)
 
 void do_order(struct char_data *ch, const char *argument, int cmd)
 {
-    char                                    name[100] = "\0\0\0\0\0\0\0";
+    char                                    name[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
     char                                    message[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
     char                                    message2[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
     char                                    action[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
@@ -272,7 +272,7 @@ void do_order(struct char_data *ch, const char *argument, int cmd)
 
     half_chop(argument, name, message);
 
-    strcpy(message2, message);
+    strlcpy(message2, message, MAX_INPUT_LENGTH);
 
     if (!*name || !*message)
 	cprintf(ch, "Order who to do what?\r\n");
@@ -533,12 +533,12 @@ void slam_into_wall(struct char_data *ch, struct room_direction_data *exitp)
     if (exitp->keyword && *exitp->keyword) {
 	if ((strcmp(fname(exitp->keyword), "secret") == 0)
 	    || (IS_SET(exitp->exit_info, EX_SECRET))) {
-	    strcpy(doorname, "wall");
+	    strlcpy(doorname, "wall", MAX_INPUT_LENGTH);
 	} else {
-	    strcpy(doorname, fname(exitp->keyword));
+	    strlcpy(doorname, fname(exitp->keyword), MAX_INPUT_LENGTH);
 	}
     } else {
-	strcpy(doorname, "barrier");
+	strlcpy(doorname, "barrier", MAX_INPUT_LENGTH);
     }
 
     cprintf(ch, "You slam your body against the %s with no effect\r\n", doorname);
@@ -1172,7 +1172,7 @@ void do_breath(struct char_data *ch, const char *argument, int cmd)
 #if 0
 void do_shoot(struct char_data *ch, const char *argument, int cmd)
 {
-    char                                    arg[80] = "\0\0\0\0\0\0\0";
+    char                                    arg[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
     struct char_data                       *victim = NULL;
 
     if (DEBUG)

@@ -148,7 +148,8 @@ void board_write_msg(struct char_data *ch, char *arg, struct Board *b)
   char                                    new_arg[60] = "\0\0\0";
   char                                    time_str[60] = "\0\0\0";
   struct tm                              *tm_info = NULL;
-  time_t                                  tc;
+  time_t                                  tc = 0;
+  int                                     mlen = 0;
 
   if (DEBUG > 2)
     log_info("called %s with %s, %s, %08zx", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(arg), (size_t)b);
@@ -176,12 +177,14 @@ void board_write_msg(struct char_data *ch, char *arg, struct Board *b)
   /*
    * +4 is for a space and '()' around the character name. 
    */
-  CREATE(b->head[b->msg_num], char, 70 + strlen(GET_NAME(ch)) + 4);
 
-  strncpy(new_arg, arg, 40);
-  sprintf(time_str, "%s", asctime(tm_info));
+  mlen = 70 + strlen(GET_NAME(ch)) + 4;
+  CREATE(b->head[b->msg_num], char, mlen);
+
+  strlcpy(new_arg, arg, 40);
+  snprintf(time_str, 60, "%s", asctime(tm_info));
   time_str[strlen(time_str) - 1] = '\0';
-  sprintf(b->head[b->msg_num], "%s (%s) %s", new_arg, GET_NAME(ch), time_str);
+  snprintf(b->head[b->msg_num], mlen, "%s (%s) %s", new_arg, GET_NAME(ch), time_str);
   b->msgs[b->msg_num] = NULL;
 
   cprintf(ch, "Write your message. Terminate with an @.\r\n\r\n");
@@ -328,7 +331,7 @@ void board_save_board(struct Board *bp)
     }
 
     board_id = bp->Vnum;
-    sprintf(board_filename, "%s/%d.data", BOARD_DIR, board_id);
+    snprintf(board_filename, MAX_STRING_LENGTH, "%s/%d.data", BOARD_DIR, board_id);
     if(!(fp = fopen(board_filename, "w"))) {
         log_error("Cannot open %s for writing!", board_filename);
         return;
@@ -345,13 +348,13 @@ void board_save_board(struct Board *bp)
         message_id = i;
 
         /* Adventurers WANTED! (Quixadhal) Sun Jul 25 00:35:39 2004 */
-        strcpy(message_date, bp->head[i] + strlen(bp->head[i]) - 24);
-        strcpy(message_header, bp->head[i]);
+        strlcpy(message_date, bp->head[i] + strlen(bp->head[i]) - 24, 25);
+        strlcpy(message_header, bp->head[i], MAX_STRING_LENGTH);
         message_header[strlen(message_header) - 26] = '\0';
 
         mp = strrchr(message_header, '(');
         if (mp) {
-            strcpy(message_sender, mp + 1);
+            strlcpy(message_sender, mp + 1, MAX_STRING_LENGTH);
             *(mp - 1) = '\0';
         } else {
             *message_sender = '\0';
@@ -359,9 +362,9 @@ void board_save_board(struct Board *bp)
 
         if (!bp->msgs[i]) {
             CREATE(bp->msgs[i], char, 50);			       /* Quixadhal: Why 50? */
-            strcpy(bp->msgs[i], "Generic Message");
+            strlcpy(bp->msgs[i], "Generic Message", 50);
         }
-        strcpy(message_text, bp->msgs[i]);
+        strlcpy(message_text, bp->msgs[i], MAX_STRING_LENGTH);
 
         fprintf(fp, "%d\n%s~\n%s~\n%s~\n%s~\n", message_id, message_date, message_sender, message_header, message_text);
     }
@@ -376,6 +379,7 @@ void board_load_board(struct Board *bp)
     char board_filename[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
     int message_count = 0;
     int i = 0;
+    int mlen = 0;
 
     if (DEBUG > 2)
         log_info("called %s with %08zx", __PRETTY_FUNCTION__, (size_t)bp);
@@ -384,7 +388,7 @@ void board_load_board(struct Board *bp)
         return;
 
     board_id = bp->Vnum;
-    sprintf(board_filename, "%s/%d.data", BOARD_DIR, board_id);
+    snprintf(board_filename, MAX_STRING_LENGTH, "%s/%d.data", BOARD_DIR, board_id);
     if(!(fp = fopen(board_filename, "r"))) {
         log_error("Cannot open %s for reading!", board_filename);
         return;
@@ -409,17 +413,18 @@ void board_load_board(struct Board *bp)
         message_text = strdup(new_fread_string(fp));
 
         /* Adventurers WANTED! (Quixadhal) Sun Jul 25 00:35:39 2004 */
-        strcpy(full_header, message_header);
-        strcat(full_header, " (");
-        strcat(full_header, message_sender);
-        strcat(full_header, ") ");
-        strcat(full_header, message_date);
+        strlcpy(full_header, message_header, MAX_STRING_LENGTH);
+        strlcat(full_header, " (", MAX_STRING_LENGTH);
+        strlcat(full_header, message_sender, MAX_STRING_LENGTH);
+        strlcat(full_header, ") ", MAX_STRING_LENGTH);
+        strlcat(full_header, message_date, MAX_STRING_LENGTH);
 
         free(message_date);
         free(message_header);
         free(message_sender);
-        CREATE(bp->head[message_id], char, strlen(full_header) + 1);
-        strcpy(bp->head[message_id], full_header);
+        mlen = strlen(full_header) + 1;
+        CREATE(bp->head[message_id], char, mlen);
+        strlcpy(bp->head[message_id], full_header, mlen);
         bp->msgs[message_id] = message_text;
     }
     fclose(fp);

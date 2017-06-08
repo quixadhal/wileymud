@@ -278,4 +278,11 @@ Perm      Mort
 Connected 0
 End
 
+#COMMAND
+Name      i3taunt
+Code      I3_taunt
+Perm      Admin
+Connected 1
+End
+
 #END

@@ -533,13 +533,15 @@ void i3send_to_pager(const char *txt, CHAR_DATA *ch)
 void i3page_printf(CHAR_DATA *ch, const char *fmt, ...)
 {
     char                                    buf[MAX_STRING_LENGTH];
+    char                                    buf2[MAX_STRING_LENGTH];
     va_list                                 args;
 
     va_start(args, fmt);
     vsnprintf(buf, MAX_STRING_LENGTH, fmt, args);
     va_end(args);
 
-    i3send_to_pager(buf, ch);
+    i3strlcpy(buf2, I3_i3tag_to_mudtag(ch, buf), MAX_STRING_LENGTH);
+    i3send_to_pager(buf2, ch);
     return;
 }
 
@@ -3069,6 +3071,7 @@ void I3_process_channel_m(I3_HEADER *header, char *s)
     int                  regexp_rv;
     int                  regexp_matchpos[30];
     int                  regexp_pid;
+    char                *url_stripped       = NULL;
 
     I3_get_field(ps, &next_ps);
     I3_remove_quotes(&ps);
@@ -3148,8 +3151,9 @@ void I3_process_channel_m(I3_HEADER *header, char *s)
             }
         }
 
+        url_stripped = i3_strip_colors(tps);
         regexp_rv = pcre_exec(regexp_compiled, regexp_studied,
-                              tps, strlen(tps),
+                              url_stripped, strlen(url_stripped),
                               0, 0, // START POS, OPTIONS
                               regexp_matchpos, 30);
 
@@ -3167,7 +3171,7 @@ void I3_process_channel_m(I3_HEADER *header, char *s)
             }
         } else {
             while( regexp_rv > 0 ) {
-                if (pcre_get_substring(tps, regexp_matchpos, regexp_rv, 0, &regexp_match) >= 0) {
+                if (pcre_get_substring(url_stripped, regexp_matchpos, regexp_rv, 0, &regexp_match) >= 0) {
                     i3log("Found URL ( %s ) in channel ( %s )", regexp_match, channel->local_name);
                     regexp_pid = fork();
                     if( regexp_pid == 0 ) {
@@ -3182,7 +3186,7 @@ void I3_process_channel_m(I3_HEADER *header, char *s)
                     }
                 }
                 regexp_rv = pcre_exec(regexp_compiled, regexp_studied,
-                                      tps, strlen(tps),
+                                      url_stripped, strlen(url_stripped),
                                       regexp_matchpos[1], 0,
                                       regexp_matchpos, 30);
             }

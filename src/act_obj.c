@@ -78,7 +78,7 @@ void do_get(struct char_data *ch, const char *argument, int cmd)
     char                                    found = FALSE;
     char                                    fail = FALSE;
     int                                     type = 3;
-    char                                    newarg[100] = "\0\0\0\0\0\0\0";
+    char                                    newarg[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
     int                                     num = 0;
     int                                     p = 0;
 
@@ -178,10 +178,10 @@ void do_get(struct char_data *ch, const char *argument, int cmd)
 		fail = FALSE;
 
 		if (getall(arg1, newarg) != FALSE) {
-		    strcpy(arg1, newarg);
+		    strlcpy(arg1, newarg, MAX_STRING_LENGTH);
 		    num = -1;
 		} else if ((p = getabunch(arg1, newarg)) != FALSE) {
-		    strcpy(arg1, newarg);
+		    strlcpy(arg1, newarg, MAX_STRING_LENGTH);
 		    num = p;
 		} else {
 		    num = 1;
@@ -311,10 +311,10 @@ void do_get(struct char_data *ch, const char *argument, int cmd)
 
 			if (getall(arg1, newarg) != FALSE) {
 			    num = -1;
-			    strcpy(arg1, newarg);
+			    strlcpy(arg1, newarg, MAX_STRING_LENGTH);
 			} else if ((p = getabunch(arg1, newarg)) != FALSE) {
 			    num = p;
-			    strcpy(arg1, newarg);
+			    strlcpy(arg1, newarg, MAX_STRING_LENGTH);
 			} else {
 			    num = 1;
 			}
@@ -378,7 +378,7 @@ void do_drop(struct char_data *ch, const char *argument, int cmd)
     struct obj_data                        *next_obj = NULL;
     const char                             *s = NULL;
     char                                    arg[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
-    char                                    newarg[100] = "\0\0\0\0\0\0\0";
+    char                                    newarg[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
     int                                     test = FALSE;
     int                                     amount = 0;
     int                                     num = 0;
@@ -391,7 +391,7 @@ void do_drop(struct char_data *ch, const char *argument, int cmd)
     s = one_argument(argument, arg);
     if (is_number(arg)) {
 	amount = atoi(arg);
-	strcpy(arg, s);
+	strlcpy(arg, s, MAX_INPUT_LENGTH);
 
 	/*
 	 * if (0!=str_cmp("coins",arg) && 0!=str_cmp("coin",arg))  {
@@ -452,10 +452,10 @@ void do_drop(struct char_data *ch, const char *argument, int cmd)
 	     */
 	    if (getall(arg, newarg) != FALSE) {
 		num = -1;
-		strcpy(arg, newarg);
+		strlcpy(arg, newarg, MAX_INPUT_LENGTH);
 	    } else if ((p = getabunch(arg, newarg)) != FALSE) {
 		num = p;
-		strcpy(arg, newarg);
+		strlcpy(arg, newarg, MAX_INPUT_LENGTH);
 	    } else {
 		num = 1;
 	    }
@@ -493,7 +493,7 @@ void do_put(struct char_data *ch, const char *argument, int cmd)
     struct char_data                       *tmp_char = NULL;
     char                                    arg1[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
     char                                    arg2[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
-    char                                    newarg[100] = "\0\0\0\0\0\0\0";
+    char                                    newarg[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
     int                                     bits = 0;
     int                                     num = 0;
     int                                     p = 0;
@@ -509,10 +509,10 @@ void do_put(struct char_data *ch, const char *argument, int cmd)
 
 	    if (getall(arg1, newarg) != FALSE) {
 		num = -1;
-		strcpy(arg1, newarg);
+		strlcpy(arg1, newarg, MAX_INPUT_LENGTH);
 	    } else if ((p = getabunch(arg1, newarg)) != FALSE) {
 		num = p;
-		strcpy(arg1, newarg);
+		strlcpy(arg1, newarg, MAX_INPUT_LENGTH);
 	    } else {
 		num = 1;
 	    }
@@ -600,10 +600,10 @@ void do_give(struct char_data *ch, const char *argument, int cmd)
 {
     struct char_data                       *vict = NULL;
     struct obj_data                        *obj = NULL;
-    char                                    obj_name[80] = "\0\0\0\0\0\0\0";
-    char                                    vict_name[80] = "\0\0\0\0\0\0\0";
-    char                                    arg[80] = "\0\0\0\0\0\0\0";
-    char                                    newarg[100] = "\0\0\0\0\0\0\0";
+    char                                    obj_name[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
+    char                                    vict_name[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
+    char                                    arg[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
+    char                                    newarg[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
     int                                     amount = 0;
     int                                     num = 0;
     int                                     p = 0;
@@ -663,10 +663,10 @@ void do_give(struct char_data *ch, const char *argument, int cmd)
      */
     if (getall(obj_name, newarg) != FALSE) {
 	num = -1;
-	strcpy(obj_name, newarg);
+	strlcpy(obj_name, newarg, MAX_INPUT_LENGTH);
     } else if ((p = getabunch(obj_name, newarg)) != FALSE) {
 	num = p;
-	strcpy(obj_name, newarg);
+	strlcpy(obj_name, newarg, MAX_INPUT_LENGTH);
     } else {
 	num = 1;
     }
@@ -743,7 +743,7 @@ void weight_change_object(struct obj_data *obj, int weight)
 void name_from_drinkcon(struct obj_data *obj)
 {
     int                                     i = 0;
-    char                                    buf[100] = "\0\0\0\0\0\0\0";
+    char                                    buf[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
     char                                   *new_name = NULL;
 
     if (DEBUG > 2)
@@ -771,9 +771,9 @@ void name_to_drinkcon(struct obj_data *obj, int type)
     if (DEBUG > 2)
 	log_info("called %s with %s, %d", __PRETTY_FUNCTION__, SAFE_ONAME(obj), type);
 
-    CREATE(new_name, char, strlen           (obj->name) + strlen(drinknames[type]) + 2);
+    CREATE(new_name, char, strlen(obj->name) + strlen(drinknames[type]) + 2);
 
-    sprintf(new_name, "%s %s", obj->name, drinknames[type]);
+    snprintf(new_name, strlen(obj->name) + strlen(drinknames[type]) + 2, "%s %s", obj->name, drinknames[type]);
     DESTROY(obj->name);
     obj->name = new_name;
 }
@@ -878,7 +878,7 @@ void do_drink(struct char_data *ch, const char *argument, int cmd)
 
 void do_puke(struct char_data *ch, const char *argument, int cmd)
 {
-    char                                    buf[100] = "\0\0\0\0\0\0\0";
+    char                                    buf[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
     struct char_data                       *vict = NULL;
 
     if (DEBUG)
@@ -910,7 +910,7 @@ void do_puke(struct char_data *ch, const char *argument, int cmd)
 
 void do_eat(struct char_data *ch, const char *argument, int cmd)
 {
-    char                                    buf[100] = "\0\0\0\0\0\0\0";
+    char                                    buf[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
     int                                     j = 0;
     int                                     num = 0;
     struct obj_data                        *temp = NULL;

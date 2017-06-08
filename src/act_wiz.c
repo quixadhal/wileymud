@@ -92,9 +92,8 @@ void do_rentmode(struct char_data *ch, const char *argument, int cmd)
 	only_argument(argument, buf);
 	if (sscanf(buf, " %lf ", &it) == 1)
 	    RENT_RATE = it;
-	sprintf(buf, "Rent now costs %f normal.", RENT_RATE);
-	cprintf(ch, "%s\r\n", buf);
-	log_info("%s", buf);
+	cprintf(ch, "Rent now costs %f normal.", RENT_RATE);
+	log_info("Rent now costs %f normal.", RENT_RATE);
     } else {
 	if (RENT_RATE != 0.0) {
 	    cprintf(ch, "Rent is now free!\r\n");
@@ -378,7 +377,7 @@ void do_form(struct char_data *ch, const char *argument, int cmd)
 	}
 	rp->zone = zone;
     }
-    sprintf(buf, "%d", loc_nr);
+    snprintf(buf, MAX_INPUT_LENGTH, "%d", loc_nr);
     rp->name = (char *)strdup(buf);
     rp->description = (char *)strdup("New Room\n");
 }
@@ -595,37 +594,37 @@ void do_apraise(struct char_data *ch, const char *argument, int cmd)
 		    cprintf(ch, "Light hours of Use : [%d]", j->obj_flags.value[2]);
 		    break;
 		case ITEM_WEAPON:
-		    sprintf(buf, "Weapon Class:");
+		    snprintf(buf, MAX_STRING_LENGTH, "Weapon Class:");
 		    switch (j->obj_flags.value[3]) {
 			case 0:
-			    strcat(buf, "Smiting Class.\r\n");
+			    strlcat(buf, "Smiting Class.\r\n", MAX_STRING_LENGTH);
 			    break;
 			case 1:
-			    strcat(buf, "Stabbing Class.\r\n");
+			    strlcat(buf, "Stabbing Class.\r\n", MAX_STRING_LENGTH);
 			    break;
 			case 2:
-			    strcat(buf, "Whipping Class.\r\n");
+			    strlcat(buf, "Whipping Class.\r\n", MAX_STRING_LENGTH);
 			    break;
 			case 3:
-			    strcat(buf, "Slashing Class.\r\n");
+			    strlcat(buf, "Slashing Class.\r\n", MAX_STRING_LENGTH);
 			    break;
 			case 4:
-			    strcat(buf, "Smashing Class.\r\n");
+			    strlcat(buf, "Smashing Class.\r\n", MAX_STRING_LENGTH);
 			    break;
 			case 5:
-			    strcat(buf, "Cleaving Class.\r\n");
+			    strlcat(buf, "Cleaving Class.\r\n", MAX_STRING_LENGTH);
 			    break;
 			case 6:
-			    strcat(buf, "Crushing Class.\r\n");
+			    strlcat(buf, "Crushing Class.\r\n", MAX_STRING_LENGTH);
 			    break;
 			case 7:
-			    strcat(buf, "Bludgeoning Class.\r\n");
+			    strlcat(buf, "Bludgeoning Class.\r\n", MAX_STRING_LENGTH);
 			    break;
 			case 11:
-			    strcat(buf, "Piercing Class.\r\n");
+			    strlcat(buf, "Piercing Class.\r\n", MAX_STRING_LENGTH);
 			    break;
 			default:
-			    strcat(buf, "Foreign Class to you....\r\n");
+			    strlcat(buf, "Foreign Class to you....\r\n", MAX_STRING_LENGTH);
 			    break;
 		    }
 
@@ -637,29 +636,29 @@ void do_apraise(struct char_data *ch, const char *argument, int cmd)
 			    found_one = 1;
 			    switch (j->affected[i].modifier) {
 				case 1:
-				    strcat(buf, "It is well balanced.\r\n");
+				    strlcat(buf, "It is well balanced.\r\n", MAX_STRING_LENGTH);
 				    break;
 				case 2:
-				    strcat(buf, "It is very well balanced.\r\n");
+				    strlcat(buf, "It is very well balanced.\r\n", MAX_STRING_LENGTH);
 				    break;
 				case 3:
-				    strcat(buf, "It is a superb weapon.\r\n");
+				    strlcat(buf, "It is a superb weapon.\r\n", MAX_STRING_LENGTH);
 				    break;
 				case 4:
-				    strcat(buf, "It was forged by the gods.\r\n");
+				    strlcat(buf, "It was forged by the gods.\r\n", MAX_STRING_LENGTH);
 				    break;
 				case 5:
-				    strcat(buf, "It should not be in your hands.\r\n");
+				    strlcat(buf, "It should not be in your hands.\r\n", MAX_STRING_LENGTH);
 				    break;
 				default:
-				    strcat(buf, "It will crack with the next blow.\r\n");
+				    strlcat(buf, "It will crack with the next blow.\r\n", MAX_STRING_LENGTH);
 				    break;
 			    }
 			}
 		    }
 
 		    if (!found_one)
-			strcat(buf, "It is common in accuracy.\r\n");
+			strlcat(buf, "It is common in accuracy.\r\n", MAX_STRING_LENGTH);
 
 		    found_one = 0;
 		    for (i = 0; i < MAX_OBJ_AFFECT; i++) {
@@ -668,42 +667,42 @@ void do_apraise(struct char_data *ch, const char *argument, int cmd)
 			    found_one = 1;
 			    switch (j->affected[i].modifier) {
 				case 0:
-				    strcat(buf, "It will surely damage its target.\r\n");
+				    strlcat(buf, "It will surely damage its target.\r\n", MAX_STRING_LENGTH);
 				    break;
 				case 1:
-				    strcat(buf, "It looks to be made from a strong metal.\r\n");
+				    strlcat(buf, "It looks to be made from a strong metal.\r\n", MAX_STRING_LENGTH);
 				    break;
 				case 2:
-				    strcat(buf, "This was forged from a mystical flame.\r\n");
+				    strlcat(buf, "This was forged from a mystical flame.\r\n", MAX_STRING_LENGTH);
 				    break;
 				case 3:
-				    strcat(buf, "It has definite magical charms.\r\n");
+				    strlcat(buf, "It has definite magical charms.\r\n", MAX_STRING_LENGTH);
 				    break;
 				case 4:
-				    strcat(buf,
-					   "This is definitately blessed by the gods.\r\n");
+				    strlcat(buf,
+					   "This is definitately blessed by the gods.\r\n", MAX_STRING_LENGTH);
 				    break;
 				case 5:
-				    strcat(buf, "It is ready to lose its hilt.\r\n");
+				    strlcat(buf, "It is ready to lose its hilt.\r\n", MAX_STRING_LENGTH);
 				    break;
 				default:
-				    strcat(buf,
-					   "It is checked badly and most likely will break.\r\n");
+				    strlcat(buf,
+					   "It is checked badly and most likely will break.\r\n", MAX_STRING_LENGTH);
 				    break;
 			    }
 			}
 		    }
 		    if (!found_one)
-			strcat(buf, "It has a common strength to its making.\r\n");
+			strlcat(buf, "It has a common strength to its making.\r\n", MAX_STRING_LENGTH);
 		    cprintf(ch, "%s", buf);
 
 		    break;
 		case ITEM_ARMOR:
-		    sprintf(buf, "Effective AC points: [%d]\r\nWhen Repaired: [%d]",
+		    snprintf(buf, MAX_STRING_LENGTH, "Effective AC points: [%d]\r\nWhen Repaired: [%d]",
 			    j->obj_flags.value[0], j->obj_flags.value[1]);
 		    if (j->obj_flags.value[0] != 0 && j->obj_flags.value[1] == 0) {
-			strcat(buf,
-			       "\r\nYou should take it to be updated at the Blacksmith\r\n");
+			strlcat(buf,
+			       "\r\nYou should take it to be updated at the Blacksmith\r\n", MAX_STRING_LENGTH);
 		    }
 		    cprintf(ch, "%s", buf);
 		    break;
@@ -780,8 +779,8 @@ void do_stat(struct char_data *ch, const char *argument, int cmd)
 		    "---------------------------------------------------------------------------\r\n");
 	    *buf = '\0';
 	    for (; desc; desc = desc->next) {
-		strcat(buf, desc->keyword);
-		strcat(buf, " ");
+		strlcat(buf, desc->keyword, MAX_STRING_LENGTH);
+		strlcat(buf, " ", MAX_STRING_LENGTH);
 	    }
 	    cprintf(ch, "Extras: %s\r\n", buf);
 	}
@@ -848,13 +847,13 @@ void do_stat(struct char_data *ch, const char *argument, int cmd)
 		if (CAN_SEE(ch, k)) {
 		    int                                     v = 0;
 
-		    sprintf(buf, "%s", GET_NAME(k));
+		    snprintf(buf, MAX_STRING_LENGTH, "%s", GET_NAME(k));
 		    if (!(v = MobVnum(k)))
-			strcat(buf, "(PC)");
+			strlcat(buf, "(PC)", MAX_STRING_LENGTH);
 		    else if (v < 0)
-			strcat(buf, "(NPC)");
+			strlcat(buf, "(NPC)", MAX_STRING_LENGTH);
 		    else
-			sprintf(buf + strlen(buf), " [#%d]", v);
+			scprintf(buf, MAX_STRING_LENGTH, " [#%d]", v);
 		    cprintf(ch, "     %s\r\n", buf);
 		}
 	    }
@@ -924,16 +923,16 @@ void do_stat(struct char_data *ch, const char *argument, int cmd)
 
 	switch (k->player.sex) {
 	    case SEX_NEUTRAL:
-		strcpy(buf, "Neutral-Sex");
+		strlcpy(buf, "Neutral-Sex", MAX_STRING_LENGTH);
 		break;
 	    case SEX_MALE:
-		strcpy(buf, "Male");
+		strlcpy(buf, "Male", MAX_STRING_LENGTH);
 		break;
 	    case SEX_FEMALE:
-		strcpy(buf, "Female");
+		strlcpy(buf, "Female", MAX_STRING_LENGTH);
 		break;
 	    default:
-		strcpy(buf, "ILLEGAL-SEX!!");
+		strlcpy(buf, "ILLEGAL-SEX!!", MAX_STRING_LENGTH);
 		break;
 	}
 
@@ -948,19 +947,19 @@ void do_stat(struct char_data *ch, const char *argument, int cmd)
 		(k->player.long_descr ? k->player.long_descr : "None"));
 
 	if (IS_NPC(k)) {
-	    strcpy(buf, "Monster Class: ");
+	    strlcpy(buf, "Monster Class: ", MAX_STRING_LENGTH);
 	    sprinttype(k->player.class, npc_class_types, buf2);
 	} else {
-	    strcpy(buf, "Class: ");
+	    strlcpy(buf, "Class: ", MAX_STRING_LENGTH);
 	    sprintbit(k->player.class, pc_class_types, buf2);
 	}
-	strcat(buf, buf2);
+	strlcat(buf, buf2, MAX_STRING_LENGTH);
 
-	sprintf(buf2, " :  Level [%d/%d/%d/%d/%d] : Alignment[%d]\r\n",
+	snprintf(buf2, MAX_STRING_LENGTH, " :  Level [%d/%d/%d/%d/%d] : Alignment[%d]\r\n",
 		k->player.level[0], k->player.level[1],
 		k->player.level[2], k->player.level[3], k->player.level[4], GET_ALIGNMENT(k));
 
-	strcat(buf, buf2);
+	strlcat(buf, buf2, MAX_STRING_LENGTH);
 	cprintf(ch, "%s", buf);
 
 	if (IS_PC(k)) {
@@ -995,33 +994,29 @@ void do_stat(struct char_data *ch, const char *argument, int cmd)
 	cprintf(ch, "+----------------------------+\r\n");
 
 	sprinttype(GET_POS(k), position_types, buf2);
-	sprintf(buf, "Position: %s : Fighting: %s", buf2,
+	snprintf(buf, MAX_STRING_LENGTH, "Position: %s : Fighting: %s", buf2,
 		((k->specials.fighting) ? GET_NAME(k->specials.fighting) : "Nobody"));
 	if (k->desc) {
 	    sprinttype(k->desc->connected, connected_types, buf2);
-	    strcat(buf, " : Connected: ");
-	    strcat(buf, buf2);
+	    strlcat(buf, " : Connected: ", MAX_STRING_LENGTH);
+	    strlcat(buf, buf2, MAX_STRING_LENGTH);
 	}
 	cprintf(ch, "%s\r\n", buf);
 
-	strcpy(buf, "Default position: ");
+	strlcpy(buf, "Default position: ", MAX_STRING_LENGTH);
 	sprinttype((k->specials.default_pos), position_types, buf2);
-	strcat(buf, buf2);
+	strlcat(buf, buf2, MAX_STRING_LENGTH);
 	if (IS_NPC(k)) {
-	    strcat(buf, "\r\nNPC flags: ");
+	    strlcat(buf, "\r\nNPC flags: ", MAX_STRING_LENGTH);
 	    sprintbit(k->specials.act, action_bits, buf2);
 	} else {
-	    strcat(buf, ",PC flags: ");
+	    strlcat(buf, ",PC flags: ", MAX_STRING_LENGTH);
 	    sprintbit(k->specials.act, player_bits, buf2);
 	}
 
-	strcat(buf, buf2);
+	strlcat(buf, buf2, MAX_STRING_LENGTH);
 
 	if (IS_MOB(k)) {
-	    /*
-	     * strcpy(buf, "\r\nMobile Special procedure : "); strcat(buf, (mob_index[k->nr].func ? "Exists\r\n" :
-	     * "None\r\n")); cprintf(ch, buf); 
-	     */
 	    cprintf(ch, "\r\nMobile Special procedure : %s\r\n",
 		    (mob_index[k->nr].func ? MobFunctionNameByFunc(mob_index[k->nr].func) :
 		     "None"));
@@ -1030,13 +1025,13 @@ void do_stat(struct char_data *ch, const char *argument, int cmd)
 		IS_CARRYING_W(k), IS_CARRYING_N(k));
 
 	for (i = 0, j = k->carrying; j; j = j->next_content, i++);
-	sprintf(buf, "Items in inventory: %d, ", i);
+	snprintf(buf, MAX_STRING_LENGTH, "Items in inventory: %d, ", i);
 
 	for (i = 0, i2 = 0; i < MAX_WEAR; i++)
 	    if (k->equipment[i])
 		i2++;
-	sprintf(buf2, "Items in equipment: %d\r\n", i2);
-	strcat(buf, buf2);
+	snprintf(buf2, MAX_STRING_LENGTH, "Items in equipment: %d\r\n", i2);
+	strlcat(buf, buf2, MAX_STRING_LENGTH);
 	cprintf(ch, "%s", buf);
 
 	cprintf(ch, "Apply saving throws: [%d] [%d] [%d] [%d] [%d]\r\n",
@@ -1127,24 +1122,24 @@ void do_stat(struct char_data *ch, const char *argument, int cmd)
 	    }
 	}
 	virtual = (j->item_number >= 0) ? obj_index[j->item_number].virtual : 0;
-	sprintf(buf, "Object name: [%s]\r\nR-number: [%d], Load Number: [%d]\r\nItem type: ",
+	snprintf(buf, MAX_STRING_LENGTH, "Object name: [%s]\r\nR-number: [%d], Load Number: [%d]\r\nItem type: ",
 		j->name, j->item_number, virtual);
 	sprinttype(GET_ITEM_TYPE(j), item_types, buf2);
-	strcat(buf, buf2);
+	strlcat(buf, buf2, MAX_STRING_LENGTH);
 	cprintf(ch, "%s\r\n", buf);
 	cprintf(ch, "Short description: %s\r\nLong description:\r\n%s\r\n",
 		((j->short_description) ? j->short_description : "None"),
 		((j->description) ? j->description : "None"));
 	if (j->ex_description) {
-	    strcpy(buf, "Extra description keyword(s):\r\n----------\r\n");
+	    strlcpy(buf, "Extra description keyword(s):\r\n----------\r\n", MAX_STRING_LENGTH);
 	    for (desc = j->ex_description; desc; desc = desc->next) {
-		strcat(buf, desc->keyword);
-		strcat(buf, "\r\n");
+		strlcat(buf, desc->keyword, MAX_STRING_LENGTH);
+		strlcat(buf, "\r\n", MAX_STRING_LENGTH);
 	    }
-	    strcat(buf, "----------\r\n");
+	    strlcat(buf, "----------\r\n", MAX_STRING_LENGTH);
 	    cprintf(ch, "%s", buf);
 	} else {
-	    strcpy(buf, "Extra description keyword(s): None\r\n");
+	    strlcpy(buf, "Extra description keyword(s): None\r\n", MAX_STRING_LENGTH);
 	    cprintf(ch, "%s", buf);
 	}
 
@@ -1164,153 +1159,153 @@ void do_stat(struct char_data *ch, const char *argument, int cmd)
 		j->obj_flags.weight, j->obj_flags.cost,
 		j->obj_flags.cost_per_day, j->obj_flags.timer);
 
-	strcpy(buf, "In room: ");
+	strlcpy(buf, "In room: ", MAX_STRING_LENGTH);
 	if (j->in_room == NOWHERE)
-	    strcat(buf, "Nowhere");
+	    strlcat(buf, "Nowhere", MAX_STRING_LENGTH);
 	else {
-	    sprintf(buf2, "%d", j->in_room);
-	    strcat(buf, buf2);
+	    snprintf(buf2, MAX_STRING_LENGTH, "%d", j->in_room);
+	    strlcat(buf, buf2, MAX_STRING_LENGTH);
 	}
-	strcat(buf, " ,In object: ");
-	strcat(buf, (!j->in_obj ? "None" : fname(j->in_obj->name)));
+	strlcat(buf, " ,In object: ", MAX_STRING_LENGTH);
+	strlcat(buf, (!j->in_obj ? "None" : fname(j->in_obj->name)), MAX_STRING_LENGTH);
 
 	/*
-	 * strcat(buf," ,Carried by:");
+	 * strlcat(buf," ,Carried by:", MAX_STRING_LENGTH);
 	 * if (j->carried_by) 
 	 * {
 	 * if (GET_NAME(j->carried_by)) 
 	 * {
 	 * if (strlen(GET_NAME(j->carried_by)) > 0) 
 	 * {
-	 * strcat(buf, (!j->carried_by) ? "Nobody" : GET_NAME(j->carried_by));
+	 * strlcat(buf, (!j->carried_by) ? "Nobody" : GET_NAME(j->carried_by), MAX_STRING_LENGTH);
 	 * }
 	 * else
 	 * {
-	 * strcat(buf, "NonExistantPlayer");
+	 * strlcat(buf, "NonExistantPlayer", MAX_STRING_LENGTH);
 	 * }
 	 * }
 	 * else 
 	 * {
-	 * strcat(buf, "NonExistantPlayer");
+	 * strlcat(buf, "NonExistantPlayer", MAX_STRING_LENGTH);
 	 * }
 	 * }
 	 * else 
 	 * {
-	 * strcat(buf, "Nobody");
+	 * strlcat(buf, "Nobody", MAX_STRING_LENGTH);
 	 * }
-	 * strcat(buf,"\r\n");
+	 * strlcat(buf,"\r\n", MAX_STRING_LENGTH);
 	 * cprintf(ch, buf);
 	 */
 	switch (j->obj_flags.type_flag) {
 	    case ITEM_LIGHT:
-		sprintf(buf, "Colour : [%d]\r\nType : [%d]\r\nHours : [%d]",
+		snprintf(buf, MAX_STRING_LENGTH, "Colour : [%d]\r\nType : [%d]\r\nHours : [%d]",
 			j->obj_flags.value[0], j->obj_flags.value[1], j->obj_flags.value[2]);
 		break;
 	    case ITEM_SCROLL:
-		sprintf(buf, "Spells : %d, %d, %d, %d",
+		snprintf(buf, MAX_STRING_LENGTH, "Spells : %d, %d, %d, %d",
 			j->obj_flags.value[0],
 			j->obj_flags.value[1], j->obj_flags.value[2], j->obj_flags.value[3]);
 		break;
 	    case ITEM_WAND:
-		sprintf(buf, "Spell : %d\r\nMana : %d", j->obj_flags.value[0],
+		snprintf(buf, MAX_STRING_LENGTH, "Spell : %d\r\nMana : %d", j->obj_flags.value[0],
 			j->obj_flags.value[1]);
 		break;
 	    case ITEM_STAFF:
-		sprintf(buf, "Spell : %d\r\nMana : %d", j->obj_flags.value[0],
+		snprintf(buf, MAX_STRING_LENGTH, "Spell : %d\r\nMana : %d", j->obj_flags.value[0],
 			j->obj_flags.value[1]);
 		break;
 	    case ITEM_WEAPON:
-		sprintf(buf, "Tohit : %d\r\nTodam : %dD%d\r\nType : %d",
+		snprintf(buf, MAX_STRING_LENGTH, "Tohit : %d\r\nTodam : %dD%d\r\nType : %d",
 			j->obj_flags.value[0],
 			j->obj_flags.value[1], j->obj_flags.value[2], j->obj_flags.value[3]);
 		break;
 	    case ITEM_FIREWEAPON:
-		sprintf(buf, "Tohit : %d\r\nTodam : %dD%d\r\nType : %d",
+		snprintf(buf, MAX_STRING_LENGTH, "Tohit : %d\r\nTodam : %dD%d\r\nType : %d",
 			j->obj_flags.value[0],
 			j->obj_flags.value[1], j->obj_flags.value[2], j->obj_flags.value[3]);
 		break;
 	    case ITEM_MISSILE:
-		sprintf(buf, "Tohit : %d\r\nTodam : %d\r\nType : %d",
+		snprintf(buf, MAX_STRING_LENGTH, "Tohit : %d\r\nTodam : %d\r\nType : %d",
 			j->obj_flags.value[0], j->obj_flags.value[1], j->obj_flags.value[3]);
 		break;
 	    case ITEM_ARMOR:
-		sprintf(buf, "AC-apply : [%d]\r\nFull Strength : [%d]",
+		snprintf(buf, MAX_STRING_LENGTH, "AC-apply : [%d]\r\nFull Strength : [%d]",
 			j->obj_flags.value[0], j->obj_flags.value[1]);
 
 		break;
 	    case ITEM_POTION:
-		sprintf(buf, "Spells : %d, %d, %d, %d",
+		snprintf(buf, MAX_STRING_LENGTH, "Spells : %d, %d, %d, %d",
 			j->obj_flags.value[0],
 			j->obj_flags.value[1], j->obj_flags.value[2], j->obj_flags.value[3]);
 		break;
 	    case ITEM_TRAP:
-		sprintf(buf, "level: %d, att type: %d, damage class: %d, charges: %d",
+		snprintf(buf, MAX_STRING_LENGTH, "level: %d, att type: %d, damage class: %d, charges: %d",
 			j->obj_flags.value[0],
 			j->obj_flags.value[1], j->obj_flags.value[2], j->obj_flags.value[3]);
 		break;
 	    case ITEM_CONTAINER:
-		sprintf(buf, "Max-contains : %d\r\nLocktype : %d\r\nCorpse : %s",
+		snprintf(buf, MAX_STRING_LENGTH, "Max-contains : %d\r\nLocktype : %d\r\nCorpse : %s",
 			j->obj_flags.value[0],
 			j->obj_flags.value[1], j->obj_flags.value[3] ? "Yes" : "No");
 		break;
 	    case ITEM_DRINKCON:
 		sprinttype(j->obj_flags.value[2], drinks, buf2);
-		sprintf(buf,
+		snprintf(buf, MAX_STRING_LENGTH,
 			"Max-contains : %d\r\nContains : %d\r\nPoisoned : %d\r\nLiquid : %s",
 			j->obj_flags.value[0], j->obj_flags.value[1], j->obj_flags.value[3],
 			buf2);
 		break;
 	    case ITEM_NOTE:
-		sprintf(buf, "Tounge : %d", j->obj_flags.value[0]);
+		snprintf(buf, MAX_STRING_LENGTH, "Tounge : %d", j->obj_flags.value[0]);
 		break;
 	    case ITEM_KEY:
-		sprintf(buf, "Keytype : %d", j->obj_flags.value[0]);
+		snprintf(buf, MAX_STRING_LENGTH, "Keytype : %d", j->obj_flags.value[0]);
 		break;
 	    case ITEM_FOOD:
-		sprintf(buf, "Makes full : %d\r\nPoisoned : %d",
+		snprintf(buf, MAX_STRING_LENGTH, "Makes full : %d\r\nPoisoned : %d",
 			j->obj_flags.value[0], j->obj_flags.value[3]);
 		break;
 	    default:
-		sprintf(buf, "Values 0-3 : [%d] [%d] [%d] [%d]",
+		snprintf(buf, MAX_STRING_LENGTH, "Values 0-3 : [%d] [%d] [%d] [%d]",
 			j->obj_flags.value[0],
 			j->obj_flags.value[1], j->obj_flags.value[2], j->obj_flags.value[3]);
 		break;
 	}
 	cprintf(ch, "%s", buf);
 
-	strcpy(buf, "\r\nEquipment Status: ");
+	strlcpy(buf, "\r\nEquipment Status: ", MAX_STRING_LENGTH);
 	if (!j->carried_by)
-	    strcat(buf, "NONE");
+	    strlcat(buf, "NONE", MAX_STRING_LENGTH);
 	else {
 	    found = FALSE;
 	    for (i = 0; i < MAX_WEAR; i++) {
 		if (j->carried_by->equipment[i] == j) {
 		    sprinttype(i, equipment_types, buf2);
-		    strcat(buf, buf2);
+		    strlcat(buf, buf2, MAX_STRING_LENGTH);
 		    found = TRUE;
 		}
 	    }
 	    if (!found)
-		strcat(buf, "Inventory");
+		strlcat(buf, "Inventory", MAX_STRING_LENGTH);
 	}
 	cprintf(ch, "%s", buf);
 
-	strcpy(buf, "\r\nSpecial procedure : ");
+	strlcpy(buf, "\r\nSpecial procedure : ", MAX_STRING_LENGTH);
 	if (j->item_number >= 0)
-	    strcat(buf, (obj_index[j->item_number].func ? "exists\r\n" : "No\r\n"));
+	    strlcat(buf, (obj_index[j->item_number].func ? "exists\r\n" : "No\r\n"), MAX_STRING_LENGTH);
 	else
-	    strcat(buf, "No\r\n");
+	    strlcat(buf, "No\r\n", MAX_STRING_LENGTH);
 	cprintf(ch, "%s", buf);
 
-	strcpy(buf, "Contains :\r\n");
+	strlcpy(buf, "Contains :\r\n", MAX_STRING_LENGTH);
 	found = FALSE;
 	for (j2 = j->contains; j2; j2 = j2->next_content) {
-	    strcat(buf, fname(j2->name));
-	    strcat(buf, "\r\n");
+	    strlcat(buf, fname(j2->name), MAX_STRING_LENGTH);
+	    strlcat(buf, "\r\n", MAX_STRING_LENGTH);
 	    found = TRUE;
 	}
 	if (!found)
-	    strcpy(buf, "Contains : Nothing\r\n");
+	    strlcpy(buf, "Contains : Nothing\r\n", MAX_STRING_LENGTH);
 	cprintf(ch, "%s", buf);
 
 	cprintf(ch, "Can affect char :\r\n");
@@ -1327,8 +1322,8 @@ void do_stat(struct char_data *ch, const char *argument, int cmd)
 
 void do_pretitle(struct char_data *ch, const char *argument, int cmd)
 {
-    char                                    name[20] = "\0\0\0\0\0\0\0";
-    char                                    pretitle[50] = "\0\0\0\0\0\0\0";
+    char                                    name[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
+    char                                    pretitle[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
     struct char_data                       *vict = NULL;
 
     if (DEBUG)
@@ -1338,7 +1333,7 @@ void do_pretitle(struct char_data *ch, const char *argument, int cmd)
     argument = one_argument(argument, name);
     if (*argument == ' ')
 	argument++;
-    strcpy(pretitle, argument);
+    strlcpy(pretitle, argument, MAX_INPUT_LENGTH);
 
     if (!(vict = get_char_vis(ch, name))) {
 	cprintf(ch, "I don't see them here?\r\n");
@@ -1348,17 +1343,16 @@ void do_pretitle(struct char_data *ch, const char *argument, int cmd)
 	GET_PRETITLE(vict) = NULL;
 	return;
     }
-    CREATE(GET_PRETITLE(vict), char, strlen(pretitle) + 1);
-    strcpy(GET_PRETITLE(vict), pretitle);
+    GET_PRETITLE(vict) = strdup(pretitle);
 }
 
 void do_set(struct char_data *ch, const char *argument, int cmd)
 {
     struct char_data                       *mob = NULL;
-    char                                    field[20] = "\0\0\0\0\0\0\0";
-    char                                    name[20] = "\0\0\0\0\0\0\0";
-    char                                    parmstr[50] = "\0\0\0\0\0\0\0";
-    char                                    tmp[80] = "\0\0\0\0\0\0\0";
+    char                                    field[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
+    char                                    name[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
+    char                                    parmstr[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
+    char                                    tmp[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
     char                                    buf[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
     int                                     index_value = 0;
     int                                     parm = 0;
@@ -1384,17 +1378,17 @@ void do_set(struct char_data *ch, const char *argument, int cmd)
 
     argument = one_argument(argument, name);
     argument = one_argument(argument, field);
-    strncpy(tmp, argument, 79);
+    strlcpy(tmp, argument, MAX_INPUT_LENGTH);
     argument = one_argument(argument, parmstr);
 
     if ((mob = get_char_vis(ch, name)) == NULL) {
 	cprintf(ch, "I don't see them here? \r\n\r\n");
 	*buf = '\0';
-	strcpy(buf, "Usage:  pset <name> <attrib> <value>\r\n");
+	strlcpy(buf, "Usage:  pset <name> <attrib> <value>\r\n", MAX_STRING_LENGTH);
 	for (no = 1, i = 0; pset_list[i]; i++) {
-	    sprintf(buf + strlen(buf), "%-10s", pset_list[i]);
+	    scprintf(buf, MAX_STRING_LENGTH, "%-10s", pset_list[i]);
 	    if (!(no % 7))
-		strcat(buf, "\r\n");
+		strlcat(buf, "\r\n", MAX_STRING_LENGTH);
 	    no++;
 	}
 	cprintf(ch, "%s\r\n", buf);
@@ -1643,11 +1637,11 @@ void do_set(struct char_data *ch, const char *argument, int cmd)
 	    break;
 	default:
 	    *buf = '\0';
-	    strcpy(buf, "Usage:  pset <name> <attrib> <value>\r\n");
+	    strlcpy(buf, "Usage:  pset <name> <attrib> <value>\r\n", MAX_STRING_LENGTH);
 	    for (no = 1, i = 0; pset_list[i]; i++) {
-		sprintf(buf + strlen(buf), "%-10s", pset_list[i]);
+		scprintf(buf, MAX_STRING_LENGTH, "%-10s", pset_list[i]);
 		if (!(no % 7))
-		    strcat(buf, "\r\n");
+		    strlcat(buf, "\r\n", MAX_STRING_LENGTH);
 		no++;
 	    }
 	    cprintf(ch, "%s\r\n", buf);
@@ -2827,20 +2821,20 @@ static void print_room(int rnum, struct room_data *rp, struct string_block *sb)
 	log_info("called %s with %d, %08zx, %08zx", __PRETTY_FUNCTION__, rnum, (size_t) rp,
 		 (size_t) sb);
 
-    sprintf(buf, "%5d %4d %-12s %s", rp->number, rnum, sector_types[rp->sector_type], rp->name);
-    strcat(buf, " [");
+    snprintf(buf, MAX_STRING_LENGTH, "%5d %4d %-12s %s", rp->number, rnum, sector_types[rp->sector_type], rp->name);
+    strlcat(buf, " [", MAX_STRING_LENGTH);
 
     dink = 0;
     for (bits = rp->room_flags, scan = 0; bits; scan++) {
 	if (bits & (1 << scan)) {
 	    if (dink)
-		strcat(buf, " ");
-	    strcat(buf, room_bits[scan]);
+		strlcat(buf, " ", MAX_STRING_LENGTH);
+	    strlcat(buf, room_bits[scan], MAX_STRING_LENGTH);
 	    dink = 1;
 	    bits ^= (1 << scan);
 	}
     }
-    strcat(buf, "]\r\n");
+    strlcat(buf, "]\r\n", MAX_STRING_LENGTH);
 
     append_to_string_block(sb, buf);
 }
@@ -2877,7 +2871,7 @@ static void show_room_zone(int rnum, struct room_data *rp, struct show_room_zone
 	return;						       /* optimize later */
 
     if (srzs->blank && (srzs->lastblank + 1 != rp->number)) {
-	sprintf(buf, "rooms %d-%d are blank\r\n", srzs->startblank, srzs->lastblank);
+	snprintf(buf, MAX_STRING_LENGTH, "rooms %d-%d are blank\r\n", srzs->startblank, srzs->lastblank);
 	append_to_string_block(srzs->sb, buf);
 	srzs->blank = 0;
     }
@@ -2888,7 +2882,7 @@ static void show_room_zone(int rnum, struct room_data *rp, struct show_room_zone
 	}
 	return;
     } else if (srzs->blank) {
-	sprintf(buf, "rooms %d-%d are blank\r\n", srzs->startblank, srzs->lastblank);
+	snprintf(buf, MAX_STRING_LENGTH, "rooms %d-%d are blank\r\n", srzs->startblank, srzs->lastblank);
 	append_to_string_block(srzs->sb, buf);
 	srzs->blank = 0;
     }
@@ -2920,8 +2914,7 @@ void do_show(struct char_data *ch, const char *argument, int cmd)
 	struct zone_data                       *zd = NULL;
 	int                                     zone_bottom = 0;
 
-	sprintf(buf,
-		"# Zone   name                                lifespan age     rooms     reset\r\n");
+	snprintf(buf, MAX_STRING_LENGTH, "# Zone   name                                lifespan age     rooms     reset\r\n");
 	append_to_string_block(&sb, buf);
 
 	for (zone = 0; zone <= top_of_zone_table; zone++) {
@@ -2942,7 +2935,7 @@ void do_show(struct char_data *ch, const char *argument, int cmd)
 		    mode = "!unknown!";
 		    break;
 	    }
-	    sprintf(buf, "%4d %-40s %4dm %4dm %6d-%-6d %s\r\n", zone, zd->name,
+	    snprintf(buf, MAX_STRING_LENGTH, "%4d %-40s %4dm %4dm %6d-%-6d %s\r\n", zone, zd->name,
 		    zd->lifespan, zd->age, zone_bottom, zd->top, mode);
 	    append_to_string_block(&sb, buf);
 	    zone_bottom = zd->top + 1;
@@ -2956,7 +2949,7 @@ void do_show(struct char_data *ch, const char *argument, int cmd)
 	only_argument(argument, zonenum);
 	zone = -1;
 	if (1 == sscanf(zonenum, "%i", &zone) && (zone < 0 || zone > top_of_zone_table)) {
-	    sprintf(buf, "That is not a valid zone_number\r\n");
+	    snprintf(buf, MAX_STRING_LENGTH, "That is not a valid zone_number\r\n");
 	    append_to_string_block(&sb, buf);
 	    return;
 	}
@@ -2964,7 +2957,7 @@ void do_show(struct char_data *ch, const char *argument, int cmd)
 	    bottom = zone ? (zone_table[zone - 1].top + 1) : 0;
 	    top = zone_table[zone].top;
 	}
-	sprintf(buf, "%5s %4s %5s %-40s %-16s %s\r\n", "VNUM", "rnum", "count", "names",
+	snprintf(buf, MAX_STRING_LENGTH, "%5s %4s %5s %-40s %-16s %s\r\n", "VNUM", "rnum", "count", "names",
 		"distance", "room");
 	append_to_string_block(&sb, buf);
 	for (objn = 0; objn <= topi; objn++) {
@@ -2980,22 +2973,22 @@ void do_show(struct char_data *ch, const char *argument, int cmd)
 	    if (target_mob)
 		target_room = real_roomp(target_mob->in_room);
 	    if (target_mob && target_room)
-		sprintf(tbuf, "[#%5d] %s", target_mob->in_room, target_room->name);
-	    sprintf(buf, "%5d %4d %5d %-40s %-16s %s\r\n", oi->virtual, objn, oi->number,
+		snprintf(tbuf, MAX_INPUT_LENGTH, "[#%5d] %s", target_mob->in_room, target_room->name);
+	    snprintf(buf, MAX_STRING_LENGTH, "%5d %4d %5d %-40s %-16s %s\r\n", oi->virtual, objn, oi->number,
 		    oi->name, target_mob ? track_distance(ch, oi->name) : "",
 		    target_room ? tbuf : "");
 	    append_to_string_block(&sb, buf);
 	}
     } else if (is_abbrev(buf, "rooms")) {
 	only_argument(argument, zonenum);
-	sprintf(buf, "VNUM  rnum type         name [BITS]\r\n");
+	snprintf(buf, MAX_STRING_LENGTH, "VNUM  rnum type         name [BITS]\r\n");
 	append_to_string_block(&sb, buf);
 	if (is_abbrev(zonenum, "death")) {
 	    hash_iterate(&room_db, (funcp)print_death_room, &sb);
 	} else if (is_abbrev(zonenum, "private")) {
 	    hash_iterate(&room_db, (funcp)print_private_room, &sb);
 	} else if (1 != sscanf(zonenum, "%i", &zone) || zone < 0 || zone > top_of_zone_table) {
-	    sprintf(buf, "I need a zone number with this command\r\n");
+	    snprintf(buf, MAX_STRING_LENGTH, "I need a zone number with this command\r\n");
 	    append_to_string_block(&sb, buf);
 	} else {
 	    struct show_room_zone_struct            srzs;
@@ -3006,13 +2999,14 @@ void do_show(struct char_data *ch, const char *argument, int cmd)
 	    srzs.sb = &sb;
 	    hash_iterate(&room_db, (funcp)show_room_zone, &srzs);
 	    if (srzs.blank) {
-		sprintf(buf, "rooms %d-%d are blank\r\n", srzs.startblank, srzs.lastblank);
+		snprintf(buf, MAX_STRING_LENGTH, "rooms %d-%d are blank\r\n", srzs.startblank, srzs.lastblank);
 		append_to_string_block(&sb, buf);
 		srzs.blank = 0;
 	    }
 	}
     } else {
-	sprintf(buf, "Usage:\r\n"
+	snprintf(buf, MAX_STRING_LENGTH,
+                "Usage:\r\n"
 		"  show zones\r\n"
 		"  show (objects|mobiles) (zone#|name)\r\n"
 		"  show rooms (zone#|death|private)\r\n");

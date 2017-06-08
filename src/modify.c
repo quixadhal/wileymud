@@ -643,7 +643,7 @@ void page_printf(struct char_data *ch, const char *Str, ...)
     if (Str && *Str && ch && ch->desc) {
 	bzero(Result, MAX_STRING_LENGTH);
 	va_start(arg, Str);
-	vsprintf(Result, Str, arg);
+	vsnprintf(Result, MAX_STRING_LENGTH, Str, arg);
 	va_end(arg);
 	page_string(ch->desc, Result, 1);
     }

@@ -210,8 +210,8 @@ void do_commune(struct char_data *ch, const char *argument, int cmd)
 void do_tell(struct char_data *ch, const char *argument, int cmd)
 {
     struct char_data                       *vict = NULL;
-    char                                    name[100] = "\0\0\0\0\0\0\0";
-    char                                    message[MAX_INPUT_LENGTH + 20] = "\0\0\0\0\0\0\0";
+    char                                    name[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
+    char                                    message[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
 
     if (DEBUG)
 	log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch),
@@ -269,7 +269,7 @@ void do_tell(struct char_data *ch, const char *argument, int cmd)
 void do_whisper(struct char_data *ch, const char *argument, int cmd)
 {
     struct char_data                       *vict = NULL;
-    char                                    name[100] = "\0\0\0\0\0\0\0";
+    char                                    name[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
     char                                    message[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
 
     if (DEBUG)
@@ -298,7 +298,7 @@ void do_whisper(struct char_data *ch, const char *argument, int cmd)
 void do_ask(struct char_data *ch, const char *argument, int cmd)
 {
     struct char_data                       *vict = NULL;
-    char                                    name[100] = "\0\0\0\0\0\0\0";
+    char                                    name[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
     char                                    message[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
 
     if (DEBUG)
@@ -449,7 +449,7 @@ void do_group_report(struct char_data *ch, const char *argument, int cmd)
 	cprintf(ch, "You are to tired to do this....\r\n");
 	return;
     }
-    sprintf(message,
+    snprintf(message, MAX_INPUT_LENGTH,
 	    "\r\nGroup Report from:Name:%s Hits:%d(%d) Mana:%d(%d) Move:%d(%d)",
 	    GET_NAME(ch),
 	    GET_HIT(ch),
