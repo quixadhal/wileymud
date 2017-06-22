@@ -270,45 +270,6 @@ sub pinkfish_to {
     return $string;
 }
 
-sub pinkfish_to_ansi {
-    my $string = shift;
-    my %conversion = (
-        '%^RESET%^'                 => "\033[0;0m",
-
-        '%^BOLD%^'                  => "\033[1m",
-        '%^FLASH%^'                 => "\033[5m",
-
-        '%^BLACK%^'                 => "\033[30m",
-        '%^RED%^'                   => "\033[31m",
-        '%^GREEN%^'                 => "\033[32m",
-        '%^ORANGE%^'                => "\033[33m",
-        '%^BLUE%^'                  => "\033[34m",
-        '%^MAGENTA%^'               => "\033[35m",
-        '%^CYAN%^'                  => "\033[36m",
-        #'%^WHITE%^'                 => "\033[37m",
-        '%^DARKGREY%^'              => "\033[37m",
-
-        '%^GREY%^'                  => "\033[1;30m",
-        '%^PINK%^'                  => "\033[1;31m",
-        '%^LIGHTRED%^'              => "\033[1;31m",
-        '%^LIGHTGREEN%^'            => "\033[1;32m",
-        '%^YELLOW%^'                => "\033[1;33m",
-        '%^LIGHTBLUE%^'             => "\033[1;34m",
-        '%^LIGHTMAGENTA%^'          => "\033[1;35m",
-        '%^LIGHTCYAN%^'             => "\033[1;36m",
-        '%^WHITE%^'                 => "\033[1;37m",
-    );
-    foreach my $k (keys(%conversion)) {
-        my $v = $conversion{$k};
-        $string =~ s/\Q$k\E/$v/gsmx;
-    }
-    return $string;
-}
-
-#my $testvar = "%^RESET%^%^GREEN%^http://tinyurl.com/lhs9rts ::%^RESET%^ %^RESET%^YouTube %^YELLOW%^[CW-gdyJJBII]%^RESET%^ is Duran Duran - RIO 35th Anniversary: An oral history with Roger, Nick, John & Simon %^RED%^(15:29)%^RESET%^\n";
-#print pinkfish_to_ansi($testvar);
-#exit 1;
-
 sub new_get_url {
     my $url = shift;
 
@@ -405,155 +366,145 @@ sub get_page_title {
     return $funky;
 }
 
-sub get_youtube_id {
-    my $page = shift;
+sub get_source {
     my $xurl = shift;
 
-    if( defined $xurl ) {
-        $xurl =~ /watch\?v=([^\"\&]*)\">/i;
-        my ($id) =  ($1);
-        return $id if defined $id;
+    if (defined $xurl) {
+        return "YouTube"        if $xurl =~ /youtube/i;
+        return "IMDB"           if $xurl =~ /imdb/i;
+        return "Dailymotion"    if $xurl =~ /dailymotion/i;
+        return "Steam"          if $xurl =~ /steam/i;
     }
+    return "";
+}
 
-    if( defined $page ) {
-        $page =~ /<link\s+rel=\"canonical\"\s+href=\".*?\/watch\?v=([^\"\&]*)\">/i;
-        my ($id) =  ($1);
-        return $id if defined $id;
+sub get_id {
+    my $source = shift;
+    my $xurl = shift;
+    my $page = shift;
+
+    return undef if !defined $source;
+
+    if ($source eq "YouTube") {
+        if( defined $xurl ) {
+            $xurl =~ /watch\?v=([^\"\&]*)\">/i;
+            my ($id) =  ($1);
+            return $id if defined $id;
+        }
+        if( defined $page ) {
+            $page =~ /<link\s+rel=\"canonical\"\s+href=\".*?\/watch\?v=([^\"\&]*)\">/i;
+            my ($id) =  ($1);
+            return $id if defined $id;
+        }
+    } elsif ($source eq "IMDB") {
+        if( defined $xurl ) {
+            #http://www.imdb.com/title/tt5171438/?ref_=nv_sr_1
+            $xurl =~ /\/title\/(tt\d\d\d\d\d\d\d)\//i;
+            my ($id) =  ($1);
+            return $id if defined $id;
+        }
+        if( defined $page ) {
+            $page =~ /<meta\s+property=\"pageId\"\s+content=\"(tt\d\d\d\d\d\d\d)\"\s+\/>/i;
+            my ($id) =  ($1);
+            return $id if defined $id;
+        }
+    } elsif ($source eq "Dailymotion") {
+        if( defined $xurl ) {
+            # https://www.dailymotion.com/video/x59wnvy
+            $xurl =~ /\/video\/(\w\w\w\w\w\w\w)$/i;
+            my ($id) =  ($1);
+            return $id if defined $id;
+        }
+        if( defined $page ) {
+            $page =~ /<meta\s+property=\"og:url\"\s+content=\"([^\"]*)\"\/>/i;
+            my ($url) =  ($1);
+            return undef if !defined $url;
+            $url =~ /\/(\w\w\w\w\w\w\w)$/i;
+            my ($id) =  ($1);
+            return $id if defined $id;
+        }
+    } elsif ($source eq "Steam") {
+        if( defined $page ) {
+            $page =~ /<link\s+rel=\"canonical\"\s+href=\".*?\/app\/([^\"\&]*)\/\">/i;
+            my ($id) =  ($1);
+            return $id if defined $id;
+        }
     }
-
     return undef;
 }
 
-sub get_youtube_title {
+sub get_title {
+    my $source = shift;
+    my $xurl = shift;
     my $page = shift;
 
+    return undef if !defined $source;
     return undef if !defined $page;
+
     #<meta name="robots" content="noindex">
     $page =~ /<meta\s+name=\"robots\"\s+content=\"([^\"]*)\">/i;
     my ($robot) =  ($1);
     return "Robot Error" if defined $robot;
 
-    $page =~ /<meta\s+name=\"title\"\s+content=\"([^\"]*)\">/i;
-    my ($title) =  ($1);
-    $title = decode_entities($title) if defined $title;
-    return $title;
-}
-
-sub get_youtube_duration {
-    my $page = shift;
-
-    return undef if !defined $page;
-    $page =~ /<meta\s+itemprop=\"duration\"\s+content=\"([^\"]*)\">/i;
-    my ($funky) = ($1);
-    return undef if !defined $funky;
-
-    $funky =~ /.*?(\d+)M(\d+)S/;
-    my ($minutes, $seconds) = ($1, $2);
-    return sprintf "%d:%02d", $minutes, $seconds;
-}
-
-sub get_imdb_id {
-    my $page = shift;
-    my $xurl = shift;
-
-    #http://www.imdb.com/title/tt5171438/?ref_=nv_sr_1
-    if( defined $xurl ) {
-        $xurl =~ /\/title\/(tt\d\d\d\d\d\d\d)\//i;
-        my ($id) =  ($1);
-        return $id if defined $id;
-    }
-
-    if( defined $page ) {
-        $page =~ /<meta\s+property=\"pageId\"\s+content=\"(tt\d\d\d\d\d\d\d)\"\s+\/>/i;
-        my ($id) =  ($1);
-        return $id if defined $id;
-    }
-
-    return undef;
-}
-
-sub get_imdb_title {
-    my $page = shift;
-
-    return undef if !defined $page;
-    $page =~ /<meta\s+name=\"title\"\s+content=\"([^\"]*)\"\s+\/>/i;
-    my ($title) =  ($1);
-    $title = decode_entities($title) if defined $title;
-    return $title;
-}
-
-sub get_imdb_duration {
-    my $page = shift;
-
-    return undef if !defined $page;
-    $page =~ /<time\s+itemprop=\"duration\"\s+datetime=\"PT(\d+)M\">/i;
-    my ($minutes) = ($1);
-    return undef if !defined $minutes;
-
-    my $hours = int( $minutes / 60 );
-    $minutes = $minutes % 60;
-    return sprintf "%d:%02d", $hours, $minutes;
-}
-
-sub get_dailymotion_id {
-    my $page = shift;
-    my $xurl = shift;
-
-    if( defined $xurl ) {
-        # https://www.dailymotion.com/video/x59wnvy
-        $xurl =~ /\/video\/(\w\w\w\w\w\w\w)$/i;
-        my ($id) =  ($1);
-        return $id if defined $id;
-    }
-
-    if( defined $page ) {
-        $page =~ /<meta\s+property=\"og:url\"\s+content=\"([^\"]*)\"\/>/i;
-        my ($url) =  ($1);
-        $url =~ /\/(\w\w\w\w\w\w\w)$/i;
-        my ($id) =  ($1);
-        return $id if defined $id;
-    }
-
-    return undef;
-}
-
-sub get_dailymotion_title {
-    my $page = shift;
-
-    return undef if !defined $page;
-    $page =~ /<meta\s+property=\"og:title\"\s+content=\"([^\"]*)\"\/>/i;
-    my ($title) =  ($1);
-    $title = decode_entities($title) if defined $title;
-    return $title;
-}
-
-sub get_dailymotion_duration {
-    my $page = shift;
-
-    return undef if !defined $page;
-    $page =~ /<meta\s+property=\"video:duration\"\s+content=\"([^\"]*)\"\/>/i;
-    my ($seconds) = ($1);
-    return undef if !defined $seconds;
-
-    my $minutes = int( $seconds / 60 );
-    my $hours = int( $minutes / 60 );
-    $seconds = $seconds % 60;
-    $minutes = $minutes % 60;
-    if( defined $hours and $hours > 0 ) {
-        return sprintf "%d:%02d:%02d", $hours, $minutes, $seconds;
+    if ($source eq "YouTube" or $source eq "IMDB") {
+        $page =~ /<meta\s+name=\"title\"\s+content=\"([^\"]*)\"\s*\/?>/i;
+        my ($title) =  ($1);
+        $title = decode_entities($title) if defined $title;
+        return $title if defined $title;
+    } elsif ($source eq "Dailymotion") {
+        $page =~ /<meta\s+property=\"og:title\"\s+content=\"([^\"]*)\"\s*\/?>/i;
+        my ($title) =  ($1);
+        $title = decode_entities($title) if defined $title;
+        return $title if defined $title;
     } else {
-        return sprintf "%d:%02d", $minutes, $seconds;
+        $page =~ /<title>\s*([^\<]*?)\s*<\/title>/i;
+        my ($title) = ($1);
+        return $title if defined $title;
     }
+    return undef;
 }
 
-sub get_steam_id {
-    my $page = shift;
+sub get_duration {
+    my $source = shift;
     my $xurl = shift;
+    my $page = shift;
 
+    return undef if !defined $source;
     return undef if !defined $page;
-    $page =~ /<link\s+rel=\"canonical\"\s+href=\".*?\/app\/([^\"\&]*)\/\">/i;
-    my ($id) =  ($1);
-    return $id;
+
+    if ($source eq "YouTube") {
+        $page =~ /<meta\s+itemprop=\"duration\"\s+content=\"([^\"]*)\">/i;
+        my ($funky) = ($1);
+        return undef if !defined $funky;
+
+        $funky =~ /.*?(\d+)M(\d+)S/;
+        my ($minutes, $seconds) = ($1, $2);
+        return sprintf "%d:%02d", $minutes, $seconds;
+    } elsif ($source eq "IMDB") {
+        $page =~ /<time\s+itemprop=\"duration\"\s+datetime=\"PT(\d+)M\">/i;
+        my ($minutes) = ($1);
+        return undef if !defined $minutes;
+
+        my $hours = int( $minutes / 60 );
+        $minutes = $minutes % 60;
+        return sprintf "%d:%02d", $hours, $minutes;
+    } elsif ($source eq "Dailymotion") {
+        $page =~ /<meta\s+property=\"video:duration\"\s+content=\"([^\"]*)\"\/>/i;
+        my ($seconds) = ($1);
+        return undef if !defined $seconds;
+
+        my $minutes = int( $seconds / 60 );
+        my $hours = int( $minutes / 60 );
+        $seconds = $seconds % 60;
+        $minutes = $minutes % 60;
+        if( defined $hours and $hours > 0 ) {
+            return sprintf "%d:%02d:%02d", $hours, $minutes, $seconds;
+        } else {
+            return sprintf "%d:%02d", $minutes, $seconds;
+        }
+    }
+
+    return undef;
 }
 
 sub get_steam_desc {
@@ -622,7 +573,7 @@ if( !defined $page ) {
 }
 
 my $origin_host = $origin->host if defined $origin;
-my $the_url = (defined $origin_host) ? $origin_host : $given_uri;
+my $the_url = (defined $origin_host) ? $origin : $given_uri;
 
 my $chan_color = channel_color($channel, $style) if defined $channel;
 
@@ -631,25 +582,10 @@ my $id = undef;
 my $title = undef;
 my $duration = undef;
 
-$source = "YouTube"     if $origin_host =~ /youtube/i;
-$source = "IMDB"        if $origin_host =~ /imdb/i;
-$source = "Dailymotion" if $origin_host =~ /dailymotion/i;
-$source = "Steam"       if $origin_host =~ /steam/i;
-$source = ""            if !defined $source;
-
-$id = get_youtube_id($page, $the_url)     if $source eq "YouTube";
-$id = get_imdb_id($page, $the_url)        if $source eq "IMDB";
-$id = get_dailymotion_id($page, $the_url) if $source eq "Dailymotion";
-$id = get_steam_id($page, $the_url)       if $source eq "Steam";
-
-$title = get_youtube_title($page)       if $source eq "YouTube";
-$title = get_imdb_title($page)          if $source eq "IMDB";
-$title = get_dailymotion_title($page)   if $source eq "Dailymotion";
-$title = get_page_title($page)          if !defined $title and defined $page;
-
-$duration = get_youtube_duration($page)     if $source eq "YouTube";
-$duration = get_imdb_duration($page)        if $source eq "IMDB";
-$duration = get_dailymotion_duration($page) if $source eq "Dailymotion";
+$source = get_source($the_url);
+$id = get_id($source, $the_url, $page);
+$title = get_title($source, $the_url, $page);
+$duration = get_duration($source, $the_url, $page);
 
 if( defined $channel ) {
     if( defined $chan_color ) {
@@ -691,8 +627,24 @@ $output .= "\n";
 print pinkfish_to( $output, $style );
 
 if ( $style eq "debug" ) {
+    $Data::Dumper::Sortkeys = 1;
+
     print "\n";
     print Dumper({ 'page' => $page, });
+    print "\n";
+    print Dumper({
+           'source' => $source,
+           'id' => $id,
+           'title' => $title,
+           'duration' => $duration,
+           'channel' => $channel,
+           'given_host' => $given_host,
+           'origin_host' => $origin_host,
+           'the_url' => $the_url,
+           'given_uri' => $given_uri,
+           'tinyurl' => $tinyurl,
+           'output' => $output,
+        });
     print "\n";
 }
 
