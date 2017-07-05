@@ -52,155 +52,45 @@ use WWW::Mechanize;
 
 sub channel_color {
     my $channel = shift;
-    my $method = shift;
     my $colors = {
-        "bloodlines" => {
-            "intermud"      => "%^B_BLACK%^%^GREY%^",
-            "muds"          => "%^B_BLACK%^%^GREY%^",
-            "connections"   => "%^B_BLACK%^%^WHITE%^",
-            "death"         => "%^LIGHTRED%^",
-            "cre"           => "%^LIGHTGREEN%^",
-            "admin"         => "%^LIGHTMAGENTA%^",
-            "newbie"        => "%^B_YELLOW%^%^BLACK%^",
-            "gossip"        => "%^B_BLUE%^%^YELLOW%^",
+        "intermud"      => "%^WHITE%^",
+        "muds"          => "%^WHITE%^",
+        "connections"   => "%^BOLD%^%^WHITE%^",
+        "death"         => "%^BOLD%^%^RED%^",
+        "cre"           => "%^BOLD%^%^GREEN%^",
+        "admin"         => "%^BOLD%^%^MAGENTA%^",
+        "newbie"        => "%^B_YELLOW%^%^BLACK%^",
+        "gossip"        => "%^B_BLUE%^%^YELLOW%^",
 
-            "wiley"         => "%^YELLOW%^",
-            "ds"            => "%^YELLOW%^",
-            "dchat"         => "%^CYAN%^",
-            "intergossip"   => "%^GREEN%^",
-            "intercre"      => "%^ORANGE%^",
-            "pyom"          => "%^FLASH%^%^LIGHTGREEN%^",
-            "free_speech"   => "%^PINK%^",
-            "url"           => "%^WHITE%^",
+        "wiley"         => "%^BOLD%^%^YELLOW%^",
+        "ds"            => "%^BOLD%^%^YELLOW%^",
+        "dchat"         => "%^CYAN%^",
+        "intergossip"   => "%^GREEN%^",
+        "intercre"      => "%^ORANGE%^",
+        "pyom"          => "%^FLASH%^%^BOLD%^%^GREEN%^",
+        "free_speech"   => "%^BOLD%^%^RED%^",
+        "url"           => "%^BOLD%^%^WHITE%^",
 
-            "ibuild"        => "%^B_RED%^%^YELLOW%^",
-            "ichat"         => "%^B_RED%^%^GREEN%^",
-            "mbchat"        => "%^B_RED%^%^GREEN%^",
-            "pchat"         => "%^B_RED%^%^LIGHTGREEN%^",
-            "i2game"        => "%^B_BLUE%^",
-            "i2chat"        => "%^B_GREEN%^",
-            "i3chat"        => "%^B_RED%^",
-            "i2code"        => "%^B_YELLOW%^%^RED%^",
-            "i2news"        => "%^B_YELLOW%^%^BLUE%^",
-            "imudnews"      => "%^B_YELLOW%^%^CYAN%^",
-            "irc"           => "%^B_BLUE%^%^GREEN%^",
-            "ifree"         => "%^B_BLUE%^%^GREEN%^",
+        "ibuild"        => "%^B_RED%^%^YELLOW%^",
+        "ichat"         => "%^B_RED%^%^GREEN%^",
+        "mbchat"        => "%^B_RED%^%^GREEN%^",
+        "pchat"         => "%^B_RED%^%^BOLD%^%^GREEN%^",
+        "i2game"        => "%^B_BLUE%^",
+        "i2chat"        => "%^B_GREEN%^",
+        "i3chat"        => "%^B_RED%^",
+        "i2code"        => "%^B_YELLOW%^%^RED%^",
+        "i2news"        => "%^B_YELLOW%^%^BLUE%^",
+        "imudnews"      => "%^B_YELLOW%^%^CYAN%^",
+        "irc"           => "%^B_BLUE%^%^GREEN%^",
+        "ifree"         => "%^B_BLUE%^%^GREEN%^",
 
-            "default"       => "%^LIGHTBLUE%^",
-            "default-IMC2"  => "%^B_BLUE%^%^WHITE%^"
-        },
-        "wiley" => {
-            "intermud"      => "%^WHITE%^",
-            "muds"          => "%^WHITE%^",
-            "connections"   => "%^BOLD%^%^WHITE%^",
-            "death"         => "%^BOLD%^%^RED%^",
-            "cre"           => "%^BOLD%^%^GREEN%^",
-            "admin"         => "%^BOLD%^%^MAGENTA%^",
-            "newbie"        => "%^B_YELLOW%^%^BLACK%^",
-            "gossip"        => "%^B_BLUE%^%^YELLOW%^",
-
-            "wiley"         => "%^BOLD%^%^YELLOW%^",
-            "ds"            => "%^BOLD%^%^YELLOW%^",
-            "dchat"         => "%^CYAN%^",
-            "intergossip"   => "%^GREEN%^",
-            "intercre"      => "%^ORANGE%^",
-            "pyom"          => "%^FLASH%^%^BOLD%^%^GREEN%^",
-            "free_speech"   => "%^BOLD%^%^RED%^",
-            "url"           => "%^BOLD%^%^WHITE%^",
-
-            "ibuild"        => "%^B_RED%^%^YELLOW%^",
-            "ichat"         => "%^B_RED%^%^GREEN%^",
-            "mbchat"        => "%^B_RED%^%^GREEN%^",
-            "pchat"         => "%^B_RED%^%^BOLD%^%^GREEN%^",
-            "i2game"        => "%^B_BLUE%^",
-            "i2chat"        => "%^B_GREEN%^",
-            "i3chat"        => "%^B_RED%^",
-            "i2code"        => "%^B_YELLOW%^%^RED%^",
-            "i2news"        => "%^B_YELLOW%^%^BLUE%^",
-            "imudnews"      => "%^B_YELLOW%^%^CYAN%^",
-            "irc"           => "%^B_BLUE%^%^GREEN%^",
-            "ifree"         => "%^B_BLUE%^%^GREEN%^",
-
-            "default"       => "%^BOLD%^%^BLUE%^",
-            "default-IMC2"  => "%^B_BLUE%^%^BOLD%^%^WHITE%^"
-        },
-        "html" => {
-            "intermud"      => '<SPAN style="color: #bbbbbb">',
-            "muds"          => '<SPAN style="color: #bbbbbb">',
-            "connections"   => '<SPAN style="color: #ffffff">',
-            "death"         => '<SPAN style="color: #ff5555">',
-            "cre"           => '<SPAN style="color: #55ff55">',
-            "admin"         => '<SPAN style="color: #ff55ff">',
-            "newbie"        => '<SPAN style="background-color: #ffff55; color: #000000">',
-            "gossip"        => '<SPAN style="background-color: #0000bb; color: #ffff55">',
-
-            "wiley"         => '<SPAN style="color: #ffff55">',
-            "ds"            => '<SPAN style="color: #ffff55">',
-            "dchat"	    => '<SPAN style="color: #00bbbb">',
-            "intergossip"   => '<SPAN style="color: #00bb00">',
-            "intercre"      => '<SPAN style="color: #bbbb00">',
-            "pyom"          => '<SPAN style="color: #55ff55">',
-            "free_speech"   => '<SPAN style="color: #ff55ff">',
-            "url"           => '<SPAN style="color: #ffffff">',
-
-            "ibuild"        => '<SPAN style="background-color: #bb0000; color: #ffff55">',
-            "ichat"         => '<SPAN style="background-color: #00bb00; color: #000000">',
-            "mbchat"        => '<SPAN style="background-color: #00bb00; color: #000000">',
-            "pchat"         => '<SPAN style="background-color: #bb0000; color: #00ff00">',
-            "i2game"        => '<SPAN style="background-color: #0000bb; color: #ffffff">',
-            "i2chat"        => '<SPAN style="background-color: #00bb00; color: #ffffff">',
-            "i3chat"        => '<SPAN style="background-color: #bb0000; color: #ffffff">',
-            "i2code"        => '<SPAN style="background-color: #bb0000; color: #ffff55">',
-            "i2news"        => '<SPAN style="background-color: #0000bb; color: #ffff55">',
-            "imudnews"      => '<SPAN style="background-color: #00bbbb; color: #0000bb">',
-            "irc"           => '<SPAN style="background-color: #bb00bb; color: #000000">',
-            "ifree"         => '<SPAN style="background-color: #bb00bb; color: #000000">',
-
-            "default"       => '<SPAN style="color: #5555ff">',
-            "default-IMC2"  => '<SPAN style="background-color: #0000bb; color: #ffffff">'
-        },
-        "ansi" => {
-            "intermud"      => "\033[40m\033[1;30m",
-            "muds"          => "\033[40m\033[1;30m",
-            "connections"   => "\033[40m\033[1;37m",
-            "death"         => "\033[1;31m",
-            "cre"           => "\033[1;32m",
-            "admin"         => "\033[1;35m",
-            "newbie"        => "\033[43m\033[30m",
-            "gossip"        => "\033[44m\033[1;33m",
-
-            "wiley"         => "\033[1;33m",
-            "ds"            => "\033[1;33m",
-            "dchat"         => "\033[36m",
-            "intergossip"   => "\033[32m",
-            "intercre"      => "\033[33m",
-            "pyom"          => "\033[5m\033[1;32m",
-            "free_speech"   => "\033[1;31m",
-            "url"           => "\033[1;37m",
-
-            "ibuild"        => "\033[41m\033[1;33m",
-            "ichat"         => "\033[41m\033[32m",
-            "mbchat"        => "\033[41m\033[32m",
-            "pchat"         => "\033[41m\033[1;32m",
-            "i2game"        => "\033[44m",
-            "i2chat"        => "\033[42m",
-            "i3chat"        => "\033[41m",
-            "i2code"        => "\033[43m\033[31m",
-            "i2news"        => "\033[43m\033[34m",
-            "imudnews"      => "\033[43m\033[36m",
-            "irc"           => "\033[44m\033[32m",
-            "ifree"         => "\033[44m\033[32m",
-
-            "default"       => "\033[34m",
-            "default-IMC2"  => "\033[44m\033[1;37m",
-        },
+        "default"       => "%^BOLD%^%^BLUE%^",
+        "default-IMC2"  => "%^B_BLUE%^%^BOLD%^%^WHITE%^"
     };
 
-    $method = "wiley" if !defined $method;
-
-    return $colors->{$method}->{default} if !defined $channel;
-    return $colors->{$method}->{$channel} if exists $colors->{$method}->{$channel};
-    return $colors->{$method}->{default};
+    return $colors->{default} if !defined $channel;
+    return $colors->{$channel} if exists $colors->{$channel};
+    return $colors->{default};
 }
 
 sub pinkfish_to {
@@ -236,6 +126,26 @@ sub pinkfish_to {
             '%^LIGHTMAGENTA%^'          => "\033[1;35m",
             '%^LIGHTCYAN%^'             => "\033[1;36m",
             '%^WHITE%^'                 => "\033[1;37m",
+
+            '%^B_BLACK%^'               => "\033[40m",
+            '%^B_RED%^'                 => "\033[41m",
+            '%^B_GREEN%^'               => "\033[42m",
+            '%^B_ORANGE%^'              => "\033[43m",
+            '%^B_BLUE%^'                => "\033[44m",
+            '%^B_MAGENTA%^'             => "\033[45m",
+            '%^B_CYAN%^'                => "\033[46m",
+            '%^B_DARKGREY%^'            => "\033[47m",
+
+            # Bold backgrounds are not supported by normal ANSI
+            '%^B_GREY%^'                => "\033[40m",
+            '%^B_PINK%^'                => "\033[41m",
+            '%^B_LIGHTRED%^'            => "\033[41m",
+            '%^B_LIGHTGREEN%^'          => "\033[42m",
+            '%^B_YELLOW%^'              => "\033[43m",
+            '%^B_LIGHTBLUE%^'           => "\033[44m",
+            '%^B_LIGHTMAGENTA%^'        => "\033[45m",
+            '%^B_LIGHTCYAN%^'           => "\033[46m",
+            '%^B_WHITE%^'               => "\033[47m",
         },
         "html" => {
             '%^RESET%^'                 => '</SPAN>',
@@ -261,6 +171,25 @@ sub pinkfish_to {
             '%^LIGHTMAGENTA%^'          => '<SPAN style="color: #ffaaff">',
             '%^LIGHTCYAN%^'             => '<SPAN style="color: #aaffff">',
             '%^WHITE%^'                 => '<SPAN style="color: #ffffff">',
+
+            '%^B_BLACK%^'               => '<SPAN style="background-color: #000000">',
+            '%^B_RED%^'                 => '<SPAN style="background-color: #ff0000">',
+            '%^B_GREEN%^'               => '<SPAN style="background-color: #00ff00">',
+            '%^B_ORANGE%^'              => '<SPAN style="background-color: #ffaa00">',
+            '%^B_BLUE%^'                => '<SPAN style="background-color: #0000ff">',
+            '%^B_MAGENTA%^'             => '<SPAN style="background-color: #ff00ff">',
+            '%^B_CYAN%^'                => '<SPAN style="background-color: #00ffff">',
+            '%^B_DARKGREY%^'            => '<SPAN style="background-color: #555555">',
+
+            '%^B_GREY%^'                => '<SPAN style="background-color: #aaaaaa">',
+            '%^B_PINK%^'                => '<SPAN style="background-color: #ffaaaa">',
+            '%^B_LIGHTRED%^'            => '<SPAN style="background-color: #ffaaaa">',
+            '%^B_LIGHTGREEN%^'          => '<SPAN style="background-color: #aaffaa">',
+            '%^B_YELLOW%^'              => '<SPAN style="background-color: #ffff55">',
+            '%^B_LIGHTBLUE%^'           => '<SPAN style="background-color: #aaaaff">',
+            '%^B_LIGHTMAGENTA%^'        => '<SPAN style="background-color: #ffaaff">',
+            '%^B_LIGHTCYAN%^'           => '<SPAN style="background-color: #aaffff">',
+            '%^B_WHITE%^'               => '<SPAN style="background-color: #ffffff">',
         },
     };
     foreach my $k ( keys( %{ $conversion->{$style} } ) ) {
@@ -352,18 +281,25 @@ sub get_url {
     return undef;
 }
 
-sub get_page_title {
-    my $page = shift;
+sub time_parts {
+    my $seconds = shift;
 
-    return undef if !defined $page;
-    #<meta name="robots" content="noindex">
-    $page =~ /<meta\s+name=\"robots\"\s+content=\"([^\"]*)\">/i;
-    my ($robot) =  ($1);
-    return "Robot Error" if defined $robot;
+    return "0:00" if !defined $seconds;
 
-    $page =~ /<title>\s*([^\<]*?)\s*<\/title>/i;
-    my ($funky) = ($1);
-    return $funky;
+    my $days    = int( $seconds / (60 * 60 * 24) );
+    my $hours   = int( $seconds / (60 * 60) );
+    my $minutes = int( $seconds / 60 );
+    $hours      = $hours % 24;
+    $minutes    = $minutes % 60;
+    $seconds    = $seconds % 60;
+
+    if( defined $days and $days > 0 ) {
+        return sprintf "%d days, %d:%02d:%02d", $days, $hours, $minutes, $seconds;
+    } elsif( defined $hours and $hours > 0 ) {
+        return sprintf "%d:%02d:%02d", $hours, $minutes, $seconds;
+    } else {
+        return sprintf "%d:%02d", $minutes, $seconds;
+    }
 }
 
 sub get_source {
@@ -398,7 +334,7 @@ sub get_id {
         }
     } elsif ($source eq "IMDB") {
         if( defined $xurl ) {
-            #http://www.imdb.com/title/tt5171438/?ref_=nv_sr_1
+            # http://www.imdb.com/title/tt5171438/?ref_=nv_sr_1
             $xurl =~ /\/title\/(tt\d\d\d\d\d\d\d)\//i;
             my ($id) =  ($1);
             return $id if defined $id;
@@ -424,8 +360,14 @@ sub get_id {
             return $id if defined $id;
         }
     } elsif ($source eq "Steam") {
+        if( defined $xurl ) {
+            # http://store.steampowered.com/app/306660/Ultimate_General_Gettysburg/
+            $xurl =~ /\/app\/(\d+)\//i;
+            my ($id) =  ($1);
+            return $id if defined $id;
+        }
         if( defined $page ) {
-            $page =~ /<link\s+rel=\"canonical\"\s+href=\".*?\/app\/([^\"\&]*)\/\">/i;
+            $page =~ /<link\s+rel=\"canonical\"\s+href=\".*?\/app\/(\d+)\/[^\"]*\">/i;
             my ($id) =  ($1);
             return $id if defined $id;
         }
@@ -440,11 +382,6 @@ sub get_title {
 
     return undef if !defined $source;
     return undef if !defined $page;
-
-    #<meta name="robots" content="noindex">
-    $page =~ /<meta\s+name=\"robots\"\s+content=\"([^\"]*)\">/i;
-    my ($robot) =  ($1);
-    return "Robot Error" if defined $robot;
 
     if ($source eq "YouTube" or $source eq "IMDB") {
         $page =~ /<meta\s+name=\"title\"\s+content=\"([^\"]*)\"\s*\/?>/i;
@@ -461,6 +398,12 @@ sub get_title {
         my ($title) = ($1);
         return $title if defined $title;
     }
+
+    #<meta name="robots" content="noindex">
+    $page =~ /<meta\s+name=\"robots\"\s+content=\"([^\"]*)\">/i;
+    my ($robot) =  ($1);
+    return "Robot Error" if defined $robot;
+
     return undef;
 }
 
@@ -479,29 +422,20 @@ sub get_duration {
 
         $funky =~ /.*?(\d+)M(\d+)S/;
         my ($minutes, $seconds) = ($1, $2);
-        return sprintf "%d:%02d", $minutes, $seconds;
+
+        return time_parts($minutes * 60 + $seconds);
     } elsif ($source eq "IMDB") {
         $page =~ /<time\s+itemprop=\"duration\"\s+datetime=\"PT(\d+)M\">/i;
         my ($minutes) = ($1);
         return undef if !defined $minutes;
 
-        my $hours = int( $minutes / 60 );
-        $minutes = $minutes % 60;
-        return sprintf "%d:%02d", $hours, $minutes;
+        return time_parts($minutes * 60);
     } elsif ($source eq "Dailymotion") {
         $page =~ /<meta\s+property=\"video:duration\"\s+content=\"([^\"]*)\"\/>/i;
         my ($seconds) = ($1);
         return undef if !defined $seconds;
 
-        my $minutes = int( $seconds / 60 );
-        my $hours = int( $minutes / 60 );
-        $seconds = $seconds % 60;
-        $minutes = $minutes % 60;
-        if( defined $hours and $hours > 0 ) {
-            return sprintf "%d:%02d:%02d", $hours, $minutes, $seconds;
-        } else {
-            return sprintf "%d:%02d", $minutes, $seconds;
-        }
+        return time_parts($seconds);
     }
 
     return undef;
@@ -533,6 +467,7 @@ my $YELLOW  = pinkfish_to( "%^YELLOW%^", $style );
 my $RED     = pinkfish_to( "%^RED%^", $style );
 my $GREEN   = pinkfish_to( "%^GREEN%^", $style );
 my $CYAN    = pinkfish_to( "%^CYAN%^", $style );
+my $WHITE   = pinkfish_to( "%^WHITE%^", $style );
 my $FLASH   = pinkfish_to( "%^FLASH%^", $style );
 
 my $given_uri = URI->new($url);
@@ -575,7 +510,7 @@ if( !defined $page ) {
 my $origin_host = $origin->host if defined $origin;
 my $the_url = (defined $origin_host) ? $origin : $given_uri;
 
-my $chan_color = channel_color($channel, $style) if defined $channel;
+my $chan_color = channel_color($channel) if defined $channel;
 
 my $source = undef;
 my $id = undef;
@@ -597,9 +532,9 @@ if( defined $channel ) {
     $channel = "";
 }
 
-$id = "${YELLOW}[${id}]${RESET}"            if defined $id;
-$duration = "${RED}(${duration})${RESET}"   if defined $duration;
-$title = "${RESET}${title}"                 if defined $title;
+$id = "${YELLOW}[${id}]${RESET}"                                    if defined $id;
+$duration = "${RED}(${duration})${RESET}"                           if defined $duration;
+$title = "${RESET}${WHITE}\xe3\x80\x8c${title}\xe3\x80\x8d${RESET}" if defined $title;
 
 my $output = "";
 
