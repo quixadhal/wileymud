@@ -29,12 +29,21 @@ $DESKTOP_URL        = "http://wileymud.i3.themud.org/~wiley/i3log.php";
 $MOBILE_URL         = "http://wileymud.i3.themud.org/~wiley/i3log_m.php";
 
 function isMobile() {
+    global $_REQUEST;
+    global $_SERVER;
+
     if( isset($_REQUEST) && isset($_REQUEST["m"]) ) {
+        //echo "<hr><h1>Found M Request</h1><hr><br>";
         return true;
     }
-    if( true === preg_match("/(android|avantgo|blackberry|bolt|boost|cricket|docomo|fone|hiptop|mini|mobi|palm|phone|pie|tablet|up\.browser|up\.link|webos|wos)/i", $_SERVER["HTTP_USER_AGENT"]) ) {
+    if( preg_match(
+        "/(android|avantgo|blackberry|bolt|boost|cricket|docomo|fone|hiptop|mini|mobi|palm|phone|pie|tablet|up\.browser|up\.link|webos|wos)/i",
+        $_SERVER["HTTP_USER_AGENT"]) ) {
+        //echo "<hr><h1>Found Match</h1><hr><br>";
         return true;
     }
+    //echo "<hr><h1>UA: \"".$_SERVER["HTTP_USER_AGENT"]."\"</h1><hr><br>";
+    //echo "<hr><h1>No match</h1><hr><br>";
     return false;
 }
 
@@ -444,6 +453,14 @@ function is_bot_line($line) {
     if( $result ) {
         return $result;
     }
+    $result = preg_match("/\tCron\@WileyMUD\t.*It\'s\s+going\s+DOWN\!/", $line) ? $line : false;
+    if( $result ) {
+        return $result;
+    }
+    $result = preg_match("/\tCron\@WileyMUD\t.*Not connected to I3/", $line) ? $line : false;
+    if( $result ) {
+        return $result;
+    }
     $result = preg_match("/\twiley\tCron\@WileyMUD\t/", $line);
     if ($result) {
         return false;
@@ -717,12 +734,14 @@ $bg = 0;
             <?php
             foreach ($file_lines as $line) {
                 $line_data = explode( "\t", $line );
-                if ( sizeof( $line_data ) != 4 ) {
+                if ( sizeof( $line_data ) < 5 ) {
                     continue;
                 }
+                $date = substr( $line_data[0], 0, 10 ); // YYYY.MM.DD
                 $bgColor = get_background_color( $line_data[1], $bg );
                 $who = explode( "@", $line_data[2] );
-                $date = substr( $line_data[0], 0, 10 ); // YYYY.MM.DD
+                $is_emote = $line_data[3];
+                $message = implode("\t", array_slice($line_data, 4));
                 ?>
                 <tr id="row_<?php echo $bg;?>" style="display:none">
                     <td bgcolor="<?php echo $bgColor; ?>"><?php echo $date; ?></td>
@@ -739,7 +758,7 @@ $bg = 0;
                     <?php
                     //$tmp_msg = preg_replace("/\x1b\[[0-9]+(;[0-9]+)*m/", "", $line_data[3]);
                     //$message = htmlentities($tmp_msg,0,'UTF-8');
-                    $message = htmlentities($line_data[3], ENT_QUOTES|ENT_SUBSTITUTE, 'UTF-8');
+                    $message = htmlentities($message, ENT_QUOTES|ENT_SUBSTITUTE, 'UTF-8');
                     $message = preg_replace("/\%\^RED\%\^\%\^BOLD\%\^/", "<span style=\"color: #ff5555;\">", $message);
                     $message = preg_replace("/\%\^RED\%\^BOLD\%\^/", "<span style=\"color: #ff5555;\">", $message);
                     $message = preg_replace("/\%\^RED\%\^/", "<span style=\"color: #bb0000;\">", $message);

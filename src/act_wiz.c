@@ -36,6 +36,7 @@
 #include "weather.h"
 #include "modify.h"
 #include "tracking.h"
+#include "i3.h"
 #define _ACT_WIZ_C
 #include "act_wiz.h"
 
@@ -1683,6 +1684,7 @@ void do_shutdown(struct char_data *ch, const char *argument, int cmd)
 	allprintf("\x007\r\nBroadcast message from %s (tty0) %s...\r\n\r\n", GET_NAME(ch),
 		  tmstr);
 	allprintf("\x007The system is going down NOW !!\r\n\x007\r\n");
+        i3_log_dead();
 	diku_shutdown = 1;
 	update_time_and_weather();
     } else if (!str_cmp(arg, "-k")) {
@@ -1698,6 +1700,7 @@ void do_shutdown(struct char_data *ch, const char *argument, int cmd)
 		  tmstr);
 	allprintf("\x007Rebooting.  Come back in a few minutes!\r\n");
 	allprintf("\x007The system is going down NOW !!\r\n\r\n");
+        i3_log_dead();
 	diku_shutdown = diku_reboot = 1;
 	update_time_and_weather();
     } else

@@ -359,6 +359,11 @@ bool i3_command_hook( CHAR_DATA * ch, const char *command, const char *argument 
 void i3_startup( bool forced, int mudport, bool isconnected );
 void i3_shutdown( int delay, CHAR_DATA *ch );
 void i3_npc_chat( const char *chan_name, const char *actor, const char *message );
+void i3_npc_speak( const char *chan_name, const char *actor, const char *message );
 void I3_listen_channel( CHAR_DATA *ch, const char *argument);
 bool I3_hasname( char *list, const char *name );
+void allchan_log( int is_emote, char *channel, char *speaker, char *mud, char *str );
+void i3_message_to_players( char *str );
+void i3_log_alive( void );
+void i3_log_dead( void );
 #endif

@@ -330,7 +330,7 @@ obj/act_wiz.o: act_wiz.c include/global.h include/bug.h include/utils.h \
   include/spell_parser.h include/board.h include/whod.h \
   include/reception.h include/spec_procs.h include/multiclass.h \
   include/act_skills.h include/act_info.h include/fight.h include/hash.h \
-  include/weather.h include/modify.h include/tracking.h \
+  include/weather.h include/modify.h include/tracking.h include/i3.h \
   include/act_wiz.h
 obj/events.o: events.c include/global.h include/bug.h include/utils.h \
   include/comm.h include/interpreter.h include/handler.h include/db.h \

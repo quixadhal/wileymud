@@ -1076,6 +1076,26 @@ CHAR_DATA                              *I3_find_user(const char *name)
     return NULL;
 }
 
+void i3_message_to_players( char *str ) {
+    DESCRIPTOR_DATA                        *d;
+    CHAR_DATA                              *vch = NULL;
+
+    for (d = first_descriptor; d; d = d->next) {
+	vch = d->original ? d->original : d->character;
+
+	if (!vch)
+	    continue;
+
+	if (!I3_hasname(I3LISTEN(vch), "wiley")
+	    || I3_hasname(I3DENY(vch), "wiley"))
+	    continue;
+
+        if (d->connected == CON_PLAYING) {
+	    i3_printf(vch, "%s%%^RESET%%^\r\n", str);
+        }
+    }
+}
+
 /* Beefed up to include wildcard ignores and user-level IP ignores.
  * Be careful when setting IP based ignores - Last resort measure, etc.
  */
@@ -2906,6 +2926,23 @@ void I3_process_channel_filter(I3_HEADER *header, char *s)
 
 #define I3_ALLCHAN_LOG  I3_DIR "i3.allchan.log"
 
+void allchan_log( int is_emote, char *channel, char *speaker, char *mud, char *str ) {
+    FILE                                   *fp = NULL;
+    struct tm                              *local = localtime(&i3_time);
+
+    if(!(fp = fopen(I3_ALLCHAN_LOG, "a"))) {
+        i3bug("Could not open file %s!", I3_ALLCHAN_LOG);
+    } else {
+        fprintf(fp, "%04d.%02d.%02d-%02d.%02d,%02d%03d\t%s\t%s@%s\t%c\t%s\n",
+                local->tm_year + 1900, local->tm_mon + 1, local->tm_mday,
+                local->tm_hour, local->tm_min, local->tm_sec, 0,
+                channel, speaker, mud,
+                is_emote ? 't' : 'f',
+                str);
+        I3FCLOSE(fp);
+    }
+}
+
 char *color_time( struct tm *local )
 {
     static char                             timestamp[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0\0";
@@ -3052,12 +3089,12 @@ void I3_process_channel_m(I3_HEADER *header, char *s)
     DESCRIPTOR_DATA                        *d;
     CHAR_DATA                              *vch = NULL;
     char                                    visname[MAX_INPUT_LENGTH],
+                                            tmpvisname[MAX_INPUT_LENGTH],
                                             buf[MAX_STRING_LENGTH],
                                             tps[MAX_STRING_LENGTH],
                                             format[MAX_INPUT_LENGTH];
     I3_CHANNEL                             *channel;
     struct tm                              *local = localtime(&i3_time);
-    FILE                                   *fp = NULL;
     int                                     len;
 
     const char          *regexp_pattern     = "(https?\\:\\/\\/[\\w.-]+(?:\\.[\\w\\.-]+)+[\\w\\-\\._~:/?#[\\]@!\\$&'\\(\\)\\*\\+,;=.]+)";
@@ -3104,22 +3141,9 @@ void I3_process_channel_m(I3_HEADER *header, char *s)
     strcpy(format, "%s ");
     strcat(format, channel->layout_m);
     snprintf(buf, MAX_STRING_LENGTH, format, color_time(local), channel->local_name, visname, header->originator_mudname, tps);
+    snprintf(tmpvisname, MAX_INPUT_LENGTH, "%s@%s", visname, header->originator_mudname);
 
-    if(!(fp = fopen(I3_ALLCHAN_LOG, "a"))) {
-        perror(buf);
-        i3bug("Could not open file %s!", I3_ALLCHAN_LOG);
-    } else {
-        fprintf(fp, "%04d.%02d.%02d-%02d.%02d,%02d%03d\t%s\t%s@%s\t%s\n",
-                local->tm_year + 1900, local->tm_mon + 1, local->tm_mday,
-                local->tm_hour, local->tm_min, local->tm_sec,
-                0,
-                channel->local_name,
-                visname,
-                header->originator_mudname,
-                tps
-               );
-        I3FCLOSE(fp);
-    }
+    allchan_log(0, channel->local_name, visname, header->originator_mudname, tps);
 
     if(strcasecmp(channel->local_name, "url")) {
         // Never process url's from the url channel, recursion lurks here!
@@ -3205,7 +3229,11 @@ skip_regexp:
 	    || I3_hasname(I3DENY(vch), channel->local_name))
 	    continue;
 
-	if (d->connected == CON_PLAYING && !i3ignoring(vch, visname)) {
+        if (d->connected == CON_PLAYING) {
+            if (i3ignoring(vch, visname))
+                continue;
+            if (i3ignoring(vch, tmpvisname))
+                continue;
 	    i3_printf(vch, "%s%%^RESET%%^\r\n", buf);
         }
     }
@@ -3221,13 +3249,13 @@ void I3_process_channel_e(I3_HEADER *header, char *s)
     DESCRIPTOR_DATA                        *d;
     CHAR_DATA                              *vch = NULL;
     char                                    visname[MAX_INPUT_LENGTH],
+                                            tmpvisname[MAX_INPUT_LENGTH],
                                             msg[MAX_STRING_LENGTH],
                                             buf[MAX_STRING_LENGTH],
                                             tps[MAX_STRING_LENGTH],
                                             format[MAX_INPUT_LENGTH];
     I3_CHANNEL                             *channel;
     struct tm                              *local = localtime(&i3_time);
-    FILE                                   *fp = NULL;
     int                                     len;
 
     I3_get_field(ps, &next_ps);
@@ -3266,22 +3294,9 @@ void I3_process_channel_e(I3_HEADER *header, char *s)
     strcpy(format, "%s ");
     strcat(format, channel->layout_e);
     snprintf(buf, MAX_STRING_LENGTH, format, color_time(local), channel->local_name, msg);
+    snprintf(tmpvisname, MAX_INPUT_LENGTH, "%s@%s", visname, header->originator_mudname);
 
-    if(!(fp = fopen(I3_ALLCHAN_LOG, "a"))) {
-        perror(buf);
-        i3bug("Could not open file %s!", I3_ALLCHAN_LOG);
-    } else {
-        fprintf(fp, "%04d.%02d.%02d-%02d.%02d,%02d%03d\t%s\t%s@%s\t%s\n",
-                local->tm_year + 1900, local->tm_mon + 1, local->tm_mday,
-                local->tm_hour, local->tm_min, local->tm_sec,
-                0,
-                channel->local_name,
-                visname,
-                header->originator_mudname,
-                msg
-               );
-        I3FCLOSE(fp);
-    }
+    allchan_log(1, channel->local_name, visname, header->originator_mudname, msg);
 
     for (d = first_descriptor; d; d = d->next) {
 	vch = d->original ? d->original : d->character;
@@ -3293,8 +3308,13 @@ void I3_process_channel_e(I3_HEADER *header, char *s)
 	    || I3_hasname(I3DENY(vch), channel->local_name))
 	    continue;
 
-	if (d->connected == CON_PLAYING && !i3ignoring(vch, visname))
+        if (d->connected == CON_PLAYING) {
+            if (i3ignoring(vch, visname))
+                continue;
+            if (i3ignoring(vch, tmpvisname))
+                continue;
 	    i3_printf(vch, "%s%%^RESET%%^\r\n", buf);
+        }
     }
     update_chanhistory(channel, buf);
     tics_since_last_message = TAUNT_DELAY;
@@ -6619,8 +6639,7 @@ void router_connect(const char *router_name, bool forced, int mudport, bool isco
 	I3_load_color_table();
 
     if ((!this_i3mud->autoconnect && !forced && !isconnected) || (isconnected && I3_socket < 1)) {
-	i3log("%s",
-	      "Intermud-3 network data loaded. Autoconnect not set. Will need to connect manually.");
+	i3log("Intermud-3 network data loaded. Autoconnect not set. Will need to connect manually.");
 	I3_socket = -1;
 	return;
     } else
@@ -6650,6 +6669,8 @@ void router_connect(const char *router_name, bool forced, int mudport, bool isco
 
     if (!rfound && !isconnected) {
 	i3log("%s", "Unable to connect. No available routers found.");
+        allchan_log(0,"wiley", "Cron", "WileyMUD", "%^RED%^Not connected to I3.  No routers available.%^RESET%^");
+        i3_message_to_players("\r\n%^RED%^I3 is down again.  No routers available.%^RESET%^");
 	I3_socket = -1;
 	return;
     }
@@ -6700,7 +6721,8 @@ void do_taunt_from_log(void)
     char                                    second[3] = "\0\0";
     char                                    speaker[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0\0";
     char                                    message[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0\0";
-    char                                   *s = NULL;
+    char                                   *ss = NULL;
+    char                                   *se = NULL;
     char                                   *t = NULL;
 
     taunt_pid = fork();
@@ -6719,30 +6741,39 @@ void do_taunt_from_log(void)
                 fgets(line, MAX_STRING_LENGTH-2, fp);
             }
             fclose(fp);
-/* 2009.09.21-12.10,28000  imud_gossip     Sinistrad@Dead Souls Dev        Not out yet tho */
+/* 2009.09.21-12.10,28000	imud_gossip	Sinistrad@Dead Souls Dev	f	Not out yet tho */
             strncpy(year, &line[0], 4);
             strncpy(month, &line[5], 2);
             strncpy(day, &line[8], 2);
             strncpy(hour, &line[11], 2);
             strncpy(minute, &line[14], 2);
             strncpy(second, &line[17], 2);
-            s = strchr(line, '\t');
-            if(!s || !*s) {
+            // Skip to channel
+            ss = strchr(line, '\t');
+            if(!ss || !*ss) {
                 exit(1);
             }
-            s++;
-            s = strchr(s, '\t');
-            if(!s || !*s) {
+            ss++;
+            // Skip to speaker
+            ss = strchr(ss, '\t');
+            if(!ss || !*ss) {
                 exit(1);
             }
-            s++;
-            t = strchr(s, '\t');
+            ss++;
+            // Skip to is_emote
+            se = strchr(ss, '\t');
+            if(!se || !*se) {
+                exit(1);
+            }
+            se++;
+            // Get to message
+            t = strchr(se, '\t');
             if(!t || !*t) {
                 exit(1);
             }
-            bzero(speaker, MAX_STRING_LENGTH);
-            strncpy(speaker, s, (t-s));
             t++;
+            bzero(speaker, MAX_STRING_LENGTH);
+            strncpy(speaker, ss, (se-ss));
             bzero(message, MAX_STRING_LENGTH);
             strncpy(message, t, MAX_STRING_LENGTH);
             snprintf(taunt, MAX_STRING_LENGTH, "%%^RED%%^%%^BOLD%%^[%-s-%s-%s %s:%s]%%^RESET%%^ %%^YELLOW%%^%s%%^RESET%%^ once said %%^GREEN%%^%%^BOLD%%^%s%%^RESET%%^",
@@ -6987,6 +7018,32 @@ void i3_check_urls() {
     }
 }
 
+void i3_log_alive() {
+    struct tm                              *tm_info = NULL;
+    time_t                                  tc = (time_t) 0;
+    char                                    taunt[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
+
+    tc = time(0);
+    tm_info = localtime(&tc);
+
+    snprintf(taunt, MAX_STRING_LENGTH, "%%^RED%%^%%^BOLD%%^[%-4.4d-%-2.2d-%-2.2d %-2.2d:%-2.2d]%%^RESET%%^ %%^GREEN%%^%%^BOLD%%^%s%%^RESET%%^ %%^YELLOW%%^%s%%^RESET%%^",
+            tm_info->tm_year + 1900, tm_info->tm_mon + 1, tm_info->tm_mday, tm_info->tm_hour, tm_info->tm_min, "It's ALIVE!\r\n", VERSION_STR);
+    i3_npc_speak("wiley", "Cron", taunt);
+}
+
+void i3_log_dead() {
+    struct tm                              *tm_info = NULL;
+    time_t                                  tc = (time_t) 0;
+    char                                    taunt[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
+
+    tc = time(0);
+    tm_info = localtime(&tc);
+
+    snprintf(taunt, MAX_STRING_LENGTH, "%%^RED%%^%%^BOLD%%^[%-4.4d-%-2.2d-%-2.2d %-2.2d:%-2.2d]%%^RESET%%^ %%^RED%%^%%^BOLD%%^%s%%^RESET%%^ %%^YELLOW%%^%s %s%%^RESET%%^",
+            tm_info->tm_year + 1900, tm_info->tm_mon + 1, tm_info->tm_mday, tm_info->tm_hour, tm_info->tm_min, "It's going DOWN!\r\n", VERSION_BASE, VERSION_BUILD);
+    allchan_log(0, "wiley", "Cron", "WileyMUD", taunt);
+}
+
 /*
  * Check for a packet and if one available read it and parse it.
  * Also checks to see if the mud should attempt to reconnect to the router.
@@ -7008,7 +7065,6 @@ void i3_loop(void)
 
     struct tm                              *tm_info = NULL;
     time_t                                  tc = (time_t) 0;
-    char                                    taunt[MAX_STRING_LENGTH];
     /*
     int                                     chan_choice = 0;
     const char                             *chan_list[] = {
@@ -7049,6 +7105,7 @@ void i3_loop(void)
 	i3timeout--;
 	if (i3timeout == 0) {				       /* Time's up baby! */
 	    i3log("I3 Client timeout.");
+            allchan_log(0,"wiley", "Cron", "WileyMUD", "%^RED%^I3 Client timeout.%^RESET%^");
 	    I3_connection_close(TRUE);
 	    return;
 	}
@@ -7062,7 +7119,8 @@ void i3_loop(void)
      */
     if ((tm_info->tm_wday == 1) || (tm_info->tm_wday == 3) || (tm_info->tm_wday == 5)) {
         if ((tm_info->tm_hour == 5) && (tm_info->tm_min == 0) && (tm_info->tm_sec == 0)) {
-	    i3log("I3 Client is rebooting for weekly router reboot.");
+	    i3log("I3 Client is rebooting for scheduled router reboot.");
+            allchan_log(0,"wiley", "Cron", "WileyMUD", "%^RED%^I3 Client is rebooting for scheduled router reboot.%^RESET%^");
             I3_connection_close(TRUE);
             return;
         }
@@ -7111,9 +7169,7 @@ void i3_loop(void)
     // A version of keepalive...
     if (i3justconnected) {
         i3justconnected = 0;
-        snprintf(taunt, MAX_STRING_LENGTH, "%%^RED%%^%%^BOLD%%^[%-4.4d-%-2.2d-%-2.2d %-2.2d:%-2.2d]%%^RESET%%^ %%^GREEN%%^%%^BOLD%%^%s%%^RESET%%^ %%^YELLOW%%^%s%%^RESET%%^",
-                tm_info->tm_year + 1900, tm_info->tm_mon + 1, tm_info->tm_mday, tm_info->tm_hour, tm_info->tm_min, "It's ALIVE!\r\n", VERSION_STR);
-        i3_npc_speak("wiley", "Cron", taunt);
+        i3_log_alive();
         tics_since_last_message = TAUNT_DELAY;
     }
 
@@ -7204,13 +7260,9 @@ I3_CMD(I3_show_ucache_contents)
     UCACHE_DATA                            *user;
     int                                     users = 0;
 
-    i3send_to_pager("%%^WHITE%%^Cached user information%%^RESET%%^\r\n", ch);
-    i3send_to_pager
-	("%%^WHITE%%^User                          | Gender ( 0 = Male, 1 = Female, 2 = Neuter )%%^RESET%%^\r\n",
-	 ch);
-    i3send_to_pager
-	("%%^WHITE%%^---------------------------------------------------------------------------%%^RESET%%^\r\n",
-	 ch);
+    i3page_printf(ch, "%%^WHITE%%^Cached user information%%^RESET%%^\r\n");
+    i3page_printf(ch, "%%^WHITE%%^User                          | Gender ( 0 = Male, 1 = Female, 2 = Neuter )%%^RESET%%^\r\n");
+    i3page_printf(ch, "%%^WHITE%%^---------------------------------------------------------------------------%%^RESET%%^\r\n");
     for (user = first_ucache; user; user = user->next) {
 	i3page_printf(ch, "%%^WHITE%%^%-30s %d%%^RESET%%^\r\n", user->name, user->gender);
 	users++;
@@ -7610,11 +7662,11 @@ I3_CMD(I3_chanlist)
     if (!strcasecmp(filter, "all") && i3_is_connected()) {
 	all = TRUE;
 	argument = i3one_argument(argument, filter);
-	i3send_to_pager("%%^CYAN%%^Showing ALL known channels.%%^RESET%%^\r\n\r\n", ch);
+	i3page_printf(ch, "%%^CYAN%%^Showing ALL known channels.%%^RESET%%^\r\n\r\n");
     }
 
-    i3page_printf(ch, "%s", "%%^CYAN%%^Local name          Perm    I3 Name             Hosted at           Status%%^RESET%%^\r\n");
-    i3page_printf(ch, "%s", "%%^CYAN%%^-------------------------------------------------------------------------------%%^RESET%%^\r\n");
+    i3page_printf(ch, "%%^CYAN%%^Local name          Perm    I3 Name             Hosted at           Status%%^RESET%%^\r\n");
+    i3page_printf(ch, "%%^CYAN%%^-------------------------------------------------------------------------------%%^RESET%%^\r\n");
     for (channel = first_I3chan; channel; channel = channel->next) {
 	found = FALSE;
 
@@ -7638,9 +7690,9 @@ I3_CMD(I3_chanlist)
 		      found ? '*' : ' ',
 		      channel->local_name ? channel->local_name : "Not configured",
 		      perm_names[channel->i3perm], channel->I3_name, channel->host_mud,
-		      channel->status == 0 ? "%%^GREEN%%^%%^BOLD%%^Public" : "%%^RED%%^%%^BOLD%%^Private");
+		      channel->status == 0 ? "%^GREEN%^%^BOLD%^Public" : "%^RED%^%^BOLD%^Private");
     }
-    i3page_printf(ch, "%s", "%%^CYAN%%^%%^BOLD%%^*: You are listening to these channels.%%^RESET%%^\r\n");
+    i3page_printf(ch, "%%^CYAN%%^%%^BOLD%%^*: You are listening to these channels.%%^RESET%%^\r\n");
     return;
 }
 
@@ -8056,8 +8108,18 @@ I3_CMD(I3_chanlayout)
 	return;
     }
     if (arg2[0] == '\0') {
-	I3_chanlayout(ch, "");
-	return;
+        if (!(channel = find_I3_channel_by_localname(arg1))) {
+	    I3_chanlayout(ch, "");
+	    return;
+        } else {
+            i3_printf(ch, "Message layout for <%%^GREEN%%^%s%%^RESET%%^>: \"%%^YELLOW%%^", arg1);
+            cprintf(ch, "%s", channel->layout_m);
+            i3_printf(ch, "%%^RESET%%^\"\r\n");
+            i3_printf(ch, "Emote layout for <%%^GREEN%%^%s%%^RESET%%^>: \"%%^YELLOW%%^", arg1);
+            cprintf(ch, "%s", channel->layout_e);
+            i3_printf(ch, "%%^RESET%%^\"\r\n");
+	    return;
+        }
     }
     if (!argument || argument[0] == '\0') {
 	I3_chanlayout(ch, "");
@@ -9034,7 +9096,7 @@ I3_CMD(i3_help)
 	    if (col % 6 != 0)
 		i3strlcat(buf, "%^RESET%^\r\n", MAX_STRING_LENGTH);
 	}
-	i3send_to_pager(buf, ch);
+	i3page_printf(ch, "%s", buf);
 	return;
     }
 
@@ -9129,9 +9191,8 @@ I3_CMD(I3_other)
 	if (col % 6 != 0)
             i3strlcat(buf, "%%^RESET%%^\r\n%%^GREEN%%^%%^BOLD%%^", MAX_STRING_LENGTH);
     }
-    i3send_to_pager(buf, ch);
-    i3send_to_pager
-	("%%^RESET%%^\r\n%%^GREEN%%^For information about a specific command, see %%^WHITE%%^%%^BOLD%%^i3help <command>%%^GREEN%%^.%%^RESET%%^\r\n", ch);
+    i3page_printf(ch, "%s", buf);
+    i3page_printf(ch, "%%^RESET%%^\r\n%%^GREEN%%^For information about a specific command, see %%^WHITE%%^%%^BOLD%%^i3help <command>%%^GREEN%%^.%%^RESET%%^\r\n");
     return;
 }
 
