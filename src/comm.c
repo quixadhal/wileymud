@@ -29,6 +29,7 @@
 #include <locale.h>
 
 #include "global.h"
+#include "sql.h"
 #ifdef I3
 #include "i3.h"
 #endif
@@ -237,9 +238,13 @@ int run_the_game(int port)
 
     log_boot("Opening mother connection.");
     s = init_socket(port);
+
+    log_boot("Connecting to SQL.");
+    sql_startup();
+
     load_db();
 
-    log_boot("Opening WHO port.");
+    //log_boot("Opening WHO port.");
     //init_whod(port);
 
 #ifdef I3
@@ -264,6 +269,8 @@ int run_the_game(int port)
     //close_whod();
 
     unload_db();
+    sql_shutdown();
+
     if (diku_reboot) {
 	log_boot("Rebooting.");
 	return MUD_REBOOT;

@@ -70,7 +70,9 @@ extern int                              mud_port;
 
 #endif
 
+#ifndef TESTING
 int                                     main(int argc, const char **argv);
+#endif
 int                                     run_the_game(int port);
 void                                    emit_prompt(struct descriptor_data *point);
 void                                    game_loop(int s);

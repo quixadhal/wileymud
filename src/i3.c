@@ -65,6 +65,7 @@
 #include <pcre.h>
 #include <signal.h>
 #include "global.h"
+#include "sql.h"
 #include "bug.h"
 #include "utils.h"
 #include "multiclass.h"
@@ -73,6 +74,7 @@
 #include "modify.h"
 #include "interpreter.h"
 #include "version.h"
+#define _I3_C
 #include "i3.h"
 
 /* Global variables for I3 */
@@ -97,7 +99,7 @@ int                                     i3justconnected = 0;    // So we can say
 time_t                                  ucache_clock;	       /* Timer for pruning the ucache */
 long                                    bytes_received;
 long                                    bytes_sent;
-time_t                                  i3_time;	       /* Current clock time for the client */
+time_t                                  i3_time = 0;	       /* Current clock time for the client */
 
 I3_MUD                                 *this_i3mud = NULL;
 I3_MUD                                 *first_mud;
@@ -120,6 +122,12 @@ I3_HELP_DATA                           *last_i3_help;
 
 #define TAUNT_DELAY                     PULSE_PER_SECOND * 60 * 30; /* 30 minutes worth */
 int                                     tics_since_last_message = TAUNT_DELAY;
+
+// These two are for the cases where we're going to be handling multiple requests that
+// could end up with the same timestamp (even with milliseconds).  In those cases, we need
+// to add an incrementing value so we can still sort by time (timestamp + sub_second_counter)
+time_t                                  last_second = 0;
+int                                     sub_second_counter = 0;
 
 void                                    i3_printf(CHAR_DATA *ch, const char *fmt, ...)
     __attribute__ ((format(printf, 2, 3)));
@@ -2928,19 +2936,36 @@ void I3_process_channel_filter(I3_HEADER *header, char *s)
 
 void allchan_log( int is_emote, char *channel, char *speaker, char *mud, char *str ) {
     FILE                                   *fp = NULL;
-    struct tm                              *local = localtime(&i3_time);
+    struct tm                              *local = NULL;
+    struct timeval                          last_time;
+
+    if(i3_time == 0) {
+        // We called this before the first run of i3_loop(), from outside.
+        // Either that, or this code has travelled back in time, and I'm going to be rich!
+        gettimeofday(&last_time, NULL);
+        i3_time = (time_t) last_time.tv_sec;
+    }
+    local = localtime(&i3_time);
+
+    if(last_second != i3_time) {
+        last_second = i3_time;
+        sub_second_counter = 0;
+    } else {
+        sub_second_counter++;
+    }
 
     if(!(fp = fopen(I3_ALLCHAN_LOG, "a"))) {
         i3bug("Could not open file %s!", I3_ALLCHAN_LOG);
     } else {
         fprintf(fp, "%04d.%02d.%02d-%02d.%02d,%02d%03d\t%s\t%s@%s\t%c\t%s\n",
                 local->tm_year + 1900, local->tm_mon + 1, local->tm_mday,
-                local->tm_hour, local->tm_min, local->tm_sec, 0,
+                local->tm_hour, local->tm_min, local->tm_sec, sub_second_counter,
                 channel, speaker, mud,
                 is_emote ? 't' : 'f',
                 str);
         I3FCLOSE(fp);
     }
+    allchan_sql(is_emote, channel, speaker, mud, str);
 }
 
 char *color_time( struct tm *local )
@@ -3078,10 +3103,6 @@ void I3_process_channel_t(I3_HEADER *header, char *s)
     return;
 }
 
-#define UNTINY      "../bin/untiny.pl"
-#define PERL        "/usr/bin/perl"
-#define I3_URL_DUMP I3_DIR "i3.urldump"
-
 void I3_process_channel_m(I3_HEADER *header, char *s)
 {
     char                                   *ps = s;
@@ -3144,6 +3165,8 @@ void I3_process_channel_m(I3_HEADER *header, char *s)
     snprintf(tmpvisname, MAX_INPUT_LENGTH, "%s@%s", visname, header->originator_mudname);
 
     allchan_log(0, channel->local_name, visname, header->originator_mudname, tps);
+
+    goto skip_regexp;
 
     if(strcasecmp(channel->local_name, "url")) {
         // Never process url's from the url channel, recursion lurks here!

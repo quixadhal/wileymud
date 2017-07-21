@@ -1,6 +1,6 @@
 # Must be GNU Make!
 
-DATESTAMP	= $(shell /bin/date "+%y.%m.%d")
+DATESTAMP	= $(shell /bin/date "+%Y-%m-%d")
 DEPLINE		= $(shell /bin/grep -n -e '^\#--- Comment for make deps ---' GNUmakefile | awk -F: '{print $$1}')
 
 CC		= clang #gcc #g++
@@ -16,8 +16,10 @@ IDENTDIR	= libident-0.19
 NEED_CRYPT	= -lcrypt #Linux needs this
 #NEED_COMPAT	= -lcompat #BSD needs this
 NEED_MATH	= -lm #math for tracking and such
-SQL_INC		= -DUSE_PGSQL -I/usr/include/postgresql
-SQL_LIB		= -L/usr/lib/postgresql -lpq -lecpg
+SQL_INC		= 
+SQL_LIB		= -lsqlite3
+#SQL_INC		= -DUSE_PGSQL -I/usr/include/postgresql
+#SQL_LIB		= -L/usr/lib/postgresql -lpq -lecpg
 ID_DEP		= $(IDENTDIR)/libident.a
 ID_INC		= #
 ID_LIB		= -L$(IDENTDIR) -lident
@@ -54,8 +56,8 @@ ADDL_DEBUG	= #-DTIME_DEBUG
 EFENCE		= #-lpthread -lefence
 PROF_FLAG	= #-pg
 
-INC		= -Iinclude $(ID_INC) $(IMC_INC) $(I3_INC) #$(SQL_INC)
-LIB		= $(ID_LIB) $(NEED_MATH) $(NEED_CRYPT) $(NEED_COMPAT) $(EFENCE) $(PCRE_LIB) #$(SQL_LIB)
+INC		= -Iinclude $(ID_INC) $(IMC_INC) $(I3_INC) $(SQL_INC)
+LIB		= $(ID_LIB) $(NEED_MATH) $(NEED_CRYPT) $(NEED_COMPAT) $(EFENCE) $(PCRE_LIB) $(SQL_LIB)
 UTILSLIB	= $(NEED_MATH) $(NEED_CRYPT) $(NEED_COMPAT) $(EFENCE)
 
 CFLAGS		= $(W_FLAGS) $(DEBUG_FLAG) $(OPT_FLAG) $(PROF_FLAG) $(M_ARCH) $(INC)
@@ -73,7 +75,7 @@ tOBJ =	mob_actions.o spec_procs.o breath_weapons.o tracking.o \
 	modify.o multiclass.o opinion.o random.o reception.o \
 	shop.o signals.o sound.o spell_parser.o \
 	spells.o trap.o utils.o weather.o whod.o events.o \
-	ban.o sha256.o imc.o i3.o
+	ban.o sha256.o imc.o i3.o sql.o
 OBJ =	$(addprefix obj/, $(tOBJ))
 
 tIDOBJ		= id_close.o id_open.o id_parse.o \
@@ -135,6 +137,7 @@ version :
 	@echo "\"\\\\r\\\\n*** Welcome to WileyMUD III, Quixadhal's Version 1.$(VERSION)w3-beta ($(DATESTAMP)) ***\\\\r\\\\n\"" >> $(VER)
 	@echo "#define VERSION_BASE \"WileyMUD III\"" >> $(VER)
 	@echo "#define VERSION_BUILD \"1.$(VERSION)b\"" >> $(VER)
+	@echo "#define VERSION_DATE \"$(DATESTAMP)\"" >> $(VER)
 	@echo '#endif /* _VERSION_H */' >> $(VER)
 	@echo New version file generated.
 
@@ -198,14 +201,14 @@ obj/shop.o: shop.c include/global.h include/bug.h include/comm.h \
 obj/opinion.o: opinion.c include/global.h include/bug.h include/utils.h \
   include/spells.h include/constants.h include/comm.h include/db.h \
   include/multiclass.h include/opinion.h
-obj/comm.o: comm.c include/global.h include/i3.h include/bug.h \
+obj/comm.o: comm.c include/global.h include/sql.h include/i3.h include/bug.h \
   include/utils.h include/interpreter.h include/handler.h include/db.h \
   include/modify.h include/whod.h include/multiclass.h include/weather.h \
   include/mudlimits.h include/spells.h include/spell_parser.h \
   include/sound.h include/fight.h include/mob_actions.h \
   include/act_other.h include/signals.h include/ban.h include/board.h \
   include/comm.h
-obj/i3.o: i3.c include/global.h include/bug.h include/utils.h \
+obj/i3.o: i3.c include/global.h include/sql.h include/bug.h include/utils.h \
   include/multiclass.h include/comm.h include/constants.h \
   include/modify.h include/interpreter.h include/version.h include/i3.h
 obj/act_off.o: act_off.c include/global.h include/bug.h include/utils.h \
@@ -361,6 +364,8 @@ obj/act_obj.o: act_obj.c include/global.h include/bug.h include/utils.h \
   include/spells.h include/trap.h include/constants.h \
   include/spell_parser.h include/multiclass.h include/mudlimits.h \
   include/fight.h include/act_info.h include/act_obj.h
+obj/sql.o: sql.c include/global.h include/bug.h include/comm.h \
+  include/version.h include/i3.h include/sql.h
 obj/imc.o: imc.c
 obj/db.o: db.c include/global.h include/i3.h include/bug.h include/utils.h \
   include/comm.h include/handler.h include/mudlimits.h include/opinion.h \

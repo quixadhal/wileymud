@@ -60,6 +60,10 @@
 #define CODEBASE                VERSION_BASE
 #define CODEVERSION             VERSION_BUILD
 
+#define UNTINY      "../bin/untiny.pl"
+#define PERL        "/usr/bin/perl"
+#define I3_URL_DUMP I3_DIR "i3.urldump"
+
 #define I3_CHANNEL_FILE  I3_DIR "i3.channels"
 #define I3_CONFIG_FILE   I3_DIR "i3.config"
 #define I3_BAN_FILE      I3_DIR "i3.bans"
@@ -162,11 +166,16 @@ typedef struct i3_cmd_alias I3_ALIAS;  /* Big, bad, bloated command alias thing 
 typedef void I3_FUN( CHAR_DATA * ch, const char *argument );
 #define I3_CMD( name ) void (name)( CHAR_DATA *ch, const char *argument )
 
+#ifndef _I3_C
 extern int I3_socket;
 
 extern I3_MUD *first_mud;
 extern I3_MUD *this_i3mud;
 extern char *I3_ROUTER_NAME;
+
+extern time_t last_second;
+extern int sub_second_counter;
+#endif
 
 /* Oh yeah, baby, that raunchy looking Merc structure just got the facelift of the century.
  * Thanks to Thoric and friends for the slick idea.
@@ -366,4 +375,5 @@ void allchan_log( int is_emote, char *channel, char *speaker, char *mud, char *s
 void i3_message_to_players( char *str );
 void i3_log_alive( void );
 void i3_log_dead( void );
+char *i3_strip_colors(const char *txt);
 #endif
