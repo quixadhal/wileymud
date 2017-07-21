@@ -62,7 +62,6 @@
 #include <sys/time.h>
 #include <time.h>
 #include <sys/types.h>
-#include <pcre.h>
 #include <signal.h>
 #include "global.h"
 #include "sql.h"
@@ -3118,19 +3117,6 @@ void I3_process_channel_m(I3_HEADER *header, char *s)
     struct tm                              *local = localtime(&i3_time);
     int                                     len;
 
-    const char          *regexp_pattern     = "(https?\\:\\/\\/[\\w.-]+(?:\\.[\\w\\.-]+)+[\\w\\-\\._~:/?#[\\]@!\\$&'\\(\\)\\*\\+,;=.]+)";
-    int                  regexp_opts        = PCRE_CASELESS|PCRE_MULTILINE;
-    static pcre         *regexp_compiled    = NULL;
-    static pcre_extra   *regexp_studied     = NULL;
-    const char          *regexp_error       = NULL;
-    int                  regexp_err_offset  = 0;
-    const char          *regexp_match       = NULL;
-    static int           regexp_broken      = 0;
-    int                  regexp_rv;
-    int                  regexp_matchpos[30];
-    int                  regexp_pid;
-    char                *url_stripped       = NULL;
-
     I3_get_field(ps, &next_ps);
     I3_remove_quotes(&ps);
 
@@ -3166,82 +3152,6 @@ void I3_process_channel_m(I3_HEADER *header, char *s)
 
     allchan_log(0, channel->local_name, visname, header->originator_mudname, tps);
 
-    goto skip_regexp;
-
-    if(strcasecmp(channel->local_name, "url")) {
-        // Never process url's from the url channel, recursion lurks here!
-
-        //i3log("I3 regexp checking starts...");
-        if(regexp_broken) {
-            i3log("I3 regexp checking skipped");
-            goto skip_regexp;
-        }
-
-        if(!strcasecmp(visname, "cron") && !strcasecmp(header->originator_mudname, "wileymud")) {
-            // Also don't process things from Cron@WileyMUD...
-            goto skip_regexp;
-        }
-
-        if(!regexp_compiled) { // Haven't compiled yet
-            regexp_compiled = pcre_compile(regexp_pattern, regexp_opts, &regexp_error, &regexp_err_offset, NULL);
-            i3log("I3 regexp: /%s/", regexp_pattern);
-            if(!regexp_compiled) {
-                i3bug("regexp failed to compile");
-                regexp_broken = 1;
-                goto skip_regexp;
-            }
-            regexp_studied = pcre_study(regexp_compiled, 0, &regexp_error);
-            if(regexp_error != NULL) {
-                i3bug("regexp study failed");
-                regexp_broken = 1;
-                goto skip_regexp;
-            }
-        }
-
-        url_stripped = i3_strip_colors(tps);
-        regexp_rv = pcre_exec(regexp_compiled, regexp_studied,
-                              url_stripped, strlen(url_stripped),
-                              0, 0, // START POS, OPTIONS
-                              regexp_matchpos, 30);
-
-        if(regexp_rv < 0) {
-            switch(regexp_rv) {
-                case PCRE_ERROR_NOMATCH:
-                    //i3log("No match");
-                    break;
-                case PCRE_ERROR_NULL:
-                    i3bug("NULL Error in regexp handling");
-                    break;
-                default:
-                    i3bug("Error in regexp handling");
-                    break;
-            }
-        } else {
-            while( regexp_rv > 0 ) {
-                if (pcre_get_substring(url_stripped, regexp_matchpos, regexp_rv, 0, &regexp_match) >= 0) {
-                    i3log("Found URL ( %s ) in channel ( %s )", regexp_match, channel->local_name);
-                    regexp_pid = fork();
-                    if( regexp_pid == 0 ) {
-                        // We are the new kid, so go run our perl script.
-                        //i3log("Launching %s -w %s %s %s", PERL, UNTINY, regexp_match, channel->local_name);
-                        freopen(I3_URL_DUMP, "a", stdout);
-                        execl(PERL, PERL, "-w", UNTINY, regexp_match, channel->local_name, (char *)NULL);
-                        i3bug("It is not possible to be here!");
-                    } else {
-                        // Normally, we need to track the child pid, but we're already
-                        // ignoring SIGCHLD in signals.c, and doing so prevents zombies.
-                    }
-                }
-                regexp_rv = pcre_exec(regexp_compiled, regexp_studied,
-                                      url_stripped, strlen(url_stripped),
-                                      regexp_matchpos[1], 0,
-                                      regexp_matchpos, 30);
-            }
-        }
-        //i3log("I3 regexp checking ends.");
-    }
-
-skip_regexp:
     for (d = first_descriptor; d; d = d->next) {
 	vch = d->original ? d->original : d->character;
 
