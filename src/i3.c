@@ -95,6 +95,7 @@ int                                     i3wait;		       /* Number of game loops 
 int                                     i3timeout;	       /* Number of loops to wait before giving up on an
 							        * initial router connection */
 int                                     i3justconnected = 0;    // So we can say something for the logs.
+int                                     justconnected_lag = PULSE_PER_SECOND * 5; // Don't start urlbot for a few seconds
 time_t                                  ucache_clock;	       /* Timer for pruning the ucache */
 long                                    bytes_received;
 long                                    bytes_sent;
@@ -119,7 +120,6 @@ I3_CMD_DATA                            *last_i3_command;
 I3_HELP_DATA                           *first_i3_help;
 I3_HELP_DATA                           *last_i3_help;
 
-#define TAUNT_DELAY                     PULSE_PER_SECOND * 60 * 30; /* 30 minutes worth */
 int                                     tics_since_last_message = TAUNT_DELAY;
 
 // These two are for the cases where we're going to be handling multiple requests that
@@ -151,8 +151,9 @@ char                                   *I3_nameescape(const char *ps);
 char                                   *I3_nameremap(const char *ps);
 void                                    i3_npc_chat(const char *chan_name, const char *actor, const char *message);
 void                                    i3_npc_speak(const char *chan_name, const char *actor, const char *message);
-void                                    i3_nuke_url_file(void);
-void                                    i3_check_urls(void);
+
+//void                                    i3_nuke_url_file(void);
+//void                                    i3_check_urls(void);
 
 #define I3KEY( literal, field, value ) \
 if( !strcasecmp( word, literal ) )     \
@@ -6630,7 +6631,7 @@ void router_connect(const char *router_name, bool forced, int mudport, bool isco
 /* Wrapper for router_connect now - so we don't need to force older client installs to adjust. */
 void i3_startup(bool forced, int mudport, bool isconnected)
 {
-    i3_nuke_url_file();
+    //i3_nuke_url_file();
     if (I3_read_config(mudport))
 	router_connect(NULL, forced, mudport, isconnected);
     else
@@ -7102,6 +7103,7 @@ void i3_loop(void)
     // A version of keepalive...
     if (i3justconnected) {
         i3justconnected = 0;
+        justconnected_lag = PULSE_PER_SECOND * 5;
         i3_log_alive();
         tics_since_last_message = TAUNT_DELAY;
     }
@@ -7110,20 +7112,15 @@ void i3_loop(void)
 
     if ( tics_since_last_message <= 0 ) {
         tics_since_last_message = TAUNT_DELAY;
-
         do_taunt_from_log();
-
-        /*
-        snprintf(taunt, MAX_STRING_LENGTH, "%%^RED%%^%%^BOLD%%^[%-4.4d-%-2.2d-%-2.2d %-2.2d:%-2.2d]%%^RESET%%^ %%^GREEN%%^%%^BOLD%%^%s%%^RESET%%^",
-                tm_info->tm_year + 1900, tm_info->tm_mon + 1, tm_info->tm_mday, tm_info->tm_hour, tm_info->tm_min, i3_taunt_line());
-
-        chan_choice = i3number(0, (sizeof(chan_list) / sizeof(chan_list[0])) - 1);
-        i3_npc_speak(chan_list[chan_choice], "Cron", taunt);
-        */
     }
 
     // Check for urls that our external process prepared for us.
-    i3_check_urls();
+    if( justconnected_lag <= 0 ) {
+        process_urls();
+    } else {
+        justconnected_lag--;
+    }
 
     /*
      * Will prune the cache once every 24hrs after bootup time 

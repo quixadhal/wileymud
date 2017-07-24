@@ -60,9 +60,10 @@
 #define CODEBASE                VERSION_BASE
 #define CODEVERSION             VERSION_BUILD
 
-#define UNTINY      "../bin/untiny.pl"
-#define PERL        "/usr/bin/perl"
-#define I3_URL_DUMP I3_DIR "i3.urldump"
+#define UNTINY_SQL              "../bin/untiny_sql.pl"
+#define UNTINY                  "../bin/untiny.pl"
+#define PERL                    "/usr/bin/perl"
+#define I3_URL_DUMP      I3_DIR "i3.urldump"
 
 #define I3_CHANNEL_FILE  I3_DIR "i3.channels"
 #define I3_CONFIG_FILE   I3_DIR "i3.config"
@@ -166,6 +167,8 @@ typedef struct i3_cmd_alias I3_ALIAS;  /* Big, bad, bloated command alias thing 
 typedef void I3_FUN( CHAR_DATA * ch, const char *argument );
 #define I3_CMD( name ) void (name)( CHAR_DATA *ch, const char *argument )
 
+#define TAUNT_DELAY                     PULSE_PER_SECOND * 60 * 30; /* 30 minutes worth */
+
 #ifndef _I3_C
 extern int I3_socket;
 
@@ -175,6 +178,7 @@ extern char *I3_ROUTER_NAME;
 
 extern time_t last_second;
 extern int sub_second_counter;
+extern int tics_since_last_message;
 #endif
 
 /* Oh yeah, baby, that raunchy looking Merc structure just got the facelift of the century.

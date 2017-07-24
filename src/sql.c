@@ -27,6 +27,7 @@ void sql_startup(void) {
     }
     log_boot("SQLite Version: %s\n", sqlite3_libversion());
     setup_i3log_table();
+    setup_urls_table();
     snprintf(log_msg, MAX_STRING_LENGTH, "%%^GREEN%%^WileyMUD Version: %s (%s), SQLite Version %s.%%^RESET%%^", VERSION_BUILD, VERSION_DATE, sqlite3_libversion());
     allchan_log(0,"wiley", "Cron", "WileyMUD", log_msg);
 }
@@ -61,7 +62,195 @@ void setup_i3log_table(void) {
     }
 }
 
-int is_url( int is_emote, char *channel, char *speaker, char *mud, char *message ) {
+void setup_urls_table(void) {
+    char *err_msg = NULL;
+    // This table stores urls that have been found in I3 messages.
+    // When they are put in the table, the message field is left NULL, so an
+    // external helper process can find and process them, filling in that data.
+    // Once the message is NOT NULL, and processed is NULL, they will be emitted
+    // to the url channel of I3, and then processed will become 1.
+    char *sql = "CREATE TABLE IF NOT EXISTS urls ( "
+                "created DATETIME DEFAULT (STRFTIME('%Y-%m-%d %H:%M:%f', 'NOW','utc')), "
+                "processed INTEGER, "
+                "channel TEXT, "
+                "speaker TEXT, "
+                "mud TEXT, "
+                "url TEXT, "
+                "message TEXT "
+                ");";
+
+    int rc = sqlite3_exec(db, sql, 0, 0, &err_msg);
+    if (rc != SQLITE_OK) {
+        log_fatal("Cannot create %s: %s\n", "url table", err_msg);
+        sqlite3_free(err_msg);
+        sqlite3_close(db);
+	proper_exit(MUD_HALT);
+    }
+}
+
+int                                     unprocessed_urls = 0;
+int                                     tics_to_next_url_processing = URL_DELAY;
+int                                     first_processing = 1;
+
+void add_url( const char *channel, const char *speaker, const char *mud, const char *url ) {
+
+    //log_info("add_url entered");
+
+    char *err_msg = NULL;
+    sqlite3_stmt *insert_stmt = NULL;
+    char *sql = "INSERT INTO urls ( url, channel, speaker, mud ) VALUES (?,?,?,?);";
+
+    int rc = sqlite3_prepare_v2( db, sql, -1, &insert_stmt, NULL );
+    if (rc != SQLITE_OK) {
+        log_fatal("SQL statement error %s: %s\n", "urls insert", sqlite3_errmsg(db));
+        sqlite3_close(db);
+	proper_exit(MUD_HALT);
+    }
+    rc = sqlite3_bind_text( insert_stmt, 1, url, strlen(url), NULL );
+    if (rc != SQLITE_OK) {
+        log_fatal("SQL parameter error %s: %s\n", "urls url", sqlite3_errmsg(db));
+        sqlite3_close(db);
+	proper_exit(MUD_HALT);
+    }
+    rc = sqlite3_bind_text( insert_stmt, 2, channel, strlen(channel), NULL );
+    if (rc != SQLITE_OK) {
+        log_fatal("SQL parameter error %s: %s\n", "urls channel", sqlite3_errmsg(db));
+        sqlite3_close(db);
+	proper_exit(MUD_HALT);
+    }
+    rc = sqlite3_bind_text( insert_stmt, 3, speaker, strlen(speaker), NULL );
+    if (rc != SQLITE_OK) {
+        log_fatal("SQL parameter error %s: %s\n", "urls speaker", sqlite3_errmsg(db));
+        sqlite3_close(db);
+	proper_exit(MUD_HALT);
+    }
+    rc = sqlite3_bind_text( insert_stmt, 4, mud, strlen(mud), NULL );
+    if (rc != SQLITE_OK) {
+        log_fatal("SQL parameter error %s: %s\n", "urls mud", sqlite3_errmsg(db));
+        sqlite3_close(db);
+	proper_exit(MUD_HALT);
+    }
+
+    rc = sqlite3_step(insert_stmt);
+    if (rc != SQLITE_DONE) {
+        log_fatal("SQL insert error %s: %s\n", "urls insert", err_msg);
+        sqlite3_free(err_msg);
+        sqlite3_close(db);
+	proper_exit(MUD_HALT);
+    }
+    sqlite3_finalize(insert_stmt);
+    unprocessed_urls++;
+
+    log_info("add_url done, unprocessed urls == %d", unprocessed_urls);
+}
+
+void process_urls( void ) {
+    // This routine will look in the urls table for any entries which have
+    // a non-NULL message field and a NULL processed field.  That means our
+    // external helper app has done the lookups and pushed the results into
+    // the table, but we haven't yet sent those results out over I3.
+    //
+    // For each result we find, we need to update the row to set processed
+    // to 1, so we don't do it again later.
+
+    if( unprocessed_urls < 0 ) {
+        // This can happen if we have leftovers from a previous run,
+        // or if we screw up and fail to process one and end up doing
+        // it twice somehow.
+        unprocessed_urls = 0;
+    }
+
+    if( tics_to_next_url_processing > 0 ) {
+        tics_to_next_url_processing--;
+        return;
+    }
+
+    if( !first_processing && unprocessed_urls < 1 ) {
+        //log_info("process_urls no work to do");
+        return;
+    }
+
+    //log_info("process_urls started with work to do");
+    tics_to_next_url_processing = URL_DELAY;
+    char *err_msg = NULL;
+    char *sql = "  SELECT created, url, message "
+                "    FROM urls "
+                "   WHERE processed IS NOT 1 AND message IS NOT NULL "
+                "ORDER BY created ASC;";
+    int rc = sqlite3_exec(db, sql, process_url_callback, 0, &err_msg);
+    if (rc != SQLITE_OK) {
+        if (rc != SQLITE_BUSY) {
+            log_fatal("SQL statement error %s: %s\n", "urls select", sqlite3_errmsg(db));
+            sqlite3_close(db);
+            proper_exit(MUD_HALT);
+        }
+        log_error("SQL statement error %s: %s\n", "urls select", sqlite3_errmsg(db));
+    }
+    if( first_processing ) {
+        first_processing = 0;
+    }
+
+    //log_info("process_urls done");
+}
+
+// SQLite can use callbacks for each row retrieved from a select statement.
+int process_url_callback(void *unused, int count, char **values, char **keys) {
+    //log_info("process_url_callback entered");
+
+    char *err_msg = NULL;
+    sqlite3_stmt *update_stmt = NULL;
+    char *sql = "  UPDATE urls "
+                "     SET processed = 1 "
+                "   WHERE created = ? AND url = ? AND processed IS NOT 1 AND message IS NOT NULL;";
+
+    //log_info("Count = %d", count);
+    if( count < 3 ) {
+        log_error("process_url_callback aborted, expected 3 arguments, got %d", count);
+        if( count >= 1 && values[0] ) log_error("created = %s", values[0]);
+        if( count >= 2 && values[1] ) log_error("url = %s", values[1]);
+        if( count >= 3 && values[2] ) log_error("message = %s", values[2]);
+        return 0;
+    }
+
+    if( values[2] ) {
+        // We have a message string!
+        i3_npc_speak("url", "URLbot", values[2]);
+    }
+    // Now we need to mark this as processed...
+    int rc = sqlite3_prepare_v2( db, sql, -1, &update_stmt, NULL );
+    if (rc != SQLITE_OK) {
+        log_fatal("SQL statement error %s: %s\n", "urls update", sqlite3_errmsg(db));
+        sqlite3_close(db);
+	proper_exit(MUD_HALT);
+    }
+    rc = sqlite3_bind_text( update_stmt, 1, values[0], strlen(values[0]), NULL );
+    if (rc != SQLITE_OK) {
+        log_fatal("SQL parameter error %s: %s\n", "urls created", sqlite3_errmsg(db));
+        sqlite3_close(db);
+	proper_exit(MUD_HALT);
+    }
+    rc = sqlite3_bind_text( update_stmt, 2, values[1], strlen(values[1]), NULL );
+    if (rc != SQLITE_OK) {
+        log_fatal("SQL parameter error %s: %s\n", "urls url", sqlite3_errmsg(db));
+        sqlite3_close(db);
+	proper_exit(MUD_HALT);
+    }
+
+    rc = sqlite3_step(update_stmt);
+    if (rc != SQLITE_DONE) {
+        log_fatal("SQL update error %s: %s\n", "urls update", err_msg);
+        sqlite3_free(err_msg);
+        sqlite3_close(db);
+	proper_exit(MUD_HALT);
+    }
+    sqlite3_finalize(update_stmt);
+    unprocessed_urls--;
+    log_info("process_url_callback done, unprocessed_urls == %d", unprocessed_urls);
+    return 0;
+}
+
+
+int is_url( int is_emote, const char *channel, const char *speaker, const char *mud, const char *message ) {
     const char          *regexp_pattern     = "(https?\\:\\/\\/[\\w.-]+(?:\\.[\\w\\.-]+)+[\\w\\-\\._~:/?#[\\]@!\\$&'\\(\\)\\*\\+,;=.]+)";
     int                  regexp_opts        = PCRE_CASELESS|PCRE_MULTILINE;
     static pcre         *regexp_compiled    = NULL;
@@ -114,35 +303,46 @@ int is_url( int is_emote, char *channel, char *speaker, char *mud, char *message
         // Either an error, or no URL match found
         return 0;
     }
-    // We have one or more URLs, so this is where we process them.
-    // This used to be in i3.c, but we might as well move it here.
-    // The idea is simple, fork a process for each URL to run an
-    // external perl script that nicely handles URL lookups, dumping
-    // the results in a file that gets checked elsewhere for output.
+
+    // This version will become active once the external script is redesigned to use
+    // the database, and once the main loop is taught to read from the database and
+    // not a file.  The new script will handle all unprocessed urls at once.
     while( regexp_rv > 0 ) {
         if (pcre_get_substring(url_stripped, regexp_matchpos, regexp_rv, 0, &regexp_match) >= 0) {
             log_info("Found URL ( %s ) in channel ( %s )", regexp_match, channel);
-            regexp_pid = fork();
-            if( regexp_pid == 0 ) {
-                // We are the new kid, so go run our perl script.
-                //i3log("Launching %s -w %s %s %s", PERL, UNTINY, regexp_match, channel->local_name);
-                freopen(I3_URL_DUMP, "a", stdout);
-                execl(PERL, PERL, "-w", UNTINY, regexp_match, channel, (char *)NULL);
-                log_error("It is not possible to be here!");
-            } else {
-                // Normally, we need to track the child pid, but we're already
-                // ignoring SIGCHLD in signals.c, and doing so prevents zombies.
-            }
+            add_url(channel, speaker, mud, regexp_match);
         }
         regexp_rv = pcre_exec(regexp_compiled, regexp_studied,
                               url_stripped, strlen(url_stripped),
                               regexp_matchpos[1], 0,
                               regexp_matchpos, 30);
     }
+
+    // For now, this seems OK, but there's a nagging suspicion I have that if
+    // a high volume of URL's came in, in separate messages, one right after the
+    // other, forking a "do all the urls not done" might cause errors.
+    //
+    // In most cases I can think of, even if the same records somehow got written
+    // to multiple times, the results SHOULD always be the same, so it shouldn't
+    // matter, other than some extra work done.
+    //
+    // But keep this in mind if a problem does show up, we may need to move this
+    // higher up, so it only runs once per N tics.
+
+    regexp_pid = fork();
+    if( regexp_pid == 0 ) {
+        // We are the new kid, so go run our perl script.
+        log_info("Forking %s", UNTINY_SQL);
+        execl(PERL, PERL, "-w", UNTINY_SQL, (char *)NULL);
+        log_error("It is not possible to be here!");
+    } else {
+        // Normally, we need to track the child pid, but we're already
+        // ignoring SIGCHLD in signals.c, and doing so prevents zombies.
+    }
     return 1;
 }
 
-int is_bot( int is_emote, char *channel, char *speaker, char *mud, char *message ) {
+int is_bot( int is_emote, const char *channel, const char *speaker, const char *mud, const char *message ) {
     if(!strcasecmp(speaker, "cron") && !strcasecmp(mud, "wileymud")) return 1;
     if(!strcasecmp(speaker, "urlbot") && !strcasecmp(mud, "wileymud")) return 1;
     if(!strcasecmp(speaker, "system") && !strcasecmp(mud, "bloodlines")) return 1;
@@ -164,7 +364,7 @@ int is_bot( int is_emote, char *channel, char *speaker, char *mud, char *message
     return 0;
 }
 
-void allchan_sql( int is_emote, char *channel, char *speaker, char *mud, char *message ) {
+void allchan_sql( int is_emote, const char *channel, const char *speaker, const char *mud, const char *message ) {
     char *err_msg = NULL;
     sqlite3_stmt *insert_stmt = NULL;
     char *sql = "INSERT INTO i3log ( channel, speaker, mud, message, is_emote, is_url, is_bot ) "

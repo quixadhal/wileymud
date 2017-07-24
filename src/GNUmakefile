@@ -211,6 +211,8 @@ obj/comm.o: comm.c include/global.h include/sql.h include/i3.h include/bug.h \
 obj/i3.o: i3.c include/global.h include/sql.h include/bug.h include/utils.h \
   include/multiclass.h include/comm.h include/constants.h \
   include/modify.h include/interpreter.h include/version.h include/i3.h
+obj/untiny.o: untiny.c include/global.h include/bug.h include/sql.h \
+  include/untiny.h
 obj/act_off.o: act_off.c include/global.h include/bug.h include/utils.h \
   include/comm.h include/interpreter.h include/handler.h include/db.h \
   include/spells.h include/mudlimits.h include/opinion.h \
