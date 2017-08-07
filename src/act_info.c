@@ -2781,17 +2781,18 @@ void do_ticks(struct char_data *ch, const char *argument, int cmd)
 		 VNULL(argument), cmd);
 
     cprintf(ch, "Pulse Counter: %d\r\n", pulse);
-    cprintf(ch, "  NEXT TICK:\t\t%1.2lf\r\n", pulse_update / (double)PULSE_PER_SECOND);
-    cprintf(ch, "  Next Zone tick:\t%1.2lf\r\n", pulse_zone / (double)PULSE_PER_SECOND);
-    cprintf(ch, "  Next Teleport tick:\t%1.2lf\r\n", pulse_teleport / (double)PULSE_PER_SECOND);
-    cprintf(ch, "  Next Nature tick:\t%1.2lf\r\n", pulse_nature / (double)PULSE_PER_SECOND);
-    cprintf(ch, "  Next Violence tick:\t%1.2lf\r\n", pulse_violence / (double)PULSE_PER_SECOND);
-    cprintf(ch, "  Next River tick:\t%1.2lf\r\n", pulse_river / (double)PULSE_PER_SECOND);
-    cprintf(ch, "  Next Sound tick:\t%1.2lf\r\n", pulse_sound / (double)PULSE_PER_SECOND);
-    cprintf(ch, "  Next Reboot tick:\t%1.2lf\r\n", pulse_reboot / (double)PULSE_PER_SECOND);
-    cprintf(ch, "  Next Dump tick:\t%1.2lf\r\n", pulse_dump / (double)PULSE_PER_SECOND);
+    cprintf(ch, "  NEXT TICK:\t\t%7.2lf\r\n", pulse_update / (double)PULSE_PER_SECOND);
+    cprintf(ch, "  Next Zone tick:\t%7.2lf\r\n", pulse_zone / (double)PULSE_PER_SECOND);
+    cprintf(ch, "  Next Teleport tick:\t%7.2lf\r\n", pulse_teleport / (double)PULSE_PER_SECOND);
+    cprintf(ch, "  Next Nature tick:\t%7.2lf\r\n", pulse_nature / (double)PULSE_PER_SECOND);
+    cprintf(ch, "  Next Violence tick:\t%7.2lf\r\n", pulse_violence / (double)PULSE_PER_SECOND);
+    cprintf(ch, "  Next River tick:\t%7.2lf\r\n", pulse_river / (double)PULSE_PER_SECOND);
+    cprintf(ch, "  Next Sound tick:\t%7.2lf\r\n", pulse_sound / (double)PULSE_PER_SECOND);
+    cprintf(ch, "  Next Reboot tick:\t%7.2lf\r\n", pulse_reboot / (double)PULSE_PER_SECOND);
+    cprintf(ch, "  Next Dump tick:\t%7.2lf\r\n", pulse_dump / (double)PULSE_PER_SECOND);
+    cprintf(ch, "  Next Mudlist tick:\t%7.2lf\r\n", pulse_mudlist / (double)PULSE_PER_SECOND);
     if (REBOOT_FREQ > 0) {
-        cprintf(ch, "  Next REBOOT in:\t%d\r\n", REBOOT_LEFT - ((int)time(0) - REBOOT_LASTCHECK));
+        cprintf(ch, "  Next REBOOT in:\t%7d\r\n", REBOOT_LEFT - ((int)time(0) - REBOOT_LASTCHECK));
     }
 }
 

@@ -362,6 +362,7 @@ char                                   *whod_html(void)
     sprintf(buf + strlen(buf), "<style>\r\n");
     sprintf(buf + strlen(buf), "a { text-decoration:none; }\r\n");
     sprintf(buf + strlen(buf), "a:hover { text-decoration:underline; }\r\n");
+    sprintf(buf + strlen(buf), "td { white-space:nowrap; }\r\n");
     sprintf(buf + strlen(buf), "</style>\r\n");
     sprintf(buf + strlen(buf), "</head>\r\n");
     sprintf(buf + strlen(buf), "<body>\r\n");
@@ -516,9 +517,11 @@ char                                   *whod_html(void)
             sprintf(buf + strlen(buf), "<td align=\"left\"><a target=\"I3 mudlist\" href=\"http://%s/\">%s</a></td>\r\n", mud->ipaddress, mud->name);
             sprintf(buf + strlen(buf), "<td align=\"left\" >%s</td>\r\n", mud->mud_type);
             sprintf(buf + strlen(buf), "<td align=\"left\" >%s</td>\r\n", mud->mudlib);
+            //sprintf(buf + strlen(buf), "<td align=\"left\" ><a href=\"telnet://%s:%d/\">%s</a></td>\r\n", mud->ipaddress, mud->player_port, mud->ipaddress);
             sprintf(buf + strlen(buf), "<a href=\"telnet://%s:%d/\" >\r\n", mud->ipaddress, mud->player_port);
-            sprintf(buf + strlen(buf), "<td align=\"left\" ><a href=\"telnet://%s:%d/\">%s</a></td>\r\n", mud->ipaddress, mud->player_port, mud->ipaddress);
+            sprintf(buf + strlen(buf), "<td align=\"left\" >%s</td>\r\n",  mud->ipaddress);
             sprintf(buf + strlen(buf), "<td align=\"right\" >%d</td>\r\n", mud->player_port);
+            sprintf(buf + strlen(buf), "</a>\r\n");
             sprintf(buf + strlen(buf), "</tr>\r\n");
             row_counter++;
         }
@@ -723,6 +726,7 @@ void                                    generate_mudlist(void)
     fprintf(fp, "<style>\r\n");
     fprintf(fp, "a { text-decoration:none; }\r\n");
     fprintf(fp, "a:hover { text-decoration:underline; }\r\n");
+    fprintf(fp, "td { white-space:nowrap; }\r\n");
     fprintf(fp, "</style>\r\n");
     fprintf(fp, "</head>\r\n");
 
@@ -888,9 +892,12 @@ void                                    generate_mudlist(void)
             fprintf(fp, "<td align=\"left\"><a target=\"I3 mudlist\" href=\"http://%s/\">%s</a></td>\r\n", mud->ipaddress, mud->name);
             fprintf(fp, "<td align=\"left\" >%s</td>\r\n", mud->mud_type);
             fprintf(fp, "<td align=\"left\" >%s</td>\r\n", mud->mudlib);
-            fprintf(fp, "<a href=\"telnet://%s:%d/\" >\r\n", mud->ipaddress, mud->player_port);
+            //fprintf(fp, "<a href=\"telnet://%s:%d/\" >\r\n", mud->ipaddress, mud->player_port);
+            //fprintf(fp, "<td align=\"left\" >%s</td>\r\n", mud->ipaddress);
+            //fprintf(fp, "<td align=\"right\" >%d</td>\r\n", mud->player_port);
             fprintf(fp, "<td align=\"left\" ><a href=\"telnet://%s:%d/\">%s</a></td>\r\n", mud->ipaddress, mud->player_port, mud->ipaddress);
-            fprintf(fp, "<td align=\"right\" >%d</td>\r\n", mud->player_port);
+            fprintf(fp, "<td align=\"right\" ><a href=\"telnet://%s:%d/\">%d</a></td>\r\n", mud->ipaddress, mud->player_port, mud->player_port);
+            //fprintf(fp, "</a>\r\n");
             fprintf(fp, "</tr>\r\n");
             row_counter++;
         }

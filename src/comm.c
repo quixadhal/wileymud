@@ -380,7 +380,7 @@ void game_loop(int s)
     struct timeval                          timeout;
     struct timeval                          null_time;
     static struct timeval                   opt_time;
-    char                                    comm[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
+    char                                    comm[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
     struct descriptor_data                 *point = NULL;
     struct descriptor_data                 *next_point = NULL;
     int                                     input_flag = 0;

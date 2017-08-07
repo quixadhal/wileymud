@@ -1193,11 +1193,12 @@ void nanny(struct descriptor_data *d, char *arg)
 {
     int                                     count = 0;
     int                                     oops = FALSE;
-    char                                    tmp_name[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
+    char                                    tmp_name[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
     struct char_file_u                      tmp_store;
     int                                     i = 0;
     char                                    cryptbuf[17] = "\0\0\0\0\0\0\0";
     char                                    cryptsalt[3] = { '\0', '\0', '\0' };
+    char                                    host_name[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
 
     if (DEBUG > 2)
 	log_info("called %s with %08zx, %s", __PRETTY_FUNCTION__, (size_t) d, VNULL(arg));
@@ -1206,32 +1207,46 @@ void nanny(struct descriptor_data *d, char *arg)
 	arg++;
     write(d->descriptor, echo_on, strlen(echo_on));
 
+    if(d && d->host && d->host[0])
+        strcpy(host_name, d->host);
+    else if(d && d->ip && d->ip[0])
+        strcpy(host_name, d->ip);
+    else
+        strcpy(host_name, "unknown host");
+
     switch (STATE(d)) {
 	default:
 	    log_error("Nanny:  illegal state %d.\n", STATE(d));
 	    close_socket(d);
 	    return;
 	case CON_GET_NAME:
-	    log_info("Got Connection from: %s", d->host);
+	    log_info("Got Connection from: %s", host_name);
 	    if (!d->character) {
-	        log_info("Creating new character structure: %s", d->host);
+	        log_info("Creating new character structure: %s", host_name);
 		CREATE(d->character, struct char_data, 1);
 
 		clear_char(d->character);
 		d->character->desc = d;
 	    }
 	    if (!*arg) {
-	        log_info("Kicking connection: %s", d->host);
+	        log_info("Kicking connection: %s", host_name);
 		close_socket(d);
 		return;
 	    }
+            if (!strncasecmp(arg, "GET ", 4)) {
+                // Clueless bots thinking this is a web server...
+	        log_info("Kicking connection: %s using %s", host_name, arg);
+		close_socket(d);
+		return;
+            }
+
 	    if (!valid_parse_name(arg, tmp_name)) {
-	        log_info("Illegal name: \"%s\" from %s", arg, d->host);
+	        log_info("Illegal name: \"%s\" from %s", arg, host_name);
 		dcprintf(d, "\rIllegal name, please try another.\r\nWHAT is your Name? ");
 		return;
 	    }
 	    if (check_playing(d, tmp_name)) {
-	        log_info("Already playing %s, new connection %s", tmp_name, d->host);
+	        log_info("Already playing %s, new connection %s", tmp_name, host_name);
 		dcprintf(d,
 			 "\rSorry, %s is already playing... you might be cheating!\r\nWhat is YOUR Name? ",
 			 tmp_name);
@@ -1262,7 +1277,7 @@ void nanny(struct descriptor_data *d, char *arg)
 		store_to_char(&tmp_store, d->character);
 		strcpy(d->oldpwd, tmp_store.oldpwd);
 		strcpy(d->pwd, tmp_store.pwd);
-		log_info("%s@%s loaded.", d->usr_name, d->host);
+		log_info("%s@%s loaded.", d->usr_name, host_name);
 		dcprintf(d, "\r\n%sWHAT is your Password? ", echo_off);
 		STATE(d) = CON_GET_PASSWORD;
 	    } else if (load_char(d->usr_name, &tmp_store) > -1) {
@@ -1272,7 +1287,7 @@ void nanny(struct descriptor_data *d, char *arg)
 		store_to_char(&tmp_store, d->character);
 		strcpy(d->oldpwd, tmp_store.oldpwd);
 		strcpy(d->pwd, tmp_store.pwd);
-		log_info("%s@%s loaded from old playerfile.", d->usr_name, d->host);
+		log_info("%s@%s loaded from old playerfile.", d->usr_name, host_name);
 		dcprintf(d, "\r\n%sWHAT is your Password? ", echo_off);
 		STATE(d) = CON_GET_PASSWORD;
 	    } else {
@@ -1316,9 +1331,6 @@ void nanny(struct descriptor_data *d, char *arg)
 	    }
 	    if (check_reconnect(d))
 		return;
-	    /*
-	     * log_info("%s (%s@%s) has connected.", GET_NAME(d->character), d->username, d->host); 
-	     */
 	    log_auth(d->character, "WELCOME BACK %s (%s@%s/%s)!", GET_NAME(d->character),
 		     d->username, d->host, d->ip);
 	    if (GetMaxLevel(d->character) > LOW_IMMORTAL)
@@ -1507,7 +1519,7 @@ void nanny(struct descriptor_data *d, char *arg)
 	    }
 
 	    if (STATE(d) != CON_GET_CLASS) {
-		log_info("%s [%s] new player.", GET_NAME(d->character), d->host);
+		log_info("%s [%s] new player.", GET_NAME(d->character), host_name);
 		init_char(d->character);
 		d->pos = create_entry(GET_NAME(d->character));
 		save_char(d->character, NOWHERE);

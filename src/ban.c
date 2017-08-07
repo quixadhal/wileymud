@@ -257,7 +257,7 @@ void do_ban(struct char_data *ch, const char *argument, int cmd)
 		    /*
 		     * No banning localhost! 
 		     */
-		    if (str_cmp("127.0.0.1", buf)) {
+		    if (!str_cmp("127.0.0.1", buf)) {
 			cprintf(ch, "You cannot ban localhost!\r\n");
 			return;
 		    }

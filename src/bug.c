@@ -93,8 +93,8 @@ void bug_logger(unsigned int Type, const char *BugFile,
     va_end(arg);
     ftime(&right_now);
     now_part = localtime((const time_t *)&right_now);
-    snprintf(Result, MAX_STRING_LENGTH, "<: %02d%02d%02d.%02d%02d%02d.%03d",
-	    now_part->tm_year, now_part->tm_mon + 1, now_part->tm_mday,
+    snprintf(Result, MAX_STRING_LENGTH, "<: %04d%02d%02d.%02d%02d%02d.%03d",
+	    now_part->tm_year + 1900, now_part->tm_mon + 1, now_part->tm_mday,
 	    now_part->tm_hour, now_part->tm_min, now_part->tm_sec, right_now.millitm);
     scprintf(Result, MAX_STRING_LENGTH, " - %s -", LogNames[Type]);
     if (File || Func || Line) {

@@ -119,6 +119,10 @@ int board(struct char_data *ch, int cmd, char *arg)
     case CMD_goto:
     case CMD_pager:
     case CMD_shutdown:
+    case CMD_ticks:
+    case CMD_gtell:
+    case CMD_users:
+    case CMD_wiznet:
       return FALSE;
       break;
     case CMD_look:					       /* look */

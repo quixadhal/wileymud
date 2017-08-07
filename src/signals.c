@@ -11,6 +11,7 @@
 #include <signal.h>
 #include <sys/time.h>
 #include <sys/wait.h>
+#include <execinfo.h>
 
 
 #include "global.h"
@@ -112,7 +113,8 @@ void signal_setup(void)
 	{{SIG_DFL}, SIGFPE, SA_NODEFER | SA_RESETHAND},
 	{{SIG_DFL}, SIGKILL, SA_NODEFER | SA_RESETHAND},
 	{{SIG_DFL}, SIGBUS, SA_NODEFER | SA_RESETHAND},
-	{{SIG_DFL}, SIGSEGV, SA_NODEFER | SA_RESETHAND},
+	//{{SIG_DFL}, SIGSEGV, SA_NODEFER | SA_RESETHAND},
+	{{exit_with_traceback}, SIGSEGV, SA_NODEFER | SA_RESETHAND},
 	{{SIG_DFL}, SIGSYS, SA_NODEFER | SA_RESETHAND},
 	{{SIG_IGN}, SIGPIPE, SA_NODEFER},
 	{{SIG_IGN}, SIGALRM, SA_NODEFER},
@@ -144,7 +146,8 @@ void signal_setup(void)
 	{{SIG_DFL}, {{SIGFPE}}, SA_NODEFER | SA_RESETHAND, NULL},
 	{{SIG_DFL}, {{SIGKILL}}, SA_NODEFER | SA_RESETHAND, NULL},
 	{{shutdown_request}, {{SIGUSR1}}, SA_NODEFER | SA_RESETHAND, NULL},
-	{{SIG_DFL}, {{SIGSEGV}}, SA_NODEFER | SA_RESETHAND, NULL},
+	//{{SIG_DFL}, {{SIGSEGV}}, SA_NODEFER | SA_RESETHAND, NULL},
+	{{exit_with_traceback}, {{SIGSEGV}}, SA_NODEFER | SA_RESETHAND, NULL},
 	{{SIG_IGN}, {{SIGUSR2}}, SA_NODEFER | SA_RESETHAND, NULL},
 	{{SIG_IGN}, {{SIGPIPE}}, SA_NODEFER, NULL},
 	{{SIG_IGN}, {{SIGALRM}}, SA_NODEFER, NULL},
@@ -175,6 +178,7 @@ void signal_setup(void)
     signal(SIGINT, shutdown_request);
     signal(SIGQUIT, SIG_IGN);
     signal(SIGUSR1, shutdown_request);
+    signal(SIGSEGV, exit_with_traceback);
     signal(SIGUSR2, SIG_IGN);
     signal(SIGPIPE, SIG_IGN);
     signal(SIGALRM, SIG_IGN);
@@ -270,5 +274,31 @@ void reaper(int a)
     while((pid = waitpid(-1, &status, WNOHANG)) > 0)
         ;
     log_info("Child reaped.");
+}
+
+void exit_with_traceback(int a)
+{
+    int i, count;
+    char **frames;
+    void *buffer[100];
+
+    if (DEBUG > 3)
+	log_info("called %s with %d", __PRETTY_FUNCTION__, a);
+
+    count = backtrace(buffer, 100);
+    log_fatal("%d frames in backtrace", count);
+
+    frames = backtrace_symbols(buffer, count);
+    if(!frames) {
+        log_fatal("No backtrace info available");
+    } else {
+        for( i = 0; i < count; i++ ) {
+            log_fatal("%s", frames[i]);
+        }
+        free(frames);
+    }
+    close_sockets(0);
+    close_whod();
+    proper_exit(MUD_REBOOT);
 }
 
