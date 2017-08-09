@@ -88,9 +88,9 @@ void setup_urls_table(void) {
     }
 }
 
-int                                     unprocessed_urls = 0;
-int                                     tics_to_next_url_processing = URL_DELAY;
-int                                     first_processing = 1;
+//int                                     unprocessed_urls = 0;
+//int                                     tics_to_next_url_processing = URL_DELAY;
+//int                                     first_processing = 1;
 
 void add_url( const char *channel, const char *speaker, const char *mud, const char *url ) {
 
@@ -139,9 +139,10 @@ void add_url( const char *channel, const char *speaker, const char *mud, const c
 	proper_exit(MUD_HALT);
     }
     sqlite3_finalize(insert_stmt);
-    unprocessed_urls++;
+//    unprocessed_urls++;
 
-    log_info("add_url done, unprocessed urls == %d", unprocessed_urls);
+//    log_info("add_url done, unprocessed urls == %d", unprocessed_urls);
+    log_info("add_url done, added %s", url);
 }
 
 void process_urls( void ) {
@@ -153,25 +154,25 @@ void process_urls( void ) {
     // For each result we find, we need to update the row to set processed
     // to 1, so we don't do it again later.
 
-    if( unprocessed_urls < 0 ) {
-        // This can happen if we have leftovers from a previous run,
-        // or if we screw up and fail to process one and end up doing
-        // it twice somehow.
-        unprocessed_urls = 0;
-    }
+//    if( unprocessed_urls < 0 ) {
+//        // This can happen if we have leftovers from a previous run,
+//        // or if we screw up and fail to process one and end up doing
+//        // it twice somehow.
+//        unprocessed_urls = 0;
+//    }
 
-    if( tics_to_next_url_processing > 0 ) {
-        tics_to_next_url_processing--;
-        return;
-    }
+//    if( tics_to_next_url_processing > 0 ) {
+//        tics_to_next_url_processing--;
+//        return;
+//    }
 
-    if( !first_processing && unprocessed_urls < 1 ) {
-        //log_info("process_urls no work to do");
-        return;
-    }
+//    if( !first_processing && unprocessed_urls < 1 ) {
+//        //log_info("process_urls no work to do");
+//        return;
+//    }
 
     //log_info("process_urls started with work to do");
-    tics_to_next_url_processing = URL_DELAY;
+//    tics_to_next_url_processing = URL_DELAY;
     char *err_msg = NULL;
     char *sql = "  SELECT created, url, message "
                 "    FROM urls "
@@ -186,9 +187,9 @@ void process_urls( void ) {
         }
         log_error("SQL statement error %s: %s\n", "urls select", sqlite3_errmsg(db));
     }
-    if( first_processing ) {
-        first_processing = 0;
-    }
+//    if( first_processing ) {
+//        first_processing = 0;
+//    }
 
     //log_info("process_urls done");
 }
@@ -244,8 +245,9 @@ int process_url_callback(void *unused, int count, char **values, char **keys) {
 	proper_exit(MUD_HALT);
     }
     sqlite3_finalize(update_stmt);
-    unprocessed_urls--;
-    log_info("process_url_callback done, unprocessed_urls == %d", unprocessed_urls);
+//    unprocessed_urls--;
+//    log_info("process_url_callback done, unprocessed_urls == %d", unprocessed_urls);
+    log_info("process_url_callback done, processed %s", values[1]);
     return 0;
 }
 

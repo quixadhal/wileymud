@@ -1207,9 +1207,9 @@ void nanny(struct descriptor_data *d, char *arg)
 	arg++;
     write(d->descriptor, echo_on, strlen(echo_on));
 
-    if(d && d->host && d->host[0])
+    if(d && d->host[0])
         strcpy(host_name, d->host);
-    else if(d && d->ip && d->ip[0])
+    else if(d && d->ip[0])
         strcpy(host_name, d->ip);
     else
         strcpy(host_name, "unknown host");

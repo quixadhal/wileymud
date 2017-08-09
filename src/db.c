@@ -1744,9 +1744,9 @@ void char_to_store(struct char_data *ch, struct char_file_u *st)
 	*st->description = '\0';
 
     if (ch->desc)
-	if (ch->desc->host)
-	    if (ch->desc->username) {
-		char                                    ackpfft[MAX_INPUT_LENGTH];
+	if (ch->desc->host[0])
+	    if (ch->desc->username[0]) {
+		char                                    ackpfft[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
 
 		sprintf(ackpfft, "%s@%s", ch->desc->username, ch->desc->host);
 		strncpy(st->last_connect_site, ackpfft, 48);

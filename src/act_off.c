@@ -645,56 +645,52 @@ void do_doorbash(struct char_data *ch, const char *argument, int cmd)
      * now we've checked for failures, time to check for success;
      */
 
-    if (ch->skills) {
-	if (ch->skills[SKILL_DOOR_BASH].learned) {
-	    roll = number(1, 100);
-	    if (roll > ch->skills[SKILL_DOOR_BASH].learned) {
-		slam_into_wall(ch, exitp);
-	    } else {
-		/*
-		 * unlock and open the door
-		 */
-		act("$n slams into the %s, and smashes it down", FALSE, ch, 0, 0, TO_ROOM,
-		    fname(exitp->keyword));
-		cprintf(ch, "You slam into the %s, and smashes open!\r\n",
-			fname(exitp->keyword));
-		raw_unlock_door(ch, exitp, dir);
-		raw_open_door(ch, dir);
-		/*
-		 * Now a dex check to keep from flying into the next room
-		 */
-		roll = number(1, 20);
-		if (roll > GET_DEX(ch)) {
-		    was_in = ch->in_room;
-		    char_from_room(ch);
-		    char_to_room(ch, exitp->to_room);
-		    do_look(ch, "", 0);
-		    DisplayMove(ch, dir, was_in, 1);
-		    if (!check_falling(ch)) {
-			if (IS_SET(RM_FLAGS(ch->in_room), DEATH)
-			    && GetMaxLevel(ch) < LOW_IMMORTAL) {
-			    return;
-			}
-		    } else {
-			return;
-		    }
-		    WAIT_STATE(ch, PULSE_VIOLENCE * 3);
-		    GET_MOVE(ch) -= 5;
-		    return;
-		} else {
-		    WAIT_STATE(ch, PULSE_VIOLENCE * 1);
-		    GET_MOVE(ch) -= 2;
-		    return;
-		}
-	    }
-	} else {
-	    cprintf(ch, "You do not know this well enough yet.\r\n");
-	    slam_into_wall(ch, exitp);
-	    return;
-	}
+    if (ch->skills[SKILL_DOOR_BASH].learned) {
+        roll = number(1, 100);
+        if (roll > ch->skills[SKILL_DOOR_BASH].learned) {
+            slam_into_wall(ch, exitp);
+        } else {
+            /*
+             * unlock and open the door
+             */
+            act("$n slams into the %s, and smashes it down", FALSE, ch, 0, 0, TO_ROOM,
+                fname(exitp->keyword));
+            cprintf(ch, "You slam into the %s, and smashes open!\r\n",
+                    fname(exitp->keyword));
+            raw_unlock_door(ch, exitp, dir);
+            raw_open_door(ch, dir);
+            /*
+             * Now a dex check to keep from flying into the next room
+             */
+            roll = number(1, 20);
+            if (roll > GET_DEX(ch)) {
+                was_in = ch->in_room;
+                char_from_room(ch);
+                char_to_room(ch, exitp->to_room);
+                do_look(ch, "", 0);
+                DisplayMove(ch, dir, was_in, 1);
+                if (!check_falling(ch)) {
+                    if (IS_SET(RM_FLAGS(ch->in_room), DEATH)
+                        && GetMaxLevel(ch) < LOW_IMMORTAL) {
+                        return;
+                    }
+                } else {
+                    return;
+                }
+                WAIT_STATE(ch, PULSE_VIOLENCE * 3);
+                GET_MOVE(ch) -= 5;
+                return;
+            } else {
+                WAIT_STATE(ch, PULSE_VIOLENCE * 1);
+                GET_MOVE(ch) -= 2;
+                return;
+            }
+        }
     } else {
-	return;
+        cprintf(ch, "You do not know this well enough yet.\r\n");
+        slam_into_wall(ch, exitp);
     }
+    return;
 }
 
 void do_bash(struct char_data *ch, const char *argument, int cmd)

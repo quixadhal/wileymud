@@ -88,6 +88,7 @@ int                                     pulse_violence = PULSE_VIOLENCE;
 int                                     pulse_reboot = PULSE_REBOOT;
 int                                     pulse_dump = PULSE_DUMP;
 int                                     pulse_mudlist = PULSE_MUDLIST;
+int                                     pulse_url = PULSE_URL; // check for urls to send over I3
 
 int main(int argc, const char **argv)
 {
@@ -621,6 +622,11 @@ void game_loop(int s)
 	}
 	if ((--pulse_mudlist) <= 0) {
 	    pulse_mudlist = PULSE_MUDLIST;
+            generate_mudlist();
+	}
+	if ((--pulse_url) <= 0) {
+	    pulse_url = PULSE_URL;
+            process_urls();
             generate_mudlist();
 	}
 

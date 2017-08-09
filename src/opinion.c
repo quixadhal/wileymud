@@ -33,7 +33,7 @@ void FreeHates(struct char_data *ch)
     for (k = ch->hates.clist; k; k = n) {
 	n = k->next;
 	if (n)
-	    if (n->valid) {
+	    if (n->valid[0]) {
 		if (!strcmp(n->valid, "AddHated")) {
 		    DESTROY(n);
 		} else {
@@ -54,7 +54,7 @@ void FreeFears(struct char_data *ch)
     for (k = ch->fears.clist; k; k = n) {
 	n = k->next;
 	if (n)
-	    if (n->valid) {
+	    if (n->valid[0]) {
 		if (!strcmp(n->valid, "AddFeared")) {
 		    DESTROY(n);
 		} else {
@@ -466,7 +466,7 @@ int DoesFear(struct char_data *ch, struct char_data *v)
 	    for (i = ch->fears.clist; i; i = i->next) {
 		if (i) {
 		    if (i->op_ch) {
-			if (i->name) {
+			if (i->name[0]) {
 			    if ((i->op_ch == v) && (!strcmp(i->name, GET_NAME(v))))
 				return (TRUE);
 			} else {
@@ -476,7 +476,7 @@ int DoesFear(struct char_data *ch, struct char_data *v)
 			    RemFeared(ch, i->op_ch);
 			}
 		    } else {
-			if (i->name) {
+			if (i->name[0]) {
 			    if (!strcmp(i->name, GET_NAME(v)))
 				return (TRUE);
 			}

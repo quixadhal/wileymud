@@ -95,7 +95,7 @@ int                                     i3wait;		       /* Number of game loops 
 int                                     i3timeout;	       /* Number of loops to wait before giving up on an
 							        * initial router connection */
 int                                     i3justconnected = 0;    // So we can say something for the logs.
-int                                     justconnected_lag = PULSE_PER_SECOND * 5; // Don't start urlbot for a few seconds
+//int                                     justconnected_lag = PULSE_PER_SECOND * 5; // Don't start urlbot for a few seconds
 time_t                                  ucache_clock;	       /* Timer for pruning the ucache */
 long                                    bytes_received;
 long                                    bytes_sent;
@@ -7103,7 +7103,7 @@ void i3_loop(void)
     // A version of keepalive...
     if (i3justconnected) {
         i3justconnected = 0;
-        justconnected_lag = PULSE_PER_SECOND * 5;
+        //justconnected_lag = PULSE_PER_SECOND * 5;
         i3_log_alive();
         tics_since_last_message = TAUNT_DELAY;
     }
@@ -7115,12 +7115,14 @@ void i3_loop(void)
         do_taunt_from_log();
     }
 
+    /*
     // Check for urls that our external process prepared for us.
     if( justconnected_lag <= 0 ) {
         process_urls();
     } else {
         justconnected_lag--;
     }
+    */
 
     /*
      * Will prune the cache once every 24hrs after bootup time 

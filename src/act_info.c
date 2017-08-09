@@ -2183,7 +2183,7 @@ void do_users(struct char_data *ch, const char *argument, int cmd)
 
 	if (flag)
 	    scprintf(line, MAX_INPUT_LENGTH, "[%s@%s/%s]\r\n", d->username,
-		    d->host ? d->host : "unknown", d->ip ? d->ip : "unknown");
+		    d->host[0] ? d->host : "unknown", d->ip[0] ? d->ip : "unknown");
 	if (flag)
 	    strlcat(buf, line, MAX_STRING_LENGTH);
     }
@@ -2791,6 +2791,7 @@ void do_ticks(struct char_data *ch, const char *argument, int cmd)
     cprintf(ch, "  Next Reboot tick:\t%7.2lf\r\n", pulse_reboot / (double)PULSE_PER_SECOND);
     cprintf(ch, "  Next Dump tick:\t%7.2lf\r\n", pulse_dump / (double)PULSE_PER_SECOND);
     cprintf(ch, "  Next Mudlist tick:\t%7.2lf\r\n", pulse_mudlist / (double)PULSE_PER_SECOND);
+    cprintf(ch, "  Next URL tick:\t%7.2lf\r\n", pulse_url / (double)PULSE_PER_SECOND);
     if (REBOOT_FREQ > 0) {
         cprintf(ch, "  Next REBOOT in:\t%7d\r\n", REBOOT_LEFT - ((int)time(0) - REBOOT_LASTCHECK));
     }
