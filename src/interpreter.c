@@ -1199,6 +1199,7 @@ void nanny(struct descriptor_data *d, char *arg)
     char                                    cryptbuf[17] = "\0\0\0\0\0\0\0";
     char                                    cryptsalt[3] = { '\0', '\0', '\0' };
     char                                    host_name[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
+    char                                    ip_addr[20] = "\0\0\0\0\0\0\0";
 
     if (DEBUG > 2)
 	log_info("called %s with %08zx, %s", __PRETTY_FUNCTION__, (size_t) d, VNULL(arg));
@@ -1207,10 +1208,13 @@ void nanny(struct descriptor_data *d, char *arg)
 	arg++;
     write(d->descriptor, echo_on, strlen(echo_on));
 
+    if(d && d->ip[0])
+        strcpy(ip_addr, d->ip);
+    else
+        strcpy(ip_addr, "unknown address");
+
     if(d && d->host[0])
         strcpy(host_name, d->host);
-    else if(d && d->ip[0])
-        strcpy(host_name, d->ip);
     else
         strcpy(host_name, "unknown host");
 
@@ -1220,33 +1224,33 @@ void nanny(struct descriptor_data *d, char *arg)
 	    close_socket(d);
 	    return;
 	case CON_GET_NAME:
-	    log_info("Got Connection from: %s", host_name);
+	    log_info("Got Connection from: %s/%s", host_name, ip_addr);
 	    if (!d->character) {
-	        log_info("Creating new character structure: %s", host_name);
+	        log_info("Creating new character structure: %s/%s", host_name, ip_addr);
 		CREATE(d->character, struct char_data, 1);
 
 		clear_char(d->character);
 		d->character->desc = d;
 	    }
 	    if (!*arg) {
-	        log_info("Kicking connection: %s", host_name);
+	        log_info("Kicking connection: %s/%s", host_name, ip_addr);
 		close_socket(d);
 		return;
 	    }
             if (!strncasecmp(arg, "GET ", 4)) {
                 // Clueless bots thinking this is a web server...
-	        log_info("Kicking connection: %s using %s", host_name, arg);
+	        log_info("Kicking connection: %s/%s using %s", host_name, ip_addr, arg);
 		close_socket(d);
 		return;
             }
 
 	    if (!valid_parse_name(arg, tmp_name)) {
-	        log_info("Illegal name: \"%s\" from %s", arg, host_name);
+	        log_info("Illegal name: \"%s\" from %s/%s", arg, host_name, ip_addr);
 		dcprintf(d, "\rIllegal name, please try another.\r\nWHAT is your Name? ");
 		return;
 	    }
 	    if (check_playing(d, tmp_name)) {
-	        log_info("Already playing %s, new connection %s", tmp_name, host_name);
+	        log_info("Already playing %s, new connection %s/%s", tmp_name, host_name, ip_addr);
 		dcprintf(d,
 			 "\rSorry, %s is already playing... you might be cheating!\r\nWhat is YOUR Name? ",
 			 tmp_name);
@@ -1277,7 +1281,7 @@ void nanny(struct descriptor_data *d, char *arg)
 		store_to_char(&tmp_store, d->character);
 		strcpy(d->oldpwd, tmp_store.oldpwd);
 		strcpy(d->pwd, tmp_store.pwd);
-		log_info("%s@%s loaded.", d->usr_name, host_name);
+		log_info("%s@%s/%s loaded.", d->usr_name, host_name, ip_addr);
 		dcprintf(d, "\r\n%sWHAT is your Password? ", echo_off);
 		STATE(d) = CON_GET_PASSWORD;
 	    } else if (load_char(d->usr_name, &tmp_store) > -1) {
@@ -1287,7 +1291,7 @@ void nanny(struct descriptor_data *d, char *arg)
 		store_to_char(&tmp_store, d->character);
 		strcpy(d->oldpwd, tmp_store.oldpwd);
 		strcpy(d->pwd, tmp_store.pwd);
-		log_info("%s@%s loaded from old playerfile.", d->usr_name, host_name);
+		log_info("%s@%s/%s loaded from old playerfile.", d->usr_name, host_name, ip_addr);
 		dcprintf(d, "\r\n%sWHAT is your Password? ", echo_off);
 		STATE(d) = CON_GET_PASSWORD;
 	    } else {
@@ -1309,7 +1313,7 @@ void nanny(struct descriptor_data *d, char *arg)
 		 * log_info("New player!"); 
 		 */
 		log_auth(d->character, "NEW PLAYER %s (%s@%s/%s)!", GET_NAME(d->character),
-			 d->username, d->host, d->ip);
+			 d->username, host_name, ip_addr);
 	    }
 	    return;
 	case CON_GET_PASSWORD:
@@ -1332,7 +1336,7 @@ void nanny(struct descriptor_data *d, char *arg)
 	    if (check_reconnect(d))
 		return;
 	    log_auth(d->character, "WELCOME BACK %s (%s@%s/%s)!", GET_NAME(d->character),
-		     d->username, d->host, d->ip);
+		     d->username, host_name, ip_addr);
 	    if (GetMaxLevel(d->character) > LOW_IMMORTAL)
 		dcprintf(d, "\r\n%s", wmotd);
 	    else
@@ -1519,7 +1523,7 @@ void nanny(struct descriptor_data *d, char *arg)
 	    }
 
 	    if (STATE(d) != CON_GET_CLASS) {
-		log_info("%s [%s] new player.", GET_NAME(d->character), host_name);
+		log_info("%s [%s/%s] new player.", GET_NAME(d->character), host_name, ip_addr);
 		init_char(d->character);
 		d->pos = create_entry(GET_NAME(d->character));
 		save_char(d->character, NOWHERE);
