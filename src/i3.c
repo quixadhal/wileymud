@@ -6682,34 +6682,32 @@ void do_taunt_from_log(void)
             strncpy(hour, &line[11], 2);
             strncpy(minute, &line[14], 2);
             strncpy(second, &line[17], 2);
-            // Skip to channel
+            // Skip to channel (throw away)
             ss = strchr(line, '\t');
-            if(!ss || !*ss) {
-                exit(1);
-            }
+            if(!ss || !*ss) return;
             ss++;
-            // Skip to speaker
+
+            // Skip to speaker (ss to se-2)
             ss = strchr(ss, '\t');
-            if(!ss || !*ss) {
-                exit(1);
-            }
+            if(!ss || !*ss) return;
             ss++;
-            // Skip to is_emote
+
+            // Skip to is_emote (se to t-2)
             se = strchr(ss, '\t');
-            if(!se || !*se) {
-                exit(1);
-            }
+            if(!se || !*se) return;
             se++;
-            // Get to message
+
+            // Get to message (t to EOL)
             t = strchr(se, '\t');
-            if(!t || !*t) {
-                exit(1);
-            }
+            if(!t || !*t) return;
             t++;
+
             bzero(speaker, MAX_STRING_LENGTH);
-            strncpy(speaker, ss, (se-ss));
+            strncpy(speaker, ss, (se-ss-1));
+
             bzero(message, MAX_STRING_LENGTH);
             strncpy(message, t, MAX_STRING_LENGTH);
+
             snprintf(taunt, MAX_STRING_LENGTH, "%%^RED%%^%%^BOLD%%^[%-s-%s-%s %s:%s]%%^RESET%%^ %%^YELLOW%%^%s%%^RESET%%^ once said %%^GREEN%%^%%^BOLD%%^%s%%^RESET%%^",
                      year, month, day, hour, minute, speaker, message);
             i3_npc_speak("wiley", "Cron", taunt);
