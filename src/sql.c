@@ -88,6 +88,32 @@ void setup_urls_table(void) {
     }
 }
 
+void setup_log_table(void) {
+    char *err_msg = NULL;
+    char *sql = "CREATE TABLE IF NOT EXISTS log ( "
+                "created DATETIME DEFAULT (STRFTIME('%Y-%m-%d %H:%M:%f', 'NOW','utc')), "
+                "logtype TEXT DEFAULT 'INFO', "
+                "filename TEXT, "
+                "function TEXT, "
+                "line INTEGER, "
+                "area_file TEXT, "
+                "area_line INTEGER, "
+                "character TEXT, "
+                "character_room INTEGER, "
+                "victim TEXT, "
+                "victim_room INTEGER, "
+                "message TEXT "
+                ");";
+
+    int rc = sqlite3_exec(db, sql, 0, 0, &err_msg);
+    if (rc != SQLITE_OK) {
+        log_fatal("Cannot create %s: %s\n", "log table", err_msg);
+        sqlite3_free(err_msg);
+        sqlite3_close(db);
+	proper_exit(MUD_HALT);
+    }
+}
+
 //int                                     unprocessed_urls = 0;
 //int                                     tics_to_next_url_processing = URL_DELAY;
 //int                                     first_processing = 1;
@@ -251,6 +277,20 @@ int process_url_callback(void *unused, int count, char **values, char **keys) {
     return 0;
 }
 
+void spawn_url_handler(void) {
+    int                  regexp_pid;
+
+    regexp_pid = fork();
+    if( regexp_pid == 0 ) {
+        // We are the new kid, so go run our perl script.
+        log_info("Forking %s", UNTINY_SQL);
+        execl(PERL, PERL, "-w", UNTINY_SQL, (char *)NULL);
+        log_error("It is not possible to be here!");
+    } else {
+        // Normally, we need to track the child pid, but we're already
+        // ignoring SIGCHLD in signals.c, and doing so prevents zombies.
+    }
+}
 
 int is_url( int is_emote, const char *channel, const char *speaker, const char *mud, const char *message ) {
     const char          *regexp_pattern     = "(https?\\:\\/\\/[\\w.-]+(?:\\.[\\w\\.-]+)+[\\w\\-\\._~:/?#[\\]@!\\$&'\\(\\)\\*\\+,;=.]+)";
@@ -263,7 +303,6 @@ int is_url( int is_emote, const char *channel, const char *speaker, const char *
     static int           regexp_broken      = 0;
     int                  regexp_rv;
     int                  regexp_matchpos[30];
-    int                  regexp_pid;
     char                *url_stripped       = NULL;
 
     if(regexp_broken) {
@@ -331,16 +370,7 @@ int is_url( int is_emote, const char *channel, const char *speaker, const char *
     // But keep this in mind if a problem does show up, we may need to move this
     // higher up, so it only runs once per N tics.
 
-    regexp_pid = fork();
-    if( regexp_pid == 0 ) {
-        // We are the new kid, so go run our perl script.
-        log_info("Forking %s", UNTINY_SQL);
-        execl(PERL, PERL, "-w", UNTINY_SQL, (char *)NULL);
-        log_error("It is not possible to be here!");
-    } else {
-        // Normally, we need to track the child pid, but we're already
-        // ignoring SIGCHLD in signals.c, and doing so prevents zombies.
-    }
+    spawn_url_handler();
     return 1;
 }
 
@@ -434,3 +464,119 @@ void allchan_sql( int is_emote, const char *channel, const char *speaker, const 
     sqlite3_finalize(insert_stmt);
 }
 
+void bug_sql( const char *logtype, const char *filename, const char *function, int line,
+              const char *area_file, int area_line, 
+              const char *character, int character_room,
+              const char *victim, int victim_room, 
+              const char *message ) {
+
+    char *err_msg = NULL;
+    sqlite3_stmt *insert_stmt = NULL;
+    char *sql = "INSERT INTO log ( logtype, filename, function, line, area_file, area_line, "
+                "character, character_room, victim, victim_room, message ) "
+                "VALUES (?,?,?,?,?,?,?,?,?,?,?);";
+
+    return; // remove me for production
+
+    int rc = sqlite3_prepare_v2( db, sql, -1, &insert_stmt, NULL );
+    if (rc != SQLITE_OK) {
+        log_fatal("SQL statement error %s: %s\n", "log insert", sqlite3_errmsg(db));
+        sqlite3_close(db);
+	proper_exit(MUD_HALT);
+    }
+    if(logtype && *logtype) {
+        rc = sqlite3_bind_text( insert_stmt, 1, logtype, strlen(logtype), NULL );
+        if (rc != SQLITE_OK) {
+            log_fatal("SQL parameter error %s: %s\n", "log logtype", sqlite3_errmsg(db));
+            sqlite3_close(db);
+            proper_exit(MUD_HALT);
+        }
+    }
+    if(filename && *filename) {
+        rc = sqlite3_bind_text( insert_stmt, 2, filename, strlen(filename), NULL );
+        if (rc != SQLITE_OK) {
+            log_fatal("SQL parameter error %s: %s\n", "log filename", sqlite3_errmsg(db));
+            sqlite3_close(db);
+            proper_exit(MUD_HALT);
+        }
+    }
+    if(function && *function) {
+        rc = sqlite3_bind_text( insert_stmt, 3, function, strlen(function), NULL );
+        if (rc != SQLITE_OK) {
+            log_fatal("SQL parameter error %s: %s\n", "log function", sqlite3_errmsg(db));
+            sqlite3_close(db);
+            proper_exit(MUD_HALT);
+        }
+    }
+    if(line > 0) {
+        rc = sqlite3_bind_int( insert_stmt, 4, line );
+        if (rc != SQLITE_OK) {
+            log_fatal("SQL parameter error %s: %s\n", "log line", sqlite3_errmsg(db));
+            sqlite3_close(db);
+            proper_exit(MUD_HALT);
+        }
+    }
+    if(area_file && *area_file) {
+        rc = sqlite3_bind_text( insert_stmt, 5, area_file, strlen(area_file), NULL );
+        if (rc != SQLITE_OK) {
+            log_fatal("SQL parameter error %s: %s\n", "log area_file", sqlite3_errmsg(db));
+            sqlite3_close(db);
+            proper_exit(MUD_HALT);
+        }
+    }
+    if(area_line > 0) {
+        rc = sqlite3_bind_int( insert_stmt, 6, area_line );
+        if (rc != SQLITE_OK) {
+            log_fatal("SQL parameter error %s: %s\n", "log area_line", sqlite3_errmsg(db));
+            sqlite3_close(db);
+            proper_exit(MUD_HALT);
+        }
+    }
+    if(character && *character) {
+        rc = sqlite3_bind_text( insert_stmt, 7, character, strlen(character), NULL );
+        if (rc != SQLITE_OK) {
+            log_fatal("SQL parameter error %s: %s\n", "log character", sqlite3_errmsg(db));
+            sqlite3_close(db);
+            proper_exit(MUD_HALT);
+        }
+    }
+    if(character_room > 0) {
+        rc = sqlite3_bind_int( insert_stmt, 8, character_room );
+        if (rc != SQLITE_OK) {
+            log_fatal("SQL parameter error %s: %s\n", "log character_room", sqlite3_errmsg(db));
+            sqlite3_close(db);
+            proper_exit(MUD_HALT);
+        }
+    }
+    if(victim && *victim) {
+        rc = sqlite3_bind_text( insert_stmt, 9, victim, strlen(victim), NULL );
+        if (rc != SQLITE_OK) {
+            log_fatal("SQL parameter error %s: %s\n", "log victim", sqlite3_errmsg(db));
+            sqlite3_close(db);
+            proper_exit(MUD_HALT);
+        }
+    }
+    if(victim_room > 0) {
+        rc = sqlite3_bind_int( insert_stmt, 10, victim_room );
+        if (rc != SQLITE_OK) {
+            log_fatal("SQL parameter error %s: %s\n", "log victim_room", sqlite3_errmsg(db));
+            sqlite3_close(db);
+            proper_exit(MUD_HALT);
+        }
+    }
+    rc = sqlite3_bind_text( insert_stmt, 11, message, strlen(message), NULL );
+    if (rc != SQLITE_OK) {
+        log_fatal("SQL parameter error %s: %s\n", "log message", sqlite3_errmsg(db));
+        sqlite3_close(db);
+	proper_exit(MUD_HALT);
+    }
+
+    rc = sqlite3_step(insert_stmt);
+    if (rc != SQLITE_DONE) {
+        log_fatal("SQL insert error %s: %s\n", "log insert", err_msg);
+        sqlite3_free(err_msg);
+        sqlite3_close(db);
+	proper_exit(MUD_HALT);
+    }
+    sqlite3_finalize(insert_stmt);
+}

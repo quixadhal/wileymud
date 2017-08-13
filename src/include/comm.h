@@ -67,6 +67,7 @@ extern int                              pulse_reboot;
 extern int                              pulse_dump;
 extern int                              pulse_mudlist;
 extern int                              pulse_url;
+extern int                              pulse_url_handler;
 extern int                              mud_port;
 
 #endif

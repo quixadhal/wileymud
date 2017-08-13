@@ -381,7 +381,7 @@ obj/spells.o: spells.c include/global.h include/bug.h include/utils.h \
   include/constants.h include/multiclass.h include/act_move.h \
   include/spells.h include/spell_parser.h include/fight.h
 obj/bug.o: bug.c include/global.h include/utils.h include/comm.h \
-  include/multiclass.h include/db.h include/bug.h
+  include/multiclass.h include/db.h include/sql.h include/bug.h
 obj/act_skills.o: act_skills.c include/global.h include/bug.h include/utils.h \
   include/comm.h include/constants.h include/db.h include/handler.h \
   include/interpreter.h include/multiclass.h include/spells.h \

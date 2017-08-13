@@ -89,6 +89,7 @@ int                                     pulse_reboot = PULSE_REBOOT;
 int                                     pulse_dump = PULSE_DUMP;
 int                                     pulse_mudlist = PULSE_MUDLIST;
 int                                     pulse_url = PULSE_URL; // check for urls to send over I3
+int                                     pulse_url_handler = PULSE_URL_HANDLER; // every so often, fork for lost url processing
 
 int main(int argc, const char **argv)
 {
@@ -627,7 +628,10 @@ void game_loop(int s)
 	if ((--pulse_url) <= 0) {
 	    pulse_url = PULSE_URL;
             process_urls();
-            generate_mudlist();
+	}
+	if ((--pulse_url_handler) <= 0) {
+	    pulse_url_handler = PULSE_URL_HANDLER;
+            spawn_url_handler();
 	}
 
 	tics++;						       /* tics since last checkpoint signal */

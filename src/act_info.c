@@ -2774,26 +2774,64 @@ void do_players(struct char_data *ch, const char *argument, int cmd)
 	page_string(ch->desc, buf, 1);
 }
 
+void tick_line(struct char_data *ch, const char *label, int pulse_count) {
+    double seconds = 0.0;
+    int minutes = 0;
+    int hours = 0;
+
+    if (DEBUG)
+	log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch),
+		 VNULL(label), pulse_count);
+
+    seconds = (double)pulse_count / (double)PULSE_PER_SECOND;
+    minutes = (int)seconds / 60;
+    seconds = seconds - ((double)minutes * 60.0);
+    hours = minutes / 60;
+    minutes %= 60;
+
+    cprintf(ch, "    %-30s%d:%02d:%05.2lf\r\n", label, hours, minutes, seconds);
+}
+
 void do_ticks(struct char_data *ch, const char *argument, int cmd)
 {
+    int seconds = 0;
+    int minutes = 0;
+    int hours = 0;
+    int days = 0;
+
     if (DEBUG)
 	log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch),
 		 VNULL(argument), cmd);
 
     cprintf(ch, "Pulse Counter: %d\r\n", pulse);
-    cprintf(ch, "  NEXT TICK:\t\t%7.2lf\r\n", pulse_update / (double)PULSE_PER_SECOND);
-    cprintf(ch, "  Next Zone tick:\t%7.2lf\r\n", pulse_zone / (double)PULSE_PER_SECOND);
-    cprintf(ch, "  Next Teleport tick:\t%7.2lf\r\n", pulse_teleport / (double)PULSE_PER_SECOND);
-    cprintf(ch, "  Next Nature tick:\t%7.2lf\r\n", pulse_nature / (double)PULSE_PER_SECOND);
-    cprintf(ch, "  Next Violence tick:\t%7.2lf\r\n", pulse_violence / (double)PULSE_PER_SECOND);
-    cprintf(ch, "  Next River tick:\t%7.2lf\r\n", pulse_river / (double)PULSE_PER_SECOND);
-    cprintf(ch, "  Next Sound tick:\t%7.2lf\r\n", pulse_sound / (double)PULSE_PER_SECOND);
-    cprintf(ch, "  Next Reboot tick:\t%7.2lf\r\n", pulse_reboot / (double)PULSE_PER_SECOND);
-    cprintf(ch, "  Next Dump tick:\t%7.2lf\r\n", pulse_dump / (double)PULSE_PER_SECOND);
-    cprintf(ch, "  Next Mudlist tick:\t%7.2lf\r\n", pulse_mudlist / (double)PULSE_PER_SECOND);
-    cprintf(ch, "  Next URL tick:\t%7.2lf\r\n", pulse_url / (double)PULSE_PER_SECOND);
+
+    tick_line(ch, "NEXT TICK:", pulse_update);
+    tick_line(ch, "Next Zone tick:", pulse_zone);
+    tick_line(ch, "Next Teleport tick:", pulse_teleport);
+    tick_line(ch, "Next Nature tick:", pulse_nature);
+    tick_line(ch, "Next Violance tick:", pulse_violence);
+    tick_line(ch, "Next River tick:", pulse_river);
+    tick_line(ch, "Next Sound tick:", pulse_sound);
+    tick_line(ch, "Next Reboot tick:", pulse_reboot);
+    tick_line(ch, "Next Dump tick:", pulse_dump);
+    tick_line(ch, "Next Mudlist tick:", pulse_mudlist);
+    tick_line(ch, "Next URL tick:", pulse_url);
+    tick_line(ch, "Next URL Handler tick:", pulse_url_handler);
+
     if (REBOOT_FREQ > 0) {
-        cprintf(ch, "  Next REBOOT in:\t%7d\r\n", REBOOT_LEFT - ((int)time(0) - REBOOT_LASTCHECK));
+        seconds = REBOOT_LEFT - ((int)time(0) - REBOOT_LASTCHECK);
+        minutes = seconds / 60;
+        hours = minutes / 60;
+        days = hours / 24;
+        seconds %= 60;
+        minutes %= 60;
+        hours %= 24;
+
+        if(days > 0) {
+            cprintf(ch, "  %-30s%d days, %d:%02d:%02d.\r\n", "Next REBOOT in:", days, hours, minutes, seconds);
+        } else {
+            cprintf(ch, "  %-30s%d:%02d:%02d.\r\n", "Next REBOOT in:", hours, minutes, seconds);
+        }
     }
 }
 

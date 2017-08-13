@@ -12,6 +12,7 @@
 #include "comm.h"
 #include "multiclass.h"
 #include "db.h"
+#include "sql.h"
 
 #define _BUG_C
 #include "bug.h"
@@ -146,4 +147,10 @@ void bug_logger(unsigned int Type, const char *BugFile,
 	fflush(stderr);
     }
 
+    // Here is where we would log to SQL too!
+
+    bug_sql(LogNames[Type], File, Func, Line, NULL, 0,
+            ch ? NAME(ch) : NULL, ch ? ch->in_room : 0,
+            victim ? NAME(victim) : NULL,  victim ? victim->in_room : 0,
+            Temp);
 }

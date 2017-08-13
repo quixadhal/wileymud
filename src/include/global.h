@@ -239,6 +239,7 @@ struct opinion {
 
 #define PULSE_VIOLENCE    6				       /* combat rounds */
 #define PULSE_URL         7                                    /* check for urls from I3 */
+#define PULSE_URL_HANDLER (6 * PULSE_PER_MINUTE)               /* fork to handle lost urls */
 #define PULSE_RIVER      10				       /* These two must be 10 to make the timings */
 #define PULSE_TELEPORT   10				       /* in the world files come out right. */
 #define PULSE_NATURE     19				       /* This is checks for falling/drowning */

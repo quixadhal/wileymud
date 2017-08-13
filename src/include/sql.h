@@ -24,5 +24,11 @@ int is_url( int is_emote, const char *channel, const char *speaker, const char *
 int is_bot( int is_emote, const char *channel, const char *speaker, const char *mud, const char *message );
 void add_url( const char *channel, const char *speaker, const char *mud, const char *url );
 void process_urls( void );
+void spawn_url_handler(void);
+void bug_sql( const char *logtype, const char *filename, const char *function, int line,
+              const char *area_file, int area_line, 
+              const char *character, int character_room,
+              const char *victim, int victim_room, 
+              const char *message );
 
 #endif

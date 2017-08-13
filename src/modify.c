@@ -29,7 +29,7 @@ int                                     REBOOT_HOUR = 23;
 int                                     REBOOT_MIN  = 0;	       /* 0-N, 0-59, time of optional reboot if -e lib/reboot */
 int                                     REBOOT_FREQ = 0;
 int                                     REBOOT_LEFT = 0;
-int                                     REBOOT_LASTCHECK = 0;
+int                                     REBOOT_LASTCHECK = 1502649434; // Time when the bug was fixed
 int                                     REBOOT_DISABLED = 0;
 struct room_data                       *world = NULL;	       /* dyn alloc'ed array of rooms */
 
