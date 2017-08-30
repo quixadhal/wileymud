@@ -380,4 +380,5 @@ void i3_message_to_players( char *str );
 void i3_log_alive( void );
 void i3_log_dead( void );
 char *i3_strip_colors(const char *txt);
+void i3_do_ping(const char *fake_user, const char *chan_name, const char *mud_name);
 #endif

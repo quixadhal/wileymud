@@ -7110,7 +7110,9 @@ void i3_loop(void)
 
     if ( tics_since_last_message <= 0 ) {
         tics_since_last_message = TAUNT_DELAY;
-        do_taunt_from_log();
+        //do_taunt_from_log();
+        // Instead, we could do a chan_who and maybe special-case toss the results?
+        i3_do_ping("Cron", "intergossip", "Dead Souls Dev");
     }
 
     /*
@@ -10022,6 +10024,18 @@ bool i3_command_hook(CHAR_DATA *ch, const char *lcommand, const char *argument)
 	    break;
     }
     return TRUE;
+}
+
+void i3_do_ping(const char *fake_user, const char *chan_name, const char *mud_name)
+{
+    if (!i3_is_connected())
+	return;
+
+    I3_write_header("chan-who-req", this_i3mud->name, fake_user, mud_name, NULL);
+    I3_write_buffer("\"");
+    I3_write_buffer(chan_name);
+    I3_write_buffer("\",})\r");
+    I3_send_packet();
 }
 
 void i3_npc_speak(const char *chan_name, const char *actor, const char *message)

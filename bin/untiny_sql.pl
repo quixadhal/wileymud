@@ -460,18 +460,26 @@ foreach my $r (@$result) {
         $tinyurl = $given_uri;
     } elsif ($given_uri =~ /bit\.ly\/\w\w\w\w\w\w\w$/i) {
         $tinyurl = $given_uri;
+    } elsif ($given_uri =~ /t\.co\/\w\w\w\w\w\w\w\w\w\w$/i) {
+        $tinyurl = $given_uri;
     } elsif ((defined $origin) and $origin =~ /tinyurl\.com\/\w\w\w\w\w\w\w$/i) {
         $tinyurl = $origin;
     } elsif ((defined $origin) and $origin =~ /bit\.ly\/\w\w\w\w\w\w\w$/i) {
         $tinyurl = $origin;
+    } elsif ((defined $origin) and $origin =~ /t\.co\/\w\w\w\w\w\w\w\w\w\w$/i) {
+        $tinyurl = $origin;
     } elsif (defined $origin) {
-        $tinyurl = makeashorterlink($origin);
+        eval {
+            $tinyurl = makeashorterlink($origin);
+        };
     } else {
-        $tinyurl = makeashorterlink($given_uri);
+        eval {
+            $tinyurl = makeashorterlink($given_uri);
+        };
     }
 
     # Give it a third try, because sometimes it fails for unknown reasons.
-    if( !defined $page ) {
+    if( !defined $page and defined $tinyurl ) {
         sleep 0.6;
         ($origin, $page) = get_url($tinyurl);
     }

@@ -33,6 +33,7 @@
 #include "act_skills.h"
 #include "spec_procs.h"
 #include "tracking.h"
+#include "i3.h"
 #define _ACT_INFO_C
 #include "act_info.h"
 
@@ -2778,6 +2779,7 @@ void tick_line(struct char_data *ch, const char *label, int pulse_count) {
     double seconds = 0.0;
     int minutes = 0;
     int hours = 0;
+    int days = 0;
 
     if (DEBUG)
 	log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch),
@@ -2787,9 +2789,19 @@ void tick_line(struct char_data *ch, const char *label, int pulse_count) {
     minutes = (int)seconds / 60;
     seconds = seconds - ((double)minutes * 60.0);
     hours = minutes / 60;
+    days = hours / 24;
     minutes %= 60;
+    hours %= 24;
 
-    cprintf(ch, "    %-30s%d:%02d:%05.2lf\r\n", label, hours, minutes, seconds);
+    if(days > 0) {
+        cprintf(ch, "    %-25s%d days, %2d:%02d:%05.2lf.\r\n", label, days, hours, minutes, seconds);
+    } else if(hours > 0) {
+        cprintf(ch, "    %-34s%2d:%02d:%05.2lf\r\n", label, hours, minutes, seconds);
+    } else if(minutes > 0) {
+        cprintf(ch, "    %-37s%2d:%05.2lf\r\n", label, minutes, seconds);
+    } else {
+        cprintf(ch, "    %-40s%5.2lf\r\n", label, seconds);
+    }
 }
 
 void do_ticks(struct char_data *ch, const char *argument, int cmd)
@@ -2817,6 +2829,7 @@ void do_ticks(struct char_data *ch, const char *argument, int cmd)
     tick_line(ch, "Next Mudlist tick:", pulse_mudlist);
     tick_line(ch, "Next URL tick:", pulse_url);
     tick_line(ch, "Next URL Handler tick:", pulse_url_handler);
+    tick_line(ch, "Next I3 idle tick:", tics_since_last_message);
 
     if (REBOOT_FREQ > 0) {
         seconds = REBOOT_LEFT - ((int)time(0) - REBOOT_LASTCHECK);
@@ -2828,9 +2841,13 @@ void do_ticks(struct char_data *ch, const char *argument, int cmd)
         hours %= 24;
 
         if(days > 0) {
-            cprintf(ch, "  %-30s%d days, %d:%02d:%02d.\r\n", "Next REBOOT in:", days, hours, minutes, seconds);
+            cprintf(ch, "    %-25s%d days, %2d:%02d:%05.2lf.\r\n", "Next REBOOT in:", days, hours, minutes, (double)seconds);
+        } else if(hours > 0) {
+            cprintf(ch, "    %-34s%2d:%02d:%05.2lf\r\n", "Next REBOOT in:", hours, minutes, (double)seconds);
+        } else if(minutes > 0) {
+            cprintf(ch, "    %-37s%2d:%05.2lf\r\n", "Next REBOOT in:", minutes, (double)seconds);
         } else {
-            cprintf(ch, "  %-30s%d:%02d:%02d.\r\n", "Next REBOOT in:", hours, minutes, seconds);
+            cprintf(ch, "    %-40s%5.2lf\r\n", "Next REBOOT in:", (double)seconds);
         }
     }
 }
