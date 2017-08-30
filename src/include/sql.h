@@ -6,6 +6,10 @@
 #define SQL_DB  "i3/wiley.db"
 #define URL_DELAY                       ((int)(PULSE_PER_SECOND * 1.5));
 
+#define UNTINY_SQL              "../bin/untiny_sql.pl"
+#define UNTINY                  "../bin/untiny"
+#define PERL                    "/usr/bin/perl"
+
 #ifndef _SQL_C
 extern sqlite3 *db;
 extern int unprocessed_urls;

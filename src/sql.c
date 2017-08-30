@@ -284,7 +284,8 @@ void spawn_url_handler(void) {
     if( regexp_pid == 0 ) {
         // We are the new kid, so go run our perl script.
         log_info("Forking %s", UNTINY_SQL);
-        execl(PERL, PERL, "-w", UNTINY_SQL, (char *)NULL);
+        //execl(PERL, PERL, "-w", UNTINY_SQL, (char *)NULL);
+        execl(PERL, PERL, "-w", UNTINY, "--sql", (char *)NULL);
         log_error("It is not possible to be here!");
     } else {
         // Normally, we need to track the child pid, but we're already

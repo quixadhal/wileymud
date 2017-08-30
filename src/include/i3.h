@@ -60,9 +60,6 @@
 #define CODEBASE                VERSION_BASE
 #define CODEVERSION             VERSION_BUILD
 
-#define UNTINY_SQL              "../bin/untiny_sql.pl"
-#define UNTINY                  "../bin/untiny.pl"
-#define PERL                    "/usr/bin/perl"
 #define I3_URL_DUMP      I3_DIR "i3.urldump"
 
 #define I3_CHANNEL_FILE  I3_DIR "i3.channels"
