@@ -8,7 +8,6 @@ use HTML::Entities;
 use LWP::UserAgent;
 use URI;
 use WWW::Shorten::TinyURL qw(makeashorterlink);
-use WWW::Mechanize;
 use DBI;
 
 sub channel_color {
@@ -160,50 +159,13 @@ sub pinkfish_to {
     return $string;
 }
 
-sub new_get_url {
-    my $url = shift;
-
-    return undef if !defined $url;
-    my $timeout = 90;
-    my $lwp = WWW::Mechanize->new();
-       $lwp->agent('User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36');
-       $URI::ABS_ALLOW_RELATIVE_SCHEME = 1;
-       $URI::ABS_REMOTE_LEADING_DOTS = 1; 
-
-    my $given_uri = URI->new($url);
-    my $given_host = $given_uri->host;
-    my $origin_uri = undef;
-
-    #print STDERR "DEBUG: given URL:  $given_uri\n";
-    #print STDERR "DEBUG: given HOST: $given_host\n";
-
-    my $response = undef;
-
-    eval {
-        local $SIG{ALRM} = sub { die "Exceeded Timeout of $timeout for $url\n" };
-        alarm $timeout;
-        $response = $lwp->get($url);
-        alarm 0;
-    };
-    warn "Timeout" if($EVAL_ERROR and ($EVAL_ERROR =~ /^Exceeded Timeout/));
-
-    if( (defined $response) and $response->is_success ) {
-        my $origin = $response->uri();
-        $origin_uri = (defined $origin) ? URI->new($origin) : $given_uri->clone;
-        return ($origin_uri, $response->content);
-    }
-    return ($given_uri, undef);
-}
-
 sub get_url {
     my $url = shift;
 
     return undef if !defined $url;
     my $timeout = 90;
     my $lwp = LWP::UserAgent->new( cookie_jar => {} );
-    #my $lwp = WWW::Mechanize->new();
        $lwp->timeout($timeout/2);
-       #$lwp->agent("User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.5) Gecko/20031007 Firebird/0.7");
        $lwp->agent('User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36');
        $URI::ABS_ALLOW_RELATIVE_SCHEME = 1;
        $URI::ABS_REMOTE_LEADING_DOTS = 1; 
@@ -400,16 +362,6 @@ sub get_duration {
     }
 
     return undef;
-}
-
-sub get_steam_desc {
-    my $page = shift;
-
-    return undef if !defined $page;
-    $page =~ /<meta\s+name=\"Description\"\s+content=\"([^\"]*)\">/i;
-    my ($desc) =  ($1);
-    $desc = decode_entities($desc) if defined $desc;
-    return $desc;
 }
 
 my $style = "wiley";
