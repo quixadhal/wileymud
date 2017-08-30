@@ -404,14 +404,23 @@ sub parse_style {
 }
 
 sub handle_url {
-    # This function takes either an SQL row object, or undef as the first parameter.
-    # If an object was passed in, we get the URL and channel from that, if not
-    # we expect those to be passed in as well.
+    # This function can be called in two ways.
+    #
+    # handle_url($row)
+    #     In this case, $row is a reference to a database row retrieved
+    #     via DBI as a hashref, and explicitly blessed as 'DBI' by the
+    #     caller to avoid mishaps.
+    # handle_url($url, $channel)
+    #     In this case, both arguments are simple strings, and the channel
+    #     may be undef if not applicable (command line use).
+    #
     my $sql_row = shift;
     my $url = undef;
     my $channel = undef;
 
-    #print Dumper( [ $sql_row, $url, $channel ] );
+    # This check works because isa() can always be called on a non-reference
+    # or on a blessed reference.  For a non-reference, it always returns undef.
+    # If you pass in an unblessed reference, this will crash.
     if( defined $sql_row and $sql_row->isa('DBI')) {
         $url = $sql_row->{'url'};
         $channel = $sql_row->{'channel'};
