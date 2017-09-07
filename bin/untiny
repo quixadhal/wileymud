@@ -1,6 +1,12 @@
 #!/usr/bin/perl -w
 
+use utf8;
 use strict;
+#use open ":encoding(utf8)";
+#binmode STDERR, ":encoding(utf8)";
+#binmode STDOUT, ":encoding(utf8)";
+use Encode qw(encode_utf8);
+no warnings 'utf8';
 use English;
 use Data::Dumper;
 use HTTP::Request::Common qw(POST);
@@ -9,8 +15,11 @@ use LWP::UserAgent;
 use URI;
 use WWW::Shorten::TinyURL qw(makeashorterlink);
 use DBI;
+use JSON;
 
 my $DB_FILE = '/home/wiley/lib/i3/wiley.db';
+my $API_KEY_FILE = '/home/wiley/.google-api.key';
+my $api_key = undef;
 my $db = undef;
 my $result = undef;
 my $update_sql = undef;
@@ -21,6 +30,22 @@ my $do_sql = undef;
 my $do_debug = undef;
 my $channel = undef;
 my $style = undef;
+
+my $RESET   = undef;
+my $YELLOW  = undef;
+my $RED     = undef;
+my $GREEN   = undef;
+my $CYAN    = undef;
+my $WHITE   = undef;
+my $FLASH   = undef;
+
+my $timeout = 90;
+my $lwp = LWP::UserAgent->new( cookie_jar => {} );
+   $lwp->timeout($timeout/2);
+   $lwp->agent('User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36');
+   $URI::ABS_ALLOW_RELATIVE_SCHEME = 1;
+   $URI::ABS_REMOTE_LEADING_DOTS = 1; 
+   $lwp->max_redirect(5);
 
 sub channel_color {
     my $channel = shift;
@@ -171,25 +196,15 @@ sub pinkfish_to {
     return $string;
 }
 
-sub get_url {
+sub get_final_url {
     my $url = shift;
 
     return undef if !defined $url;
-    my $timeout = 90;
-    my $lwp = LWP::UserAgent->new( cookie_jar => {} );
-       $lwp->timeout($timeout/2);
-       $lwp->agent('User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36');
-       $URI::ABS_ALLOW_RELATIVE_SCHEME = 1;
-       $URI::ABS_REMOTE_LEADING_DOTS = 1; 
-    my $request = HTTP::Request->new(GET => $url);
+    return undef if !defined $lwp;
+
+    my $request = HTTP::Request->new(HEAD => $url);
+    $request->header('Accept' => 'text/html');
     my $response = undef;
-
-    my $given_uri = URI->new($url);
-    my $given_host = $given_uri->host;
-    my $origin_uri = undef;
-
-    #print STDERR "DEBUG: given URL:  $given_uri\n";
-    #print STDERR "DEBUG: given HOST: $given_host\n";
 
     if($request) {
         eval {
@@ -201,17 +216,36 @@ sub get_url {
         warn "Timeout" if($EVAL_ERROR and ($EVAL_ERROR =~ /^Exceeded Timeout/));
 
         if( (defined $response) and $response->is_success ) {
-            my $origin = undef;
-            for( my $prev = $response; defined $prev; $prev = $prev->previous ) {
-                $origin = $prev->header("location");
-                #print STDERR "DEBUG: $origin\n";
-                #print STDERR "DEBUG: " . Dumper($prev) . "\n";
-                last if defined $origin;
-            }
-            #print STDERR "DEBUG: origin URL: $origin\n" if defined $origin;
-            $origin_uri = (defined $origin) ? URI->new($origin) : $given_uri->clone;
+            my $given_uri = URI->new($url);
+            my $origin_uri = $response->request->uri;
+            return $origin_uri if defined $origin_uri;
+            return $given_uri;
         }
-        return ($origin_uri, $response->content);
+    }
+    return undef;
+}
+
+sub get_page {
+    my $url = shift;
+
+    return undef if !defined $url;
+    return undef if !defined $lwp;
+
+    my $request = HTTP::Request->new(GET => $url);
+    my $response = undef;
+
+    if($request) {
+        eval {
+            local $SIG{ALRM} = sub { die "Exceeded Timeout of $timeout for $url\n" };
+            alarm $timeout;
+            $response = $lwp->request($request);
+            alarm 0;
+        };
+        warn "Timeout" if($EVAL_ERROR and ($EVAL_ERROR =~ /^Exceeded Timeout/));
+
+        if( (defined $response) and $response->is_success ) {
+            return $response->content;
+        }
     }
     return undef;
 }
@@ -246,7 +280,7 @@ sub get_source {
         return "Dailymotion"    if $xurl =~ /dailymotion/i;
         return "Steam"          if $xurl =~ /steam/i;
     }
-    return "";
+    return undef;
 }
 
 sub get_id {
@@ -258,11 +292,13 @@ sub get_id {
 
     if ($source eq "YouTube") {
         if( defined $xurl ) {
-            $xurl =~ /watch\?v=([^\"\&]*)\">/i;
+            #https://www.youtube.com/watch?v=PJjTHgJ6rQo
+            $xurl =~ /watch\?v=([A-Za-z0-9_-]{11})/i;
             my ($id) =  ($1);
             return $id if defined $id;
 
-            $xurl =~ /playlist\?list=([^\"\&]*)\">/i;
+            #https://www.youtube.com/playlist?list=PLGB6RkFB7ZmM3KmoGYdYD3KfSF24MTHZV
+            $xurl =~ /playlist\?list=([A-Za-z0-9_-]{34})/i;
             ($id) =  ($1);
             return $id if defined $id;
         }
@@ -322,7 +358,11 @@ sub get_title {
     return undef if !defined $source;
     return undef if !defined $page;
 
-    if ($source eq "YouTube" or $source eq "IMDB") {
+    if (!defined $source) {
+        $page =~ /<title>\s*(.*?)\s*<\/title>/i;
+        my ($title) = ($1);
+        return $title if defined $title;
+    } elsif ($source eq "YouTube" or $source eq "IMDB") {
         $page =~ /<meta\s+name=\"title\"\s+content=\"([^\"]*)\"\s*\/?>/i;
         my ($title) =  ($1);
         $title = decode_entities($title) if defined $title;
@@ -332,16 +372,7 @@ sub get_title {
         my ($title) =  ($1);
         $title = decode_entities($title) if defined $title;
         return $title if defined $title;
-    } else {
-        $page =~ /<title>\s*([^\<]*?)\s*<\/title>/i;
-        my ($title) = ($1);
-        return $title if defined $title;
     }
-
-    #<meta name="robots" content="noindex">
-    $page =~ /<meta\s+name=\"robots\"\s+content=\"([^\"]*)\">/i;
-    my ($robot) =  ($1);
-    return "Robot Error" if defined $robot;
 
     return undef;
 }
@@ -380,6 +411,104 @@ sub get_duration {
     return undef;
 }
 
+sub read_api {
+    my $key = undef;
+    my $found = undef;
+    open FP, "$API_KEY_FILE" or die "Cannot find API key file $API_KEY_FILE: $!";
+    while($key = <FP>) {
+        chomp $key;
+        $key =~ s/^\s+|\s+$//g;
+        if (length $key == 39) {
+            $found = 1;
+            last;
+        }
+    }
+    close FP;
+    die "No valid key found in $API_KEY_FILE!" if !defined $found;
+    return $key;
+}
+
+sub get_youtube_api {
+    my $id = shift;
+    return (undef, undef) if !defined $id;
+
+    my $page = undef;
+    my $title = undef;
+    my $duration = undef;
+
+    $api_key = read_api() if !defined $api_key;
+
+    my $data_url = "https://www.googleapis.com/youtube/v3/videos?part=contentDetails%2Csnippet&id=$id&key=$api_key";
+    my $request = HTTP::Request->new(GET => $data_url);
+    my $response = undef;
+    my $data = undef;
+    if($request) {
+        eval {
+            local $SIG{ALRM} = sub { die "Exceeded Timeout of 90 seconds for URL\n" };
+            alarm 90;
+            $response = $lwp->request($request);
+            alarm 0;
+        };
+        warn "Timeout" if($EVAL_ERROR and ($EVAL_ERROR =~ /^Exceeded Timeout/));
+        if( (defined $response) and $response->is_success ) {
+            #$data = decode_json encode_utf8($response->content);
+            $data = decode_json $response->content;
+        }
+    }
+    #    "duration": "PT1H52M28S",
+    if( defined $data ) {
+        if( defined $data->{'items'} ) {
+            if( defined $data->{'items'}[0] ) {
+                if( defined $data->{'items'}[0]->{'snippet'} ) {
+                    if( exists $data->{'items'}[0]->{'snippet'}->{'title'} ) {
+                        $title = $data->{'items'}[0]->{'snippet'}->{'title'};
+                        $title = decode_entities($title) if defined $title;
+                    }
+                }
+                if( defined $data->{'items'}[0]->{'contentDetails'} ) {
+                    if( exists $data->{'items'}[0]->{'contentDetails'}->{'duration'} ) {
+                        my $funky = $data->{'items'}[0]->{'contentDetails'}->{'duration'};
+                        $funky =~ /PT(?:(\d+)H)?(?:(\d+)M)?(\d+)S/;
+                        my ($hours, $minutes, $seconds) = ($1, $2, $3);
+                        $hours = 0 if !defined $hours;
+                        $minutes = 0 if !defined $minutes;
+                        $seconds = 0 if !defined $seconds;
+                        $duration = time_parts(($hours * 60 * 60) + ($minutes * 60) + $seconds);
+                    }
+                }
+            }
+        }
+    }
+    return ($title, $duration);
+}
+
+sub get_metadata {
+    my $source = shift;
+    my $the_url = shift;
+
+    my $page = undef;
+    my $id = undef;
+    my $title = undef;
+    my $duration = undef;
+
+    if( defined $source and $source eq "YouTube" ) {
+        $id = get_id($source, $the_url, $page);
+        ($title, $duration) = get_youtube_api($id);
+    } else {
+        $page = get_page($the_url);
+        $id = get_id($source, $the_url, $page);
+        $title = get_title($source, $the_url, $page);
+        $duration = get_duration($source, $the_url, $page);
+    }
+
+    $id         = "${YELLOW}[${id}]${RESET}"                        if defined $id;
+    $duration   = "${RED}(${duration})${RESET}"                     if defined $duration;
+    $title      = "${CYAN}${title}${RESET}"                         if defined $title;
+    #$title = "${RESET}${WHITE}\xe3\x80\x8c${title}\xe3\x80\x8d${RESET}" if defined $title;
+
+    return ($id, $title, $duration);
+}
+
 sub parse_style {
     my $arg = shift;
 
@@ -401,6 +530,86 @@ sub parse_style {
     return "sql" if $arg eq '--sql';
     return "sql" if $arg eq '-s';
     return undef;
+}
+
+sub get_tinyurl {
+    my $given = shift;
+    my $origin = shift;
+    my $result = undef;
+
+    # http://tinyurl.com/y9jzgz7o
+    
+    if( defined $given ) {
+        return $given if length $given <= 27;
+        return $given if $given =~ /tinyurl\.com\/\w\w\w\w\w\w\w$/i;
+        return $given if $given =~ /bit\.ly\/\w\w\w\w\w\w\w$/i;
+        return $given if $given =~ /t\.co\/\w\w\w\w\w\w\w\w\w\w$/i;
+    }
+
+    if( defined $origin ) {
+        return $origin if length $origin <= 27;
+        return $origin if $origin =~ /tinyurl\.com\/\w\w\w\w\w\w\w$/i;
+        return $origin if $origin =~ /bit\.ly\/\w\w\w\w\w\w\w$/i;
+        return $origin if $origin =~ /t\.co\/\w\w\w\w\w\w\w\w\w\w$/i;
+    }
+
+    my $check = (defined $origin) ? $origin : $given;
+    eval {
+        $result = makeashorterlink($check);
+    };
+    return $result;
+}
+
+sub get_channel {
+    my $channel = shift;
+
+    if( defined $channel ) {
+        my $chan_color = channel_color($channel);
+        if( defined $chan_color ) {
+            $channel = "${chan_color}<${channel}>${RESET}";
+        } else {
+            $channel = "<${channel}>";
+        }
+    }
+
+    return $channel;
+}
+
+sub format_output {
+    my $style = shift;
+    my $source = shift;
+    my $given_host = shift;
+    my $origin_host = shift;
+    my $tinyurl = shift;
+    my $id = shift;
+    my $channel = shift;
+    my $title = shift;
+    my $duration = shift;
+
+    # tiny :: Youtube [foo] on <blah> is Title (1:00)
+    # tiny :: Youtube URL on <blah> is Title (1:00)
+    # tiny :: foo.com URL on <blah> is Title from arg.com
+    # tiny :: foo.com URL on <blah> goes to arg.com
+    # tiny :: foo.com URL on <blah> is Title
+    # tiny :: foo.com URL on <blah>
+
+    my $two_hosts = 0;
+    $two_hosts = 1 if defined $origin_host and $given_host ne $origin_host;
+
+    my $output  = "${RESET}";
+       $output .= "${GREEN}$tinyurl :: ${RESET}"        if defined $tinyurl;
+       $output .= "${source}"                           if defined $source;
+       $output .= "${given_host}"                       if !defined $source;
+       $output .= " ${id}"                              if defined $id;
+       $output .= " URL"                                if !defined $id;
+       $output .= " on ${channel}"                      if defined $channel;
+       $output .= " is ${title}"                        if defined $title;
+       $output .= " ${duration}"                        if defined $duration;
+       $output .= " from ${origin_host}"                if !defined $source and defined $title and $two_hosts;
+       $output .= " goes to ${origin_host}"             if !defined $source and !defined $title and $two_hosts;
+       $output .= "\n";
+
+    return $output;
 }
 
 sub handle_url {
@@ -431,107 +640,27 @@ sub handle_url {
     }
     #print Dumper( [ $sql_row, $url, $channel ] );
 
-    my $RESET   = pinkfish_to( "%^RESET%^", $style );
-    my $YELLOW  = pinkfish_to( "%^YELLOW%^", $style );
-    my $RED     = pinkfish_to( "%^RED%^", $style );
-    my $GREEN   = pinkfish_to( "%^GREEN%^", $style );
-    my $CYAN    = pinkfish_to( "%^CYAN%^", $style );
-    my $WHITE   = pinkfish_to( "%^WHITE%^", $style );
-    my $FLASH   = pinkfish_to( "%^FLASH%^", $style );
+    $RESET   = pinkfish_to( "%^RESET%^", $style );
+    $YELLOW  = pinkfish_to( "%^YELLOW%^", $style );
+    $RED     = pinkfish_to( "%^RED%^", $style );
+    $GREEN   = pinkfish_to( "%^GREEN%^", $style );
+    $CYAN    = pinkfish_to( "%^CYAN%^", $style );
+    $WHITE   = pinkfish_to( "%^WHITE%^", $style );
+    $FLASH   = pinkfish_to( "%^FLASH%^", $style );
 
     my $given_uri = URI->new($url);
     my $given_host = $given_uri->host;
-    my ($origin, $page) = get_url($url);
-
-    # Give it a second try, because sometimes it fails from DNS stupidity.
-    if( !defined $page ) {
-        sleep 0.4;
-        ($origin, $page) = get_url($given_uri);
-    }
-
-    my $tinyurl = undef;
-
-    if ($given_uri =~ /tinyurl\.com\/\w\w\w\w\w\w\w$/i) {
-        $tinyurl = $given_uri;
-    } elsif ($given_uri =~ /bit\.ly\/\w\w\w\w\w\w\w$/i) {
-        $tinyurl = $given_uri;
-    } elsif ($given_uri =~ /t\.co\/\w\w\w\w\w\w\w\w\w\w$/i) {
-        $tinyurl = $given_uri;
-    } elsif ((defined $origin) and $origin =~ /tinyurl\.com\/\w\w\w\w\w\w\w$/i) {
-        $tinyurl = $origin;
-    } elsif ((defined $origin) and $origin =~ /bit\.ly\/\w\w\w\w\w\w\w$/i) {
-        $tinyurl = $origin;
-    } elsif ((defined $origin) and $origin =~ /t\.co\/\w\w\w\w\w\w\w\w\w\w$/i) {
-        $tinyurl = $origin;
-    } elsif (defined $origin) {
-        eval {
-            $tinyurl = makeashorterlink($origin);
-        };
-    } else {
-        eval {
-            $tinyurl = makeashorterlink($given_uri);
-        };
-    }
-
-    # Give it a third try, because sometimes it fails for unknown reasons.
-    if( !defined $page and defined $tinyurl ) {
-        sleep 0.6;
-        ($origin, $page) = get_url($tinyurl);
-    }
-
+    my $origin = get_final_url($url);
     my $origin_host = $origin->host if defined $origin;
+
+    my $tinyurl = get_tinyurl($given_uri, $origin);
     my $the_url = (defined $origin_host) ? $origin : $given_uri;
+    my $source = get_source($the_url);
 
-    my $chan_color = channel_color($channel) if defined $channel;
-
-    my $source = undef;
-    my $id = undef;
-    my $title = undef;
-    my $duration = undef;
-
-    $source = get_source($the_url);
-    $id = get_id($source, $the_url, $page);
-    $title = get_title($source, $the_url, $page);
-    $duration = get_duration($source, $the_url, $page);
-
-    if( defined $channel ) {
-        if( defined $chan_color ) {
-            $channel = " from ${chan_color}<${channel}>${RESET}";
-        } else {
-            $channel = " from <${channel}>";
-        }
-    } else {
-        $channel = "";
-    }
-
-    $id = "${YELLOW}[${id}]${RESET}"                                    if defined $id;
-    $duration = "${RED}(${duration})${RESET}"                           if defined $duration;
-    $title = "${RESET}${WHITE}\xe3\x80\x8c${title}\xe3\x80\x8d${RESET}" if defined $title;
-
-    $id = "" if !defined $id;
-
-    my $output = "";
-
-    $output .= "${RESET}${GREEN}$tinyurl :: "   if defined $tinyurl;
-    $output .= "${RESET}";
-
-    if( $source ne "" ) {
-        $output .= "${source}";
-        $output .= " $id$channel is" if $id ne "" or $channel ne "";
-        $output .= " $title" if defined $title;
-        $output .= " $duration" if defined $duration;
-    } elsif( defined $origin_host ) {
-        $output .= "${given_host} " if $given_host ne $origin_host;
-        $output .= "URL";
-        $output .= " ${channel}";
-        $output .= " ${title} from ${origin_host}" if defined $title;
-
-        $output .= " goes to ${origin_host}" if !defined $title;
-    } else {
-        $output .= "${channel}";
-    }
-
-    $output .= "\n";
+    $channel = get_channel($channel);
+    my ($id, $title, $duration) = get_metadata($source, $the_url);
+    my $output = format_output($style, $source, $given_host, $origin_host,
+                               $tinyurl, $id, $channel, $title, $duration);
     my $message = pinkfish_to( $output, $style );
 
     if(defined $sql_row) {
@@ -544,8 +673,6 @@ sub handle_url {
         }
     } else {
         if( $do_debug ) {
-            $message .= "\n";
-            $message .= Dumper({ 'page' => $page, });
             $message .= "\n";
             $message .= Dumper({
                    'source' => $source,
