@@ -275,10 +275,10 @@ sub get_source {
     my $xurl = shift;
 
     if (defined $xurl) {
-        return "YouTube"        if $xurl =~ /youtube/i;
-        return "IMDB"           if $xurl =~ /imdb/i;
-        return "Dailymotion"    if $xurl =~ /dailymotion/i;
-        return "Steam"          if $xurl =~ /steam/i;
+        return "YouTube"        if $xurl =~ /^https?:\/\/.*?youtube\.com/i;
+        return "IMDB"           if $xurl =~ /^https?:\/\/.*?imdb\.com/i;
+        return "Dailymotion"    if $xurl =~ /^https?:\/\/.*?dailymotion\.com/i;
+        return "Steam"          if $xurl =~ /^https?:\/\/.*?steampowered.com/i;
     }
     return undef;
 }
