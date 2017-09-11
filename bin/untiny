@@ -355,7 +355,6 @@ sub get_title {
     my $xurl = shift;
     my $page = shift;
 
-    return undef if !defined $source;
     return undef if !defined $page;
 
     if (!defined $source) {
