@@ -1,0 +1,16 @@
+20171028    Quixadhal
+    0601    Started HACKLOG, had already copied over config files for bash and vim
+            Got ssh access configured and setup for wiley's github
+    0615    changed default /etc/apt/sources.list
+
+                deb http://security.debian.org/ stretch/updates main non-free contrib
+                deb-src http://security.debian.org/ stretch/updates main non-free contrib
+
+                deb http://mirror.aarnet.edu.au/debian stretch main non-free contrib
+                deb-src http://mirror.aarnet.edu.au/debian stretch main non-free contrib
+
+    0631    apt-get install git
+    0852    apt-get install python3 python3-pip
+            apt-get install clang clang-3.8-doc llvm-3.8-doc
+            apt-get install manpages manpages-dev manpages-posix manpages-posix-dev man-db
+            apt-get install locales
