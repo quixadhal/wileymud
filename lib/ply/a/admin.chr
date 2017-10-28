@@ -8,10 +8,10 @@ Description
 A new admin drifts around the world and tries to make sense
 of everything.
 ~
-LastSite           adork@c-69-242-42-155.hsd1.nj.comcast.net~
-LastLogin          1349203361
+LastSite           adork@c-69-242-122-92.hsd1.pa.comcast.net~
+LastLogin          1507405579
 Birth              803755990
-Played             4437617
+Played             4437774
 Sex                1
 Race               2
 Class              63
@@ -31,11 +31,11 @@ PoofIn             ~
 PoofOut            ~
 AbilityScores      3 0 3 3 3 3
 AbilityPad         0 0 0 0
-HpManaMove         4 1 102 0 327 0
+HpManaMove         2 1 102 0 323 0
 AC                 100
 ToHitDamage        0 0
 SaveApply          0 0 0 0 0
-Conditions         -1 1 9 0 0 0
+Conditions         -1 0 7 0 0 0
 PointsPad1         0 0 0
 PointsPad2         0 0 0 0
 PointsPad3         0 0 0
@@ -215,6 +215,4 @@ Affect             23 0 0 0 0 0 0
 Affect             24 0 0 0 0 0 0
 i3perm       1
 i3flags      256
-IMCPerm      1
-IMCFlags     256
 End

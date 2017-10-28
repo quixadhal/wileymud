@@ -1,0 +1,180 @@
+#RENT
+Owner              Shin~
+Gold               57
+TotalCost          0
+LastUpdate         1501509492
+MinimumStay        0
+End
+#EQUIPMENT
+End
+#CARRIED
+#ITEM
+ObjId              5
+ContainedBy        -1
+Name               staff wood~
+Description
+A long piece of carved wood lies here, perhaps it is a staff.~
+ShortDescr
+a long staff~
+ActionDescr
+(null)~
+VNum               3102
+EquippedAt         0
+Values             0 1 6 7
+ExtraFlags         0
+Weight             4
+Timer              0
+BitVector          0
+Type               5
+WearFlags          32769
+Cost               5
+CostPerDay         5
+Affect             0 0
+Affect             0 0
+ExtraDescr         staff wood~
+  The staff appears to be made of oak although it has been carved to
+fit nicely with any hands.
+~
+End
+#ITEM
+ObjId              5
+ContainedBy        -1
+Name               heafty loaf bread~
+Description
+A heafty loaf of bread rests here.~
+ShortDescr
+a heafty loaf of bread~
+ActionDescr
+(null)~
+VNum               5016
+EquippedAt         0
+Values             7 0 0 0
+ExtraFlags         0
+Weight             1
+Timer              0
+BitVector          0
+Type               19
+WearFlags          1
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              5
+ContainedBy        -1
+Name               heafty loaf bread~
+Description
+A heafty loaf of bread rests here.~
+ShortDescr
+a heafty loaf of bread~
+ActionDescr
+(null)~
+VNum               5016
+EquippedAt         0
+Values             7 0 0 0
+ExtraFlags         0
+Weight             1
+Timer              0
+BitVector          0
+Type               19
+WearFlags          1
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              5
+ContainedBy        -1
+Name               map shlyar~
+Description
+A map lies here.~
+ShortDescr
+a map~
+ActionDescr
+(null)~
+VNum               3050
+EquippedAt         0
+Values             0 0 0 0
+ExtraFlags         0
+Weight             2
+Timer              0
+BitVector          0
+Type               12
+WearFlags          1
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+ExtraDescr         map shylar~
+                         -= Grassland =-
+
+     -= Mansion =-           
+           +              -= Arcanus =-
+   	       	         	+
+         * * * * *  *  *  *  *  *+ -= Jakes =-  +-= Kark =-
+   
+                 -= Jessica =- +*                -= Farm =-
+
+                 -= Supply =-  +*+ -= Griffons =-      
+      +
++-= Chapel =-+   -= Bakery =-  +*  -= Sass =-
+      +            		       +	
+ -= Pastue =-     -= Tate =-   +*  *  *  *  *  *  *  *  *  *
+-= Cemetary =-                         + 
+      +                            -= Home =-
+
+                         -= Grassland =-
+~
+End
+#ITEM
+ObjId              5
+ContainedBy        -1
+Name               heafty loaf bread~
+Description
+A heafty loaf of bread rests here.~
+ShortDescr
+a heafty loaf of bread~
+ActionDescr
+(null)~
+VNum               5016
+EquippedAt         0
+Values             7 0 0 0
+ExtraFlags         0
+Weight             1
+Timer              0
+BitVector          0
+Type               19
+WearFlags          1
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+#ITEM
+ObjId              5
+ContainedBy        -1
+Name               heafty loaf bread~
+Description
+A heafty loaf of bread rests here.~
+ShortDescr
+a heafty loaf of bread~
+ActionDescr
+(null)~
+VNum               5016
+EquippedAt         0
+Values             7 0 0 0
+ExtraFlags         0
+Weight             1
+Timer              0
+BitVector          0
+Type               19
+WearFlags          1
+Cost               5
+CostPerDay         1
+Affect             0 0
+Affect             0 0
+End
+End
+#END_RENT

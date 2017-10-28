@@ -1,0 +1,40 @@
+#RENT
+Owner              Kith~
+Gold               316
+TotalCost          0
+LastUpdate         1501561866
+MinimumStay        0
+End
+#EQUIPMENT
+End
+#CARRIED
+#ITEM
+ObjId              0
+ContainedBy        -1
+Name               staff wood~
+Description
+A long piece of carved wood lies here, perhaps it is a staff.~
+ShortDescr
+a long staff~
+ActionDescr
+(null)~
+VNum               3102
+EquippedAt         0
+Values             0 1 6 7
+ExtraFlags         0
+Weight             4
+Timer              0
+BitVector          0
+Type               5
+WearFlags          32769
+Cost               5
+CostPerDay         5
+Affect             0 0
+Affect             0 0
+ExtraDescr         staff wood~
+  The staff appears to be made of oak although it has been carved to
+fit nicely with any hands.
+~
+End
+End
+#END_RENT

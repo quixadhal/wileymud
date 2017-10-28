@@ -1717,5 +1717,15 @@
     "lilithsucci": "<SPAN style=\"background-color: #ffffff; color: #0000bb\">",
     "a small rabbit": "<SPAN style=\"background-color: #ffff55; color: #00bb00\">",
     "bessus": "<SPAN style=\"background-color: #ffffff; color: #00bb00\">",
-    "pommes": "<SPAN style=\"color: #55ff55\">"
+    "pommes": "<SPAN style=\"color: #55ff55\">",
+    "pp": "<SPAN style=\"color: #bbbbbb\">",
+    "encryption": "<SPAN style=\"color: #ffffff\">",
+    "gandalph": "<SPAN style=\"background-color: #bb0000; color: #00bb00\">",
+    "tibalt": "<SPAN style=\"background-color: #bb0000; color: #00ff00\">",
+    "cronus": "<SPAN style=\"color: #bb0000\">",
+    "deckard": "<SPAN style=\"color: #bb0000\">",
+    "rhale": "<SPAN style=\"color: #bb0000\">",
+    "juppie": "<SPAN style=\"color: #00bb00\">",
+    "ixliam": "<SPAN style=\"color: #bbbb00\">",
+    "lauryn": "<SPAN style=\"color: #0000bb\">"
 }

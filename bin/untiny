@@ -29,6 +29,7 @@ my $url = undef;
 my $do_sql = undef;
 my $do_debug = undef;
 my $channel = undef;
+my $speaker = undef;
 my $style = undef;
 
 my $RESET   = undef;
@@ -67,6 +68,7 @@ sub channel_color {
         "pyom"          => "%^FLASH%^%^BOLD%^%^GREEN%^",
         "free_speech"   => "%^BOLD%^%^RED%^",
         "url"           => "%^BOLD%^%^WHITE%^",
+        "discord"       => "%^BOLD%^%^MAGENTA%^",
 
         "ibuild"        => "%^B_RED%^%^YELLOW%^",
         "ichat"         => "%^B_RED%^%^GREEN%^",
@@ -561,9 +563,12 @@ sub get_tinyurl {
 
 sub get_channel {
     my $channel = shift;
+    my $speaker = shift;
 
     if( defined $channel ) {
         my $chan_color = channel_color($channel);
+        #$channel = "$speaker\@$channel" if defined $speaker;
+        $channel = "$speaker on $channel" if defined $speaker;
         if( defined $chan_color ) {
             $channel = "${chan_color}<${channel}>${RESET}";
         } else {
@@ -601,10 +606,10 @@ sub format_output {
        $output .= "${given_host}"                       if !defined $source;
        $output .= " ${id}"                              if defined $id;
        $output .= " URL"                                if !defined $id;
-       $output .= " on ${channel}"                      if defined $channel;
+       $output .= " from ${channel}"                    if defined $channel;
        $output .= " is ${title}"                        if defined $title;
        $output .= " ${duration}"                        if defined $duration;
-       $output .= " from ${origin_host}"                if !defined $source and defined $title and $two_hosts;
+       $output .= " at ${origin_host}"                  if !defined $source and defined $title and $two_hosts;
        $output .= " goes to ${origin_host}"             if !defined $source and !defined $title and $two_hosts;
        $output .= "\n";
 
@@ -625,6 +630,7 @@ sub handle_url {
     my $sql_row = shift;
     my $url = undef;
     my $channel = undef;
+    my $speaker = undef;
 
     # This check works because isa() can always be called on a non-reference
     # or on a blessed reference.  For a non-reference, it always returns undef.
@@ -632,9 +638,11 @@ sub handle_url {
     if( defined $sql_row and $sql_row->isa('DBI')) {
         $url = $sql_row->{'url'};
         $channel = $sql_row->{'channel'};
+        $speaker = $sql_row->{'speaker'};
     } else {
         $url = $sql_row;
         $channel = shift;
+        $speaker = shift;
         $sql_row = undef;
     }
     #print Dumper( [ $sql_row, $url, $channel ] );
@@ -656,7 +664,7 @@ sub handle_url {
     my $the_url = (defined $origin_host) ? $origin : $given_uri;
     my $source = get_source($the_url);
 
-    $channel = get_channel($channel);
+    $channel = get_channel($channel, $speaker);
     my ($id, $title, $duration) = get_metadata($source, $the_url);
     my $output = format_output($style, $source, $given_host, $origin_host,
                                $tinyurl, $id, $channel, $title, $duration);
@@ -702,7 +710,7 @@ if( !defined $style ) {
 }
 
 if( !defined $url and $style ne 'sql' ) {
-    print "Usage: $prog [ wiley | ansi | html | debug | sql ] URL\n";
+    print "Usage: $prog [wiley|ansi|html|debug|sql] URL [channel] [speaker]\n";
     exit 1;
 }
 
@@ -715,13 +723,14 @@ if( $style eq 'sql' ) {
 }
 
 $channel = shift;
+$speaker = shift;
 
 #print Dumper( [ $do_sql, $url, $style, $channel ] );
 if( $do_sql ) {
     $db = DBI->connect("DBI:SQLite:dbname=$DB_FILE", '', '', { AutoCommit => 1, PrintError => 0, });
     # Fetch all the matches and stuff them into an array of hashes
     $result = $db->selectall_arrayref(qq!
-        SELECT created, url, channel
+        SELECT created, url, channel, speaker
           FROM urls
          WHERE processed IS NOT 1 AND message IS NULL
       ORDER BY created ASC
@@ -739,7 +748,7 @@ if( $do_sql ) {
     }
     $db->disconnect();
 } else {
-    handle_url( $url, $channel );
+    handle_url( $url, $channel, $speaker );
 }
 
 exit 1;
