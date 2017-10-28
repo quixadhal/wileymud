@@ -461,6 +461,10 @@ function is_bot_line($line) {
     if( $result ) {
         return $result;
     }
+    $result = preg_match("/\tCron\@WileyMUD\t.*Version/", $line) ? $line : false;
+    if( $result ) {
+        return $result;
+    }
     $result = preg_match("/\twiley\tCron\@WileyMUD\t/", $line);
     if ($result) {
         return false;

@@ -121,6 +121,9 @@ I3_HELP_DATA                           *first_i3_help;
 I3_HELP_DATA                           *last_i3_help;
 
 int                                     tics_since_last_message = TAUNT_DELAY;
+int                                     router_reconnect_short_delay = 15 * PULSE_PER_SECOND;
+int                                     router_reconnect_medium_delay = 60 * PULSE_PER_SECOND;
+int                                     router_reconnect_long_delay = 300 * PULSE_PER_SECOND;
 
 // These two are for the cases where we're going to be handling multiple requests that
 // could end up with the same timestamp (even with milliseconds).  In those cases, we need
@@ -6366,24 +6369,36 @@ void I3_connection_close(bool reconnect)
 	I3_socket = -1;
     }
     if (reconnect) {
-	if (router->reconattempts <= 3) {
-	    i3wait = 100;				       /* Wait for 100 game loops */
+        if (router->reconattempts <= 3) {
+            i3wait = router_reconnect_short_delay;
 	    i3log("%s", "Will attempt to reconnect in approximately 15 seconds.");
+        } else if (router->reconattempts <= 6) {
+            i3wait = router_reconnect_medium_delay;
+	    i3log("%s", "Will attempt to reconnect in approximately 1 minute.");
+        } else if (router->reconattempts <= 9) {
+            i3wait = router_reconnect_long_delay;
+	    i3log("%s", "Will attempt to reconnect in approximately 5 minutes.");
 	} else if (router->next != NULL) {
 	    i3log("Unable to reach %s. Abandoning connection.", router->name);
 	    i3log("Bytes sent: %ld. Bytes received: %ld.", bytes_sent, bytes_received);
 	    bytes_sent = 0;
 	    bytes_received = 0;
-	    i3wait = 100;
+	    i3wait = router_reconnect_short_delay;
+            router->reconattempts = 0;
+            router = router->next;
 	    i3log("Will attempt new connection to %s in approximately 15 seconds.",
-		  router->next->name);
-	} else {
+		  router->name);
+        } else {
+	    i3log("Unable to reach %s. Abandoning connection.", router->name);
+	    i3log("Bytes sent: %ld. Bytes received: %ld.", bytes_sent, bytes_received);
 	    bytes_sent = 0;
 	    bytes_received = 0;
-	    i3wait = -2;
-	    i3log("%s", "Unable to reconnect. No routers responding.");
-	    return;
-	}
+	    i3wait = router_reconnect_short_delay;
+            router->reconattempts = 0;
+            router = first_router;
+	    i3log("Will attempt new connection to %s in approximately 15 seconds.",
+		  router->name);
+        }
     }
     i3log("Bytes sent: %ld. Bytes received: %ld.", bytes_sent, bytes_received);
     bytes_sent = 0;
@@ -6512,7 +6527,7 @@ void i3_shutdown(int delay, CHAR_DATA *ch)
     I3_input_pointer = 0;
     I3_output_pointer = 4;
     I3_save_id();
-    sleep(2);						       /* Short delay to allow the socket to close */
+    usleep(200000); /* Never lag the MUD for a full 2 seconds! 0.2 is acceptable. */
     if(ch)
         i3_printf(ch, "Intermud-3 router connection closed.\r\n");
 }
@@ -6593,7 +6608,7 @@ void router_connect(const char *router_name, bool forced, int mudport, bool isco
 	    if (router_name && strcasecmp(router_name, router->name))
 		continue;
 
-	    if (router->reconattempts <= 3) {
+	    if (router->reconattempts <= 9) {
 		rfound = TRUE;
 		I3_socket = I3_connection_open(router);
 		break;
@@ -6614,7 +6629,7 @@ void router_connect(const char *router_name, bool forced, int mudport, bool isco
 	return;
     }
 
-    sleep(1);
+    usleep(100000);
 
     i3log("%s", "Intermud-3 Network initialized.");
 
@@ -6958,8 +6973,8 @@ void i3_log_alive() {
     tc = time(0);
     tm_info = localtime(&tc);
 
-    snprintf(taunt, MAX_STRING_LENGTH, "%%^RED%%^%%^BOLD%%^[%-4.4d-%-2.2d-%-2.2d %-2.2d:%-2.2d]%%^RESET%%^ %%^GREEN%%^%%^BOLD%%^%s%%^RESET%%^ %%^YELLOW%%^%s%%^RESET%%^",
-            tm_info->tm_year + 1900, tm_info->tm_mon + 1, tm_info->tm_mday, tm_info->tm_hour, tm_info->tm_min, "It's ALIVE!\r\n", VERSION_STR);
+    snprintf(taunt, MAX_STRING_LENGTH, "%%^RED%%^%%^BOLD%%^[%-4.4d-%-2.2d-%-2.2d %-2.2d:%-2.2d]%%^RESET%%^ %%^GREEN%%^%%^BOLD%%^%s (%s)%%^RESET%%^ %%^YELLOW%%^%s%%^RESET%%^",
+            tm_info->tm_year + 1900, tm_info->tm_mon + 1, tm_info->tm_mday, tm_info->tm_hour, tm_info->tm_min, "It's ALIVE!\r\n", I3_ROUTER_NAME, VERSION_STR);
     i3_npc_speak("wiley", "Cron", taunt);
 }
 
@@ -6971,8 +6986,8 @@ void i3_log_dead() {
     tc = time(0);
     tm_info = localtime(&tc);
 
-    snprintf(taunt, MAX_STRING_LENGTH, "%%^RED%%^%%^BOLD%%^[%-4.4d-%-2.2d-%-2.2d %-2.2d:%-2.2d]%%^RESET%%^ %%^RED%%^%%^BOLD%%^%s%%^RESET%%^ %%^YELLOW%%^%s %s%%^RESET%%^",
-            tm_info->tm_year + 1900, tm_info->tm_mon + 1, tm_info->tm_mday, tm_info->tm_hour, tm_info->tm_min, "It's going DOWN!\r\n", VERSION_BASE, VERSION_BUILD);
+    snprintf(taunt, MAX_STRING_LENGTH, "%%^RED%%^%%^BOLD%%^[%-4.4d-%-2.2d-%-2.2d %-2.2d:%-2.2d]%%^RESET%%^ %%^RED%%^%%^BOLD%%^%s (%s)%%^RESET%%^ %%^YELLOW%%^%s%%^RESET%%^",
+            tm_info->tm_year + 1900, tm_info->tm_mon + 1, tm_info->tm_mday, tm_info->tm_hour, tm_info->tm_min, "It's going DOWN!\r\n", I3_ROUTER_NAME, VERSION_STR);
     allchan_log(0, "wiley", "Cron", "WileyMUD", taunt);
 }
 
@@ -7067,7 +7082,7 @@ void i3_loop(void)
 	    if (manual_router && strcasecmp(router->name, manual_router))
 		continue;
 
-	    if (router->reconattempts <= 3) {
+	    if (router->reconattempts <= 9) {
 		rfound = TRUE;
 		break;
 	    }
@@ -7081,11 +7096,15 @@ void i3_loop(void)
 	I3_socket = I3_connection_open(router);
 	if (I3_socket < 1) {
 	    if (router->reconattempts <= 3)
-		i3wait = 100;
+                i3wait = router_reconnect_short_delay;
+            else if (router->reconattempts <= 6)
+                i3wait = router_reconnect_medium_delay;
+            else
+                i3wait = router_reconnect_long_delay;
 	    return;
 	}
 
-	sleep(1);
+	usleep(100000);
 
 	i3log("Connection to Intermud-3 router %s %s.",
 	      router->name, router->reconattempts > 0 ? "reestablished" : "established");
