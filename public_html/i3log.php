@@ -449,23 +449,23 @@ function get_background_color($channel, $counter) {
 
 function is_bot_line($line) {
     $result = false;
-    $result = preg_match("/\tCron\@WileyMUD\t.*It\'s\s+ALIVE\!/", $line) ? $line : false;
+    $result = preg_match("/\tCron\@WileyMUD.?\t.*It\'s\s+ALIVE\!/", $line) ? $line : false;
     if( $result ) {
         return $result;
     }
-    $result = preg_match("/\tCron\@WileyMUD\t.*It\'s\s+going\s+DOWN\!/", $line) ? $line : false;
+    $result = preg_match("/\tCron\@WileyMUD.?\t.*It\'s\s+going\s+DOWN\!/", $line) ? $line : false;
     if( $result ) {
         return $result;
     }
-    $result = preg_match("/\tCron\@WileyMUD\t.*Not connected to I3/", $line) ? $line : false;
+    $result = preg_match("/\tCron\@WileyMUD.?\t.*Not connected to I3/", $line) ? $line : false;
     if( $result ) {
         return $result;
     }
-    $result = preg_match("/\tCron\@WileyMUD\t.*Version/", $line) ? $line : false;
+    $result = preg_match("/\tCron\@WileyMUD.?\t.*Version/", $line) ? $line : false;
     if( $result ) {
         return $result;
     }
-    $result = preg_match("/\twiley\tCron\@WileyMUD\t/", $line);
+    $result = preg_match("/\twiley\tCron\@WileyMUD.?\t/", $line);
     if ($result) {
         return false;
     }
@@ -478,7 +478,7 @@ function is_bot_line($line) {
 
 function is_urlbot_line($line) {
     $result = false;
-    $result = preg_match("/\turl\tURLbot\@WileyMUD\t/", $line);
+    $result = preg_match("/\turl\tURLbot\@WileyMUD.?\t/", $line);
     if ($result) {
         return $line;
     }
