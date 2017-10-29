@@ -14,3 +14,33 @@
             apt-get install clang clang-3.8-doc llvm-3.8-doc
             apt-get install manpages manpages-dev manpages-posix manpages-posix-dev man-db
             apt-get install locales
+            dpkg-reconfigure locales
+                set up en.US, en.AU, and jp UTF-8 languages
+                set en.US-utf8 as the default
+
+    0903    apt-get install sqlite3 sqlite3-doc sqlite3-pcre libsqlite3-dev
+            apt-get install libpcre2-dev libpcre3-dev
+                Oddly, pcre2 is the newer version, but wiley used the older one.
+
+    1208    cpan
+                autoconfigure
+
+            cpan > install CPAN
+
+    1212    apt-get install readline-common readline-doc libreadline-dev
+            apt-get install traceroute mtr-tiny
+
+            cpan > install Term::ReadLine::Gnu
+            cpan > install HTTP::Request
+            cpan > install HTML::Entities
+            cpan > install LWP::UserAgent
+            cpan > install WWW::Shorten::TinyURL
+    1626    cpan > install DBI DBD::SQLite
+            cpan > install JSON
+    1643    cpan > install Rose::DB::SQLite
+    1939    cpan > install Pod::POM
+    1948    apt-get install perl-doc
+            cpan > install Lingua::EN::Numbers::Ordinate
+            cpan > install Rose::DB::Object
+    2012    cpan > install CGI
+
