@@ -44,3 +44,6 @@
             cpan > install Rose::DB::Object
     2012    cpan > install CGI
 
+20171031    Quixadhal
+    0131    apt-get install bc
+
