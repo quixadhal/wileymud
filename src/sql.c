@@ -283,7 +283,7 @@ void spawn_url_handler(void) {
     regexp_pid = fork();
     if( regexp_pid == 0 ) {
         // We are the new kid, so go run our perl script.
-        log_info("Forking %s", UNTINY_SQL);
+        log_info("Forking %s", UNTINY);
         //execl(PERL, PERL, "-w", UNTINY_SQL, (char *)NULL);
         execl(PERL, PERL, "-w", UNTINY, "--sql", (char *)NULL);
         log_error("It is not possible to be here!");
