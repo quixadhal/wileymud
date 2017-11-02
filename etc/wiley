@@ -11,7 +11,9 @@
 #
 
 PORT=3000
-MUDDIR=/home/wiley
+MUDDIR=/home/quix
+MUDUSER=quix
+MUDGROUP=quix
 PATH=$MUDDIR/bin:/bin:/usr/bin:/sbin:/usr/sbin
 DAEMON=$MUDDIR/bin/wileymud
 SCRIPT=$MUDDIR/bin/wileyloop
@@ -26,17 +28,17 @@ test -x $DAEMON || exit 0
 case "$1" in
   start)
 	echo -n "Starting MUD Server: WileyMUD"
-        if start-stop-daemon --quiet --stop --signal 0 --pidfile $PIDFILE --name wileymud --user wiley
+        if start-stop-daemon --quiet --stop --signal 0 --pidfile $PIDFILE --name wileymud --user $MUDUSER
 	then
 		echo " already running."
 		exit
 	fi
-	/sbin/start-stop-daemon --start --quiet --chuid wiley:users --chdir $STARTDIR --background --pidfile $PIDFILE --exec $SCRIPT -- -P $PIDFILE -L $LOGFILE $PORT
+	/sbin/start-stop-daemon --start --quiet --chuid $MUDUSER:$MUDGROUP --chdir $STARTDIR --background --pidfile $PIDFILE --exec $SCRIPT -- -P $PIDFILE -L $LOGFILE $PORT
 	echo "."
 	;;
   stop)
 	echo -n "Stopping MUD Server: WileyMUD"
-	if start-stop-daemon --quiet --stop --signal 0 --pidfile $PIDFILE --name wileymud --user wiley
+	if start-stop-daemon --quiet --stop --signal 0 --pidfile $PIDFILE --name wileymud --user $MUDUSER
 	then
 		PID=`cat $PIDFILE`
 		start-stop-daemon --quiet --stop --signal INT --user wiley --exec $DAEMON --pidfile $PIDFILE --name wileymud
