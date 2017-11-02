@@ -47,3 +47,11 @@
 20171031    Quixadhal
     0131    apt-get install bc
 
+20171101    Quixadhal
+    0722    apt-get install curl libcurl3-dev
+    0749    cpan > install YAML
+            apt-get install libssl-dev
+            apt-get install zlib1g zlib1g-dev
+            cpan > install LWP::Protocol::https
+    0900    Added backup host IP to Google's API key registry so it can use it
+
