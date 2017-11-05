@@ -6635,7 +6635,7 @@ void router_connect(const char *router_name, bool forced, int mudport, bool isco
 
     if (!isconnected) {
 	I3_startup_packet();
-	i3timeout = 100;
+	i3timeout = 200;
     } else {
 	I3_loadmudlist();
 	I3_loadchanlist();

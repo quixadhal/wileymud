@@ -205,6 +205,10 @@ int main(int argc, const char **argv)
 	close(fileno(stdout));
 	dup2(fileno(stderr), fileno(stdout));
 	log_boot("Switch to %s completed.", logfile);
+
+        unlink("/home/wiley/lib/log/runlog");
+        symlink(logfile, "/home/wiley/lib/log/runlog");
+	log_boot("Symlink runlog to %s done.", logfile);
     }
 
     srandom(time(0));
