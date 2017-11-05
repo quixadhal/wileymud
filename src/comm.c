@@ -1845,5 +1845,6 @@ void proper_exit(int exit_code)
     log_boot("Disconnecting from database!");
     close_sql();
 #endif
+    unlink("/home/wiley/lib/log/runlog");
     exit(exit_code);
 }

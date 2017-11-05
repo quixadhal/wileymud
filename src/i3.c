@@ -135,10 +135,6 @@ void                                    i3_printf(CHAR_DATA *ch, const char *fmt
     __attribute__ ((format(printf, 2, 3)));
 void                                    i3page_printf(CHAR_DATA *ch, const char *fmt, ...)
     __attribute__ ((format(printf, 2, 3)));
-void                                    i3bug(const char *format, ...)
-    __attribute__ ((format(printf, 1, 2)));
-void                                    i3log(const char *format, ...)
-    __attribute__ ((format(printf, 1, 2)));
 I3_HEADER                              *I3_get_header(char **pps);
 void                                    I3_send_channel_listen(I3_CHANNEL *channel,
 							       bool lconnect);
@@ -299,41 +295,6 @@ const char                             *i3one_argument(const char *argument, cha
 	argument++;
 
     return argument;
-}
-
-/* Generic log function which will route the log messages to the appropriate system logging function */
-void i3log(const char *format, ...)
-{
-    char                                    buf[MAX_STRING_LENGTH],
-                                            buf2[MAX_STRING_LENGTH];
-    //char                                   *strtime;
-    va_list                                 ap;
-
-    va_start(ap, format);
-    vsnprintf(buf, MAX_STRING_LENGTH, format, ap);
-    va_end(ap);
-
-    snprintf(buf2, MAX_STRING_LENGTH, "I3: %s", buf);
-
-    //strtime = ctime(&i3_time);
-    //fprintf(stderr, "%s :: %s\n", strtime, buf2);
-
-    log_info("%s", buf2);
-    return;
-}
-
-/* Generic bug logging function which will route the message to the appropriate function that handles bug logs */
-void i3bug(const char *format, ...)
-{
-    char                                    buf[MAX_STRING_LENGTH];
-    va_list                                 ap;
-
-    va_start(ap, format);
-    vsnprintf(buf, MAX_STRING_LENGTH, format, ap);
-    va_end(ap);
-
-    log_error("%s", buf);
-    return;
 }
 
 /*
@@ -697,12 +658,12 @@ void I3_unflagchan(char **list, const char *name)
 bool i3_str_prefix(const char *astr, const char *bstr)
 {
     if (!astr) {
-	i3bug("Strn_cmp: null astr.");
+	log_error("Strn_cmp: null astr.");
 	return TRUE;
     }
 
     if (!bstr) {
-	i3bug("Strn_cmp: null bstr.");
+	log_error("Strn_cmp: null bstr.");
 	return TRUE;
     }
 
@@ -922,7 +883,7 @@ void destroy_I3_channel(I3_CHANNEL *channel)
     int                                     x;
 
     if (channel == NULL) {
-	i3bug("%s", "destroy_I3_channel: Null parameter");
+	log_error("%s", "destroy_I3_channel: Null parameter");
 	return;
     }
 
@@ -1043,7 +1004,7 @@ I3_MUD *create_I3_mud()
 void destroy_I3_mud(I3_MUD *mud)
 {
     if (mud == NULL) {
-	i3bug("%s", "destroy_I3_mud: Null parameter");
+	log_error("%s", "destroy_I3_mud: Null parameter");
 	return;
     }
 
@@ -1224,7 +1185,7 @@ int i3fread_number(FILE * fp)
 
     do {
 	if (feof(fp)) {
-	    i3log("%s", "i3fread_number: EOF encountered on read.");
+	    log_info("%s", "i3fread_number: EOF encountered on read.");
 	    return 0;
 	}
 	c = getc(fp);
@@ -1242,13 +1203,13 @@ int i3fread_number(FILE * fp)
     }
 
     if (!isdigit(c)) {
-	i3log("i3fread_number: bad format. (%c)", c);
+	log_info("i3fread_number: bad format. (%c)", c);
 	return 0;
     }
 
     while (isdigit(c)) {
 	if (feof(fp)) {
-	    i3log("%s", "i3fread_number: EOF encountered on read.");
+	    log_info("%s", "i3fread_number: EOF encountered on read.");
 	    return num;
 	}
 	num = num * 10 + c - '0';
@@ -1286,7 +1247,7 @@ char                                   *i3fread_line(FILE * fp)
      */
     do {
 	if (feof(fp)) {
-	    i3bug("%s", "i3fread_line: EOF encountered on read.");
+	    log_error("%s", "i3fread_line: EOF encountered on read.");
 	    i3strlcpy(line, "", MAX_STRING_LENGTH);
 	    return I3STRALLOC(line);
 	}
@@ -1298,7 +1259,7 @@ char                                   *i3fread_line(FILE * fp)
 
     do {
 	if (feof(fp)) {
-	    i3bug("%s", "i3fread_line: EOF encountered on read.");
+	    log_error("%s", "i3fread_line: EOF encountered on read.");
 	    *pline = '\0';
 	    return I3STRALLOC(line);
 	}
@@ -1306,7 +1267,7 @@ char                                   *i3fread_line(FILE * fp)
 	*pline++ = c;
 	ln++;
 	if (ln >= (MAX_STRING_LENGTH - 1)) {
-	    i3bug("%s", "i3fread_line: line too long");
+	    log_error("%s", "i3fread_line: line too long");
 	    break;
 	}
     }
@@ -1340,7 +1301,7 @@ char                                   *i3fread_word(FILE * fp)
 
     do {
 	if (feof(fp)) {
-	    i3log("%s", "i3fread_word: EOF encountered on read.");
+	    log_info("%s", "i3fread_word: EOF encountered on read.");
 	    word[0] = '\0';
 	    return word;
 	}
@@ -1358,7 +1319,7 @@ char                                   *i3fread_word(FILE * fp)
 
     for (; pword < word + MAX_INPUT_LENGTH; pword++) {
 	if (feof(fp)) {
-	    i3log("%s", "i3fread_word: EOF encountered on read.");
+	    log_info("%s", "i3fread_word: EOF encountered on read.");
 	    *pword = '\0';
 	    return word;
 	}
@@ -1371,7 +1332,7 @@ char                                   *i3fread_word(FILE * fp)
 	}
     }
 
-    i3log("%s", "i3fread_word: word too long");
+    log_info("%s", "i3fread_word: word too long");
     return NULL;
 }
 
@@ -1383,7 +1344,7 @@ char                                   *i3fread_rest_of_line(FILE * fp)
 
     do {
 	if (feof(fp)) {
-	    i3log("%s", "i3fread_rest_of_line: EOF encountered on read.");
+	    log_info("%s", "i3fread_rest_of_line: EOF encountered on read.");
 	    word[0] = '\0';
 	    return word;
 	}
@@ -1395,7 +1356,7 @@ char                                   *i3fread_rest_of_line(FILE * fp)
 
     for (; pword < word + MAX_STRING_LENGTH; pword++) {
 	if (feof(fp)) {
-	    i3log("%s", "i3fread_rest_of_line: EOF encountered on read.");
+	    log_info("%s", "i3fread_rest_of_line: EOF encountered on read.");
 	    *pword = '\0';
 	    return word;
 	}
@@ -1413,7 +1374,7 @@ char                                   *i3fread_rest_of_line(FILE * fp)
         }
     }
 
-    i3log("%s", "i3fread_rest_of_line: line too long");
+    log_info("%s", "i3fread_rest_of_line: line too long");
     return NULL;
 }
 
@@ -1426,7 +1387,7 @@ char i3fread_letter(FILE * fp)
 
     do {
 	if (feof(fp)) {
-	    i3log("%s", "i3fread_letter: EOF encountered on read.");
+	    log_info("%s", "i3fread_letter: EOF encountered on read.");
 	    return '\0';
 	}
 	c = getc(fp);
@@ -1445,7 +1406,7 @@ void i3fread_to_eol(FILE * fp)
 
     do {
 	if (feof(fp)) {
-	    i3log("%s", "i3fread_to_eol: EOF encountered on read.");
+	    log_info("%s", "i3fread_to_eol: EOF encountered on read.");
 	    return;
 	}
 	c = getc(fp);
@@ -1533,7 +1494,7 @@ void I3_write_buffer(const char *msg)
     long                                    newsize = I3_output_pointer + strlen(msg);
 
     if (newsize > OPS - 1) {
-	i3bug("I3_write_buffer: buffer too large (would become %ld)", newsize);
+	log_error("I3_write_buffer: buffer too large (would become %ld)", newsize);
 	return;
     }
     i3strlcpy(I3_output_buffer + I3_output_pointer, msg, newsize);
@@ -1708,9 +1669,9 @@ bool I3_write_packet(char *msg)
 
     if (!check || (check < 0 && errno != EAGAIN && errno != EWOULDBLOCK)) {
 	if (check < 0)
-	    i3log("%s", "Write error on socket.");
+	    log_info("%s", "Write error on socket.");
 	else
-	    i3log("%s", "EOF encountered on socket write.");
+	    log_info("%s", "EOF encountered on socket write.");
 	I3_connection_close(TRUE);
 	return FALSE;
     }
@@ -1720,8 +1681,8 @@ bool I3_write_packet(char *msg)
 
     bytes_sent += check;
     if (packetdebug) {
-	i3log("Size: %d. Bytes Sent: %d.", oldsize, check);
-	i3log("Packet Sent: %s", msg + 4);
+	log_info("Size: %d. Bytes Sent: %d.", oldsize, check);
+	log_info("Packet Sent: %s", msg + 4);
     }
     I3_output_pointer = 4;
     return TRUE;
@@ -1750,7 +1711,7 @@ void I3_startup_packet(void)
     I3_output_pointer = 4;
     I3_output_buffer[0] = '\0';
 
-    i3log("Sending startup_packet to %s", I3_ROUTER_NAME);
+    log_info("Sending startup_packet to %s", I3_ROUTER_NAME);
 
     I3_write_header("startup-req-3", this_i3mud->name, NULL, I3_ROUTER_NAME, NULL);
 
@@ -1866,7 +1827,7 @@ void I3_save_id(void)
     FILE                                   *fp;
 
     if (!(fp = fopen(I3_PASSWORD_FILE, "w"))) {
-	i3log("%s", "Couldn't write to I3 password file.");
+	log_info("%s", "Couldn't write to I3 password file.");
 	return;
     }
 
@@ -1892,7 +1853,7 @@ void I3_process_startup_reply(I3_HEADER *header, char *s)
      * Recevies the router list. Nothing much to do here until there's more than 1 router. 
      */
     I3_get_field(ps, &next_ps);
-    i3log("%s", ps);					       /* Just checking for now */
+    log_info("%s", ps);					       /* Just checking for now */
     ps = next_ps;
 
     /*
@@ -1901,7 +1862,7 @@ void I3_process_startup_reply(I3_HEADER *header, char *s)
     I3_get_field(ps, &next_ps);
     this_i3mud->password = atoi(ps);
 
-    i3log("Received startup_reply from %s", header->originator_mudname);
+    log_info("Received startup_reply from %s", header->originator_mudname);
 
     I3_save_id();
 
@@ -1915,11 +1876,11 @@ void I3_process_startup_reply(I3_HEADER *header, char *s)
     i3wait = 0;
     i3timeout = 0;
     i3justconnected = 1;
-    i3log("%s", "Intermud-3 Network connection complete.");
+    log_info("%s", "Intermud-3 Network connection complete.");
 
     for (channel = first_I3chan; channel; channel = channel->next) {
 	if (channel->local_name && channel->local_name[0] != '\0') {
-	    i3log("Subscribing to %s", channel->local_name);
+	    log_info("Subscribing to %s", channel->local_name);
 	    I3_send_channel_listen(channel, TRUE);
 	}
     }
@@ -1936,7 +1897,7 @@ void I3_process_chanack(I3_HEADER *header, char *s)
     I3_remove_quotes(&ps);
 
     if (!(ch = I3_find_user(header->target_username)))
-	i3log("%s", ps);
+	log_info("%s", ps);
     else
 	i3_printf(ch, "%%^GREEN%%^%%^BOLD%%^%s%%^RESET%%^\r\n", ps);
     return;
@@ -1983,7 +1944,7 @@ void I3_process_error(I3_HEADER *header, char *s)
 	     ps);
 
     if (!(ch = I3_find_user(header->target_username)))
-	i3log("%s", error);
+	log_info("%s", error);
     else
 	i3_printf(ch, "%%^RED%%^%%^BOLD%%^%s%%^RESET%%^\r\n", error);
 }
@@ -2010,7 +1971,7 @@ void I3_save_ucache(void)
     UCACHE_DATA                            *user;
 
     if (!(fp = fopen(I3_UCACHE_FILE, "w"))) {
-	i3log("%s", "Couldn't write to I3 ucache file.");
+	log_info("%s", "Couldn't write to I3 ucache file.");
 	return;
     }
 
@@ -2455,7 +2416,7 @@ void I3_process_chanlist_reply(I3_HEADER *header, char *s)
     I3_CHANNEL                             *channel;
     char                                    chan[MAX_INPUT_LENGTH];
 
-    i3log("I3_process_chanlist_reply: %s", "Got chanlist-reply packet!");
+    log_info("I3_process_chanlist_reply: %s", "Got chanlist-reply packet!");
 
     I3_get_field(ps, &next_ps);
     this_i3mud->chanlist_id = atoi(ps);
@@ -2477,10 +2438,10 @@ void I3_process_chanlist_reply(I3_HEADER *header, char *s)
 	    if (!(channel = find_I3_channel_by_name(chan))) {
 		channel = new_I3_channel();
 		channel->I3_name = I3STRALLOC(chan);
-		i3log("New channel %s has been added from router %s", channel->I3_name,
+		log_info("New channel %s has been added from router %s", channel->I3_name,
 		      I3_ROUTER_NAME);
 	    } else {
-		i3log("Channel %s has been updated from router %s", channel->I3_name,
+		log_info("Channel %s has been updated from router %s", channel->I3_name,
 		      I3_ROUTER_NAME);
 	    }
 
@@ -2495,7 +2456,7 @@ void I3_process_chanlist_reply(I3_HEADER *header, char *s)
 	} else {
 	    if ((channel = find_I3_channel_by_name(chan)) != NULL) {
 		if (channel->local_name && channel->local_name[0] != '\0')
-		    i3log("Locally configured channel %s has been purged from router %s",
+		    log_info("Locally configured channel %s has been purged from router %s",
 			  channel->local_name, I3_ROUTER_NAME);
 		destroy_I3_channel(channel);
 		I3_write_channel_config();
@@ -2505,7 +2466,7 @@ void I3_process_chanlist_reply(I3_HEADER *header, char *s)
 	if (ps[0] == ']')
 	    break;
     }
-    i3log("I3_process_chanlist_reply: %s", "Saving channel config data.");
+    log_info("I3_process_chanlist_reply: %s", "Saving channel config data.");
     I3_write_channel_config();
     return;
 }
@@ -2653,17 +2614,17 @@ char                                   *I3_convert_channel_message(const char *m
      * Sanity checks - if any of these are NULL, bad things will happen - Samson 6-29-01 
      */
     if (!message) {
-	i3bug("%s", "I3_convert_channel_message: NULL message!");
+	log_error("%s", "I3_convert_channel_message: NULL message!");
 	return msgbuf;
     }
 
     if (!sname) {
-	i3bug("%s", "I3_convert_channel_message: NULL sname!");
+	log_error("%s", "I3_convert_channel_message: NULL sname!");
 	return msgbuf;
     }
 
     if (!tname) {
-	i3bug("%s", "I3_convert_channel_message: NULL tname!");
+	log_error("%s", "I3_convert_channel_message: NULL tname!");
 	return msgbuf;
     }
 
@@ -2680,12 +2641,12 @@ void update_chanhistory(I3_CHANNEL *channel, char *message)
     int                                     x;
 
     if (!channel) {
-	i3bug("%s", "update_chanhistory: NULL channel received!");
+	log_error("%s", "update_chanhistory: NULL channel received!");
 	return;
     }
 
     if (!message || message[0] == '\0') {
-	i3bug("%s", "update_chanhistory: NULL message received!");
+	log_error("%s", "update_chanhistory: NULL message received!");
 	return;
     }
 
@@ -2704,7 +2665,7 @@ void update_chanhistory(I3_CHANNEL *channel, char *message)
 		snprintf(buf, MAX_STRING_LENGTH, "%s%s.log", I3_DIR, channel->local_name);
 		if (!(fp = fopen(buf, "a"))) {
 		    perror(buf);
-		    i3bug("Could not open file %s!", buf);
+		    log_error("Could not open file %s!", buf);
 		} else {
 		    fprintf(fp, "%s\n", i3_strip_colors(channel->history[x]));
 		    I3FCLOSE(fp);
@@ -2738,7 +2699,7 @@ void update_chanhistory(I3_CHANNEL *channel, char *message)
 		snprintf(buf, MAX_STRING_LENGTH, "%s%s.log", I3_DIR, channel->local_name);
 		if (!(fp = fopen(buf, "a"))) {
 		    perror(buf);
-		    i3bug("Could not open file %s!", buf);
+		    log_error("Could not open file %s!", buf);
 		} else {
 		    fprintf(fp, "%s\n", i3_strip_colors(channel->history[x]));
 		    I3FCLOSE(fp);
@@ -2906,7 +2867,7 @@ void I3_process_channel_filter(I3_HEADER *header, char *s)
     I3_remove_quotes(&ps);
 
     if (!(channel = find_I3_channel_by_name(ps))) {
-	i3log("I3_process_channel_filter: received unknown channel (%s)", ps);
+	log_info("I3_process_channel_filter: received unknown channel (%s)", ps);
 	return;
     }
 
@@ -2958,7 +2919,7 @@ void allchan_log( int is_emote, char *channel, char *speaker, char *mud, char *s
     }
 
     if(!(fp = fopen(I3_ALLCHAN_LOG, "a"))) {
-        i3bug("Could not open file %s!", I3_ALLCHAN_LOG);
+        log_error("Could not open file %s!", I3_ALLCHAN_LOG);
     } else {
         fprintf(fp, "%04d.%02d.%02d-%02d.%02d,%02d%03d\t%s\t%s@%s\t%c\t%s\n",
                 local->tm_year + 1900, local->tm_mon + 1, local->tm_mday,
@@ -3032,7 +2993,7 @@ void I3_process_channel_t(I3_HEADER *header, char *s)
     I3_remove_quotes(&ps);
 
     if (!(channel = find_I3_channel_by_name(ps))) {
-	i3log("I3_process_channel_t: received unknown channel (%s)", ps);
+	log_info("I3_process_channel_t: received unknown channel (%s)", ps);
 	return;
     }
 
@@ -3125,7 +3086,7 @@ void I3_process_channel_m(I3_HEADER *header, char *s)
     I3_remove_quotes(&ps);
 
     if (!(channel = find_I3_channel_by_name(ps))) {
-	i3log("channel_m: received unknown channel (%s)", ps);
+	log_info("channel_m: received unknown channel (%s)", ps);
 	return;
     }
 
@@ -3199,7 +3160,7 @@ void I3_process_channel_e(I3_HEADER *header, char *s)
     I3_remove_quotes(&ps);
 
     if (!(channel = find_I3_channel_by_name(ps))) {
-	i3log("channel_e: received unknown channel (%s)", ps);
+	log_info("channel_e: received unknown channel (%s)", ps);
 	return;
     }
 
@@ -3279,7 +3240,7 @@ void I3_process_chan_who_req(I3_HEADER *header, char *s)
 		 this_i3mud->name);
 	I3_send_error(header->originator_mudname, header->originator_username, "unk-channel",
 		      buf);
-	i3log("chan_who_req: received unknown channel (%s)", ps);
+	log_info("chan_who_req: received unknown channel (%s)", ps);
 	return;
     }
 
@@ -3325,7 +3286,7 @@ void I3_process_chan_who_reply(I3_HEADER *header, char *s)
     CHAR_DATA                              *ch;
 
     if (!(ch = I3_find_user(header->target_username))) {
-	i3bug("I3_process_chan_who_reply(): user %s not found.", header->target_username);
+	log_error("I3_process_chan_who_reply(): user %s not found.", header->target_username);
 	return;
     }
 
@@ -4195,7 +4156,7 @@ void I3_process_channel_adminlist_reply(I3_HEADER *header, char *s)
     CHAR_DATA                              *ch;
 
     if ((ch = I3_find_user(header->target_username)) == NULL) {
-	i3bug("I3_process_channel_adminlist_reply(): user %s not found.",
+	log_error("I3_process_channel_adminlist_reply(): user %s not found.",
 	      header->target_username);
 	return;
     }
@@ -4203,7 +4164,7 @@ void I3_process_channel_adminlist_reply(I3_HEADER *header, char *s)
     I3_get_field(ps, &next_ps);
     I3_remove_quotes(&ps);
     if (!(channel = find_I3_channel_by_name(ps))) {
-	i3bug("I3_process_channel_adminlist_reply(): Invalid local channel %s reply received.",
+	log_error("I3_process_channel_adminlist_reply(): Invalid local channel %s reply received.",
 	      ps);
 	return;
     }
@@ -4271,7 +4232,7 @@ void I3_send_channel_add(CHAR_DATA *ch, char *arg, int type)
     I3_write_buffer("\",");
     switch (type) {
 	default:
-	    i3bug("%s", "I3_send_channel_add: Illegal channel type!");
+	    log_error("%s", "I3_send_channel_add: Illegal channel type!");
 	    return;
 	case 0:
 	    I3_write_buffer("0,})\r");
@@ -4377,7 +4338,7 @@ void I3_parse_packet(void)
 	return;
 
     if (packetdebug)
-	i3log("Packet received: %s", ps);
+	log_info("Packet received: %s", ps);
 
     ps += 2;
     I3_get_field(ps, &next_ps);
@@ -4471,10 +4432,10 @@ void I3_parse_packet(void)
 	delay = atoi(ps);
 
 	if (delay == 0) {
-	    i3log("Router %s is shutting down.", I3_ROUTER_NAME);
+	    log_info("Router %s is shutting down.", I3_ROUTER_NAME);
 	    I3_connection_close(FALSE);
 	} else {
-	    i3log("Router %s is rebooting and will be back in %d second%s.", I3_ROUTER_NAME,
+	    log_info("Router %s is rebooting and will be back in %d second%s.", I3_ROUTER_NAME,
 		  delay, delay == 1 ? "" : "s");
 	    I3_connection_close(TRUE);
 	}
@@ -4732,7 +4693,7 @@ void I3_savecolor(void)
     I3_COLOR                               *color;
 
     if ((fp = fopen(I3_COLOR_FILE, "w")) == NULL) {
-	i3log("%s", "Couldn't write to I3 color file.");
+	log_info("%s", "Couldn't write to I3 color file.");
 	return;
     }
 
@@ -4783,7 +4744,7 @@ void I3_readcolor(I3_COLOR *color, FILE * fp)
 		break;
 	}
 	if (!fMatch)
-	    i3bug("i3_readcolor: no match: %s", word);
+	    log_error("i3_readcolor: no match: %s", word);
     }
 }
 
@@ -4794,10 +4755,10 @@ void I3_load_color_table(void)
 
     first_i3_color = last_i3_color = NULL;
 
-    i3log("%s", "Loading color table...");
+    log_info("%s", "Loading color table...");
 
     if (!(fp = fopen(I3_COLOR_FILE, "r"))) {
-	i3log("%s", "No color table found.");
+	log_info("%s", "No color table found.");
 	return;
     }
 
@@ -4812,7 +4773,7 @@ void I3_load_color_table(void)
 	}
 
 	if (letter != '#') {
-	    i3bug("%s", "i3_load_color_table: # not found.");
+	    log_error("%s", "i3_load_color_table: # not found.");
 	    break;
 	}
 
@@ -4826,7 +4787,7 @@ void I3_load_color_table(void)
 	} else if (!strcasecmp(word, "END"))
 	    break;
 	else {
-	    i3bug("i3_load_color_table: bad section: %s.", word);
+	    log_error("i3_load_color_table: bad section: %s.", word);
 	    continue;
 	}
     }
@@ -4840,7 +4801,7 @@ void I3_savehelps(void)
     I3_HELP_DATA                           *help;
 
     if ((fp = fopen(I3_HELP_FILE, "w")) == NULL) {
-	i3log("%s", "Couldn't write to I3 help file.");
+	log_info("%s", "Couldn't write to I3 help file.");
 	return;
     }
 
@@ -4889,7 +4850,7 @@ void I3_readhelp(I3_HELP_DATA *help, FILE * fp)
 		    permvalue = get_permvalue(word);
 
 		    if (permvalue < 0 || permvalue > I3PERM_IMP) {
-			i3bug
+			log_error
 			    ("i3_readhelp: Command %s loaded with invalid permission. Set to Imp.",
 			     help->name);
 			help->level = I3PERM_IMP;
@@ -4924,7 +4885,7 @@ void I3_readhelp(I3_HELP_DATA *help, FILE * fp)
 		break;
 	}
 	if (!fMatch)
-	    i3bug("i3_readhelp: no match: %s", word);
+	    log_error("i3_readhelp: no match: %s", word);
     }
 }
 
@@ -4935,10 +4896,10 @@ void I3_load_helps(void)
 
     first_i3_help = last_i3_help = NULL;
 
-    i3log("%s", "Loading I3 help file...");
+    log_info("%s", "Loading I3 help file...");
 
     if (!(fp = fopen(I3_HELP_FILE, "r"))) {
-	i3log("%s", "No help file found.");
+	log_info("%s", "No help file found.");
 	return;
     }
 
@@ -4953,7 +4914,7 @@ void I3_load_helps(void)
 	}
 
 	if (letter != '#') {
-	    i3bug("%s", "i3_load_helps: # not found.");
+	    log_error("%s", "i3_load_helps: # not found.");
 	    break;
 	}
 
@@ -4967,7 +4928,7 @@ void I3_load_helps(void)
 	} else if (!strcasecmp(word, "END"))
 	    break;
 	else {
-	    i3bug("i3_load_helps: bad section: %s.", word);
+	    log_error("i3_load_helps: bad section: %s.", word);
 	    continue;
 	}
     }
@@ -4982,7 +4943,7 @@ void I3_savecommands(void)
     I3_ALIAS                               *alias;
 
     if (!(fp = fopen(I3_CMD_FILE, "w"))) {
-	i3log("%s", "Couldn't write to I3 command file.");
+	log_info("%s", "Couldn't write to I3 command file.");
 	return;
     }
 
@@ -5043,7 +5004,7 @@ void I3_readcommand(I3_CMD_DATA *cmd, FILE * fp)
 		    word = i3fread_word(fp);
 		    cmd->function = i3_function(word);
 		    if (cmd->function == NULL)
-			i3bug
+			log_error
 			    ("i3_readcommand: Command %s loaded with invalid function. Set to NULL.",
 			     cmd->name);
 		    fMatch = TRUE;
@@ -5061,7 +5022,7 @@ void I3_readcommand(I3_CMD_DATA *cmd, FILE * fp)
 		    permvalue = get_permvalue(word);
 
 		    if (permvalue < 0 || permvalue > I3PERM_IMP) {
-			i3bug
+			log_error
 			    ("i3_readcommand: Command %s loaded with invalid permission. Set to Imp.",
 			     cmd->name);
 			cmd->level = I3PERM_IMP;
@@ -5073,7 +5034,7 @@ void I3_readcommand(I3_CMD_DATA *cmd, FILE * fp)
 		break;
 	}
 	if (!fMatch)
-	    i3bug("i3_readcommand: no match: %s", word);
+	    log_error("i3_readcommand: no match: %s", word);
     }
 }
 
@@ -5084,10 +5045,10 @@ bool I3_load_commands(void)
 
     first_i3_command = last_i3_command = NULL;
 
-    i3log("%s", "Loading I3 command table...");
+    log_info("%s", "Loading I3 command table...");
 
     if (!(fp = fopen(I3_CMD_FILE, "r"))) {
-	i3log("%s", "No command table found.");
+	log_info("%s", "No command table found.");
 	return FALSE;
     }
 
@@ -5102,7 +5063,7 @@ bool I3_load_commands(void)
 	}
 
 	if (letter != '#') {
-	    i3bug("%s", "i3_load_commands: # not found.");
+	    log_error("%s", "i3_load_commands: # not found.");
 	    break;
 	}
 
@@ -5116,7 +5077,7 @@ bool I3_load_commands(void)
 	} else if (!strcasecmp(word, "END"))
 	    break;
 	else {
-	    i3bug("i3_load_commands: bad section: %s.", word);
+	    log_error("i3_load_commands: bad section: %s.", word);
 	    continue;
 	}
     }
@@ -5130,7 +5091,7 @@ void I3_saverouters(void)
     ROUTER_DATA                            *router;
 
     if (!(fp = fopen(I3_ROUTER_FILE, "w"))) {
-	i3log("%s", "Couldn't write to I3 router file.");
+	log_info("%s", "Couldn't write to I3 router file.");
 	return;
     }
 
@@ -5179,7 +5140,7 @@ void I3_readrouter(ROUTER_DATA *router, FILE * fp)
 		break;
 	}
 	if (!fMatch)
-	    i3bug("i3_readrouter: no match: %s", word);
+	    log_error("i3_readrouter: no match: %s", word);
     }
 }
 
@@ -5190,10 +5151,10 @@ bool I3_load_routers(void)
 
     first_router = last_router = NULL;
 
-    i3log("%s", "Loading I3 router data...");
+    log_info("%s", "Loading I3 router data...");
 
     if (!(fp = fopen(I3_ROUTER_FILE, "r"))) {
-	i3log("%s", "No router data found.");
+	log_info("%s", "No router data found.");
 	return FALSE;
     }
 
@@ -5208,7 +5169,7 @@ bool I3_load_routers(void)
 	}
 
 	if (letter != '#') {
-	    i3bug("%s", "i3_load_routers: # not found.");
+	    log_error("%s", "i3_load_routers: # not found.");
 	    break;
 	}
 
@@ -5228,7 +5189,7 @@ bool I3_load_routers(void)
 	} else if (!strcasecmp(word, "END"))
 	    break;
 	else {
-	    i3bug("i3_load_routers: bad section: %s.", word);
+	    log_error("i3_load_routers: bad section: %s.", word);
 	    continue;
 	}
     }
@@ -5284,7 +5245,7 @@ void I3_readucache(UCACHE_DATA *user, FILE * fp)
 		break;
 	}
 	if (!fMatch)
-	    i3bug("I3_readucache: no match: %s", word);
+	    log_error("I3_readucache: no match: %s", word);
     }
 }
 
@@ -5295,10 +5256,10 @@ void I3_load_ucache(void)
 
     first_ucache = last_ucache = NULL;
 
-    i3log("%s", "Loading ucache data...");
+    log_info("%s", "Loading ucache data...");
 
     if (!(fp = fopen(I3_UCACHE_FILE, "r"))) {
-	i3log("%s", "No ucache data found.");
+	log_info("%s", "No ucache data found.");
 	return;
     }
 
@@ -5313,7 +5274,7 @@ void I3_load_ucache(void)
 	}
 
 	if (letter != '#') {
-	    i3bug("%s", "I3_load_ucahe: # not found.");
+	    log_error("%s", "I3_load_ucahe: # not found.");
 	    break;
 	}
 
@@ -5327,7 +5288,7 @@ void I3_load_ucache(void)
 	} else if (!strcasecmp(word, "END"))
 	    break;
 	else {
-	    i3bug("I3_load_ucache: bad section: %s.", word);
+	    log_error("I3_load_ucache: bad section: %s.", word);
 	    continue;
 	}
     }
@@ -5340,7 +5301,7 @@ void I3_saveconfig(void)
     FILE                                   *fp;
 
     if (!(fp = fopen(I3_CONFIG_FILE, "w"))) {
-	i3log("%s", "Couldn't write to i3.config file.");
+	log_info("%s", "Couldn't write to i3.config file.");
 	return;
     }
 
@@ -5551,7 +5512,7 @@ void I3_fread_config_file(FILE * fin)
 		break;
 	}
 	if (!fMatch)
-	    i3bug("I3_fread_config_file: Bad keyword: %s\r\n", word);
+	    log_error("I3_fread_config_file: Bad keyword: %s\r\n", word);
     }
 }
 
@@ -5564,11 +5525,11 @@ bool I3_read_config(int mudport)
 	destroy_I3_mud(this_i3mud);
     this_i3mud = NULL;
 
-    i3log("%s", "Loading Intermud-3 network data...");
+    log_info("%s", "Loading Intermud-3 network data...");
 
     if (!(fin = fopen(I3_CONFIG_FILE, "r"))) {
-	i3log("%s", "Can't open configuration file: i3.config");
-	i3log("%s", "Network configuration aborted.");
+	log_info("%s", "Can't open configuration file: i3.config");
+	log_info("%s", "Network configuration aborted.");
 	return FALSE;
     }
 
@@ -5584,7 +5545,7 @@ bool I3_read_config(int mudport)
 	}
 
 	if (letter != '$') {
-	    i3bug("%s", "I3_read_config: $ not found");
+	    log_error("%s", "I3_read_config: $ not found");
 	    break;
 	}
 
@@ -5597,15 +5558,15 @@ bool I3_read_config(int mudport)
 	} else if (!strcasecmp(word, "END"))
 	    break;
 	else {
-	    i3bug("I3_read_config: Bad section in config file: %s", word);
+	    log_error("I3_read_config: Bad section in config file: %s", word);
 	    continue;
 	}
     }
     I3FCLOSE(fin);
 
     if (!this_i3mud) {
-	i3log("%s", "Error during configuration load.");
-	i3log("%s", "Network configuration aborted.");
+	log_info("%s", "Error during configuration load.");
+	log_info("%s", "Network configuration aborted.");
 	return FALSE;
     }
 
@@ -5631,8 +5592,8 @@ bool I3_read_config(int mudport)
     }
 
     if (!this_i3mud->name || this_i3mud->name[0] == '\0') {
-	i3log("%s", "Mud name not loaded in configuration file.");
-	i3log("%s", "Network configuration aborted.");
+	log_info("%s", "Mud name not loaded in configuration file.");
+	log_info("%s", "Network configuration aborted.");
 	destroy_I3_mud(this_i3mud);
 	return FALSE;
     }
@@ -5672,7 +5633,7 @@ void I3_readban(I3_BAN *ban, FILE * fin)
 		break;
 	}
 	if (!fMatch)
-	    i3bug("I3_readban: no match: %s", word);
+	    log_error("I3_readban: no match: %s", word);
     }
 }
 
@@ -5684,10 +5645,10 @@ void I3_loadbans(void)
     first_i3ban = NULL;
     last_i3ban = NULL;
 
-    i3log("%s", "Loading ban list...");
+    log_info("%s", "Loading ban list...");
 
     if ((fin = fopen(I3_BAN_FILE, "r")) == NULL) {
-	i3log("%s", "No ban list defined.");
+	log_info("%s", "No ban list defined.");
 	return;
     }
 
@@ -5702,7 +5663,7 @@ void I3_loadbans(void)
 	}
 
 	if (letter != '#') {
-	    i3bug("%s", "I3_loadbans: # not found.");
+	    log_error("%s", "I3_loadbans: # not found.");
 	    break;
 	}
 
@@ -5719,7 +5680,7 @@ void I3_loadbans(void)
 	} else if (!strcasecmp(word, "END"))
 	    break;
 	else {
-	    i3bug("I3_loadbans: bad section: %s.", word);
+	    log_error("I3_loadbans: bad section: %s.", word);
 	    continue;
 	}
     }
@@ -5733,7 +5694,7 @@ void I3_write_bans(void)
     I3_BAN                                 *ban;
 
     if ((fout = fopen(I3_BAN_FILE, "w")) == NULL) {
-	i3log("%s", "Couldn't write to ban list file.");
+	log_info("%s", "Couldn't write to ban list file.");
 	return;
     }
 
@@ -5800,7 +5761,7 @@ void I3_readchannel(I3_CHANNEL *channel, FILE * fin)
 		break;
 	}
 	if (!fMatch)
-	    i3bug("I3_readchannel: no match: %s", word);
+	    log_error("I3_readchannel: no match: %s", word);
     }
 }
 
@@ -5811,10 +5772,10 @@ void I3_loadchannels(void)
 
     first_I3chan = last_I3chan = NULL;
 
-    i3log("%s", "Loading channels...");
+    log_info("%s", "Loading channels...");
 
     if (!(fin = fopen(I3_CHANNEL_FILE, "r"))) {
-	i3log("%s", "No channel config file found.");
+	log_info("%s", "No channel config file found.");
 	return;
     }
 
@@ -5829,7 +5790,7 @@ void I3_loadchannels(void)
 	}
 
 	if (letter != '#') {
-	    i3bug("%s", "I3_loadchannels: # not found.");
+	    log_error("%s", "I3_loadchannels: # not found.");
 	    break;
 	}
 
@@ -5860,7 +5821,7 @@ void I3_loadchannels(void)
 	} else if (!strcasecmp(word, "END"))
 	    break;
 	else {
-	    i3bug("I3_loadchannels: bad section: %s.", word);
+	    log_error("I3_loadchannels: bad section: %s.", word);
 	    continue;
 	}
     }
@@ -5874,7 +5835,7 @@ void I3_write_channel_config(void)
     I3_CHANNEL                             *channel;
 
     if ((fout = fopen(I3_CHANNEL_FILE, "w")) == NULL) {
-	i3log("%s", "Couldn't write to channel config file.");
+	log_info("%s", "Couldn't write to channel config file.");
 	return;
     }
 
@@ -6023,7 +5984,7 @@ void fread_mudlist(FILE * fin, I3_MUD *mud)
 	}
 
 	if (!fMatch)
-	    i3bug("I3_readmudlist: no match: %s", word);
+	    log_error("I3_readmudlist: no match: %s", word);
     }
 }
 
@@ -6047,7 +6008,7 @@ void I3_loadmudlist(void)
 	}
 
 	if (letter != '#') {
-	    i3bug("%s", "I3_loadmudlist: # not found.");
+	    log_error("%s", "I3_loadmudlist: # not found.");
 	    break;
 	}
 
@@ -6068,7 +6029,7 @@ void I3_loadmudlist(void)
 		fread_mudlist(fin, mud);
 		I3STRFREE(tmpname);
 	    } else {
-		i3bug("%s", "fread_mudlist: No mudname saved, skipping entry.");
+		log_error("%s", "fread_mudlist: No mudname saved, skipping entry.");
 		i3fread_to_eol(fin);
 		for (;;) {
 		    word = feof(fin) ? "End" : i3fread_word(fin);
@@ -6082,7 +6043,7 @@ void I3_loadmudlist(void)
 	} else if (!strcasecmp(word, "END"))
 	    break;
 	else {
-	    i3bug("I3_loadmudlist: bad section: %s.", word);
+	    log_error("I3_loadmudlist: bad section: %s.", word);
 	    continue;
 	}
     }
@@ -6111,7 +6072,7 @@ void I3_loadchanlist(void)
 	}
 
 	if (letter != '#') {
-	    i3bug("%s", "I3_loadchanlist: # not found.");
+	    log_error("%s", "I3_loadchanlist: # not found.");
 	    break;
 	}
 
@@ -6129,7 +6090,7 @@ void I3_loadchanlist(void)
 	} else if (!strcasecmp(word, "END"))
 	    break;
 	else {
-	    i3bug("I3_loadchanlist: bad section: %s.", word);
+	    log_error("I3_loadchanlist: bad section: %s.", word);
 	    continue;
 	}
     }
@@ -6145,7 +6106,7 @@ void I3_savemudlist(void)
     I3_MUD                                 *mud;
 
     if (!(fp = fopen(I3_MUDLIST_FILE, "w"))) {
-	i3bug("%s", "I3_savemudlist: Unable to write to mudlist file.");
+	log_error("%s", "I3_savemudlist: Unable to write to mudlist file.");
 	return;
     }
 
@@ -6198,7 +6159,7 @@ void I3_savechanlist(void)
     I3_CHANNEL                             *channel;
 
     if (!(fp = fopen(I3_CHANLIST_FILE, "w"))) {
-	i3bug("%s", "I3_savechanlist: Unable to write to chanlist file.");
+	log_error("%s", "I3_savechanlist: Unable to write to chanlist file.");
 	return;
     }
 
@@ -6286,23 +6247,23 @@ int I3_connection_open(ROUTER_DATA *router)
     struct hostent                         *hostp;
     int                                     x = 1;
 
-    i3log("Attempting connect to %s on port %d", router->ip, router->port);
+    log_info("Attempting connect to %s on port %d", router->ip, router->port);
 
     I3_socket = socket(AF_INET, SOCK_STREAM, 0);
     if (I3_socket < 0) {
-	i3log("%s", "Cannot create socket!");
+	log_info("%s", "Cannot create socket!");
 	I3_connection_close(TRUE);
 	return -1;
     }
 
     if ((x = fcntl(I3_socket, F_GETFL, 0)) < 0) {
-	i3log("%s", "I3_connection_open: fcntl(F_GETFL)");
+	log_info("%s", "I3_connection_open: fcntl(F_GETFL)");
 	I3_connection_close(TRUE);
 	return -1;
     }
 
     if (fcntl(I3_socket, F_SETFL, x | O_NONBLOCK) < 0) {
-	i3log("%s", "I3_connection_open: fcntl(F_SETFL)");
+	log_info("%s", "I3_connection_open: fcntl(F_SETFL)");
 	I3_connection_close(TRUE);
 	return -1;
     }
@@ -6313,7 +6274,7 @@ int I3_connection_open(ROUTER_DATA *router)
     if (!inet_aton(router->ip, &sa.sin_addr)) {
 	hostp = gethostbyname(router->ip);
 	if (!hostp) {
-	    i3log("%s", "I3_connection_open: Cannot resolve router hostname.");
+	    log_info("%s", "I3_connection_open: Cannot resolve router hostname.");
 	    I3_connection_close(TRUE);
 	    return -1;
 	}
@@ -6324,13 +6285,13 @@ int I3_connection_open(ROUTER_DATA *router)
 
     if (connect(I3_socket, (struct sockaddr *)&sa, sizeof(sa)) < 0) {
 	if (errno != EINPROGRESS) {
-	    i3log("I3_connection_open: Unable to connect to router %s", router->name);
+	    log_info("I3_connection_open: Unable to connect to router %s", router->name);
 	    I3_connection_close(TRUE);
 	    return -1;
 	}
     }
     I3_ROUTER_NAME = router->name;
-    i3log("Connected to Intermud-3 router %s", router->name);
+    log_info("Connected to Intermud-3 router %s", router->name);
     return I3_socket;
 }
 
@@ -6355,7 +6316,7 @@ void I3_connection_close(bool reconnect)
 	}
 
     if (!rfound) {
-	i3log("%s", "I3_connection_close: Disconnecting from router.");
+	log_info("%s", "I3_connection_close: Disconnecting from router.");
 	if (I3_socket > 0) {
 	    close(I3_socket);
 	    I3_socket = -1;
@@ -6363,7 +6324,7 @@ void I3_connection_close(bool reconnect)
 	return;
     }
 
-    i3log("Closing connection to Intermud-3 router %s", router->name);
+    log_info("Closing connection to Intermud-3 router %s", router->name);
     if (I3_socket > 0) {
 	close(I3_socket);
 	I3_socket = -1;
@@ -6371,36 +6332,36 @@ void I3_connection_close(bool reconnect)
     if (reconnect) {
         if (router->reconattempts <= 3) {
             i3wait = router_reconnect_short_delay;
-	    i3log("%s", "Will attempt to reconnect in approximately 15 seconds.");
+	    log_info("%s", "Will attempt to reconnect in approximately 15 seconds.");
         } else if (router->reconattempts <= 6) {
             i3wait = router_reconnect_medium_delay;
-	    i3log("%s", "Will attempt to reconnect in approximately 1 minute.");
+	    log_info("%s", "Will attempt to reconnect in approximately 1 minute.");
         } else if (router->reconattempts <= 9) {
             i3wait = router_reconnect_long_delay;
-	    i3log("%s", "Will attempt to reconnect in approximately 5 minutes.");
+	    log_info("%s", "Will attempt to reconnect in approximately 5 minutes.");
 	} else if (router->next != NULL) {
-	    i3log("Unable to reach %s. Abandoning connection.", router->name);
-	    i3log("Bytes sent: %ld. Bytes received: %ld.", bytes_sent, bytes_received);
+	    log_info("Unable to reach %s. Abandoning connection.", router->name);
+	    log_info("Bytes sent: %ld. Bytes received: %ld.", bytes_sent, bytes_received);
 	    bytes_sent = 0;
 	    bytes_received = 0;
 	    i3wait = router_reconnect_short_delay;
             router->reconattempts = 0;
             router = router->next;
-	    i3log("Will attempt new connection to %s in approximately 15 seconds.",
+	    log_info("Will attempt new connection to %s in approximately 15 seconds.",
 		  router->name);
         } else {
-	    i3log("Unable to reach %s. Abandoning connection.", router->name);
-	    i3log("Bytes sent: %ld. Bytes received: %ld.", bytes_sent, bytes_received);
+	    log_info("Unable to reach %s. Abandoning connection.", router->name);
+	    log_info("Bytes sent: %ld. Bytes received: %ld.", bytes_sent, bytes_received);
 	    bytes_sent = 0;
 	    bytes_received = 0;
 	    i3wait = router_reconnect_short_delay;
             router->reconattempts = 0;
             router = first_router;
-	    i3log("Will attempt new connection to %s in approximately 15 seconds.",
+	    log_info("Will attempt new connection to %s in approximately 15 seconds.",
 		  router->name);
         }
     }
-    i3log("Bytes sent: %ld. Bytes received: %ld.", bytes_sent, bytes_received);
+    log_info("Bytes sent: %ld. Bytes received: %ld.", bytes_sent, bytes_received);
     bytes_sent = 0;
     bytes_received = 0;
     return;
@@ -6555,7 +6516,7 @@ void router_connect(const char *router_name, bool forced, int mudport, bool isco
      */
     if (first_i3_command == NULL) {
 	if (!I3_load_commands()) {
-	    i3log("%s", "router_connect: Unable to load command table!");
+	    log_info("%s", "router_connect: Unable to load command table!");
 	    I3_socket = -1;
 	    return;
 	}
@@ -6568,7 +6529,7 @@ void router_connect(const char *router_name, bool forced, int mudport, bool isco
 
     if (first_router == NULL) {
 	if (!I3_load_routers()) {
-	    i3log("%s", "router_connect: No router configurations were found!");
+	    log_info("%s", "router_connect: No router configurations were found!");
 	    I3_socket = -1;
 	    return;
 	}
@@ -6588,11 +6549,11 @@ void router_connect(const char *router_name, bool forced, int mudport, bool isco
 	I3_load_color_table();
 
     if ((!this_i3mud->autoconnect && !forced && !isconnected) || (isconnected && I3_socket < 1)) {
-	i3log("Intermud-3 network data loaded. Autoconnect not set. Will need to connect manually.");
+	log_info("Intermud-3 network data loaded. Autoconnect not set. Will need to connect manually.");
 	I3_socket = -1;
 	return;
     } else
-	i3log("%s", "Intermud-3 network data loaded. Initialiazing network connection...");
+	log_info("%s", "Intermud-3 network data loaded. Initialiazing network connection...");
 
     I3_loadchannels();
     I3_loadbans();
@@ -6617,7 +6578,7 @@ void router_connect(const char *router_name, bool forced, int mudport, bool isco
     }
 
     if (!rfound && !isconnected) {
-	i3log("%s", "Unable to connect. No available routers found.");
+	log_info("%s", "Unable to connect. No available routers found.");
         allchan_log(0,"wiley", "Cron", "WileyMUD", "%^RED%^Not connected to I3.  No routers available.%^RESET%^");
         i3_message_to_players("\r\n%^RED%^I3 is down again.  No routers available.%^RESET%^");
 	I3_socket = -1;
@@ -6631,7 +6592,7 @@ void router_connect(const char *router_name, bool forced, int mudport, bool isco
 
     usleep(100000);
 
-    i3log("%s", "Intermud-3 Network initialized.");
+    log_info("%s", "Intermud-3 Network initialized.");
 
     if (!isconnected) {
 	I3_startup_packet();
@@ -6650,7 +6611,7 @@ void i3_startup(bool forced, int mudport, bool isconnected)
     if (I3_read_config(mudport))
 	router_connect(NULL, forced, mudport, isconnected);
     else
-	i3bug("i3_startup: %s", "Configuration failed!");
+	log_error("i3_startup: %s", "Configuration failed!");
 }
 
 void do_taunt_from_log(void)
@@ -6924,7 +6885,7 @@ void i3_check_urls() {
 
     if(stat(I3_URL_DUMP, &fst) != -1) {
         if( fst.st_mtime > last_changed ) {
-            i3log("URL file is ready to process!");
+            log_info("URL file is ready to process!");
             /* File has been updated, so reload it */
             last_changed = fst.st_mtime;
 
@@ -6959,7 +6920,7 @@ void i3_check_urls() {
                 fclose(fp);
                 fp = NULL;
                 truncate(I3_URL_DUMP, 0);
-                i3log("%d lines read, %d results sent, from URL file %s.", i, j, I3_URL_DUMP);
+                log_info("%d lines read, %d results sent, from URL file %s.", i, j, I3_URL_DUMP);
             }
         }
     }
@@ -7051,7 +7012,7 @@ void i3_loop(void)
     if (i3timeout > 0) {
 	i3timeout--;
 	if (i3timeout == 0) {				       /* Time's up baby! */
-	    i3log("I3 Client timeout.");
+	    log_info("I3 Client timeout.");
             allchan_log(0,"wiley", "Cron", "WileyMUD", "%^RED%^I3 Client timeout.%^RESET%^");
 	    I3_connection_close(TRUE);
 	    return;
@@ -7066,7 +7027,7 @@ void i3_loop(void)
      */
     if ((tm_info->tm_wday == 1) || (tm_info->tm_wday == 3) || (tm_info->tm_wday == 5)) {
         if ((tm_info->tm_hour == 5) && (tm_info->tm_min == 0) && (tm_info->tm_sec == 0)) {
-	    i3log("I3 Client is rebooting for scheduled router reboot.");
+	    log_info("I3 Client is rebooting for scheduled router reboot.");
             allchan_log(0,"wiley", "Cron", "WileyMUD", "%^RED%^I3 Client is rebooting for scheduled router reboot.%^RESET%^");
             I3_connection_close(TRUE);
             return;
@@ -7090,7 +7051,7 @@ void i3_loop(void)
 
 	if (!rfound) {
 	    i3wait = -2;
-	    i3log("%s", "I3 Unable to reconnect. No routers responding.");
+	    log_info("%s", "I3 Unable to reconnect. No routers responding.");
 	    return;
 	}
 	I3_socket = I3_connection_open(router);
@@ -7106,11 +7067,11 @@ void i3_loop(void)
 
 	usleep(100000);
 
-	i3log("Connection to Intermud-3 router %s %s.",
+	log_info("Connection to Intermud-3 router %s %s.",
 	      router->name, router->reconattempts > 0 ? "reestablished" : "established");
 	router->reconattempts++;
 	I3_startup_packet();
-	i3timeout = 100;
+	i3timeout = 200;
 	return;
     }
 
@@ -7164,7 +7125,7 @@ void i3_loop(void)
     if (FD_ISSET(I3_socket, &exc_set)) {
 	FD_CLR(I3_socket, &in_set);
 	FD_CLR(I3_socket, &out_set);
-	i3log("%s", "Exception raised on I3 socket.");
+	log_info("%s", "Exception raised on I3 socket.");
 	I3_connection_close(TRUE);
 	return;
     }
@@ -7174,21 +7135,21 @@ void i3_loop(void)
 	if (!ret || (ret < 0 && errno != EAGAIN && errno != EWOULDBLOCK)) {
 	    FD_CLR(I3_socket, &out_set);
 	    if (ret < 0)
-		i3log("%s", "Read error on I3 socket.");
+		log_info("%s", "Read error on I3 socket.");
 	    else
-		i3log("%s", "EOF encountered on I3 socket read.");
+		log_info("%s", "EOF encountered on I3 socket read.");
 	    I3_connection_close(TRUE);
 	    return;
 	}
 	if (ret < 0)					       /* EAGAIN */
 	    return;
 	if (ret == MAX_STRING_LENGTH)
-	    i3log("%s", "String overflow in I3 socket read!");
+	    log_info("%s", "String overflow in I3 socket read!");
 
 	I3_input_pointer += ret;
 	bytes_received += ret;
 	if (packetdebug)
-	    i3log("Bytes received: %d", ret);
+	    log_info("Bytes received: %d", ret);
     }
 
     memcpy(&size, I3_input_buffer, 4);
@@ -7561,12 +7522,12 @@ I3_CMD(I3_mudlist)
 		  "Address", "Port");
     for (mud = first_mud; mud; mud = mud->next) {
 	if (mud == NULL) {
-	    i3bug("%s", "I3_mudlist: NULL mud found in listing!");
+	    log_error("%s", "I3_mudlist: NULL mud found in listing!");
 	    continue;
 	}
 
 	if (mud->name == NULL) {
-	    i3bug("%s", "I3_mudlist: NULL mud name found in listing!");
+	    log_error("%s", "I3_mudlist: NULL mud name found in listing!");
 	    continue;
 	}
 
@@ -7694,7 +7655,7 @@ I3_CMD(I3_setup_channel)
 	    if (I3_hasname(I3DENY(vch), channel->local_name))
 		I3_unflagchan(&I3DENY(vch), channel->local_name);
 	}
-	i3log("setup_channel: removing %s as %s@%s", channel->local_name, channel->I3_name,
+	log_info("setup_channel: removing %s as %s@%s", channel->local_name, channel->I3_name,
 	      channel->host_mud);
 	I3_send_channel_listen(channel, FALSE);
 	I3STRFREE(channel->local_name);
@@ -7730,7 +7691,7 @@ I3_CMD(I3_setup_channel)
 	channel->layout_e = I3STRALLOC("%%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^] %%^CYAN%%^%s");
 	i3_printf(ch, "%s@%s is now locally known as %s\r\n", channel->I3_name,
 		  channel->host_mud, channel->local_name);
-	i3log("setup_channel: setting up %s@%s as %s", channel->I3_name, channel->host_mud,
+	log_info("setup_channel: setting up %s@%s as %s", channel->I3_name, channel->host_mud,
 	      channel->local_name);
 	I3_send_channel_listen(channel, TRUE);
 	I3_write_channel_config();
@@ -9866,17 +9827,17 @@ bool i3_command_hook(CHAR_DATA *ch, const char *lcommand, const char *argument)
 	return FALSE;
 
     if (!this_i3mud) {
-	i3log("%s", "Ooops. I3 called with missing configuration!");
+	log_info("%s", "Ooops. I3 called with missing configuration!");
 	return FALSE;
     }
 
     if (first_i3_command == NULL) {
-	i3log("%s", "Dammit! No command data is loaded!");
+	log_info("%s", "Dammit! No command data is loaded!");
 	return FALSE;
     }
 
     if (I3PERM(ch) <= I3PERM_NONE) {
-	i3bug("Permission %d vs. %d", I3PERM(ch), I3PERM_NONE);
+	log_error("Permission %d vs. %d", I3PERM(ch), I3PERM_NONE);
 	return FALSE;
     }
 
@@ -9903,7 +9864,7 @@ bool i3_command_hook(CHAR_DATA *ch, const char *lcommand, const char *argument)
 
 	    if (cmd->function == NULL) {
 		i3_printf(ch, "That command has no code set. Inform the administration.\r\n");
-		i3bug("i3_command_hook: Command %s has no code set!", cmd->name);
+		log_error("i3_command_hook: Command %s has no code set!", cmd->name);
 		return TRUE;
 	    }
 
@@ -10064,17 +10025,17 @@ void i3_npc_speak(const char *chan_name, const char *actor, const char *message)
     // char buf[MAX_STRING_LENGTH];
 
     if (!i3_is_connected()) {
-	i3log("Not connected!");
+	log_info("Not connected!");
 	return;
     }
     if (!(channel = find_I3_channel_by_localname(chan_name))) {
-	i3log("Can't find local channel %s.", chan_name);
+	log_info("Can't find local channel %s.", chan_name);
 	return;
     }
 
     while (isspace(*message))
 	message++;
-    i3log("Sending [%s] from %s to %s.", message, actor, chan_name);
+    log_info("Sending [%s] from %s to %s.", message, actor, chan_name);
     I3_send_channel_message(channel, actor, message);
 }
 
@@ -10085,17 +10046,17 @@ void i3_npc_chat(const char *chan_name, const char *actor, const char *message)
     // char buf[MAX_STRING_LENGTH];
 
     if (!i3_is_connected()) {
-	i3log("Not connected!");
+	log_info("Not connected!");
 	return;
     }
     if (!(channel = find_I3_channel_by_localname(chan_name))) {
-	i3log("Can't find local channel %s.", chan_name);
+	log_info("Can't find local channel %s.", chan_name);
 	return;
     }
 
     while (isspace(*message))
 	message++;
-    i3log("Sending [%s] from %s to %s.", message, actor, chan_name);
+    log_info("Sending [%s] from %s to %s.", message, actor, chan_name);
     I3_send_channel_emote(channel, actor, message);
 
 #if 0
@@ -10113,7 +10074,7 @@ void i3_npc_chat(const char *chan_name, const char *actor, const char *message)
     send_to_i3(I3_escape(buf));
     I3_write_buffer("\",})\r");
     I3_send_packet();
-    i3log("Sending [%s] from %s to %s.", buf, actor, channel->I3_name);
+    log_info("Sending [%s] from %s to %s.", buf, actor, channel->I3_name);
 #endif
 }
 
