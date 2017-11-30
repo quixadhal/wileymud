@@ -55,3 +55,7 @@
             cpan > install LWP::Protocol::https
     0900    Added backup host IP to Google's API key registry so it can use it
 
+20171130    Quixadhal
+    1800    Added mssql apt source, for amusement.
+            apt-get install apt-transport-https
+            curl https://packages.microsoft.com/keys/microsoft.asc | sudo apt-key add -
