@@ -1076,7 +1076,10 @@ int damage(struct char_data *ch, struct char_data *victim, int dam, int attackty
 	    log_kill(ch, victim, "%s killed by %s at %s", SOME_NAME(victim), SOME_NAME(ch),
 		     SOME_ROOM(ch));
 	} else {
-	    random_death_message(ch, victim);
+            if( ch != victim && ch && victim && ch->in_room && victim->in_room ) {
+	        random_death_message(ch, victim);
+                /* Stop spamming people who are dead and disconnected */
+            }
 	    log_death(ch, victim, "%s butchered by %s at %s", SOME_NAME(victim), SOME_NAME(ch),
 		      SOME_ROOM(ch));
 	}
