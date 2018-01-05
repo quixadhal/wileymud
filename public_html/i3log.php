@@ -3,6 +3,7 @@ global $time_start;
 $time_start = microtime(true);
 
 global $isLocal;
+global $isMobile;
 global $pinkfishMap;
 global $hourColors;
 global $channelColors;
@@ -13,6 +14,7 @@ global $CHAT_DATA_FILE;
 global $file_lines;
 global $bg;
 global $dump;
+global $CHANNEL_ONLY;
 
 $CHAT_COLOR_FILE    = "/home/bloodlines/lib/secure/save/chat.o";
 $CHAT_TEXT_FILE     = "/home/wiley/lib/i3/i3.allchan.log";
@@ -21,6 +23,7 @@ $CHAT_DATA_FILE     = "/home/wiley/lib/i3/i3.speakers.json";
 $LINES_TO_READ      = 2500;
 $PAGE_SIZE          = 25;
 $URL_ONLY           = 0;
+$CHANNEL_ONLY       = 0;
 
 //header("Location: http://wiley.the-firebird.net/~wiley/i3log.php");
 //header("Location: http://wileymud.i3.themud.org/~wiley/i3log.php");
@@ -28,7 +31,7 @@ $URL_ONLY           = 0;
 $DESKTOP_URL        = "http://wileymud.i3.themud.org/~wiley/i3log.php";
 $MOBILE_URL         = "http://wileymud.i3.themud.org/~wiley/i3log_m.php";
 
-function isMobile() {
+function is_mobile() {
     global $_REQUEST;
     global $_SERVER;
 
@@ -47,12 +50,23 @@ function isMobile() {
     return false;
 }
 
-if( isMobile() ) {
-    header("Location: $MOBILE_URL");
+$isMobile = is_mobile();
+if( isset($_REQUEST) && isset($_REQUEST["mobile"]) ) {
+    $isMobile = true;
+} else if( isset($_REQUEST) && isset($_REQUEST["desktop"]) ) {
+    $isMobile = false;
 }
+
+//if( $isMobile ) {
+//    header("Location: $MOBILE_URL");
+//} else {
+//    header("Location: $DESKTOP_URL");
+//}
 
 if( isset($_REQUEST) && isset($_REQUEST["url"]) ) {
     $URL_ONLY = 1;
+} else if( isset($_REQUEST) && isset($_REQUEST["channel"]) ) {
+    $CHANNEL_ONLY = $_REQUEST["channel"];
 }
 
 function numbered_source($filename)
@@ -349,11 +363,16 @@ function file_tail($filepath, $lines = 1, $adaptive = true) {
 
 function get_time_color($time) {
     global $hourColors;
+    global $isMobile;
 
     $hour = substr( $time, 11, 2 );
     $min  = substr( $time, 14, 2 );
     $sec  = substr( $time, 17, 2 );
-    $timestr = "$hour:$min.$sec";
+    if( ! $isMobile ) {
+        $timestr = "$hour:$min.$sec";
+    } else {
+        $timestr = "$hour:$min";
+    }
     $fancyLad = $hourColors[$hour] . $timestr . "</SPAN>";
     return $fancyLad;
 }
@@ -376,6 +395,7 @@ function get_speaker_color($who, $where) {
     global $colorMap;
     global $CHAT_DATA_FILE;
     global $dump;
+    global $isMobile;
 
     $whoLow = strtolower($who);
     $speakerColor = $colorMap["default"];
@@ -408,42 +428,84 @@ function get_speaker_color($who, $where) {
             file_put_contents($CHAT_DATA_FILE, $dump);
         }
     }
-    $fancyLad = "$speakerColor" . $who . "@" . $where . "</SPAN>";
+    if( ! $isMobile ) {
+        $fancyLad = "$speakerColor" . $who . "@" . $where . "</SPAN>";
+    } else {
+        $who_bits = array();
+        $who_bits = explode(" ", $who);
+        $who = $who_bits[sizeof($who_bits) - 1];
+        
+        $fancyLad = "$speakerColor" . $who . "</SPAN>";
+    }
     return $fancyLad;
 }
 
 function get_background_color($channel, $counter) {
-    $hi_colors = array(
-        "default"       => "#1F1F1F",
-        "wiley"         => "#2F1F00",
-        "ds"            => "#2F1F00",
-        "dchat"         => "#002F2F",
-        "intergossip"   => "#002F00",
-        "intercre"      => "#2F1F00",
-        "free_speech"   => "#2F0000",
-        "dwchat"        => "#00002F",
-        "dgd"           => "#1F002F",
-    );
-    $lo_colors = array(
-        "default"       => "#000000",
-        "wiley"         => "#0F0700",
-        "ds"            => "#0F0F00",
-        "dchat"         => "#000F0F",
-        "intergossip"   => "#000F00",
-        "intercre"      => "#0F0700",
-        "free_speech"   => "#0F0000",
-        "dwchat"        => "#00000F",
-        "dgd"           => "#07000F",
-    );
+    global $isMobile;
 
-    if( $counter % 2 ) {
-        $choice = array_key_exists( $channel, $lo_colors) ? $lo_colors[$channel] : $lo_colors["default"];
+    if( $isMobile ) {
+        $hi_colors = array(
+            "default"       => "#2F2F2F",
+            "wiley"         => "#3F2F00",
+            "ds"            => "#3F3F00",
+            "dchat"         => "#003F3F",
+            "intergossip"   => "#003F00",
+            "intercre"      => "#3F2F00",
+            "free_speech"   => "#3F0000",
+            "dwchat"        => "#00003F",
+            "dgd"           => "#2F003F",
+        );
     } else {
-        $choice = array_key_exists( $channel, $hi_colors) ? $hi_colors[$channel] : $hi_colors["default"];
+        $hi_colors = array(
+            "default"       => "#1F1F1F",
+            "wiley"         => "#2F1F00",
+            "ds"            => "#2F1F00",
+            "dchat"         => "#002F2F",
+            "intergossip"   => "#002F00",
+            "intercre"      => "#2F1F00",
+            "free_speech"   => "#2F0000",
+            "dwchat"        => "#00002F",
+            "dgd"           => "#1F002F",
+        );
     }
 
-    //echo "<br>Channel: $channel, Counter: $counter, Choice: $choice<br>";
-    $choice = ($counter % 2) ? "#000000" : "#1F1F1F";
+    if( $isMobile ) {
+        $lo_colors = array(
+            "default"       => "#000000",
+            "wiley"         => "#1F0F00",
+            "ds"            => "#1F1F00",
+            "dchat"         => "#001F1F",
+            "intergossip"   => "#001F00",
+            "intercre"      => "#1F0F00",
+            "free_speech"   => "#1F0000",
+            "dwchat"        => "#00001F",
+            "dgd"           => "#0F001F",
+        );
+    } else {
+        $lo_colors = array(
+            "default"       => "#000000",
+            "wiley"         => "#0F0700",
+            "ds"            => "#0F0F00",
+            "dchat"         => "#000F0F",
+            "intergossip"   => "#000F00",
+            "intercre"      => "#0F0700",
+            "free_speech"   => "#0F0000",
+            "dwchat"        => "#00000F",
+            "dgd"           => "#07000F",
+        );
+    }
+
+    if( $isMobile ) {
+        if( $counter % 2 ) {
+            $choice = array_key_exists( $channel, $lo_colors) ? $lo_colors[$channel] : $lo_colors["default"];
+        } else {
+            $choice = array_key_exists( $channel, $hi_colors) ? $hi_colors[$channel] : $hi_colors["default"];
+        }
+    } else {
+        //echo "<br>Channel: $channel, Counter: $counter, Choice: $choice<br>";
+        $choice = ($counter % 2) ? "#000000" : "#1F1F1F";
+    }
+
     return $choice;
 }
 
@@ -485,6 +547,17 @@ function is_urlbot_line($line) {
     return false;
 }
 
+function is_specific_channel_line( $line ) {
+    global $CHANNEL_ONLY;
+
+    $result = false;
+    $result = preg_match("/\t$CHANNEL_ONLY\t/", $line);
+    if ($result) {
+        return $line;
+    }
+    return false;
+}
+
 $isLocal = is_local_ip();
 
 init_pinkfish_map();
@@ -499,6 +572,8 @@ $colorMap = get_chatter_colors();
 if( $URL_ONLY == 1 ) {
     $file_lines = array_filter(explode( "\n", file_tail( $CHAT_TEXT_FILE, $LINES_TO_READ * 20 ) ), "is_urlbot_line");
     //$file_lines = preg_grep("/URLbot\@WileyMUD/", $file_lines);
+} else if( $CHANNEL_ONLY ) {
+    $file_lines = array_filter(explode( "\n", file_tail( $CHAT_TEXT_FILE, $LINES_TO_READ * 20 ) ), "is_specific_channel_line");
 } else {
     $file_lines = array_filter(explode( "\n", file_tail( $CHAT_TEXT_FILE, $LINES_TO_READ ) ), "is_bot_line");
 }
@@ -685,12 +760,20 @@ $bg = 0;
             table { table-layout: fixed; max-width: 99%; overflow-x: hidden; word-wrap: break-word; text-overflow: ellipsis; }
             a { text-decoration:none; }
             a:hover { text-decoration:underline; }
+            <?php if( $isMobile ) { ?>
+            th,td { font-size: 40px; }
+            input { font-size: 60px; }
+            <?php } ?>
         </style>
     </head>
     <body bgcolor="black" text="#d0d0d0" link="#ffffbf" vlink="#ffa040" onload="setup();">
         <table id="navbar" width="99%" align="center">
             <tr>
+                <?php if( ! $isMobile ) { ?>
                 <td align="left" width="35%">
+                <?php } else { ?>
+                <td align="center" width="100%">
+                <?php } ?>
                     <input id="start_button" type="button" value="1" onclick="first_page();">
                     <input id="back_ten_button" type="button" value="<<" onclick="page_backward_ten();">
                     <input id="back_button" type="button" value="back" onclick="page_backward();">
@@ -699,6 +782,7 @@ $bg = 0;
                     <input id="forward_ten_button" type="button" value=">>" onclick="page_forward_ten();">
                     <input id="end_button" type="button" value="end" onclick="last_page();">
                 </td>
+                <?php if( ! $isMobile ) { ?>
                 <td align="center" width="10%">
                     &nbsp;
                 </td>
@@ -722,15 +806,21 @@ $bg = 0;
                         </span>
                     </a>
                 </td>
+                <?php } ?>
             </tr>
         </table>
         <table id="content" width="99%" align="center">
             <thead>
             <tr>
+                <?php if( ! $isMobile ) { ?>
                 <th id="dateheader" align="left" width="80px" style="color: #DDDDDD; min-width: 80px;">Date</th>
                 <th id="timeheader" align="left" width="60px" style="color: #DDDDDD; min-width: 40px;">Time</th>
                 <th id="channelheader" align="left" width="80px" style="color: #DDDDDD; min-width: 100px;">Channel</th>
                 <th id="speakerheader" align="left" width="200px" style="color: #DDDDDD; min-width: 200px;">Speaker</th>
+                <?php } else { ?>
+                <th id="timeheader" align="left" width="120mm" style="color: #DDDDDD; min-width: 170mm;">Time</th>
+                <th id="speakerheader" align="left" width="250mm" style="color: #DDDDDD; min-width: 250mm;">Speaker</th>
+                <?php } ?>
                 <th align="left">&nbsp;</th>
             </tr>
             </thead>
@@ -748,13 +838,17 @@ $bg = 0;
                 $message = implode("\t", array_slice($line_data, 4));
                 ?>
                 <tr id="row_<?php echo $bg;?>" style="display:none">
+                    <?php if( ! $isMobile ) { ?>
                     <td bgcolor="<?php echo $bgColor; ?>"><?php echo $date; ?></td>
+                    <?php } ?>
 
                     <?php $time = get_time_color( $line_data[0] ); ?>
                     <td bgcolor="<?php echo $bgColor; ?>"><?php echo $time; ?></td>
 
+                    <?php if( ! $isMobile ) { ?>
                     <?php $channel = get_channel_color( $line_data[1] ); ?>
                     <td bgcolor="<?php echo $bgColor; ?>"><?php echo $channel; ?></td>
+                    <?php } ?>
 
                     <?php $speaker = get_speaker_color( $who[0], $who[1] ); ?>
                     <td bgcolor="<?php echo $bgColor; ?>"><?php echo $speaker; ?></td>
@@ -817,9 +911,11 @@ $bg = 0;
             ?>
             </tbody>
         </table>
+        <?php if( ! $isMobile ) { ?>
         <div id="source" style="display: none; vertical-align: bottom; background-color: white;"> <?php echo numbered_source(__FILE__); ?> </div>
         <div id="dump" style="display: none; vertical-align: bottom; background-color: white;"> <?php echo json_encode($colorMap, JSON_PRETTY_PRINT); ?> </div>
         <?php $time_end = microtime(true); $time_spent = $time_end - $time_start; ?>
         <div id="hidden_time" style="display: none;"> <?php printf( "%7.3f", $time_spent); ?> </div>
+        <?php } ?>
     </body>
 </html>

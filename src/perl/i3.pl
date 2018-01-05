@@ -397,22 +397,27 @@ sub do_table_setup {
         }
     }
 
-    if( defined $insert_sql and defined $data ) {
-        $sth = undef;
-        $sth = $db->prepare( $insert_sql );
-        foreach my $k ( sort { length $b <=> length $a } keys( %$data ) ) {
-            my $v = $data->{$k};
-            $rv = $sth->execute($k,$v);
-            if( $rv ) {
-                #$db->commit;
-            } else {
-                print STDERR $DBI::errstr."\n" if $DBI::errstr !~ /^UNIQUE constraint failed/;
-                $db->rollback;
-                return undef;
+    if( defined $data) {
+        if( defined $insert_sql and ref $insert_sql eq 'CODE' ) {
+            $insert_sql->( $db, $data );
+        } else {
+            $sth = undef;
+            $sth = $db->prepare( $insert_sql );
+            foreach my $k ( sort { length $b <=> length $a } keys( %$data ) ) {
+                my $v = $data->{$k};
+                $rv = $sth->execute($k,$v);
+                if( $rv ) {
+                    #$db->commit;
+                } else {
+                    print STDERR $DBI::errstr."\n" if $DBI::errstr !~ /^UNIQUE constraint failed/;
+                    $db->rollback;
+                    return undef;
+                }
             }
+            $db->commit if $rv;
         }
-        $db->commit if $rv;
     }
+
     return 1;
 }
 
@@ -441,13 +446,16 @@ sub setup_urls_table {
 
     return do_table_setup( $db, qq!
         CREATE TABLE IF NOT EXISTS urls ( 
-            created     DATETIME DEFAULT (STRFTIME('%Y-%m-%d %H:%M:%f', 'NOW','utc')), 
-            processed   INTEGER, 
-            channel     TEXT, 
-            speaker     TEXT, 
-            mud         TEXT, 
-            url         TEXT, 
-            message     TEXT 
+            created         DATETIME DEFAULT (STRFTIME('%Y-%m-%d %H:%M:%f', 'NOW','utc')), 
+            processed       INTEGER,
+            channel         TEXT,
+            speaker         TEXT,
+            mud             TEXT,
+            url             TEXT,
+            message         TEXT,
+            message_text    TEXT,
+            message_ansi    TEXT,
+            message_html    TEXT
         );
         !
     );
@@ -578,6 +586,56 @@ sub setup_users_table {
             last_logout DATETIME,
             email       TEXT,
             auth        INTEGER
+        );
+        !
+    );
+}
+
+sub setup_i3_table {
+    my $db = shift;
+    die "Invalid database handle!" unless defined $db;
+
+    return do_table_setup( $db, qq!
+        CREATE TABLE IF NOT EXISTS i3 ( 
+            router_name         TEXT PRIMARY KEY NOT NULL,
+            router_address      TEXT NOT NULL,
+            router_port         INTEGER NOT NULL,
+            router_password     INTEGER DEFAULT 0,
+            mudlist_id          INTEGER DEFAULT 0,
+            chanlist_id         INTEGE DEFAULT 0R
+            mud_name            TEXT,
+            telnet_port         INTEGER,
+            mudlib              TEXT,
+            base_mudlib         TEXT,
+            driver              TEXT,
+            mud_type            TEXT,
+            open_status         TEXT,
+            admin_email         TEXT
+        );
+        !,
+        qq!
+        DELETE FROM i3;
+        !,
+        qq!
+        INSERT INTO i3 (router_name, router_address, router_port,
+                        mud_name, telnet_port, mudlib, base_mudlib,
+                        driver, mud_type, open_status, admin_email) VALUES (?,?);
+        !,
+        $i3_data
+    );
+}
+
+sub setup_i3_chanlist_table {
+    my $db = shift;
+    die "Invalid database handle!" unless defined $db;
+
+    return do_table_setup( $db, qq!
+        CREATE TABLE IF NOT EXISTS i3_chanlist ( 
+            router_name         TEXT PRIMARY KEY NOT NULL REFERENCES i3(router_name),
+            channel_name        TEXT,
+            channel_host        TEXT,
+            channel_type        INTEGER,
+            is_deleted          INTEGER
         );
         !
     );
@@ -1288,20 +1346,56 @@ sub handle_message_for_chat_server {
 POE::Kernel->run();
 exit 0;
 
-my $router_list = {
-    '*dalet'    => {
-        address     => '97.107.133.86',
-        port        => 8787,
+my $i3_data = [
+    {
+        router_name     => '*KellyTest',
+        router_address  => '144.139.132.92',
+        router_port     => 9000,
+        router_password => 0, # This will be given by the router on connect.
+        mudlist_id      => 0, # This will be given by the router on connect.
+        chanlist_id     => 0, # This will be given by the router on connect.
+        mud_name        => 'PerlToy',
+        telnet_port     => 3456,
+        mudlib          => 'Under Par',
+        base_mudlib     => 'Par 5',
+        driver          => '9 Iron',
+        mud_type        => 'Golf Clap',
+        open_status     => 'LOL',
+        admin_email     => 'crow@biteme.com',
     },
-    '*i4'       => {
-        address     => '204.209.44.3',
-        port        => 8080,
+    {
+        router_name     => '*dalet',
+        router_address  => '97.107.133.86',
+        router_port     => 8787,
+        router_password => 0, # This will be given by the router on connect.
+        mudlist_id      => 0, # This will be given by the router on connect.
+        chanlist_id     => 0, # This will be given by the router on connect.
+        mud_name        => 'PerlToy',
+        telnet_port     => 3456,
+        mudlib          => 'Under Par',
+        base_mudlib     => 'Par 5',
+        driver          => '9 Iron',
+        mud_type        => 'Golf Clap',
+        open_status     => 'LOL',
+        admin_email     => 'crow@biteme.com',
     },
-    '*KellyTest'    => {
-        address     => '144.139.132.92',
-        port        => 9000,
+    {
+        router_name     => '*i4',
+        router_address  => '204.209.44.3',
+        router_port     => 8080,
+        router_password => 0, # This will be given by the router on connect.
+        mudlist_id      => 0, # This will be given by the router on connect.
+        chanlist_id     => 0, # This will be given by the router on connect.
+        mud_name        => 'PerlToy',
+        telnet_port     => 3456,
+        mudlib          => 'Under Par',
+        base_mudlib     => 'Par 5',
+        driver          => '9 Iron',
+        mud_type        => 'Golf Clap',
+        open_status     => 'LOL',
+        admin_email     => 'crow@biteme.com',
     },
-};
+];
 
 my $current_router = '*KellyTest';
 
@@ -1319,8 +1413,8 @@ sub setup_i3_client {
     my $session_id = $_[SESSION]->ID;
     $_[HEAP]{i3_client} = POE::Component::Client::TCP->new(
         Alias           => "i3_client",
-        RemoteAddress   => $router_list->{$current_router}{address},
-        RemotePort      => $router_list->{$current_router}{port},
+        RemoteAddress   => $i3_data->[$current_router]->{router_address},
+        RemotePort      => $i3_data->[$current_router]->{router_port},
         #Domain          => AF_INET,
         Filter          => 'POE::Filter::Stream',
         Connected       => \&handle_i3_connect,
@@ -1556,10 +1650,13 @@ sub form_packet {
 
 # Individual packet handlers
 
+
+
+
+
 my $MUD = {
     name                => 'Testes123',
     port                => 3456,
-    username            => 'Quixadhal',
     driver              => '9 Iron',
     mudlib              => 'Under Par',
     base_mudlib         => 'Par 5',
@@ -1582,25 +1679,25 @@ sub send_startup_packet {
     my $gm = gmtime();
     my $packet = form_packet(
         [
-            "startup-req-3",                # Packet type
-            5,                              # Always 5
-            $MUD->{name},                   # originator mud name or 0
-            0,                              # originator username or 0
-            $I3->{current_router},          # target mud name or 0
-            0,                              # target username or 0
+            "startup-req-3",                                # Packet type
+            5,                                              # Always 5
+            $i3_data->[$current_router]->{mud_name},        # originator mud name or 0
+            0,                                              # originator username or 0
+            $current_router,                                # target mud name or 0
+            0,                                              # target username or 0
 
-            $I3->{password},                # Our I3 password integer, or 0
-            $I3->{mudlist_id},              # Our last seen mudlist ID, or 0
-            $I3->{chanlist_id},             # Our last seen channel list ID, or 0
-            $MUD->{port},                   # Login port for our mud
+            $i3_data->[$current_router]->{router_password}, # Our I3 password integer, or 0
+            $i3_data->[$current_router]->{mudlist_id},      # Our last seen mudlist ID, or 0
+            $i3_data->[$current_router]->{chanlist_id},     # Our last seen channel list ID, or 0
+            $i3_data->[$current_router]->{telnet_port},     # Login port for our mud
             0,
             0,
-            $MUD->{mudlib},
-            $MUD->{base_mudlib},
-            $MUD->{driver},
-            $MUD->{mud_type},
-            $MUD->{open_status},
-            $MUD->{admin_email},
+            $i3_data->[$current_router]->{mudlib},
+            $i3_data->[$current_router]->{base_mudlib},
+            $i3_data->[$current_router]->{driver},
+            $i3_data->[$current_router]->{mud_type},
+            $i3_data->[$current_router]->{open_status},
+            $i3_data->[$current_router]->{admin_email},
             {
                 emoteto     => 0,   # boolean
                 news        => 0,   # boolean

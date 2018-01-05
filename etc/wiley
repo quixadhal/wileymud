@@ -11,9 +11,9 @@
 #
 
 PORT=3000
-MUDDIR=/home/quix
-MUDUSER=quix
-MUDGROUP=quix
+MUDDIR=/home/wiley
+MUDUSER=wiley
+MUDGROUP=users
 PATH=$MUDDIR/bin:/bin:/usr/bin:/sbin:/usr/sbin
 DAEMON=$MUDDIR/bin/wileymud
 SCRIPT=$MUDDIR/bin/wileyloop
