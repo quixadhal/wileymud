@@ -35,10 +35,6 @@ function is_mobile() {
     global $_REQUEST;
     global $_SERVER;
 
-    if( isset($_REQUEST) && isset($_REQUEST["m"]) ) {
-        //echo "<hr><h1>Found M Request</h1><hr><br>";
-        return true;
-    }
     if( preg_match(
         "/(android|avantgo|blackberry|bolt|boost|cricket|docomo|fone|hiptop|mini|mobi|palm|phone|pie|tablet|up\.browser|up\.link|webos|wos)/i",
         $_SERVER["HTTP_USER_AGENT"]) ) {
@@ -790,7 +786,7 @@ $bg = 0;
                     <a href="mudlist.html">Mudlist</a>
                 </td>
                 <td align="center" width="10%">
-                    <a href="https://i3.themud.org/chanhist.php#Channel=all">Other Logs</a>
+                    <a href="https://themud.org/chanhist.php#Channel=all">Other Logs</a>
                 </td>
                 <td align="right" width="35%" onmouseover="pagegen.style.color='#00FF00'; timespent.style.color='#00FF00';" onmouseout="pagegen.style.color='#1F1F1F'; timespent.style.color='#1F1F1F';">
                     &nbsp;
