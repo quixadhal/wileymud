@@ -332,7 +332,7 @@ obj/utils.o: utils.c include/global.h include/bug.h include/spells.h \
   include/hash.h include/multiclass.h include/handler.h include/fight.h \
   include/act_info.h include/reception.h include/act_off.h \
   include/magic_utils.h include/mudlimits.h include/act_skills.h \
-  include/utils.h
+  include/i3.h include/utils.h
 obj/bug.o: bug.c include/global.h include/utils.h include/comm.h \
   include/multiclass.h include/db.h include/sql.h include/bug.h
 obj/random.o: random.c include/global.h include/bug.h include/utils.h \

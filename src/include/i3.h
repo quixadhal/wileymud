@@ -176,6 +176,8 @@ extern char *I3_ROUTER_NAME;
 extern time_t last_second;
 extern int sub_second_counter;
 extern int tics_since_last_message;
+
+extern time_t i3_time;
 #endif
 
 /* Oh yeah, baby, that raunchy looking Merc structure just got the facelift of the century.
@@ -357,6 +359,7 @@ struct I3_mud
 };
 
 bool i3_is_connected( void );
+bool i3_is_really_connected( void );
 size_t i3strlcpy( char *dst, const char *src, size_t siz );
 size_t i3strlcat( char *dst, const char *src, size_t siz );
 const char *i3one_argument( const char *argument, char *arg_first );

@@ -97,9 +97,18 @@ int                                     i3timeout;	       /* Number of loops to 
 int                                     i3justconnected = 0;    // So we can say something for the logs.
 //int                                     justconnected_lag = PULSE_PER_SECOND * 5; // Don't start urlbot for a few seconds
 time_t                                  ucache_clock;	       /* Timer for pruning the ucache */
+long                                    channel_m_received;
+long                                    channel_m_sent;
 long                                    bytes_received;
 long                                    bytes_sent;
 time_t                                  i3_time = 0;	       /* Current clock time for the client */
+time_t                                  connected_at = 0;
+time_t                                  connect_started_at = 0;
+int                                     connection_timeouts = 0;
+time_t                                  uptime = 0;
+time_t                                  record_uptime = 0;
+time_t                                  lag_spike = 0;
+time_t                                  record_lag_spike = 0;
 
 I3_MUD                                 *this_i3mud = NULL;
 I3_MUD                                 *first_mud;
@@ -748,6 +757,18 @@ bool i3_is_connected(void)
 	return FALSE;
 
     return TRUE;
+}
+
+/*
+ * This says the I3 connection is actually up and functional, or was... it returns true
+ * only after we have received the startup_reply packet.
+ */
+bool i3_is_really_connected(void)
+{
+    if( ! connected_at )
+        return FALSE;
+
+    return i3_is_connected();
 }
 
 /*
@@ -1665,8 +1686,10 @@ bool I3_write_packet(char *msg)
 	if (msg[x] == '\r' && x > 3)
 	    msg[x] = '\0';
 
+    bytes_sent += oldsize + 4;
     check = send(I3_socket, msg, oldsize + 4, 0);
 
+#if 0
     if (!check || (check < 0 && errno != EAGAIN && errno != EWOULDBLOCK)) {
 	if (check < 0)
 	    log_info("%s", "Write error on socket.");
@@ -1679,7 +1702,42 @@ bool I3_write_packet(char *msg)
     if (check < 0)					       /* EAGAIN */
 	return TRUE;
 
-    bytes_sent += check;
+    //bytes_sent += check;
+#endif
+
+    if ( check == 0 ) {
+	log_error( "EOF encountered on socket write." );
+	I3_connection_close(TRUE);
+	return FALSE;
+    }
+
+    if ( check < 0 ) {
+        switch( errno ) {
+            // Linux morons -- EAGAIN and EWOULDBLOCK are not actually the same error,
+            // even if you tend to do the same thing when they happen.  'tards.
+            
+            //case EAGAIN:
+            case EWOULDBLOCK:
+                //log_info("Socket would block, retrying later.");
+	        return TRUE;
+                break;
+            case EMSGSIZE:
+                log_error( "Message too big for tcp/ip?" );
+                I3_connection_close(TRUE);
+                return FALSE;
+                break;
+            case ENOTCONN:
+                log_error( "Socket not actualy connected?" );
+                I3_connection_close(TRUE);
+                return FALSE;
+                break;
+            default:
+                log_error( "Socket error: %d", errno );
+                I3_connection_close(TRUE);
+                return FALSE;
+        }
+    }
+
     if (packetdebug) {
 	log_info("Size: %d. Bytes Sent: %d.", oldsize, check);
 	log_info("Packet Sent: %s", msg + 4);
@@ -1704,6 +1762,7 @@ void I3_startup_packet(void)
 {
     char                                    s[MAX_INPUT_LENGTH];
     char                                   *strtime;
+    struct timeval                          last_time;
 
     if (!i3_is_connected())
 	return;
@@ -1813,6 +1872,14 @@ void I3_startup_packet(void)
 
     I3_write_buffer("]),})\r");
     I3_send_packet();
+
+    if(i3_time == 0) {
+        // We called this before the first run of i3_loop(), from outside.
+        // Either that, or this code has travelled back in time, and I'm going to be rich!
+        gettimeofday(&last_time, NULL);
+        i3_time = (time_t) last_time.tv_sec;
+    }
+    connect_started_at = i3_time;
 }
 
 /* This function saves the password, mudlist ID, and chanlist ID that are used by the mud.
@@ -2494,6 +2561,8 @@ void I3_send_channel_message(I3_CHANNEL *channel, const char *name, const char *
     I3_write_buffer("\",})\r");
     I3_send_packet();
     //log_info("I3_send_channel() done.");
+    channel_m_sent++;
+    lag_spike = i3_time;
 
     return;
 }
@@ -3092,6 +3161,14 @@ void I3_process_channel_m(I3_HEADER *header, char *s)
 
     if (!channel->local_name)
 	return;
+
+    channel_m_received++;
+    if (lag_spike > 0) {
+        lag_spike = i3_time - lag_spike;
+        if (lag_spike > record_lag_spike)
+            record_lag_spike = lag_spike;
+        lag_spike = 0;
+    }
 
     ps = next_ps;
     I3_get_field(ps, &next_ps);
@@ -6344,6 +6421,8 @@ void I3_connection_close(bool reconnect)
 	    log_info("Bytes sent: %ld. Bytes received: %ld.", bytes_sent, bytes_received);
 	    bytes_sent = 0;
 	    bytes_received = 0;
+            channel_m_sent = 0;
+            channel_m_received = 0;
 	    i3wait = router_reconnect_short_delay;
             router->reconattempts = 0;
             router = router->next;
@@ -6354,6 +6433,8 @@ void I3_connection_close(bool reconnect)
 	    log_info("Bytes sent: %ld. Bytes received: %ld.", bytes_sent, bytes_received);
 	    bytes_sent = 0;
 	    bytes_received = 0;
+            channel_m_sent = 0;
+            channel_m_received = 0;
 	    i3wait = router_reconnect_short_delay;
             router->reconattempts = 0;
             router = first_router;
@@ -6364,6 +6445,8 @@ void I3_connection_close(bool reconnect)
     log_info("Bytes sent: %ld. Bytes received: %ld.", bytes_sent, bytes_received);
     bytes_sent = 0;
     bytes_received = 0;
+    channel_m_sent = 0;
+    channel_m_received = 0;
     return;
 }
 
@@ -6504,10 +6587,12 @@ void router_connect(const char *router_name, bool forced, int mudport, bool isco
     ROUTER_DATA                            *router;
     bool                                    rfound = FALSE;
 
-    i3wait = 0;
-    i3timeout = 0;
+    //i3wait = 0;
+    //i3timeout = 0;
     bytes_sent = 0;
     bytes_received = 0;
+    channel_m_sent = 0;
+    channel_m_received = 0;
 
     manual_router = router_name;
 
@@ -6596,7 +6681,7 @@ void router_connect(const char *router_name, bool forced, int mudport, bool isco
 
     if (!isconnected) {
 	I3_startup_packet();
-	i3timeout = 200;
+	i3timeout = 2500;
     } else {
 	I3_loadmudlist();
 	I3_loadchanlist();
@@ -6967,37 +7052,12 @@ void i3_loop(void)
     fd_set                                  in_set,
                                             out_set,
                                             exc_set;
-    static struct timeval                   last_time,
-                                            null_time;
+    static struct timeval                   last_time;
+    static struct timeval                   null_time;
     bool                                    rfound = FALSE;
 
     struct tm                              *tm_info = NULL;
     time_t                                  tc = (time_t) 0;
-    /*
-    int                                     chan_choice = 0;
-    const char                             *chan_list[] = {
-        "wiley",
-        "wiley",
-        "wiley",
-        "wiley",
-        "wiley",
-        "wiley",
-        "intergossip",
-        "wiley",
-        "wiley",
-        "wiley",
-        "wiley",
-        "wiley",
-        "wiley",
-        "dwchat"
-        "wiley",
-        "wiley",
-        "wiley",
-        "wiley",
-        "wiley",
-        "wiley"
-    };
-    */
 
     gettimeofday(&last_time, NULL);
     i3_time = (time_t) last_time.tv_sec;
@@ -7015,6 +7075,7 @@ void i3_loop(void)
 	    log_info("I3 Client timeout.");
             allchan_log(0,"wiley", "Cron", "WileyMUD", "%^RED%^I3 Client timeout.%^RESET%^");
 	    I3_connection_close(TRUE);
+            connection_timeouts++;
 	    return;
 	}
     }
@@ -7022,6 +7083,7 @@ void i3_loop(void)
     tc = time(0);
     tm_info = localtime(&tc);
 
+#if 0
     /* We reboot our router every Monday, Wedensday, and Friday, at 4:45AM.  This makes the I3
      * connection die, but we can't seem to recognize this, so bounce I3 at 5AM on those days.
      */
@@ -7033,6 +7095,7 @@ void i3_loop(void)
             return;
         }
     }
+#endif
 
     /*
      * This condition can only occur if you were previously connected and the socket was closed.
@@ -7071,7 +7134,7 @@ void i3_loop(void)
 	      router->name, router->reconattempts > 0 ? "reestablished" : "established");
 	router->reconattempts++;
 	I3_startup_packet();
-	i3timeout = 200;
+	i3timeout = 2500;
 	return;
     }
 
@@ -7084,6 +7147,15 @@ void i3_loop(void)
         //justconnected_lag = PULSE_PER_SECOND * 5;
         i3_log_alive();
         tics_since_last_message = TAUNT_DELAY;
+        connected_at = i3_time;
+        uptime = 0;
+    }
+
+    if (connected_at > 0) {
+        uptime = i3_time - connected_at;
+        if (uptime > record_uptime)
+            record_uptime = uptime;
+        // In theory, save this and load it to persist across reboots.
     }
 
     tics_since_last_message--;
@@ -8969,14 +9041,44 @@ I3_CMD(I3_stats)
 	chan_count++;
 
     i3_printf(ch, "%%^CYAN%%^General Statistics:%%^RESET%%^\r\n\r\n");
-    i3_printf(ch, "%%^CYAN%%^Currently connected to: %%^WHITE%%^%%^BOLD%%^%s%%^RESET%%^\r\n",
-	      i3_is_connected()? I3_ROUTER_NAME : "Nowhere!");
-    if (i3_is_connected())
-	i3_printf(ch, "%%^CYAN%%^Connected on descriptor: %%^WHITE%%^%%^BOLD%%^%d%%^RESET%%^\r\n", I3_socket);
-    i3_printf(ch, "%%^CYAN%%^Bytes sent    : %%^WHITE%%^%%^BOLD%%^%ld%%^RESET%%^\r\n", bytes_sent);
-    i3_printf(ch, "%%^CYAN%%^Bytes received: %%^WHITE%%^%%^BOLD%%^%ld%%^RESET%%^\r\n", bytes_received);
-    i3_printf(ch, "%%^CYAN%%^Known muds    : %%^WHITE%%^%%^BOLD%%^%d%%^RESET%%^\r\n", mud_count);
-    i3_printf(ch, "%%^CYAN%%^Known channels: %%^WHITE%%^%%^BOLD%%^%d%%^RESET%%^\r\n", chan_count);
+
+    if (i3_is_really_connected())
+        i3_printf(ch, "%%^CYAN%%^Currently connected to     : %%^WHITE%%^%%^BOLD%%^%s%%^RESET%%^\r\n", I3_ROUTER_NAME);
+    else if (i3_is_connected())
+        i3_printf(ch, "%%^CYAN%%^Currently connecting to    : %%^YELLOW%%^%%^BOLD%%^%s%%^RESET%%^\r\n", I3_ROUTER_NAME);
+    else
+        i3_printf(ch, "%%^CYAN%%^Currently connecting to    : %%^RED%%^%%^BOLD%%^%s%%^RESET%%^\r\n", "Nowhere");
+
+    if (i3_is_really_connected())
+        i3_printf(ch, "%%^CYAN%%^Connected on descriptor    : %%^WHITE%%^%%^BOLD%%^%d%%^RESET%%^\r\n", I3_socket);
+    else if (i3_is_connected())
+        i3_printf(ch, "%%^CYAN%%^Connecting on descriptor   : %%^YELLOW%%^%%^BOLD%%^%d%%^RESET%%^\r\n", I3_socket);
+
+    if (i3_is_really_connected()) {
+        i3_printf(ch, "%%^CYAN%%^Connected for              : %%^WHITE%%^%%^BOLD%%^%s%%^RESET%%^\r\n", time_elapsed(connected_at, 0));
+        i3_printf(ch, "%%^CYAN%%^Time to connect            : %%^WHITE%%^%%^BOLD%%^%s%%^RESET%%^\r\n", time_elapsed(connect_started_at, connected_at));
+    } else if (i3_is_connected())
+        i3_printf(ch, "%%^CYAN%%^Connecting for             : %%^YELLOW%%^%%^BOLD%%^%s%%^RESET%%^\r\n", time_elapsed(connect_started_at, 0));
+
+    if (connection_timeouts > 0) {
+        i3_printf(ch, "%%^CYAN%%^Connection timeouts        : %%^YELLOW%%^%%^BOLD%%^%s (%d)%%^RESET%%^\r\n", time_elapsed(0, (2500 / PULSE_PER_SECOND) * connection_timeouts), connection_timeouts);
+    }
+
+    if (record_uptime > 0) {
+        i3_printf(ch, "%%^CYAN%%^Longest Uptime             : %%^GREEN%%^%%^BOLD%%^%s%%^RESET%%^\r\n", time_elapsed(0, record_uptime));
+    }
+
+    if (record_lag_spike > 0) {
+        i3_printf(ch, "%%^CYAN%%^Longest LAG Spike          : %%^RED%%^%%^BOLD%%^%s%%^RESET%%^\r\n", time_elapsed(0, connection_timeouts));
+    }
+
+    i3_printf(ch, "%%^CYAN%%^Bytes sent                 : %%^WHITE%%^%%^BOLD%%^%ld%%^RESET%%^\r\n", bytes_sent);
+    i3_printf(ch, "%%^CYAN%%^Bytes received             : %%^WHITE%%^%%^BOLD%%^%ld%%^RESET%%^\r\n", bytes_received);
+    i3_printf(ch, "%%^CYAN%%^Channel messages sent      : %%^WHITE%%^%%^BOLD%%^%ld%%^RESET%%^\r\n", channel_m_sent);
+    i3_printf(ch, "%%^CYAN%%^Channel messages received  : %%^WHITE%%^%%^BOLD%%^%ld%%^RESET%%^\r\n", channel_m_received);
+    i3_printf(ch, "%%^CYAN%%^Known muds                 : %%^WHITE%%^%%^BOLD%%^%d%%^RESET%%^\r\n", mud_count);
+    i3_printf(ch, "%%^CYAN%%^Known channels             : %%^WHITE%%^%%^BOLD%%^%d%%^RESET%%^\r\n", chan_count);
+
     return;
 }
 

@@ -12,6 +12,7 @@
 #include <string.h>
 #include <assert.h>
 #include <time.h>
+#include <sys/time.h>
 
 #include "global.h"
 #include "bug.h"
@@ -30,6 +31,7 @@
 #include "magic_utils.h"
 #include "mudlimits.h"
 #include "act_skills.h"
+#include "i3.h"
 #define _UTILS_C
 #include "utils.h"
 
@@ -1517,5 +1519,57 @@ int scprintf(char *buf, size_t limit, const char *Str, ...) {
 	va_end(arg);
     }
     return result + len;
+}
+
+char *time_elapsed(time_t since, time_t now) {
+    time_t                                  diff = 0;
+    static char                             display_time[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
+    struct timeval                          the_time;
+    time_t                                  seconds = 0,
+                                            minutes = 0,
+                                            hours = 0,
+                                            days = 0;
+
+    if( now == 0 ) {
+        gettimeofday(&the_time, NULL);
+        now = (time_t) the_time.tv_sec;
+    }
+
+    diff = now - since;
+    seconds = diff % 60;
+    diff /= 60;
+    minutes = diff % 60;
+    diff /= 60;
+    hours = diff % 24;
+    diff /= 24;
+    days = diff;
+
+    log_info( "TIME_ELAPSED: since %d, now %d, [ %d %2d:%02d:%02d ]",
+            (int)since, (int)now, (int)days, (int)hours, (int)minutes, (int)seconds );
+
+    *display_time = '\0';
+    if(days > 0) {
+        scprintf(display_time, MAX_STRING_LENGTH, "%d days", (int)days);
+        if(hours > 0)
+            scprintf(display_time, MAX_STRING_LENGTH, ", ");
+    }
+    if(hours > 0) {
+        scprintf(display_time, MAX_STRING_LENGTH, "%d hours", (int)hours);
+        if(minutes > 0)
+            scprintf(display_time, MAX_STRING_LENGTH, ", ");
+    }
+    if(minutes > 0) {
+        scprintf(display_time, MAX_STRING_LENGTH, "%d minutes", (int)minutes);
+        if(seconds > 0)
+            scprintf(display_time, MAX_STRING_LENGTH, ", ");
+    }
+    if(seconds > 0)
+        scprintf(display_time, MAX_STRING_LENGTH, "%d seconds", (int)seconds);
+    if(days > 0 || hours > 0 || minutes > 0 || seconds > 0 )
+        scprintf(display_time, MAX_STRING_LENGTH, ".");
+    else
+        scprintf(display_time, MAX_STRING_LENGTH, "No time.");
+
+    return display_time;
 }
 
