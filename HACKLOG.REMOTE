@@ -65,4 +65,8 @@
 
 20180108    Wiley
     1728    Installed nmap
-apt install postgresql locales-all postgresql-doc libdbd-pg-perl
+            apt install postgresql locales-all postgresql-doc libdbd-pg-perl
+
+20180202    Quixadhal
+    1212    dpkg --add-architecture i386
+
