@@ -88,6 +88,7 @@ long                                    I3_output_pointer = 4;
 #define I3_THISMUD (this_i3mud->name)
 //char *I3_THISMUD = NULL;
 char                                   *I3_ROUTER_NAME;
+char                                   *I3_ROUTER_IP;
 const char                             *manual_router;
 int                                     I3_socket;
 int                                     i3wait;		       /* Number of game loops to wait before attempting to
@@ -105,6 +106,7 @@ time_t                                  i3_time = 0;	       /* Current clock tim
 time_t                                  connected_at = 0;
 time_t                                  connect_started_at = 0;
 int                                     connection_timeouts = 0;
+int                                     timeout_ticks = 3000;
 time_t                                  uptime = 0;
 time_t                                  record_uptime = 0;
 time_t                                  lag_spike = 0;
@@ -1937,6 +1939,7 @@ void I3_process_startup_reply(I3_HEADER *header, char *s)
 	if (!strcasecmp(router->name, header->originator_mudname)) {
 	    router->reconattempts = 0;
 	    I3_ROUTER_NAME = router->name;
+	    I3_ROUTER_IP = router->ip;
 	    break;
 	}
     }
@@ -2559,10 +2562,10 @@ void I3_send_channel_message(I3_CHANNEL *channel, const char *name, const char *
     send_to_i3(I3_escape(buf));
     //log_info("I3_send_channel() escaped buffer.");
     I3_write_buffer("\",})\r");
-    I3_send_packet();
-    //log_info("I3_send_channel() done.");
-    channel_m_sent++;
     lag_spike = i3_time;
+    I3_send_packet();
+    channel_m_sent++;
+    //log_info("I3_send_channel() done.");
 
     return;
 }
@@ -6681,7 +6684,7 @@ void router_connect(const char *router_name, bool forced, int mudport, bool isco
 
     if (!isconnected) {
 	I3_startup_packet();
-	i3timeout = 2500;
+	i3timeout = timeout_ticks;
     } else {
 	I3_loadmudlist();
 	I3_loadchanlist();
@@ -7134,7 +7137,7 @@ void i3_loop(void)
 	      router->name, router->reconattempts > 0 ? "reestablished" : "established");
 	router->reconattempts++;
 	I3_startup_packet();
-	i3timeout = 2500;
+	i3timeout = timeout_ticks;
 	return;
     }
 
@@ -9043,9 +9046,9 @@ I3_CMD(I3_stats)
     i3_printf(ch, "%%^CYAN%%^General Statistics:%%^RESET%%^\r\n\r\n");
 
     if (i3_is_really_connected())
-        i3_printf(ch, "%%^CYAN%%^Currently connected to     : %%^WHITE%%^%%^BOLD%%^%s%%^RESET%%^\r\n", I3_ROUTER_NAME);
+        i3_printf(ch, "%%^CYAN%%^Currently connected to     : %%^WHITE%%^%%^BOLD%%^%s (%s)%%^RESET%%^\r\n", I3_ROUTER_NAME, I3_ROUTER_IP);
     else if (i3_is_connected())
-        i3_printf(ch, "%%^CYAN%%^Currently connecting to    : %%^YELLOW%%^%%^BOLD%%^%s%%^RESET%%^\r\n", I3_ROUTER_NAME);
+        i3_printf(ch, "%%^CYAN%%^Currently connecting to    : %%^YELLOW%%^%%^BOLD%%^%s (%s)%%^RESET%%^\r\n", I3_ROUTER_NAME, I3_ROUTER_IP);
     else
         i3_printf(ch, "%%^CYAN%%^Currently connecting to    : %%^RED%%^%%^BOLD%%^%s%%^RESET%%^\r\n", "Nowhere");
 
@@ -9056,12 +9059,13 @@ I3_CMD(I3_stats)
 
     if (i3_is_really_connected()) {
         i3_printf(ch, "%%^CYAN%%^Connected for              : %%^WHITE%%^%%^BOLD%%^%s%%^RESET%%^\r\n", time_elapsed(connected_at, 0));
-        i3_printf(ch, "%%^CYAN%%^Time to connect            : %%^WHITE%%^%%^BOLD%%^%s%%^RESET%%^\r\n", time_elapsed(connect_started_at, connected_at));
-    } else if (i3_is_connected())
-        i3_printf(ch, "%%^CYAN%%^Connecting for             : %%^YELLOW%%^%%^BOLD%%^%s%%^RESET%%^\r\n", time_elapsed(connect_started_at, 0));
+        i3_printf(ch, "%%^CYAN%%^Time to connect            : %%^WHITE%%^%%^BOLD%%^%s%%^RESET%%^\r\n", time_elapsed(connect_started_at - ((timeout_ticks / PULSE_PER_SECOND) * connection_timeouts), connected_at));
+    } else if (i3_is_connected()) {
+        i3_printf(ch, "%%^CYAN%%^Connecting for             : %%^YELLOW%%^%%^BOLD%%^%s%%^RESET%%^\r\n", time_elapsed(connect_started_at - ((timeout_ticks / PULSE_PER_SECOND) * connection_timeouts), 0));
+    }
 
     if (connection_timeouts > 0) {
-        i3_printf(ch, "%%^CYAN%%^Connection timeouts        : %%^YELLOW%%^%%^BOLD%%^%s (%d)%%^RESET%%^\r\n", time_elapsed(0, (2500 / PULSE_PER_SECOND) * connection_timeouts), connection_timeouts);
+        i3_printf(ch, "%%^CYAN%%^Connection timeouts        : %%^YELLOW%%^%%^BOLD%%^%s (%d)%%^RESET%%^\r\n", time_elapsed(0, (timeout_ticks / PULSE_PER_SECOND) * connection_timeouts), connection_timeouts);
     }
 
     if (record_uptime > 0) {
