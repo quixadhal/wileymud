@@ -294,7 +294,8 @@ void spawn_url_handler(void) {
 }
 
 int is_url( int is_emote, const char *channel, const char *speaker, const char *mud, const char *message ) {
-    const char          *regexp_pattern     = "(https?\\:\\/\\/[\\w.-]+(?:\\.[\\w\\.-]+)+[\\w\\-\\._~:/?#[\\]@!\\$&'\\(\\)\\*\\+,;=.]+)";
+    const char          *regexp_pattern     = "(https?\\:\\/\\/[\\w.-]+(?:\\.[\\w\\.-]+)+(?:\\:[\\d]+)?[\\w\\-\\.\\~\\:\\/\\?\\#[\\]\\@\\!\\$\\&\\'\\(\\)\\*\\+\\,\\;\\=\\%]+)";
+    //"(https?\\:\\/\\/[\\w.-]+(?:\\.[\\w\\.-]+)+[\\w\\-\\._~:/?#[\\]@!\\$&'\\(\\)\\*\\+,;=.]+)";
     int                  regexp_opts        = PCRE_CASELESS|PCRE_MULTILINE;
     static pcre         *regexp_compiled    = NULL;
     static pcre_extra   *regexp_studied     = NULL;
