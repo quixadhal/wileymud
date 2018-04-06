@@ -635,7 +635,7 @@ void game_loop(int s)
 	}
 	if ((--pulse_url_handler) <= 0) {
 	    pulse_url_handler = PULSE_URL_HANDLER;
-            spawn_url_handler();
+            // spawn_url_handler();
 	}
 
 	tics++;						       /* tics since last checkpoint signal */
