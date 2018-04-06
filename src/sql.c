@@ -372,7 +372,7 @@ int is_url( int is_emote, const char *channel, const char *speaker, const char *
     // But keep this in mind if a problem does show up, we may need to move this
     // higher up, so it only runs once per N tics.
 
-    spawn_url_handler();
+    //spawn_url_handler();
     return 1;
 }
 
