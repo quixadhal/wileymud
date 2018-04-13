@@ -1573,3 +1573,18 @@ char *time_elapsed(time_t since, time_t now) {
     return display_time;
 }
 
+char                                    *json_escape(char *thing)
+{
+    static char result[MAX_STRING_LENGTH];
+
+    bzero(result, MAX_STRING_LENGTH);
+    for(char *s = thing; *s; s++) {
+        if( *s == '"' || *s == '\\' || ( '\x00' <= *s && *s <= '\x1f' ) ) {
+            scprintf(result, MAX_STRING_LENGTH, "\\u%04x", (unsigned int)*s);
+        } else {
+            scprintf(result, MAX_STRING_LENGTH, "%c", *s);
+        }
+    }
+    return result;
+}
+

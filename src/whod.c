@@ -924,3 +924,43 @@ void                                    generate_mudlist(void)
     return;
 }
 
+#define JSON_MUDLIST_PAGE "../public_html/" "mudlist.json"
+
+void                                    generate_json_mudlist(void)
+{
+    FILE                                   *fp = NULL;
+#ifdef I3
+    I3_MUD                                 *mud;
+#endif
+
+    fprintf(fp, "{\n");
+    fprintf(fp, "    \"mudlist\" : [ \n");
+    for (mud = first_mud; mud; mud = mud->next) {
+        if( mud == NULL )
+            continue;
+        if( mud->name == NULL )
+            continue;
+        if( mud->mud_type == NULL )
+            continue;
+        if( mud->mudlib == NULL )
+            continue;
+        if( mud->ipaddress == NULL )
+            continue;
+        if( mud->status == -1 ) {
+            fprintf(fp, "        {\n");
+            fprintf(fp, "            \"name\"      : \"%s\", \n", json_escape(mud->name));
+            fprintf(fp, "            \"type\"      : \"%s\", \n", json_escape(mud->mud_type));
+            fprintf(fp, "            \"mudlib\"    : \"%s\", \n", json_escape(mud->mudlib));
+            fprintf(fp, "            \"ipaddress\" : \"%s\", \n", json_escape(mud->ipaddress));
+            fprintf(fp, "            \"port\"      : %d\n", mud->player_port);
+            if( mud->next ) {
+                fprintf(fp, "        }, \n");
+            } else {
+                fprintf(fp, "        }\n");
+            }
+        }
+    }
+    fprintf(fp, "    ]\n");
+    fprintf(fp, "}\n");
+}
+

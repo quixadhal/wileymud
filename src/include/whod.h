@@ -62,5 +62,6 @@ void                                    init_whod(int port);
 void                                    close_whod(void);
 void                                    whod_loop(void);
 void                                    generate_mudlist(void);
+void                                    generate_json_mudlist(void);
 
 #endif

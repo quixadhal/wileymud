@@ -628,6 +628,7 @@ void game_loop(int s)
 	if ((--pulse_mudlist) <= 0) {
 	    pulse_mudlist = PULSE_MUDLIST;
             generate_mudlist();
+            generate_json_mudlist();
 	}
 	if ((--pulse_url) <= 0) {
 	    pulse_url = PULSE_URL;
