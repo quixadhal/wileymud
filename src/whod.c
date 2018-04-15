@@ -932,9 +932,16 @@ void                                    generate_json_mudlist(void)
 #ifdef I3
     I3_MUD                                 *mud;
 #endif
+    int                                     did_one = 0;
+
+    if(!(fp = fopen(JSON_MUDLIST_PAGE, "w"))) {
+        log_error("Cannot open %s!", JSON_MUDLIST_PAGE);
+        return;
+    }
 
     fprintf(fp, "{\n");
     fprintf(fp, "    \"mudlist\" : [ \n");
+#ifdef I3
     for (mud = first_mud; mud; mud = mud->next) {
         if( mud == NULL )
             continue;
@@ -946,21 +953,29 @@ void                                    generate_json_mudlist(void)
             continue;
         if( mud->ipaddress == NULL )
             continue;
-        if( mud->status == -1 ) {
-            fprintf(fp, "        {\n");
-            fprintf(fp, "            \"name\"      : \"%s\", \n", json_escape(mud->name));
-            fprintf(fp, "            \"type\"      : \"%s\", \n", json_escape(mud->mud_type));
-            fprintf(fp, "            \"mudlib\"    : \"%s\", \n", json_escape(mud->mudlib));
-            fprintf(fp, "            \"ipaddress\" : \"%s\", \n", json_escape(mud->ipaddress));
-            fprintf(fp, "            \"port\"      : %d\n", mud->player_port);
-            if( mud->next ) {
-                fprintf(fp, "        }, \n");
-            } else {
-                fprintf(fp, "        }\n");
-            }
+        if( did_one ) {
+            fprintf(fp, ",\n");
+        } else {
+            did_one = 1;
         }
+        fprintf(fp, "        {\n");
+        fprintf(fp, "            \"name\"      : \"%s\", \n", json_escape(mud->name));
+        fprintf(fp, "            \"type\"      : \"%s\", \n", json_escape(mud->mud_type));
+        fprintf(fp, "            \"mudlib\"    : \"%s\", \n", json_escape(mud->mudlib));
+        fprintf(fp, "            \"ipaddress\" : \"%s\", \n", json_escape(mud->ipaddress));
+        fprintf(fp, "            \"port\"      : %d,\n", mud->player_port);
+        fprintf(fp, "            \"online\"    : %d\n", mud->status == -1 ? 1 : 0);
+        fprintf(fp, "        }");
     }
+    if( did_one ) {
+        fprintf(fp, "\n");
+    }
+#endif
     fprintf(fp, "    ]\n");
     fprintf(fp, "}\n");
+
+    fclose(fp);
+    fp = NULL;
+    return;
 }
 
