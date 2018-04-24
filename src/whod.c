@@ -740,7 +740,10 @@ void                                    generate_mudlist(void)
     fprintf(fp, "<style>\r\n");
     fprintf(fp, "a { text-decoration:none; }\r\n");
     fprintf(fp, "a:hover { text-decoration:underline; }\r\n");
-    fprintf(fp, "td { white-space:nowrap; text-overflow: ellipsis; overflow-x: hidden; }\r\n");
+    fprintf(fp, "table { table-layout: fixed; white-space:nowrap; text-overflow: ellipsis; overflow-x: hidden; }\r\n");
+    fprintf(fp, "tr { table-layout: fixed; white-space:nowrap; text-overflow: ellipsis; overflow-x: hidden; }\r\n");
+    fprintf(fp, "th { table-layout: fixed; white-space:nowrap; text-overflow: ellipsis; overflow-x: hidden; }\r\n");
+    fprintf(fp, "td { table-layout: fixed; white-space:nowrap; text-overflow: ellipsis; overflow-x: hidden; }\r\n");
     fprintf(fp, "</style>\r\n");
     fprintf(fp, "</head>\r\n");
 
