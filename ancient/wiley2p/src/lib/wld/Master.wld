@@ -1,0 +1,17 @@
+:: Master.wld
+:: Master DataBase file.
+:: All areas that will exist in the game shall be loaded from this
+:: single master file.  Sequential ordering is important for the
+:: time being, but shall be changed with later revisions.
+::
+:: Notes - 
+::   Rooms that have a sector type pertaining to water must follow
+::   the sector definition with both a direction of flow and a speed
+::   that the water flows with.
+
+::   sect swim north 1
+
+:: Individual area files can NOT have the .wld extention.  
+default/Void0
+default/AdvGuild3
+default/WizardChamber1000

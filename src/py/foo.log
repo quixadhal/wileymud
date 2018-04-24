@@ -1,0 +1,6 @@
+2017-04-06 09:43:13.072 BOOT             wileymud| System booting.
+2017-04-06 09:43:13.072 INFO             wileymud| wizlock=False, logfile=foo.log, specials=True, port=3000, debug=False, directory=None, pidfile=foo.pid
+2017-04-06 09:43:13.072 INFO             wileymud| Player port is 3000
+2017-04-06 09:43:13.073 BOOT              signals| Signal handlers setup.
+2017-04-06 09:43:13.073 INFO             wileymud| System was up for 0:00:00.002641
+2017-04-06 09:43:13.073 CRITICAL         wileymud| System halting.

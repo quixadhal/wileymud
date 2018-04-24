@@ -1748,5 +1748,16 @@
     "bastian": "<SPAN style=\"background-color: #00bb00; color: #ffff55\">",
     "fantom": "<SPAN style=\"background-color: #0000bb; color: #ffff55\">",
     "lingeng": "<SPAN style=\"background-color: #bb00bb; color: #ffff55\">",
-    "expresso": "<SPAN style=\"background-color: #bb0000; color: #000000\">"
+    "expresso": "<SPAN style=\"background-color: #bb0000; color: #000000\">",
+    "chemizt": "<SPAN style=\"background-color: #00bb00; color: #000000\">",
+    "sunaris": "<SPAN style=\"background-color: #bb00bb; color: #000000\">",
+    "vengence": "<SPAN style=\"background-color: #00bbbb; color: #000000\">",
+    "lesa": "<SPAN style=\"background-color: #ffff55; color: #000000\">",
+    "henrey": "<SPAN style=\"background-color: #ffffff; color: #000000\">",
+    "radyth": "<SPAN style=\"background-color: #00bbbb; color: #0000bb\">",
+    "zakarowyn": "<SPAN style=\"background-color: #ffff55; color: #0000bb\">",
+    "danaer": "<SPAN style=\"background-color: #ffffff; color: #0000bb\">",
+    "vance": "<SPAN style=\"background-color: #ffff55; color: #00bb00\">",
+    "bryantos": "<SPAN style=\"background-color: #ffffff; color: #00bb00\">",
+    "vashti": "<SPAN style=\"color: #55ff55\">"
 }

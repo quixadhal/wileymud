@@ -1,0 +1,19 @@
+;; The adventures Guild, loads regardless...
+#3
+  name Adventures Guild.~ zone 1 desc
+  You stand in the adventures guild, a place where newborns are created.
+A large wooden room with a small table set in the back corner with four small
+chairs pulled up around it.  A portrait hangs on the wall, its image
+faded badly with the passing of time. One wooden door lies on the western
+wall, it appears to slightly ajar.
+~
+  exit west 
+    goto 3000 
+    desc A large door made of wood.~
+  end
+  sound1 You hear the floorboards creak about you....~
+  ex_desc portrait wall image~
+  The image appears to be that of a man, perhaps the owner of this small
+abode.
+~
+end

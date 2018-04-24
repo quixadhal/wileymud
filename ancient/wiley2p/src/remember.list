@@ -1,0 +1,8 @@
+for the spell turn to work, you must have the mobiles race as either bing
+undead or ghost, this is the only way it will work....
+
+room #3 must be a no exit room, call it storage_room, it is a blank
+room for storing things needed in the code
+
+mobiles used in polymorph spell must be kept in room #3 also, they are moved
+to where the cast is and the cast is moved to where the mobile was

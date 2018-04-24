@@ -47,22 +47,6 @@ class Database(object):
             i.context = MigrationContext.configure(i.connection)
             i.current_revision = i.context.get_current_revision()
             logger.boot('Database revision: %s', i.current_revision)
-            #if i.current_revision is None:
-            #    DataBase.metadata.create_all(SQLEngine)
-            #    from option import Option
-            #    session = Session()
-            #    options = Option()
-            #    #options.date_created = datetime.now()
-            #    #options.version = None
-            #    #options.port = 4400
-            #    #options.wizlock = False
-            #    #options.debug = False
-            #    #options.specials = True
-            #    #options.pidfile = None
-            #    session.add(options)
-            #    session.commit()
-            #    logger.boot('Database created and initialized.')
-            #    logger.boot('Empty Database created.')
 
             i.config = Config(ALEMBIC_CONFIG)
             i.script = ScriptDirectory.from_config(i.config)

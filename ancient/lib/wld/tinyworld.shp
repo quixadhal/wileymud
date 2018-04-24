@@ -1,0 +1,1799 @@
+#0~
+3000
+3001
+3002
+3003
+3004
+1.5
+0.5
+0
+0
+0
+0
+0
+%s Don't mix that here pup.~
+%s You don't even have that pup.~
+%s This is a bar pup, only drinks here.~
+%s A might to expensive for me pup.~
+%s This is a little out of your league pup.~
+%s Thanks for the %d coins pup.~
+%s I think %d coins is just a bit much, but i'll do it pup.~
+2
+0
+3000
+0
+3001
+0
+28
+0
+0
+#1~
+3010
+3011
+3012
+-1
+-1
+1.6
+0.3
+17
+19
+0
+0
+0
+%s I don't bake that!~
+%s You don't seem to have that!~
+%s I only have what you see on the LIST!~
+%s Entirely too expensive for me!~
+%s My goods are far to exquisite for your shallow pouch.~
+%s Only %d coins, thankyou!~
+%s I will only give you %d coins for it.~
+2
+0
+3001
+0
+3010
+0
+28
+0
+0
+#2~
+3015
+3016
+3017
+3018
+-1
+1.4
+0.5
+1
+8
+12
+15
+0
+%s I don't have that here!~
+%s Look again.....~
+%s I don't buy that type of thing.~
+%s Too expensive for me ace.~
+%s This is to expensive for you!~
+%s I'll take %d coins please.~
+%s All you will get is %d coins.~
+2
+0
+3002
+0
+3009
+0
+28
+0
+0
+#3~
+3020
+3021
+-1
+-1
+-1
+1.8
+0.4
+5
+0
+0
+0
+0
+%s I don't have that bub.~
+%s Look at yourself again eh.~
+%s Only what you see here in front of you bub.~
+%s I don't have that much cash.~
+%s You don't have enough!~
+%s Give me %d coins please.~
+%s I will give you %d coins.  Take it and go.~
+2
+0
+3003
+0
+3024
+0
+28
+0
+0
+#4~
+3025
+3026
+3027
+3028
+3029
+1.4
+0.7
+9
+0
+0
+0
+0
+%s I don't have that friend.~
+%s Look at yourself again friend.~
+%s Only what you see here in front of you friend.~
+%s I don't have that much cash.~
+%s You don't have enough!~
+%s Give me %d coins please.~
+%s I will give you %d coins.  Hope you enjoy!~
+0
+0
+3004
+0
+3012
+0
+28
+0
+0
+#5~
+-1
+5000
+5001
+5002
+5003
+1.3
+0.9
+0
+0
+0
+0
+0
+%s I can't hear all that well, what was that?~
+%s We are only a Customs office!~
+%s Please! We are not a general store!~
+%s Our coffers seem to be low at the moment, try again later.~
+%s Things work on money in this city friend.~
+%s Thank you for your contribution of %d coins to the city.~
+%s The city pays you %d coins for that.~
+2
+0
+5000
+0
+5002
+0
+28
+0
+0
+#6~
+5004
+5005
+5006
+5007
+5008
+1.5
+0.9
+10
+15
+17
+0
+0
+%s Haven't made it yet, but will add it to my list.~
+%s I do most of my own work here, not much buying.~
+%s I only buy fine wines or other refreshing drinks.~
+%s I am afraid business has been bad, please try again later.~
+%s Sorry, I cannot lower the price.  Come back when you have more coins.~
+%s I appreciate your business, that will be %d coins please.~
+%s Lovely!  I will pay %d coins for that!~
+2
+0
+5001
+0
+5004
+0
+28
+0
+0
+#7~
+5009
+5010
+5011
+5012
+5013
+1.2
+0.9
+0
+0
+0
+0
+0
+%s I thought I knew every drink around!  You will have to teach me that one!~
+%s Where did you ever hear of such a drink?~
+%s Don't buy nothing here sorry.~
+%s Don't buy nothing here sorry.~
+%s You don't have enough for my drink.~
+%s Much appreciated, %d coins please.~
+%s How odd, I shouldn't be paying %d coins for that, please <bug> this.~
+2
+0
+5002
+0
+5012
+0
+28
+0
+0
+#8~
+5014
+5015
+5016
+5017
+5018
+1.1
+0.9
+0
+0
+0
+0
+0
+%s Don't make that here, but will think about it.~
+%s I buy in bundles, no thanks.~
+%s This is a kitchen!  Get outta here!~
+%s Sorry bub, I told you I don't buy!~
+%s How do you expect me to make a living when people have no money?~
+%s Enjoy!  %d coins please.~
+%s I really shouldn't be doing this, please <bug> this incident.~
+2
+0
+5003
+0
+5013
+0
+28
+0
+0
+#9~
+5019
+5020
+5021
+5022
+5023
+1.5
+0.5
+5
+0
+0
+0
+0
+%s Sorry, but we only carry the finest weapons.~
+%s You probably wish you had that weapon don't you?~
+%s I only buy/sell weapons here.~
+%s I seem to be a bit low on cash at the moment....lone me some?~
+%s You don't have the cash for that!~
+%s Here here, take it and throw the %d coins down.~
+%s Here here, I will give you %d coins for that.~
+2
+0
+5004
+0
+5023
+0
+28
+0
+0
+#10~
+5024
+5025
+5026
+5027
+-1
+1.6
+0.3
+8
+17
+11
+12
+15
+%s I am sorry but I have not made that yet.~
+%s It is really to bad you don't have that item.~
+%s We generally don't deal in that type of thing.~
+%s I am but a meek pottery maker, I couldn't possibly afford such a thing.~
+%s You really should look for something else.~
+%s Thank you!  If you could just give me %d coins please.~
+%s Well, I could give you %d coins for that.~
+2
+0
+5005
+0
+5058
+0
+28
+0
+0
+#11~
+5028
+5029
+5030
+5031
+5032
+1.4
+0.7
+5
+0
+0
+0
+0
+%s Just what you see in the cases here.~
+%s You had better take a closer look at yourself.~
+%s Just daggers here.~
+%s Buisiness has been a little slow lately.~
+%s Sorry, but I don't give out credit.~
+%s Well thanks!  Just a mere %d coins please.~
+%s Let me think.  I will give you %d coins for that.~
+2
+0
+5006
+0
+5085
+0
+28
+0
+0
+#12~
+5033
+5034
+5035
+5036
+5037
+1.3
+0.6
+9
+0
+0
+0
+0
+%s I don't have that here.~
+%s Why don't you look at yourself again.~
+%s We only deal with the protection elements here.~
+%s I don't have the cash for that.~
+%s You wouldn't know what to do with it if you had the money.~
+%s I'll take %d coins for it.~
+%s I dunno.......here, %d coins for that.~
+2
+0
+5007
+0
+5076
+0
+28
+0
+0
+#13~
+5038
+5039
+5040
+5041
+5042
+1.6
+0.3
+9
+0
+0
+0
+0
+%s Take a look around the store and then decide.~
+%s I can't see it on you.  Why don't you go home and get it.~
+%s We only deal in the best, that is not it.~
+%s It would seem that is out of my range at the moment.~
+%s Get out or find something less expensive!~
+%s Well done!  Hope you like it for %d coins.~
+%s Lets see.  I could muster %d coins for it.~
+2
+0
+5008
+0
+5129
+0
+28
+0
+0
+#14~
+-1
+-1
+-1
+-1
+-1
+1.0
+0.9
+5
+8
+9
+15
+4
+%s Don't have that item here.~
+%s You don't have that!  What are you trying to do?~
+%s I don't have the coins for that.~
+%s I don't have the coins for that!~
+%s You don't have the coins for that!~
+%s Hope you enjoy it again for only %d coins!~
+%s I will let another enjoy it for %d coins.~
+2
+0
+5009
+0
+5153
+0
+28
+0
+0
+#15~
+5043
+-1
+-1
+-1
+-1
+1.0
+0.9
+12
+0
+0
+0
+0
+%s Just the plants I have grown please.~
+%s I really don't think you know what you are doing.~
+%s Just plants enjoy this atmosphere.~
+%s This isn't that lucrative a buisiness!~
+%s You really should get some money first.~
+%s Hope you enjoy!  Just put %d coins down on the way out.~
+%s Lovely!  I must have it!  How about %d coins?~
+2
+0
+5010
+0
+5155
+0
+28
+0
+0
+#16~
+5044
+5045
+5046
+5047
+5048
+1.4
+0.8
+4
+8
+12
+15
+17
+%s Perhaps I may try to get that later.~
+%s You better look at you inventory again.~
+%s I couldn't possibly take that from you.~
+%s Such a treasure!  One can't put a monatary value on it.~
+%s You couldn't afford it.~
+%s Hope you enjoy.  Please leave %d coins on the counter.~
+%s That is very nice, I will give you %d coins for it.~
+2
+0
+5011
+0
+5158
+0
+28
+0
+0
+#17~
+-1
+-1
+5049
+5050
+5051
+1.2
+0.9
+0
+0
+0
+0
+0
+%s Give me the recipe sometime.~
+%s I really have no need for that.~
+%s I really have no need for that.~
+%s I really have no need for that.~
+%s I shall just have to bake it for you later.~
+%s Enjoy!  Please place %d coins on the counter.~
+%s I shouldn't be doing this.  <bug> it please.~
+2
+0
+5012
+0
+5170
+0
+28
+0
+0
+#18~
+5052
+5053
+5054
+5055
+5056
+1.5
+0.5
+5
+0
+0
+0
+0
+%s I will see what I can do about getting it for you.~
+%s You don't have that!~
+%s I only deal in weapons here.~
+%s I am low on coins at the moment.  Care to lend some?~
+%s You don't have the money for that!~
+%s Just give me %d coins and it is yours.~
+%s I absolutely have to have it!  Take %d coins for it?~
+2
+0
+5013
+0
+5175
+0
+28
+0
+0
+#19~
+5057
+5058
+5059
+5060
+5061
+1.2
+0.6
+5
+6
+7
+8
+12
+%s Don't ssssseem to have that, look again.~
+%s You don't ssssssseem to have that.~
+%s I can't deal in that type of item.~
+%s I couldn't possssssssssibly use that.~
+%s You really don't ssssssseem to have the cassssssssh at the moment.~
+%s It will only cosssssssst you %d coins!~
+%s Fine then.  Will you take %d coinsssssssssss?  Good.~
+2
+0
+5014
+0
+5180
+0
+28
+0
+0
+#20~
+-1
+-1
+-1
+-1
+5062
+1.6
+0.4
+0
+0
+0
+0
+0
+%s I only have these things.~
+%s I do not sell for my personal profit, therefore do not buy.~
+%s Please!  I cannot do that!~
+%s Tempt me not!~
+%s You must pay to have this gift of the gods!~
+%s May the way of pain follow in your steps.~
+%s I am not able to do that.  Please <bug> if I do.~
+2
+0
+5015
+0
+5210
+0
+28
+0
+0
+#21~
+1901
+1902
+-1
+-1
+-1
+1.2
+0.8
+0
+0
+0
+0
+0
+%s Leave this place, you do not belong........~
+%s Leave this place, you do not belong........~
+%s Leave this place, you do not belong........~
+%s Leave this place, you do not belong........~
+%s Leave this place, you do not belong........~
+%s The redspine offers its thanks.......~
+%s Leave this place, you do not belong........~
+2
+0
+1904
+0
+1952
+0
+28
+0
+0
+#22~
+3100
+3101
+3102
+3103
+3104
+1.2
+0.9
+2
+3
+4
+10
+0
+%s I am new here, and very busy......~
+%s I am new here, and very busy......~
+%s I am new here, and very busy......~
+%s I am new here, and very busy......~
+%s I am new here, and very busy......~
+%s I will take a mere %d coins for that.~
+%s Interesting object, I will give you %d coins for it!~
+2
+0
+3102
+0
+3121
+0
+28
+0
+0
+#23~
+4723
+4724
+4715
+4716
+4717
+1.3
+0.8
+5
+9
+12
+0
+0
+%s Go back to the surface.~
+%s You don't have it, go back to the surface.~
+%s Don't have it, go back to the surface.~
+%s Can't buy it.~
+%s You aint' got the cash, go back to the surface.~
+%s Aint' good coin but i'll take the %d coins.~
+%s %d is a bit much, but i'll take it.~
+2
+0
+4709
+0
+4752
+0
+28
+0
+0
+#24~
+-1
+-1
+-1
+-1
+-1
+1.5
+0.2
+0
+0
+0
+0
+0
+%s Leave me be!~
+%s Leave me be!~
+%s Leave me be!~
+%s Leave me be!~
+%s Leave me be!~
+%s Give me the %d coins and go!~
+%s I don't buy!~
+2
+0
+4710
+0
+4771
+0
+28
+0
+0
+#25~
+4726
+4727
+-1
+-1
+-1
+1.1
+0.8
+17
+19
+0
+0
+0
+%s Eat a pasty!  Drink a mug of Ale!~
+%s Here!  Drink a mug of Ale!~
+%s Pasty's and Ale!~
+%s Please please!  Pastys and Ale, all else is far to expensive.~
+%s Can't even afford a pasty, truely a sad day!~
+%s Enjoy!  Pass the %d coins down.~
+%s Fine!  Done!  %d coins it is!~
+2
+0
+4711
+0
+4761
+0
+28
+0
+0
+#26~
+4728
+4729
+4730
+4731
+-1
+1.3
+0.7
+0
+0
+0
+0
+0
+%s I am working very hard here!~
+%s I am working very hard here!~
+%s I am working very hard here!~
+%s I am working very hard here!~
+%s I am working very hard here!~
+%s Fine then!  Enjoy it for %d coins!~
+%s No no no no no, I don't buy!~
+2
+0
+4712
+0
+4764
+0
+28
+0
+0
+#27~
+4732
+4733
+-1
+-1
+-1
+1.7
+0.3
+8
+12
+0
+0
+0
+%s I don't see that here do you?~
+%s You don't even have that!~
+%s I only have what I have offered to you!~
+%s Sorry, I am not that rich!~
+%s You don't have the money for it!~
+%s Fine then!  Sold for %d coins!~
+%s Good, I will buy it for %d coins!  Done deal!~
+2
+0
+4713
+0
+4765
+0
+28
+0
+0
+#28~
+-1
+-1
+6100
+6101
+6102
+1.6
+0.4
+22
+0
+0
+0
+0
+%s Only the boats you see on the list are for sail.~
+%s You don't even have that item!~
+%s I don't purchase that item.~
+%s I don't have the gold to buy that.~
+%s You don't have the gold for such a craft.~
+%s Be well, i'll take %d coins for it.~
+%s You'll get %d coins for it.~
+2
+0
+6100
+0
+6107
+0
+28
+0
+0
+#29~
+-1
+-1
+-1
+-1
+-1
+1.3
+0.7
+1
+2
+3
+4
+5
+%s What you see is what I have.~
+%s You don't seem to have that item.~
+%s I don't purchase that, try elsewhere.~
+%s I can't afford such a great thing.~
+%s You can't afford it!~
+%s Right then, i'll take %d coins.~
+%s You'll get %d coins for that!~
+2
+0
+6101
+0
+6114
+0
+28
+0
+0
+#30~
+-1
+-1
+-1
+-1
+-1
+1.1
+0.9
+3
+4
+5
+6
+7
+%s What you see is what I have.~
+%s You don't seem to have that item.~
+%s I don't purchase that, try elsewhere.~
+%s I can't afford such a great thing.~
+%s You can't afford it!~
+%s Right then, i'll take %d coins.~
+%s You'll get %d coins for that!~
+2
+0
+6120
+0
+6115
+0
+28
+0
+0
+#31~
+-1
+-1
+-1
+-1
+-1
+1.6
+0.5
+5
+6
+7
+8
+9
+%s What you see is what I have.~
+%s You don't seem to have that item.~
+%s I don't purchase that, try elsewhere.~
+%s I can't afford such a great thing.~
+%s You can't afford it!~
+%s Right then, i'll take %d coins.~
+%s You'll get %d coins for that!~
+2
+0
+6121
+0
+6116
+0
+28
+0
+0
+#32~
+-1
+-1
+-1
+-1
+-1
+1.9
+0.9
+10
+17
+16
+15
+9
+%s What you see is what I have.~
+%s You don't seem to have that item.~
+%s I don't purchase that, try elsewhere.~
+%s I can't afford such a great thing.~
+%s You can't afford it!~
+%s Right then, i'll take %d coins.~
+%s You'll get %d coins for that!~
+2
+0
+6122
+0
+6117
+0
+28
+0
+0
+#33~
+-1
+-1
+-1
+-1
+-1
+1.1
+0.3
+3
+9
+10
+4
+5
+%s What you see is what I have.~
+%s You don't seem to have that item.~
+%s I don't purchase that, try elsewhere.~
+%s I can't afford such a great thing.~
+%s You can't afford it!~
+%s Right then, i'll take %d coins.~
+%s You'll get %d coins for that!~
+2
+0
+6123
+0
+6118
+0
+28
+0
+0
+#34~
+-1
+-1
+-1
+-1
+-1
+1.3
+0.7
+11
+2
+8
+4
+15
+%s What you see is what I have.~
+%s You don't seem to have that item.~
+%s I don't purchase that, try elsewhere.~
+%s I can't afford such a great thing.~
+%s You can't afford it!~
+%s Right then, i'll take %d coins.~
+%s You'll get %d coins for that!~
+2
+0
+6124
+0
+6119
+0
+28
+0
+0
+#35~
+-1
+-1
+-1
+-1
+-1
+1.1
+0.9
+2
+3
+4
+5
+9
+%s What you see is what I have.~
+%s You don't seem to have that item.~
+%s I don't purchase that, try elsewhere.~
+%s I can't afford such a great thing.~
+%s You can't afford it!~
+%s Right then, i'll take %d coins.~
+%s You'll get %d coins for that!~
+2
+0
+6125
+0
+6120
+0
+28
+0
+0
+#36~
+-1
+-1
+-1
+-1
+-1
+1.6
+0.5
+17
+22
+9
+8
+15
+%s What you see is what I have.~
+%s You don't seem to have that item.~
+%s I don't purchase that, try elsewhere.~
+%s I can't afford such a great thing.~
+%s You can't afford it!~
+%s Right then, i'll take %d coins.~
+%s You'll get %d coins for that!~
+2
+0
+6126
+0
+6121
+0
+28
+0
+0
+#37~
+3049
+-1
+-1
+-1
+-1
+1.1
+0.5
+0
+0
+0
+0
+0
+%s I have only my gifts.~
+%s Please, I give offerings.~
+%s Please, I give offerings.~
+%s Please, I give offerings.~
+%s Please, I give offerings.~
+%s May Tyken be with you...~
+%s Please, I give offerings.~
+2
+0
+3037
+0
+3033
+0
+28
+0
+0
+#38~
+15001
+15002
+15003
+15004
+-1
+1.1
+0.5
+0
+0
+0
+0
+0
+%s Don't have that item here.~
+%s You don't seem to have that item.~
+%s I don't buy that item.~
+%s I don't have the coin for that.~
+%s You don't have the coin for that..~
+%s That will be %d coins.~
+%s I will give %d coins for that.~
+2
+0
+15000
+0
+15183
+0
+28
+0
+0
+#39~
+-1
+-1
+-1
+-1
+-1
+1.1
+0.5
+0
+0
+0
+0
+0
+%s Don't have that item here.~
+%s You don't seem to have that item.~
+%s I don't buy that item.~
+%s I don't have the coin for that.~
+%s You don't have the coin for that..~
+%s That will be %d coins.~
+%s I will give %d coins for that.~
+2
+0
+15001
+0
+15184
+0
+28
+0
+0
+#40~
+15016
+15017
+15018
+-1
+-1
+1.1
+0.5
+0
+0
+0
+0
+0
+%s Don't have that item here.~
+%s You don't seem to have that item.~
+%s I don't buy that item.~
+%s I don't have the coin for that.~
+%s You don't have the coin for that..~
+%s That will be %d coins.~
+%s I will give %d coins for that.~
+2
+0
+15002
+0
+15185
+0
+28
+0
+0
+#41~
+15019
+15020
+15021
+15022
+15023
+1.1
+0.5
+0
+0
+0
+0
+0
+%s Don't have that item here.~
+%s You don't seem to have that item.~
+%s I don't buy that item.~
+%s I don't have the coin for that.~
+%s You don't have the coin for that..~
+%s That will be %d coins.~
+%s I will give %d coins for that.~
+2
+0
+15003
+0
+15186
+0
+28
+0
+0
+#42~
+15025
+15026
+15027
+15028
+15029
+1.1
+0.5
+0
+0
+0
+0
+0
+%s Don't have that item here.~
+%s You don't seem to have that item.~
+%s I don't buy that item.~
+%s I don't have the coin for that.~
+%s You don't have the coin for that..~
+%s That will be %d coins.~
+%s I will give %d coins for that.~
+2
+0
+15005
+0
+15189
+0
+28
+0
+0
+#43~
+-1
+-1
+-1
+-1
+-1
+1.1
+0.5
+0
+0
+0
+0
+0
+%s Don't have that item here.~
+%s You don't seem to have that item.~
+%s I don't buy that item.~
+%s I don't have the coin for that.~
+%s You don't have the coin for that..~
+%s That will be %d coins.~
+%s I will give %d coins for that.~
+2
+0
+15006
+0
+15188
+0
+28
+0
+0
+#44~
+15030
+15031
+15032
+-1
+-1
+1.1
+0.5
+0
+0
+0
+0
+0
+%s Don't have that item here.~
+%s You don't seem to have that item.~
+%s I don't buy that item.~
+%s I don't have the coin for that.~
+%s You don't have the coin for that..~
+%s That will be %d coins.~
+%s I will give %d coins for that.~
+2
+0
+15007
+0
+15190
+0
+28
+0
+0
+#45~
+15033
+15034
+15035
+15036
+-1
+1.1
+0.5
+0
+0
+0
+0
+0
+%s Don't have that item here.~
+%s You don't seem to have that item.~
+%s I don't buy that item.~
+%s I don't have the coin for that.~
+%s You don't have the coin for that..~
+%s That will be %d coins.~
+%s I will give %d coins for that.~
+2
+0
+15008
+0
+15191
+0
+28
+0
+0
+#46~
+-1
+-1
+-1
+-1
+-1
+1.1
+0.5
+0
+0
+0
+0
+0
+%s Don't have that item here.~
+%s You don't seem to have that item.~
+%s I don't buy that item.~
+%s I don't have the coin for that.~
+%s You don't have the coin for that..~
+%s That will be %d coins.~
+%s I will give %d coins for that.~
+2
+0
+15009
+0
+15192
+0
+28
+0
+0
+#47~
+-1
+-1
+-1
+-1
+-1
+1.1
+0.5
+0
+0
+0
+0
+0
+%s Don't have that item here.~
+%s You don't seem to have that item.~
+%s I don't buy that item.~
+%s I don't have the coin for that.~
+%s You don't have the coin for that..~
+%s That will be %d coins.~
+%s I will give %d coins for that.~
+2
+0
+15011
+0
+15194
+0
+28
+0
+0
+#48~
+-1
+-1
+-1
+-1
+-1
+1.1
+0.5
+0
+0
+0
+0
+0
+%s Don't have that item here.~
+%s You don't seem to have that item.~
+%s I don't buy that item.~
+%s I don't have the coin for that.~
+%s You don't have the coin for that..~
+%s That will be %d coins.~
+%s I will give %d coins for that.~
+2
+0
+15012
+0
+15195
+0
+28
+0
+0
+#49~
+-1
+-1
+-1
+-1
+-1
+1.1
+0.5
+0
+0
+0
+0
+0
+%s Don't have that item here.~
+%s You don't seem to have that item.~
+%s I don't buy that item.~
+%s I don't have the coin for that.~
+%s You don't have the coin for that..~
+%s That will be %d coins.~
+%s I will give %d coins for that.~
+2
+0
+15014
+0
+15197
+0
+28
+0
+0
+#50~
+-1
+-1
+-1
+-1
+-1
+1.1
+0.5
+0
+0
+0
+0
+0
+%s Don't have that item here.~
+%s You don't seem to have that item.~
+%s I don't buy that item.~
+%s I don't have the coin for that.~
+%s You don't have the coin for that..~
+%s That will be %d coins.~
+%s I will give %d coins for that.~
+2
+0
+15015
+0
+15198
+0
+28
+0
+0
+#51~
+-1
+-1
+-1
+-1
+-1
+1.1
+0.5
+0
+0
+0
+0
+0
+%s Don't have that item here.~
+%s You don't seem to have that item.~
+%s I don't buy that item.~
+%s I don't have the coin for that.~
+%s You don't have the coin for that..~
+%s That will be %d coins.~
+%s I will give %d coins for that.~
+2
+0
+15016
+0
+15199
+0
+28
+0
+0
+#52~
+-1
+-1
+-1
+-1
+-1
+1.1
+0.5
+0
+0
+0
+0
+0
+%s Don't have that item here.~
+%s You don't seem to have that item.~
+%s I don't buy that item.~
+%s I don't have the coin for that.~
+%s You don't have the coin for that..~
+%s That will be %d coins.~
+%s I will give %d coins for that.~
+2
+0
+15017
+0
+15200
+0
+28
+0
+0
+#53~
+-1
+-1
+-1
+-1
+-1
+1.1
+0.5
+0
+0
+0
+0
+0
+%s Don't have that item here.~
+%s You don't seem to have that item.~
+%s I don't buy that item.~
+%s I don't have the coin for that.~
+%s You don't have the coin for that..~
+%s That will be %d coins.~
+%s I will give %d coins for that.~
+2
+0
+15022
+0
+15205
+0
+28
+0
+0
+#54~
+-1
+-1
+-1
+-1
+-1
+1.1
+0.5
+0
+0
+0
+0
+0
+%s Don't have that item here.~
+%s You don't seem to have that item.~
+%s I don't buy that item.~
+%s I don't have the coin for that.~
+%s You don't have the coin for that..~
+%s That will be %d coins.~
+%s I will give %d coins for that.~
+2
+0
+15023
+0
+15209
+0
+28
+0
+0
+#55~
+-1
+-1
+-1
+-1
+-1
+1.1
+0.5
+0
+0
+0
+0
+0
+%s Don't have that item here.~
+%s You don't seem to have that item.~
+%s I don't buy that item.~
+%s I don't have the coin for that.~
+%s You don't have the coin for that..~
+%s That will be %d coins.~
+%s I will give %d coins for that.~
+2
+0
+15027
+0
+15210
+0
+28
+0
+0
+#56~
+-1
+-1
+-1
+-1
+-1
+1.1
+0.5
+0
+0
+0
+0
+0
+%s Don't have that item here.~
+%s You don't seem to have that item.~
+%s I don't buy that item.~
+%s I don't have the coin for that.~
+%s You don't have the coin for that..~
+%s That will be %d coins.~
+%s I will give %d coins for that.~
+2
+0
+15028
+0
+15211
+0
+28
+0
+0
+#57~
+-1
+-1
+-1
+-1
+-1
+1.1
+0.5
+0
+0
+0
+0
+0
+%s Don't have that item here.~
+%s You don't seem to have that item.~
+%s I don't buy that item.~
+%s I don't have the coin for that.~
+%s You don't have the coin for that..~
+%s That will be %d coins.~
+%s I will give %d coins for that.~
+2
+0
+15030
+0
+15213
+0
+28
+0
+0
+#58~
+-1
+-1
+-1
+-1
+-1
+1.1
+0.5
+0
+0
+0
+0
+0
+%s Don't have that item here.~
+%s You don't seem to have that item.~
+%s I don't buy that item.~
+%s I don't have the coin for that.~
+%s You don't have the coin for that..~
+%s That will be %d coins.~
+%s I will give %d coins for that.~
+2
+0
+15031
+0
+15214
+0
+28
+0
+0
+#59~
+-1
+-1
+-1
+-1
+-1
+1.1
+0.5
+0
+0
+0
+0
+0
+%s Don't have that item here.~
+%s You don't seem to have that item.~
+%s I don't buy that item.~
+%s I don't have the coin for that.~
+%s You don't have the coin for that..~
+%s That will be %d coins.~
+%s I will give %d coins for that.~
+2
+0
+15033
+0
+15216
+0
+28
+0
+0
+#60~
+-1
+-1
+-1
+-1
+-1
+1.1
+0.5
+0
+0
+0
+0
+0
+%s Don't have that item here.~
+%s You don't seem to have that item.~
+%s I don't buy that item.~
+%s I don't have the coin for that.~
+%s You don't have the coin for that..~
+%s That will be %d coins.~
+%s I will give %d coins for that.~
+2
+0
+15034
+0
+15217
+0
+28
+0
+0
+#61~
+-1
+-1
+-1
+-1
+-1
+1.1
+0.5
+0
+0
+0
+0
+0
+%s Don't have that item here.~
+%s You don't seem to have that item.~
+%s I don't buy that item.~
+%s I don't have the coin for that.~
+%s You don't have the coin for that..~
+%s That will be %d coins.~
+%s I will give %d coins for that.~
+2
+0
+15035
+0
+15219
+0
+28
+0
+0
+$~

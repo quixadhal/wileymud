@@ -908,10 +908,10 @@ void                                    generate_mudlist(void)
 #ifdef DUAL_LAYOUT
     fprintf(fp, "<th align=\"center\" width=\"%d\">%s</th>\r\n", MUDLIST_WIDTH + 2, "Login Screen");
     fprintf(fp, "<th align=\"left\" width=\"50\">%s</th>\r\n", "&nbsp;");
-    fprintf(fp, "<th align=\"center\">%s</th>\r\n", "Info");
+    fprintf(fp, "<th align=\"center\" width=\"25%%\">%s</th>\r\n", "Info");
     fprintf(fp, "<th align=\"center\" width=\"%d\">%s</th>\r\n", MUDLIST_WIDTH + 2, "Login Screen");
     fprintf(fp, "<th align=\"left\" width=\"50\">%s</th>\r\n", "&nbsp;");
-    fprintf(fp, "<th align=\"center\">%s</th>\r\n", "Info");
+    fprintf(fp, "<th align=\"center\" width=\"25%%\">%s</th>\r\n", "Info");
 #else
     fprintf(fp, "<th align=\"center\" width=\"%d\">%s</th>\r\n", MUDLIST_WIDTH + 2, "Login Screen");
     fprintf(fp, "<th align=\"left\" width=\"50\">%s</th>\r\n", "&nbsp;");

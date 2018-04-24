@@ -1,1 +1,4 @@
 tags
+*.bkp
+*.old
+untiny.c

@@ -6,10 +6,10 @@ PreTitle           ~
 Title              the Elven Student/Filcher~
 Description
 ~
-LastSite           adork@localhost~
-LastLogin          1262633807
+LastSite           adork@stalin.awasteoftime.net~
+LastLogin          1509869776
 Birth              1221467932
-Played             1949
+Played             1965
 Sex                1
 Race               2
 Class              9
@@ -207,7 +207,7 @@ Affect             21 0 0 0 0 0 0
 Affect             22 0 0 0 0 0 0
 Affect             23 0 0 0 0 0 0
 Affect             24 0 0 0 0 0 0
-IMCPerm      3
-IMCFlags     768
-IMCListen    pchat ichat
+i3perm       2
+i3flags      256
+i3listen     wiley
 End

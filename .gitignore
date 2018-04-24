@@ -1,2 +1,6 @@
 .*
 !.gitignore
+tf
+*.txt
+*.lua
+*.png

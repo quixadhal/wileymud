@@ -1,0 +1,9 @@
+test*
+*.diff
+*.tgz
+i3_json.php
+i3log_m.php
+i3log_sql.php
+index_old.php
+menu.php
+archive

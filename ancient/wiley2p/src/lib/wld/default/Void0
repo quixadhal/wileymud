@@ -1,0 +1,9 @@
+;; The Void, a default room that is loaded regardless...
+#0
+  name The Void.
+  zone 0
+  desc
+  You stand in the void, a dark mist lightly wraps around your ankles.
+There are no exits to be seen here, you existance is by your own misfortune.
+~
+end

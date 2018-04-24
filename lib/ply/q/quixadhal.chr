@@ -10,10 +10,10 @@ larger, and larger, overshadowing all else, looming ever closer,
 reaching out to...
      hand you a HUGE glass of the blackest beer you've ever seen!
 ~
-LastSite           adork@localhost~
-LastLogin          1461721281
+LastSite           adork@Quixadhal.SunnyDale~
+LastLogin          1522051427
 Birth              803755990
-Played             41436468
+Played             77618068
 Sex                1
 Race               2
 Class              63
@@ -33,7 +33,7 @@ PoofIn             ~
 PoofOut            ~
 AbilityScores      25 100 25 25 25 25
 AbilityPad         0 0 0 0
-HpManaMove         10002 9999 266 0 1084 0
+HpManaMove         10002 9999 266 0 1145 0
 AC                 100
 ToHitDamage        0 0
 SaveApply          0 0 0 0 0
@@ -189,7 +189,7 @@ NamedSkill         182 100 1 disarm trap~
 NamedSkill         183 100 1 disarm~
 NamedSkill         184 100 1 shield bash~
 NamedSkill         185 100 1 riding~
-ActFlags           32 1
+ActFlags           36 1
 Affect             0 0 0 0 0 0 0
 Affect             1 0 0 0 0 0 0
 Affect             2 0 0 0 0 0 0
@@ -217,8 +217,5 @@ Affect             23 0 0 0 0 0 0
 Affect             24 0 0 0 0 0 0
 i3perm       5
 i3flags      768
-i3listen     dchat intergossip free_speech ds icode wiley dgd pyom dwchat url
-IMCPerm      5
-IMCFlags     768
-IMCListen    dgd intergossip dchat free_speech imud_code
+i3listen     dchat intergossip free_speech ds wiley dgd pyom dwchat url intercre fluffos troll discord
 End

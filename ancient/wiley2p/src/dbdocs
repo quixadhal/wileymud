@@ -1,0 +1,119 @@
+:: A brief discussion of what has been done to the database, a full
+:: builders doc will follow at a later time....
+
+:: I will start by listing all of the definition words known to the
+:: database..
+
+::	::		A comment in your file that will not print out when
+::			 the file is being parsed.
+::	;;		A comment in your file that will print out when
+::			 the file is being parsed.
+::	@		Inherit symbol, followed by an integer.
+::	#		Start of a room, followed by an integer.
+::	end		End of a room, exdescription,exit...and what not.
+::	name		to define the name, a string ending with '~'
+::	desc		to define the main desc, followed by '~'
+::	sect		Sector type, followed by a definition word, see LISTS
+::	zone		The zone this file belongs to, followed by an integer.
+:: 	flags		Flag types, followed by definition word[s], see LISTS
+::	exit		Start of an exit, use end to encapsulate it. c LISTS
+::	key		Key used for an exit, followed by an integer.
+::	goto		Room exit should goto, followed by an integer.
+::	sound1		This is the in room sound players will hear.
+::	sound2		This is the out of room sound players hear when
+::			 in a room connected to this room.
+::	tele_time	The time before a teleport takes action.
+::	tele_targ	where the room teleports to.
+::	tele_look	Should the description print when the player shows
+::			 up. see lists.
+::	ex_desc		An extra description, followed by key words used when
+::			 a player used 'look at '. use end to encapsulate it.
+
+:: LISTS
+::  There are various lists used throughout, most are for checking keywords
+::  used with other definitions.
+
+::  SECTOR LIST
+::	inside
+::	city
+::	field
+::	forest
+::	hills
+::	mountain
+::	swim		- a player CAN swim in this room ****
+::	no_swim		- a player needs a floatation device for this room ***
+::	air		- a player must be flying by some means to enter.
+::	underwater	- a player needs a way to breath to enter. ****
+
+:: **** These sector types must be followed by the currents direction and
+::      speed. IE.  sect swim north 1.
+::      This room will flow north with a flow speed of 1.
+
+::  DIRECTION LIST - used for exits and water flow direction.
+::	north or N or n
+::	east or E or e
+::	south or S or s
+::	west or W or w
+::	up or U or u
+::	down or D or d
+
+::  FLAGS LIST
+::	dark
+::	no_mob
+::	indoors
+::	no_flight
+::	no_steal
+::	no_summon
+::	no_magic
+::	private
+
+:: REPLY LIST
+::	YES or yes
+::	NO or no
+::	ON or on
+::	OFF or off
+
+:: EXIT LIST - 
+::      isdoor
+::	closed
+::	locked
+::	pickproof
+
+:: DEFAULTS for room if you do not define them.
+::	zone		0
+::	sect		city
+::	riverdir	-1	
+::	riverspeed	0
+::	teletime	-1
+::	teletarg	-1
+::	telelook	YES
+::	flags		none
+::	
+:: DEFAULTS for an exit if you do not define them.
+::	keyword		none
+::	description	none
+::	flags		none
+::	key		-1
+::	goto		0 ( void ) cackle
+:: AN EXAMPLE
+
+#1000				
+name A test room.~
+flags indoors no_mob~
+desc
+A description of this room, well, none actually.
+~					
+sect city			
+zone 1			
+ex_desc rug~
+This is the extra description for the rug.~
+  exit north	
+    desc This is the description of an exit.~
+    goto 1001
+  end	
+  exit south
+    key 1111
+    flags isdoor~
+    desc A small wooden door set into the south wall.~
+  end 
+end

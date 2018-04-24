@@ -1,0 +1,32 @@
+;; The Wizards Chamber, default room loaded regardless...
+;;
+#1000
+  name The Wizards Chamber.
+  zone 1
+  desc
+  You stand in the Wizards Chamber....
+  Two large doors hang on the north and south wall.
+~
+  exit north
+    goto 0
+    desc The word 'Void' can be seen on the north door.~
+  end
+  exit south
+    goto 3
+    desc The word 'Guild' can be seen on the south door.~
+  end
+end
+#1001
+  name Cyric's Abode
+  zone 1
+  desc
+  You stand in the small humble abode of Cyric...
+~
+  exit north
+    goto 0
+  end
+  exit south
+    goto 3
+  end
+end
+  
