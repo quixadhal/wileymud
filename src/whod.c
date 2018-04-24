@@ -1006,10 +1006,14 @@ void                                    generate_mudlist(void)
 #endif
 
     fprintf(fp, "<tr bgcolor=\"#00002f\">\r\n");
+#ifdef OLD_LAYOUT
+    fprintf(fp, "<td align=\"center\" colspan=\"5\">%d total muds listed.</td>\r\n", row_counter);
+#else
 #ifdef DUAL_LAYOUT
-    fprintf(fp, "<td align=\"center\" colspan=\"5\">%d total muds listed.</td>\r\n", (row_counter * 2) + (col_counter % 2));
+    fprintf(fp, "<td align=\"center\" colspan=\"6\">%d total muds listed.</td>\r\n", (row_counter * 2) + (col_counter % 2));
 #else
     fprintf(fp, "<td align=\"center\" colspan=\"5\">%d total muds listed.</td>\r\n", row_counter);
+#endif
 #endif
     fprintf(fp, "</tr>\r\n");
     fprintf(fp, "</table>\r\n");
