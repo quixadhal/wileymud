@@ -689,8 +689,8 @@ void whod_loop(void)
 #define MUDLIST_PAGE    WEB_DIR "mudlist.html"
 #define PUBLIC_GFX      "gfx/mud/"
 #define MUDLIST_GFX     WEB_DIR PUBLIC_GFX
-#define MUDLIST_WIDTH   240
-#define MUDLIST_HEIGHT  150
+#define MUDLIST_WIDTH   192 // 240
+#define MUDLIST_HEIGHT  120 // 150
 
 void                                    generate_mudlist(void)
 {
