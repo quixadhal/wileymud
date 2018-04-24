@@ -712,11 +712,11 @@ void                                    generate_mudlist(void)
     char                                    nowtimebuf[100];
     struct timeval                          now_bits;
     struct timeval                          later_bits;
-    int                                     row_counter = 0;
 #ifdef I3
     I3_MUD                                 *mud;
     struct stat                             stat_buf;
     char                                    stat_name[MAX_INPUT_LENGTH];
+    int                                     row_counter = 0;
 #ifdef DUAL_LAYOUT
     int                                     col_counter = 0;
 #endif
@@ -1006,7 +1006,11 @@ void                                    generate_mudlist(void)
 #endif
 
     fprintf(fp, "<tr bgcolor=\"#00002f\">\r\n");
+#ifdef DUAL_LAYOUT
+    fprintf(fp, "<td align=\"center\" colspan=\"5\">%d total muds listed.</td>\r\n", (row_counter * 2) + (col_counter % 2));
+#else
     fprintf(fp, "<td align=\"center\" colspan=\"5\">%d total muds listed.</td>\r\n", row_counter);
+#endif
     fprintf(fp, "</tr>\r\n");
     fprintf(fp, "</table>\r\n");
 #endif
