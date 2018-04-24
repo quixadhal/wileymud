@@ -22,6 +22,7 @@
 #include <string.h>
 #include <ctype.h>
 #include <fcntl.h>
+#include <sys/stat.h>
 
 #include "version.h"
 #include "global.h"
@@ -684,7 +685,11 @@ void whod_loop(void)
  * #
  */
 
-#define MUDLIST_PAGE "../public_html/" "mudlist.html"
+#define WEB_DIR         "../public_html/"
+#define MUDLIST_PAGE    WEB_DIR "mudlist.html"
+#define MUDLIST_GFX     WEB_DIR "gfx/mud/"
+#define MUDLIST_WIDTH   240
+#define MUDLIST_HEIGHT  150
 
 void                                    generate_mudlist(void)
 {
@@ -706,6 +711,8 @@ void                                    generate_mudlist(void)
     int                                     row_counter = 0;
 #ifdef I3
     I3_MUD                                 *mud;
+    struct stat                             stat_buf;
+    char                                    stat_name[MAX_INPUT_LENGTH];
 #endif
 
     now = time((time_t *) 0);
@@ -868,14 +875,33 @@ void                                    generate_mudlist(void)
     fprintf(fp, "<br />\r\n");
 
     fprintf(fp, "<table border=\"0\" cellspacing=\"0\" cellpadding=\"1\" width=\"%s\">\r\n", "80%");
-    fprintf(fp, "<tr bgcolor=\"#00002f\">\r\n");
     /* name, type, mudlib, address, port */
+
+    /*
+     * Old layout:  Name    Type    Mudlib  Address Port
+     *
+     * New layout:  [-------] Name
+     *              [ Image ] Type      Address Port
+     *              [-------] Mudlib
+     */
+
+#undef OLD_LAYOUT
+
+    fprintf(fp, "<tr bgcolor=\"#00002f\">\r\n");
+#ifdef OLD_LAYOUT
     fprintf(fp, "<th align=\"center\" >%s</th>\r\n", "Name");
     fprintf(fp, "<th align=\"center\" width=\"100\">%s</th>\r\n", "Type");
     fprintf(fp, "<th align=\"center\" width=\"200\">%s</th>\r\n", "Mudlib");
     fprintf(fp, "<th align=\"center\" width=\"150\">%s</th>\r\n", "Address");
     fprintf(fp, "<th align=\"center\" width=\"50\">%s</th>\r\n", "Port");
+#else
+    fprintf(fp, "<th align=\"center\" >%s</th>\r\n", "MUD");
+    fprintf(fp, "<th align=\"center\" width=\"200\">%s</th>\r\n", "Info");
+    fprintf(fp, "<th align=\"center\" width=\"150\">%s</th>\r\n", "Address");
+    fprintf(fp, "<th align=\"center\" width=\"50\">%s</th>\r\n", "Port");
+#endif
     fprintf(fp, "</tr>\r\n");
+
     for (mud = first_mud; mud; mud = mud->next) {
         if( mud == NULL )
             continue;
@@ -889,15 +915,26 @@ void                                    generate_mudlist(void)
             continue;
         if( mud->status == -1 ) {
             fprintf(fp, "<tr bgcolor=\"%s\">\r\n", row_counter % 2 ? "#000000" : "#1f1f1f");
+#ifdef OLD_LAYOUT
             fprintf(fp, "<td align=\"left\"><a target=\"I3 mudlist\" href=\"http://%s/\">%s</a></td>\r\n", mud->ipaddress, mud->name);
             fprintf(fp, "<td align=\"left\" >%s</td>\r\n", mud->mud_type);
             fprintf(fp, "<td align=\"left\" >%s</td>\r\n", mud->mudlib);
-            //fprintf(fp, "<a href=\"telnet://%s:%d/\" >\r\n", mud->ipaddress, mud->player_port);
-            //fprintf(fp, "<td align=\"left\" >%s</td>\r\n", mud->ipaddress);
-            //fprintf(fp, "<td align=\"right\" >%d</td>\r\n", mud->player_port);
             fprintf(fp, "<td align=\"left\" ><a href=\"telnet://%s:%d/\">%s</a></td>\r\n", mud->ipaddress, mud->player_port, mud->ipaddress);
             fprintf(fp, "<td align=\"right\" ><a href=\"telnet://%s:%d/\">%d</a></td>\r\n", mud->ipaddress, mud->player_port, mud->player_port);
-            //fprintf(fp, "</a>\r\n");
+#else
+            sprintf(stat_name, "%s%s.png", MUDLIST_GFX, mud->name);
+            if( stat(stat_name, &stat_buf) < 0 ) {
+                sprintf(stat_name, "%s%s.png", MUDLIST_GFX, "__NOT_FOUND");
+            }
+            fprintf(fp, "<td align=\"left\" ><img border=\"0\" width=\"%d\" height=\"%d\" src=\"%s.png\" /></td>\r\n", MUDLIST_WIDTH, MUDLIST_HEIGHT, stat_name);
+            fprintf(fp, "<td align=\"left\">\r\n");
+            fprintf(fp, "    <a target=\"I3 mudlist\" href=\"http://%s/\">%s</a><br />\r\n", mud->ipaddress, mud->name);
+            fprintf(fp, "    %s<br />\r\n", mud->mud_type);
+            fprintf(fp, "    %s\r\n", mud->mudlib);
+            fprintf(fp, "</td>\r\n");
+            fprintf(fp, "<td align=\"left\"><a href=\"telnet://%s:%d/\">%s</a></td>\r\n", mud->ipaddress, mud->player_port, mud->ipaddress);
+            fprintf(fp, "<td align=\"right\"><a href=\"telnet://%s:%d/\">%d</a></td>\r\n", mud->ipaddress, mud->player_port, mud->player_port);
+#endif
             fprintf(fp, "</tr>\r\n");
             row_counter++;
         }
