@@ -687,7 +687,8 @@ void whod_loop(void)
 
 #define WEB_DIR         "../public_html/"
 #define MUDLIST_PAGE    WEB_DIR "mudlist.html"
-#define MUDLIST_GFX     WEB_DIR "gfx/mud/"
+#define PUBLIC_GFX      "gfx/mud/"
+#define MUDLIST_GFX     WEB_DIR PUBLIC_GFX
 #define MUDLIST_WIDTH   240
 #define MUDLIST_HEIGHT  150
 
@@ -924,8 +925,11 @@ void                                    generate_mudlist(void)
 #else
             sprintf(stat_name, "%s%s.png", MUDLIST_GFX, mud->name);
             if( stat(stat_name, &stat_buf) < 0 ) {
-                sprintf(stat_name, "%s%s.png", MUDLIST_GFX, "__NOT_FOUND");
+                sprintf(stat_name, "%s%s.png", PUBLIC_GFX, "__NOT_FOUND");
+            } else {
+                sprintf(stat_name, "%s%s.png", PUBLIC_GFX, mud->name);
             }
+
             fprintf(fp, "<td align=\"left\" ><img border=\"0\" width=\"%d\" height=\"%d\" src=\"%s.png\" /></td>\r\n", MUDLIST_WIDTH, MUDLIST_HEIGHT, stat_name);
             fprintf(fp, "<td align=\"left\">\r\n");
             fprintf(fp, "    <a target=\"I3 mudlist\" href=\"http://%s/\">%s</a><br />\r\n", mud->ipaddress, mud->name);
