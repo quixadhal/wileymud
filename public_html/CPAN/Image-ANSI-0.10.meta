@@ -1,0 +1,51 @@
+---
+name: Image-ANSI
+version: 0.10
+author:
+  - 'Brian Cassidy <bricas@cpan.org>'
+abstract: '(DEPRECATED) Load, create, manipulate and save ANSI files'
+license: perl
+resources:
+  license: http://dev.perl.org/licenses/
+requires:
+  Class::Accessor: 0
+  File::SAUCE: 0
+  GD: 0
+provides:
+  Image::ANSI:
+    file: lib/Image/ANSI.pm
+    version: 0.10
+  Image::ANSI::Font:
+    file: lib/Image/ANSI/Font.pm
+    version: 0.10
+  Image::ANSI::Font::8x16:
+    file: lib/Image/ANSI/Font/8x16.pm
+    version: 0.10
+  Image::ANSI::Font::8x8:
+    file: lib/Image/ANSI/Font/8x8.pm
+    version: 0.10
+  Image::ANSI::Palette:
+    file: lib/Image/ANSI/Palette.pm
+    version: 0.10
+  Image::ANSI::Palette::VGA:
+    file: lib/Image/ANSI/Palette/VGA.pm
+    version: 0.10
+  Image::ANSI::Parser:
+    file: lib/Image/ANSI/Parser.pm
+    version: 0.10
+  Image::ANSI::Pixel:
+    file: lib/Image/ANSI/Pixel.pm
+    version: 0.10
+  Image::ANSI::Utils:
+    file: lib/Image/ANSI/Utils.pm
+    version: 0.10
+  Image::ANSIMation:
+    file: lib/Image/ANSIMation.pm
+    version: 0.10
+  Image::ANSIMation::Parser:
+    file: lib/Image/ANSIMation/Parser.pm
+    version: 0.10
+generated_by: Module::Build version 0.280801
+meta-spec:
+  url: http://module-build.sourceforge.net/META-spec-v1.2.html
+  version: 1.2
