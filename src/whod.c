@@ -692,6 +692,9 @@ void whod_loop(void)
 #define MUDLIST_WIDTH   192 // 240
 #define MUDLIST_HEIGHT  120 // 150
 
+#undef OLD_LAYOUT
+#define DUAL_LAYOUT
+
 void                                    generate_mudlist(void)
 {
     FILE                                   *fp = NULL;
@@ -714,6 +717,9 @@ void                                    generate_mudlist(void)
     I3_MUD                                 *mud;
     struct stat                             stat_buf;
     char                                    stat_name[MAX_INPUT_LENGTH];
+#ifdef DUAL_LAYOUT
+    int                                     col_counter = 0;
+#endif
 #endif
 
     now = time((time_t *) 0);
@@ -884,9 +890,12 @@ void                                    generate_mudlist(void)
      * New layout:  [-------] Name
      *              [ Image ] Type      Address Port
      *              [-------] Mudlib
+     *
+     * Dual layout: [-------] Name      [-------] Name
+     *              [ Image ] Type      [ Image ] Type
+     *              [  ---  ] Mudlib    [  ---  ] Mudlib
+     *              [-------] IP Port   [-------] IP Port
      */
-
-#undef OLD_LAYOUT
 
     fprintf(fp, "<tr bgcolor=\"#00002f\">\r\n");
 #ifdef OLD_LAYOUT
@@ -896,11 +905,20 @@ void                                    generate_mudlist(void)
     fprintf(fp, "<th align=\"center\" width=\"150\">%s</th>\r\n", "Address");
     fprintf(fp, "<th align=\"center\" width=\"50\">%s</th>\r\n", "Port");
 #else
+#ifdef DUAL_LAYOUT
+    fprintf(fp, "<th align=\"center\" width=\"%d\">%s</th>\r\n", MUDLIST_WIDTH + 2, "Login Screen");
+    fprintf(fp, "<th align=\"left\" width=\"50\">%s</th>\r\n", "&nbsp;");
+    fprintf(fp, "<th align=\"center\">%s</th>\r\n", "Info");
+    fprintf(fp, "<th align=\"center\" width=\"%d\">%s</th>\r\n", MUDLIST_WIDTH + 2, "Login Screen");
+    fprintf(fp, "<th align=\"left\" width=\"50\">%s</th>\r\n", "&nbsp;");
+    fprintf(fp, "<th align=\"center\">%s</th>\r\n", "Info");
+#else
     fprintf(fp, "<th align=\"center\" width=\"%d\">%s</th>\r\n", MUDLIST_WIDTH + 2, "Login Screen");
     fprintf(fp, "<th align=\"left\" width=\"50\">%s</th>\r\n", "&nbsp;");
     fprintf(fp, "<th align=\"center\">%s</th>\r\n", "Info");
     fprintf(fp, "<th align=\"left\" width=\"150\">%s</th>\r\n", "Address");
     fprintf(fp, "<th align=\"right\" width=\"50\">%s</th>\r\n", "Port");
+#endif
 #endif
     fprintf(fp, "</tr>\r\n");
 
@@ -916,14 +934,22 @@ void                                    generate_mudlist(void)
         if( mud->ipaddress == NULL )
             continue;
         if( mud->status == -1 ) {
-            fprintf(fp, "<tr bgcolor=\"%s\">\r\n", row_counter % 2 ? "#000000" : "#1f1f1f");
 #ifdef OLD_LAYOUT
+            fprintf(fp, "<tr bgcolor=\"%s\">\r\n", row_counter % 2 ? "#000000" : "#1f1f1f");
             fprintf(fp, "<td align=\"left\"><a target=\"I3 mudlist\" href=\"http://%s/\">%s</a></td>\r\n", mud->ipaddress, mud->name);
             fprintf(fp, "<td align=\"left\" >%s</td>\r\n", mud->mud_type);
             fprintf(fp, "<td align=\"left\" >%s</td>\r\n", mud->mudlib);
             fprintf(fp, "<td align=\"left\" ><a href=\"telnet://%s:%d/\">%s</a></td>\r\n", mud->ipaddress, mud->player_port, mud->ipaddress);
             fprintf(fp, "<td align=\"right\" ><a href=\"telnet://%s:%d/\">%d</a></td>\r\n", mud->ipaddress, mud->player_port, mud->player_port);
+            fprintf(fp, "</tr>\r\n");
+            row_counter++;
 #else
+#ifdef DUAL_LAYOUT
+            if( !(col_counter % 2) ) {
+                // Even means we're on the left side of a row
+                fprintf(fp, "<tr bgcolor=\"%s\">\r\n", row_counter % 2 ? "#000000" : "#1f1f1f");
+            }
+
             sprintf(stat_name, "%s%s.png", MUDLIST_GFX, mud->name);
             if( stat(stat_name, &stat_buf) < 0 ) {
                 sprintf(stat_name, "%s%s.png", PUBLIC_GFX, "__NOT_FOUND");
@@ -936,15 +962,49 @@ void                                    generate_mudlist(void)
             fprintf(fp, "<td align=\"left\">\r\n");
             fprintf(fp, "    <a target=\"I3 mudlist\" href=\"http://%s/\">%s</a><br />\r\n", mud->ipaddress, mud->name);
             fprintf(fp, "    %s<br />\r\n", mud->mud_type);
+            fprintf(fp, "    %s<br />\r\n", mud->mudlib);
+            fprintf(fp, "    <a href=\"telnet://%s:%d/\">%s %d</a>\r\n", mud->ipaddress, mud->player_port, mud->ipaddress, mud->player_port);
+            fprintf(fp, "</td>\r\n");
+
+            if( col_counter % 2 ) {
+                // Odd means we are on the right side of a row
+                fprintf(fp, "</tr>\r\n");
+                row_counter++;
+            }
+            col_counter++;
+#else
+            sprintf(stat_name, "%s%s.png", MUDLIST_GFX, mud->name);
+            if( stat(stat_name, &stat_buf) < 0 ) {
+                sprintf(stat_name, "%s%s.png", PUBLIC_GFX, "__NOT_FOUND");
+            } else {
+                sprintf(stat_name, "%s%s.png", PUBLIC_GFX, mud->name);
+            }
+
+            fprintf(fp, "<tr bgcolor=\"%s\">\r\n", row_counter % 2 ? "#000000" : "#1f1f1f");
+            fprintf(fp, "<td align=\"center\"><img border=\"0\" width=\"%d\" height=\"%d\" src=\"%s\" /></td>\r\n", MUDLIST_WIDTH, MUDLIST_HEIGHT, stat_name);
+            fprintf(fp, "<td align=\"left\">%s</td>\r\n", "&nbsp;");
+            fprintf(fp, "<td align=\"left\">\r\n");
+            fprintf(fp, "    <a target=\"I3 mudlist\" href=\"http://%s/\">%s</a><br />\r\n", mud->ipaddress, mud->name);
+            fprintf(fp, "    %s<br />\r\n", mud->mud_type);
             fprintf(fp, "    %s\r\n", mud->mudlib);
             fprintf(fp, "</td>\r\n");
             fprintf(fp, "<td align=\"left\"><a href=\"telnet://%s:%d/\">%s</a></td>\r\n", mud->ipaddress, mud->player_port, mud->ipaddress);
             fprintf(fp, "<td align=\"right\"><a href=\"telnet://%s:%d/\">%d</a></td>\r\n", mud->ipaddress, mud->player_port, mud->player_port);
-#endif
             fprintf(fp, "</tr>\r\n");
             row_counter++;
+#endif
+#endif
         }
     }
+
+#ifdef DUAL_LAYOUT
+    if( col_counter % 2 ) {
+        // Odd means we are on the right side of a row
+        // Furthermore, at this point it means we never closed off our row
+        fprintf(fp, "</tr>\r\n");
+    }
+#endif
+
     fprintf(fp, "<tr bgcolor=\"#00002f\">\r\n");
     fprintf(fp, "<td align=\"center\" colspan=\"5\">%d total muds listed.</td>\r\n", row_counter);
     fprintf(fp, "</tr>\r\n");
