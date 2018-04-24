@@ -2810,11 +2810,21 @@ void do_ticks(struct char_data *ch, const char *argument, int cmd)
     int minutes = 0;
     int hours = 0;
     int days = 0;
+    char ticktype[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
 
     if (DEBUG)
 	log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch),
 		 VNULL(argument), cmd);
 
+    only_argument(argument, ticktype);
+    if (0 == strcasecmp(ticktype, "mudlist")) {
+        pulse_mudlist = 0;
+    } else if (0 == strcasecmp(ticktype, "zone")) {
+        pulse_zone = 0;
+    } else if (0 == strcasecmp(ticktype, "nature")) {
+        pulse_nature = 0;
+    }
+    
     cprintf(ch, "Pulse Counter: %d\r\n", pulse);
 
     tick_line(ch, "NEXT TICK:", pulse_update);
