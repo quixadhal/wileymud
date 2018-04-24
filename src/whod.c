@@ -740,7 +740,7 @@ void                                    generate_mudlist(void)
     fprintf(fp, "<style>\r\n");
     fprintf(fp, "a { text-decoration:none; }\r\n");
     fprintf(fp, "a:hover { text-decoration:underline; }\r\n");
-    fprintf(fp, "td { white-space:nowrap; }\r\n");
+    fprintf(fp, "td { white-space:nowrap; text-overflow: ellipsis; overflow-x: hidden; }\r\n");
     fprintf(fp, "</style>\r\n");
     fprintf(fp, "</head>\r\n");
 
@@ -908,10 +908,10 @@ void                                    generate_mudlist(void)
 #ifdef DUAL_LAYOUT
     fprintf(fp, "<th align=\"center\" width=\"%d\">%s</th>\r\n", MUDLIST_WIDTH + 2, "Login Screen");
     fprintf(fp, "<th align=\"left\" width=\"50\">%s</th>\r\n", "&nbsp;");
-    fprintf(fp, "<th align=\"center\" width=\"25%%\" style=\"overflow-x: hidden; text-overflow: ellipsis\">%s</th>\r\n", "Info");
+    fprintf(fp, "<th align=\"center\" width=\"25%%\">%s</th>\r\n", "Info");
     fprintf(fp, "<th align=\"center\" width=\"%d\">%s</th>\r\n", MUDLIST_WIDTH + 2, "Login Screen");
     fprintf(fp, "<th align=\"left\" width=\"50\">%s</th>\r\n", "&nbsp;");
-    fprintf(fp, "<th align=\"center\" width=\"25%%\" style=\"overflow-x: hidden; text-overflow: ellipsis\">%s</th>\r\n", "Info");
+    fprintf(fp, "<th align=\"center\" width=\"25%%\">%s</th>\r\n", "Info");
 #else
     fprintf(fp, "<th align=\"center\" width=\"%d\">%s</th>\r\n", MUDLIST_WIDTH + 2, "Login Screen");
     fprintf(fp, "<th align=\"left\" width=\"50\">%s</th>\r\n", "&nbsp;");
@@ -959,7 +959,7 @@ void                                    generate_mudlist(void)
 
             fprintf(fp, "<td align=\"center\"><img border=\"0\" width=\"%d\" height=\"%d\" src=\"%s\" /></td>\r\n", MUDLIST_WIDTH, MUDLIST_HEIGHT, stat_name);
             fprintf(fp, "<td align=\"left\">%s</td>\r\n", "&nbsp;");
-            fprintf(fp, "<td align=\"left\" style=\"overflow-x: hidden; text-overflow: ellipsis\">\r\n");
+            fprintf(fp, "<td align=\"left\">\r\n");
             fprintf(fp, "    <a target=\"I3 mudlist\" href=\"http://%s/\">%s</a><br />\r\n", mud->ipaddress, mud->name);
             fprintf(fp, "    %s<br />\r\n", mud->mud_type);
             fprintf(fp, "    %s<br />\r\n", mud->mudlib);
