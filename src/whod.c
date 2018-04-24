@@ -896,10 +896,11 @@ void                                    generate_mudlist(void)
     fprintf(fp, "<th align=\"center\" width=\"150\">%s</th>\r\n", "Address");
     fprintf(fp, "<th align=\"center\" width=\"50\">%s</th>\r\n", "Port");
 #else
-    fprintf(fp, "<th align=\"center\" width=\"%d\">%s</th>\r\n", MUDLIST_WIDTH + 2, "MUD");
+    fprintf(fp, "<th align=\"center\" width=\"%d\">%s</th>\r\n", MUDLIST_WIDTH + 2, "Login Screen");
+    fprintf(fp, "<th align=\"left\" width=\"50\">%s</th>\r\n", "&nbsp;");
     fprintf(fp, "<th align=\"center\">%s</th>\r\n", "Info");
-    fprintf(fp, "<th align=\"center\" width=\"150\">%s</th>\r\n", "Address");
-    fprintf(fp, "<th align=\"center\" width=\"50\">%s</th>\r\n", "Port");
+    fprintf(fp, "<th align=\"left\" width=\"150\">%s</th>\r\n", "Address");
+    fprintf(fp, "<th align=\"right\" width=\"50\">%s</th>\r\n", "Port");
 #endif
     fprintf(fp, "</tr>\r\n");
 
@@ -930,7 +931,8 @@ void                                    generate_mudlist(void)
                 sprintf(stat_name, "%s%s.png", PUBLIC_GFX, mud->name);
             }
 
-            fprintf(fp, "<td align=\"center\"><img border=\"0\" width=\"%d\" height=\"%d\" src=\"%s.png\" /></td>\r\n", MUDLIST_WIDTH, MUDLIST_HEIGHT, stat_name);
+            fprintf(fp, "<td align=\"center\"><img border=\"0\" width=\"%d\" height=\"%d\" src=\"%s\" /></td>\r\n", MUDLIST_WIDTH, MUDLIST_HEIGHT, stat_name);
+            fprintf(fp, "<td align=\"left\">%s</td>\r\n", "&nbsp;");
             fprintf(fp, "<td align=\"left\">\r\n");
             fprintf(fp, "    <a target=\"I3 mudlist\" href=\"http://%s/\">%s</a><br />\r\n", mud->ipaddress, mud->name);
             fprintf(fp, "    %s<br />\r\n", mud->mud_type);
