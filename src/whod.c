@@ -955,7 +955,7 @@ void                                    generate_mudlist(void)
 
             sprintf(stat_name, "%s%s.png", MUDLIST_GFX, mud->name);
             if( stat(stat_name, &stat_buf) < 0 ) {
-                sprintf(stat_name, "%s%s.png", PUBLIC_GFX, "__NOT_FOUND");
+                sprintf(stat_name, "%s%s_%d.png", PUBLIC_GFX, "__NOT_FOUND", (int)(random() % 10));
             } else {
                 sprintf(stat_name, "%s%s.png", PUBLIC_GFX, mud->name);
             }
