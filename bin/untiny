@@ -15,12 +15,14 @@ use HTTP::Request::Common qw(POST);
 use HTML::Entities;
 use LWP::UserAgent;
 use URI;
-use WWW::Shorten::TinyURL qw(makeashorterlink);
+#use WWW::Shorten::TinyURL qw(makeashorterlink);
+use WWW::Shorten::Bitly;
 use DBI;
 use JSON;
 
 my $DB_FILE = '/home/wiley/lib/i3/wiley.db';
-my $API_KEY_FILE = '/home/wiley/.google-api.key';
+my $GOOGLE_API_KEY_FILE = '/home/wiley/.google-api.key';
+my $BITLY_API_KEY_FILE = '/home/wiley/.bitly-api.key';
 my $api_key = undef;
 my $db = undef;
 my $result = undef;
@@ -42,9 +44,9 @@ my $CYAN    = undef;
 my $WHITE   = undef;
 my $FLASH   = undef;
 
-my $timeout = 90;
+my $timeout = 15;
 my $lwp = LWP::UserAgent->new( cookie_jar => {} );
-   $lwp->timeout($timeout/2);
+   $lwp->timeout($timeout);
    $lwp->agent('User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36');
    $URI::ABS_ALLOW_RELATIVE_SCHEME = 1;
    $URI::ABS_REMOTE_LEADING_DOTS = 1; 
@@ -219,26 +221,26 @@ sub get_final_url {
     my $response = undef;
 
     if($request) {
-        print timestamp() . "Got request\n" if $do_debug;
+        print timestamp() . " Got request\n" if $do_debug;
         eval {
             local $SIG{ALRM} = sub { die "Exceeded Timeout of $timeout for $url\n" };
             alarm $timeout;
             $response = $lwp->request($request);
             alarm 0;
         };
-        warn "Timeout" if($EVAL_ERROR and ($EVAL_ERROR =~ /^Exceeded Timeout/));
+        warn timestamp() . " Timeout" if($EVAL_ERROR and ($EVAL_ERROR =~ /^Exceeded Timeout/));
 
         if( (defined $response) and $response->is_success ) {
-            print timestamp() . "Got response\n" if $do_debug;
+            print timestamp() . " Got response\n" if $do_debug;
             my $given_uri = URI->new($url);
             my $origin_uri = $response->request->uri;
             return $origin_uri if defined $origin_uri;
             return $given_uri;
         } elsif( defined $response ) {
-            print timestamp() . "Response:".Dumper($response)."\n" if $do_debug;
+            print timestamp() . " Response:".Dumper($response)."\n" if $do_debug;
         }
     }
-    print timestamp() . "Failed request or response\n" if $do_debug;
+    print timestamp() . " Failed request or response\n" if $do_debug;
     return undef;
 }
 
@@ -258,7 +260,7 @@ sub get_page {
             $response = $lwp->request($request);
             alarm 0;
         };
-        warn "Timeout" if($EVAL_ERROR and ($EVAL_ERROR =~ /^Exceeded Timeout/));
+        warn timestamp() . " Timeout" if($EVAL_ERROR and ($EVAL_ERROR =~ /^Exceeded Timeout/));
 
         if( (defined $response) and $response->is_success ) {
             return $response->content;
@@ -427,10 +429,10 @@ sub get_duration {
     return undef;
 }
 
-sub read_api {
+sub read_google_api {
     my $key = undef;
     my $found = undef;
-    open FP, "$API_KEY_FILE" or die "Cannot find API key file $API_KEY_FILE: $!";
+    open FP, "$GOOGLE_API_KEY_FILE" or die "Cannot find API key file $GOOGLE_API_KEY_FILE: $!";
     while($key = <FP>) {
         chomp $key;
         $key =~ s/^\s+|\s+$//g;
@@ -440,7 +442,24 @@ sub read_api {
         }
     }
     close FP;
-    die "No valid key found in $API_KEY_FILE!" if !defined $found;
+    die "No valid key found in $GOOGLE_API_KEY_FILE!" if !defined $found;
+    return $key;
+}
+
+sub read_bitly_api {
+    my $key = undef;
+    my $found = undef;
+    open FP, "$BITLY_API_KEY_FILE" or die "Cannot find API key file $BITLY_API_KEY_FILE: $!";
+    while($key = <FP>) {
+        chomp $key;
+        $key =~ s/^\s+|\s+$//g;
+        if (length $key == 40) {
+            $found = 1;
+            last;
+        }
+    }
+    close FP;
+    die "No valid key found in $BITLY_API_KEY_FILE!" if !defined $found;
     return $key;
 }
 
@@ -452,33 +471,33 @@ sub get_youtube_api {
     my $title = undef;
     my $duration = undef;
 
-    $api_key = read_api() if !defined $api_key;
-    print timestamp() . "Got API key\n" if defined $do_debug and defined $api_key;
+    $api_key = read_google_api() if !defined $api_key;
+    print timestamp() . " Got API key\n" if defined $do_debug and defined $api_key;
 
     my $data_url = "https://www.googleapis.com/youtube/v3/videos?part=contentDetails%2Csnippet&id=$id&key=$api_key";
     my $request = HTTP::Request->new(GET => $data_url);
     my $response = undef;
     my $data = undef;
-    print timestamp() . "Got request\n" if $do_debug;
+    print timestamp() . " Got request\n" if $do_debug;
     if($request) {
         eval {
-            local $SIG{ALRM} = sub { die "Exceeded Timeout of 90 seconds for URL\n" };
-            alarm 90;
+            local $SIG{ALRM} = sub { die "Exceeded Timeout of $timeout seconds for URL\n" };
+            alarm $timeout;
             $response = $lwp->request($request);
             alarm 0;
         };
-        warn "Timeout" if($EVAL_ERROR and ($EVAL_ERROR =~ /^Exceeded Timeout/));
+        warn timestamp() . " Timeout" if($EVAL_ERROR and ($EVAL_ERROR =~ /^Exceeded Timeout/));
         if( (defined $response) and $response->is_success ) {
             #$data = decode_json encode_utf8($response->content);
-            print timestamp() . "Got response\n" if $do_debug;
+            print timestamp() . " Got response\n" if $do_debug;
             $data = decode_json $response->content;
         } elsif( defined $response ) {
-            print timestamp() . "Response:".Dumper($response)."\n" if $do_debug;
+            print timestamp() . " Response:".Dumper($response)."\n" if $do_debug;
         }
     }
     #    "duration": "PT1H52M28S",
     if( defined $data ) {
-        print timestamp() . "Got JSON data\n" if $do_debug;
+        print timestamp() . " Got JSON data\n" if $do_debug;
         if( defined $data->{'items'} ) {
             if( defined $data->{'items'}[0] ) {
                 if( defined $data->{'items'}[0]->{'snippet'} ) {
@@ -577,8 +596,19 @@ sub get_tinyurl {
 
     my $check = (defined $origin) ? $origin : $given;
     eval {
-        $result = makeashorterlink($check);
+        local $SIG{ALRM} = sub { die "Exceeded Timeout of $timeout for $url\n" };
+        alarm $timeout;
+        #$result = makeashorterlink($check);
+        my $token = read_bitly_api();
+        my $bitly = WWW::Shorten::Bitly->new(
+            access_token => $token,
+        );
+        $result = $bitly->shorten(longUrl => $check);
+        print STDERR timestamp() . " ShortURL = " . Dumper($result) . "\n" if defined $do_debug;
+        $result = $result->{url} if defined $result;
+        alarm 0;
     };
+    warn timestamp() . " Timeout" if($EVAL_ERROR and ($EVAL_ERROR =~ /^Exceeded Timeout/));
     return $result;
 }
 
