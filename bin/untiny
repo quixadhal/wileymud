@@ -5,6 +5,8 @@ use strict;
 #use open ":encoding(utf8)";
 #binmode STDERR, ":encoding(utf8)";
 #binmode STDOUT, ":encoding(utf8)";
+use Time::HiRes qw(sleep time alarm);
+use POSIX qw(strftime);
 use Encode qw(encode_utf8);
 no warnings 'utf8';
 use English;
@@ -47,6 +49,14 @@ my $lwp = LWP::UserAgent->new( cookie_jar => {} );
    $URI::ABS_ALLOW_RELATIVE_SCHEME = 1;
    $URI::ABS_REMOTE_LEADING_DOTS = 1; 
    $lwp->max_redirect(5);
+
+sub timestamp {
+    my $now = time();
+    my $fraction = substr(sprintf("%3.3f", $now - (int $now)), 1);
+
+    my $stamp = strftime("%Y-%m-%d %H:%M:%S", localtime($now));
+    return sprintf("%s%s -- ", $stamp, $fraction);
+}
 
 sub channel_color {
     my $channel = shift;
@@ -209,7 +219,7 @@ sub get_final_url {
     my $response = undef;
 
     if($request) {
-        print "Got request\n" if $do_debug;
+        print timestamp() . "Got request\n" if $do_debug;
         eval {
             local $SIG{ALRM} = sub { die "Exceeded Timeout of $timeout for $url\n" };
             alarm $timeout;
@@ -219,16 +229,16 @@ sub get_final_url {
         warn "Timeout" if($EVAL_ERROR and ($EVAL_ERROR =~ /^Exceeded Timeout/));
 
         if( (defined $response) and $response->is_success ) {
-            print "Got response\n" if $do_debug;
+            print timestamp() . "Got response\n" if $do_debug;
             my $given_uri = URI->new($url);
             my $origin_uri = $response->request->uri;
             return $origin_uri if defined $origin_uri;
             return $given_uri;
         } elsif( defined $response ) {
-            print "Response:".Dumper($response)."\n" if $do_debug;
+            print timestamp() . "Response:".Dumper($response)."\n" if $do_debug;
         }
     }
-    print "Failed request or response\n" if $do_debug;
+    print timestamp() . "Failed request or response\n" if $do_debug;
     return undef;
 }
 
@@ -443,13 +453,13 @@ sub get_youtube_api {
     my $duration = undef;
 
     $api_key = read_api() if !defined $api_key;
-    print "Got API key\n" if defined $do_debug and defined $api_key;
+    print timestamp() . "Got API key\n" if defined $do_debug and defined $api_key;
 
     my $data_url = "https://www.googleapis.com/youtube/v3/videos?part=contentDetails%2Csnippet&id=$id&key=$api_key";
     my $request = HTTP::Request->new(GET => $data_url);
     my $response = undef;
     my $data = undef;
-    print "Got request\n" if $do_debug;
+    print timestamp() . "Got request\n" if $do_debug;
     if($request) {
         eval {
             local $SIG{ALRM} = sub { die "Exceeded Timeout of 90 seconds for URL\n" };
@@ -460,15 +470,15 @@ sub get_youtube_api {
         warn "Timeout" if($EVAL_ERROR and ($EVAL_ERROR =~ /^Exceeded Timeout/));
         if( (defined $response) and $response->is_success ) {
             #$data = decode_json encode_utf8($response->content);
-            print "Got response\n" if $do_debug;
+            print timestamp() . "Got response\n" if $do_debug;
             $data = decode_json $response->content;
         } elsif( defined $response ) {
-            print "Response:".Dumper($response)."\n" if $do_debug;
+            print timestamp() . "Response:".Dumper($response)."\n" if $do_debug;
         }
     }
     #    "duration": "PT1H52M28S",
     if( defined $data ) {
-        print "Got JSON data\n" if $do_debug;
+        print timestamp() . "Got JSON data\n" if $do_debug;
         if( defined $data->{'items'} ) {
             if( defined $data->{'items'}[0] ) {
                 if( defined $data->{'items'}[0]->{'snippet'} ) {
