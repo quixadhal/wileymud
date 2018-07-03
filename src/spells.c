@@ -25,7 +25,7 @@
 #include "spell_parser.h"
 #include "fight.h"
 
-void cast_armor(char level, struct char_data *ch, const char *arg, int type,
+void cast_armor(int level, struct char_data *ch, const char *arg, int type,
 		struct char_data *victim, struct obj_data *tar_obj)
 {
     if (DEBUG > 1)
@@ -71,7 +71,7 @@ void cast_armor(char level, struct char_data *ch, const char *arg, int type,
     }
 }
 
-void cast_teleport(char level, struct char_data *ch, const char *arg, int type,
+void cast_teleport(int level, struct char_data *ch, const char *arg, int type,
 		   struct char_data *victim, struct obj_data *tar_obj)
 {
     if (DEBUG > 1)
@@ -106,7 +106,7 @@ void cast_teleport(char level, struct char_data *ch, const char *arg, int type,
     }
 }
 
-void cast_bless(char level, struct char_data *ch, const char *arg, int type,
+void cast_bless(int level, struct char_data *ch, const char *arg, int type,
 		struct char_data *victim, struct obj_data *tar_obj)
 {
     if (DEBUG > 1)
@@ -174,7 +174,7 @@ void cast_bless(char level, struct char_data *ch, const char *arg, int type,
     }
 }
 
-void cast_blindness(char level, struct char_data *ch, const char *arg, int type,
+void cast_blindness(int level, struct char_data *ch, const char *arg, int type,
 		    struct char_data *victim, struct obj_data *tar_obj)
 {
     if (DEBUG > 1)
@@ -225,7 +225,7 @@ void cast_blindness(char level, struct char_data *ch, const char *arg, int type,
     }
 }
 
-void cast_burning_hands(char level, struct char_data *ch, const char *arg, int type,
+void cast_burning_hands(int level, struct char_data *ch, const char *arg, int type,
 			struct char_data *victim, struct obj_data *tar_obj)
 {
     if (DEBUG > 1)
@@ -244,7 +244,7 @@ void cast_burning_hands(char level, struct char_data *ch, const char *arg, int t
     }
 }
 
-void cast_call_lightning(char level, struct char_data *ch, const char *arg, int type,
+void cast_call_lightning(int level, struct char_data *ch, const char *arg, int type,
 			 struct char_data *victim, struct obj_data *tar_obj)
 {
     if (DEBUG > 1)
@@ -282,7 +282,7 @@ void cast_call_lightning(char level, struct char_data *ch, const char *arg, int 
     }
 }
 
-void cast_charm_person(char level, struct char_data *ch, const char *arg, int type,
+void cast_charm_person(int level, struct char_data *ch, const char *arg, int type,
 		       struct char_data *victim, struct obj_data *tar_obj)
 {
     if (DEBUG > 1)
@@ -310,7 +310,7 @@ void cast_charm_person(char level, struct char_data *ch, const char *arg, int ty
     }
 }
 
-void cast_chill_touch(char level, struct char_data *ch, const char *arg, int type,
+void cast_chill_touch(int level, struct char_data *ch, const char *arg, int type,
 		      struct char_data *victim, struct obj_data *tar_obj)
 {
     if (DEBUG > 1)
@@ -329,7 +329,7 @@ void cast_chill_touch(char level, struct char_data *ch, const char *arg, int typ
 
 #define GLASS_MIRROR	1133
 
-void cast_clone(char level, struct char_data *ch, const char *arg, int type,
+void cast_clone(int level, struct char_data *ch, const char *arg, int type,
 		struct char_data *victim, struct obj_data *tar_obj)
 {
     struct char_data                       *this_victim = NULL;
@@ -396,7 +396,7 @@ void cast_clone(char level, struct char_data *ch, const char *arg, int type,
     }
 }
 
-void cast_colour_spray(char level, struct char_data *ch, const char *arg, int type,
+void cast_colour_spray(int level, struct char_data *ch, const char *arg, int type,
 		       struct char_data *victim, struct obj_data *tar_obj)
 {
     if (DEBUG > 1)
@@ -423,7 +423,7 @@ void cast_colour_spray(char level, struct char_data *ch, const char *arg, int ty
     }
 }
 
-void cast_control_weather(char level, struct char_data *ch, const char *arg, int type,
+void cast_control_weather(int level, struct char_data *ch, const char *arg, int type,
 			  struct char_data *victim, struct obj_data *tar_obj)
 {
     char                                    buffer[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
@@ -499,7 +499,7 @@ void cast_control_weather(char level, struct char_data *ch, const char *arg, int
     }
 }
 
-void cast_create_food(char level, struct char_data *ch, const char *arg, int type,
+void cast_create_food(int level, struct char_data *ch, const char *arg, int type,
 		      struct char_data *victim, struct obj_data *tar_obj)
 {
     if (DEBUG > 1)
@@ -524,7 +524,7 @@ void cast_create_food(char level, struct char_data *ch, const char *arg, int typ
     }
 }
 
-void cast_create_water(char level, struct char_data *ch, const char *arg, int type,
+void cast_create_water(int level, struct char_data *ch, const char *arg, int type,
 		       struct char_data *victim, struct obj_data *tar_obj)
 {
     if (DEBUG > 1)
@@ -545,7 +545,7 @@ void cast_create_water(char level, struct char_data *ch, const char *arg, int ty
     }
 }
 
-void cast_cure_blind(char level, struct char_data *ch, const char *arg, int type,
+void cast_cure_blind(int level, struct char_data *ch, const char *arg, int type,
 		     struct char_data *victim, struct obj_data *tar_obj)
 {
     if (DEBUG > 1)
@@ -573,7 +573,7 @@ void cast_cure_blind(char level, struct char_data *ch, const char *arg, int type
 
 /* Offensive */
 
-void cast_shocking_grasp(char level, struct char_data *ch, const char *arg, int type,
+void cast_shocking_grasp(int level, struct char_data *ch, const char *arg, int type,
 			 struct char_data *victim, struct obj_data *tar_obj)
 {
     if (DEBUG > 1)
@@ -594,7 +594,7 @@ void cast_shocking_grasp(char level, struct char_data *ch, const char *arg, int 
 #define HAMMER_2	5932
 #define HAMMER_3	9713
 
-void cast_new_earthquake(char level, struct char_data *ch, const char *arg, int type,
+void cast_new_earthquake(int level, struct char_data *ch, const char *arg, int type,
 			 struct char_data *victim, struct obj_data *tar_obj)
 {
     int                                     vnum = 0;
@@ -659,7 +659,7 @@ void cast_new_earthquake(char level, struct char_data *ch, const char *arg, int 
     }
 }
 
-void cast_earthquake(char level, struct char_data *ch, const char *arg, int type,
+void cast_earthquake(int level, struct char_data *ch, const char *arg, int type,
 		     struct char_data *victim, struct obj_data *tar_obj)
 {
     if (DEBUG > 1)
@@ -678,7 +678,7 @@ void cast_earthquake(char level, struct char_data *ch, const char *arg, int type
     }
 }
 
-void cast_energy_drain(char level, struct char_data *ch, const char *arg, int type,
+void cast_energy_drain(int level, struct char_data *ch, const char *arg, int type,
 		       struct char_data *victim, struct obj_data *tar_obj)
 {
     if (DEBUG > 1)
@@ -715,7 +715,7 @@ void cast_energy_drain(char level, struct char_data *ch, const char *arg, int ty
     }
 }
 
-void cast_fireball(char level, struct char_data *ch, const char *arg, int type,
+void cast_fireball(int level, struct char_data *ch, const char *arg, int type,
 		   struct char_data *victim, struct obj_data *tar_obj)
 {
     if (DEBUG > 1)
@@ -758,7 +758,7 @@ void cast_fireball(char level, struct char_data *ch, const char *arg, int type,
 
 }
 
-void cast_harm(char level, struct char_data *ch, const char *arg, int type,
+void cast_harm(int level, struct char_data *ch, const char *arg, int type,
 	       struct char_data *victim, struct obj_data *tar_obj)
 {
     if (DEBUG > 1)
@@ -785,7 +785,7 @@ void cast_harm(char level, struct char_data *ch, const char *arg, int type,
     }
 }
 
-void cast_lightning_bolt(char level, struct char_data *ch, const char *arg, int type,
+void cast_lightning_bolt(int level, struct char_data *ch, const char *arg, int type,
 			 struct char_data *victim, struct obj_data *tar_obj)
 {
     if (DEBUG > 1)
@@ -813,7 +813,7 @@ void cast_lightning_bolt(char level, struct char_data *ch, const char *arg, int 
     }
 }
 
-void cast_acid_blast(char level, struct char_data *ch, const char *arg, int type,
+void cast_acid_blast(int level, struct char_data *ch, const char *arg, int type,
 		     struct char_data *victim, struct obj_data *tar_obj)
 {
     if (DEBUG > 1)
@@ -841,7 +841,7 @@ void cast_acid_blast(char level, struct char_data *ch, const char *arg, int type
     }
 }
 
-void cast_cone_of_cold(char level, struct char_data *ch, const char *arg, int type,
+void cast_cone_of_cold(int level, struct char_data *ch, const char *arg, int type,
 		       struct char_data *victim, struct obj_data *tar_obj)
 {
     if (DEBUG > 1)
@@ -862,7 +862,7 @@ void cast_cone_of_cold(char level, struct char_data *ch, const char *arg, int ty
     }
 }
 
-void cast_ice_storm(char level, struct char_data *ch, const char *arg, int type,
+void cast_ice_storm(int level, struct char_data *ch, const char *arg, int type,
 		    struct char_data *victim, struct obj_data *tar_obj)
 {
     if (DEBUG > 1)
@@ -883,7 +883,7 @@ void cast_ice_storm(char level, struct char_data *ch, const char *arg, int type,
     }
 }
 
-void cast_meteor_swarm(char level, struct char_data *ch, const char *arg, int type,
+void cast_meteor_swarm(int level, struct char_data *ch, const char *arg, int type,
 		       struct char_data *victim, struct obj_data *tar_obj)
 {
     if (DEBUG > 1)
@@ -911,7 +911,7 @@ void cast_meteor_swarm(char level, struct char_data *ch, const char *arg, int ty
     }
 }
 
-void cast_flamestrike(char level, struct char_data *ch, const char *arg, int type,
+void cast_flamestrike(int level, struct char_data *ch, const char *arg, int type,
 		      struct char_data *victim, struct obj_data *tar_obj)
 {
     if (DEBUG > 1)
@@ -939,7 +939,7 @@ void cast_flamestrike(char level, struct char_data *ch, const char *arg, int typ
     }
 }
 
-void cast_magic_missile(char level, struct char_data *ch, const char *arg, int type,
+void cast_magic_missile(int level, struct char_data *ch, const char *arg, int type,
 			struct char_data *victim, struct obj_data *tar_obj)
 {
     if (DEBUG > 1)
@@ -967,7 +967,7 @@ void cast_magic_missile(char level, struct char_data *ch, const char *arg, int t
     }
 }
 
-void cast_cause_light(char level, struct char_data *ch, const char *arg, int type,
+void cast_cause_light(int level, struct char_data *ch, const char *arg, int type,
 		      struct char_data *victim, struct obj_data *tar_obj)
 {
     if (DEBUG > 1)
@@ -994,7 +994,7 @@ void cast_cause_light(char level, struct char_data *ch, const char *arg, int typ
     }
 }
 
-void cast_cause_serious(char level, struct char_data *ch, const char *arg, int type,
+void cast_cause_serious(int level, struct char_data *ch, const char *arg, int type,
 			struct char_data *victim, struct obj_data *tar_obj)
 {
     if (DEBUG > 1)
@@ -1027,7 +1027,7 @@ void cast_cause_serious(char level, struct char_data *ch, const char *arg, int t
     }
 }
 
-void cast_cause_critic(char level, struct char_data *ch, const char *arg, int type,
+void cast_cause_critic(int level, struct char_data *ch, const char *arg, int type,
 		       struct char_data *victim, struct obj_data *tar_obj)
 {
     if (DEBUG > 1)
@@ -1054,7 +1054,7 @@ void cast_cause_critic(char level, struct char_data *ch, const char *arg, int ty
     }
 }
 
-void cast_geyser(char level, struct char_data *ch, const char *arg, int type,
+void cast_geyser(int level, struct char_data *ch, const char *arg, int type,
 		 struct char_data *victim, struct obj_data *tar_obj)
 {
     if (DEBUG > 1)
@@ -1074,7 +1074,7 @@ void cast_geyser(char level, struct char_data *ch, const char *arg, int type,
     }
 }
 
-void cast_green_slime(char level, struct char_data *ch, const char *arg, int type,
+void cast_green_slime(int level, struct char_data *ch, const char *arg, int type,
 		      struct char_data *victim, struct obj_data *tar_obj)
 {
     if (DEBUG > 1)
@@ -1107,7 +1107,7 @@ void cast_green_slime(char level, struct char_data *ch, const char *arg, int typ
  * Copyright (C) 1990, 1991 - see 'license.doc' for complete information.
  */
 
-void cast_resurrection(char level, struct char_data *ch, const char *arg, int type,
+void cast_resurrection(int level, struct char_data *ch, const char *arg, int type,
 		       struct char_data *victim, struct obj_data *tar_obj)
 {
     if (DEBUG > 1)
@@ -1132,7 +1132,7 @@ void cast_resurrection(char level, struct char_data *ch, const char *arg, int ty
 
 }
 
-void cast_mana(char level, struct char_data *ch, const char *arg, int type,
+void cast_mana(int level, struct char_data *ch, const char *arg, int type,
 	       struct char_data *victim, struct obj_data *tar_obj)
 {
     if (DEBUG > 1)
@@ -1160,7 +1160,7 @@ void cast_mana(char level, struct char_data *ch, const char *arg, int type,
 
 }
 
-void cast_stone_skin(char level, struct char_data *ch, const char *arg, int type,
+void cast_stone_skin(int level, struct char_data *ch, const char *arg, int type,
 		     struct char_data *victim, struct obj_data *tar_obj)
 {
     if (DEBUG > 1)
@@ -1201,7 +1201,7 @@ void cast_stone_skin(char level, struct char_data *ch, const char *arg, int type
     }
 }
 
-void cast_astral_walk(char level, struct char_data *ch, const char *arg, int type,
+void cast_astral_walk(int level, struct char_data *ch, const char *arg, int type,
 		      struct char_data *victim, struct obj_data *tar_obj)
 {
     if (DEBUG > 1)
@@ -1226,7 +1226,7 @@ void cast_astral_walk(char level, struct char_data *ch, const char *arg, int typ
     }
 }
 
-void cast_visions(char level, struct char_data *ch, const char *arg, int type,
+void cast_visions(int level, struct char_data *ch, const char *arg, int type,
 		  struct char_data *victim, struct obj_data *tar_obj)
 {
     if (DEBUG > 1)
@@ -1251,7 +1251,7 @@ void cast_visions(char level, struct char_data *ch, const char *arg, int type,
     }
 }
 
-void cast_infravision(char level, struct char_data *ch, const char *arg, int type,
+void cast_infravision(int level, struct char_data *ch, const char *arg, int type,
 		      struct char_data *victim, struct obj_data *tar_obj)
 {
     if (DEBUG > 1)
@@ -1301,7 +1301,7 @@ void cast_infravision(char level, struct char_data *ch, const char *arg, int typ
 
 }
 
-void cast_true_seeing(char level, struct char_data *ch, const char *arg, int type,
+void cast_true_seeing(int level, struct char_data *ch, const char *arg, int type,
 		      struct char_data *victim, struct obj_data *tar_obj)
 {
     if (DEBUG > 1)
@@ -1351,7 +1351,7 @@ void cast_true_seeing(char level, struct char_data *ch, const char *arg, int typ
 
 }
 
-void cast_light(char level, struct char_data *ch, const char *arg, int type,
+void cast_light(int level, struct char_data *ch, const char *arg, int type,
 		struct char_data *victim, struct obj_data *tar_obj)
 {
     if (DEBUG > 1)
@@ -1378,7 +1378,7 @@ void cast_light(char level, struct char_data *ch, const char *arg, int type,
     }
 }
 
-void cast_cont_light(char level, struct char_data *ch, const char *arg, int type,
+void cast_cont_light(int level, struct char_data *ch, const char *arg, int type,
 		     struct char_data *victim, struct obj_data *tar_obj)
 {
     if (DEBUG > 1)
@@ -1405,7 +1405,7 @@ void cast_cont_light(char level, struct char_data *ch, const char *arg, int type
     }
 }
 
-void cast_calm(char level, struct char_data *ch, const char *arg, int type,
+void cast_calm(int level, struct char_data *ch, const char *arg, int type,
 	       struct char_data *victim, struct obj_data *tar_obj)
 {
     if (DEBUG > 1)
@@ -1441,7 +1441,7 @@ void cast_calm(char level, struct char_data *ch, const char *arg, int type,
     }
 }
 
-void cast_water_breath(char level, struct char_data *ch, const char *arg, int type,
+void cast_water_breath(int level, struct char_data *ch, const char *arg, int type,
 		       struct char_data *victim, struct obj_data *tar_obj)
 {
     if (DEBUG > 1)
@@ -1465,7 +1465,7 @@ void cast_water_breath(char level, struct char_data *ch, const char *arg, int ty
     }
 }
 
-void cast_flying(char level, struct char_data *ch, const char *arg, int type,
+void cast_flying(int level, struct char_data *ch, const char *arg, int type,
 		 struct char_data *victim, struct obj_data *tar_obj)
 {
     if (DEBUG > 1)
@@ -1497,7 +1497,7 @@ void cast_flying(char level, struct char_data *ch, const char *arg, int type,
     }
 }
 
-void cast_goodberry(char level, struct char_data *ch, const char *arg, int type,
+void cast_goodberry(int level, struct char_data *ch, const char *arg, int type,
 		    struct char_data *victim, struct obj_data *tar_obj)
 {
     if (DEBUG > 1)
@@ -1524,7 +1524,7 @@ void cast_goodberry(char level, struct char_data *ch, const char *arg, int type,
     }
 }
 
-void cast_cure_critic(char level, struct char_data *ch, const char *arg, int type,
+void cast_cure_critic(int level, struct char_data *ch, const char *arg, int type,
 		      struct char_data *victim, struct obj_data *tar_obj)
 {
     if (DEBUG > 1)
@@ -1556,7 +1556,7 @@ void cast_cure_critic(char level, struct char_data *ch, const char *arg, int typ
     }
 }
 
-void cast_cure_light(char level, struct char_data *ch, const char *arg, int type,
+void cast_cure_light(int level, struct char_data *ch, const char *arg, int type,
 		     struct char_data *victim, struct obj_data *tar_obj)
 {
     if (DEBUG > 1)
@@ -1587,7 +1587,7 @@ void cast_cure_light(char level, struct char_data *ch, const char *arg, int type
     }
 }
 
-void cast_cure_serious(char level, struct char_data *ch, const char *arg, int type,
+void cast_cure_serious(int level, struct char_data *ch, const char *arg, int type,
 		       struct char_data *victim, struct obj_data *tar_obj)
 {
     if (DEBUG > 1)
@@ -1618,7 +1618,7 @@ void cast_cure_serious(char level, struct char_data *ch, const char *arg, int ty
     }
 }
 
-void cast_refresh(char level, struct char_data *ch, const char *arg, int type,
+void cast_refresh(int level, struct char_data *ch, const char *arg, int type,
 		  struct char_data *victim, struct obj_data *tar_obj)
 {
     if (DEBUG > 1)
@@ -1649,7 +1649,7 @@ void cast_refresh(char level, struct char_data *ch, const char *arg, int type,
     }
 }
 
-void cast_second_wind(char level, struct char_data *ch, const char *arg, int type,
+void cast_second_wind(int level, struct char_data *ch, const char *arg, int type,
 		      struct char_data *victim, struct obj_data *tar_obj)
 {
     if (DEBUG > 1)
@@ -1677,7 +1677,7 @@ void cast_second_wind(char level, struct char_data *ch, const char *arg, int typ
     }
 }
 
-void cast_shield(char level, struct char_data *ch, const char *arg, int type,
+void cast_shield(int level, struct char_data *ch, const char *arg, int type,
 		 struct char_data *victim, struct obj_data *tar_obj)
 {
     if (DEBUG > 1)
@@ -1713,7 +1713,7 @@ void cast_shield(char level, struct char_data *ch, const char *arg, int type,
 
 }
 
-void cast_curse(char level, struct char_data *ch, const char *arg, int type,
+void cast_curse(int level, struct char_data *ch, const char *arg, int type,
 		struct char_data *victim, struct obj_data *tar_obj)
 {
     if (DEBUG > 1)
@@ -1752,7 +1752,7 @@ void cast_curse(char level, struct char_data *ch, const char *arg, int type,
     }
 }
 
-void cast_detect_evil(char level, struct char_data *ch, const char *arg, int type,
+void cast_detect_evil(int level, struct char_data *ch, const char *arg, int type,
 		      struct char_data *victim, struct obj_data *tar_obj)
 {
     if (DEBUG > 1)
@@ -1785,7 +1785,7 @@ void cast_detect_evil(char level, struct char_data *ch, const char *arg, int typ
     }
 }
 
-void cast_detect_invisibility(char level, struct char_data *ch, const char *arg, int type,
+void cast_detect_invisibility(int level, struct char_data *ch, const char *arg, int type,
 			      struct char_data *victim, struct obj_data *tar_obj)
 {
     if (DEBUG > 1)
@@ -1818,7 +1818,7 @@ void cast_detect_invisibility(char level, struct char_data *ch, const char *arg,
     }
 }
 
-void cast_detect_magic(char level, struct char_data *ch, const char *arg, int type,
+void cast_detect_magic(int level, struct char_data *ch, const char *arg, int type,
 		       struct char_data *victim, struct obj_data *tar_obj)
 {
     if (DEBUG > 1)
@@ -1851,7 +1851,7 @@ void cast_detect_magic(char level, struct char_data *ch, const char *arg, int ty
     }
 }
 
-void cast_detect_poison(char level, struct char_data *ch, const char *arg, int type,
+void cast_detect_poison(int level, struct char_data *ch, const char *arg, int type,
 			struct char_data *victim, struct obj_data *tar_obj)
 {
     if (DEBUG > 1)
@@ -1880,7 +1880,7 @@ void cast_detect_poison(char level, struct char_data *ch, const char *arg, int t
     }
 }
 
-void cast_dispel_evil(char level, struct char_data *ch, const char *arg, int type,
+void cast_dispel_evil(int level, struct char_data *ch, const char *arg, int type,
 		      struct char_data *victim, struct obj_data *tar_obj)
 {
     if (DEBUG > 1)
@@ -1918,7 +1918,7 @@ void cast_dispel_evil(char level, struct char_data *ch, const char *arg, int typ
     }
 }
 
-void cast_dispel_good(char level, struct char_data *ch, const char *arg, int type,
+void cast_dispel_good(int level, struct char_data *ch, const char *arg, int type,
 		      struct char_data *victim, struct obj_data *tar_obj)
 {
     if (DEBUG > 1)
@@ -1956,7 +1956,7 @@ void cast_dispel_good(char level, struct char_data *ch, const char *arg, int typ
     }
 }
 
-void cast_faerie_fire(char level, struct char_data *ch, const char *arg, int type,
+void cast_faerie_fire(int level, struct char_data *ch, const char *arg, int type,
 		      struct char_data *victim, struct obj_data *tar_obj)
 {
     if (DEBUG > 1)
@@ -1994,7 +1994,7 @@ void cast_faerie_fire(char level, struct char_data *ch, const char *arg, int typ
     }
 }
 
-void cast_enchant_weapon(char level, struct char_data *ch, const char *arg, int type,
+void cast_enchant_weapon(int level, struct char_data *ch, const char *arg, int type,
 			 struct char_data *victim, struct obj_data *tar_obj)
 {
     if (DEBUG > 1)
@@ -2017,7 +2017,7 @@ void cast_enchant_weapon(char level, struct char_data *ch, const char *arg, int 
     }
 }
 
-void cast_enchant_armor(char level, struct char_data *ch, const char *arg, int type,
+void cast_enchant_armor(int level, struct char_data *ch, const char *arg, int type,
 			struct char_data *victim, struct obj_data *tar_obj)
 {
     if (DEBUG > 1)
@@ -2040,7 +2040,7 @@ void cast_enchant_armor(char level, struct char_data *ch, const char *arg, int t
     }
 }
 
-void cast_heal(char level, struct char_data *ch, const char *arg, int type,
+void cast_heal(int level, struct char_data *ch, const char *arg, int type,
 	       struct char_data *victim, struct obj_data *tar_obj)
 {
     if (DEBUG > 1)
@@ -2068,7 +2068,7 @@ void cast_heal(char level, struct char_data *ch, const char *arg, int type,
     }
 }
 
-void cast_invisibility(char level, struct char_data *ch, const char *arg, int type,
+void cast_invisibility(int level, struct char_data *ch, const char *arg, int type,
 		       struct char_data *victim, struct obj_data *tar_obj)
 {
     if (DEBUG > 1)
@@ -2127,7 +2127,7 @@ void cast_invisibility(char level, struct char_data *ch, const char *arg, int ty
     }
 }
 
-void cast_locate_object(char level, struct char_data *ch, const char *arg, int type,
+void cast_locate_object(int level, struct char_data *ch, const char *arg, int type,
 			struct char_data *victim, struct obj_data *tar_obj)
 {
     if (DEBUG > 1)
@@ -2144,7 +2144,7 @@ void cast_locate_object(char level, struct char_data *ch, const char *arg, int t
     }
 }
 
-void cast_poison(char level, struct char_data *ch, const char *arg, int type,
+void cast_poison(int level, struct char_data *ch, const char *arg, int type,
 		 struct char_data *victim, struct obj_data *tar_obj)
 {
     if (DEBUG > 1)
@@ -2170,7 +2170,7 @@ void cast_poison(char level, struct char_data *ch, const char *arg, int type,
     }
 }
 
-void cast_protection_from_evil(char level, struct char_data *ch, const char *arg, int type,
+void cast_protection_from_evil(int level, struct char_data *ch, const char *arg, int type,
 			       struct char_data *victim, struct obj_data *tar_obj)
 {
     if (DEBUG > 1)
@@ -2203,7 +2203,7 @@ void cast_protection_from_evil(char level, struct char_data *ch, const char *arg
     }
 }
 
-void cast_remove_curse(char level, struct char_data *ch, const char *arg, int type,
+void cast_remove_curse(int level, struct char_data *ch, const char *arg, int type,
 		       struct char_data *victim, struct obj_data *tar_obj)
 {
     if (DEBUG > 1)
@@ -2238,7 +2238,7 @@ void cast_remove_curse(char level, struct char_data *ch, const char *arg, int ty
     }
 }
 
-void cast_remove_poison(char level, struct char_data *ch, const char *arg, int type,
+void cast_remove_poison(int level, struct char_data *ch, const char *arg, int type,
 			struct char_data *victim, struct obj_data *tar_obj)
 {
     if (DEBUG > 1)
@@ -2264,7 +2264,7 @@ void cast_remove_poison(char level, struct char_data *ch, const char *arg, int t
     }
 }
 
-void cast_remove_paralysis(char level, struct char_data *ch, const char *arg, int type,
+void cast_remove_paralysis(int level, struct char_data *ch, const char *arg, int type,
 			   struct char_data *victim, struct obj_data *tar_obj)
 {
     if (DEBUG > 1)
@@ -2295,7 +2295,7 @@ void cast_remove_paralysis(char level, struct char_data *ch, const char *arg, in
     }
 }
 
-void cast_sanctuary(char level, struct char_data *ch, const char *arg, int type,
+void cast_sanctuary(int level, struct char_data *ch, const char *arg, int type,
 		    struct char_data *victim, struct obj_data *tar_obj)
 {
     if (DEBUG > 1)
@@ -2330,7 +2330,7 @@ void cast_sanctuary(char level, struct char_data *ch, const char *arg, int type,
     }
 }
 
-void cast_fireshield(char level, struct char_data *ch, const char *arg, int type,
+void cast_fireshield(int level, struct char_data *ch, const char *arg, int type,
 		     struct char_data *victim, struct obj_data *tar_obj)
 {
     if (DEBUG > 1)
@@ -2365,7 +2365,7 @@ void cast_fireshield(char level, struct char_data *ch, const char *arg, int type
     }
 }
 
-void cast_sleep(char level, struct char_data *ch, const char *arg, int type,
+void cast_sleep(int level, struct char_data *ch, const char *arg, int type,
 		struct char_data *victim, struct obj_data *tar_obj)
 {
     if (DEBUG > 1)
@@ -2403,7 +2403,7 @@ void cast_sleep(char level, struct char_data *ch, const char *arg, int type,
     }
 }
 
-void cast_strength(char level, struct char_data *ch, const char *arg, int type,
+void cast_strength(int level, struct char_data *ch, const char *arg, int type,
 		   struct char_data *victim, struct obj_data *tar_obj)
 {
     if (DEBUG > 1)
@@ -2436,7 +2436,7 @@ void cast_strength(char level, struct char_data *ch, const char *arg, int type,
     }
 }
 
-void cast_ventriloquate(char level, struct char_data *ch, const char *arg, int type,
+void cast_ventriloquate(int level, struct char_data *ch, const char *arg, int type,
 			struct char_data *victim, struct obj_data *tar_obj)
 {
     struct char_data                       *tmp_ch = NULL;
@@ -2478,7 +2478,7 @@ void cast_ventriloquate(char level, struct char_data *ch, const char *arg, int t
     }
 }
 
-void cast_word_of_recall(char level, struct char_data *ch, const char *arg, int type,
+void cast_word_of_recall(int level, struct char_data *ch, const char *arg, int type,
 			 struct char_data *victim, struct obj_data *tar_obj)
 {
     if (DEBUG > 1)
@@ -2516,7 +2516,7 @@ void cast_word_of_recall(char level, struct char_data *ch, const char *arg, int 
     }
 }
 
-void cast_summon(char level, struct char_data *ch, const char *arg, int type,
+void cast_summon(int level, struct char_data *ch, const char *arg, int type,
 		 struct char_data *victim, struct obj_data *tar_obj)
 {
     if (DEBUG > 1)
@@ -2533,7 +2533,7 @@ void cast_summon(char level, struct char_data *ch, const char *arg, int type,
     }
 }
 
-void cast_charm_monster(char level, struct char_data *ch, const char *arg, int type,
+void cast_charm_monster(int level, struct char_data *ch, const char *arg, int type,
 			struct char_data *victim, struct obj_data *tar_obj)
 {
     if (DEBUG > 1)
@@ -2561,7 +2561,7 @@ void cast_charm_monster(char level, struct char_data *ch, const char *arg, int t
     }
 }
 
-void cast_sense_life(char level, struct char_data *ch, const char *arg, int type,
+void cast_sense_life(int level, struct char_data *ch, const char *arg, int type,
 		     struct char_data *victim, struct obj_data *tar_obj)
 {
     if (DEBUG > 1)
@@ -2587,7 +2587,7 @@ void cast_sense_life(char level, struct char_data *ch, const char *arg, int type
     }
 }
 
-void cast_identify(char level, struct char_data *ch, const char *arg, int type,
+void cast_identify(int level, struct char_data *ch, const char *arg, int type,
 		   struct char_data *victim, struct obj_data *tar_obj)
 {
     if (DEBUG > 1)
@@ -2628,7 +2628,7 @@ struct pbreath {
     }, {
 0},};
 
-void cast_dragon_breath(char level, struct char_data *ch, const char *arg, int type,
+void cast_dragon_breath(int level, struct char_data *ch, const char *arg, int type,
 			struct char_data *victim, struct obj_data *tar_obj)
 {
     struct pbreath                         *scan = NULL;
@@ -2677,7 +2677,7 @@ void cast_dragon_breath(char level, struct char_data *ch, const char *arg, int t
     }
 }
 
-void cast_fire_breath(char level, struct char_data *ch, const char *arg, int type,
+void cast_fire_breath(int level, struct char_data *ch, const char *arg, int type,
 		      struct char_data *victim, struct obj_data *tar_obj)
 {
     if (DEBUG > 1)
@@ -2694,7 +2694,7 @@ void cast_fire_breath(char level, struct char_data *ch, const char *arg, int typ
     }
 }
 
-void cast_frost_breath(char level, struct char_data *ch, const char *arg, int type,
+void cast_frost_breath(int level, struct char_data *ch, const char *arg, int type,
 		       struct char_data *victim, struct obj_data *tar_obj)
 {
     if (DEBUG > 1)
@@ -2711,7 +2711,7 @@ void cast_frost_breath(char level, struct char_data *ch, const char *arg, int ty
     }
 }
 
-void cast_acid_breath(char level, struct char_data *ch, const char *arg, int type,
+void cast_acid_breath(int level, struct char_data *ch, const char *arg, int type,
 		      struct char_data *victim, struct obj_data *tar_obj)
 {
     if (DEBUG > 1)
@@ -2728,7 +2728,7 @@ void cast_acid_breath(char level, struct char_data *ch, const char *arg, int typ
     }
 }
 
-void cast_gas_breath(char level, struct char_data *ch, const char *arg, int type,
+void cast_gas_breath(int level, struct char_data *ch, const char *arg, int type,
 		     struct char_data *victim, struct obj_data *tar_obj)
 {
     if (DEBUG > 1)
@@ -2748,7 +2748,7 @@ void cast_gas_breath(char level, struct char_data *ch, const char *arg, int type
     }
 }
 
-void cast_lightning_breath(char level, struct char_data *ch, const char *arg, int type,
+void cast_lightning_breath(int level, struct char_data *ch, const char *arg, int type,
 			   struct char_data *victim, struct obj_data *tar_obj)
 {
     if (DEBUG > 1)
@@ -2765,7 +2765,7 @@ void cast_lightning_breath(char level, struct char_data *ch, const char *arg, in
     }
 }
 
-void cast_knock(char level, struct char_data *ch, const char *arg, int type,
+void cast_knock(int level, struct char_data *ch, const char *arg, int type,
 		struct char_data *victim, struct obj_data *tar_obj)
 {
     int                                     door = 0;
@@ -2853,7 +2853,7 @@ void cast_knock(char level, struct char_data *ch, const char *arg, int type,
     }
 }
 
-void cast_know_alignment(char level, struct char_data *ch, const char *arg, int type,
+void cast_know_alignment(int level, struct char_data *ch, const char *arg, int type,
 			 struct char_data *victim, struct obj_data *tar_obj)
 {
     if (DEBUG > 1)
@@ -2878,7 +2878,7 @@ void cast_know_alignment(char level, struct char_data *ch, const char *arg, int 
     }
 }
 
-void cast_weakness(char level, struct char_data *ch, const char *arg, int type,
+void cast_weakness(int level, struct char_data *ch, const char *arg, int type,
 		   struct char_data *victim, struct obj_data *tar_obj)
 {
     if (DEBUG > 1)
@@ -2911,7 +2911,7 @@ void cast_weakness(char level, struct char_data *ch, const char *arg, int type,
     }
 }
 
-void cast_dispel_magic(char level, struct char_data *ch, const char *arg, int type,
+void cast_dispel_magic(int level, struct char_data *ch, const char *arg, int type,
 		       struct char_data *victim, struct obj_data *tar_obj)
 {
     if (DEBUG > 1)
@@ -2948,7 +2948,7 @@ void cast_dispel_magic(char level, struct char_data *ch, const char *arg, int ty
     }
 }
 
-void cast_animate_dead(char level, struct char_data *ch, const char *arg, int type,
+void cast_animate_dead(int level, struct char_data *ch, const char *arg, int type,
 		       struct char_data *victim, struct obj_data *tar_obj)
 {
     struct obj_data                        *i = NULL;
@@ -2990,7 +2990,7 @@ void cast_animate_dead(char level, struct char_data *ch, const char *arg, int ty
     }
 }
 
-void cast_succor(char level, struct char_data *ch, const char *arg, int type,
+void cast_succor(int level, struct char_data *ch, const char *arg, int type,
 		 struct char_data *victim, struct obj_data *tar_obj)
 {
     if (DEBUG > 1)
@@ -3006,7 +3006,7 @@ void cast_succor(char level, struct char_data *ch, const char *arg, int type,
 
 }
 
-void cast_paralyze(char level, struct char_data *ch, const char *arg, int type,
+void cast_paralyze(int level, struct char_data *ch, const char *arg, int type,
 		   struct char_data *victim, struct obj_data *tar_obj)
 {
     if (DEBUG > 1)
@@ -3044,7 +3044,7 @@ void cast_paralyze(char level, struct char_data *ch, const char *arg, int type,
     }
 }
 
-void cast_fear(char level, struct char_data *ch, const char *arg, int type,
+void cast_fear(int level, struct char_data *ch, const char *arg, int type,
 	       struct char_data *victim, struct obj_data *tar_obj)
 {
     if (DEBUG > 1)
@@ -3084,7 +3084,7 @@ void cast_fear(char level, struct char_data *ch, const char *arg, int type,
     }
 }
 
-void cast_turn(char level, struct char_data *ch, const char *arg, int type,
+void cast_turn(int level, struct char_data *ch, const char *arg, int type,
 	       struct char_data *victim, struct obj_data *tar_obj)
 {
     if (DEBUG > 1)
@@ -3121,7 +3121,7 @@ void cast_turn(char level, struct char_data *ch, const char *arg, int type,
     }
 }
 
-void cast_faerie_fog(char level, struct char_data *ch, const char *arg, int type,
+void cast_faerie_fog(int level, struct char_data *ch, const char *arg, int type,
 		     struct char_data *victim, struct obj_data *tar_obj)
 {
     if (DEBUG > 1)
@@ -3183,7 +3183,7 @@ const struct PolyType                   PolyList[] = {
 
 #define LAST_POLY_MOB 37
 
-void cast_poly_self(char level, struct char_data *ch, const char *arg, int type,
+void cast_poly_self(int level, struct char_data *ch, const char *arg, int type,
 		    struct char_data *victim, struct obj_data *tar_obj)
 {
     char                                    buffer[40] = "\0\0\0\0\0\0\0";
@@ -3248,7 +3248,7 @@ void cast_poly_self(char level, struct char_data *ch, const char *arg, int type,
 
 #define NUT_CRACKED 1131
 
-void cast_shelter(char level, struct char_data *ch, const char *arg, int type,
+void cast_shelter(int level, struct char_data *ch, const char *arg, int type,
 		  struct char_data *victim, struct obj_data *tar_obj)
 {
     struct obj_data                        *sac = NULL;
@@ -3295,7 +3295,7 @@ void cast_shelter(char level, struct char_data *ch, const char *arg, int type,
 #define GOOD_WALNUT  1130
 #define BAD_WALNUT   1132
 
-void cast_minor_creation(char level, struct char_data *ch, const char *arg, int type,
+void cast_minor_creation(int level, struct char_data *ch, const char *arg, int type,
 			 struct char_data *victim, struct obj_data *tar_obj)
 {
     char                                    buffer[40] = "\0\0\0\0\0\0\0";
@@ -3365,7 +3365,7 @@ void cast_minor_creation(char level, struct char_data *ch, const char *arg, int 
 #define CLEAR_STONE     1125
 #define GREY_STONE      1126
 
-void cast_conjure_elemental(char level, struct char_data *ch, const char *arg, int type,
+void cast_conjure_elemental(int level, struct char_data *ch, const char *arg, int type,
 			    struct char_data *victim, struct obj_data *tar_obj)
 {
     char                                    buffer[40] = "\0\0\0\0\0\0\0";
@@ -3442,7 +3442,7 @@ void cast_conjure_elemental(char level, struct char_data *ch, const char *arg, i
 #define JEWELLED_DAGGER  25019
 #define SWORD_SHARPNESS  25017
 
-void cast_cacaodemon(char level, struct char_data *ch, const char *arg, int type,
+void cast_cacaodemon(int level, struct char_data *ch, const char *arg, int type,
 		     struct char_data *victim, struct obj_data *tar_obj)
 {
     char                                    buffer[40] = "\0\0\0\0\0\0\0";
@@ -3512,7 +3512,7 @@ void cast_cacaodemon(char level, struct char_data *ch, const char *arg, int type
 
 }
 
-void cast_mon_sum1(char level, struct char_data *ch, const char *arg, int type,
+void cast_mon_sum1(int level, struct char_data *ch, const char *arg, int type,
 		   struct char_data *victim, struct obj_data *tar_obj)
 {
     if (DEBUG > 1)
@@ -3532,7 +3532,7 @@ void cast_mon_sum1(char level, struct char_data *ch, const char *arg, int type,
     }
 }
 
-void cast_mon_sum2(char level, struct char_data *ch, const char *arg, int type,
+void cast_mon_sum2(int level, struct char_data *ch, const char *arg, int type,
 		   struct char_data *victim, struct obj_data *tar_obj)
 {
     if (DEBUG > 1)
@@ -3552,7 +3552,7 @@ void cast_mon_sum2(char level, struct char_data *ch, const char *arg, int type,
     }
 }
 
-void cast_mon_sum3(char level, struct char_data *ch, const char *arg, int type,
+void cast_mon_sum3(int level, struct char_data *ch, const char *arg, int type,
 		   struct char_data *victim, struct obj_data *tar_obj)
 {
     if (DEBUG > 1)
@@ -3572,7 +3572,7 @@ void cast_mon_sum3(char level, struct char_data *ch, const char *arg, int type,
     }
 }
 
-void cast_mon_sum4(char level, struct char_data *ch, const char *arg, int type,
+void cast_mon_sum4(int level, struct char_data *ch, const char *arg, int type,
 		   struct char_data *victim, struct obj_data *tar_obj)
 {
     if (DEBUG > 1)
@@ -3592,7 +3592,7 @@ void cast_mon_sum4(char level, struct char_data *ch, const char *arg, int type,
     }
 }
 
-void cast_mon_sum5(char level, struct char_data *ch, const char *arg, int type,
+void cast_mon_sum5(int level, struct char_data *ch, const char *arg, int type,
 		   struct char_data *victim, struct obj_data *tar_obj)
 {
     if (DEBUG > 1)
@@ -3612,7 +3612,7 @@ void cast_mon_sum5(char level, struct char_data *ch, const char *arg, int type,
     }
 }
 
-void cast_mon_sum6(char level, struct char_data *ch, const char *arg, int type,
+void cast_mon_sum6(int level, struct char_data *ch, const char *arg, int type,
 		   struct char_data *victim, struct obj_data *tar_obj)
 {
     if (DEBUG > 1)
@@ -3632,7 +3632,7 @@ void cast_mon_sum6(char level, struct char_data *ch, const char *arg, int type,
     }
 }
 
-void cast_mon_sum7(char level, struct char_data *ch, const char *arg, int type,
+void cast_mon_sum7(int level, struct char_data *ch, const char *arg, int type,
 		   struct char_data *victim, struct obj_data *tar_obj)
 {
     if (DEBUG > 1)
@@ -3658,7 +3658,7 @@ void cast_mon_sum7(char level, struct char_data *ch, const char *arg, int type,
  * Copyright (C) 1990, 1991 - see 'license.doc' for complete information.
  */
 
-void cast_fly_group(char level, struct char_data *ch, const char *arg, int type,
+void cast_fly_group(int level, struct char_data *ch, const char *arg, int type,
 		    struct char_data *victim, struct obj_data *tar_obj)
 {
     if (DEBUG > 1)
@@ -3680,7 +3680,7 @@ void cast_fly_group(char level, struct char_data *ch, const char *arg, int type,
     }
 }
 
-void cast_aid(char level, struct char_data *ch, const char *arg, int type,
+void cast_aid(int level, struct char_data *ch, const char *arg, int type,
 	      struct char_data *victim, struct obj_data *tar_obj)
 {
     if (DEBUG > 1)

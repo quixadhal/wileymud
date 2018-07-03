@@ -31,7 +31,7 @@
 #include "act_obj.h"
 #include "act_info.h"
 
-void spell_armor(char level, struct char_data *ch, struct char_data *victim,
+void spell_armor(int level, struct char_data *ch, struct char_data *victim,
 		 struct obj_data *obj)
 {
     struct affected_type                    af;
@@ -57,7 +57,7 @@ void spell_armor(char level, struct char_data *ch, struct char_data *victim,
     }
 }
 
-void spell_teleport(char level, struct char_data *ch, struct char_data *victim,
+void spell_teleport(int level, struct char_data *ch, struct char_data *victim,
 		    struct obj_data *obj)
 {
     int                                     to_room = 0;
@@ -129,7 +129,7 @@ void spell_teleport(char level, struct char_data *ch, struct char_data *victim,
     }
 }
 
-void spell_bless(char level, struct char_data *ch, struct char_data *victim,
+void spell_bless(int level, struct char_data *ch, struct char_data *victim,
 		 struct obj_data *obj)
 {
     struct affected_type                    af;
@@ -162,7 +162,7 @@ void spell_bless(char level, struct char_data *ch, struct char_data *victim,
     }
 }
 
-void spell_blindness(char level, struct char_data *ch, struct char_data *victim,
+void spell_blindness(int level, struct char_data *ch, struct char_data *victim,
 		     struct obj_data *obj)
 {
     struct affected_type                    af;
@@ -198,7 +198,7 @@ void spell_blindness(char level, struct char_data *ch, struct char_data *victim,
 	set_fighting(victim, ch);
 }
 
-void spell_burning_hands(char level, struct char_data *ch, struct char_data *victim,
+void spell_burning_hands(int level, struct char_data *ch, struct char_data *victim,
 			 struct obj_data *obj)
 {
     int                                     dam = 0;
@@ -219,7 +219,7 @@ void spell_burning_hands(char level, struct char_data *ch, struct char_data *vic
     AreaEffectSpell(ch, dam, SPELL_BURNING_HANDS, 0, NULL);
 }
 
-void spell_call_lightning(char level, struct char_data *ch, struct char_data *victim,
+void spell_call_lightning(int level, struct char_data *ch, struct char_data *victim,
 			  struct obj_data *obj)
 {
     int                                     dam = 0;
@@ -246,7 +246,7 @@ void spell_call_lightning(char level, struct char_data *ch, struct char_data *vi
     }
 }
 
-void spell_charm_person(char level, struct char_data *ch, struct char_data *victim,
+void spell_charm_person(int level, struct char_data *ch, struct char_data *victim,
 			struct obj_data *obj)
 {
     struct affected_type                    af;
@@ -317,7 +317,7 @@ void spell_charm_person(char level, struct char_data *ch, struct char_data *vict
     }
 }
 
-void spell_chill_touch(char level, struct char_data *ch, struct char_data *victim,
+void spell_chill_touch(int level, struct char_data *ch, struct char_data *victim,
 		       struct obj_data *obj)
 {
     struct affected_type                    af;
@@ -384,7 +384,7 @@ void spell_chill_touch(char level, struct char_data *ch, struct char_data *victi
  *
  * Note:  we must write a special routine to control this behaviour.
  */
-void spell_clone(char level, struct char_data *ch, struct char_data *victim,
+void spell_clone(int level, struct char_data *ch, struct char_data *victim,
 		 struct obj_data *obj)
 {
     int                                     i = 0;
@@ -645,7 +645,7 @@ void spell_clone(char level, struct char_data *ch, struct char_data *victim,
     }
 }
 
-void spell_colour_spray(char level, struct char_data *ch, struct char_data *victim,
+void spell_colour_spray(int level, struct char_data *ch, struct char_data *victim,
 			struct obj_data *obj)
 {
     int                                     dam = 0;
@@ -721,7 +721,7 @@ void spell_colour_spray(char level, struct char_data *ch, struct char_data *vict
     }
 }
 
-void spell_control_weather(char level, struct char_data *ch, struct char_data *victim,
+void spell_control_weather(int level, struct char_data *ch, struct char_data *victim,
 			   struct obj_data *obj)
 {
     if (DEBUG > 1)
@@ -735,7 +735,7 @@ void spell_control_weather(char level, struct char_data *ch, struct char_data *v
      */
 }
 
-void spell_create_food(char level, struct char_data *ch, struct char_data *victim,
+void spell_create_food(int level, struct char_data *ch, struct char_data *victim,
 		       struct obj_data *obj)
 {
     struct obj_data                        *tmp_obj = NULL;
@@ -782,7 +782,7 @@ void spell_create_food(char level, struct char_data *ch, struct char_data *victi
     act("$p suddenly appears.", TRUE, ch, tmp_obj, 0, TO_CHAR);
 }
 
-void spell_create_water(char level, struct char_data *ch, struct char_data *victim,
+void spell_create_water(int level, struct char_data *ch, struct char_data *victim,
 			struct obj_data *obj)
 {
     int                                     water = 0;
@@ -819,7 +819,7 @@ void spell_create_water(char level, struct char_data *ch, struct char_data *vict
     }
 }
 
-void spell_cure_blind(char level, struct char_data *ch, struct char_data *victim,
+void spell_cure_blind(int level, struct char_data *ch, struct char_data *victim,
 		      struct obj_data *obj)
 {
     if (DEBUG > 1)
@@ -836,7 +836,7 @@ void spell_cure_blind(char level, struct char_data *ch, struct char_data *victim
 
 /* Offensive Spells */
 
-void spell_magic_missile(char level, struct char_data *ch, struct char_data *victim,
+void spell_magic_missile(int level, struct char_data *ch, struct char_data *victim,
 			 struct obj_data *obj)
 {
     int                                     dam = 0;
@@ -862,7 +862,7 @@ void spell_magic_missile(char level, struct char_data *ch, struct char_data *vic
     damage(ch, victim, dam, SPELL_MAGIC_MISSILE);
 }
 
-void spell_shocking_grasp(char level, struct char_data *ch, struct char_data *victim,
+void spell_shocking_grasp(int level, struct char_data *ch, struct char_data *victim,
 			  struct obj_data *obj)
 {
     int                                     dam = 0;
@@ -892,7 +892,7 @@ void spell_shocking_grasp(char level, struct char_data *ch, struct char_data *vi
     damage(ch, victim, dam, SPELL_SHOCKING_GRASP);
 }
 
-void spell_lightning_bolt(char level, struct char_data *ch, struct char_data *victim,
+void spell_lightning_bolt(int level, struct char_data *ch, struct char_data *victim,
 			  struct obj_data *obj)
 {
     int                                     dam = 0;
@@ -917,7 +917,7 @@ void spell_lightning_bolt(char level, struct char_data *ch, struct char_data *vi
 }
 
 /* Drain XP, MANA, HP - caster gains HP and MANA */
-void spell_energy_drain(char level, struct char_data *ch, struct char_data *victim,
+void spell_energy_drain(int level, struct char_data *ch, struct char_data *victim,
 			struct obj_data *obj)
 {
     int                                     dam = 0;
@@ -984,7 +984,7 @@ void spell_energy_drain(char level, struct char_data *ch, struct char_data *vict
     }
 }
 
-void spell_fireball(char level, struct char_data *ch, struct char_data *victim,
+void spell_fireball(int level, struct char_data *ch, struct char_data *victim,
 		    struct obj_data *obj)
 {
     int                                     dam = 0;
@@ -1002,7 +1002,7 @@ void spell_fireball(char level, struct char_data *ch, struct char_data *victim,
     AreaEffectSpell(ch, dam, SPELL_FIREBALL, 1, "You feel a blast of hot air.\r\n");
 }
 
-void spell_new_earthquake(char level, struct char_data *ch, struct char_data *victim,
+void spell_new_earthquake(int level, struct char_data *ch, struct char_data *victim,
 			  struct obj_data *obj)
 {
     int                                     i = 0;
@@ -1087,7 +1087,7 @@ void spell_new_earthquake(char level, struct char_data *ch, struct char_data *vi
     }
 }
 
-void spell_earthquake(char level, struct char_data *ch, struct char_data *victim,
+void spell_earthquake(int level, struct char_data *ch, struct char_data *victim,
 		      struct obj_data *obj)
 {
     int                                     dam = 0;
@@ -1106,7 +1106,7 @@ void spell_earthquake(char level, struct char_data *ch, struct char_data *victim
 		    "The ground trembless beneath your feet....\r\n");
 }
 
-void spell_dispel_evil(char level, struct char_data *ch, struct char_data *victim,
+void spell_dispel_evil(int level, struct char_data *ch, struct char_data *victim,
 		       struct obj_data *obj)
 {
     if (DEBUG > 1)
@@ -1142,7 +1142,7 @@ void spell_dispel_evil(char level, struct char_data *ch, struct char_data *victi
     }
 }
 
-void spell_harm(char level, struct char_data *ch, struct char_data *victim,
+void spell_harm(int level, struct char_data *ch, struct char_data *victim,
 		struct obj_data *obj)
 {
     int                                     dam = 0;
@@ -1175,7 +1175,7 @@ void spell_harm(char level, struct char_data *ch, struct char_data *victim,
 
 /* spells2.c - Not directly offensive spells */
 
-void spell_shelter(char level, struct char_data *ch, struct char_data *victim,
+void spell_shelter(int level, struct char_data *ch, struct char_data *victim,
 		   struct obj_data *obj)
 {
     struct obj_cost                         cost;
@@ -1221,7 +1221,7 @@ void spell_shelter(char level, struct char_data *ch, struct char_data *victim,
     return;
 }
 
-void spell_astral_walk(char level, struct char_data *ch, struct char_data *victim,
+void spell_astral_walk(int level, struct char_data *ch, struct char_data *victim,
 		       struct obj_data *obj)
 {
     int                                     location = 0;
@@ -1256,7 +1256,7 @@ void spell_astral_walk(char level, struct char_data *ch, struct char_data *victi
     }
 }
 
-void spell_visions(char level, struct char_data *ch, struct char_data *victim,
+void spell_visions(int level, struct char_data *ch, struct char_data *victim,
 		   struct obj_data *obj)
 {
     int                                     location = 0;
@@ -1291,7 +1291,7 @@ void spell_visions(char level, struct char_data *ch, struct char_data *victim,
     }
 }
 
-void spell_cure_critic(char level, struct char_data *ch, struct char_data *victim,
+void spell_cure_critic(int level, struct char_data *ch, struct char_data *victim,
 		       struct obj_data *obj)
 {
     int                                     healpoints = 0;
@@ -1330,7 +1330,7 @@ void spell_cure_critic(char level, struct char_data *ch, struct char_data *victi
 	cprintf(ch, "%s %s.\r\n", NAME(victim), pain_level(victim));
 }
 
-void spell_cure_light(char level, struct char_data *ch, struct char_data *victim,
+void spell_cure_light(int level, struct char_data *ch, struct char_data *victim,
 		      struct obj_data *obj)
 {
     int                                     healpoints = 0;
@@ -1369,7 +1369,7 @@ void spell_cure_light(char level, struct char_data *ch, struct char_data *victim
 	cprintf(ch, "%s %s.\r\n", NAME(victim), pain_level(victim));
 }
 
-void spell_curse(char level, struct char_data *ch, struct char_data *victim,
+void spell_curse(int level, struct char_data *ch, struct char_data *victim,
 		 struct obj_data *obj)
 {
     struct affected_type                    af;
@@ -1419,7 +1419,7 @@ void spell_curse(char level, struct char_data *ch, struct char_data *victim,
     }
 }
 
-void spell_detect_evil(char level, struct char_data *ch, struct char_data *victim,
+void spell_detect_evil(int level, struct char_data *ch, struct char_data *victim,
 		       struct obj_data *obj)
 {
     struct affected_type                    af;
@@ -1455,7 +1455,7 @@ void spell_detect_evil(char level, struct char_data *ch, struct char_data *victi
     cprintf(victim, "Your eyes tingle.\r\n");
 }
 
-void spell_detect_invisibility(char level, struct char_data *ch, struct char_data *victim,
+void spell_detect_invisibility(int level, struct char_data *ch, struct char_data *victim,
 			       struct obj_data *obj)
 {
     struct affected_type                    af;
@@ -1480,7 +1480,7 @@ void spell_detect_invisibility(char level, struct char_data *ch, struct char_dat
     cprintf(victim, "Your eyes tingle.\r\n");
 }
 
-void spell_detect_magic(char level, struct char_data *ch, struct char_data *victim,
+void spell_detect_magic(int level, struct char_data *ch, struct char_data *victim,
 			struct obj_data *obj)
 {
     struct affected_type                    af;
@@ -1504,7 +1504,7 @@ void spell_detect_magic(char level, struct char_data *ch, struct char_data *vict
     cprintf(victim, "Your eyes tingle.\r\n");
 }
 
-void spell_detect_poison(char level, struct char_data *ch, struct char_data *victim,
+void spell_detect_poison(int level, struct char_data *ch, struct char_data *victim,
 			 struct obj_data *obj)
 {
     if (DEBUG > 1)
@@ -1535,7 +1535,7 @@ void spell_detect_poison(char level, struct char_data *ch, struct char_data *vic
     }
 }
 
-void spell_enchant_weapon(char level, struct char_data *ch, struct char_data *victim,
+void spell_enchant_weapon(int level, struct char_data *ch, struct char_data *victim,
 			  struct obj_data *obj)
 {
     int                                     i = 0;
@@ -1583,7 +1583,7 @@ void spell_enchant_weapon(char level, struct char_data *ch, struct char_data *vi
     }
 }
 
-void spell_heal(char level, struct char_data *ch, struct char_data *victim,
+void spell_heal(int level, struct char_data *ch, struct char_data *victim,
 		struct obj_data *obj)
 {
     int                                     dam = 0;
@@ -1617,7 +1617,7 @@ void spell_heal(char level, struct char_data *ch, struct char_data *victim,
     cprintf(victim, "A deity has smiled down on you....\r\n");
 }
 
-void spell_invisibility(char level, struct char_data *ch, struct char_data *victim,
+void spell_invisibility(int level, struct char_data *ch, struct char_data *victim,
 			struct obj_data *obj)
 {
     struct affected_type                    af;
@@ -1649,7 +1649,7 @@ void spell_invisibility(char level, struct char_data *ch, struct char_data *vict
     }
 }
 
-void spell_locate_object(char level, struct char_data *ch, struct char_data *victim, char *obj)
+void spell_locate_object(int level, struct char_data *ch, struct char_data *victim, char *obj)
 {
     struct obj_data                        *i = NULL;
     char                                    name[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
@@ -1693,7 +1693,7 @@ void spell_locate_object(char level, struct char_data *ch, struct char_data *vic
 	cprintf(ch, "No such object.\r\n");
 }
 
-void spell_poison(char level, struct char_data *ch, struct char_data *victim,
+void spell_poison(int level, struct char_data *ch, struct char_data *victim,
 		  struct obj_data *obj)
 {
     struct affected_type                    af;
@@ -1745,7 +1745,7 @@ void spell_poison(char level, struct char_data *ch, struct char_data *victim,
     }
 }
 
-void spell_protection_from_evil(char level, struct char_data *ch, struct char_data *victim,
+void spell_protection_from_evil(int level, struct char_data *ch, struct char_data *victim,
 				struct obj_data *obj)
 {
     struct affected_type                    af;
@@ -1768,7 +1768,7 @@ void spell_protection_from_evil(char level, struct char_data *ch, struct char_da
     }
 }
 
-void spell_remove_curse(char level, struct char_data *ch, struct char_data *victim,
+void spell_remove_curse(int level, struct char_data *ch, struct char_data *victim,
 			struct obj_data *obj)
 {
     if (DEBUG > 1)
@@ -1794,7 +1794,7 @@ void spell_remove_curse(char level, struct char_data *ch, struct char_data *vict
     }
 }
 
-void spell_remove_poison(char level, struct char_data *ch, struct char_data *victim,
+void spell_remove_poison(int level, struct char_data *ch, struct char_data *victim,
 			 struct obj_data *obj)
 {
     if (DEBUG > 1)
@@ -1819,7 +1819,7 @@ void spell_remove_poison(char level, struct char_data *ch, struct char_data *vic
     }
 }
 
-void spell_fireshield(char level, struct char_data *ch, struct char_data *victim,
+void spell_fireshield(int level, struct char_data *ch, struct char_data *victim,
 		      struct obj_data *obj)
 {
     struct affected_type                    af;
@@ -1841,7 +1841,7 @@ void spell_fireshield(char level, struct char_data *ch, struct char_data *victim
     }
 }
 
-void spell_sanctuary(char level, struct char_data *ch, struct char_data *victim,
+void spell_sanctuary(int level, struct char_data *ch, struct char_data *victim,
 		     struct obj_data *obj)
 {
     struct affected_type                    af;
@@ -1863,7 +1863,7 @@ void spell_sanctuary(char level, struct char_data *ch, struct char_data *victim,
     }
 }
 
-void spell_sleep(char level, struct char_data *ch, struct char_data *victim,
+void spell_sleep(int level, struct char_data *ch, struct char_data *victim,
 		 struct obj_data *obj)
 {
     struct affected_type                    af;
@@ -1911,7 +1911,7 @@ void spell_sleep(char level, struct char_data *ch, struct char_data *victim,
     }
 }
 
-void spell_strength(char level, struct char_data *ch, struct char_data *victim,
+void spell_strength(int level, struct char_data *ch, struct char_data *victim,
 		    struct obj_data *obj)
 {
     struct affected_type                    af;
@@ -1950,7 +1950,7 @@ void spell_strength(char level, struct char_data *ch, struct char_data *victim,
     }
 }
 
-void spell_ventriloquate(char level, struct char_data *ch, struct char_data *victim,
+void spell_ventriloquate(int level, struct char_data *ch, struct char_data *victim,
 			 struct obj_data *obj)
 {
     if (DEBUG > 1)
@@ -1962,7 +1962,7 @@ void spell_ventriloquate(char level, struct char_data *ch, struct char_data *vic
      */
 }
 
-void spell_word_of_recall(char level, struct char_data *ch, struct char_data *victim,
+void spell_word_of_recall(int level, struct char_data *ch, struct char_data *victim,
 			  struct obj_data *obj)
 {
     int                                     location = 0;
@@ -1993,7 +1993,7 @@ void spell_word_of_recall(char level, struct char_data *ch, struct char_data *vi
     do_look(victim, "", 15);
 }
 
-void spell_summon(char level, struct char_data *ch, struct char_data *victim,
+void spell_summon(int level, struct char_data *ch, struct char_data *victim,
 		  struct obj_data *obj)
 {
     short int                               target = 0;
@@ -2059,7 +2059,7 @@ void spell_summon(char level, struct char_data *ch, struct char_data *victim,
     }
 }
 
-void spell_charm_monster(char level, struct char_data *ch, struct char_data *victim,
+void spell_charm_monster(int level, struct char_data *ch, struct char_data *victim,
 			 struct obj_data *obj)
 {
     struct affected_type                    af;
@@ -2131,7 +2131,7 @@ void spell_charm_monster(char level, struct char_data *ch, struct char_data *vic
     }
 }
 
-void spell_sense_life(char level, struct char_data *ch, struct char_data *victim,
+void spell_sense_life(int level, struct char_data *ch, struct char_data *victim,
 		      struct obj_data *obj)
 {
     struct affected_type                    af;
@@ -2159,7 +2159,7 @@ void spell_sense_life(char level, struct char_data *ch, struct char_data *victim
  *                     Not cast-able spells                                  *
  * ************************************************************************* */
 
-void spell_identify(char level, struct char_data *ch, struct char_data *victim,
+void spell_identify(int level, struct char_data *ch, struct char_data *victim,
 		    struct obj_data *obj)
 {
     char                                    buf[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
@@ -2252,7 +2252,7 @@ void spell_identify(char level, struct char_data *ch, struct char_data *victim,
  *                     NPC spells..                                          *
  * ************************************************************************* */
 
-void spell_fire_breath(char level, struct char_data *ch, struct char_data *victim,
+void spell_fire_breath(int level, struct char_data *ch, struct char_data *victim,
 		       struct obj_data *obj)
 {
     int                                     dam = 0;
@@ -2299,7 +2299,7 @@ void spell_fire_breath(char level, struct char_data *ch, struct char_data *victi
     }
 }
 
-void spell_frost_breath(char level, struct char_data *ch, struct char_data *victim,
+void spell_frost_breath(int level, struct char_data *ch, struct char_data *victim,
 			struct obj_data *obj)
 {
     int                                     dam = 0;
@@ -2344,7 +2344,7 @@ void spell_frost_breath(char level, struct char_data *ch, struct char_data *vict
     }
 }
 
-void spell_acid_breath(char level, struct char_data *ch, struct char_data *victim,
+void spell_acid_breath(int level, struct char_data *ch, struct char_data *victim,
 		       struct obj_data *obj)
 {
     int                                     dam = 0;
@@ -2374,7 +2374,7 @@ void spell_acid_breath(char level, struct char_data *ch, struct char_data *victi
 
 }
 
-void spell_gas_breath(char level, struct char_data *ch, struct char_data *victim,
+void spell_gas_breath(int level, struct char_data *ch, struct char_data *victim,
 		      struct obj_data *obj)
 {
     int                                     dam = 0;
@@ -2404,7 +2404,7 @@ void spell_gas_breath(char level, struct char_data *ch, struct char_data *victim
 
 }
 
-void spell_lightning_breath(char level, struct char_data *ch, struct char_data *victim,
+void spell_lightning_breath(int level, struct char_data *ch, struct char_data *victim,
 			    struct obj_data *obj)
 {
     int                                     dam = 0;
@@ -2449,7 +2449,7 @@ void spell_lightning_breath(char level, struct char_data *ch, struct char_data *
  **   time (if a pc)
  */
 
-void spell_resurrection(char level, struct char_data *ch, struct char_data *victim,
+void spell_resurrection(int level, struct char_data *ch, struct char_data *victim,
 			struct obj_data *obj)
 {
     struct char_file_u                      st;
@@ -2563,7 +2563,7 @@ void spell_resurrection(char level, struct char_data *ch, struct char_data *vict
     }
 }
 
-void spell_cause_light(char level, struct char_data *ch, struct char_data *victim,
+void spell_cause_light(int level, struct char_data *ch, struct char_data *victim,
 		       struct obj_data *obj)
 {
     int                                     dam = 0;
@@ -2600,7 +2600,7 @@ void spell_cause_light(char level, struct char_data *ch, struct char_data *victi
     damage(ch, victim, dam, SPELL_CAUSE_LIGHT);
 }
 
-void spell_cause_critical(char level, struct char_data *ch, struct char_data *victim,
+void spell_cause_critical(int level, struct char_data *ch, struct char_data *victim,
 			  struct obj_data *obj)
 {
     int                                     dam = 0;
@@ -2636,7 +2636,7 @@ void spell_cause_critical(char level, struct char_data *ch, struct char_data *vi
     damage(ch, victim, dam, SPELL_CAUSE_CRITICAL);
 }
 
-void spell_cause_serious(char level, struct char_data *ch, struct char_data *victim,
+void spell_cause_serious(int level, struct char_data *ch, struct char_data *victim,
 			 struct obj_data *obj)
 {
     int                                     dam = 0;
@@ -2673,7 +2673,7 @@ void spell_cause_serious(char level, struct char_data *ch, struct char_data *vic
 
 }
 
-void spell_cure_serious(char level, struct char_data *ch, struct char_data *victim,
+void spell_cure_serious(int level, struct char_data *ch, struct char_data *victim,
 			struct obj_data *obj)
 {
     int                                     dam = 0;
@@ -2715,7 +2715,7 @@ void spell_cure_serious(char level, struct char_data *ch, struct char_data *vict
 	cprintf(ch, "%s %s.\r\n", NAME(victim), pain_level(victim));
 }
 
-void spell_mana(char level, struct char_data *ch, struct char_data *victim,
+void spell_mana(int level, struct char_data *ch, struct char_data *victim,
 		struct obj_data *obj)
 {
     int                                     dam = 0;
@@ -2739,7 +2739,7 @@ void spell_mana(char level, struct char_data *ch, struct char_data *victim,
 
 }
 
-void spell_second_wind(char level, struct char_data *ch, struct char_data *victim,
+void spell_second_wind(int level, struct char_data *ch, struct char_data *victim,
 		       struct obj_data *obj)
 {
     int                                     dam = 0;
@@ -2764,7 +2764,7 @@ void spell_second_wind(char level, struct char_data *ch, struct char_data *victi
 
 }
 
-void spell_flamestrike(char level, struct char_data *ch, struct char_data *victim,
+void spell_flamestrike(int level, struct char_data *ch, struct char_data *victim,
 		       struct obj_data *obj)
 {
     int                                     dam = 0;
@@ -2789,7 +2789,7 @@ void spell_flamestrike(char level, struct char_data *ch, struct char_data *victi
     damage(ch, victim, dam, SPELL_FLAMESTRIKE);
 }
 
-void spell_dispel_good(char level, struct char_data *ch, struct char_data *victim,
+void spell_dispel_good(int level, struct char_data *ch, struct char_data *victim,
 		       struct obj_data *obj)
 {
     if (DEBUG > 1)
@@ -2825,7 +2825,7 @@ void spell_dispel_good(char level, struct char_data *ch, struct char_data *victi
     }
 }
 
-void spell_turn(char level, struct char_data *ch, struct char_data *victim,
+void spell_turn(int level, struct char_data *ch, struct char_data *victim,
 		struct obj_data *obj)
 {
     int                                     diff = 0;
@@ -2919,7 +2919,7 @@ void spell_turn(char level, struct char_data *ch, struct char_data *victim,
     }
 }
 
-void spell_remove_paralysis(char level, struct char_data *ch, struct char_data *victim,
+void spell_remove_paralysis(int level, struct char_data *ch, struct char_data *victim,
 			    struct obj_data *obj)
 {
     if (DEBUG > 1)
@@ -2938,7 +2938,7 @@ void spell_remove_paralysis(char level, struct char_data *ch, struct char_data *
     }
 }
 
-void spell_holy_word(char level, struct char_data *ch, struct char_data *victim,
+void spell_holy_word(int level, struct char_data *ch, struct char_data *victim,
 		     struct obj_data *obj)
 {
     if (DEBUG > 1)
@@ -2946,7 +2946,7 @@ void spell_holy_word(char level, struct char_data *ch, struct char_data *victim,
 		 SAFE_NAME(victim), SAFE_ONAME(obj));
 }
 
-void spell_unholy_word(char level, struct char_data *ch, struct char_data *victim,
+void spell_unholy_word(int level, struct char_data *ch, struct char_data *victim,
 		       struct obj_data *obj)
 {
     if (DEBUG > 1)
@@ -2954,7 +2954,7 @@ void spell_unholy_word(char level, struct char_data *ch, struct char_data *victi
 		 SAFE_NAME(victim), SAFE_ONAME(obj));
 }
 
-void spell_succor(char level, struct char_data *ch, struct char_data *victim,
+void spell_succor(int level, struct char_data *ch, struct char_data *victim,
 		  struct obj_data *obj)
 {
     struct obj_data                        *o = NULL;
@@ -2974,7 +2974,7 @@ void spell_succor(char level, struct char_data *ch, struct char_data *victim,
     act("You wave your hand and create $p.", TRUE, ch, o, 0, TO_CHAR);
 }
 
-void spell_detect_charm(char level, struct char_data *ch, struct char_data *victim,
+void spell_detect_charm(int level, struct char_data *ch, struct char_data *victim,
 			struct obj_data *obj)
 {
     if (DEBUG > 1)
@@ -2982,7 +2982,7 @@ void spell_detect_charm(char level, struct char_data *ch, struct char_data *vict
 		 SAFE_NAME(victim), SAFE_ONAME(obj));
 }
 
-void spell_true_seeing(char level, struct char_data *ch, struct char_data *victim,
+void spell_true_seeing(int level, struct char_data *ch, struct char_data *victim,
 		       struct obj_data *obj)
 {
     struct affected_type                    af;
@@ -3020,7 +3020,7 @@ void spell_true_seeing(char level, struct char_data *ch, struct char_data *victi
  * magic user spells
  */
 
-void spell_poly_self(char level, struct char_data *ch, struct char_data *victim,
+void spell_poly_self(int level, struct char_data *ch, struct char_data *victim,
 		     struct obj_data *obj)
 {
     /*
@@ -3058,7 +3058,7 @@ void spell_poly_self(char level, struct char_data *ch, struct char_data *victim,
     GET_EXP(victim) = 10;
 }
 
-void spell_minor_create(char level, struct char_data *ch, struct char_data *victim,
+void spell_minor_create(int level, struct char_data *ch, struct char_data *victim,
 			struct obj_data *obj)
 {
     if (DEBUG > 1)
@@ -3078,7 +3078,7 @@ void spell_minor_create(char level, struct char_data *ch, struct char_data *vict
 
 }
 
-void spell_stone_skin(char level, struct char_data *ch, struct char_data *victim,
+void spell_stone_skin(int level, struct char_data *ch, struct char_data *victim,
 		      struct obj_data *obj)
 {
     struct affected_type                    af;
@@ -3122,7 +3122,7 @@ void spell_stone_skin(char level, struct char_data *ch, struct char_data *victim
 	cprintf(ch, "The spell fizzles...\r\n");
 }
 
-void spell_infravision(char level, struct char_data *ch, struct char_data *victim,
+void spell_infravision(int level, struct char_data *ch, struct char_data *victim,
 		       struct obj_data *obj)
 {
     struct affected_type                    af;
@@ -3154,7 +3154,7 @@ void spell_infravision(char level, struct char_data *ch, struct char_data *victi
     }
 }
 
-void spell_shield(char level, struct char_data *ch, struct char_data *victim,
+void spell_shield(int level, struct char_data *ch, struct char_data *victim,
 		  struct obj_data *obj)
 {
     struct affected_type                    af;
@@ -3187,7 +3187,7 @@ void spell_shield(char level, struct char_data *ch, struct char_data *victim,
 	cprintf(ch, "The spell fizzles....\r\n");
 }
 
-void spell_weakness(char level, struct char_data *ch, struct char_data *victim,
+void spell_weakness(int level, struct char_data *ch, struct char_data *victim,
 		    struct obj_data *obj)
 {
     struct affected_type                    af;
@@ -3223,7 +3223,7 @@ void spell_weakness(char level, struct char_data *ch, struct char_data *victim,
 	}
 }
 
-void spell_invis_group(char level, struct char_data *ch, struct char_data *victim,
+void spell_invis_group(int level, struct char_data *ch, struct char_data *victim,
 		       struct obj_data *obj)
 {
     struct char_data                       *tmp_victim = NULL;
@@ -3258,7 +3258,7 @@ void spell_invis_group(char level, struct char_data *ch, struct char_data *victi
     }
 }
 
-void spell_acid_blast(char level, struct char_data *ch, struct char_data *victim,
+void spell_acid_blast(int level, struct char_data *ch, struct char_data *victim,
 		      struct obj_data *obj)
 {
     int                                     dam = 0;
@@ -3300,7 +3300,7 @@ void spell_acid_blast(char level, struct char_data *ch, struct char_data *victim
     damage(ch, victim, dam, SPELL_ACID_BLAST);
 }
 
-void spell_cone_of_cold(char level, struct char_data *ch, struct char_data *victim,
+void spell_cone_of_cold(int level, struct char_data *ch, struct char_data *victim,
 			struct obj_data *obj)
 {
     int                                     dam = 0;
@@ -3340,7 +3340,7 @@ void spell_cone_of_cold(char level, struct char_data *ch, struct char_data *vict
     AreaEffectSpell(ch, dam, SPELL_CONE_OF_COLD, 0, NULL);
 }
 
-void spell_ice_storm(char level, struct char_data *ch, struct char_data *victim,
+void spell_ice_storm(int level, struct char_data *ch, struct char_data *victim,
 		     struct obj_data *obj)
 {
     int                                     dam = 0;
@@ -3362,7 +3362,7 @@ void spell_ice_storm(char level, struct char_data *ch, struct char_data *victim,
     AreaEffectSpell(ch, dam, SPELL_ICE_STORM, 0, NULL);
 }
 
-void spell_poison_cloud(char level, struct char_data *ch, struct char_data *victim,
+void spell_poison_cloud(int level, struct char_data *ch, struct char_data *victim,
 			struct obj_data *obj)
 {
     if (DEBUG > 1)
@@ -3370,7 +3370,7 @@ void spell_poison_cloud(char level, struct char_data *ch, struct char_data *vict
 		 SAFE_NAME(victim), SAFE_ONAME(obj));
 }
 
-void spell_chain_lightning(char level, struct char_data *ch, struct char_data *victim,
+void spell_chain_lightning(int level, struct char_data *ch, struct char_data *victim,
 			   struct obj_data *obj)
 {
     if (DEBUG > 1)
@@ -3378,7 +3378,7 @@ void spell_chain_lightning(char level, struct char_data *ch, struct char_data *v
 		 SAFE_NAME(victim), SAFE_ONAME(obj));
 }
 
-void spell_major_create(char level, struct char_data *ch, struct char_data *victim,
+void spell_major_create(int level, struct char_data *ch, struct char_data *victim,
 			struct obj_data *obj)
 {
     if (DEBUG > 1)
@@ -3386,7 +3386,7 @@ void spell_major_create(char level, struct char_data *ch, struct char_data *vict
 		 SAFE_NAME(victim), SAFE_ONAME(obj));
 }
 
-void spell_summon_obj(char level, struct char_data *ch, struct char_data *victim,
+void spell_summon_obj(int level, struct char_data *ch, struct char_data *victim,
 		      struct obj_data *obj)
 {
     if (DEBUG > 1)
@@ -3394,7 +3394,7 @@ void spell_summon_obj(char level, struct char_data *ch, struct char_data *victim
 		 SAFE_NAME(victim), SAFE_ONAME(obj));
 }
 
-void spell_pword_blind(char level, struct char_data *ch, struct char_data *victim,
+void spell_pword_blind(int level, struct char_data *ch, struct char_data *victim,
 		       struct obj_data *obj)
 {
     if (DEBUG > 1)
@@ -3402,7 +3402,7 @@ void spell_pword_blind(char level, struct char_data *ch, struct char_data *victi
 		 SAFE_NAME(victim), SAFE_ONAME(obj));
 }
 
-void spell_pword_kill(char level, struct char_data *ch, struct char_data *victim,
+void spell_pword_kill(int level, struct char_data *ch, struct char_data *victim,
 		      struct obj_data *obj)
 {
     if (DEBUG > 1)
@@ -3410,7 +3410,7 @@ void spell_pword_kill(char level, struct char_data *ch, struct char_data *victim
 		 SAFE_NAME(victim), SAFE_ONAME(obj));
 }
 
-void spell_sending(char level, struct char_data *ch, struct char_data *victim,
+void spell_sending(int level, struct char_data *ch, struct char_data *victim,
 		   struct obj_data *obj)
 {
     if (DEBUG > 1)
@@ -3418,7 +3418,7 @@ void spell_sending(char level, struct char_data *ch, struct char_data *victim,
 		 SAFE_NAME(victim), SAFE_ONAME(obj));
 }
 
-void spell_meteor_swarm(char level, struct char_data *ch, struct char_data *victim,
+void spell_meteor_swarm(int level, struct char_data *ch, struct char_data *victim,
 			struct obj_data *obj)
 {
     int                                     dam = 0;
@@ -3440,7 +3440,7 @@ void spell_meteor_swarm(char level, struct char_data *ch, struct char_data *vict
     AreaEffectSpell(ch, dam, SPELL_METEOR_SWARM, 0, NULL);
 }
 
-void spell_Create_Monster(char level, struct char_data *ch, struct char_data *victim,
+void spell_Create_Monster(int level, struct char_data *ch, struct char_data *victim,
 			  struct obj_data *obj)
 {
     struct affected_type                    af;
@@ -3531,7 +3531,7 @@ void spell_Create_Monster(char level, struct char_data *ch, struct char_data *vi
  * either
  */
 
-void spell_light(char level, struct char_data *ch, struct char_data *victim,
+void spell_light(int level, struct char_data *ch, struct char_data *victim,
 		 struct obj_data *obj)
 {
     struct obj_data                        *tmp_obj = NULL;
@@ -3574,7 +3574,7 @@ void spell_light(char level, struct char_data *ch, struct char_data *victim,
     act("With a flick of your wrist, $p suddenly appears.", TRUE, ch, tmp_obj, 0, TO_CHAR);
 }
 
-void spell_fly(char level, struct char_data *ch, struct char_data *victim, struct obj_data *obj)
+void spell_fly(int level, struct char_data *ch, struct char_data *victim, struct obj_data *obj)
 {
     struct affected_type                    af;
     int                                     dur = 0;
@@ -3629,7 +3629,7 @@ void spell_fly(char level, struct char_data *ch, struct char_data *victim, struc
     affect_to_char(victim, &af);
 }
 
-void spell_refresh(char level, struct char_data *ch, struct char_data *victim,
+void spell_refresh(int level, struct char_data *ch, struct char_data *victim,
 		   struct obj_data *obj)
 {
     int                                     dam = 0;
@@ -3657,7 +3657,7 @@ void spell_refresh(char level, struct char_data *ch, struct char_data *victim,
     cprintf(victim, "You feel less tired\r\n");
 }
 
-void spell_water_breath(char level, struct char_data *ch, struct char_data *victim,
+void spell_water_breath(int level, struct char_data *ch, struct char_data *victim,
 			struct obj_data *obj)
 {
     struct affected_type                    af;
@@ -3685,7 +3685,7 @@ void spell_water_breath(char level, struct char_data *ch, struct char_data *vict
     affect_to_char(victim, &af);
 }
 
-void spell_cont_light(char level, struct char_data *ch, struct char_data *victim,
+void spell_cont_light(int level, struct char_data *ch, struct char_data *victim,
 		      struct obj_data *obj)
 {
 /*
@@ -3729,7 +3729,7 @@ void spell_cont_light(char level, struct char_data *ch, struct char_data *victim
 
 }
 
-void spell_animate_dead(char level, struct char_data *ch, struct char_data *victim,
+void spell_animate_dead(int level, struct char_data *ch, struct char_data *victim,
 			struct obj_data *corpse)
 {
     struct char_data                       *mob = NULL;
@@ -3827,7 +3827,7 @@ void spell_animate_dead(char level, struct char_data *ch, struct char_data *vict
 	GET_ALIGNMENT(ch) = -1000;
 }
 
-void spell_know_alignment(char level, struct char_data *ch, struct char_data *victim,
+void spell_know_alignment(int level, struct char_data *ch, struct char_data *victim,
 			  struct obj_data *obj)
 {
     int                                     ap = 0;
@@ -3869,7 +3869,7 @@ void spell_know_alignment(char level, struct char_data *ch, struct char_data *vi
 	cprintf(ch, "I'd rather just not say anything at all about %s\r\n", name);
 }
 
-void spell_dispel_magic(char level, struct char_data *ch, struct char_data *victim,
+void spell_dispel_magic(int level, struct char_data *ch, struct char_data *victim,
 			struct obj_data *obj)
 {
     int                                     yes = 0;
@@ -4055,7 +4055,7 @@ void spell_dispel_magic(char level, struct char_data *ch, struct char_data *vict
     }
 }
 
-void spell_paralyze(char level, struct char_data *ch, struct char_data *victim,
+void spell_paralyze(int level, struct char_data *ch, struct char_data *victim,
 		    struct obj_data *obj)
 {
     struct affected_type                    af;
@@ -4107,7 +4107,7 @@ void spell_paralyze(char level, struct char_data *ch, struct char_data *victim,
     }
 }
 
-void spell_fear(char level, struct char_data *ch, struct char_data *victim,
+void spell_fear(int level, struct char_data *ch, struct char_data *victim,
 		struct obj_data *obj)
 {
     if (DEBUG > 1)
@@ -4142,7 +4142,7 @@ void spell_fear(char level, struct char_data *ch, struct char_data *victim,
     }
 }
 
-void spell_prot_align_group(char level, struct char_data *ch, struct char_data *victim,
+void spell_prot_align_group(int level, struct char_data *ch, struct char_data *victim,
 			    struct obj_data *obj)
 {
     if (DEBUG > 1)
@@ -4150,7 +4150,7 @@ void spell_prot_align_group(char level, struct char_data *ch, struct char_data *
 		 SAFE_NAME(victim), SAFE_ONAME(obj));
 }
 
-void spell_calm(char level, struct char_data *ch, struct char_data *victim,
+void spell_calm(int level, struct char_data *ch, struct char_data *victim,
 		struct obj_data *obj)
 {
     if (DEBUG > 1)
@@ -4181,7 +4181,7 @@ void spell_calm(char level, struct char_data *ch, struct char_data *victim,
     }
 }
 
-void spell_conjure_elemental(char level, struct char_data *ch, struct char_data *victim,
+void spell_conjure_elemental(int level, struct char_data *ch, struct char_data *victim,
 			     struct obj_data *obj)
 {
     struct affected_type                    af;
@@ -4232,7 +4232,7 @@ void spell_conjure_elemental(char level, struct char_data *ch, struct char_data 
     affect_to_char(victim, &af);
 }
 
-void spell_faerie_fire(char level, struct char_data *ch, struct char_data *victim,
+void spell_faerie_fire(int level, struct char_data *ch, struct char_data *victim,
 		       struct obj_data *obj)
 {
     struct affected_type                    af;
@@ -4268,7 +4268,7 @@ void spell_faerie_fire(char level, struct char_data *ch, struct char_data *victi
 
 }
 
-void spell_faerie_fog(char level, struct char_data *ch, struct char_data *victim,
+void spell_faerie_fog(int level, struct char_data *ch, struct char_data *victim,
 		      struct obj_data *obj)
 {
     struct char_data                       *tmp_victim = NULL;
@@ -4313,7 +4313,7 @@ void spell_faerie_fog(char level, struct char_data *ch, struct char_data *victim
     }
 }
 
-void spell_cacaodemon(char level, struct char_data *ch, struct char_data *victim,
+void spell_cacaodemon(int level, struct char_data *ch, struct char_data *victim,
 		      struct obj_data *obj)
 {
     struct affected_type                    af;
@@ -4365,7 +4365,7 @@ void spell_cacaodemon(char level, struct char_data *ch, struct char_data *victim
  * neither
  */
 
-void spell_improved_identify(char level, struct char_data *ch, struct char_data *victim,
+void spell_improved_identify(int level, struct char_data *ch, struct char_data *victim,
 			     struct obj_data *obj)
 {
     if (DEBUG > 1)
@@ -4373,7 +4373,7 @@ void spell_improved_identify(char level, struct char_data *ch, struct char_data 
 		 SAFE_NAME(victim), SAFE_ONAME(obj));
 }
 
-void spell_geyser(char level, struct char_data *ch, struct char_data *victim,
+void spell_geyser(int level, struct char_data *ch, struct char_data *victim,
 		  struct obj_data *obj)
 {
     int                                     dam = 0;
@@ -4410,7 +4410,7 @@ void spell_geyser(char level, struct char_data *ch, struct char_data *victim,
     }
 }
 
-void spell_green_slime(char level, struct char_data *ch, struct char_data *victim,
+void spell_green_slime(int level, struct char_data *ch, struct char_data *victim,
 		       struct obj_data *obj)
 {
     int                                     dam = 0;
@@ -4452,7 +4452,7 @@ void spell_green_slime(char level, struct char_data *ch, struct char_data *victi
  *
  */
 
-void spell_fly_group(char level, struct char_data *ch, struct char_data *victim,
+void spell_fly_group(int level, struct char_data *ch, struct char_data *victim,
 		     struct obj_data *obj)
 {
     struct affected_type                    af;
@@ -4511,7 +4511,7 @@ void spell_fly_group(char level, struct char_data *ch, struct char_data *victim,
     }
 }
 
-void spell_aid(char level, struct char_data *ch, struct char_data *victim, struct obj_data *obj)
+void spell_aid(int level, struct char_data *ch, struct char_data *victim, struct obj_data *obj)
 {
     struct affected_type                    af;
 
@@ -4543,7 +4543,7 @@ void spell_aid(char level, struct char_data *ch, struct char_data *victim, struc
     affect_to_char(victim, &af);
 }
 
-void spell_goodberry(char level, struct char_data *ch, struct char_data *victim,
+void spell_goodberry(int level, struct char_data *ch, struct char_data *victim,
 		     struct obj_data *obj)
 {
     struct obj_data                        *tmp_obj = NULL;
@@ -4597,7 +4597,7 @@ void spell_goodberry(char level, struct char_data *ch, struct char_data *victim,
 
 #ifdef DRUID_WORKING
 
-void spell_tree_travel(char level, struct char_data *ch, struct char_data *victim,
+void spell_tree_travel(int level, struct char_data *ch, struct char_data *victim,
 		       struct obj_data *obj)
 {
     struct affected_type                    af;
@@ -4627,7 +4627,7 @@ void spell_tree_travel(char level, struct char_data *ch, struct char_data *victi
 
 }
 
-void spell_transport_via_plant(char level, struct char_data *ch, struct char_data *victim,
+void spell_transport_via_plant(int level, struct char_data *ch, struct char_data *victim,
 			       struct obj_data *obj)
 {
     struct room_data                       *rp = NULL;
@@ -4678,7 +4678,7 @@ void spell_transport_via_plant(char level, struct char_data *ch, struct char_dat
 
 }
 
-void spell_speak_with_plants(char level, struct char_data *ch, struct char_data *victim,
+void spell_speak_with_plants(int level, struct char_data *ch, struct char_data *victim,
 			     struct obj_data *obj)
 {
     if (DEBUG > 1)
@@ -4701,7 +4701,7 @@ void spell_speak_with_plants(char level, struct char_data *ch, struct char_data 
 
 #define TREE 6110
 
-void spell_changestaff(char level, struct char_data *ch, struct char_data *victim,
+void spell_changestaff(int level, struct char_data *ch, struct char_data *victim,
 		       struct obj_data *obj)
 {
     struct affected_type                    af;
@@ -4769,7 +4769,7 @@ void spell_changestaff(char level, struct char_data *ch, struct char_data *victi
 }
 
 /* mage spells */
-void spell_pword_kill(char level, struct char_data *ch, struct char_data *victim,
+void spell_pword_kill(int level, struct char_data *ch, struct char_data *victim,
 		      struct obj_data *obj)
 {
     if (DEBUG > 1)
@@ -4789,7 +4789,7 @@ void spell_pword_kill(char level, struct char_data *ch, struct char_data *victim
 
 }
 
-void spell_pword_blind(char level, struct char_data *ch, struct char_data *victim,
+void spell_pword_blind(int level, struct char_data *ch, struct char_data *victim,
 		       struct obj_data *obj)
 {
     if (DEBUG > 1)
@@ -4809,7 +4809,7 @@ void spell_pword_blind(char level, struct char_data *ch, struct char_data *victi
 
 }
 
-void spell_chain_lightn(char level, struct char_data *ch, struct char_data *victim,
+void spell_chain_lightn(int level, struct char_data *ch, struct char_data *victim,
 			struct obj_data *obj)
 {
     int                                     lev = level;
@@ -4840,7 +4840,7 @@ void spell_chain_lightn(char level, struct char_data *ch, struct char_data *vict
     }
 }
 
-void spell_scare(char level, struct char_data *ch, struct char_data *victim,
+void spell_scare(int level, struct char_data *ch, struct char_data *victim,
 		 struct obj_data *obj)
 {
     if (DEBUG > 1)
@@ -4856,7 +4856,7 @@ void spell_scare(char level, struct char_data *ch, struct char_data *victim,
 	do_flee(victim, "", 0);
 }
 
-void spell_haste(char level, struct char_data *ch, struct char_data *victim,
+void spell_haste(int level, struct char_data *ch, struct char_data *victim,
 		 struct obj_data *obj)
 {
     struct affected_type                    af;
@@ -4908,7 +4908,7 @@ void spell_haste(char level, struct char_data *ch, struct char_data *victim,
     }
 }
 
-void spell_slow(char level, struct char_data *ch, struct char_data *victim,
+void spell_slow(int level, struct char_data *ch, struct char_data *victim,
 		struct obj_data *obj)
 {
     struct affected_type                    af;
@@ -4956,7 +4956,7 @@ void spell_slow(char level, struct char_data *ch, struct char_data *victim,
 #define ROTT    3093
 #define WOLF    3094
 
-void spell_familiar(char level, struct char_data *ch, struct char_data **victim,
+void spell_familiar(int level, struct char_data *ch, struct char_data **victim,
 		    struct obj_data *obj)
 {
     struct affected_type                    af;
@@ -5013,7 +5013,7 @@ void spell_familiar(char level, struct char_data *ch, struct char_data **victim,
 
 /* cleric */
 
-void spell_holyword(char level, struct char_data *ch, struct char_data *victim,
+void spell_holyword(int level, struct char_data *ch, struct char_data *victim,
 		    struct obj_data *obj)
 {
     int                                     lev = 0;
@@ -5075,7 +5075,7 @@ void spell_holyword(char level, struct char_data *ch, struct char_data *victim,
 
 #define GOLEM 38
 
-void spell_golem(char level, struct char_data *ch, struct char_data *victim,
+void spell_golem(int level, struct char_data *ch, struct char_data *victim,
 		 struct obj_data *obj)
 {
     int                                     count = 0;
@@ -5227,7 +5227,7 @@ void spell_golem(char level, struct char_data *ch, struct char_data *victim,
 
 /***************/
 
-void spell_feeblemind(char level, struct char_data *ch, struct char_data *victim,
+void spell_feeblemind(int level, struct char_data *ch, struct char_data *victim,
 		      struct obj_data *obj)
 {
     struct affected_type                    af;
@@ -5283,7 +5283,7 @@ void spell_feeblemind(char level, struct char_data *ch, struct char_data *victim
     }
 }
 
-void spell_shillelagh(char level, struct char_data *ch, struct char_data *victim,
+void spell_shillelagh(int level, struct char_data *ch, struct char_data *victim,
 		      struct obj_data *obj)
 {
     int                                     i = 0;
@@ -5337,7 +5337,7 @@ void spell_shillelagh(char level, struct char_data *ch, struct char_data *victim
     }
 }
 
-void spell_flame_blade(char level, struct char_data *ch, struct char_data *victim,
+void spell_flame_blade(int level, struct char_data *ch, struct char_data *victim,
 		       struct obj_data *obj)
 {
     struct obj_data                        *tmp_obj = NULL;
@@ -5392,7 +5392,7 @@ void spell_flame_blade(char level, struct char_data *ch, struct char_data *victi
     act("$p appears in $n's hand.", TRUE, ch, tmp_obj, 0, TO_ROOM);
 }
 
-void spell_animal_growth(char level, struct char_data *ch, struct char_data *victim,
+void spell_animal_growth(int level, struct char_data *ch, struct char_data *victim,
 			 struct obj_data *obj)
 {
     struct affected_type                    af;
@@ -5455,7 +5455,7 @@ void spell_animal_growth(char level, struct char_data *ch, struct char_data *vic
  */
 }
 
-void spell_insect_growth(char level, struct char_data *ch, struct char_data *victim,
+void spell_insect_growth(int level, struct char_data *ch, struct char_data *victim,
 			 struct obj_data *obj)
 {
     struct affected_type                    af;
@@ -5519,7 +5519,7 @@ void spell_insect_growth(char level, struct char_data *ch, struct char_data *vic
 
 #define CREEPING_DEATH 39
 
-void spell_creeping_death(char level, struct char_data *ch, struct char_data *victim, int dir)
+void spell_creeping_death(int level, struct char_data *ch, struct char_data *victim, int dir)
 {
     struct affected_type                    af;
     struct char_data                       *cd = NULL;
@@ -5580,7 +5580,7 @@ void spell_creeping_death(char level, struct char_data *ch, struct char_data *vi
 
 }
 
-void spell_commune(char level, struct char_data *ch, struct char_data *victim,
+void spell_commune(int level, struct char_data *ch, struct char_data *victim,
 		   struct obj_data *obj)
 {
     struct char_data                       *c = NULL;
@@ -5635,7 +5635,7 @@ void spell_commune(char level, struct char_data *ch, struct char_data *victim,
 #define ANISUM2  9014
 #define ANISUM3  9021
 
-void spell_animal_summon(char level, struct char_data *ch, struct char_data *victim,
+void spell_animal_summon(int level, struct char_data *ch, struct char_data *victim,
 			 struct obj_data *obj)
 {
     struct affected_type                    af;
@@ -5743,7 +5743,7 @@ void spell_animal_summon(char level, struct char_data *ch, struct char_data *vic
 
 #define FIRE_ELEMENTAL  40
 
-void spell_elemental_summoning(char level, struct char_data *ch, struct char_data *victim,
+void spell_elemental_summoning(int level, struct char_data *ch, struct char_data *victim,
 			       int spell)
 {
     int                                     vnum = 0;
@@ -5826,7 +5826,7 @@ void spell_elemental_summoning(char level, struct char_data *ch, struct char_dat
     }
 }
 
-void spell_reincarnate(char level, struct char_data *ch, struct char_data *victim,
+void spell_reincarnate(int level, struct char_data *ch, struct char_data *victim,
 		       struct obj_data *obj)
 {
     struct char_data                       *newch = NULL;
@@ -5941,7 +5941,7 @@ void spell_reincarnate(char level, struct char_data *ch, struct char_data *victi
     }
 }
 
-void spell_charm_veggie(char level, struct char_data *ch, struct char_data *victim,
+void spell_charm_veggie(int level, struct char_data *ch, struct char_data *victim,
 			struct obj_data *obj)
 {
     struct affected_type                    af;
@@ -6015,7 +6015,7 @@ void spell_charm_veggie(char level, struct char_data *ch, struct char_data *vict
     }
 }
 
-void spell_veggie_growth(char level, struct char_data *ch, struct char_data *victim,
+void spell_veggie_growth(int level, struct char_data *ch, struct char_data *victim,
 			 struct obj_data *obj)
 {
     struct affected_type                    af;
@@ -6079,7 +6079,7 @@ void spell_veggie_growth(char level, struct char_data *ch, struct char_data *vic
 
 #define SAPLING  45
 
-void spell_tree(char level, struct char_data *ch, struct char_data *victim,
+void spell_tree(int level, struct char_data *ch, struct char_data *victim,
 		struct obj_data *obj)
 {
     struct char_data                       *mob = NULL;
@@ -6123,7 +6123,7 @@ void spell_tree(char level, struct char_data *ch, struct char_data *victim,
 
 #define LITTLE_ROCK  50
 
-void spell_animate_rock(char level, struct char_data *ch, struct char_data *victim,
+void spell_animate_rock(int level, struct char_data *ch, struct char_data *victim,
 			struct obj_data *obj)
 {
     struct char_data                       *mob = NULL;
@@ -6209,7 +6209,7 @@ void spell_animate_rock(char level, struct char_data *ch, struct char_data *vict
 
 }
 
-void spell_travelling(char level, struct char_data *ch, struct char_data *victim,
+void spell_travelling(int level, struct char_data *ch, struct char_data *victim,
 		      struct obj_data *obj)
 {
     struct affected_type                    af;
@@ -6237,7 +6237,7 @@ void spell_travelling(char level, struct char_data *ch, struct char_data *victim
     cprintf(victim, "You feel fleet of foot.\r\n");
 }
 
-void spell_animal_friendship(char level, struct char_data *ch, struct char_data *victim,
+void spell_animal_friendship(int level, struct char_data *ch, struct char_data *victim,
 			     struct obj_data *obj)
 {
     struct affected_type                    af;
@@ -6305,7 +6305,7 @@ void spell_animal_friendship(char level, struct char_data *ch, struct char_data 
 
 }
 
-void spell_invis_to_animals(char level, struct char_data *ch, struct char_data *victim,
+void spell_invis_to_animals(int level, struct char_data *ch, struct char_data *victim,
 			    struct obj_data *obj)
 {
     struct affected_type                    af;
@@ -6333,7 +6333,7 @@ void spell_invis_to_animals(char level, struct char_data *ch, struct char_data *
     }
 }
 
-void spell_slow_poison(char level, struct char_data *ch, struct char_data *victim,
+void spell_slow_poison(int level, struct char_data *ch, struct char_data *victim,
 		       struct obj_data *obj)
 {
     struct affected_type                    af;
@@ -6361,7 +6361,7 @@ void spell_slow_poison(char level, struct char_data *ch, struct char_data *victi
     }
 }
 
-void spell_snare(char level, struct char_data *ch, struct char_data *victim,
+void spell_snare(int level, struct char_data *ch, struct char_data *victim,
 		 struct obj_data *obj)
 {
     if (DEBUG > 1)
@@ -6393,7 +6393,7 @@ void spell_snare(char level, struct char_data *ch, struct char_data *victim,
     }
 }
 
-void spell_entangle(char level, struct char_data *ch, struct char_data *victim,
+void spell_entangle(int level, struct char_data *ch, struct char_data *victim,
 		    struct obj_data *obj)
 {
     struct affected_type                    af;
@@ -6434,7 +6434,7 @@ void spell_entangle(char level, struct char_data *ch, struct char_data *victim,
     }
 }
 
-void spell_barkskin(char level, struct char_data *ch, struct char_data *victim,
+void spell_barkskin(int level, struct char_data *ch, struct char_data *victim,
 		    struct obj_data *obj)
 {
     struct affected_type                    af;
@@ -6479,7 +6479,7 @@ void spell_barkskin(char level, struct char_data *ch, struct char_data *victim,
     }
 }
 
-void spell_gust_of_wind(char level, struct char_data *ch, struct char_data *victim,
+void spell_gust_of_wind(int level, struct char_data *ch, struct char_data *victim,
 			struct obj_data *obj)
 {
     struct char_data                       *tmp_victim = NULL;
@@ -6514,7 +6514,7 @@ void spell_gust_of_wind(char level, struct char_data *ch, struct char_data *vict
     }
 }
 
-void spell_silence(char level, struct char_data *ch, struct char_data *victim,
+void spell_silence(int level, struct char_data *ch, struct char_data *victim,
 		   struct obj_data *obj)
 {
     struct affected_type                    af;
@@ -6553,7 +6553,7 @@ void spell_silence(char level, struct char_data *ch, struct char_data *victim,
     }
 }
 
-void spell_warp_weapon(char level, struct char_data *ch, struct char_data *victim,
+void spell_warp_weapon(int level, struct char_data *ch, struct char_data *victim,
 		       struct obj_data *obj)
 {
 
@@ -6582,7 +6582,7 @@ void spell_warp_weapon(char level, struct char_data *ch, struct char_data *victi
 	    set_fighting(victim, ch);
 }
 
-void spell_heat_stuff(char level, struct char_data *ch, struct char_data *victim,
+void spell_heat_stuff(int level, struct char_data *ch, struct char_data *victim,
 		      struct obj_data *obj)
 {
     struct affected_type                    af;
@@ -6627,7 +6627,7 @@ void spell_heat_stuff(char level, struct char_data *ch, struct char_data *victim
 
 #define DUST_DEVIL 60
 
-void spell_dust_devil(char level, struct char_data *ch, struct char_data *victim,
+void spell_dust_devil(int level, struct char_data *ch, struct char_data *victim,
 		      struct obj_data *obj)
 {
     int                                     vnum = 0;
@@ -6709,7 +6709,7 @@ void spell_dust_devil(char level, struct char_data *ch, struct char_data *victim
     }
 }
 
-void spell_sunray(char level, struct char_data *ch, struct char_data *victim,
+void spell_sunray(int level, struct char_data *ch, struct char_data *victim,
 		  struct obj_data *obj)
 {
     struct char_data                       *t = NULL;
@@ -6757,7 +6757,7 @@ void spell_sunray(char level, struct char_data *ch, struct char_data *victim,
     }
 }
 
-void spell_know_monster(char level, struct char_data *ch, struct char_data *victim,
+void spell_know_monster(int level, struct char_data *ch, struct char_data *victim,
 			struct obj_data *obj)
 {
     char                                    buf[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
@@ -6845,7 +6845,7 @@ void spell_know_monster(char level, struct char_data *ch, struct char_data *vict
 
 }
 
-void spell_find_traps(char level, struct char_data *ch, struct char_data *victim,
+void spell_find_traps(int level, struct char_data *ch, struct char_data *victim,
 		      struct obj_data *obj)
 {
     struct affected_type                    af;
@@ -6871,7 +6871,7 @@ void spell_find_traps(char level, struct char_data *ch, struct char_data *victim
 
 }
 
-void spell_firestorm(char level, struct char_data *ch, struct char_data *victim,
+void spell_firestorm(int level, struct char_data *ch, struct char_data *victim,
 		     struct obj_data *obj)
 {
 /*
@@ -6913,7 +6913,7 @@ void spell_firestorm(char level, struct char_data *ch, struct char_data *victim,
     }
 }
 
-void spell_teleport_wo_error(char level, struct char_data *ch, struct char_data *victim,
+void spell_teleport_wo_error(int level, struct char_data *ch, struct char_data *victim,
 			     struct obj_data *obj)
 {
     int                                     location = 0;
@@ -6975,7 +6975,7 @@ void spell_teleport_wo_error(char level, struct char_data *ch, struct char_data 
 
 #define PORTAL 31
 
-void spell_portal(char level, struct char_data *ch, struct char_data *tmp_ch,
+void spell_portal(int level, struct char_data *ch, struct char_data *tmp_ch,
 		  struct obj_data *obj)
 {
     /*
@@ -7026,7 +7026,7 @@ void spell_portal(char level, struct char_data *ch, struct char_data *tmp_ch,
 #define MOUNT_EVIL 70
 #define MOUNT_NEUT 71
 
-void spell_mount(char level, struct char_data *ch, struct char_data *victim,
+void spell_mount(int level, struct char_data *ch, struct char_data *victim,
 		 struct obj_data *obj)
 {
     struct char_data                       *m = NULL;
@@ -7077,7 +7077,7 @@ void spell_mount(char level, struct char_data *ch, struct char_data *victim,
     }
 }
 
-void spell_dragon_ride(char level, struct char_data *ch, struct char_data *victim,
+void spell_dragon_ride(int level, struct char_data *ch, struct char_data *victim,
 		       struct obj_data *obj)
 {
     struct affected_type                    af;
