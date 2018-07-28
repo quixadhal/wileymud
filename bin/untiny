@@ -377,8 +377,9 @@ sub get_title {
     return undef if !defined $page;
 
     if (!defined $source) {
-        $page =~ /<title>\s*(.*?)\s*<\/title>/i;
+        $page =~ /<title>\s*(.*?)\s*<\\?\/title>/i;
         my ($title) = ($1);
+        $title = decode_entities($title) if defined $title;
         return $title if defined $title;
     } elsif ($source eq "YouTube" or $source eq "IMDB") {
         $page =~ /<meta\s+name=\"title\"\s+content=\"([^\"]*)\"\s*\/?>/i;
