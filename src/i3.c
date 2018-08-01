@@ -2727,8 +2727,8 @@ void update_chanhistory(I3_CHANNEL *channel, char *message)
 	if (channel->history[x] == NULL) {
 	    t = time(NULL);
 	    local = localtime(&t);
-	    snprintf(buf, MAX_STRING_LENGTH, "%%^RED%%^%%^BOLD%%^[%-4.4d-%-2.2d-%-2.2d %-2.2d:%-2.2d]%%^RESET%%^ %%^GREEN%%^%%^BOLD%%^%s",
-		     local->tm_year + 1900, local->tm_mon + 1, local->tm_mday, local->tm_hour, local->tm_min, msg);
+	    snprintf(buf, MAX_STRING_LENGTH, "%%^RED%%^%%^BOLD%%^%-4.4d-%-2.2d-%-2.2d%%^RESET%%^ %%^GREEN%%^%%^BOLD%%^%s",
+		     local->tm_year + 1900, local->tm_mon + 1, local->tm_mday, msg);
 	    channel->history[x] = I3STRALLOC(buf);
 
 	    if (I3IS_SET(channel->flags, I3CHAN_LOG)) {
@@ -2760,8 +2760,8 @@ void update_chanhistory(I3_CHANNEL *channel, char *message)
 
 	    t = time(NULL);
 	    local = localtime(&t);
-	    snprintf(buf, MAX_STRING_LENGTH, "%%^RED%%^%%^BOLD%%^[%-4.4d-%-2.2d-%-2.2d %-2.2d:%-2.2d]%%^RESET%%^ %%^GREEN%%^%%^BOLD%%^%s",
-		     local->tm_year + 1900, local->tm_mon + 1, local->tm_mday, local->tm_hour, local->tm_min, msg);
+	    snprintf(buf, MAX_STRING_LENGTH, "%%^RED%%^%%^BOLD%%^%-4.4d-%-2.2d-%-2.2d%%^RESET%%^ %%^GREEN%%^%%^BOLD%%^%s",
+		     local->tm_year + 1900, local->tm_mon + 1, local->tm_mday, msg);
 	    I3STRFREE(channel->history[x]);
 	    channel->history[x] = I3STRALLOC(buf);
 
@@ -9925,6 +9925,7 @@ bool i3_command_hook(CHAR_DATA *ch, const char *lcommand, const char *argument)
         "%^RESET%^%^MAGENTA%^%^BOLD%^",
     };
     int                                     color = 0;
+    const char                             *original_argument;
 
     if (IS_NPC(ch))
 	return FALSE;
@@ -9996,32 +9997,11 @@ bool i3_command_hook(CHAR_DATA *ch, const char *lcommand, const char *argument)
     }
 
     if (!argument || argument[0] == '\0') {
-	i3_printf(ch, "%%^CYAN%%^The last %d %s messages:%%^RESET%%^\r\n", MAX_I3HISTORY, channel->local_name);
-	for (x = 0; x < MAX_I3HISTORY; x++) {
-	    if (channel->history[x] != NULL)
-		i3_printf(ch, "%s%%^RESET%%^\r\n", channel->history[x]);
-	    else
-		break;
-	}
 	return TRUE;
     }
 
     if (!i3_is_connected()) {
 	i3_printf(ch, "The mud is not currently connected to I3.\r\n");
-	return TRUE;
-    }
-
-    if (I3PERM(ch) >= I3PERM_ADMIN && !strcasecmp(argument, "log")) {
-	if (!I3IS_SET(channel->flags, I3CHAN_LOG)) {
-	    I3SET_BIT(channel->flags, I3CHAN_LOG);
-	    i3_printf(ch,
-		      "%%^RED%%^%%^BOLD%%^File logging enabled for %s, PLEASE don't forget to undo this when it isn't needed!%%^RESET%%^\r\n",
-		      channel->local_name);
-	} else {
-	    I3REMOVE_BIT(channel->flags, I3CHAN_LOG);
-	    i3_printf(ch, "%%^GREEN%%^%%^BOLD%%^File logging disabled for %s.%%^RESET%%^\r\n", channel->local_name);
-	}
-	I3_write_channel_config();
 	return TRUE;
     }
 
@@ -10052,11 +10032,48 @@ bool i3_command_hook(CHAR_DATA *ch, const char *lcommand, const char *argument)
 		argument++;
 	    I3_send_social(channel, ch, argument);
 	    break;
-        case '!':
-            argument++;
+	case '/':
+	    /*
+	     * Strip the / and then extra spaces
+	     */
+            original_argument = argument;
+	    argument++;
 	    while (isspace(*argument))
 		argument++;
-            if(!strncasecmp(argument, "colorize", 8)) {
+            if (!strncasecmp(argument, "help", 4)) {
+                i3_printf(ch, "%%^GREEN%%^%%^BOLD%%^Channel subcommands available for %s are:%%^RESET%%^\r\n", channel->local_name);
+                i3_printf(ch, "%%^GREEN%%^%%^BOLD%%^    :emote     - Sends message as an \"emote\", which usually prints differently.%%^RESET%%^\r\n");
+                i3_printf(ch, "%%^GREEN%%^%%^BOLD%%^    @social    - Sends message as a \"social\", which we don't really have.%%^RESET%%^\r\n");
+                i3_printf(ch, "%%^GREEN%%^%%^BOLD%%^    /help      - This helpful message.%%^RESET%%^\r\n");
+                i3_printf(ch, "%%^GREEN%%^%%^BOLD%%^    /history   - Shows the last %d messages.%%^RESET%%^\r\n", MAX_I3HISTORY);
+                if (I3PERM(ch) >= I3PERM_ADMIN) {
+                    i3_printf(ch, "%%^GREEN%%^%%^BOLD%%^    /log       - Toggle file logging on or off.%%^RESET%%^\r\n");
+                    i3_printf(ch, "%%^GREEN%%^%%^BOLD%%^    /colorize  - Adds annoying colors to the message.%%^RESET%%^\r\n");
+                    i3_printf(ch, "%%^GREEN%%^%%^BOLD%%^    /rainbow   - Adds differently annoying colors to the message.%%^RESET%%^\r\n");
+                }
+                return TRUE;
+            } else if (I3PERM(ch) >= I3PERM_ADMIN && !strncasecmp(argument, "log", 3)) {
+                if (!I3IS_SET(channel->flags, I3CHAN_LOG)) {
+                    I3SET_BIT(channel->flags, I3CHAN_LOG);
+                    i3_printf(ch,
+                              "%%^RED%%^%%^BOLD%%^File logging enabled for %s, PLEASE don't forget to undo this when it isn't needed!%%^RESET%%^\r\n",
+                              channel->local_name);
+                } else {
+                    I3REMOVE_BIT(channel->flags, I3CHAN_LOG);
+                    i3_printf(ch, "%%^GREEN%%^%%^BOLD%%^File logging disabled for %s.%%^RESET%%^\r\n", channel->local_name);
+                }
+                I3_write_channel_config();
+                return TRUE;
+            } else if (!strncasecmp(argument, "history", 7) || !strncasecmp(argument, "hist", 4)) {
+                i3_printf(ch, "%%^CYAN%%^The last %d %s messages:%%^RESET%%^\r\n", MAX_I3HISTORY, channel->local_name);
+                for (x = 0; x < MAX_I3HISTORY; x++) {
+                    if (channel->history[x] != NULL)
+                        i3_printf(ch, "%s%%^RESET%%^\r\n", channel->history[x]);
+                    else
+                        break;
+                }
+                return TRUE;
+            } else if (I3PERM(ch) >= I3PERM_ADMIN && !strncasecmp(argument, "colorize", 8)) {
                 argument += 8;
                 while (isspace(*argument))
                     argument++;
@@ -10078,7 +10095,7 @@ bool i3_command_hook(CHAR_DATA *ch, const char *lcommand, const char *argument)
                 }
                 strcpy(b, "%^RESET%^");
 	        I3_send_channel_message(channel, CH_I3NAME(ch), buffer);
-            } else if(!strncasecmp(argument, "rainbow", 7)) {
+            } else if (I3PERM(ch) >= I3PERM_ADMIN && !strncasecmp(argument, "rainbow", 7)) {
                 argument += 7;
                 while (isspace(*argument))
                     argument++;
@@ -10102,7 +10119,8 @@ bool i3_command_hook(CHAR_DATA *ch, const char *lcommand, const char *argument)
                 strcpy(b, "%^RESET%^");
 	        I3_send_channel_message(channel, CH_I3NAME(ch), buffer);
             } else {
-	        I3_send_channel_message(channel, CH_I3NAME(ch), argument);
+                /* No match for known subcommands, so just send it */
+	        I3_send_channel_message(channel, CH_I3NAME(ch), original_argument);
             }
             break;
 	default:
