@@ -1,6 +1,7 @@
 #!/usr/bin/perl -w
 
 use strict;
+use utf8;
 use English;
 use Data::Dumper;
 
@@ -23,6 +24,7 @@ use Image::ANSI;
 use Encode;
 use Parallel::ForkManager 0.7.6;
 use JSON qw(decode_json);
+use Encode qw( encode_utf8 );
 
 $HTML::FromANSI::Options{fill_cols} = 1;
 $HTML::FromANSI::Options{linewrap} = 0;
@@ -143,7 +145,7 @@ sub get_mudlist {
         open my $fp, "<", $filename or die "Cannot open $filename: $!";
         <$fp>;
     };
-    my $json = decode_json($page);
+    my $json = decode_json(encode_utf8($page));
     if(defined $page) {
         print STDERR "done, processing ...";
         my @mudlist = @{ $json->{mudlist} };
