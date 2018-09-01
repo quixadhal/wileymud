@@ -719,6 +719,7 @@ void                                    generate_mudlist(void)
     char                                    stat_name[MAX_INPUT_LENGTH];
     char                                    stat_name_public[MAX_INPUT_LENGTH];
     int                                     row_counter = 0;
+    int                                     connected = 0;
 #ifdef DUAL_LAYOUT
     int                                     col_counter = 0;
 #endif
@@ -959,10 +960,10 @@ void                                    generate_mudlist(void)
             bzero(stat_name, MAX_INPUT_LENGTH);
             bzero(stat_name_public, MAX_INPUT_LENGTH);
 
-            sprintf(stat_name, "%s%s.png", MUDLIST_GFX, sha256_crypt(mud->name));
-            sprintf(stat_name_public, "%s%s.png", PUBLIC_GFX, sha256_crypt(mud->name));
+            //sprintf(stat_name, "%s%s.png", MUDLIST_GFX, sha256_crypt(mud->name));
+            //sprintf(stat_name_public, "%s%s.png", PUBLIC_GFX, sha256_crypt(mud->name));
             //log_info("Looking for           %s", stat_name);
-            if( stat(stat_name, &stat_buf) < 0 ) {
+            //if( stat(stat_name, &stat_buf) < 0 ) {
                 sprintf(stat_name, "%s%s.png", MUDLIST_GFX, md5_hex(mud->name));
                 sprintf(stat_name_public, "%s%s.png", PUBLIC_GFX, md5_hex(mud->name));
                 //log_info("NOT FOUND Looking for %s", stat_name);
@@ -972,8 +973,10 @@ void                                    generate_mudlist(void)
                     sprintf(stat_name, "%s%s_%d.png", MUDLIST_GFX, "__NOT_FOUND", guess);
                     sprintf(stat_name_public, "%s%s_%d.png", PUBLIC_GFX, "__NOT_FOUND", guess);
                     //log_info("NOT FOUND Either.");
+                } else {
+                    connected++;
                 }
-            }
+            //}
             //log_info("                      %s", stat_name);
             log_info("                      %s", stat_name_public);
 
@@ -997,10 +1000,10 @@ void                                    generate_mudlist(void)
             bzero(stat_name, MAX_INPUT_LENGTH);
             bzero(stat_name_public, MAX_INPUT_LENGTH);
 
-            sprintf(stat_name, "%s%s.png", MUDLIST_GFX, sha256_crypt(mud->name));
-            sprintf(stat_name_public, "%s%s.png", PUBLIC_GFX, sha256_crypt(mud->name));
+            //sprintf(stat_name, "%s%s.png", MUDLIST_GFX, sha256_crypt(mud->name));
+            //sprintf(stat_name_public, "%s%s.png", PUBLIC_GFX, sha256_crypt(mud->name));
             //log_info("Looking for           %s", stat_name);
-            if( stat(stat_name, &stat_buf) < 0 ) {
+            //if( stat(stat_name, &stat_buf) < 0 ) {
                 sprintf(stat_name, "%s%s.png", MUDLIST_GFX, md5_hex(mud->name));
                 sprintf(stat_name_public, "%s%s.png", PUBLIC_GFX, md5_hex(mud->name));
                 //log_info("NOT FOUND Looking for %s", stat_name);
@@ -1010,8 +1013,10 @@ void                                    generate_mudlist(void)
                     sprintf(stat_name, "%s%s_%d.png", MUDLIST_GFX, "__NOT_FOUND", guess);
                     sprintf(stat_name_public, "%s%s_%d.png", PUBLIC_GFX, "__NOT_FOUND", guess);
                     //log_info("NOT FOUND Either.");
+                } else {
+                    connected++;
                 }
-            }
+            //}
             //log_info("                      %s", stat_name);
             log_info("                      %s", stat_name_public);
 
@@ -1045,9 +1050,9 @@ void                                    generate_mudlist(void)
     fprintf(fp, "<td align=\"center\" colspan=\"5\">%d total muds listed.</td>\r\n", row_counter);
 #else
 #ifdef DUAL_LAYOUT
-    fprintf(fp, "<td align=\"center\" colspan=\"6\">%d total muds listed.</td>\r\n", (row_counter * 2) + (col_counter % 2));
+    fprintf(fp, "<td align=\"center\" colspan=\"6\">%d total muds listed (%d connected).</td>\r\n", (row_counter * 2) + (col_counter % 2), connected);
 #else
-    fprintf(fp, "<td align=\"center\" colspan=\"5\">%d total muds listed.</td>\r\n", row_counter);
+    fprintf(fp, "<td align=\"center\" colspan=\"5\">%d total muds listed (%d connected).</td>\r\n", row_counter, connected);
 #endif
 #endif
     fprintf(fp, "</tr>\r\n");
