@@ -356,6 +356,8 @@ char                                   *sha256_crypt(const char *pwd)
     unsigned char                           sha256sum[32];
     unsigned int                            j;
 
+    bzero(output, 65);
+
     SHA256_Init(&context);
     SHA256_Update(&context, (const unsigned char *)pwd, strlen(pwd));
     SHA256_Final(sha256sum, &context);
