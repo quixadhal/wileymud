@@ -16,6 +16,7 @@ IDENTDIR	= libident-0.19
 NEED_CRYPT	= -lcrypt #Linux needs this
 #NEED_COMPAT	= -lcompat #BSD needs this
 NEED_MATH	= -lm #math for tracking and such
+NEED_SSL	= -lcrypto #MD5 checksum code
 SQL_INC		= 
 SQL_LIB		= -lsqlite3
 #SQL_INC		= -DUSE_PGSQL -I/usr/include/postgresql
@@ -57,7 +58,7 @@ EFENCE		= #-lpthread -lefence
 PROF_FLAG	= #-pg
 
 INC		= -Iinclude $(ID_INC) $(IMC_INC) $(I3_INC) $(SQL_INC)
-LIB		= $(ID_LIB) $(NEED_MATH) $(NEED_CRYPT) $(NEED_COMPAT) $(EFENCE) $(PCRE_LIB) $(SQL_LIB)
+LIB		= $(ID_LIB) $(NEED_MATH) $(NEED_SSL) $(NEED_CRYPT) $(NEED_COMPAT) $(EFENCE) $(PCRE_LIB) $(SQL_LIB)
 UTILSLIB	= $(NEED_MATH) $(NEED_CRYPT) $(NEED_COMPAT) $(EFENCE)
 
 CFLAGS		= $(W_FLAGS) $(DEBUG_FLAG) $(OPT_FLAG) $(PROF_FLAG) $(M_ARCH) $(INC)
@@ -230,7 +231,7 @@ obj/limits.o: limits.c include/global.h include/bug.h include/spells.h \
   include/act_obj.h include/act_other.h include/mudlimits.h
 obj/whod.o: whod.c include/version.h include/global.h include/bug.h \
   include/db.h include/comm.h include/utils.h include/interpreter.h \
-  include/multiclass.h include/i3.h include/whod.h
+  include/multiclass.h include/i3.h include/sha256.h include/whod.h
 obj/bounce.o: utils/bounce.c
 obj/genpasswd.o: utils/genpasswd.c
 obj/mkworld.o: utils/mkworld.c

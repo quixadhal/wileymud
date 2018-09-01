@@ -33,6 +33,7 @@
 #include "interpreter.h"
 #include "multiclass.h"
 #include "i3.h"
+#include "sha256.h"
 #define _WHOD_C
 #include "whod.h"
 
@@ -716,6 +717,7 @@ void                                    generate_mudlist(void)
     I3_MUD                                 *mud;
     struct stat                             stat_buf;
     char                                    stat_name[MAX_INPUT_LENGTH];
+    char                                    stat_name_public[MAX_INPUT_LENGTH];
     int                                     row_counter = 0;
 #ifdef DUAL_LAYOUT
     int                                     col_counter = 0;
@@ -953,14 +955,29 @@ void                                    generate_mudlist(void)
                 fprintf(fp, "<tr bgcolor=\"%s\">\r\n", row_counter % 2 ? "#000000" : "#1f1f1f");
             }
 
-            sprintf(stat_name, "%s%s.png", MUDLIST_GFX, mud->name);
-            if( stat(stat_name, &stat_buf) < 0 ) {
-                sprintf(stat_name, "%s%s_%d.png", PUBLIC_GFX, "__NOT_FOUND", (int)(random() % 10));
-            } else {
-                sprintf(stat_name, "%s%s.png", PUBLIC_GFX, mud->name);
-            }
+            log_info("Generating layout for %s", mud->name);
+            bzero(stat_name, MAX_INPUT_LENGTH);
+            bzero(stat_name_public, MAX_INPUT_LENGTH);
 
-            fprintf(fp, "<td align=\"center\"><img border=\"0\" width=\"%d\" height=\"%d\" src=\"%s\" /></td>\r\n", MUDLIST_WIDTH, MUDLIST_HEIGHT, stat_name);
+            sprintf(stat_name, "%s%s.png", MUDLIST_GFX, sha256_crypt(mud->name));
+            sprintf(stat_name_public, "%s%s.png", PUBLIC_GFX, sha256_crypt(mud->name));
+            //log_info("Looking for           %s", stat_name);
+            if( stat(stat_name, &stat_buf) < 0 ) {
+                sprintf(stat_name, "%s%s.png", MUDLIST_GFX, md5_hex(mud->name));
+                sprintf(stat_name_public, "%s%s.png", PUBLIC_GFX, md5_hex(mud->name));
+                //log_info("NOT FOUND Looking for %s", stat_name);
+                if( stat(stat_name, &stat_buf) < 0 ) {
+                    int guess = (int)(random() % 10);
+
+                    sprintf(stat_name, "%s%s_%d.png", MUDLIST_GFX, "__NOT_FOUND", guess);
+                    sprintf(stat_name_public, "%s%s_%d.png", PUBLIC_GFX, "__NOT_FOUND", guess);
+                    //log_info("NOT FOUND Either.");
+                }
+            }
+            //log_info("                      %s", stat_name);
+            log_info("                      %s", stat_name_public);
+
+            fprintf(fp, "<td align=\"center\"><img border=\"0\" width=\"%d\" height=\"%d\" src=\"%s\" /></td>\r\n", MUDLIST_WIDTH, MUDLIST_HEIGHT, stat_name_public);
             fprintf(fp, "<td align=\"left\">%s</td>\r\n", "&nbsp;");
             fprintf(fp, "<td align=\"left\">\r\n");
             fprintf(fp, "    <a target=\"I3 mudlist\" href=\"http://%s/\">%s</a><br />\r\n", mud->ipaddress, mud->name);
@@ -976,15 +993,30 @@ void                                    generate_mudlist(void)
             }
             col_counter++;
 #else
-            sprintf(stat_name, "%s%s.png", MUDLIST_GFX, mud->name);
+            log_info("Generating layout for %s", mud->name);
+            bzero(stat_name, MAX_INPUT_LENGTH);
+            bzero(stat_name_public, MAX_INPUT_LENGTH);
+
+            sprintf(stat_name, "%s%s.png", MUDLIST_GFX, sha256_crypt(mud->name));
+            sprintf(stat_name_public, "%s%s.png", PUBLIC_GFX, sha256_crypt(mud->name));
+            //log_info("Looking for           %s", stat_name);
             if( stat(stat_name, &stat_buf) < 0 ) {
-                sprintf(stat_name, "%s%s.png", PUBLIC_GFX, "__NOT_FOUND");
-            } else {
-                sprintf(stat_name, "%s%s.png", PUBLIC_GFX, mud->name);
+                sprintf(stat_name, "%s%s.png", MUDLIST_GFX, md5_hex(mud->name));
+                sprintf(stat_name_public, "%s%s.png", PUBLIC_GFX, md5_hex(mud->name));
+                //log_info("NOT FOUND Looking for %s", stat_name);
+                if( stat(stat_name, &stat_buf) < 0 ) {
+                    int guess = (int)(random() % 10);
+
+                    sprintf(stat_name, "%s%s_%d.png", MUDLIST_GFX, "__NOT_FOUND", guess);
+                    sprintf(stat_name_public, "%s%s_%d.png", PUBLIC_GFX, "__NOT_FOUND", guess);
+                    //log_info("NOT FOUND Either.");
+                }
             }
+            //log_info("                      %s", stat_name);
+            log_info("                      %s", stat_name_public);
 
             fprintf(fp, "<tr bgcolor=\"%s\">\r\n", row_counter % 2 ? "#000000" : "#1f1f1f");
-            fprintf(fp, "<td align=\"center\"><img border=\"0\" width=\"%d\" height=\"%d\" src=\"%s\" /></td>\r\n", MUDLIST_WIDTH, MUDLIST_HEIGHT, stat_name);
+            fprintf(fp, "<td align=\"center\"><img border=\"0\" width=\"%d\" height=\"%d\" src=\"%s\" /></td>\r\n", MUDLIST_WIDTH, MUDLIST_HEIGHT, stat_name_public);
             fprintf(fp, "<td align=\"left\">%s</td>\r\n", "&nbsp;");
             fprintf(fp, "<td align=\"left\">\r\n");
             fprintf(fp, "    <a target=\"I3 mudlist\" href=\"http://%s/\">%s</a><br />\r\n", mud->ipaddress, mud->name);

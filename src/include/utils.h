@@ -388,5 +388,6 @@ size_t strlcat(char *dst, const char *src, size_t siz);
 int    scprintf(char *buf, size_t limit, const char *Str, ...) __attribute__ ( ( format( printf, 3, 4 ) ) );
 char  *time_elapsed(time_t since, time_t now);
 char  *json_escape(char *thing);
+char  *md5_hex(const char *str);
 
 #endif

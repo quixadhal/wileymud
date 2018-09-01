@@ -77,6 +77,20 @@
 #include "i3.h"
 
 /* Global variables for I3 */
+
+#define I3_PACKET_STATE_NONE        0
+#define I3_PACKET_STATE_GOT_SIZE    1
+#define I3_PACKET_STATE_READING     2
+#define I3_PACKET_STATE_GOT_PACKET  3
+#define I3_PACKET_STATE_PROCESSING  4
+
+char                                    I3_incoming_packet_size[4];
+uint32_t                                I3_incoming_packet_length = 0;
+char                                   *I3_incoming_packet = NULL;
+long                                    I3_incoming_packet_read = 0;
+int                                     I3_packet_processing_state = I3_PACKET_STATE_NONE;
+
+
 char                                    I3_input_buffer[IPS];
 char                                    I3_output_buffer[OPS];
 char                                    I3_currentpacket[IPS];
@@ -84,7 +98,6 @@ bool                                    packetdebug = FALSE;   /* Packet debuggi
 							        * outgoing packets */
 long                                    I3_input_pointer = 0;
 long                                    I3_output_pointer = 4;
-
 #define I3_THISMUD (this_i3mud->name)
 //char *I3_THISMUD = NULL;
 char                                   *I3_ROUTER_NAME;
@@ -4545,6 +4558,126 @@ void I3_read_packet(void)
     return;
 }
 
+void I3_handle_packet(char *packetBuffer)
+{
+    I3_HEADER                              *header = NULL;
+    char                                   *ps,
+                                           *next_ps;
+    char                                    ptype[MAX_INPUT_LENGTH];
+
+    ps = packetBuffer;
+
+    if (packetdebug)
+	log_info("Packet received: %s", ps);
+
+    ps += 2;
+    I3_get_field(ps, &next_ps);
+    I3_remove_quotes(&ps);
+    i3strlcpy(ptype, ps, MAX_INPUT_LENGTH);
+
+    header = I3_get_header(&ps);
+
+    /*
+     * There. Nice and simple, no? 
+     * -- a nice and simple memory leak (Quixadhal)
+     */
+    if (i3banned(header->originator_mudname)) {
+        I3DISPOSE(header);
+	return;
+    }
+
+    if (!strcasecmp(ptype, "tell"))
+	I3_process_tell(header, ps);
+
+    if (!strcasecmp(ptype, "beep"))
+	I3_process_beep(header, ps);
+
+    if (!strcasecmp(ptype, "emoteto"))
+	I3_process_emoteto(header, ps);
+
+    if (!strcasecmp(ptype, "channel-m"))
+	I3_process_channel_m(header, ps);
+
+    if (!strcasecmp(ptype, "channel-e"))
+	I3_process_channel_e(header, ps);
+
+    if (!strcasecmp(ptype, "chan-filter-req"))
+	I3_process_channel_filter(header, ps);
+
+    if (!strcasecmp(ptype, "finger-req"))
+	I3_process_finger_req(header, ps);
+
+    if (!strcasecmp(ptype, "finger-reply"))
+	I3_process_finger_reply(header, ps);
+
+    if (!strcasecmp(ptype, "locate-req"))
+	I3_process_locate_req(header, ps);
+
+    if (!strcasecmp(ptype, "locate-reply"))
+	I3_process_locate_reply(header, ps);
+
+    if (!strcasecmp(ptype, "chan-who-req"))
+	I3_process_chan_who_req(header, ps);
+
+    if (!strcasecmp(ptype, "chan-who-reply"))
+	I3_process_chan_who_reply(header, ps);
+
+    if (!strcasecmp(ptype, "chan-adminlist-reply"))
+	I3_process_channel_adminlist_reply(header, ps);
+
+    if (!strcasecmp(ptype, "ucache-update") && this_i3mud->ucache == TRUE)
+	I3_process_ucache_update(header, ps);
+
+    if (!strcasecmp(ptype, "who-req"))
+	I3_process_who_req(header, ps);
+
+    if (!strcasecmp(ptype, "who-reply"))
+	I3_process_who_reply(header, ps);
+
+    if (!strcasecmp(ptype, "chanlist-reply"))
+	I3_process_chanlist_reply(header, ps);
+
+    if (!strcasecmp(ptype, "startup-reply"))
+	I3_process_startup_reply(header, ps);
+
+    if (!strcasecmp(ptype, "mudlist"))
+	I3_process_mudlist(header, ps);
+
+    if (!strcasecmp(ptype, "error"))
+	I3_process_error(header, ps);
+
+    if (!strcasecmp(ptype, "chan-ack"))
+	I3_process_chanack(header, ps);
+
+    if (!strcasecmp(ptype, "channel-t"))
+	I3_process_channel_t(header, ps);
+
+    if (!strcasecmp(ptype, "chan-user-req"))
+	I3_process_chan_user_req(header, ps);
+
+    if (!strcasecmp(ptype, "chan-user-reply") && this_i3mud->ucache == TRUE)
+	I3_process_chan_user_reply(header, ps);
+
+    if (!strcasecmp(ptype, "router-shutdown")) {
+	int                                     delay;
+
+	I3_get_field(ps, &next_ps);
+	delay = atoi(ps);
+
+	if (delay == 0) {
+	    log_info("Router %s is shutting down.", I3_ROUTER_NAME);
+	    I3_connection_close(FALSE);
+	} else {
+	    log_info("Router %s is rebooting and will be back in %d second%s.", I3_ROUTER_NAME,
+		  delay, delay == 1 ? "" : "s");
+	    I3_connection_close(TRUE);
+	}
+    }
+
+    I3DISPOSE(header);
+    return;
+}
+
 /************************************
  * User login and logout functions. *
  ************************************/
@@ -7041,6 +7174,20 @@ void i3_log_dead() {
 }
 
 /*
+ * This just makes sure we have a clean state to grab a new packet
+ */
+void I3_packet_cleanup(void)
+{
+    I3_packet_processing_state = I3_PACKET_STATE_NONE;
+    I3_incoming_packet_length = 0;
+    bzero(I3_incoming_packet_size, 4);
+    if(I3_incoming_packet)
+        free(I3_incoming_packet);
+    I3_incoming_packet = NULL;
+    I3_incoming_packet_read = 0;
+}
+
+/*
  * Check for a packet and if one available read it and parse it.
  * Also checks to see if the mud should attempt to reconnect to the router.
  * This is an input only loop. Attempting to use it to send buffered output
@@ -7051,7 +7198,7 @@ void i3_loop(void)
 {
     ROUTER_DATA                            *router;
     int                                     ret;
-    long                                    size;
+    //long                                    size;
     fd_set                                  in_set,
                                             out_set,
                                             exc_set;
@@ -7206,6 +7353,103 @@ void i3_loop(void)
     }
 
     if (FD_ISSET(I3_socket, &in_set)) {
+        /* An I3 packet (or part of one) has arrived */
+        switch(I3_packet_processing_state) {
+            case I3_PACKET_STATE_NONE:
+                /* We want to grab the size first! */
+                I3_packet_cleanup();
+                ret = read(I3_socket, I3_incoming_packet_size, 4);
+                if (!ret || (ret < 0 && errno != EAGAIN && errno != EWOULDBLOCK)) {
+                    FD_CLR(I3_socket, &out_set);
+                    if (ret < 0)
+                        log_info("Read error on I3 socket.");
+                    else
+                        log_info("EOF encountered on I3 socket read.");
+                    I3_packet_cleanup();
+                    I3_connection_close(TRUE);
+                    return;
+                }
+                if (ret < 0) { /* EAGAIN */
+                    return;
+                }
+                /* NOTE:  32-bit "int" is assumed here, C sucks, we use uint32_t to try and force it */
+                memcpy(&I3_incoming_packet_length, I3_incoming_packet_size, 4);
+                I3_incoming_packet_length = ntohl(I3_incoming_packet_length);
+                I3_packet_processing_state = I3_PACKET_STATE_GOT_SIZE;
+                /* break; */
+            case I3_PACKET_STATE_GOT_SIZE:
+                /* We now knwo the size we expect */
+                if( I3_incoming_packet_length <= 0 ) {
+                    /* But it's invalid? */
+                    FD_CLR(I3_socket, &out_set);
+                    log_error("Invalid packet size, reboot the sucker!");
+                    I3_packet_cleanup();
+                    I3_connection_close(TRUE);
+                    return;
+                }
+                I3_incoming_packet = (char *)calloc(I3_incoming_packet_length + 1, sizeof(char));
+                I3_packet_processing_state = I3_PACKET_STATE_READING;
+                /* break; */
+            case I3_PACKET_STATE_READING:
+                /* OK, we have a buffer ready, try to read it! */
+                ret = read(I3_socket, I3_incoming_packet + I3_incoming_packet_read, I3_incoming_packet_length - I3_incoming_packet_read);
+                if (!ret || (ret < 0 && errno != EAGAIN && errno != EWOULDBLOCK)) {
+                    FD_CLR(I3_socket, &out_set);
+                    if (ret < 0)
+                        log_info("Read error on I3 socket.");
+                    else
+                        log_info("EOF encountered on I3 socket read.");
+                    I3_packet_cleanup();
+                    I3_connection_close(TRUE);
+                    return;
+                }
+                if (ret < 0) { /* EAGAIN */
+                    return;
+                }
+                if (ret < (I3_incoming_packet_length - I3_incoming_packet_read)) {
+                    /* Still more to read! */
+                    I3_incoming_packet_read += ret;
+                    return;
+                }
+                I3_incoming_packet_read += ret;
+                I3_packet_processing_state = I3_PACKET_STATE_GOT_PACKET;
+                /* break; */
+            case I3_PACKET_STATE_GOT_PACKET:
+                /* Now we have a complete packet, according to the mudmode data */
+                bytes_received += (I3_incoming_packet_length + 4);
+
+                /* Incoming_packet_length is 1 larger than the string content of the packet
+                 * because it counts the NUL byte.
+                 */
+                if ( I3_incoming_packet[0] != '(' || 
+                     I3_incoming_packet[1] != '{' ||
+                     I3_incoming_packet[I3_incoming_packet_length - 3] != '}' ||
+                     I3_incoming_packet[I3_incoming_packet_length - 2] != ')'
+                     ) {
+                    log_error("Invalid packet data, throw it away!");
+                    log_error("I3_incoming_packet_length: %d", I3_incoming_packet_length);
+                    log_error("strlen of packet: %lu", strlen(I3_incoming_packet));
+                    log_error("Packet: %s", I3_incoming_packet);
+                    I3_packet_cleanup();
+                    return;
+                }
+                I3_packet_processing_state = I3_PACKET_STATE_PROCESSING;
+                /* break; */
+            case I3_PACKET_STATE_PROCESSING:
+                I3_handle_packet(I3_incoming_packet);
+                I3_packet_cleanup();
+                break;
+            default:
+                log_error("How did the code get here???");
+                FD_CLR(I3_socket, &out_set);
+                I3_packet_cleanup();
+                I3_connection_close(TRUE);
+                break;
+        }
+    }
+    return;
+
+#if 0
 	ret = read(I3_socket, I3_input_buffer + I3_input_pointer, MAX_STRING_LENGTH);
 	if (!ret || (ret < 0 && errno != EAGAIN && errno != EWOULDBLOCK)) {
 	    FD_CLR(I3_socket, &out_set);
@@ -7218,8 +7462,19 @@ void i3_loop(void)
 	}
 	if (ret < 0)					       /* EAGAIN */
 	    return;
-	if (ret == MAX_STRING_LENGTH)
-	    log_info("%s", "String overflow in I3 socket read!");
+	if (ret == MAX_STRING_LENGTH) {
+            char debug_str[33];
+
+            memcpy(&size, I3_input_buffer, 4);
+            size = ntohl(size);
+	    log_info("String overflow in I3 socket read!");
+	    log_info("Packet size appears to be %ld!", size);
+	    log_info("MAX_STRING is %d", MAX_STRING_LENGTH);
+	    log_info("IPS is %d", IPS);
+            bzero(debug_str, 33);
+            strncpy(debug_str, I3_input_buffer, 32);
+            log_info("Leading string buffer is: %s", debug_str);
+        }
 
 	I3_input_pointer += ret;
 	bytes_received += ret;
@@ -7230,11 +7485,42 @@ void i3_loop(void)
     memcpy(&size, I3_input_buffer, 4);
     size = ntohl(size);
 
+    if (size >= IPS) {
+        log_error("%s", "I3 packet TOO LARGE!");
+        do {
+            char garbage[MAX_STRING_LENGTH];
+
+            /* We can't read the packet, so throw it away */
+            ret = read(I3_socket, garbage, MAX_STRING_LENGTH);
+            if (!ret || (ret < 0 && errno != EAGAIN && errno != EWOULDBLOCK)) {
+                FD_CLR(I3_socket, &out_set);
+                if (ret < 0)
+                    log_info("%s", "Read error on I3 socket.");
+                else
+                    log_info("%s", "EOF encountered on I3 socket read.");
+                I3_connection_close(TRUE);
+                return;
+            }
+            if(ret < 0)
+                continue;
+
+            I3_input_pointer += ret;
+            bytes_received += ret;
+        } while( size > I3_input_pointer );
+        I3_input_pointer = 0;
+        I3_output_pointer = 4;
+        bzero(I3_input_buffer, IPS);
+        bzero(I3_output_buffer, OPS);
+        bzero(I3_currentpacket, IPS);
+        return;
+    }
+
     if (size <= I3_input_pointer - 4) {
 	I3_read_packet();
 	I3_parse_packet();
     }
     return;
+#endif
 }
 
 /*****************************************

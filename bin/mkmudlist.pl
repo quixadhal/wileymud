@@ -25,6 +25,8 @@ use Encode;
 use Parallel::ForkManager 0.7.6;
 use JSON qw(decode_json);
 use Encode qw( encode_utf8 );
+use Digest::SHA qw(sha256_hex);
+use Digest::MD5 qw(md5_hex);
 
 $HTML::FromANSI::Options{fill_cols} = 1;
 $HTML::FromANSI::Options{linewrap} = 0;
@@ -131,6 +133,7 @@ sub dump_png {
 
     printf STDERR "            Saving login screen for %s from %s %d\n", $result->{'name'}, $result->{'ipaddress'}, $result->{'port'};
     my $mudname = $result->{'name'};
+    $mudname = md5_hex($mudname);
     open FP, ">", "$imagedir/$mudname.png" or return;
     print FP decode_base64($result->{'png'});
     close FP;

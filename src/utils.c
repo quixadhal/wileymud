@@ -13,6 +13,7 @@
 #include <assert.h>
 #include <time.h>
 #include <sys/time.h>
+#include <openssl/md5.h>
 
 #include "global.h"
 #include "bug.h"
@@ -1585,6 +1586,37 @@ char                                    *json_escape(char *thing)
             scprintf(result, MAX_STRING_LENGTH, "%c", *s);
         }
     }
+    return result;
+}
+
+char                                    *md5_hex(const char *str)
+{
+    int length;
+    int i;
+    MD5_CTX c;
+    unsigned char digest[16];
+    static char result[33];
+
+    MD5_Init(&c);
+
+    length = strlen(str);
+    while (length > 0) {
+        if (length > 512) {
+            MD5_Update(&c, str, 512);
+        } else {
+            MD5_Update(&c, str, length);
+        }
+        length -= 512;
+        str += 512;
+    }
+
+    MD5_Final(digest, &c);
+
+    for (i = 0; i < 16; ++i) {
+        snprintf(&(result[i*2]), 16*2, "%02x", (unsigned int)digest[i]);
+    }
+    result[32] = '\0';
+
     return result;
 }
 
