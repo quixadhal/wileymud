@@ -15,6 +15,7 @@ global $file_lines;
 global $bg;
 global $dump;
 global $CHANNEL_ONLY;
+global $SPEAKER_ONLY;
 
 $CHAT_COLOR_FILE    = "/home/bloodlines/lib/secure/save/chat.o";
 $CHAT_TEXT_FILE     = "/home/wiley/lib/i3/i3.allchan.log";
@@ -24,6 +25,7 @@ $LINES_TO_READ      = 2500;
 $PAGE_SIZE          = 25;
 $URL_ONLY           = 0;
 $CHANNEL_ONLY       = 0;
+$SPEAKER_ONLY       = 0;
 
 //header("Location: http://wiley.the-firebird.net/~wiley/i3log.php");
 //header("Location: http://wileymud.i3.themud.org/~wiley/i3log.php");
@@ -63,6 +65,8 @@ if( isset($_REQUEST) && isset($_REQUEST["url"]) ) {
     $URL_ONLY = 1;
 } else if( isset($_REQUEST) && isset($_REQUEST["channel"]) ) {
     $CHANNEL_ONLY = $_REQUEST["channel"];
+} else if( isset($_REQUEST) && isset($_REQUEST["speaker"]) ) {
+    $CHANNEL_ONLY = $_REQUEST["speaker"];
 }
 
 function numbered_source($filename)
@@ -549,6 +553,10 @@ function is_urlbot_line($line) {
     if ($result) {
         return $line;
     }
+    $result = preg_match("/\turl\tURLbot\@Disk World.?\t/", $line);
+    if ($result) {
+        return $line;
+    }
     return false;
 }
 
@@ -557,6 +565,17 @@ function is_specific_channel_line( $line ) {
 
     $result = false;
     $result = preg_match("/\t$CHANNEL_ONLY\t/", $line);
+    if ($result) {
+        return $line;
+    }
+    return false;
+}
+
+function is_specific_speaker_line( $line ) {
+    global $SPEAKER_ONLY;
+
+    $result = false;
+    $result = preg_match("/\t$SPEAKER_ONLY\@.*\t/", $line);
     if ($result) {
         return $line;
     }
@@ -658,9 +677,10 @@ $colorMap = get_chatter_colors();
 //$file_lines = explode( "\n", file_tail( $CHAT_TEXT_FILE, 2500 ) );
 if( $URL_ONLY == 1 ) {
     $file_lines = array_filter(explode( "\n", file_tail( $CHAT_TEXT_FILE, $LINES_TO_READ * 20 ) ), "is_urlbot_line");
-    //$file_lines = preg_grep("/URLbot\@WileyMUD/", $file_lines);
 } else if( $CHANNEL_ONLY ) {
     $file_lines = array_filter(explode( "\n", file_tail( $CHAT_TEXT_FILE, $LINES_TO_READ * 20 ) ), "is_specific_channel_line");
+} else if( $SPEAKER_ONLY ) {
+    $file_lines = array_filter(explode( "\n", file_tail( $CHAT_TEXT_FILE, $LINES_TO_READ * 20 ) ), "is_specific_speaker_line");
 } else {
     $file_lines = array_filter(explode( "\n", file_tail( $CHAT_TEXT_FILE, $LINES_TO_READ ) ), "is_bot_line");
 }
@@ -871,7 +891,11 @@ $bg = 0;
                 </td>
                 <?php if( ! $isMobile ) { ?>
                 <td align="center" width="10%">
-                    &nbsp;
+                <?php if( $URL_ONLY == 1 ) { ?>
+                    <a href="i3log.php">Normal</a>
+                <?php } else { ?>
+                    <a href="i3log.php?url">URL's Only</a>
+                <?php } ?>
                 </td>
                 <td align="center" width="10%">
                     <a href="mudlist.html">Mudlist</a>
