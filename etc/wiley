@@ -55,12 +55,37 @@ case "$1" in
 	$0 start
 	;;
   status)
-	if [ ! -f $PIDFILE ]; then
-		echo "No PID file, game may be down"
-		ps auxww | grep wiley | grep -v grep
-	else
-		ps auxww | grep `cat $PIDFILE` | grep -v grep
-	fi
+        #wiley     2037  0.0  0.0   7856  2144 ?        S    Aug01   0:00 /bin/bash /home/wiley/bin/wileyloop -P /home/wiley/etc/wileymud.pid -L /home/wiley/lib/log/runlog.180801-041043 3000
+        #wiley     2041  0.2  0.1  28536 17556 ?        S    Aug01   7:12 /home/wiley/bin/wileymud -P /home/wiley/etc/wileymud.pid -L /home/wiley/lib/log/runlog.180801-041043 3000
+        HEADER=`ps -auxwwww | head -1`
+        DRIVER=`ps -auxwwww | grep "$DAEMON" | grep -v "grep $DAEMON" | head -1`
+        LOOPER=`ps -auxwwww | grep "$SCRIPT" | grep -v "grep $SCRIPT" | head -1`
+        D_PID=`echo $DRIVER | awk '{print $2}'`
+        D_PORT=`echo $DRIVER | awk '{print $NF}'`
+        L_PID=`echo $LOOPER | awk '{print $2}'`
+
+        if [ -n "$D_PID" ]; then
+            D_RUNNING="The driver is running on port $D_PORT"
+        else
+            D_RUNNING="The driver is not running, but is configured to use port $D_PORT"
+        fi
+
+        if [ -n "$D_PID" ]; then
+            L_RUNNING="The loop script is running."
+        else
+            L_RUNNING="The loop script is not running."
+        fi
+
+        echo ""
+        if [ -n "$D_PID" -o -n "$L_PID" ]; then
+            echo "$HEADER"
+            echo "$DRIVER"
+            echo "$LOOPER"
+            echo ""
+        fi
+        echo "$D_RUNNING"
+        echo "$L_RUNNING"
+        echo ""
 	;;
   *)
 	echo "Usage: /etc/init.d/wiley {start|stop|restart|status}"
