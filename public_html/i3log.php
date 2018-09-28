@@ -71,6 +71,12 @@ if( isset($_REQUEST) && isset($_REQUEST["url"]) ) {
 
 function numbered_source($filename)
 {
+    ini_set('highlight.string',  '#DD0000'); // DD0000
+    ini_set('highlight.comment', '#0000BB'); // FF8000
+    ini_set('highlight.keyword', '#00CC00'); // 007700
+    ini_set('highlight.bg',      '#111111'); // FFFFFF
+    ini_set('highlight.default', '#00DDDD'); // 0000BB
+    ini_set('highlight.html',    '#CCCCCC'); // 000000
     $lines = implode(range(1, count(file($filename))), '<br />');
     $content = highlight_file($filename, true);
     $style = '
@@ -78,6 +84,7 @@ function numbered_source($filename)
         .num { 
         float: left; 
         color: gray; 
+        background-color: #111111;
         font-size: 13px;    
         font-family: monospace; 
         text-align: right; 
@@ -90,7 +97,7 @@ function numbered_source($filename)
         code {white-space: nowrap;} 
     </style>
     '; 
-    return "$style\n<table><tr><td class=\"num\">\n$lines\n</td><td>\n$content\n</td></tr></table>"; 
+    return "$style\n<div style=\"background-color: black;\"><table><tr><td class=\"num\">\n$lines\n</td><td>\n$content\n</td></tr></table></div>"; 
 }
 
 function init_pinkfish_map() {
@@ -877,7 +884,7 @@ $bg = 0;
         <table id="navbar" width="99%" align="center">
             <tr>
                 <?php if( ! $isMobile ) { ?>
-                <td align="left" width="35%">
+                <td align="left" width="34%">
                 <?php } else { ?>
                 <td align="center" width="100%">
                 <?php } ?>
@@ -890,20 +897,23 @@ $bg = 0;
                     <input id="end_button" type="button" value="end" onclick="last_page();">
                 </td>
                 <?php if( ! $isMobile ) { ?>
-                <td align="center" width="10%">
+                <td align="center" width="8%">
                 <?php if( $URL_ONLY == 1 ) { ?>
                     <a href="i3log.php">Normal</a>
                 <?php } else { ?>
                     <a href="i3log.php?url">URL's Only</a>
                 <?php } ?>
                 </td>
-                <td align="center" width="10%">
+                <td align="center" width="8%">
                     <a href="mudlist.html">Mudlist</a>
                 </td>
-                <td align="center" width="10%">
+                <td align="center" width="8%">
                     <a href="https://themud.org/chanhist.php#Channel=all">Other Logs</a>
                 </td>
-                <td align="right" width="35%" onmouseover="pagegen.style.color='#00FF00'; timespent.style.color='#00FF00';" onmouseout="pagegen.style.color='#1F1F1F'; timespent.style.color='#1F1F1F';">
+                <td align="center" width="8%">
+                    <a href="server.php">Server</a>
+                </td>
+                <td align="right" width="34%" onmouseover="pagegen.style.color='#00FF00'; timespent.style.color='#00FF00';" onmouseout="pagegen.style.color='#1F1F1F'; timespent.style.color='#1F1F1F';">
                     &nbsp;
                     <a href="javascript:;" onmousedown="toggleDiv('source');">
                         <span id="pagegen" style="color: #1F1F1F">

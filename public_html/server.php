@@ -17,7 +17,7 @@
         return 0;
     }
 
-    function numbered_source($filename)
+    function old_numbered_source($filename)
     {
         $lines = implode(range(1, count(file($filename))), '<br />');
         $content = highlight_file($filename, true);
@@ -41,10 +41,42 @@
         return "$style\n<table><tr><td class=\"num\">\n$lines\n</td><td>\n$content\n</td></tr></table>"; 
     }
 
+    function numbered_source($filename)
+    {
+        ini_set('highlight.string',  '#DD0000'); // DD0000
+        ini_set('highlight.comment', '#0000BB'); // FF8000
+        ini_set('highlight.keyword', '#00CC00'); // 007700
+        ini_set('highlight.bg',      '#111111'); // FFFFFF
+        ini_set('highlight.default', '#00DDDD'); // 0000BB
+        ini_set('highlight.html',    '#CCCCCC'); // 000000
+        $lines = implode(range(1, count(file($filename))), '<br />');
+        $content = highlight_file($filename, true);
+        $style = '
+        <style type="text/css"> 
+            .num { 
+            float: left; 
+            color: gray; 
+            background-color: #111111;
+            font-size: 13px;    
+            font-family: monospace; 
+            text-align: right; 
+            margin-right: 6pt; 
+            padding-right: 6pt; 
+            border-right: 1px solid gray;} 
+
+            body {margin: 0px; margin-left: 5px;} 
+            td {vertical-align: top; white-space: normal;} 
+            code {white-space: nowrap;} 
+        </style>
+        '; 
+        return "$style\n<div style=\"background-color: black;\"><table><tr><td class=\"num\">\n$lines\n</td><td>\n$content\n</td></tr></table></div>"; 
+    }
+
     $isLocal = is_local_ip();
 
     $graphics = array();
-    $graphics['server_case'] = $isLocal ? "gfx/server_case.jpg" : "https://lh6.googleusercontent.com/-w6XwIBerDjw/UdooiSE-NUI/AAAAAAAAAPI/wGjTt7QiEmA/s800/server_case.jpg";
+    $graphics['server_case'] = $isLocal ? "gfx/server_case.png" : "https://i.imgur.com/TFmF5Yg.png";
+    //$graphics['server_case'] = $isLocal ? "gfx/server_case.png" : "https://lh6.googleusercontent.com/-w6XwIBerDjw/UdooiSE-NUI/AAAAAAAAAPI/wGjTt7QiEmA/s800/server_case.jpg";
     //$graphics['server_case'] = $isLocal ? "gfx/server_case.jpg" : "http://i302.photobucket.com/albums/nn96/quixadhal/shadowlord/server_case_zpsdcdc0b79.jpg";
     $graphics['speedtest_raw'] = $isLocal ? "gfx/speedtest_raw_4478672602.png" : "http://www.speedtest.net/result/4478672602.png";
     $graphics['speedtest_qos'] = $isLocal ? "gfx/speedtest_qos_4478667111.png" : "http://www.speedtest.net/result/4478667111.png";
@@ -66,7 +98,7 @@
         }
     </script>
     </head>
-    <body>
+    <body bgcolor="black" text="#d0d0d0" link="#ffffbf" vlink="#ffa040">
         <table style="table-layout:fixed; width:100%; border:0px; white-space:normal;  word-wrap:break-word;">
             <tr>
                 <td width="75%" align="left">
@@ -95,9 +127,8 @@
                     <hr />
                     <h3>Internet Performance:</h3>
                     <center>
-                        NEW:&nbsp;<img src="<?php echo $graphics['speedtest_new']; ?>" border="0" width="300" height="135" />
-                        Raw:&nbsp;<img src="<?php echo $graphics['speedtest_raw']; ?>" border="0" width="300" height="135" />
-                        QoS:&nbsp;<img src="<?php echo $graphics['speedtest_qos']; ?>" border="0" width="300" height="135" />
+                        Seattle:&nbsp;<img src="<?php echo $graphics['speedtest_new']; ?>" border="0" width="300" height="135" />
+                        Kalamazoo:&nbsp;<img src="<?php echo $graphics['speedtest_raw']; ?>" border="0" width="300" height="135" />
                     </center>
                 </td>
             </tr>
