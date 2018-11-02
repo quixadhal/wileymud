@@ -73,6 +73,7 @@
 #include "modify.h"
 #include "interpreter.h"
 #include "version.h"
+#include "stringmap.h"
 #define _I3_C
 #include "i3.h"
 
@@ -83,12 +84,19 @@
 #define I3_PACKET_STATE_READING     2
 #define I3_PACKET_STATE_GOT_PACKET  3
 #define I3_PACKET_STATE_PROCESSING  4
+#define I3_PACKET_STATE_LEFTOVERS   5
+#define I3_PACKET_STATE_MISSING     6
 
 char                                    I3_incoming_packet_size[4];
 uint32_t                                I3_incoming_packet_length = 0;
 char                                   *I3_incoming_packet = NULL;
 long                                    I3_incoming_packet_read = 0;
 int                                     I3_packet_processing_state = I3_PACKET_STATE_NONE;
+char                                   *I3_incoming_packet_leftovers = NULL;
+long                                    I3_incoming_packet_strlen = 0;
+stringMap                              *speaker_db = NULL;
+int                                     speaker_count = 0;
+
 
 
 char                                    I3_input_buffer[IPS];
@@ -174,6 +182,7 @@ char                                   *I3_nameescape(const char *ps);
 char                                   *I3_nameremap(const char *ps);
 void                                    i3_npc_chat(const char *chan_name, const char *actor, const char *message);
 void                                    i3_npc_speak(const char *chan_name, const char *actor, const char *message);
+void                                    I3_packet_cleanup(void);
 
 //void                                    i3_nuke_url_file(void);
 //void                                    i3_check_urls(void);
@@ -321,13 +330,44 @@ const char                             *i3one_argument(const char *argument, cha
     return argument;
 }
 
+
+char *i3strrep(const char *src, const char *search, const char *rep)
+{
+    static char result[MAX_STRING_LENGTH];
+    const char *src_p;
+    size_t search_len = strlen(search);
+    size_t rep_len = strlen(rep);
+    char bit[2];
+
+    bzero(result, MAX_STRING_LENGTH);
+    bit[0] = bit[1] = '\0';
+
+    if(!src || !*src)
+        return result;
+
+    for( src_p = src; *src_p && strlen(result) < (MAX_STRING_LENGTH - rep_len); ) {
+        if(strncmp(src_p, search, search_len) == 0) {
+            // Found search string at current source position
+            strcat(result, rep);
+            src_p += search_len;
+        } else {
+            // Current position NOT the start of a pattern
+            bit[0] = *src_p;
+            strcat(result, bit);
+            src_p++;
+        }
+    }
+    return result;
+}
+
+
 /*
    Original Code from SW:FotE 1.1
    Reworked strrep function. 
    Fixed a few glaring errors. It also will not overrun the bounds of a string.
    -- Xorith
 */
-char                                   *i3strrep(const char *src, const char *sch,
+char                                   *i3strrep_old(const char *src, const char *sch,
 						 const char *rep)
 {
     int                                     src_len = strlen(src),
@@ -3053,6 +3093,54 @@ char *color_time( struct tm *local )
     return timestamp;
 }
 
+char *color_speaker( const char *speaker )
+{
+    static char                             result[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0\0";
+    char                                    lowercase_name[MAX_INPUT_LENGTH];
+    const char                             *found = NULL;
+    char                                   *colormap[] = {
+        "%^BLACK%^%^BOLD%^",
+        "%^RED%^",
+        "%^GREEN%^",
+        "%^ORANGE%^",
+        "%^BLUE%^",
+        "%^MAGENTA%^",
+        "%^CYAN%^",
+        "%^WHITE%^",
+        "%^RED%^%^BOLD%^",
+        "%^GREEN%^%^BOLD%^",
+        "%^YELLOW%^",
+        "%^MAGENTA%^%^BOLD%^",
+        "%^BLUE%^%^BOLD%^",
+        "%^CYAN%^%^BOLD%^",
+        "%^WHITE%^%^BOLD%^"
+    };
+
+    if( speaker && *speaker ) {
+        bzero(lowercase_name, MAX_INPUT_LENGTH);
+        for(int i = 0; i < strlen(speaker) && i < MAX_INPUT_LENGTH; i++) {
+            if(isalpha(speaker[i]))
+                lowercase_name[i] = tolower(speaker[i]);
+            else
+                lowercase_name[i] = speaker[i];
+        }
+
+        found = stringmap_find(speaker_db, lowercase_name);
+        if(found) {
+            // Simply return the color code found.
+            snprintf(result, MAX_INPUT_LENGTH, "%s", found);
+        } else {
+            // Add them as a new speaker and THEN return the color code.
+            found = colormap[speaker_count % sizeof(colormap)];
+            stringmap_add( speaker_db, lowercase_name, found );
+            speaker_count++;
+            I3_saveSpeakers();
+            snprintf(result, MAX_INPUT_LENGTH, "%s", found);
+        }
+    }
+    return result;
+}
+
 void I3_process_channel_t(I3_HEADER *header, char *s)
 {
     char                                   *ps = s;
@@ -3166,6 +3254,8 @@ void I3_process_channel_m(I3_HEADER *header, char *s)
     I3_CHANNEL                             *channel;
     struct tm                              *local = localtime(&i3_time);
     int                                     len;
+    char                                    speaker_color[MAX_INPUT_LENGTH];
+    char                                    mud_color[MAX_INPUT_LENGTH];
 
     I3_get_field(ps, &next_ps);
     I3_remove_quotes(&ps);
@@ -3205,8 +3295,14 @@ void I3_process_channel_m(I3_HEADER *header, char *s)
 
     strcpy(format, "%s ");
     strcat(format, channel->layout_m);
-    snprintf(buf, MAX_STRING_LENGTH, format, color_time(local), channel->local_name, visname, header->originator_mudname, tps);
     snprintf(tmpvisname, MAX_INPUT_LENGTH, "%s@%s", visname, header->originator_mudname);
+    //snprintf(buf, MAX_STRING_LENGTH, format, color_time(local), channel->local_name, visname, header->originator_mudname, tps);
+
+    // We omit the RESET from the end of the speaker name, so it can also catch the @ if the channel
+    // format string doesn't override it.
+    snprintf(speaker_color, MAX_INPUT_LENGTH, "%s%s", color_speaker(header->originator_username), visname);
+    snprintf(mud_color, MAX_INPUT_LENGTH, "%s%s%%^RESET%%^", color_speaker(header->originator_username), header->originator_mudname);
+    snprintf(buf, MAX_STRING_LENGTH, format, color_time(local), channel->local_name, speaker_color, mud_color, tps);
 
     allchan_log(0, channel->local_name, visname, header->originator_mudname, tps);
 
@@ -4900,6 +4996,162 @@ void i3_savechar(CHAR_DATA *ch, FILE * fp)
  * Network Startup and Shutdown functions. *
  *******************************************/
 
+void I3_saveSpeakers(void)
+{
+    FILE                                   *fp = NULL;
+    int                                     do_reset = 1;
+    stringMap                              *node = NULL;
+
+    if ((fp = fopen(I3_SPEAKER_FILE, "w")) == NULL) {
+	log_info("%s", "Couldn't write to I3 speaker file.");
+	return;
+    }
+
+    log_info("Saving I3 speaker list...");
+    fprintf(fp, "%s", "#COUNT\n");
+    fprintf(fp, "Count   %d\n", speaker_count);
+    fprintf(fp, "%s", "End\n\n");
+
+    do_reset = 1;
+    do {
+        node = stringmap_walk(speaker_db, do_reset);
+        do_reset = 0;
+        if( node && node->key ) {
+            fprintf(fp, "%s", "#SPEAKER\n");
+            fprintf(fp, "Name   %s\n", node->key);
+            fprintf(fp, "Color  %s\n", node->value ? node->value : "%^RESET%^");
+            fprintf(fp, "%s", "End\n\n");
+        }
+    } while ( node );
+
+    fprintf(fp, "%s", "#END\n");
+    I3FCLOSE(fp);
+}
+
+void I3_readSpeakerCount(FILE *fp)
+{
+    const char                             *word;
+    bool                                    fMatch;
+
+    for (;;) {
+	word = feof(fp) ? "End" : i3fread_word(fp);
+	fMatch = FALSE;
+
+	switch (word[0]) {
+	    case '*':
+		fMatch = TRUE;
+		i3fread_to_eol(fp);
+		break;
+
+	    case 'E':
+		if (!strcasecmp(word, "End")) {
+                    return;
+                }
+		break;
+
+	    case 'C':
+		I3KEY("Count", speaker_count, i3fread_number(fp));
+		break;
+	}
+	if (!fMatch)
+	    log_error("i3_readSpeakerCount: no match: %s", word);
+    }
+}
+
+void I3_readSpeaker(FILE *fp)
+{
+    const char                             *word;
+    bool                                    fMatch;
+    char                                   *key = NULL;
+    char                                   *value = NULL;
+
+    for (;;) {
+	word = feof(fp) ? "End" : i3fread_word(fp);
+	fMatch = FALSE;
+
+	switch (word[0]) {
+	    case '*':
+		fMatch = TRUE;
+		i3fread_to_eol(fp);
+		break;
+
+	    case 'E':
+		if (!strcasecmp(word, "End")) {
+                    if(key && *key && value) {
+                        const char *check = NULL;
+
+                        if(!(check = stringmap_find(speaker_db, key))) {
+                            stringmap_add(speaker_db, key, value);
+                        }
+                    }
+		    return;
+                }
+		break;
+
+	    case 'C':
+		I3KEY("Color", value, i3fread_line(fp));
+		break;
+
+	    case 'N':
+		I3KEY("Name", key, i3fread_line(fp));
+		break;
+	}
+	if (!fMatch)
+	    log_error("i3_readSpeaker: no match: %s", word);
+    }
+}
+
+void I3_loadSpeakers(void)
+{
+    FILE                                   *fp = NULL;
+
+    log_info("Initializing I3 speaker list...");
+    stringmap_destroy(speaker_db);  // Free anything present
+    speaker_db = stringmap_init();  // Setup a new empty structure
+
+    log_info("Loading I3 speaker list...");
+    if ((fp = fopen(I3_SPEAKER_FILE, "r")) == NULL) {
+	log_info("%s", "Couldn't open I3 speaker file.");
+	return;
+    }
+
+    for (;;) {
+	char                                    letter;
+	char                                   *word;
+
+	letter = i3fread_letter(fp);
+	if (letter == '*') {
+	    i3fread_to_eol(fp);
+	    continue;
+	}
+
+	if (letter != '#') {
+	    log_error("I3_loadSpeakers: # not found.");
+	    break;
+	}
+
+	word = i3fread_word(fp);
+	if (!strcasecmp(word, "SPEAKER")) {
+            I3_readSpeaker(fp);
+	    continue;
+	} else if (!strcasecmp(word, "COUNT")) {
+            I3_readSpeakerCount(fp);
+	    continue;
+	} else if (!strcasecmp(word, "END")) {
+	    break;
+        } else {
+	    log_error("I3_loadSpeakers: bad section: %s.", word);
+	    continue;
+	}
+    }
+    I3FCLOSE(fp);
+}
+
+
+
+
+
+
 void I3_savecolor(void)
 {
     FILE                                   *fp;
@@ -6521,6 +6773,7 @@ void I3_connection_close(bool reconnect)
     bzero(I3_input_buffer, IPS);
     bzero(I3_output_buffer, OPS);
     bzero(I3_currentpacket, IPS);
+    I3_packet_cleanup();
 
     for (router = first_router; router; router = router->next)
 	if (!strcasecmp(router->name, I3_ROUTER_NAME)) {
@@ -6778,6 +7031,8 @@ void router_connect(const char *router_name, bool forced, int mudport, bool isco
 
     I3_loadchannels();
     I3_loadbans();
+
+    I3_loadSpeakers();
 
     if (this_i3mud->ucache == TRUE) {
 	I3_load_ucache();
@@ -7185,6 +7440,10 @@ void I3_packet_cleanup(void)
         free(I3_incoming_packet);
     I3_incoming_packet = NULL;
     I3_incoming_packet_read = 0;
+    if(I3_incoming_packet_leftovers)
+        free(I3_incoming_packet_leftovers);
+    I3_incoming_packet_leftovers = NULL;
+    I3_incoming_packet_strlen = 0;
 }
 
 /*
@@ -7365,7 +7624,6 @@ void i3_loop(void)
                         log_info("Read error on I3 socket.");
                     else
                         log_info("EOF encountered on I3 socket read.");
-                    I3_packet_cleanup();
                     I3_connection_close(TRUE);
                     return;
                 }
@@ -7383,7 +7641,6 @@ void i3_loop(void)
                     /* But it's invalid? */
                     FD_CLR(I3_socket, &out_set);
                     log_error("Invalid packet size, reboot the sucker!");
-                    I3_packet_cleanup();
                     I3_connection_close(TRUE);
                     return;
                 }
@@ -7399,7 +7656,6 @@ void i3_loop(void)
                         log_info("Read error on I3 socket.");
                     else
                         log_info("EOF encountered on I3 socket read.");
-                    I3_packet_cleanup();
                     I3_connection_close(TRUE);
                     return;
                 }
@@ -7421,6 +7677,29 @@ void i3_loop(void)
                 /* Incoming_packet_length is 1 larger than the string content of the packet
                  * because it counts the NUL byte.
                  */
+                I3_incoming_packet_strlen = strlen(I3_incoming_packet);
+                if (I3_incoming_packet_strlen == (I3_incoming_packet_length - 1)) {
+                    /* Perfect, we got the packet exactly right */
+                } else if (I3_incoming_packet_strlen >= I3_incoming_packet_length) {
+                    /* This means we didn't get our NUL byte, and the packet size
+                     * was wrong (too small).  Our only choice here is to keep
+                     * reading until we find the NUL byte.
+                     */
+                    log_error("I3 Packet size mismatch!  No NUL byte found in read!");
+                    log_error("I3_incoming_packet_length: %d", I3_incoming_packet_length);
+                    log_error("strlen of packet: %lu", I3_incoming_packet_strlen);
+                    log_error("Packet: %s", I3_incoming_packet);
+                } else {
+                    /* And this means we read too much, because the packet size
+                     * was wrong (too big).  We now have leftovers that are really
+                     * part of the NEXT packet.
+                     */
+                    log_error("I3 Packet size mismatch! Read too much!");
+                    log_error("I3_incoming_packet_length: %d", I3_incoming_packet_length);
+                    log_error("strlen of packet: %lu", I3_incoming_packet_strlen);
+                    log_error("Packet: %s", I3_incoming_packet);
+                }
+
                 if ( I3_incoming_packet[0] != '(' || 
                      I3_incoming_packet[1] != '{' ||
                      I3_incoming_packet[I3_incoming_packet_length - 3] != '}' ||
@@ -7428,7 +7707,7 @@ void i3_loop(void)
                      ) {
                     log_error("Invalid packet data, throw it away!");
                     log_error("I3_incoming_packet_length: %d", I3_incoming_packet_length);
-                    log_error("strlen of packet: %lu", strlen(I3_incoming_packet));
+                    log_error("strlen of packet: %lu", I3_incoming_packet_strlen);
                     log_error("Packet: %s", I3_incoming_packet);
                     I3_packet_cleanup();
                     return;
@@ -7439,10 +7718,13 @@ void i3_loop(void)
                 I3_handle_packet(I3_incoming_packet);
                 I3_packet_cleanup();
                 break;
+            case I3_PACKET_STATE_LEFTOVERS:
+                break;
+            case I3_PACKET_STATE_MISSING:
+                break;
             default:
                 log_error("How did the code get here???");
                 FD_CLR(I3_socket, &out_set);
-                I3_packet_cleanup();
                 I3_connection_close(TRUE);
                 break;
         }
@@ -10002,6 +10284,47 @@ I3_CMD(I3_taunt)
     return;
 }
 
+I3_CMD(I3_speaker_color)
+{
+    const char                             *found = NULL;
+    char                                    lowercase_name[MAX_INPUT_LENGTH];
+    char                                    speaker[MAX_INPUT_LENGTH];
+
+    if (!argument || argument[0] == '\0') {
+	i3_printf(ch, "Usage: i3speaker_color <speaker> <color>\r\n");
+	return;
+    }
+
+    bzero(speaker, MAX_INPUT_LENGTH);
+    argument = i3one_argument(argument, speaker);
+
+    if (!*speaker) {
+	i3_printf(ch, "Usage: i3speaker_color <speaker> <color>\r\n");
+	return;
+    }
+
+    bzero(lowercase_name, MAX_INPUT_LENGTH);
+    for(int i = 0; i < strlen(speaker) && i < MAX_INPUT_LENGTH; i++) {
+        if(isalpha(speaker[i]))
+            lowercase_name[i] = tolower(speaker[i]);
+        else
+            lowercase_name[i] = speaker[i];
+    }
+
+    found = stringmap_find(speaker_db, lowercase_name);
+    if(found) {
+        if(!argument || !*argument) {
+	    i3_printf(ch, "%%^YELLOW%%^No color sequence specified.%%^RESET%%^\r\n");
+        } else {
+            stringmap_add( speaker_db, lowercase_name, argument );
+            I3_saveSpeakers();
+	    i3_printf(ch, "%%^GREEN%%^Color sequence for %s saved.%%^RESET%%^\r\n", speaker);
+        }
+    } else {
+	i3_printf(ch, "%%^YELLOW%%^No such speaker known.%%^RESET%%^\r\n");
+    }
+}
+
 const char                             *i3_funcname(I3_FUN *func)
 {
     if (func == I3_other)
@@ -10086,6 +10409,8 @@ const char                             *i3_funcname(I3_FUN *func)
 	return ("i3_cedit");
     if (func == I3_taunt)
 	return ("I3_taunt");
+    if (func == I3_speaker_color)
+	return ("I3_speaker_color");
 
     return "";
 }
@@ -10174,6 +10499,8 @@ I3_FUN                                 *i3_function(const char *func)
 	return i3_hedit;
     if (!strcasecmp(func, "I3_taunt"))
 	return I3_taunt;
+    if (!strcasecmp(func, "I3_speaker_color"))
+	return I3_speaker_color;
 
     return NULL;
 }
@@ -10212,6 +10539,7 @@ bool i3_command_hook(CHAR_DATA *ch, const char *lcommand, const char *argument)
     };
     int                                     color = 0;
     const char                             *original_argument;
+    int                                     emote_hack = 0;
 
     if (IS_NPC(ch))
 	return FALSE;
@@ -10305,8 +10633,7 @@ bool i3_command_hook(CHAR_DATA *ch, const char *lcommand, const char *argument)
 	     * Strip the , and then extra spaces - Remcon 6-28-03 
 	     */
 	    argument++;
-	    while (isspace(*argument))
-		argument++;
+            // while (isspace(*argument)) argument++;
 	    I3_send_channel_emote(channel, CH_I3NAME(ch), argument);
 	    break;
 	case '@':
@@ -10314,18 +10641,16 @@ bool i3_command_hook(CHAR_DATA *ch, const char *lcommand, const char *argument)
 	     * Strip the @ and then extra spaces - Remcon 6-28-03 
 	     */
 	    argument++;
-	    while (isspace(*argument))
-		argument++;
+	    // while (isspace(*argument)) argument++;
 	    I3_send_social(channel, ch, argument);
 	    break;
 	case '/':
 	    /*
-	     * Strip the / and then extra spaces
+	     * Strip the / and then any spaces between it and the command word
 	     */
             original_argument = argument;
 	    argument++;
-	    while (isspace(*argument))
-		argument++;
+	    while (*argument && isspace(*argument)) argument++;
             if (!strncasecmp(argument, "help", 4)) {
                 i3_printf(ch, "%%^GREEN%%^%%^BOLD%%^Channel subcommands available for %s are:%%^RESET%%^\r\n", channel->local_name);
                 i3_printf(ch, "%%^GREEN%%^%%^BOLD%%^    :emote     - Sends message as an \"emote\", which usually prints differently.%%^RESET%%^\r\n");
@@ -10361,8 +10686,9 @@ bool i3_command_hook(CHAR_DATA *ch, const char *lcommand, const char *argument)
                 return TRUE;
             } else if (I3PERM(ch) >= I3PERM_ADMIN && !strncasecmp(argument, "colorize", 8)) {
                 argument += 8;
-                while (isspace(*argument))
-                    argument++;
+                // Skip the command verb + one space
+                if (*argument && isspace(*argument)) argument++;
+                if (*argument == ':' || *argument == ',') emote_hack = 1;
                 bzero(buffer, MAX_STRING_LENGTH);
                 color = random() % token_count;
                 strncpy(b, token[color], strlen(token[color]));
@@ -10380,11 +10706,17 @@ bool i3_command_hook(CHAR_DATA *ch, const char *lcommand, const char *argument)
                     }
                 }
                 strcpy(b, "%^RESET%^");
-	        I3_send_channel_message(channel, CH_I3NAME(ch), buffer);
+                if( emote_hack ) {
+	            I3_send_channel_emote(channel, CH_I3NAME(ch), buffer);
+                    emote_hack = 0;
+                } else {
+	            I3_send_channel_message(channel, CH_I3NAME(ch), buffer);
+                }
             } else if (I3PERM(ch) >= I3PERM_ADMIN && !strncasecmp(argument, "rainbow", 7)) {
                 argument += 7;
-                while (isspace(*argument))
-                    argument++;
+                // Skip the command verb + one space
+                if (*argument && isspace(*argument)) argument++;
+                if (*argument == ':' || *argument == ',') emote_hack = 1;
                 bzero(buffer, MAX_STRING_LENGTH);
                 color = 0;
                 strncpy(b, token[color], strlen(token[color]));
@@ -10403,7 +10735,12 @@ bool i3_command_hook(CHAR_DATA *ch, const char *lcommand, const char *argument)
                     }
                 }
                 strcpy(b, "%^RESET%^");
-	        I3_send_channel_message(channel, CH_I3NAME(ch), buffer);
+                if( emote_hack ) {
+	            I3_send_channel_emote(channel, CH_I3NAME(ch), buffer);
+                    emote_hack = 0;
+                } else {
+	            I3_send_channel_message(channel, CH_I3NAME(ch), buffer);
+                }
             } else {
                 /* No match for known subcommands, so just send it */
 	        I3_send_channel_message(channel, CH_I3NAME(ch), original_argument);

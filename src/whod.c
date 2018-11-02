@@ -38,7 +38,7 @@
 #include "whod.h"
 
 // #define WILEY_ADDRESS "wiley.the-firebird.net"
-#define WILEY_ADDRESS "wileymud.i3.themud.org"
+#define WILEY_ADDRESS "wileymud.themud.org"
 // #define WILEY_ADDRESS "wileymud.lpmud.org"
 
 /*
@@ -956,7 +956,7 @@ void                                    generate_mudlist(void)
                 fprintf(fp, "<tr bgcolor=\"%s\">\r\n", row_counter % 2 ? "#000000" : "#1f1f1f");
             }
 
-            log_info("Generating layout for %s", mud->name);
+            //log_info("Generating layout for %s", mud->name);
             bzero(stat_name, MAX_INPUT_LENGTH);
             bzero(stat_name_public, MAX_INPUT_LENGTH);
 
@@ -978,7 +978,7 @@ void                                    generate_mudlist(void)
                 }
             //}
             //log_info("                      %s", stat_name);
-            log_info("                      %s", stat_name_public);
+            //log_info("                      %s", stat_name_public);
 
             fprintf(fp, "<td align=\"center\"><img border=\"0\" width=\"%d\" height=\"%d\" src=\"%s\" /></td>\r\n", MUDLIST_WIDTH, MUDLIST_HEIGHT, stat_name_public);
             fprintf(fp, "<td align=\"left\">%s</td>\r\n", "&nbsp;");
@@ -996,7 +996,7 @@ void                                    generate_mudlist(void)
             }
             col_counter++;
 #else
-            log_info("Generating layout for %s", mud->name);
+            //log_info("Generating layout for %s", mud->name);
             bzero(stat_name, MAX_INPUT_LENGTH);
             bzero(stat_name_public, MAX_INPUT_LENGTH);
 
@@ -1018,7 +1018,7 @@ void                                    generate_mudlist(void)
                 }
             //}
             //log_info("                      %s", stat_name);
-            log_info("                      %s", stat_name_public);
+            //log_info("                      %s", stat_name_public);
 
             fprintf(fp, "<tr bgcolor=\"%s\">\r\n", row_counter % 2 ? "#000000" : "#1f1f1f");
             fprintf(fp, "<td align=\"center\"><img border=\"0\" width=\"%d\" height=\"%d\" src=\"%s\" /></td>\r\n", MUDLIST_WIDTH, MUDLIST_HEIGHT, stat_name_public);

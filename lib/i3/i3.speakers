@@ -1,0 +1,75 @@
+#COUNT
+Count   14
+End
+
+#SPEAKER
+Name   shentino
+Color  %^BLUE%^
+End
+
+#SPEAKER
+Name   joshua
+Color  %^MAGENTA%^
+End
+
+#SPEAKER
+Name   urlbot
+Color  %^YELLOW%^%^B_BLUE%^
+End
+
+#SPEAKER
+Name   dexter
+Color  %^YELLOW%^
+End
+
+#SPEAKER
+Name   ploosk
+Color  %^MAGENTA%^%^BOLD%^
+End
+
+#SPEAKER
+Name   sinistrad
+Color  %^ORANGE%^
+End
+
+#SPEAKER
+Name   wodan
+Color  %^CYAN%^%^BOLD%^
+End
+
+#SPEAKER
+Name   ninja
+Color  %^RED%^%^BOLD%^
+End
+
+#SPEAKER
+Name   cratylus
+Color  %^WHITE%^
+End
+
+#SPEAKER
+Name   quixadhal
+Color  %^RED%^
+End
+
+#SPEAKER
+Name   cron
+Color  %^BLACK%^%^BOLD%^
+End
+
+#SPEAKER
+Name   qwer
+Color  %^GREEN%^%^BOLD%^
+End
+
+#SPEAKER
+Name   salius
+Color  %^BLUE%^%^BOLD%^
+End
+
+#SPEAKER
+Name   zaphod
+Color  %^CYAN%^
+End
+
+#END

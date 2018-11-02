@@ -76,7 +76,7 @@ tOBJ =	mob_actions.o spec_procs.o breath_weapons.o tracking.o \
 	modify.o multiclass.o opinion.o random.o reception.o \
 	shop.o signals.o sound.o spell_parser.o \
 	spells.o trap.o utils.o weather.o whod.o events.o \
-	ban.o sha256.o imc.o i3.o sql.o
+	ban.o sha256.o imc.o i3.o sql.o stringmap.o
 OBJ =	$(addprefix obj/, $(tOBJ))
 
 tIDOBJ		= id_close.o id_open.o id_parse.o \
@@ -211,9 +211,10 @@ obj/comm.o: comm.c include/global.h include/sql.h include/i3.h include/bug.h \
   include/comm.h
 obj/i3.o: i3.c include/global.h include/sql.h include/bug.h include/utils.h \
   include/multiclass.h include/comm.h include/constants.h \
-  include/modify.h include/interpreter.h include/version.h include/i3.h
+  include/modify.h include/interpreter.h include/version.h \
+  include/stringmap.h include/i3.h
 obj/untiny.o: untiny.c include/global.h include/bug.h include/sql.h \
-  include/untiny.h
+  include/stringmap.h include/untiny.h
 obj/act_off.o: act_off.c include/global.h include/bug.h include/utils.h \
   include/comm.h include/interpreter.h include/handler.h include/db.h \
   include/spells.h include/mudlimits.h include/opinion.h \
@@ -299,6 +300,8 @@ obj/handler.o: handler.c include/global.h include/bug.h include/utils.h \
   include/spell_parser.h include/constants.h include/fight.h \
   include/modify.h include/multiclass.h include/opinion.h \
   include/act_wiz.h include/handler.h
+obj/stringmap.o: stringmap.c include/global.h include/bug.h include/sql.h \
+  include/stringmap.h
 obj/fight.o: fight.c include/global.h include/bug.h include/utils.h \
   include/comm.h include/handler.h include/interpreter.h include/db.h \
   include/constants.h include/spells.h include/spell_parser.h \

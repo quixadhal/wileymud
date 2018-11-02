@@ -73,6 +73,7 @@
 #define I3_MUDLIST_FILE  I3_DIR "i3.mudlist"
 #define I3_CHANLIST_FILE I3_DIR "i3.chanlist"
 #define I3_ROUTER_FILE   I3_DIR "i3.routers"
+#define I3_SPEAKER_FILE  I3_DIR "i3.speakers"
 
 #define I3STRALLOC strdup
 #define I3STRFREE DESTROY
@@ -381,4 +382,8 @@ void i3_log_alive( void );
 void i3_log_dead( void );
 char *i3_strip_colors(const char *txt);
 void i3_do_ping(const char *fake_user, const char *chan_name, const char *mud_name);
+void I3_saveSpeakers(void);
+void I3_readSpeaker(FILE *fp);
+void I3_loadSpeakers(void);
+char *color_speaker( const char *speaker );
 #endif
