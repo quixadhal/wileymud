@@ -56,13 +56,14 @@ DEBUG_FLAG	= -g
 ADDL_DEBUG	= #-DTIME_DEBUG
 EFENCE		= #-lpthread -lefence
 PROF_FLAG	= #-pg
+DYN_FLAG	= -rdynamic
 
 INC		= -Iinclude $(ID_INC) $(IMC_INC) $(I3_INC) $(SQL_INC)
 LIB		= $(ID_LIB) $(NEED_MATH) $(NEED_SSL) $(NEED_CRYPT) $(NEED_COMPAT) $(EFENCE) $(PCRE_LIB) $(SQL_LIB)
 UTILSLIB	= $(NEED_MATH) $(NEED_CRYPT) $(NEED_COMPAT) $(EFENCE)
 
 CFLAGS		= $(W_FLAGS) $(DEBUG_FLAG) $(OPT_FLAG) $(PROF_FLAG) $(M_ARCH) $(INC)
-LDFLAGS		= $(DEBUG_FLAG) $(OPT_FLAG) $(PROF_FLAG)
+LDFLAGS		= $(DEBUG_FLAG) $(OPT_FLAG) $(PROF_FLAG) $(DYN_FLAG)
 
 VER		= $(addprefix include/, version.h)
 OLDV		= $(shell perl -ne '$$i = $$1 if /Version\s+\d\.(\d+)w3-beta/i; END { $$i = 0 if !defined $$i; print "$$i\n";}' < $(VER))

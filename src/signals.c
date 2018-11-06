@@ -276,6 +276,14 @@ void reaper(int a)
     log_info("Child reaped.");
 }
 
+int addr2line(char const * const program_name, void const * const addr)
+{
+    char addr2line_cmd[512] = {0};
+
+    sprintf(addr2line_cmd,"addr2line -f -p -e %.256s %p", program_name, addr); 
+    return system(addr2line_cmd);
+}
+
 void exit_with_traceback(int a)
 {
     int i, count;
@@ -294,6 +302,11 @@ void exit_with_traceback(int a)
     } else {
         for( i = 0; i < count; i++ ) {
             log_fatal("%s", frames[i]);
+            /*
+            if(addr2line(prog_name, frames[i]) != 0) {
+                log_fatal("%s", frames[i]);
+            }
+            */
         }
         free(frames);
     }

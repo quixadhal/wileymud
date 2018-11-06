@@ -1,10 +1,15 @@
 #COUNT
-Count   14
+Count   24
 End
 
 #SPEAKER
 Name   shentino
 Color  %^BLUE%^
+End
+
+#SPEAKER
+Name   ploo
+Color  %^RED%^
 End
 
 #SPEAKER
@@ -28,6 +33,36 @@ Color  %^MAGENTA%^%^BOLD%^
 End
 
 #SPEAKER
+Name   kalinash
+Color  %^MAGENTA%^
+End
+
+#SPEAKER
+Name   taffyd
+Color  %^GREEN%^
+End
+
+#SPEAKER
+Name   hugo
+Color  %^WHITE%^
+End
+
+#SPEAKER
+Name   lyanic
+Color  %^CYAN%^
+End
+
+#SPEAKER
+Name   silenus
+Color  %^BLUE%^
+End
+
+#SPEAKER
+Name   thrym
+Color  %^BLACK%^%^BOLD%^
+End
+
+#SPEAKER
 Name   sinistrad
 Color  %^ORANGE%^
 End
@@ -35,6 +70,21 @@ End
 #SPEAKER
 Name   wodan
 Color  %^CYAN%^%^BOLD%^
+End
+
+#SPEAKER
+Name   ardneh
+Color  %^WHITE%^%^BOLD%^
+End
+
+#SPEAKER
+Name   cozminsky
+Color  %^ORANGE%^
+End
+
+#SPEAKER
+Name   andrew
+Color  %^RED%^%^BOLD%^
 End
 
 #SPEAKER

@@ -91,6 +91,8 @@ int                                     pulse_mudlist = PULSE_MUDLIST;
 int                                     pulse_url = PULSE_URL; // check for urls to send over I3
 int                                     pulse_url_handler = PULSE_URL_HANDLER; // every so often, fork for lost url processing
 
+const char                             *prog_name = NULL;
+
 int main(int argc, const char **argv)
 {
     int                                     port = 0;
@@ -108,6 +110,8 @@ int main(int argc, const char **argv)
     WizLock = FALSE;
 
     setlocale(LC_ALL, "en_US.utf8");
+
+    prog_name = argv[0];
 
     while ((pos < argc) && (*(argv[pos]) == '-')) {
 	switch (*(argv[pos] + 1)) {

@@ -2061,6 +2061,8 @@ void I3_process_error(I3_HEADER *header, char *s)
      */
     if (!strcasecmp(header->originator_mudname, "VargonMUD"))
 	return;
+    if (!strcasecmp(header->originator_mudname, "Ulario"))
+	return;
 
     snprintf(error, MAX_STRING_LENGTH, "Error: from %s to %s@%s\r\n%s: %s",
 	     header->originator_mudname, header->target_username, header->target_mudname, type,
@@ -3131,7 +3133,7 @@ char *color_speaker( const char *speaker )
             snprintf(result, MAX_INPUT_LENGTH, "%s", found);
         } else {
             // Add them as a new speaker and THEN return the color code.
-            found = colormap[speaker_count % sizeof(colormap)];
+            found = colormap[speaker_count % (sizeof(colormap) / sizeof(colormap[0]))];
             stringmap_add( speaker_db, lowercase_name, found );
             speaker_count++;
             I3_saveSpeakers();
