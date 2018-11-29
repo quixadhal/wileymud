@@ -10282,7 +10282,64 @@ void I3_send_social(I3_CHANNEL *channel, CHAR_DATA *ch, const char *argument)
 
 I3_CMD(I3_taunt)
 {
-    do_taunt_from_log();
+    char                                    to[MAX_INPUT_LENGTH],
+                                           *ps;
+    char                                    mud[MAX_INPUT_LENGTH];
+    I3_MUD                                 *pmud;
+    char                                   *taunt;
+
+    if (!argument || argument[0] == '\0') {
+        do_taunt_from_log();
+    } else {
+        argument = i3one_argument(argument, to);
+        ps = strchr(to, '@');
+
+        if (to[0] == '\0' || ps == NULL) {
+            i3_printf(ch, "%%^YELLOW%%^You should specify a person and a mud.%%^RESET%%^\r\n" "(use %%^WHITE%%^%%^BOLD%%^i3mudlist%%^YELLOW%%^ to get an overview of the muds available)%%^RESET%%^\r\n");
+            return;
+        }
+
+        ps[0] = '\0';
+        ps++;
+        i3strlcpy(mud, ps, MAX_INPUT_LENGTH);
+
+        if (!(pmud = find_I3_mud_by_name(mud))) {
+            i3_printf(ch, "%%^YELLOW%%^No such mud known.%%^RESET%%^\r\n" "(use %%^WHITE%%^%%^BOLD%%^i3mudlist%%^YELLOW%%^ to get an overview of the muds available)%%^RESET%%^\r\n");
+            return;
+        }
+
+        /*
+        if (!strcasecmp(this_i3mud->name, pmud->name)) {
+            i3_printf(ch, "Use your mud's own internal system for that.\r\n");
+            return;
+        }
+        */
+
+        if (pmud->status >= 0) {
+            i3_printf(ch, "%s is marked as down.\r\n", pmud->name);
+            return;
+        }
+
+        if (pmud->tell == 0) {
+            i3_printf(ch, "%s does not support the 'tell' command.\r\n", pmud->name);
+            return;
+        }
+
+        //I3_send_tell(ch, to, pmud->name, argument);
+        //i3_npc_speak("wiley", "Cron", taunt);
+
+        taunt = i3_taunt_line();
+
+        I3_escape(to);
+        I3_write_header("tell", this_i3mud->name, "Taunter", pmud->name, to);
+        I3_write_buffer("\"");
+        I3_write_buffer("Taunter");
+        I3_write_buffer("\",\"");
+        send_to_i3(I3_escape(taunt));
+        I3_write_buffer("\",})\r");
+        I3_send_packet();
+        i3_printf(ch, "%%^YELLOW%%^You TAUNT %%^CYAN%%^%%^BOLD%%^%s@%s%%^RESET%%^ with: %s\r\n", to, pmud->name, taunt);
+    }
     return;
 }
 
