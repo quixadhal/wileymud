@@ -3733,15 +3733,15 @@ char                                   *i3rankbuffer(CHAR_DATA *ch)
     static char                             rbuf[MAX_INPUT_LENGTH];
 
     if (I3PERM(ch) >= I3PERM_IMM) {
-	i3strlcpy(rbuf, "~YStaff", MAX_INPUT_LENGTH);
+	i3strlcpy(rbuf, "%^YELLOW%^Staff%^RESET%^", MAX_INPUT_LENGTH);
 
 	if (CH_I3RANK(ch) && CH_I3RANK(ch)[0] != '\0')
-	    snprintf(rbuf, MAX_INPUT_LENGTH, "~Y%s", I3_mudtag_to_i3tag(CH_I3RANK(ch)));
+	    snprintf(rbuf, MAX_INPUT_LENGTH, "%%^YELLOW%%^%s%%^RESET%%^", I3_mudtag_to_i3tag(CH_I3RANK(ch)));
     } else {
-	i3strlcpy(rbuf, "~BPlayer", MAX_INPUT_LENGTH);
+	i3strlcpy(rbuf, "%^GREEN%^Player%^RESET%^", MAX_INPUT_LENGTH);
 
 	if (CH_I3RANK(ch) && CH_I3RANK(ch)[0] != '\0')
-	    snprintf(rbuf, MAX_INPUT_LENGTH, "~B%s", I3_mudtag_to_i3tag(CH_I3RANK(ch)));
+	    snprintf(rbuf, MAX_INPUT_LENGTH, "%%^GREEN%%^BOLD%%^%s%%^RESET%%^", I3_mudtag_to_i3tag(CH_I3RANK(ch)));
     }
     return rbuf;
 }
@@ -3806,8 +3806,7 @@ void I3_process_who_req(I3_HEADER *header, char *s)
 
 	    if (xx == 0) {
 		I3_write_buffer("({\"");
-		send_to_i3(I3_escape
-			   ("%%^BLUE%%^%%^BOLD%%^--------------------------------=[ %%^WHITE%%^%%^BOLD%%^Players %%^BLUE%%^%%^BOLD%%^]=---------------------------------"));
+		send_to_i3(I3_escape("%^BLUE%^%^BOLD%^--------------------------------=[ %^WHITE%^%^BOLD%^Players %^BLUE%^%^BOLD%^]=---------------------------------"));
 		I3_write_buffer("\",");
 		snprintf(smallbuf, 50, "%ld", bogusidle);
 		I3_write_buffer(smallbuf);
@@ -3825,12 +3824,12 @@ void I3_process_who_req(I3_HEADER *header, char *s)
 	    I3_write_buffer(smallbuf);
 	    I3_write_buffer(",\"");
 
-	    i3strlcpy(stats, "&z[", 200);
+	    i3strlcpy(stats, "[", 200);
 	    if (CH_I3AFK(person))
 		i3strlcat(stats, "AFK", 200);
 	    else
 		i3strlcat(stats, "---", 200);
-	    i3strlcat(stats, "]%%^GREEN%%^%%^BOLD%%^", 200);
+	    i3strlcat(stats, "]%^GREEN%^%^BOLD%^", 200);
 
 	    snprintf(personbuf, MAX_STRING_LENGTH, "%s %s%s", stats, CH_I3NAME(person),
 		     CH_I3TITLE(person));
@@ -3853,7 +3852,7 @@ void I3_process_who_req(I3_HEADER *header, char *s)
 	    if (yy == 0) {
 		I3_write_buffer("({\"");
 		send_to_i3(I3_escape
-			   ("%%^RED%%^%%^BOLD%%^-------------------------------=[ %%^WHITE%%^%%^BOLD%%^Immortals %%^RED%%^%%^BOLD%%^]=--------------------------------"));
+			   ("%^RED%^%^BOLD%^-------------------------------=[ %^WHITE%^%^BOLD%^Immortals %^RED%^%^BOLD%^]=--------------------------------"));
 		I3_write_buffer("\",");
 		if (xx > 0)
 		    snprintf(smallbuf, 50, "%ld", bogusidle * 3);
@@ -3873,12 +3872,12 @@ void I3_process_who_req(I3_HEADER *header, char *s)
 	    I3_write_buffer(smallbuf);
 	    I3_write_buffer(",\"");
 
-	    i3strlcpy(stats, "&z[", 200);
+	    i3strlcpy(stats, "[", 200);
 	    if (CH_I3AFK(person))
 		i3strlcat(stats, "AFK", 200);
 	    else
 		i3strlcat(stats, "---", 200);
-	    i3strlcat(stats, "]%%^GREEN%%^%%^BOLD%%^", 200);
+	    i3strlcat(stats, "]%^GREEN%^%^BOLD%^", 200);
 
 	    snprintf(personbuf, MAX_STRING_LENGTH, "%s %s%s", stats, CH_I3NAME(person),
 		     CH_I3TITLE(person));
