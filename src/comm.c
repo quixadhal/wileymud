@@ -298,7 +298,10 @@ void emit_prompt(struct descriptor_data *point)
     struct tm                              *t_info = NULL;
 
     if (point->str) {
-        write_to_descriptor(point->descriptor, "] ");
+        if (point->prompt_mode) {
+            point->prompt_mode = 0;
+            write_to_descriptor(point->descriptor, "] ");
+        }
     } else if (!point->connected) {
         if (point->page_first) {
             if (point->prompt_mode) {

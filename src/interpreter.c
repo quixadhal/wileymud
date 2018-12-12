@@ -1625,10 +1625,10 @@ void nanny(struct descriptor_data *d, char *arg)
 		    }
 		    return;
 		case '2':
-                    dcprintf(d, "I don't think we every fully implemented this?\r\nRun away!\r\n");
-	            dcprintf(d, "%s", login_menu);
-	            STATE(d) = CON_MENU_SELECT;
-                    return;
+                    //dcprintf(d, "I don't think we every fully implemented this?\r\nRun away!\r\n");
+	            //dcprintf(d, "%s", login_menu);
+	            //STATE(d) = CON_MENU_SELECT;
+                    //return;
 		    dcprintf(d,
 			     "Enter a text you'd like others to see when they look at you.\r\nTerminate with a '@'.\r\n");
 		    if (d->character->player.description) {
