@@ -3746,6 +3746,81 @@ char                                   *i3rankbuffer(CHAR_DATA *ch)
     return rbuf;
 }
 
+void I3_write_who_line(const char *str, int idle, const char *xtra)
+{
+    char tmp[MAX_STRING_LENGTH];
+
+    snprintf(tmp, MAX_STRING_LENGTH, "({\"%s\",%d,\"%s\"})", str, idle, xtra);
+    send_to_i3(I3_escape(tmp));
+}
+
+void new_I3_process_who_req(I3_HEADER *header, char *s)
+{
+    struct descriptor_data                 *d = NULL;
+    struct char_data                       *person = NULL;
+    //int                                     player_count = 0;
+    //int                                     immortal_count = 0;
+    //int                                     npc_count = 0;
+
+    char                                    boottimebuf[MAX_INPUT_LENGTH];
+    //char                                    uptimebuf[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
+    //char                                    nowtimebuf[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
+    char                                    ibuf[MAX_INPUT_LENGTH];
+    char                                    tmp[MAX_INPUT_LENGTH];
+    char                                    header_line_one[MAX_INPUT_LENGTH];
+    char                                    header_line_two[MAX_INPUT_LENGTH];
+
+    strftime(boottimebuf, MAX_INPUT_LENGTH, RFC1123FMT, localtime((time_t *) &Uptime));
+    snprintf(ibuf, MAX_INPUT_LENGTH, "%s@%s", header->originator_username,
+	     header->originator_mudname);
+
+    /*
+     * Proper who-reply format should be:
+     *
+     * ({
+     *     (string)  "who-req",
+     *     (int)     5,
+     *     (string)  originator_mudname,
+     *     (string)  "0",
+     *     (string)  target_mudname,
+     *     (string)  target_username,
+     *     (mixed *) who_data
+     * })
+     *
+     * and who_data should be an array with each row being:
+     *
+     * ({
+     *     (string)  user_visname
+     *     (int)     idle_time,
+     *     (string)  xtra_info
+     * })
+     */
+
+    // Header line one
+    snprintf(tmp, MAX_INPUT_LENGTH, "%%^RED%%^%%^BOLD%%^-=[ %%^WHITE%%^%%^BOLD%%^Who's on %s %%^RED%%^%%^BOLD%%^]=-%%^RESET%%^", this_i3mud->name);
+    i3strlcpy(header_line_one, i3centerline(tmp, 78), MAX_INPUT_LENGTH);
+    // Header line two
+    snprintf(tmp, MAX_INPUT_LENGTH, "%%^YELLOW%%^-=[ %%^WHITE%%^%%^BOLD%%^telnet://%s:%d %%^YELLOW%%^]=-%%^RESET%%^", this_i3mud->telnet, this_i3mud->player_port);
+    i3strlcpy(header_line_two, i3centerline(tmp, 78), MAX_INPUT_LENGTH);
+
+    // Actual packet stuff
+    I3_write_header("who-reply", this_i3mud->name, NULL, header->originator_mudname,
+		    header->originator_username);
+    I3_write_buffer("({");
+        // Header line one
+        I3_write_who_line(header_line_one, -1, "");
+        // Header line two
+        I3_write_buffer(",");
+        I3_write_who_line(header_line_two, -1, "");
+
+        for (d = first_descriptor; d; d = d->next) {
+	    person = d->original ? d->original : d->character;
+        }
+
+    I3_write_buffer("})");
+    I3_send_packet();
+}
+
 void I3_process_who_req(I3_HEADER *header, char *s)
 {
     DESCRIPTOR_DATA                        *d;

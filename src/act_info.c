@@ -2072,7 +2072,7 @@ void do_who(struct char_data *ch, const char *argument, int cmd)
 
     now = time((time_t *) 0);
     strftime(nowtimebuf, sizeof(nowtimebuf), RFC1123FMT, localtime(&now));
-    strftime(uptimebuf, sizeof(uptimebuf), RFC1123FMT, localtime((time_t *) & Uptime));
+    strftime(uptimebuf, sizeof(uptimebuf), RFC1123FMT, localtime((time_t *) &Uptime));
 
     page_printf(ch, "%s\r\n", VERSION_STR);
 

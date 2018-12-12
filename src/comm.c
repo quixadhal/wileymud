@@ -997,6 +997,7 @@ int new_descriptor(int s)
      * } 
      */
 
+    log_boot("site connecting:%s\n", newd->ip);
     descriptor_list = newd;
     SEND_TO_Q(greetings, newd);
     SEND_TO_Q("By what name do you wish to be known? ", newd);
