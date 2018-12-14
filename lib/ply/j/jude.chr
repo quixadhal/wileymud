@@ -1,39 +1,41 @@
 #PLAYER
-Name               Shentino~
-Passwd             ShP0w.pzBlECM~
+Name               Jude~
+Passwd             JuTBwgooLw056~
 Whizz              0
 PreTitle           ~
-Title              the Dwarven ~
+Title              the Dwarven Swordpupil~
 Description
-~
-LastSite           adork@96-41-217-162.dhcp.elbg.wa.charter.com~
-LastLogin          1543657666
-Birth              1543657666
-Played             0
+Mostly water
+the rest is gross without it.~
+LastSite           adork@71-85-22-17.dhcp.knwc.wa.charter.com~
+LastLogin          1540099320
+Birth              1540001397
+Played             40569
 Sex                1
 Race               3
-Class              8
-Alignment          0
-Exp                0
-HeightWeight       113 178
-Gold               0 0
-HomeTown           3001
+Class              4
+Alignment          426
+Exp                3412
+Level              warrior 1
+HeightWeight       135 154
+Gold               2 0
+HomeTown           3008
 LoadRoom           -1
 PoofIn             ~
 PoofOut            ~
-AbilityScores      0 0 0 0 0 0
+AbilityScores      14 0 12 14 10 11
 AbilityPad         0 0 0 0
-HpManaMove         5 0 100 0 81 0
+HpManaMove         26 20 95 0 79 0
 AC                 100
 ToHitDamage        0 0
 SaveApply          0 0 0 0 0
-Conditions         24 24 24 0 0 0
+Conditions         0 14 10 0 0 0
 PointsPad1         0 0 0
 PointsPad2         0 0 0 0
 PointsPad3         0 0 0
 ShortSavePad       0 0 0 0
 SavePad            0 0 0 0
-Pracs              0
+Pracs              3
 SkillsToLearn      0
 NamedSkill         1 0 0 armour~
 NamedSkill         2 0 0 teleport~
@@ -179,7 +181,7 @@ NamedSkill         182 0 0 disarm trap~
 NamedSkill         183 0 0 disarm~
 NamedSkill         184 0 0 shield bash~
 NamedSkill         185 0 0 riding~
-ActFlags           0 0
+ActFlags           16 0
 Affect             0 0 0 0 0 0 0
 Affect             1 0 0 0 0 0 0
 Affect             2 0 0 0 0 0 0
@@ -205,6 +207,6 @@ Affect             21 0 0 0 0 0 0
 Affect             22 0 0 0 0 0 0
 Affect             23 0 0 0 0 0 0
 Affect             24 0 0 0 0 0 0
-i3perm       2
+i3perm       1
 i3flags      256
 End

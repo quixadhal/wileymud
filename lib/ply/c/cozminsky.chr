@@ -1,39 +1,40 @@
 #PLAYER
-Name               Shentino~
-Passwd             ShP0w.pzBlECM~
+Name               Cozminsky~
+Passwd             CopX0hzhpNFPw~
 Whizz              0
 PreTitle           ~
-Title              the Dwarven ~
+Title              the Human Swordpupil~
 Description
 ~
-LastSite           adork@96-41-217-162.dhcp.elbg.wa.charter.com~
-LastLogin          1543657666
-Birth              1543657666
-Played             0
+LastSite           unknown~
+LastLogin          1544674865
+Birth              1544674214
+Played             458
 Sex                1
-Race               3
-Class              8
+Race               1
+Class              4
 Alignment          0
-Exp                0
-HeightWeight       113 178
+Exp                1
+Level              warrior 1
+HeightWeight       183 168
 Gold               0 0
-HomeTown           3001
+HomeTown           3008
 LoadRoom           -1
 PoofIn             ~
 PoofOut            ~
-AbilityScores      0 0 0 0 0 0
+AbilityScores      16 0 14 15 9 10
 AbilityPad         0 0 0 0
-HpManaMove         5 0 100 0 81 0
+HpManaMove         26 20 101 0 82 103
 AC                 100
 ToHitDamage        0 0
 SaveApply          0 0 0 0 0
-Conditions         24 24 24 0 0 0
+Conditions         0 19 19 0 0 0
 PointsPad1         0 0 0
 PointsPad2         0 0 0 0
 PointsPad3         0 0 0
 ShortSavePad       0 0 0 0
 SavePad            0 0 0 0
-Pracs              0
+Pracs              3
 SkillsToLearn      0
 NamedSkill         1 0 0 armour~
 NamedSkill         2 0 0 teleport~
@@ -205,6 +206,6 @@ Affect             21 0 0 0 0 0 0
 Affect             22 0 0 0 0 0 0
 Affect             23 0 0 0 0 0 0
 Affect             24 0 0 0 0 0 0
-i3perm       2
+i3perm       1
 i3flags      256
 End

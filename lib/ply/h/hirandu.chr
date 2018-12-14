@@ -1,39 +1,40 @@
 #PLAYER
-Name               Shentino~
-Passwd             ShP0w.pzBlECM~
+Name               Hirandu~
+Passwd             HiZGHJAjakE/o~
 Whizz              0
 PreTitle           ~
-Title              the Dwarven ~
+Title              the Human Runner~
 Description
 ~
-LastSite           adork@96-41-217-162.dhcp.elbg.wa.charter.com~
-LastLogin          1543657666
-Birth              1543657666
-Played             0
+LastSite           adork@no-rdns-yet.ohtele.com~
+LastLogin          1538620491
+Birth              1538618634
+Played             1801
 Sex                1
-Race               3
-Class              8
+Race               1
+Class              16
 Alignment          0
-Exp                0
-HeightWeight       113 178
+Exp                1
+Level              ranger 1
+HeightWeight       185 153
 Gold               0 0
-HomeTown           3001
+HomeTown           3008
 LoadRoom           -1
 PoofIn             ~
 PoofOut            ~
-AbilityScores      0 0 0 0 0 0
+AbilityScores      15 0 12 9 8 13
 AbilityPad         0 0 0 0
-HpManaMove         5 0 100 0 81 0
+HpManaMove         27 20 102 0 97 97
 AC                 100
 ToHitDamage        0 0
 SaveApply          0 0 0 0 0
-Conditions         24 24 24 0 0 0
+Conditions         0 3 3 0 0 0
 PointsPad1         0 0 0
 PointsPad2         0 0 0 0
 PointsPad3         0 0 0
 ShortSavePad       0 0 0 0
 SavePad            0 0 0 0
-Pracs              0
+Pracs              3
 SkillsToLearn      0
 NamedSkill         1 0 0 armour~
 NamedSkill         2 0 0 teleport~
@@ -173,10 +174,10 @@ NamedSkill         176 0 0 barter~
 NamedSkill         177 0 0 knockout~
 NamedSkill         178 0 0 spellcraft~
 NamedSkill         179 0 0 meditation~
-NamedSkill         180 0 0 track~
+NamedSkill         180 13 0 track~
 NamedSkill         181 0 0 locate trap~
 NamedSkill         182 0 0 disarm trap~
-NamedSkill         183 0 0 disarm~
+NamedSkill         183 7 0 disarm~
 NamedSkill         184 0 0 shield bash~
 NamedSkill         185 0 0 riding~
 ActFlags           0 0
@@ -207,4 +208,5 @@ Affect             23 0 0 0 0 0 0
 Affect             24 0 0 0 0 0 0
 i3perm       2
 i3flags      256
+i3listen     wiley
 End
