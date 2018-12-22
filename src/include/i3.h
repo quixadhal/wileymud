@@ -361,8 +361,6 @@ struct I3_mud
 
 bool i3_is_connected( void );
 bool i3_is_really_connected( void );
-size_t i3strlcpy( char *dst, const char *src, size_t siz );
-size_t i3strlcat( char *dst, const char *src, size_t siz );
 const char *i3one_argument( const char *argument, char *arg_first );
 void i3_loop( void );
 bool i3_loadchar( CHAR_DATA * ch, FILE * fp, const char *word );

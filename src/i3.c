@@ -67,6 +67,7 @@
 #include "sql.h"
 #include "bug.h"
 #include "utils.h"
+#include "db.h"
 #include "multiclass.h"
 #include "comm.h"
 #include "constants.h"
@@ -187,107 +188,13 @@ void                                    I3_packet_cleanup(void);
 //void                                    i3_nuke_url_file(void);
 //void                                    i3_check_urls(void);
 
-#define I3KEY( literal, field, value ) \
-if( !strcasecmp( word, literal ) )     \
-{                                      \
-   field = value;                      \
-   fMatch = TRUE;                      \
-   break;                              \
-}
-
 const char                             *perm_names[] = {
     "Notset", "None", "Mort", "Imm", "Admin", "Imp"
 };
 
-/* creates a random number in interval [from;to] */
-int i3number(int from, int to)
-{
-    if (DEBUG > 3)
-	log_info("called %s with %d, %d", __PRETTY_FUNCTION__, from, to);
-
-    if (to - from + 1)
-	return ((random() % (to - from + 1)) + from);
-    else
-	return from;
-}
-
 /*******************************************
  * String buffering and logging functions. *
  ******************************************/
-
-/*
- * Copy src to string dst of size siz.  At most siz-1 characters
- * will be copied.  Always NUL terminates (unless siz == 0).
- * Returns strlen(src); if retval >= siz, truncation occurred.
- *
- * Renamed so it can play itself system independent.
- * Samson 10-12-03
- */
-size_t i3strlcpy(char *dst, const char *src, size_t siz)
-{
-    register char                          *d = dst;
-    register const char                    *s = src;
-    register size_t                         n = siz;
-
-    /*
-     * Copy as many bytes as will fit 
-     */
-    if (n != 0 && --n != 0) {
-	do {
-	    if ((*d++ = *s++) == 0)
-		break;
-	}
-	while (--n != 0);
-    }
-
-    /*
-     * Not enough room in dst, add NUL and traverse rest of src 
-     */
-    if (n == 0) {
-	if (siz != 0)
-	    *d = '\0';					       /* NUL-terminate dst */
-	while (*s++);
-    }
-    return (s - src - 1);				       /* count does not include NUL */
-}
-
-/*
- * Appends src to string dst of size siz (unlike strncat, siz is the
- * full size of dst, not space left).  At most siz-1 characters
- * will be copied.  Always NUL terminates (unless siz <= strlen(dst)).
- * Returns strlen(initial dst) + strlen(src); if retval >= siz,
- * truncation occurred.
- *
- * Renamed so it can play itself system independent.
- * Samson 10-12-03
- */
-size_t i3strlcat(char *dst, const char *src, size_t siz)
-{
-    register char                          *d = dst;
-    register const char                    *s = src;
-    register size_t                         n = siz;
-    size_t                                  dlen;
-
-    /*
-     * Find the end of dst and adjust bytes left but don't go past end 
-     */
-    while (n-- != 0 && *d != '\0')
-	d++;
-    dlen = d - dst;
-    n = siz - dlen;
-
-    if (n == 0)
-	return (dlen + strlen(s));
-    while (*s != '\0') {
-	if (n != 1) {
-	    *d++ = *s;
-	    n--;
-	}
-	s++;
-    }
-    *d = '\0';
-    return (dlen + (s - src));				       /* count does not include NUL */
-}
 
 const char                             *i3one_argument(const char *argument, char *arg_first)
 {
@@ -433,18 +340,18 @@ char                                   *i3_strip_colors(const char *txt)
     I3_COLOR                               *color;
     static char                             tbuf[MAX_STRING_LENGTH];
 
-    i3strlcpy(tbuf, txt, MAX_STRING_LENGTH);
+    strlcpy(tbuf, txt, MAX_STRING_LENGTH);
 
     for (color = first_i3_color; color; color = color->next)
-	i3strlcpy(tbuf, i3strrep(tbuf, color->i3tag, ""), MAX_STRING_LENGTH);
+	strlcpy(tbuf, i3strrep(tbuf, color->i3tag, ""), MAX_STRING_LENGTH);
 
 #ifdef IMC
 //    for (color = first_i3_color; color; color = color->next)
-//	i3strlcpy(tbuf, i3strrep(tbuf, color->imctag, ""), MAX_STRING_LENGTH);
+//	strlcpy(tbuf, i3strrep(tbuf, color->imctag, ""), MAX_STRING_LENGTH);
 #endif
 
     for (color = first_i3_color; color; color = color->next)
-	i3strlcpy(tbuf, i3strrep(tbuf, color->mudtag, ""), MAX_STRING_LENGTH);
+	strlcpy(tbuf, i3strrep(tbuf, color->mudtag, ""), MAX_STRING_LENGTH);
 
     return tbuf;
 }
@@ -458,9 +365,9 @@ char                                   *I3_mudtag_to_i3tag(const char *txt)
     if (!txt || *txt == '\0')
 	return tbuf;
 
-    i3strlcpy(tbuf, txt, MAX_STRING_LENGTH);
+    strlcpy(tbuf, txt, MAX_STRING_LENGTH);
     for (color = first_i3_color; color; color = color->next)
-	i3strlcpy(tbuf, i3strrep(tbuf, color->mudtag, color->i3tag), MAX_STRING_LENGTH);
+	strlcpy(tbuf, i3strrep(tbuf, color->mudtag, color->i3tag), MAX_STRING_LENGTH);
 
     return tbuf;
 }
@@ -474,9 +381,9 @@ char                                   *I3_imctag_to_i3tag(const char *txt)
     if (!txt || *txt == '\0')
 	return tbuf;
 
-    i3strlcpy(tbuf, txt, MAX_STRING_LENGTH);
+    strlcpy(tbuf, txt, MAX_STRING_LENGTH);
     for (color = first_i3_color; color; color = color->next)
-	i3strlcpy(tbuf, i3strrep(tbuf, color->imctag, color->i3tag), MAX_STRING_LENGTH);
+	strlcpy(tbuf, i3strrep(tbuf, color->imctag, color->i3tag), MAX_STRING_LENGTH);
 
     return tbuf;
 }
@@ -491,11 +398,11 @@ char                                   *I3_imctag_to_mudtag(CHAR_DATA *ch, const
 	return tbuf;
 
     if (I3IS_SET(I3FLAG(ch), I3_COLORFLAG)) {
-	i3strlcpy(tbuf, txt, MAX_STRING_LENGTH);
+	strlcpy(tbuf, txt, MAX_STRING_LENGTH);
 	for (color = first_i3_color; color; color = color->next)
-	    i3strlcpy(tbuf, i3strrep(tbuf, color->imctag, color->mudtag), MAX_STRING_LENGTH);
+	    strlcpy(tbuf, i3strrep(tbuf, color->imctag, color->mudtag), MAX_STRING_LENGTH);
     } else
-	i3strlcpy(tbuf, i3_strip_colors(txt), MAX_STRING_LENGTH);
+	strlcpy(tbuf, i3_strip_colors(txt), MAX_STRING_LENGTH);
 
     return tbuf;
 }
@@ -510,11 +417,11 @@ char                                   *I3_i3tag_to_mudtag(CHAR_DATA *ch, const 
 	return tbuf;
 
     if (I3IS_SET(I3FLAG(ch), I3_COLORFLAG)) {
-	i3strlcpy(tbuf, txt, MAX_STRING_LENGTH);
+	strlcpy(tbuf, txt, MAX_STRING_LENGTH);
 	for (color = first_i3_color; color; color = color->next)
-	    i3strlcpy(tbuf, i3strrep(tbuf, color->i3tag, color->mudtag), MAX_STRING_LENGTH);
+	    strlcpy(tbuf, i3strrep(tbuf, color->i3tag, color->mudtag), MAX_STRING_LENGTH);
     } else
-	i3strlcpy(tbuf, i3_strip_colors(txt), MAX_STRING_LENGTH);
+	strlcpy(tbuf, i3_strip_colors(txt), MAX_STRING_LENGTH);
 
     return tbuf;
 }
@@ -537,9 +444,9 @@ void i3_printf(CHAR_DATA *ch, const char *fmt, ...)
     vsnprintf(buf, MAX_STRING_LENGTH, fmt, args);
     va_end(args);
 
-    i3strlcpy(buf2, I3_i3tag_to_mudtag(ch, buf), MAX_STRING_LENGTH);
+    strlcpy(buf2, I3_i3tag_to_mudtag(ch, buf), MAX_STRING_LENGTH);
 //#ifdef IMC
-//    i3strlcpy(buf3, I3_imctag_to_mudtag(ch, buf2), MAX_STRING_LENGTH);
+//    strlcpy(buf3, I3_imctag_to_mudtag(ch, buf2), MAX_STRING_LENGTH);
 //    cprintf(ch, "%s", buf3);
 //#else
     cprintf(ch, "%s", buf2);
@@ -555,9 +462,9 @@ void i3send_to_pager(const char *txt, CHAR_DATA *ch)
 //    char                                    buf2[MAX_STRING_LENGTH];
 #endif
 
-    i3strlcpy(buf, I3_i3tag_to_mudtag(ch, txt), MAX_STRING_LENGTH);
+    strlcpy(buf, I3_i3tag_to_mudtag(ch, txt), MAX_STRING_LENGTH);
 #ifdef IMC
-//    i3strlcpy(buf2, I3_imctag_to_mudtag(ch, buf), MAX_STRING_LENGTH);
+//    strlcpy(buf2, I3_imctag_to_mudtag(ch, buf), MAX_STRING_LENGTH);
 //    page_printf(ch, "%s\033[0m", buf2);
 #else
     page_printf(ch, "%s", buf);
@@ -576,7 +483,7 @@ void i3page_printf(CHAR_DATA *ch, const char *fmt, ...)
     vsnprintf(buf, MAX_STRING_LENGTH, fmt, args);
     va_end(args);
 
-    i3strlcpy(buf2, I3_i3tag_to_mudtag(ch, buf), MAX_STRING_LENGTH);
+    strlcpy(buf2, I3_i3tag_to_mudtag(ch, buf), MAX_STRING_LENGTH);
     i3send_to_pager(buf2, ch);
     return;
 }
@@ -692,7 +599,7 @@ void I3_flagchan(char **list, const char *name)
     if (*list && *list[0] != '\0')
 	snprintf(buf, MAX_STRING_LENGTH, "%s %s", *list, name);
     else
-	i3strlcpy(buf, name, MAX_STRING_LENGTH);
+	strlcpy(buf, name, MAX_STRING_LENGTH);
 
     I3STRFREE(*list);
     *list = I3STRALLOC(buf);
@@ -710,8 +617,8 @@ void I3_unflagchan(char **list, const char *name)
     while (arg[0]) {
 	if (strcasecmp(arg, name)) {
 	    if (buf[0])
-		i3strlcat(buf, " ", MAX_STRING_LENGTH);
-	    i3strlcat(buf, arg, MAX_STRING_LENGTH);
+		strlcat(buf, " ", MAX_STRING_LENGTH);
+	    strlcat(buf, arg, MAX_STRING_LENGTH);
 	}
 	p = I3_getarg(p, arg, MAX_INPUT_LENGTH);
     }
@@ -1172,7 +1079,7 @@ bool i3ignoring(CHAR_DATA *ch, const char *ignore)
 	return FALSE;
 
     ps[0] = '\0';
-    i3strlcpy(mudname, ps + 1, MAX_INPUT_LENGTH);
+    strlcpy(mudname, ps + 1, MAX_INPUT_LENGTH);
 
     for (mud = first_mud; mud; mud = mud->next) {
 	if (!strcasecmp(mud->name, mudname)) {
@@ -1212,7 +1119,7 @@ bool i3banned(const char *ignore)
 	return FALSE;
 
     ps[0] = '\0';
-    i3strlcpy(mudname, ps + 1, MAX_INPUT_LENGTH);
+    strlcpy(mudname, ps + 1, MAX_INPUT_LENGTH);
 
     for (mud = first_mud; mud; mud = mud->next) {
 	if (!strcasecmp(mud->name, mudname)) {
@@ -1324,7 +1231,7 @@ char                                   *i3fread_line(FILE * fp)
     do {
 	if (feof(fp)) {
 	    log_error("%s", "i3fread_line: EOF encountered on read.");
-	    i3strlcpy(line, "", MAX_STRING_LENGTH);
+	    strlcpy(line, "", MAX_STRING_LENGTH);
 	    return I3STRALLOC(line);
 	}
 	c = getc(fp);
@@ -1573,7 +1480,7 @@ void I3_write_buffer(const char *msg)
 	log_error("I3_write_buffer: buffer too large (would become %ld)", newsize);
 	return;
     }
-    i3strlcpy(I3_output_buffer + I3_output_pointer, msg, newsize);
+    strlcpy(I3_output_buffer + I3_output_pointer, msg, newsize);
     I3_output_pointer = newsize;
 }
 
@@ -2050,7 +1957,7 @@ void I3_process_error(I3_HEADER *header, char *s)
 
     I3_get_field(ps, &next_ps);
     I3_remove_quotes(&ps);
-    i3strlcpy(type, ps, MAX_INPUT_LENGTH);
+    strlcpy(type, ps, MAX_INPUT_LENGTH);
     ps = next_ps;
 
     I3_get_field(ps, &next_ps);
@@ -2188,12 +2095,12 @@ void I3_process_ucache_update(I3_HEADER *header, char *s)
 
     I3_get_field(ps, &next_ps);
     I3_remove_quotes(&ps);
-    i3strlcpy(username, ps, MAX_INPUT_LENGTH);
+    strlcpy(username, ps, MAX_INPUT_LENGTH);
 
     ps = next_ps;
     I3_get_field(ps, &next_ps);
     I3_remove_quotes(&ps);
-    i3strlcpy(visname, ps, MAX_INPUT_LENGTH);
+    strlcpy(visname, ps, MAX_INPUT_LENGTH);
 
     ps = next_ps;
     I3_get_field(ps, &next_ps);
@@ -2270,12 +2177,12 @@ void I3_process_chan_user_reply(I3_HEADER *header, char *s)
 
     I3_get_field(ps, &next_ps);
     I3_remove_quotes(&ps);
-    i3strlcpy(username, ps, MAX_INPUT_LENGTH);
+    strlcpy(username, ps, MAX_INPUT_LENGTH);
 
     ps = next_ps;
     I3_get_field(ps, &next_ps);
     I3_remove_quotes(&ps);
-    i3strlcpy(visname, ps, MAX_INPUT_LENGTH);
+    strlcpy(visname, ps, MAX_INPUT_LENGTH);
 
     ps = next_ps;
     I3_get_field(ps, &next_ps);
@@ -2312,7 +2219,7 @@ void I3_process_mudlist(I3_HEADER *header, char *s)
 
 	I3_get_field(ps, &next_ps);
 	I3_remove_quotes(&ps);
-	i3strlcpy(mud_name, ps, MAX_INPUT_LENGTH);
+	strlcpy(mud_name, ps, MAX_INPUT_LENGTH);
 
 	ps = next_ps;
 	I3_get_field(ps, &next_ps2);
@@ -2393,7 +2300,7 @@ void I3_process_mudlist(I3_HEADER *header, char *s)
 
 		I3_get_field(ps, &next_ps3);
 		I3_remove_quotes(&ps);
-		i3strlcpy(key, ps, MAX_INPUT_LENGTH);
+		strlcpy(key, ps, MAX_INPUT_LENGTH);
 		ps = next_ps3;
 		I3_get_field(ps, &next_ps3);
 
@@ -2555,7 +2462,7 @@ void I3_process_chanlist_reply(I3_HEADER *header, char *s)
 
 	I3_get_field(ps, &next_ps);
 	I3_remove_quotes(&ps);
-	i3strlcpy(chan, ps, MAX_INPUT_LENGTH);
+	strlcpy(chan, ps, MAX_INPUT_LENGTH);
 
 	ps = next_ps;
 	I3_get_field(ps, &next_ps2);
@@ -2603,7 +2510,7 @@ void I3_send_channel_message(I3_CHANNEL *channel, const char *name, const char *
     if (!i3_is_connected())
 	return;
 
-    i3strlcpy(buf, message, MAX_STRING_LENGTH);
+    strlcpy(buf, message, MAX_STRING_LENGTH);
 
     //log_info("I3_send_channel(%s@%s, %s, %s)", channel->I3_name, channel->host_mud, name, message);
     I3_write_header("channel-m", this_i3mud->name, name, NULL, NULL);
@@ -2635,7 +2542,7 @@ void I3_send_channel_emote(I3_CHANNEL *channel, const char *name, const char *me
     if (strstr(message, "$N") == NULL)
 	snprintf(buf, MAX_STRING_LENGTH, "$N %s", message);
     else
-	i3strlcpy(buf, message, MAX_STRING_LENGTH);
+	strlcpy(buf, message, MAX_STRING_LENGTH);
 
     I3_write_header("channel-e", this_i3mud->name, name, NULL, NULL);
     I3_write_buffer("\"");
@@ -2688,16 +2595,16 @@ int I3_token(char type, char *string, char *oname, char *tname)
 	    code[1] = '\0';
 	    return 1;
 	case '$':
-	    i3strlcpy(code, "$", 50);
+	    strlcpy(code, "$", 50);
 	    break;
 	case ' ':
-	    i3strlcpy(code, " ", 50);
+	    strlcpy(code, " ", 50);
 	    break;
 	case 'N':					       /* Originator's name */
-	    i3strlcpy(code, oname, 50);
+	    strlcpy(code, oname, 50);
 	    break;
 	case 'O':					       /* Target's name */
-	    i3strlcpy(code, tname, 50);
+	    strlcpy(code, tname, 50);
 	    break;
     }
     p = code;
@@ -2777,7 +2684,7 @@ void update_chanhistory(I3_CHANNEL *channel, char *message)
 	return;
     }
 
-    i3strlcpy(msg, message, MAX_STRING_LENGTH);
+    strlcpy(msg, message, MAX_STRING_LENGTH);
     for (x = 0; x < MAX_I3HISTORY; x++) {
 	if (channel->history[x] == NULL) {
 	    t = time(NULL);
@@ -2849,12 +2756,12 @@ void I3_chan_filter_m(I3_CHANNEL *channel, I3_HEADER *header, char *s)
 
     I3_get_field(ps, &next_ps);
     I3_remove_quotes(&ps);
-    i3strlcpy(visname, ps, MAX_INPUT_LENGTH);
+    strlcpy(visname, ps, MAX_INPUT_LENGTH);
 
     ps = next_ps;
     I3_get_field(ps, &next_ps);
     I3_remove_quotes(&ps);
-    i3strlcpy(newmsg, ps, MAX_STRING_LENGTH);
+    strlcpy(newmsg, ps, MAX_STRING_LENGTH);
     snprintf(newmsg, MAX_STRING_LENGTH, "%s%s", ps, " (filtered M)");
 
     I3_write_header("chan-filter-reply", this_i3mud->name, NULL, I3_ROUTER_NAME, NULL);
@@ -2888,7 +2795,7 @@ void I3_chan_filter_e(I3_CHANNEL *channel, I3_HEADER *header, char *s)
 
     I3_get_field(ps, &next_ps);
     I3_remove_quotes(&ps);
-    i3strlcpy(visname, ps, MAX_INPUT_LENGTH);
+    strlcpy(visname, ps, MAX_INPUT_LENGTH);
 
     ps = next_ps;
     I3_get_field(ps, &next_ps);
@@ -2929,12 +2836,12 @@ void I3_chan_filter_t(I3_CHANNEL *channel, I3_HEADER *header, char *s)
 
     I3_get_field(ps, &next_ps);
     I3_remove_quotes(&ps);
-    i3strlcpy(targetmud, ps, MAX_INPUT_LENGTH);
+    strlcpy(targetmud, ps, MAX_INPUT_LENGTH);
 
     ps = next_ps;
     I3_get_field(ps, &next_ps);
     I3_remove_quotes(&ps);
-    i3strlcpy(targetuser, ps, MAX_INPUT_LENGTH);
+    strlcpy(targetuser, ps, MAX_INPUT_LENGTH);
 
     ps = next_ps;
     I3_get_field(ps, &next_ps);
@@ -2949,7 +2856,7 @@ void I3_chan_filter_t(I3_CHANNEL *channel, I3_HEADER *header, char *s)
     ps = next_ps;
     I3_get_field(ps, &next_ps);
     I3_remove_quotes(&ps);
-    i3strlcpy(visname_o, ps, MAX_INPUT_LENGTH);
+    strlcpy(visname_o, ps, MAX_INPUT_LENGTH);
 
     ps = next_ps;
     I3_get_field(ps, &next_ps);
@@ -3005,7 +2912,7 @@ void I3_process_channel_filter(I3_HEADER *header, char *s)
     ps += 2;
     I3_get_field(ps, &next_ps);
     I3_remove_quotes(&ps);
-    i3strlcpy(ptype, ps, MAX_INPUT_LENGTH);
+    strlcpy(ptype, ps, MAX_INPUT_LENGTH);
 
     second_header = I3_get_header(&ps);
 
@@ -3178,27 +3085,27 @@ void I3_process_channel_t(I3_HEADER *header, char *s)
     ps = next_ps;
     I3_get_field(ps, &next_ps);
     I3_remove_quotes(&ps);
-    i3strlcpy(targetmud, ps, MAX_INPUT_LENGTH);
+    strlcpy(targetmud, ps, MAX_INPUT_LENGTH);
 
     ps = next_ps;
     I3_get_field(ps, &next_ps);
     I3_remove_quotes(&ps);
-    i3strlcpy(targetuser, ps, MAX_INPUT_LENGTH);
+    strlcpy(targetuser, ps, MAX_INPUT_LENGTH);
 
     ps = next_ps;
     I3_get_field(ps, &next_ps);
     I3_remove_quotes(&ps);
-    i3strlcpy(message_o, ps, MAX_STRING_LENGTH);
+    strlcpy(message_o, ps, MAX_STRING_LENGTH);
 
     ps = next_ps;
     I3_get_field(ps, &next_ps);
     I3_remove_quotes(&ps);
-    i3strlcpy(message_t, ps, MAX_STRING_LENGTH);
+    strlcpy(message_t, ps, MAX_STRING_LENGTH);
 
     ps = next_ps;
     I3_get_field(ps, &next_ps);
     I3_remove_quotes(&ps);
-    i3strlcpy(visname_o, ps, MAX_INPUT_LENGTH);
+    strlcpy(visname_o, ps, MAX_INPUT_LENGTH);
 
     ps = next_ps;
     I3_get_field(ps, &next_ps);
@@ -3281,14 +3188,14 @@ void I3_process_channel_m(I3_HEADER *header, char *s)
     ps = next_ps;
     I3_get_field(ps, &next_ps);
     I3_remove_quotes(&ps);
-    i3strlcpy(visname, ps, MAX_INPUT_LENGTH);
+    strlcpy(visname, ps, MAX_INPUT_LENGTH);
 
     ps = next_ps;
     I3_get_field(ps, &next_ps);
     I3_remove_quotes(&ps);
 
     /* Try to squash multiple trailing newlines in the packet message */
-    i3strlcpy(tps, ps, MAX_STRING_LENGTH);
+    strlcpy(tps, ps, MAX_STRING_LENGTH);
     len = strlen(tps);
     while(ISNEWL(tps[len-1]) && len > 1) {
         tps[len-1] = '\0';
@@ -3368,7 +3275,7 @@ void I3_process_channel_e(I3_HEADER *header, char *s)
     I3_remove_quotes(&ps);
 
     /* Try to squash multiple trailing newlines in the packet message */
-    i3strlcpy(tps, ps, MAX_STRING_LENGTH);
+    strlcpy(tps, ps, MAX_STRING_LENGTH);
     len = strlen(tps);
     while(ISNEWL(tps[len-1]) && len > 1) {
         tps[len-1] = '\0';
@@ -3713,7 +3620,7 @@ char                                   *i3centerline(const char *string, int len
     static char                             outbuf[400];
     int                                     amount;
 
-    i3strlcpy(stripped, i3_strip_colors(string), 300);
+    strlcpy(stripped, i3_strip_colors(string), 300);
     amount = len - strlen(stripped);			       /* Determine amount to put in front of line */
 
     if (amount < 1)
@@ -3733,12 +3640,12 @@ char                                   *i3rankbuffer(CHAR_DATA *ch)
     static char                             rbuf[MAX_INPUT_LENGTH];
 
     if (I3PERM(ch) >= I3PERM_IMM) {
-	i3strlcpy(rbuf, "%^YELLOW%^Staff%^RESET%^", MAX_INPUT_LENGTH);
+	strlcpy(rbuf, "%^YELLOW%^Staff%^RESET%^", MAX_INPUT_LENGTH);
 
 	if (CH_I3RANK(ch) && CH_I3RANK(ch)[0] != '\0')
 	    snprintf(rbuf, MAX_INPUT_LENGTH, "%%^YELLOW%%^%s%%^RESET%%^", I3_mudtag_to_i3tag(CH_I3RANK(ch)));
     } else {
-	i3strlcpy(rbuf, "%^GREEN%^Player%^RESET%^", MAX_INPUT_LENGTH);
+	strlcpy(rbuf, "%^GREEN%^Player%^RESET%^", MAX_INPUT_LENGTH);
 
 	if (CH_I3RANK(ch) && CH_I3RANK(ch)[0] != '\0')
 	    snprintf(rbuf, MAX_INPUT_LENGTH, "%%^GREEN%%^BOLD%%^%s%%^RESET%%^", I3_mudtag_to_i3tag(CH_I3RANK(ch)));
@@ -3798,10 +3705,10 @@ void new_I3_process_who_req(I3_HEADER *header, char *s)
 
     // Header line one
     snprintf(tmp, MAX_INPUT_LENGTH, "%%^RED%%^%%^BOLD%%^-=[ %%^WHITE%%^%%^BOLD%%^Who's on %s %%^RED%%^%%^BOLD%%^]=-%%^RESET%%^", this_i3mud->name);
-    i3strlcpy(header_line_one, i3centerline(tmp, 78), MAX_INPUT_LENGTH);
+    strlcpy(header_line_one, i3centerline(tmp, 78), MAX_INPUT_LENGTH);
     // Header line two
     snprintf(tmp, MAX_INPUT_LENGTH, "%%^YELLOW%%^-=[ %%^WHITE%%^%%^BOLD%%^telnet://%s:%d %%^YELLOW%%^]=-%%^RESET%%^", this_i3mud->telnet, this_i3mud->player_port);
-    i3strlcpy(header_line_two, i3centerline(tmp, 78), MAX_INPUT_LENGTH);
+    strlcpy(header_line_two, i3centerline(tmp, 78), MAX_INPUT_LENGTH);
 
     // Actual packet stuff
     I3_write_header("who-reply", this_i3mud->name, NULL, header->originator_mudname,
@@ -3849,7 +3756,7 @@ void I3_process_who_req(I3_HEADER *header, char *s)
 
     I3_write_buffer("({\"");
     snprintf(buf, 300, "%%^RED%%^%%^BOLD%%^-=[ %%^WHITE%%^%%^BOLD%%^Players on %s %%^RED%%^%%^BOLD%%^]=-", this_i3mud->name);
-    i3strlcpy(outbuf, i3centerline(buf, 78), 400);
+    strlcpy(outbuf, i3centerline(buf, 78), 400);
     send_to_i3(I3_escape(outbuf));
 
     I3_write_buffer("\",");
@@ -3859,7 +3766,7 @@ void I3_process_who_req(I3_HEADER *header, char *s)
     I3_write_buffer(",\" \",}),({\"");
     snprintf(buf, 300, "%%^YELLOW%%^-=[ %%^WHITE%%^%%^BOLD%%^telnet://%s:%d %%^YELLOW%%^]=-", this_i3mud->telnet,
 	     this_i3mud->player_port);
-    i3strlcpy(outbuf, i3centerline(buf, 78), 400);
+    strlcpy(outbuf, i3centerline(buf, 78), 400);
     send_to_i3(I3_escape(outbuf));
 
     I3_write_buffer("\",");
@@ -3890,8 +3797,8 @@ void I3_process_who_req(I3_HEADER *header, char *s)
 
 	    I3_write_buffer("({\"");
 
-	    i3strlcpy(rank, i3rankbuffer(person), 200);
-	    i3strlcpy(outbuf, i3centerline(rank, 20), 400);
+	    strlcpy(rank, i3rankbuffer(person), 200);
+	    strlcpy(outbuf, i3centerline(rank, 20), 400);
 	    send_to_i3(I3_escape(outbuf));
 
 	    I3_write_buffer("\",");
@@ -3899,12 +3806,12 @@ void I3_process_who_req(I3_HEADER *header, char *s)
 	    I3_write_buffer(smallbuf);
 	    I3_write_buffer(",\"");
 
-	    i3strlcpy(stats, "[", 200);
+	    strlcpy(stats, "[", 200);
 	    if (CH_I3AFK(person))
-		i3strlcat(stats, "AFK", 200);
+		strlcat(stats, "AFK", 200);
 	    else
-		i3strlcat(stats, "---", 200);
-	    i3strlcat(stats, "]%^GREEN%^%^BOLD%^", 200);
+		strlcat(stats, "---", 200);
+	    strlcat(stats, "]%^GREEN%^%^BOLD%^", 200);
 
 	    snprintf(personbuf, MAX_STRING_LENGTH, "%s %s%s", stats, CH_I3NAME(person),
 		     CH_I3TITLE(person));
@@ -3938,8 +3845,8 @@ void I3_process_who_req(I3_HEADER *header, char *s)
 	    }
 	    I3_write_buffer("({\"");
 
-	    i3strlcpy(rank, i3rankbuffer(person), 200);
-	    i3strlcpy(outbuf, i3centerline(rank, 20), 400);
+	    strlcpy(rank, i3rankbuffer(person), 200);
+	    strlcpy(outbuf, i3centerline(rank, 20), 400);
 	    send_to_i3(I3_escape(outbuf));
 
 	    I3_write_buffer("\",");
@@ -3947,12 +3854,12 @@ void I3_process_who_req(I3_HEADER *header, char *s)
 	    I3_write_buffer(smallbuf);
 	    I3_write_buffer(",\"");
 
-	    i3strlcpy(stats, "[", 200);
+	    strlcpy(stats, "[", 200);
 	    if (CH_I3AFK(person))
-		i3strlcat(stats, "AFK", 200);
+		strlcat(stats, "AFK", 200);
 	    else
-		i3strlcat(stats, "---", 200);
-	    i3strlcat(stats, "]%^GREEN%^%^BOLD%^", 200);
+		strlcat(stats, "---", 200);
+	    strlcat(stats, "]%^GREEN%^%^BOLD%^", 200);
 
 	    snprintf(personbuf, MAX_STRING_LENGTH, "%s %s%s", stats, CH_I3NAME(person),
 		     CH_I3TITLE(person));
@@ -4026,14 +3933,14 @@ void I3_process_who_reply(I3_HEADER *header, char *s)
 	ps += 2;
 	I3_get_field(ps, &next_ps2);
 	I3_remove_quotes(&ps);
-	i3strlcpy(person, ps, MAX_STRING_LENGTH);
+	strlcpy(person, ps, MAX_STRING_LENGTH);
 	ps = next_ps2;
 	I3_get_field(ps, &next_ps2);
 	idle = atoi(ps);
 	ps = next_ps2;
 	I3_get_field(ps, &next_ps2);
 	I3_remove_quotes(&ps);
-	i3strlcpy(title, ps, MAX_INPUT_LENGTH);
+	strlcpy(title, ps, MAX_INPUT_LENGTH);
 	ps = next_ps2;
 
 	if (idle == 9999)
@@ -4062,7 +3969,7 @@ void I3_send_emoteto(CHAR_DATA *ch, const char *to, I3_MUD *mud, const char *mes
     if (strstr(message, "$N") == NULL)
 	snprintf(buf, MAX_STRING_LENGTH, "$N %s", message);
     else
-	i3strlcpy(buf, message, MAX_STRING_LENGTH);
+	strlcpy(buf, message, MAX_STRING_LENGTH);
 
     I3_escape(to);
     I3_write_header("emoteto", this_i3mud->name, CH_I3NAME(ch), mud->name, to);
@@ -4160,7 +4067,7 @@ void I3_process_finger_reply(I3_HEADER *header, char *s)
 
     I3_get_field(ps, &next_ps);
     I3_remove_quotes(&ps);
-    i3strlcpy(title, ps, MAX_INPUT_LENGTH);
+    strlcpy(title, ps, MAX_INPUT_LENGTH);
     ps = next_ps;
 
     I3_get_field(ps, &next_ps);
@@ -4169,12 +4076,12 @@ void I3_process_finger_reply(I3_HEADER *header, char *s)
 
     I3_get_field(ps, &next_ps);
     I3_remove_quotes(&ps);
-    i3strlcpy(email, ps, MAX_INPUT_LENGTH);
+    strlcpy(email, ps, MAX_INPUT_LENGTH);
     ps = next_ps;
 
     I3_get_field(ps, &next_ps);
     I3_remove_quotes(&ps);
-    i3strlcpy(last, ps, MAX_INPUT_LENGTH);
+    strlcpy(last, ps, MAX_INPUT_LENGTH);
     ps = next_ps;
 
     I3_get_field(ps, &next_ps);
@@ -4186,7 +4093,7 @@ void I3_process_finger_reply(I3_HEADER *header, char *s)
 
     I3_get_field(ps, &next_ps);
     I3_remove_quotes(&ps);
-    i3strlcpy(level, ps, MAX_INPUT_LENGTH);
+    strlcpy(level, ps, MAX_INPUT_LENGTH);
     ps = next_ps;
 
     I3_get_field(ps, &next_ps);
@@ -4264,7 +4171,7 @@ void I3_process_finger_req(I3_HEADER *header, char *s)
 #endif
     I3_write_buffer("[Private]");
     I3_write_buffer("\",\"");
-    i3strlcpy(smallbuf, "-1", 200);			       /* online since */
+    strlcpy(smallbuf, "-1", 200);			       /* online since */
     I3_write_buffer(smallbuf);
     I3_write_buffer("\",");
     snprintf(smallbuf, 200, "%ld", -1l);
@@ -4316,12 +4223,12 @@ void I3_process_locate_reply(I3_HEADER *header, char *s)
 
     I3_get_field(ps, &next_ps);
     I3_remove_quotes(&ps);
-    i3strlcpy(mud_name, ps, MAX_INPUT_LENGTH);
+    strlcpy(mud_name, ps, MAX_INPUT_LENGTH);
     ps = next_ps;
 
     I3_get_field(ps, &next_ps);
     I3_remove_quotes(&ps);
-    i3strlcpy(user_name, ps, MAX_INPUT_LENGTH);
+    strlcpy(user_name, ps, MAX_INPUT_LENGTH);
     ps = next_ps;
 
     I3_get_field(ps, &next_ps);
@@ -4329,13 +4236,13 @@ void I3_process_locate_reply(I3_HEADER *header, char *s)
 
     I3_get_field(ps, &next_ps);
     I3_remove_quotes(&ps);
-    i3strlcpy(status, ps, MAX_INPUT_LENGTH);
+    strlcpy(status, ps, MAX_INPUT_LENGTH);
 
     if (!strcasecmp(status, "active"))
-	i3strlcpy(status, "Online", MAX_INPUT_LENGTH);
+	strlcpy(status, "Online", MAX_INPUT_LENGTH);
 
     if (!strcasecmp(status, "exists, but not logged on"))
-	i3strlcpy(status, "Offline", MAX_INPUT_LENGTH);
+	strlcpy(status, "Offline", MAX_INPUT_LENGTH);
 
     i3_printf(ch, "%%^RED%%^%%^BOLD%%^I3 Locate: %%^YELLOW%%^%s@%s: %%^CYAN%%^%s.%%^RESET%%^\r\n", user_name, mud_name, status);
     return;
@@ -4566,19 +4473,19 @@ I3_HEADER                              *I3_get_header(char **pps)
     ps = next_ps;
     I3_get_field(ps, &next_ps);
     I3_remove_quotes(&ps);
-    i3strlcpy(header->originator_mudname, ps, MAX_INPUT_LENGTH);
+    strlcpy(header->originator_mudname, ps, MAX_INPUT_LENGTH);
     ps = next_ps;
     I3_get_field(ps, &next_ps);
     I3_remove_quotes(&ps);
-    i3strlcpy(header->originator_username, ps, MAX_INPUT_LENGTH);
+    strlcpy(header->originator_username, ps, MAX_INPUT_LENGTH);
     ps = next_ps;
     I3_get_field(ps, &next_ps);
     I3_remove_quotes(&ps);
-    i3strlcpy(header->target_mudname, ps, MAX_INPUT_LENGTH);
+    strlcpy(header->target_mudname, ps, MAX_INPUT_LENGTH);
     ps = next_ps;
     I3_get_field(ps, &next_ps);
     I3_remove_quotes(&ps);
-    i3strlcpy(header->target_username, ps, MAX_INPUT_LENGTH);
+    strlcpy(header->target_username, ps, MAX_INPUT_LENGTH);
 
     *pps = next_ps;
     return header;
@@ -4608,7 +4515,7 @@ void I3_parse_packet(void)
     ps += 2;
     I3_get_field(ps, &next_ps);
     I3_remove_quotes(&ps);
-    i3strlcpy(ptype, ps, MAX_INPUT_LENGTH);
+    strlcpy(ptype, ps, MAX_INPUT_LENGTH);
 
     header = I3_get_header(&ps);
 
@@ -4745,7 +4652,7 @@ void I3_handle_packet(char *packetBuffer)
     ps += 2;
     I3_get_field(ps, &next_ps);
     I3_remove_quotes(&ps);
-    i3strlcpy(ptype, ps, MAX_INPUT_LENGTH);
+    strlcpy(ptype, ps, MAX_INPUT_LENGTH);
 
     header = I3_get_header(&ps);
 
@@ -4984,7 +4891,7 @@ bool i3_loadchar(CHAR_DATA *ch, FILE * fp, const char *word)
 
     switch (UPPER(word[0])) {
 	case 'I':
-	    I3KEY("i3perm", I3PERM(ch), i3fread_number(fp));
+	    KEY("i3perm", I3PERM(ch), i3fread_number(fp));
 	    if (!strcasecmp(word, "i3flags")) {
 		I3FLAG(ch) = i3fread_number(fp);
 		I3_char_login(ch);
@@ -5126,7 +5033,7 @@ void I3_readSpeakerCount(FILE *fp)
 		break;
 
 	    case 'C':
-		I3KEY("Count", speaker_count, i3fread_number(fp));
+		KEY("Count", speaker_count, i3fread_number(fp));
 		break;
 	}
 	if (!fMatch)
@@ -5165,11 +5072,11 @@ void I3_readSpeaker(FILE *fp)
 		break;
 
 	    case 'C':
-		I3KEY("Color", value, i3fread_line(fp));
+		KEY("Color", value, i3fread_line(fp));
 		break;
 
 	    case 'N':
-		I3KEY("Name", key, i3fread_line(fp));
+		KEY("Name", key, i3fread_line(fp));
 		break;
 	}
 	if (!fMatch)
@@ -5272,16 +5179,16 @@ void I3_readcolor(I3_COLOR *color, FILE * fp)
 		break;
 
 	    case 'I':
-		I3KEY("IMCtag", color->imctag, i3fread_line(fp));
-		I3KEY("I3tag", color->i3tag, i3fread_line(fp));
+		KEY("IMCtag", color->imctag, i3fread_line(fp));
+		KEY("I3tag", color->i3tag, i3fread_line(fp));
 		break;
 
 	    case 'M':
-		I3KEY("Mudtag", color->mudtag, i3fread_line(fp));
+		KEY("Mudtag", color->mudtag, i3fread_line(fp));
 		break;
 
 	    case 'N':
-		I3KEY("Name", color->name, i3fread_line(fp));
+		KEY("Name", color->name, i3fread_line(fp));
 		break;
 	}
 	if (!fMatch)
@@ -5382,7 +5289,7 @@ void I3_readhelp(I3_HELP_DATA *help, FILE * fp)
 		break;
 
 	    case 'N':
-		I3KEY("Name", help->name, i3fread_line(fp));
+		KEY("Name", help->name, i3fread_line(fp));
 		break;
 
 	    case 'P':
@@ -5421,7 +5328,7 @@ void I3_readhelp(I3_HELP_DATA *help, FILE * fp)
 		    fMatch = TRUE;
 		    break;
 		}
-		I3KEY("Text", help->text, i3fread_line(fp));
+		KEY("Text", help->text, i3fread_line(fp));
                 */
 		break;
 	}
@@ -5540,7 +5447,7 @@ void I3_readcommand(I3_CMD_DATA *cmd, FILE * fp)
 		break;
 
 	    case 'C':
-		I3KEY("Connected", cmd->connected, i3fread_number(fp));
+		KEY("Connected", cmd->connected, i3fread_number(fp));
 		if (!strcasecmp(word, "Code")) {
 		    word = i3fread_word(fp);
 		    cmd->function = i3_function(word);
@@ -5554,7 +5461,7 @@ void I3_readcommand(I3_CMD_DATA *cmd, FILE * fp)
 		break;
 
 	    case 'N':
-		I3KEY("Name", cmd->name, i3fread_line(fp));
+		KEY("Name", cmd->name, i3fread_line(fp));
 		break;
 
 	    case 'P':
@@ -5669,15 +5576,15 @@ void I3_readrouter(ROUTER_DATA *router, FILE * fp)
 		break;
 
 	    case 'I':
-		I3KEY("IP", router->ip, i3fread_line(fp));
+		KEY("IP", router->ip, i3fread_line(fp));
 		break;
 
 	    case 'N':
-		I3KEY("Name", router->name, i3fread_line(fp));
+		KEY("Name", router->name, i3fread_line(fp));
 		break;
 
 	    case 'P':
-		I3KEY("Port", router->port, i3fread_number(fp));
+		KEY("Port", router->port, i3fread_number(fp));
 		break;
 	}
 	if (!fMatch)
@@ -5769,15 +5676,15 @@ void I3_readucache(UCACHE_DATA *user, FILE * fp)
 		break;
 
 	    case 'N':
-		I3KEY("Name", user->name, i3fread_line(fp));
+		KEY("Name", user->name, i3fread_line(fp));
 		break;
 
 	    case 'S':
-		I3KEY("Sex", user->gender, i3fread_number(fp));
+		KEY("Sex", user->gender, i3fread_number(fp));
 		break;
 
 	    case 'T':
-		I3KEY("Time", user->time, i3fread_number(fp));
+		KEY("Time", user->time, i3fread_number(fp));
 		break;
 
 	    case 'E':
@@ -5914,23 +5821,23 @@ void I3_fread_config_file(FILE * fin)
 		break;
 
 	    case 'a':
-		I3KEY("adminemail", this_i3mud->admin_email, i3fread_line(fin));
-		I3KEY("adminlevel", this_i3mud->adminlevel, i3fread_number(fin));
-		I3KEY("amrcp", this_i3mud->amrcp, i3fread_number(fin));
-		I3KEY("auth", this_i3mud->auth, i3fread_number(fin));
-		I3KEY("autoconnect", this_i3mud->autoconnect, i3fread_number(fin));
+		KEY("adminemail", this_i3mud->admin_email, i3fread_line(fin));
+		KEY("adminlevel", this_i3mud->adminlevel, i3fread_number(fin));
+		KEY("amrcp", this_i3mud->amrcp, i3fread_number(fin));
+		KEY("auth", this_i3mud->auth, i3fread_number(fin));
+		KEY("autoconnect", this_i3mud->autoconnect, i3fread_number(fin));
 		break;
 
 	    case 'b':
-		I3KEY("beep", this_i3mud->beep, i3fread_number(fin));
+		KEY("beep", this_i3mud->beep, i3fread_number(fin));
 		break;
 
 	    case 'c':
-		I3KEY("channel", this_i3mud->channel, i3fread_number(fin));
+		KEY("channel", this_i3mud->channel, i3fread_number(fin));
 		break;
 
 	    case 'e':
-		I3KEY("emoteto", this_i3mud->emoteto, i3fread_number(fin));
+		KEY("emoteto", this_i3mud->emoteto, i3fread_number(fin));
 		if (!strcasecmp(word, "end")) {
 		    char                                    lib_buf[MAX_STRING_LENGTH];
 
@@ -5967,46 +5874,46 @@ void I3_fread_config_file(FILE * fin)
 		break;
 
 	    case 'f':
-		I3KEY("file", this_i3mud->file, i3fread_number(fin));
-		I3KEY("finger", this_i3mud->finger, i3fread_number(fin));
-		I3KEY("ftp", this_i3mud->ftp, i3fread_number(fin));
+		KEY("file", this_i3mud->file, i3fread_number(fin));
+		KEY("finger", this_i3mud->finger, i3fread_number(fin));
+		KEY("ftp", this_i3mud->ftp, i3fread_number(fin));
 		break;
 
 	    case 'h':
-		I3KEY("http", this_i3mud->http, i3fread_number(fin));
+		KEY("http", this_i3mud->http, i3fread_number(fin));
 		break;
 
 	    case 'i':
-		I3KEY("immlevel", this_i3mud->immlevel, i3fread_number(fin));
-		I3KEY("implevel", this_i3mud->implevel, i3fread_number(fin));
+		KEY("immlevel", this_i3mud->immlevel, i3fread_number(fin));
+		KEY("implevel", this_i3mud->implevel, i3fread_number(fin));
 		break;
 
 	    case 'l':
-		I3KEY("locate", this_i3mud->locate, i3fread_number(fin));
+		KEY("locate", this_i3mud->locate, i3fread_number(fin));
 		break;
 
 	    case 'm':
-		I3KEY("mail", this_i3mud->mail, i3fread_number(fin));
-		I3KEY("minlevel", this_i3mud->minlevel, i3fread_number(fin));
-		I3KEY("mudlib", this_i3mud->mudlib, i3fread_line(fin));
-		I3KEY("mudtype", this_i3mud->mud_type, i3fread_line(fin));
+		KEY("mail", this_i3mud->mail, i3fread_number(fin));
+		KEY("minlevel", this_i3mud->minlevel, i3fread_number(fin));
+		KEY("mudlib", this_i3mud->mudlib, i3fread_line(fin));
+		KEY("mudtype", this_i3mud->mud_type, i3fread_line(fin));
 		break;
 
 	    case 'n':
-		I3KEY("news", this_i3mud->news, i3fread_number(fin));
-		I3KEY("nntp", this_i3mud->nntp, i3fread_number(fin));
+		KEY("news", this_i3mud->news, i3fread_number(fin));
+		KEY("nntp", this_i3mud->nntp, i3fread_number(fin));
 		break;
 
 	    case 'o':
-		I3KEY("openstatus", this_i3mud->open_status, i3fread_line(fin));
+		KEY("openstatus", this_i3mud->open_status, i3fread_line(fin));
 		break;
 
 	    case 'p':
-		I3KEY("pop3", this_i3mud->pop3, i3fread_number(fin));
+		KEY("pop3", this_i3mud->pop3, i3fread_number(fin));
 		break;
 
 	    case 'r':
-		I3KEY("rcp", this_i3mud->rcp, i3fread_number(fin));
+		KEY("rcp", this_i3mud->rcp, i3fread_number(fin));
 		/*
 		 * Router config loading is legacy support here - routers are configured in their own file now. 
 		 */
@@ -6034,22 +5941,22 @@ void I3_fread_config_file(FILE * fin)
 		break;
 
 	    case 's':
-		I3KEY("smtp", this_i3mud->smtp, i3fread_number(fin));
+		KEY("smtp", this_i3mud->smtp, i3fread_number(fin));
 		break;
 
 	    case 't':
-		I3KEY("tell", this_i3mud->tell, i3fread_number(fin));
-		I3KEY("telnet", this_i3mud->telnet, i3fread_line(fin));
-		I3KEY("thismud", this_i3mud->name, i3fread_line(fin));
+		KEY("tell", this_i3mud->tell, i3fread_number(fin));
+		KEY("telnet", this_i3mud->telnet, i3fread_line(fin));
+		KEY("thismud", this_i3mud->name, i3fread_line(fin));
 		break;
 
 	    case 'u':
-		I3KEY("ucache", this_i3mud->ucache, i3fread_number(fin));
+		KEY("ucache", this_i3mud->ucache, i3fread_number(fin));
 		break;
 
 	    case 'w':
-		I3KEY("web", this_i3mud->web, i3fread_line(fin));
-		I3KEY("who", this_i3mud->who, i3fread_number(fin));
+		KEY("web", this_i3mud->web, i3fread_line(fin));
+		KEY("who", this_i3mud->who, i3fread_number(fin));
 		break;
 	}
 	if (!fMatch)
@@ -6165,7 +6072,7 @@ void I3_readban(I3_BAN *ban, FILE * fin)
 		break;
 
 	    case 'N':
-		I3KEY("Name", ban->name, i3fread_line(fin));
+		KEY("Name", ban->name, i3fread_line(fin));
 		break;
 
 	    case 'E':
@@ -6264,14 +6171,14 @@ void I3_readchannel(I3_CHANNEL *channel, FILE * fin)
 		break;
 
 	    case 'C':
-		I3KEY("ChanName", channel->I3_name, i3fread_line(fin));
-		I3KEY("ChanMud", channel->host_mud, i3fread_line(fin));
-		I3KEY("ChanLocal", channel->local_name, i3fread_line(fin));
-		I3KEY("ChanLayM", channel->layout_m, i3fread_line(fin));
-		I3KEY("ChanLayE", channel->layout_e, i3fread_line(fin));
-		I3KEY("ChanLevel", channel->i3perm, i3fread_number(fin));
-		I3KEY("ChanStatus", channel->status, i3fread_number(fin));
-		I3KEY("ChanFlags", channel->flags, i3fread_number(fin));
+		KEY("ChanName", channel->I3_name, i3fread_line(fin));
+		KEY("ChanMud", channel->host_mud, i3fread_line(fin));
+		KEY("ChanLocal", channel->local_name, i3fread_line(fin));
+		KEY("ChanLayM", channel->layout_m, i3fread_line(fin));
+		KEY("ChanLayE", channel->layout_e, i3fread_line(fin));
+		KEY("ChanLevel", channel->i3perm, i3fread_number(fin));
+		KEY("ChanStatus", channel->status, i3fread_number(fin));
+		KEY("ChanFlags", channel->flags, i3fread_number(fin));
 		break;
 
 	    case 'E':
@@ -6429,31 +6336,31 @@ void fread_mudlist(FILE * fin, I3_MUD *mud)
 		break;
 
 	    case 'B':
-		I3KEY("Banner", mud->banner, i3fread_line(fin));
-		I3KEY("Baselib", mud->base_mudlib, i3fread_line(fin));
+		KEY("Banner", mud->banner, i3fread_line(fin));
+		KEY("Baselib", mud->base_mudlib, i3fread_line(fin));
 		break;
 
 	    case 'D':
-		I3KEY("Daemon", mud->daemon, i3fread_line(fin));
-		I3KEY("Driver", mud->driver, i3fread_line(fin));
+		KEY("Daemon", mud->daemon, i3fread_line(fin));
+		KEY("Driver", mud->driver, i3fread_line(fin));
 		break;
 
 	    case 'E':
-		I3KEY("Email", mud->admin_email, i3fread_line(fin));
+		KEY("Email", mud->admin_email, i3fread_line(fin));
 		if (!strcasecmp(word, "End")) {
 		    return;
 		}
 
 	    case 'I':
-		I3KEY("IP", mud->ipaddress, i3fread_line(fin));
+		KEY("IP", mud->ipaddress, i3fread_line(fin));
 		break;
 
 	    case 'M':
-		I3KEY("Mudlib", mud->mudlib, i3fread_line(fin));
+		KEY("Mudlib", mud->mudlib, i3fread_line(fin));
 		break;
 
 	    case 'O':
-		I3KEY("Openstatus", mud->open_status, i3fread_line(fin));
+		KEY("Openstatus", mud->open_status, i3fread_line(fin));
 		if (!strcasecmp(word, "OOBPorts")) {
 		    ln = i3fread_line(fin);
 		    x1 = x2 = x3 = x4 = x5 = x6 = x7 = 0;
@@ -6488,7 +6395,7 @@ void fread_mudlist(FILE * fin, I3_MUD *mud)
 		break;
 
 	    case 'S':
-		I3KEY("Status", mud->status, i3fread_number(fin));
+		KEY("Status", mud->status, i3fread_number(fin));
 		if (!strcasecmp(word, "Services")) {
 		    ln = i3fread_line(fin);
 		    x1 = x2 = x3 = x4 = x5 = x6 = x7 = x8 = x9 = x10 = x11 = x12 = 0;
@@ -6514,13 +6421,13 @@ void fread_mudlist(FILE * fin, I3_MUD *mud)
 		break;
 
 	    case 'T':
-		I3KEY("Telnet", mud->telnet, i3fread_line(fin));
-		I3KEY("Time", mud->time, i3fread_line(fin));
-		I3KEY("Type", mud->mud_type, i3fread_line(fin));
+		KEY("Telnet", mud->telnet, i3fread_line(fin));
+		KEY("Time", mud->time, i3fread_line(fin));
+		KEY("Type", mud->mud_type, i3fread_line(fin));
 		break;
 
 	    case 'W':
-		I3KEY("Web", mud->web, i3fread_line(fin));
+		KEY("Web", mud->web, i3fread_line(fin));
 		break;
 	}
 
@@ -7326,7 +7233,7 @@ no_taunt_file:
     }
 
     /* We should have taunt data now */
-    return (taunt_list[i3number(0, taunt_count-1)]);
+    return (taunt_list[number(0, taunt_count-1)]);
 }
 
 #define I3_USERMAP_FILE   I3_DIR "i3.usermap"
@@ -7950,7 +7857,7 @@ I3_CMD(I3_beep)
 
     ps[0] = '\0';
     ps++;
-    i3strlcpy(mud, ps, MAX_INPUT_LENGTH);
+    strlcpy(mud, ps, MAX_INPUT_LENGTH);
 
     if (!(pmud = find_I3_mud_by_name(mud))) {
 	i3_printf(ch, "%%^YELLOW%%^No such mud known.%%^RESET%%^\r\n" "(use %%^WHITE%%^%%^BOLD%%^i3mudlist%%^YELLOW%%^ to get an overview of the muds available)%%^RESET%%^\r\n");
@@ -8035,7 +7942,7 @@ I3_CMD(I3_tell)
 
     ps[0] = '\0';
     ps++;
-    i3strlcpy(mud, ps, MAX_INPUT_LENGTH);
+    strlcpy(mud, ps, MAX_INPUT_LENGTH);
 
     if (!(pmud = find_I3_mud_by_name(mud))) {
 	i3_printf(ch, "%%^YELLOW%%^No such mud known.%%^RESET%%^\r\n" "(use %%^WHITE%%^%%^BOLD%%^i3mudlist%%^YELLOW%%^ to get an overview of the muds available)%%^RESET%%^\r\n");
@@ -8106,7 +8013,7 @@ I3_CMD(I3_reply)
         }
         ps[0] = '\0';
         ps++;
-        i3strlcpy(mud, ps, MAX_INPUT_LENGTH);
+        strlcpy(mud, ps, MAX_INPUT_LENGTH);
 
         i3_printf(ch, "%%^GREEN%%^DEBUG: to == %s\r\n", to);
         i3_printf(ch, "%%^GREEN%%^DEBUG: mud == %s\r\n", mud);
@@ -8917,8 +8824,8 @@ I3_CMD(I3_send_user_req)
     }
 
     ps[0] = '\0';
-    i3strlcpy(user, argument, MAX_INPUT_LENGTH);
-    i3strlcpy(mud, ps + 1, MAX_INPUT_LENGTH);
+    strlcpy(user, argument, MAX_INPUT_LENGTH);
+    strlcpy(mud, ps + 1, MAX_INPUT_LENGTH);
 
     if (user[0] == '\0' || mud[0] == '\0') {
 	i3_printf(ch, "%%^YELLOW%%^You should specify a person and a mud.%%^RESET%%^\r\n" "(use %%^WHITE%%^%%^BOLD%%^i3mudlist%%^YELLOW%%^ to get an overview of the muds available)%%^RESET%%^\r\n");
@@ -9500,8 +9407,8 @@ I3_CMD(I3_finger)
     }
 
     ps[0] = '\0';
-    i3strlcpy(user, argument, MAX_INPUT_LENGTH);
-    i3strlcpy(mud, ps + 1, MAX_INPUT_LENGTH);
+    strlcpy(user, argument, MAX_INPUT_LENGTH);
+    strlcpy(mud, ps + 1, MAX_INPUT_LENGTH);
 
     if (user[0] == '\0' || mud[0] == '\0') {
 	i3_printf(ch, "%%^YELLOW%%^You should specify a person and a mud.%%^RESET%%^\r\n" "(use %%^WHITE%%^%%^BOLD%%^i3mudlist%%^YELLOW%%^ to get an overview of the muds available)%%^RESET%%^\r\n");
@@ -9557,7 +9464,7 @@ I3_CMD(I3_emote)
 
     ps[0] = '\0';
     ps++;
-    i3strlcpy(mud, ps, MAX_INPUT_LENGTH);
+    strlcpy(mud, ps, MAX_INPUT_LENGTH);
 
     if (!(pmud = find_I3_mud_by_name(mud))) {
 	i3_printf(ch, "%%^YELLOW%%^No such mud known.%%^RESET%%^\r\n" "( use %%^WHITE%%^%%^BOLD%%^i3mudlist%%^YELLOW%%^ to get an overview of the muds available)%%^RESET%%^\r\n");
@@ -9738,9 +9645,9 @@ I3_CMD(i3_help)
                                             perm;
 
     if (!argument || argument[0] == '\0') {
-	i3strlcpy(buf, "%^GREEN%^Help is available for the following commands:%^RESET%^\r\n",
+	strlcpy(buf, "%^GREEN%^Help is available for the following commands:%^RESET%^\r\n",
 		  MAX_STRING_LENGTH);
-	i3strlcat(buf, "%^GREEN%^%^BOLD%^---------------------------------------------%^RESET%^\r\n",
+	strlcat(buf, "%^GREEN%^%^BOLD%^---------------------------------------------%^RESET%^\r\n",
 		  MAX_STRING_LENGTH);
 	for (perm = I3PERM_MORT; perm <= I3PERM(ch); perm++) {
 	    col = 0;
@@ -9753,10 +9660,10 @@ I3_CMD(i3_help)
 		snprintf(buf + strlen(buf), MAX_STRING_LENGTH - strlen(buf), "%-15s",
 			 help->name);
 		if (++col % 6 == 0)
-		    i3strlcat(buf, "%^RESET%^\r\n", MAX_STRING_LENGTH);
+		    strlcat(buf, "%^RESET%^\r\n", MAX_STRING_LENGTH);
 	    }
 	    if (col % 6 != 0)
-		i3strlcat(buf, "%^RESET%^\r\n", MAX_STRING_LENGTH);
+		strlcat(buf, "%^RESET%^\r\n", MAX_STRING_LENGTH);
 	}
 	i3page_printf(ch, "%s", buf);
 	return;
@@ -9836,8 +9743,8 @@ I3_CMD(I3_other)
     int                                     col,
                                             perm;
 
-    i3strlcpy(buf, "%%^GREEN%%^The following commands are available:%%^RESET%%^\r\n", MAX_STRING_LENGTH);
-    i3strlcat(buf, "%%^GREEN%%^%%^BOLD%%^-------------------------------------%%^RESET%%^\r\n", MAX_STRING_LENGTH);
+    strlcpy(buf, "%%^GREEN%%^The following commands are available:%%^RESET%%^\r\n", MAX_STRING_LENGTH);
+    strlcat(buf, "%%^GREEN%%^%%^BOLD%%^-------------------------------------%%^RESET%%^\r\n", MAX_STRING_LENGTH);
     for (perm = I3PERM_MORT; perm <= I3PERM(ch); perm++) {
 	col = 0;
 	snprintf(buf + strlen(buf), MAX_STRING_LENGTH - strlen(buf), "%%^RESET%%^\r\n%%^GREEN%%^%s commands:%%^GREEN%%^%%^BOLD%%^\r\n",
@@ -9848,10 +9755,10 @@ I3_CMD(I3_other)
 
 	    snprintf(buf + strlen(buf), MAX_STRING_LENGTH - strlen(buf), "%-15s", cmd->name);
 	    if (++col % 6 == 0)
-		i3strlcat(buf, "%%^RESET%%^\r\n%%^GREEN%%^%%^BOLD%%^", MAX_STRING_LENGTH);
+		strlcat(buf, "%%^RESET%%^\r\n%%^GREEN%%^%%^BOLD%%^", MAX_STRING_LENGTH);
 	}
 	if (col % 6 != 0)
-            i3strlcat(buf, "%%^RESET%%^\r\n%%^GREEN%%^%%^BOLD%%^", MAX_STRING_LENGTH);
+            strlcat(buf, "%%^RESET%%^\r\n%%^GREEN%%^%%^BOLD%%^", MAX_STRING_LENGTH);
     }
     i3page_printf(ch, "%s", buf);
     i3page_printf(ch, "%%^RESET%%^\r\n%%^GREEN%%^For information about a specific command, see %%^WHITE%%^%%^BOLD%%^i3help <command>%%^GREEN%%^.%%^RESET%%^\r\n");
@@ -10029,15 +9936,15 @@ I3_CMD(i3_cedit)
 	if (cmd->first_alias) {
 	    int                                     col = 0;
 
-	    i3strlcpy(buf, "%^GREEN%^Aliases       : %^WHITE%^%^BOLD%^", MAX_STRING_LENGTH);
+	    strlcpy(buf, "%^GREEN%^Aliases       : %^WHITE%^%^BOLD%^", MAX_STRING_LENGTH);
 	    for (alias = cmd->first_alias; alias; alias = alias->next) {
 		snprintf(buf + strlen(buf), MAX_STRING_LENGTH - strlen(buf), "%s ",
 			 alias->name);
 		if (++col % 10 == 0)
-		    i3strlcat(buf, "\r\n", MAX_STRING_LENGTH);
+		    strlcat(buf, "\r\n", MAX_STRING_LENGTH);
 	    }
 	    if (col % 10 != 0)
-		i3strlcat(buf, "\r\n", MAX_STRING_LENGTH);
+		strlcat(buf, "\r\n", MAX_STRING_LENGTH);
 	    i3_printf(ch, "%s%%^RESET%%^", buf);
 	}
 	return;
@@ -10111,20 +10018,20 @@ char                                   *I3_find_social(CHAR_DATA *ch, char *snam
 		i3_printf(ch, "%%^YELLOW%%^Social %%^WHITE%%^%%^BOLD%%^%s%%^YELLOW%%^: Missing others_auto.%%^RESET%%^\r\n", social->name);
 		return socname;
 	    }
-	    i3strlcpy(socname, social->others_auto, MAX_STRING_LENGTH);
+	    strlcpy(socname, social->others_auto, MAX_STRING_LENGTH);
 	} else {
 	    if (!victim) {
 		if (!social->others_found) {
 		    i3_printf(ch, "%%^YELLOW%%^Social %%^WHITE%%^%%^BOLD%%^%s%%^YELLOW%%^: Missing others_found.%%^RESET%%^\r\n", social->name);
 		    return socname;
 		}
-		i3strlcpy(socname, social->others_found, MAX_STRING_LENGTH);
+		strlcpy(socname, social->others_found, MAX_STRING_LENGTH);
 	    } else {
 		if (!social->vict_found) {
 		    i3_printf(ch, "%%^YELLOW%%^Social %%^WHITE%%^%%^BOLD%%^%s%%^YELLOW%%^: Missing vict_found.%%^RESET%%^\r\n", social->name);
 		    return socname;
 		}
-		i3strlcpy(socname, social->vict_found, MAX_STRING_LENGTH);
+		strlcpy(socname, social->vict_found, MAX_STRING_LENGTH);
 	    }
 	}
     } else {
@@ -10132,7 +10039,7 @@ char                                   *I3_find_social(CHAR_DATA *ch, char *snam
 	    i3_printf(ch, "%%^YELLOW%%^Social %%^WHITE%%^%%^BOLD%%^%s%%^YELLOW%%^: Missing others_no_arg.%%^RESET%%^\r\n", social->name);
 	    return socname;
 	}
-	i3strlcpy(socname, social->others_no_arg, MAX_STRING_LENGTH);
+	strlcpy(socname, social->others_no_arg, MAX_STRING_LENGTH);
     }
 #endif
     return socname;
@@ -10308,7 +10215,7 @@ void I3_send_social(I3_CHANNEL *channel, CHAR_DATA *ch, const char *argument)
 	    person[x] = '\0';
 
 	    ps[0] = '\0';
-	    i3strlcpy(mud, ps + 1, MAX_INPUT_LENGTH);
+	    strlcpy(mud, ps + 1, MAX_INPUT_LENGTH);
 	}
     }
 
@@ -10338,13 +10245,13 @@ void I3_send_social(I3_CHANNEL *channel, CHAR_DATA *ch, const char *argument)
 	    CH_I3SEX(skeleton) = sex;
 	}
 
-	i3strlcpy(msg_o, (char *)i3act_string(socbuf_o, ch, skeleton), MAX_STRING_LENGTH);
-	i3strlcpy(msg_t, (char *)i3act_string(socbuf_t, ch, skeleton), MAX_STRING_LENGTH);
+	strlcpy(msg_o, (char *)i3act_string(socbuf_o, ch, skeleton), MAX_STRING_LENGTH);
+	strlcpy(msg_t, (char *)i3act_string(socbuf_t, ch, skeleton), MAX_STRING_LENGTH);
 
 	if (!skeleton)
 	    I3_send_channel_emote(channel, CH_I3NAME(ch), msg_o);
 	else {
-	    i3strlcpy(buf, person, MAX_STRING_LENGTH);
+	    strlcpy(buf, person, MAX_STRING_LENGTH);
 	    buf[0] = tolower(buf[0]);
 	    I3_send_channel_t(channel, CH_I3NAME(ch), mud, buf, msg_o, msg_t, person);
 	}
@@ -10375,7 +10282,7 @@ I3_CMD(I3_taunt)
 
         ps[0] = '\0';
         ps++;
-        i3strlcpy(mud, ps, MAX_INPUT_LENGTH);
+        strlcpy(mud, ps, MAX_INPUT_LENGTH);
 
         if (!(pmud = find_I3_mud_by_name(mud))) {
             i3_printf(ch, "%%^YELLOW%%^No such mud known.%%^RESET%%^\r\n" "(use %%^WHITE%%^%%^BOLD%%^i3mudlist%%^YELLOW%%^ to get an overview of the muds available)%%^RESET%%^\r\n");
@@ -10943,7 +10850,7 @@ void i3_npc_chat(const char *chan_name, const char *actor, const char *message)
     if (strstr(message, "$N") == NULL)
 	snprintf(buf, MAX_STRING_LENGTH, "$N %s", message);
     else
-	i3strlcpy(buf, message, MAX_STRING_LENGTH);
+	strlcpy(buf, message, MAX_STRING_LENGTH);
 
     I3_write_header("channel-e", this_i3mud->name, actor, NULL, NULL);
     I3_write_buffer("\"");

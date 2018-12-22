@@ -927,6 +927,7 @@ void                                    generate_mudlist(void)
 #endif
 #endif
     fprintf(fp, "</tr>\r\n");
+    fprintf(fp, "<div class=\"gallery\">\r\n");
 
     for (mud = first_mud; mud; mud = mud->next) {
         if( mud == NULL )
@@ -980,7 +981,15 @@ void                                    generate_mudlist(void)
             //log_info("                      %s", stat_name);
             //log_info("                      %s", stat_name_public);
 
-            fprintf(fp, "<td align=\"center\"><img border=\"0\" width=\"%d\" height=\"%d\" src=\"%s\" /></td>\r\n", MUDLIST_WIDTH, MUDLIST_HEIGHT, stat_name_public);
+            fprintf(fp, "<td align=\"center\">\r\n");
+            fprintf(fp, "<div class=\"gallery-item\">\r\n");
+            //fprintf(fp, "    <a href=\"%s\" data-lightbox=\"gallery\">\r\n", stat_name_public);
+            fprintf(fp, "    <a href=\"%s\" data-lightbox>\r\n", stat_name_public);
+            fprintf(fp, "        <img border=\"0\" width=\"%d\" height=\"%d\" src=\"%s\" />\r\n",
+                    MUDLIST_WIDTH, MUDLIST_HEIGHT, stat_name_public);
+            fprintf(fp, "    </a>\r\n");
+            fprintf(fp, "</div>\r\n");
+            fprintf(fp, "</td>\r\n");
             fprintf(fp, "<td align=\"left\">%s</td>\r\n", "&nbsp;");
             fprintf(fp, "<td align=\"left\">\r\n");
             fprintf(fp, "    <a target=\"I3 mudlist\" href=\"http://%s/\">%s</a><br />\r\n", mud->ipaddress, mud->name);
@@ -1045,6 +1054,7 @@ void                                    generate_mudlist(void)
     }
 #endif
 
+    fprintf(fp, "</div>\r\n");
     fprintf(fp, "<tr bgcolor=\"#00002f\">\r\n");
 #ifdef OLD_LAYOUT
     fprintf(fp, "<td align=\"center\" colspan=\"5\">%d total muds listed.</td>\r\n", row_counter);
@@ -1066,6 +1076,13 @@ void                                    generate_mudlist(void)
 	    "<div align=\"right\"><font size=\"-1\" color=\"#1f1f1f\">page took %01d.%06d seconds to render.</font></div>\r\n",
 	    (int)(later_bits.tv_sec - now_bits.tv_sec),
 	    (int)(later_bits.tv_usec - now_bits.tv_usec));
+
+    fprintf(fp, "<link href=\"lightbox/lightbox.min.css\" rel=\"stylesheet\">\r\n");
+    fprintf(fp, "<script src=\"lightbox/lightbox.min.js\"></script>\r\n");
+    fprintf(fp, "<script>\r\n");
+    fprintf(fp, "    const btn = document.querySelector('.trigger-lightbox');\r\n");
+    fprintf(fp, "    btn.addEventListener('click', () => new lightbox('#modal'));\r\n");
+    fprintf(fp, "</script>\r\n");
 
     fprintf(fp, "</body>\r\n");
     fprintf(fp, "</html>\r\n");
