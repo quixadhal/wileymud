@@ -3,10 +3,12 @@
 #include <string.h>
 #include <pcre.h>
 #include <unistd.h>
+#include <sys/types.h>
 #include "global.h"
 #include "bug.h"
 #include "comm.h"
 #include "version.h"
+#include "crc32.h"
 #ifdef I3
 #include "i3.h"
 #endif
@@ -76,7 +78,8 @@ void setup_urls_table(void) {
                 "speaker TEXT, "
                 "mud TEXT, "
                 "url TEXT, "
-                "message TEXT "
+                "message TEXT, "
+                "checksum TEXT "
                 ");";
 
     int rc = sqlite3_exec(db, sql, 0, 0, &err_msg);
@@ -122,11 +125,18 @@ void add_url( const char *channel, const char *speaker, const char *mud, const c
 
     //log_info("add_url entered");
 
+    int rc;
+    u_int32_t crc;
     char *err_msg = NULL;
     sqlite3_stmt *insert_stmt = NULL;
-    char *sql = "INSERT INTO urls ( url, channel, speaker, mud ) VALUES (?,?,?,?);";
+    char *sql = "INSERT INTO urls ( url, channel, speaker, mud, checksum ) VALUES (?,?,?,?,?);";
+    //char *sql = "INSERT INTO urls ( url, channel, speaker, mud ) VALUES (?,?,?,?);";
+    char checksum[MAX_INPUT_LENGTH];
 
-    int rc = sqlite3_prepare_v2( db, sql, -1, &insert_stmt, NULL );
+    crc = crc32(url, strlen(url));
+    snprintf(checksum, MAX_INPUT_LENGTH, "%08x", crc);
+
+    rc = sqlite3_prepare_v2( db, sql, -1, &insert_stmt, NULL );
     if (rc != SQLITE_OK) {
         log_fatal("SQL statement error %s: %s\n", "urls insert", sqlite3_errmsg(db));
         sqlite3_close(db);
@@ -156,6 +166,12 @@ void add_url( const char *channel, const char *speaker, const char *mud, const c
         sqlite3_close(db);
 	proper_exit(MUD_HALT);
     }
+    rc = sqlite3_bind_text( insert_stmt, 5, checksum, strlen(checksum), NULL );
+    if (rc != SQLITE_OK) {
+        log_fatal("SQL parameter error %s: %s\n", "urls mud", sqlite3_errmsg(db));
+        sqlite3_close(db);
+	proper_exit(MUD_HALT);
+    }
 
     rc = sqlite3_step(insert_stmt);
     if (rc != SQLITE_DONE) {
@@ -168,7 +184,7 @@ void add_url( const char *channel, const char *speaker, const char *mud, const c
 //    unprocessed_urls++;
 
 //    log_info("add_url done, unprocessed urls == %d", unprocessed_urls);
-    log_info("add_url done, added %s", url);
+    log_info("add_url done, added %s: %s", checksum, url);
 }
 
 void process_urls( void ) {

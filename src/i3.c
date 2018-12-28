@@ -75,6 +75,7 @@
 #include "interpreter.h"
 #include "version.h"
 #include "stringmap.h"
+#include "scheduler.h"
 #define _I3_C
 #include "i3.h"
 
@@ -108,17 +109,13 @@ bool                                    packetdebug = FALSE;   /* Packet debuggi
 long                                    I3_input_pointer = 0;
 long                                    I3_output_pointer = 4;
 #define I3_THISMUD (this_i3mud->name)
-//char *I3_THISMUD = NULL;
 char                                   *I3_ROUTER_NAME;
 char                                   *I3_ROUTER_IP;
 const char                             *manual_router;
 int                                     I3_socket;
 int                                     i3wait;		       /* Number of game loops to wait before attempting to
 							        * reconnect when a socket dies */
-int                                     i3timeout;	       /* Number of loops to wait before giving up on an
-							        * initial router connection */
 int                                     i3justconnected = 0;    // So we can say something for the logs.
-//int                                     justconnected_lag = PULSE_PER_SECOND * 5; // Don't start urlbot for a few seconds
 time_t                                  ucache_clock;	       /* Timer for pruning the ucache */
 long                                    channel_m_received;
 long                                    channel_m_sent;
@@ -128,7 +125,6 @@ time_t                                  i3_time = 0;	       /* Current clock tim
 time_t                                  connected_at = 0;
 time_t                                  connect_started_at = 0;
 int                                     connection_timeouts = 0;
-int                                     timeout_ticks = 3000;
 time_t                                  uptime = 0;
 time_t                                  record_uptime = 0;
 time_t                                  lag_spike = 0;
@@ -153,7 +149,6 @@ I3_CMD_DATA                            *last_i3_command;
 I3_HELP_DATA                           *first_i3_help;
 I3_HELP_DATA                           *last_i3_help;
 
-int                                     tics_since_last_message = TAUNT_DELAY;
 int                                     router_reconnect_short_delay = 15 * PULSE_PER_SECOND;
 int                                     router_reconnect_medium_delay = 60 * PULSE_PER_SECOND;
 int                                     router_reconnect_long_delay = 300 * PULSE_PER_SECOND;
@@ -163,6 +158,18 @@ int                                     router_reconnect_long_delay = 300 * PULS
 // to add an incrementing value so we can still sort by time (timestamp + sub_second_counter)
 time_t                                  last_second = 0;
 int                                     sub_second_counter = 0;
+
+
+// To move away from "ticks", we need to start using microsecond timing info.
+int64_t                                 time_to_taunt = (int64_t)1730793600 * (int64_t)1000000;
+int64_t                                 timeout_marker = (int64_t)1730793600 * (int64_t)1000000;
+int                                     expecting_timeout = 0;
+
+
+
+
+
+
 
 void                                    i3_printf(CHAR_DATA *ch, const char *fmt, ...)
     __attribute__ ((format(printf, 2, 3)));
@@ -345,11 +352,6 @@ char                                   *i3_strip_colors(const char *txt)
     for (color = first_i3_color; color; color = color->next)
 	strlcpy(tbuf, i3strrep(tbuf, color->i3tag, ""), MAX_STRING_LENGTH);
 
-#ifdef IMC
-//    for (color = first_i3_color; color; color = color->next)
-//	strlcpy(tbuf, i3strrep(tbuf, color->imctag, ""), MAX_STRING_LENGTH);
-#endif
-
     for (color = first_i3_color; color; color = color->next)
 	strlcpy(tbuf, i3strrep(tbuf, color->mudtag, ""), MAX_STRING_LENGTH);
 
@@ -435,9 +437,6 @@ void i3_printf(CHAR_DATA *ch, const char *fmt, ...)
 {
     char                                    buf[MAX_STRING_LENGTH];
     char                                    buf2[MAX_STRING_LENGTH];
-//#ifdef IMC
-//    char                                    buf3[MAX_STRING_LENGTH];
-//#endif
     va_list                                 args;
 
     va_start(args, fmt);
@@ -445,12 +444,7 @@ void i3_printf(CHAR_DATA *ch, const char *fmt, ...)
     va_end(args);
 
     strlcpy(buf2, I3_i3tag_to_mudtag(ch, buf), MAX_STRING_LENGTH);
-//#ifdef IMC
-//    strlcpy(buf3, I3_imctag_to_mudtag(ch, buf2), MAX_STRING_LENGTH);
-//    cprintf(ch, "%s", buf3);
-//#else
     cprintf(ch, "%s", buf2);
-//#endif
     return;
 }
 
@@ -458,17 +452,9 @@ void i3_printf(CHAR_DATA *ch, const char *fmt, ...)
 void i3send_to_pager(const char *txt, CHAR_DATA *ch)
 {
     char                                    buf[MAX_STRING_LENGTH];
-#ifdef IMC
-//    char                                    buf2[MAX_STRING_LENGTH];
-#endif
 
     strlcpy(buf, I3_i3tag_to_mudtag(ch, txt), MAX_STRING_LENGTH);
-#ifdef IMC
-//    strlcpy(buf2, I3_imctag_to_mudtag(ch, buf), MAX_STRING_LENGTH);
-//    page_printf(ch, "%s\033[0m", buf2);
-#else
     page_printf(ch, "%s", buf);
-#endif
     return;
 }
 
@@ -708,12 +694,12 @@ bool verify_i3layout(const char *fmt, int num)
     return TRUE;
 }
 
-/* Fixed this function yet again. If the socket is negative or 0, then it will return
- * a FALSE. Used to just check to see if the socket was positive, and that just wasn't
- * working for the way some places checked for this. Any negative value is an indication
- * that the socket never existed.
+/*
+ * This means we're in the process of connecting to the I3 network, but may not have
+ * fully finished yet.  This will be false only if there is no I3 socket, which happens
+ * before any connection attempts, or after a disconnect without a reconnect.
  */
-bool i3_is_connected(void)
+bool is_connecting(void)
 {
     if (I3_socket < 1)
 	return FALSE;
@@ -725,12 +711,12 @@ bool i3_is_connected(void)
  * This says the I3 connection is actually up and functional, or was... it returns true
  * only after we have received the startup_reply packet.
  */
-bool i3_is_really_connected(void)
+bool is_connected(void)
 {
-    if( ! connected_at )
-        return FALSE;
+    if( connected_at )
+        return TRUE;
 
-    return i3_is_connected();
+    return FALSE;
 }
 
 /*
@@ -1726,7 +1712,7 @@ void I3_startup_packet(void)
     char                                   *strtime;
     struct timeval                          last_time;
 
-    if (!i3_is_connected())
+    if (!is_connecting())
 	return;
 
     I3_output_pointer = 4;
@@ -1875,19 +1861,15 @@ void I3_process_startup_reply(I3_HEADER *header, char *s)
 {
     ROUTER_DATA                            *router;
     I3_CHANNEL                             *channel;
-    char                                   *ps = s,
-	*next_ps;
+    char                                   *ps = s;
+    char                                   *next_ps;
 
-    /*
-     * Recevies the router list. Nothing much to do here until there's more than 1 router. 
-     */
+    // Recevies the router list. Nothing much to do here until there's more than 1 router. 
     I3_get_field(ps, &next_ps);
-    log_info("%s", ps);					       /* Just checking for now */
+    //log_info("%s", ps);
     ps = next_ps;
 
-    /*
-     * Receives your mud's updated password, which may or may not be the same as what it sent out before 
-     */
+    // Receives your mud's updated password, which may or may not be the same as what it sent out before 
     I3_get_field(ps, &next_ps);
     this_i3mud->password = atoi(ps);
 
@@ -1904,8 +1886,13 @@ void I3_process_startup_reply(I3_HEADER *header, char *s)
 	}
     }
     i3wait = 0;
-    i3timeout = 0;
-    i3justconnected = 1;
+    expecting_timeout = 0;
+    i3justconnected = 1;        // This is just a flag to let us process on_connect things
+                                // later, after we've had a chance to get channels setup
+    uptime = 0;
+    connected_at = i3_time;
+    time_to_taunt = getTimestamp() + I3_TAUNT_DELAY;
+
     log_info("%s", "Intermud-3 Network connection complete.");
 
     for (channel = first_I3chan; channel; channel = channel->next) {
@@ -1935,7 +1922,7 @@ void I3_process_chanack(I3_HEADER *header, char *s)
 
 void I3_send_error(const char *mud, const char *user, const char *code, const char *message)
 {
-    if (!i3_is_connected())
+    if (!is_connected())
 	return;
 
     I3_write_header("error", this_i3mud->name, 0, mud, user);
@@ -2066,7 +2053,7 @@ void I3_send_ucache_update(const char *visname, int gender)
 {
     char                                    buf[10];
 
-    if (!i3_is_connected())
+    if (!is_connected())
 	return;
 
     I3_write_header("ucache-update", this_i3mud->name, NULL, NULL, NULL);
@@ -2120,7 +2107,7 @@ void I3_process_ucache_update(I3_HEADER *header, char *s)
 
 void I3_send_chan_user_req(char *targetmud, char *targetuser)
 {
-    if (!i3_is_connected())
+    if (!is_connected())
 	return;
 
     I3_write_header("chan-user-req", this_i3mud->name, NULL, targetmud, NULL);
@@ -2507,7 +2494,7 @@ void I3_send_channel_message(I3_CHANNEL *channel, const char *name, const char *
 {
     char                                    buf[MAX_STRING_LENGTH];
 
-    if (!i3_is_connected())
+    if (!is_connected())
 	return;
 
     strlcpy(buf, message, MAX_STRING_LENGTH);
@@ -2536,7 +2523,7 @@ void I3_send_channel_emote(I3_CHANNEL *channel, const char *name, const char *me
 {
     char                                    buf[MAX_STRING_LENGTH];
 
-    if (!i3_is_connected())
+    if (!is_connected())
 	return;
 
     if (strstr(message, "$N") == NULL)
@@ -2560,7 +2547,7 @@ void I3_send_channel_emote(I3_CHANNEL *channel, const char *name, const char *me
 void I3_send_channel_t(I3_CHANNEL *channel, const char *name, char *tmud, char *tuser, char *msg_o,
 		       char *msg_t, char *tvis)
 {
-    if (!i3_is_connected())
+    if (!is_connected())
 	return;
 
     I3_write_header("channel-t", this_i3mud->name, name, NULL, NULL);
@@ -3145,7 +3132,7 @@ void I3_process_channel_t(I3_HEADER *header, char *s)
 	}
     }
     update_chanhistory(channel, omsg);
-    tics_since_last_message = TAUNT_DELAY;
+    time_to_taunt = getTimestamp() + I3_TAUNT_DELAY;
     return;
 }
 
@@ -3234,7 +3221,7 @@ void I3_process_channel_m(I3_HEADER *header, char *s)
         }
     }
     update_chanhistory(channel, buf);
-    tics_since_last_message = TAUNT_DELAY;
+    time_to_taunt = getTimestamp() + I3_TAUNT_DELAY;
     return;
 }
 
@@ -3313,7 +3300,7 @@ void I3_process_channel_e(I3_HEADER *header, char *s)
         }
     }
     update_chanhistory(channel, buf);
-    tics_since_last_message = TAUNT_DELAY;
+    time_to_taunt = getTimestamp() + I3_TAUNT_DELAY;
     return;
 }
 
@@ -3413,7 +3400,7 @@ void I3_process_chan_who_reply(I3_HEADER *header, char *s)
 
 void I3_send_chan_who(CHAR_DATA *ch, I3_CHANNEL *channel, I3_MUD *mud)
 {
-    if (!i3_is_connected())
+    if (!is_connected())
 	return;
 
     I3_write_header("chan-who-req", this_i3mud->name, CH_I3NAME(ch), mud->name, NULL);
@@ -3427,7 +3414,7 @@ void I3_send_chan_who(CHAR_DATA *ch, I3_CHANNEL *channel, I3_MUD *mud)
 
 void I3_send_beep(CHAR_DATA *ch, const char *to, I3_MUD *mud)
 {
-    if (!i3_is_connected())
+    if (!is_connected())
 	return;
 
     I3_escape(to);
@@ -3487,7 +3474,7 @@ void I3_process_beep(I3_HEADER *header, char *s)
 
 void I3_send_tell(CHAR_DATA *ch, const char *to, const char *mud, const char *message)
 {
-    if (!i3_is_connected())
+    if (!is_connected())
 	return;
 
     I3_escape(to);
@@ -3597,13 +3584,13 @@ void I3_process_tell(I3_HEADER *header, char *s)
     snprintf(buf, MAX_INPUT_LENGTH, "%s %%^CYAN%%^%%^BOLD%%^%s%%^RESET%%^ %%^YELLOW%%^i3tells you: %%^RESET%%^%s", color_time(local), usr, ps);
     i3_printf(ch, "%s%%^RESET%%^\r\n", buf);
     i3_update_tellhistory(ch, buf);
-    tics_since_last_message = TAUNT_DELAY;
+    time_to_taunt = getTimestamp() + I3_TAUNT_DELAY;
     return;
 }
 
 void I3_send_who(CHAR_DATA *ch, char *mud)
 {
-    if (!i3_is_connected())
+    if (!is_connected())
 	return;
 
     I3_escape(mud);
@@ -3963,7 +3950,7 @@ void I3_send_emoteto(CHAR_DATA *ch, const char *to, I3_MUD *mud, const char *mes
 {
     char                                    buf[MAX_STRING_LENGTH];
 
-    if (!i3_is_connected())
+    if (!is_connected())
 	return;
 
     if (strstr(message, "$N") == NULL)
@@ -4031,7 +4018,7 @@ void I3_process_emoteto(I3_HEADER *header, char *s)
 
 void I3_send_finger(CHAR_DATA *ch, char *user, char *mud)
 {
-    if (!i3_is_connected())
+    if (!is_connected())
 	return;
 
     I3_escape(mud);
@@ -4197,7 +4184,7 @@ void I3_process_finger_req(I3_HEADER *header, char *s)
 
 void I3_send_locate(CHAR_DATA *ch, const char *user)
 {
-    if (!i3_is_connected())
+    if (!is_connected())
 	return;
 
     I3_write_header("locate-req", this_i3mud->name, CH_I3NAME(ch), NULL, NULL);
@@ -4304,7 +4291,7 @@ void I3_process_locate_req(I3_HEADER *header, char *s)
 
 void I3_send_channel_listen(I3_CHANNEL *channel, bool lconnect)
 {
-    if (!i3_is_connected())
+    if (!is_connected())
 	return;
 
     I3_write_header("channel-listen", this_i3mud->name, NULL, I3_ROUTER_NAME, NULL);
@@ -4365,7 +4352,7 @@ void I3_process_channel_adminlist_reply(I3_HEADER *header, char *s)
 
 void I3_send_channel_adminlist(CHAR_DATA *ch, char *chan_name)
 {
-    if (!i3_is_connected())
+    if (!is_connected())
 	return;
 
     I3_write_header("chan-adminlist", this_i3mud->name, CH_I3NAME(ch), I3_ROUTER_NAME, NULL);
@@ -4379,7 +4366,7 @@ void I3_send_channel_adminlist(CHAR_DATA *ch, char *chan_name)
 
 void I3_send_channel_admin(CHAR_DATA *ch, char *chan_name, char *list)
 {
-    if (!i3_is_connected())
+    if (!is_connected())
 	return;
 
     I3_write_header("channel-admin", this_i3mud->name, CH_I3NAME(ch), I3_ROUTER_NAME, NULL);
@@ -4395,7 +4382,7 @@ void I3_send_channel_admin(CHAR_DATA *ch, char *chan_name, char *list)
 
 void I3_send_channel_add(CHAR_DATA *ch, char *arg, int type)
 {
-    if (!i3_is_connected())
+    if (!is_connected())
 	return;
 
     I3_write_header("channel-add", this_i3mud->name, CH_I3NAME(ch), I3_ROUTER_NAME, NULL);
@@ -4422,7 +4409,7 @@ void I3_send_channel_add(CHAR_DATA *ch, char *arg, int type)
 
 void I3_send_channel_remove(CHAR_DATA *ch, I3_CHANNEL *channel)
 {
-    if (!i3_is_connected())
+    if (!is_connected())
 	return;
 
     I3_write_header("channel-remove", this_i3mud->name, CH_I3NAME(ch), I3_ROUTER_NAME, NULL);
@@ -4438,12 +4425,14 @@ void I3_send_shutdown(int delay)
     I3_CHANNEL                             *channel;
     char                                    s[50];
 
-    if (!i3_is_connected())
+    if (!is_connecting())
 	return;
 
-    for (channel = first_I3chan; channel; channel = channel->next) {
-	if (channel->local_name && channel->local_name[0] != '\0')
-	    I3_send_channel_listen(channel, FALSE);
+    if (is_connected()) {
+        for (channel = first_I3chan; channel; channel = channel->next) {
+            if (channel->local_name && channel->local_name[0] != '\0')
+                I3_send_channel_listen(channel, FALSE);
+        }
     }
 
     I3_write_header("shutdown", this_i3mud->name, NULL, I3_ROUTER_NAME, NULL);
@@ -4855,8 +4844,8 @@ void I3_char_login(CHAR_DATA *ch)
 
     I3_adjust_perms(ch);
 
-    if (!i3_is_connected()) {
-	if (I3PERM(ch) >= I3PERM_IMM && i3wait == -2)
+    if (!is_connected()) {
+	if (I3PERM(ch) >= I3PERM_IMM)
 	    i3_printf(ch, "%%^RED%%^%%^BOLD%%^The Intermud-3 connection is down. Attempts to reconnect were abandoned due to excessive failures.%%^RESET%%^\r\n");
 	return;
     }
@@ -4901,7 +4890,7 @@ bool i3_loadchar(CHAR_DATA *ch, FILE * fp, const char *word)
 
 	    if (!strcasecmp(word, "i3listen")) {
 		I3LISTEN(ch) = i3fread_line(fp);
-		if (I3LISTEN(ch) != NULL && i3_is_connected()) {
+		if (I3LISTEN(ch) != NULL && is_connected()) {
 		    I3_CHANNEL                             *channel = NULL;
 		    const char                             *channels = I3LISTEN(ch);
 		    char                                    arg[MAX_INPUT_LENGTH];
@@ -4923,7 +4912,7 @@ bool i3_loadchar(CHAR_DATA *ch, FILE * fp, const char *word)
 
 	    if (!strcasecmp(word, "i3deny")) {
 		I3DENY(ch) = i3fread_line(fp);
-		if (I3DENY(ch) != NULL && i3_is_connected()) {
+		if (I3DENY(ch) != NULL && is_connected()) {
 		    I3_CHANNEL                             *channel = NULL;
 		    const char                             *channels = I3DENY(ch);
 		    char                                    arg[MAX_INPUT_LENGTH];
@@ -6758,11 +6747,16 @@ void I3_connection_close(bool reconnect)
     bzero(I3_currentpacket, IPS);
     I3_packet_cleanup();
 
-    for (router = first_router; router; router = router->next)
+    // Mark ourselves as NOT connected
+    connect_started_at = 0;
+    connected_at = 0;
+
+    for (router = first_router; router; router = router->next) {
 	if (!strcasecmp(router->name, I3_ROUTER_NAME)) {
 	    rfound = TRUE;
 	    break;
 	}
+    }
 
     if (!rfound) {
 	log_info("%s", "I3_connection_close: Disconnecting from router.");
@@ -6778,6 +6772,7 @@ void I3_connection_close(bool reconnect)
 	close(I3_socket);
 	I3_socket = -1;
     }
+
     if (reconnect) {
         if (router->reconattempts <= 3) {
             i3wait = router_reconnect_short_delay;
@@ -6959,8 +6954,6 @@ void router_connect(const char *router_name, bool forced, int mudport, bool isco
     ROUTER_DATA                            *router;
     bool                                    rfound = FALSE;
 
-    //i3wait = 0;
-    //i3timeout = 0;
     bytes_sent = 0;
     bytes_received = 0;
     channel_m_sent = 0;
@@ -7055,7 +7048,8 @@ void router_connect(const char *router_name, bool forced, int mudport, bool isco
 
     if (!isconnected) {
 	I3_startup_packet();
-	i3timeout = timeout_ticks;
+        expecting_timeout = 1;
+        timeout_marker = getTimestamp() + I3_TIMEOUT_DELAY;
     } else {
 	I3_loadmudlist();
 	I3_loadchanlist();
@@ -7066,6 +7060,7 @@ void router_connect(const char *router_name, bool forced, int mudport, bool isco
 /* Wrapper for router_connect now - so we don't need to force older client installs to adjust. */
 void i3_startup(bool forced, int mudport, bool isconnected)
 {
+    time_to_taunt = getTimestamp() + I3_TAUNT_DELAY;
     //i3_nuke_url_file();
     if (I3_read_config(mudport))
 	router_connect(NULL, forced, mudport, isconnected);
@@ -7461,15 +7456,13 @@ void i3_loop(void)
     if (i3wait > 0)
 	i3wait--;
 
-    if (i3timeout > 0) {
-	i3timeout--;
-	if (i3timeout == 0) {				       /* Time's up baby! */
-	    log_info("I3 Client timeout.");
-            allchan_log(0,"wiley", "Cron", "WileyMUD", "%^RED%^I3 Client timeout.%^RESET%^");
-	    I3_connection_close(TRUE);
-            connection_timeouts++;
-	    return;
-	}
+    if ( expecting_timeout && diffTimestamp(timeout_marker, -1) <= 0 ) {
+        expecting_timeout = 0;
+        log_info("I3 Client timeout.");
+        allchan_log(0,"wiley", "Cron", "WileyMUD", "%^RED%^I3 Client timeout.%^RESET%^");
+        I3_connection_close(TRUE);
+        connection_timeouts++;
+        return;
     }
 
     tc = time(0);
@@ -7526,21 +7519,17 @@ void i3_loop(void)
 	      router->name, router->reconattempts > 0 ? "reestablished" : "established");
 	router->reconattempts++;
 	I3_startup_packet();
-	i3timeout = timeout_ticks;
+        expecting_timeout = 1;
+        timeout_marker = getTimestamp() + I3_TIMEOUT_DELAY;
 	return;
     }
 
-    if (!i3_is_connected())
+    if (!is_connecting())
 	return;
 
-    // A version of keepalive...
     if (i3justconnected) {
         i3justconnected = 0;
-        //justconnected_lag = PULSE_PER_SECOND * 5;
         i3_log_alive();
-        tics_since_last_message = TAUNT_DELAY;
-        connected_at = i3_time;
-        uptime = 0;
     }
 
     if (connected_at > 0) {
@@ -7550,27 +7539,12 @@ void i3_loop(void)
         // In theory, save this and load it to persist across reboots.
     }
 
-    tics_since_last_message--;
-
-    if ( tics_since_last_message <= 0 ) {
-        tics_since_last_message = TAUNT_DELAY;
-        //do_taunt_from_log();
-        // Instead, we could do a chan_who and maybe special-case toss the results?
+    if ( diffTimestamp(time_to_taunt, -1) <= 0 ) {
+        time_to_taunt = getTimestamp() + I3_TAUNT_DELAY;
         i3_do_ping("Cron", "intergossip", "Dead Souls Dev");
     }
 
-    /*
-    // Check for urls that our external process prepared for us.
-    if( justconnected_lag <= 0 ) {
-        process_urls();
-    } else {
-        justconnected_lag--;
-    }
-    */
-
-    /*
-     * Will prune the cache once every 24hrs after bootup time 
-     */
+    // Will prune the cache once every 24hrs after bootup time 
     if (ucache_clock <= i3_time) {
 	ucache_clock = i3_time + 86400;
 	I3_prune_ucache();
@@ -8197,7 +8171,7 @@ I3_CMD(I3_chanlist)
     *filter = '\0';
     argument = i3one_argument(argument, filter);
 
-    if (!strcasecmp(filter, "all") && i3_is_connected()) {
+    if (!strcasecmp(filter, "all") && is_connected()) {
 	all = TRUE;
 	argument = i3one_argument(argument, filter);
 	i3page_printf(ch, "%%^CYAN%%^Showing ALL known channels.%%^RESET%%^\r\n\r\n");
@@ -8906,7 +8880,7 @@ I3_CMD(I3_admin_channel)
 
 I3_CMD(I3_disconnect)
 {
-    if (!i3_is_connected()) {
+    if (!is_connecting()) {
 	i3_printf(ch, "The MUD isn't connected to the Intermud-3 router.\r\n");
 	return;
     }
@@ -8921,7 +8895,7 @@ I3_CMD(I3_connect)
 {
     ROUTER_DATA                            *router;
 
-    if (i3_is_connected()) {
+    if (is_connecting()) {
 	i3_printf(ch, "The MUD is already connected to Intermud-3 router %s\r\n",
 		  I3_ROUTER_NAME);
 	return;
@@ -8951,7 +8925,7 @@ I3_CMD(I3_reload)
 {
     int                                     mudport = this_i3mud->player_port;
 
-    if (i3_is_connected()) {
+    if (is_connecting()) {
 	i3_printf(ch, "Disconnecting from I3 router...\r\n");
 	i3_shutdown(0, ch);
     }
@@ -9162,7 +9136,7 @@ I3_CMD(I3_setconfig)
 	return;
     }
 
-    if (i3_is_connected()) {
+    if (is_connecting()) {
 	i3_printf(ch, "%s may not be changed while the mud is connected.\r\n", arg);
 	return;
     }
@@ -9596,27 +9570,31 @@ I3_CMD(I3_stats)
 
     i3_printf(ch, "%%^CYAN%%^General Statistics:%%^RESET%%^\r\n\r\n");
 
-    if (i3_is_really_connected())
+    if (is_connected())
         i3_printf(ch, "%%^CYAN%%^Currently connected to     : %%^WHITE%%^%%^BOLD%%^%s (%s)%%^RESET%%^\r\n", I3_ROUTER_NAME, I3_ROUTER_IP);
-    else if (i3_is_connected())
+    else if (is_connecting())
         i3_printf(ch, "%%^CYAN%%^Currently connecting to    : %%^YELLOW%%^%%^BOLD%%^%s (%s)%%^RESET%%^\r\n", I3_ROUTER_NAME, I3_ROUTER_IP);
     else
         i3_printf(ch, "%%^CYAN%%^Currently connecting to    : %%^RED%%^%%^BOLD%%^%s%%^RESET%%^\r\n", "Nowhere");
 
-    if (i3_is_really_connected())
+    if (is_connected())
         i3_printf(ch, "%%^CYAN%%^Connected on descriptor    : %%^WHITE%%^%%^BOLD%%^%d%%^RESET%%^\r\n", I3_socket);
-    else if (i3_is_connected())
+    else if (is_connecting())
         i3_printf(ch, "%%^CYAN%%^Connecting on descriptor   : %%^YELLOW%%^%%^BOLD%%^%d%%^RESET%%^\r\n", I3_socket);
 
-    if (i3_is_really_connected()) {
+    if (is_connected()) {
         i3_printf(ch, "%%^CYAN%%^Connected for              : %%^WHITE%%^%%^BOLD%%^%s%%^RESET%%^\r\n", time_elapsed(connected_at, 0));
-        i3_printf(ch, "%%^CYAN%%^Time to connect            : %%^WHITE%%^%%^BOLD%%^%s%%^RESET%%^\r\n", time_elapsed(connect_started_at - ((timeout_ticks / PULSE_PER_SECOND) * connection_timeouts), connected_at));
-    } else if (i3_is_connected()) {
-        i3_printf(ch, "%%^CYAN%%^Connecting for             : %%^YELLOW%%^%%^BOLD%%^%s%%^RESET%%^\r\n", time_elapsed(connect_started_at - ((timeout_ticks / PULSE_PER_SECOND) * connection_timeouts), 0));
+        i3_printf(ch, "%%^CYAN%%^Time to connect            : %%^WHITE%%^%%^BOLD%%^%s%%^RESET%%^\r\n", time_elapsed(connect_started_at - ((I3_TIMEOUT_DELAY / 1000000) * connection_timeouts), connected_at));
+    } else if (is_connecting()) {
+        i3_printf(ch, "%%^CYAN%%^Connecting for             : %%^YELLOW%%^%%^BOLD%%^%s%%^RESET%%^\r\n", time_elapsed(connect_started_at - ((I3_TIMEOUT_DELAY / 1000000) * connection_timeouts), 0));
+    }
+
+    if (expecting_timeout) {
+        i3_printf(ch, "%%^CYAN%%^Time remaining             : %%^YELLOW%%^%%^BOLD%%^%s%%^RESET%%^\r\n", time_elapsed(connect_started_at, (int)(diffTimestamp(timeout_marker, -1) / (int64_t)1000000)));
     }
 
     if (connection_timeouts > 0) {
-        i3_printf(ch, "%%^CYAN%%^Connection timeouts        : %%^YELLOW%%^%%^BOLD%%^%s (%d)%%^RESET%%^\r\n", time_elapsed(0, (timeout_ticks / PULSE_PER_SECOND) * connection_timeouts), connection_timeouts);
+        i3_printf(ch, "%%^CYAN%%^Connection timeouts        : %%^YELLOW%%^%%^BOLD%%^%s (%d)%%^RESET%%^\r\n", time_elapsed(0, (I3_TIMEOUT_DELAY / 1000000) * connection_timeouts), connection_timeouts);
     }
 
     if (record_uptime > 0) {
@@ -9624,7 +9602,7 @@ I3_CMD(I3_stats)
     }
 
     if (record_lag_spike > 0) {
-        i3_printf(ch, "%%^CYAN%%^Longest LAG Spike          : %%^RED%%^%%^BOLD%%^%s%%^RESET%%^\r\n", time_elapsed(0, connection_timeouts));
+        i3_printf(ch, "%%^CYAN%%^Longest LAG Spike          : %%^RED%%^%%^BOLD%%^%s%%^RESET%%^\r\n", time_elapsed(record_lag_spike, 0));
     }
 
     i3_printf(ch, "%%^CYAN%%^Bytes sent                 : %%^WHITE%%^%%^BOLD%%^%ld%%^RESET%%^\r\n", bytes_sent);
@@ -10604,7 +10582,7 @@ bool i3_command_hook(CHAR_DATA *ch, const char *lcommand, const char *argument)
 
     /*
      * Simple command interpreter menu. Nothing overly fancy etc, but it beats trying to tie directly into the mud's
-     * * own internal structures. Especially with the differences in codebases.
+     * own internal structures. Especially with the differences in codebases.
      */
     for (cmd = first_i3_command; cmd; cmd = cmd->next) {
 	if (I3PERM(ch) < cmd->level)
@@ -10618,7 +10596,7 @@ bool i3_command_hook(CHAR_DATA *ch, const char *lcommand, const char *argument)
 	}
 
 	if (!strcasecmp(lcommand, cmd->name)) {
-	    if (cmd->connected == TRUE && !i3_is_connected()) {
+	    if (cmd->connected == TRUE && !is_connecting()) {
 		i3_printf(ch, "The mud is not currently connected to I3.\r\n");
 		return TRUE;
 	    }
@@ -10634,9 +10612,7 @@ bool i3_command_hook(CHAR_DATA *ch, const char *lcommand, const char *argument)
 	}
     }
 
-    /*
-     * Assumed to be going for a channel if it gets this far 
-     */
+    // Assumed to be going for a channel if it gets this far 
 
     if (!(channel = find_I3_channel_by_localname(lcommand)))
 	return FALSE;
@@ -10654,7 +10630,7 @@ bool i3_command_hook(CHAR_DATA *ch, const char *lcommand, const char *argument)
 	return TRUE;
     }
 
-    if (!i3_is_connected()) {
+    if (!is_connecting()) {
 	i3_printf(ch, "The mud is not currently connected to I3.\r\n");
 	return TRUE;
     }
@@ -10669,25 +10645,19 @@ bool i3_command_hook(CHAR_DATA *ch, const char *lcommand, const char *argument)
     switch (argument[0]) {
 	case ',':
 	case ':':
-	    /*
-	     * Strip the , and then extra spaces - Remcon 6-28-03 
-	     */
+            // Strip the token
 	    argument++;
             // while (isspace(*argument)) argument++;
 	    I3_send_channel_emote(channel, CH_I3NAME(ch), argument);
 	    break;
 	case '@':
-	    /*
-	     * Strip the @ and then extra spaces - Remcon 6-28-03 
-	     */
+            // Strip the token
 	    argument++;
 	    // while (isspace(*argument)) argument++;
 	    I3_send_social(channel, ch, argument);
 	    break;
 	case '/':
-	    /*
-	     * Strip the / and then any spaces between it and the command word
-	     */
+	    // Strip the / and then any spaces between it and the command word
             original_argument = argument;
 	    argument++;
 	    while (*argument && isspace(*argument)) argument++;
@@ -10795,7 +10765,7 @@ bool i3_command_hook(CHAR_DATA *ch, const char *lcommand, const char *argument)
 
 void i3_do_ping(const char *fake_user, const char *chan_name, const char *mud_name)
 {
-    if (!i3_is_connected())
+    if (!is_connected())
 	return;
 
     I3_write_header("chan-who-req", this_i3mud->name, fake_user, mud_name, NULL);
@@ -10803,15 +10773,14 @@ void i3_do_ping(const char *fake_user, const char *chan_name, const char *mud_na
     I3_write_buffer(chan_name);
     I3_write_buffer("\",})\r");
     I3_send_packet();
+    log_info("Sending PING from %s to %s@%s.", fake_user, chan_name, mud_name);
 }
 
 void i3_npc_speak(const char *chan_name, const char *actor, const char *message)
 {
     I3_CHANNEL                             *channel;
 
-    // char buf[MAX_STRING_LENGTH];
-
-    if (!i3_is_connected()) {
+    if (!is_connected()) {
 	log_info("Not connected!");
 	return;
     }
@@ -10830,9 +10799,7 @@ void i3_npc_chat(const char *chan_name, const char *actor, const char *message)
 {
     I3_CHANNEL                             *channel;
 
-    // char buf[MAX_STRING_LENGTH];
-
-    if (!i3_is_connected()) {
+    if (!is_connected()) {
 	log_info("Not connected!");
 	return;
     }
@@ -10845,24 +10812,6 @@ void i3_npc_chat(const char *chan_name, const char *actor, const char *message)
 	message++;
     log_info("Sending [%s] from %s to %s.", message, actor, chan_name);
     I3_send_channel_emote(channel, actor, message);
-
-#if 0
-    if (strstr(message, "$N") == NULL)
-	snprintf(buf, MAX_STRING_LENGTH, "$N %s", message);
-    else
-	strlcpy(buf, message, MAX_STRING_LENGTH);
-
-    I3_write_header("channel-e", this_i3mud->name, actor, NULL, NULL);
-    I3_write_buffer("\"");
-    I3_write_buffer(channel->I3_name);
-    I3_write_buffer("\",\"");
-    I3_write_buffer(actor);
-    I3_write_buffer("\",\"");
-    send_to_i3(I3_escape(buf));
-    I3_write_buffer("\",})\r");
-    I3_send_packet();
-    log_info("Sending [%s] from %s to %s.", buf, actor, channel->I3_name);
-#endif
 }
 
 char                                   *I3_nameescape(const char *ps)

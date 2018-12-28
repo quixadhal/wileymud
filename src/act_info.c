@@ -33,6 +33,7 @@
 #include "act_skills.h"
 #include "spec_procs.h"
 #include "tracking.h"
+#include "scheduler.h"
 #include "i3.h"
 #define _ACT_INFO_C
 #include "act_info.h"
@@ -2839,7 +2840,7 @@ void do_ticks(struct char_data *ch, const char *argument, int cmd)
     tick_line(ch, "Next Mudlist tick:", pulse_mudlist);
     tick_line(ch, "Next URL tick:", pulse_url);
     tick_line(ch, "Next URL Handler tick:", pulse_url_handler);
-    tick_line(ch, "Next I3 idle tick:", tics_since_last_message);
+    tick_line(ch, "Next I3 idle tick:", timestampToTicks(diffTimestamp(time_to_taunt, -1)));
 
     if (REBOOT_FREQ > 0) {
         seconds = REBOOT_LEFT - ((int)time(0) - REBOOT_LASTCHECK);

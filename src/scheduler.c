@@ -49,8 +49,18 @@ int64_t getTimestamp(void)
  * If you pass in a negative value as the point, it will
  * use gettimeofday() to use the current time.
  *
- * If the value is negative, reference is in the past
- * for point.  If positive, reference has yet to happen.
+ * If the result is positive, the reference is ahead of
+ * our point, meaning it has not happened yet and the value
+ * is how long it will be until we reach that reference.
+ *
+ * If the result is negative, the reference is behind our
+ * point, meaning we've passed it, and the value is how far
+ * in the past our reference is.
+ *
+ * This simplifies our typical use case, since we can set
+ * a task for now + X seconds, and then see if we've reached
+ * it easily by doing if( diffTimestamp(scheduled_time, -1) <= 0 ).
+ *
  */
 int64_t diffTimestamp(int64_t reference, int64_t point)
 {
@@ -59,7 +69,7 @@ int64_t diffTimestamp(int64_t reference, int64_t point)
     if( point < 0 )
         point = getTimestamp();
 
-    return (point - reference);
+    return (reference - point);
 }
 
 /*
@@ -97,5 +107,87 @@ struct timeval *packTimestamp(int64_t point, struct timeval *t_point)
     t_point->tv_usec = microseconds;
 
     return t_point;
+}
+
+int timestampToTicks(int64_t point)
+{
+    int seconds;
+    int microseconds;
+    int ticks;
+
+    microseconds = (int)(abs64(point) % 1000000);
+
+    if( point < 0 && point > -1000000) {
+        seconds = 0;
+        microseconds = -microseconds;
+    } else {
+        seconds = (int)(point / 1000000);
+    }
+
+    ticks = seconds * PULSE_PER_SECOND;
+    ticks += microseconds / (1000000 / PULSE_PER_SECOND);
+
+    return ticks;
+}
+
+int64_t ticksToTimestamp(int ticks)
+{
+    int64_t point;
+
+    point = ticks * PULSE_PER_SECOND * 1000000;
+
+    return point;
+}
+
+char *stringTimestamp(int64_t point)
+{
+    static char result[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
+    int days = 0;
+    int hours = 0;
+    int minutes = 0;
+    int seconds = 0;
+    int microseconds = 0;
+
+    point = abs64(point);
+
+    microseconds = (int)(point % 1000000);
+    point /= 1000000;
+    seconds = (int)(point % 60);
+    point /= 60;
+    minutes = (int)(point % 60);
+    point /= 60;
+    hours = (int)(point % 24);
+    point /= 24;
+    days = point;
+
+    *result = '\0';
+    if(days > 0) {
+        scprintf(result, MAX_STRING_LENGTH, "%d days", (int)days);
+        if(hours > 0)
+            scprintf(result, MAX_STRING_LENGTH, ", ");
+    }
+    if(hours > 0) {
+        scprintf(result, MAX_STRING_LENGTH, "%d hours", (int)hours);
+        if(minutes > 0)
+            scprintf(result, MAX_STRING_LENGTH, ", ");
+    }
+    if(minutes > 0) {
+        scprintf(result, MAX_STRING_LENGTH, "%d minutes", (int)minutes);
+        if(seconds > 0)
+            scprintf(result, MAX_STRING_LENGTH, ", ");
+    }
+    if(seconds > 0) {
+        if(microseconds > 999) {
+            scprintf(result, MAX_STRING_LENGTH, "%d.%03d seconds", (int)seconds, (int)(microseconds/1000));
+        } else {
+            scprintf(result, MAX_STRING_LENGTH, "%d seconds", (int)seconds);
+        }
+    }
+    if(days > 0 || hours > 0 || minutes > 0 || seconds > 0 )
+        scprintf(result, MAX_STRING_LENGTH, ".");
+    else
+        scprintf(result, MAX_STRING_LENGTH, "No time.");
+
+    return result;
 }
 

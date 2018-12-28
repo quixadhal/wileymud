@@ -56,5 +56,8 @@ int64_t abs64(int64_t value);
 int64_t getTimestamp(void);
 int64_t diffTimestamp(int64_t reference, int64_t point);
 struct timeval *packTimestamp(int64_t point, struct timeval *t_point);
+int timestampToTicks(int64_t point);
+int64_t ticksToTimestamp(int ticks);
+char *stringTimestamp(int64_t point);
 
 #endif

@@ -141,13 +141,13 @@
                     <hr />
                     <h3><a href="javascript:;" onmousedown="toggleDiv('mem');">Memory Information:</a></h3>
                     <div id="mem" style="display: none;">
-                        <pre><?php pcmd("/usr/bin/free"); ?></pre>
+                        <pre><?php pcmd("/usr/bin/free --mega -h"); ?></pre>
                     </div>
                     <hr />
                     <h3><a href="javascript:;" onmousedown="toggleDiv('disk');">Disk Information:</a></h3>
                     <div id="disk" style="display: none;">
                         <pre><?php pcmd("/bin/dmesg | /bin/grep 'WDC' | /bin/grep 'ata'"); ?></pre>
-                        <pre><?php pcmd("/bin/df | /bin/grep -v 'udev' | /bin/grep -v 'tmpfs' | /bin/grep -v 'by-uuid'"); ?></pre>
+                        <pre><?php pcmd("/bin/df -h | /bin/grep -v 'udev' | /bin/grep -v 'tmpfs' | /bin/grep -v 'by-uuid'"); ?></pre>
                     </div>
                     <hr />
                     <h3><a href="javascript:;" onmousedown="toggleDiv('temp');">Temperature Sensor Output:</a></h3>

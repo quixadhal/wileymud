@@ -285,4 +285,11 @@ Perm      Admin
 Connected 1
 End
 
+#COMMAND
+Name      i3speaker_color
+Code      I3_speaker_color
+Perm      Admin
+Connected 0
+End
+
 #END

@@ -51,11 +51,25 @@ End
 Name   DGrey
 Mudtag [0;1;30m
 IMCtag &z
+I3tag  %^BOLD%^BLACK%^
+End
+
+#COLOR
+Name   DGrey2
+Mudtag [0;1;30m
+IMCtag &z
 I3tag  %^BLACK%^%^BOLD%^
 End
 
 #COLOR
 Name   Red
+Mudtag [0;1;31m
+IMCtag &R
+I3tag  %^BOLD%^RED%^
+End
+
+#COLOR
+Name   Red2
 Mudtag [0;1;31m
 IMCtag &R
 I3tag  %^RED%^%^BOLD%^
@@ -65,11 +79,25 @@ End
 Name   Green
 Mudtag [0;1;32m
 IMCtag &G
+I3tag  %^BOLD%^GREEN%^
+End
+
+#COLOR
+Name   Green2
+Mudtag [0;1;32m
+IMCtag &G
 I3tag  %^GREEN%^%^BOLD%^
 End
 
 #COLOR
 Name   Blue
+Mudtag [0;1;34m
+IMCtag &B
+I3tag  %^BOLD%^BLUE%^
+End
+
+#COLOR
+Name   Blue2
 Mudtag [0;1;34m
 IMCtag &B
 I3tag  %^BLUE%^%^BOLD%^
@@ -79,6 +107,13 @@ End
 Name   Pink
 Mudtag [0;1;35m
 IMCtag &P
+I3tag  %^BOLD%^MAGENTA%^
+End
+
+#COLOR
+Name   Pink2
+Mudtag [0;1;35m
+IMCtag &P
 I3tag  %^MAGENTA%^%^BOLD%^
 End
 
@@ -86,11 +121,25 @@ End
 Name   LBlue
 Mudtag [0;1;36m
 IMCtag &C
+I3tag  %^BOLD%^CYAN%^
+End
+
+#COLOR
+Name   LBlue2
+Mudtag [0;1;36m
+IMCtag &C
 I3tag  %^CYAN%^%^BOLD%^
 End
 
 #COLOR
 Name   White
+Mudtag [0;1;37m
+IMCtag &W
+I3tag  %^BOLD%^WHITE%^
+End
+
+#COLOR
+Name   White2
 Mudtag [0;1;37m
 IMCtag &W
 I3tag  %^WHITE%^%^BOLD%^

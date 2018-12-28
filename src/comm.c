@@ -639,7 +639,7 @@ void game_loop(int s)
 	}
 	if ((--pulse_url) <= 0) {
 	    pulse_url = PULSE_URL;
-            process_urls();
+            //process_urls();
 	}
 	if ((--pulse_url_handler) <= 0) {
 	    pulse_url_handler = PULSE_URL_HANDLER;

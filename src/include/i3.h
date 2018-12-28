@@ -165,7 +165,8 @@ typedef struct i3_cmd_alias I3_ALIAS;  /* Big, bad, bloated command alias thing 
 typedef void I3_FUN( CHAR_DATA * ch, const char *argument );
 #define I3_CMD( name ) void (name)( CHAR_DATA *ch, const char *argument )
 
-#define TAUNT_DELAY                     PULSE_PER_SECOND * 60 * 30; /* 30 minutes worth */
+#define I3_TAUNT_DELAY                  (30 * 60 * 1000000) // 30 minutes in microseconds
+#define I3_TIMEOUT_DELAY                (10 * 60 * 1000000) // 10 minutes
 
 #ifndef _I3_C
 extern int I3_socket;
@@ -176,7 +177,8 @@ extern char *I3_ROUTER_NAME;
 
 extern time_t last_second;
 extern int sub_second_counter;
-extern int tics_since_last_message;
+
+extern int64_t time_to_taunt;
 
 extern time_t i3_time;
 #endif
@@ -359,8 +361,8 @@ struct I3_mud
    int implevel;
 };
 
-bool i3_is_connected( void );
-bool i3_is_really_connected( void );
+bool is_connecting( void );
+bool is_connected( void );
 const char *i3one_argument( const char *argument, char *arg_first );
 void i3_loop( void );
 bool i3_loadchar( CHAR_DATA * ch, FILE * fp, const char *word );

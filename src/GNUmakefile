@@ -76,8 +76,9 @@ tOBJ =	mob_actions.o spec_procs.o breath_weapons.o tracking.o \
 	hash.o interpreter.o limits.o magic.o magic_utils.o \
 	modify.o multiclass.o opinion.o random.o reception.o \
 	shop.o signals.o sound.o spell_parser.o \
-	spells.o trap.o utils.o weather.o whod.o events.o \
-	ban.o sha256.o imc.o i3.o sql.o stringmap.o scheduler.o
+	spells.o trap.o utils.o weather.o whod.o \
+	events.o ban.o sha256.o imc.o i3.o \
+	sql.o stringmap.o scheduler.o crc32.o
 OBJ =	$(addprefix obj/, $(tOBJ))
 
 tIDOBJ		= id_close.o id_open.o id_parse.o \
@@ -195,6 +196,7 @@ obj/sign.o obj/mkworld.o obj/genpasswd.o obj/bounce.o : obj/%o : utils/%c
 obj/act_social.o: act_social.c include/global.h include/bug.h include/utils.h \
   include/comm.h include/interpreter.h include/handler.h include/db.h \
   include/spells.h include/multiclass.h include/act_social.h
+obj/crc32.o: crc32.c include/crc32.h
 obj/shop.o: shop.c include/global.h include/bug.h include/comm.h \
   include/handler.h include/db.h include/interpreter.h include/utils.h \
   include/constants.h include/act_comm.h include/multiclass.h \
@@ -213,7 +215,7 @@ obj/comm.o: comm.c include/global.h include/sql.h include/i3.h include/bug.h \
 obj/i3.o: i3.c include/global.h include/sql.h include/bug.h include/utils.h \
   include/db.h include/multiclass.h include/comm.h include/constants.h \
   include/modify.h include/interpreter.h include/version.h \
-  include/stringmap.h include/i3.h
+  include/stringmap.h include/scheduler.h include/i3.h
 obj/act_off.o: act_off.c include/global.h include/bug.h include/utils.h \
   include/comm.h include/interpreter.h include/handler.h include/db.h \
   include/spells.h include/mudlimits.h include/opinion.h \
@@ -370,7 +372,7 @@ obj/act_obj.o: act_obj.c include/global.h include/bug.h include/utils.h \
   include/spell_parser.h include/multiclass.h include/mudlimits.h \
   include/fight.h include/act_info.h include/act_obj.h
 obj/sql.o: sql.c include/global.h include/bug.h include/comm.h \
-  include/version.h include/i3.h include/sql.h
+  include/version.h include/crc32.h include/i3.h include/sql.h
 obj/imc.o: imc.c
 obj/db.o: db.c include/global.h include/i3.h include/bug.h include/utils.h \
   include/comm.h include/handler.h include/mudlimits.h include/opinion.h \
@@ -413,4 +415,4 @@ obj/act_info.o: act_info.c include/global.h include/bug.h include/version.h \
   include/hash.h include/constants.h include/spell_parser.h \
   include/whod.h include/multiclass.h include/modify.h include/act_wiz.h \
   include/act_skills.h include/spec_procs.h include/tracking.h \
-  include/i3.h include/act_info.h
+  include/scheduler.h include/i3.h include/act_info.h

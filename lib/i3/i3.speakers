@@ -1,5 +1,15 @@
 #COUNT
-Count   24
+Count   46
+End
+
+#SPEAKER
+Name   the ethereal presence
+Color  %^YELLOW%^
+End
+
+#SPEAKER
+Name   zanatos
+Color  %^GREEN%^
 End
 
 #SPEAKER
@@ -10,6 +20,11 @@ End
 #SPEAKER
 Name   ploo
 Color  %^RED%^
+End
+
+#SPEAKER
+Name   seerlock
+Color  %^WHITE%^%^BOLD%^
 End
 
 #SPEAKER
@@ -33,8 +48,38 @@ Color  %^MAGENTA%^%^BOLD%^
 End
 
 #SPEAKER
+Name   viriato
+Color  %^ORANGE%^
+End
+
+#SPEAKER
+Name   icewolfz
+Color  %^YELLOW%^
+End
+
+#SPEAKER
 Name   kalinash
 Color  %^MAGENTA%^
+End
+
+#SPEAKER
+Name   bluewolf
+Color  %^CYAN%^
+End
+
+#SPEAKER
+Name   charon
+Color  %^RED%^
+End
+
+#SPEAKER
+Name   adam
+Color  %^MAGENTA%^
+End
+
+#SPEAKER
+Name   justinjm
+Color  %^RED%^%^BOLD%^
 End
 
 #SPEAKER
@@ -43,8 +88,18 @@ Color  %^GREEN%^
 End
 
 #SPEAKER
+Name   orpheo
+Color  %^MAGENTA%^%^BOLD%^
+End
+
+#SPEAKER
 Name   hugo
 Color  %^WHITE%^
+End
+
+#SPEAKER
+Name   recluse
+Color  %^CYAN%^%^BOLD%^
 End
 
 #SPEAKER
@@ -68,6 +123,11 @@ Color  %^ORANGE%^
 End
 
 #SPEAKER
+Name   oarien
+Color  %^GREEN%^%^BOLD%^
+End
+
+#SPEAKER
 Name   wodan
 Color  %^CYAN%^%^BOLD%^
 End
@@ -83,8 +143,33 @@ Color  %^ORANGE%^
 End
 
 #SPEAKER
+Name   admin
+Color  %^MAGENTA%^%^BOLD%^
+End
+
+#SPEAKER
+Name   presto
+Color  %^WHITE%^%^BOLD%^
+End
+
+#SPEAKER
+Name   ahti
+Color  %^BLUE%^
+End
+
+#SPEAKER
+Name   aidil
+Color  %^CYAN%^%^BOLD%^
+End
+
+#SPEAKER
 Name   andrew
 Color  %^RED%^%^BOLD%^
+End
+
+#SPEAKER
+Name   cheeky
+Color  %^BLACK%^%^BOLD%^
 End
 
 #SPEAKER
@@ -98,8 +183,23 @@ Color  %^WHITE%^
 End
 
 #SPEAKER
+Name   ashadow
+Color  %^GREEN%^%^BOLD%^
+End
+
+#SPEAKER
 Name   quixadhal
 Color  %^RED%^
+End
+
+#SPEAKER
+Name   mactorg
+Color  %^BLUE%^%^BOLD%^
+End
+
+#SPEAKER
+Name   silbago
+Color  %^BLACK%^%^BOLD%^
 End
 
 #SPEAKER
@@ -113,7 +213,17 @@ Color  %^GREEN%^%^BOLD%^
 End
 
 #SPEAKER
+Name   scathach
+Color  %^WHITE%^
+End
+
+#SPEAKER
 Name   salius
+Color  %^BLUE%^%^BOLD%^
+End
+
+#SPEAKER
+Name   arwyn
 Color  %^BLUE%^%^BOLD%^
 End
 

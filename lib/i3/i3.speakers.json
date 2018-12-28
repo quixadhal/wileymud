@@ -1759,5 +1759,8 @@
     "danaer": "<SPAN style=\"background-color: #ffffff; color: #0000bb\">",
     "vance": "<SPAN style=\"background-color: #ffff55; color: #00bb00\">",
     "bryantos": "<SPAN style=\"background-color: #ffffff; color: #00bb00\">",
-    "vashti": "<SPAN style=\"color: #55ff55\">"
+    "vashti": "<SPAN style=\"color: #55ff55\">",
+    "bluewolf": "<SPAN style=\"color: #bbbbbb\">",
+    "recluse": "<SPAN style=\"color: #ffffff\">",
+    "seerlock": "<SPAN style=\"background-color: #bb0000; color: #00bb00\">"
 }

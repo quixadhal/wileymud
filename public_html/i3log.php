@@ -412,6 +412,7 @@ function get_speaker_color($who, $where) {
 
     $who = strip_colors($who);
     $who = preg_replace("/Kreezxil/", "The Annoying Kreezxil", $who);
+    $who = preg_replace("/Joshua/", "Hellmonger", $who);
 
     $whoLow = strtolower($who);
     $speakerColor = $colorMap["default"];
