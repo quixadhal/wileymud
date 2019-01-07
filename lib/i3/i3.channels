@@ -111,10 +111,10 @@ End
 #I3CHAN
 ChanName   urlbot
 ChanMud    Bloodlines
-ChanLocal  (null)
-ChanLayM   %^RED%^%^BOLD%^[%^WHITE%^%^BOLD%^%s%^RED%^%^BOLD%^] %^CYAN%^%^BOLD%^%s@%s: %^RESET%^%s
-ChanLayE   %^RED%^%^BOLD%^[%^WHITE%^%^BOLD%^%s%^RED%^%^BOLD%^] %^RESET%^%s
-ChanLevel  0
+ChanLocal  urlbot
+ChanLayM   %%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^] %%^CYAN%%^%%^BOLD%%^%s@%s: %%^CYAN%%^%s
+ChanLayE   %%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^] %%^CYAN%%^%s
+ChanLevel  2
 ChanStatus 2
 ChanFlags  0
 End
@@ -507,10 +507,10 @@ End
 #I3CHAN
 ChanName   discworld-cre
 ChanMud    Discworld
-ChanLocal  (null)
-ChanLayM   %^RED%^%^BOLD%^[%^WHITE%^%^BOLD%^%s%^RED%^%^BOLD%^] %^CYAN%^%^BOLD%^%s@%s: %^RESET%^%s
-ChanLayE   %^RED%^%^BOLD%^[%^WHITE%^%^BOLD%^%s%^RED%^%^BOLD%^] %^RESET%^%s
-ChanLevel  0
+ChanLocal  dwcre
+ChanLayM   %%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^] %%^CYAN%%^%%^BOLD%%^%s@%s: %%^CYAN%%^%s
+ChanLayE   %%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^] %%^CYAN%%^%s
+ChanLevel  2
 ChanStatus 0
 ChanFlags  0
 End
@@ -863,7 +863,7 @@ ChanLocal  (null)
 ChanLayM   %^RED%^%^BOLD%^[%^WHITE%^%^BOLD%^%s%^RED%^%^BOLD%^] %^CYAN%^%^BOLD%^%s@%s: %^RESET%^%s
 ChanLayE   %^RED%^%^BOLD%^[%^WHITE%^%^BOLD%^%s%^RED%^%^BOLD%^] %^RESET%^%s
 ChanLevel  0
-ChanStatus 2
+ChanStatus 0
 ChanFlags  0
 End
 
@@ -1684,6 +1684,677 @@ End
 #I3CHAN
 ChanName   I3testers2
 ChanMud    The Zone
+ChanLocal  (null)
+ChanLayM   %%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^] %%^CYAN%%^%%^BOLD%%^%s@%s: %%^RESET%%^%s
+ChanLayE   %%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^] %%^RESET%%^%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   ChanMud    Ulario
+ChanMud    (null)
+ChanLocal  (null)
+ChanLayM   %%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^] %%^CYAN%%^%%^BOLD%%^%s@%s: %%^RESET%%^%s
+ChanLayE   %%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^] %%^RESET%%^%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   ChanMud    Ulario
+ChanMud    (null)
+ChanLocal  (null)
+ChanLayM   %%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^] %%^CYAN%%^%%^BOLD%%^%s@%s: %%^RESET%%^%s
+ChanLayE   %%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^] %%^RESET%%^%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   ChanMud    Ulario
+ChanMud    (null)
+ChanLocal  (null)
+ChanLayM   %%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^] %%^CYAN%%^%%^BOLD%%^%s@%s: %%^RESET%%^%s
+ChanLayE   %%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^] %%^RESET%%^%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   ChanMud    Ulario
+ChanMud    (null)
+ChanLocal  (null)
+ChanLayM   %%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^] %%^CYAN%%^%%^BOLD%%^%s@%s: %%^RESET%%^%s
+ChanLayE   %%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^] %%^RESET%%^%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   ChanMud    Ulario
+ChanMud    (null)
+ChanLocal  (null)
+ChanLayM   %%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^] %%^CYAN%%^%%^BOLD%%^%s@%s: %%^RESET%%^%s
+ChanLayE   %%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^] %%^RESET%%^%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   ChanMud    Ulario
+ChanMud    (null)
+ChanLocal  (null)
+ChanLayM   %%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^] %%^CYAN%%^%%^BOLD%%^%s@%s: %%^RESET%%^%s
+ChanLayE   %%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^] %%^RESET%%^%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   ChanMud    Ulario
+ChanMud    (null)
+ChanLocal  (null)
+ChanLayM   %%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^] %%^CYAN%%^%%^BOLD%%^%s@%s: %%^RESET%%^%s
+ChanLayE   %%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^] %%^RESET%%^%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   ChanMud    Ulario
+ChanMud    (null)
+ChanLocal  (null)
+ChanLayM   %%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^] %%^CYAN%%^%%^BOLD%%^%s@%s: %%^RESET%%^%s
+ChanLayE   %%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^] %%^RESET%%^%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   ChanMud    Ulario
+ChanMud    (null)
+ChanLocal  (null)
+ChanLayM   %%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^] %%^CYAN%%^%%^BOLD%%^%s@%s: %%^RESET%%^%s
+ChanLayE   %%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^] %%^RESET%%^%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   ChanMud    Ulario
+ChanMud    (null)
+ChanLocal  (null)
+ChanLayM   %%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^] %%^CYAN%%^%%^BOLD%%^%s@%s: %%^RESET%%^%s
+ChanLayE   %%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^] %%^RESET%%^%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   ChanMud    Ulario
+ChanMud    (null)
+ChanLocal  (null)
+ChanLayM   %%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^] %%^CYAN%%^%%^BOLD%%^%s@%s: %%^RESET%%^%s
+ChanLayE   %%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^] %%^RESET%%^%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   ChanMud    Ulario
+ChanMud    (null)
+ChanLocal  (null)
+ChanLayM   %%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^] %%^CYAN%%^%%^BOLD%%^%s@%s: %%^RESET%%^%s
+ChanLayE   %%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^] %%^RESET%%^%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   ChanMud    Ulario
+ChanMud    (null)
+ChanLocal  (null)
+ChanLayM   %%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^] %%^CYAN%%^%%^BOLD%%^%s@%s: %%^RESET%%^%s
+ChanLayE   %%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^] %%^RESET%%^%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   ChanMud    Ulario
+ChanMud    (null)
+ChanLocal  (null)
+ChanLayM   %%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^] %%^CYAN%%^%%^BOLD%%^%s@%s: %%^RESET%%^%s
+ChanLayE   %%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^] %%^RESET%%^%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   ChanMud    Ulario
+ChanMud    (null)
+ChanLocal  (null)
+ChanLayM   %%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^] %%^CYAN%%^%%^BOLD%%^%s@%s: %%^RESET%%^%s
+ChanLayE   %%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^] %%^RESET%%^%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   ChanMud    Ulario
+ChanMud    (null)
+ChanLocal  (null)
+ChanLayM   %%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^] %%^CYAN%%^%%^BOLD%%^%s@%s: %%^RESET%%^%s
+ChanLayE   %%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^] %%^RESET%%^%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   ChanMud    Ulario
+ChanMud    (null)
+ChanLocal  (null)
+ChanLayM   %%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^] %%^CYAN%%^%%^BOLD%%^%s@%s: %%^RESET%%^%s
+ChanLayE   %%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^] %%^RESET%%^%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   ChanMud    Ulario
+ChanMud    (null)
+ChanLocal  (null)
+ChanLayM   %%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^] %%^CYAN%%^%%^BOLD%%^%s@%s: %%^RESET%%^%s
+ChanLayE   %%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^] %%^RESET%%^%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   ChanMud    Ulario
+ChanMud    (null)
+ChanLocal  (null)
+ChanLayM   %%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^] %%^CYAN%%^%%^BOLD%%^%s@%s: %%^RESET%%^%s
+ChanLayE   %%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^] %%^RESET%%^%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   ChanMud    Ulario
+ChanMud    (null)
+ChanLocal  (null)
+ChanLayM   %%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^] %%^CYAN%%^%%^BOLD%%^%s@%s: %%^RESET%%^%s
+ChanLayE   %%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^] %%^RESET%%^%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   ChanMud    Ulario
+ChanMud    (null)
+ChanLocal  (null)
+ChanLayM   %%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^] %%^CYAN%%^%%^BOLD%%^%s@%s: %%^RESET%%^%s
+ChanLayE   %%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^] %%^RESET%%^%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   ChanMud    Ulario
+ChanMud    (null)
+ChanLocal  (null)
+ChanLayM   %%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^] %%^CYAN%%^%%^BOLD%%^%s@%s: %%^RESET%%^%s
+ChanLayE   %%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^] %%^RESET%%^%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   ChanMud    Ulario
+ChanMud    (null)
+ChanLocal  (null)
+ChanLayM   %%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^] %%^CYAN%%^%%^BOLD%%^%s@%s: %%^RESET%%^%s
+ChanLayE   %%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^] %%^RESET%%^%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   ChanMud    Ulario
+ChanMud    (null)
+ChanLocal  (null)
+ChanLayM   %%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^] %%^CYAN%%^%%^BOLD%%^%s@%s: %%^RESET%%^%s
+ChanLayE   %%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^] %%^RESET%%^%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   ChanMud    Ulario
+ChanMud    (null)
+ChanLocal  (null)
+ChanLayM   %%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^] %%^CYAN%%^%%^BOLD%%^%s@%s: %%^RESET%%^%s
+ChanLayE   %%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^] %%^RESET%%^%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   ChanMud    Ulario
+ChanMud    (null)
+ChanLocal  (null)
+ChanLayM   %%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^] %%^CYAN%%^%%^BOLD%%^%s@%s: %%^RESET%%^%s
+ChanLayE   %%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^] %%^RESET%%^%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   ChanMud    Ulario
+ChanMud    (null)
+ChanLocal  (null)
+ChanLayM   %%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^] %%^CYAN%%^%%^BOLD%%^%s@%s: %%^RESET%%^%s
+ChanLayE   %%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^] %%^RESET%%^%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   ChanMud    Ulario
+ChanMud    (null)
+ChanLocal  (null)
+ChanLayM   %%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^] %%^CYAN%%^%%^BOLD%%^%s@%s: %%^RESET%%^%s
+ChanLayE   %%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^] %%^RESET%%^%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   ChanMud    Ulario
+ChanMud    (null)
+ChanLocal  (null)
+ChanLayM   %%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^] %%^CYAN%%^%%^BOLD%%^%s@%s: %%^RESET%%^%s
+ChanLayE   %%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^] %%^RESET%%^%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   ChanMud    Ulario
+ChanMud    (null)
+ChanLocal  (null)
+ChanLayM   %%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^] %%^CYAN%%^%%^BOLD%%^%s@%s: %%^RESET%%^%s
+ChanLayE   %%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^] %%^RESET%%^%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   corinium
+ChanMud    Corinium
+ChanLocal  (null)
+ChanLayM   %%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^] %%^CYAN%%^%%^BOLD%%^%s@%s: %%^RESET%%^%s
+ChanLayE   %%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^] %%^RESET%%^%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   ChanMud    Ulario
+ChanMud    (null)
+ChanLocal  (null)
+ChanLayM   %%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^] %%^CYAN%%^%%^BOLD%%^%s@%s: %%^RESET%%^%s
+ChanLayE   %%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^] %%^RESET%%^%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   ChanMud    Ulario
+ChanMud    (null)
+ChanLocal  (null)
+ChanLayM   %%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^] %%^CYAN%%^%%^BOLD%%^%s@%s: %%^RESET%%^%s
+ChanLayE   %%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^] %%^RESET%%^%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   ChanMud    Ulario
+ChanMud    (null)
+ChanLocal  (null)
+ChanLayM   %%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^] %%^CYAN%%^%%^BOLD%%^%s@%s: %%^RESET%%^%s
+ChanLayE   %%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^] %%^RESET%%^%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   ChanMud    Ulario
+ChanMud    (null)
+ChanLocal  (null)
+ChanLayM   %%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^] %%^CYAN%%^%%^BOLD%%^%s@%s: %%^RESET%%^%s
+ChanLayE   %%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^] %%^RESET%%^%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   ChanMud    Ulario
+ChanMud    (null)
+ChanLocal  (null)
+ChanLayM   %%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^] %%^CYAN%%^%%^BOLD%%^%s@%s: %%^RESET%%^%s
+ChanLayE   %%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^] %%^RESET%%^%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   ChanMud    Ulario
+ChanMud    (null)
+ChanLocal  (null)
+ChanLayM   %%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^] %%^CYAN%%^%%^BOLD%%^%s@%s: %%^RESET%%^%s
+ChanLayE   %%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^] %%^RESET%%^%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   ChanMud    Ulario
+ChanMud    (null)
+ChanLocal  (null)
+ChanLayM   %%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^] %%^CYAN%%^%%^BOLD%%^%s@%s: %%^RESET%%^%s
+ChanLayE   %%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^] %%^RESET%%^%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   ChanMud    Ulario
+ChanMud    (null)
+ChanLocal  (null)
+ChanLayM   %%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^] %%^CYAN%%^%%^BOLD%%^%s@%s: %%^RESET%%^%s
+ChanLayE   %%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^] %%^RESET%%^%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   ChanMud    Ulario
+ChanMud    (null)
+ChanLocal  (null)
+ChanLayM   %%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^] %%^CYAN%%^%%^BOLD%%^%s@%s: %%^RESET%%^%s
+ChanLayE   %%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^] %%^RESET%%^%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   ChanMud    Ulario
+ChanMud    (null)
+ChanLocal  (null)
+ChanLayM   %%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^] %%^CYAN%%^%%^BOLD%%^%s@%s: %%^RESET%%^%s
+ChanLayE   %%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^] %%^RESET%%^%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   ChanMud    Ulario
+ChanMud    (null)
+ChanLocal  (null)
+ChanLayM   %%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^] %%^CYAN%%^%%^BOLD%%^%s@%s: %%^RESET%%^%s
+ChanLayE   %%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^] %%^RESET%%^%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   ChanMud    Ulario
+ChanMud    (null)
+ChanLocal  (null)
+ChanLayM   %%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^] %%^CYAN%%^%%^BOLD%%^%s@%s: %%^RESET%%^%s
+ChanLayE   %%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^] %%^RESET%%^%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   ChanMud    Ulario
+ChanMud    (null)
+ChanLocal  (null)
+ChanLayM   %%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^] %%^CYAN%%^%%^BOLD%%^%s@%s: %%^RESET%%^%s
+ChanLayE   %%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^] %%^RESET%%^%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   ChanMud    Ulario
+ChanMud    (null)
+ChanLocal  (null)
+ChanLayM   %%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^] %%^CYAN%%^%%^BOLD%%^%s@%s: %%^RESET%%^%s
+ChanLayE   %%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^] %%^RESET%%^%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   ChanMud    Ulario
+ChanMud    (null)
+ChanLocal  (null)
+ChanLayM   %%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^] %%^CYAN%%^%%^BOLD%%^%s@%s: %%^RESET%%^%s
+ChanLayE   %%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^] %%^RESET%%^%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   ChanMud    Ulario
+ChanMud    (null)
+ChanLocal  (null)
+ChanLayM   %%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^] %%^CYAN%%^%%^BOLD%%^%s@%s: %%^RESET%%^%s
+ChanLayE   %%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^] %%^RESET%%^%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   ChanMud    Ulario
+ChanMud    (null)
+ChanLocal  (null)
+ChanLayM   %%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^] %%^CYAN%%^%%^BOLD%%^%s@%s: %%^RESET%%^%s
+ChanLayE   %%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^] %%^RESET%%^%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   ChanMud    Ulario
+ChanMud    (null)
+ChanLocal  (null)
+ChanLayM   %%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^] %%^CYAN%%^%%^BOLD%%^%s@%s: %%^RESET%%^%s
+ChanLayE   %%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^] %%^RESET%%^%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   ChanMud    Ulario
+ChanMud    (null)
+ChanLocal  (null)
+ChanLayM   %%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^] %%^CYAN%%^%%^BOLD%%^%s@%s: %%^RESET%%^%s
+ChanLayE   %%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^] %%^RESET%%^%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   ChanMud    Ulario
+ChanMud    (null)
+ChanLocal  (null)
+ChanLayM   %%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^] %%^CYAN%%^%%^BOLD%%^%s@%s: %%^RESET%%^%s
+ChanLayE   %%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^] %%^RESET%%^%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   ChanMud    Ulario
+ChanMud    (null)
+ChanLocal  (null)
+ChanLayM   %%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^] %%^CYAN%%^%%^BOLD%%^%s@%s: %%^RESET%%^%s
+ChanLayE   %%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^] %%^RESET%%^%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   bot
+ChanMud    WileyMUD
+ChanLocal  bot
+ChanLayM   %%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^] %%^CYAN%%^%%^BOLD%%^%s@%s: %%^CYAN%%^%s
+ChanLayE   %%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^] %%^CYAN%%^%s
+ChanLevel  4
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   ChanMud    Ulario
+ChanMud    (null)
+ChanLocal  (null)
+ChanLayM   %%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^] %%^CYAN%%^%%^BOLD%%^%s@%s: %%^RESET%%^%s
+ChanLayE   %%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^] %%^RESET%%^%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   ChanMud    Ulario
+ChanMud    (null)
+ChanLocal  (null)
+ChanLayM   %%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^] %%^CYAN%%^%%^BOLD%%^%s@%s: %%^RESET%%^%s
+ChanLayE   %%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^] %%^RESET%%^%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   ChanMud    Ulario
+ChanMud    (null)
+ChanLocal  (null)
+ChanLayM   %%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^] %%^CYAN%%^%%^BOLD%%^%s@%s: %%^RESET%%^%s
+ChanLayE   %%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^] %%^RESET%%^%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   ChanMud    Ulario
+ChanMud    (null)
+ChanLocal  (null)
+ChanLayM   %%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^] %%^CYAN%%^%%^BOLD%%^%s@%s: %%^RESET%%^%s
+ChanLayE   %%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^] %%^RESET%%^%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   ChanMud    Ulario
+ChanMud    (null)
+ChanLocal  (null)
+ChanLayM   %%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^] %%^CYAN%%^%%^BOLD%%^%s@%s: %%^RESET%%^%s
+ChanLayE   %%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^] %%^RESET%%^%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   ChanMud    Ulario
+ChanMud    (null)
+ChanLocal  (null)
+ChanLayM   %%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^] %%^CYAN%%^%%^BOLD%%^%s@%s: %%^RESET%%^%s
+ChanLayE   %%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^] %%^RESET%%^%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   ChanMud    Ulario
+ChanMud    (null)
+ChanLocal  (null)
+ChanLayM   %%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^] %%^CYAN%%^%%^BOLD%%^%s@%s: %%^RESET%%^%s
+ChanLayE   %%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^] %%^RESET%%^%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   ChanMud    Ulario
+ChanMud    (null)
 ChanLocal  (null)
 ChanLayM   %%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^] %%^CYAN%%^%%^BOLD%%^%s@%s: %%^RESET%%^%s
 ChanLayE   %%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^] %%^RESET%%^%s

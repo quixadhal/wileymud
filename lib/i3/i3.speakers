@@ -1,5 +1,5 @@
 #COUNT
-Count   46
+Count   49
 End
 
 #SPEAKER
@@ -60,6 +60,11 @@ End
 #SPEAKER
 Name   kalinash
 Color  %^MAGENTA%^
+End
+
+#SPEAKER
+Name   llama
+Color  %^ORANGE%^
 End
 
 #SPEAKER
@@ -143,6 +148,11 @@ Color  %^ORANGE%^
 End
 
 #SPEAKER
+Name   kill
+Color  %^RED%^
+End
+
+#SPEAKER
 Name   admin
 Color  %^MAGENTA%^%^BOLD%^
 End
@@ -170,6 +180,11 @@ End
 #SPEAKER
 Name   cheeky
 Color  %^BLACK%^%^BOLD%^
+End
+
+#SPEAKER
+Name   avenged
+Color  %^GREEN%^
 End
 
 #SPEAKER

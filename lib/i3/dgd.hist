@@ -1,1 +1,0 @@
-%^RED%^%^BOLD%^[2018-06-28 14:05]%^RESET%^ %^GREEN%^%^BOLD%^%^WHITE%^14:%^WHITE%^05%^RESET%^ %^RED%^%^BOLD%^[%^BLUE%^%^BOLD%^dgd%^RED%^%^BOLD%^] %^CYAN%^%^BOLD%^aidil@lpcdb-dev: %^RESET%^heh, it took like 10 minutes to get lpcdb to talk to Apache Cassandra.. all this networking stuff I wrote for lpcdb and nodejs is amazingly useful.

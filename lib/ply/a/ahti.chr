@@ -6,10 +6,10 @@ PreTitle           ~
 Title              the Dwarven Sentry~
 Description
 ~
-LastSite           adork@host-212-253-112-26.reverse.superonline.ne~
-LastLogin          1456177107
+LastSite           adork@host-195-142-81-247.reverse.superonline.ne~
+LastLogin          1543529314
 Birth              1396720029
-Played             46504
+Played             48742
 Sex                1
 Race               3
 Class              4
@@ -24,11 +24,11 @@ PoofIn             ~
 PoofOut            ~
 AbilityScores      17 0 12 14 9 11
 AbilityPad         0 0 0 0
-HpManaMove         21 43 104 0 101 0
+HpManaMove         35 43 104 0 198 0
 AC                 100
 ToHitDamage        0 0
 SaveApply          0 0 0 0 0
-Conditions         0 5 24 0 0 0
+Conditions         0 0 0 0 0 0
 PointsPad1         0 0 0
 PointsPad2         0 0 0 0
 PointsPad3         0 0 0
@@ -208,6 +208,4 @@ Affect             23 0 0 0 0 0 0
 Affect             24 0 0 0 0 0 0
 i3perm       1
 i3flags      256
-IMCPerm      1
-IMCFlags     256
 End

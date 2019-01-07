@@ -5,37 +5,38 @@ Whizz              0
 PreTitle           ~
 Title              the Elven Student/Filcher~
 Description
+Another old blah blah
 ~
-LastSite           adork@stalin.awasteoftime.net~
-LastLogin          1509869776
+LastSite           adork@localhost~
+LastLogin          1544712541
 Birth              1221467932
-Played             1965
+Played             5780
 Sex                1
 Race               2
 Class              9
-Alignment          -5
-Exp                5001
+Alignment          -2
+Exp                5194
 Level              mage 3
 Level              thief 3
 HeightWeight       191 111
-Gold               0 0
+Gold               2 0
 HomeTown           3008
 LoadRoom           -1
 PoofIn             ~
 PoofOut            ~
 AbilityScores      14 0 15 11 14 8
 AbilityPad         0 0 0 0
-HpManaMove         34 24 108 0 152 0
+HpManaMove         25 24 19 0 246 0
 AC                 100
 ToHitDamage        0 0
 SaveApply          0 0 0 0 0
-Conditions         0 4 4 0 0 0
+Conditions         0 0 8 0 0 0
 PointsPad1         0 0 0
 PointsPad2         0 0 0 0
 PointsPad3         0 0 0
 ShortSavePad       0 0 0 0
 SavePad            0 0 0 0
-Pracs              17
+Pracs              12
 SkillsToLearn      0
 NamedSkill         1 0 0 armour~
 NamedSkill         2 0 0 teleport~
@@ -68,7 +69,7 @@ NamedSkill         28 0 0 heal~
 NamedSkill         29 0 0 invisibility~
 NamedSkill         30 0 0 lightning bolt~
 NamedSkill         31 0 0 locate object~
-NamedSkill         32 0 0 magic missile~
+NamedSkill         32 18 0 magic missile~
 NamedSkill         33 0 0 poison~
 NamedSkill         34 0 0 protection from evil~
 NamedSkill         35 0 0 remove curse~
@@ -105,11 +106,11 @@ NamedSkill         65 0 0 remove paralysis~
 NamedSkill         66 0 0 fear~
 NamedSkill         67 0 0 acid blast~
 NamedSkill         68 0 0 water breath~
-NamedSkill         69 0 0 fly~
+NamedSkill         69 16 0 fly~
 NamedSkill         70 0 0 cone of cold~
 NamedSkill         71 0 0 meteor swarm~
 NamedSkill         72 0 0 ice storm~
-NamedSkill         73 0 0 shield~
+NamedSkill         73 17 0 shield~
 NamedSkill         74 0 0 monsum one~
 NamedSkill         75 0 0 monsum two~
 NamedSkill         76 0 0 monsum three~
@@ -121,12 +122,12 @@ NamedSkill         81 0 0 fireshield~
 NamedSkill         82 0 0 charm monster~
 NamedSkill         83 0 0 cure serious~
 NamedSkill         84 0 0 cause serious~
-NamedSkill         85 0 0 refresh~
+NamedSkill         85 17 0 refresh~
 NamedSkill         86 0 0 second wind~
 NamedSkill         87 0 0 turn~
 NamedSkill         88 0 0 succor~
 NamedSkill         89 0 0 create light~
-NamedSkill         90 0 0 continual light~
+NamedSkill         90 18 0 continual light~
 NamedSkill         91 0 0 calm~
 NamedSkill         92 0 0 stoneskin~
 NamedSkill         93 0 0 conjure elemental~
@@ -207,7 +208,7 @@ Affect             21 0 0 0 0 0 0
 Affect             22 0 0 0 0 0 0
 Affect             23 0 0 0 0 0 0
 Affect             24 0 0 0 0 0 0
-i3perm       2
-i3flags      256
+i3perm       5
+i3flags      768
 i3listen     wiley
 End

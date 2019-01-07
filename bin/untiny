@@ -21,6 +21,7 @@ use DBI;
 use JSON;
 
 my $DB_FILE = '/home/wiley/lib/i3/wiley.db';
+my $LPC_DUMP_FILE = '/home/wiley/lib/i3/urldb.lpc-saved-object';
 my $GOOGLE_API_KEY_FILE = '/home/wiley/.google-api.key';
 my $BITLY_API_KEY_FILE = '/home/wiley/.bitly-api.key';
 my $api_key = undef;
@@ -33,6 +34,7 @@ my $url = undef;
 my $do_sql = undef;
 my $do_debug = undef;
 my $do_checksum = undef;
+my $do_lpc = undef;
 my $channel = undef;
 my $speaker = undef;
 my $style = undef;
@@ -661,26 +663,23 @@ sub parse_style {
 
     return undef if !defined $arg;
     return undef if $arg =~ /^http/i;
-    return "wiley" if $arg eq 'wiley';
-    return "wiley" if $arg eq '--wiley';
-    return "wiley" if $arg eq '-w';
-    return "ansi" if $arg eq 'ansi';
-    return "ansi" if $arg eq '--ansi';
-    return "ansi" if $arg eq '-a';
-    return "html" if $arg eq 'html';
-    return "html" if $arg eq '--html';
-    return "html" if $arg eq '-h';
-    return "debug" if $arg eq 'debug';
-    return "debug" if $arg eq '--debug';
-    return "debug" if $arg eq '-d';
-    return "sql" if $arg eq 'sql';
-    return "sql" if $arg eq '--sql';
-    return "sql" if $arg eq '-s';
-    return "checksum" if $arg eq 'checksum';
-    return "checksum" if $arg eq '--checksum';
-    return "checksum" if $arg eq '-c';
-    return "checksum" if $arg eq 'crc32';
-    return "checksum" if $arg eq '--crc32';
+
+    return "wiley"      if $arg =~ /^(--)?wiley$/;
+    return "wiley"      if $arg eq '-w';
+    return "ansi"       if $arg =~ /^(--)?ansi$/;
+    return "ansi"       if $arg eq '-a';
+    return "html"       if $arg =~ /^(--)?html$/;
+    return "html"       if $arg eq '-h';
+    return "debug"      if $arg =~ /^(--)?debug$/;
+    return "debug"      if $arg eq '-d';
+    return "sql"        if $arg =~ /^(--)?sql$/;
+    return "sql"        if $arg eq '-s';
+    return "checksum"   if $arg =~ /^(--)?checksum$/;
+    return "checksum"   if $arg =~ /^(--)?crc32$/;
+    return "checksum"   if $arg eq '-c';
+    return "lpc"        if $arg =~ /^(--)?lpc$/;
+    return "lpc"        if $arg eq '-l';
+
     return undef;
 }
 
@@ -875,6 +874,7 @@ if( !defined $url and $style ne 'sql' and $style ne 'checksum' ) {
     print "Usage: $prog [wiley|ansi|html|debug] URL [channel] [speaker]\n";
     print "       $prog sql [limit] [--mark]\n";
     print "       $prog checksum [limit]\n";
+    print "       $prog lpc [limit]\n";
     exit 1;
 }
 
@@ -971,6 +971,61 @@ if( $do_sql ) {
         }
         last if $left <= 0;
     }
+    $db->disconnect();
+} elsif( $do_lpc ) {
+    # LPC: checksum : ({ url, counter, time, channel, user, mud, result })
+    # time is seconds since epoch
+    # counter is number of times seen, defaults to 1
+    # result is fancy output from untiny
+    #
+    # SQL: CREATE TABLE urls (
+    #           created DATETIME DEFAULT (STRFTIME('%Y-%m-%d %H:%M:%f', 'NOW','utc')),
+    #           processed INTEGER,
+    #           channel TEXT,
+    #           speaker TEXT,
+    #           mud TEXT,
+    #           url TEXT,
+    #           message TEXT,
+    #           checksum TEXT);
+
+    $db = DBI->connect("DBI:SQLite:dbname=$DB_FILE", '', '', { AutoCommit => 1, PrintError => 0, });
+    $result = $db->selectall_arrayref(qq!
+        SELECT checksum,
+               url,
+               1 AS counter,
+               CAST(strftime('%s', created) AS int) AS time,
+               channel,
+               speaker AS user,
+               mud,
+               message AS result
+          FROM urls
+         WHERE message IS NOT NULL
+      ORDER BY time ASC
+      !, { Slice => {} });
+
+    my $left = scalar @$result;
+    my $limit;
+    $limit = $url if defined $url and $url =~ /^\d+$/;
+    $limit = $left if !defined $limit;
+
+    open FP, ">$LPC_DUMP_FILE" or die "Cannot open LPC dump file $LPC_DUMP_FILE $!";
+    printf FP "urls ([";
+    foreach my $r (@$result) {
+        my $url = $r->{'url'};
+        printf "% 5d : %s...\n", $left--, substr($url, 0, 50);
+        printf FP "\"%s\":([\"url\":\"%s\",\"counter\":%d,\"time\":\"%d\",\"channel\":\"%s\",\"user\":\"%s\",\"mud\":\"%s\",\"result\":\"%s\",]),",
+            $r->{'checksum'},
+            $r->{'url'},
+            $r->{'counter'},
+            $r->{'time'},
+            $r->{'channel'},
+            $r->{'user'},
+            $r->{'mud'},
+            $r->{'result'};
+        last if $left <= 0;
+    }
+    printf FP "])\n";
+    close FP;
     $db->disconnect();
 } else {
     handle_url( $url, $channel, $speaker );
