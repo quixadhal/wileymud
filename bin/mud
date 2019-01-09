@@ -1,0 +1,368 @@
+#!/bin/bash
+
+# This script makes a few assumptions about your directory
+# structure and naming conventions.  If these aren't true
+# you may need to adjust things.
+#
+# For example, if your mud were in a directory called "lpmud",
+# we would assume this script is called "lpmud" and lives in
+# $BASE_DIR/lpmud.  Further, we'd assume the mud itself lives in
+# $BASE_DIR/lpmud/bin, and has a configuration file called
+# "lpmud.cfg" in that same directory.
+#
+# Finally, we assume the driver binary is called "driver",
+# and that the address server is called "addr_server", also
+# in that same bin directory.
+#
+# Because it's not uncommon to want to check the game status
+# as a different user than the one running the mud itself,
+# we use the script name to find the $BASE_DIR location, rather
+# than the actual $HOME variable
+
+# The rest of this should be fine.
+SCRIPT="$0"
+CMD="$1"
+MUD=`basename $SCRIPT`
+#WILEY_SCRIPT="/etc/init.d/wiley"
+WILEY_SCRIPT="/home/wiley/etc/wiley"
+
+BASE__=`dirname $SCRIPT`
+BASE_DIR=`dirname $BASE__`
+
+if [ -z "$BASE_DIR" -o ! -d "$BASE_DIR" ]; then
+    $BASE_DIR=$HOME
+fi
+
+if [ ! -d "$BASE_DIR" ]; then
+    echo "Sorry, $BASE_DIR must be a valid directory!"
+    exit 1
+fi
+
+if [ "$MUD" = "wiley" ]; then
+    IS_DIKU=1
+fi
+
+function display_usage() {
+    if [ -z "$IS_DIKU" ]; then
+        echo "Usage: $SCRIPT [start|stop|status|schedule|unschedule]"
+    else
+        echo "Usage: $SCRIPT [start|stop|status]"
+    fi
+}
+
+function display_help() {
+    echo ""
+    echo "This is a quick and dirty tool to let you start and stop"
+    echo "an LPMUD running under the FluffOS game driver."
+    echo ""
+    display_usage
+    echo ""
+    echo "    help          - This detailed man page."
+    echo "    start         - Starts the address server and game driver."
+    echo "    stop          - Tries to halt the address server and game driver."
+    echo "    status        - Displays process information about both."
+    if [ -z "$IS_DIKU" ]; then
+        echo "    schedule      - Creates a cron entry to start or stop the mud."
+        echo ""
+        echo "                    Format:   [start|stop] <hour> <minute>"
+        echo "                              The hour and minute argument sare both"
+        echo "                              required, and should either be numbers"
+        echo "                              with hour [0-23] and minute [0-59], or"
+        echo "                              a valid crontab range may be specified."
+        echo "                              Whitespace is NOT allowed."
+        echo "                    Example:  bash% (set -f; mud schedule start * */15)"
+        echo "                              The () are needed to not screw up file"
+        echo "                              globbing in your main shell"
+        echo ""
+        echo "    unschedule    - Removes all cron entries."
+    fi
+    echo ""
+}
+
+if [ "$MUD" == "wiley" ]; then
+    # Special case, DikuMUD!
+    if [ -z "$CMD" -o "$CMD" == "status" -o "$CMD" == "--status" ]; then
+        # No arguments, assume you want status info
+        $WILEY_SCRIPT status
+        exit 0
+    elif [ "$CMD" == "start" -o "$CMD" == "--start" ]; then
+        if [ "$USER"  == "wiley" -o "$USER" == "root" ]; then
+            $WILEY_SCRIPT start
+            exit $?
+        else
+            echo "You probably don't have permission to do that."
+            exit 1
+        fi
+    elif [ "$CMD" == "stop" -o "$CMD" == "--stop" ]; then
+        if [ "$USER"  == "wiley" -o "$USER" == "root" ]; then
+            $WILEY_SCRIPT stop
+            exit $?
+        else
+            echo "You probably don't have permission to do that."
+            exit 1
+        fi
+    elif [ "$CMD" == "schedule" -o "$CMD" == "--schedule" ]; then
+        echo "Sorry, scheduling for DikuMUD is not supported."
+        exit 1
+    elif [ "$CMD" == "unschedule" -o "$CMD" == "--unschedule" ]; then
+        echo "Sorry, scheduling for DikuMUD is not supported."
+        exit 1
+    elif [ "$CMD" == "help" -o "$CMD" == "-h" -o "$CMD" == "--help" ]; then
+        display_help
+        exit 1
+    elif [ "$CMD" != "status" -a "$CMD" != "--status" ]; then
+        # This is the catch-all for "I have no idea what arguments are valid!"
+        display_usage
+        exit 1
+    fi
+    exit 1
+fi
+
+M_DIR="$BASE_DIR/$MUD/bin"
+M_CFG="$M_DIR/$MUD.cfg"
+
+if [ ! -d "$M_DIR" ]; then
+    echo "Sorry, $M_DIR must be a valid directory!"
+    exit 1
+fi
+
+if [ ! -r "$M_CFG" ]; then
+    echo "Sorry, $M_CFG must be a valid configuration file!"
+    exit 1
+fi
+
+D_PORT=`grep <"$M_CFG" external_port_1 | awk '{print $NF}'`
+A_PORT=`grep <"$M_CFG" 'address server port' | awk '{print $NF}'`
+G_DRIVER="$M_DIR/driver $M_CFG"
+G_ADDR="$M_DIR/addr_server $A_PORT"
+
+if [ -z "$D_PORT" ]; then
+    echo "Could not fine the main login port, external_port_1 : N, in $M_CFG!"
+    exit 1
+fi
+
+if [ -z "$A_PORT" ]; then
+    echo "Could not fine the address server port, address server port : N, in $M_CFG!"
+    exit 1
+fi
+
+function get_status() {
+    HEADER=`ps -auxwwww | head -1`
+    DRIVER=`ps -auxwwww | grep "$G_DRIVER" | grep -v "grep $G_DRIVER" | head -1`
+    ADDR=`ps -auxwwww | grep "$G_ADDR" | grep -v "grep $G_ADDR" | head -1`
+    D_PID=`echo $DRIVER | awk '{print $2}'`
+    A_PID=`echo $ADDR | awk '{print $2}'`
+    CRON_HEADER='# m h  dom mon dow   command'
+    CRON_START_ENTRY=`crontab -l 2>/dev/null | grep "$SCRIPT start" | head -1`
+    CRON_STOP_ENTRY=`crontab -l 2>/dev/null | grep "$SCRIPT stop" | head -1`
+
+    if [ -n "$D_PID" ]; then
+        D_RUNNING="The driver is running on port $D_PORT"
+    else
+        D_RUNNING="The driver is not running, but is configured to use port $D_PORT"
+    fi
+    if [ -n "$A_PID" ]; then
+        A_RUNNING="The address server is running on port $A_PORT"
+    else
+        A_RUNNING="The address server is not running, but is configured to use port $A_PORT"
+    fi
+}
+
+function start_up() {
+    get_status
+    if [ -z "$ADDR" ]; then
+        echo "Launching address server..."
+        $M_DIR/addr_server $A_PORT >/dev/null 2>&1 &
+        sleep 1
+    fi
+    if [ -z "$DRIVER" ]; then
+        echo "Launching driver..."
+        $M_DIR/driver $M_CFG >/dev/null 2>&1 &
+        sleep 1
+    fi
+}
+
+function shut_down() {
+    get_status
+    if [ ! -z "$D_PID" ]; then
+        echo "Halting driver... $D_PID"
+        kill "$D_PID"
+        sleep 1
+    fi
+    if [ ! -z "$A_PID" ]; then
+        echo "Halting address server... $A_PID"
+        kill "$A_PID"
+        sleep 1
+    fi
+}
+
+function display_status() {
+    get_status
+    echo ""
+    if [ -n "$D_PID" -o -n "$A_PID" ]; then
+        echo "$HEADER"
+        echo "$DRIVER"
+        echo "$ADDR"
+        echo ""
+    fi
+    echo "$D_RUNNING"
+    echo "$A_RUNNING"
+    if [ -n "$CRON_START_ENTRY" -a -n "$CRON_STOP_ENTRY" ]; then
+        echo "Schedule:"
+        echo "$CRON_HEADER"
+        echo "$CRON_START_ENTRY"
+        echo "$CRON_STOP_ENTRY"
+    elif [ -n "$CRON_START_ENTRY" ]; then
+        echo "Schedule:"
+        echo "$CRON_HEADER"
+        echo "$CRON_START_ENTRY"
+        echo "No crontab halt schedule exists"
+    elif [ -n "$CRON_STOP_ENTRY" ]; then
+        echo "No crontab startup schedule exists"
+        echo "Schedule:"
+        echo "$CRON_HEADER"
+        echo "$CRON_STOP_ENTRY"
+    else
+        echo "No crontab startup schedule exists"
+        echo "No crontab halt schedule exists"
+    fi
+    echo ""
+}
+
+function is_numeric() {
+    if [ -n "$1" ]; then
+        [[ $1 =~ ^[0-9]+$ ]] && { return 0; } || { return 1; }
+    fi
+    return 1;
+}
+
+function is_crontab_format_numeric() {
+    if [ -n "$1" ]; then
+        if is_numeric "$1"; then
+            # plain old numbers are fine
+            return 0;
+        elif [[ $1 =~ ^[0-9]+(,[0-9]+)*$ ]]; then
+            # cron accepts numbers with commas as lists
+            return 0;
+        elif [[ $1 =~ ^\*(/[0-9]+)?$ ]]; then
+            # cron accepts */N for divisible numbers
+            # and just * for every
+            return 0;
+        fi
+    fi
+    return 1;
+}
+
+function is_crontab_hour() {
+    if [ -n "$1" ]; then
+        if is_numeric "$1"; then
+            if [ $1 -ge 0 -a $1 -le 23 ]; then
+                return 0;
+            else
+                return 1;
+            fi
+        elif is_crontab_format_numeric "$1"; then
+            # We can't easily check this, but the format is OK
+            return 0;
+        fi
+    fi
+    return 1;
+}
+
+function is_crontab_minute() {
+    if [ -n "$1" ]; then
+        if is_numeric "$1"; then
+            if [ $1 -ge 0 -a $1 -le 59 ]; then
+                return 0;
+            else
+                return 1;
+            fi
+        elif is_crontab_format_numeric "$1"; then
+            # We can't easily check this, but the format is OK
+            return 0;
+        fi
+    fi
+    return 1;
+}
+
+function unschedule() {
+    crontab -l 2>/dev/null | grep -v "$SCRIPT start" | grep -v "$SCRIPT stop" | crontab -
+}
+
+function schedule_raw() {
+    SUBCMD="$1"
+    HOUR="$2"
+    MIN="$3"
+
+    get_status
+    if [ "$SUBCMD" == "start" ]; then
+        SAVE_START=""
+        SAVE_STOP="$CRON_STOP_ENTRY"
+    else
+        SAVE_START="$CRON_START_ENTRY"
+        SAVE_STOP=""
+    fi
+    unschedule
+    NEW_ENTRY="$MIN $HOUR * * * $SCRIPT $SUBCMD >/dev/null 2>&1"
+    if [ -n "$SAVE_START" ] ; then
+        crontab -l 2>/dev/null | sed "\$ a $SAVE_START" | sed "\$ a $NEW_ENTRY" | crontab -
+    elif [ -n "$SAVE_STOP" ]; then
+        crontab -l 2>/dev/null | sed "\$ a $SAVE_STOP" | sed "\$ a $NEW_ENTRY" | crontab -
+    else
+        crontab -l 2>/dev/null | sed "\$ a $NEW_ENTRY" | crontab -
+    fi
+}
+
+function schedule() {
+    if [ $# -eq 3 ]; then
+        # <start|stop> <hour> <minute>
+        SUBCMD="$1"
+        HOUR="$2"
+        MIN="$3"
+        if [ "$SUBCMD" == "start" -o "$SUBCMD" == "stop" ]; then
+            if [ -n "$HOUR" -a -n "$MIN" ] && is_crontab_hour "$HOUR" && is_crontab_minute "$MIN"; then
+                schedule_raw "$SUBCMD" "$HOUR" "$MIN"
+            else
+                echo "Time must be a valid hour and minute, or follow crontab format"
+                display_help
+                exit 1
+            fi
+        else
+            echo "Command must be \"start\" or \"stop\""
+            display_help
+            exit 1
+        fi
+    else
+        echo "Invalid arguments for schedule (expected 3, got $#)"
+        echo "Arguments: $*"
+        display_help
+        exit 1
+    fi
+}
+
+if [ -z "$CMD" ]; then
+    # No arguments, assume you want status info
+    display_status
+    exit 0
+elif [ "$CMD" == "start" -o "$CMD" == "--start" ]; then
+    start_up
+elif [ "$CMD" == "stop" -o "$CMD" == "--stop" ]; then
+    shut_down
+elif [ "$CMD" == "schedule" -o "$CMD" == "--schedule" ]; then
+    shift
+    set -f
+    schedule $*
+elif [ "$CMD" == "unschedule" -o "$CMD" == "--unschedule" ]; then
+    unschedule
+elif [ "$CMD" == "help" -o "$CMD" == "-h" -o "$CMD" == "--help" ]; then
+    display_help
+    exit 1
+elif [ "$CMD" != "status" -a "$CMD" != "--status" ]; then
+    # This is the catch-all for "I have no idea what arguments are valid!"
+    display_usage
+    exit 1
+fi
+
+# We usually want to see the results of whatever we did
+display_status
+exit 0

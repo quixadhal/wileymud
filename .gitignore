@@ -1,6 +1,11 @@
 .*
 !.gitignore
 tf
-*.txt
-*.lua
-*.png
+Documents
+Pictures
+Videos
+Desktop
+Downloads
+Public
+Templates
+Music

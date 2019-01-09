@@ -1,0 +1,46 @@
+2019-01-07
+
+Installed Debian buster with Gnome desktop
+added contrib and non-free to apt sources.list
+
+apt install sudo
+apt install dkms build-essential linux-headers-amd64
+apt install git git-doc
+apt install vim-nox vim-doc
+
+Ugh... stupid nanny state politics...
+	To enable root logins from the X11 display manager (gdm)
+	edit /etc/gdm3/daemon.conf
+	add AllowRoot = true to the [Security] section
+	edit /etc/pam.d/gdm-password
+	comment out auth required pam_succeed_if.so user != root quiet_success
+
+apt install clang
+apt install manpages-posix
+
+Copied .inputrc, .vimrc, .vim/ from my home directory to both wiley and root
+Without doing this, cut/paste behavior via Putty was weird.
+
+apt install sqlite3 libsqlite3-dev libdbd-sqlite3-perl sqlite3-doc
+apt install libssl-dev libssl-doc
+apt install libpcre3-dev libpcre3-dbg sqlite3-pcre
+
+Chagned /etc/ssh/sshd_config to allow logins without an X11 login already established.
+    PubkeyAuthentication yes
+    PasswordAuthentication yes
+    PermitEmptyPasswords yes
+    ChallengeResponseAuthentication yes
+    UsePAM yes
+    AllowTcpForwarding yes
+    X11Forwarding yes
+    PermitTTY yes
+    PrintMotd no
+    TCPKeepAlive yes
+
+OK, this is weird... sshd refused connections for FOUR MINUTES after a reboot?  WTF???
+Why would it not start immediately, even before X11 was finished setting itself up?
+
+https://daniel-lange.com/archives/152-Openssh-taking-minutes-to-become-available,-booting-takes-half-an-hour-...-because-your-server-waits-for-a-few-bytes-of-randomness.html
+
+That's why.  Fucking hell.
+
