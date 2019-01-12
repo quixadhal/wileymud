@@ -870,7 +870,7 @@ if( !defined $style ) {
     $url = shift;
 }
 
-if( !defined $url and $style ne 'sql' and $style ne 'checksum' ) {
+if( !defined $url and $style ne 'sql' and $style ne 'checksum' and $style ne 'lpc' ) {
     print "Usage: $prog [wiley|ansi|html|debug] URL [channel] [speaker]\n";
     print "       $prog sql [limit] [--mark]\n";
     print "       $prog checksum [limit]\n";
@@ -886,6 +886,9 @@ if( $style eq 'sql' ) {
     $style = 'wiley';
 } elsif( $style eq 'debug' ) {
     $do_debug = 1;
+    $style = 'wiley';
+} elsif( $style eq 'lpc' ) {
+    $do_lpc = 1;
     $style = 'wiley';
 }
 

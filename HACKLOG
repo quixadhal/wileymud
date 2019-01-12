@@ -44,3 +44,98 @@ https://daniel-lange.com/archives/152-Openssh-taking-minutes-to-become-available
 
 That's why.  Fucking hell.
 
+Well, the "fix" for this is to edit /etc/default/grub
+
+    GRUB_CMDLINE_LINUX_DEFAULT="quiet random.trust_cpu=on"
+    GRUB_CMDLINE_LINUX="random.trust_cpu=on"
+
+apt install flex bison autoconf automake libtool binutils
+apt install gnu-standards autoconf-doc gettext bison-doc flex-doc libtool-doc
+apt install m4-doc autoconf-archive doc-base gettext-doc
+apt install zlib1g-dev
+apt install libwww-shorten-perl
+apt install liblog-log4perl-perl
+apt install readline-doc libterm-readline-gnu-perl
+apt install libjson-perl
+
+More weirdness with sshd...
+    Had to disable keepalive, as it prevented more than a single SSH session from working.
+
+apt install php php-pear
+apt install php-mbstring
+apt install libdate-manip-perl
+apt install libnet-telnet-perl
+apt install libcgi-pm-perl
+cpan
+    install HTML::FromANSI
+apt install libhtml-tableextract-perl
+apt install libgd-perl libgd-dev
+apt install libclass-accessor-perl
+cpan
+    install File::SAUCE
+
+Now that the pre-reqs are done, we can hand-install Image::ANSI, since
+the author removed it from CPAN to push his newer version, which simply doesn't
+work the same way.
+
+Should we ever lose the tarball of this module, we'll have to rewrite our perl
+code, which will be a PITA.
+
+apt install libparallel-forkmanager-perl
+apt install subversion cvs
+
+apt install mtr
+
+apt install ipset
+
+iptables-persistent apparently does NOTHING, or at least does it wrong...
+apt remove iptables-persistent
+
+    *sigh*
+    Fine.  To configure ipset, creat a blacklist table and then add all the entries to it.
+        create blacklist hash:ip family inet hashsize 4096 maxelem 65536
+        add blacklist 211.159.155.202
+        add blacklist 150.109.73.131
+        add blacklist 118.25.236.78
+        add blacklist 118.89.161.221
+        add blacklist 103.60.222.49
+        add blacklist 132.232.142.195
+        add blacklist 190.85.81.27
+    Then, do ipset save blacklist >/etc/iptables/ipset.blacklist
+
+    Once the blacklist exists, do this:
+
+        iptables -I INPUT -m set --match-set blacklist src -j DROP
+        iptables -I FORWARD -m set --match-set blacklist src -j DROP
+
+    and then iptables-save > /etc/iptables/rules.v4
+
+    NOW, to restore the rules at boot time (more-or-less), we hack 
+        /etc/network/if-up.d/ and make a new script called ipset-restore
+
+        #!/bin/sh
+
+        # This is a kludge to make ipset and iptables restore their rulesets
+        # at boot time.
+
+        # We pin this to loopback, as normally that interface should always
+        # come up AND isn't likely to go down, thus it should only happen once
+        # per boot cycle.
+
+        if [ "$IFACE" == "lo" ]; then
+            if [ "$ADDRFAM" == "inet" ]; then
+                ipset restore < /etc/iptables/ipset.blacklist
+                iptables-restore < /etc/iptables/rules.v4
+            fi
+        fi
+
+    and hopefully, this gets run after loopback comes up.  It would be ideal to have it
+    only run after ALL network interfaces are up, but systemd makes this extremely hard
+    to do.
+
+Fucking hippy linux freaks.... a VM has no need to "suspend" or "hibernate"...
+    systemctl mask sleep.target suspend.target hibernate.target hybrid-sleep.target
+
+Restore crontab for mudlist generation:
+    0 3,11,19 * * * /home/wiley/bin/mkmudlist.pl >/dev/null 2>&1 &
+
