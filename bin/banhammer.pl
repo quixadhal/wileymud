@@ -33,6 +33,7 @@ foreach my $filename (@logs) {
             /\[client\s+(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})\:\d+\]/;
             my ($ip) = ($1);
             next if !defined $ip;
+            next if $ip =~ /^172\.92\.143\.166/; # This is my external address
             next if $ip =~ /^192\.168\.0/;
             next if $ip =~ /^127\.0/;
             $error_count{$ip}++;
