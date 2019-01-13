@@ -23,11 +23,29 @@
 SCRIPT="$0"
 CMD="$1"
 MUD=`basename $SCRIPT`
+MUD__=`echo "$MUD" | cut -c1-3`
 #WILEY_SCRIPT="/etc/init.d/wiley"
 WILEY_SCRIPT="/home/wiley/etc/wiley"
 
 BASE__=`dirname $SCRIPT`
 BASE_DIR=`dirname $BASE__`
+
+#echo "BASE__ is $BASE__"
+#echo "BASE_DIR is $BASE_DIR"
+#echo "MUD is $MUD"
+#echo "MUD__ is $MUD__"
+
+if [ ! -z "$BASE_DIR" -a "$BASE_DIR" = "/etc" ]; then
+    # We're running out of /etc/init.d as a system startup
+    BASE_DIR="/home/wiley"
+    case "$MUD__" in
+        [SK][0-9][0-9] )
+            MUD=`echo "$MUD" | cut -c4-`
+            ;;
+        *)
+            ;;
+    esac
+fi
 
 if [ -z "$BASE_DIR" -o ! -d "$BASE_DIR" ]; then
     $BASE_DIR=$HOME

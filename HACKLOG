@@ -139,3 +139,5 @@ Fucking hippy linux freaks.... a VM has no need to "suspend" or "hibernate"...
 Restore crontab for mudlist generation:
     0 3,11,19 * * * /home/wiley/bin/mkmudlist.pl >/dev/null 2>&1 &
 
+apt install rsync
+

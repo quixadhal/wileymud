@@ -162,7 +162,7 @@
                     <hr />
                     <h3><a href="javascript:;" onmousedown="toggleDiv('hacklog');">HACKLOG:</a></h3>
                     <div id="hacklog" style="display: none;">
-                        <pre><?php pcmd("/bin/cat /home/quixadhal/HACKLOG/HACKLOG.lenin"); ?></pre>
+                        <pre><?php pcmd("/bin/cat /home/wiley/HACKLOG"); ?></pre>
                     </div>
                     <hr />
                     <h3><a href="javascript:;" onmousedown="toggleDiv('source');">Page Source:</a></h3>
