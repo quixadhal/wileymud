@@ -1,0 +1,16 @@
+#!/bin/sh
+
+# This is a kludge to make ipset and iptables restore their rulesets
+# at boot time.
+
+# We pin this to loopback, as normally that interface should always
+# come up AND isn't likely to go down, thus it should only happen once
+# per boot cycle.
+
+if [ "$IFACE" = "lo" ]; then
+    if [ "$ADDRFAM" = "inet" ]; then
+        ipset restore < /etc/iptables/ipset.blacklist
+        iptables-restore < /etc/iptables/rules.v4
+    fi
+fi
+

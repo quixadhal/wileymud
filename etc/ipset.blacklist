@@ -1,0 +1,1 @@
+create blacklist hash:ip family inet hashsize 4096 maxelem 65536
