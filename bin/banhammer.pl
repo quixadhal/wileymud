@@ -42,10 +42,13 @@ foreach my $filename (@logs) {
     }
 }
 
+system "ipset create blacklist hash:ip hashsize 4096";
+
 foreach my $ip (sort keys %error_count) {
     next if $error_count{$ip} < $ban_strikes;
     system "ipset add blacklist $ip";
 }
 
+system "cp -p $blacklist $blacklist.bkp";
 system "ipset save >$blacklist";
 

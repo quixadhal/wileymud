@@ -154,3 +154,57 @@ Damnit, stop re-enablng ipv6 when it's not going to work anyways...
 /etc/postfix/main.cf:
     inet_interfaces = 127.0.0.1
 
+apt install samba
+smbpasswd -a wiley
+
+Made some changes to /etc/samba/smb.conf
+    # Samba versions
+    # NT1 -- old CIFS version
+    # SMB2 -- updated for vista and windows 7
+    # SMB3 -- updated for windows 8
+
+    client min protocol = SMB3
+    client max protocol = SMB3
+    server min protocol = SMB3
+    server max protocol = SMB3
+    socket options = TCP_NODELAY
+    #security = user
+    server signing = auto
+    client signing = auto
+    local master = no
+    domain master = no
+    preferred master = no
+    os level = 10
+
+    [homes]
+       comment = Home Directories
+       browseable = no
+       read only = no
+       create mask = 0755
+       directory mask = 0755
+
+    [tmp]
+        comment = Temporary Stuff
+        read only = no
+        locking = no
+        path = /tmp
+        guest ok = yes
+
+And even MORE hippy shit....
+    root@wileymud3:/home/wiley# su - Debian-gdm -s /bin/bash
+    Debian-gdm@wileymud3:~$ dbus-launch gsettings range org.gnome.settings-daemon.plugins.power sleep-inactive-ac-type
+    enum
+    'blank'
+    'suspend'
+    'shutdown'
+    'hibernate'
+    'interactive'
+    'nothing'
+    'logout'
+    Debian-gdm@wileymud3:~$ dbus-launch gsettings get org.gnome.settings-daemon.plugins.power sleep-inactive-ac-type
+    'suspend'
+    Debian-gdm@wileymud3:~$ dbus-launch gsettings set org.gnome.settings-daemon.plugins.power sleep-inactive-ac-type 'nothing'
+    Debian-gdm@wileymud3:~$ logout
+
+No, seriously.. it's a virtual machine.
+There will be NO hugging of trees by making it "suspend".
