@@ -208,3 +208,10 @@ And even MORE hippy shit....
 
 No, seriously.. it's a virtual machine.
 There will be NO hugging of trees by making it "suspend".
+
+crontab now:
+    # m h  dom mon dow   command
+    0 3,11,19 * * * /home/wiley/bin/mkmudlist.pl >/dev/null 2>&1 &
+    25 2 * * * /home/wiley/bin/cleanlogs >/dev/null 2>&1 &
+    30 2 * * * /home/wiley/bin/remote-backup >/dev/null 2>&1 &
+

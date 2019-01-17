@@ -12,11 +12,12 @@ Environment=LC_ALL=en_US.utf8
 Environment=MALLOC_CHECK=2
 WorkingDirectory=/home/wiley/bin
 ExecStart=/home/wiley/bin/wileymud -L /home/wiley/lib/log 3000
-ExecStopPost=/bin/bzip2 -9q /home/wiley/lib/log/runlog.*
+ExecReload=/bin/kill -TERM $MAINPID
 TimeoutStopSec=30
 Restart=always
 RestartSec=30
 RestartPreventExitStatus=42
+KillSignal=SIGINT
 
 [Install]
 WantedBy=multi-user.target

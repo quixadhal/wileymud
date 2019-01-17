@@ -118,7 +118,7 @@ void signal_setup(void)
 	{{SIG_DFL}, SIGSYS, SA_NODEFER | SA_RESETHAND},
 	{{SIG_IGN}, SIGPIPE, SA_NODEFER},
 	{{SIG_IGN}, SIGALRM, SA_NODEFER},
-	{{SIG_IGN}, SIGTERM, SA_NODEFER},
+	{{reboot_request}, SIGTERM, SA_NODEFER},
 	{{SIG_IGN}, SIGURG, SA_NODEFER},
 	{{SIG_IGN}, SIGSTOP, SA_NODEFER},
 	{{SIG_IGN}, SIGTSTP, SA_NODEFER},
@@ -151,7 +151,7 @@ void signal_setup(void)
 	{{SIG_IGN}, {{SIGUSR2}}, SA_NODEFER | SA_RESETHAND, NULL},
 	{{SIG_IGN}, {{SIGPIPE}}, SA_NODEFER, NULL},
 	{{SIG_IGN}, {{SIGALRM}}, SA_NODEFER, NULL},
-	{{SIG_IGN}, {{SIGTERM}}, SA_NODEFER, NULL},
+	{{reboot_request}, {{SIGTERM}}, SA_NODEFER, NULL},
 	{{SIG_DFL}, {{0}}, SA_NODEFER | SA_RESETHAND, NULL},   /* Not listed by kill -l ??? */
 	{{reaper}, {{SIGCHLD}}, SA_NODEFER, NULL},
 	{{SIG_IGN}, {{SIGCONT}}, SA_NODEFER, NULL},
@@ -182,7 +182,7 @@ void signal_setup(void)
     signal(SIGUSR2, SIG_IGN);
     signal(SIGPIPE, SIG_IGN);
     signal(SIGALRM, SIG_IGN);
-    signal(SIGTERM, SIG_IGN);
+    signal(SIGTERM, reboot_request);
     signal(SIGCHLD, reaper);
     signal(SIGCONT, SIG_IGN);
     signal(SIGSTOP, SIG_IGN);

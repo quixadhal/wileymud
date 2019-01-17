@@ -1,0 +1,7 @@
+#!/bin/bash
+
+SKIP=`ls -al /home/wiley/lib/log/runlog* | grep -- '->' | awk '{print $NF}'`
+FILES=`ls -al /home/wiley/lib/log/runlog* | grep -v "$SKIP" | awk '{print $NF}'`
+
+echo "$FILES" | xargs bzip2 -9q
+
