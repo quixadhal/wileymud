@@ -35,6 +35,7 @@ case "$1" in
 	fi
 	/sbin/start-stop-daemon --start --quiet --chuid $MUDUSER:$MUDGROUP --chdir $STARTDIR --background --pidfile $PIDFILE --exec $SCRIPT -- -P $PIDFILE -L $LOGFILE $PORT
 	echo "."
+        $0 status
 	;;
   stop)
 	echo -n "Stopping MUD Server: WileyMUD"

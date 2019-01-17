@@ -1,0 +1,21 @@
+[Unit]
+Description=Disk World MUD
+Requires=dw_addr.service
+After=dw_addr.service
+
+[Service]
+Type=simple
+User=wiley
+Group=wiley
+Environment=LANG=en_US.utf8
+Environment=LC_ALL=en_US.utf8
+WorkingDirectory=/home/wiley/dw/bin
+ExecStart=/home/wiley/dw/bin/driver dw.cfg
+Restart=always
+RestartSec=30
+RestartPreventExitStatus=255
+
+[Install]
+WantedBy=multi-user.target
+Alias=diskworld.service
+Also=dw_addr.service

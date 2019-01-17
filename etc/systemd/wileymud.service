@@ -1,0 +1,22 @@
+[Unit]
+Description=WileyMUD III
+Documentation=http://wileymud.themud.org/~wiley/i3log.php
+After=dw_driver.service
+
+[Service]
+Type=simple
+User=wiley
+Group=wiley
+Environment=LANG=en_US.utf8
+Environment=LC_ALL=en_US.utf8
+Environment=MALLOC_CHECK=2
+WorkingDirectory=/home/wiley/bin
+ExecStart=/home/wiley/bin/wileymud -L /home/wiley/lib/log 3000
+ExecStopPost=/bin/bzip2 -9q /home/wiley/lib/log/runlog.*
+TimeoutStopSec=30
+Restart=always
+RestartSec=30
+RestartPreventExitStatus=42
+
+[Install]
+WantedBy=multi-user.target

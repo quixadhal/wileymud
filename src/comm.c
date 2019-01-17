@@ -132,7 +132,7 @@ int main(int argc, const char **argv)
 		else if (++pos < argc)
 		    logfile = argv[pos];
 		else {
-		    log_fatal("LOG filename expected after option -L.");
+		    log_fatal("LOG file directory name expected after option -L.");
 		    proper_exit(MUD_HALT);
 		}
 		break;
@@ -200,19 +200,28 @@ int main(int argc, const char **argv)
     }
 
     if (logfile) {
-	log_boot("Switching to %s as stderr.", logfile);
-	stderr = freopen(logfile, "a", stderr);
+        time_t                                  now = 0;
+        char                                    nowtimebuf[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
+        char                                    logfilename[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
+        //"%a, %d %b %Y %H:%M:%S %Z"
+
+        now = time((time_t *) 0);
+        strftime(nowtimebuf, sizeof(nowtimebuf), "%Y%m%d-%H%M%S", localtime(&now));
+        snprintf(logfilename, MAX_INPUT_LENGTH, "%s/runlog.%s", logfile, nowtimebuf);
+
+	log_boot("Switching to %s as stderr.", logfilename);
+	stderr = freopen(logfilename, "a", stderr);
 	if (!stderr) {
 	    log_fatal("Cannot reopen stderr!");
 	    proper_exit(MUD_HALT);
 	}
 	close(fileno(stdout));
 	dup2(fileno(stderr), fileno(stdout));
-	log_boot("Switch to %s completed.", logfile);
+	log_boot("Switch to %s completed.", logfilename);
 
         unlink("/home/wiley/lib/log/runlog");
-        symlink(logfile, "/home/wiley/lib/log/runlog");
-	log_boot("Symlink runlog to %s done.", logfile);
+        symlink(logfilename, "/home/wiley/lib/log/runlog");
+	log_boot("Symlink runlog to %s done.", logfilename);
     }
 
     srandom(time(0));

@@ -190,12 +190,20 @@ function start_up() {
     get_status
     if [ -z "$ADDR" ]; then
         echo "Launching address server..."
-        $M_DIR/addr_server $A_PORT >/dev/null 2>&1 &
+        if [ "$UID" = "0" ]; then
+            start-stop-daemon -S -c wiley:wiley -d $BASE_DIR -b $M_DIR/addr_server $A_PORT >/dev/null 2>&1 &
+        else
+            $M_DIR/addr_server $A_PORT >/dev/null 2>&1 &
+        fi
         sleep 1
     fi
     if [ -z "$DRIVER" ]; then
         echo "Launching driver..."
-        $M_DIR/driver $M_CFG >/dev/null 2>&1 &
+        if [ "$UID" = "0" ]; then
+            start-stop-daemon -S -c wiley:wiley -d $BASE_DIR -b $M_DIR/driver $M_CFG >/dev/null 2>&1 &
+        else
+            $M_DIR/driver $M_CFG >/dev/null 2>&1 &
+        fi
         sleep 1
     fi
 }
