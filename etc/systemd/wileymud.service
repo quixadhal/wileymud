@@ -1,7 +1,7 @@
 [Unit]
 Description=WileyMUD III
 Documentation=http://wileymud.themud.org/~wiley/i3log.php
-After=dw_driver.service
+After=diskworld.service
 
 [Service]
 Type=simple

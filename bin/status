@@ -1,4 +1,4 @@
 #!/bin/bash
 
-systemctl --no-pager status dw_addr dw_driver wileymud
+systemctl --no-pager status diskworld dw_addr dw_driver wileymud
 

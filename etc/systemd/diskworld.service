@@ -1,0 +1,17 @@
+[Unit]
+Description=Disk World MUD
+Requires=network-online.target
+After=network-online.target
+
+[Service]
+Type=oneshot
+User=wiley
+Group=wiley
+Environment=LANG=en_US.utf8
+Environment=LC_ALL=en_US.utf8
+WorkingDirectory=/home/wiley/dw/bin
+ExecStart=/bin/true
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target
