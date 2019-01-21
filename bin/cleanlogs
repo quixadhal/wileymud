@@ -1,7 +1,22 @@
 #!/bin/bash
 
-SKIP=`ls -al /home/wiley/lib/log/runlog* | grep -- '->' | awk '{print $NF}'`
-FILES=`ls -al /home/wiley/lib/log/runlog* | grep -v "$SKIP" | awk '{print $NF}'`
+LOG_DIR=/home/wiley/lib/log
+SKIP=`ls -al $LOG_DIR/runlog* | grep -- '->' | awk '{print $NF}'`
+FILES=`ls -al $LOG_DIR/runlog* | grep -v "$SKIP" | awk '{print $NF}'`
 
 echo "$FILES" | xargs bzip2 -9q
 
+THE_YEAR=`date '+%Y'`
+THE_MONTH=`date '+%m'`
+
+if [ $THE_MONTH -ge 1 -a $THE_YEAR -ge 1 ]; then
+    LAST_MONTH=$[ $THE_MONTH - 1 ]
+    if [ $LAST_MONTH -eq 0 ]; then
+        THE_YEAR=$[ $THE_YEAR - 1 ]
+        THE_MONTH=12
+    else
+        THE_MONTH=$LAST_MONTH
+    fi
+    mkdir -p $LOG_DIR/$THE_YEAR/$THE_MONTH
+    mv $LOG_DIR/$THE_YEAR$THE_MONTH* $LOG_DIR/$THE_YEAR/$THE_MONTH/ 2>/dev/null
+fi
