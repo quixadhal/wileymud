@@ -16,7 +16,6 @@
 #include "sql.h"
 
 sqlite3 *db = NULL;
-void setup_i3log_table(void);
 
 void sql_startup(void) {
     char log_msg[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
@@ -30,6 +29,11 @@ void sql_startup(void) {
     log_boot("SQLite Version: %s\n", sqlite3_libversion());
     setup_i3log_table();
     setup_urls_table();
+    setup_log_table();
+    setup_pinkfish_map_table();
+    setup_hours_table();
+    setup_channels_table();
+    setup_speakers_table();
     snprintf(log_msg, MAX_STRING_LENGTH, "%%^GREEN%%^WileyMUD Version: %s (%s), SQLite Version %s.%%^RESET%%^", VERSION_BUILD, VERSION_DATE, sqlite3_libversion());
     allchan_log(0,"wiley", "Cron", "WileyMUD", log_msg);
 }
@@ -111,6 +115,70 @@ void setup_log_table(void) {
     int rc = sqlite3_exec(db, sql, 0, 0, &err_msg);
     if (rc != SQLITE_OK) {
         log_fatal("Cannot create %s: %s\n", "log table", err_msg);
+        sqlite3_free(err_msg);
+        sqlite3_close(db);
+	proper_exit(MUD_HALT);
+    }
+}
+
+void setup_pinkfish_map_table(void) {
+    char *err_msg = NULL;
+    char *sql = "CREATE TABLE IF NOT EXISTS pinkfish_map ( "
+                "pinkfish TEXT PRIMARY KEY NOT NULL, "
+                "html TEXT "
+                ");";
+
+    int rc = sqlite3_exec(db, sql, 0, 0, &err_msg);
+    if (rc != SQLITE_OK) {
+        log_fatal("Cannot create %s: %s\n", "pinkfish_map table", err_msg);
+        sqlite3_free(err_msg);
+        sqlite3_close(db);
+	proper_exit(MUD_HALT);
+    }
+}
+
+void setup_hours_table(void) {
+    char *err_msg = NULL;
+    char *sql = "CREATE TABLE IF NOT EXISTS hours ( "
+                "hour TEXT PRIMARY KEY NOT NULL, "
+                "pinkfish TEXT "
+                ");";
+
+    int rc = sqlite3_exec(db, sql, 0, 0, &err_msg);
+    if (rc != SQLITE_OK) {
+        log_fatal("Cannot create %s: %s\n", "hours table", err_msg);
+        sqlite3_free(err_msg);
+        sqlite3_close(db);
+	proper_exit(MUD_HALT);
+    }
+}
+
+void setup_channels_table(void) {
+    char *err_msg = NULL;
+    char *sql = "CREATE TABLE IF NOT EXISTS channels ( "
+                "channel TEXT PRIMARY KEY NOT NULL, "
+                "pinkfish TEXT "
+                ");";
+
+    int rc = sqlite3_exec(db, sql, 0, 0, &err_msg);
+    if (rc != SQLITE_OK) {
+        log_fatal("Cannot create %s: %s\n", "channels table", err_msg);
+        sqlite3_free(err_msg);
+        sqlite3_close(db);
+	proper_exit(MUD_HALT);
+    }
+}
+
+void setup_speakers_table(void) {
+    char *err_msg = NULL;
+    char *sql = "CREATE TABLE IF NOT EXISTS speakers ( "
+                "speaker TEXT PRIMARY KEY NOT NULL, "
+                "pinkfish TEXT "
+                ");";
+
+    int rc = sqlite3_exec(db, sql, 0, 0, &err_msg);
+    if (rc != SQLITE_OK) {
+        log_fatal("Cannot create %s: %s\n", "speakers table", err_msg);
         sqlite3_free(err_msg);
         sqlite3_close(db);
 	proper_exit(MUD_HALT);

@@ -18,6 +18,11 @@ extern int tics_to_next_url_processing;
 #else
 void setup_i3log_table(void);
 void setup_urls_table(void);
+void setup_log_table(void);
+void setup_pinkfish_map_table(void);
+void setup_hours_table(void);
+void setup_channels_table(void);
+void setup_speakers_table(void);
 int process_url_callback(void *unused, int count, char **values, char **keys);
 #endif
 
