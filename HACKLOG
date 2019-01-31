@@ -215,3 +215,8 @@ crontab now:
     25 2 * * * /home/wiley/bin/cleanlogs >/dev/null 2>&1 &
     30 2 * * * /home/wiley/bin/remote-backup >/dev/null 2>&1 &
 
+apt install perl-doc
+apt install python3-pip python3-twisted python-attr-doc python-crypto-doc python-openssl-doc
+    python-secretstorage-doc python-setuptools-doc python3-examples fonts-roboto
+    python-openssl python3-pampy python-cryptography-doc python-enum34-doc
+

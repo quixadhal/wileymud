@@ -1766,5 +1766,6 @@
     "avenged": "<SPAN style=\"background-color: #bb0000; color: #00ff00\">",
     "llama": "<SPAN style=\"color: #bb0000\">",
     "hirandu": "<SPAN style=\"color: #bb0000\">",
-    "thrym": "<SPAN style=\"color: #bb0000\">"
+    "thrym": "<SPAN style=\"color: #bb0000\">",
+    "malaclypse": "<SPAN style=\"color: #00bb00\">"
 }

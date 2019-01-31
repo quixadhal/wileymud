@@ -34,5 +34,6 @@ void bug_sql( const char *logtype, const char *filename, const char *function, i
               const char *character, int character_room,
               const char *victim, int victim_room, 
               const char *message );
+void addspeaker_sql( const char *speaker, const char *pinkfish );
 
 #endif

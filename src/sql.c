@@ -598,3 +598,39 @@ void bug_sql( const char *logtype, const char *filename, const char *function, i
     }
     sqlite3_finalize(insert_stmt);
 }
+
+void addspeaker_sql( const char *speaker, const char *pinkfish ) {
+    char *err_msg = NULL;
+    sqlite3_stmt *insert_stmt = NULL;
+    char *sql = "INSERT OR IGNORE INTO speakers ( speaker, pinkfish) "
+                "VALUES (?,?);";
+
+    int rc = sqlite3_prepare_v2( db, sql, -1, &insert_stmt, NULL );
+    if (rc != SQLITE_OK) {
+        log_fatal("SQL statement error %s: %s\n", "speakers insert", sqlite3_errmsg(db));
+        sqlite3_close(db);
+	proper_exit(MUD_HALT);
+    }
+    rc = sqlite3_bind_text( insert_stmt, 1, speaker, strlen(speaker), NULL );
+    if (rc != SQLITE_OK) {
+        log_fatal("SQL parameter error %s: %s\n", "speakers speaker", sqlite3_errmsg(db));
+        sqlite3_close(db);
+	proper_exit(MUD_HALT);
+    }
+    rc = sqlite3_bind_text( insert_stmt, 2, pinkfish, strlen(pinkfish), NULL );
+    if (rc != SQLITE_OK) {
+        log_fatal("SQL parameter error %s: %s\n", "speakers pinkfish", sqlite3_errmsg(db));
+        sqlite3_close(db);
+	proper_exit(MUD_HALT);
+    }
+
+    rc = sqlite3_step(insert_stmt);
+    if (rc != SQLITE_DONE) {
+        log_fatal("SQL insert error %s: %s\n", "speakers insert", err_msg);
+        sqlite3_free(err_msg);
+        sqlite3_close(db);
+	proper_exit(MUD_HALT);
+    }
+    sqlite3_finalize(insert_stmt);
+}
+

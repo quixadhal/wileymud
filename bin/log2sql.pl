@@ -92,12 +92,110 @@ sub setup_log_table {
     }
 }
 
+sub setup_pinkfish_map_table {
+    my $db = shift;
+    die "Invalid database handle!" if !defined $db;
+
+    my $table_sql = $db->prepare( qq!
+        CREATE TABLE IF NOT EXISTS pinkfish_map ( 
+            pinkfish TEXT PRIMARY KEY NOT NULL,
+            html TEXT
+        );
+        !);
+    my $rv = $table_sql->execute();
+    if($rv) {
+        $db->commit;
+    } else {
+        print STDERR $DBI::errstr."\n";
+        $db->rollback;
+    }
+}
+
+sub setup_hours_table {
+    my $db = shift;
+    die "Invalid database handle!" if !defined $db;
+
+    my $table_sql = $db->prepare( qq!
+        CREATE TABLE IF NOT EXISTS hours ( 
+            hour INTEGER PRIMARY KEY NOT NULL,
+            pinkfish TEXT
+        );
+        !);
+    my $rv = $table_sql->execute();
+    if($rv) {
+        $db->commit;
+    } else {
+        print STDERR $DBI::errstr."\n";
+        $db->rollback;
+    }
+}
+
+sub setup_channels_table {
+    my $db = shift;
+    die "Invalid database handle!" if !defined $db;
+
+    my $table_sql = $db->prepare( qq!
+        CREATE TABLE IF NOT EXISTS channels ( 
+            channel TEXT PRIMARY KEY NOT NULL,
+            pinkfish TEXT
+        );
+        !);
+    my $rv = $table_sql->execute();
+    if($rv) {
+        $db->commit;
+    } else {
+        print STDERR $DBI::errstr."\n";
+        $db->rollback;
+    }
+}
+
+sub setup_speakers_table  {
+    my $db = shift;
+    die "Invalid database handle!" if !defined $db;
+
+    my $table_sql = $db->prepare( qq!
+        CREATE TABLE IF NOT EXISTS speakers ( 
+            created DATETIME DEFAULT (STRFTIME('%Y-%m-%d %H:%M:%f', 'NOW','utc')), 
+            speaker TEXT,
+            channel TEXT,
+            mud TEXT,
+            pinkfish TEXT
+        );
+        !);
+    my $rv = $table_sql->execute();
+    if($rv) {
+        $db->commit;
+    } else {
+        print STDERR $DBI::errstr."\n";
+        $db->rollback;
+    }
+}
+
 sub check_offset {
     my $db = shift;
     die "Invalid database handle!" if !defined $db;
 
     my $rv = $db->selectrow_arrayref(qq!
         SELECT COUNT(*) FROM i3log;
+        !);
+    if($rv) {
+    #    $db->commit;
+        return $rv->[0];
+    } else {
+        print STDERR $DBI::errstr."\n";
+    #    $db->rollback;
+    }
+
+    return 0;
+}
+
+sub check_speakers {
+    my $db = shift;
+    die "Invalid database handle!" if !defined $db;
+
+    my $rv = $db->selectrow_arrayref(qq!
+        select count(*) from (select distinct speaker from i3log) as sq;
+        SELECT COUNT(*) FROM colors;
         !);
     if($rv) {
     #    $db->commit;
@@ -162,6 +260,10 @@ $db = DBI->connect("DBI:SQLite:dbname=$DB_FILE", '', '', { AutoCommit => 0, Prin
 setup_i3log_table($db);
 setup_urls_table($db);
 setup_log_table($db);
+setup_pinkfish_map_table($db);
+setup_hours_table($db);
+setup_channels_table($db);
+setup_speakers_table($db);
 $offset = check_offset($db) if !$offset;
 
 my $insert_sql = $db->prepare( qq!

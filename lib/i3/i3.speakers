@@ -1,5 +1,5 @@
 #COUNT
-Count   49
+Count   56
 End
 
 #SPEAKER
@@ -10,6 +10,11 @@ End
 #SPEAKER
 Name   zanatos
 Color  %^GREEN%^
+End
+
+#SPEAKER
+Name   malaclypse
+Color  %^BLUE%^
 End
 
 #SPEAKER
@@ -88,6 +93,11 @@ Color  %^RED%^%^BOLD%^
 End
 
 #SPEAKER
+Name   ban
+Color  %^YELLOW%^
+End
+
+#SPEAKER
 Name   taffyd
 Color  %^GREEN%^
 End
@@ -95,6 +105,16 @@ End
 #SPEAKER
 Name   orpheo
 Color  %^MAGENTA%^%^BOLD%^
+End
+
+#SPEAKER
+Name   pauline
+Color  %^WHITE%^
+End
+
+#SPEAKER
+Name   star
+Color  %^RED%^%^BOLD%^
 End
 
 #SPEAKER
@@ -115,6 +135,11 @@ End
 #SPEAKER
 Name   silenus
 Color  %^BLUE%^
+End
+
+#SPEAKER
+Name   falerin
+Color  %^MAGENTA%^
 End
 
 #SPEAKER
@@ -203,6 +228,11 @@ Color  %^GREEN%^%^BOLD%^
 End
 
 #SPEAKER
+Name   lash
+Color  %^CYAN%^
+End
+
+#SPEAKER
 Name   quixadhal
 Color  %^RED%^
 End
@@ -230,6 +260,11 @@ End
 #SPEAKER
 Name   scathach
 Color  %^WHITE%^
+End
+
+#SPEAKER
+Name   celt
+Color  %^GREEN%^%^BOLD%^
 End
 
 #SPEAKER
