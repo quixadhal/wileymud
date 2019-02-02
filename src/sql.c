@@ -9,6 +9,7 @@
 #include "comm.h"
 #include "version.h"
 #include "crc32.h"
+#include "utils.h"
 #ifdef I3
 #include "i3.h"
 #endif
@@ -672,6 +673,10 @@ void addspeaker_sql( const char *speaker, const char *pinkfish ) {
     sqlite3_stmt *insert_stmt = NULL;
     char *sql = "INSERT OR IGNORE INTO speakers ( speaker, pinkfish) "
                 "VALUES (?,?);";
+
+    log_info("ADD_SPEAKER: %s = %s", VNULL(speaker), VNULL(pinkfish));
+    if(!speaker || !*speaker || !pinkfish || !*pinkfish)
+        return;
 
     int rc = sqlite3_prepare_v2( db, sql, -1, &insert_stmt, NULL );
     if (rc != SQLITE_OK) {

@@ -2573,7 +2573,7 @@ void I3_send_channel_t(I3_CHANNEL *channel, const char *name, char *tmud, char *
 
 int I3_token(char type, char *string, char *oname, char *tname)
 {
-    char                                    code[50];
+    char                                    code[500];
     char                                   *p;
 
     switch (type) {
@@ -2582,16 +2582,16 @@ int I3_token(char type, char *string, char *oname, char *tname)
 	    code[1] = '\0';
 	    return 1;
 	case '$':
-	    strlcpy(code, "$", 50);
+	    strlcpy(code, "$", 500);
 	    break;
 	case ' ':
-	    strlcpy(code, " ", 50);
+	    strlcpy(code, " ", 500);
 	    break;
 	case 'N':					       /* Originator's name */
-	    strlcpy(code, oname, 50);
+	    strlcpy(code, oname, 500);
 	    break;
 	case 'O':					       /* Target's name */
-	    strlcpy(code, tname, 50);
+	    strlcpy(code, tname, 500);
 	    break;
     }
     p = code;
@@ -3243,6 +3243,8 @@ void I3_process_channel_e(I3_HEADER *header, char *s)
     I3_CHANNEL                             *channel;
     struct tm                              *local = localtime(&i3_time);
     int                                     len;
+    char                                    speaker_color[MAX_INPUT_LENGTH];
+    char                                    mud_color[MAX_INPUT_LENGTH];
 
     I3_get_field(ps, &next_ps);
     I3_remove_quotes(&ps);
@@ -3258,7 +3260,8 @@ void I3_process_channel_e(I3_HEADER *header, char *s)
     ps = next_ps;
     I3_get_field(ps, &next_ps);
     I3_remove_quotes(&ps);
-    snprintf(visname, MAX_INPUT_LENGTH, "%s@%s", ps, header->originator_mudname);
+    //snprintf(visname, MAX_INPUT_LENGTH, "%s@%s", ps, header->originator_mudname);
+    strlcpy(visname, ps, MAX_INPUT_LENGTH);
 
     ps = next_ps;
     I3_get_field(ps, &next_ps);
@@ -3272,15 +3275,17 @@ void I3_process_channel_e(I3_HEADER *header, char *s)
         len--;
     }
 
-    snprintf(msg, MAX_STRING_LENGTH, "%s", I3_convert_channel_message(tps, visname, visname));
     //strcpy(format, "%%^GREEN%%^%%^BOLD%%^%-2.2d%%^WHITE%%^%%^BOLD%%^:%%^GREEN%%^%%^BOLD%%^%-2.2d%%^RESET%%^ ");
     //strcat(format, channel->layout_e);
     //snprintf(buf, MAX_STRING_LENGTH, format, local->tm_hour, local->tm_min, channel->local_name, msg);
 
     strcpy(format, "%s ");
     strcat(format, channel->layout_e);
+    snprintf(speaker_color, MAX_INPUT_LENGTH, "%s%s", color_speaker(header->originator_username), visname);
+    snprintf(mud_color, MAX_INPUT_LENGTH, "%s%s%%^RESET%%^", color_speaker(header->originator_username), header->originator_mudname);
+    snprintf(tmpvisname, MAX_INPUT_LENGTH, "%s@%s", speaker_color, mud_color);
+    snprintf(msg, MAX_STRING_LENGTH, "%s", I3_convert_channel_message(tps, tmpvisname, tmpvisname));
     snprintf(buf, MAX_STRING_LENGTH, format, color_time(local), channel->local_name, msg);
-    snprintf(tmpvisname, MAX_INPUT_LENGTH, "%s@%s", visname, header->originator_mudname);
 
     allchan_log(1, channel->local_name, visname, header->originator_mudname, msg);
 
