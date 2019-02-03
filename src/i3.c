@@ -3112,6 +3112,8 @@ void I3_process_channel_t(I3_HEADER *header, char *s)
     strcpy(layout, "%s ");
     strcat(layout, channel->layout_e);
 
+    allchan_log(1, channel->local_name, visname_o, header->originator_mudname, omsg);
+
     for (d = first_descriptor; d; d = d->next) {
 	vch = d->original ? d->original : d->character;
 
