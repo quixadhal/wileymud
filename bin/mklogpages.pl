@@ -9,120 +9,37 @@ use Data::Dumper;
 use DBI;
 use Date::Manip::Date;
 use HTML::Entities;
+use Getopt::Long;
 
 my $DB_FILE = '/home/wiley/lib/i3/wiley.db';
 my $PAGE_DIR = "/home/wiley/public_html/logpages";
-my $page_size = 100;
 my $db = undef;
 
-sub add_speaker {
-    my $db = shift;
-    my $speakers = shift;
-    my $speaker = shift;
-    return $speakers if !defined $speaker or length "$speaker" < 1;
-    $speaker = lc $speaker;
+my $page_start = 0;
+my $page_size = 100;
+my $page_limit = 10;
 
-    my @color_map = (
-        "%^BLACK%^%^BOLD%^",
-        "%^RED%^",
-        "%^GREEN%^",
-        "%^ORANGE%^",
-        "%^BLUE%^",
-        "%^MAGENTA%^",
-        "%^CYAN%^",
-        "%^WHITE%^",
-        "%^RED%^%^BOLD%^",
-        "%^GREEN%^%^BOLD%^",
-        "%^YELLOW%^",
-        "%^MAGENTA%^%^BOLD%^",
-        "%^BLUE%^%^BOLD%^",
-        "%^CYAN%^%^BOLD%^",
-        "%^WHITE%^%^BOLD%^",
-        '%^B_RED%^%^WHITE%^',
-        '%^B_GREEN%^%^WHITE%^',
-        '%^B_BLUE%^%^WHITE%^',
-        '%^B_MAGENTA%^%^WHITE%^',
-        '%^B_RED%^%^BLACK%^',
-        '%^B_GREEN%^%^BLACK%^',
-        '%^B_MAGENTA%^%^BLACK%^',
-        '%^B_CYAN%^%^BLACK%^',
-        '%^B_YELLOW%^%^BLACK%^',
-        '%^B_WHITE%^%^BLACK%^',
-    );
-    my $color_count = scalar @color_map;
-    my $speaker_count = scalar keys %$speakers;
-
-    if( ! exists $speakers->{$speaker} ) {
-        # New speaker, insert to the database and reload it.
-        my $new_color = @color_map[$speaker_count % $color_count];
-        #$db->begin_work;
-        my $insert_sql = $db->prepare( qq!
-            INSERT INTO speakers ( speaker, pinkfish )
-            VALUES (?,?)
-            !);
-        my $rv = $insert_sql->execute( $speaker, $new_color );
-        if($rv) {
-            #$db->commit if !($counter % 100);
-            #$db->commit;
-            print "Added $speaker as $new_color\n";
-        } else {
-            print STDERR $DBI::errstr."\n";
-            #$db->rollback;
-        }
-        $speakers = load_speakers($db);
-    }
-
-    return $speakers;
+sub do_help {
+    print STDERR <<EOM
+usage:  $PROGRAM_NAME [-h] [-p page] [-s page size] [-c page count]
+long options:
+    --help              - This helpful help!
+    --page N            - Page to start from, 0 is the first page.
+    --size N            - Page size, defaults to 100.
+    --count N           - Number of pages to do, defaults to 10.
+EOM
+    ;
+    exit(1);
 }
 
-sub add_channel {
-    my $db = shift;
-    my $channels = shift;
-    my $channel = shift;
-    return $channels if !defined $channel or length "$channel" < 1;
-    $channel = lc $channel;
-
-    my @color_map = (
-        "%^RED%^",
-        "%^GREEN%^",
-        "%^ORANGE%^",
-        "%^BLUE%^",
-        "%^MAGENTA%^",
-        "%^CYAN%^",
-        "%^WHITE%^",
-        "%^RED%^%^BOLD%^",
-        "%^GREEN%^%^BOLD%^",
-        "%^YELLOW%^",
-        "%^MAGENTA%^%^BOLD%^",
-        "%^BLUE%^%^BOLD%^",
-        "%^CYAN%^%^BOLD%^",
-        "%^WHITE%^%^BOLD%^",
-    );
-    my $color_count = scalar @color_map;
-    my $channel_count = scalar keys %$channels;
-
-    if( ! exists $channels->{$channel} ) {
-        # New speaker, insert to the database and reload it.
-        my $new_color = @color_map[$channel_count % $color_count];
-        #$db->begin_work;
-        my $insert_sql = $db->prepare( qq!
-            INSERT INTO channels ( channel, pinkfish )
-            VALUES (?,?)
-            !);
-        my $rv = $insert_sql->execute( $channel, $new_color );
-        if($rv) {
-            #$db->commit if !($counter % 100);
-            #$db->commit;
-            print "Added $channel as $new_color\n";
-        } else {
-            print STDERR $DBI::errstr."\n";
-            #$db->rollback;
-        }
-        $channels = load_channels($db);
-    }
-
-    return $channels;
-}
+Getopt::Long::Configure("gnu_getopt");
+Getopt::Long::Configure("auto_version");
+GetOptions(
+    'help|h'        => sub { do_help() },
+    'page|p:i'      => \$page_start,
+    'size|s:100'    => \$page_size,
+    'limit|l:10'    => \$page_limit,
+);
 
 sub fetch_row_count {
     my $db = shift;
@@ -431,9 +348,16 @@ sub load_speakers {
     return undef;
 }
 
-
 $db = DBI->connect("DBI:SQLite:dbname=$DB_FILE", '', '', { AutoCommit => 1, PrintError => 1, });
 my $row_count = fetch_row_count($db);
+my $page_count = $row_count / $page_size;
+
+printf "Found %d rows, which is %d pages of %d rows each.\n", $row_count, $page_count, $page_size;
+printf "Starting from page %d, as requested!\n", $page_start;
+printf "Pausing 5 seconds before charging ahead!\n";
+
+sleep 5;
+
 my $pinkfish_map = load_pinkfish_map($db);
 my $hours = load_hours($db);
 
@@ -446,11 +370,16 @@ my $speakers = load_speakers($db);
 #print STDERR "Channels: ".Dumper($channels)."\n";
 #print STDERR "Speakers: ".Dumper($speakers)."\n";
 
-printf "Found %d rows\n", $row_count;
-
 my $pages_done = 0;
-for( my $i = 0; $i < $row_count; $i += $page_size ) {
+for( my $i = ($page_start * $page_size); $i < $row_count; $i += $page_size ) {
+    last if $pages_done >= $page_limit;
+    $pages_done++;
+
     my $filename = sprintf "%s/%09d.html", $PAGE_DIR, $i;
+    if( -f $filename ) {
+        printf "    Skipping %s!\n", $filename;
+        next;
+    }
     my $next_page = sprintf "%09d.html", $i + $page_size;
     my $prev_page = sprintf "%09d.html", $i - $page_size;
 
@@ -592,9 +521,6 @@ EOM
         # Emit each data row as a table row
         my $bg_color = ($counter % 2) ? "#000000" : "#1F1F1F";
 
-        #$channels = add_channel($db, $channels, $row->{channel}) if defined $row->{channel};
-        #$speakers = add_speaker($db, $speakers, $row->{speaker}) if defined $row->{speaker};
-
         my $hour_html = $row->{hour_html} || "--**--NULL--**--";
         my $channel_html = $row->{channel_html} || $channels->{default}{html} || "--**--NULL--**--";
         my $speaker_html = $row->{speaker_html} || $speakers->{default}{html} || "--**--NULL--**--";
@@ -637,9 +563,6 @@ EOM
 EOM
 ;
     close FP;
-
-    $pages_done++;
-    last if $pages_done > 9;
 }
 
 #$channels = load_channels($db);
