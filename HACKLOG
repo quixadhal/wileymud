@@ -220,3 +220,10 @@ apt install python3-pip python3-twisted python-attr-doc python-crypto-doc python
     python-secretstorage-doc python-setuptools-doc python3-examples fonts-roboto
     python-openssl python3-pampy python-cryptography-doc python-enum34-doc
 
+apt install default-jre default-jdk
+    ant jython antlr javacc ant-doc libregexp-java liblog4j2-java libjsch-java
+    javacc-doc junit-doc jython-doc libpostgresql-jdbc-java libcommons-logging-java-doc
+    openjdk-11-source libcompress-lzf-java liblog4j2-java-doc
+    libcommons-net-java libcommons-net-java-doc liboro-java
+
+apt install libdata-serializer-perl
