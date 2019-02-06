@@ -7,12 +7,13 @@ no warnings 'utf8';
 use English;
 use Data::Dumper;
 use DBI;
-use Date::Manip::Date;
 use HTML::Entities;
 use Getopt::Long;
 
-my $DB_FILE = '/home/wiley/lib/i3/wiley.db';
-my $PAGE_DIR = "/home/wiley/public_html/logpages";
+#my $DB_FILE = '/home/wiley/lib/i3/wiley.db';
+my $DB_FILE = '/home/wiley/lib/i3/wiley.db.bkp-20190205';
+my $PAGE_DIR = '/home/wiley/public_html/logpages';
+
 my $db = undef;
 
 my $page_start = 0;
@@ -21,12 +22,12 @@ my $page_limit = 10;
 
 sub do_help {
     print STDERR <<EOM
-usage:  $PROGRAM_NAME [-h] [-p page] [-s page size] [-c page count]
+usage:  $PROGRAM_NAME [-h] [-s start page] [-l page limit] [-p page size]
 long options:
     --help              - This helpful help!
-    --page N            - Page to start from, 0 is the first page.
-    --size N            - Page size, defaults to 100.
-    --count N           - Number of pages to do, defaults to 10.
+    --start N           - Page to start from, 0 is the first page.
+    --limit N           - Number of pages to do, defaults to 10.
+    --pagesize N        - Page size, defaults to 100.
 EOM
     ;
     exit(1);
@@ -35,10 +36,10 @@ EOM
 Getopt::Long::Configure("gnu_getopt");
 Getopt::Long::Configure("auto_version");
 GetOptions(
-    'help|h'        => sub { do_help() },
-    'page|p:i'      => \$page_start,
-    'size|s:100'    => \$page_size,
-    'limit|l:10'    => \$page_limit,
+    'help|h'            => sub { do_help() },
+    'start|s:i'         => \$page_start,
+    'limit|l:10'        => \$page_limit,
+    'pagesize|p:100'    => \$page_size,
 );
 
 sub fetch_row_count {
@@ -78,16 +79,16 @@ sub update_all_speakers {
         "%^BLUE%^%^BOLD%^",
         "%^CYAN%^%^BOLD%^",
         "%^WHITE%^%^BOLD%^",
-        '%^B_RED%^%^WHITE%^',
-        '%^B_GREEN%^%^WHITE%^',
-        '%^B_BLUE%^%^WHITE%^',
-        '%^B_MAGENTA%^%^WHITE%^',
-        '%^B_RED%^%^BLACK%^',
-        '%^B_GREEN%^%^BLACK%^',
-        '%^B_MAGENTA%^%^BLACK%^',
-        '%^B_CYAN%^%^BLACK%^',
-        '%^B_YELLOW%^%^BLACK%^',
-        '%^B_WHITE%^%^BLACK%^',
+        '%^WHITE%^%^B_RED%^',
+        '%^WHITE%^%^B_GREEN%^',
+        '%^WHITE%^%^B_BLUE%^',
+        '%^WHITE%^%^B_MAGENTA%^',
+        '%^BLACK%^%^B_RED%^',
+        '%^BLACK%^%^B_GREEN%^',
+        '%^BLACK%^%^B_MAGENTA%^',
+        '%^BLACK%^%^B_CYAN%^',
+        '%^BLACK%^%^B_YELLOW%^',
+        '%^BLACK%^%^B_WHITE%^',
     );
     my $color_count = scalar @color_map;
     my $speakers = load_speakers($db);
@@ -211,6 +212,101 @@ sub simple_fetch_page {
     return undef;
 }
 
+sub fetch_date_counts {
+    my $db = shift;
+    die "Invalid database handle!" if !defined $db;
+
+    # 2006-09-25 11:57:45.000
+    # YYYY-MM-DD HH:MM:SS.UUU
+    # 1    6  9  12 15 18 21
+    my $rv = $db->selectall_arrayref(qq!
+        SELECT      SUBSTR(created, 1, 10) AS the_date,
+                    SUBSTR(created, 1, 4) AS the_year,
+                    SUBSTR(created, 6, 2) AS the_month,
+                    SUBSTR(created, 9, 2) AS the_day,
+                    COUNT(*) AS count
+        FROM        i3log
+        GROUP BY    the_date
+        ORDER BY    the_date ASC;
+        ;!, { Slice => {} } );
+    if($rv) {
+    #    $db->commit;
+        return $rv;
+    } else {
+        print STDERR $DBI::errstr."\n";
+    #    $db->rollback;
+    }
+    return undef;
+}
+
+sub fetch_page_by_date {
+    my $db = shift;
+    my $date = shift;
+    die "Invalid database handle!" if !defined $db;
+
+    my $rv = undef;
+
+    if( !defined $date ) {
+        $rv = $db->selectrow_arrayref("select date('now');");
+        if($rv) {
+            $date = $rv->[0];
+        } else {
+            print STDERR $DBI::errstr."\n";
+        }
+    }
+    die "Cannot obtain a valid date???: $!" if !defined $date;
+
+    $rv = $db->selectall_arrayref(qq!
+             SELECT i3log.created,
+                    i3log.is_emote,
+                    i3log.is_url,
+                    i3log.is_bot,
+                    i3log.channel,
+                    i3log.speaker,
+                    i3log.mud,
+                    i3log.message,
+                    SUBSTR(created, 1, 10)     AS the_date,
+                    SUBSTR(created, 12, 8)     AS the_time,
+                    SUBSTR(created, 1, 4)      AS the_year,
+                    SUBSTR(created, 6, 2)      AS the_month,
+                    SUBSTR(created, 9, 2)      AS the_day,
+                    SUBSTR(created, 12, 2)     AS the_hour,
+                    SUBSTR(created, 15, 2)     AS the_minute,
+                    SUBSTR(created, 18, 2)     AS the_second,
+                    CAST(SUBSTR(created, 12, 2) AS INTEGER) AS the_hour,
+                    hours.pinkfish             AS hour_color,
+                    channels.pinkfish          AS channel_color,
+                    speakers.pinkfish          AS speaker_color,
+                    pinkfish_map_hour.html     AS hour_html,
+                    pinkfish_map_channel.html  AS channel_html,
+                    pinkfish_map_speaker.html  AS speaker_html
+               FROM i3log
+          LEFT JOIN hours
+                 ON (the_hour = hours.hour)
+          LEFT JOIN channels
+                 ON (lower(i3log.channel) = channels.channel)
+          LEFT JOIN speakers
+                 ON (lower(i3log.speaker) = speakers.speaker)
+          LEFT JOIN pinkfish_map pinkfish_map_hour
+                 ON (hour_color = pinkfish_map_hour.pinkfish)
+          LEFT JOIN pinkfish_map pinkfish_map_channel
+                 ON (channel_color = pinkfish_map_channel.pinkfish)
+          LEFT JOIN pinkfish_map pinkfish_map_speaker
+                 ON (speaker_color = pinkfish_map_speaker.pinkfish)
+              WHERE date(i3log.created) = ?
+           ORDER BY created ASC;
+        ;!, { Slice => {} }, ($date) );
+    if($rv) {
+    #    $db->commit;
+        return $rv;
+    } else {
+        print STDERR $DBI::errstr."\n";
+    #    $db->rollback;
+    }
+    return undef;
+
+}
+
 sub fetch_page {
     my $db = shift;
     my $offset = shift || 0;
@@ -268,6 +364,8 @@ sub fetch_page {
 #        );
 sub load_pinkfish_map {
     my $db = shift;
+    die "Invalid database handle!" if !defined $db;
+
     my $rv = $db->selectall_hashref(qq!
         SELECT pinkfish, html
           FROM pinkfish_map
@@ -288,6 +386,8 @@ sub load_pinkfish_map {
 #        );
 sub load_hours {
     my $db = shift;
+    die "Invalid database handle!" if !defined $db;
+
     my $rv = $db->selectall_hashref(qq!
         SELECT hour, hours.pinkfish, html
           FROM hours
@@ -310,6 +410,8 @@ sub load_hours {
 #        );
 sub load_channels {
     my $db = shift;
+    die "Invalid database handle!" if !defined $db;
+
     my $rv = $db->selectall_hashref(qq!
         SELECT channel, channels.pinkfish, html
           FROM channels
@@ -332,6 +434,8 @@ sub load_channels {
 #        );
 sub load_speakers {
     my $db = shift;
+    die "Invalid database handle!" if !defined $db;
+
     my $rv = $db->selectall_hashref(qq!
         SELECT speaker, speakers.pinkfish, html
           FROM speakers
@@ -348,12 +452,88 @@ sub load_speakers {
     return undef;
 }
 
+sub next_page_date {
+    my $date_counts = shift;
+    my $page_year = shift;
+    my $page_month = shift;
+    my $page_day = shift;
+
+
+}
+
+sub generate_navbar_script {
+    my $date_counts = shift;
+    die "Invalid date information!" if !defined $date_counts;
+
+    my $filename = "$PAGE_DIR/navbar.js";
+
+    my @date_list = ();
+    foreach my $row (@$date_counts) {
+        push @date_list, ($row->{the_date});
+    }
+    my $big_list = join(",\n", map { sprintf "\"%s\"", $_; } (@date_list));
+    my $last_date = $date_list[-1];
+
+    open FP, ">$filename" or die "Cannot open navbar script $filename: $!";
+    print FP <<EOM
+        var valid_dates = [
+            $big_list
+        ];
+        var bits = window.location.href.toString().split('/');
+        var my_date = bits[bits.length-1].substr(0,10);
+
+        function checkDate(date) {
+            var m = date.getMonth();
+            var d = date.getDate();
+            var y = date.getFullYear();
+             
+            // First convert the date in to the yyyy-mm-dd format 
+            // Take note that we will increment the month count by 1 
+            var candidate_date = ("0000" + y).slice(-4) + '-' 
+                + ("00" + (m + 1)).slice(-2) + '-' 
+                + ("00" + d).slice(-2);
+             
+            if (\$.inArray(candidate_date, valid_dates) != -1 ) {
+                return [true];
+            }
+            return [false];
+        }
+
+        function gotoNewPage(dateString) {
+            var url_bits = window.location.href.toString().split('/');
+            url_bits[url_bits.length - 1] = '../../'
+                + dateString.substr(0,4) + '/'
+                + dateString.substr(5,2) + '/'
+                + dateString + '.html';
+            window.location.href = url_bits.join('/');
+        }
+
+        \$( function() {
+            \$( "#datepicker" ).datepicker({
+                beforeShowDay   : checkDate,
+                onSelect        : gotoNewPage,
+                changeYear      : true,
+                changeMonth     : true,
+                dateFormat      : "yy-mm-dd",
+                defaultDate     : my_date,
+             });
+        });
+EOM
+    ;
+    close FP;
+}
+
+print "Initializing...\n";
+
 $db = DBI->connect("DBI:SQLite:dbname=$DB_FILE", '', '', { AutoCommit => 1, PrintError => 1, });
 my $row_count = fetch_row_count($db);
-my $page_count = $row_count / $page_size;
+#my $page_count = $row_count / $page_size;
+my $date_counts = fetch_date_counts($db);
 
-printf "Found %d rows, which is %d pages of %d rows each.\n", $row_count, $page_count, $page_size;
+#printf "Found %d rows, which is %d pages of %d rows each.\n", $row_count, $page_count, $page_size;
+printf "Found %d rows over %d pages.\n", $row_count, scalar @$date_counts;
 printf "Starting from page %d, as requested!\n", $page_start;
+printf "Stopping after %d pages\n", $page_limit;
 printf "Pausing 5 seconds before charging ahead!\n";
 
 sleep 5;
@@ -361,6 +541,7 @@ sleep 5;
 my $pinkfish_map = load_pinkfish_map($db);
 my $hours = load_hours($db);
 
+print "Updating speaker and channel info...\n";
 update_all_channels($db);
 update_all_speakers($db);
 
@@ -370,36 +551,68 @@ my $speakers = load_speakers($db);
 #print STDERR "Channels: ".Dumper($channels)."\n";
 #print STDERR "Speakers: ".Dumper($speakers)."\n";
 
+print "Generating navigation data...\n";
+generate_navbar_script($date_counts);
+
 my $pages_done = 0;
-for( my $i = ($page_start * $page_size); $i < $row_count; $i += $page_size ) {
-    last if $pages_done >= $page_limit;
+#foreach my $day_row (@$date_counts) {
+for( my $i = $page_start; $i < scalar @$date_counts; $i++ ) {
+    my $day_row = $date_counts->[$i];
+    my $today = $day_row->{the_date};
+
+    last if $pages_done >= $page_limit or $pages_done >= scalar @$date_counts;
     $pages_done++;
 
-    my $filename = sprintf "%s/%09d.html", $PAGE_DIR, $i;
-    if( -f $filename ) {
+    my $dir_path = sprintf "%s/%s", $PAGE_DIR, $day_row->{the_year};
+    mkdir $dir_path if ! -d $dir_path;
+    $dir_path = sprintf "%s/%s/%s", $PAGE_DIR, $day_row->{the_year}, $day_row->{the_month};
+    mkdir $dir_path if ! -d $dir_path;
+
+    my $filename = sprintf "%s/%s/%s/%s.html", $PAGE_DIR,
+        $day_row->{the_year}, $day_row->{the_month},
+        $day_row->{the_date};
+
+    if( $i < ((scalar @$date_counts) - 2) and -f $filename ) {
+        # Always generate the very last, and next to last page again.
         printf "    Skipping %s!\n", $filename;
         next;
     }
-    my $next_page = sprintf "%09d.html", $i + $page_size;
-    my $prev_page = sprintf "%09d.html", $i - $page_size;
 
-    my $page_number = $i / $page_size;
-    my $next_page_number = $i + 1;
-    my $prev_page_number = $i - 1;
+    my $prev_row = undef;
+    my $prev_page = undef;
+    my $next_row = undef;
+    my $next_page = undef;
+    if( $i > 0 ) {
+        # We have a previous page.
+        $prev_row = $date_counts->[$i - 1];
+        $prev_page = sprintf "../../%s/%s/%s.html",
+            $prev_row->{the_year}, $prev_row->{the_month},
+            $prev_row->{the_date};
+    }
+    if( $i < (scalar @$date_counts) - 1 ) {
+        # We have a next page.
+        $next_row = $date_counts->[$i + 1];
+        $next_page = sprintf "../../%s/%s/%s.html",
+            $next_row->{the_year}, $next_row->{the_month},
+            $next_row->{the_date};
+    }
 
-    # Skip pages already generated unless it's the last page
-    next if ($i < $row_count - $page_size) and -f $filename;
-    printf "    Generating %s\n", $filename;
-    my $page = fetch_page($db, $i, $page_size);
-    die "Invalid data!" if !defined $page;
+    my $page = fetch_page_by_date($db, $today);
+    die "No data for $today? $!" if !defined $page;
+    printf "    Generating %s... %d messages.\n", $today, scalar @$page;
 
-
-    # Make the page
     open FP, ">$filename" or die "Cannot open output page $filename: $!";
 
     print FP <<EOM
 <html>
     <head>
+        <meta charset="utf-8">
+        <link rel="stylesheet" href="../../jquery/jquery-ui.css">
+        <link rel="stylesheet" href="../../jquery/jquery-ui.theme.css">
+        <script src="../../jquery.js"></script>
+        <script src="../../jquery/jquery-ui.js"></script>
+        <script src="../../navbar.js"></script>
+
         <script language="javascript">
             function toggleDiv(divID) {
                 if(document.getElementById(divID).style.display == 'none') {
@@ -456,42 +669,41 @@ for( my $i = ($page_start * $page_size); $i < $row_count; $i += $page_size ) {
     <body bgcolor="black" text="#d0d0d0" link="#ffffbf" vlink="#ffa040" onload="setup();">
         <table id="navbar" width="99%" align="center">
             <tr>
-                <td align="left" width="34%">
+                <td align="left" width="10%">
+                    <a href="mudlist.html">Mudlist</a>
+                </td>
+                <td align="right" width="20%">
 EOM
-;
-    if( $i - $page_size >= 0 ) {
-        printf FP "<a href=\"%s\">Previous Page (%d)</a>", $prev_page, ($i-$page_size) / $page_size;
+    ;
+
+    if(defined $prev_page) {
+        printf FP "<a href=\"%s\">Previous Page (%s)</a>", $prev_page, $prev_row->{the_date};
     } else {
         printf FP "No Previous Page";
     }
 
-    if( $i < $row_count + $page_size ) {
-        printf FP "<a href=\"%s\">Next Page (%d)</a>", $next_page, ($i+$page_size) / $page_size;
+    print FP <<EOM
+                </td>
+                <td align="center" width="10%">
+                    <input type="text" id="datepicker" size="10">
+                </td>
+                <td align="left" width="20%">
+EOM
+    ;
+
+    if(defined $next_page) {
+        printf FP "<a href=\"%s\">Next Page (%s)</a>", $next_page, $next_row->{the_date};
     } else {
         printf FP "No Next Page";
     }
 
     print FP <<EOM
                 </td>
-                <td align="center" width="8%">
-                    &nbsp;
-                </td>
-                <td align="center" width="8%">
-                    <a href="mudlist.html">Mudlist</a>
-                </td>
-                <td align="center" width="8%">
+                <td align="right">
                     <a href="https://themud.org/chanhist.php#Channel=all">Other Logs</a>
                 </td>
-                <td align="center" width="8%">
+                <td align="right" width="10%">
                     <a href="server.php">Server</a>
-                </td>
-                <td align="right" width="34%" onmouseover="pagegen.style.color='#00FF00'; timespent.style.color='#00FF00';" onmouseout="pagegen.style.color='#1F1F1F'; timespent.style.color='#1F1F1F';">
-                    &nbsp;
-                    <a href="javascript:;" onmousedown="toggleDiv('source');">
-                        <span id="pagegen" style="color: #1F1F1F">
-                            Page &nbsp; Source
-                        </span>
-                    </a>
                 </td>
             </tr>
         </table>
@@ -508,8 +720,8 @@ EOM
             </thead>
             <tbody>
 EOM
-;
-    # Emit the HTML garbage, and the table headers
+    ;
+
     my $counter = 0;
     foreach my $row (@$page) {
         # YYYY-MM-DD date
@@ -533,13 +745,24 @@ EOM
 
         my $message = $row->{message};
         # encode_entities
-        $message = encode_entities($message);
+        $message = encode_entities($message, '<>&"');
 
         # Filter known pinkfish codes and make them HTML
-        foreach my $pf_key (keys %$pinkfish_map) {
-            my $pf_replacement = $pinkfish_map->{$pf_key}{html};
+        if( $message =~ /\%\^/gsmx ) {
+            #printf STDERR "        Message has pinkfish codes: %s\n", $message;
 
-            $message =~ s/$pf_key/$pf_replacement/gmx;
+            foreach my $pf_key (sort { length $b <=> length $a } keys %$pinkfish_map) {
+                my $quoted = quotemeta $pf_key;
+                my $regex = qr/$quoted/;
+                my $pf_rep = $pinkfish_map->{$pf_key}{html};
+
+                #printf STDERR "Checking %s (%s) ...\n", $pf_key, $quoted;
+
+                if ( $message =~ /$regex/gsmx ) {
+                    #printf STDERR "Found match for %s\n", $quoted;
+                    $message =~ s/$regex/$pf_rep/gsmx;
+                }
+            }
         }
 
         # Try to match links so we can make them clickable
@@ -554,17 +777,17 @@ EOM
 
         $counter++;
     }
-
     print FP <<EOM
             </tbody>
         </table>
     </body>
 </html>
 EOM
-;
+    ;
     close FP;
 }
 
+print "Dumping I3 speaker file for WileyMUD...\n";
 #$channels = load_channels($db);
 $speakers = load_speakers($db);
 
@@ -581,3 +804,5 @@ printf FP "#END\n";
 
 close FP;
 
+print "Done!\n";
+exit 0;
