@@ -209,37 +209,37 @@ void add_url( const char *channel, const char *speaker, const char *mud, const c
     if (rc != SQLITE_OK) {
         log_fatal("SQL statement error %s: %s\n", "urls insert", sqlite3_errmsg(db));
         sqlite3_close(db);
-	proper_exit(MUD_HALT);
+	proper_exit(MUD_REBOOT);
     }
     rc = sqlite3_bind_text( insert_stmt, 1, url, strlen(url), NULL );
     if (rc != SQLITE_OK) {
         log_fatal("SQL parameter error %s: %s\n", "urls url", sqlite3_errmsg(db));
         sqlite3_close(db);
-	proper_exit(MUD_HALT);
+	proper_exit(MUD_REBOOT);
     }
     rc = sqlite3_bind_text( insert_stmt, 2, channel, strlen(channel), NULL );
     if (rc != SQLITE_OK) {
         log_fatal("SQL parameter error %s: %s\n", "urls channel", sqlite3_errmsg(db));
         sqlite3_close(db);
-	proper_exit(MUD_HALT);
+	proper_exit(MUD_REBOOT);
     }
     rc = sqlite3_bind_text( insert_stmt, 3, speaker, strlen(speaker), NULL );
     if (rc != SQLITE_OK) {
         log_fatal("SQL parameter error %s: %s\n", "urls speaker", sqlite3_errmsg(db));
         sqlite3_close(db);
-	proper_exit(MUD_HALT);
+	proper_exit(MUD_REBOOT);
     }
     rc = sqlite3_bind_text( insert_stmt, 4, mud, strlen(mud), NULL );
     if (rc != SQLITE_OK) {
         log_fatal("SQL parameter error %s: %s\n", "urls mud", sqlite3_errmsg(db));
         sqlite3_close(db);
-	proper_exit(MUD_HALT);
+	proper_exit(MUD_REBOOT);
     }
     rc = sqlite3_bind_text( insert_stmt, 5, checksum, strlen(checksum), NULL );
     if (rc != SQLITE_OK) {
         log_fatal("SQL parameter error %s: %s\n", "urls mud", sqlite3_errmsg(db));
         sqlite3_close(db);
-	proper_exit(MUD_HALT);
+	proper_exit(MUD_REBOOT);
     }
 
     rc = sqlite3_step(insert_stmt);
@@ -247,7 +247,7 @@ void add_url( const char *channel, const char *speaker, const char *mud, const c
         log_fatal("SQL insert error %s: %s\n", "urls insert", err_msg);
         sqlite3_free(err_msg);
         sqlite3_close(db);
-	proper_exit(MUD_HALT);
+	proper_exit(MUD_REBOOT);
     }
     sqlite3_finalize(insert_stmt);
 //    unprocessed_urls++;
@@ -294,7 +294,7 @@ void process_urls( void ) {
         if (rc != SQLITE_BUSY) {
             log_fatal("SQL statement error %s: %s\n", "urls select", sqlite3_errmsg(db));
             sqlite3_close(db);
-            proper_exit(MUD_HALT);
+            proper_exit(MUD_REBOOT);
         }
         log_error("SQL statement error %s: %s\n", "urls select", sqlite3_errmsg(db));
     }
@@ -333,19 +333,19 @@ int process_url_callback(void *unused, int count, char **values, char **keys) {
     if (rc != SQLITE_OK) {
         log_fatal("SQL statement error %s: %s\n", "urls update", sqlite3_errmsg(db));
         sqlite3_close(db);
-	proper_exit(MUD_HALT);
+	proper_exit(MUD_REBOOT);
     }
     rc = sqlite3_bind_text( update_stmt, 1, values[0], strlen(values[0]), NULL );
     if (rc != SQLITE_OK) {
         log_fatal("SQL parameter error %s: %s\n", "urls created", sqlite3_errmsg(db));
         sqlite3_close(db);
-	proper_exit(MUD_HALT);
+	proper_exit(MUD_REBOOT);
     }
     rc = sqlite3_bind_text( update_stmt, 2, values[1], strlen(values[1]), NULL );
     if (rc != SQLITE_OK) {
         log_fatal("SQL parameter error %s: %s\n", "urls url", sqlite3_errmsg(db));
         sqlite3_close(db);
-	proper_exit(MUD_HALT);
+	proper_exit(MUD_REBOOT);
     }
 
     rc = sqlite3_step(update_stmt);
@@ -353,7 +353,7 @@ int process_url_callback(void *unused, int count, char **values, char **keys) {
         log_fatal("SQL update error %s: %s\n", "urls update", err_msg);
         sqlite3_free(err_msg);
         sqlite3_close(db);
-	proper_exit(MUD_HALT);
+	proper_exit(MUD_REBOOT);
     }
     sqlite3_finalize(update_stmt);
 //    unprocessed_urls--;
@@ -496,57 +496,61 @@ void allchan_sql( int is_emote, const char *channel, const char *speaker, const 
     if (rc != SQLITE_OK) {
         log_fatal("SQL statement error %s: %s\n", "i3log insert", sqlite3_errmsg(db));
         sqlite3_close(db);
-	proper_exit(MUD_HALT);
+	proper_exit(MUD_REBOOT);
     }
     rc = sqlite3_bind_text( insert_stmt, 1, channel, strlen(channel), NULL );
     if (rc != SQLITE_OK) {
         log_fatal("SQL parameter error %s: %s\n", "i3log channel", sqlite3_errmsg(db));
         sqlite3_close(db);
-	proper_exit(MUD_HALT);
+	proper_exit(MUD_REBOOT);
     }
     rc = sqlite3_bind_text( insert_stmt, 2, speaker, strlen(speaker), NULL );
     if (rc != SQLITE_OK) {
         log_fatal("SQL parameter error %s: %s\n", "i3log speaker", sqlite3_errmsg(db));
         sqlite3_close(db);
-	proper_exit(MUD_HALT);
+	proper_exit(MUD_REBOOT);
     }
     rc = sqlite3_bind_text( insert_stmt, 3, mud, strlen(mud), NULL );
     if (rc != SQLITE_OK) {
         log_fatal("SQL parameter error %s: %s\n", "i3log mud", sqlite3_errmsg(db));
         sqlite3_close(db);
-	proper_exit(MUD_HALT);
+	proper_exit(MUD_REBOOT);
     }
     rc = sqlite3_bind_text( insert_stmt, 4, message, strlen(message), NULL );
     if (rc != SQLITE_OK) {
         log_fatal("SQL parameter error %s: %s\n", "i3log message", sqlite3_errmsg(db));
         sqlite3_close(db);
-	proper_exit(MUD_HALT);
+	proper_exit(MUD_REBOOT);
     }
     rc = sqlite3_bind_int( insert_stmt, 5, is_emote );
     if (rc != SQLITE_OK) {
         log_fatal("SQL parameter error %s: %s\n", "i3log is_emote", sqlite3_errmsg(db));
         sqlite3_close(db);
-	proper_exit(MUD_HALT);
+	proper_exit(MUD_REBOOT);
     }
     rc = sqlite3_bind_int( insert_stmt, 6, url );
     if (rc != SQLITE_OK) {
         log_fatal("SQL parameter error %s: %s\n", "i3log is_url", sqlite3_errmsg(db));
         sqlite3_close(db);
-	proper_exit(MUD_HALT);
+	proper_exit(MUD_REBOOT);
     }
     rc = sqlite3_bind_int( insert_stmt, 7, bot );
     if (rc != SQLITE_OK) {
         log_fatal("SQL parameter error %s: %s\n", "i3log is_bot", sqlite3_errmsg(db));
         sqlite3_close(db);
-	proper_exit(MUD_HALT);
+	proper_exit(MUD_REBOOT);
     }
 
     rc = sqlite3_step(insert_stmt);
     if (rc != SQLITE_DONE) {
-        log_fatal("SQL insert error %s: %s\n", "i3log insert", err_msg);
-        sqlite3_free(err_msg);
-        sqlite3_close(db);
-	proper_exit(MUD_HALT);
+        if (rc != SQLITE_BUSY) {
+            log_fatal("SQL insert error %s: %s\n", "i3log insert", err_msg);
+            sqlite3_free(err_msg);
+            sqlite3_close(db);
+            proper_exit(MUD_REBOOT);
+        } else {
+            log_error("SQL statement error %s: %s\n", "i3log insert", sqlite3_errmsg(db));
+        }
     }
     sqlite3_finalize(insert_stmt);
 }
@@ -569,14 +573,14 @@ void bug_sql( const char *logtype, const char *filename, const char *function, i
     if (rc != SQLITE_OK) {
         log_fatal("SQL statement error %s: %s\n", "log insert", sqlite3_errmsg(db));
         sqlite3_close(db);
-	proper_exit(MUD_HALT);
+	proper_exit(MUD_REBOOT);
     }
     if(logtype && *logtype) {
         rc = sqlite3_bind_text( insert_stmt, 1, logtype, strlen(logtype), NULL );
         if (rc != SQLITE_OK) {
             log_fatal("SQL parameter error %s: %s\n", "log logtype", sqlite3_errmsg(db));
             sqlite3_close(db);
-            proper_exit(MUD_HALT);
+            proper_exit(MUD_REBOOT);
         }
     }
     if(filename && *filename) {
@@ -584,7 +588,7 @@ void bug_sql( const char *logtype, const char *filename, const char *function, i
         if (rc != SQLITE_OK) {
             log_fatal("SQL parameter error %s: %s\n", "log filename", sqlite3_errmsg(db));
             sqlite3_close(db);
-            proper_exit(MUD_HALT);
+            proper_exit(MUD_REBOOT);
         }
     }
     if(function && *function) {
@@ -592,7 +596,7 @@ void bug_sql( const char *logtype, const char *filename, const char *function, i
         if (rc != SQLITE_OK) {
             log_fatal("SQL parameter error %s: %s\n", "log function", sqlite3_errmsg(db));
             sqlite3_close(db);
-            proper_exit(MUD_HALT);
+            proper_exit(MUD_REBOOT);
         }
     }
     if(line > 0) {
@@ -600,7 +604,7 @@ void bug_sql( const char *logtype, const char *filename, const char *function, i
         if (rc != SQLITE_OK) {
             log_fatal("SQL parameter error %s: %s\n", "log line", sqlite3_errmsg(db));
             sqlite3_close(db);
-            proper_exit(MUD_HALT);
+            proper_exit(MUD_REBOOT);
         }
     }
     if(area_file && *area_file) {
@@ -608,7 +612,7 @@ void bug_sql( const char *logtype, const char *filename, const char *function, i
         if (rc != SQLITE_OK) {
             log_fatal("SQL parameter error %s: %s\n", "log area_file", sqlite3_errmsg(db));
             sqlite3_close(db);
-            proper_exit(MUD_HALT);
+            proper_exit(MUD_REBOOT);
         }
     }
     if(area_line > 0) {
@@ -616,7 +620,7 @@ void bug_sql( const char *logtype, const char *filename, const char *function, i
         if (rc != SQLITE_OK) {
             log_fatal("SQL parameter error %s: %s\n", "log area_line", sqlite3_errmsg(db));
             sqlite3_close(db);
-            proper_exit(MUD_HALT);
+            proper_exit(MUD_REBOOT);
         }
     }
     if(character && *character) {
@@ -624,7 +628,7 @@ void bug_sql( const char *logtype, const char *filename, const char *function, i
         if (rc != SQLITE_OK) {
             log_fatal("SQL parameter error %s: %s\n", "log character", sqlite3_errmsg(db));
             sqlite3_close(db);
-            proper_exit(MUD_HALT);
+            proper_exit(MUD_REBOOT);
         }
     }
     if(character_room > 0) {
@@ -632,7 +636,7 @@ void bug_sql( const char *logtype, const char *filename, const char *function, i
         if (rc != SQLITE_OK) {
             log_fatal("SQL parameter error %s: %s\n", "log character_room", sqlite3_errmsg(db));
             sqlite3_close(db);
-            proper_exit(MUD_HALT);
+            proper_exit(MUD_REBOOT);
         }
     }
     if(victim && *victim) {
@@ -640,7 +644,7 @@ void bug_sql( const char *logtype, const char *filename, const char *function, i
         if (rc != SQLITE_OK) {
             log_fatal("SQL parameter error %s: %s\n", "log victim", sqlite3_errmsg(db));
             sqlite3_close(db);
-            proper_exit(MUD_HALT);
+            proper_exit(MUD_REBOOT);
         }
     }
     if(victim_room > 0) {
@@ -648,22 +652,26 @@ void bug_sql( const char *logtype, const char *filename, const char *function, i
         if (rc != SQLITE_OK) {
             log_fatal("SQL parameter error %s: %s\n", "log victim_room", sqlite3_errmsg(db));
             sqlite3_close(db);
-            proper_exit(MUD_HALT);
+            proper_exit(MUD_REBOOT);
         }
     }
     rc = sqlite3_bind_text( insert_stmt, 11, message, strlen(message), NULL );
     if (rc != SQLITE_OK) {
         log_fatal("SQL parameter error %s: %s\n", "log message", sqlite3_errmsg(db));
         sqlite3_close(db);
-	proper_exit(MUD_HALT);
+	proper_exit(MUD_REBOOT);
     }
 
     rc = sqlite3_step(insert_stmt);
     if (rc != SQLITE_DONE) {
-        log_fatal("SQL insert error %s: %s\n", "log insert", err_msg);
-        sqlite3_free(err_msg);
-        sqlite3_close(db);
-	proper_exit(MUD_HALT);
+        if (rc != SQLITE_BUSY) {
+            log_fatal("SQL insert error %s: %s\n", "log insert", err_msg);
+            sqlite3_free(err_msg);
+            sqlite3_close(db);
+            proper_exit(MUD_REBOOT);
+        } else {
+            log_error("SQL statement error %s: %s\n", "log insert", sqlite3_errmsg(db));
+        }
     }
     sqlite3_finalize(insert_stmt);
 }
@@ -682,27 +690,31 @@ void addspeaker_sql( const char *speaker, const char *pinkfish ) {
     if (rc != SQLITE_OK) {
         log_fatal("SQL statement error %s: %s\n", "speakers insert", sqlite3_errmsg(db));
         sqlite3_close(db);
-	proper_exit(MUD_HALT);
+	proper_exit(MUD_REBOOT);
     }
     rc = sqlite3_bind_text( insert_stmt, 1, speaker, strlen(speaker), NULL );
     if (rc != SQLITE_OK) {
         log_fatal("SQL parameter error %s: %s\n", "speakers speaker", sqlite3_errmsg(db));
         sqlite3_close(db);
-	proper_exit(MUD_HALT);
+	proper_exit(MUD_REBOOT);
     }
     rc = sqlite3_bind_text( insert_stmt, 2, pinkfish, strlen(pinkfish), NULL );
     if (rc != SQLITE_OK) {
         log_fatal("SQL parameter error %s: %s\n", "speakers pinkfish", sqlite3_errmsg(db));
         sqlite3_close(db);
-	proper_exit(MUD_HALT);
+	proper_exit(MUD_REBOOT);
     }
 
     rc = sqlite3_step(insert_stmt);
     if (rc != SQLITE_DONE) {
-        log_fatal("SQL insert error %s: %s\n", "speakers insert", err_msg);
-        sqlite3_free(err_msg);
-        sqlite3_close(db);
-	proper_exit(MUD_HALT);
+        if (rc != SQLITE_BUSY) {
+            log_fatal("SQL insert error %s: %s\n", "speakers insert", err_msg);
+            sqlite3_free(err_msg);
+            sqlite3_close(db);
+            proper_exit(MUD_REBOOT);
+        } else {
+            log_error("SQL statement error %s: %s\n", "speakers insert", sqlite3_errmsg(db));
+        }
     }
     sqlite3_finalize(insert_stmt);
 }

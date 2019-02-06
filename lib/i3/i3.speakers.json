@@ -1767,5 +1767,8 @@
     "llama": "<SPAN style=\"color: #bb0000\">",
     "hirandu": "<SPAN style=\"color: #bb0000\">",
     "thrym": "<SPAN style=\"color: #bb0000\">",
-    "malaclypse": "<SPAN style=\"color: #00bb00\">"
+    "malaclypse": "<SPAN style=\"color: #00bb00\">",
+    "star": "<SPAN style=\"color: #bbbb00\">",
+    "ban": "<SPAN style=\"color: #0000bb\">",
+    "biggus dickus": "<SPAN style=\"color: #bb00bb\">"
 }

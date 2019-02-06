@@ -751,7 +751,7 @@ int receptionist(struct char_data *ch, int cmd, char *arg)
 
     if (!recep) {
 	log_fatal("No receptionist.\r\n");
-	proper_exit(MUD_HALT);
+	proper_exit(MUD_REBOOT);
     }
     if (IS_NPC(ch))
 	return (FALSE);

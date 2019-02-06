@@ -248,7 +248,7 @@ void stop_fighting(struct char_data *ch)
 	for (tmp = combat_list; tmp && (tmp->next_fighting != ch); tmp = tmp->next_fighting);
 	if (!tmp) {
 	    log_fatal("Char fighting not found Error");
-	    proper_exit(MUD_HALT);
+	    proper_exit(MUD_REBOOT);
 	}
 	tmp->next_fighting = ch->next_fighting;
     }
@@ -1406,7 +1406,7 @@ void perform_violence(int current_pulse)
 	 */
 	if (!(ch->specials.fighting)) {
 	    log_fatal("specials.fighting is false");
-	    proper_exit(MUD_HALT);
+	    proper_exit(MUD_REBOOT);
 	}
 
 	if (check_peaceful(ch, "")) {

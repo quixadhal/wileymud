@@ -6,6 +6,8 @@ use strict;
 use English;
 use Time::HiRes         qw( time );
 use Data::Dumper;
+use lib ".";
+
 use MudConvert::Utils   qw( center );
 use MudConvert::Usage   qw( parse_options do_help );
 use MudConvert::Inputs  qw( %input_format validate_input );

@@ -15,7 +15,7 @@ W_EXTRA     = -Wunused #-Wunreachable-code
 W_C_ONLY    = -Wmissing-declarations -Wimplicit-int -Wimplicit-function-declaration #-Wsequence-point -Wnonnull
 W_ANSI      = #-pedantic
 W_UBER      = -Wall #-W
-W_ERROR     = -Werror
+W_ERROR     = #-Werror
 
 W_ALL       = $(W_ANSI) $(W_UBER) $(W_FORMAT) $(W_MESSY) $(W_FUNC) $(W_TYPE) $(W_EXTRA) $(W_NITPICK) $(W_ERROR)
 W_CLANG     = $(W_C_ONLY)

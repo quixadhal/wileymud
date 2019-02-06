@@ -227,3 +227,5 @@ apt install default-jre default-jdk
     libcommons-net-java libcommons-net-java-doc liboro-java
 
 apt install libdata-serializer-perl
+apt install libdate-calc-perl
+
