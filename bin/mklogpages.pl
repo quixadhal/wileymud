@@ -709,6 +709,9 @@ for( my $i = $page_start; $i < scalar @$date_counts; $i++ ) {
             a:active, a:focus { outline: 0; border: none; -moz-outline-style: none; }
             input, select, textarea { border-color: #101010; background-color: #101010; color: #d0d0d0; }
             input:focus, textarea:focus { border-color: #101010; background-color: #303030; color: #f0f0f0; }
+            #navbar { position: fixed; top: 0; background-color: black; }
+            #content-header { position: fixed; top: 58px; width: 100%; background-color: black; }
+            #content { padding-top: 48px; }
         </style>
     </head>
     <body bgcolor="black" text="#d0d0d0" link="#ffffbf" vlink="#ffa040" onload="setup();">
@@ -771,7 +774,15 @@ EOM
                 </td>
             </tr>
         </table>
-
+        <table id="content-header-outside" width="99%" align="center">
+            <tr id="content-header">
+                <td id="dateheader" align="left" width="80px" style="color: #DDDDDD; min-width: 80px;">Date</td>
+                <td id="timeheader" align="left" width="60px" style="color: #DDDDDD; min-width: 40px;">Time</td>
+                <td id="channelheader" align="left" width="80px" style="color: #DDDDDD; min-width: 100px;">Channel</td>
+                <td id="speakerheader" align="left" width="200px" style="color: #DDDDDD; min-width: 200px;">Speaker</td>
+                <td align="left">&nbsp;</td>
+            </tr>
+        </table>
         <table id="content" width="99%" align="center">
             <thead>
             <tr>
