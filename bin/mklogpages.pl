@@ -10,24 +10,38 @@ use DBI;
 use HTML::Entities;
 use Getopt::Long;
 
-#my $DB_FILE = '/home/wiley/lib/i3/wiley.db';
-my $DB_FILE = '/home/wiley/lib/i3/wiley.db.bkp-20190205';
-my $PAGE_DIR = '/home/wiley/public_html/logpages';
+my $URL_HOME        = 'http://wileymud.themud.org/~wiley';
+#my $DB_FILE         = '/home/wiley/lib/i3/wiley.db';
+my $DB_FILE         = '/home/wiley/lib/i3/wiley.db.bkp-20190205';
+my $PAGE_DIR        = '/home/wiley/public_html/logpages';
+
+my $BEGIN_ICON      = '../../../gfx/navbegin.png';
+my $PREV_ICON       = '../../../gfx/navprev.png';
+my $NEXT_ICON       = '../../../gfx/navnext.png';
+my $END_ICON        = '../../../gfx/navend.png';
+
+my $CALENDER_ICON   = '../../../gfx/navcal.png';
+my $SERVER_ICON     = '../../../gfx/server_icon.png';
+my $MUDLIST_ICON    = '../../../gfx/mud.png';
+my $LOG_ICON        = '../../../gfx/log.png';
+my $ICON_WIDTH      = 48;
 
 my $db = undef;
 
-my $page_start = 0;
-my $page_size = 100;
-my $page_limit = 10;
+my $overwrite       = 0;
+my $page_start      = 0;
+my $page_limit      = 10;
+my $page_size       = 100;
 
 sub do_help {
     print STDERR <<EOM
-usage:  $PROGRAM_NAME [-h] [-s start page] [-l page limit] [-p page size]
+usage:  $PROGRAM_NAME [-h] [-o] [-s start page] [-l page limit] [-p page size]
 long options:
     --help              - This helpful help!
-    --start N           - Page to start from, 0 is the first page.
-    --limit N           - Number of pages to do, defaults to 10.
-    --pagesize N        - Page size, defaults to 100.
+    --overwrite         - Force overwriting of pages, default is to skip.
+    --start N           - Page to start from, defaults to $page_start.
+    --limit N           - Number of pages to do, defaults to $page_limit.
+    --pagesize N        - Page size, defaults to $page_size.
 EOM
     ;
     exit(1);
@@ -37,6 +51,7 @@ Getopt::Long::Configure("gnu_getopt");
 Getopt::Long::Configure("auto_version");
 GetOptions(
     'help|h'            => sub { do_help() },
+    'overwrite'         => \$overwrite,
     'start|s:i'         => \$page_start,
     'limit|l:10'        => \$page_limit,
     'pagesize|p:100'    => \$page_size,
@@ -573,21 +588,40 @@ for( my $i = $page_start; $i < scalar @$date_counts; $i++ ) {
         $day_row->{the_date};
 
     if( $i < ((scalar @$date_counts) - 2) and -f $filename ) {
-        # Always generate the very last, and next to last page again.
-        printf "    Skipping %s!\n", $filename;
-        next;
+        if( !$overwrite ) {
+            # Always generate the very last, and next to last page again.
+            printf "    Skipping %s!\n", $filename;
+            next;
+        }
     }
 
-    my $prev_row = undef;
-    my $prev_page = undef;
-    my $next_row = undef;
-    my $next_page = undef;
+    my $first_row   = undef;
+    my $first_page  = undef;
+    my $first_date  = undef;
+    my $prev_row    = undef;
+    my $prev_page   = undef;
+    my $prev_date   = undef;
+    my $next_row    = undef;
+    my $next_page   = undef;
+    my $next_date   = undef;
+    my $last_row    = undef;
+    my $last_page   = undef;
+    my $last_date   = undef;
+
     if( $i > 0 ) {
         # We have a previous page.
         $prev_row = $date_counts->[$i - 1];
         $prev_page = sprintf "../../%s/%s/%s.html",
             $prev_row->{the_year}, $prev_row->{the_month},
             $prev_row->{the_date};
+        $prev_date = $prev_row->{the_date};
+
+        # We also are not ON the first page, so we should have that too.
+        $first_row   = $date_counts->[0];
+        $first_page  = sprintf "../../%s/%s/%s.html",
+            $first_row->{the_year}, $first_row->{the_month},
+            $first_row->{the_date};
+        $first_date  = $first_row->{the_date};
     }
     if( $i < (scalar @$date_counts) - 1 ) {
         # We have a next page.
@@ -595,6 +629,14 @@ for( my $i = $page_start; $i < scalar @$date_counts; $i++ ) {
         $next_page = sprintf "../../%s/%s/%s.html",
             $next_row->{the_year}, $next_row->{the_month},
             $next_row->{the_date};
+        $next_date = $next_row->{the_date};
+
+        # And there should also be a final page, which we are not on.
+        $last_row   = $date_counts->[-1];
+        $last_page  = sprintf "../../%s/%s/%s.html",
+            $last_row->{the_year}, $last_row->{the_month},
+            $last_row->{the_date};
+        $last_date  = $last_row->{the_date};
     }
 
     my $page = fetch_page_by_date($db, $today);
@@ -664,46 +706,68 @@ for( my $i = $page_start; $i < scalar @$date_counts; $i++ ) {
             table { table-layout: fixed; max-width: 99%; overflow-x: hidden; word-wrap: break-word; text-overflow: ellipsis; }
             a { text-decoration:none; }
             a:hover { text-decoration:underline; }
+            a:active, a:focus { outline: 0; border: none; -moz-outline-style: none; }
+            input, select, textarea { border-color: #101010; background-color: #101010; color: #d0d0d0; }
+            input:focus, textarea:focus { border-color: #101010; background-color: #303030; color: #f0f0f0; }
         </style>
     </head>
     <body bgcolor="black" text="#d0d0d0" link="#ffffbf" vlink="#ffa040" onload="setup();">
         <table id="navbar" width="99%" align="center">
             <tr>
-                <td align="left" width="10%">
-                    <a href="mudlist.html">Mudlist</a>
+                <td align="left" width="20%">
+                    <a href="../../../mudlist.html" alt="Mudlist" title="Mudlist">
+                        <img src="$MUDLIST_ICON" width="$ICON_WIDTH" height="$ICON_WIDTH" border="0" />
+                    </a>
+                    <a href="https://themud.org/chanhist.php#Channel=all" alt="Other Logs" title="Other Logs">
+                        <img src="$LOG_ICON" width="$ICON_WIDTH" height="$ICON_WIDTH" border="0" />
+                    </a>
                 </td>
                 <td align="right" width="20%">
 EOM
     ;
 
-    if(defined $prev_page) {
-        printf FP "<a href=\"%s\">Previous Page (%s)</a>", $prev_page, $prev_row->{the_date};
+    if(defined $first_page) {
+        printf FP "<a href=\"%s\" alt=\"%s\" title=\"%s\"><img src=\"%s\" width=\"%d\" height=\"%d\" border=\"0\" /></a>", $first_page, $first_date, $first_date, $BEGIN_ICON, $ICON_WIDTH, $ICON_WIDTH;
     } else {
-        printf FP "No Previous Page";
+        printf FP "<img src=\"%s\" width=\"%d\" height=\"%d\" border=\"0\" style=\"opacity: 0.5;\" />", $BEGIN_ICON, $ICON_WIDTH, $ICON_WIDTH;
+    }
+
+    if(defined $prev_page) {
+        printf FP "<a href=\"%s\" alt=\"%s\" title=\"%s\"><img src=\"%s\" width=\"%d\" height=\"%d\" border=\"0\" /></a>", $prev_page, $prev_date, $prev_date, $PREV_ICON, $ICON_WIDTH, $ICON_WIDTH;
+    } else {
+        printf FP "<img src=\"%s\" width=\"%d\" height=\"%d\" border=\"0\" style=\"opacity: 0.5;\" />", $PREV_ICON, $ICON_WIDTH, $ICON_WIDTH;
     }
 
     print FP <<EOM
                 </td>
                 <td align="center" width="10%">
-                    <input type="text" id="datepicker" size="10">
+                    <input type="text" id="datepicker" size="10" value="$today" style="font-size: 16px; text-align: center;" />
                 </td>
                 <td align="left" width="20%">
 EOM
     ;
 
+    # <img src="$CALENDER_ICON" width="$ICON_WIDTH" height="$ICON_WIDTH" id="datepicker" />
+    # <input type="text" id="datepicker" size="10">
+    
     if(defined $next_page) {
-        printf FP "<a href=\"%s\">Next Page (%s)</a>", $next_page, $next_row->{the_date};
+        printf FP "<a href=\"%s\" alt=\"%s\" title=\"%s\"><img src=\"%s\" width=\"%d\" height=\"%d\" border=\"0\" /></a>", $next_page, $next_date, $next_date, $NEXT_ICON, $ICON_WIDTH, $ICON_WIDTH;
     } else {
-        printf FP "No Next Page";
+        printf FP "<img src=\"%s\" width=\"%d\" height=\"%d\" border=\"0\" style=\"opacity: 0.5;\" />", $NEXT_ICON, $ICON_WIDTH, $ICON_WIDTH;
+    }
+
+    if(defined $last_page) {
+        printf FP "<a href=\"%s\" alt=\"%s\" title=\"%s\"><img src=\"%s\" width=\"%d\" height=\"%d\" border=\"0\" /></a>", $last_page, $last_date, $last_date, $END_ICON, $ICON_WIDTH, $ICON_WIDTH;
+    } else {
+        printf FP "<img src=\"%s\" width=\"%d\" height=\"%d\" border=\"0\" style=\"opacity: 0.5;\" />", $END_ICON, $ICON_WIDTH, $ICON_WIDTH;
     }
 
     print FP <<EOM
                 </td>
-                <td align="right">
-                    <a href="https://themud.org/chanhist.php#Channel=all">Other Logs</a>
-                </td>
-                <td align="right" width="10%">
-                    <a href="server.php">Server</a>
+                <td align="right" width="20%">
+                    <a href="../../../server.php" alt="Server" title="Server">
+                        <img src="$SERVER_ICON" width="$ICON_WIDTH" height="$ICON_WIDTH" border="0" />
+                    </a>
                 </td>
             </tr>
         </table>
