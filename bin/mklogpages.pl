@@ -10,51 +10,98 @@ use DBI;
 use HTML::Entities;
 use Getopt::Long;
 
-my $URL_HOME        = 'http://wileymud.themud.org/~wiley';
+my $URL_HOME        = "http://wileymud.themud.org/~wiley";
+my $LOG_HOME        = "$URL_HOME/logpages";
+
 #my $DB_FILE         = '/home/wiley/lib/i3/wiley.db';
-my $DB_FILE         = '/home/wiley/lib/i3/wiley.db.bkp-20190205';
+my $DB_FILE         = '/home/wiley/lib/i3/wiley.db.bkp-20190209';
 my $PAGE_DIR        = '/home/wiley/public_html/logpages';
 
-my $BEGIN_ICON      = '../../../gfx/navbegin.png';
-my $PREV_ICON       = '../../../gfx/navprev.png';
-my $NEXT_ICON       = '../../../gfx/navnext.png';
-my $END_ICON        = '../../../gfx/navend.png';
+my $BEGIN_ICON      = "$URL_HOME/gfx/navbegin.png";
+my $PREV_ICON       = "$URL_HOME/gfx/navprev.png";
+my $NEXT_ICON       = "$URL_HOME/gfx/navnext.png";
+my $END_ICON        = "$URL_HOME/gfx/navend.png";
 
-my $CALENDER_ICON   = '../../../gfx/navcal.png';
-my $SERVER_ICON     = '../../../gfx/server_icon.png';
-my $MUDLIST_ICON    = '../../../gfx/mud.png';
-my $LOG_ICON        = '../../../gfx/log.png';
+my $CALENDER_ICON   = "$URL_HOME/gfx/navcal.png";
+my $SERVER_ICON     = "$URL_HOME/gfx/server_icon.png";
+my $MUDLIST_ICON    = "$URL_HOME/gfx/mud.png";
+my $LOG_ICON        = "$URL_HOME/gfx/log.png";
 my $ICON_WIDTH      = 48;
+
+my $MUDLIST_IMG     = "<img src=\"$MUDLIST_ICON\" width=\"$ICON_WIDTH\" height=\"$ICON_WIDTH\" border=\"0\" />";
+my $LOG_IMG         = "<img src=\"$LOG_ICON\" width=\"$ICON_WIDTH\" height=\"$ICON_WIDTH\" border=\"0\" />";
+my $SERVER_IMG      = "<img src=\"$SERVER_ICON\" width=\"$ICON_WIDTH\" height=\"$ICON_WIDTH\" border=\"0\" />";
+
+my $MUDLIST_LINK    = "<a href=\"$URL_HOME/mudlist.html\" alt=\"Mudlist\" title=\"Mudlist\">$MUDLIST_IMG</a>";
+my $LOG_LINK        = "<a href=\"https://themud.org/chanhist.php#Channel=all\" alt=\"Other Logs\" title=\"Other Logs\">$LOG_IMG</a>";
+my $SERVER_LINK     = "<a href=\"$URL_HOME/server.php\" alt=\"Server\" title=\"Server\">$SERVER_IMG</a>";
+
+my $JQUI_CSS        = "$LOG_HOME/jquery/jquery-ui.css";
+my $JQUI_THEME      = "$LOG_HOME/jquery/jquery-ui.theme.css";
+my $JQ              = "$LOG_HOME/jquery.js";
+my $JQUI            = "$LOG_HOME/jquery/jquery-ui.js";
+my $NAVBAR          = "$LOG_HOME/navbar.js";
 
 my $db = undef;
 
-my $overwrite       = 0;
-my $page_start      = 0;
-my $page_limit      = 10;
 my $page_size       = 100;
+my $page_start      = 0;
+my $page_limit      = 0;
+my $overwrite       = 0;
+my $generate        = 1;
+my $update          = 1;
+my $pause           = 1;
 
 sub do_help {
     print STDERR <<EOM
-usage:  $PROGRAM_NAME [-h] [-o] [-s start page] [-l page limit] [-p page size]
+usage:  $PROGRAM_NAME [-h] [-ugop] [-s start page] [-l page limit]
 long options:
     --help              - This helpful help!
-    --overwrite         - Force overwriting of pages, default is to skip.
     --start N           - Page to start from, defaults to $page_start.
-    --limit N           - Number of pages to do, defaults to $page_limit.
-    --pagesize N        - Page size, defaults to $page_size.
+                          Pages are numbered from 0 to N, however there is a
+                          special case.  Passing in a negative number will
+                          generate pages from the most recent minus the
+                          number passed.  So, -2 would generate yesterday's
+                          page and today's page.
+    --limit N           - Number of pages to do, the default is ALL of them.
+    --overwrite         - Force overwriting of pages, default is to skip.
+    --generate          - Generate i3.speakers MUD file.  Default is yes.
+    --update            - Update speaker and channel color data.  Default is yes.
+    --pause             - Pause for 5 seconds before starting.  Default is yes.
 EOM
     ;
+    #--pagesize N        - Page size, defaults to $page_size.
     exit(1);
+}
+
+sub display_options {
+    my $row_count = shift || 0;
+    my $page_count = shift || 0;
+
+    #printf "Found %d rows, which is %d pages of %d rows each.\n", $row_count, $page_count, $page_size;
+    printf "Found %d rows over %d pages.\n", $row_count, $page_count;
+    printf "Starting from page %d, as requested.\n", $page_start;
+    if($page_limit) {
+        printf "Stopping after %d pages\n", $page_limit;
+    } else {
+        printf "Doing all %d pages\n", ($page_start >= 0) ? ($page_count - $page_start) : (-$page_start);
+    }
+    printf "We will %soverwrite existing pages.\n", $overwrite ? "" : "NOT ";
+    printf "We will %sgenerate I3 speaker data.\n", $generate ? "" : "NOT ";
+    printf "We will %supdate speaker and channel color data.\n", $update ? "" : "NOT ";
+    printf "We will %spause 5 seconds before starting.\n", $pause ? "" : "NOT ";
 }
 
 Getopt::Long::Configure("gnu_getopt");
 Getopt::Long::Configure("auto_version");
 GetOptions(
     'help|h'            => sub { do_help() },
-    'overwrite'         => \$overwrite,
-    'start|s:i'         => \$page_start,
-    'limit|l:10'        => \$page_limit,
-    'pagesize|p:100'    => \$page_size,
+    'start|s=i'         => \$page_start,
+    'limit|l=i'         => \$page_limit,
+    'overwrite|o!'      => \$overwrite,
+    'generate|g!'       => \$generate,
+    'update|u!'         => \$update,
+    'pause|p!'          => \$pause,
 );
 
 sub fetch_row_count {
@@ -467,13 +514,29 @@ sub load_speakers {
     return undef;
 }
 
-sub next_page_date {
-    my $date_counts = shift;
-    my $page_year = shift;
-    my $page_month = shift;
-    my $page_day = shift;
+sub page_url {
+    my $row = shift;
 
+    my $pathname = sprintf "%s/%s/%s/%s.php", $LOG_HOME,
+        $row->{the_year}, $row->{the_month},
+        $row->{the_date};
 
+    return $pathname;
+}
+
+sub page_path {
+    my $row = shift;
+
+    my $dir_path = sprintf "%s/%s", $PAGE_DIR, $row->{the_year};
+    mkdir $dir_path if ! -d $dir_path;
+    $dir_path = sprintf "%s/%s/%s", $PAGE_DIR, $row->{the_year}, $row->{the_month};
+    mkdir $dir_path if ! -d $dir_path;
+
+    my $pathname = sprintf "%s/%s/%s/%s.php", $PAGE_DIR,
+        $row->{the_year}, $row->{the_month},
+        $row->{the_date};
+
+    return $pathname;
 }
 
 sub generate_navbar_script {
@@ -484,7 +547,7 @@ sub generate_navbar_script {
 
     my @date_list = ();
     foreach my $row (@$date_counts) {
-        push @date_list, ($row->{the_date});
+        push @date_list, ($row->{the_date}) if -f page_path($row);
     }
     my $big_list = join(",\n", map { sprintf "\"%s\"", $_; } (@date_list));
     my $last_date = $date_list[-1];
@@ -516,10 +579,10 @@ sub generate_navbar_script {
 
         function gotoNewPage(dateString) {
             var url_bits = window.location.href.toString().split('/');
-            url_bits[url_bits.length - 1] = '../../'
-                + dateString.substr(0,4) + '/'
-                + dateString.substr(5,2) + '/'
-                + dateString + '.html';
+            url_bits[url_bits.length - 3] = dateString.substr(0,4);
+            url_bits[url_bits.length - 2] = dateString.substr(5,2);
+            url_bits[url_bits.length - 1] = dateString + '.php';
+
             window.location.href = url_bits.join('/');
         }
 
@@ -545,29 +608,28 @@ my $row_count = fetch_row_count($db);
 #my $page_count = $row_count / $page_size;
 my $date_counts = fetch_date_counts($db);
 
-#printf "Found %d rows, which is %d pages of %d rows each.\n", $row_count, $page_count, $page_size;
-printf "Found %d rows over %d pages.\n", $row_count, scalar @$date_counts;
-printf "Starting from page %d, as requested!\n", $page_start;
-printf "Stopping after %d pages\n", $page_limit;
-printf "Pausing 5 seconds before charging ahead!\n";
+if( $page_start < 0 ) {
+    $page_start = (scalar @$date_counts) + $page_start;
+}
 
-sleep 5;
+display_options($row_count, scalar @$date_counts);
+sleep 5 if $pause;
 
 my $pinkfish_map = load_pinkfish_map($db);
 my $hours = load_hours($db);
 
-print "Updating speaker and channel info...\n";
-update_all_channels($db);
-update_all_speakers($db);
+if( $update ) {
+    print "Updating speaker and channel info...\n";
+    update_all_channels($db);
+    update_all_speakers($db);
+}
 
 my $channels = load_channels($db);
 my $speakers = load_speakers($db);
-
 #print STDERR "Channels: ".Dumper($channels)."\n";
 #print STDERR "Speakers: ".Dumper($speakers)."\n";
 
-print "Generating navigation data...\n";
-generate_navbar_script($date_counts);
+$page_limit = (scalar @$date_counts) if $page_limit < 1;
 
 my $pages_done = 0;
 #foreach my $day_row (@$date_counts) {
@@ -578,19 +640,12 @@ for( my $i = $page_start; $i < scalar @$date_counts; $i++ ) {
     last if $pages_done >= $page_limit or $pages_done >= scalar @$date_counts;
     $pages_done++;
 
-    my $dir_path = sprintf "%s/%s", $PAGE_DIR, $day_row->{the_year};
-    mkdir $dir_path if ! -d $dir_path;
-    $dir_path = sprintf "%s/%s/%s", $PAGE_DIR, $day_row->{the_year}, $day_row->{the_month};
-    mkdir $dir_path if ! -d $dir_path;
-
-    my $filename = sprintf "%s/%s/%s/%s.html", $PAGE_DIR,
-        $day_row->{the_year}, $day_row->{the_month},
-        $day_row->{the_date};
+    my $filename = page_path($day_row);
 
     if( $i < ((scalar @$date_counts) - 2) and -f $filename ) {
         if( !$overwrite ) {
             # Always generate the very last, and next to last page again.
-            printf "    Skipping %s!\n", $filename;
+            printf "    Skipping %s.\n", $filename;
             next;
         }
     }
@@ -611,32 +666,24 @@ for( my $i = $page_start; $i < scalar @$date_counts; $i++ ) {
     if( $i > 0 ) {
         # We have a previous page.
         $prev_row = $date_counts->[$i - 1];
-        $prev_page = sprintf "../../%s/%s/%s.html",
-            $prev_row->{the_year}, $prev_row->{the_month},
-            $prev_row->{the_date};
         $prev_date = $prev_row->{the_date};
+        $prev_page = page_url($prev_row);
 
         # We also are not ON the first page, so we should have that too.
         $first_row   = $date_counts->[0];
-        $first_page  = sprintf "../../%s/%s/%s.html",
-            $first_row->{the_year}, $first_row->{the_month},
-            $first_row->{the_date};
         $first_date  = $first_row->{the_date};
+        $first_page = page_url($first_row);
     }
     if( $i < (scalar @$date_counts) - 1 ) {
         # We have a next page.
         $next_row = $date_counts->[$i + 1];
-        $next_page = sprintf "../../%s/%s/%s.html",
-            $next_row->{the_year}, $next_row->{the_month},
-            $next_row->{the_date};
         $next_date = $next_row->{the_date};
+        $next_page = page_url($next_row);
 
         # And there should also be a final page, which we are not on.
         $last_row   = $date_counts->[-1];
-        $last_page  = sprintf "../../%s/%s/%s.html",
-            $last_row->{the_year}, $last_row->{the_month},
-            $last_row->{the_date};
         $last_date  = $last_row->{the_date};
+        $last_page = page_url($last_row);
     }
 
     my $page = fetch_page_by_date($db, $today);
@@ -649,11 +696,11 @@ for( my $i = $page_start; $i < scalar @$date_counts; $i++ ) {
 <html>
     <head>
         <meta charset="utf-8">
-        <link rel="stylesheet" href="../../jquery/jquery-ui.css">
-        <link rel="stylesheet" href="../../jquery/jquery-ui.theme.css">
-        <script src="../../jquery.js"></script>
-        <script src="../../jquery/jquery-ui.js"></script>
-        <script src="../../navbar.js"></script>
+        <link rel="stylesheet" href="$JQUI_CSS">
+        <link rel="stylesheet" href="$JQUI_THEME">
+        <script src="$JQ"></script>
+        <script src="$JQUI"></script>
+        <script src="$NAVBAR"></script>
 
         <script language="javascript">
             function toggleDiv(divID) {
@@ -718,27 +765,23 @@ for( my $i = $page_start; $i < scalar @$date_counts; $i++ ) {
         <table id="navbar" width="99%" align="center">
             <tr>
                 <td align="left" width="20%">
-                    <a href="../../../mudlist.html" alt="Mudlist" title="Mudlist">
-                        <img src="$MUDLIST_ICON" width="$ICON_WIDTH" height="$ICON_WIDTH" border="0" />
-                    </a>
-                    <a href="https://themud.org/chanhist.php#Channel=all" alt="Other Logs" title="Other Logs">
-                        <img src="$LOG_ICON" width="$ICON_WIDTH" height="$ICON_WIDTH" border="0" />
-                    </a>
+                    $MUDLIST_LINK
+                    $LOG_LINK
                 </td>
                 <td align="right" width="20%">
 EOM
     ;
 
     if(defined $first_page) {
-        printf FP "<a href=\"%s\" alt=\"%s\" title=\"%s\"><img src=\"%s\" width=\"%d\" height=\"%d\" border=\"0\" /></a>", $first_page, $first_date, $first_date, $BEGIN_ICON, $ICON_WIDTH, $ICON_WIDTH;
+        printf FP "<a href=\"%s\" alt=\"%s\" title=\"%s\"><img src=\"%s\" width=\"%d\" height=\"%d\" border=\"0\" /></a>\n", $first_page, $first_date, $first_date, $BEGIN_ICON, $ICON_WIDTH, $ICON_WIDTH;
     } else {
-        printf FP "<img src=\"%s\" width=\"%d\" height=\"%d\" border=\"0\" style=\"opacity: 0.5;\" />", $BEGIN_ICON, $ICON_WIDTH, $ICON_WIDTH;
+        printf FP "<img src=\"%s\" width=\"%d\" height=\"%d\" border=\"0\" style=\"opacity: 0.5;\" />\n", $BEGIN_ICON, $ICON_WIDTH, $ICON_WIDTH;
     }
 
     if(defined $prev_page) {
-        printf FP "<a href=\"%s\" alt=\"%s\" title=\"%s\"><img src=\"%s\" width=\"%d\" height=\"%d\" border=\"0\" /></a>", $prev_page, $prev_date, $prev_date, $PREV_ICON, $ICON_WIDTH, $ICON_WIDTH;
+        printf FP "<a href=\"%s\" alt=\"%s\" title=\"%s\"><img src=\"%s\" width=\"%d\" height=\"%d\" border=\"0\" /></a>\n", $prev_page, $prev_date, $prev_date, $PREV_ICON, $ICON_WIDTH, $ICON_WIDTH;
     } else {
-        printf FP "<img src=\"%s\" width=\"%d\" height=\"%d\" border=\"0\" style=\"opacity: 0.5;\" />", $PREV_ICON, $ICON_WIDTH, $ICON_WIDTH;
+        printf FP "<img src=\"%s\" width=\"%d\" height=\"%d\" border=\"0\" style=\"opacity: 0.5;\" />\n", $PREV_ICON, $ICON_WIDTH, $ICON_WIDTH;
     }
 
     print FP <<EOM
@@ -750,27 +793,22 @@ EOM
 EOM
     ;
 
-    # <img src="$CALENDER_ICON" width="$ICON_WIDTH" height="$ICON_WIDTH" id="datepicker" />
-    # <input type="text" id="datepicker" size="10">
-    
     if(defined $next_page) {
-        printf FP "<a href=\"%s\" alt=\"%s\" title=\"%s\"><img src=\"%s\" width=\"%d\" height=\"%d\" border=\"0\" /></a>", $next_page, $next_date, $next_date, $NEXT_ICON, $ICON_WIDTH, $ICON_WIDTH;
+        printf FP "<a href=\"%s\" alt=\"%s\" title=\"%s\"><img src=\"%s\" width=\"%d\" height=\"%d\" border=\"0\" /></a>\n", $next_page, $next_date, $next_date, $NEXT_ICON, $ICON_WIDTH, $ICON_WIDTH;
     } else {
-        printf FP "<img src=\"%s\" width=\"%d\" height=\"%d\" border=\"0\" style=\"opacity: 0.5;\" />", $NEXT_ICON, $ICON_WIDTH, $ICON_WIDTH;
+        printf FP "<img src=\"%s\" width=\"%d\" height=\"%d\" border=\"0\" style=\"opacity: 0.5;\" />\n", $NEXT_ICON, $ICON_WIDTH, $ICON_WIDTH;
     }
 
     if(defined $last_page) {
-        printf FP "<a href=\"%s\" alt=\"%s\" title=\"%s\"><img src=\"%s\" width=\"%d\" height=\"%d\" border=\"0\" /></a>", $last_page, $last_date, $last_date, $END_ICON, $ICON_WIDTH, $ICON_WIDTH;
+        printf FP "<a href=\"%s\" alt=\"%s\" title=\"%s\"><img src=\"%s\" width=\"%d\" height=\"%d\" border=\"0\" /></a>\n", $last_page, $last_date, $last_date, $END_ICON, $ICON_WIDTH, $ICON_WIDTH;
     } else {
-        printf FP "<img src=\"%s\" width=\"%d\" height=\"%d\" border=\"0\" style=\"opacity: 0.5;\" />", $END_ICON, $ICON_WIDTH, $ICON_WIDTH;
+        printf FP "<img src=\"%s\" width=\"%d\" height=\"%d\" border=\"0\" style=\"opacity: 0.5;\" />\n", $END_ICON, $ICON_WIDTH, $ICON_WIDTH;
     }
 
     print FP <<EOM
                 </td>
                 <td align="right" width="20%">
-                    <a href="../../../server.php" alt="Server" title="Server">
-                        <img src="$SERVER_ICON" width="$ICON_WIDTH" height="$ICON_WIDTH" border="0" />
-                    </a>
+                    $SERVER_LINK
                 </td>
             </tr>
         </table>
@@ -862,22 +900,27 @@ EOM
     close FP;
 }
 
-print "Dumping I3 speaker file for WileyMUD...\n";
-#$channels = load_channels($db);
-$speakers = load_speakers($db);
+print "Generating navigation data...\n";
+generate_navbar_script($date_counts);
 
-$db->disconnect();
+if( $generate ) {
+    print "Dumping I3 speaker file for WileyMUD...\n";
+    #$channels = load_channels($db);
+    $speakers = load_speakers($db);
 
-my $filename = sprintf "%s/i3.speakers.new", $PAGE_DIR;
-open FP, ">$filename" or die "Cannot open speaker file $filename: $!";
+    $db->disconnect();
 
-printf FP "#COUNT\nCount   %d\nEnd\n\n", scalar keys %$speakers;
-foreach my $row (map { $speakers->{$_} } (sort keys %$speakers)) {
-    printf FP "#SPEAKER\nName    %s\nColor   %s\nEnd\n\n", $row->{speaker}, $row->{pinkfish};
+    my $filename = sprintf "%s/i3.speakers.new", $PAGE_DIR;
+    open FP, ">$filename" or die "Cannot open speaker file $filename: $!";
+
+    printf FP "#COUNT\nCount   %d\nEnd\n\n", scalar keys %$speakers;
+    foreach my $row (map { $speakers->{$_} } (sort keys %$speakers)) {
+        printf FP "#SPEAKER\nName    %s\nColor   %s\nEnd\n\n", $row->{speaker}, $row->{pinkfish};
+    }
+    printf FP "#END\n";
+
+    close FP;
 }
-printf FP "#END\n";
-
-close FP;
 
 print "Done!\n";
 exit 0;
