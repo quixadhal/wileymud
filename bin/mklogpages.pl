@@ -9,12 +9,13 @@ use Data::Dumper;
 use DBI;
 use HTML::Entities;
 use Getopt::Long;
+use JSON qw(encode_json);
 
 my $URL_HOME        = "http://wileymud.themud.org/~wiley";
 my $LOG_HOME        = "$URL_HOME/logpages";
 
 #my $DB_FILE         = '/home/wiley/lib/i3/wiley.db';
-my $DB_FILE         = '/home/wiley/lib/i3/wiley.db.bkp-20190209';
+my $DB_FILE         = '/home/wiley/lib/i3/wiley.bkp-20190211.db';
 my $PAGE_DIR        = '/home/wiley/public_html/logpages';
 
 my $BEGIN_ICON      = "$URL_HOME/gfx/navbegin.png";
@@ -41,6 +42,12 @@ my $JQUI_THEME      = "$LOG_HOME/jquery/jquery-ui.theme.css";
 my $JQ              = "$LOG_HOME/jquery.js";
 my $JQUI            = "$LOG_HOME/jquery/jquery-ui.js";
 my $NAVBAR          = "$LOG_HOME/navbar.js";
+
+my $PINKFISH_CACHE  = "$PAGE_DIR/pinkfish.json";
+my $CHANNEL_CACHE   = "$PAGE_DIR/channels.json";
+my $SPEAKER_CACHE   = "$PAGE_DIR/speakers.json";
+my $DATE_CACHE      = "$PAGE_DIR/date_counts.json";
+my $HOUR_CACHE      = "$PAGE_DIR/hours.json";
 
 my $db = undef;
 
@@ -89,7 +96,7 @@ sub display_options {
     printf "We will %soverwrite existing pages.\n", $overwrite ? "" : "NOT ";
     printf "We will %sgenerate I3 speaker data.\n", $generate ? "" : "NOT ";
     printf "We will %supdate speaker and channel color data.\n", $update ? "" : "NOT ";
-    printf "We will %spause 5 seconds before starting.\n", $pause ? "" : "NOT ";
+    printf "We will %spause 5 seconds before starting%s\n", ($pause ? "" : "NOT "), ($pause ? "..............." : ".");
 }
 
 Getopt::Long::Configure("gnu_getopt");
@@ -103,6 +110,111 @@ GetOptions(
     'update|u!'         => \$update,
     'pause|p!'          => \$pause,
 );
+
+sub save_json_cache {
+    my $data = shift;
+    my $filename = shift;
+
+    my $json_data = encode_json($data);
+    die "Invalid JSON data for $filename!" if !defined $json_data;
+    open FP, ">$filename" or die "Cannot open output page $filename: $!";
+    print FP $json_data;
+    close FP;
+}
+
+#CREATE TABLE pinkfish_map (
+#            pinkfish TEXT PRIMARY KEY NOT NULL,
+#            html TEXT
+#        );
+sub fetch_pinkfish_map {
+    my $db = shift;
+    die "Invalid database handle!" if !defined $db;
+
+    my $rv = $db->selectall_hashref(qq!
+        SELECT pinkfish, html
+          FROM pinkfish_map
+        ;!, 'pinkfish');
+    if($rv) {
+    #    $db->commit;
+        return $rv;
+    } else {
+        print STDERR $DBI::errstr."\n";
+    #    $db->rollback;
+    }
+    return undef;
+}
+
+#CREATE TABLE hours (
+#            hour INTEGER PRIMARY KEY NOT NULL,
+#            pinkfish TEXT
+#        );
+sub fetch_hours {
+    my $db = shift;
+    die "Invalid database handle!" if !defined $db;
+
+    my $rv = $db->selectall_hashref(qq!
+        SELECT hour, hours.pinkfish, html
+          FROM hours
+     LEFT JOIN pinkfish_map
+            ON (hours.pinkfish = pinkfish_map.pinkfish)
+        ;!, 'hour');
+    if($rv) {
+    #    $db->commit;
+        return $rv;
+    } else {
+        print STDERR $DBI::errstr."\n";
+    #    $db->rollback;
+    }
+    return undef;
+}
+
+#CREATE TABLE channels (
+#            channel TEXT PRIMARY KEY NOT NULL,
+#            pinkfish TEXT
+#        );
+sub fetch_channels {
+    my $db = shift;
+    die "Invalid database handle!" if !defined $db;
+
+    my $rv = $db->selectall_hashref(qq!
+        SELECT channel, channels.pinkfish, html
+          FROM channels
+     LEFT JOIN pinkfish_map
+            ON (channels.pinkfish = pinkfish_map.pinkfish)
+        ;!, 'channel');
+    if($rv) {
+    #    $db->commit;
+        return $rv;
+    } else {
+        print STDERR $DBI::errstr."\n";
+    #    $db->rollback;
+    }
+    return undef;
+}
+
+#CREATE TABLE speakers (
+#            speaker TEXT PRIMARY KEY NOT NULL,
+#            pinkfish TEXT
+#        );
+sub fetch_speakers {
+    my $db = shift;
+    die "Invalid database handle!" if !defined $db;
+
+    my $rv = $db->selectall_hashref(qq!
+        SELECT speaker, speakers.pinkfish, html
+          FROM speakers
+     LEFT JOIN pinkfish_map
+            ON (speakers.pinkfish = pinkfish_map.pinkfish)
+        ;!, 'speaker');
+    if($rv) {
+    #    $db->commit;
+        return $rv;
+    } else {
+        print STDERR $DBI::errstr."\n";
+    #    $db->rollback;
+    }
+    return undef;
+}
 
 sub fetch_row_count {
     my $db = shift;
@@ -153,7 +265,7 @@ sub update_all_speakers {
         '%^BLACK%^%^B_WHITE%^',
     );
     my $color_count = scalar @color_map;
-    my $speakers = load_speakers($db);
+    my $speakers = fetch_speakers($db);
     my $speaker_count = scalar keys %$speakers;
 
     my $result = $db->selectall_arrayref(qq!
@@ -207,7 +319,7 @@ sub update_all_channels {
         "%^WHITE%^%^BOLD%^",
     );
     my $color_count = scalar @color_map;
-    my $channels = load_channels($db);
+    my $channels = fetch_channels($db);
     my $channel_count = scalar keys %$channels;
 
     my $result = $db->selectall_arrayref(qq!
@@ -241,39 +353,6 @@ sub update_all_channels {
     }
 }
 
-sub simple_fetch_page {
-    my $db = shift;
-    my $offset = shift || 0;
-    my $page_size = shift || 100;
-    die "Invalid database handle!" if !defined $db;
-
-    my $rv = $db->selectall_arrayref(qq!
-             SELECT i3log.created,
-                    i3log.is_emote,
-                    i3log.is_url,
-                    i3log.is_bot,
-                    i3log.channel,
-                    i3log.speaker,
-                    i3log.mud,
-                    i3log.message,
-                    substr(created, 1, 10)     AS the_date,
-                    substr(created, 12, 8)     AS the_time,
-                    substr(created, 12, 2)     AS the_hour
-               FROM i3log
-           ORDER BY created ASC
-             LIMIT  $page_size
-             OFFSET $offset
-        ;!, { Slice => {} } );
-    if($rv) {
-    #    $db->commit;
-        return $rv;
-    } else {
-        print STDERR $DBI::errstr."\n";
-    #    $db->rollback;
-    }
-    return undef;
-}
-
 sub fetch_date_counts {
     my $db = shift;
     die "Invalid database handle!" if !defined $db;
@@ -299,6 +378,22 @@ sub fetch_date_counts {
     #    $db->rollback;
     }
     return undef;
+}
+
+sub save_date_cache {
+    my $date_data = shift;
+    my $filename = shift;
+
+    my $data = {};
+    foreach my $row (@$date_data) {
+        $data->{$row->{the_date}} = $row;
+    }
+
+    my $json_data = encode_json($data);
+    die "Invalid JSON data for $filename!" if !defined $json_data;
+    open FP, ">$filename" or die "Cannot open output page $filename: $!";
+    print FP $json_data;
+    close FP;
 }
 
 sub fetch_page_by_date {
@@ -335,7 +430,7 @@ sub fetch_page_by_date {
                     SUBSTR(created, 12, 2)     AS the_hour,
                     SUBSTR(created, 15, 2)     AS the_minute,
                     SUBSTR(created, 18, 2)     AS the_second,
-                    CAST(SUBSTR(created, 12, 2) AS INTEGER) AS the_hour,
+                    CAST(SUBSTR(created, 12, 2) AS INTEGER) AS int_hour,
                     hours.pinkfish             AS hour_color,
                     channels.pinkfish          AS channel_color,
                     speakers.pinkfish          AS speaker_color,
@@ -344,7 +439,7 @@ sub fetch_page_by_date {
                     pinkfish_map_speaker.html  AS speaker_html
                FROM i3log
           LEFT JOIN hours
-                 ON (the_hour = hours.hour)
+                 ON (int_hour = hours.hour)
           LEFT JOIN channels
                  ON (lower(i3log.channel) = channels.channel)
           LEFT JOIN speakers
@@ -420,100 +515,6 @@ sub fetch_page {
     return undef;
 }
 
-#CREATE TABLE pinkfish_map (
-#            pinkfish TEXT PRIMARY KEY NOT NULL,
-#            html TEXT
-#        );
-sub load_pinkfish_map {
-    my $db = shift;
-    die "Invalid database handle!" if !defined $db;
-
-    my $rv = $db->selectall_hashref(qq!
-        SELECT pinkfish, html
-          FROM pinkfish_map
-        ;!, 'pinkfish');
-    if($rv) {
-    #    $db->commit;
-        return $rv;
-    } else {
-        print STDERR $DBI::errstr."\n";
-    #    $db->rollback;
-    }
-    return undef;
-}
-
-#CREATE TABLE hours (
-#            hour INTEGER PRIMARY KEY NOT NULL,
-#            pinkfish TEXT
-#        );
-sub load_hours {
-    my $db = shift;
-    die "Invalid database handle!" if !defined $db;
-
-    my $rv = $db->selectall_hashref(qq!
-        SELECT hour, hours.pinkfish, html
-          FROM hours
-     LEFT JOIN pinkfish_map
-            ON (hours.pinkfish = pinkfish_map.pinkfish)
-        ;!, 'hour');
-    if($rv) {
-    #    $db->commit;
-        return $rv;
-    } else {
-        print STDERR $DBI::errstr."\n";
-    #    $db->rollback;
-    }
-    return undef;
-}
-
-#CREATE TABLE channels (
-#            channel TEXT PRIMARY KEY NOT NULL,
-#            pinkfish TEXT
-#        );
-sub load_channels {
-    my $db = shift;
-    die "Invalid database handle!" if !defined $db;
-
-    my $rv = $db->selectall_hashref(qq!
-        SELECT channel, channels.pinkfish, html
-          FROM channels
-     LEFT JOIN pinkfish_map
-            ON (channels.pinkfish = pinkfish_map.pinkfish)
-        ;!, 'channel');
-    if($rv) {
-    #    $db->commit;
-        return $rv;
-    } else {
-        print STDERR $DBI::errstr."\n";
-    #    $db->rollback;
-    }
-    return undef;
-}
-
-#CREATE TABLE speakers (
-#            speaker TEXT PRIMARY KEY NOT NULL,
-#            pinkfish TEXT
-#        );
-sub load_speakers {
-    my $db = shift;
-    die "Invalid database handle!" if !defined $db;
-
-    my $rv = $db->selectall_hashref(qq!
-        SELECT speaker, speakers.pinkfish, html
-          FROM speakers
-     LEFT JOIN pinkfish_map
-            ON (speakers.pinkfish = pinkfish_map.pinkfish)
-        ;!, 'speaker');
-    if($rv) {
-    #    $db->commit;
-        return $rv;
-    } else {
-        print STDERR $DBI::errstr."\n";
-    #    $db->rollback;
-    }
-    return undef;
-}
-
 sub page_url {
     my $row = shift;
 
@@ -579,11 +580,25 @@ sub generate_navbar_script {
 
         function gotoNewPage(dateString) {
             var url_bits = window.location.href.toString().split('/');
-            url_bits[url_bits.length - 3] = dateString.substr(0,4);
-            url_bits[url_bits.length - 2] = dateString.substr(5,2);
-            url_bits[url_bits.length - 1] = dateString + '.php';
+            var logpages = url_bits.indexOf("logpages");
+            var new_bits = [];
 
-            window.location.href = url_bits.join('/');
+            if(logpages >= 0) {
+                var i;
+                for(i = 0; i <= logpages; i++) {
+                    new_bits[i] = url_bits[i];
+                }
+                new_bits[new_bits.length] = dateString.substr(0,4);
+                new_bits[new_bits.length] = dateString.substr(5,2);
+                new_bits[new_bits.length] = dateString + '.php';
+                window.location.href = new_bits.join('/');
+            } else {
+                // We can't find it, so use the old code and pray
+                url_bits[url_bits.length - 3] = dateString.substr(0,4);
+                url_bits[url_bits.length - 2] = dateString.substr(5,2);
+                url_bits[url_bits.length - 1] = dateString + '.php';
+                window.location.href = url_bits.join('/');
+            }
         }
 
         \$( function() {
@@ -613,10 +628,23 @@ if( $page_start < 0 ) {
 }
 
 display_options($row_count, scalar @$date_counts);
-sleep 5 if $pause;
+if( $pause ) {
+    sleep 1;
+    print "4............\n";
+    sleep 1;
+    print "3.........\n";
+    sleep 1;
+    print "2......\n";
+    sleep 1;
+    print "1...\n";
+    sleep 1;
+    print "GO!\n\n";
+} else {
+    print "\n";
+}
 
-my $pinkfish_map = load_pinkfish_map($db);
-my $hours = load_hours($db);
+my $pinkfish_map = fetch_pinkfish_map($db);
+my $hours = fetch_hours($db);
 
 if( $update ) {
     print "Updating speaker and channel info...\n";
@@ -624,12 +652,38 @@ if( $update ) {
     update_all_speakers($db);
 }
 
-my $channels = load_channels($db);
-my $speakers = load_speakers($db);
-#print STDERR "Channels: ".Dumper($channels)."\n";
-#print STDERR "Speakers: ".Dumper($speakers)."\n";
+my $channels = fetch_channels($db);
+my $speakers = fetch_speakers($db);
+
+print "Saving cached versions of SQL data...\n";
+save_date_cache($date_counts, $DATE_CACHE);
+save_json_cache($pinkfish_map, $PINKFISH_CACHE);
+save_json_cache($hours, $HOUR_CACHE);
+save_json_cache($channels, $CHANNEL_CACHE);
+save_json_cache($speakers, $SPEAKER_CACHE);
+
+print "Generating navigation data...\n";
+generate_navbar_script($date_counts);
+
+if( $generate ) {
+    print "Dumping I3 speaker file for WileyMUD...\n";
+
+    my $filename = sprintf "%s/i3.speakers.new", $PAGE_DIR;
+    open FP, ">$filename" or die "Cannot open speaker file $filename: $!";
+
+    printf FP "#COUNT\nCount   %d\nEnd\n\n", scalar keys %$speakers;
+    foreach my $row (map { $speakers->{$_} } (sort keys %$speakers)) {
+        printf FP "#SPEAKER\nName    %s\nColor   %s\nEnd\n\n", $row->{speaker}, $row->{pinkfish};
+    }
+    printf FP "#END\n";
+
+    close FP;
+}
 
 $page_limit = (scalar @$date_counts) if $page_limit < 1;
+
+my $pages_todo = (scalar @$date_counts) - $page_start;
+$pages_todo = $page_limit if $page_limit < $pages_todo;
 
 my $pages_done = 0;
 #foreach my $day_row (@$date_counts) {
@@ -645,7 +699,7 @@ for( my $i = $page_start; $i < scalar @$date_counts; $i++ ) {
     if( $i < ((scalar @$date_counts) - 2) and -f $filename ) {
         if( !$overwrite ) {
             # Always generate the very last, and next to last page again.
-            printf "    Skipping %s.\n", $filename;
+            printf "            Skipping %s.\n", $filename;
             next;
         }
     }
@@ -688,7 +742,8 @@ for( my $i = $page_start; $i < scalar @$date_counts; $i++ ) {
 
     my $page = fetch_page_by_date($db, $today);
     die "No data for $today? $!" if !defined $page;
-    printf "    Generating %s... %d messages.\n", $today, scalar @$page;
+    printf "    [%5d] Generating %s... %d messages.\n",
+        ($pages_todo - $pages_done), $today, scalar @$page;
 
     open FP, ">$filename" or die "Cannot open output page $filename: $!";
 
@@ -857,6 +912,7 @@ EOM
         printf FP "<td bgcolor=\"%s\">%s%s@%s%s</td>\n", $bg_color, $speaker_html, $row->{speaker}, $row->{mud}, "</span>";
 
         my $message = $row->{message};
+        $message = "" if !defined $message;
         # encode_entities
         $message = encode_entities($message, '<>&"');
 
@@ -900,27 +956,9 @@ EOM
     close FP;
 }
 
-print "Generating navigation data...\n";
+print "Regenerating navigation data...\n";
 generate_navbar_script($date_counts);
 
-if( $generate ) {
-    print "Dumping I3 speaker file for WileyMUD...\n";
-    #$channels = load_channels($db);
-    $speakers = load_speakers($db);
-
-    $db->disconnect();
-
-    my $filename = sprintf "%s/i3.speakers.new", $PAGE_DIR;
-    open FP, ">$filename" or die "Cannot open speaker file $filename: $!";
-
-    printf FP "#COUNT\nCount   %d\nEnd\n\n", scalar keys %$speakers;
-    foreach my $row (map { $speakers->{$_} } (sort keys %$speakers)) {
-        printf FP "#SPEAKER\nName    %s\nColor   %s\nEnd\n\n", $row->{speaker}, $row->{pinkfish};
-    }
-    printf FP "#END\n";
-
-    close FP;
-}
-
+$db->disconnect();
 print "Done!\n";
 exit 0;
