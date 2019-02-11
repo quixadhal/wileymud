@@ -13,6 +13,7 @@ use JSON qw(encode_json);
 
 my $URL_HOME        = "http://wileymud.themud.org/~wiley";
 my $LOG_HOME        = "$URL_HOME/logpages";
+my $LIVE_PAGE       = "$LOG_HOME/";
 
 #my $DB_FILE         = '/home/wiley/lib/i3/wiley.db';
 my $DB_FILE         = '/home/wiley/lib/i3/wiley.bkp-20190211.db';
@@ -361,10 +362,14 @@ sub fetch_date_counts {
     # YYYY-MM-DD HH:MM:SS.UUU
     # 1    6  9  12 15 18 21
     my $rv = $db->selectall_arrayref(qq!
-        SELECT      SUBSTR(created, 1, 10) AS the_date,
-                    SUBSTR(created, 1, 4) AS the_year,
-                    SUBSTR(created, 6, 2) AS the_month,
-                    SUBSTR(created, 9, 2) AS the_day,
+        SELECT      SUBSTR(datetime(datetime(created, 'localtime'), 'localtime'),
+                        1, 10) AS the_date,
+                    SUBSTR(datetime(datetime(created, 'localtime'), 'localtime'),
+                        1, 4) AS the_year,
+                    SUBSTR(datetime(datetime(created, 'localtime'), 'localtime'),
+                        6, 2) AS the_month,
+                    SUBSTR(datetime(datetime(created, 'localtime'), 'localtime'),
+                        9, 2) AS the_day,
                     COUNT(*) AS count
         FROM        i3log
         GROUP BY    the_date
@@ -396,25 +401,29 @@ sub save_date_cache {
     close FP;
 }
 
+sub fetch_current_date {
+    my $db = shift;
+
+    my $date = undef;
+    my $rv = $db->selectrow_arrayref("select date(datetime('now', 'localtime'));");
+    if($rv) {
+        $date = $rv->[0];
+    } else {
+        print STDERR $DBI::errstr."\n";
+    }
+    die "Cannot obtain a valid date???: $!" if !defined $date;
+    return $date;
+}
+
 sub fetch_page_by_date {
     my $db = shift;
     my $date = shift;
     die "Invalid database handle!" if !defined $db;
 
-    my $rv = undef;
+    $date = fetch_current_date($db) if !defined $date;
 
-    if( !defined $date ) {
-        $rv = $db->selectrow_arrayref("select date('now');");
-        if($rv) {
-            $date = $rv->[0];
-        } else {
-            print STDERR $DBI::errstr."\n";
-        }
-    }
-    die "Cannot obtain a valid date???: $!" if !defined $date;
-
-    $rv = $db->selectall_arrayref(qq!
-             SELECT i3log.created,
+    my $rv = $db->selectall_arrayref(qq!
+             SELECT datetime(datetime(i3log.created, 'localtime'), 'localtime') AS created,
                     i3log.is_emote,
                     i3log.is_url,
                     i3log.is_bot,
@@ -422,15 +431,24 @@ sub fetch_page_by_date {
                     i3log.speaker,
                     i3log.mud,
                     i3log.message,
-                    SUBSTR(created, 1, 10)     AS the_date,
-                    SUBSTR(created, 12, 8)     AS the_time,
-                    SUBSTR(created, 1, 4)      AS the_year,
-                    SUBSTR(created, 6, 2)      AS the_month,
-                    SUBSTR(created, 9, 2)      AS the_day,
-                    SUBSTR(created, 12, 2)     AS the_hour,
-                    SUBSTR(created, 15, 2)     AS the_minute,
-                    SUBSTR(created, 18, 2)     AS the_second,
-                    CAST(SUBSTR(created, 12, 2) AS INTEGER) AS int_hour,
+                    SUBSTR(datetime(datetime(i3log.created, 'localtime'), 'localtime')
+                        , 1, 10)     AS the_date,
+                    SUBSTR(datetime(datetime(i3log.created, 'localtime'), 'localtime')
+                        , 12, 8)     AS the_time,
+                    SUBSTR(datetime(datetime(i3log.created, 'localtime'), 'localtime')
+                        , 1, 4)      AS the_year,
+                    SUBSTR(datetime(datetime(i3log.created, 'localtime'), 'localtime')
+                        , 6, 2)      AS the_month,
+                    SUBSTR(datetime(datetime(i3log.created, 'localtime'), 'localtime')
+                        , 9, 2)      AS the_day,
+                    SUBSTR(datetime(datetime(i3log.created, 'localtime'), 'localtime')
+                        , 12, 2)     AS the_hour,
+                    SUBSTR(datetime(datetime(i3log.created, 'localtime'), 'localtime')
+                        , 15, 2)     AS the_minute,
+                    SUBSTR(datetime(datetime(i3log.created, 'localtime'), 'localtime')
+                        , 18, 2)     AS the_second,
+                    CAST(SUBSTR(datetime(datetime(i3log.created, 'localtime'), 'localtime')
+                        , 12, 2) AS INTEGER) AS int_hour,
                     hours.pinkfish             AS hour_color,
                     channels.pinkfish          AS channel_color,
                     speakers.pinkfish          AS speaker_color,
@@ -450,8 +468,8 @@ sub fetch_page_by_date {
                  ON (channel_color = pinkfish_map_channel.pinkfish)
           LEFT JOIN pinkfish_map pinkfish_map_speaker
                  ON (speaker_color = pinkfish_map_speaker.pinkfish)
-              WHERE date(i3log.created) = ?
-           ORDER BY created ASC;
+              WHERE date(datetime(datetime(i3log.created, 'localtime'), 'localtime')) = ?
+           ORDER BY datetime(datetime(i3log.created, 'localtime'), 'localtime') ASC;
         ;!, { Slice => {} }, ($date) );
     if($rv) {
     #    $db->commit;
@@ -462,57 +480,6 @@ sub fetch_page_by_date {
     }
     return undef;
 
-}
-
-sub fetch_page {
-    my $db = shift;
-    my $offset = shift || 0;
-    my $page_size = shift || 100;
-    die "Invalid database handle!" if !defined $db;
-
-    my $rv = $db->selectall_arrayref(qq!
-             SELECT i3log.created,
-                    i3log.is_emote,
-                    i3log.is_url,
-                    i3log.is_bot,
-                    i3log.channel,
-                    i3log.speaker,
-                    i3log.mud,
-                    i3log.message,
-                    SUBSTR(created, 1, 10)     AS the_date,
-                    SUBSTR(created, 12, 8)     AS the_time,
-                    CAST(SUBSTR(created, 12, 2) AS INTEGER) AS the_hour,
-                    hours.pinkfish             AS hour_color,
-                    channels.pinkfish          AS channel_color,
-                    speakers.pinkfish          AS speaker_color,
-                    pinkfish_map_hour.html     AS hour_html,
-                    pinkfish_map_channel.html  AS channel_html,
-                    pinkfish_map_speaker.html  AS speaker_html
-               FROM i3log
-          LEFT JOIN hours
-                 ON (the_hour = hours.hour)
-          LEFT JOIN channels
-                 ON (lower(i3log.channel) = channels.channel)
-          LEFT JOIN speakers
-                 ON (lower(i3log.speaker) = speakers.speaker)
-          LEFT JOIN pinkfish_map pinkfish_map_hour
-                 ON (hour_color = pinkfish_map_hour.pinkfish)
-          LEFT JOIN pinkfish_map pinkfish_map_channel
-                 ON (channel_color = pinkfish_map_channel.pinkfish)
-          LEFT JOIN pinkfish_map pinkfish_map_speaker
-                 ON (speaker_color = pinkfish_map_speaker.pinkfish)
-           ORDER BY created ASC
-             LIMIT  $page_size
-             OFFSET $offset
-        ;!, { Slice => {} } );
-    if($rv) {
-    #    $db->commit;
-        return $rv;
-    } else {
-        print STDERR $DBI::errstr."\n";
-    #    $db->rollback;
-    }
-    return undef;
 }
 
 sub page_url {
@@ -579,25 +546,29 @@ sub generate_navbar_script {
         }
 
         function gotoNewPage(dateString) {
-            var url_bits = window.location.href.toString().split('/');
-            var logpages = url_bits.indexOf("logpages");
-            var new_bits = [];
-
-            if(logpages >= 0) {
-                var i;
-                for(i = 0; i <= logpages; i++) {
-                    new_bits[i] = url_bits[i];
-                }
-                new_bits[new_bits.length] = dateString.substr(0,4);
-                new_bits[new_bits.length] = dateString.substr(5,2);
-                new_bits[new_bits.length] = dateString + '.php';
-                window.location.href = new_bits.join('/');
+            if( dateString == "$last_date" ) {
+                window.location.href = "$LIVE_PAGE";
             } else {
-                // We can't find it, so use the old code and pray
-                url_bits[url_bits.length - 3] = dateString.substr(0,4);
-                url_bits[url_bits.length - 2] = dateString.substr(5,2);
-                url_bits[url_bits.length - 1] = dateString + '.php';
-                window.location.href = url_bits.join('/');
+                var url_bits = window.location.href.toString().split('/');
+                var logpages = url_bits.indexOf("logpages");
+                var new_bits = [];
+
+                if(logpages >= 0) {
+                    var i;
+                    for(i = 0; i <= logpages; i++) {
+                        new_bits[i] = url_bits[i];
+                    }
+                    new_bits[new_bits.length] = dateString.substr(0,4);
+                    new_bits[new_bits.length] = dateString.substr(5,2);
+                    new_bits[new_bits.length] = dateString + '.php';
+                    window.location.href = new_bits.join('/');
+                } else {
+                    // We can't find it, so use the old code and pray
+                    url_bits[url_bits.length - 3] = dateString.substr(0,4);
+                    url_bits[url_bits.length - 2] = dateString.substr(5,2);
+                    url_bits[url_bits.length - 1] = dateString + '.php';
+                    window.location.href = url_bits.join('/');
+                }
             }
         }
 
@@ -719,26 +690,28 @@ for( my $i = $page_start; $i < scalar @$date_counts; $i++ ) {
 
     if( $i > 0 ) {
         # We have a previous page.
-        $prev_row = $date_counts->[$i - 1];
+        $prev_row  = $date_counts->[$i - 1];
         $prev_date = $prev_row->{the_date};
         $prev_page = page_url($prev_row);
 
         # We also are not ON the first page, so we should have that too.
-        $first_row   = $date_counts->[0];
-        $first_date  = $first_row->{the_date};
+        $first_row  = $date_counts->[0];
+        $first_date = $first_row->{the_date};
         $first_page = page_url($first_row);
     }
     if( $i < (scalar @$date_counts) - 1 ) {
         # We have a next page.
-        $next_row = $date_counts->[$i + 1];
+        $next_row  = $date_counts->[$i + 1];
         $next_date = $next_row->{the_date};
         $next_page = page_url($next_row);
-
-        # And there should also be a final page, which we are not on.
-        $last_row   = $date_counts->[-1];
-        $last_date  = $last_row->{the_date};
-        $last_page = page_url($last_row);
     }
+
+    # We ALWAYS have a last page, as that's the current page.  But,
+    # this one is special.  Instead of the usual static page, we want
+    # to point you to the live page that gets updated on load.
+    $last_row  = $date_counts->[-1];
+    $last_date = "LIVE " . $last_row->{the_date};
+    $last_page = $LIVE_PAGE;
 
     my $page = fetch_page_by_date($db, $today);
     die "No data for $today? $!" if !defined $page;
