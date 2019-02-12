@@ -229,3 +229,5 @@ apt install default-jre default-jdk
 apt install libdata-serializer-perl
 apt install libdate-calc-perl
 
+apt install php-sqlite3
+

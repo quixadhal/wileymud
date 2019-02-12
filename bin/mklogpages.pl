@@ -636,7 +636,9 @@ EOM
 
 print "Initializing...\n";
 
-$db = DBI->connect("DBI:SQLite:dbname=$DB_FILE", '', '', { AutoCommit => 1, PrintError => 1, });
+my $DATABASE = $use_live ? $LIVE_DB_FILE : $DB_FILE;
+
+$db = DBI->connect("DBI:SQLite:dbname=$DATABASE", '', '', { AutoCommit => 1, PrintError => 1, });
 fix_local_column($db);
 my $row_count = fetch_row_count($db);
 #my $page_count = $row_count / $page_size;

@@ -56,7 +56,7 @@ catch(PDOException $e) {
 }
 
 function now_date($db) {
-    $sql = "SELECT date(datetime('now', 'localtime')) AS 'the_date';";
+    $sql = "SELECT date('now', 'localtime') AS 'the_date';";
     $sth = $db->prepare($sql);
     $sth->execute();
     $sth->setFetchMode(PDO::FETCH_ASSOC);
@@ -422,11 +422,20 @@ $hours = load_hours($HOUR_CACHE);
 //$channels = fetch_channels($db);
 //$speakers = fetch_speakers($db);
 
-// We assume the current page IS the last page, else we'd be on a different page.
+$this_day = now_date($db);
 $date_counts = load_date_counts($DATE_CACHE);
-//$date_counts = fetch_date_counts($db);
-$date_keys = array_keys($date_counts);
+// Normally, this is all good, however if there have been no messages
+// yet today, it might be that there really were no messages OR that
+// the cache is out of date, so let's grab it from the database to
+// be sure...
+$today      = $date_counts[array_key_last($date_counts)]['the_date'];
+if( $this_day !== $today ) {
+    $date_counts = fetch_date_counts($db);
+    $json_data = json_encode($date_counts);
+    file_put_contents($DATE_CACHE, $json_data);
+}
 
+$date_keys = array_keys($date_counts);
 $first_date = $date_counts[array_key_first($date_counts)]['the_date'];
 $today      = $date_counts[array_key_last($date_counts)]['the_date'];
 $yesterday  = $date_counts[$date_keys[array_search($today, $date_keys)-1]]['the_date'];
