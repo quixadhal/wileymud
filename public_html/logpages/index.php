@@ -163,14 +163,10 @@ function load_speakers($filename) {
 
 function fetch_date_counts($db) {
     $sql = "
-        SELECT      SUBSTR(datetime(datetime(created, 'localtime'), 'localtime'),
-                        1, 10) AS the_date,
-                    SUBSTR(datetime(datetime(created, 'localtime'), 'localtime'),
-                        1, 4) AS the_year,
-                    SUBSTR(datetime(datetime(created, 'localtime'), 'localtime'),
-                        6, 2) AS the_month,
-                    SUBSTR(datetime(datetime(created, 'localtime'), 'localtime'),
-                        9, 2) AS the_day,
+        SELECT      SUBSTR(local, 1, 10) AS the_date,
+                    SUBSTR(local, 1, 4) AS the_year,
+                    SUBSTR(local, 6, 2) AS the_month,
+                    SUBSTR(local, 9, 2) AS the_day,
                     COUNT(*) AS count
         FROM        i3log
         GROUP BY    the_date
@@ -220,7 +216,7 @@ function fetch_page_by_date($db, $query_date = NULL) {
     }
 
     $sql = "
-             SELECT datetime(datetime(i3log.created, 'localtime'), 'localtime') AS created,
+             SELECT i3log.local AS created,
                     i3log.is_emote,
                     i3log.is_url,
                     i3log.is_bot,
@@ -228,24 +224,15 @@ function fetch_page_by_date($db, $query_date = NULL) {
                     i3log.speaker,
                     i3log.mud,
                     i3log.message,
-                    SUBSTR(datetime(datetime(i3log.created, 'localtime'), 'localtime')
-                        , 1, 10)     AS the_date,
-                    SUBSTR(datetime(datetime(i3log.created, 'localtime'), 'localtime')
-                        , 12, 8)     AS the_time,
-                    SUBSTR(datetime(datetime(i3log.created, 'localtime'), 'localtime')
-                        , 1, 4)      AS the_year,
-                    SUBSTR(datetime(datetime(i3log.created, 'localtime'), 'localtime')
-                        , 6, 2)      AS the_month,
-                    SUBSTR(datetime(datetime(i3log.created, 'localtime'), 'localtime')
-                        , 9, 2)      AS the_day,
-                    SUBSTR(datetime(datetime(i3log.created, 'localtime'), 'localtime')
-                        , 12, 2)     AS the_hour,
-                    SUBSTR(datetime(datetime(i3log.created, 'localtime'), 'localtime')
-                        , 15, 2)     AS the_minute,
-                    SUBSTR(datetime(datetime(i3log.created, 'localtime'), 'localtime')
-                        , 18, 2)     AS the_second,
-                    CAST(SUBSTR(datetime(datetime(i3log.created, 'localtime'), 'localtime')
-                        , 12, 2) AS INTEGER) AS int_hour,
+                    SUBSTR(i3log.local, 1, 10)     AS the_date,
+                    SUBSTR(i3log.local, 12, 8)     AS the_time,
+                    SUBSTR(i3log.local, 1, 4)      AS the_year,
+                    SUBSTR(i3log.local, 6, 2)      AS the_month,
+                    SUBSTR(i3log.local, 9, 2)      AS the_day,
+                    SUBSTR(i3log.local, 12, 2)     AS the_hour,
+                    SUBSTR(i3log.local, 15, 2)     AS the_minute,
+                    SUBSTR(i3log.local, 18, 2)     AS the_second,
+                    CAST(SUBSTR(i3log.local, 12, 2) AS INTEGER) AS int_hour,
                     hours.pinkfish             AS hour_color,
                     channels.pinkfish          AS channel_color,
                     speakers.pinkfish          AS speaker_color,
@@ -265,9 +252,8 @@ function fetch_page_by_date($db, $query_date = NULL) {
                  ON (channel_color = pinkfish_map_channel.pinkfish)
           LEFT JOIN pinkfish_map pinkfish_map_speaker
                  ON (speaker_color = pinkfish_map_speaker.pinkfish)
-              WHERE date(datetime(datetime(i3log.created, 'localtime'), 'localtime'))
-                        = :query_date
-           ORDER BY datetime(datetime(i3log.created, 'localtime'), 'localtime') ASC;
+              WHERE date(i3log.local) = :query_date
+           ORDER BY i3log.local ASC;
     ";
     $sth = $db->prepare($sql);
     $sth->bindParam(':query_date', $query_date);

@@ -15,7 +15,7 @@ my $URL_HOME        = "http://wileymud.themud.org/~wiley";
 my $LOG_HOME        = "$URL_HOME/logpages";
 my $LIVE_PAGE       = "$LOG_HOME/";
 
-#my $DB_FILE         = '/home/wiley/lib/i3/wiley.db';
+my $LIVE_DB_FILE    = '/home/wiley/lib/i3/wiley.db';
 my $DB_FILE         = '/home/wiley/lib/i3/wiley.bkp-20190211.db';
 my $PAGE_DIR        = '/home/wiley/public_html/logpages';
 
@@ -59,6 +59,7 @@ my $overwrite       = 0;
 my $generate        = 1;
 my $update          = 1;
 my $pause           = 1;
+my $use_live        = 0;
 
 sub do_help {
     print STDERR <<EOM
@@ -76,6 +77,9 @@ long options:
     --generate          - Generate i3.speakers MUD file.  Default is yes.
     --update            - Update speaker and channel color data.  Default is yes.
     --pause             - Pause for 5 seconds before starting.  Default is yes.
+    --live              - Use the live database for the most current data.  Default is no.
+                          Because SQLite doesn't handle locks well, if this is true,
+                          the run will be limited to 10 pages at a time.
 EOM
     ;
     #--pagesize N        - Page size, defaults to $page_size.
@@ -86,7 +90,7 @@ sub display_options {
     my $row_count = shift || 0;
     my $page_count = shift || 0;
 
-    #printf "Found %d rows, which is %d pages of %d rows each.\n", $row_count, $page_count, $page_size;
+    printf "We are running against the %s database%s\n", ($use_live ? "live" : "backup"), ($use_live ? "!" : ".");
     printf "Found %d rows over %d pages.\n", $row_count, $page_count;
     printf "Starting from page %d, as requested.\n", $page_start;
     if($page_limit) {
@@ -110,6 +114,7 @@ GetOptions(
     'generate|g!'       => \$generate,
     'update|u!'         => \$update,
     'pause|p!'          => \$pause,
+    'live!'             => \$use_live,
 );
 
 sub save_json_cache {
@@ -354,6 +359,34 @@ sub update_all_channels {
     }
 }
 
+sub fix_local_column {
+    my $db = shift;
+    die "Invalid database handle!" if !defined $db;
+
+    # SQLite is confused about timezones and stores my data with
+    # a doubled offset, so instead of GMT, it's actually being
+    # stored as GMT+8 when I'm at GMT-8.
+    #
+    # SQLite won't let you alter a table to add a column with
+    # a default value that invokes a function... so... for now
+    # we hand fix things before we paw through it.
+
+    print "Fixing local timestamp column...\n";
+    my $update_sql = $db->prepare( qq!
+        UPDATE i3log
+           SET local = STRFTIME('%Y-%m-%d %H:%M:%f',
+               STRFTIME('%Y-%m-%d %H:%M:%f', created, 'localtime'), 'localtime')
+         WHERE local IS NULL;
+    !);
+    my $rv = $update_sql->execute();
+    if($rv) {
+        print "Fixed!\n"
+    } else {
+        print STDERR $DBI::errstr."\n";
+        #$db->rollback;
+    }
+}
+
 sub fetch_date_counts {
     my $db = shift;
     die "Invalid database handle!" if !defined $db;
@@ -362,14 +395,10 @@ sub fetch_date_counts {
     # YYYY-MM-DD HH:MM:SS.UUU
     # 1    6  9  12 15 18 21
     my $rv = $db->selectall_arrayref(qq!
-        SELECT      SUBSTR(datetime(datetime(created, 'localtime'), 'localtime'),
-                        1, 10) AS the_date,
-                    SUBSTR(datetime(datetime(created, 'localtime'), 'localtime'),
-                        1, 4) AS the_year,
-                    SUBSTR(datetime(datetime(created, 'localtime'), 'localtime'),
-                        6, 2) AS the_month,
-                    SUBSTR(datetime(datetime(created, 'localtime'), 'localtime'),
-                        9, 2) AS the_day,
+        SELECT      SUBSTR(local, 1, 10) AS the_date,
+                    SUBSTR(local, 1, 4) AS the_year,
+                    SUBSTR(local, 6, 2) AS the_month,
+                    SUBSTR(local, 9, 2) AS the_day,
                     COUNT(*) AS count
         FROM        i3log
         GROUP BY    the_date
@@ -423,7 +452,7 @@ sub fetch_page_by_date {
     $date = fetch_current_date($db) if !defined $date;
 
     my $rv = $db->selectall_arrayref(qq!
-             SELECT datetime(datetime(i3log.created, 'localtime'), 'localtime') AS created,
+             SELECT i3log.local AS created,
                     i3log.is_emote,
                     i3log.is_url,
                     i3log.is_bot,
@@ -431,24 +460,15 @@ sub fetch_page_by_date {
                     i3log.speaker,
                     i3log.mud,
                     i3log.message,
-                    SUBSTR(datetime(datetime(i3log.created, 'localtime'), 'localtime')
-                        , 1, 10)     AS the_date,
-                    SUBSTR(datetime(datetime(i3log.created, 'localtime'), 'localtime')
-                        , 12, 8)     AS the_time,
-                    SUBSTR(datetime(datetime(i3log.created, 'localtime'), 'localtime')
-                        , 1, 4)      AS the_year,
-                    SUBSTR(datetime(datetime(i3log.created, 'localtime'), 'localtime')
-                        , 6, 2)      AS the_month,
-                    SUBSTR(datetime(datetime(i3log.created, 'localtime'), 'localtime')
-                        , 9, 2)      AS the_day,
-                    SUBSTR(datetime(datetime(i3log.created, 'localtime'), 'localtime')
-                        , 12, 2)     AS the_hour,
-                    SUBSTR(datetime(datetime(i3log.created, 'localtime'), 'localtime')
-                        , 15, 2)     AS the_minute,
-                    SUBSTR(datetime(datetime(i3log.created, 'localtime'), 'localtime')
-                        , 18, 2)     AS the_second,
-                    CAST(SUBSTR(datetime(datetime(i3log.created, 'localtime'), 'localtime')
-                        , 12, 2) AS INTEGER) AS int_hour,
+                    SUBSTR(i3log.local, 1, 10)     AS the_date,
+                    SUBSTR(i3log.local, 12, 8)     AS the_time,
+                    SUBSTR(i3log.local, 1, 4)      AS the_year,
+                    SUBSTR(i3log.local, 6, 2)      AS the_month,
+                    SUBSTR(i3log.local, 9, 2)      AS the_day,
+                    SUBSTR(i3log.local, 12, 2)     AS the_hour,
+                    SUBSTR(i3log.local, 15, 2)     AS the_minute,
+                    SUBSTR(i3log.local, 18, 2)     AS the_second,
+                    CAST(SUBSTR(i3log.local, 12, 2) AS INTEGER) AS int_hour,
                     hours.pinkfish             AS hour_color,
                     channels.pinkfish          AS channel_color,
                     speakers.pinkfish          AS speaker_color,
@@ -468,8 +488,8 @@ sub fetch_page_by_date {
                  ON (channel_color = pinkfish_map_channel.pinkfish)
           LEFT JOIN pinkfish_map pinkfish_map_speaker
                  ON (speaker_color = pinkfish_map_speaker.pinkfish)
-              WHERE date(datetime(datetime(i3log.created, 'localtime'), 'localtime')) = ?
-           ORDER BY datetime(datetime(i3log.created, 'localtime'), 'localtime') ASC;
+              WHERE date(i3log.local) = ?
+           ORDER BY i3log.local ASC;
         ;!, { Slice => {} }, ($date) );
     if($rv) {
     #    $db->commit;
@@ -590,6 +610,7 @@ EOM
 print "Initializing...\n";
 
 $db = DBI->connect("DBI:SQLite:dbname=$DB_FILE", '', '', { AutoCommit => 1, PrintError => 1, });
+fix_local_column($db);
 my $row_count = fetch_row_count($db);
 #my $page_count = $row_count / $page_size;
 my $date_counts = fetch_date_counts($db);
@@ -652,6 +673,7 @@ if( $generate ) {
 }
 
 $page_limit = (scalar @$date_counts) if $page_limit < 1;
+$page_limit = 10 if $use_live;
 
 my $pages_todo = (scalar @$date_counts) - $page_start;
 $pages_todo = $page_limit if $page_limit < $pages_todo;
@@ -687,6 +709,7 @@ for( my $i = $page_start; $i < scalar @$date_counts; $i++ ) {
     my $last_row    = undef;
     my $last_page   = undef;
     my $last_date   = undef;
+    my $this_is_the_end = ($i == (scalar @$date_counts) - 1) ? 1 : undef;
 
     if( $i > 0 ) {
         # We have a previous page.
@@ -710,8 +733,10 @@ for( my $i = $page_start; $i < scalar @$date_counts; $i++ ) {
     # this one is special.  Instead of the usual static page, we want
     # to point you to the live page that gets updated on load.
     $last_row  = $date_counts->[-1];
-    $last_date = "LIVE " . $last_row->{the_date};
+    $last_date = $this_is_the_end ? "LIVE" : ("LIVE " . $last_row->{the_date});
     $last_page = $LIVE_PAGE;
+
+    my $page_background = $this_is_the_end ? "#1F0000" : "black";
 
     my $page = fetch_page_by_date($db, $today);
     die "No data for $today? $!" if !defined $page;
@@ -784,12 +809,12 @@ for( my $i = $page_start; $i < scalar @$date_counts; $i++ ) {
             a:active, a:focus { outline: 0; border: none; -moz-outline-style: none; }
             input, select, textarea { border-color: #101010; background-color: #101010; color: #d0d0d0; }
             input:focus, textarea:focus { border-color: #101010; background-color: #303030; color: #f0f0f0; }
-            #navbar { position: fixed; top: 0; background-color: black; }
-            #content-header { position: fixed; top: 58px; width: 100%; background-color: black; }
+            #navbar { position: fixed; top: 0; background-color: $page_background; }
+            #content-header { position: fixed; top: 58px; width: 100%; background-color: $page_background; }
             #content { padding-top: 48px; }
         </style>
     </head>
-    <body bgcolor="black" text="#d0d0d0" link="#ffffbf" vlink="#ffa040" onload="setup();">
+    <body bgcolor="$page_background" text="#d0d0d0" link="#ffffbf" vlink="#ffa040" onload="setup();">
         <table id="navbar" width="99%" align="center">
             <tr>
                 <td align="left" width="20%">
