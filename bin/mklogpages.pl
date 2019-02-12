@@ -444,6 +444,33 @@ sub fetch_current_date {
     return $date;
 }
 
+# ALTER TABLE i3log RENAME TO i3bkp;
+# CREATE TABLE i3log (
+#             created DATETIME DEFAULT (STRFTIME('%Y-%m-%d %H:%M:%f', 'NOW','utc')),
+#             local DATETIME DEFAULT (STRFTIME('%Y-%m-%d %H:%M:%f', 'NOW','localtime')),
+#             is_emote INTEGER,
+#             is_url INTEGER,
+#             is_bot INTEGER,
+#             channel TEXT,
+#             speaker TEXT,
+#             mud TEXT,
+#             message TEXT
+#         );
+# INSERT INTO i3log SELECT created, STRFTIME('%Y-%m-%d %H:%M:%f', 
+#     STRFTIME('%Y-%m-%d %H:%M:%f', created, 'localtime'), 'localtime')
+#     AS local, is_emote, is_url, is_bot, channel, speaker, mud, message FROM i3bkp;
+# CREATE INDEX ix_local ON i3log(local);
+#
+# This routine should never have anything to do anymore, but there's no real harmn in
+# letting it run... if the work is 0 rows, the time is minimal.
+#
+# In case you're wondering, this is to work around a bug I didn't realize happened.
+# For whatever reason,, the default of UTC fails in SQLite and actually generates
+# timestamps that are 16 hours shifted, rather than the 8 they should be.
+#
+# Unfortunately, some of the rows will have been shifted 10 hours when I was living
+# in GMT-5, and 16 hours when I moved to GMT-8.  Oh well...
+#
 sub fetch_page_by_date {
     my $db = shift;
     my $date = shift;
