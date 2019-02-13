@@ -3247,6 +3247,7 @@ void I3_process_channel_e(I3_HEADER *header, char *s)
     int                                     len;
     char                                    speaker_color[MAX_INPUT_LENGTH];
     char                                    mud_color[MAX_INPUT_LENGTH];
+    int                                     hack_len = 0;
 
     I3_get_field(ps, &next_ps);
     I3_remove_quotes(&ps);
@@ -3283,11 +3284,20 @@ void I3_process_channel_e(I3_HEADER *header, char *s)
 
     strcpy(format, "%s ");
     strcat(format, channel->layout_e);
+    snprintf(tmpvisname, MAX_INPUT_LENGTH, "%s@%s", visname, header->originator_mudname);
+
+    // We omit the RESET from the end of the speaker name, so it can also catch the @ if the channel
+    // format string doesn't override it.
     snprintf(speaker_color, MAX_INPUT_LENGTH, "%s%s", color_speaker(header->originator_username), visname);
     snprintf(mud_color, MAX_INPUT_LENGTH, "%s%s%%^RESET%%^", color_speaker(header->originator_username), header->originator_mudname);
-    snprintf(tmpvisname, MAX_INPUT_LENGTH, "%s@%s", speaker_color, mud_color);
     snprintf(msg, MAX_STRING_LENGTH, "%s", I3_convert_channel_message(tps, tmpvisname, tmpvisname));
-    snprintf(buf, MAX_STRING_LENGTH, format, color_time(local), channel->local_name, msg);
+
+    // Emotes suck.  The message itself has user@mud embedded in it, so to do things right,
+    // we need to skip over that for the actual message, but still handle it with hackery
+    strcat(format, "@%s%s");
+    hack_len = strlen(tmpvisname);
+
+    snprintf(buf, MAX_STRING_LENGTH, format, color_time(local), channel->local_name, speaker_color, mud_color, &msg[hack_len]);
 
     allchan_log(1, channel->local_name, visname, header->originator_mudname, msg);
 
