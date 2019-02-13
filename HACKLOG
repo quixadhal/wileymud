@@ -231,3 +231,10 @@ apt install libdate-calc-perl
 
 apt install php-sqlite3
 
+updated crontab:
+    # m h  dom mon dow   command
+    1 3,6,9,12,15,18,21 * * * /home/wiley/bin/mkmudlist.pl >/dev/null 2>&1 &
+    25 2 * * * /home/wiley/bin/cleanlogs >/dev/null 2>&1 &
+    30 2 * * * /home/wiley/bin/remote-backup >/dev/null 2>&1 &
+    5 1,7,13,19 * * * /home/wiley/bin/mklogpages.pl --overwrite --debug --start -3 --live --no-pause >/dev/null 2>&1 &
+

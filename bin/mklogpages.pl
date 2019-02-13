@@ -60,6 +60,7 @@ my $generate        = 1;
 my $update          = 1;
 my $pause           = 1;
 my $use_live        = 0;
+my $debug_page      = 0;
 
 sub do_help {
     print STDERR <<EOM
@@ -80,6 +81,11 @@ long options:
     --live              - Use the live database for the most current data.  Default is no.
                           Because SQLite doesn't handle locks well, if this is true,
                           the run will be limited to 10 pages at a time.
+    --debug             - This changes the next-link button for the next to the last
+                          page, so it points to another static page, rather than to the
+                          live page.  The static page has a dark red background, so you
+                          know it's not live data.  By default, this points to the
+                          live page, as the END link always does.
 EOM
     ;
     #--pagesize N        - Page size, defaults to $page_size.
@@ -90,7 +96,7 @@ sub display_options {
     my $row_count = shift || 0;
     my $page_count = shift || 0;
 
-    printf "We are running against the %s database%s\n", ($use_live ? "live" : "backup"), ($use_live ? "!" : ".");
+    printf "We are running against %s.\n", ($use_live ? $LIVE_DB_FILE : $DB_FILE);
     printf "Found %d rows over %d pages.\n", $row_count, $page_count;
     printf "Starting from page %d, as requested.\n", $page_start;
     if($page_limit) {
@@ -102,6 +108,7 @@ sub display_options {
     printf "We will %sgenerate I3 speaker data.\n", $generate ? "" : "NOT ";
     printf "We will %supdate speaker and channel color data.\n", $update ? "" : "NOT ";
     printf "We will %spause 5 seconds before starting%s\n", ($pause ? "" : "NOT "), ($pause ? "..............." : ".");
+    printf "The next-to-the-last page will point to %s.\n", $debug_page ? "a static page" : "the live page";
 }
 
 Getopt::Long::Configure("gnu_getopt");
@@ -115,6 +122,7 @@ GetOptions(
     'update|u!'         => \$update,
     'pause|p!'          => \$pause,
     'live!'             => \$use_live,
+    'debug!'            => \$debug_page,
 );
 
 sub save_json_cache {
@@ -532,7 +540,7 @@ sub fetch_page_by_date {
 sub page_url {
     my $row = shift;
 
-    my $pathname = sprintf "%s/%s/%s/%s.php", $LOG_HOME,
+    my $pathname = sprintf "%s/%s/%s/%s.html", $LOG_HOME,
         $row->{the_year}, $row->{the_month},
         $row->{the_date};
 
@@ -547,7 +555,7 @@ sub page_path {
     $dir_path = sprintf "%s/%s/%s", $PAGE_DIR, $row->{the_year}, $row->{the_month};
     mkdir $dir_path if ! -d $dir_path;
 
-    my $pathname = sprintf "%s/%s/%s/%s.php", $PAGE_DIR,
+    my $pathname = sprintf "%s/%s/%s/%s.html", $PAGE_DIR,
         $row->{the_year}, $row->{the_month},
         $row->{the_date};
 
@@ -565,7 +573,7 @@ sub generate_navbar_script {
         push @date_list, ($row->{the_date}) if -f page_path($row);
     }
     my $big_list = join(",\n", map { sprintf "\"%s\"", $_; } (@date_list));
-    my $last_date = $date_list[-1];
+    my $last_date = (scalar @date_list < 1) ? fetch_current_date($db) : $date_list[-1];
 
     open FP, ">$filename" or die "Cannot open navbar script $filename: $!";
     print FP <<EOM
@@ -607,13 +615,13 @@ sub generate_navbar_script {
                     }
                     new_bits[new_bits.length] = dateString.substr(0,4);
                     new_bits[new_bits.length] = dateString.substr(5,2);
-                    new_bits[new_bits.length] = dateString + '.php';
+                    new_bits[new_bits.length] = dateString + '.html';
                     window.location.href = new_bits.join('/');
                 } else {
                     // We can't find it, so use the old code and pray
                     url_bits[url_bits.length - 3] = dateString.substr(0,4);
                     url_bits[url_bits.length - 2] = dateString.substr(5,2);
-                    url_bits[url_bits.length - 1] = dateString + '.php';
+                    url_bits[url_bits.length - 1] = dateString + '.html';
                     window.location.href = url_bits.join('/');
                 }
             }
@@ -751,11 +759,23 @@ for( my $i = $page_start; $i < scalar @$date_counts; $i++ ) {
         $first_date = $first_row->{the_date};
         $first_page = page_url($first_row);
     }
-    if( $i < (scalar @$date_counts) - 1 ) {
+    if( $i < (scalar @$date_counts) - 2 ) {
         # We have a next page.
         $next_row  = $date_counts->[$i + 1];
         $next_date = $next_row->{the_date};
         $next_page = page_url($next_row);
+    } elsif( $i < (scalar @$date_counts) - 1 ) {
+        if( $debug_page ) {
+            # We want the static page.
+            $next_row  = $date_counts->[$i + 1];
+            $next_date = $next_row->{the_date};
+            $next_page = page_url($next_row);
+        } else {
+            # We want the live page.
+            $next_row  = $date_counts->[$i + 1];
+            $next_date = "LIVE " . $next_row->{the_date};
+            $next_page = $LIVE_PAGE;
+        }
     }
 
     # We ALWAYS have a last page, as that's the current page.  But,

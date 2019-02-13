@@ -26,7 +26,7 @@ $ICON_WIDTH     = 48;
 
 $MUDLIST_IMG    = "<img src=\"$MUDLIST_ICON\" width=\"$ICON_WIDTH\" height=\"$ICON_WIDTH\" border=\"0\" />";
 $LOG_IMG        = "<img src=\"$LOG_ICON\" width=\"$ICON_WIDTH\" height=\"$ICON_WIDTH\" border=\"0\" />";
-$SERVER_IMG     = "<img src=\"$SERVER_ICON\" width=\"$ICON_WIDTH\" height=\"$ICON_WIDTH\" border=\"0\" />";
+$SERVER_IMG     = "<img align=\"right\" src=\"$SERVER_ICON\" width=\"$ICON_WIDTH\" height=\"$ICON_WIDTH\" border=\"0\" />";
 
 $MUDLIST_LINK   = "<a href=\"$URL_HOME/mudlist.html\" alt=\"Mudlist\" title=\"Mudlist\">$MUDLIST_IMG</a>";
 $LOG_LINK       = "<a href=\"https://themud.org/chanhist.php#Channel=all\" alt=\"Other Logs\" title=\"Other Logs\">$LOG_IMG</a>";
@@ -387,7 +387,7 @@ function load_page_by_date($db, $query_date = NULL, $pinkfish_map, $hours, $chan
 function page_url($page_counts, $day) {
     global $LOG_HOME;
 
-    $pathname = sprintf("%s/%s/%s/%s.php", $LOG_HOME,
+    $pathname = sprintf("%s/%s/%s/%s.html", $LOG_HOME,
         $page_counts[$day]['the_year'],
         $page_counts[$day]['the_month'],
         $page_counts[$day]['the_date']);
@@ -397,7 +397,7 @@ function page_url($page_counts, $day) {
 function page_path($page_counts, $day) {
     global $PAGE_DIR;
 
-    $pathname = sprintf("%s/%s/%s/%s.php", $PAGE_DIR,
+    $pathname = sprintf("%s/%s/%s/%s.html", $PAGE_DIR,
         $page_counts[$day]['the_year'],
         $page_counts[$day]['the_month'],
         $page_counts[$day]['the_date']);
@@ -454,6 +454,10 @@ $last_link = sprintf("<img src=\"%s\" width=\"%d\" height=\"%d\" border=\"0\" st
 $page = fetch_page_by_date($db, $today);
 //$page = load_page_by_date($db, $today, $pinkfish_map, $hours, $channels, $speakers);
 
+$local_refresh = strftime('%H:%M %Z');
+$local_hour = (int)substr($local_refresh, 0, 2);
+$local_time = $pinkfish_map[ $hours[$local_hour]['pinkfish'] ]['html'] . $local_refresh . "</span>";
+
 ?>
 <html>
     <head>
@@ -505,6 +509,7 @@ $page = fetch_page_by_date($db, $today);
                 for(var i = 0; i < count; i++) {
                     row_on(i);
                 }
+                setTimeout(function () { location.reload(true); }, 30 * 60 * 1000);
             }
             function setup() {
                 setup_work();
@@ -526,7 +531,7 @@ $page = fetch_page_by_date($db, $today);
     <body bgcolor="black" text="#d0d0d0" link="#ffffbf" vlink="#ffa040" onload="setup();">
         <table id="navbar" width="99%" align="center">
             <tr>
-                <td align="left" width="20%">
+                <td align="left" width="25%">
                     <?php echo $MUDLIST_LINK;?>
                     <?php echo $LOG_LINK;?>
                 </td>
@@ -541,8 +546,9 @@ $page = fetch_page_by_date($db, $today);
                     <?php echo $next_link; ?>
                     <?php echo $last_link; ?>
                 </td>
-                <td align="right" width="20%">
+                <td align="right" width="25%">
                     <?php echo $SERVER_LINK;?>
+                    <?php echo $local_time;?>
                 </td>
             </tr>
         </table>
