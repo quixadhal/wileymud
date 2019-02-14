@@ -14,6 +14,7 @@ use JSON qw(encode_json);
 my $URL_HOME        = "http://wileymud.themud.org/~wiley";
 my $LOG_HOME        = "$URL_HOME/logpages";
 my $LIVE_PAGE       = "$LOG_HOME/";
+my $HEAD_SECTION    = "/home/wiley/public_html/logpages/head_section.html";
 
 my $LIVE_DB_FILE    = '/home/wiley/lib/i3/wiley.db';
 my $DB_FILE         = '/home/wiley/lib/i3/wiley.bkp-20190211.db';

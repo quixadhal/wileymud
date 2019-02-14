@@ -7,6 +7,7 @@ global $CHAT_TEXT_FILE;
 $URL_HOME       = "http://wileymud.themud.org/~wiley";
 $LOG_HOME       = "$URL_HOME/logpages";
 $LIVE_PAGE      = "$LOG_HOME/";
+$HEAD_SECTION   = "/home/wiley/public_html/logpages/head_section.html";
 
 $DB_FILE        = '/home/wiley/lib/i3/wiley.db';
 //$DB_FILE        = '/home/wiley/lib/i3/wiley.bkp-20190211.db';
@@ -458,76 +459,9 @@ $local_refresh = strftime('%H:%M %Z');
 $local_hour = (int)substr($local_refresh, 0, 2);
 $local_time = $pinkfish_map[ $hours[$local_hour]['pinkfish'] ]['html'] . $local_refresh . "</span>";
 
-?>
-<html>
-    <head>
-        <meta charset="utf-8">
-        <link rel="stylesheet" href="<?php echo $JQUI_CSS;?>">
-        <link rel="stylesheet" href="<?php echo $JQUI_THEME;?>">
-        <script src="<?php echo $JQ;?>"></script>
-        <script src="<?php echo $JQUI;?>"></script>
-        <script src="<?php echo $NAVBAR;?>"></script>
+require_once($HEAD_SECTION);
 
-        <script language="javascript">
-            function toggleDiv(divID) {
-                if(document.getElementById(divID).style.display == 'none') {
-                    document.getElementById(divID).style.display = 'block';
-                } else {
-                    document.getElementById(divID).style.display = 'none';
-                }
-            }
-        </script>
-        <script type="text/javascript">
-            function toggle_row( row ) {
-                r = document.getElementById("row_" + row);
-                if(r !== null) {
-                    if(r.style.display !== "none") {
-                        r.style.display = "none";
-                    } else {
-                        r.style.display = "table-row";
-                    }
-                }
-            }
-            function row_on( row ) {
-                r = document.getElementById("row_" + row);
-                if(r !== null) {
-                    if(r.style.display == "none") {
-                        r.style.display = "table-row";
-                    }
-                }
-            }
-            function row_off( row ) {
-                r = document.getElementById("row_" + row);
-                if(r !== null) {
-                    if(r.style.display !== "none") {
-                        r.style.display = "none";
-                    }
-                }
-            }
-            function setup_work() {
-                count = document.getElementById("content").getElementsByTagName("tr").length;
-                for(var i = 0; i < count; i++) {
-                    row_on(i);
-                }
-                setTimeout(function () { location.reload(true); }, 30 * 60 * 1000);
-            }
-            function setup() {
-                setup_work();
-            }
-        </script>
-        <style>
-            html, body { table-layout: fixed; max-width: 100%; overflow-x: hidden; word-wrap: break-word; text-overflow: ellipsis; }
-            table { table-layout: fixed; max-width: 99%; overflow-x: hidden; word-wrap: break-word; text-overflow: ellipsis; }
-            a { text-decoration:none; }
-            a:hover { text-decoration:underline; }
-            a:active, a:focus { outline: 0; border: none; -moz-outline-style: none; }
-            input, select, textarea { border-color: #101010; background-color: #101010; color: #d0d0d0; }
-            input:focus, textarea:focus { border-color: #101010; background-color: #303030; color: #f0f0f0; }
-            #navbar { position: fixed; top: 0; background-color: black; }
-            #content-header { position: fixed; top: 58px; width: 100%; background-color: black; }
-            #content { padding-top: 48px; }
-        </style>
-    </head>
+?>
     <body bgcolor="black" text="#d0d0d0" link="#ffffbf" vlink="#ffa040" onload="setup();">
         <table id="navbar" width="99%" align="center">
             <tr>
