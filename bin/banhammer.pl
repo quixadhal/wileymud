@@ -1,6 +1,8 @@
 #!/usr/bin/perl -w
 use strict;
+use English;
 use Data::Dumper;
+use Getopt::Long;
 
 # A normal apache installatino will rotate the log files every day,
 # and the ones from 2 days ago or older will be gzipped.
@@ -15,10 +17,37 @@ use Data::Dumper;
 
 my $log_path = "/var/log/apache2";
 my $blacklist = "/etc/iptables/ipset.blacklist";
-my $ban_strikes = 10;
+
+my $do_compressed   = 1;
+my $ban_strikes     = 10;
+
+sub do_help {
+    print STDERR <<EOM
+usage:  $PROGRAM_NAME [-h] [-c] [-b ban-threshold]
+long options:
+    --help              - This helpful help!
+    --compressed        - Scan the older compressed logs too, default is yes.
+    --ban               - Number of hits needed for a ban, default is $ban_strikes.
+EOM
+    ;
+    exit(1);
+}
+
+Getopt::Long::Configure("gnu_getopt");
+Getopt::Long::Configure("auto_version");
+GetOptions(
+    'help|h'            => sub { do_help() },
+    'compressed|c!'     => \$do_compressed,
+    'ban|b=i'           => \$ban_strikes,
+);
 
 opendir DP, $log_path or die "Can't opendir $log_path $!";
-my @logs = grep { /^error\.log(\.\d+)?(\.gz)?$/ && -f "$log_path/$_" } readdir DP;
+my @logs = ();
+if( $do_compressed ) {
+    @logs = grep { /^error\.log(\.\d+)?(\.gz)?$/ && -f "$log_path/$_" } readdir DP;
+} else {
+    @logs = grep { /^error\.log(\.\d+)?$/ && -f "$log_path/$_" } readdir DP;
+}
 closedir DP;
 
 my %error_count = ();

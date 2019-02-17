@@ -14,18 +14,20 @@ use JSON qw(encode_json);
 my $URL_HOME        = "http://wileymud.themud.org/~wiley";
 my $LOG_HOME        = "$URL_HOME/logpages";
 my $LIVE_PAGE       = "$LOG_HOME/";
-my $HEAD_SECTION    = "/home/wiley/public_html/logpages/head_section.html";
 
 my $LIVE_DB_FILE    = '/home/wiley/lib/i3/wiley.db';
 my $DB_FILE         = '/home/wiley/lib/i3/wiley.bkp-20190211.db';
 my $PAGE_DIR        = '/home/wiley/public_html/logpages';
 
-my $BEGIN_ICON      = "$URL_HOME/gfx/navbegin.png";
-my $PREV_ICON       = "$URL_HOME/gfx/navprev.png";
-my $NEXT_ICON       = "$URL_HOME/gfx/navnext.png";
-my $END_ICON        = "$URL_HOME/gfx/navend.png";
+my $BEGIN_ICON      = "$URL_HOME/gfx/nav/begin.png";
+my $PREV_ICON       = "$URL_HOME/gfx/nav/previous.png";
+my $NEXT_ICON       = "$URL_HOME/gfx/nav/next.png";
+my $END_ICON        = "$URL_HOME/gfx/nav/end.png";
+my $UP_ICON         = "$URL_HOME/gfx/nav/green/up.png";
+my $DOWN_ICON       = "$URL_HOME/gfx/nav/green/down.png";
+my $TOP_ICON        = "$URL_HOME/gfx/nav/green/top.png";
+my $BOTTOM_ICON     = "$URL_HOME/gfx/nav/green/bottom.png";
 
-my $CALENDER_ICON   = "$URL_HOME/gfx/navcal.png";
 my $SERVER_ICON     = "$URL_HOME/gfx/server_icon.png";
 my $MUDLIST_ICON    = "$URL_HOME/gfx/mud.png";
 my $LOG_ICON        = "$URL_HOME/gfx/log.png";
@@ -628,6 +630,155 @@ sub generate_navbar_script {
             }
         }
 
+        function toggleDiv(divID) {
+            if(document.getElementById(divID).style.display == 'none') {
+                document.getElementById(divID).style.display = 'block';
+            } else {
+                document.getElementById(divID).style.display = 'none';
+            }
+        }
+
+        function toggle_row( row ) {
+            r = document.getElementById("row_" + row);
+            if(r !== null) {
+                if(r.style.display !== "none") {
+                    r.style.display = "none";
+                } else {
+                    r.style.display = "table-row";
+                }
+            }
+        }
+
+        function row_on( row ) {
+            r = document.getElementById("row_" + row);
+            if(r !== null) {
+                if(r.style.display == "none") {
+                    r.style.display = "table-row";
+                }
+            }
+        }
+
+        function row_off( row ) {
+            r = document.getElementById("row_" + row);
+            if(r !== null) {
+                if(r.style.display !== "none") {
+                    r.style.display = "none";
+                }
+            }
+        }
+
+        function row_visible( row ) {
+            r = document.getElementById("row_" + row);
+            if(r !== null) {
+                if(r.style.display !== "none") {
+                    var bounds = r.getBoundingClientRect();
+                    return bounds.top < window.innerHeight && bounds.bottom > 0;
+                }
+            }
+            return false;
+        }
+
+        function jump_to_row( row ) {
+            r = document.getElementById("row_" + row);
+            if(r !== null) {
+                if(r.style.display !== "none") {
+                    // NOTE: \$("#row_" + row + ":in-viewport")
+                    // \$(":below-the-fold") \$(":above-the-top")
+                    // \$(":left-of-screen") \$(":right-of-screen")
+                    //window.scrollTo(r.offsetLeft, r.offsetTop);
+                    r.scrollIntoView();
+                }
+            }
+        }
+
+        function count_rows_in_view() {
+            count = document.getElementById("content").getElementsByTagName("tr").length;
+            row = 0;
+            z = document.getElementById("row_" + row);
+            if(z !== null) {
+                var i = 1;
+                for(i = 1; i < count; i++) {
+                    if(row_visible(i) == false) {
+                        break;
+                    }
+                }
+                return i;
+            }
+            return 0;
+        }
+
+        function on_scroll_down() {
+            b = document.getElementById("scroll_down_button");
+            b2 = document.getElementById("scroll_bottom_button");
+            if( (window.innerHeight + window.pageYOffset) >=
+                (document.body.offsetHeight) ) {
+                // Dim the button since we cannot go down further
+                if(b !== null) {
+                    b.style.opacity = "0.5";
+                }
+                if(b2 !== null) {
+                    b2.style.opacity = "0.5";
+                }
+            } else {
+                // Make the button normal, since it can be used
+                if(b !== null) {
+                    b.style.opacity = "1.0";
+                }
+                if(b2 !== null) {
+                    b2.style.opacity = "1.0";
+                }
+            }
+        }
+
+        function on_scroll_up() {
+            b = document.getElementById("scroll_up_button");
+            b2 = document.getElementById("scroll_top_button");
+            if( window.pageYOffset <= 1 ) {
+                // Dim the button since we cannot go up further
+                if(b !== null) {
+                    b.style.opacity = "0.5";
+                }
+                if(b2 !== null) {
+                    b2.style.opacity = "0.5";
+                }
+            } else {
+                // Make the button normal, since it can be used
+                if(b !== null) {
+                    b.style.opacity = "1.0";
+                }
+                if(b2 !== null) {
+                    b2.style.opacity = "1.0";
+                }
+            }
+        }
+
+        function scroll_up() {
+            window.scrollBy(0, -Math.floor(window.innerHeight * 0.90));
+        }
+
+        function scroll_down() {
+            window.scrollBy(0, Math.floor(window.innerHeight * 0.90));
+        }
+
+        function scroll_top() {
+            window.scrollTo(0,0);
+        }
+
+        function scroll_bottom() {
+            window.scrollBy(0, document.body.offsetHeight);
+        }
+
+        function setup_rows() {
+            count = document.getElementById("content").getElementsByTagName("tr").length;
+            for(var i = 0; i < count; i++) {
+                row_on(i);
+            }
+            \$(window).on("scroll", function() {
+                    on_scroll_down();
+                    on_scroll_up();
+            });
+        }
+
         \$( function() {
             \$( "#datepicker" ).datepicker({
                 beforeShowDay   : checkDate,
@@ -798,57 +949,19 @@ for( my $i = $page_start; $i < scalar @$date_counts; $i++ ) {
     print FP <<EOM
 <html>
     <head>
-        <meta charset="utf-8">
+        <meta charset="utf-8" />
+        <meta http-equiv="Cache-Control" content="no-store" />
         <link rel="stylesheet" href="$JQUI_CSS">
         <link rel="stylesheet" href="$JQUI_THEME">
         <script src="$JQ"></script>
         <script src="$JQUI"></script>
         <script src="$NAVBAR"></script>
 
-        <script language="javascript">
-            function toggleDiv(divID) {
-                if(document.getElementById(divID).style.display == 'none') {
-                    document.getElementById(divID).style.display = 'block';
-                } else {
-                    document.getElementById(divID).style.display = 'none';
-                }
-            }
-        </script>
         <script type="text/javascript">
-            function toggle_row( row ) {
-                r = document.getElementById("row_" + row);
-                if(r !== null) {
-                    if(r.style.display !== "none") {
-                        r.style.display = "none";
-                    } else {
-                        r.style.display = "table-row";
-                    }
-                }
-            }
-            function row_on( row ) {
-                r = document.getElementById("row_" + row);
-                if(r !== null) {
-                    if(r.style.display == "none") {
-                        r.style.display = "table-row";
-                    }
-                }
-            }
-            function row_off( row ) {
-                r = document.getElementById("row_" + row);
-                if(r !== null) {
-                    if(r.style.display !== "none") {
-                        r.style.display = "none";
-                    }
-                }
-            }
-            function setup_work() {
-                count = document.getElementById("content").getElementsByTagName("tr").length;
-                for(var i = 0; i < count; i++) {
-                    row_on(i);
-                }
-            }
             function setup() {
-                setup_work();
+                setup_rows();
+                // This if for the live page ONLY, pointless for static pages.
+                //setTimeout(function () { location.reload(true); }, 30 * 60 * 1000);
             }
         </script>
         <style>
@@ -874,6 +987,9 @@ for( my $i = $page_start; $i < scalar @$date_counts; $i++ ) {
                 <td align="right" width="20%">
 EOM
     ;
+
+    #printf FP "<img id=\"scroll_top_button\" src=\"%s\" width=\"%d\" height=\"%d\" border=\"0\" style=\"opacity: 0.5;\" onclick=\"scroll_top()\"/>\n", $TOP_ICON, $ICON_WIDTH, $ICON_WIDTH;
+    printf FP "<img id=\"scroll_up_button\" src=\"%s\" width=\"%d\" height=\"%d\" border=\"0\" style=\"opacity: 0.5;\" onclick=\"scroll_up()\"/>\n", $UP_ICON, $ICON_WIDTH, $ICON_WIDTH;
 
     if(defined $first_page) {
         printf FP "<a href=\"%s\" alt=\"%s\" title=\"%s\"><img src=\"%s\" width=\"%d\" height=\"%d\" border=\"0\" /></a>\n", $first_page, $first_date, $first_date, $BEGIN_ICON, $ICON_WIDTH, $ICON_WIDTH;
@@ -907,6 +1023,9 @@ EOM
     } else {
         printf FP "<img src=\"%s\" width=\"%d\" height=\"%d\" border=\"0\" style=\"opacity: 0.5;\" />\n", $END_ICON, $ICON_WIDTH, $ICON_WIDTH;
     }
+
+    printf FP "<img id=\"scroll_down_button\" src=\"%s\" width=\"%d\" height=\"%d\" border=\"0\" style=\"opacity: 1.0;\" onclick=\"scroll_down()\"/>\n", $DOWN_ICON, $ICON_WIDTH, $ICON_WIDTH;
+    #printf FP "<img id=\"scroll_bottom_button\" src=\"%s\" width=\"%d\" height=\"%d\" border=\"0\" style=\"opacity: 1.0;\" onclick=\"scroll_bottom()\"/>\n", $BOTTOM_ICON, $ICON_WIDTH, $ICON_WIDTH;
 
     print FP <<EOM
                 </td>

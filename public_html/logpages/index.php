@@ -7,19 +7,21 @@ global $CHAT_TEXT_FILE;
 $URL_HOME       = "http://wileymud.themud.org/~wiley";
 $LOG_HOME       = "$URL_HOME/logpages";
 $LIVE_PAGE      = "$LOG_HOME/";
-$HEAD_SECTION   = "/home/wiley/public_html/logpages/head_section.html";
 
 $DB_FILE        = '/home/wiley/lib/i3/wiley.db';
 //$DB_FILE        = '/home/wiley/lib/i3/wiley.bkp-20190211.db';
 $PAGE_DIR       = '/home/wiley/public_html/logpages';
 $CHAT_TEXT_FILE = "/home/wiley/lib/i3/i3.allchan.log";
 
-$BEGIN_ICON     = "$URL_HOME/gfx/navbegin.png";
-$PREV_ICON      = "$URL_HOME/gfx/navprev.png";
-$NEXT_ICON      = "$URL_HOME/gfx/navnext.png";
-$END_ICON       = "$URL_HOME/gfx/navend.png";
+$BEGIN_ICON     = "$URL_HOME/gfx/nav/begin.png";
+$PREV_ICON      = "$URL_HOME/gfx/nav/previous.png";
+$NEXT_ICON      = "$URL_HOME/gfx/nav/next.png";
+$END_ICON       = "$URL_HOME/gfx/nav/end.png";
+$UP_ICON        = "$URL_HOME/gfx/nav/green/up.png";
+$DOWN_ICON      = "$URL_HOME/gfx/nav/green/down.png";
+$TOP_ICON       = "$URL_HOME/gfx/nav/green/top.png";
+$BOTTOM_ICON    = "$URL_HOME/gfx/nav/green/bottom.png";
 
-$CALENDER_ICON  = "$URL_HOME/gfx/navcal.png";
 $SERVER_ICON    = "$URL_HOME/gfx/server_icon.png";
 $MUDLIST_ICON   = "$URL_HOME/gfx/mud.png";
 $LOG_ICON       = "$URL_HOME/gfx/log.png";
@@ -441,6 +443,12 @@ $first_date = $date_counts[array_key_first($date_counts)]['the_date'];
 $today      = $date_counts[array_key_last($date_counts)]['the_date'];
 $yesterday  = $date_counts[$date_keys[array_search($today, $date_keys)-1]]['the_date'];
 
+// A link to the very top
+$top_link = sprintf("<img id=\"scroll_top_button\" src=\"%s\" width=\"%d\" height=\"%d\" border=\"0\" style=\"opacity: 0.5;\" onclick=\"scroll_top()\" />\n",
+    $TOP_ICON, $ICON_WIDTH, $ICON_WIDTH);
+// A shiny new scroll up button
+$up_link = sprintf("<img id=\"scroll_up_button\" src=\"%s\" width=\"%d\" height=\"%d\" border=\"0\" style=\"opacity: 0.5;\" onclick=\"scroll_up()\" />\n",
+    $UP_ICON, $ICON_WIDTH, $ICON_WIDTH);
 // Navigation for going back
 $first_link = sprintf("<a href=\"%s\" alt=\"%s\" title=\"%s\"><img src=\"%s\" width=\"%d\" height=\"%d\" border=\"0\" /></a>\n",
     page_url($date_counts, $first_date), $first_date, $first_date, $BEGIN_ICON, $ICON_WIDTH, $ICON_WIDTH);
@@ -451,6 +459,12 @@ $next_link = sprintf("<img src=\"%s\" width=\"%d\" height=\"%d\" border=\"0\" st
     $NEXT_ICON, $ICON_WIDTH, $ICON_WIDTH);
 $last_link = sprintf("<img src=\"%s\" width=\"%d\" height=\"%d\" border=\"0\" style=\"opacity: 0.5;\" />\n",
     $END_ICON, $ICON_WIDTH, $ICON_WIDTH);
+// and finally, our new button to scroll down to a row
+$down_link = sprintf("<img id=\"scroll_down_button\" src=\"%s\" width=\"%d\" height=\"%d\" border=\"0\" style=\"opacity: 1.0;\" onclick=\"scroll_down()\" />\n",
+    $DOWN_ICON, $ICON_WIDTH, $ICON_WIDTH);
+// and for real, finally, a jump to bottom button
+$bottom_link = sprintf("<img id=\"scroll_bottom_button\" src=\"%s\" width=\"%d\" height=\"%d\" border=\"0\" style=\"opacity: 1.0;\" onclick=\"scroll_bottom()\" />\n",
+    $BOTTOM_ICON, $ICON_WIDTH, $ICON_WIDTH);
 
 $page = fetch_page_by_date($db, $today);
 //$page = load_page_by_date($db, $today, $pinkfish_map, $hours, $channels, $speakers);
@@ -459,9 +473,38 @@ $local_refresh = strftime('%H:%M %Z');
 $local_hour = (int)substr($local_refresh, 0, 2);
 $local_time = $pinkfish_map[ $hours[$local_hour]['pinkfish'] ]['html'] . $local_refresh . "</span>";
 
-require_once($HEAD_SECTION);
-
 ?>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="Cache-Control" content="no-store" />
+        <link rel="stylesheet" href="<?php echo $JQUI_CSS;?>">
+        <link rel="stylesheet" href="<?php echo $JQUI_THEME;?>">
+        <script src="<?php echo $JQ;?>""></script>
+        <script src="<?php echo $JQUI;?>""></script>
+        <script src="<?php echo $NAVBAR;?>"></script>
+
+        <script language="javascript">
+            function setup() {
+                setup_rows();
+                // This if for the live page ONLY, pointless for static pages.
+                scroll_bottom();
+                setTimeout(function () { location.reload(true); }, 30 * 60 * 1000);
+            }
+        </script>
+        <style>
+            html, body { table-layout: fixed; max-width: 100%; overflow-x: hidden; word-wrap: break-word; text-overflow: ellipsis; }
+            table { table-layout: fixed; max-width: 99%; overflow-x: hidden; word-wrap: break-word; text-overflow: ellipsis; }
+            a { text-decoration:none; }
+            a:hover { text-decoration:underline; }
+            a:active, a:focus { outline: 0; border: none; -moz-outline-style: none; }
+            input, select, textarea { border-color: #101010; background-color: #101010; color: #d0d0d0; }
+            input:focus, textarea:focus { border-color: #101010; background-color: #303030; color: #f0f0f0; }
+            #navbar { position: fixed; top: 0; background-color: black; }
+            #content-header { position: fixed; top: 58px; width: 100%; background-color: black; }
+            #content { padding-top: 48px; }
+        </style>
+    </head>
     <body bgcolor="black" text="#d0d0d0" link="#ffffbf" vlink="#ffa040" onload="setup();">
         <table id="navbar" width="99%" align="center">
             <tr>
@@ -470,6 +513,7 @@ require_once($HEAD_SECTION);
                     <?php echo $LOG_LINK;?>
                 </td>
                 <td align="right" width="20%">
+                    <?php echo $up_link; ?>
                     <?php echo $first_link; ?>
                     <?php echo $prev_link; ?>
                 </td>
@@ -479,6 +523,7 @@ require_once($HEAD_SECTION);
                 <td align="left" width="20%">
                     <?php echo $next_link; ?>
                     <?php echo $last_link; ?>
+                    <?php echo $down_link; ?>
                 </td>
                 <td align="right" width="25%">
                     <?php echo $SERVER_LINK;?>
