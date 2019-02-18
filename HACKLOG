@@ -238,3 +238,20 @@ updated crontab:
     30 2 * * * /home/wiley/bin/remote-backup >/dev/null 2>&1 &
     5 1,7,13,19 * * * /home/wiley/bin/mklogpages.pl --overwrite --debug --start -3 --live --no-pause >/dev/null 2>&1 &
 
+OK, undid all my anti-IPv6 changes (see above), since at Adam's prodding, I got my network
+working with IPv6, as my ISP does support it.
+
+For posterity, the main change in the router (beyond re-enabling it) was to tell it to
+get an IPv6 address via SLAAC... it defaulted to DHCPv6, which does NOT work.  Once that was
+done, I tweaked Windows 10 to "Prefer IPv6 over IPv4", rebooted everything, and it appears
+to be functional.
+
+It does seem slightly snappier, although it's hard to say if that's just from the fresh reboot
+or because we're no longer using some transparent proxy 6to4 tunnel for everything.  Time
+will tell, I guess.
+
+I must say though,  172.92.143.166 is MUCH easier to remember than
+2604:4080:1311:b8e1:c5e4:30cb:4f15:fdcc.  Whomever dreamed up that numbering system
+needs to be forced to type it as a data entry clerk in hell for all eternity, with
+lashings every time they make a typo.
+

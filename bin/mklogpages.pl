@@ -707,48 +707,53 @@ sub generate_navbar_script {
             return 0;
         }
 
-        function on_scroll_down() {
-            b = document.getElementById("scroll_down_button");
-            b2 = document.getElementById("scroll_bottom_button");
-            if( (window.innerHeight + window.pageYOffset) >=
-                (document.body.offsetHeight) ) {
-                // Dim the button since we cannot go down further
-                if(b !== null) {
-                    b.style.opacity = "0.5";
-                }
-                if(b2 !== null) {
-                    b2.style.opacity = "0.5";
-                }
-            } else {
-                // Make the button normal, since it can be used
-                if(b !== null) {
-                    b.style.opacity = "1.0";
-                }
-                if(b2 !== null) {
-                    b2.style.opacity = "1.0";
-                }
+        function dim(element) {
+            if(element !== null) {
+                element.style.opacity = "0.5";
             }
         }
 
-        function on_scroll_up() {
-            b = document.getElementById("scroll_up_button");
-            b2 = document.getElementById("scroll_top_button");
-            if( window.pageYOffset <= 1 ) {
-                // Dim the button since we cannot go up further
-                if(b !== null) {
-                    b.style.opacity = "0.5";
-                }
-                if(b2 !== null) {
-                    b2.style.opacity = "0.5";
-                }
+        function brighten(element) {
+            if(element !== null) {
+                element.style.opacity = "1.0";
+            }
+        }
+
+        function on_scroll() {
+            var body = document.body;
+            var html = document.documentElement;
+            var bd = document.getElementById("scroll_down_button");
+            var bb = document.getElementById("scroll_bottom_button");
+            var bu = document.getElementById("scroll_up_button");
+            var bt = document.getElementById("scroll_top_button");
+            var doc_height = Math.max( body.scrollHeight, body.offsetHeight,
+                html.clientHeight, html.scrollHeight, html.offsetHeight );
+
+            if( window.innerHeight >= doc_height ) {
+                // The page fits entirely on the screen, no scrolling possible.
+                dim(bd);
+                dim(bb);
+                dim(bu);
+                dim(bt);
+            } else if( (window.innerHeight + window.pageYOffset) >=
+                (document.body.offsetHeight) ) {
+                // We are at the bottom of the page.
+                dim(bd);
+                dim(bb);
+                brighten(bu);
+                brighten(bt);
+            } else if( window.pageYOffset <= 1 ) {
+                // We are at the top of the page.
+                brighten(bd);
+                brighten(bb);
+                dim(bu);
+                dim(bt);
             } else {
-                // Make the button normal, since it can be used
-                if(b !== null) {
-                    b.style.opacity = "1.0";
-                }
-                if(b2 !== null) {
-                    b2.style.opacity = "1.0";
-                }
+                // We're somewhere in the middle.
+                brighten(bd);
+                brighten(bb);
+                brighten(bu);
+                brighten(bt);
             }
         }
 
@@ -773,9 +778,9 @@ sub generate_navbar_script {
             for(var i = 0; i < count; i++) {
                 row_on(i);
             }
+            on_scroll(); // Call once, in case the page cannot scroll
             \$(window).on("scroll", function() {
-                    on_scroll_down();
-                    on_scroll_up();
+                    on_scroll();
             });
         }
 
