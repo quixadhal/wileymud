@@ -21,7 +21,7 @@
 #define MAX_CMD_LIST 290
 
 /* Here we Go!  The monster command list.... ewwwwwww! */
-/* 284 is the current maximum */
+/* 287 is the current maximum */
 #define CMD_EMOTE	214
 #define CMD_GTELL	177
 #define CMD_INTERNAL	0				       /* NOT initiated from the command line */
@@ -281,6 +281,7 @@
 #define CMD_use		172
 #define CMD_users	208
 #define CMD_value	58
+#define CMD_version	287
 #define CMD_wake	46
 #define CMD_wall	223
 #define CMD_wave	143				       /* social */

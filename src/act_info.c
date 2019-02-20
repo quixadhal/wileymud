@@ -35,6 +35,7 @@
 #include "tracking.h"
 #include "scheduler.h"
 #include "i3.h"
+#include "sql.h"
 #define _ACT_INFO_C
 #include "act_info.h"
 
@@ -3200,3 +3201,16 @@ void do_ansimap(struct char_data *ch, const char *argument, int cmd)
 		free(map[i][j]);
 
 }
+
+void do_version(struct char_data *ch, const char *argument, int cmd)
+{
+    if (DEBUG)
+	log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch),
+		 VNULL(argument), cmd);
+
+    cprintf(ch, "WileyMUD:         %s (%s)\r\n", VERSION_BUILD, VERSION_DATE);
+    sql_connect();
+    cprintf(ch, "SQLite:           %s\r\n", sqlite3_libversion());
+    sql_disconnect();
+}
+
