@@ -664,18 +664,20 @@ void bug_sql( const char *logtype, const char *filename, const char *function, i
 	proper_exit(MUD_REBOOT);
     }
 
-    rc = sqlite3_step(insert_stmt);
-    if (rc != SQLITE_DONE) {
-        if (rc != SQLITE_BUSY) {
+    for(int x = 0; x < 4; x++) {
+        rc = sqlite3_step(insert_stmt);
+        if (rc == SQLITE_DONE) {
+            sqlite3_finalize(insert_stmt);
+            break;
+        } else if (rc == SQLITE_BUSY && x < 3) {
+            usleep(10000); // Horrible, but what else can we do?
+            continue;
+        } else {
             log_fatal("SQL insert error %s: %s\n", "log insert", err_msg);
             sqlite3_free(err_msg);
-            sqlite3_close(db);
             proper_exit(MUD_REBOOT);
-        } else {
-            log_error("SQL statement error %s: %s\n", "log insert", sqlite3_errmsg(db));
         }
     }
-    sqlite3_finalize(insert_stmt);
     sql_disconnect();
 }
 
