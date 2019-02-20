@@ -26,6 +26,8 @@ void setup_speakers_table(void);
 int process_url_callback(void *unused, int count, char **values, char **keys);
 #endif
 
+void sql_connect(void);
+void sql_disconnect(void);
 void sql_startup(void);
 void sql_shutdown(void);
 void allchan_sql( int is_emote, const char *channel, const char *speaker, const char *mud, const char *message );

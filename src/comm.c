@@ -1864,5 +1864,6 @@ void proper_exit(int exit_code)
     close_sql();
 #endif
     unlink("/home/wiley/lib/log/runlog");
+    sql_disconnect();
     exit(exit_code);
 }
