@@ -1635,7 +1635,14 @@ bool I3_write_packet(char *msg)
 	    msg[x] = '\0';
 
     bytes_sent += oldsize + 4;
+    if (packetdebug) {
+	log_info("Sending: %d Bytes...", oldsize);
+    }
     check = send(I3_socket, msg, oldsize + 4, 0);
+    if (packetdebug) {
+	log_info("Sent: %d Bytes...", check);
+	log_info("Packet Sent: %s", msg + 4);
+    }
 
 #if 0
     if (!check || (check < 0 && errno != EAGAIN && errno != EWOULDBLOCK)) {
@@ -1666,7 +1673,9 @@ bool I3_write_packet(char *msg)
             
             //case EAGAIN:
             case EWOULDBLOCK:
-                //log_info("Socket would block, retrying later.");
+                if (packetdebug) {
+                    log_info("Socket would block, retrying later.");
+                }
 	        return TRUE;
                 break;
             case EMSGSIZE:
@@ -1686,10 +1695,6 @@ bool I3_write_packet(char *msg)
         }
     }
 
-    if (packetdebug) {
-	log_info("Size: %d. Bytes Sent: %d.", oldsize, check);
-	log_info("Packet Sent: %s", msg + 4);
-    }
     I3_output_pointer = 4;
     return TRUE;
 }
@@ -6748,6 +6753,7 @@ int I3_connection_open(ROUTER_DATA *router)
 	}
     }
     I3_ROUTER_NAME = router->name;
+    I3_ROUTER_IP = router->ip;
     log_info("Connected to Intermud-3 router %s", router->name);
     return I3_socket;
 }
@@ -7004,6 +7010,7 @@ void router_connect(const char *router_name, bool forced, int mudport, bool isco
 	    return;
 	}
 	I3_ROUTER_NAME = first_router->name;
+        I3_ROUTER_IP = first_router->ip;
     }
 
     /*
@@ -7569,6 +7576,10 @@ void i3_loop(void)
 	ucache_clock = i3_time + 86400;
 	I3_prune_ucache();
     }
+
+    // Flush the output buffer?
+    if (I3_output_pointer != 4)
+	I3_write_packet(I3_output_buffer);
 
     FD_SET(I3_socket, &in_set);
     FD_SET(I3_socket, &out_set);

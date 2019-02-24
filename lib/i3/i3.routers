@@ -1,13 +1,13 @@
 #ROUTER
-Name *dalet
-IP   97.107.133.86
-Port 8787
-End
-
-#ROUTER
 Name *Kelly
 IP   150.101.219.57
 Port 8080
+End
+
+#ROUTER
+Name *dalet
+IP   97.107.133.86
+Port 8787
 End
 
 #ROUTER
@@ -18,7 +18,7 @@ End
 
 #ROUTER
 Name *wpr
-IP   195.242.99.94
+IP   136.144.155.250
 Port 8080
 End
 

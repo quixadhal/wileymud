@@ -166,7 +166,7 @@ typedef void I3_FUN( CHAR_DATA * ch, const char *argument );
 #define I3_CMD( name ) void (name)( CHAR_DATA *ch, const char *argument )
 
 #define I3_TAUNT_DELAY                  (30 * 60 * 1000000) // 30 minutes in microseconds
-#define I3_TIMEOUT_DELAY                (10 * 60 * 1000000) // 10 minutes
+#define I3_TIMEOUT_DELAY                (5 * 60 * 1000000)  // 5 minutes
 
 #ifndef _I3_C
 extern int I3_socket;
