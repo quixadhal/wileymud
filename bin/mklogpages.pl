@@ -18,6 +18,8 @@ my $LIVE_PAGE       = "$LOG_HOME/";
 my $LIVE_DB_FILE    = '/home/wiley/lib/i3/wiley.db';
 my $DB_FILE         = '/home/wiley/lib/i3/wiley.bkp-20190220.db';
 my $PAGE_DIR        = '/home/wiley/public_html/logpages';
+my $JSON_DIR        = '/home/wiley/public_html/logdata';
+my $BZIP            = '/usr/bin/bzip2';
 
 my $BEGIN_ICON      = "$URL_HOME/gfx/nav/begin.png";
 my $PREV_ICON       = "$URL_HOME/gfx/nav/previous.png";
@@ -67,6 +69,7 @@ my $do_cache        = 1;
 my $pause           = 1;
 my $use_live        = 0;
 my $debug_page      = 0;
+my $do_json         = 1;
 
 sub do_help {
     print STDERR <<EOM
@@ -98,6 +101,9 @@ long options:
                           live page.  The static page has a dark red background, so you
                           know it's not live data.  By default, this points to the
                           live page, as the END link always does.
+    --json              - Also emit a JSON dump of the data for each page, to allow
+                          for simple exporting of the data to others.  You can use
+                          --json with --no-pages to only regenerate the JSON data.
 EOM
     ;
     #--pagesize N        - Page size, defaults to $page_size.
@@ -110,7 +116,7 @@ sub display_options {
 
     printf "We are running against %s.\n", ($use_live ? $LIVE_DB_FILE : $DB_FILE);
     printf "Found %d rows over %d pages.\n", $row_count, $page_count;
-    if( $do_pages ) {
+    if( $do_pages or $do_json ) {
         printf "Starting from page %d, as requested.\n", $page_start;
         if($page_limit) {
             printf "Stopping after %d pages\n", $page_limit;
@@ -118,7 +124,9 @@ sub display_options {
             printf "Doing all %d pages\n", ($page_start >= 0) ? ($page_count - $page_start) : (-$page_start);
         }
         printf "The next-to-the-last page will point to %s.\n", $debug_page ? "a static page" : "the live page";
-        printf "We will %soverwrite existing pages.\n", $overwrite ? "" : "NOT ";
+        printf "We will %soverwrite existing files.\n", $overwrite ? "" : "NOT ";
+        printf "We will %soutput HTML pages.\n", $do_pages ? "" : "NOT ";
+        printf "We will %sexport JSON data for each page.\n", $do_json ? "" : "NOT ";
     } else {
         printf "We will NOT process pages.\n";
     }
@@ -144,6 +152,7 @@ GetOptions(
     'debug!'            => \$debug_page,
     'pages!'            => \$do_pages,
     'cache!'            => \$do_cache,
+    'json!'             => \$do_json,
 );
 
 sub save_json_cache {
@@ -583,6 +592,21 @@ sub page_path {
     return $pathname;
 }
 
+sub json_path {
+    my $row = shift;
+
+    my $dir_path = sprintf "%s/%s", $JSON_DIR, $row->{the_year};
+    mkdir $dir_path if ! -d $dir_path;
+    $dir_path = sprintf "%s/%s/%s", $JSON_DIR, $row->{the_year}, $row->{the_month};
+    mkdir $dir_path if ! -d $dir_path;
+
+    my $pathname = sprintf "%s/%s/%s/%s.json", $JSON_DIR,
+        $row->{the_year}, $row->{the_month},
+        $row->{the_date};
+
+    return $pathname;
+}
+
 sub generate_navbar_script {
     my $date_counts = shift;
     die "Invalid date information!" if !defined $date_counts;
@@ -888,7 +912,7 @@ if( $do_speakers ) {
     close FP;
 }
 
-if( $do_pages ) {
+if( $do_pages or $do_json ) {
     $page_limit = (scalar @$date_counts) if $page_limit < 1;
     $page_limit = 30 if $use_live and $page_limit > 30;
 
@@ -972,9 +996,10 @@ if( $do_pages ) {
         printf "    [%5d] Generating %s... %d messages.\n",
             ($pages_todo - $pages_done), $today, scalar @$page;
 
-        open FP, ">$filename" or die "Cannot open output page $filename: $!";
+        if ($do_pages) {
+            open FP, ">$filename" or die "Cannot open output page $filename: $!";
 
-        print FP <<EOM
+            print FP <<EOM
 <html>
     <head>
         <meta charset="utf-8" />
@@ -1014,48 +1039,48 @@ if( $do_pages ) {
                 </td>
                 <td align="right" width="20%">
 EOM
-        ;
+            ;
 
-        #printf FP "<img id=\"scroll_top_button\" src=\"%s\" width=\"%d\" height=\"%d\" border=\"0\" style=\"opacity: 0.5;\" onclick=\"scroll_top()\"/>\n", $TOP_ICON, $ICON_WIDTH, $ICON_WIDTH;
-        printf FP "<img id=\"scroll_up_button\" src=\"%s\" width=\"%d\" height=\"%d\" border=\"0\" style=\"opacity: 0.5;\" onclick=\"scroll_up()\"/>\n", $UP_ICON, $ICON_WIDTH, $ICON_WIDTH;
+            #printf FP "<img id=\"scroll_top_button\" src=\"%s\" width=\"%d\" height=\"%d\" border=\"0\" style=\"opacity: 0.5;\" onclick=\"scroll_top()\"/>\n", $TOP_ICON, $ICON_WIDTH, $ICON_WIDTH;
+            printf FP "<img id=\"scroll_up_button\" src=\"%s\" width=\"%d\" height=\"%d\" border=\"0\" style=\"opacity: 0.5;\" onclick=\"scroll_up()\"/>\n", $UP_ICON, $ICON_WIDTH, $ICON_WIDTH;
 
-        if(defined $first_page) {
-            printf FP "<a href=\"%s\" alt=\"%s\" title=\"%s\"><img src=\"%s\" width=\"%d\" height=\"%d\" border=\"0\" /></a>\n", $first_page, $first_date, $first_date, $BEGIN_ICON, $ICON_WIDTH, $ICON_WIDTH;
-        } else {
-            printf FP "<img src=\"%s\" width=\"%d\" height=\"%d\" border=\"0\" style=\"opacity: 0.5;\" />\n", $BEGIN_ICON, $ICON_WIDTH, $ICON_WIDTH;
-        }
+            if(defined $first_page) {
+                printf FP "<a href=\"%s\" alt=\"%s\" title=\"%s\"><img src=\"%s\" width=\"%d\" height=\"%d\" border=\"0\" /></a>\n", $first_page, $first_date, $first_date, $BEGIN_ICON, $ICON_WIDTH, $ICON_WIDTH;
+            } else {
+                printf FP "<img src=\"%s\" width=\"%d\" height=\"%d\" border=\"0\" style=\"opacity: 0.5;\" />\n", $BEGIN_ICON, $ICON_WIDTH, $ICON_WIDTH;
+            }
 
-        if(defined $prev_page) {
-            printf FP "<a href=\"%s\" alt=\"%s\" title=\"%s\"><img src=\"%s\" width=\"%d\" height=\"%d\" border=\"0\" /></a>\n", $prev_page, $prev_date, $prev_date, $PREV_ICON, $ICON_WIDTH, $ICON_WIDTH;
-        } else {
-            printf FP "<img src=\"%s\" width=\"%d\" height=\"%d\" border=\"0\" style=\"opacity: 0.5;\" />\n", $PREV_ICON, $ICON_WIDTH, $ICON_WIDTH;
-        }
+            if(defined $prev_page) {
+                printf FP "<a href=\"%s\" alt=\"%s\" title=\"%s\"><img src=\"%s\" width=\"%d\" height=\"%d\" border=\"0\" /></a>\n", $prev_page, $prev_date, $prev_date, $PREV_ICON, $ICON_WIDTH, $ICON_WIDTH;
+            } else {
+                printf FP "<img src=\"%s\" width=\"%d\" height=\"%d\" border=\"0\" style=\"opacity: 0.5;\" />\n", $PREV_ICON, $ICON_WIDTH, $ICON_WIDTH;
+            }
 
-        print FP <<EOM
+            print FP <<EOM
                 </td>
                 <td align="center" width="10%">
                     <input type="text" id="datepicker" size="10" value="$today" style="font-size: 16px; text-align: center;" />
                 </td>
                 <td align="left" width="20%">
 EOM
-        ;
+            ;
 
-        if(defined $next_page) {
-            printf FP "<a href=\"%s\" alt=\"%s\" title=\"%s\"><img src=\"%s\" width=\"%d\" height=\"%d\" border=\"0\" /></a>\n", $next_page, $next_date, $next_date, $NEXT_ICON, $ICON_WIDTH, $ICON_WIDTH;
-        } else {
-            printf FP "<img src=\"%s\" width=\"%d\" height=\"%d\" border=\"0\" style=\"opacity: 0.5;\" />\n", $NEXT_ICON, $ICON_WIDTH, $ICON_WIDTH;
-        }
+            if(defined $next_page) {
+                printf FP "<a href=\"%s\" alt=\"%s\" title=\"%s\"><img src=\"%s\" width=\"%d\" height=\"%d\" border=\"0\" /></a>\n", $next_page, $next_date, $next_date, $NEXT_ICON, $ICON_WIDTH, $ICON_WIDTH;
+            } else {
+                printf FP "<img src=\"%s\" width=\"%d\" height=\"%d\" border=\"0\" style=\"opacity: 0.5;\" />\n", $NEXT_ICON, $ICON_WIDTH, $ICON_WIDTH;
+            }
 
-        if(defined $last_page) {
-            printf FP "<a href=\"%s\" alt=\"%s\" title=\"%s\"><img src=\"%s\" width=\"%d\" height=\"%d\" border=\"0\" /></a>\n", $last_page, $last_date, $last_date, $END_ICON, $ICON_WIDTH, $ICON_WIDTH;
-        } else {
-            printf FP "<img src=\"%s\" width=\"%d\" height=\"%d\" border=\"0\" style=\"opacity: 0.5;\" />\n", $END_ICON, $ICON_WIDTH, $ICON_WIDTH;
-        }
+            if(defined $last_page) {
+                printf FP "<a href=\"%s\" alt=\"%s\" title=\"%s\"><img src=\"%s\" width=\"%d\" height=\"%d\" border=\"0\" /></a>\n", $last_page, $last_date, $last_date, $END_ICON, $ICON_WIDTH, $ICON_WIDTH;
+            } else {
+                printf FP "<img src=\"%s\" width=\"%d\" height=\"%d\" border=\"0\" style=\"opacity: 0.5;\" />\n", $END_ICON, $ICON_WIDTH, $ICON_WIDTH;
+            }
 
-        printf FP "<img id=\"scroll_down_button\" src=\"%s\" width=\"%d\" height=\"%d\" border=\"0\" style=\"opacity: 1.0;\" onclick=\"scroll_down()\"/>\n", $DOWN_ICON, $ICON_WIDTH, $ICON_WIDTH;
-        #printf FP "<img id=\"scroll_bottom_button\" src=\"%s\" width=\"%d\" height=\"%d\" border=\"0\" style=\"opacity: 1.0;\" onclick=\"scroll_bottom()\"/>\n", $BOTTOM_ICON, $ICON_WIDTH, $ICON_WIDTH;
+            printf FP "<img id=\"scroll_down_button\" src=\"%s\" width=\"%d\" height=\"%d\" border=\"0\" style=\"opacity: 1.0;\" onclick=\"scroll_down()\"/>\n", $DOWN_ICON, $ICON_WIDTH, $ICON_WIDTH;
+            #printf FP "<img id=\"scroll_bottom_button\" src=\"%s\" width=\"%d\" height=\"%d\" border=\"0\" style=\"opacity: 1.0;\" onclick=\"scroll_bottom()\"/>\n", $BOTTOM_ICON, $ICON_WIDTH, $ICON_WIDTH;
 
-        print FP <<EOM
+            print FP <<EOM
                 </td>
                 <td align="right" width="20%">
                     $SERVER_LINK
@@ -1083,71 +1108,88 @@ EOM
             </thead>
             <tbody>
 EOM
-        ;
+            ;
 
-        my $counter = 0;
-        foreach my $row (@$page) {
-            # YYYY-MM-DD date
-            # HH:MM:SS time -- colored by time of day
-            # Channel -- colored by channel name
-            # Speaker@Mud -- colored by speaker name
-            # Message -- fixed font
+            my $counter = 0;
+            foreach my $row (@$page) {
+                # YYYY-MM-DD date
+                # HH:MM:SS time -- colored by time of day
+                # Channel -- colored by channel name
+                # Speaker@Mud -- colored by speaker name
+                # Message -- fixed font
 
-            # Emit each data row as a table row
-            my $bg_color = ($counter % 2) ? "#000000" : "#1F1F1F";
+                # Emit each data row as a table row
+                my $bg_color = ($counter % 2) ? "#000000" : "#1F1F1F";
 
-            my $hour_html = $row->{hour_html} || "--**--NULL--**--";
-            my $channel_html = $row->{channel_html} || $channels->{default}{html} || "--**--NULL--**--";
-            my $speaker_html = $row->{speaker_html} || $speakers->{default}{html} || "--**--NULL--**--";
+                my $hour_html = $row->{hour_html} || "--**--NULL--**--";
+                my $channel_html = $row->{channel_html} || $channels->{default}{html} || "--**--NULL--**--";
+                my $speaker_html = $row->{speaker_html} || $speakers->{default}{html} || "--**--NULL--**--";
 
-            printf FP "<tr id=\"row_%d\" style=\"display:none\">\n", $counter;
-            printf FP "<td bgcolor=\"%s\">%s</td>\n", $bg_color, $row->{the_date};
-            printf FP "<td bgcolor=\"%s\">%s%s%s</td>\n", $bg_color, $hour_html, $row->{the_time}, "</span>";
-            printf FP "<td bgcolor=\"%s\">%s%s%s</td>\n", $bg_color, $channel_html, $row->{channel}, "</span>";
-            printf FP "<td bgcolor=\"%s\">%s%s@%s%s</td>\n", $bg_color, $speaker_html, $row->{speaker}, $row->{mud}, "</span>";
+                printf FP "<tr id=\"row_%d\" style=\"display:none\">\n", $counter;
+                printf FP "<td bgcolor=\"%s\">%s</td>\n", $bg_color, $row->{the_date};
+                printf FP "<td bgcolor=\"%s\">%s%s%s</td>\n", $bg_color, $hour_html, $row->{the_time}, "</span>";
+                printf FP "<td bgcolor=\"%s\">%s%s%s</td>\n", $bg_color, $channel_html, $row->{channel}, "</span>";
+                printf FP "<td bgcolor=\"%s\">%s%s@%s%s</td>\n", $bg_color, $speaker_html, $row->{speaker}, $row->{mud}, "</span>";
 
-            my $message = $row->{message};
-            $message = "" if !defined $message;
-            # encode_entities
-            $message = encode_entities($message, '<>&"');
+                my $message = $row->{message};
+                $message = "" if !defined $message;
+                # encode_entities
+                $message = encode_entities($message, '<>&"');
 
-            # Filter known pinkfish codes and make them HTML
-            if( $message =~ /\%\^/gsmx ) {
-                #printf STDERR "        Message has pinkfish codes: %s\n", $message;
+                # Filter known pinkfish codes and make them HTML
+                if( $message =~ /\%\^/gsmx ) {
+                    #printf STDERR "        Message has pinkfish codes: %s\n", $message;
 
-                foreach my $pf_key (sort { length $b <=> length $a } keys %$pinkfish_map) {
-                    my $quoted = quotemeta $pf_key;
-                    my $regex = qr/$quoted/;
-                    my $pf_rep = $pinkfish_map->{$pf_key}{html};
+                    foreach my $pf_key (sort { length $b <=> length $a } keys %$pinkfish_map) {
+                        my $quoted = quotemeta $pf_key;
+                        my $regex = qr/$quoted/;
+                        my $pf_rep = $pinkfish_map->{$pf_key}{html};
 
-                    #printf STDERR "Checking %s (%s) ...\n", $pf_key, $quoted;
+                        #printf STDERR "Checking %s (%s) ...\n", $pf_key, $quoted;
 
-                    if ( $message =~ /$regex/gsmx ) {
-                        #printf STDERR "Found match for %s\n", $quoted;
-                        $message =~ s/$regex/$pf_rep/gsmx;
+                        if ( $message =~ /$regex/gsmx ) {
+                            #printf STDERR "Found match for %s\n", $quoted;
+                            $message =~ s/$regex/$pf_rep/gsmx;
+                        }
                     }
                 }
+
+                # Try to match links so we can make them clickable
+                $message =~ s/((?:http|https|ftp)\:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(?::[a-zA-Z0-9]*)?\/?(?:[a-zA-Z0-9\-\._\?\,\'\/\\\+&amp;%\$#\=~])*)/<a href="$1" target="I3-link">$1<\/a>/gsmix;
+                $message =~ s/YouTube\s+(<span.*?>)\s*\[([^\]]*)\]/YouTube $1 <a href="https:\/\/youtu.be\/$2" target="I3-link">[$2]<\/a>/gsmix;
+                $message =~ s/IMDB\s+(<span.*?>)\s*\[([^\]]*)\]/IMDB $1 <a href="https:\/\/www.imdb.com\/title\/$2\/" target="I3-link">[$2]<\/a>/gsmix;
+                $message =~ s/Steam\s+(<span.*?>)\s*\[([^\]]*)\]/Steam $1 <a href="http:\/\/store.steampowered.com\/app\/$2\/" target="I3-link">[$2]<\/a>/gsmix;
+                $message =~ s/Dailymotion\s+(<span.*?>)\s*\[([^\]]*)\]/Dailymotion $1 <a href="https:\/\/www.dailymotion.com\/video\/$2" target="I3-link">[$2]<\/a>/gsmix;
+
+                printf FP "<td bgcolor=\"%s\"><span style=\"font-family: monospace; white-space: pre-wrap;\">%s</span></td>\n",  $bg_color, $message;
+                printf FP "</tr>\n";
+
+                $counter++;
             }
-
-            # Try to match links so we can make them clickable
-            $message =~ s/((?:http|https|ftp)\:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(?::[a-zA-Z0-9]*)?\/?(?:[a-zA-Z0-9\-\._\?\,\'\/\\\+&amp;%\$#\=~])*)/<a href="$1" target="I3-link">$1<\/a>/gsmix;
-            $message =~ s/YouTube\s+(<span.*?>)\s*\[([^\]]*)\]/YouTube $1 <a href="https:\/\/youtu.be\/$2" target="I3-link">[$2]<\/a>/gsmix;
-            $message =~ s/IMDB\s+(<span.*?>)\s*\[([^\]]*)\]/IMDB $1 <a href="https:\/\/www.imdb.com\/title\/$2\/" target="I3-link">[$2]<\/a>/gsmix;
-            $message =~ s/Steam\s+(<span.*?>)\s*\[([^\]]*)\]/Steam $1 <a href="http:\/\/store.steampowered.com\/app\/$2\/" target="I3-link">[$2]<\/a>/gsmix;
-            $message =~ s/Dailymotion\s+(<span.*?>)\s*\[([^\]]*)\]/Dailymotion $1 <a href="https:\/\/www.dailymotion.com\/video\/$2" target="I3-link">[$2]<\/a>/gsmix;
-
-            printf FP "<td bgcolor=\"%s\"><span style=\"font-family: monospace; white-space: pre-wrap;\">%s</span></td>\n",  $bg_color, $message;
-            printf FP "</tr>\n";
-
-            $counter++;
-        }
-        print FP <<EOM
+            print FP <<EOM
             </tbody>
         </table>
     </body>
 </html>
 EOM
-        ;
+            ;
+            close FP;
+        }
+
+        # Do JSON here
+        next if ! $do_json;
+
+        $filename = json_path($day_row);
+        if( $i < ((scalar @$date_counts) - 2) and -f $filename ) {
+            if( !$overwrite ) {
+                # Always generate the very last, and next to last page again.
+                next;
+            }
+        }
+        #my $json_dump = encode_json($page);
+        my $json_dump = JSON->new->utf8->allow_nonref->canonical->pretty->encode($page);
+        open FP, "|$BZIP -9cq >$filename.bz2" or die "Cannot open dump page $filename.bz2: $!";
+        print FP "$json_dump\n";
         close FP;
     }
 }
