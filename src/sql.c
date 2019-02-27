@@ -202,7 +202,6 @@ void add_url( const char *channel, const char *speaker, const char *mud, const c
 
     int rc;
     u_int32_t crc;
-    char *err_msg = NULL;
     sqlite3_stmt *insert_stmt = NULL;
     char *sql = "INSERT INTO urls ( url, channel, speaker, mud, checksum ) VALUES (?,?,?,?,?);";
     //char *sql = "INSERT INTO urls ( url, channel, speaker, mud ) VALUES (?,?,?,?);";
@@ -251,9 +250,11 @@ void add_url( const char *channel, const char *speaker, const char *mud, const c
         } else if (rc == SQLITE_BUSY && x < 3) {
             usleep(10000); // Horrible, but what else can we do?
             continue;
+        } else if (rc == SQLITE_LOCKED && x < 3) {
+            usleep(10000); // Horrible, but what else can we do?
+            continue;
         } else {
-            log_fatal("SQL insert error %s: %s\n", "urls insert", err_msg);
-            sqlite3_free(err_msg);
+            log_fatal("SQL insert error %s: %s (%d)\n", "urls insert", sqlite3_errmsg(db), rc);
             proper_exit(MUD_REBOOT);
         }
     }
@@ -307,9 +308,11 @@ void process_urls( void ) {
         } else if (rc == SQLITE_BUSY && x < 3) {
             usleep(10000); // Horrible, but what else can we do?
             continue;
+        } else if (rc == SQLITE_LOCKED && x < 3) {
+            usleep(10000); // Horrible, but what else can we do?
+            continue;
         } else {
-            log_fatal("SQL statement error %s: %s\n", "urls select", sqlite3_errmsg(db));
-            sqlite3_free(err_msg);
+            log_fatal("SQL insert error %s: %s (%d)\n", "urls select", err_msg, rc);
             proper_exit(MUD_REBOOT);
         }
     }
@@ -329,7 +332,6 @@ void process_urls( void ) {
 int process_url_callback(void *unused, int count, char **values, char **keys) {
     //log_info("process_url_callback entered");
 
-    char *err_msg = NULL;
     sqlite3_stmt *update_stmt = NULL;
     char *sql = "  UPDATE urls "
                 "     SET processed = 1 "
@@ -367,8 +369,7 @@ int process_url_callback(void *unused, int count, char **values, char **keys) {
 
     rc = sqlite3_step(update_stmt);
     if (rc != SQLITE_DONE) {
-        log_fatal("SQL update error %s: %s\n", "urls update", err_msg);
-        sqlite3_free(err_msg);
+        log_fatal("SQL update error %s: %s (%d)\n", "urls update", sqlite3_errmsg(db), rc);
 	proper_exit(MUD_REBOOT);
     }
     sqlite3_finalize(update_stmt);
@@ -500,7 +501,6 @@ int is_bot( int is_emote, const char *channel, const char *speaker, const char *
 }
 
 void allchan_sql( int is_emote, const char *channel, const char *speaker, const char *mud, const char *message ) {
-    char *err_msg = NULL;
     sqlite3_stmt *insert_stmt = NULL;
     char *sql = "INSERT INTO i3log ( channel, speaker, mud, message, is_emote, is_url, is_bot ) "
                 "VALUES (?,?,?,?,?,?,?);";
@@ -559,9 +559,11 @@ void allchan_sql( int is_emote, const char *channel, const char *speaker, const 
         } else if (rc == SQLITE_BUSY && x < 3) {
             usleep(10000); // Horrible, but what else can we do?
             continue;
+        } else if (rc == SQLITE_LOCKED && x < 3) {
+            usleep(10000); // Horrible, but what else can we do?
+            continue;
         } else {
-            log_fatal("SQL insert error %s: %s\n", "i3log insert", err_msg);
-            sqlite3_free(err_msg);
+            log_fatal("SQL insert error %s: %s (%d)\n", "i3log insert", sqlite3_errmsg(db), rc);
             proper_exit(MUD_REBOOT);
         }
     }
@@ -574,7 +576,6 @@ void bug_sql( const char *logtype, const char *filename, const char *function, i
               const char *victim, int victim_room, 
               const char *message ) {
 
-    char *err_msg = NULL;
     sqlite3_stmt *insert_stmt = NULL;
     char *sql = "INSERT INTO log ( logtype, filename, function, line, area_file, area_line, "
                 "character, character_room, victim, victim_room, message ) "
@@ -672,9 +673,11 @@ void bug_sql( const char *logtype, const char *filename, const char *function, i
         } else if (rc == SQLITE_BUSY && x < 3) {
             usleep(10000); // Horrible, but what else can we do?
             continue;
+        } else if (rc == SQLITE_LOCKED && x < 3) {
+            usleep(10000); // Horrible, but what else can we do?
+            continue;
         } else {
-            log_fatal("SQL insert error %s: %s\n", "log insert", err_msg);
-            sqlite3_free(err_msg);
+            log_fatal("SQL insert error %s: %s (%d)\n", "log insert", sqlite3_errmsg(db), rc);
             proper_exit(MUD_REBOOT);
         }
     }
@@ -682,12 +685,11 @@ void bug_sql( const char *logtype, const char *filename, const char *function, i
 }
 
 void addspeaker_sql( const char *speaker, const char *pinkfish ) {
-    char *err_msg = NULL;
     sqlite3_stmt *insert_stmt = NULL;
     char *sql = "INSERT OR IGNORE INTO speakers ( speaker, pinkfish) "
                 "VALUES (?,?);";
 
-    log_info("ADD_SPEAKER: %s = %s", VNULL(speaker), VNULL(pinkfish));
+    //log_info("ADD_SPEAKER: %s = %s", VNULL(speaker), VNULL(pinkfish));
     if(!speaker || !*speaker || !pinkfish || !*pinkfish)
         return;
 
@@ -695,16 +697,19 @@ void addspeaker_sql( const char *speaker, const char *pinkfish ) {
     int rc = sqlite3_prepare_v2( db, sql, -1, &insert_stmt, NULL );
     if (rc != SQLITE_OK) {
         log_fatal("SQL statement error %s: %s\n", "speakers insert", sqlite3_errmsg(db));
+        log_fatal("SQL == %s (\"%s\", \"%s\")\n", sql, VNULL(speaker), VNULL(pinkfish));
 	proper_exit(MUD_REBOOT);
     }
     rc = sqlite3_bind_text( insert_stmt, 1, speaker, strlen(speaker), NULL );
     if (rc != SQLITE_OK) {
         log_fatal("SQL parameter error %s: %s\n", "speakers speaker", sqlite3_errmsg(db));
+        log_fatal("SQL == %s (\"%s\", \"%s\")\n", sql, VNULL(speaker), VNULL(pinkfish));
 	proper_exit(MUD_REBOOT);
     }
     rc = sqlite3_bind_text( insert_stmt, 2, pinkfish, strlen(pinkfish), NULL );
     if (rc != SQLITE_OK) {
         log_fatal("SQL parameter error %s: %s\n", "speakers pinkfish", sqlite3_errmsg(db));
+        log_fatal("SQL == %s (\"%s\", \"%s\")\n", sql, VNULL(speaker), VNULL(pinkfish));
 	proper_exit(MUD_REBOOT);
     }
 
@@ -716,9 +721,12 @@ void addspeaker_sql( const char *speaker, const char *pinkfish ) {
         } else if (rc == SQLITE_BUSY && x < 3) {
             usleep(10000); // Horrible, but what else can we do?
             continue;
+        } else if (rc == SQLITE_LOCKED && x < 3) {
+            usleep(10000); // Horrible, but what else can we do?
+            continue;
         } else {
-            log_fatal("SQL insert error %s: %s\n", "speakers insert", err_msg);
-            sqlite3_free(err_msg);
+            log_fatal("SQL insert error %s: %s (%d)\n", "speakers insert", sqlite3_errmsg(db), rc);
+            log_fatal("SQL == %s (\"%s\", \"%s\")\n", sql, VNULL(speaker), VNULL(pinkfish));
             proper_exit(MUD_REBOOT);
         }
     }

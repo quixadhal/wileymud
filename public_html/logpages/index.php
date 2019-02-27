@@ -3,6 +3,7 @@
 global $LOG_HOME;
 global $PAGE_DIR;
 global $CHAT_TEXT_FILE;
+global $DB_FILE;
 
 $URL_HOME       = "http://wileymud.themud.org/~wiley";
 $LOG_HOME       = "$URL_HOME/logpages";
@@ -47,33 +48,54 @@ $SPEAKER_CACHE  = "$PAGE_DIR/speakers.json";
 $DATE_CACHE     = "$PAGE_DIR/date_counts.json";
 $HOUR_CACHE     = "$PAGE_DIR/hours.json";
 
-$db = null;
+//$db = null;
 
 // Connect to SQLite database
-try {
+//try {
     //$db = new PDO( $db_dsn, $db_user, $db_pwd, array( PDO::ATTR_PERSISTENT => true, PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION ));
-    $db = new PDO( "sqlite:$DB_FILE", null, null, array( PDO::ATTR_PERSISTENT => true, PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION ));
-}
-catch(PDOException $e) {
-    echo $e->getMessage();
+//    $db = new PDO( "sqlite:$DB_FILE", null, null, array( PDO::ATTR_PERSISTENT => true, PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION ));
+//}
+//catch(PDOException $e) {
+//    echo $e->getMessage();
+//}
+
+function db_connect() {
+    global $DB_FILE;
+
+    $db = null;
+    try {
+        $db = new PDO( "sqlite:$DB_FILE", null, null, array(
+            PDO::ATTR_PERSISTENT        => true, 
+            PDO::ATTR_ERRMODE           => PDO::ERRMODE_EXCEPTION,
+            PDO::ATTR_EMULATE_PREPARES  => false,
+        ));
+    }
+    catch(PDOException $e) {
+        echo $e->getMessage();
+    }
+    return $db;
 }
 
-function now_date($db) {
+function now_date() {
     $sql = "SELECT date('now', 'localtime') AS 'the_date';";
+    $db = db_connect();
     $sth = $db->prepare($sql);
     $sth->execute();
     $sth->setFetchMode(PDO::FETCH_ASSOC);
     $row = $sth->fetch();
     $query_date = $row['the_date'];
+    #SQLite3Result::finalize();
+    $db = null;
     return $query_date;
 }
 
-function fetch_pinkfish_map($db) {
+function fetch_pinkfish_map() {
     $sql = "
         SELECT pinkfish, html
           FROM pinkfish_map
       ORDER BY LENGTH(pinkfish) DESC;
     ";
+    $db = db_connect();
     $sth = $db->prepare($sql);
     $sth->execute();
     $sth->setFetchMode(PDO::FETCH_ASSOC);
@@ -81,6 +103,8 @@ function fetch_pinkfish_map($db) {
     while($row = $sth->fetch()) {
         $result[$row['pinkfish']] = $row;
     }
+    #SQLite3Result::finalize();
+    $db = null;
     return $result;
 }
 
@@ -102,13 +126,14 @@ function load_pinkfish_map($filename) {
     return null;
 }
 
-function fetch_channels($db) {
+function fetch_channels() {
     $sql = "
         SELECT channel, channels.pinkfish, html
           FROM channels
      LEFT JOIN pinkfish_map
             ON (channels.pinkfish = pinkfish_map.pinkfish);
     ";
+    $db = db_connect();
     $sth = $db->prepare($sql);
     $sth->execute();
     $sth->setFetchMode(PDO::FETCH_ASSOC);
@@ -116,6 +141,8 @@ function fetch_channels($db) {
     while($row = $sth->fetch()) {
         $result[$row['channel']] = $row;
     }
+    #SQLite3Result::finalize();
+    $db = null;
     return $result;
 }
 
@@ -133,13 +160,14 @@ function load_channels($filename) {
     return null;
 }
 
-function fetch_speakers($db) {
+function fetch_speakers() {
     $sql = "
         SELECT speaker, speakers.pinkfish, html
           FROM speakers
      LEFT JOIN pinkfish_map
             ON (speakers.pinkfish = pinkfish_map.pinkfish);
     ";
+    $db = db_connect();
     $sth = $db->prepare($sql);
     $sth->execute();
     $sth->setFetchMode(PDO::FETCH_ASSOC);
@@ -147,6 +175,8 @@ function fetch_speakers($db) {
     while($row = $sth->fetch()) {
         $result[$row['speaker']] = $row;
     }
+    #SQLite3Result::finalize();
+    $db = null;
     return $result;
 }
 
@@ -164,7 +194,7 @@ function load_speakers($filename) {
     return null;
 }
 
-function fetch_date_counts($db) {
+function fetch_date_counts() {
     $sql = "
         SELECT      SUBSTR(local, 1, 10) AS the_date,
                     SUBSTR(local, 1, 4) AS the_year,
@@ -175,6 +205,7 @@ function fetch_date_counts($db) {
         GROUP BY    the_date
         ORDER BY    the_date ASC;
     ";
+    $db = db_connect();
     $sth = $db->prepare($sql);
     $sth->execute();
     $sth->setFetchMode(PDO::FETCH_ASSOC);
@@ -182,6 +213,8 @@ function fetch_date_counts($db) {
     while($row = $sth->fetch()) {
         $result[$row['the_date']] = $row;
     }
+    #SQLite3Result::finalize();
+    $db = null;
     return $result;
 }
 
@@ -213,7 +246,9 @@ function load_hours($filename) {
     return null;
 }
 
-function fetch_page_by_date($db, $query_date = NULL) {
+function fetch_page_by_date($query_date = NULL) {
+    $db = db_connect();
+
     if( $query_date === NULL ) {
         $query_date = now_date($db);
     }
@@ -266,6 +301,8 @@ function fetch_page_by_date($db, $query_date = NULL) {
     while($row = $sth->fetch()) {
         $result[] = $row;
     }
+    #SQLite3Result::finalize();
+    $db = null;
     return $result;
 }
 
@@ -306,13 +343,15 @@ function file_tail($filepath, $lines = 1, $adaptive = true) {
     return $output;
 }
 
-function load_page_by_date($db, $query_date = NULL, $pinkfish_map, $hours, $channels, $speakers) {
+function load_page_by_date($query_date = NULL, $pinkfish_map, $hours, $channels, $speakers) {
     global $CHAT_TEXT_FILE;
 
     $result = array();
 
     if( $query_date === NULL ) {
+        $db = db_connect();
         $query_date = now_date($db);
+        $db = null;
     }
     //$file_lines = array_filter(explode( "\n", file_tail( $CHAT_TEXT_FILE, $LINES_TO_READ ) ), "is_bot_line");
     $raw_lines = explode("\n", file_tail($CHAT_TEXT_FILE, 5000));
@@ -425,7 +464,7 @@ $hours = load_hours($HOUR_CACHE);
 //$channels = fetch_channels($db);
 //$speakers = fetch_speakers($db);
 
-$this_day = now_date($db);
+$this_day = now_date();
 $date_counts = load_date_counts($DATE_CACHE);
 // Normally, this is all good, however if there have been no messages
 // yet today, it might be that there really were no messages OR that
@@ -433,7 +472,7 @@ $date_counts = load_date_counts($DATE_CACHE);
 // be sure...
 $today      = $date_counts[array_key_last($date_counts)]['the_date'];
 if( $this_day !== $today ) {
-    $date_counts = fetch_date_counts($db);
+    $date_counts = fetch_date_counts();
     $json_data = json_encode($date_counts);
     file_put_contents($DATE_CACHE, $json_data);
 }
@@ -466,7 +505,7 @@ $down_link = sprintf("<img id=\"scroll_down_button\" src=\"%s\" width=\"%d\" hei
 $bottom_link = sprintf("<img id=\"scroll_bottom_button\" src=\"%s\" width=\"%d\" height=\"%d\" border=\"0\" style=\"opacity: 1.0;\" onclick=\"scroll_bottom()\" />\n",
     $BOTTOM_ICON, $ICON_WIDTH, $ICON_WIDTH);
 
-$page = fetch_page_by_date($db, $today);
+$page = fetch_page_by_date($today);
 //$page = load_page_by_date($db, $today, $pinkfish_map, $hours, $channels, $speakers);
 
 $local_refresh = strftime('%H:%M %Z');

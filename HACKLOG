@@ -255,3 +255,9 @@ I must say though,  172.92.143.166 is MUCH easier to remember than
 needs to be forced to type it as a data entry clerk in hell for all eternity, with
 lashings every time they make a typo.
 
+apt install postgresql postgresql-doc libpostgresql-jdbc-java libpostgresql-jdbc-java-doc
+    libdbd-pg-perl postgresql-plperl postgresql-plpython3 php-pgsql
+
+apt install apt-file
+    apt-file update
+

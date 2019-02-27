@@ -16,10 +16,21 @@ my $LOG_HOME        = "$URL_HOME/logpages";
 my $LIVE_PAGE       = "$LOG_HOME/";
 
 my $LIVE_DB_FILE    = '/home/wiley/lib/i3/wiley.db';
-my $DB_FILE         = '/home/wiley/lib/i3/wiley.bkp-20190220.db';
+my $DB_FILE         = '/home/wiley/lib/i3/wiley.bkp-20190223.db';
 my $PAGE_DIR        = '/home/wiley/public_html/logpages';
 my $JSON_DIR        = '/home/wiley/public_html/logdata';
-my $BZIP            = '/usr/bin/bzip2';
+
+# /usr/bin/bzip2 -9cq wiley.bkp-20190220.db
+my $KOMPRESSOR      = '/usr/bin/bzip2';
+my $KOMPRESSOR_ARGS = '-9cq';
+my $KOMPRESSOR_EXT  = 'bz2';
+my $UNKOMPRESSOR    = '/usr/bin/bzcat';
+
+# /usr/bin/xz -9eq -T0 wiley.bkp-20190220.db
+#my $KOMPRESSOR      = '/usr/bin/xz';
+#my $KOMPRESSOR_ARGS = '-9ceq -T0';
+#my $KOMPRESSOR_EXT  = 'xz';
+#my $UNKOMPRESSOR    = '/usr/bin/xzcat';
 
 my $BEGIN_ICON      = "$URL_HOME/gfx/nav/begin.png";
 my $PREV_ICON       = "$URL_HOME/gfx/nav/previous.png";
@@ -595,10 +606,16 @@ sub page_path {
 sub json_path {
     my $row = shift;
 
-    my $dir_path = sprintf "%s/%s", $JSON_DIR, $row->{the_year};
+    my $index_file      = "$JSON_DIR/index.php";
+    my $dir_path        = sprintf "%s/%s", $JSON_DIR, $row->{the_year};
+    my $symlink_target  = sprintf "%s/%s/index.php", $JSON_DIR, $row->{the_year};
     mkdir $dir_path if ! -d $dir_path;
-    $dir_path = sprintf "%s/%s/%s", $JSON_DIR, $row->{the_year}, $row->{the_month};
+    symlink $index_file, $symlink_target if ! -e $symlink_target;
+
+    $dir_path           = sprintf "%s/%s/%s", $JSON_DIR, $row->{the_year}, $row->{the_month};
+    $symlink_target     = sprintf "%s/%s/%s/index.php", $JSON_DIR, $row->{the_year}, $row->{the_month};
     mkdir $dir_path if ! -d $dir_path;
+    symlink $index_file, $symlink_target if ! -e $symlink_target;
 
     my $pathname = sprintf "%s/%s/%s/%s.json", $JSON_DIR,
         $row->{the_year}, $row->{the_month},
@@ -1188,7 +1205,7 @@ EOM
         }
         #my $json_dump = encode_json($page);
         my $json_dump = JSON->new->utf8->allow_nonref->canonical->pretty->encode($page);
-        open FP, "|$BZIP -9cq >$filename.bz2" or die "Cannot open dump page $filename.bz2: $!";
+        open FP, "|$KOMPRESSOR $KOMPRESSOR_ARGS >$filename.$KOMPRESSOR_EXT" or die "Cannot open dump page $filename.$KOMPRESSOR_EXT: $!";
         print FP "$json_dump\n";
         close FP;
     }
