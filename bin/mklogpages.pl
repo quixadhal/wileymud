@@ -66,8 +66,6 @@ my $SPEAKER_CACHE   = "$PAGE_DIR/speakers.json";
 my $DATE_CACHE      = "$PAGE_DIR/date_counts.json";
 my $HOUR_CACHE      = "$PAGE_DIR/hours.json";
 
-my $db = undef;
-
 my $page_size       = 100;
 my $page_start      = 0;
 my $page_limit      = 0;
@@ -166,6 +164,14 @@ GetOptions(
     'json!'             => \$do_json,
 );
 
+sub init_db {
+    my $DATABASE = shift;
+
+    my $db = DBI->connect("DBI:SQLite:dbname=$DATABASE", '', '',
+        { AutoCommit => 1, PrintError => 1, });
+    return $db;
+}
+
 sub save_json_cache {
     my $data = shift;
     my $filename = shift;
@@ -182,21 +188,16 @@ sub save_json_cache {
 #            html TEXT
 #        );
 sub fetch_pinkfish_map {
-    my $db = shift;
-    die "Invalid database handle!" if !defined $db;
+    my $DATABASE = shift;
+    my $db = init_db($DATABASE);
 
     my $rv = $db->selectall_hashref(qq!
         SELECT pinkfish, html
           FROM pinkfish_map
         ;!, 'pinkfish');
-    if($rv) {
-    #    $db->commit;
-        return $rv;
-    } else {
-        print STDERR $DBI::errstr."\n";
-    #    $db->rollback;
-    }
-    return undef;
+    print STDERR $DBI::errstr."\n" if ! $rv;
+    $db->disconnect();
+    return $rv;
 }
 
 #CREATE TABLE hours (
@@ -204,8 +205,8 @@ sub fetch_pinkfish_map {
 #            pinkfish TEXT
 #        );
 sub fetch_hours {
-    my $db = shift;
-    die "Invalid database handle!" if !defined $db;
+    my $DATABASE = shift;
+    my $db = init_db($DATABASE);
 
     my $rv = $db->selectall_hashref(qq!
         SELECT hour, hours.pinkfish, html
@@ -213,14 +214,9 @@ sub fetch_hours {
      LEFT JOIN pinkfish_map
             ON (hours.pinkfish = pinkfish_map.pinkfish)
         ;!, 'hour');
-    if($rv) {
-    #    $db->commit;
-        return $rv;
-    } else {
-        print STDERR $DBI::errstr."\n";
-    #    $db->rollback;
-    }
-    return undef;
+    print STDERR $DBI::errstr."\n" if ! $rv;
+    $db->disconnect();
+    return $rv;
 }
 
 #CREATE TABLE channels (
@@ -228,8 +224,8 @@ sub fetch_hours {
 #            pinkfish TEXT
 #        );
 sub fetch_channels {
-    my $db = shift;
-    die "Invalid database handle!" if !defined $db;
+    my $DATABASE = shift;
+    my $db = init_db($DATABASE);
 
     my $rv = $db->selectall_hashref(qq!
         SELECT channel, channels.pinkfish, html
@@ -237,14 +233,9 @@ sub fetch_channels {
      LEFT JOIN pinkfish_map
             ON (channels.pinkfish = pinkfish_map.pinkfish)
         ;!, 'channel');
-    if($rv) {
-    #    $db->commit;
-        return $rv;
-    } else {
-        print STDERR $DBI::errstr."\n";
-    #    $db->rollback;
-    }
-    return undef;
+    print STDERR $DBI::errstr."\n" if ! $rv;
+    $db->disconnect();
+    return $rv;
 }
 
 #CREATE TABLE speakers (
@@ -252,8 +243,8 @@ sub fetch_channels {
 #            pinkfish TEXT
 #        );
 sub fetch_speakers {
-    my $db = shift;
-    die "Invalid database handle!" if !defined $db;
+    my $DATABASE = shift;
+    my $db = init_db($DATABASE);
 
     my $rv = $db->selectall_hashref(qq!
         SELECT speaker, speakers.pinkfish, html
@@ -261,36 +252,25 @@ sub fetch_speakers {
      LEFT JOIN pinkfish_map
             ON (speakers.pinkfish = pinkfish_map.pinkfish)
         ;!, 'speaker');
-    if($rv) {
-    #    $db->commit;
-        return $rv;
-    } else {
-        print STDERR $DBI::errstr."\n";
-    #    $db->rollback;
-    }
-    return undef;
+    print STDERR $DBI::errstr."\n" if ! $rv;
+    $db->disconnect();
+    return $rv;
 }
 
 sub fetch_row_count {
-    my $db = shift;
-    die "Invalid database handle!" if !defined $db;
+    my $DATABASE = shift;
+    my $db = init_db($DATABASE);
 
     my $rv = $db->selectrow_arrayref(qq!
         SELECT COUNT(*) FROM i3log;
         !);
-    if($rv) {
-    #    $db->commit;
-        return $rv->[0];
-    } else {
-        print STDERR $DBI::errstr."\n";
-    #    $db->rollback;
-    }
-
-    return 0;
+    print STDERR $DBI::errstr."\n" if ! $rv;
+    $db->disconnect();
+    return $rv ? $rv->[0] : 0;
 }
 
 sub update_all_speakers {
-    my $db = shift;
+    my $DATABASE = shift;
 
     my @color_map = (
         "%^BLACK%^%^BOLD%^",
@@ -320,9 +300,10 @@ sub update_all_speakers {
         '%^BLACK%^%^B_WHITE%^',
     );
     my $color_count = scalar @color_map;
-    my $speakers = fetch_speakers($db);
+    my $speakers = fetch_speakers($DATABASE);
     my $speaker_count = scalar keys %$speakers;
 
+    my $db = init_db($DATABASE);
     my $result = $db->selectall_arrayref(qq!
         SELECT DISTINCT speaker FROM i3log;
         ;!, { Slice => {} } );
@@ -352,10 +333,11 @@ sub update_all_speakers {
     } else {
         print STDERR $DBI::errstr."\n";
     }
+    $db->disconnect();
 }
 
 sub update_all_channels {
-    my $db = shift;
+    my $DATABASE = shift;
 
     my @color_map = (
         "%^RED%^",
@@ -374,9 +356,10 @@ sub update_all_channels {
         "%^WHITE%^%^BOLD%^",
     );
     my $color_count = scalar @color_map;
-    my $channels = fetch_channels($db);
+    my $channels = fetch_channels($DATABASE);
     my $channel_count = scalar keys %$channels;
 
+    my $db = init_db($DATABASE);
     my $result = $db->selectall_arrayref(qq!
         SELECT DISTINCT channel FROM i3log;
         ;!, { Slice => {} } );
@@ -406,11 +389,12 @@ sub update_all_channels {
     } else {
         print STDERR $DBI::errstr."\n";
     }
+    $db->disconnect();
 }
 
 sub fix_local_column {
-    my $db = shift;
-    die "Invalid database handle!" if !defined $db;
+    my $DATABASE = shift;
+    my $db = init_db($DATABASE);
 
     # SQLite is confused about timezones and stores my data with
     # a doubled offset, so instead of GMT, it's actually being
@@ -428,17 +412,14 @@ sub fix_local_column {
          WHERE local IS NULL;
     !);
     my $rv = $update_sql->execute();
-    if($rv) {
-        print "Fixed!\n"
-    } else {
-        print STDERR $DBI::errstr."\n";
-        #$db->rollback;
-    }
+    print STDERR $DBI::errstr."\n" if ! $rv;
+    print "Fixed!\n" if $rv;
+    $db->disconnect();
 }
 
 sub fetch_date_counts {
-    my $db = shift;
-    die "Invalid database handle!" if !defined $db;
+    my $DATABASE = shift;
+    my $db = init_db($DATABASE);
 
     # 2006-09-25 11:57:45.000
     # YYYY-MM-DD HH:MM:SS.UUU
@@ -453,14 +434,9 @@ sub fetch_date_counts {
         GROUP BY    the_date
         ORDER BY    the_date ASC;
         ;!, { Slice => {} } );
-    if($rv) {
-    #    $db->commit;
-        return $rv;
-    } else {
-        print STDERR $DBI::errstr."\n";
-    #    $db->rollback;
-    }
-    return undef;
+    print STDERR $DBI::errstr."\n" if ! $rv;
+    $db->disconnect();
+    return $rv;
 }
 
 sub save_date_cache {
@@ -480,17 +456,15 @@ sub save_date_cache {
 }
 
 sub fetch_current_date {
-    my $db = shift;
+    my $DATABASE = shift;
+    my $db = init_db($DATABASE);
 
     my $date = undef;
     my $rv = $db->selectrow_arrayref("select date(datetime('now', 'localtime'));");
-    if($rv) {
-        $date = $rv->[0];
-    } else {
-        print STDERR $DBI::errstr."\n";
-    }
-    die "Cannot obtain a valid date???: $!" if !defined $date;
-    return $date;
+    print STDERR $DBI::errstr."\n" if ! $rv;
+    $db->disconnect();
+    die "Cannot obtain a valid date???: $!" if !defined $rv;
+    return $rv ? $rv->[0] : undef;
 }
 
 # ALTER TABLE i3log RENAME TO i3bkp;
@@ -521,11 +495,11 @@ sub fetch_current_date {
 # in GMT-5, and 16 hours when I moved to GMT-8.  Oh well...
 #
 sub fetch_page_by_date {
-    my $db = shift;
+    my $DATABASE = shift;
+    my $db = init_db($DATABASE);
     my $date = shift;
-    die "Invalid database handle!" if !defined $db;
 
-    $date = fetch_current_date($db) if !defined $date;
+    $date = fetch_current_date($DATABASE) if !defined $date;
 
     my $rv = $db->selectall_arrayref(qq!
              SELECT i3log.local AS created,
@@ -567,15 +541,10 @@ sub fetch_page_by_date {
               WHERE date(i3log.local) = ?
            ORDER BY i3log.local ASC;
         ;!, { Slice => {} }, ($date) );
-    if($rv) {
-    #    $db->commit;
-        return $rv;
-    } else {
-        print STDERR $DBI::errstr."\n";
-    #    $db->rollback;
-    }
-    return undef;
 
+    print STDERR $DBI::errstr."\n" if ! $rv;
+    $db->disconnect();
+    return $rv;
 }
 
 sub page_url {
@@ -625,6 +594,7 @@ sub json_path {
 }
 
 sub generate_navbar_script {
+    my $DATABASE = shift;
     my $date_counts = shift;
     die "Invalid date information!" if !defined $date_counts;
 
@@ -635,7 +605,7 @@ sub generate_navbar_script {
         push @date_list, ($row->{the_date}) if -f page_path($row);
     }
     my $big_list = join(",\n", map { sprintf "\"%s\"", $_; } (@date_list));
-    my $last_date = (scalar @date_list < 1) ? fetch_current_date($db) : $date_list[-1];
+    my $last_date = (scalar @date_list < 1) ? fetch_current_date($DATABASE) : $date_list[-1];
 
     open FP, ">$filename" or die "Cannot open navbar script $filename: $!";
     print FP <<EOM
@@ -862,11 +832,10 @@ print "Initializing...\n";
 
 my $DATABASE = $use_live ? $LIVE_DB_FILE : $DB_FILE;
 
-$db = DBI->connect("DBI:SQLite:dbname=$DATABASE", '', '', { AutoCommit => 1, PrintError => 1, });
-fix_local_column($db);
-my $row_count = fetch_row_count($db);
+fix_local_column($DATABASE);
+my $row_count = fetch_row_count($DATABASE);
 #my $page_count = $row_count / $page_size;
-my $date_counts = fetch_date_counts($db);
+my $date_counts = fetch_date_counts($DATABASE);
 
 if( $page_start < 0 ) {
     $page_start = (scalar @$date_counts) + $page_start;
@@ -888,17 +857,17 @@ if( $pause ) {
     print "\n";
 }
 
-my $pinkfish_map = fetch_pinkfish_map($db);
-my $hours = fetch_hours($db);
+my $pinkfish_map = fetch_pinkfish_map($DATABASE);
+my $hours = fetch_hours($DATABASE);
 
 if( $do_update ) {
     print "Updating speaker and channel info...\n";
-    update_all_channels($db);
-    update_all_speakers($db);
+    update_all_channels($DATABASE);
+    update_all_speakers($DATABASE);
 }
 
-my $channels = fetch_channels($db);
-my $speakers = fetch_speakers($db);
+my $channels = fetch_channels($DATABASE);
+my $speakers = fetch_speakers($DATABASE);
 
 if( $do_cache ) {
     print "Saving cached versions of SQL data...\n";
@@ -911,7 +880,7 @@ if( $do_cache ) {
 
 if( $do_navbar ) {
     print "Generating navigation data...\n";
-    generate_navbar_script($date_counts);
+    generate_navbar_script($DATABASE, $date_counts);
 }
 
 if( $do_speakers ) {
@@ -1008,7 +977,7 @@ if( $do_pages or $do_json ) {
 
         my $page_background = $this_is_the_end ? "#1F0000" : "black";
 
-        my $page = fetch_page_by_date($db, $today);
+        my $page = fetch_page_by_date($DATABASE, $today);
         die "No data for $today? $!" if !defined $page;
         printf "    [%5d] Generating %s... %d messages.\n",
             ($pages_todo - $pages_done), $today, scalar @$page;
@@ -1213,9 +1182,8 @@ EOM
 
 if( $do_navbar ) {
     print "Regenerating navigation data...\n";
-    generate_navbar_script($date_counts);
+    generate_navbar_script($DATABASE, $date_counts);
 }
 
-$db->disconnect();
 print "Done!\n";
 exit 0;
