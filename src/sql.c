@@ -4,6 +4,7 @@
 #include <pcre.h>
 #include <unistd.h>
 #include <sys/types.h>
+#include <arpa/inet.h>
 #include "global.h"
 #include "bug.h"
 #include "comm.h"
@@ -16,42 +17,71 @@
 #define _SQL_C
 #include "sql.h"
 
-sqlite3 *db = NULL;
+PGconn *db = NULL;
 
 void sql_connect(void) {
-    int rc = sqlite3_open(SQL_DB, &db);
-    if (rc != SQLITE_OK) {
-        log_fatal("Cannot open database: %s\n", sqlite3_errmsg(db));
-        sqlite3_close(db);
-	proper_exit(MUD_HALT);
+    if( db != NULL ) {
+        // check existing status
+        if (PQstatus(db) != CONNECTION_OK) {
+            PQreset(db);
+            if (PQstatus(db) != CONNECTION_OK) {
+                log_fatal("Database connection lost: %s\n", PQerrorMessage(db));
+                PQfinish(db);
+                proper_exit(MUD_HALT);
+            }
+        }
+        return;
+    } else {
+        db = PQconnectdb("dbname=i3log user=wiley password=tardis69");
+        if (PQstatus(db) != CONNECTION_OK) {
+            log_fatal("Cannot open database: %s\n", PQerrorMessage(db));
+            PQfinish(db);
+            proper_exit(MUD_HALT);
+        }
     }
 }
 
 void sql_disconnect(void) {
-    sqlite3_close(db);
+    PQfinish(db);
     db = NULL;
+}
+
+char *sql_version(void) {
+    static char pg_version[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
+    int version = 0;
+    int major, minor, revision;
+
+    sql_connect();
+    version = PQlibVersion();
+    major = version / 10000;
+    minor = (version % 10000) / 100;
+    revision = version % 100;
+    snprintf(pg_version, MAX_INPUT_LENGTH, "%d.%02d.%02d", major, minor, revision);
+
+    return pg_version;
 }
 
 void sql_startup(void) {
     char log_msg[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
+    
     log_boot("Opening SQL database.");
     sql_connect();
-    log_boot("SQLite Version: %s\n", sqlite3_libversion());
-    setup_i3log_table();
-    setup_urls_table();
-    setup_log_table();
+    log_boot("PostgreSQL Version: %s\n", sql_version());
     setup_pinkfish_map_table();
     setup_hours_table();
     setup_channels_table();
     setup_speakers_table();
-    snprintf(log_msg, MAX_STRING_LENGTH, "%%^GREEN%%^WileyMUD Version: %s (%s), SQLite Version %s.%%^RESET%%^", VERSION_BUILD, VERSION_DATE, sqlite3_libversion());
+    setup_i3log_table();
+    setup_urls_table();
+    setup_log_table();
+    snprintf(log_msg, MAX_STRING_LENGTH, "%%^GREEN%%^WileyMUD Version: %s (%s), PostgreSQL Version %s.%%^RESET%%^", VERSION_BUILD, VERSION_DATE, sql_version());
     allchan_log(0,"wiley", "Cron", "WileyMUD", log_msg);
 }
 
 void sql_shutdown(void) {
     char log_msg[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
     log_boot("Shutting down SQL database.");
-    snprintf(log_msg, MAX_STRING_LENGTH, "%%^RED%%^WileyMUD Version: %s (%s), SQLite Version %s.%%^RESET%%^", VERSION_BUILD, VERSION_DATE, sqlite3_libversion());
+    snprintf(log_msg, MAX_STRING_LENGTH, "%%^RED%%^WileyMUD Version: %s (%s), PostgreSQL Version %s.%%^RESET%%^", VERSION_BUILD, VERSION_DATE, sql_version());
     allchan_log(0,"wiley", "Cron", "WileyMUD", log_msg);
     sql_disconnect();
 }
@@ -60,339 +90,287 @@ void sql_shutdown(void) {
  * All the setup_() functions here assume we're already connected.
  */
 
-void setup_i3log_table(void) {
-    char *err_msg = NULL;
-    char *sql = "CREATE TABLE IF NOT EXISTS i3log ( "
-                "created DATETIME DEFAULT (STRFTIME('%Y-%m-%d %H:%M:%f', 'NOW','utc')), "
-                "is_emote INTEGER, "
-                "is_url INTEGER, "
-                "is_bot INTEGER, "
-                "channel TEXT, "
-                "speaker TEXT, "
-                "mud TEXT, "
-                "message TEXT "
-                ");";
-
-    int rc = sqlite3_exec(db, sql, 0, 0, &err_msg);
-    if (rc != SQLITE_OK) {
-        log_fatal("Cannot create %s: %s\n", "i3log table", err_msg);
-        sqlite3_free(err_msg);
-	proper_exit(MUD_HALT);
-    }
-}
-
-void setup_urls_table(void) {
-    char *err_msg = NULL;
-    // This table stores urls that have been found in I3 messages.
-    // When they are put in the table, the message field is left NULL, so an
-    // external helper process can find and process them, filling in that data.
-    // Once the message is NOT NULL, and processed is NULL, they will be emitted
-    // to the url channel of I3, and then processed will become 1.
-    char *sql = "CREATE TABLE IF NOT EXISTS urls ( "
-                "created DATETIME DEFAULT (STRFTIME('%Y-%m-%d %H:%M:%f', 'NOW','utc')), "
-                "processed INTEGER, "
-                "channel TEXT, "
-                "speaker TEXT, "
-                "mud TEXT, "
-                "url TEXT, "
-                "message TEXT, "
-                "checksum TEXT "
-                ");";
-
-    int rc = sqlite3_exec(db, sql, 0, 0, &err_msg);
-    if (rc != SQLITE_OK) {
-        log_fatal("Cannot create %s: %s\n", "url table", err_msg);
-        sqlite3_free(err_msg);
-	proper_exit(MUD_HALT);
-    }
-}
-
-void setup_log_table(void) {
-    char *err_msg = NULL;
-    char *sql = "CREATE TABLE IF NOT EXISTS log ( "
-                "created DATETIME DEFAULT (STRFTIME('%Y-%m-%d %H:%M:%f', 'NOW','utc')), "
-                "logtype TEXT DEFAULT 'INFO', "
-                "filename TEXT, "
-                "function TEXT, "
-                "line INTEGER, "
-                "area_file TEXT, "
-                "area_line INTEGER, "
-                "character TEXT, "
-                "character_room INTEGER, "
-                "victim TEXT, "
-                "victim_room INTEGER, "
-                "message TEXT "
-                ");";
-
-    int rc = sqlite3_exec(db, sql, 0, 0, &err_msg);
-    if (rc != SQLITE_OK) {
-        log_fatal("Cannot create %s: %s\n", "log table", err_msg);
-        sqlite3_free(err_msg);
-	proper_exit(MUD_HALT);
-    }
-}
-
 void setup_pinkfish_map_table(void) {
-    char *err_msg = NULL;
+    PGresult *res = NULL;
+    ExecStatusType st = 0;
     char *sql = "CREATE TABLE IF NOT EXISTS pinkfish_map ( "
-                "pinkfish TEXT PRIMARY KEY NOT NULL, "
-                "html TEXT "
-                ");";
+                "    pinkfish TEXT PRIMARY KEY NOT NULL, "
+                "    html TEXT NOT NULL "
+                "); ";
 
-    int rc = sqlite3_exec(db, sql, 0, 0, &err_msg);
-    if (rc != SQLITE_OK) {
-        log_fatal("Cannot create %s: %s\n", "pinkfish_map table", err_msg);
-        sqlite3_free(err_msg);
+    sql_connect();
+    res = PQexec(db, sql);
+    st = PQresultStatus(res);
+    if( st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE ) {
+        log_fatal("Cannot create pinkfish_map table: %s", PQerrorMessage(db));
+        PQclear(res);
 	proper_exit(MUD_HALT);
     }
+    PQclear(res);
 }
 
 void setup_hours_table(void) {
-    char *err_msg = NULL;
+    PGresult *res = NULL;
+    ExecStatusType st = 0;
     char *sql = "CREATE TABLE IF NOT EXISTS hours ( "
-                "hour TEXT PRIMARY KEY NOT NULL, "
-                "pinkfish TEXT "
-                ");";
+                "    hour INTEGER PRIMARY KEY NOT NULL, "
+                "    pinkfish TEXT NOT NULL REFERENCES pinkfish_map (pinkfish) "
+                "); ";
 
-    int rc = sqlite3_exec(db, sql, 0, 0, &err_msg);
-    if (rc != SQLITE_OK) {
-        log_fatal("Cannot create %s: %s\n", "hours table", err_msg);
-        sqlite3_free(err_msg);
+    sql_connect();
+    res = PQexec(db, sql);
+    st = PQresultStatus(res);
+    if( st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE ) {
+        log_fatal("Cannot create hours table: %s", PQerrorMessage(db));
+        PQclear(res);
 	proper_exit(MUD_HALT);
     }
+    PQclear(res);
 }
 
 void setup_channels_table(void) {
-    char *err_msg = NULL;
+    PGresult *res = NULL;
+    ExecStatusType st = 0;
     char *sql = "CREATE TABLE IF NOT EXISTS channels ( "
-                "channel TEXT PRIMARY KEY NOT NULL, "
-                "pinkfish TEXT "
-                ");";
+                "    channel TEXT PRIMARY KEY NOT NULL, "
+                "    pinkfish TEXT NOT NULL REFERENCES pinkfish_map (pinkfish) "
+                "); ";
 
-    int rc = sqlite3_exec(db, sql, 0, 0, &err_msg);
-    if (rc != SQLITE_OK) {
-        log_fatal("Cannot create %s: %s\n", "channels table", err_msg);
-        sqlite3_free(err_msg);
+    sql_connect();
+    res = PQexec(db, sql);
+    st = PQresultStatus(res);
+    if( st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE ) {
+        log_fatal("Cannot create channels table: %s", PQerrorMessage(db));
+        PQclear(res);
 	proper_exit(MUD_HALT);
     }
+    PQclear(res);
 }
 
 void setup_speakers_table(void) {
-    char *err_msg = NULL;
+    PGresult *res = NULL;
+    ExecStatusType st = 0;
     char *sql = "CREATE TABLE IF NOT EXISTS speakers ( "
-                "speaker TEXT PRIMARY KEY NOT NULL, "
-                "pinkfish TEXT "
-                ");";
+                "    speaker TEXT PRIMARY KEY NOT NULL, "
+                "    pinkfish TEXT NOT NULL REFERENCES pinkfish_map (pinkfish) "
+                "); ";
 
-    int rc = sqlite3_exec(db, sql, 0, 0, &err_msg);
-    if (rc != SQLITE_OK) {
-        log_fatal("Cannot create %s: %s\n", "speakers table", err_msg);
-        sqlite3_free(err_msg);
+    sql_connect();
+    res = PQexec(db, sql);
+    st = PQresultStatus(res);
+    if( st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE ) {
+        log_fatal("Cannot create speakers table: %s", PQerrorMessage(db));
+        PQclear(res);
 	proper_exit(MUD_HALT);
     }
+    PQclear(res);
 }
 
-//int                                     unprocessed_urls = 0;
-//int                                     tics_to_next_url_processing = URL_DELAY;
-//int                                     first_processing = 1;
+void setup_i3log_table(void) {
+    PGresult *res = NULL;
+    ExecStatusType st = 0;
+    char *sql = "CREATE TABLE IF NOT EXISTS i3log ( "
+                "    created TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT (now() AT TIME ZONE 'UTC'), "
+                "    local TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "
+                "    is_emote BOOLEAN, "
+                "    is_url BOOLEAN, "
+                "    is_bot BOOLEAN, "
+                "    channel TEXT NOT NULL, "
+                "    speaker TEXT NOT NULL, "
+                "    mud TEXT NOT NULL, "
+                "    message TEXT "
+                "); ";
+    char *sql2 = "CREATE INDEX IF NOT EXISTS ix_i3log_local ON i3log (local);";
+    char *sql3 = "ALTER TABLE i3log DROP CONSTRAINT IF EXISTS ix_i3log_row;";
+    char *sql4 = "ALTER TABLE i3log ADD CONSTRAINT ix_i3log_row UNIQUE " 
+                 "    (created, local, is_emote, is_url, is_bot, "
+                 "     channel, speaker, mud, message);";
+    char *sql5 = "DROP VIEW IF EXISTS page_view;";
+    char *sql6 = "CREATE VIEW page_view AS "
+                 "SELECT i3log.local, "
+                 "       i3log.is_emote, "
+                 "       i3log.is_url, "
+                 "       i3log.is_bot, "
+                 "       i3log.channel, "
+                 "       i3log.speaker, "
+                 "       i3log.mud, "
+                 "       i3log.message, "
+                 "       to_char(i3log.local, 'YYYY-MM-DD')  the_date, "
+                 "       to_char(i3log.local, 'HH24:MI:SS')  the_time, "
+                 "       to_char(i3log.local, 'YYYY')        the_year, "
+                 "       to_char(i3log.local, 'MM')          the_month, "
+                 "       to_char(i3log.local, 'DD')          the_day, "
+                 "       to_char(i3log.local, 'HH24')        the_hour, "
+                 "       to_char(i3log.local, 'MI')          the_minute, "
+                 "       to_char(i3log.local, 'SS')          the_second, "
+                 "       date_part('hour', i3log.local)      int_hour, "
+                 "       hours.pinkfish                      hour_color, "
+                 "       channels.pinkfish                   channel_color, "
+                 "       speakers.pinkfish                   speaker_color, "
+                 "       pinkfish_map_hour.html              hour_html, "
+                 "       pinkfish_map_channel.html           channel_html, "
+                 "       pinkfish_map_speaker.html           speaker_html "
+                 "  FROM i3log "
+              "LEFT JOIN hours "
+              "       ON (date_part('hour', i3log.local) = hours.hour) "
+              "LEFT JOIN channels "
+              "       ON (lower(i3log.channel) = channels.channel) "
+              "LEFT JOIN speakers "
+              "       ON (lower(i3log.speaker) = speakers.speaker) "
+              "LEFT JOIN pinkfish_map pinkfish_map_hour "
+              "       ON (hours.pinkfish = pinkfish_map_hour.pinkfish) "
+              "LEFT JOIN pinkfish_map pinkfish_map_channel "
+              "       ON (channels.pinkfish = pinkfish_map_channel.pinkfish) "
+              "LEFT JOIN pinkfish_map pinkfish_map_speaker "
+              "       ON (speakers.pinkfish = pinkfish_map_speaker.pinkfish); ";
+
+    sql_connect();
+    res = PQexec(db, sql);
+    st = PQresultStatus(res);
+    if( st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE ) {
+        log_fatal("Cannot create i3log table: %s", PQerrorMessage(db));
+        PQclear(res);
+	proper_exit(MUD_HALT);
+    }
+    PQclear(res);
+
+    res = PQexec(db, sql2);
+    st = PQresultStatus(res);
+    if( st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE ) {
+        log_fatal("Cannot create i3log local index: %s", PQerrorMessage(db));
+        PQclear(res);
+	proper_exit(MUD_HALT);
+    }
+    PQclear(res);
+
+    res = PQexec(db, sql3);
+    st = PQresultStatus(res);
+    if( st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE ) {
+        log_fatal("Cannot drop i3log row constraint: %s", PQerrorMessage(db));
+        PQclear(res);
+	proper_exit(MUD_HALT);
+    }
+    PQclear(res);
+
+    res = PQexec(db, sql4);
+    st = PQresultStatus(res);
+    if( st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE ) {
+        log_fatal("Cannot create i3log row constraint: %s", PQerrorMessage(db));
+        PQclear(res);
+	proper_exit(MUD_HALT);
+    }
+    PQclear(res);
+
+    res = PQexec(db, sql5);
+    st = PQresultStatus(res);
+    if( st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE ) {
+        log_fatal("Cannot drop page view: %s", PQerrorMessage(db));
+        PQclear(res);
+	proper_exit(MUD_HALT);
+    }
+    PQclear(res);
+
+    res = PQexec(db, sql6);
+    st = PQresultStatus(res);
+    if( st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE ) {
+        log_fatal("Cannot create page view: %s", PQerrorMessage(db));
+        PQclear(res);
+	proper_exit(MUD_HALT);
+    }
+    PQclear(res);
+
+}
+
+void setup_urls_table(void) {
+    PGresult *res = NULL;
+    ExecStatusType st = 0;
+    char *sql = "CREATE TABLE IF NOT EXISTS urls ( "
+                "    created TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT (now() AT TIME ZONE 'UTC'), "
+                "    processed BOOLEAN, "
+                "    channel TEXT NOT NULL, "
+                "    speaker TEXT NOT NULL, "
+                "    mud TEXT NOT NULL, "
+                "    url TEXT, "
+                "    message TEXT, "
+                "    checksum TEXT "
+                "); ";
+
+    sql_connect();
+    res = PQexec(db, sql);
+    st = PQresultStatus(res);
+    if( st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE ) {
+        log_fatal("Cannot create urls table: %s", PQerrorMessage(db));
+        PQclear(res);
+	proper_exit(MUD_HALT);
+    }
+    PQclear(res);
+}
+
+void setup_log_table(void) {
+    PGresult *res = NULL;
+    ExecStatusType st = 0;
+    char *sql = "CREATE TABLE IF NOT EXISTS log ( "
+                "    created TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT (now() AT TIME ZONE 'UTC'), "
+                "    logtype TEXT DEFAULT 'INFO', "
+                "    filename TEXT, "
+                "    function TEXT, "
+                "    line INTEGER, "
+                "    area_file TEXT, "
+                "    area_line INTEGER, "
+                "    character TEXT, "
+                "    character_room INTEGER, "
+                "    victim TEXT, "
+                "    victim_room INTEGER, "
+                "    message TEXT "
+                "); ";
+
+    sql_connect();
+    res = PQexec(db, sql);
+    st = PQresultStatus(res);
+    if( st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE ) {
+        log_fatal("Cannot create log table: %s", PQerrorMessage(db));
+        PQclear(res);
+	proper_exit(MUD_HALT);
+    }
+    PQclear(res);
+}
 
 void add_url( const char *channel, const char *speaker, const char *mud, const char *url ) {
-
-    //log_info("add_url entered");
-
-    int rc;
     u_int32_t crc;
-    sqlite3_stmt *insert_stmt = NULL;
-    char *sql = "INSERT INTO urls ( url, channel, speaker, mud, checksum ) VALUES (?,?,?,?,?);";
-    //char *sql = "INSERT INTO urls ( url, channel, speaker, mud ) VALUES (?,?,?,?);";
-    char checksum[MAX_INPUT_LENGTH];
+    char checksum[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
+    PGresult *res = NULL;
+    ExecStatusType st = 0;
+    const char *sql = "INSERT INTO urls ( url, channel, speaker, mud, checksum ) VALUES ($1,$2,$3,$4,$5);";
+    const char *param_val[5];
+    int param_len[5];
+    int param_bin[5] = {0,0,0,0,0};
 
     crc = crc32(url, strlen(url));
     snprintf(checksum, MAX_INPUT_LENGTH, "%08x", crc);
 
+    param_val[0] = url;
+    param_val[1] = channel;
+    param_val[2] = speaker;
+    param_val[3] = mud;
+    param_val[4] = checksum;
+
+    param_len[0] = url ? strlen(url) : 0;
+    param_len[1] = channel ? strlen(channel) : 0;
+    param_len[2] = speaker ? strlen(speaker) : 0;
+    param_len[3] = mud ? strlen(mud) : 0;
+    param_len[4] = strlen(checksum);
+
     sql_connect();
-    rc = sqlite3_prepare_v2( db, sql, -1, &insert_stmt, NULL );
-    if (rc != SQLITE_OK) {
-        log_fatal("SQL statement error %s: %s\n", "urls insert", sqlite3_errmsg(db));
-	proper_exit(MUD_REBOOT);
+    res = PQexecParams(db, sql, 5, NULL, param_val, param_len, param_bin, 0);
+    st = PQresultStatus(res);
+    if( st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE ) {
+        log_fatal("Cannot insert url: %s", PQerrorMessage(db));
+        //PQclear(res);
+	//proper_exit(MUD_HALT);
     }
-    rc = sqlite3_bind_text( insert_stmt, 1, url, strlen(url), NULL );
-    if (rc != SQLITE_OK) {
-        log_fatal("SQL parameter error %s: %s\n", "urls url", sqlite3_errmsg(db));
-	proper_exit(MUD_REBOOT);
-    }
-    rc = sqlite3_bind_text( insert_stmt, 2, channel, strlen(channel), NULL );
-    if (rc != SQLITE_OK) {
-        log_fatal("SQL parameter error %s: %s\n", "urls channel", sqlite3_errmsg(db));
-	proper_exit(MUD_REBOOT);
-    }
-    rc = sqlite3_bind_text( insert_stmt, 3, speaker, strlen(speaker), NULL );
-    if (rc != SQLITE_OK) {
-        log_fatal("SQL parameter error %s: %s\n", "urls speaker", sqlite3_errmsg(db));
-	proper_exit(MUD_REBOOT);
-    }
-    rc = sqlite3_bind_text( insert_stmt, 4, mud, strlen(mud), NULL );
-    if (rc != SQLITE_OK) {
-        log_fatal("SQL parameter error %s: %s\n", "urls mud", sqlite3_errmsg(db));
-	proper_exit(MUD_REBOOT);
-    }
-    rc = sqlite3_bind_text( insert_stmt, 5, checksum, strlen(checksum), NULL );
-    if (rc != SQLITE_OK) {
-        log_fatal("SQL parameter error %s: %s\n", "urls mud", sqlite3_errmsg(db));
-	proper_exit(MUD_REBOOT);
-    }
+    PQclear(res);
 
-    for(int x = 0; x < 4; x++) {
-        rc = sqlite3_step(insert_stmt);
-        if (rc == SQLITE_DONE) {
-            sqlite3_finalize(insert_stmt);
-            break;
-        } else if (rc == SQLITE_BUSY && x < 3) {
-            usleep(10000); // Horrible, but what else can we do?
-            continue;
-        } else if (rc == SQLITE_LOCKED && x < 3) {
-            usleep(10000); // Horrible, but what else can we do?
-            continue;
-        } else {
-            log_fatal("SQL insert error %s: %s (%d)\n", "urls insert", sqlite3_errmsg(db), rc);
-            proper_exit(MUD_REBOOT);
-        }
-    }
-//    unprocessed_urls++;
-
-//    log_info("add_url done, unprocessed urls == %d", unprocessed_urls);
     log_info("add_url done, added %s: %s", checksum, url);
-    sql_disconnect();
-}
-
-void process_urls( void ) {
-    // This routine will look in the urls table for any entries which have
-    // a non-NULL message field and a NULL processed field.  That means our
-    // external helper app has done the lookups and pushed the results into
-    // the table, but we haven't yet sent those results out over I3.
-    //
-    // For each result we find, we need to update the row to set processed
-    // to 1, so we don't do it again later.
-
-//    if( unprocessed_urls < 0 ) {
-//        // This can happen if we have leftovers from a previous run,
-//        // or if we screw up and fail to process one and end up doing
-//        // it twice somehow.
-//        unprocessed_urls = 0;
-//    }
-
-//    if( tics_to_next_url_processing > 0 ) {
-//        tics_to_next_url_processing--;
-//        return;
-//    }
-
-//    if( !first_processing && unprocessed_urls < 1 ) {
-//        //log_info("process_urls no work to do");
-//        return;
-//    }
-
-    //log_info("process_urls started with work to do");
-//    tics_to_next_url_processing = URL_DELAY;
-    char *err_msg = NULL;
-    char *sql = "  SELECT created, url, message "
-                "    FROM urls "
-                "   WHERE processed IS NOT 1 AND message IS NOT NULL "
-                "ORDER BY created ASC;";
-    int rc;
-
-    sql_connect();
-    for(int x = 0; x < 4; x++) {
-        rc = sqlite3_exec(db, sql, process_url_callback, 0, &err_msg);
-        if (rc == SQLITE_OK) {
-            break;
-        } else if (rc == SQLITE_BUSY && x < 3) {
-            usleep(10000); // Horrible, but what else can we do?
-            continue;
-        } else if (rc == SQLITE_LOCKED && x < 3) {
-            usleep(10000); // Horrible, but what else can we do?
-            continue;
-        } else {
-            log_fatal("SQL insert error %s: %s (%d)\n", "urls select", err_msg, rc);
-            proper_exit(MUD_REBOOT);
-        }
-    }
-
-//    if( first_processing ) {
-//        first_processing = 0;
-//    }
-
-    //log_info("process_urls done");
-    sql_disconnect();
-}
-
-// SQLite can use callbacks for each row retrieved from a select statement.
-// I am going to ASSUME that SQLite is not actually multi-threaded, and thus the
-// database connection is still open from the previous function.
-// Likewise, since the previous function will close it, we don't have to.
-int process_url_callback(void *unused, int count, char **values, char **keys) {
-    //log_info("process_url_callback entered");
-
-    sqlite3_stmt *update_stmt = NULL;
-    char *sql = "  UPDATE urls "
-                "     SET processed = 1 "
-                "   WHERE created = ? AND url = ? AND processed IS NOT 1 AND message IS NOT NULL;";
-
-    //log_info("Count = %d", count);
-    if( count < 3 ) {
-        log_error("process_url_callback aborted, expected 3 arguments, got %d", count);
-        if( count >= 1 && values[0] ) log_error("created = %s", values[0]);
-        if( count >= 2 && values[1] ) log_error("url = %s", values[1]);
-        if( count >= 3 && values[2] ) log_error("message = %s", values[2]);
-        return 0;
-    }
-
-    if( values[2] ) {
-        // We have a message string!
-        i3_npc_speak("url", "URLbot", values[2]);
-    }
-    // Now we need to mark this as processed...
-    int rc = sqlite3_prepare_v2( db, sql, -1, &update_stmt, NULL );
-    if (rc != SQLITE_OK) {
-        log_fatal("SQL statement error %s: %s\n", "urls update", sqlite3_errmsg(db));
-	proper_exit(MUD_REBOOT);
-    }
-    rc = sqlite3_bind_text( update_stmt, 1, values[0], strlen(values[0]), NULL );
-    if (rc != SQLITE_OK) {
-        log_fatal("SQL parameter error %s: %s\n", "urls created", sqlite3_errmsg(db));
-	proper_exit(MUD_REBOOT);
-    }
-    rc = sqlite3_bind_text( update_stmt, 2, values[1], strlen(values[1]), NULL );
-    if (rc != SQLITE_OK) {
-        log_fatal("SQL parameter error %s: %s\n", "urls url", sqlite3_errmsg(db));
-	proper_exit(MUD_REBOOT);
-    }
-
-    rc = sqlite3_step(update_stmt);
-    if (rc != SQLITE_DONE) {
-        log_fatal("SQL update error %s: %s (%d)\n", "urls update", sqlite3_errmsg(db), rc);
-	proper_exit(MUD_REBOOT);
-    }
-    sqlite3_finalize(update_stmt);
-//    unprocessed_urls--;
-//    log_info("process_url_callback done, unprocessed_urls == %d", unprocessed_urls);
-    log_info("process_url_callback done, processed %s", values[1]);
-    return 0;
-}
-
-void spawn_url_handler(void) {
-    int                  regexp_pid;
-
-    regexp_pid = fork();
-    if( regexp_pid == 0 ) {
-        // We are the new kid, so go run our perl script.
-        log_info("Forking %s", UNTINY);
-        //execl(PERL, PERL, "-w", UNTINY_SQL, (char *)NULL);
-        execl(PERL, PERL, "-w", UNTINY, "--sql", (char *)NULL);
-        log_error("It is not possible to be here!");
-    } else {
-        // Normally, we need to track the child pid, but we're already
-        // ignoring SIGCHLD in signals.c, and doing so prevents zombies.
-    }
 }
 
 int is_url( int is_emote, const char *channel, const char *speaker, const char *mud, const char *message ) {
@@ -501,73 +479,60 @@ int is_bot( int is_emote, const char *channel, const char *speaker, const char *
 }
 
 void allchan_sql( int is_emote, const char *channel, const char *speaker, const char *mud, const char *message ) {
-    sqlite3_stmt *insert_stmt = NULL;
-    char *sql = "INSERT INTO i3log ( channel, speaker, mud, message, is_emote, is_url, is_bot ) "
-                "VALUES (?,?,?,?,?,?,?);";
+    PGresult *res = NULL;
+    ExecStatusType st = 0;
+    const char *sql = "INSERT INTO i3log ( channel, speaker, mud, message, is_emote, is_url, is_bot ) "
+                      "VALUES ($1,$2,$3,$4,$5,$6,$7);";
+    const char *param_val[7];
+    int param_len[7];
+    //int param_bin[7] = {0,0,0,0,1,1,1}; // Are booleans considered binary?
+    int param_bin[7] = {0,0,0,0,0,0,0};
+    char param_emote[2];
+    char param_url[2];
+    char param_bot[2];
 
+    // Note that is_url() calls add_url() 0 or more times, as urls are found in the message.
     int url = is_url(is_emote, channel, speaker, mud, message);
     int bot = is_bot(is_emote, channel, speaker, mud, message);
-    int rc;
+
+    //is_emote = htonl(is_emote);
+    //url = htonl(url);
+    //bot = htonl(bot);
+    sprintf(param_emote, "%s", (is_emote ? "t" : "f"));
+    sprintf(param_url, "%s", (url ? "t" : "f"));
+    sprintf(param_bot, "%s", (bot ? "t" : "f"));
+
+    param_val[0] = channel;
+    param_val[1] = speaker;
+    param_val[2] = mud;
+    param_val[3] = message;
+    //param_val[4] = (char *)&is_emote;
+    //param_val[5] = (char *)&url;
+    //param_val[6] = (char *)&bot;
+    param_val[4] = param_emote;
+    param_val[5] = param_url;
+    param_val[6] = param_bot;
+
+    param_len[0] = channel ? strlen(channel) : 0;
+    param_len[1] = speaker ? strlen(speaker) : 0;
+    param_len[2] = mud ? strlen(mud) : 0;
+    param_len[3] = message ? strlen(message) : 0;
+    //param_len[4] = sizeof(is_emote);
+    //param_len[5] = sizeof(url);
+    //param_len[6] = sizeof(bot);
+    param_len[4] = strlen(param_emote);
+    param_len[5] = strlen(param_url);
+    param_len[6] = strlen(param_bot);
 
     sql_connect();
-    rc = sqlite3_prepare_v2( db, sql, -1, &insert_stmt, NULL );
-    if (rc != SQLITE_OK) {
-        log_fatal("SQL statement error %s: %s\n", "i3log insert", sqlite3_errmsg(db));
-	proper_exit(MUD_REBOOT);
+    res = PQexecParams(db, sql, 7, NULL, param_val, param_len, param_bin, 0);
+    st = PQresultStatus(res);
+    if( st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE ) {
+        log_fatal("Cannot insert message: %s", PQerrorMessage(db));
+        //PQclear(res);
+	//proper_exit(MUD_HALT);
     }
-    rc = sqlite3_bind_text( insert_stmt, 1, channel, strlen(channel), NULL );
-    if (rc != SQLITE_OK) {
-        log_fatal("SQL parameter error %s: %s\n", "i3log channel", sqlite3_errmsg(db));
-	proper_exit(MUD_REBOOT);
-    }
-    rc = sqlite3_bind_text( insert_stmt, 2, speaker, strlen(speaker), NULL );
-    if (rc != SQLITE_OK) {
-        log_fatal("SQL parameter error %s: %s\n", "i3log speaker", sqlite3_errmsg(db));
-	proper_exit(MUD_REBOOT);
-    }
-    rc = sqlite3_bind_text( insert_stmt, 3, mud, strlen(mud), NULL );
-    if (rc != SQLITE_OK) {
-        log_fatal("SQL parameter error %s: %s\n", "i3log mud", sqlite3_errmsg(db));
-	proper_exit(MUD_REBOOT);
-    }
-    rc = sqlite3_bind_text( insert_stmt, 4, message, strlen(message), NULL );
-    if (rc != SQLITE_OK) {
-        log_fatal("SQL parameter error %s: %s\n", "i3log message", sqlite3_errmsg(db));
-	proper_exit(MUD_REBOOT);
-    }
-    rc = sqlite3_bind_int( insert_stmt, 5, is_emote );
-    if (rc != SQLITE_OK) {
-        log_fatal("SQL parameter error %s: %s\n", "i3log is_emote", sqlite3_errmsg(db));
-	proper_exit(MUD_REBOOT);
-    }
-    rc = sqlite3_bind_int( insert_stmt, 6, url );
-    if (rc != SQLITE_OK) {
-        log_fatal("SQL parameter error %s: %s\n", "i3log is_url", sqlite3_errmsg(db));
-	proper_exit(MUD_REBOOT);
-    }
-    rc = sqlite3_bind_int( insert_stmt, 7, bot );
-    if (rc != SQLITE_OK) {
-        log_fatal("SQL parameter error %s: %s\n", "i3log is_bot", sqlite3_errmsg(db));
-	proper_exit(MUD_REBOOT);
-    }
-
-    for(int x = 0; x < 4; x++) {
-        rc = sqlite3_step(insert_stmt);
-        if (rc == SQLITE_DONE) {
-            sqlite3_finalize(insert_stmt);
-            break;
-        } else if (rc == SQLITE_BUSY && x < 3) {
-            usleep(10000); // Horrible, but what else can we do?
-            continue;
-        } else if (rc == SQLITE_LOCKED && x < 3) {
-            usleep(10000); // Horrible, but what else can we do?
-            continue;
-        } else {
-            log_fatal("SQL insert error %s: %s (%d)\n", "i3log insert", sqlite3_errmsg(db), rc);
-            proper_exit(MUD_REBOOT);
-        }
-    }
-    sql_disconnect();
+    PQclear(res);
 }
 
 void bug_sql( const char *logtype, const char *filename, const char *function, int line,
@@ -575,161 +540,87 @@ void bug_sql( const char *logtype, const char *filename, const char *function, i
               const char *character, int character_room,
               const char *victim, int victim_room, 
               const char *message ) {
-
-    sqlite3_stmt *insert_stmt = NULL;
-    char *sql = "INSERT INTO log ( logtype, filename, function, line, area_file, area_line, "
-                "character, character_room, victim, victim_room, message ) "
-                "VALUES (?,?,?,?,?,?,?,?,?,?,?);";
+    PGresult *res = NULL;
+    ExecStatusType st = 0;
+    const char *sql = "INSERT INTO log ( logtype, filename, function, line, "
+                      "area_file, area_line, character, character_room, victim, "
+                      "victim_room, message ) "
+                      "VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11);";
+    const char *param_val[11];
+    int param_len[11];
+    int param_bin[11] = {0,0,0,1,0,1,0,1,0,1,0};
+    int param_line;
+    int param_area_line;
+    int param_char_room;
+    int param_vic_room;
 
     return; // remove me for production
 
-    sql_connect();
-    int rc = sqlite3_prepare_v2( db, sql, -1, &insert_stmt, NULL );
-    if (rc != SQLITE_OK) {
-        log_fatal("SQL statement error %s: %s\n", "log insert", sqlite3_errmsg(db));
-	proper_exit(MUD_REBOOT);
-    }
-    if(logtype && *logtype) {
-        rc = sqlite3_bind_text( insert_stmt, 1, logtype, strlen(logtype), NULL );
-        if (rc != SQLITE_OK) {
-            log_fatal("SQL parameter error %s: %s\n", "log logtype", sqlite3_errmsg(db));
-            proper_exit(MUD_REBOOT);
-        }
-    }
-    if(filename && *filename) {
-        rc = sqlite3_bind_text( insert_stmt, 2, filename, strlen(filename), NULL );
-        if (rc != SQLITE_OK) {
-            log_fatal("SQL parameter error %s: %s\n", "log filename", sqlite3_errmsg(db));
-            proper_exit(MUD_REBOOT);
-        }
-    }
-    if(function && *function) {
-        rc = sqlite3_bind_text( insert_stmt, 3, function, strlen(function), NULL );
-        if (rc != SQLITE_OK) {
-            log_fatal("SQL parameter error %s: %s\n", "log function", sqlite3_errmsg(db));
-            proper_exit(MUD_REBOOT);
-        }
-    }
-    if(line > 0) {
-        rc = sqlite3_bind_int( insert_stmt, 4, line );
-        if (rc != SQLITE_OK) {
-            log_fatal("SQL parameter error %s: %s\n", "log line", sqlite3_errmsg(db));
-            proper_exit(MUD_REBOOT);
-        }
-    }
-    if(area_file && *area_file) {
-        rc = sqlite3_bind_text( insert_stmt, 5, area_file, strlen(area_file), NULL );
-        if (rc != SQLITE_OK) {
-            log_fatal("SQL parameter error %s: %s\n", "log area_file", sqlite3_errmsg(db));
-            proper_exit(MUD_REBOOT);
-        }
-    }
-    if(area_line > 0) {
-        rc = sqlite3_bind_int( insert_stmt, 6, area_line );
-        if (rc != SQLITE_OK) {
-            log_fatal("SQL parameter error %s: %s\n", "log area_line", sqlite3_errmsg(db));
-            proper_exit(MUD_REBOOT);
-        }
-    }
-    if(character && *character) {
-        rc = sqlite3_bind_text( insert_stmt, 7, character, strlen(character), NULL );
-        if (rc != SQLITE_OK) {
-            log_fatal("SQL parameter error %s: %s\n", "log character", sqlite3_errmsg(db));
-            proper_exit(MUD_REBOOT);
-        }
-    }
-    if(character_room > 0) {
-        rc = sqlite3_bind_int( insert_stmt, 8, character_room );
-        if (rc != SQLITE_OK) {
-            log_fatal("SQL parameter error %s: %s\n", "log character_room", sqlite3_errmsg(db));
-            proper_exit(MUD_REBOOT);
-        }
-    }
-    if(victim && *victim) {
-        rc = sqlite3_bind_text( insert_stmt, 9, victim, strlen(victim), NULL );
-        if (rc != SQLITE_OK) {
-            log_fatal("SQL parameter error %s: %s\n", "log victim", sqlite3_errmsg(db));
-            proper_exit(MUD_REBOOT);
-        }
-    }
-    if(victim_room > 0) {
-        rc = sqlite3_bind_int( insert_stmt, 10, victim_room );
-        if (rc != SQLITE_OK) {
-            log_fatal("SQL parameter error %s: %s\n", "log victim_room", sqlite3_errmsg(db));
-            proper_exit(MUD_REBOOT);
-        }
-    }
-    rc = sqlite3_bind_text( insert_stmt, 11, message, strlen(message), NULL );
-    if (rc != SQLITE_OK) {
-        log_fatal("SQL parameter error %s: %s\n", "log message", sqlite3_errmsg(db));
-	proper_exit(MUD_REBOOT);
-    }
+    param_line = htonl(line);
+    param_area_line = htonl(area_line);
+    param_char_room = htonl(character_room);
+    param_vic_room = htonl(victim_room);
 
-    for(int x = 0; x < 4; x++) {
-        rc = sqlite3_step(insert_stmt);
-        if (rc == SQLITE_DONE) {
-            sqlite3_finalize(insert_stmt);
-            break;
-        } else if (rc == SQLITE_BUSY && x < 3) {
-            usleep(10000); // Horrible, but what else can we do?
-            continue;
-        } else if (rc == SQLITE_LOCKED && x < 3) {
-            usleep(10000); // Horrible, but what else can we do?
-            continue;
-        } else {
-            log_fatal("SQL insert error %s: %s (%d)\n", "log insert", sqlite3_errmsg(db), rc);
-            proper_exit(MUD_REBOOT);
-        }
+    param_val[0] = logtype;
+    param_val[1] = filename;
+    param_val[2] = function;
+    param_val[3] = (char *)&param_line;
+    param_val[4] = area_file;
+    param_val[5] = (char *)&param_area_line;
+    param_val[6] = character;
+    param_val[7] = (char *)&param_char_room;
+    param_val[8] = victim;
+    param_val[9] = (char *)&param_vic_room;
+    param_val[10] = message;
+
+    param_len[0] = logtype ? strlen(logtype) : 0;
+    param_len[1] = filename ? strlen(filename) : 0;
+    param_len[2] = function ? strlen(function) : 0;
+    param_len[3] = sizeof(param_line);
+    param_len[4] = area_file ? strlen(area_file) : 0;
+    param_len[5] = sizeof(param_area_line);
+    param_len[6] = character ? strlen(character) : 0;
+    param_len[7] = sizeof(param_char_room);
+    param_len[8] = victim ? strlen(victim) : 0;
+    param_len[9] = sizeof(param_vic_room);
+    param_len[10] = message ? strlen(message) : 0;
+
+    sql_connect();
+    res = PQexecParams(db, sql, 11, NULL, param_val, param_len, param_bin, 0);
+    st = PQresultStatus(res);
+    if( st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE ) {
+        log_fatal("Cannot insert log message: %s", PQerrorMessage(db));
+        //PQclear(res);
+	//proper_exit(MUD_HALT);
     }
-    sql_disconnect();
+    PQclear(res);
 }
 
 void addspeaker_sql( const char *speaker, const char *pinkfish ) {
-    sqlite3_stmt *insert_stmt = NULL;
-    char *sql = "INSERT OR IGNORE INTO speakers ( speaker, pinkfish) "
-                "VALUES (?,?);";
+    PGresult *res = NULL;
+    ExecStatusType st = 0;
+    const char *sql = "INSERT INTO speakers (speaker, pinkfish) "
+                      "VALUES ($1,$2) "
+                      "ON CONFLICT (speaker) "
+                      "DO NOTHING; ";
+    const char *param_val[2];
+    int param_len[2];
+    int param_bin[2] = {0,0};
 
-    //log_info("ADD_SPEAKER: %s = %s", VNULL(speaker), VNULL(pinkfish));
-    if(!speaker || !*speaker || !pinkfish || !*pinkfish)
-        return;
+    param_val[0] = speaker;
+    param_val[1] = pinkfish;
+
+    param_len[0] = speaker ? strlen(speaker) : 0;
+    param_len[1] = pinkfish ? strlen(pinkfish) : 0;
 
     sql_connect();
-    int rc = sqlite3_prepare_v2( db, sql, -1, &insert_stmt, NULL );
-    if (rc != SQLITE_OK) {
-        log_fatal("SQL statement error %s: %s\n", "speakers insert", sqlite3_errmsg(db));
-        log_fatal("SQL == %s (\"%s\", \"%s\")\n", sql, VNULL(speaker), VNULL(pinkfish));
-	proper_exit(MUD_REBOOT);
+    res = PQexecParams(db, sql, 11, NULL, param_val, param_len, param_bin, 0);
+    st = PQresultStatus(res);
+    if( st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE ) {
+        log_fatal("Cannot add speaker: %s", PQerrorMessage(db));
+        //PQclear(res);
+	//proper_exit(MUD_HALT);
     }
-    rc = sqlite3_bind_text( insert_stmt, 1, speaker, strlen(speaker), NULL );
-    if (rc != SQLITE_OK) {
-        log_fatal("SQL parameter error %s: %s\n", "speakers speaker", sqlite3_errmsg(db));
-        log_fatal("SQL == %s (\"%s\", \"%s\")\n", sql, VNULL(speaker), VNULL(pinkfish));
-	proper_exit(MUD_REBOOT);
-    }
-    rc = sqlite3_bind_text( insert_stmt, 2, pinkfish, strlen(pinkfish), NULL );
-    if (rc != SQLITE_OK) {
-        log_fatal("SQL parameter error %s: %s\n", "speakers pinkfish", sqlite3_errmsg(db));
-        log_fatal("SQL == %s (\"%s\", \"%s\")\n", sql, VNULL(speaker), VNULL(pinkfish));
-	proper_exit(MUD_REBOOT);
-    }
-
-    for(int x = 0; x < 4; x++) {
-        rc = sqlite3_step(insert_stmt);
-        if (rc == SQLITE_DONE) {
-            sqlite3_finalize(insert_stmt);
-            break;
-        } else if (rc == SQLITE_BUSY && x < 3) {
-            usleep(10000); // Horrible, but what else can we do?
-            continue;
-        } else if (rc == SQLITE_LOCKED && x < 3) {
-            usleep(10000); // Horrible, but what else can we do?
-            continue;
-        } else {
-            log_fatal("SQL insert error %s: %s (%d)\n", "speakers insert", sqlite3_errmsg(db), rc);
-            log_fatal("SQL == %s (\"%s\", \"%s\")\n", sql, VNULL(speaker), VNULL(pinkfish));
-            proper_exit(MUD_REBOOT);
-        }
-    }
-    sql_disconnect();
+    PQclear(res);
 }
 

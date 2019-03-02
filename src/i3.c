@@ -3031,7 +3031,7 @@ char *color_speaker( const char *speaker )
             // Simply return the color code found.
             snprintf(result, MAX_INPUT_LENGTH, "%s", found);
             // For now, always add so it can catch up...
-            addspeaker_sql(lowercase_name, found);
+            // addspeaker_sql(lowercase_name, found);
         } else {
             // Add them as a new speaker and THEN return the color code.
             found = colormap[speaker_count % (sizeof(colormap) / sizeof(colormap[0]))];

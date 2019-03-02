@@ -3210,7 +3210,6 @@ void do_version(struct char_data *ch, const char *argument, int cmd)
 
     cprintf(ch, "WileyMUD:         %s (%s)\r\n", VERSION_BUILD, VERSION_DATE);
     sql_connect();
-    cprintf(ch, "SQLite:           %s\r\n", sqlite3_libversion());
-    sql_disconnect();
+    cprintf(ch, "PostgreSQL:       %s\r\n", sql_version());
 }
 

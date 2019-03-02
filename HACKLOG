@@ -261,3 +261,10 @@ apt install postgresql postgresql-doc libpostgresql-jdbc-java libpostgresql-jdbc
 apt install apt-file
     apt-file update
 
+apt install whois
+
+Adjusted /etc/postgresql/11/main/pg_hba.conf
+    local   all             wiley                                   md5
+
+apt install libpq-dev libpqtypes-dev libpqxx-dev libpq5 libpqxx-doc
+

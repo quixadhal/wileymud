@@ -19,6 +19,7 @@ my $LIVE_DB_FILE    = '/home/wiley/lib/i3/wiley.db';
 my $DB_FILE         = '/home/wiley/lib/i3/wiley.bkp-20190223.db';
 my $PAGE_DIR        = '/home/wiley/public_html/logpages';
 my $JSON_DIR        = '/home/wiley/public_html/logdata';
+my $PG_DB           = 'i3log';
 
 # /usr/bin/bzip2 -9cq wiley.bkp-20190220.db
 my $KOMPRESSOR      = '/usr/bin/bzip2';
@@ -123,7 +124,8 @@ sub display_options {
     my $row_count = shift || 0;
     my $page_count = shift || 0;
 
-    printf "We are running against %s.\n", ($use_live ? $LIVE_DB_FILE : $DB_FILE);
+    #printf "We are running against %s.\n", ($use_live ? $LIVE_DB_FILE : $DB_FILE);
+    printf "We are running against PostgreSQL now!\n";
     printf "Found %d rows over %d pages.\n", $row_count, $page_count;
     if( $do_pages or $do_json ) {
         printf "Starting from page %d, as requested.\n", $page_start;
@@ -164,12 +166,42 @@ GetOptions(
     'json!'             => \$do_json,
 );
 
-sub init_db {
-    my $DATABASE = shift;
+sub open_postgres_db {
+    my $DB_NAME = shift;
 
-    my $db = DBI->connect("DBI:SQLite:dbname=$DATABASE", '', '',
-        { AutoCommit => 1, PrintError => 1, });
+    my $db = DBI->connect("dbi:Pg:dbname=$DB_NAME", 'wiley', 'tardis69',
+        { AutoCommit => 1, RaiseError => 1, PrintError => 0, });
     return $db;
+}
+
+sub open_postgres_tcp_db {
+    my $DB_NAME = shift;
+
+    my $db = DBI->connect("dbi:Pg:dbname=$DB_NAME;host=localhost;port=5432", 'wiley', 'tardis69',
+        { AutoCommit => 1, RaiseError => 1, PrintError => 0, });
+    return $db;
+}
+
+sub import_json {
+    my $filename = shift;
+
+    local $/ = undef;
+    open FP, "<$filename" or die "Cannot open data file $filename: $!";
+    my $data = <FP>;
+    close FP;
+    my $object = decode_json($data);
+    return $object;
+}
+
+sub import_compressed_json {
+    my $filename = shift;
+
+    local $/ = undef;
+    open FP, "$UNKOMPRESSOR $filename|" or die "Cannot open data file $filename: $!";
+    my $data = <FP>;
+    close FP;
+    my $object = decode_json($data);
+    return $object;
 }
 
 sub save_json_cache {
@@ -188,15 +220,13 @@ sub save_json_cache {
 #            html TEXT
 #        );
 sub fetch_pinkfish_map {
-    my $DATABASE = shift;
-    my $db = init_db($DATABASE);
+    my $db = shift;
 
     my $rv = $db->selectall_hashref(qq!
         SELECT pinkfish, html
           FROM pinkfish_map
         ;!, 'pinkfish');
     print STDERR $DBI::errstr."\n" if ! $rv;
-    $db->disconnect();
     return $rv;
 }
 
@@ -205,8 +235,7 @@ sub fetch_pinkfish_map {
 #            pinkfish TEXT
 #        );
 sub fetch_hours {
-    my $DATABASE = shift;
-    my $db = init_db($DATABASE);
+    my $db = shift;
 
     my $rv = $db->selectall_hashref(qq!
         SELECT hour, hours.pinkfish, html
@@ -215,7 +244,6 @@ sub fetch_hours {
             ON (hours.pinkfish = pinkfish_map.pinkfish)
         ;!, 'hour');
     print STDERR $DBI::errstr."\n" if ! $rv;
-    $db->disconnect();
     return $rv;
 }
 
@@ -224,8 +252,7 @@ sub fetch_hours {
 #            pinkfish TEXT
 #        );
 sub fetch_channels {
-    my $DATABASE = shift;
-    my $db = init_db($DATABASE);
+    my $db = shift;
 
     my $rv = $db->selectall_hashref(qq!
         SELECT channel, channels.pinkfish, html
@@ -234,7 +261,6 @@ sub fetch_channels {
             ON (channels.pinkfish = pinkfish_map.pinkfish)
         ;!, 'channel');
     print STDERR $DBI::errstr."\n" if ! $rv;
-    $db->disconnect();
     return $rv;
 }
 
@@ -243,8 +269,7 @@ sub fetch_channels {
 #            pinkfish TEXT
 #        );
 sub fetch_speakers {
-    my $DATABASE = shift;
-    my $db = init_db($DATABASE);
+    my $db = shift;
 
     my $rv = $db->selectall_hashref(qq!
         SELECT speaker, speakers.pinkfish, html
@@ -253,24 +278,21 @@ sub fetch_speakers {
             ON (speakers.pinkfish = pinkfish_map.pinkfish)
         ;!, 'speaker');
     print STDERR $DBI::errstr."\n" if ! $rv;
-    $db->disconnect();
     return $rv;
 }
 
 sub fetch_row_count {
-    my $DATABASE = shift;
-    my $db = init_db($DATABASE);
+    my $db = shift;
 
     my $rv = $db->selectrow_arrayref(qq!
         SELECT COUNT(*) FROM i3log;
         !);
     print STDERR $DBI::errstr."\n" if ! $rv;
-    $db->disconnect();
     return $rv ? $rv->[0] : 0;
 }
 
 sub update_all_speakers {
-    my $DATABASE = shift;
+    my $db = shift;
 
     my @color_map = (
         "%^BLACK%^%^BOLD%^",
@@ -300,10 +322,9 @@ sub update_all_speakers {
         '%^BLACK%^%^B_WHITE%^',
     );
     my $color_count = scalar @color_map;
-    my $speakers = fetch_speakers($DATABASE);
+    my $speakers = fetch_speakers($db);
     my $speaker_count = scalar keys %$speakers;
 
-    my $db = init_db($DATABASE);
     my $result = $db->selectall_arrayref(qq!
         SELECT DISTINCT speaker FROM i3log;
         ;!, { Slice => {} } );
@@ -316,28 +337,30 @@ sub update_all_speakers {
             $speakers->{$speaker} = { 'speaker' => $speaker, 'pinkfish' => $new_color };
             $speaker_count = scalar keys %$speakers;
 
+            $db->begin_work();
             my $insert_sql = $db->prepare( qq!
                 INSERT INTO speakers ( speaker, pinkfish )
                 VALUES (?,?)
+                ON CONFLICT (speaker)
+                DO NOTHING;
                 !);
             my $rv = $insert_sql->execute( $speaker, $new_color );
             if($rv) {
                 #$db->commit if !($counter % 100);
-                #$db->commit;
+                $db->commit;
                 print "Added $speaker as $new_color\n";
             } else {
                 print STDERR $DBI::errstr."\n";
-                #$db->rollback;
+                $db->rollback;
             }
         }
     } else {
         print STDERR $DBI::errstr."\n";
     }
-    $db->disconnect();
 }
 
 sub update_all_channels {
-    my $DATABASE = shift;
+    my $db = shift;
 
     my @color_map = (
         "%^RED%^",
@@ -356,10 +379,9 @@ sub update_all_channels {
         "%^WHITE%^%^BOLD%^",
     );
     my $color_count = scalar @color_map;
-    my $channels = fetch_channels($DATABASE);
+    my $channels = fetch_channels($db);
     my $channel_count = scalar keys %$channels;
 
-    my $db = init_db($DATABASE);
     my $result = $db->selectall_arrayref(qq!
         SELECT DISTINCT channel FROM i3log;
         ;!, { Slice => {} } );
@@ -372,70 +394,42 @@ sub update_all_channels {
             $channels->{$channel} = { 'channel' => $channel, 'pinkfish' => $new_color };
             $channel_count = scalar keys %$channels;
 
+            $db->begin_work();
             my $insert_sql = $db->prepare( qq!
                 INSERT INTO channels ( channel, pinkfish )
                 VALUES (?,?)
+                ON CONFLICT (channel)
+                DO NOTHING;
                 !);
             my $rv = $insert_sql->execute( $channel, $new_color );
             if($rv) {
                 #$db->commit if !($counter % 100);
-                #$db->commit;
+                $db->commit;
                 print "Added $channel as $new_color\n";
             } else {
                 print STDERR $DBI::errstr."\n";
-                #$db->rollback;
+                $db->rollback;
             }
         }
     } else {
         print STDERR $DBI::errstr."\n";
     }
-    $db->disconnect();
-}
-
-sub fix_local_column {
-    my $DATABASE = shift;
-    my $db = init_db($DATABASE);
-
-    # SQLite is confused about timezones and stores my data with
-    # a doubled offset, so instead of GMT, it's actually being
-    # stored as GMT+8 when I'm at GMT-8.
-    #
-    # SQLite won't let you alter a table to add a column with
-    # a default value that invokes a function... so... for now
-    # we hand fix things before we paw through it.
-
-    print "Fixing local timestamp column...\n";
-    my $update_sql = $db->prepare( qq!
-        UPDATE i3log
-           SET local = STRFTIME('%Y-%m-%d %H:%M:%f',
-               STRFTIME('%Y-%m-%d %H:%M:%f', created, 'localtime'), 'localtime')
-         WHERE local IS NULL;
-    !);
-    my $rv = $update_sql->execute();
-    print STDERR $DBI::errstr."\n" if ! $rv;
-    print "Fixed!\n" if $rv;
-    $db->disconnect();
 }
 
 sub fetch_date_counts {
-    my $DATABASE = shift;
-    my $db = init_db($DATABASE);
+    my $db = shift;
 
-    # 2006-09-25 11:57:45.000
-    # YYYY-MM-DD HH:MM:SS.UUU
-    # 1    6  9  12 15 18 21
     my $rv = $db->selectall_arrayref(qq!
-        SELECT      SUBSTR(local, 1, 10) AS the_date,
-                    SUBSTR(local, 1, 4) AS the_year,
-                    SUBSTR(local, 6, 2) AS the_month,
-                    SUBSTR(local, 9, 2) AS the_day,
-                    COUNT(*) AS count
+        SELECT      to_char(local, 'YYYY-MM-DD')  the_date,
+                    to_char(local, 'YYYY')        the_year,
+                    to_char(local, 'MM')          the_month,
+                    to_char(local, 'DD')          the_day,
+                    COUNT(*) count
         FROM        i3log
-        GROUP BY    the_date
+        GROUP BY    the_date, the_year, the_month, the_day
         ORDER BY    the_date ASC;
         ;!, { Slice => {} } );
     print STDERR $DBI::errstr."\n" if ! $rv;
-    $db->disconnect();
     return $rv;
 }
 
@@ -456,13 +450,11 @@ sub save_date_cache {
 }
 
 sub fetch_current_date {
-    my $DATABASE = shift;
-    my $db = init_db($DATABASE);
+    my $db = shift;
 
     my $date = undef;
-    my $rv = $db->selectrow_arrayref("select date(datetime('now', 'localtime'));");
+    my $rv = $db->selectrow_arrayref("SELECT date('now') the_date;");
     print STDERR $DBI::errstr."\n" if ! $rv;
-    $db->disconnect();
     die "Cannot obtain a valid date???: $!" if !defined $rv;
     return $rv ? $rv->[0] : undef;
 }
@@ -495,14 +487,13 @@ sub fetch_current_date {
 # in GMT-5, and 16 hours when I moved to GMT-8.  Oh well...
 #
 sub fetch_page_by_date {
-    my $DATABASE = shift;
-    my $db = init_db($DATABASE);
+    my $db = shift;
     my $date = shift;
 
-    $date = fetch_current_date($DATABASE) if !defined $date;
+    $date = fetch_current_date($db) if !defined $date;
 
     my $rv = $db->selectall_arrayref(qq!
-             SELECT i3log.local AS created,
+             SELECT i3log.local,
                     i3log.is_emote,
                     i3log.is_url,
                     i3log.is_bot,
@@ -510,40 +501,39 @@ sub fetch_page_by_date {
                     i3log.speaker,
                     i3log.mud,
                     i3log.message,
-                    SUBSTR(i3log.local, 1, 10)     AS the_date,
-                    SUBSTR(i3log.local, 12, 8)     AS the_time,
-                    SUBSTR(i3log.local, 1, 4)      AS the_year,
-                    SUBSTR(i3log.local, 6, 2)      AS the_month,
-                    SUBSTR(i3log.local, 9, 2)      AS the_day,
-                    SUBSTR(i3log.local, 12, 2)     AS the_hour,
-                    SUBSTR(i3log.local, 15, 2)     AS the_minute,
-                    SUBSTR(i3log.local, 18, 2)     AS the_second,
-                    CAST(SUBSTR(i3log.local, 12, 2) AS INTEGER) AS int_hour,
-                    hours.pinkfish             AS hour_color,
-                    channels.pinkfish          AS channel_color,
-                    speakers.pinkfish          AS speaker_color,
-                    pinkfish_map_hour.html     AS hour_html,
-                    pinkfish_map_channel.html  AS channel_html,
-                    pinkfish_map_speaker.html  AS speaker_html
+                    to_char(i3log.local, 'YYYY-MM-DD')  the_date,
+                    to_char(i3log.local, 'HH24:MI:SS')  the_time,
+                    to_char(i3log.local, 'YYYY')        the_year,
+                    to_char(i3log.local, 'MM')          the_month,
+                    to_char(i3log.local, 'DD')          the_day,
+                    to_char(i3log.local, 'HH24')        the_hour,
+                    to_char(i3log.local, 'MI')          the_minute,
+                    to_char(i3log.local, 'SS')          the_second,
+                    date_part('hour', i3log.local)      int_hour,
+                    hours.pinkfish                      hour_color,
+                    channels.pinkfish                   channel_color,
+                    speakers.pinkfish                   speaker_color,
+                    pinkfish_map_hour.html              hour_html,
+                    pinkfish_map_channel.html           channel_html,
+                    pinkfish_map_speaker.html           speaker_html
                FROM i3log
           LEFT JOIN hours
-                 ON (int_hour = hours.hour)
+                 ON (date_part('hour', i3log.local) = hours.hour)
           LEFT JOIN channels
                  ON (lower(i3log.channel) = channels.channel)
           LEFT JOIN speakers
                  ON (lower(i3log.speaker) = speakers.speaker)
           LEFT JOIN pinkfish_map pinkfish_map_hour
-                 ON (hour_color = pinkfish_map_hour.pinkfish)
+                 ON (hours.pinkfish = pinkfish_map_hour.pinkfish)
           LEFT JOIN pinkfish_map pinkfish_map_channel
-                 ON (channel_color = pinkfish_map_channel.pinkfish)
+                 ON (channels.pinkfish = pinkfish_map_channel.pinkfish)
           LEFT JOIN pinkfish_map pinkfish_map_speaker
-                 ON (speaker_color = pinkfish_map_speaker.pinkfish)
+                 ON (speakers.pinkfish = pinkfish_map_speaker.pinkfish)
               WHERE date(i3log.local) = ?
            ORDER BY i3log.local ASC;
         ;!, { Slice => {} }, ($date) );
 
     print STDERR $DBI::errstr."\n" if ! $rv;
-    $db->disconnect();
     return $rv;
 }
 
@@ -594,7 +584,7 @@ sub json_path {
 }
 
 sub generate_navbar_script {
-    my $DATABASE = shift;
+    my $db = shift;
     my $date_counts = shift;
     die "Invalid date information!" if !defined $date_counts;
 
@@ -605,7 +595,7 @@ sub generate_navbar_script {
         push @date_list, ($row->{the_date}) if -f page_path($row);
     }
     my $big_list = join(",\n", map { sprintf "\"%s\"", $_; } (@date_list));
-    my $last_date = (scalar @date_list < 1) ? fetch_current_date($DATABASE) : $date_list[-1];
+    my $last_date = (scalar @date_list < 1) ? fetch_current_date($db) : $date_list[-1];
 
     open FP, ">$filename" or die "Cannot open navbar script $filename: $!";
     print FP <<EOM
@@ -830,11 +820,9 @@ EOM
 
 print "Initializing...\n";
 
-my $DATABASE = $use_live ? $LIVE_DB_FILE : $DB_FILE;
+my $DATABASE = open_postgres_db($PG_DB);
 
-fix_local_column($DATABASE);
 my $row_count = fetch_row_count($DATABASE);
-#my $page_count = $row_count / $page_size;
 my $date_counts = fetch_date_counts($DATABASE);
 
 if( $page_start < 0 ) {
@@ -900,7 +888,7 @@ if( $do_speakers ) {
 
 if( $do_pages or $do_json ) {
     $page_limit = (scalar @$date_counts) if $page_limit < 1;
-    $page_limit = 30 if $use_live and $page_limit > 30;
+    #$page_limit = 30 if $use_live and $page_limit > 30;
 
     my $pages_todo = (scalar @$date_counts) - $page_start;
     $pages_todo = $page_limit if $page_limit < $pages_todo;

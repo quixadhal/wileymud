@@ -18,7 +18,8 @@ NEED_CRYPT	= -lcrypt #Linux needs this
 NEED_MATH	= -lm #math for tracking and such
 NEED_SSL	= -lcrypto #MD5 checksum code
 SQL_INC		= 
-SQL_LIB		= -lsqlite3
+SQL_LIB		= -lpq
+#SQL_LIB		= -lsqlite3
 #SQL_INC		= -DUSE_PGSQL -I/usr/include/postgresql
 #SQL_LIB		= -L/usr/lib/postgresql -lpq -lecpg
 ID_DEP		= $(IDENTDIR)/libident.a
@@ -204,6 +205,9 @@ obj/act_wiz.o: act_wiz.c include/global.h include/bug.h include/utils.h \
 obj/act_social.o: act_social.c include/global.h include/bug.h include/utils.h \
   include/comm.h include/interpreter.h include/handler.h include/db.h \
   include/spells.h include/multiclass.h include/act_social.h
+obj/sqlite_sql.o: sqlite_sql.c include/global.h include/bug.h include/comm.h \
+  include/version.h include/crc32.h include/utils.h include/i3.h \
+  include/sql.h
 obj/mob_actions.o: mob_actions.c include/global.h include/bug.h \
   include/utils.h include/act_obj.h include/act_off.h include/comm.h \
   include/constants.h include/db.h include/handler.h include/hash.h \
