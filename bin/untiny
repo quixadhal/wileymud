@@ -20,12 +20,14 @@ use WWW::Shorten::Bitly;
 use DBI;
 use JSON;
 
+my $DB_NAME = 'i3log';
 my $DB_FILE = '/home/wiley/lib/i3/wiley.db';
 my $LPC_DUMP_FILE = '/home/wiley/lib/i3/urldb.lpc-saved-object';
 my $GOOGLE_API_KEY_FILE = '/home/wiley/.google-api.key';
 my $BITLY_API_KEY_FILE = '/home/wiley/.bitly-api.key';
 my $api_key = undef;
 my $db = undef;
+my $sqlite_db = undef;
 my $result = undef;
 my $update_sql = undef;
 
@@ -35,6 +37,7 @@ my $do_sql = undef;
 my $do_debug = undef;
 my $do_checksum = undef;
 my $do_lpc = undef;
+my $do_transfer = undef;
 my $channel = undef;
 my $speaker = undef;
 my $style = undef;
@@ -679,6 +682,8 @@ sub parse_style {
     return "checksum"   if $arg eq '-c';
     return "lpc"        if $arg =~ /^(--)?lpc$/;
     return "lpc"        if $arg eq '-l';
+    return "transfer"   if $arg =~ /^(--)?transfer$/;
+    return "transfer"   if $arg eq '-t';
 
     return undef;
 }
@@ -832,12 +837,13 @@ sub handle_url {
     my $message = pinkfish_to( $output, $style );
 
     if(defined $sql_row) {
+        $db->begin_work();
         my $rv = $update_sql->execute($message, $sql_row->{'created'}, $sql_row->{'url'});
         if($rv) {
-        #    $db->commit;
+            $db->commit;
         } else {
             print STDERR $DBI::errstr."\n";
-        #    $db->rollback;
+            $db->rollback;
         }
     } else {
         if( $do_debug ) {
@@ -870,11 +876,12 @@ if( !defined $style ) {
     $url = shift;
 }
 
-if( !defined $url and $style ne 'sql' and $style ne 'checksum' and $style ne 'lpc' ) {
+if( !defined $url and $style ne 'sql' and $style ne 'checksum' and $style ne 'lpc' and $style ne 'transfer' ) {
     print "Usage: $prog [wiley|ansi|html|debug] URL [channel] [speaker]\n";
     print "       $prog sql [limit] [--mark]\n";
     print "       $prog checksum [limit]\n";
     print "       $prog lpc [limit]\n";
+    print "       $prog transfer [limit]\n";
     exit 1;
 }
 
@@ -890,6 +897,9 @@ if( $style eq 'sql' ) {
 } elsif( $style eq 'lpc' ) {
     $do_lpc = 1;
     $style = 'wiley';
+} elsif( $style eq 'transfer' ) {
+    $do_transfer = 1;
+    $style = 'wiley';
 }
 
 $channel = shift;
@@ -897,7 +907,8 @@ $speaker = shift;
 
 #print Dumper( [ $do_sql, $url, $style, $channel ] );
 if( $do_sql ) {
-    $db = DBI->connect("DBI:SQLite:dbname=$DB_FILE", '', '', { AutoCommit => 1, PrintError => 0, });
+    #$sqlite_db = DBI->connect("DBI:SQLite:dbname=$DB_FILE", '', '', { AutoCommit => 1, PrintError => 0, });
+    $db = DBI->connect("dbi:Pg:dbname=$DB_NAME", 'wiley', 'tardis69', { AutoCommit => 1, RaiseError => 1, PrintError => 0, });
     # Fetch all the matches and stuff them into an array of hashes
     $result = $db->selectall_arrayref(qq!
         SELECT created, url, channel, speaker
@@ -939,7 +950,8 @@ if( $do_sql ) {
     }
     $db->disconnect();
 } elsif( $do_checksum ) {
-    $db = DBI->connect("DBI:SQLite:dbname=$DB_FILE", '', '', { AutoCommit => 1, PrintError => 0, });
+    #$sqlite_db = DBI->connect("DBI:SQLite:dbname=$DB_FILE", '', '', { AutoCommit => 1, PrintError => 0, });
+    $db = DBI->connect("dbi:Pg:dbname=$DB_NAME", 'wiley', 'tardis69', { AutoCommit => 1, RaiseError => 1, PrintError => 0, });
     $result = $db->selectall_arrayref(qq!
         SELECT created, url
           FROM urls
@@ -964,13 +976,14 @@ if( $do_sql ) {
         my $checksum = sprintf("%08x", crc32($url, length $url));
         $url .= "\0" x 50;
 
+        $db->begin_work();
         my $rv = $update_sql->execute($checksum, $sql_row->{'created'}, $sql_row->{'url'});
         if($rv) {
-        #    $db->commit;
+            $db->commit;
             printf "% 5d - %s : %s...\n", $left--, $checksum, substr($url, 0, 50);
         } else {
             print STDERR $DBI::errstr."\n";
-        #    $db->rollback;
+            $db->rollback;
         }
         last if $left <= 0;
     }
@@ -991,12 +1004,13 @@ if( $do_sql ) {
     #           message TEXT,
     #           checksum TEXT);
 
-    $db = DBI->connect("DBI:SQLite:dbname=$DB_FILE", '', '', { AutoCommit => 1, PrintError => 0, });
+    #$sqlite_db = DBI->connect("DBI:SQLite:dbname=$DB_FILE", '', '', { AutoCommit => 1, PrintError => 0, });
+    $db = DBI->connect("dbi:Pg:dbname=$DB_NAME", 'wiley', 'tardis69', { AutoCommit => 1, RaiseError => 1, PrintError => 0, });
     $result = $db->selectall_arrayref(qq!
         SELECT checksum,
                url,
                1 AS counter,
-               CAST(strftime('%s', created) AS int) AS time,
+               EXTRACT(epoch FROM created) AS time,
                channel,
                speaker AS user,
                mud,
@@ -1030,6 +1044,67 @@ if( $do_sql ) {
     printf FP "])\n";
     close FP;
     $db->disconnect();
+} elsif( $do_transfer ) {
+    $sqlite_db = DBI->connect("DBI:SQLite:dbname=$DB_FILE", '', '', { AutoCommit => 1, PrintError => 0, });
+    $db = DBI->connect("dbi:Pg:dbname=$DB_NAME", 'wiley', 'tardis69', { AutoCommit => 1, RaiseError => 1, PrintError => 0, });
+
+    # created DATETIME DEFAULT (STRFTIME('%Y-%m-%d %H:%M:%f', 'NOW','utc')),
+    # processed INTEGER,
+    # channel TEXT,
+    # speaker TEXT,
+    # mud TEXT,
+    # url TEXT,
+    # message TEXT,
+    # checksum TEXT
+    $result = $sqlite_db->selectall_arrayref(qq!
+        SELECT created,
+               processed,
+               channel,
+               speaker,
+               mud,
+               url,
+               message,
+               checksum
+          FROM urls
+      ORDER BY created ASC
+      !, { Slice => {} });
+    my $left = scalar @$result;
+    my $limit;
+    $limit = $url if defined $url and $url =~ /^\d+$/;
+    $limit = $left if !defined $limit;
+
+    printf("%d URLs to process, only doing %d.\n", $left, $limit) if $left > $limit;
+    $left = $limit if $left > $limit;
+
+    $update_sql = $db->prepare( qq!
+        INSERT INTO urls (created, processed, channel, speaker, mud, url, message, checksum )
+        VALUES (?,?,?,?,?,?,?,?)
+        ON CONFLICT (checksum)
+        DO NOTHING
+        !);
+    foreach my $sql_row (@$result) {
+        $left--;
+        if(defined $sql_row->{'message'} and length $sql_row->{'message'} > 512) {
+            print "Skipping stupidly long url" . $sql_row->{created} . "\n";
+            next;
+        }
+        $db->begin_work();
+        my $rv = $update_sql->execute(
+            $sql_row->{'created'}, $sql_row->{'processed'},
+            $sql_row->{'channel'}, $sql_row->{'speaker'},
+            $sql_row->{'mud'}, $sql_row->{'url'},
+            $sql_row->{'message'}, $sql_row->{'checksum'}
+        );
+        if($rv) {
+            $db->commit;
+        } else {
+            print STDERR $DBI::errstr."\n";
+            $db->rollback;
+        }
+        last if $left <= 0;
+    }
+    $db->disconnect();
+    $sqlite_db->disconnect();
 } else {
     handle_url( $url, $channel, $speaker );
 }

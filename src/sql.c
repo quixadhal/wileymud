@@ -294,6 +294,8 @@ void setup_urls_table(void) {
                 "    message TEXT, "
                 "    checksum TEXT "
                 "); ";
+    char *sql3 = "DROP INDEX IF EXISTS ix_urls_checksum;";
+    char *sql4 = "CREATE UNIQUE INDEX ix_urls_checksum ON urls (checksum);";
 
     sql_connect();
     res = PQexec(db, sql);
@@ -304,6 +306,25 @@ void setup_urls_table(void) {
 	proper_exit(MUD_HALT);
     }
     PQclear(res);
+
+    res = PQexec(db, sql3);
+    st = PQresultStatus(res);
+    if( st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE ) {
+        log_fatal("Cannot drop urls checksum index: %s", PQerrorMessage(db));
+        PQclear(res);
+	proper_exit(MUD_HALT);
+    }
+    PQclear(res);
+
+    res = PQexec(db, sql4);
+    st = PQresultStatus(res);
+    if( st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE ) {
+        log_fatal("Cannot create urls checksum index: %s", PQerrorMessage(db));
+        PQclear(res);
+	proper_exit(MUD_HALT);
+    }
+    PQclear(res);
+
 }
 
 void setup_log_table(void) {
@@ -340,7 +361,10 @@ void add_url( const char *channel, const char *speaker, const char *mud, const c
     char checksum[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
     PGresult *res = NULL;
     ExecStatusType st = 0;
-    const char *sql = "INSERT INTO urls ( url, channel, speaker, mud, checksum ) VALUES ($1,$2,$3,$4,$5);";
+    const char *sql = "INSERT INTO urls ( url, channel, speaker, mud, checksum ) "
+                      "VALUES ($1,$2,$3,$4,$5) "
+                      "ON CONFLICT (checksum) "
+                      "DO NOTHING; ";
     const char *param_val[5];
     int param_len[5];
     int param_bin[5] = {0,0,0,0,0};
