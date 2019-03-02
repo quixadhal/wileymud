@@ -522,18 +522,22 @@ sub get_duration {
         $funky =~ /.*?(\d+)M(\d+)S/;
         my ($minutes, $seconds) = ($1, $2);
 
+        $minutes = 0 if !defined $minutes or $minutes =~ /[^\d]/;
+        $seconds = 0 if !defined $seconds or $seconds =~ /[^\d]/;
         return time_parts($minutes * 60 + $seconds);
     } elsif ($source eq "IMDB") {
         $page =~ /<time\s+itemprop=\"duration\"\s+datetime=\"PT(\d+)M\">/i;
         my ($minutes) = ($1);
         return undef if !defined $minutes;
 
+        $minutes = 0 if !defined $minutes or $minutes =~ /[^\d]/;
         return time_parts($minutes * 60);
     } elsif ($source eq "Dailymotion") {
         $page =~ /<meta\s+property=\"video:duration\"\s+content=\"([^\"]*)\"\/>/i;
         my ($seconds) = ($1);
         return undef if !defined $seconds;
 
+        $seconds = 0 if !defined $seconds or $seconds =~ /[^\d]/;
         return time_parts($seconds);
     }
 
@@ -622,9 +626,9 @@ sub get_youtube_api {
                         my $funky = $data->{'items'}[0]->{'contentDetails'}->{'duration'};
                         $funky =~ /PT(?:(\d+)H)?(?:(\d+)M)?(\d+)S/;
                         my ($hours, $minutes, $seconds) = ($1, $2, $3);
-                        $hours = 0 if !defined $hours;
-                        $minutes = 0 if !defined $minutes;
-                        $seconds = 0 if !defined $seconds;
+                        $hours = 0 if !defined $hours or $hours =~ /[^\d]/;
+                        $minutes = 0 if !defined $minutes or $minutes =~ /[^\d]/;
+                        $seconds = 0 if !defined $seconds or $seconds =~ /[^\d]/;
                         $duration = time_parts(($hours * 60 * 60) + ($minutes * 60) + $seconds);
                     }
                 }
@@ -913,7 +917,7 @@ if( $do_sql ) {
     $result = $db->selectall_arrayref(qq!
         SELECT created, url, channel, speaker
           FROM urls
-         WHERE processed IS NOT 1 AND message IS NULL
+         WHERE processed IS NOT TRUE AND message IS NULL
       ORDER BY created ASC
       !, { Slice => {} });
 
@@ -927,14 +931,14 @@ if( $do_sql ) {
     if( $mark_processed ) {
         $update_sql = $db->prepare( qq!
             UPDATE urls
-               SET message = ?, processed = 1
-             WHERE created = ? AND url = ? AND processed IS NOT 1 AND message IS NULL
+               SET message = ?, processed = TRUE
+             WHERE created = ? AND url = ? AND processed IS NOT TRUE AND message IS NULL
             !);
     } else {
         $update_sql = $db->prepare( qq!
             UPDATE urls
                SET message = ?
-             WHERE created = ? AND url = ? AND processed IS NOT 1 AND message IS NULL
+             WHERE created = ? AND url = ? AND processed IS NOT TRUE AND message IS NULL
             !);
     }
 
