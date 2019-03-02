@@ -107,24 +107,56 @@ int board(struct char_data *ch, int cmd, char *arg)
     return (FALSE);
 
   switch (cmd) {
-    case CMD_north:
-    case CMD_east:
-    case CMD_south:
-    case CMD_west:
-    case CMD_up:
+    // Mortal commands allowed
+    case CMD_bug:
+    case CMD_credits:
     case CMD_down:
-    case CMD_who:
-    case CMD_tell:
+    case CMD_east:
     case CMD_exits:
-    case CMD_goto:
-    case CMD_pager:
-    case CMD_shutdown:
-    case CMD_ticks:
     case CMD_gtell:
+    case CMD_idea:
+    case CMD_info:
+    case CMD_north:
+    case CMD_nosummon:
+    case CMD_noteleport:
+    case CMD_pager:
+    case CMD_quit:
+    case CMD_return:
+    case CMD_save:
+    case CMD_south:
+    case CMD_tell:
+    case CMD_time:
+    case CMD_typo:
+    case CMD_up:
     case CMD_users:
+    case CMD_version:
+    case CMD_west:
+    case CMD_where:
+    case CMD_who:
+    case CMD_whozone:
+    case CMD_wimp:
+    case CMD_wizlist:
     case CMD_wiznet:
       return FALSE;
       break;
+    // Immortal commands allowed
+    case CMD_goto:
+    case CMD_invisible:
+    case CMD_nohassle:
+    case CMD_players:
+    case CMD_reset:
+    case CMD_restore:
+    case CMD_restoreall:
+    case CMD_show:
+    case CMD_shutdown:
+    case CMD_switch:
+    case CMD_ticks:
+    case CMD_transfer:
+    case CMD_world:
+    case CMD_zpurge:
+      return FALSE;
+      break;
+    // Special case commands
     case CMD_look:					       /* look */
       if (!board_show_board(ch, arg, nb))		       /* no args, or failed */
 	do_look(ch, "", 0);
@@ -142,6 +174,7 @@ int board(struct char_data *ch, int cmd, char *arg)
       board_remove_msg(ch, arg, nb);
       return TRUE;
       break;
+    // Anything else just fails silently
     default:
       return TRUE;
   }

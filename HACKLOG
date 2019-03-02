@@ -268,3 +268,14 @@ Adjusted /etc/postgresql/11/main/pg_hba.conf
 
 apt install libpq-dev libpqtypes-dev libpqxx-dev libpq5 libpqxx-doc
 
+updated crontab:
+    # m h  dom mon dow   command
+    1 0,3,6,9,12,15,18,21 * * * /home/wiley/bin/mkmudlist.pl >/dev/null 2>&1 &
+    25 2 * * * /home/wiley/bin/cleanlogs >/dev/null 2>&1 &
+    30 2 * * * /home/wiley/bin/remote-backup >/dev/null 2>&1 &
+    5 1,4,7,10,13,16,19,22 * * * /home/wiley/bin/mklogpages.pl --overwrite --debug --start -3 --live --json --no-pause >/dev/null 2>&1 &
+    #0,15,30,45 * * * * /home/wiley/bin/mklogpages.pl --no-pages --no-speakers --no-update --debug --live --no-json --no-pause >/dev/null 2>&1 &
+    20 2 * * * (cd /home/wiley/public_html && /usr/bin/tar -cf logdata.tar logdata) >/dev/null 2>&1 &
+    10 2 * * * (cd /home/wiley/public_html && PGPASSWORD=tardis69 /usr/bin/pg_dump --clean --if-exists --no-owner i3log | /usr/bin/xz -9ceq -T0 >i3log.sql.xz) >/dev/null 2>&1 &
+    5 2 * * * /home/wiley/bin/untiny sql --mark >/dev/null 2>&1 &
+

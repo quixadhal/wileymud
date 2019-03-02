@@ -7415,8 +7415,8 @@ void i3_log_alive() {
     tc = time(0);
     tm_info = localtime(&tc);
 
-    snprintf(taunt, MAX_STRING_LENGTH, "%%^RED%%^%%^BOLD%%^[%-4.4d-%-2.2d-%-2.2d %-2.2d:%-2.2d]%%^RESET%%^ %%^GREEN%%^%%^BOLD%%^%s (%s)%%^RESET%%^ %%^YELLOW%%^%s%%^RESET%%^",
-            tm_info->tm_year + 1900, tm_info->tm_mon + 1, tm_info->tm_mday, tm_info->tm_hour, tm_info->tm_min, "It's ALIVE!\r\n", I3_ROUTER_NAME, VERSION_STR);
+    snprintf(taunt, MAX_STRING_LENGTH, "%%^RED%%^%%^BOLD%%^[%-4.4d-%-2.2d-%-2.2d %-2.2d:%-2.2d]%%^RESET%%^ %%^GREEN%%^%%^BOLD%%^%s (%s)%%^RESET%%^ %%^YELLOW%%^*** Welcome to WileyMUD III, Quixadhal's Version %s (%s) ***%%^RESET%%^",
+            tm_info->tm_year + 1900, tm_info->tm_mon + 1, tm_info->tm_mday, tm_info->tm_hour, tm_info->tm_min, "It's ALIVE!\r\n", I3_ROUTER_NAME, VERSION_BUILD, VERSION_DATE);
     i3_npc_speak("wiley", "Cron", taunt);
 }
 
@@ -7428,8 +7428,8 @@ void i3_log_dead() {
     tc = time(0);
     tm_info = localtime(&tc);
 
-    snprintf(taunt, MAX_STRING_LENGTH, "%%^RED%%^%%^BOLD%%^[%-4.4d-%-2.2d-%-2.2d %-2.2d:%-2.2d]%%^RESET%%^ %%^RED%%^%%^BOLD%%^%s (%s)%%^RESET%%^ %%^YELLOW%%^%s%%^RESET%%^",
-            tm_info->tm_year + 1900, tm_info->tm_mon + 1, tm_info->tm_mday, tm_info->tm_hour, tm_info->tm_min, "It's going DOWN!\r\n", I3_ROUTER_NAME, VERSION_STR);
+    snprintf(taunt, MAX_STRING_LENGTH, "%%^RED%%^%%^BOLD%%^[%-4.4d-%-2.2d-%-2.2d %-2.2d:%-2.2d]%%^RESET%%^ %%^RED%%^%%^BOLD%%^%s (%s)%%^RESET%%^ %%^YELLOW%%^*** Welcome to WileyMUD III, Quixadhal's Version %s (%s) ***%%^RESET%%^",
+            tm_info->tm_year + 1900, tm_info->tm_mon + 1, tm_info->tm_mday, tm_info->tm_hour, tm_info->tm_min, "It's going DOWN!\r\n", I3_ROUTER_NAME, VERSION_BUILD, VERSION_DATE);
     allchan_log(0, "wiley", "Cron", "WileyMUD", taunt);
 }
 

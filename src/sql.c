@@ -25,16 +25,18 @@ void sql_connect(void) {
         if (PQstatus(db) != CONNECTION_OK) {
             PQreset(db);
             if (PQstatus(db) != CONNECTION_OK) {
-                log_fatal("Database connection lost: %s\n", PQerrorMessage(db));
+                log_fatal("Database connection lost: %s", PQerrorMessage(db));
                 PQfinish(db);
                 proper_exit(MUD_HALT);
+            } else {
+                log_info("Database connection restored.");
             }
         }
         return;
     } else {
         db = PQconnectdb("dbname=i3log user=wiley password=tardis69");
         if (PQstatus(db) != CONNECTION_OK) {
-            log_fatal("Cannot open database: %s\n", PQerrorMessage(db));
+            log_fatal("Cannot open database: %s", PQerrorMessage(db));
             PQfinish(db);
             proper_exit(MUD_HALT);
         }
@@ -294,8 +296,8 @@ void setup_urls_table(void) {
                 "    message TEXT, "
                 "    checksum TEXT "
                 "); ";
-    char *sql3 = "DROP INDEX IF EXISTS ix_urls_checksum;";
-    char *sql4 = "CREATE UNIQUE INDEX ix_urls_checksum ON urls (checksum);";
+    char *sql2 = "DROP INDEX IF EXISTS ix_urls_checksum;";
+    char *sql3 = "CREATE UNIQUE INDEX ix_urls_checksum ON urls (checksum);";
 
     sql_connect();
     res = PQexec(db, sql);
@@ -307,7 +309,7 @@ void setup_urls_table(void) {
     }
     PQclear(res);
 
-    res = PQexec(db, sql3);
+    res = PQexec(db, sql2);
     st = PQresultStatus(res);
     if( st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE ) {
         log_fatal("Cannot drop urls checksum index: %s", PQerrorMessage(db));
@@ -316,7 +318,7 @@ void setup_urls_table(void) {
     }
     PQclear(res);
 
-    res = PQexec(db, sql4);
+    res = PQexec(db, sql3);
     st = PQresultStatus(res);
     if( st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE ) {
         log_fatal("Cannot create urls checksum index: %s", PQerrorMessage(db));
