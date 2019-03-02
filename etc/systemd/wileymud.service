@@ -1,6 +1,10 @@
 [Unit]
 Description=WileyMUD III
 Documentation=http://wileymud.themud.org/~wiley/i3log.php
+Requires=network-online.target
+Requires=postgresql.service
+After=network-online.target
+After=postgresql.service
 After=diskworld.service
 
 [Service]
