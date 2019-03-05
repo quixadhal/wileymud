@@ -42,19 +42,19 @@ void do_say(struct char_data *ch, const char *argument, int cmd)
 	    case '!':
 		act("\x1b[0;32m$n exclaims '%s'\x1b[0m", FALSE, ch, 0, 0, TO_ROOM,
 		    argument + i);
-		if (IS_NPC(ch) || (IS_SET(ch->specials.act, PLR_ECHO))) {
+		if (IS_NPC(ch) || (IS_SET(ch->specials.new_act, NEW_PLR_ECHO))) {
 		    cprintf(ch, "\x1b[0;32mYou exclaim '%s'\x1b[0m\r\n", argument + i);
 		}
 		break;
 	    case '?':
 		act("\x1b[0;32m$n asks '%s'\x1b[0m", FALSE, ch, 0, 0, TO_ROOM, argument + i);
-		if (IS_NPC(ch) || (IS_SET(ch->specials.act, PLR_ECHO))) {
+		if (IS_NPC(ch) || (IS_SET(ch->specials.new_act, NEW_PLR_ECHO))) {
 		    cprintf(ch, "\x1b[0;32mYou ask '%s'\x1b[0m\r\n", argument + i);
 		}
 		break;
 	    default:
 		act("\x1b[0;32m$n says '%s'\x1b[0m", FALSE, ch, 0, 0, TO_ROOM, argument + i);
-		if (IS_NPC(ch) || (IS_SET(ch->specials.act, PLR_ECHO))) {
+		if (IS_NPC(ch) || (IS_SET(ch->specials.new_act, NEW_PLR_ECHO))) {
 		    cprintf(ch, "\x1b[0;32mYou say '%s'\x1b[0m\r\n", argument + i);
 		}
 		break;
@@ -78,7 +78,7 @@ void do_shout(struct char_data *ch, const char *argument, int cmd)
 	log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch),
 		 VNULL(argument), cmd);
 
-    if (IS_SET(ch->specials.act, PLR_NOSHOUT)) {
+    if (IS_SET(ch->specials.new_act, NEW_PLR_NOSHOUT)) {
 	cprintf(ch, "You can't shout!!\r\n");
 	return;
     }
@@ -97,7 +97,7 @@ void do_shout(struct char_data *ch, const char *argument, int cmd)
 	cprintf(ch, "\x1b[1;32mYou shout '%s'\x1b[0m\r\n", argument);
 	for (i = descriptor_list; i; i = i->next)
 	    if (i->character != ch && !i->connected &&
-		!IS_SET(i->character->specials.act, PLR_NOSHOUT) &&
+		!IS_SET(i->character->specials.new_act, NEW_PLR_NOSHOUT) &&
 		!IS_SET(i->character->specials.act, PLR_DEAF) &&
 		(rp = real_roomp(i->character->in_room)) &&
 		(!FindBoardInRoom(i->character->in_room)))
@@ -120,11 +120,11 @@ void do_shout(struct char_data *ch, const char *argument, int cmd)
 	GET_MOVE(ch) -= (GET_MAX_MOVE(ch) / 10);
 	GET_MANA(ch) -= (GET_MAX_MANA(ch) / 15);
 	GET_COND(ch, THIRST) -= 4;
-	if (IS_SET(ch->specials.act, PLR_ECHO))
+	if (IS_SET(ch->specials.new_act, NEW_PLR_ECHO))
 	    cprintf(ch, "\x1b[1;32mYou shout '%s'\x1b[0m\r\n", argument);
 	for (i = descriptor_list; i; i = i->next)
 	    if (i->character != ch && !i->connected &&
-		!IS_SET(i->character->specials.act, PLR_NOSHOUT) &&
+		!IS_SET(i->character->specials.new_act, NEW_PLR_NOSHOUT) &&
 		!IS_SET(i->character->specials.act, PLR_DEAF) &&
 		(rp = real_roomp(i->character->in_room)) && (mrp = real_roomp(ch->in_room)) &&
 		(!FindBoardInRoom(i->character->in_room)))
@@ -147,11 +147,11 @@ void do_shout(struct char_data *ch, const char *argument, int cmd)
 	GET_MOVE(ch) -= (GET_MAX_MOVE(ch) / 10);
 	GET_MANA(ch) -= (GET_MAX_MANA(ch) / 15);
 	GET_COND(ch, THIRST) -= 4;
-	if (IS_SET(ch->specials.act, PLR_ECHO))
+	if (IS_SET(ch->specials.new_act, NEW_PLR_ECHO))
 	    cprintf(ch, "\x1b[1;32mYou shout '%s'\x1b[0m\r\n", argument);
 	for (i = descriptor_list; i; i = i->next)
 	    if (i->character != ch && !i->connected &&
-		!IS_SET(i->character->specials.act, PLR_NOSHOUT) &&
+		!IS_SET(i->character->specials.new_act, NEW_PLR_NOSHOUT) &&
 		!IS_SET(i->character->specials.act, PLR_DEAF) &&
 		(rp = real_roomp(i->character->in_room)) &&
 		(mrp = real_roomp(ch->in_room)) && (rp->zone == mrp->zone) &&
@@ -167,14 +167,14 @@ void do_shout(struct char_data *ch, const char *argument, int cmd)
 	}
 	for (v = mrp->people; v; v = v->next_in_room)
 	    if (v != ch && v->desc &&
-		!IS_SET(v->specials.act, PLR_NOSHOUT) && !IS_SET(v->specials.act, PLR_DEAF))
+		!IS_SET(v->specials.new_act, NEW_PLR_NOSHOUT) && !IS_SET(v->specials.act, PLR_DEAF))
 		act("\x1b[1;32m$n shouts '%s'\x1b[0m", 0, ch, 0, v, TO_VICT, argument);
 	for (x = 0; x < MAX_NUM_EXITS; x++)
 	    if ((exitp = EXIT(ch, x)) && exit_ok(exitp, mrp))
 		if ((rp = real_roomp(exitp->to_room)) && (rp != mrp)
 		    && (!FindBoardInRoom(v->in_room))) {
 		    for (v = rp->people; v; v = v->next_in_room)
-			if (v != ch && v->desc && !IS_SET(v->specials.act, PLR_NOSHOUT)
+			if (v != ch && v->desc && !IS_SET(v->specials.new_act, NEW_PLR_NOSHOUT)
 			    && !IS_SET(v->specials.act, PLR_DEAF))
 			    act("\x1b[1;32m$n shouts %s '%s'\x1b[0m", 0, ch, 0, v, TO_VICT,
 				dir_from[rev_dir[x]], argument);
@@ -196,12 +196,12 @@ void do_commune(struct char_data *ch, const char *argument, int cmd)
     if (!(*argument))
 	cprintf(ch, "Communing among the gods is fine, but WHAT?\r\n");
     else {
-	if (IS_NPC(ch) || IS_SET(ch->specials.act, PLR_ECHO)) {
+	if (IS_NPC(ch) || IS_SET(ch->specials.new_act, NEW_PLR_ECHO)) {
 	    cprintf(ch, "You wiz : '%s'\r\n", argument);       /* part of wiznet */
 	}
 	for (i = descriptor_list; i; i = i->next)
 	    if (i->character != ch && !i->connected &&
-		!IS_SET(i->character->specials.act, PLR_NOSHOUT) &&
+		!IS_SET(i->character->specials.new_act, NEW_PLR_NOSHOUT) &&
 		(GetMaxLevel(i->character) >= LOW_IMMORTAL))
 		act("$n : '%s'", 0, ch, 0, i->character, TO_VICT, argument);
     }
@@ -250,17 +250,17 @@ void do_tell(struct char_data *ch, const char *argument, int cmd)
     switch (message[strlen(message) - 1]) {
 	case '!':
 	    cprintf(vict, "\x1b[1;33m%s exclaims to you '%s'\x1b[0m\r\n", NAME(ch), message);
-	    if (IS_NPC(ch) || IS_SET(ch->specials.act, PLR_ECHO))
+	    if (IS_NPC(ch) || IS_SET(ch->specials.new_act, NEW_PLR_ECHO))
 		cprintf(ch, "\x1b[1;33mYou exclaim to %s '%s'\x1b[0m\r\n", NAME(vict), message);
 	    break;
 	case '?':
 	    cprintf(vict, "\x1b[1;33m%s asks you '%s'\x1b[0m\r\n", NAME(ch), message);
-	    if (IS_NPC(ch) || IS_SET(ch->specials.act, PLR_ECHO))
+	    if (IS_NPC(ch) || IS_SET(ch->specials.new_act, NEW_PLR_ECHO))
 		cprintf(ch, "\x1b[1;33mYou ask %s '%s'\x1b[0m\r\n", NAME(vict), message);
 	    break;
 	default:
 	    cprintf(vict, "\x1b[1;33m%s tells you '%s'\x1b[0m\r\n", NAME(ch), message);
-	    if (IS_NPC(ch) || IS_SET(ch->specials.act, PLR_ECHO))
+	    if (IS_NPC(ch) || IS_SET(ch->specials.new_act, NEW_PLR_ECHO))
 		cprintf(ch, "\x1b[1;33mYou tell %s '%s'\x1b[0m\r\n", NAME(vict), message);
 	    break;
     }
@@ -287,7 +287,7 @@ void do_whisper(struct char_data *ch, const char *argument, int cmd)
 	cprintf(ch, "You can't seem to get your mouth close enough to your ear...\r\n");
     } else {
 	act("\x1b[35m$n whispers to you, '%s'\x1b[0m", FALSE, ch, 0, vict, TO_VICT, message);
-	if (IS_NPC(ch) || (IS_SET(ch->specials.act, PLR_ECHO))) {
+	if (IS_NPC(ch) || (IS_SET(ch->specials.new_act, NEW_PLR_ECHO))) {
 	    cprintf(ch, "\x1b[35mYou whisper to %s, '%s'\x1b[0m\r\n",
 		    (IS_NPC(vict) ? vict->player.name : GET_NAME(vict)), message);
 	}
@@ -317,7 +317,7 @@ void do_ask(struct char_data *ch, const char *argument, int cmd)
     } else {
 	act("$n asks you '%s'", FALSE, ch, 0, vict, TO_VICT, message);
 
-	if (IS_NPC(ch) || (IS_SET(ch->specials.act, PLR_ECHO))) {
+	if (IS_NPC(ch) || (IS_SET(ch->specials.new_act, NEW_PLR_ECHO))) {
 	    cprintf(ch, "You ask %s, '%s'\r\n",
 		    (IS_NPC(vict) ? vict->player.name : GET_NAME(vict)), message);
 	}
@@ -426,7 +426,7 @@ void do_group_tell(struct char_data *ch, const char *argument, int cmd)
 			(IS_NPC(ch) ? ch->player.short_descr : GET_NAME(ch)), argument);
     }
 
-    if (IS_NPC(ch) || IS_SET(ch->specials.act, PLR_ECHO))
+    if (IS_NPC(ch) || IS_SET(ch->specials.new_act, NEW_PLR_ECHO))
 	cprintf(ch, "\x1b[0;33mYou tell the group '%s'\x1b[0m\r\n", argument);
 }
 
@@ -479,7 +479,7 @@ void do_group_report(struct char_data *ch, const char *argument, int cmd)
 		cprintf(vict, "%s", message);
     }
 
-    if (IS_NPC(ch) || IS_SET(ch->specials.act, PLR_ECHO))
+    if (IS_NPC(ch) || IS_SET(ch->specials.new_act, NEW_PLR_ECHO))
 	cprintf(ch, "You tell the group your stats.\r\n");
 }
 

@@ -18,6 +18,7 @@ void                                    do_steal(struct char_data *ch, const cha
 void                                    do_practice(struct char_data *ch, const char *arg, int cmd);
 void                                    do_idea(struct char_data *ch, const char *argument, int cmd);
 void                                    do_typo(struct char_data *ch, const char *argument, int cmd);
+void                                    do_autoexit(struct char_data *ch, const char *argument, int cmd);
 void                                    do_bug(struct char_data *ch, const char *argument, int cmd);
 void                                    do_brief(struct char_data *ch, const char *argument, int cmd);
 void                                    do_compact(struct char_data *ch, const char *argument,

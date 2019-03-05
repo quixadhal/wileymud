@@ -11,9 +11,9 @@ reaching out to...
      hand you a HUGE glass of the blackest beer you've ever seen!
 ~
 LastSite           adork@localhost~
-LastLogin          1546657583
+LastLogin          1551679471
 Birth              803755990
-Played             93548472
+Played             97284683
 Sex                1
 Race               2
 Class              63
@@ -33,7 +33,7 @@ PoofIn             ~
 PoofOut            ~
 AbilityScores      25 100 25 25 25 25
 AbilityPad         0 0 0 0
-HpManaMove         10002 9999 266 0 1168 0
+HpManaMove         10002 9999 266 0 1173 0
 AC                 100
 ToHitDamage        0 0
 SaveApply          0 0 0 0 0
@@ -189,7 +189,7 @@ NamedSkill         182 100 1 disarm trap~
 NamedSkill         183 100 1 disarm~
 NamedSkill         184 100 1 shield bash~
 NamedSkill         185 100 1 riding~
-ActFlags           36 1
+ActFlags           36 337
 Affect             0 0 0 0 0 0 0
 Affect             1 0 0 0 0 0 0
 Affect             2 0 0 0 0 0 0
@@ -218,8 +218,5 @@ Affect             24 0 0 0 0 0 0
 i3perm       5
 i3flags      768
 i3listen     dchat intergossip free_speech ds wiley dgd pyom dwchat url intercre fluffos troll discord urlbot bot
-i3ignore     Aidil@Way of the Force
-i3ignore     Zaphod@Dead Souls Dev
-i3ignore     aidil@lpcdb-dev
 i3ignore     BlueWolf
 End

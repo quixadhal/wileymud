@@ -11,3 +11,15 @@ Templates
 Music
 dw
 share
+bkp
+stuff
+old_stuff
+python
+java
+_new
+*.bz2
+*.gz
+*.xz
+*.bkp*
+*.zip
+*.tar*

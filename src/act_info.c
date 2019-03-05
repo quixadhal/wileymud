@@ -174,7 +174,10 @@ void show_obj_to_char(struct obj_data *object, struct char_data *ch, int mode)
 	    strlcat(buffer, "(invisible)", MAX_STRING_LENGTH);
     }
     strlcat(buffer, "\r\n", MAX_STRING_LENGTH);
-    page_string(ch->desc, buffer, 1);
+    if(mode == 0)
+        cprintf(ch, "%s", buffer);
+    else
+        page_string(ch->desc, buffer, 1);
 }
 
 void show_mult_obj_to_char(struct obj_data *object, struct char_data *ch, int mode, int num)
@@ -226,7 +229,10 @@ void show_mult_obj_to_char(struct obj_data *object, struct char_data *ch, int mo
         scprintf(buffer, MAX_STRING_LENGTH, "[%d]", num);
     }
     strlcat(buffer, "\r\n", MAX_STRING_LENGTH);
-    page_string(ch->desc, buffer, 1);
+    if(mode == 0)
+        cprintf(ch, "%s", buffer);
+    else
+        page_string(ch->desc, buffer, 1);
 }
 
 void list_obj_in_room(struct obj_data *list, struct char_data *ch)
@@ -969,7 +975,10 @@ void do_look(struct char_data *ch, const char *argument, int cmd)
     } else if ((IS_DARKOUT(ch->in_room)) && (!IS_IMMORTAL(ch)) &&
 	       (!IS_AFFECTED(ch, AFF_TRUE_SIGHT))) {
 	// cprintf(ch, "\x1b[0;36m%s\x1b[0m\r\n", real_roomp(ch->in_room)->name); /* ANSI CYAN */
-	cprintf(ch, "%s\r\n", real_roomp(ch->in_room)->name);  /* ANSI CYAN */
+        if(IS_IMMORTAL(ch))
+	    cprintf(ch, "[#%d] %s\r\n", ch->in_room, real_roomp(ch->in_room)->name);	/* ANSI CYAN */
+        else
+	    cprintf(ch, "%s\r\n", real_roomp(ch->in_room)->name);	/* ANSI CYAN */
 	cprintf(ch, "\r\nIt is quite dark here...\r\n");
 	if ((IS_AFFECTED(ch, AFF_INFRAVISION)) || BRIGHT_MOON(ch->in_room)) {
 	    list_char_in_room(real_roomp(ch->in_room)->people, ch);
@@ -1261,9 +1270,13 @@ void do_look(struct char_data *ch, const char *argument, int cmd)
 		 */
 	    case 8:{
 		    // cprintf(ch, "\x1b[0;36m%s\x1b[0m\r\n", real_roomp(ch->in_room)->name); /* ANSI CYAN */
-		    cprintf(ch, "%s\r\n", real_roomp(ch->in_room)->name);	/* ANSI CYAN */
+                    if(IS_IMMORTAL(ch))
+	                cprintf(ch, "[#%d] %s\r\n", ch->in_room, real_roomp(ch->in_room)->name);	/* ANSI CYAN */
+                    else
+		        cprintf(ch, "%s\r\n", real_roomp(ch->in_room)->name);	/* ANSI CYAN */
 		    if (!IS_SET(ch->specials.act, PLR_BRIEF))
 			cprintf(ch, "%s", real_roomp(ch->in_room)->description);
+
 		    if (IS_PC(ch)) {
 			if (IS_SET(ch->specials.act, PLR_HUNTING)) {
 			    if (ch->specials.hunting) {
@@ -1296,7 +1309,10 @@ void do_look(struct char_data *ch, const char *argument, int cmd)
 
 		    list_obj_in_room(real_roomp(ch->in_room)->contents, ch);
 		    list_char_in_room(real_roomp(ch->in_room)->people, ch);
-
+		    if (IS_SET(ch->specials.new_act, NEW_PLR_AUTOEXIT)) {
+                        //list_exits_in_room(ch);
+                        do_exits(ch, "", cmd);
+                    }
 		}
 		break;
 
@@ -1313,7 +1329,10 @@ void do_look(struct char_data *ch, const char *argument, int cmd)
 	    case 9:{
 
 		    // cprintf(ch, "\x1b[0;36m%s\x1b[0m\r\n", real_roomp(ch->in_room)->name); /* ANSI CYAN */
-		    cprintf(ch, "%s\r\n", real_roomp(ch->in_room)->name);	/* ANSI CYAN */
+                    if(IS_IMMORTAL(ch))
+	                cprintf(ch, "[#%d] %s\r\n", ch->in_room, real_roomp(ch->in_room)->name);	/* ANSI CYAN */
+                    else
+		        cprintf(ch, "%s\r\n", real_roomp(ch->in_room)->name);	/* ANSI CYAN */
 		    cprintf(ch, "%s", real_roomp(ch->in_room)->description);
 
 		    if (!IS_NPC(ch)) {
@@ -1348,7 +1367,10 @@ void do_look(struct char_data *ch, const char *argument, int cmd)
 
 		    list_obj_in_room(real_roomp(ch->in_room)->contents, ch);
 		    list_char_in_room(real_roomp(ch->in_room)->people, ch);
-
+		    if (IS_SET(ch->specials.new_act, NEW_PLR_AUTOEXIT)) {
+                        //list_exits_in_room(ch);
+                        do_exits(ch, "", cmd);
+                    }
 		}
 		break;
 	}
@@ -1458,6 +1480,36 @@ void do_search(struct char_data *ch, const char *argument, int cmd)
 	cprintf(ch, "%s", buf);
     else
 	cprintf(ch, "None?\r\n");
+}
+
+void list_exits_in_room(struct char_data *ch)
+{
+    int                                     door = -1;
+    char                                    buf[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
+    const char                             *exits[] = {
+	"North",
+	"East",
+	"South",
+	"West",
+	"Up",
+	"Down"
+    };
+    struct room_direction_data             *exitdata = NULL;
+
+    if (!IS_IMMORTAL(ch))
+        return;
+
+    for (door = 0; door < MAX_NUM_EXITS; door++) {
+	exitdata = EXIT(ch, door);
+	if (exitdata && exitdata->to_room != NOWHERE) {
+            scprintf(buf, MAX_INPUT_LENGTH, "%s [#%d]%s, ", exits[door],
+                     exitdata->to_room, real_roomp(exitdata->to_room)->name);
+        }
+    }
+    if(*buf) {
+        buf[strlen(buf)-2] = '\0'; // Wipe out the trailing ", "
+    }
+    cprintf(ch, "Exits: %s\r\n", buf);
 }
 
 void do_exits(struct char_data *ch, const char *argument, int cmd)

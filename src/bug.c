@@ -86,7 +86,7 @@ void bug_logger(unsigned int Type, const char *BugFile,
 	strlcat(Result, Temp, MAX_STRING_LENGTH);
 	for (i = descriptor_list; i; i = i->next)
 	    if ((!i->connected) && (GetMaxLevel(i->character) >= Level) &&
-		(IS_SET(i->character->specials.act, PLR_LOGS)))
+		(IS_SET(i->character->specials.new_act, NEW_PLR_LOGS)))
 		write_to_q(Result, &i->output, 1);
 	bzero(Result, MAX_STRING_LENGTH);
     } else

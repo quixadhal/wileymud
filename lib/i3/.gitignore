@@ -3,3 +3,6 @@ i3.password
 i3.ucache
 *.db
 *.hist
+i3.password.dalet
+speaker.names
+urldb.lpc-saved-object

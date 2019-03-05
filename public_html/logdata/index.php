@@ -26,8 +26,6 @@
   $link_color = "#ffffbf";
   $visited_link_color = "#ffa040";
 
-  $files = get_data();
-
 function natSortKey(&$arrIn)
 {
   $key_array = array();
@@ -141,6 +139,8 @@ function get_data()
   $entries = array_merge(get_dir_listing(), get_index_dat());
   return $entries;
 }
+
+$files = get_dir_listing();
 
 ?>
 <html>

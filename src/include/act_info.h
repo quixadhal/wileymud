@@ -35,6 +35,7 @@ void                                    do_examine(struct char_data *ch, const c
 						   int cmd);
 void                                    do_search(struct char_data *ch, const char *argument,
 						  int cmd);
+void                                    list_exits_in_room(struct char_data *ch);
 void                                    do_exits(struct char_data *ch, const char *argument, int cmd);
 void                                    do_score(struct char_data *ch, const char *argument, int cmd);
 void                                    do_mystat(struct char_data *ch, const char *argument,
@@ -81,5 +82,6 @@ void                                    do_ticks(struct char_data *ch, const cha
 void                                    do_map(struct char_data *ch, const char *argument, int cmd);
 void                                    do_ansimap(struct char_data *ch, const char *argument, int cmd);
 void                                    do_version(struct char_data *ch, const char *argument, int cmd);
+void                                    do_autoexit(struct char_data *ch, const char *argument, int cmd);
 
 #endif

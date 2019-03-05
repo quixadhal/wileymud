@@ -7,10 +7,10 @@ Title              the Elven Student/Filcher~
 Description
 Another old blah blah
 ~
-LastSite           adork@localhost~
-LastLogin          1544712541
+LastSite           unknown~
+LastLogin          1551675785
 Birth              1221467932
-Played             5780
+Played             6249
 Sex                1
 Race               2
 Class              9
@@ -26,11 +26,11 @@ PoofIn             ~
 PoofOut            ~
 AbilityScores      14 0 15 11 14 8
 AbilityPad         0 0 0 0
-HpManaMove         25 24 19 0 246 0
+HpManaMove         18 24 74 0 231 0
 AC                 100
 ToHitDamage        0 0
 SaveApply          0 0 0 0 0
-Conditions         0 0 8 0 0 0
+Conditions         0 0 3 0 0 0
 PointsPad1         0 0 0
 PointsPad2         0 0 0 0
 PointsPad3         0 0 0

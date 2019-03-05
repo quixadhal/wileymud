@@ -723,17 +723,25 @@ struct room_data {
 #define PLR_STEALTH   (1<<6)				       /* char won't be seen in a variety of situations */
 #define PLR_HUNTING   (1<<7)				       /* the player is hunt somene,doa track each look */
 #define PLR_DEAF      (1<<8)				       /* The player does not hear shouts */
+
+/* These are apparently broken and have been moved to new_act */
 #define PLR_ECHO      (1<<9)				       /* Messages (tells, shout,etc) echo back */
 #define PLR_NOSHOUT   (1<<14)				       /* the player is not allowed to shout */
 #define PLR_PAGER     (1<<15)				       /* Use the Game pager or not */
 #define PLR_LOGS      (1<<16)				       /* Player is writing tothe board */
+#define PLR_AUTOEXIT  (1<<17)				       /* Player does exit command after move */
 
 /* the following are used in ch->specials.new_act */
 
-#define NEW_PLR_KILLOK (1<<0)				       /* players can kill each other */
-#define NEW_PLR_NOTELL (1<<1)				       /* players can't recieve tells */
-#define NEW_PLR_SUMMON (1<<2)				       /* This player is a pc killer */
-#define NEW_PLR_TELEPORT (1<<3)				       /* This player is a pc thief */
+#define NEW_PLR_KILLOK    (1<<0)			       /* players can kill each other */
+#define NEW_PLR_NOTELL    (1<<1)			       /* players can't recieve tells */
+#define NEW_PLR_SUMMON    (1<<2)			       /* This player is a pc killer */
+#define NEW_PLR_TELEPORT  (1<<3)			       /* This player is a pc thief */
+#define NEW_PLR_ECHO      (1<<4)			       /* Messages (tells, shout,etc) echo back */
+#define NEW_PLR_NOSHOUT   (1<<5)			       /* the player is not allowed to shout */
+#define NEW_PLR_PAGER     (1<<6)			       /* Use the Game pager or not */
+#define NEW_PLR_LOGS      (1<<7)			       /* Player is writing tothe board */
+#define NEW_PLR_AUTOEXIT  (1<<8)			       /* Player does exit command after move */
 
 #define PRIV_GIVE_PRIV  (1<<0)				       /* can this player give privs */
 #define PRIV_FORCE	(1<<1)

@@ -747,7 +747,7 @@ void show_page(struct descriptor_data *d)
     int                                     i = 0;
     int                                     page_size = 23;
     int                                     use_pager =
-	IS_SET(d->character->specials.act, PLR_PAGER);
+	IS_SET(d->character->specials.new_act, NEW_PLR_PAGER);
 
     if (DEBUG > 2)
 	log_info("called %s with %08zx", __PRETTY_FUNCTION__, (size_t) d);
@@ -854,7 +854,7 @@ void show_string(struct descriptor_data *d, char *input)
 	    continue;
 	if (*scan == '\n')
 	    lines++;
-	else if (!*scan || ((lines >= 22) && IS_SET(d->character->specials.act, PLR_PAGER))) {
+	else if (!*scan || ((lines >= 22) && IS_SET(d->character->specials.new_act, NEW_PLR_PAGER))) {
 	    *scan = '\0';
 	    SEND_TO_Q(buffer, d);
 

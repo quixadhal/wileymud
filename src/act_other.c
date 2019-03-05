@@ -661,6 +661,24 @@ void do_bug(struct char_data *ch, const char *argument, int cmd)
     cprintf(ch, "Really?  Ok, we'll send someone to have a look.\r\n");
 }
 
+void do_autoexit(struct char_data *ch, const char *argument, int cmd)
+{
+    if (DEBUG)
+	log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch),
+		 VNULL(argument), cmd);
+
+    if (IS_NPC(ch))
+	return;
+
+    if (IS_SET(ch->specials.new_act, NEW_PLR_AUTOEXIT)) {
+	cprintf(ch, "You will no longer see exits automatically.\r\n");
+	REMOVE_BIT(ch->specials.new_act, NEW_PLR_AUTOEXIT);
+    } else {
+	cprintf(ch, "You will now see exits automatically.\r\n");
+	SET_BIT(ch->specials.new_act, NEW_PLR_AUTOEXIT);
+    }
+}
+
 void do_brief(struct char_data *ch, const char *argument, int cmd)
 {
     if (DEBUG)

@@ -2264,8 +2264,8 @@ void reset_char(struct char_data *ch)
 	}
     }
 
-    SET_BIT(ch->specials.act, PLR_ECHO);
-    SET_BIT(ch->specials.act, PLR_PAGER);
+    SET_BIT(ch->specials.new_act, NEW_PLR_ECHO);
+    SET_BIT(ch->specials.new_act, NEW_PLR_PAGER);
 
     ch->hunt_dist = 0;
     ch->hatefield = 0;

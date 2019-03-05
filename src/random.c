@@ -97,7 +97,7 @@ void random_death_message(struct char_data *ch, struct char_data *victim)
     sprintf(tease, bugger[razz = number(0, bugcount - 1)], perp, GET_NAME(victim));
     for (xx = descriptor_list; xx; xx = xx->next)
         if (xx->character != ch && !xx->connected &&
-            !IS_SET(xx->character->specials.act, PLR_NOSHOUT) &&
+            !IS_SET(xx->character->specials.new_act, NEW_PLR_NOSHOUT) &&
             !IS_SET(xx->character->specials.act, PLR_DEAF))
             act("%s", 0, ch, 0, xx->character, TO_VICT, tease);
     cprintf(victim, "%s", tease);

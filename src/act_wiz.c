@@ -152,7 +152,7 @@ void do_emote(struct char_data *ch, const char *argument, int cmd)
 	cprintf(ch, "Yes.. But what?\r\n");
     else {
 	act("$n %s", FALSE, ch, 0, 0, TO_ROOM, argument + i);
-	if (IS_NPC(ch) || (IS_SET(ch->specials.act, PLR_ECHO))) {
+	if (IS_NPC(ch) || (IS_SET(ch->specials.new_act, NEW_PLR_ECHO))) {
 	    cprintf(ch, "You emote: '%s'\r\n", argument + i);
 	}
     }
@@ -172,11 +172,11 @@ void do_echo(struct char_data *ch, const char *argument, int cmd)
     for (i = 0; *(argument + i) == ' '; i++);
 
     if (!*(argument + i)) {
-	if (IS_SET(ch->specials.act, PLR_ECHO)) {
+	if (IS_SET(ch->specials.new_act, NEW_PLR_ECHO)) {
 	    cprintf(ch, "echo off\r\n");
-	    REMOVE_BIT(ch->specials.act, PLR_ECHO);
+	    REMOVE_BIT(ch->specials.new_act, NEW_PLR_ECHO);
 	} else {
-	    SET_BIT(ch->specials.act, PLR_ECHO);
+	    SET_BIT(ch->specials.new_act, NEW_PLR_ECHO);
 	    cprintf(ch, "echo on\r\n");
 	}
     } else {
@@ -2681,13 +2681,13 @@ void do_show_logs(struct char_data *ch, const char *argument, int cmd)
 	log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch),
 		 VNULL(argument), cmd);
 
-    if (IS_SET(ch->specials.act, PLR_LOGS)) {
+    if (IS_SET(ch->specials.new_act, NEW_PLR_LOGS)) {
 	cprintf(ch, "You will no longer recieve the logs to your screen.\r\n");
-	REMOVE_BIT(ch->specials.act, PLR_LOGS);
+	REMOVE_BIT(ch->specials.new_act, NEW_PLR_LOGS);
 	return;
     } else {
 	cprintf(ch, "You WILL recieve the logs to your screen.\r\n");
-	SET_BIT(ch->specials.act, PLR_LOGS);
+	SET_BIT(ch->specials.new_act, NEW_PLR_LOGS);
 	return;
     }
 }
@@ -2708,26 +2708,26 @@ void do_noshout(struct char_data *ch, const char *argument, int cmd)
     only_argument(argument, buf);
 
     if (!*buf || IS_MORTAL(ch))
-	if (IS_SET(ch->specials.act, PLR_NOSHOUT)) {
+	if (IS_SET(ch->specials.new_act, NEW_PLR_NOSHOUT)) {
 	    cprintf(ch, "You can now hear shouts again.\r\n");
-	    REMOVE_BIT(ch->specials.act, PLR_NOSHOUT);
+	    REMOVE_BIT(ch->specials.new_act, NEW_PLR_NOSHOUT);
 	} else {
 	    cprintf(ch, "From now on, you won't hear shouts.\r\n");
-	    SET_BIT(ch->specials.act, PLR_NOSHOUT);
+	    SET_BIT(ch->specials.new_act, NEW_PLR_NOSHOUT);
     } else if (!generic_find(argument, FIND_CHAR_WORLD, ch, &vict, &dummy))
 	cprintf(ch, "Couldn't find any such creature.\r\n");
     else if (IS_NPC(vict))
 	cprintf(ch, "Can't do that to a beast.\r\n");
     else if (GetMaxLevel(vict) >= GetMaxLevel(ch))
 	act("$E might object to that.. better not.", 0, ch, 0, vict, TO_CHAR);
-    else if (IS_SET(vict->specials.act, PLR_NOSHOUT) && (GetMaxLevel(ch) >= SAINT)) {
+    else if (IS_SET(vict->specials.new_act, NEW_PLR_NOSHOUT) && (GetMaxLevel(ch) >= SAINT)) {
 	cprintf(vict, "You can shout again.\r\n");
 	cprintf(ch, "NOSHOUT removed.\r\n");
-	REMOVE_BIT(vict->specials.act, PLR_NOSHOUT);
+	REMOVE_BIT(vict->specials.new_act, NEW_PLR_NOSHOUT);
     } else if (GetMaxLevel(ch) >= SAINT) {
 	cprintf(vict, "The gods take away your ability to shout!\r\n");
 	cprintf(ch, "NOSHOUT set.\r\n");
-	SET_BIT(vict->specials.act, PLR_NOSHOUT);
+	SET_BIT(vict->specials.new_act, NEW_PLR_NOSHOUT);
     } else {
 	cprintf(ch, "Sorry, you can't do that\r\n");
     }
@@ -2739,12 +2739,12 @@ void do_pager(struct char_data *ch, const char *argument, int cmd)
 	log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch),
 		 VNULL(argument), cmd);
 
-    if (IS_SET(ch->specials.act, PLR_PAGER)) {
+    if (IS_SET(ch->specials.new_act, NEW_PLR_PAGER)) {
 	cprintf(ch, "You stop using the Wiley Pager.\r\n");
-	REMOVE_BIT(ch->specials.act, PLR_PAGER);
+	REMOVE_BIT(ch->specials.new_act, NEW_PLR_PAGER);
     } else {
 	cprintf(ch, "You now USE the Wiley Pager.\r\n");
-	SET_BIT(ch->specials.act, PLR_PAGER);
+	SET_BIT(ch->specials.new_act, NEW_PLR_PAGER);
     }
 }
 

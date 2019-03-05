@@ -309,13 +309,15 @@ void emit_prompt(struct descriptor_data *point)
     if (point->str) {
         if (point->prompt_mode) {
             point->prompt_mode = 0;
-            write_to_descriptor(point->descriptor, "] ");
+            snprintf(promptbuf, MAX_INPUT_LENGTH, "] %c%c", TELNET_IAC, TELNET_GA);
+            write_to_descriptor(point->descriptor, promptbuf);
         }
     } else if (!point->connected) {
         if (point->page_first) {
             if (point->prompt_mode) {
                 point->prompt_mode = 0;
-                write_to_descriptor(point->descriptor, "\r\n*** Press return or q ***");
+                snprintf(promptbuf, MAX_INPUT_LENGTH, "\r\n*** Press return or q ***%c%c", TELNET_IAC, TELNET_GA);
+                write_to_descriptor(point->descriptor, promptbuf);
             }
         } else {
             if (point->prompt_mode) {
