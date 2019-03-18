@@ -640,7 +640,7 @@ void addspeaker_sql( const char *speaker, const char *pinkfish ) {
     param_len[1] = pinkfish ? strlen(pinkfish) : 0;
 
     sql_connect();
-    res = PQexecParams(db, sql, 11, NULL, param_val, param_len, param_bin, 0);
+    res = PQexecParams(db, sql, 2, NULL, param_val, param_len, param_bin, 0);
     st = PQresultStatus(res);
     if( st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE ) {
         log_fatal("Cannot add speaker: %s", PQerrorMessage(db));
