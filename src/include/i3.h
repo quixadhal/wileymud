@@ -81,6 +81,7 @@
 #define I3LINK LINK
 #define I3UNLINK UNLINK
 #define I3INSERT INSERT
+#define I3HEADLINK HEADLINK
 #define I3CREATE CREATE
 #define I3FCLOSE FCLOSE
 
@@ -232,6 +233,9 @@ struct router_data
    char *ip;
    int port;
    int reconattempts;
+   int password;
+   int mudlist_id;
+   int chanlist_id;
 };
 
 struct ucache_data

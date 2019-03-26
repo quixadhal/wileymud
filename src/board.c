@@ -108,6 +108,7 @@ int board(struct char_data *ch, int cmd, char *arg)
 
   switch (cmd) {
     // Mortal commands allowed
+    case CMD_autoexit:
     case CMD_bug:
     case CMD_credits:
     case CMD_down:
@@ -136,22 +137,29 @@ int board(struct char_data *ch, int cmd, char *arg)
     case CMD_whozone:
     case CMD_wimp:
     case CMD_wizlist:
-    case CMD_wiznet:
       return FALSE;
       break;
     // Immortal commands allowed
+    case CMD_at:
     case CMD_goto:
+    case CMD_immtrack:
     case CMD_invisible:
     case CMD_nohassle:
     case CMD_players:
+    case CMD_reboot:
+    case CMD_rentmode:
     case CMD_reset:
     case CMD_restore:
     case CMD_restoreall:
     case CMD_show:
     case CMD_shutdown:
+    case CMD_snoop:
     case CMD_switch:
     case CMD_ticks:
     case CMD_transfer:
+    case CMD_wizhelp:
+    case CMD_wizlock:
+    case CMD_wiznet:
     case CMD_world:
     case CMD_zpurge:
       return FALSE;

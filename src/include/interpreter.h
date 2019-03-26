@@ -18,10 +18,10 @@
 #define WELC_MESSG VERSION_STR
 
 #define STATE(d) ((d)->connected)
-#define MAX_CMD_LIST 290
+#define MAX_CMD_LIST 300
 
 /* Here we Go!  The monster command list.... ewwwwwww! */
-/* 288 is the current maximum */
+/* 289 is the current maximum */
 #define CMD_EMOTE	214
 #define CMD_GTELL	177
 #define CMD_INTERNAL	0				       /* NOT initiated from the command line */
@@ -194,6 +194,7 @@
 #define CMD_qui		21
 #define CMD_quit	73
 #define CMD_read	63
+#define CMD_reboot	289
 #define CMD_recite	207
 #define CMD_register	257
 #define CMD_remove	66

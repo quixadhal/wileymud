@@ -39,7 +39,7 @@ $HTML::FromANSI::Options{style} = "line-height: 1.0; letter-spacing: 0; font-siz
 
 my $filename = "/home/wiley/public_html/mudlist.json";
 my $imagedir = "/home/wiley/public_html/gfx/mud";
-my $thread_count = 20;
+my $thread_count = 30;
 my @global_tmp = ();
 my @result_set = ();
 
@@ -62,7 +62,7 @@ sub fetch_login_screen {
 
     return undef if !defined $site or !defined $port;
 
-    my $telnet = Net::Telnet->new( Timeout => 10 );
+    my $telnet = Net::Telnet->new( Timeout => 30 );
     my $connect = 0;
     my @tlines = ();
 
@@ -73,11 +73,11 @@ sub fetch_login_screen {
 
     if ( $connect ) {
         my $tline = undef;
-        $telnet->timeout(2);
+        $telnet->timeout(30);
         $telnet->errmode("return");
         push @tlines, $tline while( $tline = $telnet->getline());
         $telnet->close();
-        $telnet->timeout(10);
+        $telnet->timeout(30);
         $telnet->errmode("return");
     }
 

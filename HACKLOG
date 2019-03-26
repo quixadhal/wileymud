@@ -279,3 +279,5 @@ updated crontab:
     10 2 * * * (cd /home/wiley/public_html && PGPASSWORD=tardis69 /usr/bin/pg_dump --clean --if-exists --no-owner i3log | /usr/bin/xz -9ceq -T0 >i3log.sql.xz) >/dev/null 2>&1 &
     5 2 * * * /home/wiley/bin/untiny sql --mark >/dev/null 2>&1 &
 
+apt install ffmpeg
+

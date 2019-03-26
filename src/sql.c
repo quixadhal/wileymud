@@ -294,7 +294,8 @@ void setup_urls_table(void) {
                 "    mud TEXT NOT NULL, "
                 "    url TEXT, "
                 "    message TEXT, "
-                "    checksum TEXT "
+                "    checksum TEXT, "
+                "    hits INTEGER DEFAULT 1 "
                 "); ";
     char *sql2 = "DROP INDEX IF EXISTS ix_urls_checksum;";
     char *sql3 = "CREATE UNIQUE INDEX ix_urls_checksum ON urls (checksum);";
@@ -366,7 +367,7 @@ void add_url( const char *channel, const char *speaker, const char *mud, const c
     const char *sql = "INSERT INTO urls ( url, channel, speaker, mud, checksum ) "
                       "VALUES ($1,$2,$3,$4,$5) "
                       "ON CONFLICT (checksum) "
-                      "DO NOTHING; ";
+                      "DO UPDATE SET hits = urls.hits + 1;";
     const char *param_val[5];
     int param_len[5];
     int param_bin[5] = {0,0,0,0,0};

@@ -130,7 +130,7 @@ const char                             *command[] = {
     "land", "nosummon", "noteleport", "players", "reset",
     "event", "zpurge", "ticks", "bury", "desecrate",
     "setreboot", "home", "bandage", "unban", "immtrack",
-    "ansimap", "version", "autoexit"
+    "ansimap", "version", "autoexit", "reboot",
     "\n"
 };
 
@@ -741,6 +741,7 @@ void assign_command_pointers(void)
     COMMANDO(CMD_pretitle, POSITION_DEAD, do_pretitle, 51);
     COMMANDO(CMD_pset, POSITION_DEAD, do_set, 58);
     COMMANDO(CMD_purge, POSITION_DEAD, do_purge, 52);
+    COMMANDO(CMD_reboot, POSITION_DEAD, do_reboot, 58);
     COMMANDO(CMD_rentmode, POSITION_DEAD, do_rentmode, 57);
     COMMANDO(CMD_reroll, POSITION_DEAD, do_reroll, 58);
     COMMANDO(CMD_reset, POSITION_DEAD, do_reset, 57);

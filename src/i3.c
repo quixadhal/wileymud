@@ -5562,6 +5562,9 @@ void I3_saverouters(void)
 	fprintf(fp, "Name %s\n", router->name);
 	fprintf(fp, "IP   %s\n", router->ip);
 	fprintf(fp, "Port %d\n", router->port);
+        fprintf(fp, "Password %d\n", router->password);
+        fprintf(fp, "MudlistID %d\n", router->mudlist_id);
+        fprintf(fp, "ChanlistID %d\n", router->chanlist_id);
 	fprintf(fp, "%s", "End\n\n");
     }
     fprintf(fp, "%s", "#END\n");
@@ -5584,6 +5587,10 @@ void I3_readrouter(ROUTER_DATA *router, FILE * fp)
 		i3fread_to_eol(fp);
 		break;
 
+	    case 'C':
+		KEY("ChanlistID", router->chanlist_id, i3fread_number(fp));
+		break;
+
 	    case 'E':
 		if (!strcasecmp(word, "End"))
 		    return;
@@ -5593,12 +5600,17 @@ void I3_readrouter(ROUTER_DATA *router, FILE * fp)
 		KEY("IP", router->ip, i3fread_line(fp));
 		break;
 
+	    case 'M':
+		KEY("MudlistID", router->mudlist_id, i3fread_number(fp));
+		break;
+
 	    case 'N':
 		KEY("Name", router->name, i3fread_line(fp));
 		break;
 
 	    case 'P':
 		KEY("Port", router->port, i3fread_number(fp));
+		KEY("Password", router->password, i3fread_number(fp));
 		break;
 	}
 	if (!fMatch)
@@ -8933,7 +8945,7 @@ I3_CMD(I3_connect)
     }
 
     if (!argument || argument[0] == '\0') {
-	i3_printf(ch, "Connecting to Intermud-3\r\n");
+	i3_printf(ch, "Connecting to Intermud-3 router %s\r\n", I3_ROUTER_NAME);
 	router_connect(NULL, TRUE, this_i3mud->player_port, FALSE);
 	return;
     }
@@ -8957,7 +8969,7 @@ I3_CMD(I3_reload)
     int                                     mudport = this_i3mud->player_port;
 
     if (is_connecting()) {
-	i3_printf(ch, "Disconnecting from I3 router...\r\n");
+	i3_printf(ch, "Disconnecting from I3 router %s...\r\n", I3_ROUTER_NAME);
 	i3_shutdown(0, ch);
     }
     i3_printf(ch, "Reloading I3 configuration...\r\n");
@@ -9496,6 +9508,7 @@ I3_CMD(I3_router)
     if (!argument || argument[0] == '\0') {
 	i3_printf(ch, "%%^WHITE%%^Usage: i3router add <router_name> <router_ip> <router_port>%%^RESET%%^\r\n");
 	i3_printf(ch, "%%^WHITE%%^Usage: i3router remove <router_name>%%^RESET%%^\r\n");
+	i3_printf(ch, "%%^WHITE%%^Usage: i3router select <router_name>%%^RESET%%^\r\n");
 	i3_printf(ch, "%%^WHITE%%^Usage: i3router list%%^RESET%%^\r\n");
 	return;
     }
@@ -9526,6 +9539,24 @@ I3_CMD(I3_router)
 			  argument);
 		I3_saverouters();
 		return;
+	    }
+	}
+	i3_printf(ch, "%%^YELLOW%%^No router named %%^WHITE%%^%%^BOLD%%^%s%%^YELLOW%%^ exists in your configuration.%%^RESET%%^\r\n", argument);
+	return;
+    }
+
+    if (!strcasecmp(cmd, "select")) {
+	for (router = first_router; router; router = router->next) {
+	    if (!strcasecmp(router->name, argument) || !strcasecmp(router->ip, argument)) {
+                // Remove the router from where it was
+		I3UNLINK(router, first_router, last_router, next, prev);
+                // Add it to the top
+                I3HEADLINK(router, first_router, last_router, next, prev);
+
+		i3_printf(ch, "%%^YELLOW%%^Router %%^WHITE%%^%%^BOLD%%^%s%%^YELLOW%%^ has been selected for use.%%^RESET%%^\r\n",
+			  argument);
+		I3_saverouters();
+                return I3_reload(ch, argument);
 	    }
 	}
 	i3_printf(ch, "%%^YELLOW%%^No router named %%^WHITE%%^%%^BOLD%%^%s%%^YELLOW%%^ exists in your configuration.%%^RESET%%^\r\n", argument);
@@ -10872,7 +10903,7 @@ char                                   *I3_old_nameremap(const char *ps)
         /* strcpy(xnew, "きけさだる"); */
         /* strcpy(xnew, "Dread Lord Quixadhal"); */
         /* strcpy(xnew, "Off-Topic Quixadhal"); */
-        strcpy(xnew, "Cromulent Quixadhal");
+        /* strcpy(xnew, "Cromulent Quixadhal"); */
     } else {
         strcpy(xnew, ps);
     }

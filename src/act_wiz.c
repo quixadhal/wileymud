@@ -1658,6 +1658,34 @@ void do_shutdow(struct char_data *ch, const char *argument, int cmd)
     cprintf(ch, "If you want to shut something down - say so!\r\n");
 }
 
+void do_reboot(struct char_data *ch, const char *argument, int cmd)
+{
+    time_t                                  tc = (time_t) 0;
+    struct tm                              *t_info = NULL;
+    char                                   *tmstr = NULL;
+
+    if (DEBUG)
+	log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch),
+		 VNULL(argument), cmd);
+
+    if (IS_NPC(ch))
+	return;
+
+    tc = time(0);
+    t_info = localtime(&tc);
+    tmstr = asctime(t_info);
+    *(tmstr + strlen(tmstr) - 1) = '\0';
+
+    log_boot("REBOOT by %s at %d:%d", GET_NAME(ch), t_info->tm_hour + 1, t_info->tm_min);
+    allprintf("\x007\r\nBroadcast message from %s (tty0) %s...\r\n\r\n", GET_NAME(ch),
+              tmstr);
+    allprintf("\x007Rebooting.  Come back in a few minutes!\r\n");
+    allprintf("\x007The system is going down NOW !!\r\n\r\n");
+    i3_log_dead();
+    diku_shutdown = diku_reboot = 1;
+    update_time_and_weather();
+}
+
 void do_shutdown(struct char_data *ch, const char *argument, int cmd)
 {
     time_t                                  tc = (time_t) 0;

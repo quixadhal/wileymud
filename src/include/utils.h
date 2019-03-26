@@ -120,6 +120,20 @@ do                                              \
    (last) = (link);                             \
 } while(0)
 
+#define HEADLINK(link, first, last, next, prev) \
+do                                              \
+{                                               \
+   if ( !(first) ) {                            \
+      (first) = (link);                         \
+      (last) = (link);                          \
+      (link)->next = NULL;                      \
+   } else {                                     \
+      (link)->next = (first);                   \
+      (first) = (link);                         \
+   }                                            \
+   (link)->prev = NULL;                         \
+} while(0)
+
 #define INSERT(link, insert, first, next, prev)    \
 do                                                    \
 {                                                     \

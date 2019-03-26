@@ -35,6 +35,8 @@ void                                    do_pretitle(struct char_data *ch, const 
 void                                    do_set(struct char_data *ch, const char *argument, int cmd);
 void                                    do_shutdow(struct char_data *ch, const char *argument,
 						   int cmd);
+void                                    do_reboot(struct char_data *ch, const char *argument,
+						    int cmd);
 void                                    do_shutdown(struct char_data *ch, const char *argument,
 						    int cmd);
 void                                    do_snoop(struct char_data *ch, const char *argument, int cmd);

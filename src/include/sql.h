@@ -20,6 +20,9 @@ void setup_urls_table(void);
 void setup_log_table(void);
 #endif
 
+//void sql_connect(const char *db_name);
+//void sql_disconnect(const char *db_name);
+//char *sql_version(const char *db_name);
 void sql_connect(void);
 void sql_disconnect(void);
 char *sql_version(void);
