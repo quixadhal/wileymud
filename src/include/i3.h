@@ -390,4 +390,5 @@ void I3_saveSpeakers(void);
 void I3_readSpeaker(FILE *fp);
 void I3_loadSpeakers(void);
 char *color_speaker( const char *speaker );
+void I3_saverouters(void);
 #endif

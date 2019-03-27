@@ -17,7 +17,7 @@ void setup_channels_table(void);
 void setup_speakers_table(void);
 void setup_i3log_table(void);
 void setup_urls_table(void);
-void setup_log_table(void);
+void setup_logfile_table(void);
 #endif
 
 //void sql_connect(const char *db_name);

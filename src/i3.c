@@ -1716,12 +1716,23 @@ void I3_startup_packet(void)
     char                                    s[MAX_INPUT_LENGTH];
     char                                   *strtime;
     struct timeval                          last_time;
+    ROUTER_DATA                            *router;
 
     if (!is_connecting())
 	return;
 
     I3_output_pointer = 4;
     I3_output_buffer[0] = '\0';
+
+    for (router = first_router; router; router = router->next) {
+        if (!strcasecmp(router->name, I3_ROUTER_NAME)) {
+            router->password = this_i3mud->password;
+            router->mudlist_id = this_i3mud->mudlist_id;
+            router->chanlist_id = this_i3mud->chanlist_id;
+	    break;
+        }
+    }
+    I3_saverouters();
 
     log_info("Sending startup_packet to %s", I3_ROUTER_NAME);
 
@@ -1887,9 +1898,12 @@ void I3_process_startup_reply(I3_HEADER *header, char *s)
 	    router->reconattempts = 0;
 	    I3_ROUTER_NAME = router->name;
 	    I3_ROUTER_IP = router->ip;
+            router->password = this_i3mud->password;
 	    break;
 	}
     }
+    I3_saverouters();
+
     i3wait = 0;
     expecting_timeout = 0;
     i3justconnected = 1;        // This is just a flag to let us process on_connect things
@@ -2198,10 +2212,19 @@ void I3_process_mudlist(I3_HEADER *header, char *s)
 	*next_ps;
     I3_MUD                                 *mud = NULL;
     char                                    mud_name[MAX_INPUT_LENGTH];
+    ROUTER_DATA                            *router;
 
     I3_get_field(ps, &next_ps);
     this_i3mud->mudlist_id = atoi(ps);
     I3_save_id();
+
+    for (router = first_router; router; router = router->next) {
+        if (!strcasecmp(router->name, I3_ROUTER_NAME)) {
+            router->mudlist_id = this_i3mud->mudlist_id;
+	    break;
+        }
+    }
+    I3_saverouters();
 
     ps = next_ps;
     ps += 2;
@@ -2439,12 +2462,21 @@ void I3_process_chanlist_reply(I3_HEADER *header, char *s)
 	*next_ps;
     I3_CHANNEL                             *channel;
     char                                    chan[MAX_INPUT_LENGTH];
+    ROUTER_DATA                            *router;
 
     log_info("I3_process_chanlist_reply: %s", "Got chanlist-reply packet!");
 
     I3_get_field(ps, &next_ps);
     this_i3mud->chanlist_id = atoi(ps);
     I3_save_id();
+
+    for (router = first_router; router; router = router->next) {
+        if (!strcasecmp(router->name, I3_ROUTER_NAME)) {
+            router->chanlist_id = this_i3mud->chanlist_id;
+	    break;
+        }
+    }
+    I3_saverouters();
 
     ps = next_ps;
     ps += 2;

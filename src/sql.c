@@ -75,7 +75,7 @@ void sql_startup(void) {
     setup_speakers_table();
     setup_i3log_table();
     setup_urls_table();
-    setup_log_table();
+    setup_logfile_table();
     snprintf(log_msg, MAX_STRING_LENGTH, "%%^GREEN%%^WileyMUD Version: %s (%s), PostgreSQL Version %s.%%^RESET%%^", VERSION_BUILD, VERSION_DATE, sql_version());
     allchan_log(0,"wiley", "Cron", "WileyMUD", log_msg);
 }
@@ -330,10 +330,10 @@ void setup_urls_table(void) {
 
 }
 
-void setup_log_table(void) {
+void setup_logfile_table(void) {
     PGresult *res = NULL;
     ExecStatusType st = 0;
-    char *sql = "CREATE TABLE IF NOT EXISTS log ( "
+    char *sql = "CREATE TABLE IF NOT EXISTS logfile ( "
                 "    created TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT (now() AT TIME ZONE 'UTC'), "
                 "    logtype TEXT DEFAULT 'INFO', "
                 "    filename TEXT, "
@@ -569,7 +569,7 @@ void bug_sql( const char *logtype, const char *filename, const char *function, i
               const char *message ) {
     PGresult *res = NULL;
     ExecStatusType st = 0;
-    const char *sql = "INSERT INTO log ( logtype, filename, function, line, "
+    const char *sql = "INSERT INTO logfile ( logtype, filename, function, line, "
                       "area_file, area_line, character, character_room, victim, "
                       "victim_room, message ) "
                       "VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11);";

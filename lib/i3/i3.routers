@@ -2,24 +2,36 @@
 Name *Kelly
 IP   150.101.219.57
 Port 8080
+Password 647990417
+MudlistID 137833
+ChanlistID 1
 End
 
 #ROUTER
 Name *dalet
 IP   97.107.133.86
 Port 8787
-End
-
-#ROUTER
-Name *i4
-IP   204.209.44.3
-Port 8080
+Password 0
+MudlistID 0
+ChanlistID 0
 End
 
 #ROUTER
 Name *wpr
 IP   136.144.155.250
 Port 8080
+Password 0
+MudlistID 0
+ChanlistID 0
+End
+
+#ROUTER
+Name *i4
+IP   204.209.44.3
+Port 8080
+Password 0
+MudlistID 0
+ChanlistID 0
 End
 
 #END
