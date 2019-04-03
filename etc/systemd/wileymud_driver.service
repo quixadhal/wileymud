@@ -1,0 +1,27 @@
+[Unit]
+Description=WileyMUD III Game Driver
+Documentation=http://wileymud.themud.org/~wiley/i3log.php
+PartOf=wileymud.service
+Requires=postgresql.service
+After=postgresql.service
+After=wileymud.service
+
+[Service]
+Type=simple
+User=wiley
+Group=wiley
+Environment=LANG=en_US.utf8
+Environment=LC_ALL=en_US.utf8
+Environment=MALLOC_CHECK=2
+WorkingDirectory=/home/wiley/bin
+ExecStartPre=/usr/bin/sleep 30
+ExecStart=/home/wiley/bin/wileymud -L /home/wiley/lib/log 3000
+ExecReload=/bin/kill -TERM $MAINPID
+TimeoutStopSec=30
+Restart=always
+RestartSec=30
+RestartPreventExitStatus=42
+KillSignal=SIGINT
+
+[Install]
+WantedBy=wileymud.service
