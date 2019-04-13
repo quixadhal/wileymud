@@ -977,7 +977,8 @@ if( $do_pages or $do_json ) {
 <html>
     <head>
         <meta charset="utf-8" />
-        <meta http-equiv="Cache-Control" content="no-store" />
+        <meta http-equiv="cache-control" content="no-cache" />
+        <meta http-equiv="pragma" content="no-cache" />
         <link rel="stylesheet" href="$JQUI_CSS">
         <link rel="stylesheet" href="$JQUI_THEME">
         <script src="$JQ"></script>
@@ -1162,7 +1163,8 @@ EOM
         }
         #my $json_dump = encode_json($page);
         my $json_dump = JSON->new->utf8->allow_nonref->canonical->pretty->encode($page);
-        open FP, "|$KOMPRESSOR $KOMPRESSOR_ARGS >$filename.$KOMPRESSOR_EXT" or die "Cannot open dump page $filename.$KOMPRESSOR_EXT: $!";
+        #open FP, "|$KOMPRESSOR $KOMPRESSOR_ARGS >$filename.$KOMPRESSOR_EXT" or die "Cannot open dump page $filename.$KOMPRESSOR_EXT: $!";
+        open FP, ">$filename" or die "Cannot open dump page $filename: $!";
         print FP "$json_dump\n";
         close FP;
     }
