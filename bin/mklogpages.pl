@@ -42,17 +42,20 @@ my $DOWN_ICON       = "$URL_HOME/gfx/nav/green/down.png";
 my $TOP_ICON        = "$URL_HOME/gfx/nav/green/top.png";
 my $BOTTOM_ICON     = "$URL_HOME/gfx/nav/green/bottom.png";
 
-my $SERVER_ICON     = "$URL_HOME/gfx/server_icon.png";
 my $MUDLIST_ICON    = "$URL_HOME/gfx/mud.png";
 my $LOG_ICON        = "$URL_HOME/gfx/log.png";
+my $DISCORD_ICON    = "$URL_HOME/gfx/discord.png";
+my $SERVER_ICON     = "$URL_HOME/gfx/server_icon.png";
 my $ICON_WIDTH      = 48;
 
 my $MUDLIST_IMG     = "<img src=\"$MUDLIST_ICON\" width=\"$ICON_WIDTH\" height=\"$ICON_WIDTH\" border=\"0\" />";
 my $LOG_IMG         = "<img src=\"$LOG_ICON\" width=\"$ICON_WIDTH\" height=\"$ICON_WIDTH\" border=\"0\" />";
+my $DISCORD_IMG     = "<img src=\"$DISCORD_ICON\" width=\"$ICON_WIDTH\" height=\"$ICON_WIDTH\" border=\"0\" />";
 my $SERVER_IMG      = "<img src=\"$SERVER_ICON\" width=\"$ICON_WIDTH\" height=\"$ICON_WIDTH\" border=\"0\" />";
 
 my $MUDLIST_LINK    = "<a href=\"$URL_HOME/mudlist.html\" alt=\"Mudlist\" title=\"Mudlist\">$MUDLIST_IMG</a>";
 my $LOG_LINK        = "<a href=\"https://themud.org/chanhist.php#Channel=all\" alt=\"Other Logs\" title=\"Other Logs\">$LOG_IMG</a>";
+my $DISCORD_LINK    = "<a href=\"https://discord.gg/kUduSsJ\" alt=\"Discord\" title=\"Discord\">$DISCORD_IMG</a>";
 my $SERVER_LINK     = "<a href=\"$URL_HOME/server.php\" alt=\"Server\" title=\"Server\">$SERVER_IMG</a>";
 
 my $JQUI_CSS        = "$LOG_HOME/jquery/jquery-ui.css";
@@ -1011,6 +1014,7 @@ if( $do_pages or $do_json ) {
                 <td align="left" width="20%">
                     $MUDLIST_LINK
                     $LOG_LINK
+                    $DISCORD_LINK
                 </td>
                 <td align="right" width="20%">
 EOM

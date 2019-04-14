@@ -32,17 +32,20 @@ $DOWN_ICON      = "$URL_HOME/gfx/nav/green/down.png";
 $TOP_ICON       = "$URL_HOME/gfx/nav/green/top.png";
 $BOTTOM_ICON    = "$URL_HOME/gfx/nav/green/bottom.png";
 
-$SERVER_ICON    = "$URL_HOME/gfx/server_icon.png";
 $MUDLIST_ICON   = "$URL_HOME/gfx/mud.png";
 $LOG_ICON       = "$URL_HOME/gfx/log.png";
+$DISCORD_ICON   = "$URL_HOME/gfx/discord.png";
+$SERVER_ICON    = "$URL_HOME/gfx/server_icon.png";
 $ICON_WIDTH     = 48;
 
 $MUDLIST_IMG    = "<img src=\"$MUDLIST_ICON\" width=\"$ICON_WIDTH\" height=\"$ICON_WIDTH\" border=\"0\" />";
 $LOG_IMG        = "<img src=\"$LOG_ICON\" width=\"$ICON_WIDTH\" height=\"$ICON_WIDTH\" border=\"0\" />";
+$DISCORD_IMG    = "<img src=\"$DISCORD_ICON\" width=\"$ICON_WIDTH\" height=\"$ICON_WIDTH\" border=\"0\" />";
 $SERVER_IMG     = "<img align=\"right\" src=\"$SERVER_ICON\" width=\"$ICON_WIDTH\" height=\"$ICON_WIDTH\" border=\"0\" />";
 
 $MUDLIST_LINK   = "<a href=\"$URL_HOME/mudlist.html\" alt=\"Mudlist\" title=\"Mudlist\">$MUDLIST_IMG</a>";
 $LOG_LINK       = "<a href=\"https://themud.org/chanhist.php#Channel=all\" alt=\"Other Logs\" title=\"Other Logs\">$LOG_IMG</a>";
+$DISCORD_LINK   = "<a href=\"https://discord.gg/kUduSsJ\" alt=\"Discord\" title=\"Discord\">$DISCORD_IMG</a>";
 $SERVER_LINK    = "<a href=\"$URL_HOME/server.php\" alt=\"Server\" title=\"Server\">$SERVER_IMG</a>";
 
 $JQUI_CSS       = "$LOG_HOME/jquery/jquery-ui.css";
@@ -543,11 +546,15 @@ $local_time = $pinkfish_map[ $hours[$local_hour]['pinkfish'] ]['html'] . $local_
 
 $db = null;
 
+header("Cache-Control: no-cache");
+header("Pragma: no-cache");
+
 ?>
 <html>
     <head>
         <meta charset="utf-8" />
-        <meta http-equiv="Cache-Control" content="no-store" />
+        <meta http-equiv="cache-control" content="no-cache" />
+        <meta http-equiv="pragma" content="no-cache" />
         <link rel="stylesheet" href="<?php echo $JQUI_CSS;?>">
         <link rel="stylesheet" href="<?php echo $JQUI_THEME;?>">
         <script src="<?php echo $JQ;?>""></script>
@@ -581,6 +588,7 @@ $db = null;
                 <td align="left" width="25%">
                     <?php echo $MUDLIST_LINK;?>
                     <?php echo $LOG_LINK;?>
+                    <?php echo $DISCORD_LINK;?>
                 </td>
                 <td align="right" width="20%">
                     <?php echo $up_link; ?>
