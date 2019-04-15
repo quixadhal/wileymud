@@ -38,8 +38,9 @@
 #include "whod.h"
 
 // #define WILEY_ADDRESS "wiley.the-firebird.net"
-#define WILEY_ADDRESS "wileymud.themud.org"
 // #define WILEY_ADDRESS "wileymud.lpmud.org"
+#define WILEY_ADDRESS "wileymud.themud.org"
+#define WILEY_PORT 3000
 
 /*
  * In function run_the_game(int port):
@@ -693,8 +694,22 @@ void whod_loop(void)
 #define MUDLIST_WIDTH   192 // 240
 #define MUDLIST_HEIGHT  120 // 150
 
-#undef OLD_LAYOUT
-#define DUAL_LAYOUT
+#define URL_HOME        "http://wileymud.themud.org/~wiley"
+#define MUDLIST_ICON    URL_HOME "/gfx/mud.png"
+#define LOG_ICON        URL_HOME "/gfx/log.png"
+#define DISCORD_ICON    URL_HOME "/gfx/discord.png"
+#define SERVER_ICON     URL_HOME "/gfx/server_icon.png"
+#define WILEY_ICON      URL_HOME "/gfx/wileymud3.png"
+#define ICON_WIDTH      48
+//#define WILEY_WIDTH     247
+//#define WILEY_HEIGHT    48
+#define WILEY_WIDTH     165
+#define WILEY_HEIGHT    32
+
+#define MUDLIST_URL     URL_HOME "/mudlist.html"
+#define LOG_URL         URL_HOME "/logpages"
+#define DISCORD_URL     "https://discord.gg/kUduSsJ"
+#define SERVER_URL      URL_HOME "/server.php"
 
 void                                    generate_mudlist(void)
 {
@@ -720,9 +735,7 @@ void                                    generate_mudlist(void)
     char                                    stat_name_public[MAX_INPUT_LENGTH];
     int                                     row_counter = 0;
     int                                     connected = 0;
-#ifdef DUAL_LAYOUT
     int                                     col_counter = 0;
-#endif
 #endif
 
     now = time((time_t *) 0);
@@ -739,54 +752,73 @@ void                                    generate_mudlist(void)
     fprintf(fp, "<html>\r\n");
 
     fprintf(fp, "<head>\r\n");
-    fprintf(fp, "<title>Welcome to %s!</title>\r\n", MUDNAME);
+    fprintf(fp, "<meta charset=\"utf-8\" />");
+    fprintf(fp, "<meta http-equiv=\"cache-control\" content=\"no-cache\" />");
+    fprintf(fp, "<meta http-equiv=\"pragma\" content=\"no-cache\" />");
     fprintf(fp, "<style>\r\n");
-    fprintf(fp, "a { text-decoration:none; }\r\n");
-    fprintf(fp, "a:hover { text-decoration:underline; }\r\n");
-    fprintf(fp, "table { table-layout: fixed; white-space:nowrap; text-overflow: ellipsis; overflow-x: hidden; }\r\n");
-    fprintf(fp, "tr { table-layout: fixed; white-space:nowrap; text-overflow: ellipsis; overflow-x: hidden; }\r\n");
-    fprintf(fp, "th { table-layout: fixed; white-space:nowrap; text-overflow: ellipsis; overflow-x: hidden; }\r\n");
-    fprintf(fp, "td { table-layout: fixed; white-space:nowrap; text-overflow: ellipsis; overflow-x: hidden; }\r\n");
+    fprintf(fp, "    html, body { table-layout: fixed; max-width: 100%%; overflow-x: hidden; word-wrap: break-word; text-overflow: ellipsis;}\r\n");
+    fprintf(fp, "    table { table-layout: fixed; max-width: 99%%; overflow-x: hidden; word-wrap: break-word; text-overflow: ellipsis; }\r\n");
+    fprintf(fp, "    a { text-decoration:none; }\r\n");
+    fprintf(fp, "    a:hover { text-decoration:underline; }\r\n");
+    fprintf(fp, "    a:active, a:focus { outline: 0; border: none; -moz-outline-style: none; }\r\n");
+    fprintf(fp, "    #navbar { position: fixed; top: 0; left: 0; background-color: black; }\r\n");
+    //fprintf(fp, "    #content-header { position: fixed; top: 58px; width: 100%%; background-color: black; }\r\n");
+    fprintf(fp, "    #content-header { padding-top: 60px; }\r\n");
+    //fprintf(fp, "    #content { padding-top: 60px; }\r\n");
     fprintf(fp, "</style>\r\n");
+    fprintf(fp, "<title>Welcome to %s!</title>\r\n", MUDNAME);
     fprintf(fp, "</head>\r\n");
-
     fprintf(fp, "<body bgcolor=\"black\" text=\"#d0d0d0\" link=\"#ffffbf\" vlink=\"#ffa040\">\r\n");
 
-    fprintf(fp, "<table border=\"0\" cellspacing=\"0\" cellpadding=\"1\" width=\"%s\">\r\n", "99%");
-    fprintf(fp, "<tr valign=\"middle\" bgcolor=\"#000000\">\r\n");
-#ifdef I3
-    fprintf(fp, "<td valign=\"middle\" align=\"center\" width=\"75\"><a href=\"http://%s/~wiley/i3log.php\">i3 logs</a></td>\r\n",
-            WILEY_ADDRESS);
-#endif
-    fprintf(fp, "<td valign=\"middle\" align=\"center\"><h3><a href=\"telnet://%s:3000\">*** Welcome to WileyMUD III, Quixadhal's Version %s (%s) ***</a></h3></td>\r\n",
-	    WILEY_ADDRESS, VERSION_BUILD, VERSION_DATE);
-#ifdef I3
-    fprintf(fp, "<td valign=\"middle\" align=\"center\" width=\"75\">&nbsp;</td>\r\n");
-#endif
-    fprintf(fp, "</tr>\r\n");
+    // Navbar on top.
+    fprintf(fp, "<table id=\"navbar\" width=\"99%%\" cellspacing=\"0\" cellpadding=\"1\" align=\"center\">\r\n");
+    fprintf(fp, "    <tr>\r\n");
+    fprintf(fp, "    <td align=\"left\" width=\"25%%\">\r\n");
+    fprintf(fp, "        <a href=\"%s\" alt=\"Logs\" title=\"Logs\">\r\n", LOG_URL);
+    fprintf(fp, "            <img src=\"%s\" width=\"%d\" height=\"%d\" border=\"0\" />\r\n", LOG_ICON, ICON_WIDTH, ICON_WIDTH);
+    fprintf(fp, "        </a>\r\n");
+    fprintf(fp, "        <a href=\"%s\" alt=\"Discord\" title=\"Discord\">\r\n", DISCORD_URL);
+    fprintf(fp, "            <img src=\"%s\" width=\"%d\" height=\"%d\" border=\"0\" />\r\n", DISCORD_ICON, ICON_WIDTH, ICON_WIDTH);
+    fprintf(fp, "        </a>\r\n");
+    fprintf(fp, "    </td>\r\n");
+    fprintf(fp, "    <td align=\"center\" width=\"50%%\">\r\n");
+    fprintf(fp, "        <a href=\"telnet://%s:%d\" alt=\"WileyMUD\" title=\"WileyMUD\">\r\n", WILEY_ADDRESS, WILEY_PORT);
+    fprintf(fp, "            <img src=\"%s\" width=\"%d\" height=\"%d\" border=\"0\" />\r\n", WILEY_ICON, WILEY_WIDTH, WILEY_HEIGHT);
+    fprintf(fp, "        </a>\r\n");
+    fprintf(fp, "        <br />\r\n");
+    fprintf(fp, "        <span style=\"vertical-align: bottom; color: #bb0000\"> Version %s (%s) </span>\r\n", VERSION_BUILD, VERSION_DATE);
+    fprintf(fp, "    </td>\r\n");
+    fprintf(fp, "    <td align=\"right\" width=\"25%%\">\r\n");
+    fprintf(fp, "        <span style=\"vertical-align: top; color: #ccaa00\"> %5.5s %s </span>\r\n", &nowtimebuf[17], &nowtimebuf[26]);
+    fprintf(fp, "        <a href=\"%s\" alt=\"Server\" title=\"Server\">\r\n", SERVER_URL);
+    fprintf(fp, "            <img src=\"%s\" width=\"%d\" height=\"%d\" border=\"0\" />\r\n", SERVER_ICON, ICON_WIDTH, ICON_WIDTH);
+    fprintf(fp, "        </a>\r\n");
+    fprintf(fp, "    </td>\r\n");
+    fprintf(fp, "    </tr>\r\n");
     fprintf(fp, "</table>\r\n");
 
     players = 0;
     gods = 0;
     char_index = 0;
 
-    fprintf(fp, "<div align=\"center\">\r\n");
-    fprintf(fp, "<table border=\"0\" cellspacing=\"0\" cellpadding=\"1\" width=\"%s\">\r\n", "80%");
-    fprintf(fp, "<tr bgcolor=\"#2f0000\">\r\n");
+    fprintf(fp, "<div id=\"content-header\" align=\"center\">\r\n");
+
+    fprintf(fp, "<table id=\"players\" border=\"0\" cellspacing=\"0\" cellpadding=\"1\" width=\"%s\">\r\n", "80%");
+    fprintf(fp, "    <tr bgcolor=\"#2f0000\">\r\n");
     if (IS_SET(SHOW_IDLE, whod_mode))
-	fprintf(fp, "<th align=\"center\" width=\"100\">%s</th>\r\n", "Idle");
+	fprintf(fp, "        <th align=\"center\" width=\"100\">%s</th>\r\n", "Idle");
 
     if (IS_SET(SHOW_LEVEL, whod_mode))
-	fprintf(fp, "<th align=\"center\" width=\"100\">%s</th>\r\n", "Level");
+	fprintf(fp, "        <th align=\"center\" width=\"100\">%s</th>\r\n", "Level");
 
-    fprintf(fp, "<th align=\"left\" >%s</th>\r\n", "Name");
+    fprintf(fp, "        <th align=\"left\" >%s</th>\r\n", "Name");
 
     if (IS_SET(SHOW_ROOM, whod_mode))
-	fprintf(fp, "<th align=\"center\" width=\"100\">%s</th>\r\n", "Room");
+	fprintf(fp, "        <th align=\"center\" width=\"100\">%s</th>\r\n", "Room");
 
     if (IS_SET(SHOW_SITE, whod_mode))
-	fprintf(fp, "<th align=\"left\" width=\"200\">%s</th>\r\n", "Site");
-    fprintf(fp, "</tr>\r\n");
+	fprintf(fp, "        <th align=\"left\" width=\"200\">%s</th>\r\n", "Site");
+    fprintf(fp, "    </tr>\r\n");
 
     for (ch = character_list; ch; ch = ch->next) {
 	if (IS_PC(ch)) {
@@ -799,10 +831,10 @@ void                                    generate_mudlist(void)
 
 		char_index++;
 
-		fprintf(fp, "<tr bgcolor=\"%s\">\r\n", char_index % 2 ? "#000000" : "#1f1f1f");
+		fprintf(fp, "    <tr bgcolor=\"%s\">\r\n", char_index % 2 ? "#000000" : "#1f1f1f");
 		if (IS_SET(SHOW_IDLE, whod_mode)) {
 		    if (!(ch->desc)) {
-			fprintf(fp, "<td align=\"center\">%s</td>\r\n",
+			fprintf(fp, "        <td align=\"center\">%s</td>\r\n",
 				"linkdead");
 		    } else {
 			ttime = GET_IDLE_TIME(ch);
@@ -812,122 +844,103 @@ void                                    generate_mudlist(void)
 			ttime -= tmin * 60;
 			tsec = ttime;
 			if (!thour && !tmin && (tsec <= 15))
-			    fprintf(fp, "<td align=\"center\">%s</td>\r\n",
+			    fprintf(fp, "        <td align=\"center\">%s</td>\r\n",
 				    "playing");
 			else
 			    fprintf(fp,
-				    "<td align=\"center\">%02ld:%02ld:%02ld</td>\r\n", thour,
+				    "        <td align=\"center\">%02ld:%02ld:%02ld</td>\r\n", thour,
 				    tmin, tsec);
 		    }
 		}
 
 		if (IS_SET(SHOW_LEVEL, whod_mode)) {
 		    if (GetMaxLevel(ch) >= WIZ_MAX_LEVEL)
-			fprintf(fp, "<td align=\"center\">%s</td>\r\n", "God");
+			fprintf(fp, "        <td align=\"center\">%s</td>\r\n", "God");
 		    else if (GetMaxLevel(ch) == WIZ_MAX_LEVEL - 1)
-			fprintf(fp, "<td align=\"center\">%s</td>\r\n", "Power");
+			fprintf(fp, "        <td align=\"center\">%s</td>\r\n", "Power");
 		    else if (GetMaxLevel(ch) >= WIZ_MIN_LEVEL)
-			fprintf(fp, "<td align=\"center\">%s</td>\r\n", "Whizz");
+			fprintf(fp, "        <td align=\"center\">%s</td>\r\n", "Whizz");
 		    else
-			fprintf(fp, "<td align=\"center\">%3d</td>\r\n",
+			fprintf(fp, "        <td align=\"center\">%3d</td>\r\n",
 				GetMaxLevel(ch));
 		}
 
-		fprintf(fp, "<td align=\"left\">");
+		fprintf(fp, "        <td align=\"left\">");
 		if (IS_SET(SHOW_TITLE, whod_mode))
 		    if (GET_PRETITLE(ch))
-			fprintf(fp, "%s ", GET_PRETITLE(ch));
+			fprintf(fp, " %s", GET_PRETITLE(ch));
 
 		if (IS_SET(SHOW_NAME, whod_mode))
-		    fprintf(fp, "%s", GET_NAME(ch));
+		    fprintf(fp, " %s", GET_NAME(ch));
 
 		if (IS_SET(SHOW_TITLE, whod_mode))
 		    fprintf(fp, " %s", GET_TITLE(ch));
-		fprintf(fp, "</td>\r\n");
+		fprintf(fp, "        </td>\r\n");
 
 		/*
 		 * This is bad for the external whod... it pinpoints people too easily.
 		 * Make them enter the game to see where people are.
 		 */
 		if (IS_SET(SHOW_ROOM, whod_mode)) {
-		    fprintf(fp, "<td align=\"center\">%s</td>\r\n",
+		    fprintf(fp, "        <td align=\"center\">%s</td>\r\n",
 			    real_roomp(ch->in_room)->name);
 		}
 
 		if (IS_SET(SHOW_SITE, whod_mode)) {
 		    if (ch->desc->host[0] != '\0')
-			fprintf(fp, "<td align=\"left\">%s</td>\r\n",
+			fprintf(fp, "        <td align=\"left\">%s</td>\r\n",
 				ch->desc->host);
 		    else if (ch->desc->ip[0] != '\0')
-			fprintf(fp, "<td align=\"left\">%s</td>\r\n",
+			fprintf(fp, "        <td align=\"left\">%s</td>\r\n",
 				ch->desc->ip);
 		}
-		fprintf(fp, "</tr>\r\n");
+		fprintf(fp, "    </tr>\r\n");
 	    }
 	}
     }
     fprintf(fp, "</table>\r\n");
     fprintf(fp, "<br />\r\n");
 
-    fprintf(fp, "<table border=\"0\" cellspacing=\"0\" cellpadding=\"1\" width=\"%s\">\r\n", "80%");
-    fprintf(fp, "<tr bgcolor=\"#002f00\">\r\n");
-    fprintf(fp, "<th align=\"center\" >%s</th>\r\n", "Boot Time");
-    fprintf(fp, "<th align=\"center\" >%s</th>\r\n", "Current Time");
-    fprintf(fp, "<th align=\"center\" width=\"100\">%s</th>\r\n", "Players");
-    fprintf(fp, "<th align=\"center\" width=\"100\">%s</th>\r\n", "Gods");
-    fprintf(fp, "</tr>\r\n");
-    fprintf(fp, "<tr bgcolor=\"%s\">\r\n", "#1f1f1f");
-    fprintf(fp, "<td align=\"center\" >%s</td>\r\n", uptimebuf);
-    fprintf(fp, "<td align=\"center\" >%s</td>\r\n", nowtimebuf);
-    fprintf(fp, "<td align=\"center\" >%d</td>\r\n", players);
-    fprintf(fp, "<td align=\"center\" >%d</td>\r\n", gods);
-    fprintf(fp, "</tr>\r\n");
+    fprintf(fp, "<table id=\"status\" border=\"0\" cellspacing=\"0\" cellpadding=\"1\" width=\"%s\">\r\n", "80%");
+    fprintf(fp, "    <tr bgcolor=\"#002f00\">\r\n");
+    fprintf(fp, "        <th align=\"center\" >%s</th>\r\n", "Boot Time");
+    fprintf(fp, "        <th align=\"center\" >%s</th>\r\n", "Current Time");
+    fprintf(fp, "        <th align=\"center\" width=\"100\">%s</th>\r\n", "Players");
+    fprintf(fp, "        <th align=\"center\" width=\"100\">%s</th>\r\n", "Gods");
+    fprintf(fp, "    </tr>\r\n");
+    fprintf(fp, "    <tr bgcolor=\"%s\">\r\n", "#1f1f1f");
+    fprintf(fp, "        <td align=\"center\" >%s</td>\r\n", uptimebuf);
+    fprintf(fp, "        <td align=\"center\" >%s</td>\r\n", nowtimebuf);
+    fprintf(fp, "        <td align=\"center\" >%d</td>\r\n", players);
+    fprintf(fp, "        <td align=\"center\" >%d</td>\r\n", gods);
+    fprintf(fp, "    </tr>\r\n");
     fprintf(fp, "</table>\r\n");
+    fprintf(fp, "</div>\r\n"); // content-header
 
+    // Now, the actual content.
+    fprintf(fp, "<div id=\"content\" align=\"center\">\r\n");
 #ifdef I3
-    fprintf(fp, "<br />\r\n");
+    fprintf(fp, "    <br />\r\n");
 
-    fprintf(fp, "<table border=\"0\" cellspacing=\"0\" cellpadding=\"1\" width=\"%s\">\r\n", "80%");
+    fprintf(fp, "    <table border=\"0\" cellspacing=\"0\" cellpadding=\"1\" width=\"%s\">\r\n", "80%");
     /* name, type, mudlib, address, port */
 
     /*
-     * Old layout:  Name    Type    Mudlib  Address Port
-     *
-     * New layout:  [-------] Name
-     *              [ Image ] Type      Address Port
-     *              [-------] Mudlib
-     *
      * Dual layout: [-------] Name      [-------] Name
      *              [ Image ] Type      [ Image ] Type
      *              [  ---  ] Mudlib    [  ---  ] Mudlib
      *              [-------] IP Port   [-------] IP Port
      */
 
-    fprintf(fp, "<tr bgcolor=\"#00002f\">\r\n");
-#ifdef OLD_LAYOUT
-    fprintf(fp, "<th align=\"center\" >%s</th>\r\n", "Name");
-    fprintf(fp, "<th align=\"center\" width=\"100\">%s</th>\r\n", "Type");
-    fprintf(fp, "<th align=\"center\" width=\"200\">%s</th>\r\n", "Mudlib");
-    fprintf(fp, "<th align=\"center\" width=\"150\">%s</th>\r\n", "Address");
-    fprintf(fp, "<th align=\"center\" width=\"50\">%s</th>\r\n", "Port");
-#else
-#ifdef DUAL_LAYOUT
-    fprintf(fp, "<th align=\"center\" width=\"%d\">%s</th>\r\n", MUDLIST_WIDTH + 2, "Login Screen");
-    fprintf(fp, "<th align=\"left\" width=\"50\">%s</th>\r\n", "&nbsp;");
-    fprintf(fp, "<th align=\"center\" width=\"25%%\">%s</th>\r\n", "Info");
-    fprintf(fp, "<th align=\"center\" width=\"%d\">%s</th>\r\n", MUDLIST_WIDTH + 2, "Login Screen");
-    fprintf(fp, "<th align=\"left\" width=\"50\">%s</th>\r\n", "&nbsp;");
-    fprintf(fp, "<th align=\"center\" width=\"25%%\">%s</th>\r\n", "Info");
-#else
-    fprintf(fp, "<th align=\"center\" width=\"%d\">%s</th>\r\n", MUDLIST_WIDTH + 2, "Login Screen");
-    fprintf(fp, "<th align=\"left\" width=\"50\">%s</th>\r\n", "&nbsp;");
-    fprintf(fp, "<th align=\"center\">%s</th>\r\n", "Info");
-    fprintf(fp, "<th align=\"left\" width=\"150\">%s</th>\r\n", "Address");
-    fprintf(fp, "<th align=\"right\" width=\"50\">%s</th>\r\n", "Port");
-#endif
-#endif
-    fprintf(fp, "</tr>\r\n");
-    fprintf(fp, "<div class=\"gallery\">\r\n");
+    fprintf(fp, "        <tr bgcolor=\"#00002f\">\r\n");
+    fprintf(fp, "            <th align=\"center\" width=\"%d\">%s</th>\r\n", MUDLIST_WIDTH + 2, "Login Screen");
+    fprintf(fp, "            <th align=\"left\" width=\"50\">%s</th>\r\n", "&nbsp;");
+    fprintf(fp, "            <th align=\"center\" width=\"25%%\">%s</th>\r\n", "Info");
+    fprintf(fp, "            <th align=\"center\" width=\"%d\">%s</th>\r\n", MUDLIST_WIDTH + 2, "Login Screen");
+    fprintf(fp, "            <th align=\"left\" width=\"50\">%s</th>\r\n", "&nbsp;");
+    fprintf(fp, "            <th align=\"center\" width=\"25%%\">%s</th>\r\n", "Info");
+    fprintf(fp, "        </tr>\r\n");
+    fprintf(fp, "        <div class=\"gallery\">\r\n");
 
     for (mud = first_mud; mud; mud = mud->next) {
         if( mud == NULL )
@@ -941,20 +954,9 @@ void                                    generate_mudlist(void)
         if( mud->ipaddress == NULL )
             continue;
         if( mud->status == -1 ) {
-#ifdef OLD_LAYOUT
-            fprintf(fp, "<tr bgcolor=\"%s\">\r\n", row_counter % 2 ? "#000000" : "#1f1f1f");
-            fprintf(fp, "<td align=\"left\"><a target=\"I3 mudlist\" href=\"http://%s/\">%s</a></td>\r\n", mud->ipaddress, mud->name);
-            fprintf(fp, "<td align=\"left\" >%s</td>\r\n", mud->mud_type);
-            fprintf(fp, "<td align=\"left\" >%s</td>\r\n", mud->mudlib);
-            fprintf(fp, "<td align=\"left\" ><a href=\"telnet://%s:%d/\">%s</a></td>\r\n", mud->ipaddress, mud->player_port, mud->ipaddress);
-            fprintf(fp, "<td align=\"right\" ><a href=\"telnet://%s:%d/\">%d</a></td>\r\n", mud->ipaddress, mud->player_port, mud->player_port);
-            fprintf(fp, "</tr>\r\n");
-            row_counter++;
-#else
-#ifdef DUAL_LAYOUT
             if( !(col_counter % 2) ) {
                 // Even means we're on the left side of a row
-                fprintf(fp, "<tr bgcolor=\"%s\">\r\n", row_counter % 2 ? "#000000" : "#1f1f1f");
+                fprintf(fp, "            <tr bgcolor=\"%s\">\r\n", row_counter % 2 ? "#000000" : "#1f1f1f");
             }
 
             //log_info("Generating layout for %s", mud->name);
@@ -981,101 +983,57 @@ void                                    generate_mudlist(void)
             //log_info("                      %s", stat_name);
             //log_info("                      %s", stat_name_public);
 
-            fprintf(fp, "<td align=\"center\">\r\n");
-            fprintf(fp, "<div class=\"gallery-item\">\r\n");
+            fprintf(fp, "                <td align=\"center\">\r\n");
+            fprintf(fp, "                    <div class=\"gallery-item\">\r\n");
             //fprintf(fp, "    <a href=\"%s\" data-lightbox=\"gallery\">\r\n", stat_name_public);
-            fprintf(fp, "    <a href=\"%s\" data-lightbox>\r\n", stat_name_public);
-            fprintf(fp, "        <img border=\"0\" width=\"%d\" height=\"%d\" src=\"%s\" />\r\n",
+            fprintf(fp, "                        <a href=\"%s\" data-lightbox>\r\n", stat_name_public);
+            fprintf(fp, "                            <img border=\"0\" width=\"%d\" height=\"%d\" src=\"%s\" />\r\n",
                     MUDLIST_WIDTH, MUDLIST_HEIGHT, stat_name_public);
-            fprintf(fp, "    </a>\r\n");
-            fprintf(fp, "</div>\r\n");
-            fprintf(fp, "</td>\r\n");
-            fprintf(fp, "<td align=\"left\">%s</td>\r\n", "&nbsp;");
-            fprintf(fp, "<td align=\"left\">\r\n");
-            fprintf(fp, "    <a target=\"I3 mudlist\" href=\"http://%s/\">%s</a><br />\r\n", mud->ipaddress, mud->name);
-            fprintf(fp, "    %s<br />\r\n", mud->mud_type);
-            fprintf(fp, "    %s<br />\r\n", mud->mudlib);
-            fprintf(fp, "    <a href=\"telnet://%s:%d/\">%s %d</a>\r\n", mud->ipaddress, mud->player_port, mud->ipaddress, mud->player_port);
-            fprintf(fp, "</td>\r\n");
+            fprintf(fp, "                        </a>\r\n");
+            fprintf(fp, "                    </div>\r\n");
+            fprintf(fp, "                </td>\r\n");
+            fprintf(fp, "                <td align=\"left\">%s</td>\r\n", "&nbsp;");
+            fprintf(fp, "                <td align=\"left\">\r\n");
+            fprintf(fp, "                    <a target=\"I3 mudlist\" href=\"http://%s/\">%s</a><br />\r\n", mud->ipaddress, mud->name);
+            fprintf(fp, "                    %s<br />\r\n", mud->mud_type);
+            fprintf(fp, "                    %s<br />\r\n", mud->mudlib);
+            fprintf(fp, "                    <a href=\"telnet://%s:%d/\">%s %d</a>\r\n", mud->ipaddress, mud->player_port, mud->ipaddress, mud->player_port);
+            fprintf(fp, "                </td>\r\n");
 
             if( col_counter % 2 ) {
                 // Odd means we are on the right side of a row
-                fprintf(fp, "</tr>\r\n");
+                fprintf(fp, "            </tr>\r\n");
                 row_counter++;
             }
             col_counter++;
-#else
-            //log_info("Generating layout for %s", mud->name);
-            bzero(stat_name, MAX_INPUT_LENGTH);
-            bzero(stat_name_public, MAX_INPUT_LENGTH);
-
-            //sprintf(stat_name, "%s%s.png", MUDLIST_GFX, sha256_crypt(mud->name));
-            //sprintf(stat_name_public, "%s%s.png", PUBLIC_GFX, sha256_crypt(mud->name));
-            //log_info("Looking for           %s", stat_name);
-            //if( stat(stat_name, &stat_buf) < 0 ) {
-                sprintf(stat_name, "%s%s.png", MUDLIST_GFX, md5_hex(mud->name));
-                sprintf(stat_name_public, "%s%s.png", PUBLIC_GFX, md5_hex(mud->name));
-                //log_info("NOT FOUND Looking for %s", stat_name);
-                if( stat(stat_name, &stat_buf) < 0 ) {
-                    int guess = (int)(random() % 10);
-
-                    sprintf(stat_name, "%s%s_%d.png", MUDLIST_GFX, "__NOT_FOUND", guess);
-                    sprintf(stat_name_public, "%s%s_%d.png", PUBLIC_GFX, "__NOT_FOUND", guess);
-                    //log_info("NOT FOUND Either.");
-                } else {
-                    connected++;
-                }
-            //}
-            //log_info("                      %s", stat_name);
-            //log_info("                      %s", stat_name_public);
-
-            fprintf(fp, "<tr bgcolor=\"%s\">\r\n", row_counter % 2 ? "#000000" : "#1f1f1f");
-            fprintf(fp, "<td align=\"center\"><img border=\"0\" width=\"%d\" height=\"%d\" src=\"%s\" /></td>\r\n", MUDLIST_WIDTH, MUDLIST_HEIGHT, stat_name_public);
-            fprintf(fp, "<td align=\"left\">%s</td>\r\n", "&nbsp;");
-            fprintf(fp, "<td align=\"left\">\r\n");
-            fprintf(fp, "    <a target=\"I3 mudlist\" href=\"http://%s/\">%s</a><br />\r\n", mud->ipaddress, mud->name);
-            fprintf(fp, "    %s<br />\r\n", mud->mud_type);
-            fprintf(fp, "    %s\r\n", mud->mudlib);
-            fprintf(fp, "</td>\r\n");
-            fprintf(fp, "<td align=\"left\"><a href=\"telnet://%s:%d/\">%s</a></td>\r\n", mud->ipaddress, mud->player_port, mud->ipaddress);
-            fprintf(fp, "<td align=\"right\"><a href=\"telnet://%s:%d/\">%d</a></td>\r\n", mud->ipaddress, mud->player_port, mud->player_port);
-            fprintf(fp, "</tr>\r\n");
-            row_counter++;
-#endif
-#endif
         }
     }
 
-#ifdef DUAL_LAYOUT
     if( col_counter % 2 ) {
         // Odd means we are on the right side of a row
         // Furthermore, at this point it means we never closed off our row
-        fprintf(fp, "</tr>\r\n");
+        fprintf(fp, "            </tr>\r\n");
     }
-#endif
 
-    fprintf(fp, "</div>\r\n");
-    fprintf(fp, "<tr bgcolor=\"#00002f\">\r\n");
-#ifdef OLD_LAYOUT
-    fprintf(fp, "<td align=\"center\" colspan=\"5\">%d total muds listed.</td>\r\n", row_counter);
-#else
-#ifdef DUAL_LAYOUT
-    fprintf(fp, "<td align=\"center\" colspan=\"6\">%d total muds listed (%d connected).</td>\r\n", (row_counter * 2) + (col_counter % 2), connected);
-#else
-    fprintf(fp, "<td align=\"center\" colspan=\"5\">%d total muds listed (%d connected).</td>\r\n", row_counter, connected);
-#endif
-#endif
-    fprintf(fp, "</tr>\r\n");
-    fprintf(fp, "</table>\r\n");
-#endif
+    fprintf(fp, "        </div>\r\n"); // gallary
 
-    fprintf(fp, "</div>\r\n");
+    fprintf(fp, "        <tr bgcolor=\"#00002f\">\r\n");
+    fprintf(fp, "            <td align=\"center\" colspan=\"6\">%d total muds listed (%d connected).</td>\r\n", (row_counter * 2) + (col_counter % 2), connected);
+    fprintf(fp, "        </tr>\r\n");
 
     gettimeofday(&later_bits, NULL);
-    fprintf(fp,
-	    "<div align=\"right\"><font size=\"-1\" color=\"#1f1f1f\">page took %01d.%06d seconds to render.</font></div>\r\n",
+    fprintf(fp, "        <tr bgcolor=\"#000000\">\r\n");
+    fprintf(fp, 
+            "            <td align=\"right\" colspan=\"%d\"><font size=\"-1\" color=\"#1f1f1f\">%01d.%06d seconds</font></td>\r\n",
+            6,
 	    (int)(later_bits.tv_sec - now_bits.tv_sec),
-	    (int)(later_bits.tv_usec - now_bits.tv_usec));
+	    (int)(later_bits.tv_usec - now_bits.tv_usec)
+            );
+    fprintf(fp, "        </tr>\r\n");
+    fprintf(fp, "    </table>\r\n");
+#endif
+
+    fprintf(fp, "</div>\r\n");  // content
 
     fprintf(fp, "<link href=\"lightbox/lightbox.min.css\" rel=\"stylesheet\">\r\n");
     fprintf(fp, "<script src=\"lightbox/lightbox.min.js\"></script>\r\n");
@@ -1101,13 +1059,74 @@ void                                    generate_json_mudlist(void)
     I3_MUD                                 *mud;
 #endif
     int                                     did_one = 0;
+    time_t                                  now;
+    char                                    nowtimebuf[100];
+    char                                    uptimebuf[100];
+    struct char_data                       *ch = NULL;
+    int                                     mortals = 0;
+    int                                     gods = 0;
 
     if(!(fp = fopen(JSON_MUDLIST_PAGE, "w"))) {
         log_error("Cannot open %s!", JSON_MUDLIST_PAGE);
         return;
     }
 
+    now = time((time_t *) 0);
+    strftime(nowtimebuf, sizeof(nowtimebuf), RFC1123FMT, localtime(&now));
+    strftime(uptimebuf, sizeof(uptimebuf), RFC1123FMT, localtime((time_t *) & Uptime));
+
     fprintf(fp, "{\n");
+    fprintf(fp, "    \"version\" : {\n");
+    fprintf(fp, "        \"build\" : \"%s\",\n", json_escape(VERSION_BUILD));
+    fprintf(fp, "        \"date\" : \"%s\"\n", json_escape(VERSION_DATE));
+    fprintf(fp, "    },\n");
+    fprintf(fp, "    \"time\" : \"%5.5s %s\",\n", &nowtimebuf[17], &nowtimebuf[26]);
+    fprintf(fp, "    \"boot\" : \"%s\",\n", uptimebuf);
+    fprintf(fp, "    \"player_list\" : [\n");
+
+    did_one = 0;
+    for (ch = character_list; ch; ch = ch->next) {
+	if (IS_PC(ch)) {
+	    if ((INVIS_LEVEL(ch) < 2) && (GetMaxLevel(ch) <= WIZ_MAX_LEVEL) &&
+		!IS_AFFECTED(ch, AFF_HIDE) && !IS_AFFECTED(ch, AFF_INVISIBLE)) {
+
+                if( did_one ) {
+                    fprintf(fp, ",\n");
+                } else {
+                    did_one = 1;
+                }
+
+                fprintf(fp, "        {\n");
+                fprintf(fp, "            \"name\" : \"%s\",\n", json_escape(GET_NAME(ch)));
+                fprintf(fp, "            \"title\" : \"%s\",\n", json_escape(GET_TITLE(ch)));
+                fprintf(fp, "            \"pretitle\" : \"%s\",\n", GET_PRETITLE(ch) ? json_escape(GET_PRETITLE(ch)) : "");
+                fprintf(fp, "            \"idle\" : \"%ld\",\n", GET_IDLE_TIME(ch));
+                fprintf(fp, "            \"level\" : \"%d\",\n", GetMaxLevel(ch));
+                fprintf(fp, "            \"rank\" : \"%s\"\n", 
+                        GetMaxLevel(ch) >= WIZ_MAX_LEVEL ? "God" :
+                        GetMaxLevel(ch) == WIZ_MAX_LEVEL - 1 ? "Power" :
+                        GetMaxLevel(ch) >= WIZ_MIN_LEVEL ? "Whizz" :
+                        "mortal");
+                fprintf(fp, "        }");
+
+                if( GetMaxLevel(ch) >= WIZ_MIN_LEVEL ) {
+                    gods++;
+                } else {
+                    mortals++;
+                }
+            }
+        }
+    }
+    if( did_one ) {
+        fprintf(fp, "\n");
+    }
+    fprintf(fp, "    ],\n");
+    fprintf(fp, "    \"players\" : {\n");
+    fprintf(fp, "        \"gods\" : \"%d\",\n", gods);
+    fprintf(fp, "        \"mortals\" : \"%d\"\n", mortals);
+    fprintf(fp, "    },\n");
+
+    did_one = 0;
     fprintf(fp, "    \"mudlist\" : [ \n");
 #ifdef I3
     for (mud = first_mud; mud; mud = mud->next) {
@@ -1128,6 +1147,7 @@ void                                    generate_json_mudlist(void)
         }
         fprintf(fp, "        {\n");
         fprintf(fp, "            \"name\"      : \"%s\", \n", json_escape(mud->name));
+        fprintf(fp, "            \"md5\"       : \"%s\", \n", json_escape(md5_hex(mud->name)));
         fprintf(fp, "            \"type\"      : \"%s\", \n", json_escape(mud->mud_type));
         fprintf(fp, "            \"mudlib\"    : \"%s\", \n", json_escape(mud->mudlib));
         fprintf(fp, "            \"ipaddress\" : \"%s\", \n", json_escape(mud->ipaddress));

@@ -1,1537 +1,1816 @@
 <html>
 <head>
-<title>Welcome to WileyMUD!</title>
-<style>
-a { text-decoration:none; }
-a:hover { text-decoration:underline; }
-table { table-layout: fixed; white-space:nowrap; text-overflow: ellipsis; overflow-x: hidden; }
-tr { table-layout: fixed; white-space:nowrap; text-overflow: ellipsis; overflow-x: hidden; }
-th { table-layout: fixed; white-space:nowrap; text-overflow: ellipsis; overflow-x: hidden; }
-td { table-layout: fixed; white-space:nowrap; text-overflow: ellipsis; overflow-x: hidden; }
+<meta charset="utf-8" /><meta http-equiv="cache-control" content="no-cache" /><meta http-equiv="pragma" content="no-cache" /><style>
+    html, body { table-layout: fixed; max-width: 100%; overflow-x: hidden; word-wrap: break-word; text-overflow: ellipsis;}
+    table { table-layout: fixed; max-width: 99%; overflow-x: hidden; word-wrap: break-word; text-overflow: ellipsis; }
+    a { text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    a:active, a:focus { outline: 0; border: none; -moz-outline-style: none; }
+    #navbar { position: fixed; top: 0; left: 0; background-color: black; }
+    #content-header { padding-top: 60px; }
 </style>
+<title>Welcome to WileyMUD!</title>
 </head>
 <body bgcolor="black" text="#d0d0d0" link="#ffffbf" vlink="#ffa040">
-<table border="0" cellspacing="0" cellpadding="1" width="99%">
-<tr valign="middle" bgcolor="#000000">
-<td valign="middle" align="center" width="75"><a href="http://wileymud.themud.org/~wiley/i3log.php">i3 logs</a></td>
-<td valign="middle" align="center"><h3><a href="telnet://wileymud.themud.org:3000">*** Welcome to WileyMUD III, Quixadhal's Version 1.786b (2019-03-26) ***</a></h3></td>
-<td valign="middle" align="center" width="75">&nbsp;</td>
-</tr>
+<table id="navbar" width="99%" cellspacing="0" cellpadding="1" align="center">
+    <tr>
+    <td align="left" width="25%">
+        <a href="http://wileymud.themud.org/~wiley/logpages" alt="Logs" title="Logs">
+            <img src="http://wileymud.themud.org/~wiley/gfx/log.png" width="48" height="48" border="0" />
+        </a>
+        <a href="https://discord.gg/kUduSsJ" alt="Discord" title="Discord">
+            <img src="http://wileymud.themud.org/~wiley/gfx/discord.png" width="48" height="48" border="0" />
+        </a>
+    </td>
+    <td align="center" width="50%">
+        <a href="telnet://wileymud.themud.org:3000" alt="WileyMUD" title="WileyMUD">
+            <img src="http://wileymud.themud.org/~wiley/gfx/wileymud3.png" width="165" height="32" border="0" />
+        </a>
+        <br />
+        <span style="vertical-align: bottom; color: #bb0000"> Version 1.810b (2019-04-14) </span>
+    </td>
+    <td align="right" width="25%">
+        <span style="vertical-align: top; color: #ccaa00"> 10:05 PDT </span>
+        <a href="http://wileymud.themud.org/~wiley/server.php" alt="Server" title="Server">
+            <img src="http://wileymud.themud.org/~wiley/gfx/server_icon.png" width="48" height="48" border="0" />
+        </a>
+    </td>
+    </tr>
 </table>
-<div align="center">
-<table border="0" cellspacing="0" cellpadding="1" width="80%">
-<tr bgcolor="#2f0000">
-<th align="center" width="100">Idle</th>
-<th align="left" >Name</th>
-</tr>
-<tr bgcolor="#000000">
-<td align="center">00:02:00</td>
-<td align="left">Dread Quixadhal is the Dark Lord of VI</td>
-</tr>
+<div id="content-header" align="center">
+<table id="players" border="0" cellspacing="0" cellpadding="1" width="80%">
+    <tr bgcolor="#2f0000">
+        <th align="center" width="100">Idle</th>
+        <th align="left" >Name</th>
+    </tr>
+    <tr bgcolor="#000000">
+        <td align="center">00:13:03</td>
+        <td align="left"> Dread Quixadhal is the Dark Lord of VI        </td>
+    </tr>
 </table>
 <br />
-<table border="0" cellspacing="0" cellpadding="1" width="80%">
-<tr bgcolor="#002f00">
-<th align="center" >Boot Time</th>
-<th align="center" >Current Time</th>
-<th align="center" width="100">Players</th>
-<th align="center" width="100">Gods</th>
-</tr>
-<tr bgcolor="#1f1f1f">
-<td align="center" >Fri, 05 Apr 2019 16:53:00 PDT</td>
-<td align="center" >Sun, 14 Apr 2019 00:28:37 PDT</td>
-<td align="center" >0</td>
-<td align="center" >1</td>
-</tr>
-</table>
-<br />
-<table border="0" cellspacing="0" cellpadding="1" width="80%">
-<tr bgcolor="#00002f">
-<th align="center" width="194">Login Screen</th>
-<th align="left" width="50">&nbsp;</th>
-<th align="center" width="25%">Info</th>
-<th align="center" width="194">Login Screen</th>
-<th align="left" width="50">&nbsp;</th>
-<th align="center" width="25%">Info</th>
-</tr>
-<div class="gallery">
-<tr bgcolor="#1f1f1f">
-<td align="center">
-<div class="gallery-item">
-    <a href="gfx/mud/27e3ce1705dbda21ebc9e3670b77b2cc.png" data-lightbox>
-        <img border="0" width="192" height="120" src="gfx/mud/27e3ce1705dbda21ebc9e3670b77b2cc.png" />
-    </a>
-</div>
-</td>
-<td align="left">&nbsp;</td>
-<td align="left">
-    <a target="I3 mudlist" href="http://69.164.199.238/">7thplane</a><br />
-    n/a<br />
-    IMC2 Freedom CL-2.2-PlanarDiku<br />
-    <a href="telnet://69.164.199.238:8888/">69.164.199.238 8888</a>
-</td>
-<td align="center">
-<div class="gallery-item">
-    <a href="gfx/mud/23d0971cee5e5c17607376949c6da58f.png" data-lightbox>
-        <img border="0" width="192" height="120" src="gfx/mud/23d0971cee5e5c17607376949c6da58f.png" />
-    </a>
-</div>
-</td>
-<td align="left">&nbsp;</td>
-<td align="left">
-    <a target="I3 mudlist" href="http://178.79.173.99/">Aadaria</a><br />
-    DikuMUD<br />
-    ADR 4.05 (build: 73) 4.05 (build: 88)<br />
-    <a href="telnet://178.79.173.99:1111/">178.79.173.99 1111</a>
-</td>
-</tr>
-<tr bgcolor="#000000">
-<td align="center">
-<div class="gallery-item">
-    <a href="gfx/mud/__NOT_FOUND_7.png" data-lightbox>
-        <img border="0" width="192" height="120" src="gfx/mud/__NOT_FOUND_7.png" />
-    </a>
-</div>
-</td>
-<td align="left">&nbsp;</td>
-<td align="left">
-    <a target="I3 mudlist" href="http://98.213.174.122/">Aadarian_Realms</a><br />
-    DikuMUD<br />
-    ADR 1.00 (build: 33)<br />
-    <a href="telnet://98.213.174.122:1111/">98.213.174.122 1111</a>
-</td>
-<td align="center">
-<div class="gallery-item">
-    <a href="gfx/mud/24d6379cd169aa70bc3a3112fbab83a3.png" data-lightbox>
-        <img border="0" width="192" height="120" src="gfx/mud/24d6379cd169aa70bc3a3112fbab83a3.png" />
-    </a>
-</div>
-</td>
-<td align="left">&nbsp;</td>
-<td align="left">
-    <a target="I3 mudlist" href="http://178.79.173.99/">Aadarian_Realms-OLD</a><br />
-    DikuMUD<br />
-    ADR 4.66 (build: 82)<br />
-    <a href="telnet://178.79.173.99:1114/">178.79.173.99 1114</a>
-</td>
-</tr>
-<tr bgcolor="#1f1f1f">
-<td align="center">
-<div class="gallery-item">
-    <a href="gfx/mud/21886062a6e123d028e3f5c46ef13300.png" data-lightbox>
-        <img border="0" width="192" height="120" src="gfx/mud/21886062a6e123d028e3f5c46ef13300.png" />
-    </a>
-</div>
-</td>
-<td align="left">&nbsp;</td>
-<td align="left">
-    <a target="I3 mudlist" href="http://178.196.119.83/">Adaka</a><br />
-    CoffeeMud<br />
-    CoffeeMud v5.9.6<br />
-    <a href="telnet://178.196.119.83:5555/">178.196.119.83 5555</a>
-</td>
-<td align="center">
-<div class="gallery-item">
-    <a href="gfx/mud/ba0efe0165f99e0fe749ce7824c56e79.png" data-lightbox>
-        <img border="0" width="192" height="120" src="gfx/mud/ba0efe0165f99e0fe749ce7824c56e79.png" />
-    </a>
-</div>
-</td>
-<td align="left">&nbsp;</td>
-<td align="left">
-    <a target="I3 mudlist" href="http://45.79.84.36/">Aftermath RPG</a><br />
-    CoffeeMud<br />
-    CoffeeMud v5.9.6.3<br />
-    <a href="telnet://45.79.84.36:23/">45.79.84.36 23</a>
-</td>
-</tr>
-<tr bgcolor="#000000">
-<td align="center">
-<div class="gallery-item">
-    <a href="gfx/mud/4361761aeb2fc711997dc9aa6365730e.png" data-lightbox>
-        <img border="0" width="192" height="120" src="gfx/mud/4361761aeb2fc711997dc9aa6365730e.png" />
-    </a>
-</div>
-</td>
-<td align="left">&nbsp;</td>
-<td align="left">
-    <a target="I3 mudlist" href="http://66.85.147.93/">Allegiances Unbroken</a><br />
-    CoffeeMud<br />
-    CoffeeMud v5.9.1<br />
-    <a href="telnet://66.85.147.93:1234/">66.85.147.93 1234</a>
-</td>
-<td align="center">
-<div class="gallery-item">
-    <a href="gfx/mud/__NOT_FOUND_9.png" data-lightbox>
-        <img border="0" width="192" height="120" src="gfx/mud/__NOT_FOUND_9.png" />
-    </a>
-</div>
-</td>
-<td align="left">&nbsp;</td>
-<td align="left">
-    <a target="I3 mudlist" href="http://54.236.72.139/">Amazopolis</a><br />
-    CoffeeMud<br />
-    CoffeeMud v5.9.6<br />
-    <a href="telnet://54.236.72.139:5555/">54.236.72.139 5555</a>
-</td>
-</tr>
-<tr bgcolor="#1f1f1f">
-<td align="center">
-<div class="gallery-item">
-    <a href="gfx/mud/b12ada003e4a5ac54e09aa42ce0d6d80.png" data-lightbox>
-        <img border="0" width="192" height="120" src="gfx/mud/b12ada003e4a5ac54e09aa42ce0d6d80.png" />
-    </a>
-</div>
-</td>
-<td align="left">&nbsp;</td>
-<td align="left">
-    <a target="I3 mudlist" href="http://128.16.10.197/">Antikaria</a><br />
-    TMD<br />
-    antikaria<br />
-    <a href="telnet://128.16.10.197:9000/">128.16.10.197 9000</a>
-</td>
-<td align="center">
-<div class="gallery-item">
-    <a href="gfx/mud/fda8bf95b5380d11d0d9d2ee44224d08.png" data-lightbox>
-        <img border="0" width="192" height="120" src="gfx/mud/fda8bf95b5380d11d0d9d2ee44224d08.png" />
-    </a>
-</div>
-</td>
-<td align="left">&nbsp;</td>
-<td align="left">
-    <a target="I3 mudlist" href="http://178.62.73.229/">AsYetUntitled</a><br />
-    LPMud<br />
-    Dead Souls 3.8.6<br />
-    <a href="telnet://178.62.73.229:6666/">178.62.73.229 6666</a>
-</td>
-</tr>
-<tr bgcolor="#000000">
-<td align="center">
-<div class="gallery-item">
-    <a href="gfx/mud/b4df03519ad8be2f68bd70413b74c64d.png" data-lightbox>
-        <img border="0" width="192" height="120" src="gfx/mud/b4df03519ad8be2f68bd70413b74c64d.png" />
-    </a>
-</div>
-</td>
-<td align="left">&nbsp;</td>
-<td align="left">
-    <a target="I3 mudlist" href="http://95.85.50.124/">Awakened Codex</a><br />
-    CoffeeMud<br />
-    CoffeeMud v5.9.7<br />
-    <a href="telnet://95.85.50.124:5555/">95.85.50.124 5555</a>
-</td>
-<td align="center">
-<div class="gallery-item">
-    <a href="gfx/mud/__NOT_FOUND_6.png" data-lightbox>
-        <img border="0" width="192" height="120" src="gfx/mud/__NOT_FOUND_6.png" />
-    </a>
-</div>
-</td>
-<td align="left">&nbsp;</td>
-<td align="left">
-    <a target="I3 mudlist" href="http://195.176.29.132/">BLOCKS</a><br />
-    CoffeeMud<br />
-    CoffeeMud v5.9.4<br />
-    <a href="telnet://195.176.29.132:5555/">195.176.29.132 5555</a>
-</td>
-</tr>
-<tr bgcolor="#1f1f1f">
-<td align="center">
-<div class="gallery-item">
-    <a href="gfx/mud/2dd142eb1ca762dda2ed13e5aeeb6169.png" data-lightbox>
-        <img border="0" width="192" height="120" src="gfx/mud/2dd142eb1ca762dda2ed13e5aeeb6169.png" />
-    </a>
-</div>
-</td>
-<td align="left">&nbsp;</td>
-<td align="left">
-    <a target="I3 mudlist" href="http://198.12.92.168/">Chaos Reigns</a><br />
-    LPMud<br />
-    Dead Souls 3.8.6<br />
-    <a href="telnet://198.12.92.168:6666/">198.12.92.168 6666</a>
-</td>
-<td align="center">
-<div class="gallery-item">
-    <a href="gfx/mud/c94774c4f4a90784e141215e1bc2ab4e.png" data-lightbox>
-        <img border="0" width="192" height="120" src="gfx/mud/c94774c4f4a90784e141215e1bc2ab4e.png" />
-    </a>
-</div>
-</td>
-<td align="left">&nbsp;</td>
-<td align="left">
-    <a target="I3 mudlist" href="http://104.14.28.106/">CoffeeMud</a><br />
-    CoffeeMud<br />
-    CoffeeMud v5.9.8.1<br />
-    <a href="telnet://104.14.28.106:2323/">104.14.28.106 2323</a>
-</td>
-</tr>
-<tr bgcolor="#000000">
-<td align="center">
-<div class="gallery-item">
-    <a href="gfx/mud/6bcafe4035076f6e5fed44f03b3025d3.png" data-lightbox>
-        <img border="0" width="192" height="120" src="gfx/mud/6bcafe4035076f6e5fed44f03b3025d3.png" />
-    </a>
-</div>
-</td>
-<td align="left">&nbsp;</td>
-<td align="left">
-    <a target="I3 mudlist" href="http://173.193.107.10/">Core MUD</a><br />
-    LPMud<br />
-    Colony 1.3<br />
-    <a href="telnet://173.193.107.10:4000/">173.193.107.10 4000</a>
-</td>
-<td align="center">
-<div class="gallery-item">
-    <a href="gfx/mud/d622fb236809b5fc0ce47650eb4b9151.png" data-lightbox>
-        <img border="0" width="192" height="120" src="gfx/mud/d622fb236809b5fc0ce47650eb4b9151.png" />
-    </a>
-</div>
-</td>
-<td align="left">&nbsp;</td>
-<td align="left">
-    <a target="I3 mudlist" href="http://96.126.100.155/">Covenant of Lords</a><br />
-    CoffeeMud<br />
-    CoffeeMud v5.9.7<br />
-    <a href="telnet://96.126.100.155:23/">96.126.100.155 23</a>
-</td>
-</tr>
-<tr bgcolor="#1f1f1f">
-<td align="center">
-<div class="gallery-item">
-    <a href="gfx/mud/__NOT_FOUND_1.png" data-lightbox>
-        <img border="0" width="192" height="120" src="gfx/mud/__NOT_FOUND_1.png" />
-    </a>
-</div>
-</td>
-<td align="left">&nbsp;</td>
-<td align="left">
-    <a target="I3 mudlist" href="http://138.91.79.81/">Crat's Agony</a><br />
-    LPMud<br />
-    Dead Souls 3.8.1<br />
-    <a href="telnet://138.91.79.81:6666/">138.91.79.81 6666</a>
-</td>
-<td align="center">
-<div class="gallery-item">
-    <a href="gfx/mud/5f406b242e5d7f5224cf975d524a5b10.png" data-lightbox>
-        <img border="0" width="192" height="120" src="gfx/mud/5f406b242e5d7f5224cf975d524a5b10.png" />
-    </a>
-</div>
-</td>
-<td align="left">&nbsp;</td>
-<td align="left">
-    <a target="I3 mudlist" href="http://178.79.173.99/">Dark City</a><br />
-    GodWars<br />
-    Dark City<br />
-    <a href="telnet://178.79.173.99:3000/">178.79.173.99 3000</a>
-</td>
-</tr>
-<tr bgcolor="#000000">
-<td align="center">
-<div class="gallery-item">
-    <a href="gfx/mud/0326d47db1bb6b3d50966dcea6b0aedb.png" data-lightbox>
-        <img border="0" width="192" height="120" src="gfx/mud/0326d47db1bb6b3d50966dcea6b0aedb.png" />
-    </a>
-</div>
-</td>
-<td align="left">&nbsp;</td>
-<td align="left">
-    <a target="I3 mudlist" href="http://138.197.27.13/">Dark Ruins</a><br />
-    LPMud<br />
-    Dead Souls 3.8.6<br />
-    <a href="telnet://138.197.27.13:3000/">138.197.27.13 3000</a>
-</td>
-<td align="center">
-<div class="gallery-item">
-    <a href="gfx/mud/16f58cd6254cb4dfbffb15040efaad5f.png" data-lightbox>
-        <img border="0" width="192" height="120" src="gfx/mud/16f58cd6254cb4dfbffb15040efaad5f.png" />
-    </a>
-</div>
-</td>
-<td align="left">&nbsp;</td>
-<td align="left">
-    <a target="I3 mudlist" href="http://222.154.243.2/">Darkmaze</a><br />
-    LPMud<br />
-    Dead Souls 3.8.1<br />
-    <a href="telnet://222.154.243.2:6900/">222.154.243.2 6900</a>
-</td>
-</tr>
-<tr bgcolor="#1f1f1f">
-<td align="center">
-<div class="gallery-item">
-    <a href="gfx/mud/5dd655a0a62981f02a978030106130c9.png" data-lightbox>
-        <img border="0" width="192" height="120" src="gfx/mud/5dd655a0a62981f02a978030106130c9.png" />
-    </a>
-</div>
-</td>
-<td align="left">&nbsp;</td>
-<td align="left">
-    <a target="I3 mudlist" href="http://204.10.33.131/">Darkness and Despair</a><br />
-    LPMud<br />
-    Nightmare+DnD<br />
-    <a href="telnet://204.10.33.131:4201/">204.10.33.131 4201</a>
-</td>
-<td align="center">
-<div class="gallery-item">
-    <a href="gfx/mud/83670fc77dca81e8c0696e4022d3979c.png" data-lightbox>
-        <img border="0" width="192" height="120" src="gfx/mud/83670fc77dca81e8c0696e4022d3979c.png" />
-    </a>
-</div>
-</td>
-<td align="left">&nbsp;</td>
-<td align="left">
-    <a target="I3 mudlist" href="http://198.74.50.70/">Darkness Rises</a><br />
-    CoffeeMud<br />
-    CoffeeMud v5.9.7.3<br />
-    <a href="telnet://198.74.50.70:5555/">198.74.50.70 5555</a>
-</td>
-</tr>
-<tr bgcolor="#000000">
-<td align="center">
-<div class="gallery-item">
-    <a href="gfx/mud/6f4dded0475ba23a702b0546548d2bd8.png" data-lightbox>
-        <img border="0" width="192" height="120" src="gfx/mud/6f4dded0475ba23a702b0546548d2bd8.png" />
-    </a>
-</div>
-</td>
-<td align="left">&nbsp;</td>
-<td align="left">
-    <a target="I3 mudlist" href="http://84.245.8.150/">Darkscapes</a><br />
-    LPMud<br />
-    Dead Souls 3.6<br />
-    <a href="telnet://84.245.8.150:6717/">84.245.8.150 6717</a>
-</td>
-<td align="center">
-<div class="gallery-item">
-    <a href="gfx/mud/45c0d80132b486d656eaa847afe36798.png" data-lightbox>
-        <img border="0" width="192" height="120" src="gfx/mud/45c0d80132b486d656eaa847afe36798.png" />
-    </a>
-</div>
-</td>
-<td align="left">&nbsp;</td>
-<td align="left">
-    <a target="I3 mudlist" href="http://97.107.133.86/">Dead Souls Dev</a><br />
-    LPMud<br />
-    Dead Souls 3.8.6<br />
-    <a href="telnet://97.107.133.86:8000/">97.107.133.86 8000</a>
-</td>
-</tr>
-<tr bgcolor="#1f1f1f">
-<td align="center">
-<div class="gallery-item">
-    <a href="gfx/mud/60d655b365c33b48ef933003dedcc1c4.png" data-lightbox>
-        <img border="0" width="192" height="120" src="gfx/mud/60d655b365c33b48ef933003dedcc1c4.png" />
-    </a>
-</div>
-</td>
-<td align="left">&nbsp;</td>
-<td align="left">
-    <a target="I3 mudlist" href="http://178.7.50.156/">Dead_Souls_djtechno</a><br />
-    LPMud<br />
-    Dead Souls 3.8.2<br />
-    <a href="telnet://178.7.50.156:6666/">178.7.50.156 6666</a>
-</td>
-<td align="center">
-<div class="gallery-item">
-    <a href="gfx/mud/__NOT_FOUND_1.png" data-lightbox>
-        <img border="0" width="192" height="120" src="gfx/mud/__NOT_FOUND_1.png" />
-    </a>
-</div>
-</td>
-<td align="left">&nbsp;</td>
-<td align="left">
-    <a target="I3 mudlist" href="http://184.170.75.41/">Dead_Souls_panther</a><br />
-    LPMud<br />
-    Dead Souls 3.8.6<br />
-    <a href="telnet://184.170.75.41:4000/">184.170.75.41 4000</a>
-</td>
-</tr>
-<tr bgcolor="#000000">
-<td align="center">
-<div class="gallery-item">
-    <a href="gfx/mud/774ac7a8da69a41287f03042b519e73b.png" data-lightbox>
-        <img border="0" width="192" height="120" src="gfx/mud/774ac7a8da69a41287f03042b519e73b.png" />
-    </a>
-</div>
-</td>
-<td align="left">&nbsp;</td>
-<td align="left">
-    <a target="I3 mudlist" href="http://172.92.143.166/">Disk World</a><br />
-    LPMud<br />
-    Discworld 17.0a<br />
-    <a href="telnet://172.92.143.166:4400/">172.92.143.166 4400</a>
-</td>
-<td align="center">
-<div class="gallery-item">
-    <a href="gfx/mud/bc77fc33686f58682dfe0704c435c4a6.png" data-lightbox>
-        <img border="0" width="192" height="120" src="gfx/mud/bc77fc33686f58682dfe0704c435c4a6.png" />
-    </a>
-</div>
-</td>
-<td align="left">&nbsp;</td>
-<td align="left">
-    <a target="I3 mudlist" href="http://24.175.232.23/">DoT</a><br />
-    n/a<br />
-    IMC2 Freedom C++ CL-2.1a Dawn<br />
-    <a href="telnet://24.175.232.23:4000/">24.175.232.23 4000</a>
-</td>
-</tr>
-<tr bgcolor="#1f1f1f">
-<td align="center">
-<div class="gallery-item">
-    <a href="gfx/mud/4b7edd92f92774b24780794f4f2b8950.png" data-lightbox>
-        <img border="0" width="192" height="120" src="gfx/mud/4b7edd92f92774b24780794f4f2b8950.png" />
-    </a>
-</div>
-</td>
-<td align="left">&nbsp;</td>
-<td align="left">
-    <a target="I3 mudlist" href="http://74.109.126.27/">Dragon's Den</a><br />
-    LPMud<br />
-    Dragon Mudlib 1.1<br />
-    <a href="telnet://74.109.126.27:2222/">74.109.126.27 2222</a>
-</td>
-<td align="center">
-<div class="gallery-item">
-    <a href="gfx/mud/e9e206be1c4447295f06bc1d06416175.png" data-lightbox>
-        <img border="0" width="192" height="120" src="gfx/mud/e9e206be1c4447295f06bc1d06416175.png" />
-    </a>
-</div>
-</td>
-<td align="left">&nbsp;</td>
-<td align="left">
-    <a target="I3 mudlist" href="http://82.68.167.68/">DW_Clone</a><br />
-    LPMud<br />
-    Discworld 18.0a<br />
-    <a href="telnet://82.68.167.68:4242/">82.68.167.68 4242</a>
-</td>
-</tr>
-<tr bgcolor="#000000">
-<td align="center">
-<div class="gallery-item">
-    <a href="gfx/mud/c3cb4ad2a9a11fec6df44d8e8a206db7.png" data-lightbox>
-        <img border="0" width="192" height="120" src="gfx/mud/c3cb4ad2a9a11fec6df44d8e8a206db7.png" />
-    </a>
-</div>
-</td>
-<td align="left">&nbsp;</td>
-<td align="left">
-    <a target="I3 mudlist" href="http://74.207.226.164/">EmpiresEnd</a><br />
-    CoffeeMud<br />
-    CoffeeMud v5.9.6<br />
-    <a href="telnet://74.207.226.164:5555/">74.207.226.164 5555</a>
-</td>
-<td align="center">
-<div class="gallery-item">
-    <a href="gfx/mud/79eb1051bc5d99f4266196c39454f946.png" data-lightbox>
-        <img border="0" width="192" height="120" src="gfx/mud/79eb1051bc5d99f4266196c39454f946.png" />
-    </a>
-</div>
-</td>
-<td align="left">&nbsp;</td>
-<td align="left">
-    <a target="I3 mudlist" href="http://209.216.23.199/">EotL</a><br />
-    LPMud<br />
-    LPMud EotL 98<br />
-    <a href="telnet://209.216.23.199:2010/">209.216.23.199 2010</a>
-</td>
-</tr>
-<tr bgcolor="#1f1f1f">
-<td align="center">
-<div class="gallery-item">
-    <a href="gfx/mud/__NOT_FOUND_4.png" data-lightbox>
-        <img border="0" width="192" height="120" src="gfx/mud/__NOT_FOUND_4.png" />
-    </a>
-</div>
-</td>
-<td align="left">&nbsp;</td>
-<td align="left">
-    <a target="I3 mudlist" href="http://176.126.244.21/">Epitaph</a><br />
-    LPMud<br />
-    Epiphany v1.2.13 [release]<br />
-    <a href="telnet://176.126.244.21:23/">176.126.244.21 23</a>
-</td>
-<td align="center">
-<div class="gallery-item">
-    <a href="gfx/mud/29d5a05ba309ffb32f22b45134ea62c7.png" data-lightbox>
-        <img border="0" width="192" height="120" src="gfx/mud/29d5a05ba309ffb32f22b45134ea62c7.png" />
-    </a>
-</div>
-</td>
-<td align="left">&nbsp;</td>
-<td align="left">
-    <a target="I3 mudlist" href="http://176.126.244.68/">Epitaph Black Ops</a><br />
-    LPMud<br />
-    Epiphany v1.2.14 [development]<br />
-    <a href="telnet://176.126.244.68:6789/">176.126.244.68 6789</a>
-</td>
-</tr>
-<tr bgcolor="#000000">
-<td align="center">
-<div class="gallery-item">
-    <a href="gfx/mud/__NOT_FOUND_4.png" data-lightbox>
-        <img border="0" width="192" height="120" src="gfx/mud/__NOT_FOUND_4.png" />
-    </a>
-</div>
-</td>
-<td align="left">&nbsp;</td>
-<td align="left">
-    <a target="I3 mudlist" href="http://176.126.244.68/">Epitaph_Black_Ops</a><br />
-     <br />
-     <br />
-    <a href="telnet://176.126.244.68:0/">176.126.244.68 0</a>
-</td>
-<td align="center">
-<div class="gallery-item">
-    <a href="gfx/mud/450c578b17088e36ba1cc4dbba9c4322.png" data-lightbox>
-        <img border="0" width="192" height="120" src="gfx/mud/450c578b17088e36ba1cc4dbba9c4322.png" />
-    </a>
-</div>
-</td>
-<td align="left">&nbsp;</td>
-<td align="left">
-    <a target="I3 mudlist" href="http://45.33.46.103/">Erimand</a><br />
-    CoffeeMud<br />
-    CoffeeMud v5.9.6.4<br />
-    <a href="telnet://45.33.46.103:23/">45.33.46.103 23</a>
-</td>
-</tr>
-<tr bgcolor="#1f1f1f">
-<td align="center">
-<div class="gallery-item">
-    <a href="gfx/mud/9f6572786d20a2ce7f21f50dab11343e.png" data-lightbox>
-        <img border="0" width="192" height="120" src="gfx/mud/9f6572786d20a2ce7f21f50dab11343e.png" />
-    </a>
-</div>
-</td>
-<td align="left">&nbsp;</td>
-<td align="left">
-    <a target="I3 mudlist" href="http://93.186.192.146/">Evermore</a><br />
-    LDMud<br />
-    EverLIB 3.0.0<br />
-    <a href="telnet://93.186.192.146:23/">93.186.192.146 23</a>
-</td>
-<td align="center">
-<div class="gallery-item">
-    <a href="gfx/mud/a7effb71168b94b6fd7026b3ef6b3c01.png" data-lightbox>
-        <img border="0" width="192" height="120" src="gfx/mud/a7effb71168b94b6fd7026b3ef6b3c01.png" />
-    </a>
-</div>
-</td>
-<td align="left">&nbsp;</td>
-<td align="left">
-    <a target="I3 mudlist" href="http://185.47.42.101/">Final Realms</a><br />
-    LPMud<br />
-    FRlib V<br />
-    <a href="telnet://185.47.42.101:4001/">185.47.42.101 4001</a>
-</td>
-</tr>
-<tr bgcolor="#000000">
-<td align="center">
-<div class="gallery-item">
-    <a href="gfx/mud/7a875ffe240478dbcffcd5f7cbffbeda.png" data-lightbox>
-        <img border="0" width="192" height="120" src="gfx/mud/7a875ffe240478dbcffcd5f7cbffbeda.png" />
-    </a>
-</div>
-</td>
-<td align="left">&nbsp;</td>
-<td align="left">
-    <a target="I3 mudlist" href="http://71.85.22.17/">FOR_NOW</a><br />
-    CoffeeMud<br />
-    CoffeeMud v5.9.7<br />
-    <a href="telnet://71.85.22.17:5555/">71.85.22.17 5555</a>
-</td>
-<td align="center">
-<div class="gallery-item">
-    <a href="gfx/mud/0f35b757c0817f57b10a4a7d0e7ad841.png" data-lightbox>
-        <img border="0" width="192" height="120" src="gfx/mud/0f35b757c0817f57b10a4a7d0e7ad841.png" />
-    </a>
-</div>
-</td>
-<td align="left">&nbsp;</td>
-<td align="left">
-    <a target="I3 mudlist" href="http://54.172.123.224/">Forgotten-Gods</a><br />
-    LPMud<br />
-    Dead Souls 3.8.6<br />
-    <a href="telnet://54.172.123.224:6690/">54.172.123.224 6690</a>
-</td>
-</tr>
-<tr bgcolor="#1f1f1f">
-<td align="center">
-<div class="gallery-item">
-    <a href="gfx/mud/b97f5618f49d5adf844dfed21f9ef739.png" data-lightbox>
-        <img border="0" width="192" height="120" src="gfx/mud/b97f5618f49d5adf844dfed21f9ef739.png" />
-    </a>
-</div>
-</td>
-<td align="left">&nbsp;</td>
-<td align="left">
-    <a target="I3 mudlist" href="http://204.209.44.3/">Frontiers</a><br />
-    LPMud<br />
-    Dead Souls 2.10<br />
-    <a href="telnet://204.209.44.3:8000/">204.209.44.3 8000</a>
-</td>
-<td align="center">
-<div class="gallery-item">
-    <a href="gfx/mud/0cd1769ffadf7e517ee79883a56efc38.png" data-lightbox>
-        <img border="0" width="192" height="120" src="gfx/mud/0cd1769ffadf7e517ee79883a56efc38.png" />
-    </a>
-</div>
-</td>
-<td align="left">&nbsp;</td>
-<td align="left">
-    <a target="I3 mudlist" href="http://37.60.155.210/">Gandhaal</a><br />
-    CoffeeMud<br />
-    CoffeeMud v5.9.7<br />
-    <a href="telnet://37.60.155.210:7777/">37.60.155.210 7777</a>
-</td>
-</tr>
-<tr bgcolor="#000000">
-<td align="center">
-<div class="gallery-item">
-    <a href="gfx/mud/5124494aad7dc83c6675c70b72b4745b.png" data-lightbox>
-        <img border="0" width="192" height="120" src="gfx/mud/5124494aad7dc83c6675c70b72b4745b.png" />
-    </a>
-</div>
-</td>
-<td align="left">&nbsp;</td>
-<td align="left">
-    <a target="I3 mudlist" href="http://5.135.160.179/">Gates of Krynn</a><br />
-    CoffeeMud<br />
-    CoffeeMud v5.9.7<br />
-    <a href="telnet://5.135.160.179:4500/">5.135.160.179 4500</a>
-</td>
-<td align="center">
-<div class="gallery-item">
-    <a href="gfx/mud/__NOT_FOUND_3.png" data-lightbox>
-        <img border="0" width="192" height="120" src="gfx/mud/__NOT_FOUND_3.png" />
-    </a>
-</div>
-</td>
-<td align="left">&nbsp;</td>
-<td align="left">
-    <a target="I3 mudlist" href="http://150.101.219.57/">I3-TheMud-ORG</a><br />
-    LPMud<br />
-    Dead Souls 3.8.6<br />
-    <a href="telnet://150.101.219.57:5555/">150.101.219.57 5555</a>
-</td>
-</tr>
-<tr bgcolor="#1f1f1f">
-<td align="center">
-<div class="gallery-item">
-    <a href="gfx/mud/4f58fba21203ab7da51a8c59331e2503.png" data-lightbox>
-        <img border="0" width="192" height="120" src="gfx/mud/4f58fba21203ab7da51a8c59331e2503.png" />
-    </a>
-</div>
-</td>
-<td align="left">&nbsp;</td>
-<td align="left">
-    <a target="I3 mudlist" href="http://2.82.183.179/">Iberia MUD</a><br />
-    IME<br />
-    IME v0.997b<br />
-    <a href="telnet://2.82.183.179:5900/">2.82.183.179 5900</a>
-</td>
-<td align="center">
-<div class="gallery-item">
-    <a href="gfx/mud/bf94b4e5dd66d95e19b69b7785d7c6eb.png" data-lightbox>
-        <img border="0" width="192" height="120" src="gfx/mud/bf94b4e5dd66d95e19b69b7785d7c6eb.png" />
-    </a>
-</div>
-</td>
-<td align="left">&nbsp;</td>
-<td align="left">
-    <a target="I3 mudlist" href="http://173.255.197.121/">Imagining Stuff</a><br />
-    CoffeeMud<br />
-    CoffeeMud v5.9.6.3<br />
-    <a href="telnet://173.255.197.121:1111/">173.255.197.121 1111</a>
-</td>
-</tr>
-<tr bgcolor="#000000">
-<td align="center">
-<div class="gallery-item">
-    <a href="gfx/mud/b0f690cb696f269521357999d04b4a3b.png" data-lightbox>
-        <img border="0" width="192" height="120" src="gfx/mud/b0f690cb696f269521357999d04b4a3b.png" />
-    </a>
-</div>
-</td>
-<td align="left">&nbsp;</td>
-<td align="left">
-    <a target="I3 mudlist" href="http://104.237.155.126/">KellerMUD</a><br />
-    CoffeeMud<br />
-    CoffeeMud v5.9.6<br />
-    <a href="telnet://104.237.155.126:23/">104.237.155.126 23</a>
-</td>
-<td align="center">
-<div class="gallery-item">
-    <a href="gfx/mud/3c3c06eb454507b8ed4ae1301f0ce2a3.png" data-lightbox>
-        <img border="0" width="192" height="120" src="gfx/mud/3c3c06eb454507b8ed4ae1301f0ce2a3.png" />
-    </a>
-</div>
-</td>
-<td align="left">&nbsp;</td>
-<td align="left">
-    <a target="I3 mudlist" href="http://45.79.110.179/">KF5QEO`s Coffee Mud</a><br />
-    CoffeeMud<br />
-    CoffeeMud v5.9.6<br />
-    <a href="telnet://45.79.110.179:3535/">45.79.110.179 3535</a>
-</td>
-</tr>
-<tr bgcolor="#1f1f1f">
-<td align="center">
-<div class="gallery-item">
-    <a href="gfx/mud/7d6baf450b4f31ad61d5bc693710dac7.png" data-lightbox>
-        <img border="0" width="192" height="120" src="gfx/mud/7d6baf450b4f31ad61d5bc693710dac7.png" />
-    </a>
-</div>
-</td>
-<td align="left">&nbsp;</td>
-<td align="left">
-    <a target="I3 mudlist" href="http://198.58.115.221/">Lands of Teric</a><br />
-    CoffeeMud<br />
-    CoffeeMud v5.9.7.3<br />
-    <a href="telnet://198.58.115.221:23/">198.58.115.221 23</a>
-</td>
-<td align="center">
-<div class="gallery-item">
-    <a href="gfx/mud/3345b537cacf26cbbf6cf311d20861b6.png" data-lightbox>
-        <img border="0" width="192" height="120" src="gfx/mud/3345b537cacf26cbbf6cf311d20861b6.png" />
-    </a>
-</div>
-</td>
-<td align="left">&nbsp;</td>
-<td align="left">
-    <a target="I3 mudlist" href="http://173.22.222.195/">Last Dawn</a><br />
-    CoffeeMud<br />
-    CoffeeMud v5.9.7.6<br />
-    <a href="telnet://173.22.222.195:8777/">173.22.222.195 8777</a>
-</td>
-</tr>
-<tr bgcolor="#000000">
-<td align="center">
-<div class="gallery-item">
-    <a href="gfx/mud/__NOT_FOUND_0.png" data-lightbox>
-        <img border="0" width="192" height="120" src="gfx/mud/__NOT_FOUND_0.png" />
-    </a>
-</div>
-</td>
-<td align="left">&nbsp;</td>
-<td align="left">
-    <a target="I3 mudlist" href="http://87.209.243.234/">lpcdb-dev</a><br />
-    LPMud<br />
-    lpcdb v1.0 alpha 2<br />
-    <a href="telnet://87.209.243.234:4000/">87.209.243.234 4000</a>
-</td>
-<td align="center">
-<div class="gallery-item">
-    <a href="gfx/mud/2fd7e856c7d4ae37a004641b03a51b82.png" data-lightbox>
-        <img border="0" width="192" height="120" src="gfx/mud/2fd7e856c7d4ae37a004641b03a51b82.png" />
-    </a>
-</div>
-</td>
-<td align="left">&nbsp;</td>
-<td align="left">
-    <a target="I3 mudlist" href="http://45.56.76.179/">Macrocosm</a><br />
-    CoffeeMud<br />
-    CoffeeMud v5.9.7.3<br />
-    <a href="telnet://45.56.76.179:5555/">45.56.76.179 5555</a>
-</td>
-</tr>
-<tr bgcolor="#1f1f1f">
-<td align="center">
-<div class="gallery-item">
-    <a href="gfx/mud/__NOT_FOUND_2.png" data-lightbox>
-        <img border="0" width="192" height="120" src="gfx/mud/__NOT_FOUND_2.png" />
-    </a>
-</div>
-</td>
-<td align="left">&nbsp;</td>
-<td align="left">
-    <a target="I3 mudlist" href="http://107.0.42.254/">Mr. Mike`s Crazy World</a><br />
-    CoffeeMud<br />
-    CoffeeMud v5.9.6<br />
-    <a href="telnet://107.0.42.254:5555/">107.0.42.254 5555</a>
-</td>
-<td align="center">
-<div class="gallery-item">
-    <a href="gfx/mud/0d4113f866fc7be2b7241e78d83a89d1.png" data-lightbox>
-        <img border="0" width="192" height="120" src="gfx/mud/0d4113f866fc7be2b7241e78d83a89d1.png" />
-    </a>
-</div>
-</td>
-<td align="left">&nbsp;</td>
-<td align="left">
-    <a target="I3 mudlist" href="http://65.103.157.31/">mud.seatonserver.com</a><br />
-    LPMud<br />
-    Dead Souls 3.8.2<br />
-    <a href="telnet://65.103.157.31:6666/">65.103.157.31 6666</a>
-</td>
-</tr>
-<tr bgcolor="#000000">
-<td align="center">
-<div class="gallery-item">
-    <a href="gfx/mud/e729ffaaca1d68184184c4750ed5c7df.png" data-lightbox>
-        <img border="0" width="192" height="120" src="gfx/mud/e729ffaaca1d68184184c4750ed5c7df.png" />
-    </a>
-</div>
-</td>
-<td align="left">&nbsp;</td>
-<td align="left">
-    <a target="I3 mudlist" href="http://99.192.66.240/">MUDgaard</a><br />
-    CoffeeMud<br />
-    CoffeeMud v5.9.7<br />
-    <a href="telnet://99.192.66.240:5555/">99.192.66.240 5555</a>
-</td>
-<td align="center">
-<div class="gallery-item">
-    <a href="gfx/mud/9deee549e0ae06b80cc0f22acf16b5e9.png" data-lightbox>
-        <img border="0" width="192" height="120" src="gfx/mud/9deee549e0ae06b80cc0f22acf16b5e9.png" />
-    </a>
-</div>
-</td>
-<td align="left">&nbsp;</td>
-<td align="left">
-    <a target="I3 mudlist" href="http://45.56.75.164/">MUDGourd</a><br />
-    CoffeeMud<br />
-    CoffeeMud v5.9.7.3<br />
-    <a href="telnet://45.56.75.164:5555/">45.56.75.164 5555</a>
-</td>
-</tr>
-<tr bgcolor="#1f1f1f">
-<td align="center">
-<div class="gallery-item">
-    <a href="gfx/mud/08451a1fd3d0e0dc196bc46230c3e675.png" data-lightbox>
-        <img border="0" width="192" height="120" src="gfx/mud/08451a1fd3d0e0dc196bc46230c3e675.png" />
-    </a>
-</div>
-</td>
-<td align="left">&nbsp;</td>
-<td align="left">
-    <a target="I3 mudlist" href="http://23.239.11.138/">Mundo Sangre</a><br />
-    CoffeeMud<br />
-    CoffeeMud v5.9.7.3<br />
-    <a href="telnet://23.239.11.138:5555/">23.239.11.138 5555</a>
-</td>
-<td align="center">
-<div class="gallery-item">
-    <a href="gfx/mud/2378865ed5c632b3df4095159c0e5e64.png" data-lightbox>
-        <img border="0" width="192" height="120" src="gfx/mud/2378865ed5c632b3df4095159c0e5e64.png" />
-    </a>
-</div>
-</td>
-<td align="left">&nbsp;</td>
-<td align="left">
-    <a target="I3 mudlist" href="http://207.162.200.121/">Nanvaent</a><br />
-    LP<br />
-    Nanvaent V.4ish<br />
-    <a href="telnet://207.162.200.121:3000/">207.162.200.121 3000</a>
-</td>
-</tr>
-<tr bgcolor="#000000">
-<td align="center">
-<div class="gallery-item">
-    <a href="gfx/mud/90b5ba0c183f29b02e59951af4017204.png" data-lightbox>
-        <img border="0" width="192" height="120" src="gfx/mud/90b5ba0c183f29b02e59951af4017204.png" />
-    </a>
-</div>
-</td>
-<td align="left">&nbsp;</td>
-<td align="left">
-    <a target="I3 mudlist" href="http://23.239.2.188/">New MUD</a><br />
-    CoffeeMud<br />
-    CoffeeMud v5.9.7.3<br />
-    <a href="telnet://23.239.2.188:5555/">23.239.2.188 5555</a>
-</td>
-<td align="center">
-<div class="gallery-item">
-    <a href="gfx/mud/943eda6395ff81bdde49e5b250330a2e.png" data-lightbox>
-        <img border="0" width="192" height="120" src="gfx/mud/943eda6395ff81bdde49e5b250330a2e.png" />
-    </a>
-</div>
-</td>
-<td align="left">&nbsp;</td>
-<td align="left">
-    <a target="I3 mudlist" href="http://107.190.71.174/">Nexus1 Testserver</a><br />
-    CoffeeMud<br />
-    CoffeeMud v5.9.7<br />
-    <a href="telnet://107.190.71.174:5555/">107.190.71.174 5555</a>
-</td>
-</tr>
-<tr bgcolor="#1f1f1f">
-<td align="center">
-<div class="gallery-item">
-    <a href="gfx/mud/841f1fc38dc4cafe7c8f30ab03638470.png" data-lightbox>
-        <img border="0" width="192" height="120" src="gfx/mud/841f1fc38dc4cafe7c8f30ab03638470.png" />
-    </a>
-</div>
-</td>
-<td align="left">&nbsp;</td>
-<td align="left">
-    <a target="I3 mudlist" href="http://82.165.147.114/">Nightfall</a><br />
-    LPMud<br />
-    NF<br />
-    <a href="telnet://82.165.147.114:4242/">82.165.147.114 4242</a>
-</td>
-<td align="center">
-<div class="gallery-item">
-    <a href="gfx/mud/69d15965eaae05e85046b4629f71e268.png" data-lightbox>
-        <img border="0" width="192" height="120" src="gfx/mud/69d15965eaae05e85046b4629f71e268.png" />
-    </a>
-</div>
-</td>
-<td align="left">&nbsp;</td>
-<td align="left">
-    <a target="I3 mudlist" href="http://23.92.26.97/">Nygaard MUD</a><br />
-    CoffeeMud<br />
-    CoffeeMud v5.9.7.3<br />
-    <a href="telnet://23.92.26.97:5555/">23.92.26.97 5555</a>
-</td>
-</tr>
-<tr bgcolor="#000000">
-<td align="center">
-<div class="gallery-item">
-    <a href="gfx/mud/56620c8e17fdc99dfa2c57da918f3ed9.png" data-lightbox>
-        <img border="0" width="192" height="120" src="gfx/mud/56620c8e17fdc99dfa2c57da918f3ed9.png" />
-    </a>
-</div>
-</td>
-<td align="left">&nbsp;</td>
-<td align="left">
-    <a target="I3 mudlist" href="http://199.74.141.8/">Occulte MUD</a><br />
-    LP<br />
-    Skylib 1.8<br />
-    <a href="telnet://199.74.141.8:8010/">199.74.141.8 8010</a>
-</td>
-<td align="center">
-<div class="gallery-item">
-    <a href="gfx/mud/ff60664d90625464e70349cda6f27b6c.png" data-lightbox>
-        <img border="0" width="192" height="120" src="gfx/mud/ff60664d90625464e70349cda6f27b6c.png" />
-    </a>
-</div>
-</td>
-<td align="left">&nbsp;</td>
-<td align="left">
-    <a target="I3 mudlist" href="http://158.69.22.132/">Project DF</a><br />
-    CoffeeMud<br />
-    CoffeeMud v5.9.5<br />
-    <a href="telnet://158.69.22.132:4000/">158.69.22.132 4000</a>
-</td>
-</tr>
-<tr bgcolor="#1f1f1f">
-<td align="center">
-<div class="gallery-item">
-    <a href="gfx/mud/708d2fb0be22d5be832abece0f9070d6.png" data-lightbox>
-        <img border="0" width="192" height="120" src="gfx/mud/708d2fb0be22d5be832abece0f9070d6.png" />
-    </a>
-</div>
-</td>
-<td align="left">&nbsp;</td>
-<td align="left">
-    <a target="I3 mudlist" href="http://198.204.235.170/">projectdf</a><br />
-    CoffeeMud<br />
-    CoffeeMud v5.9.5<br />
-    <a href="telnet://198.204.235.170:4000/">198.204.235.170 4000</a>
-</td>
-<td align="center">
-<div class="gallery-item">
-    <a href="gfx/mud/1c8bbc8796f31c8b1407e5bbc47fba92.png" data-lightbox>
-        <img border="0" width="192" height="120" src="gfx/mud/1c8bbc8796f31c8b1407e5bbc47fba92.png" />
-    </a>
-</div>
-</td>
-<td align="left">&nbsp;</td>
-<td align="left">
-    <a target="I3 mudlist" href="http://166.62.103.99/">Prosperus</a><br />
-    LPMud<br />
-    Dead Souls 3.8.6<br />
-    <a href="telnet://166.62.103.99:31337/">166.62.103.99 31337</a>
-</td>
-</tr>
-<tr bgcolor="#000000">
-<td align="center">
-<div class="gallery-item">
-    <a href="gfx/mud/6ff4735b0fc4160e081440b3f7238925.png" data-lightbox>
-        <img border="0" width="192" height="120" src="gfx/mud/6ff4735b0fc4160e081440b3f7238925.png" />
-    </a>
-</div>
-</td>
-<td align="left">&nbsp;</td>
-<td align="left">
-    <a target="I3 mudlist" href="http://68.183.124.30/">Purgatory</a><br />
-    CoffeeMud<br />
-    CoffeeMud v5.9.7<br />
-    <a href="telnet://68.183.124.30:5555/">68.183.124.30 5555</a>
-</td>
-<td align="center">
-<div class="gallery-item">
-    <a href="gfx/mud/43d6c49281dab27223d3da275757c57c.png" data-lightbox>
-        <img border="0" width="192" height="120" src="gfx/mud/43d6c49281dab27223d3da275757c57c.png" />
-    </a>
-</div>
-</td>
-<td align="left">&nbsp;</td>
-<td align="left">
-    <a target="I3 mudlist" href="http://46.4.48.195/">Railworks MUD</a><br />
-    CoffeeMud<br />
-    CoffeeMud v5.9.4<br />
-    <a href="telnet://46.4.48.195:5585/">46.4.48.195 5585</a>
-</td>
-</tr>
-<tr bgcolor="#1f1f1f">
-<td align="center">
-<div class="gallery-item">
-    <a href="gfx/mud/d39e7456db72431c88ac5d26595bb395.png" data-lightbox>
-        <img border="0" width="192" height="120" src="gfx/mud/d39e7456db72431c88ac5d26595bb395.png" />
-    </a>
-</div>
-</td>
-<td align="left">&nbsp;</td>
-<td align="left">
-    <a target="I3 mudlist" href="http://104.237.152.181/">Randy Stadham</a><br />
-    CoffeeMud<br />
-    CoffeeMud v5.9.6.4<br />
-    <a href="telnet://104.237.152.181:23/">104.237.152.181 23</a>
-</td>
-<td align="center">
-<div class="gallery-item">
-    <a href="gfx/mud/e400dc0785e695e715bc374a0217ab18.png" data-lightbox>
-        <img border="0" width="192" height="120" src="gfx/mud/e400dc0785e695e715bc374a0217ab18.png" />
-    </a>
-</div>
-</td>
-<td align="left">&nbsp;</td>
-<td align="left">
-    <a target="I3 mudlist" href="http://50.36.182.99/">Realm of Cernunnos</a><br />
-    CoffeeMud<br />
-    CoffeeMud v5.9.4<br />
-    <a href="telnet://50.36.182.99:5555/">50.36.182.99 5555</a>
-</td>
-</tr>
-<tr bgcolor="#000000">
-<td align="center">
-<div class="gallery-item">
-    <a href="gfx/mud/81d6a17d1e25a63203750a2b30c22184.png" data-lightbox>
-        <img border="0" width="192" height="120" src="gfx/mud/81d6a17d1e25a63203750a2b30c22184.png" />
-    </a>
-</div>
-</td>
-<td align="left">&nbsp;</td>
-<td align="left">
-    <a target="I3 mudlist" href="http://45.56.72.144/">Realms of Discordia</a><br />
-    CoffeeMud<br />
-    CoffeeMud v5.9.7.3<br />
-    <a href="telnet://45.56.72.144:5555/">45.56.72.144 5555</a>
-</td>
-<td align="center">
-<div class="gallery-item">
-    <a href="gfx/mud/ee38e4d5dd68c4e440825018d549cb47.png" data-lightbox>
-        <img border="0" width="192" height="120" src="gfx/mud/ee38e4d5dd68c4e440825018d549cb47.png" />
-    </a>
-</div>
-</td>
-<td align="left">&nbsp;</td>
-<td align="left">
-    <a target="I3 mudlist" href="http://163.172.210.70/">Red</a><br />
-    LPMud<br />
-    LPMud EotL 98<br />
-    <a href="telnet://163.172.210.70:2010/">163.172.210.70 2010</a>
-</td>
-</tr>
-<tr bgcolor="#1f1f1f">
-<td align="center">
-<div class="gallery-item">
-    <a href="gfx/mud/dcf3c03d44c1edc6d5ee5a0530532ec6.png" data-lightbox>
-        <img border="0" width="192" height="120" src="gfx/mud/dcf3c03d44c1edc6d5ee5a0530532ec6.png" />
-    </a>
-</div>
-</td>
-<td align="left">&nbsp;</td>
-<td align="left">
-    <a target="I3 mudlist" href="http://74.207.245.13/">rossmud</a><br />
-    LPMud<br />
-    Dead Souls 3.8.6<br />
-    <a href="telnet://74.207.245.13:6666/">74.207.245.13 6666</a>
-</td>
-<td align="center">
-<div class="gallery-item">
-    <a href="gfx/mud/__NOT_FOUND_2.png" data-lightbox>
-        <img border="0" width="192" height="120" src="gfx/mud/__NOT_FOUND_2.png" />
-    </a>
-</div>
-</td>
-<td align="left">&nbsp;</td>
-<td align="left">
-    <a target="I3 mudlist" href="http://23.25.8.124/">savageisle</a><br />
-    CoffeeMud<br />
-    CoffeeMud v5.9.6<br />
-    <a href="telnet://23.25.8.124:5559/">23.25.8.124 5559</a>
-</td>
-</tr>
-<tr bgcolor="#000000">
-<td align="center">
-<div class="gallery-item">
-    <a href="gfx/mud/04566f7ab2474aa9469cc4ac29735e9e.png" data-lightbox>
-        <img border="0" width="192" height="120" src="gfx/mud/04566f7ab2474aa9469cc4ac29735e9e.png" />
-    </a>
-</div>
-</td>
-<td align="left">&nbsp;</td>
-<td align="left">
-    <a target="I3 mudlist" href="http://54.84.108.226/">Second Contract</a><br />
-    LPMud<br />
-    Dead Souls 3.6<br />
-    <a href="telnet://54.84.108.226:6666/">54.84.108.226 6666</a>
-</td>
-<td align="center">
-<div class="gallery-item">
-    <a href="gfx/mud/77763068c8184cc9a9ff4e3b9dab553b.png" data-lightbox>
-        <img border="0" width="192" height="120" src="gfx/mud/77763068c8184cc9a9ff4e3b9dab553b.png" />
-    </a>
-</div>
-</td>
-<td align="left">&nbsp;</td>
-<td align="left">
-    <a target="I3 mudlist" href="http://45.33.49.26/">Shadow Wind</a><br />
-    CoffeeMud<br />
-    CoffeeMud v5.9.7.3<br />
-    <a href="telnet://45.33.49.26:5555/">45.33.49.26 5555</a>
-</td>
-</tr>
-<tr bgcolor="#1f1f1f">
-<td align="center">
-<div class="gallery-item">
-    <a href="gfx/mud/d27efa153fa100883c762712dc4252b7.png" data-lightbox>
-        <img border="0" width="192" height="120" src="gfx/mud/d27efa153fa100883c762712dc4252b7.png" />
-    </a>
-</div>
-</td>
-<td align="left">&nbsp;</td>
-<td align="left">
-    <a target="I3 mudlist" href="http://199.74.141.8/">ShadowMUD</a><br />
-    LP<br />
-    Nightmare/ShadowLib 3.2.2/0.5<br />
-    <a href="telnet://199.74.141.8:1030/">199.74.141.8 1030</a>
-</td>
-<td align="center">
-<div class="gallery-item">
-    <a href="gfx/mud/faf366a6e12cd3ca17b3709c6d8867c3.png" data-lightbox>
-        <img border="0" width="192" height="120" src="gfx/mud/faf366a6e12cd3ca17b3709c6d8867c3.png" />
-    </a>
-</div>
-</td>
-<td align="left">&nbsp;</td>
-<td align="left">
-    <a target="I3 mudlist" href="http://78.46.233.162/">SilverMUD</a><br />
-    CoffeeMud<br />
-    CoffeeMud v5.9.4<br />
-    <a href="telnet://78.46.233.162:5555/">78.46.233.162 5555</a>
-</td>
-</tr>
-<tr bgcolor="#000000">
-<td align="center">
-<div class="gallery-item">
-    <a href="gfx/mud/e394f78c0fec6db4f30616bf483a6ac9.png" data-lightbox>
-        <img border="0" width="192" height="120" src="gfx/mud/e394f78c0fec6db4f30616bf483a6ac9.png" />
-    </a>
-</div>
-</td>
-<td align="left">&nbsp;</td>
-<td align="left">
-    <a target="I3 mudlist" href="http://195.201.33.9/">Silvium</a><br />
-    LPMud<br />
-    GurbaLib v0.50<br />
-    <a href="telnet://195.201.33.9:4000/">195.201.33.9 4000</a>
-</td>
-<td align="center">
-<div class="gallery-item">
-    <a href="gfx/mud/91eb6cf80dfb9ea080ca3f7cdd6ecf8f.png" data-lightbox>
-        <img border="0" width="192" height="120" src="gfx/mud/91eb6cf80dfb9ea080ca3f7cdd6ecf8f.png" />
-    </a>
-</div>
-</td>
-<td align="left">&nbsp;</td>
-<td align="left">
-    <a target="I3 mudlist" href="http://46.251.35.104/">SingularisMUD</a><br />
-    LP<br />
-    Skylib 1.8<br />
-    <a href="telnet://46.251.35.104:8000/">46.251.35.104 8000</a>
-</td>
-</tr>
-<tr bgcolor="#1f1f1f">
-<td align="center">
-<div class="gallery-item">
-    <a href="gfx/mud/9d0fa609cad1a7910a742f1a8c418a4c.png" data-lightbox>
-        <img border="0" width="192" height="120" src="gfx/mud/9d0fa609cad1a7910a742f1a8c418a4c.png" />
-    </a>
-</div>
-</td>
-<td align="left">&nbsp;</td>
-<td align="left">
-    <a target="I3 mudlist" href="http://68.46.79.247/">SirdudesGurbaLib</a><br />
-    LPMud<br />
-    GurbaLib v0.50<br />
-    <a href="telnet://68.46.79.247:4000/">68.46.79.247 4000</a>
-</td>
-<td align="center">
-<div class="gallery-item">
-    <a href="gfx/mud/f7a34d11ca56e0ed985e008c0ac9674c.png" data-lightbox>
-        <img border="0" width="192" height="120" src="gfx/mud/f7a34d11ca56e0ed985e008c0ac9674c.png" />
-    </a>
-</div>
-</td>
-<td align="left">&nbsp;</td>
-<td align="left">
-    <a target="I3 mudlist" href="http://178.79.173.99/">SotU</a><br />
-    DikuMUD<br />
-    GodWars Deluxe<br />
-    <a href="telnet://178.79.173.99:3560/">178.79.173.99 3560</a>
-</td>
-</tr>
-<tr bgcolor="#000000">
-<td align="center">
-<div class="gallery-item">
-    <a href="gfx/mud/c776a0707344d96097603f38b809aa1d.png" data-lightbox>
-        <img border="0" width="192" height="120" src="gfx/mud/c776a0707344d96097603f38b809aa1d.png" />
-    </a>
-</div>
-</td>
-<td align="left">&nbsp;</td>
-<td align="left">
-    <a target="I3 mudlist" href="http://45.56.68.46/">Tavern at the End of the Universe</a><br />
-    CoffeeMud<br />
-    CoffeeMud v5.9.6.4<br />
-    <a href="telnet://45.56.68.46:23/">45.56.68.46 23</a>
-</td>
-<td align="center">
-<div class="gallery-item">
-    <a href="gfx/mud/7a2d8bcf7ebefddd9d687698485faa75.png" data-lightbox>
-        <img border="0" width="192" height="120" src="gfx/mud/7a2d8bcf7ebefddd9d687698485faa75.png" />
-    </a>
-</div>
-</td>
-<td align="left">&nbsp;</td>
-<td align="left">
-    <a target="I3 mudlist" href="http://92.251.172.22/">TeaghlachMUD</a><br />
-    LPMud<br />
-    Dead Souls 3.8.6<br />
-    <a href="telnet://92.251.172.22:6665/">92.251.172.22 6665</a>
-</td>
-</tr>
-<tr bgcolor="#1f1f1f">
-<td align="center">
-<div class="gallery-item">
-    <a href="gfx/mud/a8e637161b1c015105a756ec82561bae.png" data-lightbox>
-        <img border="0" width="192" height="120" src="gfx/mud/a8e637161b1c015105a756ec82561bae.png" />
-    </a>
-</div>
-</td>
-<td align="left">&nbsp;</td>
-<td align="left">
-    <a target="I3 mudlist" href="http://173.44.63.194/">TGK</a><br />
-    LPMud<br />
-    Dead Souls 3.8.6<br />
-    <a href="telnet://173.44.63.194:2222/">173.44.63.194 2222</a>
-</td>
-<td align="center">
-<div class="gallery-item">
-    <a href="gfx/mud/36395aba3a1c2256e4804cb0fac2be85.png" data-lightbox>
-        <img border="0" width="192" height="120" src="gfx/mud/36395aba3a1c2256e4804cb0fac2be85.png" />
-    </a>
-</div>
-</td>
-<td align="left">&nbsp;</td>
-<td align="left">
-    <a target="I3 mudlist" href="http://96.244.229.21/">The Brass Ring</a><br />
-    LPMud<br />
-    Dead Souls 3.8.6<br />
-    <a href="telnet://96.244.229.21:2150/">96.244.229.21 2150</a>
-</td>
-</tr>
-<tr bgcolor="#000000">
-<td align="center">
-<div class="gallery-item">
-    <a href="gfx/mud/72baea3babc286d7daace1d378bb8af9.png" data-lightbox>
-        <img border="0" width="192" height="120" src="gfx/mud/72baea3babc286d7daace1d378bb8af9.png" />
-    </a>
-</div>
-</td>
-<td align="left">&nbsp;</td>
-<td align="left">
-    <a target="I3 mudlist" href="http://65.19.167.66/">The Library</a><br />
-    LPMud<br />
-    Dead Souls 3.7a7<br />
-    <a href="telnet://65.19.167.66:6666/">65.19.167.66 6666</a>
-</td>
-<td align="center">
-<div class="gallery-item">
-    <a href="gfx/mud/74b801619049ae82cd0115aaa9d685d1.png" data-lightbox>
-        <img border="0" width="192" height="120" src="gfx/mud/74b801619049ae82cd0115aaa9d685d1.png" />
-    </a>
-</div>
-</td>
-<td align="left">&nbsp;</td>
-<td align="left">
-    <a target="I3 mudlist" href="http://173.255.210.234/">The Savage Soul</a><br />
-    LPMud<br />
-    Dead Souls 3.7a7<br />
-    <a href="telnet://173.255.210.234:6666/">173.255.210.234 6666</a>
-</td>
-</tr>
-<tr bgcolor="#1f1f1f">
-<td align="center">
-<div class="gallery-item">
-    <a href="gfx/mud/04839e2f8e54c562f33121fc654fda05.png" data-lightbox>
-        <img border="0" width="192" height="120" src="gfx/mud/04839e2f8e54c562f33121fc654fda05.png" />
-    </a>
-</div>
-</td>
-<td align="left">&nbsp;</td>
-<td align="left">
-    <a target="I3 mudlist" href="http://136.144.155.250/">The Zone</a><br />
-    LPMud<br />
-    WOTFlib 0.90<br />
-    <a href="telnet://136.144.155.250:8888/">136.144.155.250 8888</a>
-</td>
-<td align="center">
-<div class="gallery-item">
-    <a href="gfx/mud/c2e3bb70f8ea4205fd4379f43a71caf6.png" data-lightbox>
-        <img border="0" width="192" height="120" src="gfx/mud/c2e3bb70f8ea4205fd4379f43a71caf6.png" />
-    </a>
-</div>
-</td>
-<td align="left">&nbsp;</td>
-<td align="left">
-    <a target="I3 mudlist" href="http://136.144.155.250/">The Zone-dalet</a><br />
-    LPMud<br />
-    WOTFlib 0.90<br />
-    <a href="telnet://136.144.155.250:8888/">136.144.155.250 8888</a>
-</td>
-</tr>
-<tr bgcolor="#000000">
-<td align="center">
-<div class="gallery-item">
-    <a href="gfx/mud/2fbdec0ab1cdbc532077b7dde9ca5527.png" data-lightbox>
-        <img border="0" width="192" height="120" src="gfx/mud/2fbdec0ab1cdbc532077b7dde9ca5527.png" />
-    </a>
-</div>
-</td>
-<td align="left">&nbsp;</td>
-<td align="left">
-    <a target="I3 mudlist" href="http://136.144.155.250/">The Zone-Kelly</a><br />
-    LPMud<br />
-    WOTFlib 0.90<br />
-    <a href="telnet://136.144.155.250:8888/">136.144.155.250 8888</a>
-</td>
-<td align="center">
-<div class="gallery-item">
-    <a href="gfx/mud/__NOT_FOUND_3.png" data-lightbox>
-        <img border="0" width="192" height="120" src="gfx/mud/__NOT_FOUND_3.png" />
-    </a>
-</div>
-</td>
-<td align="left">&nbsp;</td>
-<td align="left">
-    <a target="I3 mudlist" href="http://151.80.230.22/">truxonline</a><br />
-    LPMud<br />
-    Dead Souls 3.8.6<br />
-    <a href="telnet://151.80.230.22:6666/">151.80.230.22 6666</a>
-</td>
-</tr>
-<tr bgcolor="#1f1f1f">
-<td align="center">
-<div class="gallery-item">
-    <a href="gfx/mud/28e098175bb05703eb34c5adbb234370.png" data-lightbox>
-        <img border="0" width="192" height="120" src="gfx/mud/28e098175bb05703eb34c5adbb234370.png" />
-    </a>
-</div>
-</td>
-<td align="left">&nbsp;</td>
-<td align="left">
-    <a target="I3 mudlist" href="http://97.107.138.126/">TSC</a><br />
-    LPMud<br />
-    Dead Souls 3.8.6<br />
-    <a href="telnet://97.107.138.126:4000/">97.107.138.126 4000</a>
-</td>
-<td align="center">
-<div class="gallery-item">
-    <a href="gfx/mud/8a269b8d1bc5530c5f623b0096634600.png" data-lightbox>
-        <img border="0" width="192" height="120" src="gfx/mud/8a269b8d1bc5530c5f623b0096634600.png" />
-    </a>
-</div>
-</td>
-<td align="left">&nbsp;</td>
-<td align="left">
-    <a target="I3 mudlist" href="http://178.79.173.99/">War_of_Legend</a><br />
-    DikuMUD<br />
-    WoL 10.25 (build: 82) 10.25 (build: 82)<br />
-    <a href="telnet://178.79.173.99:4200/">178.79.173.99 4200</a>
-</td>
-</tr>
-<tr bgcolor="#000000">
-<td align="center">
-<div class="gallery-item">
-    <a href="gfx/mud/097df3fadd5b6171e2c8a0f8fb93bbf6.png" data-lightbox>
-        <img border="0" width="192" height="120" src="gfx/mud/097df3fadd5b6171e2c8a0f8fb93bbf6.png" />
-    </a>
-</div>
-</td>
-<td align="left">&nbsp;</td>
-<td align="left">
-    <a target="I3 mudlist" href="http://136.144.155.250/">Way of the Force</a><br />
-    LPMud<br />
-    WOTFlib 0.90<br />
-    <a href="telnet://136.144.155.250:23/">136.144.155.250 23</a>
-</td>
-<td align="center">
-<div class="gallery-item">
-    <a href="gfx/mud/a70ac21aab61cb0138b28ed70a0cd877.png" data-lightbox>
-        <img border="0" width="192" height="120" src="gfx/mud/a70ac21aab61cb0138b28ed70a0cd877.png" />
-    </a>
-</div>
-</td>
-<td align="left">&nbsp;</td>
-<td align="left">
-    <a target="I3 mudlist" href="http://172.92.143.166/">WileyMUD</a><br />
-    DikuMUD<br />
-    WileyMUD III 1.786b<br />
-    <a href="telnet://172.92.143.166:3000/">172.92.143.166 3000</a>
-</td>
-</tr>
-<tr bgcolor="#1f1f1f">
-<td align="center">
-<div class="gallery-item">
-    <a href="gfx/mud/af534169800799ee50aa4c6f701a4d01.png" data-lightbox>
-        <img border="0" width="192" height="120" src="gfx/mud/af534169800799ee50aa4c6f701a4d01.png" />
-    </a>
-</div>
-</td>
-<td align="left">&nbsp;</td>
-<td align="left">
-    <a target="I3 mudlist" href="http://45.56.123.249/">Worlds MUD</a><br />
-    CoffeeMud<br />
-    CoffeeMud v5.9.7<br />
-    <a href="telnet://45.56.123.249:23/">45.56.123.249 23</a>
-</td>
-<td align="center">
-<div class="gallery-item">
-    <a href="gfx/mud/8646269436c302459547fd50bd085758.png" data-lightbox>
-        <img border="0" width="192" height="120" src="gfx/mud/8646269436c302459547fd50bd085758.png" />
-    </a>
-</div>
-</td>
-<td align="left">&nbsp;</td>
-<td align="left">
-    <a target="I3 mudlist" href="http://70.112.237.48/">Wrath of the Gods of the Titans of DOOOOOOOOOM!</a><br />
-    LPMud<br />
-    Dead Souls 3.8.2<br />
-    <a href="telnet://70.112.237.48:6666/">70.112.237.48 6666</a>
-</td>
-</tr>
-</div>
-<tr bgcolor="#00002f">
-<td align="center" colspan="6">98 total muds listed (86 connected).</td>
-</tr>
+<table id="status" border="0" cellspacing="0" cellpadding="1" width="80%">
+    <tr bgcolor="#002f00">
+        <th align="center" >Boot Time</th>
+        <th align="center" >Current Time</th>
+        <th align="center" width="100">Players</th>
+        <th align="center" width="100">Gods</th>
+    </tr>
+    <tr bgcolor="#1f1f1f">
+        <td align="center" >Sun, 14 Apr 2019 18:55:07 PDT</td>
+        <td align="center" >Mon, 15 Apr 2019 10:05:30 PDT</td>
+        <td align="center" >0</td>
+        <td align="center" >1</td>
+    </tr>
 </table>
 </div>
-<div align="right"><font size="-1" color="#1f1f1f">page took 0.001179 seconds to render.</font></div>
+<div id="content" align="center">
+    <br />
+    <table border="0" cellspacing="0" cellpadding="1" width="80%">
+        <tr bgcolor="#00002f">
+            <th align="center" width="194">Login Screen</th>
+            <th align="left" width="50">&nbsp;</th>
+            <th align="center" width="25%">Info</th>
+            <th align="center" width="194">Login Screen</th>
+            <th align="left" width="50">&nbsp;</th>
+            <th align="center" width="25%">Info</th>
+        </tr>
+        <div class="gallery">
+            <tr bgcolor="#1f1f1f">
+                <td align="center">
+                    <div class="gallery-item">
+                        <a href="gfx/mud/27e3ce1705dbda21ebc9e3670b77b2cc.png" data-lightbox>
+                            <img border="0" width="192" height="120" src="gfx/mud/27e3ce1705dbda21ebc9e3670b77b2cc.png" />
+                        </a>
+                    </div>
+                </td>
+                <td align="left">&nbsp;</td>
+                <td align="left">
+                    <a target="I3 mudlist" href="http://69.164.199.238/">7thplane</a><br />
+                    n/a<br />
+                    IMC2 Freedom CL-2.2-PlanarDiku<br />
+                    <a href="telnet://69.164.199.238:8888/">69.164.199.238 8888</a>
+                </td>
+                <td align="center">
+                    <div class="gallery-item">
+                        <a href="gfx/mud/23d0971cee5e5c17607376949c6da58f.png" data-lightbox>
+                            <img border="0" width="192" height="120" src="gfx/mud/23d0971cee5e5c17607376949c6da58f.png" />
+                        </a>
+                    </div>
+                </td>
+                <td align="left">&nbsp;</td>
+                <td align="left">
+                    <a target="I3 mudlist" href="http://178.79.173.99/">Aadaria</a><br />
+                    DikuMUD<br />
+                    ADR 4.05 (build: 73) 4.05 (build: 88)<br />
+                    <a href="telnet://178.79.173.99:1111/">178.79.173.99 1111</a>
+                </td>
+            </tr>
+            <tr bgcolor="#000000">
+                <td align="center">
+                    <div class="gallery-item">
+                        <a href="gfx/mud/__NOT_FOUND_9.png" data-lightbox>
+                            <img border="0" width="192" height="120" src="gfx/mud/__NOT_FOUND_9.png" />
+                        </a>
+                    </div>
+                </td>
+                <td align="left">&nbsp;</td>
+                <td align="left">
+                    <a target="I3 mudlist" href="http://152.228.99.176/">Aadarian_Realms</a><br />
+                    DikuMUD<br />
+                    ADR 1.00 (build: 33)<br />
+                    <a href="telnet://152.228.99.176:1111/">152.228.99.176 1111</a>
+                </td>
+                <td align="center">
+                    <div class="gallery-item">
+                        <a href="gfx/mud/24d6379cd169aa70bc3a3112fbab83a3.png" data-lightbox>
+                            <img border="0" width="192" height="120" src="gfx/mud/24d6379cd169aa70bc3a3112fbab83a3.png" />
+                        </a>
+                    </div>
+                </td>
+                <td align="left">&nbsp;</td>
+                <td align="left">
+                    <a target="I3 mudlist" href="http://178.79.173.99/">Aadarian_Realms-OLD</a><br />
+                    DikuMUD<br />
+                    ADR 4.66 (build: 82)<br />
+                    <a href="telnet://178.79.173.99:1114/">178.79.173.99 1114</a>
+                </td>
+            </tr>
+            <tr bgcolor="#1f1f1f">
+                <td align="center">
+                    <div class="gallery-item">
+                        <a href="gfx/mud/21886062a6e123d028e3f5c46ef13300.png" data-lightbox>
+                            <img border="0" width="192" height="120" src="gfx/mud/21886062a6e123d028e3f5c46ef13300.png" />
+                        </a>
+                    </div>
+                </td>
+                <td align="left">&nbsp;</td>
+                <td align="left">
+                    <a target="I3 mudlist" href="http://178.196.119.83/">Adaka</a><br />
+                    CoffeeMud<br />
+                    CoffeeMud v5.9.6<br />
+                    <a href="telnet://178.196.119.83:5555/">178.196.119.83 5555</a>
+                </td>
+                <td align="center">
+                    <div class="gallery-item">
+                        <a href="gfx/mud/ba0efe0165f99e0fe749ce7824c56e79.png" data-lightbox>
+                            <img border="0" width="192" height="120" src="gfx/mud/ba0efe0165f99e0fe749ce7824c56e79.png" />
+                        </a>
+                    </div>
+                </td>
+                <td align="left">&nbsp;</td>
+                <td align="left">
+                    <a target="I3 mudlist" href="http://45.79.84.36/">Aftermath RPG</a><br />
+                    CoffeeMud<br />
+                    CoffeeMud v5.9.6.3<br />
+                    <a href="telnet://45.79.84.36:23/">45.79.84.36 23</a>
+                </td>
+            </tr>
+            <tr bgcolor="#000000">
+                <td align="center">
+                    <div class="gallery-item">
+                        <a href="gfx/mud/4361761aeb2fc711997dc9aa6365730e.png" data-lightbox>
+                            <img border="0" width="192" height="120" src="gfx/mud/4361761aeb2fc711997dc9aa6365730e.png" />
+                        </a>
+                    </div>
+                </td>
+                <td align="left">&nbsp;</td>
+                <td align="left">
+                    <a target="I3 mudlist" href="http://66.85.147.93/">Allegiances Unbroken</a><br />
+                    CoffeeMud<br />
+                    CoffeeMud v5.9.1<br />
+                    <a href="telnet://66.85.147.93:1234/">66.85.147.93 1234</a>
+                </td>
+                <td align="center">
+                    <div class="gallery-item">
+                        <a href="gfx/mud/__NOT_FOUND_0.png" data-lightbox>
+                            <img border="0" width="192" height="120" src="gfx/mud/__NOT_FOUND_0.png" />
+                        </a>
+                    </div>
+                </td>
+                <td align="left">&nbsp;</td>
+                <td align="left">
+                    <a target="I3 mudlist" href="http://54.236.72.139/">Amazopolis</a><br />
+                    CoffeeMud<br />
+                    CoffeeMud v5.9.6<br />
+                    <a href="telnet://54.236.72.139:5555/">54.236.72.139 5555</a>
+                </td>
+            </tr>
+            <tr bgcolor="#1f1f1f">
+                <td align="center">
+                    <div class="gallery-item">
+                        <a href="gfx/mud/b12ada003e4a5ac54e09aa42ce0d6d80.png" data-lightbox>
+                            <img border="0" width="192" height="120" src="gfx/mud/b12ada003e4a5ac54e09aa42ce0d6d80.png" />
+                        </a>
+                    </div>
+                </td>
+                <td align="left">&nbsp;</td>
+                <td align="left">
+                    <a target="I3 mudlist" href="http://128.16.10.197/">Antikaria</a><br />
+                    TMD<br />
+                    antikaria<br />
+                    <a href="telnet://128.16.10.197:9000/">128.16.10.197 9000</a>
+                </td>
+                <td align="center">
+                    <div class="gallery-item">
+                        <a href="gfx/mud/f0f9e19996a252f41cd57eab7de3ff0b.png" data-lightbox>
+                            <img border="0" width="192" height="120" src="gfx/mud/f0f9e19996a252f41cd57eab7de3ff0b.png" />
+                        </a>
+                    </div>
+                </td>
+                <td align="left">&nbsp;</td>
+                <td align="left">
+                    <a target="I3 mudlist" href="http://88.97.75.68/">Archipelago</a><br />
+                    LPMud<br />
+                    Discworld 15.0a<br />
+                    <a href="telnet://88.97.75.68:8000/">88.97.75.68 8000</a>
+                </td>
+            </tr>
+            <tr bgcolor="#000000">
+                <td align="center">
+                    <div class="gallery-item">
+                        <a href="gfx/mud/fda8bf95b5380d11d0d9d2ee44224d08.png" data-lightbox>
+                            <img border="0" width="192" height="120" src="gfx/mud/fda8bf95b5380d11d0d9d2ee44224d08.png" />
+                        </a>
+                    </div>
+                </td>
+                <td align="left">&nbsp;</td>
+                <td align="left">
+                    <a target="I3 mudlist" href="http://178.62.73.229/">AsYetUntitled</a><br />
+                    LPMud<br />
+                    Dead Souls 3.8.6<br />
+                    <a href="telnet://178.62.73.229:6666/">178.62.73.229 6666</a>
+                </td>
+                <td align="center">
+                    <div class="gallery-item">
+                        <a href="gfx/mud/b4df03519ad8be2f68bd70413b74c64d.png" data-lightbox>
+                            <img border="0" width="192" height="120" src="gfx/mud/b4df03519ad8be2f68bd70413b74c64d.png" />
+                        </a>
+                    </div>
+                </td>
+                <td align="left">&nbsp;</td>
+                <td align="left">
+                    <a target="I3 mudlist" href="http://95.85.50.124/">Awakened Codex</a><br />
+                    CoffeeMud<br />
+                    CoffeeMud v5.9.7<br />
+                    <a href="telnet://95.85.50.124:5555/">95.85.50.124 5555</a>
+                </td>
+            </tr>
+            <tr bgcolor="#1f1f1f">
+                <td align="center">
+                    <div class="gallery-item">
+                        <a href="gfx/mud/__NOT_FOUND_4.png" data-lightbox>
+                            <img border="0" width="192" height="120" src="gfx/mud/__NOT_FOUND_4.png" />
+                        </a>
+                    </div>
+                </td>
+                <td align="left">&nbsp;</td>
+                <td align="left">
+                    <a target="I3 mudlist" href="http://195.176.29.132/">BLOCKS</a><br />
+                    CoffeeMud<br />
+                    CoffeeMud v5.9.4<br />
+                    <a href="telnet://195.176.29.132:5555/">195.176.29.132 5555</a>
+                </td>
+                <td align="center">
+                    <div class="gallery-item">
+                        <a href="gfx/mud/2dd142eb1ca762dda2ed13e5aeeb6169.png" data-lightbox>
+                            <img border="0" width="192" height="120" src="gfx/mud/2dd142eb1ca762dda2ed13e5aeeb6169.png" />
+                        </a>
+                    </div>
+                </td>
+                <td align="left">&nbsp;</td>
+                <td align="left">
+                    <a target="I3 mudlist" href="http://198.12.92.168/">Chaos Reigns</a><br />
+                    LPMud<br />
+                    Dead Souls 3.8.6<br />
+                    <a href="telnet://198.12.92.168:6666/">198.12.92.168 6666</a>
+                </td>
+            </tr>
+            <tr bgcolor="#000000">
+                <td align="center">
+                    <div class="gallery-item">
+                        <a href="gfx/mud/c94774c4f4a90784e141215e1bc2ab4e.png" data-lightbox>
+                            <img border="0" width="192" height="120" src="gfx/mud/c94774c4f4a90784e141215e1bc2ab4e.png" />
+                        </a>
+                    </div>
+                </td>
+                <td align="left">&nbsp;</td>
+                <td align="left">
+                    <a target="I3 mudlist" href="http://104.14.28.106/">CoffeeMud</a><br />
+                    CoffeeMud<br />
+                    CoffeeMud v5.9.8.1<br />
+                    <a href="telnet://104.14.28.106:2323/">104.14.28.106 2323</a>
+                </td>
+                <td align="center">
+                    <div class="gallery-item">
+                        <a href="gfx/mud/6bcafe4035076f6e5fed44f03b3025d3.png" data-lightbox>
+                            <img border="0" width="192" height="120" src="gfx/mud/6bcafe4035076f6e5fed44f03b3025d3.png" />
+                        </a>
+                    </div>
+                </td>
+                <td align="left">&nbsp;</td>
+                <td align="left">
+                    <a target="I3 mudlist" href="http://173.193.107.10/">Core MUD</a><br />
+                    LPMud<br />
+                    Colony 1.3<br />
+                    <a href="telnet://173.193.107.10:4000/">173.193.107.10 4000</a>
+                </td>
+            </tr>
+            <tr bgcolor="#1f1f1f">
+                <td align="center">
+                    <div class="gallery-item">
+                        <a href="gfx/mud/d622fb236809b5fc0ce47650eb4b9151.png" data-lightbox>
+                            <img border="0" width="192" height="120" src="gfx/mud/d622fb236809b5fc0ce47650eb4b9151.png" />
+                        </a>
+                    </div>
+                </td>
+                <td align="left">&nbsp;</td>
+                <td align="left">
+                    <a target="I3 mudlist" href="http://96.126.100.155/">Covenant of Lords</a><br />
+                    CoffeeMud<br />
+                    CoffeeMud v5.9.7<br />
+                    <a href="telnet://96.126.100.155:23/">96.126.100.155 23</a>
+                </td>
+                <td align="center">
+                    <div class="gallery-item">
+                        <a href="gfx/mud/__NOT_FOUND_1.png" data-lightbox>
+                            <img border="0" width="192" height="120" src="gfx/mud/__NOT_FOUND_1.png" />
+                        </a>
+                    </div>
+                </td>
+                <td align="left">&nbsp;</td>
+                <td align="left">
+                    <a target="I3 mudlist" href="http://138.91.79.81/">Crat's Agony</a><br />
+                    LPMud<br />
+                    Dead Souls 3.8.1<br />
+                    <a href="telnet://138.91.79.81:6666/">138.91.79.81 6666</a>
+                </td>
+            </tr>
+            <tr bgcolor="#000000">
+                <td align="center">
+                    <div class="gallery-item">
+                        <a href="gfx/mud/5f406b242e5d7f5224cf975d524a5b10.png" data-lightbox>
+                            <img border="0" width="192" height="120" src="gfx/mud/5f406b242e5d7f5224cf975d524a5b10.png" />
+                        </a>
+                    </div>
+                </td>
+                <td align="left">&nbsp;</td>
+                <td align="left">
+                    <a target="I3 mudlist" href="http://178.79.173.99/">Dark City</a><br />
+                    GodWars<br />
+                    Dark City<br />
+                    <a href="telnet://178.79.173.99:3000/">178.79.173.99 3000</a>
+                </td>
+                <td align="center">
+                    <div class="gallery-item">
+                        <a href="gfx/mud/0326d47db1bb6b3d50966dcea6b0aedb.png" data-lightbox>
+                            <img border="0" width="192" height="120" src="gfx/mud/0326d47db1bb6b3d50966dcea6b0aedb.png" />
+                        </a>
+                    </div>
+                </td>
+                <td align="left">&nbsp;</td>
+                <td align="left">
+                    <a target="I3 mudlist" href="http://138.197.27.13/">Dark Ruins</a><br />
+                    LPMud<br />
+                    Dead Souls 3.8.6<br />
+                    <a href="telnet://138.197.27.13:3000/">138.197.27.13 3000</a>
+                </td>
+            </tr>
+            <tr bgcolor="#1f1f1f">
+                <td align="center">
+                    <div class="gallery-item">
+                        <a href="gfx/mud/__NOT_FOUND_3.png" data-lightbox>
+                            <img border="0" width="192" height="120" src="gfx/mud/__NOT_FOUND_3.png" />
+                        </a>
+                    </div>
+                </td>
+                <td align="left">&nbsp;</td>
+                <td align="left">
+                    <a target="I3 mudlist" href="http://45.52.9.106/">DarkeMUD</a><br />
+                     <br />
+                     <br />
+                    <a href="telnet://45.52.9.106:0/">45.52.9.106 0</a>
+                </td>
+                <td align="center">
+                    <div class="gallery-item">
+                        <a href="gfx/mud/16f58cd6254cb4dfbffb15040efaad5f.png" data-lightbox>
+                            <img border="0" width="192" height="120" src="gfx/mud/16f58cd6254cb4dfbffb15040efaad5f.png" />
+                        </a>
+                    </div>
+                </td>
+                <td align="left">&nbsp;</td>
+                <td align="left">
+                    <a target="I3 mudlist" href="http://222.154.243.2/">Darkmaze</a><br />
+                    LPMud<br />
+                    Dead Souls 3.8.1<br />
+                    <a href="telnet://222.154.243.2:6900/">222.154.243.2 6900</a>
+                </td>
+            </tr>
+            <tr bgcolor="#000000">
+                <td align="center">
+                    <div class="gallery-item">
+                        <a href="gfx/mud/5dd655a0a62981f02a978030106130c9.png" data-lightbox>
+                            <img border="0" width="192" height="120" src="gfx/mud/5dd655a0a62981f02a978030106130c9.png" />
+                        </a>
+                    </div>
+                </td>
+                <td align="left">&nbsp;</td>
+                <td align="left">
+                    <a target="I3 mudlist" href="http://204.10.33.131/">Darkness and Despair</a><br />
+                    LPMud<br />
+                    Nightmare+DnD<br />
+                    <a href="telnet://204.10.33.131:4201/">204.10.33.131 4201</a>
+                </td>
+                <td align="center">
+                    <div class="gallery-item">
+                        <a href="gfx/mud/83670fc77dca81e8c0696e4022d3979c.png" data-lightbox>
+                            <img border="0" width="192" height="120" src="gfx/mud/83670fc77dca81e8c0696e4022d3979c.png" />
+                        </a>
+                    </div>
+                </td>
+                <td align="left">&nbsp;</td>
+                <td align="left">
+                    <a target="I3 mudlist" href="http://198.74.50.70/">Darkness Rises</a><br />
+                    CoffeeMud<br />
+                    CoffeeMud v5.9.7.3<br />
+                    <a href="telnet://198.74.50.70:5555/">198.74.50.70 5555</a>
+                </td>
+            </tr>
+            <tr bgcolor="#1f1f1f">
+                <td align="center">
+                    <div class="gallery-item">
+                        <a href="gfx/mud/6f4dded0475ba23a702b0546548d2bd8.png" data-lightbox>
+                            <img border="0" width="192" height="120" src="gfx/mud/6f4dded0475ba23a702b0546548d2bd8.png" />
+                        </a>
+                    </div>
+                </td>
+                <td align="left">&nbsp;</td>
+                <td align="left">
+                    <a target="I3 mudlist" href="http://84.245.8.150/">Darkscapes</a><br />
+                    LPMud<br />
+                    Dead Souls 3.6<br />
+                    <a href="telnet://84.245.8.150:6717/">84.245.8.150 6717</a>
+                </td>
+                <td align="center">
+                    <div class="gallery-item">
+                        <a href="gfx/mud/0d096d5f113c9f92589549c302020785.png" data-lightbox>
+                            <img border="0" width="192" height="120" src="gfx/mud/0d096d5f113c9f92589549c302020785.png" />
+                        </a>
+                    </div>
+                </td>
+                <td align="left">&nbsp;</td>
+                <td align="left">
+                    <a target="I3 mudlist" href="http://24.175.232.23/">Days of Dragons</a><br />
+                    Smaug<br />
+                    6Dragons 4.4<br />
+                    <a href="telnet://24.175.232.23:4040/">24.175.232.23 4040</a>
+                </td>
+            </tr>
+            <tr bgcolor="#000000">
+                <td align="center">
+                    <div class="gallery-item">
+                        <a href="gfx/mud/45c0d80132b486d656eaa847afe36798.png" data-lightbox>
+                            <img border="0" width="192" height="120" src="gfx/mud/45c0d80132b486d656eaa847afe36798.png" />
+                        </a>
+                    </div>
+                </td>
+                <td align="left">&nbsp;</td>
+                <td align="left">
+                    <a target="I3 mudlist" href="http://97.107.133.86/">Dead Souls Dev</a><br />
+                    LPMud<br />
+                    Dead Souls 3.8.6<br />
+                    <a href="telnet://97.107.133.86:8000/">97.107.133.86 8000</a>
+                </td>
+                <td align="center">
+                    <div class="gallery-item">
+                        <a href="gfx/mud/60d655b365c33b48ef933003dedcc1c4.png" data-lightbox>
+                            <img border="0" width="192" height="120" src="gfx/mud/60d655b365c33b48ef933003dedcc1c4.png" />
+                        </a>
+                    </div>
+                </td>
+                <td align="left">&nbsp;</td>
+                <td align="left">
+                    <a target="I3 mudlist" href="http://188.104.160.196/">Dead_Souls_djtechno</a><br />
+                    LPMud<br />
+                    Dead Souls 3.8.2<br />
+                    <a href="telnet://188.104.160.196:6666/">188.104.160.196 6666</a>
+                </td>
+            </tr>
+            <tr bgcolor="#1f1f1f">
+                <td align="center">
+                    <div class="gallery-item">
+                        <a href="gfx/mud/__NOT_FOUND_9.png" data-lightbox>
+                            <img border="0" width="192" height="120" src="gfx/mud/__NOT_FOUND_9.png" />
+                        </a>
+                    </div>
+                </td>
+                <td align="left">&nbsp;</td>
+                <td align="left">
+                    <a target="I3 mudlist" href="http://68.235.56.195/">Dead_Souls_panther</a><br />
+                    LPMud<br />
+                    Dead Souls 3.8.6<br />
+                    <a href="telnet://68.235.56.195:4000/">68.235.56.195 4000</a>
+                </td>
+                <td align="center">
+                    <div class="gallery-item">
+                        <a href="gfx/mud/e24f78c2617fed97447fc073393c1b58.png" data-lightbox>
+                            <img border="0" width="192" height="120" src="gfx/mud/e24f78c2617fed97447fc073393c1b58.png" />
+                        </a>
+                    </div>
+                </td>
+                <td align="left">&nbsp;</td>
+                <td align="left">
+                    <a target="I3 mudlist" href="http://216.51.210.130/">DeadSoulsTest</a><br />
+                    LPMud<br />
+                    Dead Souls 3.8.6<br />
+                    <a href="telnet://216.51.210.130:6666/">216.51.210.130 6666</a>
+                </td>
+            </tr>
+            <tr bgcolor="#000000">
+                <td align="center">
+                    <div class="gallery-item">
+                        <a href="gfx/mud/2a27428ecedca797c55501d29060c9c2.png" data-lightbox>
+                            <img border="0" width="192" height="120" src="gfx/mud/2a27428ecedca797c55501d29060c9c2.png" />
+                        </a>
+                    </div>
+                </td>
+                <td align="left">&nbsp;</td>
+                <td align="left">
+                    <a target="I3 mudlist" href="http://204.10.33.131/">Desolation</a><br />
+                    LP<br />
+                    Lima 1.0a8<br />
+                    <a href="telnet://204.10.33.131:7878/">204.10.33.131 7878</a>
+                </td>
+                <td align="center">
+                    <div class="gallery-item">
+                        <a href="gfx/mud/41dd888487001748d6d89bd79f73d5c6.png" data-lightbox>
+                            <img border="0" width="192" height="120" src="gfx/mud/41dd888487001748d6d89bd79f73d5c6.png" />
+                        </a>
+                    </div>
+                </td>
+                <td align="left">&nbsp;</td>
+                <td align="left">
+                    <a target="I3 mudlist" href="http://82.68.167.69/">Discworld</a><br />
+                    LPMud<br />
+                    Discworld 18.0a<br />
+                    <a href="telnet://82.68.167.69:23/">82.68.167.69 23</a>
+                </td>
+            </tr>
+            <tr bgcolor="#1f1f1f">
+                <td align="center">
+                    <div class="gallery-item">
+                        <a href="gfx/mud/774ac7a8da69a41287f03042b519e73b.png" data-lightbox>
+                            <img border="0" width="192" height="120" src="gfx/mud/774ac7a8da69a41287f03042b519e73b.png" />
+                        </a>
+                    </div>
+                </td>
+                <td align="left">&nbsp;</td>
+                <td align="left">
+                    <a target="I3 mudlist" href="http://172.92.143.166/">Disk World</a><br />
+                    LPMud<br />
+                    Discworld 17.0a<br />
+                    <a href="telnet://172.92.143.166:4400/">172.92.143.166 4400</a>
+                </td>
+                <td align="center">
+                    <div class="gallery-item">
+                        <a href="gfx/mud/bc77fc33686f58682dfe0704c435c4a6.png" data-lightbox>
+                            <img border="0" width="192" height="120" src="gfx/mud/bc77fc33686f58682dfe0704c435c4a6.png" />
+                        </a>
+                    </div>
+                </td>
+                <td align="left">&nbsp;</td>
+                <td align="left">
+                    <a target="I3 mudlist" href="http://24.175.232.23/">DoT</a><br />
+                    n/a<br />
+                    IMC2 Freedom C++ CL-2.1a Dawn<br />
+                    <a href="telnet://24.175.232.23:4000/">24.175.232.23 4000</a>
+                </td>
+            </tr>
+            <tr bgcolor="#000000">
+                <td align="center">
+                    <div class="gallery-item">
+                        <a href="gfx/mud/4b7edd92f92774b24780794f4f2b8950.png" data-lightbox>
+                            <img border="0" width="192" height="120" src="gfx/mud/4b7edd92f92774b24780794f4f2b8950.png" />
+                        </a>
+                    </div>
+                </td>
+                <td align="left">&nbsp;</td>
+                <td align="left">
+                    <a target="I3 mudlist" href="http://74.109.126.27/">Dragon's Den</a><br />
+                    LPMud<br />
+                    Dragon Mudlib 1.1<br />
+                    <a href="telnet://74.109.126.27:2222/">74.109.126.27 2222</a>
+                </td>
+                <td align="center">
+                    <div class="gallery-item">
+                        <a href="gfx/mud/e9e206be1c4447295f06bc1d06416175.png" data-lightbox>
+                            <img border="0" width="192" height="120" src="gfx/mud/e9e206be1c4447295f06bc1d06416175.png" />
+                        </a>
+                    </div>
+                </td>
+                <td align="left">&nbsp;</td>
+                <td align="left">
+                    <a target="I3 mudlist" href="http://82.68.167.68/">DW_Clone</a><br />
+                    LPMud<br />
+                    Discworld 18.0a<br />
+                    <a href="telnet://82.68.167.68:4242/">82.68.167.68 4242</a>
+                </td>
+            </tr>
+            <tr bgcolor="#1f1f1f">
+                <td align="center">
+                    <div class="gallery-item">
+                        <a href="gfx/mud/c3cb4ad2a9a11fec6df44d8e8a206db7.png" data-lightbox>
+                            <img border="0" width="192" height="120" src="gfx/mud/c3cb4ad2a9a11fec6df44d8e8a206db7.png" />
+                        </a>
+                    </div>
+                </td>
+                <td align="left">&nbsp;</td>
+                <td align="left">
+                    <a target="I3 mudlist" href="http://74.207.226.164/">EmpiresEnd</a><br />
+                    CoffeeMud<br />
+                    CoffeeMud v5.9.6<br />
+                    <a href="telnet://74.207.226.164:5555/">74.207.226.164 5555</a>
+                </td>
+                <td align="center">
+                    <div class="gallery-item">
+                        <a href="gfx/mud/79eb1051bc5d99f4266196c39454f946.png" data-lightbox>
+                            <img border="0" width="192" height="120" src="gfx/mud/79eb1051bc5d99f4266196c39454f946.png" />
+                        </a>
+                    </div>
+                </td>
+                <td align="left">&nbsp;</td>
+                <td align="left">
+                    <a target="I3 mudlist" href="http://209.216.23.199/">EotL</a><br />
+                    LPMud<br />
+                    LPMud EotL 98<br />
+                    <a href="telnet://209.216.23.199:2010/">209.216.23.199 2010</a>
+                </td>
+            </tr>
+            <tr bgcolor="#000000">
+                <td align="center">
+                    <div class="gallery-item">
+                        <a href="gfx/mud/__NOT_FOUND_8.png" data-lightbox>
+                            <img border="0" width="192" height="120" src="gfx/mud/__NOT_FOUND_8.png" />
+                        </a>
+                    </div>
+                </td>
+                <td align="left">&nbsp;</td>
+                <td align="left">
+                    <a target="I3 mudlist" href="http://176.126.244.21/">Epitaph</a><br />
+                    LPMud<br />
+                    Epiphany v1.2.13 [release]<br />
+                    <a href="telnet://176.126.244.21:23/">176.126.244.21 23</a>
+                </td>
+                <td align="center">
+                    <div class="gallery-item">
+                        <a href="gfx/mud/29d5a05ba309ffb32f22b45134ea62c7.png" data-lightbox>
+                            <img border="0" width="192" height="120" src="gfx/mud/29d5a05ba309ffb32f22b45134ea62c7.png" />
+                        </a>
+                    </div>
+                </td>
+                <td align="left">&nbsp;</td>
+                <td align="left">
+                    <a target="I3 mudlist" href="http://176.126.244.68/">Epitaph Black Ops</a><br />
+                    LPMud<br />
+                    Epiphany v1.2.14 [development]<br />
+                    <a href="telnet://176.126.244.68:6789/">176.126.244.68 6789</a>
+                </td>
+            </tr>
+            <tr bgcolor="#1f1f1f">
+                <td align="center">
+                    <div class="gallery-item">
+                        <a href="gfx/mud/__NOT_FOUND_9.png" data-lightbox>
+                            <img border="0" width="192" height="120" src="gfx/mud/__NOT_FOUND_9.png" />
+                        </a>
+                    </div>
+                </td>
+                <td align="left">&nbsp;</td>
+                <td align="left">
+                    <a target="I3 mudlist" href="http://176.126.244.68/">Epitaph_Black_Ops</a><br />
+                     <br />
+                     <br />
+                    <a href="telnet://176.126.244.68:0/">176.126.244.68 0</a>
+                </td>
+                <td align="center">
+                    <div class="gallery-item">
+                        <a href="gfx/mud/450c578b17088e36ba1cc4dbba9c4322.png" data-lightbox>
+                            <img border="0" width="192" height="120" src="gfx/mud/450c578b17088e36ba1cc4dbba9c4322.png" />
+                        </a>
+                    </div>
+                </td>
+                <td align="left">&nbsp;</td>
+                <td align="left">
+                    <a target="I3 mudlist" href="http://45.33.46.103/">Erimand</a><br />
+                    CoffeeMud<br />
+                    CoffeeMud v5.9.6.4<br />
+                    <a href="telnet://45.33.46.103:23/">45.33.46.103 23</a>
+                </td>
+            </tr>
+            <tr bgcolor="#000000">
+                <td align="center">
+                    <div class="gallery-item">
+                        <a href="gfx/mud/9f6572786d20a2ce7f21f50dab11343e.png" data-lightbox>
+                            <img border="0" width="192" height="120" src="gfx/mud/9f6572786d20a2ce7f21f50dab11343e.png" />
+                        </a>
+                    </div>
+                </td>
+                <td align="left">&nbsp;</td>
+                <td align="left">
+                    <a target="I3 mudlist" href="http://93.186.192.146/">Evermore</a><br />
+                    LDMud<br />
+                    EverLIB 3.0.0<br />
+                    <a href="telnet://93.186.192.146:23/">93.186.192.146 23</a>
+                </td>
+                <td align="center">
+                    <div class="gallery-item">
+                        <a href="gfx/mud/3ae1d3fb3abdb75fa77d59a555a06885.png" data-lightbox>
+                            <img border="0" width="192" height="120" src="gfx/mud/3ae1d3fb3abdb75fa77d59a555a06885.png" />
+                        </a>
+                    </div>
+                </td>
+                <td align="left">&nbsp;</td>
+                <td align="left">
+                    <a target="I3 mudlist" href="http://99.225.187.219/">Fallen World of Darkness</a><br />
+                    CoffeeMud<br />
+                    FWOD v1.0.0<br />
+                    <a href="telnet://99.225.187.219:5555/">99.225.187.219 5555</a>
+                </td>
+            </tr>
+            <tr bgcolor="#1f1f1f">
+                <td align="center">
+                    <div class="gallery-item">
+                        <a href="gfx/mud/047ea2fff790e36f2e790a4662772afd.png" data-lightbox>
+                            <img border="0" width="192" height="120" src="gfx/mud/047ea2fff790e36f2e790a4662772afd.png" />
+                        </a>
+                    </div>
+                </td>
+                <td align="left">&nbsp;</td>
+                <td align="left">
+                    <a target="I3 mudlist" href="http://73.64.246.156/">Farpoint</a><br />
+                    LPMud<br />
+                    Dead Souls 3.8.2<br />
+                    <a href="telnet://73.64.246.156:6666/">73.64.246.156 6666</a>
+                </td>
+                <td align="center">
+                    <div class="gallery-item">
+                        <a href="gfx/mud/a7effb71168b94b6fd7026b3ef6b3c01.png" data-lightbox>
+                            <img border="0" width="192" height="120" src="gfx/mud/a7effb71168b94b6fd7026b3ef6b3c01.png" />
+                        </a>
+                    </div>
+                </td>
+                <td align="left">&nbsp;</td>
+                <td align="left">
+                    <a target="I3 mudlist" href="http://185.47.42.101/">Final Realms</a><br />
+                    LPMud<br />
+                    FRlib V<br />
+                    <a href="telnet://185.47.42.101:4001/">185.47.42.101 4001</a>
+                </td>
+            </tr>
+            <tr bgcolor="#000000">
+                <td align="center">
+                    <div class="gallery-item">
+                        <a href="gfx/mud/7a875ffe240478dbcffcd5f7cbffbeda.png" data-lightbox>
+                            <img border="0" width="192" height="120" src="gfx/mud/7a875ffe240478dbcffcd5f7cbffbeda.png" />
+                        </a>
+                    </div>
+                </td>
+                <td align="left">&nbsp;</td>
+                <td align="left">
+                    <a target="I3 mudlist" href="http://71.85.22.17/">FOR_NOW</a><br />
+                    CoffeeMud<br />
+                    CoffeeMud v5.9.7<br />
+                    <a href="telnet://71.85.22.17:5555/">71.85.22.17 5555</a>
+                </td>
+                <td align="center">
+                    <div class="gallery-item">
+                        <a href="gfx/mud/3fe08094134670d6302788b71443f259.png" data-lightbox>
+                            <img border="0" width="192" height="120" src="gfx/mud/3fe08094134670d6302788b71443f259.png" />
+                        </a>
+                    </div>
+                </td>
+                <td align="left">&nbsp;</td>
+                <td align="left">
+                    <a target="I3 mudlist" href="http://71.85.22.17/">FOR_NOW_Alt</a><br />
+                    CoffeeMud<br />
+                    CoffeeMud v5.9.7<br />
+                    <a href="telnet://71.85.22.17:5555/">71.85.22.17 5555</a>
+                </td>
+            </tr>
+            <tr bgcolor="#1f1f1f">
+                <td align="center">
+                    <div class="gallery-item">
+                        <a href="gfx/mud/0f35b757c0817f57b10a4a7d0e7ad841.png" data-lightbox>
+                            <img border="0" width="192" height="120" src="gfx/mud/0f35b757c0817f57b10a4a7d0e7ad841.png" />
+                        </a>
+                    </div>
+                </td>
+                <td align="left">&nbsp;</td>
+                <td align="left">
+                    <a target="I3 mudlist" href="http://54.172.123.224/">Forgotten-Gods</a><br />
+                    LPMud<br />
+                    Dead Souls 3.8.6<br />
+                    <a href="telnet://54.172.123.224:6690/">54.172.123.224 6690</a>
+                </td>
+                <td align="center">
+                    <div class="gallery-item">
+                        <a href="gfx/mud/b97f5618f49d5adf844dfed21f9ef739.png" data-lightbox>
+                            <img border="0" width="192" height="120" src="gfx/mud/b97f5618f49d5adf844dfed21f9ef739.png" />
+                        </a>
+                    </div>
+                </td>
+                <td align="left">&nbsp;</td>
+                <td align="left">
+                    <a target="I3 mudlist" href="http://204.209.44.3/">Frontiers</a><br />
+                    LPMud<br />
+                    Dead Souls 2.10<br />
+                    <a href="telnet://204.209.44.3:8000/">204.209.44.3 8000</a>
+                </td>
+            </tr>
+            <tr bgcolor="#000000">
+                <td align="center">
+                    <div class="gallery-item">
+                        <a href="gfx/mud/0cd1769ffadf7e517ee79883a56efc38.png" data-lightbox>
+                            <img border="0" width="192" height="120" src="gfx/mud/0cd1769ffadf7e517ee79883a56efc38.png" />
+                        </a>
+                    </div>
+                </td>
+                <td align="left">&nbsp;</td>
+                <td align="left">
+                    <a target="I3 mudlist" href="http://37.60.155.210/">Gandhaal</a><br />
+                    CoffeeMud<br />
+                    CoffeeMud v5.9.7<br />
+                    <a href="telnet://37.60.155.210:7777/">37.60.155.210 7777</a>
+                </td>
+                <td align="center">
+                    <div class="gallery-item">
+                        <a href="gfx/mud/5124494aad7dc83c6675c70b72b4745b.png" data-lightbox>
+                            <img border="0" width="192" height="120" src="gfx/mud/5124494aad7dc83c6675c70b72b4745b.png" />
+                        </a>
+                    </div>
+                </td>
+                <td align="left">&nbsp;</td>
+                <td align="left">
+                    <a target="I3 mudlist" href="http://5.135.160.179/">Gates of Krynn</a><br />
+                    CoffeeMud<br />
+                    CoffeeMud v5.9.7<br />
+                    <a href="telnet://5.135.160.179:4500/">5.135.160.179 4500</a>
+                </td>
+            </tr>
+            <tr bgcolor="#1f1f1f">
+                <td align="center">
+                    <div class="gallery-item">
+                        <a href="gfx/mud/__NOT_FOUND_3.png" data-lightbox>
+                            <img border="0" width="192" height="120" src="gfx/mud/__NOT_FOUND_3.png" />
+                        </a>
+                    </div>
+                </td>
+                <td align="left">&nbsp;</td>
+                <td align="left">
+                    <a target="I3 mudlist" href="http://150.101.219.57/">I3-TheMud-ORG</a><br />
+                    LPMud<br />
+                    Dead Souls 3.8.6<br />
+                    <a href="telnet://150.101.219.57:5555/">150.101.219.57 5555</a>
+                </td>
+                <td align="center">
+                    <div class="gallery-item">
+                        <a href="gfx/mud/4f58fba21203ab7da51a8c59331e2503.png" data-lightbox>
+                            <img border="0" width="192" height="120" src="gfx/mud/4f58fba21203ab7da51a8c59331e2503.png" />
+                        </a>
+                    </div>
+                </td>
+                <td align="left">&nbsp;</td>
+                <td align="left">
+                    <a target="I3 mudlist" href="http://2.82.183.179/">Iberia MUD</a><br />
+                    IME<br />
+                    IME v0.997b<br />
+                    <a href="telnet://2.82.183.179:5900/">2.82.183.179 5900</a>
+                </td>
+            </tr>
+            <tr bgcolor="#000000">
+                <td align="center">
+                    <div class="gallery-item">
+                        <a href="gfx/mud/bf94b4e5dd66d95e19b69b7785d7c6eb.png" data-lightbox>
+                            <img border="0" width="192" height="120" src="gfx/mud/bf94b4e5dd66d95e19b69b7785d7c6eb.png" />
+                        </a>
+                    </div>
+                </td>
+                <td align="left">&nbsp;</td>
+                <td align="left">
+                    <a target="I3 mudlist" href="http://173.255.197.121/">Imagining Stuff</a><br />
+                    CoffeeMud<br />
+                    CoffeeMud v5.9.6.3<br />
+                    <a href="telnet://173.255.197.121:1111/">173.255.197.121 1111</a>
+                </td>
+                <td align="center">
+                    <div class="gallery-item">
+                        <a href="gfx/mud/b0f690cb696f269521357999d04b4a3b.png" data-lightbox>
+                            <img border="0" width="192" height="120" src="gfx/mud/b0f690cb696f269521357999d04b4a3b.png" />
+                        </a>
+                    </div>
+                </td>
+                <td align="left">&nbsp;</td>
+                <td align="left">
+                    <a target="I3 mudlist" href="http://104.237.155.126/">KellerMUD</a><br />
+                    CoffeeMud<br />
+                    CoffeeMud v5.9.6<br />
+                    <a href="telnet://104.237.155.126:23/">104.237.155.126 23</a>
+                </td>
+            </tr>
+            <tr bgcolor="#1f1f1f">
+                <td align="center">
+                    <div class="gallery-item">
+                        <a href="gfx/mud/3c3c06eb454507b8ed4ae1301f0ce2a3.png" data-lightbox>
+                            <img border="0" width="192" height="120" src="gfx/mud/3c3c06eb454507b8ed4ae1301f0ce2a3.png" />
+                        </a>
+                    </div>
+                </td>
+                <td align="left">&nbsp;</td>
+                <td align="left">
+                    <a target="I3 mudlist" href="http://45.79.110.179/">KF5QEO`s Coffee Mud</a><br />
+                    CoffeeMud<br />
+                    CoffeeMud v5.9.6<br />
+                    <a href="telnet://45.79.110.179:3535/">45.79.110.179 3535</a>
+                </td>
+                <td align="center">
+                    <div class="gallery-item">
+                        <a href="gfx/mud/7d6baf450b4f31ad61d5bc693710dac7.png" data-lightbox>
+                            <img border="0" width="192" height="120" src="gfx/mud/7d6baf450b4f31ad61d5bc693710dac7.png" />
+                        </a>
+                    </div>
+                </td>
+                <td align="left">&nbsp;</td>
+                <td align="left">
+                    <a target="I3 mudlist" href="http://198.58.115.221/">Lands of Teric</a><br />
+                    CoffeeMud<br />
+                    CoffeeMud v5.9.7.3<br />
+                    <a href="telnet://198.58.115.221:23/">198.58.115.221 23</a>
+                </td>
+            </tr>
+            <tr bgcolor="#000000">
+                <td align="center">
+                    <div class="gallery-item">
+                        <a href="gfx/mud/3345b537cacf26cbbf6cf311d20861b6.png" data-lightbox>
+                            <img border="0" width="192" height="120" src="gfx/mud/3345b537cacf26cbbf6cf311d20861b6.png" />
+                        </a>
+                    </div>
+                </td>
+                <td align="left">&nbsp;</td>
+                <td align="left">
+                    <a target="I3 mudlist" href="http://173.22.222.195/">Last Dawn</a><br />
+                    CoffeeMud<br />
+                    CoffeeMud v5.9.7.6<br />
+                    <a href="telnet://173.22.222.195:8777/">173.22.222.195 8777</a>
+                </td>
+                <td align="center">
+                    <div class="gallery-item">
+                        <a href="gfx/mud/70ea2c4f10a75d6800c45a8d786db86d.png" data-lightbox>
+                            <img border="0" width="192" height="120" src="gfx/mud/70ea2c4f10a75d6800c45a8d786db86d.png" />
+                        </a>
+                    </div>
+                </td>
+                <td align="left">&nbsp;</td>
+                <td align="left">
+                    <a target="I3 mudlist" href="http://35.164.33.211/">Liminus</a><br />
+                    LPMud<br />
+                    GurbaLib v0.50<br />
+                    <a href="telnet://35.164.33.211:4000/">35.164.33.211 4000</a>
+                </td>
+            </tr>
+            <tr bgcolor="#1f1f1f">
+                <td align="center">
+                    <div class="gallery-item">
+                        <a href="gfx/mud/5cb2fb579e6bfd20b23f1ccb1eba0c43.png" data-lightbox>
+                            <img border="0" width="192" height="120" src="gfx/mud/5cb2fb579e6bfd20b23f1ccb1eba0c43.png" />
+                        </a>
+                    </div>
+                </td>
+                <td align="left">&nbsp;</td>
+                <td align="left">
+                    <a target="I3 mudlist" href="http://136.144.155.250/">lpcdb</a><br />
+                    LPMud<br />
+                    lpcdb v1.0 alpha 2<br />
+                    <a href="telnet://136.144.155.250:4000/">136.144.155.250 4000</a>
+                </td>
+                <td align="center">
+                    <div class="gallery-item">
+                        <a href="gfx/mud/__NOT_FOUND_0.png" data-lightbox>
+                            <img border="0" width="192" height="120" src="gfx/mud/__NOT_FOUND_0.png" />
+                        </a>
+                    </div>
+                </td>
+                <td align="left">&nbsp;</td>
+                <td align="left">
+                    <a target="I3 mudlist" href="http://87.209.243.234/">lpcdb-dev</a><br />
+                    LPMud<br />
+                    lpcdb v1.0 alpha 2<br />
+                    <a href="telnet://87.209.243.234:4000/">87.209.243.234 4000</a>
+                </td>
+            </tr>
+            <tr bgcolor="#000000">
+                <td align="center">
+                    <div class="gallery-item">
+                        <a href="gfx/mud/2fd7e856c7d4ae37a004641b03a51b82.png" data-lightbox>
+                            <img border="0" width="192" height="120" src="gfx/mud/2fd7e856c7d4ae37a004641b03a51b82.png" />
+                        </a>
+                    </div>
+                </td>
+                <td align="left">&nbsp;</td>
+                <td align="left">
+                    <a target="I3 mudlist" href="http://45.56.76.179/">Macrocosm</a><br />
+                    CoffeeMud<br />
+                    CoffeeMud v5.9.7.3<br />
+                    <a href="telnet://45.56.76.179:5555/">45.56.76.179 5555</a>
+                </td>
+                <td align="center">
+                    <div class="gallery-item">
+                        <a href="gfx/mud/__NOT_FOUND_2.png" data-lightbox>
+                            <img border="0" width="192" height="120" src="gfx/mud/__NOT_FOUND_2.png" />
+                        </a>
+                    </div>
+                </td>
+                <td align="left">&nbsp;</td>
+                <td align="left">
+                    <a target="I3 mudlist" href="http://86.61.249.216/">Morkin23</a><br />
+                    LPMud<br />
+                    Dead Souls 3.8.6<br />
+                    <a href="telnet://86.61.249.216:6666/">86.61.249.216 6666</a>
+                </td>
+            </tr>
+            <tr bgcolor="#1f1f1f">
+                <td align="center">
+                    <div class="gallery-item">
+                        <a href="gfx/mud/__NOT_FOUND_4.png" data-lightbox>
+                            <img border="0" width="192" height="120" src="gfx/mud/__NOT_FOUND_4.png" />
+                        </a>
+                    </div>
+                </td>
+                <td align="left">&nbsp;</td>
+                <td align="left">
+                    <a target="I3 mudlist" href="http://107.0.42.254/">Mr. Mike`s Crazy World</a><br />
+                    CoffeeMud<br />
+                    CoffeeMud v5.9.6<br />
+                    <a href="telnet://107.0.42.254:5555/">107.0.42.254 5555</a>
+                </td>
+                <td align="center">
+                    <div class="gallery-item">
+                        <a href="gfx/mud/0d4113f866fc7be2b7241e78d83a89d1.png" data-lightbox>
+                            <img border="0" width="192" height="120" src="gfx/mud/0d4113f866fc7be2b7241e78d83a89d1.png" />
+                        </a>
+                    </div>
+                </td>
+                <td align="left">&nbsp;</td>
+                <td align="left">
+                    <a target="I3 mudlist" href="http://65.103.157.31/">mud.seatonserver.com</a><br />
+                    LPMud<br />
+                    Dead Souls 3.8.2<br />
+                    <a href="telnet://65.103.157.31:6666/">65.103.157.31 6666</a>
+                </td>
+            </tr>
+            <tr bgcolor="#000000">
+                <td align="center">
+                    <div class="gallery-item">
+                        <a href="gfx/mud/e729ffaaca1d68184184c4750ed5c7df.png" data-lightbox>
+                            <img border="0" width="192" height="120" src="gfx/mud/e729ffaaca1d68184184c4750ed5c7df.png" />
+                        </a>
+                    </div>
+                </td>
+                <td align="left">&nbsp;</td>
+                <td align="left">
+                    <a target="I3 mudlist" href="http://99.192.66.240/">MUDgaard</a><br />
+                    CoffeeMud<br />
+                    CoffeeMud v5.9.7<br />
+                    <a href="telnet://99.192.66.240:5555/">99.192.66.240 5555</a>
+                </td>
+                <td align="center">
+                    <div class="gallery-item">
+                        <a href="gfx/mud/9deee549e0ae06b80cc0f22acf16b5e9.png" data-lightbox>
+                            <img border="0" width="192" height="120" src="gfx/mud/9deee549e0ae06b80cc0f22acf16b5e9.png" />
+                        </a>
+                    </div>
+                </td>
+                <td align="left">&nbsp;</td>
+                <td align="left">
+                    <a target="I3 mudlist" href="http://45.56.75.164/">MUDGourd</a><br />
+                    CoffeeMud<br />
+                    CoffeeMud v5.9.7.3<br />
+                    <a href="telnet://45.56.75.164:5555/">45.56.75.164 5555</a>
+                </td>
+            </tr>
+            <tr bgcolor="#1f1f1f">
+                <td align="center">
+                    <div class="gallery-item">
+                        <a href="gfx/mud/08451a1fd3d0e0dc196bc46230c3e675.png" data-lightbox>
+                            <img border="0" width="192" height="120" src="gfx/mud/08451a1fd3d0e0dc196bc46230c3e675.png" />
+                        </a>
+                    </div>
+                </td>
+                <td align="left">&nbsp;</td>
+                <td align="left">
+                    <a target="I3 mudlist" href="http://23.239.11.138/">Mundo Sangre</a><br />
+                    CoffeeMud<br />
+                    CoffeeMud v5.9.7.3<br />
+                    <a href="telnet://23.239.11.138:5555/">23.239.11.138 5555</a>
+                </td>
+                <td align="center">
+                    <div class="gallery-item">
+                        <a href="gfx/mud/2378865ed5c632b3df4095159c0e5e64.png" data-lightbox>
+                            <img border="0" width="192" height="120" src="gfx/mud/2378865ed5c632b3df4095159c0e5e64.png" />
+                        </a>
+                    </div>
+                </td>
+                <td align="left">&nbsp;</td>
+                <td align="left">
+                    <a target="I3 mudlist" href="http://207.162.200.121/">Nanvaent</a><br />
+                    LP<br />
+                    Nanvaent V.4ish<br />
+                    <a href="telnet://207.162.200.121:3000/">207.162.200.121 3000</a>
+                </td>
+            </tr>
+            <tr bgcolor="#000000">
+                <td align="center">
+                    <div class="gallery-item">
+                        <a href="gfx/mud/90b5ba0c183f29b02e59951af4017204.png" data-lightbox>
+                            <img border="0" width="192" height="120" src="gfx/mud/90b5ba0c183f29b02e59951af4017204.png" />
+                        </a>
+                    </div>
+                </td>
+                <td align="left">&nbsp;</td>
+                <td align="left">
+                    <a target="I3 mudlist" href="http://23.239.2.188/">New MUD</a><br />
+                    CoffeeMud<br />
+                    CoffeeMud v5.9.7.3<br />
+                    <a href="telnet://23.239.2.188:5555/">23.239.2.188 5555</a>
+                </td>
+                <td align="center">
+                    <div class="gallery-item">
+                        <a href="gfx/mud/943eda6395ff81bdde49e5b250330a2e.png" data-lightbox>
+                            <img border="0" width="192" height="120" src="gfx/mud/943eda6395ff81bdde49e5b250330a2e.png" />
+                        </a>
+                    </div>
+                </td>
+                <td align="left">&nbsp;</td>
+                <td align="left">
+                    <a target="I3 mudlist" href="http://107.190.71.174/">Nexus1 Testserver</a><br />
+                    CoffeeMud<br />
+                    CoffeeMud v5.9.7<br />
+                    <a href="telnet://107.190.71.174:5555/">107.190.71.174 5555</a>
+                </td>
+            </tr>
+            <tr bgcolor="#1f1f1f">
+                <td align="center">
+                    <div class="gallery-item">
+                        <a href="gfx/mud/841f1fc38dc4cafe7c8f30ab03638470.png" data-lightbox>
+                            <img border="0" width="192" height="120" src="gfx/mud/841f1fc38dc4cafe7c8f30ab03638470.png" />
+                        </a>
+                    </div>
+                </td>
+                <td align="left">&nbsp;</td>
+                <td align="left">
+                    <a target="I3 mudlist" href="http://82.165.147.114/">Nightfall</a><br />
+                    LPMud<br />
+                    NF<br />
+                    <a href="telnet://82.165.147.114:4242/">82.165.147.114 4242</a>
+                </td>
+                <td align="center">
+                    <div class="gallery-item">
+                        <a href="gfx/mud/69d15965eaae05e85046b4629f71e268.png" data-lightbox>
+                            <img border="0" width="192" height="120" src="gfx/mud/69d15965eaae05e85046b4629f71e268.png" />
+                        </a>
+                    </div>
+                </td>
+                <td align="left">&nbsp;</td>
+                <td align="left">
+                    <a target="I3 mudlist" href="http://23.92.26.97/">Nygaard MUD</a><br />
+                    CoffeeMud<br />
+                    CoffeeMud v5.9.7.3<br />
+                    <a href="telnet://23.92.26.97:5555/">23.92.26.97 5555</a>
+                </td>
+            </tr>
+            <tr bgcolor="#000000">
+                <td align="center">
+                    <div class="gallery-item">
+                        <a href="gfx/mud/56620c8e17fdc99dfa2c57da918f3ed9.png" data-lightbox>
+                            <img border="0" width="192" height="120" src="gfx/mud/56620c8e17fdc99dfa2c57da918f3ed9.png" />
+                        </a>
+                    </div>
+                </td>
+                <td align="left">&nbsp;</td>
+                <td align="left">
+                    <a target="I3 mudlist" href="http://199.74.141.8/">Occulte MUD</a><br />
+                    LP<br />
+                    Skylib 1.8<br />
+                    <a href="telnet://199.74.141.8:8010/">199.74.141.8 8010</a>
+                </td>
+                <td align="center">
+                    <div class="gallery-item">
+                        <a href="gfx/mud/ff60664d90625464e70349cda6f27b6c.png" data-lightbox>
+                            <img border="0" width="192" height="120" src="gfx/mud/ff60664d90625464e70349cda6f27b6c.png" />
+                        </a>
+                    </div>
+                </td>
+                <td align="left">&nbsp;</td>
+                <td align="left">
+                    <a target="I3 mudlist" href="http://158.69.22.132/">Project DF</a><br />
+                    CoffeeMud<br />
+                    CoffeeMud v5.9.5<br />
+                    <a href="telnet://158.69.22.132:4000/">158.69.22.132 4000</a>
+                </td>
+            </tr>
+            <tr bgcolor="#1f1f1f">
+                <td align="center">
+                    <div class="gallery-item">
+                        <a href="gfx/mud/708d2fb0be22d5be832abece0f9070d6.png" data-lightbox>
+                            <img border="0" width="192" height="120" src="gfx/mud/708d2fb0be22d5be832abece0f9070d6.png" />
+                        </a>
+                    </div>
+                </td>
+                <td align="left">&nbsp;</td>
+                <td align="left">
+                    <a target="I3 mudlist" href="http://198.204.235.170/">projectdf</a><br />
+                    CoffeeMud<br />
+                    CoffeeMud v5.9.5<br />
+                    <a href="telnet://198.204.235.170:4000/">198.204.235.170 4000</a>
+                </td>
+                <td align="center">
+                    <div class="gallery-item">
+                        <a href="gfx/mud/6ff4735b0fc4160e081440b3f7238925.png" data-lightbox>
+                            <img border="0" width="192" height="120" src="gfx/mud/6ff4735b0fc4160e081440b3f7238925.png" />
+                        </a>
+                    </div>
+                </td>
+                <td align="left">&nbsp;</td>
+                <td align="left">
+                    <a target="I3 mudlist" href="http://68.183.124.30/">Purgatory</a><br />
+                    CoffeeMud<br />
+                    CoffeeMud v5.9.7<br />
+                    <a href="telnet://68.183.124.30:5555/">68.183.124.30 5555</a>
+                </td>
+            </tr>
+            <tr bgcolor="#000000">
+                <td align="center">
+                    <div class="gallery-item">
+                        <a href="gfx/mud/43d6c49281dab27223d3da275757c57c.png" data-lightbox>
+                            <img border="0" width="192" height="120" src="gfx/mud/43d6c49281dab27223d3da275757c57c.png" />
+                        </a>
+                    </div>
+                </td>
+                <td align="left">&nbsp;</td>
+                <td align="left">
+                    <a target="I3 mudlist" href="http://46.4.48.195/">Railworks MUD</a><br />
+                    CoffeeMud<br />
+                    CoffeeMud v5.9.4<br />
+                    <a href="telnet://46.4.48.195:5585/">46.4.48.195 5585</a>
+                </td>
+                <td align="center">
+                    <div class="gallery-item">
+                        <a href="gfx/mud/d39e7456db72431c88ac5d26595bb395.png" data-lightbox>
+                            <img border="0" width="192" height="120" src="gfx/mud/d39e7456db72431c88ac5d26595bb395.png" />
+                        </a>
+                    </div>
+                </td>
+                <td align="left">&nbsp;</td>
+                <td align="left">
+                    <a target="I3 mudlist" href="http://104.237.152.181/">Randy Stadham</a><br />
+                    CoffeeMud<br />
+                    CoffeeMud v5.9.6.4<br />
+                    <a href="telnet://104.237.152.181:23/">104.237.152.181 23</a>
+                </td>
+            </tr>
+            <tr bgcolor="#1f1f1f">
+                <td align="center">
+                    <div class="gallery-item">
+                        <a href="gfx/mud/e400dc0785e695e715bc374a0217ab18.png" data-lightbox>
+                            <img border="0" width="192" height="120" src="gfx/mud/e400dc0785e695e715bc374a0217ab18.png" />
+                        </a>
+                    </div>
+                </td>
+                <td align="left">&nbsp;</td>
+                <td align="left">
+                    <a target="I3 mudlist" href="http://50.36.182.99/">Realm of Cernunnos</a><br />
+                    CoffeeMud<br />
+                    CoffeeMud v5.9.4<br />
+                    <a href="telnet://50.36.182.99:5555/">50.36.182.99 5555</a>
+                </td>
+                <td align="center">
+                    <div class="gallery-item">
+                        <a href="gfx/mud/81d6a17d1e25a63203750a2b30c22184.png" data-lightbox>
+                            <img border="0" width="192" height="120" src="gfx/mud/81d6a17d1e25a63203750a2b30c22184.png" />
+                        </a>
+                    </div>
+                </td>
+                <td align="left">&nbsp;</td>
+                <td align="left">
+                    <a target="I3 mudlist" href="http://45.56.72.144/">Realms of Discordia</a><br />
+                    CoffeeMud<br />
+                    CoffeeMud v5.9.7.3<br />
+                    <a href="telnet://45.56.72.144:5555/">45.56.72.144 5555</a>
+                </td>
+            </tr>
+            <tr bgcolor="#000000">
+                <td align="center">
+                    <div class="gallery-item">
+                        <a href="gfx/mud/dcf3c03d44c1edc6d5ee5a0530532ec6.png" data-lightbox>
+                            <img border="0" width="192" height="120" src="gfx/mud/dcf3c03d44c1edc6d5ee5a0530532ec6.png" />
+                        </a>
+                    </div>
+                </td>
+                <td align="left">&nbsp;</td>
+                <td align="left">
+                    <a target="I3 mudlist" href="http://74.207.245.13/">rossmud</a><br />
+                    LPMud<br />
+                    Dead Souls 3.8.6<br />
+                    <a href="telnet://74.207.245.13:6666/">74.207.245.13 6666</a>
+                </td>
+                <td align="center">
+                    <div class="gallery-item">
+                        <a href="gfx/mud/__NOT_FOUND_9.png" data-lightbox>
+                            <img border="0" width="192" height="120" src="gfx/mud/__NOT_FOUND_9.png" />
+                        </a>
+                    </div>
+                </td>
+                <td align="left">&nbsp;</td>
+                <td align="left">
+                    <a target="I3 mudlist" href="http://23.25.8.124/">savageisle</a><br />
+                    CoffeeMud<br />
+                    CoffeeMud v5.9.6<br />
+                    <a href="telnet://23.25.8.124:5559/">23.25.8.124 5559</a>
+                </td>
+            </tr>
+            <tr bgcolor="#1f1f1f">
+                <td align="center">
+                    <div class="gallery-item">
+                        <a href="gfx/mud/04566f7ab2474aa9469cc4ac29735e9e.png" data-lightbox>
+                            <img border="0" width="192" height="120" src="gfx/mud/04566f7ab2474aa9469cc4ac29735e9e.png" />
+                        </a>
+                    </div>
+                </td>
+                <td align="left">&nbsp;</td>
+                <td align="left">
+                    <a target="I3 mudlist" href="http://54.84.108.226/">Second Contract</a><br />
+                    LPMud<br />
+                    Dead Souls 3.6<br />
+                    <a href="telnet://54.84.108.226:6666/">54.84.108.226 6666</a>
+                </td>
+                <td align="center">
+                    <div class="gallery-item">
+                        <a href="gfx/mud/77763068c8184cc9a9ff4e3b9dab553b.png" data-lightbox>
+                            <img border="0" width="192" height="120" src="gfx/mud/77763068c8184cc9a9ff4e3b9dab553b.png" />
+                        </a>
+                    </div>
+                </td>
+                <td align="left">&nbsp;</td>
+                <td align="left">
+                    <a target="I3 mudlist" href="http://45.33.49.26/">Shadow Wind</a><br />
+                    CoffeeMud<br />
+                    CoffeeMud v5.9.7.3<br />
+                    <a href="telnet://45.33.49.26:5555/">45.33.49.26 5555</a>
+                </td>
+            </tr>
+            <tr bgcolor="#000000">
+                <td align="center">
+                    <div class="gallery-item">
+                        <a href="gfx/mud/d27efa153fa100883c762712dc4252b7.png" data-lightbox>
+                            <img border="0" width="192" height="120" src="gfx/mud/d27efa153fa100883c762712dc4252b7.png" />
+                        </a>
+                    </div>
+                </td>
+                <td align="left">&nbsp;</td>
+                <td align="left">
+                    <a target="I3 mudlist" href="http://199.74.141.8/">ShadowMUD</a><br />
+                    LP<br />
+                    Nightmare/ShadowLib 3.2.2/0.5<br />
+                    <a href="telnet://199.74.141.8:1030/">199.74.141.8 1030</a>
+                </td>
+                <td align="center">
+                    <div class="gallery-item">
+                        <a href="gfx/mud/__NOT_FOUND_0.png" data-lightbox>
+                            <img border="0" width="192" height="120" src="gfx/mud/__NOT_FOUND_0.png" />
+                        </a>
+                    </div>
+                </td>
+                <td align="left">&nbsp;</td>
+                <td align="left">
+                    <a target="I3 mudlist" href="http://24.96.6.93/">Shadows of the Void</a><br />
+                    CoffeeMud<br />
+                    CoffeeMud v5.9.8<br />
+                    <a href="telnet://24.96.6.93:5555/">24.96.6.93 5555</a>
+                </td>
+            </tr>
+            <tr bgcolor="#1f1f1f">
+                <td align="center">
+                    <div class="gallery-item">
+                        <a href="gfx/mud/faf366a6e12cd3ca17b3709c6d8867c3.png" data-lightbox>
+                            <img border="0" width="192" height="120" src="gfx/mud/faf366a6e12cd3ca17b3709c6d8867c3.png" />
+                        </a>
+                    </div>
+                </td>
+                <td align="left">&nbsp;</td>
+                <td align="left">
+                    <a target="I3 mudlist" href="http://78.46.233.162/">SilverMUD</a><br />
+                    CoffeeMud<br />
+                    CoffeeMud v5.9.4<br />
+                    <a href="telnet://78.46.233.162:5555/">78.46.233.162 5555</a>
+                </td>
+                <td align="center">
+                    <div class="gallery-item">
+                        <a href="gfx/mud/e394f78c0fec6db4f30616bf483a6ac9.png" data-lightbox>
+                            <img border="0" width="192" height="120" src="gfx/mud/e394f78c0fec6db4f30616bf483a6ac9.png" />
+                        </a>
+                    </div>
+                </td>
+                <td align="left">&nbsp;</td>
+                <td align="left">
+                    <a target="I3 mudlist" href="http://195.201.33.9/">Silvium</a><br />
+                    LPMud<br />
+                    GurbaLib v0.50<br />
+                    <a href="telnet://195.201.33.9:4000/">195.201.33.9 4000</a>
+                </td>
+            </tr>
+            <tr bgcolor="#000000">
+                <td align="center">
+                    <div class="gallery-item">
+                        <a href="gfx/mud/91eb6cf80dfb9ea080ca3f7cdd6ecf8f.png" data-lightbox>
+                            <img border="0" width="192" height="120" src="gfx/mud/91eb6cf80dfb9ea080ca3f7cdd6ecf8f.png" />
+                        </a>
+                    </div>
+                </td>
+                <td align="left">&nbsp;</td>
+                <td align="left">
+                    <a target="I3 mudlist" href="http://46.251.35.104/">SingularisMUD</a><br />
+                    LP<br />
+                    Skylib 1.8<br />
+                    <a href="telnet://46.251.35.104:8000/">46.251.35.104 8000</a>
+                </td>
+                <td align="center">
+                    <div class="gallery-item">
+                        <a href="gfx/mud/9d0fa609cad1a7910a742f1a8c418a4c.png" data-lightbox>
+                            <img border="0" width="192" height="120" src="gfx/mud/9d0fa609cad1a7910a742f1a8c418a4c.png" />
+                        </a>
+                    </div>
+                </td>
+                <td align="left">&nbsp;</td>
+                <td align="left">
+                    <a target="I3 mudlist" href="http://68.46.79.247/">SirdudesGurbaLib</a><br />
+                    LPMud<br />
+                    GurbaLib v0.50<br />
+                    <a href="telnet://68.46.79.247:4000/">68.46.79.247 4000</a>
+                </td>
+            </tr>
+            <tr bgcolor="#1f1f1f">
+                <td align="center">
+                    <div class="gallery-item">
+                        <a href="gfx/mud/f7a34d11ca56e0ed985e008c0ac9674c.png" data-lightbox>
+                            <img border="0" width="192" height="120" src="gfx/mud/f7a34d11ca56e0ed985e008c0ac9674c.png" />
+                        </a>
+                    </div>
+                </td>
+                <td align="left">&nbsp;</td>
+                <td align="left">
+                    <a target="I3 mudlist" href="http://178.79.173.99/">SotU</a><br />
+                    DikuMUD<br />
+                    GodWars Deluxe<br />
+                    <a href="telnet://178.79.173.99:3560/">178.79.173.99 3560</a>
+                </td>
+                <td align="center">
+                    <div class="gallery-item">
+                        <a href="gfx/mud/9ef98815d72c277d3f8e29a1d8d55e88.png" data-lightbox>
+                            <img border="0" width="192" height="120" src="gfx/mud/9ef98815d72c277d3f8e29a1d8d55e88.png" />
+                        </a>
+                    </div>
+                </td>
+                <td align="left">&nbsp;</td>
+                <td align="left">
+                    <a target="I3 mudlist" href="http://84.197.190.89/">STiNKBoMB</a><br />
+                    LPMud<br />
+                    GurbaLib v0.50<br />
+                    <a href="telnet://84.197.190.89:4000/">84.197.190.89 4000</a>
+                </td>
+            </tr>
+            <tr bgcolor="#000000">
+                <td align="center">
+                    <div class="gallery-item">
+                        <a href="gfx/mud/1006cd3f2b76e0c528d236fe3f55b9aa.png" data-lightbox>
+                            <img border="0" width="192" height="120" src="gfx/mud/1006cd3f2b76e0c528d236fe3f55b9aa.png" />
+                        </a>
+                    </div>
+                </td>
+                <td align="left">&nbsp;</td>
+                <td align="left">
+                    <a target="I3 mudlist" href="http://87.229.23.214/">szetnezek</a><br />
+                    LPMud<br />
+                    Nightmare IVr6<br />
+                    <a href="telnet://87.229.23.214:5555/">87.229.23.214 5555</a>
+                </td>
+                <td align="center">
+                    <div class="gallery-item">
+                        <a href="gfx/mud/c776a0707344d96097603f38b809aa1d.png" data-lightbox>
+                            <img border="0" width="192" height="120" src="gfx/mud/c776a0707344d96097603f38b809aa1d.png" />
+                        </a>
+                    </div>
+                </td>
+                <td align="left">&nbsp;</td>
+                <td align="left">
+                    <a target="I3 mudlist" href="http://45.56.68.46/">Tavern at the End of the Universe</a><br />
+                    CoffeeMud<br />
+                    CoffeeMud v5.9.6.4<br />
+                    <a href="telnet://45.56.68.46:23/">45.56.68.46 23</a>
+                </td>
+            </tr>
+            <tr bgcolor="#1f1f1f">
+                <td align="center">
+                    <div class="gallery-item">
+                        <a href="gfx/mud/7a2d8bcf7ebefddd9d687698485faa75.png" data-lightbox>
+                            <img border="0" width="192" height="120" src="gfx/mud/7a2d8bcf7ebefddd9d687698485faa75.png" />
+                        </a>
+                    </div>
+                </td>
+                <td align="left">&nbsp;</td>
+                <td align="left">
+                    <a target="I3 mudlist" href="http://178.167.136.115/">TeaghlachMUD</a><br />
+                    LPMud<br />
+                    Dead Souls 3.8.6<br />
+                    <a href="telnet://178.167.136.115:6665/">178.167.136.115 6665</a>
+                </td>
+                <td align="center">
+                    <div class="gallery-item">
+                        <a href="gfx/mud/a8e637161b1c015105a756ec82561bae.png" data-lightbox>
+                            <img border="0" width="192" height="120" src="gfx/mud/a8e637161b1c015105a756ec82561bae.png" />
+                        </a>
+                    </div>
+                </td>
+                <td align="left">&nbsp;</td>
+                <td align="left">
+                    <a target="I3 mudlist" href="http://173.44.63.194/">TGK</a><br />
+                    LPMud<br />
+                    Dead Souls 3.8.6<br />
+                    <a href="telnet://173.44.63.194:2222/">173.44.63.194 2222</a>
+                </td>
+            </tr>
+            <tr bgcolor="#000000">
+                <td align="center">
+                    <div class="gallery-item">
+                        <a href="gfx/mud/36395aba3a1c2256e4804cb0fac2be85.png" data-lightbox>
+                            <img border="0" width="192" height="120" src="gfx/mud/36395aba3a1c2256e4804cb0fac2be85.png" />
+                        </a>
+                    </div>
+                </td>
+                <td align="left">&nbsp;</td>
+                <td align="left">
+                    <a target="I3 mudlist" href="http://96.244.229.21/">The Brass Ring</a><br />
+                    LPMud<br />
+                    Dead Souls 3.8.6<br />
+                    <a href="telnet://96.244.229.21:2150/">96.244.229.21 2150</a>
+                </td>
+                <td align="center">
+                    <div class="gallery-item">
+                        <a href="gfx/mud/__NOT_FOUND_5.png" data-lightbox>
+                            <img border="0" width="192" height="120" src="gfx/mud/__NOT_FOUND_5.png" />
+                        </a>
+                    </div>
+                </td>
+                <td align="left">&nbsp;</td>
+                <td align="left">
+                    <a target="I3 mudlist" href="http://78.90.77.217/">The Chronicles of Meridian</a><br />
+                    LPmud<br />
+                    Meridian v0.1<br />
+                    <a href="telnet://78.90.77.217:7878/">78.90.77.217 7878</a>
+                </td>
+            </tr>
+            <tr bgcolor="#1f1f1f">
+                <td align="center">
+                    <div class="gallery-item">
+                        <a href="gfx/mud/72baea3babc286d7daace1d378bb8af9.png" data-lightbox>
+                            <img border="0" width="192" height="120" src="gfx/mud/72baea3babc286d7daace1d378bb8af9.png" />
+                        </a>
+                    </div>
+                </td>
+                <td align="left">&nbsp;</td>
+                <td align="left">
+                    <a target="I3 mudlist" href="http://65.19.167.66/">The Library</a><br />
+                    LPMud<br />
+                    Dead Souls 3.7a7<br />
+                    <a href="telnet://65.19.167.66:6666/">65.19.167.66 6666</a>
+                </td>
+                <td align="center">
+                    <div class="gallery-item">
+                        <a href="gfx/mud/74b801619049ae82cd0115aaa9d685d1.png" data-lightbox>
+                            <img border="0" width="192" height="120" src="gfx/mud/74b801619049ae82cd0115aaa9d685d1.png" />
+                        </a>
+                    </div>
+                </td>
+                <td align="left">&nbsp;</td>
+                <td align="left">
+                    <a target="I3 mudlist" href="http://173.255.210.234/">The Savage Soul</a><br />
+                    LPMud<br />
+                    Dead Souls 3.7a7<br />
+                    <a href="telnet://173.255.210.234:6666/">173.255.210.234 6666</a>
+                </td>
+            </tr>
+            <tr bgcolor="#000000">
+                <td align="center">
+                    <div class="gallery-item">
+                        <a href="gfx/mud/04839e2f8e54c562f33121fc654fda05.png" data-lightbox>
+                            <img border="0" width="192" height="120" src="gfx/mud/04839e2f8e54c562f33121fc654fda05.png" />
+                        </a>
+                    </div>
+                </td>
+                <td align="left">&nbsp;</td>
+                <td align="left">
+                    <a target="I3 mudlist" href="http://136.144.155.250/">The Zone</a><br />
+                    LPMud<br />
+                    WOTFlib 0.90<br />
+                    <a href="telnet://136.144.155.250:8888/">136.144.155.250 8888</a>
+                </td>
+                <td align="center">
+                    <div class="gallery-item">
+                        <a href="gfx/mud/c2e3bb70f8ea4205fd4379f43a71caf6.png" data-lightbox>
+                            <img border="0" width="192" height="120" src="gfx/mud/c2e3bb70f8ea4205fd4379f43a71caf6.png" />
+                        </a>
+                    </div>
+                </td>
+                <td align="left">&nbsp;</td>
+                <td align="left">
+                    <a target="I3 mudlist" href="http://136.144.155.250/">The Zone-dalet</a><br />
+                    LPMud<br />
+                    WOTFlib 0.90<br />
+                    <a href="telnet://136.144.155.250:8888/">136.144.155.250 8888</a>
+                </td>
+            </tr>
+            <tr bgcolor="#1f1f1f">
+                <td align="center">
+                    <div class="gallery-item">
+                        <a href="gfx/mud/1d5dd9218775cb93311a093efc941507.png" data-lightbox>
+                            <img border="0" width="192" height="120" src="gfx/mud/1d5dd9218775cb93311a093efc941507.png" />
+                        </a>
+                    </div>
+                </td>
+                <td align="left">&nbsp;</td>
+                <td align="left">
+                    <a target="I3 mudlist" href="http://136.144.155.250/">The Zone-i4</a><br />
+                    LPMud<br />
+                    WOTFlib 0.90<br />
+                    <a href="telnet://136.144.155.250:8888/">136.144.155.250 8888</a>
+                </td>
+                <td align="center">
+                    <div class="gallery-item">
+                        <a href="gfx/mud/2fbdec0ab1cdbc532077b7dde9ca5527.png" data-lightbox>
+                            <img border="0" width="192" height="120" src="gfx/mud/2fbdec0ab1cdbc532077b7dde9ca5527.png" />
+                        </a>
+                    </div>
+                </td>
+                <td align="left">&nbsp;</td>
+                <td align="left">
+                    <a target="I3 mudlist" href="http://136.144.155.250/">The Zone-Kelly</a><br />
+                    LPMud<br />
+                    WOTFlib 0.90<br />
+                    <a href="telnet://136.144.155.250:8888/">136.144.155.250 8888</a>
+                </td>
+            </tr>
+            <tr bgcolor="#000000">
+                <td align="center">
+                    <div class="gallery-item">
+                        <a href="gfx/mud/__NOT_FOUND_9.png" data-lightbox>
+                            <img border="0" width="192" height="120" src="gfx/mud/__NOT_FOUND_9.png" />
+                        </a>
+                    </div>
+                </td>
+                <td align="left">&nbsp;</td>
+                <td align="left">
+                    <a target="I3 mudlist" href="http://151.80.230.22/">truxonline</a><br />
+                    LPMud<br />
+                    Dead Souls 3.8.6<br />
+                    <a href="telnet://151.80.230.22:6666/">151.80.230.22 6666</a>
+                </td>
+                <td align="center">
+                    <div class="gallery-item">
+                        <a href="gfx/mud/28e098175bb05703eb34c5adbb234370.png" data-lightbox>
+                            <img border="0" width="192" height="120" src="gfx/mud/28e098175bb05703eb34c5adbb234370.png" />
+                        </a>
+                    </div>
+                </td>
+                <td align="left">&nbsp;</td>
+                <td align="left">
+                    <a target="I3 mudlist" href="http://97.107.138.126/">TSC</a><br />
+                    LPMud<br />
+                    Dead Souls 3.8.6<br />
+                    <a href="telnet://97.107.138.126:4000/">97.107.138.126 4000</a>
+                </td>
+            </tr>
+            <tr bgcolor="#1f1f1f">
+                <td align="center">
+                    <div class="gallery-item">
+                        <a href="gfx/mud/8a269b8d1bc5530c5f623b0096634600.png" data-lightbox>
+                            <img border="0" width="192" height="120" src="gfx/mud/8a269b8d1bc5530c5f623b0096634600.png" />
+                        </a>
+                    </div>
+                </td>
+                <td align="left">&nbsp;</td>
+                <td align="left">
+                    <a target="I3 mudlist" href="http://178.79.173.99/">War_of_Legend</a><br />
+                    DikuMUD<br />
+                    WoL 10.25 (build: 82) 10.25 (build: 82)<br />
+                    <a href="telnet://178.79.173.99:4200/">178.79.173.99 4200</a>
+                </td>
+                <td align="center">
+                    <div class="gallery-item">
+                        <a href="gfx/mud/097df3fadd5b6171e2c8a0f8fb93bbf6.png" data-lightbox>
+                            <img border="0" width="192" height="120" src="gfx/mud/097df3fadd5b6171e2c8a0f8fb93bbf6.png" />
+                        </a>
+                    </div>
+                </td>
+                <td align="left">&nbsp;</td>
+                <td align="left">
+                    <a target="I3 mudlist" href="http://136.144.155.250/">Way of the Force</a><br />
+                    LPMud<br />
+                    WOTFlib 0.90<br />
+                    <a href="telnet://136.144.155.250:23/">136.144.155.250 23</a>
+                </td>
+            </tr>
+            <tr bgcolor="#000000">
+                <td align="center">
+                    <div class="gallery-item">
+                        <a href="gfx/mud/a70ac21aab61cb0138b28ed70a0cd877.png" data-lightbox>
+                            <img border="0" width="192" height="120" src="gfx/mud/a70ac21aab61cb0138b28ed70a0cd877.png" />
+                        </a>
+                    </div>
+                </td>
+                <td align="left">&nbsp;</td>
+                <td align="left">
+                    <a target="I3 mudlist" href="http://172.92.143.166/">WileyMUD</a><br />
+                    DikuMUD<br />
+                    WileyMUD III 1.810b<br />
+                    <a href="telnet://172.92.143.166:3000/">172.92.143.166 3000</a>
+                </td>
+                <td align="center">
+                    <div class="gallery-item">
+                        <a href="gfx/mud/bc7314c7140078f88090af3aba9878b4.png" data-lightbox>
+                            <img border="0" width="192" height="120" src="gfx/mud/bc7314c7140078f88090af3aba9878b4.png" />
+                        </a>
+                    </div>
+                </td>
+                <td align="left">&nbsp;</td>
+                <td align="left">
+                    <a target="I3 mudlist" href="http://24.181.101.2/">wMud</a><br />
+                    CoffeeMud<br />
+                    CoffeeMud v5.9.6<br />
+                    <a href="telnet://24.181.101.2:5555/">24.181.101.2 5555</a>
+                </td>
+            </tr>
+            <tr bgcolor="#1f1f1f">
+                <td align="center">
+                    <div class="gallery-item">
+                        <a href="gfx/mud/af534169800799ee50aa4c6f701a4d01.png" data-lightbox>
+                            <img border="0" width="192" height="120" src="gfx/mud/af534169800799ee50aa4c6f701a4d01.png" />
+                        </a>
+                    </div>
+                </td>
+                <td align="left">&nbsp;</td>
+                <td align="left">
+                    <a target="I3 mudlist" href="http://45.56.123.249/">Worlds MUD</a><br />
+                    CoffeeMud<br />
+                    CoffeeMud v5.9.7<br />
+                    <a href="telnet://45.56.123.249:23/">45.56.123.249 23</a>
+                </td>
+                <td align="center">
+                    <div class="gallery-item">
+                        <a href="gfx/mud/8646269436c302459547fd50bd085758.png" data-lightbox>
+                            <img border="0" width="192" height="120" src="gfx/mud/8646269436c302459547fd50bd085758.png" />
+                        </a>
+                    </div>
+                </td>
+                <td align="left">&nbsp;</td>
+                <td align="left">
+                    <a target="I3 mudlist" href="http://70.112.237.48/">Wrath of the Gods of the Titans of DOOOOOOOOOM!</a><br />
+                    LPMud<br />
+                    Dead Souls 3.8.2<br />
+                    <a href="telnet://70.112.237.48:6666/">70.112.237.48 6666</a>
+                </td>
+            </tr>
+            <tr bgcolor="#000000">
+                <td align="center">
+                    <div class="gallery-item">
+                        <a href="gfx/mud/35efd0f0affa32e8687e65d5e23c94d6.png" data-lightbox>
+                            <img border="0" width="192" height="120" src="gfx/mud/35efd0f0affa32e8687e65d5e23c94d6.png" />
+                        </a>
+                    </div>
+                </td>
+                <td align="left">&nbsp;</td>
+                <td align="left">
+                    <a target="I3 mudlist" href="http://174.109.164.19/">WWC</a><br />
+                    LP<br />
+                    FRlib III<br />
+                    <a href="telnet://174.109.164.19:4000/">174.109.164.19 4000</a>
+                </td>
+            </tr>
+        </div>
+        <tr bgcolor="#00002f">
+            <td align="center" colspan="6">115 total muds listed (99 connected).</td>
+        </tr>
+        <tr bgcolor="#000000">
+            <td align="right" colspan="6"><font size="-1" color="#1f1f1f">0.001260 seconds</font></td>
+        </tr>
+    </table>
+</div>
 <link href="lightbox/lightbox.min.css" rel="stylesheet">
 <script src="lightbox/lightbox.min.js"></script>
 <script>

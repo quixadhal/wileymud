@@ -1,7 +1,28 @@
 {
+    "version" : {
+        "build" : "1.810b",
+        "date" : "2019-04-14"
+    },
+    "time" : "10:05 PDT",
+    "boot" : "Sun, 14 Apr 2019 18:55:07 PDT",
+    "player_list" : [
+        {
+            "name" : "Quixadhal",
+            "title" : "is the Dark Lord of VI",
+            "pretitle" : "Dread",
+            "idle" : "783",
+            "level" : "60",
+            "rank" : "God"
+        }
+    ],
+    "players" : {
+        "gods" : "1",
+        "mortals" : "0"
+    },
     "mudlist" : [ 
         {
             "name"      : "7thplane", 
+            "md5"       : "27e3ce1705dbda21ebc9e3670b77b2cc", 
             "type"      : "n/a", 
             "mudlib"    : "IMC2 Freedom CL-2.2-PlanarDiku", 
             "ipaddress" : "69.164.199.238", 
@@ -10,6 +31,7 @@
         },
         {
             "name"      : "A.hegy", 
+            "md5"       : "78759d94d3213fbb9a2dcb75294f71ac", 
             "type"      : "LPMud", 
             "mudlib"    : "Dead Souls 3.6", 
             "ipaddress" : "89.133.33.82", 
@@ -18,6 +40,7 @@
         },
         {
             "name"      : "Aadaria", 
+            "md5"       : "23d0971cee5e5c17607376949c6da58f", 
             "type"      : "DikuMUD", 
             "mudlib"    : "ADR 4.05 (build: 73) 4.05 (build: 88)", 
             "ipaddress" : "178.79.173.99", 
@@ -26,14 +49,16 @@
         },
         {
             "name"      : "Aadarian_Realms", 
+            "md5"       : "087b0b732d867d4b5fbef3ba6d77f207", 
             "type"      : "DikuMUD", 
             "mudlib"    : "ADR 1.00 (build: 33)", 
-            "ipaddress" : "98.213.174.122", 
+            "ipaddress" : "152.228.99.176", 
             "port"      : 1111,
             "online"    : 1
         },
         {
             "name"      : "Aadarian_Realms-OLD", 
+            "md5"       : "24d6379cd169aa70bc3a3112fbab83a3", 
             "type"      : "DikuMUD", 
             "mudlib"    : "ADR 4.66 (build: 82)", 
             "ipaddress" : "178.79.173.99", 
@@ -42,6 +67,7 @@
         },
         {
             "name"      : "Adaka", 
+            "md5"       : "21886062a6e123d028e3f5c46ef13300", 
             "type"      : "CoffeeMud", 
             "mudlib"    : "CoffeeMud v5.9.6", 
             "ipaddress" : "178.196.119.83", 
@@ -49,15 +75,8 @@
             "online"    : 1
         },
         {
-            "name"      : "Aetherym Dawning", 
-            "type"      : "LP", 
-            "mudlib"    : "FRlib 3.5", 
-            "ipaddress" : "50.109.15.53", 
-            "port"      : 2012,
-            "online"    : 0
-        },
-        {
             "name"      : "Aftermath RPG", 
+            "md5"       : "ba0efe0165f99e0fe749ce7824c56e79", 
             "type"      : "CoffeeMud", 
             "mudlib"    : "CoffeeMud v5.9.6.3", 
             "ipaddress" : "45.79.84.36", 
@@ -66,6 +85,7 @@
         },
         {
             "name"      : "Allegiances Unbroken", 
+            "md5"       : "4361761aeb2fc711997dc9aa6365730e", 
             "type"      : "CoffeeMud", 
             "mudlib"    : "CoffeeMud v5.9.1", 
             "ipaddress" : "66.85.147.93", 
@@ -74,6 +94,7 @@
         },
         {
             "name"      : "Amazopolis", 
+            "md5"       : "f5ff3ad5add604cbba5b41b750e1f358", 
             "type"      : "CoffeeMud", 
             "mudlib"    : "CoffeeMud v5.9.6", 
             "ipaddress" : "54.236.72.139", 
@@ -81,15 +102,8 @@
             "online"    : 1
         },
         {
-            "name"      : "Amniverse", 
-            "type"      : "CoffeeMud", 
-            "mudlib"    : "CoffeeMud v5.9.7.2", 
-            "ipaddress" : "45.79.78.158", 
-            "port"      : 23,
-            "online"    : 0
-        },
-        {
             "name"      : "Antikaria", 
+            "md5"       : "b12ada003e4a5ac54e09aa42ce0d6d80", 
             "type"      : "TMD", 
             "mudlib"    : "antikaria", 
             "ipaddress" : "128.16.10.197", 
@@ -98,14 +112,16 @@
         },
         {
             "name"      : "Archipelago", 
+            "md5"       : "f0f9e19996a252f41cd57eab7de3ff0b", 
             "type"      : "LPMud", 
             "mudlib"    : "Discworld 15.0a", 
             "ipaddress" : "88.97.75.68", 
             "port"      : 8000,
-            "online"    : 0
+            "online"    : 1
         },
         {
             "name"      : "AsYetUntitled", 
+            "md5"       : "fda8bf95b5380d11d0d9d2ee44224d08", 
             "type"      : "LPMud", 
             "mudlib"    : "Dead Souls 3.8.6", 
             "ipaddress" : "178.62.73.229", 
@@ -114,6 +130,7 @@
         },
         {
             "name"      : "Avalon", 
+            "md5"       : "76dbe559f557d065613840d49fd0c7a8", 
             "type"      : "LP", 
             "mudlib"    : "Avalon", 
             "ipaddress" : "91.215.74.15", 
@@ -122,6 +139,7 @@
         },
         {
             "name"      : "Awakened Codex", 
+            "md5"       : "b4df03519ad8be2f68bd70413b74c64d", 
             "type"      : "CoffeeMud", 
             "mudlib"    : "CoffeeMud v5.9.7", 
             "ipaddress" : "95.85.50.124", 
@@ -129,15 +147,8 @@
             "online"    : 1
         },
         {
-            "name"      : "Beginning of the Line", 
-            "type"      : "LPMud", 
-            "mudlib"    : "Dead Souls 3.8.2", 
-            "ipaddress" : "209.124.64.118", 
-            "port"      : 2010,
-            "online"    : 0
-        },
-        {
             "name"      : "BlackDawn", 
+            "md5"       : "c858c416e652e8ff284737834039dd7c", 
             "type"      : "LPMud", 
             "mudlib"    : "BlackDawn II ", 
             "ipaddress" : "150.101.219.57", 
@@ -146,6 +157,7 @@
         },
         {
             "name"      : "BLOCKS", 
+            "md5"       : "6d133e41aa2591449366e2c277069d50", 
             "type"      : "CoffeeMud", 
             "mudlib"    : "CoffeeMud v5.9.4", 
             "ipaddress" : "195.176.29.132", 
@@ -154,6 +166,7 @@
         },
         {
             "name"      : "Brain Cancer MUD", 
+            "md5"       : "710d4c33238bb869a94a8719e0737b01", 
             "type"      : "CoffeeMud", 
             "mudlib"    : "CoffeeMud v5.9.6", 
             "ipaddress" : "75.22.121.97", 
@@ -161,7 +174,17 @@
             "online"    : 0
         },
         {
+            "name"      : "BushidoMud", 
+            "md5"       : "06459e81609869bf1b0e231dccad9813", 
+            "type"      : "CoffeeMud", 
+            "mudlib"    : "CoffeeMud v5.9.8", 
+            "ipaddress" : "72.39.43.208", 
+            "port"      : 5555,
+            "online"    : 0
+        },
+        {
             "name"      : "Chaos Reigns", 
+            "md5"       : "2dd142eb1ca762dda2ed13e5aeeb6169", 
             "type"      : "LPMud", 
             "mudlib"    : "Dead Souls 3.8.6", 
             "ipaddress" : "198.12.92.168", 
@@ -170,6 +193,7 @@
         },
         {
             "name"      : "CoffeeMud", 
+            "md5"       : "c94774c4f4a90784e141215e1bc2ab4e", 
             "type"      : "CoffeeMud", 
             "mudlib"    : "CoffeeMud v5.9.8.1", 
             "ipaddress" : "104.14.28.106", 
@@ -178,6 +202,7 @@
         },
         {
             "name"      : "Core MUD", 
+            "md5"       : "6bcafe4035076f6e5fed44f03b3025d3", 
             "type"      : "LPMud", 
             "mudlib"    : "Colony 1.3", 
             "ipaddress" : "173.193.107.10", 
@@ -186,6 +211,7 @@
         },
         {
             "name"      : "Covenant of Lords", 
+            "md5"       : "d622fb236809b5fc0ce47650eb4b9151", 
             "type"      : "CoffeeMud", 
             "mudlib"    : "CoffeeMud v5.9.7", 
             "ipaddress" : "96.126.100.155", 
@@ -194,6 +220,7 @@
         },
         {
             "name"      : "Crat's Agony", 
+            "md5"       : "94e67f72d3fd300117d36810394f1abc", 
             "type"      : "LPMud", 
             "mudlib"    : "Dead Souls 3.8.1", 
             "ipaddress" : "138.91.79.81", 
@@ -202,6 +229,7 @@
         },
         {
             "name"      : "Dark City", 
+            "md5"       : "5f406b242e5d7f5224cf975d524a5b10", 
             "type"      : "GodWars", 
             "mudlib"    : "Dark City", 
             "ipaddress" : "178.79.173.99", 
@@ -210,6 +238,7 @@
         },
         {
             "name"      : "Dark Ruins", 
+            "md5"       : "0326d47db1bb6b3d50966dcea6b0aedb", 
             "type"      : "LPMud", 
             "mudlib"    : "Dead Souls 3.8.6", 
             "ipaddress" : "138.197.27.13", 
@@ -218,14 +247,16 @@
         },
         {
             "name"      : "DarkeMUD", 
+            "md5"       : "0cbe099879fd833b6d88cc80f4aea581", 
             "type"      : " ", 
             "mudlib"    : " ", 
             "ipaddress" : "45.52.9.106", 
             "port"      : 0,
-            "online"    : 0
+            "online"    : 1
         },
         {
             "name"      : "Darkmaze", 
+            "md5"       : "16f58cd6254cb4dfbffb15040efaad5f", 
             "type"      : "LPMud", 
             "mudlib"    : "Dead Souls 3.8.1", 
             "ipaddress" : "222.154.243.2", 
@@ -234,6 +265,7 @@
         },
         {
             "name"      : "Darkness and Despair", 
+            "md5"       : "5dd655a0a62981f02a978030106130c9", 
             "type"      : "LPMud", 
             "mudlib"    : "Nightmare+DnD", 
             "ipaddress" : "204.10.33.131", 
@@ -242,6 +274,7 @@
         },
         {
             "name"      : "Darkness Rises", 
+            "md5"       : "83670fc77dca81e8c0696e4022d3979c", 
             "type"      : "CoffeeMud", 
             "mudlib"    : "CoffeeMud v5.9.7.3", 
             "ipaddress" : "198.74.50.70", 
@@ -250,6 +283,7 @@
         },
         {
             "name"      : "Darkscapes", 
+            "md5"       : "6f4dded0475ba23a702b0546548d2bd8", 
             "type"      : "LPMud", 
             "mudlib"    : "Dead Souls 3.6", 
             "ipaddress" : "84.245.8.150", 
@@ -258,14 +292,16 @@
         },
         {
             "name"      : "Days of Dragons", 
+            "md5"       : "0d096d5f113c9f92589549c302020785", 
             "type"      : "Smaug", 
             "mudlib"    : "6Dragons 4.4", 
             "ipaddress" : "24.175.232.23", 
             "port"      : 4040,
-            "online"    : 0
+            "online"    : 1
         },
         {
             "name"      : "Dead Souls Dev", 
+            "md5"       : "45c0d80132b486d656eaa847afe36798", 
             "type"      : "LPMud", 
             "mudlib"    : "Dead Souls 3.8.6", 
             "ipaddress" : "97.107.133.86", 
@@ -273,31 +309,17 @@
             "online"    : 1
         },
         {
-            "name"      : "Dead_Souls_admin", 
-            "type"      : "LPMud", 
-            "mudlib"    : "Dead Souls 3.8.6", 
-            "ipaddress" : "70.65.247.76", 
-            "port"      : 6666,
-            "online"    : 0
-        },
-        {
-            "name"      : "Dead_Souls_cronus", 
-            "type"      : "LPMud", 
-            "mudlib"    : "Dead Souls 3.8.6", 
-            "ipaddress" : "173.64.83.190", 
-            "port"      : 6666,
-            "online"    : 0
-        },
-        {
             "name"      : "Dead_Souls_djtechno", 
+            "md5"       : "60d655b365c33b48ef933003dedcc1c4", 
             "type"      : "LPMud", 
             "mudlib"    : "Dead Souls 3.8.2", 
-            "ipaddress" : "178.7.50.156", 
+            "ipaddress" : "188.104.160.196", 
             "port"      : 6666,
             "online"    : 1
         },
         {
             "name"      : "Dead_Souls_ganny", 
+            "md5"       : "2aa12df8156b62b0f1aab3ba23bd58b2", 
             "type"      : "LPMud", 
             "mudlib"    : "Dead Souls 3.8.6", 
             "ipaddress" : "104.46.3.43", 
@@ -306,6 +328,7 @@
         },
         {
             "name"      : "Dead_Souls_montroze", 
+            "md5"       : "89fc1d0431bb5965ee322294c2f3f268", 
             "type"      : "LPMud", 
             "mudlib"    : "Dead Souls 3.8.2", 
             "ipaddress" : "24.72.139.143", 
@@ -314,46 +337,43 @@
         },
         {
             "name"      : "Dead_Souls_panther", 
+            "md5"       : "bb7b62778b5779ef05a7dddf49829d6b", 
             "type"      : "LPMud", 
             "mudlib"    : "Dead Souls 3.8.6", 
-            "ipaddress" : "184.170.75.41", 
+            "ipaddress" : "68.235.56.195", 
             "port"      : 4000,
             "online"    : 1
         },
         {
             "name"      : "DeadSoulsTest", 
+            "md5"       : "e24f78c2617fed97447fc073393c1b58", 
             "type"      : "LPMud", 
             "mudlib"    : "Dead Souls 3.8.6", 
             "ipaddress" : "216.51.210.130", 
             "port"      : 6666,
-            "online"    : 0
+            "online"    : 1
         },
         {
             "name"      : "Desolation", 
+            "md5"       : "2a27428ecedca797c55501d29060c9c2", 
             "type"      : "LP", 
             "mudlib"    : "Lima 1.0a8", 
             "ipaddress" : "204.10.33.131", 
             "port"      : 7878,
-            "online"    : 0
+            "online"    : 1
         },
         {
             "name"      : "Discworld", 
+            "md5"       : "41dd888487001748d6d89bd79f73d5c6", 
             "type"      : "LPMud", 
             "mudlib"    : "Discworld 18.0a", 
             "ipaddress" : "82.68.167.69", 
             "port"      : 23,
-            "online"    : 0
-        },
-        {
-            "name"      : "Discworld Win32", 
-            "type"      : "LPMud", 
-            "mudlib"    : "Discworld 17.0a", 
-            "ipaddress" : "134.175.231.111", 
-            "port"      : 6677,
-            "online"    : 0
+            "online"    : 1
         },
         {
             "name"      : "Disk World", 
+            "md5"       : "774ac7a8da69a41287f03042b519e73b", 
             "type"      : "LPMud", 
             "mudlib"    : "Discworld 17.0a", 
             "ipaddress" : "172.92.143.166", 
@@ -361,15 +381,8 @@
             "online"    : 1
         },
         {
-            "name"      : "Divine Madness", 
-            "type"      : "CoffeeMud", 
-            "mudlib"    : "CoffeeMud v5.9.7", 
-            "ipaddress" : "173.53.8.219", 
-            "port"      : 5555,
-            "online"    : 0
-        },
-        {
             "name"      : "DoT", 
+            "md5"       : "bc77fc33686f58682dfe0704c435c4a6", 
             "type"      : "n/a", 
             "mudlib"    : "IMC2 Freedom C++ CL-2.1a Dawn", 
             "ipaddress" : "24.175.232.23", 
@@ -378,6 +391,7 @@
         },
         {
             "name"      : "DozysDen", 
+            "md5"       : "b2ed42884b75e25b38baaffd0b865888", 
             "type"      : "CoffeeMud", 
             "mudlib"    : "CoffeeMud v5.9.7.6", 
             "ipaddress" : "142.161.86.192", 
@@ -386,6 +400,7 @@
         },
         {
             "name"      : "Dragon's Den", 
+            "md5"       : "4b7edd92f92774b24780794f4f2b8950", 
             "type"      : "LPMud", 
             "mudlib"    : "Dragon Mudlib 1.1", 
             "ipaddress" : "74.109.126.27", 
@@ -393,15 +408,8 @@
             "online"    : 1
         },
         {
-            "name"      : "Dreamverse", 
-            "type"      : "LPMud", 
-            "mudlib"    : "DV-Nightmare RELENG_1_3", 
-            "ipaddress" : "96.92.149.60", 
-            "port"      : 9600,
-            "online"    : 0
-        },
-        {
             "name"      : "Dumber", 
+            "md5"       : "d69d06fe9930814c849c13fde7d90709", 
             "type"      : "n/a", 
             "mudlib"    : "IMC2 Freedom C++ CL-2.1a Chronicles", 
             "ipaddress" : "24.175.232.23", 
@@ -410,6 +418,7 @@
         },
         {
             "name"      : "Dungeonia", 
+            "md5"       : "fdd586370cdcd8b5eea6ae471c819107", 
             "type"      : "CoffeeMud", 
             "mudlib"    : "CoffeeMud v5.9.6.3", 
             "ipaddress" : "139.162.120.235", 
@@ -418,6 +427,7 @@
         },
         {
             "name"      : "DW_Clone", 
+            "md5"       : "e9e206be1c4447295f06bc1d06416175", 
             "type"      : "LPMud", 
             "mudlib"    : "Discworld 18.0a", 
             "ipaddress" : "82.68.167.68", 
@@ -425,15 +435,8 @@
             "online"    : 1
         },
         {
-            "name"      : "Elysium MUD", 
-            "type"      : "CoffeeMud", 
-            "mudlib"    : "CoffeeMud v5.9.7", 
-            "ipaddress" : "170.76.186.73", 
-            "port"      : 6000,
-            "online"    : 0
-        },
-        {
             "name"      : "EmpiresEnd", 
+            "md5"       : "c3cb4ad2a9a11fec6df44d8e8a206db7", 
             "type"      : "CoffeeMud", 
             "mudlib"    : "CoffeeMud v5.9.6", 
             "ipaddress" : "74.207.226.164", 
@@ -442,6 +445,7 @@
         },
         {
             "name"      : "EotL", 
+            "md5"       : "79eb1051bc5d99f4266196c39454f946", 
             "type"      : "LPMud", 
             "mudlib"    : "LPMud EotL 98", 
             "ipaddress" : "209.216.23.199", 
@@ -450,6 +454,7 @@
         },
         {
             "name"      : "Epitaph", 
+            "md5"       : "7dce28958cd7f4ee7e9d4ccdd0674e8c", 
             "type"      : "LPMud", 
             "mudlib"    : "Epiphany v1.2.13 [release]", 
             "ipaddress" : "176.126.244.21", 
@@ -458,6 +463,7 @@
         },
         {
             "name"      : "Epitaph Black Ops", 
+            "md5"       : "29d5a05ba309ffb32f22b45134ea62c7", 
             "type"      : "LPMud", 
             "mudlib"    : "Epiphany v1.2.14 [development]", 
             "ipaddress" : "176.126.244.68", 
@@ -466,6 +472,7 @@
         },
         {
             "name"      : "Epitaph_Black_Ops", 
+            "md5"       : "c057fa82155421800818cec9fe6ae85b", 
             "type"      : " ", 
             "mudlib"    : " ", 
             "ipaddress" : "176.126.244.68", 
@@ -474,6 +481,7 @@
         },
         {
             "name"      : "Erimand", 
+            "md5"       : "450c578b17088e36ba1cc4dbba9c4322", 
             "type"      : "CoffeeMud", 
             "mudlib"    : "CoffeeMud v5.9.6.4", 
             "ipaddress" : "45.33.46.103", 
@@ -482,6 +490,7 @@
         },
         {
             "name"      : "Evermore", 
+            "md5"       : "9f6572786d20a2ce7f21f50dab11343e", 
             "type"      : "LDMud", 
             "mudlib"    : "EverLIB 3.0.0", 
             "ipaddress" : "93.186.192.146", 
@@ -489,31 +498,26 @@
             "online"    : 1
         },
         {
-            "name"      : "Eye of the World", 
-            "type"      : "LPmud", 
-            "mudlib"    : "Tmi-2 1.4", 
-            "ipaddress" : "50.116.55.253", 
-            "port"      : 2222,
-            "online"    : 0
-        },
-        {
             "name"      : "Fallen World of Darkness", 
+            "md5"       : "3ae1d3fb3abdb75fa77d59a555a06885", 
             "type"      : "CoffeeMud", 
             "mudlib"    : "FWOD v1.0.0", 
             "ipaddress" : "99.225.187.219", 
             "port"      : 5555,
-            "online"    : 0
+            "online"    : 1
         },
         {
             "name"      : "Farpoint", 
+            "md5"       : "047ea2fff790e36f2e790a4662772afd", 
             "type"      : "LPMud", 
             "mudlib"    : "Dead Souls 3.8.2", 
             "ipaddress" : "73.64.246.156", 
             "port"      : 6666,
-            "online"    : 0
+            "online"    : 1
         },
         {
             "name"      : "Final Realms", 
+            "md5"       : "a7effb71168b94b6fd7026b3ef6b3c01", 
             "type"      : "LPMud", 
             "mudlib"    : "FRlib V", 
             "ipaddress" : "185.47.42.101", 
@@ -522,6 +526,16 @@
         },
         {
             "name"      : "FOR_NOW", 
+            "md5"       : "7a875ffe240478dbcffcd5f7cbffbeda", 
+            "type"      : "CoffeeMud", 
+            "mudlib"    : "CoffeeMud v5.9.7", 
+            "ipaddress" : "71.85.22.17", 
+            "port"      : 5555,
+            "online"    : 1
+        },
+        {
+            "name"      : "FOR_NOW_Alt", 
+            "md5"       : "3fe08094134670d6302788b71443f259", 
             "type"      : "CoffeeMud", 
             "mudlib"    : "CoffeeMud v5.9.7", 
             "ipaddress" : "71.85.22.17", 
@@ -530,6 +544,7 @@
         },
         {
             "name"      : "Forgotten-Gods", 
+            "md5"       : "0f35b757c0817f57b10a4a7d0e7ad841", 
             "type"      : "LPMud", 
             "mudlib"    : "Dead Souls 3.8.6", 
             "ipaddress" : "54.172.123.224", 
@@ -538,6 +553,7 @@
         },
         {
             "name"      : "Frontiers", 
+            "md5"       : "b97f5618f49d5adf844dfed21f9ef739", 
             "type"      : "LPMud", 
             "mudlib"    : "Dead Souls 2.10", 
             "ipaddress" : "204.209.44.3", 
@@ -546,6 +562,7 @@
         },
         {
             "name"      : "Gandhaal", 
+            "md5"       : "0cd1769ffadf7e517ee79883a56efc38", 
             "type"      : "CoffeeMud", 
             "mudlib"    : "CoffeeMud v5.9.7", 
             "ipaddress" : "37.60.155.210", 
@@ -554,6 +571,7 @@
         },
         {
             "name"      : "Gates of Krynn", 
+            "md5"       : "5124494aad7dc83c6675c70b72b4745b", 
             "type"      : "CoffeeMud", 
             "mudlib"    : "CoffeeMud v5.9.7", 
             "ipaddress" : "5.135.160.179", 
@@ -561,15 +579,8 @@
             "online"    : 1
         },
         {
-            "name"      : "GurbaLab", 
-            "type"      : "LPMud", 
-            "mudlib"    : "GurbaLib v0.50", 
-            "ipaddress" : "185.26.59.68", 
-            "port"      : 4000,
-            "online"    : 0
-        },
-        {
             "name"      : "Hattaralandia", 
+            "md5"       : "fb91ee264f74adb4606d3305c260c3af", 
             "type"      : "LPMud", 
             "mudlib"    : "GurbaLib v0.50", 
             "ipaddress" : "37.130.175.46", 
@@ -578,6 +589,7 @@
         },
         {
             "name"      : "Hellbridge", 
+            "md5"       : "c7d572a18ff46560825232adb70f6915", 
             "type"      : "CoffeeMud", 
             "mudlib"    : "CoffeeMud v5.9.6", 
             "ipaddress" : "45.33.61.238", 
@@ -585,15 +597,8 @@
             "online"    : 0
         },
         {
-            "name"      : "Hokie Mud", 
-            "type"      : "CoffeeMud", 
-            "mudlib"    : "CoffeeMud v5.9.7", 
-            "ipaddress" : "35.183.225.155", 
-            "port"      : 5555,
-            "online"    : 0
-        },
-        {
             "name"      : "I3-TheMud-ORG", 
+            "md5"       : "b110202cfeeab38417cffbe68bdf8500", 
             "type"      : "LPMud", 
             "mudlib"    : "Dead Souls 3.8.6", 
             "ipaddress" : "150.101.219.57", 
@@ -602,6 +607,7 @@
         },
         {
             "name"      : "Iberia MUD", 
+            "md5"       : "4f58fba21203ab7da51a8c59331e2503", 
             "type"      : "IME", 
             "mudlib"    : "IME v0.997b", 
             "ipaddress" : "2.82.183.179", 
@@ -610,6 +616,7 @@
         },
         {
             "name"      : "Iberia MUD test", 
+            "md5"       : "53ef3fef8c5f5155686ff7936f7f052a", 
             "type"      : "IME", 
             "mudlib"    : "IME v0.997b", 
             "ipaddress" : "2.82.183.179", 
@@ -618,6 +625,7 @@
         },
         {
             "name"      : "Imagining Stuff", 
+            "md5"       : "bf94b4e5dd66d95e19b69b7785d7c6eb", 
             "type"      : "CoffeeMud", 
             "mudlib"    : "CoffeeMud v5.9.6.3", 
             "ipaddress" : "173.255.197.121", 
@@ -625,15 +633,8 @@
             "online"    : 1
         },
         {
-            "name"      : "IndigoMUD", 
-            "type"      : "CoffeeMud", 
-            "mudlib"    : "CoffeeMud v5.9.7", 
-            "ipaddress" : "5.38.192.196", 
-            "port"      : 5555,
-            "online"    : 0
-        },
-        {
             "name"      : "Ironhaven", 
+            "md5"       : "8d46073b5ac5531c20904b7d68c4e5bf", 
             "type"      : "CoffeeMud", 
             "mudlib"    : "CoffeeMud v5.9.7", 
             "ipaddress" : "97.99.95.133", 
@@ -641,15 +642,8 @@
             "online"    : 0
         },
         {
-            "name"      : "Jelly", 
-            "type"      : "n/a", 
-            "mudlib"    : "IMC2 Freedom CL-2.2 SmaugFUSS 1.9", 
-            "ipaddress" : "24.175.232.23", 
-            "port"      : 4020,
-            "online"    : 0
-        },
-        {
             "name"      : "JellyBean III", 
+            "md5"       : "aef7608c81bf1750c7747b89d59a2bba", 
             "type"      : "CoffeeMud", 
             "mudlib"    : "CoffeeMud v5.9.6", 
             "ipaddress" : "24.175.232.23", 
@@ -658,6 +652,7 @@
         },
         {
             "name"      : "KellerMUD", 
+            "md5"       : "b0f690cb696f269521357999d04b4a3b", 
             "type"      : "CoffeeMud", 
             "mudlib"    : "CoffeeMud v5.9.6", 
             "ipaddress" : "104.237.155.126", 
@@ -666,6 +661,7 @@
         },
         {
             "name"      : "KF5QEO`s Coffee Mud", 
+            "md5"       : "3c3c06eb454507b8ed4ae1301f0ce2a3", 
             "type"      : "CoffeeMud", 
             "mudlib"    : "CoffeeMud v5.9.6", 
             "ipaddress" : "45.79.110.179", 
@@ -674,6 +670,7 @@
         },
         {
             "name"      : "Kotaka", 
+            "md5"       : "7eaf38d9c3b8c0dcd4844028ba7f2d1c", 
             "type"      : "DGD", 
             "mudlib"    : "Kotaka", 
             "ipaddress" : "50.35.129.84", 
@@ -682,6 +679,7 @@
         },
         {
             "name"      : "Lands of Teric", 
+            "md5"       : "7d6baf450b4f31ad61d5bc693710dac7", 
             "type"      : "CoffeeMud", 
             "mudlib"    : "CoffeeMud v5.9.7.3", 
             "ipaddress" : "198.58.115.221", 
@@ -690,6 +688,7 @@
         },
         {
             "name"      : "Last Dawn", 
+            "md5"       : "3345b537cacf26cbbf6cf311d20861b6", 
             "type"      : "CoffeeMud", 
             "mudlib"    : "CoffeeMud v5.9.7.6", 
             "ipaddress" : "173.22.222.195", 
@@ -697,31 +696,26 @@
             "online"    : 1
         },
         {
-            "name"      : "Legend of Darithnia", 
-            "type"      : "CoffeeMud", 
-            "mudlib"    : "CoffeeMud v5.9.7", 
-            "ipaddress" : "216.146.109.113", 
-            "port"      : 5555,
-            "online"    : 0
-        },
-        {
             "name"      : "Liminus", 
+            "md5"       : "70ea2c4f10a75d6800c45a8d786db86d", 
             "type"      : "LPMud", 
             "mudlib"    : "GurbaLib v0.50", 
             "ipaddress" : "35.164.33.211", 
             "port"      : 4000,
-            "online"    : 0
+            "online"    : 1
         },
         {
             "name"      : "lpcdb", 
+            "md5"       : "5cb2fb579e6bfd20b23f1ccb1eba0c43", 
             "type"      : "LPMud", 
             "mudlib"    : "lpcdb v1.0 alpha 2", 
             "ipaddress" : "136.144.155.250", 
             "port"      : 4000,
-            "online"    : 0
+            "online"    : 1
         },
         {
             "name"      : "lpcdb-dev", 
+            "md5"       : "5fc91abeffd63a4ea21e97f450e7f60b", 
             "type"      : "LPMud", 
             "mudlib"    : "lpcdb v1.0 alpha 2", 
             "ipaddress" : "87.209.243.234", 
@@ -730,6 +724,7 @@
         },
         {
             "name"      : "Macrocosm", 
+            "md5"       : "2fd7e856c7d4ae37a004641b03a51b82", 
             "type"      : "CoffeeMud", 
             "mudlib"    : "CoffeeMud v5.9.7.3", 
             "ipaddress" : "45.56.76.179", 
@@ -738,6 +733,7 @@
         },
         {
             "name"      : "Mathers Realms", 
+            "md5"       : "efc40aa4fce331e37181589d013e9589", 
             "type"      : "CoffeeMud", 
             "mudlib"    : "CoffeeMud v5.9.8", 
             "ipaddress" : "73.247.178.182", 
@@ -746,6 +742,7 @@
         },
         {
             "name"      : "McMUD", 
+            "md5"       : "b9230bb2e79d37c0b86115ac80898ad1", 
             "type"      : "CoffeeMud", 
             "mudlib"    : "CoffeeMud v5.9.8", 
             "ipaddress" : "173.53.8.219", 
@@ -754,6 +751,7 @@
         },
         {
             "name"      : "Midknight", 
+            "md5"       : "6fec57a55c285057a2b0267ad4729f3f", 
             "type"      : "CoffeeMud", 
             "mudlib"    : "CoffeeMud v5.9.6", 
             "ipaddress" : "151.228.87.170", 
@@ -761,7 +759,17 @@
             "online"    : 0
         },
         {
+            "name"      : "Morkin23", 
+            "md5"       : "61fbfb316bbbc2f874af99a5137a5e95", 
+            "type"      : "LPMud", 
+            "mudlib"    : "Dead Souls 3.8.6", 
+            "ipaddress" : "86.61.249.216", 
+            "port"      : 6666,
+            "online"    : 1
+        },
+        {
             "name"      : "Mr. Mike`s Crazy World", 
+            "md5"       : "506e7bcdc3021af4ddb33c554de36105", 
             "type"      : "CoffeeMud", 
             "mudlib"    : "CoffeeMud v5.9.6", 
             "ipaddress" : "107.0.42.254", 
@@ -770,6 +778,7 @@
         },
         {
             "name"      : "mud.seatonserver.com", 
+            "md5"       : "0d4113f866fc7be2b7241e78d83a89d1", 
             "type"      : "LPMud", 
             "mudlib"    : "Dead Souls 3.8.2", 
             "ipaddress" : "65.103.157.31", 
@@ -778,6 +787,7 @@
         },
         {
             "name"      : "MUDgaard", 
+            "md5"       : "e729ffaaca1d68184184c4750ed5c7df", 
             "type"      : "CoffeeMud", 
             "mudlib"    : "CoffeeMud v5.9.7", 
             "ipaddress" : "99.192.66.240", 
@@ -786,6 +796,7 @@
         },
         {
             "name"      : "MUDGourd", 
+            "md5"       : "9deee549e0ae06b80cc0f22acf16b5e9", 
             "type"      : "CoffeeMud", 
             "mudlib"    : "CoffeeMud v5.9.7.3", 
             "ipaddress" : "45.56.75.164", 
@@ -794,6 +805,7 @@
         },
         {
             "name"      : "Mundo Sangre", 
+            "md5"       : "08451a1fd3d0e0dc196bc46230c3e675", 
             "type"      : "CoffeeMud", 
             "mudlib"    : "CoffeeMud v5.9.7.3", 
             "ipaddress" : "23.239.11.138", 
@@ -802,6 +814,7 @@
         },
         {
             "name"      : "Nanvaent", 
+            "md5"       : "2378865ed5c632b3df4095159c0e5e64", 
             "type"      : "LP", 
             "mudlib"    : "Nanvaent V.4ish", 
             "ipaddress" : "207.162.200.121", 
@@ -810,6 +823,7 @@
         },
         {
             "name"      : "New MUD", 
+            "md5"       : "90b5ba0c183f29b02e59951af4017204", 
             "type"      : "CoffeeMud", 
             "mudlib"    : "CoffeeMud v5.9.7.3", 
             "ipaddress" : "23.239.2.188", 
@@ -817,15 +831,8 @@
             "online"    : 1
         },
         {
-            "name"      : "Newworld", 
-            "type"      : "n/a", 
-            "mudlib"    : "IMC2 Freedom CL-2.2 SmaugFUSS 1.8", 
-            "ipaddress" : "24.175.232.23", 
-            "port"      : 4010,
-            "online"    : 0
-        },
-        {
             "name"      : "Nexus1 Testserver", 
+            "md5"       : "943eda6395ff81bdde49e5b250330a2e", 
             "type"      : "CoffeeMud", 
             "mudlib"    : "CoffeeMud v5.9.7", 
             "ipaddress" : "107.190.71.174", 
@@ -834,6 +841,7 @@
         },
         {
             "name"      : "Nightfall", 
+            "md5"       : "841f1fc38dc4cafe7c8f30ab03638470", 
             "type"      : "LPMud", 
             "mudlib"    : "NF", 
             "ipaddress" : "82.165.147.114", 
@@ -842,6 +850,7 @@
         },
         {
             "name"      : "Nygaard MUD", 
+            "md5"       : "69d15965eaae05e85046b4629f71e268", 
             "type"      : "CoffeeMud", 
             "mudlib"    : "CoffeeMud v5.9.7.3", 
             "ipaddress" : "23.92.26.97", 
@@ -849,15 +858,8 @@
             "online"    : 1
         },
         {
-            "name"      : "OASIS MUD", 
-            "type"      : "CoffeeMud", 
-            "mudlib"    : "CoffeeMud v5.9.7.2", 
-            "ipaddress" : "84.126.216.177", 
-            "port"      : 5555,
-            "online"    : 0
-        },
-        {
             "name"      : "Occulte MUD", 
+            "md5"       : "56620c8e17fdc99dfa2c57da918f3ed9", 
             "type"      : "LP", 
             "mudlib"    : "Skylib 1.8", 
             "ipaddress" : "199.74.141.8", 
@@ -865,15 +867,8 @@
             "online"    : 1
         },
         {
-            "name"      : "Planstudio Dungeons", 
-            "type"      : "CoffeeMud", 
-            "mudlib"    : "CoffeeMud v5.9.5", 
-            "ipaddress" : "80.210.98.67", 
-            "port"      : 5555,
-            "online"    : 0
-        },
-        {
             "name"      : "Project DF", 
+            "md5"       : "ff60664d90625464e70349cda6f27b6c", 
             "type"      : "CoffeeMud", 
             "mudlib"    : "CoffeeMud v5.9.5", 
             "ipaddress" : "158.69.22.132", 
@@ -882,6 +877,7 @@
         },
         {
             "name"      : "projectdf", 
+            "md5"       : "708d2fb0be22d5be832abece0f9070d6", 
             "type"      : "CoffeeMud", 
             "mudlib"    : "CoffeeMud v5.9.5", 
             "ipaddress" : "198.204.235.170", 
@@ -890,6 +886,7 @@
         },
         {
             "name"      : "Prospectus", 
+            "md5"       : "26d753d272460f9f714c0a43f01a089b", 
             "type"      : "LPMud", 
             "mudlib"    : "Dead Souls 3.8.6", 
             "ipaddress" : "166.62.103.99", 
@@ -898,6 +895,7 @@
         },
         {
             "name"      : "Prosperous", 
+            "md5"       : "013f2f27de4d77703209d194dc494de2", 
             "type"      : "LPMud", 
             "mudlib"    : "Dead Souls 3.8.2", 
             "ipaddress" : "166.62.103.99", 
@@ -906,14 +904,16 @@
         },
         {
             "name"      : "Prosperus", 
+            "md5"       : "1c8bbc8796f31c8b1407e5bbc47fba92", 
             "type"      : "LPMud", 
             "mudlib"    : "Dead Souls 3.8.6", 
             "ipaddress" : "166.62.103.99", 
             "port"      : 31337,
-            "online"    : 1
+            "online"    : 0
         },
         {
             "name"      : "Purgatory", 
+            "md5"       : "6ff4735b0fc4160e081440b3f7238925", 
             "type"      : "CoffeeMud", 
             "mudlib"    : "CoffeeMud v5.9.7", 
             "ipaddress" : "68.183.124.30", 
@@ -922,6 +922,7 @@
         },
         {
             "name"      : "Railworks MUD", 
+            "md5"       : "43d6c49281dab27223d3da275757c57c", 
             "type"      : "CoffeeMud", 
             "mudlib"    : "CoffeeMud v5.9.4", 
             "ipaddress" : "46.4.48.195", 
@@ -930,6 +931,7 @@
         },
         {
             "name"      : "Randy Stadham", 
+            "md5"       : "d39e7456db72431c88ac5d26595bb395", 
             "type"      : "CoffeeMud", 
             "mudlib"    : "CoffeeMud v5.9.6.4", 
             "ipaddress" : "104.237.152.181", 
@@ -938,6 +940,7 @@
         },
         {
             "name"      : "Realm of Cernunnos", 
+            "md5"       : "e400dc0785e695e715bc374a0217ab18", 
             "type"      : "CoffeeMud", 
             "mudlib"    : "CoffeeMud v5.9.4", 
             "ipaddress" : "50.36.182.99", 
@@ -946,6 +949,7 @@
         },
         {
             "name"      : "Realms of Discordia", 
+            "md5"       : "81d6a17d1e25a63203750a2b30c22184", 
             "type"      : "CoffeeMud", 
             "mudlib"    : "CoffeeMud v5.9.7.3", 
             "ipaddress" : "45.56.72.144", 
@@ -954,14 +958,16 @@
         },
         {
             "name"      : "Red", 
+            "md5"       : "ee38e4d5dd68c4e440825018d549cb47", 
             "type"      : "LPMud", 
             "mudlib"    : "LPMud EotL 98", 
             "ipaddress" : "163.172.210.70", 
             "port"      : 2010,
-            "online"    : 1
+            "online"    : 0
         },
         {
             "name"      : "rossmud", 
+            "md5"       : "dcf3c03d44c1edc6d5ee5a0530532ec6", 
             "type"      : "LPMud", 
             "mudlib"    : "Dead Souls 3.8.6", 
             "ipaddress" : "74.207.245.13", 
@@ -970,6 +976,7 @@
         },
         {
             "name"      : "sa", 
+            "md5"       : "c12e01f2a13ff5587e1e9e4aedb8242d", 
             "type"      : "CoffeeMud", 
             "mudlib"    : "CoffeeMud v5.9.7", 
             "ipaddress" : "5.146.248.14", 
@@ -978,6 +985,7 @@
         },
         {
             "name"      : "savageisle", 
+            "md5"       : "3660380af331a0d25c48875d37c695db", 
             "type"      : "CoffeeMud", 
             "mudlib"    : "CoffeeMud v5.9.6", 
             "ipaddress" : "23.25.8.124", 
@@ -986,6 +994,7 @@
         },
         {
             "name"      : "schoolmud", 
+            "md5"       : "70b4d0c815e90ae5dcfa7785fc9deb4a", 
             "type"      : "CoffeeMud", 
             "mudlib"    : "CoffeeMud v5.9.5", 
             "ipaddress" : "24.202.90.139", 
@@ -994,6 +1003,7 @@
         },
         {
             "name"      : "Second Contract", 
+            "md5"       : "04566f7ab2474aa9469cc4ac29735e9e", 
             "type"      : "LPMud", 
             "mudlib"    : "Dead Souls 3.6", 
             "ipaddress" : "54.84.108.226", 
@@ -1002,6 +1012,7 @@
         },
         {
             "name"      : "Shadow Wind", 
+            "md5"       : "77763068c8184cc9a9ff4e3b9dab553b", 
             "type"      : "CoffeeMud", 
             "mudlib"    : "CoffeeMud v5.9.7.3", 
             "ipaddress" : "45.33.49.26", 
@@ -1010,6 +1021,7 @@
         },
         {
             "name"      : "ShadowMUD", 
+            "md5"       : "d27efa153fa100883c762712dc4252b7", 
             "type"      : "LP", 
             "mudlib"    : "Nightmare/ShadowLib 3.2.2/0.5", 
             "ipaddress" : "199.74.141.8", 
@@ -1018,6 +1030,7 @@
         },
         {
             "name"      : "ShadowMUDii Dev", 
+            "md5"       : "4f3636b66d923305ff4d722c505530b4", 
             "type"      : "LP", 
             "mudlib"    : "Nightmare/ShadowLib 3.2.2/0.5", 
             "ipaddress" : "199.74.141.8", 
@@ -1026,6 +1039,7 @@
         },
         {
             "name"      : "Shadows of the Abyss", 
+            "md5"       : "9932dc36cf419075b1bb2f74463918ae", 
             "type"      : "CoffeeMud", 
             "mudlib"    : "CoffeeMud v5.9.8", 
             "ipaddress" : "24.96.6.93", 
@@ -1034,14 +1048,16 @@
         },
         {
             "name"      : "Shadows of the Void", 
+            "md5"       : "dc525d40d2a64394f9ce82ede6282308", 
             "type"      : "CoffeeMud", 
             "mudlib"    : "CoffeeMud v5.9.8", 
             "ipaddress" : "24.96.6.93", 
             "port"      : 5555,
-            "online"    : 0
+            "online"    : 1
         },
         {
             "name"      : "SilverMUD", 
+            "md5"       : "faf366a6e12cd3ca17b3709c6d8867c3", 
             "type"      : "CoffeeMud", 
             "mudlib"    : "CoffeeMud v5.9.4", 
             "ipaddress" : "78.46.233.162", 
@@ -1050,6 +1066,7 @@
         },
         {
             "name"      : "Silvium", 
+            "md5"       : "e394f78c0fec6db4f30616bf483a6ac9", 
             "type"      : "LPMud", 
             "mudlib"    : "GurbaLib v0.50", 
             "ipaddress" : "195.201.33.9", 
@@ -1058,6 +1075,7 @@
         },
         {
             "name"      : "SingularisMUD", 
+            "md5"       : "91eb6cf80dfb9ea080ca3f7cdd6ecf8f", 
             "type"      : "LP", 
             "mudlib"    : "Skylib 1.8", 
             "ipaddress" : "46.251.35.104", 
@@ -1066,6 +1084,7 @@
         },
         {
             "name"      : "SirdudesGurbaLib", 
+            "md5"       : "9d0fa609cad1a7910a742f1a8c418a4c", 
             "type"      : "LPMud", 
             "mudlib"    : "GurbaLib v0.50", 
             "ipaddress" : "68.46.79.247", 
@@ -1074,6 +1093,7 @@
         },
         {
             "name"      : "Skylib Fluffos Win32", 
+            "md5"       : "84363fd33752e0c5b0a8f48a05f6a5bf", 
             "type"      : "LP", 
             "mudlib"    : "Skylib 1.8", 
             "ipaddress" : "178.167.180.103", 
@@ -1082,6 +1102,7 @@
         },
         {
             "name"      : "SotU", 
+            "md5"       : "f7a34d11ca56e0ed985e008c0ac9674c", 
             "type"      : "DikuMUD", 
             "mudlib"    : "GodWars Deluxe", 
             "ipaddress" : "178.79.173.99", 
@@ -1090,22 +1111,25 @@
         },
         {
             "name"      : "STiNKBoMB", 
+            "md5"       : "9ef98815d72c277d3f8e29a1d8d55e88", 
             "type"      : "LPMud", 
             "mudlib"    : "GurbaLib v0.50", 
             "ipaddress" : "84.197.190.89", 
             "port"      : 4000,
-            "online"    : 0
+            "online"    : 1
         },
         {
             "name"      : "szetnezek", 
+            "md5"       : "1006cd3f2b76e0c528d236fe3f55b9aa", 
             "type"      : "LPMud", 
             "mudlib"    : "Nightmare IVr6", 
             "ipaddress" : "87.229.23.214", 
             "port"      : 5555,
-            "online"    : 0
+            "online"    : 1
         },
         {
             "name"      : "Tavern at the End of the Universe", 
+            "md5"       : "c776a0707344d96097603f38b809aa1d", 
             "type"      : "CoffeeMud", 
             "mudlib"    : "CoffeeMud v5.9.6.4", 
             "ipaddress" : "45.56.68.46", 
@@ -1114,30 +1138,16 @@
         },
         {
             "name"      : "TeaghlachMUD", 
+            "md5"       : "7a2d8bcf7ebefddd9d687698485faa75", 
             "type"      : "LPMud", 
             "mudlib"    : "Dead Souls 3.8.6", 
-            "ipaddress" : "92.251.172.22", 
+            "ipaddress" : "178.167.136.115", 
             "port"      : 6665,
             "online"    : 1
         },
         {
-            "name"      : "Telaria", 
-            "type"      : "CoffeeMud", 
-            "mudlib"    : "CoffeeMud v5.9.7", 
-            "ipaddress" : "31.201.91.40", 
-            "port"      : 5555,
-            "online"    : 0
-        },
-        {
-            "name"      : "Test", 
-            "type"      : "CoffeeMud", 
-            "mudlib"    : "CoffeeMud v5.9.7", 
-            "ipaddress" : "47.197.37.8", 
-            "port"      : 5555,
-            "online"    : 0
-        },
-        {
             "name"      : "Test Mud", 
+            "md5"       : "fe91b558d9cd176fe9fa4129104a0a41", 
             "type"      : "CoffeeMud", 
             "mudlib"    : "CoffeeMud v5.9.7", 
             "ipaddress" : "208.114.139.18", 
@@ -1146,6 +1156,7 @@
         },
         {
             "name"      : "TGK", 
+            "md5"       : "a8e637161b1c015105a756ec82561bae", 
             "type"      : "LPMud", 
             "mudlib"    : "Dead Souls 3.8.6", 
             "ipaddress" : "173.44.63.194", 
@@ -1154,6 +1165,7 @@
         },
         {
             "name"      : "The Brass Ring", 
+            "md5"       : "36395aba3a1c2256e4804cb0fac2be85", 
             "type"      : "LPMud", 
             "mudlib"    : "Dead Souls 3.8.6", 
             "ipaddress" : "96.244.229.21", 
@@ -1162,14 +1174,16 @@
         },
         {
             "name"      : "The Chronicles of Meridian", 
+            "md5"       : "5b6a39c3f606830f3db1d996b4081805", 
             "type"      : "LPmud", 
             "mudlib"    : "Meridian v0.1", 
             "ipaddress" : "78.90.77.217", 
             "port"      : 7878,
-            "online"    : 0
+            "online"    : 1
         },
         {
             "name"      : "The Digital MUD", 
+            "md5"       : "1cf0abc84174e4c635f03b82efcd63f8", 
             "type"      : "CoffeeMud", 
             "mudlib"    : "CoffeeMud v5.9.7", 
             "ipaddress" : "68.99.137.93", 
@@ -1178,6 +1192,7 @@
         },
         {
             "name"      : "The Library", 
+            "md5"       : "72baea3babc286d7daace1d378bb8af9", 
             "type"      : "LPMud", 
             "mudlib"    : "Dead Souls 3.7a7", 
             "ipaddress" : "65.19.167.66", 
@@ -1186,6 +1201,7 @@
         },
         {
             "name"      : "The Savage Soul", 
+            "md5"       : "74b801619049ae82cd0115aaa9d685d1", 
             "type"      : "LPMud", 
             "mudlib"    : "Dead Souls 3.7a7", 
             "ipaddress" : "173.255.210.234", 
@@ -1194,6 +1210,7 @@
         },
         {
             "name"      : "The Zone", 
+            "md5"       : "04839e2f8e54c562f33121fc654fda05", 
             "type"      : "LPMud", 
             "mudlib"    : "WOTFlib 0.90", 
             "ipaddress" : "136.144.155.250", 
@@ -1202,6 +1219,7 @@
         },
         {
             "name"      : "The Zone-dalet", 
+            "md5"       : "c2e3bb70f8ea4205fd4379f43a71caf6", 
             "type"      : "LPMud", 
             "mudlib"    : "WOTFlib 0.90", 
             "ipaddress" : "136.144.155.250", 
@@ -1210,14 +1228,16 @@
         },
         {
             "name"      : "The Zone-i4", 
+            "md5"       : "1d5dd9218775cb93311a093efc941507", 
             "type"      : "LPMud", 
             "mudlib"    : "WOTFlib 0.90", 
             "ipaddress" : "136.144.155.250", 
             "port"      : 8888,
-            "online"    : 0
+            "online"    : 1
         },
         {
             "name"      : "The Zone-Kelly", 
+            "md5"       : "2fbdec0ab1cdbc532077b7dde9ca5527", 
             "type"      : "LPMud", 
             "mudlib"    : "WOTFlib 0.90", 
             "ipaddress" : "136.144.155.250", 
@@ -1226,6 +1246,7 @@
         },
         {
             "name"      : "The Zone-wpr", 
+            "md5"       : "e8852b7055c42c8d9f5391913c78a723", 
             "type"      : "LPMud", 
             "mudlib"    : "WOTFlib 0.90", 
             "ipaddress" : "136.144.155.250", 
@@ -1234,6 +1255,7 @@
         },
         {
             "name"      : "TimCB", 
+            "md5"       : "7c66ef0140d1359ca40a1a841b3992ad", 
             "type"      : "LPmud", 
             "mudlib"    : "Tmi-2 1.4", 
             "ipaddress" : "174.97.204.217", 
@@ -1242,6 +1264,7 @@
         },
         {
             "name"      : "truxonline", 
+            "md5"       : "e64a0b8e683605411e0e0455944982a0", 
             "type"      : "LPMud", 
             "mudlib"    : "Dead Souls 3.8.6", 
             "ipaddress" : "151.80.230.22", 
@@ -1250,6 +1273,7 @@
         },
         {
             "name"      : "TSC", 
+            "md5"       : "28e098175bb05703eb34c5adbb234370", 
             "type"      : "LPMud", 
             "mudlib"    : "Dead Souls 3.8.6", 
             "ipaddress" : "97.107.138.126", 
@@ -1257,15 +1281,8 @@
             "online"    : 1
         },
         {
-            "name"      : "TSC_local", 
-            "type"      : "LPMud", 
-            "mudlib"    : "Dead Souls 3.8.6", 
-            "ipaddress" : "184.170.75.41", 
-            "port"      : 4000,
-            "online"    : 0
-        },
-        {
             "name"      : "Ulario", 
+            "md5"       : "352023df519c50ec792439fc66351951", 
             "type"      : "DGD", 
             "mudlib"    : "Kotaka", 
             "ipaddress" : "50.35.129.84", 
@@ -1273,23 +1290,8 @@
             "online"    : 0
         },
         {
-            "name"      : "Ultimate Illusion", 
-            "type"      : "CoffeeMud", 
-            "mudlib"    : "CoffeeMud v5.9.7", 
-            "ipaddress" : "172.93.50.129", 
-            "port"      : 5555,
-            "online"    : 0
-        },
-        {
-            "name"      : "Unnamed_CoffeeMUD#1208585192", 
-            "type"      : "CoffeeMud", 
-            "mudlib"    : "CoffeeMud v5.9.7.6", 
-            "ipaddress" : "121.133.176.3", 
-            "port"      : 5555,
-            "online"    : 0
-        },
-        {
             "name"      : "Unnamed_CoffeeMUD#1635361993", 
+            "md5"       : "0124a5de045acc6459dd56464e33fd37", 
             "type"      : "CoffeeMud", 
             "mudlib"    : "CoffeeMud v5.9.8", 
             "ipaddress" : "24.96.6.93", 
@@ -1298,6 +1300,7 @@
         },
         {
             "name"      : "Unnamed_CoffeeMUD#1852691832", 
+            "md5"       : "c1e0f4210d05183725e120d60051e8ec", 
             "type"      : "CoffeeMud", 
             "mudlib"    : "CoffeeMud v5.9.7.6", 
             "ipaddress" : "104.14.28.106", 
@@ -1306,6 +1309,7 @@
         },
         {
             "name"      : "Unnamed_CoffeeMUD#331741563", 
+            "md5"       : "9375acb74fa6494a6dc14460e6942645", 
             "type"      : "CoffeeMud", 
             "mudlib"    : "CoffeeMud v5.9.7", 
             "ipaddress" : "76.189.52.191", 
@@ -1313,23 +1317,8 @@
             "online"    : 0
         },
         {
-            "name"      : "Unnamed_CoffeeMUD#873113110", 
-            "type"      : "CoffeeMud", 
-            "mudlib"    : "CoffeeMud v5.9.7", 
-            "ipaddress" : "189.123.83.190", 
-            "port"      : 5555,
-            "online"    : 0
-        },
-        {
-            "name"      : "Unnamed_CoffeeMUD#887084161", 
-            "type"      : "CoffeeMud", 
-            "mudlib"    : "CoffeeMud v5.9.7", 
-            "ipaddress" : "170.76.186.73", 
-            "port"      : 6000,
-            "online"    : 0
-        },
-        {
             "name"      : "War of Legend", 
+            "md5"       : "395fdc2548dd7a3a5dc0c87584f84fed", 
             "type"      : "DikuMUD", 
             "mudlib"    : "WoL 10.25 (build: 82)", 
             "ipaddress" : "178.79.173.99", 
@@ -1338,6 +1327,7 @@
         },
         {
             "name"      : "War_of_Legend", 
+            "md5"       : "8a269b8d1bc5530c5f623b0096634600", 
             "type"      : "DikuMUD", 
             "mudlib"    : "WoL 10.25 (build: 82) 10.25 (build: 82)", 
             "ipaddress" : "178.79.173.99", 
@@ -1346,6 +1336,7 @@
         },
         {
             "name"      : "Way of the Force", 
+            "md5"       : "097df3fadd5b6171e2c8a0f8fb93bbf6", 
             "type"      : "LPMud", 
             "mudlib"    : "WOTFlib 0.90", 
             "ipaddress" : "136.144.155.250", 
@@ -1354,6 +1345,7 @@
         },
         {
             "name"      : "WibbleMUD", 
+            "md5"       : "ddc1c07bda261e66d0e659a3acd3b513", 
             "type"      : "LPMud", 
             "mudlib"    : "Dead Souls 3.8.6", 
             "ipaddress" : "78.148.136.196", 
@@ -1362,14 +1354,16 @@
         },
         {
             "name"      : "WileyMUD", 
+            "md5"       : "a70ac21aab61cb0138b28ed70a0cd877", 
             "type"      : "DikuMUD", 
-            "mudlib"    : "WileyMUD III 1.786b", 
+            "mudlib"    : "WileyMUD III 1.810b", 
             "ipaddress" : "172.92.143.166", 
             "port"      : 3000,
             "online"    : 1
         },
         {
             "name"      : "Wk-CoffeeMud-Dev", 
+            "md5"       : "bc1e60a89841799efca869975a1c3ae2", 
             "type"      : "CoffeeMud", 
             "mudlib"    : "CoffeeMud v5.9.8", 
             "ipaddress" : "104.14.28.106", 
@@ -1378,14 +1372,16 @@
         },
         {
             "name"      : "wMud", 
+            "md5"       : "bc7314c7140078f88090af3aba9878b4", 
             "type"      : "CoffeeMud", 
             "mudlib"    : "CoffeeMud v5.9.6", 
             "ipaddress" : "24.181.101.2", 
             "port"      : 5555,
-            "online"    : 0
+            "online"    : 1
         },
         {
             "name"      : "Worlds MUD", 
+            "md5"       : "af534169800799ee50aa4c6f701a4d01", 
             "type"      : "CoffeeMud", 
             "mudlib"    : "CoffeeMud v5.9.7", 
             "ipaddress" : "45.56.123.249", 
@@ -1394,6 +1390,7 @@
         },
         {
             "name"      : "Wrath of the Gods of the Titans of DOOOOOOOOOM!", 
+            "md5"       : "8646269436c302459547fd50bd085758", 
             "type"      : "LPMud", 
             "mudlib"    : "Dead Souls 3.8.2", 
             "ipaddress" : "70.112.237.48", 
@@ -1402,11 +1399,12 @@
         },
         {
             "name"      : "WWC", 
+            "md5"       : "35efd0f0affa32e8687e65d5e23c94d6", 
             "type"      : "LP", 
             "mudlib"    : "FRlib III", 
             "ipaddress" : "174.109.164.19", 
             "port"      : 4000,
-            "online"    : 0
+            "online"    : 1
         }
     ]
 }

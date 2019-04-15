@@ -1,4 +1,5 @@
 #!/bin/bash
 
+clear
 systemctl --no-pager status postgresql diskworld dw_addr dw_driver wileymud wileymud_driver
 

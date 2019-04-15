@@ -229,6 +229,10 @@ obj/act_info.o: act_info.c include/global.h include/bug.h include/version.h \
   include/whod.h include/multiclass.h include/modify.h include/act_wiz.h \
   include/act_skills.h include/spec_procs.h include/tracking.h \
   include/scheduler.h include/i3.h include/sql.h include/act_info.h
+obj/whod_working.o: whod_working.c include/version.h include/global.h \
+  include/bug.h include/db.h include/comm.h include/utils.h \
+  include/interpreter.h include/multiclass.h include/i3.h \
+  include/sha256.h include/whod.h
 obj/tracking.o: tracking.c include/global.h include/bug.h include/utils.h \
   include/act_move.h include/comm.h include/constants.h include/db.h \
   include/handler.h include/hash.h include/interpreter.h \

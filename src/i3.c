@@ -2226,6 +2226,10 @@ void I3_process_mudlist(I3_HEADER *header, char *s)
     }
     I3_saverouters();
 
+    // If we haven't processed the mudlist recently, do it now!
+    if(pulse_mudlist > (PULSE_MUDLIST / 10))
+        pulse_mudlist = 0;
+
     ps = next_ps;
     ps += 2;
 

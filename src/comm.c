@@ -645,7 +645,9 @@ void game_loop(int s)
 	}
 	if ((--pulse_mudlist) <= 0) {
 	    pulse_mudlist = PULSE_MUDLIST;
-            generate_mudlist();
+            //generate_mudlist();
+            // We now use a PHP page to parse the JSON data, so we don't need to
+            // recompile for EVERY little change to the web page.
             generate_json_mudlist();
 	}
 	if ((--pulse_url) <= 0) {
