@@ -17,16 +17,16 @@
 #define _SQL_C
 #include "sql.h"
 
-PGconn *db = NULL;
+PGconn *db_i3log = NULL;
 
-void sql_connect(void) {
-    if( db != NULL ) {
+void sql_connect(PGconn **db) {
+    if( *db != NULL ) {
         // check existing status
-        if (PQstatus(db) != CONNECTION_OK) {
-            PQreset(db);
-            if (PQstatus(db) != CONNECTION_OK) {
-                log_fatal("Database connection lost: %s", PQerrorMessage(db));
-                PQfinish(db);
+        if (PQstatus(*db) != CONNECTION_OK) {
+            PQreset(*db);
+            if (PQstatus(*db) != CONNECTION_OK) {
+                log_fatal("Database connection lost: %s", PQerrorMessage(*db));
+                PQfinish(*db);
                 proper_exit(MUD_HALT);
             } else {
                 log_info("Database connection restored.");
@@ -34,26 +34,26 @@ void sql_connect(void) {
         }
         return;
     } else {
-        db = PQconnectdb("dbname=i3log user=wiley password=tardis69");
-        if (PQstatus(db) != CONNECTION_OK) {
-            log_fatal("Cannot open database: %s", PQerrorMessage(db));
-            PQfinish(db);
+        *db = PQconnectdb("dbname=i3log user=wiley password=tardis69");
+        if (PQstatus(*db) != CONNECTION_OK) {
+            log_fatal("Cannot open database: %s", PQerrorMessage(*db));
+            PQfinish(*db);
             proper_exit(MUD_HALT);
         }
     }
 }
 
-void sql_disconnect(void) {
-    PQfinish(db);
-    db = NULL;
+void sql_disconnect(PGconn **db) {
+    PQfinish(*db);
+    *db = NULL;
 }
 
-char *sql_version(void) {
+char *sql_version(PGconn **db) {
     static char pg_version[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
     int version = 0;
     int major, minor, revision;
 
-    sql_connect();
+    sql_connect(db);
     version = PQlibVersion();
     major = version / 10000;
     minor = (version % 10000) / 100;
@@ -67,8 +67,8 @@ void sql_startup(void) {
     char log_msg[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
     
     log_boot("Opening SQL database.");
-    sql_connect();
-    log_boot("PostgreSQL Version: %s\n", sql_version());
+    sql_connect(&db_i3log);
+    log_boot("PostgreSQL Version: %s\n", sql_version(&db_i3log));
     setup_pinkfish_map_table();
     setup_hours_table();
     setup_channels_table();
@@ -76,16 +76,16 @@ void sql_startup(void) {
     setup_i3log_table();
     setup_urls_table();
     setup_logfile_table();
-    snprintf(log_msg, MAX_STRING_LENGTH, "%%^GREEN%%^WileyMUD Version: %s (%s), PostgreSQL Version %s.%%^RESET%%^", VERSION_BUILD, VERSION_DATE, sql_version());
+    snprintf(log_msg, MAX_STRING_LENGTH, "%%^GREEN%%^WileyMUD Version: %s (%s), PostgreSQL Version %s.%%^RESET%%^", VERSION_BUILD, VERSION_DATE, sql_version(&db_i3log));
     allchan_log(0,"wiley", "Cron", "WileyMUD", log_msg);
 }
 
 void sql_shutdown(void) {
     char log_msg[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
     log_boot("Shutting down SQL database.");
-    snprintf(log_msg, MAX_STRING_LENGTH, "%%^RED%%^WileyMUD Version: %s (%s), PostgreSQL Version %s.%%^RESET%%^", VERSION_BUILD, VERSION_DATE, sql_version());
+    snprintf(log_msg, MAX_STRING_LENGTH, "%%^RED%%^WileyMUD Version: %s (%s), PostgreSQL Version %s.%%^RESET%%^", VERSION_BUILD, VERSION_DATE, sql_version(&db_i3log));
     allchan_log(0,"wiley", "Cron", "WileyMUD", log_msg);
-    sql_disconnect();
+    sql_disconnect(&db_i3log);
 }
 
 /*
@@ -100,11 +100,11 @@ void setup_pinkfish_map_table(void) {
                 "    html TEXT NOT NULL "
                 "); ";
 
-    sql_connect();
-    res = PQexec(db, sql);
+    sql_connect(&db_i3log);
+    res = PQexec(db_i3log, sql);
     st = PQresultStatus(res);
     if( st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE ) {
-        log_fatal("Cannot create pinkfish_map table: %s", PQerrorMessage(db));
+        log_fatal("Cannot create pinkfish_map table: %s", PQerrorMessage(db_i3log));
         PQclear(res);
 	proper_exit(MUD_HALT);
     }
@@ -119,11 +119,11 @@ void setup_hours_table(void) {
                 "    pinkfish TEXT NOT NULL REFERENCES pinkfish_map (pinkfish) "
                 "); ";
 
-    sql_connect();
-    res = PQexec(db, sql);
+    sql_connect(&db_i3log);
+    res = PQexec(db_i3log, sql);
     st = PQresultStatus(res);
     if( st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE ) {
-        log_fatal("Cannot create hours table: %s", PQerrorMessage(db));
+        log_fatal("Cannot create hours table: %s", PQerrorMessage(db_i3log));
         PQclear(res);
 	proper_exit(MUD_HALT);
     }
@@ -138,11 +138,11 @@ void setup_channels_table(void) {
                 "    pinkfish TEXT NOT NULL REFERENCES pinkfish_map (pinkfish) "
                 "); ";
 
-    sql_connect();
-    res = PQexec(db, sql);
+    sql_connect(&db_i3log);
+    res = PQexec(db_i3log, sql);
     st = PQresultStatus(res);
     if( st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE ) {
-        log_fatal("Cannot create channels table: %s", PQerrorMessage(db));
+        log_fatal("Cannot create channels table: %s", PQerrorMessage(db_i3log));
         PQclear(res);
 	proper_exit(MUD_HALT);
     }
@@ -157,11 +157,11 @@ void setup_speakers_table(void) {
                 "    pinkfish TEXT NOT NULL REFERENCES pinkfish_map (pinkfish) "
                 "); ";
 
-    sql_connect();
-    res = PQexec(db, sql);
+    sql_connect(&db_i3log);
+    res = PQexec(db_i3log, sql);
     st = PQresultStatus(res);
     if( st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE ) {
-        log_fatal("Cannot create speakers table: %s", PQerrorMessage(db));
+        log_fatal("Cannot create speakers table: %s", PQerrorMessage(db_i3log));
         PQclear(res);
 	proper_exit(MUD_HALT);
     }
@@ -226,56 +226,56 @@ void setup_i3log_table(void) {
               "LEFT JOIN pinkfish_map pinkfish_map_speaker "
               "       ON (speakers.pinkfish = pinkfish_map_speaker.pinkfish); ";
 
-    sql_connect();
-    res = PQexec(db, sql);
+    sql_connect(&db_i3log);
+    res = PQexec(db_i3log, sql);
     st = PQresultStatus(res);
     if( st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE ) {
-        log_fatal("Cannot create i3log table: %s", PQerrorMessage(db));
+        log_fatal("Cannot create i3log table: %s", PQerrorMessage(db_i3log));
         PQclear(res);
 	proper_exit(MUD_HALT);
     }
     PQclear(res);
 
-    res = PQexec(db, sql2);
+    res = PQexec(db_i3log, sql2);
     st = PQresultStatus(res);
     if( st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE ) {
-        log_fatal("Cannot create i3log local index: %s", PQerrorMessage(db));
+        log_fatal("Cannot create i3log local index: %s", PQerrorMessage(db_i3log));
         PQclear(res);
 	proper_exit(MUD_HALT);
     }
     PQclear(res);
 
-    res = PQexec(db, sql3);
+    res = PQexec(db_i3log, sql3);
     st = PQresultStatus(res);
     if( st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE ) {
-        log_fatal("Cannot drop i3log row constraint: %s", PQerrorMessage(db));
+        log_fatal("Cannot drop i3log row constraint: %s", PQerrorMessage(db_i3log));
         PQclear(res);
 	proper_exit(MUD_HALT);
     }
     PQclear(res);
 
-    res = PQexec(db, sql4);
+    res = PQexec(db_i3log, sql4);
     st = PQresultStatus(res);
     if( st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE ) {
-        log_fatal("Cannot create i3log row constraint: %s", PQerrorMessage(db));
+        log_fatal("Cannot create i3log row constraint: %s", PQerrorMessage(db_i3log));
         PQclear(res);
 	proper_exit(MUD_HALT);
     }
     PQclear(res);
 
-    res = PQexec(db, sql5);
+    res = PQexec(db_i3log, sql5);
     st = PQresultStatus(res);
     if( st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE ) {
-        log_fatal("Cannot drop page view: %s", PQerrorMessage(db));
+        log_fatal("Cannot drop page view: %s", PQerrorMessage(db_i3log));
         PQclear(res);
 	proper_exit(MUD_HALT);
     }
     PQclear(res);
 
-    res = PQexec(db, sql6);
+    res = PQexec(db_i3log, sql6);
     st = PQresultStatus(res);
     if( st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE ) {
-        log_fatal("Cannot create page view: %s", PQerrorMessage(db));
+        log_fatal("Cannot create page view: %s", PQerrorMessage(db_i3log));
         PQclear(res);
 	proper_exit(MUD_HALT);
     }
@@ -300,29 +300,29 @@ void setup_urls_table(void) {
     char *sql2 = "DROP INDEX IF EXISTS ix_urls_checksum;";
     char *sql3 = "CREATE UNIQUE INDEX ix_urls_checksum ON urls (checksum);";
 
-    sql_connect();
-    res = PQexec(db, sql);
+    sql_connect(&db_i3log);
+    res = PQexec(db_i3log, sql);
     st = PQresultStatus(res);
     if( st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE ) {
-        log_fatal("Cannot create urls table: %s", PQerrorMessage(db));
+        log_fatal("Cannot create urls table: %s", PQerrorMessage(db_i3log));
         PQclear(res);
 	proper_exit(MUD_HALT);
     }
     PQclear(res);
 
-    res = PQexec(db, sql2);
+    res = PQexec(db_i3log, sql2);
     st = PQresultStatus(res);
     if( st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE ) {
-        log_fatal("Cannot drop urls checksum index: %s", PQerrorMessage(db));
+        log_fatal("Cannot drop urls checksum index: %s", PQerrorMessage(db_i3log));
         PQclear(res);
 	proper_exit(MUD_HALT);
     }
     PQclear(res);
 
-    res = PQexec(db, sql3);
+    res = PQexec(db_i3log, sql3);
     st = PQresultStatus(res);
     if( st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE ) {
-        log_fatal("Cannot create urls checksum index: %s", PQerrorMessage(db));
+        log_fatal("Cannot create urls checksum index: %s", PQerrorMessage(db_i3log));
         PQclear(res);
 	proper_exit(MUD_HALT);
     }
@@ -348,11 +348,11 @@ void setup_logfile_table(void) {
                 "    message TEXT "
                 "); ";
 
-    sql_connect();
-    res = PQexec(db, sql);
+    sql_connect(&db_i3log);
+    res = PQexec(db_i3log, sql);
     st = PQresultStatus(res);
     if( st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE ) {
-        log_fatal("Cannot create log table: %s", PQerrorMessage(db));
+        log_fatal("Cannot create log table: %s", PQerrorMessage(db_i3log));
         PQclear(res);
 	proper_exit(MUD_HALT);
     }
@@ -387,11 +387,11 @@ void add_url( const char *channel, const char *speaker, const char *mud, const c
     param_len[3] = mud ? strlen(mud) : 0;
     param_len[4] = strlen(checksum);
 
-    sql_connect();
-    res = PQexecParams(db, sql, 5, NULL, param_val, param_len, param_bin, 0);
+    sql_connect(&db_i3log);
+    res = PQexecParams(db_i3log, sql, 5, NULL, param_val, param_len, param_bin, 0);
     st = PQresultStatus(res);
     if( st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE ) {
-        log_fatal("Cannot insert url: %s", PQerrorMessage(db));
+        log_fatal("Cannot insert url: %s", PQerrorMessage(db_i3log));
         //PQclear(res);
 	//proper_exit(MUD_HALT);
     }
@@ -551,11 +551,11 @@ void allchan_sql( int is_emote, const char *channel, const char *speaker, const 
     param_len[5] = strlen(param_url);
     param_len[6] = strlen(param_bot);
 
-    sql_connect();
-    res = PQexecParams(db, sql, 7, NULL, param_val, param_len, param_bin, 0);
+    sql_connect(&db_i3log);
+    res = PQexecParams(db_i3log, sql, 7, NULL, param_val, param_len, param_bin, 0);
     st = PQresultStatus(res);
     if( st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE ) {
-        log_fatal("Cannot insert message: %s", PQerrorMessage(db));
+        log_fatal("Cannot insert message: %s", PQerrorMessage(db_i3log));
         //PQclear(res);
 	//proper_exit(MUD_HALT);
     }
@@ -612,11 +612,11 @@ void bug_sql( const char *logtype, const char *filename, const char *function, i
     param_len[9] = sizeof(param_vic_room);
     param_len[10] = message ? strlen(message) : 0;
 
-    sql_connect();
-    res = PQexecParams(db, sql, 11, NULL, param_val, param_len, param_bin, 0);
+    sql_connect(&db_i3log);
+    res = PQexecParams(db_i3log, sql, 11, NULL, param_val, param_len, param_bin, 0);
     st = PQresultStatus(res);
     if( st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE ) {
-        log_fatal("Cannot insert log message: %s", PQerrorMessage(db));
+        log_fatal("Cannot insert log message: %s", PQerrorMessage(db_i3log));
         //PQclear(res);
 	//proper_exit(MUD_HALT);
     }
@@ -640,11 +640,11 @@ void addspeaker_sql( const char *speaker, const char *pinkfish ) {
     param_len[0] = speaker ? strlen(speaker) : 0;
     param_len[1] = pinkfish ? strlen(pinkfish) : 0;
 
-    sql_connect();
-    res = PQexecParams(db, sql, 2, NULL, param_val, param_len, param_bin, 0);
+    sql_connect(&db_i3log);
+    res = PQexecParams(db_i3log, sql, 2, NULL, param_val, param_len, param_bin, 0);
     st = PQresultStatus(res);
     if( st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE ) {
-        log_fatal("Cannot add speaker: %s", PQerrorMessage(db));
+        log_fatal("Cannot add speaker: %s", PQerrorMessage(db_i3log));
         //PQclear(res);
 	//proper_exit(MUD_HALT);
     }

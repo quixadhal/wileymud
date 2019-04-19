@@ -414,8 +414,6 @@ void game_loop(int s)
      */
     sigset_t                                mask;
 
-    // int sql_reconnect;
-
     if (DEBUG > 1)
 	log_info("called %s with %d", __PRETTY_FUNCTION__, s);
 
@@ -2082,11 +2080,7 @@ void dump_player_list(void)
 
 void proper_exit(int exit_code)
 {
-#if 0
-    log_boot("Disconnecting from database!");
-    close_sql();
-#endif
     unlink("/home/wiley/lib/log/runlog");
-    sql_disconnect();
+    sql_disconnect(&db_i3log);
     exit(exit_code);
 }

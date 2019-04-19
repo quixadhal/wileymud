@@ -3261,7 +3261,6 @@ void do_version(struct char_data *ch, const char *argument, int cmd)
 		 VNULL(argument), cmd);
 
     cprintf(ch, "WileyMUD:         %s (%s)\r\n", VERSION_BUILD, VERSION_DATE);
-    sql_connect();
-    cprintf(ch, "PostgreSQL:       %s\r\n", sql_version());
+    cprintf(ch, "PostgreSQL:       %s\r\n", sql_version(&db_i3log));
 }
 

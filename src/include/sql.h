@@ -18,14 +18,16 @@ void setup_speakers_table(void);
 void setup_i3log_table(void);
 void setup_urls_table(void);
 void setup_logfile_table(void);
+#else
+extern PGconn *db_i3log;
 #endif
 
 //void sql_connect(const char *db_name);
 //void sql_disconnect(const char *db_name);
 //char *sql_version(const char *db_name);
-void sql_connect(void);
-void sql_disconnect(void);
-char *sql_version(void);
+void sql_connect(PGconn **db);
+void sql_disconnect(PGconn **db);
+char *sql_version(PGconn **db);
 void sql_startup(void);
 void sql_shutdown(void);
 void allchan_sql( int is_emote, const char *channel, const char *speaker, const char *mud, const char *message );
