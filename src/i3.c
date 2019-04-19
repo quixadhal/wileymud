@@ -3798,6 +3798,8 @@ void I3_process_who_req(I3_HEADER *header, char *s)
     snprintf(ibuf, MAX_INPUT_LENGTH, "%s@%s", header->originator_username,
 	     header->originator_mudname);
 
+    log_info("Got who request from %s", ibuf);
+
     I3_write_header("who-reply", this_i3mud->name, NULL, header->originator_mudname,
 		    header->originator_username);
     I3_write_buffer("({");
@@ -3861,7 +3863,7 @@ void I3_process_who_req(I3_HEADER *header, char *s)
 		strlcat(stats, "---", 200);
 	    strlcat(stats, "]%^GREEN%^%^BOLD%^", 200);
 
-	    snprintf(personbuf, MAX_STRING_LENGTH, "%s %s%s", stats, CH_I3NAME(person),
+	    snprintf(personbuf, MAX_STRING_LENGTH, "%s %s %s", stats, CH_I3NAME(person),
 		     CH_I3TITLE(person));
 	    send_to_i3(I3_escape(personbuf));
 	    I3_write_buffer("\",}),");
@@ -3909,7 +3911,7 @@ void I3_process_who_req(I3_HEADER *header, char *s)
 		strlcat(stats, "---", 200);
 	    strlcat(stats, "]%^GREEN%^%^BOLD%^", 200);
 
-	    snprintf(personbuf, MAX_STRING_LENGTH, "%s %s%s", stats, CH_I3NAME(person),
+	    snprintf(personbuf, MAX_STRING_LENGTH, "%s %s %s", stats, CH_I3NAME(person),
 		     CH_I3TITLE(person));
 	    send_to_i3(I3_escape(personbuf));
 	    I3_write_buffer("\",}),");

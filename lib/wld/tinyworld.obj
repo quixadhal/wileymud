@@ -4100,14 +4100,6 @@ A huge sword lies here; a claymore.~
 0 1 14 3
 15 2543 2543
 #6157
-cutlass~
-a cutlass~
-A cutlass lies here.~
-~
-5 12288 8193
-0 1 6 3
-6 765 75
-#6157
 khoplesh~
 a khoplesh~
 A large khoplesh lies here.~
@@ -4269,6 +4261,14 @@ A blade lies here, the edge very straight.~
 5 12288 8193
 0 1 8 3
 9 123 123
+#6175
+cutlass~
+a cutlass~
+A cutlass lies here.~
+~
+5 12288 8193
+0 1 6 3
+6 765 75
 #6200
 gnarled root helm~
 a gnarled root helm~
@@ -5066,14 +5066,6 @@ A vest made of sea shells lies here.~
 9 0 9
 4 4 0 0
 34 239 239
-#6527
-helm skull locathah~
-a locathah skull helm~
-A helm lies here, the skull of a locathah.~
-~
-9 0 17
-4 4 0 0
-12 129 129
 #6528
 chest rusted~
 a rusted chest~
@@ -5098,6 +5090,14 @@ A pile of golden coins lies here.~
 20 0 1
 2198 0 0 0
 1 1 1
+#6531
+helm skull locathah~
+a locathah skull helm~
+A helm lies here, the skull of a locathah.~
+~
+9 0 17
+4 4 0 0
+12 129 129
 #6910
 skirt scale~
 a black dragon scale skirt~

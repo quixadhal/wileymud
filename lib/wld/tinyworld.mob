@@ -736,7 +736,7 @@ A weretiger snarls at you.
 131072 0 -500 M 2
 6 13 3 6d8+36 1d7+0
 -1 0 0 8
-8 8 3
+8 8 0
 #256
 manticore~
 a manticore~
@@ -1625,7 +1625,7 @@ This large reptile seems to be hunting for mice or other small animals.
 Unfortunately for you, it's not too picky about what it just bites, only
 what it is actually going to consume!
 ~
-97 1572864 0 W 2
+97 1572864 0 M 2
 2 19 6 2d8+1 1d2+0
 -1 0 175 22
 8 8 0
@@ -5775,7 +5775,7 @@ over and over praying to some god long lost to man now.
 35d100+500 35 35d8+120 8 1 1
 1d4+1 1
 0 0 0
-3d6 0 3d6 3d6 1d6+12 18
+3d6+0 0 3d6+0 3d6+0 1d6+12 18
 0 0 0 0 0
 6 6 1 0
 The man looks up at you and says, "May the ways of Ya'vell travel with you."
@@ -7305,7 +7305,7 @@ never-ending parchment.
 34 40 -1000 W 2
 20 6 -4 20d8+115 1d6+5
 -1 0 13214 10
-8 8 3 7 112
+8 8 3 7 112 0
 The scribes hands move throught the desk and pull forth another parchment.
 ~
 ~
