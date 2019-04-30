@@ -1839,8 +1839,23 @@ char  *color_wrap(int soft_limit, int hard_limit, const char *pad, const char *i
                         //printf("hard_limit: %ld - [%c]\n", line_pos, segment[i][j]);
                         // First, break the line and pad
                         strlcat(result, "\r\n", MAX_STRING_LENGTH);
-                        strlcat(result, pad, MAX_STRING_LENGTH);
-                        line_pos = strlen(pad);
+                        line_pos = 0;
+
+                        // Only pad if there is more to come
+                        if(segment[i][j] || i < (segment_count - 1)) {
+                            int more_stuff = 0;
+
+                            for(int k = i+1; k < segment_count; k++) {
+                                if(!is_ansi[k] && strlen(segment[k]) > 0) {
+                                    more_stuff = 1;
+                                }
+                            }
+                            if(more_stuff) {
+                                strlcat(result, pad, MAX_STRING_LENGTH);
+                                line_pos = strlen(pad);
+                            }
+                        }
+
                         // Now eat leading white space from the next line.
                         while(segment[i][j] && isspace(segment[i][j]))
                             j++;
@@ -1863,8 +1878,17 @@ char  *color_wrap(int soft_limit, int hard_limit, const char *pad, const char *i
                                 j++;
                             // Only pad if there is more to come
                             if(segment[i][j] || i < (segment_count - 1)) {
-                                strlcat(result, pad, MAX_STRING_LENGTH);
-                                line_pos = strlen(pad);
+                                int more_stuff = 0;
+
+                                for(int k = i+1; k < segment_count; k++) {
+                                    if(!is_ansi[k] && strlen(segment[k]) > 0) {
+                                        more_stuff = 1;
+                                    }
+                                }
+                                if(more_stuff) {
+                                    strlcat(result, pad, MAX_STRING_LENGTH);
+                                    line_pos = strlen(pad);
+                                }
                             }
                         } else {
                             //printf("soft: %ld - [%c]\n", line_pos, segment[i][j]);
@@ -1929,8 +1953,17 @@ char  *color_wrap(int soft_limit, int hard_limit, const char *pad, const char *i
                                 j++;
                             // Only pad if there is more to come
                             if(segment[i][j] || i < (segment_count - 1)) {
-                                strlcat(result, pad, MAX_STRING_LENGTH);
-                                line_pos = strlen(pad);
+                                int more_stuff = 0;
+
+                                for(int k = i+1; k < segment_count; k++) {
+                                    if(!is_ansi[k] && strlen(segment[k]) > 0) {
+                                        more_stuff = 1;
+                                    }
+                                }
+                                if(more_stuff) {
+                                    strlcat(result, pad, MAX_STRING_LENGTH);
+                                    line_pos = strlen(pad);
+                                }
                             }
                         }
                         // And now process whatever non-whitespace might be here.
