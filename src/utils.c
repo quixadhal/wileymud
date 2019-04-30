@@ -1905,6 +1905,9 @@ char  *color_wrap(int soft_limit, int hard_limit, const char *pad, const char *i
                                         // The one negative byte was it?  Malformed?
                                     }
                                 }
+                            } else {
+                                if(isprint(segment[i][j]))
+                                    line_pos++;
                             }
                             j++;
                         }
@@ -1966,6 +1969,9 @@ char  *color_wrap(int soft_limit, int hard_limit, const char *pad, const char *i
                                         // The one negative byte was it?  Malformed?
                                     }
                                 }
+                            } else {
+                                if(isprint(segment[i][j]))
+                                    line_pos++;
                             }
                             j++;
                         }
