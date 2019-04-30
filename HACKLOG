@@ -292,3 +292,7 @@ updated crontab:
     35 2 * * * /home/wiley/bin/cleanlogs >/dev/null 2>&1 &
     10 3 * * * (cd /home/wiley/public_html && /usr/bin/tar -Jcf logpages.tar.xz logpages) >/dev/null 2>&1 &
     30 3 * * * /home/wiley/bin/remote-backup >/dev/null 2>&1 &
+
+apt install atop nethogs pgtop kerneltop
+apt install gdb
+

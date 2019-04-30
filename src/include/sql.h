@@ -40,5 +40,6 @@ void bug_sql( const char *logtype, const char *filename, const char *function, i
               const char *victim, int victim_room, 
               const char *message );
 void addspeaker_sql( const char *speaker, const char *pinkfish );
+void do_urlcheck(struct char_data *ch, const char *argument, int cmd);
 
 #endif

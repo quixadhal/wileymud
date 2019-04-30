@@ -14,6 +14,7 @@
 #include <time.h>
 #include <sys/time.h>
 #include <openssl/md5.h>
+#include <ctype.h>
 
 #include "global.h"
 #include "bug.h"
@@ -1620,3 +1621,553 @@ char                                    *md5_hex(const char *str)
     return result;
 }
 
+char  *old_old_color_wrap(int soft_limit, int hard_limit, const char *pad, const char *input) {
+    static char result[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
+    int first_line = 1;
+    int o = 0;
+    int line_pos = 0;
+    int did_pad = 0;
+    int skip_leading = 0;
+
+    bzero(result, MAX_STRING_LENGTH);
+    for(int i = 0; i < strlen(input);) {
+        if(line_pos == 0 && !did_pad) {
+            if(first_line) {
+                first_line = 0;
+            } else {
+                for(int j = 0; o < MAX_STRING_LENGTH && j < strlen(pad); j++) {
+                    result[o] = pad[j];
+                    o++;
+                    line_pos++;
+                }
+                skip_leading = 1;
+            }
+            did_pad = 1;
+        }
+
+        if(input[i] == 0x1b) {
+            // This MIGHT be an ANSI sequence
+            if(input[i+1] && input[i+1] == '[') {
+                // This IS an ANSI sequence
+                result[o] = input[i]; // Copy the ESC
+                o++;
+                i++;
+                result[o] = input[i]; // Copy the [
+                o++;
+                i++;
+                // Valid ANSI sequences are ESC [ digits;digits;digits m
+                // We won't be so picky... we just eat until we see an m
+                while(input[i] && input[i] != 'm') {
+                    result[o] = input[i]; // Copy everything
+                    o++;
+                    i++;
+                }
+                if(input[i]) {
+                    result[o] = input[i]; // Copy the m
+                    o++;
+                    i++;
+                }
+            }
+        } else if(input[i] == '\r' || input[i] == '\n') {
+            while(input[i] && (input[i] == '\r' || input[i] == '\n')) {
+                result[o] = input[i]; // Copy CRLF elements
+                o++;
+                i++;
+            }
+            line_pos = 0;
+            did_pad = 0;
+            continue;
+        }
+
+        // Skip over leading spaces to keep the lineup tidy.
+        if(skip_leading) {
+            skip_leading = 0;
+            while(input[i] && isspace(input[i]))
+                i++;
+        }
+
+        // Make sure we didn't hit the end of the string in ANSI processing
+        if(!input[i])
+            break;
+
+        result[o] = input[i];
+        o++;
+        i++;
+        if(isprint(input[i]))
+            line_pos++;
+
+        if( (line_pos >= hard_limit) ||
+            ((line_pos >= soft_limit) && (isspace(input[i]) || ispunct(input[i])))
+          ) {
+            log_info("soft %d, hard %d, line_pos %d, char '%c'", soft_limit, hard_limit, line_pos, input[i]);
+            log_info("output len %ld, output '%s'", strlen(result), result);
+            line_pos = 0;
+            did_pad = 0;
+            if(o < MAX_STRING_LENGTH)
+                result[o++] = '\r';
+            if(o < MAX_STRING_LENGTH)
+                result[o++] = '\n';
+        }
+    }
+    return result;
+}
+
+/*
+ * This function breaks an input string into segments which
+ * include normal strings and ANSI sequences.
+ * Because there can be any combination of such things,
+ * it returns the number of them as an integer, and expects
+ * you to pass in two pointer references it can use to
+ * allocate the substrings and flags to say if they are
+ * ANSI or not.
+ *
+ * CAUTION:  This allocates memory, so be sure to free() it!
+ */
+int ansi_explode(const char *input, char ***segment, int **is_ansi) {
+    int segment_count = 0;
+    const char *current = NULL;
+    const char *chalk = NULL;
+
+    if(!segment) {
+        printf("NULL segment reference passed to ansi_explode!");
+        exit(1);
+    }
+    if(!is_ansi) {
+        printf("NULL is_ansi reference passed to ansi_explode!");
+        exit(1);
+    }
+
+    current = strchr(input, 0x1b);
+    if(!current) {
+        //printf("NO ESC found\n");
+        // No segment breaks, so we are just one big segment.
+        segment_count = 1;
+        *segment = calloc(segment_count, sizeof(char **));
+        *is_ansi = calloc(segment_count, sizeof(int));
+        *segment[0] = strdup(input);
+        *is_ansi[0] = 0;
+    } else {
+        current = input;
+        chalk = input;
+        *segment = NULL;
+        *is_ansi = NULL;
+        segment_count = 0;
+        do {
+            const char *lookahead = current;
+            // chalk is the previous point, just after the previous ANSI sequence
+            // segment is the start of the next ANSI sequence
+            current = strstr(current, "\x1b[");
+            if(current) {
+                char *mark = NULL;
+                size_t mark_len = 0;
+                size_t segment_len = 0;
+
+                // mark is th end of the current ANSI sequence
+                mark = strchr(current, 'm');
+                if(mark) {
+                    // But we only count VALID sequences
+                    mark_len = strspn((current + 2), "0123456789;");
+                    // ESC [32;1m
+                    //      mark_len = 3 2 ; 1 == 4
+                    //      (mark - current) = ESC [ 3 2 ; 1 m == 7 == 6 + 1
+                    if((mark - current + 1) == (mark_len + 3)) {
+                        // OK, so copy chalk -> current into segment
+                        // THEN copy current -> mark into segemnts+1
+                        // THEN advance chalk to mark+1
+                        segment_len = (current - chalk);
+                        mark_len = (mark - current + 1);
+
+                        if(segment_len > 0) {
+                            // We have both a string segment AND ANSI sequence
+                            *segment = realloc(*segment, (segment_count + 2) * sizeof(char **));
+                            *is_ansi = realloc(*is_ansi, (segment_count + 2) * sizeof(int));
+                            (*segment)[segment_count] = strndup(chalk, segment_len);
+                            (*is_ansi)[segment_count] = 0;
+                            segment_count++;
+                        } else {
+                            // We have only the ANSI sequence
+                            *segment = realloc(*segment, (segment_count + 1) * sizeof(char **));
+                            *is_ansi = realloc(*is_ansi, (segment_count + 1) * sizeof(int));
+                        }
+                        (*segment)[segment_count] = strndup(current, mark_len);
+                        (*is_ansi)[segment_count] = 1;
+                        segment_count++;
+                        chalk = (mark + 1);
+                        current = chalk;
+                        continue;
+                    }
+                }
+                current++;
+            } else {
+                if(lookahead && *lookahead) {
+                    // No more ANSI sequences, but some string left.
+                    *segment = realloc(*segment, (segment_count + 1) * sizeof(char **));
+                    *is_ansi = realloc(*is_ansi, (segment_count + 1) * sizeof(int));
+                    (*segment)[segment_count] = strdup(lookahead);
+                    (*is_ansi)[segment_count] = 0;
+                    segment_count++;
+                }
+            }
+        } while(current);
+    }
+    return segment_count;
+}
+
+char  *old_color_wrap(int soft_limit, int hard_limit, const char *pad, const char *input) {
+    static char result[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
+    char **segment = NULL;
+    int   *is_ansi = NULL;
+    int    segment_count = 0;
+    int    line_pos = 0;
+
+    bzero(result, MAX_STRING_LENGTH);
+    segment_count = ansi_explode(input, &segment, &is_ansi);
+
+    for(int i = 0; i < segment_count; i++) {
+        if(segment[i]) {
+            if(is_ansi[i]) {
+                // Just push the whole ANSI sequence
+                strlcat(result, segment[i], MAX_STRING_LENGTH);
+            } else {
+                int segment_len = strlen(segment[i]);
+                for(int j = 0; j < segment_len;) {
+                    if(segment[i][j] == '\0')
+                        break;
+
+                    if(line_pos >= hard_limit) {
+                        // First, break the line and pad
+                        strlcat(result, "\r\n", MAX_STRING_LENGTH);
+                        strlcat(result, pad, MAX_STRING_LENGTH);
+                        line_pos = 0;
+                        // Now eat leading white space from the next line.
+                        while(segment[i][j] && isspace(segment[i][j]))
+                            j++;
+                        // And dump out the first character
+                        if(segment[i][j]) {
+                            scprintf(result, MAX_STRING_LENGTH, "%c", segment[i][j]);
+                            if(isprint(segment[i][j]))
+                                line_pos++;
+                            j++;
+                        }
+                    } else if(line_pos >= soft_limit) {
+                        if(segment[i][j] && ispunct(segment[i][j])) {
+                            // If we're sitting on a punctuation symbol,
+                            // emit it before we go to the next line.
+                            scprintf(result, MAX_STRING_LENGTH, "%c", segment[i][j]);
+                            j++;
+                            if(segment[i][j] == '\r') {
+                                // CR -- look for 0 or 1 matching LF
+                                j++;
+                                if(segment[i][j+1] == '\n')
+                                    j++;
+
+                                // break the line and pad
+                                strlcat(result, "\r\n", MAX_STRING_LENGTH);
+                                line_pos = 0;
+                                // Now eat leading white space from the next line.
+                                while(segment[i][j] && isspace(segment[i][j]))
+                                    j++;
+                                // Only pad if there is more to come
+                                if(segment[i][j])
+                                    strlcat(result, pad, MAX_STRING_LENGTH);
+                            } else if(segment[i][j] == '\n') {
+                                // LF -- look for 0 or 1 matching CR
+                                j++;
+                                if(segment[i][j+1] == '\r')
+                                    j++;
+
+                                // break the line and pad
+                                strlcat(result, "\r\n", MAX_STRING_LENGTH);
+                                line_pos = 0;
+                                // Now eat leading white space from the next line.
+                                while(segment[i][j] && isspace(segment[i][j]))
+                                    j++;
+                                // Only pad if there is more to come
+                                if(segment[i][j])
+                                    strlcat(result, pad, MAX_STRING_LENGTH);
+                            } else {
+                                // Eat the leading whitespace from the next line.
+                                while(segment[i][j] && isspace(segment[i][j]))
+                                    j++;
+                                // And if anything is left, add our line break
+                                if(segment[i][j]) {
+                                    strlcat(result, "\r\n", MAX_STRING_LENGTH);
+                                    strlcat(result, pad, MAX_STRING_LENGTH);
+                                    line_pos = 0;
+                                }
+                            }
+                        } else if(segment[i][j] && isspace(segment[i][j])) {
+                            if(segment[i][j] == '\r') {
+                                // CR -- look for 0 or 1 matching LF
+                                j++;
+                                if(segment[i][j+1] == '\n')
+                                    j++;
+
+                                // break the line and pad
+                                strlcat(result, "\r\n", MAX_STRING_LENGTH);
+                                line_pos = 0;
+                                // Now eat leading white space from the next line.
+                                while(segment[i][j] && isspace(segment[i][j]))
+                                    j++;
+                                // Only pad if there is more to come
+                                if(segment[i][j])
+                                    strlcat(result, pad, MAX_STRING_LENGTH);
+                            } else if(segment[i][j] == '\n') {
+                                // LF -- look for 0 or 1 matching CR
+                                j++;
+                                if(segment[i][j+1] == '\r')
+                                    j++;
+
+                                // break the line and pad
+                                strlcat(result, "\r\n", MAX_STRING_LENGTH);
+                                line_pos = 0;
+                                // Now eat leading white space from the next line.
+                                while(segment[i][j] && isspace(segment[i][j]))
+                                    j++;
+                                // Only pad if there is more to come
+                                if(segment[i][j])
+                                    strlcat(result, pad, MAX_STRING_LENGTH);
+                            } else {
+                                // Eat the leading whitespace from the next line.
+                                while(segment[i][j] && isspace(segment[i][j]))
+                                    j++;
+                                // And if anything is left, add our line break
+                                if(segment[i][j]) {
+                                    strlcat(result, "\r\n", MAX_STRING_LENGTH);
+                                    strlcat(result, pad, MAX_STRING_LENGTH);
+                                    line_pos = 0;
+                                }
+                            }
+                        } else {
+                            // Finally, if it was something else, emit that
+                            // and keep going on the next pass, to try and find
+                            // a cleaner point to break
+                            scprintf(result, MAX_STRING_LENGTH, "%c", segment[i][j]);
+                            if(isprint(segment[i][j]))
+                                line_pos++;
+                            j++;
+                        }
+                    } else {
+                        // If we're not near the end of the line, just check for a
+                        // linebreak, so we can reset our position if need be.
+                        if(segment[i][j] == '\r') {
+                            // CR -- look for 0 or 1 matching LF
+                            j++;
+                            if(segment[i][j+1] == '\n')
+                                j++;
+
+                            // break the line and pad
+                            strlcat(result, "\r\n", MAX_STRING_LENGTH);
+                            line_pos = 0;
+                            // Now eat leading white space from the next line.
+                            while(segment[i][j] && isspace(segment[i][j]))
+                                j++;
+                            // Only pad if there is more to come
+                            if(segment[i][j])
+                                strlcat(result, pad, MAX_STRING_LENGTH);
+                        } else if(segment[i][j] == '\n') {
+                            // LF -- look for 0 or 1 matching CR
+                            j++;
+                            if(segment[i][j+1] == '\r')
+                                j++;
+
+                            // break the line and pad
+                            strlcat(result, "\r\n", MAX_STRING_LENGTH);
+                            line_pos = 0;
+                            // Now eat leading white space from the next line.
+                            while(segment[i][j] && isspace(segment[i][j]))
+                                j++;
+                            // Only pad if there is more to come
+                            if(segment[i][j])
+                                strlcat(result, pad, MAX_STRING_LENGTH);
+                        }
+                        // And now process whatever non-whitespace might be here.
+                        if(segment[i][j]) {
+                            scprintf(result, MAX_STRING_LENGTH, "%c", segment[i][j]);
+                            if(isprint(segment[i][j]))
+                                line_pos++;
+                            j++;
+                        }
+                    }
+                    // If we have a double-width character (kanji, other UTF-8?)
+                    // we really should detect this and increment line_pos again.
+                }
+            }
+            free(segment[i]);
+        }
+    }
+    // Now, free all the segment bits
+    free(segment);
+    free(is_ansi);
+    return result;
+}
+
+char  *color_wrap(int soft_limit, int hard_limit, const char *pad, const char *input) {
+    static char result[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
+    char **segment = NULL;
+    int   *is_ansi = NULL;
+    int    segment_count = 0;
+    int    line_pos = 0;
+
+    bzero(result, MAX_STRING_LENGTH);
+    segment_count = ansi_explode(input, &segment, &is_ansi);
+
+    for(int i = 0; i < segment_count; i++) {
+        if(segment[i]) {
+            if(is_ansi[i]) {
+                // Just push the whole ANSI sequence
+                strlcat(result, segment[i], MAX_STRING_LENGTH);
+                //printf("ANSI line_pos: %ld - [%s] %ld\n", line_pos, segment[i], strlen(segment[i]));
+            } else {
+                int segment_len = strlen(segment[i]);
+                for(int j = 0; j < segment_len;) {
+                    if(segment[i][j] == '\0')
+                        break;
+
+                    if(line_pos >= hard_limit) {
+                        //printf("hard_limit: %ld - [%c]\n", line_pos, segment[i][j]);
+                        // First, break the line and pad
+                        strlcat(result, "\r\n", MAX_STRING_LENGTH);
+                        strlcat(result, pad, MAX_STRING_LENGTH);
+                        line_pos = strlen(pad);
+                        // Now eat leading white space from the next line.
+                        while(segment[i][j] && isspace(segment[i][j]))
+                            j++;
+                    } else if(line_pos >= soft_limit) {
+                        if(isspace(segment[i][j]) || ispunct(segment[i][j])) {
+                            if(ispunct(segment[i][j])) {
+                                //printf("soft + punct: %ld - [%c]\n", line_pos, segment[i][j]);
+                                // If we're sitting on a punctuation symbol,
+                                // emit it before we go to the next line.
+                                scprintf(result, MAX_STRING_LENGTH, "%c", segment[i][j]);
+                                j++;
+                            } else {
+                                //printf("soft + space: %ld - [%c]\n", line_pos, segment[i][j]);
+                            }
+                            // Now, emit the line ending
+                            strlcat(result, "\r\n", MAX_STRING_LENGTH);
+                            line_pos = 0;
+                            // eat leading white space from the next line.
+                            while(segment[i][j] && isspace(segment[i][j]))
+                                j++;
+                            // Only pad if there is more to come
+                            if(segment[i][j] || i < (segment_count - 1)) {
+                                strlcat(result, pad, MAX_STRING_LENGTH);
+                                line_pos = strlen(pad);
+                            }
+                        } else {
+                            //printf("soft: %ld - [%c]\n", line_pos, segment[i][j]);
+                            // Finally, if it was something else, emit that
+                            // and keep going on the next pass, to try and find
+                            // a cleaner point to break
+                            scprintf(result, MAX_STRING_LENGTH, "%c", segment[i][j]);
+                            if(!isspace(segment[i][j])) {
+                                line_pos++;
+                                if((unsigned int)segment[i][j] > 0x7F) {
+                                    // UTF-8 lives here
+                                    // We will assume they all take 3 bytes screen width
+                                    line_pos += 2;
+
+                                    if(((unsigned int)segment[i][j] & 0xE0) == 0xC0) {
+                                        // 110xxxxx means 1 more bytes
+                                        if(segment[i][j+1]) {
+                                            //printf("UTF-8-1: %c%c\n", segment[i][j], segment[i][j+1]);
+                                            scprintf(result, MAX_STRING_LENGTH, "%c", segment[i][j+1]);
+                                            j += 1;
+                                        }
+                                    } else if(((unsigned int)segment[i][j] & 0xF0) == 0xE0) {
+                                        // 1110xxxx means 2 more bytes
+                                        if(segment[i][j+1] && segment[i][j+2]) {
+                                            //printf("UTF-8-2: %c%c%c\n", segment[i][j], segment[i][j+1], segment[i][j+2]);
+                                            scprintf(result, MAX_STRING_LENGTH, "%c%c", segment[i][j+1], segment[i][j+2]);
+                                            j += 2;
+                                        }
+                                    } else if(((unsigned int)segment[i][j] & 0xF8) == 0xF0) {
+                                        // 11110xxx means 3 more bytes
+                                        if(segment[i][j+1] && segment[i][j+2] && segment[i][j+3]) {
+                                            //printf("UTF-8-3: %c%c%c%c\n", segment[i][j], segment[i][j+1], segment[i][j+2], segment[i][j+3]);
+                                            scprintf(result, MAX_STRING_LENGTH, "%c%c%c", segment[i][j+1], segment[i][j+2], segment[i][j+3]);
+                                            j += 3;
+                                        }
+                                    } else {
+                                        //printf("UTF-8-0: %c\n", segment[i][j]);
+                                        // The one negative byte was it?  Malformed?
+                                    }
+                                }
+                            }
+                            j++;
+                        }
+                    } else {
+                        // If we're not near the end of the line, just check for a
+                        // linebreak, so we can reset our position if need be.
+                        if(segment[i][j] == '\r' || segment[i][j] == '\n') {
+                            j++;
+                            if(segment[i][j] == '\r' && segment[i][j+1] == '\n')
+                                j++;
+                            if(segment[i][j] == '\n' && segment[i][j+1] == '\r')
+                                j++;
+
+                            // break the line and pad
+                            strlcat(result, "\r\n", MAX_STRING_LENGTH);
+                            line_pos = 0;
+                            // Now eat leading white space from the next line.
+                            while(segment[i][j] && isspace(segment[i][j]))
+                                j++;
+                            // Only pad if there is more to come
+                            if(segment[i][j] || i < (segment_count - 1)) {
+                                strlcat(result, pad, MAX_STRING_LENGTH);
+                                line_pos = strlen(pad);
+                            }
+                        }
+                        // And now process whatever non-whitespace might be here.
+                        if(segment[i][j]) {
+                            scprintf(result, MAX_STRING_LENGTH, "%c", segment[i][j]);
+                            if(!isspace(segment[i][j])) {
+                                line_pos++;
+                                if((unsigned int)segment[i][j] > 0x7F) {
+                                    // UTF-8 lives here
+                                    // We will assume they all take 3 bytes screen width
+                                    line_pos += 2;
+
+                                    if(((unsigned int)segment[i][j] & 0xE0) == 0xC0) {
+                                        // 110xxxxx means 1 more bytes
+                                        if(segment[i][j+1]) {
+                                            //printf("UTF-8-1: %c%c\n", segment[i][j], segment[i][j+1]);
+                                            scprintf(result, MAX_STRING_LENGTH, "%c", segment[i][j+1]);
+                                            j += 1;
+                                        }
+                                    } else if(((unsigned int)segment[i][j] & 0xF0) == 0xE0) {
+                                        // 1110xxxx means 2 more bytes
+                                        if(segment[i][j+1] && segment[i][j+2]) {
+                                            //printf("UTF-8-2: %c%c%c\n", segment[i][j], segment[i][j+1], segment[i][j+2]);
+                                            scprintf(result, MAX_STRING_LENGTH, "%c%c", segment[i][j+1], segment[i][j+2]);
+                                            j += 2;
+                                        }
+                                    } else if(((unsigned int)segment[i][j] & 0xF8) == 0xF0) {
+                                        // 11110xxx means 3 more bytes
+                                        if(segment[i][j+1] && segment[i][j+2] && segment[i][j+3]) {
+                                            //printf("UTF-8-3: %c%c%c%c\n", segment[i][j], segment[i][j+1], segment[i][j+2], segment[i][j+3]);
+                                            scprintf(result, MAX_STRING_LENGTH, "%c%c%c", segment[i][j+1], segment[i][j+2], segment[i][j+3]);
+                                            j += 3;
+                                        }
+                                    } else {
+                                        //printf("UTF-8-0: %c\n", segment[i][j]);
+                                        // The one negative byte was it?  Malformed?
+                                    }
+                                }
+                            }
+                            j++;
+                        }
+                    }
+                    // If we have a double-width character (kanji, other UTF-8?)
+                    // we really should detect this and increment line_pos again.
+                }
+            }
+            free(segment[i]);
+        }
+    }
+    // Now, free all the segment bits
+    free(segment);
+    free(is_ansi);
+    return result;
+}

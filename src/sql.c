@@ -10,6 +10,7 @@
 #include "comm.h"
 #include "version.h"
 #include "crc32.h"
+#include "interpreter.h"
 #include "utils.h"
 #ifdef I3
 #include "i3.h"
@@ -649,5 +650,96 @@ void addspeaker_sql( const char *speaker, const char *pinkfish ) {
 	//proper_exit(MUD_HALT);
     }
     PQclear(res);
+}
+
+void do_urlcheck(struct char_data *ch, const char *argument, int cmd)
+{
+    static char                             buf[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
+    static char                             tmp[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
+    PGresult *res = NULL;
+    ExecStatusType st = 0;
+    const char *sql =   "SELECT to_char(created AT TIME ZONE 'US/Pacific', "
+                            "'YYYY-MM-DD HH24:MI:SS ') "
+                            "||(select abbrev from pg_timezone_names where name = 'US/Pacific') "
+                        "AS created, speaker, hits "
+                        "FROM urls "
+                        "WHERE url = $1;";
+    const char *param_val[1];
+    int param_len[1];
+    int param_bin[1] = {0};
+    int rows = 0;
+    int columns = 0;
+    int *col_len = NULL;
+
+    if (DEBUG)
+	log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch),
+		 VNULL(argument), cmd);
+
+    only_argument(argument, tmp);
+    if (*tmp) {
+        param_val[0] = tmp;
+        param_len[0] = *tmp ? strlen(tmp) : 0;
+
+        sql_connect(&db_i3log);
+        res = PQexecParams(db_i3log, sql, 1, NULL, param_val, param_len, param_bin, 0);
+        st = PQresultStatus(res);
+        if( st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE ) {
+            log_fatal("Cannot get url info: %s", PQerrorMessage(db_i3log));
+            //PQclear(res);
+            //proper_exit(MUD_HALT);
+        }
+        rows = PQntuples(res);
+        log_info("urlcheck %s, got %d rows", tmp, rows);
+        if( rows > 0 ) {
+            columns = PQnfields(res);
+            //log_info("urlcheck %s, got %d columns", tmp, columns);
+            if( columns > 0 ) {
+                col_len = (int *)calloc(columns, sizeof(int));
+
+                for( int j = 0; j < columns; j++) {
+                    char *col_name = PQfname(res, j);
+                    col_len[j] = MAX(strlen(col_name), col_len[j]);
+                    for(int i = 0; i < rows; i++) {
+                        char *val = PQgetvalue(res, i, j);
+                        col_len[j] = MAX(strlen(val), col_len[j]);
+                        col_len[j] = MAX(30, col_len[j]);
+                    }
+                }
+
+                for( int j = 0; j < columns; j++) {
+                    scprintf(buf, MAX_STRING_LENGTH, "%*.*s ",
+                            col_len[j], col_len[j], PQfname(res, j));
+                }
+                scprintf(buf, MAX_STRING_LENGTH, "\r\n");
+
+                for( int j = 0; j < columns; j++) {
+                    scprintf(buf, MAX_STRING_LENGTH, "%*.*s ",
+                            col_len[j], col_len[j], "------------------------------");
+                }
+                scprintf(buf, MAX_STRING_LENGTH, "\r\n");
+
+                for( int i = 0; i < rows; i++ ) {
+                    for( int j = 0; j < columns; j++) {
+                        int nil = PQgetisnull(res, i, j);
+                        if(!nil) {
+                            scprintf(buf, MAX_STRING_LENGTH, "%*.*s ",
+                                    col_len[j], col_len[j], PQgetvalue(res, i, j));
+                        } else {
+                            scprintf(buf, MAX_STRING_LENGTH, "%*.*s ",
+                                    col_len[j], col_len[j], "");
+                        }
+                    }
+                    scprintf(buf, MAX_STRING_LENGTH, "\r\n");
+                }
+
+                if(col_len) free(col_len);
+            }
+            log_info("urlcheck %s\n%s\n", tmp, buf);
+            cprintf(ch, "%s\r\n", buf);
+        }
+        PQclear(res);
+    } else {
+        cprintf(ch, "URL is not known, yet!\r\n");
+    }
 }
 

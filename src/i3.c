@@ -444,7 +444,8 @@ void i3_printf(CHAR_DATA *ch, const char *fmt, ...)
     va_end(args);
 
     strlcpy(buf2, I3_i3tag_to_mudtag(ch, buf), MAX_STRING_LENGTH);
-    cprintf(ch, "%s", buf2);
+    //cprintf(ch, "%s", buf2);
+    cprintf(ch, "%s", color_wrap(78, 96, "      ", buf2));
     return;
 }
 
@@ -6320,11 +6321,11 @@ void I3_loadchannels(void)
 	    }
 	    if (channel->layout_m && !strcmp(channel->layout_m, "(null)")) {
 		I3STRFREE(channel->layout_m);
-		channel->layout_m = I3STRALLOC("%%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^] %%^CYAN%%^%%^BOLD%%^%s@%s: %%^RESET%%^%s");
+		channel->layout_m = I3STRALLOC("[%s] %s@%s: %%^RESET%%^%s");
 	    }
 	    if (channel->layout_e && !strcmp(channel->layout_e, "(null)")) {
 		I3STRFREE(channel->layout_e);
-		channel->layout_e = I3STRALLOC("%%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^] %%^RESET%%^%s");
+		channel->layout_e = I3STRALLOC("[%s] %%^RESET%%^%s");
 	    }
 	    for (x = 0; x < MAX_I3HISTORY; x++)
 		channel->history[x] = NULL;

@@ -157,6 +157,7 @@ int board(struct char_data *ch, int cmd, char *arg)
     case CMD_switch:
     case CMD_ticks:
     case CMD_transfer:
+    case CMD_urlcheck:
     case CMD_wizhelp:
     case CMD_wizlock:
     case CMD_wiznet:
