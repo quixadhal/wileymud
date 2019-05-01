@@ -1813,7 +1813,68 @@ int ansi_explode(const char *input, char ***segment, int **is_ansi) {
     return segment_count;
 }
 
-char  *color_wrap(int soft_limit, int hard_limit, const char *pad, const char *input) {
+int more_to_go(char **segment, int *is_ansi, int segment_count, int i, int j) {
+    if(segment[i][j]) {
+        // There might be more in this segment
+        for(int k = i; k < strlen(segment[i]); k++) {
+            if(!isspace(segment[i][k]))
+                return 1;
+        }
+    }
+    if(i < (segment_count - 1)) {
+        // There might be more in further segments
+        for(int k = i+1; k < segment_count; k++) {
+            if(!is_ansi[k]) {
+                // We have a future segment that is non-ANSI and not empty
+                for(int x = 0; x < strlen(segment[k]); x++) {
+                    if(!isspace(segment[k][x]))
+                        return 1;
+                }
+            }
+        }
+    }
+    return 0;
+}
+
+char *utf8_check(char *candidate) {
+    static char utf[5];
+
+    // If you passed in junk, NOT utf-8
+    if(!candidate || !*candidate)
+        return NULL;
+
+    // Normal whitespace, not utf-8
+    if(isspace(candidate[0]))
+        return NULL;
+
+    if((unsigned int)candidate[0] > 0x7F) {
+        // Now we're talking!
+        bzero(utf, 5);
+        if(((unsigned int)candidate[0] & 0xE0) == 0xC0) {
+            // 110xxxxx means 1 more bytes
+            if(candidate[1]) {
+                scprintf(utf, 5, "%c", candidate[1]);
+            }
+        } else if(((unsigned int)candidate[0] & 0xF0) == 0xE0) {
+            // 1110xxxx means 2 more bytes
+            if(candidate[1] && candidate[2]) {
+                scprintf(utf, 5, "%c%c", candidate[1], candidate[2]);
+            }
+        } else if(((unsigned int)candidate[0] & 0xF8) == 0xF0) {
+            // 11110xxx means 3 more bytes
+            if(candidate[1] && candidate[2] && candidate[3]) {
+                scprintf(utf, 5, "%c%c%c", candidate[1], candidate[2], candidate[3]);
+            }
+        } else {
+            // The one negative byte was it?  Malformed?
+        }
+        return utf;
+    }
+
+    return NULL;
+}
+
+char *color_wrap(int soft_limit, int hard_limit, const char *pad, const char *input) {
     static char result[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
     char **segment = NULL;
     int   *is_ansi = NULL;
@@ -1837,28 +1898,18 @@ char  *color_wrap(int soft_limit, int hard_limit, const char *pad, const char *i
 
                     if(line_pos >= hard_limit) {
                         //printf("hard_limit: %ld - [%c]\n", line_pos, segment[i][j]);
-                        // First, break the line and pad
-                        strlcat(result, "\r\n", MAX_STRING_LENGTH);
+                        // Reset our line counter
                         line_pos = 0;
-
-                        // Only pad if there is more to come
-                        if(segment[i][j] || i < (segment_count - 1)) {
-                            int more_stuff = 0;
-
-                            for(int k = i+1; k < segment_count; k++) {
-                                if(!is_ansi[k] && strlen(segment[k]) > 0) {
-                                    more_stuff = 1;
-                                }
-                            }
-                            if(more_stuff) {
-                                strlcat(result, pad, MAX_STRING_LENGTH);
-                                line_pos = strlen(pad);
-                            }
-                        }
-
                         // Now eat leading white space from the next line.
                         while(segment[i][j] && isspace(segment[i][j]))
                             j++;
+
+                        // only emit the line ending if we have more lines to go.
+                        if(more_to_go(segment, is_ansi, segment_count, i, j)) {
+                            strlcat(result, "\r\n", MAX_STRING_LENGTH);
+                            strlcat(result, pad, MAX_STRING_LENGTH);
+                            line_pos = strlen(pad);
+                        }
                     } else if(line_pos >= soft_limit) {
                         if(isspace(segment[i][j]) || ispunct(segment[i][j])) {
                             if(ispunct(segment[i][j])) {
@@ -1870,68 +1921,43 @@ char  *color_wrap(int soft_limit, int hard_limit, const char *pad, const char *i
                             } else {
                                 //printf("soft + space: %ld - [%c]\n", line_pos, segment[i][j]);
                             }
-                            // Now, emit the line ending
-                            strlcat(result, "\r\n", MAX_STRING_LENGTH);
+                            // Reset our line counter
                             line_pos = 0;
                             // eat leading white space from the next line.
                             while(segment[i][j] && isspace(segment[i][j]))
                                 j++;
-                            // Only pad if there is more to come
-                            if(segment[i][j] || i < (segment_count - 1)) {
-                                int more_stuff = 0;
 
-                                for(int k = i+1; k < segment_count; k++) {
-                                    if(!is_ansi[k] && strlen(segment[k]) > 0) {
-                                        more_stuff = 1;
-                                    }
-                                }
-                                if(more_stuff) {
-                                    strlcat(result, pad, MAX_STRING_LENGTH);
-                                    line_pos = strlen(pad);
-                                }
+                            // only emit the line ending if we have more lines to go.
+                            if(more_to_go(segment, is_ansi, segment_count, i, j)) {
+                                strlcat(result, "\r\n", MAX_STRING_LENGTH);
+                                strlcat(result, pad, MAX_STRING_LENGTH);
+                                line_pos = strlen(pad);
                             }
                         } else {
                             //printf("soft: %ld - [%c]\n", line_pos, segment[i][j]);
                             // Finally, if it was something else, emit that
                             // and keep going on the next pass, to try and find
                             // a cleaner point to break
-                            scprintf(result, MAX_STRING_LENGTH, "%c", segment[i][j]);
-                            if(!isspace(segment[i][j])) {
-                                line_pos++;
-                                if((unsigned int)segment[i][j] > 0x7F) {
-                                    // UTF-8 lives here
-                                    // We will assume they all take 3 bytes screen width
-                                    line_pos += 2;
 
-                                    if(((unsigned int)segment[i][j] & 0xE0) == 0xC0) {
-                                        // 110xxxxx means 1 more bytes
-                                        if(segment[i][j+1]) {
-                                            //printf("UTF-8-1: %c%c\n", segment[i][j], segment[i][j+1]);
-                                            scprintf(result, MAX_STRING_LENGTH, "%c", segment[i][j+1]);
-                                            j += 1;
-                                        }
-                                    } else if(((unsigned int)segment[i][j] & 0xF0) == 0xE0) {
-                                        // 1110xxxx means 2 more bytes
-                                        if(segment[i][j+1] && segment[i][j+2]) {
-                                            //printf("UTF-8-2: %c%c%c\n", segment[i][j], segment[i][j+1], segment[i][j+2]);
-                                            scprintf(result, MAX_STRING_LENGTH, "%c%c", segment[i][j+1], segment[i][j+2]);
-                                            j += 2;
-                                        }
-                                    } else if(((unsigned int)segment[i][j] & 0xF8) == 0xF0) {
-                                        // 11110xxx means 3 more bytes
-                                        if(segment[i][j+1] && segment[i][j+2] && segment[i][j+3]) {
-                                            //printf("UTF-8-3: %c%c%c%c\n", segment[i][j], segment[i][j+1], segment[i][j+2], segment[i][j+3]);
-                                            scprintf(result, MAX_STRING_LENGTH, "%c%c%c", segment[i][j+1], segment[i][j+2], segment[i][j+3]);
-                                            j += 3;
-                                        }
-                                    } else {
-                                        //printf("UTF-8-0: %c\n", segment[i][j]);
-                                        // The one negative byte was it?  Malformed?
-                                    }
-                                }
-                            } else {
+                            scprintf(result, MAX_STRING_LENGTH, "%c", segment[i][j]);
+                            if(isspace(segment[i][j])) {
                                 if(isprint(segment[i][j]))
                                     line_pos++;
+                            } else {
+                                char *check = NULL;
+
+                                line_pos++;
+                                check = utf8_check(&segment[i][j]);
+                                if(check) {
+                                    // UTF-8 lives here
+                                    int utf_len = 0;
+
+                                    // We will assume they all take 3 bytes screen width
+                                    line_pos += 2;
+                                    utf_len = strlen(check);
+                                    scprintf(result, MAX_STRING_LENGTH, "%s", check);
+                                    j += utf_len;
+                                }
                             }
                             j++;
                         }
@@ -1945,66 +1971,40 @@ char  *color_wrap(int soft_limit, int hard_limit, const char *pad, const char *i
                             if(segment[i][j] == '\n' && segment[i][j+1] == '\r')
                                 j++;
 
-                            // break the line and pad
-                            strlcat(result, "\r\n", MAX_STRING_LENGTH);
+                            // Reset our line counter
                             line_pos = 0;
                             // Now eat leading white space from the next line.
                             while(segment[i][j] && isspace(segment[i][j]))
                                 j++;
-                            // Only pad if there is more to come
-                            if(segment[i][j] || i < (segment_count - 1)) {
-                                int more_stuff = 0;
 
-                                for(int k = i+1; k < segment_count; k++) {
-                                    if(!is_ansi[k] && strlen(segment[k]) > 0) {
-                                        more_stuff = 1;
-                                    }
-                                }
-                                if(more_stuff) {
-                                    strlcat(result, pad, MAX_STRING_LENGTH);
-                                    line_pos = strlen(pad);
-                                }
+                            // only emit the line ending if we have more lines to go.
+                            if(more_to_go(segment, is_ansi, segment_count, i, j)) {
+                                strlcat(result, "\r\n", MAX_STRING_LENGTH);
+                                strlcat(result, pad, MAX_STRING_LENGTH);
+                                line_pos = strlen(pad);
                             }
                         }
                         // And now process whatever non-whitespace might be here.
                         if(segment[i][j]) {
                             scprintf(result, MAX_STRING_LENGTH, "%c", segment[i][j]);
-                            if(!isspace(segment[i][j])) {
-                                line_pos++;
-                                if((unsigned int)segment[i][j] > 0x7F) {
-                                    // UTF-8 lives here
-                                    // We will assume they all take 3 bytes screen width
-                                    line_pos += 2;
-
-                                    if(((unsigned int)segment[i][j] & 0xE0) == 0xC0) {
-                                        // 110xxxxx means 1 more bytes
-                                        if(segment[i][j+1]) {
-                                            //printf("UTF-8-1: %c%c\n", segment[i][j], segment[i][j+1]);
-                                            scprintf(result, MAX_STRING_LENGTH, "%c", segment[i][j+1]);
-                                            j += 1;
-                                        }
-                                    } else if(((unsigned int)segment[i][j] & 0xF0) == 0xE0) {
-                                        // 1110xxxx means 2 more bytes
-                                        if(segment[i][j+1] && segment[i][j+2]) {
-                                            //printf("UTF-8-2: %c%c%c\n", segment[i][j], segment[i][j+1], segment[i][j+2]);
-                                            scprintf(result, MAX_STRING_LENGTH, "%c%c", segment[i][j+1], segment[i][j+2]);
-                                            j += 2;
-                                        }
-                                    } else if(((unsigned int)segment[i][j] & 0xF8) == 0xF0) {
-                                        // 11110xxx means 3 more bytes
-                                        if(segment[i][j+1] && segment[i][j+2] && segment[i][j+3]) {
-                                            //printf("UTF-8-3: %c%c%c%c\n", segment[i][j], segment[i][j+1], segment[i][j+2], segment[i][j+3]);
-                                            scprintf(result, MAX_STRING_LENGTH, "%c%c%c", segment[i][j+1], segment[i][j+2], segment[i][j+3]);
-                                            j += 3;
-                                        }
-                                    } else {
-                                        //printf("UTF-8-0: %c\n", segment[i][j]);
-                                        // The one negative byte was it?  Malformed?
-                                    }
-                                }
-                            } else {
+                            if(isspace(segment[i][j])) {
                                 if(isprint(segment[i][j]))
                                     line_pos++;
+                            } else {
+                                char *check = NULL;
+
+                                line_pos++;
+                                check = utf8_check(&segment[i][j]);
+                                if(check) {
+                                    // UTF-8 lives here
+                                    int utf_len = 0;
+
+                                    // We will assume they all take 3 bytes screen width
+                                    line_pos += 2;
+                                    utf_len = strlen(check);
+                                    scprintf(result, MAX_STRING_LENGTH, "%s", check);
+                                    j += utf_len;
+                                }
                             }
                             j++;
                         }
