@@ -1930,8 +1930,20 @@ char *color_wrap(int soft_limit, int hard_limit, const char *pad, const char *in
                                         if(!isspace(segment[i][j]) && !ispunct(segment[i][j])) {
                                             // We found something like Bob's or they're.
                                             do_linebreak = 0;
+                                        } else if(segment[i][j] == '.' || segment[i][j] == '?' || segment[i][j] == '!') {
+                                            // Improper punctuation outside single quotes.
+                                            do_linebreak = 0;
                                         } else {
                                             // A single quote, or something else
+                                            line_pos = 0;
+                                        }
+                                        break;
+                                    case '\"':
+                                        if(segment[i][j] == '.' || segment[i][j] == '?' || segment[i][j] == '!') {
+                                            // Improper punctuation outside double quotes.
+                                            do_linebreak = 0;
+                                        } else {
+                                            // A double quote
                                             line_pos = 0;
                                         }
                                         break;
