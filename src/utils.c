@@ -1912,23 +1912,91 @@ char *color_wrap(int soft_limit, int hard_limit, const char *pad, const char *in
                         }
                     } else if(line_pos >= soft_limit) {
                         if(isspace(segment[i][j]) || ispunct(segment[i][j])) {
+                            int do_linebreak = 1;
+
                             if(ispunct(segment[i][j])) {
                                 //printf("soft + punct: %ld - [%c]\n", line_pos, segment[i][j]);
                                 // If we're sitting on a punctuation symbol,
                                 // emit it before we go to the next line.
                                 scprintf(result, MAX_STRING_LENGTH, "%c", segment[i][j]);
                                 j++;
+                                line_pos++;
+                                // Special cases:  apostrophies, quotes, and elipsis.
+                                switch(segment[i][j-1]) {
+                                    default:
+                                        line_pos = 0;
+                                        break;
+                                    case '\'':
+                                        if(!isspace(segment[i][j]) && !ispunct(segment[i][j])) {
+                                            // We found something like Bob's or they're.
+                                            do_linebreak = 0;
+                                        } else {
+                                            // A single quote, or something else
+                                            line_pos = 0;
+                                        }
+                                        break;
+                                    case '-':
+                                        if(segment[i][j] == '-') {
+                                            // A double-dash -- usually is treated as a long dash
+                                            do_linebreak = 0;
+                                        } else if(segment[i][j] == '>') {
+                                            // An arrow token -> keep that intact
+                                            do_linebreak = 0;
+                                        } else {
+                                            // Just a hyphenated word
+                                            line_pos = 0;
+                                        }
+                                        break;
+                                    case '=':
+                                        if(segment[i][j] == '=' || segment[i][j] == '>') {
+                                            // A double == or an arrow =>
+                                            do_linebreak = 0;
+                                        } else {
+                                            // Just an equal sign
+                                            line_pos = 0;
+                                        }
+                                        break;
+                                    case '<':
+                                        if(segment[i][j] == '-' || segment[i][j] == '=') {
+                                            // the other arrow token <- or <=
+                                            do_linebreak = 0;
+                                        } else {
+                                            // Just a bracket
+                                            line_pos = 0;
+                                        }
+                                        break;
+                                    case ':':
+                                        if(segment[i][j] == '=' || segment[i][j] == ':') {
+                                            // An assignemnt := or a double coloin ::
+                                            do_linebreak = 0;
+                                        } else {
+                                            // Just a colon
+                                            line_pos = 0;
+                                        }
+                                        break;
+                                    case '.':
+                                        if(segment[i][j] == '.' && segment[i][j+1] == '.') {
+                                            // We found the start of an elipsis ...
+                                            line_pos = 0;
+                                            scprintf(result, MAX_STRING_LENGTH, "..");
+                                            j += 2;
+                                        } else {
+                                            // End of a sentence, or more than 3 dots...
+                                            line_pos = 0;
+                                        }
+                                        break;
+                                }
                             } else {
+                                // Reset our line counter
+                                line_pos = 0;
                                 //printf("soft + space: %ld - [%c]\n", line_pos, segment[i][j]);
                             }
-                            // Reset our line counter
-                            line_pos = 0;
                             // eat leading white space from the next line.
                             while(segment[i][j] && isspace(segment[i][j]))
                                 j++;
 
                             // only emit the line ending if we have more lines to go.
-                            if(more_to_go(segment, is_ansi, segment_count, i, j)) {
+                            if(do_linebreak && more_to_go(segment, is_ansi, segment_count, i, j)) {
                                 strlcat(result, "\r\n", MAX_STRING_LENGTH);
                                 strlcat(result, pad, MAX_STRING_LENGTH);
                                 line_pos = strlen(pad);
@@ -2019,5 +2087,7 @@ char *color_wrap(int soft_limit, int hard_limit, const char *pad, const char *in
     // Now, free all the segment bits
     free(segment);
     free(is_ansi);
+    scprintf(result, MAX_STRING_LENGTH, "\r\n");
     return result;
 }
+
