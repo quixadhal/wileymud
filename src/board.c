@@ -124,6 +124,7 @@ int board(struct char_data *ch, int cmd, char *arg)
     case CMD_quit:
     case CMD_return:
     case CMD_save:
+    case CMD_score:
     case CMD_south:
     case CMD_tell:
     case CMD_time:

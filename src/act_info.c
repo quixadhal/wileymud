@@ -1617,6 +1617,9 @@ void do_score(struct char_data *ch, const char *argument, int cmd)
 	    GET_PRETITLE(target) ? GET_PRETITLE(target) : "", GET_NAME(target),
 	    GET_TITLE(target), GET_AGE(target));
 
+    cprintf(ch, "Your terminal is set as %d columns by %d rows.\r\n",
+            ch->desc->telnet.cols, ch->desc->telnet.rows);
+
     if (GetMaxLevel(ch) > 3) {
 	cprintf(ch, "      +-------------------------Abilities-----------------------+\r\n");
 	if (GET_ADD(target) > 99)
@@ -1837,6 +1840,8 @@ void do_score(struct char_data *ch, const char *argument, int cmd)
 	if (isneedy)
 	    cprintf(ch, "You are affected by %s.\r\n", buf);
     }
+    //write_to_descriptor(ch->desc->descriptor, "\xFF\xFD\x1F"); // Ask client to do NAWS to get windows size
+    //log_info("TELNET sent DO_NAWS from score");
 }
 
 void do_mystat(struct char_data *ch, const char *argument, int cmd)

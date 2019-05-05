@@ -33,14 +33,15 @@
 #define TO_NOTVICT 2
 #define TO_CHAR    3
 
-#define TELNET_GA   249
-#define TELNET_SB   250
-#define TELNET_SE   240
+#define TELNET_GA   0xF9
+#define TELNET_SB   0xFA
+#define TELNET_SE   0xF0
 #define TELNET_WILL 0xFB
 #define TELNET_WONT 0xFC
 #define TELNET_DO   0xFD
 #define TELNET_DONT 0xFE
 #define TELNET_IAC  0xFF
+#define TELNET_NAWS 0x1F
 
 #ifndef _COMM_C
 extern struct descriptor_data          *descriptor_list;

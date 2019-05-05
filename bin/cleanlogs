@@ -1,10 +1,11 @@
 #!/bin/bash
 
 LOG_DIR=/home/wiley/lib/log
-SKIP=`ls -al $LOG_DIR/runlog* | grep -- '->' | awk '{print $NF}'`
-FILES=`ls -al $LOG_DIR/runlog* | grep -v "$SKIP" | awk '{print $NF}'`
+FILES=`ls -al $LOG_DIR/runlog.* | awk '{print $NF}'`
 
-echo "$FILES" | xargs bzip2 -9q
+for i in $FILES; do
+    bzip2 -9q "$i"
+done
 
 THE_YEAR=`date '+%Y'`
 THE_MONTH=`date '+%m'`
@@ -17,6 +18,9 @@ if [ $THE_MONTH -ge 1 -a $THE_YEAR -ge 1 ]; then
     else
         THE_MONTH=$LAST_MONTH
     fi
+    THE_YEAR=`printf "%04d" $THE_YEAR`
+    THE_MONTH=`printf "%02d" $THE_MONTH`
+
     mkdir -p $LOG_DIR/$THE_YEAR/$THE_MONTH
     mv $LOG_DIR/$THE_YEAR$THE_MONTH* $LOG_DIR/$THE_YEAR/$THE_MONTH/ 2>/dev/null
 fi

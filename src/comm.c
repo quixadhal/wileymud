@@ -945,7 +945,9 @@ int new_descriptor(int s)
     newd->connected = 1;
     newd->wait = 1;
     newd->prompt_mode = 1;
-    *newd->buf = '\0';
+    // *newd->buf = '\0';
+    bzero(newd->buf, MAX_STRING_LENGTH);
+    newd->buf_len = 0;
     newd->str = 0;
     newd->showstr_head = 0;
     newd->showstr_point = 0;
@@ -960,6 +962,14 @@ int new_descriptor(int s)
     newd->original = 0;
     newd->snoop.snooping = 0;
     newd->snoop.snoop_by = 0;
+    newd->telnet.cols = 80;
+    newd->telnet.rows = 24;
+    newd->telnet.naws.ok = 0;
+    newd->telnet.naws.sent_will = 0;
+    newd->telnet.naws.sent_do = 0;
+    newd->telnet.naws.sent_wont = 0;
+    newd->telnet.naws.sent_dont = 0;
+
     memset(newd->buf, '\0', MAX_STRING_LENGTH);
     memset(newd->last_input, '\0', MAX_INPUT_LENGTH);
 
@@ -1015,6 +1025,9 @@ int new_descriptor(int s)
 
     log_boot("site connecting:%s\n", newd->ip);
     descriptor_list = newd;
+
+    write_to_descriptor(desc, "\xFF\xFD\x1F"); // Ask client to do NAWS to get windows size
+
     SEND_TO_Q(greetings, newd);
     SEND_TO_Q("By what name do you wish to be known? ", newd);
     return (0);
@@ -1079,15 +1092,122 @@ int write_to_descriptor(int desc, const char *txt)
     return (0);
 }
 
-char *process_telnet(char *buffer) {
-    static char tmp[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
-    int                                     i = 0;
-    int                                     j = 0;
-    int                                     in_iac = 0;
-    int                                     in_sub = 0;
+void process_opt(char *buffer, int buflen, struct descriptor_data *d) {
+    char reply[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
 
+    // We get passed in a TELNET 3 byte OPT, or a subnegotiation SB/SE sequence
+    // Currently, the only TELNET opt we care about is NAWS
+
+    if((unsigned char)buffer[0] != TELNET_IAC)
+        return;
+
+    if((unsigned char)buffer[2] != TELNET_NAWS) {
+        log_info("TELNET got a non-NAWS sequence: %02x %02x %02x", (unsigned char)buffer[0], (unsigned char)buffer[1], (unsigned char)buffer[2]);
+        return;
+    }
+
+    // So, we have either WILL, WONT, DO, DONT, or SB for buffer[1]
+
+    if((unsigned char)buffer[1] == TELNET_SB) {
+        // We are being told the termainl size, woot!
+        // We expect IAC SB NAWS hi_col lo_col hi_row lo_row IAC SE
+        int cols = 0;
+        int rows = 0;
+
+        log_info("TELNET got SB NAWS");
+
+        if(buflen < 7) {
+            char tmp[MAX_STRING_LENGTH];
+
+            log_info("TELNET SB not long enough, only %d bytes:", buflen);
+            sprintf(tmp, "Buffer contents: ");
+            for(int i = 0; i < buflen; i++) {
+                scprintf(tmp, MAX_STRING_LENGTH, "%02x ", (unsigned char)buffer[i]);
+            }
+            log_info("%s", tmp);
+            return;
+        }
+
+        log_info("TELNET got NAWS DATA of %02x %02x %02x %02x",
+                buffer[3], buffer[4], buffer[5], buffer[6]);
+
+        cols = ((unsigned char)buffer[3] * 256) + (unsigned char)buffer[4];
+        rows = ((unsigned char)buffer[5] * 256) + (unsigned char)buffer[6];
+
+        log_info("TELNET NAWS terminal size of %d x %d", cols, rows);
+
+        if(cols < 20) {
+            log_info("TELNET unlikely column size, set to 20");
+            cols = 20;
+        }
+        if(rows < 10) {
+            log_info("TELNET unlikely row size, set to 10");
+            rows = 10;
+        }
+
+        d->telnet.cols = cols;
+        d->telnet.rows = rows;
+        return;
+    }
+
+    if((unsigned char)buffer[1] == TELNET_WILL) {
+        // We're being told the client will do this
+        // Reply with a DO only if we didn't already
+        log_info("TELNET got WILL NAWS");
+        if(!d->telnet.naws.sent_do) {
+            log_info("TELNET sent DO NAWS");
+            d->telnet.naws.sent_do = 1;
+            d->telnet.naws.sent_wont = 0;
+            sprintf(reply, "%c%c%c", TELNET_IAC, TELNET_DO, TELNET_NAWS);
+            write_to_descriptor(d->descriptor, reply);
+        }
+        d->telnet.naws.ok = 1;
+        return;
+    }
+
+    if((unsigned char)buffer[1] == TELNET_DO) {
+        // This makes no sense, as we're the server and have no
+        // size info to send back... but we'll just take this
+        // to mean the client is OK with us asking...
+        log_info("TELNET got DO NAWS");
+        d->telnet.naws.ok = 1;
+        return;
+    }
+
+    if((unsigned char)buffer[1] == TELNET_WONT) {
+        // We're being told the client will NOT do this
+        log_info("TELNET got WONT NAWS");
+        d->telnet.naws.ok = 0;
+        return;
+    }
+
+    if((unsigned char)buffer[1] == TELNET_DONT) {
+        // The client is telling us NOT to do this
+        log_info("TELNET got DONT NAWS");
+        if(!d->telnet.naws.sent_wont) {
+            log_info("TELNET sent WONT NAWS");
+            d->telnet.naws.sent_do = 0;
+            d->telnet.naws.sent_wont = 1;
+            sprintf(reply, "%c%c%c", TELNET_IAC, TELNET_WONT, TELNET_NAWS);
+            write_to_descriptor(d->descriptor, reply);
+        }
+        d->telnet.naws.ok = 0;
+        return;
+    }
+}
+
+char *process_telnet(char *buffer, int buflen, struct descriptor_data *d, int *outlen) {
+    static char tmp[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
+    int i = 0;
+    int j = 0;
+    int in_iac = 0;
+    int in_sub = 0;
+    static char sequence[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
+    int  s = 0;
+
+    bzero(sequence, MAX_STRING_LENGTH);
     // At this point, we want to strip out any TELNET sequences, since we don't support them.
-    for(i = 0, j = 0; i < strlen(buffer) && i < MAX_STRING_LENGTH;) {
+    for(i = 0, j = 0; i < buflen && i < MAX_STRING_LENGTH;) {
         if( !in_iac ) {
             if( (unsigned char) buffer[i] != TELNET_IAC ) {
                 // Normal processing
@@ -1096,32 +1216,52 @@ char *process_telnet(char *buffer) {
                 j++;
             } else {
                 in_iac = 1;
+                sequence[s] = buffer[i];
+                s++;
                 i++;
             }
         } else {
             if( in_sub ) {
                 if( (unsigned char) buffer[i] == TELNET_SE ) {
                     // done!
+                    sequence[s] = buffer[i];
+                    s++;
                     i++;
                     in_sub = 0;
                     in_iac = 0;
+                    process_opt(sequence, s, d);
+                    bzero(sequence, MAX_STRING_LENGTH);
+                    s = 0;
                 } else {
                     // Part of the SB sub... skip it all.
+                    sequence[s] = buffer[i];
+                    s++;
                     i++;
                 }
             } else {
                 switch( (unsigned char) buffer[i] ) {
                     case TELNET_SB:
                         // Sub-negotiation
+                        sequence[s] = buffer[i];
+                        s++;
                         i++;
                         in_sub = 1;
+                        break;
                     case TELNET_WILL:
                     case TELNET_WONT:
                     case TELNET_DO:
                     case TELNET_DONT:
+                        sequence[s] = buffer[i];
+                        s++;
                         i++;            // Skip the OP
+
+                        sequence[s] = buffer[i];
+                        s++;
                         i++;            // Skip whatever it tried to do or ask
                         in_iac = 0;     // done
+                        process_opt(sequence, s, d);
+                        bzero(sequence, MAX_STRING_LENGTH);
+                        s = 0;
                         break;
                     case TELNET_IAC:
                         in_iac = 0;     // Double IAC, escaped!
@@ -1130,62 +1270,86 @@ char *process_telnet(char *buffer) {
                         tmp[j] = buffer[i];
                         i++;
                         j++;
+                        bzero(sequence, MAX_STRING_LENGTH);
+                        s = 0;
                 }
             }
         }
     }
     tmp[j] = '\0';
+    if(outlen)
+        *outlen = j;    // Return the raw length, in case there are NUL bytes
 
     return tmp;
 }
 
-int process_input(struct descriptor_data *t)
-{
-    int found_one = 0;
-    int read_in = 0;
-    char * crlf_spot = NULL;
-    char * read_ptr = NULL;
-    //const size_t maxlen = MAX_STRING_LENGTH - 3;
-    const size_t maxlen = MAX_INPUT_LENGTH - 3;
-    char line_buffer[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
-    char read_buffer[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
-
-    if (DEBUG > 2)
-	log_info("called %s with %08zx", __PRETTY_FUNCTION__, (size_t) t);
-
-    /*
-     * So, what we do here is first copy any remaining leftovers out of
-     * the character's buffer, so we know how much we can safely read
-     * without overflow.
-     *
-     * Then, we read that much (or try to).  If we get a CRLF, we can process
-     * up to that point.  If we get more than one, yay... do them all.
-     *
-     * At some point, we'll either fill our buffer or be out of stuff to read.
-     *
-     * If we fill our buffer, we know we can NEVER handle what was given to us,
-     * so we might as well just truncate it and send it along with an error
-     * message, so we can start over and hopefully get to something useful
-     * eventually.
-     *
-     * If we are out of stuff to read, save whatever's left in the character's
-     * buffer for next time.
-     */
-
-    memset(read_buffer, '\0', MAX_STRING_LENGTH);
-    memset(line_buffer, '\0', MAX_STRING_LENGTH);
-
-    if(strlen(t->buf) > 0) {
-        // We have some leftovers from last time...
-        log_info("-- t->buf leftovers is (%lu) \"%s\"", strlen(t->buf), t->buf);
-        strlcpy(read_buffer, t->buf, maxlen);
-        memset(t->buf, '\0', MAX_STRING_LENGTH);
+void process_input_line(char *line, int line_len, struct descriptor_data *d) {
+    if(line_len >= MAX_INPUT_LENGTH) {
+        line[MAX_INPUT_LENGTH-1] = '\0';
+        if( write_to_descriptor(d->descriptor, "Line too long.  Truncated to:\r\n") >= 0 ) {
+            write_to_descriptor(d->descriptor, line);
+            write_to_descriptor(d->descriptor, "\r\n");
+        }
     }
 
-    read_ptr = read_buffer + strlen(read_buffer);
+    if( (d->snoop.snoop_by) && (d->snoop.snoop_by->desc) ) {
+        // If we're being snooped, send our input to the snooper.
+        write_to_q("% ", &d->snoop.snoop_by->desc->output, 1);
+        write_to_q(line, &d->snoop.snoop_by->desc->output, 0);
+        write_to_q("\r\n", &d->snoop.snoop_by->desc->output, 0);
+    }
 
-    // Otherwise, we're ready to read stuff and try to do something useful!
-    read_in = read(t->descriptor, read_ptr, maxlen - strlen(read_buffer));
+    if( *line == '!' ) {
+        // redo the last command again
+        write_to_q(d->last_input, &d->input, 0);
+    } else {
+        // save this to last_input, for future ! use
+        memcpy(d->last_input, line, MAX_INPUT_LENGTH);
+        d->last_input[MAX_INPUT_LENGTH-1] = '\0';
+        write_to_q(line, &d->input, 0);
+    }
+
+    d->idle_time = time(0);
+}
+
+int process_input(struct descriptor_data *t)
+{
+    char read_buffer[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
+    char line_buffer[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
+    char *read_ptr = NULL;
+    int read_buflen = 0;
+    int read_in = 0;
+    char *filtered = NULL;
+    int filtered_len = 0;
+    int f = 0;
+    int l = 0;
+    int found_one = 0;
+
+    bzero(read_buffer, MAX_STRING_LENGTH);
+    bzero(line_buffer, MAX_STRING_LENGTH);
+
+    read_ptr = read_buffer;
+
+    // First step is to move any unprocessed leftovers from the previous run
+    // into the fron tof our read_buffer.
+    if(t->buf_len > 0) {
+        char tmp[MAX_STRING_LENGTH];
+
+        log_info("-- t->buf leftovers are (%d bytes)", t->buf_len);
+        sprintf(tmp, "Buffer contents: ");
+        for(int i = 0; i < t->buf_len; i++) {
+            scprintf(tmp, MAX_STRING_LENGTH, "%02x ", (unsigned char)(t->buf[i]));
+            *read_ptr = t->buf[i];
+            read_ptr++;
+            read_buflen++;
+        }
+        log_info("%s", tmp);
+        bzero(t->buf, MAX_STRING_LENGTH);
+        t->buf_len = 0;
+    }
+
+    read_in = recv(t->descriptor, read_ptr, MAX_INPUT_LENGTH - read_buflen, 0);
+    //read_in = read(t->descriptor, read_ptr, MAX_INPUT_LENGTH - read_buflen);
     if( read_in == 0 ) {
         // EOF
         log_error("EOF on socket read.");
@@ -1198,379 +1362,54 @@ int process_input(struct descriptor_data *t)
         }
     } else {
         // We got data
-        read_ptr[read_in] = '\0';
+        //read_ptr[read_in] = '\0';
+        read_buflen += read_in;
         //log_info("00 Socket Buffer is (%lu) \"%s\"", strlen(read_ptr), read_ptr);
         //log_info("01 Read Buffer is (%lu) \"%s\"", strlen(read_buffer), read_buffer);
     }
 
-    // What is the previous command was EXACTLY one less than our limit?
-    // We'll end up with a CR but the LF will be read next time, resulting
-    // in an empty command as if the user hit return an extra time.
+    // Now that we have some data, let's handle any TELNET stuff and strip it all away.
+    filtered = process_telnet(read_buffer, read_buflen, t, &filtered_len);
 
-    // We could filter out all leading CRLF elements, but this prevents the user
-    // from being able to hit return to refresh the prompt... so let's just
-    // filter out LF only, to catch the split pairs.
-    while( read_ptr < (read_buffer + maxlen) && *read_ptr && (*read_ptr == '\n') ) {
-        read_ptr++;
+    // At this point, what we have can be broken into lines for processing, and
+    // any leftovers after the last CRLF saved for the next cycle.
+
+    found_one = 0;
+    l = 0;
+    for(f = 0; f < filtered_len;) {
+        if(filtered[f] == '\r') {
+            f++;
+            if(filtered[f] == '\n') {
+                f++;
+            }
+            // Found a line ending, process it.
+            found_one = 1;
+            process_input_line(line_buffer, l, t);
+            bzero(line_buffer, MAX_STRING_LENGTH);
+            l = 0;
+        } else if(filtered[f] == '\n') {
+            f++;
+            if(filtered[f] == '\r') {
+                f++;
+            }
+            // Found a line ending, process it.
+            found_one = 1;
+            process_input_line(line_buffer, l, t);
+            bzero(line_buffer, MAX_STRING_LENGTH);
+            l = 0;
+        } else {
+            line_buffer[l++] = filtered[f++];
+        }
     }
-
-    // OK, we got some data to play with... so let's pull out ALL
-    // the lines we can find.
-    
-    while((crlf_spot = strpbrk(read_ptr, "\r\n")) != NULL) {
-        memset(line_buffer, '\0', MAX_STRING_LENGTH);
-        strlcpy(line_buffer, read_ptr, (size_t)(crlf_spot - read_ptr + 1));
-
-        //log_info("02 Line Buffer is (%lu) \"%s\"", strlen(line_buffer), line_buffer);
-
-        // Eat up all the CRLF combinations until we hit something else
-        while( crlf_spot < (read_buffer + maxlen) && *crlf_spot && ISNEWL(*crlf_spot) ) {
-            crlf_spot++;
-        }
-        // Advance the read_ptr
-        read_ptr = crlf_spot;
-
-        // Process TELNET first!
-        strlcpy(line_buffer, process_telnet(line_buffer), maxlen);
-
-        if( (t->snoop.snoop_by) && (t->snoop.snoop_by->desc) ) {
-            // If we're being snooped, send our input to the snooper.
-            write_to_q("% ", &t->snoop.snoop_by->desc->output, 1);
-            write_to_q(line_buffer, &t->snoop.snoop_by->desc->output, 0);
-            write_to_q("\r\n", &t->snoop.snoop_by->desc->output, 0);
-        }
-
-        if( *line_buffer == '!' ) {
-            // redo the last command again
-            strlcpy(line_buffer, t->last_input, maxlen);
-        } else {
-            // save this to last_input, for future ! use
-            strlcpy(t->last_input, line_buffer, maxlen);
-        }
-
-        // Send to actual command queue for processing.
-        write_to_q(line_buffer, &t->input, 0);
-        t->idle_time = time(0);
-        //log_info("02 Final Line Buffer is (%lu) \"%s\"", strlen(line_buffer), line_buffer);
-
-        found_one = 1;
-    } while((crlf_spot = strpbrk(read_ptr, "\r\n")) != NULL);
-
-    // And, if there's anything left, we have to save it for next time.
-    if(strlen(read_ptr) > 0) {
-        // We're only going to deal with HALF our usual input length
-        // because if we copy over an almost full thing, we'll end up
-        // not being able to read the next chunk and tossing it anyways.
-        memset(line_buffer, '\0', MAX_STRING_LENGTH);
-        if(strlcpy(line_buffer, read_ptr, maxlen/2) >= maxlen/2) {
-            strlcpy(line_buffer, process_telnet(line_buffer), maxlen);
-            // Truncated, too long!
-            if( write_to_descriptor(t->descriptor, "Line too long.  Truncated to:\r\n") >= 0 ) {
-                write_to_descriptor(t->descriptor, line_buffer);
-                write_to_descriptor(t->descriptor, "\r\n");
-            }
-            //log_info("03 Leftover too long, processed (%lu) \"%s\"", strlen(line_buffer), line_buffer);
-
-            if( (t->snoop.snoop_by) && (t->snoop.snoop_by->desc) ) {
-                // If we're being snooped, send our input to the snooper.
-                write_to_q("% ", &t->snoop.snoop_by->desc->output, 1);
-                write_to_q(line_buffer, &t->snoop.snoop_by->desc->output, 0);
-                write_to_q("\r\n", &t->snoop.snoop_by->desc->output, 0);
-            }
-
-            if( *line_buffer == '!' ) {
-                // redo the last command again
-                strlcpy(line_buffer, t->last_input, maxlen);
-            } else {
-                // save this to last_input, for future ! use
-                strlcpy(t->last_input, line_buffer, maxlen);
-            }
-
-            write_to_q(line_buffer, &t->input, 0);
-            t->idle_time = time(0);
-        } else {
-            strlcpy(t->buf, line_buffer, maxlen);
-            log_info("03 Leftover is (%lu ) \"%s\"", strlen(t->buf), t->buf);
+    if(l > 0) {
+        // We must have leftovers that didn't make a full line.
+        bzero(t->buf, MAX_INPUT_LENGTH);
+        t->buf_len = l;
+        for(f = 0; f < l; f++) {
+            t->buf[f] = line_buffer[f];
         }
     }
     return found_one;
-}
-
-int working_process_input(struct descriptor_data *t)
-{
-    int                                     i = 0;
-    int                                     j = 0;
-    int                                     in_iac = 0;
-    int                                     in_sub = 0;
-    int                                     begin = 0;
-    int                                     sofar = 0;
-    int                                     thisround = 0;
-    char                                    *line_marker = NULL;
-    char                                    buffer[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
-    char                                    tmp[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
-
-    if (DEBUG > 2)
-	log_info("called %s with %08zx", __PRETTY_FUNCTION__, (size_t) t);
-
-    begin = strlen(t->buf);
-
-    do {
-        thisround = read(t->descriptor, t->buf + begin + sofar, MAX_STRING_LENGTH - (begin + sofar) - 1); // Leave an extra byte for two-character newline processing.
-        if( thisround > 0 ) {
-            sofar += thisround;
-        } else if( thisround < 0 ) {
-            if (errno != EWOULDBLOCK) {
-                log_error("Socket READ error.");
-                return( -1 );
-            } else {
-                // Blocking means no more data available, yet.
-                break;
-            }
-        } else if( thisround == 0 ) {
-            log_error("EOF on socket read.");
-            return( -1 );
-        }
-    } while(1);
-    // } while(!ISNEWL( *( t->buf + begin + sofar - 1) ));
-    // If we find the end of line, we're done for now, even if there is more to read.
-
-    *(t->buf + begin + sofar) = 0; // Add NUL to end of newly extended string
-
-    //if( !(line_marker = strpbrk((t->buf + begin), "\r\n")) )
-    if( !(line_marker = strpbrk((t->buf), "\r\n")) ) {
-        // If no newline (or partial newline) was found, process next time.
-        return( 0 );
-    }
-
-    // At this point we have valid input to process.
-
-    // Copy up to (but not including) the first newline marker, and NUL the position it would be in.
-    strncpy(buffer, t->buf, line_marker - t->buf);
-    buffer[line_marker - t->buf] = '\0';
-    while( *line_marker && ISNEWL(*line_marker) ) {
-        line_marker++; // Skip newline characters, however many there are.
-    }
-    strlcpy(tmp, line_marker, MAX_STRING_LENGTH); // Copy unprocessed buffer aside.
-
-    if( strlen(buffer) > MAX_INPUT_LENGTH - 1) {
-        buffer[MAX_INPUT_LENGTH - 1] = '\0';
-        // report the truncated line to the user.
-        if( write_to_descriptor(t->descriptor, "Line too long.  Truncated to:\r\n") >= 0 ) {
-            write_to_descriptor(t->descriptor, buffer);
-            write_to_descriptor(t->descriptor, "\r\n");
-        } else {
-            return( -1 );
-        }
-    }
-
-    // Move the unprocessed content to the front of t->buf for future processing.
-    strlcpy(t->buf, tmp, MAX_STRING_LENGTH);
-
-    // At this point, we want to strip out any TELNET sequences, since we don't support them.
-    for(i = 0, j = 0; i < strlen(buffer);) {
-        if( !in_iac ) {
-            if( (unsigned char) buffer[i] != TELNET_IAC ) {
-                // Normal processing
-                tmp[j] = buffer[i];
-                i++;
-                j++;
-            } else {
-                in_iac = 1;
-                i++;
-            }
-        } else {
-            if( in_sub ) {
-                if( (unsigned char) buffer[i] == TELNET_SE ) {
-                    // done!
-                    i++;
-                    in_sub = 0;
-                    in_iac = 0;
-                } else {
-                    // Part of the SB sub... skip it all.
-                    i++;
-                }
-            } else {
-                switch( (unsigned char) buffer[i] ) {
-                    case TELNET_SB:
-                        // Sub-negotiation
-                        i++;
-                        in_sub = 1;
-                    case TELNET_WILL:
-                    case TELNET_WONT:
-                    case TELNET_DO:
-                    case TELNET_DONT:
-                        i++;            // Skip the OP
-                        i++;            // Skip whatever it tried to do or ask
-                        in_iac = 0;     // done
-                        break;
-                    case TELNET_IAC:
-                        in_iac = 0;     // Double IAC, escaped!
-                    default:
-                        // Unknown
-                        tmp[j] = buffer[i];
-                        i++;
-                        j++;
-                }
-            }
-        }
-    }
-    tmp[j] = '\0';
-
-    if( *tmp == '!' ) {
-        // This means do the last command again, so... swap!
-        strlcpy(tmp, t->last_input, MAX_INPUT_LENGTH);
-    } else {
-        // Save an extra copy as our last command.
-        strlcpy(t->last_input, tmp, MAX_INPUT_LENGTH);
-    }
-    // Send to actual command queue for processing.
-    write_to_q(tmp, &t->input, 0);
-    t->idle_time = time(0);
-
-    if( (t->snoop.snoop_by) && (t->snoop.snoop_by->desc) ) {
-        // If we're being snooped, send our input to the snooper.
-        write_to_q("% ", &t->snoop.snoop_by->desc->output, 1);
-        write_to_q(tmp, &t->snoop.snoop_by->desc->output, 0);
-        write_to_q("\r\n", &t->snoop.snoop_by->desc->output, 0);
-    }
-
-    // Debugging... turn it off unless there are... issues.
-    //for(i = 0; i < strlen(tmp); i++) {
-    //    if( !isprint( tmp[i] ) ) {
-    //        log_info("Tossing character %02.2X \"%c\"", tmp[i], tmp[i]);
-    //        log_info("Tossed from \"%s\"", tmp);
-    //    }
-    //}
-
-    return( 1 );
-}
-
-int old_process_input(struct descriptor_data *t)
-{
-    int                                     sofar = 0;
-    int                                     thisround = 0;
-    int                                     begin = 0;
-    int                                     squelch = 0;
-    int                                     i = 0;
-    int                                     k = 0;
-    int                                     flag = FALSE;
-    long                                    now_time = 0L;
-    char                                    tmp[MAX_INPUT_LENGTH + 2] = "\0\0\0\0\0\0\0";
-    char                                    buffer[MAX_INPUT_LENGTH + 60] = "\0\0\0\0\0\0\0";
-
-    if (DEBUG > 2)
-	log_info("called %s with %08zx", __PRETTY_FUNCTION__, (size_t) t);
-
-    begin = strlen(t->buf);
-
-    /*
-     * Read in some stuff 
-     */
-    do {
-	if ((thisround = read(t->descriptor, t->buf + begin + sofar,
-			      MAX_STRING_LENGTH - (begin + sofar) - 1)) > 0) {
-	    sofar += thisround;
-	} else {
-	    if (thisround < 0) {
-		if (errno != EWOULDBLOCK) {
-		    log_error("Read1 - ERROR");
-		    return (-1);
-		} else {
-		    break;
-		}
-	    } else {
-		log_info("EOF encountered on socket read.");
-		return (-1);
-	    }
-	}
-    } while (!ISNEWL(*(t->buf + begin + sofar - 1)));
-
-    *(t->buf + begin + sofar) = 0;
-
-    /*
-     * if no newline is contained in input, return without proc'ing 
-     */
-    for (i = begin; !ISNEWL(*(t->buf + i)); i++)
-	if (!*(t->buf + i))
-	    return (0);
-
-    /*
-     * input contains 1 or more newlines; process the stuff 
-     */
-    for (i = 0, k = 0; *(t->buf + i);) {
-	if (!ISNEWL(*(t->buf + i)) && !(flag = (k >= (MAX_INPUT_LENGTH - 2))))
-	    if (*(t->buf + i) == '\b') {		       /* backspace */
-		if (k) {				       /* more than one char ? */
-#if 0
-		    if (*(tmp + --k) == '$')
-			k--;
-#endif
-		    i++;
-		} else {
-		    i++;				       /* no or just one char.. Skip backsp */
-		}
-	    } else {
-		/* if (isascii(*(t->buf + i)) && isprint(*(t->buf + i))) { */
-		if (isprint(*(t->buf + i))) {
-		    /*
-		     * trans char, double for '$' (printf)        
-		     */
-
-		    /* if ((*(tmp + k) = *(t->buf + i)) == '$') */
-
-		    *(tmp + k) = *(t->buf + i);
-#if 0
-		    if ((*(tmp + k)) == '$')
-                        *(tmp + ++k) = '$';
-#endif
-		    k++;
-		    i++;
-		} else {
-	            log_info("Tossing character %02.2X \"%c\"", *(t->buf + i), *(t->buf + i));
-		    i++;
-		}
-	} else {
-	    *(tmp + k) = 0;
-	    if (*tmp == '!')
-		strlcpy(tmp, t->last_input, MAX_INPUT_LENGTH);
-	    else
-		strlcpy(t->last_input, tmp, MAX_INPUT_LENGTH);
-
-	    write_to_q(tmp, &t->input, 0);
-
-	    now_time = time(0);
-	    t->idle_time = now_time;
-	    if ((t->snoop.snoop_by) && (t->snoop.snoop_by->desc)) {
-		write_to_q("% ", &t->snoop.snoop_by->desc->output, 1);
-		write_to_q(tmp, &t->snoop.snoop_by->desc->output, 0);
-		write_to_q("\r\n", &t->snoop.snoop_by->desc->output, 0);
-	    }
-	    if (flag) {
-		snprintf(buffer, MAX_INPUT_LENGTH + 60, "Line too long. Truncated to:\r\n%s\r\n", tmp);
-		if (write_to_descriptor(t->descriptor, buffer) < 0)
-		    return (-1);
-
-		/*
-		 * skip the rest of the line 
-		 */
-		for (; !ISNEWL(*(t->buf + i)); i++);
-	    }
-	    /*
-	     * find end of entry 
-	     */
-	    for (; ISNEWL(*(t->buf + i)); i++);
-
-	    /*
-	     * squelch the entry from the buffer 
-	     */
-	    for (squelch = 0;; squelch++)
-		if ((*(t->buf + squelch) = *(t->buf + i + squelch)) == '\0')
-		    break;
-	    k = 0;
-	    i = 0;
-	}
-    }
-    return (1);
 }
 
 void close_sockets(int s)

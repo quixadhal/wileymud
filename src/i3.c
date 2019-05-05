@@ -445,7 +445,8 @@ void i3_printf(CHAR_DATA *ch, const char *fmt, ...)
 
     strlcpy(buf2, I3_i3tag_to_mudtag(ch, buf), MAX_STRING_LENGTH);
     //cprintf(ch, "%s", buf2);
-    cprintf(ch, "%s", color_wrap(78, 96, "      ", buf2));
+    //cprintf(ch, "%s", color_wrap(78, 96, "      ", buf2));
+    cprintf(ch, "%s", color_wrap(MAX(18, ch->desc->telnet.cols - 12), MAX(18, ch->desc->telnet.cols - 2), "      ", buf2));
     return;
 }
 

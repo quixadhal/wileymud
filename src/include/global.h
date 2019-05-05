@@ -1154,6 +1154,20 @@ struct pager_data {
   struct pager_data                      *prev;
 };
 
+struct telopt_data {
+    int                                 ok;
+    int                                 sent_will;
+    int                                 sent_do;
+    int                                 sent_wont;
+    int                                 sent_dont;
+};
+
+struct telnet_data {
+    int                                 cols;
+    int                                 rows;
+    struct telopt_data                  naws;
+};
+
 struct descriptor_data {
   int                                     descriptor;	       /* file descriptor for socket */
   long                                    idle_time;	       /* for ilde time duh */
@@ -1172,6 +1186,7 @@ struct descriptor_data {
   int                                     max_str;	       /* - */
   int                                     prompt_mode;	       /* control of prompt-printing */
   char                                    buf[MAX_STRING_LENGTH];	/* buffer for raw input */
+  int                                     buf_len;             /* length of buf, so it can have NUL bytes */
   char                                    last_input[MAX_INPUT_LENGTH];	/* the last input */
   struct txt_q                            output;	       /* q of strings to send */
   struct txt_q                            input;	       /* q of unprocessed input */
@@ -1182,6 +1197,7 @@ struct descriptor_data {
   struct pager_data                      *page_first;
   struct pager_data                      *page_last;
   char                                    page_control;
+  struct telnet_data                      telnet;
 };
 
 struct msg_type {
