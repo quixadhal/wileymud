@@ -10,7 +10,13 @@
 #define UNTINY                  "../bin/untiny"
 #define PERL                    "/usr/bin/perl"
 
+struct sql_connection {
+    PGconn *dbc;
+    const char *dbname;
+};
+
 #ifdef _SQL_C
+// I3log
 void setup_pinkfish_map_table(void);
 void setup_hours_table(void);
 void setup_channels_table(void);
@@ -18,16 +24,19 @@ void setup_speakers_table(void);
 void setup_i3log_table(void);
 void setup_urls_table(void);
 void setup_logfile_table(void);
+// WileyMUD
+void setup_bans_table(void);
 #else
 extern PGconn *db_i3log;
+extern PGconn *db_wileymud;
 #endif
 
 //void sql_connect(const char *db_name);
 //void sql_disconnect(const char *db_name);
 //char *sql_version(const char *db_name);
-void sql_connect(PGconn **db);
+void sql_connect(PGconn **db, const char *dbname);
 void sql_disconnect(PGconn **db);
-char *sql_version(PGconn **db);
+char *sql_version(PGconn **db, const char *dbname);
 void sql_startup(void);
 void sql_shutdown(void);
 void allchan_sql( int is_emote, const char *channel, const char *speaker, const char *mud, const char *message );

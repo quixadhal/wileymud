@@ -406,7 +406,7 @@ obj/board.o: board.c include/global.h include/bug.h include/utils.h \
   include/modify.h include/handler.h include/act_info.h include/board.h
 obj/ban.o: ban.c include/global.h include/utils.h include/comm.h \
   include/modify.h include/interpreter.h include/db.h include/bug.h \
-  include/ban.h
+  include/sql.h include/ban.h
 obj/spell_parser.o: spell_parser.c include/global.h include/bug.h \
   include/utils.h include/comm.h include/db.h include/interpreter.h \
   include/handler.h include/spells.h include/constants.h \

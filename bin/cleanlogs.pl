@@ -19,8 +19,6 @@ my $symlink_target = readlink("$log_dir/runlog") if -l "$log_dir/runlog";
 
 opendir DP, $log_dir or die "Can't opendir $log_dir $!";
 my @need_to_compress = grep { /^runlog\.\d{8}\-\d{6}$/ && -f "$log_dir/$_" } readdir DP;
-rewinddir DP;
-my @need_to_move = grep { /^runlog\.\d{8}\-\d{6}\.bz2$/ && -f "$log_dir/$_" } readdir DP;
 closedir DP;
 
 foreach my $filename (@need_to_compress) {
@@ -29,11 +27,14 @@ foreach my $filename (@need_to_compress) {
 
     print "comnpressing $filename\n";
     system "bzip2", "-9v", "$filename";
-    @need_to_move = (@need_to_move, "$filename.bz2");
 }
 
+opendir DP, $log_dir or die "Can't opendir $log_dir $!";
+my @need_to_move = grep { /^runlog\.\d{8}\-\d{6}\.bz2$/ && -f "$log_dir/$_" } readdir DP;
+closedir DP;
+
 foreach my $filename (@need_to_move) {
-    print "skip $filename (symlink)\n"  if defined $symlink_target and $symlink_target eq "$log_dir/$filename";
+    print "skip $filename (symlink)\n" if defined $symlink_target and $symlink_target eq "$log_dir/$filename";
     next if defined $symlink_target and $symlink_target eq "$log_dir/$filename";
 
     $filename =~ /\.(\d{4})(\d\d)(\d\d)\-/;

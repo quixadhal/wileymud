@@ -1526,6 +1526,7 @@ void do_exits(struct char_data *ch, const char *argument, int cmd)
 	"Down "
     };
     struct room_direction_data             *exitdata = NULL;
+    struct room_data                       *target_room = NULL;
 
     if (DEBUG)
 	log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch),
@@ -1539,20 +1540,28 @@ void do_exits(struct char_data *ch, const char *argument, int cmd)
 		 * don't print unless immortal 
 		 */
 		if (IS_IMMORTAL(ch)) {
-		    scprintf(buf, MAX_INPUT_LENGTH, "%s - [#%d] Swirling CHAOS!\r\n",
+		    scprintf(buf, MAX_INPUT_LENGTH, "  %s - [#%d] Swirling CHAOS!\r\n",
 			     exits[door], exitdata->to_room);
 		}
 	    } else if (exitdata->to_room != NOWHERE &&
 		       (!IS_SET(exitdata->exit_info, EX_CLOSED) || IS_IMMORTAL(ch))) {
+                target_room = real_roomp(exitdata->to_room);
+
 		if ((IS_DARK(exitdata->to_room) || IS_DARKOUT(exitdata->to_room))
 		    && !IS_IMMORTAL(ch)) {
-		    scprintf(buf, MAX_INPUT_LENGTH, "%s - Too dark to tell", exits[door]);
+		    scprintf(buf, MAX_INPUT_LENGTH, "  %s - Too dark to tell", exits[door]);
                 } else if (IS_IMMORTAL(ch)) {
-		    scprintf(buf, MAX_INPUT_LENGTH, "%s - [#%d] %s", exits[door],
-			    exitdata->to_room, real_roomp(exitdata->to_room)->name);
+                    if(target_room->zone == real_roomp(ch->in_room)->zone) {
+                        scprintf(buf, MAX_INPUT_LENGTH, "  %s - [#%d] %s", exits[door],
+                                exitdata->to_room, target_room->name);
+                    } else {
+                        scprintf(buf, MAX_INPUT_LENGTH, "  %s - [#%d] %s in #%d - %s", exits[door],
+                                exitdata->to_room, target_room->name,
+                                target_room->zone, zone_table[target_room->zone].name);
+                    }
                 } else {
-		    scprintf(buf, MAX_INPUT_LENGTH, "%s - %s", exits[door],
-			    real_roomp(exitdata->to_room)->name);
+		    scprintf(buf, MAX_INPUT_LENGTH, "  %s - %s", exits[door],
+			    target_room->name);
                 }
 		if (IS_SET(exitdata->exit_info, EX_CLOSED))
 		    strlcat(buf, " (closed)", MAX_INPUT_LENGTH);
@@ -1568,7 +1577,7 @@ void do_exits(struct char_data *ch, const char *argument, int cmd)
     if (*buf)
 	cprintf(ch, "%s", buf);
     else
-	cprintf(ch, "None.\r\n");
+	cprintf(ch, "  None.\r\n");
 }
 
 void do_score(struct char_data *ch, const char *argument, int cmd)
@@ -3266,6 +3275,6 @@ void do_version(struct char_data *ch, const char *argument, int cmd)
 		 VNULL(argument), cmd);
 
     cprintf(ch, "WileyMUD:         %s (%s)\r\n", VERSION_BUILD, VERSION_DATE);
-    cprintf(ch, "PostgreSQL:       %s\r\n", sql_version(&db_i3log));
+    cprintf(ch, "PostgreSQL:       %s\r\n", sql_version(&db_i3log, "i3log"));
 }
 

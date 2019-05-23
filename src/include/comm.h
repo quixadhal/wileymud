@@ -42,6 +42,8 @@
 #define TELNET_DONT 0xFE
 #define TELNET_IAC  0xFF
 #define TELNET_NAWS 0x1F
+#define TELNET_ECHO 0x01
+#define TELNET_LINEMODE 0x22
 
 #ifndef _COMM_C
 extern struct descriptor_data          *descriptor_list;

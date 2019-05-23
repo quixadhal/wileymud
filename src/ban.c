@@ -11,6 +11,7 @@
 #include "interpreter.h"
 #include "db.h"
 #include "bug.h"
+#include "sql.h"
 
 #define __BAN_C__
 #include "ban.h"

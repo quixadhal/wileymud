@@ -1098,12 +1098,28 @@ void process_opt(char *buffer, int buflen, struct descriptor_data *d) {
     // We get passed in a TELNET 3 byte OPT, or a subnegotiation SB/SE sequence
     // Currently, the only TELNET opt we care about is NAWS
 
+    if(buflen < 3)
+        return;
+
     if((unsigned char)buffer[0] != TELNET_IAC)
         return;
 
-    if((unsigned char)buffer[2] != TELNET_NAWS) {
-        log_info("TELNET got a non-NAWS sequence: %02x %02x %02x", (unsigned char)buffer[0], (unsigned char)buffer[1], (unsigned char)buffer[2]);
-        return;
+    switch((unsigned char)buffer[2]) {
+        default:
+            log_info("TELNET got a non-NAWS sequence: %02x %02x %02x", (unsigned char)buffer[0], (unsigned char)buffer[1], (unsigned char)buffer[2]);
+            return;
+            break;
+        case TELNET_ECHO:
+            log_info("TELNET got an ECHO sequence: %02x %02x %02x", (unsigned char)buffer[0], (unsigned char)buffer[1], (unsigned char)buffer[2]);
+            return;
+            break;
+        case TELNET_LINEMODE:
+            log_info("TELNET got a LINEMODE sequence: %02x %02x %02x", (unsigned char)buffer[0], (unsigned char)buffer[1], (unsigned char)buffer[2]);
+            return;
+            break;
+        case TELNET_NAWS:
+            break;
+
     }
 
     // So, we have either WILL, WONT, DO, DONT, or SB for buffer[1]

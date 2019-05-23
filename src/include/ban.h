@@ -15,6 +15,5 @@ void                                    do_unban(struct char_data *ch, const cha
 int                                     banned_ip(char *ip);
 int                                     banned_name(char *name);
 int                                     banned_at(char *name, char *ip);
-void                                    bans_to_sql(void);
 
 #endif

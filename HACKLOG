@@ -296,3 +296,9 @@ updated crontab:
 apt install atop nethogs pgtop kerneltop
 apt install gdb
 
+apt install figlet php-text-figlet toilet toilet-fonts
+
+apt install build-essential libgtk3-perl libgoocanvas-2.0-dev wmctrl libsox-fmt-all timidity
+cpan
+    install Archive::Extract File::HomeDir File::ShareDir File::ShareDir::Install GooCanvas2 JSON Net::OpenSSH Path::Tiny Regexp::IPv6 X11::WMCtrl
+
