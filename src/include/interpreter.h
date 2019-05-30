@@ -280,7 +280,7 @@
 #define CMD_unban	284
 #define CMD_unlock	102
 #define CMD_up		5
-#define CMD_urlcheck	290
+#define CMD_checkurl	290
 #define CMD_use		172
 #define CMD_users	208
 #define CMD_value	58

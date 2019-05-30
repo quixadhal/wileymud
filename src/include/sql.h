@@ -11,8 +11,8 @@
 #define PERL                    "/usr/bin/perl"
 
 struct sql_connection {
+    const char *name;
     PGconn *dbc;
-    const char *dbname;
 };
 
 #ifdef _SQL_C
@@ -27,16 +27,17 @@ void setup_logfile_table(void);
 // WileyMUD
 void setup_bans_table(void);
 #else
-extern PGconn *db_i3log;
-extern PGconn *db_wileymud;
+extern struct sql_connection db_i3log;
+extern struct sql_connection db_wileymud;
 #endif
 
 //void sql_connect(const char *db_name);
 //void sql_disconnect(const char *db_name);
 //char *sql_version(const char *db_name);
-void sql_connect(PGconn **db, const char *dbname);
-void sql_disconnect(PGconn **db);
-char *sql_version(PGconn **db, const char *dbname);
+void sql_connect(struct sql_connection *db);
+void sql_disconnect(struct sql_connection *db);
+char *sql_version(struct sql_connection *db);
+
 void sql_startup(void);
 void sql_shutdown(void);
 void allchan_sql( int is_emote, const char *channel, const char *speaker, const char *mud, const char *message );
@@ -49,6 +50,6 @@ void bug_sql( const char *logtype, const char *filename, const char *function, i
               const char *victim, int victim_room, 
               const char *message );
 void addspeaker_sql( const char *speaker, const char *pinkfish );
-void do_urlcheck(struct char_data *ch, const char *argument, int cmd);
+void do_checkurl(struct char_data *ch, const char *argument, int cmd);
 
 #endif
