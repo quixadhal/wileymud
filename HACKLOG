@@ -302,3 +302,6 @@ apt install build-essential libgtk3-perl libgoocanvas-2.0-dev wmctrl libsox-fmt-
 cpan
     install Archive::Extract File::HomeDir File::ShareDir File::ShareDir::Install GooCanvas2 JSON Net::OpenSSH Path::Tiny Regexp::IPv6 X11::WMCtrl
 
+apt install locate
+    . /etc/cron.daily/locate
+

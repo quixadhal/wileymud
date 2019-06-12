@@ -1552,10 +1552,10 @@ void do_exits(struct char_data *ch, const char *argument, int cmd)
 		    scprintf(buf, MAX_INPUT_LENGTH, "  %s - Too dark to tell", exits[door]);
                 } else if (IS_IMMORTAL(ch)) {
                     if(target_room->zone == real_roomp(ch->in_room)->zone) {
-                        scprintf(buf, MAX_INPUT_LENGTH, "  %s - [#%d] %s", exits[door],
+                        scprintf(buf, MAX_INPUT_LENGTH, "  \x1b[33;1m%s - [#%d] %s\x1b[0m", exits[door],
                                 exitdata->to_room, target_room->name);
                     } else {
-                        scprintf(buf, MAX_INPUT_LENGTH, "  %s - [#%d] %s in #%d - %s", exits[door],
+                        scprintf(buf, MAX_INPUT_LENGTH, "  \x1b[33;1m%s - [#%d] \x1b[31m%s in #%d - %s\x1b[0m", exits[door],
                                 exitdata->to_room, target_room->name,
                                 target_room->zone, zone_table[target_room->zone].name);
                     }

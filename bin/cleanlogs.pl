@@ -26,7 +26,7 @@ foreach my $filename (@need_to_compress) {
     next if defined $symlink_target and $symlink_target eq "$log_dir/$filename";
 
     print "comnpressing $filename\n";
-    system "bzip2", "-9v", "$filename";
+    system "/usr/bin/bzip2", "-9v", "$log_dir/$filename";
 }
 
 opendir DP, $log_dir or die "Can't opendir $log_dir $!";
