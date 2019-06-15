@@ -305,3 +305,18 @@ cpan
 apt install locate
     . /etc/cron.daily/locate
 
+cpan
+    install Bundle::CPAN
+    install Time::HiRes
+    install Log::Log4perl
+
+apt install libmoose-perl libmoosex-types-perl libmoosex-getopt-perl
+    libmoosex-log-log4perl-perl libmoosex-nonmoose-perl libmoosex-singleton-perl
+    libmoosex-role-timer-perl libmoosex-storage-perl libmoosex-util-perl
+    libmoosex-async-perl libmoosex-undeftolerant-perl libcurses-perl
+    libio-pty-perl libsocket-getaddrinfo-perl libsocket6-perl libterm-readkey-perl
+
+apt install libmoosex-strictconstructor-perl libmoosex-params-validate-perl
+    libmoosex-types-structured-perl libmoosex-classattribute-perl
+    libmoosex-daemonize-perl
+
