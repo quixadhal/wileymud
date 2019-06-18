@@ -62,6 +62,8 @@ my $JQUI_CSS        = "$LOG_HOME/jquery/jquery-ui.css";
 my $JQUI_THEME      = "$LOG_HOME/jquery/jquery-ui.theme.css";
 my $JQ              = "$LOG_HOME/jquery.js";
 my $JQUI            = "$LOG_HOME/jquery/jquery-ui.js";
+my $MOMENT          = "$LOG_HOME/moment.js";
+my $MOMENT_TZ       = "$LOG_HOME/moment-timezone.js";
 my $NAVBAR          = "$LOG_HOME/navbar.js";
 
 my $PINKFISH_CACHE  = "$PAGE_DIR/pinkfish.json";
@@ -986,12 +988,69 @@ if( $do_pages or $do_json ) {
         <link rel="stylesheet" href="$JQUI_THEME">
         <script src="$JQ"></script>
         <script src="$JQUI"></script>
+        <script src="$MOMENT"></script>
+        <script src="$MOMENT_TZ"></script>
         <script src="$NAVBAR"></script>
 
         <script type="text/javascript">
+            function localize_rows() {
+		// 0 -> 23
+                var hour_map = [
+		    '#555555',
+		    '#555555',
+		    '#555555',
+		    '#555555',
+		    '#bb0000',
+		    '#bb0000',
+		    '#bbbb00',
+		    '#bbbb00',
+		    '#ffff55',
+		    '#ffff55',
+		    '#00bb00',
+		    '#00bb00',
+		    '#55ff55',
+		    '#55ff55',
+		    '#bbbbbb',
+		    '#bbbbbb',
+		    '#55ffff',
+		    '#55ffff',
+		    '#00bbbb',
+		    '#00bbbb',
+		    '#5555ff',
+		    '#5555ff',
+		    '#0000bb',
+		    '#0000bb'
+                ];
+
+                var yourTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+                var yourLocale = (navigator.languages && navigator.languages.length) ?
+                    navigator.languages[0] : navigator.language;
+
+                var rows = \$(`[id^=row_]`);
+                for( var i = 0; i < rows.length-1; i++ ) {
+                    var tds = rows[i].getElementsByTagName("td");
+                    var oldDate = tds[0].innerHTML;
+                    var tdspan = tds[1].getElementsByTagName("span");
+                    var oldTime = tdspan[0].innerHTML;
+
+                    var oldMoment = moment.tz(oldDate + " " + oldTime, "America/Los_Angeles");
+                    var newMoment = oldMoment.clone().tz(yourTimeZone);
+                    //var newMoment = oldMoment.clone().tz("Asia/Tokyo");
+                    var newDate = newMoment.format('YYYY-MM-DD');
+                    var newTime = newMoment.format('HH:mm:ss');
+                    var newHour = newMoment.hour();
+
+                    tds[0].innerHTML = newDate;
+                    tdspan[0].innerHTML = newTime;
+                    tdspan[0].style.color = hour_map[newHour];
+                }
+            }
+
             function setup() {
                 setup_rows();
+                localize_rows();
                 // This if for the live page ONLY, pointless for static pages.
+                //scroll_bottom();
                 //setTimeout(function () { location.reload(true); }, 30 * 60 * 1000);
             }
         </script>

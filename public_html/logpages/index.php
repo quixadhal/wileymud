@@ -52,6 +52,8 @@ $JQUI_CSS       = "$LOG_HOME/jquery/jquery-ui.css";
 $JQUI_THEME     = "$LOG_HOME/jquery/jquery-ui.theme.css";
 $JQ             = "$LOG_HOME/jquery.js";
 $JQUI           = "$LOG_HOME/jquery/jquery-ui.js";
+$MOMENT         = "$LOG_HOME/moment.js";
+$MOMENT_TZ      = "$LOG_HOME/moment-timezone.js";
 $NAVBAR         = "$LOG_HOME/navbar.js";
 
 $PINKFISH_CACHE = "$PAGE_DIR/pinkfish.json";
@@ -561,11 +563,108 @@ header("Pragma: no-cache");
         <link rel="stylesheet" href="<?php echo $JQUI_THEME;?>">
         <script src="<?php echo $JQ;?>""></script>
         <script src="<?php echo $JQUI;?>""></script>
+        <script src="<?php echo $MOMENT;?>""></script>
+        <script src="<?php echo $MOMENT_TZ;?>""></script>
         <script src="<?php echo $NAVBAR;?>"></script>
 
         <script language="javascript">
+            function debug_local_time() {
+                var hour_map = [
+		    '#555555',
+		    '#555555',
+		    '#555555',
+		    '#555555',
+		    '#bb0000',
+		    '#bb0000',
+		    '#bbbb00',
+		    '#bbbb00',
+		    '#ffff55',
+		    '#ffff55',
+		    '#00bb00',
+		    '#00bb00',
+		    '#55ff55',
+		    '#55ff55',
+		    '#bbbbbb',
+		    '#bbbbbb',
+		    '#55ffff',
+		    '#55ffff',
+		    '#00bbbb',
+		    '#00bbbb',
+		    '#5555ff',
+		    '#5555ff',
+		    '#0000bb',
+		    '#0000bb'
+                ];
+                var yourTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+                var yourLocale = (navigator.languages && navigator.languages.length) ?
+                    navigator.languages[0] : navigator.language;
+
+                var momentObj = moment().tz(yourTimeZone);
+                var momentStr = momentObj.format('YYYY-MM-DD HH:mm:ss z');
+                var momentHour = momentObj.hour();
+
+                var yt = document.getElementById("yourTime");
+                yt.innerHTML = "[" + yourLocale + " " + yourTimeZone + "] " + momentStr;
+                yt.style.color = hour_map[momentHour];
+            }
+
+            function localize_rows() {
+		// 0 -> 23
+                var hour_map = [
+		    '#555555',
+		    '#555555',
+		    '#555555',
+		    '#555555',
+		    '#bb0000',
+		    '#bb0000',
+		    '#bbbb00',
+		    '#bbbb00',
+		    '#ffff55',
+		    '#ffff55',
+		    '#00bb00',
+		    '#00bb00',
+		    '#55ff55',
+		    '#55ff55',
+		    '#bbbbbb',
+		    '#bbbbbb',
+		    '#55ffff',
+		    '#55ffff',
+		    '#00bbbb',
+		    '#00bbbb',
+		    '#5555ff',
+		    '#5555ff',
+		    '#0000bb',
+		    '#0000bb'
+                ];
+
+                var yourTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+                var yourLocale = (navigator.languages && navigator.languages.length) ?
+                    navigator.languages[0] : navigator.language;
+
+                var rows = $(`[id^=row_]`);
+                for( var i = 0; i < rows.length-1; i++ ) {
+                    var tds = rows[i].getElementsByTagName("td");
+                    var oldDate = tds[0].innerHTML;
+                    var tdspan = tds[1].getElementsByTagName("span");
+                    var oldTime = tdspan[0].innerHTML;
+
+                    var oldMoment = moment.tz(oldDate + " " + oldTime, "America/Los_Angeles");
+                    var newMoment = oldMoment.clone().tz(yourTimeZone);
+                    //var newMoment = oldMoment.clone().tz("Asia/Tokyo");
+                    var newDate = newMoment.format('YYYY-MM-DD');
+                    var newTime = newMoment.format('HH:mm:ss');
+                    var newHour = newMoment.hour();
+
+                    tds[0].innerHTML = newDate;
+                    tdspan[0].innerHTML = newTime;
+                    tdspan[0].style.color = hour_map[newHour];
+                }
+            }
+
             function setup() {
                 setup_rows();
+                debug_local_time();
+                localize_rows();
                 // This if for the live page ONLY, pointless for static pages.
                 scroll_bottom();
                 setTimeout(function () { location.reload(true); }, 30 * 60 * 1000);
@@ -664,7 +763,7 @@ header("Pragma: no-cache");
         $message = "<span style=\"font-family: monospace; white-space: pre-wrap;\">$message</span>";
 ?>
         <tr id="row_<?php echo $counter;?>" style="display:none">
-            <td bgcolor="<?php echo $bg_color;?>"><?php echo $date_col;?></span></td>
+            <td bgcolor="<?php echo $bg_color;?>"><?php echo $date_col;?></td>
             <td bgcolor="<?php echo $bg_color;?>"><?php echo $time_col;?></span></td>
             <td bgcolor="<?php echo $bg_color;?>"><?php echo $channel_col;?></span></td>
             <td bgcolor="<?php echo $bg_color;?>"><?php echo $speaker_col;?></span></td>
@@ -677,7 +776,8 @@ header("Pragma: no-cache");
     $bg_color = ($counter % 2) ? "#000000" : "#1F1F1F";
 ?>
         <tr id="row_<?php echo $counter;?>" style="display:none">
-            <td colspan="5" align="right" bgcolor="<?php echo $bg_color;?>"><?php printf("%7.3f seconds",$time_spent);?></td>
+            <td colspan="4" align="right" bgcolor="<?php echo $bg_color;?>"><span id="yourTime" style="color: #1F1F1F">&nbsp;</span></td>
+            <td align="right" bgcolor="<?php echo $bg_color;?>"><?php printf("%7.3f seconds",$time_spent);?></td>
         </tr>
             </tbody>
         </table>

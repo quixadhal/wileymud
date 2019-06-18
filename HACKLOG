@@ -320,3 +320,7 @@ apt install libmoosex-strictconstructor-perl libmoosex-params-validate-perl
     libmoosex-types-structured-perl libmoosex-classattribute-perl
     libmoosex-daemonize-perl
 
+apt install libelf-dev
+
+apt install default-libmysqlclient-dev
+
