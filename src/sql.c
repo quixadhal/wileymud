@@ -363,6 +363,13 @@ void setup_logfile_table(void) {
                 "); ";
     char *sql2 = "CREATE INDEX IF NOT EXISTS ix_logfile_local ON logfile (local);";
     char *sql3 = "CREATE INDEX IF NOT EXISTS ix_logfile_logtype ON logfile (logtype);";
+    char *sql4 = "CREATE OR REPLACE VIEW logtail AS "
+                 "SELECT to_char(logfile.local, 'YYYY-MM-DD HH24:MI:SS'::text) AS local, "
+                 "       logfile.logtype, "
+                 "       logfile.message "
+                 "FROM logfile "
+                 "ORDER BY (to_char(logfile.local, 'YYYY-MM-DD HH24:MI:SS'::text)) "
+                 "OFFSET (( SELECT count(*) AS count FROM logfile logfile_1)) - 20; ";
 
     res = PQexec(db_logfile.dbc, sql);
     st = PQresultStatus(res);
@@ -386,6 +393,15 @@ void setup_logfile_table(void) {
     st = PQresultStatus(res);
     if( st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE ) {
         log_fatal("Cannot create logfile logtype index: %s", PQerrorMessage(db_logfile.dbc));
+        PQclear(res);
+	proper_exit(MUD_HALT);
+    }
+    PQclear(res);
+
+    res = PQexec(db_logfile.dbc, sql4);
+    st = PQresultStatus(res);
+    if( st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE ) {
+        log_fatal("Cannot create logtail view: %s", PQerrorMessage(db_logfile.dbc));
         PQclear(res);
 	proper_exit(MUD_HALT);
     }
