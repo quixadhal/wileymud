@@ -20,6 +20,7 @@
 
 struct sql_connection db_i3log      = { "i3log", NULL };
 struct sql_connection db_wileymud   = { "wileymud", NULL };
+struct sql_connection db_logfile    = { "logfile", NULL };
 
 void sql_connect(struct sql_connection *db) {
     char connect_string[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
@@ -79,8 +80,12 @@ void sql_startup(void) {
     setup_hours_table();
     setup_channels_table();
     setup_speakers_table();
+
+    sql_connect(&db_i3log);
     setup_i3log_table();
     setup_urls_table();
+
+    sql_connect(&db_logfile);
     setup_logfile_table();
     snprintf(log_msg, MAX_STRING_LENGTH, "%%^GREEN%%^WileyMUD Version: %s (%s), PostgreSQL Version %s.%%^RESET%%^", VERSION_BUILD, VERSION_DATE, sql_version(&db_i3log));
     allchan_log(0,"wiley", "Cron", "WileyMUD", log_msg);
@@ -237,7 +242,6 @@ void setup_i3log_table(void) {
               "LEFT JOIN pinkfish_map pinkfish_map_speaker "
               "       ON (speakers.pinkfish = pinkfish_map_speaker.pinkfish); ";
 
-    sql_connect(&db_i3log);
     res = PQexec(db_i3log.dbc, sql);
     st = PQresultStatus(res);
     if( st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE ) {
@@ -344,6 +348,7 @@ void setup_logfile_table(void) {
     ExecStatusType st = 0;
     char *sql = "CREATE TABLE IF NOT EXISTS logfile ( "
                 "    created TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT (now() AT TIME ZONE 'UTC'), "
+                "    local TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "
                 "    logtype TEXT DEFAULT 'INFO', "
                 "    filename TEXT, "
                 "    function TEXT, "
@@ -356,12 +361,31 @@ void setup_logfile_table(void) {
                 "    victim_room INTEGER, "
                 "    message TEXT "
                 "); ";
+    char *sql2 = "CREATE INDEX IF NOT EXISTS ix_logfile_local ON logfile (local);";
+    char *sql3 = "CREATE INDEX IF NOT EXISTS ix_logfile_logtype ON logfile (logtype);";
 
-    sql_connect(&db_i3log);
-    res = PQexec(db_i3log.dbc, sql);
+    res = PQexec(db_logfile.dbc, sql);
     st = PQresultStatus(res);
     if( st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE ) {
-        log_fatal("Cannot create log table: %s", PQerrorMessage(db_i3log.dbc));
+        log_fatal("Cannot create log table: %s", PQerrorMessage(db_logfile.dbc));
+        PQclear(res);
+	proper_exit(MUD_HALT);
+    }
+    PQclear(res);
+
+    res = PQexec(db_logfile.dbc, sql2);
+    st = PQresultStatus(res);
+    if( st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE ) {
+        log_fatal("Cannot create logfile local index: %s", PQerrorMessage(db_logfile.dbc));
+        PQclear(res);
+	proper_exit(MUD_HALT);
+    }
+    PQclear(res);
+
+    res = PQexec(db_logfile.dbc, sql3);
+    st = PQresultStatus(res);
+    if( st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE ) {
+        log_fatal("Cannot create logfile logtype index: %s", PQerrorMessage(db_logfile.dbc));
         PQclear(res);
 	proper_exit(MUD_HALT);
     }
@@ -652,7 +676,10 @@ void bug_sql( const char *logtype, const char *filename, const char *function, i
     int param_char_room;
     int param_vic_room;
 
-    return; // remove me for production
+    if( !db_logfile.dbc ) {
+        // If we are not connected, and we've TRIED to connect, punt.
+        return;
+    }
 
     param_line = htonl(line);
     param_area_line = htonl(area_line);
@@ -683,11 +710,11 @@ void bug_sql( const char *logtype, const char *filename, const char *function, i
     param_len[9] = sizeof(param_vic_room);
     param_len[10] = message ? strlen(message) : 0;
 
-    sql_connect(&db_i3log);
-    res = PQexecParams(db_i3log.dbc, sql, 11, NULL, param_val, param_len, param_bin, 0);
+    sql_connect(&db_logfile);
+    res = PQexecParams(db_logfile.dbc, sql, 11, NULL, param_val, param_len, param_bin, 0);
     st = PQresultStatus(res);
     if( st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE ) {
-        log_fatal("Cannot insert log message: %s", PQerrorMessage(db_i3log.dbc));
+        log_sql("Cannot insert log message: %s", PQerrorMessage(db_logfile.dbc));
         //PQclear(res);
 	//proper_exit(MUD_HALT);
     }

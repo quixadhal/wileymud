@@ -11,6 +11,7 @@
 #define	LOG_DEATH	6
 #define	LOG_RESET	7
 #define	LOG_IMC         8
+#define	LOG_SQL         9
 
 #ifndef _BUG_C
 extern char * LogNames[];
@@ -69,6 +70,12 @@ extern char * LogNames[];
                    NULL, NULL, 0, \
                    NULL, 0, \
                    NULL, NULL, \
+                   GREATER_GOD, (Str), ## __VA_ARGS__ )
+#define log_sql(Str, ...) \
+        bug_logger(LOG_SQL, NULL, \
+                   __FILE__, __PRETTY_FUNCTION__, __LINE__, \
+                   NULL, 0, \
+	           NULL, NULL, \
                    GREATER_GOD, (Str), ## __VA_ARGS__ )
 
 void                                    bug_logger(unsigned int Type, const char *BugFile,

@@ -26,7 +26,8 @@ const char                             *LogNames[] = {
     "KILL",
     "DEATH",
     "RESET",
-    "IMC"
+    "IMC",
+    "SQL"
 };
 
 /* Handy query for checking logs:
@@ -148,9 +149,12 @@ void bug_logger(unsigned int Type, const char *BugFile,
     }
 
     // Here is where we would log to SQL too!
-
-    bug_sql(LogNames[Type], File, Func, Line, NULL, 0,
-            ch ? NAME(ch) : NULL, ch ? ch->in_room : 0,
-            victim ? NAME(victim) : NULL,  victim ? victim->in_room : 0,
-            Temp);
+    if( Type != LOG_SQL ) {
+        // If the Type is LOG_SQL, it's an error with the database and
+        // we have to make sure we don't make a loop of infinite failure.
+        bug_sql(LogNames[Type], File, Func, Line, NULL, 0,
+                ch ? NAME(ch) : NULL, ch ? ch->in_room : 0,
+                victim ? NAME(victim) : NULL,  victim ? victim->in_room : 0,
+                Temp);
+    }
 }

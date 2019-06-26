@@ -29,6 +29,7 @@ void setup_bans_table(void);
 #else
 extern struct sql_connection db_i3log;
 extern struct sql_connection db_wileymud;
+extern struct sql_connection db_logfile;
 #endif
 
 //void sql_connect(const char *db_name);
