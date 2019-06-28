@@ -223,8 +223,8 @@ char                                   *whod_text(void)
     long                                    tmin = 0L;
     long                                    tsec = 0L;
     time_t                                  now;
-    char                                    uptimebuf[100];
-    char                                    nowtimebuf[100];
+    char                                    uptimebuf[MAX_INPUT_LENGTH];
+    char                                    nowtimebuf[MAX_INPUT_LENGTH];
 
     now = time((time_t *) 0);
     strftime(nowtimebuf, sizeof(nowtimebuf), RFC1123FMT, localtime(&now));
@@ -337,9 +337,9 @@ char                                   *whod_html(void)
     long                                    tmin = 0L;
     long                                    tsec = 0L;
     time_t                                  now;
-    char                                    timebuf[100];
-    char                                    uptimebuf[100];
-    char                                    nowtimebuf[100];
+    char                                    timebuf[MAX_INPUT_LENGTH];
+    char                                    uptimebuf[MAX_INPUT_LENGTH];
+    char                                    nowtimebuf[MAX_INPUT_LENGTH];
     static char                             headers[40960];
     struct timeval                          now_bits;
     struct timeval                          later_bits;
@@ -723,9 +723,9 @@ void                                    generate_mudlist(void)
     long                                    tmin = 0L;
     long                                    tsec = 0L;
     time_t                                  now;
-    char                                    timebuf[100];
-    char                                    uptimebuf[100];
-    char                                    nowtimebuf[100];
+    char                                    timebuf[MAX_INPUT_LENGTH];
+    char                                    uptimebuf[MAX_INPUT_LENGTH];
+    char                                    nowtimebuf[MAX_INPUT_LENGTH];
     struct timeval                          now_bits;
     struct timeval                          later_bits;
 #ifdef I3
@@ -1060,8 +1060,8 @@ void                                    generate_json_mudlist(void)
 #endif
     int                                     did_one = 0;
     time_t                                  now;
-    char                                    nowtimebuf[100];
-    char                                    uptimebuf[100];
+    char                                    nowtimebuf[MAX_INPUT_LENGTH];
+    char                                    uptimebuf[MAX_INPUT_LENGTH];
     struct char_data                       *ch = NULL;
     int                                     mortals = 0;
     int                                     gods = 0;
@@ -1097,8 +1097,8 @@ void                                    generate_json_mudlist(void)
                 }
 
                 fprintf(fp, "        {\n");
-                fprintf(fp, "            \"name\" : \"%s\",\n", json_escape(GET_NAME(ch)));
-                fprintf(fp, "            \"title\" : \"%s\",\n", json_escape(GET_TITLE(ch)));
+                fprintf(fp, "            \"name\" : \"%s\",\n", GET_NAME(ch) ? json_escape(GET_NAME(ch)) : "");
+                fprintf(fp, "            \"title\" : \"%s\",\n", GET_TITLE(ch) ? json_escape(GET_TITLE(ch)) : "");
                 fprintf(fp, "            \"pretitle\" : \"%s\",\n", GET_PRETITLE(ch) ? json_escape(GET_PRETITLE(ch)) : "");
                 fprintf(fp, "            \"idle\" : \"%ld\",\n", GET_IDLE_TIME(ch));
                 fprintf(fp, "            \"level\" : \"%d\",\n", GetMaxLevel(ch));
