@@ -324,3 +324,7 @@ apt install libelf-dev
 
 apt install default-libmysqlclient-dev
 
+#   For the old hardware ONLY...
+    apt install firmware-misc-nonfree
+    apt install r8168-dkms
+
