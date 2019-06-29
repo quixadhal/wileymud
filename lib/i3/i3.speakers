@@ -1,5 +1,5 @@
 #COUNT
-Count   2740
+Count   2749
 End
 
 #SPEAKER
@@ -1205,6 +1205,11 @@ End
 #SPEAKER
 Name   wintermute
 Color  %^WHITE%^%^BOLD%^
+End
+
+#SPEAKER
+Name   akana
+Color  %^ORANGE%^
 End
 
 #SPEAKER
@@ -2703,6 +2708,11 @@ Color  %^BLACK%^%^BOLD%^
 End
 
 #SPEAKER
+Name   chilidog
+Color  %^CYAN%^%^BOLD%^
+End
+
+#SPEAKER
 Name   abner
 Color  %^BLACK%^%^B_RED%^
 End
@@ -3810,6 +3820,11 @@ End
 #SPEAKER
 Name   zengo
 Color  %^WHITE%^%^B_BLUE%^
+End
+
+#SPEAKER
+Name   warpdongle
+Color  %^YELLOW%^
 End
 
 #SPEAKER
@@ -8463,6 +8478,11 @@ Color  %^YELLOW%^
 End
 
 #SPEAKER
+Name   carbon
+Color  %^BLUE%^%^BOLD%^
+End
+
+#SPEAKER
 Name   a hat
 Color  %^BLACK%^%^B_YELLOW%^
 End
@@ -10563,6 +10583,11 @@ Color  %^MAGENTA%^
 End
 
 #SPEAKER
+Name   etranger
+Color  %^MAGENTA%^%^BOLD%^
+End
+
+#SPEAKER
 Name   a perched chicken
 Color  %^WHITE%^%^B_BLUE%^
 End
@@ -10720,6 +10745,11 @@ End
 #SPEAKER
 Name   vott
 Color  %^BLACK%^%^B_RED%^
+End
+
+#SPEAKER
+Name   muirrum
+Color  %^GREEN%^
 End
 
 #SPEAKER
@@ -11438,6 +11468,11 @@ Color  %^BLUE%^%^BOLD%^
 End
 
 #SPEAKER
+Name   memnon
+Color  %^RED%^
+End
+
+#SPEAKER
 Name   advtech
 Color  %^BLACK%^%^B_CYAN%^
 End
@@ -12000,6 +12035,11 @@ End
 #SPEAKER
 Name   xoral
 Color  %^ORANGE%^
+End
+
+#SPEAKER
+Name   ceazer
+Color  %^WHITE%^%^BOLD%^
 End
 
 #SPEAKER
@@ -12990,6 +13030,11 @@ End
 #SPEAKER
 Name   zaerth
 Color  %^CYAN%^
+End
+
+#SPEAKER
+Name   corneliusv
+Color  %^BLACK%^%^BOLD%^
 End
 
 #SPEAKER

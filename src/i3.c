@@ -2962,7 +2962,10 @@ void I3_process_channel_filter(I3_HEADER *header, char *s)
 
 #define I3_ALLCHAN_LOG  I3_DIR "i3.allchan.log"
 
-void allchan_log( int is_emote, char *channel, char *speaker, char *mud, char *str ) {
+// The speaker here is visname, not originator_username.
+// We should probably pass in both, so we can use both.
+//
+void allchan_log( int is_emote, char *channel, char *speaker, char *username, char *mud, char *str ) {
     FILE                                   *fp = NULL;
     struct tm                              *local = NULL;
     struct timeval                          last_time;
@@ -2993,7 +2996,7 @@ void allchan_log( int is_emote, char *channel, char *speaker, char *mud, char *s
                 str);
         I3FCLOSE(fp);
     }
-    allchan_sql(is_emote, channel, speaker, mud, str);
+    allchan_sql(is_emote, channel, speaker, username, mud, str);
 }
 
 char *color_time( struct tm *local )
@@ -3155,7 +3158,7 @@ void I3_process_channel_t(I3_HEADER *header, char *s)
     strcpy(layout, "%s ");
     strcat(layout, channel->layout_e);
 
-    allchan_log(1, channel->local_name, visname_o, header->originator_mudname, omsg);
+    allchan_log(1, channel->local_name, visname_o, header->originator_username, header->originator_mudname, omsg);
 
     for (d = first_descriptor; d; d = d->next) {
 	vch = d->original ? d->original : d->character;
@@ -3248,7 +3251,7 @@ void I3_process_channel_m(I3_HEADER *header, char *s)
     snprintf(mud_color, MAX_INPUT_LENGTH, "%s%s%%^RESET%%^", color_speaker(header->originator_username), header->originator_mudname);
     snprintf(buf, MAX_STRING_LENGTH, format, color_time(local), channel->local_name, speaker_color, mud_color, tps);
 
-    allchan_log(0, channel->local_name, visname, header->originator_mudname, tps);
+    allchan_log(0, channel->local_name, visname, header->originator_username, header->originator_mudname, tps);
 
     for (d = first_descriptor; d; d = d->next) {
 	vch = d->original ? d->original : d->character;
@@ -3342,7 +3345,7 @@ void I3_process_channel_e(I3_HEADER *header, char *s)
 
     snprintf(buf, MAX_STRING_LENGTH, format, color_time(local), channel->local_name, speaker_color, mud_color, &msg[hack_len]);
 
-    allchan_log(1, channel->local_name, visname, header->originator_mudname, msg);
+    allchan_log(1, channel->local_name, visname, header->originator_username, header->originator_mudname, msg);
 
     for (d = first_descriptor; d; d = d->next) {
 	vch = d->original ? d->original : d->character;
@@ -7110,7 +7113,7 @@ void router_connect(const char *router_name, bool forced, int mudport, bool isco
 
     if (!rfound && !isconnected) {
 	log_info("%s", "Unable to connect. No available routers found.");
-        allchan_log(0,"wiley", "Cron", "WileyMUD", "%^RED%^Not connected to I3.  No routers available.%^RESET%^");
+        allchan_log(0,"wiley", "Cron", "Cron", "WileyMUD", "%^RED%^Not connected to I3.  No routers available.%^RESET%^");
         i3_message_to_players("\r\n%^RED%^I3 is down again.  No routers available.%^RESET%^");
 	I3_socket = -1;
 	return;
@@ -7482,7 +7485,7 @@ void i3_log_dead() {
 
     snprintf(taunt, MAX_STRING_LENGTH, "%%^RED%%^%%^BOLD%%^[%-4.4d-%-2.2d-%-2.2d %-2.2d:%-2.2d]%%^RESET%%^ %%^RED%%^%%^BOLD%%^%s (%s)%%^RESET%%^ %%^YELLOW%%^*** Welcome to WileyMUD III, Quixadhal's Version %s (%s) ***%%^RESET%%^",
             tm_info->tm_year + 1900, tm_info->tm_mon + 1, tm_info->tm_mday, tm_info->tm_hour, tm_info->tm_min, "It's going DOWN!\r\n", I3_ROUTER_NAME, VERSION_BUILD, VERSION_DATE);
-    allchan_log(0, "wiley", "Cron", "WileyMUD", taunt);
+    allchan_log(0, "wiley", "Cron", "Cron", "WileyMUD", taunt);
 }
 
 /*
@@ -7538,7 +7541,7 @@ void i3_loop(void)
     if ( expecting_timeout && diffTimestamp(timeout_marker, -1) <= 0 ) {
         expecting_timeout = 0;
         log_info("I3 Client timeout.");
-        allchan_log(0,"wiley", "Cron", "WileyMUD", "%^RED%^I3 Client timeout.%^RESET%^");
+        allchan_log(0,"wiley", "Cron", "Cron", "WileyMUD", "%^RED%^I3 Client timeout.%^RESET%^");
         I3_connection_close(TRUE);
         connection_timeouts++;
         return;
@@ -7554,7 +7557,7 @@ void i3_loop(void)
     if ((tm_info->tm_wday == 1) || (tm_info->tm_wday == 3) || (tm_info->tm_wday == 5)) {
         if ((tm_info->tm_hour == 5) && (tm_info->tm_min == 0) && (tm_info->tm_sec == 0)) {
 	    log_info("I3 Client is rebooting for scheduled router reboot.");
-            allchan_log(0,"wiley", "Cron", "WileyMUD", "%^RED%^I3 Client is rebooting for scheduled router reboot.%^RESET%^");
+            allchan_log(0,"wiley", "Cron", "Cron", "WileyMUD", "%^RED%^I3 Client is rebooting for scheduled router reboot.%^RESET%^");
             I3_connection_close(TRUE);
             return;
         }

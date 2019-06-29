@@ -314,7 +314,7 @@ function fetch_page_by_date($db, $query_date = NULL) {
           LEFT JOIN channels
                  ON (lower(i3log.channel) = channels.channel)
           LEFT JOIN speakers
-                 ON (lower(i3log.speaker) = speakers.speaker)
+                 ON (lower(i3log.username) = speakers.speaker)
           LEFT JOIN pinkfish_map pinkfish_map_hour
                  ON (hours.pinkfish = pinkfish_map_hour.pinkfish)
           LEFT JOIN pinkfish_map pinkfish_map_channel

@@ -3849,7 +3849,19 @@
 "2019-06-14",
 "2019-06-15",
 "2019-06-16",
-"2019-06-17"
+"2019-06-17",
+"2019-06-18",
+"2019-06-19",
+"2019-06-20",
+"2019-06-21",
+"2019-06-22",
+"2019-06-23",
+"2019-06-24",
+"2019-06-25",
+"2019-06-26",
+"2019-06-27",
+"2019-06-28",
+"2019-06-29"
         ];
         var bits = window.location.href.toString().split('/');
         var my_date = bits[bits.length-1].substr(0,10);
@@ -3872,7 +3884,7 @@
         }
 
         function gotoNewPage(dateString) {
-            if( dateString == "2019-06-17" ) {
+            if( dateString == "2019-06-29" ) {
                 window.location.href = "http://wileymud.themud.org/~wiley/logpages/";
             } else {
                 var url_bits = window.location.href.toString().split('/');

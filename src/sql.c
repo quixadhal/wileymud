@@ -88,7 +88,7 @@ void sql_startup(void) {
     sql_connect(&db_logfile);
     setup_logfile_table();
     snprintf(log_msg, MAX_STRING_LENGTH, "%%^GREEN%%^WileyMUD Version: %s (%s), PostgreSQL Version %s.%%^RESET%%^", VERSION_BUILD, VERSION_DATE, sql_version(&db_i3log));
-    allchan_log(0,"wiley", "Cron", "WileyMUD", log_msg);
+    allchan_log(0,"wiley", "Cron", "Cron", "WileyMUD", log_msg);
 
     log_boot("Opening SQL database for WileyMUD.");
     sql_connect(&db_wileymud);
@@ -99,7 +99,7 @@ void sql_shutdown(void) {
     char log_msg[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
     log_boot("Shutting down SQL database.");
     snprintf(log_msg, MAX_STRING_LENGTH, "%%^RED%%^WileyMUD Version: %s (%s), PostgreSQL Version %s.%%^RESET%%^", VERSION_BUILD, VERSION_DATE, sql_version(&db_i3log));
-    allchan_log(0,"wiley", "Cron", "WileyMUD", log_msg);
+    allchan_log(0,"wiley", "Cron", "Cron", "WileyMUD", log_msg);
     sql_disconnect(&db_i3log);
     sql_disconnect(&db_wileymud);
 }
@@ -195,6 +195,7 @@ void setup_i3log_table(void) {
                 "    is_bot BOOLEAN, "
                 "    channel TEXT NOT NULL, "
                 "    speaker TEXT NOT NULL, "
+                "    username TEXT NOT NULL, "
                 "    mud TEXT NOT NULL, "
                 "    message TEXT "
                 "); ";
@@ -204,6 +205,7 @@ void setup_i3log_table(void) {
                  "    (created, local, is_emote, is_url, is_bot, "
                  "     channel, speaker, mud, message);";
     char *sql5 = "DROP VIEW IF EXISTS page_view;";
+#if 0
     char *sql6 = "CREATE VIEW page_view AS "
                  "SELECT i3log.local, "
                  "       i3log.is_emote, "
@@ -235,6 +237,44 @@ void setup_i3log_table(void) {
               "       ON (lower(i3log.channel) = channels.channel) "
               "LEFT JOIN speakers "
               "       ON (lower(i3log.speaker) = speakers.speaker) "
+              "LEFT JOIN pinkfish_map pinkfish_map_hour "
+              "       ON (hours.pinkfish = pinkfish_map_hour.pinkfish) "
+              "LEFT JOIN pinkfish_map pinkfish_map_channel "
+              "       ON (channels.pinkfish = pinkfish_map_channel.pinkfish) "
+              "LEFT JOIN pinkfish_map pinkfish_map_speaker "
+              "       ON (speakers.pinkfish = pinkfish_map_speaker.pinkfish); ";
+#endif
+    char *sql6 = "CREATE VIEW page_view AS "
+                 "SELECT i3log.local, "
+                 "       i3log.is_emote, "
+                 "       i3log.is_url, "
+                 "       i3log.is_bot, "
+                 "       i3log.channel, "
+                 "       i3log.speaker, "
+                 "       i3log.mud, "
+                 "       i3log.message, "
+                 "       to_char(i3log.local, 'YYYY-MM-DD')  the_date, "
+                 "       to_char(i3log.local, 'HH24:MI:SS')  the_time, "
+                 "       to_char(i3log.local, 'YYYY')        the_year, "
+                 "       to_char(i3log.local, 'MM')          the_month, "
+                 "       to_char(i3log.local, 'DD')          the_day, "
+                 "       to_char(i3log.local, 'HH24')        the_hour, "
+                 "       to_char(i3log.local, 'MI')          the_minute, "
+                 "       to_char(i3log.local, 'SS')          the_second, "
+                 "       date_part('hour', i3log.local)      int_hour, "
+                 "       hours.pinkfish                      hour_color, "
+                 "       channels.pinkfish                   channel_color, "
+                 "       speakers.pinkfish                   speaker_color, "
+                 "       pinkfish_map_hour.html              hour_html, "
+                 "       pinkfish_map_channel.html           channel_html, "
+                 "       pinkfish_map_speaker.html           speaker_html "
+                 "  FROM i3log "
+              "LEFT JOIN hours "
+              "       ON (date_part('hour', i3log.local) = hours.hour) "
+              "LEFT JOIN channels "
+              "       ON (lower(i3log.channel) = channels.channel) "
+              "LEFT JOIN speakers "
+              "       ON (lower(i3log.username) = speakers.speaker) "
               "LEFT JOIN pinkfish_map pinkfish_map_hour "
               "       ON (hours.pinkfish = pinkfish_map_hour.pinkfish) "
               "LEFT JOIN pinkfish_map pinkfish_map_channel "
@@ -616,15 +656,21 @@ int is_bot( int is_emote, const char *channel, const char *speaker, const char *
     return 0;
 }
 
-void allchan_sql( int is_emote, const char *channel, const char *speaker, const char *mud, const char *message ) {
+// This gets passed "visname", rather than "originator_username"
+// The result is that the log messages are logged by the fake name people can use
+// not the username that works for tells.
+//
+// We could add a column and ALSO store username, if we wanted...
+//
+void allchan_sql( int is_emote, const char *channel, const char *speaker, const char *username, const char *mud, const char *message ) {
     PGresult *res = NULL;
     ExecStatusType st = 0;
-    const char *sql = "INSERT INTO i3log ( channel, speaker, mud, message, is_emote, is_url, is_bot ) "
-                      "VALUES ($1,$2,$3,$4,$5,$6,$7);";
-    const char *param_val[7];
-    int param_len[7];
+    const char *sql = "INSERT INTO i3log ( channel, speaker, username, mud, message, is_emote, is_url, is_bot ) "
+                      "VALUES ($1,$2,$3,$4,$5,$6,$7,$8);";
+    const char *param_val[8];
+    int param_len[8];
     //int param_bin[7] = {0,0,0,0,1,1,1}; // Are booleans considered binary?
-    int param_bin[7] = {0,0,0,0,0,0,0};
+    int param_bin[8] = {0,0,0,0,0,0,0,0};
     char param_emote[2];
     char param_url[2];
     char param_bot[2];
@@ -642,28 +688,30 @@ void allchan_sql( int is_emote, const char *channel, const char *speaker, const 
 
     param_val[0] = channel;
     param_val[1] = speaker;
-    param_val[2] = mud;
-    param_val[3] = message;
+    param_val[2] = username;
+    param_val[3] = mud;
+    param_val[4] = message;
     //param_val[4] = (char *)&is_emote;
     //param_val[5] = (char *)&url;
     //param_val[6] = (char *)&bot;
-    param_val[4] = param_emote;
-    param_val[5] = param_url;
-    param_val[6] = param_bot;
+    param_val[5] = param_emote;
+    param_val[6] = param_url;
+    param_val[7] = param_bot;
 
     param_len[0] = channel ? strlen(channel) : 0;
     param_len[1] = speaker ? strlen(speaker) : 0;
-    param_len[2] = mud ? strlen(mud) : 0;
-    param_len[3] = message ? strlen(message) : 0;
+    param_len[2] = username ? strlen(username) : 0;
+    param_len[3] = mud ? strlen(mud) : 0;
+    param_len[4] = message ? strlen(message) : 0;
     //param_len[4] = sizeof(is_emote);
     //param_len[5] = sizeof(url);
     //param_len[6] = sizeof(bot);
-    param_len[4] = strlen(param_emote);
-    param_len[5] = strlen(param_url);
-    param_len[6] = strlen(param_bot);
+    param_len[5] = strlen(param_emote);
+    param_len[6] = strlen(param_url);
+    param_len[7] = strlen(param_bot);
 
     sql_connect(&db_i3log);
-    res = PQexecParams(db_i3log.dbc, sql, 7, NULL, param_val, param_len, param_bin, 0);
+    res = PQexecParams(db_i3log.dbc, sql, 8, NULL, param_val, param_len, param_bin, 0);
     st = PQresultStatus(res);
     if( st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE ) {
         log_fatal("Cannot insert message: %s", PQerrorMessage(db_i3log.dbc));
