@@ -983,7 +983,7 @@ char *update_message_from_file( const char *filename, int is_prompt ) {
     res = PQexecParams(db_wileymud.dbc, sql, 1, NULL, param_val, param_len, param_bin, 0);
     st = PQresultStatus(res);
     if( st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE ) {
-        log_fatal("Message does not exist in database: %s", PQerrorMessage(db_wileymud.dbc));
+        log_error("Message does not exist in database: %s", PQerrorMessage(db_wileymud.dbc));
         //PQclear(res);
         //proper_exit(MUD_HALT);
     } else {
@@ -1019,6 +1019,7 @@ char *update_message_from_file( const char *filename, int is_prompt ) {
         param_val[0] = filename;
         param_len[0] = *filename ? strlen(filename) : 0;
 
+        log_boot("  Message %s has been updated on disk, updating SQL to match!", filename);
         if(is_prompt) {
             file_to_prompt(filename, tmp);
         } else {
@@ -1036,6 +1037,8 @@ char *update_message_from_file( const char *filename, int is_prompt ) {
             //proper_exit(MUD_HALT);
         }
         PQclear(res);
+    } else {
+        log_boot("  Using message %s from SQL database.", filename);
     }
 
     // And at THIS point, we either have the message content from the SQL query we used

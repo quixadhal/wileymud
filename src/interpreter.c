@@ -1346,7 +1346,7 @@ void nanny(struct descriptor_data *d, char *arg)
 		dcprintf(d, "\r\n%s", wmotd);
 	    else
 		dcprintf(d, "\r\n%s", motd);
-	    dcprintf(d, "*** Press Return: ");
+	    dcprintf(d, "*** Press RETURN: ");
 	    STATE(d) = CON_READ_MOTD;
 	    return;
 	case CON_GET_NEW_PASWORD:
@@ -1532,7 +1532,7 @@ void nanny(struct descriptor_data *d, char *arg)
 		init_char(d->character);
 		d->pos = create_entry(GET_NAME(d->character));
 		save_char(d->character, NOWHERE);
-		dcprintf(d, "\r\n%s\r\n*** PRESS RETURN: ", motd);
+		dcprintf(d, "\r\n%s\r\n*** Press RETURN: ", motd);
 		STATE(d) = CON_READ_MOTD;
 	    }
 	    return;
@@ -1647,7 +1647,7 @@ void nanny(struct descriptor_data *d, char *arg)
 		    STATE(d) = CON_EDIT_DESCRIPTION;
 		    return;
 		case '3':
-		    page_string(d, the_story, 0);
+		    dcprintf(d, "%s\r\n*** Press RETURN: ", the_story);
 		    STATE(d) = CON_READ_MOTD;
 		    return;
 		case '4':
@@ -1672,7 +1672,7 @@ void nanny(struct descriptor_data *d, char *arg)
 					     , GET_NAME(person), person->player.title);
 				}
 			    }
-			dcprintf(d, "Total Connected %d\r\n", lcount);
+			dcprintf(d, "Total Connected %d\r\n*** Press RETURN: ", lcount);
 			STATE(d) = CON_READ_MOTD;
 			break;
 		    }

@@ -135,55 +135,38 @@ void load_db(void)
     reset_time();
 
     log_boot("- Reading news");
-    //file_to_string(NEWS_FILE, news);
     strlcpy(news, update_message_from_file(NEWS_FILE, 0), MAX_STRING_LENGTH);
     log_boot("- Reading credits");
-    //file_to_string(CREDITS_FILE, credits);
     strlcpy(credits, update_message_from_file(CREDITS_FILE, 0), MAX_STRING_LENGTH);
     log_boot("- Reading motd");
-    //file_to_string(MOTD_FILE, motd);
     strlcpy(motd, update_message_from_file(MOTD_FILE, 0), MAX_STRING_LENGTH);
     log_boot("- Reading help");
-    //file_to_string(HELP_PAGE_FILE, help);
     strlcpy(help, update_message_from_file(HELP_PAGE_FILE, 0), MAX_STRING_LENGTH);
     log_boot("- Reading info");
-    //file_to_string(INFO_FILE, info);
     strlcpy(info, update_message_from_file(INFO_FILE, 0), MAX_STRING_LENGTH);
     log_boot("- Reading wizlist");
-    //file_to_string(WIZLIST_FILE, wizlist);
     strlcpy(wizlist, update_message_from_file(WIZLIST_FILE, 0), MAX_STRING_LENGTH);
     log_boot("- Reading wiz motd");
-    //file_to_string(WMOTD_FILE, wmotd);
     strlcpy(wmotd, update_message_from_file(WMOTD_FILE, 0), MAX_STRING_LENGTH);
     log_boot("- Reading greetings");
-    //file_to_string(GREETINGS_FILE, greetings);
     strlcpy(greetings, update_message_from_file(GREETINGS_FILE, 0), MAX_STRING_LENGTH);
     log_boot("- Reading login menu");
-    //file_to_prompt(LOGIN_MENU_FILE, login_menu);
     strlcpy(login_menu, update_message_from_file(LOGIN_MENU_FILE, 1), MAX_STRING_LENGTH);
     log_boot("- Reading sex menu");
-    //file_to_prompt(SEX_MENU_FILE, sex_menu);
     strlcpy(sex_menu, update_message_from_file(SEX_MENU_FILE, 1), MAX_STRING_LENGTH);
     log_boot("- Reading race menu");
-    //file_to_prompt(RACE_MENU_FILE, race_menu);
     strlcpy(race_menu, update_message_from_file(RACE_MENU_FILE, 1), MAX_STRING_LENGTH);
     log_boot("- Reading class menu");
-    //file_to_prompt(CLASS_MENU_FILE, class_menu);
     strlcpy(class_menu, update_message_from_file(CLASS_MENU_FILE, 1), MAX_STRING_LENGTH);
     log_boot("- Reading race help");
-    //file_to_prompt(RACE_HELP_FILE, race_help);
     strlcpy(race_help, update_message_from_file(RACE_HELP_FILE, 1), MAX_STRING_LENGTH);
     log_boot("- Reading class help");
-    //file_to_prompt(CLASS_HELP_FILE, class_help);
     strlcpy(class_help, update_message_from_file(CLASS_HELP_FILE, 1), MAX_STRING_LENGTH);
     log_boot("- Reading story");
-    //file_to_string(STORY_FILE, the_story);
     strlcpy(the_story, update_message_from_file(STORY_FILE, 0), MAX_STRING_LENGTH);
     log_boot("- Reading suicide warning");
-    //file_to_prompt(SUICIDE_WARN_FILE, suicide_warn);
     strlcpy(suicide_warn, update_message_from_file(SUICIDE_WARN_FILE, 1), MAX_STRING_LENGTH);
     log_boot("- Reading suicide result");
-    //file_to_string(SUICIDE_DONE_FILE, suicide_done);
     strlcpy(suicide_done, update_message_from_file(SUICIDE_DONE_FILE, 0), MAX_STRING_LENGTH);
 
     load_bans();
@@ -2169,7 +2152,7 @@ void free_obj(struct obj_data *obj)
 int file_to_string(const char *name, char *buf)
 {
     FILE                                   *fl = NULL;
-    char                                    tmp[100] = "\0\0\0\0\0\0\0";
+    char                                    tmp[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
 
     if (DEBUG > 2)
 	log_info("called %s with %s, %s", __PRETTY_FUNCTION__, VNULL(name), VNULL(buf));
@@ -2182,7 +2165,16 @@ int file_to_string(const char *name, char *buf)
 	return (-1);
     }
     do {
-	fgets(tmp, 99, fl);
+	fgets(tmp, MAX_INPUT_LENGTH - 1, fl);
+        // If we read in a full line, with CRLF or some variation on the end,
+        // strip all that and normalize it to the plain UNIX LF.
+        if(strlen(tmp) > 0 && ISNEWL(tmp[strlen(tmp)-1])) {
+            while(strlen(tmp) > 0 && ISNEWL(tmp[strlen(tmp)-1])) {
+                tmp[strlen(tmp)-1] = '\0';
+            }
+            tmp[strlen(tmp)+1] = '\0';
+            tmp[strlen(tmp)] = '\n';
+        }
 
 	if (!feof(fl)) {
 	    if (strlen(buf) + strlen(tmp) + 2 > MAX_STRING_LENGTH) {
@@ -2191,57 +2183,31 @@ int file_to_string(const char *name, char *buf)
 		FCLOSE(fl);
 		return (-1);
 	    }
-	    strcat(buf, tmp);
-	    *(buf + strlen(buf) + 1) = '\0';
-	    *(buf + strlen(buf)) = '\r';
+	    strlcat(buf, tmp, MAX_STRING_LENGTH);
 	}
-    }
-    while (!feof(fl));
+    } while (!feof(fl));
 
     FCLOSE(fl);
-
     return (0);
 }
 
 /* read contents of a text file, and place in buf */
 int file_to_prompt(const char *name, char *buf)
 {
-    FILE                                   *fl = NULL;
-    char                                    tmp[100] = "\0\0\0\0\0\0\0";
+    int rc = -1;
 
     if (DEBUG > 2)
 	log_info("called %s with %s, %s", __PRETTY_FUNCTION__, VNULL(name), VNULL(buf));
 
-    *buf = '\0';
+    rc = file_to_string(name, buf);
 
-    if (!(fl = fopen(name, "r"))) {
-	log_error("file-to-prompt");
-	*buf = '\0';
-	return (-1);
+    if(rc >= 0) {
+        // If we got something, remove any trailing newlines.
+        while(strlen(buf) > 0 && ISNEWL(buf[strlen(buf)-1]))
+            buf[strlen(buf)-1] = '\0';
     }
-    do {
-	fgets(tmp, 99, fl);
 
-	if (!feof(fl)) {
-	    if (strlen(buf) + strlen(tmp) + 2 > MAX_STRING_LENGTH) {
-		log_error("fl->strng: string too big (db.c, file_to_string)");
-		*buf = '\0';
-		FCLOSE(fl);
-		return (-1);
-	    }
-	    strcat(buf, tmp);
-	    *(buf + strlen(buf) + 1) = '\0';
-	    *(buf + strlen(buf)) = '\r';
-	}
-    }
-    while (!feof(fl));
-    if (strlen(buf) > 2)
-	if (buf[strlen(buf) - 2] == '\n')
-	    buf[strlen(buf) - 2] = '\0';
-
-    FCLOSE(fl);
-
-    return (0);
+    return rc;
 }
 
 /* clear some of the the working variables of a char */

@@ -115,6 +115,7 @@ int board(struct char_data *ch, int cmd, char *arg)
     case CMD_east:
     case CMD_exits:
     case CMD_gtell:
+    case CMD_help:
     case CMD_idea:
     case CMD_info:
     case CMD_north:
