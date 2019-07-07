@@ -12,6 +12,7 @@
 #include "crc32.h"
 #include "interpreter.h"
 #include "utils.h"
+#include "db.h"
 #ifdef I3
 #include "i3.h"
 #endif
@@ -73,6 +74,9 @@ char *sql_version(struct sql_connection *db) {
 void sql_startup(void) {
     char log_msg[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
     
+    log_boot("Opening SQL database for Logging.");
+    // The act of logging anything will attempt to open the logging database.
+
     log_boot("Opening SQL database for I3.");
     sql_connect(&db_i3log);
     log_boot("PostgreSQL Version: %s\n", sql_version(&db_i3log));
@@ -92,6 +96,7 @@ void sql_startup(void) {
 
     log_boot("Opening SQL database for WileyMUD.");
     sql_connect(&db_wileymud);
+    setup_messages_table();
     //setup_bans_table();
 }
 
@@ -448,6 +453,47 @@ void setup_logfile_table(void) {
     PQclear(res);
 }
 
+void setup_messages_table(void) {
+    PGresult *res = NULL;
+    ExecStatusType st = 0;
+    char *sql = "CREATE TABLE IF NOT EXISTS messages ( "
+                "    created TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT (now() AT TIME ZONE 'UTC'), "
+                "    updated TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT (now() AT TIME ZONE 'UTC'), "
+                "    filename TEXT PRIMARY KEY NOT NULL, "
+                "    message TEXT "
+                "); ";
+    char *sql2 = "CREATE INDEX IF NOT EXISTS ix_messages_updated ON messages (updated);";
+    char *sql3 = "CREATE INDEX IF NOT EXISTS ix_messages_filename ON messages (filename);";
+
+    sql_connect(&db_wileymud);
+    res = PQexec(db_wileymud.dbc, sql);
+    st = PQresultStatus(res);
+    if( st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE ) {
+        log_fatal("Cannot create messages table: %s", PQerrorMessage(db_wileymud.dbc));
+        PQclear(res);
+	proper_exit(MUD_HALT);
+    }
+    PQclear(res);
+
+    res = PQexec(db_wileymud.dbc, sql2);
+    st = PQresultStatus(res);
+    if( st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE ) {
+        log_fatal("Cannot create messages updated index: %s", PQerrorMessage(db_wileymud.dbc));
+        PQclear(res);
+	proper_exit(MUD_HALT);
+    }
+    PQclear(res);
+
+    res = PQexec(db_wileymud.dbc, sql3);
+    st = PQresultStatus(res);
+    if( st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE ) {
+        log_fatal("Cannot create messages filename index: %s", PQerrorMessage(db_wileymud.dbc));
+        PQclear(res);
+	proper_exit(MUD_HALT);
+    }
+    PQclear(res);
+}
+
 void setup_bans_table(void) {
     PGresult *res = NULL;
     ExecStatusType st = 0;
@@ -778,9 +824,10 @@ void bug_sql( const char *logtype, const char *filename, const char *function, i
     res = PQexecParams(db_logfile.dbc, sql, 11, NULL, param_val, param_len, param_bin, 0);
     st = PQresultStatus(res);
     if( st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE ) {
+        // In case of an error, we defined a special logging level that does NOT
+        // attempt to log to SQL, so we can still emit errors if the database is
+        // not available.
         log_sql("Cannot insert log message: %s", PQerrorMessage(db_logfile.dbc));
-        //PQclear(res);
-	//proper_exit(MUD_HALT);
     }
     PQclear(res);
 }
@@ -813,7 +860,7 @@ void addspeaker_sql( const char *speaker, const char *pinkfish ) {
     PQclear(res);
 }
 
-void do_checkurl(struct char_data *ch, const char *argument, int cmd)
+void do_checkurl( struct char_data *ch, const char *argument, int cmd )
 {
     static char                             buf[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
     static char                             tmp[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
@@ -904,3 +951,96 @@ void do_checkurl(struct char_data *ch, const char *argument, int cmd)
     }
 }
 
+char *update_message_from_file( const char *filename, int is_prompt ) {
+    static char                             tmp[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
+    time_t file_timestamp = -1;
+    time_t sql_timestamp = -1;
+
+    PGresult *res = NULL;
+    ExecStatusType st = 0;
+    const char *sql =   "SELECT extract(EPOCH from created) AS the_time, "
+                        "       message "
+                        "FROM   messages "
+                        "WHERE  filename = $1;";
+    const char *sql2 =  "INSERT INTO messages(filename, message) "
+                        "VALUES ($1, $2) "
+                        "ON CONFLICT (filename) "
+                        "DO UPDATE SET "
+                        "    created = now() AT TIME ZONE 'UTC', "
+                        "    message = $2;";
+    const char *param_val[2];
+    int param_len[2];
+    int param_bin[2] = {0,0};
+    int rows = 0;
+    int columns = 0;
+
+    file_timestamp = file_date(filename);
+
+    param_val[0] = filename;
+    param_len[0] = *filename ? strlen(filename) : 0;
+
+    sql_connect(&db_wileymud);
+    res = PQexecParams(db_wileymud.dbc, sql, 1, NULL, param_val, param_len, param_bin, 0);
+    st = PQresultStatus(res);
+    if( st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE ) {
+        log_fatal("Message does not exist in database: %s", PQerrorMessage(db_wileymud.dbc));
+        //PQclear(res);
+        //proper_exit(MUD_HALT);
+    } else {
+        rows = PQntuples(res);
+        if( rows > 0 ) {
+            columns = PQnfields(res);
+            if( columns > 0 ) {
+                // The PQgetvalue() API will return the integer we expect as a
+                // NULL terminated string, so we can convert it with atoi().
+                sql_timestamp = (time_t)atoi(PQgetvalue(res,0,0));
+                strlcpy(tmp, PQgetvalue(res,0,1), MAX_STRING_LENGTH);
+            }
+        }
+    }
+    PQclear(res);
+
+    // OK, at this point, we have either -1 or a valid timestamp in both
+    // variables.  If the SQL entry didn't exist but the file did, the
+    // file date > -1, so upload the file contents... likewise if the file
+    // is newer than the SQL.
+    //
+    // If the file didn't exist, but the SQL did, that's fine... file <= sql.
+    //
+    // If the file didn't exist AND the SQL also didn't exist, we have a problem.
+    if( file_timestamp == -1 && sql_timestamp == -1 ) {
+        log_fatal("No data available for %s!", filename);
+        proper_exit(MUD_HALT);
+    }
+
+    if( file_timestamp > sql_timestamp ) {
+        // OK, the file is actually newer than the SQL (or the SQL didn't exist)
+        // So, we want to upload the newer version.
+        param_val[0] = filename;
+        param_len[0] = *filename ? strlen(filename) : 0;
+
+        if(is_prompt) {
+            file_to_prompt(filename, tmp);
+        } else {
+            file_to_string(filename, tmp);
+        }
+
+        param_val[1] = tmp;
+        param_len[1] = *tmp ? strlen(tmp) : 0;
+
+        res = PQexecParams(db_wileymud.dbc, sql2, 2, NULL, param_val, param_len, param_bin, 0);
+        st = PQresultStatus(res);
+        if( st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE ) {
+            log_fatal("Cannot insert message: %s", PQerrorMessage(db_wileymud.dbc));
+            //PQclear(res);
+            //proper_exit(MUD_HALT);
+        }
+        PQclear(res);
+    }
+
+    // And at THIS point, we either have the message content from the SQL query we used
+    // earlier, or the version read in from the disk file and then uploaded.  Either way,
+    // we return that string for our caller to use (or not).
+
+    return tmp;
+}

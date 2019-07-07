@@ -24,6 +24,7 @@ void setup_speakers_table(void);
 void setup_i3log_table(void);
 void setup_urls_table(void);
 void setup_logfile_table(void);
+void setup_messages_table(void);
 // WileyMUD
 void setup_bans_table(void);
 #else
@@ -51,6 +52,7 @@ void bug_sql( const char *logtype, const char *filename, const char *function, i
               const char *victim, int victim_room, 
               const char *message );
 void addspeaker_sql( const char *speaker, const char *pinkfish );
-void do_checkurl(struct char_data *ch, const char *argument, int cmd);
+void do_checkurl( struct char_data *ch, const char *argument, int cmd );
+char *update_message_from_file( const char *filename, int is_prompt );
 
 #endif

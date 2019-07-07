@@ -15,6 +15,9 @@
 #include <sys/time.h>
 #include <openssl/md5.h>
 #include <ctype.h>
+#include <sys/stat.h>
+#include <unistd.h>
+#include <sys/sysmacros.h>
 
 #include "global.h"
 #include "bug.h"
@@ -2010,5 +2013,18 @@ char *color_wrap(int soft_limit, int hard_limit, const char *pad, const char *in
     free(is_ansi);
     scprintf(result, MAX_STRING_LENGTH, "\r\n");
     return result;
+}
+
+time_t file_date( const char *filename ) {
+    struct stat file_info;
+
+    if( stat(filename, &file_info) == -1 ) {
+        log_error("File %s does not exist.", filename);
+        return -1;
+    }
+    // I guess this is actually an internal macro now, for #define st_mtime st_mtim.tv_sec
+    // The new raw version of the stat structure allows for microseconds to be reported
+    // We don't care, here.
+    return file_info.st_mtime;
 }
 

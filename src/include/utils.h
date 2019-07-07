@@ -404,5 +404,6 @@ char  *time_elapsed(time_t since, time_t now);
 char  *json_escape(char *thing);
 char  *md5_hex(const char *str);
 char  *color_wrap(int soft_limit, int hard_limit, const char *pad, const char *input);
+time_t file_date( const char *filename );
 
 #endif

@@ -40,6 +40,7 @@
 #include "board.h"
 #include "interpreter.h"
 #include "ban.h"
+#include "sql.h"
 
 #define _DB_C
 #include "db.h"
@@ -134,39 +135,56 @@ void load_db(void)
     reset_time();
 
     log_boot("- Reading news");
-    file_to_string(NEWS_FILE, news);
+    //file_to_string(NEWS_FILE, news);
+    strlcpy(news, update_message_from_file(NEWS_FILE, 0), MAX_STRING_LENGTH);
     log_boot("- Reading credits");
-    file_to_string(CREDITS_FILE, credits);
+    //file_to_string(CREDITS_FILE, credits);
+    strlcpy(credits, update_message_from_file(CREDITS_FILE, 0), MAX_STRING_LENGTH);
     log_boot("- Reading motd");
-    file_to_string(MOTD_FILE, motd);
+    //file_to_string(MOTD_FILE, motd);
+    strlcpy(motd, update_message_from_file(MOTD_FILE, 0), MAX_STRING_LENGTH);
     log_boot("- Reading help");
-    file_to_string(HELP_PAGE_FILE, help);
+    //file_to_string(HELP_PAGE_FILE, help);
+    strlcpy(help, update_message_from_file(HELP_PAGE_FILE, 0), MAX_STRING_LENGTH);
     log_boot("- Reading info");
-    file_to_string(INFO_FILE, info);
+    //file_to_string(INFO_FILE, info);
+    strlcpy(info, update_message_from_file(INFO_FILE, 0), MAX_STRING_LENGTH);
     log_boot("- Reading wizlist");
-    file_to_string(WIZLIST_FILE, wizlist);
+    //file_to_string(WIZLIST_FILE, wizlist);
+    strlcpy(wizlist, update_message_from_file(WIZLIST_FILE, 0), MAX_STRING_LENGTH);
     log_boot("- Reading wiz motd");
-    file_to_string(WMOTD_FILE, wmotd);
+    //file_to_string(WMOTD_FILE, wmotd);
+    strlcpy(wmotd, update_message_from_file(WMOTD_FILE, 0), MAX_STRING_LENGTH);
     log_boot("- Reading greetings");
-    file_to_string(GREETINGS_FILE, greetings);
+    //file_to_string(GREETINGS_FILE, greetings);
+    strlcpy(greetings, update_message_from_file(GREETINGS_FILE, 0), MAX_STRING_LENGTH);
     log_boot("- Reading login menu");
-    file_to_prompt(LOGIN_MENU_FILE, login_menu);
+    //file_to_prompt(LOGIN_MENU_FILE, login_menu);
+    strlcpy(login_menu, update_message_from_file(LOGIN_MENU_FILE, 1), MAX_STRING_LENGTH);
     log_boot("- Reading sex menu");
-    file_to_prompt(SEX_MENU_FILE, sex_menu);
+    //file_to_prompt(SEX_MENU_FILE, sex_menu);
+    strlcpy(sex_menu, update_message_from_file(SEX_MENU_FILE, 1), MAX_STRING_LENGTH);
     log_boot("- Reading race menu");
-    file_to_prompt(RACE_MENU_FILE, race_menu);
+    //file_to_prompt(RACE_MENU_FILE, race_menu);
+    strlcpy(race_menu, update_message_from_file(RACE_MENU_FILE, 1), MAX_STRING_LENGTH);
     log_boot("- Reading class menu");
-    file_to_prompt(CLASS_MENU_FILE, class_menu);
+    //file_to_prompt(CLASS_MENU_FILE, class_menu);
+    strlcpy(class_menu, update_message_from_file(CLASS_MENU_FILE, 1), MAX_STRING_LENGTH);
     log_boot("- Reading race help");
-    file_to_prompt(RACE_HELP_FILE, race_help);
+    //file_to_prompt(RACE_HELP_FILE, race_help);
+    strlcpy(race_help, update_message_from_file(RACE_HELP_FILE, 1), MAX_STRING_LENGTH);
     log_boot("- Reading class help");
-    file_to_prompt(CLASS_HELP_FILE, class_help);
+    //file_to_prompt(CLASS_HELP_FILE, class_help);
+    strlcpy(class_help, update_message_from_file(CLASS_HELP_FILE, 1), MAX_STRING_LENGTH);
     log_boot("- Reading story");
-    file_to_string(STORY_FILE, the_story);
+    //file_to_string(STORY_FILE, the_story);
+    strlcpy(the_story, update_message_from_file(STORY_FILE, 0), MAX_STRING_LENGTH);
     log_boot("- Reading suicide warning");
-    file_to_prompt(SUICIDE_WARN_FILE, suicide_warn);
+    //file_to_prompt(SUICIDE_WARN_FILE, suicide_warn);
+    strlcpy(suicide_warn, update_message_from_file(SUICIDE_WARN_FILE, 1), MAX_STRING_LENGTH);
     log_boot("- Reading suicide result");
-    file_to_string(SUICIDE_DONE_FILE, suicide_done);
+    //file_to_string(SUICIDE_DONE_FILE, suicide_done);
+    strlcpy(suicide_done, update_message_from_file(SUICIDE_DONE_FILE, 0), MAX_STRING_LENGTH);
 
     load_bans();
 
