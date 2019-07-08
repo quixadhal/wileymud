@@ -958,7 +958,7 @@ char *update_message_from_file( const char *filename, int is_prompt ) {
 
     PGresult *res = NULL;
     ExecStatusType st = 0;
-    const char *sql =   "SELECT extract(EPOCH from created) AS the_time, "
+    const char *sql =   "SELECT extract(EPOCH from updated) AS the_time, "
                         "       message "
                         "FROM   messages "
                         "WHERE  filename = $1;";
@@ -966,7 +966,7 @@ char *update_message_from_file( const char *filename, int is_prompt ) {
                         "VALUES ($1, $2) "
                         "ON CONFLICT (filename) "
                         "DO UPDATE SET "
-                        "    created = now() AT TIME ZONE 'UTC', "
+                        "    updated = now() AT TIME ZONE 'UTC', "
                         "    message = $2;";
     const char *param_val[2];
     int param_len[2];
