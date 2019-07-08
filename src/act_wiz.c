@@ -37,6 +37,7 @@
 #include "modify.h"
 #include "tracking.h"
 #include "i3.h"
+#include "sql.h"
 #define _ACT_WIZ_C
 #include "act_wiz.h"
 
@@ -1683,7 +1684,8 @@ void do_reboot(struct char_data *ch, const char *argument, int cmd)
     allprintf("\x007The system is going down NOW !!\r\n\r\n");
     i3_log_dead();
     diku_shutdown = diku_reboot = 1;
-    update_time_and_weather();
+    //update_time_and_weather();
+    save_weather(TIME_FILE, time_info, weather_info);
 }
 
 void do_shutdown(struct char_data *ch, const char *argument, int cmd)
@@ -1714,7 +1716,8 @@ void do_shutdown(struct char_data *ch, const char *argument, int cmd)
 	allprintf("\x007The system is going down NOW !!\r\n\x007\r\n");
         i3_log_dead();
 	diku_shutdown = 1;
-	update_time_and_weather();
+	//update_time_and_weather();
+        save_weather(TIME_FILE, time_info, weather_info);
     } else if (!str_cmp(arg, "-k")) {
 	log_info("FAKE REBOOT by %s at %d:%d", GET_NAME(ch),
 		 t_info->tm_hour + 1, t_info->tm_min);
@@ -1730,7 +1733,8 @@ void do_shutdown(struct char_data *ch, const char *argument, int cmd)
 	allprintf("\x007The system is going down NOW !!\r\n\r\n");
         i3_log_dead();
 	diku_shutdown = diku_reboot = 1;
-	update_time_and_weather();
+	//update_time_and_weather();
+        save_weather(TIME_FILE, time_info, weather_info);
     } else
 	cprintf(ch, "Go shut down someone your own size.\r\n");
 }

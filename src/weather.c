@@ -18,6 +18,7 @@
 #include "handler.h"
 #include "interpreter.h"
 #include "db.h"
+#include "sql.h"
 #define _WEATHER_C
 #include "weather.h"
 
@@ -40,8 +41,10 @@ void weather_and_time(int mode)
     another_hour(mode);
     if (mode)
 	weather_change();
-    if (time_info.hours == TIME_NOON || time_info.hours == TIME_MIDNIGHT)
-	update_time_and_weather();
+    if (time_info.hours == TIME_NOON || time_info.hours == TIME_MIDNIGHT) {
+	//update_time_and_weather();
+        save_weather(NULL, time_info, weather_info);
+    }
 }
 
 void another_hour(int mode)

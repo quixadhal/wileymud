@@ -201,7 +201,7 @@ obj/act_wiz.o: act_wiz.c include/global.h include/bug.h include/utils.h \
   include/reception.h include/spec_procs.h include/multiclass.h \
   include/act_skills.h include/act_info.h include/fight.h include/hash.h \
   include/weather.h include/modify.h include/tracking.h include/i3.h \
-  include/act_wiz.h
+  include/sql.h include/act_wiz.h
 obj/act_social.o: act_social.c include/global.h include/bug.h include/utils.h \
   include/comm.h include/interpreter.h include/handler.h include/db.h \
   include/spells.h include/multiclass.h include/act_social.h
@@ -399,7 +399,7 @@ obj/random.o: random.c include/global.h include/bug.h include/utils.h \
   include/comm.h include/i3.h include/random.h
 obj/weather.o: weather.c include/global.h include/bug.h include/utils.h \
   include/comm.h include/handler.h include/interpreter.h include/db.h \
-  include/weather.h
+  include/sql.h include/weather.h
 obj/imc.o: imc.c
 obj/board.o: board.c include/global.h include/bug.h include/utils.h \
   include/comm.h include/db.h include/interpreter.h include/multiclass.h \
@@ -414,7 +414,8 @@ obj/spell_parser.o: spell_parser.c include/global.h include/bug.h \
   include/fight.h include/act_info.h include/spell_parser.h
 obj/sql.o: sql.c include/global.h include/bug.h include/comm.h \
   include/version.h include/crc32.h include/interpreter.h \
-  include/utils.h include/db.h include/i3.h include/sql.h
+  include/utils.h include/db.h include/weather.h include/i3.h \
+  include/sql.h
 obj/db.o: db.c include/global.h include/i3.h include/bug.h include/utils.h \
   include/comm.h include/handler.h include/mudlimits.h include/opinion.h \
   include/hash.h include/constants.h include/spells.h \
