@@ -3203,6 +3203,7 @@ void I3_process_channel_m(I3_HEADER *header, char *s)
     int                                     len;
     char                                    speaker_color[MAX_INPUT_LENGTH];
     char                                    mud_color[MAX_INPUT_LENGTH];
+    char                                    magic_visname[MAX_INPUT_LENGTH];
 
     I3_get_field(ps, &next_ps);
     I3_remove_quotes(&ps);
@@ -3243,11 +3244,17 @@ void I3_process_channel_m(I3_HEADER *header, char *s)
     strcpy(format, "%s ");
     strcat(format, channel->layout_m);
     snprintf(tmpvisname, MAX_INPUT_LENGTH, "%s@%s", visname, header->originator_mudname);
+    if(!strcasecmp(visname, header->originator_username)) {
+        strlcpy(magic_visname, visname, MAX_INPUT_LENGTH);
+    } else {
+        snprintf(magic_visname, MAX_INPUT_LENGTH, "%s(%s)", visname, header->originator_username);
+    }
+
     //snprintf(buf, MAX_STRING_LENGTH, format, color_time(local), channel->local_name, visname, header->originator_mudname, tps);
 
     // We omit the RESET from the end of the speaker name, so it can also catch the @ if the channel
     // format string doesn't override it.
-    snprintf(speaker_color, MAX_INPUT_LENGTH, "%s%s", color_speaker(header->originator_username), visname);
+    snprintf(speaker_color, MAX_INPUT_LENGTH, "%s%s", color_speaker(header->originator_username), magic_visname);
     snprintf(mud_color, MAX_INPUT_LENGTH, "%s%s%%^RESET%%^", color_speaker(header->originator_username), header->originator_mudname);
     snprintf(buf, MAX_STRING_LENGTH, format, color_time(local), channel->local_name, speaker_color, mud_color, tps);
 
