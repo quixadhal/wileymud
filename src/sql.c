@@ -387,6 +387,7 @@ void setup_i3log_table(void) {
               "LEFT JOIN pinkfish_map pinkfish_map_speaker "
               "       ON (speakers.pinkfish = pinkfish_map_speaker.pinkfish); ";
 
+    sql_connect(&db_i3log);
     res = PQexec(db_i3log.dbc, sql);
     st = PQresultStatus(res);
     if( st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE ) {
@@ -1215,6 +1216,7 @@ void save_weather(const char *filename, struct time_info_data local_time,
     param_val[10] = strdup(tmp);
     param_len[10] = *tmp ? strlen(tmp) : 0;
 
+    sql_connect(&db_wileymud);
     res = PQexecParams(db_wileymud.dbc, sql, 11, NULL, (const char **)param_val, param_len, param_bin, 0);
     st = PQresultStatus(res);
     if( st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE ) {
@@ -1421,6 +1423,7 @@ int remove_ban(struct ban *pal) {
     char *sql_at   =  "DELETE FROM bans WHERE name = $1 AND ip = $2;";
     int rows = 0;
 
+    sql_connect(&db_wileymud);
     if(pal->name[0] && pal->ip[0]) {
         // A ban of user@ip
         param_val[0] = (pal->name[0]) ? pal->name : NULL;
