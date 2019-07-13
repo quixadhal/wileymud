@@ -1366,24 +1366,25 @@ int add_ban(struct ban *pal) {
     PGresult *res = NULL;
     ExecStatusType st = 0;
     const char *sql = "INSERT INTO bans ( expires, name, ip, banned_by, reason ) "
-                      "VALUES ($1,$2,$3,$4,$5) "
+                      "VALUES (to_timestamp($1),$2,$3,$4,$5) "
                       "ON CONFLICT (name, ip) "
                       "DO UPDATE SET updated = now(), "
                       "              expires = to_timestamp($1), "
                       "              name = $2, ip = $3, "
                       "              banned_by = $4, reason = $5;";
+    //const Oid *param_types[5];
     const char *param_val[5];
     int param_len[5];
-    int param_bin[5] = {0,0,0,0,0};
-    char expires_str[MAX_INPUT_LENGTH];
+    int param_bin[5] = {1,0,0,0,0};
+    int param_expires;
 
     if(pal->expires >= 0)
-        snprintf(expires_str, MAX_INPUT_LENGTH, "%ld", pal->expires);
+        param_expires = htonl(pal->expires);
 
     // NOTE:  Because the strings in the ban structure are fixed arrays,
     // they won't be NULL, so we assume you mean NULL for the database
     // if you give us an empty string.
-    param_val[0] = (pal->expires >= 0) ? expires_str : NULL;
+    param_val[0] = (pal->expires >= 0) ? (char *)&param_expires : NULL;
     param_val[1] = (pal->name[0]) ? pal->name : NULL;
     param_val[2] = (pal->ip[0]) ? pal->ip : NULL;
     param_val[3] = (pal->banned_by[0]) ? pal->banned_by : NULL;
@@ -1415,19 +1416,30 @@ int remove_ban(struct ban *pal) {
     const char *param_val[2];
     int param_len[2];
     int param_bin[2] = {0,0};
-    char *sql =  "DELETE FROM bans WHERE name = $1 AND ip = $2;";
+    char *sql_name =  "DELETE FROM bans WHERE name = $1 AND ip IS NULL;";
+    char *sql_ip   =  "DELETE FROM bans WHERE name IS NULL AND ip = $1;";
+    char *sql_at   =  "DELETE FROM bans WHERE name = $1 AND ip = $2;";
     int rows = 0;
 
-    if(!pal->name[0] && !pal->ip[0]) {
+    if(pal->name[0] && pal->ip[0]) {
+        // A ban of user@ip
+        param_val[0] = (pal->name[0]) ? pal->name : NULL;
+        param_val[1] = (pal->ip[0]) ? pal->ip : NULL;
+        res = PQexecParams(db_wileymud.dbc, sql_at, 2, NULL, param_val, param_len, param_bin, 0);
+    } else if(pal->name[0]) {
+        // A global name ban
+        param_val[0] = (pal->name[0]) ? pal->name : NULL;
+        res = PQexecParams(db_wileymud.dbc, sql_name, 1, NULL, param_val, param_len, param_bin, 0);
+    } else if(pal->ip[0]) {
+        // A ban of everyone at an IP address
+        param_val[0] = (pal->ip[0]) ? pal->ip : NULL;
+        res = PQexecParams(db_wileymud.dbc, sql_ip, 1, NULL, param_val, param_len, param_bin, 0);
+    } else {
         // I TOLD you not to do that!
         log_error("Empty name AND ip passed to remove_ban.");
         return 0;
     }
 
-    param_val[0] = (pal->name[0]) ? pal->name : NULL;
-    param_val[1] = (pal->ip[0]) ? pal->ip : NULL;
-
-    res = PQexecParams(db_wileymud.dbc, sql, 2, NULL, param_val, param_len, param_bin, 0);
     st = PQresultStatus(res);
     if( st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE ) {
         log_error("Cannot delete ban from bans table: %s", PQerrorMessage(db_wileymud.dbc));
