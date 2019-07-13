@@ -12,27 +12,30 @@
 // logs in from elsewhere, they will be allowed... and new characters of
 // that name can be made if that user doesn't exist anymore.
 struct ban {
-    int     updated;                        // The ban was last updated at this time.
-    int     expires;                        // The ban expires at this timestamp, never if 0.
+    time_t  updated;                        // The ban was last updated at this time.
+    time_t  expires;                        // The ban expires at this timestamp, never if 0.
     char    name[MAX_INPUT_LENGTH];         // The character name banned.
     char    ip[MAX_INPUT_LENGTH];           // The address banned.
     char    banned_by[MAX_INPUT_LENGTH];    // The immortal that banned you.
     char    reason[MAX_STRING_LENGTH];      // The reason for being banned, if not NULL.
 };
 
-#define BANNED_NAME_FILE  "adm/banned_names"
-#define BANNED_IP_FILE    "adm/banned_ips"
-#define BAN_FILE          "adm/bans"
+#ifndef _BAN_C
+extern struct ban *ban_list;
+extern int         ban_list_count;
+#endif
 
-void					unload_bans(void);
-void					load_bans(void);
-void					save_bans(void);
-int                                     acceptable_name( const char *name );
-void                                    do_ban(struct char_data *ch, const char *argument, int cmd);
-void                                    do_unban(struct char_data *ch, const char *argument, int cmd);
+void        load_bans(void);
+void        unload_bans(void);
+int         add_ban(struct ban *pal);
+int         remove_ban(struct ban *pal);
 
-int                                     banned_ip(char *ip);
-int                                     banned_name(char *name);
-int                                     banned_at(char *name, char *ip);
+int         acceptable_name(const char *name);
+int         banned_ip(char *ip);
+int         banned_name(char *name);
+int         banned_at(char *name, char *ip);
+
+void        do_ban(struct char_data *ch, const char *argument, int cmd);
+void        do_unban(struct char_data *ch, const char *argument, int cmd);
 
 #endif

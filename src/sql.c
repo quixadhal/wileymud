@@ -15,6 +15,7 @@
 #include "utils.h"
 #include "db.h"
 #include "weather.h"
+#include "ban.h"
 #ifdef I3
 #include "i3.h"
 #endif
@@ -105,7 +106,7 @@ void sql_startup(void) {
     setup_weather_table();
 
     // Bans
-    //setup_bans_table();
+    setup_bans_table();
 }
 
 void sql_shutdown(void) {
@@ -152,7 +153,7 @@ void setup_logfile_table(void) {
     if( st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE ) {
         log_fatal("Cannot create log table: %s", PQerrorMessage(db_logfile.dbc));
         PQclear(res);
-	proper_exit(MUD_HALT);
+        proper_exit(MUD_HALT);
     }
     PQclear(res);
 
@@ -161,7 +162,7 @@ void setup_logfile_table(void) {
     if( st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE ) {
         log_fatal("Cannot create logfile local index: %s", PQerrorMessage(db_logfile.dbc));
         PQclear(res);
-	proper_exit(MUD_HALT);
+        proper_exit(MUD_HALT);
     }
     PQclear(res);
 
@@ -170,7 +171,7 @@ void setup_logfile_table(void) {
     if( st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE ) {
         log_fatal("Cannot create logfile logtype index: %s", PQerrorMessage(db_logfile.dbc));
         PQclear(res);
-	proper_exit(MUD_HALT);
+        proper_exit(MUD_HALT);
     }
     PQclear(res);
 
@@ -179,7 +180,7 @@ void setup_logfile_table(void) {
     if( st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE ) {
         log_fatal("Cannot create logtail view: %s", PQerrorMessage(db_logfile.dbc));
         PQclear(res);
-	proper_exit(MUD_HALT);
+        proper_exit(MUD_HALT);
     }
     PQclear(res);
 }
@@ -265,7 +266,7 @@ void setup_pinkfish_map_table(void) {
     if( st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE ) {
         log_fatal("Cannot create pinkfish_map table: %s", PQerrorMessage(db_i3log.dbc));
         PQclear(res);
-	proper_exit(MUD_HALT);
+        proper_exit(MUD_HALT);
     }
     PQclear(res);
 }
@@ -284,7 +285,7 @@ void setup_hours_table(void) {
     if( st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE ) {
         log_fatal("Cannot create hours table: %s", PQerrorMessage(db_i3log.dbc));
         PQclear(res);
-	proper_exit(MUD_HALT);
+        proper_exit(MUD_HALT);
     }
     PQclear(res);
 }
@@ -303,7 +304,7 @@ void setup_channels_table(void) {
     if( st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE ) {
         log_fatal("Cannot create channels table: %s", PQerrorMessage(db_i3log.dbc));
         PQclear(res);
-	proper_exit(MUD_HALT);
+        proper_exit(MUD_HALT);
     }
     PQclear(res);
 }
@@ -322,7 +323,7 @@ void setup_speakers_table(void) {
     if( st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE ) {
         log_fatal("Cannot create speakers table: %s", PQerrorMessage(db_i3log.dbc));
         PQclear(res);
-	proper_exit(MUD_HALT);
+        proper_exit(MUD_HALT);
     }
     PQclear(res);
 }
@@ -391,7 +392,7 @@ void setup_i3log_table(void) {
     if( st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE ) {
         log_fatal("Cannot create i3log table: %s", PQerrorMessage(db_i3log.dbc));
         PQclear(res);
-	proper_exit(MUD_HALT);
+        proper_exit(MUD_HALT);
     }
     PQclear(res);
 
@@ -400,7 +401,7 @@ void setup_i3log_table(void) {
     if( st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE ) {
         log_fatal("Cannot create i3log local index: %s", PQerrorMessage(db_i3log.dbc));
         PQclear(res);
-	proper_exit(MUD_HALT);
+        proper_exit(MUD_HALT);
     }
     PQclear(res);
 
@@ -409,7 +410,7 @@ void setup_i3log_table(void) {
     if( st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE ) {
         log_fatal("Cannot drop i3log row constraint: %s", PQerrorMessage(db_i3log.dbc));
         PQclear(res);
-	proper_exit(MUD_HALT);
+        proper_exit(MUD_HALT);
     }
     PQclear(res);
 
@@ -418,7 +419,7 @@ void setup_i3log_table(void) {
     if( st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE ) {
         log_fatal("Cannot create i3log row constraint: %s", PQerrorMessage(db_i3log.dbc));
         PQclear(res);
-	proper_exit(MUD_HALT);
+        proper_exit(MUD_HALT);
     }
     PQclear(res);
 
@@ -427,7 +428,7 @@ void setup_i3log_table(void) {
     if( st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE ) {
         log_fatal("Cannot drop page view: %s", PQerrorMessage(db_i3log.dbc));
         PQclear(res);
-	proper_exit(MUD_HALT);
+        proper_exit(MUD_HALT);
     }
     PQclear(res);
 
@@ -436,7 +437,7 @@ void setup_i3log_table(void) {
     if( st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE ) {
         log_fatal("Cannot create page view: %s", PQerrorMessage(db_i3log.dbc));
         PQclear(res);
-	proper_exit(MUD_HALT);
+        proper_exit(MUD_HALT);
     }
     PQclear(res);
 }
@@ -464,7 +465,7 @@ void setup_urls_table(void) {
     if( st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE ) {
         log_fatal("Cannot create urls table: %s", PQerrorMessage(db_i3log.dbc));
         PQclear(res);
-	proper_exit(MUD_HALT);
+        proper_exit(MUD_HALT);
     }
     PQclear(res);
 
@@ -473,7 +474,7 @@ void setup_urls_table(void) {
     if( st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE ) {
         log_fatal("Cannot drop urls checksum index: %s", PQerrorMessage(db_i3log.dbc));
         PQclear(res);
-	proper_exit(MUD_HALT);
+        proper_exit(MUD_HALT);
     }
     PQclear(res);
 
@@ -482,7 +483,7 @@ void setup_urls_table(void) {
     if( st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE ) {
         log_fatal("Cannot create urls checksum index: %s", PQerrorMessage(db_i3log.dbc));
         PQclear(res);
-	proper_exit(MUD_HALT);
+        proper_exit(MUD_HALT);
     }
     PQclear(res);
 }
@@ -521,7 +522,7 @@ void add_url( const char *channel, const char *speaker, const char *mud, const c
     if( st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE ) {
         log_fatal("Cannot insert url: %s", PQerrorMessage(db_i3log.dbc));
         //PQclear(res);
-	//proper_exit(MUD_HALT);
+        //proper_exit(MUD_HALT);
     }
     PQclear(res);
 
@@ -693,7 +694,7 @@ void allchan_sql( int is_emote, const char *channel, const char *speaker, const 
     if( st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE ) {
         log_fatal("Cannot insert message: %s", PQerrorMessage(db_i3log.dbc));
         //PQclear(res);
-	//proper_exit(MUD_HALT);
+        //proper_exit(MUD_HALT);
     }
     PQclear(res);
 }
@@ -721,7 +722,7 @@ void addspeaker_sql( const char *speaker, const char *pinkfish ) {
     if( st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE ) {
         log_fatal("Cannot add speaker: %s", PQerrorMessage(db_i3log.dbc));
         //PQclear(res);
-	//proper_exit(MUD_HALT);
+        //proper_exit(MUD_HALT);
     }
     PQclear(res);
 }
@@ -746,8 +747,8 @@ void do_checkurl( struct char_data *ch, const char *argument, int cmd )
     int *col_len = NULL;
 
     if (DEBUG)
-	log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch),
-		 VNULL(argument), cmd);
+        log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch),
+                 VNULL(argument), cmd);
 
     only_argument(argument, tmp);
     if (*tmp) {
@@ -837,7 +838,7 @@ void setup_messages_table(void) {
     if( st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE ) {
         log_fatal("Cannot create messages table: %s", PQerrorMessage(db_wileymud.dbc));
         PQclear(res);
-	proper_exit(MUD_HALT);
+        proper_exit(MUD_HALT);
     }
     PQclear(res);
 
@@ -846,7 +847,7 @@ void setup_messages_table(void) {
     if( st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE ) {
         log_fatal("Cannot create messages updated index: %s", PQerrorMessage(db_wileymud.dbc));
         PQclear(res);
-	proper_exit(MUD_HALT);
+        proper_exit(MUD_HALT);
     }
     PQclear(res);
 
@@ -855,7 +856,7 @@ void setup_messages_table(void) {
     if( st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE ) {
         log_fatal("Cannot create messages filename index: %s", PQerrorMessage(db_wileymud.dbc));
         PQclear(res);
-	proper_exit(MUD_HALT);
+        proper_exit(MUD_HALT);
     }
     PQclear(res);
 }
@@ -960,7 +961,7 @@ char *update_message_from_file( const char *filename, int is_prompt ) {
 // Weather
 
 void setup_weather_table(void) {
-    //time_t beginning_of_time = 650336715;	/* Fri Aug 10 21:05:15 1990 */
+    //time_t beginning_of_time = 650336715;     /* Fri Aug 10 21:05:15 1990 */
     PGresult *res = NULL;
     ExecStatusType st = 0;
     char *sql = "CREATE TABLE IF NOT EXISTS weather ( "
@@ -989,7 +990,7 @@ void setup_weather_table(void) {
     if( st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE ) {
         log_fatal("Cannot create weather table: %s", PQerrorMessage(db_wileymud.dbc));
         PQclear(res);
-	proper_exit(MUD_HALT);
+        proper_exit(MUD_HALT);
     }
     PQclear(res);
 
@@ -998,7 +999,7 @@ void setup_weather_table(void) {
     if( st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE ) {
         log_fatal("Cannot get row count of weather table: %s", PQerrorMessage(db_wileymud.dbc));
         PQclear(res);
-	proper_exit(MUD_HALT);
+        proper_exit(MUD_HALT);
     }
     rows = PQntuples(res);
     if(rows > 0) {
@@ -1050,7 +1051,7 @@ void load_weather(const char *filename) {
     int columns = 0;
     struct time_info_data local_time;
     struct weather_data local_weather;
-    time_t beginning_of_time = 650336715;	/* Fri Aug 10 21:05:15 1990 */
+    time_t beginning_of_time = 650336715;       /* Fri Aug 10 21:05:15 1990 */
 
     file_timestamp = file_date(filename);
 
@@ -1130,7 +1131,7 @@ void load_weather(const char *filename) {
     weather_info = local_weather;
     weather_and_time(1);
     log_info("   Current Gametime: %dH %dD %dM %dY.",
-	     time_info.hours, time_info.day, time_info.month, time_info.year);
+             time_info.hours, time_info.day, time_info.month, time_info.year);
 }
 
 void save_weather(const char *filename, struct time_info_data local_time,
@@ -1241,8 +1242,8 @@ void setup_bans_table(void) {
     PGresult *res = NULL;
     ExecStatusType st = 0;
     char *sql = "CREATE TABLE IF NOT EXISTS bans ( "
-                "    updated TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT (now() AT TIME ZONE 'UTC'), "
-                "    expires TIMESTAMP WITHOUT TIME ZONE, "
+                "    updated TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "
+                "    expires TIMESTAMP WITH TIME ZONE, "
                 "    name TEXT, "
                 "    ip TEXT, "
                 "    banned_by TEXT, "
@@ -1250,6 +1251,7 @@ void setup_bans_table(void) {
                 "); ";
     char *sql2 = "CREATE INDEX IF NOT EXISTS ix_bans_name ON bans (name);";
     char *sql3 = "CREATE INDEX IF NOT EXISTS ix_bans_ip ON bans (ip);";
+    char *sql4 = "CREATE UNIQUE INDEX IF NOT EXISTS ix_bans_name_ip ON bans (name, ip);";
 
     sql_connect(&db_wileymud);
     res = PQexec(db_wileymud.dbc, sql);
@@ -1257,7 +1259,7 @@ void setup_bans_table(void) {
     if( st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE ) {
         log_fatal("Cannot create bans table: %s", PQerrorMessage(db_wileymud.dbc));
         PQclear(res);
-	proper_exit(MUD_HALT);
+        proper_exit(MUD_HALT);
     }
     PQclear(res);
 
@@ -1266,7 +1268,7 @@ void setup_bans_table(void) {
     if( st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE ) {
         log_fatal("Cannot create bans name index: %s", PQerrorMessage(db_wileymud.dbc));
         PQclear(res);
-	proper_exit(MUD_HALT);
+        proper_exit(MUD_HALT);
     }
     PQclear(res);
 
@@ -1275,8 +1277,174 @@ void setup_bans_table(void) {
     if( st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE ) {
         log_fatal("Cannot create bans ip index: %s", PQerrorMessage(db_wileymud.dbc));
         PQclear(res);
-	proper_exit(MUD_HALT);
+        proper_exit(MUD_HALT);
     }
     PQclear(res);
+
+    res = PQexec(db_wileymud.dbc, sql4);
+    st = PQresultStatus(res);
+    if( st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE ) {
+        log_fatal("Cannot create bans unique index: %s", PQerrorMessage(db_wileymud.dbc));
+        PQclear(res);
+        proper_exit(MUD_HALT);
+    }
+    PQclear(res);
+}
+
+void load_bans(void) {
+    PGresult *res = NULL;
+    ExecStatusType st = 0;
+    char *sql = "SELECT count(*) FROM bans;";
+    char *sql2 = "SELECT extract(EPOCH from updated) AS updated, "
+                 "       extract(EPOCH from expires) AS expires, "
+                 "       name, ip, banned_by, reason "
+                 "FROM bans;";
+    int rows = 0;
+    int columns = 0;
+    int count = 0;
+
+    sql_connect(&db_wileymud);
+    res = PQexec(db_wileymud.dbc, sql);
+    st = PQresultStatus(res);
+    if( st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE ) {
+        log_fatal("Cannot get row count of bans table: %s", PQerrorMessage(db_wileymud.dbc));
+        PQclear(res);
+        proper_exit(MUD_HALT);
+    }
+    rows = PQntuples(res);
+    if(rows > 0) {
+        columns = PQnfields(res);
+        if( columns > 0 ) {
+            count = atoi(PQgetvalue(res,0,0));
+        }
+    }
+    PQclear(res);
+
+    unload_bans();
+
+    if(count > 0) {
+        ban_list_count = count;
+
+        res = PQexec(db_wileymud.dbc, sql2);
+        st = PQresultStatus(res);
+        if( st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE ) {
+            log_fatal("Cannot load bans from bans table: %s", PQerrorMessage(db_wileymud.dbc));
+            PQclear(res);
+            proper_exit(MUD_HALT);
+        }
+        rows = PQntuples(res);
+        if( rows > 0 ) {
+            columns = PQnfields(res);
+            if( columns > 0 ) {
+                ban_list = (struct ban *)calloc(count, sizeof(struct ban));
+                for( int i = 0; i < count; i++) {
+                    ban_list[i].updated = (time_t)atoi(PQgetvalue(res,i,0));
+                    ban_list[i].expires = (time_t)atoi(PQgetvalue(res,i,1));
+                    strlcpy(ban_list[i].name, PQgetvalue(res,i,2), MAX_INPUT_LENGTH);
+                    strlcpy(ban_list[i].ip, PQgetvalue(res,i,3), MAX_INPUT_LENGTH);
+                    strlcpy(ban_list[i].banned_by, PQgetvalue(res,i,4), MAX_INPUT_LENGTH);
+                    strlcpy(ban_list[i].reason, PQgetvalue(res,i,5), MAX_INPUT_LENGTH);
+                }
+            }
+        }
+        PQclear(res);
+    } else {
+        log_info("There are no bans, yet.");
+    }
+}
+
+void unload_bans(void) {
+    if(ban_list)
+        free(ban_list);
+    ban_list_count = 0;
+}
+
+// NOTE:  Because the ban unix timestamps are integers, if you want to pass in
+//        NULL for database storage as NULL, you have to pass in a -1 for that field
+//        and this code has to handle it.
+int add_ban(struct ban *pal) {
+    PGresult *res = NULL;
+    ExecStatusType st = 0;
+    const char *sql = "INSERT INTO bans ( expires, name, ip, banned_by, reason ) "
+                      "VALUES ($1,$2,$3,$4,$5) "
+                      "ON CONFLICT (name, ip) "
+                      "DO UPDATE SET updated = now(), "
+                      "              expires = to_timestamp($1), "
+                      "              name = $2, ip = $3, "
+                      "              banned_by = $4, reason = $5;";
+    const char *param_val[5];
+    int param_len[5];
+    int param_bin[5] = {0,0,0,0,0};
+    char expires_str[MAX_INPUT_LENGTH];
+
+    if(pal->expires >= 0)
+        snprintf(expires_str, MAX_INPUT_LENGTH, "%ld", pal->expires);
+
+    // NOTE:  Because the strings in the ban structure are fixed arrays,
+    // they won't be NULL, so we assume you mean NULL for the database
+    // if you give us an empty string.
+    param_val[0] = (pal->expires >= 0) ? expires_str : NULL;
+    param_val[1] = (pal->name[0]) ? pal->name : NULL;
+    param_val[2] = (pal->ip[0]) ? pal->ip : NULL;
+    param_val[3] = (pal->banned_by[0]) ? pal->banned_by : NULL;
+    param_val[4] = (pal->reason[0]) ? pal->reason : NULL;
+
+    sql_connect(&db_wileymud);
+    res = PQexecParams(db_wileymud.dbc, sql, 5, NULL, param_val, param_len, param_bin, 0);
+    st = PQresultStatus(res);
+    if( st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE ) {
+        log_error("Cannot insert ban: %s", PQerrorMessage(db_wileymud.dbc));
+        PQclear(res);
+        return 0;
+        //proper_exit(MUD_HALT);
+    }
+    PQclear(res);
+
+    load_bans();
+    return 1;
+}
+
+// Bans are uniquely identified by the combination of the name/ip-address fields,
+// which is also a UNIQUE constraint in the database.  NULL for either field is
+// how you ban a name generically, or every connection from an address.  If both fields
+// are set, only that user@ip is banned, but the name is available if their account
+// is deleted.  If both are NULL, that makes no sense... don't do that.
+int remove_ban(struct ban *pal) {
+    PGresult *res = NULL;
+    ExecStatusType st = 0;
+    const char *param_val[2];
+    int param_len[2];
+    int param_bin[2] = {0,0};
+    char *sql =  "DELETE FROM bans WHERE name = $1 AND ip = $2;";
+    int rows = 0;
+
+    if(!pal->name[0] && !pal->ip[0]) {
+        // I TOLD you not to do that!
+        log_error("Empty name AND ip passed to remove_ban.");
+        return 0;
+    }
+
+    param_val[0] = (pal->name[0]) ? pal->name : NULL;
+    param_val[1] = (pal->ip[0]) ? pal->ip : NULL;
+
+    res = PQexecParams(db_wileymud.dbc, sql, 2, NULL, param_val, param_len, param_bin, 0);
+    st = PQresultStatus(res);
+    if( st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE ) {
+        log_error("Cannot delete ban from bans table: %s", PQerrorMessage(db_wileymud.dbc));
+        PQclear(res);
+        return 0;
+        //proper_exit(MUD_HALT);
+    }
+
+    rows = atoi(PQcmdTuples(res));
+    if(rows > 0) {
+        log_info("Deleted %d rows from bans table for (%s,%s)", rows, pal->name, pal->ip);
+    } else {
+        log_info("No rows deleted from bans table for (%s,%s)", pal->name, pal->ip);
+    }
+    PQclear(res);
+
+    load_bans();
+    return 1;
 }
 
