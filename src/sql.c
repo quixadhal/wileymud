@@ -825,8 +825,8 @@ void setup_messages_table(void) {
     PGresult *res = NULL;
     ExecStatusType st = 0;
     char *sql = "CREATE TABLE IF NOT EXISTS messages ( "
-                "    created TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT (now() AT TIME ZONE 'UTC'), "
-                "    updated TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT (now() AT TIME ZONE 'UTC'), "
+                "    created TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "
+                "    updated TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "
                 "    filename TEXT PRIMARY KEY NOT NULL, "
                 "    message TEXT "
                 "); ";
@@ -877,7 +877,7 @@ char *update_message_from_file( const char *filename, int is_prompt ) {
                         "VALUES ($1, $2) "
                         "ON CONFLICT (filename) "
                         "DO UPDATE SET "
-                        "    updated = now() AT TIME ZONE 'UTC', "
+                        "    updated = now(), "
                         "    message = $2;";
     const char *param_val[2];
     int param_len[2];
@@ -966,7 +966,7 @@ void setup_weather_table(void) {
     PGresult *res = NULL;
     ExecStatusType st = 0;
     char *sql = "CREATE TABLE IF NOT EXISTS weather ( "
-                "    updated TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT (now() AT TIME ZONE 'UTC'), "
+                "    updated TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "
                 "    hours INTEGER, "
                 "    day INTEGER, "
                 "    month INTEGER, "
@@ -980,7 +980,7 @@ void setup_weather_table(void) {
                 "    moon INTEGER "
                 "); ";
     char *sql2 = "SELECT count(*) FROM weather;";
-    char *sql3 = "INSERT INTO weather (updated) VALUES (to_timestamp(650336715) AT TIME ZONE 'UTC');";
+    char *sql3 = "INSERT INTO weather (updated) VALUES (to_timestamp(650336715));";
     int rows = 0;
     int columns = 0;
     int count = 0;
@@ -1141,7 +1141,7 @@ void save_weather(const char *filename, struct time_info_data local_time,
     PGresult *res = NULL;
     ExecStatusType st = 0;
     const char *sql =   "UPDATE weather SET "
-                        "    updated = now() AT TIME ZONE 'UTC', "
+                        "    updated = now(), "
                         "    hours = $1, "
                         "    day = $2, "
                         "    month = $3, "
