@@ -79,8 +79,7 @@ void do_highfive(struct char_data *ch, const char *argument, int cmd)
 void do_rentmode(struct char_data *ch, const char *argument, int cmd)
 {
     char                                    buf[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
-    double                                  it = 0.0;
-    FILE                                   *pfd = NULL;
+    float                                   factor = 0.0;
 
     if (DEBUG)
 	log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch),
@@ -92,27 +91,30 @@ void do_rentmode(struct char_data *ch, const char *argument, int cmd)
     }
     if (argument && *argument) {
 	only_argument(argument, buf);
-	if (sscanf(buf, " %lf ", &it) == 1)
-	    RENT_RATE = it;
-	cprintf(ch, "Rent now costs %f normal.", RENT_RATE);
-	log_info("Rent now costs %f normal.", RENT_RATE);
-    } else {
-	if (RENT_RATE != 0.0) {
-	    cprintf(ch, "Rent is now free!\r\n");
-	    log_info("Rent cost is now ZERO.");
-	    RENT_RATE = 0.0;
-	} else {
-	    cprintf(ch, "Rent is now normal.\r\n");
-	    log_info("Rent cost is now normal.");
-	    RENT_RATE = 1.0;
-	}
+
+        if(!str_cmp(buf, "list") || !str_cmp(buf, "show")) {
+            cprintf(ch, "Rent is currently %s and set at %f normal.\r\n",
+                    RENT_ON ? "enabled" : "disabled", RENT_RATE);
+            return;
+        } else if(!str_cmp(buf, "toggle")) {
+            toggle_rent(ch);
+            cprintf(ch, "Rent is now %s and curently set at %f normal.\r\n",
+                    RENT_ON ? "enabled" : "disabled", RENT_RATE);
+            log_info("Rent is now %s and curently set at %f normal",
+                    RENT_ON ? "enabled" : "disabled", RENT_RATE);
+            return;
+        } else if (sscanf(buf, " %f ", &factor) == 1) {
+            set_rent(ch, factor);
+            cprintf(ch, "Rent is currently %s and now set at %f normal.\r\n",
+                    RENT_ON ? "enabled" : "disabled", RENT_RATE);
+            log_info("Rent is currently %s and now set at %f normal",
+                    RENT_ON ? "enabled" : "disabled", RENT_RATE);
+            return;
+        }
     }
-    if (!(pfd = fopen(RENTCOST_FILE, "w"))) {
-	log_info("Cannot save rent cost!");
-    } else {
-	fprintf(pfd, "%f\n", RENT_RATE);
-	FCLOSE(pfd);
-    }
+    cprintf(ch, "Usage: rentmode list\r\n"
+                "       rentmode toggle\r\n"
+                "       rentmode <factor>\r\n");
 }
 
 void do_wizlock(struct char_data *ch, const char *argument, int cmd)

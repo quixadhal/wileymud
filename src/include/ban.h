@@ -27,11 +27,6 @@ extern struct ban *ban_list;
 extern int         ban_list_count;
 #endif
 
-void        load_bans(void);
-void        unload_bans(void);
-int         add_ban(struct ban *pal);
-int         remove_ban(struct ban *pal);
-
 int         acceptable_name(const char *name);
 int         banned_ip(char *ip);
 int         banned_name(char *name);

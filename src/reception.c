@@ -28,7 +28,8 @@
 #define _RECEPTION_C
 #include "reception.h"
 
-double                                  RENT_RATE = 1.0;
+float                                   RENT_RATE = 1.0;
+int                                     RENT_ON = 1;
 
 /*
  * Routines used for the "Offer"
@@ -49,7 +50,7 @@ void add_obj_cost(struct char_data *ch, struct char_data *re,
 
     if (obj) {
 	if ((obj->item_number > -1) && (cost->ok)) {
-	    temp = MAX(0, (int)(obj->obj_flags.cost_per_day * RENT_RATE));
+	    temp = RENT_ON ? MAX(0, (int)(obj->obj_flags.cost_per_day * RENT_RATE)) : 0;
 	    cost->total_cost += temp;
 	    if (re) {
 		cprintf(ch, "%30s : %d coins/day\r\n", obj->short_description, temp);

@@ -107,6 +107,9 @@ void sql_startup(void) {
 
     // Bans
     setup_bans_table();
+
+    // Rent
+    setup_rent_table();
 }
 
 void sql_shutdown(void) {
@@ -1434,23 +1437,37 @@ int add_ban(struct ban *pal) {
     if(pal->expires >= 0)
         param_expires = htonl(pal->expires);
     param_val[0] = (pal->expires >= 0) ? (char *)&param_expires : NULL;
+    param_len[0] = (pal->expires >= 0) ? sizeof(param_expires) : 0;
 
     sql_connect(&db_wileymud);
     if(!strcasecmp(pal->ban_type, "NAME")) {
         param_val[1] = (pal->name[0]) ? pal->name : NULL;
         param_val[2] = (pal->set_by[0]) ? pal->set_by : NULL;
         param_val[3] = (pal->reason[0]) ? pal->reason : NULL;
+        param_len[1] = (pal->name[0]) ? strlen(pal->name) : 0;
+        param_len[2] = (pal->set_by[0]) ? strlen(pal->set_by) : 0;
+        param_len[3] = (pal->reason[0]) ? strlen(pal->reason) : 0;
+
         res = PQexecParams(db_wileymud.dbc, sql_name, 4, NULL, param_val, param_len, param_bin, 0);
     } else if(!strcasecmp(pal->ban_type, "IP")) {
         param_val[1] = (pal->ip[0]) ? pal->ip : NULL;
         param_val[2] = (pal->set_by[0]) ? pal->set_by : NULL;
         param_val[3] = (pal->reason[0]) ? pal->reason : NULL;
+        param_len[1] = (pal->ip[0]) ? strlen(pal->ip) : 0;
+        param_len[2] = (pal->set_by[0]) ? strlen(pal->set_by) : 0;
+        param_len[3] = (pal->reason[0]) ? strlen(pal->reason) : 0;
+
         res = PQexecParams(db_wileymud.dbc, sql_ip, 4, NULL, param_val, param_len, param_bin, 0);
     } else if(!strcasecmp(pal->ban_type, "NAME_AT_IP")) {
         param_val[1] = (pal->name[0]) ? pal->name : NULL;
         param_val[2] = (pal->ip[0]) ? pal->ip : NULL;
         param_val[3] = (pal->set_by[0]) ? pal->set_by : NULL;
         param_val[4] = (pal->reason[0]) ? pal->reason : NULL;
+        param_len[1] = (pal->name[0]) ? strlen(pal->name) : 0;
+        param_len[2] = (pal->ip[0]) ? strlen(pal->ip) : 0;
+        param_len[3] = (pal->set_by[0]) ? strlen(pal->set_by) : 0;
+        param_len[4] = (pal->reason[0]) ? strlen(pal->reason) : 0;
+
         res = PQexecParams(db_wileymud.dbc, sql_at, 5, NULL, param_val, param_len, param_bin, 0);
     } else {
         log_error("INVALID ban type, %s.", VNULL(pal->ban_type));
@@ -1483,13 +1500,20 @@ int remove_ban(struct ban *pal) {
     sql_connect(&db_wileymud);
     if(!strcasecmp(pal->ban_type, "NAME")) {
         param_val[0] = (pal->name[0]) ? pal->name : NULL;
+        param_len[0] = (pal->name[0]) ? strlen(pal->name) : 0;
+
         res = PQexecParams(db_wileymud.dbc, sql_name, 1, NULL, param_val, param_len, param_bin, 0);
     } else if(!strcasecmp(pal->ban_type, "IP")) {
         param_val[0] = (pal->ip[0]) ? pal->ip : NULL;
+        param_len[0] = (pal->ip[0]) ? strlen(pal->ip) : 0;
+
         res = PQexecParams(db_wileymud.dbc, sql_ip, 1, NULL, param_val, param_len, param_bin, 0);
     } else if(!strcasecmp(pal->ban_type, "NAME_AT_IP")) {
         param_val[0] = (pal->name[0]) ? pal->name : NULL;
         param_val[1] = (pal->ip[0]) ? pal->ip : NULL;
+        param_len[0] = (pal->name[0]) ? strlen(pal->name) : 0;
+        param_len[1] = (pal->ip[0]) ? strlen(pal->ip) : 0;
+
         res = PQexecParams(db_wileymud.dbc, sql_at, 2, NULL, param_val, param_len, param_bin, 0);
     } else {
         log_error("INVALID ban type, %s.", VNULL(pal->ban_type));
@@ -1584,5 +1608,104 @@ void setup_rent_table(void) {
         }
         PQclear(res);
     }
+}
+
+void load_rent(void) {
+    PGresult *res = NULL;
+    ExecStatusType st = 0;
+    const char *sql = "SELECT enabled::integer, factor FROM rent LIMIT 1;";
+    int rows = 0;
+    int columns = 0;
+    int enabled = 0;
+    float factor = 0.0;
+
+    sql_connect(&db_wileymud);
+    res = PQexec(db_wileymud.dbc, sql);
+    st = PQresultStatus(res);
+    if( st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE ) {
+        log_fatal("Cannot get rent from rent table: %s", PQerrorMessage(db_wileymud.dbc));
+        PQclear(res);
+        proper_exit(MUD_HALT);
+    }
+
+    rows = PQntuples(res);
+    columns = PQnfields(res);
+    if(rows > 0 && columns > 1) {
+        log_boot("  Loading rent data from SQL database.");
+        enabled = atoi(PQgetvalue(res,0,0));
+        factor = atof(PQgetvalue(res,0,1));
+    } else {
+        log_fatal("Invalid result set from rent table!");
+        PQclear(res);
+        proper_exit(MUD_HALT);
+    }
+    PQclear(res);
+
+    RENT_RATE = factor;
+    RENT_ON = enabled;
+}
+
+int toggle_rent(struct char_data *ch) {
+    PGresult *res = NULL;
+    ExecStatusType st = 0;
+    const char *sql =   "UPDATE rent SET enabled = NOT enabled, "
+                        "updated = now(), "
+                        "set_by = $1;";
+    const char *param_val[1];
+    int param_len[1];
+    int param_bin[1] = {0};
+    char set_by[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
+
+    strlcpy(set_by, GET_NAME(ch), MAX_INPUT_LENGTH);
+    param_val[0] = (set_by[0]) ? set_by : NULL;
+    param_len[0] = (set_by[0]) ? strlen(set_by) : 0;
+
+    sql_connect(&db_wileymud);
+    res = PQexecParams(db_wileymud.dbc, sql, 1, NULL, param_val, param_len, param_bin, 0);
+    st = PQresultStatus(res);
+    if( st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE ) {
+        log_error("Cannot toggle rent in rent table: %s", PQerrorMessage(db_wileymud.dbc));
+        PQclear(res);
+        return 0;
+        //proper_exit(MUD_HALT);
+    }
+    PQclear(res);
+
+    load_rent();
+    return 1;
+}
+
+int set_rent(struct char_data *ch, float factor) {
+    PGresult *res = NULL;
+    ExecStatusType st = 0;
+    const char *sql =   "UPDATE rent SET factor = $2, "
+                        "updated = now(), "
+                        "set_by = $1;";
+    const char *param_val[2];
+    int param_len[2];
+    int param_bin[2] = {0,0};
+    char set_by[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
+    char factor_buf[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
+
+    strlcpy(set_by, GET_NAME(ch), MAX_INPUT_LENGTH);
+    param_val[0] = (set_by[0]) ? set_by : NULL;
+    param_len[0] = (set_by[0]) ? strlen(set_by) : 0;
+    snprintf(factor_buf, MAX_INPUT_LENGTH, "%f", factor);
+    param_val[1] = (factor_buf[0]) ? factor_buf : NULL;
+    param_len[1] = (factor_buf[0]) ? strlen(factor_buf) : 0;
+
+    sql_connect(&db_wileymud);
+    res = PQexecParams(db_wileymud.dbc, sql, 2, NULL, param_val, param_len, param_bin, 0);
+    st = PQresultStatus(res);
+    if( st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE ) {
+        log_error("Cannot set rent in rent table: %s", PQerrorMessage(db_wileymud.dbc));
+        PQclear(res);
+        return 0;
+        //proper_exit(MUD_HALT);
+    }
+    PQclear(res);
+
+    load_rent();
+    return 1;
 }
 
