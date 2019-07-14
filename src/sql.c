@@ -981,6 +981,7 @@ void setup_weather_table(void) {
                 "); ";
     char *sql2 = "SELECT count(*) FROM weather;";
     char *sql3 = "INSERT INTO weather (updated) VALUES (to_timestamp(650336715));";
+    char *sql4 = "DELETE FROM weather WHERE updated <> (SELECT max(UPDATED) FROM weather);";
     int rows = 0;
     int columns = 0;
     int count = 0;
@@ -1003,25 +1004,37 @@ void setup_weather_table(void) {
         proper_exit(MUD_HALT);
     }
     rows = PQntuples(res);
-    if(rows > 0) {
-        columns = PQnfields(res);
-        if( columns > 0 ) {
-            count = atoi(PQgetvalue(res,0,0));
-        }
+    columns = PQnfields(res);
+    if(rows > 0 && columns > 0) {
+        count = atoi(PQgetvalue(res,0,0));
+    } else {
+        log_fatal("Invalid result set from row count!");
+        PQclear(res);
+        proper_exit(MUD_HALT);
     }
     PQclear(res);
 
     if(count < 1) {
+        // Insert our default value.
         res = PQexec(db_wileymud.dbc, sql3);
         st = PQresultStatus(res);
         if( st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE ) {
-            log_fatal("Cannot insert placeholder row: %s", PQerrorMessage(db_wileymud.dbc));
+            log_fatal("Cannot insert placeholder row to weather table: %s", PQerrorMessage(db_wileymud.dbc));
             PQclear(res);
             proper_exit(MUD_HALT);
         }
         PQclear(res);
     } else if(count > 1) {
+        // That shouldn't happen... fix it!
         log_error("There are %d rows in the weather table, instead of just ONE!", count);
+        res = PQexec(db_wileymud.dbc, sql4);
+        st = PQresultStatus(res);
+        if( st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE ) {
+            log_fatal("Cannot remove old rows from weather table: %s", PQerrorMessage(db_wileymud.dbc));
+            PQclear(res);
+            proper_exit(MUD_HALT);
+        }
+        PQclear(res);
     }
 }
 
@@ -1246,14 +1259,20 @@ void setup_bans_table(void) {
     char *sql = "CREATE TABLE IF NOT EXISTS bans ( "
                 "    updated TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "
                 "    expires TIMESTAMP WITH TIME ZONE, "
+                "    enabled BOOLEAN DEFAULT true, "
+                "    ban_type TEXT NOT NULL, "
                 "    name TEXT, "
                 "    ip TEXT, "
-                "    banned_by TEXT, "
-                "    reason TEXT "
+                "    set_by TEXT DEFAULT 'SYSTEM', "
+                "    reason TEXT DEFAULT 'Naughty.', "
+                "    CONSTRAINT bans_type_name UNIQUE(ban_type, name), "
+                "    CONSTRAINT bans_type_ip UNIQUE(ban_type, ip), "
+                "    CONSTRAINT bans_type_name_ip UNIQUE(ban_type, name, ip) "
                 "); ";
-    char *sql2 = "CREATE INDEX IF NOT EXISTS ix_bans_name ON bans (name);";
-    char *sql3 = "CREATE INDEX IF NOT EXISTS ix_bans_ip ON bans (ip);";
-    char *sql4 = "CREATE UNIQUE INDEX IF NOT EXISTS ix_bans_name_ip ON bans (name, ip);";
+    char *sql2 = "CREATE INDEX IF NOT EXISTS ix_bans_enabled ON bans (enabled);";
+    char *sql3 = "CREATE INDEX IF NOT EXISTS ix_bans_type ON bans (ban_type);";
+    char *sql4 = "CREATE INDEX IF NOT EXISTS ix_bans_name ON bans (name);";
+    char *sql5 = "CREATE INDEX IF NOT EXISTS ix_bans_ip ON bans (ip);";
 
     sql_connect(&db_wileymud);
     res = PQexec(db_wileymud.dbc, sql);
@@ -1268,7 +1287,7 @@ void setup_bans_table(void) {
     res = PQexec(db_wileymud.dbc, sql2);
     st = PQresultStatus(res);
     if( st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE ) {
-        log_fatal("Cannot create bans name index: %s", PQerrorMessage(db_wileymud.dbc));
+        log_fatal("Cannot create bans enabled index: %s", PQerrorMessage(db_wileymud.dbc));
         PQclear(res);
         proper_exit(MUD_HALT);
     }
@@ -1277,7 +1296,7 @@ void setup_bans_table(void) {
     res = PQexec(db_wileymud.dbc, sql3);
     st = PQresultStatus(res);
     if( st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE ) {
-        log_fatal("Cannot create bans ip index: %s", PQerrorMessage(db_wileymud.dbc));
+        log_fatal("Cannot create bans type index: %s", PQerrorMessage(db_wileymud.dbc));
         PQclear(res);
         proper_exit(MUD_HALT);
     }
@@ -1286,7 +1305,16 @@ void setup_bans_table(void) {
     res = PQexec(db_wileymud.dbc, sql4);
     st = PQresultStatus(res);
     if( st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE ) {
-        log_fatal("Cannot create bans unique index: %s", PQerrorMessage(db_wileymud.dbc));
+        log_fatal("Cannot create bans name index: %s", PQerrorMessage(db_wileymud.dbc));
+        PQclear(res);
+        proper_exit(MUD_HALT);
+    }
+    PQclear(res);
+
+    res = PQexec(db_wileymud.dbc, sql5);
+    st = PQresultStatus(res);
+    if( st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE ) {
+        log_fatal("Cannot create bans ip index: %s", PQerrorMessage(db_wileymud.dbc));
         PQclear(res);
         proper_exit(MUD_HALT);
     }
@@ -1296,14 +1324,17 @@ void setup_bans_table(void) {
 void load_bans(void) {
     PGresult *res = NULL;
     ExecStatusType st = 0;
-    char *sql = "SELECT count(*) FROM bans;";
+    char *sql = "SELECT count(*) FROM bans WHERE enabled;";
     char *sql2 = "SELECT extract(EPOCH from updated) AS updated, "
                  "       extract(EPOCH from expires) AS expires, "
-                 "       name, ip, banned_by, reason "
-                 "FROM bans;";
+                 "       enabled::integer, ban_type, name, ip, set_by, reason "
+                 "FROM bans "
+                 "WHERE enabled;";
     int rows = 0;
     int columns = 0;
     int count = 0;
+
+    unload_bans();
 
     sql_connect(&db_wileymud);
     res = PQexec(db_wileymud.dbc, sql);
@@ -1314,17 +1345,14 @@ void load_bans(void) {
         proper_exit(MUD_HALT);
     }
     rows = PQntuples(res);
-    if(rows > 0) {
-        columns = PQnfields(res);
-        if( columns > 0 ) {
-            count = atoi(PQgetvalue(res,0,0));
-        }
+    columns = PQnfields(res);
+    if(rows > 0 && columns > 0 ) {
+        count = atoi(PQgetvalue(res,0,0));
     }
     PQclear(res);
 
-    unload_bans();
-
     if(count > 0) {
+        log_boot("  Loading ban data from SQL database.");
         ban_list_count = count;
 
         res = PQexec(db_wileymud.dbc, sql2);
@@ -1335,30 +1363,33 @@ void load_bans(void) {
             proper_exit(MUD_HALT);
         }
         rows = PQntuples(res);
-        if( rows > 0 ) {
-            columns = PQnfields(res);
-            if( columns > 0 ) {
-                ban_list = (struct ban *)calloc(count, sizeof(struct ban));
-                for( int i = 0; i < count; i++) {
-                    ban_list[i].updated = (time_t)atoi(PQgetvalue(res,i,0));
-                    ban_list[i].expires = (time_t)atoi(PQgetvalue(res,i,1));
-                    strlcpy(ban_list[i].name, PQgetvalue(res,i,2), MAX_INPUT_LENGTH);
-                    strlcpy(ban_list[i].ip, PQgetvalue(res,i,3), MAX_INPUT_LENGTH);
-                    strlcpy(ban_list[i].banned_by, PQgetvalue(res,i,4), MAX_INPUT_LENGTH);
-                    strlcpy(ban_list[i].reason, PQgetvalue(res,i,5), MAX_INPUT_LENGTH);
-                }
+        columns = PQnfields(res);
+        if( rows > 0 && columns > 0 ) {
+            ban_list = (struct ban *)calloc(count, sizeof(struct ban));
+            for( int i = 0; i < rows; i++) {
+                ban_list[i].updated = (time_t)atoi(PQgetvalue(res,i,0));
+                ban_list[i].expires = (time_t)atoi(PQgetvalue(res,i,1));
+                // We typecast enabled as integer to avoid 't' and 'f'.
+                ban_list[i].enabled = (int)atoi(PQgetvalue(res,i,2));
+                strlcpy(ban_list[i].ban_type, PQgetvalue(res,i,3), MAX_INPUT_LENGTH);
+                strlcpy(ban_list[i].name, PQgetvalue(res,i,4), MAX_INPUT_LENGTH);
+                strlcpy(ban_list[i].ip, PQgetvalue(res,i,5), MAX_INPUT_LENGTH);
+                strlcpy(ban_list[i].set_by, PQgetvalue(res,i,6), MAX_INPUT_LENGTH);
+                strlcpy(ban_list[i].reason, PQgetvalue(res,i,7), MAX_INPUT_LENGTH);
             }
         }
         PQclear(res);
     } else {
-        log_info("There are no bans, yet.");
+        log_boot("  There are no bans to load, yet.");
     }
 }
 
 void unload_bans(void) {
     if(ban_list)
         free(ban_list);
+    ban_list = NULL;
     ban_list_count = 0;
+    log_info("Ban list unloaded");
 }
 
 // NOTE:  Because the ban unix timestamps are integers, if you want to pass in
@@ -1367,14 +1398,34 @@ void unload_bans(void) {
 int add_ban(struct ban *pal) {
     PGresult *res = NULL;
     ExecStatusType st = 0;
-    const char *sql = "INSERT INTO bans ( expires, name, ip, banned_by, reason ) "
-                      "VALUES (to_timestamp($1),$2,$3,$4,$5) "
-                      "ON CONFLICT (name, ip) "
-                      "DO UPDATE SET updated = now(), "
-                      "              expires = to_timestamp($1), "
-                      "              name = $2, ip = $3, "
-                      "              banned_by = $4, reason = $5;";
-    //const Oid *param_types[5];
+    const char *sql_name = "INSERT INTO bans ( ban_type, expires, name, set_by, reason ) "
+                           "VALUES ('NAME', to_timestamp($1),$2,$3,$4) "
+                           "ON CONFLICT ON CONSTRAINT bans_type_name "
+                           "DO UPDATE SET updated = now(), "
+                           "              enabled = true, "
+                           "              ban_type = 'NAME', "
+                           "              expires = to_timestamp($1), "
+                           "              name = $2, ip = NULL, "
+                           "              set_by = $3, reason = $4;";
+    const char *sql_ip   = "INSERT INTO bans ( ban_type, expires, ip, set_by, reason ) "
+                           "VALUES ('IP', to_timestamp($1),$2,$3,$4) "
+                           "ON CONFLICT ON CONSTRAINT bans_type_ip "
+                           "DO UPDATE SET updated = now(), "
+                           "              enabled = true, "
+                           "              ban_type = 'IP', "
+                           "              expires = to_timestamp($1), "
+                           "              name = NULL, ip = $2, "
+                           "              set_by = $3, reason = $4;";
+    const char *sql_at   = "INSERT INTO bans ( ban_type, expires, name, ip, set_by, reason ) "
+                           "VALUES ('NAME_AT_IP', to_timestamp($1),$2,$3,$4,$5) "
+                           "ON CONFLICT ON CONSTRAINT bans_type_name_ip "
+                           "DO UPDATE SET updated = now(), "
+                           "              enabled = true, "
+                           "              ban_type = 'NAME_AT_IP', "
+                           "              expires = to_timestamp($1), "
+                           "              name = $2, ip = $3, "
+                           "              set_by = $4, reason = $5;";
+
     const char *param_val[5];
     int param_len[5];
     int param_bin[5] = {1,0,0,0,0};
@@ -1382,21 +1433,32 @@ int add_ban(struct ban *pal) {
 
     if(pal->expires >= 0)
         param_expires = htonl(pal->expires);
-
-    // NOTE:  Because the strings in the ban structure are fixed arrays,
-    // they won't be NULL, so we assume you mean NULL for the database
-    // if you give us an empty string.
     param_val[0] = (pal->expires >= 0) ? (char *)&param_expires : NULL;
-    param_val[1] = (pal->name[0]) ? pal->name : NULL;
-    param_val[2] = (pal->ip[0]) ? pal->ip : NULL;
-    param_val[3] = (pal->banned_by[0]) ? pal->banned_by : NULL;
-    param_val[4] = (pal->reason[0]) ? pal->reason : NULL;
 
     sql_connect(&db_wileymud);
-    res = PQexecParams(db_wileymud.dbc, sql, 5, NULL, param_val, param_len, param_bin, 0);
+    if(!strcasecmp(pal->ban_type, "NAME")) {
+        param_val[1] = (pal->name[0]) ? pal->name : NULL;
+        param_val[2] = (pal->set_by[0]) ? pal->set_by : NULL;
+        param_val[3] = (pal->reason[0]) ? pal->reason : NULL;
+        res = PQexecParams(db_wileymud.dbc, sql_name, 4, NULL, param_val, param_len, param_bin, 0);
+    } else if(!strcasecmp(pal->ban_type, "IP")) {
+        param_val[1] = (pal->ip[0]) ? pal->ip : NULL;
+        param_val[2] = (pal->set_by[0]) ? pal->set_by : NULL;
+        param_val[3] = (pal->reason[0]) ? pal->reason : NULL;
+        res = PQexecParams(db_wileymud.dbc, sql_ip, 4, NULL, param_val, param_len, param_bin, 0);
+    } else if(!strcasecmp(pal->ban_type, "NAME_AT_IP")) {
+        param_val[1] = (pal->name[0]) ? pal->name : NULL;
+        param_val[2] = (pal->ip[0]) ? pal->ip : NULL;
+        param_val[3] = (pal->set_by[0]) ? pal->set_by : NULL;
+        param_val[4] = (pal->reason[0]) ? pal->reason : NULL;
+        res = PQexecParams(db_wileymud.dbc, sql_at, 5, NULL, param_val, param_len, param_bin, 0);
+    } else {
+        log_error("INVALID ban type, %s.", VNULL(pal->ban_type));
+        return 0;
+    }
     st = PQresultStatus(res);
     if( st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE ) {
-        log_error("Cannot insert ban: %s", PQerrorMessage(db_wileymud.dbc));
+        log_error("Cannot add ban: %s", PQerrorMessage(db_wileymud.dbc));
         PQclear(res);
         return 0;
         //proper_exit(MUD_HALT);
@@ -1407,45 +1469,36 @@ int add_ban(struct ban *pal) {
     return 1;
 }
 
-// Bans are uniquely identified by the combination of the name/ip-address fields,
-// which is also a UNIQUE constraint in the database.  NULL for either field is
-// how you ban a name generically, or every connection from an address.  If both fields
-// are set, only that user@ip is banned, but the name is available if their account
-// is deleted.  If both are NULL, that makes no sense... don't do that.
 int remove_ban(struct ban *pal) {
     PGresult *res = NULL;
     ExecStatusType st = 0;
     const char *param_val[2];
     int param_len[2];
     int param_bin[2] = {0,0};
-    char *sql_name =  "DELETE FROM bans WHERE name = $1 AND ip IS NULL;";
-    char *sql_ip   =  "DELETE FROM bans WHERE name IS NULL AND ip = $1;";
-    char *sql_at   =  "DELETE FROM bans WHERE name = $1 AND ip = $2;";
+    char *sql_name =  "UPDATE bans SET updated = now(), enabled = false WHERE ban_type = 'NAME' AND name = $1 AND ip IS NULL;";
+    char *sql_ip   =  "UPDATE bans SET updated = now(), enabled = false WHERE ban_type = 'IP' AND name IS NULL AND ip = $1;";
+    char *sql_at   =  "UPDATE bans SET updated = now(), enabled = false WHERE ban_type = 'NAME_AT_IP' AND name = $1 AND ip = $2;";
     int rows = 0;
 
     sql_connect(&db_wileymud);
-    if(pal->name[0] && pal->ip[0]) {
-        // A ban of user@ip
+    if(!strcasecmp(pal->ban_type, "NAME")) {
+        param_val[0] = (pal->name[0]) ? pal->name : NULL;
+        res = PQexecParams(db_wileymud.dbc, sql_name, 1, NULL, param_val, param_len, param_bin, 0);
+    } else if(!strcasecmp(pal->ban_type, "IP")) {
+        param_val[0] = (pal->ip[0]) ? pal->ip : NULL;
+        res = PQexecParams(db_wileymud.dbc, sql_ip, 1, NULL, param_val, param_len, param_bin, 0);
+    } else if(!strcasecmp(pal->ban_type, "NAME_AT_IP")) {
         param_val[0] = (pal->name[0]) ? pal->name : NULL;
         param_val[1] = (pal->ip[0]) ? pal->ip : NULL;
         res = PQexecParams(db_wileymud.dbc, sql_at, 2, NULL, param_val, param_len, param_bin, 0);
-    } else if(pal->name[0]) {
-        // A global name ban
-        param_val[0] = (pal->name[0]) ? pal->name : NULL;
-        res = PQexecParams(db_wileymud.dbc, sql_name, 1, NULL, param_val, param_len, param_bin, 0);
-    } else if(pal->ip[0]) {
-        // A ban of everyone at an IP address
-        param_val[0] = (pal->ip[0]) ? pal->ip : NULL;
-        res = PQexecParams(db_wileymud.dbc, sql_ip, 1, NULL, param_val, param_len, param_bin, 0);
     } else {
-        // I TOLD you not to do that!
-        log_error("Empty name AND ip passed to remove_ban.");
+        log_error("INVALID ban type, %s.", VNULL(pal->ban_type));
         return 0;
     }
 
     st = PQresultStatus(res);
     if( st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE ) {
-        log_error("Cannot delete ban from bans table: %s", PQerrorMessage(db_wileymud.dbc));
+        log_error("Cannot disable ban from bans table: %s", PQerrorMessage(db_wileymud.dbc));
         PQclear(res);
         return 0;
         //proper_exit(MUD_HALT);
@@ -1453,13 +1506,83 @@ int remove_ban(struct ban *pal) {
 
     rows = atoi(PQcmdTuples(res));
     if(rows > 0) {
-        log_info("Deleted %d rows from bans table for (%s,%s)", rows, pal->name, pal->ip);
+        log_info("Disabled %d rows from bans table for (%s,%s)", rows, pal->name, pal->ip);
     } else {
-        log_info("No rows deleted from bans table for (%s,%s)", pal->name, pal->ip);
+        log_info("No rows disabled from bans table for (%s,%s)", pal->name, pal->ip);
     }
     PQclear(res);
 
     load_bans();
     return 1;
+}
+
+// Rent
+
+void setup_rent_table(void) {
+    PGresult *res = NULL;
+    ExecStatusType st = 0;
+    char *sql = "CREATE TABLE IF NOT EXISTS rent ( "
+                "    updated TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "
+                "    enabled BOOLEAN NOT NULL DEFAULT true, "
+                "    factor FLOAT NOT NULL DEFAULT 1.0, "
+                "    set_by TEXT NOT NULL DEFAULT 'SYSTEM'"
+                "); ";
+    char *sql2 = "SELECT count(*) FROM rent;";
+    char *sql3 = "INSERT INTO rent (enabled) VALUES (true);";
+    char *sql4 = "DELETE FROM rent WHERE updated <> (SELECT max(UPDATED) FROM rent);";
+    int rows = 0;
+    int columns = 0;
+    int count = 0;
+
+    sql_connect(&db_wileymud);
+    res = PQexec(db_wileymud.dbc, sql);
+    st = PQresultStatus(res);
+    if( st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE ) {
+        log_fatal("Cannot create rent table: %s", PQerrorMessage(db_wileymud.dbc));
+        PQclear(res);
+        proper_exit(MUD_HALT);
+    }
+    PQclear(res);
+
+    res = PQexec(db_wileymud.dbc, sql2);
+    st = PQresultStatus(res);
+    if( st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE ) {
+        log_fatal("Cannot get row count of rent table: %s", PQerrorMessage(db_wileymud.dbc));
+        PQclear(res);
+        proper_exit(MUD_HALT);
+    }
+    rows = PQntuples(res);
+    columns = PQnfields(res);
+    if(rows > 0 && columns > 0) {
+        count = atoi(PQgetvalue(res,0,0));
+    } else {
+        log_fatal("Invalid result set from row count!");
+        PQclear(res);
+        proper_exit(MUD_HALT);
+    }
+    PQclear(res);
+
+    if(count < 1) {
+        // Insert our default value.
+        res = PQexec(db_wileymud.dbc, sql3);
+        st = PQresultStatus(res);
+        if( st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE ) {
+            log_fatal("Cannot insert placeholder row to rent table: %s", PQerrorMessage(db_wileymud.dbc));
+            PQclear(res);
+            proper_exit(MUD_HALT);
+        }
+        PQclear(res);
+    } else if(count > 1) {
+        // That shouldn't happen... fix it!
+        log_error("There are %d rows in the rent table, instead of just ONE!", count);
+        res = PQexec(db_wileymud.dbc, sql4);
+        st = PQresultStatus(res);
+        if( st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE ) {
+            log_fatal("Cannot remove old rows from rent table: %s", PQerrorMessage(db_wileymud.dbc));
+            PQclear(res);
+            proper_exit(MUD_HALT);
+        }
+        PQclear(res);
+    }
 }
 

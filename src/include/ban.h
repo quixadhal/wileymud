@@ -14,9 +14,11 @@
 struct ban {
     time_t  updated;                        // The ban was last updated at this time.
     time_t  expires;                        // The ban expires at this timestamp, never if 0.
+    int     enabled;                        // Is this ban enabled or disabled?
+    char    ban_type[MAX_INPUT_LENGTH];     // Needed because of NULL != NULL issues.
     char    name[MAX_INPUT_LENGTH];         // The character name banned.
     char    ip[MAX_INPUT_LENGTH];           // The address banned.
-    char    banned_by[MAX_INPUT_LENGTH];    // The immortal that banned you.
+    char    set_by[MAX_INPUT_LENGTH];       // The immortal that banned you.
     char    reason[MAX_STRING_LENGTH];      // The reason for being banned, if not NULL.
 };
 
