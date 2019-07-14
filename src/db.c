@@ -132,7 +132,6 @@ void load_db(void)
     log_boot("Boot db -- BEGIN.");
 
     log_boot("- Loading game time and weather:");
-    //reset_time();
     load_weather(TIME_FILE);
 
     log_boot("- Reading news");
@@ -170,32 +169,13 @@ void load_db(void)
     log_boot("- Reading suicide result");
     strlcpy(suicide_done, update_message_from_file(SUICIDE_DONE_FILE, 0), MAX_STRING_LENGTH);
 
+    log_boot("- Loading bans");
     load_bans();
 
     log_boot("- Loading rent mode");
-    if (!(pfd = fopen(RENTCOST_FILE, "r"))) {
-	log_boot("Default rent cost of 1.0 used.");
-	if (!(pfd = fopen(RENTCOST_FILE, "w"))) {
-	    log_error("Cannot save rent cost!");
-	} else {
-	    fprintf(pfd, "%f\n", 1.0);
-	    FCLOSE(pfd);
-	}
-    } else {
-	double                                  it;
+    load_rent();
 
-	if (fscanf(pfd, " %lf ", &it) != 1) {
-	    log_error("Invalid rent cost.");
-	    if (!(pfd = fopen(RENTCOST_FILE, "w"))) {
-		log_error("Cannot save rent cost!");
-	    } else {
-		fprintf(pfd, "%f\n", 1.0);
-		FCLOSE(pfd);
-	    }
-	}
-	RENT_RATE = it;
-	FCLOSE(pfd);
-    }
+    // This part will not be SQL for a while
     log_boot("- Loading player list");
     if (!(pfd = fopen(PLAYER_FILE, "r"))) {
 	log_error("Cannot load accumulated player data\r\n");
@@ -218,6 +198,8 @@ void load_db(void)
 	    }
 	}
     }
+    // This part will not be SQL for a while
+
     log_boot("- Loading reboot frequency");
     if (!(pfd = fopen(REBOOTTIME_FILE, "r"))) {
         log_boot("Default reboot is every 23 hours");
