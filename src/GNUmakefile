@@ -244,7 +244,7 @@ obj/reception.o: reception.c include/global.h include/bug.h include/comm.h \
   include/spec_procs.h include/reception.h
 obj/modify.o: modify.c include/global.h include/bug.h include/utils.h \
   include/interpreter.h include/handler.h include/db.h include/comm.h \
-  include/multiclass.h include/modify.h
+  include/multiclass.h include/sql.h include/modify.h
 obj/spells.o: spells.c include/global.h include/bug.h include/utils.h \
   include/comm.h include/db.h include/interpreter.h include/handler.h \
   include/constants.h include/multiclass.h include/act_move.h \
@@ -415,7 +415,7 @@ obj/spell_parser.o: spell_parser.c include/global.h include/bug.h \
 obj/sql.o: sql.c include/global.h include/bug.h include/comm.h \
   include/version.h include/crc32.h include/interpreter.h \
   include/utils.h include/db.h include/weather.h include/ban.h \
-  include/i3.h include/sql.h
+  include/modify.h include/i3.h include/sql.h
 obj/db.o: db.c include/global.h include/i3.h include/bug.h include/utils.h \
   include/comm.h include/handler.h include/mudlimits.h include/opinion.h \
   include/hash.h include/constants.h include/spells.h \

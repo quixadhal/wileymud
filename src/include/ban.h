@@ -11,7 +11,7 @@
 // If both are set, the ban is a particular user@address.  If the user
 // logs in from elsewhere, they will be allowed... and new characters of
 // that name can be made if that user doesn't exist anymore.
-struct ban {
+struct ban_data {
     time_t  updated;                        // The ban was last updated at this time.
     time_t  expires;                        // The ban expires at this timestamp, never if 0.
     int     enabled;                        // Is this ban enabled or disabled?
@@ -23,8 +23,8 @@ struct ban {
 };
 
 #ifndef _BAN_C
-extern struct ban *ban_list;
-extern int         ban_list_count;
+extern struct ban_data  *ban_list;
+extern int              ban_list_count;
 #endif
 
 int         acceptable_name(const char *name);

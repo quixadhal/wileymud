@@ -8,19 +8,24 @@
 #define GR
 #define NEW
 
+struct reboot_data {
+    time_t  updated;
+    int     enabled;
+    time_t  next_reboot;
+    time_t  frequency;
+    char    set_by[MAX_INPUT_LENGTH];
+    time_t  last_message;   // temporary field, when did the last warning mesage go out?
+    char    next_reboot_text[MAX_INPUT_LENGTH]; // temporary field to avoid asking SQL
+};
+
 #ifndef _MODIFY_C
-extern int                              REBOOT_HOUR;
-extern int                              REBOOT_MIN;
-extern int                              REBOOT_FREQ;
-extern int                              REBOOT_LASTCHECK;
-extern int                              REBOOT_LEFT;	       /* 0-N, 0-59, time of optional reboot if -e lib/reboot */
-extern int                              REBOOT_DISABLED;
 extern struct room_data                *world;
-extern const char                            *string_fields[];
-extern const char                            *room_fields[];
+extern struct reboot_data               reboot;
+extern const char                      *string_fields[];
+extern const char                      *room_fields[];
 extern int                              length[];
 extern int                              room_length[];
-extern const char                            *skill_fields[];
+extern const char                      *skill_fields[];
 extern int                              max_value[];
 
 #endif

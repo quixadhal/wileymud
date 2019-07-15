@@ -22,16 +22,12 @@
 #include "db.h"
 #include "comm.h"
 #include "multiclass.h"
+#include "sql.h"
 #define _MODIFY_C
 #include "modify.h"
 
-int                                     REBOOT_HOUR = 23;
-int                                     REBOOT_MIN  = 0;	       /* 0-N, 0-59, time of optional reboot if -e lib/reboot */
-int                                     REBOOT_FREQ = 0;
-int                                     REBOOT_LEFT = 0;
-int                                     REBOOT_LASTCHECK = 1502649434; // Time when the bug was fixed
-int                                     REBOOT_DISABLED = 0;
 struct room_data                       *world = NULL;	       /* dyn alloc'ed array of rooms */
+struct reboot_data                      reboot;
 
 const char                             *string_fields[] = {
     "name",
@@ -877,104 +873,74 @@ void show_string(struct descriptor_data *d, char *input)
 
 void check_reboot(void)
 {
-    time_t                                  tc;
+    time_t                                  now;
+    time_t                                  time_left;
     struct tm                              *t_info = NULL;
     char                                   *tmstr = NULL;
 
     if (DEBUG > 2)
 	log_info("called %s with no arguments", __PRETTY_FUNCTION__);
 
-    tc = time(0);
+    now = time(0);
+    time_left = reboot.next_reboot - now;
 
-    //log_info("REBOOT_FREQ: %d\nREBOOT_LEFT: %d", REBOOT_FREQ, REBOOT_LEFT);
-    if (REBOOT_FREQ > 0 && REBOOT_DISABLED == 0) {
-        REBOOT_LEFT -= (tc - REBOOT_LASTCHECK);
-        REBOOT_LASTCHECK = tc;
-
-        if (REBOOT_LEFT <= 0) {
-            t_info = localtime(&tc);
-            tmstr = asctime(t_info);
-            *(tmstr + strlen(tmstr) - 1) = '\0';
-
-            allprintf("\x007\r\nBroadcast message from Quixadhal (tty0) %s...\r\n\r\n", tmstr);
-            allprintf("Automatic reboot.  Come back in a few minutes!\r\n");
-            allprintf("\x007The system is going down NOW !!\r\n\x007\r\n");
-            log_info("Rebooting!");
-            diku_shutdown = diku_reboot = 1;
-        } else if (REBOOT_LEFT <= 60 * 60) {
-            if (((REBOOT_LEFT/60) < 10) && ((REBOOT_LEFT % 60) == 0)) {
-                WizLock = 1;
-                allprintf("\x007\r\nBroadcast message from Quixadhal (tty0) %s...\r\n\r\n", tmstr);
-                allprintf("Automatic reboot.  Game is now Whizz-Locked!\r\n");
-                allprintf("\x007The system is going DOWN in %d minutes !!\r\n\x007\r\n", (REBOOT_LEFT/60));
-            } else if (((REBOOT_LEFT/60) <= 30) && ((REBOOT_LEFT % 300) == 0)) {
-                allprintf("\x007\r\nBroadcast message from Quixadhal (tty0) %s...\r\n\r\n", tmstr);
-                allprintf("Automatic reboot.  Game is now Whizz-Locked!\r\n");
-                allprintf("\x007The system is going DOWN in %d minutes !!\r\n\x007\r\n", (REBOOT_LEFT/60));
-            } else if (((REBOOT_LEFT/60) <= 60) && ((REBOOT_LEFT % 600) == 0)) {
-                allprintf("\x007\r\nBroadcast message from Quixadhal (tty0) %s...\r\n\r\n", tmstr);
-                allprintf("Automatic reboot.  Game is now Whizz-Locked!\r\n");
-                allprintf("\x007The system is going DOWN in %d minutes !!\r\n\x007\r\n", (REBOOT_LEFT/60));
-            }
+    if (reboot.enabled == FALSE) {
+        if (now >= reboot.next_reboot) {
+            set_next_reboot(); // Here, we schedule the next reboot, if any...
         }
+        return;
     }
-}
 
-#if 0
-void check_reboot(void)
-{
-    time_t                                  tc;
-    struct tm                              *t_info = NULL;
-    char                                    dummy = '\0';
-    FILE                                   *boot = NULL;
-    char                                    buf[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
-    char                                   *tmstr = NULL;
+    // More than an hour away, nothing interesting to do yet.
+    if (time_left > (60 * 60))
+        return;
 
-    if (DEBUG > 2)
-	log_info("called %s with no arguments", __PRETTY_FUNCTION__);
-
-    tc = time(0);
-    t_info = localtime(&tc);
+    t_info = localtime(&now);
     tmstr = asctime(t_info);
     *(tmstr + strlen(tmstr) - 1) = '\0';
 
-    if ((((t_info->tm_hour + 1) == REBOOT_AT1) ||
-	 ((t_info->tm_hour + 1) == REBOOT_AT2)) && (t_info->tm_min > 30))
-	if ((boot = fopen(REBOOT_FILE, "r"))) {
-	    if (t_info->tm_min > 55) {
-		log_info("**** Reboot exists ****");
-		fread(&dummy, sizeof(dummy), 1, boot);
-		if (!feof(boot)) {			       /* the file is nonepty */
-		    log_info("Reboot is nonempty.");
-		    if (system(REBOOT_FILE)) {
-			log_info("Reboot script terminated abnormally");
-			allprintf("The reboot was cancelled.\r\n");
-			sprintf(buf, "mv %s %s.FAILED", REBOOT_FILE, REBOOT_FILE);
-			system(buf);
-			FCLOSE(boot);
-			return;
-		    } else {
-			sprintf(buf, "mv %s %s.OK", REBOOT_FILE, REBOOT_FILE);
-			system(buf);
-		    }
-		}
-		sprintf(buf, "touch %s", REBOOT_FILE);
-		system(buf);
-		allprintf("\x007\r\nBroadcast message from Quixadhal (tty0) %s...\r\n\r\n",
-			  tmstr);
-		allprintf("Automatic reboot.  Come back in a few minutes!\r\n");
-		allprintf("\x007The system is going down NOW !!\r\n\x007\r\n");
-		diku_shutdown = diku_reboot = 1;
-	    } else if (t_info->tm_min > 40) {
-		allprintf("\x007\r\nBroadcast message from Quixadhal (tty0) %s...\r\n\r\n",
-			  tmstr);
-		allprintf("Automatic reboot.  Game is now Whizz-Locked!\r\n");
-		allprintf("\x007The system is going DOWN in %d minutes !!\r\n\x007\r\n",
-			  55 - t_info->tm_min);
-		WizLock = 1;
-	    }
-	    FCLOSE(boot);
-	}
+    // Note that this is only run every PULSE_REBOOT ticks, which is
+    // currently set at 599, or roughly once every 2.5 minutes.  So
+    // the finer grained messages won't work the way you might expect.
+    //
+    // The cleanest way to fix this is to make PULSE_REBOOT a proper
+    // integer rather than a #define, in whic case we can adjust the
+    // granularity.. since if it's an hour away, you probably only want
+    // a message every 10-15 minutes, but if it's a minute away, every
+    // 10 seconds is reasonable.
+
+    allprintf("\x007\r\nBroadcast message from SYSTEM (tty0) %s...\r\n\r\n", tmstr);
+
+    if (now >= reboot.next_reboot) {
+        // Time to die!
+        allprintf("Automatic reboot.  Come back in a few minutes!\r\n");
+        allprintf("\x007The system is going down NOW !!\r\n\x007\r\n");
+        log_boot("Rebooting!");
+        set_next_reboot(); // Here, we schedule the next reboot, if any...
+        diku_shutdown = diku_reboot = 1;
+    } else if (time_left <= 60) {
+        // 60 seconds or less
+        WizLock = 1;
+        if(now < (reboot.last_message + 15)) {
+            allprintf("Automatic reboot.  Game is now Whizz-Locked!\r\n");
+            allprintf("\x007The system is going DOWN in %ld seconds!  You are all going to DIE!\r\n", time_left);
+            reboot.last_message = now;
+        }
+    } else if (time_left <= (60 * 10)) {
+        // 10 minutes or less
+        WizLock = 1;
+        if(now < (reboot.last_message + (60 * 3))) {
+            allprintf("Automatic reboot.  Game is now Whizz-Locked!\r\n");
+            allprintf("\x007The system is going DOWN in %ld minutes!  You are NOT prepared!\r\n", MIN(1, (time_left / 60)));
+            reboot.last_message = now;
+        }
+    } else {
+        // One hour to go
+        if(now < (reboot.last_message + (60 * 10))) {
+            // Only spam every 10 minutes...
+            allprintf("\x007Automatic reboot in %ld minutes!  You should start finding an inn room.\r\n", MIN(1, (time_left / 60)));
+            reboot.last_message = now;
+        }
+    }
 }
-#endif
 

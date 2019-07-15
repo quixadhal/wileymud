@@ -16,8 +16,8 @@
 #define __BAN_C__
 #include "ban.h"
 
-struct ban *ban_list = NULL;
-int         ban_list_count = 0;
+struct ban_data *ban_list = NULL;
+int              ban_list_count = 0;
 
 /* Returns TRUE if this character name would be acceptable for a
  * new player.
@@ -128,7 +128,7 @@ void do_ban(struct char_data *ch, const char *argument, int cmd)
 {
     char                                    ban_type[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
     char                                    buf[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
-    struct ban                              new_ban;
+    struct ban_data                         new_ban;
 
     if (DEBUG)
 	log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch),
@@ -211,7 +211,7 @@ void do_unban(struct char_data *ch, const char *argument, int cmd)
 {
     char                                    ban_type[MAX_STRING_LENGTH] = "\0\0\0";
     char                                    buf[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
-    struct ban                              new_ban;
+    struct ban_data                         new_ban;
 
     if (DEBUG)
 	log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch),

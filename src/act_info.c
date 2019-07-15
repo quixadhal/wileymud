@@ -1865,14 +1865,13 @@ void do_mystat(struct char_data *ch, const char *argument, int cmd)
 void do_time(struct char_data *ch, const char *argument, int cmd)
 {
     struct tm                              *tm_info = NULL;
-    time_t                                  tc = (time_t) 0;
+    time_t                                  now = (time_t) 0;
     char                                    buf[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
     int                                     weekday = 0;
     int                                     day = 0;
-    char                                    nowtimebuf[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
 
-    tc = time(0);
-    tm_info = localtime(&tc);
+    now = time(0);
+    tm_info = localtime(&now);
 
     if (DEBUG)
 	log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch),
@@ -1906,12 +1905,8 @@ void do_time(struct char_data *ch, const char *argument, int cmd)
 	snprintf(buf, MAX_INPUT_LENGTH, "It is %2d:%2.2dam in the Land of RL.\r\n", tm_info->tm_hour,
 		tm_info->tm_min);
 
-    if (REBOOT_FREQ > 0) {
-        tc = time(0);
-        tc = tc + REBOOT_LEFT - (tc - REBOOT_LASTCHECK);
-        tm_info = localtime(&tc);
-        strftime(nowtimebuf, sizeof(nowtimebuf), RFC1123FMT, tm_info);
-        cprintf(ch, "%sThe next scheduled REBOOT is at %s RLT.\r\n", buf, nowtimebuf);
+    if (reboot.enabled && reboot.next_reboot > 0) {
+        cprintf(ch, "%sThe next scheduled REBOOT is at %s RLT.\r\n", buf, reboot.next_reboot_text);
     } else {
         cprintf(ch, "%s", buf);
     }
@@ -2862,22 +2857,18 @@ void tick_line(struct char_data *ch, const char *label, int pulse_count) {
     hours %= 24;
 
     if(days > 0) {
-        cprintf(ch, "    %-25s%d days, %2d:%02d:%05.2lf.\r\n", label, days, hours, minutes, seconds);
+        cprintf(ch, "    %-35s%d days, %2d:%02d:%05.2lf.\r\n", label, days, hours, minutes, seconds);
     } else if(hours > 0) {
-        cprintf(ch, "    %-34s%2d:%02d:%05.2lf\r\n", label, hours, minutes, seconds);
+        cprintf(ch, "    %-44s%2d:%02d:%05.2lf\r\n", label, hours, minutes, seconds);
     } else if(minutes > 0) {
-        cprintf(ch, "    %-37s%2d:%05.2lf\r\n", label, minutes, seconds);
+        cprintf(ch, "    %-47s%2d:%05.2lf\r\n", label, minutes, seconds);
     } else {
-        cprintf(ch, "    %-40s%5.2lf\r\n", label, seconds);
+        cprintf(ch, "    %-50s%5.2lf\r\n", label, seconds);
     }
 }
 
 void do_ticks(struct char_data *ch, const char *argument, int cmd)
 {
-    int seconds = 0;
-    int minutes = 0;
-    int hours = 0;
-    int days = 0;
     char ticktype[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
 
     if (DEBUG)
@@ -2909,24 +2900,12 @@ void do_ticks(struct char_data *ch, const char *argument, int cmd)
     tick_line(ch, "Next URL Handler tick:", pulse_url_handler);
     tick_line(ch, "Next I3 idle tick:", timestampToTicks(diffTimestamp(time_to_taunt, -1)));
 
-    if (REBOOT_FREQ > 0) {
-        seconds = REBOOT_LEFT - ((int)time(0) - REBOOT_LASTCHECK);
-        minutes = seconds / 60;
-        hours = minutes / 60;
-        days = hours / 24;
-        seconds %= 60;
-        minutes %= 60;
-        hours %= 24;
+    if (reboot.enabled && reboot.next_reboot > 0 && reboot.next_reboot >= time(0)) {
+        char tmp[MAX_INPUT_LENGTH];
 
-        if(days > 0) {
-            cprintf(ch, "    %-25s%d days, %2d:%02d:%05.2lf.\r\n", "Next REBOOT in:", days, hours, minutes, (double)seconds);
-        } else if(hours > 0) {
-            cprintf(ch, "    %-34s%2d:%02d:%05.2lf\r\n", "Next REBOOT in:", hours, minutes, (double)seconds);
-        } else if(minutes > 0) {
-            cprintf(ch, "    %-37s%2d:%05.2lf\r\n", "Next REBOOT in:", minutes, (double)seconds);
-        } else {
-            cprintf(ch, "    %-40s%5.2lf\r\n", "Next REBOOT in:", (double)seconds);
-        }
+        strlcpy(tmp, reboot.next_reboot_text, MAX_INPUT_LENGTH);
+        tmp[19] = '\0'; // 2019-07-16 12:48:31
+        cprintf(ch, "    %-36s%s\r\n", "Next REBOOT at:", reboot.next_reboot_text);
     }
 }
 

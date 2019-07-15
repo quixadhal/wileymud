@@ -201,56 +201,7 @@ void load_db(void)
     // This part will not be SQL for a while
 
     log_boot("- Loading reboot frequency");
-    if (!(pfd = fopen(REBOOTTIME_FILE, "r"))) {
-        log_boot("Default reboot is every 23 hours");
-        REBOOT_HOUR = 23;
-        REBOOT_MIN = 0;
-        REBOOT_FREQ = (REBOOT_HOUR * 60 * 60 ) + (REBOOT_MIN * 60);
-        REBOOT_LASTCHECK = time(0);
-        REBOOT_LEFT = REBOOT_FREQ;
-        REBOOT_DISABLED = 0;
-	if (!(pfd = fopen(REBOOTTIME_FILE, "w"))) {
-	    log_error("Cannot save reboot times!");
-	} else {
-	    fprintf(pfd, "%d %d\n", REBOOT_HOUR, REBOOT_MIN);
-	    FCLOSE(pfd);
-	}
-    } else {
-	int                                     hour_count,
-	                                        min_count;
-
-	if ((fscanf(pfd, " %d %d ", &hour_count, &min_count) != 2) || (hour_count < 0 || min_count < 0 || min_count > 59)) {
-	    log_error("Invalid reboot frequency.");
-            REBOOT_HOUR = 23;
-            REBOOT_MIN = 0;
-            REBOOT_FREQ = (REBOOT_HOUR * 60 * 60 ) + (REBOOT_MIN * 60);
-            REBOOT_LASTCHECK = time(0);
-            REBOOT_LEFT = REBOOT_FREQ;
-            REBOOT_DISABLED = 0;
-	    if (!(pfd = fopen(REBOOTTIME_FILE, "w"))) {
-		log_error("Cannot save reboot times!");
-	    } else {
-		fprintf(pfd, "%d %d\n", REBOOT_HOUR, REBOOT_MIN);
-		FCLOSE(pfd);
-	    }
-	} else if (hour_count == 0 && min_count == 0) {
-            REBOOT_HOUR = 23;
-            REBOOT_MIN = 0;
-            REBOOT_FREQ = (REBOOT_HOUR * 60 * 60 ) + (REBOOT_MIN * 60);
-            REBOOT_LASTCHECK = time(0);
-            REBOOT_LEFT = REBOOT_FREQ;
-            REBOOT_DISABLED = 1;
-        } else {
-            REBOOT_HOUR = hour_count;
-            REBOOT_MIN  = min_count;
-            REBOOT_FREQ = (REBOOT_HOUR * 60 * 60 ) + (REBOOT_MIN * 60);
-            REBOOT_LASTCHECK = time(0);
-            REBOOT_LEFT = REBOOT_FREQ;
-            REBOOT_DISABLED = 0;
-        }
-
-	FCLOSE(pfd);
-    }
+    load_reboot();
 
     log_boot("- Loading help files");
     if (!(help_fl = fopen(HELP_KWRD_FILE, "r")))

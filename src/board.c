@@ -154,6 +154,7 @@ int board(struct char_data *ch, int cmd, char *arg)
     case CMD_reset:
     case CMD_restore:
     case CMD_restoreall:
+    case CMD_setreboot:
     case CMD_show:
     case CMD_shutdown:
     case CMD_snoop:

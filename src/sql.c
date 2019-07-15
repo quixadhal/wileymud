@@ -16,6 +16,7 @@
 #include "db.h"
 #include "weather.h"
 #include "ban.h"
+#include "modify.h"
 #ifdef I3
 #include "i3.h"
 #endif
@@ -110,6 +111,9 @@ void sql_startup(void) {
 
     // Rent
     setup_rent_table();
+
+    // Reboot
+    setup_reboot_table();
 }
 
 void sql_shutdown(void) {
@@ -1368,7 +1372,7 @@ void load_bans(void) {
         rows = PQntuples(res);
         columns = PQnfields(res);
         if( rows > 0 && columns > 0 ) {
-            ban_list = (struct ban *)calloc(count, sizeof(struct ban));
+            ban_list = (struct ban_data *)calloc(count, sizeof(struct ban_data));
             for( int i = 0; i < rows; i++) {
                 ban_list[i].updated = (time_t)atoi(PQgetvalue(res,i,0));
                 ban_list[i].expires = (time_t)atoi(PQgetvalue(res,i,1));
@@ -1398,7 +1402,7 @@ void unload_bans(void) {
 // NOTE:  Because the ban unix timestamps are integers, if you want to pass in
 //        NULL for database storage as NULL, you have to pass in a -1 for that field
 //        and this code has to handle it.
-int add_ban(struct ban *pal) {
+int add_ban(struct ban_data *pal) {
     PGresult *res = NULL;
     ExecStatusType st = 0;
     const char *sql_name = "INSERT INTO bans ( ban_type, expires, name, set_by, reason ) "
@@ -1432,7 +1436,7 @@ int add_ban(struct ban *pal) {
     const char *param_val[5];
     int param_len[5];
     int param_bin[5] = {1,0,0,0,0};
-    int param_expires;
+    time_t param_expires;
 
     if(pal->expires >= 0)
         param_expires = htonl(pal->expires);
@@ -1486,7 +1490,7 @@ int add_ban(struct ban *pal) {
     return 1;
 }
 
-int remove_ban(struct ban *pal) {
+int remove_ban(struct ban_data *pal) {
     PGresult *res = NULL;
     ExecStatusType st = 0;
     const char *param_val[2];
@@ -1707,5 +1711,290 @@ int set_rent(struct char_data *ch, float factor) {
 
     load_rent();
     return 1;
+}
+
+// Reboot
+
+void setup_reboot_table(void) {
+    PGresult *res = NULL;
+    ExecStatusType st = 0;
+    // frequency indicates when the next reboot should be scheduled after the
+    // current one happens.  We use PostgreSQL's interval type to store this,
+    // but the UI will have simple keywords such as
+    // 'monthly', 'weekly', 'daily', 'twice' for twice a day.
+    // We may allow an addition integer argument to mean every N periods,
+    // so "setreboot daily 3" would mean reboot every 3 days.
+    // frequency is a nullable column, so one-shot reboots can be done, but
+    // the UI would be clunky unless we feed the argument directly to SQL and
+    // the user knows what PostgreSQL supports for interval strings.
+    char *sql = "CREATE TABLE IF NOT EXISTS reboot ( "
+                "    updated TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "
+                "    enabled BOOLEAN NOT NULL DEFAULT false, "
+                "    next_reboot TIMESTAMP WITH TIME ZONE DEFAULT (now() + '1 day'::interval), "
+                "    frequency INTERVAL DEFAULT '1 day'::interval, "
+                "    set_by TEXT NOT NULL DEFAULT 'SYSTEM'"
+                "); ";
+    char *sql2 = "SELECT count(*) FROM reboot;";
+    char *sql3 = "INSERT INTO reboot (enabled) VALUES (false);";
+    char *sql4 = "DELETE FROM reboot WHERE updated <> (SELECT max(UPDATED) FROM reboot);";
+    int rows = 0;
+    int columns = 0;
+    int count = 0;
+
+    sql_connect(&db_wileymud);
+    res = PQexec(db_wileymud.dbc, sql);
+    st = PQresultStatus(res);
+    if( st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE ) {
+        log_fatal("Cannot create reboot table: %s", PQerrorMessage(db_wileymud.dbc));
+        PQclear(res);
+        proper_exit(MUD_HALT);
+    }
+    PQclear(res);
+
+    res = PQexec(db_wileymud.dbc, sql2);
+    st = PQresultStatus(res);
+    if( st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE ) {
+        log_fatal("Cannot get row count of reboot table: %s", PQerrorMessage(db_wileymud.dbc));
+        PQclear(res);
+        proper_exit(MUD_HALT);
+    }
+    rows = PQntuples(res);
+    columns = PQnfields(res);
+    if(rows > 0 && columns > 0) {
+        count = atoi(PQgetvalue(res,0,0));
+    } else {
+        log_fatal("Invalid result set from row count!");
+        PQclear(res);
+        proper_exit(MUD_HALT);
+    }
+    PQclear(res);
+
+    if(count < 1) {
+        // Insert our default value.
+        res = PQexec(db_wileymud.dbc, sql3);
+        st = PQresultStatus(res);
+        if( st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE ) {
+            log_fatal("Cannot insert placeholder row to reboot table: %s", PQerrorMessage(db_wileymud.dbc));
+            PQclear(res);
+            proper_exit(MUD_HALT);
+        }
+        PQclear(res);
+    } else if(count > 1) {
+        // That shouldn't happen... fix it!
+        log_error("There are %d rows in the reboot table, instead of just ONE!", count);
+        res = PQexec(db_wileymud.dbc, sql4);
+        st = PQresultStatus(res);
+        if( st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE ) {
+            log_fatal("Cannot remove old rows from reboot table: %s", PQerrorMessage(db_wileymud.dbc));
+            PQclear(res);
+            proper_exit(MUD_HALT);
+        }
+        PQclear(res);
+    }
+}
+
+void load_reboot(void) {
+    PGresult *res = NULL;
+    ExecStatusType st = 0;
+    const char *sql =   "SELECT extract('epoch' FROM updated) AS updated, "
+                        "enabled::integer, "
+                        "extract('epoch' FROM next_reboot) AS next_reboot, "
+                        "extract('epoch' FROM frequency) AS frequencey, "
+                        "set_by, "
+                        "next_reboot AS next_reboot_text " // We grab this as text for display
+                        "FROM reboot LIMIT 1;";
+    int rows = 0;
+    int columns = 0;
+    struct reboot_data the_boot = { 0, 0, 0, 0, "", 0, "" };
+
+    sql_connect(&db_wileymud);
+    res = PQexec(db_wileymud.dbc, sql);
+    st = PQresultStatus(res);
+    if( st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE ) {
+        log_fatal("Cannot get reboot data from reboot table: %s", PQerrorMessage(db_wileymud.dbc));
+        PQclear(res);
+        proper_exit(MUD_HALT);
+    }
+
+    rows = PQntuples(res);
+    columns = PQnfields(res);
+    if(rows > 0 && columns > 4) {
+        log_boot("  Loading reboot data from SQL database.");
+        the_boot.updated = atol(PQgetvalue(res,0,0));
+        the_boot.enabled = atoi(PQgetvalue(res,0,1));
+        the_boot.next_reboot = atol(PQgetvalue(res,0,2));
+        the_boot.frequency = atol(PQgetvalue(res,0,3));
+        strlcpy(the_boot.set_by, PQgetvalue(res,0,4), MAX_INPUT_LENGTH);
+        the_boot.last_message = time(0); // temporary field for reboot message spam
+        strlcpy(the_boot.next_reboot_text, PQgetvalue(res,0,5), MAX_INPUT_LENGTH); // temp
+    } else {
+        log_fatal("Invalid result set from rent table!");
+        PQclear(res);
+        proper_exit(MUD_HALT);
+    }
+    PQclear(res);
+
+    reboot = the_boot;
+}
+
+int set_first_reboot(void) {
+    PGresult *res = NULL;
+    ExecStatusType st = 0;
+    const char *sql =   "UPDATE reboot "
+                        "SET next_reboot = now() + frequency "
+                        "WHERE frequency IS NOT NULL;";
+
+    sql_connect(&db_wileymud);
+    res = PQexec(db_wileymud.dbc, sql);
+    st = PQresultStatus(res);
+    if( st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE ) {
+        log_fatal("Cannot set next_reboot in reboot table: %s", PQerrorMessage(db_wileymud.dbc));
+        PQclear(res);
+        //proper_exit(MUD_HALT);
+        return 0;
+    }
+    PQclear(res);
+    log_boot("Next scheduled reboot set in SQL database.");
+    load_reboot();
+    return 1;
+}
+
+int set_next_reboot(void) {
+    PGresult *res = NULL;
+    ExecStatusType st = 0;
+    const char *sql =   "UPDATE reboot "
+                        "SET next_reboot = next_reboot + frequency "
+                        "WHERE frequency IS NOT NULL;";
+
+    sql_connect(&db_wileymud);
+    res = PQexec(db_wileymud.dbc, sql);
+    st = PQresultStatus(res);
+    if( st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE ) {
+        log_fatal("Cannot update next_reboot in reboot table: %s", PQerrorMessage(db_wileymud.dbc));
+        PQclear(res);
+        //proper_exit(MUD_HALT);
+        return 0;
+    }
+    PQclear(res);
+    log_boot("Next scheduled reboot updated in SQL database.");
+    load_reboot();
+    return 1;
+}
+
+int toggle_reboot(struct char_data *ch) {
+    PGresult *res = NULL;
+    ExecStatusType st = 0;
+    const char *sql =   "UPDATE reboot SET enabled = NOT enabled, "
+                        "updated = now(), "
+                        "set_by = $1;";
+    const char *param_val[1];
+    int param_len[1];
+    int param_bin[1] = {0};
+    char set_by[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
+
+    strlcpy(set_by, GET_NAME(ch), MAX_INPUT_LENGTH);
+    param_val[0] = (set_by[0]) ? set_by : NULL;
+    param_len[0] = (set_by[0]) ? strlen(set_by) : 0;
+
+    sql_connect(&db_wileymud);
+    res = PQexecParams(db_wileymud.dbc, sql, 1, NULL, param_val, param_len, param_bin, 0);
+    st = PQresultStatus(res);
+    if( st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE ) {
+        log_error("Cannot toggle reboot in reboot table: %s", PQerrorMessage(db_wileymud.dbc));
+        PQclear(res);
+        return 0;
+        //proper_exit(MUD_HALT);
+    }
+    PQclear(res);
+    load_reboot();
+    return 1;
+}
+
+int set_reboot_interval(struct char_data *ch, const char *mode, int number) {
+    PGresult *res = NULL;
+    ExecStatusType st = 0;
+    const char *sql =   "UPDATE reboot SET frequency = $1::interval, "
+                        "updated = now(), "
+                        "set_by = $2;";
+    const char *param_val[2];
+    int param_len[2];
+    int param_bin[2] = {0,0};
+    char set_by[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
+    char interval[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
+    int next_interval = 0;
+
+    if(!strcasecmp(mode, "week")) {
+        next_interval = (60 * 60 * 24 * 7 * number);
+    } else if(!strcasecmp(mode, "day")) {
+        next_interval = (60 * 60 * 24 * number);
+    } else if(!strcasecmp(mode, "hour")) {
+        next_interval = (60 * 60 * number);
+    }
+
+    snprintf(interval, MAX_INPUT_LENGTH, "%d %s", number, mode);
+    param_val[0] = (interval[0]) ? interval : NULL;
+    param_len[0] = (interval[0]) ? strlen(interval) : 0;
+    strlcpy(set_by, GET_NAME(ch), MAX_INPUT_LENGTH);
+    param_val[1] = (set_by[0]) ? set_by : NULL;
+    param_len[1] = (set_by[0]) ? strlen(set_by) : 0;
+
+    sql_connect(&db_wileymud);
+    res = PQexecParams(db_wileymud.dbc, sql, 2, NULL, param_val, param_len, param_bin, 0);
+    st = PQresultStatus(res);
+    if( st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE ) {
+        log_error("Cannot adjust reboot frequency: %s", PQerrorMessage(db_wileymud.dbc));
+        PQclear(res);
+        return 0;
+        //proper_exit(MUD_HALT);
+    }
+    PQclear(res);
+    load_reboot();
+
+    if((reboot.next_reboot < (time(0) + next_interval)) ||
+       (reboot.next_reboot > (time(0) + (2 * next_interval)))) {
+        // If our next reboot is 0 (NULL) or less than our interval, set it
+        // to be one interval's worth from now.
+        set_first_reboot();
+        load_reboot();
+    }
+    return 1;
+}
+
+void set_reboot(struct reboot_data *the_boot) {
+    PGresult *res = NULL;
+    ExecStatusType st = 0;
+    const char *sql =   "UPDATE reboot "
+                        "SET updated = now(), "
+                        "enabled = $1::boolean, "
+                        "next_reboot = to_timestamp($2), "
+                        "frequency = ($3 || ' seconds')::interval, "
+                        "set_by = $4;";
+    const char *param_val[4];
+    int param_len[4];
+    int param_bin[4] = {0,0,0,0};
+
+    int enabled = htonl(the_boot->enabled);
+    time_t next_reboot = htonl(the_boot->next_reboot);
+    time_t frequency = htonl(the_boot->frequency);
+
+    param_val[0] = enabled ? (const char *)&enabled : NULL;
+    param_len[0] = sizeof(enabled);
+    param_val[1] = next_reboot ? (const char *)&next_reboot : NULL;
+    param_len[1] = sizeof(next_reboot);
+    param_val[2] = frequency ? (const char *)&frequency : NULL;
+    param_len[2] = sizeof(frequency);
+    param_val[3] = the_boot->set_by;
+    param_len[3] = the_boot->set_by[0] ? strlen(the_boot->set_by) : 0;
+
+    sql_connect(&db_wileymud);
+    res = PQexecParams(db_wileymud.dbc, sql, 4, NULL, param_val, param_len, param_bin, 0);
+    st = PQresultStatus(res);
+    if( st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE ) {
+        log_fatal("Cannot store reboot data in reboot table: %s", PQerrorMessage(db_wileymud.dbc));
+        PQclear(res);
+        proper_exit(MUD_HALT);
+    }
+
+    load_reboot();
 }
 

@@ -3263,13 +3263,17 @@ void do_not_yet_implemented(struct char_data *ch, const char *argument, int cmd)
     cprintf(ch, "This command is not yet implemented.\r\n");
 }
 
+void show_reboot_info(struct char_data *ch) {
+    cprintf(ch, "Automatic reboots are currently %s.\r\n",
+            reboot.enabled ? "enabled" : "disabled");
+    cprintf(ch, "The next scheduled reboot %s at %s RLT.\r\n",
+        reboot.enabled ? "is" : "would be", reboot.next_reboot_text);
+}
+
 void do_setreboot(struct char_data *ch, const char *argument, int cmd)
 {
-    FILE                                   *pfd = NULL;
-    int                                     first = 0;
-    int                                     second = 0;
-    char                                    first_str[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
-    char                                    second_str[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
+    char    command_verb[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
+    char    value_arg[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
 
     if (DEBUG)
 	log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch),
@@ -3277,52 +3281,69 @@ void do_setreboot(struct char_data *ch, const char *argument, int cmd)
 
     if (IS_NPC(ch))
 	return;
-    argument = one_argument(argument, first_str);
-    if (*first_str) {
-	first = atoi(first_str);
-	if (first < 0)
-	    first = 0;
-	argument = one_argument(argument, second_str);
-	if (*second_str) {
-	    second = atoi(second_str);
-	    if (second < 0)
-		second = 0;
-	    if (second > 59)
-		second = 59;
-	} else {
-	    second = first;
-	}
-    } else {
-	first = 23;
-	second = 0;
-    }
 
-    if (first > 0) {
-        REBOOT_HOUR = first;
-        REBOOT_MIN = second;
-        REBOOT_FREQ = (REBOOT_HOUR * 60 * 60 ) + (REBOOT_MIN * 60);
-        REBOOT_LASTCHECK = time(0);
-        REBOOT_LEFT = REBOOT_FREQ;
-        REBOOT_DISABLED = 0;
+    argument = one_argument(argument, command_verb);
+    if (*command_verb) {
+        if(!str_cmp(command_verb, "list") || !str_cmp(command_verb, "show")) {
+            show_reboot_info(ch);
+            return;
+        } else if(!str_cmp(command_verb, "enable") || !str_cmp(command_verb, "on")) {
+            if(!reboot.enabled)
+                toggle_reboot(ch);
+            show_reboot_info(ch);
+            return;
+        } else if(!str_cmp(command_verb, "disable") || !str_cmp(command_verb, "off")) {
+            if(reboot.enabled)
+                toggle_reboot(ch);
+            show_reboot_info(ch);
+            return;
+        } else if(!str_cmp(command_verb, "weekly") || !str_cmp(command_verb, "week")) {
+            int number = 1;
 
-        if (!(pfd = fopen(REBOOTTIME_FILE, "w"))) {
-            log_info("Cannot save reboot times!");
-        } else {
-            fprintf(pfd, "%d %d\n", REBOOT_HOUR, REBOOT_MIN);
-            FCLOSE(pfd);
+            argument = one_argument(argument, value_arg);
+            if(*value_arg) {
+                number = atoi(value_arg);
+                if(number <= 1)
+                    number = 1;
+            }
+            set_reboot_interval(ch, "week", number);
+            show_reboot_info(ch);
+            return;
+        } else if(!str_cmp(command_verb, "daily") || !str_cmp(command_verb, "day")) {
+            int number = 1;
+
+            argument = one_argument(argument, value_arg);
+            if(*value_arg) {
+                number = atoi(value_arg);
+                if(number <= 1)
+                    number = 1;
+            }
+            set_reboot_interval(ch, "day", number);
+            show_reboot_info(ch);
+            return;
+        } else if(!str_cmp(command_verb, "twice")) {
+            set_reboot_interval(ch, "hour", 12);
+            show_reboot_info(ch);
+            return;
+        } else if(!str_cmp(command_verb, "hourly") || !str_cmp(command_verb, "hour")) {
+            int number = 1;
+
+            argument = one_argument(argument, value_arg);
+            if(*value_arg) {
+                number = atoi(value_arg);
+                if(number <= 1)
+                    number = 1;
+            }
+            set_reboot_interval(ch, "hour", number);
+            show_reboot_info(ch);
+            return;
         }
-        cprintf(ch, "You have set the reboot frequency to %2d hours and %2d minutes.\r\n", REBOOT_HOUR, REBOOT_MIN);
-        log_info("Reboot frequency set to %2d hours and %2d minutes by %s.\r\n", REBOOT_HOUR, REBOOT_MIN, GET_NAME(ch));
-    } else {
-        if (!(pfd = fopen(REBOOTTIME_FILE, "w"))) {
-            log_info("Cannot save reboot times!");
-        } else {
-            fprintf(pfd, "%d %d\n", 0, 0);
-            FCLOSE(pfd);
-        }
-        REBOOT_DISABLED = 1;
-        cprintf(ch, "You have disabled automatic reboots.\r\n");
-        log_info("Automatic reboot disabled by %s.\r\n", GET_NAME(ch));
     }
-
+    cprintf(ch, "Usage: setreboot list\r\n"
+                "       setreboot enable|disable\r\n"
+                "       setreboot week [number]\r\n"
+                "       setreboot day [number]\r\n"
+                "       setreboot twice (twice per day)\r\n"
+                "       setreboot hour [number]\r\n");
 }
+
