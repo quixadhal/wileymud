@@ -67,7 +67,7 @@ CFLAGS		= $(W_FLAGS) $(DEBUG_FLAG) $(OPT_FLAG) $(PROF_FLAG) $(M_ARCH) $(INC)
 LDFLAGS		= $(DEBUG_FLAG) $(OPT_FLAG) $(PROF_FLAG) $(DYN_FLAG)
 
 VER		= $(addprefix include/, version.h)
-OLDV		= $(shell perl -ne '$$i = $$1 if /Version\s+\d\.(\d+)w3-beta/i; END { $$i = 0 if !defined $$i; print "$$i\n";}' < $(VER))
+OLDV		= $(shell perl -ne '$$i = $$1 if /Version\s+\d\.(\d+)w3-gamma/i; END { $$i = 0 if !defined $$i; print "$$i\n";}' < $(VER))
 VERSION		= $(shell echo $(OLDV) + 1 | bc)
 
 tOBJ =	mob_actions.o spec_procs.o breath_weapons.o tracking.o \
@@ -138,9 +138,9 @@ version :
 	@echo '#define _VERSION_H' >> $(VER)
 	@echo '' >> $(VER)
 	@echo "#define VERSION_STR \\\\" >> $(VER)
-	@echo "\"\\\\r\\\\n*** Welcome to WileyMUD III, Quixadhal's Version 1.$(VERSION)w3-beta ($(DATESTAMP)) ***\\\\r\\\\n\"" >> $(VER)
+	@echo "\"\\\\r\\\\n*** Welcome to WileyMUD III, Quixadhal's Version 2.$(VERSION)w3-gamma ($(DATESTAMP)) ***\\\\r\\\\n\"" >> $(VER)
 	@echo "#define VERSION_BASE \"WileyMUD III\"" >> $(VER)
-	@echo "#define VERSION_BUILD \"1.$(VERSION)b\"" >> $(VER)
+	@echo "#define VERSION_BUILD \"2.$(VERSION)g\"" >> $(VER)
 	@echo "#define VERSION_DATE \"$(DATESTAMP)\"" >> $(VER)
 	@echo '#endif /* _VERSION_H */' >> $(VER)
 	@echo New version file generated.
