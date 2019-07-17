@@ -10,7 +10,7 @@
 #include "bug.h"
 #include "utils.h"
 #include "comm.h"           // for proper_exit()
-#include "interpreter.h"    // for WizLock
+#include "interpreter.h"    // for one_argument()
 #include "db.h"             // for time_info and weather_info
 #include "weather.h"        // for save_weather()
 #include "sql.h"
@@ -20,7 +20,8 @@
 #define _REBOOT_C
 #include "reboot.h"
 
-struct reboot_data          reboot;
+struct reboot_data          reboot = { 0, 0, 0, 0, "", 0, "" };
+int                         WizLock = FALSE;
 
 void setup_reboot_table(void) {
     PGresult *res = NULL;

@@ -325,7 +325,6 @@ struct command_info {
 extern struct command_info              cmd_info[MAX_CMD_LIST];
 extern const char                             echo_on[];
 extern const char                             echo_off[];
-extern int                              WizLock;
 extern const char                            *command[];
 extern const char                            *fill[];
 

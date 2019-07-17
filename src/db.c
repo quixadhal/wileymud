@@ -42,6 +42,7 @@
 #include "ban.h"
 #include "sql.h"
 #include "reboot.h"
+#include "rent.h"
 
 #define _DB_C
 #include "db.h"

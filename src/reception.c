@@ -25,11 +25,9 @@
 #include "multiclass.h"
 #include "act_social.h"
 #include "spec_procs.h"
+#include "rent.h"           // for RENT_ON and RENT_RATE
 #define _RECEPTION_C
 #include "reception.h"
-
-float                                   RENT_RATE = 1.0;
-int                                     RENT_ON = 1;
 
 /*
  * Routines used for the "Offer"

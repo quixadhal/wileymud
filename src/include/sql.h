@@ -31,10 +31,6 @@ void setup_messages_table(void);
 void setup_weather_table(void);
 // Bans
 void setup_bans_table(void);
-// Rent
-void setup_rent_table(void);
-extern float RENT_RATE;
-extern int RENT_ON;
 
 #else
 extern struct sql_connection db_i3log;
@@ -74,10 +70,5 @@ void unload_bans(void);
 struct ban_data;
 int add_ban(struct ban_data *pal);
 int remove_ban(struct ban_data *pal);
-
-// Rent
-void load_rent(void);
-int toggle_rent(struct char_data *ch);
-int set_rent(struct char_data *ch, float factor);
 
 #endif

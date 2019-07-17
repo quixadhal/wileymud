@@ -72,8 +72,6 @@ const char                              echo_off[] = {
     IAC, WILL, TELOPT_ECHO, '\0'
 };
 
-int                                     WizLock = FALSE;
-
 const char                             *command[] = {
     "north", "east", "south", "west", "up",
     "down", "enter", "exits", "kill", "get",

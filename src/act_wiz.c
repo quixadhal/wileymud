@@ -38,6 +38,8 @@
 #include "tracking.h"
 #include "i3.h"
 #include "sql.h"
+#include "reboot.h"
+#include "rent.h"
 #define _ACT_WIZ_C
 #include "act_wiz.h"
 

@@ -13,6 +13,7 @@ struct reboot_data {
 
 #ifndef _REBOOT_C
 extern struct reboot_data               reboot;
+extern int                              WizLock;
 #endif
 
 void setup_reboot_table(void);

@@ -79,7 +79,8 @@ tOBJ =	mob_actions.o spec_procs.o breath_weapons.o tracking.o \
 	shop.o signals.o sound.o spell_parser.o \
 	spells.o trap.o utils.o weather.o whod.o \
 	events.o ban.o sha256.o imc.o i3.o \
-	sql.o stringmap.o scheduler.o crc32.o reboot.o
+	sql.o stringmap.o scheduler.o crc32.o reboot.o \
+	rent.o
 OBJ =	$(addprefix obj/, $(tOBJ))
 
 tIDOBJ		= id_close.o id_open.o id_parse.o \
@@ -201,7 +202,7 @@ obj/act_wiz.o: act_wiz.c include/global.h include/bug.h include/utils.h \
   include/reception.h include/spec_procs.h include/multiclass.h \
   include/act_skills.h include/act_info.h include/fight.h include/hash.h \
   include/weather.h include/modify.h include/tracking.h include/i3.h \
-  include/sql.h include/act_wiz.h
+  include/sql.h include/reboot.h include/rent.h include/act_wiz.h
 obj/act_social.o: act_social.c include/global.h include/bug.h include/utils.h \
   include/comm.h include/interpreter.h include/handler.h include/db.h \
   include/spells.h include/multiclass.h include/act_social.h
@@ -242,7 +243,7 @@ obj/tracking.o: tracking.c include/global.h include/bug.h include/utils.h \
 obj/reception.o: reception.c include/global.h include/bug.h include/comm.h \
   include/handler.h include/db.h include/interpreter.h include/utils.h \
   include/spells.h include/multiclass.h include/act_social.h \
-  include/spec_procs.h include/reception.h
+  include/spec_procs.h include/rent.h include/reception.h
 obj/modify.o: modify.c include/global.h include/bug.h include/utils.h \
   include/interpreter.h include/handler.h include/db.h include/comm.h \
   include/multiclass.h include/modify.h
@@ -302,6 +303,8 @@ obj/utils.o: utils.c include/global.h include/bug.h include/spells.h \
   include/magic_utils.h include/mudlimits.h include/act_skills.h \
   include/i3.h include/utils.h
 obj/crc32.o: crc32.c include/crc32.h
+obj/rent.o: rent.c include/global.h include/bug.h include/utils.h \
+  include/comm.h include/sql.h include/rent.h
 obj/handler.o: handler.c include/global.h include/bug.h include/utils.h \
   include/comm.h include/db.h include/interpreter.h include/spells.h \
   include/spell_parser.h include/constants.h include/fight.h \
@@ -419,7 +422,7 @@ obj/spell_parser.o: spell_parser.c include/global.h include/bug.h \
 obj/sql.o: sql.c include/global.h include/bug.h include/comm.h \
   include/version.h include/crc32.h include/interpreter.h \
   include/utils.h include/db.h include/weather.h include/ban.h \
-  include/reboot.h include/i3.h include/sql.h
+  include/reboot.h include/rent.h include/i3.h include/sql.h
 obj/db.o: db.c include/global.h include/i3.h include/bug.h include/utils.h \
   include/comm.h include/handler.h include/mudlimits.h include/opinion.h \
   include/hash.h include/constants.h include/spells.h \
@@ -427,4 +430,4 @@ obj/db.o: db.c include/global.h include/i3.h include/bug.h include/utils.h \
   include/modify.h include/fight.h include/act_social.h \
   include/spec_procs.h include/multiclass.h include/board.h \
   include/interpreter.h include/ban.h include/sql.h include/reboot.h \
-  include/db.h
+  include/rent.h include/db.h
