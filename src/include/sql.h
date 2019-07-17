@@ -27,8 +27,6 @@ void setup_i3log_table(void);
 void setup_urls_table(void);
 // Messages
 void setup_messages_table(void);
-// Weather
-void setup_weather_table(void);
 
 #else
 extern struct sql_connection db_i3log;
@@ -61,9 +59,5 @@ void addspeaker_sql( const char *speaker, const char *pinkfish );
 void do_checkurl( struct char_data *ch, const char *argument, int cmd );
 // Messages
 char *update_message_from_file( const char *filename, int is_prompt );
-// Weather
-void load_weather(const char *filename);
-void save_weather(const char *filename, struct time_info_data local_time,
-                  struct weather_data local_weather);
 
 #endif
