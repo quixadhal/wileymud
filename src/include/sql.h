@@ -15,8 +15,6 @@ struct sql_connection {
     PGconn *dbc;
 };
 
-struct reboot_data;
-
 #ifdef _SQL_C
 // Logging
 void setup_logfile_table(void);
@@ -37,10 +35,6 @@ void setup_bans_table(void);
 void setup_rent_table(void);
 extern float RENT_RATE;
 extern int RENT_ON;
-
-// Reboot
-void setup_reboot_table(void);
-extern struct reboot_data reboot;
 
 #else
 extern struct sql_connection db_i3log;
@@ -85,13 +79,5 @@ int remove_ban(struct ban_data *pal);
 void load_rent(void);
 int toggle_rent(struct char_data *ch);
 int set_rent(struct char_data *ch, float factor);
-
-// Reboot
-
-void load_reboot(void);
-int set_first_reboot(void);
-int set_next_reboot(void);
-int toggle_reboot(struct char_data *ch);
-int set_reboot_interval(struct char_data *ch, const char *mode, int number);
 
 #endif

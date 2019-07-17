@@ -79,7 +79,7 @@ tOBJ =	mob_actions.o spec_procs.o breath_weapons.o tracking.o \
 	shop.o signals.o sound.o spell_parser.o \
 	spells.o trap.o utils.o weather.o whod.o \
 	events.o ban.o sha256.o imc.o i3.o \
-	sql.o stringmap.o scheduler.o crc32.o
+	sql.o stringmap.o scheduler.o crc32.o reboot.o
 OBJ =	$(addprefix obj/, $(tOBJ))
 
 tIDOBJ		= id_close.o id_open.o id_parse.o \
@@ -228,7 +228,8 @@ obj/act_info.o: act_info.c include/global.h include/bug.h include/version.h \
   include/hash.h include/constants.h include/spell_parser.h \
   include/whod.h include/multiclass.h include/modify.h include/act_wiz.h \
   include/act_skills.h include/spec_procs.h include/tracking.h \
-  include/scheduler.h include/i3.h include/sql.h include/act_info.h
+  include/scheduler.h include/i3.h include/sql.h include/reboot.h \
+  include/act_info.h
 obj/whod_working.o: whod_working.c include/version.h include/global.h \
   include/bug.h include/db.h include/comm.h include/utils.h \
   include/interpreter.h include/multiclass.h include/i3.h \
@@ -244,7 +245,7 @@ obj/reception.o: reception.c include/global.h include/bug.h include/comm.h \
   include/spec_procs.h include/reception.h
 obj/modify.o: modify.c include/global.h include/bug.h include/utils.h \
   include/interpreter.h include/handler.h include/db.h include/comm.h \
-  include/multiclass.h include/sql.h include/modify.h
+  include/multiclass.h include/modify.h
 obj/spells.o: spells.c include/global.h include/bug.h include/utils.h \
   include/comm.h include/db.h include/interpreter.h include/handler.h \
   include/constants.h include/multiclass.h include/act_move.h \
@@ -270,7 +271,7 @@ obj/comm.o: comm.c include/global.h include/sql.h include/i3.h include/bug.h \
   include/mudlimits.h include/spells.h include/spell_parser.h \
   include/sound.h include/fight.h include/mob_actions.h \
   include/act_other.h include/signals.h include/ban.h include/board.h \
-  include/comm.h
+  include/reboot.h include/comm.h
 obj/events.o: events.c include/global.h include/bug.h include/utils.h \
   include/comm.h include/interpreter.h include/handler.h include/db.h \
   include/spells.h include/mudlimits.h include/constants.h \
@@ -314,6 +315,9 @@ obj/handler.o: handler.c include/global.h include/bug.h include/utils.h \
 obj/sha256.o: sha256.c include/sha256.h
 obj/constants.o: constants.c include/global.h include/bug.h \
   include/mudlimits.h include/trap.h include/constants.h
+obj/reboot.o: reboot.c include/global.h include/bug.h include/utils.h \
+  include/comm.h include/interpreter.h include/db.h include/weather.h \
+  include/reboot.h include/i3.h include/sql.h
 obj/act_comm.o: act_comm.c include/global.h include/bug.h include/utils.h \
   include/comm.h include/interpreter.h include/handler.h include/db.h \
   include/spells.h include/constants.h include/mudlimits.h \
@@ -379,7 +383,7 @@ obj/interpreter.o: interpreter.c include/global.h include/i3.h include/bug.h \
   include/spell_parser.h include/modify.h include/whod.h \
   include/events.h include/random.h include/board.h include/multiclass.h \
   include/handler.h include/reception.h include/tracking.h include/ban.h \
-  include/sql.h include/interpreter.h
+  include/sql.h include/reboot.h include/interpreter.h
 obj/fight.o: fight.c include/global.h include/bug.h include/utils.h \
   include/comm.h include/handler.h include/interpreter.h include/db.h \
   include/constants.h include/spells.h include/spell_parser.h \
@@ -415,11 +419,12 @@ obj/spell_parser.o: spell_parser.c include/global.h include/bug.h \
 obj/sql.o: sql.c include/global.h include/bug.h include/comm.h \
   include/version.h include/crc32.h include/interpreter.h \
   include/utils.h include/db.h include/weather.h include/ban.h \
-  include/modify.h include/i3.h include/sql.h
+  include/reboot.h include/i3.h include/sql.h
 obj/db.o: db.c include/global.h include/i3.h include/bug.h include/utils.h \
   include/comm.h include/handler.h include/mudlimits.h include/opinion.h \
   include/hash.h include/constants.h include/spells.h \
   include/spell_parser.h include/reception.h include/weather.h \
   include/modify.h include/fight.h include/act_social.h \
   include/spec_procs.h include/multiclass.h include/board.h \
-  include/interpreter.h include/ban.h include/sql.h include/db.h
+  include/interpreter.h include/ban.h include/sql.h include/reboot.h \
+  include/db.h

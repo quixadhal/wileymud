@@ -22,12 +22,10 @@
 #include "db.h"
 #include "comm.h"
 #include "multiclass.h"
-#include "sql.h"
 #define _MODIFY_C
 #include "modify.h"
 
 struct room_data                       *world = NULL;	       /* dyn alloc'ed array of rooms */
-struct reboot_data                      reboot;
 
 const char                             *string_fields[] = {
     "name",
@@ -870,77 +868,4 @@ void show_string(struct descriptor_data *d, char *input)
     }
 }
 #endif
-
-void check_reboot(void)
-{
-    time_t                                  now;
-    time_t                                  time_left;
-    struct tm                              *t_info = NULL;
-    char                                   *tmstr = NULL;
-
-    if (DEBUG > 2)
-	log_info("called %s with no arguments", __PRETTY_FUNCTION__);
-
-    now = time(0);
-    time_left = reboot.next_reboot - now;
-
-    if (reboot.enabled == FALSE) {
-        if (now >= reboot.next_reboot) {
-            set_next_reboot(); // Here, we schedule the next reboot, if any...
-        }
-        return;
-    }
-
-    // More than an hour away, nothing interesting to do yet.
-    if (time_left > (60 * 60))
-        return;
-
-    t_info = localtime(&now);
-    tmstr = asctime(t_info);
-    *(tmstr + strlen(tmstr) - 1) = '\0';
-
-    // Note that this is only run every PULSE_REBOOT ticks, which is
-    // currently set at 599, or roughly once every 2.5 minutes.  So
-    // the finer grained messages won't work the way you might expect.
-    //
-    // The cleanest way to fix this is to make PULSE_REBOOT a proper
-    // integer rather than a #define, in whic case we can adjust the
-    // granularity.. since if it's an hour away, you probably only want
-    // a message every 10-15 minutes, but if it's a minute away, every
-    // 10 seconds is reasonable.
-
-    allprintf("\x007\r\nBroadcast message from SYSTEM (tty0) %s...\r\n\r\n", tmstr);
-
-    if (now >= reboot.next_reboot) {
-        // Time to die!
-        allprintf("Automatic reboot.  Come back in a few minutes!\r\n");
-        allprintf("\x007The system is going down NOW !!\r\n\x007\r\n");
-        log_boot("Rebooting!");
-        set_next_reboot(); // Here, we schedule the next reboot, if any...
-        diku_shutdown = diku_reboot = 1;
-    } else if (time_left <= 60) {
-        // 60 seconds or less
-        WizLock = 1;
-        if(now < (reboot.last_message + 15)) {
-            allprintf("Automatic reboot.  Game is now Whizz-Locked!\r\n");
-            allprintf("\x007The system is going DOWN in %ld seconds!  You are all going to DIE!\r\n", time_left);
-            reboot.last_message = now;
-        }
-    } else if (time_left <= (60 * 10)) {
-        // 10 minutes or less
-        WizLock = 1;
-        if(now < (reboot.last_message + (60 * 3))) {
-            allprintf("Automatic reboot.  Game is now Whizz-Locked!\r\n");
-            allprintf("\x007The system is going DOWN in %ld minutes!  You are NOT prepared!\r\n", MIN(1, (time_left / 60)));
-            reboot.last_message = now;
-        }
-    } else {
-        // One hour to go
-        if(now < (reboot.last_message + (60 * 10))) {
-            // Only spam every 10 minutes...
-            allprintf("\x007Automatic reboot in %ld minutes!  You should start finding an inn room.\r\n", MIN(1, (time_left / 60)));
-            reboot.last_message = now;
-        }
-    }
-}
 

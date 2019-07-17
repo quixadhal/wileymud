@@ -33,12 +33,6 @@ void                                    do_stat(struct char_data *ch, const char
 void                                    do_pretitle(struct char_data *ch, const char *argument,
 						    int cmd);
 void                                    do_set(struct char_data *ch, const char *argument, int cmd);
-void                                    do_shutdow(struct char_data *ch, const char *argument,
-						   int cmd);
-void                                    do_reboot(struct char_data *ch, const char *argument,
-						    int cmd);
-void                                    do_shutdown(struct char_data *ch, const char *argument,
-						    int cmd);
 void                                    do_snoop(struct char_data *ch, const char *argument, int cmd);
 void                                    do_switch(struct char_data *ch, const char *argument,
 						  int cmd);
@@ -82,7 +76,5 @@ void                                    do_zone_purge(struct char_data *ch, cons
 						      int cmd);
 void                                    do_not_yet_implemented(struct char_data *ch,
 							       const char *argument, int cmd);
-void                                    do_setreboot(struct char_data *ch, const char *argument,
-						     int cmd);
 
 #endif

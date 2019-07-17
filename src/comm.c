@@ -55,6 +55,7 @@
 #include "signals.h"
 #include "ban.h"
 #include "board.h"
+#include "reboot.h"
 #define _COMM_C
 #include "comm.h"
 

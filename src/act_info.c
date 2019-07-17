@@ -36,6 +36,7 @@
 #include "scheduler.h"
 #include "i3.h"
 #include "sql.h"
+#include "reboot.h"
 #define _ACT_INFO_C
 #include "act_info.h"
 

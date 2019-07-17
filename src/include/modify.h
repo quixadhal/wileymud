@@ -8,19 +8,8 @@
 #define GR
 #define NEW
 
-struct reboot_data {
-    time_t  updated;
-    int     enabled;
-    time_t  next_reboot;
-    time_t  frequency;
-    char    set_by[MAX_INPUT_LENGTH];
-    time_t  last_message;   // temporary field, when did the last warning mesage go out?
-    char    next_reboot_text[MAX_INPUT_LENGTH]; // temporary field to avoid asking SQL
-};
-
 #ifndef _MODIFY_C
 extern struct room_data                *world;
-extern struct reboot_data               reboot;
 extern const char                      *string_fields[];
 extern const char                      *room_fields[];
 extern int                              length[];
@@ -44,7 +33,6 @@ void                                    page_string(struct descriptor_data *d, c
 						    int keep_internal);
 void                                    show_page(struct descriptor_data *d);
 void                                    control_page(struct descriptor_data *d, char *input);
-void                                    check_reboot(void);
 
 #ifdef GR
 int                                     workhours(void);

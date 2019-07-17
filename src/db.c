@@ -41,6 +41,7 @@
 #include "interpreter.h"
 #include "ban.h"
 #include "sql.h"
+#include "reboot.h"
 
 #define _DB_C
 #include "db.h"
