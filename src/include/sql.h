@@ -93,6 +93,5 @@ int set_first_reboot(void);
 int set_next_reboot(void);
 int toggle_reboot(struct char_data *ch);
 int set_reboot_interval(struct char_data *ch, const char *mode, int number);
-void set_reboot(struct reboot_data *the_boot);
 
 #endif

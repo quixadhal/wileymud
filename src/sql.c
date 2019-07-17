@@ -221,29 +221,29 @@ void bug_sql( const char *logtype, const char *filename, const char *function, i
     param_char_room = htonl(character_room);
     param_vic_room = htonl(victim_room);
 
-    param_val[0] = logtype;
-    param_val[1] = filename;
-    param_val[2] = function;
-    param_val[3] = (char *)&param_line;
-    param_val[4] = area_file;
-    param_val[5] = (char *)&param_area_line;
-    param_val[6] = character;
-    param_val[7] = (char *)&param_char_room;
-    param_val[8] = victim;
-    param_val[9] = (char *)&param_vic_room;
-    param_val[10] = message;
+    param_val[0] = (logtype && logtype[0]) ? logtype : NULL;
+    param_val[1] = (filename && filename[0]) ? filename : NULL;
+    param_val[2] = (function && function[0]) ? function : NULL;
+    param_val[3] = (line > 0) ? (char *)&param_line : NULL;
+    param_val[4] = (area_file && area_file[0]) ? area_file : NULL;
+    param_val[5] = (area_line > 0) ? (char *)&param_area_line : NULL;
+    param_val[6] = (character && character[0]) ? character : NULL;
+    param_val[7] = (character_room > 0) ? (char *)&param_char_room : NULL;
+    param_val[8] = (victim && victim[0]) ? victim : NULL;
+    param_val[9] = (victim_room > 0) ? (char *)&param_vic_room : NULL;
+    param_val[10] = (message && message[0]) ? message : NULL;
 
-    param_len[0] = logtype ? strlen(logtype) : 0;
-    param_len[1] = filename ? strlen(filename) : 0;
-    param_len[2] = function ? strlen(function) : 0;
-    param_len[3] = sizeof(param_line);
-    param_len[4] = area_file ? strlen(area_file) : 0;
-    param_len[5] = sizeof(param_area_line);
-    param_len[6] = character ? strlen(character) : 0;
-    param_len[7] = sizeof(param_char_room);
-    param_len[8] = victim ? strlen(victim) : 0;
-    param_len[9] = sizeof(param_vic_room);
-    param_len[10] = message ? strlen(message) : 0;
+    param_len[0] = (logtype && logtype[0]) ? strlen(logtype) : 0;
+    param_len[1] = (filename && filename[0]) ? strlen(filename) : 0;
+    param_len[2] = (function && function[0]) ? strlen(function) : 0;
+    param_len[3] = (line > 0) ? sizeof(param_line) : 0;
+    param_len[4] = (area_file && area_file[0]) ? strlen(area_file) : 0;
+    param_len[5] = (area_line > 0) ? sizeof(param_area_line) : 0;
+    param_len[6] = (character && character[0]) ? strlen(character) : 0;
+    param_len[7] = (character_room > 0) ? sizeof(param_char_room) : 0;
+    param_len[8] = (victim && victim[0]) ? strlen(victim) : 0;
+    param_len[9] = (victim_room > 0) ? sizeof(param_vic_room) : 0;
+    param_len[10] = (message && message[0]) ? strlen(message) : 0;
 
     sql_connect(&db_logfile);
     res = PQexecParams(db_logfile.dbc, sql, 11, NULL, param_val, param_len, param_bin, 0);
@@ -1682,21 +1682,21 @@ int toggle_rent(struct char_data *ch) {
 int set_rent(struct char_data *ch, float factor) {
     PGresult *res = NULL;
     ExecStatusType st = 0;
-    const char *sql =   "UPDATE rent SET factor = $2, "
+    const char *sql =   "UPDATE rent SET factor = $1, "
                         "updated = now(), "
-                        "set_by = $1;";
+                        "set_by = $2;";
     const char *param_val[2];
     int param_len[2];
     int param_bin[2] = {0,0};
     char set_by[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
     char factor_buf[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
 
-    strlcpy(set_by, GET_NAME(ch), MAX_INPUT_LENGTH);
-    param_val[0] = (set_by[0]) ? set_by : NULL;
-    param_len[0] = (set_by[0]) ? strlen(set_by) : 0;
     snprintf(factor_buf, MAX_INPUT_LENGTH, "%f", factor);
-    param_val[1] = (factor_buf[0]) ? factor_buf : NULL;
-    param_len[1] = (factor_buf[0]) ? strlen(factor_buf) : 0;
+    param_val[0] = (factor_buf[0]) ? factor_buf : NULL;
+    param_len[0] = (factor_buf[0]) ? strlen(factor_buf) : 0;
+    strlcpy(set_by, GET_NAME(ch), MAX_INPUT_LENGTH);
+    param_val[1] = (set_by[0]) ? set_by : NULL;
+    param_len[1] = (set_by[0]) ? strlen(set_by) : 0;
 
     sql_connect(&db_wileymud);
     res = PQexecParams(db_wileymud.dbc, sql, 2, NULL, param_val, param_len, param_bin, 0);
@@ -1958,43 +1958,5 @@ int set_reboot_interval(struct char_data *ch, const char *mode, int number) {
         load_reboot();
     }
     return 1;
-}
-
-void set_reboot(struct reboot_data *the_boot) {
-    PGresult *res = NULL;
-    ExecStatusType st = 0;
-    const char *sql =   "UPDATE reboot "
-                        "SET updated = now(), "
-                        "enabled = $1::boolean, "
-                        "next_reboot = to_timestamp($2), "
-                        "frequency = ($3 || ' seconds')::interval, "
-                        "set_by = $4;";
-    const char *param_val[4];
-    int param_len[4];
-    int param_bin[4] = {0,0,0,0};
-
-    int enabled = htonl(the_boot->enabled);
-    time_t next_reboot = htonl(the_boot->next_reboot);
-    time_t frequency = htonl(the_boot->frequency);
-
-    param_val[0] = enabled ? (const char *)&enabled : NULL;
-    param_len[0] = sizeof(enabled);
-    param_val[1] = next_reboot ? (const char *)&next_reboot : NULL;
-    param_len[1] = sizeof(next_reboot);
-    param_val[2] = frequency ? (const char *)&frequency : NULL;
-    param_len[2] = sizeof(frequency);
-    param_val[3] = the_boot->set_by;
-    param_len[3] = the_boot->set_by[0] ? strlen(the_boot->set_by) : 0;
-
-    sql_connect(&db_wileymud);
-    res = PQexecParams(db_wileymud.dbc, sql, 4, NULL, param_val, param_len, param_bin, 0);
-    st = PQresultStatus(res);
-    if( st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE ) {
-        log_fatal("Cannot store reboot data in reboot table: %s", PQerrorMessage(db_wileymud.dbc));
-        PQclear(res);
-        proper_exit(MUD_HALT);
-    }
-
-    load_reboot();
 }
 
