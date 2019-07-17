@@ -61,7 +61,7 @@ DYN_FLAG	= -rdynamic
 
 INC		= -Iinclude $(ID_INC) $(IMC_INC) $(I3_INC) $(SQL_INC)
 LIB		= $(ID_LIB) $(NEED_MATH) $(NEED_SSL) $(NEED_CRYPT) $(NEED_COMPAT) $(EFENCE) $(PCRE_LIB) $(SQL_LIB)
-UTILSLIB	= $(NEED_MATH) $(NEED_CRYPT) $(NEED_COMPAT) $(EFENCE)
+EXTRALIB	= $(NEED_MATH) $(NEED_CRYPT) $(NEED_COMPAT) $(EFENCE)
 
 CFLAGS		= $(W_FLAGS) $(DEBUG_FLAG) $(OPT_FLAG) $(PROF_FLAG) $(M_ARCH) $(INC)
 LDFLAGS		= $(DEBUG_FLAG) $(OPT_FLAG) $(PROF_FLAG) $(DYN_FLAG)
@@ -101,19 +101,19 @@ $(BINDIR)/wileymud : $(ID_DEP) $(OBJ)
 
 $(BINDIR)/mkworld : obj/mkworld.o
 	@echo Make the world editing program...
-	$(CC) $(LDFLAGS) -o $@ $< $(UTILSLIB)
+	$(CC) $(LDFLAGS) -o $@ $< $(EXTRALIB)
 
 $(BINDIR)/sign : obj/sign.o
 	@echo Make the downtime notice program...
-	$(CC) $(LDFLAGS) -o $@ $< $(UTILSLIB)
+	$(CC) $(LDFLAGS) -o $@ $< $(EXTRALIB)
 
 $(BINDIR)/genpasswd : obj/genpasswd.o
 	@echo Make the password generation program...
-	$(CC) $(LDFLAGS) -o $@ $< $(UTILSLIB)
+	$(CC) $(LDFLAGS) -o $@ $< $(EXTRALIB)
 
 $(BINDIR)/bounce : obj/bounce.o
 	@echo Make the port bouncer program...
-	$(CC) $(LDFLAGS) -o $@ $< $(UTILSLIB)
+	$(CC) $(LDFLAGS) -o $@ $< $(EXTRALIB)
 
 $(ID_DEP): $(IDOBJ)
 	(cd $(IDENTDIR);$(MAKE) linux)
@@ -179,7 +179,7 @@ install : bin
 	@cp -vp $(BINDIR)/wileymud $(BINDIR)/sign $(BINDIR)/bounce $(BINDIR)/genpasswd $(BINDIR)/mkworld $(PRODBIN)/
 	@-chown $(PRODOWN) $(PRODBIN)/wileymud $(PRODBIN)/sign $(PRODBIN)/bounce $(PRODBIN)/genpasswd $(PRODBIN)/mkworld
 	@chmod $(PRODMODE) $(PRODBIN)/wileymud $(PRODBIN)/sign $(PRODBIN)/bounce $(PRODBIN)/genpasswd $(PRODBIN)/mkworld
-	@cp -vp utils/wileyloop.sh $(PRODBIN)/wileyloop
+	@cp -vp extras/wileyloop.sh $(PRODBIN)/wileyloop
 	@-chown $(PRODOWN) $(PRODBIN)/wileyloop
 	@chmod $(PRODMODE) $(PRODBIN)/wileyloop 
 	@echo done.
@@ -190,7 +190,7 @@ install : bin
 obj/%o : %c
 	$(CC) $(CFLAGS) -c $< -o $@
 
-obj/sign.o obj/mkworld.o obj/genpasswd.o obj/bounce.o : obj/%o : utils/%c
+obj/sign.o obj/mkworld.o obj/genpasswd.o obj/bounce.o : obj/%o : extras/%c
 	$(CC) $(CFLAGS) -c $< -o $@
 
 #--- Comment for make deps ---
@@ -250,11 +250,6 @@ obj/spells.o: spells.c include/global.h include/bug.h include/utils.h \
   include/comm.h include/db.h include/interpreter.h include/handler.h \
   include/constants.h include/multiclass.h include/act_move.h \
   include/spells.h include/spell_parser.h include/fight.h
-obj/sign.o: utils/sign.c include/global.h include/bug.h
-obj/mkworld.o: utils/mkworld.c
-obj/randline.o: utils/randline.c
-obj/bounce.o: utils/bounce.c
-obj/genpasswd.o: utils/genpasswd.c
 obj/act_off.o: act_off.c include/global.h include/bug.h include/utils.h \
   include/comm.h include/interpreter.h include/handler.h include/db.h \
   include/spells.h include/mudlimits.h include/opinion.h \
@@ -317,7 +312,7 @@ obj/constants.o: constants.c include/global.h include/bug.h \
   include/mudlimits.h include/trap.h include/constants.h
 obj/reboot.o: reboot.c include/global.h include/bug.h include/utils.h \
   include/comm.h include/interpreter.h include/db.h include/weather.h \
-  include/reboot.h include/i3.h include/sql.h
+  include/sql.h include/i3.h include/reboot.h
 obj/act_comm.o: act_comm.c include/global.h include/bug.h include/utils.h \
   include/comm.h include/interpreter.h include/handler.h include/db.h \
   include/spells.h include/constants.h include/mudlimits.h \
@@ -365,6 +360,11 @@ obj/act_move.o: act_move.c include/global.h include/utils.h include/bug.h \
   include/multiclass.h include/fight.h include/reception.h \
   include/magic_utils.h include/spell_parser.h include/act_info.h \
   include/act_skills.h include/act_move.h
+obj/sign.o: extras/sign.c include/global.h include/bug.h
+obj/mkworld.o: extras/mkworld.c
+obj/randline.o: extras/randline.c
+obj/bounce.o: extras/bounce.c
+obj/genpasswd.o: extras/genpasswd.c
 obj/limits.o: limits.c include/global.h include/bug.h include/spells.h \
   include/comm.h include/db.h include/spell_parser.h include/constants.h \
   include/utils.h include/multiclass.h include/fight.h \
