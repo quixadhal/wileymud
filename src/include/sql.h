@@ -29,8 +29,6 @@ void setup_urls_table(void);
 void setup_messages_table(void);
 // Weather
 void setup_weather_table(void);
-// Bans
-void setup_bans_table(void);
 
 #else
 extern struct sql_connection db_i3log;
@@ -53,9 +51,12 @@ void bug_sql( const char *logtype, const char *filename, const char *function, i
               const char *message );
 // I3
 void add_url( const char *channel, const char *speaker, const char *mud, const char *url );
-int is_url( int is_emote, const char *channel, const char *speaker, const char *mud, const char *message );
-int is_bot( int is_emote, const char *channel, const char *speaker, const char *mud, const char *message );
-void allchan_sql( int is_emote, const char *channel, const char *speaker, const char *username, const char *mud, const char *message );
+int is_url( int is_emote, const char *channel, const char *speaker, const char *mud,
+            const char *message );
+int is_bot( int is_emote, const char *channel, const char *speaker, const char *mud,
+            const char *message );
+void allchan_sql( int is_emote, const char *channel, const char *speaker,
+                  const char *username, const char *mud, const char *message );
 void addspeaker_sql( const char *speaker, const char *pinkfish );
 void do_checkurl( struct char_data *ch, const char *argument, int cmd );
 // Messages
@@ -64,11 +65,5 @@ char *update_message_from_file( const char *filename, int is_prompt );
 void load_weather(const char *filename);
 void save_weather(const char *filename, struct time_info_data local_time,
                   struct weather_data local_weather);
-// Bans
-void load_bans(void);
-void unload_bans(void);
-struct ban_data;
-int add_ban(struct ban_data *pal);
-int remove_ban(struct ban_data *pal);
 
 #endif

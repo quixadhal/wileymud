@@ -35,4 +35,9 @@ int         banned_at(char *name, char *ip);
 void        do_ban(struct char_data *ch, const char *argument, int cmd);
 void        do_unban(struct char_data *ch, const char *argument, int cmd);
 
+void        setup_bans_table(void);
+void        load_bans(void);
+void        unload_bans(void);
+int         add_ban(struct ban_data *pal);
+int         remove_ban(struct ban_data *pal);
 #endif
