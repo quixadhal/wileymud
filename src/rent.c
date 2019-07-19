@@ -88,7 +88,7 @@ void setup_rent_table(void) {
 void load_rent(void) {
     PGresult *res = NULL;
     ExecStatusType st = 0;
-    const char *sql = "SELECT extract('epoch' FROM updated AS updated, "
+    const char *sql = "SELECT extract('epoch' FROM updated) AS updated, "
                       "enabled::integer, "
                       "factor, set_by FROM rent LIMIT 1;";
     int rows = 0;
