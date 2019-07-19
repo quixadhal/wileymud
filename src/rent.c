@@ -88,11 +88,12 @@ void setup_rent_table(void) {
 void load_rent(void) {
     PGresult *res = NULL;
     ExecStatusType st = 0;
-    const char *sql = "SELECT enabled::integer, factor FROM rent LIMIT 1;";
+    const char *sql = "SELECT extract('epoch' FROM updated AS updated, "
+                      "enabled::integer, "
+                      "factor, set_by FROM rent LIMIT 1;";
     int rows = 0;
     int columns = 0;
-    int enabled = 0;
-    float factor = 0.0;
+    struct rent_data the_rent = { 650336715, 1, 1.0, "SYSTEM" }; // beginning of time...
 
     sql_connect(&db_wileymud);
     res = PQexec(db_wileymud.dbc, sql);
@@ -105,10 +106,12 @@ void load_rent(void) {
 
     rows = PQntuples(res);
     columns = PQnfields(res);
-    if(rows > 0 && columns > 1) {
+    if(rows > 0 && columns > 3) {
         log_boot("  Loading rent data from SQL database.");
-        enabled = atoi(PQgetvalue(res,0,0));
-        factor = atof(PQgetvalue(res,0,1));
+        the_rent.updated = (time_t) atol(PQgetvalue(res,0,0));
+        the_rent.enabled = (int) atoi(PQgetvalue(res,0,1));
+        the_rent.factor = (float) atof(PQgetvalue(res,0,2));
+        strlcpy(the_rent.set_by, PQgetvalue(res,0,3), MAX_INPUT_LENGTH);
     } else {
         log_fatal("Invalid result set from rent table!");
         PQclear(res);
@@ -116,8 +119,7 @@ void load_rent(void) {
     }
     PQclear(res);
 
-    rent.factor = factor;
-    rent.enabled = enabled;
+    rent = the_rent;
 }
 
 int toggle_rent(struct char_data *ch) {

@@ -22,6 +22,8 @@
 
 struct reboot_data          reboot = { 650336715, 0, 0, 0, "SYSTEM", 0, "" }; // beginning of time...
 int                         WizLock = FALSE;
+int                         diku_shutdown = 0;     /* clean shutdown */
+int                         diku_reboot = 0;       /* reboot the game after a shutdown */
 
 void setup_reboot_table(void) {
     PGresult *res = NULL;
@@ -113,7 +115,7 @@ void load_reboot(void) {
                         "FROM reboot LIMIT 1;";
     int rows = 0;
     int columns = 0;
-    struct reboot_data the_boot = { 0, 0, 0, 0, "", 0, "" };
+    struct reboot_data the_boot = { 650336715, 0, 0, 0, "SYSTEM", 0, "" }; // beginning of time...
 
     sql_connect(&db_wileymud);
     res = PQexec(db_wileymud.dbc, sql);

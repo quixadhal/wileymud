@@ -67,9 +67,6 @@ struct descriptor_data                 *descriptor_list = NULL;
 struct descriptor_data                 *next_to_process = NULL;
 
 int                                     mud_port = 0;
-int                                     slow_death = 0;	       /* Shut her down, Martha, she's sucking mud */
-int                                     diku_shutdown = 0;     /* clean shutdown */
-int                                     diku_reboot = 0;       /* reboot the game after a shutdown */
 int                                     DEBUG = FALSE;
 int                                     no_specials = 0;       /* Suppress ass. of special routines */
 long                                    Uptime = 0L;	       /* time that the game has been up */

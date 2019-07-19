@@ -14,6 +14,8 @@ struct reboot_data {
 #ifndef _REBOOT_C
 extern struct reboot_data               reboot;
 extern int                              WizLock;
+extern int                              diku_shutdown;
+extern int                              diku_reboot;
 #endif
 
 void setup_reboot_table(void);

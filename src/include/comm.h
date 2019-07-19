@@ -48,9 +48,6 @@
 #ifndef _COMM_C
 extern struct descriptor_data          *descriptor_list;
 extern struct descriptor_data          *next_to_process;
-extern int                              slow_death;
-extern int                              diku_shutdown;
-extern int                              diku_reboot;
 extern int                              DEBUG;
 extern int                              no_specials;
 extern long                             Uptime;
