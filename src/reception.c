@@ -25,7 +25,7 @@
 #include "multiclass.h"
 #include "act_social.h"
 #include "spec_procs.h"
-#include "rent.h"           // for RENT_ON and RENT_RATE
+#include "rent.h"           // for rent data
 #define _RECEPTION_C
 #include "reception.h"
 
@@ -48,7 +48,7 @@ void add_obj_cost(struct char_data *ch, struct char_data *re,
 
     if (obj) {
 	if ((obj->item_number > -1) && (cost->ok)) {
-	    temp = RENT_ON ? MAX(0, (int)(obj->obj_flags.cost_per_day * RENT_RATE)) : 0;
+	    temp = rent.enabled ? MAX(0, (int)(obj->obj_flags.cost_per_day * rent.factor)) : 0;
 	    cost->total_cost += temp;
 	    if (re) {
 		cprintf(ch, "%30s : %d coins/day\r\n", obj->short_description, temp);

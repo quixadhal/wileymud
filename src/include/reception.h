@@ -39,8 +39,6 @@ struct obj_file_u {
 };
 
 #ifndef _RECEPTION_C
-extern float                            RENT_RATE;
-extern int                              RENT_ON;
 #endif
 
 void                                    add_obj_cost(struct char_data *ch, struct char_data *re,

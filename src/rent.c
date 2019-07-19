@@ -15,8 +15,7 @@
 #define _RENT_C
 #include "rent.h"
 
-float   RENT_RATE = 1.0;
-int     RENT_ON = 1;
+struct rent_data        rent = { 650336715, 1, 1.0, "SYSTEM" }; // beginning of time...
 
 void setup_rent_table(void) {
     PGresult *res = NULL;
@@ -117,8 +116,8 @@ void load_rent(void) {
     }
     PQclear(res);
 
-    RENT_RATE = factor;
-    RENT_ON = enabled;
+    rent.factor = factor;
+    rent.enabled = enabled;
 }
 
 int toggle_rent(struct char_data *ch) {

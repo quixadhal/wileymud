@@ -96,21 +96,21 @@ void do_rentmode(struct char_data *ch, const char *argument, int cmd)
 
         if(!str_cmp(buf, "list") || !str_cmp(buf, "show")) {
             cprintf(ch, "Rent is currently %s and set at %f normal.\r\n",
-                    RENT_ON ? "enabled" : "disabled", RENT_RATE);
+                    rent.enabled ? "enabled" : "disabled", rent.factor);
             return;
         } else if(!str_cmp(buf, "toggle")) {
             toggle_rent(ch);
             cprintf(ch, "Rent is now %s and curently set at %f normal.\r\n",
-                    RENT_ON ? "enabled" : "disabled", RENT_RATE);
+                    rent.enabled ? "enabled" : "disabled", rent.factor);
             log_info("Rent is now %s and curently set at %f normal",
-                    RENT_ON ? "enabled" : "disabled", RENT_RATE);
+                    rent.enabled ? "enabled" : "disabled", rent.factor);
             return;
         } else if (sscanf(buf, " %f ", &factor) == 1) {
             set_rent(ch, factor);
             cprintf(ch, "Rent is currently %s and now set at %f normal.\r\n",
-                    RENT_ON ? "enabled" : "disabled", RENT_RATE);
+                    rent.enabled ? "enabled" : "disabled", rent.factor);
             log_info("Rent is currently %s and now set at %f normal",
-                    RENT_ON ? "enabled" : "disabled", RENT_RATE);
+                    rent.enabled ? "enabled" : "disabled", rent.factor);
             return;
         }
     }

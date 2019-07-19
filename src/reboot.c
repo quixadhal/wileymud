@@ -20,7 +20,7 @@
 #define _REBOOT_C
 #include "reboot.h"
 
-struct reboot_data          reboot = { 0, 0, 0, 0, "", 0, "" };
+struct reboot_data          reboot = { 650336715, 0, 0, 0, "SYSTEM", 0, "" }; // beginning of time...
 int                         WizLock = FALSE;
 
 void setup_reboot_table(void) {

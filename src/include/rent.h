@@ -1,9 +1,15 @@
 #ifndef _RENT_H
 #define _RENT_H
 
+struct rent_data {
+    time_t  updated;
+    int     enabled;
+    float   factor;
+    char    set_by[MAX_INPUT_LENGTH];
+};
+
 #ifndef _REBOOT_C
-extern float    RENT_RATE;
-extern int      RENT_ON;
+extern struct rent_data     rent;
 #endif
 
 void setup_rent_table(void);
