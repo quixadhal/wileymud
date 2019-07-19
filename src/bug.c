@@ -6,6 +6,8 @@
 #include <time.h>
 #include <string.h>
 #include <sys/timeb.h>
+#include <unistd.h>
+#include <arpa/inet.h>
 
 #include "global.h"
 #include "utils.h"
@@ -27,7 +29,8 @@ const char                             *LogNames[] = {
     "DEATH",
     "RESET",
     "IMC",
-    "SQL"
+    "SQL",
+    "NOSQL"
 };
 
 /* Handy query for checking logs:
@@ -149,8 +152,8 @@ void bug_logger(unsigned int Type, const char *BugFile,
     }
 
     // Here is where we would log to SQL too!
-    if( Type != LOG_SQL ) {
-        // If the Type is LOG_SQL, it's an error with the database and
+    if( Type != LOG_NOSQL ) {
+        // If the Type is LOG_NOSQL, it's an error with the database and
         // we have to make sure we don't make a loop of infinite failure.
         bug_sql(LogNames[Type], File, Func, Line, NULL, 0,
                 ch ? NAME(ch) : NULL, ch ? ch->in_room : 0,
@@ -158,3 +161,133 @@ void bug_logger(unsigned int Type, const char *BugFile,
                 Temp);
     }
 }
+
+void setup_logfile_table(void) {
+    PGresult *res = NULL;
+    ExecStatusType st = 0;
+    char *sql = "CREATE TABLE IF NOT EXISTS logfile ( "
+                "    created TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "
+                "    logtype TEXT DEFAULT 'INFO', "
+                "    filename TEXT, "
+                "    function TEXT, "
+                "    line INTEGER, "
+                "    area_file TEXT, "
+                "    area_line INTEGER, "
+                "    character TEXT, "
+                "    character_room INTEGER, "
+                "    victim TEXT, "
+                "    victim_room INTEGER, "
+                "    message TEXT "
+                "); ";
+    char *sql2 = "CREATE INDEX IF NOT EXISTS ix_logfile_created ON logfile (created);";
+    char *sql3 = "CREATE INDEX IF NOT EXISTS ix_logfile_logtype ON logfile (logtype);";
+    char *sql4 = "CREATE OR REPLACE VIEW logtail AS "
+                 "SELECT to_char(logfile.created, 'YYYY-MM-DD HH24:MI:SS'::text) AS created, "
+                 "       logfile.logtype, "
+                 "       logfile.message "
+                 "FROM logfile "
+                 "ORDER BY (to_char(logfile.created, 'YYYY-MM-DD HH24:MI:SS'::text)) "
+                 "OFFSET (( SELECT count(*) AS count FROM logfile logfile_1)) - 20; ";
+
+    res = PQexec(db_logfile.dbc, sql);
+    st = PQresultStatus(res);
+    if( st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE ) {
+        log_fatal("Cannot create log table: %s", PQerrorMessage(db_logfile.dbc));
+        PQclear(res);
+        proper_exit(MUD_HALT);
+    }
+    PQclear(res);
+
+    res = PQexec(db_logfile.dbc, sql2);
+    st = PQresultStatus(res);
+    if( st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE ) {
+        log_fatal("Cannot create logfile created index: %s", PQerrorMessage(db_logfile.dbc));
+        PQclear(res);
+        proper_exit(MUD_HALT);
+    }
+    PQclear(res);
+
+    res = PQexec(db_logfile.dbc, sql3);
+    st = PQresultStatus(res);
+    if( st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE ) {
+        log_fatal("Cannot create logfile logtype index: %s", PQerrorMessage(db_logfile.dbc));
+        PQclear(res);
+        proper_exit(MUD_HALT);
+    }
+    PQclear(res);
+
+    res = PQexec(db_logfile.dbc, sql4);
+    st = PQresultStatus(res);
+    if( st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE ) {
+        log_fatal("Cannot create logtail view: %s", PQerrorMessage(db_logfile.dbc));
+        PQclear(res);
+        proper_exit(MUD_HALT);
+    }
+    PQclear(res);
+}
+
+void bug_sql( const char *logtype, const char *filename, const char *function, int line,
+              const char *area_file, int area_line, 
+              const char *character, int character_room,
+              const char *victim, int victim_room, 
+              const char *message ) {
+    PGresult *res = NULL;
+    ExecStatusType st = 0;
+    const char *sql = "INSERT INTO logfile ( logtype, filename, function, line, "
+                      "area_file, area_line, character, character_room, victim, "
+                      "victim_room, message ) "
+                      "VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11);";
+    const char *param_val[11];
+    int param_len[11];
+    int param_bin[11] = {0,0,0,1,0,1,0,1,0,1,0};
+    int param_line;
+    int param_area_line;
+    int param_char_room;
+    int param_vic_room;
+
+    if( !db_logfile.dbc ) {
+        // If we are not connected, and we've TRIED to connect, punt.
+        return;
+    }
+
+    param_line = htonl(line);
+    param_area_line = htonl(area_line);
+    param_char_room = htonl(character_room);
+    param_vic_room = htonl(victim_room);
+
+    param_val[0] = (logtype && logtype[0]) ? logtype : NULL;
+    param_val[1] = (filename && filename[0]) ? filename : NULL;
+    param_val[2] = (function && function[0]) ? function : NULL;
+    param_val[3] = (line > 0) ? (char *)&param_line : NULL;
+    param_val[4] = (area_file && area_file[0]) ? area_file : NULL;
+    param_val[5] = (area_line > 0) ? (char *)&param_area_line : NULL;
+    param_val[6] = (character && character[0]) ? character : NULL;
+    param_val[7] = (character_room > 0) ? (char *)&param_char_room : NULL;
+    param_val[8] = (victim && victim[0]) ? victim : NULL;
+    param_val[9] = (victim_room > 0) ? (char *)&param_vic_room : NULL;
+    param_val[10] = (message && message[0]) ? message : NULL;
+
+    param_len[0] = (logtype && logtype[0]) ? strlen(logtype) : 0;
+    param_len[1] = (filename && filename[0]) ? strlen(filename) : 0;
+    param_len[2] = (function && function[0]) ? strlen(function) : 0;
+    param_len[3] = (line > 0) ? sizeof(param_line) : 0;
+    param_len[4] = (area_file && area_file[0]) ? strlen(area_file) : 0;
+    param_len[5] = (area_line > 0) ? sizeof(param_area_line) : 0;
+    param_len[6] = (character && character[0]) ? strlen(character) : 0;
+    param_len[7] = (character_room > 0) ? sizeof(param_char_room) : 0;
+    param_len[8] = (victim && victim[0]) ? strlen(victim) : 0;
+    param_len[9] = (victim_room > 0) ? sizeof(param_vic_room) : 0;
+    param_len[10] = (message && message[0]) ? strlen(message) : 0;
+
+    sql_connect(&db_logfile);
+    res = PQexecParams(db_logfile.dbc, sql, 11, NULL, param_val, param_len, param_bin, 0);
+    st = PQresultStatus(res);
+    if( st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE ) {
+        // In case of an error, we defined a special logging level that does NOT
+        // attempt to log to SQL, so we can still emit errors if the database is
+        // not available.
+        log_nosql("Cannot insert log message: %s", PQerrorMessage(db_logfile.dbc));
+    }
+    PQclear(res);
+}
+

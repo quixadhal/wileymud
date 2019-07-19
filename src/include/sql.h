@@ -16,8 +16,6 @@ struct sql_connection {
 };
 
 #ifdef _SQL_C
-// Logging
-void setup_logfile_table(void);
 // I3
 void setup_pinkfish_map_table(void);
 void setup_hours_table(void);
@@ -41,12 +39,6 @@ char *sql_version(struct sql_connection *db);
 void sql_startup(void);
 void sql_shutdown(void);
 
-// Logging
-void bug_sql( const char *logtype, const char *filename, const char *function, int line,
-              const char *area_file, int area_line, 
-              const char *character, int character_room,
-              const char *victim, int victim_room, 
-              const char *message );
 // I3
 void add_url( const char *channel, const char *speaker, const char *mud, const char *url );
 int is_url( int is_emote, const char *channel, const char *speaker, const char *mud,

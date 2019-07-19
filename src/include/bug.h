@@ -12,6 +12,7 @@
 #define	LOG_RESET	7
 #define	LOG_IMC         8
 #define	LOG_SQL         9
+#define	LOG_NOSQL       10
 
 #ifndef _BUG_C
 extern char * LogNames[];
@@ -77,6 +78,12 @@ extern char * LogNames[];
                    NULL, 0, \
 	           NULL, NULL, \
                    GREATER_GOD, (Str), ## __VA_ARGS__ )
+#define log_nosql(Str, ...) \
+        bug_logger(LOG_NOSQL, NULL, \
+                   __FILE__, __PRETTY_FUNCTION__, __LINE__, \
+                   NULL, 0, \
+	           NULL, NULL, \
+                   GREATER_GOD, (Str), ## __VA_ARGS__ )
 
 void                                    bug_logger(unsigned int Type, const char *BugFile,
                                                    const char *File, const char *Func, int Line,
@@ -84,5 +91,12 @@ void                                    bug_logger(unsigned int Type, const char
 	                                           struct char_data *ch, struct char_data *victim,
 					           unsigned int Level, const char *Str, ...)
                                                    __attribute__ ( ( format( printf, 11, 12 ) ) );;
+
+void setup_logfile_table(void);
+void bug_sql( const char *logtype, const char *filename, const char *function, int line,
+              const char *area_file, int area_line, 
+              const char *character, int character_room,
+              const char *victim, int victim_room, 
+              const char *message );
 
 #endif
