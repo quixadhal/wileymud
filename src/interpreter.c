@@ -35,7 +35,6 @@ extern char                            *crypt(const char *key, const char *salt)
 #include "db.h"
 #include "utils.h"
 #include "mudlimits.h"
-#include "constants.h"
 #include "act_comm.h"
 #include "act_info.h"
 #include "act_move.h"

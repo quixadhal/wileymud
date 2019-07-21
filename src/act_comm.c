@@ -18,7 +18,6 @@
 #include "handler.h"
 #include "db.h"
 #include "spells.h"
-#include "constants.h"
 #include "mudlimits.h"
 #include "multiclass.h"
 #include "board.h"

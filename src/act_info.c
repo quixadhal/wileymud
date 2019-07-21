@@ -24,7 +24,6 @@
 #include "mudlimits.h"
 #include "trap.h"
 #include "hash.h"
-#include "constants.h"
 #include "spell_parser.h"
 #include "whod.h"
 #include "multiclass.h"
@@ -37,6 +36,7 @@
 #include "i3.h"
 #include "sql.h"
 #include "reboot.h"
+#include "weather.h"        // time_info_data struct
 #define _ACT_INFO_C
 #include "act_info.h"
 

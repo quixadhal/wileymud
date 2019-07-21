@@ -353,9 +353,6 @@ int                                     scan_number(const char *text, int *rval)
  void                             sprintbit(unsigned long vektor, const char *names[],
 						  char *result);
  void                             sprinttype(int type, const char *names[], char *result);
-struct time_info_data                   real_time_passed(time_t t2, time_t t1);
-struct time_info_data                   mud_time_passed(time_t t2, time_t t1);
-struct time_info_data                   age(struct char_data *ch);
 int                                     in_group(struct char_data *ch1, struct char_data *ch2);
 int                                     getall(char *name, char *newname);
 int                                     getabunch(char *name, char *newname);

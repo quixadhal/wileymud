@@ -264,19 +264,6 @@ struct opinion {
 #define MESS_VICTIM   2
 #define MESS_ROOM     3
 
-#define SECS_PER_REAL_MIN  60
-#define SECS_PER_REAL_HOUR (60*SECS_PER_REAL_MIN)
-#define SECS_PER_REAL_DAY  (24*SECS_PER_REAL_HOUR)
-#define SECS_PER_REAL_YEAR (365*SECS_PER_REAL_DAY)
-
-#define SECS_PER_MUD_HOUR  	75
-#define HOURS_PER_MUD_DAY	24
-#define DAYS_PER_MUD_MONTH	35
-#define MONTHS_PER_MUD_YEAR	17
-#define SECS_PER_MUD_DAY   (HOURS_PER_MUD_DAY*SECS_PER_MUD_HOUR)
-#define SECS_PER_MUD_MONTH (DAYS_PER_MUD_MONTH*SECS_PER_MUD_DAY)
-#define SECS_PER_MUD_YEAR  (MONTHS_PER_MUD_YEAR*SECS_PER_MUD_MONTH)
-
 /* The following defs are for obj_data  */
 
 /* For 'type_flag' */
@@ -952,54 +939,6 @@ struct char_data {
 #endif
 };
 
-/* ======================================================================== */
-
-/* This structure is purely intended to be an easy way to transfer */
-/* and return information about time (real or mudwise).            */
-
-struct time_info_data {
-/* Sorry Cyric... but you can't scanf("%d") into a char and expect it NOT
- * to give a SIGBUS!  get a clue!
- *
- * char hours;
- * char day;
- * char month;
- */
-  int                                     hours,
-                                          day,
-                                          month;
-  int                                     year;
-};
-
-/* How much light is in the land ? */
-#define SUN_DARK	0
-#define SUN_RISE	1
-#define SUN_LIGHT	2
-#define SUN_SET		3
-
-/* And how is the sky ? */
-#define SKY_CLOUDLESS	0
-#define SKY_CLOUDY	1
-#define SKY_RAINING	2
-#define SKY_LIGHTNING	3
-
-/* Which way is the wind blowing */
-#define WIND_NORTH	0
-#define WIND_EAST	1
-#define WIND_SOUTH	2
-#define WIND_WEST	3
-#define WIND_DEAD	4
-
-struct weather_data {
-  int                                     pressure;	       /* How is the pressure ( Mb ) */
-  int                                     change;	       /* How fast and what way does it change. */
-  int                                     sky;		       /* How is the sky. */
-  int                                     sunlight;	       /* And how much sun. */
-  int                                     wind_speed;	       /* how hard is the wind blowing */
-  int                                     wind_direction;      /* which direction is the wind blowing */
-  int                                     moon;		       /* what is the moon like */
-};
-
 /* ***********************************************************************
  * *  file element for player file. BEWARE: Changing it will ruin the file  *
  * *********************************************************************** */
@@ -1272,4 +1211,105 @@ struct title_type {
   int                                     exp;
 };
 
+
+/*************************************************************/
+/*************** constants.h is now here *********************/
+/*************************************************************/
+
+/* Race -- Npc, otherwise */
+#define RACE_HALFBREED 0
+#define RACE_HUMAN     1
+#define RACE_ELVEN     2
+#define RACE_DWARF     3
+#define RACE_HALFLING  4
+#define RACE_GNOME     5
+
+/* end of player races */
+
+#define RACE_REPTILE  6
+#define RACE_SPECIAL  7
+#define RACE_LYCANTH  8
+#define RACE_DRAGON   9
+#define RACE_UNDEAD   10
+#define RACE_ORC      11
+#define RACE_INSECT   12
+#define RACE_ARACHNID 13
+#define RACE_DINOSAUR 14
+#define RACE_FISH     15
+#define RACE_BIRD     16
+#define RACE_GIANT    17
+#define RACE_PREDATOR 18
+#define RACE_PARASITE 19
+#define RACE_SLIME    20
+#define RACE_DEMON    21
+#define RACE_SNAKE    22
+#define RACE_HERBIV   23
+#define RACE_TREE     24
+#define RACE_VEGGIE   25
+#define RACE_ELEMENT  26
+#define RACE_PLANAR   27
+#define RACE_DEVIL    28
+#define RACE_GHOST    29
+#define RACE_GOBLIN   30
+#define RACE_TROLL    31
+#define RACE_VEGMAN   32
+#define RACE_MFLAYER  33
+#define RACE_PRIMATE  34
+#define RACE_ANIMAL   35
+#define RACE_FAERY    36
+#define RACE_PLANT    37
+
+#ifndef _GLOBAL_C
+extern const char                      *class_name[];
+extern const char                      *exp_needed_text[];
+extern const char                      *percent_hit[];
+extern const char                      *percent_tired[];
+extern const char                      *spell_wear_off_msg[];
+extern const char                      *spell_wear_off_soon_msg[];
+extern const int                        rev_dir[];
+extern const int                        TrapDir[];
+extern const int                        movement_loss[];
+extern const char                      *dirs[];
+extern const char                      *dir_from[];
+extern const char                      *ItemDamType[];
+extern const char                      *weekdays[7];
+extern const char                      *month_name[17];
+extern const int                        sharp[];
+extern const char                      *where[];
+extern const char                      *drinks[];
+extern const char                      *drinknames[];
+extern const int                        RacialMax[][4];
+extern int                              ItemSaveThrows[22][5];
+extern const int                        drink_aff[][3];
+extern const char                      *color_liquid[];
+extern const char                      *fullness[];
+extern const struct title_type          titles[6][ABS_MAX_LVL + 1];
+extern const char                      *RaceName[];
+extern const char                      *item_types[];
+extern const char                      *wear_bits[];
+extern const char                      *extra_bits[];
+extern const char                      *room_bits[];
+extern const char                      *exit_bits[];
+extern const char                      *sector_types[];
+extern const char                      *equipment_types[];
+extern const char                      *affected_bits[];
+extern const char                      *immunity_names[];
+extern const char                      *apply_types[];
+extern const char                      *pc_class_types[];
+extern const char                      *npc_class_types[];
+extern const char                      *action_bits[];
+extern const char                      *player_bits[];
+extern const char                      *position_types[];
+extern const char                      *connected_types[];
+extern const int                        thaco[6][ABS_MAX_LVL];
+extern const struct str_app_type        str_app[31];
+extern const struct dex_skill_type      dex_app_skill[26];
+extern const char                       backstab_mult[ABS_MAX_LVL];
+extern const struct dex_app_type        dex_app[26];
+extern const struct con_app_type        con_app[26];
+extern const struct int_app_type        int_app[26];
+extern const struct wis_app_type        wis_app[26];
 #endif
+
+#endif
+

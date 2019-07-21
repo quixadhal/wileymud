@@ -19,7 +19,6 @@
 #include "handler.h"
 #include "mudlimits.h"
 #include "db.h"
-#include "constants.h"
 #include "spells.h"
 #include "spell_parser.h"
 #include "multiclass.h"
@@ -30,6 +29,7 @@
 #include "act_off.h"
 #include "act_obj.h"
 #include "act_info.h"
+#include "weather.h"        // for SECS_PER defines
 
 void spell_armor(int level, struct char_data *ch, struct char_data *victim,
 		 struct obj_data *obj)

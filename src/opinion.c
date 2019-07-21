@@ -15,7 +15,6 @@
 #include "bug.h"
 #include "utils.h"
 #include "spells.h"
-#include "constants.h"
 #include "comm.h"
 #include "db.h"
 #include "multiclass.h"

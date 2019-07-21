@@ -20,31 +20,19 @@
 #include "interpreter.h"
 #include "handler.h"
 #include "spells.h"
-#include "constants.h"
 #include "act_off.h"
 #include "random.h"
 #include "multiclass.h"
 #include "fight.h"
 #include "act_info.h"
+#include "spells.h"         // spell_info_type
+
 #define _SPELL_PARSER_C
 #include "spell_parser.h"
 
 struct spell_info_type                  spell_info[MAX_SKILLS];
 
-const char
-
- 
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-                                saving_throws[ABS_MAX_CLASS][MAX_SAVING_THROWS][ABS_MAX_LVL] = {
+const char saving_throws[ABS_MAX_CLASS][MAX_SAVING_THROWS][ABS_MAX_LVL] = {
     {
      {16, 14, 14, 14, 14, 14, 13, 13, 13, 13, 13, 11, 11, 11, 11, 11, 10, 10, 10, 10, 10, 8, 6,
       4,

@@ -12,7 +12,6 @@
 
 #include "act_move.h"
 #include "comm.h"
-#include "constants.h"
 #include "db.h"
 #include "handler.h"
 #include "hash.h"

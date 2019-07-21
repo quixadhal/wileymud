@@ -19,7 +19,6 @@
 #include "handler.h"
 #include "interpreter.h"
 #include "db.h"
-#include "constants.h"
 #include "spells.h"
 #include "spell_parser.h"
 #include "mudlimits.h"

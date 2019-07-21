@@ -19,7 +19,6 @@
 #include "db.h"
 #include "spells.h"
 #include "trap.h"
-#include "constants.h"
 #include "whod.h"
 #include "multiclass.h"
 #include "fight.h"

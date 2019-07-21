@@ -15,7 +15,6 @@
 #include "act_obj.h"
 #include "act_off.h"
 #include "comm.h"
-#include "constants.h"
 #include "db.h"
 #include "handler.h"
 #include "hash.h"

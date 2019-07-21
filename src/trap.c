@@ -15,7 +15,6 @@
 #include "comm.h"
 #include "db.h"
 #include "opinion.h"
-#include "constants.h"
 #include "fight.h"
 #include "reception.h"
 #include "spell_parser.h"

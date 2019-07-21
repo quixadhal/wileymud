@@ -19,7 +19,6 @@
 #include "comm.h"
 #include "db.h"
 #include "spell_parser.h"
-#include "constants.h"
 #include "utils.h"
 #include "multiclass.h"
 #include "fight.h"
@@ -28,6 +27,8 @@
 #include "handler.h"
 #include "act_obj.h"
 #include "act_other.h"
+#include "weather.h"        // age() function
+
 #define _DIKU_LIMITS_C
 #include "mudlimits.h"
 

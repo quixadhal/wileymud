@@ -20,7 +20,6 @@
 #include "interpreter.h"
 #include "spells.h"
 #include "spell_parser.h"
-#include "constants.h"
 #include "fight.h"
 #include "modify.h"
 #include "multiclass.h"

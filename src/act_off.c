@@ -22,7 +22,6 @@
 #include "mudlimits.h"
 #include "opinion.h"
 #include "multiclass.h"
-#include "constants.h"
 #include "spec_procs.h"
 #include "fight.h"
 #include "act_skills.h"

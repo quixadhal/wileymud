@@ -22,7 +22,6 @@
 #include "global.h"
 #include "bug.h"
 #include "spells.h"
-#include "constants.h"
 #include "db.h"
 #include "opinion.h"
 #include "comm.h"
@@ -327,56 +326,6 @@ void sprinttype(int type, const char *names[], char *result)
 	strcpy(result, "UNDEFINED");
 }
 
-/* Calculate the REAL time passed over the last t2-t1 centuries (secs) */
-struct time_info_data real_time_passed(time_t t2, time_t t1)
-{
-    long                                    secs = 0L;
-    struct time_info_data                   now;
-
-    if (DEBUG > 3)
-	log_info("called %s with %ld, %ld", __PRETTY_FUNCTION__, t2, t1);
-
-    secs = (long)(t2 - t1);
-    now.hours = (secs / SECS_PER_REAL_HOUR) % 24;	       /* 0..23 hours */
-    secs -= SECS_PER_REAL_HOUR * now.hours;
-    now.day = (secs / SECS_PER_REAL_DAY);		       /* 0..34 days */
-    secs -= SECS_PER_REAL_DAY * now.day;
-    now.month = -1;
-    now.year = -1;
-    return now;
-}
-
-/* Calculate the MUD time passed over the last t2-t1 centuries (secs) */
-struct time_info_data mud_time_passed(time_t t2, time_t t1)
-{
-    long                                    secs = 0L;
-    struct time_info_data                   now;
-
-    if (DEBUG > 3)
-	log_info("called %s with %ld, %ld", __PRETTY_FUNCTION__, t2, t1);
-
-    secs = (long)(t2 - t1);
-    now.hours = (secs / SECS_PER_MUD_HOUR) % 24;	       /* 0..23 hours */
-    secs -= SECS_PER_MUD_HOUR * now.hours;
-    now.day = (secs / SECS_PER_MUD_DAY) % 35;		       /* 0..34 days */
-    secs -= SECS_PER_MUD_DAY * now.day;
-    now.month = (secs / SECS_PER_MUD_MONTH) % 17;	       /* 0..16 months */
-    secs -= SECS_PER_MUD_MONTH * now.month;
-    now.year = (secs / SECS_PER_MUD_YEAR);		       /* 0..XX? years */
-    return now;
-}
-
-struct time_info_data age(struct char_data *ch)
-{
-    struct time_info_data                   player_age;
-
-    if (DEBUG > 3)
-	log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
-
-    player_age = mud_time_passed(time(0), ch->player.time.birth);
-    player_age.year += 17;				       /* All players start at 17 */
-    return player_age;
-}
 
 int in_group(struct char_data *ch1, struct char_data *ch2)
 {

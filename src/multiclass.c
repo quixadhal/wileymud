@@ -21,7 +21,6 @@
 #include "spells.h"
 #include "mudlimits.h"
 #include "opinion.h"
-#include "constants.h"
 #define _MULTICLASS_C
 #include "multiclass.h"
 

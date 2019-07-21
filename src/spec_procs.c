@@ -19,7 +19,6 @@
 #include "act_wiz.h"
 #include "board.h"
 #include "comm.h"
-#include "constants.h"
 #include "db.h"
 #include "handler.h"
 #include "hash.h"
@@ -37,6 +36,7 @@
 #include "breath_weapons.h"
 #include "mob_actions.h"
 #include "tracking.h"
+#include "weather.h"        // time_info_data needed
 #define _SPEC_PROCS_C
 #include "spec_procs.h"
 

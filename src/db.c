@@ -27,7 +27,6 @@
 #include "mudlimits.h"
 #include "opinion.h"
 #include "hash.h"
-#include "constants.h"
 #include "spells.h"
 #include "spell_parser.h"
 #include "reception.h"

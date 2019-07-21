@@ -80,7 +80,6 @@
 #include "utils.h"
 #include "multiclass.h"
 #include "comm.h"
-#include "constants.h"
 #include "modify.h"
 #include "imc.h"
 #endif

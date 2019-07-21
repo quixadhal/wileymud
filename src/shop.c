@@ -18,12 +18,13 @@
 #include "db.h"
 #include "interpreter.h"
 #include "utils.h"
-#include "constants.h"
 #include "act_comm.h"
 #include "multiclass.h"
 #include "act_social.h"
 #include "act_wiz.h"
 #include "spec_procs.h"
+#include "weather.h"        // time_info_data struct
+
 #define _SHOP_C
 #include "shop.h"
 

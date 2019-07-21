@@ -26,6 +26,7 @@
 #include "act_social.h"
 #include "spec_procs.h"
 #include "rent.h"           // for rent data
+#include "weather.h"        // for SECS_PER defines
 #define _RECEPTION_C
 #include "reception.h"
 

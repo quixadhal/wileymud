@@ -22,6 +22,8 @@
 #define _WEATHER_C
 #include "weather.h"
 
+const time_t beginning_of_time = 650336715;     /* Fri Aug 10 21:05:15 1990 */
+
 const char                             *moon_names[] = {
     "new",
     "waxing cresent",
@@ -32,6 +34,61 @@ const char                             *moon_names[] = {
     "waning half",
     "waning cresent"
 };
+
+/* Calculate the REAL time passed over the last t2-t1 centuries (secs) */
+struct time_info_data real_time_passed(time_t t2, time_t t1)
+{
+    time_t                                  secs = 0L;
+    struct time_info_data                   now;
+
+    if (DEBUG > 3)
+	log_info("called %s with %ld, %ld", __PRETTY_FUNCTION__, t2, t1);
+
+    secs = (time_t)(t2 - t1);
+
+    now.hours = (secs / SECS_PER_REAL_HOUR) % 24;	       /* 0..23 hours */
+    secs -= SECS_PER_REAL_HOUR * now.hours;
+    now.day = (secs / SECS_PER_REAL_DAY);		       /* 0..34 days */
+    secs -= SECS_PER_REAL_DAY * now.day;
+    now.month = -1;
+    now.year = -1;
+
+    return now;
+}
+
+/* Calculate the MUD time passed over the last t2-t1 centuries (secs) */
+struct time_info_data mud_time_passed(time_t t2, time_t t1)
+{
+    time_t                                  secs = 0L;
+    struct time_info_data                   now;
+
+    if (DEBUG > 3)
+	log_info("called %s with %ld, %ld", __PRETTY_FUNCTION__, t2, t1);
+
+    secs = (time_t)(t2 - t1);
+
+    now.hours = (secs / SECS_PER_MUD_HOUR) % 24;	       /* 0..23 hours */
+    secs -= SECS_PER_MUD_HOUR * now.hours;
+    now.day = (secs / SECS_PER_MUD_DAY) % 35;		       /* 0..34 days */
+    secs -= SECS_PER_MUD_DAY * now.day;
+    now.month = (secs / SECS_PER_MUD_MONTH) % 17;	       /* 0..16 months */
+    secs -= SECS_PER_MUD_MONTH * now.month;
+    now.year = (secs / SECS_PER_MUD_YEAR);		       /* 0..XX? years */
+
+    return now;
+}
+
+struct time_info_data age(struct char_data *ch)
+{
+    struct time_info_data                   player_age;
+
+    if (DEBUG > 3)
+	log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
+
+    player_age = mud_time_passed(time(0), ch->player.time.birth);
+    player_age.year += 17;				       /* All players start at 17 */
+    return player_age;
+}
 
 void weather_and_time(int mode)
 {
@@ -302,23 +359,22 @@ void GetMonth(int month)
     }
 }
 
-void reset_weather(void)
-{
-    if (DEBUG > 3)
-	log_info("called %s with no arguments", __PRETTY_FUNCTION__);
+struct weather_data default_weather(void) {
+    struct weather_data local_weather;
 
-    weather_info.pressure = 960;
-    weather_info.change = 0;
-    weather_info.sky = SKY_CLOUDLESS;
-    weather_info.wind_speed = 0;
-    weather_info.wind_direction = WIND_DEAD;
+    local_weather.pressure = 960;
+    local_weather.change = 0;
+    local_weather.sky = SKY_CLOUDLESS;
+    local_weather.wind_speed = 0;
+    local_weather.wind_direction = WIND_DEAD;
+
+    return local_weather;
 }
 
 void reset_time(void)
 {
     FILE                                   *f1 = NULL;
     char                                    buf[80] = "\0\0\0\0\0\0\0";
-    long                                    beginning_of_time = 650336715;	/* Fri Aug 10 21:05:15 1990 */
     long                                    current_time = 0L;
 
     if (DEBUG > 2)
@@ -331,7 +387,7 @@ void reset_time(void)
     if (!(f1 = fopen(TIME_FILE, "r"))) {
 	log_info("Reset Time: Time file does not exist!\n");
 	time_info = mud_time_passed(time(0), beginning_of_time);
-	reset_weather();
+	weather_info = default_weather();
     } else {
 	fgets(buf, 80, f1);
 	fscanf(f1, "%ld\n", &current_time);
@@ -389,7 +445,6 @@ void update_time_and_weather(void)
 }
 
 void setup_weather_table(void) {
-    //time_t beginning_of_time = 650336715;     /* Fri Aug 10 21:05:15 1990 */
     PGresult *res = NULL;
     ExecStatusType st = 0;
     char *sql = "CREATE TABLE IF NOT EXISTS weather ( "
@@ -412,6 +467,8 @@ void setup_weather_table(void) {
     int rows = 0;
     int columns = 0;
     int count = 0;
+    struct time_info_data local_time;
+    struct weather_data local_weather;
 
     sql_connect(&db_wileymud);
     res = PQexec(db_wileymud.dbc, sql);
@@ -442,6 +499,13 @@ void setup_weather_table(void) {
     PQclear(res);
 
     if(count < 1) {
+	local_time = mud_time_passed(time(0), beginning_of_time);
+        local_weather = default_weather();
+
+
+
+
+
         // Insert our default value.
         res = PQexec(db_wileymud.dbc, sql3);
         st = PQresultStatus(res);
@@ -492,7 +556,6 @@ void load_weather(const char *filename) {
     int columns = 0;
     struct time_info_data local_time;
     struct weather_data local_weather;
-    time_t beginning_of_time = 650336715;       /* Fri Aug 10 21:05:15 1990 */
 
     file_timestamp = file_date(filename);
 
@@ -538,12 +601,7 @@ void load_weather(const char *filename) {
         if (!(fp = fopen(filename, "r"))) {
             log_error("  Weather file %s cannot be opened, using defaults.", filename);
             local_time = mud_time_passed(time(0), beginning_of_time);
-            // reset_weather();
-            local_weather.pressure = 960;
-            local_weather.change = 0;
-            local_weather.sky = SKY_CLOUDLESS;
-            local_weather.wind_speed = 0;
-            local_weather.wind_direction = WIND_DEAD;
+            local_weather = default_weather();
         } else {
             time_t local_current_time;
 

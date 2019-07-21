@@ -70,7 +70,6 @@
 #include "db.h"
 #include "multiclass.h"
 #include "comm.h"
-#include "constants.h"
 #include "modify.h"
 #include "interpreter.h"
 #include "version.h"

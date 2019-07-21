@@ -1,5 +1,5 @@
 /*
- * file: constants.c                                      Part of DIKUMUD
+ * file: global.c                                      Part of DIKUMUD
  * Usage: For constants used by the game.
  * Copyright (C) 1990, 1991 - see 'license.doc' for complete information.
  */
@@ -9,12 +9,11 @@
 /* #include <unistd.h> */
 #include <sys/types.h>
 
+#define _GLOBAL_C
 #include "global.h"
 #include "bug.h"
 #include "mudlimits.h"
 #include "trap.h"
-#define _CONSTANTS_C
-#include "constants.h"
 
 const char                             *class_name[] = {
     "mage", "cleric", "warrior", "thief", "ranger", "druid", NULL

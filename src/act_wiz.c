@@ -22,7 +22,6 @@
 #include "db.h"
 #include "spells.h"
 #include "mudlimits.h"
-#include "constants.h"
 #include "spell_parser.h"
 #include "board.h"
 #include "whod.h"

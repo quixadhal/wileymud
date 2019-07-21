@@ -17,13 +17,14 @@
 #include "db.h"
 #include "interpreter.h"
 #include "handler.h"
-#include "constants.h"
 #include "multiclass.h"
 #include "act_move.h"
+#include "weather.h"            // weather_info struct
+
 #define _SPELLS_C
 #include "spells.h"
-#include "spell_parser.h"
-#include "fight.h"
+#include "spell_parser.h"       // this uses the spell_info struct from spells.h
+#include "fight.h"              // this uses attack_hit_type from spells.h
 
 void cast_armor(int level, struct char_data *ch, const char *arg, int type,
 		struct char_data *victim, struct obj_data *tar_obj)
