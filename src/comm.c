@@ -627,7 +627,7 @@ void game_loop(int s)
 	}
 	if ((--pulse_update) <= 0) {
 	    pulse_update = PULSE_UPDATE + number(0, PULSE_VARIABLE);
-	    weather_and_time(1);
+	    update_weather_and_time();
 	    affect_update();
 	    point_update(pulse);
 	}

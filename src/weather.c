@@ -53,6 +53,7 @@ struct time_info_data real_time_passed(time_t t2, time_t t1)
     now.month = -1;
     now.year = -1;
 
+    now.last_updated = time(0);
     return now;
 }
 
@@ -75,6 +76,7 @@ struct time_info_data mud_time_passed(time_t t2, time_t t1)
     secs -= SECS_PER_MUD_MONTH * now.month;
     now.year = (secs / SECS_PER_MUD_YEAR);		       /* 0..XX? years */
 
+    now.last_updated = time(0);
     return now;
 }
 
@@ -87,27 +89,27 @@ struct time_info_data age(struct char_data *ch)
 
     player_age = mud_time_passed(time(0), ch->player.time.birth);
     player_age.year += 17;				       /* All players start at 17 */
+
     return player_age;
 }
 
-void weather_and_time(int mode)
+void update_weather_and_time(void)
 {
     if (DEBUG > 3)
-	log_info("called %s with %d", __PRETTY_FUNCTION__, mode);
+	log_info("called %s with no arguments", __PRETTY_FUNCTION__);
 
-    another_hour(mode);
-    if (mode)
-	weather_change();
+    another_hour();
+    weather_change();
+
     if (time_info.hours == TIME_NOON || time_info.hours == TIME_MIDNIGHT) {
-	//update_time_and_weather();
-        save_weather(NULL, time_info, weather_info);
+        save_weather(time_info, weather_info);
     }
 }
 
-void another_hour(int mode)
+void another_hour(void)
 {
     if (DEBUG > 2)
-	log_info("called %s with %d", __PRETTY_FUNCTION__, mode);
+	log_info("called %s with no arguments", __PRETTY_FUNCTION__);
 
     time_info.hours++;
     if (time_info.hours >= HOURS_PER_MUD_DAY) {
@@ -128,40 +130,39 @@ void another_hour(int mode)
 	    }
 	}
     }
-    if (mode) {
-	switch (time_info.hours) {
-	    case 0:
-		oprintf("The moon rises high overhead.\r\n");
-		break;
-	    case 4:
-		oprintf("The moon sets.\r\n");
-		break;
-	    case 6:
-		weather_info.sunlight = SUN_RISE;
-		oprintf("The sun rises in the east.\r\n");
-		break;
-	    case 7:
-		weather_info.sunlight = SUN_LIGHT;
-		oprintf("The day has begun.\r\n");
-		break;
-	    case 12:
-		oprintf("It is noon.\r\n");
-		break;
-	    case 18:
-		weather_info.sunlight = SUN_SET;
-		oprintf("The sun slowly disappears in the west.\r\n");
-		break;
-	    case 19:
-		weather_info.sunlight = SUN_DARK;
-		oprintf("The night has begun.\r\n");
-		break;
-	    case 21:
-		oprintf("A %s moon rises in the eastern sky.\r\n",
-			moon_names[(weather_info.moon - 1) / 4]);
-		break;
-	    default:
-		break;
-	}
+
+    switch (time_info.hours) {
+        case 0:
+            oprintf("The moon rises high overhead.\r\n");
+            break;
+        case 4:
+            oprintf("The moon sets.\r\n");
+            break;
+        case 6:
+            weather_info.sunlight = SUN_RISE;
+            oprintf("The sun rises in the east.\r\n");
+            break;
+        case 7:
+            weather_info.sunlight = SUN_LIGHT;
+            oprintf("The day has begun.\r\n");
+            break;
+        case 12:
+            oprintf("It is noon.\r\n");
+            break;
+        case 18:
+            weather_info.sunlight = SUN_SET;
+            oprintf("The sun slowly disappears in the west.\r\n");
+            break;
+        case 19:
+            weather_info.sunlight = SUN_DARK;
+            oprintf("The night has begun.\r\n");
+            break;
+        case 21:
+            oprintf("A %s moon rises in the eastern sky.\r\n",
+                    moon_names[(weather_info.moon - 1) / 4]);
+            break;
+        default:
+            break;
     }
 }
 
@@ -362,6 +363,7 @@ void GetMonth(int month)
 struct weather_data default_weather(void) {
     struct weather_data local_weather;
 
+    local_weather.last_updated = time(0);
     local_weather.pressure = 960;
     local_weather.change = 0;
     local_weather.sky = SKY_CLOUDLESS;
@@ -369,79 +371,6 @@ struct weather_data default_weather(void) {
     local_weather.wind_direction = WIND_DEAD;
 
     return local_weather;
-}
-
-void reset_time(void)
-{
-    FILE                                   *f1 = NULL;
-    char                                    buf[80] = "\0\0\0\0\0\0\0";
-    long                                    current_time = 0L;
-
-    if (DEBUG > 2)
-	log_info("called %s with no arguments", __PRETTY_FUNCTION__);
-
-    /*
-     * struct time_info_data mud_time_passed(time_t t2, time_t t1); 
-     */
-
-    if (!(f1 = fopen(TIME_FILE, "r"))) {
-	log_info("Reset Time: Time file does not exist!\n");
-	time_info = mud_time_passed(time(0), beginning_of_time);
-	weather_info = default_weather();
-    } else {
-	fgets(buf, 80, f1);
-	fscanf(f1, "%ld\n", &current_time);
-	fscanf(f1, "%d\n", &time_info.hours);
-	fscanf(f1, "%d\n", &time_info.day);
-	fscanf(f1, "%d\n", &time_info.month);
-	fscanf(f1, "%d\n", &time_info.year);
-	fgets(buf, 80, f1);
-	fscanf(f1, "%d\n", &weather_info.pressure);
-	fscanf(f1, "%d\n", &weather_info.change);
-	fscanf(f1, "%d\n", &weather_info.sky);
-	fscanf(f1, "%d\n", &weather_info.sunlight);
-	fscanf(f1, "%d\n", &weather_info.wind_speed);
-	fscanf(f1, "%d\n", &weather_info.wind_direction);
-	fscanf(f1, "%d\n", &weather_info.moon);
-	FCLOSE(f1);
-    }
-
-    weather_and_time(1);
-
-    log_info("   Current Gametime: %dH %dD %dM %dY.",
-	     time_info.hours, time_info.day, time_info.month, time_info.year);
-}
-
-void update_time_and_weather(void)
-{
-    FILE                                   *f1 = NULL;
-    long                                    current_time = 0L;
-
-    if (DEBUG > 2)
-	log_info("called %s with no arguments", __PRETTY_FUNCTION__);
-
-    if (!(f1 = fopen(TIME_FILE, "w"))) {
-	log_error("update time");
-	return;
-    }
-    current_time = time(0);
-    log_info("Time update.");
-    fprintf(f1, "# Time -last,hours,day,month,year\n");
-    fprintf(f1, "%ld\n", current_time);
-    fprintf(f1, "%d\n", time_info.hours);
-    fprintf(f1, "%d\n", time_info.day);
-    fprintf(f1, "%d\n", time_info.month);
-    fprintf(f1, "%d\n", time_info.year);
-    log_info("Weather update.");
-    fprintf(f1, "# Weather -pressure,change,sky,sunlight,windspeed,direction\n");
-    fprintf(f1, "%d\n", weather_info.pressure);
-    fprintf(f1, "%d\n", weather_info.change);
-    fprintf(f1, "%d\n", weather_info.sky);
-    fprintf(f1, "%d\n", weather_info.sunlight);
-    fprintf(f1, "%d\n", weather_info.wind_speed);
-    fprintf(f1, "%d\n", weather_info.wind_direction);
-    fprintf(f1, "%d\n", weather_info.moon);
-    FCLOSE(f1);
 }
 
 void setup_weather_table(void) {
@@ -529,10 +458,7 @@ void setup_weather_table(void) {
     }
 }
 
-void load_weather(const char *filename) {
-    static char                             tmp[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
-    time_t file_timestamp = -1;
-    time_t sql_timestamp = -1;
+void load_weather(void) {
     PGresult *res = NULL;
     ExecStatusType st = 0;
     const char *sql =   "SELECT extract(EPOCH from updated) AS the_time, "
@@ -549,93 +475,59 @@ void load_weather(const char *filename) {
                         "       moon "
                         "FROM   weather "
                         "LIMIT  1;";
-    const char *param_val[1];
-    int param_len[1];
-    int param_bin[1] = {0};
     int rows = 0;
     int columns = 0;
     struct time_info_data local_time;
     struct weather_data local_weather;
 
-    file_timestamp = file_date(filename);
+    local_time = mud_time_passed(time(0), beginning_of_time);
+    local_weather = default_weather();
 
     sql_connect(&db_wileymud);
-    res = PQexecParams(db_wileymud.dbc, sql, 0, NULL, param_val, param_len, param_bin, 0);
+    res = PQexec(db_wileymud.dbc, sql);
     st = PQresultStatus(res);
     if( st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE ) {
         log_error("Weather info does not exist in database: %s", PQerrorMessage(db_wileymud.dbc));
         //PQclear(res);
         //proper_exit(MUD_HALT);
+        log_boot("  Using default weather data.");
     } else {
         rows = PQntuples(res);
-        if( rows > 0 ) {
-            columns = PQnfields(res);
-            if( columns > 0 ) {
-                // The PQgetvalue() API will return the integer we expect as a
-                // NULL terminated string, so we can convert it with atoi().
-                sql_timestamp = (time_t)atoi(PQgetvalue(res,0,0));
-                local_time.hours = atoi(PQgetvalue(res,0,1));
-                local_time.day = atoi(PQgetvalue(res,0,2));
-                local_time.month = atoi(PQgetvalue(res,0,3));
-                local_time.year = atoi(PQgetvalue(res,0,4));
-                local_weather.pressure = atoi(PQgetvalue(res,0,5));
-                local_weather.change = atoi(PQgetvalue(res,0,6));
-                local_weather.sky = atoi(PQgetvalue(res,0,7));
-                local_weather.sunlight = atoi(PQgetvalue(res,0,8));
-                local_weather.wind_speed = atoi(PQgetvalue(res,0,9));
-                local_weather.wind_direction = atoi(PQgetvalue(res,0,10));
-                local_weather.moon = atoi(PQgetvalue(res,0,11));
-            }
+        columns = PQnfields(res);
+        if( rows > 0 && columns > 11 ) {
+            // The PQgetvalue() API will return the integer we expect as a
+            // NULL terminated string, so we can convert it with atoi().
+            local_time.last_updated = (time_t)atol(PQgetvalue(res,0,0));
+            local_time.hours = atoi(PQgetvalue(res,0,1));
+            local_time.day = atoi(PQgetvalue(res,0,2));
+            local_time.month = atoi(PQgetvalue(res,0,3));
+            local_time.year = atoi(PQgetvalue(res,0,4));
+
+            local_weather.last_updated = (time_t)atol(PQgetvalue(res,0,0));
+            local_weather.pressure = atoi(PQgetvalue(res,0,5));
+            local_weather.change = atoi(PQgetvalue(res,0,6));
+            local_weather.sky = atoi(PQgetvalue(res,0,7));
+            local_weather.sunlight = atoi(PQgetvalue(res,0,8));
+            local_weather.wind_speed = atoi(PQgetvalue(res,0,9));
+            local_weather.wind_direction = atoi(PQgetvalue(res,0,10));
+            local_weather.moon = atoi(PQgetvalue(res,0,11));
+
+            log_boot("  Using weather data from SQL database.");
+        } else {
+            log_error("Invalid weather info query result: %s", PQerrorMessage(db_wileymud.dbc));
+            log_boot("  Using default weather data.");
         }
     }
     PQclear(res);
 
-    if( file_timestamp == -1 && sql_timestamp == -1 ) {
-        log_fatal("No weather data available from %s!", filename);
-        proper_exit(MUD_HALT);
-    }
-
-    if( file_timestamp > sql_timestamp ) {
-        FILE *fp = NULL;
-        log_boot("  Weather has been updated in %s, updating SQL to match!", filename);
-        if (!(fp = fopen(filename, "r"))) {
-            log_error("  Weather file %s cannot be opened, using defaults.", filename);
-            local_time = mud_time_passed(time(0), beginning_of_time);
-            local_weather = default_weather();
-        } else {
-            time_t local_current_time;
-
-            fgets(tmp, MAX_INPUT_LENGTH, fp);
-            fscanf(fp, "%ld\n", &local_current_time);
-            fscanf(fp, "%d\n", &local_time.hours);
-            fscanf(fp, "%d\n", &local_time.day);
-            fscanf(fp, "%d\n", &local_time.month);
-            fscanf(fp, "%d\n", &local_time.year);
-            fgets(tmp, MAX_INPUT_LENGTH, fp);
-            fscanf(fp, "%d\n", &local_weather.pressure);
-            fscanf(fp, "%d\n", &local_weather.change);
-            fscanf(fp, "%d\n", &local_weather.sky);
-            fscanf(fp, "%d\n", &local_weather.sunlight);
-            fscanf(fp, "%d\n", &local_weather.wind_speed);
-            fscanf(fp, "%d\n", &local_weather.wind_direction);
-            fscanf(fp, "%d\n", &local_weather.moon);
-            FCLOSE(fp);
-        }
-        save_weather(NULL, local_time, local_weather);
-    } else {
-        log_boot("  Using weather data from SQL database.");
-    }
-
     time_info = local_time;
     weather_info = local_weather;
-    weather_and_time(1);
+    update_weather_and_time();
     log_info("   Current Gametime: %dH %dD %dM %dY.",
              time_info.hours, time_info.day, time_info.month, time_info.year);
 }
 
-void save_weather(const char *filename, struct time_info_data local_time,
-                  struct weather_data local_weather) {
-    static char                             tmp[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
+void save_weather(struct time_info_data local_time, struct weather_data local_weather) {
     PGresult *res = NULL;
     ExecStatusType st = 0;
     const char *sql =   "UPDATE weather SET "
@@ -651,88 +543,36 @@ void save_weather(const char *filename, struct time_info_data local_time,
                         "    wind_speed = $9, "
                         "    wind_direction = $10, "
                         "    moon = $11;";
+    char tmp[11][MAX_INPUT_LENGTH];
     char *param_val[11];
     int param_len[11];
     int param_bin[11] = {0,0,0,0,0,0,0,0,0,0,0};
-    FILE *fp = NULL;
 
-    if(filename && *filename) {
-        if (!(fp = fopen(filename, "w"))) {
-            log_error("Cannot save weather data to %s.", filename);
-        } else {
-            log_info("Saving weather data to %s.", filename);
-            fprintf(fp, "# Time -last,hours,day,month,year\n");
-            fprintf(fp, "%ld\n", time(0));
-            fprintf(fp, "%d\n", local_time.hours);
-            fprintf(fp, "%d\n", local_time.day);
-            fprintf(fp, "%d\n", local_time.month);
-            fprintf(fp, "%d\n", local_time.year);
-            fprintf(fp, "# Weather -pressure,change,sky,sunlight,windspeed,direction\n");
-            fprintf(fp, "%d\n", local_weather.pressure);
-            fprintf(fp, "%d\n", local_weather.change);
-            fprintf(fp, "%d\n", local_weather.sky);
-            fprintf(fp, "%d\n", local_weather.sunlight);
-            fprintf(fp, "%d\n", local_weather.wind_speed);
-            fprintf(fp, "%d\n", local_weather.wind_direction);
-            fprintf(fp, "%d\n", local_weather.moon);
-            FCLOSE(fp);
-        }
+    snprintf(tmp[0], MAX_INPUT_LENGTH, "%d", local_time.hours);
+    snprintf(tmp[1], MAX_INPUT_LENGTH, "%d", local_time.day);
+    snprintf(tmp[2], MAX_INPUT_LENGTH, "%d", local_time.month);
+    snprintf(tmp[3], MAX_INPUT_LENGTH, "%d", local_time.year);
+    snprintf(tmp[4], MAX_INPUT_LENGTH, "%d", local_weather.pressure);
+    snprintf(tmp[5], MAX_INPUT_LENGTH, "%d", local_weather.change);
+    snprintf(tmp[6], MAX_INPUT_LENGTH, "%d", local_weather.sky);
+    snprintf(tmp[7], MAX_INPUT_LENGTH, "%d", local_weather.sunlight);
+    snprintf(tmp[8], MAX_INPUT_LENGTH, "%d", local_weather.wind_speed);
+    snprintf(tmp[9], MAX_INPUT_LENGTH, "%d", local_weather.wind_direction);
+    snprintf(tmp[10], MAX_INPUT_LENGTH, "%d", local_weather.moon);
+
+    for(int i = 0; i < 12; i++) {
+        param_val[i] = tmp[i][0] ? tmp[i] : NULL;
+        param_len[i] = tmp[i][0] ? strlen(tmp[i]) : 0;
     }
-
-    snprintf(tmp, MAX_INPUT_LENGTH, "%d", local_time.hours);
-    param_val[0] = strdup(tmp);
-    param_len[0] = *tmp ? strlen(tmp) : 0;
-    snprintf(tmp, MAX_INPUT_LENGTH, "%d", local_time.day);
-    param_val[1] = strdup(tmp);
-    param_len[1] = *tmp ? strlen(tmp) : 0;
-    snprintf(tmp, MAX_INPUT_LENGTH, "%d", local_time.month);
-    param_val[2] = strdup(tmp);
-    param_len[2] = *tmp ? strlen(tmp) : 0;
-    snprintf(tmp, MAX_INPUT_LENGTH, "%d", local_time.year);
-    param_val[3] = strdup(tmp);
-    param_len[3] = *tmp ? strlen(tmp) : 0;
-
-    snprintf(tmp, MAX_INPUT_LENGTH, "%d", local_weather.pressure);
-    param_val[4] = strdup(tmp);
-    param_len[4] = *tmp ? strlen(tmp) : 0;
-    snprintf(tmp, MAX_INPUT_LENGTH, "%d", local_weather.change);
-    param_val[5] = strdup(tmp);
-    param_len[5] = *tmp ? strlen(tmp) : 0;
-    snprintf(tmp, MAX_INPUT_LENGTH, "%d", local_weather.sky);
-    param_val[6] = strdup(tmp);
-    param_len[6] = *tmp ? strlen(tmp) : 0;
-    snprintf(tmp, MAX_INPUT_LENGTH, "%d", local_weather.sunlight);
-    param_val[7] = strdup(tmp);
-    param_len[7] = *tmp ? strlen(tmp) : 0;
-    snprintf(tmp, MAX_INPUT_LENGTH, "%d", local_weather.wind_speed);
-    param_val[8] = strdup(tmp);
-    param_len[8] = *tmp ? strlen(tmp) : 0;
-    snprintf(tmp, MAX_INPUT_LENGTH, "%d", local_weather.wind_direction);
-    param_val[9] = strdup(tmp);
-    param_len[9] = *tmp ? strlen(tmp) : 0;
-    snprintf(tmp, MAX_INPUT_LENGTH, "%d", local_weather.moon);
-    param_val[10] = strdup(tmp);
-    param_len[10] = *tmp ? strlen(tmp) : 0;
 
     sql_connect(&db_wileymud);
     res = PQexecParams(db_wileymud.dbc, sql, 11, NULL, (const char **)param_val, param_len, param_bin, 0);
     st = PQresultStatus(res);
     if( st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE ) {
-        log_fatal("Cannot update weather: %s", PQerrorMessage(db_wileymud.dbc));
+        log_error("Cannot update weather: %s", PQerrorMessage(db_wileymud.dbc));
         //PQclear(res);
         //proper_exit(MUD_HALT);
     }
     PQclear(res);
-    free(param_val[0]);
-    free(param_val[1]);
-    free(param_val[2]);
-    free(param_val[3]);
-    free(param_val[4]);
-    free(param_val[5]);
-    free(param_val[6]);
-    free(param_val[7]);
-    free(param_val[8]);
-    free(param_val[9]);
-    free(param_val[10]);
 }
 

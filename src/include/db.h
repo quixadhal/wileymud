@@ -29,7 +29,7 @@
 #define SUICIDE_WARN_FILE "etc/suicide.warn"
 #define SUICIDE_DONE_FILE "etc/suicide.done"
 #define PLAYER_FILE       "adm/players"			       /* the player database */
-#define TIME_FILE         "etc/time"			       /* game calendar information */
+//#define TIME_FILE         "etc/time"			       /* game calendar information */
 #define MESS_FILE         "etc/messages"		       /* damage message */
 #define SOCMESS_FILE      "etc/actions"			       /* messgs for social acts */
 #define INFO_FILE         "etc/info"			       /* for INFO */
@@ -45,12 +45,12 @@
 #define IDEA_FILE         "log/ideas"			       /* for the 'idea'-command */
 #define TYPO_FILE         "log/typos"			       /* 'typo' */
 #define BUG_FILE          "log/bugs"			       /* 'bug' */
-#define REBOOT_FILE	  "adm/reboot"
-#define REBOOTTIME_FILE	  "adm/reboot.times"
+//#define REBOOT_FILE	  "adm/reboot"
+//#define REBOOTTIME_FILE	  "adm/reboot.times"
 #define PASSWD_FILE       "adm/passwd"
 #define PASSWD_NEW        "adm/passwd.new"
 #define PASSWD_OFF        "adm/passwd.off"
-#define RENTCOST_FILE     "adm/rent"
+//#define RENTCOST_FILE     "adm/rent"
 
 #define DEFAULT_HOME		3001			       /* when a player is created */
 

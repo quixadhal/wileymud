@@ -3,8 +3,8 @@
 #define _VERSION_H
 
 #define VERSION_STR \
-"\r\n*** Welcome to WileyMUD III, Quixadhal's Version 2.13w3-gamma (2019-07-20) ***\r\n"
+"\r\n*** Welcome to WileyMUD III, Quixadhal's Version 2.14w3-gamma (2019-07-20) ***\r\n"
 #define VERSION_BASE "WileyMUD III"
-#define VERSION_BUILD "2.13g"
+#define VERSION_BUILD "2.14g"
 #define VERSION_DATE "2019-07-20"
 #endif /* _VERSION_H */

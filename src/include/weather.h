@@ -38,20 +38,22 @@
 #define MAX_MOON_PHASES     32
 
 struct time_info_data {
-  int       hours;
-  int       day;
-  int       month;
-  int       year;
+    time_t  last_updated;
+    int     hours;
+    int     day;
+    int     month;
+    int     year;
 };
 
 struct weather_data {
-  int       pressure;       /* How is the pressure ( Mb ) */
-  int       change;         /* How fast and what way does it change. */
-  int       sky;            /* How is the sky. */
-  int       sunlight;       /* And how much sun. */
-  int       wind_speed;     /* how hard is the wind blowing */
-  int       wind_direction; /* which direction is the wind blowing */
-  int       moon;           /* what is the moon like */
+    time_t  last_updated;
+    int     pressure;       /* How is the pressure ( Mb ) */
+    int     change;         /* How fast and what way does it change. */
+    int     sky;            /* How is the sky. */
+    int     sunlight;       /* And how much sun. */
+    int     wind_speed;     /* how hard is the wind blowing */
+    int     wind_direction; /* which direction is the wind blowing */
+    int     moon;           /* what is the moon like */
 };
 
 #ifndef _WEATHER_C
@@ -63,18 +65,15 @@ struct time_info_data                   real_time_passed(time_t t2, time_t t1);
 struct time_info_data                   mud_time_passed(time_t t2, time_t t1);
 struct time_info_data                   age(struct char_data *ch);
 
-void    weather_and_time(int mode);
-void    another_hour(int mode);
+void    update_weather_and_time(void);
+void    another_hour(void);
 void    weather_change(void);
 void    ChangeWeather(int change);
 void    GetMonth(int month);
 struct weather_data default_weather(void);
-void    reset_time(void);
-void    update_time_and_weather(void);
 
 void    setup_weather_table(void);
-void    load_weather(const char *filename);
-void    save_weather(const char *filename, struct time_info_data local_time,
-                     struct weather_data local_weather);
+void    load_weather(void);
+void    save_weather(struct time_info_data local_time, struct weather_data local_weather);
 
 #endif

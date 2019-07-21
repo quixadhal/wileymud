@@ -133,7 +133,7 @@ void load_db(void)
     log_boot("Boot db -- BEGIN.");
 
     log_boot("- Loading game time and weather:");
-    load_weather(TIME_FILE);
+    load_weather();
 
     log_boot("- Reading news");
     strlcpy(news, update_message_from_file(NEWS_FILE, 0), MAX_STRING_LENGTH);
