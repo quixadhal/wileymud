@@ -1526,59 +1526,91 @@ void do_exits(struct char_data *ch, const char *argument, int cmd)
 	"Up   ",
 	"Down "
     };
-    struct room_direction_data             *exitdata = NULL;
+    const int                               reverse_dir[6] = { 2, 3, 0, 1, 6, 5 };
+    struct room_direction_data             *this_exit = NULL;
+    struct room_data                       *this_room = NULL;
+    int                                     this_zone = 0;
+    struct room_direction_data             *target_exit = NULL;
     struct room_data                       *target_room = NULL;
+    int                                     target_zone = 0;
 
     if (DEBUG)
 	log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch),
 		 VNULL(argument), cmd);
 
-    for (door = 0; door < MAX_NUM_EXITS; door++) {
-	exitdata = EXIT(ch, door);
-	if (exitdata) {
-	    if (!real_roomp(exitdata->to_room)) {
-		/*
-		 * don't print unless immortal 
-		 */
-		if (IS_IMMORTAL(ch)) {
-		    scprintf(buf, MAX_INPUT_LENGTH, "  %s - [#%d] Swirling CHAOS!\r\n",
-			     exits[door], exitdata->to_room);
-		}
-	    } else if (exitdata->to_room != NOWHERE &&
-		       (!IS_SET(exitdata->exit_info, EX_CLOSED) || IS_IMMORTAL(ch))) {
-                target_room = real_roomp(exitdata->to_room);
+    bzero(buf, MAX_INPUT_LENGTH);
 
-		if ((IS_DARK(exitdata->to_room) || IS_DARKOUT(exitdata->to_room))
-		    && !IS_IMMORTAL(ch)) {
-		    scprintf(buf, MAX_INPUT_LENGTH, "  %s - Too dark to tell", exits[door]);
-                } else if (IS_IMMORTAL(ch)) {
-                    if(target_room->zone == real_roomp(ch->in_room)->zone) {
-                        scprintf(buf, MAX_INPUT_LENGTH, "  \x1b[33;1m%s - [#%d] %s\x1b[0m", exits[door],
-                                exitdata->to_room, target_room->name);
+    this_room = real_roomp((ch)->in_room);
+    if(this_room) {
+        this_zone = this_room->zone;
+
+        for (door = 0; door < MAX_NUM_EXITS; door++) {
+            this_exit = this_room->dir_option[door];
+
+            if (this_exit) {
+                target_room = real_roomp(this_exit->to_room);
+
+                if (IS_IMMORTAL(ch)) {
+                    // 31 is red, 32 is green, 33 is yellow, 37 is white/grey
+                    if (target_room) {
+                        target_zone = target_room->zone;
+                        target_exit = target_room->dir_option[reverse_dir[door]];
+
+                        // white means the target is in the same zone we are,
+                        // yellow means it's a different zone.
+
+                        scprintf(buf, MAX_INPUT_LENGTH, "  %s%s - [#%d]",
+                                (target_zone == this_zone) ? "\x1b[37;1m" : "\x1b[33;1m",
+                                exits[door], this_exit->to_room);
+
+                        // green means normal euclidean,
+                        // red means non-euclidean.
+
+                        scprintf(buf, MAX_INPUT_LENGTH, " %s%s",
+                                (target_exit && (target_exit->to_room == this_room->number)) ?
+                                "\x1b[32;1m" : "\x1b[31;1m",
+                                target_room ? target_room->name : "Swirling CHAOS!!!");
+
+                        if(target_exit && target_exit->to_room != this_room->number) {
+                            // A non-euclidean exit that returns somewhere NOT here.
+                            scprintf(buf, MAX_INPUT_LENGTH, "\x1b[31;1m returns to [#%d]",
+                                    target_exit->to_room);
+                        }
+
+                        if(target_zone != this_zone) {
+                            scprintf(buf, MAX_INPUT_LENGTH, "\x1b[33;1m in #%d - %s",
+                                    target_room->zone, zone_table[target_room->zone].name);
+                        }
+
+                        strlcat(buf, "\x1b[0m", MAX_INPUT_LENGTH);
+                        if (IS_SET(this_exit->exit_info, EX_CLOSED))
+                            strlcat(buf, " (closed)", MAX_INPUT_LENGTH);
+                        if (IS_DARK(this_exit->to_room))
+                            strlcat(buf, " (dark)", MAX_INPUT_LENGTH);
+
                     } else {
-                        scprintf(buf, MAX_INPUT_LENGTH, "  \x1b[33;1m%s - [#%d] \x1b[31m%s in #%d - %s\x1b[0m", exits[door],
-                                exitdata->to_room, target_room->name,
-                                target_room->zone, zone_table[target_room->zone].name);
+                        scprintf(buf, MAX_INPUT_LENGTH,
+                                "  \x1b[31;1m%s - [#%d] Swirling CHAOS!!!\x1b[0m",
+                                exits[door], this_exit->to_room);
                     }
+                    strlcat(buf, "\r\n", MAX_INPUT_LENGTH);
                 } else {
-		    scprintf(buf, MAX_INPUT_LENGTH, "  %s - %s", exits[door],
-			    target_room->name);
+                    // Mortal view...
+                    if(target_room) {
+                        if (IS_SET(this_exit->exit_info, EX_CLOSED))
+                            continue;
+                        scprintf(buf, MAX_INPUT_LENGTH,
+                                "  %s - %s\r\n", exits[door],
+                                (IS_DARK(this_exit->to_room) || IS_DARKOUT(this_exit->to_room)) ?
+                                "Too dark to tell" : target_room->name);
+                    }
                 }
-		if (IS_SET(exitdata->exit_info, EX_CLOSED))
-		    strlcat(buf, " (closed)", MAX_INPUT_LENGTH);
-		if (IS_DARK(exitdata->to_room) && IS_IMMORTAL(ch))
-		    strlcat(buf, " (dark)", MAX_INPUT_LENGTH);
-		strlcat(buf, "\r\n", MAX_INPUT_LENGTH);
-	    }
-	}
+            }
+        }
+        cprintf(ch, "Obvious exits:\r\n%s\r\n", buf[0] ? buf : "None.\r\n");
+    } else {
+        cprintf(ch, "You seem to be nowhere at all...\r\n");
     }
-
-    cprintf(ch, "Obvious exits:\r\n");
-
-    if (*buf)
-	cprintf(ch, "%s", buf);
-    else
-	cprintf(ch, "  None.\r\n");
 }
 
 void do_score(struct char_data *ch, const char *argument, int cmd)
