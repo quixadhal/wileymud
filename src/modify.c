@@ -560,6 +560,7 @@ char                                   *one_word(char *argument, char *first_arg
     return (argument + begin);
 }
 
+#if 0
 struct help_index_element              *build_help_index(FILE * fl, int *num)
 {
     int                                     nr = -1;
@@ -628,6 +629,7 @@ struct help_index_element              *build_help_index(FILE * fl, int *num)
     *num = nr;
     return (list);
 }
+#endif
 
 void page_printf(struct char_data *ch, const char *Str, ...)
 {

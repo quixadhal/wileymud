@@ -79,7 +79,8 @@ tOBJ =	mob_actions.o spec_procs.o breath_weapons.o tracking.o act_comm.o \
 	shop.o signals.o sound.o spell_parser.o spells.o \
 	trap.o utils.o weather.o whod.o events.o \
 	ban.o sha256.o imc.o i3.o sql.o \
-	stringmap.o scheduler.o crc32.o reboot.o rent.o
+	stringmap.o scheduler.o crc32.o reboot.o rent.o \
+	help.o
 OBJ =	$(addprefix obj/, $(tOBJ))
 
 tIDOBJ		= id_close.o id_open.o id_parse.o \
@@ -384,7 +385,8 @@ obj/interpreter.o: interpreter.c include/global.h include/i3.h include/bug.h \
   include/modify.h include/whod.h include/events.h include/random.h \
   include/board.h include/multiclass.h include/handler.h \
   include/reception.h include/tracking.h include/ban.h include/sql.h \
-  include/reboot.h include/interpreter.h
+  include/reboot.h include/stringmap.h include/help.h \
+  include/interpreter.h
 obj/fight.o: fight.c include/global.h include/bug.h include/utils.h \
   include/comm.h include/handler.h include/interpreter.h include/db.h \
   include/spells.h include/spell_parser.h include/mudlimits.h \
@@ -409,6 +411,9 @@ obj/imc.o: imc.c
 obj/board.o: board.c include/global.h include/bug.h include/utils.h \
   include/comm.h include/db.h include/interpreter.h include/multiclass.h \
   include/modify.h include/handler.h include/act_info.h include/board.h
+obj/help.o: help.c include/global.h include/bug.h include/utils.h \
+  include/comm.h include/stringmap.h include/modify.h \
+  include/multiclass.h include/sql.h include/help.h
 obj/ban.o: ban.c include/global.h include/utils.h include/comm.h \
   include/modify.h include/interpreter.h include/db.h include/bug.h \
   include/sql.h include/ban.h
@@ -420,7 +425,8 @@ obj/spell_parser.o: spell_parser.c include/global.h include/bug.h \
 obj/sql.o: sql.c include/global.h include/bug.h include/comm.h \
   include/version.h include/crc32.h include/interpreter.h \
   include/utils.h include/db.h include/weather.h include/ban.h \
-  include/reboot.h include/rent.h include/i3.h include/sql.h
+  include/reboot.h include/rent.h include/stringmap.h include/help.h \
+  include/i3.h include/sql.h
 obj/global.o: global.c include/global.h include/bug.h include/mudlimits.h \
   include/trap.h
 obj/db.o: db.c include/global.h include/i3.h include/bug.h include/utils.h \
@@ -429,4 +435,5 @@ obj/db.o: db.c include/global.h include/i3.h include/bug.h include/utils.h \
   include/reception.h include/weather.h include/modify.h include/fight.h \
   include/act_social.h include/spec_procs.h include/multiclass.h \
   include/board.h include/interpreter.h include/ban.h include/sql.h \
-  include/reboot.h include/rent.h include/db.h
+  include/reboot.h include/rent.h include/stringmap.h include/help.h \
+  include/db.h

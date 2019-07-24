@@ -26,7 +26,7 @@ void                                    do_string(struct char_data *ch, const ch
 void                                    bisect_arg(const char *arg, int *field, char *string);
 void                                    do_setskill(struct char_data *ch, const char *arg, int cmd);
 char                                   *one_word(char *argument, char *first_arg);
-struct help_index_element              *build_help_index(FILE * fl, int *num);
+//struct help_index_element              *build_help_index(FILE * fl, int *num);
 void                                    page_printf(struct char_data *ch, const char *Str, ...)
                                                     __attribute__ ( ( format( printf, 2, 3 ) ) );
 void                                    page_string(struct descriptor_data *d, char *str,

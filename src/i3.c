@@ -3066,7 +3066,7 @@ char *color_speaker( const char *speaker )
                 lowercase_name[i] = speaker[i];
         }
 
-        found = stringmap_find(speaker_db, lowercase_name);
+        found = (const char *)stringmap_find(speaker_db, lowercase_name);
         if(found) {
             // Simply return the color code found.
             snprintf(result, MAX_INPUT_LENGTH, "%s", found);
@@ -3075,7 +3075,7 @@ char *color_speaker( const char *speaker )
         } else {
             // Add them as a new speaker and THEN return the color code.
             found = colormap[speaker_count % (sizeof(colormap) / sizeof(colormap[0]))];
-            stringmap_add( speaker_db, lowercase_name, found );
+            stringmap_add( speaker_db, lowercase_name, (void *)found, strlen(found)+1 );
             speaker_count++;
             I3_saveSpeakers();
             snprintf(result, MAX_INPUT_LENGTH, "%s", found);
@@ -5126,8 +5126,8 @@ void I3_readSpeaker(FILE *fp)
                     if(key && *key && value) {
                         const char *check = NULL;
 
-                        if(!(check = stringmap_find(speaker_db, key))) {
-                            stringmap_add(speaker_db, key, value);
+                        if(!(check = (const char *)stringmap_find(speaker_db, key))) {
+                            stringmap_add(speaker_db, key, value, strlen(value)+1);
                         }
                     }
 		    return;
@@ -10440,12 +10440,12 @@ I3_CMD(I3_speaker_color)
             lowercase_name[i] = speaker[i];
     }
 
-    found = stringmap_find(speaker_db, lowercase_name);
+    found = (const char *)stringmap_find(speaker_db, lowercase_name);
     if(found) {
         if(!argument || !*argument) {
 	    i3_printf(ch, "%%^YELLOW%%^No color sequence specified.%%^RESET%%^\r\n");
         } else {
-            stringmap_add( speaker_db, lowercase_name, argument );
+            stringmap_add( speaker_db, lowercase_name, (void *)argument, strlen(argument)+1 );
             I3_saveSpeakers();
 	    i3_printf(ch, "%%^GREEN%%^Color sequence for %s saved.%%^RESET%%^\r\n", speaker);
         }

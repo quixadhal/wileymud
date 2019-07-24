@@ -8,7 +8,7 @@ struct rent_data {
     char    set_by[MAX_INPUT_LENGTH];
 };
 
-#ifndef _REBOOT_C
+#ifndef _RENT_C
 extern struct rent_data     rent;
 #endif
 

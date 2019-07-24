@@ -37,6 +37,7 @@ void _stringmap_recursive_nuke( stringMap *map )
         free(map->value);
         map->value = NULL;
     }
+    map->size = 0;
     if(map->next) {
         _stringmap_recursive_nuke(map->next);
         free(map->next);
@@ -58,6 +59,7 @@ void stringmap_destroy( stringMap *map )
             free(map[i].value);
             map[i].value = NULL;
         }
+        map[i].size = 0;
         if(map[i].next) {
             _stringmap_recursive_nuke(map->next);
             map[i].next = NULL;
@@ -74,13 +76,14 @@ stringMap * stringmap_init( void )
     {
         map[i].key = NULL;
         map[i].value = NULL;
+        map[i].size = 0;
         map[i].next = NULL;
     }
 
     return map;
 }
 
-void stringmap_add( stringMap *map, const char *k, const char *v )
+void stringmap_add( stringMap *map, const char *k, void *v, size_t size )
 {
     unsigned int hashcode;
     stringMap *p;
@@ -97,24 +100,30 @@ void stringmap_add( stringMap *map, const char *k, const char *v )
     if(!p->key) {
         /* First node? */
         p->key = (char *)strdup(k);
-        p->value = (char *)strdup(v);
+        p->value = (void *)calloc(1, size);
+        memcpy(p->value, v, size);
+        p->size = size;
         p->next = NULL;
     } else if(!strcasecmp(p->key, k)) {
         /* Found our match! */
         if(p->value)
             free((void *)p->value);
-        p->value = (char *)strdup(v);
+        p->value = (void *)calloc(1, size);
+        memcpy(p->value, v, size);
+        p->size = size;
     } else {
         /* New key */
         p->next = (stringMap *)calloc(1, sizeof(stringMap));
         p = p->next;
         p->key = (char *)strdup(k);
-        p->value = (char *)strdup(v);
+        p->value = (void *)calloc(1, size);
+        memcpy(p->value, v, size);
+        p->size = size;
         p->next = NULL;
     }
 }
 
-const char * stringmap_find(stringMap *map, const char *k)
+void * stringmap_find(stringMap *map, const char *k)
 {
     unsigned int hashcode;
     stringMap *p;

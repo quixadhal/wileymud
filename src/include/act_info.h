@@ -43,9 +43,6 @@ void                                    do_mystat(struct char_data *ch, const ch
 void                                    do_time(struct char_data *ch, const char *argument, int cmd);
 void                                    do_weather(struct char_data *ch, const char *argument,
 						   int cmd);
-void                                    do_help(struct char_data *ch, const char *argument, int cmd);
-void                                    do_wizhelp(struct char_data *ch, const char *argument,
-						   int cmd);
 void                                    do_allcommands(struct char_data *ch, const char *argument,
 						       int cmd);
 void                                    do_who(struct char_data *ch, const char *argument, int cmd);

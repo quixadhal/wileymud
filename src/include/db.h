@@ -165,10 +165,12 @@ struct player_index_element {
   int                                     nr;
 };
 
+#if 0
 struct help_index_element {
   char                                   *keyword;
   long                                    pos;
 };
+#endif
 
 struct player_list_entry {
   char                                  name[80];
@@ -213,18 +215,18 @@ extern char                             suicide_done[MAX_STRING_LENGTH];
 
 extern FILE                            *mob_f;
 extern FILE                            *obj_f;
-extern FILE                            *help_fl;
-extern FILE                            *wizhelp_fl;
+//extern FILE                            *help_fl;
+//extern FILE                            *wizhelp_fl;
 
 extern struct index_data               *mob_index;
 extern struct index_data               *obj_index;
-extern struct help_index_element       *help_index;
-extern struct help_index_element       *wizhelp_index;
+//extern struct help_index_element       *help_index;
+//extern struct help_index_element       *wizhelp_index;
 
 extern int                              top_of_mobt;
 extern int                              top_of_objt;
-extern int                              top_of_helpt;
-extern int                              top_of_wizhelpt;
+//extern int                              top_of_helpt;
+//extern int                              top_of_wizhelpt;
 
 extern struct time_info_data            time_info;
 extern struct weather_data              weather_info;

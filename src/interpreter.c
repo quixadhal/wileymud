@@ -58,6 +58,8 @@ extern char                            *crypt(const char *key, const char *salt)
 #include "ban.h"
 #include "sql.h"
 #include "reboot.h"
+#include "stringmap.h"
+#include "help.h"
 #define _INTERPRETER_C
 #include "interpreter.h"
 
