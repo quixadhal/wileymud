@@ -11,9 +11,9 @@ reaching out to...
      hand you a HUGE glass of the blackest beer you've ever seen!
 ~
 LastSite           adork@localhost~
-LastLogin          1551679471
+LastLogin          1564154017
 Birth              803755990
-Played             97284683
+Played             108426501
 Sex                1
 Race               2
 Class              63
@@ -33,7 +33,7 @@ PoofIn             ~
 PoofOut            ~
 AbilityScores      25 100 25 25 25 25
 AbilityPad         0 0 0 0
-HpManaMove         10002 9999 266 0 1173 0
+HpManaMove         10002 9999 266 0 1184 0
 AC                 100
 ToHitDamage        0 0
 SaveApply          0 0 0 0 0
@@ -45,7 +45,7 @@ ShortSavePad       0 0 0 0
 SavePad            0 0 0 0
 Pracs              99
 SkillsToLearn      0
-NamedSkill         1 100 1 armour~
+NamedSkill         1 100 1 armor~
 NamedSkill         2 100 1 teleport~
 NamedSkill         3 100 1 bless~
 NamedSkill         4 100 1 blindness~
@@ -54,7 +54,7 @@ NamedSkill         6 100 1 call lightning~
 NamedSkill         7 100 1 charm person~
 NamedSkill         8 100 1 chill touch~
 NamedSkill         9 100 1 clone~
-NamedSkill         10 100 1 colour spray~
+NamedSkill         10 100 1 color spray~
 NamedSkill         11 100 1 control weather~
 NamedSkill         12 100 1 create food~
 NamedSkill         13 100 1 create water~

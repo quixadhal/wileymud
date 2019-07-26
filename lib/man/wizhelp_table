@@ -1,9 +1,35 @@
-@
+WIZHELP
+    The following privileged comands MAY be available to you:
+
+force      transfer   goto       shutdow    string     stat       load
+purge      shutdown   at         snoop      advance    snowball   reroll
+restore    switch     users      wizhelp    slay       nohassle   wall
+stealth    pset       @          wizlock    highfive   world      spells
+show       debug      invisible  mkzone     wiznet     rentmode   pretitle
+logs       whod       restoreall players    reset      event      zpurge
+ticks      setreboot  home
+#
+WIZNET @
     Wizard chat.  Just like group chat, but all wizards see this.
 #
+'ACT FLAGS' ACT_FLAGS ACT
+    Nasty function that does formatted output for player situations.
+
+        $n - ch                      $N - victim
+        $m - him/her/it of ch        $M him/her/it of victim
+        $s - his/her/it of ch        $S his/her/it of victim
+        $e - he/she/it of ch         $E he/she/it of victim
+        $o - objective
+        $p - possessive
+        $a - a/an obj                $A a/an victim
+        $T - victim 
+        $F - fname(victim)
+#
 ADVANCE
-    Gives a player (or mob) levels as if they had earned them.
-    A nice way to reward players who do something really cool.
+    To advance a player to a level higher than his present. Default is to
+    advance him one level. A level 0 player (Man/Woman) is always only
+    advanced by one level.
+
     I think negative arguments will demote players as well!
 #
 AT
@@ -11,6 +37,39 @@ AT
     this will be the name of a mob or player.
 
     "at eli trans bozo" -- teleports bozo to eli
+#
+ATTRIBUTES
+    Currently these are the only attributes you may work with when working
+    with cust. Things in <> are what you are to enter, <CR> means hit
+    return at this point.
+
+    cust name           <name of room> <CR>
+    cust desc           <CR>
+    cust extra          <keywords> <CR>
+    cust exit           <dir> <door flags> <key> <to_room> <CR>
+    cust xdesc          <dir> <CR>
+    cust flags          <flags> <sector_type> <CR>
+    cust riv            <speed> <dir> <CR>
+    cust tele           <time> <to_room> <look-flag> <CR>
+#
+CUST
+    Cust will allow you to customize certain aspects of a room that you
+    are currently 'standing' in. Below is a list of available fields that
+    you may use when customizing.
+
+    cust <field> <attribute>
+
+    field:
+        name : This is the name of the room you are in.
+        desc : This is the rooms main description.
+        extra: This is the rooms extra description.
+        exit : This works with one of the FIVE exits available.
+               You may add an exit, delete an exit or change
+               certain properties of an exit.
+        xdesc: This works on a exits description.
+        flags: This works on the room flags. 'help room_flags'
+
+    See also: ATTRIBUTES
 #
 DEBUG
     Adjusts the debug level.  Don't go above 2 unless you
@@ -42,8 +101,13 @@ INVISIBLE
     A wiz invisible command.
 #
 LOAD
-    Function to create any mob or object by name or vnum.  It will
-    appear in the room with you, or in your inventory.
+    For loading (or cloning) new objects or characters from the database.
+    The format is: load <type> <vnum>
+
+    Where <type> is either 'obj' or 'char', and vnum is the vnum of the
+    object or NPC character you wish to create.  Objects will appear in
+    your inventory, while NPCs will appear in the room you are standing
+    in.
 #
 LOGS
     Toggles reception of log statements as a notify channel.  If on,
@@ -61,12 +125,35 @@ PRETITLE
     Sets the pretitle of a character.
 #
 PSET
-    Allows manipulation of many player attributes.  You can use this
-    to restore lost gold, or tweak stats.
+    Allows a Wiz to set values pertaining to the type of object being
+    worked on.
+
+    Usage: pset <att> name <val>
+
+    att list: align class exp lev sex race hit mhit tohit bank gold prac
+    name: is the person|object|mobile you are working on.
+    value: an integer corresponding to the value you wish to set.
+
+    align       1000.....-1000
+    class       DO not use this one, let them suffer with what they chose
+    exp         any integer value, perferably higher then the value they
+                have
+    lev         use advance instead! This screws multiclass
+    sex         If they really want it?
+    hit         integer: Hit points
+    mhit        Max hit points, you should not set this, unfair.
+    tohit       changes the thaco
+    bank        if they need reimburse for money, use this instead of
+                giving.
+    gold        take it away if need be.
+    prac        Do not let them advance unnatuarly
 #
 PURGE
     Destroys ALL objects and mobs in the room you are standing in!
     Useful after you've had your fun with the Berserker Axe.
+    Usage:
+        purge               To empty a room of monsters and objects.
+        purge <object>      Figure this one out yourself.
 #
 RENTMODE
     Allows you to set the rent value multiplier.  If all the rent
@@ -82,9 +169,27 @@ RESET
 #
 RESTORE
     Restores a player (or mob) to full mana/move/health.
+
+    If used on a mortal, this command will reset that players mana and
+    hit points.  If used on an Immortal various values will be reset to
+    their proper values.
 #
 RESTOREALL
     Like restore, but to every player in the game!
+#
+'ROOM FLAGS' ROOM_FLAGS ROOM
+    Room_flags                  Sector_flags
+    -----------------           -----------------
+    Dark         1              Indoors         0
+    No mob       4              City            1
+    Indoors      8              Field           2
+    Peaceful     16             Forest          3
+    No steal     32             Hills           4
+    No sum       64             Mountains       5
+    No magic     128            Water           6
+    Private      512            No-swim Water   7
+                                Air             8
+                                Underwater      9
 #
 SETREBOOT
     Sets the time of day at which the gamedriver will automatically
@@ -119,11 +224,34 @@ SPELLS
     Show all spells in the game.
 #
 STAT
-    This allows you to see vital statistics on any specific item in
-    the game.
+    Shows some internal data about game objects, beyond what the normal
+    player interfaces should reveal.
+
+    Usage: stat < pc|mob|obj|room > [ name|vnum ]
 #
 STEALTH
     Sets the stealth flag on a player.
+#
+STRING
+    For changing the text-strings associated with objects and characters.
+    The format is:
+
+    string <type> <name> <field> [<string> | <keyword>]
+
+    Type is either 'obj' or 'char'.
+    Field is one of the following(the names may be abbreviated):
+    Name                    the call-name of an obj/char - kill giant
+    Short                   for inventory lists (objs) and actions (chars)
+    Long                    for when obj/character is seen in room
+    Title                   for players
+    Description             For look at. For objs, must be followed by a
+                            keyword
+    Delete-description      only for objs. Must be followed by keyword
+
+    Where a string is expected as the last argument, a newline will make
+    you enter a string mode, and the game will prompt you for new lines to
+    the string until you exceed the maximum length for the string or you
+    end a line with a '@'.
 #
 SWITCH
     Take control of a mob as if it were your character.  This is
@@ -146,15 +274,9 @@ WALL
     Global emote that has no prefixes.  This can be used for
     atmosphere, or for warnings.
 #
-WIZHELP
-    Duh!
-#
 WIZLOCK
     Prevent mortals from logging in.  This should be used if you
     are debugging.
-#
-WIZNET
-    Another name for the @ command.  Wizard chat.
 #
 WORLD
     Some statistics about the game world.

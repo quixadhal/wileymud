@@ -2179,8 +2179,8 @@ int magic_user(struct char_data *ch, int cmd, const char *arg)
 	case 12:
 	case 13:
 	case 14:
-	    say_spell(ch, SPELL_COLOUR_SPRAY);
-	    cast_colour_spray(GetMaxLevel(ch), ch, "", SPELL_TYPE_SPELL, vict, 0);
+	    say_spell(ch, SPELL_COLOR_SPRAY);
+	    cast_color_spray(GetMaxLevel(ch), ch, "", SPELL_TYPE_SPELL, vict, 0);
 	    break;
 	case 15:
 	case 16:
@@ -3495,8 +3495,8 @@ void zm_zap_area_at(struct char_data *ch, int maxlevel)
 	    cast_cone_of_cold(maxlevel, ch, "", SPELL_TYPE_SPELL, ch->specials.fighting, 0);
 	    break;
 	case 2:
-	    say_spell(ch, SPELL_COLOUR_SPRAY);
-	    cast_colour_spray(maxlevel, ch, "", SPELL_TYPE_SPELL, ch->specials.fighting, 0);
+	    say_spell(ch, SPELL_COLOR_SPRAY);
+	    cast_color_spray(maxlevel, ch, "", SPELL_TYPE_SPELL, ch->specials.fighting, 0);
 	    break;
 	case 3:
 	    act("$N flails about blindly and curses the name of $n.", TRUE, ch, 0,

@@ -166,11 +166,11 @@ void                                    cast_clone(int level, struct char_data *
 						   int type, struct char_data *tar_ch,
 						   struct obj_data *tar_obj);
 
-#define SPELL_COLOUR_SPRAY           10
-void                                    spell_colour_spray(int level, struct char_data *ch,
+#define SPELL_COLOR_SPRAY           10
+void                                    spell_color_spray(int level, struct char_data *ch,
 							   struct char_data *victim,
 							   struct obj_data *obj);
-void                                    cast_colour_spray(int level, struct char_data *ch,
+void                                    cast_color_spray(int level, struct char_data *ch,
 							  const char *arg, int type,
 							  struct char_data *victim,
 							  struct obj_data *tar_obj);

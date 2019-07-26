@@ -7,10 +7,10 @@ Title              the Elven Student/Filcher~
 Description
 Another old blah blah
 ~
-LastSite           unknown~
-LastLogin          1551675785
+LastSite           adork@localhost~
+LastLogin          1563978252
 Birth              1221467932
-Played             6249
+Played             7032
 Sex                1
 Race               2
 Class              9
@@ -26,7 +26,7 @@ PoofIn             ~
 PoofOut            ~
 AbilityScores      14 0 15 11 14 8
 AbilityPad         0 0 0 0
-HpManaMove         18 24 74 0 231 0
+HpManaMove         18 24 74 0 200 0
 AC                 100
 ToHitDamage        0 0
 SaveApply          0 0 0 0 0
@@ -47,7 +47,7 @@ NamedSkill         6 0 0 call lightning~
 NamedSkill         7 0 0 charm person~
 NamedSkill         8 0 0 chill touch~
 NamedSkill         9 0 0 clone~
-NamedSkill         10 0 0 colour spray~
+NamedSkill         10 0 0 color spray~
 NamedSkill         11 0 0 control weather~
 NamedSkill         12 0 0 create food~
 NamedSkill         13 0 0 create water~
@@ -182,7 +182,7 @@ NamedSkill         182 0 0 disarm trap~
 NamedSkill         183 0 0 disarm~
 NamedSkill         184 0 0 shield bash~
 NamedSkill         185 0 0 riding~
-ActFlags           0 0
+ActFlags           4 80
 Affect             0 0 0 0 0 0 0
 Affect             1 0 0 0 0 0 0
 Affect             2 0 0 0 0 0 0

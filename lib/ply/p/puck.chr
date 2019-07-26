@@ -48,7 +48,7 @@ NamedSkill         6 0 0 call lightning~
 NamedSkill         7 0 0 charm person~
 NamedSkill         8 0 0 chill touch~
 NamedSkill         9 0 0 clone~
-NamedSkill         10 0 0 colour spray~
+NamedSkill         10 0 0 color spray~
 NamedSkill         11 0 0 control weather~
 NamedSkill         12 61 0 create food~
 NamedSkill         13 11 0 create water~

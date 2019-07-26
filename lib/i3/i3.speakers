@@ -1,5 +1,5 @@
 #COUNT
-Count   2749
+Count   2755
 End
 
 #SPEAKER
@@ -3568,6 +3568,16 @@ Color  %^BLACK%^%^B_CYAN%^
 End
 
 #SPEAKER
+Name   kaon
+Color  %^BLUE%^
+End
+
+#SPEAKER
+Name   gesslar
+Color  %^RED%^%^BOLD%^
+End
+
+#SPEAKER
 Name   ahimoth
 Color  %^BLACK%^%^B_YELLOW%^
 End
@@ -6818,6 +6828,11 @@ Color  %^WHITE%^
 End
 
 #SPEAKER
+Name   sarmonsiill
+Color  %^GREEN%^%^BOLD%^
+End
+
+#SPEAKER
 Name   alton
 Color  %^RED%^%^BOLD%^
 End
@@ -8100,6 +8115,11 @@ End
 #SPEAKER
 Name   whisper
 Color  %^BLACK%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name   mariner
+Color  %^WHITE%^
 End
 
 #SPEAKER
@@ -9905,6 +9925,11 @@ End
 #SPEAKER
 Name   timbo
 Color  %^WHITE%^%^B_BLUE%^
+End
+
+#SPEAKER
+Name   amariner
+Color  %^CYAN%^
 End
 
 #SPEAKER
@@ -11769,6 +11794,11 @@ End
 
 #SPEAKER
 Name   zyren
+Color  %^MAGENTA%^
+End
+
+#SPEAKER
+Name   reno
 Color  %^MAGENTA%^
 End
 

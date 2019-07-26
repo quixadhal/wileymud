@@ -27,87 +27,49 @@ int help_keyword_count = 0;
 void setup_help_table(void) {
     PGresult *res = NULL;
     ExecStatusType st = 0;
-    char *sql = "CREATE TABLE IF NOT EXISTS help_messages ( "
-                "    updated TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "
-                "    immortal BOOLEAN NOT NULL DEFAULT false, "
-                "    set_by TEXT NOT NULL DEFAULT 'SYSTEM', "
-                "    id INTEGER PRIMARY KEY NOT NULL, "
-                "    message TEXT "
-                "); ";
-    char *sql2 = "CREATE TABLE IF NOT EXISTS help_keywords ( "
+    char *sqla = "CREATE TABLE IF NOT EXISTS help_messages ( "
+                 "    updated TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "
+                 "    immortal BOOLEAN NOT NULL DEFAULT false, "
+                 "    set_by TEXT NOT NULL DEFAULT 'SYSTEM', "
+                 "    id INTEGER PRIMARY KEY NOT NULL, "
+                 "    message TEXT "
+                 "); ";
+    char *sqlb = "CREATE TABLE IF NOT EXISTS help_keywords ( "
                 "    id INTEGER NOT NULL REFERENCES help_messages(id), "
                 "    keyword TEXT PRIMARY KEY NOT NULL "
                 "); ";
-    char *sql3 = "INSERT INTO help_messages (id, message, immortal) VALUES ($1,$2,$3) "
-                 "ON CONFLICT DO NOTHING;";
-                 //"ON CONFLICT (id) DO UPDATE SET updated = now(), message = $2, immortal = $3;";
-    char *sql4 = "INSERT INTO help_keywords (id, keyword) VALUES ($1,$2) ON CONFLICT DO NOTHING;";
+    // We need to verify that our magic keywords are present, and that
+    // entries exist for them.
+    char *sql2   = "SELECT id FROM help_keywords WHERE lower(keyword) = lower($1);";
+    char *sql2b  = "SELECT id FROM help_messages WHERE id = $1;";
+
+    // We might need this if we have an issue...
+    char *sql3  = "SELECT coalesce(MAX(id), 0) FROM help_messages;";
+
+    // If anything wasn't there, we'll need to put placeholders in...
+    char *sql4a = "INSERT INTO help_messages (id, message, immortal) VALUES ($1,$2,$3) "
+                  "ON CONFLICT DO NOTHING;";
+    char *sql4b = "INSERT INTO help_keywords (id, keyword) VALUES ($1,$2) "
+                  "ON CONFLICT DO NOTHING;";
+
     const char *param_val[3];
     int param_len[3];
     int param_bin[3] = {0,0,0};
-    char *keywords[3] = { "help", "contents", "wizhelp" };
+    char *keywords[3] = { "HELP", "CONTENTS", "WIZHELP" };
     char *wizzness[3] = { "0", "0", "1" };
     char *messages[3] = {
         // HELP
-        "The following help is available:\r\n"
-        "\r\n"
-        "HELP help       - This text.\r\n"
-        "HELP            - List the available commands.\r\n"
-        "HELP --list     - List the available commands by keyword.\r\n"
-        "HELP --reload   - Immortal only, forces the help data to be refreshed.\r\n"
-        "\r\n"
-        "Help searches for a partial match of the entered word, including any\r\n"
-        "spaces that may follow the word.\r\n"
-        "\r\n"
-        "Example:\r\n"
-        " > 'help magic mis'\r\n"
-        "    will find the help text for the magic missile spell.\r\n"
-        "\r\n"
-        " > 'help mag '\r\n"
-        "   will not match anything.\r\n"
-        "\r\n"
-        " > 'help mag'\r\n"
-        "   will match 'magic user' or 'magic missile' depending on first\r\n"
-        "   occurrence in the help file.\r\n",
+        "The help system is not fully installed, complain to your admin!\r\n",
         // CONTENTS
-        "                          ---=>>> WileyMUD III <<<=---\r\n"
-        "\r\n"
-        " --Communication--    --Equipment--       --Movement--      --Experience--   \r\n"
-        "  ' say              wear, wield        n,s,e,w,u,d        practice <skill>  \r\n"
-        "  , group tell       remove, hold       enter, leave       gain              \r\n"
-        "  \" tell             use <item>         follow, flee       prac <m/c/w/t/r>  \r\n"
-        "  : emote            recite <scroll>    land                *add known to    \r\n"
-        "  @ whizz tell       quaff <potion>     sit, stand          show only your   \r\n"
-        "    shout, whisper                      rest, sleep         known skills.    \r\n"
-        "\r\n"
-        "     --Groups--         --Shops--          --Combat--         --Food--       \r\n"
-        "  follow             buy, sell          consider, kill     eat, taste        \r\n"
-        "  group, grep        list               cast, swat         drink, sip        \r\n"
-        "  gtell, split       value              kick, bash                           \r\n"
-        "                     rent, offer        rescue, backstab                     \r\n"
-        "                                        flee                                 \r\n"
-        "\r\n"
-        "     --Items--         --Corpses--       --Environment--     --Personal--    \r\n"
-        "  get, drop, put     get all corpse     look               score, inventory  \r\n"
-        "  buy, sell          bury               look in            nosummon,noshout  \r\n"
-        "  give               desecrate          search             noteleport        \r\n"
-        "  steal, pick                                              help              \r\n"
-        "  open, close                                              who               \r\n"
-        "  lock, unlock                                             quit (careful!)   \r\n",
+        "The help system is empty, your admin is lazy!\r\n",
         // WIZHELP
-        "The following privileged comands MAY be available to you:\r\n"
-        "\r\n"
-        "  force      transfer   goto       shutdow    string     stat       load     \r\n"
-        "  purge      shutdown   at         snoop      advance    snowball   reroll   \r\n"
-        "  restore    switch     users      wizhelp    slay       nohassle   wall     \r\n"
-        "  stealth    pset       @          wizlock    highfive   world      spells   \r\n"
-        "  show       debug      invisible  mkzone     wiznet     rentmode   pretitle \r\n"
-        "  logs       whod       restoreall players    reset      event      zpurge   \r\n"
-        "  ticks      setreboot  home                                                 \r\n"
+        "You forgot to install the help files, dumbass.\r\n"
     };
+    int rows = 0;
+    int columns = 0;
 
     sql_connect(&db_wileymud);
-    res = PQexec(db_wileymud.dbc, sql);
+    res = PQexec(db_wileymud.dbc, sqla);
     st = PQresultStatus(res);
     if( st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE ) {
         log_fatal("Cannot create help_messages table: %s", PQerrorMessage(db_wileymud.dbc));
@@ -116,7 +78,7 @@ void setup_help_table(void) {
     }
     PQclear(res);
 
-    res = PQexec(db_wileymud.dbc, sql2);
+    res = PQexec(db_wileymud.dbc, sqlb);
     st = PQresultStatus(res);
     if( st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE ) {
         log_fatal("Cannot create help_keywords table: %s", PQerrorMessage(db_wileymud.dbc));
@@ -127,35 +89,137 @@ void setup_help_table(void) {
     // Make sure any hard-coded help entries the code uses are in place!
     for(int i = 0; i < 3; i++) {
         char tmp[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
+        int this_keyword_id = 0;
+        int this_message_id = 0;
 
-        snprintf(tmp, MAX_INPUT_LENGTH, "%d", i);
-        param_val[0] = tmp[0] ? tmp : NULL;
-        param_len[0] = tmp[0] ? strlen(tmp) : 0;
-        param_val[1] = messages[i][0] ? messages[i] : NULL;
-        param_len[1] = messages[i][0] ? strlen(messages[i]) : 0;
-        param_val[2] = wizzness[i][0] ? wizzness[i] : NULL;
-        param_len[2] = wizzness[i][0] ? strlen(wizzness[i]) : 0;
-
-        res = PQexecParams(db_wileymud.dbc, sql3, 3, NULL, param_val, param_len, param_bin, 0);
+        param_val[0] = keywords[i][0] ? keywords[i] : NULL;
+        param_len[0] = keywords[i][0] ? strlen(keywords[i]) : 0;
+        res = PQexecParams(db_wileymud.dbc, sql2, 1, NULL, param_val, param_len, param_bin, 0);
         st = PQresultStatus(res);
         if( st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE ) {
-            log_fatal("Cannot insert message %d to help_messages table: %s", i, PQerrorMessage(db_wileymud.dbc));
+            log_fatal("Cannot fetch keyword id for %s from help_messages table: %s", keywords[i], PQerrorMessage(db_wileymud.dbc));
             PQclear(res);
             proper_exit(MUD_HALT);
         }
-        PQclear(res);
-
-        param_val[1] = keywords[i][0] ? keywords[i] : NULL;
-        param_len[1] = keywords[i][0] ? strlen(keywords[i]) : 0;
-
-        res = PQexecParams(db_wileymud.dbc, sql4, 2, NULL, param_val, param_len, param_bin, 0);
-        st = PQresultStatus(res);
-        if( st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE ) {
-            log_fatal("Cannot insert keyword %d to help_keywords table: %s", i, PQerrorMessage(db_wileymud.dbc));
+        rows = PQntuples(res);
+        columns = PQnfields(res);
+        if(rows < 1 || columns < 1) {
+            // We did NOT find the keyword we needed, fudge one?
             PQclear(res);
-            proper_exit(MUD_HALT);
+            log_sql("Did not find keyword id for %s", keywords[i]);
+        } else {
+            this_keyword_id = (int) atoi(PQgetvalue(res,0,0));
+            PQclear(res);
+            log_sql("Found keyword id %d for %s", this_keyword_id, keywords[i]);
+
+            // We found the keyword for our message, now we need to ensure the message is there.
+            snprintf(tmp, MAX_INPUT_LENGTH, "%d", i);
+            param_val[0] = tmp[0] ? tmp : NULL;
+            param_len[0] = tmp[0] ? strlen(tmp) : 0;
+            res = PQexecParams(db_wileymud.dbc, sql2b, 1, NULL, param_val, param_len, param_bin, 0);
+            st = PQresultStatus(res);
+            if( st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE ) {
+                log_fatal("Cannot fetch keyword id for %d from help_messages table: %s", i, PQerrorMessage(db_wileymud.dbc));
+                PQclear(res);
+                proper_exit(MUD_HALT);
+            }
+            rows = PQntuples(res);
+            columns = PQnfields(res);
+            if(rows < 1 || columns < 1) {
+                // We had a keyword, but no message... grrrr....
+                PQclear(res);
+                log_sql("Did not find message for id %d from %s", this_keyword_id, keywords[i]);
+            } else {
+                this_message_id = (int) atoi(PQgetvalue(res,0,0));
+                PQclear(res);
+                log_sql("Found message id %d for keyword id %d from %s", this_message_id, this_keyword_id, keywords[i]);
+            }
         }
-        PQclear(res);
+
+        if(this_keyword_id < 1 || this_message_id < 1) {
+            // If either id is zero, we failed to find something.
+            // In either case, we should get the MAX(id) of the message table
+
+            res = PQexec(db_wileymud.dbc, sql3);
+            st = PQresultStatus(res);
+            if( st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE ) {
+                log_fatal("Cannot get max id from messages table: %s", PQerrorMessage(db_wileymud.dbc));
+                PQclear(res);
+                proper_exit(MUD_HALT);
+            }
+            rows = PQntuples(res);
+            columns = PQnfields(res);
+            if(rows < 1 || columns < 1) {
+                // We can't get a MAX(id), this is bad...
+                log_fatal("Invalid max id from messages table: %s", PQerrorMessage(db_wileymud.dbc));
+                PQclear(res);
+                proper_exit(MUD_HALT);
+            } else {
+                this_message_id = (int) atoi(PQgetvalue(res,0,0));
+                PQclear(res);
+            }
+
+            if(this_keyword_id < 1) {
+                // Now, if we also didn't have a keyword, we'll just use the MAX(id) + 1
+                // If we had one, cool.. use it.
+                this_keyword_id = this_message_id + 1;
+                log_sql("Inserting message id %d for keyword %s", this_keyword_id, keywords[i]);
+
+                snprintf(tmp, MAX_INPUT_LENGTH, "%d", this_keyword_id);
+                param_val[0] = tmp[0] ? tmp : NULL;
+                param_len[0] = tmp[0] ? strlen(tmp) : 0;
+                param_val[1] = messages[i][0] ? messages[i] : NULL;
+                param_len[1] = messages[i][0] ? strlen(messages[i]) : 0;
+                param_val[2] = wizzness[i][0] ? wizzness[i] : NULL;
+                param_len[2] = wizzness[i][0] ? strlen(wizzness[i]) : 0;
+                res = PQexecParams(db_wileymud.dbc, sql4a, 3, NULL,
+                                   param_val, param_len, param_bin, 0);
+                st = PQresultStatus(res);
+                if( st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE ) {
+                    log_fatal("Cannot insert message %d to help_messages table: %s", this_keyword_id, PQerrorMessage(db_wileymud.dbc));
+                    PQclear(res);
+                    proper_exit(MUD_HALT);
+                }
+                PQclear(res);
+
+                log_sql("Inserting keyword %d to mach...", this_keyword_id);
+                snprintf(tmp, MAX_INPUT_LENGTH, "%d", this_keyword_id);
+                param_val[0] = tmp[0] ? tmp : NULL;
+                param_len[0] = tmp[0] ? strlen(tmp) : 0;
+                param_val[1] = keywords[i][0] ? keywords[i] : NULL;
+                param_len[1] = keywords[i][0] ? strlen(keywords[i]) : 0;
+
+                res = PQexecParams(db_wileymud.dbc, sql4b, 2, NULL, param_val, param_len, param_bin, 0);
+                st = PQresultStatus(res);
+                if( st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE ) {
+                    log_fatal("Cannot insert keyword %d to help_keywords table: %s", i, PQerrorMessage(db_wileymud.dbc));
+                    PQclear(res);
+                    proper_exit(MUD_HALT);
+                }
+                PQclear(res);
+            } else {
+                // We had one, but we still have to restore the missing message entry...
+                // This really should never happen because of the foreign key contraint.
+                log_sql("Inserting message id %d for keyword %s", this_keyword_id, keywords[i]);
+
+                snprintf(tmp, MAX_INPUT_LENGTH, "%d", this_keyword_id);
+                param_val[0] = tmp[0] ? tmp : NULL;
+                param_len[0] = tmp[0] ? strlen(tmp) : 0;
+                param_val[1] = messages[i][0] ? messages[i] : NULL;
+                param_len[1] = messages[i][0] ? strlen(messages[i]) : 0;
+                param_val[2] = wizzness[i][0] ? wizzness[i] : NULL;
+                param_len[2] = wizzness[i][0] ? strlen(wizzness[i]) : 0;
+                res = PQexecParams(db_wileymud.dbc, sql4a, 3, NULL,
+                                   param_val, param_len, param_bin, 0);
+                st = PQresultStatus(res);
+                if( st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE ) {
+                    log_fatal("Cannot insert message %d to help_messages table: %s", this_keyword_id, PQerrorMessage(db_wileymud.dbc));
+                    PQclear(res);
+                    proper_exit(MUD_HALT);
+                }
+                PQclear(res);
+            }
+        }
     }
 }
 
@@ -279,6 +343,13 @@ static int _keyword_cmp(const void *a, const void *b) {
     return strncasecmp(ka->keyword, kb->keyword, strlen(ka->keyword));
 }
 
+static int _exact_keyword_cmp(const void *a, const void *b) {
+    struct help_keyword *ka = (struct help_keyword *) a;
+    struct help_keyword *kb = (struct help_keyword *) b;
+
+    return strcasecmp(ka->keyword, kb->keyword);
+}
+
 int find_help_by_keyword(const char *keyword) {
     struct help_keyword needle;
     struct help_keyword *result;
@@ -287,7 +358,10 @@ int find_help_by_keyword(const char *keyword) {
     needle.id = 0;
 
     result = bsearch(&needle, help_keywords, help_keyword_count,
-                     sizeof(struct help_keyword), _keyword_cmp);
+                     sizeof(struct help_keyword), _exact_keyword_cmp);
+    if(!result)
+        result = bsearch(&needle, help_keywords, help_keyword_count,
+                         sizeof(struct help_keyword), _keyword_cmp);
 
     return result ? result->id : -1;
 }
@@ -331,8 +405,13 @@ void do_help(struct char_data *ch, const char *argument, int cmd)
 
             // Yes, this will print out duplicates for those cases where one help
             // entry shares multiple keywords... for now.
-            scprintf(result, MAX_STRING_LENGTH, "%-12.12s", help_keywords[i].keyword);
-            if(++column > 5 || i == (help_keyword_count - 1)) {
+            if(strlen(help_keywords[i].keyword) > 18 && column < 3) {
+                scprintf(result, MAX_STRING_LENGTH, "%-36.36s  ", help_keywords[i].keyword);
+                column++;
+            } else {
+                scprintf(result, MAX_STRING_LENGTH, "%-18.18s ", help_keywords[i].keyword);
+            }
+            if(++column > 3 || i == (help_keyword_count - 1)) {
                 column = 0;
                 scprintf(result, MAX_STRING_LENGTH, "\r\n");
             }

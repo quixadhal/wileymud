@@ -51,7 +51,7 @@ NamedSkill         6 86 1 call lightning~
 NamedSkill         7 90 1 charm person~
 NamedSkill         8 51 1 chill touch~
 NamedSkill         9 66 1 clone~
-NamedSkill         10 80 1 colour spray~
+NamedSkill         10 80 1 color spray~
 NamedSkill         11 64 1 control weather~
 NamedSkill         12 71 1 create food~
 NamedSkill         13 63 1 create water~

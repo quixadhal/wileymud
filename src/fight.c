@@ -1798,7 +1798,7 @@ int PreProcDam(struct char_data *ch, int type, int dam)
 	    break;
 
 	case SPELL_MAGIC_MISSILE:
-	case SPELL_COLOUR_SPRAY:
+	case SPELL_COLOR_SPRAY:
 	case SPELL_GAS_BREATH:
 	case SPELL_METEOR_SWARM:
 	    Our_Bit = IMM_ENERGY;
@@ -2163,7 +2163,7 @@ int GetItemDamageType(int type)
 	    return (COLD_DAMAGE);
 	    break;
 
-	case SPELL_COLOUR_SPRAY:
+	case SPELL_COLOR_SPRAY:
 	case SPELL_METEOR_SWARM:
 	case SPELL_GAS_BREATH:
 	    return (BLOW_DAMAGE);

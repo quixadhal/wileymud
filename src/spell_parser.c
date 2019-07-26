@@ -1134,7 +1134,7 @@ void assign_spell_pointers(void)
     ASSIGN_SPELL(SPELL_ANIMATE_DEAD, 1, 0, "animate dead", cast_animate_dead, 24, 15, 50,
 		 TAR_OBJ_ROOM, POSITION_STANDING, LOKI, CLASS_ALL, 10, 7, LOKI, LOKI, LOKI,
 		 LOKI);
-    ASSIGN_SPELL(SPELL_ARMOR, 1, 0, "armour", cast_armor, 12, 5, 50, TAR_CHAR_ROOM,
+    ASSIGN_SPELL(SPELL_ARMOR, 1, 0, "armor", cast_armor, 12, 5, 50, TAR_CHAR_ROOM,
 		 POSITION_STANDING, LOKI, CLASS_ALL, 4, 1, LOKI, LOKI, 10, LOKI);
     ASSIGN_SPELL(SPELL_ASTRAL_WALK, 1, 0, "astral walk", cast_astral_walk, 12, 33, 50,
 		 TAR_CHAR_WORLD, POSITION_STANDING, LOKI, CLASS_ALL, 21, 18, LOKI, LOKI, LOKI,
@@ -1175,7 +1175,7 @@ void assign_spell_pointers(void)
 		 CLASS_ALL, 3, LOW_IMMORTAL, LOKI, LOKI, LOKI, LOKI);
     ASSIGN_SPELL(SPELL_CLONE, 1, 0, "clone", cast_clone, 48, 50, 100, TAR_CHAR_WORLD,
 		 POSITION_STANDING, LOKI, CLASS_ALL, 25, 48, LOKI, LOKI, LOKI, LOKI);
-    ASSIGN_SPELL(SPELL_COLOUR_SPRAY, 1, 0, "colour spray", cast_colour_spray, 24, 15, 50,
+    ASSIGN_SPELL(SPELL_COLOR_SPRAY, 1, 0, "color spray", cast_color_spray, 24, 15, 50,
 		 TAR_IGNORE | TAR_VIOLENT, POSITION_FIGHTING, LOKI, CLASS_ALL, 11, LOW_IMMORTAL,
 		 LOKI, LOKI, LOKI, LOKI);
     ASSIGN_SPELL(SPELL_CONE_OF_COLD, 1, 0, "cone of cold", cast_cone_of_cold, 24, 15, 50,

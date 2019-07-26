@@ -1203,7 +1203,7 @@ void do_stat(struct char_data *ch, const char *argument, int cmd)
 	 */
 	switch (j->obj_flags.type_flag) {
 	    case ITEM_LIGHT:
-		snprintf(buf, MAX_STRING_LENGTH, "Colour : [%d]\r\nType : [%d]\r\nHours : [%d]",
+		snprintf(buf, MAX_STRING_LENGTH, "Color : [%d]\r\nType : [%d]\r\nHours : [%d]",
 			j->obj_flags.value[0], j->obj_flags.value[1], j->obj_flags.value[2]);
 		break;
 	    case ITEM_SCROLL:
@@ -2466,7 +2466,7 @@ void do_advance(struct char_data *ch, const char *argument, int cmd)
     cprintf(ch, "You feel generous.\r\n");
     act("$n makes some strange gestures.\r\nA strange feeling comes upon you,"
 	"\r\nLike a giant hand, light comes down from\r\nabove, grabbing your "
-	"body, that begins\r\nto pulse with coloured lights from inside.\r\nYo"
+	"body, that begins\r\nto pulse with colored lights from inside.\r\nYo"
 	"ur head seems to be filled with daemons\r\nfrom another plane as your"
 	" body dissolves\r\ninto the elements of time and space itself.\r\nSudde"
 	"nly a silent explosion of light snaps\r\nyou back to reality. You fee"

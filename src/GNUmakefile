@@ -203,6 +203,9 @@ obj/act_wiz.o: act_wiz.c include/global.h include/bug.h include/utils.h \
   include/act_info.h include/fight.h include/hash.h include/weather.h \
   include/modify.h include/tracking.h include/i3.h include/sql.h \
   include/reboot.h include/rent.h include/act_wiz.h
+obj/help2.o: help2.c include/global.h include/bug.h include/utils.h \
+  include/comm.h include/stringmap.h include/modify.h \
+  include/multiclass.h include/sql.h include/help.h
 obj/act_social.o: act_social.c include/global.h include/bug.h include/utils.h \
   include/comm.h include/interpreter.h include/handler.h include/db.h \
   include/spells.h include/multiclass.h include/act_social.h

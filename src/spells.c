@@ -397,7 +397,7 @@ void cast_clone(int level, struct char_data *ch, const char *arg, int type,
     }
 }
 
-void cast_colour_spray(int level, struct char_data *ch, const char *arg, int type,
+void cast_color_spray(int level, struct char_data *ch, const char *arg, int type,
 		       struct char_data *victim, struct obj_data *tar_obj)
 {
     if (DEBUG > 1)
@@ -406,20 +406,20 @@ void cast_colour_spray(int level, struct char_data *ch, const char *arg, int typ
 
     switch (type) {
 	case SPELL_TYPE_SPELL:
-	    spell_colour_spray(level, ch, victim, 0);
+	    spell_color_spray(level, ch, victim, 0);
 	    break;
 	case SPELL_TYPE_SCROLL:
 	    if (victim)
-		spell_colour_spray(level, ch, victim, 0);
+		spell_color_spray(level, ch, victim, 0);
 	    else if (!tar_obj)
-		spell_colour_spray(level, ch, ch, 0);
+		spell_color_spray(level, ch, ch, 0);
 	    break;
 	case SPELL_TYPE_WAND:
 	    if (victim)
-		spell_colour_spray(level, ch, victim, 0);
+		spell_color_spray(level, ch, victim, 0);
 	    break;
 	default:
-	    log_error("Serious screw-up in colour spray!");
+	    log_error("Serious screw-up in color spray!");
 	    break;
     }
 }

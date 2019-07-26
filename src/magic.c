@@ -645,8 +645,8 @@ void spell_clone(int level, struct char_data *ch, struct char_data *victim,
     }
 }
 
-void spell_colour_spray(int level, struct char_data *ch, struct char_data *victim,
-			struct obj_data *obj)
+void spell_color_spray(int level, struct char_data *ch, struct char_data *victim,
+                       struct obj_data *obj)
 {
     int                                     dam = 0;
     struct char_data                       *tmp_victim = NULL;
@@ -674,7 +674,7 @@ void spell_colour_spray(int level, struct char_data *ch, struct char_data *victi
 	    if (IS_PC(tmp_victim) && IS_IMMORTAL(tmp_victim) && !IS_IMMORTAL(ch)) {
 		cprintf(tmp_victim, "Some puny mortal tries to blind you with color spray\r\n");
 	    } else {
-		damage(ch, tmp_victim, dam, SPELL_COLOUR_SPRAY);
+		damage(ch, tmp_victim, dam, SPELL_COLOR_SPRAY);
 
 		if (GetMaxLevel(tmp_victim) <= (GET_LEVEL(ch, MAGE_LEVEL_IND) / 2)) {
 		    if (!saves_spell(tmp_victim, SAVING_SPELL)) {

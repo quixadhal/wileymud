@@ -2893,7 +2893,7 @@ char                                   *get_ansi_sector(struct room_data *this_r
 {
     static char                             buf[12];
     const char                             *symbols = "..-%^^~~$~";
-    const char                             *colours = "0322774464";
+    const char                             *colors = "0322774464";
     const char                             *bolds = "9939399393";
 
     strlcpy(buf, " ", 12);
@@ -2904,7 +2904,7 @@ char                                   *get_ansi_sector(struct room_data *this_r
     if (this_room->sector_type >= 0) {
 	int                                     x = this_room->sector_type;
 
-	snprintf(buf, 12, "%c[%c%cm%c%c[0m", 27, bolds[x], colours[x], symbols[x], 27);
+	snprintf(buf, 12, "%c[%c%cm%c%c[0m", 27, bolds[x], colors[x], symbols[x], 27);
     } else {
 	snprintf(buf, 12, "%c[%c%cm%c%c[0m", 27, '4', '5', '?', 27);
     }

@@ -166,7 +166,7 @@ typedef int                             (*ifuncp) ( /* CHAR_DATA *, char *, int 
 #define MAX_MAIL_LENGTH 2048				       /* that should be enough */
 #define MAIL_PATH "mail"				       /* this is offset by the location of lib */
 
-struct colour_data {
+struct color_data {
   char                                    code[10];
   char                                    act_code[5];
   char                                    name[15];

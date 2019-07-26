@@ -445,7 +445,7 @@ void do_practice(struct char_data *ch, const char *argument, int cmd)
 		    cprintf(ch, "I bet you wish you were a warrior.\r\n");
 		    return;
 		}
-		snprintf(buf, MAX_STRING_LENGTH, "You can practise any of these MANLY skills:\r\n");
+		snprintf(buf, MAX_STRING_LENGTH, "You can practice any of these MANLY skills:\r\n");
 		for (i = 0; i < MAX_SKILLS; i++) {
 		    if (CanUseClass(ch, i, WARRIOR_LEVEL_IND))
 			scprintf(buf, MAX_STRING_LENGTH, "%s%s\r\n", spell_info[i].name,
@@ -462,7 +462,7 @@ void do_practice(struct char_data *ch, const char *argument, int cmd)
 		    cprintf(ch, "I wish I was a Ranger too!\r\n");
 		    return;
 		}
-		snprintf(buf, MAX_STRING_LENGTH, "You can practise any of these outdoor skills:\r\n");
+		snprintf(buf, MAX_STRING_LENGTH, "You can practice any of these outdoor skills:\r\n");
 		for (i = 0; i < MAX_SKILLS; i++) {
 		    if (CanUseClass(ch, i, RANGER_LEVEL_IND))
 			scprintf(buf, MAX_STRING_LENGTH, "%s%s\r\n", spell_info[i].name,

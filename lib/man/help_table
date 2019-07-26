@@ -1,717 +1,646 @@
-"ACID BLAST" ACIDBLAST
+HELP
+    The following help is available:
 
+    HELP help       - This text.
+    HELP            - List the available commands.
+    HELP --list     - List the available commands by keyword.
+    HELP --reload   - IMMORTAL ONLY, forces the help data to be refreshed.
+
+    Help searches for a partial match of the entered word, including any
+    spaces that may follow the word.
+
+    Example:
+        > "help magic mis"
+        will find the help text for the magic missile spell.
+
+        > "help mag "
+        will not match anything.
+
+        > "help mag"
+        will match "magic user" or "magic missile" depending on first
+        occurrence in the help file.
+#
+CONTENTS
+--Communication--    --Equipment--       --Movement--      --Experience--
+ ' say              wear, wield        n,s,e,w,u,d        practice <skill>
+ , group tell       remove, hold       enter, leave       gain
+ " tell             use <item>         follow, flee       prac <m/c/w/t/r>
+ : emote            recite <scroll>    land                *add known to
+ @ whizz tell       quaff <potion>     sit, stand          show only your
+   shout, whisper                      rest, sleep         known skills.
+
+    --Groups--         --Shops--          --Combat--         --Food--
+ follow             buy, sell          consider, kill     eat, taste
+ group, grep        list               cast, swat         drink, sip
+ gtell, split       value              kick, bash
+                    rent, offer        rescue, backstab
+                                       flee
+
+    --Items--         --Corpses--       --Environment--     --Personal--
+ get, drop, put     get all corpse     look               score, inventory
+ buy, sell          bury               look in            nosummon,noshout
+ give               desecrate          search             noteleport
+ steal, pick                                              help
+ open, close                                              who
+ lock, unlock                                             quit (careful!)
+#
+'ARMOR CLASS' ARMORCLASS AC
+    Armor Class of a individual is dependant upon there ability to
+    outmanuever their foe.  The armor that one wears upon his body also
+    helps blunt the strike of a foes weapon.
+#
+'ACID BLAST' ACIDBLAST
     Acid blast creates a powerful blast of acid that does a great deal of
     damage.
-
 #
-"ACTIVE SKILLS"
-  Riding: This skill allows you to mount a beast and make it carry you
-    and the supplies you have.  type help mount for more info.
+'ACTIVE SKILLS' ACTIVE
+    Riding:     This skill allows you to mount a beast and make it carry
+                you and the supplies you have.  type help mount for more
+                info.
 
-  Bandage: An active skill in the art of medicine.  A player with this skill
-    has the chance of reviving a fallen comrade in battle by applying knowledge
-    learned through practice.  This skill is a must for those that do not
-    have the god given powers of healing.
+    Bandage:    An active skill in the art of medicine.  A player with
+                this skill has the chance of reviving a fallen comrade in
+                battle by applying knowledge learned through practice.
+                This skill is a must for those that do not have the god
+                given powers of healing.
 
-  Track: SEE TRACK
+    Track:      SEE TRACK
 
-  Punch: Bare knuckle brawling is the best type of fun any can find!
-    Punch aids those that can not seem to hang onto their weapon in
-    battle, or those that do not wish to wield a weapon at all.
-    The skill bare hand aids in this offensive skill greatly along
-    with any str bonus that might be applied.  Those that wear
-    gloves of some sort have been known to knock an opponent down
-    to his knees, only to never see the light of day.
+    Punch:      Bare knuckle brawling is the best type of fun any can
+                find!  Punch aids those that can not seem to hang onto
+                their weapon in battle, or those that do not wish to wield
+                a weapon at all.  The skill bare hand aids in this
+                offensive skill greatly along with any str bonus that
+                might be applied.  Those that wear gloves of some sort
+                have been known to knock an opponent down to his knees,
+                only to never see the light of day.
 
-  Apraise : This skill give minor information on an object that is
-    either a weapon, armour, or light source.  Message depicting
-    the relative value of the object and information that is
-    unique to each object.  Apraise on a weapon will give its
-    weapon class, for the fighters that can specialize in that
-    class.  For a torch, it will give the hours left to burn.
-    On armour, it will show the Effective and True Armour class
-    of the object.  If the True and Effective armour classes are
-    not the same, it is time to get the armour repaired. This
-    can also be done by just looking at the armour.
+    Apraise:    This skill give minor information on an object that is
+                either a weapon, armor, or light source.  Message
+                depicting the relative value of the object and information
+                that is unique to each object.  Apraise on a weapon will
+                give its weapon class, for the fighters that can
+                specialize in that class.  For a torch, it will give the
+                hours left to burn.  On armor, it will show the Effective
+                and True Armor class of the object.  If the True and
+                Effective armor classes are not the same, it is time to
+                get the armor repaired.  This can also be done by just
+                looking at the armor.
 
-  DoorBash: A player with this skill has a chance to break down
-    a door by the shear force aplied by hurling their body into it.
-    This is a tiring skill and can even damage you if not careful.
-    Ever bashed a door down and found that no floor was on the other
-    side? (HINT)
-
-#
-ADVANCE
-Immort-Only
-
-To advance a player to a level higher than his present. Default is to
-advance him one level. A level 0 player (Man/Woman) is always only
-advanced by one level.
-
+    DoorBash:   A player with this skill has a chance to break down a door
+                by the shear force aplied by hurling their body into it.
+                This is a tiring skill and can even damage you if not
+                careful.  Ever bashed a door down and found that no floor
+                was on the other side? (HINT)
 #
 AID
+    This prayer allows the target to have more hit points than what is
+    normally allowed for their position.  It also has been known to help
+    with ones hunger, thirst and even from time to time affect armor
+    class and makes one hit better.
 
-  This prayer allows the target to have more hit points than what is normally
-  allowed for their position.  It also has been known to help with ones
-  hunger, thirst and even from time to time affect armour class and makes one
-  hit better.
-
-Duration: level.
-
+    Duration:   level.
 #
 ALLCOMMANDS
-
-   This will give you a list of all the commands that are available
-   to you at this moment.
-
+    This will give you a list of all the commands that are available to
+    you at this moment.
 #
-"ANIMATE DEAD" ANIMATEDEAD
-
-   Bringing forth a undead shell of the being which once lived is frowned
-   upon by most in the realm.
-
+'ANIMATE DEAD' ANIMATEDEAD
+    Bringing forth a undead shell of the being which once lived is frowned
+    upon by most in the realm.
 #
 APPEAR
-
-   This command willfully dispells a invisibility spell.  Ironhands claim.
-
+    This command willfully dispells a invisibility spell.  Ironhands
+    claim.
 #
-ARMOUR
+ARMOR
+    This incantation allows the caster to bring forth a invisible suit of
+    magical protection that seems to allow protection even if the caster
+    wears other forms of armor or protection.  It is known that a higher
+    level mages magical armor will hold its consistancy much longer than
+    one of lower level.
 
-   This incantation allows the caster to bring forth a invisible suit of
-   magical protection that seems to allow protection even if the caster
-   wears other forms of armour or protection.  It is known that a higher
-   level mages magical armour will hold its consistancy much longer than
-   one of lower level.
-   The prayer for this spell seems to work much the same as several priests
-   and mages have consulted and tested upon it.
+    The prayer for this spell seems to work much the same as several
+    priests and mages have consulted and tested upon it.
 
-Duration: Level of the Best Magic Class. See Note.
-Damage: None
-Special: AC is reduced by 2.  Note, this may not be shown by what is on your
-	 score. Internally the AC is done by -100 <-> 100, not -10 <-> 10
-	 so rounding does occur for the the score command. But it is a good
-	 approximation as to your ac.
-Note: Since this is a shared spell between mages and clerics, the duration
-      is calculated as per the best level of the two. Not necessarily the
-      class in which you practiced it first.
-
-#
-"ARMOUR CLASS" ARMOURCLASS AC
-
-   Armour Class of a individual is dependant upon there ability to outmanuever
-   their foe.  The armour that one wears upon his body also helps blunt the
-   strike of a foes weapon.
-
+    Duration:   Level of the Best Magic Class. See NOTE.
+    Damage:     None
+    Special:    AC is reduced by 2.  Note, this may not be shown by what
+                is on your score. Internally the AC is done by -100 <->
+                100, not -10 <-> 10 so rounding does occur for the the
+                score command. But it is a good approximation as to your
+                AC.
+    NOTE:       Since this is a shared spell between mages and clerics,
+                the duration is calculated as per the best level of the
+                two.  Not necessarily the class in which you practiced it
+                first.
 #
 ASSIST
+    If you type assist <player> you will begin fighting the same the
+    <player> is.
 
-  If you type assist <player> you will begin fighting the same
-person the <player> is.
+    ASSIST is similar to RESCUE except the <player> continues fighting.
+    It is better than KILL in many cases because you do not have to choose
+    between 1.golem and 2.golem (or 1.lamia that just entered the room).
+    Even though monsters of the same type assist each other in combat,
+    ASSIST is better because you will eliminate one aggressor much faster.
 
-  ASSIST is similar to RESCUE except the <player> continues fighting.
-It is better than KILL in many cases because you do not have to choose
-between 1.golem and 2.golem (or 1.lamia that just entered the room).
-Even though monsters of the same type assist each other in combat,
-ASSIST is better because you will eliminate one aggressor much faster.
-
-See also: RESCUE, KILL
+    SEE ALSO:   RESCUE, KILL
 #
-"ASTRAL WALK" ASTRALWALK
+'ASTRAL WALK' ASTRALWALK
+    This prayer allows the caster to bring forth a door into a
+    trans-dimensional realm from which one can go almost anywhere on the
+    known world.  The prayer is rather draining and takes some time to
+    cast although those who's faith is true to their diety have been noted
+    to bring there followers along with them through their door, and out
+    into the new location.  A high priest of Tyken had his last day as he
+    prayed for the spell and transported himself and a small party to a
+    location known only to him, he did not unfortunatly return.
 
-   This prayer allows the caster to bring forth a door into a trans-dimensional
-   realm from which one can go almost anywhere on the known world.  The
-   prayer is rather draining and takes some time to cast although those
-   who's faith is true to their diety have been noted to bring there followers
-   along with them through their door, and out into the new location.  A
-   high priest of Tyken had his last day as he prayed for the spell and
-   transported himself and a small party to a location known only to him, he
-   did not unfortunatly return.
-
-Duration: None
-Damage: None
-Special: Only rooms that will allow you entrance as per magic can be
-	 walked to.
-
-#
-ATTRIBUTES
-Immort-Only
-
-Currently these are the only attributes you may work with when working
-with cust. Things in <> are what you are to enter, <CR> means hit return
-at this point.
-
-cust name		<name of room> <CR>
-cust desc		<CR>
-cust extra		<keywords> <CR>
-cust exit		<dir> <door flags> <key> <to_room> <CR>
-cust xdesc		<dir> <CR>
-cust flags		<flags> <sector_type> <CR>
-cust riv		<speed> <dir> <CR>
-cust tele		<time> <to_room> <look-flag> <CR>
-
+    Duration:   None
+    Damage:     None
+    Special:    Only rooms that will allow you entrance as per magic can
+                be walked to.
 #
 FLAMESTRIKE
+    This prayer brings forth a pillar of flames from the heavens upon the
+    casters command.  A very damaging spell as the flames of the pillar
+    have crucified many with its scorching heat.  
 
-  This prayer brings forth a pillar of flames from the heavens upon the
-  casters command.  A very damaging spell as the flames of the pillar
-  have crucified many with its scorching heat.  
-
-Duration: None.
-Damage: (level/5) * 1d8.
-
+    Duration:   None.
+    Damage:     (level/5) * 1d8.
 #
 GAIN
-
-  This command allows you to advance a level provided you have the right 
-  amount of exp and that you are at a guildmaster that can train you.
-
+    This command allows you to advance a level provided you have the right
+    amount of exp and that you are at a guildmaster that can train you.
 #
 PARALYZE
+    This spell makes the chosen target become immovable for a short period
+    of time.  This means that the target cannot do anything, including
+    fight back if the caster happens to be beating on it.
 
-  This spell makes the chosen target become immovable for a short period of
-  time.  This means that the target cannot do anything, including fight back
-  if the caster happens to be beating on it.
-
-Duration: 5 rounds.
-Damage: 1 target immoble.
-
+    Duration:   5 rounds.
+    Damage:     1 target immoble.
 #
 FEAR
+    This incantation puts fear into the target of the spell.  This will
+    result in the instant flight of that target instead of them remaining
+    to fight.  This incantation is crucial when traveling into heavily
+    popluted areas with creates that will attack at a whim.
 
-  This incantation puts fear into the target of the spell.  This will result
-  in the instant flight of that target instead of them remaining to fight.
-  This incantation is crucial when traveling into heavily popluted areas
-  with creates that will attack at a whim.
-
-Duration: Special.
-Damage: Forces mob to flee for a indefinate time.
-
+    Duration:   Special.
+    Damage:     Forces mob to flee for a indefinate time.
 #
-SKILL SKILLS
+SKILLS SKILL
+    There is a new commands added called skills, it will show you your
+    rating in the new skills for the game.
 
-    There is a new commands added called skills, it will show you
-  your rating in the new skills for the game.
+    There are new skills included in the game and there should more to
+    come with time.  The tutor in various towns can teach you these skills
+    and perhaps even commoners you may adventure to find.
 
-    There are new skills included in the game and there should more
-  to come with time.  The tutor in various towns can teach you these
-  skills and perhaps even commoners you may adventure to find.
+    Skills have been broken up into two categories.
 
-  Skills have been broken up into two categories.
+    1.  Passive
+    2.  Active
 
-  1.  Passive
-  2.  Active
+    Passive skills are those that are always being used without you having
+    to issue a specific command to make them act on you or another.
+    Various rolls are made against your knowledge of the skills to see if
+    they aid you in what every action you are taking.  Never will a skill
+    hinder you if you fail a roll, the most you can expect is that the
+    normal affects will take place as if you never had the skill at all. 
 
-  Passive skills are those that are always being used without you having
-  to issue a specific command to make them act on you or another.  Various
-  rolls are made against your knowledge of the skills to see if they aid
-  you in what every action you are taking.  Never will a skill hinder you
-  if you fail a roll, the most you can expect is that the normal affects
-  will take place as if you never had the skill at all. 
+    Active skills are those that you must invoke on your own.  These
+    skills are activated by using the skill name and usually including an
+    arguement for the skill to act on.
 
-  Active skills are those that you must invoke on your own.  These skills
-  are activated by using the skill name and usually including an arguement
-  for the skill to act on.
-
-  See ACTIVE, PASSIVE for a skill list
+    SEE ALSO:   ACTIVE, PASSIVE for skill lists.
 #
-PASSIVE
+'PASSIVE SKILLS' PASSIVE
+    Swimming:       If proficient in swimming, the player having this
+                    passive skill will not have to spend as much movement
+                    while moving through shallow water.  Water that
+                    normally can be walked through, not water that is too
+                    deep and requires a boat to traverse.  This skills is
+                    benefitial if you must leave your frigate off of shore
+                    due to the shallows.  Yes, frigates are being made for
+                    cross ocean journeys.
 
-  Swimming : If proficient in swimming, the player having this passive skill
-    will not have to spend as much movement while moving through shallow water.
-    Water that normally can be walked through, not water that is too deep and
-    requires a boat to traverse.  This skills is benefitial if you must leave
-    your frigate off of shore due to the shallows.  Yes, frigates are being
-    made for cross ocean journeys.
+    Endurance:      A player proficient with endurance has a good chance
+                    of maintaining his/her stamina in a fight.  This skill
+                    coincides with a players constitution and what percent
+                    of their hits have been left.  All classes will
+                    benefit from this skill.
 
-  Endurance: A player proficient with endurance has a good chance of
-    maintaining his/her stamina in a fight.  This skill coincides with a 
-    players constitution and what percent of their hits have been left. 
-    All classes will benefit from this skill.
+    Deciphering:    This skill aids those that wish to read the arcane
+                    works of magic and have a better chance of
+                    understanding the spell that is written.  All classes
+                    will benefit from this skill.  Because you are a
+                    castor does not mean you have the ability to read
+                    other spells besides the ones you know. Essentially
+                    this is the fabled 'READ MAGIC' but applies to all
+                    classes that wish to use scrolls other then recall.
 
-  Deciphering: This skill aids those that wish to read the arcane works of
-    magic and have a better chance of understanding the spell that is written.
-    All classes will benefit from this skill.  Because you are a castor does
-    not mean you have the ability to read other spells besides the ones you
-    know. Essentially this is the fabled 'READ MAGIC' but applies to all 
-    classes that wish to use scrolls other then recall.
+    Two_Hand:       All characters may and most likely will wield weapons
+                    two-handed in this world.  A mage can apply this to a
+                    staff, a cleric to a hammer..  you get the point.
+                    Because you wield a weapon two-handed, you may not use
+                    a shield nor hold something in your hand, punch will
+                    not work while doing this also.  This skill improves
+                    the chance that you will maintain your grip on your
+                    weapon when a foe tries to disarm you, it will also
+                    aid you in damaging your enemy slightly more since you
+                    are now applying all of your upper body to the blow.
+                    Characters and still be disarmed even with this skill
+                    though, no one is 100% proficient.
 
-  Two_Hand: All characters may and most likely will wield weapons two-handed
-    in this world.  A mage can apply this to a staff, a cleric to a hammer..
-    you get the point.  Because you wield a weapon two-handed, you may not 
-    use a shield nor hold something in your hand, punch will not work while
-    doing this also.  This skill improves the chance that you will maintain 
-    your grip on your weapon when a foe tries to disarm you, it will also aid
-    you in damaging your enemy slightly more since you are now applying all
-    of your upper body to the blow.  Characters and still be disarmed even
-    with this skill though, no one is 100% proficient.
+    Bare_Hand:      All characters may attack with no weapon at all, doing
+                    minor damage plus any additional strength that might
+                    apply.  With this skill a player has essentially
+                    learned how to box and can now utilize this knowledge
+                    when faced with a battle without a weapon.  This skill
+                    also works along with the skill punch, aiding in
+                    accuracy and force for the blow.
 
-  Bare_Hand: All characters may attack with no weapon at all, doing minor damage
-    plus any additional strength that might apply.  With this skill a player has
-    essentially learned how to box and can now utilize this knowledge when faced
-    with a battle without a weapon.  This skill also works along with the skill
-    punch, aiding in accuracy and force for the blow.
+    Spell_Craft:    A spell caster with this skill has the chance to
+                    understand a spell even better once successfully cast.
+                    When a player successfully casts a spell, a 2% bonus
+                    is added on up until 50% in the spell is achieved.
+                    The skill Spell Craft will add in an extra amount to
+                    this percent based on how well you know this art.
 
-  Spell_Craft: A spell caster with this skill has the chance to understand a
-    spell even better once successfully cast.  When a player successfully casts
-    a spell, a 2% bonus is added on up until 50% in the spell is achieved.
-    The skill Spell Craft will add in an extra amount to this percent based
-    on how well you know this art.
-
-  Meditation: The act of meditating and being able to focus ones self aids in
-    the recovery of both mana and health, a player with meditation can earn
-    these two amounts back faster while resting or sleeping. A must for any
-    that wishes to stay in style with the monks of the redspines.
-
+    Meditation:     The act of meditating and being able to focus ones
+                    self aids in the recovery of both mana and health, a
+                    player with meditation can earn these two amounts back
+                    faster while resting or sleeping. A must for any that
+                    wishes to stay in style with the monks of the
+                    redspines.
 #
 MOUNT
+    This command goes along with the RIDING skill you may learn.  When you
+    find a beast you wish to try and mount, type...
 
-  This command goes along with the RIDING skill you may learn.
-  When you find a beast you wish to try and mount, type...
+        > mount <beast name>
 
-  mount <beast name>
+    Depending on how well you know riding, and the disposition of the
+    creature will determine if you are able to ride it or not.  When
+    mounted, you lose no movement points, except for those in combat, you
+    have some spell capabilities, and some skills will not be usable when
+    mounted, the same will apply towards some skills that are not usable
+    to a person when mounted.  You do not have control of the beast to the
+    point of being able to issue orders to it, you may however simply type
+    the direction you wish to travel and the mount shall carry you there.
 
-  Depending on how well you know riding, and the disposition of the
-  creature will determine if you are able to ride it or not.
-  When mounted, you lose no movement points, except for those in
-  combat, you have some spell capabilities, and some skills will
-  not be usable when mounted, the same will apply towards some
-  skills that are not usable to a person when mounted.
-  You do not have control of the beast to the point of being able
-  to issue orders to it, you may however simply type the direction
-  you wish to travel and the mount shall carry you there.
+    This is still experimental, all bug reports are welcome and encourged
+    to help get this ironed out as fast as possible.  Comments and
+    suggestions are also welcome.
 
-  This is still experimental, all bug reports are welcome and encourged
-  to help get this ironed out as fast as possible.  Comments and suggestions
-  are also welcome.
-
-  I am planning on make a stable, where you may take your mount (pet?)
-  to be boarded, this way you can come back on the game and pick you
-  mount (pet?) up with ot having to venture out to find another.
-
-
+    I am planning on make a stable, where you may take your mount (pet?)
+    to be boarded, this way you can come back on the game and pick you
+    mount (pet?) up with ot having to venture out to find another.
 #
-SPELL SPELLS
-
+SPELLS SPELL
     Spells are the backbone of the magic user and the strict guidelines of
-  many cleric religions.  Spells which a magic-using class can use are
-  listed in the practices when one gains a level in their magic-using class.
-  Clerics will find being extremely good will allow them to heal the
-  appropriate amount while being evil will allow the cleric to harm targets
-  quite well, yet they will suffer in their healing abilities.
-  Please do not be dismayed about not seeing a entire spell list, simply
-  ask those that are of higher levels if your curiousity gets the best of
-  you.
+    many cleric religions.  Spells which a magic-using class can use are
+    listed in the practices when one gains a level in their magic-using
+    class.  Clerics will find being extremely good will allow them to heal
+    the appropriate amount while being evil will allow the cleric to harm
+    targets quite well, yet they will suffer in their healing abilities.
+    Please do not be dismayed about not seeing a entire spell list, simply
+    ask those that are of higher levels if your curiousity gets the best
+    of you.
 
-    One can find out more about spells by 'help <spell>', if the reply comes
-  back not in the help files please 'bug <spell name>'.
+    One can find out more about spells by 'help <spell>', if the reply
+    comes back not in the help files please 'bug <spell name>'.
 
     Cyric and staff have taken great aims to make the spells in Wiley as
-  close to the spells on would find in any players handbook for AD&D.  If
-  you find that a spell is totally different than one you would find within,
-  please 'bug <problem>'.
+    close to the spells on would find in any players handbook for AD&D.
+    If you find that a spell is totally different than one you would find
+    within, please 'bug <problem>'.
 
-    More spells are being added constantly for all magic-using classes, 
-  if you would like to see a unusual spell use the 'idea <spell>' to add
-  it to our possibilities.
-
+    More spells are being added constantly for all magic-using classes, if
+    you would like to see a unusual spell use the 'idea <spell>' to add it
+    to our possibilities.
 #
-SPEC SPECIALIZATION
-
-  Fighters may specialize in a weapon class of their chose, this is done
-  by choosing the class you wish to become proficient with and spending
-  the training in that class.  This is a passive skill that aids when
-  in combat.  The normal +1 hit and +2 damage applies if a succesful
-  skill roll is made while attacking.  The fighter may specialize
-  in any one or more classes that are available at the time of
-  training.  You may use the apraise command to look at different
-  weapons to see if it may aid you in your type of specialization or
-  not.
-
+SPECIALIZATION SPEC
+    Fighters may specialize in a weapon class of their chose, this is done
+    by choosing the class you wish to become proficient with and spending
+    the training in that class.  This is a passive skill that aids when in
+    combat.  The normal +1 hit and +2 damage applies if a succesful skill
+    roll is made while attacking.  The fighter may specialize in any one
+    or more classes that are available at the time of training.  You may
+    use the apraise command to look at different weapons to see if it may
+    aid you in your type of specialization or not.
 #
 PEER
+    A thief skill that allows them to look into an area that exists in one
+    of the cardinal directions.  A thief will only be able to see into
+    that room if the could actually walk into that room and look around,
+    IE you can not look into a dark room nor can you look through a door.
 
-  A thief skill that allows them to look into an area that exists in
-  one of the cardinal directions.  A thief will only be able to see
-  into that room if the could actually walk into that room and look
-  around, IE you can not look into a dark room nor can you look through
-  a door.
-
-See also: search
+    SEE ALSO: SEARCH
 #
 SEARCH
-
-  This skill alows a player to search the local area for hidden or secret
-  passages.  If a succesful skill check is made, the player is now aware
-  of the exit and the true name of it.
-
+    This skill alows a player to search the local area for hidden or
+    secret passages.  If a succesful skill check is made, the player is
+    now aware of the exit and the true name of it.
 #
-"FIND TRAPS"
+'FIND TRAPS'
+    This is a passive skill that acts when ever you encounter a trap in an
+    area.  If a succesful roll is made against your skill, the trap is
+    made quit apparent to you.
 
-  This is a passive skill that acts when ever you encounter a trap in
-  an area.  If a succesful roll is made against your skill, the trap
-  is made quit apparent to you.
-
-Disarm Traps is coming soon.
+    Disarm Traps is coming soon.
 #
 RULES
+    Player Killing:     The only way you may engage in combat with another
+                        player is to register yourself with Eli as a
+                        player that can and most likely will kill or be
+                        killed by other players.  This system should work
+                        for both hand to hand combat and spells, if this
+                        is not the case then please make a note to the
+                        board indicating what was done.
 
-Player Killing:  The only way you may engage in combat with another player
-  is to register yourself with Eli as a player that can and most likely
-  will kill or be killed by other players.  This system should work for
-  both hand to hand combat and spells, if this is not the case then please
-  make a note to the board indicating what was done.
+    Disarm & Stealing:  You will no longer be able to disarm another
+                        player unless both you and the victim have been
+                        registered to kill other players.
 
-Disarm & Stealing: You will no longer be able to disarm another player
-  unless both you and the victim have been registered to kill other
-  players.
+    Charm:              Charming another character or using a follower and
+                        forcing them to perform some act that will violate
+                        the stated rules or rules that have been posted or
+                        conveyed by a Immortal will result in the deletion
+                        of your character.
 
-Charm: Charming another character or using a follower and forcing them
-  to perform some act that will violate the stated rules or rules that
-  have been posted or conveyed by a Immortal will result in the
-  deletion of your character.
+    Multi-Character:    Do to the limited resource this machine is
+                        currently running with, I ask that you only have
+                        one character on the game at once.  You may have
+                        another character to use as storage, but both
+                        character should not be on the game at the same
+                        time except when at one of the renting locations.
+                        This clause is ONLY for exchanging items with a
+                        rental character.
 
-Multi-Character: Do to the limited resource this machine is currently
-  running with, I ask that you only have one character on the game at
-  once.  You may have another character to use as storage, but both
-  character should not be on the game at the same time except when at
-  one of the renting locations.  This clause is ONLY for exchanging items
-  with a rental character.
-  The first time you are found to have more then one character on the
-  game you shall be warned to quit all extra characters.
-  The second time the extra characters shall be forced off of the game
-  and your eq left behind.
-  The third time will result in deletion of you extra characters from
-  the player file.
-  The fourth time you are caught, all characters shall be deleted from
-  the game.
+                        The first time you are found to have more then one
+                        character on the game you shall be warned to quit
+                        all extra characters.
 
+                        The second time the extra characters shall be
+                        forced off of the game and your eq left behind.
+
+                        The third time will result in deletion of you
+                        extra characters from the player file.
+
+                        The fourth time you are caught, all characters
+                        shall be deleted from the game.
 #
-MOBILES
-
+MOBILES NPC MOBS
     Mobiles, or monsters, in wiley have much the same stats as a player of
-    there equal level.  Some mobs out there are simply going about their 
-    business while others are out to gain items and exp like a average player.
-    Mobiles have classes and class abilities just like you, so if you plan
-    to bash a bandit, be ready to see one in return.  One of the advantages
-    a player has over a mob is their ability to group randomly.  Mobs do this
-    but only on rare ocasions.
+    there equal level.  Some mobs out there are simply going about their
+    business while others are out to gain items and exp like a average
+    player.  Mobiles have classes and class abilities just like you, so if
+    you plan to bash a bandit, be ready to see one in return.  One of the
+    advantages a player has over a mob is their ability to group randomly.
+    Mobs do this but only on rare ocasions.
 
-See also : CONSIDER, GROUP
-
+    SEE ALSO: CONSIDER, GROUP
 #
 START
+    When first starting out, you should make sure you stay within the city
+    of Shylar and keep supplied with food from the Baker and water from
+    buck at the inn.  You should find your the local master of your chosen
+    class and GAIN and PRACTICE there before adventuring.  Remember to
+    equip yourself with the supplies you start out with. To do so just
+    type wear all.  Take a look at the map you may have been given and
+    begin to explore the surrounding areas.  Remember to type SAVE very
+    often.
 
-  When first starting out, you should make sure you stay within the city
-of Shylar and keep supplied with food from the Baker and water from buck
-at the inn.  You should find your the local master of your chosen class
-and GAIN and PRACTICE there before adventuring.  Remember to equip yourself 
-with the supplies you start out with. To do so just type wear all.  
-Take a look at the map you may have been given and begin to explore the 
-surrounding areas.  Remember to type SAVE very often.
-
-See also: COMMANDS, PRACTICE, GAIN, SAVE, RACES, NEWS, SLANG
-
+    SEE ALSO: COMMANDS, PRACTICE, GAIN, SAVE, RACES, NEWS, SLANG
 #
 COMMANDS
+    This is a short list of most useful commands, to obtain a full list
+    type the command 'allcommands' or help.
 
-  This is a short list of most useful commands, to obtain a full list type
-the command 'allcommands' or help.
+    score   -   to see many statistics about your character
+    inv     -   to see your inventory.
+    eq      -   to see the objects you have equipped.
+    say     -   to talk to others in the same room.
+    tell    -   to say something to someone specific.
+    list    -   to get a list of items you can buy in a shop.
+    buy     -   to buy an item in a shop.
+    value   -   to get an idea of the money a shopkeeper will give you
+                for an item.
+    wear    -   to wear an object you have in your inventory
+    wield   -   to wield a weapon you have
+    rem     -   to remove an item from your equipped list.
+    offer   -   to get a price for a room at an inn.
+    rent    -   to save your stuff at an in.
+    save    -   duh?
+    shout   -   people in the same zone can hear what you shout.
+    prac    -   to practice skills from a person that will teach you.
+    who     -   to see who is on the game at the same time as you.
+    drop    -   to drop an item in your inv.
+    get     -   to pick an item up.
+    give    -   to give something to someone.
+    kill    -   to attack something.
+    cast    -   to cast a spell.
 
-score	-	to see many statistics about your character
-inv	-	to see your inventory.
-eq	-	to see the objects you have equipped.
-say	-	to talk to others in the same room.
-tell	-	to say something to someone specific.
-list	-	to get a list of items you can buy in a shop.
-buy	-	to buy an item in a shop.
-value	-	to get an idea of the money a shopkeeper will give you for
-                   an item.
-wear	-	to wear an object you have in your inventory
-wield	-	to wield a weapon you have
-rem	-	to remove an item from your equipped list.
-offer	-	to get a price for a room at an inn.
-rent	-	to save your stuff at an in.
-save	-	duh?
-shout	-	people in the same zone can hear what you shout.
-prac	-	to practice skills from a person that will teach you.
-who	-	to see who is on the game at the same time as you.
-drop	-	to drop an item in your inv.
-get	-	to pick an item up.
-give	-	to give something to someone.
-kill	-	to attack something.
-cast	-	to cast a spell.
+    For a more indepth help page on each of these type HELP command such
+    as...
+        > HELP CAST
 
-for a more indepth help page on each of these type HELP command such as...
-
-help cast
-
-See also : START
+    SEE ALSO: START
 #
 SWAT
+    Short for: "SWitch ATtack"
+    For PC's only.
+    Usage: swat <mobile name>
 
->From : "SWitch ATtack"
-For PC's only.
-Usage: swat <mobile name>
-
-   This command allows you to choose a new target while in combat.  The monster
-   you are fighting at the moment will continue to fight you, but your attacks
-   will be directed towards another target.
-
+    This command allows you to choose a new target while in combat.  The
+    monster you are fighting at the moment will continue to fight you, but
+    your attacks will be directed towards another target.
 #
 HOUSES KEEPS CASTLES
-
-    When you obtain 25th level you become a Lord of the land and 
-    receive a keep.  As you continue to advance, individuals will begin
-    following you and will be at your command as hirelings.
-    You will be required to complete a small quest designed by one
-    of the Immorts in order to recieve this.
-
+    When you obtain 25th level you become a Lord of the land and receive a
+    keep.  As you continue to advance, individuals will begin following
+    you and will be at your command as hirelings.  You will be required to
+    complete a small quest designed by one of the Immorts in order to
+    receive this.
 #
-MONSUM
-
+'MONSTER SUMMONING' 'SUMMON MONSTER' MONSUM
     Mages have been known to call upon the mists of summoning to bring
     forth temporary followers. Eventually the charm that was laid down
-    upon them will lift and the creatures will remember nothing of
-    your commands yet alone that you lead them.
-
-
+    upon them will lift and the creatures will remember nothing of your
+    commands yet alone that you lead them.
 #
-CONTINUAL LIGHT
-
-   Continual light creates a ball of light which can be held like a 
-   torch or lantern to light up the room.
-
+'CONTINUAL LIGHT'
+    Continual light creates a ball of light which can be held like a torch
+    or lantern to light up the room.
 #
 POLYMORPH
+    This incantation allows you to form yourself into another creature of
+    the realm.  Mages generally refrain from extensive use of this spell
+    as with time you grow to become more like the beasts you transform
+    into.
 
-    This incantation allows you to form yourself into another creature of 
-    the realm.  Mages generally refrain from extensive use of this spell as
-    with time you grow to become more like the beasts you transform into.
-
-* name         level
-  goblin      	10
-  orc         	10
-  badger      	10
-  beetle      	10
-  troglodyte  	10
-  cow         	10
-  dog         	10
-  frog        	10
-  hobgoblin   	11
-  spider      	11
-  gnoll       	11
-  ant         	11
-  lemure      	12
-  toad        	12
-  stirge      	12
-  fighter     	12
-  bugbear     	13
-  lizard     	13
-  rat         	13
-  ogre        	14
-  tick        	14
-  weazal      	15
-  black dragon	16
-  ape         	16
-  blue dragon 	17
-  gargoyle    	17
-  ghast       	17
-  lupan       	18
-  owlbear     	18
-  shadow      	18
-  displacer   	19
-
+    level   creatures
+    -----   ---------
+       10   goblin, orc, badger, beetle, troglodyte, cow, dog, frog
+       11   hobgoblin, spider, gnoll, ant
+       12   lemure, toad, stirge, fighter
+       13   bugbear, lizard, rat
+       14   ogre, tick
+       15   weazal
+       16   black dragon, ape
+       17   blue dragon, gargoyle, ghast
+       18   lupan, owlbear, shadow
+       19   displacer
 #
-METEOR SWARM
-
+'METEOR SWARM'
     Pulls forth a swarm of huge lava rocks that will smash into anything
     in the room doing massive destructive damage.
-
 #
 CACAODEMON
+    This spell is wreathed in mystery. The only sure knowledge about it is
+    that it is cast in the following manner:
 
-    This spell is wreathed in mystery. The only sure knowledge about it
-    is that it is cast in the following manner:
-
-	cast 'cacaodemon' one 
-		.
-		.
-		.
-	cast 'cacaodemon' six
-
+        cast 'cacaodemon' one 
+                .
+                .
+                .
+        cast 'cacaodemon' six
 #
-CASTING
-
+CAST CASTING
     To invoke the magickal forces  you must use a certain incantation.
     This is done in this manner:
 
-    cast 'spell' target
+        > cast 'spell' target
 
+    The "spell" must be enclosed in ('), one on each side.
 #
-"FAERIE FIRE FOG"
+'FAERIE FIRE'
+    The casting of this spell has been known to bring forth those that are
+    unseen.  The pinkish glow has shown many a traveler his glory or
+    death.
 
-     The casting of this spell has been known to bring forth those that
-     are unseen.  The pinkish glow has shown many a traveler his glory or
-     death.
-
-Duration: level/2.
-
+    Duration:   level/2.
 #
-MINOR CREATION
+'FAERIE FOG'
+    The casting of this spell has been known to bring forth those that are
+    unseen.  The pinkish glow has shown many a traveler his glory or
+    death.
 
+    Duration:   level/2.
+#
+'MINOR CREATION'
     Upon the casting of this spell, mist is drawn forth to bring a object
     into existance.  It is commonly known that one must clarify the object
     when casting the spell.
-
 #
-TRUE SIGHT
-
-    The casting of this spell has been known to endow the castor with 
+'TRUE SIGHT'
+    The casting of this spell has been known to endow the castor with
     unusual sight, seeing things they speak of in wonder only.
-
 #
 CONJURE
-
-    The only thing known of this dangerous spell is that you must sacrifice
-    something dear to you for it to call the daemon forth.
-
+    The only thing known of this dangerous spell is that you must
+    sacrifice something dear to you for it to call the daemon forth.
 #
 CALM
-
     This spell has been known to drown the fire in the worst ogres heart.
-
 #
-STONE SKIN
-
-   The castors skin becomes like a statue.  Some believe casting this spell
-   to often makes you a statue forever.
-
+'STONE SKIN'
+    The castors skin becomes like a statue.  Some believe casting this
+    spell too often makes you a statue forever.
 #
-CHARM MONSTER
-
-   Casting this spell upon a creature of the realm will, at times, make it
-   see you as its master.  At other times it will strike you down.
-
+'CHARM MONSTER'
+    Casting this spell upon a creature of the realm will, at times, make
+    it see you as its master.  At other times it will strike you down.
 #
 REFRESH
-
-   A travelers distance is often increased with this incantation.
-
+    A travelers distance is often increased with this incantation.
 #
-SECOND WIND
-  
-   A travelers distance is often greatly increased with this incantation.
+'SECOND WIND'
+    A travelers distance is often greatly increased with this incantation.
 
-Duration: None
-Damage: None
-Special: This can give back leveld8+level move points
-
+    Duration:   None
+    Damage:     None
+    Special:    This can give back leveld8+level move points
 #
 TURN
-
-   The beings that dwell in the undead are often turned away if the castor
-   speaks this spell at them.
-
+    The beings that dwell in the undead are often turned away if the
+    castor speaks this spell at them.
 #
 SHIELD
-
-   Tis rumored this spell is a major defense in mage battles.
-
+    Tis rumored this spell is a major defense in mage battles.
 #
 SUCCOR
-
-   This spell is writhed in mystery, none dare to ask their diety, none
-   have the vanity to explore.
-
+    This spell is writhed in mystery, none dare to ask their diety, none
+    have the vanity to explore.
 #
 FIRESHIELD
-
-   Let the fires of the neither realm burn about you.
-
+    Let the fires of the neither realm burn about you.
 #
 ICE STORM
-
-   This spell calls forth the winter winds, and the glaciers of ice.
-
+    This spell calls forth the winter winds, and the glaciers of ice.
 #
 CONE COLD
-
-   One strong wind of this spell has been known to send the whirlwind upon
-   another path.
-
+    One strong wind of this spell has been known to send the whirlwind
+    upon another path.
 #
 RACES
+    Monsters belong to races, as do you.  Some races do not get along or
+    have natural enemies, so beware!
 
-    Monsters belong to races, as do you.  Some races do not get along
-    or have natural enemies, so beware!
-    
-    Races that players can be include : 
+    Races that players can be include:
         Human, Elven, Gnome, Dwarven, and Halfling
 
-See also : HUMAN, ELF, GNOME, DWARF, HALFLING
-
+    SEE ALSO: HUMAN, ELF, GNOME, DWARF, HALFLING
 #
 DWARF DWARVES DWARVEN
-
-	Dwarves are short, bearded folk known to mine deep into the
-	earth for precious gems and metals.  Because of their short
-        stature, they can not walk as fast as most taller races, but
-	their strength and hardiness easily makes up for this.  Working
-	in the dark underground regions has also gifted them with
-	natural infravision.
-
+    Dwarves are short, bearded folk known to mine deep into the earth for
+    precious gems and metals.  Because of their short stature, they can
+    not walk as fast as most taller races, but their strength and
+    hardiness easily makes up for this.  Working in the dark underground
+    regions has also gifted them with natural infravision.
 #
 ELF ELVES ELVEN
-	
-	The elves are a tall, graceful race, with a love of the arts
-	and magick.  They are seen by many as arrogant and flightly,
-	and have numerous racial hatreds.  Their long limbs and natural
-	quickness allow them to easily outdistance most other races when
-	on foot, especially in the forests.
-
+    The elves are a tall, graceful race, with a love of the arts and
+    magick.  They are seen by many as arrogant and flightly, and have
+    numerous racial hatreds.  Their long limbs and natural quickness allow
+    them to easily outdistance most other races when on foot, especially
+    in the forests.
 #
-HUMANS
-
-	Humans make up the largest portion of the population of the
-	'civilized' world.  They are considered the "stock" race, and
-	act as a benchmark for many comparisons between the different
-	races.
-
+HUMAN HUMANS
+    Humans make up the largest portion of the population of the
+    "civilized" world.  They are considered the "stock" race, and act as a
+    benchmark for many comparisons between the different races.
 #
-HALFLINGS
-
-	Halflings are a short, jolly race, known to be extremely quick
-	and good with their hands.  They are very 'laid back' and are both
-	tolerant and tolerated but almost all other races.  Because of their
-	frivolous attitude towards study and work, they tend to be weak in
-	the magickal arts.
-
+HALFLING HALFLINGS
+    Halflings are a short, jolly race, known to be extremely quick and
+    good with their hands.  They are very "laid back" and are both
+    tolerant and tolerated but almost all other races.  Because of their
+    frivolous attitude towards study and work, they tend to be weak in the
+    magickal arts.
 #
-GNOMES
-	
-	Gnomes are the shortest race, and have alot of trouble keeping
-	up with other races when walking.  These intellectual underground
-	dwellers are quite adept at magick, and are gifted with infravision. 
-
+GNOME GNOMES GNOMISH
+    Gnomes are the shortest race, and have alot of trouble keeping up with
+    other races when walking.  These intellectual underground dwellers are
+    quite adept at magick, and are gifted with infravision. 
 #
-PICK LOCKS
-
+'PICK LOCK' PICK
     Thieves only.
 
-    For picking locks on doors and containers. Not all locks can be picked,
-    and some locks and containers may be trapped, so beware!
+    For picking locks on doors and containers. Not all locks can be
+    picked, and some locks and containers may be trapped, so beware!
 
     Example:
-     > pick door
-     > pick safe
+        > pick door
+        > pick safe
 
-See Also : OPEN, CLOSE, LOCK, UNLOCK
-Thieves See Also : SNEAK, HIDE, BACKSTAB, STEAL
-
+    SEE ALSO: OPEN, CLOSE, LOCK, UNLOCK
+    Thieves SEE ALSO: SNEAK, HIDE, BACKSTAB, STEAL
 #
 SNEAK
-
     Thieves and Rangers Only.
 
     Used for sneaking (moving in and out of rooms without anyone taking
@@ -722,1626 +651,1273 @@ SNEAK
     that no others can get to without encountering a battle on the way.
 
     Example:
+        > sneak
+        You'll try to move silently for a while. 
 
-    > sneak
-    You'll try to move silently for a while. 
-
-Thieves See Also : HIDE, BACKSTAB, STEAL, PICK
-
+    Thieves SEE ALSO: HIDE, BACKSTAB, STEAL, PICK
 #
 HIDE
-
     Thieves Only.
+
     When you type hide there is a chance that you hide in the room. If
-    hidden you can only be sensed by the sense life spell. Even if
-    sensed your identity will remain hidden. Hide is broken by pressing
-    return, regardless of whether you typed a command or not.
+    hidden you can only be sensed by the sense life spell. Even if sensed
+    your identity will remain hidden. Hide is broken by pressing return,
+    regardless of whether you typed a command or not.
 
     Example:
+        > hide
+        Ok.
+        > (you wait for ex. 5 mins and remain hidden for 5 mins)
+        > (You pressed enter and no longer hide)
 
-   > hide
-   Ok.
-   >  (you wait for ex. 5 mins and remain hidden for 5 mins)
-
-   >  (You pressed enter and no longer hide)
-
-Thieves See Also : SNEAK, BACKSTAB, STEAL, PICK
+    Thieves SEE ALSO: SNEAK, BACKSTAB, STEAL, PICK
 #
 LOOK
-    
     For studying your surroundings. 
     Examples:
-    
-    > look                                      
-    > look AT the fido
-    > look IN the bag
-    > look to the south   (or just: 'look south' or 'l s')
+        > look                                      
+        > look AT the fido
+        > look IN the bag
+        > look to the south (or just: "look south" or "l s")
 
-    Note that if you LOOK AT CORPSE you will not see its inventory.
-    To see what is inside a container (e.i. Corpse) use LOOK IN <OBJECT>.
+    Note that if you LOOK AT CORPSE you will not see its inventory.  To
+    see what is inside a container (e.i. Corpse) use LOOK IN <OBJECT>.
 
-See also : EXAMINE or READ
-
+    SEE ALSO: EXAMINE or READ
 #
 OPEN CLOSE LOCK UNLOCK
+    Opens, closes, locks, or unlocks doors, containers, and maybe other
+    things.
 
-Usage (example):
- > open portal
-or
- > open portal to the south
- > open portal south
- > op portal s
-   (if there is more than one to choose from)
+    Usage (example):
+        > open portal
+    or
+        > open portal to the south
+        > open portal south
+        > op portal s
+        (if there is more than one to choose from)
 
-Thieves See Also : PICK
-
+    Thieves SEE ALSO: PICK
 #
 NORTH SOUTH EAST WEST UP DOWN
-
-To walk/go in a given direction.
-
+    To walk/go in a given direction.
 #
 EAT DRINK SIP TASTE
-If you are hungry or thirsty. 
+    If you are hungry or thirsty.   Sip or taste will only consume a small
+    portion of the food or drink, if it has more than a single amount.
 
-Examples:
-
-    > drink beer
-    > eat bread
-
+    Examples:
+        > drink beer
+        > eat bread
 #
 WHO
+    Lists the people currently in the game. Some people may choose to
+    remain unseen.
 
-Lists the people currently in the game. Some people may choose to remain
-unseen.
-
-See also : WHOZONE, WHOD
-
+    SEE ALSO: WHOZONE, WHOD
 #
 WHOD
+    By telneting to the port+1 the game is running on you are able to get
+    a list of active players on the game currently.  This will also show
+    all gods that are visible at the time.
 
-  By telneting to the port+1 the game is running on you are able to get a
-list of active players on the game currently.  This will also show all gods
-that are visible at the time.
+    I.E.  telnet wiley.cs.wmich.edu 2346    <- note 2345+1 = 2346
 
-i.e.  telnet wiley.cs.wmich.edu 2346    <- note 2345+1 = 2346
+    As an IMMORTAL, you can adjust some parameters of this sevice:
+        name    - show the names of the players
+        title   - show the titles of the players
+        site    - show the site from which players are coming from
+        on      - turn the daemon on
+        off     - turn the daemon off
 
-#
-WILEYD
-
-  Commands available are
-   name	- show the names of the players
-   title - show the titles of the players
-   site - show the site from which players are coming from
-   on - turn the daemon on
-   off - turn the daemon off
-
+    NOTE:   This service is probably disabled and non-functional, as we
+            now use a web service for this purpose.
 #
 GIVE
+    If you feel benevolent, you may give some stuff to someone in need. 
 
-If you feel benevolent, you may give some stuff to someone in need. 
+    Example:
+        > give bread to the beggar
+        (can also be stated as:)
+        > give bread beggar
 
-Example:
+    You may also use this format...
 
-> give bread to the beggar
-(can also be stated as:)
-> give bread beggar
+        > give 3.bread bob      - this will give the third bread to bob
+        > give 3*bread bob      - this will give 3 breads to bob
+        > give all.bread bob    - this will give ALL your bread to bob
 
-You may also use this format...
+    For giving gold :
 
-> give 3.bread bob			this will give the third bread to bob
-
-> give 3*bread bob			this will give 3 breads to bob
-
-> give all.bread bob			this will give ALL your bread to bob
-
-For giving gold :
-
-> give 100 coins bob
-
+        > give 100 coins bob
 #
 SAVE
-
-Save your persona. This includes experience points, strength, gold, etc. 
-It also saves your equipment, up to the first 200 items.
-
-#
-STRING
-
-Immort-Only.
-
-For changing the text-strings associated with objects and characters. The
-format is:
-
-string <type> <name> <field> [<string> | <keyword>]
-
-Type is either 'obj' or 'char'.
-Field is one of the following(the names may be abbreviated):
-Name                  (the call-name of an obj/char - kill giant)
-Short                 (for inventory lists (objs) and actions (chars))
-Long                  (for when obj/character is seen in room)
-Title                 (for players)
-Description           (For look at. For objs, must be followed by a keyword)
-Delete-description    (only for objs. Must be followed by keyword)
-
-Where a string is expected as the last argument, a newline will make
-you enter a string mode, and the game will prompt you for new lines to
-the string until you exceed the maximum length for the string or you
-end a line with a '@'.
-
-#
-LOAD
-
-Immort-Only.
-
-For loading new objects or characters from the database. The format is:
-  load <type> <number>
-Where <type> is either 'obj' or 'char', and number is the number of the object
-or character you wish to create.
+    Save your persona. This includes experience points, strength, gold,
+    etc.  It also saves your equipment, up to the first 200 items.
 #
 INVENTORY
+    If you are uncertain about what you are carrying, or simply want to
+    check that no thieves have pilfered from your backpack.
 
-If you are uncertain about what you are carrying, or simply want to check
-that no thieves have pilfered from your backpack.
-
-See also: EQUIPMENT
-
+    SEE ALSO: EQUIPMENT
 #
 EQUIPMENT
+    When you want to know what armor, weapon, charms etc. you are
+    wearing.
 
-When you want to know what armour, weapon, charms etc. you are wearing.
-
-See also: INVENTORY
-
+    SEE ALSO: INVENTORY
 #
 WEAR
+    If you want to wear some clothes, armor or the likes.
 
-If you want to wear some clothes, armour or the likes.
-For example : 
+    For example: 
+        > wear boots
 
-> wear boots
+    to attempt to wear everything in your inventory, use :
+        > wear all
 
-to attempt to wear everything in your inventory, use :
-
-> wear all
-
-See also: REMOVE, EQUIPMENT
-
+    SEE ALSO: REMOVE, EQUIPMENT
 #
 WIELD
+    When you get tired of bashing monsters with your fists, you might
+    consider wielding a weapon. 
 
-When you get tired of bashing monsters with your fists, you might consider
-wielding a weapon. 
+    Example: 
+        > wield sword
+        > wield two sword           - for wielding it two handed
 
-Example : 
+    NOTE: some weapons require you to wield them two handed.
 
-> wield sword
-> wield two sword             - for wielding it two handed
-   *NOTE some weapons require you to wield them two handed.
-
-See also: REMOVE, EQUIPMENT
+    See also: REMOVE, EQUIPMENT
 #
 SCORE
-
-Whenever you want to check whether you are still alive and healthy
-or simply want to see how much money you have left.
-
+    Whenever you want to check whether you are still alive and healthy or
+    simply want to see how much money you have left.
 #
 SAY TELL WHISPER SHOUT ASK
+    If you consider communicating with other beings, you might be
+    understood better if you start your sentences with either
+    say, tell, whisper or shout.
 
-If you consider communicating with other beings, you might be understood
-better if you start your sentences with either say,tell,whisper or shout.
-
-You can use ' as a shorthand for say with no space required before the
-' as in:
-
-'hello there.
+    You can use ' as a shorthand for say with no space required before
+    the ' as in:
+        > 'hello there.
 #
 QUI SHUTDOW
-
-Just to prevent accidental quittings and/or shutdowns.
-This command does not DO anything, it simply is.
+    Just to prevent accidental quittings and/or shutdowns.  This command
+    does not DO anything, it simply is.
 #
 KILL HIT
-
-  This will start a round by round combat between you and the person
-you name in the command.
-
+    This will start a round by round combat between you and the person you
+    name in the command.
 #
 KICK
+    Fighters only.
 
-Fighters only.
+    The success of a kick depends upon how well you are learned. The
+    higher level you reach the harder you kick. There is one small catch -
+    whenever you kick (or miss) you will be unable to type any command for
+    three rounds of "Violence" - so be sure that you do not need to flee!
 
-The success of a kick depends upon how well you are learned. The
-higher level you reach the harder you kick. There is one small catch -
-whenever you kick (or miss) you will be unable to type any command for
-three rounds of 'Violence' - so be sure that you do not need to flee!
-
-Fighters See Also : RESCUE, BASH, DISARM
+    Fighters SEE ALSO: RESCUE, BASH, DISARM
 #
 BASH
+    Fighters only.
 
-Fighters only.
+    The success of a bash depends upon how well you are learned. To bash
+    someone is to attempt to "knock" that person over. If you succeed you
+    will inflict minor damage, and cause the victim to fall on its rear.
+    The victim will be unable to issue any commands for 2 rounds of
+    violence. If you miss you loose your balance and fall.
 
-  The success of a bash depends upon how well you are learned. To bash
-someone is to attempt to 'knock' that person over. If you succeed you
-will inflict minor damage, and cause the victim to fall on its rear.
-The victim will be unable to issue any commands for 2 rounds of
-violence. If you miss you loose your balance and fall.
-  A bash makes you unable to type commands for 2 rounds of violence.
+    A bash makes you unable to type commands for 2 rounds of violence.
 
-Fighters See Also : RESCUE, KICK, DISARM
+    Fighters SEE ALSO: RESCUE, KICK, DISARM
 #
 RESCUE
+    Fighters & Rangers Only.
 
-Fighters & Rangers Only.
+    A rescue is an attempt to make a monster hit you instead of the person
+    being rescued. You can only "turn" one monster for each attempt. This
+    is highly useful when playing in groups.
 
-  A rescue is an attempt to make a monster hit you instead of the
-person being rescued. You can only 'turn' one monster for each
-attempt. This is highly useful when playing in groups.
-
-See Also : ASSIST, SWAT
-
-Fighters See Also : BASH, KICK, DISARM
+    SEE ALSO: ASSIST, SWAT
+    Fighters SEE ALSO: BASH, KICK, DISARM
 #
 STEAL
+    Thief Only.
 
-Thief Only.
+    Use steal to steal gold or items from people. The chance of not
+    getting caught depends on how well you have practiced steal, and if
+    the person is asleep.
 
-Use steal to steal gold or items from people. The chance of not
-getting caught depends on how well you have practiced steal, and if
-the person is asleep.
+    Example:
+        > steal gold drunk
 
-Example:
-
-> steal gold drunk
-
-Thieves See Also : BACKSTAB, PICK, SNEAK, HIDE
+    Thieves SEE ALSO: BACKSTAB, PICK, SNEAK, HIDE
 #
 BACKSTAB
+    Thief only.
 
-Thief only.
+    Is a way to sneak up on a person, and attempt to place you dagger in
+    his back, at exactly the point where it does most damage. A successful
+    backstab gives a damage multiplier, depending on level.
 
-Is a way to sneak up on a person, and attempt to place you dagger in
-his back, at exactly the point where it does most damage. A successful
-backstab gives a damage multiplier, depending on level.
+    The chance of successfully backstabbing a person depends on how well
+    you have practiced backstab at your guild.
 
-The chance of successfully backstabbing a person depends on how well
-you have practiced backstab at your guild.
-
-Thieves See Also : STEAL, PICK, SNEAK, HIDE
-#
-CAST
-For magical people. If you want to throw a spell at someone or something.
-
-  i.e.
-    cast 'spell' target  
-    The "spell" must be enclosed in ('), one on each side.
-
+    Thieves SEE ALSO: STEAL, PICK, SNEAK, HIDE
 #
 DISARM
+    Ranger and Fighter Only.
 
-   Ranger and Fighter Only.
+    This skill allows the fighter or ranger to make his opponent lose
+    grasp of his or her weapon and send it flying to the ground.  A
+    disarmed opponent is much easier to beat than one still wielding his
+    or her weapon.
 
-   This skill allows the fighter or ranger to make his opponent lose
-   grasp of his or her weapon and send it flying to the ground.  A disarmed
-   opponent is much easier to beat than one still wielding his or her 
-   weapon.
-
-Rangers and Fighters See Also : RESCUE
-Fighters See Also : KICK, BASH
-
+    Rangers and Fighters SEE ALSO: RESCUE
+    Fighters SEE ALSO: KICK, BASH
 #
 DROP
-If you lose interest in a carried item, you can drop it on the ground.
+    If you lose interest in a carried item, you can drop it on the ground.
 
-Example :
+    Example :
+        > Drop bottle
 
->  Drop bottle
+    If you feel like getting rid of all your earthly possessions, you may
+    use drop all.  Also you can drop 9*bottle, which would drop 9 bottles,
+    but leave the rest in your hands.
 
-  If you feel like getting rid of all your earthly possessions, you
-may use drop all.  Also you can drop 9*bottle, which would drop 9
-bottles, but leave the rest in your hands.
-
-See also: GET
-#
-PURGE
-
-Immort-Only.
-
-A way to make the world a little cleaner.
-Usage:
-  purge                         To empty a room of monsters and objects.
-  purge <object>                Figure this one out yourself.
-
-#
-STAT
-
-Immort-Only.
-
-  If you are interested in a person and want to find out about
-his/her/its skills, strength, mana, hitpoints etc. In addition, 'stat
-room' will give you useful information about the room you are in.
-
+    SEE ALSO: GET
 #
 ORDER
+    If you have a follower, you may order them to do things, as if they
+    were doing the action themselves...
 
-  If you have a follower, you may order them to do things, as if they 
-were doing the action themselves...
-
-such as
-
-> order followers shout Hiya Cyric ;)
-
+    such as:
+        > order followers shout Hiya Cyric ;)
 #
 BUY SELL VALUE
-Commands for the shops - very useful too !
+    Commands for the shops - very useful too!
 
-You may use buy to purchase items at shops...
+    You may use buy to purchase items at shops...
 
-buy bread			will buy one bread
-buy 3*bread			will buy (3) three breads.
+        > buy bread             - will buy one bread
+        > buy 3*bread           - will buy (3) three breads.
+        > sell dagger           - will sell the dagger to the shop keeper
 
-sell dagger			will sell the dagger to the shop keeper
+    You may only buy the number of items you may carry....
 
-you may only buy the number of items you may carry....
-
-Value will give you an estimate of how much the shop keeper will give you for
-an item. use it before you sell the item.
-
+    Value will give you an estimate of how much the shop keeper will give
+    you for an item. use it before you sell the item.
 #
 WEATHER
-If you are uncertain whether the sun is shining or the rain is pouring down.
+    If you are uncertain whether the sun is shining or the rain is pouring
+    down.
 #
 READ
-When you want to read something.
+    When you want to read something.
 #
 REMOVE
-If you tire of wearing some armour or wielding a weapon.
+    If you tire of wearing some armor or wielding a weapon.
 
-rem shield
-rem sword
-rem all			removes all things being used now.
-rem 2.cloak		removes the second cloak worn
-
+    > rem shield
+    > rem sword
+    > rem all                       - removes all things being used now.
+    > rem 2.cloak                   - removes the second cloak worn
 #
 SHOPS
-  Shops are places where the adventurer may purchase equipment for his
-quests, and where he may sell his treasure if he should manage to
-survive the perils with his life and sanity intact. Many shops trade
-only in a specific type of merchandise. Thus, a baker may well refuse
-to buy your armour, even if it is of high quality!
+    Shops are places where the adventurer may purchase equipment for his
+    quests, and where he may sell his treasure if he should manage to
+    survive the perils with his life and sanity intact. Many shops trade
+    only in a specific type of merchandise. Thus, a baker may well refuse
+    to buy your armor, even if it is of high quality!
 
-See also: BUY, SELL, LIST, VALUE
+    SEE ALSO: BUY, SELL, LIST, VALUE
 #
-SOCIAL ACTIONS
-Commands mainly for social interaction:
+'SOCIAL ACTIONS' SOCIALS SOCIAL
+    Commands mainly for social interaction:
 
-applaud, beg, bleed, blush, bounce, bow, burp, cackle, chuckle, clap,
-comfort, cough, cringe, cry, cuddle, curtsey, dance, daydream, fart,
-flip, fondle, french, frown, fume, gasp, giggle, glare, grin, groan,
-grope, grovel, growl, hiccup, hold, hop, hug, yawn, kiss, laugh, lick,
-love, moan, nibble, nod, nudge, pat, peer, point, poke, ponder, pout,
-puke, punch, purr, ruffle, scream, shake, shiver, shrug, sigh, sing,
-slap, smirk, smile, snap, snarl, sneeze, snicker, sniff, snore,
-snuggle, spank, spit, squeeze, stare, steam, strut, sulk, tackle,
-taunt, thank, twiddle, wave, whine, whistle, wiggle, wink, worship
-
+    applaud, beg, bleed, blush, bounce, bow, burp, cackle, chuckle, clap,
+    comfort, cough, cringe, cry, cuddle, curtsey, dance, daydream, fart,
+    flip, fondle, french, frown, fume, gasp, giggle, glare, grin, groan,
+    grope, grovel, growl, hiccup, hold, hop, hug, yawn, kiss, laugh, lick,
+    love, moan, nibble, nod, nudge, pat, peer, point, poke, ponder, pout,
+    puke, punch, purr, ruffle, scream, shake, shiver, shrug, sigh, sing,
+    slap, smirk, smile, snap, snarl, sneeze, snicker, sniff, snore,
+    snuggle, spank, spit, squeeze, stare, steam, strut, sulk, tackle,
+    taunt, thank, twiddle, wave, whine, whistle, wiggle, wink, worship
 #
-WIZ
-A listing of the commands for immortals (should be unavailable for mortals  :)
+WIZLIST WIZ
+    A list of the immortals, past and present, so you can bask in their
+    glory, after a fashion.
 #
 WARRIOR FIGHTER
+    Warriors are the strong fighters of the realm.  Generally they take
+    jobs in the mercenary fields or perhaps guards of a city or town.
+    They live and die by the blade that they have chosen their own,
+    although seem to take a few with them when they go.
 
-     Warriors are the strong fighters of the realm.  Generally they take 
-   jobs in the mercenary fields or perhaps guards of a city or town.  
-   They live and die by the blade that they have chosen their own, although
-   seem to take a few with them when they go.
-     Warriors are the ultimate fighting machines and there skills justify it
-   as so.  They are allowed to practice several effective combat tactics
-   including kick, bash, rescue, and disarm.  Warriors of higher levels 
-   also see the benefit of multiple attacks.
+    Warriors are the ultimate fighting machines and there skills justify
+    it as so.  They are allowed to practice several effective combat
+    tactics including kick, bash, rescue, and disarm.  Warriors of higher
+    levels also see the benefit of multiple attacks.
 
-
-See also: PRACTICE
+    SEE ALSO: PRACTICE
 #
 THIEF
-  Thieves are known to have very special qualities, that no other
-class offers.  Many of these qualities can come in handy in many
-situations, such as picking locks.  They are not very combat oriented,
-however, so do not expect to be able to kill many things by yourself.
-The useful aspect of thieves involves their ability to scout ahead,
-avoiding monsters, detecting and removing traps and selling and buying
-items at the black market.
-   You can improve you skills by using the practice command.
+    Thieves are known to have very special qualities, that no other class
+    offers.  Many of these qualities can come in handy in many situations,
+    such as picking locks.  They are not very combat oriented, however, so
+    do not expect to be able to kill many things by yourself.  The useful
+    aspect of thieves involves their ability to scout ahead, avoiding
+    monsters, detecting and removing traps and selling and buying items at
+    the black market.
 
-See also: PRACTICE
+    You can improve you skills by using the practice command.
+
+    SEE ALSO: PRACTICE
 #
 CLERIC
-  This class gives you the wisdom of peace, blessing and healing,
-though it is possible to learn more violent spells.  You can improve
-your spells by using the practice command.
+    This class gives you the wisdom of peace, blessing and healing, though
+    it is possible to learn more violent spells.  You can improve your
+    spells by using the practice command.
 
-See also: PRACTICE
+    SEE ALSO: PRACTICE
 #
-MAGIC USER WIZARD MAGE
-  This is the class of powerful and violent magic, but the magic user
-does not control the nature, and can therefore not bless and such. You
-can improve your spells by using the practice command.
+'MAGIC USER' WIZARD MAGE
+    This is the class of powerful and violent magic, but the magic user
+    does not control the nature, and can therefore not bless and such. You
+    can improve your spells by using the practice command.
 
-See also: PRACTICE
+    See also: PRACTICE
 #
 RANGER
-     
-     This class gives you both the strength of the fighter, but the wisdom
-   and peace of a priest.  It is rumored that the gods of the woods look
-   favorably on those that keep a GOOD outlook on life, those that do not
-   seem to find themselves becoming more as a fighter.
-     Rangers are not allowed to wear any solid plates of metal upon their
-   bodies, although studded and perhaps banded armours would be allowed.
-     These men of the land benefit from several different skills and at 
-   higher levels gain the use of a limited spell field.
+    This class gives you both the strength of the fighter, but the wisdom
+    and peace of a priest.  It is rumored that the gods of the woods look
+    favorably on those that keep a GOOD outlook on life, those that do not
+    seem to find themselves becoming more as a fighter.
 
+    Rangers are not allowed to wear any solid plates of metal upon their
+    bodies, although studded and perhaps banded armors would be allowed.
 
-See also: Practice
+    These men of the land benefit from several different skills and at
+    higher levels gain the use of a limited spell field.
+
+    SEE ALSO: PRACTICE
 #
-PRACTICE PRACTISE
-  Practice is the way you improve your spells and skills. You must go
-to your guildmaster to let him/her help you improve.  If you type
-practice, you will see which skills you can improve upon, and how good
-you already are at these.  You can then use practice <skill>, to
-practice the appropriate skill.  You can only practise a certain
-amount for each level you gain, and you do not have to save this, it
-can be accumulated.  When you go out and begin to use this new skill
-you will begin to understand what it is you have just learned. In essence
-you will improve you ability to do use this skill.  This will allow
-you to become an average user of the skill.  To improve further you must
-go back and have someone (guildmaster) teach you the subtlties of the
-skill you are using.
+PRACTICE
+    Practice is the way you improve your spells and skills. You must go to
+    your guildmaster to let him/her help you improve.  If you type
+    practice, you will see which skills you can improve upon, and how good
+    you already are at these.  You can then use practice <skill>, to
+    practice the appropriate skill.  You can only practice a certain
+    amount for each level you gain, and you do not have to save this, it
+    can be accumulated.  When you go out and begin to use this new skill
+    you will begin to understand what it is you have just learned. In
+    essence you will improve you ability to do use this skill.  This will
+    allow you to become an average user of the skill.  To improve further
+    you must go back and have someone (guildmaster) teach you the
+    subtlties of the skill you are using.
 
-The number of practices you recieve is based on the class you are and
-the prime ability for that class.  A fighter is strength for example.
-This is not the only factor in gaining practices, it is also based on
-the NEW things you have done to gain exp.
-
+    The number of practices you recieve is based on the class you are and
+    the prime ability for that class.  A fighter is strength for example.
+    This is not the only factor in gaining practices, it is also based on
+    the NEW things you have done to gain exp.
 #
 EXITS
-  Gives you a list of the obvious exits from your location. Of course,
-the less obvious ones will not show up here - you have to THINK in
-order to locate those.
-
+    Gives you a list of the obvious exits from your location. Of course,
+    the less obvious ones will not show up here - you have to THINK in
+    order to locate those.
 #
 LEAVE
-  If you feel claustrophobic, typing 'leave' will make you use the
-nearest obvious exit to the outside.
-
+    If you feel claustrophobic, typing "leave" will make you use the
+    nearest obvious exit to the outside.
 #
 ENTER
-  If you type 'enter' while you are outdoors, you will enter any
-nearby shelter.  You can also follow 'enter' with an argument; for
-example, 'enter window'.
-
+    If you type "enter" while you are outdoors, you will enter any nearby
+    shelter.  You can also follow "enter" with an argument; for example,
+    "enter window".
 #
 TIME
-  Gives you the current 'gametime'. Your initial reaction to the
-output of this command may be one of surprise, but you will get used
-to it. you will have to, at any rate, since certain things in the game
-depend on this particular notion of time; the opening hours of the
-shops, for example.
-
+    Gives you the current "gametime". Your initial reaction to the output
+    of this command may be one of surprise, but you will get used to it.
+    you will have to, at any rate, since certain things in the game depend
+    on this particular notion of time; the opening hours of the shops, for
+    example.
 #
 BUG TYPO IDEA
-For making useful suggestions to the maintainers of the game. Examples:
-
-bug the entire game crashes when I type 'put bag in bag'
-idea make a restaurant in Midgaard
-typo 'sence' should be spelled 'sense'
+    For making useful suggestions to the maintainers of the game.
+    Examples:
+        > bug the entire game crashes when I type "put bag in bag"
+        > idea make a restaurant in Midgaard
+        > typo "sence" should be spelled "sense"
 #
 QUIT
-  When you get tired of playing, you can leave the game by typing
-'quit'. Note that whatever stuff you might be carrying with you is
-simply left on the ground. If you wish to have your equipment put away
-until you are able to come back, you will have to find an inn.
+    When you get tired of playing, you can leave the game by typing
+    "quit".  Note that whatever stuff you might be carrying with you is
+    simply left on the ground. If you wish to have your equipment put away
+    until you are able to come back, you will have to find an inn.
 
-See also: INN
+    SEE ALSO: INN
 #
 INN INNS
-  Inns are places where the weary traveler may rest while the
-innkeeper looks after his equipment and treasure. Specifically, you
-may use inns to store your gathered equipment while you are not
-playing the game (we all have to sleep sometimes, there is no shame in
-that).
+    Inns are places where the weary traveler may rest while the innkeeper
+    looks after his equipment and treasure. Specifically, you may use inns
+    to store your gathered equipment while you are not playing the game
+    (we all have to sleep sometimes, there is no shame in that).
 
-See also: OFFER, RENT
+    SEE ALSO: OFFER, RENT
 #
-OFFER RENT
-  For use in the receptions of inns. The command 'offer' will make the
-innkeeper tell you the cost of storing your carried items for one day.
-'rent' will store the items and make you leave the game. The next time
-you enter, you will start out in the reception where you left. The inn
-will store your items as long as you have the gold to pay the rent.
+RENT OFFER
+    For use in the receptions of inns. The command "offer" will make the
+    innkeeper tell you the cost of storing your carried items for one day.
+    "rent" will store the items and make you leave the game. The next time
+    you enter, you will start out in the reception where you left. The inn
+    will store your items as long as you have the gold to pay the rent.
 
-See also: INN
+    SEE ALSO: INN
 #
 GET TAKE
-  If you find something interesting on the ground, you may use 'get'
-to pick it up. Example: get greatsword. If you are in a hurry, or if
-you just feel very greedy, you may type get all. You can also use
-'get' to extract objects from containers. Example: get dagger from
-bag.  Other examples:
+    If you find something interesting on the ground, you may use "get" to
+    pick it up. Example: get greatsword. If you are in a hurry, or if you
+    just feel very greedy, you may type get all. You can also use "get" to
+    extract objects from containers. Example: get dagger from bag.
 
-  get all.bread from bag		gets all of the breads from the bag
-  get 9*bread from bag			gets 9 breads from bag
-  get all from corpse
+    Other examples:
+        > get all.bread from bag    - gets all of the breads from the bag
+        > get 9*bread from bag      - gets 9 breads from bag
+        > get all from corpse
 
-See also: DROP PUT
+    SEE ALSO: DROP PUT
 #
 PUT
-For putting stuff in containers. Example: Put the dagger in the bag.
+    For putting stuff in containers.
+    Example: Put the dagger in the bag.
 
-  put bread bag			puts a bread in the bag
-  put all.bread in bag		puts all the bread in the bag
-  put 9.bread in bag.		puts the ninth bread in the bag
-  put 9*bread in bag		puts nine breads into your bag.
+        > put bread bag             - puts a bread in the bag
+        > put all.bread in bag      - puts all the bread in the bag
+        > put 9.bread in bag.       - puts the ninth bread in the bag
+        > put 9*bread in bag        - puts nine breads into your bag
 
-See also: GET
+    SEE ALSO: GET
 #
 EXAMINE
-May give you some valuable information about an item, or a monster.
+    May give you some valuable information about an item, or a monster.
 
-See also: LOOK
+    SEE ALSO: LOOK
 #
 WRITE
-
-  In order to write a note, you need a piece of blank paper (or
-similar), and a pen of some sort. You can then type something like
-write on the paper with the pen, whereupon you will be asked to type
-in your note at the keyboard.
-
+    In order to write a note, you need a piece of blank paper (or
+    similar), and a pen of some sort. You can then type something like
+    write on the paper with the pen, whereupon you will be asked to type
+    in your note at the keyboard.
 #
 NEWS
-
-  This command will show you the current edition of the DikuMUD
-Herald, a publication dedicated to news and useful information about
-this world. It is a VERY good idea to check it out once in a while or
-more often to see recent updates and bullitens.
-
+    This command will show you the current edition of the DikuMUD Herald,
+    a publication dedicated to news and useful information about this
+    world. It is a VERY good idea to check it out once in a while or more
+    often to see recent updates and bullitens.
 #
-SLEEPING WAKE REST SIT STAND
-  For changing your position. If you feel weary, It is probably a good
-idea to sit and rest for awhile; or maybe even take a nap.
-
+SLEEP WAKE REST SIT STAND
+    For changing your position. If you feel weary, It is probably a good
+    idea to sit and rest for awhile; or maybe even take a nap.
 #
 POUR
-If you want to pour some liquid from one container to another.
+    If you want to pour some liquid from one container to another.
 #
 GRAB
-For getting a good grip on something; a torch, for example.
+    For getting a good grip on something; a torch, for example.
 
-See also: WEAR, WIELD, REMOVE
+    SEE ALSO: WEAR, WIELD, REMOVE
 #
 FOLLOW
-  If you happen to be going in the same direction as someone else, why
-not simply follow that person? For example: Follow joe. If you are
-following someone and you wish to stop doing that, then all you have
-to do is follow yourself: follow <your name>.
+    If you happen to be going in the same direction as someone else, why
+    not simply follow that person? For example: Follow joe. If you are
+    following someone and you wish to stop doing that, then all you have
+    to do is follow yourself: follow <your name>.
 
-See also: GTELL, GROUP
+    SEE ALSO: GTELL, GROUP
 #
 FLEE
-  If you are in a fight and things are beginning to get a little
-uncomfortable (maybe you are about to die), just type 'flee', and
-presto! you are out of harm's way - that is, IF you are still standing
-and, IF there is a suitable exit nearby, and IF that exit does not
-simply take you out of the frying pan and into the fire... but then,
-who wants to live forever?
+    If you are in a fight and things are beginning to get a little
+    uncomfortable (maybe you are about to die), just type "flee", and
+    presto!  you are out of harm's way - that is, IF you are still
+    standing and, IF there is a suitable exit nearby, and IF that exit
+    does not simply take you out of the frying pan and into the fire...
+    but then, who wants to live forever?
 
+    Fleeing is also a sudden and unexpected thing to do, so if you have
+    anyone following you that you'd like to lose, this may work in your
+    favor!
 #
 INFO
-Gives you some useful hints and information about the game.
+    Gives you some useful hints and information about the game.
 #
 WHERE
-Tells you the location of a monster, or an object. Examples:
+    Tells you the location of a monster, or an object.  Examples:
 
-where torch
-where dragon
-
+        > where torch
+        > where dragon
 #
 USERS
-Tells you who is logged on to the game, and where they are playing from.
+    Tells you who is logged on to the game, and where they are playing
+    from.
 #
 LEVELS
-Lists the levels of your class. 
+    Lists the levels of your class. 
 #
 BRIEF
-  Toggle brief mode. When in brief mode, you do not see the
-descriptions of the room you are in; only the name of the room, and
-the people and objects in there. Unless you are very familiar with the
-area in which you travel, however, it is not advisable to use this
-command. Frequently, you will find small, but vital hints in the
-descriptions of the rooms: An extra peek at your surroundings could
-mean the difference between life and death!
+    Toggle brief mode. When in brief mode, you do not see the descriptions
+    of the room you are in; only the name of the room, and the people and
+    objects in there. Unless you are very familiar with the area in which
+    you travel, however, it is not advisable to use this command.
+    Frequently, you will find small, but vital hints in the descriptions
+    of the rooms: An extra peek at your surroundings could mean the
+    difference between life and death!
 
-See also: COMPACT
+    SEE ALSO: COMPACT
 #
 !
-Repeat the last command typed at the keyboard.
+    Repeat the last command typed at the keyboard.
 #
 CONSIDER
+    This command will compare your Level with the <monsters> level. You
+    will then receive a rough estimate, which is by no means exact.
 
-Usage : consider <monster>
-
-  This command will compare your Level with the <monsters> level. You
-will then receive a rough estimate, which is by no means exact.
-
-Example:
-  > consider fido
-
+    Example:
+    > consider fido
 #
 EXPERIENCE XP
+    Whenever you kill a monster you earn experience points.  When enough
+    experience points are earned, you raise a level after going to a
+    teacher and typing "gain".
 
-Whenever you kill a monster you earn experience points.
-When enough experience points are earned, you raise a level after
-going to a teacher and typing 'gain'.
+    A player will earn exp based on the number of classes they have.  ie.
+    amount = amount/number of classes.  This is true for both multi and
+    single class characters.  A single class will go up in level faster as
+    it may seem on the outside, but a multi will actual have the same
+    amount of exp spread between the number of classes.
 
-A player will earn exp based on the number of classes they have.
-ie.  amount = amount/number of classes.  This is true for both multi
-and single class characters.  A single class will go up in level faster
-as it may seem on the outside, but a multi will actual have the same amount
-of exp spread between the number of classes.
+    When dying, a player loses exp in accordance to the following chart:
 
-When dieing, a player loses exp in accordance to the following chart:
+        Level               Amount
+        1-7                 1/( 6 * number of classes)
+        7-14                1/( 5 * number of classes)
+        15-21               1/( 4 * number of classes)
+        22-28               1/( 3 * number of classes)
+        29-49               1/( 2 * number of classes)
 
-Level			Amount
-1-7			1/( 6 * number of classes)
-7-14			1/( 5 * number of classes)
-15-21			1/( 4 * number of classes)
-22-28			1/( 3 * number of classes)
-29-49			1/( 2 * number of classes)
+    As you can see, low levelers lose less exp then a more experienced
+    adventurer.  The key word is experienced, a player that has been
+    around long enough to obtain a level 29 or above has built sufficient
+    resources to protect themself and provide a means to avoid death.Low
+    level players do not have this advantage on their side, this is the
+    reason for the smaller reduction in exp loss when dieing.
 
-As you can see, low levelers lose less exp then a more experienced adventurer.
-The key word is experienced, a player that has been around long enough to
-obtain a level 29 or above has built sufficient resources to protect themself
-and provide a means to avoid death.Low level players do not have this advantage
-on their side, this is the reason for the smaller reduction in exp loss when
-dieing.
+    It may seem that multi class characters are losing less exp then a
+    single class character, but remember, the multi class character has
+    already split the exp amount between the classes.  Since the amount
+    initial given was split, and the formulae is above (amount  = amount /
+    number of classes) the amount lost should also be used in the same
+    fashion to make it fair between multi and single class characters.
+    This algorythim has both types of players basically earning exp and
+    losing exp at the same rate even though the numbers may not actual be
+    the same when compared.
 
-It may seem that multi class characters are losing less exp then a single
-class character, but remember, the multi class character has already split
-the exp amount between the classes.  Since the amount initial given was
-split, and the formulae is above ( amount  = amount / #classes) the amount
-lost should also be used in the same fashion to make it fair between multi
-and single class characters.  This algorythim has both types of players
-basically earning exp and losing exp at the same rate even though the numbers
-may not actual be the same when compared.
-
-See Also: GROUP
+    SEE ALSO: GROUP
 #
 GROUP
-Usage : GROUP [player]
+    Usage: GROUP [player]
 
-If you are a group member, then you will share experience points for
-killing monsters equally among the group. Experience points will only
-be shared among group members that are in the same location, at the
-time of the killing blow. Sharing is regardless of whether the group
-members have been participating in the fight.
+    If you are a group member, then you will share experience points for
+    killing monsters equally among the group. Experience points will only
+    be shared among group members that are in the same location, at the
+    time of the killing blow. Sharing is regardless of whether the group
+    members have been participating in the fight.
 
-Group with no argument show a list of people with whom you are grouped.
+    Group with no argument show a list of people with whom you are
+    grouped.
 
-To make a group, a leader must be selected. All members of the group
-must then follow the leader using the follow command. The leader
-should NOT follow anyone at all! The leader can now toggle group
-membership for each player in the group, by using group
-<player_name>. The leader should remember to include himself in the
-group.
+    To make a group, a leader must be selected. All members of the group
+    must then follow the leader using the follow command. The leader
+    should NOT follow anyone at all! The leader can now toggle group
+    membership for each player in the group, by using group <player_name>.
+    The leader should remember to include himself in the group.
 
-Example:
+    Example:
+        Cyric and Muth wish to group with Grimwell.
 
-Cyric and Muth wish to group with Grimwell.
+        Cyric:      > follow grimwell
+        Muth:       > follow grimwell 
+        (grimwell should be following no one but himself)
+        grimwell:   > group grimwell
+        grimwell:   > group cyric
+        grimwell:   > group muth
 
-Cyric: follow grimwell
-Muth: follow grimwell 
-(grimwell should be following no one but himself)
-grimwell: group grimwell
-grimwell: group cyric
-grimwell: group muth
+        Later when grimwell gets upset at muth (because he is sleeping
+        all the time) he types: 
 
-Later when grimwell gets upset at muth (because he is sleeping all the
-time) he types : 
+        grimwell:   > group muth
 
-> group muth
+        to kick Muth out of the group.
 
-to kick Muth out of the group.
-
-See Also: XP EXPERIENCE
+    SEE ALSO: XP EXPERIENCE
 #
-QUAFF POTIONS
+QUAFF POTION
+    Use: quaff <Potion>
 
-Use : quaff <Potion>
-
-Quaff is used to drink a potion.
-
+    Quaff is used to drink a potion.
 #
-RECITE SCROLL SCROLLS
+RECITE SCROLL
+    Use: recite <Scroll> [Target]
 
-Use : recite <Scroll> [Target]
-
-Recite is used to read a magical scroll. The "target" can be an object, 
-character, or nothing (which generally defaults to yourself).
-
+    Recite is used to read a magical scroll. The "target" can be an
+    object, character, or nothing (which generally defaults to yourself).
 #
-USE WAND STAFF STAFFS WANDS
+USE WAND STAFF
+    > use <Staff>
+    > use <Wand> <Target>
 
-Use : Use <Staff>
-      Use <Wand> <Target>
+    Using staves will automatically target everybody (or everything) in a
+    room, in some cases, or everyone not in your group in others.
+    Therefore staves are naturally very powerful, and yet may be very
+    dangerous to use around other players.
 
-Using staves will automatically target everybody (or everything) in a
-room, in some cases, or everyone not in your group in others.
-Therefore staves are naturally very powerful, and yet may be very
-dangerous to use around other players.
+    Using wands require that you point it at a target, which can be either
+    a character or an object.
 
-Using wands require that you point it at a target, which can be either
-a character or an object.
-
-Both staves and wands must be HELD in the hand prior to use! (Use the
-grab or hold commands). You must still supply the name of the staff or
-wand to avoid confusion.
-
+    Both staves and wands must be HELD in the hand prior to use! (Use the
+    grab or hold commands). You must still supply the name of the staff or
+    wand to avoid confusion.
 #
 TELEPORT
+    This spell will take the target to a place about the realm.  Unlucky
+    recipients have been ported into a solid rock before, never seen
+    again.
 
-   This spell will take the target to a place about the realm.  Unlucky
-   recipients have been ported into a solid rock before, never seen again.
-
-Duration: None
-Damage: None
-Special: A victim of this spell gets a save
-
+    Duration:   None
+    Damage:     None
+    Special:    A victim of this spell gets a save
 #
 BLESS
+    This prayer is one that a alcolyte learns early in his duties to his
+    diety.  Upon the completion of this spell those that travel with the
+    caster, and the caster, recieve a blessing from their diety allowing
+    them to combat with increased efficiency.
 
-   This prayer is one that a alcolyte learns early in his duties to his
-   diety.  Upon the completion of this spell those that travel with the
-   caster, and the caster, recieve a blessing from their diety allowing 
-   them to combat with increased efficiency.
-
-Duration: Level/3
-Damage: None
-Special: + 1 hit, + 1 save
-
+    Duration:   Level/3
+    Damage:     None
+    Special:    +1 hit, +1 save
 #
 BLINDNESS
+    This short incantation causes the sight of another to be taken from
+    them.  It is commonly known amung the houses that Quintelan has been
+    experimenting with this spell trying to increase and decrease, upon
+    casting, the time of which the spell is effective.
 
-   This short incantation causes the sight of another to be taken from 
-   them.  It is commonly known amung the houses that Quintelan has been
-   experimenting with this spell trying to increase and decrease, upon 
-   casting, the time of which the spell is effective.
-   The prayer of this spell is commonly known to those priests that follow
-   a darker path, but to those that see only the light and truth the true
-   words to the spell often avoid them.
+    The prayer of this spell is commonly known to those priests that
+    follow a darker path, but to those that see only the light and truth
+    the true words to the spell often avoid them.
 
-Duration: 2d4 hrs
-Damage: None
-Special: Victim is -4 hit and armour is increased by 2.
-
+    Duration:   2d4 hrs
+    Damage:     None
+    Special:    Victim is -4 hit and armor is increased by 2.
 #
 CLONE
-
-   Calls the mist to replicate something.  The spell is frowned upon by
-   most mages.
-
+    Calls the mist to replicate something.  The spell is frowned upon by
+    most mages.
 #
-"CONTROL WEATHER"
-
-   Allows the castor to worsen or better the weather.
-
+'CONTROL WEATHER'
+    Allows the castor to worsen or better the weather.
 #
-"CREATE FOOD"
+'CREATE FOOD'
+    The castor of this spell creates a small mushroom from which a full
+    meal can be had.  Depending on the level of the castor, the mushroom
+    will sometimes become over ripe and there by harm the person eating
+    it.
 
-  The castor of this spell creates a small mushroom from which a full
-  meal can be had.  Depending on the level of the castor, the mushroom
-  will sometimes become over ripe and there by harm the person eating
-  it.
-
-Duration: None
-Damage: None
-Special: None
-
+    Duration:   None
+    Damage:     None
+    Special:    None
 #
-"WATER BREATH"
-
-   Castors have been known to breath like the gilled creatures.
-
+'WATER BREATH'
+    Castors have been known to breath like the gilled creatures.
 #
-CREATE LIGHT
-
-   Creates a light for one to see by.
-
+'CREATE LIGHT'
+    Creates a light for one to see by.
 #
 FLY
-
-   Allows one to fly about, or levitate as most uses would allow.
-
+    Allows one to fly about, or levitate as most uses would allow.
 #
-"CREATE WATER"
+'CREATE WATER'
+    Brings water forth into a container. The container must be clean and
+    one that has already contained the purest water that will refill it.
+    Strange side affects have been known to happen to those that do not
+    prepare their receptical beforehand.
 
-   Brings water forth into a container. The container must be clean and
-   one that has already contained the purest water that will refill it.
-   Strange side affects have been known to happen to those that do not
-   prepare their receptical beforehand.
-
-Duration: None
-Damage: None
-Special: A container can be filled to the top with this spell.
-
+    Duration:   None
+    Damage:     None
+    Special:    A container can be filled to the top with this spell.
 #
-"CURE BLIND"
+'CURE BLIND'
+    Returns the sight of one who has lost it.
 
-   Returns the sight of one who has lost it.
-
-Duration: None
-Damage: None
-Special: The victim has their sight restored to them, if affected by a magical
-	 means of blindness
-
+    Duration:   None
+    Damage:     None
+    Special:    The victim has their sight restored to them, if affected
+                by a magical means of blindness
 #
-"CURE CRITIC"
+'CURE CRITICAL'
+    This prayer is the third and most powerful of the simple curing
+    spells.  Its words are hard to come by, even for those that follow a
+    virtous path yet they often recieve the full benefits if they are
+    pure.  Others, who do not see the light, have a hard time casting this
+    spell, as the intricate prayers are hard to come by making the full
+    extent of this spell evaid their grasp.
 
-   This prayer is the third and most powerful of the simple curing spells.
-   Its words are hard to come by, even for those that follow a virtous
-   path yet they often recieve the full benefits if they are pure.  Others,
-   who do not see the light, have a hard time casting this spell, as the
-   intricate prayers are hard to come by making the full extent of this
-   spell evaid their grasp.
-
-Duration: None
-Damage: None
-Special: A cleric can give upto 3d8+3 points back in health.
-Note: It has been said that those that follow the ways of good and
-      virtue have been able to restore more then this meager amount
-      and sometimes regenerating a body to full.
-
+    Duration:   None
+    Damage:     None
+    Special:    A cleric can give upto 3d8+3 points back in health.
+    Note:       It has been said that those that follow the ways of good
+                and virtue have been able to restore more then this
+                meager amount and sometimes regenerating a body to full.
 #
-"CURE SERIOUS"
+'CURE SERIOUS'
+    This prayer, more intricate than cure light follows the others path
+    in, it would seem, the same way.  Those that are true of heart seem to
+    be able to cure the worst wound, while others find that the prayer
+    comes with difficulty and can not recieve the full extent.
 
-   This prayer, more intricate than cure light follows the others path
-   in, it would seem, the same way.  Those that are true of heart seem
-   to be able to cure the worst wound, while others find that the prayer
-   comes with difficulty and can not recieve the full extent.
-
-Duration: None
-Damage: None
-Special: A cleric can give upto 2d8+2 points back in health.
-
+    Duration:   None
+    Damage:     None
+    Special:    A cleric can give upto 2d8+2 points back in health.
 #
-"CURE LIGHT"
+'CURE LIGHT'
+    The prayer of this spell is often the first that any alcolyte learns,
+    as this is the backbone of many dietys paths.  Those that are true of
+    heart and follow nothing other than truth and virtue find the prayer
+    almost flow with a music from their lips, healing the worst of wounds.
 
-   The prayer of this spell is often the first that any alcolyte learns,
-   as this is the backbone of many dietys paths.  Those that are true
-   of heart and follow nothing other than truth and virtue find the prayer
-   almost flow with a music from their lips, healing the worst of wounds.
-   The prayer, so simple in its words, at times comes hard to those that
-   follow a darker path, they recieve the benefits of the spell, yet lack
-   the true knowledge to heal a bad wound.
+    The prayer, so simple in its words, at times comes hard to those that
+    follow a darker path, they recieve the benefits of the spell, yet lack
+    the true knowledge to heal a bad wound.
 
-Duration: None
-Damage: None
-Special: A cleric can give back 1d8 points back in health.  It is has been
-	 said that those clerics true to their faith have been able to
-	 heal more then this meager amount.
-
+    Duration:   None
+    Damage:     None
+    Special:    A cleric can give back 1d8 points back in health.  It has
+                been said that those clerics true to their faith have been
+                able to heal more then this meager amount.
 #
-"CAUSE CRITIC"
+'CAUSE CRITICAL'
+    The words of this prayer flow within the priests that are truely dark
+    in the heart causing immense pain in those that are the targets of the
+    prayer.  Those that follow the path of light often find this intricate
+    prayer hard to pronounce, finding the target not suffering the full
+    damage of this spell.  It is known a high priest of Aklan has cast
+    this prayer upon a follower stealing his life from him on the stop not
+    even giving it a second thought.
 
-   The words of this prayer flow within the priests that are truely dark
-   in the heart causing immense pain in those that are the targets of the
-   prayer.  Those that follow the path of light often find this intricate
-   prayer hard to pronounce, finding the target not suffering the full
-   damage of this spell.  It is known a high priest of Aklan has cast this
-   prayer upon a follower stealing his life from him on the stop not even
-   giving it a second thought.
-
-Duration: None
-Damage: 3d8 + 3
-Special: None
-
+    Duration:   None
+    Damage:     3d8 + 3
+    Special:    None
 #
-"CAUSE SERIOUS"
+'CAUSE SERIOUS'
+    This prayer is the second to be learned by those that follower the
+    path of darker realms, for this is often their best attack as those
+    that follow the truely vile way find there amount of pain increased as
+    the words of the prayer almost flow with a malevolent, stinging song.
+    Those of a light path find the words of this spell difficult to say,
+    the pain that the spell causes not as much as one would think.
 
-   This prayer is the second to be learned by those that follower the
-   path of darker realms, for this is often their best attack as those
-   that follow the truely vile way find there amount of pain increased as
-   the words of the prayer almost flow with a malevolent, stinging song.
-   Those of a light path find the words of this spell difficult to say,
-   the pain that the spell causes not as much as one would think.
-
-Duration: None
-Damage: 2d8 + 2
-Special: None
-
+    Duration:   None
+    Damage:     2d8 + 2
+    Special:    None
 #
-"CAUSE LIGHT"
+'CAUSE LIGHT'
+    This spell is the first spell learned by those clerics that chose to
+    follow a darker path, for it is with this spell that man Aklan
+    followers must cause pain onto others.  Followers have been commonly
+    seen casting this spell on someone walking the bazaar, for no reason
+    other than seeing the pain in anothers eye.
 
-   This spell is the first spell learned by those clerics that chose to
-   follow a darker path, for it is with this spell that man Aklan followers
-   must cause pain onto others.  Followers have been commonly seen casting
-   this spell on someone walking the bazaar, for no reason other than seeing
-   the pain in anothers eye.
-   Those of a light path find this spell difficult to cast, the words of
-   the prayer evading the caster, the spell doing much less damage.
+    Those of a light path find this spell difficult to cast, the words of
+    the prayer evading the caster, the spell doing much less damage.
 
-Duration: None
-Damage: 1d8
-Special: None
-
+    Duration:   None
+    Damage:     1d8
+    Special:    None
 #
 CURSE
+    Brings forth the wrath of ones diety upon a foe.  Used only by priests
+    of a disdained diety. It has been shown in the past that clerics of
+    true power can alter the strengths of metal with this spell.
 
-   Brings forth the wrath of ones diety upon a foe.  Used only by priests
-   of a disdained diety. It has been shown in the past that clerics of
-   true power can alter the strengths of metal with this spell.
-
-Duration: 24 hrs
-Damage: None
-Special: -1 Hit and -1 save.
-
+    Duration:   24 hrs
+    Damage:     None
+    Special:    -1 Hit and -1 save.
 #
-"DETECT EVIL"
+'DETECT EVIL'
+    The incantation of this spell allows one to see a colored outline of
+    the targets true faith.  Those who find themselves following a lighter
+    path through life find the spell lasting longer, allowing them to see
+    more of there eternal foes.  Several high mages have been
+    experimenting with this spell trying to get many different colors
+    beyond those which the spells calls upon.
 
-   The incantation of this spell allows one to see a coloured outline of
-   the targets true faith.  Those who find themselves following a lighter
-   path through life find the spell lasting longer, allowing them to see
-   more of there eternal foes.  Several high mages have been experimenting
-   with this spell trying to get many different colours beyond those which
-   the spells calls upon.
-   The prayer is very similar to the incantation although the faith of the
-   caster is much more dependant upon how long the spell allows you to see
-   those of evil.
+    The prayer is very similar to the incantation although the faith of
+    the caster is much more dependant upon how long the spell allows you
+    to see those of evil.
 
-Duration: 20 hrs
-Damage: None
-Special: Those of a good alignment have been able to sustain this spell
-	 for days on end...
-
+    Duration:   20 hrs
+    Damage:     None
+    Special:    Those of a good alignment have been able to sustain this
+                spell for days on end...
 #
-"DETECT INVISIBILITY"
+'DETECT INVISIBILITY'
+    This incantation allows the caster to look into a alternate realm, one
+    that lives in a negative vision.  Those that recieve the incantation
+    of this spell are allowed to look into the world and see those who
+    dwell within, those that walk upon the vision world within the
+    invisibilty that the other offers.
 
-   This incantation allows the caster to look into a alternate realm, one
-   that lives in a negative vision.  Those that recieve the incantation of
-   this spell are allowed to look into the world and see those who dwell
-   within, those that walk upon the vision world within the invisibilty
-   that the other offers.
-
-Duration: 5 hrs + 1hr/level
-Damage: None
-Special: Those things equal or less in level are seen by you with the aid of
-	 this spell.
-
+    Duration:   5 hrs + 1hr/level
+    Damage:     None
+    Special:    Those things equal or less in level are seen by you with
+                the aid of this spell.
 #
-"DETECT MAGIC"
+'DETECT MAGIC'
+    This incantation allows the caster to look over the items in his
+    presence and see the magic that might dwell within them.  Many high
+    mages have tried with extent to find the exact dweomer, but as of yet
+    no progress has been commented.
 
-   This incantation allows the caster to look over the items in his presence
-   and see the magic that might dwell within them.  Many high mages have
-   tried with extent to find the exact dweomer, but as of yet no progress
-   has been commented.
-
-Duration: 2hrs + 1hr/level
-Damage: None
-Special: None
-
+    Duration:   2hrs + 1hr/level
+    Damage:     None
+    Special:    None
 #
-"DETECT POISON"
+'DETECT POISON'
+    This prayer allows the caster to look within the target and see what
+    flows within their veins.  If a poison is present it will show itself
+    to the caster allowing him to locate it for removal.
 
-   This prayer allows the caster to look within the target and see what
-   flows within their veins.  If a poison is present it will show itself
-   to the caster allowing him to locate it for removal.
-
-Duration: Instant
-Damage: None
-Special: Can be used on an object or player
-
+    Duration:   Instant
+    Damage:     None
+    Special:    Can be used on an object or player
 #
-"ENCHANT WEAPON"
+'ENCHANT WEAPON'
+    This incantation is very drawing upon the caster, often forcing him to
+    sleep for days, possibly weeks, trying to recover from the loss of
+    power.  For, this spell takes the power from the mage and places it
+    within the item casted upon.  It has been noted, by those that dabble
+    in this spell, that higher powered mages seem to be able to place more
+    into a item than those of lower levels.
 
-   This incantation is very drawing upon the caster, often forcing him to
-   sleep for days, possibly weeks, trying to recover from the loss of 
-   power.  For, this spell takes the power from the mage and places it 
-   within the item casted upon.  It has been noted, by those that dabble in
-   this spell, that higher powered mages seem to be able to place more into
-   a item than those of lower levels.
-
-Duration: Permanent
-Damage: None
-Special: A weapon already altered by a magical means may not be affected by
-	 this spell.  The power intoned into the weapon will vary as the
-	 castor rises in level, but shall never be worsened.
-
+    Duration:   Permanent
+    Damage:     None
+    Special:    A weapon already altered by a magical means may not be
+                affected by this spell.  The power intoned into the
+                weapon will vary as the castor rises in level, but shall
+                never be worsened.
 #
 HEAL
+    This prayer calls upon the diety to heal all wounds that would ail the
+    target of the spell.  This spell is recieved by all that have gained
+    the power to cast yet those that are true to virtue find the very
+    difficult prayers of this spell to flow from their lips healing all
+    that may ail someone.  Others, especially those that follow a dimmer
+    path find the spell heals, yet the true power is just out of their
+    reach.  The dark of heart can heal yet the true meaning of the spell
+    evades them.  It is known that a high priest of Tyken has healed even
+    the laim to full health, allowing them to lead a fullfilled life,
+    having been touched by a diety.
 
-   This prayer calls upon the diety to heal all wounds that would ail the
-   target of the spell.  This spell is recieved by all that have gained
-   the power to cast yet those that are true to virtue find the very 
-   difficult prayers of this spell to flow from their lips healing all that
-   may ail someone.  Others, especially those that follow a dimmer path
-   find the spell heals, yet the true power is just out of their reach.
-   The dark of heart can heal yet the true meaning of the spell evades 
-   them.  It is known that a high priest of Tyken has healed even the laim
-   to full health, allowing them to lead a fullfilled life, having been
-   touched by a diety.
-
-Duration: None
-Damage: Special
-Special: Those with the evil out look on life will do less healing
-	 then those seeking a life of virtue and goodness.  The same
-	 is mirrored with that of Harm.  A truely holy cleric could
-	 take a fighter up to full while others may only heal twice
-	 of what their level is.
-
+    Duration:   None
+    Damage:     Special
+    Special:    Those with the evil out look on life will do less healing
+                then those seeking a life of virtue and goodness.  The
+                same is mirrored with that of Harm.  A truely holy cleric
+                could take a fighter up to full while others may only
+                heal twice of what their level is.
 #
 INVISIBILITY
+    This incantation allows the target the spell to step into a paralel
+    realm that has been reported to be much different than our own.
+    Although this realm has only been seen by one, whom the spell seems to
+    have misfired slightly, is claimed to exit, none but the one can
+    varify.  On the usual this spell allows the target to slip into a form
+    of non-reality in which very few things can see.  You in fact become
+    unseeable to normal eyes allowing one to more freely within many
+    hostile realms.  It is commonly noted that attacking another while in
+    this state will immediately cause one to become visible again.
 
-   This incantation allows the target the spell to step into a paralel realm
-   that has been reported to be much different than our own.  Although this
-   realm has only been seen by one, whom the spell seems to have misfired
-   slightly, is claimed to exit, none but the one can varify.  On the
-   usual this spell allows the target to slip into a form of non-reality in
-   which very few things can see.  You in fact become unseeable to normal
-   eyes allowing one to more freely within many hostile realms.  It is
-   commonly noted that attacking another while in this state will immediately
-   cause one to become visible again.
-
-Duration: 1hr + (level/2)
-Damage: None
-Special: This is nullified if combat is entered, and a person is rendered
-	 visible to those that can see into other plains of existance.
-
+    Duration:   1hr + (level/2)
+    Damage:     None
+    Special:    This is nullified if combat is entered, and a person is
+                rendered visible to those that can see into other plains
+                of existance.
 #
-"LOCATE OBJECT"
+'LOCATE OBJECT'
+    This prayer helps the caster find a object that he knows the exact
+    name of.  It must be something close to the caster or well known to
+    him at the least, for finding this object somewhere across the realm
+    is a ardous and long task.  Some have noted that this spell cast only
+    once has taken days in the process.
 
-   This prayer helps the caster find a object that he knows the exact name
-   of.  It must be something close to the caster or well known to him at
-   the least, for finding this object somewhere across the realm is a 
-   ardous and long task.  Some have noted that this spell cast only once
-   has taken days in the process.
-
-Duration: None
-Damage: None
-Special: None
-
+    Duration:   None
+    Damage:     None
+    Special:    None
 #
 POISON
+    A painful spell to those it is cast upon.  This spell is used only by
+    priests who worship a disdained diety.
 
-   A painful spell to those it is cast upon.  This spell is used only by
-   priests who worship a disdained diety.
-
-Duration: 6 hrs
-Damage: Special
-Special: The amount of damage done per hour is based on the victims
-	 constitution and the level of the castor.  It has been reported
-	 that a high level castor has been able to vanquish foes with
-	 a single casting of this. Be warned, creatures that natuarly
-	 produce venoms can sometimes reflect the effects of this spell.
-
+    Duration:   6 hrs
+    Damage:     Special
+    Special:    The amount of damage done per hour is based on the
+                victims constitution and the level of the castor.  It
+                has been reported that a high level castor has been able
+                to vanquish foes with a single casting of this. Be warned,
+                creatures that natuarly produce venoms can sometimes
+                reflect the effects of this spell.
 #
-"PROTECTION FROM EVIL"
+'PROTECTION FROM EVIL'
+    Allows the target to accept some protection from the evils about.  The
+    undead of the land flee from clerics protected by this ward, if they
+    were created by a low level cleric of an evil church. It is known that
+    some undead are not affected at all by this spell, but instead look
+    for those hiding behind its affects.
 
-   Allows the target to accept some protection from the evils about.
-   The undead of the land flee from clerics protected by this ward, 
-   if they were created by a low level cleric of an evil church. It
-   is known that some undead are not affected at all by this
-   spell, but instead look for those hiding behind its affects.
-
-Duration: 1hr + level/2
-Damage: None
-Special: 
-
-
+    Duration:   1hr + level/2
+    Damage:     None
+    Special:    None
 #
-"REMOVE CURSE"
-
-   Has a chance to remove anothers disdained curse.
-
+'REMOVE CURSE'
+    Has a chance to remove anothers disdained curse.
 #
-"REMOVE POISON"
-
-   Has a chance to remove the infected body of its poison.
-
+'REMOVE POISON'
+    Has a chance to remove the infected body of its poison.
 #
-"REMOVE PARALYSIS"
-
-   Makes a attempt to restore life to a paralyzed body.
-
+'REMOVE PARALYSIS'
+    Makes a attempt to restore life to a paralyzed body.
 #
 SANCTUARY
-
-   Offers some protection to the elements about you.
-
+    Offers some protection to the elements about you.
 #
 WEAKNESS
-
-   Drains some of the life giving strength.
-
+    Drains some of the life giving strength.
 #
 KNOCK
-
-   Tis known no door shall stand in the way of a knowledged mage.
-
+    Tis known no door shall stand in the way of a knowledged mage.
 #
-"KNOW ALIGNMENT"
-
-   Helps one see the true face of another.
-
+'KNOW ALIGNMENT'
+    Helps one see the true face of another.
 #
 SLEEP
-
-   Helps another find peace in sleep.
-
+    Helps another find peace in sleep.
 #
-"DISPEL MAGIC"
-
-   Attempts to take the magic dweomer from something else.
-
+'DISPEL MAGIC'
+    Attempts to take the magic dweomer from something else.
 #
 STRENGTH
-
-   Endows another with some strength.
-
+    Endows another with some strength.
 #
 VENTRILOQUATE
-
-   Casted upon another followed by that which he should say has ruined many
-   a spokesman that didn't bend to the ways to the house in power.
-
+    Casted upon another followed by that which he should say has ruined
+    many a spokesman that didn't bend to the ways to the house in power.
 #
-"WORD OF RECALL"
-
-   Brings the recipient closer to understanding of his diety.
-
+'WORD OF RECALL'
+    Brings the recipient closer to understanding of his diety.
 #
 SUMMON
-
-   Tis rumored this will bring something to the castor.  Most refrain as
-   it has been outlawed as a general rule.
-
+    Tis rumored this will bring something to the castor.  Most refrain as
+    it has been outlawed as a general rule.
 #
-"CHARM PERSON"
-
-   Allows another to see the things as the castor does.
-
+'CHARM PERSON'
+    Allows another to see the things as the castor does.
 #
-"SENSE LIFE"
-
-   Many have been able to find that which is unseen.
-
+'SENSE LIFE'
+    Many have been able to find that which is unseen.
 #
-"MAGIC MISSILE"
+'MAGIC MISSILE'
+    This incantation is the backbone of many adventuring mages.  Upon
+    gaining higher power in this sphere one gains the power to throw more
+    missiles upon the target.
 
-   This incantation is the backbone of many adventuring mages.  Upon gaining
-   higher power in this sphere one gains the power to throw more missiles
-   upon the target.
-
-Duration: None
-Damage: 1d4+1 per missile
-Special: 1 missile per 2 levels, max of 5 missiles
-
+    Duration:   None
+    Damage:     1d4+1 per missile
+    Special:    1 missile per 2 levels, max of 5 missiles
 #
-"CHILL TOUCH"
+'CHILL TOUCH'
+    This incantation trys to drain a targets strength and sears them with
+    an icy cold touch.  A novice from the house in Highstaff once defeated
+    the local champion by touching him repeatedly with the incantation
+    causing him to become weak beyond aggresion.  
 
-   This incantation trys to drain a targets strength and sears
-   them with an icy cold touch.  A novice from the house in Highstaff once
-   defeated the local champion by touching him repeatedly with the 
-   incantation causing him to become weak beyond aggresion.  
-
-Duration: 12 hrs
-Damage: 1d4 per 3 levels
-Special: -1 Strength with successful attack
-
+    Duration:   12 hrs
+    Damage:     1d4 per 3 levels
+    Special:    -1 Strength with successful attack
 #
-"BURNING HANDS"
+'BURNING HANDS'
+    Area Affect Spell
 
-   Calling forth this incantation brings forth some flame of the plane of
-   elemental fire.  This, shot from ones fingertips, blows into everything
-   that stands in front of the caster.  A modification by Quintelan, a high
-   elven mage allowed his traveling companions to avoid the flames.
+    Calling forth this incantation brings forth some flame of the plane of
+    elemental fire.  This, shot from ones fingertips, blows into
+    everything that stands in front of the caster.  A modification by
+    Quintelan, a high elven mage allowed his traveling companions to avoid
+    the flames.
 
-Area Affect Spell.
-Duration: None
-Damage: 1d6 + level 
-Special: All things in the room except the caster will be affected.
-
+    Duration:   None
+    Damage:     1d6 + level 
+    Special:    All things in the room except the caster will be affected.
 #
-"SHOCKING GRASP"
+'SHOCKING GRASP'
+    Touching a target after incanting this spell sends a powerful jolt of
+    energy into them causing great pain and dispair.  This spell has been
+    famed the next step to a novice traveling mage, next up from magic
+    missile that is.
 
-   Touching a target after incanting this spell sends a powerful jolt of
-   energy into them causing great pain and dispair.  This spell has been
-   famed the next step to a novice traveling mage, next up from magic missile
-   that is.
-
-Duration: None
-Damage: 1d8 + level
-
+    Duration:   None
+    Damage:     1d8 + level
 #
-"LIGHTNING BOLT"
+'LIGHTNING BOLT'
+    Upon the incantation of this spell, a higher level mage draws forth
+    some of the lightning from the eternal storm.  This energy is then
+    discharged into the chosen target.  It has been noted by a high level
+    mage in the Highstaff house that one recieves much greater control and
+    more bolts to fire as they advance in this sphere.  He crushed a
+    mountain giant with one incantation of this spell, only to be traced
+    and hunted down by the clan orcs.
 
-   Upon the incantation of this spell, a higher level mage draws forth some
-   of the lightning from the eternal storm.  This energy is then discharged
-   into the chosen target.  It has been noted by a high level mage in the
-   Highstaff house that one recieves much greater control and more bolts to
-   fire as they advance in this sphere.  He crushed a mountain giant with
-   one incantation of this spell, only to be traced and hunted down by the
-   clan orcs.
-
-Duration: None
-Damage: 5d6 + ( One extra bolt for each 5 levels starting at 10th level )
-
-i.e.  50th level mage strikes with 14 bolts of lightning.
-
+    Duration:   None
+    Damage:     5d6 + 1 extra bolt for each 5 levels starting at 10th
+                level.
+                A 50th level mage strikes with 14 bolts of lightning.
 #
-"COLOUR SPRAY"
+'COLOR SPRAY'
+    Area Affect Spell
 
-   This incantation calls forth the rays of the rainbow often blinding all
-   those in its path.  The rays also seem to sear into the target causing 
-   them great pain and agony. A modification by a high elven house mage,
-   Quintelan, tried to exempt ones traveling companions from the destruction
-   of the dangerous rays.  He failed, yet is still trying much to the dismay
-   of those that follow him.
+    This incantation calls forth the rays of the rainbow often blinding
+    all those in its path.  The rays also seem to sear into the target
+    causing them great pain and agony. A modification by a high elven
+    house mage, Quintelan, tried to exempt ones traveling companions from
+    the destruction of the dangerous rays.  He failed, yet is still trying
+    much to the dismay of those that follow him.
 
-Area Affect Spell.
-Duration: Special
-Damage: 1d6 per creature, affects everyone except castor.
-Special: Everyone except castor is affected by colour spray.
-	 Those failing their save are blinded for 2d4 hrs.
-         See BLINDNESS
+    Duration:   Special
+    Damage:     1d6 per creature, affects everyone except castor.
+    Special:    Everyone except castor is affected by color spray.
+                Those failing their save are blinded for 2d4 hrs.
 
+    SEE ALSO: BLINDNESS
 #
-"ENERGY DRAIN"
+'ENERGY DRAIN'
+    This incantation is the most draining a mage can cast.  With this
+    spell one must put forth part of his life energy to draw forth part of
+    the targets life energy, then with the succesful completetion of the
+    spell both forces are drawn back to the caster, gaining the benefits
+    of both.  A Quintelan renegade mage had quite a lot of luck draining
+    the life of another and himself being advanced quickly until his luck
+    ran out, tis rumored the spell turned on him and he was consumed in
+    his own greed for power.
 
-   This incantation is the most draining a mage can cast.  With this spell
-   one must put forth part of his life energy to draw forth part of the
-   targets life energy, then with the succesful completetion of the spell
-   both forces are drawn back to the caster, gaining the benefits of both.
-   A Quintelan renegade mage had quite a lot of luck draining the life of
-   another and himself being advanced quickly until his luck ran out, tis
-   rumored the spell turned on him and he was consumed in his own greed for
-   power.
-
-Duration: None
-Damage: Very Very Evil, only those with the blackest of hearts will find
-	out its secrets through use....
-
+    Duration:   None
+    Damage:     Very Very Evil, only those with the blackest of hearts
+                will find out its secrets through use....
 #
 FIREBALL
+    Area Affect Spell
 
-   The draining and long incantation of this spell brings forth a small, but
-   gaining sphere of elemental fire.  Upon contact with the disignated 
-   taget the sphere explodes contacting with everything in the mages 
-   immediate area, only the caster is naturally immune to the destructive
-   effects of this dangerous spell.  Many mages in the Quintelan house have
-   been trying to negate those that travel with them but have only ended up
-   with charred corpses.
+    The draining and long incantation of this spell brings forth a small,
+    but gaining sphere of elemental fire.  Upon contact with the
+    disignated taget the sphere explodes contacting with everything in the
+    mages immediate area, only the caster is naturally immune to the
+    destructive effects of this dangerous spell.  Many mages in the
+    Quintelan house have been trying to negate those that travel with them
+    but have only ended up with charred corpses.
 
-Area Affect Spell.
-Duration: None
-Damage: ( Level/5)d6 + 2d6 worth of damage.
-Special: Objects carried by creatures will also suffer damage.
-
-i.e. 50th level mage does 12d6 worth of damage to area of affect.
-
+    Duration:   None
+    Damage:     (Level/5)d6 + 2d6 worth of damage.
+    Special:    Objects carried by creatures will also suffer damage.
+                A 50th level mage does 12d6 worth of damage to area of
+                affect.
 #
 EARTHQUAKE
+    Area Affect Spell
 
-   The cleric that calls upon their diety for this incantation brings forth
-   the elements of the earth to tremor and distroy the land and people about
-   him.  Upon the completion of this prayer all that stand about the caster
-   will be knocked to their knees and possibly be crushed under the falling
-   debri.  Many priests have prayed to have their companions spared from 
-   this harsh damage yet none has reported any recognition.
+    The cleric that calls upon their diety for this incantation brings
+    forth the elements of the earth to tremor and distroy the land and
+    people about him.  Upon the completion of this prayer all that stand
+    about the caster will be knocked to their knees and possibly be
+    crushed under the falling debri.  Many priests have prayed to have
+    their companions spared from this harsh damage yet none has reported
+    any recognition.
 
-Area Affect Spell.
-Duration: None
-Damage: 1d8 + level
-Special: Those that fail save, fall and must wait 3 rnds to stand and fight.
-	 Affects all in room except castor.
-
+    Duration:   None
+    Damage:     1d8 + level
+    Special:    Those that fail save, fall and must wait 3 rnds to stand
+                and fight.  Affects all in room except castor.
 #
-"DISPEL EVIL"
-
-   Trys to shun those who are of disdain.
-
+'DISPEL EVIL'
+    Trys to shun those who are of disdain.
 #
-"DISPEL GOOD"
-
-   Trys to shun those who are of virtue.
-
+'DISPEL GOOD'
+    Trys to shun those who are of virtue.
 #
-"CALL LIGHTNING"
+'CALL LIGHTNING'
+    The cleric that prays for this spell must have the storm at their
+    command, without it there is no lightning from which to call the
+    prayer.  After the long prayer has been cited the storm releases its
+    power upon the unfortunate target allowing it to feel the full power
+    of the storm, and the truth of faith.  It has been noted that the
+    priests that adhere to complete compliance with the alignment of their
+    diety bring forth bolts of extreme power often downing a small army of
+    goblins.
 
-   The cleric that prays for this spell must have the storm at their command,
-   without it there is no lightning from which to call the prayer.  After
-   the long prayer has been cited the storm releases its power upon the
-   unfortunate target allowing it to feel the full power of the storm, and
-   the truth of faith.  It has been noted that the priests that adhere to
-   complete compliance with the alignment of their diety bring forth bolts
-   of extreme power often downing a small army of goblins.
-
-Duration: None
-Damage: Special
-Special: Normal damage is 2d6, can not be saved against
-	 1d6 + ( Level/5 )d6 can be saved for half damage.
-
-i.e. 50th level cleric does 13d6 points of damage.
-
+    Duration:   None
+    Damage:     Special
+    Special:    Normal damage is 2d6, can not be saved against
+                1d6 + ( Level/5 )d6 can be saved for half damage.
+                A 50th level cleric does 13d6 points of damage.
 #
 HARM
+    This prayer is one known best by priests who's faith has taken a
+    darker path, for they draw the life from their victims and then smite
+    them with a single blow.  Those of a more pure path seem to have the
+    words of the prayer weak in their tongues, the spell barely affecting
+    the target at which they strike.  It has been commonly noted that
+    followers of Aklan, especially the high priests have struck even there
+    own followers down, truely showing their faith, there hearts cold and
+    black.
 
-   This prayer is one known best by priests who's faith has taken a darker
-   path, for they draw the life from their victims and then smite them with
-   a single blow.  Those of a more pure path seem to have the words of the
-   prayer weak in their tongues, the spell barely affecting the target at
-   which they strike.  It has been commonly noted that followers of Aklan,
-   especially the high priests have struck even there own followers down,
-   truely showing their faith, there hearts cold and black.
+    Duration:   None
+    Damage:     Special
+    Special:    Those with the evil out look on life will do more damage
+                then those seeking a life of virtue and goodness.  The
+                same is mirrored with that of Heal.  A truely vile Aklan
+                follower could take a fighter down to his last 4 hit
+                points while others only do their level worth of damage.
 
-Duration: None
-Damage: Special
-Special: Those with the evil out look on life will do more damage then
-	 those seeking a life of virtue and goodness.  The same is mirrored
-	 with that of Heal.  A truely vile Aklan follower could take a
-	 fighter down to his last 4 hit points while others only do
-	 their level worth of damage.
-
-A victim of this spell is allowed a save for no damage done.
-
-#
-HELP
-
-Following help is available:
-
-HELP help       - This text.
-HELP            - List the available commands.
-
-Help searches for a partial match of the entered word, including any
-spaces that may follow the word.
-
-Example:
- > 'help magic mis'
-    will find the help text for the magic missile spell.
-
- > 'help mag '
-   will not match anything.
-
- > 'help mag'
-   will match 'magic user' or 'magic missile' depending on first
-   occurrence in the help file.
-#
-WIZHELP
-Immort-Only
-
-List the privileged commands available to you. Can only be used by immortals.
+                A victim of this spell is allowed a save for no damage
+                done.
 #
 NOSHOUT
-Immort-Only
+    Toggles your ability to hear shouts.
 
-  Prevents you from (or allows you to) hearing shouts, if used with no
-arguments.  Can be used with the name of a player, to prevent him/her
-from hearing shouts, as well as from shouting. Can only be used by
-certain more powerful beings.
-
-#
-RESTORE
-Immort-Only
-
-  If used on a mortal, this command will reset that players mana and
-hit points.  If used on an Immortal various values will be reset to
-their proper values.
-
+    IMMORTAL ONLY, you can also use this command to prevent other players
+    from being able to hear shouts or use shout.
 #
 COMPACT
-  If you have a small display you might want to use this command. It
-turns off (or on) the extra newline after output to your screen.
+    If you have a small display you might want to use this command. It
+    turns off (or on) the extra newline after output to your screen.
 
-See also: BRIEF
+    SEE ALSO: BRIEF
 #
 HERMIT
-  Type deafen and all shouts are no longer heard.  Type deafen once again
-and shouts can once again be heard.
+    Type deafen and all shouts are no longer heard.  Type deafen once
+    again and shouts can once again be heard.
 
-See also : SHOUT
+    SEE ALSO: SHOUT
 #
 WIMP
+    Wimp mode will make you flee once you have dropped below 5 hitspoints.
+    This is not guarenteed but it is better then nothing at all.
 
-  Wimp mode will make you flee once you have dropped below 5 hitspoints.  This
-is not guarenteed but it is better then nothing at all.
-
-At 3rd level you will no longer be able to use wimp.
-
+    At 3rd level you will no longer be able to use wimp.
 #
-INFRA INFRAVISION
-   Infravision is a spell that allows you to see heat sources in
-otherwise dark conditions.  It does not allow you to read scrolls, or
-find items.  In addition, usage of spells which create large amounts
-of heat may cause temporary blindness in Infravision-affected players
-and monsters.
+INFRAVISION
+    Infravision is a spell that allows you to see heat sources in
+    otherwise dark conditions.  It does not allow you to read scrolls, or
+    find items.  In addition, usage of spells which create large amounts
+    of heat may cause temporary blindness in Infravision-affected players
+    and monsters.
 
-Certain races are naturally gifted with Infravision.
-
-#
-CUST
-Immort-Only
-
-   Cust will allow you to customize certain aspects of a room that you
-are currently 'standing' in. Below is a list of available fields that
-you may use when customizing.
-
-cust <field> <attribute>
-
-field:
-    name : This is the name of the room you are in.
-    desc : This is the rooms main description.
-    extra: This is the rooms extra description.
-    exit : This works with one of the FIVE exits available.
-           You may add an exit, delete an exit or change
-           certain properties of an exit.
-    xdesc: This works on a exits description.
-    flags: This works on the room flags. 'help room_flags'
-
-See also: ATTRIBUTES
-
-#
-ROOM_FLAGS
-
-   Room_flags			Sector_flags
-   -----------------            -----------------
-   Dark         1		Indoors		0
-   No mob       4		City		1
-   Indoors      8		Field		2
-   Peaceful     16 		Forest		3
-   No steal     32		Hills		4
-   No sum       64		Mountains	5
-   No magic     128 		Water		6
-   Private      512		No-swim Water	7
-				Air		8
-                                Underwater	9
-
-
+    Certain races are naturally gifted with Infravision.
 #
 ECHO
+    This will work as a switch.  The text you type will either be echoed
+    back to you or not, depending on the state you leave the switch.
 
-  This will work as a switch.  The text you type will either be echoed back
-to you or not, depending on the state you leave the switch.
-
-See also: BRIEF, COMPACT, PAGER
-
+    SEE ALSO: BRIEF, COMPACT, PAGER
 #
 PAGER
+    This command will toggle the in-game text pager on and off.  Certain
+    clients have built in pagers so you may wish to use this command.  If
+    you have your pager on, text that would exceed the length of the
+    screen will be paused until you hit return (or q, for quit) after
+    every ~23 lines.
 
-This command will toggle the in-game text pager on and off.  Certain clients
-have built in pagers so you may wish to use this command.  If you have your
-pager on, text that would exceed the length of the screen will be paused 
-until you hit return (or q, for quit) after every ~23 lines.
+    Thanks to Quixadhal for the idea for this command!
 
-Thanks to Quixadhal for the idea for this command!
-
-See also : BRIEF, COMPACT, ECHO
+    SEE ALSO: BRIEF, COMPACT, ECHO
 #
 VALUE
+    In a shop, this command will tell you what the shopkeeper is willing
+    to pay for the item.
 
-  In a shop, this command will tell you what the shopkeeper is willing
-to pay for the item.
-
-See Also : LIST, BUY, SELL, SHOPS
+    SEE ALSO: LIST, BUY, SELL, SHOPS
 #
 LIST
+    In a shop this command will list what the shopkeeper has for sale,
+    with prices.
 
-  In a shop this command will list what the shopkeeper has for sale,
-with prices.
-
-See Also : , BUY, SELL, SHOPS
+    SEE ALSO: , BUY, SELL, SHOPS
 #
-RESTAURANTS FOOD
-
- Food comes in different shapes and sizes, you may find that meat is
-left from a recent kill.  Food can spoil on Wiley, so be careful of what
-you find and think you should eat.  Most stores provide food that will
-not spoil, so if you buy it you are assured that it is good.
-
-#
-PSET
-Immort-Only
-
-Allows a Wiz to set values pertaining to the type of object being worked on.
-
-Usage: pset <att> name <val>
-
-att list: align class exp lev sex race hit mhit tohit bank gold prac
-name: is the person|object|mobile you are working on.
-value: an integer corresponding to the value you wish to set.
-
-align		1000.....-1000
-class		DO not use this one, let them suffer with what they chose
-exp		any integer value, perferably higher then the value they have
-lev		use advance instead! This screws multiclass
-sex		If they really want it?
-hit		integer: Hit points
-mhit		Max hit points, you should not set this, unfair.
-tohit		changes the thaco
-bank		if they need reimburse for money, use this instead of giving.
-gold		take it away if need be.
-prac		Do not let them advance unnatuarly
+FOOD
+    Food comes in different shapes and sizes, you may find that meat is
+    left from a recent kill.  Food can spoil on Wiley, so be careful of
+    what you find and think you should eat.  Most stores provide food that
+    will not spoil, so if you buy it you are assured that it is good.
 #
 WHOZONE
+    This command lists all the players in the current zone and also tells
+    you their location. 
 
-  This command lists all the players in the current zone and also
-tells you their location. 
-
-Players
--------
-Cyric 					- Travelers Road
-Muth                                    - Travelers Road
-
+    Players
+    -------
+    Cyric           - Travelers Road
+    Muth            - Travelers Road
 #
 GTELL
+    Usage: gtell <what you want to tell them>
 
-Usage: gtell <what you want to tell them>
+    This command alows you to talk with players grouped with you and only
+    those people.
 
-  This command alows you to talk with players grouped with you and only
-those people.
-
-See Also : GROUP, GREP
+    SEE ALSO: GROUP, GREP
 #
 GREP
+    Usage: grep
 
-Usage: grep
+    This command allows you to send your stats (mana, move and hits) to
+    people in the same group as you.  Saves time in having to type them
+    all in a say or gtell.
 
-  This command allows you to send your stats (mana, move and hits) to people
-  in the same group as you.  Saves time in having to type them all in a say
-  or gtell.
+    Thanks to Bennu for the suggestion.
 
-  Thanks to Bennu for the suggestion.
-
-See Also: GTELL, GROUP
-
+    SEE ALSO: GTELL, GROUP
 #
 TRACK
+    Track is a skill for rangers, it will allow you to track some prey
+    from a distance.  Mana costs will vary according to race and class.
+    Although this skill is for all to take, only those that are taugt from
+    true masters will advance quickly in this art.
 
-  Track is a skill for rangers, it will allow you to track some prey from a 
-distance.  Mana costs will vary according to race and class.  Although this
-skill is for all to take, only those that are taugt from true masters will
-advance quickly in this art.
-
-> track wolf
-
-You see a slight trail to the west...
-
+        > track wolf
+        You see a slight trail to the west...
 #
 SLANG TERMS ABBREVIATIONS BTW BRB IMO IMHO REIMBS
+    Many words and phrases have been shortened or abbreviated in net and
+    MUD communication, and it's not always easy to decipher these, so
+    here's a listing to help you get started -
 
-Many words and phrases have been shortened or abbreviated in net and MUD
-communication, and it's not always easy to decipher these, so here's a
-listing to help you get started -
-
-BRB   : Be Right Back
-BTW   : By The Way
-Ppl   : People
-IMO,
-IMHO  : In My Opinion / In My Humble Opinion
-Reimb : Reimbursal for equipment loss due to glitches in the game.  If you
-	feel you need a reimb, post a note on the board and a God will get
-	in touch with you about it :)
-#
-FUNC_ACT
-
-Nasty function that does formatted output for player situations.
-
-    $n - ch                      $N - victim
-    $m - him/her/it of ch        $M him/her/it of victim
-    $s - his/her/it of ch        $S his/her/it of victim
-    $e - he/she/it of ch         $E he/she/it of victim
-    $o - objective
-    $p - possessive
-    $a - a/an obj                $A a/an victim
-    $T - victim 
-    $F - fname(victim)
-
+    BRB     : Be Right Back
+    BTW     : By The Way
+    Ppl     : People
+    IMO,
+    IMHO    : In My Opinion / In My Humble Opinion
+    Reimb   : Reimbursal for equipment loss due to glitches in the game.
+              If you feel you need a reimb, post a note on the board and
+              a God will get in touch with you about it :)
 #~

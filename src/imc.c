@@ -119,43 +119,43 @@ const char                             *const imcperm_names[] = {
     "Notset", "None", "Mort", "Imm", "Admin", "Imp"
 };
 
-#define IMC_SPEAKER_COLOURS 13
-const char                             *const imc_colour_symbols[] = {
+#define IMC_SPEAKER_COLORS 13
+const char                             *const imc_color_symbols[] = {
     "~r", "~g", "~Y", "~B", "~W", "~m", "~C", "~R", "~G", "~M", "~z", "^B~W", "^r~Y"
-//ichat ~rdarkred~gdarkgreen~Yyellow~Bblue~Wwhite~mdarkmagenta~Ccyan~Rred~Ggreen~Mmagenta~zgrey^B~Wwhiteonblue^r~Yyellowonred~! 13 colours before it loops.
+//ichat ~rdarkred~gdarkgreen~Yyellow~Bblue~Wwhite~mdarkmagenta~Ccyan~Rred~Ggreen~Mmagenta~zgrey^B~Wwhiteonblue^r~Yyellowonred~! 13 colors before it loops.
 //ichat ~gdark~Ggreen~rdark~Rred~ydark~Yyellow~mdark~Mmagenta~wdark~Wwhite~cdark~Ccyan~bdark~Bblue~xdark~zblack~!
 };
 
 IMC_SPEAKER                            *first_speaker;
 IMC_SPEAKER                            *last_speaker;
 
-const char                             *imc_speaker_colour(const char *name)
+const char                             *imc_speaker_color(const char *name)
 {
     IMC_SPEAKER                            *p;
     IMC_SPEAKER                            *i;
-    int                                     last_colour = -1;
+    int                                     last_color = -1;
 
     for (i = first_speaker; i; i = i->next) {
 	if (!strcasecmp(i->name, name))
-	    return imc_colour_symbols[i->colour];
+	    return imc_color_symbols[i->color];
 	else
-	    last_colour = i->colour;
+	    last_color = i->color;
     }
 
     IMCCREATE(p, IMC_SPEAKER, 1);
 
     p->name = IMCSTRALLOC(name);
-    p->colour = (last_colour + 1) % IMC_SPEAKER_COLOURS;
+    p->color = (last_color + 1) % IMC_SPEAKER_COLORS;
     IMCLINK(p, first_speaker, last_speaker, next, prev);
-    imclog("Assigned colour %d to %s", p->colour, p->name);
-    return imc_colour_symbols[p->colour];
+    imclog("Assigned color %d to %s", p->color, p->name);
+    return imc_color_symbols[p->color];
 }
 
 const char                             *imc_speaker_name(const char *name)
 {
     static char                             buf[LGST];
 
-    snprintf(buf, LGST, "%s%s~!", imc_speaker_colour(name), name);
+    snprintf(buf, LGST, "%s%s~!", imc_speaker_color(name), name);
     return buf;
 }
 
@@ -7897,7 +7897,7 @@ void imc_save_speakers(void)
     for (i = first_speaker; i; i = i->next) {
 	fprintf(fp, "%s", "#IMCSPEAKER\n");
 	fprintf(fp, "SpeakerName         %s\n", i->name);
-	fprintf(fp, "SpeakerColour       %d\n", i->colour);
+	fprintf(fp, "SpeakerColor        %d\n", i->color);
 	fprintf(fp, "%s", "End\n\n");
     }
     fprintf(fp, "%s", "#END\n");
@@ -7970,7 +7970,7 @@ void imc_read_speaker(IMC_SPEAKER *p, FILE * fp)
 
 	    case 'S':
 		IMCKEY("SpeakerName", p->name, imcfread_line(fp));
-		IMCKEY("SpeakerColour", p->colour, imcfread_number(fp));
+		IMCKEY("SpeakerColor", p->color, imcfread_number(fp));
 		break;
 
 	    case 'E':

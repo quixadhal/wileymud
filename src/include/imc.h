@@ -200,7 +200,7 @@ do                                               \
 /* No real functional difference in alot of this, but double linked lists DO seem to handle better,
  * and they look alot neater too. Yes, readability IS important! - Samson
  */
-typedef struct imc_speaker IMC_SPEAKER;   /* Name to colour mapping */
+typedef struct imc_speaker IMC_SPEAKER;   /* Name to color mapping */
 typedef struct imc_channel IMC_CHANNEL;   /* Channels, both local and non-local */
 typedef struct imc_packet IMC_PACKET;  /* It's a packet! */
 typedef struct imc_packet_data IMC_PDATA; /* Extra data fields for packets */
@@ -308,7 +308,7 @@ struct imc_speaker
    IMC_SPEAKER *next;
    IMC_SPEAKER *prev;
    char *name; /* name of speaker */
-   int colour; /* colour index to use */
+   int color; /* color index to use */
 };
 
 struct imc_channel
@@ -427,7 +427,7 @@ struct who_template
    char *master;
 };
 
-const char * imc_speaker_colour( const char *name );
+const char * imc_speaker_color( const char *name );
 const char *imc_speaker_name( const char *name );
 bool imc_command_hook( CHAR_DATA * ch, const char *command, const char *argument );
 void imc_hotboot( void );
