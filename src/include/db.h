@@ -17,6 +17,7 @@
 #define CREDITS_FILE      "etc/credits"			       /* for the 'credits' command */
 #define NEWS_FILE         "etc/news"			       /* for the 'news' command */
 #define MOTD_FILE         "etc/motd"			       /* messages of today */
+#define HELP_PAGE_FILE    "man/help"
 #define WMOTD_FILE        "etc/wmotd"			       /* messages of today */
 #define GREETINGS_FILE    "etc/greetings"
 #define LOGIN_MENU_FILE   "etc/login.menu"
@@ -29,28 +30,20 @@
 #define SUICIDE_WARN_FILE "etc/suicide.warn"
 #define SUICIDE_DONE_FILE "etc/suicide.done"
 #define PLAYER_FILE       "adm/players"			       /* the player database */
-//#define TIME_FILE         "etc/time"			       /* game calendar information */
 #define MESS_FILE         "etc/messages"		       /* damage message */
 #define SOCMESS_FILE      "etc/actions"			       /* messgs for social acts */
 #define INFO_FILE         "etc/info"			       /* for INFO */
 #define WIZLIST_FILE      "etc/wizlist"			       /* for WIZLIST */
 #define POSEMESS_FILE     "etc/poses"			       /* for 'pose'-command */
-#define HELP_KWRD_FILE    "man/help_table"		       /* for HELP <keywrd> */
-#define HELP_PAGE_FILE    "man/help"			       /* for HELP <CR> */
-#define WIZHELP_KWRD_FILE "man/wizhelp_table"		       /* for WIZHELP <keywrd> */
-#define WIZHELP_PAGE_FILE "man/wizhelp"			       /* for WIZHELP <CR> */
 #define BOARD_FILE_PATH   "boards"
 #define OBJ_SAVE_FILE	  "ply/pcobjs.obj"
 #define MKZONE_PATH	  "wld/mkzone"
 #define IDEA_FILE         "log/ideas"			       /* for the 'idea'-command */
 #define TYPO_FILE         "log/typos"			       /* 'typo' */
 #define BUG_FILE          "log/bugs"			       /* 'bug' */
-//#define REBOOT_FILE	  "adm/reboot"
-//#define REBOOTTIME_FILE	  "adm/reboot.times"
 #define PASSWD_FILE       "adm/passwd"
 #define PASSWD_NEW        "adm/passwd.new"
 #define PASSWD_OFF        "adm/passwd.off"
-//#define RENTCOST_FILE     "adm/rent"
 
 #define DEFAULT_HOME		3001			       /* when a player is created */
 
@@ -165,13 +158,6 @@ struct player_index_element {
   int                                     nr;
 };
 
-#if 0
-struct help_index_element {
-  char                                   *keyword;
-  long                                    pos;
-};
-#endif
-
 struct player_list_entry {
   char                                  name[80];
   char                                  last_site[80];
@@ -215,18 +201,12 @@ extern char                             suicide_done[MAX_STRING_LENGTH];
 
 extern FILE                            *mob_f;
 extern FILE                            *obj_f;
-//extern FILE                            *help_fl;
-//extern FILE                            *wizhelp_fl;
 
 extern struct index_data               *mob_index;
 extern struct index_data               *obj_index;
-//extern struct help_index_element       *help_index;
-//extern struct help_index_element       *wizhelp_index;
 
 extern int                              top_of_mobt;
 extern int                              top_of_objt;
-//extern int                              top_of_helpt;
-//extern int                              top_of_wizhelpt;
 
 extern struct time_info_data            time_info;
 extern struct weather_data              weather_info;

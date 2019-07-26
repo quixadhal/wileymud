@@ -12,7 +12,7 @@ extern struct attack_hit_type           attack_hit_text[];
 #endif
 
 void                                    appear(struct char_data *ch);
-void                                    load_messages(void);
+void                                    load_fight_messages(void);
 void                                    update_pos(struct char_data *victim);
 int                                     check_peaceful(struct char_data *ch, const char *msg);
 void                                    set_fighting(struct char_data *ch,

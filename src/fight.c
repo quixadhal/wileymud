@@ -80,7 +80,7 @@ void appear(struct char_data *ch)
     }
 }
 
-void load_messages(void)
+void load_fight_messages(void)
 {
     FILE                                   *f1 = NULL;
     int                                     i = 0;

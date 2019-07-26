@@ -93,18 +93,12 @@ char                                    suicide_done[MAX_STRING_LENGTH] = "\0\0\
 
 FILE                                   *mob_f = NULL;	       /* file containing mob prototypes */
 FILE                                   *obj_f = NULL;	       /* obj prototypes */
-//FILE                                   *help_fl = NULL;	       /* file for help texts (HELP <kwd>) */
-//FILE                                   *wizhelp_fl = NULL;     /* file for help texts (HELP <kwd>) */
 
 struct index_data                      *mob_index = NULL;      /* index table for mobile file */
 struct index_data                      *obj_index = NULL;      /* index table for object file */
-struct help_index_element              *help_index = NULL;
-struct help_index_element              *wizhelp_index = NULL;
 
 int                                     top_of_mobt = 0;       /* top of mobile index table */
 int                                     top_of_objt = 0;       /* top of object index table */
-//int                                     top_of_helpt = 0;      /* top of help index table */
-//int                                     top_of_wizhelpt = 0;   /* top of wizhelp index table */
 
 struct time_info_data                   time_info;	       /* the infomation about the time */
 struct weather_data                     weather_info;	       /* the infomation about the weather */
@@ -206,31 +200,15 @@ void load_db(void)
     log_boot("- Loading reboot frequency");
     load_reboot();
 
-
-
-
-
-
-    /*
-    log_boot("- Loading help files");
-    if (!(help_fl = fopen(HELP_KWRD_FILE, "r")))
-	log_error("   Could not open help file.");
-    else
-	help_index = build_help_index(help_fl, &top_of_helpt);
-    if (!(wizhelp_fl = fopen(WIZHELP_KWRD_FILE, "r")))
-	log_error("   Could not open wizhelp file.");
-    else
-	wizhelp_index = build_help_index(wizhelp_fl, &top_of_wizhelpt);
-    */
+    log_boot("- Loading help entries");
     load_help();
 
 
 
 
 
-
     log_boot("- Loading fight messages");
-    load_messages();
+    load_fight_messages();
     log_boot("- Loading social messages");
     boot_social_messages();
     log_boot("- Loading pose messages");
