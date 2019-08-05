@@ -21,6 +21,7 @@
 #include "weather.h"
 #include "stringmap.h"
 #include "help.h"
+#include "whod.h"
 #ifdef I3
 #include "i3.h"
 #endif
@@ -112,6 +113,7 @@ void sql_startup(void) {
     setup_rent_table();
     setup_reboot_table();
     setup_help_table();
+    setup_whod_table();
 }
 
 void sql_shutdown(void) {

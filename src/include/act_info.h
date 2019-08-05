@@ -45,8 +45,6 @@ void                                    do_weather(struct char_data *ch, const c
 						   int cmd);
 void                                    do_allcommands(struct char_data *ch, const char *argument,
 						       int cmd);
-void                                    do_who(struct char_data *ch, const char *argument, int cmd);
-void                                    do_users(struct char_data *ch, const char *argument, int cmd);
 void                                    do_inventory(struct char_data *ch, const char *argument,
 						     int cmd);
 void                                    do_equipment(struct char_data *ch, const char *argument,
@@ -73,8 +71,6 @@ void                                    do_spells(struct char_data *ch, const ch
 						  int cmd);
 void                                    do_world(struct char_data *ch, const char *argument, int cmd);
 void                                    do_skills(struct char_data *ch, const char *argument, int cmd);
-void                                    do_players(struct char_data *ch, const char *argument,
-						   int cmd);
 void                                    do_ticks(struct char_data *ch, const char *argument, int cmd);
 void                                    do_map(struct char_data *ch, const char *argument, int cmd);
 void                                    do_ansimap(struct char_data *ch, const char *argument, int cmd);

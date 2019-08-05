@@ -50,7 +50,7 @@ extern struct descriptor_data          *descriptor_list;
 extern struct descriptor_data          *next_to_process;
 extern int                              DEBUG;
 extern int                              no_specials;
-extern long                             Uptime;
+extern time_t                           Uptime;
 extern int                              maxdesc;
 extern int                              avail_descs;
 extern int                              tics;

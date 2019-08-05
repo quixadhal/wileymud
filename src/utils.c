@@ -1977,3 +1977,19 @@ time_t file_date( const char *filename ) {
     return file_info.st_mtime;
 }
 
+char *timestamp(time_t the_time, time_t the_micro) {
+    static char     time_string[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
+    char            timezone_string[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
+    struct timeval  tv;
+
+    if(the_time < 0) {
+        gettimeofday(&tv, NULL);
+        the_time = tv.tv_sec;
+        the_micro = tv.tv_usec;
+    }
+    strftime(time_string, sizeof(time_string), WILEYMUD_TIMESTAMP, localtime(&the_time));
+    strftime(timezone_string, sizeof(timezone_string), WILEYMUD_TIMEZONE, localtime(&the_time));
+    scprintf(time_string, MAX_INPUT_LENGTH, ".%03ld %s", the_micro/1000, timezone_string);
+    return time_string;
+}
+

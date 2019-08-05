@@ -22,6 +22,9 @@
 #endif
 
 #define VNULL(s) ((s)?(s):"(null)")
+#define ENULL(s) ((s)?(s):"")
+#define BOOLSTR(s) ((s)?"true":"false")
+#define ENABLED(s) ((s)?"enabled":"disabled")
 
  int                              str_cmp(const char *arg1, const char *arg2);
  int                              strn_cmp(const char *arg1, const char *arg2,
@@ -394,13 +397,17 @@ void                                    RestoreChar(struct char_data *ch);
 
 #define IsNonMagical(ch) (!IsMagical(ch))
 
-size_t strlcpy(char *dst, const char *src, size_t siz);
-size_t strlcat(char *dst, const char *src, size_t siz);
-int    scprintf(char *buf, size_t limit, const char *Str, ...) __attribute__ ( ( format( printf, 3, 4 ) ) );
-char  *time_elapsed(time_t since, time_t now);
-char  *json_escape(char *thing);
-char  *md5_hex(const char *str);
-char  *color_wrap(int soft_limit, int hard_limit, const char *pad, const char *input);
-time_t file_date( const char *filename );
+size_t  strlcpy(char *dst, const char *src, size_t siz);
+size_t  strlcat(char *dst, const char *src, size_t siz);
+int     scprintf(char *buf, size_t limit, const char *Str, ...) __attribute__ ( ( format( printf, 3, 4 ) ) );
+char   *time_elapsed(time_t since, time_t now);
+char   *json_escape(char *thing);
+char   *md5_hex(const char *str);
+char   *color_wrap(int soft_limit, int hard_limit, const char *pad, const char *input);
+time_t  file_date(const char *filename);
+
+#define WILEYMUD_TIMESTAMP  "%Y-%m-%d %H:%M:%S"
+#define WILEYMUD_TIMEZONE   "%Z"
+char   *timestamp(time_t the_time, time_t the_micro);
 
 #endif

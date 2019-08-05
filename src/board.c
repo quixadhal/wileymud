@@ -144,6 +144,7 @@ int board(struct char_data *ch, int cmd, char *arg)
     // Immortal commands allowed
     case CMD_at:
     case CMD_ban:
+    case CMD_checkurl:
     case CMD_goto:
     case CMD_immtrack:
     case CMD_invisible:
@@ -161,8 +162,8 @@ int board(struct char_data *ch, int cmd, char *arg)
     case CMD_switch:
     case CMD_ticks:
     case CMD_transfer:
-    case CMD_checkurl:
     case CMD_unban:
+    case CMD_whod:
     case CMD_wizhelp:
     case CMD_wizlock:
     case CMD_wiznet:

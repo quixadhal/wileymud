@@ -203,9 +203,6 @@ obj/act_wiz.o: act_wiz.c include/global.h include/bug.h include/utils.h \
   include/act_info.h include/fight.h include/hash.h include/weather.h \
   include/modify.h include/tracking.h include/i3.h include/sql.h \
   include/reboot.h include/rent.h include/act_wiz.h
-obj/help2.o: help2.c include/global.h include/bug.h include/utils.h \
-  include/comm.h include/stringmap.h include/modify.h \
-  include/multiclass.h include/sql.h include/help.h
 obj/act_social.o: act_social.c include/global.h include/bug.h include/utils.h \
   include/comm.h include/interpreter.h include/handler.h include/db.h \
   include/spells.h include/multiclass.h include/act_social.h
@@ -263,7 +260,8 @@ obj/act_off.o: act_off.c include/global.h include/bug.h include/utils.h \
   include/act_info.h include/breath_weapons.h include/act_off.h
 obj/whod.o: whod.c include/version.h include/global.h include/bug.h \
   include/db.h include/comm.h include/utils.h include/interpreter.h \
-  include/multiclass.h include/i3.h include/sha256.h include/whod.h
+  include/multiclass.h include/i3.h include/sha256.h include/modify.h \
+  include/sql.h include/whod.h
 obj/comm.o: comm.c include/global.h include/sql.h include/i3.h include/bug.h \
   include/utils.h include/interpreter.h include/handler.h include/db.h \
   include/modify.h include/whod.h include/multiclass.h include/weather.h \
@@ -429,7 +427,7 @@ obj/sql.o: sql.c include/global.h include/bug.h include/comm.h \
   include/version.h include/crc32.h include/interpreter.h \
   include/utils.h include/db.h include/weather.h include/ban.h \
   include/reboot.h include/rent.h include/stringmap.h include/help.h \
-  include/i3.h include/sql.h
+  include/whod.h include/i3.h include/sql.h
 obj/global.o: global.c include/global.h include/bug.h include/mudlimits.h \
   include/trap.h
 obj/db.o: db.c include/global.h include/i3.h include/bug.h include/utils.h \

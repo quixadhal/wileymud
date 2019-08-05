@@ -48,20 +48,52 @@
 #define WRITE(d,msg) if((write((d),(msg),strlen(msg)))<0){\
                             perror("whod.c - write");}
 
-#ifndef _WHOD_C
-/* static long disconnect_time; */
-/* static int s; */
-extern int                              whod_mode;
+#define WILEY_ADDRESS "wileymud.themud.org"
+#define WILEY_PORT 3000
 
-/* static int state; */
-/* static int whod_port; */
+struct whod_data {
+    time_t  updated;
+    int     enabled;
+    int     port;
+    char    set_by[MAX_INPUT_LENGTH];
+    int     show_idle;
+    int     show_level;
+    int     show_name;
+    int     show_title;
+    int     show_room;
+    int     show_site;
+    int     show_room_ingame;
+    int     show_linkdead;
+    int     state;              // Temporary, for tracking request state
+    int     socket;             // Temporary, the socket descriptor
+    time_t  disconnect_time;    // Temporary, tracking disconnection timeouts
+};
+
+#ifndef _WHOD_C
+extern struct whod_data                 whod;
 #endif
 
-void                                    do_whod(struct char_data *ch, const char *arg, int cmd);
-void                                    init_whod(int port);
-void                                    close_whod(void);
-void                                    whod_loop(void);
-void                                    generate_mudlist(void);
-void                                    generate_json_mudlist(void);
+void setup_whod_table(void);
+void load_whod(void);
+int toggle_whod_flag(struct char_data *ch, const char *param);
+int whod_flag_value(const char *param);
+int set_whod_port(struct char_data *ch, int number);
+
+void init_whod(void);
+void close_whod(void);
+void whod_loop(void);
+char *idle_time_string(struct char_data *ch);
+char *player_level_string(struct char_data *ch);
+char *player_full_name(struct char_data *ch, int show_title);
+char *player_room_name(struct char_data *ch);
+char *player_site_name(struct char_data *ch);
+char *whod_text(struct char_data *viewer);
+void show_whod_info(struct char_data *ch);
+void do_whod(struct char_data *ch, const char *arg, int cmd);
+
+void generate_json_mudlist(void);
+void do_who(struct char_data *ch, const char *argument, int cmd);
+void do_users(struct char_data *ch, const char *argument, int cmd);
+void do_players(struct char_data *ch, const char *argument, int cmd);
 
 #endif

@@ -69,7 +69,7 @@ struct descriptor_data                 *next_to_process = NULL;
 int                                     mud_port = 0;
 int                                     DEBUG = FALSE;
 int                                     no_specials = 0;       /* Suppress ass. of special routines */
-long                                    Uptime = 0L;	       /* time that the game has been up */
+time_t                                  Uptime = 0L;	       /* time that the game has been up */
 
 int                                     maxdesc = 0;
 int                                     avail_descs = 0;
@@ -261,8 +261,8 @@ int run_the_game(int port)
 
     load_db();
 
-    //log_boot("Opening WHO port.");
-    //init_whod(port);
+    log_boot("Opening WHO port.");
+    init_whod();
 
 #ifdef I3
     log_boot("Opening I3 connection.");
@@ -283,7 +283,7 @@ int run_the_game(int port)
     i3_shutdown(0, NULL);
 #endif
     close_sockets(s);
-    //close_whod();
+    close_whod();
 
     unload_db();
     sql_shutdown();
@@ -472,7 +472,7 @@ void game_loop(int s)
 	 * sigsetmask(mask); 
 	 */
 	sigprocmask(SIG_BLOCK, &mask, NULL);
-	//whod_loop();
+	whod_loop();
 	if (select(maxdesc + 1, &input_set, &output_set, &exc_set, &null_time) < 0) {
 	    log_error("Select poll");
 	    return;
