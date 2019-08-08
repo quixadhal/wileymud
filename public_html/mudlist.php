@@ -1,10 +1,22 @@
 <?php
 $time_start = microtime(true);
 
+function dump_to($filename = "foo.txt", $mixed = null) {
+    ob_start();
+    var_dump($mixed);
+    $thing = ob_get_contents();
+    ob_end_clean();
+    file_put_contents($filename, $thing);
+}
+
 $MUDLIST_FILE = "/home/wiley/public_html/mudlist.json";
 
 $mudlist_text = file_get_contents($MUDLIST_FILE);
 $mudlist = json_decode($mudlist_text, true, 512, JSON_INVALID_UTF8_SUBSTITUTE);
+//dump_to("/home/wiley/public_html/foo.sub", $mudlist);
+//$mudlist2 = json_decode($mudlist_text, true, 512, JSON_INVALID_UTF8_IGNORE);
+//dump_to("/home/wiley/public_html/foo.ignore", $mudlist2);
+
 if( json_last_error() != JSON_ERROR_NONE ) {
     echo "<hr>".json_last_error_msg()."<br><hr>";
 }
