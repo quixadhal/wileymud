@@ -4,9 +4,9 @@ $time_start = microtime(true);
 $MUDLIST_FILE = "/home/wiley/public_html/mudlist.json";
 
 $mudlist_text = file_get_contents($MUDLIST_FILE);
-$mudlist = json_decode($mudlist_text, true);
+$mudlist = json_decode($mudlist_text, true, 512, JSON_INVALID_UTF8_SUBSTITUTE);
 if( json_last_error() != JSON_ERROR_NONE ) {
-    echo "<hr>".json_last_error_msg()."<br>";
+    echo "<hr>".json_last_error_msg()."<br><hr>";
 }
 $WILEY_BUILD_NUMBER = $mudlist["version"]["build"];
 $WILEY_BUILD_DATE = $mudlist["version"]["date"];
