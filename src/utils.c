@@ -1982,6 +1982,8 @@ char *timestamp(time_t the_time, time_t the_micro) {
     char            timezone_string[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
     struct timeval  tv;
 
+    // 2019-08-14 22:04:19.559 PDT
+
     if(the_time < 0) {
         gettimeofday(&tv, NULL);
         the_time = tv.tv_sec;

@@ -740,7 +740,7 @@ void                                    generate_json_mudlist(void)
     int                                     did_one = 0;
     time_t                                  now;
     char                                    nowtimebuf[MAX_INPUT_LENGTH];
-    char                                    uptimebuf[MAX_INPUT_LENGTH];
+    //char                                    uptimebuf[MAX_INPUT_LENGTH];
     struct char_data                       *ch = NULL;
     int                                     mortals = 0;
     int                                     gods = 0;
@@ -752,7 +752,7 @@ void                                    generate_json_mudlist(void)
 
     now = time((time_t *) 0);
     strftime(nowtimebuf, sizeof(nowtimebuf), RFC1123FMT, localtime(&now));
-    strftime(uptimebuf, sizeof(uptimebuf), RFC1123FMT, localtime((time_t *) & Uptime));
+    //strftime(uptimebuf, sizeof(uptimebuf), RFC1123FMT, localtime((time_t *) & Uptime));
 
     fprintf(fp, "{\n");
     fprintf(fp, "    \"version\" : {\n");
@@ -760,7 +760,8 @@ void                                    generate_json_mudlist(void)
     fprintf(fp, "        \"date\" : \"%s\"\n", json_escape(VERSION_DATE));
     fprintf(fp, "    },\n");
     fprintf(fp, "    \"time\" : \"%5.5s %s\",\n", &nowtimebuf[17], &nowtimebuf[26]);
-    fprintf(fp, "    \"boot\" : \"%s\",\n", uptimebuf);
+    //fprintf(fp, "    \"boot\" : \"%s\",\n", uptimebuf);
+    fprintf(fp, "    \"boot\" : \"%s\",\n", json_escape(timestamp(Uptime, 0)));
     fprintf(fp, "    \"player_list\" : [\n");
 
     did_one = 0;
@@ -856,9 +857,9 @@ void do_who(struct char_data *ch, const char *argument, int cmd)
     long                                    tmin = 0;
     long                                    tsec = 0;
     char                                    buf[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
-    time_t                                  now = 0;
-    char                                    uptimebuf[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
-    char                                    nowtimebuf[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
+    //time_t                                  now = 0;
+    //char                                    uptimebuf[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
+    //char                                    nowtimebuf[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
 
     if (DEBUG)
 	log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch),
@@ -869,9 +870,9 @@ void do_who(struct char_data *ch, const char *argument, int cmd)
  *   return;
  */
 
-    now = time((time_t *) 0);
-    strftime(nowtimebuf, sizeof(nowtimebuf), RFC1123FMT, localtime(&now));
-    strftime(uptimebuf, sizeof(uptimebuf), RFC1123FMT, localtime((time_t *) &Uptime));
+    //now = time((time_t *) 0);
+    //strftime(nowtimebuf, sizeof(nowtimebuf), RFC1123FMT, localtime(&now));
+    //strftime(uptimebuf, sizeof(uptimebuf), RFC1123FMT, localtime((time_t *) &Uptime));
 
     page_printf(ch, "%s\r\n", VERSION_STR);
 
@@ -946,8 +947,8 @@ void do_who(struct char_data *ch, const char *argument, int cmd)
 	page_printf(ch, "%s", buf);
     }
     snprintf(buf, MAX_STRING_LENGTH, "\r\nTotal visible players on %s: %d\r\n", MUDNAME, count);
-    scprintf(buf, MAX_STRING_LENGTH, "Wiley start time was: %s\r\n", uptimebuf);
-    scprintf(buf, MAX_STRING_LENGTH, "Quixadhal's time is:  %s\r\n", nowtimebuf);
+    scprintf(buf, MAX_STRING_LENGTH, "Wiley start time was: %s\r\n", timestamp(Uptime, 0));
+    scprintf(buf, MAX_STRING_LENGTH, " Quixadhal's time is: %s\r\n", timestamp(-1, 0));
     page_printf(ch, "%s", buf);
 }
 

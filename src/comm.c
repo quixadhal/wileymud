@@ -1371,7 +1371,7 @@ int process_input(struct descriptor_data *t)
     } else if( read_in < 0 ) {
         // Error of some kind?
         if (errno != EWOULDBLOCK) {
-            log_error("Socket READ error.");
+            log_error("Socket READ error: %s", strerror(errno));
             return -1;
         }
     } else {
@@ -1383,6 +1383,7 @@ int process_input(struct descriptor_data *t)
     }
 
     // Now that we have some data, let's handle any TELNET stuff and strip it all away.
+    filtered_len = 0;
     filtered = process_telnet(read_buffer, read_buflen, t, &filtered_len);
 
     // At this point, what we have can be broken into lines for processing, and
