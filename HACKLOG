@@ -328,3 +328,10 @@ apt install default-libmysqlclient-dev
     apt install firmware-misc-nonfree
     apt install r8168-dkms
 
+apt install fping
+
+apt install libboost-dev
+
+cpan
+    install Image::Size
+
