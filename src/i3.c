@@ -9832,8 +9832,8 @@ I3_CMD(I3_other)
     int                                     col,
                                             perm;
 
-    strlcpy(buf, "%%^GREEN%%^The following commands are available:%%^RESET%%^\r\n", MAX_STRING_LENGTH);
-    strlcat(buf, "%%^GREEN%%^%%^BOLD%%^-------------------------------------%%^RESET%%^\r\n", MAX_STRING_LENGTH);
+    strlcpy(buf, "%^GREEN%^The following commands are available:%^RESET%^\r\n", MAX_STRING_LENGTH);
+    strlcat(buf, "%^GREEN%^%^BOLD%^-------------------------------------%^RESET%^\r\n", MAX_STRING_LENGTH);
     for (perm = I3PERM_MORT; perm <= I3PERM(ch); perm++) {
 	col = 0;
 	snprintf(buf + strlen(buf), MAX_STRING_LENGTH - strlen(buf), "%%^RESET%%^\r\n%%^GREEN%%^%s commands:%%^GREEN%%^%%^BOLD%%^\r\n",
@@ -9844,10 +9844,10 @@ I3_CMD(I3_other)
 
 	    snprintf(buf + strlen(buf), MAX_STRING_LENGTH - strlen(buf), "%-15s", cmd->name);
 	    if (++col % 6 == 0)
-		strlcat(buf, "%%^RESET%%^\r\n%%^GREEN%%^%%^BOLD%%^", MAX_STRING_LENGTH);
+		strlcat(buf, "%^RESET%^\r\n%^GREEN%^%^BOLD%^", MAX_STRING_LENGTH);
 	}
 	if (col % 6 != 0)
-            strlcat(buf, "%%^RESET%%^\r\n%%^GREEN%%^%%^BOLD%%^", MAX_STRING_LENGTH);
+            strlcat(buf, "%^RESET%^\r\n%^GREEN%^%^BOLD%^", MAX_STRING_LENGTH);
     }
     i3page_printf(ch, "%s", buf);
     i3page_printf(ch, "%%^RESET%%^\r\n%%^GREEN%%^For information about a specific command, see %%^WHITE%%^%%^BOLD%%^i3help <command>%%^GREEN%%^.%%^RESET%%^\r\n");

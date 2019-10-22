@@ -233,10 +233,19 @@ void command_interpreter(struct char_data *ch, char *argument)
 
     REMOVE_BIT(ch->specials.affected_by, AFF_HIDE);
 
+    if (ch-> desc && ch->desc->board_vnum > 0) {
+        if (finish_write_board_message(ch)) {
+            // If it worked, reload all the boards just to be safe.
+            load_boards();
+        }
+    }
+
+    /*
     if (ch == board_kludge_char) {
 	board_save_board(FindBoardInRoom(ch->in_room));
 	board_kludge_char = 0;
     }
+    */
     /*
      * Find first non blank 
      */
@@ -357,10 +366,15 @@ void new_command_interpreter(struct char_data *ch, char *argument)
     // only in-game actions.
     REMOVE_BIT(ch->specials.affected_by, AFF_HIDE);
 
+    if (ch-> desc && ch->desc->board_vnum > 0) {
+        finish_write_board_message(ch);
+    }
+    /*
     if (ch == board_kludge_char) {
 	board_save_board(FindBoardInRoom(ch->in_room));
 	board_kludge_char = 0;
     }
+    */
 
     if( !s || !*s ) {
         log_error("Empty command passed to interpreter?");

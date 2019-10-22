@@ -1995,3 +1995,31 @@ char *timestamp(time_t the_time, time_t the_micro) {
     return time_string;
 }
 
+char *time_only(time_t the_time) {
+    static char     time_string[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
+    struct timeval  tv;
+
+    // 22:04:19
+
+    if(the_time < 0) {
+        gettimeofday(&tv, NULL);
+        the_time = tv.tv_sec;
+    }
+    strftime(time_string, sizeof(time_string), WILEYMUD_TIMEONLY, localtime(&the_time));
+    return time_string;
+}
+
+char *date_only(time_t the_time) {
+    static char     time_string[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
+    struct timeval  tv;
+
+    // 2019-08-14
+
+    if(the_time < 0) {
+        gettimeofday(&tv, NULL);
+        the_time = tv.tv_sec;
+    }
+    strftime(time_string, sizeof(time_string), WILEYMUD_DATEONLY, localtime(&the_time));
+    return time_string;
+}
+

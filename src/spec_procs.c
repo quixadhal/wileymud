@@ -147,9 +147,9 @@ static struct special_proc_entry        specials_m[] = {
 static struct special_proc_entry        specials_o[] = {
     {3, fountain, "fountain (Highstaff Fountain)"},
     {3005, fountain, "fountain (Shylar Barrel)"},
-    {3098, board, "board (Wizard's Board)"},
-    {3099, board, "board (Shylar Board)"},
-    {5099, board, "board (Highstaff Board)"},
+    {3098, board_special, "board (Wizard's Board)"},
+    {3099, board_special, "board (Shylar Board)"},
+    {5099, board_special, "board (Highstaff Board)"},
     {4734, BerserkerAxe, "BerserkerAxe (Druegar Axe)"},
     {-1, NULL, "NULL (none)"},
 };
@@ -4937,7 +4937,7 @@ void assign_objects(void)
 	    obj_index[onum].func = specials_o[i].proc;
 	}
     }
-    InitBoards();
+    //InitBoards();
 }
 
 /* assign special procedures to rooms */

@@ -1198,7 +1198,15 @@ struct obj_data                        *read_object(int nr, int type)
     obj_index[nr].number++;
 
     if (ITEM_TYPE(obj) == ITEM_BOARD) {
-	InitABoard(obj);
+        struct board_data *bp = NULL;
+
+	//InitABoard(obj);
+        // To allow importing of old data
+        bp = create_board(obj_index[obj->item_number].virtual);
+        if(bp && bp->message_count < 1) {
+            import_board(bp);
+            load_boards();
+        }
     }
     return (obj);
 }

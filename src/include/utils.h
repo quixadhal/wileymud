@@ -407,7 +407,11 @@ char   *color_wrap(int soft_limit, int hard_limit, const char *pad, const char *
 time_t  file_date(const char *filename);
 
 #define WILEYMUD_TIMESTAMP  "%Y-%m-%d %H:%M:%S"
+#define WILEYMUD_DATEONLY   "%Y-%m-%d"
+#define WILEYMUD_TIMEONLY   "%H:%M:%S"
 #define WILEYMUD_TIMEZONE   "%Z"
 char   *timestamp(time_t the_time, time_t the_micro);
+char   *time_only(time_t the_time);
+char   *date_only(time_t the_time);
 
 #endif

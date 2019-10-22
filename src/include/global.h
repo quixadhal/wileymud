@@ -1137,6 +1137,12 @@ struct descriptor_data {
   struct pager_data                      *page_last;
   char                                    page_control;
   struct telnet_data                      telnet;
+  // Using struct board_message_data would be nice, but it would also require
+  // including board.h in almost every single file, since descriptors are used
+  // almost everywhere.
+  int                                     board_vnum;
+  char                                    *board_subject;
+  char                                    *board_body;
 };
 
 struct msg_type {

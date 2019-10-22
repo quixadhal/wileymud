@@ -25,10 +25,12 @@
 0,15,30,45 * * * * /home/wiley/bin/mklogpages.pl --no-pages --no-speakers --no-update --debug --live --no-json --no-pause >/dev/null 2>&1 &
 5 2 * * * /home/wiley/bin/untiny sql --mark >/dev/null 2>&1 &
 10 2 * * * (cd /home/wiley/public_html && PGPASSWORD=tardis69 /usr/bin/pg_dump --clean --if-exists --no-owner i3log | /usr/bin/xz -9ceq -T0 >i3log.sql.xz) >/dev/null 2>&1 &
+15 2 * * * (cd /home/wiley && /usr/bin/tar -Jcf backups/wileymud_files.tar.xz bin src lib etc) >/dev/null 2>&1 &
+20 2 * * * (cd /home/wiley && /usr/bin/tar -Jcf backups/diskworld_files.tar.xz dw) >/dev/null 2>&1 &
 25 2 * * * (cd /home/wiley/public_html && /usr/bin/tar -Jcf logdata.tar.xz logdata) >/dev/null 2>&1 &
-40 2 * * * /home/wiley/bin/cleanlogs.pl >/dev/null 2>&1 &
-45 2 * * * (cd /home/wiley/backups && PGPASSWORD=tardis69 /usr/bin/pg_dump --clean --if-exists --no-owner wileymud | /usr/bin/xz -9ceq -T0 >wileymud.sql.xz) >/dev/null 2>&1 &
-50 2 * * * (cd /home/wiley/backups && PGPASSWORD=tardis69 /usr/bin/pg_dump --clean --if-exists --no-owner logfile | /usr/bin/xz -9ceq -T0 >logfile.sql.xz) >/dev/null 2>&1 &
+35 2 * * * /home/wiley/bin/cleanlogs.pl >/dev/null 2>&1 &
+40 2 * * * (cd /home/wiley/backups && PGPASSWORD=tardis69 /usr/bin/pg_dump --clean --if-exists --no-owner wileymud | /usr/bin/xz -9ceq -T0 >wileymud.sql.xz) >/dev/null 2>&1 &
+45 2 * * * (cd /home/wiley/backups && PGPASSWORD=tardis69 /usr/bin/pg_dump --clean --if-exists --no-owner logfile | /usr/bin/xz -9ceq -T0 >logfile.sql.xz) >/dev/null 2>&1 &
 10 3 * * * (cd /home/wiley/public_html && /usr/bin/tar -Jcf logpages.tar.xz logpages) >/dev/null 2>&1 &
 25 3 * * * /usr/bin/crontab -l >/home/wiley/etc/cron.tab 2>/dev/null &
 30 3 * * * /home/wiley/bin/remote-backup >/dev/null 2>&1 &

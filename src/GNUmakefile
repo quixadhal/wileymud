@@ -411,7 +411,8 @@ obj/weather.o: weather.c include/global.h include/bug.h include/utils.h \
 obj/imc.o: imc.c
 obj/board.o: board.c include/global.h include/bug.h include/utils.h \
   include/comm.h include/db.h include/interpreter.h include/multiclass.h \
-  include/modify.h include/handler.h include/act_info.h include/board.h
+  include/modify.h include/handler.h include/act_info.h include/sql.h \
+  include/board.h
 obj/help.o: help.c include/global.h include/bug.h include/utils.h \
   include/comm.h include/stringmap.h include/modify.h \
   include/multiclass.h include/sql.h include/help.h
@@ -427,7 +428,7 @@ obj/sql.o: sql.c include/global.h include/bug.h include/comm.h \
   include/version.h include/crc32.h include/interpreter.h \
   include/utils.h include/db.h include/weather.h include/ban.h \
   include/reboot.h include/rent.h include/stringmap.h include/help.h \
-  include/whod.h include/i3.h include/sql.h
+  include/whod.h include/board.h include/i3.h include/sql.h
 obj/global.o: global.c include/global.h include/bug.h include/mudlimits.h \
   include/trap.h
 obj/db.o: db.c include/global.h include/i3.h include/bug.h include/utils.h \

@@ -5,7 +5,7 @@ use English;
 use Image::Size;
 
 opendir DP, '.' or die "Can't opendir '.' $!";
-my @pics = grep { /\.(jpeg|jpg|png|gif)$/i && -f "./$_" } readdir DP;
+my @pics = grep { /\.(jpeg|jpg|png|gif|webp)$/i && -f "./$_" } readdir DP;
 closedir DP;
 
 foreach my $filename (@pics) {

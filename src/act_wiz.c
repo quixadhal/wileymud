@@ -1843,7 +1843,8 @@ void do_force(struct char_data *ch, const char *argument, int cmd)
 	}
     } else {						       /* force all */
 	for (i = descriptor_list; i; i = i->next)
-	    if (i->character != ch && !i->connected && i->character != board_kludge_char) {
+	    //if (i->character != ch && !i->connected && i->character != board_kludge_char)
+	    if (i->character != ch && !i->connected && i->board_vnum == 0) {
 		vict = i->character;
 		if ((GetMaxLevel(ch) <= GetMaxLevel(vict)) && (!IS_NPC(vict)))
 		    cprintf(ch, "Oh no you don't!!\r\n");
@@ -2601,7 +2602,7 @@ void do_restore(struct char_data *ch, const char *argument, int cmd)
     } else if (!strcasecmp(buf, "all")) {
 	for (i = descriptor_list; i; i = i->next) {
 	    if ( /* i->character != ch && */ !i->connected &&
-		i->character != board_kludge_char) {
+		/* i->character != board_kludge_char */ i->board_vnum == 0) {
 		victim = i->character;
 		restore_one_victim(victim);
 		if (INVIS_LEVEL(victim) < GetMaxLevel(ch))

@@ -1,30 +1,46 @@
 #!/bin/bash
 
 NOW=`date "+%Y%m%d"`
-SQL="wiley/backups/${NOW}_wiley.sql.bz2"
+I3LOG_DB="/home/wiley/backups/${NOW}/i3log.sql.xz"
+WILEYMUD_DB="/home/wiley/backups/${NOW}/wileymud.sql.xz"
+LOGFILE_DB="/home/wiley/backups/${NOW}/logfile.sql.xz"
+WILEYMUD_FILES="/home/wiley/backups/${NOW}/wileymud_files.tar.xz"
+DISKWORLD_FILES="/home/wiley/backups/${NOW}/diskworld_files.tar.xz"
+LOGDATA_FILES="/home/wiley/backups/${NOW}/logdata.tar.xz"
+LOGPAGE_FILES="/home/wiley/backups/${NOW}/logpages.tar.xz"
 
-TAR="wiley/backups/${NOW}_wiley.tar.bz2"
-FILES='wiley/.git wiley/.gitignore wiley/README wiley/WileyREADME wiley/attic wiley/bin wiley/docs wiley/etc wiley/lib wiley/public_html wiley/src'
-EXCLUDE='--exclude=lib/log/[12r]* --exclude=wileymud* --exclude=*.[oa]'
+mkdir -p /home/wiley/backups/${NOW}
 
-DISTTAR="wiley/backups/${NOW}_wiley_dist.tar.bz2"
-DISTFILES='wiley/README wiley/WileyREADME wiley/attic wiley/bin wiley/docs wiley/etc wiley/lib wiley/public_html wiley/src'
-DISTEXCLUDE='--exclude=.git* --exclude=lib/log/[12r]* --exclude=wileymud* --exclude=*.[oa] --exclude=attic --exclude=lib/imc/*.hist --exclude=lib/i3/*.hist --exclude=wiley/lib/ply/*/*.* --exclude=src/convert/output/*'
-
-cd /home
-
-echo -en "Staring Database Backup..."
-pg_dump wiley | bzip2 -9 >$SQL
+echo -en "Updating mudlist info..."
+/home/wiley/bin/mkmudlist.pl >/dev/null 2>&1
+echo -en "logpages..."
+/home/wiley/bin/mklogpages.pl --overwrite --debug --start -3 --live --json --no-pause >/dev/null 2>&1
+echo -en "urls..."
+/home/wiley/bin/untiny sql --mark >/dev/null 2>&1
 echo -en "done.\n"
 
-echo -en "Starting Stripped Backup..."
-tar $DISTEXCLUDE -jcf $DISTTAR $DISTFILES
+echo -en "Starting i3log database backup..."
+PGPASSWORD=tardis69 /usr/bin/pg_dump --clean --if-exists --no-owner i3log | /usr/bin/xz -9ceq -T0 >$I3LOG_DB
+echo -en "wileymud..."
+PGPASSWORD=tardis69 /usr/bin/pg_dump --clean --if-exists --no-owner wileymud | /usr/bin/xz -9ceq -T0 >$WILEYMUD_DB
+echo -en "logfile..."
+PGPASSWORD=tardis69 /usr/bin/pg_dump --clean --if-exists --no-owner logfile | /usr/bin/xz -9ceq -T0 >$LOGFILE_DB
 echo -en "done.\n"
 
-echo -en "Staring Full Backup..."
-tar $EXCLUDE -jcf $TAR $FILES
+echo -en "Starting backup of WileyMUD files..."
+/usr/bin/crontab -l >/home/wiley/etc/cron.tab
+(cd /home/wiley && /usr/bin/tar -Jcf $WILEYMUD_FILES bin src lib etc) >/dev/null 2>&1
+echo -en "Disk World..."
+(cd /home/wiley && /usr/bin/tar -Jcf $DISKWORLD_FILES dw) >/dev/null 2>&1
 echo -en "done.\n"
 
-cd /home/wiley
-ls -l backups/${NOW}*
+echo -en "Starting backup of I3 log data..."
+(cd /home/wiley/public_html && /usr/bin/tar -Jcf $LOGDATA_FILES logdata) >/dev/null 2>&1
+echo -en "cleanup..."
+/home/wiley/bin/cleanlogs.pl >/dev/null 2>&1
+echo -en "pages..."
+(cd /home/wiley/public_html && /usr/bin/tar -Jcf $LOGPAGE_FILES logpages) >/dev/null 2>&1
+echo -en "done.\n"
+
+(cd /home/wiley/backups && ls --color --group-directories-first --human-readable -l ./${NOW}*)
 

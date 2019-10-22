@@ -335,3 +335,8 @@ apt install libboost-dev
 cpan
     install Image::Size
 
+apt install libapache2-mod-bw
+
+cpan
+    install Image::MetaData::JPEG
+
