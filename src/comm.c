@@ -1372,6 +1372,9 @@ int process_input(struct descriptor_data *t)
         // Error of some kind?
         if (errno != EWOULDBLOCK) {
             log_error("Socket READ error: %s", strerror(errno));
+            bzero(read_buffer, MAX_STRING_LENGTH);
+            bzero(line_buffer, MAX_STRING_LENGTH);
+            read_ptr = read_buffer;
             return -1;
         }
     } else {

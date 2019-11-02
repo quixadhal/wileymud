@@ -3260,6 +3260,12 @@ void I3_process_channel_m(I3_HEADER *header, char *s)
     allchan_log(0, channel->local_name, visname, header->originator_username, header->originator_mudname, tps);
 
     for (d = first_descriptor; d; d = d->next) {
+        if (!d || !d->character)
+            continue;
+
+        if (d->connected != CON_PLAYING)
+            continue;
+
 	vch = d->original ? d->original : d->character;
 
 	if (!vch)
