@@ -3811,6 +3811,10 @@ void I3_process_who_req(I3_HEADER *header, char *s)
     long int                                bogusidle = 9999;
     char                                    boottimebuf[100];
 
+    if(!header || !header->originator_username[0] || !header->originator_mudname[0]) {
+        log_error("Invalid header in who request");
+    }
+
     strftime(boottimebuf, sizeof(boottimebuf), RFC1123FMT, localtime((time_t *) & Uptime));
     snprintf(ibuf, MAX_INPUT_LENGTH, "%s@%s", header->originator_username,
 	     header->originator_mudname);
@@ -3844,6 +3848,8 @@ void I3_process_who_req(I3_HEADER *header, char *s)
 
     xx = 0;
     for (d = first_descriptor; d; d = d->next) {
+        if(!d)
+            break;
 	person = d->original ? d->original : d->character;
 
 	if (person && d->connected >= CON_PLAYING) {
@@ -3890,6 +3896,8 @@ void I3_process_who_req(I3_HEADER *header, char *s)
 
     yy = 0;
     for (d = first_descriptor; d; d = d->next) {
+        if(!d)
+            break;
 	person = d->original ? d->original : d->character;
 
 	if (person && d->connected >= CON_PLAYING) {
