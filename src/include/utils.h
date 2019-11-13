@@ -414,4 +414,8 @@ char   *timestamp(time_t the_time, time_t the_micro);
 char   *time_only(time_t the_time);
 char   *date_only(time_t the_time);
 
+void remove_quotes(char **ps);
+char *add_quotes(char *s);
+char *strrep(const char *src, const char *search, const char *rep);
+
 #endif

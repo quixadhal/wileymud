@@ -243,104 +243,6 @@ const char                             *i3one_argument(const char *argument, cha
     return argument;
 }
 
-
-char *i3strrep(const char *src, const char *search, const char *rep)
-{
-    static char result[MAX_STRING_LENGTH];
-    const char *src_p;
-    size_t search_len = strlen(search);
-    size_t rep_len = strlen(rep);
-    char bit[2];
-
-    bzero(result, MAX_STRING_LENGTH);
-    bit[0] = bit[1] = '\0';
-
-    if(!src || !*src)
-        return result;
-
-    for( src_p = src; *src_p && strlen(result) < (MAX_STRING_LENGTH - rep_len); ) {
-        if(strncmp(src_p, search, search_len) == 0) {
-            // Found search string at current source position
-            strcat(result, rep);
-            src_p += search_len;
-        } else {
-            // Current position NOT the start of a pattern
-            bit[0] = *src_p;
-            strcat(result, bit);
-            src_p++;
-        }
-    }
-    return result;
-}
-
-
-/*
-   Original Code from SW:FotE 1.1
-   Reworked strrep function. 
-   Fixed a few glaring errors. It also will not overrun the bounds of a string.
-   -- Xorith
-*/
-char                                   *i3strrep_old(const char *src, const char *sch,
-						 const char *rep)
-{
-    int                                     src_len = strlen(src),
-	sch_len = strlen(sch),
-	rep_len = strlen(rep),
-	src_p,
-	offset,
-	dest_p;
-    static char                             dest[MAX_STRING_LENGTH];
-    bool                                    searching = FALSE;
-
-    dest[0] = '\0';
-    for (src_p = 0, dest_p = 0; src_p < src_len; src_p++, dest_p++) {
-	if (src[src_p] == sch[0]) {
-	    searching = TRUE;
-	    for (offset = 0; offset < sch_len; offset++)
-		if (src[src_p + offset] != sch[offset])
-		    searching = FALSE;
-
-	    if (searching) {
-		for (offset = 0; offset < rep_len; offset++, dest_p++) {
-		    if (dest_p == (MAX_STRING_LENGTH - 1)) {
-			dest[dest_p] = '\0';
-			return dest;
-		    }
-#if 0
-		    if (src[src_p - 1] == sch[0]) {
-			if (rep[0] == '\033') {
-			    if (offset < sch_len) {
-				if (offset == 0)
-				    dest[dest_p - 1] = sch[offset];
-				else
-				    dest[dest_p] = sch[offset];
-			    } else
-				offset = rep_len;
-			} else {
-			    if (offset == 0)
-				dest[dest_p - 1] = rep[offset];
-			    dest[dest_p] = rep[offset];
-			}
-		    } else
-#endif
-			dest[dest_p] = rep[offset];
-		}
-		src_p += sch_len - 1;
-		dest_p--;
-		searching = FALSE;
-		continue;
-	    }
-	}
-	if (dest_p == (MAX_STRING_LENGTH - 1)) {
-	    dest[dest_p] = '\0';
-	    return dest;
-	}
-	dest[dest_p] = src[src_p];
-    }
-    dest[dest_p] = '\0';
-    return dest;
-}
-
 char                                   *i3_strip_colors(const char *txt)
 {
     I3_COLOR                               *color;
@@ -349,10 +251,10 @@ char                                   *i3_strip_colors(const char *txt)
     strlcpy(tbuf, txt, MAX_STRING_LENGTH);
 
     for (color = first_i3_color; color; color = color->next)
-	strlcpy(tbuf, i3strrep(tbuf, color->i3tag, ""), MAX_STRING_LENGTH);
+	strlcpy(tbuf, strrep(tbuf, color->i3tag, ""), MAX_STRING_LENGTH);
 
     for (color = first_i3_color; color; color = color->next)
-	strlcpy(tbuf, i3strrep(tbuf, color->mudtag, ""), MAX_STRING_LENGTH);
+	strlcpy(tbuf, strrep(tbuf, color->mudtag, ""), MAX_STRING_LENGTH);
 
     return tbuf;
 }
@@ -368,7 +270,7 @@ char                                   *I3_mudtag_to_i3tag(const char *txt)
 
     strlcpy(tbuf, txt, MAX_STRING_LENGTH);
     for (color = first_i3_color; color; color = color->next)
-	strlcpy(tbuf, i3strrep(tbuf, color->mudtag, color->i3tag), MAX_STRING_LENGTH);
+	strlcpy(tbuf, strrep(tbuf, color->mudtag, color->i3tag), MAX_STRING_LENGTH);
 
     return tbuf;
 }
@@ -384,7 +286,7 @@ char                                   *I3_imctag_to_i3tag(const char *txt)
 
     strlcpy(tbuf, txt, MAX_STRING_LENGTH);
     for (color = first_i3_color; color; color = color->next)
-	strlcpy(tbuf, i3strrep(tbuf, color->imctag, color->i3tag), MAX_STRING_LENGTH);
+	strlcpy(tbuf, strrep(tbuf, color->imctag, color->i3tag), MAX_STRING_LENGTH);
 
     return tbuf;
 }
@@ -401,7 +303,7 @@ char                                   *I3_imctag_to_mudtag(CHAR_DATA *ch, const
     if (I3IS_SET(I3FLAG(ch), I3_COLORFLAG)) {
 	strlcpy(tbuf, txt, MAX_STRING_LENGTH);
 	for (color = first_i3_color; color; color = color->next)
-	    strlcpy(tbuf, i3strrep(tbuf, color->imctag, color->mudtag), MAX_STRING_LENGTH);
+	    strlcpy(tbuf, strrep(tbuf, color->imctag, color->mudtag), MAX_STRING_LENGTH);
     } else
 	strlcpy(tbuf, i3_strip_colors(txt), MAX_STRING_LENGTH);
 
@@ -420,7 +322,7 @@ char                                   *I3_i3tag_to_mudtag(CHAR_DATA *ch, const 
     if (I3IS_SET(I3FLAG(ch), I3_COLORFLAG)) {
 	strlcpy(tbuf, txt, MAX_STRING_LENGTH);
 	for (color = first_i3_color; color; color = color->next)
-	    strlcpy(tbuf, i3strrep(tbuf, color->i3tag, color->mudtag), MAX_STRING_LENGTH);
+	    strlcpy(tbuf, strrep(tbuf, color->i3tag, color->mudtag), MAX_STRING_LENGTH);
     } else
 	strlcpy(tbuf, i3_strip_colors(txt), MAX_STRING_LENGTH);
 
@@ -747,64 +649,6 @@ char                                   *I3_escape(const char *ps)
     }
     pnew[0] = '\0';
     return xnew;
-}
-
-/*
- * Remove "'s at begin/end of string
- * If a character is prefixed by \'s it also will be unescaped
- */
-void I3_remove_quotes(char **ps)
-{
-    char                                   *ps1,
-                                           *ps2;
-
-    if (*ps[0] == '"')
-	(*ps)++;
-    if ((*ps)[strlen(*ps) - 1] == '"')
-	(*ps)[strlen(*ps) - 1] = 0;
-
-    ps1 = ps2 = *ps;
-    while (ps2[0]) {
-	if (ps2[0] == '\\') {
-	    ps2++;
-	}
-	ps1[0] = ps2[0];
-	ps1++;
-	ps2++;
-    }
-    ps1[0] = '\0';
-}
-
-/*
- * Adds "'s at begin/end of string.
- * Also escapes any " or ' characters inside the string.
- */
-char *I3_add_quotes(char *s)
-{
-    static char          buf[MAX_STRING_LENGTH];
-    char                *ps = buf;
-    int                  i;
-
-    if(s[0] != '"') {
-        *ps++ = '"';
-    }
-    for(i = 0; i < strlen(s); i++) {
-        switch( s[i] ) {
-            case '"':
-            case '\'': 
-                *ps++ = '\\';
-                *ps++ = s[i];
-                break;
-            default:
-                *ps++ = s[i];
-                break;
-        }
-    }
-    if(s[strlen(s)-1] != '"') {
-        *ps++ = '"';
-    }
-    *ps = '\0';
-    return buf;
 }
 
 /* Searches through the channel list to see if one exists with the localname supplied to it. */
@@ -1931,7 +1775,7 @@ void I3_process_chanack(I3_HEADER *header, char *s)
                                            *ps = s;
 
     I3_get_field(ps, &next_ps);
-    I3_remove_quotes(&ps);
+    remove_quotes(&ps);
 
     if (!(ch = I3_find_user(header->target_username)))
 	log_info("%s", ps);
@@ -1963,12 +1807,12 @@ void I3_process_error(I3_HEADER *header, char *s)
                                             error[MAX_STRING_LENGTH];
 
     I3_get_field(ps, &next_ps);
-    I3_remove_quotes(&ps);
+    remove_quotes(&ps);
     strlcpy(type, ps, MAX_INPUT_LENGTH);
     ps = next_ps;
 
     I3_get_field(ps, &next_ps);
-    I3_remove_quotes(&ps);
+    remove_quotes(&ps);
 
     /*
      * Since VargonMUD likes to spew errors for no good reason.... 
@@ -2101,17 +1945,17 @@ void I3_process_ucache_update(I3_HEADER *header, char *s)
                                             gender;
 
     I3_get_field(ps, &next_ps);
-    I3_remove_quotes(&ps);
+    remove_quotes(&ps);
     strlcpy(username, ps, MAX_INPUT_LENGTH);
 
     ps = next_ps;
     I3_get_field(ps, &next_ps);
-    I3_remove_quotes(&ps);
+    remove_quotes(&ps);
     strlcpy(visname, ps, MAX_INPUT_LENGTH);
 
     ps = next_ps;
     I3_get_field(ps, &next_ps);
-    I3_remove_quotes(&ps);
+    remove_quotes(&ps);
     gender = atoi(ps);
 
     snprintf(buf, MAX_STRING_LENGTH, "%s@%s", visname, header->originator_mudname);
@@ -2147,7 +1991,7 @@ void I3_process_chan_user_req(I3_HEADER *header, char *s)
     int                                     gender;
 
     I3_get_field(ps, &next_ps);
-    I3_remove_quotes(&ps);
+    remove_quotes(&ps);
 
     snprintf(buf, MAX_STRING_LENGTH, "%s@%s", header->target_username, this_i3mud->name);
     gender = I3_get_ucache_gender(buf);
@@ -2183,17 +2027,17 @@ void I3_process_chan_user_reply(I3_HEADER *header, char *s)
                                             gender;
 
     I3_get_field(ps, &next_ps);
-    I3_remove_quotes(&ps);
+    remove_quotes(&ps);
     strlcpy(username, ps, MAX_INPUT_LENGTH);
 
     ps = next_ps;
     I3_get_field(ps, &next_ps);
-    I3_remove_quotes(&ps);
+    remove_quotes(&ps);
     strlcpy(visname, ps, MAX_INPUT_LENGTH);
 
     ps = next_ps;
     I3_get_field(ps, &next_ps);
-    I3_remove_quotes(&ps);
+    remove_quotes(&ps);
     gender = atoi(ps);
 
     snprintf(buf, MAX_STRING_LENGTH, "%s@%s", visname, header->originator_mudname);
@@ -2238,7 +2082,7 @@ void I3_process_mudlist(I3_HEADER *header, char *s)
 	char                                   *next_ps2;
 
 	I3_get_field(ps, &next_ps);
-	I3_remove_quotes(&ps);
+	remove_quotes(&ps);
 	strlcpy(mud_name, ps, MAX_INPUT_LENGTH);
 
 	ps = next_ps;
@@ -2255,7 +2099,7 @@ void I3_process_mudlist(I3_HEADER *header, char *s)
 	    ps = next_ps;
 
 	    I3_get_field(ps, &next_ps);
-	    I3_remove_quotes(&ps);
+	    remove_quotes(&ps);
 	    I3STRFREE(mud->ipaddress);
 	    mud->ipaddress = I3STRALLOC(ps);
 	    ps = next_ps;
@@ -2273,37 +2117,37 @@ void I3_process_mudlist(I3_HEADER *header, char *s)
 	    ps = next_ps;
 
 	    I3_get_field(ps, &next_ps);
-	    I3_remove_quotes(&ps);
+	    remove_quotes(&ps);
 	    I3STRFREE(mud->mudlib);
 	    mud->mudlib = I3STRALLOC(ps);
 	    ps = next_ps;
 
 	    I3_get_field(ps, &next_ps);
-	    I3_remove_quotes(&ps);
+	    remove_quotes(&ps);
 	    I3STRFREE(mud->base_mudlib);
 	    mud->base_mudlib = I3STRALLOC(ps);
 	    ps = next_ps;
 
 	    I3_get_field(ps, &next_ps);
-	    I3_remove_quotes(&ps);
+	    remove_quotes(&ps);
 	    I3STRFREE(mud->driver);
 	    mud->driver = I3STRALLOC(ps);
 	    ps = next_ps;
 
 	    I3_get_field(ps, &next_ps);
-	    I3_remove_quotes(&ps);
+	    remove_quotes(&ps);
 	    I3STRFREE(mud->mud_type);
 	    mud->mud_type = I3STRALLOC(ps);
 	    ps = next_ps;
 
 	    I3_get_field(ps, &next_ps);
-	    I3_remove_quotes(&ps);
+	    remove_quotes(&ps);
 	    I3STRFREE(mud->open_status);
 	    mud->open_status = I3STRALLOC(ps);
 	    ps = next_ps;
 
 	    I3_get_field(ps, &next_ps);
-	    I3_remove_quotes(&ps);
+	    remove_quotes(&ps);
 	    I3STRFREE(mud->admin_email);
 	    mud->admin_email = I3STRALLOC(ps);
 	    ps = next_ps;
@@ -2319,7 +2163,7 @@ void I3_process_mudlist(I3_HEADER *header, char *s)
 		    break;
 
 		I3_get_field(ps, &next_ps3);
-		I3_remove_quotes(&ps);
+		remove_quotes(&ps);
 		strlcpy(key, ps, MAX_INPUT_LENGTH);
 		ps = next_ps3;
 		I3_get_field(ps, &next_ps3);
@@ -2425,7 +2269,7 @@ void I3_process_mudlist(I3_HEADER *header, char *s)
 			    break;
 			}
 			if (!strcasecmp(key, "url")) {
-			    I3_remove_quotes(&ps);
+			    remove_quotes(&ps);
 			    I3STRFREE(mud->web_wrong);
 			    mud->web_wrong = I3STRALLOC(ps);
 			    break;
@@ -2490,7 +2334,7 @@ void I3_process_chanlist_reply(I3_HEADER *header, char *s)
 	char                                   *next_ps2;
 
 	I3_get_field(ps, &next_ps);
-	I3_remove_quotes(&ps);
+	remove_quotes(&ps);
 	strlcpy(chan, ps, MAX_INPUT_LENGTH);
 
 	ps = next_ps;
@@ -2508,7 +2352,7 @@ void I3_process_chanlist_reply(I3_HEADER *header, char *s)
 
 	    ps += 2;
 	    I3_get_field(ps, &next_ps);
-	    I3_remove_quotes(&ps);
+	    remove_quotes(&ps);
 	    I3STRFREE(channel->host_mud);
 	    channel->host_mud = I3STRALLOC(ps);
 	    ps = next_ps;
@@ -2784,12 +2628,12 @@ void I3_chan_filter_m(I3_CHANNEL *channel, I3_HEADER *header, char *s)
                                             newmsg[MAX_STRING_LENGTH];
 
     I3_get_field(ps, &next_ps);
-    I3_remove_quotes(&ps);
+    remove_quotes(&ps);
     strlcpy(visname, ps, MAX_INPUT_LENGTH);
 
     ps = next_ps;
     I3_get_field(ps, &next_ps);
-    I3_remove_quotes(&ps);
+    remove_quotes(&ps);
     strlcpy(newmsg, ps, MAX_STRING_LENGTH);
     snprintf(newmsg, MAX_STRING_LENGTH, "%s%s", ps, " (filtered M)");
 
@@ -2823,12 +2667,12 @@ void I3_chan_filter_e(I3_CHANNEL *channel, I3_HEADER *header, char *s)
                                             newmsg[MAX_STRING_LENGTH];
 
     I3_get_field(ps, &next_ps);
-    I3_remove_quotes(&ps);
+    remove_quotes(&ps);
     strlcpy(visname, ps, MAX_INPUT_LENGTH);
 
     ps = next_ps;
     I3_get_field(ps, &next_ps);
-    I3_remove_quotes(&ps);
+    remove_quotes(&ps);
     snprintf(newmsg, MAX_STRING_LENGTH, "%s%s", ps, " (filtered E)");
 
     I3_write_header("chan-filter-reply", this_i3mud->name, NULL, I3_ROUTER_NAME, NULL);
@@ -2864,32 +2708,32 @@ void I3_chan_filter_t(I3_CHANNEL *channel, I3_HEADER *header, char *s)
     char                                    visname_o[MAX_INPUT_LENGTH];
 
     I3_get_field(ps, &next_ps);
-    I3_remove_quotes(&ps);
+    remove_quotes(&ps);
     strlcpy(targetmud, ps, MAX_INPUT_LENGTH);
 
     ps = next_ps;
     I3_get_field(ps, &next_ps);
-    I3_remove_quotes(&ps);
+    remove_quotes(&ps);
     strlcpy(targetuser, ps, MAX_INPUT_LENGTH);
 
     ps = next_ps;
     I3_get_field(ps, &next_ps);
-    I3_remove_quotes(&ps);
+    remove_quotes(&ps);
     snprintf(message_o, MAX_STRING_LENGTH, "%s%s", ps, " (filtered T)");
 
     ps = next_ps;
     I3_get_field(ps, &next_ps);
-    I3_remove_quotes(&ps);
+    remove_quotes(&ps);
     snprintf(message_t, MAX_STRING_LENGTH, "%s%s", ps, " (filtered T)");
 
     ps = next_ps;
     I3_get_field(ps, &next_ps);
-    I3_remove_quotes(&ps);
+    remove_quotes(&ps);
     strlcpy(visname_o, ps, MAX_INPUT_LENGTH);
 
     ps = next_ps;
     I3_get_field(ps, &next_ps);
-    I3_remove_quotes(&ps);
+    remove_quotes(&ps);
 
     I3_write_header("chan-filter-reply", this_i3mud->name, NULL, I3_ROUTER_NAME, NULL);
     I3_write_buffer("\"");
@@ -2927,7 +2771,7 @@ void I3_process_channel_filter(I3_HEADER *header, char *s)
     I3_HEADER                              *second_header;
 
     I3_get_field(ps, &next_ps);
-    I3_remove_quotes(&ps);
+    remove_quotes(&ps);
 
     if (!(channel = find_I3_channel_by_name(ps))) {
 	log_info("I3_process_channel_filter: received unknown channel (%s)", ps);
@@ -2940,13 +2784,13 @@ void I3_process_channel_filter(I3_HEADER *header, char *s)
     ps = next_ps;
     ps += 2;
     I3_get_field(ps, &next_ps);
-    I3_remove_quotes(&ps);
+    remove_quotes(&ps);
     strlcpy(ptype, ps, MAX_INPUT_LENGTH);
 
     second_header = I3_get_header(&ps);
 
     I3_get_field(ps, &next_ps);
-    I3_remove_quotes(&ps);
+    remove_quotes(&ps);
 
     if (!strcasecmp(ptype, "channel-m"))
 	I3_chan_filter_m(channel, second_header, next_ps);
@@ -3107,7 +2951,7 @@ void I3_process_channel_t(I3_HEADER *header, char *s)
     struct tm                              *local = localtime(&i3_time);
 
     I3_get_field(ps, &next_ps);
-    I3_remove_quotes(&ps);
+    remove_quotes(&ps);
 
     if (!(channel = find_I3_channel_by_name(ps))) {
 	log_info("I3_process_channel_t: received unknown channel (%s)", ps);
@@ -3119,32 +2963,32 @@ void I3_process_channel_t(I3_HEADER *header, char *s)
 
     ps = next_ps;
     I3_get_field(ps, &next_ps);
-    I3_remove_quotes(&ps);
+    remove_quotes(&ps);
     strlcpy(targetmud, ps, MAX_INPUT_LENGTH);
 
     ps = next_ps;
     I3_get_field(ps, &next_ps);
-    I3_remove_quotes(&ps);
+    remove_quotes(&ps);
     strlcpy(targetuser, ps, MAX_INPUT_LENGTH);
 
     ps = next_ps;
     I3_get_field(ps, &next_ps);
-    I3_remove_quotes(&ps);
+    remove_quotes(&ps);
     strlcpy(message_o, ps, MAX_STRING_LENGTH);
 
     ps = next_ps;
     I3_get_field(ps, &next_ps);
-    I3_remove_quotes(&ps);
+    remove_quotes(&ps);
     strlcpy(message_t, ps, MAX_STRING_LENGTH);
 
     ps = next_ps;
     I3_get_field(ps, &next_ps);
-    I3_remove_quotes(&ps);
+    remove_quotes(&ps);
     strlcpy(visname_o, ps, MAX_INPUT_LENGTH);
 
     ps = next_ps;
     I3_get_field(ps, &next_ps);
-    I3_remove_quotes(&ps);
+    remove_quotes(&ps);
 
     snprintf(sname, MAX_INPUT_LENGTH, "%s@%s", visname_o, header->originator_mudname);
     snprintf(tname, MAX_INPUT_LENGTH, "%s@%s", ps, targetmud);
@@ -3205,7 +3049,7 @@ void I3_process_channel_m(I3_HEADER *header, char *s)
     char                                    magic_visname[MAX_INPUT_LENGTH];
 
     I3_get_field(ps, &next_ps);
-    I3_remove_quotes(&ps);
+    remove_quotes(&ps);
 
     if (!(channel = find_I3_channel_by_name(ps))) {
 	log_info("channel_m: received unknown channel (%s)", ps);
@@ -3225,12 +3069,12 @@ void I3_process_channel_m(I3_HEADER *header, char *s)
 
     ps = next_ps;
     I3_get_field(ps, &next_ps);
-    I3_remove_quotes(&ps);
+    remove_quotes(&ps);
     strlcpy(visname, ps, MAX_INPUT_LENGTH);
 
     ps = next_ps;
     I3_get_field(ps, &next_ps);
-    I3_remove_quotes(&ps);
+    remove_quotes(&ps);
 
     /* Try to squash multiple trailing newlines in the packet message */
     strlcpy(tps, ps, MAX_STRING_LENGTH);
@@ -3308,7 +3152,7 @@ void I3_process_channel_e(I3_HEADER *header, char *s)
     int                                     hack_len = 0;
 
     I3_get_field(ps, &next_ps);
-    I3_remove_quotes(&ps);
+    remove_quotes(&ps);
 
     if (!(channel = find_I3_channel_by_name(ps))) {
 	log_info("channel_e: received unknown channel (%s)", ps);
@@ -3320,13 +3164,13 @@ void I3_process_channel_e(I3_HEADER *header, char *s)
 
     ps = next_ps;
     I3_get_field(ps, &next_ps);
-    I3_remove_quotes(&ps);
+    remove_quotes(&ps);
     //snprintf(visname, MAX_INPUT_LENGTH, "%s@%s", ps, header->originator_mudname);
     strlcpy(visname, ps, MAX_INPUT_LENGTH);
 
     ps = next_ps;
     I3_get_field(ps, &next_ps);
-    I3_remove_quotes(&ps);
+    remove_quotes(&ps);
 
     /* Try to squash multiple trailing newlines in the packet message */
     strlcpy(tps, ps, MAX_STRING_LENGTH);
@@ -3393,7 +3237,7 @@ void I3_process_chan_who_req(I3_HEADER *header, char *s)
     I3_CHANNEL                             *channel;
 
     I3_get_field(ps, &next_ps);
-    I3_remove_quotes(&ps);
+    remove_quotes(&ps);
 
     snprintf(ibuf, MAX_INPUT_LENGTH, "%s@%s", header->originator_username,
 	     header->originator_mudname);
@@ -3454,7 +3298,7 @@ void I3_process_chan_who_reply(I3_HEADER *header, char *s)
     }
 
     I3_get_field(ps, &next_ps);
-    I3_remove_quotes(&ps);
+    remove_quotes(&ps);
     i3_printf(ch, "%%^WHITE%%^%%^BOLD%%^Users listening to %s on %s:%%^RESET%%^\r\n\r\n", ps, header->originator_mudname);
 
     ps = next_ps;
@@ -3466,7 +3310,7 @@ void I3_process_chan_who_reply(I3_HEADER *header, char *s)
 	    return;
 	}
 	I3_get_field(ps, &next_ps);
-	I3_remove_quotes(&ps);
+	remove_quotes(&ps);
 	i3_printf(ch, "%%^CYAN%%^%s%%^RESET%%^\r\n", ps);
 
 	ps = next_ps;
@@ -3544,7 +3388,7 @@ void I3_process_beep(I3_HEADER *header, char *s)
     }
 
     I3_get_field(ps, &next_ps);
-    I3_remove_quotes(&ps);
+    remove_quotes(&ps);
 
     i3_printf(ch, "%%^YELLOW%%^\a%s@%s i3beeps you.%%^RESET%%^\r\n", ps, header->originator_mudname);
     return;
@@ -3644,7 +3488,7 @@ void I3_process_tell(I3_HEADER *header, char *s)
     }
 
     I3_get_field(ps, &next_ps);
-    I3_remove_quotes(&ps);
+    remove_quotes(&ps);
 
     snprintf(usr, MAX_INPUT_LENGTH, "%s@%s", ps, header->originator_mudname);
     //snprintf(buf, MAX_INPUT_LENGTH, "'%s@%s'", ps, header->originator_mudname);
@@ -3657,7 +3501,7 @@ void I3_process_tell(I3_HEADER *header, char *s)
 
     ps = next_ps;
     I3_get_field(ps, &next_ps);
-    I3_remove_quotes(&ps);
+    remove_quotes(&ps);
 
     snprintf(buf, MAX_INPUT_LENGTH, "%s %%^CYAN%%^%%^BOLD%%^%s%%^RESET%%^ %%^YELLOW%%^i3tells you: %%^RESET%%^%s", color_time(local), usr, ps);
     i3_printf(ch, "%s%%^RESET%%^\r\n", buf);
@@ -4007,14 +3851,14 @@ void I3_process_who_reply(I3_HEADER *header, char *s)
 
 	ps += 2;
 	I3_get_field(ps, &next_ps2);
-	I3_remove_quotes(&ps);
+	remove_quotes(&ps);
 	strlcpy(person, ps, MAX_STRING_LENGTH);
 	ps = next_ps2;
 	I3_get_field(ps, &next_ps2);
 	idle = atoi(ps);
 	ps = next_ps2;
 	I3_get_field(ps, &next_ps2);
-	I3_remove_quotes(&ps);
+	remove_quotes(&ps);
 	strlcpy(title, ps, MAX_INPUT_LENGTH);
 	ps = next_ps2;
 
@@ -4092,12 +3936,12 @@ void I3_process_emoteto(I3_HEADER *header, char *s)
     }
 
     I3_get_field(ps, &next_ps);
-    I3_remove_quotes(&ps);
+    remove_quotes(&ps);
     snprintf(visname, MAX_INPUT_LENGTH, "%s@%s", ps, header->originator_mudname);
 
     ps = next_ps;
     I3_get_field(ps, &next_ps);
-    I3_remove_quotes(&ps);
+    remove_quotes(&ps);
 
     i3_printf(ch, "%%^CYAN%%^%s%%^RESET%%^\r\n",
             I3_convert_channel_message(ps, visname, visname));
@@ -4135,27 +3979,27 @@ void I3_process_finger_reply(I3_HEADER *header, char *s)
 	return;
 
     I3_get_field(ps, &next_ps);
-    I3_remove_quotes(&ps);
+    remove_quotes(&ps);
     i3_printf(ch, "%%^WHITE%%^I3FINGER information for %%^GREEN%%^%%^BOLD%%^%s@%s%%^RESET%%^\r\n", ps, header->originator_mudname);
     i3_printf(ch, "%%^WHITE%%^-------------------------------------------------%%^RESET%%^\r\n");
     ps = next_ps;
 
     I3_get_field(ps, &next_ps);
-    I3_remove_quotes(&ps);
+    remove_quotes(&ps);
     strlcpy(title, ps, MAX_INPUT_LENGTH);
     ps = next_ps;
 
     I3_get_field(ps, &next_ps);
-    I3_remove_quotes(&ps);
+    remove_quotes(&ps);
     ps = next_ps;
 
     I3_get_field(ps, &next_ps);
-    I3_remove_quotes(&ps);
+    remove_quotes(&ps);
     strlcpy(email, ps, MAX_INPUT_LENGTH);
     ps = next_ps;
 
     I3_get_field(ps, &next_ps);
-    I3_remove_quotes(&ps);
+    remove_quotes(&ps);
     strlcpy(last, ps, MAX_INPUT_LENGTH);
     ps = next_ps;
 
@@ -4163,16 +4007,16 @@ void I3_process_finger_reply(I3_HEADER *header, char *s)
     ps = next_ps;
 
     I3_get_field(ps, &next_ps);
-    I3_remove_quotes(&ps);
+    remove_quotes(&ps);
     ps = next_ps;
 
     I3_get_field(ps, &next_ps);
-    I3_remove_quotes(&ps);
+    remove_quotes(&ps);
     strlcpy(level, ps, MAX_INPUT_LENGTH);
     ps = next_ps;
 
     I3_get_field(ps, &next_ps);
-    I3_remove_quotes(&ps);
+    remove_quotes(&ps);
 
     i3_printf(ch, "%%^WHITE%%^Title: %%^GREEN%%^%%^BOLD%%^%s%%^RESET%%^\r\n", title);
     i3_printf(ch, "%%^WHITE%%^Level: %%^GREEN%%^%%^BOLD%%^%s%%^RESET%%^\r\n", level);
@@ -4192,7 +4036,7 @@ void I3_process_finger_req(I3_HEADER *header, char *s)
                                             buf[MAX_INPUT_LENGTH];
 
     I3_get_field(ps, &next_ps);
-    I3_remove_quotes(&ps);
+    remove_quotes(&ps);
 
     snprintf(buf, MAX_INPUT_LENGTH, "%s@%s", header->originator_username,
 	     header->originator_mudname);
@@ -4297,12 +4141,12 @@ void I3_process_locate_reply(I3_HEADER *header, char *s)
 	return;
 
     I3_get_field(ps, &next_ps);
-    I3_remove_quotes(&ps);
+    remove_quotes(&ps);
     strlcpy(mud_name, ps, MAX_INPUT_LENGTH);
     ps = next_ps;
 
     I3_get_field(ps, &next_ps);
-    I3_remove_quotes(&ps);
+    remove_quotes(&ps);
     strlcpy(user_name, ps, MAX_INPUT_LENGTH);
     ps = next_ps;
 
@@ -4310,7 +4154,7 @@ void I3_process_locate_reply(I3_HEADER *header, char *s)
     ps = next_ps;
 
     I3_get_field(ps, &next_ps);
-    I3_remove_quotes(&ps);
+    remove_quotes(&ps);
     strlcpy(status, ps, MAX_INPUT_LENGTH);
 
     if (!strcasecmp(status, "active"))
@@ -4333,7 +4177,7 @@ void I3_process_locate_req(I3_HEADER *header, char *s)
     bool                                    choffline = FALSE;
 
     I3_get_field(ps, &next_ps);
-    I3_remove_quotes(&ps);
+    remove_quotes(&ps);
 
     snprintf(buf, MAX_INPUT_LENGTH, "%s@%s", header->originator_username,
 	     header->originator_mudname);
@@ -4409,7 +4253,7 @@ void I3_process_channel_adminlist_reply(I3_HEADER *header, char *s)
     }
 
     I3_get_field(ps, &next_ps);
-    I3_remove_quotes(&ps);
+    remove_quotes(&ps);
     if (!(channel = find_I3_channel_by_name(ps))) {
 	log_error("I3_process_channel_adminlist_reply(): Invalid local channel %s reply received.",
 	      ps);
@@ -4428,7 +4272,7 @@ void I3_process_channel_adminlist_reply(I3_HEADER *header, char *s)
 	}
 
 	I3_get_field(ps, &next_ps);
-	I3_remove_quotes(&ps);
+	remove_quotes(&ps);
 	i3_printf(ch, "%%^YELLOW%%^%s%%^RESET%%^\r\n", ps);
 
 	ps = next_ps;
@@ -4549,19 +4393,19 @@ I3_HEADER                              *I3_get_header(char **pps)
     I3_get_field(ps, &next_ps);
     ps = next_ps;
     I3_get_field(ps, &next_ps);
-    I3_remove_quotes(&ps);
+    remove_quotes(&ps);
     strlcpy(header->originator_mudname, ps, MAX_INPUT_LENGTH);
     ps = next_ps;
     I3_get_field(ps, &next_ps);
-    I3_remove_quotes(&ps);
+    remove_quotes(&ps);
     strlcpy(header->originator_username, ps, MAX_INPUT_LENGTH);
     ps = next_ps;
     I3_get_field(ps, &next_ps);
-    I3_remove_quotes(&ps);
+    remove_quotes(&ps);
     strlcpy(header->target_mudname, ps, MAX_INPUT_LENGTH);
     ps = next_ps;
     I3_get_field(ps, &next_ps);
-    I3_remove_quotes(&ps);
+    remove_quotes(&ps);
     strlcpy(header->target_username, ps, MAX_INPUT_LENGTH);
 
     *pps = next_ps;
@@ -4591,7 +4435,7 @@ void I3_parse_packet(void)
 
     ps += 2;
     I3_get_field(ps, &next_ps);
-    I3_remove_quotes(&ps);
+    remove_quotes(&ps);
     strlcpy(ptype, ps, MAX_INPUT_LENGTH);
 
     header = I3_get_header(&ps);
@@ -4728,7 +4572,7 @@ void I3_handle_packet(char *packetBuffer)
 
     ps += 2;
     I3_get_field(ps, &next_ps);
-    I3_remove_quotes(&ps);
+    remove_quotes(&ps);
     strlcpy(ptype, ps, MAX_INPUT_LENGTH);
 
     header = I3_get_header(&ps);

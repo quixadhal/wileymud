@@ -2023,3 +2023,90 @@ char *date_only(time_t the_time) {
     return time_string;
 }
 
+/*
+ * Remove "'s at begin/end of string
+ * If a character is prefixed by \'s it also will be unescaped
+ */
+void remove_quotes(char **ps)
+{
+    char                                   *ps1,
+                                           *ps2;
+
+    if (*ps[0] == '"')
+	(*ps)++;
+    if ((*ps)[strlen(*ps) - 1] == '"')
+	(*ps)[strlen(*ps) - 1] = 0;
+
+    ps1 = ps2 = *ps;
+    while (ps2[0]) {
+	if (ps2[0] == '\\') {
+	    ps2++;
+	}
+	ps1[0] = ps2[0];
+	ps1++;
+	ps2++;
+    }
+    ps1[0] = '\0';
+}
+
+/*
+ * Adds "'s at begin/end of string.
+ * Also escapes any " or ' characters inside the string.
+ */
+char *add_quotes(char *s)
+{
+    static char          buf[MAX_STRING_LENGTH];
+    char                *ps = buf;
+    int                  i;
+
+    if(s[0] != '"') {
+        *ps++ = '"';
+    }
+    for(i = 0; i < strlen(s); i++) {
+        switch( s[i] ) {
+            case '"':
+            case '\'':
+                *ps++ = '\\';
+                *ps++ = s[i];
+                break;
+            default:
+                *ps++ = s[i];
+                break;
+        }
+    }
+    if(s[strlen(s)-1] != '"') {
+        *ps++ = '"';
+    }
+    *ps = '\0';
+    return buf;
+}
+
+char *strrep(const char *src, const char *search, const char *rep)
+{
+    static char result[MAX_STRING_LENGTH];
+    const char *src_p;
+    size_t search_len = strlen(search);
+    size_t rep_len = strlen(rep);
+    char bit[2];
+
+    bzero(result, MAX_STRING_LENGTH);
+    bit[0] = bit[1] = '\0';
+
+    if(!src || !*src)
+        return result;
+
+    for( src_p = src; *src_p && strlen(result) < (MAX_STRING_LENGTH - rep_len); ) {
+        if(strncmp(src_p, search, search_len) == 0) {
+            // Found search string at current source position
+            strcat(result, rep);
+            src_p += search_len;
+        } else {
+            // Current position NOT the start of a pattern
+            bit[0] = *src_p;
+            strcat(result, bit);
+            src_p++;
+        }
+    }
+    return result;
+}
+
