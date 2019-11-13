@@ -2110,3 +2110,16 @@ char *strrep(const char *src, const char *search, const char *rep)
     return result;
 }
 
+char *hex_dump(const unsigned char *data, const size_t len) {
+    static char result[MAX_STRING_LENGTH];
+
+    strcpy(result, "b'");
+    for(size_t i = 0; i < len; i++) {
+        // Truncate if we will overflow
+        if(i >= MAX_STRING_LENGTH - 3)
+            break;
+        scprintf(result, MAX_STRING_LENGTH, "\\x%02x", (unsigned char)data[i]);
+    }
+    strlcat(result, "'\n", MAX_STRING_LENGTH);
+    return result;
+}

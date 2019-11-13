@@ -80,7 +80,7 @@ tOBJ =	mob_actions.o spec_procs.o breath_weapons.o tracking.o act_comm.o \
 	trap.o utils.o weather.o whod.o events.o \
 	ban.o sha256.o imc.o i3.o sql.o \
 	stringmap.o scheduler.o crc32.o reboot.o rent.o \
-	help.o
+	help.o base64.o 2fa.o
 OBJ =	$(addprefix obj/, $(tOBJ))
 
 tIDOBJ		= id_close.o id_open.o id_parse.o \
@@ -289,6 +289,7 @@ obj/spec_procs.o: spec_procs.c include/global.h include/bug.h include/utils.h \
   include/spell_parser.h include/fight.h include/breath_weapons.h \
   include/mob_actions.h include/tracking.h include/weather.h \
   include/spec_procs.h
+obj/base64.o: base64.c include/base64.h
 obj/act_obj.o: act_obj.c include/global.h include/bug.h include/utils.h \
   include/comm.h include/interpreter.h include/handler.h include/db.h \
   include/spells.h include/trap.h include/spell_parser.h \
@@ -304,6 +305,8 @@ obj/utils.o: utils.c include/global.h include/bug.h include/spells.h \
   include/act_info.h include/reception.h include/act_off.h \
   include/magic_utils.h include/mudlimits.h include/act_skills.h \
   include/i3.h include/utils.h
+obj/2fa.o: 2fa.c include/global.h include/bug.h include/utils.h \
+  include/base64.h include/2fa.h
 obj/crc32.o: crc32.c include/crc32.h
 obj/rent.o: rent.c include/global.h include/bug.h include/utils.h \
   include/comm.h include/sql.h include/rent.h
