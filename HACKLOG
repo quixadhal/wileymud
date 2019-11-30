@@ -340,3 +340,20 @@ apt install libapache2-mod-bw
 cpan
     install Image::MetaData::JPEG
 
+Upgraded virtualbox to 6.x
+Installed guest tools
+setup shared folders for the pictures and videos from my desktop
+so they can be accessed "directly" without needing to go through samba
+
+usermod -a -G vboxsf wiley
+
+apt install minidlna
+edit /etc/minidlna.conf
+    media_dir=P,/media/sf_Pictures
+    media_dir=V,/media/sf_Videos
+    db_dir=/var/cache/minidlna
+    log_dir=/var/log
+    friendly_name=WileyMUD
+
+usermod -a -G vboxsf minidlna
+

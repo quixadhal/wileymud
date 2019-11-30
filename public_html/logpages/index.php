@@ -48,6 +48,9 @@ $LOG_LINK       = "<a href=\"https://themud.org/chanhist.php#Channel=all\" alt=\
 $DISCORD_LINK   = "<a href=\"https://discord.gg/kUduSsJ\" alt=\"Discord\" title=\"Discord\">$DISCORD_IMG</a>";
 $SERVER_LINK    = "<a href=\"$URL_HOME/server.php\" alt=\"Server\" title=\"Server\">$SERVER_IMG</a>";
 
+$OVERLAY_ICON   = "$URL_HOME/gfx/archive_stamp.png";
+$OVERLAY_IMG    = "<img class=\"overlay-fixed\" src=\"$OVERLAY_ICON\" />";
+
 $JQUI_CSS       = "$LOG_HOME/jquery/jquery-ui.css";
 $JQUI_THEME     = "$LOG_HOME/jquery/jquery-ui.theme.css";
 $JQ             = "$LOG_HOME/jquery.js";
@@ -281,48 +284,8 @@ function fetch_page_by_date($db, $query_date = NULL) {
     $sql = "
              SELECT *
                FROM page_view
-              WHERE date(created) = :query_date
-           ORDER BY created ASC;
-    ";
-    $sql = "
-             SELECT i3log.local,
-                    i3log.is_emote,
-                    i3log.is_url,
-                    i3log.is_bot,
-                    i3log.channel,
-                    i3log.speaker,
-                    i3log.mud,
-                    i3log.message,
-                    to_char(i3log.local, 'YYYY-MM-DD')  the_date,
-                    to_char(i3log.local, 'HH24:MI:SS')  the_time,
-                    to_char(i3log.local, 'YYYY')        the_year,
-                    to_char(i3log.local, 'MM')          the_month,
-                    to_char(i3log.local, 'DD')          the_day,
-                    to_char(i3log.local, 'HH24')        the_hour,
-                    to_char(i3log.local, 'MI')          the_minute,
-                    to_char(i3log.local, 'SS')          the_second,
-                    date_part('hour', i3log.local)      int_hour,
-                    hours.pinkfish                      hour_color,
-                    channels.pinkfish                   channel_color,
-                    speakers.pinkfish                   speaker_color,
-                    pinkfish_map_hour.html              hour_html,
-                    pinkfish_map_channel.html           channel_html,
-                    pinkfish_map_speaker.html           speaker_html
-               FROM i3log
-          LEFT JOIN hours
-                 ON (date_part('hour', i3log.local) = hours.hour)
-          LEFT JOIN channels
-                 ON (lower(i3log.channel) = channels.channel)
-          LEFT JOIN speakers
-                 ON (lower(i3log.username) = speakers.speaker)
-          LEFT JOIN pinkfish_map pinkfish_map_hour
-                 ON (hours.pinkfish = pinkfish_map_hour.pinkfish)
-          LEFT JOIN pinkfish_map pinkfish_map_channel
-                 ON (channels.pinkfish = pinkfish_map_channel.pinkfish)
-          LEFT JOIN pinkfish_map pinkfish_map_speaker
-                 ON (speakers.pinkfish = pinkfish_map_speaker.pinkfish)
-              WHERE date(i3log.local) = :query_date
-           ORDER BY i3log.local ASC;
+              WHERE date(local) = :query_date
+           ORDER BY local ASC;
     ";
     try {
         //$db->beginTransaction();
@@ -681,9 +644,11 @@ header("Pragma: no-cache");
             #navbar { position: fixed; top: 0; background-color: black; }
             #content-header { position: fixed; top: 58px; width: 100%; background-color: black; }
             #content { padding-top: 48px; }
+            .overlay-fixed { position: fixed; top: 48px; left: 0px; width: 100%; height: 100%; z-index: 999; opacity: 0.3; pointer-events: none; }
         </style>
     </head>
     <body bgcolor="black" text="#d0d0d0" link="#ffffbf" vlink="#ffa040" onload="setup();">
+        <!-- <?php echo $OVERLAY_IMG; ?> -->
         <table id="navbar" width="99%" align="center">
             <tr>
                 <td align="left" width="25%">
@@ -776,7 +741,7 @@ header("Pragma: no-cache");
     $bg_color = ($counter % 2) ? "#000000" : "#1F1F1F";
 ?>
         <tr id="row_<?php echo $counter;?>" style="display:none">
-            <td colspan="4" align="right" bgcolor="<?php echo $bg_color;?>"><span id="yourTime" style="color: #1F1F1F">&nbsp;</span></td>
+            <td colspan="4" align="right" bgcolor="<?php echo $bg_color;?>"><span id="yourTime" style="color: #1F1F1F; display:none">&nbsp;</span></td>
             <td align="right" bgcolor="<?php echo $bg_color;?>"><?php printf("%7.3f seconds",$time_spent);?></td>
         </tr>
             </tbody>

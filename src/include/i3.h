@@ -52,7 +52,7 @@
 /* Remcon: Ask and ye shall receive. */
 #define I3_DIR           "i3/"
 #define PLAYER_DIR       "ply/"
-#define HTTP_PLACEHOLDER        "http://www.shadowlord.org:8088/"
+#define HTTP_PLACEHOLDER        "http://wileymud.themud.org/~wiley/"
 #define MAXPLAYERS_PLACEHOLDER  0
 #define NUMLOGINS_PLACEHOLDER   0
 #define RFC1123FMT              "%a, %d %b %Y %H:%M:%S %Z"

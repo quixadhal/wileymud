@@ -1,40 +1,42 @@
 #PLAYER
-Name               Stanach~
-Passwd             StvActGIQQDYM~
+Name               Busty~
+Passwd             BuMxjRLVuQnmw~
 Whizz              0
 PreTitle           ~
-Title              the Human Supplicant~
+Title              the Human Swordpupil/Pilferess~
 Description
-ugly~
-LastSite           adork@c-73-136-75-178.hsd1.tx.comcast.net~
-LastLogin          1571844150
-Birth              1363395308
-Played             1194
-Sex                1
+This is the face of Busty Halfway, though it's said there are two of them.  Faces, that is.  I mean she certainly has two of THEM, they're impossible to miss, specially on such a small frame.
+~
+LastSite           adork@137.162.31.213.dyn.plus.net~
+LastLogin          1565616337
+Birth              1565615976
+Played             64
+Sex                2
 Race               1
-Class              1
+Class              12
 Alignment          0
 Exp                1
-Level              mage 1
-HeightWeight       199 123
+Level              warrior 1
+Level              thief 1
+HeightWeight       164 149
 Gold               0 0
 HomeTown           3008
 LoadRoom           -1
 PoofIn             ~
 PoofOut            ~
-AbilityScores      10 0 10 8 15 14
+AbilityScores      14 0 13 12 10 10
 AbilityPad         0 0 0 0
-HpManaMove         22 20 105 0 105 0
+HpManaMove         25 20 101 0 101 101
 AC                 100
 ToHitDamage        0 0
 SaveApply          0 0 0 0 0
-Conditions         0 14 14 0 0 0
+Conditions         0 23 23 0 0 0
 PointsPad1         0 0 0
 PointsPad2         0 0 0 0
 PointsPad3         0 0 0
 ShortSavePad       0 0 0 0
 SavePad            0 0 0 0
-Pracs              3
+Pracs              6
 SkillsToLearn      0
 NamedSkill         1 0 0 armor~
 NamedSkill         2 0 0 teleport~
@@ -80,11 +82,11 @@ NamedSkill         41 0 0 ventriloquate~
 NamedSkill         42 0 0 word of recall~
 NamedSkill         43 0 0 remove poison~
 NamedSkill         44 0 0 sense life~
-NamedSkill         45 0 0 sneak~
-NamedSkill         46 0 0 hide~
-NamedSkill         47 0 0 steal~
-NamedSkill         48 0 0 backstab~
-NamedSkill         49 0 0 pick lock~
+NamedSkill         45 1 0 sneak~
+NamedSkill         46 13 0 hide~
+NamedSkill         47 7 0 steal~
+NamedSkill         48 1 0 backstab~
+NamedSkill         49 1 0 pick lock~
 NamedSkill         50 0 0 kick~
 NamedSkill         51 0 0 bash~
 NamedSkill         52 0 0 rescue~
@@ -206,6 +208,7 @@ Affect             21 0 0 0 0 0 0
 Affect             22 0 0 0 0 0 0
 Affect             23 0 0 0 0 0 0
 Affect             24 0 0 0 0 0 0
-i3perm       1
+i3perm       2
 i3flags      256
+i3listen     wiley
 End

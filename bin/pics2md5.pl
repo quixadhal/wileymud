@@ -9,6 +9,7 @@ my @pics = grep { /\.(jpeg|jpg|png|gif|webp)$/i && -f "./$_" } readdir DP;
 closedir DP;
 
 foreach my $filename (@pics) {
+    next if ! -f $filename;
     open(FP, "-|", "md5sum", $filename) or die "Can't open $filename $!";
     my $md5 = <FP>;
     close FP;
@@ -16,6 +17,8 @@ foreach my $filename (@pics) {
     chomp $md5;
     $md5 = (split /\s/, $md5)[0];
     my $ext = (split /\./, $filename)[-1];
+    $ext = "jpg" if $ext =~ /(jpeg|jpg)/i;
+    $ext = lc $ext;
     my $new_filename = "$md5.$ext";
 
     rename $filename, $new_filename if $filename ne $new_filename;

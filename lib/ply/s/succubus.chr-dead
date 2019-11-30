@@ -1,40 +1,41 @@
 #PLAYER
-Name               Stanach~
-Passwd             StvActGIQQDYM~
+Name               Succubus~
+Passwd             Sul7Zt/91PdG6~
 Whizz              0
 PreTitle           ~
-Title              the Human Supplicant~
+Title              the Elven Supplicant/Swordpupil~
 Description
-ugly~
-LastSite           adork@c-73-136-75-178.hsd1.tx.comcast.net~
-LastLogin          1571844150
-Birth              1363395308
-Played             1194
-Sex                1
-Race               1
-Class              1
+A female demon what comes in the night and makes mad passionate wossname, according to some parrots at least. She has two large, proud, firm, wings and a pair of big, round, curvaceous, horns.~
+LastSite           adork@206.162.31.213.dyn.plus.net~
+LastLogin          1566218261
+Birth              1566217745
+Played             434
+Sex                2
+Race               2
+Class              5
 Alignment          0
-Exp                1
+Exp                61
 Level              mage 1
-HeightWeight       199 123
+Level              warrior 1
+HeightWeight       165 204
 Gold               0 0
 HomeTown           3008
 LoadRoom           -1
 PoofIn             ~
 PoofOut            ~
-AbilityScores      10 0 10 8 15 14
+AbilityScores      12 0 8 8 9 7
 AbilityPad         0 0 0 0
-HpManaMove         22 20 105 0 105 0
+HpManaMove         25 20 102 0 57 107
 AC                 100
 ToHitDamage        0 0
 SaveApply          0 0 0 0 0
-Conditions         0 14 14 0 0 0
+Conditions         0 19 19 0 0 0
 PointsPad1         0 0 0
 PointsPad2         0 0 0 0
 PointsPad3         0 0 0
 ShortSavePad       0 0 0 0
 SavePad            0 0 0 0
-Pracs              3
+Pracs              6
 SkillsToLearn      0
 NamedSkill         1 0 0 armor~
 NamedSkill         2 0 0 teleport~
@@ -180,7 +181,7 @@ NamedSkill         182 0 0 disarm trap~
 NamedSkill         183 0 0 disarm~
 NamedSkill         184 0 0 shield bash~
 NamedSkill         185 0 0 riding~
-ActFlags           0 80
+ActFlags           16 80
 Affect             0 0 0 0 0 0 0
 Affect             1 0 0 0 0 0 0
 Affect             2 0 0 0 0 0 0
@@ -206,6 +207,7 @@ Affect             21 0 0 0 0 0 0
 Affect             22 0 0 0 0 0 0
 Affect             23 0 0 0 0 0 0
 Affect             24 0 0 0 0 0 0
-i3perm       1
+i3perm       2
 i3flags      256
+i3listen     wiley
 End

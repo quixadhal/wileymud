@@ -58,6 +58,9 @@ my $LOG_LINK        = "<a href=\"https://themud.org/chanhist.php#Channel=all\" a
 my $DISCORD_LINK    = "<a href=\"https://discord.gg/kUduSsJ\" alt=\"Discord\" title=\"Discord\">$DISCORD_IMG</a>";
 my $SERVER_LINK     = "<a href=\"$URL_HOME/server.php\" alt=\"Server\" title=\"Server\">$SERVER_IMG</a>";
 
+my $OVERLAY_ICON    = "$URL_HOME/gfx/archive_stamp.png";
+my $OVERLAY_IMG     = "<img class=\"overlay-fixed\" src=\"$OVERLAY_ICON\" />";
+
 my $JQUI_CSS        = "$LOG_HOME/jquery/jquery-ui.css";
 my $JQUI_THEME      = "$LOG_HOME/jquery/jquery-ui.theme.css";
 my $JQ              = "$LOG_HOME/jquery.js";
@@ -969,6 +972,7 @@ if( $do_pages or $do_json ) {
         $last_page = $LIVE_PAGE;
 
         my $page_background = $this_is_the_end ? "#1F0000" : "black";
+        my $overlay_image = $this_is_the_end ? $OVERLAY_IMG : "";
 
         my $page = fetch_page_by_date($DATABASE, $today);
         die "No data for $today? $!" if !defined $page;
@@ -1065,9 +1069,11 @@ if( $do_pages or $do_json ) {
             #navbar { position: fixed; top: 0; background-color: $page_background; }
             #content-header { position: fixed; top: 58px; width: 100%; background-color: $page_background; }
             #content { padding-top: 48px; }
+            .overlay-fixed { position: fixed; top: 48px; left: 0px; width: 100%; height: 100%; z-index: 999; opacity: 0.3; pointer-events: none; }
         </style>
     </head>
     <body bgcolor="$page_background" text="#d0d0d0" link="#ffffbf" vlink="#ffa040" onload="setup();">
+        $overlay_image
         <table id="navbar" width="99%" align="center">
             <tr>
                 <td align="left" width="20%">

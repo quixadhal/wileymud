@@ -612,7 +612,7 @@ sub get_youtube_api {
     }
     #    "duration": "PT1H52M28S",
     if( defined $data ) {
-        print timestamp() . " Got JSON data\n" if $do_debug;
+        print timestamp() . " Got JSON data:".Dumper($data)."\n" if $do_debug;
         if( defined $data->{'items'} ) {
             if( defined $data->{'items'}[0] ) {
                 if( defined $data->{'items'}[0]->{'snippet'} ) {
@@ -624,7 +624,7 @@ sub get_youtube_api {
                 if( defined $data->{'items'}[0]->{'contentDetails'} ) {
                     if( exists $data->{'items'}[0]->{'contentDetails'}->{'duration'} ) {
                         my $funky = $data->{'items'}[0]->{'contentDetails'}->{'duration'};
-                        $funky =~ /PT(?:(\d+)H)?(?:(\d+)M)?(\d+)S/;
+                        $funky =~ /PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?/;
                         my ($hours, $minutes, $seconds) = ($1, $2, $3);
                         $hours = 0 if !defined $hours or $hours =~ /[^\d]/;
                         $minutes = 0 if !defined $minutes or $minutes =~ /[^\d]/;

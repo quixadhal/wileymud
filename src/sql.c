@@ -332,7 +332,8 @@ void setup_urls_table(void) {
                 "    url TEXT, "
                 "    message TEXT, "
                 "    checksum TEXT, "
-                "    hits INTEGER DEFAULT 1 "
+                "    hits INTEGER DEFAULT 1, "
+                "    tiny TEXT "
                 "); ";
     char *sql2 = "DROP INDEX IF EXISTS ix_urls_checksum;";
     char *sql3 = "CREATE UNIQUE INDEX ix_urls_checksum ON urls (checksum);";
