@@ -81,6 +81,7 @@
     $graphics['speedtest_raw'] = $isLocal ? "gfx/speedtest_raw_4478672602.png" : "http://www.speedtest.net/result/4478672602.png";
     $graphics['speedtest_qos'] = $isLocal ? "gfx/speedtest_qos_4478667111.png" : "http://www.speedtest.net/result/4478667111.png";
     $graphics['speedtest_new'] = $isLocal ? "gfx/wave_g_test2.png" : "gfx/wave_g_test2.png";
+    $graphics['speedtest_current'] = $isLocal ? "gfx/speedtest_8811654706.png" : "gfx/speedtest_8811654706.png";
 ?>
 
 <html>
@@ -127,6 +128,7 @@
                     <hr />
                     <h3>Internet Performance:</h3>
                     <center>
+                        Current (Seattle):&nbsp;<img src="<?php echo $graphics['speedtest_current']; ?>" border="0" width="300" height="135" />
                         Seattle:&nbsp;<img src="<?php echo $graphics['speedtest_new']; ?>" border="0" width="300" height="135" />
                         Kalamazoo:&nbsp;<img src="<?php echo $graphics['speedtest_raw']; ?>" border="0" width="300" height="135" />
                     </center>
