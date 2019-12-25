@@ -971,7 +971,8 @@ if( $do_pages or $do_json ) {
         $last_date = $this_is_the_end ? "LIVE" : ("LIVE " . $last_row->{the_date});
         $last_page = $LIVE_PAGE;
 
-        my $page_background = $this_is_the_end ? "#1F0000" : "black";
+        #my $page_background = $this_is_the_end ? "#1F0000" : "black";
+        my $page_background = $this_is_the_end ? "#070707" : "black";
         my $overlay_image = $this_is_the_end ? $OVERLAY_IMG : "";
 
         my $page = fetch_page_by_date($DATABASE, $today);

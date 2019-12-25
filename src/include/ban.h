@@ -40,4 +40,5 @@ void        load_bans(void);
 void        unload_bans(void);
 int         add_ban(struct ban_data *pal);
 int         remove_ban(struct ban_data *pal);
+int         ban_address(const char *ip_addr, const char *reason);
 #endif

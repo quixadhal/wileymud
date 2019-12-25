@@ -340,6 +340,7 @@ apt install libapache2-mod-bw
 cpan
     install Image::MetaData::JPEG
 
+---- Only for the VM ----
 Upgraded virtualbox to 6.x
 Installed guest tools
 setup shared folders for the pictures and videos from my desktop
@@ -356,4 +357,22 @@ edit /etc/minidlna.conf
     friendly_name=WileyMUD
 
 usermod -a -G vboxsf minidlna
+---- Only for the VM ----
+
+apt install cdparanoia flac lame vorbis-tools
+
+--- To upgrade postgresql (forgot to add this earlier)
+
+apt install postgresql-plperl-12
+pg_dropcluster --stop 12 main
+systemctl daemon-reload
+pg_upgradecluster 11 main
+systemctl daemon-reload
+
+apt install libimage-exiftool-perl libencode-hanextra-perl
+apt install rtorrent
+
+apt install build-essential bison libevent-dev libjemalloc-dev libpcre3-dev
+    libpq-dev libsqlite3-dev libssl-dev libz-dev cmake cmake-doc libmariadb-dev
+
 

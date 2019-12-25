@@ -132,6 +132,7 @@ const char                             *command[] = {
     "event", "zpurge", "ticks", "bury", "desecrate",
     "setreboot", "home", "bandage", "unban", "immtrack",
     "ansimap", "version", "autoexit", "reboot", "checkurl",
+    "hint",
     "\n"
 };
 
@@ -740,6 +741,7 @@ void assign_command_pointers(void)
 /* whizz commands */
     COMMANDO(CMD_WIZNET, POSITION_DEAD, do_commune, 51);
     COMMANDO(CMD_advance, POSITION_DEAD, do_advance, 58);
+    COMMANDO(CMD_autoexit, POSITION_DEAD, do_autoexit, 51);
     COMMANDO(CMD_ban, POSITION_DEAD, do_ban, 54);
     COMMANDO(CMD_debug, POSITION_DEAD, do_debug, 59);
     COMMANDO(CMD_event, POSITION_DEAD, do_event, 55);
@@ -803,7 +805,6 @@ void assign_command_pointers(void)
     COMMANDO(CMD_ask, POSITION_RESTING, do_ask, 0);
     COMMANDO(CMD_assist, POSITION_FIGHTING, do_assist, 0);
     COMMANDO(CMD_at, POSITION_DEAD, do_at, 53);
-    COMMANDO(CMD_autoexit, POSITION_DEAD, do_autoexit, 0);
     COMMANDO(CMD_backstab, POSITION_STANDING, do_backstab, 1);
     COMMANDO(CMD_balance, POSITION_RESTING, do_not_here, 1);
     COMMANDO(CMD_bandage, POSITION_FIGHTING, do_bandage, 1);
@@ -883,6 +884,7 @@ void assign_command_pointers(void)
     COMMANDO(CMD_hermit, POSITION_SLEEPING, do_plr_noshout, 1);
     COMMANDO(CMD_hiccup, POSITION_RESTING, do_action, 0);
     COMMANDO(CMD_hide, POSITION_RESTING, do_hide, 1);
+    COMMANDO(CMD_hint, POSITION_SLEEPING, do_info, 0);
     COMMANDO(CMD_hit, POSITION_FIGHTING, do_hit, 0);
     COMMANDO(CMD_hold, POSITION_RESTING, do_grab, 1);
     COMMANDO(CMD_hop, POSITION_RESTING, do_action, 0);
@@ -1219,6 +1221,8 @@ void nanny(struct descriptor_data *d, char *arg)
     char                                    cryptsalt[3] = { '\0', '\0', '\0' };
     char                                    host_name[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
     char                                    ip_addr[20] = "\0\0\0\0\0\0\0";
+    static int                              bad_names = 0;
+    static time_t                           last_bad_name = 0;
 
     if (DEBUG > 2)
 	log_info("called %s with %08zx, %s", __PRETTY_FUNCTION__, (size_t) d, VNULL(arg));
@@ -1259,12 +1263,26 @@ void nanny(struct descriptor_data *d, char *arg)
             if (!strncasecmp(arg, "GET ", 4)) {
                 // Clueless bots thinking this is a web server...
 	        log_info("Kicking connection: %s/%s using %s", host_name, ip_addr, arg);
+                ban_address(ip_addr, "HTTP Spam");
 		close_socket(d);
 		return;
             }
 
 	    if (!valid_parse_name(arg, tmp_name)) {
 	        log_info("Illegal name: \"%s\" from %s/%s", arg, host_name, ip_addr);
+                bad_names++;
+                if(last_bad_name > time(NULL) - 10) {
+                    // Yes, this should be tied to the specific ip_addr, but meh
+                    last_bad_name = time(NULL);
+                    if(bad_names > 3) {
+                        log_info("3 strikes and you're banned!  %s/%s", host_name, ip_addr);
+                        ban_address(ip_addr, "Bad name spam");
+                        close_socket(d);
+                        return;
+                    }
+                } else {
+                    last_bad_name = time(NULL);
+                }
 		dcprintf(d, "\rIllegal name, please try another.\r\nWHAT is your Name? ");
 		return;
 	    }

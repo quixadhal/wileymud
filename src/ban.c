@@ -6,6 +6,7 @@
 #include <unistd.h>
 #include <sys/types.h>
 #include <arpa/inet.h>
+#include <time.h>
 
 #include "global.h"
 #include "utils.h"
@@ -425,6 +426,21 @@ void unload_bans(void) {
     ban_list = NULL;
     ban_list_count = 0;
     log_info("Ban list unloaded");
+}
+
+int ban_address(const char *ip_addr, const char *reason) {
+    struct ban_data                         new_ban;
+
+    new_ban.updated = time(NULL);
+    new_ban.expires = -1;
+    new_ban.enabled = 1;
+    strcpy(new_ban.ban_type, "IP");
+    new_ban.name[0] = '\0';
+    strlcpy(new_ban.ip, ip_addr, MAX_INPUT_LENGTH);
+    strcpy(new_ban.set_by, "SYSTEM");
+    strlcpy(new_ban.reason, (reason && *reason) ? reason : "Spam", MAX_INPUT_LENGTH);
+
+    return add_ban(&new_ban);
 }
 
 // NOTE:  Because the ban unix timestamps are integers, if you want to pass in

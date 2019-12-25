@@ -1219,6 +1219,7 @@ char *process_telnet(char *buffer, int buflen, struct descriptor_data *d, int *o
     static char sequence[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
     int  s = 0;
 
+    bzero(tmp, MAX_STRING_LENGTH);
     bzero(sequence, MAX_STRING_LENGTH);
     // At this point, we want to strip out any TELNET sequences, since we don't support them.
     for(i = 0, j = 0; i < buflen && i < MAX_STRING_LENGTH;) {
@@ -1374,7 +1375,12 @@ int process_input(struct descriptor_data *t)
             log_error("Socket READ error: %s", strerror(errno));
             bzero(read_buffer, MAX_STRING_LENGTH);
             bzero(line_buffer, MAX_STRING_LENGTH);
+            bzero(t->buf, MAX_STRING_LENGTH);
+            filtered = NULL;
             read_ptr = read_buffer;
+            read_buflen = 0;
+            filtered_len = 0;
+            t->buf_len = 0;
             return -1;
         }
     } else {
