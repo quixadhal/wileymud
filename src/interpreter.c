@@ -1275,6 +1275,7 @@ void nanny(struct descriptor_data *d, char *arg)
                     // Yes, this should be tied to the specific ip_addr, but meh
                     last_bad_name = time(NULL);
                     if(bad_names > 3) {
+                        bad_names = 0;
                         log_info("3 strikes and you're banned!  %s/%s", host_name, ip_addr);
                         ban_address(ip_addr, "Bad name spam");
                         close_socket(d);
