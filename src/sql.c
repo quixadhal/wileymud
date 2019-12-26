@@ -690,9 +690,13 @@ void do_checkurl( struct char_data *ch, const char *argument, int cmd )
             }
             log_info("checkurl %s\n%s\n", tmp, buf);
             cprintf(ch, "%s\r\n", buf);
+        } else {
+            log_info("checkurl %s\n", tmp);
+            cprintf(ch, "URL is not known, yet!\r\n");
         }
         PQclear(res);
     } else {
+        log_info("checkurl %s\n", tmp);
         cprintf(ch, "URL is not known, yet!\r\n");
     }
 }

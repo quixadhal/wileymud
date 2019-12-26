@@ -117,13 +117,39 @@ void show_bans(struct char_data *ch)
     if(visible_bans < 1) {
         cprintf(ch, "       %-20s\r\n", "none");
     } else {
+        cprintf(ch, "%-10s %4s %-16s %-16s %s\r\n",
+                    "Date Set",
+                    "Type",
+                    "Name/IP",
+                    "Set By",
+                    "Reason"
+                    );
+        cprintf(ch, "%-10s %4s %-16s %-16s %s\r\n",
+                    "----------",
+                    "----",
+                    "----------------",
+                    "----------------",
+                    "----------------------------"
+                    );
         for(int i = 0; i < ban_list_count; i++) {
             if(!strcasecmp(ban_list[i].ban_type, "NAME"))
-                cprintf(ch, "NAME - %-20s\r\n", ban_list[i].name);
+                cprintf(ch, "%-10s %4s %-16s %-16s %s\r\n",
+                        ban_list[i].updated_text,
+                        "NAME",
+                        ban_list[i].name,
+                        ban_list[i].set_by,
+                        ban_list[i].reason
+                        );
         }
         for(int i = 0; i < ban_list_count; i++) {
             if(!strcasecmp(ban_list[i].ban_type, "IP"))
-                cprintf(ch, "  IP - %-20s\r\n", ban_list[i].ip);
+                cprintf(ch, "%-10s %4s %-16s %-16s %s\r\n",
+                        ban_list[i].updated_text,
+                        "IP",
+                        ban_list[i].ip,
+                        ban_list[i].set_by,
+                        ban_list[i].reason
+                        );
         }
     }
 }
@@ -363,7 +389,9 @@ void load_bans(void) {
     char *sql = "SELECT count(*) FROM bans WHERE enabled;";
     char *sql2 = "SELECT extract(EPOCH from updated) AS updated, "
                  "       extract(EPOCH from expires) AS expires, "
-                 "       enabled::integer, ban_type, name, ip, set_by, reason "
+                 "       enabled::integer, ban_type, name, ip, set_by, reason, "
+                 "       to_char(updated AT TIME ZONE 'US/Pacific', 'YYYY-MM-DD') "
+                 "           AS updated_text "
                  "FROM bans "
                  "WHERE enabled;";
     int rows = 0;
@@ -412,6 +440,7 @@ void load_bans(void) {
                 strlcpy(ban_list[i].ip, PQgetvalue(res,i,5), MAX_INPUT_LENGTH);
                 strlcpy(ban_list[i].set_by, PQgetvalue(res,i,6), MAX_INPUT_LENGTH);
                 strlcpy(ban_list[i].reason, PQgetvalue(res,i,7), MAX_INPUT_LENGTH);
+                strlcpy(ban_list[i].updated_text, PQgetvalue(res,i,8), MAX_INPUT_LENGTH);
             }
         }
         PQclear(res);

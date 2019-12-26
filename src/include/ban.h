@@ -20,6 +20,7 @@ struct ban_data {
     char    ip[MAX_INPUT_LENGTH];           // The address banned.
     char    set_by[MAX_INPUT_LENGTH];       // The immortal that banned you.
     char    reason[MAX_STRING_LENGTH];      // The reason for being banned, if not NULL.
+    char    updated_text[MAX_INPUT_LENGTH]; // A pretty version of the date, not stored. YYYY-MM-DD HH:MM:SS TZZ
 };
 
 #ifndef _BAN_C
