@@ -612,7 +612,9 @@ void do_checkurl( struct char_data *ch, const char *argument, int cmd )
     static char                             tmp[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
     PGresult *res = NULL;
     ExecStatusType st = 0;
-    const char *sql =   "SELECT to_char(created AT TIME ZONE 'US/Pacific', "
+    const char *sql =   "SELECT to_char(created "
+                            "AT TIME ZONE 'UTC' " // This is to work around the timestamp without time zone type
+                            "AT TIME ZONE 'US/Pacific', "
                             "'YYYY-MM-DD HH24:MI:SS ') "
                             "||(select abbrev from pg_timezone_names where name = 'US/Pacific') "
                         "AS created, speaker, hits "
