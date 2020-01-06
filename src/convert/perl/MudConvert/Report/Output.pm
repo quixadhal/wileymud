@@ -19,7 +19,7 @@ sub dump_game {
   my $results = {};
 
   $dump_dir = $cfg->{'destination-dir'}."/Report";
-  if( !(mkdir $dump_dir) ) {
+  if( !(-d $dump_dir) && !(mkdir $dump_dir) ) {
     #system("echo rm -rf ".$cfg->{'destination-dir'}.'/WileyMUD' $cfg->{'destination-dir'}.'/WileyMUD.old');
     #system("echo mv ".$cfg->{'destination-dir'}.'/WileyMUD'." ".$cfg->{'destination-dir'}.'/WileyMUD.old');
     printf STDERR "FATAL: Cannot create output directory (%s) for Report!\n", $dump_dir;

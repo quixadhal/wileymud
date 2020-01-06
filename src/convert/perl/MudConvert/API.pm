@@ -202,6 +202,7 @@ sub flags_value {
   return 0 if !(defined $ref) or !(defined $conversion);
   my $a = join(' + ', map { $conversion->{$_} } @{ $ref });
   $a = eval $a;
+  return 0 if !(defined $a);
   return $a;
 }
 

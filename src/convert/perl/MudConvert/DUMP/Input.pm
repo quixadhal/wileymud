@@ -15,7 +15,7 @@ sub load_game {
   my $dump = Data::Serializer->new();
 
   my $dump_dir = $cfg->{'source-dir'};
-  my $dump_file = "$dump_dir/data.dump";
+  my $dump_file = "$dump_dir/data.json";
 
   if( (! -d $dump_dir) or (! -r $dump_file) or !(open FOO, $dump_file) ) {
     printf STDERR "FATAL: Cannot open input DUMP file (%s) for DUMP!\n", $dump_file;
