@@ -4889,6 +4889,9 @@ void i3_savechar(CHAR_DATA *ch, FILE * fp)
     fprintf(fp, "i3flags      %d\n", I3FLAG(ch));
     if (I3LISTEN(ch) && I3LISTEN(ch)[0] != '\0')
 	fprintf(fp, "i3listen     %s\n", I3LISTEN(ch));
+    else
+	fprintf(fp, "i3listen     %s\n", "wiley");
+
     if (I3DENY(ch) && I3DENY(ch)[0] != '\0')
 	fprintf(fp, "i3deny       %s\n", I3DENY(ch));
     for (temp = FIRST_I3IGNORE(ch); temp; temp = temp->next)

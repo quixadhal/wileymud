@@ -1,5 +1,5 @@
 #COUNT
-Count   2755
+Count   2780
 End
 
 #SPEAKER
@@ -145,6 +145,11 @@ End
 #SPEAKER
 Name   will
 Color  %^BLUE%^
+End
+
+#SPEAKER
+Name   kyrrodi
+Color  %^CYAN%^%^BOLD%^
 End
 
 #SPEAKER
@@ -543,6 +548,11 @@ Color  %^BLACK%^%^B_MAGENTA%^
 End
 
 #SPEAKER
+Name   catbro
+Color  %^WHITE%^%^BOLD%^
+End
+
+#SPEAKER
 Name   arnold
 Color  %^BLACK%^%^B_WHITE%^
 End
@@ -825,6 +835,11 @@ End
 #SPEAKER
 Name   zorn
 Color  %^CYAN%^%^BOLD%^
+End
+
+#SPEAKER
+Name   succubus
+Color  %^BLUE%^%^BOLD%^
 End
 
 #SPEAKER
@@ -1303,6 +1318,11 @@ Color  %^WHITE%^
 End
 
 #SPEAKER
+Name   exash
+Color  %^CYAN%^%^BOLD%^
+End
+
+#SPEAKER
 Name   alessandra
 Color  %^BLUE%^
 End
@@ -1460,6 +1480,11 @@ End
 #SPEAKER
 Name   zilch
 Color  %^RED%^%^BOLD%^
+End
+
+#SPEAKER
+Name   helm
+Color  %^ORANGE%^
 End
 
 #SPEAKER
@@ -2473,6 +2498,11 @@ Color  %^RED%^
 End
 
 #SPEAKER
+Name   visceral
+Color  %^ORANGE%^
+End
+
+#SPEAKER
 Name   a presence
 Color  %^BLACK%^%^B_CYAN%^
 End
@@ -2560,6 +2590,11 @@ End
 #SPEAKER
 Name   viriato
 Color  %^WHITE%^
+End
+
+#SPEAKER
+Name   rek
+Color  %^RED%^
 End
 
 #SPEAKER
@@ -3115,6 +3150,11 @@ End
 #SPEAKER
 Name   zifnab
 Color  %^WHITE%^
+End
+
+#SPEAKER
+Name   swiper
+Color  %^RED%^
 End
 
 #SPEAKER
@@ -4598,6 +4638,11 @@ Color  %^WHITE%^
 End
 
 #SPEAKER
+Name   eldermeer
+Color  %^GREEN%^
+End
+
+#SPEAKER
 Name   alaedra
 Color  %^WHITE%^%^B_GREEN%^
 End
@@ -4900,6 +4945,11 @@ End
 #SPEAKER
 Name   zyll
 Color  %^CYAN%^%^BOLD%^
+End
+
+#SPEAKER
+Name   cash
+Color  %^WHITE%^%^BOLD%^
 End
 
 #SPEAKER
@@ -5290,6 +5340,11 @@ End
 #SPEAKER
 Name   yase
 Color  %^BLACK%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name   chaostriad
+Color  %^CYAN%^
 End
 
 #SPEAKER
@@ -6958,6 +7013,11 @@ Color  %^WHITE%^%^B_GREEN%^
 End
 
 #SPEAKER
+Name   amazon
+Color  %^BLUE%^%^BOLD%^
+End
+
+#SPEAKER
 Name   alexi
 Color  %^CYAN%^%^BOLD%^
 End
@@ -7375,6 +7435,11 @@ End
 #SPEAKER
 Name   wizard
 Color  %^WHITE%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name   ace
+Color  %^MAGENTA%^%^BOLD%^
 End
 
 #SPEAKER
@@ -9063,6 +9128,11 @@ Color  %^BLACK%^%^B_GREEN%^
 End
 
 #SPEAKER
+Name   troll
+Color  %^BLACK%^%^BOLD%^
+End
+
+#SPEAKER
 Name   ajhk
 Color  %^BLUE%^%^BOLD%^
 End
@@ -9343,6 +9413,11 @@ Color  %^RED%^
 End
 
 #SPEAKER
+Name   lifeless
+Color  %^BLACK%^%^BOLD%^
+End
+
+#SPEAKER
 Name   aethion
 Color  %^CYAN%^
 End
@@ -9485,6 +9560,11 @@ End
 #SPEAKER
 Name   zmax
 Color  %^MAGENTA%^%^BOLD%^
+End
+
+#SPEAKER
+Name   tsath
+Color  %^RED%^%^BOLD%^
 End
 
 #SPEAKER
@@ -10068,6 +10148,11 @@ Color  %^ORANGE%^
 End
 
 #SPEAKER
+Name   gabrio
+Color  %^YELLOW%^
+End
+
+#SPEAKER
 Name   arasiel
 Color  %^YELLOW%^
 End
@@ -10613,6 +10698,16 @@ Color  %^MAGENTA%^%^BOLD%^
 End
 
 #SPEAKER
+Name   notnull
+Color  %^WHITE%^
+End
+
+#SPEAKER
+Name   pridda
+Color  %^YELLOW%^
+End
+
+#SPEAKER
 Name   a perched chicken
 Color  %^WHITE%^%^B_BLUE%^
 End
@@ -10905,6 +11000,11 @@ End
 #SPEAKER
 Name   zahir
 Color  %^BLACK%^%^B_CYAN%^
+End
+
+#SPEAKER
+Name   xrakisis
+Color  %^GREEN%^
 End
 
 #SPEAKER
@@ -11333,6 +11433,11 @@ Color  %^BLUE%^%^BOLD%^
 End
 
 #SPEAKER
+Name   suturb
+Color  %^GREEN%^%^BOLD%^
+End
+
+#SPEAKER
 Name   a cow
 Color  %^BLACK%^%^B_GREEN%^
 End
@@ -11495,6 +11600,11 @@ End
 #SPEAKER
 Name   memnon
 Color  %^RED%^
+End
+
+#SPEAKER
+Name   curious
+Color  %^BLUE%^
 End
 
 #SPEAKER
@@ -12223,6 +12333,11 @@ Color  %^GREEN%^%^BOLD%^
 End
 
 #SPEAKER
+Name   mrwolf
+Color  %^MAGENTA%^%^BOLD%^
+End
+
+#SPEAKER
 Name   abilfmekoj
 Color  %^GREEN%^
 End
@@ -12335,6 +12450,11 @@ End
 #SPEAKER
 Name   zalbar
 Color  %^WHITE%^%^B_RED%^
+End
+
+#SPEAKER
+Name   kogar
+Color  %^BLUE%^
 End
 
 #SPEAKER
@@ -12940,6 +13060,11 @@ End
 #SPEAKER
 Name   zod
 Color  %^CYAN%^%^BOLD%^
+End
+
+#SPEAKER
+Name   ramuki
+Color  %^MAGENTA%^
 End
 
 #SPEAKER

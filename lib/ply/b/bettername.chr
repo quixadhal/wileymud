@@ -1,34 +1,34 @@
 #PLAYER
-Name               Cindel~
-Passwd             Ci6BUgx43vzJA~
+Name               Bettername~
+Passwd             Be.iZTkUyMElc~
 Whizz              0
 PreTitle           ~
 Title              the Human Swordpupil~
 Description
 ~
-LastSite           adork@184-089-059-247.res.spectrum.com~
-LastLogin          1578961844
-Birth              1512658665
-Played             25677
-Sex                2
+LastSite           adork@host109-150-60-139.range109-150.btcentralp~
+LastLogin          1577207089
+Birth              1577207010
+Played             54
+Sex                1
 Race               1
 Class              4
 Alignment          0
-Exp                3333
+Exp                1
 Level              warrior 1
-HeightWeight       152 152
+HeightWeight       187 121
 Gold               0 0
 HomeTown           3008
 LoadRoom           -1
 PoofIn             ~
 PoofOut            ~
-AbilityScores      17 0 13 16 8 11
+AbilityScores      18 24 17 17 12 13
 AbilityPad         0 0 0 0
-HpManaMove         -4 20 101 0 165 0
+HpManaMove         26 20 101 0 105 105
 AC                 100
 ToHitDamage        0 0
 SaveApply          0 0 0 0 0
-Conditions         0 0 0 0 0 0
+Conditions         0 23 23 0 0 0
 PointsPad1         0 0 0
 PointsPad2         0 0 0 0
 PointsPad3         0 0 0
@@ -206,6 +206,7 @@ Affect             21 0 0 0 0 0 0
 Affect             22 0 0 0 0 0 0
 Affect             23 0 0 0 0 0 0
 Affect             24 0 0 0 0 0 0
-i3perm       1
+i3perm       2
 i3flags      256
+i3listen     wiley
 End

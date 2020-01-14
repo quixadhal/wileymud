@@ -257,7 +257,7 @@ do                                               \
 #define GET_RACE(ch)     ((ch)->race)
 #define GET_HITROLL(ch) ((ch)->points.hitroll)
 #define GET_DAMROLL(ch) ((ch)->points.damroll)
-#define GET_IDLE_TIME(ch)  (time(0) - ((ch)->desc->idle_time))
+#define GET_IDLE_TIME(ch)  (time(0) - (((ch)->desc) ? ((ch)->desc->idle_time): Uptime))
 #define AWAKE(ch) (GET_POS(ch) > POSITION_SLEEPING)
 #define WAIT_STATE(ch, cycle)  (((ch)->desc) ? (ch)->desc->wait = (cycle) : 0)
 
