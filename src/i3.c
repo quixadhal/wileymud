@@ -1534,7 +1534,7 @@ bool I3_write_packet(char *msg)
                 return FALSE;
                 break;
             default:
-                log_error( "Socket error: %d", errno );
+                log_error( "Socket error: %d (%s)", errno, strerror(errno) );
                 I3_connection_close(TRUE);
                 return FALSE;
         }

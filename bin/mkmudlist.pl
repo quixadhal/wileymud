@@ -6,7 +6,7 @@ use English;
 use Data::Dumper;
 
 use Time::HiRes qw(sleep time alarm);
-use Net::Telnet;
+use Net::Telnet qw(TELNET_IAC TELNET_SB TELNET_SE TELOPT_TTYPE);
 use DBI;
 use CGI;
 use POSIX qw(strftime);
@@ -42,6 +42,7 @@ my $imagedir = "/home/wiley/public_html/gfx/mud";
 my $thread_count = 30;
 my @global_tmp = ();
 my @result_set = ();
+our $default_ttype = "ansi";
 
 do_build();
 exit 0;
@@ -56,6 +57,20 @@ sub ansi2png {
     return $png;
 }
 
+sub subopt_callback {
+    my ($biteme, $option, $parameters) = @_;
+    my $telcmd;
+
+    if ($option == TELOPT_TTYPE) {
+        $telcmd = pack("C4 A* C2", TELNET_IAC, TELNET_SB, TELOPT_TTYPE, 0,
+                       $default_ttype, TELNET_IAC, TELNET_SE);
+        $biteme->put(String => $telcmd, Telnetmode => 0);
+        printf STDERR "                Replying to TTYPE with %s\n", $default_ttype;
+    }
+
+    1;
+}
+
 sub fetch_login_screen {
     my $site = shift;
     my $port = shift;
@@ -65,6 +80,10 @@ sub fetch_login_screen {
     my $telnet = Net::Telnet->new( Timeout => 30 );
     my $connect = 0;
     my @tlines = ();
+
+    $telnet->option_callback(sub {});
+    $telnet->suboption_callback(\&subopt_callback);
+    $telnet->option_accept(Do => TELOPT_TTYPE);
 
     eval { $connect = ($telnet->open( Host => $site, Port => $port )); };
     if ( $EVAL_ERROR and $EVAL_ERROR =~ /unknown remote host/i ) {

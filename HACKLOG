@@ -357,6 +357,19 @@ edit /etc/minidlna.conf
     friendly_name=WileyMUD
 
 usermod -a -G vboxsf minidlna
+
+also, when upgrading kernels, and especially when upgrading versions of
+VirtualBox, you must re-install/rebuild the kernel modules for the
+extensions to work properly.
+
+apt install build-essential module-assistant
+m-a prepare
+
+Click on "install guest additions" from the VM's devices menu
+mount /media/cdrom
+
+bash VBoxLinuxAdditions.run
+
 ---- Only for the VM ----
 
 apt install cdparanoia flac lame vorbis-tools
@@ -375,4 +388,22 @@ apt install rtorrent
 apt install build-essential bison libevent-dev libjemalloc-dev libpcre3-dev
     libpq-dev libsqlite3-dev libssl-dev libz-dev cmake cmake-doc libmariadb-dev
 
+cpan
+    install Sort::Naturally::ICU
+
+cpan
+    install CPAN::DistnameInfo
+
+apt install libcrypt-ssleay-perl libnet-ssleay-perl libnet-server-perl
+
+apt install libio-aio-perl libio-event-perl
+
+apt install lynx
+cpan
+    install HTML::FormatText::Lynx HTML::FormatText::Html2text
+    o conf lynx /usr/bin/lynx
+    o conf commit
+    install  POE::Component::Log4perl
+
+apt install mercurial
 
