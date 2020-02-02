@@ -18,6 +18,8 @@ use MudConvert::WileyMUD::Constants qw( $sector_types $rev_sector_types
                                         $shop_attitudes $rev_shop_attitudes
                                         $shop_immortal_flags $rev_shop_immortal_flags
                                         $shop_message_names
+                                        $act_flags $rev_act_flags
+                                        $class_types $rev_class_types
                                       );
 use MudConvert::API qw( exit_flag_list );
 
@@ -478,6 +480,24 @@ sub parse_mob {
 
     my $mob = $mob_data->{$vnum}->{'file_section'};
 
+    my ($Name, $ShortDescription, $LongDescription, $Description) = (undef, undef, [], []);
+    my ($ActFlags, $AffectedBy, $Alignment, $Type) = (undef, undef, undef, undef);
+    my $AttackCount = undef;
+    my $ClassType = undef;
+    my $Attributes = {
+        'Strength'      => undef,
+        'Dexterity'     => undef,
+        'Constitution'  => undef,
+        'Intelligence'  => undef,
+        'Wisdom'        => undef,
+    };
+    my ($Level, $ToHit, $ArmorClass) = (undef,undef,undef);
+    my $HitPoints = {
+        'Rolls'     => undef,
+        'Die'       => undef,
+        'Modifier'  => undef,
+    };
+
     #  "#1\n
     #  Astral traveler~\n
     #  An astral traveler~\n
@@ -486,21 +506,172 @@ sub parse_mob {
     #  26 1 -1 26d8+26 1d8+3\n
     #  -1 0 15000 27\n
     #  8 8 2\n
-    #  #2"
+    # #1020
+    # testbeast test creature~
+    # A test creature~
+    # This creature exists to test Quixadhal's new type 'C' mob structure.
+    # ~
+    #   This creature is a test of Quixadhal's new type 'C' mob structure.
+    # He looks very unhappy about the changes and will probably kill you just
+    # to make himself feel a little better.
+    # ~
+    # 2359330 100392 0 C
+    # 18 5 1 135 237 10d20+0
+    # 10d500+2000 20 20d8+100 -7 6 4
+    # 2d4+3 1
+    # 2d4+3 1
+    # 2d4+3 1
+    # 2d4+3 1
+    # 0 0 0
+    # 18 79 15 11 6 3
+    # 6 6 6 6 6
+    # 8 8 1 0
+    # This is the first test sound.
+    # ~
+    # This is the second test sound.
+    # ~
 
-    #  $room =~
-    #    /^\#(?:[\d-]+)\s*\n      # VNum
-    #      ([^~]*)~\n      # Room Name
-    #      ([^~]*)~\n      # Description
-    #      \s*([\d-]+)\s+([\d-]+)\s+([\d-]+)    # Zone, Flags, Sector
-    #         (?:\s+([\d-]+))?(?:\s+([\d-]+))?   # Teleport or River
-    #         (?:\s+([\d-]+))?(?:\s+([\d-]+))?\s*\n
-    #    /cgmsx;
-    #
-    #  ( $Name, $t2,
-    #    $Zone, $Flags, $Sector,
-    #    $t6, $t7, $t8, $t9,
-    #  ) = ( $1, $2, $3, $4, $5, $6, $7, $8, $9 );
+    if( !($mob =~ /^\#(?:[\d-]+)\s*\n/cgmsx) ) {   # VNum
+        report_error($mob_data, $vnum, $mob, pos($mob), "FATAL", "Missing MOBILE VNUM");
+        print STDERR "Skipping mob $vnum!\n";
+        return 0;
+    }
+
+    if( !($mob =~ /\G([^~]*)~+\n/cgmsx) ) {   # Mobile Name (keyword list)
+        report_error($mob_data, $vnum, $mob, pos($mob), "FATAL", "Missing MOBILE NAME");
+        print STDERR "Skipping mob $vnum!\n";
+        return 0;
+    } else {
+        $Name = $1;
+    }
+
+    if( !($mob =~ /\G([^~]*)~+\n/cgmsx) ) {   # Mobile Short Description
+        report_error($mob_data, $vnum, $mob, pos($mob), "FATAL", "Missing MOBILE SHORT");
+        print STDERR "Skipping mob $vnum!\n";
+        return 0;
+    } else {
+        $ShortDescription = $1;
+    }
+
+    if( !($mob =~ /\G([^~]*)~+\n/cgmsx) ) {   # Long Description (Action)
+        report_error($mob_data, $vnum, $mob, pos($mob), "FATAL", "Missing mob LONG");
+        print STDERR "Skipping mob $vnum!\n";
+        return 0;
+    } else {
+        push @{ $LongDescription }, (split /\n/, $1);
+    }
+
+    if( !($mob =~ /\G([^~]*)~+\n/cgmsx) ) {   # Description (Long)
+        report_error($mob_data, $vnum, $mob, pos($mob), "FATAL", "Missing mob DESCRIPTION");
+        print STDERR "Skipping mob $vnum!\n";
+        return 0;
+    } else {
+        push @{ $Description }, (split /\n/, $1);
+    }
+
+    if( !($mob =~ /\G\s+([\d-]+)/cgmsx) ) {   # ACT Flags
+        report_error($mob_data, $vnum, $mob, pos($mob), "FATAL", "Missing mob ACT Flags");
+        print STDERR "Skipping mob $vnum!\n";
+        return 0;
+    } else {
+        $ActFlags = $1;
+    }
+
+    if( !($mob =~ /\G\s+([\d-]+)/cgmsx) ) {   # Affected By Flags
+        report_error($mob_data, $vnum, $mob, pos($mob), "FATAL", "Missing mob AFFECTED_BY");
+        print STDERR "Skipping mob $vnum!\n";
+        return 0;
+    } else {
+        $AffectedBy = $1;
+    }
+
+    if( !($mob =~ /\G\s+([\d-]+)/cgmsx) ) {   # Alignment
+        report_error($mob_data, $vnum, $mob, pos($mob), "FATAL", "Missing mob ALIGNMENT");
+        print STDERR "Skipping mob $vnum!\n";
+        return 0;
+    } else {
+        $Alignment = $1;
+    }
+
+    if( !($mob =~ /\G\s+([WMSDC])/cgmsx) ) {   # Type
+        report_error($mob_data, $vnum, $mob, pos($mob), "FATAL", "Missing mob TYPE");
+        print STDERR "Skipping mob $vnum!\n";
+        return 0;
+    } else {
+        $Type = $1;
+    }
+
+    if( !($mob =~ /\G\s+([\d-]+)/cgmsx) ) {   # Attack Count
+        report_error($mob_data, $vnum, $mob, pos($mob), "WARN", "Missing mob ATTACK COUNT");
+        $AttackCount = 1;
+    } else {
+        $AttackCount = $1;
+    }
+
+    $ActFlags |= $rev_act_flags->{'ACT_ISNPC'};
+    $ClassType = $rev_class_types->{'CLASS_WARRIOR'};
+
+    if ($Type eq 'W' or $Type eq 'M' or $Type eq 'S') {
+        $Attributes = {
+            'Strength'      => 14,
+            'Dexterity'     => 14,
+            'Constitution'  => 14,
+            'Intelligence'  => 14,
+            'Wisdom'        => 14,
+        };
+
+        if( !($mob =~ /\G\s+([\d-]+)/cgmsx) ) {   # Level
+            report_error($mob_data, $vnum, $mob, pos($mob), "FATAL", "Missing mob LEVEL");
+            print STDERR "Skipping mob $vnum!\n";
+            return 0;
+        } else {
+            $Level = $1;
+        }
+
+        if( !($mob =~ /\G\s+([\d-]+)/cgmsx) ) {   # ToHit
+            report_error($mob_data, $vnum, $mob, pos($mob), "FATAL", "Missing mob TOHIT");
+            print STDERR "Skipping mob $vnum!\n";
+            return 0;
+        } else {
+            $ToHit = $1;
+        }
+
+        if( !($mob =~ /\G\s+([\d-]+)/cgmsx) ) {   # AC
+            report_error($mob_data, $vnum, $mob, pos($mob), "FATAL", "Missing mob AC");
+            print STDERR "Skipping mob $vnum!\n";
+            return 0;
+        } else {
+            $ArmorClass = $1;
+        }
+
+        # foreach ($one, $two, $three, $four) { 
+        #   $_ =~ /(?:(\d+)\s*[dD]\s*(\d+))?\s*([\+-]?\d+)?/cmsx;
+        #   @found = ($1, $2, $3);
+        #   print $_ . " " . join(", ", @found) . "\n";
+        # }
+        if( !($mob =~ /\G\s+(?:(\d+)\s*[dD]\s*(\d+))?\s*\+?\s*(\-\d+)?/cgmsx) ) {   # HitPoints
+            report_error($mob_data, $vnum, $mob, pos($mob), "FATAL", "Missing mob HitPoints");
+            print STDERR "Skipping mob $vnum!\n";
+            return 0;
+        } else {
+            $HitPoints = {
+                'Rolls'     => $1,
+                'Die'       => $2,
+                'Modifier'  => $3,
+            };
+        }
+
+    } elsif ($Type eq 'D') {
+        report_error($mob_data, $vnum, $mob, pos($mob), "FATAL", "Type D mobs are not supported");
+        print STDERR "Skipping mob $vnum!\n";
+        return 0;
+    } elsif ($Type eq 'C') {
+    } else {
+        report_error($mob_data, $vnum, $mob, pos($mob), "FATAL", "Unknown Type mobs are not supported");
+        print STDERR "Skipping mob $vnum!\n";
+        return 0;
+    }
+
     return 1;
 }
 
