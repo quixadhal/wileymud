@@ -10,6 +10,8 @@ use DBI;
 use HTML::Entities;
 use Getopt::Long;
 use JSON qw(encode_json);
+use File::Random qw(random_file);
+use Cwd qw(getcwd);
 
 my $URL_HOME        = "http://wileymud.themud.org/~wiley";
 my $LOG_HOME        = "$URL_HOME/logpages";
@@ -17,6 +19,7 @@ my $LIVE_PAGE       = "$LOG_HOME/";
 
 my $LIVE_DB_FILE    = '/home/wiley/lib/i3/wiley.db';
 my $DB_FILE         = '/home/wiley/lib/i3/wiley.bkp-20190223.db';
+my $BACKGROUND_DIR  = '/home/wiley/public_html/gfx/wallpaper/';
 my $PAGE_DIR        = '/home/wiley/public_html/logpages';
 my $JSON_DIR        = '/home/wiley/public_html/logdata';
 my $PG_DB           = 'i3log';
@@ -975,6 +978,17 @@ if( $do_pages or $do_json ) {
         my $page_background = $this_is_the_end ? "#070707" : "black";
         my $overlay_image = $this_is_the_end ? $OVERLAY_IMG : "";
 
+        my $old_dir = getcwd;
+        chdir $BACKGROUND_DIR;
+        my $BACKGROUND = random_file(
+            -dir    => '.',
+            -check  => qr/\.(jpg|png)$/,
+        );
+        chdir $old_dir;
+        #print "RANDOM BACKGROUND: $BACKGROUND\n";
+        my $BACKGROUND_IMG = "<img class=\"overlay-bg\" src=\"$URL_HOME/gfx/wallpaper/$BACKGROUND\" />";
+        my $background_image = $BACKGROUND_IMG;
+
         my $page = fetch_page_by_date($DATABASE, $today);
         die "No data for $today? $!" if !defined $page;
         printf "    [%5d] Generating %s... %d messages.\n",
@@ -1071,9 +1085,11 @@ if( $do_pages or $do_json ) {
             #content-header { position: fixed; top: 58px; width: 100%; background-color: $page_background; }
             #content { padding-top: 48px; }
             .overlay-fixed { position: fixed; top: 48px; left: 0px; width: 100%; height: 100%; z-index: 999; opacity: 0.3; pointer-events: none; }
+            .overlay-bg { position: fixed; top: 81px; z-index: 998; opacity: 0.15; pointer-events: none; object-fit: cover; width: 100%; height: 100%; left: 50%; transform: translateX(-50%); }
         </style>
     </head>
     <body bgcolor="$page_background" text="#d0d0d0" link="#ffffbf" vlink="#ffa040" onload="setup();">
+        $background_image
         $overlay_image
         <table id="navbar" width="99%" align="center">
             <tr>

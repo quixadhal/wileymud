@@ -18,6 +18,7 @@ $DB_FILE        = '/home/wiley/lib/i3/wiley.db';
 //$DB_FILE        = '/home/wiley/lib/i3/wiley.bkp-20190211.db';
 $PAGE_DIR       = '/home/wiley/public_html/logpages';
 $CHAT_TEXT_FILE = "/home/wiley/lib/i3/i3.allchan.log";
+$BACKGROUND_DIR = "/home/wiley/public_html/gfx/wallpaper/";
 
 $PG_DB          = "i3log";
 $PG_USERNAME    = "wiley";
@@ -64,6 +65,19 @@ $CHANNEL_CACHE  = "$PAGE_DIR/channels.json";
 $SPEAKER_CACHE  = "$PAGE_DIR/speakers.json";
 $DATE_CACHE     = "$PAGE_DIR/date_counts.json";
 $HOUR_CACHE     = "$PAGE_DIR/hours.json";
+
+function random_image($dir) {
+    $old_dir = getcwd();
+    chdir($dir);
+
+    $jpg_list = glob("*.jpg");
+    $png_list = glob("*.png");
+    $file_list = array_merge($jpg_list, $png_list);
+    $pick = array_rand($file_list);
+
+    chdir($old_dir);
+    return $file_list[$pick];
+}
 
 function db_connect() {
     global $DB_FILE;
@@ -513,6 +527,9 @@ $local_time = $pinkfish_map[ $hours[$local_hour]['pinkfish'] ]['html'] . $local_
 
 $db = null;
 
+$BACKGROUND     = random_image($BACKGROUND_DIR);
+$BACKGROUND_IMG = "<img class=\"overlay-bg\" src=\"$URL_HOME/gfx/wallpaper/$BACKGROUND\" />";
+
 header("Cache-Control: no-cache");
 header("Pragma: no-cache");
 
@@ -645,9 +662,11 @@ header("Pragma: no-cache");
             #content-header { position: fixed; top: 58px; width: 100%; background-color: black; }
             #content { padding-top: 48px; }
             .overlay-fixed { position: fixed; top: 48px; left: 0px; width: 100%; height: 100%; z-index: 999; opacity: 0.3; pointer-events: none; }
+            .overlay-bg { position: fixed; top: 81px; z-index: 998; opacity: 0.15; pointer-events: none; object-fit: cover; width: 100%; height: 100%; left: 50%; transform: translateX(-50%); }
         </style>
     </head>
     <body bgcolor="black" text="#d0d0d0" link="#ffffbf" vlink="#ffa040" onload="setup();">
+        <!-- <?php echo $BACKGROUND_IMG; ?> -->
         <!-- <?php echo $OVERLAY_IMG; ?> -->
         <table id="navbar" width="99%" align="center">
             <tr>
