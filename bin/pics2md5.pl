@@ -3,6 +3,9 @@
 use strict;
 use English;
 use Image::Size;
+use Cwd qw(getcwd);
+
+die "NO!" if getcwd() =~ /\/home\/.*?\/public_html\/gfx\/wallpaper/i;
 
 opendir DP, '.' or die "Can't opendir '.' $!";
 my @pics = grep { /\.(jpeg|jpg|png|gif|webp)$/i && -f "./$_" } readdir DP;

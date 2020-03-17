@@ -1,0 +1,148 @@
+#!/usr/bin/perl -w
+
+use strict;
+use English;
+$| = 1;
+
+my $destination = shift || "/share/videos";
+$destination =~ s!/$!!; #Remove trailing slash if there
+die "$destination does not exist!" unless -d "$destination" or -f "$destination";
+
+my $url_list = "$destination/url.list";
+if (-f "$destination" ) {
+    # Hmmm, you gave us the URL list file instead of a directory... OK.
+    $url_list = $destination;
+    my @bits = split /\//, $destination;
+    $destination = join '/', @bits[0..($#bits-1)];
+}
+
+my $output_format = "$destination/%(season_number)02d.%(episode_number)02d %(title)s.%(ext)s";
+
+sub get_url_list {
+    my $url_list = shift;
+
+    die "$url_list does not exist!" if ! -r "$url_list";
+    die "$url_list is empty!" if -s "$url_list" < 1;
+    die "Cannot open $url_list" unless open(my $fh, "<$url_list");
+    my @urls = ();
+    foreach (<$fh>) {
+        chomp;
+        s/^\s+//;
+        s/\s+$//;
+        next unless /^(#\s.*?\s)?http/i;
+        push @urls, $_;
+    }
+    close $fh;
+
+    return @urls;
+}
+
+sub update_url_list {
+    my $url_list = shift;
+    my $urls = shift;
+    my $index = shift;
+    my $found = shift;
+    my $target = shift;
+
+    return if ! $found;
+
+    $urls->[$index] = "# $target " . $urls->[$index];
+    system("mv", "$url_list", "$url_list.bkp");
+    die "Cannot update $url_list!" unless open(my $fh, ">$url_list");
+    print $fh "$_\n" foreach (@$urls);
+    close $fh;
+}
+
+sub get_format {
+    my $url = shift;
+    my $index = shift;
+
+    my $format = undef;
+    my $fh = undef;
+    unless (open($fh, "-|", "youtube-dl", "--ignore-config", "-sF", "$url")) {
+        printf "Cannot open youtube-dl to get format list for %02d!\n", ($index + 1);
+        return $format;
+    }
+    my @lines = (<$fh>);
+    close $fh;
+
+    my @candidates = grep {/^(hls-audio-ja-JP-hardsub-en-US[\-\d]+)/i}
+        grep {/1920x1080/i} grep {/mp4a/i} @lines;
+    if ((scalar @candidates) < 1) {
+        @candidates = grep {/^(hls-audio-ja-JP-hardsub-en-US[\-\d]+)/i}
+            grep {/1280x720/i} grep {/mp4a/i} @lines;
+    }
+
+    foreach my $line (@candidates) {
+        $line =~ /^(hls-audio-ja-JP-hardsub-en-US[\-\d]+)/i;
+        $format = ($1);
+        last if $format;
+    }
+
+    return $format;
+}
+
+sub get_target_filename {
+    my $url = shift;
+    my $index = shift;
+    my $output_format = shift;
+
+    my $filename = undef;
+    my $fh = undef;
+    unless (open($fh, "-|", "youtube-dl", "--ignore-config", "--get-filename",
+            "-o", "$output_format", "$url")) {
+        printf "Cannot open youtube-dl to get target filename for %02d!\n",
+            ($index + 1);
+        return $filename;
+    }
+    $filename = <$fh>;
+    close $fh;
+
+    chomp $filename;
+    return $filename;
+}
+
+my $GREEN = sprintf "%c[32m", 27;
+my $YELLOW = sprintf "%c[33m", 27;
+my $RED = sprintf "%c[31m", 27;
+my $RESET = sprintf "%c[0m", 27;
+
+my @urls = get_url_list($url_list);
+die "No valid urls found in $url_list!" if (scalar @urls) < 1;
+
+my @to_process = grep {/^http/} @urls;
+printf "Found %d of %d urls to process.\n", (scalar @to_process), (scalar @urls)
+    unless (scalar @to_process) < 1;
+
+for (my $index = 0; $index < (scalar @urls); $index++) {
+    my $url = $urls[$index];
+    next unless $url =~ /^http/i;
+
+    printf "Grabbing %02d of %02d ...%s\n", ($index + 1), (scalar @urls),
+        substr($url, -40);
+    sleep 2 + int(rand(5));
+
+    my $target = get_target_filename($url, $index, $output_format);
+    my $found = -f "$target";
+
+    if ($found) {
+        printf "${YELLOW}Skipping %s, which already exists!$RESET\n", $target;
+        update_url_list($url_list, \@urls, $index, $found, $target);
+        next;
+    }
+
+    printf "Format for %s: ", substr($target, -40);
+    my $format = get_format($url, $index);
+    printf "%s.\n", (defined $format) ? $format : "not found";
+    next unless (defined $format);
+
+    printf "Fetching ...%s ", substr($target, -40);
+    system("youtube-dl", "--quiet", "--ignore-config", "-f",
+        "$format", "-o", "$output_format", "$url");
+    system("sync");
+
+    $found = -f "$target";
+    update_url_list($url_list, \@urls, $index, $found, $target);
+    printf "%s\n", ($found ? ($GREEN . "done!" . $RESET) : ($RED . "failed." . $RESET));
+}
+

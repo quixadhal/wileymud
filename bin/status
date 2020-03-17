@@ -1,5 +1,8 @@
 #!/bin/bash
 
 clear
-systemctl --no-pager status postgresql diskworld dw_addr dw_driver wileymud wileymud_driver
+SYSTEMD_COLORS=1 systemctl --no-pager status --lines 0 \
+    postgresql \
+    dw_addr dw_driver \
+    wileymud_driver 2>/dev/null
 

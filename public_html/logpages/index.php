@@ -9,7 +9,9 @@ global $DB_FILE;
 global $PG_DB;
 global $PG_USERNAME;
 global $PG_PASSWORD;
+global $URL_ONLY;
 
+$URL_ONLY       = (isset($_GET["url"]) || isset($_POST["url"])) ? true : false;
 $URL_HOME       = "http://wileymud.themud.org/~wiley";
 $LOG_HOME       = "$URL_HOME/logpages";
 $LIVE_PAGE      = "$LOG_HOME/";
@@ -319,6 +321,35 @@ function fetch_page_by_date($db, $query_date = NULL) {
     return $result;
 }
 
+function fetch_urls_by_date($db, $query_date = NULL) {
+    if( $query_date === NULL ) {
+        $query_date = now_date($db);
+    }
+    $sql = "
+             SELECT *
+               FROM page_view
+              WHERE date(local) = :query_date
+                AND (is_url OR speaker = 'URLbot')
+           ORDER BY local ASC;
+    ";
+    try {
+        //$db->beginTransaction();
+        $sth = $db->prepare($sql);
+        $sth->bindParam(':query_date', $query_date);
+        $sth->execute();
+        $sth->setFetchMode(PDO::FETCH_ASSOC);
+        $result = array();
+        while($row = $sth->fetch()) {
+            $result[] = $row;
+        }
+        //$db->commit();
+    } catch (Exception $e) {
+        //$db->rollback();
+        throw $e;
+    }
+    return $result;
+}
+
 function file_tail($filepath, $lines = 1, $adaptive = true) {
     $f = @fopen($filepath, "rb");
     if ($f === false) return false;
@@ -518,7 +549,7 @@ $down_link = sprintf("<img id=\"scroll_down_button\" src=\"%s\" width=\"%d\" hei
 $bottom_link = sprintf("<img id=\"scroll_bottom_button\" src=\"%s\" width=\"%d\" height=\"%d\" border=\"0\" style=\"opacity: 1.0;\" onclick=\"scroll_bottom()\" />\n",
     $BOTTOM_ICON, $ICON_WIDTH, $ICON_WIDTH);
 
-$page = fetch_page_by_date($db, $today);
+$page = $URL_ONLY ? fetch_urls_by_date($db, $today) : fetch_page_by_date($db, $today);
 //$page = load_page_by_date($db, $today, $pinkfish_map, $hours, $channels, $speakers);
 
 $local_refresh = strftime('%H:%M %Z');
@@ -666,7 +697,7 @@ header("Pragma: no-cache");
         </style>
     </head>
     <body bgcolor="black" text="#d0d0d0" link="#ffffbf" vlink="#ffa040" onload="setup();">
-        <!-- <?php echo $BACKGROUND_IMG; ?> -->
+        <?php echo $BACKGROUND_IMG; ?>
         <!-- <?php echo $OVERLAY_IMG; ?> -->
         <table id="navbar" width="99%" align="center">
             <tr>
