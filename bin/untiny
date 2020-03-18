@@ -728,6 +728,7 @@ sub get_tinyurl {
         alarm 0;
     };
     warn timestamp() . " Timeout" if($EVAL_ERROR and ($EVAL_ERROR =~ /^Exceeded Timeout/));
+    $result = $result->[0] if ref $result eq 'ARRAY';
     return $result;
 }
 
