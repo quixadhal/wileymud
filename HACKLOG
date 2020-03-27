@@ -407,3 +407,4 @@ cpan
 
 apt install mercurial
 
+apt install python3-pep8 python3-flake8 python3-autopep8

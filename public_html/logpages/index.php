@@ -10,8 +10,10 @@ global $PG_DB;
 global $PG_USERNAME;
 global $PG_PASSWORD;
 global $URL_ONLY;
+global $CENSOR;
 
 $URL_ONLY       = (isset($_GET["url"]) || isset($_POST["url"])) ? true : false;
+$CENSOR         = (isset($_GET["censor"]) || isset($_POST["censor"])) ? true : false;
 $URL_HOME       = "http://wileymud.themud.org/~wiley";
 $LOG_HOME       = "$URL_HOME/logpages";
 $LIVE_PAGE      = "$LOG_HOME/";
@@ -752,6 +754,7 @@ header("Pragma: no-cache");
 
         $hour_html    = $row['hour_html'];
         $channel_html = $row['channel_html'];
+        $channel      = $row['channel']; // text only channel name
         if( empty($channel_html) || is_null($channel_html) ) {
             $channel_html = $channels['default']['html'];
         }
@@ -775,7 +778,13 @@ header("Pragma: no-cache");
         $message = preg_replace('/Steam\s+(<span.*?>)\s*\[([^\]]*)\]/i', 'Steam $1 <a href="http://store.steampowered.com/app/$2/" target="I3-link">[$2]</a>', $message);
         $message = preg_replace('/Dailymotion\s+(<span.*?>)\s*\[([^\]]*)\]/i', 'Dailymotion $1 <a href="https://www.dailymotion.com/video/$2" target="I3-link">[$2]</a>', $message);
 
-        $message = "<span style=\"font-family: monospace; white-space: pre-wrap;\">$message</span>";
+        $span_style = "font-family: monospace; white-space: pre-wrap;";
+        if($CENSOR) {
+            if($channel == "free_speech") {
+                $span_style = "filter: blur(3px); $span_style ";
+            }
+        }
+        $message = "<span style=\"$span_style\">$message</span>";
 ?>
         <tr id="row_<?php echo $counter;?>" style="display:none">
             <td bgcolor="<?php echo $bg_color;?>"><?php echo $date_col;?></td>

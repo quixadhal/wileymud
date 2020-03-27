@@ -83,7 +83,7 @@ my $page_start      = 0;
 my $page_limit      = 0;
 my $overwrite       = 0;
 my $do_speakers     = 1;
-my $do_update          = 1;
+my $do_update       = 1;
 my $do_navbar       = 1;
 my $do_pages        = 1;
 my $do_cache        = 1;
@@ -91,6 +91,7 @@ my $pause           = 1;
 my $use_live        = 0;
 my $debug_page      = 0;
 my $do_json         = 1;
+my $do_censor       = 0;
 
 sub do_help {
     print STDERR <<EOM
@@ -114,17 +115,21 @@ long options:
     --update            - Update speaker and channel color data.  Default is yes.
     --cache             - Save cached data to JSON files.  Default is yes.
     --pause             - Pause for 5 seconds before starting.  Default is yes.
-    --live              - Use the live database for the most current data.  Default is no.
+    --live              - Use the live database for the most current data.  Default
+                          is no.
                           Because SQLite doesn't handle locks well, if this is true,
                           the run will be limited to 10 pages at a time.
     --debug             - This changes the next-link button for the next to the last
-                          page, so it points to another static page, rather than to the
-                          live page.  The static page has a dark red background, so you
-                          know it's not live data.  By default, this points to the
-                          live page, as the END link always does.
+                          page, so it points to another static page, rather than to
+                          the live page.  The static page has a dark red background,
+                          so you know it's not live data.  By default, this points
+                          to the live page, as the END link always does.
     --json              - Also emit a JSON dump of the data for each page, to allow
                           for simple exporting of the data to others.  You can use
                           --json with --no-pages to only regenerate the JSON data.
+    --censor            - Adds a blur effect to any messages on the free_speech
+                          channel, in case you wanted to generate censored pages.
+                          The default is no censorship.
 EOM
     ;
     #--pagesize N        - Page size, defaults to $page_size.
@@ -149,6 +154,7 @@ sub display_options {
         printf "We will %soverwrite existing files.\n", $overwrite ? "" : "NOT ";
         printf "We will %soutput HTML pages.\n", $do_pages ? "" : "NOT ";
         printf "We will %sexport JSON data for each page.\n", $do_json ? "" : "NOT ";
+        printf "We will %scensor messages on free_speech.\n", $do_censor ? "" : "NOT ";
     } else {
         printf "We will NOT process pages.\n";
     }
@@ -175,6 +181,7 @@ GetOptions(
     'pages!'            => \$do_pages,
     'cache!'            => \$do_cache,
     'json!'             => \$do_json,
+    'censor!'           => \$do_censor,
 );
 
 sub open_postgres_db {
@@ -1185,6 +1192,7 @@ EOM
                 my $hour_html = $row->{hour_html} || "--**--NULL--**--";
                 my $channel_html = $row->{channel_html} || $channels->{default}{html} || "--**--NULL--**--";
                 my $speaker_html = $row->{speaker_html} || $speakers->{default}{html} || "--**--NULL--**--";
+                my $channel = $row->{channel}; # text only channel name
 
                 printf FP "<tr id=\"row_%d\" style=\"display:none\">\n", $counter;
                 printf FP "<td bgcolor=\"%s\">%s</td>\n", $bg_color, $row->{the_date};
@@ -1222,7 +1230,10 @@ EOM
                 $message =~ s/Steam\s+(<span.*?>)\s*\[([^\]]*)\]/Steam $1 <a href="http:\/\/store.steampowered.com\/app\/$2\/" target="I3-link">[$2]<\/a>/gsmix;
                 $message =~ s/Dailymotion\s+(<span.*?>)\s*\[([^\]]*)\]/Dailymotion $1 <a href="https:\/\/www.dailymotion.com\/video\/$2" target="I3-link">[$2]<\/a>/gsmix;
 
-                printf FP "<td bgcolor=\"%s\"><span style=\"font-family: monospace; white-space: pre-wrap;\">%s</span></td>\n",  $bg_color, $message;
+                my $span_style = "font-family: monospace; white-space: pre-wrap;";
+                $span_style = "filter: blur(3px); $span_style" if $do_censor and $channel eq "free_speech";
+
+                printf FP "<td bgcolor=\"%s\"><span style=\"$span_style\">%s</span></td>\n",  $bg_color, $message;
                 printf FP "</tr>\n";
 
                 $counter++;
