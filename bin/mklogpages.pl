@@ -1010,6 +1010,15 @@ if( $do_pages or $do_json ) {
         <meta charset="utf-8" />
         <meta http-equiv="cache-control" content="no-cache" />
         <meta http-equiv="pragma" content="no-cache" />
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-163395867-1"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', 'UA-163395867-1');
+        </script>
         <link rel="stylesheet" href="$JQUI_CSS">
         <link rel="stylesheet" href="$JQUI_THEME">
         <script src="$JQ"></script>

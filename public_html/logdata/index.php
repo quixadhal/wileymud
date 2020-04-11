@@ -144,22 +144,34 @@ $files = get_dir_listing();
 
 ?>
 <html>
-<head>
-<title><?php echo $title; ?></title>
-</head>
-<body bgcolor="<?php echo $bg_color;?>" text="<?php echo $text_color;?>" link="<?php echo $link_color;?>" vlink="<?php echo $visited_link_color;?>">
-<table width="100%">
-<tr>
-  <td colspan="3" bgcolor="<?php echo $bg_color;?>" align="center"><h1><?php echo $title;?></h1></td>
-</tr>
-<?php if ( count($files) < 1 ) { ?>
-  <tr><td colspan="3" align="center"><h3>No files available.</h3></td></tr>
-<?php } else { ?>
-<tr>
-  <td width="25%" bgcolor="<?php echo $parent_color;?>"><a href="..">..</a></td>
-  <td bgcolor="<?php echo $parent_color;?>">Parent Directory</td>
-  <td align="right" width="10%" bgcolor="<?php echo $parent_color;?>">Size</td>
-</tr>
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="cache-control" content="no-cache" />
+        <meta http-equiv="pragma" content="no-cache" />
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-163395867-1"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', 'UA-163395867-1');
+        </script>
+        <title><?php echo $title; ?></title>
+    </head>
+    <body bgcolor="<?php echo $bg_color;?>" text="<?php echo $text_color;?>" link="<?php echo $link_color;?>" vlink="<?php echo $visited_link_color;?>">
+        <table width="100%">
+            <tr>
+                <td colspan="3" bgcolor="<?php echo $bg_color;?>" align="center"><h1><?php echo $title;?></h1></td>
+            </tr>
+            <?php if ( count($files) < 1 ) { ?>
+                <tr><td colspan="3" align="center"><h3>No files available.</h3></td></tr>
+            <?php } else { ?>
+            <tr>
+                <td width="25%" bgcolor="<?php echo $parent_color;?>"><a href="..">..</a></td>
+                <td bgcolor="<?php echo $parent_color;?>">Parent Directory</td>
+                <td align="right" width="10%" bgcolor="<?php echo $parent_color;?>">Size</td>
+            </tr>
 <?php
   $i = 0;
   foreach ( $files as $key => $value ) {
@@ -171,16 +183,16 @@ $files = get_dir_listing();
       $size = human_size(filesize($key));
     }
     ?>
-    <tr>
-      <td width="25%" bgcolor="<?php echo $bgcolor;?>"><strong><a href="<?php echo $key;?>"><?php echo $key;?></a></strong></td>
-      <td bgcolor="<?php echo $bgcolor;?>"><?php echo $value;?></td>
-      <td align="right" width="10%" bgcolor="<?php echo $bgcolor;?>"><?php echo $size;?></td>
-    </tr>
+            <tr>
+                <td width="25%" bgcolor="<?php echo $bgcolor;?>"><strong><a href="<?php echo $key;?>"><?php echo $key;?></a></strong></td>
+                <td bgcolor="<?php echo $bgcolor;?>"><?php echo $value;?></td>
+                <td align="right" width="10%" bgcolor="<?php echo $bgcolor;?>"><?php echo $size;?></td>
+            </tr>
     <?php
     $i++;
   }
 }
 ?>
-</table>
-</body>
+        </table>
+    </body>
 </html>
