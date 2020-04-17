@@ -373,28 +373,6 @@ ChanFlags  0
 End
 
 #I3CHAN
-ChanName   mlp
-ChanMud    Ulario
-ChanLocal  (null)
-ChanLayM   [%s] %s@%s: %%^RESET%%^%s
-ChanLayE   [%s] %%^RESET%%^%s
-ChanLevel  0
-ChanStatus 0
-ChanFlags  0
-End
-
-#I3CHAN
-ChanName   foo
-ChanMud    Ulario
-ChanLocal  (null)
-ChanLayM   [%s] %s@%s: %%^RESET%%^%s
-ChanLayE   [%s] %%^RESET%%^%s
-ChanLevel  0
-ChanStatus 0
-ChanFlags  0
-End
-
-#I3CHAN
 ChanName   4l
 ChanMud    4Liberty
 ChanLocal  (null)
@@ -419,17 +397,6 @@ End
 #I3CHAN
 ChanName   cleric
 ChanMud    Dead_Souls_ihsahn
-ChanLocal  (null)
-ChanLayM   [%s] %s@%s: %%^RESET%%^%s
-ChanLayE   [%s] %%^RESET%%^%s
-ChanLevel  0
-ChanStatus 0
-ChanFlags  0
-End
-
-#I3CHAN
-ChanName   spyro
-ChanMud    Ulario
 ChanLocal  (null)
 ChanLayM   [%s] %s@%s: %%^RESET%%^%s
 ChanLayE   [%s] %%^RESET%%^%s
@@ -483,17 +450,6 @@ ChanFlags  0
 End
 
 #I3CHAN
-ChanName   ad
-ChanMud    Ulario
-ChanLocal  (null)
-ChanLayM   [%s] %s@%s: %%^RESET%%^%s
-ChanLayE   [%s] %%^RESET%%^%s
-ChanLevel  0
-ChanStatus 0
-ChanFlags  0
-End
-
-#I3CHAN
 ChanName   nschat
 ChanMud    Elanathia
 ChanLocal  (null)
@@ -533,7 +489,7 @@ ChanLocal  (null)
 ChanLayM   [%s] %s@%s: %%^RESET%%^%s
 ChanLayE   [%s] %%^RESET%%^%s
 ChanLevel  0
-ChanStatus 2
+ChanStatus 0
 ChanFlags  0
 End
 
@@ -639,17 +595,6 @@ End
 #I3CHAN
 ChanName   test
 ChanMud    OuterSpace
-ChanLocal  (null)
-ChanLayM   [%s] %s@%s: %%^RESET%%^%s
-ChanLayE   [%s] %%^RESET%%^%s
-ChanLevel  0
-ChanStatus 0
-ChanFlags  0
-End
-
-#I3CHAN
-ChanName   vore
-ChanMud    Ulario
 ChanLocal  (null)
 ChanLayM   [%s] %s@%s: %%^RESET%%^%s
 ChanLayE   [%s] %%^RESET%%^%s
@@ -835,17 +780,6 @@ ChanFlags  0
 End
 
 #I3CHAN
-ChanName   bestiality 2
-ChanMud    Ulario
-ChanLocal  (null)
-ChanLayM   [%s] %s@%s: %%^RESET%%^%s
-ChanLayE   [%s] %%^RESET%%^%s
-ChanLevel  0
-ChanStatus 0
-ChanFlags  0
-End
-
-#I3CHAN
 ChanName   felixfelicis
 ChanMud    CoffeeMudESP
 ChanLocal  (null)
@@ -890,17 +824,6 @@ ChanFlags  0
 End
 
 #I3CHAN
-ChanName   bestiality
-ChanMud    Ulario
-ChanLocal  (null)
-ChanLayM   [%s] %s@%s: %%^RESET%%^%s
-ChanLayE   [%s] %%^RESET%%^%s
-ChanLevel  0
-ChanStatus 0
-ChanFlags  0
-End
-
-#I3CHAN
 ChanName   ADR
 ChanMud    Aadarian_Realms
 ChanLocal  (null)
@@ -934,30 +857,8 @@ ChanFlags  0
 End
 
 #I3CHAN
-ChanName   kotaka
-ChanMud    Ulario
-ChanLocal  (null)
-ChanLayM   [%s] %s@%s: %%^RESET%%^%s
-ChanLayE   [%s] %%^RESET%%^%s
-ChanLevel  0
-ChanStatus 0
-ChanFlags  0
-End
-
-#I3CHAN
 ChanName   diskworld-cre
 ChanMud    6d-esp
-ChanLocal  (null)
-ChanLayM   [%s] %s@%s: %%^RESET%%^%s
-ChanLayE   [%s] %%^RESET%%^%s
-ChanLevel  0
-ChanStatus 0
-ChanFlags  0
-End
-
-#I3CHAN
-ChanName   foobar
-ChanMud    Ulario
 ChanLocal  (null)
 ChanLayM   [%s] %s@%s: %%^RESET%%^%s
 ChanLayE   [%s] %%^RESET%%^%s
@@ -1013,17 +914,6 @@ End
 #I3CHAN
 ChanName   dod
 ChanMud    Days of Dragons
-ChanLocal  (null)
-ChanLayM   [%s] %s@%s: %%^RESET%%^%s
-ChanLayE   [%s] %%^RESET%%^%s
-ChanLevel  0
-ChanStatus 0
-ChanFlags  0
-End
-
-#I3CHAN
-ChanName   ascii_video
-ChanMud    Ulario
 ChanLocal  (null)
 ChanLayM   [%s] %s@%s: %%^RESET%%^%s
 ChanLayE   [%s] %%^RESET%%^%s
@@ -1099,17 +989,6 @@ ChanFlags  0
 End
 
 #I3CHAN
-ChanName   crat is crazy
-ChanMud    Ulario
-ChanLocal  (null)
-ChanLayM   [%s] %s@%s: %%^RESET%%^%s
-ChanLayE   [%s] %%^RESET%%^%s
-ChanLevel  0
-ChanStatus 0
-ChanFlags  0
-End
-
-#I3CHAN
 ChanName   bsg2
 ChanMud    Dead Souls Dev
 ChanLocal  bsg2
@@ -1134,17 +1013,6 @@ End
 #I3CHAN
 ChanName   animechat
 ChanMud    Bleached InuYasha Galaxy
-ChanLocal  (null)
-ChanLayM   [%s] %s@%s: %%^RESET%%^%s
-ChanLayE   [%s] %%^RESET%%^%s
-ChanLevel  0
-ChanStatus 0
-ChanFlags  0
-End
-
-#I3CHAN
-ChanName   foobar 2
-ChanMud    Ulario
 ChanLocal  (null)
 ChanLayM   [%s] %s@%s: %%^RESET%%^%s
 ChanLayE   [%s] %%^RESET%%^%s
@@ -1198,17 +1066,6 @@ ChanFlags  0
 End
 
 #I3CHAN
-ChanName   foofoo
-ChanMud    Ulario
-ChanLocal  (null)
-ChanLayM   [%s] %s@%s: %%^RESET%%^%s
-ChanLayE   [%s] %%^RESET%%^%s
-ChanLevel  0
-ChanStatus 0
-ChanFlags  0
-End
-
-#I3CHAN
 ChanName   nscre
 ChanMud    Elanathia
 ChanLocal  (null)
@@ -1242,30 +1099,8 @@ ChanFlags  0
 End
 
 #I3CHAN
-ChanName   furry
-ChanMud    Ulario
-ChanLocal  (null)
-ChanLayM   [%s] %s@%s: %%^RESET%%^%s
-ChanLayE   [%s] %%^RESET%%^%s
-ChanLevel  0
-ChanStatus 0
-ChanFlags  0
-End
-
-#I3CHAN
 ChanName   mage
 ChanMud    Second Nightmare
-ChanLocal  (null)
-ChanLayM   [%s] %s@%s: %%^RESET%%^%s
-ChanLayE   [%s] %%^RESET%%^%s
-ChanLevel  0
-ChanStatus 0
-ChanFlags  0
-End
-
-#I3CHAN
-ChanName   yiff
-ChanMud    Ulario
 ChanLocal  (null)
 ChanLayM   [%s] %s@%s: %%^RESET%%^%s
 ChanLayE   [%s] %%^RESET%%^%s
@@ -1363,17 +1198,6 @@ ChanFlags  0
 End
 
 #I3CHAN
-ChanName   crat
-ChanMud    Ulario
-ChanLocal  (null)
-ChanLayM   [%s] %s@%s: %%^RESET%%^%s
-ChanLayE   [%s] %%^RESET%%^%s
-ChanLevel  0
-ChanStatus 0
-ChanFlags  0
-End
-
-#I3CHAN
 ChanName   minecraft
 ChanMud    Bloodlines
 ChanLocal  (null)
@@ -1451,17 +1275,6 @@ ChanFlags  0
 End
 
 #I3CHAN
-ChanName   avalar
-ChanMud    Ulario
-ChanLocal  (null)
-ChanLayM   [%s] %s@%s: %%^RESET%%^%s
-ChanLayE   [%s] %%^RESET%%^%s
-ChanLevel  0
-ChanStatus 0
-ChanFlags  0
-End
-
-#I3CHAN
 ChanName   german
 ChanMud    OuterSpace
 ChanLocal  (null)
@@ -1528,17 +1341,6 @@ ChanFlags  0
 End
 
 #I3CHAN
-ChanName   asdfasdf
-ChanMud    Ulario
-ChanLocal  (null)
-ChanLayM   [%s] %s@%s: %%^RESET%%^%s
-ChanLayE   [%s] %%^RESET%%^%s
-ChanLevel  0
-ChanStatus 0
-ChanFlags  0
-End
-
-#I3CHAN
 ChanName   bd_dev
 ChanMud    BrokenDreamsDev
 ChanLocal  (null)
@@ -1594,8 +1396,8 @@ ChanFlags  0
 End
 
 #I3CHAN
-ChanName   ChanMud    Ulario
-ChanMud    (null)
+ChanName   wonder
+ChanMud    md20
 ChanLocal  (null)
 ChanLayM   [%s] %s@%s: %%^RESET%%^%s
 ChanLayE   [%s] %%^RESET%%^%s
@@ -1605,1250 +1407,216 @@ ChanFlags  0
 End
 
 #I3CHAN
-ChanName   ChanMud    Ulario
-ChanMud    (null)
+ChanName   mlp
+ChanMud    Ulario
 ChanLocal  (null)
-ChanLayM   [%s] %s@%s: %%^RESET%%^%s
-ChanLayE   [%s] %%^RESET%%^%s
-ChanLevel  0
-ChanStatus 0
-ChanFlags  0
-End
-
-#I3CHAN
-ChanName   ChanMud    Ulario
-ChanMud    (null)
-ChanLocal  (null)
-ChanLayM   [%s] %s@%s: %%^RESET%%^%s
-ChanLayE   [%s] %%^RESET%%^%s
-ChanLevel  0
-ChanStatus 0
-ChanFlags  0
-End
-
-#I3CHAN
-ChanName   ChanMud    Ulario
-ChanMud    (null)
-ChanLocal  (null)
-ChanLayM   [%s] %s@%s: %%^RESET%%^%s
-ChanLayE   [%s] %%^RESET%%^%s
-ChanLevel  0
-ChanStatus 0
-ChanFlags  0
-End
-
-#I3CHAN
-ChanName   ChanMud    Ulario
-ChanMud    (null)
-ChanLocal  (null)
-ChanLayM   [%s] %s@%s: %%^RESET%%^%s
-ChanLayE   [%s] %%^RESET%%^%s
-ChanLevel  0
-ChanStatus 0
-ChanFlags  0
-End
-
-#I3CHAN
-ChanName   ChanMud    Ulario
-ChanMud    (null)
-ChanLocal  (null)
-ChanLayM   [%s] %s@%s: %%^RESET%%^%s
-ChanLayE   [%s] %%^RESET%%^%s
-ChanLevel  0
-ChanStatus 0
-ChanFlags  0
-End
-
-#I3CHAN
-ChanName   ChanMud    Ulario
-ChanMud    (null)
-ChanLocal  (null)
-ChanLayM   [%s] %s@%s: %%^RESET%%^%s
-ChanLayE   [%s] %%^RESET%%^%s
-ChanLevel  0
-ChanStatus 0
-ChanFlags  0
-End
-
-#I3CHAN
-ChanName   ChanMud    Ulario
-ChanMud    (null)
-ChanLocal  (null)
-ChanLayM   [%s] %s@%s: %%^RESET%%^%s
-ChanLayE   [%s] %%^RESET%%^%s
-ChanLevel  0
-ChanStatus 0
-ChanFlags  0
-End
-
-#I3CHAN
-ChanName   ChanMud    Ulario
-ChanMud    (null)
-ChanLocal  (null)
-ChanLayM   [%s] %s@%s: %%^RESET%%^%s
-ChanLayE   [%s] %%^RESET%%^%s
-ChanLevel  0
-ChanStatus 0
-ChanFlags  0
-End
-
-#I3CHAN
-ChanName   ChanMud    Ulario
-ChanMud    (null)
-ChanLocal  (null)
-ChanLayM   [%s] %s@%s: %%^RESET%%^%s
-ChanLayE   [%s] %%^RESET%%^%s
-ChanLevel  0
-ChanStatus 0
-ChanFlags  0
-End
-
-#I3CHAN
-ChanName   ChanMud    Ulario
-ChanMud    (null)
-ChanLocal  (null)
-ChanLayM   [%s] %s@%s: %%^RESET%%^%s
-ChanLayE   [%s] %%^RESET%%^%s
-ChanLevel  0
-ChanStatus 0
-ChanFlags  0
-End
-
-#I3CHAN
-ChanName   ChanMud    Ulario
-ChanMud    (null)
-ChanLocal  (null)
-ChanLayM   [%s] %s@%s: %%^RESET%%^%s
-ChanLayE   [%s] %%^RESET%%^%s
-ChanLevel  0
-ChanStatus 0
-ChanFlags  0
-End
-
-#I3CHAN
-ChanName   ChanMud    Ulario
-ChanMud    (null)
-ChanLocal  (null)
-ChanLayM   [%s] %s@%s: %%^RESET%%^%s
-ChanLayE   [%s] %%^RESET%%^%s
-ChanLevel  0
-ChanStatus 0
-ChanFlags  0
-End
-
-#I3CHAN
-ChanName   ChanMud    Ulario
-ChanMud    (null)
-ChanLocal  (null)
-ChanLayM   [%s] %s@%s: %%^RESET%%^%s
-ChanLayE   [%s] %%^RESET%%^%s
-ChanLevel  0
-ChanStatus 0
-ChanFlags  0
-End
-
-#I3CHAN
-ChanName   ChanMud    Ulario
-ChanMud    (null)
-ChanLocal  (null)
-ChanLayM   [%s] %s@%s: %%^RESET%%^%s
-ChanLayE   [%s] %%^RESET%%^%s
-ChanLevel  0
-ChanStatus 0
-ChanFlags  0
-End
-
-#I3CHAN
-ChanName   ChanMud    Ulario
-ChanMud    (null)
-ChanLocal  (null)
-ChanLayM   [%s] %s@%s: %%^RESET%%^%s
-ChanLayE   [%s] %%^RESET%%^%s
-ChanLevel  0
-ChanStatus 0
-ChanFlags  0
-End
-
-#I3CHAN
-ChanName   ChanMud    Ulario
-ChanMud    (null)
-ChanLocal  (null)
-ChanLayM   [%s] %s@%s: %%^RESET%%^%s
-ChanLayE   [%s] %%^RESET%%^%s
-ChanLevel  0
-ChanStatus 0
-ChanFlags  0
-End
-
-#I3CHAN
-ChanName   ChanMud    Ulario
-ChanMud    (null)
-ChanLocal  (null)
-ChanLayM   [%s] %s@%s: %%^RESET%%^%s
-ChanLayE   [%s] %%^RESET%%^%s
-ChanLevel  0
-ChanStatus 0
-ChanFlags  0
-End
-
-#I3CHAN
-ChanName   ChanMud    Ulario
-ChanMud    (null)
-ChanLocal  (null)
-ChanLayM   [%s] %s@%s: %%^RESET%%^%s
-ChanLayE   [%s] %%^RESET%%^%s
-ChanLevel  0
-ChanStatus 0
-ChanFlags  0
-End
-
-#I3CHAN
-ChanName   ChanMud    Ulario
-ChanMud    (null)
-ChanLocal  (null)
-ChanLayM   [%s] %s@%s: %%^RESET%%^%s
-ChanLayE   [%s] %%^RESET%%^%s
-ChanLevel  0
-ChanStatus 0
-ChanFlags  0
-End
-
-#I3CHAN
-ChanName   ChanMud    Ulario
-ChanMud    (null)
-ChanLocal  (null)
-ChanLayM   [%s] %s@%s: %%^RESET%%^%s
-ChanLayE   [%s] %%^RESET%%^%s
-ChanLevel  0
-ChanStatus 0
-ChanFlags  0
-End
-
-#I3CHAN
-ChanName   ChanMud    Ulario
-ChanMud    (null)
-ChanLocal  (null)
-ChanLayM   [%s] %s@%s: %%^RESET%%^%s
-ChanLayE   [%s] %%^RESET%%^%s
-ChanLevel  0
-ChanStatus 0
-ChanFlags  0
-End
-
-#I3CHAN
-ChanName   ChanMud    Ulario
-ChanMud    (null)
-ChanLocal  (null)
-ChanLayM   [%s] %s@%s: %%^RESET%%^%s
-ChanLayE   [%s] %%^RESET%%^%s
-ChanLevel  0
-ChanStatus 0
-ChanFlags  0
-End
-
-#I3CHAN
-ChanName   ChanMud    Ulario
-ChanMud    (null)
-ChanLocal  (null)
-ChanLayM   [%s] %s@%s: %%^RESET%%^%s
-ChanLayE   [%s] %%^RESET%%^%s
-ChanLevel  0
-ChanStatus 0
-ChanFlags  0
-End
-
-#I3CHAN
-ChanName   ChanMud    Ulario
-ChanMud    (null)
-ChanLocal  (null)
-ChanLayM   [%s] %s@%s: %%^RESET%%^%s
-ChanLayE   [%s] %%^RESET%%^%s
-ChanLevel  0
-ChanStatus 0
-ChanFlags  0
-End
-
-#I3CHAN
-ChanName   ChanMud    Ulario
-ChanMud    (null)
-ChanLocal  (null)
-ChanLayM   [%s] %s@%s: %%^RESET%%^%s
-ChanLayE   [%s] %%^RESET%%^%s
-ChanLevel  0
-ChanStatus 0
-ChanFlags  0
-End
-
-#I3CHAN
-ChanName   ChanMud    Ulario
-ChanMud    (null)
-ChanLocal  (null)
-ChanLayM   [%s] %s@%s: %%^RESET%%^%s
-ChanLayE   [%s] %%^RESET%%^%s
-ChanLevel  0
-ChanStatus 0
-ChanFlags  0
-End
-
-#I3CHAN
-ChanName   ChanMud    Ulario
-ChanMud    (null)
-ChanLocal  (null)
-ChanLayM   [%s] %s@%s: %%^RESET%%^%s
-ChanLayE   [%s] %%^RESET%%^%s
-ChanLevel  0
-ChanStatus 0
-ChanFlags  0
-End
-
-#I3CHAN
-ChanName   ChanMud    Ulario
-ChanMud    (null)
-ChanLocal  (null)
-ChanLayM   [%s] %s@%s: %%^RESET%%^%s
-ChanLayE   [%s] %%^RESET%%^%s
-ChanLevel  0
-ChanStatus 0
-ChanFlags  0
-End
-
-#I3CHAN
-ChanName   ChanMud    Ulario
-ChanMud    (null)
-ChanLocal  (null)
-ChanLayM   [%s] %s@%s: %%^RESET%%^%s
-ChanLayE   [%s] %%^RESET%%^%s
-ChanLevel  0
-ChanStatus 0
-ChanFlags  0
-End
-
-#I3CHAN
-ChanName   ChanMud    Ulario
-ChanMud    (null)
-ChanLocal  (null)
-ChanLayM   [%s] %s@%s: %%^RESET%%^%s
-ChanLayE   [%s] %%^RESET%%^%s
-ChanLevel  0
-ChanStatus 0
-ChanFlags  0
-End
-
-#I3CHAN
-ChanName   ChanMud    Ulario
-ChanMud    (null)
-ChanLocal  (null)
-ChanLayM   [%s] %s@%s: %%^RESET%%^%s
-ChanLayE   [%s] %%^RESET%%^%s
-ChanLevel  0
-ChanStatus 0
-ChanFlags  0
-End
-
-#I3CHAN
-ChanName   ChanMud    Ulario
-ChanMud    (null)
-ChanLocal  (null)
-ChanLayM   [%s] %s@%s: %%^RESET%%^%s
-ChanLayE   [%s] %%^RESET%%^%s
-ChanLevel  0
-ChanStatus 0
-ChanFlags  0
-End
-
-#I3CHAN
-ChanName   ChanMud    Ulario
-ChanMud    (null)
-ChanLocal  (null)
-ChanLayM   [%s] %s@%s: %%^RESET%%^%s
-ChanLayE   [%s] %%^RESET%%^%s
-ChanLevel  0
-ChanStatus 0
-ChanFlags  0
-End
-
-#I3CHAN
-ChanName   ChanMud    Ulario
-ChanMud    (null)
-ChanLocal  (null)
-ChanLayM   [%s] %s@%s: %%^RESET%%^%s
-ChanLayE   [%s] %%^RESET%%^%s
-ChanLevel  0
-ChanStatus 0
-ChanFlags  0
-End
-
-#I3CHAN
-ChanName   ChanMud    Ulario
-ChanMud    (null)
-ChanLocal  (null)
-ChanLayM   [%s] %s@%s: %%^RESET%%^%s
-ChanLayE   [%s] %%^RESET%%^%s
-ChanLevel  0
-ChanStatus 0
-ChanFlags  0
-End
-
-#I3CHAN
-ChanName   ChanMud    Ulario
-ChanMud    (null)
-ChanLocal  (null)
-ChanLayM   [%s] %s@%s: %%^RESET%%^%s
-ChanLayE   [%s] %%^RESET%%^%s
-ChanLevel  0
-ChanStatus 0
-ChanFlags  0
-End
-
-#I3CHAN
-ChanName   ChanMud    Ulario
-ChanMud    (null)
-ChanLocal  (null)
-ChanLayM   [%s] %s@%s: %%^RESET%%^%s
-ChanLayE   [%s] %%^RESET%%^%s
-ChanLevel  0
-ChanStatus 0
-ChanFlags  0
-End
-
-#I3CHAN
-ChanName   ChanMud    Ulario
-ChanMud    (null)
-ChanLocal  (null)
-ChanLayM   [%s] %s@%s: %%^RESET%%^%s
-ChanLayE   [%s] %%^RESET%%^%s
-ChanLevel  0
-ChanStatus 0
-ChanFlags  0
-End
-
-#I3CHAN
-ChanName   ChanMud    Ulario
-ChanMud    (null)
-ChanLocal  (null)
-ChanLayM   [%s] %s@%s: %%^RESET%%^%s
-ChanLayE   [%s] %%^RESET%%^%s
-ChanLevel  0
-ChanStatus 0
-ChanFlags  0
-End
-
-#I3CHAN
-ChanName   ChanMud    Ulario
-ChanMud    (null)
-ChanLocal  (null)
-ChanLayM   [%s] %s@%s: %%^RESET%%^%s
-ChanLayE   [%s] %%^RESET%%^%s
-ChanLevel  0
-ChanStatus 0
-ChanFlags  0
-End
-
-#I3CHAN
-ChanName   ChanMud    Ulario
-ChanMud    (null)
-ChanLocal  (null)
-ChanLayM   [%s] %s@%s: %%^RESET%%^%s
-ChanLayE   [%s] %%^RESET%%^%s
-ChanLevel  0
-ChanStatus 0
-ChanFlags  0
-End
-
-#I3CHAN
-ChanName   ChanMud    Ulario
-ChanMud    (null)
-ChanLocal  (null)
-ChanLayM   [%s] %s@%s: %%^RESET%%^%s
-ChanLayE   [%s] %%^RESET%%^%s
-ChanLevel  0
-ChanStatus 0
-ChanFlags  0
-End
-
-#I3CHAN
-ChanName   ChanMud    Ulario
-ChanMud    (null)
-ChanLocal  (null)
-ChanLayM   [%s] %s@%s: %%^RESET%%^%s
-ChanLayE   [%s] %%^RESET%%^%s
-ChanLevel  0
-ChanStatus 0
-ChanFlags  0
-End
-
-#I3CHAN
-ChanName   ChanMud    Ulario
-ChanMud    (null)
-ChanLocal  (null)
-ChanLayM   [%s] %s@%s: %%^RESET%%^%s
-ChanLayE   [%s] %%^RESET%%^%s
-ChanLevel  0
-ChanStatus 0
-ChanFlags  0
-End
-
-#I3CHAN
-ChanName   ChanMud    Ulario
-ChanMud    (null)
-ChanLocal  (null)
-ChanLayM   [%s] %s@%s: %%^RESET%%^%s
-ChanLayE   [%s] %%^RESET%%^%s
-ChanLevel  0
-ChanStatus 0
-ChanFlags  0
-End
-
-#I3CHAN
-ChanName   ChanMud    Ulario
-ChanMud    (null)
-ChanLocal  (null)
-ChanLayM   [%s] %s@%s: %%^RESET%%^%s
-ChanLayE   [%s] %%^RESET%%^%s
-ChanLevel  0
-ChanStatus 0
-ChanFlags  0
-End
-
-#I3CHAN
-ChanName   ChanMud    Ulario
-ChanMud    (null)
-ChanLocal  (null)
-ChanLayM   [%s] %s@%s: %%^RESET%%^%s
-ChanLayE   [%s] %%^RESET%%^%s
-ChanLevel  0
-ChanStatus 0
-ChanFlags  0
-End
-
-#I3CHAN
-ChanName   ChanMud    Ulario
-ChanMud    (null)
-ChanLocal  (null)
-ChanLayM   [%s] %s@%s: %%^RESET%%^%s
-ChanLayE   [%s] %%^RESET%%^%s
-ChanLevel  0
-ChanStatus 0
-ChanFlags  0
-End
-
-#I3CHAN
-ChanName   ChanMud    Ulario
-ChanMud    (null)
-ChanLocal  (null)
-ChanLayM   [%s] %s@%s: %%^RESET%%^%s
-ChanLayE   [%s] %%^RESET%%^%s
-ChanLevel  0
-ChanStatus 0
-ChanFlags  0
-End
-
-#I3CHAN
-ChanName   ChanMud    Ulario
-ChanMud    (null)
-ChanLocal  (null)
-ChanLayM   [%s] %s@%s: %%^RESET%%^%s
-ChanLayE   [%s] %%^RESET%%^%s
-ChanLevel  0
-ChanStatus 0
-ChanFlags  0
-End
-
-#I3CHAN
-ChanName   ChanMud    Ulario
-ChanMud    (null)
-ChanLocal  (null)
-ChanLayM   [%s] %s@%s: %%^RESET%%^%s
-ChanLayE   [%s] %%^RESET%%^%s
-ChanLevel  0
-ChanStatus 0
-ChanFlags  0
-End
-
-#I3CHAN
-ChanName   ChanMud    Ulario
-ChanMud    (null)
-ChanLocal  (null)
-ChanLayM   [%s] %s@%s: %%^RESET%%^%s
-ChanLayE   [%s] %%^RESET%%^%s
-ChanLevel  0
-ChanStatus 0
-ChanFlags  0
-End
-
-#I3CHAN
-ChanName   ChanMud    Ulario
-ChanMud    (null)
-ChanLocal  (null)
-ChanLayM   [%s] %s@%s: %%^RESET%%^%s
-ChanLayE   [%s] %%^RESET%%^%s
-ChanLevel  0
-ChanStatus 0
-ChanFlags  0
-End
-
-#I3CHAN
-ChanName   ChanMud    Ulario
-ChanMud    (null)
-ChanLocal  (null)
-ChanLayM   [%s] %s@%s: %%^RESET%%^%s
-ChanLayE   [%s] %%^RESET%%^%s
-ChanLevel  0
-ChanStatus 0
-ChanFlags  0
-End
-
-#I3CHAN
-ChanName   ChanMud    Ulario
-ChanMud    (null)
-ChanLocal  (null)
-ChanLayM   [%s] %s@%s: %%^RESET%%^%s
-ChanLayE   [%s] %%^RESET%%^%s
-ChanLevel  0
-ChanStatus 0
-ChanFlags  0
-End
-
-#I3CHAN
-ChanName   ChanMud    Ulario
-ChanMud    (null)
-ChanLocal  (null)
-ChanLayM   [%s] %s@%s: %%^RESET%%^%s
-ChanLayE   [%s] %%^RESET%%^%s
-ChanLevel  0
-ChanStatus 0
-ChanFlags  0
-End
-
-#I3CHAN
-ChanName   ChanMud    Ulario
-ChanMud    (null)
-ChanLocal  (null)
-ChanLayM   [%s] %s@%s: %%^RESET%%^%s
-ChanLayE   [%s] %%^RESET%%^%s
-ChanLevel  0
-ChanStatus 0
-ChanFlags  0
-End
-
-#I3CHAN
-ChanName   ChanMud    Ulario
-ChanMud    (null)
-ChanLocal  (null)
-ChanLayM   [%s] %s@%s: %%^RESET%%^%s
-ChanLayE   [%s] %%^RESET%%^%s
-ChanLevel  0
-ChanStatus 0
-ChanFlags  0
-End
-
-#I3CHAN
-ChanName   ChanMud    Ulario
-ChanMud    (null)
-ChanLocal  (null)
-ChanLayM   [%s] %s@%s: %%^RESET%%^%s
-ChanLayE   [%s] %%^RESET%%^%s
-ChanLevel  0
-ChanStatus 0
-ChanFlags  0
-End
-
-#I3CHAN
-ChanName   ChanMud    Ulario
-ChanMud    (null)
-ChanLocal  (null)
-ChanLayM   [%s] %s@%s: %%^RESET%%^%s
-ChanLayE   [%s] %%^RESET%%^%s
-ChanLevel  0
-ChanStatus 0
-ChanFlags  0
-End
-
-#I3CHAN
-ChanName   ChanMud    Ulario
-ChanMud    (null)
-ChanLocal  (null)
-ChanLayM   [%s] %s@%s: %%^RESET%%^%s
-ChanLayE   [%s] %%^RESET%%^%s
-ChanLevel  0
-ChanStatus 0
-ChanFlags  0
-End
-
-#I3CHAN
-ChanName   ChanMud    Ulario
-ChanMud    (null)
-ChanLocal  (null)
-ChanLayM   [%s] %s@%s: %%^RESET%%^%s
-ChanLayE   [%s] %%^RESET%%^%s
-ChanLevel  0
-ChanStatus 0
-ChanFlags  0
-End
-
-#I3CHAN
-ChanName   ChanMud    Ulario
-ChanMud    (null)
-ChanLocal  (null)
-ChanLayM   [%s] %s@%s: %%^RESET%%^%s
-ChanLayE   [%s] %%^RESET%%^%s
-ChanLevel  0
-ChanStatus 0
-ChanFlags  0
-End
-
-#I3CHAN
-ChanName   ChanMud    Ulario
-ChanMud    (null)
-ChanLocal  (null)
-ChanLayM   [%s] %s@%s: %%^RESET%%^%s
-ChanLayE   [%s] %%^RESET%%^%s
-ChanLevel  0
-ChanStatus 0
-ChanFlags  0
-End
-
-#I3CHAN
-ChanName   ChanMud    Ulario
-ChanMud    (null)
-ChanLocal  (null)
-ChanLayM   [%s] %s@%s: %%^RESET%%^%s
-ChanLayE   [%s] %%^RESET%%^%s
-ChanLevel  0
-ChanStatus 0
-ChanFlags  0
-End
-
-#I3CHAN
-ChanName   ChanMud    Ulario
-ChanMud    (null)
-ChanLocal  (null)
-ChanLayM   [%s] %s@%s: %%^RESET%%^%s
-ChanLayE   [%s] %%^RESET%%^%s
-ChanLevel  0
-ChanStatus 0
-ChanFlags  0
-End
-
-#I3CHAN
-ChanName   ChanMud    Ulario
-ChanMud    (null)
-ChanLocal  (null)
-ChanLayM   [%s] %s@%s: %%^RESET%%^%s
-ChanLayE   [%s] %%^RESET%%^%s
-ChanLevel  0
-ChanStatus 0
-ChanFlags  0
-End
-
-#I3CHAN
-ChanName   ChanMud    Ulario
-ChanMud    (null)
-ChanLocal  (null)
-ChanLayM   [%s] %s@%s: %%^RESET%%^%s
-ChanLayE   [%s] %%^RESET%%^%s
-ChanLevel  0
-ChanStatus 0
-ChanFlags  0
-End
-
-#I3CHAN
-ChanName   ChanMud    Ulario
-ChanMud    (null)
-ChanLocal  (null)
-ChanLayM   [%s] %s@%s: %%^RESET%%^%s
-ChanLayE   [%s] %%^RESET%%^%s
-ChanLevel  0
-ChanStatus 0
-ChanFlags  0
-End
-
-#I3CHAN
-ChanName   ChanMud    Ulario
-ChanMud    (null)
-ChanLocal  (null)
-ChanLayM   [%s] %s@%s: %%^RESET%%^%s
-ChanLayE   [%s] %%^RESET%%^%s
-ChanLevel  0
-ChanStatus 0
-ChanFlags  0
-End
-
-#I3CHAN
-ChanName   ChanMud    Ulario
-ChanMud    (null)
-ChanLocal  (null)
-ChanLayM   [%s] %s@%s: %%^RESET%%^%s
-ChanLayE   [%s] %%^RESET%%^%s
-ChanLevel  0
-ChanStatus 0
-ChanFlags  0
-End
-
-#I3CHAN
-ChanName   ChanMud    Ulario
-ChanMud    (null)
-ChanLocal  (null)
-ChanLayM   [%s] %s@%s: %%^RESET%%^%s
-ChanLayE   [%s] %%^RESET%%^%s
-ChanLevel  0
-ChanStatus 0
-ChanFlags  0
-End
-
-#I3CHAN
-ChanName   ChanMud    Ulario
-ChanMud    (null)
-ChanLocal  (null)
-ChanLayM   [%s] %s@%s: %%^RESET%%^%s
-ChanLayE   [%s] %%^RESET%%^%s
-ChanLevel  0
-ChanStatus 0
-ChanFlags  0
-End
-
-#I3CHAN
-ChanName   ChanMud    Ulario
-ChanMud    (null)
-ChanLocal  (null)
-ChanLayM   [%s] %s@%s: %%^RESET%%^%s
-ChanLayE   [%s] %%^RESET%%^%s
-ChanLevel  0
-ChanStatus 0
-ChanFlags  0
-End
-
-#I3CHAN
-ChanName   ChanMud    Ulario
-ChanMud    (null)
-ChanLocal  (null)
-ChanLayM   [%s] %s@%s: %%^RESET%%^%s
-ChanLayE   [%s] %%^RESET%%^%s
-ChanLevel  0
-ChanStatus 0
-ChanFlags  0
-End
-
-#I3CHAN
-ChanName   ChanMud    Ulario
-ChanMud    (null)
-ChanLocal  (null)
-ChanLayM   [%s] %s@%s: %%^RESET%%^%s
-ChanLayE   [%s] %%^RESET%%^%s
-ChanLevel  0
-ChanStatus 0
-ChanFlags  0
-End
-
-#I3CHAN
-ChanName   ChanMud    Ulario
-ChanMud    (null)
-ChanLocal  (null)
-ChanLayM   [%s] %s@%s: %%^RESET%%^%s
-ChanLayE   [%s] %%^RESET%%^%s
-ChanLevel  0
-ChanStatus 0
-ChanFlags  0
-End
-
-#I3CHAN
-ChanName   ChanMud    Ulario
-ChanMud    (null)
-ChanLocal  (null)
-ChanLayM   [%s] %s@%s: %%^RESET%%^%s
-ChanLayE   [%s] %%^RESET%%^%s
-ChanLevel  0
-ChanStatus 0
-ChanFlags  0
-End
-
-#I3CHAN
-ChanName   ChanMud    Ulario
-ChanMud    (null)
-ChanLocal  (null)
-ChanLayM   [%s] %s@%s: %%^RESET%%^%s
-ChanLayE   [%s] %%^RESET%%^%s
-ChanLevel  0
-ChanStatus 0
-ChanFlags  0
-End
-
-#I3CHAN
-ChanName   ChanMud    Ulario
-ChanMud    (null)
-ChanLocal  (null)
-ChanLayM   [%s] %s@%s: %%^RESET%%^%s
-ChanLayE   [%s] %%^RESET%%^%s
-ChanLevel  0
-ChanStatus 0
-ChanFlags  0
-End
-
-#I3CHAN
-ChanName   ChanMud    Ulario
-ChanMud    (null)
-ChanLocal  (null)
-ChanLayM   [%s] %s@%s: %%^RESET%%^%s
-ChanLayE   [%s] %%^RESET%%^%s
-ChanLevel  0
-ChanStatus 0
-ChanFlags  0
-End
-
-#I3CHAN
-ChanName   ChanMud    Ulario
-ChanMud    (null)
-ChanLocal  (null)
-ChanLayM   [%s] %s@%s: %%^RESET%%^%s
-ChanLayE   [%s] %%^RESET%%^%s
-ChanLevel  0
-ChanStatus 0
-ChanFlags  0
-End
-
-#I3CHAN
-ChanName   ChanMud    Ulario
-ChanMud    (null)
-ChanLocal  (null)
-ChanLayM   [%s] %s@%s: %%^RESET%%^%s
-ChanLayE   [%s] %%^RESET%%^%s
-ChanLevel  0
-ChanStatus 0
-ChanFlags  0
-End
-
-#I3CHAN
-ChanName   ChanMud    Ulario
-ChanMud    (null)
-ChanLocal  (null)
-ChanLayM   [%s] %s@%s: %%^RESET%%^%s
-ChanLayE   [%s] %%^RESET%%^%s
-ChanLevel  0
-ChanStatus 0
-ChanFlags  0
-End
-
-#I3CHAN
-ChanName   ChanMud    Ulario
-ChanMud    (null)
-ChanLocal  (null)
-ChanLayM   [%s] %s@%s: %%^RESET%%^%s
-ChanLayE   [%s] %%^RESET%%^%s
-ChanLevel  0
-ChanStatus 0
-ChanFlags  0
-End
-
-#I3CHAN
-ChanName   ChanMud    Ulario
-ChanMud    (null)
-ChanLocal  (null)
-ChanLayM   [%s] %s@%s: %%^RESET%%^%s
-ChanLayE   [%s] %%^RESET%%^%s
-ChanLevel  0
-ChanStatus 0
-ChanFlags  0
-End
-
-#I3CHAN
-ChanName   ChanMud    Ulario
-ChanMud    (null)
-ChanLocal  (null)
-ChanLayM   [%s] %s@%s: %%^RESET%%^%s
-ChanLayE   [%s] %%^RESET%%^%s
-ChanLevel  0
-ChanStatus 0
-ChanFlags  0
-End
-
-#I3CHAN
-ChanName   ChanMud    Ulario
-ChanMud    (null)
-ChanLocal  (null)
-ChanLayM   [%s] %s@%s: %%^RESET%%^%s
-ChanLayE   [%s] %%^RESET%%^%s
-ChanLevel  0
-ChanStatus 0
-ChanFlags  0
-End
-
-#I3CHAN
-ChanName   ChanMud    Ulario
-ChanMud    (null)
-ChanLocal  (null)
-ChanLayM   [%s] %s@%s: %%^RESET%%^%s
-ChanLayE   [%s] %%^RESET%%^%s
-ChanLevel  0
-ChanStatus 0
-ChanFlags  0
-End
-
-#I3CHAN
-ChanName   ChanMud    Ulario
-ChanMud    (null)
-ChanLocal  (null)
-ChanLayM   [%s] %s@%s: %%^RESET%%^%s
-ChanLayE   [%s] %%^RESET%%^%s
-ChanLevel  0
-ChanStatus 0
-ChanFlags  0
-End
-
-#I3CHAN
-ChanName   ChanMud    Ulario
-ChanMud    (null)
-ChanLocal  (null)
-ChanLayM   [%s] %s@%s: %%^RESET%%^%s
-ChanLayE   [%s] %%^RESET%%^%s
-ChanLevel  0
-ChanStatus 0
-ChanFlags  0
-End
-
-#I3CHAN
-ChanName   ChanMud    Ulario
-ChanMud    (null)
-ChanLocal  (null)
-ChanLayM   [%s] %s@%s: %%^RESET%%^%s
-ChanLayE   [%s] %%^RESET%%^%s
-ChanLevel  0
-ChanStatus 0
-ChanFlags  0
-End
-
-#I3CHAN
-ChanName   ChanMud    Ulario
-ChanMud    (null)
-ChanLocal  (null)
-ChanLayM   [%s] %s@%s: %%^RESET%%^%s
-ChanLayE   [%s] %%^RESET%%^%s
-ChanLevel  0
-ChanStatus 0
-ChanFlags  0
-End
-
-#I3CHAN
-ChanName   ChanMud    Ulario
-ChanMud    (null)
-ChanLocal  (null)
-ChanLayM   [%s] %s@%s: %%^RESET%%^%s
-ChanLayE   [%s] %%^RESET%%^%s
-ChanLevel  0
-ChanStatus 0
-ChanFlags  0
-End
-
-#I3CHAN
-ChanName   ChanMud    Ulario
-ChanMud    (null)
-ChanLocal  (null)
-ChanLayM   [%s] %s@%s: %%^RESET%%^%s
-ChanLayE   [%s] %%^RESET%%^%s
+ChanLayM   (null)
+ChanLayE   (null)
 ChanLevel  0
 ChanStatus 0
 ChanFlags  0
 End
 
 #I3CHAN
-ChanName   ChanMud    Ulario
-ChanMud    (null)
+ChanName   foo
+ChanMud    Ulario
 ChanLocal  (null)
-ChanLayM   [%s] %s@%s: %%^RESET%%^%s
-ChanLayE   [%s] %%^RESET%%^%s
+ChanLayM   (null)
+ChanLayE   (null)
 ChanLevel  0
 ChanStatus 0
 ChanFlags  0
 End
 
 #I3CHAN
-ChanName   ChanMud    Ulario
-ChanMud    (null)
+ChanName   spyro
+ChanMud    Ulario
 ChanLocal  (null)
-ChanLayM   [%s] %s@%s: %%^RESET%%^%s
-ChanLayE   [%s] %%^RESET%%^%s
+ChanLayM   (null)
+ChanLayE   (null)
 ChanLevel  0
 ChanStatus 0
 ChanFlags  0
 End
 
 #I3CHAN
-ChanName   ChanMud    Ulario
-ChanMud    (null)
+ChanName   ad
+ChanMud    Ulario
 ChanLocal  (null)
-ChanLayM   [%s] %s@%s: %%^RESET%%^%s
-ChanLayE   [%s] %%^RESET%%^%s
+ChanLayM   (null)
+ChanLayE   (null)
 ChanLevel  0
 ChanStatus 0
 ChanFlags  0
 End
 
 #I3CHAN
-ChanName   ChanMud    Ulario
-ChanMud    (null)
+ChanName   vore
+ChanMud    Ulario
 ChanLocal  (null)
-ChanLayM   [%s] %s@%s: %%^RESET%%^%s
-ChanLayE   [%s] %%^RESET%%^%s
+ChanLayM   (null)
+ChanLayE   (null)
 ChanLevel  0
 ChanStatus 0
 ChanFlags  0
 End
 
 #I3CHAN
-ChanName   ChanMud    Ulario
-ChanMud    (null)
+ChanName   bestiality 2
+ChanMud    Ulario
 ChanLocal  (null)
-ChanLayM   [%s] %s@%s: %%^RESET%%^%s
-ChanLayE   [%s] %%^RESET%%^%s
+ChanLayM   (null)
+ChanLayE   (null)
 ChanLevel  0
 ChanStatus 0
 ChanFlags  0
 End
 
 #I3CHAN
-ChanName   ChanMud    Ulario
-ChanMud    (null)
+ChanName   bestiality
+ChanMud    Ulario
 ChanLocal  (null)
-ChanLayM   [%s] %s@%s: %%^RESET%%^%s
-ChanLayE   [%s] %%^RESET%%^%s
+ChanLayM   (null)
+ChanLayE   (null)
 ChanLevel  0
 ChanStatus 0
 ChanFlags  0
 End
 
 #I3CHAN
-ChanName   ChanMud    Ulario
-ChanMud    (null)
+ChanName   Discworld
+ChanMud    GuardianMUD
 ChanLocal  (null)
-ChanLayM   [%s] %s@%s: %%^RESET%%^%s
-ChanLayE   [%s] %%^RESET%%^%s
+ChanLayM   (null)
+ChanLayE   (null)
 ChanLevel  0
 ChanStatus 0
 ChanFlags  0
 End
 
 #I3CHAN
-ChanName   ChanMud    Ulario
-ChanMud    (null)
+ChanName   kotaka
+ChanMud    Ulario
 ChanLocal  (null)
-ChanLayM   [%s] %s@%s: %%^RESET%%^%s
-ChanLayE   [%s] %%^RESET%%^%s
+ChanLayM   (null)
+ChanLayE   (null)
 ChanLevel  0
 ChanStatus 0
 ChanFlags  0
 End
 
 #I3CHAN
-ChanName   ChanMud    Ulario
-ChanMud    (null)
+ChanName   foobar
+ChanMud    Ulario
 ChanLocal  (null)
-ChanLayM   [%s] %s@%s: %%^RESET%%^%s
-ChanLayE   [%s] %%^RESET%%^%s
+ChanLayM   (null)
+ChanLayE   (null)
 ChanLevel  0
 ChanStatus 0
 ChanFlags  0
 End
 
 #I3CHAN
-ChanName   ChanMud    Ulario
-ChanMud    (null)
+ChanName   ascii_video
+ChanMud    Ulario
 ChanLocal  (null)
-ChanLayM   [%s] %s@%s: %%^RESET%%^%s
-ChanLayE   [%s] %%^RESET%%^%s
+ChanLayM   (null)
+ChanLayE   (null)
 ChanLevel  0
 ChanStatus 0
 ChanFlags  0
 End
 
 #I3CHAN
-ChanName   ChanMud    Ulario
-ChanMud    (null)
+ChanName   crat is crazy
+ChanMud    Ulario
 ChanLocal  (null)
-ChanLayM   [%s] %s@%s: %%^RESET%%^%s
-ChanLayE   [%s] %%^RESET%%^%s
+ChanLayM   (null)
+ChanLayE   (null)
 ChanLevel  0
 ChanStatus 0
 ChanFlags  0
 End
 
 #I3CHAN
-ChanName   ChanMud    Ulario
-ChanMud    (null)
+ChanName   foobar 2
+ChanMud    Ulario
 ChanLocal  (null)
-ChanLayM   [%s] %s@%s: %%^RESET%%^%s
-ChanLayE   [%s] %%^RESET%%^%s
+ChanLayM   (null)
+ChanLayE   (null)
 ChanLevel  0
 ChanStatus 0
 ChanFlags  0
 End
 
 #I3CHAN
-ChanName   ChanMud    Ulario
-ChanMud    (null)
+ChanName   foofoo
+ChanMud    Ulario
 ChanLocal  (null)
-ChanLayM   [%s] %s@%s: %%^RESET%%^%s
-ChanLayE   [%s] %%^RESET%%^%s
+ChanLayM   (null)
+ChanLayE   (null)
 ChanLevel  0
 ChanStatus 0
 ChanFlags  0
 End
 
 #I3CHAN
-ChanName   ChanMud    Ulario
-ChanMud    (null)
+ChanName   furry
+ChanMud    Ulario
 ChanLocal  (null)
-ChanLayM   [%s] %s@%s: %%^RESET%%^%s
-ChanLayE   [%s] %%^RESET%%^%s
+ChanLayM   (null)
+ChanLayE   (null)
 ChanLevel  0
 ChanStatus 0
 ChanFlags  0
 End
 
 #I3CHAN
-ChanName   ChanMud    Ulario
-ChanMud    (null)
+ChanName   yiff
+ChanMud    Ulario
 ChanLocal  (null)
-ChanLayM   [%s] %s@%s: %%^RESET%%^%s
-ChanLayE   [%s] %%^RESET%%^%s
+ChanLayM   (null)
+ChanLayE   (null)
 ChanLevel  0
 ChanStatus 0
 ChanFlags  0
 End
 
 #I3CHAN
-ChanName   ChanMud    Ulario
-ChanMud    (null)
+ChanName   crat
+ChanMud    Ulario
 ChanLocal  (null)
-ChanLayM   [%s] %s@%s: %%^RESET%%^%s
-ChanLayE   [%s] %%^RESET%%^%s
+ChanLayM   (null)
+ChanLayE   (null)
 ChanLevel  0
 ChanStatus 0
 ChanFlags  0
 End
 
 #I3CHAN
-ChanName   ChanMud    Ulario
-ChanMud    (null)
+ChanName   avalar
+ChanMud    Ulario
 ChanLocal  (null)
-ChanLayM   [%s] %s@%s: %%^RESET%%^%s
-ChanLayE   [%s] %%^RESET%%^%s
+ChanLayM   (null)
+ChanLayE   (null)
 ChanLevel  0
 ChanStatus 0
 ChanFlags  0
 End
 
 #I3CHAN
-ChanName   ChanMud    Ulario
-ChanMud    (null)
+ChanName   asdfasdf
+ChanMud    Ulario
 ChanLocal  (null)
-ChanLayM   [%s] %s@%s: %%^RESET%%^%s
-ChanLayE   [%s] %%^RESET%%^%s
+ChanLayM   (null)
+ChanLayE   (null)
 ChanLevel  0
 ChanStatus 0
 ChanFlags  0
 End
 
 #I3CHAN
-ChanName   
+ChanName   intercre
 ChanMud    Ulario
 ChanLocal  (null)
 ChanLayM   (null)

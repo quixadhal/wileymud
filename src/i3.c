@@ -6226,6 +6226,13 @@ void I3_write_channel_config(void)
     for (channel = first_I3chan; channel; channel = channel->next) {
 	// if( channel->local_name )
 	// {
+
+        // Skip stupid channels with empty names or leading whitespace
+        if(!channel->I3_name || !channel->I3_name[0] || isspace(channel->I3_name[0]))
+            continue;
+        if(!channel->host_mud || !channel->host_mud[0] || isspace(channel->host_mud[0]))
+            continue;
+
 	fprintf(fout, "%s", "#I3CHAN\n");
 	fprintf(fout, "ChanName   %s\n", channel->I3_name);
 	fprintf(fout, "ChanMud    %s\n", channel->host_mud);
@@ -6496,11 +6503,13 @@ void I3_savemudlist(void)
 
     fprintf(fp, "#ROUTER %s\n", I3_ROUTER_NAME);
     for (mud = first_mud; mud; mud = mud->next) {
-	/*
-	 * Don't store muds that are down, who cares? They'll update themselves anyway 
-	 */
+	// Don't store muds that are down, who cares? They'll update themselves anyway 
 	if (mud->status == 0)
 	    continue;
+
+        // Skip stupid muds with empty names or leading whitespace
+        if(!mud->name || !mud->name[0] || isspace(mud->name[0]))
+            continue;
 
 	fprintf(fp, "%s", "#MUDLIST\n");
 	fprintf(fp, "Name		%s\n", mud->name);
@@ -6548,11 +6557,16 @@ void I3_savechanlist(void)
     }
 
     for (channel = first_I3chan; channel; channel = channel->next) {
-	/*
-	 * Don't save local channels, they are stored elsewhere 
-	 */
+	// Don't save local channels, they are stored elsewhere 
 	if (channel->local_name)
 	    continue;
+
+        // Skip stupid channels with empty names or leading whitespace
+        if(!channel->I3_name || !channel->I3_name[0] || isspace(channel->I3_name[0]))
+            continue;
+
+        if(!channel->host_mud || !channel->host_mud[0] || isspace(channel->host_mud[0]))
+            continue;
 
 	fprintf(fp, "%s", "#I3CHAN\n");
 	fprintf(fp, "ChanMud		%s\n", channel->host_mud);

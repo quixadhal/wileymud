@@ -1,5 +1,5 @@
 #COUNT
-Count   2780
+Count   2788
 End
 
 #SPEAKER
@@ -1593,6 +1593,11 @@ Color  %^WHITE%^%^BOLD%^
 End
 
 #SPEAKER
+Name   majin
+Color  %^WHITE%^
+End
+
+#SPEAKER
 Name   asura
 Color  %^WHITE%^%^B_BLUE%^
 End
@@ -3155,6 +3160,11 @@ End
 #SPEAKER
 Name   swiper
 Color  %^RED%^
+End
+
+#SPEAKER
+Name   dove
+Color  %^MAGENTA%^%^BOLD%^
 End
 
 #SPEAKER
@@ -8318,6 +8328,11 @@ Color  %^BLACK%^%^B_WHITE%^
 End
 
 #SPEAKER
+Name   yyy
+Color  %^BLUE%^%^BOLD%^
+End
+
+#SPEAKER
 Name   abinidi
 Color  %^BLACK%^%^B_WHITE%^
 End
@@ -8984,6 +8999,11 @@ End
 
 #SPEAKER
 Name   wallsy
+Color  %^YELLOW%^
+End
+
+#SPEAKER
+Name   slypaw
 Color  %^YELLOW%^
 End
 
@@ -9865,6 +9885,11 @@ End
 #SPEAKER
 Name   ylapirrynag
 Color  %^WHITE%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name   nitupsar
+Color  %^GREEN%^%^BOLD%^
 End
 
 #SPEAKER
@@ -12183,6 +12208,11 @@ Color  %^WHITE%^%^BOLD%^
 End
 
 #SPEAKER
+Name   fire
+Color  %^MAGENTA%^
+End
+
+#SPEAKER
 Name   a shadow
 Color  %^BLACK%^%^B_YELLOW%^
 End
@@ -12455,6 +12485,11 @@ End
 #SPEAKER
 Name   kogar
 Color  %^BLUE%^
+End
+
+#SPEAKER
+Name   gal
+Color  %^RED%^%^BOLD%^
 End
 
 #SPEAKER
@@ -13340,6 +13375,11 @@ End
 #SPEAKER
 Name   zell
 Color  %^WHITE%^%^B_RED%^
+End
+
+#SPEAKER
+Name   crysrothe
+Color  %^CYAN%^
 End
 
 #SPEAKER
