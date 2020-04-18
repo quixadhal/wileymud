@@ -1,0 +1,17 @@
+#!/bin/bash
+
+NOW=`date '+%Y-%m-%d %H:%M:%S %Z'`
+if [ -f ./VERSION ]; then
+    VER=`head -1 ./VERSION | awk -F"\t" '{print $1}'`
+    if [ -z "$VER" ]; then
+        VER=0.00
+    fi
+    NVER=`printf '%4.2f\n' $(echo "$VER + 0.01" | bc)`
+else
+    NVER=0.01
+fi
+if [ -z "$NVER" ]; then
+    NVER=$1
+fi
+echo -en "$NVER\t$NOW\n" >./VERSION
+cat ./VERSION
