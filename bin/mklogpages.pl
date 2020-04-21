@@ -1097,7 +1097,7 @@ if( $do_pages or $do_json ) {
             a:active, a:focus { outline: 0; border: none; -moz-outline-style: none; }
             input, select, textarea { border-color: #101010; background-color: #101010; color: #d0d0d0; }
             input:focus, textarea:focus { border-color: #101010; background-color: #303030; color: #f0f0f0; }
-            #navbar { position: fixed; top: 0; background-color: $page_background; }
+            #navbar { position: fixed; top: 0; height: 58px; background-color: $page_background; }
             #content-header { position: fixed; top: 58px; width: 100%; background-color: $page_background; }
             #content { padding-top: 48px; }
             .overlay-fixed { position: fixed; top: 48px; left: 0px; width: 100%; height: 100%; z-index: 999; opacity: 0.3; pointer-events: none; }
