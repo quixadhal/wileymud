@@ -1102,6 +1102,9 @@ if( $do_pages or $do_json ) {
             #content { padding-top: 48px; }
             .overlay-fixed { position: fixed; top: 48px; left: 0px; width: 100%; height: 100%; z-index: 999; opacity: 0.3; pointer-events: none; }
             .overlay-bg { position: fixed; top: 81px; z-index: 998; opacity: 0.15; pointer-events: none; object-fit: cover; width: 100%; height: 100%; left: 50%; transform: translateX(-50%); }
+            .unblurred { font-family: monospace; white-space: pre-wrap; }
+            .blurry:not(:hover) { filter: blur(3px); font-family: monospace; white-space: pre-wrap; }
+            .blurry:hover { font-family: monospace; white-space: pre-wrap; }
         </style>
     </head>
     <body bgcolor="$page_background" text="#d0d0d0" link="#ffffbf" vlink="#ffa040" onload="setup();">
@@ -1240,9 +1243,10 @@ EOM
                 $message =~ s/Dailymotion\s+(<span.*?>)\s*\[([^\]]*)\]/Dailymotion $1 <a href="https:\/\/www.dailymotion.com\/video\/$2" target="I3-link">[$2]<\/a>/gsmix;
 
                 my $span_style = "font-family: monospace; white-space: pre-wrap;";
-                $span_style = "filter: blur(3px); $span_style" if $do_censor and $channel eq "free_speech";
+                my $span_class = "unblurred";
+                $span_class = "blurry" if $do_censor and $channel eq "free_speech";
 
-                printf FP "<td bgcolor=\"%s\"><span style=\"$span_style\">%s</span></td>\n",  $bg_color, $message;
+                printf FP "<td bgcolor=\"%s\"><span class=\"$span_class\">%s</span></td>\n",  $bg_color, $message;
                 printf FP "</tr>\n";
 
                 $counter++;

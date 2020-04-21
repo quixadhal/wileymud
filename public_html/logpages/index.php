@@ -13,7 +13,8 @@ global $URL_ONLY;
 global $CENSOR;
 
 $URL_ONLY       = (isset($_GET["url"]) || isset($_POST["url"])) ? true : false;
-$CENSOR         = (isset($_GET["censor"]) || isset($_POST["censor"])) ? true : false;
+//$CENSOR         = (isset($_GET["censor"]) || isset($_POST["censor"])) ? false : true;
+$CENSOR         = true;
 $URL_HOME       = "http://wileymud.themud.org/~wiley";
 $LOG_HOME       = "$URL_HOME/logpages";
 $LIVE_PAGE      = "$LOG_HOME/";
@@ -705,6 +706,9 @@ header("Pragma: no-cache");
             #content { padding-top: 48px; }
             .overlay-fixed { position: fixed; top: 48px; left: 0px; width: 100%; height: 100%; z-index: 999; opacity: 0.3; pointer-events: none; }
             .overlay-bg { position: fixed; top: 81px; z-index: 998; opacity: 0.15; pointer-events: none; object-fit: cover; width: 100%; height: 100%; left: 50%; transform: translateX(-50%); }
+            .unblurred { font-family: monospace; white-space: pre-wrap; }
+            .blurry:not(:hover) { filter: blur(3px); font-family: monospace; white-space: pre-wrap; }
+            .blurry:hover { font-family: monospace; white-space: pre-wrap; }
         </style>
     </head>
     <body bgcolor="black" text="#d0d0d0" link="#ffffbf" vlink="#ffa040" onload="setup();">
@@ -787,13 +791,13 @@ header("Pragma: no-cache");
         $message = preg_replace('/Steam\s+(<span.*?>)\s*\[([^\]]*)\]/i', 'Steam $1 <a href="http://store.steampowered.com/app/$2/" target="I3-link">[$2]</a>', $message);
         $message = preg_replace('/Dailymotion\s+(<span.*?>)\s*\[([^\]]*)\]/i', 'Dailymotion $1 <a href="https://www.dailymotion.com/video/$2" target="I3-link">[$2]</a>', $message);
 
-        $span_style = "font-family: monospace; white-space: pre-wrap;";
+        $span_class = "unblurred";
         if($CENSOR) {
             if($channel == "free_speech") {
-                $span_style = "filter: blur(3px); $span_style ";
+                $span_class = "blurry";
             }
         }
-        $message = "<span style=\"$span_style\">$message</span>";
+        $message = "<span class=\"$span_class\">$message</span>";
 ?>
         <tr id="row_<?php echo $counter;?>" style="display:none">
             <td bgcolor="<?php echo $bg_color;?>"><?php echo $date_col;?></td>
