@@ -1214,6 +1214,7 @@ EOM
 
                 my $message = $row->{message};
                 $message = "" if !defined $message;
+                $message =~ s/^\%\^RESET\%\^//i;
                 # encode_entities
                 $message = encode_entities($message, '<>&"');
 
@@ -1245,6 +1246,7 @@ EOM
                 my $span_style = "font-family: monospace; white-space: pre-wrap;";
                 my $span_class = "unblurred";
                 $span_class = "blurry" if $do_censor and $channel eq "free_speech";
+                $span_class = "blurry" if $do_censor and $message =~ /on\sfree_speech\&gt\;/;
 
                 printf FP "<td bgcolor=\"%s\"><span class=\"$span_class\">%s</span></td>\n",  $bg_color, $message;
                 printf FP "</tr>\n";

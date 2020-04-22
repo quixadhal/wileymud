@@ -782,6 +782,7 @@ header("Pragma: no-cache");
         $speaker_col  = sprintf("%s%s@%s", $speaker_html, $row['speaker'], $row['mud']);
 
         $message = $row['message'];
+        $message = preg_replace('/^\%\^RESET\%\^/', '', $message);
         $message = htmlentities($message, ENT_QUOTES|ENT_SUBSTITUTE, 'UTF-8');
         $message = handle_colors($pinkfish_map, $message);
 
@@ -794,6 +795,8 @@ header("Pragma: no-cache");
         $span_class = "unblurred";
         if($CENSOR) {
             if($channel == "free_speech") {
+                $span_class = "blurry";
+            } else if(preg_match('/on\sfree_speech\&gt\;/', $message) > 0) {
                 $span_class = "blurry";
             }
         }
