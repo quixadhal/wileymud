@@ -12,13 +12,15 @@ use Getopt::Long;
 use JSON qw(encode_json);
 use File::Random qw(random_file);
 use Cwd qw(getcwd);
+use Parallel::ForkManager 0.7.6;
+use Time::HiRes qw(time);
 
 my $URL_HOME        = "http://wileymud.themud.org/~wiley";
 my $LOG_HOME        = "$URL_HOME/logpages";
 my $LIVE_PAGE       = "$LOG_HOME/";
 
-my $LIVE_DB_FILE    = '/home/wiley/lib/i3/wiley.db';
-my $DB_FILE         = '/home/wiley/lib/i3/wiley.bkp-20190223.db';
+#my $LIVE_DB_FILE    = '/home/wiley/lib/i3/wiley.db';
+#my $DB_FILE         = '/home/wiley/lib/i3/wiley.bkp-20190223.db';
 my $BACKGROUND_DIR  = '/home/wiley/public_html/gfx/wallpaper/';
 my $PAGE_DIR        = '/home/wiley/public_html/logpages';
 my $JSON_DIR        = '/home/wiley/public_html/logdata';
@@ -92,9 +94,13 @@ my $use_live        = 0;
 my $debug_page      = 0;
 my $do_json         = 1;
 my $do_censor       = 0;
+my $thread_count    = 0;
+my $partition_size  = 200;
 
 sub do_help {
-    print STDERR <<EOM
+    local $| = 1;
+
+    print STDERR <<EOM;
 usage:  $PROGRAM_NAME [-h]
 long options:
     --help              - This helpful help!
@@ -115,10 +121,6 @@ long options:
     --update            - Update speaker and channel color data.  Default is yes.
     --cache             - Save cached data to JSON files.  Default is yes.
     --pause             - Pause for 5 seconds before starting.  Default is yes.
-    --live              - Use the live database for the most current data.  Default
-                          is no.
-                          Because SQLite doesn't handle locks well, if this is true,
-                          the run will be limited to 10 pages at a time.
     --debug             - This changes the next-link button for the next to the last
                           page, so it points to another static page, rather than to
                           the live page.  The static page has a dark red background,
@@ -130,9 +132,20 @@ long options:
     --censor            - Adds a blur effect to any messages on the free_speech
                           channel, in case you wanted to generate censored pages.
                           The default is no censorship.
+    --threads N         - To attempt to optimize performance, we support threading
+                          now, and you can specify how many threads to use.  If you
+                          give a value less and 2, thrading is not used.  The default
+                          is 0.
+    --partition N       - If using threads, we allow you to set the parition size
+                          used when doing a query and sorting the results, since
+                          pulling back all 5000 entries seems to be a bit slower
+                          than not using threads at all.
 EOM
-    ;
-    #--pagesize N        - Page size, defaults to $page_size.
+#    --live              - Use the live database for the most current data.  Default
+#                          is no.
+#                          Because SQLite doesn't handle locks well, if this is true,
+#                          the run will be limited to 10 pages at a time.
+#    --pagesize N        - Page size, defaults to $page_size.
     exit(1);
 }
 
@@ -140,6 +153,7 @@ sub display_options {
     my $row_count = shift || 0;
     my $page_count = shift || 0;
 
+    local $| = 1;
     #printf "We are running against %s.\n", ($use_live ? $LIVE_DB_FILE : $DB_FILE);
     printf "We are running against PostgreSQL now!\n";
     printf "Found %d rows over %d pages.\n", $row_count, $page_count;
@@ -155,6 +169,12 @@ sub display_options {
         printf "We will %soutput HTML pages.\n", $do_pages ? "" : "NOT ";
         printf "We will %sexport JSON data for each page.\n", $do_json ? "" : "NOT ";
         printf "We will %scensor messages on free_speech.\n", $do_censor ? "" : "NOT ";
+        printf "We will %s threads.\n", $thread_count > 1 ? (sprintf "use %d", $thread_count) : "NOT use";
+        if( $thread_count > 1 ) {
+            printf "We will partition our results into %d day chunks.\n", $partition_size;
+        } else {
+            printf "We will NOT partition our results.\n";
+        }
     } else {
         printf "We will NOT process pages.\n";
     }
@@ -182,6 +202,8 @@ GetOptions(
     'cache!'            => \$do_cache,
     'json!'             => \$do_json,
     'censor!'           => \$do_censor,
+    'threads=i'         => \$thread_count,
+    'partition=i'       => \$partition_size,
 );
 
 sub open_postgres_db {
@@ -312,6 +334,9 @@ sub fetch_row_count {
 sub update_all_speakers {
     my $db = shift;
 
+    local $| = 1;
+    print "Updating speaker info...";
+
     my @color_map = (
         "%^BLACK%^%^BOLD%^",
         "%^RED%^",
@@ -375,10 +400,15 @@ sub update_all_speakers {
     } else {
         print STDERR $DBI::errstr."\n";
     }
+
+    print "done.\n";
 }
 
 sub update_all_channels {
     my $db = shift;
+
+    local $| = 1;
+    print "Updating channel info...";
 
     my @color_map = (
         "%^RED%^",
@@ -432,6 +462,25 @@ sub update_all_channels {
     } else {
         print STDERR $DBI::errstr."\n";
     }
+
+    print "done.\n";
+}
+
+sub update_cache {
+    my $date_counts = shift or die "No date_count data provided.";
+    my $pinkfish_map = shift or die "No pinkfish_map data provided.";
+    my $hours = shift or die "No hours data provided.";
+    my $channels = shift or die "No channels data provided.";
+    my $speakers = shift or die "No speakers data provided.";
+
+    local $| = 1;
+    print "Saving cached versions of SQL data...";
+    save_date_cache($date_counts, $DATE_CACHE);
+    save_json_cache($pinkfish_map, $PINKFISH_CACHE);
+    save_json_cache($hours, $HOUR_CACHE);
+    save_json_cache($channels, $CHANNEL_CACHE);
+    save_json_cache($speakers, $SPEAKER_CACHE);
+    print "done.\n";
 }
 
 sub fetch_date_counts {
@@ -555,6 +604,102 @@ sub fetch_page_by_date {
     return $rv;
 }
 
+# $date_range is expected to be a string that is a set of dates
+# joined together by commas, which is fed to SQL as the target of
+# an IN clause.
+#
+sub fetch_pages_by_date_range {
+    my $db = shift;
+    my $chosen_dates = shift;
+    local $| = 1;
+
+    $chosen_dates = [ { date => fetch_current_date($db), i => 0 } ] if !defined $chosen_dates;
+
+    #my $date_range = "'" . join("', '", map { $_->{date} } (@$chosen_dates)) . "'";
+    #print "Date Range: $date_range\n";
+    
+    my $start_date = $chosen_dates->[0]->{date};
+    my $end_date = $chosen_dates->[-1]->{date};
+
+
+    printf "Fetching data for %d dates from database...", (scalar @$chosen_dates);
+    my $st = time();
+    my $rv = $db->selectall_arrayref(qq!
+             SELECT i3log.local,
+                    i3log.is_emote,
+                    i3log.is_url,
+                    i3log.is_bot,
+                    i3log.channel,
+                    i3log.speaker,
+                    i3log.mud,
+                    i3log.message,
+                    to_char(i3log.local, 'YYYY-MM-DD')  the_date,
+                    to_char(i3log.local, 'HH24:MI:SS')  the_time,
+                    to_char(i3log.local, 'YYYY')        the_year,
+                    to_char(i3log.local, 'MM')          the_month,
+                    to_char(i3log.local, 'DD')          the_day,
+                    to_char(i3log.local, 'HH24')        the_hour,
+                    to_char(i3log.local, 'MI')          the_minute,
+                    to_char(i3log.local, 'SS')          the_second,
+                    date_part('hour', i3log.local)      int_hour,
+                    hours.pinkfish                      hour_color,
+                    channels.pinkfish                   channel_color,
+                    speakers.pinkfish                   speaker_color,
+                    pinkfish_map_hour.html              hour_html,
+                    pinkfish_map_channel.html           channel_html,
+                    pinkfish_map_speaker.html           speaker_html
+               FROM i3log
+          LEFT JOIN hours
+                 ON (date_part('hour', i3log.local) = hours.hour)
+          LEFT JOIN channels
+                 ON (lower(i3log.channel) = channels.channel)
+          LEFT JOIN speakers
+                 ON (lower(i3log.username) = speakers.speaker)
+          LEFT JOIN pinkfish_map pinkfish_map_hour
+                 ON (hours.pinkfish = pinkfish_map_hour.pinkfish)
+          LEFT JOIN pinkfish_map pinkfish_map_channel
+                 ON (channels.pinkfish = pinkfish_map_channel.pinkfish)
+          LEFT JOIN pinkfish_map pinkfish_map_speaker
+                 ON (speakers.pinkfish = pinkfish_map_speaker.pinkfish)
+              WHERE date(i3log.local) BETWEEN ? AND ?
+           ORDER BY i3log.local ASC;
+        ;!, { Slice => {} }, ($start_date, $end_date));
+
+    print STDERR $DBI::errstr."\n" if ! $rv;
+    my $et = time() - $st;
+    printf "done in %9.6f seconds.\n", $et;
+
+    #my @dates = split /\',\s\'/, substr($date_range, 1, -1);
+
+    printf "Processing data from result set...";
+    $st = time();
+    my $result = {};
+    foreach my $row (@$chosen_dates) {
+        $result->{$row->{date}} = { page => [], i => $row->{i} };
+    }
+    foreach my $row (@$rv) {
+        my $date = $row->{the_date};
+        push @{ $result->{$date}{page} }, ($row);
+    }
+
+=pod
+    foreach my $row (@$chosen_dates) {
+        my $date = $row->{date};
+        my $i = $row->{i};
+        #print "Date $date, i $i\n";
+        $result->{$date} = {
+            page    => [grep { $_->{the_date} eq $date } @$rv],
+            i       => $i,
+        };
+    }
+=cut
+
+    $et = time() - $st;
+    printf "done in %9.6f seconds.\n", $et;
+
+    return $result;
+}
+
 sub page_url {
     my $row = shift;
 
@@ -606,6 +751,9 @@ sub generate_navbar_script {
     my $date_counts = shift;
     die "Invalid date information!" if !defined $date_counts;
 
+    local $| = 1;
+    print "Generating navigation data...";
+
     my $filename = "$PAGE_DIR/navbar.js";
 
     my @date_list = ();
@@ -616,7 +764,7 @@ sub generate_navbar_script {
     my $last_date = (scalar @date_list < 1) ? fetch_current_date($db) : $date_list[-1];
 
     open FP, ">$filename" or die "Cannot open navbar script $filename: $!";
-    print FP <<EOM
+    print FP <<EOM;
         var valid_dates = [
             $big_list
         ];
@@ -832,65 +980,15 @@ sub generate_navbar_script {
              });
         });
 EOM
-    ;
     close FP;
+    print "done.\n";
 }
 
-print "Initializing...\n";
+sub dump_speakers {
+    my $speakers = shift or die "No speakers data provided.";
 
-my $DATABASE = open_postgres_db($PG_DB);
-
-my $row_count = fetch_row_count($DATABASE);
-my $date_counts = fetch_date_counts($DATABASE);
-
-if( $page_start < 0 ) {
-    $page_start = (scalar @$date_counts) + $page_start;
-}
-
-display_options($row_count, scalar @$date_counts);
-if( $pause ) {
-    sleep 1;
-    print "4............\n";
-    sleep 1;
-    print "3.........\n";
-    sleep 1;
-    print "2......\n";
-    sleep 1;
-    print "1...\n";
-    sleep 1;
-    print "GO!\n\n";
-} else {
-    print "\n";
-}
-
-my $pinkfish_map = fetch_pinkfish_map($DATABASE);
-my $hours = fetch_hours($DATABASE);
-
-if( $do_update ) {
-    print "Updating speaker and channel info...\n";
-    update_all_channels($DATABASE);
-    update_all_speakers($DATABASE);
-}
-
-my $channels = fetch_channels($DATABASE);
-my $speakers = fetch_speakers($DATABASE);
-
-if( $do_cache ) {
-    print "Saving cached versions of SQL data...\n";
-    save_date_cache($date_counts, $DATE_CACHE);
-    save_json_cache($pinkfish_map, $PINKFISH_CACHE);
-    save_json_cache($hours, $HOUR_CACHE);
-    save_json_cache($channels, $CHANNEL_CACHE);
-    save_json_cache($speakers, $SPEAKER_CACHE);
-}
-
-if( $do_navbar ) {
-    print "Generating navigation data...\n";
-    generate_navbar_script($DATABASE, $date_counts);
-}
-
-if( $do_speakers ) {
-    print "Dumping I3 speaker file for WileyMUD...\n";
+    local $| = 1;
+    print "Dumping I3 speaker file for WileyMUD...";
 
     my $filename = sprintf "%s/i3.speakers.new", $PAGE_DIR;
     open FP, ">$filename" or die "Cannot open speaker file $filename: $!";
@@ -902,109 +1000,91 @@ if( $do_speakers ) {
     printf FP "#END\n";
 
     close FP;
+
+    print "done.\n";
 }
 
-if( $do_pages or $do_json ) {
-    $page_limit = (scalar @$date_counts) if $page_limit < 1;
-    #$page_limit = 30 if $use_live and $page_limit > 30;
+sub do_pause {
+    my $pause = shift;
 
-    my $pages_todo = (scalar @$date_counts) - $page_start;
-    $pages_todo = $page_limit if $page_limit < $pages_todo;
+    if( $pause ) {
+        sleep 1;
+        print "4............\n";
+        sleep 1;
+        print "3.........\n";
+        sleep 1;
+        print "2......\n";
+        sleep 1;
+        print "1...\n";
+        sleep 1;
+        print "GO!\n\n";
+    } else {
+        print "\n";
+    }
+}
 
-    my $pages_done = 0;
-    #foreach my $day_row (@$date_counts)
-    for( my $i = $page_start; $i < scalar @$date_counts; $i++ ) {
-        my $day_row = $date_counts->[$i];
-        my $today = $day_row->{the_date};
+sub get_random_background {
+    my $BACKGROUND_DIR = shift;
+    my $URL_HOME = shift;
 
-        last if $pages_done >= $page_limit or $pages_done >= scalar @$date_counts;
-        $pages_done++;
+    my $old_dir = getcwd;
+    chdir $BACKGROUND_DIR;
+    my $BACKGROUND = random_file(
+        -dir    => '.',
+        -check  => qr/\.(jpg|png)$/,
+    );
+    chdir $old_dir;
+    #print "RANDOM BACKGROUND: $BACKGROUND\n";
+    my $BACKGROUND_IMG = "<img class=\"overlay-bg\" src=\"$URL_HOME/gfx/wallpaper/$BACKGROUND\" />";
+    my $background_image = $BACKGROUND_IMG;
 
-        my $filename = page_path($day_row);
+    return ($BACKGROUND_IMG, $background_image);
+}
 
-        if( $i < ((scalar @$date_counts) - 2) and -f $filename ) {
-            if( !$overwrite ) {
-                # Always generate the very last, and next to last page again.
-                printf "            Skipping %s.\n", $filename;
-                next;
-            }
-        }
+sub generate_html_page {
+    my %args = @_;
 
-        my $first_row   = undef;
-        my $first_page  = undef;
-        my $first_date  = undef;
-        my $prev_row    = undef;
-        my $prev_page   = undef;
-        my $prev_date   = undef;
-        my $next_row    = undef;
-        my $next_page   = undef;
-        my $next_date   = undef;
-        my $last_row    = undef;
-        my $last_page   = undef;
-        my $last_date   = undef;
-        my $this_is_the_end = ($i == (scalar @$date_counts) - 1) ? 1 : undef;
+    # Globals
+    # $JQUI_CSS
+    # $JQUI_THEME
+    # $JQ
+    # $JQUI
+    # $MOMENT
+    # $MOMENT_TZ
+    # $NAVBAR
+    # $MUDLIST_LINK
+    # $LOG_LINK
+    # $DISCORD_LINK
+    # $ICON_WIDTH, $ICON_WIDTH
+    # $UP_ICON
+    # $BEGIN_ICON
+    # $PREV_ICON
+    # $NEXT_ICON
+    # $END_ICON
+    # $DOWN_ICON
+    # $SERVER_LINK
 
-        if( $i > 0 ) {
-            # We have a previous page.
-            $prev_row  = $date_counts->[$i - 1];
-            $prev_date = $prev_row->{the_date};
-            $prev_page = page_url($prev_row);
+    my $filename            = $args{filename};
+    my $page_background     = $args{page_background};
+    my $background_image    = $args{background_image};
+    my $overlay_image       = $args{overlay_image};
+    my $today               = $args{today};
+    my $page                = $args{page};
+    my $channels            = $args{channels};
+    my $speakers            = $args{speakers};
+    my $pinkfish_map        = $args{pinkfish_map};
+    my $do_censor           = $args{do_censor};
+    my $first_page          = $args{first_page};
+    my $first_date          = $args{first_date};
+    my $prev_page           = $args{prev_page};
+    my $prev_date           = $args{prev_date};
+    my $next_page           = $args{next_page};
+    my $next_date           = $args{next_date};
+    my $last_page           = $args{last_page};
+    my $last_date           = $args{last_date};
 
-            # We also are not ON the first page, so we should have that too.
-            $first_row  = $date_counts->[0];
-            $first_date = $first_row->{the_date};
-            $first_page = page_url($first_row);
-        }
-        if( $i < (scalar @$date_counts) - 2 ) {
-            # We have a next page.
-            $next_row  = $date_counts->[$i + 1];
-            $next_date = $next_row->{the_date};
-            $next_page = page_url($next_row);
-        } elsif( $i < (scalar @$date_counts) - 1 ) {
-            if( $debug_page ) {
-                # We want the static page.
-                $next_row  = $date_counts->[$i + 1];
-                $next_date = $next_row->{the_date};
-                $next_page = page_url($next_row);
-            } else {
-                # We want the live page.
-                $next_row  = $date_counts->[$i + 1];
-                $next_date = "LIVE " . $next_row->{the_date};
-                $next_page = $LIVE_PAGE;
-            }
-        }
-
-        # We ALWAYS have a last page, as that's the current page.  But,
-        # this one is special.  Instead of the usual static page, we want
-        # to point you to the live page that gets updated on load.
-        $last_row  = $date_counts->[-1];
-        $last_date = $this_is_the_end ? "LIVE" : ("LIVE " . $last_row->{the_date});
-        $last_page = $LIVE_PAGE;
-
-        #my $page_background = $this_is_the_end ? "#1F0000" : "black";
-        my $page_background = $this_is_the_end ? "#070707" : "black";
-        my $overlay_image = $this_is_the_end ? $OVERLAY_IMG : "";
-
-        my $old_dir = getcwd;
-        chdir $BACKGROUND_DIR;
-        my $BACKGROUND = random_file(
-            -dir    => '.',
-            -check  => qr/\.(jpg|png)$/,
-        );
-        chdir $old_dir;
-        #print "RANDOM BACKGROUND: $BACKGROUND\n";
-        my $BACKGROUND_IMG = "<img class=\"overlay-bg\" src=\"$URL_HOME/gfx/wallpaper/$BACKGROUND\" />";
-        my $background_image = $BACKGROUND_IMG;
-
-        my $page = fetch_page_by_date($DATABASE, $today);
-        die "No data for $today? $!" if !defined $page;
-        printf "    [%5d] Generating %s... %d messages.\n",
-            ($pages_todo - $pages_done), $today, scalar @$page;
-
-        if ($do_pages) {
-            open FP, ">$filename" or die "Cannot open output page $filename: $!";
-
-            print FP <<EOM
+    open FP, ">$filename" or die "Cannot open output page $filename: $!";
+    print FP <<EOM;
 <html>
     <head>
         <meta charset="utf-8" />
@@ -1029,32 +1109,32 @@ if( $do_pages or $do_json ) {
 
         <script type="text/javascript">
             function localize_rows() {
-		// 0 -> 23
+                // 0 -> 23
                 var hour_map = [
-		    '#555555',
-		    '#555555',
-		    '#555555',
-		    '#555555',
-		    '#bb0000',
-		    '#bb0000',
-		    '#bbbb00',
-		    '#bbbb00',
-		    '#ffff55',
-		    '#ffff55',
-		    '#00bb00',
-		    '#00bb00',
-		    '#55ff55',
-		    '#55ff55',
-		    '#bbbbbb',
-		    '#bbbbbb',
-		    '#55ffff',
-		    '#55ffff',
-		    '#00bbbb',
-		    '#00bbbb',
-		    '#5555ff',
-		    '#5555ff',
-		    '#0000bb',
-		    '#0000bb'
+                    '#555555',
+                    '#555555',
+                    '#555555',
+                    '#555555',
+                    '#bb0000',
+                    '#bb0000',
+                    '#bbbb00',
+                    '#bbbb00',
+                    '#ffff55',
+                    '#ffff55',
+                    '#00bb00',
+                    '#00bb00',
+                    '#55ff55',
+                    '#55ff55',
+                    '#bbbbbb',
+                    '#bbbbbb',
+                    '#55ffff',
+                    '#55ffff',
+                    '#00bbbb',
+                    '#00bbbb',
+                    '#5555ff',
+                    '#5555ff',
+                    '#0000bb',
+                    '#0000bb'
                 ];
 
                 var yourTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
@@ -1119,173 +1199,392 @@ if( $do_pages or $do_json ) {
                 </td>
                 <td align="right" width="20%">
 EOM
-            ;
 
-            #printf FP "<img id=\"scroll_top_button\" src=\"%s\" width=\"%d\" height=\"%d\" border=\"0\" style=\"opacity: 0.5;\" onclick=\"scroll_top()\"/>\n", $TOP_ICON, $ICON_WIDTH, $ICON_WIDTH;
-            printf FP "<img id=\"scroll_up_button\" src=\"%s\" width=\"%d\" height=\"%d\" border=\"0\" style=\"opacity: 0.5;\" onclick=\"scroll_up()\"/>\n", $UP_ICON, $ICON_WIDTH, $ICON_WIDTH;
+                #printf FP "<img id=\"scroll_top_button\" src=\"%s\" width=\"%d\" height=\"%d\" border=\"0\" style=\"opacity: 0.5;\" onclick=\"scroll_top()\"/>\n", $TOP_ICON, $ICON_WIDTH, $ICON_WIDTH;
+                printf FP "<img id=\"scroll_up_button\" src=\"%s\" width=\"%d\" height=\"%d\" border=\"0\" style=\"opacity: 0.5;\" onclick=\"scroll_up()\"/>\n", $UP_ICON, $ICON_WIDTH, $ICON_WIDTH;
 
-            if(defined $first_page) {
-                printf FP "<a href=\"%s\" alt=\"%s\" title=\"%s\"><img src=\"%s\" width=\"%d\" height=\"%d\" border=\"0\" /></a>\n", $first_page, $first_date, $first_date, $BEGIN_ICON, $ICON_WIDTH, $ICON_WIDTH;
-            } else {
-                printf FP "<img src=\"%s\" width=\"%d\" height=\"%d\" border=\"0\" style=\"opacity: 0.5;\" />\n", $BEGIN_ICON, $ICON_WIDTH, $ICON_WIDTH;
-            }
+                if(defined $first_page) {
+                    printf FP "<a href=\"%s\" alt=\"%s\" title=\"%s\"><img src=\"%s\" width=\"%d\" height=\"%d\" border=\"0\" /></a>\n", $first_page, $first_date, $first_date, $BEGIN_ICON, $ICON_WIDTH, $ICON_WIDTH;
+                } else {
+                    printf FP "<img src=\"%s\" width=\"%d\" height=\"%d\" border=\"0\" style=\"opacity: 0.5;\" />\n", $BEGIN_ICON, $ICON_WIDTH, $ICON_WIDTH;
+                }
 
-            if(defined $prev_page) {
-                printf FP "<a href=\"%s\" alt=\"%s\" title=\"%s\"><img src=\"%s\" width=\"%d\" height=\"%d\" border=\"0\" /></a>\n", $prev_page, $prev_date, $prev_date, $PREV_ICON, $ICON_WIDTH, $ICON_WIDTH;
-            } else {
-                printf FP "<img src=\"%s\" width=\"%d\" height=\"%d\" border=\"0\" style=\"opacity: 0.5;\" />\n", $PREV_ICON, $ICON_WIDTH, $ICON_WIDTH;
-            }
+                if(defined $prev_page) {
+                    printf FP "<a href=\"%s\" alt=\"%s\" title=\"%s\"><img src=\"%s\" width=\"%d\" height=\"%d\" border=\"0\" /></a>\n", $prev_page, $prev_date, $prev_date, $PREV_ICON, $ICON_WIDTH, $ICON_WIDTH;
+                } else {
+                    printf FP "<img src=\"%s\" width=\"%d\" height=\"%d\" border=\"0\" style=\"opacity: 0.5;\" />\n", $PREV_ICON, $ICON_WIDTH, $ICON_WIDTH;
+                }
 
-            print FP <<EOM
+                print FP <<EOM;
                 </td>
                 <td align="center" width="10%">
                     <input type="text" id="datepicker" size="10" value="$today" style="font-size: 16px; text-align: center;" />
                 </td>
                 <td align="left" width="20%">
 EOM
-            ;
 
-            if(defined $next_page) {
-                printf FP "<a href=\"%s\" alt=\"%s\" title=\"%s\"><img src=\"%s\" width=\"%d\" height=\"%d\" border=\"0\" /></a>\n", $next_page, $next_date, $next_date, $NEXT_ICON, $ICON_WIDTH, $ICON_WIDTH;
-            } else {
-                printf FP "<img src=\"%s\" width=\"%d\" height=\"%d\" border=\"0\" style=\"opacity: 0.5;\" />\n", $NEXT_ICON, $ICON_WIDTH, $ICON_WIDTH;
-            }
-
-            if(defined $last_page) {
-                printf FP "<a href=\"%s\" alt=\"%s\" title=\"%s\"><img src=\"%s\" width=\"%d\" height=\"%d\" border=\"0\" /></a>\n", $last_page, $last_date, $last_date, $END_ICON, $ICON_WIDTH, $ICON_WIDTH;
-            } else {
-                printf FP "<img src=\"%s\" width=\"%d\" height=\"%d\" border=\"0\" style=\"opacity: 0.5;\" />\n", $END_ICON, $ICON_WIDTH, $ICON_WIDTH;
-            }
-
-            printf FP "<img id=\"scroll_down_button\" src=\"%s\" width=\"%d\" height=\"%d\" border=\"0\" style=\"opacity: 1.0;\" onclick=\"scroll_down()\"/>\n", $DOWN_ICON, $ICON_WIDTH, $ICON_WIDTH;
-            #printf FP "<img id=\"scroll_bottom_button\" src=\"%s\" width=\"%d\" height=\"%d\" border=\"0\" style=\"opacity: 1.0;\" onclick=\"scroll_bottom()\"/>\n", $BOTTOM_ICON, $ICON_WIDTH, $ICON_WIDTH;
-
-            print FP <<EOM
-                </td>
-                <td align="right" width="20%">
-                    $SERVER_LINK
-                </td>
-            </tr>
-        </table>
-        <table id="content-header-outside" width="99%" align="center">
-            <tr id="content-header">
-                <td id="dateheader" align="left" width="80px" style="color: #DDDDDD; min-width: 80px;">Date</td>
-                <td id="timeheader" align="left" width="60px" style="color: #DDDDDD; min-width: 40px;">Time</td>
-                <td id="channelheader" align="left" width="80px" style="color: #DDDDDD; min-width: 100px;">Channel</td>
-                <td id="speakerheader" align="left" width="200px" style="color: #DDDDDD; min-width: 200px;">Speaker</td>
-                <td align="left">&nbsp;</td>
-            </tr>
-        </table>
-        <table id="content" width="99%" align="center">
-            <thead>
-            <tr>
-                <th id="dateheader" align="left" width="80px" style="color: #DDDDDD; min-width: 80px;">Date</th>
-                <th id="timeheader" align="left" width="60px" style="color: #DDDDDD; min-width: 40px;">Time</th>
-                <th id="channelheader" align="left" width="80px" style="color: #DDDDDD; min-width: 100px;">Channel</th>
-                <th id="speakerheader" align="left" width="200px" style="color: #DDDDDD; min-width: 200px;">Speaker</th>
-                <th align="left">&nbsp;</th>
-            </tr>
-            </thead>
-            <tbody>
-EOM
-            ;
-
-            my $counter = 0;
-            foreach my $row (@$page) {
-                # YYYY-MM-DD date
-                # HH:MM:SS time -- colored by time of day
-                # Channel -- colored by channel name
-                # Speaker@Mud -- colored by speaker name
-                # Message -- fixed font
-
-                # Emit each data row as a table row
-                my $bg_color = ($counter % 2) ? "#000000" : "#1F1F1F";
-
-                my $hour_html = $row->{hour_html} || "--**--NULL--**--";
-                my $channel_html = $row->{channel_html} || $channels->{default}{html} || "--**--NULL--**--";
-                my $speaker_html = $row->{speaker_html} || $speakers->{default}{html} || "--**--NULL--**--";
-                my $channel = $row->{channel}; # text only channel name
-
-                printf FP "<tr id=\"row_%d\" style=\"display:none\">\n", $counter;
-                printf FP "<td bgcolor=\"%s\">%s</td>\n", $bg_color, $row->{the_date};
-                printf FP "<td bgcolor=\"%s\">%s%s%s</td>\n", $bg_color, $hour_html, $row->{the_time}, "</span>";
-                printf FP "<td bgcolor=\"%s\">%s%s%s</td>\n", $bg_color, $channel_html, $row->{channel}, "</span>";
-                printf FP "<td bgcolor=\"%s\">%s%s@%s%s</td>\n", $bg_color, $speaker_html, $row->{speaker}, $row->{mud}, "</span>";
-
-                my $message = $row->{message};
-                $message = "" if !defined $message;
-                $message =~ s/^\%\^RESET\%\^//i;
-                # encode_entities
-                $message = encode_entities($message, '<>&"');
-
-                # Filter known pinkfish codes and make them HTML
-                if( $message =~ /\%\^/gsmx ) {
-                    #printf STDERR "        Message has pinkfish codes: %s\n", $message;
-
-                    foreach my $pf_key (sort { length $b <=> length $a } keys %$pinkfish_map) {
-                        my $quoted = quotemeta $pf_key;
-                        my $regex = qr/$quoted/;
-                        my $pf_rep = $pinkfish_map->{$pf_key}{html};
-
-                        #printf STDERR "Checking %s (%s) ...\n", $pf_key, $quoted;
-
-                        if ( $message =~ /$regex/gsmx ) {
-                            #printf STDERR "Found match for %s\n", $quoted;
-                            $message =~ s/$regex/$pf_rep/gsmx;
-                        }
-                    }
+                if(defined $next_page) {
+                    printf FP "<a href=\"%s\" alt=\"%s\" title=\"%s\"><img src=\"%s\" width=\"%d\" height=\"%d\" border=\"0\" /></a>\n", $next_page, $next_date, $next_date, $NEXT_ICON, $ICON_WIDTH, $ICON_WIDTH;
+                } else {
+                    printf FP "<img src=\"%s\" width=\"%d\" height=\"%d\" border=\"0\" style=\"opacity: 0.5;\" />\n", $NEXT_ICON, $ICON_WIDTH, $ICON_WIDTH;
                 }
 
-                # Try to match links so we can make them clickable
-                $message =~ s/((?:http|https|ftp)\:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(?::[a-zA-Z0-9]*)?\/?(?:[a-zA-Z0-9\-\._\?\,\'\/\\\+&amp;%\$#\=~])*)/<a href="$1" target="I3-link">$1<\/a>/gsmix;
-                $message =~ s/YouTube\s+(<span.*?>)\s*\[([^\]]*)\]/YouTube $1 <a href="https:\/\/youtu.be\/$2" target="I3-link">[$2]<\/a>/gsmix;
-                $message =~ s/IMDB\s+(<span.*?>)\s*\[([^\]]*)\]/IMDB $1 <a href="https:\/\/www.imdb.com\/title\/$2\/" target="I3-link">[$2]<\/a>/gsmix;
-                $message =~ s/Steam\s+(<span.*?>)\s*\[([^\]]*)\]/Steam $1 <a href="http:\/\/store.steampowered.com\/app\/$2\/" target="I3-link">[$2]<\/a>/gsmix;
-                $message =~ s/Dailymotion\s+(<span.*?>)\s*\[([^\]]*)\]/Dailymotion $1 <a href="https:\/\/www.dailymotion.com\/video\/$2" target="I3-link">[$2]<\/a>/gsmix;
+                if(defined $last_page) {
+                    printf FP "<a href=\"%s\" alt=\"%s\" title=\"%s\"><img src=\"%s\" width=\"%d\" height=\"%d\" border=\"0\" /></a>\n", $last_page, $last_date, $last_date, $END_ICON, $ICON_WIDTH, $ICON_WIDTH;
+                } else {
+                    printf FP "<img src=\"%s\" width=\"%d\" height=\"%d\" border=\"0\" style=\"opacity: 0.5;\" />\n", $END_ICON, $ICON_WIDTH, $ICON_WIDTH;
+                }
 
-                my $span_style = "font-family: monospace; white-space: pre-wrap;";
-                my $span_class = "unblurred";
-                $span_class = "blurry" if $do_censor and $channel eq "free_speech";
-                $span_class = "blurry" if $do_censor and $message =~ /on\sfree_speech\&gt\;/;
+                printf FP "<img id=\"scroll_down_button\" src=\"%s\" width=\"%d\" height=\"%d\" border=\"0\" style=\"opacity: 1.0;\" onclick=\"scroll_down()\"/>\n", $DOWN_ICON, $ICON_WIDTH, $ICON_WIDTH;
+                #printf FP "<img id=\"scroll_bottom_button\" src=\"%s\" width=\"%d\" height=\"%d\" border=\"0\" style=\"opacity: 1.0;\" onclick=\"scroll_bottom()\"/>\n", $BOTTOM_ICON, $ICON_WIDTH, $ICON_WIDTH;
 
-                printf FP "<td bgcolor=\"%s\"><span class=\"$span_class\">%s</span></td>\n",  $bg_color, $message;
-                printf FP "</tr>\n";
+                print FP <<EOM;
+                    </td>
+                    <td align="right" width="20%">
+                        $SERVER_LINK
+                    </td>
+                </tr>
+            </table>
+            <table id="content-header-outside" width="99%" align="center">
+                <tr id="content-header">
+                    <td id="dateheader" align="left" width="80px" style="color: #DDDDDD; min-width: 80px;">Date</td>
+                    <td id="timeheader" align="left" width="60px" style="color: #DDDDDD; min-width: 40px;">Time</td>
+                    <td id="channelheader" align="left" width="80px" style="color: #DDDDDD; min-width: 100px;">Channel</td>
+                    <td id="speakerheader" align="left" width="200px" style="color: #DDDDDD; min-width: 200px;">Speaker</td>
+                    <td align="left">&nbsp;</td>
+                </tr>
+            </table>
+            <table id="content" width="99%" align="center">
+                <thead>
+                <tr>
+                    <th id="dateheader" align="left" width="80px" style="color: #DDDDDD; min-width: 80px;">Date</th>
+                    <th id="timeheader" align="left" width="60px" style="color: #DDDDDD; min-width: 40px;">Time</th>
+                    <th id="channelheader" align="left" width="80px" style="color: #DDDDDD; min-width: 100px;">Channel</th>
+                    <th id="speakerheader" align="left" width="200px" style="color: #DDDDDD; min-width: 200px;">Speaker</th>
+                    <th align="left">&nbsp;</th>
+                </tr>
+                </thead>
+                <tbody>
+EOM
 
-                $counter++;
-            }
-            print FP <<EOM
+                my $counter = 0;
+                foreach my $row (@$page) {
+                    # YYYY-MM-DD date
+                    # HH:MM:SS time -- colored by time of day
+                    # Channel -- colored by channel name
+                    # Speaker@Mud -- colored by speaker name
+                    # Message -- fixed font
+
+                    # Emit each data row as a table row
+                    my $bg_color = ($counter % 2) ? "#000000" : "#1F1F1F";
+
+                    my $hour_html = $row->{hour_html} || "--**--NULL--**--";
+                    my $channel_html = $row->{channel_html} || $channels->{default}{html} || "--**--NULL--**--";
+                    my $speaker_html = $row->{speaker_html} || $speakers->{default}{html} || "--**--NULL--**--";
+                    my $channel = $row->{channel}; # text only channel name
+
+                    printf FP "<tr id=\"row_%d\" style=\"display:none\">\n", $counter;
+                    printf FP "<td bgcolor=\"%s\">%s</td>\n", $bg_color, $row->{the_date};
+                    printf FP "<td bgcolor=\"%s\">%s%s%s</td>\n", $bg_color, $hour_html, $row->{the_time}, "</span>";
+                    printf FP "<td bgcolor=\"%s\">%s%s%s</td>\n", $bg_color, $channel_html, $row->{channel}, "</span>";
+                    printf FP "<td bgcolor=\"%s\">%s%s@%s%s</td>\n", $bg_color, $speaker_html, $row->{speaker}, $row->{mud}, "</span>";
+
+                    my $message = $row->{message};
+                    $message = "" if !defined $message;
+                    $message =~ s/^\%\^RESET\%\^//i;
+                    # encode_entities
+                    $message = encode_entities($message, '<>&"');
+
+                    # Filter known pinkfish codes and make them HTML
+                    if( $message =~ /\%\^/gsmx ) {
+                        #printf STDERR "        Message has pinkfish codes: %s\n", $message;
+
+                        foreach my $pf_key (sort { length $b <=> length $a } keys %$pinkfish_map) {
+                            my $quoted = quotemeta $pf_key;
+                            my $regex = qr/$quoted/;
+                            my $pf_rep = $pinkfish_map->{$pf_key}{html};
+
+                            #printf STDERR "Checking %s (%s) ...\n", $pf_key, $quoted;
+
+                            if ( $message =~ /$regex/gsmx ) {
+                                #printf STDERR "Found match for %s\n", $quoted;
+                                $message =~ s/$regex/$pf_rep/gsmx;
+                            }
+                        }
+                    }
+
+                    # Try to match links so we can make them clickable
+                    $message =~ s/((?:http|https|ftp)\:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(?::[a-zA-Z0-9]*)?\/?(?:[a-zA-Z0-9\-\._\?\,\'\/\\\+&amp;%\$#\=~])*)/<a href="$1" target="I3-link">$1<\/a>/gsmix;
+                    $message =~ s/YouTube\s+(<span.*?>)\s*\[([^\]]*)\]/YouTube $1 <a href="https:\/\/youtu.be\/$2" target="I3-link">[$2]<\/a>/gsmix;
+                    $message =~ s/IMDB\s+(<span.*?>)\s*\[([^\]]*)\]/IMDB $1 <a href="https:\/\/www.imdb.com\/title\/$2\/" target="I3-link">[$2]<\/a>/gsmix;
+                    $message =~ s/Steam\s+(<span.*?>)\s*\[([^\]]*)\]/Steam $1 <a href="http:\/\/store.steampowered.com\/app\/$2\/" target="I3-link">[$2]<\/a>/gsmix;
+                    $message =~ s/Dailymotion\s+(<span.*?>)\s*\[([^\]]*)\]/Dailymotion $1 <a href="https:\/\/www.dailymotion.com\/video\/$2" target="I3-link">[$2]<\/a>/gsmix;
+
+                    my $span_style = "font-family: monospace; white-space: pre-wrap;";
+                    my $span_class = "unblurred";
+                    $span_class = "blurry" if $do_censor and $channel eq "free_speech";
+                    $span_class = "blurry" if $do_censor and $message =~ /on\sfree_speech\&gt\;/;
+
+                    printf FP "<td bgcolor=\"%s\"><span class=\"$span_class\">%s</span></td>\n",  $bg_color, $message;
+                    printf FP "</tr>\n";
+
+                    $counter++;
+                }
+                print FP <<EOM;
             </tbody>
         </table>
     </body>
 </html>
 EOM
-            ;
-            close FP;
-        }
+    close FP;
+}
 
-        # Do JSON here
-        next if ! $do_json;
+sub generate_json_page {
+    my %args = @_;
 
-        $filename = json_path($day_row);
-        if( $i < ((scalar @$date_counts) - 2) and -f $filename ) {
-            if( !$overwrite ) {
-                # Always generate the very last, and next to last page again.
-                next;
-            }
-        }
-        #my $json_dump = encode_json($page);
-        my $json_dump = JSON->new->utf8->allow_nonref->canonical->pretty->encode($page);
-        #open FP, "|$KOMPRESSOR $KOMPRESSOR_ARGS >$filename.$KOMPRESSOR_EXT" or die "Cannot open dump page $filename.$KOMPRESSOR_EXT: $!";
-        open FP, ">$filename" or die "Cannot open dump page $filename: $!";
-        print FP "$json_dump\n";
-        close FP;
+    foreach (qw(overwrite date_counts index json_filename page)) {
+        die "$_ not provided!" if !exists $args{$_};
     }
+
+    my $overwrite           = $args{overwrite};
+    my $date_counts         = $args{date_counts};
+    my $i                   = $args{index};         # the index into the entire data set
+    my $filename            = $args{json_filename};
+    my $page                = $args{page};
+
+    if( $i < ((scalar @$date_counts) - 2) and -f $filename ) {
+        if( !$overwrite ) {
+            # Always generate the very last, and next to last page again.
+            return;
+        }
+    }
+
+    my $json_dump = JSON->new->utf8->allow_nonref->canonical->pretty->encode($page);
+    open FP, ">$filename" or die "Cannot open dump page $filename: $!";
+    print FP "$json_dump\n";
+    close FP;
 }
 
-if( $do_navbar ) {
-    print "Regenerating navigation data...\n";
-    generate_navbar_script($DATABASE, $date_counts);
+sub generate_page {
+    my %args = @_;
+
+    foreach (qw(do_pages do_json do_censor overwrite pinkfish_map channels speakers
+        date_counts index page_limit pages_done pages_todo page)) {
+        die "$_ not provided!" if !exists $args{$_};
+    }
+
+    #my $LOCAL_DB        = open_postgres_db($PG_DB); # When forking, we can't use the original
+    my $do_pages        = $args{do_pages};
+    my $do_json         = $args{do_json};
+    my $do_censor       = $args{do_censor};
+    my $overwrite       = $args{overwrite};
+    my $pinkfish_map    = $args{pinkfish_map};
+    my $channels        = $args{channels};
+    my $speakers        = $args{speakers};
+
+    my $date_counts     = $args{date_counts};
+    my $i               = $args{index};         # the index into the entire data set
+    my $page_limit      = $args{page_limit};
+    my $pages_done      = $args{pages_done};    # the number of pages we've done
+    my $pages_todo      = $args{pages_todo};
+    my $page            = $args{page};          # This is our collected page data
+
+    my $day_row         = $args{day_row}            = $date_counts->[$i];
+    my $today           = $args{today}              = $day_row->{the_date};
+    my $filename        = $args{filename}           = page_path($day_row);
+    my $json_filename   = $args{json_filename}      = json_path($day_row);
+    my $this_is_the_end = $args{this_is_the_end}    = ($i == (scalar @$date_counts) - 1) ? 1 : undef;
+
+    if( $i < ((scalar @$date_counts) - 2) and -f $filename ) {
+        if( !$overwrite ) {
+            # Always generate the very last, and next to last page again.
+            printf "            Skipping %s.\n", $filename;
+            return;
+        }
+    }
+
+    my ($first_row, $first_page, $first_date,
+        $prev_row, $prev_page, $prev_date,
+        $next_row, $next_page, $next_date,
+        $last_row, $last_page, $last_date);
+
+    if( $i > 0 ) {
+        # We have a previous page.
+        $prev_row   = $args{prev_row}   = $date_counts->[$i - 1];
+        $prev_date  = $args{prev_date}  = $prev_row->{the_date};
+        $prev_page  = $args{prev_page}  = page_url($prev_row);
+
+        # We also are not ON the first page, so we should have that too.
+        $first_row  = $args{first_row}  = $date_counts->[0];
+        $first_date = $args{first_date} = $first_row->{the_date};
+        $first_page = $args{first_page} = page_url($first_row);
+    }
+    if( $i < (scalar @$date_counts) - 2 ) {
+        # We have a next page.
+        $next_row   = $args{next_row}   = $date_counts->[$i + 1];
+        $next_date  = $args{next_date}  = $next_row->{the_date};
+        $next_page  = $args{next_page}  = page_url($next_row);
+    } elsif( $i < (scalar @$date_counts) - 1 ) {
+        if( $debug_page ) {
+            # We want the static page.
+            $next_row   = $args{next_row}   = $date_counts->[$i + 1];
+            $next_date  = $args{next_date}  = $next_row->{the_date};
+            $next_page  = $args{next_page}  = page_url($next_row);
+        } else {
+            # We want the live page.
+            $next_row   = $args{next_row}   = $date_counts->[$i + 1];
+            $next_date  = $args{next_date}  = "LIVE " . $next_row->{the_date};
+            $next_page  = $args{next_page}  = $LIVE_PAGE;
+        }
+    }
+
+    # We ALWAYS have a last page, as that's the current page.  But,
+    # this one is special.  Instead of the usual static page, we want
+    # to point you to the live page that gets updated on load.
+    $last_row   = $args{last_row}   = $date_counts->[-1];
+    $last_date  = $args{last_date}  = $this_is_the_end ? "LIVE" : ("LIVE " . $last_row->{the_date});
+    $last_page  = $args{last_page}  = $LIVE_PAGE;
+
+    #my $page_background = $this_is_the_end ? "#1F0000" : "black";
+    my $page_background     = $args{page_background}    = $this_is_the_end ? "#070707" : "black";
+    my $overlay_image       = $args{overlay_image}      = $this_is_the_end ? $OVERLAY_IMG : "";
+
+    my ($BACKGROUND_IMG, $background_image) = get_random_background($BACKGROUND_DIR, $URL_HOME);
+    $args{BACKGROUND_IMG}   = $BACKGROUND_IMG;
+    $args{background_image} = $background_image;
+
+    #my $page    = $args{page}   = fetch_page_by_date($LOCAL_DB, $today);
+    #die "No data for $today? $!" if !defined $page;
+    #$LOCAL_DB->disconnect();
+
+    printf "    [%5d] PID $$ Generating %s... %d messages.\n",
+        ($pages_todo - $pages_done), $today, scalar @$page;
+
+    generate_html_page(%args) if $do_pages;
+    generate_json_page(%args) if $do_json;
 }
 
-print "Done!\n";
+sub main {
+    print "Initializing...\n";
+
+    my $DATABASE = open_postgres_db($PG_DB);
+
+    my $row_count = fetch_row_count($DATABASE);
+    my $date_counts = fetch_date_counts($DATABASE);
+    my $pinkfish_map = fetch_pinkfish_map($DATABASE);
+    my $hours = fetch_hours($DATABASE);
+
+    if( $page_start < 0 ) {
+        $page_start = (scalar @$date_counts) + $page_start;
+    }
+
+    display_options($row_count, scalar @$date_counts);
+    do_pause($pause);
+    update_all_channels($DATABASE) if $do_update;
+    update_all_speakers($DATABASE) if $do_update;
+
+    my $channels = fetch_channels($DATABASE);
+    my $speakers = fetch_speakers($DATABASE);
+
+    update_cache($date_counts, $pinkfish_map, $hours, $channels, $speakers) if $do_cache;
+    generate_navbar_script($DATABASE, $date_counts) if $do_navbar;
+    dump_speakers($speakers) if $do_speakers;
+
+    if( $do_pages or $do_json ) {
+        $page_limit = (scalar @$date_counts) if $page_limit < 1;
+        #$page_limit = 30 if $use_live and $page_limit > 30;
+
+        my $pages_todo = (scalar @$date_counts) - $page_start;
+        $pages_todo = $page_limit if $page_limit < $pages_todo;
+
+        $thread_count = 0 if $thread_count < 2;
+        #$thread_count = 40 if $thread_count > 40;
+
+        my $pm = Parallel::ForkManager->new($thread_count); # 0 means no forking
+
+        my $pages_done = 0;
+        my @chosen_dates = ();
+        for( my $i = $page_start; $i < scalar @$date_counts; $i++ ) {
+            last if $pages_done >= $page_limit or $pages_done >= scalar @$date_counts;
+            $pages_done++;
+            push @chosen_dates, { date => $date_counts->[$i]->{the_date}, i => $i };
+        }
+
+        # Here, we need to partition the dates into clumps of about 200.
+        printf "We have %d total dates to process.\n", (scalar @chosen_dates);
+        #my $page_set = {};
+        my @page_sets = ();
+
+        if( $thread_count > 1 ) {
+            my @partition = ();
+            my $p = 0;
+
+            foreach my $date (@chosen_dates) {
+                if( $p >= $partition_size) {
+                    my $result = fetch_pages_by_date_range($DATABASE, \@partition);
+                    #$page_set = { %$page_set, %$result } if defined $result;
+                    push @page_sets, $result if defined $result;
+                    @partition = ($date);
+                    $p = 1;
+                } else {
+                    push @partition, $date;
+                    $p++;
+                }
+            }
+            if( (scalar @partition) > 0) {
+                my $result = fetch_pages_by_date_range($DATABASE, \@partition);
+                push @page_sets, $result if defined $result;
+                #$page_set = { %$page_set, %$result } if defined $result;
+                @partition = ();
+                $p = 0;
+            }
+        } else {
+            #$page_set = fetch_pages_by_date_range($DATABASE, \@chosen_dates);
+            my $result = fetch_pages_by_date_range($DATABASE, \@chosen_dates);
+            push @page_sets, $result if defined $result;
+        }
+
+        SET_LOOP:
+        for(my $j = 0; $j < (scalar @page_sets); $j++) {
+            $pm->start($j) and next SET_LOOP;
+
+            srand(time + ($j * $$));
+            my $page_set = $page_sets[$j];
+            $pages_done = $j * $partition_size;
+
+            foreach my $date (sort keys %$page_set) {
+                $pages_done++;
+                my $row = $page_set->{$date};
+                my $i = $row->{i};
+                my $page = $row->{page};
+
+                generate_page( 
+                    do_pages        => $do_pages,
+                    do_json         => $do_json,
+                    do_censor       => $do_censor,
+                    overwrite       => $overwrite,
+                    pinkfish_map    => $pinkfish_map,
+                    channels        => $channels,
+                    speakers        => $speakers,
+                    date_counts     => $date_counts,
+                    index           => $i,
+                    page_limit      => $page_limit,
+                    pages_done      => $pages_done,
+                    pages_todo      => $pages_todo,
+                    page            => $page,
+                    );
+            }
+
+            $pm->finish();
+        }
+        $pm->wait_all_children;
+    }
+
+    generate_navbar_script($DATABASE, $date_counts) if $do_navbar;
+    print "Done!\n";
+}
+
+main();
 exit 0;
+
+
