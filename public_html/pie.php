@@ -44,6 +44,27 @@ function db_connect() {
     return $db;
 }
 
+function fetch_dates($db) {
+    $sql = "
+        SELECT date('now') AS today,
+               date(now() - '1 day'::interval) as yesterday,
+               date(now() - '1 week'::interval) as week,
+               date(now() - '1 month'::interval) as month,
+               date(now() - '1 year'::interval) as year,
+               min(date(local)) as all
+          FROM i3log
+    ;";
+    try {
+        $sth = $db->prepare($sql);
+        $sth->execute();
+        $sth->setFetchMode(PDO::FETCH_ASSOC);
+        $result = $sth->fetch();
+    } catch (Exception $e) {
+        throw $e;
+    }
+    return $result;
+}
+
 function fetch_today_speakers($db) {
     $sql = "
         SELECT speaker, count(*)
@@ -179,6 +200,7 @@ $ALL_BACKGROUND             = random_image($BACKGROUND_DIR);
 $ALL_BACKGROUND_IMG         = "<img width=\"700\" height=\"500\" style=\"position: fixed; z-index: 998; left: 50%; transform: translateX(-50%); object-fit: cover; opacity: 0.2;\" src=\"$URL_HOME/gfx/wallpaper/$ALL_BACKGROUND\" />";
 
 $db = db_connect();
+$date_info = fetch_dates($db);
 
 ?>
 
@@ -281,6 +303,7 @@ $db = db_connect();
                 $result = fetch_today_speakers($db);
                 if(count($result) > 0) {
                 ?>
+                    options['title'] = "Today's Jibber-Jabber (<?php echo $date_info['today'];?>)";
                     var data = google.visualization.arrayToDataTable([
                     <?php
                     printf("[ '%s', '%s' ],\n", 'Speaker', 'Count');
@@ -303,7 +326,7 @@ $db = db_connect();
                 $result = fetch_yesterday_speakers($db);
                 if(count($result) > 0) {
                 ?>
-                    options['title'] = "Yesterday's Rubbish";
+                    options['title'] = "Yesterday's Rubbish (<?php echo $date_info['yesterday'];?>)";
                     var data = google.visualization.arrayToDataTable([
                     <?php
                     printf("[ '%s', '%s' ],\n", 'Speaker', 'Count');
@@ -326,7 +349,7 @@ $db = db_connect();
                 $result = fetch_historical_speakers($db, '1 week');
                 if(count($result) > 0) {
                 ?>
-                    options['title'] = "The Week of Stupidity";
+                    options['title'] = "The Week of Stupidity (<?php echo $date_info['week'] . ' to ' . $date_info['today'];?>)";
                     var data = google.visualization.arrayToDataTable([
                     <?php
                     printf("[ '%s', '%s' ],\n", 'Speaker', 'Count');
@@ -349,7 +372,7 @@ $db = db_connect();
                 $result = fetch_historical_speakers($db, '1 month');
                 if(count($result) > 0) {
                 ?>
-                    options['title'] = "A Whole Month of Nonsense?";
+                    options['title'] = "A Whole Month of Nonsense? (<?php echo $date_info['month'] . ' to ' . $date_info['today'];?>)";
                     var data = google.visualization.arrayToDataTable([
                     <?php
                     printf("[ '%s', '%s' ],\n", 'Speaker', 'Count');
@@ -372,7 +395,7 @@ $db = db_connect();
                 $result = fetch_historical_speakers($db, '1 year');
                 if(count($result) > 0) {
                 ?>
-                    options['title'] = "What a Horrible Year it's Been...";
+                    options['title'] = "What a Horrible Year it's Been... (<?php echo $date_info['year'] . ' to ' . $date_info['today'];?>)";
                     var data = google.visualization.arrayToDataTable([
                     <?php
                     printf("[ '%s', '%s' ],\n", 'Speaker', 'Count');
@@ -395,7 +418,7 @@ $db = db_connect();
                 $result = fetch_all_speakers($db);
                 if(count($result) > 0) {
                 ?>
-                    options['title'] = "What Have You DONE???";
+                    options['title'] = "What Have You DONE??? (<?php echo $date_info['all'] . ' to ' . $date_info['today'];?>)";
                     var data = google.visualization.arrayToDataTable([
                     <?php
                     printf("[ '%s', '%s' ],\n", 'Speaker', 'Count');
