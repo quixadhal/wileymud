@@ -30,6 +30,7 @@ $WILEY_TIME = $mudlist["time"];
         <meta charset="utf-8" />
         <meta http-equiv="cache-control" content="no-cache" />
         <meta http-equiv="pragma" content="no-cache" />
+        <meta http-equiv="refresh" content="1800" />
         <!-- Global site tag (gtag.js) - Google Analytics -->
         <script async src="https://www.googletagmanager.com/gtag/js?id=UA-163395867-1"></script>
         <script>
@@ -54,6 +55,7 @@ $WILEY_TIME = $mudlist["time"];
     <table id="navbar" width="99%" cellspacing="0" cellpadding="1" align="center">
         <tr>
             <td align="left" width="25%">
+                    <img src="http://wileymud.themud.org/~wiley/gfx/mud.png" width="48" height="48" border="0" style="opacity: 0.2; background: rgba(255,0,0,0.25);" />
                 <a href="http://wileymud.themud.org/~wiley/logpages" alt="Logs" title="Logs">
                     <img src="http://wileymud.themud.org/~wiley/gfx/log.png" width="48" height="48" border="0" />
                 </a>
@@ -99,6 +101,9 @@ $WILEY_TIME = $mudlist["time"];
                 <span style="vertical-align: top; color: #ccaa00"> <?php echo $WILEY_TIME; ?> </span>
                 <a href="http://wileymud.themud.org/~wiley/server.php" alt="Server" title="Server">
                     <img src="http://wileymud.themud.org/~wiley/gfx/server_icon.png" width="48" height="48" border="0" />
+                </a>
+                <a href="http://wileymud.themud.org/~wiley/pie.php" alt="PIE!" title="PIE!">
+                    <img src="http://wileymud.themud.org/~wiley/gfx/pie_chart.png" width="48" height="48" border="0" />
                 </a>
             </td>
         </tr>

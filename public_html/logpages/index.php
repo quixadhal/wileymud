@@ -42,17 +42,26 @@ $MUDLIST_ICON   = "$URL_HOME/gfx/mud.png";
 $LOG_ICON       = "$URL_HOME/gfx/log.png";
 $DISCORD_ICON   = "$URL_HOME/gfx/discord.png";
 $SERVER_ICON    = "$URL_HOME/gfx/server_icon.png";
+$QR_ICON        = "$URL_HOME/stuff/qrcode.png";
+$QR_BIG_ICON    = "$URL_HOME/stuff/qrcode_big.png";
+$PIE_ICON       = "$URL_HOME/gfx/pie_chart.png";
 $ICON_WIDTH     = 48;
 
 $MUDLIST_IMG    = "<img src=\"$MUDLIST_ICON\" width=\"$ICON_WIDTH\" height=\"$ICON_WIDTH\" border=\"0\" />";
 $LOG_IMG        = "<img src=\"$LOG_ICON\" width=\"$ICON_WIDTH\" height=\"$ICON_WIDTH\" border=\"0\" />";
 $DISCORD_IMG    = "<img src=\"$DISCORD_ICON\" width=\"$ICON_WIDTH\" height=\"$ICON_WIDTH\" border=\"0\" />";
 $SERVER_IMG     = "<img align=\"right\" src=\"$SERVER_ICON\" width=\"$ICON_WIDTH\" height=\"$ICON_WIDTH\" border=\"0\" />";
+//$QR_IMG         = "<img align=\"right\" src=\"$QR_ICON\" width=\"$ICON_WIDTH\" height=\"$ICON_WIDTH\" border=\"0\" />";
+$QR_IMG         = "<img align=\"right\" src=\"$QR_ICON\" width=\"53\" height=\"53\" border=\"0\" />";
+$PIE_IMG        = "<img align=\"right\" src=\"$PIE_ICON\" width=\"$ICON_WIDTH\" height=\"$ICON_WIDTH\" border=\"0\" />";
 
 $MUDLIST_LINK   = "<a href=\"$URL_HOME/mudlist.php\" alt=\"Mudlist\" title=\"Mudlist\">$MUDLIST_IMG</a>";
 $LOG_LINK       = "<a href=\"https://themud.org/chanhist.php#Channel=all\" alt=\"Other Logs\" title=\"Other Logs\">$LOG_IMG</a>";
 $DISCORD_LINK   = "<a href=\"https://discord.gg/kUduSsJ\" alt=\"Discord\" title=\"Discord\">$DISCORD_IMG</a>";
 $SERVER_LINK    = "<a href=\"$URL_HOME/server.php\" alt=\"Server\" title=\"Server\">$SERVER_IMG</a>";
+//$QR_LINK        = "<a href=\"https://www.youtube.com/watch?v=PZqx-lMZHM0\" alt=\"リック転がし\" title=\"リック転がし\">$QR_IMG</a>";
+$QR_LINK        = "<a href=\"$QR_BIG_ICON\" alt=\"リック転がし\" title=\"リック転がし\">$QR_IMG</a>";
+$PIE_LINK       = "<a href=\"$URL_HOME/pie.php\" alt=\"PIE!\" title=\"PIE!\">$PIE_IMG</a>";
 
 $OVERLAY_ICON   = "$URL_HOME/gfx/archive_stamp.png";
 $OVERLAY_IMG    = "<img class=\"overlay-fixed\" src=\"$OVERLAY_ICON\" />";
@@ -573,6 +582,7 @@ header("Pragma: no-cache");
         <meta charset="utf-8" />
         <meta http-equiv="cache-control" content="no-cache" />
         <meta http-equiv="pragma" content="no-cache" />
+        <meta http-equiv="refresh" content="1800" />
         <!-- Global site tag (gtag.js) - Google Analytics -->
         <script async src="https://www.googletagmanager.com/gtag/js?id=UA-163395867-1"></script>
         <script>
@@ -735,6 +745,7 @@ header("Pragma: no-cache");
                     <?php echo $down_link; ?>
                 </td>
                 <td align="right" width="25%">
+                    <?php echo $PIE_LINK;?>
                     <?php echo $SERVER_LINK;?>
                     <?php echo $local_time;?>
                 </td>
