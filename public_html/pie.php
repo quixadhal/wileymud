@@ -156,9 +156,27 @@ $mudlist = json_decode($mudlist_text, true, 512, JSON_INVALID_UTF8_SUBSTITUTE);
 if( json_last_error() != JSON_ERROR_NONE ) {
     echo "<hr>".json_last_error_msg()."<br><hr>";
 }
-$WILEY_BUILD_NUMBER = $mudlist["version"]["build"];
-$WILEY_BUILD_DATE = $mudlist["version"]["date"];
-$WILEY_TIME = $mudlist["time"];
+
+$WILEY_BUILD_NUMBER     = $mudlist["version"]["build"];
+$WILEY_BUILD_DATE       = $mudlist["version"]["date"];
+$WILEY_TIME             = $mudlist["time"];
+$BACKGROUND             = random_image($BACKGROUND_DIR);
+$OVERLAY_ICON           = "$URL_HOME/gfx/NA.png";
+$BACKGROUND_IMG         = "<img width=\"700\" height=\"500\" style=\"position: fixed; z-index: 998; left: 50%; transform: translateX(-50%); object-fit: contain;\" src=\"$URL_HOME/gfx/wallpaper/$BACKGROUND\" />";
+$OVERLAY_IMG            = "<img width=\"700\" height=\"500\" style=\"position: fixed; z-index: 999; left: 50%; transform: translateX(-50%); opacity: 0.5;\" src=\"$OVERLAY_ICON\" />";
+
+$TODAY_BACKGROUND           = random_image($BACKGROUND_DIR);
+$TODAY_BACKGROUND_IMG       = "<img width=\"700\" height=\"500\" style=\"position: fixed; z-index: 998; left: 50%; transform: translateX(-50%); object-fit: cover; opacity: 0.2;\" src=\"$URL_HOME/gfx/wallpaper/$TODAY_BACKGROUND\" />";
+$YESTERDAY_BACKGROUND       = random_image($BACKGROUND_DIR);
+$YESTERDAY_BACKGROUND_IMG   = "<img width=\"700\" height=\"500\" style=\"position: fixed; z-index: 998; left: 50%; transform: translateX(-50%); object-fit: cover; opacity: 0.2;\" src=\"$URL_HOME/gfx/wallpaper/$YESTERDAY_BACKGROUND\" />";
+$WEEK_BACKGROUND            = random_image($BACKGROUND_DIR);
+$WEEK_BACKGROUND_IMG        = "<img width=\"700\" height=\"500\" style=\"position: fixed; z-index: 998; left: 50%; transform: translateX(-50%); object-fit: cover; opacity: 0.2;\" src=\"$URL_HOME/gfx/wallpaper/$WEEK_BACKGROUND\" />";
+$MONTH_BACKGROUND           = random_image($BACKGROUND_DIR);
+$MONTH_BACKGROUND_IMG       = "<img width=\"700\" height=\"500\" style=\"position: fixed; z-index: 998; left: 50%; transform: translateX(-50%); object-fit: cover; opacity: 0.2;\" src=\"$URL_HOME/gfx/wallpaper/$MONTH_BACKGROUND\" />";
+$YEAR_BACKGROUND            = random_image($BACKGROUND_DIR);
+$YEAR_BACKGROUND_IMG        = "<img width=\"700\" height=\"500\" style=\"position: fixed; z-index: 998; left: 50%; transform: translateX(-50%); object-fit: cover; opacity: 0.2;\" src=\"$URL_HOME/gfx/wallpaper/$YEAR_BACKGROUND\" />";
+$ALL_BACKGROUND             = random_image($BACKGROUND_DIR);
+$ALL_BACKGROUND_IMG         = "<img width=\"700\" height=\"500\" style=\"position: fixed; z-index: 998; left: 50%; transform: translateX(-50%); object-fit: cover; opacity: 0.2;\" src=\"$URL_HOME/gfx/wallpaper/$ALL_BACKGROUND\" />";
 
 $db = db_connect();
 
@@ -233,15 +251,15 @@ $db = db_connect();
                     is3D                : 1,
                     title               : "Today's Jibber-Jabber",
                     titleColor          : '#e0e0e0',
-                    backgroundColor     : '#101010',
+                    //backgroundColor     : '#101010',
+                    backgroundColor     : 'none',
                     legendTextStyle     : {
                         color           : '#e0e0e0',
                     },
                     pieSliceTextStyle   : {
                         color           : '#000000',
-                        //'font-size'     : '24px',
-                        //'font-weight'   : 'bold',
-                        //'text-decoration' : 'underline',
+                        fontName        : 'Arial',
+                        fontSize        : '14',
                     },
                     chartArea           : {
                         top             : '5%',
@@ -263,114 +281,136 @@ $db = db_connect();
                 $result = fetch_today_speakers($db);
                 if(count($result) > 0) {
                 ?>
-                var data = google.visualization.arrayToDataTable([
-                <?php
-                printf("[ '%s', '%s' ],\n", 'Speaker', 'Count');
-                foreach ($result as $r) {
-                    printf("[ '%s', %d ],\n", $r['speaker'], $r['count']);
-                }
-                ?>
-                ]);
-                document.getElementById('graphToday').style.display='block';
-                var chart = new google.visualization.PieChart(document.getElementById('pie_today'));
-                chart.draw(data, options);
-                document.getElementById('graphToday').style.display='none';
-                <?php
-                } else {
-                    $BACKGROUND     = random_image($BACKGROUND_DIR);
-                    $OVERLAY_ICON   = "$URL_HOME/gfx/NA.png";
-                    $BACKGROUND_IMG = "<img width=\"700\" height=\"500\" style=\"position: fixed; z-index: 998; left: 50%; transform: translateX(-50%); object-fit: contain;\" src=\"$URL_HOME/gfx/wallpaper/$BACKGROUND\" />";
-                    $OVERLAY_IMG    = "<img width=\"700\" height=\"500\" style=\"position: fixed; z-index: 999; left: 50%; transform: translateX(-50%); opacity: 0.5;\" src=\"$OVERLAY_ICON\" />";
-                ?>
+                    var data = google.visualization.arrayToDataTable([
+                    <?php
+                    printf("[ '%s', '%s' ],\n", 'Speaker', 'Count');
+                    foreach ($result as $r) {
+                        printf("[ '%s', %d ],\n", $r['speaker'], $r['count']);
+                    }
+                    ?>
+                    ]);
+                    document.getElementById('graphToday').style.display='block';
+                    var chart = new google.visualization.PieChart(document.getElementById('pie_today'));
+                    chart.draw(data, options);
+                    document.getElementById('graphToday').style.display='none';
+                <?php } else { ?>
                     document.getElementById('pie_today').innerHTML='<?php echo $BACKGROUND_IMG; echo $OVERLAY_IMG;?>';
-                <?php
-                }
-                ?>
+                <?php } ?>
             }
 
             function drawYesterday() {
-                options['title'] = "Yesterday's Rubbish";
-                var data = google.visualization.arrayToDataTable([
                 <?php
                 $result = fetch_yesterday_speakers($db);
-                printf("[ '%s', '%s' ],\n", 'Speaker', 'Count');
-                foreach ($result as $r) {
-                    printf("[ '%s', %d ],\n", $r['speaker'], $r['count']);
-                }
+                if(count($result) > 0) {
                 ?>
-                ]);
-                document.getElementById('graphYesterday').style.display='block';
-                var chart = new google.visualization.PieChart(document.getElementById('pie_yesterday'));
-                chart.draw(data, options);
-                document.getElementById('graphYesterday').style.display='none';
+                    options['title'] = "Yesterday's Rubbish";
+                    var data = google.visualization.arrayToDataTable([
+                    <?php
+                    printf("[ '%s', '%s' ],\n", 'Speaker', 'Count');
+                    foreach ($result as $r) {
+                        printf("[ '%s', %d ],\n", $r['speaker'], $r['count']);
+                    }
+                    ?>
+                    ]);
+                    document.getElementById('graphYesterday').style.display='block';
+                    var chart = new google.visualization.PieChart(document.getElementById('pie_yesterday'));
+                    chart.draw(data, options);
+                    document.getElementById('graphYesterday').style.display='none';
+                <?php } else { ?>
+                    document.getElementById('pie_yesterday').innerHTML='<?php echo $BACKGROUND_IMG; echo $OVERLAY_IMG;?>';
+                <?php } ?>
             }
 
             function drawWeek() {
-                options['title'] = "The Week of Stupidity";
-                var data = google.visualization.arrayToDataTable([
                 <?php
                 $result = fetch_historical_speakers($db, '1 week');
-                printf("[ '%s', '%s' ],\n", 'Speaker', 'Count');
-                foreach ($result as $r) {
-                    printf("[ '%s', %d ],\n", $r['speaker'], $r['count']);
-                }
+                if(count($result) > 0) {
                 ?>
-                ]);
-                document.getElementById('graphWeek').style.display='block';
-                var chart = new google.visualization.PieChart(document.getElementById('pie_week'));
-                chart.draw(data, options);
-                document.getElementById('graphWeek').style.display='none';
+                    options['title'] = "The Week of Stupidity";
+                    var data = google.visualization.arrayToDataTable([
+                    <?php
+                    printf("[ '%s', '%s' ],\n", 'Speaker', 'Count');
+                    foreach ($result as $r) {
+                        printf("[ '%s', %d ],\n", $r['speaker'], $r['count']);
+                    }
+                    ?>
+                    ]);
+                    document.getElementById('graphWeek').style.display='block';
+                    var chart = new google.visualization.PieChart(document.getElementById('pie_week'));
+                    chart.draw(data, options);
+                    document.getElementById('graphWeek').style.display='none';
+                <?php } else { ?>
+                    document.getElementById('pie_week').innerHTML='<?php echo $BACKGROUND_IMG; echo $OVERLAY_IMG;?>';
+                <?php } ?>
             }
 
             function drawMonth() {
-                options['title'] = "A Whole Month of Nonsense?";
-                var data = google.visualization.arrayToDataTable([
                 <?php
                 $result = fetch_historical_speakers($db, '1 month');
-                printf("[ '%s', '%s' ],\n", 'Speaker', 'Count');
-                foreach ($result as $r) {
-                    printf("[ '%s', %d ],\n", $r['speaker'], $r['count']);
-                }
+                if(count($result) > 0) {
                 ?>
-                ]);
-                document.getElementById('graphMonth').style.display='block';
-                var chart = new google.visualization.PieChart(document.getElementById('pie_month'));
-                chart.draw(data, options);
-                document.getElementById('graphMonth').style.display='none';
+                    options['title'] = "A Whole Month of Nonsense?";
+                    var data = google.visualization.arrayToDataTable([
+                    <?php
+                    printf("[ '%s', '%s' ],\n", 'Speaker', 'Count');
+                    foreach ($result as $r) {
+                        printf("[ '%s', %d ],\n", $r['speaker'], $r['count']);
+                    }
+                    ?>
+                    ]);
+                    document.getElementById('graphMonth').style.display='block';
+                    var chart = new google.visualization.PieChart(document.getElementById('pie_month'));
+                    chart.draw(data, options);
+                    document.getElementById('graphMonth').style.display='none';
+                <?php } else { ?>
+                    document.getElementById('pie_month').innerHTML='<?php echo $BACKGROUND_IMG; echo $OVERLAY_IMG;?>';
+                <?php } ?>
             }
 
             function drawYear() {
-                options['title'] = "What a Horrible Year it's Been...";
-                var data = google.visualization.arrayToDataTable([
                 <?php
                 $result = fetch_historical_speakers($db, '1 year');
-                printf("[ '%s', '%s' ],\n", 'Speaker', 'Count');
-                foreach ($result as $r) {
-                    printf("[ '%s', %d ],\n", $r['speaker'], $r['count']);
-                }
+                if(count($result) > 0) {
                 ?>
-                ]);
-                document.getElementById('graphYear').style.display='block';
-                var chart = new google.visualization.PieChart(document.getElementById('pie_year'));
-                chart.draw(data, options);
-                document.getElementById('graphYear').style.display='none';
+                    options['title'] = "What a Horrible Year it's Been...";
+                    var data = google.visualization.arrayToDataTable([
+                    <?php
+                    printf("[ '%s', '%s' ],\n", 'Speaker', 'Count');
+                    foreach ($result as $r) {
+                        printf("[ '%s', %d ],\n", $r['speaker'], $r['count']);
+                    }
+                    ?>
+                    ]);
+                    document.getElementById('graphYear').style.display='block';
+                    var chart = new google.visualization.PieChart(document.getElementById('pie_year'));
+                    chart.draw(data, options);
+                    document.getElementById('graphYear').style.display='none';
+                <?php } else { ?>
+                    document.getElementById('pie_year').innerHTML='<?php echo $BACKGROUND_IMG; echo $OVERLAY_IMG;?>';
+                <?php } ?>
             }
 
             function drawAll() {
-                options['title'] = "What Have You DONE???";
-                var data = google.visualization.arrayToDataTable([
                 <?php
                 $result = fetch_all_speakers($db);
-                printf("[ '%s', '%s' ],\n", 'Speaker', 'Count');
-                foreach ($result as $r) {
-                    printf("[ '%s', %d ],\n", $r['speaker'], $r['count']);
-                }
+                if(count($result) > 0) {
                 ?>
-                ]);
-                document.getElementById('graphAll').style.display='block';
-                var chart = new google.visualization.PieChart(document.getElementById('pie_all'));
-                chart.draw(data, options);
-                document.getElementById('graphAll').style.display='none';
+                    options['title'] = "What Have You DONE???";
+                    var data = google.visualization.arrayToDataTable([
+                    <?php
+                    printf("[ '%s', '%s' ],\n", 'Speaker', 'Count');
+                    foreach ($result as $r) {
+                        printf("[ '%s', %d ],\n", $r['speaker'], $r['count']);
+                    }
+                    ?>
+                    ]);
+                    document.getElementById('graphAll').style.display='block';
+                    var chart = new google.visualization.PieChart(document.getElementById('pie_all'));
+                    chart.draw(data, options);
+                    document.getElementById('graphAll').style.display='none';
+                <?php } else { ?>
+                    document.getElementById('pie_all').innerHTML='<?php echo $BACKGROUND_IMG; echo $OVERLAY_IMG;?>';
+                <?php } ?>
             }
 
             function drawTheCharts() {
@@ -466,22 +506,28 @@ $inactive_color = "#2f0000";
         <tr bgcolor="#000000">
             <td id="graphHole" colspan="3" align="center">
                 <div id="graphToday" style="display: none;">
-                    <div id="pie_today" style="width: 700px; height: 500px;"></div>
+                    <?php echo $TODAY_BACKGROUND_IMG; ?>
+                    <div id="pie_today" style="width: 700px; height: 500px; position: fixed; z-index: 999; left: 50%; transform: translateX(-50%);"></div>
                 </div>
                 <div id="graphYesterday" style="display: none;">
-                    <div id="pie_yesterday" style="width: 700px; height: 500px;"></div>
+                    <?php echo $YESTERDAY_BACKGROUND_IMG; ?>
+                    <div id="pie_yesterday" style="width: 700px; height: 500px; position: fixed; z-index: 999; left: 50%; transform: translateX(-50%);"></div>
                 </div>
                 <div id="graphWeek" style="display: none;">
-                    <div id="pie_week" style="width: 700px; height: 500px;"></div>
+                    <?php echo $WEEK_BACKGROUND_IMG; ?>
+                    <div id="pie_week" style="width: 700px; height: 500px; position: fixed; z-index: 999; left: 50%; transform: translateX(-50%);"></div>
                 </div>
                 <div id="graphMonth" style="display: none;">
-                    <div id="pie_month" style="width: 700px; height: 500px;"></div>
+                    <?php echo $MONTH_BACKGROUND_IMG; ?>
+                    <div id="pie_month" style="width: 700px; height: 500px; position: fixed; z-index: 999; left: 50%; transform: translateX(-50%);"></div>
                 </div>
                 <div id="graphYear" style="display: none;">
-                    <div id="pie_year" style="width: 700px; height: 500px;"></div>
+                    <?php echo $YEAR_BACKGROUND_IMG; ?>
+                    <div id="pie_year" style="width: 700px; height: 500px; position: fixed; z-index: 999; left: 50%; transform: translateX(-50%);"></div>
                 </div>
                 <div id="graphAll" style="display: none;">
-                    <div id="pie_all" style="width: 700px; height: 500px;"></div>
+                    <?php echo $ALL_BACKGROUND_IMG; ?>
+                    <div id="pie_all" style="width: 700px; height: 500px; position: fixed; z-index: 999; left: 50%; transform: translateX(-50%);"></div>
                 </div>
             </td>
         </tr>
