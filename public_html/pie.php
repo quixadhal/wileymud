@@ -183,8 +183,9 @@ $WILEY_BUILD_DATE       = $mudlist["version"]["date"];
 $WILEY_TIME             = $mudlist["time"];
 $BACKGROUND             = random_image($BACKGROUND_DIR);
 $OVERLAY_ICON           = "$URL_HOME/gfx/NA.png";
-$BACKGROUND_IMG         = "<img width=\"700\" height=\"500\" style=\"position: fixed; z-index: 998; left: 50%; transform: translateX(-50%); object-fit: contain;\" src=\"$URL_HOME/gfx/wallpaper/$BACKGROUND\" />";
-$OVERLAY_IMG            = "<img width=\"700\" height=\"500\" style=\"position: fixed; z-index: 999; left: 50%; transform: translateX(-50%); opacity: 0.5;\" src=\"$OVERLAY_ICON\" />";
+// contain leaves space, cover clips edges.
+$BACKGROUND_IMG         = "<img width=\"700\" height=\"500\" style=\"position: fixed; z-index: 998; left: 50%; transform: translateX(-50%); object-fit: cover;\" src=\"$URL_HOME/gfx/wallpaper/$BACKGROUND\" />";
+$OVERLAY_IMG            = "<img width=\"700\" height=\"500\" style=\"position: fixed; z-index: 999; left: 50%; transform: translateX(-50%); object-fit: contain; opacity: 0.5;\" src=\"$OVERLAY_ICON\" />";
 
 $TODAY_BACKGROUND           = random_image($BACKGROUND_DIR);
 $TODAY_BACKGROUND_IMG       = "<img width=\"700\" height=\"500\" style=\"position: fixed; z-index: 998; left: 50%; transform: translateX(-50%); object-fit: cover; opacity: 0.2;\" src=\"$URL_HOME/gfx/wallpaper/$TODAY_BACKGROUND\" />";
