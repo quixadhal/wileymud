@@ -94,6 +94,35 @@ function fetch_today_speakers($db) {
     return $result;
 }
 
+function fetch_today_channels($db) {
+    $sql = "
+        SELECT channel, count(*)
+          FROM i3log
+         WHERE speaker <> 'URLbot'
+           AND local BETWEEN date_trunc('day',now()) AND now()
+      GROUP BY channel
+      ORDER BY count DESC
+         LIMIT 12
+    ;";
+    try {
+        //$db->beginTransaction();
+        $sth = $db->prepare($sql);
+        //$sth->bindParam(':time_interval', $time_interval);
+        $sth->execute();
+        $sth->setFetchMode(PDO::FETCH_ASSOC);
+        $result = array();
+        while($row = $sth->fetch()) {
+            //$result[$row['pinkfish']] = $row;
+            $result[] = $row;
+        }
+        //$db->commit();
+    } catch (Exception $e) {
+        //$db->rollback();
+        throw $e;
+    }
+    return $result;
+}
+
 function fetch_yesterday_speakers($db) {
     $sql = "
         SELECT speaker, count(*)
@@ -102,6 +131,31 @@ function fetch_yesterday_speakers($db) {
            AND local BETWEEN date_trunc('day',now() - '1 day'::interval)
            AND date_trunc('day', now()) - '1 microsecond'::interval
       GROUP BY speaker
+      ORDER BY count DESC
+         LIMIT 12
+    ;";
+    try {
+        $sth = $db->prepare($sql);
+        $sth->execute();
+        $sth->setFetchMode(PDO::FETCH_ASSOC);
+        $result = array();
+        while($row = $sth->fetch()) {
+            $result[] = $row;
+        }
+    } catch (Exception $e) {
+        throw $e;
+    }
+    return $result;
+}
+
+function fetch_yesterday_channels($db) {
+    $sql = "
+        SELECT channel, count(*)
+          FROM i3log
+         WHERE speaker <> 'URLbot'
+           AND local BETWEEN date_trunc('day',now() - '1 day'::interval)
+           AND date_trunc('day', now()) - '1 microsecond'::interval
+      GROUP BY channel
       ORDER BY count DESC
          LIMIT 12
     ;";
@@ -148,12 +202,64 @@ function fetch_historical_speakers($db, $period) {
     return $result;
 }
 
+function fetch_historical_channels($db, $period) {
+    if( $period === NULL ) {
+        $period = '1 week';
+    }
+    $sql = "
+        SELECT channel, count(*)
+          FROM i3log
+         WHERE speaker <> 'URLbot'
+           AND local BETWEEN date_trunc('day',now() - :period ::interval)
+           AND now()
+      GROUP BY channel
+      ORDER BY count DESC
+         LIMIT 12
+    ;";
+    try {
+        $sth = $db->prepare($sql);
+        $sth->bindParam(':period', $period);
+        $sth->execute();
+        $sth->setFetchMode(PDO::FETCH_ASSOC);
+        $result = array();
+        while($row = $sth->fetch()) {
+            $result[] = $row;
+        }
+    } catch (Exception $e) {
+        throw $e;
+    }
+    return $result;
+}
+
 function fetch_all_speakers($db) {
     $sql = "
         SELECT speaker, count(*)
           FROM i3log
          WHERE speaker <> 'URLbot'
       GROUP BY speaker
+      ORDER BY count DESC
+         LIMIT 12
+    ;";
+    try {
+        $sth = $db->prepare($sql);
+        $sth->execute();
+        $sth->setFetchMode(PDO::FETCH_ASSOC);
+        $result = array();
+        while($row = $sth->fetch()) {
+            $result[] = $row;
+        }
+    } catch (Exception $e) {
+        throw $e;
+    }
+    return $result;
+}
+
+function fetch_all_channels($db) {
+    $sql = "
+        SELECT channel, count(*)
+          FROM i3log
+         WHERE speaker <> 'URLbot'
+      GROUP BY channel
       ORDER BY count DESC
          LIMIT 12
     ;";
@@ -203,6 +309,13 @@ $ALL_BACKGROUND_IMG         = "<img width=\"700\" height=\"500\" style=\"positio
 $db = db_connect();
 $date_info = fetch_dates($db);
 
+$active_style   = "background-color: #8f4f2f; opacity: 1.0;";
+$hover_style    = "background-color: #4f0000; opacity: 1.0;";
+$inactive_style = "background-color: #2f0000; opacity: 0.6;";
+
+$activechan_style   = "background-color: #2f4f8f; opacity: 1.0; font-size: 60%";
+$hoverchan_style    = "background-color: #00004f; opacity: 1.0; font-size: 60%";
+$inactivechan_style = "background-color: #00002f; opacity: 0.6; font-size: 60%";
 ?>
 
 <html>
@@ -241,22 +354,42 @@ $date_info = fetch_dates($db);
             }
             function hover_on(x) {
                 if(current_button != x) {
-                    x.style = "background-color: #4f0000; opacity: 1.0;";
+                    var s = x.id.substr(0,3);
+                    if(s == "btn") {
+                        x.style = "<?php echo $hover_style; ?>";
+                    } else {
+                        x.style = "<?php echo $hoverchan_style; ?>";
+                    }
                 }
             }
             function hover_off(x) {
                 if(current_button != x) {
-                    //x.style = "background-color: #2f0000; opacity: 0.4; background: rgba(255,0,0,0.4);";
-                    x.style = "background-color: #2f0000; opacity: 0.4;";
+                    var s = x.id.substr(0,3);
+                    if(s == "btn") {
+                        x.style = "<?php echo $inactive_style; ?>";
+                    } else {
+                        x.style = "<?php echo $inactivechan_style; ?>";
+                    }
                 }
             }
             function click_select(x) {
                 if(current_button != x) {
-                    x.style = "background-color: #8f4f2f; opacity: 1.0;";
-                    current_button.style = "background-color: #2f0000; opacity: 0.4;";
+                    var s = x.id.substr(0,3);
+                    var g;
+                    if(s == "btn") {
+                        x.style = "<?php echo $active_style; ?>";
+                        g = document.getElementById("graph" + x.id.substr(3));
+                    } else {
+                        x.style = "<?php echo $activechan_style; ?>";
+                        g = document.getElementById("graphChannels" + x.id.substr(3));
+                    }
+                    s = current_button.id.substr(0,3);
+                    if(s == "btn") {
+                        current_button.style = "<?php echo $inactive_style; ?>";
+                    } else {
+                        current_button.style = "<?php echo $inactivechan_style; ?>";
+                    }
                     current_button = x;
-                    var g = document.getElementById("graph" + x.id.substr(3));
-                    //x.innerHTML = current_graph.id + " - " + g.id;
                     current_graph.style.display = "none";
                     current_graph = g;
                     g.style.display = "block";
@@ -299,7 +432,7 @@ $date_info = fetch_dates($db);
                 };
             }
 
-            function drawToday() {
+            function drawTodaySpeakers() {
                 <?php
                 $result = fetch_today_speakers($db);
                 if(count($result) > 0) {
@@ -322,7 +455,30 @@ $date_info = fetch_dates($db);
                 <?php } ?>
             }
 
-            function drawYesterday() {
+            function drawTodayChannels() {
+                <?php
+                $result = fetch_today_channels($db);
+                if(count($result) > 0) {
+                ?>
+                    options['title'] = "Today's Jibber-Jabber (<?php echo $date_info['today'];?>)";
+                    var data = google.visualization.arrayToDataTable([
+                    <?php
+                    printf("[ '%s', '%s' ],\n", 'Channel', 'Count');
+                    foreach ($result as $r) {
+                        printf("[ '%s', %d ],\n", $r['channel'], $r['count']);
+                    }
+                    ?>
+                    ]);
+                    document.getElementById('graphChannelsToday').style.display='block';
+                    var chart = new google.visualization.PieChart(document.getElementById('piechan_today'));
+                    chart.draw(data, options);
+                    document.getElementById('graphChannelsToday').style.display='none';
+                <?php } else { ?>
+                    document.getElementById('piechan_today').innerHTML='<?php echo $BACKGROUND_IMG; echo $OVERLAY_IMG;?>';
+                <?php } ?>
+            }
+
+            function drawYesterdaySpeakers() {
                 <?php
                 $result = fetch_yesterday_speakers($db);
                 if(count($result) > 0) {
@@ -345,7 +501,30 @@ $date_info = fetch_dates($db);
                 <?php } ?>
             }
 
-            function drawWeek() {
+            function drawYesterdayChannels() {
+                <?php
+                $result = fetch_yesterday_channels($db);
+                if(count($result) > 0) {
+                ?>
+                    options['title'] = "Yesterday's Rubbish (<?php echo $date_info['yesterday'];?>)";
+                    var data = google.visualization.arrayToDataTable([
+                    <?php
+                    printf("[ '%s', '%s' ],\n", 'Channel', 'Count');
+                    foreach ($result as $r) {
+                        printf("[ '%s', %d ],\n", $r['channel'], $r['count']);
+                    }
+                    ?>
+                    ]);
+                    document.getElementById('graphChannelsYesterday').style.display='block';
+                    var chart = new google.visualization.PieChart(document.getElementById('piechan_yesterday'));
+                    chart.draw(data, options);
+                    document.getElementById('graphChannelsYesterday').style.display='none';
+                <?php } else { ?>
+                    document.getElementById('piechan_yesterday').innerHTML='<?php echo $BACKGROUND_IMG; echo $OVERLAY_IMG;?>';
+                <?php } ?>
+            }
+
+            function drawWeekSpeakers() {
                 <?php
                 $result = fetch_historical_speakers($db, '1 week');
                 if(count($result) > 0) {
@@ -368,7 +547,30 @@ $date_info = fetch_dates($db);
                 <?php } ?>
             }
 
-            function drawMonth() {
+            function drawWeekChannels() {
+                <?php
+                $result = fetch_historical_channels($db, '1 week');
+                if(count($result) > 0) {
+                ?>
+                    options['title'] = "The Week of Stupidity (<?php echo $date_info['week'] . ' to ' . $date_info['today'];?>)";
+                    var data = google.visualization.arrayToDataTable([
+                    <?php
+                    printf("[ '%s', '%s' ],\n", 'Channel', 'Count');
+                    foreach ($result as $r) {
+                        printf("[ '%s', %d ],\n", $r['channel'], $r['count']);
+                    }
+                    ?>
+                    ]);
+                    document.getElementById('graphChannelsWeek').style.display='block';
+                    var chart = new google.visualization.PieChart(document.getElementById('piechan_week'));
+                    chart.draw(data, options);
+                    document.getElementById('graphChannelsWeek').style.display='none';
+                <?php } else { ?>
+                    document.getElementById('piechan_week').innerHTML='<?php echo $BACKGROUND_IMG; echo $OVERLAY_IMG;?>';
+                <?php } ?>
+            }
+
+            function drawMonthSpeakers() {
                 <?php
                 $result = fetch_historical_speakers($db, '1 month');
                 if(count($result) > 0) {
@@ -391,7 +593,30 @@ $date_info = fetch_dates($db);
                 <?php } ?>
             }
 
-            function drawYear() {
+            function drawMonthChannels() {
+                <?php
+                $result = fetch_historical_channels($db, '1 month');
+                if(count($result) > 0) {
+                ?>
+                    options['title'] = "A Whole Month of Nonsense? (<?php echo $date_info['month'] . ' to ' . $date_info['today'];?>)";
+                    var data = google.visualization.arrayToDataTable([
+                    <?php
+                    printf("[ '%s', '%s' ],\n", 'Channel', 'Count');
+                    foreach ($result as $r) {
+                        printf("[ '%s', %d ],\n", $r['channel'], $r['count']);
+                    }
+                    ?>
+                    ]);
+                    document.getElementById('graphChannelsMonth').style.display='block';
+                    var chart = new google.visualization.PieChart(document.getElementById('piechan_month'));
+                    chart.draw(data, options);
+                    document.getElementById('graphChannelsMonth').style.display='none';
+                <?php } else { ?>
+                    document.getElementById('piechan_month').innerHTML='<?php echo $BACKGROUND_IMG; echo $OVERLAY_IMG;?>';
+                <?php } ?>
+            }
+
+            function drawYearSpeakers() {
                 <?php
                 $result = fetch_historical_speakers($db, '1 year');
                 if(count($result) > 0) {
@@ -414,7 +639,30 @@ $date_info = fetch_dates($db);
                 <?php } ?>
             }
 
-            function drawAll() {
+            function drawYearChannels() {
+                <?php
+                $result = fetch_historical_channels($db, '1 year');
+                if(count($result) > 0) {
+                ?>
+                    options['title'] = "What a Horrible Year it's Been... (<?php echo $date_info['year'] . ' to ' . $date_info['today'];?>)";
+                    var data = google.visualization.arrayToDataTable([
+                    <?php
+                    printf("[ '%s', '%s' ],\n", 'Channel', 'Count');
+                    foreach ($result as $r) {
+                        printf("[ '%s', %d ],\n", $r['channel'], $r['count']);
+                    }
+                    ?>
+                    ]);
+                    document.getElementById('graphChannelsYear').style.display='block';
+                    var chart = new google.visualization.PieChart(document.getElementById('piechan_year'));
+                    chart.draw(data, options);
+                    document.getElementById('graphChannelsYear').style.display='none';
+                <?php } else { ?>
+                    document.getElementById('piechan_year').innerHTML='<?php echo $BACKGROUND_IMG; echo $OVERLAY_IMG;?>';
+                <?php } ?>
+            }
+
+            function drawAllSpeakers() {
                 <?php
                 $result = fetch_all_speakers($db);
                 if(count($result) > 0) {
@@ -437,14 +685,46 @@ $date_info = fetch_dates($db);
                 <?php } ?>
             }
 
+            function drawAllChannels() {
+                <?php
+                $result = fetch_all_channels($db);
+                if(count($result) > 0) {
+                ?>
+                    options['title'] = "What Have You DONE??? (<?php echo $date_info['all'] . ' to ' . $date_info['today'];?>)";
+                    var data = google.visualization.arrayToDataTable([
+                    <?php
+                    printf("[ '%s', '%s' ],\n", 'Channel', 'Count');
+                    foreach ($result as $r) {
+                        printf("[ '%s', %d ],\n", $r['channel'], $r['count']);
+                    }
+                    ?>
+                    ]);
+                    document.getElementById('graphChannelsAll').style.display='block';
+                    var chart = new google.visualization.PieChart(document.getElementById('piechan_all'));
+                    chart.draw(data, options);
+                    document.getElementById('graphChannelsAll').style.display='none';
+                <?php } else { ?>
+                    document.getElementById('piechan_all').innerHTML='<?php echo $BACKGROUND_IMG; echo $OVERLAY_IMG;?>';
+                <?php } ?>
+            }
+
             function drawTheCharts() {
                 drawSetup();
-                drawToday();
-                drawYesterday();
-                drawWeek();
-                drawMonth();
-                drawYear();
-                drawAll();
+
+                drawTodaySpeakers();
+                drawYesterdaySpeakers();
+                drawWeekSpeakers();
+                drawMonthSpeakers();
+                drawYearSpeakers();
+                drawAllSpeakers();
+
+                drawTodayChannels();
+                drawYesterdayChannels();
+                drawWeekChannels();
+                drawMonthChannels();
+                drawYearChannels();
+                drawAllChannels();
+
                 document.getElementById('graphToday').style.display='block';
             }
         </script>
@@ -507,25 +787,47 @@ $date_info = fetch_dates($db);
         </tr>
     </table>
 
-<?php
-$active_style   = "background-color: #8f4f2f; opacity: 1.0;";
-$hover_style    = "background-color: #4f0000; opacity: 1.0;";
-//$inactive_style = "background-color: #2f0000; opacity: 0.4; background: rgba(255,0,0,0.25);";
-$inactive_style = "background-color: #2f0000; opacity: 0.4;";
-$active_color   = "#8f2f2f";
-$inactive_color = "#2f0000";
-?>
 <div id="content" align="center">
     <table border="0" cellspacing="0" cellpadding="1" width="80%">
-        <tr bgcolor="<?php echo $inactive_color; ?>">
-            <td id="btnToday" style="<?php echo $active_style; ?>;" align="center" width="33%" onmouseover="hover_on(this)" onmouseout="hover_off(this)" onclick="click_select(this)">Today</td>
-            <td id="btnYesterday" style="<?php echo $inactive_style; ?>;" align="center" width="34%" onmouseover="hover_on(this)" onmouseout="hover_off(this)" onclick="click_select(this)">Yesterday</td>
-            <td id="btnWeek" style="<?php echo $inactive_style; ?>;" align="center" width="33%" onmouseover="hover_on(this)" onmouseout="hover_off(this)" onclick="click_select(this)">A Week Ago</td>
+        <tr>
+            <td id="btnToday" style="<?php echo $active_style; ?>;" align="center" width="23%" onmouseover="hover_on(this)" onmouseout="hover_off(this)" onclick="click_select(this)">
+                Today
+            </td>
+            <td id="chnToday" style="<?php echo $inactivechan_style; ?>;" align="center" width="10%" onmouseover="hover_on(this)" onmouseout="hover_off(this)" onclick="click_select(this)">
+                今日ちゃん
+            </td>
+            <td id="btnYesterday" style="<?php echo $inactive_style; ?>;" align="center" width="24%" onmouseover="hover_on(this)" onmouseout="hover_off(this)" onclick="click_select(this)">
+                Yesterday
+            </td>
+            <td id="chnYesterday" style="<?php echo $inactivechan_style; ?>;" align="center" width="10%" onmouseover="hover_on(this)" onmouseout="hover_off(this)" onclick="click_select(this)">
+                昨日ちゃん
+            </td>
+            <td id="btnWeek" style="<?php echo $inactive_style; ?>;" align="center" width="23%" onmouseover="hover_on(this)" onmouseout="hover_off(this)" onclick="click_select(this)">
+                Last Week
+            </td>
+            <td id="chnWeek" style="<?php echo $inactivechan_style; ?>;" align="center" width="10%" onmouseover="hover_on(this)" onmouseout="hover_off(this)" onclick="click_select(this)">
+                週間ちゃん
+            </td>
         </tr>
-        <tr bgcolor="<?php echo $inactive_color; ?>">
-            <td id="btnMonth" style="<?php echo $inactive_style; ?>;" align="center" width="33%" onmouseover="hover_on(this)" onmouseout="hover_off(this)" onclick="click_select(this)">A Month Ago</td>
-            <td id="btnYear" style="<?php echo $inactive_style; ?>;" align="center" width="34%" onmouseover="hover_on(this)" onmouseout="hover_off(this)" onclick="click_select(this)">A Year Ago</td>
-            <td id="btnAll" style="<?php echo $inactive_style; ?>;" align="center" width="33%" onmouseover="hover_on(this)" onmouseout="hover_off(this)" onclick="click_select(this)">Of All Time</td>
+        <tr>
+            <td id="btnMonth" style="<?php echo $inactive_style; ?>;" align="center" width="23%" onmouseover="hover_on(this)" onmouseout="hover_off(this)" onclick="click_select(this)">
+                The Month
+            </td>
+            <td id="chnMonth" style="<?php echo $inactivechan_style; ?>;" align="center" width="10%" onmouseover="hover_on(this)" onmouseout="hover_off(this)" onclick="click_select(this)">
+                月ちゃん
+            </td>
+            <td id="btnYear" style="<?php echo $inactive_style; ?>;" align="center" width="24%" onmouseover="hover_on(this)" onmouseout="hover_off(this)" onclick="click_select(this)">
+                A Year Ago
+            </td>
+            <td id="chnYear" style="<?php echo $inactivechan_style; ?>;" align="center" width="10%" onmouseover="hover_on(this)" onmouseout="hover_off(this)" onclick="click_select(this)">
+                年ちゃん
+            </td>
+            <td id="btnAll" style="<?php echo $inactive_style; ?>;" align="center" width="23%" onmouseover="hover_on(this)" onmouseout="hover_off(this)" onclick="click_select(this)">
+                Of All Time
+            </td>
+            <td id="chnAll" style="<?php echo $inactivechan_style; ?>;" align="center" width="10%" onmouseover="hover_on(this)" onmouseout="hover_off(this)" onclick="click_select(this)">
+                常にちゃん
+            </td>
         </tr>
         <tr bgcolor="#000000">
             <td id="graphHole" colspan="3" align="center">
@@ -553,11 +855,35 @@ $inactive_color = "#2f0000";
                     <?php echo $ALL_BACKGROUND_IMG; ?>
                     <div id="pie_all" style="width: 700px; height: 500px; position: fixed; z-index: 999; left: 50%; transform: translateX(-50%);"></div>
                 </div>
+                <div id="graphChannelsToday" style="display: none;">
+                    <?php echo $TODAY_BACKGROUND_IMG; ?>
+                    <div id="piechan_today" style="width: 700px; height: 500px; position: fixed; z-index: 999; left: 50%; transform: translateX(-50%);"></div>
+                </div>
+                <div id="graphChannelsYesterday" style="display: none;">
+                    <?php echo $YESTERDAY_BACKGROUND_IMG; ?>
+                    <div id="piechan_yesterday" style="width: 700px; height: 500px; position: fixed; z-index: 999; left: 50%; transform: translateX(-50%);"></div>
+                </div>
+                <div id="graphChannelsWeek" style="display: none;">
+                    <?php echo $WEEK_BACKGROUND_IMG; ?>
+                    <div id="piechan_week" style="width: 700px; height: 500px; position: fixed; z-index: 999; left: 50%; transform: translateX(-50%);"></div>
+                </div>
+                <div id="graphChannelsMonth" style="display: none;">
+                    <?php echo $MONTH_BACKGROUND_IMG; ?>
+                    <div id="piechan_month" style="width: 700px; height: 500px; position: fixed; z-index: 999; left: 50%; transform: translateX(-50%);"></div>
+                </div>
+                <div id="graphChannelsYear" style="display: none;">
+                    <?php echo $YEAR_BACKGROUND_IMG; ?>
+                    <div id="piechan_year" style="width: 700px; height: 500px; position: fixed; z-index: 999; left: 50%; transform: translateX(-50%);"></div>
+                </div>
+                <div id="graphChannelsAll" style="display: none;">
+                    <?php echo $ALL_BACKGROUND_IMG; ?>
+                    <div id="piechan_all" style="width: 700px; height: 500px; position: fixed; z-index: 999; left: 50%; transform: translateX(-50%);"></div>
+                </div>
             </td>
         </tr>
         <tr bgcolor="#000000">
             <?php $time_end = microtime(true); $time_spent = $time_end - $time_start; ?>
-            <td align="right" colspan="3"><font size="-1" color="#1f1f1f"><?php echo sprintf("%9.4f", $time_spent); ?> seconds</font></td>
+            <td align="right" colspan="6"><font size="-1" color="#1f1f1f"><?php echo sprintf("%9.4f", $time_spent); ?> seconds</font></td>
         </tr>
     </table>
 </div>
