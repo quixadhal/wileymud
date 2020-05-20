@@ -65,16 +65,38 @@ function fetch_dates($db) {
     return $result;
 }
 
-function fetch_today_speakers($db) {
-    $sql = "
-        SELECT speaker, count(*)
-          FROM i3log
-         WHERE speaker <> 'URLbot'
-           AND local BETWEEN date_trunc('day',now()) AND now()
-      GROUP BY speaker
-      ORDER BY count DESC
-         LIMIT 12
-    ;";
+function fetch_stuff($db, $thing, $kind) {
+    if($kind !== 'channel') {
+        $kind = 'speaker';
+    }
+
+    $sql = "SELECT $kind, count(*) FROM i3log WHERE speaker <> 'URLbot'";
+    switch ($thing) {
+        default:
+        case 'today':
+            $sql .= " AND local BETWEEN date_trunc('day',now()) AND now()";
+            break;
+        case 'yesterday':
+            $sql .= " AND local BETWEEN date_trunc('day',now() - '1 day'::interval)";
+            $sql .= " AND date_trunc('day', now()) - '1 microsecond'::interval";
+            break;
+        case 'week':
+            $sql .= " AND local BETWEEN date_trunc('day',now() - '1 week'::interval)";
+            $sql .= " AND now()";
+            break;
+        case 'month':
+            $sql .= " AND local BETWEEN date_trunc('day',now() - '1 month'::interval)";
+            $sql .= " AND now()";
+            break;
+        case 'year':
+            $sql .= " AND local BETWEEN date_trunc('day',now() - '1 year'::interval)";
+            $sql .= " AND now()";
+            break;
+        case 'all':
+            break;
+    }
+    $sql .= " GROUP BY $kind ORDER BY count DESC LIMIT 12;";
+
     try {
         //$db->beginTransaction();
         $sth = $db->prepare($sql);
@@ -89,189 +111,6 @@ function fetch_today_speakers($db) {
         //$db->commit();
     } catch (Exception $e) {
         //$db->rollback();
-        throw $e;
-    }
-    return $result;
-}
-
-function fetch_today_channels($db) {
-    $sql = "
-        SELECT channel, count(*)
-          FROM i3log
-         WHERE speaker <> 'URLbot'
-           AND local BETWEEN date_trunc('day',now()) AND now()
-      GROUP BY channel
-      ORDER BY count DESC
-         LIMIT 12
-    ;";
-    try {
-        //$db->beginTransaction();
-        $sth = $db->prepare($sql);
-        //$sth->bindParam(':time_interval', $time_interval);
-        $sth->execute();
-        $sth->setFetchMode(PDO::FETCH_ASSOC);
-        $result = array();
-        while($row = $sth->fetch()) {
-            //$result[$row['pinkfish']] = $row;
-            $result[] = $row;
-        }
-        //$db->commit();
-    } catch (Exception $e) {
-        //$db->rollback();
-        throw $e;
-    }
-    return $result;
-}
-
-function fetch_yesterday_speakers($db) {
-    $sql = "
-        SELECT speaker, count(*)
-          FROM i3log
-         WHERE speaker <> 'URLbot'
-           AND local BETWEEN date_trunc('day',now() - '1 day'::interval)
-           AND date_trunc('day', now()) - '1 microsecond'::interval
-      GROUP BY speaker
-      ORDER BY count DESC
-         LIMIT 12
-    ;";
-    try {
-        $sth = $db->prepare($sql);
-        $sth->execute();
-        $sth->setFetchMode(PDO::FETCH_ASSOC);
-        $result = array();
-        while($row = $sth->fetch()) {
-            $result[] = $row;
-        }
-    } catch (Exception $e) {
-        throw $e;
-    }
-    return $result;
-}
-
-function fetch_yesterday_channels($db) {
-    $sql = "
-        SELECT channel, count(*)
-          FROM i3log
-         WHERE speaker <> 'URLbot'
-           AND local BETWEEN date_trunc('day',now() - '1 day'::interval)
-           AND date_trunc('day', now()) - '1 microsecond'::interval
-      GROUP BY channel
-      ORDER BY count DESC
-         LIMIT 12
-    ;";
-    try {
-        $sth = $db->prepare($sql);
-        $sth->execute();
-        $sth->setFetchMode(PDO::FETCH_ASSOC);
-        $result = array();
-        while($row = $sth->fetch()) {
-            $result[] = $row;
-        }
-    } catch (Exception $e) {
-        throw $e;
-    }
-    return $result;
-}
-
-function fetch_historical_speakers($db, $period) {
-    if( $period === NULL ) {
-        $period = '1 week';
-    }
-    $sql = "
-        SELECT speaker, count(*)
-          FROM i3log
-         WHERE speaker <> 'URLbot'
-           AND local BETWEEN date_trunc('day',now() - :period ::interval)
-           AND now()
-      GROUP BY speaker
-      ORDER BY count DESC
-         LIMIT 12
-    ;";
-    try {
-        $sth = $db->prepare($sql);
-        $sth->bindParam(':period', $period);
-        $sth->execute();
-        $sth->setFetchMode(PDO::FETCH_ASSOC);
-        $result = array();
-        while($row = $sth->fetch()) {
-            $result[] = $row;
-        }
-    } catch (Exception $e) {
-        throw $e;
-    }
-    return $result;
-}
-
-function fetch_historical_channels($db, $period) {
-    if( $period === NULL ) {
-        $period = '1 week';
-    }
-    $sql = "
-        SELECT channel, count(*)
-          FROM i3log
-         WHERE speaker <> 'URLbot'
-           AND local BETWEEN date_trunc('day',now() - :period ::interval)
-           AND now()
-      GROUP BY channel
-      ORDER BY count DESC
-         LIMIT 12
-    ;";
-    try {
-        $sth = $db->prepare($sql);
-        $sth->bindParam(':period', $period);
-        $sth->execute();
-        $sth->setFetchMode(PDO::FETCH_ASSOC);
-        $result = array();
-        while($row = $sth->fetch()) {
-            $result[] = $row;
-        }
-    } catch (Exception $e) {
-        throw $e;
-    }
-    return $result;
-}
-
-function fetch_all_speakers($db) {
-    $sql = "
-        SELECT speaker, count(*)
-          FROM i3log
-         WHERE speaker <> 'URLbot'
-      GROUP BY speaker
-      ORDER BY count DESC
-         LIMIT 12
-    ;";
-    try {
-        $sth = $db->prepare($sql);
-        $sth->execute();
-        $sth->setFetchMode(PDO::FETCH_ASSOC);
-        $result = array();
-        while($row = $sth->fetch()) {
-            $result[] = $row;
-        }
-    } catch (Exception $e) {
-        throw $e;
-    }
-    return $result;
-}
-
-function fetch_all_channels($db) {
-    $sql = "
-        SELECT channel, count(*)
-          FROM i3log
-         WHERE speaker <> 'URLbot'
-      GROUP BY channel
-      ORDER BY count DESC
-         LIMIT 12
-    ;";
-    try {
-        $sth = $db->prepare($sql);
-        $sth->execute();
-        $sth->setFetchMode(PDO::FETCH_ASSOC);
-        $result = array();
-        while($row = $sth->fetch()) {
-            $result[] = $row;
-        }
-    } catch (Exception $e) {
         throw $e;
     }
     return $result;
@@ -434,7 +273,7 @@ $inactivechan_style = "background-color: #00002f; opacity: 0.6; font-size: 60%";
 
             function drawTodaySpeakers() {
                 <?php
-                $result = fetch_today_speakers($db);
+                $result = fetch_stuff($db, 'today', 'speaker');
                 if(count($result) > 0) {
                 ?>
                     options['title'] = "Today's Jibber-Jabber (<?php echo $date_info['today'];?>)";
@@ -457,7 +296,7 @@ $inactivechan_style = "background-color: #00002f; opacity: 0.6; font-size: 60%";
 
             function drawTodayChannels() {
                 <?php
-                $result = fetch_today_channels($db);
+                $result = fetch_stuff($db, 'today', 'channel');
                 if(count($result) > 0) {
                 ?>
                     options['title'] = "Today's Jibber-Jabber (<?php echo $date_info['today'];?>)";
@@ -480,7 +319,7 @@ $inactivechan_style = "background-color: #00002f; opacity: 0.6; font-size: 60%";
 
             function drawYesterdaySpeakers() {
                 <?php
-                $result = fetch_yesterday_speakers($db);
+                $result = fetch_stuff($db, 'yesterday', 'speaker');
                 if(count($result) > 0) {
                 ?>
                     options['title'] = "Yesterday's Rubbish (<?php echo $date_info['yesterday'];?>)";
@@ -503,7 +342,7 @@ $inactivechan_style = "background-color: #00002f; opacity: 0.6; font-size: 60%";
 
             function drawYesterdayChannels() {
                 <?php
-                $result = fetch_yesterday_channels($db);
+                $result = fetch_stuff($db, 'yesterday', 'channel');
                 if(count($result) > 0) {
                 ?>
                     options['title'] = "Yesterday's Rubbish (<?php echo $date_info['yesterday'];?>)";
@@ -526,7 +365,7 @@ $inactivechan_style = "background-color: #00002f; opacity: 0.6; font-size: 60%";
 
             function drawWeekSpeakers() {
                 <?php
-                $result = fetch_historical_speakers($db, '1 week');
+                $result = fetch_stuff($db, 'week', 'speaker');
                 if(count($result) > 0) {
                 ?>
                     options['title'] = "The Week of Stupidity (<?php echo $date_info['week'] . ' to ' . $date_info['today'];?>)";
@@ -549,7 +388,7 @@ $inactivechan_style = "background-color: #00002f; opacity: 0.6; font-size: 60%";
 
             function drawWeekChannels() {
                 <?php
-                $result = fetch_historical_channels($db, '1 week');
+                $result = fetch_stuff($db, 'week', 'channel');
                 if(count($result) > 0) {
                 ?>
                     options['title'] = "The Week of Stupidity (<?php echo $date_info['week'] . ' to ' . $date_info['today'];?>)";
@@ -572,7 +411,7 @@ $inactivechan_style = "background-color: #00002f; opacity: 0.6; font-size: 60%";
 
             function drawMonthSpeakers() {
                 <?php
-                $result = fetch_historical_speakers($db, '1 month');
+                $result = fetch_stuff($db, 'month', 'speaker');
                 if(count($result) > 0) {
                 ?>
                     options['title'] = "A Whole Month of Nonsense? (<?php echo $date_info['month'] . ' to ' . $date_info['today'];?>)";
@@ -595,7 +434,7 @@ $inactivechan_style = "background-color: #00002f; opacity: 0.6; font-size: 60%";
 
             function drawMonthChannels() {
                 <?php
-                $result = fetch_historical_channels($db, '1 month');
+                $result = fetch_stuff($db, 'month', 'channel');
                 if(count($result) > 0) {
                 ?>
                     options['title'] = "A Whole Month of Nonsense? (<?php echo $date_info['month'] . ' to ' . $date_info['today'];?>)";
@@ -618,7 +457,7 @@ $inactivechan_style = "background-color: #00002f; opacity: 0.6; font-size: 60%";
 
             function drawYearSpeakers() {
                 <?php
-                $result = fetch_historical_speakers($db, '1 year');
+                $result = fetch_stuff($db, 'year', 'speaker');
                 if(count($result) > 0) {
                 ?>
                     options['title'] = "What a Horrible Year it's Been... (<?php echo $date_info['year'] . ' to ' . $date_info['today'];?>)";
@@ -641,7 +480,7 @@ $inactivechan_style = "background-color: #00002f; opacity: 0.6; font-size: 60%";
 
             function drawYearChannels() {
                 <?php
-                $result = fetch_historical_channels($db, '1 year');
+                $result = fetch_stuff($db, 'year', 'channel');
                 if(count($result) > 0) {
                 ?>
                     options['title'] = "What a Horrible Year it's Been... (<?php echo $date_info['year'] . ' to ' . $date_info['today'];?>)";
@@ -664,7 +503,7 @@ $inactivechan_style = "background-color: #00002f; opacity: 0.6; font-size: 60%";
 
             function drawAllSpeakers() {
                 <?php
-                $result = fetch_all_speakers($db);
+                $result = fetch_stuff($db, 'all', 'speaker');
                 if(count($result) > 0) {
                 ?>
                     options['title'] = "What Have You DONE??? (<?php echo $date_info['all'] . ' to ' . $date_info['today'];?>)";
@@ -687,7 +526,7 @@ $inactivechan_style = "background-color: #00002f; opacity: 0.6; font-size: 60%";
 
             function drawAllChannels() {
                 <?php
-                $result = fetch_all_channels($db);
+                $result = fetch_stuff($db, 'all', 'channel');
                 if(count($result) > 0) {
                 ?>
                     options['title'] = "What Have You DONE??? (<?php echo $date_info['all'] . ' to ' . $date_info['today'];?>)";
