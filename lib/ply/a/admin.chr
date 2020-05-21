@@ -8,10 +8,10 @@ Description
 A new admin drifts around the world and tries to make sense
 of everything.
 ~
-LastSite           unknown~
-LastLogin          1541716522
+LastSite           adork@pool-108-16-121-113.phlapa.fios.verizon.ne~
+LastLogin          1582164773
 Birth              803755990
-Played             4437848
+Played             4437958
 Sex                1
 Race               2
 Class              63
@@ -31,11 +31,11 @@ PoofIn             ~
 PoofOut            ~
 AbilityScores      3 0 3 3 3 3
 AbilityPad         0 0 0 0
-HpManaMove         0 1 102 0 324 0
+HpManaMove         1 1 102 0 311 0
 AC                 100
 ToHitDamage        0 0
 SaveApply          0 0 0 0 0
-Conditions         -1 0 6 0 0 0
+Conditions         -1 0 5 0 0 0
 PointsPad1         0 0 0
 PointsPad2         0 0 0 0
 PointsPad3         0 0 0
@@ -43,7 +43,7 @@ ShortSavePad       0 0 0 0
 SavePad            0 0 0 0
 Pracs              80
 SkillsToLearn      0
-NamedSkill         1 1 1 armour~
+NamedSkill         1 1 1 armor~
 NamedSkill         2 1 1 teleport~
 NamedSkill         3 1 1 bless~
 NamedSkill         4 1 1 blindness~
@@ -187,9 +187,9 @@ NamedSkill         182 1 1 disarm trap~
 NamedSkill         183 1 1 disarm~
 NamedSkill         184 1 1 shield bash~
 NamedSkill         185 17 1 riding~
-ActFlags           32 1
-Affect             0 0 0 0 0 0 0
-Affect             1 0 0 0 0 0 0
+ActFlags           32 81
+Affect             0 3 10 -1 24 0 0
+Affect             1 3 10 1 18 0 0
 Affect             2 0 0 0 0 0 0
 Affect             3 0 0 0 0 0 0
 Affect             4 0 0 0 0 0 0
@@ -215,4 +215,5 @@ Affect             23 0 0 0 0 0 0
 Affect             24 0 0 0 0 0 0
 i3perm       1
 i3flags      256
+i3listen     wiley
 End

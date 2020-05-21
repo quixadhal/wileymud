@@ -39,7 +39,7 @@ $HTML::FromANSI::Options{style} = "line-height: 1.0; letter-spacing: 0; font-siz
 
 my $filename = "/home/wiley/public_html/mudlist.json";
 my $imagedir = "/home/wiley/public_html/gfx/mud";
-my $thread_count = 30;
+my $thread_count = 60;
 my @global_tmp = ();
 my @result_set = ();
 our $default_ttype = "ansi";
@@ -65,7 +65,7 @@ sub subopt_callback {
         $telcmd = pack("C4 A* C2", TELNET_IAC, TELNET_SB, TELOPT_TTYPE, 0,
                        $default_ttype, TELNET_IAC, TELNET_SE);
         $biteme->put(String => $telcmd, Telnetmode => 0);
-        printf STDERR "                Replying to TTYPE with %s\n", $default_ttype;
+        #printf STDERR "                Replying to TTYPE with %s\n", $default_ttype;
     }
 
     1;
@@ -95,6 +95,13 @@ sub fetch_login_screen {
         $telnet->timeout(30);
         $telnet->errmode("return");
         push @tlines, $tline while( $tline = $telnet->getline());
+        #my $first_line = $telnet->getline( Timeout => 10 );
+        #if( defined $first_line ) {
+        #    my @other_lines = $telnet->getlines( Timeout => 20, All => 0 );
+        #    @tlines = ($first_line, @other_lines);
+        #}
+        #@tlines= $telnet->getlines( Timeout => 20, All => 0 );
+        #chomp foreach (@tlines);
         $telnet->close();
         $telnet->timeout(30);
         $telnet->errmode("return");

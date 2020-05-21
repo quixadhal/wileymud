@@ -21,8 +21,10 @@
 # 
 # m h  dom mon dow   command
 1 0,3,6,9,12,15,18,21 * * * /home/wiley/bin/mkmudlist.pl >/dev/null 2>&1 &
-5 0,1,4,7,10,13,16,19,22 * * * /home/wiley/bin/mklogpages.pl --overwrite --debug --start -3 --live --json --no-pause >/dev/null 2>&1 &
-0,15,30,45 * * * * /home/wiley/bin/mklogpages.pl --no-pages --no-speakers --no-update --debug --live --no-json --no-pause >/dev/null 2>&1 &
+#5 0,1,4,7,10,13,16,19,22 * * * /home/wiley/bin/mklogpages.pl --overwrite --debug --start -3 --live --json --no-pause >/dev/null 2>&1 &
+5 0,1,4,7,10,13,16,19,22 * * * /home/wiley/bin/mklogpages.pl --overwrite --start -3 --json --censor --no-pause >/dev/null 2>&1 &
+#0,15,30,45 * * * * /home/wiley/bin/mklogpages.pl --no-pages --no-speakers --no-update --debug --live --no-json --no-pause >/dev/null 2>&1 &
+0,15,30,45 * * * * /home/wiley/bin/mklogpages.pl --no-pages --no-speakers --no-update --censor --no-json --no-pause >/dev/null 2>&1 &
 5 2 * * * /home/wiley/bin/untiny sql --mark >/dev/null 2>&1 &
 10 2 * * * (cd /home/wiley/public_html && PGPASSWORD=tardis69 /usr/bin/pg_dump --clean --if-exists --no-owner i3log | /usr/bin/xz -9ceq -T0 >i3log.sql.xz) >/dev/null 2>&1 &
 15 2 * * * (cd /home/wiley && /usr/bin/tar -Jcf backups/wileymud_files.tar.xz bin src lib etc) >/dev/null 2>&1 &

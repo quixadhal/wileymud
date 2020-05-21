@@ -1,0 +1,184 @@
+<html>
+    <head>
+        <script>
+            var volume_setting      = 4;        // 1 to 100
+            var player_height       = '720';    // You should probably keep these
+            var player_width        = '1280';   // in a 16:9 ratio
+            var player_quality      = 'hd720';  // And this should probably match
+            var starting_choices = [            // Some nice countdown timers or other intros
+                'r1l1cedmOaE',                  // artsy numbers
+                'uo9dAIQR3g8',                  // epic sphere
+                '3UuMspLxMGM',                  // jeapordy circle
+                'UwNtY8kP0Sw',                  // rainbow circle
+            ];
+            var playlist_list = [               // This is a list of playlists, as you like
+                //'TfXSBBIzRyg',                                  // girls und panzer
+                //'H-2yGnwgiBY',                                  // haifuri
+                'RD_abj2xbf2mA',                                // I J I
+                'RD_K3s_oN0wwA',                                // TrySail haifuri
+                'RDhroQj71AO7s',                                // syncopation
+                'RDHkiJwtU8zMQ',                                // otomegokoro
+                'RDGMEMXdNDEg4wQ96My0DhjI-cIgVMaMWhcxBOq_M',    // buono! 4K 2017
+                'RDGMEMXdNDEg4wQ96My0DhjI-cIgVMxJwP2goQDJM',    // pastel wind
+                'PL1O9Dza23T3SIGkGqJIpdY8JEoAJlWLQt',           // X4 grayduster
+            ];
+            var playlist_list_index = -1;       // This is our list of playlists index
+            var starting_video = starting_choices[Math.floor(Math.random()*starting_choices.length)];
+
+            /*
+             * You probably shouldn't mess with stuff below this point.
+             * Just sayin'...
+             */
+
+            // Here we do setup boilerplate for YouTube's API
+            var tag = document.createElement( 'script' );
+            tag.src = "https://www.youtube.com/player_api";
+            var firstScriptTag = document.getElementsByTagName( 'script' )[0];
+            firstScriptTag.parentNode.insertBefore( tag, firstScriptTag );
+
+            var player;                     // A reference to the player object
+            var currentIndex;               // This is the index within the playlist
+            var currentPlaylist;            // This is the list of videos in the playlist
+            var currentDuration;            // The duration of the current video
+            var initial_video = 1;          // We start with a single video, and move on
+
+            // Convert the number of seconds to HMS format
+            function secsToHMS(point) {
+                var days = Math.floor(point/86400);
+                var hours = Math.floor(point/3600);
+                var minutes = Math.floor(point/60);
+                var seconds = Math.floor(point) % 60;
+                var result = ''
+
+                result = ((days > 0) ? days + 'd ' : '') +
+                         ((hours > 0) ? ((hours <= 9) ? '0' : '') + hours + ':' : '') + 
+                         ((minutes > 0) ? ((minutes <= 9) ? '0' : '') + minutes + ':' : '') +
+                         ((seconds <= 9) ? '0' : '') + seconds;
+                return result;
+            }
+
+            // A simple function to show or hide a div section
+            function toggleDiv(divID) {
+                if(document.getElementById(divID).style.display == 'none') {
+                    document.getElementById(divID).style.display = 'block';
+                } else {
+                    document.getElementById(divID).style.display = 'none';
+                }
+            }
+
+            // Cheesy way to display status info without popups or other poo
+            function statusReport(state, ci, cp, pli) {
+                document.getElementById("message_row").getElementsByTagName("td")[0].innerHTML = state;
+                document.getElementById("message_row").getElementsByTagName("td")[1].innerHTML = (cp ? "Current Playlist" : "Countdown Video");
+                document.getElementById("message_row").getElementsByTagName("td")[2].innerHTML = (cp ? ("" + (ci + 1) + " of " + cp.length) : "&nbsp;");
+                document.getElementById("message_row").getElementsByTagName("td")[3].innerHTML = (cp ? "Playlist Index" : "Playlists Queued");
+                document.getElementById("message_row").getElementsByTagName("td")[4].innerHTML = (cp ? ("" + (pli + 1) + " of " + playlist_list.length) : playlist_list.length);
+            }
+
+            // Callback for the player API being setup
+            function onYouTubePlayerAPIReady() {
+                player = new YT.Player( 'ytplayer', {
+                    height      : player_height,
+                    width       : player_width,
+                    videoId     : starting_video,
+                    playerVars: {
+                        'autoplay'      : 1,
+                        'controls'      : 0,
+                        'start_radio'   : 1
+                    },
+                    events: {
+                        'onReady'       : onPlayerReady,
+                        'onStateChange' : onPlayerStateChange
+                    }
+                });
+            }
+
+            // Callback for the player being actually ready to play stuff
+            function onPlayerReady(event) {
+                toggleDiv('background_image');
+                toggleDiv('ytplayer');
+                toggleDiv('status_report');
+                event.target.setVolume( volume_setting );
+                event.target.setPlaybackQuality({ suggestedQuality: player_quality });
+                event.target.playVideo();
+            }
+
+            // Callback for the player changing what it's doing
+            function onPlayerStateChange( event ) {
+                if( event.data == YT.PlayerState.PLAYING ) {
+                    // This is called once a video begins playing
+                    currentIndex = event.target.getPlaylistIndex();
+                    currentPlaylist = event.target.getPlaylist();
+                    currentDuration = event.target.getDuration();
+
+                    statusReport('PLAYING (' + secsToHMS(currentDuration) + ')', currentIndex, currentPlaylist, playlist_list_index);
+                } else if( event.data == YT.PlayerState.ENDED ) {
+                    // This is called when a video reaches the end
+                    if( initial_video == 1 ) {
+                        // In this case, it's our first "countdown" video
+                        // which has to be treated differently, as there is no playlist yet
+                        // So we cue up the first playlist entry from our list of lists
+                        initial_video = 0;
+                        playlist_list_index = 0;
+                        event.target.cuePlaylist({
+                            listType: 'playlist',
+                            list: playlist_list[playlist_list_index]
+                        });
+                        statusReport('FIRST VIDEO ENDED', currentIndex, currentPlaylist, playlist_list_index);
+                    } else {
+                        // Here, we are inside a playlist
+                        if( currentIndex == currentPlaylist.length - 1 ) {
+                            // And in this case, we have reached the end of the last
+                            // video in a playlist
+                            playlist_list_index++;
+                            if( playlist_list_index < playlist_list.length ) {
+                                // But we still have more playlists, so let's do the next one
+                                event.target.cuePlaylist({
+                                    listType: 'playlist',
+                                    list: playlist_list[playlist_list_index]
+                                });
+                                statusReport('PLAYLIST END', currentIndex, currentPlaylist, playlist_list_index);
+                            } else {
+                                // And we also hit the end of the playlist list, so we're done
+                                statusReport('END OF PLAYLISTS', currentIndex, currentPlaylist, playlist_list_index);
+                                toggleDiv('ytplayer');
+                                toggleDiv('status_report');
+                                toggleDiv('background_image');
+                            }
+                        } else {
+                            // This is just the end of a video within the playlist
+                            // Nothing to do here, as autoplay is enabled
+                            statusReport('VIDEO ENDED', currentIndex, currentPlaylist, playlist_list_index);
+                        }
+                    }
+                } else if( event.data == YT.PlayerState.PAUSED ) {
+                    // On the odd chance a video is paused, start it playing again.
+                    statusReport('VIDEO PAUSED', currentIndex, currentPlaylist, playlist_list_index);
+                    event.target.playVideo();
+                } else if( event.data == YT.PlayerState.CUED ) {
+                    // This gets called after a video or playlist has been queued up
+                    // The only thing to do is start it playing
+                    statusReport('VIDEO CUED', currentIndex, currentPlaylist, playlist_list_index);
+                    event.target.playVideo();
+                }
+            }
+        </script>
+    </head>
+    <body bgcolor="black" border="0" text="white">
+        <div id="background_image" style="display: block;">
+            <img src="https://i.ytimg.com/vi/IAmwk8AS-l0/maxresdefault.jpg" border="0" />
+        </div>
+        <div id="ytplayer" style="display: none;"></div>
+        <div id="status_report" style="display: none;">
+            <table>
+                <tr id="message_row">
+                    <td width="250">STATE</td>
+                    <td width="250">&nbsp;</td>
+                    <td width="250">&nbsp;</td>
+                    <td width="250">&nbsp;</td>
+                    <td width="250">&nbsp;</td>
+                </tr>
+            </table>
+        </div>
+    </body>
+</html>

@@ -7,9 +7,9 @@ Title              the Human Swordpupil~
 Description
 ~
 LastSite           adork@184-089-059-247.res.spectrum.com~
-LastLogin          1578961844
+LastLogin          1581667218
 Birth              1512658665
-Played             25677
+Played             25959
 Sex                2
 Race               1
 Class              4
@@ -24,11 +24,11 @@ PoofIn             ~
 PoofOut            ~
 AbilityScores      17 0 13 16 8 11
 AbilityPad         0 0 0 0
-HpManaMove         -4 20 101 0 165 0
+HpManaMove         8 20 101 0 168 0
 AC                 100
 ToHitDamage        0 0
 SaveApply          0 0 0 0 0
-Conditions         0 0 0 0 0 0
+Conditions         0 19 19 0 0 0
 PointsPad1         0 0 0
 PointsPad2         0 0 0 0
 PointsPad3         0 0 0

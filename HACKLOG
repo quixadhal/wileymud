@@ -408,3 +408,22 @@ cpan
 apt install mercurial
 
 apt install python3-pep8 python3-flake8 python3-autopep8
+
+cpan
+    install Try::Tiny::SmartCatch
+
+  490  apt install kodi-repository-kodi
+  493  apt install kodi kodi-addons-dev libkodiplatform-dev
+
+cpan
+    install Proc::ProcessTable
+    install forks
+
+cpan
+    install Config::Tiny
+
+apt install units
+
+cpan
+    install Imager::QRCode
+
