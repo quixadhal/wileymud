@@ -4,6 +4,7 @@ $time_start = microtime(true);
 global $PG_DB;
 global $PG_USERNAME;
 global $PG_PASSWORD;
+$DO_ALL_TIME    = 0;
 
 $MUDLIST_FILE   = "/home/wiley/public_html/mudlist.json";
 $PG_DB          = "i3log";
@@ -46,12 +47,12 @@ function db_connect() {
 
 function fetch_dates($db) {
     $sql = "
-        SELECT date('now') AS today,
-               date(now() - '1 day'::interval) as yesterday,
-               date(now() - '1 week'::interval) as week,
-               date(now() - '1 month'::interval) as month,
-               date(now() - '1 year'::interval) as year,
-               min(date(local)) as all
+        SELECT date(now()) AS today,
+               date(now() - '1 day'::interval) AS yesterday,
+               date(now() - '1 week'::interval) AS week,
+               date(now() - '1 month'::interval) AS month,
+               date(now() - '1 year'::interval) AS year,
+               date(min(local)) AS all
           FROM i3log
     ;";
     try {
@@ -185,6 +186,21 @@ $inactivechan_style = "background-color: #00002f; opacity: 0.6; font-size: 60%";
         <script type="text/javascript">
             var current_button;
             var current_graph;
+            var en = [];
+            var jp = [];
+
+            en['Today']     = 'Today-chan';
+            jp['Today']     = '今日ちゃん';
+            en['Yesterday'] = 'Yesterday-chan';
+            jp['Yesterday'] = '昨日ちゃん';
+            en['Week']      = 'Week-chan';
+            jp['Week']      = '週間ちゃん';
+            en['Month']     = 'Month-chan';
+            jp['Month']     = '月ちゃん';
+            en['Year']      = 'Year-chan';
+            jp['Year']      = '年ちゃん';
+            en['All']       = 'All Time-chan';
+            jp['All']       = '常にちゃん';
 
             function get_today() {
                 current_button = document.getElementById("btnToday");
@@ -194,26 +210,31 @@ $inactivechan_style = "background-color: #00002f; opacity: 0.6; font-size: 60%";
             function hover_on(x) {
                 if(current_button != x) {
                     var s = x.id.substr(0,3);
+                    var t = x.id.substr(3);
                     if(s == "btn") {
                         x.style = "<?php echo $hover_style; ?>";
                     } else {
                         x.style = "<?php echo $hoverchan_style; ?>";
+                        x.innerHTML = en[t];
                     }
                 }
             }
             function hover_off(x) {
                 if(current_button != x) {
                     var s = x.id.substr(0,3);
+                    var t = x.id.substr(3);
                     if(s == "btn") {
                         x.style = "<?php echo $inactive_style; ?>";
                     } else {
                         x.style = "<?php echo $inactivechan_style; ?>";
+                        x.innerHTML = jp[t];
                     }
                 }
             }
             function click_select(x) {
                 if(current_button != x) {
                     var s = x.id.substr(0,3);
+                    var t = x.id.substr(3);
                     var g;
                     if(s == "btn") {
                         x.style = "<?php echo $active_style; ?>";
@@ -221,12 +242,15 @@ $inactivechan_style = "background-color: #00002f; opacity: 0.6; font-size: 60%";
                     } else {
                         x.style = "<?php echo $activechan_style; ?>";
                         g = document.getElementById("graphChannels" + x.id.substr(3));
+                        x.innerHTML = jp[t];
                     }
                     s = current_button.id.substr(0,3);
+                    t = current_button.id.substr(3);
                     if(s == "btn") {
                         current_button.style = "<?php echo $inactive_style; ?>";
                     } else {
                         current_button.style = "<?php echo $inactivechan_style; ?>";
+                        current_button.innerHTML = jp[t];
                     }
                     current_button = x;
                     current_graph.style.display = "none";
@@ -502,6 +526,7 @@ $inactivechan_style = "background-color: #00002f; opacity: 0.6; font-size: 60%";
             }
 
             function drawAllSpeakers() {
+<?php if( $DO_ALL_TIME ) { ?>
                 <?php
                 $result = fetch_stuff($db, 'all', 'speaker');
                 if(count($result) > 0) {
@@ -522,9 +547,11 @@ $inactivechan_style = "background-color: #00002f; opacity: 0.6; font-size: 60%";
                 <?php } else { ?>
                     document.getElementById('pie_all').innerHTML='<?php echo $BACKGROUND_IMG; echo $OVERLAY_IMG;?>';
                 <?php } ?>
+<?php } ?>
             }
 
             function drawAllChannels() {
+<?php if( $DO_ALL_TIME ) { ?>
                 <?php
                 $result = fetch_stuff($db, 'all', 'channel');
                 if(count($result) > 0) {
@@ -545,6 +572,7 @@ $inactivechan_style = "background-color: #00002f; opacity: 0.6; font-size: 60%";
                 <?php } else { ?>
                     document.getElementById('piechan_all').innerHTML='<?php echo $BACKGROUND_IMG; echo $OVERLAY_IMG;?>';
                 <?php } ?>
+<?php } ?>
             }
 
             function drawTheCharts() {
@@ -661,12 +689,21 @@ $inactivechan_style = "background-color: #00002f; opacity: 0.6; font-size: 60%";
             <td id="chnYear" style="<?php echo $inactivechan_style; ?>;" align="center" width="10%" onmouseover="hover_on(this)" onmouseout="hover_off(this)" onclick="click_select(this)">
                 年ちゃん
             </td>
+<?php if ($DO_ALL_TIME) { ?>
             <td id="btnAll" style="<?php echo $inactive_style; ?>;" align="center" width="23%" onmouseover="hover_on(this)" onmouseout="hover_off(this)" onclick="click_select(this)">
                 Of All Time
             </td>
             <td id="chnAll" style="<?php echo $inactivechan_style; ?>;" align="center" width="10%" onmouseover="hover_on(this)" onmouseout="hover_off(this)" onclick="click_select(this)">
                 常にちゃん
             </td>
+<?php } else { ?>
+            <td id="btnAll" style="<?php echo $inactive_style; ?>; text-decoration: line-through; color: black;" align="center" width="23%">
+                Of All Time
+            </td>
+            <td id="chnAll" style="<?php echo $inactivechan_style; ?>; text-decoration: line-through; color: black;" align="center" width="10%">
+                常にちゃん
+            </td>
+<?php } ?>
         </tr>
         <tr bgcolor="#000000">
             <td id="graphHole" colspan="3" align="center">
