@@ -127,10 +127,8 @@ if( json_last_error() != JSON_ERROR_NONE ) {
 $WILEY_BUILD_NUMBER     = $mudlist["version"]["build"];
 $WILEY_BUILD_DATE       = $mudlist["version"]["date"];
 $WILEY_TIME             = $mudlist["time"];
-$BACKGROUND             = random_image($BACKGROUND_DIR);
 $OVERLAY_ICON           = "$URL_HOME/gfx/NA.png";
 // contain leaves space, cover clips edges.
-$BACKGROUND_IMG         = "<img width=\"700\" height=\"500\" style=\"position: fixed; z-index: 998; left: 50%; transform: translateX(-50%); object-fit: cover;\" src=\"$URL_HOME/gfx/wallpaper/$BACKGROUND\" />";
 $OVERLAY_IMG            = "<img width=\"700\" height=\"500\" style=\"position: fixed; z-index: 999; left: 50%; transform: translateX(-50%); object-fit: contain; opacity: 0.5;\" src=\"$OVERLAY_ICON\" />";
 
 $TODAY_BACKGROUND           = random_image($BACKGROUND_DIR);
@@ -314,7 +312,7 @@ $inactivechan_style = "background-color: #00002f; opacity: 0.6; font-size: 60%";
                     chart.draw(data, options);
                     document.getElementById('graphToday').style.display='none';
                 <?php } else { ?>
-                    document.getElementById('pie_today').innerHTML='<?php echo $BACKGROUND_IMG; echo $OVERLAY_IMG;?>';
+                    document.getElementById('pie_today').innerHTML='<?php echo $OVERLAY_IMG;?>';
                 <?php } ?>
             }
 
@@ -337,7 +335,7 @@ $inactivechan_style = "background-color: #00002f; opacity: 0.6; font-size: 60%";
                     chart.draw(data, options);
                     document.getElementById('graphChannelsToday').style.display='none';
                 <?php } else { ?>
-                    document.getElementById('piechan_today').innerHTML='<?php echo $BACKGROUND_IMG; echo $OVERLAY_IMG;?>';
+                    document.getElementById('piechan_today').innerHTML='<?php echo $OVERLAY_IMG;?>';
                 <?php } ?>
             }
 
@@ -360,7 +358,7 @@ $inactivechan_style = "background-color: #00002f; opacity: 0.6; font-size: 60%";
                     chart.draw(data, options);
                     document.getElementById('graphYesterday').style.display='none';
                 <?php } else { ?>
-                    document.getElementById('pie_yesterday').innerHTML='<?php echo $BACKGROUND_IMG; echo $OVERLAY_IMG;?>';
+                    document.getElementById('pie_yesterday').innerHTML='<?php echo $OVERLAY_IMG;?>';
                 <?php } ?>
             }
 
@@ -383,7 +381,7 @@ $inactivechan_style = "background-color: #00002f; opacity: 0.6; font-size: 60%";
                     chart.draw(data, options);
                     document.getElementById('graphChannelsYesterday').style.display='none';
                 <?php } else { ?>
-                    document.getElementById('piechan_yesterday').innerHTML='<?php echo $BACKGROUND_IMG; echo $OVERLAY_IMG;?>';
+                    document.getElementById('piechan_yesterday').innerHTML='<?php echo $OVERLAY_IMG;?>';
                 <?php } ?>
             }
 
@@ -406,7 +404,7 @@ $inactivechan_style = "background-color: #00002f; opacity: 0.6; font-size: 60%";
                     chart.draw(data, options);
                     document.getElementById('graphWeek').style.display='none';
                 <?php } else { ?>
-                    document.getElementById('pie_week').innerHTML='<?php echo $BACKGROUND_IMG; echo $OVERLAY_IMG;?>';
+                    document.getElementById('pie_week').innerHTML='<?php echo $OVERLAY_IMG;?>';
                 <?php } ?>
             }
 
@@ -429,7 +427,7 @@ $inactivechan_style = "background-color: #00002f; opacity: 0.6; font-size: 60%";
                     chart.draw(data, options);
                     document.getElementById('graphChannelsWeek').style.display='none';
                 <?php } else { ?>
-                    document.getElementById('piechan_week').innerHTML='<?php echo $BACKGROUND_IMG; echo $OVERLAY_IMG;?>';
+                    document.getElementById('piechan_week').innerHTML='<?php echo $OVERLAY_IMG;?>';
                 <?php } ?>
             }
 
@@ -452,7 +450,7 @@ $inactivechan_style = "background-color: #00002f; opacity: 0.6; font-size: 60%";
                     chart.draw(data, options);
                     document.getElementById('graphMonth').style.display='none';
                 <?php } else { ?>
-                    document.getElementById('pie_month').innerHTML='<?php echo $BACKGROUND_IMG; echo $OVERLAY_IMG;?>';
+                    document.getElementById('pie_month').innerHTML='<?php echo $OVERLAY_IMG;?>';
                 <?php } ?>
             }
 
@@ -475,7 +473,7 @@ $inactivechan_style = "background-color: #00002f; opacity: 0.6; font-size: 60%";
                     chart.draw(data, options);
                     document.getElementById('graphChannelsMonth').style.display='none';
                 <?php } else { ?>
-                    document.getElementById('piechan_month').innerHTML='<?php echo $BACKGROUND_IMG; echo $OVERLAY_IMG;?>';
+                    document.getElementById('piechan_month').innerHTML='<?php echo $OVERLAY_IMG;?>';
                 <?php } ?>
             }
 
@@ -498,7 +496,7 @@ $inactivechan_style = "background-color: #00002f; opacity: 0.6; font-size: 60%";
                     chart.draw(data, options);
                     document.getElementById('graphYear').style.display='none';
                 <?php } else { ?>
-                    document.getElementById('pie_year').innerHTML='<?php echo $BACKGROUND_IMG; echo $OVERLAY_IMG;?>';
+                    document.getElementById('pie_year').innerHTML='<?php echo $OVERLAY_IMG;?>';
                 <?php } ?>
             }
 
@@ -521,7 +519,7 @@ $inactivechan_style = "background-color: #00002f; opacity: 0.6; font-size: 60%";
                     chart.draw(data, options);
                     document.getElementById('graphChannelsYear').style.display='none';
                 <?php } else { ?>
-                    document.getElementById('piechan_year').innerHTML='<?php echo $BACKGROUND_IMG; echo $OVERLAY_IMG;?>';
+                    document.getElementById('piechan_year').innerHTML='<?php echo $OVERLAY_IMG;?>';
                 <?php } ?>
             }
 
@@ -545,8 +543,10 @@ $inactivechan_style = "background-color: #00002f; opacity: 0.6; font-size: 60%";
                     chart.draw(data, options);
                     document.getElementById('graphAll').style.display='none';
                 <?php } else { ?>
-                    document.getElementById('pie_all').innerHTML='<?php echo $BACKGROUND_IMG; echo $OVERLAY_IMG;?>';
+                    document.getElementById('pie_all').innerHTML='<?php echo $OVERLAY_IMG;?>';
                 <?php } ?>
+<?php } else { ?>
+                    document.getElementById('pie_all').innerHTML='<?php echo $OVERLAY_IMG;?>';
 <?php } ?>
             }
 
@@ -570,8 +570,10 @@ $inactivechan_style = "background-color: #00002f; opacity: 0.6; font-size: 60%";
                     chart.draw(data, options);
                     document.getElementById('graphChannelsAll').style.display='none';
                 <?php } else { ?>
-                    document.getElementById('piechan_all').innerHTML='<?php echo $BACKGROUND_IMG; echo $OVERLAY_IMG;?>';
+                    document.getElementById('piechan_all').innerHTML='<?php echo $OVERLAY_IMG;?>';
                 <?php } ?>
+<?php } else { ?>
+                    document.getElementById('piechan_all').innerHTML='<?php echo $OVERLAY_IMG;?>';
 <?php } ?>
             }
 
@@ -697,10 +699,10 @@ $inactivechan_style = "background-color: #00002f; opacity: 0.6; font-size: 60%";
                 常にちゃん
             </td>
 <?php } else { ?>
-            <td id="btnAll" style="<?php echo $inactive_style; ?>; text-decoration: line-through; color: black;" align="center" width="23%">
+            <td id="btnAll" style="<?php echo $inactive_style; ?>; text-decoration: line-through; color: #303030;" align="center" width="23%">
                 Of All Time
             </td>
-            <td id="chnAll" style="<?php echo $inactivechan_style; ?>; text-decoration: line-through; color: black;" align="center" width="10%">
+            <td id="chnAll" style="<?php echo $inactivechan_style; ?>; text-decoration: line-through; color: #303030;" align="center" width="10%">
                 常にちゃん
             </td>
 <?php } ?>
