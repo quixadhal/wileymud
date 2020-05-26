@@ -1,10 +1,21 @@
 <?php
 $time_start = microtime(true);
+global $fp;
+global $DEBUG;
+global $FRESH;
+global $CACHE;
+$DEBUG          = 0;
+$DO_ALL_TIME    = 1;
 
-global $PG_DB;
-global $PG_USERNAME;
-global $PG_PASSWORD;
-$DO_ALL_TIME    = 0;
+if( $DEBUG ) {
+    $DEBUG_LOG = "/home/wiley/public_html/pie/debug.log";
+
+    if( file_exists($DEBUG_LOG) ) {
+        chmod($DEBUG_LOG, 0664);
+    }
+    $fp = fopen($DEBUG_LOG, "w");
+    fprintf($fp, "BEGIN ----------\n");
+}
 
 $MUDLIST_FILE   = "/home/wiley/public_html/mudlist.json";
 $PG_DB          = "i3log";
@@ -12,8 +23,30 @@ $PG_USERNAME    = "wiley";
 $PG_PASSWORD    = "tardis69";
 $URL_HOME       = "http://wileymud.themud.org/~wiley";
 $BACKGROUND_DIR = "/home/wiley/public_html/gfx/wallpaper/";
+$PIE_DIR        = "/home/wiley/public_html/pie";
+
+$FRESH['dates']     = 67;
+$FRESH['quotes']    = 67;
+$FRESH['today']     = 67;
+$FRESH['yesterday'] = 121;
+$FRESH['week']      = 303;
+$FRESH['month']     = 619;
+$FRESH['year']      = 1201;
+$FRESH['all']       = 3605;
+$CACHE['dates']     = "$PIE_DIR/dates.json";
+$CACHE['quotes']    = "$PIE_DIR/quotes.json";
+$CACHE['today']     = "$PIE_DIR/today.json";
+$CACHE['yesterday'] = "$PIE_DIR/yesterday.json";
+$CACHE['week']      = "$PIE_DIR/week.json";
+$CACHE['month']     = "$PIE_DIR/month.json";
+$CACHE['year']      = "$PIE_DIR/year.json";
+$CACHE['all']       = "$PIE_DIR/all.json";
 
 function random_image($dir) {
+    global $fp;
+    global $DEBUG;
+
+    if( $DEBUG ) $local_start = microtime(true);
     $old_dir = getcwd();
     chdir($dir);
 
@@ -23,14 +56,18 @@ function random_image($dir) {
     $pick = array_rand($file_list);
 
     chdir($old_dir);
+    if( $DEBUG ) {
+        $local_end = microtime(true); $local_spent = $local_end - $local_start;
+        fprintf($fp, "random_image(): %9.4f\n", $local_spent);
+    }
     return $file_list[$pick];
 }
 
-function db_connect() {
-    global $PG_DB;
-    global $PG_USERNAME;
-    global $PG_PASSWORD;
+function db_connect($PG_DB, $PG_USERNAME, $PG_PASSWORD) {
+    global $fp;
+    global $DEBUG;
 
+    if( $DEBUG ) $local_start = microtime(true);
     $db = null;
     try {
         //$db = new PDO( "pgsql:host=localhost;port=5432;dbname=$PG_DB;user=$PG_USERNAME;password=$PG_PASSWORD", null, null, array(
@@ -42,10 +79,63 @@ function db_connect() {
     } catch(PDOException $e) {
         echo $e->getMessage();
     }
+    if( $DEBUG ) {
+        $local_end = microtime(true); $local_spent = $local_end - $local_start;
+        fprintf($fp, "db_connect(): %9.4f\n", $local_spent);
+    }
     return $db;
 }
 
+function check_cache($thing, $cache, $freshness) {
+    global $fp;
+    global $DEBUG;
+
+    if( $DEBUG ) $local_start = microtime(true);
+
+    if( file_exists($cache) ) {
+        $stats = stat($cache);
+        $cache_age = time() - $stats['mtime'];
+        if( $DEBUG ) {
+            fprintf($fp, "Cache(%s) is %d seconds old, threshold is %d\n", $thing, $cache_age, $freshness);
+        }
+        if($cache_age < $freshness) {
+            $json_data = file_get_contents($cache);
+            $result = json_decode($json_data, 1);
+            if( $DEBUG ) {
+                $local_end = microtime(true); $local_spent = $local_end - $local_start;
+                fprintf($fp, "    check_cache(%s): %9.4f [CACHED]\n", $thing, $local_spent);
+            }
+            return $result;
+        }
+    }
+    if( $DEBUG ) {
+        fprintf($fp, "    check_cache(%s) is not valid.\n", $thing);
+    }
+    return null;
+}
+
+function write_cache($thing, $result) {
+    global $fp;
+    global $CACHE;
+
+    $cache      = $CACHE[$thing];
+    $json_data  = json_encode($result);
+    if( file_exists($cache) ) {
+        chmod($cache, 0664);
+        //chown($cache, 'wiley');
+    }
+    $jfp = fopen($cache, "w");
+    fprintf($jfp, "%s\n", $json_data);
+    fclose($jfp);
+    chmod($cache, 0664);
+    //chown($cache, 'wiley');
+}
+
 function fetch_dates($db) {
+    global $fp;
+    global $DEBUG;
+
+    if( $DEBUG ) $local_start = microtime(true);
     $sql = "
         SELECT date(now()) AS today,
                date(now() - '1 day'::interval) AS yesterday,
@@ -55,6 +145,7 @@ function fetch_dates($db) {
                date(min(local)) AS all
           FROM i3log
     ;";
+
     try {
         $sth = $db->prepare($sql);
         $sth->execute();
@@ -63,39 +154,91 @@ function fetch_dates($db) {
     } catch (Exception $e) {
         throw $e;
     }
+
+    if( $DEBUG ) {
+        $local_end = microtime(true); $local_spent = $local_end - $local_start;
+        fprintf($fp, "    fetch_dates(): %9.4f\n", $local_spent);
+    }
+    return $result;
+}
+
+function thing_and_clause($thing) {
+    $and = " ";
+
+    switch ($thing) {
+        default:
+        case 'today':
+            $and .= " AND local BETWEEN date_trunc('day',now()) AND now()";
+            break;
+        case 'yesterday':
+            $and .= " AND local BETWEEN date_trunc('day',now() - '1 day'::interval)";
+            $and .= " AND date_trunc('day', now()) - '1 microsecond'::interval";
+            break;
+        case 'week':
+            $and .= " AND local BETWEEN date_trunc('day',now() - '1 week'::interval)";
+            $and .= " AND now()";
+            break;
+        case 'month':
+            $and .= " AND local BETWEEN date_trunc('day',now() - '1 month'::interval)";
+            $and .= " AND now()";
+            break;
+        case 'year':
+            $and .= " AND local BETWEEN date_trunc('day',now() - '1 year'::interval)";
+            $and .= " AND now()";
+            break;
+        case 'all':
+            //$first = $date_info['now'];
+            //$sql .= " AND local BETWEEN date_trunc('day',$first)";
+            //$sql .= " AND now()";
+            break;
+    }
+
+    return $and;
+}
+
+function fetch_quote($db, $thing) {
+    global $fp;
+    global $DEBUG;
+
+    if( $DEBUG ) $local_start = microtime(true);
+    $and  = thing_and_clause($thing);
+    $sql  = "SELECT speaker, message FROM i3log WHERE speaker <> 'URLbot'";
+    $sql .= $and;
+    $sql .= " OFFSET (random() * (SELECT COUNT(*) FROM i3log WHERE speaker <> 'URLbot'";
+    $sql .= " $and ))::INTEGER LIMIT 1";
+
+    try {
+        $sth = $db->prepare($sql);
+        $sth->execute();
+        $sth->setFetchMode(PDO::FETCH_ASSOC);
+        $result = $sth->fetch();
+        if(isset($result['message']))
+            $result['epoch'] = time();
+        if( $DEBUG ) {
+            fprintf($fp, "quote for (%s): \"%s - %s\"\n", $thing, $result['speaker'], $result['message']);
+        }
+    } catch (Exception $e) {
+        throw $e;
+    }
+
+    if( $DEBUG ) {
+        $local_end = microtime(true); $local_spent = $local_end - $local_start;
+        fprintf($fp, "    fetch_quote(%s): %9.4f\n", $thing, $local_spent);
+    }
     return $result;
 }
 
 function fetch_stuff($db, $thing, $kind) {
+    global $fp;
+    global $DEBUG;
+
+    if( $DEBUG ) $local_start = microtime(true);
     if($kind !== 'channel') {
         $kind = 'speaker';
     }
 
-    $sql = "SELECT $kind, count(*) FROM i3log WHERE speaker <> 'URLbot'";
-    switch ($thing) {
-        default:
-        case 'today':
-            $sql .= " AND local BETWEEN date_trunc('day',now()) AND now()";
-            break;
-        case 'yesterday':
-            $sql .= " AND local BETWEEN date_trunc('day',now() - '1 day'::interval)";
-            $sql .= " AND date_trunc('day', now()) - '1 microsecond'::interval";
-            break;
-        case 'week':
-            $sql .= " AND local BETWEEN date_trunc('day',now() - '1 week'::interval)";
-            $sql .= " AND now()";
-            break;
-        case 'month':
-            $sql .= " AND local BETWEEN date_trunc('day',now() - '1 month'::interval)";
-            $sql .= " AND now()";
-            break;
-        case 'year':
-            $sql .= " AND local BETWEEN date_trunc('day',now() - '1 year'::interval)";
-            $sql .= " AND now()";
-            break;
-        case 'all':
-            break;
-    }
+    $sql  = "SELECT $kind, count(*) FROM i3log WHERE speaker <> 'URLbot'";
+    $sql .= thing_and_clause($thing);
     $sql .= " GROUP BY $kind ORDER BY count DESC LIMIT 12;";
 
     try {
@@ -114,22 +257,120 @@ function fetch_stuff($db, $thing, $kind) {
         //$db->rollback();
         throw $e;
     }
+
+    if( $DEBUG ) {
+        $local_end = microtime(true); $local_spent = $local_end - $local_start;
+        fprintf($fp, "    fetch_stuff(%s,%s): %9.4f\n", $thing, $kind, $local_spent);
+    }
     return $result;
 }
 
+function load_data($db) {
+    global $fp;
+    global $DEBUG;
+    global $FRESH;
+    global $CACHE;
+
+    if( $DEBUG ) $local_start = microtime(true);
+
+    $things     = array('today', 'yesterday', 'week', 'month', 'year', 'all');
+    $kinds      = array('speaker', 'channel');
+    $others     = array();
+    $others['speaker'] = 'channel';
+    $others['channel'] = 'speaker';
+
+    $data_cache = array();
+    $thing      = 'dates';
+    $cache      = $CACHE[$thing];
+    $freshness  = $FRESH[$thing];
+    $result     = check_cache($thing, $cache, $freshness);
+
+    // cache_dates
+    if( !isset($result) ) {
+        $result = fetch_dates($db);
+        write_cache('dates', $result);
+
+        if( $DEBUG ) {
+            $local_end = microtime(true); $local_spent = $local_end - $local_start;
+            fprintf($fp, "    cache_dates(): %9.4f [NOT CACHED]\n", $local_spent);
+        }
+    }
+    $data_cache[$thing] = $result;
+    write_cache($thing, $data_cache[$thing]);
+
+    // cache_quotes
+    $thing      = 'quotes';
+    $cache      = $CACHE[$thing];
+    $freshness  = $FRESH['all'];
+    $result     = check_cache($thing, $cache, $freshness);
+    if( !isset($result) )
+        $result = array();
+    foreach ($things as $t) {
+        if( isset($result[$t]) ) {
+            $cache_age = time() - $result[$t]['epoch'];
+            if( $cache_age >= $FRESH[$t] ) {
+                $q = fetch_quote($db, $t);
+                $result[$t] = $q;
+                if( $DEBUG ) fprintf($fp, "    cache_quote(%s): [NOT CACHED]\n", $t);
+            } else {
+                if( $DEBUG ) fprintf($fp, "    cache_quote(%s): [CACHED]\n", $t);
+            }
+        } else {
+            $q = fetch_quote($db, $t);
+            $result[$t] = $q;
+            if( $DEBUG ) fprintf($fp, "    cache_quote(%s): [NOT CACHED]\n", $t);
+        }
+    }
+    $data_cache[$thing] = $result;
+    write_cache($thing, $data_cache[$thing]);
+
+    // cache_stuff
+    foreach ($things as $thing) {
+        foreach ($kinds as $kind) {
+            $cache      = $CACHE[$thing];
+            $freshness  = $FRESH[$thing];
+            $result     = check_cache($thing, $cache, $freshness);
+
+            if( isset($result) ) {
+                $data_cache[$thing] = $result;
+            } else {
+                $data_cache[$thing] = array();
+                $result = fetch_stuff($db, $thing, $kind);
+                $data_cache[$thing][$kind] = $result;
+                $result2 = fetch_stuff($db, $thing, $others[$kind]);
+                $data_cache[$thing][$others[$kind]] = $result2;
+                write_cache($thing, $data_cache[$thing]);
+            }
+        }
+    }
+
+    if( $DEBUG ) {
+        $local_end = microtime(true); $local_spent = $local_end - $local_start;
+        fprintf($fp, "Loading Data: %9.4f\n", $local_spent);
+    }
+    return $data_cache;
+}
+
+if( $DEBUG ) $local_start = microtime(true);
 $mudlist_text = file_get_contents($MUDLIST_FILE);
 $mudlist = json_decode($mudlist_text, true, 512, JSON_INVALID_UTF8_SUBSTITUTE);
-
 if( json_last_error() != JSON_ERROR_NONE ) {
     echo "<hr>".json_last_error_msg()."<br><hr>";
 }
-
 $WILEY_BUILD_NUMBER     = $mudlist["version"]["build"];
 $WILEY_BUILD_DATE       = $mudlist["version"]["date"];
 $WILEY_TIME             = $mudlist["time"];
+if( $DEBUG ) {
+    $local_end = microtime(true); $local_spent = $local_end - $local_start;
+    fprintf($fp, "Fetching JSON data: %9.4f\n", $local_spent);
+}
+
 $OVERLAY_ICON           = "$URL_HOME/gfx/NA.png";
 // contain leaves space, cover clips edges.
 $OVERLAY_IMG            = "<img width=\"700\" height=\"500\" style=\"position: fixed; z-index: 999; left: 50%; transform: translateX(-50%); object-fit: contain; opacity: 0.5;\" src=\"$OVERLAY_ICON\" />";
+$EMPTY_ICON             = "$URL_HOME/gfx/empty.png";
+//$EMPTY_IMG              = "<img width=\"700\" height=\"500\" style=\"left: 50%; transform: translateX(-50%); object-fit: contain;\" src=\"$EMPTY_ICON\" />";
+$EMPTY_IMG              = "<img width=\"700\" height=\"460\" src=\"$EMPTY_ICON\" />";
 
 $TODAY_BACKGROUND           = random_image($BACKGROUND_DIR);
 $TODAY_BACKGROUND_IMG       = "<img width=\"700\" height=\"500\" style=\"position: fixed; z-index: 998; left: 50%; transform: translateX(-50%); object-fit: cover; opacity: 0.2;\" src=\"$URL_HOME/gfx/wallpaper/$TODAY_BACKGROUND\" />";
@@ -144,9 +385,6 @@ $YEAR_BACKGROUND_IMG        = "<img width=\"700\" height=\"500\" style=\"positio
 $ALL_BACKGROUND             = random_image($BACKGROUND_DIR);
 $ALL_BACKGROUND_IMG         = "<img width=\"700\" height=\"500\" style=\"position: fixed; z-index: 998; left: 50%; transform: translateX(-50%); object-fit: cover; opacity: 0.2;\" src=\"$URL_HOME/gfx/wallpaper/$ALL_BACKGROUND\" />";
 
-$db = db_connect();
-$date_info = fetch_dates($db);
-
 $active_style   = "background-color: #8f4f2f; opacity: 1.0;";
 $hover_style    = "background-color: #4f0000; opacity: 1.0;";
 $inactive_style = "background-color: #2f0000; opacity: 0.6;";
@@ -154,6 +392,13 @@ $inactive_style = "background-color: #2f0000; opacity: 0.6;";
 $activechan_style   = "background-color: #2f4f8f; opacity: 1.0; font-size: 60%";
 $hoverchan_style    = "background-color: #00004f; opacity: 1.0; font-size: 60%";
 $inactivechan_style = "background-color: #00002f; opacity: 0.6; font-size: 60%";
+
+$db = db_connect($PG_DB, $PG_USERNAME, $PG_PASSWORD);
+//$date_info = cache_dates($db);
+$all_data = load_data($db);
+$date_info = $all_data['dates'];
+$things = array('today', 'yesterday', 'week', 'month', 'year', 'all');
+
 ?>
 
 <html>
@@ -184,6 +429,7 @@ $inactivechan_style = "background-color: #00002f; opacity: 0.6; font-size: 60%";
         <script type="text/javascript">
             var current_button;
             var current_graph;
+            var current_quote;
             var en = [];
             var jp = [];
 
@@ -203,7 +449,9 @@ $inactivechan_style = "background-color: #00002f; opacity: 0.6; font-size: 60%";
             function get_today() {
                 current_button = document.getElementById("btnToday");
                 current_graph = document.getElementById("graphToday");
+                current_quote = document.getElementById("graphQuoteToday");
                 current_graph.style.display = "block";
+                current_quote.style.display = "block";
             }
             function hover_on(x) {
                 if(current_button != x) {
@@ -234,6 +482,7 @@ $inactivechan_style = "background-color: #00002f; opacity: 0.6; font-size: 60%";
                     var s = x.id.substr(0,3);
                     var t = x.id.substr(3);
                     var g;
+                    var q;
                     if(s == "btn") {
                         x.style = "<?php echo $active_style; ?>";
                         g = document.getElementById("graph" + x.id.substr(3));
@@ -254,6 +503,11 @@ $inactivechan_style = "background-color: #00002f; opacity: 0.6; font-size: 60%";
                     current_graph.style.display = "none";
                     current_graph = g;
                     g.style.display = "block";
+
+                    q = document.getElementById("graphQuote" + x.id.substr(3));
+                    current_quote.style.display = "none";
+                    current_quote = q;
+                    q.style.display = "block";
                 }
             }
         </script>
@@ -293,9 +547,11 @@ $inactivechan_style = "background-color: #00002f; opacity: 0.6; font-size: 60%";
                 };
             }
 
+<?php if( $DEBUG ) $local_start = microtime(true); ?>
             function drawTodaySpeakers() {
                 <?php
-                $result = fetch_stuff($db, 'today', 'speaker');
+                //$result = cache_stuff($db, 'today', 'speaker');
+                $result = $all_data['today']['speaker'];
                 if(count($result) > 0) {
                 ?>
                     options['title'] = "Today's Jibber-Jabber (<?php echo $date_info['today'];?>)";
@@ -315,10 +571,18 @@ $inactivechan_style = "background-color: #00002f; opacity: 0.6; font-size: 60%";
                     document.getElementById('pie_today').innerHTML='<?php echo $OVERLAY_IMG;?>';
                 <?php } ?>
             }
+<?php
+if( $DEBUG ) {
+    $local_end = microtime(true); $local_spent = $local_end - $local_start;
+    fprintf($fp, "Configuring drawTodaySpeakers(): %9.4f\n", $local_spent);
+}
+?>
 
+<?php if( $DEBUG ) $local_start = microtime(true); ?>
             function drawTodayChannels() {
                 <?php
-                $result = fetch_stuff($db, 'today', 'channel');
+                //$result = cache_stuff($db, 'today', 'channel');
+                $result = $all_data['today']['channel'];
                 if(count($result) > 0) {
                 ?>
                     options['title'] = "Today's Jibber-Jabber (<?php echo $date_info['today'];?>)";
@@ -338,10 +602,18 @@ $inactivechan_style = "background-color: #00002f; opacity: 0.6; font-size: 60%";
                     document.getElementById('piechan_today').innerHTML='<?php echo $OVERLAY_IMG;?>';
                 <?php } ?>
             }
+<?php
+if( $DEBUG ) {
+    $local_end = microtime(true); $local_spent = $local_end - $local_start;
+    fprintf($fp, "Configuring drawTodayChannels(): %9.4f\n", $local_spent);
+}
+?>
 
+<?php if( $DEBUG ) $local_start = microtime(true); ?>
             function drawYesterdaySpeakers() {
                 <?php
-                $result = fetch_stuff($db, 'yesterday', 'speaker');
+                //$result = cache_stuff($db, 'yesterday', 'speaker');
+                $result = $all_data['yesterday']['speaker'];
                 if(count($result) > 0) {
                 ?>
                     options['title'] = "Yesterday's Rubbish (<?php echo $date_info['yesterday'];?>)";
@@ -361,10 +633,18 @@ $inactivechan_style = "background-color: #00002f; opacity: 0.6; font-size: 60%";
                     document.getElementById('pie_yesterday').innerHTML='<?php echo $OVERLAY_IMG;?>';
                 <?php } ?>
             }
+<?php
+if( $DEBUG ) {
+    $local_end = microtime(true); $local_spent = $local_end - $local_start;
+    fprintf($fp, "Configuring drawYesterdaySpeakers(): %9.4f\n", $local_spent);
+}
+?>
 
+<?php if( $DEBUG ) $local_start = microtime(true); ?>
             function drawYesterdayChannels() {
                 <?php
-                $result = fetch_stuff($db, 'yesterday', 'channel');
+                //$result = cache_stuff($db, 'yesterday', 'channel');
+                $result = $all_data['yesterday']['channel'];
                 if(count($result) > 0) {
                 ?>
                     options['title'] = "Yesterday's Rubbish (<?php echo $date_info['yesterday'];?>)";
@@ -384,10 +664,18 @@ $inactivechan_style = "background-color: #00002f; opacity: 0.6; font-size: 60%";
                     document.getElementById('piechan_yesterday').innerHTML='<?php echo $OVERLAY_IMG;?>';
                 <?php } ?>
             }
+<?php
+if( $DEBUG ) {
+    $local_end = microtime(true); $local_spent = $local_end - $local_start;
+    fprintf($fp, "Configuring drawYesterdayChannels(): %9.4f\n", $local_spent);
+}
+?>
 
+<?php if( $DEBUG ) $local_start = microtime(true); ?>
             function drawWeekSpeakers() {
                 <?php
-                $result = fetch_stuff($db, 'week', 'speaker');
+                //$result = cache_stuff($db, 'week', 'speaker');
+                $result = $all_data['week']['speaker'];
                 if(count($result) > 0) {
                 ?>
                     options['title'] = "The Week of Stupidity (<?php echo $date_info['week'] . ' to ' . $date_info['today'];?>)";
@@ -407,10 +695,18 @@ $inactivechan_style = "background-color: #00002f; opacity: 0.6; font-size: 60%";
                     document.getElementById('pie_week').innerHTML='<?php echo $OVERLAY_IMG;?>';
                 <?php } ?>
             }
+<?php
+if( $DEBUG ) {
+    $local_end = microtime(true); $local_spent = $local_end - $local_start;
+    fprintf($fp, "Configuring drawWeekSpeakers(): %9.4f\n", $local_spent);
+}
+?>
 
+<?php if( $DEBUG ) $local_start = microtime(true); ?>
             function drawWeekChannels() {
                 <?php
-                $result = fetch_stuff($db, 'week', 'channel');
+                //$result = cache_stuff($db, 'week', 'channel');
+                $result = $all_data['week']['channel'];
                 if(count($result) > 0) {
                 ?>
                     options['title'] = "The Week of Stupidity (<?php echo $date_info['week'] . ' to ' . $date_info['today'];?>)";
@@ -430,10 +726,18 @@ $inactivechan_style = "background-color: #00002f; opacity: 0.6; font-size: 60%";
                     document.getElementById('piechan_week').innerHTML='<?php echo $OVERLAY_IMG;?>';
                 <?php } ?>
             }
+<?php
+if( $DEBUG ) {
+    $local_end = microtime(true); $local_spent = $local_end - $local_start;
+    fprintf($fp, "Configuring drawWeekChannels(): %9.4f\n", $local_spent);
+}
+?>
 
+<?php if( $DEBUG ) $local_start = microtime(true); ?>
             function drawMonthSpeakers() {
                 <?php
-                $result = fetch_stuff($db, 'month', 'speaker');
+                //$result = cache_stuff($db, 'month', 'speaker');
+                $result = $all_data['month']['speaker'];
                 if(count($result) > 0) {
                 ?>
                     options['title'] = "A Whole Month of Nonsense? (<?php echo $date_info['month'] . ' to ' . $date_info['today'];?>)";
@@ -453,10 +757,18 @@ $inactivechan_style = "background-color: #00002f; opacity: 0.6; font-size: 60%";
                     document.getElementById('pie_month').innerHTML='<?php echo $OVERLAY_IMG;?>';
                 <?php } ?>
             }
+<?php
+if( $DEBUG ) {
+    $local_end = microtime(true); $local_spent = $local_end - $local_start;
+    fprintf($fp, "Configuring drawMonthSpeakers(): %9.4f\n", $local_spent);
+}
+?>
 
+<?php if( $DEBUG ) $local_start = microtime(true); ?>
             function drawMonthChannels() {
                 <?php
-                $result = fetch_stuff($db, 'month', 'channel');
+                //$result = cache_stuff($db, 'month', 'channel');
+                $result = $all_data['month']['channel'];
                 if(count($result) > 0) {
                 ?>
                     options['title'] = "A Whole Month of Nonsense? (<?php echo $date_info['month'] . ' to ' . $date_info['today'];?>)";
@@ -473,14 +785,22 @@ $inactivechan_style = "background-color: #00002f; opacity: 0.6; font-size: 60%";
                     chart.draw(data, options);
                     document.getElementById('graphChannelsMonth').style.display='none';
                 <?php } else { ?>
-                    document.getElementById('piechan_month').innerHTML='<?php echo $OVERLAY_IMG;?>';
-                <?php } ?>
-            }
+                        document.getElementById('piechan_month').innerHTML='<?php echo $OVERLAY_IMG;?>';
+                    <?php } ?>
+                }
+    <?php
+    if( $DEBUG ) {
+        $local_end = microtime(true); $local_spent = $local_end - $local_start;
+        fprintf($fp, "Configuring drawMonthChannels(): %9.4f\n", $local_spent);
+    }
+    ?>
 
-            function drawYearSpeakers() {
-                <?php
-                $result = fetch_stuff($db, 'year', 'speaker');
-                if(count($result) > 0) {
+    <?php if( $DEBUG ) $local_start = microtime(true); ?>
+                function drawYearSpeakers() {
+                    <?php
+                    //$result = cache_stuff($db, 'year', 'speaker');
+                    $result = $all_data['year']['speaker'];
+                    if(count($result) > 0) {
                 ?>
                     options['title'] = "What a Horrible Year it's Been... (<?php echo $date_info['year'] . ' to ' . $date_info['today'];?>)";
                     var data = google.visualization.arrayToDataTable([
@@ -499,10 +819,18 @@ $inactivechan_style = "background-color: #00002f; opacity: 0.6; font-size: 60%";
                     document.getElementById('pie_year').innerHTML='<?php echo $OVERLAY_IMG;?>';
                 <?php } ?>
             }
+<?php
+if( $DEBUG ) {
+    $local_end = microtime(true); $local_spent = $local_end - $local_start;
+    fprintf($fp, "Configuring drawYearSpeakers(): %9.4f\n", $local_spent);
+}
+?>
 
+<?php if( $DEBUG ) $local_start = microtime(true); ?>
             function drawYearChannels() {
                 <?php
-                $result = fetch_stuff($db, 'year', 'channel');
+                //$result = cache_stuff($db, 'year', 'channel');
+                $result = $all_data['year']['channel'];
                 if(count($result) > 0) {
                 ?>
                     options['title'] = "What a Horrible Year it's Been... (<?php echo $date_info['year'] . ' to ' . $date_info['today'];?>)";
@@ -522,11 +850,19 @@ $inactivechan_style = "background-color: #00002f; opacity: 0.6; font-size: 60%";
                     document.getElementById('piechan_year').innerHTML='<?php echo $OVERLAY_IMG;?>';
                 <?php } ?>
             }
+<?php
+if( $DEBUG ) {
+    $local_end = microtime(true); $local_spent = $local_end - $local_start;
+    fprintf($fp, "Configuring drawYearChannels(): %9.4f\n", $local_spent);
+}
+?>
 
+<?php if( $DEBUG ) $local_start = microtime(true); ?>
             function drawAllSpeakers() {
 <?php if( $DO_ALL_TIME ) { ?>
                 <?php
-                $result = fetch_stuff($db, 'all', 'speaker');
+                //$result = cache_stuff($db, 'all', 'speaker');
+                $result = $all_data['all']['speaker'];
                 if(count($result) > 0) {
                 ?>
                     options['title'] = "What Have You DONE??? (<?php echo $date_info['all'] . ' to ' . $date_info['today'];?>)";
@@ -549,11 +885,19 @@ $inactivechan_style = "background-color: #00002f; opacity: 0.6; font-size: 60%";
                     document.getElementById('pie_all').innerHTML='<?php echo $OVERLAY_IMG;?>';
 <?php } ?>
             }
+<?php
+if( $DEBUG ) {
+    $local_end = microtime(true); $local_spent = $local_end - $local_start;
+    fprintf($fp, "Configuring drawAllSpeakers(): %9.4f\n", $local_spent);
+}
+?>
 
+<?php if( $DEBUG ) $local_start = microtime(true); ?>
             function drawAllChannels() {
 <?php if( $DO_ALL_TIME ) { ?>
                 <?php
-                $result = fetch_stuff($db, 'all', 'channel');
+                //$result = cache_stuff($db, 'all', 'channel');
+                $result = $all_data['all']['channel'];
                 if(count($result) > 0) {
                 ?>
                     options['title'] = "What Have You DONE??? (<?php echo $date_info['all'] . ' to ' . $date_info['today'];?>)";
@@ -576,6 +920,12 @@ $inactivechan_style = "background-color: #00002f; opacity: 0.6; font-size: 60%";
                     document.getElementById('piechan_all').innerHTML='<?php echo $OVERLAY_IMG;?>';
 <?php } ?>
             }
+<?php
+if( $DEBUG ) {
+    $local_end = microtime(true); $local_spent = $local_end - $local_start;
+    fprintf($fp, "Configuring drawAllChannels(): %9.4f\n", $local_spent);
+}
+?>
 
             function drawTheCharts() {
                 drawSetup();
@@ -757,6 +1107,45 @@ $inactivechan_style = "background-color: #00002f; opacity: 0.6; font-size: 60%";
                     <?php echo $ALL_BACKGROUND_IMG; ?>
                     <div id="piechan_all" style="width: 700px; height: 500px; position: fixed; z-index: 999; left: 50%; transform: translateX(-50%);"></div>
                 </div>
+                <div id="graphQuotePane" style="display: block; height: 510px; text-align: center; transform: translateX(37%);">
+                    <?php echo $EMPTY_IMG; ?>
+                    <div id="graphQuoteToday" style="background-color: #202020; color: #FF9F9F; display: none;">
+                        <font size="-1">
+                            <?php echo $all_data['quotes']['today']['speaker']; ?> says
+                            "<?php echo $all_data['quotes']['today']['message']; ?>"
+                        </font>
+                    </div>
+                    <div id="graphQuoteYesterday" style="background-color: #202020; color: #FFFF9F; display: none;">
+                        <font size="-1">
+                            <?php echo $all_data['quotes']['yesterday']['speaker']; ?> says
+                            "<?php echo $all_data['quotes']['yesterday']['message']; ?>"
+                        </font>
+                    </div>
+                    <div id="graphQuoteWeek" style="background-color: #202020; color: #9FFF9F; display: none;">
+                        <font size="-1">
+                            <?php echo $all_data['quotes']['week']['speaker']; ?> says
+                            "<?php echo $all_data['quotes']['week']['message']; ?>"
+                        </font>
+                    </div>
+                    <div id="graphQuoteMonth" style="background-color: #202020; color: #9F9FFF; display: none;">
+                        <font size="-1">
+                            <?php echo $all_data['quotes']['month']['speaker']; ?> says
+                            "<?php echo $all_data['quotes']['month']['message']; ?>"
+                        </font>
+                    </div>
+                    <div id="graphQuoteYear" style="background-color: #202020; color: #9FFFFF; display: none;">
+                        <font size="-1">
+                            <?php echo $all_data['quotes']['year']['speaker']; ?> says
+                            "<?php echo $all_data['quotes']['year']['message']; ?>"
+                        </font>
+                    </div>
+                    <div id="graphQuoteAll" style="background-color: #202020; color: #FFFFFF; display: none;">
+                        <font size="-1">
+                            <?php echo $all_data['quotes']['all']['speaker']; ?> says
+                            "<?php echo $all_data['quotes']['all']['message']; ?>"
+                        </font>
+                    </div>
+                </div>
             </td>
         </tr>
         <tr bgcolor="#000000">
@@ -767,3 +1156,10 @@ $inactivechan_style = "background-color: #00002f; opacity: 0.6; font-size: 60%";
 </div>
 </body>
 </html>
+<?php
+if( $DEBUG ) {
+    fprintf($fp, "Total Script Time: %9.4f seconds.\n", $time_spent);
+    fclose($fp);
+    chmod($DEBUG_LOG, 0664);
+}
+?>
