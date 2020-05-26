@@ -1111,37 +1111,37 @@ if( $DEBUG ) {
                     <?php echo $EMPTY_IMG; ?>
                     <div id="graphQuoteToday" style="background-color: #202020; color: #FF9F9F; display: none;">
                         <font size="-1">
-                            <?php echo $all_data['quotes']['today']['speaker']; ?> says
+                            <?php echo $all_data['quotes']['today']['speaker']; ?> said
                             "<?php echo $all_data['quotes']['today']['message']; ?>"
                         </font>
                     </div>
                     <div id="graphQuoteYesterday" style="background-color: #202020; color: #FFFF9F; display: none;">
                         <font size="-1">
-                            <?php echo $all_data['quotes']['yesterday']['speaker']; ?> says
+                            <?php echo $all_data['quotes']['yesterday']['speaker']; ?> said
                             "<?php echo $all_data['quotes']['yesterday']['message']; ?>"
                         </font>
                     </div>
                     <div id="graphQuoteWeek" style="background-color: #202020; color: #9FFF9F; display: none;">
                         <font size="-1">
-                            <?php echo $all_data['quotes']['week']['speaker']; ?> says
+                            <?php echo $all_data['quotes']['week']['speaker']; ?> said
                             "<?php echo $all_data['quotes']['week']['message']; ?>"
                         </font>
                     </div>
                     <div id="graphQuoteMonth" style="background-color: #202020; color: #9F9FFF; display: none;">
                         <font size="-1">
-                            <?php echo $all_data['quotes']['month']['speaker']; ?> says
+                            <?php echo $all_data['quotes']['month']['speaker']; ?> said
                             "<?php echo $all_data['quotes']['month']['message']; ?>"
                         </font>
                     </div>
                     <div id="graphQuoteYear" style="background-color: #202020; color: #9FFFFF; display: none;">
                         <font size="-1">
-                            <?php echo $all_data['quotes']['year']['speaker']; ?> says
+                            <?php echo $all_data['quotes']['year']['speaker']; ?> said
                             "<?php echo $all_data['quotes']['year']['message']; ?>"
                         </font>
                     </div>
                     <div id="graphQuoteAll" style="background-color: #202020; color: #FFFFFF; display: none;">
                         <font size="-1">
-                            <?php echo $all_data['quotes']['all']['speaker']; ?> says
+                            <?php echo $all_data['quotes']['all']['speaker']; ?> said
                             "<?php echo $all_data['quotes']['all']['message']; ?>"
                         </font>
                     </div>
