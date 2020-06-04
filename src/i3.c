@@ -671,6 +671,9 @@ I3_CHANNEL                             *find_I3_channel_by_name(const char *name
 {
     I3_CHANNEL                             *channel = NULL;
 
+    if (!name || !*name)
+        return NULL;
+
     for (channel = first_I3chan; channel; channel = channel->next) {
 	if (!strcasecmp(channel->I3_name, name))
 	    return channel;
@@ -1760,10 +1763,10 @@ void I3_process_startup_reply(I3_HEADER *header, char *s)
     log_info("%s", "Intermud-3 Network connection complete.");
 
     for (channel = first_I3chan; channel; channel = channel->next) {
-	if (channel->local_name && channel->local_name[0] != '\0') {
-	    log_info("Subscribing to %s", channel->local_name);
+	//if (channel->local_name && channel->local_name[0] != '\0') {
+	    log_info("Subscribing to %s", channel->I3_name);
 	    I3_send_channel_listen(channel, TRUE);
-	}
+	//}
     }
     return;
 }
@@ -2566,7 +2569,7 @@ void update_chanhistory(I3_CHANNEL *channel, char *message)
 		     local->tm_year + 1900, local->tm_mon + 1, local->tm_mday, msg);
 	    channel->history[x] = I3STRALLOC(buf);
 
-	    if (I3IS_SET(channel->flags, I3CHAN_LOG)) {
+	    if (I3IS_SET(channel->flags, I3CHAN_LOG) && channel->local_name && channel->local_name[0]) {
 		FILE                                   *fp;
 
 		snprintf(buf, MAX_STRING_LENGTH, "%s%s.log", I3_DIR, channel->local_name);
@@ -2600,7 +2603,7 @@ void update_chanhistory(I3_CHANNEL *channel, char *message)
 	    I3STRFREE(channel->history[x]);
 	    channel->history[x] = I3STRALLOC(buf);
 
-	    if (I3IS_SET(channel->flags, I3CHAN_LOG)) {
+	    if (I3IS_SET(channel->flags, I3CHAN_LOG) && channel->local_name && channel->local_name[0]) {
 		FILE                                   *fp;
 
 		snprintf(buf, MAX_STRING_LENGTH, "%s%s.log", I3_DIR, channel->local_name);
@@ -2769,6 +2772,7 @@ void I3_process_channel_filter(I3_HEADER *header, char *s)
     char                                    ptype[MAX_INPUT_LENGTH];
     I3_CHANNEL                             *channel = NULL;
     I3_HEADER                              *second_header;
+    char                                    channel_name[MAX_INPUT_LENGTH];
 
     I3_get_field(ps, &next_ps);
     remove_quotes(&ps);
@@ -2778,8 +2782,14 @@ void I3_process_channel_filter(I3_HEADER *header, char *s)
 	return;
     }
 
-    if (!channel->local_name)
-	return;
+    if (!channel->local_name || !channel->local_name[0]) {
+        //return;         // We don't listen to it.
+        // But let's go ahead and log it anyways...
+        strlcpy(channel_name, ps, MAX_INPUT_LENGTH);
+    } else {
+        // Situation normal, copy this to simplify the code down there...
+        strlcpy(channel_name, channel->local_name, MAX_INPUT_LENGTH);
+    }
 
     ps = next_ps;
     ps += 2;
@@ -2949,17 +2959,24 @@ void I3_process_channel_t(I3_HEADER *header, char *s)
                                             omsg[MAX_STRING_LENGTH];
     I3_CHANNEL                             *channel = NULL;
     struct tm                              *local = localtime(&i3_time);
+    char                                    channel_name[MAX_INPUT_LENGTH];
 
     I3_get_field(ps, &next_ps);
     remove_quotes(&ps);
 
     if (!(channel = find_I3_channel_by_name(ps))) {
 	log_info("I3_process_channel_t: received unknown channel (%s)", ps);
-	return;
+	return;         // We totally don't recognize this channel.
     }
 
-    if (!channel->local_name)
-	return;
+    if (!channel->local_name || !channel->local_name[0]) {
+        //return;         // We don't listen to it.
+        // But let's go ahead and log it anyways...
+        strlcpy(channel_name, ps, MAX_INPUT_LENGTH);
+    } else {
+        // Situation normal, copy this to simplify the code down there...
+        strlcpy(channel_name, channel->local_name, MAX_INPUT_LENGTH);
+    }
 
     ps = next_ps;
     I3_get_field(ps, &next_ps);
@@ -3001,7 +3018,7 @@ void I3_process_channel_t(I3_HEADER *header, char *s)
     strcpy(layout, "%s ");
     strcat(layout, channel->layout_e);
 
-    allchan_log(1, channel->local_name, visname_o, header->originator_username, header->originator_mudname, omsg);
+    allchan_log(1, channel_name, visname_o, header->originator_username, header->originator_mudname, omsg);
 
     for (d = first_descriptor; d; d = d->next) {
 	vch = d->original ? d->original : d->character;
@@ -3009,18 +3026,18 @@ void I3_process_channel_t(I3_HEADER *header, char *s)
 	if (!vch)
 	    continue;
 
-	if (!I3_hasname(I3LISTEN(vch), channel->local_name)
-	    || I3_hasname(I3DENY(vch), channel->local_name))
+	if (!I3_hasname(I3LISTEN(vch), channel_name)
+	    || I3_hasname(I3DENY(vch), channel_name))
 	    continue;
 
 	snprintf(lname, MAX_INPUT_LENGTH, "%s@%s", CH_I3NAME(vch), this_i3mud->name);
 
 	if (d->connected == CON_PLAYING && !i3ignoring(vch, sname)) {
 	    if (!strcasecmp(lname, tname)) {
-		sprintf(buf, layout, color_time(local), channel->local_name, tmsg);
+		sprintf(buf, layout, color_time(local), channel_name, tmsg);
 		i3_printf(vch, "%s%%^RESET%%^\r\n", buf);
 	    } else {
-		sprintf(buf, layout, color_time(local), channel->local_name, omsg);
+		sprintf(buf, layout, color_time(local), channel_name, omsg);
 		i3_printf(vch, "%s%%^RESET%%^\r\n", buf);
 	    }
 	}
@@ -3047,17 +3064,24 @@ void I3_process_channel_m(I3_HEADER *header, char *s)
     char                                    speaker_color[MAX_INPUT_LENGTH];
     char                                    mud_color[MAX_INPUT_LENGTH];
     char                                    magic_visname[MAX_INPUT_LENGTH];
+    char                                    channel_name[MAX_INPUT_LENGTH];
 
     I3_get_field(ps, &next_ps);
     remove_quotes(&ps);
 
     if (!(channel = find_I3_channel_by_name(ps))) {
 	log_info("channel_m: received unknown channel (%s)", ps);
-	return;
+	return;         // We totally don't recognize this channel.
     }
 
-    if (!channel->local_name)
-	return;
+    if (!channel->local_name || !channel->local_name[0]) {
+        //return;         // We don't listen to it.
+        // But let's go ahead and log it anyways...
+        strlcpy(channel_name, ps, MAX_INPUT_LENGTH);
+    } else {
+        // Situation normal, copy this to simplify the code down there...
+        strlcpy(channel_name, channel->local_name, MAX_INPUT_LENGTH);
+    }
 
     channel_m_received++;
     if (lag_spike > 0) {
@@ -3093,15 +3117,15 @@ void I3_process_channel_m(I3_HEADER *header, char *s)
         snprintf(magic_visname, MAX_INPUT_LENGTH, "%s(%s)", visname, header->originator_username);
     }
 
-    //snprintf(buf, MAX_STRING_LENGTH, format, color_time(local), channel->local_name, visname, header->originator_mudname, tps);
+    //snprintf(buf, MAX_STRING_LENGTH, format, color_time(local), channel_name, visname, header->originator_mudname, tps);
 
     // We omit the RESET from the end of the speaker name, so it can also catch the @ if the channel
     // format string doesn't override it.
     snprintf(speaker_color, MAX_INPUT_LENGTH, "%s%s", color_speaker(header->originator_username), magic_visname);
     snprintf(mud_color, MAX_INPUT_LENGTH, "%s%s%%^RESET%%^", color_speaker(header->originator_username), header->originator_mudname);
-    snprintf(buf, MAX_STRING_LENGTH, format, color_time(local), channel->local_name, speaker_color, mud_color, tps);
+    snprintf(buf, MAX_STRING_LENGTH, format, color_time(local), channel_name, speaker_color, mud_color, tps);
 
-    allchan_log(0, channel->local_name, visname, header->originator_username, header->originator_mudname, tps);
+    allchan_log(0, channel_name, visname, header->originator_username, header->originator_mudname, tps);
 
     for (d = first_descriptor; d; d = d->next) {
         if (!d || !d->character)
@@ -3115,8 +3139,8 @@ void I3_process_channel_m(I3_HEADER *header, char *s)
 	if (!vch)
 	    continue;
 
-	if (!I3_hasname(I3LISTEN(vch), channel->local_name)
-	    || I3_hasname(I3DENY(vch), channel->local_name))
+	if (!I3_hasname(I3LISTEN(vch), channel_name)
+	    || I3_hasname(I3DENY(vch), channel_name))
 	    continue;
 
         if (d->connected == CON_PLAYING) {
@@ -3150,17 +3174,24 @@ void I3_process_channel_e(I3_HEADER *header, char *s)
     char                                    speaker_color[MAX_INPUT_LENGTH];
     char                                    mud_color[MAX_INPUT_LENGTH];
     int                                     hack_len = 0;
+    char                                    channel_name[MAX_INPUT_LENGTH];
 
     I3_get_field(ps, &next_ps);
     remove_quotes(&ps);
 
     if (!(channel = find_I3_channel_by_name(ps))) {
 	log_info("channel_e: received unknown channel (%s)", ps);
-	return;
+	return;         // We totally don't recognize this channel.
     }
 
-    if (!channel->local_name)
-	return;
+    if (!channel->local_name || !channel->local_name[0]) {
+        //return;         // We don't listen to it.
+        // But let's go ahead and log it anyways...
+        strlcpy(channel_name, ps, MAX_INPUT_LENGTH);
+    } else {
+        // Situation normal, copy this to simplify the code down there...
+        strlcpy(channel_name, channel->local_name, MAX_INPUT_LENGTH);
+    }
 
     ps = next_ps;
     I3_get_field(ps, &next_ps);
@@ -3182,7 +3213,7 @@ void I3_process_channel_e(I3_HEADER *header, char *s)
 
     //strcpy(format, "%%^GREEN%%^%%^BOLD%%^%-2.2d%%^WHITE%%^%%^BOLD%%^:%%^GREEN%%^%%^BOLD%%^%-2.2d%%^RESET%%^ ");
     //strcat(format, channel->layout_e);
-    //snprintf(buf, MAX_STRING_LENGTH, format, local->tm_hour, local->tm_min, channel->local_name, msg);
+    //snprintf(buf, MAX_STRING_LENGTH, format, local->tm_hour, local->tm_min, channel_name, msg);
 
     strcpy(format, "%s ");
     strcat(format, channel->layout_e);
@@ -3199,9 +3230,9 @@ void I3_process_channel_e(I3_HEADER *header, char *s)
     strcat(format, "@%s%s");
     hack_len = strlen(tmpvisname);
 
-    snprintf(buf, MAX_STRING_LENGTH, format, color_time(local), channel->local_name, speaker_color, mud_color, &msg[hack_len]);
+    snprintf(buf, MAX_STRING_LENGTH, format, color_time(local), channel_name, speaker_color, mud_color, &msg[hack_len]);
 
-    allchan_log(1, channel->local_name, visname, header->originator_username, header->originator_mudname, msg);
+    allchan_log(1, channel_name, visname, header->originator_username, header->originator_mudname, msg);
 
     for (d = first_descriptor; d; d = d->next) {
 	vch = d->original ? d->original : d->character;
@@ -3209,8 +3240,8 @@ void I3_process_channel_e(I3_HEADER *header, char *s)
 	if (!vch)
 	    continue;
 
-	if (!I3_hasname(I3LISTEN(vch), channel->local_name)
-	    || I3_hasname(I3DENY(vch), channel->local_name))
+	if (!I3_hasname(I3LISTEN(vch), channel_name)
+	    || I3_hasname(I3DENY(vch), channel_name))
 	    continue;
 
         if (d->connected == CON_PLAYING) {
@@ -4362,7 +4393,7 @@ void I3_send_shutdown(int delay)
 
     if (is_connected()) {
         for (channel = first_I3chan; channel; channel = channel->next) {
-            if (channel->local_name && channel->local_name[0] != '\0')
+            //if (channel->local_name && channel->local_name[0] != '\0')
                 I3_send_channel_listen(channel, FALSE);
         }
     }
@@ -8023,10 +8054,10 @@ I3_CMD(I3_mudlisten)
 
     if (!strcasecmp(argument, "all")) {
 	for (channel = first_I3chan; channel; channel = channel->next) {
-	    if (!channel->local_name || channel->local_name[0] == '\0')
-		continue;
+	    //if (!channel->local_name || channel->local_name[0] == '\0')
+	//	continue;
 
-	    i3_printf(ch, "Subscribing to %s.\r\n", channel->local_name);
+	    i3_printf(ch, "Subscribing to %s.\r\n", channel->I3_name);
 	    I3_send_channel_listen(channel, TRUE);
 	}
 	i3_printf(ch, "%%^YELLOW%%^The mud is now subscribed to all available local I3 channels.%%^RESET%%^\r\n");
@@ -8035,10 +8066,10 @@ I3_CMD(I3_mudlisten)
 
     if (!strcasecmp(argument, "none")) {
 	for (channel = first_I3chan; channel; channel = channel->next) {
-	    if (!channel->local_name || channel->local_name[0] == '\0')
-		continue;
+	    //if (!channel->local_name || channel->local_name[0] == '\0')
+	//	continue;
 
-	    i3_printf(ch, "Unsubscribing from %s.\r\n", channel->local_name);
+	    i3_printf(ch, "Unsubscribing from %s.\r\n", channel->I3_name);
 	    I3_send_channel_listen(channel, FALSE);
 	}
 	i3_printf(ch, "%%^YELLOW%%^The mud is now unsubscribed from all available local I3 channels.%%^RESET%%^\r\n");

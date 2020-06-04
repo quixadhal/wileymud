@@ -263,6 +263,10 @@ void setup_i3log_table(void) {
               "       ON (channels.pinkfish = pinkfish_map_channel.pinkfish) "
               "LEFT JOIN pinkfish_map pinkfish_map_speaker "
               "       ON (speakers.pinkfish = pinkfish_map_speaker.pinkfish); ";
+    char *sql7 = "CREATE INDEX IF NOT EXISTS ix_i3log_bot ON i3log (is_bot);";
+    char *sql8 = "CREATE INDEX IF NOT EXISTS ix_i3log_url ON i3log (is_url);";
+    char *sql9 = "CREATE INDEX IF NOT EXISTS ix_i3log_speaker ON i3log (speaker);";
+    char *sql10 = "CREATE INDEX IF NOT EXISTS ix_i3log_channel ON i3log (channel);";
 
     sql_connect(&db_i3log);
     res = PQexec(db_i3log.dbc, sql);
@@ -314,6 +318,42 @@ void setup_i3log_table(void) {
     st = PQresultStatus(res);
     if( st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE ) {
         log_fatal("Cannot create page view: %s", PQerrorMessage(db_i3log.dbc));
+        PQclear(res);
+        proper_exit(MUD_HALT);
+    }
+    PQclear(res);
+
+    res = PQexec(db_i3log.dbc, sql7);
+    st = PQresultStatus(res);
+    if( st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE ) {
+        log_fatal("Cannot create bot index: %s", PQerrorMessage(db_i3log.dbc));
+        PQclear(res);
+        proper_exit(MUD_HALT);
+    }
+    PQclear(res);
+
+    res = PQexec(db_i3log.dbc, sql8);
+    st = PQresultStatus(res);
+    if( st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE ) {
+        log_fatal("Cannot create url index: %s", PQerrorMessage(db_i3log.dbc));
+        PQclear(res);
+        proper_exit(MUD_HALT);
+    }
+    PQclear(res);
+
+    res = PQexec(db_i3log.dbc, sql9);
+    st = PQresultStatus(res);
+    if( st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE ) {
+        log_fatal("Cannot create speaker index: %s", PQerrorMessage(db_i3log.dbc));
+        PQclear(res);
+        proper_exit(MUD_HALT);
+    }
+    PQclear(res);
+
+    res = PQexec(db_i3log.dbc, sql10);
+    st = PQresultStatus(res);
+    if( st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE ) {
+        log_fatal("Cannot create channel index: %s", PQerrorMessage(db_i3log.dbc));
         PQclear(res);
         proper_exit(MUD_HALT);
     }
