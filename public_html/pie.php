@@ -26,13 +26,13 @@ $BACKGROUND_DIR = "/home/wiley/public_html/gfx/wallpaper/";
 $PIE_DIR        = "/home/wiley/public_html/pie";
 
 $FRESH['dates']     = 67;
-$FRESH['quotes']    = 67;
+$FRESH['quotes']    = 1701;
 $FRESH['today']     = 67;
-$FRESH['yesterday'] = 121;
-$FRESH['week']      = 303;
-$FRESH['month']     = 619;
-$FRESH['year']      = 1201;
-$FRESH['all']       = 3605;
+$FRESH['yesterday'] = 859;
+$FRESH['week']      = 5405;
+$FRESH['month']     = 21601;
+$FRESH['year']      = 43203;
+$FRESH['all']       = 86407;
 $CACHE['dates']     = "$PIE_DIR/dates.json";
 $CACHE['quotes']    = "$PIE_DIR/quotes.json";
 $CACHE['today']     = "$PIE_DIR/today.json";
@@ -202,9 +202,12 @@ function fetch_quote($db, $thing) {
 
     if( $DEBUG ) $local_start = microtime(true);
     $and  = thing_and_clause($thing);
-    $sql  = "SELECT speaker, message FROM i3log WHERE speaker <> 'URLbot'";
+    // URLbot is intentionally not marked as a bot, as when viewing the logs
+    // we typically want to filter out normal bot messages, but still see the
+    // url expansions from what people post.
+    $sql  = "SELECT speaker, message FROM i3log WHERE speaker <> 'URLbot' AND NOT is_bot";
     $sql .= $and;
-    $sql .= " OFFSET (random() * (SELECT COUNT(*) FROM i3log WHERE speaker <> 'URLbot'";
+    $sql .= " OFFSET (random() * (SELECT COUNT(*) FROM i3log WHERE speaker <> 'URLbot' AND NOT is_bot";
     $sql .= " $and ))::INTEGER LIMIT 1";
 
     try {
@@ -237,7 +240,10 @@ function fetch_stuff($db, $thing, $kind) {
         $kind = 'speaker';
     }
 
-    $sql  = "SELECT $kind, count(*) FROM i3log WHERE speaker <> 'URLbot'";
+    // URLbot is intentionally not marked as a bot, as when viewing the logs
+    // we typically want to filter out normal bot messages, but still see the
+    // url expansions from what people post.
+    $sql  = "SELECT $kind, count(*) FROM i3log WHERE speaker <> 'URLbot' AND NOT is_bot";
     $sql .= thing_and_clause($thing);
     $sql .= " GROUP BY $kind ORDER BY count DESC LIMIT 12;";
 
