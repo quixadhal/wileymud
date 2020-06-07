@@ -51,17 +51,24 @@ my $MUDLIST_ICON    = "$URL_HOME/gfx/mud.png";
 my $LOG_ICON        = "$URL_HOME/gfx/log.png";
 my $DISCORD_ICON    = "$URL_HOME/gfx/discord.png";
 my $SERVER_ICON     = "$URL_HOME/gfx/server_icon.png";
+my $QR_ICON         = "$URL_HOME/stuff/qrcode.png";
+my $QR_BIG_ICON     = "$URL_HOME/stuff/qrcode_big.png";
+my $PIE_ICON        = "$URL_HOME/gfx/pie_chart.png";
 my $ICON_WIDTH      = 48;
 
 my $MUDLIST_IMG     = "<img src=\"$MUDLIST_ICON\" width=\"$ICON_WIDTH\" height=\"$ICON_WIDTH\" border=\"0\" />";
 my $LOG_IMG         = "<img src=\"$LOG_ICON\" width=\"$ICON_WIDTH\" height=\"$ICON_WIDTH\" border=\"0\" />";
 my $DISCORD_IMG     = "<img src=\"$DISCORD_ICON\" width=\"$ICON_WIDTH\" height=\"$ICON_WIDTH\" border=\"0\" />";
 my $SERVER_IMG      = "<img src=\"$SERVER_ICON\" width=\"$ICON_WIDTH\" height=\"$ICON_WIDTH\" border=\"0\" />";
+my $QR_IMG          = "<img src=\"$QR_ICON\" width=\"53\" height=\"53\" border=\"0\" />";
+my $PIE_IMG         = "<img src=\"$PIE_ICON\" width=\"$ICON_WIDTH\" height=\"$ICON_WIDTH\" border=\"0\" />";
 
 my $MUDLIST_LINK    = "<a href=\"$URL_HOME/mudlist.php\" alt=\"Mudlist\" title=\"Mudlist\">$MUDLIST_IMG</a>";
 my $LOG_LINK        = "<a href=\"https://themud.org/chanhist.php#Channel=all\" alt=\"Other Logs\" title=\"Other Logs\">$LOG_IMG</a>";
 my $DISCORD_LINK    = "<a href=\"https://discord.gg/kUduSsJ\" alt=\"Discord\" title=\"Discord\">$DISCORD_IMG</a>";
 my $SERVER_LINK     = "<a href=\"$URL_HOME/server.php\" alt=\"Server\" title=\"Server\">$SERVER_IMG</a>";
+my $QR_LINK         = "<a href=\"$QR_BIG_ICON\" alt=\"リック転がし\" title=\"リック転がし\">$QR_IMG</a>";
+my $PIE_LINK        = "<a href=\"$URL_HOME/pie.php\" alt=\"PIE!\" title=\"PIE!\">$PIE_IMG</a>";
 
 my $OVERLAY_ICON    = "$URL_HOME/gfx/archive_stamp.png";
 my $OVERLAY_IMG     = "<img class=\"overlay-fixed\" src=\"$OVERLAY_ICON\" />";
@@ -1195,7 +1202,7 @@ sub generate_html_page {
                 <td align="left" width="20%">
                     $MUDLIST_LINK
                     $LOG_LINK
-                    $DISCORD_LINK
+                    $PIE_LINK
                 </td>
                 <td align="right" width="20%">
 EOM
@@ -1241,7 +1248,9 @@ EOM
                 print FP <<EOM;
                     </td>
                     <td align="right" width="20%">
+                        <span style="vertical-align: top; color: #555555"> --:-- PDT </span>
                         $SERVER_LINK
+                        $DISCORD_LINK
                     </td>
                 </tr>
             </table>

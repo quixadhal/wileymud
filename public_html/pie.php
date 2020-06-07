@@ -416,11 +416,10 @@ $things = array('today', 'yesterday', 'week', 'month', 'year', 'all');
         <!-- Global site tag (gtag.js) - Google Analytics -->
         <script async src="https://www.googletagmanager.com/gtag/js?id=UA-163395867-1"></script>
         <script>
-          window.dataLayer = window.dataLayer || [];
-          function gtag(){dataLayer.push(arguments);}
-          gtag('js', new Date());
-
-          gtag('config', 'UA-163395867-1');
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'UA-163395867-1');
         </script>
         <style>
             html, body { table-layout: fixed; max-width: 100%; overflow-x: hidden; word-wrap: break-word; text-overflow: ellipsis;}
@@ -575,6 +574,7 @@ $things = array('today', 'yesterday', 'week', 'month', 'year', 'all');
                     document.getElementById('graphToday').style.display='none';
                 <?php } else { ?>
                     document.getElementById('pie_today').innerHTML='<?php echo $OVERLAY_IMG;?>';
+                    document.getElementById('graphQuoteToday').innerHTML="<font size=\"-1\">I got nothin'.</font>";
                 <?php } ?>
             }
 <?php
@@ -637,6 +637,7 @@ if( $DEBUG ) {
                     document.getElementById('graphYesterday').style.display='none';
                 <?php } else { ?>
                     document.getElementById('pie_yesterday').innerHTML='<?php echo $OVERLAY_IMG;?>';
+                    document.getElementById('graphQuoteYesterday').innerHTML="<font size=\"-1\">Nothin' to see here.</font>";
                 <?php } ?>
             }
 <?php
@@ -699,6 +700,7 @@ if( $DEBUG ) {
                     document.getElementById('graphWeek').style.display='none';
                 <?php } else { ?>
                     document.getElementById('pie_week').innerHTML='<?php echo $OVERLAY_IMG;?>';
+                    document.getElementById('graphQuoteWeek').innerHTML="<font size=\"-1\">Move along.</font>";
                 <?php } ?>
             }
 <?php
@@ -761,6 +763,7 @@ if( $DEBUG ) {
                     document.getElementById('graphMonth').style.display='none';
                 <?php } else { ?>
                     document.getElementById('pie_month').innerHTML='<?php echo $OVERLAY_IMG;?>';
+                    document.getElementById('graphQuoteMonth').innerHTML="<font size=\"-1\">This is not the quote you're looking for.</font>";
                 <?php } ?>
             }
 <?php
@@ -823,6 +826,7 @@ if( $DEBUG ) {
                     document.getElementById('graphYear').style.display='none';
                 <?php } else { ?>
                     document.getElementById('pie_year').innerHTML='<?php echo $OVERLAY_IMG;?>';
+                    document.getElementById('graphQuoteYear').innerHTML="<font size=\"-1\">Just give up.</font>";
                 <?php } ?>
             }
 <?php
@@ -886,9 +890,11 @@ if( $DEBUG ) {
                     document.getElementById('graphAll').style.display='none';
                 <?php } else { ?>
                     document.getElementById('pie_all').innerHTML='<?php echo $OVERLAY_IMG;?>';
+                    document.getElementById('graphQuoteAll').innerHTML="<font size=\"-1\">There really is nothing to see.</font>";
                 <?php } ?>
 <?php } else { ?>
                     document.getElementById('pie_all').innerHTML='<?php echo $OVERLAY_IMG;?>';
+                    document.getElementById('graphQuoteAll').innerHTML="<font size=\"-1\">Nothing really matters anyways.</font>";
 <?php } ?>
             }
 <?php
@@ -964,9 +970,7 @@ if( $DEBUG ) {
                 <a href="http://wileymud.themud.org/~wiley/logpages" alt="Logs" title="Logs">
                     <img src="http://wileymud.themud.org/~wiley/gfx/log.png" width="48" height="48" border="0" />
                 </a>
-                <a href="https://discord.gg/kUduSsJ" alt="Discord" title="Discord">
-                    <img src="http://wileymud.themud.org/~wiley/gfx/discord.png" width="48" height="48" border="0" />
-                </a>
+                    <img src="http://wileymud.themud.org/~wiley/gfx/pie_chart.png" width="48" height="48" border="0" style="opacity: 0.2; background: rgba(255,0,0,0.25);" />
             </td>
             <td align="right" width="24%">
                 <a href="telnet://wileymud.themud.org:3000" alt="WileyMUD" title="WileyMUD">
@@ -1007,7 +1011,9 @@ if( $DEBUG ) {
                 <a href="http://wileymud.themud.org/~wiley/server.php" alt="Server" title="Server">
                     <img src="http://wileymud.themud.org/~wiley/gfx/server_icon.png" width="48" height="48" border="0" />
                 </a>
-                    <img src="http://wileymud.themud.org/~wiley/gfx/pie_chart.png" width="48" height="48" border="0" style="opacity: 0.2; background: rgba(255,0,0,0.25);" />
+                <a href="https://discord.gg/kUduSsJ" alt="Discord" title="Discord">
+                    <img src="http://wileymud.themud.org/~wiley/gfx/discord.png" width="48" height="48" border="0" />
+                </a>
             </td>
         </tr>
     </table>
@@ -1117,8 +1123,11 @@ if( $DEBUG ) {
                     <?php echo $EMPTY_IMG; ?>
                     <div id="graphQuoteToday" style="background-color: #202020; color: #FF9F9F; display: none;">
                         <font size="-1">
-                            <?php echo $all_data['quotes']['today']['speaker']; ?> said
-                            "<?php echo $all_data['quotes']['today']['message']; ?>"
+                            <?php
+                                $someone    = $all_data['quotes']['today']['speaker'] ? $all_data['quotes']['today']['speaker'] : "Nobody";
+                                $something  = $all_data['quotes']['today']['message'] ? $all_data['quotes']['today']['message'] : "a damn thing.";
+                                echo "$someone said \"$something\"";
+                            ?>
                         </font>
                     </div>
                     <div id="graphQuoteYesterday" style="background-color: #202020; color: #FFFF9F; display: none;">

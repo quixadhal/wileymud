@@ -59,8 +59,8 @@ $WILEY_TIME = $mudlist["time"];
                 <a href="http://wileymud.themud.org/~wiley/logpages" alt="Logs" title="Logs">
                     <img src="http://wileymud.themud.org/~wiley/gfx/log.png" width="48" height="48" border="0" />
                 </a>
-                <a href="https://discord.gg/kUduSsJ" alt="Discord" title="Discord">
-                    <img src="http://wileymud.themud.org/~wiley/gfx/discord.png" width="48" height="48" border="0" />
+                <a href="http://wileymud.themud.org/~wiley/pie.php" alt="PIE!" title="PIE!">
+                    <img src="http://wileymud.themud.org/~wiley/gfx/pie_chart.png" width="48" height="48" border="0" />
                 </a>
             </td>
             <td align="right" width="24%">
@@ -102,8 +102,8 @@ $WILEY_TIME = $mudlist["time"];
                 <a href="http://wileymud.themud.org/~wiley/server.php" alt="Server" title="Server">
                     <img src="http://wileymud.themud.org/~wiley/gfx/server_icon.png" width="48" height="48" border="0" />
                 </a>
-                <a href="http://wileymud.themud.org/~wiley/pie.php" alt="PIE!" title="PIE!">
-                    <img src="http://wileymud.themud.org/~wiley/gfx/pie_chart.png" width="48" height="48" border="0" />
+                <a href="https://discord.gg/kUduSsJ" alt="Discord" title="Discord">
+                    <img src="http://wileymud.themud.org/~wiley/gfx/discord.png" width="48" height="48" border="0" />
                 </a>
             </td>
         </tr>

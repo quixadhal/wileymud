@@ -50,16 +50,14 @@ $ICON_WIDTH     = 48;
 $MUDLIST_IMG    = "<img src=\"$MUDLIST_ICON\" width=\"$ICON_WIDTH\" height=\"$ICON_WIDTH\" border=\"0\" />";
 $LOG_IMG        = "<img src=\"$LOG_ICON\" width=\"$ICON_WIDTH\" height=\"$ICON_WIDTH\" border=\"0\" />";
 $DISCORD_IMG    = "<img src=\"$DISCORD_ICON\" width=\"$ICON_WIDTH\" height=\"$ICON_WIDTH\" border=\"0\" />";
-$SERVER_IMG     = "<img align=\"right\" src=\"$SERVER_ICON\" width=\"$ICON_WIDTH\" height=\"$ICON_WIDTH\" border=\"0\" />";
-//$QR_IMG         = "<img align=\"right\" src=\"$QR_ICON\" width=\"$ICON_WIDTH\" height=\"$ICON_WIDTH\" border=\"0\" />";
-$QR_IMG         = "<img align=\"right\" src=\"$QR_ICON\" width=\"53\" height=\"53\" border=\"0\" />";
-$PIE_IMG        = "<img align=\"right\" src=\"$PIE_ICON\" width=\"$ICON_WIDTH\" height=\"$ICON_WIDTH\" border=\"0\" />";
+$SERVER_IMG     = "<img src=\"$SERVER_ICON\" width=\"$ICON_WIDTH\" height=\"$ICON_WIDTH\" border=\"0\" />";
+$QR_IMG         = "<img src=\"$QR_ICON\" width=\"53\" height=\"53\" border=\"0\" />";
+$PIE_IMG        = "<img src=\"$PIE_ICON\" width=\"$ICON_WIDTH\" height=\"$ICON_WIDTH\" border=\"0\" />";
 
 $MUDLIST_LINK   = "<a href=\"$URL_HOME/mudlist.php\" alt=\"Mudlist\" title=\"Mudlist\">$MUDLIST_IMG</a>";
 $LOG_LINK       = "<a href=\"https://themud.org/chanhist.php#Channel=all\" alt=\"Other Logs\" title=\"Other Logs\">$LOG_IMG</a>";
 $DISCORD_LINK   = "<a href=\"https://discord.gg/kUduSsJ\" alt=\"Discord\" title=\"Discord\">$DISCORD_IMG</a>";
 $SERVER_LINK    = "<a href=\"$URL_HOME/server.php\" alt=\"Server\" title=\"Server\">$SERVER_IMG</a>";
-//$QR_LINK        = "<a href=\"https://www.youtube.com/watch?v=PZqx-lMZHM0\" alt=\"リック転がし\" title=\"リック転がし\">$QR_IMG</a>";
 $QR_LINK        = "<a href=\"$QR_BIG_ICON\" alt=\"リック転がし\" title=\"リック転がし\">$QR_IMG</a>";
 $PIE_LINK       = "<a href=\"$URL_HOME/pie.php\" alt=\"PIE!\" title=\"PIE!\">$PIE_IMG</a>";
 
@@ -729,7 +727,7 @@ header("Pragma: no-cache");
                 <td align="left" width="25%">
                     <?php echo $MUDLIST_LINK;?>
                     <?php echo $LOG_LINK;?>
-                    <?php echo $DISCORD_LINK;?>
+                    <?php echo $PIE_LINK;?>
                 </td>
                 <td align="right" width="20%">
                     <?php echo $up_link; ?>
@@ -745,9 +743,9 @@ header("Pragma: no-cache");
                     <?php echo $down_link; ?>
                 </td>
                 <td align="right" width="25%">
-                    <?php echo $PIE_LINK;?>
+                    <span style="vertical-align: top; color: #ccaa00"> <?php echo $local_time; ?> </span>
                     <?php echo $SERVER_LINK;?>
-                    <?php echo $local_time;?>
+                    <?php echo $DISCORD_LINK;?>
                 </td>
             </tr>
         </table>
