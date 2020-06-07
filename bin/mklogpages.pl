@@ -64,7 +64,7 @@ my $QR_IMG          = "<img src=\"$QR_ICON\" width=\"53\" height=\"53\" border=\
 my $PIE_IMG         = "<img src=\"$PIE_ICON\" width=\"$ICON_WIDTH\" height=\"$ICON_WIDTH\" border=\"0\" />";
 
 my $MUDLIST_LINK    = "<a href=\"$URL_HOME/mudlist.php\" alt=\"Mudlist\" title=\"Mudlist\">$MUDLIST_IMG</a>";
-my $LOG_LINK        = "<a href=\"https://themud.org/chanhist.php#Channel=all\" alt=\"Other Logs\" title=\"Other Logs\">$LOG_IMG</a>";
+my $LOG_LINK        = "<a href=\"$LOG_HOME\" alt=\"Logs\" title=\"Logs\">$LOG_IMG</a>";
 my $DISCORD_LINK    = "<a href=\"https://discord.gg/kUduSsJ\" alt=\"Discord\" title=\"Discord\">$DISCORD_IMG</a>";
 my $SERVER_LINK     = "<a href=\"$URL_HOME/server.php\" alt=\"Server\" title=\"Server\">$SERVER_IMG</a>";
 my $QR_LINK         = "<a href=\"$QR_BIG_ICON\" alt=\"リック転がし\" title=\"リック転がし\">$QR_IMG</a>";

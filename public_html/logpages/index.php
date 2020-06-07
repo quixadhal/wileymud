@@ -39,7 +39,7 @@ $TOP_ICON       = "$URL_HOME/gfx/nav/green/top.png";
 $BOTTOM_ICON    = "$URL_HOME/gfx/nav/green/bottom.png";
 
 $MUDLIST_ICON   = "$URL_HOME/gfx/mud.png";
-$LOG_ICON       = "$URL_HOME/gfx/log.png";
+$LOG_ICON       = "$URL_HOME/gfx/other_logs.png";
 $DISCORD_ICON   = "$URL_HOME/gfx/discord.png";
 $SERVER_ICON    = "$URL_HOME/gfx/server_icon.png";
 $QR_ICON        = "$URL_HOME/stuff/qrcode.png";
