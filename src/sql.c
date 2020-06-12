@@ -43,9 +43,11 @@ void sql_connect(struct sql_connection *db) {
         if (PQstatus(db->dbc) != CONNECTION_OK) {
             PQreset(db->dbc);
             if (PQstatus(db->dbc) != CONNECTION_OK) {
-                log_fatal("Database connection lost: %s", PQerrorMessage(db->dbc));
+                log_nosql("Database connection lost: %s", PQerrorMessage(db->dbc));
+                log_nosql("Rebooting in the hope that the database will be back.");
                 PQfinish(db->dbc);
-                proper_exit(MUD_HALT);
+                sleep(10);
+                proper_exit(MUD_REBOOT);
             } else {
                 log_info("Database connection restored.");
             }
@@ -56,9 +58,12 @@ void sql_connect(struct sql_connection *db) {
                 db->name, "wiley", "tardis69");
         db->dbc = PQconnectdb(connect_string);
         if (PQstatus(db->dbc) != CONNECTION_OK) {
-            log_fatal("Cannot open database: %s", PQerrorMessage(db->dbc));
+            log_nosql("Cannot open database: %s", PQerrorMessage(db->dbc));
+            log_nosql("Rebooting in the hope that the database will be back.");
             PQfinish(db->dbc);
-            proper_exit(MUD_HALT);
+            sleep(10);
+            proper_exit(MUD_REBOOT);
+            //proper_exit(MUD_HALT);
         }
     }
 }
