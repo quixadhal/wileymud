@@ -10573,9 +10573,23 @@ bool i3_command_hook(CHAR_DATA *ch, const char *lcommand, const char *argument)
         "%^RESET%^%^MAGENTA%^%^BOLD%^",
     };
     int                                     color = 0;
+    int                                     prev_color = 0;
     int                                     color_dir = 1;
     const char                             *original_argument;
     int                                     emote_hack = 0;
+    int                                     bg_token_count = 10;
+    const char                             *bg_token[] = {
+        "%^RESET%^%^BLACK%^%^B_RED%^",
+        "%^RESET%^%^WHITE%^%^B_RED%^",
+        "%^RESET%^%^BLACK%^%^B_YELLOW%^",
+        "%^RESET%^%^BLACK%^%^B_GREEN%^",
+        "%^RESET%^%^WHITE%^%^B_GREEN%^",
+        "%^RESET%^%^BLACK%^%^B_WHITE%^",
+        "%^RESET%^%^BLACK%^%^B_CYAN%^",
+        "%^RESET%^%^WHITE%^%^B_BLUE%^",
+        "%^RESET%^%^BLACK%^%^B_MAGENTA%^",
+        "%^RESET%^%^WHITE%^%^B_MAGENTA%^",
+    };
 
     if (IS_NPC(ch))
 	return FALSE;
@@ -10681,16 +10695,17 @@ bool i3_command_hook(CHAR_DATA *ch, const char *lcommand, const char *argument)
 	    while (*argument && isspace(*argument)) argument++;
             if (!strncasecmp(argument, "help", 4)) {
                 i3_printf(ch, "%%^GREEN%%^%%^BOLD%%^Channel subcommands available for %s are:%%^RESET%%^\r\n", channel->local_name);
-                i3_printf(ch, "%%^GREEN%%^%%^BOLD%%^    :emote     - Sends message as an \"emote\", which usually prints differently.%%^RESET%%^\r\n");
-                i3_printf(ch, "%%^GREEN%%^%%^BOLD%%^    @social    - Sends message as a \"social\", which we don't really have.%%^RESET%%^\r\n");
-                i3_printf(ch, "%%^GREEN%%^%%^BOLD%%^    /help      - This helpful message.%%^RESET%%^\r\n");
-                i3_printf(ch, "%%^GREEN%%^%%^BOLD%%^    /history   - Shows the last %d messages.%%^RESET%%^\r\n", MAX_I3HISTORY);
+                i3_printf(ch, "%%^GREEN%%^%%^BOLD%%^    :emote      - Sends message as an \"emote\", which usually prints differently.%%^RESET%%^\r\n");
+                i3_printf(ch, "%%^GREEN%%^%%^BOLD%%^    @social     - Sends message as a \"social\", which we don't really have.%%^RESET%%^\r\n");
+                i3_printf(ch, "%%^GREEN%%^%%^BOLD%%^    /help       - This helpful message.%%^RESET%%^\r\n");
+                i3_printf(ch, "%%^GREEN%%^%%^BOLD%%^    /history    - Shows the last %d messages.%%^RESET%%^\r\n", MAX_I3HISTORY);
                 if (I3PERM(ch) >= I3PERM_ADMIN) {
-                    i3_printf(ch, "%%^GREEN%%^%%^BOLD%%^    /log       - Toggle file logging on or off.%%^RESET%%^\r\n");
-                    i3_printf(ch, "%%^GREEN%%^%%^BOLD%%^    /colorize  - Adds annoying colors to the message.%%^RESET%%^\r\n");
-                    i3_printf(ch, "%%^GREEN%%^%%^BOLD%%^    /rainbow   - Adds differently annoying colors to the message.%%^RESET%%^\r\n");
-                    i3_printf(ch, "%%^GREEN%%^%%^BOLD%%^    /hex       - Display message as hexadecimal codes.%%^RESET%%^\r\n");
-                    i3_printf(ch, "%%^GREEN%%^%%^BOLD%%^    /bin       - Display message as binary digits.%%^RESET%%^\r\n");
+                    i3_printf(ch, "%%^GREEN%%^%%^BOLD%%^    /log        - Toggle file logging on or off.%%^RESET%%^\r\n");
+                    i3_printf(ch, "%%^GREEN%%^%%^BOLD%%^    /colorize   - Adds annoying colors to the message.%%^RESET%%^\r\n");
+                    i3_printf(ch, "%%^GREEN%%^%%^BOLD%%^    /rainbow    - Adds differently annoying colors to the message.%%^RESET%%^\r\n");
+                    i3_printf(ch, "%%^GREEN%%^%%^BOLD%%^    /hex        - Display message as hexadecimal codes.%%^RESET%%^\r\n");
+                    i3_printf(ch, "%%^GREEN%%^%%^BOLD%%^    /bin        - Display message as binary digits.%%^RESET%%^\r\n");
+                    i3_printf(ch, "%%^GREEN%%^%%^BOLD%%^    /background - Makes every word have a different background color.%%^RESET%%^\r\n");
                 }
                 return TRUE;
             } else if (I3PERM(ch) >= I3PERM_ADMIN && !strncasecmp(argument, "log", 3)) {
@@ -10720,19 +10735,23 @@ bool i3_command_hook(CHAR_DATA *ch, const char *lcommand, const char *argument)
                 if (*argument && isspace(*argument)) argument++;
                 if (*argument == ':' || *argument == ',') emote_hack = 1;
                 bzero(buffer, MAX_STRING_LENGTH);
-                color = random() % token_count;
+                b = buffer;
+
+                prev_color = color = random() % token_count;
                 strncpy(b, token[color], strlen(token[color]));
                 b += strlen(token[color]);
-                for(s = argument, b = buffer; *s && strlen(b) < (MAX_STRING_LENGTH - 10); s++) {
+                for(s = argument; *s && strlen(b) < (MAX_STRING_LENGTH - 10); s++) {
+                    *b = *s;
+                    b++;
                     if(isspace(*s) || ispunct(*s)) {
-                        *b = *s;
-                        b++;
-                        color = random() % token_count;
+                        for(int pc = 0; pc < 10; pc++) {
+                            color = random() % bg_token_count;
+                            if(color != prev_color)
+                                break;
+                        }
+                        prev_color = color;
                         strncpy(b, token[color], strlen(token[color]));
                         b += strlen(token[color]);
-                    } else {
-                        *b = *s;
-                        b++;
                     }
                 }
                 strcpy(b, "%^RESET%^");
@@ -10748,12 +10767,13 @@ bool i3_command_hook(CHAR_DATA *ch, const char *lcommand, const char *argument)
                 if (*argument && isspace(*argument)) argument++;
                 if (*argument == ':' || *argument == ',') emote_hack = 1;
                 bzero(buffer, MAX_STRING_LENGTH);
+                b = buffer;
 
                 color = 0;
                 color_dir = 1;
                 strncpy(b, token[color], strlen(token[color]));
                 b += strlen(token[color]);
-                for(s = argument, b = buffer; *s && strlen(b) < (MAX_STRING_LENGTH - 10); s++) {
+                for(s = argument; *s && strlen(b) < (MAX_STRING_LENGTH - 10); s++) {
                     if(isspace(*s)) {
                         *b = *s;
                         b++;
@@ -10779,12 +10799,45 @@ bool i3_command_hook(CHAR_DATA *ch, const char *lcommand, const char *argument)
                 } else {
 	            I3_send_channel_message(channel, CH_I3NAME(ch), buffer);
                 }
+            } else if (I3PERM(ch) >= I3PERM_ADMIN && !strncasecmp(argument, "background", 10)) {
+                argument += 10;
+                // Skip the command verb + one space
+                if (*argument && isspace(*argument)) argument++;
+                if (*argument == ':' || *argument == ',') emote_hack = 1;
+                bzero(buffer, MAX_STRING_LENGTH);
+                b = buffer;
+
+                prev_color = color = random() % bg_token_count;
+                strncpy(b, bg_token[color], strlen(bg_token[color]));
+                b += strlen(bg_token[color]);
+                for(s = argument; *s && strlen(b) < (MAX_STRING_LENGTH - 10); s++) {
+                    *b = *s;
+                    b++;
+                    if(isspace(*s)) {
+                        for(int pc = 0; pc < 10; pc++) {
+                            color = random() % bg_token_count;
+                            if(color != prev_color)
+                                break;
+                        }
+                        prev_color = color;
+                        strncpy(b, bg_token[color], strlen(bg_token[color]));
+                        b += strlen(bg_token[color]);
+                    }
+                }
+                strcpy(b, "%^RESET%^");
+                if( emote_hack ) {
+	            I3_send_channel_emote(channel, CH_I3NAME(ch), buffer);
+                    emote_hack = 0;
+                } else {
+	            I3_send_channel_message(channel, CH_I3NAME(ch), buffer);
+                }
             } else if (I3PERM(ch) >= I3PERM_ADMIN && !strncasecmp(argument, "hex", 3)) {
                 argument += 3;
                 // Skip the command verb + one space
                 if (*argument && isspace(*argument)) argument++;
                 if (*argument == ':' || *argument == ',') emote_hack = 1;
                 bzero(buffer, MAX_STRING_LENGTH);
+                b = buffer;
 
                 for(s = argument; *s && strlen(buffer) < (MAX_STRING_LENGTH - 10);  s++) {
                     int ss = (int)*s;
@@ -10805,6 +10858,7 @@ bool i3_command_hook(CHAR_DATA *ch, const char *lcommand, const char *argument)
                 if (*argument && isspace(*argument)) argument++;
                 if (*argument == ':' || *argument == ',') emote_hack = 1;
                 bzero(buffer, MAX_STRING_LENGTH);
+                b = buffer;
 
                 for(s = argument; *s && strlen(buffer) < (MAX_STRING_LENGTH - 10);  s++) {
                     int ss = (int)*s;
