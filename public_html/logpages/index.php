@@ -128,6 +128,23 @@ function now_date($db) {
     return $query_date;
 }
 
+function yesterday_date($db) {
+    $sql = "SELECT date('yesterday') the_date;";
+    try {
+        //$db->beginTransaction();
+        $sth = $db->prepare($sql);
+        $sth->execute();
+        $sth->setFetchMode(PDO::FETCH_ASSOC);
+        $row = $sth->fetch();
+        $query_date = $row['the_date'];
+        //$db->commit();
+    } catch (Exception $e) {
+        //$db->rollback();
+        throw $e;
+    }
+    return $query_date;
+}
+
 function fetch_pinkfish_map($db) {
     $sql = "
         SELECT pinkfish, html
@@ -519,13 +536,16 @@ $hours = load_hours($HOUR_CACHE);
 $db = db_connect();
 
 $this_day = now_date($db);
+$the_other_day = yesterday_date($db);
 $date_counts = load_date_counts($DATE_CACHE);
 // Normally, this is all good, however if there have been no messages
 // yet today, it might be that there really were no messages OR that
 // the cache is out of date, so let's grab it from the database to
 // be sure...
 $today      = $date_counts[array_key_last($date_counts)]['the_date'];
-if( $this_day !== $today ) {
+if( $this_day !== $today  && $the_other_day !== $today ) {
+    // If we have yesterday, just use that, otherwise assume
+    // the cache isn't valid.
     $date_counts = fetch_date_counts($db);
     $json_data = json_encode($date_counts);
     file_put_contents($DATE_CACHE, $json_data);
@@ -709,14 +729,33 @@ header("Pragma: no-cache");
             a:active, a:focus { outline: 0; border: none; -moz-outline-style: none; }
             input, select, textarea { border-color: #101010; background-color: #101010; color: #d0d0d0; }
             input:focus, textarea:focus { border-color: #101010; background-color: #303030; color: #f0f0f0; }
-            #navbar { position: fixed; top: 0; height: 58px; background-color: black; }
-            #content-header { position: fixed; top: 58px; width: 100%; background-color: black; }
+            #navbar { position: fixed; top: 0; z-index: 2; height: 58px; background-color: black; }
+            #content-header { position: fixed; top: 58px; z-index: 1; width: 100%; background-color: black; }
             #content { padding-top: 48px; }
             .overlay-fixed { position: fixed; top: 48px; left: 0px; width: 100%; height: 100%; z-index: 999; opacity: 0.3; pointer-events: none; }
             .overlay-bg { position: fixed; top: 81px; z-index: 998; opacity: 0.15; pointer-events: none; object-fit: cover; width: 100%; height: 100%; left: 50%; transform: translateX(-50%); }
             .unblurred { font-family: monospace; white-space: pre-wrap; }
             .blurry:not(:hover) { filter: blur(3px); font-family: monospace; white-space: pre-wrap; }
             .blurry:hover { font-family: monospace; white-space: pre-wrap; }
+        </style>
+        <style>
+            @keyframes blinking {
+                0% {
+                    opacity: 0;
+                }
+                49% {
+                    opacity: 0;
+                }
+                50% {
+                    opacity: 1;
+                }
+                100% {
+                    opacity: 1;
+                }
+            }
+            .flash_tag {
+                animation: blinking 1.5s infinite;
+            }
         </style>
     </head>
     <body bgcolor="black" text="#d0d0d0" link="#ffffbf" vlink="#ffa040" onload="setup();">

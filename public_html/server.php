@@ -73,7 +73,8 @@ $graphics['speedtest_raw'] = $isLocal ? "gfx/speedtest_raw_4478672602.png" : "ht
 $graphics['speedtest_qos'] = $isLocal ? "gfx/speedtest_qos_4478667111.png" : "http://www.speedtest.net/result/4478667111.png";
 $graphics['speedtest_new'] = $isLocal ? "gfx/wave_g_test2.png" : "gfx/wave_g_test2.png";
 #$graphics['speedtest_current'] = $isLocal ? "gfx/speedtest_8811654706.png" : "gfx/speedtest_8811654706.png";
-$graphics['speedtest_current'] = $isLocal ? "gfx/speedtest_9404657351.png" : "http://www.speedtest.net/result/9404657351.png";
+#$graphics['speedtest_current'] = $isLocal ? "gfx/speedtest_9404657351.png" : "http://www.speedtest.net/result/9404657351.png";
+$graphics['speedtest_current'] = $isLocal ? "gfx/speedtest_9586026813.png" : "http://www.speedtest.net/result/9586026813.png";
 
 $MUDLIST_FILE   = "/home/wiley/public_html/mudlist.json";
 $BACKGROUND_DIR = "/home/wiley/public_html/gfx/wallpaper/";
@@ -135,7 +136,7 @@ $BACKGROUND_IMG = "<img class=\"overlay-bg\" src=\"$URL_HOME/gfx/wallpaper/$BACK
             .blurry:not(:hover) { filter: blur(3px); font-family: monospace; white-space: pre-wrap; }
             .blurry:hover { font-family: monospace; white-space: pre-wrap; }
         </style>
-        <title>lenin inside quixadhal.ddns.net</title>
+        <title>Old Crusty MUD Server</title>
     </head>
     <body bgcolor="black" text="#d0d0d0" link="#ffffbf" vlink="#ffa040">
         <?php echo $BACKGROUND_IMG; ?>
@@ -200,7 +201,7 @@ $BACKGROUND_IMG = "<img class=\"overlay-bg\" src=\"$URL_HOME/gfx/wallpaper/$BACK
         <table id="content" width="99%" align="center">
             <tr>
                 <td width="75%" align="left">
-                    <h1>lenin inside quixadhal.ddns.net</h1>
+                    <h1>Old Crusty MUD Server</h1>
                     <hr />
                     <h3>Hardware purchased:</h3>
  54.99                   <a href="http://www.newegg.com/Product/Product.aspx?Item=N82E16813157335">ASRock B75M-DGS LGA 1155 Intel B75 Micro ATX Intel Motherboard</a><br />

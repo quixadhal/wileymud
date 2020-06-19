@@ -558,8 +558,12 @@ $things = array('today', 'yesterday', 'week', 'month', 'year', 'all');
                 //$result = cache_stuff($db, 'today', 'speaker');
                 $result = $all_data['today']['speaker'];
                 if(count($result) > 0) {
+                    $total = 0;
+                    foreach ($result as $r) {
+                        $total += $r['count'];
+                    }
                 ?>
-                    options['title'] = "Today's Jibber-Jabber (<?php echo $date_info['today'];?>)";
+                    options['title'] = "Today's <?php echo $total; ?> Jibber-Jabbers (<?php echo $date_info['today'];?>)";
                     var data = google.visualization.arrayToDataTable([
                     <?php
                     printf("[ '%s', '%s' ],\n", 'Speaker', 'Count');
@@ -590,8 +594,12 @@ if( $DEBUG ) {
                 //$result = cache_stuff($db, 'today', 'channel');
                 $result = $all_data['today']['channel'];
                 if(count($result) > 0) {
+                    $total = 0;
+                    foreach ($result as $r) {
+                        $total += $r['count'];
+                    }
                 ?>
-                    options['title'] = "Today's Jibber-Jabber (<?php echo $date_info['today'];?>)";
+                    options['title'] = "Today's <?php echo $total; ?> Jibber-Jabbers (<?php echo $date_info['today'];?>)";
                     var data = google.visualization.arrayToDataTable([
                     <?php
                     printf("[ '%s', '%s' ],\n", 'Channel', 'Count');
@@ -621,8 +629,12 @@ if( $DEBUG ) {
                 //$result = cache_stuff($db, 'yesterday', 'speaker');
                 $result = $all_data['yesterday']['speaker'];
                 if(count($result) > 0) {
+                    $total = 0;
+                    foreach ($result as $r) {
+                        $total += $r['count'];
+                    }
                 ?>
-                    options['title'] = "Yesterday's Rubbish (<?php echo $date_info['yesterday'];?>)";
+                    options['title'] = "Yesterday's <?php echo $total; ?> Bits of Rubbish (<?php echo $date_info['yesterday'];?>)";
                     var data = google.visualization.arrayToDataTable([
                     <?php
                     printf("[ '%s', '%s' ],\n", 'Speaker', 'Count');
@@ -653,8 +665,12 @@ if( $DEBUG ) {
                 //$result = cache_stuff($db, 'yesterday', 'channel');
                 $result = $all_data['yesterday']['channel'];
                 if(count($result) > 0) {
+                    $total = 0;
+                    foreach ($result as $r) {
+                        $total += $r['count'];
+                    }
                 ?>
-                    options['title'] = "Yesterday's Rubbish (<?php echo $date_info['yesterday'];?>)";
+                    options['title'] = "Yesterday's <?php echo $total; ?> Bits of Rubbish (<?php echo $date_info['yesterday'];?>)";
                     var data = google.visualization.arrayToDataTable([
                     <?php
                     printf("[ '%s', '%s' ],\n", 'Channel', 'Count');
@@ -684,8 +700,12 @@ if( $DEBUG ) {
                 //$result = cache_stuff($db, 'week', 'speaker');
                 $result = $all_data['week']['speaker'];
                 if(count($result) > 0) {
+                    $total = 0;
+                    foreach ($result as $r) {
+                        $total += $r['count'];
+                    }
                 ?>
-                    options['title'] = "The Week of Stupidity (<?php echo $date_info['week'] . ' to ' . $date_info['today'];?>)";
+                    options['title'] = "The Week of <?php echo $total; ?> Idiotic Ramblings (<?php echo $date_info['week'] . ' to ' . $date_info['today'];?>)";
                     var data = google.visualization.arrayToDataTable([
                     <?php
                     printf("[ '%s', '%s' ],\n", 'Speaker', 'Count');
@@ -716,8 +736,12 @@ if( $DEBUG ) {
                 //$result = cache_stuff($db, 'week', 'channel');
                 $result = $all_data['week']['channel'];
                 if(count($result) > 0) {
+                    $total = 0;
+                    foreach ($result as $r) {
+                        $total += $r['count'];
+                    }
                 ?>
-                    options['title'] = "The Week of Stupidity (<?php echo $date_info['week'] . ' to ' . $date_info['today'];?>)";
+                    options['title'] = "The Week of <?php echo $total; ?> Idiotic Ramblings (<?php echo $date_info['week'] . ' to ' . $date_info['today'];?>)";
                     var data = google.visualization.arrayToDataTable([
                     <?php
                     printf("[ '%s', '%s' ],\n", 'Channel', 'Count');
@@ -747,8 +771,12 @@ if( $DEBUG ) {
                 //$result = cache_stuff($db, 'month', 'speaker');
                 $result = $all_data['month']['speaker'];
                 if(count($result) > 0) {
+                    $total = 0;
+                    foreach ($result as $r) {
+                        $total += $r['count'];
+                    }
                 ?>
-                    options['title'] = "A Whole Month of Nonsense? (<?php echo $date_info['month'] . ' to ' . $date_info['today'];?>)";
+                    options['title'] = "A Month with <?php echo $total; ?> Nonsensical Opinions? (<?php echo $date_info['month'] . ' to ' . $date_info['today'];?>)";
                     var data = google.visualization.arrayToDataTable([
                     <?php
                     printf("[ '%s', '%s' ],\n", 'Speaker', 'Count');
@@ -779,8 +807,12 @@ if( $DEBUG ) {
                 //$result = cache_stuff($db, 'month', 'channel');
                 $result = $all_data['month']['channel'];
                 if(count($result) > 0) {
+                    $total = 0;
+                    foreach ($result as $r) {
+                        $total += $r['count'];
+                    }
                 ?>
-                    options['title'] = "A Whole Month of Nonsense? (<?php echo $date_info['month'] . ' to ' . $date_info['today'];?>)";
+                    options['title'] = "A Month with <?php echo $total; ?> Nonsensical Opinions? (<?php echo $date_info['month'] . ' to ' . $date_info['today'];?>)";
                     var data = google.visualization.arrayToDataTable([
                     <?php
                     printf("[ '%s', '%s' ],\n", 'Channel', 'Count');
@@ -810,8 +842,12 @@ if( $DEBUG ) {
                     //$result = cache_stuff($db, 'year', 'speaker');
                     $result = $all_data['year']['speaker'];
                     if(count($result) > 0) {
+                    $total = 0;
+                    foreach ($result as $r) {
+                        $total += $r['count'];
+                    }
                 ?>
-                    options['title'] = "What a Horrible Year it's Been... (<?php echo $date_info['year'] . ' to ' . $date_info['today'];?>)";
+                    options['title'] = "What a Horrible Year it's Been... <?php echo $total; ?> open sores. (<?php echo $date_info['year'] . ' to ' . $date_info['today'];?>)";
                     var data = google.visualization.arrayToDataTable([
                     <?php
                     printf("[ '%s', '%s' ],\n", 'Speaker', 'Count');
@@ -842,8 +878,12 @@ if( $DEBUG ) {
                 //$result = cache_stuff($db, 'year', 'channel');
                 $result = $all_data['year']['channel'];
                 if(count($result) > 0) {
+                    $total = 0;
+                    foreach ($result as $r) {
+                        $total += $r['count'];
+                    }
                 ?>
-                    options['title'] = "What a Horrible Year it's Been... (<?php echo $date_info['year'] . ' to ' . $date_info['today'];?>)";
+                    options['title'] = "What a Horrible Year it's Been... <?php echo $total; ?> open sores. (<?php echo $date_info['year'] . ' to ' . $date_info['today'];?>)";
                     var data = google.visualization.arrayToDataTable([
                     <?php
                     printf("[ '%s', '%s' ],\n", 'Channel', 'Count');
@@ -874,8 +914,12 @@ if( $DEBUG ) {
                 //$result = cache_stuff($db, 'all', 'speaker');
                 $result = $all_data['all']['speaker'];
                 if(count($result) > 0) {
+                    $total = 0;
+                    foreach ($result as $r) {
+                        $total += $r['count'];
+                    }
                 ?>
-                    options['title'] = "What Have You DONE??? (<?php echo $date_info['all'] . ' to ' . $date_info['today'];?>)";
+                    options['title'] = "What Have You DONE??? <?php echo $total; ?> Wastes of Time. (<?php echo $date_info['all'] . ' to ' . $date_info['today'];?>)";
                     var data = google.visualization.arrayToDataTable([
                     <?php
                     printf("[ '%s', '%s' ],\n", 'Speaker', 'Count');
@@ -911,8 +955,12 @@ if( $DEBUG ) {
                 //$result = cache_stuff($db, 'all', 'channel');
                 $result = $all_data['all']['channel'];
                 if(count($result) > 0) {
+                    $total = 0;
+                    foreach ($result as $r) {
+                        $total += $r['count'];
+                    }
                 ?>
-                    options['title'] = "What Have You DONE??? (<?php echo $date_info['all'] . ' to ' . $date_info['today'];?>)";
+                    options['title'] = "What Have You DONE??? <?php echo $total; ?> Wastes of Time. (<?php echo $date_info['all'] . ' to ' . $date_info['today'];?>)";
                     var data = google.visualization.arrayToDataTable([
                     <?php
                     printf("[ '%s', '%s' ],\n", 'Channel', 'Count');
@@ -1126,38 +1174,38 @@ if( $DEBUG ) {
                             <?php
                                 $someone    = $all_data['quotes']['today']['speaker'] ? $all_data['quotes']['today']['speaker'] : "Nobody";
                                 $something  = $all_data['quotes']['today']['message'] ? $all_data['quotes']['today']['message'] : "a damn thing.";
-                                echo "$someone said \"$something\"";
+                                echo "$someone said &#x300C;$something&#x300D;";
                             ?>
                         </font>
                     </div>
                     <div id="graphQuoteYesterday" style="background-color: #202020; color: #FFFF9F; display: none;">
                         <font size="-1">
                             <?php echo $all_data['quotes']['yesterday']['speaker']; ?> said
-                            "<?php echo $all_data['quotes']['yesterday']['message']; ?>"
+                            &#x300C;<?php echo $all_data['quotes']['yesterday']['message']; ?>&#x300D;
                         </font>
                     </div>
                     <div id="graphQuoteWeek" style="background-color: #202020; color: #9FFF9F; display: none;">
                         <font size="-1">
                             <?php echo $all_data['quotes']['week']['speaker']; ?> said
-                            "<?php echo $all_data['quotes']['week']['message']; ?>"
+                            &#x300C;<?php echo $all_data['quotes']['week']['message']; ?>&#x300D;
                         </font>
                     </div>
                     <div id="graphQuoteMonth" style="background-color: #202020; color: #9F9FFF; display: none;">
                         <font size="-1">
                             <?php echo $all_data['quotes']['month']['speaker']; ?> said
-                            "<?php echo $all_data['quotes']['month']['message']; ?>"
+                            &#x300C;<?php echo $all_data['quotes']['month']['message']; ?>&#x300D;
                         </font>
                     </div>
                     <div id="graphQuoteYear" style="background-color: #202020; color: #9FFFFF; display: none;">
                         <font size="-1">
                             <?php echo $all_data['quotes']['year']['speaker']; ?> said
-                            "<?php echo $all_data['quotes']['year']['message']; ?>"
+                            &#x300C;<?php echo $all_data['quotes']['year']['message']; ?>&#x300D;
                         </font>
                     </div>
                     <div id="graphQuoteAll" style="background-color: #202020; color: #FFFFFF; display: none;">
                         <font size="-1">
                             <?php echo $all_data['quotes']['all']['speaker']; ?> said
-                            "<?php echo $all_data['quotes']['all']['message']; ?>"
+                            &#x300C;<?php echo $all_data['quotes']['all']['message']; ?>&#x300D;
                         </font>
                     </div>
                 </div>
