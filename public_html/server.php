@@ -190,6 +190,9 @@ $BACKGROUND_IMG = "<img class=\"overlay-bg\" src=\"$URL_HOME/gfx/wallpaper/$BACK
                 <td align="right" width="25%">
                     <span style="vertical-align: top; color: #ccaa00"> <?php echo $WILEY_TIME; ?> </span>
                         <img src="http://wileymud.themud.org/~wiley/gfx/server_icon.png" width="48" height="48" border="0" style="opacity: 0.2; background: rgba(255,0,0,0.25);" />
+                    <a href="https://github.com/quixadhal/wileymud" alt="Source" title="Source">
+                        <img src="http://wileymud.themud.org/~wiley/gfx/github1600.png" width="48" height="48" border="0" />
+                    </a>
                     <a href="https://discord.gg/kUduSsJ" alt="Discord" title="Discord">
                         <img src="http://wileymud.themud.org/~wiley/gfx/discord.png" width="48" height="48" border="0" />
                     </a>

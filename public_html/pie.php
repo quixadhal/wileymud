@@ -1059,6 +1059,9 @@ if( $DEBUG ) {
                 <a href="http://wileymud.themud.org/~wiley/server.php" alt="Server" title="Server">
                     <img src="http://wileymud.themud.org/~wiley/gfx/server_icon.png" width="48" height="48" border="0" />
                 </a>
+                <a href="https://github.com/quixadhal/wileymud" alt="Source" title="Source">
+                    <img src="http://wileymud.themud.org/~wiley/gfx/github1600.png" width="48" height="48" border="0" />
+                </a>
                 <a href="https://discord.gg/kUduSsJ" alt="Discord" title="Discord">
                     <img src="http://wileymud.themud.org/~wiley/gfx/discord.png" width="48" height="48" border="0" />
                 </a>
