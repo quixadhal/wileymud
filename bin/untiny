@@ -7,7 +7,7 @@ use strict;
 #binmode STDOUT, ":encoding(utf8)";
 use Time::HiRes qw(sleep time alarm);
 use POSIX qw(strftime);
-use Encode qw(encode_utf8);
+use Encode qw(encode encode_utf8);
 no warnings 'utf8';
 use English;
 use Data::Dumper;
@@ -840,6 +840,9 @@ sub handle_url {
     my $output = format_output($style, $source, $given_host, $origin_host,
                                $tinyurl, $id, $channel, $title, $duration);
     my $message = pinkfish_to( $output, $style );
+    my $utf8 = encode("UTF-8", $message);
+    #my $entities = encode_entities($utf8);
+    $message = $utf8;
 
     if(defined $sql_row) {
         $db->begin_work();

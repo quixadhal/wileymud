@@ -622,6 +622,54 @@ header("Pragma: no-cache");
         <script src="<?php echo $NAVBAR;?>"></script>
 
         <script language="javascript">
+            function col_click(ob) {
+                var url = window.location.href;
+                var id = ob.parentNode.id;
+                url = url.replace(/#.*$/, "") + "#" + id;
+
+                // Our navbar screws up anchors a bit... we need to subtract
+                // 5 rows so we're not "under" the navbar when the page loads.
+                //
+                // The problem is, we don't want to do this if we're still on
+                // the first scroll set of rows, otherwise it will always push
+                // the top few off....
+                //
+                // How do I find out how many rows are actually visible on
+                // YOUR screen???
+                //var n = id.match(/\d+/)[0];
+                //if (n >= 30) {
+                //    n -= 5;
+                //    id = "row_" + n;
+                //    url = url.replace(/#.*$/, "") + "#" + id;
+                //} else {
+                //    url = url.replace(/#.*$/, "") + "#content";
+                //}
+                //console.log("URL: " + url);
+
+                if (window.clipboardData && window.clipboardData.setData ) {
+                    clipboardData.setData("Text", url);
+                    //console.log("Clipboard set to " + url);
+                } else if (document.queryCommandSupported && document.queryCommandSupported("copy")) {
+                    var textarea = document.createElement("textarea");
+                    textarea.textContent = url;
+                    textarea.style.position = "fixed";
+                    document.body.appendChild(textarea);
+                    textarea.select();
+                    var result;
+                    try {
+                        result = document.execCommand("copy");
+                        //console.log("Copied: " + url);
+                    } catch (ex) {
+                        //console.error("Copy failed: ", ex);
+                    } finally {
+                        document.body.removeChild(textarea);
+                        //console.log("Result: " + result);
+                    }
+                } else {
+                    //console.log("No way to do this!");
+                }
+            }
+
             function debug_local_time() {
                 var hour_map = [
 		    '#555555',
@@ -720,7 +768,12 @@ header("Pragma: no-cache");
                 debug_local_time();
                 localize_rows();
                 // This if for the live page ONLY, pointless for static pages.
-                scroll_bottom();
+                if (!window.location.hash) {
+                    //console.log("bottom");
+                    scroll_bottom();
+                } else {
+                    //console.log("top");
+                }
                 setTimeout(function () { location.reload(true); }, 30 * 60 * 1000);
             }
         </script>
@@ -734,7 +787,7 @@ header("Pragma: no-cache");
             input:focus, textarea:focus { border-color: #101010; background-color: #303030; color: #f0f0f0; }
             #navbar { position: fixed; top: 0; z-index: 2; height: 58px; background-color: black; }
             #content-header { position: fixed; top: 58px; z-index: 1; width: 100%; background-color: black; }
-            #content { padding-top: 48px; }
+            #content { padding-top: 58px; margin-top: -10px; }
             .overlay-fixed { position: fixed; top: 48px; left: 0px; width: 100%; height: 100%; z-index: 999; opacity: 0.3; pointer-events: none; }
             .overlay-bg { position: fixed; top: 81px; z-index: 998; opacity: 0.15; pointer-events: none; object-fit: cover; width: 100%; height: 100%; left: 50%; transform: translateX(-50%); }
             .unblurred { font-family: monospace; white-space: pre-wrap; }
@@ -855,10 +908,10 @@ header("Pragma: no-cache");
         $message = "<span class=\"$span_class\">$message</span>";
 ?>
         <tr id="row_<?php echo $counter;?>" style="display:none">
-            <td bgcolor="<?php echo $bg_color;?>"><?php echo $date_col;?></td>
-            <td bgcolor="<?php echo $bg_color;?>"><?php echo $time_col;?></span></td>
-            <td bgcolor="<?php echo $bg_color;?>"><?php echo $channel_col;?></span></td>
-            <td bgcolor="<?php echo $bg_color;?>"><?php echo $speaker_col;?></span></td>
+            <td onclick="col_click(this)" bgcolor="<?php echo $bg_color;?>"><?php echo $date_col;?></td>
+            <td onclick="col_click(this)" bgcolor="<?php echo $bg_color;?>"><?php echo $time_col;?></span></td>
+            <td onclick="col_click(this)" bgcolor="<?php echo $bg_color;?>"><?php echo $channel_col;?></span></td>
+            <td onclick="col_click(this)" bgcolor="<?php echo $bg_color;?>"><?php echo $speaker_col;?></span></td>
             <td bgcolor="<?php echo $bg_color;?>"><?php echo $message;?></span></td>
         </tr>
 <?php

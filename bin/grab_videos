@@ -16,7 +16,7 @@ if (-f "$destination" ) {
     $destination = join '/', @bits[0..($#bits-1)];
 }
 
-my $output_format = "$destination/%(season_number)02d.%(episode_number)02d %(title)s.%(ext)s";
+my $output_format = "$destination/%(season_number)02d.%(episode_number)03d %(title)s.%(ext)s";
 
 sub get_url_list {
     my $url_list = shift;
@@ -118,9 +118,8 @@ for (my $index = 0; $index < (scalar @urls); $index++) {
     my $url = $urls[$index];
     next unless $url =~ /^http/i;
 
-    printf "Grabbing %02d of %02d ...%s\n", ($index + 1), (scalar @urls),
-        substr($url, -40);
-    sleep 2 + int(rand(5));
+    printf "Grabbing %02d of %02d ...%s\n",
+        ($index + 1), (scalar @urls), substr($url, -40);
 
     my $target = get_target_filename($url, $index, $output_format);
     my $found = -f "$target";
@@ -131,10 +130,18 @@ for (my $index = 0; $index < (scalar @urls); $index++) {
         next;
     }
 
+    my $nap = 20 + int(rand(50));
+    printf "Sleeping for %d seconds...\n", $nap;
+    sleep $nap;
+
     printf "Format for %s: ", substr($target, -40);
     my $format = get_format($url, $index);
     printf "%s.\n", (defined $format) ? $format : "not found";
     next unless (defined $format);
+
+    $nap = 20 + int(rand(50));
+    printf "Sleeping for %d seconds...\n", $nap;
+    sleep $nap;
 
     printf "Fetching ...%s ", substr($target, -40);
     system("youtube-dl", "--quiet", "--ignore-config", "-f",
@@ -143,6 +150,8 @@ for (my $index = 0; $index < (scalar @urls); $index++) {
 
     $found = -f "$target";
     update_url_list($url_list, \@urls, $index, $found, $target);
-    printf "%s\n", ($found ? ($GREEN . "done!" . $RESET) : ($RED . "failed." . $RESET));
+    printf "%s\n", ($found ? ($GREEN . "done!" . $RESET)
+                           : ($RED . "failed." . $RESET));
+    printf "----\n";
 }
 

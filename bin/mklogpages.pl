@@ -54,6 +54,7 @@ my $SERVER_ICON     = "$URL_HOME/gfx/server_icon.png";
 my $QR_ICON         = "$URL_HOME/stuff/qrcode.png";
 my $QR_BIG_ICON     = "$URL_HOME/stuff/qrcode_big.png";
 my $PIE_ICON        = "$URL_HOME/gfx/pie_chart.png";
+my $GITHUB_ICON     = "$URL_HOME/gfx/github1600.png";
 my $ICON_WIDTH      = 48;
 
 my $MUDLIST_IMG     = "<img src=\"$MUDLIST_ICON\" width=\"$ICON_WIDTH\" height=\"$ICON_WIDTH\" border=\"0\" />";
@@ -62,6 +63,7 @@ my $DISCORD_IMG     = "<img src=\"$DISCORD_ICON\" width=\"$ICON_WIDTH\" height=\
 my $SERVER_IMG      = "<img src=\"$SERVER_ICON\" width=\"$ICON_WIDTH\" height=\"$ICON_WIDTH\" border=\"0\" />";
 my $QR_IMG          = "<img src=\"$QR_ICON\" width=\"53\" height=\"53\" border=\"0\" />";
 my $PIE_IMG         = "<img src=\"$PIE_ICON\" width=\"$ICON_WIDTH\" height=\"$ICON_WIDTH\" border=\"0\" />";
+my $GITHUB_IMG      = "<img src=\"$GITHUB_ICON\" width=\"$ICON_WIDTH\" height=\"$ICON_WIDTH\" border=\"0\" />";
 
 my $MUDLIST_LINK    = "<a href=\"$URL_HOME/mudlist.php\" alt=\"Mudlist\" title=\"Mudlist\">$MUDLIST_IMG</a>";
 my $LOG_LINK        = "<a href=\"$LOG_HOME\" alt=\"Logs\" title=\"Logs\">$LOG_IMG</a>";
@@ -69,6 +71,7 @@ my $DISCORD_LINK    = "<a href=\"https://discord.gg/kUduSsJ\" alt=\"Discord\" ti
 my $SERVER_LINK     = "<a href=\"$URL_HOME/server.php\" alt=\"Server\" title=\"Server\">$SERVER_IMG</a>";
 my $QR_LINK         = "<a href=\"$QR_BIG_ICON\" alt=\"リック転がし\" title=\"リック転がし\">$QR_IMG</a>";
 my $PIE_LINK        = "<a href=\"$URL_HOME/pie.php\" alt=\"PIE!\" title=\"PIE!\">$PIE_IMG</a>";
+my $GITHUB_LINK     = "<a href=\"https://github.com/quixadhal/wileymud\" alt=\"Source\" title=\"Source\">$GITHUB_IMG</a>";
 
 my $OVERLAY_ICON    = "$URL_HOME/gfx/archive_stamp.png";
 my $OVERLAY_IMG     = "<img class=\"overlay-fixed\" src=\"$OVERLAY_ICON\" />";
@@ -95,6 +98,7 @@ my $do_speakers     = 1;
 my $do_update       = 1;
 my $do_navbar       = 1;
 my $do_pages        = 1;
+my $do_dates        = 1;
 my $do_cache        = 1;
 my $pause           = 1;
 my $use_live        = 0;
@@ -126,6 +130,7 @@ long options:
     --speakers          - Generate i3.speakers MUD file.  Default is yes.
     --navbar            - Generate navigation data.  Default is yes.
     --update            - Update speaker and channel color data.  Default is yes.
+    --dates             - Save SQL date information to cache file.  Default is yes.
     --cache             - Save cached data to JSON files.  Default is yes.
     --pause             - Pause for 5 seconds before starting.  Default is yes.
     --debug             - This changes the next-link button for the next to the last
@@ -188,6 +193,7 @@ sub display_options {
     printf "We will %sgenerate navigation data.\n", $do_navbar ? "" : "NOT ";
     printf "We will %sgenerate I3 speaker data.\n", $do_speakers ? "" : "NOT ";
     printf "We will %supdate speaker and channel color data.\n", $do_update ? "" : "NOT ";
+    printf "We will %ssave SQL cached date information.\n", $do_dates ? "" : "NOT ";
     printf "We will %ssave JSON cached data.\n", $do_cache ? "" : "NOT ";
     printf "We will %spause 5 seconds before starting%s\n", ($pause ? "" : "NOT "), ($pause ? "..............." : ".");
 }
@@ -206,6 +212,7 @@ GetOptions(
     'live!'             => \$use_live,
     'debug!'            => \$debug_page,
     'pages!'            => \$do_pages,
+    'dates!'            => \$do_dates,
     'cache!'            => \$do_cache,
     'json!'             => \$do_json,
     'censor!'           => \$do_censor,
@@ -473,8 +480,16 @@ sub update_all_channels {
     print "done.\n";
 }
 
-sub update_cache {
+sub update_date_cache {
     my $date_counts = shift or die "No date_count data provided.";
+
+    local $| = 1;
+    print "Saving cached versions of SQL date information...";
+    save_date_cache($date_counts, $DATE_CACHE);
+    print "done.\n";
+}
+
+sub update_cache {
     my $pinkfish_map = shift or die "No pinkfish_map data provided.";
     my $hours = shift or die "No hours data provided.";
     my $channels = shift or die "No channels data provided.";
@@ -482,7 +497,6 @@ sub update_cache {
 
     local $| = 1;
     print "Saving cached versions of SQL data...";
-    save_date_cache($date_counts, $DATE_CACHE);
     save_json_cache($pinkfish_map, $PINKFISH_CACHE);
     save_json_cache($hours, $HOUR_CACHE);
     save_json_cache($channels, $CHANNEL_CACHE);
@@ -1115,6 +1129,36 @@ sub generate_html_page {
         <script src="$NAVBAR"></script>
 
         <script type="text/javascript">
+            function col_click(ob) {
+                var url = window.location.href;
+                var id = ob.parentNode.id;
+                url = url.replace(/#.*\$/, "") + "#" + id;
+                //console.log("URL: " + url);
+
+                if (window.clipboardData && window.clipboardData.setData ) {
+                    clipboardData.setData("Text", url);
+                    //console.log("Clipboard set to " + url);
+                } else if (document.queryCommandSupported && document.queryCommandSupported("copy")) {
+                    var textarea = document.createElement("textarea");
+                    textarea.textContent = url;
+                    textarea.style.position = "fixed";
+                    document.body.appendChild(textarea);
+                    textarea.select();
+                    var result;
+                    try {
+                        result = document.execCommand("copy");
+                        //console.log("Copied: " + url);
+                    } catch (ex) {
+                        //console.error("Copy failed: ", ex);
+                    } finally {
+                        document.body.removeChild(textarea);
+                        //console.log("Result: " + result);
+                    }
+                } else {
+                    //console.log("No way to do this!");
+                }
+            }
+
             function localize_rows() {
                 // 0 -> 23
                 var hour_map = [
@@ -1172,7 +1216,12 @@ sub generate_html_page {
                 setup_rows();
                 localize_rows();
                 // This if for the live page ONLY, pointless for static pages.
-                //scroll_bottom();
+                if (!window.location.hash) {
+                    //console.log("bottom");
+                    //scroll_bottom();
+                } else {
+                    //console.log("top");
+                }
                 //setTimeout(function () { location.reload(true); }, 30 * 60 * 1000);
             }
         </script>
@@ -1184,14 +1233,33 @@ sub generate_html_page {
             a:active, a:focus { outline: 0; border: none; -moz-outline-style: none; }
             input, select, textarea { border-color: #101010; background-color: #101010; color: #d0d0d0; }
             input:focus, textarea:focus { border-color: #101010; background-color: #303030; color: #f0f0f0; }
-            #navbar { position: fixed; top: 0; height: 58px; background-color: $page_background; }
-            #content-header { position: fixed; top: 58px; width: 100%; background-color: $page_background; }
-            #content { padding-top: 48px; }
+            #navbar { position: fixed; top: 0; z-index: 2; height: 58px; background-color: $page_background; }
+            #content-header { position: fixed; top: 58px; z-index: 1; width: 100%; background-color: $page_background; }
+            #content { padding-top: 58px; margin-top: -10px; }
             .overlay-fixed { position: fixed; top: 48px; left: 0px; width: 100%; height: 100%; z-index: 999; opacity: 0.3; pointer-events: none; }
             .overlay-bg { position: fixed; top: 81px; z-index: 998; opacity: 0.15; pointer-events: none; object-fit: cover; width: 100%; height: 100%; left: 50%; transform: translateX(-50%); }
             .unblurred { font-family: monospace; white-space: pre-wrap; }
             .blurry:not(:hover) { filter: blur(3px); font-family: monospace; white-space: pre-wrap; }
             .blurry:hover { font-family: monospace; white-space: pre-wrap; }
+        </style>
+        <style>
+            \@keyframes blinking {
+                0% {
+                    opacity: 0;
+                }
+                49% {
+                    opacity: 0;
+                }
+                50% {
+                    opacity: 1;
+                }
+                100% {
+                    opacity: 1;
+                }
+            }
+            .flash_tag {
+                animation: blinking 1.5s infinite;
+            }
         </style>
     </head>
     <body bgcolor="$page_background" text="#d0d0d0" link="#ffffbf" vlink="#ffa040" onload="setup();">
@@ -1250,6 +1318,7 @@ EOM
                     <td align="right" width="20%">
                         <span style="vertical-align: top; color: #555555"> --:-- PDT </span>
                         $SERVER_LINK
+                        $GITHUB_LINK
                         $DISCORD_LINK
                     </td>
                 </tr>
@@ -1293,10 +1362,10 @@ EOM
                     my $channel = $row->{channel}; # text only channel name
 
                     printf FP "<tr id=\"row_%d\" style=\"display:none\">\n", $counter;
-                    printf FP "<td bgcolor=\"%s\">%s</td>\n", $bg_color, $row->{the_date};
-                    printf FP "<td bgcolor=\"%s\">%s%s%s</td>\n", $bg_color, $hour_html, $row->{the_time}, "</span>";
-                    printf FP "<td bgcolor=\"%s\">%s%s%s</td>\n", $bg_color, $channel_html, $row->{channel}, "</span>";
-                    printf FP "<td bgcolor=\"%s\">%s%s@%s%s</td>\n", $bg_color, $speaker_html, $row->{speaker}, $row->{mud}, "</span>";
+                    printf FP "<td onclick=\"col_click(this)\" bgcolor=\"%s\">%s</td>\n", $bg_color, $row->{the_date};
+                    printf FP "<td onclick=\"col_click(this)\" bgcolor=\"%s\">%s%s%s</td>\n", $bg_color, $hour_html, $row->{the_time}, "</span>";
+                    printf FP "<td onclick=\"col_click(this)\" bgcolor=\"%s\">%s%s%s</td>\n", $bg_color, $channel_html, $row->{channel}, "</span>";
+                    printf FP "<td onclick=\"col_click(this)\" bgcolor=\"%s\">%s%s@%s%s</td>\n", $bg_color, $speaker_html, $row->{speaker}, $row->{mud}, "</span>";
 
                     my $message = $row->{message};
                     $message = "" if !defined $message;
@@ -1495,7 +1564,8 @@ sub main {
     my $channels = fetch_channels($DATABASE);
     my $speakers = fetch_speakers($DATABASE);
 
-    update_cache($date_counts, $pinkfish_map, $hours, $channels, $speakers) if $do_cache;
+    update_date_cache($date_counts) if $do_dates;
+    update_cache($pinkfish_map, $hours, $channels, $speakers) if $do_cache;
     generate_navbar_script($DATABASE, $date_counts) if $do_navbar;
     dump_speakers($speakers) if $do_speakers;
 
