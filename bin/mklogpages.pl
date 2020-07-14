@@ -107,6 +107,9 @@ my $do_json         = 1;
 my $do_censor       = 0;
 my $thread_count    = 0;
 my $partition_size  = 200;
+my $dark_mode       = 1;
+
+my %COLORS          = ();
 
 sub do_help {
     local $| = 1;
@@ -152,6 +155,8 @@ long options:
                           used when doing a query and sorting the results, since
                           pulling back all 5000 entries seems to be a bit slower
                           than not using threads at all.
+    --dark              - Dark mode is the normal color scheme.  If you wanted
+                          blinding white backgrounds, you can specify !dark.
 EOM
 #    --live              - Use the live database for the most current data.  Default
 #                          is no.
@@ -181,6 +186,7 @@ sub display_options {
         printf "We will %soutput HTML pages.\n", $do_pages ? "" : "NOT ";
         printf "We will %sexport JSON data for each page.\n", $do_json ? "" : "NOT ";
         printf "We will %scensor messages on free_speech.\n", $do_censor ? "" : "NOT ";
+        printf "We will generate %s pages.\n", $dark_mode ? "dark" : "light ";
         printf "We will %s threads.\n", $thread_count > 1 ? (sprintf "use %d", $thread_count) : "NOT use";
         if( $thread_count > 1 ) {
             printf "We will partition our results into %d day chunks.\n", $partition_size;
@@ -218,7 +224,43 @@ GetOptions(
     'censor!'           => \$do_censor,
     'threads=i'         => \$thread_count,
     'partition=i'       => \$partition_size,
+    'dark!'             => \$dark_mode,
 );
+
+if ($dark_mode) {
+    %COLORS = (
+        page_background             => "black",
+        page_text                   => "#D0D0D0",
+        page_link                   => "#FFFFBF",
+        page_vlink                  => "#FFA040",
+        odd_row                     => "black",
+        even_row                    => "#1F1F1F",
+        faint_text                  => "#1F1F1F",
+        header_text                 => "#DDDDDD",
+        input                       => "#d0d0d0",
+        input_border                => "#101010",
+        input_background            => "#101010",
+        selected_input              => "#f0f0f0",
+        selected_input_border       => "#101010",
+        selected_input_background   => "#303030",
+    );
+} else {
+    %COLORS = (
+        page_background             => "white",
+        page_text                   => "#303030",
+        page_link                   => "#000040",
+        page_vlink                  => "#0050C0",
+        odd_row                     => "white",
+        even_row                    => "#E0E0E0",
+        header_text                 => "#222222",
+        input                       => "#d0d0d0",
+        input_border                => "#101010",
+        input_background            => "#101010",
+        selected_input              => "#f0f0f0",
+        selected_input_border       => "#101010",
+        selected_input_background   => "#303030",
+    );
+}
 
 sub open_postgres_db {
     my $DB_NAME = shift;
@@ -1231,10 +1273,10 @@ sub generate_html_page {
             a { text-decoration:none; }
             a:hover { text-decoration:underline; }
             a:active, a:focus { outline: 0; border: none; -moz-outline-style: none; }
-            input, select, textarea { border-color: #101010; background-color: #101010; color: #d0d0d0; }
-            input:focus, textarea:focus { border-color: #101010; background-color: #303030; color: #f0f0f0; }
-            #navbar { position: fixed; top: 0; z-index: 2; height: 58px; background-color: $page_background; }
-            #content-header { position: fixed; top: 58px; z-index: 1; width: 100%; background-color: $page_background; }
+            input, select, textarea { border-color: $COLORS{"input_border"}; background-color: $COLORS{"input_background"}; color: $COLORS{"input"}; }
+            input:focus, textarea:focus { border-color: $COLORS{"selected_input_border"}; background-color: $COLORS{"selected_input_background"}; color: $COLORS{"selected_input"}; }
+            #navbar { position: fixed; top: 0; z-index: 2; height: 58px; background-color: $COLORS{'page_background'}; }
+            #content-header { position: fixed; top: 58px; z-index: 1; width: 100%; background-color: $COLORS{'page_background'}; }
             #content { padding-top: 58px; margin-top: -10px; }
             .overlay-fixed { position: fixed; top: 48px; left: 0px; width: 100%; height: 100%; z-index: 999; opacity: 0.3; pointer-events: none; }
             .overlay-bg { position: fixed; top: 81px; z-index: 998; opacity: 0.15; pointer-events: none; object-fit: cover; width: 100%; height: 100%; left: 50%; transform: translateX(-50%); }
@@ -1262,7 +1304,11 @@ sub generate_html_page {
             }
         </style>
     </head>
-    <body bgcolor="$page_background" text="#d0d0d0" link="#ffffbf" vlink="#ffa040" onload="setup();">
+    <body bgcolor="$COLORS{'page_background'}"
+          text="$COLORS{'page_text'}"
+          link="$COLORS{'page_link'}"
+          vlink="$COLORS{'page_vlink'}"
+          onload="setup();">
         $background_image
         $overlay_image
         <table id="navbar" width="99%" align="center">
@@ -1325,20 +1371,20 @@ EOM
             </table>
             <table id="content-header-outside" width="99%" align="center">
                 <tr id="content-header">
-                    <td id="dateheader" align="left" width="80px" style="color: #DDDDDD; min-width: 80px;">Date</td>
-                    <td id="timeheader" align="left" width="60px" style="color: #DDDDDD; min-width: 40px;">Time</td>
-                    <td id="channelheader" align="left" width="80px" style="color: #DDDDDD; min-width: 100px;">Channel</td>
-                    <td id="speakerheader" align="left" width="200px" style="color: #DDDDDD; min-width: 200px;">Speaker</td>
+                    <td id="dateheader" align="left" width="80px" style="color: $COLORS{"header_text"}; min-width: 80px;">Date</td>
+                    <td id="timeheader" align="left" width="60px" style="color: $COLORS{"header_text"}; min-width: 40px;">Time</td>
+                    <td id="channelheader" align="left" width="80px" style="color: $COLORS{"header_text"}; min-width: 100px;">Channel</td>
+                    <td id="speakerheader" align="left" width="200px" style="color: $COLORS{"header_text"}; min-width: 200px;">Speaker</td>
                     <td align="left">&nbsp;</td>
                 </tr>
             </table>
             <table id="content" width="99%" align="center">
                 <thead>
                 <tr>
-                    <th id="dateheader" align="left" width="80px" style="color: #DDDDDD; min-width: 80px;">Date</th>
-                    <th id="timeheader" align="left" width="60px" style="color: #DDDDDD; min-width: 40px;">Time</th>
-                    <th id="channelheader" align="left" width="80px" style="color: #DDDDDD; min-width: 100px;">Channel</th>
-                    <th id="speakerheader" align="left" width="200px" style="color: #DDDDDD; min-width: 200px;">Speaker</th>
+                    <td id="dateheader" align="left" width="80px" style="color: $COLORS{"header_text"}; min-width: 80px;">Date</td>
+                    <td id="timeheader" align="left" width="60px" style="color: $COLORS{"header_text"}; min-width: 40px;">Time</td>
+                    <td id="channelheader" align="left" width="80px" style="color: $COLORS{"header_text"}; min-width: 100px;">Channel</td>
+                    <td id="speakerheader" align="left" width="200px" style="color: $COLORS{"header_text"}; min-width: 200px;">Speaker</td>
                     <th align="left">&nbsp;</th>
                 </tr>
                 </thead>
@@ -1354,7 +1400,7 @@ EOM
                     # Message -- fixed font
 
                     # Emit each data row as a table row
-                    my $bg_color = ($counter % 2) ? "#000000" : "#1F1F1F";
+                    my $bg_color = ($counter % 2) ? $COLORS{"odd_row"} : $COLORS{"even_row"};
 
                     my $hour_html = $row->{hour_html} || "--**--NULL--**--";
                     my $channel_html = $row->{channel_html} || $channels->{default}{html} || "--**--NULL--**--";

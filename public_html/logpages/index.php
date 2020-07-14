@@ -11,6 +11,40 @@ global $PG_USERNAME;
 global $PG_PASSWORD;
 global $URL_ONLY;
 global $CENSOR;
+global $COLORS;
+
+$DARK_MODE      = 1;
+$COLORS         = array();
+if( $DARK_MODE ) {
+    $COLORS["page_background"] = "black";
+    $COLORS["page_text"] = "#D0D0D0";
+    $COLORS["page_link"] = "#FFFFBF";
+    $COLORS["page_vlink"] = "#FFA040";
+    $COLORS["odd_row"] = "black";
+    $COLORS["even_row"] = "#1F1F1F";
+    $COLORS["faint_text"] = "#1F1F1F";
+    $COLORS["header_text"] = "#DDDDDD";
+    $COLORS["input"] = "#d0d0d0";
+    $COLORS["input_border"] = "#101010";
+    $COLORS["input_background"] = "#101010";
+    $COLORS["selected_input"] = "#f0f0f0";
+    $COLORS["selected_input_border"] = "#101010";
+    $COLORS["selected_input_background"] = "#303030";
+} else {
+    $COLORS["page_background"] = "white";
+    $COLORS["page_text"] = "#303030";
+    $COLORS["page_link"] = "#000040";
+    $COLORS["page_vlink"] = "#0050C0";
+    $COLORS["odd_row"] = "white";
+    $COLORS["even_row"] = "#E0E0E0";
+    $COLORS["header_text"] = "#222222";
+    $COLORS["input"] = "#d0d0d0";
+    $COLORS["input_border"] = "#101010";
+    $COLORS["input_background"] = "#101010";
+    $COLORS["selected_input"] = "#f0f0f0";
+    $COLORS["selected_input_border"] = "#101010";
+    $COLORS["selected_input_background"] = "#303030";
+}
 
 $URL_ONLY       = (isset($_GET["url"]) || isset($_POST["url"])) ? true : false;
 //$CENSOR         = (isset($_GET["censor"]) || isset($_POST["censor"])) ? false : true;
@@ -783,10 +817,10 @@ header("Pragma: no-cache");
             a { text-decoration:none; }
             a:hover { text-decoration:underline; }
             a:active, a:focus { outline: 0; border: none; -moz-outline-style: none; }
-            input, select, textarea { border-color: #101010; background-color: #101010; color: #d0d0d0; }
-            input:focus, textarea:focus { border-color: #101010; background-color: #303030; color: #f0f0f0; }
-            #navbar { position: fixed; top: 0; z-index: 2; height: 58px; background-color: black; }
-            #content-header { position: fixed; top: 58px; z-index: 1; width: 100%; background-color: black; }
+            input, select, textarea { border-color: <?php echo $COLORS["input_border"];?>; background-color: <?php echo $COLORS["input_background"];?>; color: <?php echo $COLORS["input"];?>; }
+            input:focus, textarea:focus { border-color: <?php echo $COLORS["selected_input_border"];?>; background-color: <?php echo $COLORS["selected_input_background"];?>; color: <?php echo $COLORS["selected_input"];?>; }
+            #navbar { position: fixed; top: 0; z-index: 2; height: 58px; background-color: <?php echo $COLORS['page_background']; ?>; }
+            #content-header { position: fixed; top: 58px; z-index: 1; width: 100%; background-color: <?php echo $COLORS['page_background']; ?>; }
             #content { padding-top: 58px; margin-top: -10px; }
             .overlay-fixed { position: fixed; top: 48px; left: 0px; width: 100%; height: 100%; z-index: 999; opacity: 0.3; pointer-events: none; }
             .overlay-bg { position: fixed; top: 81px; z-index: 998; opacity: 0.15; pointer-events: none; object-fit: cover; width: 100%; height: 100%; left: 50%; transform: translateX(-50%); }
@@ -814,7 +848,11 @@ header("Pragma: no-cache");
             }
         </style>
     </head>
-    <body bgcolor="black" text="#d0d0d0" link="#ffffbf" vlink="#ffa040" onload="setup();">
+    <body bgcolor="<?php echo $COLORS['page_background']; ?>"
+          text="<?php echo $COLORS['page_text']; ?>"
+          link="<?php echo $COLORS['page_link']; ?>"
+          vlink="<?php echo $COLORS['page_vlink']; ?>"
+          onload="setup();">
         <?php echo $BACKGROUND_IMG; ?>
         <!-- <?php echo $OVERLAY_IMG; ?> -->
         <table id="navbar" width="99%" align="center">
@@ -847,20 +885,20 @@ header("Pragma: no-cache");
         </table>
         <table id="content-header-outside" width="99%" align="center">
             <tr id="content-header">
-                <td id="dateheader" align="left" width="80px" style="color: #DDDDDD; min-width: 80px;">Date</td>
-                <td id="timeheader" align="left" width="60px" style="color: #DDDDDD; min-width: 40px;">Time</td>
-                <td id="channelheader" align="left" width="80px" style="color: #DDDDDD; min-width: 100px;">Channel</td>
-                <td id="speakerheader" align="left" width="200px" style="color: #DDDDDD; min-width: 200px;">Speaker</td>
+                <td id="dateheader" align="left" width="80px" style="color: <?php echo $COLORS["header_text"];?>; min-width: 80px;">Date</td>
+                <td id="timeheader" align="left" width="60px" style="color: <?php echo $COLORS["header_text"];?>; min-width: 40px;">Time</td>
+                <td id="channelheader" align="left" width="80px" style="color: <?php echo $COLORS["header_text"];?>; min-width: 100px;">Channel</td>
+                <td id="speakerheader" align="left" width="200px" style="color: <?php echo $COLORS["header_text"];?>; min-width: 200px;">Speaker</td>
                 <td align="left">&nbsp;</td>
             </tr>
         </table>
         <table id="content" width="99%" align="center">
             <thead>
             <tr>
-                <th id="dateheader" align="left" width="80px" style="color: #DDDDDD; min-width: 80px;">Date</th>
-                <th id="timeheader" align="left" width="60px" style="color: #DDDDDD; min-width: 40px;">Time</th>
-                <th id="channelheader" align="left" width="80px" style="color: #DDDDDD; min-width: 100px;">Channel</th>
-                <th id="speakerheader" align="left" width="200px" style="color: #DDDDDD; min-width: 200px;">Speaker</th>
+                <th id="dateheader" align="left" width="80px" style="color: <?php echo $COLORS["header_text"];?>; min-width: 80px;">Date</th>
+                <th id="timeheader" align="left" width="60px" style="color: <?php echo $COLORS["header_text"];?>; min-width: 40px;">Time</th>
+                <th id="channelheader" align="left" width="80px" style="color: <?php echo $COLORS["header_text"];?>; min-width: 100px;">Channel</th>
+                <th id="speakerheader" align="left" width="200px" style="color: <?php echo $COLORS["header_text"];?>; min-width: 200px;">Speaker</th>
                 <th align="left">&nbsp;</th>
             </tr>
             </thead>
@@ -868,7 +906,7 @@ header("Pragma: no-cache");
 <?php
     $counter = 0;
     foreach ($page as $row) {
-        $bg_color     = ($counter % 2) ? "#000000" : "#1F1F1F";
+        $bg_color     = ($counter % 2) ? $COLORS["odd_row"] : $COLORS["even_row"];
 
         $hour_html    = $row['hour_html'];
         $channel_html = $row['channel_html'];
@@ -880,6 +918,7 @@ header("Pragma: no-cache");
         if( empty($speaker_html) || is_null($speaker_html) ) {
             $speaker_html = $speakers['default']['html'];
         }
+        // And here is where we could intercept colors for "light mode"
 
         $date_col     = $row['the_date'];
         $time_col     = sprintf("%s%s", $hour_html, $row['the_time']);
@@ -918,10 +957,10 @@ header("Pragma: no-cache");
         $counter++;
     }
     $time_end = microtime(true); $time_spent = $time_end - $time_start;
-    $bg_color = ($counter % 2) ? "#000000" : "#1F1F1F";
+    $bg_color = ($counter % 2) ? $COLORS["odd_row"] : $COLORS["even_row"];
 ?>
         <tr id="row_<?php echo $counter;?>" style="display:none">
-            <td colspan="4" align="right" bgcolor="<?php echo $bg_color;?>"><span id="yourTime" style="color: #1F1F1F; display:none">&nbsp;</span></td>
+            <td colspan="4" align="right" bgcolor="<?php echo $bg_color;?>"><span id="yourTime" style="color: <?php echo $COLORS["faint_text"];?>; display:none">&nbsp;</span></td>
             <td align="right" bgcolor="<?php echo $bg_color;?>"><?php printf("%7.3f seconds",$time_spent);?></td>
         </tr>
             </tbody>
