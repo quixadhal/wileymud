@@ -93,7 +93,7 @@ sub get_target_filename {
             "-o", "$output_format", "$url")) {
         printf "Cannot open youtube-dl to get target filename for %02d!\n",
             ($index + 1);
-        return $filename;
+        return undef;
     }
     $filename = <$fh>;
     close $fh;
@@ -118,13 +118,13 @@ for (my $index = 0; $index < (scalar @urls); $index++) {
     my $url = $urls[$index];
     next unless $url =~ /^http/i;
 
-    printf "Grabbing %02d of %02d ...%s\n",
+    printf "Grabbing %02d of %02d... %s\n",
         ($index + 1), (scalar @urls), substr($url, -40);
 
     my $target = get_target_filename($url, $index, $output_format);
     my $found = -f "$target";
 
-    if ($found) {
+    if ($target && $found) {
         printf "${YELLOW}Skipping %s, which already exists!$RESET\n", $target;
         update_url_list($url_list, \@urls, $index, $found, $target);
         next;
@@ -134,24 +134,30 @@ for (my $index = 0; $index < (scalar @urls); $index++) {
     printf "Sleeping for %d seconds...\n", $nap;
     sleep $nap;
 
-    printf "Format for %s: ", substr($target, -40);
+    printf "Format for %s: ", (defined $target) ?
+                              substr($target, -40) : substr($url, -40);
     my $format = get_format($url, $index);
     printf "%s.\n", (defined $format) ? $format : "not found";
     next unless (defined $format);
 
-    $nap = 20 + int(rand(50));
+    $nap = int(rand(10));
     printf "Sleeping for %d seconds...\n", $nap;
     sleep $nap;
 
-    printf "Fetching ...%s ", substr($target, -40);
+    printf "Fetching... %s ", (defined $target) ?
+                              substr($target, -40) : substr($url, -40);
     system("youtube-dl", "--quiet", "--ignore-config", "-f",
         "$format", "-o", "$output_format", "$url");
     system("sync");
 
-    $found = -f "$target";
-    update_url_list($url_list, \@urls, $index, $found, $target);
-    printf "%s\n", ($found ? ($GREEN . "done!" . $RESET)
-                           : ($RED . "failed." . $RESET));
+    if (!defined $target) {
+        printf "%s\n", ($YELLOW . "unknown status!" . $RESET);
+    } else {
+        $found = -f "$target";
+        update_url_list($url_list, \@urls, $index, $found, $target);
+        printf "%s\n", ($found ? ($GREEN . "done!" . $RESET)
+                               : ($RED . "failed." . $RESET));
+    }
     printf "----\n";
 }
 

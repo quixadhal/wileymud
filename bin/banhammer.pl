@@ -62,7 +62,11 @@ foreach my $filename (@logs) {
             /\[client\s+(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})\:\d+\]/;
             my ($ip) = ($1);
             next if !defined $ip;
-            next if $ip =~ /^172\.92\.143\.166/; # This is my external address
+            next if $ip =~ /^172\.92\.143\.166/;    # This is my external address
+            next if $ip =~ /^45\.64\.56\.66/;       # *Kelly I3 router
+            next if $ip =~ /^97\.107\.133\.86/;     # *dalet I3 router
+            next if $ip =~ /^204\.209\.44\.3/;      # *i4 I3 router
+            next if $ip =~ /^136\.144\.155\.250/;   # *wpr I3 router
             next if $ip =~ /^192\.168\.0/;
             next if $ip =~ /^127\.0/;
             $error_count{$ip}++;
@@ -70,6 +74,18 @@ foreach my $filename (@logs) {
         close FP;
     }
 }
+
+# select ip from bans where reason = 'HTTP Spam' order by ip;
+#
+#     const char *sql_ip   = "INSERT INTO bans ( ban_type, expires, ip, set_by, reason )
+#                           "VALUES ('IP', to_timestamp($1),$2,$3,$4) "
+#                           "ON CONFLICT ON CONSTRAINT bans_type_ip "
+#                           "DO UPDATE SET updated = now(), "
+#                           "              enabled = true, "
+#                           "              ban_type = 'IP', "
+#                           "              expires = to_timestamp($1), "
+#                           "              name = NULL, ip = $2, "
+#                           "              set_by = $3, reason = $4;";
 
 system "/usr/sbin/ipset create blacklist hash:ip hashsize 4096";
 

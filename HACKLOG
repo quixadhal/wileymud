@@ -427,3 +427,5 @@ apt install units
 cpan
     install Imager::QRCode
 
+apt install curl
+

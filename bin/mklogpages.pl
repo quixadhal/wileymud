@@ -1275,7 +1275,7 @@ sub generate_html_page {
             a:active, a:focus { outline: 0; border: none; -moz-outline-style: none; }
             input, select, textarea { border-color: $COLORS{"input_border"}; background-color: $COLORS{"input_background"}; color: $COLORS{"input"}; }
             input:focus, textarea:focus { border-color: $COLORS{"selected_input_border"}; background-color: $COLORS{"selected_input_background"}; color: $COLORS{"selected_input"}; }
-            #navbar { position: fixed; top: 0; z-index: 2; height: 58px; background-color: $COLORS{'page_background'}; }
+            #navbar { position: fixed; top: 0; z-index: 2; height: 60px; width: 100%; background-color: $COLORS{'page_background'}; }
             #content-header { position: fixed; top: 58px; z-index: 1; width: 100%; background-color: $COLORS{'page_background'}; }
             #content { padding-top: 58px; margin-top: -10px; }
             .overlay-fixed { position: fixed; top: 48px; left: 0px; width: 100%; height: 100%; z-index: 999; opacity: 0.3; pointer-events: none; }
