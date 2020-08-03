@@ -1,0 +1,115 @@
+html, body {
+    table-layout: fixed;
+    max-width: 100%;
+    overflow-x: hidden;
+    word-wrap: break-word;
+    text-overflow: ellipsis;
+    background-color: black;
+    color: #D0D0D0;
+}
+table {
+    table-layout: fixed;
+    max-width: 99%;
+    overflow-x: hidden;
+    word-wrap: break-word;
+    text-overflow: ellipsis;
+}
+a {
+    text-decoration:none;
+}
+a:link {
+    color: #FFFFBF;
+}
+a:visited {
+    color: #FFA040;
+}
+a:hover {
+    text-decoration:underline;
+}
+a:active, a:focus {
+    outline: 0;
+    border: none;
+    -moz-outline-style: none;
+}
+input, select, textarea {
+    border-color: #101010;
+    background-color: #101010;
+    color: #D0D0D0;
+}
+input:focus, textarea:focus {
+    border-color: #101010;
+    background-color: #303030;
+    color: #F0F0F0;
+}
+#navbar {
+    position: fixed;
+    top: 0;
+    z-index: 2;
+    height: 60px;
+    width: 100%;
+    background-color: black;
+}
+#content-header {
+    position: fixed;
+    top: 58px;
+    z-index: 1;
+    width: 100%;
+    background-color: black;
+}
+#content {
+    padding-top: 58px;
+    margin-top: -10px;
+}
+.overlay-fixed {
+    position: fixed;
+    top: 48px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    z-index: 999;
+    opacity: 0.3;
+    pointer-events: none;
+}
+.overlay-bg {
+    position: fixed;
+    top: 81px;
+    z-index: 998;
+    opacity: 0.15;
+    pointer-events: none;
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+}
+.unblurred {
+    font-family: monospace;
+    white-space: pre-wrap;
+}
+.blurry:not(:hover) {
+    filter: blur(3px);
+    font-family: monospace;
+    white-space: pre-wrap;
+}
+.blurry:hover {
+    font-family: monospace;
+    white-space: pre-wrap;
+}
+
+@keyframes blinking {
+    0% {
+        opacity: 0;
+    }
+    49% {
+        opacity: 0;
+    }
+    50% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+.flash_tag {
+    animation: blinking 1.5s infinite;
+}

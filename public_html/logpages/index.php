@@ -98,7 +98,8 @@ $QR_LINK        = "<a href=\"$QR_BIG_ICON\" alt=\"リック転がし\" title=\"�
 $PIE_LINK       = "<a href=\"$URL_HOME/pie.php\" alt=\"PIE!\" title=\"PIE!\">$PIE_IMG</a>";
 $GITHUB_LINK    = "<a href=\"https://github.com/quixadhal/wileymud\" alt=\"Source\" title=\"Source\">$GITHUB_IMG</a>";
 
-$OVERLAY_ICON   = "$URL_HOME/gfx/archive_stamp.png";
+//$OVERLAY_ICON   = "$URL_HOME/gfx/archive_stamp.png";
+$OVERLAY_ICON   = "$URL_HOME/gfx/NA.png";
 $OVERLAY_IMG    = "<img class=\"overlay-fixed\" src=\"$OVERLAY_ICON\" />";
 
 $JQUI_CSS       = "$LOG_HOME/jquery/jquery-ui.css";
@@ -108,6 +109,8 @@ $JQUI           = "$LOG_HOME/jquery/jquery-ui.js";
 $MOMENT         = "$LOG_HOME/moment.js";
 $MOMENT_TZ      = "$LOG_HOME/moment-timezone.js";
 $NAVBAR         = "$LOG_HOME/navbar.js";
+$LOGPAGE_FUNC   = "$LOG_HOME/logpage_func.js";
+$LOGPAGE_STYLE  = "$LOG_HOME/logpage.css";
 
 $PINKFISH_CACHE = "$PAGE_DIR/pinkfish.json";
 $CHANNEL_CACHE  = "$PAGE_DIR/channels.json";
@@ -299,6 +302,27 @@ function load_speakers($filename) {
     }
     print("No $filename exists.\n");
     return null;
+}
+
+function fetch_today_count($db) {
+    $sql = "
+        SELECT      COUNT(*) count
+        FROM        i3log
+        WHERE       date(local) = date('now');
+    ";
+    try {
+        //$db->beginTransaction();
+        $sth = $db->prepare($sql);
+        $sth->execute();
+        $sth->setFetchMode(PDO::FETCH_ASSOC);
+        $row = $sth->fetch();
+        $count = $row['count'] || 0;
+        //$db->commit();
+    } catch (Exception $e) {
+        //$db->rollback();
+        throw $e;
+    }
+    return $count;
 }
 
 function fetch_date_counts($db) {
@@ -570,28 +594,44 @@ $hours = load_hours($HOUR_CACHE);
 //$channels = fetch_channels($db);
 //$speakers = fetch_speakers($db);
 
+$date_counts = load_date_counts($DATE_CACHE);
+
 $db = db_connect();
 
-$this_day = now_date($db);
-$the_other_day = yesterday_date($db);
-$date_counts = load_date_counts($DATE_CACHE);
-// Normally, this is all good, however if there have been no messages
-// yet today, it might be that there really were no messages OR that
-// the cache is out of date, so let's grab it from the database to
-// be sure...
-$today      = $date_counts[array_key_last($date_counts)]['the_date'];
-if( $this_day !== $today  && $the_other_day !== $today ) {
-    // If we have yesterday, just use that, otherwise assume
-    // the cache isn't valid.
-    $date_counts = fetch_date_counts($db);
-    $json_data = json_encode($date_counts);
-    file_put_contents($DATE_CACHE, $json_data);
+$today = now_date($db);
+$yesterday = yesterday_date($db);
+$no_data = 0;
+
+// So, we occasionally run into the situation where nobody has said
+// anything since midnight.  Normally, $today is what we want
+// to call today, and show live data, and then $yesterday will
+// be the previous-page link to go to yesterday's static content.
+//
+// To check this, we can look at the last entry in date_counts.  If
+// it matches $today, then we have cached data for today and things
+// are normal.  If it matches $yesterday, then we have nothing
+// for today, which might mean we haven't updated the cache OR we
+// really have nothing for today yet.
+
+$last_date = $date_counts[array_key_last($date_counts)]['the_date'];
+if( $last_date !== $today ) {
+    // Maybe the cache hasn't been updated yet, let's check!
+    $today_count = fetch_today_count($db);
+    if( $today_count > 0 ) {
+        $date_counts = fetch_date_counts($db);
+        $json_data = json_encode($date_counts);
+        file_put_contents($DATE_CACHE, $json_data);
+        $last_date = $date_counts[array_key_last($date_counts)]['the_date'];
+    } else {
+        // Nope, there really is no data here...
+        $no_data = 1;
+    }
 }
 
 $date_keys = array_keys($date_counts);
 $first_date = $date_counts[array_key_first($date_counts)]['the_date'];
-$today      = $date_counts[array_key_last($date_counts)]['the_date'];
-$yesterday  = $date_counts[$date_keys[array_search($today, $date_keys)-1]]['the_date'];
+$last_date  = $date_counts[array_key_last($date_counts)]['the_date'];
+$yester_date = $date_counts[$date_keys[array_search($last_date, $date_keys)-1]]['the_date'];
 
 // A link to the very top
 $top_link = sprintf("<img id=\"scroll_top_button\" src=\"%s\" width=\"%d\" height=\"%d\" border=\"0\" style=\"opacity: 0.5;\" onclick=\"scroll_top()\" />\n",
@@ -604,6 +644,7 @@ $first_link = sprintf("<a href=\"%s\" alt=\"%s\" title=\"%s\"><img src=\"%s\" wi
     page_url($date_counts, $first_date), $first_date, $first_date, $BEGIN_ICON, $ICON_WIDTH, $ICON_WIDTH);
 $prev_link = sprintf("<a href=\"%s\" alt=\"%s\" title=\"%s\"><img src=\"%s\" width=\"%d\" height=\"%d\" border=\"0\" /></a>\n",
     page_url($date_counts, $yesterday), $yesterday, $yesterday, $PREV_ICON, $ICON_WIDTH, $ICON_WIDTH);
+    //page_url($date_counts, $yester_date), $yester_date, $yester_date, $PREV_ICON, $ICON_WIDTH, $ICON_WIDTH);
 // but there is no going forward
 $next_link = sprintf("<img src=\"%s\" width=\"%d\" height=\"%d\" border=\"0\" style=\"opacity: 0.5;\" />\n",
     $NEXT_ICON, $ICON_WIDTH, $ICON_WIDTH);
@@ -617,7 +658,8 @@ $bottom_link = sprintf("<img id=\"scroll_bottom_button\" src=\"%s\" width=\"%d\"
     $BOTTOM_ICON, $ICON_WIDTH, $ICON_WIDTH);
 
 $page = $URL_ONLY ? fetch_urls_by_date($db, $today) : fetch_page_by_date($db, $today);
-//$page = load_page_by_date($db, $today, $pinkfish_map, $hours, $channels, $speakers);
+//$page = $URL_ONLY ? fetch_urls_by_date($db, $last_date) : fetch_page_by_date($db, $last_date);
+//$page = load_page_by_date($db, $last_date, $pinkfish_map, $hours, $channels, $speakers);
 
 $local_refresh = strftime('%H:%M %Z');
 $local_hour = (int)substr($local_refresh, 0, 2);
@@ -654,149 +696,9 @@ header("Pragma: no-cache");
         <script src="<?php echo $MOMENT;?>""></script>
         <script src="<?php echo $MOMENT_TZ;?>""></script>
         <script src="<?php echo $NAVBAR;?>"></script>
+        <script src="<?php echo $LOGPAGE_FUNC;?>"></script>
 
         <script language="javascript">
-            function col_click(ob) {
-                var url = window.location.href;
-                var id = ob.parentNode.id;
-                url = url.replace(/#.*$/, "") + "#" + id;
-
-                // Our navbar screws up anchors a bit... we need to subtract
-                // 5 rows so we're not "under" the navbar when the page loads.
-                //
-                // The problem is, we don't want to do this if we're still on
-                // the first scroll set of rows, otherwise it will always push
-                // the top few off....
-                //
-                // How do I find out how many rows are actually visible on
-                // YOUR screen???
-                //var n = id.match(/\d+/)[0];
-                //if (n >= 30) {
-                //    n -= 5;
-                //    id = "row_" + n;
-                //    url = url.replace(/#.*$/, "") + "#" + id;
-                //} else {
-                //    url = url.replace(/#.*$/, "") + "#content";
-                //}
-                //console.log("URL: " + url);
-
-                if (window.clipboardData && window.clipboardData.setData ) {
-                    clipboardData.setData("Text", url);
-                    //console.log("Clipboard set to " + url);
-                } else if (document.queryCommandSupported && document.queryCommandSupported("copy")) {
-                    var textarea = document.createElement("textarea");
-                    textarea.textContent = url;
-                    textarea.style.position = "fixed";
-                    document.body.appendChild(textarea);
-                    textarea.select();
-                    var result;
-                    try {
-                        result = document.execCommand("copy");
-                        //console.log("Copied: " + url);
-                    } catch (ex) {
-                        //console.error("Copy failed: ", ex);
-                    } finally {
-                        document.body.removeChild(textarea);
-                        //console.log("Result: " + result);
-                    }
-                } else {
-                    //console.log("No way to do this!");
-                }
-            }
-
-            function debug_local_time() {
-                var hour_map = [
-		    '#555555',
-		    '#555555',
-		    '#555555',
-		    '#555555',
-		    '#bb0000',
-		    '#bb0000',
-		    '#bbbb00',
-		    '#bbbb00',
-		    '#ffff55',
-		    '#ffff55',
-		    '#00bb00',
-		    '#00bb00',
-		    '#55ff55',
-		    '#55ff55',
-		    '#bbbbbb',
-		    '#bbbbbb',
-		    '#55ffff',
-		    '#55ffff',
-		    '#00bbbb',
-		    '#00bbbb',
-		    '#5555ff',
-		    '#5555ff',
-		    '#0000bb',
-		    '#0000bb'
-                ];
-                var yourTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-                var yourLocale = (navigator.languages && navigator.languages.length) ?
-                    navigator.languages[0] : navigator.language;
-
-                var momentObj = moment().tz(yourTimeZone);
-                var momentStr = momentObj.format('YYYY-MM-DD HH:mm:ss z');
-                var momentHour = momentObj.hour();
-
-                var yt = document.getElementById("yourTime");
-                yt.innerHTML = "[" + yourLocale + " " + yourTimeZone + "] " + momentStr;
-                yt.style.color = hour_map[momentHour];
-            }
-
-            function localize_rows() {
-		// 0 -> 23
-                var hour_map = [
-		    '#555555',
-		    '#555555',
-		    '#555555',
-		    '#555555',
-		    '#bb0000',
-		    '#bb0000',
-		    '#bbbb00',
-		    '#bbbb00',
-		    '#ffff55',
-		    '#ffff55',
-		    '#00bb00',
-		    '#00bb00',
-		    '#55ff55',
-		    '#55ff55',
-		    '#bbbbbb',
-		    '#bbbbbb',
-		    '#55ffff',
-		    '#55ffff',
-		    '#00bbbb',
-		    '#00bbbb',
-		    '#5555ff',
-		    '#5555ff',
-		    '#0000bb',
-		    '#0000bb'
-                ];
-
-                var yourTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-                var yourLocale = (navigator.languages && navigator.languages.length) ?
-                    navigator.languages[0] : navigator.language;
-
-                var rows = $(`[id^=row_]`);
-                for( var i = 0; i < rows.length-1; i++ ) {
-                    var tds = rows[i].getElementsByTagName("td");
-                    var oldDate = tds[0].innerHTML;
-                    var tdspan = tds[1].getElementsByTagName("span");
-                    var oldTime = tdspan[0].innerHTML;
-
-                    var oldMoment = moment.tz(oldDate + " " + oldTime, "America/Los_Angeles");
-                    var newMoment = oldMoment.clone().tz(yourTimeZone);
-                    //var newMoment = oldMoment.clone().tz("Asia/Tokyo");
-                    var newDate = newMoment.format('YYYY-MM-DD');
-                    var newTime = newMoment.format('HH:mm:ss');
-                    var newHour = newMoment.hour();
-
-                    tds[0].innerHTML = newDate;
-                    tdspan[0].innerHTML = newTime;
-                    tdspan[0].style.color = hour_map[newHour];
-                }
-            }
-
             function setup() {
                 setup_rows();
                 debug_local_time();
@@ -811,50 +713,39 @@ header("Pragma: no-cache");
                 setTimeout(function () { location.reload(true); }, 30 * 60 * 1000);
             }
         </script>
+        <link rel="stylesheet" href="<?php echo $LOGPAGE_STYLE;?>">
         <style>
-            html, body { table-layout: fixed; max-width: 100%; overflow-x: hidden; word-wrap: break-word; text-overflow: ellipsis; }
-            table { table-layout: fixed; max-width: 99%; overflow-x: hidden; word-wrap: break-word; text-overflow: ellipsis; }
-            a { text-decoration:none; }
-            a:hover { text-decoration:underline; }
-            a:active, a:focus { outline: 0; border: none; -moz-outline-style: none; }
-            input, select, textarea { border-color: <?php echo $COLORS["input_border"];?>; background-color: <?php echo $COLORS["input_background"];?>; color: <?php echo $COLORS["input"];?>; }
-            input:focus, textarea:focus { border-color: <?php echo $COLORS["selected_input_border"];?>; background-color: <?php echo $COLORS["selected_input_background"];?>; color: <?php echo $COLORS["selected_input"];?>; }
-            #navbar { position: fixed; top: 0; z-index: 2; height: 60px; width: 100%; background-color: <?php echo $COLORS['page_background']; ?>; }
-            #content-header { position: fixed; top: 58px; z-index: 1; width: 100%; background-color: <?php echo $COLORS['page_background']; ?>; }
-            #content { padding-top: 58px; margin-top: -10px; }
-            .overlay-fixed { position: fixed; top: 48px; left: 0px; width: 100%; height: 100%; z-index: 999; opacity: 0.3; pointer-events: none; }
-            .overlay-bg { position: fixed; top: 81px; z-index: 998; opacity: 0.15; pointer-events: none; object-fit: cover; width: 100%; height: 100%; left: 50%; transform: translateX(-50%); }
-            .unblurred { font-family: monospace; white-space: pre-wrap; }
-            .blurry:not(:hover) { filter: blur(3px); font-family: monospace; white-space: pre-wrap; }
-            .blurry:hover { font-family: monospace; white-space: pre-wrap; }
-        </style>
-        <style>
-            @keyframes blinking {
-                0% {
-                    opacity: 0;
-                }
-                49% {
-                    opacity: 0;
-                }
-                50% {
-                    opacity: 1;
-                }
-                100% {
-                    opacity: 1;
-                }
+            html, body {
+                background-color: <?php echo $COLORS['page_background']; ?> !important;
+                color: <?php echo $COLORS['page_text']; ?> !important;
             }
-            .flash_tag {
-                animation: blinking 1.5s infinite;
+            a:link {
+                color: <?php echo $COLORS['page_link']; ?> !important;
+            }
+            a:visited {
+                color: <?php echo $COLORS['page_vlink']; ?> !important;
+            }
+            input, select, textarea {
+                border-color: <?php echo $COLORS["input_border"];?> !important;
+                background-color: <?php echo $COLORS["input_background"];?> !important;
+                color: <?php echo $COLORS["input"];?> !important;
+            }
+            input:focus, textarea:focus {
+                border-color: <?php echo $COLORS["selected_input_border"];?> !important;
+                background-color: <?php echo $COLORS["selected_input_background"];?> !important;
+                color: <?php echo $COLORS["selected_input"];?> !important;
+            }
+            #navbar {
+                background-color: <?php echo $COLORS['page_background']; ?> !important;
+            }
+            #content-header {
+                background-color: <?php echo $COLORS['page_background']; ?> !important;
             }
         </style>
     </head>
-    <body bgcolor="<?php echo $COLORS['page_background']; ?>"
-          text="<?php echo $COLORS['page_text']; ?>"
-          link="<?php echo $COLORS['page_link']; ?>"
-          vlink="<?php echo $COLORS['page_vlink']; ?>"
-          onload="setup();">
+    <body onload="setup();">
         <?php echo $BACKGROUND_IMG; ?>
-        <!-- <?php echo $OVERLAY_IMG; ?> -->
+        <?php if( $no_data ) { echo $OVERLAY_IMG; } ?>
         <table id="navbar" width="99%" align="center">
             <tr>
                 <td align="left" width="25%">

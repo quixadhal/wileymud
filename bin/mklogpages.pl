@@ -83,6 +83,8 @@ my $JQUI            = "$LOG_HOME/jquery/jquery-ui.js";
 my $MOMENT          = "$LOG_HOME/moment.js";
 my $MOMENT_TZ       = "$LOG_HOME/moment-timezone.js";
 my $NAVBAR          = "$LOG_HOME/navbar.js";
+my $LOGPAGE_FUNC    = "$LOG_HOME/logpage_func.js";
+my $LOGPAGE_STYLE   = "$LOG_HOME/logpage.css";
 
 my $PINKFISH_CACHE  = "$PAGE_DIR/pinkfish.json";
 my $CHANNEL_CACHE   = "$PAGE_DIR/channels.json";
@@ -584,6 +586,16 @@ sub fetch_current_date {
 
     my $date = undef;
     my $rv = $db->selectrow_arrayref("SELECT date('now') the_date;");
+    print STDERR $DBI::errstr."\n" if ! $rv;
+    die "Cannot obtain a valid date???: $!" if !defined $rv;
+    return $rv ? $rv->[0] : undef;
+}
+
+sub fetch_yester_date {
+    my $db = shift;
+
+    my $date = undef;
+    my $rv = $db->selectrow_arrayref("SELECT date('yesterday') the_date;");
     print STDERR $DBI::errstr."\n" if ! $rv;
     die "Cannot obtain a valid date???: $!" if !defined $rv;
     return $rv ? $rv->[0] : undef;
@@ -1169,91 +1181,9 @@ sub generate_html_page {
         <script src="$MOMENT"></script>
         <script src="$MOMENT_TZ"></script>
         <script src="$NAVBAR"></script>
+        <script src="$LOGPAGE_FUNC"></script>
 
         <script type="text/javascript">
-            function col_click(ob) {
-                var url = window.location.href;
-                var id = ob.parentNode.id;
-                url = url.replace(/#.*\$/, "") + "#" + id;
-                //console.log("URL: " + url);
-
-                if (window.clipboardData && window.clipboardData.setData ) {
-                    clipboardData.setData("Text", url);
-                    //console.log("Clipboard set to " + url);
-                } else if (document.queryCommandSupported && document.queryCommandSupported("copy")) {
-                    var textarea = document.createElement("textarea");
-                    textarea.textContent = url;
-                    textarea.style.position = "fixed";
-                    document.body.appendChild(textarea);
-                    textarea.select();
-                    var result;
-                    try {
-                        result = document.execCommand("copy");
-                        //console.log("Copied: " + url);
-                    } catch (ex) {
-                        //console.error("Copy failed: ", ex);
-                    } finally {
-                        document.body.removeChild(textarea);
-                        //console.log("Result: " + result);
-                    }
-                } else {
-                    //console.log("No way to do this!");
-                }
-            }
-
-            function localize_rows() {
-                // 0 -> 23
-                var hour_map = [
-                    '#555555',
-                    '#555555',
-                    '#555555',
-                    '#555555',
-                    '#bb0000',
-                    '#bb0000',
-                    '#bbbb00',
-                    '#bbbb00',
-                    '#ffff55',
-                    '#ffff55',
-                    '#00bb00',
-                    '#00bb00',
-                    '#55ff55',
-                    '#55ff55',
-                    '#bbbbbb',
-                    '#bbbbbb',
-                    '#55ffff',
-                    '#55ffff',
-                    '#00bbbb',
-                    '#00bbbb',
-                    '#5555ff',
-                    '#5555ff',
-                    '#0000bb',
-                    '#0000bb'
-                ];
-
-                var yourTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-                var yourLocale = (navigator.languages && navigator.languages.length) ?
-                    navigator.languages[0] : navigator.language;
-
-                var rows = \$(`[id^=row_]`);
-                for( var i = 0; i < rows.length-1; i++ ) {
-                    var tds = rows[i].getElementsByTagName("td");
-                    var oldDate = tds[0].innerHTML;
-                    var tdspan = tds[1].getElementsByTagName("span");
-                    var oldTime = tdspan[0].innerHTML;
-
-                    var oldMoment = moment.tz(oldDate + " " + oldTime, "America/Los_Angeles");
-                    var newMoment = oldMoment.clone().tz(yourTimeZone);
-                    //var newMoment = oldMoment.clone().tz("Asia/Tokyo");
-                    var newDate = newMoment.format('YYYY-MM-DD');
-                    var newTime = newMoment.format('HH:mm:ss');
-                    var newHour = newMoment.hour();
-
-                    tds[0].innerHTML = newDate;
-                    tdspan[0].innerHTML = newTime;
-                    tdspan[0].style.color = hour_map[newHour];
-                }
-            }
-
             function setup() {
                 setup_rows();
                 localize_rows();
@@ -1267,48 +1197,37 @@ sub generate_html_page {
                 //setTimeout(function () { location.reload(true); }, 30 * 60 * 1000);
             }
         </script>
+        <link rel="stylesheet" href="$LOGPAGE_STYLE">
         <style>
-            html, body { table-layout: fixed; max-width: 100%; overflow-x: hidden; word-wrap: break-word; text-overflow: ellipsis; }
-            table { table-layout: fixed; max-width: 99%; overflow-x: hidden; word-wrap: break-word; text-overflow: ellipsis; }
-            a { text-decoration:none; }
-            a:hover { text-decoration:underline; }
-            a:active, a:focus { outline: 0; border: none; -moz-outline-style: none; }
-            input, select, textarea { border-color: $COLORS{"input_border"}; background-color: $COLORS{"input_background"}; color: $COLORS{"input"}; }
-            input:focus, textarea:focus { border-color: $COLORS{"selected_input_border"}; background-color: $COLORS{"selected_input_background"}; color: $COLORS{"selected_input"}; }
-            #navbar { position: fixed; top: 0; z-index: 2; height: 60px; width: 100%; background-color: $COLORS{'page_background'}; }
-            #content-header { position: fixed; top: 58px; z-index: 1; width: 100%; background-color: $COLORS{'page_background'}; }
-            #content { padding-top: 58px; margin-top: -10px; }
-            .overlay-fixed { position: fixed; top: 48px; left: 0px; width: 100%; height: 100%; z-index: 999; opacity: 0.3; pointer-events: none; }
-            .overlay-bg { position: fixed; top: 81px; z-index: 998; opacity: 0.15; pointer-events: none; object-fit: cover; width: 100%; height: 100%; left: 50%; transform: translateX(-50%); }
-            .unblurred { font-family: monospace; white-space: pre-wrap; }
-            .blurry:not(:hover) { filter: blur(3px); font-family: monospace; white-space: pre-wrap; }
-            .blurry:hover { font-family: monospace; white-space: pre-wrap; }
-        </style>
-        <style>
-            \@keyframes blinking {
-                0% {
-                    opacity: 0;
-                }
-                49% {
-                    opacity: 0;
-                }
-                50% {
-                    opacity: 1;
-                }
-                100% {
-                    opacity: 1;
-                }
+            html, body {
+                background-color: $COLORS{"page_background"} !important;
+                color: $COLORS{"page_text"} !important;
             }
-            .flash_tag {
-                animation: blinking 1.5s infinite;
+            a:link {
+                color: $COLORS{"page_link"} !important;
+            }
+            a:visited {
+                color: $COLORS{"page_vlink"} !important;
+            }
+            input, select, textarea {
+                border-color: $COLORS{"input_border"} !important;
+                background-color: $COLORS{"input_background"} !important;
+                color: $COLORS{"input"} !important;
+            }
+            input:focus, textarea:focus {
+                border-color: $COLORS{"selected_input_border"} !important;
+                background-color: $COLORS{"selected_input_background"} !important;
+                color: $COLORS{"selected_input"} !important;
+            }
+            #navbar {
+                background-color: $COLORS{'page_background'} !important;
+            }
+            #content-header {
+                background-color: $COLORS{'page_background'} !important;
             }
         </style>
     </head>
-    <body bgcolor="$COLORS{'page_background'}"
-          text="$COLORS{'page_text'}"
-          link="$COLORS{'page_link'}"
-          vlink="$COLORS{'page_vlink'}"
-          onload="setup();">
+    <body onload="setup();">
         $background_image
         $overlay_image
         <table id="navbar" width="99%" align="center">
@@ -1492,12 +1411,15 @@ sub generate_json_page {
 sub generate_page {
     my %args = @_;
 
-    foreach (qw(do_pages do_json do_censor overwrite pinkfish_map channels speakers
+    foreach (qw(now_date yester_date do_pages do_json do_censor overwrite 
+        pinkfish_map channels speakers
         date_counts index page_limit pages_done pages_todo page)) {
         die "$_ not provided!" if !exists $args{$_};
     }
 
     #my $LOCAL_DB        = open_postgres_db($PG_DB); # When forking, we can't use the original
+    my $now_date        = $args{now_date};
+    my $yester_date     = $args{yester_date};
     my $do_pages        = $args{do_pages};
     my $do_json         = $args{do_json};
     my $do_censor       = $args{do_censor};
@@ -1543,24 +1465,49 @@ sub generate_page {
         $first_date = $args{first_date} = $first_row->{the_date};
         $first_page = $args{first_page} = page_url($first_row);
     }
+
     if( $i < (scalar @$date_counts) - 2 ) {
         # We have a next page.
         $next_row   = $args{next_row}   = $date_counts->[$i + 1];
         $next_date  = $args{next_date}  = $next_row->{the_date};
         $next_page  = $args{next_page}  = page_url($next_row);
     } elsif( $i < (scalar @$date_counts) - 1 ) {
-        if( $debug_page ) {
-            # We want the static page.
+        my $now_date = $args{now_date};
+        my $yester_date = $args{yester_date};
+
+        if( $debug_page or ($date_counts->[-1]->{the_date} eq $yester_date) ) {
+            # We crossed midnight, but nobody has said anything yet!
             $next_row   = $args{next_row}   = $date_counts->[$i + 1];
             $next_date  = $args{next_date}  = $next_row->{the_date};
             $next_page  = $args{next_page}  = page_url($next_row);
-        } else {
-            # We want the live page.
+        } elsif( $date_counts->[-1]->{the_date} eq $now_date ) {
+            # We are in normal status.
             $next_row   = $args{next_row}   = $date_counts->[$i + 1];
             $next_date  = $args{next_date}  = "LIVE " . $next_row->{the_date};
             $next_page  = $args{next_page}  = $LIVE_PAGE;
         }
     }
+        #if( $debug_page ) {
+        #    # We want the static page.
+        #    $next_row   = $args{next_row}   = $date_counts->[$i + 1];
+        #    $next_date  = $args{next_date}  = $next_row->{the_date};
+        #    $next_page  = $args{next_page}  = page_url($next_row);
+        #} else {
+        #    # We want the live page.
+        #    $next_row   = $args{next_row}   = $date_counts->[$i + 1];
+        #    $next_date  = $args{next_date}  = "LIVE " . $next_row->{the_date};
+        #    $next_page  = $args{next_page}  = $LIVE_PAGE;
+        #}
+    # else {
+    #        # We want the live page, and really should be hidden under the live page.
+    #    $next_row   = $args{next_row}   = $date_counts->[$i];
+    #    $next_date  = $args{next_date}  = "LIVE " . $next_row->{the_date};
+    #    if( $debug_page ) {
+    #        $next_page  = $args{next_page}  = page_url($next_row);
+    #    } else {
+    #        $next_page  = $args{next_page}  = $LIVE_PAGE;
+    #    }
+    #}
 
     # We ALWAYS have a last page, as that's the current page.  But,
     # this one is special.  Instead of the usual static page, we want
@@ -1614,6 +1561,9 @@ sub main {
     update_cache($pinkfish_map, $hours, $channels, $speakers) if $do_cache;
     generate_navbar_script($DATABASE, $date_counts) if $do_navbar;
     dump_speakers($speakers) if $do_speakers;
+
+    my $now_date = fetch_current_date($DATABASE);
+    my $yester_date = fetch_yester_date($DATABASE);
 
     if( $do_pages or $do_json ) {
         $page_limit = (scalar @$date_counts) if $page_limit < 1;
@@ -1684,6 +1634,8 @@ sub main {
                 my $page = $row->{page};
 
                 generate_page( 
+                    now_date        => $now_date,
+                    yester_date     => $yester_date,
                     do_pages        => $do_pages,
                     do_json         => $do_json,
                     do_censor       => $do_censor,
