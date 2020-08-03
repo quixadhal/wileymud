@@ -98,7 +98,7 @@ sub get_target_filename {
     $filename = <$fh>;
     close $fh;
 
-    chomp $filename;
+    chomp $filename if defined $filename;
     return $filename;
 }
 
@@ -122,7 +122,7 @@ for (my $index = 0; $index < (scalar @urls); $index++) {
         ($index + 1), (scalar @urls), substr($url, -40);
 
     my $target = get_target_filename($url, $index, $output_format);
-    my $found = -f "$target";
+    my $found = -f "$target" if defined $target;
 
     if ($target && $found) {
         printf "${YELLOW}Skipping %s, which already exists!$RESET\n", $target;
