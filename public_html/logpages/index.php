@@ -118,6 +118,34 @@ $SPEAKER_CACHE  = "$PAGE_DIR/speakers.json";
 $DATE_CACHE     = "$PAGE_DIR/date_counts.json";
 $HOUR_CACHE     = "$PAGE_DIR/hours.json";
 
+function numbered_source($filename) {
+    ini_set('highlight.string',  '#DD0000'); // DD0000
+    ini_set('highlight.comment', '#0000BB'); // FF8000
+    ini_set('highlight.keyword', '#00CC00'); // 007700
+    ini_set('highlight.bg',      '#111111'); // FFFFFF
+    ini_set('highlight.default', '#00DDDD'); // 0000BB
+    ini_set('highlight.html',    '#CCCCCC'); // 000000
+    $lines = implode(range(1, count(file($filename))), '<br />');
+    $content = highlight_file($filename, true);
+    $style = '
+    <style type="text/css">
+        .num {
+        float: left;
+        color: gray;
+        background-color: #111111;
+        font-size: 13px;
+        font-family: monospace;
+        text-align: right;
+        margin-right: 6pt;
+        padding-right: 6pt;
+        border-right: 1px solid gray;}
+
+        code {white-space: nowrap;}
+    </style>
+    ';
+    return "$style\n<div style=\"background-color: black;\"><table><tr><td class=\"num\">\n$lines\n</td><td>\n$content\n</td></tr></table></div>";
+}
+
 function random_image($dir) {
     $old_dir = getcwd();
     chdir($dir);
@@ -852,9 +880,12 @@ header("Pragma: no-cache");
 ?>
         <tr id="row_<?php echo $counter;?>" style="display:none">
             <td colspan="4" align="right" bgcolor="<?php echo $bg_color;?>"><span id="yourTime" style="color: <?php echo $COLORS["faint_text"];?>; display:none">&nbsp;</span></td>
-            <td align="right" bgcolor="<?php echo $bg_color;?>"><?php printf("%7.3f seconds",$time_spent);?></td>
+            <td align="right" bgcolor="<?php echo $bg_color;?>"><a href="javascript:;" onmousedown="toggleDiv('source');">Page:</a> &nbsp; <?php printf("%7.3f seconds",$time_spent);?></td>
         </tr>
             </tbody>
         </table>
+        <div id="source" style="display: none;">
+            <?php echo numbered_source(__FILE__); ?>
+        </div>
     </body>
 </html>
