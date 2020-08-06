@@ -22,5 +22,8 @@ keyword                                *make_keyword_list(char *String);
 char                                   *timestamp(void);
 void                                    sscanf_dice(char *str, int *x, int *y, int *z);
 char                                   *ordinal(int x);
+char   *md5_hex(const char *str);
+char   *json_escape(char *thing);
+int     scprintf(char *buf, size_t limit, const char *Str, ...) __attribute__ ( ( format( printf, 3, 4 ) ) );
 
 #endif

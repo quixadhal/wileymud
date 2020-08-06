@@ -202,6 +202,7 @@ void make_room_report(zones *Zones, rooms *Rooms, char *outfile)
     register int                            i,
                                             j,
                                             Sum;
+    char                                    tmp[MAX_STRING_LEN];
 
     if (outfile && *outfile) {
 	if (!Quiet) {
@@ -218,6 +219,12 @@ void make_room_report(zones *Zones, rooms *Rooms, char *outfile)
 		    zone_name(Zones, Rooms->Room[i].Zone), Rooms->Room[i].Zone);
 	    fprintf(ofp, "    It is a \"%s\" room, with a %zd byte description\n",
 		    sector_name(Rooms->Room[i].Sector), strlen(Rooms->Room[i].Description));
+
+            bzero(tmp, MAX_STRING_LEN);
+            snprintf(tmp, MAX_STRING_LEN-1, "%s%s",
+                    room_name(Rooms, Rooms->Room[i].Number),
+		    Rooms->Room[i].Description);
+            fprintf(ofp, "    The MD5 of the room is %s\n", md5_hex(tmp));
 	    if (Rooms->Room[i].ExtraCount) {
 		for (j = Sum = 0; j < Rooms->Room[i].ExtraCount; j++)
 		    Sum += strlen(Rooms->Room[i].Extra[j].Description);

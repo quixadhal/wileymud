@@ -480,7 +480,7 @@ rooms                                  *load_rooms(char *infile, zones *Zones)
     FILE                                   *ifp;
     vnum_index                             *RoomIndex;
     rooms                                  *Rooms;
-    char                                   *tmp;	       /* , tmp2[MAX_LINE_LEN], *tmp3; */
+    char                                   *tmp;	       /* , tmp2[MAX_STRING_LEN], *tmp3; */
     register int                            i,
                                             j,
                                             e;
@@ -783,10 +783,10 @@ char                                   *exittype_name(int Type)
 
 char                                   *room_flags(int Flags)
 {
-    static char                             tmp[MAX_PAGE_LEN];
+    static char                             tmp[MAX_STRING_LEN];
     int                                     First = 0;
 
-    bzero(tmp, MAX_PAGE_LEN);
+    bzero(tmp, MAX_STRING_LEN);
     if (Flags & ROOM_DARK) {
 	strcat(tmp, room_flag_name(ROOM_DARK));
 	First = 1;
@@ -1149,14 +1149,14 @@ char                                   *race_name(int Race)
 char                                   *class_name(int Class)
 {
     register int                            i;
-    static char                             class_buffer[256];
+    static char                             class_buffer[MAX_STRING_LEN];
 
     static char                            *class_name_list[] = {
 	"mage", "cleric", "warrior",
 	"rogue", "ranger", "druid"
     };
 
-    bzero(class_buffer, 256);
+    bzero(class_buffer, MAX_STRING_LEN);
     for (i = 0; i < MAX_CLASS; i++) {
 	if (Class & (1 << i)) {
 	    if (strlen(class_buffer))
@@ -1171,35 +1171,35 @@ char                                   *class_name(int Class)
 
 char                                   *hate_name(int Type, int Value)
 {
-    static char                             hate_buffer[256];
+    static char                             hate_buffer[MAX_STRING_LEN];
 
     switch (Type) {
 	case HATE_SEX:
-	    sprintf(hate_buffer, "sex %s's", sex_name(Value));
+	    snprintf(hate_buffer, MAX_STRING_LEN, "sex %s's", sex_name(Value));
 	    break;
 	case HATE_RACE:
-	    sprintf(hate_buffer, "race %s's", race_name(Value));
+	    snprintf(hate_buffer, MAX_STRING_LEN, "race %s's", race_name(Value));
 	    break;
 	case HATE_CHAR:
-	    sprintf(hate_buffer, "a specific character");
+	    snprintf(hate_buffer, MAX_STRING_LEN, "a specific character");
 	    break;
 	case HATE_CLASS:
-	    sprintf(hate_buffer, "any of class %s", class_name(Value));
+	    snprintf(hate_buffer, MAX_STRING_LEN, "any of class %s", class_name(Value));
 	    break;
 	case HATE_EVIL:
-	    sprintf(hate_buffer, "any more evil than %s", alignment_name(Value));
+	    snprintf(hate_buffer, MAX_STRING_LEN, "any more evil than %s", alignment_name(Value));
 	    break;
 	case HATE_GOOD:
-	    sprintf(hate_buffer, "any more good than %s", alignment_name(Value));
+	    snprintf(hate_buffer, MAX_STRING_LEN, "any more good than %s", alignment_name(Value));
 	    break;
 	case HATE_VNUM:
-	    sprintf(hate_buffer, "mobile [#%d]", Value);
+	    snprintf(hate_buffer, MAX_STRING_LEN, "mobile [#%d]", Value);
 	    break;
 	case HATE_RICH:
-	    sprintf(hate_buffer, "anyone carrying more than %d gold", Value);
+	    snprintf(hate_buffer, MAX_STRING_LEN, "anyone carrying more than %d gold", Value);
 	    break;
 	default:
-	    sprintf(hate_buffer, "something unknown");
+	    snprintf(hate_buffer, MAX_STRING_LEN, "something unknown");
     }
     return hate_buffer;
 }
@@ -1251,7 +1251,7 @@ char                                   *damage_type_name(int Type)
 char                                   *immunity_name(int Imms)
 {
     register int                            i;
-    static char                             imm_buffer[256];
+    static char                             imm_buffer[MAX_STRING_LEN];
 
     static char                            *imm_name[] = {
 	"Fire", "Cold", "Electricity", "Energy",
@@ -1261,7 +1261,7 @@ char                                   *immunity_name(int Imms)
 	"Plus-3", "Plus-4"
     };
 
-    bzero(imm_buffer, 256);
+    bzero(imm_buffer, MAX_STRING_LEN);
     for (i = 0; i < MAX_IMM; i++) {
 	if (Imms & (1 << i)) {
 	    if (strlen(imm_buffer))
@@ -1335,7 +1335,7 @@ char                                   *item_type_name(int Type)
 char                                   *item_wear_name(int Type)
 {
     register int                            i;
-    static char                             item_buffer[256];
+    static char                             item_buffer[MAX_STRING_LEN];
 
     static char                            *item_name[] = {
 	"Taken", "worn on Finger", "worn around Neck", "worn on the Body",
@@ -1344,7 +1344,7 @@ char                                   *item_wear_name(int Type)
 	"worn on Wrist", "Wielded", "Held", "wielded Two-handed"
     };
 
-    bzero(item_buffer, 256);
+    bzero(item_buffer, MAX_STRING_LEN);
     for (i = 0; i < MAX_WEAR; i++) {
 	if (Type & (1 << i)) {
 	    if (strlen(item_buffer))
@@ -1360,7 +1360,7 @@ char                                   *item_wear_name(int Type)
 char                                   *item_flag_name(int Type)
 {
     register int                            i;
-    static char                             item_buffer[256];
+    static char                             item_buffer[MAX_STRING_LEN];
 
     static char                            *item_name[] = {
 	"Glow", "Hum", "Metal", "Mineral",
@@ -1370,7 +1370,7 @@ char                                   *item_flag_name(int Type)
 	"Anti-Ranger", "Parishable"
     };
 
-    bzero(item_buffer, 256);
+    bzero(item_buffer, MAX_STRING_LEN);
     for (i = 0; i < MAX_ITEM_FLAGS + 1; i++) {
 	if (Type & (1 << i)) {
 	    if (strlen(item_buffer))
@@ -1472,13 +1472,13 @@ char                                   *item_equip_name(int Position)
 char                                   *container_closeable(int Value)
 {
     register int                            i;
-    static char                             cont_buffer[256];
+    static char                             cont_buffer[MAX_STRING_LEN];
 
     static char                            *cont_name[] = {
 	"Closeable", "Pickproof", "Closed", "Locked"
     };
 
-    bzero(cont_buffer, 256);
+    bzero(cont_buffer, MAX_STRING_LEN);
     for (i = 0; i < MAX_CONT_CLOSE; i++) {
 	if (Value & (1 << i)) {
 	    if (strlen(cont_buffer))
@@ -1494,7 +1494,7 @@ char                                   *container_closeable(int Value)
 char                                   *affected_by_name(int Flag)
 {
     register int                            i;
-    static char                             a_buffer[256];
+    static char                             a_buffer[MAX_STRING_LEN];
 
     static char                            *a_name[] = {
 	"Blind", "Invisible", "Detect-Evil", "Detect-Invisible",
@@ -1507,7 +1507,7 @@ char                                   *affected_by_name(int Flag)
 	"Ride", "UNDEF-6", "UNDEF-7", "UNDEF-8"
     };
 
-    bzero(a_buffer, 256);
+    bzero(a_buffer, MAX_STRING_LEN);
     for (i = 0; i < MAX_AFFECTED_BY; i++) {
 	if (Flag & (1 << i)) {
 	    if (strlen(a_buffer))
@@ -1641,7 +1641,7 @@ char                                   *position_name(int Flag)
 char                                   *act_name(int Flag)
 {
     register int                            i;
-    static char                             a_buffer[256];
+    static char                             a_buffer[MAX_STRING_LEN];
 
     static char                            *a_name[] = {
 	"Special-Function", "Sentinel", "Scavenger", "IsNPC",
@@ -1652,7 +1652,7 @@ char                                   *act_name(int Flag)
 	"Protector", "Mount", "Switch"
     };
 
-    bzero(a_buffer, 256);
+    bzero(a_buffer, MAX_STRING_LEN);
     for (i = 0; i < MAX_ACT; i++) {
 	if (Flag & (1 << i)) {
 	    if (strlen(a_buffer))
@@ -1777,7 +1777,7 @@ objects                                *load_objects(char *infile, zones *Zones)
     FILE                                   *ifp;
     vnum_index                             *ObjIndex;
     objects                                *Objects;
-    char                                   *tmp;	       /* , tmp2[MAX_LINE_LEN], *tmp3; */
+    char                                   *tmp;	       /* , tmp2[MAX_STRING_LEN], *tmp3; */
     register int                            i,
                                             j,
                                             e;
@@ -2501,13 +2501,13 @@ mobs                                   *load_mobs(char *infile, zones *Zones)
     FILE                                   *ifp;
     vnum_index                             *MobIndex;
     mobs                                   *Mobs;
-    char                                   *tmp;	       /* , tmp2[MAX_LINE_LEN], *tmp3; */
-    char                                    tmpa[MAX_LINE_LEN],
-                                            tmpb[MAX_LINE_LEN],
-                                            tmpc[MAX_LINE_LEN],
-                                            tmpd[MAX_LINE_LEN],
-                                            tmpe[MAX_LINE_LEN],
-                                            tmpf[MAX_LINE_LEN];
+    char                                   *tmp;	       /* , tmp2[MAX_STRING_LEN], *tmp3; */
+    char                                    tmpa[MAX_STRING_LEN],
+                                            tmpb[MAX_STRING_LEN],
+                                            tmpc[MAX_STRING_LEN],
+                                            tmpd[MAX_STRING_LEN],
+                                            tmpe[MAX_STRING_LEN],
+                                            tmpf[MAX_STRING_LEN];
     register int                            i,
                                             j;
     int                                     ack;

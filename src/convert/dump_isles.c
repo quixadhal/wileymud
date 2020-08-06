@@ -40,8 +40,8 @@ void dump_as_isles(zones *Zones, rooms *Rooms, shops *Shops)
 {
     FILE                                   *ofp,
                                            *listfp;
-    char                                    filename[256],
-                                            tmpstr[256];
+    char                                    filename[MAX_STRING_LEN],
+                                            tmpstr[MAX_STRING_LEN];
     int                                     i,
                                             j,
                                             k,
@@ -57,14 +57,14 @@ void dump_as_isles(zones *Zones, rooms *Rooms, shops *Shops)
     ZoneSort = (pair *)get_mem(Zones->Count, sizeof(pair));
     bzero(ZoneSort, sizeof(pair) * Zones->Count);
     for (i = 0; i < Zones->Count; i++) {
-	sprintf(filename, "%s/%s/%s_%d.zone", OutputDir, ISLES_SUBDIR,
+	snprintf(filename, MAX_STRING_LEN, "%s/%s/%s_%d.zone", OutputDir, ISLES_SUBDIR,
 		remap_name(Zones->Zone[i].Name), Zones->Zone[i].Number);
 	ofp = open_file(filename, "w");
 	if (Verbose)
 	    fprintf(stderr, "Dump of Zone \"%s\"[#%d]...\n", remap_name(Zones->Zone[i].Name),
 		    Zones->Zone[i].Number);
 	else if (!Quiet) {
-	    sprintf(tmpstr, "#%d Dump of Zone \"%s\"[#%d]...", i + 1,
+	    snprintf(tmpstr, MAX_STRING_LEN, "#%d Dump of Zone \"%s\"[#%d]...", i + 1,
 		    remap_name(Zones->Zone[i].Name), Zones->Zone[i].Number);
 	    fprintf(stderr, "%s", tmpstr);
 	    for (x = strlen(tmpstr); x < 79; x++)
@@ -202,12 +202,12 @@ void dump_as_isles(zones *Zones, rooms *Rooms, shops *Shops)
     if (!Quiet)
 	fprintf(stderr, "Generating zone list...");
     qsort(ZoneSort, Zones->Count, sizeof(pair), isles_qcmp_zone_vnum);
-    sprintf(filename, "%s/%s/zone.list", OutputDir, ISLES_SUBDIR);
+    snprintf(filename, MAX_STRING_LEN, "%s/%s/zone.list", OutputDir, ISLES_SUBDIR);
     listfp = open_file(filename, "w");
     for (i = Zones->Count - 1; i >= 0; i--) {
 	if (!Quiet)
 	    spin(stderr);
-	sprintf(filename, "%s_%d.zone", remap_name(Zones->Zone[ZoneSort[i].x].Name),
+	snprintf(filename, MAX_STRING_LEN, "%s_%d.zone", remap_name(Zones->Zone[ZoneSort[i].x].Name),
 		Zones->Zone[i].Number);
 	fprintf(listfp, "%s\n", filename);
     }

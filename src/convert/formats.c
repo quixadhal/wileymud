@@ -3,6 +3,7 @@
 #include <strings.h>
 #include <string.h>
 
+#include "include/main.h"
 #define _FORMATS_C
 #include "include/formats.h"
 
@@ -19,15 +20,17 @@ t_name                                  OutputData[OF_COUNT] = {
     {"fr", "Final Realms 2.1b4 LpMUD"},
     {"afk", "AFKMUD (Diku Derivative)"},
     {"smaug", "Smaug (Diku Derivative)"},
+    {"json", "JSON Data Dump"},
+    {"newmap", "New Map Data Dump"},
     {"ds", "Dead Souls 3.0 LpMUD"}
 };
 
 char                                   *if_name(unsigned long InputFormat)
 {
     register int                            i;
-    static char                             tmp[256];
+    static char                             tmp[MAX_STRING_LEN];
 
-    bzero(tmp, 256);
+    bzero(tmp, MAX_STRING_LEN);
     for (i = 0; i < IF_COUNT; i++)
 	if (InputFormat & (1 << i)) {
 	    strcat(tmp, InputData[i].Name);
@@ -41,9 +44,9 @@ char                                   *if_name(unsigned long InputFormat)
 char                                   *of_name(unsigned long OutputFormat)
 {
     register int                            i;
-    static char                             tmp[256];
+    static char                             tmp[MAX_STRING_LEN];
 
-    bzero(tmp, 256);
+    bzero(tmp, MAX_STRING_LEN);
     for (i = 0; i < OF_COUNT; i++)
 	if (OutputFormat & (1 << i)) {
 	    strcat(tmp, OutputData[i].Name);
@@ -57,9 +60,9 @@ char                                   *of_name(unsigned long OutputFormat)
 char                                   *if_type(unsigned long InputFormat)
 {
     register int                            i;
-    static char                             tmp[256];
+    static char                             tmp[MAX_STRING_LEN];
 
-    bzero(tmp, 256);
+    bzero(tmp, MAX_STRING_LEN);
     for (i = 0; i < IF_COUNT; i++)
 	if (InputFormat & (1 << i)) {
 	    strcat(tmp, InputData[i].Type);
@@ -73,9 +76,9 @@ char                                   *if_type(unsigned long InputFormat)
 char                                   *of_type(unsigned long OutputFormat)
 {
     register int                            i;
-    static char                             tmp[256];
+    static char                             tmp[MAX_STRING_LEN];
 
-    bzero(tmp, 256);
+    bzero(tmp, MAX_STRING_LEN);
     for (i = 0; i < OF_COUNT; i++)
 	if (OutputFormat & (1 << i)) {
 	    strcat(tmp, OutputData[i].Type);

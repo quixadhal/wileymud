@@ -210,7 +210,7 @@ void colour_3d(tree *Tree, coord_group *SoFar, int Colour, zones *Zones,
 
     if (Rooms->Room[RoomIndex].Colour)
 	return;
-    Rooms->Room[RoomIndex].                 Colour = Colour;
+    Rooms->Room[RoomIndex].Colour = Colour;
 
     /*
      * This will stop the graph from crossing zone boundries 
@@ -387,7 +387,7 @@ void make_2d_map(forest *Forest, zones *Zones, char *outfile, char *ppmpattern)
 	*pfp;
     char                                  **Map;
     ppmcolour                             **PMap;
-    char                                    ppmfile[256];
+    char                                    ppmfile[MAX_STRING_LEN];
 
     if (!Quiet) {
 	fprintf(stderr, "Generating Map Output...");
@@ -408,7 +408,7 @@ void make_2d_map(forest *Forest, zones *Zones, char *outfile, char *ppmpattern)
 	    bzero(PMap[j], Forest->Tree[i].MapSize.x * sizeof(ppmcolour));
 	}
 	if (ppmpattern && *ppmpattern) {
-	    sprintf(ppmfile, ppmpattern, i);
+	    snprintf(ppmfile, MAX_STRING_LEN, ppmpattern, i);
 	    pfp = open_file(ppmfile, "w");
 	} else {
 	    pfp = NULL;

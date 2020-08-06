@@ -27,6 +27,8 @@
 #include "include/dump_smaug.h"
 #include "include/dump_nightmare.h"
 #include "include/dump_ds.h"
+#include "include/dump_json.h"
+#include "include/dump_newmap.h"
 
 char                                   *ProgName;
 int                                     Debug = 0;
@@ -284,7 +286,7 @@ void config_status(void)
 
 int main(int argc, char **argv)
 {
-    char                                    tmp[MAX_LINE_LEN];
+    char                                    tmp[MAX_STRING_LEN];
     zones                                  *Zones;
     shops                                  *Shops;
     rooms                                  *Rooms;
@@ -298,86 +300,110 @@ int main(int argc, char **argv)
     if (!InputFormat)
 	log_fatal("No input format specified.");
     config_status();
-    sprintf(tmp, "mkdir -p %s", OutputDir);
+    snprintf(tmp, MAX_STRING_LEN, "mkdir -p %s", OutputDir);
     system(tmp);
 
-    sprintf(tmp, "%s/%s", InputDir, ZONE_FILE);
+    snprintf(tmp, MAX_STRING_LEN, "%s/%s", InputDir, ZONE_FILE);
     if (!(Zones = load_zones(tmp)))
 	log_fatal("Cannot load zone file!");
-    sprintf(tmp, "%s/%s", InputDir, SHOP_FILE);
+    snprintf(tmp, MAX_STRING_LEN, "%s/%s", InputDir, SHOP_FILE);
     if (!(Shops = load_shops(tmp)))
 	log_fatal("Cannot load shop file!");
-    sprintf(tmp, "%s/%s", InputDir, ROOM_FILE);
+    snprintf(tmp, MAX_STRING_LEN, "%s/%s", InputDir, ROOM_FILE);
     if (!(Rooms = load_rooms(tmp, Zones)))
 	log_fatal("Cannot load room file!");
-    sprintf(tmp, "%s/%s", InputDir, OBJ_FILE);
+    snprintf(tmp, MAX_STRING_LEN, "%s/%s", InputDir, OBJ_FILE);
     if (!(Objects = load_objects(tmp, Zones)))
 	log_fatal("Cannot load object file!");
-    sprintf(tmp, "%s/%s", InputDir, MOB_FILE);
+    snprintf(tmp, MAX_STRING_LEN, "%s/%s", InputDir, MOB_FILE);
     if (!(Mobs = load_mobs(tmp, Zones)))
 	log_fatal("Cannot load mob file!");
 
     if (OutputFormat & of_mask("index")) {
-	char                                    ack[256];
+	char                                    ack[MAX_STRING_LEN];
 
-	sprintf(tmp, "mkdir -p %s/%s", OutputDir, INDEX_SUBDIR);
+	snprintf(tmp, MAX_STRING_LEN, "mkdir -p %s/%s", OutputDir, INDEX_SUBDIR);
 	system(tmp);
 	if (InputFormat & if_mask("wiley")) {
 	    fprintf(stderr, "Dumping Format %s from %s\n",
 		    of_type(of_mask("index")), if_type(if_mask("wiley")));
 	    printf("Dumping Format %s from %s\n",
 		   of_type(of_mask("index")), if_type(if_mask("wiley")));
-	    sprintf(tmp, "%s/%s/%s.idx", OutputDir, INDEX_SUBDIR, ZONE_FILE);
-	    sprintf(ack, "%s/%s", InputDir, ZONE_FILE);
+	    snprintf(tmp, MAX_STRING_LEN, "%s/%s/%s.idx", OutputDir, INDEX_SUBDIR, ZONE_FILE);
+	    snprintf(ack, MAX_STRING_LEN, "%s/%s", InputDir, ZONE_FILE);
 	    make_index(ack, tmp);
-	    sprintf(tmp, "%s/%s/%s.idx", OutputDir, INDEX_SUBDIR, MOB_FILE);
-	    sprintf(ack, "%s/%s", InputDir, MOB_FILE);
+	    snprintf(tmp, MAX_STRING_LEN, "%s/%s/%s.idx", OutputDir, INDEX_SUBDIR, MOB_FILE);
+	    snprintf(ack, MAX_STRING_LEN, "%s/%s", InputDir, MOB_FILE);
 	    make_index(ack, tmp);
-	    sprintf(tmp, "%s/%s/%s.idx", OutputDir, INDEX_SUBDIR, OBJ_FILE);
-	    sprintf(ack, "%s/%s", InputDir, OBJ_FILE);
+	    snprintf(tmp, MAX_STRING_LEN, "%s/%s/%s.idx", OutputDir, INDEX_SUBDIR, OBJ_FILE);
+	    snprintf(ack, MAX_STRING_LEN, "%s/%s", InputDir, OBJ_FILE);
 	    make_index(ack, tmp);
-	    sprintf(tmp, "%s/%s/%s.idx", OutputDir, INDEX_SUBDIR, SHOP_FILE);
-	    sprintf(ack, "%s/%s", InputDir, SHOP_FILE);
+	    snprintf(tmp, MAX_STRING_LEN, "%s/%s/%s.idx", OutputDir, INDEX_SUBDIR, SHOP_FILE);
+	    snprintf(ack, MAX_STRING_LEN, "%s/%s", InputDir, SHOP_FILE);
 	    make_index(ack, tmp);
-	    sprintf(tmp, "%s/%s/%s.idx", OutputDir, INDEX_SUBDIR, ROOM_FILE);
-	    sprintf(ack, "%s/%s", InputDir, ROOM_FILE);
+	    snprintf(tmp, MAX_STRING_LEN, "%s/%s/%s.idx", OutputDir, INDEX_SUBDIR, ROOM_FILE);
+	    snprintf(ack, MAX_STRING_LEN, "%s/%s", InputDir, ROOM_FILE);
 	    make_index(ack, tmp);
 	}
 	printf("Index files generated.\n");
     }
 
     if (OutputFormat & of_mask("report")) {
-	sprintf(tmp, "mkdir -p %s/%s", OutputDir, REPORT_SUBDIR);
+	snprintf(tmp, MAX_STRING_LEN, "mkdir -p %s/%s", OutputDir, REPORT_SUBDIR);
 	system(tmp);
 	if (InputFormat & if_mask("wiley")) {
 	    fprintf(stderr, "Dumping Format %s from %s\n",
 		    of_type(of_mask("report")), if_type(if_mask("wiley")));
 	    printf("Dumping Format %s from %s\n",
 		   of_type(of_mask("report")), if_type(if_mask("wiley")));
-	    sprintf(tmp, "%s/%s/%s.out", OutputDir, REPORT_SUBDIR, ZONE_FILE);
+	    snprintf(tmp, MAX_STRING_LEN, "%s/%s/%s.out", OutputDir, REPORT_SUBDIR, ZONE_FILE);
 	    make_zone_report(Zones, Rooms, Objects, Mobs, tmp);
-	    sprintf(tmp, "%s/%s/%s.out", OutputDir, REPORT_SUBDIR, SHOP_FILE);
+	    snprintf(tmp, MAX_STRING_LEN, "%s/%s/%s.out", OutputDir, REPORT_SUBDIR, SHOP_FILE);
 	    make_shop_report(Zones, Rooms, Objects, Mobs, Shops, tmp);
-	    sprintf(tmp, "%s/%s/%s.out", OutputDir, REPORT_SUBDIR, ROOM_FILE);
+	    snprintf(tmp, MAX_STRING_LEN, "%s/%s/%s.out", OutputDir, REPORT_SUBDIR, ROOM_FILE);
 	    make_room_report(Zones, Rooms, tmp);
-	    sprintf(tmp, "%s/%s/%s.out", OutputDir, REPORT_SUBDIR, OBJ_FILE);
+	    snprintf(tmp, MAX_STRING_LEN, "%s/%s/%s.out", OutputDir, REPORT_SUBDIR, OBJ_FILE);
 	    make_obj_report(Zones, Objects, tmp);
-	    sprintf(tmp, "%s/%s/%s.out", OutputDir, REPORT_SUBDIR, MOB_FILE);
+	    snprintf(tmp, MAX_STRING_LEN, "%s/%s/%s.out", OutputDir, REPORT_SUBDIR, MOB_FILE);
 	    make_mob_report(Zones, Mobs, tmp);
 	}
     }
 
+    if (OutputFormat & of_mask("json")) {
+	snprintf(tmp, MAX_STRING_LEN, "mkdir -p %s/%s", OutputDir, JSON_SUBDIR);
+	system(tmp);
+	if (InputFormat & if_mask("wiley")) {
+	    fprintf(stderr, "Dumping Format %s from %s\n",
+		    of_type(of_mask("json")), if_type(if_mask("wiley")));
+	    printf("Dumping Format %s from %s\n",
+		   of_type(of_mask("json")), if_type(if_mask("wiley")));
+	    snprintf(tmp, MAX_STRING_LEN, "%s/%s/wileymud.json", OutputDir, JSON_SUBDIR);
+	    dump_as_json(Zones, Rooms, Objects, Mobs, Shops, tmp);
+	}
+    }
+
+    if (OutputFormat & of_mask("newmap")) {
+	if (InputFormat & if_mask("wiley")) {
+            fprintf(stderr, "Dumping Format %s from %s\n",
+                    of_type(of_mask("newmap")), if_type(InputFormat));
+            printf("Dumping Format %s from %s\n", of_type(of_mask("newmap")), if_type(InputFormat));
+            snprintf(tmp, MAX_STRING_LEN, "mkdir -p %s/%s", OutputDir, NEWMAP_SUBDIR);
+            system(tmp);
+	    dump_as_newmap(Zones, Rooms, Objects, Mobs, Shops);
+        }
+    }
+
     if (OutputFormat & of_mask("map")) {
-	char                                    ppm_template[256];
+	char                                    ppm_template[MAX_STRING_LEN];
 
 	fprintf(stderr, "Dumping Format %s from %s\n",
 		of_type(of_mask("map")), if_type(InputFormat));
 	printf("Dumping Format %s from %s\n", of_type(of_mask("map")), if_type(InputFormat));
-	sprintf(tmp, "mkdir -p %s/%s", OutputDir, MAP_SUBDIR);
+	snprintf(tmp, MAX_STRING_LEN, "mkdir -p %s/%s", OutputDir, MAP_SUBDIR);
 	system(tmp);
 	Layout = build_map(Zones, Rooms);
-	sprintf(tmp, "%s/%s/%s", OutputDir, MAP_SUBDIR, MAP_FILE);
-	sprintf(ppm_template, "%s/%s/%s", OutputDir, MAP_SUBDIR, PPM_FILE);
+	snprintf(tmp, MAX_STRING_LEN, "%s/%s/%s", OutputDir, MAP_SUBDIR, MAP_FILE);
+	snprintf(ppm_template, MAX_STRING_LEN, "%s/%s/%s", OutputDir, MAP_SUBDIR, PPM_FILE);
 	make_2d_map(Layout, Zones, tmp, ppm_template);
     }
 
@@ -385,7 +411,7 @@ int main(int argc, char **argv)
 	fprintf(stderr, "Dumping Format %s from %s\n",
 		of_type(of_mask("isles")), if_type(InputFormat));
 	printf("Dumping Format %s from %s\n", of_type(of_mask("isles")), if_type(InputFormat));
-	sprintf(tmp, "mkdir -p %s/%s", OutputDir, ISLES_SUBDIR);
+	snprintf(tmp, MAX_STRING_LEN, "mkdir -p %s/%s", OutputDir, ISLES_SUBDIR);
 	system(tmp);
 	dump_as_isles(Zones, Rooms, Shops);
     }
@@ -394,7 +420,7 @@ int main(int argc, char **argv)
 	fprintf(stderr, "Dumping Format %s from %s\n",
 		of_type(of_mask("afk")), if_type(InputFormat));
 	printf("Dumping Format %s from %s\n", of_type(of_mask("afk")), if_type(InputFormat));
-	sprintf(tmp, "mkdir -p %s/%s", OutputDir, AFK_SUBDIR);
+	snprintf(tmp, MAX_STRING_LEN, "mkdir -p %s/%s", OutputDir, AFK_SUBDIR);
 	system(tmp);
 	dump_as_afk(Zones, Rooms, Shops, Objects, Mobs);
     }
@@ -425,7 +451,7 @@ int main(int argc, char **argv)
 	fprintf(stderr, "Dumping Format %s from %s\n",
 		of_type(of_mask("smaug")), if_type(InputFormat));
 	printf("Dumping Format %s from %s\n", of_type(of_mask("smaug")), if_type(InputFormat));
-	sprintf(tmp, "mkdir -p %s/%s", OutputDir, SMAUG_SUBDIR);
+	snprintf(tmp, MAX_STRING_LEN, "mkdir -p %s/%s", OutputDir, SMAUG_SUBDIR);
 	system(tmp);
 	dump_as_smaug(Zones, Rooms, Shops, Objects, Mobs);
     }

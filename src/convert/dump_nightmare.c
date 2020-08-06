@@ -16,15 +16,15 @@ void dump_as_nightmare(zones *Zones, rooms *Rooms, shops *Shops)
 {
     FILE                                   *ofp,
                                            *fp2;
-    char                                    filename[256],
-                                            domainname[256],
-                                            dirname[256],
-                                            subdirname[256];
-    char                                    mudpath[256],
-                                            roomname[256],
-                                            mudname[256],
-                                            doorname[256],
-                                            outpath[256];
+    char                                    filename[MAX_STRING_LEN],
+                                            domainname[MAX_STRING_LEN],
+                                            dirname[MAX_STRING_LEN],
+                                            subdirname[MAX_STRING_LEN];
+    char                                    mudpath[MAX_STRING_LEN],
+                                            roomname[MAX_STRING_LEN],
+                                            mudname[MAX_STRING_LEN],
+                                            doorname[MAX_STRING_LEN],
+                                            outpath[MAX_STRING_LEN];
     int                                     i,
                                             j,
                                             k,
@@ -39,12 +39,12 @@ void dump_as_nightmare(zones *Zones, rooms *Rooms, shops *Shops)
     ZoneSort = (pair *)get_mem(Zones->Count, sizeof(pair));
     bzero(ZoneSort, sizeof(pair) * Zones->Count);
     for (i = 0; i < Zones->Count; i++) {
-	sprintf(domainname, "%s_%d", remap_name(Zones->Zone[i].Name), Zones->Zone[i].Number);
-	sprintf(dirname, "%s/%s%s/%s", OutputDir, NIGHTMARE_SUBDIR, NIGHTMARE_DOMAIN,
+	snprintf(domainname, MAX_STRING_LEN, "%s_%d", remap_name(Zones->Zone[i].Name), Zones->Zone[i].Number);
+	snprintf(dirname, MAX_STRING_LEN, "%s/%s%s/%s", OutputDir, NIGHTMARE_SUBDIR, NIGHTMARE_DOMAIN,
 		domainname);
-	sprintf(filename, "mkdir -p %s", dirname);
+	snprintf(filename, MAX_STRING_LEN, "mkdir -p %s", dirname);
 	system(filename);
-	sprintf(filename, "%s/README", dirname);
+	snprintf(filename, MAX_STRING_LEN, "%s/README", dirname);
 	ofp = open_file(filename, "w");
 	fprintf(ofp, "#ZONEDATA\n");
 	fprintf(ofp, "Name\t%s~\n", Zones->Zone[i].Name);
@@ -68,10 +68,10 @@ void dump_as_nightmare(zones *Zones, rooms *Rooms, shops *Shops)
 	fprintf(ofp, "End\n\n");
 	fclose(ofp);
 /* There, now we have some setup work to do... */
-	sprintf(subdirname, "%s/adm", dirname);
-	sprintf(filename, "mkdir -p %s/adm", dirname);
+	snprintf(subdirname, MAX_STRING_LEN, "%s/adm", dirname);
+	snprintf(filename, MAX_STRING_LEN, "mkdir -p %s/adm", dirname);
 	system(filename);
-	sprintf(filename, "%s/README", subdirname);
+	snprintf(filename, MAX_STRING_LEN, "%s/README", subdirname);
 	ofp = open_file(filename, "w");
 	fprintf(ofp, "                         /domains/%s/adm\n", domainname);
 	fprintf(ofp, "               The Administrative Directory for %s\n", domainname);
@@ -89,7 +89,7 @@ void dump_as_nightmare(zones *Zones, rooms *Rooms, shops *Shops)
 	fprintf(ofp, "the 'grant' command.\n");
 	fclose(ofp);
 
-	sprintf(filename, "%s/access.c", subdirname);
+	snprintf(filename, MAX_STRING_LEN, "%s/access.c", subdirname);
 	ofp = open_file(filename, "w");
 	fprintf(ofp, "/*    %s/%s/adm/access.c\n", NIGHTMARE_DOMAIN, domainname);
 	fprintf(ofp, " *    From the Nightmare V Object Library\n");
@@ -102,7 +102,7 @@ void dump_as_nightmare(zones *Zones, rooms *Rooms, shops *Shops)
 	fprintf(ofp, "inherit LIB_ACCESS;\n");
 	fclose(ofp);
 
-	sprintf(filename, "%s/cache.c", subdirname);
+	snprintf(filename, MAX_STRING_LEN, "%s/cache.c", subdirname);
 	ofp = open_file(filename, "w");
 	fprintf(ofp, "/*    /domains/%s/adm/cache.c\n", domainname);
 	fprintf(ofp, " *    from the Nightmare V Object Library\n");
@@ -124,7 +124,7 @@ void dump_as_nightmare(zones *Zones, rooms *Rooms, shops *Shops)
 	fprintf(ofp, "}\n");
 	fclose(ofp);
 
-	sprintf(filename, "%s/freezer.c", subdirname);
+	snprintf(filename, MAX_STRING_LEN, "%s/freezer.c", subdirname);
 	ofp = open_file(filename, "w");
 	fprintf(ofp, "/*    /domains/%s/adm/freezer.c\n", domainname);
 	fprintf(ofp, " *    from the Nightmare V Object Library\n");
@@ -170,7 +170,7 @@ void dump_as_nightmare(zones *Zones, rooms *Rooms, shops *Shops)
 	fprintf(ofp, "}\n");
 	fclose(ofp);
 
-	sprintf(filename, "%s/void.c", subdirname);
+	snprintf(filename, MAX_STRING_LEN, "%s/void.c", subdirname);
 	ofp = open_file(filename, "w");
 	fprintf(ofp, "/*    /domains/%s/adm/void.c\n", domainname);
 	fprintf(ofp, " *    from the Nightmare V Object Library\n");
@@ -192,30 +192,30 @@ void dump_as_nightmare(zones *Zones, rooms *Rooms, shops *Shops)
 	fprintf(ofp, "}\n");
 	fclose(ofp);
 
-	sprintf(filename, "mkdir -p %s/etc", dirname);
+	snprintf(filename, MAX_STRING_LEN, "mkdir -p %s/etc", dirname);
 	system(filename);
 
 /* These are unused at present and might not always be needed... */
 
-	sprintf(filename, "mkdir -p %s/armour", dirname);
+	snprintf(filename, MAX_STRING_LEN, "mkdir -p %s/armour", dirname);
 	system(filename);
-	sprintf(filename, "mkdir -p %s/fish", dirname);
+	snprintf(filename, MAX_STRING_LEN, "mkdir -p %s/fish", dirname);
 	system(filename);
-	sprintf(filename, "mkdir -p %s/meal", dirname);
+	snprintf(filename, MAX_STRING_LEN, "mkdir -p %s/meal", dirname);
 	system(filename);
-	sprintf(filename, "mkdir -p %s/npc", dirname);
+	snprintf(filename, MAX_STRING_LEN, "mkdir -p %s/npc", dirname);
 	system(filename);
-	sprintf(filename, "mkdir -p %s/save", dirname);
+	snprintf(filename, MAX_STRING_LEN, "mkdir -p %s/save", dirname);
 	system(filename);
-	sprintf(filename, "mkdir -p %s/weapon", dirname);
+	snprintf(filename, MAX_STRING_LEN, "mkdir -p %s/weapon", dirname);
 	system(filename);
 
 /* This is the virtual room server */
 
-	sprintf(subdirname, "%s/virtual", dirname);
-	sprintf(filename, "mkdir -p %s/virtual", dirname);
+	snprintf(subdirname, MAX_STRING_LEN, "%s/virtual", dirname);
+	snprintf(filename, MAX_STRING_LEN, "mkdir -p %s/virtual", dirname);
 	system(filename);
-	sprintf(filename, "%s/README", subdirname);
+	snprintf(filename, MAX_STRING_LEN, "%s/README", subdirname);
 	ofp = open_file(filename, "w");
 	fprintf(ofp, "                       /domains/%s/virtual\n", domainname);
 	fprintf(ofp, "                 Virtual Rooms for the %s Domain\n", domainname);
@@ -244,10 +244,10 @@ void dump_as_nightmare(zones *Zones, rooms *Rooms, shops *Shops)
 	fprintf(ofp, "\n");
 	fclose(ofp);
 
-	sprintf(filename, "mkdir -p %s/virtual/grassland", dirname);
+	snprintf(filename, MAX_STRING_LEN, "mkdir -p %s/virtual/grassland", dirname);
 	system(filename);
 
-	sprintf(filename, "%s/grassland.c", subdirname);
+	snprintf(filename, MAX_STRING_LEN, "%s/grassland.c", subdirname);
 	ofp = open_file(filename, "w");
 	fprintf(ofp, "/*    /domains/%s/virtual/grassland.c\n", domainname);
 	fprintf(ofp, " *    from the Nightmare V Object Library\n");
@@ -364,7 +364,7 @@ void dump_as_nightmare(zones *Zones, rooms *Rooms, shops *Shops)
 	fprintf(ofp, "}\n");
 	fclose(ofp);
 
-	sprintf(filename, "%s/server.c", subdirname);
+	snprintf(filename, MAX_STRING_LEN, "%s/server.c", subdirname);
 	ofp = open_file(filename, "w");
 	fprintf(ofp, "/*    /domains/%s/virtual/server.c\n", domainname);
 	fprintf(ofp, " *    from the Nightmare V Object Library\n");
@@ -388,20 +388,20 @@ void dump_as_nightmare(zones *Zones, rooms *Rooms, shops *Shops)
 
 /* Ye GODS that be alot of setup.... ok, time for the meat now! */
 
-	sprintf(subdirname, "%s/room", dirname);
-	sprintf(filename, "mkdir -p %s/room", dirname);
+	snprintf(subdirname, MAX_STRING_LEN, "%s/room", dirname);
+	snprintf(filename, MAX_STRING_LEN, "mkdir -p %s/room", dirname);
 	system(filename);
-	sprintf(mudpath, "%s/%s/room", NIGHTMARE_DOMAIN, domainname);
+	snprintf(mudpath, MAX_STRING_LEN, "%s/%s/room", NIGHTMARE_DOMAIN, domainname);
 
 	for (j = 0; j < Rooms->Count; j++) {
 	    if ((remap_zone_vnum(Zones, Rooms->Room[j].Zone) == i) ||
 		((Rooms->Room[j].Number >= (!i ? 0 : Zones->Zone[i - 1].Top + 1))&&
 		 (Rooms->Room[j].Number <= Zones->Zone[i].Top)
 		)) {
-		sprintf(roomname, "%s_%d.c", remap_name(Rooms->Room[j].Name),
+		snprintf(roomname, MAX_STRING_LEN, "%s_%d.c", remap_name(Rooms->Room[j].Name),
 			Rooms->Room[j].Number);
-		sprintf(filename, "%s/%s", subdirname, roomname);
-		sprintf(mudname, "%s/%s", mudpath, roomname);
+		snprintf(filename, MAX_STRING_LEN, "%s/%s", subdirname, roomname);
+		snprintf(mudname, MAX_STRING_LEN, "%s/%s", mudpath, roomname);
 		ofp = open_file(filename, "w");
 
 #ifdef DEBUG
@@ -542,7 +542,7 @@ void dump_as_nightmare(zones *Zones, rooms *Rooms, shops *Shops)
 				    fprintf(ofp, "        \"%s\" :\n",
 					    exit_name_lower(Rooms->Room[j].Exit[k].Direction));
 				}
-				sprintf(outpath, "%s/%s_%d/room", NIGHTMARE_DOMAIN,
+				snprintf(outpath, MAX_STRING_LEN, "%s/%s_%d/room", NIGHTMARE_DOMAIN,
 					remap_name(Zones->Zone[remap_zone_vnum(Zones,
 									       Rooms->Room
 									       [remap_room_vnum
@@ -596,7 +596,7 @@ void dump_as_nightmare(zones *Zones, rooms *Rooms, shops *Shops)
 			    case EXIT_OPEN_ALIAS:
 				break;
 			    default:
-				sprintf(doorname, "%s/etc/%s_%d_%s_door.c", dirname,
+				snprintf(doorname, MAX_STRING_LEN, "%s/etc/%s_%d_%s_door.c", dirname,
 					remap_name(room_name
 						   (Rooms, Rooms->Room[j].Exit[k].Room)),
 					Rooms->Room[j].Exit[k].Room,

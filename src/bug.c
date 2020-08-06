@@ -5,7 +5,7 @@
 #include <stdarg.h>
 #include <time.h>
 #include <string.h>
-#include <sys/timeb.h>
+//#include <sys/timeb.h>
 #include <unistd.h>
 #include <arpa/inet.h>
 
@@ -77,7 +77,8 @@ void bug_logger(unsigned int Type, const char *BugFile,
     char                                    Result[MAX_STRING_LENGTH] = "\0\0\0";
     char                                    Temp[MAX_STRING_LENGTH] = "\0\0\0";
     FILE                                   *fp = NULL;
-    struct timeb                            right_now;
+    //struct timeb                            right_now;
+    struct timespec                         right_now;
     struct tm                              *now_part = NULL;
 
     bzero(Result, MAX_STRING_LENGTH);
@@ -96,11 +97,14 @@ void bug_logger(unsigned int Type, const char *BugFile,
     } else
 	strlcpy(Temp, "PING!", MAX_STRING_LENGTH);
     va_end(arg);
-    ftime(&right_now);
+    //ftime(&right_now);
+    clock_gettime(CLOCK_REALTIME, &right_now);
     now_part = localtime((const time_t *)&right_now);
     snprintf(Result, MAX_STRING_LENGTH, "<: %04d%02d%02d.%02d%02d%02d.%03d",
 	    now_part->tm_year + 1900, now_part->tm_mon + 1, now_part->tm_mday,
-	    now_part->tm_hour, now_part->tm_min, now_part->tm_sec, right_now.millitm);
+	    now_part->tm_hour, now_part->tm_min, now_part->tm_sec,
+            //right_now.millitm);
+            ((int)(right_now.tv_nsec / 1000000)));
     scprintf(Result, MAX_STRING_LENGTH, " - %s -", LogNames[Type]);
     if (File || Func || Line) {
 	strlcat(Result, " (", MAX_STRING_LENGTH);

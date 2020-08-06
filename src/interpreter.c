@@ -13,7 +13,7 @@
 #include <sys/types.h>
 #include <signal.h>
 #include <time.h>
-#include <sys/timeb.h>
+//#include <sys/timeb.h>
 
 /*
  * This *SHOULD* have been defined in <unistd.h>... it's in the file
@@ -1798,7 +1798,8 @@ void update_player_list_entry(struct descriptor_data *d)
     char                                    tmpbuf[80] = "\0\0\0\0\0\0\0";
     int                                     i = 0;
     int                                     found = 0;
-    struct timeb                            right_now;
+    //struct timeb                            right_now;
+    struct timespec                         right_now;
     struct tm                              *now_part = NULL;
 
     if (DEBUG > 2)
@@ -1809,7 +1810,8 @@ void update_player_list_entry(struct descriptor_data *d)
     strcpy(tmpbuf, d->usr_name);
     for (i = 0; i < strlen(tmpbuf); i++)
 	tmpbuf[i] = tolower(tmpbuf[i]);
-    ftime(&right_now);
+    //ftime(&right_now);
+    clock_gettime(CLOCK_REALTIME, &right_now);
     now_part = localtime((const time_t *)&right_now);
     sprintf(buf, "%-16s %s@%s %02d.%02d.%02d %02d:%02d ",
 	    tmpbuf, d->username, d->host, now_part->tm_year,

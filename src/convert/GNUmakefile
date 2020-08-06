@@ -1,10 +1,11 @@
 # Must be GNU Make!
 
-CC          = gcc #g++
+CC          = clang #gcc #g++
 MACHINE     = #-mcpu=pentium2 -march=pentium2
 
 NEED_CRYPT  = -lcrypt #Linux needs this
 #NEED_COMPAT = -lcompat #BSD needs this
+NEED_SSL	= -lcrypto #MD5 checksum code
 
 W_FORMAT    = -Wformat -Wformat-security #-Wmissing-format-attribute
 W_NITPICK   = -Wpointer-arith -Winline
@@ -20,29 +21,35 @@ W_ERROR     = #-Werror
 W_ALL       = $(W_ANSI) $(W_UBER) $(W_FORMAT) $(W_MESSY) $(W_FUNC) $(W_TYPE) $(W_EXTRA) $(W_NITPICK) $(W_ERROR)
 W_CLANG     = $(W_C_ONLY)
 
-W_FLAGS     = $(W_ALL) $(W_CLANG)
+#W_FLAGS     = $(W_ALL) $(W_CLANG)
+W_FLAGS		= -Werror -Wall # -Weverything
 
-OPT_FLAG    = -pipe -O3 #-Wuninitialized
+OPT_FLAG    = -O0 #-pipe -O3 #-Wuninitialized
 
-DEBUG_FLAG  = -ggdb
+#DEBUG_FLAG  = -ggdb
+DEBUG_FLAG	= -g
 EFENCE      = #-lpthread -lefence
 PROF_FLAG   = #-pg
 
-CFLAGS      = $(MACHINE) $(W_FLAGS) $(DEBUG_FLAG) $(OPT_FLAG) $(PROF_FLAG) -Iinclude
-LDFLAGS     = $(DEBUG_FLAG) $(OPT_FLAG) $(PROF_FLAG)
+DYN_FLAG	= #-rdynamic
+INC		= -Iinclude
+
+#CFLAGS      = $(MACHINE) $(W_FLAGS) $(DEBUG_FLAG) $(OPT_FLAG) $(PROF_FLAG) -Iinclude
+CFLAGS		= $(W_FLAGS) $(DEBUG_FLAG) $(OPT_FLAG) $(PROF_FLAG) $(M_ARCH) $(INC)
+LDFLAGS		= $(DEBUG_FLAG) $(OPT_FLAG) $(PROF_FLAG) $(DYN_FLAG)
 
 SRC =	bug.c utils.c make_index.c main.c formats.c \
 	getopt.c getopt1.c \
 	parse_wiley.c \
 	dump_report.c dump_map.c dump_isles.c dump_fr.c dump_afk.c dump_smaug.c \
-	dump_nightmare.c dump_ds.c
+	dump_nightmare.c dump_ds.c dump_json.c dump_newmap.c
 OBJ =	$(addprefix obj/, $(SRC:.c=.o))
 HDRS =	bug.h utils.h make_index.h main.h formats.h getopt.h \
 	parse_wiley.h \
 	dump_report.h dump_map.h dump_isles.h dump_fr.h dump_afk.h dump_smaug.h \
-	dump_nightmare.h dump_ds.h
+	dump_nightmare.h dump_ds.h dump_json.h dump_newmap.h
 HDR =	$(addprefix include/, $(HDRS))
-LIB =	$(NEED_CRYPT) $(NEED_COMPAT) $(EFENCE)
+LIB =	$(NEED_CRYPT) $(NEED_COMPAT) $(NEED_SSL) $(EFENCE)
 AUX = GNUmakefile
 
 all : tests
@@ -76,7 +83,10 @@ clean :
 	rm -f *.idx *.bak *.out *.log
 	rm -rf obj
 	mkdir obj
+	touch obj/.gitignore
 	rm -rf output
+	mkdir output
+	touch output/.gitignore
 	rm -f convert
 	@find . -name \*.d | xargs rm -f
 

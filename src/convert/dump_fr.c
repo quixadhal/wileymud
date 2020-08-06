@@ -69,12 +69,12 @@ char                                   *WeaponMsg =
 
 #define sub_dir(x) { \
   if(!strcmp("",x)) \
-    sprintf(muddir, "%s%s%s%s", FR_DOMAIN, OneBigDomain?MEGA_DOMAIN:"", \
+    snprintf(muddir, MAX_STRING_LEN, "%s%s%s%s", FR_DOMAIN, OneBigDomain?MEGA_DOMAIN:"", \
             OneBigDomain?"":"/", OneBigDomain?"":domainname); \
   else \
-    sprintf(muddir, "%s%s%s%s%s%s", FR_DOMAIN, OneBigDomain?MEGA_DOMAIN:"", \
+    snprintf(muddir, MAX_STRING_LEN, "%s%s%s%s%s%s", FR_DOMAIN, OneBigDomain?MEGA_DOMAIN:"", \
             OneBigDomain?"/"x:"", *domainname?"/":"", domainname, OneBigDomain?"":"/"x); \
-  sprintf(filename, "mkdir -p %s/%s%s", OutputDir, FR_SUBDIR, muddir); \
+  snprintf(filename, MAX_STRING_LEN, "mkdir -p %s/%s%s", OutputDir, FR_SUBDIR, muddir); \
   system(filename); \
 }
 
@@ -83,9 +83,9 @@ void setup_dirs(zones *Zones, rooms *Rooms)
     register int                            i,
                                             j;
     FILE                                   *ofp;
-    char                                    domainname[256],
-                                            muddir[256],
-                                            filename[256];
+    char                                    domainname[MAX_STRING_LEN],
+                                            muddir[MAX_STRING_LEN],
+                                            filename[MAX_STRING_LEN];
     int                                     LowRoom,
                                             HighRoom;
 
@@ -93,14 +93,14 @@ void setup_dirs(zones *Zones, rooms *Rooms)
 	fprintf(stderr, "Setting up directory layout...");
 	fflush(stderr);
     }
-    bzero(domainname, 256);
-    bzero(muddir, 256);
-    bzero(filename, 256);
+    bzero(domainname, MAX_STRING_LEN);
+    bzero(muddir, MAX_STRING_LEN);
+    bzero(filename, MAX_STRING_LEN);
     if (OneBigDomain) {
 	if (!Quiet)
 	    spin(stderr);
 	sub_dir("");
-	sprintf(filename, "%s/%s%s/README", OutputDir, FR_SUBDIR, muddir);
+	snprintf(filename, MAX_STRING_LEN, "%s/%s%s/README", OutputDir, FR_SUBDIR, muddir);
 	ofp = open_file(filename, "w");
 	fprintf(ofp, "%s", WelcomeMsg);
 	fclose(ofp);
@@ -108,46 +108,46 @@ void setup_dirs(zones *Zones, rooms *Rooms)
 	if (!Quiet)
 	    spin(stderr);
 	sub_dir("armours");
-	sprintf(filename, "%s/%s%s/README", OutputDir, FR_SUBDIR, muddir);
+	snprintf(filename, MAX_STRING_LEN, "%s/%s%s/README", OutputDir, FR_SUBDIR, muddir);
 	ofp = open_file(filename, "w");
 	fprintf(ofp, ArmourMsg, muddir, "wiley");
 	fclose(ofp);
 	if (!Quiet)
 	    spin(stderr);
 	sub_dir("misc");
-	sprintf(filename, "%s/%s%s/README", OutputDir, FR_SUBDIR, muddir);
+	snprintf(filename, MAX_STRING_LEN, "%s/%s%s/README", OutputDir, FR_SUBDIR, muddir);
 	ofp = open_file(filename, "w");
 	fprintf(ofp, MiscMsg, muddir, "wiley");
 	fclose(ofp);
 	if (!Quiet)
 	    spin(stderr);
 	sub_dir("monsters");
-	sprintf(filename, "%s/%s%s/README", OutputDir, FR_SUBDIR, muddir);
+	snprintf(filename, MAX_STRING_LEN, "%s/%s%s/README", OutputDir, FR_SUBDIR, muddir);
 	ofp = open_file(filename, "w");
 	fprintf(ofp, MonsterMsg, muddir, "wiley");
 	fclose(ofp);
 	if (!Quiet)
 	    spin(stderr);
 	sub_dir("rooms");
-	sprintf(filename, "%s/%s%s/README", OutputDir, FR_SUBDIR, muddir);
+	snprintf(filename, MAX_STRING_LEN, "%s/%s%s/README", OutputDir, FR_SUBDIR, muddir);
 	ofp = open_file(filename, "w");
 	fprintf(ofp, RoomMsg, muddir, "wiley");
 	fclose(ofp);
 	if (!Quiet)
 	    spin(stderr);
 	sub_dir("weapons");
-	sprintf(filename, "%s/%s%s/README", OutputDir, FR_SUBDIR, muddir);
+	snprintf(filename, MAX_STRING_LEN, "%s/%s%s/README", OutputDir, FR_SUBDIR, muddir);
 	ofp = open_file(filename, "w");
 	fprintf(ofp, WeaponMsg, muddir, "wiley");
 	fclose(ofp);
     } else
 	for (i = 0; i < Zones->Count; i++) {
-	    sprintf(domainname, "%s_%d", remap_name(Zones->Zone[i].Name),
+	    snprintf(domainname, MAX_STRING_LEN, "%s_%d", remap_name(Zones->Zone[i].Name),
 		    Zones->Zone[i].Number);
 	    if (!Quiet)
 		spin(stderr);
 	    sub_dir("");
-	    sprintf(filename, "%s/%s%s/README", OutputDir, FR_SUBDIR, muddir);
+	    snprintf(filename, MAX_STRING_LEN, "%s/%s%s/README", OutputDir, FR_SUBDIR, muddir);
 	    ofp = open_file(filename, "w");
 	    fprintf(ofp, "%s", WelcomeMsg);
 	    fclose(ofp);
@@ -155,35 +155,35 @@ void setup_dirs(zones *Zones, rooms *Rooms)
 	    if (!Quiet)
 		spin(stderr);
 	    sub_dir("armours");
-	    sprintf(filename, "%s/%s%s/README", OutputDir, FR_SUBDIR, muddir);
+	    snprintf(filename, MAX_STRING_LEN, "%s/%s%s/README", OutputDir, FR_SUBDIR, muddir);
 	    ofp = open_file(filename, "w");
 	    fprintf(ofp, ArmourMsg, muddir, domainname);
 	    fclose(ofp);
 	    if (!Quiet)
 		spin(stderr);
 	    sub_dir("misc");
-	    sprintf(filename, "%s/%s%s/README", OutputDir, FR_SUBDIR, muddir);
+	    snprintf(filename, MAX_STRING_LEN, "%s/%s%s/README", OutputDir, FR_SUBDIR, muddir);
 	    ofp = open_file(filename, "w");
 	    fprintf(ofp, MiscMsg, muddir, domainname);
 	    fclose(ofp);
 	    if (!Quiet)
 		spin(stderr);
 	    sub_dir("monsters");
-	    sprintf(filename, "%s/%s%s/README", OutputDir, FR_SUBDIR, muddir);
+	    snprintf(filename, MAX_STRING_LEN, "%s/%s%s/README", OutputDir, FR_SUBDIR, muddir);
 	    ofp = open_file(filename, "w");
 	    fprintf(ofp, MonsterMsg, muddir, domainname);
 	    fclose(ofp);
 	    if (!Quiet)
 		spin(stderr);
 	    sub_dir("rooms");
-	    sprintf(filename, "%s/%s%s/README", OutputDir, FR_SUBDIR, muddir);
+	    snprintf(filename, MAX_STRING_LEN, "%s/%s%s/README", OutputDir, FR_SUBDIR, muddir);
 	    ofp = open_file(filename, "w");
 	    fprintf(ofp, RoomMsg, muddir, domainname);
 	    fclose(ofp);
 	    if (!Quiet)
 		spin(stderr);
 	    sub_dir("weapons");
-	    sprintf(filename, "%s/%s%s/README", OutputDir, FR_SUBDIR, muddir);
+	    snprintf(filename, MAX_STRING_LEN, "%s/%s%s/README", OutputDir, FR_SUBDIR, muddir);
 	    ofp = open_file(filename, "w");
 	    fprintf(ofp, WeaponMsg, muddir, domainname);
 	    fclose(ofp);
@@ -200,11 +200,11 @@ void setup_dirs(zones *Zones, rooms *Rooms)
 		HighRoom = max(HighRoom, Rooms->Room[j].Number);
 	    }
 	}
-	sprintf(domainname, "%s_%d", remap_name(Zones->Zone[i].Name), Zones->Zone[i].Number);
+	snprintf(domainname, MAX_STRING_LEN, "%s_%d", remap_name(Zones->Zone[i].Name), Zones->Zone[i].Number);
 	if (!Quiet)
 	    spin(stderr);
 	sub_dir("rooms");
-	sprintf(filename, "%s/%s%s/README", OutputDir, FR_SUBDIR, muddir);
+	snprintf(filename, MAX_STRING_LEN, "%s/%s%s/README", OutputDir, FR_SUBDIR, muddir);
 	ofp = open_file(filename, "a");
 	fprintf(ofp, ZoneDataMsg, Zones->Zone[i].Name, LowRoom, HighRoom,
 		Zones->Zone[i].Time, Zones->Zone[i].Mode);
@@ -217,12 +217,12 @@ void setup_dirs(zones *Zones, rooms *Rooms)
 void dump_as_final_realms(zones *Zones, rooms *Rooms, shops *Shops)
 {
     FILE                                   *ofp = NULL;
-    char                                    filename[256],
-                                            domainname[256],
-                                            muddir[256];
-    char                                    roomname[256],
-                                            outpath[256],
-                                            tmpstr[256];
+    char                                    filename[MAX_STRING_LEN],
+                                            domainname[MAX_STRING_LEN],
+                                            muddir[MAX_STRING_LEN];
+    char                                    roomname[MAX_STRING_LEN],
+                                            outpath[MAX_STRING_LEN],
+                                            tmpstr[MAX_STRING_LEN];
     int                                     i,
                                             j,
                                             k,
@@ -239,12 +239,12 @@ void dump_as_final_realms(zones *Zones, rooms *Rooms, shops *Shops)
     setup_dirs(Zones, Rooms);
 
     for (i = 0; i < Zones->Count; i++) {
-	sprintf(domainname, "%s_%d", remap_name(Zones->Zone[i].Name), Zones->Zone[i].Number);
+	snprintf(domainname, MAX_STRING_LEN, "%s_%d", remap_name(Zones->Zone[i].Name), Zones->Zone[i].Number);
 
 	if (Verbose)
 	    fprintf(stderr, "Dump of Domain \"%s\"...\n", domainname);
 	else if (!Quiet) {
-	    sprintf(tmpstr, "#%d Dump of Domain \"%s\"...", i + 1, domainname);
+	    snprintf(tmpstr, MAX_STRING_LEN, "#%d Dump of Domain \"%s\"...", i + 1, domainname);
 	    fprintf(stderr, "%s", tmpstr);
 	    for (x = strlen(tmpstr); x < 79; x++)
 		fprintf(stderr, " ");
@@ -263,9 +263,9 @@ void dump_as_final_realms(zones *Zones, rooms *Rooms, shops *Shops)
              NewValue = 0;
 */
 
-		sprintf(roomname, "%s_%d.c", remap_name(Rooms->Room[j].Name),
+		snprintf(roomname, MAX_STRING_LEN, "%s_%d.c", remap_name(Rooms->Room[j].Name),
 			Rooms->Room[j].Number);
-		sprintf(filename, "%s/%s%s/%s", OutputDir, FR_SUBDIR, muddir, roomname);
+		snprintf(filename, MAX_STRING_LEN, "%s/%s%s/%s", OutputDir, FR_SUBDIR, muddir, roomname);
 		ofp = open_file(filename, "w");
 
 		if (Verbose)
@@ -440,7 +440,7 @@ void dump_as_final_realms(zones *Zones, rooms *Rooms, shops *Shops)
 			case EXIT_ONE_WAY:
 			    fprintf(ofp, "    add_exit( \"%s\", ",
 				    exit_name_lower(Rooms->Room[j].Exit[k].Direction));
-			    sprintf(outpath, "%s%s%s/%s_%d%s", FR_DOMAIN,
+			    snprintf(outpath, MAX_STRING_LEN, "%s%s%s/%s_%d%s", FR_DOMAIN,
 				    OneBigDomain ? MEGA_DOMAIN : "",
 				    OneBigDomain ? "/rooms" : "",
 				    remap_name(Zones->Zone[remap_zone_vnum

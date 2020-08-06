@@ -563,7 +563,7 @@ int is_bot( int is_emote, const char *channel, const char *speaker, const char *
 // not the username that works for tells.
 //
 // We could add a column and ALSO store username, if we wanted...
-//
+
 void allchan_sql( int is_emote, const char *channel, const char *speaker, const char *username, const char *mud, const char *message ) {
     PGresult *res = NULL;
     ExecStatusType st = 0;
@@ -616,6 +616,10 @@ void allchan_sql( int is_emote, const char *channel, const char *speaker, const 
     res = PQexecParams(db_i3log.dbc, sql, 8, NULL, param_val, param_len, param_bin, 0);
     st = PQresultStatus(res);
     if( st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE ) {
+        //
+        //<: 20200706.231200.137 - FATAL - (sql.c;void allchan_sql(int, const char *, const char *, const char *, const char *, const char *),619)
+        // : Cannot insert message: ERROR:  invalid byte sequence for encoding "UTF8": 0xe2 0x88 0x54
+        //
         log_fatal("Cannot insert message: %s", PQerrorMessage(db_i3log.dbc));
         //PQclear(res);
         //proper_exit(MUD_HALT);

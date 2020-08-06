@@ -578,13 +578,16 @@ EXT_BV afk_convert_actflags(int OldValue)
 
     memset(&NewValue, '\0', sizeof(EXT_BV));
 
-    if (OldValue & ACT_SPEC);				       // NOOP 
+    if (OldValue & ACT_SPEC)
+        ; // NOOP 
     if (OldValue & ACT_SENTINEL)
 	xSET_BIT(NewValue, get_actflag("sentinel"));
     if (OldValue & ACT_SCAVENGER)
 	xSET_BIT(NewValue, get_actflag("scavenger"));
-    if (OldValue & ACT_ISNPC);				       // NOOP
-    if (OldValue & ACT_NICE_THIEF);			       // NOOP
+    if (OldValue & ACT_ISNPC)
+        ; // NOOP
+    if (OldValue & ACT_NICE_THIEF)
+        ; // NOOP
     if (OldValue & ACT_AGGRESSIVE)
 	xSET_BIT(NewValue, get_actflag("aggressive"));
     if (OldValue & ACT_STAY_ZONE)
@@ -593,23 +596,30 @@ EXT_BV afk_convert_actflags(int OldValue)
 	xSET_BIT(NewValue, get_actflag("wimpy"));
     if (OldValue & ACT_ANNOYING)
 	xSET_BIT(NewValue, get_actflag("annoying"));
-    if (OldValue & ACT_HATEFUL);			       // NOOP
-    if (OldValue & ACT_AFRAID);				       // NOOP
+    if (OldValue & ACT_HATEFUL)
+        ; // NOOP
+    if (OldValue & ACT_AFRAID)
+        ; // NOOP
     if (OldValue & ACT_IMMORTAL)
 	xSET_BIT(NewValue, get_actflag("immortal"));
-    if (OldValue & ACT_HUNTING);			       // NOOP
+    if (OldValue & ACT_HUNTING)
+        ; // NOOP
     if (OldValue & ACT_DEADLY)
 	xSET_BIT(NewValue, get_actflag("deadly"));
     if (OldValue & ACT_GUARDIAN)
 	xSET_BIT(NewValue, get_actflag("guardian"));
-    if (OldValue & ACT_USE_ITEM);			       // NOOP
+    if (OldValue & ACT_USE_ITEM)
+        ; // NOOP
     if (OldValue & ACT_FIGHTER_MOVES)
 	xSET_BIT(NewValue, get_actflag("meta_aggr"));	       // Not quite
-    if (OldValue & ACT_FOOD_PROVIDE);			       // NOOP
-    if (OldValue & ACT_PROTECTOR);			       // NOOP
+    if (OldValue & ACT_FOOD_PROVIDE)
+        ; // NOOP
+    if (OldValue & ACT_PROTECTOR)
+        ; // NOOP
     if (OldValue & ACT_MOUNT)
 	xSET_BIT(NewValue, get_actflag("mountable"));
-    if (OldValue & ACT_SWITCH);				       // NOOP
+    if (OldValue & ACT_SWITCH)
+        ; // NOOP
 
     return NewValue;
 }
@@ -637,7 +647,8 @@ EXT_BV afk_convert_aflags(int OldValue)
 	xSET_BIT(NewValue, get_aflag("silence"));
     if (OldValue & AFF_SANCTUARY)
 	xSET_BIT(NewValue, get_aflag("sanctuary"));
-    if (OldValue & AFF_GROUP);				       // NOOP
+    if (OldValue & AFF_GROUP)
+        ; // NOOP
     if (OldValue & AFF_CURSE)
 	xSET_BIT(NewValue, get_aflag("curse"));
     if (OldValue & AFF_FLYING)
@@ -648,30 +659,40 @@ EXT_BV afk_convert_aflags(int OldValue)
 	xSET_BIT(NewValue, get_aflag("protect"));
     if (OldValue & AFF_PARALYSIS)
 	xSET_BIT(NewValue, get_aflag("paralysis"));
-    if (OldValue & AFF_INFRAVISION);			       // NOOP
+    if (OldValue & AFF_INFRAVISION)
+        ; // NOOP
     if (OldValue & AFF_WATERBREATH)
 	xSET_BIT(NewValue, get_aflag("aqua_breath"));
     if (OldValue & AFF_SLEEP)
 	xSET_BIT(NewValue, get_aflag("sleep"));
-    if (OldValue & AFF_DRUG_FREE);			       // NOOP
+    if (OldValue & AFF_DRUG_FREE)
+        ; // NOOP
     if (OldValue & AFF_SNEAK)
 	xSET_BIT(NewValue, get_aflag("sneak"));
     if (OldValue & AFF_HIDE)
 	xSET_BIT(NewValue, get_aflag("hide"));
-    if (OldValue & AFF_FEAR);				       // NOOP
-    if (OldValue & AFF_CHARM);				       // NOOP
-    if (OldValue & AFF_FOLLOW);				       // NOOP
-    if (OldValue & AFF_UNDEF_1);			       // NOOP
+    if (OldValue & AFF_FEAR)
+        ; // NOOP
+    if (OldValue & AFF_CHARM)
+        ; // NOOP
+    if (OldValue & AFF_FOLLOW)
+        ; // NOOP
+    if (OldValue & AFF_UNDEF_1)
+        ; // NOOP
     if (OldValue & AFF_TRUE_SIGHT)
 	xSET_BIT(NewValue, get_aflag("truesight"));
     if (OldValue & AFF_SCRYING)
 	xSET_BIT(NewValue, get_aflag("scrying"));
     if (OldValue & AFF_FIRESHIELD)
 	xSET_BIT(NewValue, get_aflag("fireshield"));	       // Not quite
-    if (OldValue & AFF_RIDE);				       // NOOP
-    if (OldValue & AFF_UNDEF_6);			       // NOOP
-    if (OldValue & AFF_UNDEF_7);			       // NOOP
-    if (OldValue & AFF_UNDEF_8);			       // NOOP
+    if (OldValue & AFF_RIDE)
+        ; // NOOP
+    if (OldValue & AFF_UNDEF_6)
+        ; // NOOP
+    if (OldValue & AFF_UNDEF_7)
+        ; // NOOP
+    if (OldValue & AFF_UNDEF_8)
+        ; // NOOP
 
     return NewValue;
 }
@@ -1126,8 +1147,8 @@ void dump_as_afk(zones *Zones, rooms *Rooms, shops *Shops, objects *Objects, mob
 {
     FILE                                   *ofp,
                                            *listfp;
-    char                                    filename[256],
-                                            tmpstr[256];
+    char                                    filename[MAX_STRING_LEN],
+                                            tmpstr[MAX_STRING_LEN];
     int                                     i,
                                             j,
                                             k,
@@ -1141,21 +1162,21 @@ void dump_as_afk(zones *Zones, rooms *Rooms, shops *Shops, objects *Objects, mob
                                             HighRoom;
     pair                                   *ZoneSort;
 
-    sprintf(filename, "%s/%s/area.lst", OutputDir, AFK_SUBDIR);
+    snprintf(filename, MAX_STRING_LEN, "%s/%s/area.lst", OutputDir, AFK_SUBDIR);
     listfp = open_file(filename, "w");
 
     ZoneSort = (pair *)get_mem(Zones->Count, sizeof(pair));
     bzero(ZoneSort, sizeof(pair) * Zones->Count);
     for (i = 0; i < Zones->Count; i++) {
-	sprintf(tmpstr, "%s_%d.are", remap_name(Zones->Zone[i].Name), Zones->Zone[i].Number);
+	snprintf(tmpstr, MAX_STRING_LEN, "%s_%d.are", remap_name(Zones->Zone[i].Name), Zones->Zone[i].Number);
 	fprintf(listfp, "%s\n", tmpstr);
-	sprintf(filename, "%s/%s/%s", OutputDir, AFK_SUBDIR, tmpstr);
+	snprintf(filename, MAX_STRING_LEN, "%s/%s/%s", OutputDir, AFK_SUBDIR, tmpstr);
 	ofp = open_file(filename, "w");
 	if (Verbose)
 	    fprintf(stderr, "Dump of Zone \"%s\"[#%d]...\n", remap_name(Zones->Zone[i].Name),
 		    Zones->Zone[i].Number);
 	else if (!Quiet) {
-	    sprintf(tmpstr, "#%d Dump of Zone \"%s\"[#%d]...", i + 1,
+	    snprintf(tmpstr, MAX_STRING_LEN, "#%d Dump of Zone \"%s\"[#%d]...", i + 1,
 		    remap_name(Zones->Zone[i].Name), Zones->Zone[i].Number);
 	    fprintf(stderr, "%s", tmpstr);
 	    for (x = strlen(tmpstr); x < 79; x++)
@@ -1917,12 +1938,12 @@ proto~
     if (!Quiet)
 	fprintf(stderr, "Generating zone list...");
     qsort(ZoneSort, Zones->Count, sizeof(pair), afk_qcmp_zone_vnum);
-    sprintf(filename, "%s/%s/area.lst", OutputDir, AFK_SUBDIR);
+    snprintf(filename, MAX_STRING_LEN, "%s/%s/area.lst", OutputDir, AFK_SUBDIR);
     listfp = open_file(filename, "w");
     for (i = 0; i < Zones->Count; i++) {
 	if (!Quiet)
 	    spin(stderr);
-	sprintf(filename, "%s_%d.are", remap_name(Zones->Zone[ZoneSort[i].x].Name),
+	snprintf(filename, MAX_STRING_LEN, "%s_%d.are", remap_name(Zones->Zone[ZoneSort[i].x].Name),
 		Zones->Zone[i].Number);
 	fprintf(listfp, "%s\n", filename);
     }

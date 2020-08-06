@@ -5,7 +5,9 @@
 #include <stdarg.h>
 #include <time.h>
 #include <string.h>
-#include <sys/timeb.h>
+//#include <sys/timeb.h>
+
+#include "include/main.h"
 
 #undef DIKU_CRUD
 #ifdef DIKU_CRUD
@@ -20,8 +22,6 @@
 
 #ifdef DIKU_CRUD
 extern struct descriptor_data          *descriptor_list;
-#else
-#define MAX_STRING_LENGTH 2048
 #endif
 
 /*
@@ -58,13 +58,14 @@ void bug_logger(const char *File, const char *Func, int Line,
 		const char *Str, ...)
 {
     va_list                                 arg;
-    char                                    Result[MAX_STRING_LENGTH];
-    char                                    Temp[MAX_STRING_LENGTH];
+    char                                    Result[MAX_STRING_LEN];
+    char                                    Temp[MAX_STRING_LEN];
     FILE                                   *fp;
-    struct timeb                            right_now;
+    //struct timeb                            right_now;
+    struct timespec                         right_now;
     struct tm                              *now_part;
 
-    bzero(Result, MAX_STRING_LENGTH);
+    bzero(Result, MAX_STRING_LEN);
     va_start(arg, Str);
     if (Str && *Str) {
 #ifdef DIKU_CRUD
@@ -72,38 +73,41 @@ void bug_logger(const char *File, const char *Func, int Line,
 
 	strcpy(Result, "Notify> ");
 #endif
-	vsprintf(Temp, Str, arg);
+	vsnprintf(Temp, MAX_STRING_LEN, Str, arg);
 #ifdef DIKU_CRUD
 	strcat(Result, Temp);
 	for (i = descriptor_list; i; i = i->next)
 	    if ((!i->connected) && (GetMaxLevel(i->character) >= Level) &&
 		(IS_SET(i->character->specials.act, PLR_LOGS)))
 		write_to_q(Result, &i->output);
-	bzero(Result, MAX_STRING_LENGTH);
+	bzero(Result, MAX_STRING_LEN);
 #endif
     } else
 	strcpy(Temp, "PING!");
     va_end(arg);
-    ftime(&right_now);
+    //ftime(&right_now);
+    clock_gettime(CLOCK_REALTIME, &right_now);
     now_part = localtime((const time_t *)&right_now);
-    sprintf(Result, "<: %02d%02d%02d.%02d%02d%02d.%03d",
+    snprintf(Result, MAX_STRING_LEN, "<: %02d%02d%02d.%02d%02d%02d.%03d",
 	    now_part->tm_year, now_part->tm_mon + 1, now_part->tm_mday,
-	    now_part->tm_hour, now_part->tm_min, now_part->tm_sec, right_now.millitm);
+	    now_part->tm_hour, now_part->tm_min, now_part->tm_sec,
+            //right_now.millitm);
+            ((int)(right_now.tv_nsec / 1000000)));
     if (File || Func || Line) {
 	strcat(Result, " (");
 	if (File && *File) {
 	    strcat(Result, File);
 	}
 	if (Func && *Func)
-	    sprintf(Result + strlen(Result), ";%s", Func);
+	    snprintf(Result + strlen(Result), MAX_STRING_LEN, ";%s", Func);
 	if (Line)
-	    sprintf(Result + strlen(Result), ",%d)", Line);
+	    snprintf(Result + strlen(Result), MAX_STRING_LEN, ",%d)", Line);
 	else
 	    strcat(Result, ")");
     }
 #ifdef DIKU_CRUD
     if (ch && !IS_NPC(ch))
-	sprintf(Result + strlen(Result), " %s [#%d]\n",
+	snprintf(Result + strlen(Result), MAX_STRING_LEN, " %s [#%d]\n",
 		ch->player.name, ch->in_room ? ch->in_room : 0);
     else
 #endif

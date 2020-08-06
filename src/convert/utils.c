@@ -5,10 +5,12 @@
 #include <stdarg.h>
 #include <time.h>
 #include <string.h>
-#include <sys/timeb.h>
+//#include <sys/timeb.h>
 #include <ctype.h>
+#include <openssl/md5.h>
 /* #include <sys/time.h> */
 /* #include <sys/timeb.h> */
+
 #include "include/bug.h"
 #include "include/structs.h"
 #include "include/main.h"
@@ -93,14 +95,14 @@ char                                   *get_more_mem(char *Memory, long Count, l
  */
 char                                   *get_line(FILE * fp, long *Line, long *Pos, int Skip)
 {
-    static char                             tmp[MAX_LINE_LEN];
+    static char                             tmp[MAX_STRING_LEN];
 
     if (!fp)
 	return NULL;
     do {
-	bzero(tmp, MAX_LINE_LEN);
+	bzero(tmp, MAX_STRING_LEN);
 	*Pos = ftell(fp);
-	if (!fgets(tmp, MAX_LINE_LEN - 1, fp))
+	if (!fgets(tmp, MAX_STRING_LEN - 1, fp))
 	    return NULL;
 	(*Line)++;
 	if (*tmp)
@@ -154,20 +156,20 @@ int verify_pos(FILE * fp, long Pos, int Check)
  */
 char                                   *get_tilde_string(FILE * fp, long *Line, long *Pos)
 {
-    static char                             block[MAX_PAGE_LEN];
-    static char                             tmp[MAX_LINE_LEN];
+    static char                             block[MAX_STRING_LEN];
+    static char                             tmp[MAX_STRING_LEN];
 
     if (!fp)
 	return NULL;
-    bzero(block, MAX_PAGE_LEN);
+    bzero(block, MAX_STRING_LEN);
     while (1) {
 	int                                     i = 0;
 
-	bzero(tmp, MAX_LINE_LEN);
+	bzero(tmp, MAX_STRING_LEN);
 	do {
-	    bzero(tmp, MAX_LINE_LEN);
+	    bzero(tmp, MAX_STRING_LEN);
 	    *Pos = ftell(fp);
-	    if (!fgets(tmp, MAX_LINE_LEN - 1, fp))
+	    if (!fgets(tmp, MAX_STRING_LEN - 1, fp))
 		return NULL;
 	    (*Line)++;
 	    if (*tmp)
@@ -227,13 +229,13 @@ char                                   *get_tilde_string(FILE * fp, long *Line, 
  */
 char                                   *remap_name(char *Old)
 {
-    static char                             Block[MAX_PAGE_LEN];
+    static char                             Block[MAX_STRING_LEN];
     int                                     i,
                                             j;
 
     if (!Old)
 	return NULL;
-    bzero(Block, MAX_PAGE_LEN);
+    bzero(Block, MAX_STRING_LEN);
     for (j = i = 0; i < strlen(Old); i++) {
 	if (isalpha(Old[i]))
 	    Block[j++] = Old[i];
@@ -291,15 +293,19 @@ keyword                                *make_keyword_list(char *String)
 
 char                                   *timestamp(void)
 {
-    static char                             Result[256];
-    struct timeb                            right_now;
+    static char                             Result[MAX_STRING_LEN];
+    //struct timeb                            right_now;
+    struct timespec                         right_now;
     struct tm                              *now_part;
 
-    ftime(&right_now);
+    //ftime(&right_now);
+    clock_gettime(CLOCK_REALTIME, &right_now);
     now_part = localtime((const time_t *)&right_now);
-    sprintf(Result, "%02d%02d%02d.%02d%02d%02d.%03d",
+    snprintf(Result, MAX_STRING_LEN, "%02d%02d%02d.%02d%02d%02d.%03d",
 	    now_part->tm_year, now_part->tm_mon + 1, now_part->tm_mday,
-	    now_part->tm_hour, now_part->tm_min, now_part->tm_sec, right_now.millitm);
+	    now_part->tm_hour, now_part->tm_min, now_part->tm_sec,
+            //right_now.millitm);
+            ((int)(right_now.tv_nsec / 1000000)));
     return Result;
 }
 
@@ -335,3 +341,71 @@ char                                   *ordinal(int x)
 	    return "th";
     }
 }
+
+char                                    *md5_hex(const char *str)
+{
+    int length;
+    int i;
+    MD5_CTX c;
+    unsigned char digest[16];
+    static char result[33];
+
+    MD5_Init(&c);
+
+    length = strlen(str);
+    while (length > 0) {
+        if (length > 512) {
+            MD5_Update(&c, str, 512);
+        } else {
+            MD5_Update(&c, str, length);
+        }
+        length -= 512;
+        str += 512;
+    }
+
+    MD5_Final(digest, &c);
+
+    for (i = 0; i < 16; ++i) {
+        snprintf(&(result[i*2]), 16*2, "%02x", (unsigned int)digest[i]);
+    }
+    result[32] = '\0';
+
+    return result;
+}
+
+char                                    *json_escape(char *thing)
+{
+    static char result[MAX_STRING_LEN];
+
+    bzero(result, MAX_STRING_LEN);
+    for(char *s = thing; *s; s++) {
+        if( *s == '"' || *s == '\\' || ( '\x00' <= *s && *s <= '\x1f' ) ) {
+            scprintf(result, MAX_STRING_LEN, "\\u%04x", (unsigned int)*s);
+        } else {
+            scprintf(result, MAX_STRING_LEN, "%c", *s);
+        }
+    }
+    return result;
+}
+
+/*
+ * This is a wrapper for snprintf() with strlcat(), to basically allow
+ * us to append formatted data to a string, passing in the length limit
+ * of the string buffer we're pointing at.
+ *
+ * Think of it as strcat_printf(), but shorter.
+ */
+int scprintf(char *buf, size_t limit, const char *Str, ...) {
+    va_list                                 arg;
+    int                                     len = 0;
+    int                                     result = 0;
+
+    if (buf && limit > 0 && Str && *Str) {
+        len = strlen(buf);
+	va_start(arg, Str);
+	result = vsnprintf((buf + len), limit - len, Str, arg);
+	va_end(arg);
+    }
+    return result + len;
+}
+

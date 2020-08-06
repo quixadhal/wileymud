@@ -3,8 +3,7 @@
 
 #define VERSION		"Version 0.7, Released 96.08.02"
 
-#define MAX_LINE_LEN 256
-#define MAX_PAGE_LEN 8192
+#define MAX_STRING_LEN 16384
 
 #define ROOM_FILE	"tinyworld.wld"			       /* room definitions */
 #define MOB_FILE	"tinyworld.mob"			       /* monster prototypes */
@@ -21,6 +20,8 @@
 #define SMAUG_SUBDIR	"smaug"
 #define NIGHTMARE_SUBDIR	"nightmare"
 #define DS_SUBDIR	"ds"
+#define JSON_SUBDIR	"json"
+#define NEWMAP_SUBDIR	"newmap"
 
 #define MAP_FILE	"map.out"
 #define PPM_FILE	"map-%03d.ppm"
