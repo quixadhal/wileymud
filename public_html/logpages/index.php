@@ -830,6 +830,9 @@ header("Pragma: no-cache");
         $hour_html    = $row['hour_html'];
         $channel_html = $row['channel_html'];
         $channel      = $row['channel']; // text only channel name
+        if( $channel == "japanese" ) {
+            $channel = "日本語";
+        }
         if( empty($channel_html) || is_null($channel_html) ) {
             $channel_html = $channels['default']['html'];
         }
@@ -841,7 +844,7 @@ header("Pragma: no-cache");
 
         $date_col     = $row['the_date'];
         $time_col     = sprintf("%s%s", $hour_html, $row['the_time']);
-        $channel_col  = sprintf("%s%s", $channel_html, $row['channel']);
+        $channel_col  = sprintf("%s%s", $channel_html, $channel); //$row['channel']);
         $speaker_col  = sprintf("%s%s@%s", $speaker_html, $row['speaker'], $row['mud']);
 
         $message = $row['message'];

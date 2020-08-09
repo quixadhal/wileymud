@@ -138,3 +138,11 @@ function localize_rows() {
         tdspan[0].style.color = hour_map[newHour];
     }
 }
+
+function toggleDiv(divID) {
+    if(document.getElementById(divID).style.display == 'none') {
+        document.getElementById(divID).style.display = 'block';
+    } else {
+        document.getElementById(divID).style.display = 'none';
+    }
+}

@@ -1325,11 +1325,12 @@ EOM
                     my $channel_html = $row->{channel_html} || $channels->{default}{html} || "--**--NULL--**--";
                     my $speaker_html = $row->{speaker_html} || $speakers->{default}{html} || "--**--NULL--**--";
                     my $channel = $row->{channel}; # text only channel name
+                    $channel = "日本語" if $channel eq "japanese";
 
                     printf FP "<tr id=\"row_%d\" style=\"display:none\">\n", $counter;
                     printf FP "<td onclick=\"col_click(this)\" bgcolor=\"%s\">%s</td>\n", $bg_color, $row->{the_date};
                     printf FP "<td onclick=\"col_click(this)\" bgcolor=\"%s\">%s%s%s</td>\n", $bg_color, $hour_html, $row->{the_time}, "</span>";
-                    printf FP "<td onclick=\"col_click(this)\" bgcolor=\"%s\">%s%s%s</td>\n", $bg_color, $channel_html, $row->{channel}, "</span>";
+                    printf FP "<td onclick=\"col_click(this)\" bgcolor=\"%s\">%s%s%s</td>\n", $bg_color, $channel_html, $channel, "</span>";
                     printf FP "<td onclick=\"col_click(this)\" bgcolor=\"%s\">%s%s@%s%s</td>\n", $bg_color, $speaker_html, $row->{speaker}, $row->{mud}, "</span>";
 
                     my $message = $row->{message};
