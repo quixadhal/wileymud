@@ -1711,6 +1711,8 @@ char *utf8_check(char *candidate) {
     if((unsigned int)candidate[0] > 0x7F) {
         // Now we're talking!
         bzero(utf, 5);
+
+        //scprintf(utf, 5, "%c", candidate[0]);
         if(((unsigned int)candidate[0] & 0xE0) == 0xC0) {
             // 110xxxxx means 1 more bytes
             if(candidate[1]) {

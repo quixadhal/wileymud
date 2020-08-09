@@ -418,5 +418,6 @@ void remove_quotes(char **ps);
 char *add_quotes(char *s);
 char *strrep(const char *src, const char *search, const char *rep);
 char *hex_dump(const unsigned char *data, const size_t len);
+char *utf8_check(char *candidate);
 
 #endif

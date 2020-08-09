@@ -10740,18 +10740,44 @@ bool i3_command_hook(CHAR_DATA *ch, const char *lcommand, const char *argument)
                 prev_color = color = random() % token_count;
                 strncpy(b, token[color], strlen(token[color]));
                 b += strlen(token[color]);
-                for(s = argument; *s && strlen(b) < (MAX_STRING_LENGTH - 10); s++) {
-                    *b = *s;
-                    b++;
-                    if(isspace(*s) || ispunct(*s)) {
-                        for(int pc = 0; pc < 10; pc++) {
-                            color = random() % bg_token_count;
-                            if(color != prev_color)
-                                break;
+                for(s = argument; *s && strlen(b) < (MAX_STRING_LENGTH - 10);) {
+                    char *u = NULL;
+
+                    u = utf8_check((char *)s);
+                    if(u && *u) {
+                        // Something unicode!
+                        *b = *s;
+                        b++;
+                        s++;
+
+                        strncpy(b, u, strlen(u));
+                        b += strlen(u);
+                        s += strlen(u);
+
+                        if(isspace(*s) || ispunct(*s)) {
+                            for(int pc = 0; pc < 10; pc++) {
+                                color = random() % bg_token_count;
+                                if(color != prev_color)
+                                    break;
+                            }
+                            prev_color = color;
+                            strncpy(b, token[color], strlen(token[color]));
+                            b += strlen(token[color]);
                         }
-                        prev_color = color;
-                        strncpy(b, token[color], strlen(token[color]));
-                        b += strlen(token[color]);
+                    } else {
+                        *b = *s;
+                        b++;
+                        s++;
+                        if(isspace(*s) || ispunct(*s)) {
+                            for(int pc = 0; pc < 10; pc++) {
+                                color = random() % bg_token_count;
+                                if(color != prev_color)
+                                    break;
+                            }
+                            prev_color = color;
+                            strncpy(b, token[color], strlen(token[color]));
+                            b += strlen(token[color]);
+                        }
                     }
                 }
                 strcpy(b, "%^RESET%^");
@@ -10773,13 +10799,20 @@ bool i3_command_hook(CHAR_DATA *ch, const char *lcommand, const char *argument)
                 color_dir = 1;
                 strncpy(b, token[color], strlen(token[color]));
                 b += strlen(token[color]);
-                for(s = argument; *s && strlen(b) < (MAX_STRING_LENGTH - 10); s++) {
-                    if(isspace(*s)) {
+                for(s = argument; *s && strlen(b) < (MAX_STRING_LENGTH - 10);) {
+                    char *u = NULL;
+
+                    u = utf8_check((char *)s);
+                    if(u && *u) {
+                        // Something unicode!
                         *b = *s;
                         b++;
-                    } else {
-                        *b = *s;
-                        b++;
+                        s++;
+
+                        strncpy(b, u, strlen(u));
+                        b += strlen(u);
+                        s += strlen(u);
+
                         color += color_dir;
                         if(color == 0) {
                             color_dir = 1;
@@ -10790,6 +10823,27 @@ bool i3_command_hook(CHAR_DATA *ch, const char *lcommand, const char *argument)
                         color = color % token_count;
                         strncpy(b, token[color], strlen(token[color]));
                         b += strlen(token[color]);
+                    } else {
+                        // a normal character, not utf8
+                        if(isspace(*s)) {
+                            *b = *s;
+                            b++;
+                            s++;
+                        } else {
+                            *b = *s;
+                            b++;
+                            s++;
+                            color += color_dir;
+                            if(color == 0) {
+                                color_dir = 1;
+                            } else if(color == token_count) {
+                                color_dir = -1;
+                                color = token_count - 1;
+                            }
+                            color = color % token_count;
+                            strncpy(b, token[color], strlen(token[color]));
+                            b += strlen(token[color]);
+                        }
                     }
                 }
                 strcpy(b, "%^RESET%^");
@@ -10810,18 +10864,44 @@ bool i3_command_hook(CHAR_DATA *ch, const char *lcommand, const char *argument)
                 prev_color = color = random() % bg_token_count;
                 strncpy(b, bg_token[color], strlen(bg_token[color]));
                 b += strlen(bg_token[color]);
-                for(s = argument; *s && strlen(b) < (MAX_STRING_LENGTH - 10); s++) {
-                    *b = *s;
-                    b++;
-                    if(isspace(*s)) {
-                        for(int pc = 0; pc < 10; pc++) {
-                            color = random() % bg_token_count;
-                            if(color != prev_color)
-                                break;
+                for(s = argument; *s && strlen(b) < (MAX_STRING_LENGTH - 10);) {
+                    char *u = NULL;
+
+                    u = utf8_check((char *)s);
+                    if(u && *u) {
+                        // Something unicode!
+                        *b = *s;
+                        b++;
+                        s++;
+
+                        strncpy(b, u, strlen(u));
+                        b += strlen(u);
+                        s += strlen(u);
+
+                        if(isspace(*s)) {
+                            for(int pc = 0; pc < 10; pc++) {
+                                color = random() % bg_token_count;
+                                if(color != prev_color)
+                                    break;
+                            }
+                            prev_color = color;
+                            strncpy(b, bg_token[color], strlen(bg_token[color]));
+                            b += strlen(bg_token[color]);
                         }
-                        prev_color = color;
-                        strncpy(b, bg_token[color], strlen(bg_token[color]));
-                        b += strlen(bg_token[color]);
+                    } else {
+                        *b = *s;
+                        b++;
+                        s++;
+                        if(isspace(*s)) {
+                            for(int pc = 0; pc < 10; pc++) {
+                                color = random() % bg_token_count;
+                                if(color != prev_color)
+                                    break;
+                            }
+                            prev_color = color;
+                            strncpy(b, bg_token[color], strlen(bg_token[color]));
+                            b += strlen(bg_token[color]);
+                        }
                     }
                 }
                 strcpy(b, "%^RESET%^");
