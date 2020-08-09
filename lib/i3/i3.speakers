@@ -1,5 +1,5 @@
 #COUNT
-Count   2788
+Count   2813
 End
 
 #SPEAKER
@@ -150,6 +150,11 @@ End
 #SPEAKER
 Name   kyrrodi
 Color  %^CYAN%^%^BOLD%^
+End
+
+#SPEAKER
+Name   xola
+Color  %^WHITE%^
 End
 
 #SPEAKER
@@ -1113,6 +1118,11 @@ Color  %^MAGENTA%^
 End
 
 #SPEAKER
+Name   syriac
+Color  %^BLACK%^%^BOLD%^
+End
+
+#SPEAKER
 Name   asmodeo
 Color  %^WHITE%^%^B_MAGENTA%^
 End
@@ -2068,6 +2078,11 @@ Color  %^CYAN%^
 End
 
 #SPEAKER
+Name   circe
+Color  %^WHITE%^%^BOLD%^
+End
+
+#SPEAKER
 Name   antisocial
 Color  %^CYAN%^%^BOLD%^
 End
@@ -2210,6 +2225,11 @@ End
 #SPEAKER
 Name   xar
 Color  %^WHITE%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name   tlny
+Color  %^BLUE%^
 End
 
 #SPEAKER
@@ -3888,6 +3908,11 @@ Color  %^YELLOW%^
 End
 
 #SPEAKER
+Name   tlaloc
+Color  %^WHITE%^%^BOLD%^
+End
+
+#SPEAKER
 Name   an acolyte
 Color  %^BLACK%^%^BOLD%^
 End
@@ -4415,6 +4440,16 @@ End
 #SPEAKER
 Name   timbot
 Color  %^RED%^
+End
+
+#SPEAKER
+Name   yucongsun
+Color  %^CYAN%^%^BOLD%^
+End
+
+#SPEAKER
+Name   left
+Color  %^CYAN%^%^BOLD%^
 End
 
 #SPEAKER
@@ -5778,6 +5813,11 @@ Color  %^WHITE%^%^BOLD%^
 End
 
 #SPEAKER
+Name   mithyr
+Color  %^WHITE%^
+End
+
+#SPEAKER
 Name   a chicken
 Color  %^WHITE%^%^B_MAGENTA%^
 End
@@ -5925,6 +5965,16 @@ End
 #SPEAKER
 Name   tricky bows to someone
 Color  %^MAGENTA%^
+End
+
+#SPEAKER
+Name   atheistx
+Color  %^ORANGE%^
+End
+
+#SPEAKER
+Name   ageor
+Color  %^CYAN%^
 End
 
 #SPEAKER
@@ -6483,6 +6533,11 @@ Color  %^WHITE%^%^B_MAGENTA%^
 End
 
 #SPEAKER
+Name   stormy
+Color  %^ORANGE%^
+End
+
+#SPEAKER
 Name   abreu
 Color  %^YELLOW%^
 End
@@ -6898,6 +6953,11 @@ Color  %^GREEN%^%^BOLD%^
 End
 
 #SPEAKER
+Name   darb
+Color  %^BLUE%^
+End
+
+#SPEAKER
 Name   alton
 Color  %^RED%^%^BOLD%^
 End
@@ -7175,6 +7235,11 @@ End
 #SPEAKER
 Name   zeddicus
 Color  %^ORANGE%^
+End
+
+#SPEAKER
+Name   galgorin
+Color  %^BLACK%^%^BOLD%^
 End
 
 #SPEAKER
@@ -7640,6 +7705,11 @@ End
 #SPEAKER
 Name   zolomon
 Color  %^RED%^%^BOLD%^
+End
+
+#SPEAKER
+Name   neimad
+Color  %^GREEN%^%^BOLD%^
 End
 
 #SPEAKER
@@ -9323,6 +9393,16 @@ Color  %^BLACK%^%^B_WHITE%^
 End
 
 #SPEAKER
+Name   ark
+Color  %^RED%^%^BOLD%^
+End
+
+#SPEAKER
+Name   amerikranian
+Color  %^YELLOW%^
+End
+
+#SPEAKER
 Name   banokles
 Color  %^WHITE%^%^BOLD%^
 End
@@ -9435,6 +9515,11 @@ End
 #SPEAKER
 Name   lifeless
 Color  %^BLACK%^%^BOLD%^
+End
+
+#SPEAKER
+Name   ab
+Color  %^MAGENTA%^
 End
 
 #SPEAKER
@@ -9893,6 +9978,11 @@ Color  %^GREEN%^%^BOLD%^
 End
 
 #SPEAKER
+Name   galahad
+Color  %^RED%^
+End
+
+#SPEAKER
 Name   ahumado
 Color  %^WHITE%^
 End
@@ -10175,6 +10265,11 @@ End
 #SPEAKER
 Name   gabrio
 Color  %^YELLOW%^
+End
+
+#SPEAKER
+Name   darih
+Color  %^MAGENTA%^
 End
 
 #SPEAKER
@@ -11283,6 +11378,11 @@ Color  %^MAGENTA%^%^BOLD%^
 End
 
 #SPEAKER
+Name   methelius
+Color  %^MAGENTA%^%^BOLD%^
+End
+
+#SPEAKER
 Name   andschana
 Color  %^ORANGE%^
 End
@@ -11630,6 +11730,11 @@ End
 #SPEAKER
 Name   curious
 Color  %^BLUE%^
+End
+
+#SPEAKER
+Name   xephon
+Color  %^CYAN%^
 End
 
 #SPEAKER
@@ -12058,6 +12163,11 @@ Color  %^WHITE%^
 End
 
 #SPEAKER
+Name   liara
+Color  %^GREEN%^
+End
+
+#SPEAKER
 Name   aeroc
 Color  %^BLUE%^%^BOLD%^
 End
@@ -12210,6 +12320,11 @@ End
 #SPEAKER
 Name   fire
 Color  %^MAGENTA%^
+End
+
+#SPEAKER
+Name   fyra
+Color  %^BLUE%^%^BOLD%^
 End
 
 #SPEAKER
@@ -13103,6 +13218,11 @@ Color  %^MAGENTA%^
 End
 
 #SPEAKER
+Name   tcikoritys
+Color  %^GREEN%^
+End
+
+#SPEAKER
 Name   artanis
 Color  %^BLACK%^%^B_MAGENTA%^
 End
@@ -13545,6 +13665,11 @@ End
 #SPEAKER
 Name   zaroth
 Color  %^WHITE%^%^BOLD%^
+End
+
+#SPEAKER
+Name   pyra
+Color  %^RED%^
 End
 
 #SPEAKER

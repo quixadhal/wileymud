@@ -335,6 +335,13 @@ I3tag  %^YELLOW%^
 End
 
 #COLOR
+Name   Yellow2
+Mudtag [0;1;33m
+IMCtag &Y
+I3tag  %^BOLD%^YELLOW%^
+End
+
+#COLOR
 Name   Reset
 Mudtag [0m
 IMCtag &d

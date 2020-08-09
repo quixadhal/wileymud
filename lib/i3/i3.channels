@@ -134,8 +134,8 @@ End
 ChanName   pyom
 ChanMud    Bloodlines
 ChanLocal  pyom
-ChanLayM   %^GREEN%^%^BOLD%^[s%] %s@%s: %^RESET%^%s
-ChanLayE   %^GREEN%^%^BOLD%^[s%] %^RESET%^%s
+ChanLayM   %^GREEN%^%^BOLD%^[%s] %s@%s: %^RESET%^%s
+ChanLayE   %^GREEN%^%^BOLD%^[%s] %^RESET%^%s
 ChanLevel  2
 ChanStatus 0
 ChanFlags  0
@@ -489,7 +489,7 @@ ChanLocal  (null)
 ChanLayM   [%s] %s@%s: %%^RESET%%^%s
 ChanLayE   [%s] %%^RESET%%^%s
 ChanLevel  0
-ChanStatus 0
+ChanStatus 2
 ChanFlags  0
 End
 
@@ -1277,10 +1277,10 @@ End
 #I3CHAN
 ChanName   german
 ChanMud    OuterSpace
-ChanLocal  (null)
-ChanLayM   [%s] %s@%s: %%^RESET%%^%s
-ChanLayE   [%s] %%^RESET%%^%s
-ChanLevel  0
+ChanLocal  german
+ChanLayM   %%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^] %%^CYAN%%^%%^BOLD%%^%s@%s: %%^CYAN%%^%s
+ChanLayE   %%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^] %%^CYAN%%^%s
+ChanLevel  2
 ChanStatus 0
 ChanFlags  0
 End
@@ -1410,8 +1410,8 @@ End
 ChanName   mlp
 ChanMud    Ulario
 ChanLocal  (null)
-ChanLayM   (null)
-ChanLayE   (null)
+ChanLayM   [%s] %s@%s: %%^RESET%%^%s
+ChanLayE   [%s] %%^RESET%%^%s
 ChanLevel  0
 ChanStatus 0
 ChanFlags  0
@@ -1421,8 +1421,8 @@ End
 ChanName   foo
 ChanMud    Ulario
 ChanLocal  (null)
-ChanLayM   (null)
-ChanLayE   (null)
+ChanLayM   [%s] %s@%s: %%^RESET%%^%s
+ChanLayE   [%s] %%^RESET%%^%s
 ChanLevel  0
 ChanStatus 0
 ChanFlags  0
@@ -1432,8 +1432,8 @@ End
 ChanName   spyro
 ChanMud    Ulario
 ChanLocal  (null)
-ChanLayM   (null)
-ChanLayE   (null)
+ChanLayM   [%s] %s@%s: %%^RESET%%^%s
+ChanLayE   [%s] %%^RESET%%^%s
 ChanLevel  0
 ChanStatus 0
 ChanFlags  0
@@ -1443,8 +1443,8 @@ End
 ChanName   ad
 ChanMud    Ulario
 ChanLocal  (null)
-ChanLayM   (null)
-ChanLayE   (null)
+ChanLayM   [%s] %s@%s: %%^RESET%%^%s
+ChanLayE   [%s] %%^RESET%%^%s
 ChanLevel  0
 ChanStatus 0
 ChanFlags  0
@@ -1454,8 +1454,8 @@ End
 ChanName   vore
 ChanMud    Ulario
 ChanLocal  (null)
-ChanLayM   (null)
-ChanLayE   (null)
+ChanLayM   [%s] %s@%s: %%^RESET%%^%s
+ChanLayE   [%s] %%^RESET%%^%s
 ChanLevel  0
 ChanStatus 0
 ChanFlags  0
@@ -1465,8 +1465,8 @@ End
 ChanName   bestiality 2
 ChanMud    Ulario
 ChanLocal  (null)
-ChanLayM   (null)
-ChanLayE   (null)
+ChanLayM   [%s] %s@%s: %%^RESET%%^%s
+ChanLayE   [%s] %%^RESET%%^%s
 ChanLevel  0
 ChanStatus 0
 ChanFlags  0
@@ -1476,8 +1476,8 @@ End
 ChanName   bestiality
 ChanMud    Ulario
 ChanLocal  (null)
-ChanLayM   (null)
-ChanLayE   (null)
+ChanLayM   [%s] %s@%s: %%^RESET%%^%s
+ChanLayE   [%s] %%^RESET%%^%s
 ChanLevel  0
 ChanStatus 0
 ChanFlags  0
@@ -1487,8 +1487,8 @@ End
 ChanName   Discworld
 ChanMud    GuardianMUD
 ChanLocal  (null)
-ChanLayM   (null)
-ChanLayE   (null)
+ChanLayM   [%s] %s@%s: %%^RESET%%^%s
+ChanLayE   [%s] %%^RESET%%^%s
 ChanLevel  0
 ChanStatus 0
 ChanFlags  0
@@ -1498,8 +1498,8 @@ End
 ChanName   kotaka
 ChanMud    Ulario
 ChanLocal  (null)
-ChanLayM   (null)
-ChanLayE   (null)
+ChanLayM   [%s] %s@%s: %%^RESET%%^%s
+ChanLayE   [%s] %%^RESET%%^%s
 ChanLevel  0
 ChanStatus 0
 ChanFlags  0
@@ -1509,8 +1509,8 @@ End
 ChanName   foobar
 ChanMud    Ulario
 ChanLocal  (null)
-ChanLayM   (null)
-ChanLayE   (null)
+ChanLayM   [%s] %s@%s: %%^RESET%%^%s
+ChanLayE   [%s] %%^RESET%%^%s
 ChanLevel  0
 ChanStatus 0
 ChanFlags  0
@@ -1520,8 +1520,8 @@ End
 ChanName   ascii_video
 ChanMud    Ulario
 ChanLocal  (null)
-ChanLayM   (null)
-ChanLayE   (null)
+ChanLayM   [%s] %s@%s: %%^RESET%%^%s
+ChanLayE   [%s] %%^RESET%%^%s
 ChanLevel  0
 ChanStatus 0
 ChanFlags  0
@@ -1531,8 +1531,8 @@ End
 ChanName   crat is crazy
 ChanMud    Ulario
 ChanLocal  (null)
-ChanLayM   (null)
-ChanLayE   (null)
+ChanLayM   [%s] %s@%s: %%^RESET%%^%s
+ChanLayE   [%s] %%^RESET%%^%s
 ChanLevel  0
 ChanStatus 0
 ChanFlags  0
@@ -1542,8 +1542,8 @@ End
 ChanName   foobar 2
 ChanMud    Ulario
 ChanLocal  (null)
-ChanLayM   (null)
-ChanLayE   (null)
+ChanLayM   [%s] %s@%s: %%^RESET%%^%s
+ChanLayE   [%s] %%^RESET%%^%s
 ChanLevel  0
 ChanStatus 0
 ChanFlags  0
@@ -1553,8 +1553,8 @@ End
 ChanName   foofoo
 ChanMud    Ulario
 ChanLocal  (null)
-ChanLayM   (null)
-ChanLayE   (null)
+ChanLayM   [%s] %s@%s: %%^RESET%%^%s
+ChanLayE   [%s] %%^RESET%%^%s
 ChanLevel  0
 ChanStatus 0
 ChanFlags  0
@@ -1564,8 +1564,8 @@ End
 ChanName   furry
 ChanMud    Ulario
 ChanLocal  (null)
-ChanLayM   (null)
-ChanLayE   (null)
+ChanLayM   [%s] %s@%s: %%^RESET%%^%s
+ChanLayE   [%s] %%^RESET%%^%s
 ChanLevel  0
 ChanStatus 0
 ChanFlags  0
@@ -1575,8 +1575,8 @@ End
 ChanName   yiff
 ChanMud    Ulario
 ChanLocal  (null)
-ChanLayM   (null)
-ChanLayE   (null)
+ChanLayM   [%s] %s@%s: %%^RESET%%^%s
+ChanLayE   [%s] %%^RESET%%^%s
 ChanLevel  0
 ChanStatus 0
 ChanFlags  0
@@ -1586,8 +1586,8 @@ End
 ChanName   crat
 ChanMud    Ulario
 ChanLocal  (null)
-ChanLayM   (null)
-ChanLayE   (null)
+ChanLayM   [%s] %s@%s: %%^RESET%%^%s
+ChanLayE   [%s] %%^RESET%%^%s
 ChanLevel  0
 ChanStatus 0
 ChanFlags  0
@@ -1597,8 +1597,8 @@ End
 ChanName   avalar
 ChanMud    Ulario
 ChanLocal  (null)
-ChanLayM   (null)
-ChanLayE   (null)
+ChanLayM   [%s] %s@%s: %%^RESET%%^%s
+ChanLayE   [%s] %%^RESET%%^%s
 ChanLevel  0
 ChanStatus 0
 ChanFlags  0
@@ -1608,8 +1608,8 @@ End
 ChanName   asdfasdf
 ChanMud    Ulario
 ChanLocal  (null)
-ChanLayM   (null)
-ChanLayE   (null)
+ChanLayM   [%s] %s@%s: %%^RESET%%^%s
+ChanLayE   [%s] %%^RESET%%^%s
 ChanLevel  0
 ChanStatus 0
 ChanFlags  0
@@ -1619,8 +1619,63 @@ End
 ChanName   intercre
 ChanMud    Ulario
 ChanLocal  (null)
-ChanLayM   (null)
-ChanLayE   (null)
+ChanLayM   [%s] %s@%s: %%^RESET%%^%s
+ChanLayE   [%s] %%^RESET%%^%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   日本語
+ChanMud    WileyMUD
+ChanLocal  japanese
+ChanLayM   %%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^] %%^CYAN%%^%%^BOLD%%^%s@%s: %%^CYAN%%^%s
+ChanLayE   %%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^] %%^CYAN%%^%s
+ChanLevel  2
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   code
+ChanMud    TMI-2f
+ChanLocal  (null)
+ChanLayM   [%s] %s@%s: %%^RESET%%^%s
+ChanLayE   [%s] %%^RESET%%^%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   diku
+ChanMud    Realm of Shadows
+ChanLocal  (null)
+ChanLayM   [%s] %s@%s: %%^RESET%%^%s
+ChanLayE   [%s] %%^RESET%%^%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   generalchat
+ChanMud    Realm of Shadows
+ChanLocal  (null)
+ChanLayM   [%s] %s@%s: %%^RESET%%^%s
+ChanLayE   [%s] %%^RESET%%^%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   gossip_nopolitcs
+ChanMud    Realm of Shadows
+ChanLocal  (null)
+ChanLayM   [%s] %s@%s: %%^RESET%%^%s
+ChanLayE   [%s] %%^RESET%%^%s
 ChanLevel  0
 ChanStatus 0
 ChanFlags  0

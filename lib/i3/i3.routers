@@ -3,8 +3,8 @@ Name *Kelly
 IP   45.64.56.66
 Port 8080
 Password 647990417
-MudlistID 5279049
-ChanlistID 1
+MudlistID 814035
+ChanlistID 9
 End
 
 #ROUTER
@@ -12,17 +12,17 @@ Name *dalet
 IP   97.107.133.86
 Port 8787
 Password 647990417
-MudlistID 19861041
-ChanlistID 85
+MudlistID 21253200
+ChanlistID 87
 End
 
 #ROUTER
-Name *Kelly-old
-IP   150.101.219.57
+Name *i4
+IP   204.209.44.3
 Port 8080
 Password 647990417
-MudlistID 4940105
-ChanlistID 1
+MudlistID 23272912
+ChanlistID 9
 End
 
 #ROUTER
@@ -35,8 +35,17 @@ ChanlistID 0
 End
 
 #ROUTER
-Name *i4
-IP   204.209.44.3
+Name *Kelly-old
+IP   150.101.219.57
+Port 8080
+Password 647990417
+MudlistID 4940105
+ChanlistID 1
+End
+
+#ROUTER
+Name *Kelly-dns
+IP   kelly.irn.themud.org
 Port 8080
 Password 0
 MudlistID 0
