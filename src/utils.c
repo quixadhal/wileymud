@@ -2125,3 +2125,65 @@ char *hex_dump(const unsigned char *data, const size_t len) {
     strlcat(result, "'\n", MAX_STRING_LENGTH);
     return result;
 }
+
+// explode("%^", s, &d);
+//
+// This function will break apart the string s by the delimiter given
+// and create an array d that holds all the segments of s between the
+// delimiters.
+//
+// It returns the number of segments in d.
+//
+// CAUTION:  This allocates memory, so be sure to free() it!
+//
+int explode(const char *input, const char *delimiter, char ***segment) {
+    int segment_count       = 0;
+    const char *current     = NULL;
+    const char *chalk       = NULL;
+
+    if(!segment) {
+        printf("NULL segment reference passed to explode!");
+        exit(1);
+    }
+
+    current = strstr(input, delimiter);
+    if(!current) {
+        segment_count = 1;
+        *segment = calloc(segment_count, sizeof(char **));
+        *segment[0] = strdup(input);
+    } else {
+        chalk = input;
+        *segment = NULL;
+        segment_count = 0;
+        do {
+            if(current) {
+                // Found one!
+                // chalk is the previous match, advanced past the delimiter
+                // itself (if any).
+                size_t segment_len = 0;
+
+                segment_len = current - chalk;
+                *segment = realloc(*segment, (segment_count + 1) * sizeof(char **));
+                (*segment)[segment_count] = strndup(chalk, segment_len);
+                segment_count++;
+                current += strlen(delimiter);
+                chalk = current;
+                current = strstr(current, delimiter);
+            } else {
+                // We have no more delimiters, but might either be at the
+                // end of the string, or at the start of the very last
+                // segment.
+                if(*chalk) {
+                    // We have the last segment to process.
+                    *segment = realloc(*segment, (segment_count + 1) * sizeof(char **));
+                    (*segment)[segment_count] = strdup(chalk);
+                    segment_count++;
+                    break;
+                }
+            }
+        } while(current);
+    }
+    // We found 1 or more segments, and put them all in the
+    // segments arrayref... remember to free() the mallocs later!
+    return segment_count;
+}

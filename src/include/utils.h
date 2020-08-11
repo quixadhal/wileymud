@@ -419,5 +419,6 @@ char *add_quotes(char *s);
 char *strrep(const char *src, const char *search, const char *rep);
 char *hex_dump(const unsigned char *data, const size_t len);
 char *utf8_check(char *candidate);
+int explode(const char *input, const char *delimiter, char ***segment);
 
 #endif
