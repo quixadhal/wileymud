@@ -391,4 +391,25 @@ void I3_readSpeaker(FILE *fp);
 void I3_loadSpeakers(void);
 char *color_speaker( const char *speaker );
 void I3_saverouters(void);
+
+#define I3_PINKFISH_NULL    0
+#define I3_PINKFISH_ANSI    1
+#define I3_PINKFISH_I3      2
+#define I3_PINKFISH_XTERM   3
+#define I3_PINKFISH_GREY    4
+
+void I3_loadPinkfishToANSI(void);
+void I3_loadPinkfishToI3(void);
+void I3_loadPinkfishToXterm256(void);
+void I3_loadPinkfishToGreyscale(void);
+
+char *pinkfish_to(const char *src, int target);
+
+#define pinkfish_to_null(s)     pinkfish_to((s),I3_PINKFISH_NULL)
+#define pinkfish_to_ansi(s)     pinkfish_to((s),I3_PINKFISH_ANSI)
+#define pinkfish_to_i3(s)       pinkfish_to((s),I3_PINKFISH_I3)
+#define pinkfish_to_xterm(s)    pinkfish_to((s),I3_PINKFISH_XTERM)
+#define pinkfish_to_grey(s)     pinkfish_to((s),I3_PINKFISH_GREY)
+//char *pinkfish_to_ansi(const char *src);
+
 #endif

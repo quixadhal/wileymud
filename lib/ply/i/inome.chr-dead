@@ -1,34 +1,34 @@
 #PLAYER
-Name               Osiris~
-Passwd             OsVugUSsm33r.~
+Name               Inome~
+Passwd             InO7iwrOR.mgI~
 Whizz              0
 PreTitle           ~
-Title              the Human Supplicant~
+Title              the Dwarven Runner~
 Description
 ~
-LastSite           adork@pool-108-36-94-136.phlapa.fios.verizon.net~
-LastLogin          1597273657
-Birth              1197255055
-Played             22550
+LastSite           adork@catv-89-133-175-204.catv.broadband.hu~
+LastLogin          1580673010
+Birth              1580666673
+Played             6329
 Sex                1
-Race               1
-Class              1
+Race               3
+Class              16
 Alignment          0
-Exp                835
-Level              mage 1
-HeightWeight       193 122
+Exp                1530
+Level              ranger 1
+HeightWeight       104 137
 Gold               0 0
 HomeTown           3008
 LoadRoom           -1
 PoofIn             ~
 PoofOut            ~
-AbilityScores      8 0 15 8 16 16
+AbilityScores      18 53 13 13 10 14
 AbilityPad         0 0 0 0
-HpManaMove         20 20 105 0 469 0
+HpManaMove         27 20 102 0 86 86
 AC                 100
 ToHitDamage        0 0
 SaveApply          0 0 0 0 0
-Conditions         0 1 1 0 0 0
+Conditions         0 7 7 0 0 0
 PointsPad1         0 0 0
 PointsPad2         0 0 0 0
 PointsPad3         0 0 0
@@ -174,10 +174,10 @@ NamedSkill         176 0 0 barter~
 NamedSkill         177 0 0 knockout~
 NamedSkill         178 0 0 spellcraft~
 NamedSkill         179 0 0 meditation~
-NamedSkill         180 0 0 track~
+NamedSkill         180 13 0 track~
 NamedSkill         181 0 0 locate trap~
 NamedSkill         182 0 0 disarm trap~
-NamedSkill         183 0 0 disarm~
+NamedSkill         183 7 0 disarm~
 NamedSkill         184 0 0 shield bash~
 NamedSkill         185 0 0 riding~
 ActFlags           0 80

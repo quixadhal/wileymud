@@ -292,4 +292,11 @@ Perm      Admin
 Connected 0
 End
 
+#COMMAND
+Name      i3reload_speakers
+Code      I3_reload_speakers
+Perm      Admin
+Connected 0
+End
+
 #END

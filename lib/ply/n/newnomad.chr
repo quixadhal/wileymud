@@ -1,34 +1,34 @@
 #PLAYER
-Name               Osiris~
-Passwd             OsVugUSsm33r.~
+Name               Newnomad~
+Passwd             Neomh33nqYXQY~
 Whizz              0
 PreTitle           ~
-Title              the Human Supplicant~
+Title              the Human Runner~
 Description
 ~
 LastSite           adork@pool-108-36-94-136.phlapa.fios.verizon.net~
-LastLogin          1597273657
-Birth              1197255055
-Played             22550
+LastLogin          1596979907
+Birth              1596979776
+Played             127
 Sex                1
 Race               1
-Class              1
+Class              16
 Alignment          0
-Exp                835
-Level              mage 1
-HeightWeight       193 122
+Exp                1
+Level              ranger 1
+HeightWeight       197 171
 Gold               0 0
-HomeTown           3008
+HomeTown           3001
 LoadRoom           -1
 PoofIn             ~
 PoofOut            ~
-AbilityScores      8 0 15 8 16 16
+AbilityScores      16 0 12 12 10 14
 AbilityPad         0 0 0 0
-HpManaMove         20 20 105 0 469 0
+HpManaMove         27 20 102 0 95 100
 AC                 100
 ToHitDamage        0 0
 SaveApply          0 0 0 0 0
-Conditions         0 1 1 0 0 0
+Conditions         0 23 23 0 0 0
 PointsPad1         0 0 0
 PointsPad2         0 0 0 0
 PointsPad3         0 0 0
@@ -174,10 +174,10 @@ NamedSkill         176 0 0 barter~
 NamedSkill         177 0 0 knockout~
 NamedSkill         178 0 0 spellcraft~
 NamedSkill         179 0 0 meditation~
-NamedSkill         180 0 0 track~
+NamedSkill         180 13 0 track~
 NamedSkill         181 0 0 locate trap~
 NamedSkill         182 0 0 disarm trap~
-NamedSkill         183 0 0 disarm~
+NamedSkill         183 7 0 disarm~
 NamedSkill         184 0 0 shield bash~
 NamedSkill         185 0 0 riding~
 ActFlags           0 80

@@ -11769,7 +11769,7 @@ End
 
 #SPEAKER
 Name   cratylus
-Color  %^BLACK%^%^B_RED%^
+Color  %^B_RED%^%^BLACK%^
 End
 
 #SPEAKER
@@ -12124,7 +12124,7 @@ End
 
 #SPEAKER
 Name   quixadhal
-Color  %^RED%^
+Color  %^BLACK%^%^B_GREEN%^
 End
 
 #SPEAKER

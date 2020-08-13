@@ -2,8 +2,8 @@
 ChanName   dchat
 ChanMud    Frontiers
 ChanLocal  dchat
-ChanLayM   %%^CYAN%%^%%^BOLD%%^[%s] %s@%s: %%^RESET%%^%s
-ChanLayE   %%^CYAN%%^%%^BOLD%%^[%s] %%^RESET%%^%s
+ChanLayM   %%^CYAN%%^%%^BOLD%%^[%s]%%^RESET%%^ %s@%s: %%^RESET%%^%s
+ChanLayE   %%^CYAN%%^%%^BOLD%%^[%s]%%^RESET%%^ %s
 ChanLevel  3
 ChanStatus 0
 ChanFlags  0
@@ -13,8 +13,8 @@ End
 ChanName   imud_code
 ChanMud    Frontiers
 ChanLocal  intercre
-ChanLayM   %%^YELLOW%%^[%s] %s@%s: %%^RESET%%^%s
-ChanLayE   %%^YELLOW%%^[%s] %%^RESET%%^%s
+ChanLayM   %%^YELLOW%%^[%s]%%^RESET%%^ %s@%s: %%^RESET%%^%s
+ChanLayE   %%^YELLOW%%^[%s]%%^RESET%%^ %s
 ChanLevel  3
 ChanStatus 0
 ChanFlags  0
@@ -24,8 +24,8 @@ End
 ChanName   imud_gossip
 ChanMud    Frontiers
 ChanLocal  intergossip
-ChanLayM   %%^GREEN%%^%%^BOLD%%^[%s] %s@%s: %%^RESET%%^%s
-ChanLayE   %%^GREEN%%^%%^BOLD%%^[%s] %%^RESET%%^%s
+ChanLayM   %%^GREEN%%^%%^BOLD%%^[%s]%%^RESET%%^ %s@%s: %%^RESET%%^%s
+ChanLayE   %%^GREEN%%^%%^BOLD%%^[%s]%%^RESET%%^ %s
 ChanLevel  2
 ChanStatus 0
 ChanFlags  0
@@ -35,8 +35,8 @@ End
 ChanName   free_speech
 ChanMud    Frontiers
 ChanLocal  free_speech
-ChanLayM   %%^RED%%^[%s] %s@%s: %%^RESET%%^%s
-ChanLayE   %%^RED%%^[%s] %%^RESET%%^%s
+ChanLayM   %%^RED%%^[%s]%%^RESET%%^ %s@%s: %%^RESET%%^%s
+ChanLayE   %%^RED%%^[%s]%%^RESET%%^ %s
 ChanLevel  2
 ChanStatus 0
 ChanFlags  0
@@ -46,8 +46,8 @@ End
 ChanName   dgd
 ChanMud    Way of the Force
 ChanLocal  dgd
-ChanLayM   %%^BLUE%%^%%^BOLD%%^[%s] %s@%s: %%^RESET%%^%s
-ChanLayE   %%^BLUE%%^%%^BOLD%%^[%s] %%^RESET%%^%s
+ChanLayM   %%^BLUE%%^%%^BOLD%%^[%s]%%^RESET%%^ %s@%s: %%^RESET%%^%s
+ChanLayE   %%^BLUE%%^%%^BOLD%%^[%s]%%^RESET%%^ %s
 ChanLevel  3
 ChanStatus 0
 ChanFlags  0
@@ -57,8 +57,8 @@ End
 ChanName   dead_souls
 ChanMud    Frontiers
 ChanLocal  ds
-ChanLayM   %%^RED%%^%%^BOLD%%^[%s] %s@%s: %%^RESET%%^%s
-ChanLayE   %%^RED%%^%%^BOLD%%^[%s] %%^RESET%%^%s
+ChanLayM   %%^RED%%^%%^BOLD%%^[%s]%%^RESET%%^ %s@%s: %%^RESET%%^%s
+ChanLayE   %%^RED%%^%%^BOLD%%^[%s]%%^RESET%%^ %s
 ChanLevel  3
 ChanStatus 0
 ChanFlags  0
@@ -68,8 +68,8 @@ End
 ChanName   urlbot
 ChanMud    Bloodlines
 ChanLocal  urlbot
-ChanLayM   %%^WHITE%%^%%^BOLD%%^[%s] %s@%s: %%^RESET%%^%s
-ChanLayE   %%^WHITE%%^%%^BOLD%%^[%s] %%^RESET%%^%s
+ChanLayM   %%^WHITE%%^%%^BOLD%%^[%s]%%^RESET%%^ %s@%s: %%^RESET%%^%s
+ChanLayE   %%^WHITE%%^%%^BOLD%%^[%s]%%^RESET%%^ %s
 ChanLevel  2
 ChanStatus 2
 ChanFlags  0
@@ -79,8 +79,8 @@ End
 ChanName   fluffos
 ChanMud    Dead Souls
 ChanLocal  fluffos
-ChanLayM   %%^MAGENTA%%^%%^BOLD%%^[%s] %s@%s: %%^RESET%%^%s
-ChanLayE   %%^MAGENTA%%^%%^BOLD%%^[%s] %%^RESET%%^%s
+ChanLayM   %%^MAGENTA%%^%%^BOLD%%^[%s]%%^RESET%%^ %s@%s: %%^RESET%%^%s
+ChanLayE   %%^MAGENTA%%^%%^BOLD%%^[%s]%%^RESET%%^ %s
 ChanLevel  2
 ChanStatus 0
 ChanFlags  0
@@ -90,8 +90,8 @@ End
 ChanName   discworld-cre
 ChanMud    Discworld
 ChanLocal  dwcre
-ChanLayM   %%^WHITE%%^%%^BOLD%%^[%s] %s@%s: %%^RESET%%^%s
-ChanLayE   %%^WHITE%%^%%^BOLD%%^[%s] %%^RESET%%^%s
+ChanLayM   %%^WHITE%%^%%^BOLD%%^[%s]%%^RESET%%^ %s@%s: %%^RESET%%^%s
+ChanLayE   %%^WHITE%%^%%^BOLD%%^[%s]%%^RESET%%^ %s
 ChanLevel  2
 ChanStatus 0
 ChanFlags  0
@@ -101,8 +101,8 @@ End
 ChanName   discworld-chat
 ChanMud    Discworld
 ChanLocal  dwchat
-ChanLayM   %%^WHITE%%^%%^BOLD%%^[%s] %s@%s: %%^RESET%%^%s
-ChanLayE   %%^WHITE%%^%%^BOLD%%^[%s] %%^RESET%%^%s
+ChanLayM   %%^WHITE%%^%%^BOLD%%^[%s]%%^RESET%%^ %s@%s: %%^RESET%%^%s
+ChanLayE   %%^WHITE%%^%%^BOLD%%^[%s]%%^RESET%%^ %s
 ChanLevel  2
 ChanStatus 0
 ChanFlags  0
@@ -112,8 +112,8 @@ End
 ChanName   wileymud
 ChanMud    WileyMUD
 ChanLocal  wiley
-ChanLayM   %%^YELLOW%%^%%^BOLD%%^[%s] %s@%s: %%^RESET%%^%s
-ChanLayE   %%^YELLOW%%^%%^BOLD%%^[%s] %%^RESET%%^%s
+ChanLayM   %%^YELLOW%%^%%^BOLD%%^[%s]%%^RESET%%^ %s@%s: %%^RESET%%^%s
+ChanLayE   %%^YELLOW%%^%%^BOLD%%^[%s]%%^RESET%%^ %s
 ChanLevel  2
 ChanStatus 0
 ChanFlags  0
@@ -123,8 +123,8 @@ End
 ChanName   troll
 ChanMud    Final Stand
 ChanLocal  troll
-ChanLayM   %%^RED%%^%%^BOLD%%^[%s] %s@%s: %%^RESET%%^%s
-ChanLayE   %%^RED%%^%%^BOLD%%^[%s] %%^RESET%%^%s
+ChanLayM   %%^RED%%^%%^BOLD%%^[%s]%%^RESET%%^ %s@%s: %%^RESET%%^%s
+ChanLayE   %%^RED%%^%%^BOLD%%^[%s]%%^RESET%%^ %s
 ChanLevel  2
 ChanStatus 0
 ChanFlags  0
@@ -134,8 +134,8 @@ End
 ChanName   pyom
 ChanMud    Bloodlines
 ChanLocal  pyom
-ChanLayM   %^GREEN%^%^BOLD%^[%s] %s@%s: %^RESET%^%s
-ChanLayE   %^GREEN%^%^BOLD%^[%s] %^RESET%^%s
+ChanLayM   %^GREEN%^%^BOLD%^[%s]%%^RESET%%^ %s@%s: %^RESET%^%s
+ChanLayE   %^GREEN%^%^BOLD%^[%s]%^RESET%^ %s
 ChanLevel  2
 ChanStatus 0
 ChanFlags  0
@@ -145,8 +145,8 @@ End
 ChanName   url
 ChanMud    Bloodlines
 ChanLocal  url
-ChanLayM   %%^WHITE%%^%%^BOLD%%^[%s] %s@%s: %%^RESET%%^%s
-ChanLayE   %%^WHITE%%^%%^BOLD%%^[%s] %%^RESET%%^%s
+ChanLayM   %%^WHITE%%^%%^BOLD%%^[%s]%%^RESET%%^ %s@%s: %%^RESET%%^%s
+ChanLayE   %%^WHITE%%^%%^BOLD%%^[%s]%%^RESET%%^ %s
 ChanLevel  2
 ChanStatus 0
 ChanFlags  0
@@ -156,8 +156,8 @@ End
 ChanName   discord
 ChanMud    WileyMUD
 ChanLocal  discord
-ChanLayM   %%^MAGENTA%%^%%^BOLD%%^[%s] %s@%s: %%^RESET%%^%s
-ChanLayE   %%^MAGENTA%%^%%^BOLD%%^[%s] %%^RESET%%^%s
+ChanLayM   %%^MAGENTA%%^%%^BOLD%%^[%s]%%^RESET%%^ %s@%s: %%^RESET%%^%s
+ChanLayE   %%^MAGENTA%%^%%^BOLD%%^[%s]%%^RESET%%^ %s
 ChanLevel  2
 ChanStatus 0
 ChanFlags  0
@@ -167,8 +167,8 @@ End
 ChanName   bot
 ChanMud    WileyMUD
 ChanLocal  bot
-ChanLayM   %%^WHITE%%^%%^BOLD%%^[%s] %s@%s: %%^RESET%%^%s
-ChanLayE   %%^WHITE%%^%%^BOLD%%^[%s] %%^RESET%%^%s
+ChanLayM   %%^WHITE%%^%%^BOLD%%^[%s]%%^RESET%%^ %s@%s: %%^RESET%%^%s
+ChanLayE   %%^WHITE%%^%%^BOLD%%^[%s]%%^RESET%%^ %s
 ChanLevel  4
 ChanStatus 0
 ChanFlags  0
@@ -992,8 +992,8 @@ End
 ChanName   bsg2
 ChanMud    Dead Souls Dev
 ChanLocal  bsg2
-ChanLayM   %%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^] %%^CYAN%%^%%^BOLD%%^%s@%s: %%^CYAN%%^%s
-ChanLayE   %%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^] %%^CYAN%%^%s
+ChanLayM   %%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^]%%^RESET%%^ %s@%s:%%^RESET%%^ %s
+ChanLayE   %%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^]%%^RESET%%^ %s
 ChanLevel  2
 ChanStatus 0
 ChanFlags  0
@@ -1124,8 +1124,8 @@ End
 ChanName   bsg
 ChanMud    Dead Souls
 ChanLocal  bsg
-ChanLayM   %%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^] %%^CYAN%%^%%^BOLD%%^%s@%s: %%^CYAN%%^%s
-ChanLayE   %%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^] %%^CYAN%%^%s
+ChanLayM   %%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^]%%^RESET%%^ %s@%s:%%^RESET%%^ %s
+ChanLayE   %%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^]%%^RESET%%^ %s
 ChanLevel  2
 ChanStatus 0
 ChanFlags  0
@@ -1278,8 +1278,8 @@ End
 ChanName   german
 ChanMud    OuterSpace
 ChanLocal  german
-ChanLayM   %%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^] %%^CYAN%%^%%^BOLD%%^%s@%s: %%^CYAN%%^%s
-ChanLayE   %%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^] %%^CYAN%%^%s
+ChanLayM   %%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^]%%^RESET%%^ %s@%s:%%^RESET%%^ %s
+ChanLayE   %%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^]%%^RESET%%^ %s
 ChanLevel  2
 ChanStatus 0
 ChanFlags  0
@@ -1630,8 +1630,8 @@ End
 ChanName   日本語
 ChanMud    WileyMUD
 ChanLocal  japanese
-ChanLayM   %%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^] %%^CYAN%%^%%^BOLD%%^%s@%s: %%^CYAN%%^%s
-ChanLayE   %%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^] %%^CYAN%%^%s
+ChanLayM   %%^WHITE%%^%%^BOLD%%[^%s] %s@%s:%%^RESET%%^ %s
+ChanLayE   %%^WHITE%%^%%^BOLD%%[^%s]%%^RESET%%^ %s
 ChanLevel  2
 ChanStatus 0
 ChanFlags  0

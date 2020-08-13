@@ -6,10 +6,10 @@ PreTitle           ~
 Title              the Human Supplicant~
 Description
 ~
-LastSite           adork@maximus.wolfpaw.net~
-LastLogin          1274156726
+LastSite           adork@184-089-059-247.res.spectrum.com~
+LastLogin          1591653023
 Birth              1274156685
-Played             24
+Played             88
 Sex                1
 Race               1
 Class              1
@@ -18,13 +18,13 @@ Exp                1
 Level              mage 1
 HeightWeight       163 139
 Gold               0 0
-HomeTown           3001
+HomeTown           3008
 LoadRoom           -1
 PoofIn             ~
 PoofOut            ~
 AbilityScores      9 0 10 7 15 14
 AbilityPad         0 0 0 0
-HpManaMove         25 20 105 0 95 95
+HpManaMove         23 20 105 0 391 0
 AC                 100
 ToHitDamage        0 0
 SaveApply          0 0 0 0 0
@@ -36,7 +36,7 @@ ShortSavePad       0 0 0 0
 SavePad            0 0 0 0
 Pracs              3
 SkillsToLearn      0
-NamedSkill         1 0 0 armour~
+NamedSkill         1 0 0 armor~
 NamedSkill         2 0 0 teleport~
 NamedSkill         3 0 0 bless~
 NamedSkill         4 0 0 blindness~
@@ -180,7 +180,7 @@ NamedSkill         182 0 0 disarm trap~
 NamedSkill         183 0 0 disarm~
 NamedSkill         184 0 0 shield bash~
 NamedSkill         185 0 0 riding~
-ActFlags           0 0
+ActFlags           0 80
 Affect             0 0 0 0 0 0 0
 Affect             1 0 0 0 0 0 0
 Affect             2 0 0 0 0 0 0
@@ -206,6 +206,7 @@ Affect             21 0 0 0 0 0 0
 Affect             22 0 0 0 0 0 0
 Affect             23 0 0 0 0 0 0
 Affect             24 0 0 0 0 0 0
-IMCPerm      0
-IMCFlags     256
+i3perm       2
+i3flags      256
+i3listen     wiley
 End
