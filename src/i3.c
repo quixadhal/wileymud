@@ -4134,7 +4134,8 @@ void I3_process_finger_req(I3_HEADER *header, char *s)
     I3_write_buffer("\"");
     I3_write_buffer(I3_escape(CH_I3NAME(ch)));
     I3_write_buffer("\",\"");
-    I3_write_buffer(I3_escape(CH_I3NAME(ch)));
+    //I3_write_buffer(I3_escape(CH_I3NAME(ch)));
+    //I3_write_buffer(" ");
     send_to_i3(I3_escape(CH_I3TITLE(ch)));
     I3_write_buffer("\",\"\",\"");
 #if 0
@@ -15346,10 +15347,12 @@ I3_CMD(I3_beep)
 	return;
     }
 
+#if 0
     if (!strcasecmp(this_i3mud->name, pmud->name)) {
 	i3_printf(ch, "Use your mud's own internal system for that.\r\n");
 	return;
     }
+#endif
 
     if (pmud->status >= 0) {
 	i3_printf(ch, "%s is marked as down.\r\n", pmud->name);
@@ -15431,10 +15434,12 @@ I3_CMD(I3_tell)
 	return;
     }
 
+#if 0
     if (!strcasecmp(this_i3mud->name, pmud->name)) {
 	i3_printf(ch, "Use your mud's own internal system for that.\r\n");
 	return;
     }
+#endif
 
     if (pmud->status >= 0) {
 	i3_printf(ch, "%s is marked as down.\r\n", pmud->name);
@@ -15505,10 +15510,12 @@ I3_CMD(I3_reply)
             return;
         }
 
+#if 0
         if (!strcasecmp(this_i3mud->name, pmud->name)) {
             i3_printf(ch, "Use your mud's own internal system for that.\r\n");
             return;
         }
+#endif
 
         if (pmud->status >= 0) {
             i3_printf(ch, "%s is marked as down.\r\n", pmud->name);
@@ -16902,10 +16909,12 @@ I3_CMD(I3_finger)
 	return;
     }
 
+#if 0
     if (!strcasecmp(this_i3mud->name, pmud->name)) {
 	i3_printf(ch, "Use your mud's own internal system for that.\r\n");
 	return;
     }
+#endif
 
     if (pmud->status >= 0) {
 	i3_printf(ch, "%s is marked as down.\r\n", pmud->name);
@@ -17795,12 +17804,12 @@ I3_CMD(I3_taunt)
             return;
         }
 
-        /*
+#if 0
         if (!strcasecmp(this_i3mud->name, pmud->name)) {
             i3_printf(ch, "Use your mud's own internal system for that.\r\n");
             return;
         }
-        */
+#endif
 
         if (pmud->status >= 0) {
             i3_printf(ch, "%s is marked as down.\r\n", pmud->name);
