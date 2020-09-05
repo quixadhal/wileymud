@@ -74,7 +74,8 @@ $graphics['speedtest_qos'] = $isLocal ? "gfx/speedtest_qos_4478667111.png" : "ht
 $graphics['speedtest_new'] = $isLocal ? "gfx/wave_g_test2.png" : "gfx/wave_g_test2.png";
 #$graphics['speedtest_current'] = $isLocal ? "gfx/speedtest_8811654706.png" : "gfx/speedtest_8811654706.png";
 #$graphics['speedtest_current'] = $isLocal ? "gfx/speedtest_9404657351.png" : "http://www.speedtest.net/result/9404657351.png";
-$graphics['speedtest_current'] = $isLocal ? "gfx/speedtest_9809407270.png" : "https://www.speedtest.net/result/9809407270.png";
+#$graphics['speedtest_current'] = $isLocal ? "gfx/speedtest_9809407270.png" : "https://www.speedtest.net/result/9809407270.png";
+$graphics['speedtest_current'] = $isLocal ? "gfx/speedtest_10030104653.png" : "https://www.speedtest.net/result/10030104653.png";
 
 $MUDLIST_FILE   = "/home/wiley/public_html/mudlist.json";
 $BACKGROUND_DIR = "/home/wiley/public_html/gfx/wallpaper/";
@@ -219,6 +220,7 @@ $BACKGROUND_IMG = "<img class=\"overlay-bg\" src=\"$URL_HOME/gfx/wallpaper/$BACK
                     <h3>Hardware recycled:</h3>
  74.99                   <a href="http://www.newegg.com/Product/Product.aspx?Item=N82E16822236070">WD Cavier Green 1TB SATA hard drive</a><br />
 119.99                   <a href="http://www.newegg.com/Product/Product.aspx?Item=N82E16822136749">WD My Book 3TB Desktop USB 3.0 External Hard Drive</a> (now internal)<br />
+147.99                   <a href="https://www.amazon.com/gp/product/B00IRRDHUI/">Crucial M550 256GB SATA 2.5" 7mm (with 9.5mm adapter) Internal Solid State Drive</a><br />
                 </td>
                 <td align="left" >
                     <img src="<?php echo $graphics['server_case']; ?>" border="0" width="300" height="304" />

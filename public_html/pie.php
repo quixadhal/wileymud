@@ -42,6 +42,34 @@ $CACHE['month']     = "$PIE_DIR/month.json";
 $CACHE['year']      = "$PIE_DIR/year.json";
 $CACHE['all']       = "$PIE_DIR/all.json";
 
+function numbered_source($filename) {
+    ini_set('highlight.string',  '#DD0000'); // DD0000
+    ini_set('highlight.comment', '#0000BB'); // FF8000
+    ini_set('highlight.keyword', '#00CC00'); // 007700
+    ini_set('highlight.bg',      '#111111'); // FFFFFF
+    ini_set('highlight.default', '#00DDDD'); // 0000BB
+    ini_set('highlight.html',    '#CCCCCC'); // 000000
+    $lines = implode(range(1, count(file($filename))), '<br />');
+    $content = highlight_file($filename, true);
+    $style = '
+    <style type="text/css"> 
+        .num { 
+        float: left; 
+        color: gray; 
+        background-color: #111111;
+        font-size: 13px;    
+        font-family: monospace; 
+        text-align: right; 
+        margin-right: 6pt; 
+        padding-right: 6pt; 
+        border-right: 1px solid gray;} 
+
+        code {white-space: nowrap;} 
+    </style>
+    '; 
+    return "$style\n<div style=\"background-color: black;\"><table><tr><td class=\"num\">\n$lines\n</td><td>\n$content\n</td></tr></table></div>"; 
+}
+
 function random_image($dir) {
     global $fp;
     global $DEBUG;
@@ -1007,6 +1035,15 @@ if( $DEBUG ) {
                 document.getElementById('graphToday').style.display='block';
             }
         </script>
+        <script type="text/javascript">
+            function toggleDiv(divID) {
+                if(document.getElementById(divID).style.display == 'none') {
+                    document.getElementById(divID).style.display = 'block';
+                } else {
+                    document.getElementById(divID).style.display = 'none';
+                }
+            }
+        </script>
     </head>
     <body bgcolor="black" text="#d0d0d0" link="#ffffbf" vlink="#ffa040" onload="get_today()">
     <table id="navbar" width="99%" cellspacing="0" cellpadding="1" align="center">
@@ -1216,9 +1253,12 @@ if( $DEBUG ) {
         </tr>
         <tr bgcolor="#000000">
             <?php $time_end = microtime(true); $time_spent = $time_end - $time_start; ?>
-            <td align="right" colspan="6"><font size="-1" color="#1f1f1f"><?php echo sprintf("%9.4f", $time_spent); ?> seconds</font></td>
+            <td align="right" colspan="6"><font size="-1" color="#1f1f1f"><a href="javascript:;" onmousedown="toggleDiv('source');">Page:</a>&nbsp;<?php echo sprintf("%9.4f", $time_spent); ?> seconds</font></td>
         </tr>
     </table>
+</div>
+<div id="source" style="display: none;">
+    <?php echo numbered_source(__FILE__); ?>
 </div>
 </body>
 </html>
