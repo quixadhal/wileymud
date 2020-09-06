@@ -145,6 +145,7 @@ function check_cache($thing, $cache, $freshness) {
 function write_cache($thing, $result) {
     global $fp;
     global $CACHE;
+    global $DEBUG;
 
     $cache      = $CACHE[$thing];
     $json_data  = json_encode($result);
@@ -157,6 +158,9 @@ function write_cache($thing, $result) {
     fclose($jfp);
     chmod($cache, 0664);
     //chown($cache, 'wiley');
+    if( $DEBUG ) {
+        fprintf($fp, "    write_cache(%s)\n", $thing);
+    }
 }
 
 function fetch_dates($db) {
@@ -596,7 +600,7 @@ $things = array('today', 'yesterday', 'week', 'month', 'year', 'all');
                     <?php
                     printf("[ '%s', '%s' ],\n", 'Speaker', 'Count');
                     foreach ($result as $r) {
-                        printf("[ '%s', %d ],\n", $r['speaker'], $r['count']);
+                        printf("[ \"%s\", %d ],\n", addslashes($r['speaker']), $r['count']);
                     }
                     ?>
                     ]);
@@ -632,7 +636,7 @@ if( $DEBUG ) {
                     <?php
                     printf("[ '%s', '%s' ],\n", 'Channel', 'Count');
                     foreach ($result as $r) {
-                        printf("[ '%s', %d ],\n", $r['channel'], $r['count']);
+                        printf("[ \"%s\", %d ],\n", addslashes($r['channel']), $r['count']);
                     }
                     ?>
                     ]);
@@ -667,7 +671,7 @@ if( $DEBUG ) {
                     <?php
                     printf("[ '%s', '%s' ],\n", 'Speaker', 'Count');
                     foreach ($result as $r) {
-                        printf("[ '%s', %d ],\n", $r['speaker'], $r['count']);
+                        printf("[ \"%s\", %d ],\n", addslashes($r['speaker']), $r['count']);
                     }
                     ?>
                     ]);
@@ -703,7 +707,7 @@ if( $DEBUG ) {
                     <?php
                     printf("[ '%s', '%s' ],\n", 'Channel', 'Count');
                     foreach ($result as $r) {
-                        printf("[ '%s', %d ],\n", $r['channel'], $r['count']);
+                        printf("[ \"%s\", %d ],\n", addslashes($r['channel']), $r['count']);
                     }
                     ?>
                     ]);
@@ -738,7 +742,7 @@ if( $DEBUG ) {
                     <?php
                     printf("[ '%s', '%s' ],\n", 'Speaker', 'Count');
                     foreach ($result as $r) {
-                        printf("[ '%s', %d ],\n", $r['speaker'], $r['count']);
+                        printf("[ \"%s\", %d ],\n", addslashes($r['speaker']), $r['count']);
                     }
                     ?>
                     ]);
@@ -774,7 +778,7 @@ if( $DEBUG ) {
                     <?php
                     printf("[ '%s', '%s' ],\n", 'Channel', 'Count');
                     foreach ($result as $r) {
-                        printf("[ '%s', %d ],\n", $r['channel'], $r['count']);
+                        printf("[ \"%s\", %d ],\n", addslashes($r['channel']), $r['count']);
                     }
                     ?>
                     ]);
@@ -809,7 +813,7 @@ if( $DEBUG ) {
                     <?php
                     printf("[ '%s', '%s' ],\n", 'Speaker', 'Count');
                     foreach ($result as $r) {
-                        printf("[ '%s', %d ],\n", $r['speaker'], $r['count']);
+                        printf("[ \"%s\", %d ],\n", addslashes($r['speaker']), $r['count']);
                     }
                     ?>
                     ]);
@@ -845,7 +849,7 @@ if( $DEBUG ) {
                     <?php
                     printf("[ '%s', '%s' ],\n", 'Channel', 'Count');
                     foreach ($result as $r) {
-                        printf("[ '%s', %d ],\n", $r['channel'], $r['count']);
+                        printf("[ \"%s\", %d ],\n", addslashes($r['channel']), $r['count']);
                     }
                     ?>
                     ]);
@@ -880,7 +884,7 @@ if( $DEBUG ) {
                     <?php
                     printf("[ '%s', '%s' ],\n", 'Speaker', 'Count');
                     foreach ($result as $r) {
-                        printf("[ '%s', %d ],\n", $r['speaker'], $r['count']);
+                        printf("[ \"%s\", %d ],\n", addslashes($r['speaker']), $r['count']);
                     }
                     ?>
                     ]);
@@ -916,7 +920,7 @@ if( $DEBUG ) {
                     <?php
                     printf("[ '%s', '%s' ],\n", 'Channel', 'Count');
                     foreach ($result as $r) {
-                        printf("[ '%s', %d ],\n", $r['channel'], $r['count']);
+                        printf("[ \"%s\", %d ],\n", addslashes($r['channel']), $r['count']);
                     }
                     ?>
                     ]);
@@ -952,7 +956,7 @@ if( $DEBUG ) {
                     <?php
                     printf("[ '%s', '%s' ],\n", 'Speaker', 'Count');
                     foreach ($result as $r) {
-                        printf("[ '%s', %d ],\n", $r['speaker'], $r['count']);
+                        printf("[ \"%s\", %d ],\n", addslashes($r['speaker']), $r['count']);
                     }
                     ?>
                     ]);
@@ -993,7 +997,7 @@ if( $DEBUG ) {
                     <?php
                     printf("[ '%s', '%s' ],\n", 'Channel', 'Count');
                     foreach ($result as $r) {
-                        printf("[ '%s', %d ],\n", $r['channel'], $r['count']);
+                        printf("[ \"%s\", %d ],\n", addslashes($r['channel']), $r['count']);
                     }
                     ?>
                     ]);
