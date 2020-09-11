@@ -913,7 +913,9 @@ if( $style eq 'sql' ) {
 $channel = shift;
 $speaker = shift;
 
-#print Dumper( [ $do_sql, $url, $style, $channel ] );
+$url =~ s/\&ab_channel\=(?:.*?)$//; # Remove youtube's latest stupidity...
+
+#print STDERR Dumper( [ $do_sql, $url, $style, $channel ] );
 if( $do_sql ) {
     #$sqlite_db = DBI->connect("DBI:SQLite:dbname=$DB_FILE", '', '', { AutoCommit => 1, PrintError => 0, });
     $db = DBI->connect("dbi:Pg:dbname=$DB_NAME", 'wiley', 'tardis69', { AutoCommit => 1, RaiseError => 1, PrintError => 0, });
