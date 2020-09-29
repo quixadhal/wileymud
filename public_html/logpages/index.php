@@ -238,6 +238,31 @@ function fetch_pinkfish_map($db) {
     return $result;
 }
 
+function new_fetch_pinkfish_map($db) {
+    $sql = "
+        SELECT pinkfish, html
+          FROM new_pinkfish_map
+      ORDER BY LENGTH(pinkfish) DESC;
+    ";
+    try {
+        //$db->beginTransaction();
+        $sth = $db->prepare($sql);
+        $sth->execute();
+        $sth->setFetchMode(PDO::FETCH_ASSOC);
+        $result = array();
+        while($row = $sth->fetch()) {
+            $result[$row['pinkfish']] = $row;
+        }
+        //$db->commit();
+    } catch (Exception $e) {
+        //$db->rollback();
+        throw $e;
+    }
+    //$json_data = json_encode($result);
+    //file_put_contents($PINKFISH_CACHE, $json_data);
+    return $result;
+}
+
 function reverseSortByKeyLength($a, $b) {
     return strlen($b) - strlen($a);
 }
@@ -613,6 +638,18 @@ function handle_colors( $pinkfish_map, $message ) {
     return $message;
 }
 
+function new_handle_colors( $pinkfish_map, $message) {
+    $bits = explode('%^', $message);
+    for( $i = 0; $i < count($bits); $i++ ) {
+        $b = $bits[$i];
+        if( array_key_exists($b, $pinkfish_map) ) {
+            $bits[$i] = $pinkfish_map[$b]['html'];
+        }
+    }
+    $message = implode('', $bits);
+    return $message;
+}
+
 $pinkfish_map = load_pinkfish_map($PINKFISH_CACHE);
 $channels = load_channels($CHANNEL_CACHE);
 $speakers = load_speakers($SPEAKER_CACHE);
@@ -843,7 +880,11 @@ header("Pragma: no-cache");
         // And here is where we could intercept colors for "light mode"
 
         $date_col     = $row['the_date'];
+        //$date_col     = preg_replace('/[-]/', '&#8209;'); // non-breaking hyphen
+
         $time_col     = sprintf("%s%s", $hour_html, $row['the_time']);
+        //$time_col     = preg_replace('/[:]/', '&#8209;'); // non-breaking colon doesn't seem to exist
+
         $channel_col  = sprintf("%s%s", $channel_html, $channel); //$row['channel']);
         $speaker_col  = sprintf("%s%s@%s", $speaker_html, $row['speaker'], $row['mud']);
 
