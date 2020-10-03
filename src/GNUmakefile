@@ -336,10 +336,6 @@ obj/shop.o: shop.c include/global.h include/bug.h include/comm.h \
   include/act_comm.h include/multiclass.h include/act_social.h \
   include/act_wiz.h include/spec_procs.h include/weather.h \
   include/shop.h
-obj/i3fuck.o: i3fuck.c include/global.h include/sql.h include/bug.h \
-  include/utils.h include/db.h include/multiclass.h include/comm.h \
-  include/modify.h include/interpreter.h include/version.h \
-  include/stringmap.h include/scheduler.h include/i3.h
 obj/trap.o: trap.c include/global.h include/bug.h include/utils.h \
   include/spells.h include/comm.h include/db.h include/opinion.h \
   include/fight.h include/reception.h include/spell_parser.h \

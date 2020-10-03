@@ -179,6 +179,8 @@ int                                     expecting_timeout = 0;
 
 void                                    i3_printf(CHAR_DATA *ch, const char *fmt, ...)
     __attribute__ ((format(printf, 2, 3)));
+void                                    i3wrap_printf(CHAR_DATA *ch, const char *fmt, ...)
+    __attribute__ ((format(printf, 2, 3)));
 void                                    i3page_printf(CHAR_DATA *ch, const char *fmt, ...)
     __attribute__ ((format(printf, 2, 3)));
 I3_HEADER                              *I3_get_header(char **pps);
@@ -250,38 +252,6 @@ const char                             *i3one_argument(const char *argument, cha
     return argument;
 }
 
-char                                   *old_i3_strip_colors(const char *txt)
-{
-    I3_COLOR                               *color;
-    static char                             tbuf[MAX_STRING_LENGTH];
-
-    strlcpy(tbuf, txt, MAX_STRING_LENGTH);
-
-    for (color = first_i3_color; color; color = color->next)
-	strlcpy(tbuf, strrep(tbuf, color->i3tag, ""), MAX_STRING_LENGTH);
-
-    for (color = first_i3_color; color; color = color->next)
-	strlcpy(tbuf, strrep(tbuf, color->mudtag, ""), MAX_STRING_LENGTH);
-
-    return tbuf;
-}
-
-char                                   *old_I3_mudtag_to_i3tag(const char *txt)
-{
-    I3_COLOR                               *color;
-    static char                             tbuf[MAX_STRING_LENGTH];
-
-    *tbuf = '\0';
-    if (!txt || *txt == '\0')
-	return tbuf;
-
-    strlcpy(tbuf, txt, MAX_STRING_LENGTH);
-    for (color = first_i3_color; color; color = color->next)
-	strlcpy(tbuf, strrep(tbuf, color->mudtag, color->i3tag), MAX_STRING_LENGTH);
-
-    return tbuf;
-}
-
 char                                   *I3_imctag_to_i3tag(const char *txt)
 {
     I3_COLOR                               *color;
@@ -317,26 +287,60 @@ char                                   *I3_imctag_to_mudtag(CHAR_DATA *ch, const
     return tbuf;
 }
 
-char                                   *old_I3_i3tag_to_mudtag(CHAR_DATA *ch, const char *txt)
+#if 0
+
+char *i3_strip_colors(const char *txt)
 {
-    //I3_COLOR                               *color;
-    static char                             tbuf[MAX_STRING_LENGTH];
+    I3_COLOR *color;
+    static char tbuf[MAX_STRING_LENGTH];
+
+    strlcpy(tbuf, txt, MAX_STRING_LENGTH);
+
+    for (color = first_i3_color; color; color = color->next)
+        strlcpy(tbuf, strrep(tbuf, color->i3tag, ""), MAX_STRING_LENGTH);
+
+    for (color = first_i3_color; color; color = color->next)
+        strlcpy(tbuf, strrep(tbuf, color->mudtag, ""), MAX_STRING_LENGTH);
+
+    return tbuf;
+}
+
+char *I3_mudtag_to_i3tag(const char *txt)
+{
+    I3_COLOR *color;
+    static char tbuf[MAX_STRING_LENGTH];
+
+    *tbuf = '\0';
+    if (!txt || *txt == '\0')
+        return tbuf;
+
+    strlcpy(tbuf, txt, MAX_STRING_LENGTH);
+    for (color = first_i3_color; color; color = color->next)
+        strlcpy(tbuf, strrep(tbuf, color->mudtag, color->i3tag), MAX_STRING_LENGTH);
+
+    return tbuf;
+}
+
+char *I3_i3tag_to_mudtag(CHAR_DATA *ch, const char *txt)
+{
+    I3_COLOR *color;
+    static char tbuf[MAX_STRING_LENGTH];
 
     *tbuf = '\0';
     if (!txt || *txt == '\0')
 	return tbuf;
 
     if (I3IS_SET(I3FLAG(ch), I3_COLORFLAG)) {
-	//strlcpy(tbuf, txt, MAX_STRING_LENGTH);
-	//for (color = first_i3_color; color; color = color->next)
-	//    strlcpy(tbuf, strrep(tbuf, color->i3tag, color->mudtag), MAX_STRING_LENGTH);
-	strlcpy(tbuf, pinkfish_to_ansi(txt), MAX_STRING_LENGTH);
+	strlcpy(tbuf, txt, MAX_STRING_LENGTH);
+	for (color = first_i3_color; color; color = color->next)
+	    strlcpy(tbuf, strrep(tbuf, color->i3tag, color->mudtag), MAX_STRING_LENGTH);
     } else
-	//strlcpy(tbuf, i3_strip_colors(txt), MAX_STRING_LENGTH);
-	strlcpy(tbuf, pinkfish_to_null(txt), MAX_STRING_LENGTH);
+	strlcpy(tbuf, i3_strip_colors(txt), MAX_STRING_LENGTH);
 
     return tbuf;
 }
+
+#else
 
 char *i3_strip_colors(const char *txt)
 {
@@ -355,6 +359,8 @@ char *I3_i3tag_to_mudtag(CHAR_DATA *ch, const char *txt)
         : pinkfish_to_null(txt);
 }
 
+#endif
+
 /********************************
  * User level output functions. *
  *******************************/
@@ -371,19 +377,24 @@ void i3_printf(CHAR_DATA *ch, const char *fmt, ...)
     va_end(args);
 
     strlcpy(buf2, I3_i3tag_to_mudtag(ch, buf), MAX_STRING_LENGTH);
-    //cprintf(ch, "%s", buf2);
-    //cprintf(ch, "%s", color_wrap(78, 96, "      ", buf2));
-    cprintf(ch, "%s", color_wrap(MAX(18, ch->desc->telnet.cols - 12), MAX(18, ch->desc->telnet.cols - 2), "      ", buf2));
+    cprintf(ch, "%s", buf2);
     return;
 }
 
-/* Generic send_to_pager type function to send to the proper code for each codebase */
-void i3send_to_pager(const char *txt, CHAR_DATA *ch)
+void i3wrap_printf(CHAR_DATA *ch, const char *fmt, ...)
 {
     char                                    buf[MAX_STRING_LENGTH];
+    char                                    buf2[MAX_STRING_LENGTH];
+    va_list                                 args;
 
-    strlcpy(buf, I3_i3tag_to_mudtag(ch, txt), MAX_STRING_LENGTH);
-    page_printf(ch, "%s", buf);
+    va_start(args, fmt);
+    vsnprintf(buf, MAX_STRING_LENGTH, fmt, args);
+    va_end(args);
+
+    strlcpy(buf2, I3_i3tag_to_mudtag(ch, buf), MAX_STRING_LENGTH);
+    //cprintf(ch, "%s", buf2);
+    //cprintf(ch, "%s", color_wrap(78, 96, "      ", buf2));
+    cprintf(ch, "%s", color_wrap(MAX(18, ch->desc->telnet.cols - 12), MAX(18, ch->desc->telnet.cols - 2), "      ", buf2));
     return;
 }
 
@@ -395,11 +406,14 @@ void i3page_printf(CHAR_DATA *ch, const char *fmt, ...)
     va_list                                 args;
 
     va_start(args, fmt);
+    //log_info("NL-fmt  %s for %s", strpbrk(fmt, "\n") ? "FOUND" : "NOT FOUND", fmt);
     vsnprintf(buf, MAX_STRING_LENGTH, fmt, args);
     va_end(args);
 
+    //log_info("NL-pre  %s for %s", strpbrk(buf, "\n") ? "FOUND" : "NOT FOUND", buf);
     strlcpy(buf2, I3_i3tag_to_mudtag(ch, buf), MAX_STRING_LENGTH);
-    i3send_to_pager(buf2, ch);
+    //log_info("NL-post %s for %s", strpbrk(buf2, "\n") ? "FOUND" : "NOT FOUND", buf2);
+    page_string(ch->desc, buf2, 1);
     return;
 }
 
@@ -906,7 +920,7 @@ void i3_message_to_players( char *str ) {
 	    continue;
 
         if (d->connected == CON_PLAYING) {
-	    i3_printf(vch, "%s%%^RESET%%^\r\n", str);
+	    i3wrap_printf(vch, "%s%%^RESET%%^\r\n", str);
         }
     }
 }
@@ -3174,7 +3188,7 @@ void I3_process_channel_m(I3_HEADER *header, char *s)
                 continue;
             if (i3ignoring(vch, tmpvisname))
                 continue;
-	    i3_printf(vch, "%s%%^RESET%%^\r\n", buf);
+	    i3wrap_printf(vch, "%s%%^RESET%%^\r\n", buf);
         }
     }
     update_chanhistory(channel, buf);
@@ -3275,7 +3289,7 @@ void I3_process_channel_e(I3_HEADER *header, char *s)
                 continue;
             if (i3ignoring(vch, tmpvisname))
                 continue;
-	    i3_printf(vch, "%s%%^RESET%%^\r\n", buf);
+	    i3wrap_printf(vch, "%s%%^RESET%%^\r\n", buf);
         }
     }
     update_chanhistory(channel, buf);
@@ -3582,11 +3596,11 @@ void I3_send_who(CHAR_DATA *ch, char *mud)
 
 char                                   *i3centerline(const char *string, int len)
 {
-    char                                    stripped[300];
-    static char                             outbuf[400];
+    char                                    stripped[MAX_STRING_LENGTH];
+    static char                             outbuf[MAX_STRING_LENGTH];
     int                                     amount;
 
-    strlcpy(stripped, i3_strip_colors(string), 300);
+    strlcpy(stripped, i3_strip_colors(string), MAX_STRING_LENGTH);
     amount = len - strlen(stripped);			       /* Determine amount to put in front of line */
 
     if (amount < 1)
@@ -3595,7 +3609,7 @@ char                                   *i3centerline(const char *string, int len
     /*
      * Justice, you are the String God! 
      */
-    snprintf(outbuf, 400, "%*s%s%*s", (amount / 2), "", string,
+    snprintf(outbuf, MAX_STRING_LENGTH, "%*s%s%*s", (amount / 2), "", string,
 	     ((amount / 2) * 2) == amount ? (amount / 2) : ((amount / 2) + 1), "");
 
     return outbuf;
@@ -3701,16 +3715,16 @@ void I3_process_who_req(I3_HEADER *header, char *s)
     char                                    ibuf[MAX_INPUT_LENGTH],
                                             personbuf[MAX_STRING_LENGTH],
                                             tailbuf[MAX_STRING_LENGTH];
-    char                                    smallbuf[50],
-                                            buf[300],
-                                            outbuf[400],
-                                            stats[200],
-                                            rank[200];
+    char                                    smallbuf[MAX_INPUT_LENGTH],
+                                            buf[MAX_STRING_LENGTH],
+                                            outbuf[MAX_STRING_LENGTH],
+                                            stats[MAX_INPUT_LENGTH],
+                                            rank[MAX_INPUT_LENGTH];
     int                                     pcount = 0,
 	xx,
 	yy;
     long int                                bogusidle = 9999;
-    char                                    boottimebuf[100];
+    char                                    boottimebuf[MAX_INPUT_LENGTH];
 
     if(!header || !header->originator_username[0] || !header->originator_mudname[0]) {
         log_error("Invalid header in who request");
@@ -3727,22 +3741,22 @@ void I3_process_who_req(I3_HEADER *header, char *s)
     I3_write_buffer("({");
 
     I3_write_buffer("({\"");
-    snprintf(buf, 300, "%%^RED%%^%%^BOLD%%^-=[ %%^WHITE%%^%%^BOLD%%^Players on %s %%^RED%%^%%^BOLD%%^]=-", this_i3mud->name);
-    strlcpy(outbuf, i3centerline(buf, 78), 400);
+    snprintf(buf, MAX_STRING_LENGTH, "%%^RED%%^%%^BOLD%%^-=[ %%^WHITE%%^%%^BOLD%%^Players on %s %%^RED%%^%%^BOLD%%^]=-", this_i3mud->name);
+    strlcpy(outbuf, i3centerline(buf, 78), MAX_STRING_LENGTH);
     send_to_i3(I3_escape(outbuf));
 
     I3_write_buffer("\",");
-    snprintf(smallbuf, 50, "%ld", -1l);
+    snprintf(smallbuf, MAX_INPUT_LENGTH, "%ld", -1l);
     I3_write_buffer(smallbuf);
 
     I3_write_buffer(",\" \",}),({\"");
-    snprintf(buf, 300, "%%^YELLOW%%^-=[ %%^WHITE%%^%%^BOLD%%^telnet://%s:%d %%^YELLOW%%^]=-", this_i3mud->telnet,
+    snprintf(buf, MAX_STRING_LENGTH, "%%^YELLOW%%^-=[ %%^WHITE%%^%%^BOLD%%^telnet://%s:%d %%^YELLOW%%^]=-", this_i3mud->telnet,
 	     this_i3mud->player_port);
-    strlcpy(outbuf, i3centerline(buf, 78), 400);
+    strlcpy(outbuf, i3centerline(buf, 78), MAX_STRING_LENGTH);
     send_to_i3(I3_escape(outbuf));
 
     I3_write_buffer("\",");
-    snprintf(smallbuf, 50, "%ld", bogusidle);
+    snprintf(smallbuf, MAX_INPUT_LENGTH, "%ld", bogusidle);
     I3_write_buffer(smallbuf);
 
     I3_write_buffer(",\" \",}),");
@@ -3764,28 +3778,28 @@ void I3_process_who_req(I3_HEADER *header, char *s)
 		I3_write_buffer("({\"");
 		send_to_i3(I3_escape("%^BLUE%^%^BOLD%^--------------------------------=[ %^WHITE%^%^BOLD%^Players %^BLUE%^%^BOLD%^]=---------------------------------"));
 		I3_write_buffer("\",");
-		snprintf(smallbuf, 50, "%ld", bogusidle);
+		snprintf(smallbuf, MAX_INPUT_LENGTH, "%ld", bogusidle);
 		I3_write_buffer(smallbuf);
 		I3_write_buffer(",\" \",}),");
 	    }
 
 	    I3_write_buffer("({\"");
 
-	    strlcpy(rank, i3rankbuffer(person), 200);
-	    strlcpy(outbuf, i3centerline(rank, 20), 400);
+	    strlcpy(rank, i3rankbuffer(person), MAX_INPUT_LENGTH);
+	    strlcpy(outbuf, i3centerline(rank, 20), MAX_STRING_LENGTH);
 	    send_to_i3(I3_escape(outbuf));
 
 	    I3_write_buffer("\",");
-	    snprintf(smallbuf, 50, "%ld", -1l);
+	    snprintf(smallbuf, MAX_INPUT_LENGTH, "%ld", -1l);
 	    I3_write_buffer(smallbuf);
 	    I3_write_buffer(",\"");
 
-	    strlcpy(stats, "[", 200);
+	    strlcpy(stats, "[", MAX_INPUT_LENGTH);
 	    if (CH_I3AFK(person))
-		strlcat(stats, "AFK", 200);
+		strlcat(stats, "AFK", MAX_INPUT_LENGTH);
 	    else
-		strlcat(stats, "---", 200);
-	    strlcat(stats, "]%^GREEN%^%^BOLD%^", 200);
+		strlcat(stats, "---", MAX_INPUT_LENGTH);
+	    strlcat(stats, "]%^GREEN%^%^BOLD%^", MAX_INPUT_LENGTH);
 
 	    snprintf(personbuf, MAX_STRING_LENGTH, "%s %s %s", stats, CH_I3NAME(person),
 		     CH_I3TITLE(person));
@@ -3813,29 +3827,29 @@ void I3_process_who_req(I3_HEADER *header, char *s)
 			   ("%^RED%^%^BOLD%^-------------------------------=[ %^WHITE%^%^BOLD%^Immortals %^RED%^%^BOLD%^]=--------------------------------"));
 		I3_write_buffer("\",");
 		if (xx > 0)
-		    snprintf(smallbuf, 50, "%ld", bogusidle * 3);
+		    snprintf(smallbuf, MAX_INPUT_LENGTH, "%ld", bogusidle * 3);
 		else
-		    snprintf(smallbuf, 50, "%ld", bogusidle);
+		    snprintf(smallbuf, MAX_INPUT_LENGTH, "%ld", bogusidle);
 		I3_write_buffer(smallbuf);
 		I3_write_buffer(",\" \",}),");
 	    }
 	    I3_write_buffer("({\"");
 
-	    strlcpy(rank, i3rankbuffer(person), 200);
-	    strlcpy(outbuf, i3centerline(rank, 20), 400);
+	    strlcpy(rank, i3rankbuffer(person), MAX_INPUT_LENGTH);
+	    strlcpy(outbuf, i3centerline(rank, 20), MAX_STRING_LENGTH);
 	    send_to_i3(I3_escape(outbuf));
 
 	    I3_write_buffer("\",");
-	    snprintf(smallbuf, 50, "%ld", -1l);
+	    snprintf(smallbuf, MAX_INPUT_LENGTH, "%ld", -1l);
 	    I3_write_buffer(smallbuf);
 	    I3_write_buffer(",\"");
 
-	    strlcpy(stats, "[", 200);
+	    strlcpy(stats, "[", MAX_INPUT_LENGTH);
 	    if (CH_I3AFK(person))
-		strlcat(stats, "AFK", 200);
+		strlcat(stats, "AFK", MAX_INPUT_LENGTH);
 	    else
-		strlcat(stats, "---", 200);
-	    strlcat(stats, "]%^GREEN%^%^BOLD%^", 200);
+		strlcat(stats, "---", MAX_INPUT_LENGTH);
+	    strlcat(stats, "]%^GREEN%^%^BOLD%^", MAX_INPUT_LENGTH);
 
 	    snprintf(personbuf, MAX_STRING_LENGTH, "%s %s %s", stats, CH_I3NAME(person),
 		     CH_I3TITLE(person));
@@ -3849,7 +3863,7 @@ void I3_process_who_req(I3_HEADER *header, char *s)
     snprintf(tailbuf, MAX_STRING_LENGTH, "%%^YELLOW%%^[%%^WHITE%%^%%^BOLD%%^%d Player%s%%^YELLOW%%^]", pcount, pcount == 1 ? "" : "s");
     send_to_i3(I3_escape(tailbuf));
     I3_write_buffer("\",");
-    snprintf(smallbuf, 50, "%ld", bogusidle * 2);
+    snprintf(smallbuf, MAX_INPUT_LENGTH, "%ld", bogusidle * 2);
     I3_write_buffer(smallbuf);
     I3_write_buffer(",\"");
     snprintf(tailbuf, MAX_STRING_LENGTH, "%%^YELLOW%%^[%%^WHITE%%^%%^BOLD%%^Homepage: %s%%^YELLOW%%^] [%%^WHITE%%^%%^BOLD%%^%d Max Since Reboot%%^YELLOW%%^]",
@@ -3862,7 +3876,7 @@ void I3_process_who_req(I3_HEADER *header, char *s)
 	     NUMLOGINS_PLACEHOLDER, boottimebuf);
     send_to_i3(I3_escape(tailbuf));
     I3_write_buffer("\",");
-    snprintf(smallbuf, 50, "%ld", bogusidle);
+    snprintf(smallbuf, MAX_INPUT_LENGTH, "%ld", bogusidle);
     I3_write_buffer(smallbuf);
     I3_write_buffer(",\" \",}),}),})\r");
     I3_send_packet();
@@ -15647,9 +15661,8 @@ I3_CMD(I3_mudlist)
 	}
 
 	if (filter[0] && i3_str_prefix(filter, mud->name) &&
-	    (mud->mud_type && i3_str_prefix(filter, mud->mud_type)) && (mud->mudlib
-									&& i3_str_prefix(filter,
-											 mud->mudlib)))
+	    (mud->mud_type && i3_str_prefix(filter, mud->mud_type)) && 
+            (mud->mudlib && i3_str_prefix(filter, mud->mudlib)))
 	    continue;
 
 	if (!all && mud->status == 0)
@@ -18592,7 +18605,7 @@ char                                   *I3_old_nameremap(const char *ps)
     return xnew;
 }
 
-char *pinkfish_to(const char *src, int target)
+char *explode_pinkfish_to(const char *src, int target)
 {
     static char result[MAX_STRING_LENGTH];
     char **parts                    = NULL;
@@ -18639,52 +18652,116 @@ char *pinkfish_to(const char *src, int target)
             break;
     }
 
+    // This will break the string up into an array of parts,
+    // which were between the delimiter symbol "%^".
+    // If there was no delimiter, this should just be one part.
+    // Note that if the delimiter was leading or trailing, there
+    // should be an empty string as a part.
     part_count = explode(src, "%^", &parts);
-    if(part_count < 2) {
-        // We only have the whole string (or an error).
-        strlcpy(result, src, MAX_STRING_LENGTH);
 
-        for(int i = 0; i < part_count; i++) {
-            if(parts[i]) {
+    for(int i = 0; i < part_count; i++) {
+        if(parts[i]) {
+            const char *match = stringmap_find(pinkfish_target_db, parts[i]);
+            if(match) {
+                // This is a Pinkfish code we recognize!
+                //log_info("pinkfish_to: found \"%s\", remapped to \"ESC%s\" by MODE %d", parts[i], (const unsigned char *)(match +1), target);
                 free(parts[i]);
-            }
-        }
-        if(parts) {
-            free(parts);
-        }
-    } else {
-        // We got some stuff back to play with!
-        // Assuming we already setup a pinkfish_to_ansi_db stringMap...
-        for(int i = 0; i < part_count; i++) {
-            if(parts[i]) {
-                const char *match = stringmap_find(pinkfish_target_db, parts[i]);
-                if(match) {
-                    // This is a Pinkfish code we recognize!
-                    //log_info("pinkfish_to: found \"%s\", remapped to \"ESC%s\" by MODE %d", parts[i], (const unsigned char *)(match +1), target);
-                    free(parts[i]);
-                    if(target == I3_PINKFISH_NULL) {
-                        parts[i] = strdup("");
-                    } else {
-                        parts[i] = strdup(match);
-                    }
+                if(target == I3_PINKFISH_NULL) {
+                    parts[i] = strdup("");
+                } else {
+                    parts[i] = strdup(match);
                 }
+            } else {
+                //log_info("NO MATCH: \"%s\"", parts[i]);
+            }
+        }
+    }
+
+    // Now that we've replaced any that we recognized, implode!
+    for(int i = 0; i < part_count; i++) {
+        strlcat(result, parts[i], MAX_STRING_LENGTH);
+    }
+
+    // And finally, we free the mallocs...
+    for(int i = 0; i < part_count; i++) {
+        if(parts[i]) {
+            free(parts[i]);
+        }
+    }
+    if(parts) {
+        free(parts);
+    }
+
+    return result;
+}
+
+char *pinkfish_to(const char *src, int target)
+{
+    static char result[MAX_STRING_LENGTH];
+    stringMap *pinkfish_target_db = NULL;
+    char *sp = NULL;
+    char *tok = NULL;
+    char word[MAX_STRING_LENGTH];
+    const char *match = NULL;
+
+    bzero(result, MAX_STRING_LENGTH);
+
+    if(!src || !*src)
+        return result;
+
+    switch(target) {
+        default:
+        case I3_PINKFISH_NULL:
+        case I3_PINKFISH_ANSI:
+            pinkfish_target_db = pinkfish_to_ansi_db;
+            break;
+        case I3_PINKFISH_I3:
+            pinkfish_target_db = pinkfish_to_i3_db;
+            break;
+        case I3_PINKFISH_XTERM:
+            pinkfish_target_db = pinkfish_to_xterm256_db;
+            break;
+        case I3_PINKFISH_GREY:
+            pinkfish_target_db = pinkfish_to_greyscale_db;
+            break;
+    }
+
+    // Walk the string, finding our delimiters.
+    sp = (char *)src;
+    if(!(tok = strstr(sp, "%^"))) {
+        // No delimiters at all, catch and release.
+        strlcpy(result, src, MAX_STRING_LENGTH);
+    } else {
+        // We have at least one!
+        if(tok == sp) {
+            // We are sitting on it
+            sp += 2;
+        } else {
+            // There is stuff before it to process
+            strlcpy(word, sp, tok - sp + 1);
+            sp = (tok + 2);
+            strlcat(result, word, MAX_STRING_LENGTH);
+        }
+
+        while((tok = strstr(sp, "%^")) != NULL) {
+            // From now on, each token we find will mark a potential
+            // replacment.
+            strlcpy(word, sp, tok - sp + 1);
+            sp = (tok + 2);
+            match = stringmap_find(pinkfish_target_db, word);
+            if(match) {
+                // Hey, a Pinkfish code!
+                strlcat(result, match, MAX_STRING_LENGTH);
+            } else {
+                // Nope, just a word
+                strlcat(result, word, MAX_STRING_LENGTH);
             }
         }
 
-        // Now we've replaced all the matches, the way LPC would do it.
-        // We can now "implode" the results.
-        for(int i = 0; i < part_count; i++) {
-            strlcat(result, parts[i], MAX_STRING_LENGTH);
-        }
-
-        // And finally, we free the mallocs...
-        for(int i = 0; i < part_count; i++) {
-            if(parts[i]) {
-                free(parts[i]);
-            }
-        }
-        if(parts) {
-            free(parts);
+        // Now that we've exhausted all of the tokens, if there's
+        // anything left, we just copy it verbatum.
+        if(*sp) {
+            strlcat(result, sp, MAX_STRING_LENGTH);
         }
     }
 

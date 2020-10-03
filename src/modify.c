@@ -576,92 +576,170 @@ void page_printf(struct char_data *ch, const char *Str, ...)
 
 void page_string(struct descriptor_data *d, char *str, int keep_internal)
 {
-    char                                    buffer[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
-    struct pager_data                      *p = NULL;
-    char                                   *nl = NULL;
-    char                                   *sp = NULL;
+    char buffer[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
+    struct pager_data *p = NULL;
+    char *nl = NULL;
+    char *sp = NULL;
 
     if (DEBUG > 2)
-	log_info("called %s with %08zx, %s, %d", __PRETTY_FUNCTION__, (size_t) d, VNULL(str),
-		 keep_internal);
-    /*
-     * log_info("called %s with %08zx, %s", __PRETTY_FUNCTION__, (size_t)d, VNULL(str)); 
-     */
+        log_info("called %s with %08zx, %s, %d", __PRETTY_FUNCTION__, (size_t) d, VNULL(str), keep_internal);
+    if (!d || !str || !*str)
+        return;
 
-    if (!d)
-	return;
+    bzero(buffer, MAX_STRING_LENGTH);
+
+    // We may be adding onto an incomplete line from earlier.
+    if (d->page_last && d->page_last->complete_line == FALSE)
+        strcpy(buffer, d->page_last->str);
+
+    //log_info("Buffer was: %s", buffer);
 
     for (sp = str; (nl = strpbrk(sp, "\n")); sp = nl + 1) {
-	if (!nl)
-	    break;
-	if (nl - sp < 1) {
-	    /*
-	     * This means we are ON a "\n", blank line! 
-	     */
-	    if (!d->page_last || d->page_last->complete_line == TRUE) {
-		CREATE(p, struct pager_data, 1);
+        if (!nl)
+            break;
 
-		p->str = strdup("");
-		p->complete_line = TRUE;
-		LINK(p, d->page_first, d->page_last, next, prev);
-	    } else {
-		d->page_last->complete_line = TRUE;
-	    }
-	    continue;
+        if (nl == sp) {
+            // Just a "\n" in the first character position.
+            // Blank line, or completing the previous line.
+        } else if (nl == (sp + 1)) {
+            // Just a "\r\n" in the first two character positions.
+            // Blank line, or completing the previous line.
+        } else if (*(nl - 1) == '\r') {
+            // We had a "\r\n" sequence, don't keep the "\r".
+            strncat(buffer, sp, nl - sp - 1);
+            buffer[nl - sp - 1] = '\0';
+        } else if (*(nl + 1) == '\r') {
+            // We had a "\n\r" diku-sequence, don't keep the "\r".
+            strncat(buffer, sp, nl - sp);
+            buffer[nl - sp] = '\0';
+            nl++;
+        } else {
+            strncat(buffer, sp, nl - sp);
+            buffer[nl - sp] = '\0';
+        }
+
+        if (d->page_last && d->page_last->complete_line == FALSE) {
+            //log_info("Replacing old line: %s", buffer);
+            DESTROY(d->page_last->str);
+            d->page_last->str = strdup(buffer);
+            d->page_last->complete_line = TRUE;
+        } else {
+            //log_info("Adding new line: %s", buffer);
+            CREATE(p, struct pager_data, 1);
+
+            p->str = strdup(buffer);
+            p->complete_line = TRUE;
+            LINK(p, d->page_first, d->page_last, next, prev);
 	}
+        bzero(buffer, MAX_STRING_LENGTH);
+    }
 
-	*buffer = '\0';
+    for (; (nl = strpbrk(sp, "\r")); sp = nl + 1) {
+        if (!nl)
+            break;
 
-	/*
-	 * We know we have a complete line, but we may be adding onto an incomplete line from earlier. 
-	 */
-	if (d->page_last && d->page_last->complete_line == FALSE)
-	    strcpy(buffer, d->page_last->str);
+        // We have a rogue "\r" here... skip that nonsense.
+        strncat(buffer, sp, nl - sp);
+        buffer[nl - sp] = '\0';
+    }
 
-	if (*(nl - 1) == '\r') {
-	    /*
-	     * We had a "\r\n" sequence, don't keep the "\r". 
-	     */
-	    strncat(buffer, sp, nl - sp - 1);
-	    buffer[nl - sp - 1] = '\0';
-	} else if (*sp == '\r') {
-	    /*
-	     * We had a "\n\r" diku-sequence, don't keep the "\r". 
-	     */
-	    strncat(buffer, sp + 1, nl - sp - 1);
-	    buffer[nl - sp - 1] = '\0';
-	} else {
-	    strncat(buffer, sp, nl - sp);
-	    buffer[nl - sp] = '\0';
+    if (*sp) {
+        // There's still some string left, but it's all clean.
+        strcat(buffer, sp);
+    }
+
+    if (*buffer) {
+        if (d->page_last && d->page_last->complete_line == FALSE) {
+            //log_info("Replacing old leftover line: %s", buffer);
+            DESTROY(d->page_last->str);
+            d->page_last->str = strdup(buffer);
+            d->page_last->complete_line = FALSE;
+        } else {
+            //log_info("Adding new leftover line: %s", buffer);
+            CREATE(p, struct pager_data, 1);
+
+            p->str = strdup(buffer);
+            p->complete_line = FALSE;
+            LINK(p, d->page_first, d->page_last, next, prev);
+        }
+    }
+}
+
+void old_page_string(struct descriptor_data *d, char *str, int keep_internal)
+{
+    char buffer[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
+    struct pager_data *p = NULL;
+    char *nl = NULL;
+    char *sp = NULL;
+
+    if (DEBUG > 2)
+        log_info("called %s with %08zx, %s, %d", __PRETTY_FUNCTION__, (size_t) d, VNULL(str), keep_internal);
+    if (!d || !str || !*str)
+        return;
+
+    for (sp = str; (nl = strpbrk(sp, "\n")); sp = nl + 1) {
+        if (!nl)
+            break;
+        if (nl - sp < 1) {
+            // This means we are ON a "\n", blank line!
+            if (!d->page_last || d->page_last->complete_line == TRUE) {
+                CREATE(p, struct pager_data, 1);
+
+                p->str = strdup("");
+                p->complete_line = TRUE;
+                LINK(p, d->page_first, d->page_last, next, prev);
+            } else {
+                d->page_last->complete_line = TRUE;
+            }
+            continue;
+        }
+
+        bzero(buffer, MAX_STRING_LENGTH);
+
+	// We know we have a complete line, but we may be adding onto an incomplete line from earlier.
+        if (d->page_last && d->page_last->complete_line == FALSE)
+            strcpy(buffer, d->page_last->str);
+
+        if (*(nl - 1) == '\r') {
+            // We had a "\r\n" sequence, don't keep the "\r".
+            strncat(buffer, sp, nl - sp - 1);
+            buffer[nl - sp - 1] = '\0';
+        } else if (*sp == '\r') {
+            // We had a "\n\r" diku-sequence, don't keep the "\r".
+            strncat(buffer, sp + 1, nl - sp - 1);
+            buffer[nl - sp - 1] = '\0';
+        } else {
+            strncat(buffer, sp, nl - sp);
+            buffer[nl - sp] = '\0';
+        }
+        if (d->page_last && d->page_last->complete_line == FALSE) {
+            DESTROY(d->page_last->str);
+            d->page_last->str = strdup(buffer);
+            d->page_last->complete_line = TRUE;
+        } else {
+            CREATE(p, struct pager_data, 1);
+
+            p->str = strdup(buffer);
+            p->complete_line = TRUE;
+            LINK(p, d->page_first, d->page_last, next, prev);
 	}
-	if (d->page_last && d->page_last->complete_line == FALSE) {
-	    DESTROY(d->page_last->str);
-	    d->page_last->str = strdup(buffer);
-	    d->page_last->complete_line = TRUE;
-	} else {
-	    CREATE(p, struct pager_data, 1);
-
-	    p->str = strdup(buffer);
-	    p->complete_line = TRUE;
-	    LINK(p, d->page_first, d->page_last, next, prev);
-	}
-	*buffer = '\0';
+        *buffer = '\0';
     }
     if (*sp == '\r')
-	sp++;
+        sp++;
     if (*sp) {
-	int                                     l = 0;
+        int l = 0;
 
-	strcpy(buffer, sp);
-	l = strlen(buffer);
-	if (l > 0 && buffer[l - 1] == '\r')
-	    buffer[l - 1] = '\0';
-	CREATE(p, struct pager_data, 1);
+        strcpy(buffer, sp);
+        l = strlen(buffer);
+        if (l > 0 && buffer[l - 1] == '\r')
+            buffer[l - 1] = '\0';
+        CREATE(p, struct pager_data, 1);
 
-	p->str = strdup(buffer);
-	p->complete_line = FALSE;
-	LINK(p, d->page_first, d->page_last, next, prev);
-	*buffer = '\0';
+        p->str = strdup(buffer);
+        p->complete_line = FALSE;
+        LINK(p, d->page_first, d->page_last, next, prev);
+        *buffer = '\0';
     }
 }
 
