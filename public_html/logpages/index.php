@@ -82,13 +82,13 @@ $PIE_ICON       = "$URL_HOME/gfx/pie_chart.png";
 $GITHUB_ICON    = "$URL_HOME/gfx/github1600.png";
 $ICON_WIDTH     = 48;
 
-$MUDLIST_IMG    = "<img src=\"$MUDLIST_ICON\" width=\"$ICON_WIDTH\" height=\"$ICON_WIDTH\" border=\"0\" />";
-$LOG_IMG        = "<img src=\"$LOG_ICON\" width=\"$ICON_WIDTH\" height=\"$ICON_WIDTH\" border=\"0\" />";
-$DISCORD_IMG    = "<img src=\"$DISCORD_ICON\" width=\"$ICON_WIDTH\" height=\"$ICON_WIDTH\" border=\"0\" />";
-$SERVER_IMG     = "<img src=\"$SERVER_ICON\" width=\"$ICON_WIDTH\" height=\"$ICON_WIDTH\" border=\"0\" />";
+$MUDLIST_IMG    = "<img class=\"glowing\" src=\"$MUDLIST_ICON\" width=\"$ICON_WIDTH\" height=\"$ICON_WIDTH\" border=\"0\" />";
+$LOG_IMG        = "<img class=\"glowing\" src=\"$LOG_ICON\" width=\"$ICON_WIDTH\" height=\"$ICON_WIDTH\" border=\"0\" />";
+$DISCORD_IMG    = "<img class=\"glowing\" src=\"$DISCORD_ICON\" width=\"$ICON_WIDTH\" height=\"$ICON_WIDTH\" border=\"0\" />";
+$SERVER_IMG     = "<img class=\"glowing\" src=\"$SERVER_ICON\" width=\"$ICON_WIDTH\" height=\"$ICON_WIDTH\" border=\"0\" />";
 $QR_IMG         = "<img src=\"$QR_ICON\" width=\"53\" height=\"53\" border=\"0\" />";
-$PIE_IMG        = "<img src=\"$PIE_ICON\" width=\"$ICON_WIDTH\" height=\"$ICON_WIDTH\" border=\"0\" />";
-$GITHUB_IMG     = "<img src=\"$GITHUB_ICON\" width=\"$ICON_WIDTH\" height=\"$ICON_WIDTH\" border=\"0\" />";
+$PIE_IMG        = "<img class=\"glowing\" src=\"$PIE_ICON\" width=\"$ICON_WIDTH\" height=\"$ICON_WIDTH\" border=\"0\" />";
+$GITHUB_IMG     = "<img class=\"glowing\" src=\"$GITHUB_ICON\" width=\"$ICON_WIDTH\" height=\"$ICON_WIDTH\" border=\"0\" />";
 
 $MUDLIST_LINK   = "<a href=\"$URL_HOME/mudlist.php\" alt=\"Mudlist\" title=\"Mudlist\">$MUDLIST_IMG</a>";
 $LOG_LINK       = "<a href=\"https://themud.org/chanhist.php#Channel=all\" alt=\"Other Logs\" title=\"Other Logs\">$LOG_IMG</a>";
@@ -111,6 +111,11 @@ $MOMENT_TZ      = "$LOG_HOME/moment-timezone.js";
 $NAVBAR         = "$LOG_HOME/navbar.js";
 $LOGPAGE_FUNC   = "$LOG_HOME/logpage_func.js";
 $LOGPAGE_STYLE  = "$LOG_HOME/logpage.css";
+
+$LOG_CSS_FILE   = "$PAGE_DIR/logpage.css";
+$LOG_CSS_TIME   = filemtime($LOG_CSS_FILE);
+$LOGPAGE_STYLE  = "$LOG_HOME/logpage.css?version=$LOG_CSS_TIME";
+
 
 $PINKFISH_CACHE = "$PAGE_DIR/pinkfish.json";
 $CHANNEL_CACHE  = "$PAGE_DIR/channels.json";

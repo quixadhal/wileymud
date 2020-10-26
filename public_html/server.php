@@ -75,7 +75,8 @@ $graphics['speedtest_new'] = $isLocal ? "gfx/wave_g_test2.png" : "gfx/wave_g_tes
 #$graphics['speedtest_current'] = $isLocal ? "gfx/speedtest_8811654706.png" : "gfx/speedtest_8811654706.png";
 #$graphics['speedtest_current'] = $isLocal ? "gfx/speedtest_9404657351.png" : "http://www.speedtest.net/result/9404657351.png";
 #$graphics['speedtest_current'] = $isLocal ? "gfx/speedtest_9809407270.png" : "https://www.speedtest.net/result/9809407270.png";
-$graphics['speedtest_current'] = $isLocal ? "gfx/speedtest_10030104653.png" : "https://www.speedtest.net/result/10030104653.png";
+#$graphics['speedtest_current'] = $isLocal ? "gfx/speedtest_10030104653.png" : "https://www.speedtest.net/result/10030104653.png";
+$graphics['speedtest_current'] = $isLocal ? "gfx/speedtest_10284037752.png" : "https://www.speedtest.net/result/10284037752.png";
 
 $MUDLIST_FILE   = "/home/wiley/public_html/mudlist.json";
 $BACKGROUND_DIR = "/home/wiley/public_html/gfx/wallpaper/";
@@ -136,6 +137,8 @@ $BACKGROUND_IMG = "<img class=\"overlay-bg\" src=\"$URL_HOME/gfx/wallpaper/$BACK
             .unblurred { font-family: monospace; white-space: pre-wrap; }
             .blurry:not(:hover) { filter: blur(3px); font-family: monospace; white-space: pre-wrap; }
             .blurry:hover { font-family: monospace; white-space: pre-wrap; }
+            .glowing:not(:hover) { filter: brightness(1); }
+            .glowing:hover { filter: brightness(1.75); }
         </style>
         <title>Old Crusty MUD Server</title>
     </head>
@@ -145,18 +148,18 @@ $BACKGROUND_IMG = "<img class=\"overlay-bg\" src=\"$URL_HOME/gfx/wallpaper/$BACK
             <tr>
                 <td align="left" width="25%">
                     <a href="http://wileymud.themud.org/~wiley/mudlist.php" alt="Mudlist" title="Mudlist">
-                        <img src="http://wileymud.themud.org/~wiley/gfx/mud.png" width="48" height="48" border="0" />
+                        <img class="glowing" src="http://wileymud.themud.org/~wiley/gfx/mud.png" width="48" height="48" border="0" />
                     </a>
                     <a href="http://wileymud.themud.org/~wiley/logpages" alt="Logs" title="Logs">
-                        <img src="http://wileymud.themud.org/~wiley/gfx/log.png" width="48" height="48" border="0" />
+                        <img class="glowing" src="http://wileymud.themud.org/~wiley/gfx/log.png" width="48" height="48" border="0" />
                     </a>
                     <a href="http://wileymud.themud.org/~wiley/pie.php" alt="PIE!" title="PIE!">
-                        <img src="http://wileymud.themud.org/~wiley/gfx/pie_chart.png" width="48" height="48" border="0" />
+                        <img class="glowing" src="http://wileymud.themud.org/~wiley/gfx/pie_chart.png" width="48" height="48" border="0" />
                     </a>
                 </td>
                 <td align="right" width="24%">
                     <a href="telnet://wileymud.themud.org:3000" alt="WileyMUD" title="WileyMUD">
-                        <img src="http://wileymud.themud.org/~wiley/gfx/wileymud3.png" width="247" height="48" border="0" />
+                        <img class="glowing" src="http://wileymud.themud.org/~wiley/gfx/wileymud3.png" width="247" height="48" border="0" />
                     </a>
                 </td>
                 <td align="center" width="">
@@ -192,10 +195,10 @@ $BACKGROUND_IMG = "<img class=\"overlay-bg\" src=\"$URL_HOME/gfx/wallpaper/$BACK
                     <span style="vertical-align: top; color: #ccaa00"> <?php echo $WILEY_TIME; ?> </span>
                         <img src="http://wileymud.themud.org/~wiley/gfx/server_icon.png" width="48" height="48" border="0" style="opacity: 0.2; background: rgba(255,0,0,0.25);" />
                     <a href="https://github.com/quixadhal/wileymud" alt="Source" title="Source">
-                        <img src="http://wileymud.themud.org/~wiley/gfx/github1600.png" width="48" height="48" border="0" />
+                        <img class="glowing" src="http://wileymud.themud.org/~wiley/gfx/github1600.png" width="48" height="48" border="0" />
                     </a>
                     <a href="https://discord.gg/kUduSsJ" alt="Discord" title="Discord">
-                        <img src="http://wileymud.themud.org/~wiley/gfx/discord.png" width="48" height="48" border="0" />
+                        <img class="glowing" src="http://wileymud.themud.org/~wiley/gfx/discord.png" width="48" height="48" border="0" />
                     </a>
                 </td>
             </tr>

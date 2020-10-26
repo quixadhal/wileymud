@@ -48,6 +48,11 @@ $WILEY_TIME = $mudlist["time"];
             a:active, a:focus { outline: 0; border: none; -moz-outline-style: none; }
             #navbar { position: fixed; top: 0; background-color: black; opacity: 1.0; z-index: 2; }
             #content-header { padding-top: 48px; }
+            .unblurred { font-family: monospace; white-space: pre-wrap; }
+            .blurry:not(:hover) { filter: blur(3px); font-family: monospace; white-space: pre-wrap; }
+            .blurry:hover { font-family: monospace; white-space: pre-wrap; }
+            .glowing:not(:hover) { filter: brightness(1); }
+            .glowing:hover { filter: brightness(1.75); }
         </style>
         <title>Welcome to WileyMUD!</title>
     </head>
@@ -57,15 +62,15 @@ $WILEY_TIME = $mudlist["time"];
             <td align="left" width="25%">
                     <img src="http://wileymud.themud.org/~wiley/gfx/mud.png" width="48" height="48" border="0" style="opacity: 0.2; background: rgba(255,0,0,0.25);" />
                 <a href="http://wileymud.themud.org/~wiley/logpages" alt="Logs" title="Logs">
-                    <img src="http://wileymud.themud.org/~wiley/gfx/log.png" width="48" height="48" border="0" />
+                    <img class="glowing" src="http://wileymud.themud.org/~wiley/gfx/log.png" width="48" height="48" border="0" />
                 </a>
                 <a href="http://wileymud.themud.org/~wiley/pie.php" alt="PIE!" title="PIE!">
-                    <img src="http://wileymud.themud.org/~wiley/gfx/pie_chart.png" width="48" height="48" border="0" />
+                    <img class="glowing" src="http://wileymud.themud.org/~wiley/gfx/pie_chart.png" width="48" height="48" border="0" />
                 </a>
             </td>
             <td align="right" width="24%">
                 <a href="telnet://wileymud.themud.org:3000" alt="WileyMUD" title="WileyMUD">
-                    <img src="http://wileymud.themud.org/~wiley/gfx/wileymud3.png" width="247" height="48" border="0" />
+                    <img class="glowing" src="http://wileymud.themud.org/~wiley/gfx/wileymud3.png" width="247" height="48" border="0" />
                 </a>
             </td>
             <td align="center" width="">
@@ -100,13 +105,13 @@ $WILEY_TIME = $mudlist["time"];
             <td align="right" width="25%">
                 <span style="vertical-align: top; color: #ccaa00"> <?php echo $WILEY_TIME; ?> </span>
                 <a href="http://wileymud.themud.org/~wiley/server.php" alt="Server" title="Server">
-                    <img src="http://wileymud.themud.org/~wiley/gfx/server_icon.png" width="48" height="48" border="0" />
+                    <img class="glowing" src="http://wileymud.themud.org/~wiley/gfx/server_icon.png" width="48" height="48" border="0" />
                 </a>
                 <a href="https://github.com/quixadhal/wileymud" alt="Source" title="Source">
-                    <img src="http://wileymud.themud.org/~wiley/gfx/github1600.png" width="48" height="48" border="0" />
+                    <img class="glowing" src="http://wileymud.themud.org/~wiley/gfx/github1600.png" width="48" height="48" border="0" />
                 </a>
                 <a href="https://discord.gg/kUduSsJ" alt="Discord" title="Discord">
-                    <img src="http://wileymud.themud.org/~wiley/gfx/discord.png" width="48" height="48" border="0" />
+                    <img class="glowing" src="http://wileymud.themud.org/~wiley/gfx/discord.png" width="48" height="48" border="0" />
                 </a>
             </td>
         </tr>

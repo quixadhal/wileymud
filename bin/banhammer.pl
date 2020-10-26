@@ -97,3 +97,6 @@ foreach my $ip (sort keys %error_count) {
 system "cp -p $blacklist $blacklist.bkp";
 system "/usr/sbin/ipset save >$blacklist";
 
+#ipset create foo hash:ip netmask 30
+#ipset add foo 46.229.168.0/24
+

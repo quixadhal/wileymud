@@ -429,3 +429,47 @@ cpan
 
 apt install curl
 
+A recent update broke python 2 by removing the soft-link to it, so...
+    sudo -s
+    cd /usr/bin
+    ln -s python2 python
+
+
+--- To upgrade postgresql (forgot to add this earlier)
+--- Interestingly, pg_dump sticks to the old version, so you can't
+    do a backup of the freshly installed (and empty) cluster before
+    nuking it?
+
+    Ahhhh, sneaky.  pg_dump and friends are all actually links to
+    a pg_wrapper script which has its own man page, and has an
+    option --cluster, which is not documented in the man pages of
+    the actual tools.  Nice...
+
+    So anyways, here's the process.
+
+    crontab -e # edit out all the cron entries that update things db related
+    systemctl stop apache2
+    systemctl stop diskworld
+    systemctl stop wileymud
+
+    apt install postgresql-plperl-13
+
+    sudo -s
+    su - postgres
+
+    pg_dumpall --cluster 13/main >new_13.sql
+    pg_dumpall --cluster 12/main >backup_12.sql
+
+    pg_dropcluster --stop 13 main
+    systemctl daemon-reload
+    pg_upgradecluster 12 main
+    systemctl daemon-reload
+
+    systemctl start apache2
+    systemctl start wileymud
+    systemctl start diskworld
+    crontab -e # restore the commented out entries
+
+--- Fun huh?  Well, it seems to have worked.
+    Probably go bzip2 the backup and keep it around for a bit...
+

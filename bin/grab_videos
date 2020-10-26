@@ -72,6 +72,10 @@ sub get_format {
         @candidates = grep {/^(hls-audio-ja-JP-hardsub-en-US[\-\d]+)/i}
             grep {/1280x720/i} grep {/mp4a/i} @lines;
     }
+    if ((scalar @candidates) < 1) {
+        @candidates = grep {/^(hls-audio-ja-JP-hardsub-en-US[\-\d]+)/i}
+            grep {/8\d\dx480/i} grep {/mp4a/i} @lines;
+    }
 
     foreach my $line (@candidates) {
         $line =~ /^(hls-audio-ja-JP-hardsub-en-US[\-\d]+)/i;
@@ -130,19 +134,16 @@ for (my $index = 0; $index < (scalar @urls); $index++) {
         next;
     }
 
-    my $nap = 20 + int(rand(50));
-    printf "Sleeping for %d seconds...\n", $nap;
-    sleep $nap;
-
     printf "Format for %s: ", (defined $target) ?
                               substr($target, -40) : substr($url, -40);
     my $format = get_format($url, $index);
     printf "%s.\n", (defined $format) ? $format : "not found";
-    next unless (defined $format);
 
-    $nap = int(rand(10));
+    my $nap = int(rand(10));
     printf "Sleeping for %d seconds...\n", $nap;
     sleep $nap;
+
+    next unless (defined $format);
 
     printf "Fetching... %s ", (defined $target) ?
                               substr($target, -40) : substr($url, -40);
@@ -158,6 +159,13 @@ for (my $index = 0; $index < (scalar @urls); $index++) {
         printf "%s\n", ($found ? ($GREEN . "done!" . $RESET)
                                : ($RED . "failed." . $RESET));
     }
-    printf "----\n";
+
+    if ($index < (scalar @urls) - 1) {
+        printf "----\n";
+        $nap = 20 + int(rand(50));
+        printf "Sleeping for %d seconds...\n", $nap;
+        sleep $nap;
+    }
 }
 
+# for i in *.mp4; do NEW=`echo "$i" | sed 's/01.\([0-9][0-9]\)/01.0\1/'`; mv -v "$i" "$NEW"; done

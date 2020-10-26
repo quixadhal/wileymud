@@ -95,6 +95,12 @@ input:focus, textarea:focus {
     font-family: monospace;
     white-space: pre-wrap;
 }
+.glowing:not(:hover) {
+    filter: brightness(1);
+}
+.glowing:hover {
+    filter: brightness(1.75);
+}
 
 @keyframes blinking {
     0% {
