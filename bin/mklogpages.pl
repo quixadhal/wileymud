@@ -57,13 +57,13 @@ my $PIE_ICON        = "$URL_HOME/gfx/pie_chart.png";
 my $GITHUB_ICON     = "$URL_HOME/gfx/github1600.png";
 my $ICON_WIDTH      = 48;
 
-my $MUDLIST_IMG     = "<img src=\"$MUDLIST_ICON\" width=\"$ICON_WIDTH\" height=\"$ICON_WIDTH\" border=\"0\" />";
-my $LOG_IMG         = "<img src=\"$LOG_ICON\" width=\"$ICON_WIDTH\" height=\"$ICON_WIDTH\" border=\"0\" />";
-my $DISCORD_IMG     = "<img src=\"$DISCORD_ICON\" width=\"$ICON_WIDTH\" height=\"$ICON_WIDTH\" border=\"0\" />";
-my $SERVER_IMG      = "<img src=\"$SERVER_ICON\" width=\"$ICON_WIDTH\" height=\"$ICON_WIDTH\" border=\"0\" />";
+my $MUDLIST_IMG     = "<img class=\"glowing\" src=\"$MUDLIST_ICON\" width=\"$ICON_WIDTH\" height=\"$ICON_WIDTH\" border=\"0\" />";
+my $LOG_IMG         = "<img class=\"glowing\" src=\"$LOG_ICON\" width=\"$ICON_WIDTH\" height=\"$ICON_WIDTH\" border=\"0\" />";
+my $DISCORD_IMG     = "<img class=\"glowing\" src=\"$DISCORD_ICON\" width=\"$ICON_WIDTH\" height=\"$ICON_WIDTH\" border=\"0\" />";
+my $SERVER_IMG      = "<img class=\"glowing\" src=\"$SERVER_ICON\" width=\"$ICON_WIDTH\" height=\"$ICON_WIDTH\" border=\"0\" />";
 my $QR_IMG          = "<img src=\"$QR_ICON\" width=\"53\" height=\"53\" border=\"0\" />";
-my $PIE_IMG         = "<img src=\"$PIE_ICON\" width=\"$ICON_WIDTH\" height=\"$ICON_WIDTH\" border=\"0\" />";
-my $GITHUB_IMG      = "<img src=\"$GITHUB_ICON\" width=\"$ICON_WIDTH\" height=\"$ICON_WIDTH\" border=\"0\" />";
+my $PIE_IMG         = "<img class=\"glowing\" src=\"$PIE_ICON\" width=\"$ICON_WIDTH\" height=\"$ICON_WIDTH\" border=\"0\" />";
+my $GITHUB_IMG      = "<img class=\"glowing\" src=\"$GITHUB_ICON\" width=\"$ICON_WIDTH\" height=\"$ICON_WIDTH\" border=\"0\" />";
 
 my $MUDLIST_LINK    = "<a href=\"$URL_HOME/mudlist.php\" alt=\"Mudlist\" title=\"Mudlist\">$MUDLIST_IMG</a>";
 my $LOG_LINK        = "<a href=\"$LOG_HOME\" alt=\"Logs\" title=\"Logs\">$LOG_IMG</a>";
@@ -970,12 +970,14 @@ sub generate_navbar_script {
         function dim(element) {
             if(element !== null) {
                 element.style.opacity = "0.5";
+                element.className = "not-glowing";
             }
         }
 
         function brighten(element) {
             if(element !== null) {
                 element.style.opacity = "1.0";
+                element.className = "glowing";
             }
         }
 
@@ -1244,15 +1246,15 @@ EOM
                 printf FP "<img id=\"scroll_up_button\" src=\"%s\" width=\"%d\" height=\"%d\" border=\"0\" style=\"opacity: 0.5;\" onclick=\"scroll_up()\"/>\n", $UP_ICON, $ICON_WIDTH, $ICON_WIDTH;
 
                 if(defined $first_page) {
-                    printf FP "<a href=\"%s\" alt=\"%s\" title=\"%s\"><img src=\"%s\" width=\"%d\" height=\"%d\" border=\"0\" /></a>\n", $first_page, $first_date, $first_date, $BEGIN_ICON, $ICON_WIDTH, $ICON_WIDTH;
+                    printf FP "<a href=\"%s\" alt=\"%s\" title=\"%s\"><img src=\"%s\" width=\"%d\" height=\"%d\" border=\"0\" class=\"glowing\" style=\"opacity: 1.0;\" /></a>\n", $first_page, $first_date, $first_date, $BEGIN_ICON, $ICON_WIDTH, $ICON_WIDTH;
                 } else {
-                    printf FP "<img src=\"%s\" width=\"%d\" height=\"%d\" border=\"0\" style=\"opacity: 0.5;\" />\n", $BEGIN_ICON, $ICON_WIDTH, $ICON_WIDTH;
+                    printf FP "<img src=\"%s\" width=\"%d\" height=\"%d\" border=\"0\" class=\"not-glowing\" style=\"opacity: 0.5;\" />\n", $BEGIN_ICON, $ICON_WIDTH, $ICON_WIDTH;
                 }
 
                 if(defined $prev_page) {
-                    printf FP "<a href=\"%s\" alt=\"%s\" title=\"%s\"><img src=\"%s\" width=\"%d\" height=\"%d\" border=\"0\" /></a>\n", $prev_page, $prev_date, $prev_date, $PREV_ICON, $ICON_WIDTH, $ICON_WIDTH;
+                    printf FP "<a href=\"%s\" alt=\"%s\" title=\"%s\"><img src=\"%s\" width=\"%d\" height=\"%d\" border=\"0\" class=\"glowing\" style=\"opacity: 1.0;\" /></a>\n", $prev_page, $prev_date, $prev_date, $PREV_ICON, $ICON_WIDTH, $ICON_WIDTH;
                 } else {
-                    printf FP "<img src=\"%s\" width=\"%d\" height=\"%d\" border=\"0\" style=\"opacity: 0.5;\" />\n", $PREV_ICON, $ICON_WIDTH, $ICON_WIDTH;
+                    printf FP "<img src=\"%s\" width=\"%d\" height=\"%d\" border=\"0\" class=\"not-glowing\" style=\"opacity: 0.5;\" />\n", $PREV_ICON, $ICON_WIDTH, $ICON_WIDTH;
                 }
 
                 print FP <<EOM;
@@ -1264,15 +1266,15 @@ EOM
 EOM
 
                 if(defined $next_page) {
-                    printf FP "<a href=\"%s\" alt=\"%s\" title=\"%s\"><img src=\"%s\" width=\"%d\" height=\"%d\" border=\"0\" /></a>\n", $next_page, $next_date, $next_date, $NEXT_ICON, $ICON_WIDTH, $ICON_WIDTH;
+                    printf FP "<a href=\"%s\" alt=\"%s\" title=\"%s\"><img src=\"%s\" width=\"%d\" height=\"%d\" border=\"0\" class=\"glowing\" style=\"opacity: 1.0;\" /></a>\n", $next_page, $next_date, $next_date, $NEXT_ICON, $ICON_WIDTH, $ICON_WIDTH;
                 } else {
-                    printf FP "<img src=\"%s\" width=\"%d\" height=\"%d\" border=\"0\" style=\"opacity: 0.5;\" />\n", $NEXT_ICON, $ICON_WIDTH, $ICON_WIDTH;
+                    printf FP "<img src=\"%s\" width=\"%d\" height=\"%d\" border=\"0\" class=\"not-glowing\" style=\"opacity: 0.5;\" />\n", $NEXT_ICON, $ICON_WIDTH, $ICON_WIDTH;
                 }
 
                 if(defined $last_page) {
-                    printf FP "<a href=\"%s\" alt=\"%s\" title=\"%s\"><img src=\"%s\" width=\"%d\" height=\"%d\" border=\"0\" /></a>\n", $last_page, $last_date, $last_date, $END_ICON, $ICON_WIDTH, $ICON_WIDTH;
+                    printf FP "<a href=\"%s\" alt=\"%s\" title=\"%s\"><img src=\"%s\" width=\"%d\" height=\"%d\" border=\"0\" class=\"glowing\" style=\"opacity: 1.0;\" /></a>\n", $last_page, $last_date, $last_date, $END_ICON, $ICON_WIDTH, $ICON_WIDTH;
                 } else {
-                    printf FP "<img src=\"%s\" width=\"%d\" height=\"%d\" border=\"0\" style=\"opacity: 0.5;\" />\n", $END_ICON, $ICON_WIDTH, $ICON_WIDTH;
+                    printf FP "<img src=\"%s\" width=\"%d\" height=\"%d\" border=\"0\" class=\"not-glowing\" style=\"opacity: 0.5;\" />\n", $END_ICON, $ICON_WIDTH, $ICON_WIDTH;
                 }
 
                 printf FP "<img id=\"scroll_down_button\" src=\"%s\" width=\"%d\" height=\"%d\" border=\"0\" style=\"opacity: 1.0;\" onclick=\"scroll_down()\"/>\n", $DOWN_ICON, $ICON_WIDTH, $ICON_WIDTH;

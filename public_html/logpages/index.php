@@ -710,15 +710,15 @@ $top_link = sprintf("<img id=\"scroll_top_button\" src=\"%s\" width=\"%d\" heigh
 $up_link = sprintf("<img id=\"scroll_up_button\" src=\"%s\" width=\"%d\" height=\"%d\" border=\"0\" style=\"opacity: 0.5;\" onclick=\"scroll_up()\" />\n",
     $UP_ICON, $ICON_WIDTH, $ICON_WIDTH);
 // Navigation for going back
-$first_link = sprintf("<a href=\"%s\" alt=\"%s\" title=\"%s\"><img src=\"%s\" width=\"%d\" height=\"%d\" border=\"0\" /></a>\n",
+$first_link = sprintf("<a href=\"%s\" alt=\"%s\" title=\"%s\"><img src=\"%s\" width=\"%d\" height=\"%d\" border=\"0\" class=\"glowing\" style=\"opacity: 1.0;\" /></a>\n",
     page_url($date_counts, $first_date), $first_date, $first_date, $BEGIN_ICON, $ICON_WIDTH, $ICON_WIDTH);
-$prev_link = sprintf("<a href=\"%s\" alt=\"%s\" title=\"%s\"><img src=\"%s\" width=\"%d\" height=\"%d\" border=\"0\" /></a>\n",
+$prev_link = sprintf("<a href=\"%s\" alt=\"%s\" title=\"%s\"><img src=\"%s\" width=\"%d\" height=\"%d\" border=\"0\" class=\"glowing\" style=\"opacity: 1.0;\" /></a>\n",
     page_url($date_counts, $yesterday), $yesterday, $yesterday, $PREV_ICON, $ICON_WIDTH, $ICON_WIDTH);
     //page_url($date_counts, $yester_date), $yester_date, $yester_date, $PREV_ICON, $ICON_WIDTH, $ICON_WIDTH);
 // but there is no going forward
-$next_link = sprintf("<img src=\"%s\" width=\"%d\" height=\"%d\" border=\"0\" style=\"opacity: 0.5;\" />\n",
+$next_link = sprintf("<img src=\"%s\" width=\"%d\" height=\"%d\" border=\"0\" class=\"not-glowing\" style=\"opacity: 0.5;\" />\n",
     $NEXT_ICON, $ICON_WIDTH, $ICON_WIDTH);
-$last_link = sprintf("<img src=\"%s\" width=\"%d\" height=\"%d\" border=\"0\" style=\"opacity: 0.5;\" />\n",
+$last_link = sprintf("<img src=\"%s\" width=\"%d\" height=\"%d\" border=\"0\" class=\"not-glowing\" style=\"opacity: 0.5;\" />\n",
     $END_ICON, $ICON_WIDTH, $ICON_WIDTH);
 // and finally, our new button to scroll down to a row
 $down_link = sprintf("<img id=\"scroll_down_button\" src=\"%s\" width=\"%d\" height=\"%d\" border=\"0\" style=\"opacity: 1.0;\" onclick=\"scroll_down()\" />\n",
