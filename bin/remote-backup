@@ -6,6 +6,10 @@ ping -qc 1 -W 1 $SITE >/dev/null 2>&1
 if [ $? -eq 0 ]; then
     #rsync -azq -e "ssh" --exclude=.git --exclude=.ssh --exclude=.ICEauthority /home/wiley/ wiley@$SITE:
     #rsync -azq -e "ssh" --exclude=.ssh --exclude=.ICEauthority --exclude=.gnupg --exclude=.pki /home/wiley/ wiley@$SITE:/storage/backups/wiley
+    echo -en "Backing up to $SITE..."
     rsync -azq -e "ssh" /home/wiley/ wiley@$SITE:/storage/backups/wiley
+    echo " done."
+else
+    echo "$SITE is not online, backup aborted."
 fi
 
