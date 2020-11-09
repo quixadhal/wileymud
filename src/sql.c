@@ -568,7 +568,7 @@ void allchan_sql( int is_emote, const char *channel, const char *speaker, const 
     PGresult *res = NULL;
     ExecStatusType st = 0;
     const char *sql = "INSERT INTO i3log ( channel, speaker, username, mud, message, is_emote, is_url, is_bot ) "
-                      "VALUES ($1,$2,$3,$4,$5,$6,$7,$8);";
+                      "VALUES ($1,$2,lower($3),$4,$5,$6,$7,$8);";
     const char *param_val[8];
     int param_len[8];
     //int param_bin[7] = {0,0,0,0,1,1,1}; // Are booleans considered binary?
