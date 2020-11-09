@@ -275,9 +275,16 @@ function fetch_stuff($db, $thing, $kind) {
     // URLbot is intentionally not marked as a bot, as when viewing the logs
     // we typically want to filter out normal bot messages, but still see the
     // url expansions from what people post.
-    $sql  = "SELECT $kind, count(*) FROM i3log WHERE speaker <> 'URLbot' AND NOT is_bot";
-    $sql .= thing_and_clause($thing);
-    $sql .= " GROUP BY $kind ORDER BY count DESC LIMIT 12;";
+    //$sql  = "SELECT $kind, count(*) FROM i3log WHERE speaker <> 'URLbot' AND NOT is_bot";
+    if($kind === 'speaker') {
+        $sql  = "SELECT lower(username) AS speaker, count(*) FROM i3log WHERE lower(username) <> 'urlbot' AND NOT is_bot";
+        $sql .= thing_and_clause($thing);
+        $sql .= " GROUP BY lower(username) ORDER BY count DESC LIMIT 12;";
+    } else {
+        $sql  = "SELECT $kind, count(*) FROM i3log WHERE speaker <> 'URLbot' AND NOT is_bot";
+        $sql .= thing_and_clause($thing);
+        $sql .= " GROUP BY $kind ORDER BY count DESC LIMIT 12;";
+    }
 
     try {
         //$db->beginTransaction();
