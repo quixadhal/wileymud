@@ -276,6 +276,7 @@ function fetch_stuff($db, $thing, $kind) {
     // we typically want to filter out normal bot messages, but still see the
     // url expansions from what people post.
     //$sql  = "SELECT $kind, count(*) FROM i3log WHERE speaker <> 'URLbot' AND NOT is_bot";
+    // create index ix_i3log_luser on i3log ((lower(username)));
     if($kind === 'speaker') {
         $sql  = "SELECT lower(username) AS speaker, count(*) FROM i3log WHERE lower(username) <> 'urlbot' AND NOT is_bot";
         $sql .= thing_and_clause($thing);
