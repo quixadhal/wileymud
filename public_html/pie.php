@@ -278,9 +278,9 @@ function fetch_stuff($db, $thing, $kind) {
     //$sql  = "SELECT $kind, count(*) FROM i3log WHERE speaker <> 'URLbot' AND NOT is_bot";
     // create index ix_i3log_luser on i3log ((lower(username)));
     if($kind === 'speaker') {
-        $sql  = "SELECT lower(username) AS speaker, count(*) FROM i3log WHERE lower(username) <> 'urlbot' AND NOT is_bot";
+        $sql = "SELECT username AS speaker, count(*) FROM i3log WHERE username <> 'urlbot' AND NOT is_bot";
         $sql .= thing_and_clause($thing);
-        $sql .= " GROUP BY lower(username) ORDER BY count DESC LIMIT 12;";
+        $sql .= " GROUP BY username ORDER BY count DESC LIMIT 12;";
     } else {
         $sql  = "SELECT $kind, count(*) FROM i3log WHERE speaker <> 'URLbot' AND NOT is_bot";
         $sql .= thing_and_clause($thing);
@@ -289,6 +289,8 @@ function fetch_stuff($db, $thing, $kind) {
 
     try {
         //$db->beginTransaction();
+        $sth = $db->prepare("SET SESSION enable_seqscan=false;");
+        $sth->execute();
         $sth = $db->prepare($sql);
         //$sth->bindParam(':time_interval', $time_interval);
         $sth->execute();
@@ -298,6 +300,8 @@ function fetch_stuff($db, $thing, $kind) {
             //$result[$row['pinkfish']] = $row;
             $result[] = $row;
         }
+        $sth = $db->prepare("SET SESSION enable_seqscan=true;");
+        $sth->execute();
         //$db->commit();
     } catch (Exception $e) {
         //$db->rollback();

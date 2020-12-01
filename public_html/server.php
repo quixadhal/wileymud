@@ -71,12 +71,14 @@ $graphics['server_case'] = $isLocal ? "gfx/server_case.png" : "https://i.imgur.c
 //$graphics['server_case'] = $isLocal ? "gfx/server_case.jpg" : "http://i302.photobucket.com/albums/nn96/quixadhal/shadowlord/server_case_zpsdcdc0b79.jpg";
 $graphics['speedtest_raw'] = $isLocal ? "gfx/speedtest_raw_4478672602.png" : "http://www.speedtest.net/result/4478672602.png";
 $graphics['speedtest_qos'] = $isLocal ? "gfx/speedtest_qos_4478667111.png" : "http://www.speedtest.net/result/4478667111.png";
-$graphics['speedtest_new'] = $isLocal ? "gfx/wave_g_test2.png" : "gfx/wave_g_test2.png";
+#$graphics['speedtest_new'] = $isLocal ? "gfx/wave_g_test2.png" : "gfx/wave_g_test2.png";
+$graphics['speedtest_new'] = $isLocal ? "gfx/speedtest_10284037752.png" : "https://www.speedtest.net/result/10284037752.png";
 #$graphics['speedtest_current'] = $isLocal ? "gfx/speedtest_8811654706.png" : "gfx/speedtest_8811654706.png";
 #$graphics['speedtest_current'] = $isLocal ? "gfx/speedtest_9404657351.png" : "http://www.speedtest.net/result/9404657351.png";
 #$graphics['speedtest_current'] = $isLocal ? "gfx/speedtest_9809407270.png" : "https://www.speedtest.net/result/9809407270.png";
 #$graphics['speedtest_current'] = $isLocal ? "gfx/speedtest_10030104653.png" : "https://www.speedtest.net/result/10030104653.png";
-$graphics['speedtest_current'] = $isLocal ? "gfx/speedtest_10284037752.png" : "https://www.speedtest.net/result/10284037752.png";
+#$graphics['speedtest_current'] = $isLocal ? "gfx/speedtest_10284037752.png" : "https://www.speedtest.net/result/10284037752.png";
+$graphics['speedtest_current'] = $isLocal ? "gfx/speedtest_10478161918.png" : "https://www.speedtest.net/result/10478161918.png";
 
 $MUDLIST_FILE   = "/home/wiley/public_html/mudlist.json";
 $BACKGROUND_DIR = "/home/wiley/public_html/gfx/wallpaper/";
@@ -90,9 +92,9 @@ $WILEY_BUILD_NUMBER     = $mudlist["version"]["build"];
 $WILEY_BUILD_DATE       = $mudlist["version"]["date"];
 $WILEY_TIME             = $mudlist["time"];
 
-$URL_HOME       = "http://wileymud.themud.org/~wiley";
+$GFX_HOME       = $isLocal ? "gfx" : "http://wileymud.themud.org/~wiley/gfx";
 $BACKGROUND     = random_image($BACKGROUND_DIR);
-$BACKGROUND_IMG = "<img class=\"overlay-bg\" src=\"$URL_HOME/gfx/wallpaper/$BACKGROUND\" />";
+$BACKGROUND_IMG = "<img class=\"overlay-bg\" src=\"$GFX_HOME/wallpaper/$BACKGROUND\" />";
 
 ?>
 
@@ -148,18 +150,18 @@ $BACKGROUND_IMG = "<img class=\"overlay-bg\" src=\"$URL_HOME/gfx/wallpaper/$BACK
             <tr>
                 <td align="left" width="25%">
                     <a href="http://wileymud.themud.org/~wiley/mudlist.php" alt="Mudlist" title="Mudlist">
-                        <img class="glowing" src="http://wileymud.themud.org/~wiley/gfx/mud.png" width="48" height="48" border="0" />
+                        <img class="glowing" src="<?php echo $GFX_HOME; ?>/mud.png" width="48" height="48" border="0" />
                     </a>
                     <a href="http://wileymud.themud.org/~wiley/logpages" alt="Logs" title="Logs">
-                        <img class="glowing" src="http://wileymud.themud.org/~wiley/gfx/log.png" width="48" height="48" border="0" />
+                        <img class="glowing" src="<?php echo $GFX_HOME; ?>/log.png" width="48" height="48" border="0" />
                     </a>
                     <a href="http://wileymud.themud.org/~wiley/pie.php" alt="PIE!" title="PIE!">
-                        <img class="glowing" src="http://wileymud.themud.org/~wiley/gfx/pie_chart.png" width="48" height="48" border="0" />
+                        <img class="glowing" src="<?php echo $GFX_HOME; ?>/pie_chart.png" width="48" height="48" border="0" />
                     </a>
                 </td>
                 <td align="right" width="24%">
                     <a href="telnet://wileymud.themud.org:3000" alt="WileyMUD" title="WileyMUD">
-                        <img class="glowing" src="http://wileymud.themud.org/~wiley/gfx/wileymud3.png" width="247" height="48" border="0" />
+                        <img class="glowing" src="<?php echo $GFX_HOME; ?>/wileymud3.png" width="247" height="48" border="0" />
                     </a>
                 </td>
                 <td align="center" width="">
@@ -193,12 +195,12 @@ $BACKGROUND_IMG = "<img class=\"overlay-bg\" src=\"$URL_HOME/gfx/wallpaper/$BACK
                 </td>
                 <td align="right" width="25%">
                     <span style="vertical-align: top; color: #ccaa00"> <?php echo $WILEY_TIME; ?> </span>
-                        <img src="http://wileymud.themud.org/~wiley/gfx/server_icon.png" width="48" height="48" border="0" style="opacity: 0.2; background: rgba(255,0,0,0.25);" />
+                        <img src="<?php echo $GFX_HOME; ?>/server_icon.png" width="48" height="48" border="0" style="opacity: 0.2; background: rgba(255,0,0,0.25);" />
                     <a href="https://github.com/quixadhal/wileymud" alt="Source" title="Source">
-                        <img class="glowing" src="http://wileymud.themud.org/~wiley/gfx/github1600.png" width="48" height="48" border="0" />
+                        <img class="glowing" src="<?php echo $GFX_HOME; ?>/github1600.png" width="48" height="48" border="0" />
                     </a>
                     <a href="https://discord.gg/kUduSsJ" alt="Discord" title="Discord">
-                        <img class="glowing" src="http://wileymud.themud.org/~wiley/gfx/discord.png" width="48" height="48" border="0" />
+                        <img class="glowing" src="<?php echo $GFX_HOME; ?>/discord.png" width="48" height="48" border="0" />
                     </a>
                 </td>
             </tr>
@@ -241,7 +243,7 @@ $BACKGROUND_IMG = "<img class=\"overlay-bg\" src=\"$URL_HOME/gfx/wallpaper/$BACK
                                 <td align="center"> <img src="<?php echo $graphics['speedtest_raw']; ?>" border="0" width="300" height="135" /> </td>
                             </tr>
                             <tr>
-                                <td align="center"> Current&nbsp;(Seattle) </td>
+                                <td align="center"> Current&nbsp;(Bellevue) </td>
                                 <td align="center"> Seattle </td>
                                 <td align="center"> Kalamazoo </td>
                             </tr>

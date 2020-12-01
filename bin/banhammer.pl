@@ -62,6 +62,7 @@ foreach my $filename (@logs) {
             /\[client\s+(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})\:\d+\]/;
             my ($ip) = ($1);
             next if !defined $ip;
+            next if $ip =~ /^104\.156\.100\.167/;   # Oops, new external address
             next if $ip =~ /^172\.92\.143\.166/;    # This is my external address
             next if $ip =~ /^45\.64\.56\.66/;       # *Kelly I3 router
             next if $ip =~ /^97\.107\.133\.86/;     # *dalet I3 router
