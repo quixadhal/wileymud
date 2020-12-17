@@ -78,7 +78,8 @@ $graphics['speedtest_new'] = $isLocal ? "gfx/speedtest_10284037752.png" : "https
 #$graphics['speedtest_current'] = $isLocal ? "gfx/speedtest_9809407270.png" : "https://www.speedtest.net/result/9809407270.png";
 #$graphics['speedtest_current'] = $isLocal ? "gfx/speedtest_10030104653.png" : "https://www.speedtest.net/result/10030104653.png";
 #$graphics['speedtest_current'] = $isLocal ? "gfx/speedtest_10284037752.png" : "https://www.speedtest.net/result/10284037752.png";
-$graphics['speedtest_current'] = $isLocal ? "gfx/speedtest_10478161918.png" : "https://www.speedtest.net/result/10478161918.png";
+#$graphics['speedtest_current'] = $isLocal ? "gfx/speedtest_10478161918.png" : "https://www.speedtest.net/result/10478161918.png";
+$graphics['speedtest_current'] = $isLocal ? "gfx/speedtest_10600322876.png" : "https://www.speedtest.net/result/10600322876.png";
 
 $MUDLIST_FILE   = "/home/wiley/public_html/mudlist.json";
 $BACKGROUND_DIR = "/home/wiley/public_html/gfx/wallpaper/";
