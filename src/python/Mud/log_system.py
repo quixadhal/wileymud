@@ -41,6 +41,9 @@ class Logger(object):
         :rtype: object
         """
 
+        #ut = datetime.datetime.fromtimestamp(time.time())
+        #print(ut.astimezone().tzinfo)
+
         time_converter = datetime.datetime.fromtimestamp
 
         def format(self, record):
@@ -51,12 +54,12 @@ class Logger(object):
             return message
 
         def formatTime(self, record, datefmt=None):
-            timestamp = self.time_converter(record.created)
+            timestamp = self.time_converter(record.created).astimezone()
             if datefmt:
                 result = timestamp.strftime(datefmt)
             else:
                 part = timestamp.strftime('%Y-%m-%d %H:%M:%S')
-                result = "%s.%03d" % (part, record.msecs)
+                result = "%s.%03d %s" % (part, record.msecs, timestamp.tzinfo)
             return result
 
 

@@ -1,5 +1,5 @@
 #COUNT
-Count   2813
+Count   2833
 End
 
 #SPEAKER
@@ -418,6 +418,11 @@ Color  %^BLACK%^%^B_RED%^
 End
 
 #SPEAKER
+Name   tok
+Color  %^WHITE%^
+End
+
+#SPEAKER
 Name   asparagus
 Color  %^ORANGE%^
 End
@@ -555,6 +560,11 @@ End
 #SPEAKER
 Name   catbro
 Color  %^WHITE%^%^BOLD%^
+End
+
+#SPEAKER
+Name   babylon
+Color  %^YELLOW%^
 End
 
 #SPEAKER
@@ -983,6 +993,11 @@ Color  %^RED%^
 End
 
 #SPEAKER
+Name   korsario
+Color  %^BLUE%^
+End
+
+#SPEAKER
 Name   a brutal orc
 Color  %^BLACK%^%^B_WHITE%^
 End
@@ -1120,6 +1135,16 @@ End
 #SPEAKER
 Name   syriac
 Color  %^BLACK%^%^BOLD%^
+End
+
+#SPEAKER
+Name   maldrin
+Color  %^RED%^%^BOLD%^
+End
+
+#SPEAKER
+Name   grym
+Color  %^MAGENTA%^%^BOLD%^
 End
 
 #SPEAKER
@@ -1605,6 +1630,11 @@ End
 #SPEAKER
 Name   majin
 Color  %^WHITE%^
+End
+
+#SPEAKER
+Name   jakalas
+Color  %^WHITE%^%^BOLD%^
 End
 
 #SPEAKER
@@ -2938,6 +2968,11 @@ Color  %^BLACK%^%^B_MAGENTA%^
 End
 
 #SPEAKER
+Name   zealxp
+Color  %^RED%^
+End
+
+#SPEAKER
 Name   bartleby
 Color  %^BLACK%^%^B_RED%^
 End
@@ -3475,6 +3510,11 @@ End
 #SPEAKER
 Name   viscous
 Color  %^BLUE%^
+End
+
+#SPEAKER
+Name   fizzle
+Color  %^BLUE%^%^BOLD%^
 End
 
 #SPEAKER
@@ -4998,6 +5038,11 @@ Color  %^WHITE%^%^BOLD%^
 End
 
 #SPEAKER
+Name   wizzard
+Color  %^GREEN%^%^BOLD%^
+End
+
+#SPEAKER
 Name   aelyah
 Color  %^WHITE%^
 End
@@ -6245,6 +6290,11 @@ End
 #SPEAKER
 Name   viwiel
 Color  %^RED%^%^BOLD%^
+End
+
+#SPEAKER
+Name   bambooshoots
+Color  %^MAGENTA%^
 End
 
 #SPEAKER
@@ -7518,6 +7568,11 @@ Color  %^MAGENTA%^%^BOLD%^
 End
 
 #SPEAKER
+Name   esmene
+Color  %^RED%^%^BOLD%^
+End
+
+#SPEAKER
 Name   a wild fighter
 Color  %^WHITE%^%^B_BLUE%^
 End
@@ -8265,6 +8320,11 @@ End
 #SPEAKER
 Name   mariner
 Color  %^WHITE%^
+End
+
+#SPEAKER
+Name   nikavanova
+Color  %^YELLOW%^
 End
 
 #SPEAKER
@@ -9078,6 +9138,11 @@ Color  %^YELLOW%^
 End
 
 #SPEAKER
+Name   tbonta
+Color  %^MAGENTA%^%^BOLD%^
+End
+
+#SPEAKER
 Name   aagbb
 Color  %^WHITE%^%^B_GREEN%^
 End
@@ -9520,6 +9585,11 @@ End
 #SPEAKER
 Name   ab
 Color  %^MAGENTA%^
+End
+
+#SPEAKER
+Name   deisz
+Color  %^CYAN%^%^BOLD%^
 End
 
 #SPEAKER
@@ -11243,6 +11313,11 @@ Color  %^WHITE%^%^BOLD%^
 End
 
 #SPEAKER
+Name   virtual
+Color  %^BLACK%^%^BOLD%^
+End
+
+#SPEAKER
 Name   aeris
 Color  %^BLACK%^%^B_CYAN%^
 End
@@ -11868,6 +11943,11 @@ Color  %^WHITE%^%^B_MAGENTA%^
 End
 
 #SPEAKER
+Name   selfe
+Color  %^BLUE%^%^BOLD%^
+End
+
+#SPEAKER
 Name   aniline
 Color  %^BLUE%^%^BOLD%^
 End
@@ -12040,6 +12120,11 @@ End
 #SPEAKER
 Name   reno
 Color  %^MAGENTA%^
+End
+
+#SPEAKER
+Name   figgs
+Color  %^CYAN%^
 End
 
 #SPEAKER
@@ -12978,6 +13063,11 @@ Color  %^CYAN%^
 End
 
 #SPEAKER
+Name   kathaaa
+Color  %^GREEN%^%^BOLD%^
+End
+
+#SPEAKER
 Name   adaephon
 Color  %^CYAN%^
 End
@@ -13100,6 +13190,11 @@ End
 #SPEAKER
 Name   ztilly
 Color  %^RED%^%^BOLD%^
+End
+
+#SPEAKER
+Name   wolves
+Color  %^ORANGE%^
 End
 
 #SPEAKER
@@ -13670,6 +13765,11 @@ End
 #SPEAKER
 Name   pyra
 Color  %^RED%^
+End
+
+#SPEAKER
+Name   rodgerly
+Color  %^GREEN%^
 End
 
 #SPEAKER

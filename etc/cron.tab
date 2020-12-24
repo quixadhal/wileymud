@@ -35,4 +35,4 @@
 45 2 * * * (cd /home/wiley/backups && PGPASSWORD=tardis69 /usr/bin/pg_dump --clean --if-exists --no-owner logfile | /usr/bin/xz -9ceq -T0 >logfile.sql.xz) >/dev/null 2>&1 &
 06 3 * * * /usr/bin/crontab -l >/home/wiley/etc/cron.tab 2>/dev/null &
 11 3 * * * (cd /home/wiley/public_html && /usr/bin/tar -Jcf logpages.tar.xz logpages) >/dev/null 2>&1 &
-#31 3 * * * /home/wiley/bin/remote-backup >/dev/null 2>&1 &
+31 3 * * * /home/wiley/bin/remote-backup >/dev/null 2>&1 &

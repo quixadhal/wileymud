@@ -751,7 +751,8 @@ void destroy_I3_channel(I3_CHANNEL *channel)
     I3STRFREE(channel->layout_e);
 
     for (x = 0; x < MAX_I3HISTORY; x++) {
-	if (channel->history[x] && channel->history[x] != '\0')
+	//if (channel->history[x] && channel->history[x][0] != '\0')
+	if (channel->history[x] != NULL)
 	    I3STRFREE(channel->history[x]);
     }
 
@@ -3493,7 +3494,7 @@ void i3_update_tellhistory(CHAR_DATA *ch, const char *msg)
 	     msg);
 
     for (x = 0; x < MAX_I3TELLHISTORY; x++) {
-	if (I3TELLHISTORY(ch, x) == '\0') {
+	if (I3TELLHISTORY(ch, x) == NULL) {
 	    I3TELLHISTORY(ch, x) = I3STRALLOC(new_msg);
 	    break;
 	}
@@ -4998,7 +4999,7 @@ void I3_saveSpeakers(void)
         if( node && node->key ) {
             fprintf(fp, "%s", "#SPEAKER\n");
             fprintf(fp, "Name   %s\n", node->key);
-            fprintf(fp, "Color  %s\n", node->value ? node->value : "%^RESET%^");
+            fprintf(fp, "Color  %s\n", node->value ? (char *)node->value : "%^RESET%^");
             fprintf(fp, "%s", "End\n\n");
         }
     } while ( node );

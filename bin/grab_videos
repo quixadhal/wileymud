@@ -74,11 +74,30 @@ sub get_format {
     }
     if ((scalar @candidates) < 1) {
         @candidates = grep {/^(hls-audio-ja-JP-hardsub-en-US[\-\d]+)/i}
-            grep {/8\d\dx480/i} grep {/mp4a/i} @lines;
+            grep {/\d*x480/i} grep {/mp4a/i} @lines;
     }
 
     foreach my $line (@candidates) {
         $line =~ /^(hls-audio-ja-JP-hardsub-en-US[\-\d]+)/i;
+        $format = ($1);
+        last if $format;
+    }
+
+    return $format if $format;
+
+    # OK, just take whatever we can find...
+    if ((scalar @candidates) < 1) {
+        @candidates = grep {/\d*x1080/i} grep {/mp4a/i} @lines;
+    }
+    if ((scalar @candidates) < 1) {
+        @candidates = grep {/\d*x720/i} grep {/mp4a/i} @lines;
+    }
+    if ((scalar @candidates) < 1) {
+        @candidates = grep {/\d*x480/i} grep {/mp4a/i} @lines;
+    }
+    foreach my $line (@candidates) {
+        #1432         mp4        640x480    1432k , avc1.640028, mp4a.40.2 (best)
+        $line =~ /^(\d+)\s+mp4/i;
         $format = ($1);
         last if $format;
     }

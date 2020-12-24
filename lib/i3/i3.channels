@@ -1630,8 +1630,8 @@ End
 ChanName   日本語
 ChanMud    WileyMUD
 ChanLocal  japanese
-ChanLayM   %%^WHITE%%^%%^BOLD%%[^%s] %s@%s:%%^RESET%%^ %s
-ChanLayE   %%^WHITE%%^%%^BOLD%%[^%s]%%^RESET%%^ %s
+ChanLayM   %%^WHITE%%^%%^BOLD%%^[%s] %s@%s:%%^RESET%%^ %s
+ChanLayE   %%^WHITE%%^%%^BOLD%%^[%s]%%^RESET%%^ %s
 ChanLevel  2
 ChanStatus 0
 ChanFlags  0

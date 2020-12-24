@@ -473,3 +473,12 @@ A recent update broke python 2 by removing the soft-link to it, so...
 --- Fun huh?  Well, it seems to have worked.
     Probably go bzip2 the backup and keep it around for a bit...
 
+--- New stuff to prep for VM conversion back to this hardware.
+
+    apt install broadcom-sta-dkms
+    apt install mutt
+    cpan
+        install pQuery
+        install File::Random
+        install Chart::Pie
+
