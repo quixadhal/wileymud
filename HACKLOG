@@ -482,3 +482,19 @@ A recent update broke python 2 by removing the soft-link to it, so...
         install File::Random
         install Chart::Pie
 
+    Oh yeah, systemd...
+        systemctl enable wileymud (or the path to the unit file)
+        systemctl enable wileymud_driver (or the path to the unit file)
+        systemctl enable diskworld (or the path to the unit file)
+        systemctl enable dw_driver (or the path to the unit file)
+        systemctl enable dw_addr (or the path to the unit file)
+
+    And...
+        apt install screen
+        scp -rp ~wiley/share ~wiley/bin/tf ~wiley/.tf lenin:
+
+        cpan
+            re-install all the modules that get messed up...
+
+    apt install smbclient cifs-utils
+

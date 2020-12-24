@@ -6,7 +6,7 @@ After=network-online.target
 [Service]
 Type=oneshot
 User=wiley
-Group=wiley
+Group=users
 Environment=LANG=en_US.utf8
 Environment=LC_ALL=en_US.utf8
 WorkingDirectory=/home/wiley/dw/bin

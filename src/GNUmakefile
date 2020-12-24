@@ -203,82 +203,6 @@ obj/act_wiz.o: act_wiz.c include/global.h include/bug.h include/utils.h \
   include/act_info.h include/fight.h include/hash.h include/weather.h \
   include/modify.h include/tracking.h include/i3.h include/sql.h \
   include/reboot.h include/rent.h include/act_wiz.h
-obj/act_social.o: act_social.c include/global.h include/bug.h include/utils.h \
-  include/comm.h include/interpreter.h include/handler.h include/db.h \
-  include/spells.h include/multiclass.h include/act_social.h
-obj/mob_actions.o: mob_actions.c include/global.h include/bug.h \
-  include/utils.h include/act_obj.h include/act_off.h include/comm.h \
-  include/db.h include/handler.h include/hash.h include/mudlimits.h \
-  include/multiclass.h include/opinion.h include/spells.h \
-  include/spell_parser.h include/fight.h include/trap.h \
-  include/act_skills.h include/spec_procs.h include/tracking.h \
-  include/mob_actions.h
-obj/i3.o: i3.c include/global.h include/sql.h include/bug.h include/utils.h \
-  include/db.h include/multiclass.h include/comm.h include/modify.h \
-  include/interpreter.h include/version.h include/stringmap.h \
-  include/scheduler.h include/i3.h
-obj/multiclass.o: multiclass.c include/global.h include/bug.h include/utils.h \
-  include/comm.h include/db.h include/interpreter.h include/handler.h \
-  include/spells.h include/mudlimits.h include/opinion.h \
-  include/multiclass.h
-obj/scheduler.o: scheduler.c include/global.h include/bug.h include/utils.h \
-  include/comm.h include/scheduler.h
-obj/act_info.o: act_info.c include/global.h include/bug.h include/version.h \
-  include/utils.h include/comm.h include/interpreter.h include/handler.h \
-  include/db.h include/spells.h include/mudlimits.h include/trap.h \
-  include/hash.h include/spell_parser.h include/whod.h \
-  include/multiclass.h include/modify.h include/act_wiz.h \
-  include/act_skills.h include/spec_procs.h include/tracking.h \
-  include/scheduler.h include/i3.h include/sql.h include/reboot.h \
-  include/weather.h include/act_info.h
-obj/whod_working.o: whod_working.c include/version.h include/global.h \
-  include/bug.h include/db.h include/comm.h include/utils.h \
-  include/interpreter.h include/multiclass.h include/i3.h \
-  include/sha256.h include/whod.h
-obj/tracking.o: tracking.c include/global.h include/bug.h include/utils.h \
-  include/act_move.h include/comm.h include/db.h include/handler.h \
-  include/hash.h include/interpreter.h include/multiclass.h \
-  include/opinion.h include/spells.h include/fight.h include/modify.h \
-  include/tracking.h
-obj/reception.o: reception.c include/global.h include/bug.h include/comm.h \
-  include/handler.h include/db.h include/interpreter.h include/utils.h \
-  include/spells.h include/multiclass.h include/act_social.h \
-  include/spec_procs.h include/rent.h include/weather.h \
-  include/reception.h
-obj/modify.o: modify.c include/global.h include/bug.h include/utils.h \
-  include/interpreter.h include/handler.h include/db.h include/comm.h \
-  include/multiclass.h include/modify.h
-obj/spells.o: spells.c include/global.h include/bug.h include/utils.h \
-  include/comm.h include/db.h include/interpreter.h include/handler.h \
-  include/multiclass.h include/act_move.h include/weather.h \
-  include/spells.h include/spell_parser.h include/fight.h
-obj/act_off.o: act_off.c include/global.h include/bug.h include/utils.h \
-  include/comm.h include/interpreter.h include/handler.h include/db.h \
-  include/spells.h include/mudlimits.h include/opinion.h \
-  include/multiclass.h include/spec_procs.h include/fight.h \
-  include/act_skills.h include/act_move.h include/spell_parser.h \
-  include/act_info.h include/breath_weapons.h include/act_off.h
-obj/whod.o: whod.c include/version.h include/global.h include/bug.h \
-  include/db.h include/comm.h include/utils.h include/interpreter.h \
-  include/multiclass.h include/i3.h include/sha256.h include/modify.h \
-  include/sql.h include/whod.h
-obj/comm.o: comm.c include/global.h include/sql.h include/i3.h include/bug.h \
-  include/utils.h include/interpreter.h include/handler.h include/db.h \
-  include/modify.h include/whod.h include/multiclass.h include/weather.h \
-  include/mudlimits.h include/spells.h include/spell_parser.h \
-  include/sound.h include/fight.h include/mob_actions.h \
-  include/act_other.h include/signals.h include/ban.h include/board.h \
-  include/reboot.h include/comm.h
-obj/events.o: events.c include/global.h include/bug.h include/utils.h \
-  include/comm.h include/interpreter.h include/handler.h include/db.h \
-  include/spells.h include/mudlimits.h include/spell_parser.h \
-  include/fight.h include/spec_procs.h include/opinion.h include/hash.h \
-  include/events.h
-obj/act_skills.o: act_skills.c include/global.h include/bug.h include/utils.h \
-  include/comm.h include/db.h include/handler.h include/interpreter.h \
-  include/multiclass.h include/spells.h include/spell_parser.h \
-  include/fight.h include/spec_procs.h include/act_info.h \
-  include/act_skills.h
 obj/spec_procs.o: spec_procs.c include/global.h include/bug.h include/utils.h \
   include/act_comm.h include/act_info.h include/act_move.h \
   include/act_obj.h include/act_off.h include/act_social.h \
@@ -289,97 +213,137 @@ obj/spec_procs.o: spec_procs.c include/global.h include/bug.h include/utils.h \
   include/spell_parser.h include/fight.h include/breath_weapons.h \
   include/mob_actions.h include/tracking.h include/weather.h \
   include/spec_procs.h
-obj/base64.o: base64.c include/base64.h
-obj/act_obj.o: act_obj.c include/global.h include/bug.h include/utils.h \
-  include/comm.h include/interpreter.h include/handler.h include/db.h \
-  include/spells.h include/trap.h include/spell_parser.h \
-  include/multiclass.h include/mudlimits.h include/fight.h \
-  include/act_info.h include/act_obj.h
+obj/ban.o: ban.c include/global.h include/utils.h include/comm.h \
+  include/modify.h include/interpreter.h include/db.h include/bug.h \
+  include/sql.h include/ban.h
+obj/whod.o: whod.c include/version.h include/global.h include/bug.h \
+  include/db.h include/comm.h include/utils.h include/interpreter.h \
+  include/multiclass.h include/i3.h include/sha256.h include/modify.h \
+  include/sql.h include/whod.h
+obj/limits.o: limits.c include/global.h include/bug.h include/spells.h \
+  include/comm.h include/db.h include/spell_parser.h include/utils.h \
+  include/multiclass.h include/fight.h include/reception.h \
+  include/interpreter.h include/handler.h include/act_obj.h \
+  include/act_other.h include/weather.h include/mudlimits.h
+obj/rent.o: rent.c include/global.h include/bug.h include/utils.h \
+  include/comm.h include/sql.h include/rent.h
+obj/reception.o: reception.c include/global.h include/bug.h include/comm.h \
+  include/handler.h include/db.h include/interpreter.h include/utils.h \
+  include/spells.h include/multiclass.h include/act_social.h \
+  include/spec_procs.h include/rent.h include/weather.h \
+  include/reception.h
 obj/magic_utils.o: magic_utils.c include/global.h include/bug.h \
   include/utils.h include/comm.h include/db.h include/spells.h \
   include/handler.h include/mudlimits.h include/fight.h \
   include/spell_parser.h include/multiclass.h include/magic_utils.h
+obj/sound.o: sound.c include/global.h include/bug.h include/comm.h \
+  include/interpreter.h include/handler.h include/db.h include/spells.h \
+  include/trap.h include/utils.h include/sound.h
+obj/signals.o: signals.c include/global.h include/bug.h include/utils.h \
+  include/comm.h include/whod.h include/signals.h
+obj/global.o: global.c include/global.h include/bug.h include/mudlimits.h \
+  include/trap.h
+obj/weather.o: weather.c include/global.h include/bug.h include/utils.h \
+  include/comm.h include/handler.h include/interpreter.h include/db.h \
+  include/sql.h include/weather.h
+obj/breath_weapons.o: breath_weapons.c include/global.h include/bug.h \
+  include/utils.h include/act_off.h include/comm.h include/db.h \
+  include/mudlimits.h include/multiclass.h include/spells.h \
+  include/breath_weapons.h
+obj/comm.o: comm.c include/global.h include/sql.h include/i3.h include/bug.h \
+  include/utils.h include/interpreter.h include/handler.h include/db.h \
+  include/modify.h include/whod.h include/multiclass.h include/weather.h \
+  include/mudlimits.h include/spells.h include/spell_parser.h \
+  include/sound.h include/fight.h include/mob_actions.h \
+  include/act_other.h include/signals.h include/ban.h include/board.h \
+  include/reboot.h include/comm.h
+obj/trap.o: trap.c include/global.h include/bug.h include/utils.h \
+  include/spells.h include/comm.h include/db.h include/opinion.h \
+  include/fight.h include/reception.h include/spell_parser.h \
+  include/multiclass.h include/handler.h include/act_info.h \
+  include/trap.h
+obj/base64.o: base64.c include/base64.h
+obj/multiclass.o: multiclass.c include/global.h include/bug.h include/utils.h \
+  include/comm.h include/db.h include/interpreter.h include/handler.h \
+  include/spells.h include/mudlimits.h include/opinion.h \
+  include/multiclass.h
+obj/id_open.o: libident-0.19/id_open.c libident-0.19/ident.h
+obj/version.o: libident-0.19/version.c
+obj/lookup-tester.o: libident-0.19/lookup-tester.c libident-0.19/ident.h
+obj/id_parse.o: libident-0.19/id_parse.c libident-0.19/ident.h
+obj/id_query.o: libident-0.19/id_query.c libident-0.19/ident.h
+obj/ident.o: libident-0.19/ident.c libident-0.19/ident.h
+obj/ident-tester.o: libident-0.19/ident-tester.c libident-0.19/ident.h
+obj/id_close.o: libident-0.19/id_close.c libident-0.19/ident.h
+obj/support.o: libident-0.19/support.c libident-0.19/ident.h
 obj/utils.o: utils.c include/global.h include/bug.h include/spells.h \
   include/db.h include/opinion.h include/comm.h include/hash.h \
   include/multiclass.h include/handler.h include/fight.h \
   include/act_info.h include/reception.h include/act_off.h \
   include/magic_utils.h include/mudlimits.h include/act_skills.h \
   include/i3.h include/utils.h
-obj/2fa.o: 2fa.c include/global.h include/bug.h include/utils.h \
-  include/base64.h include/2fa.h
-obj/crc32.o: crc32.c include/crc32.h
-obj/rent.o: rent.c include/global.h include/bug.h include/utils.h \
-  include/comm.h include/sql.h include/rent.h
-obj/handler.o: handler.c include/global.h include/bug.h include/utils.h \
-  include/comm.h include/db.h include/interpreter.h include/spells.h \
-  include/spell_parser.h include/fight.h include/modify.h \
-  include/multiclass.h include/opinion.h include/act_wiz.h \
-  include/handler.h
-obj/sha256.o: sha256.c include/sha256.h
-obj/reboot.o: reboot.c include/global.h include/bug.h include/utils.h \
-  include/comm.h include/interpreter.h include/db.h include/weather.h \
-  include/sql.h include/i3.h include/reboot.h
-obj/act_comm.o: act_comm.c include/global.h include/bug.h include/utils.h \
+obj/db.o: db.c include/global.h include/i3.h include/bug.h include/utils.h \
+  include/comm.h include/handler.h include/mudlimits.h include/opinion.h \
+  include/hash.h include/spells.h include/spell_parser.h \
+  include/reception.h include/weather.h include/modify.h include/fight.h \
+  include/act_social.h include/spec_procs.h include/multiclass.h \
+  include/board.h include/interpreter.h include/ban.h include/sql.h \
+  include/reboot.h include/rent.h include/stringmap.h include/help.h \
+  include/db.h
+obj/act_social.o: act_social.c include/global.h include/bug.h include/utils.h \
   include/comm.h include/interpreter.h include/handler.h include/db.h \
-  include/spells.h include/mudlimits.h include/multiclass.h \
-  include/board.h include/act_comm.h
-obj/signals.o: signals.c include/global.h include/bug.h include/utils.h \
-  include/comm.h include/whod.h include/signals.h
-obj/act_other.o: act_other.c include/global.h include/bug.h include/utils.h \
-  include/comm.h include/interpreter.h include/handler.h include/db.h \
-  include/spells.h include/mudlimits.h include/spell_parser.h \
-  include/reception.h include/multiclass.h include/fight.h \
-  include/spec_procs.h include/act_skills.h include/act_comm.h \
-  include/modify.h include/act_other.h
-obj/shop.o: shop.c include/global.h include/bug.h include/comm.h \
-  include/handler.h include/db.h include/interpreter.h include/utils.h \
-  include/act_comm.h include/multiclass.h include/act_social.h \
-  include/act_wiz.h include/spec_procs.h include/weather.h \
-  include/shop.h
-obj/trap.o: trap.c include/global.h include/bug.h include/utils.h \
-  include/spells.h include/comm.h include/db.h include/opinion.h \
-  include/fight.h include/reception.h include/spell_parser.h \
-  include/multiclass.h include/handler.h include/act_info.h \
-  include/trap.h
-obj/sound.o: sound.c include/global.h include/bug.h include/comm.h \
-  include/interpreter.h include/handler.h include/db.h include/spells.h \
-  include/trap.h include/utils.h include/sound.h
-obj/bug.o: bug.c include/global.h include/utils.h include/comm.h \
-  include/multiclass.h include/db.h include/sql.h include/bug.h
-obj/hash.o: hash.c include/global.h include/bug.h include/comm.h \
-  include/utils.h include/hash.h
-obj/id_close.o: libident-0.19/id_close.c libident-0.19/ident.h
-obj/support.o: libident-0.19/support.c libident-0.19/ident.h
-obj/version.o: libident-0.19/version.c
-obj/id_open.o: libident-0.19/id_open.c libident-0.19/ident.h
-obj/id_parse.o: libident-0.19/id_parse.c libident-0.19/ident.h
-obj/lookup-tester.o: libident-0.19/lookup-tester.c libident-0.19/ident.h
-obj/ident-tester.o: libident-0.19/ident-tester.c libident-0.19/ident.h
-obj/id_query.o: libident-0.19/id_query.c libident-0.19/ident.h
-obj/ident.o: libident-0.19/ident.c libident-0.19/ident.h
-obj/opinion.o: opinion.c include/global.h include/bug.h include/utils.h \
-  include/spells.h include/comm.h include/db.h include/multiclass.h \
-  include/opinion.h
+  include/spells.h include/multiclass.h include/act_social.h
 obj/act_move.o: act_move.c include/global.h include/utils.h include/bug.h \
   include/comm.h include/interpreter.h include/handler.h include/db.h \
   include/spells.h include/trap.h include/whod.h include/multiclass.h \
   include/fight.h include/reception.h include/magic_utils.h \
   include/spell_parser.h include/act_info.h include/act_skills.h \
   include/act_move.h
-obj/sign.o: extras/sign.c include/global.h include/bug.h
+obj/handler.o: handler.c include/global.h include/bug.h include/utils.h \
+  include/comm.h include/db.h include/interpreter.h include/spells.h \
+  include/spell_parser.h include/fight.h include/modify.h \
+  include/multiclass.h include/opinion.h include/act_wiz.h \
+  include/handler.h
+obj/hash.o: hash.c include/global.h include/bug.h include/comm.h \
+  include/utils.h include/hash.h
+obj/shop.o: shop.c include/global.h include/bug.h include/comm.h \
+  include/handler.h include/db.h include/interpreter.h include/utils.h \
+  include/act_comm.h include/multiclass.h include/act_social.h \
+  include/act_wiz.h include/spec_procs.h include/weather.h \
+  include/shop.h
 obj/mkworld.o: extras/mkworld.c
-obj/randline.o: extras/randline.c
+obj/sign.o: extras/sign.c include/global.h include/bug.h
 obj/bounce.o: extras/bounce.c
 obj/genpasswd.o: extras/genpasswd.c
-obj/limits.o: limits.c include/global.h include/bug.h include/spells.h \
-  include/comm.h include/db.h include/spell_parser.h include/utils.h \
-  include/multiclass.h include/fight.h include/reception.h \
-  include/interpreter.h include/handler.h include/act_obj.h \
-  include/act_other.h include/weather.h include/mudlimits.h
-obj/breath_weapons.o: breath_weapons.c include/global.h include/bug.h \
-  include/utils.h include/act_off.h include/comm.h include/db.h \
-  include/mudlimits.h include/multiclass.h include/spells.h \
-  include/breath_weapons.h
+obj/randline.o: extras/randline.c
+obj/scheduler.o: scheduler.c include/global.h include/bug.h include/utils.h \
+  include/comm.h include/scheduler.h
+obj/stringmap.o: stringmap.c include/global.h include/bug.h include/sql.h \
+  include/stringmap.h
+obj/imc.o: imc.c
+obj/reboot.o: reboot.c include/global.h include/bug.h include/utils.h \
+  include/comm.h include/interpreter.h include/db.h include/weather.h \
+  include/sql.h include/i3.h include/reboot.h
+obj/magic.o: magic.c include/global.h include/bug.h include/utils.h \
+  include/comm.h include/handler.h include/mudlimits.h include/db.h \
+  include/spells.h include/spell_parser.h include/multiclass.h \
+  include/fight.h include/opinion.h include/reception.h \
+  include/magic_utils.h include/act_off.h include/act_obj.h \
+  include/act_info.h include/weather.h
+obj/spell_parser.o: spell_parser.c include/global.h include/bug.h \
+  include/utils.h include/comm.h include/db.h include/interpreter.h \
+  include/handler.h include/spells.h include/act_off.h include/random.h \
+  include/multiclass.h include/fight.h include/act_info.h \
+  include/spell_parser.h
+obj/fight.o: fight.c include/global.h include/bug.h include/utils.h \
+  include/comm.h include/handler.h include/interpreter.h include/db.h \
+  include/spells.h include/spell_parser.h include/mudlimits.h \
+  include/random.h include/act_move.h include/reception.h \
+  include/multiclass.h include/act_wiz.h include/act_skills.h \
+  include/opinion.h include/spec_procs.h include/mob_actions.h \
+  include/act_off.h include/fight.h
+obj/2fa.o: 2fa.c include/global.h include/bug.h include/utils.h \
+  include/base64.h include/2fa.h
 obj/interpreter.o: interpreter.c include/global.h include/i3.h include/bug.h \
   include/comm.h include/version.h include/db.h include/utils.h \
   include/mudlimits.h include/act_comm.h include/act_info.h \
@@ -391,54 +355,86 @@ obj/interpreter.o: interpreter.c include/global.h include/i3.h include/bug.h \
   include/reception.h include/tracking.h include/ban.h include/sql.h \
   include/reboot.h include/stringmap.h include/help.h \
   include/interpreter.h
-obj/fight.o: fight.c include/global.h include/bug.h include/utils.h \
-  include/comm.h include/handler.h include/interpreter.h include/db.h \
-  include/spells.h include/spell_parser.h include/mudlimits.h \
-  include/random.h include/act_move.h include/reception.h \
-  include/multiclass.h include/act_wiz.h include/act_skills.h \
-  include/opinion.h include/spec_procs.h include/mob_actions.h \
-  include/act_off.h include/fight.h
-obj/magic.o: magic.c include/global.h include/bug.h include/utils.h \
-  include/comm.h include/handler.h include/mudlimits.h include/db.h \
-  include/spells.h include/spell_parser.h include/multiclass.h \
-  include/fight.h include/opinion.h include/reception.h \
-  include/magic_utils.h include/act_off.h include/act_obj.h \
-  include/act_info.h include/weather.h
-obj/stringmap.o: stringmap.c include/global.h include/bug.h include/sql.h \
-  include/stringmap.h
-obj/random.o: random.c include/global.h include/bug.h include/utils.h \
-  include/comm.h include/i3.h include/random.h
-obj/weather.o: weather.c include/global.h include/bug.h include/utils.h \
-  include/comm.h include/handler.h include/interpreter.h include/db.h \
-  include/sql.h include/weather.h
-obj/imc.o: imc.c
+obj/sha256.o: sha256.c include/sha256.h
+obj/mob_actions.o: mob_actions.c include/global.h include/bug.h \
+  include/utils.h include/act_obj.h include/act_off.h include/comm.h \
+  include/db.h include/handler.h include/hash.h include/mudlimits.h \
+  include/multiclass.h include/opinion.h include/spells.h \
+  include/spell_parser.h include/fight.h include/trap.h \
+  include/act_skills.h include/spec_procs.h include/tracking.h \
+  include/mob_actions.h
+obj/act_other.o: act_other.c include/global.h include/bug.h include/utils.h \
+  include/comm.h include/interpreter.h include/handler.h include/db.h \
+  include/spells.h include/mudlimits.h include/spell_parser.h \
+  include/reception.h include/multiclass.h include/fight.h \
+  include/spec_procs.h include/act_skills.h include/act_comm.h \
+  include/modify.h include/act_other.h
+obj/act_comm.o: act_comm.c include/global.h include/bug.h include/utils.h \
+  include/comm.h include/interpreter.h include/handler.h include/db.h \
+  include/spells.h include/mudlimits.h include/multiclass.h \
+  include/board.h include/act_comm.h
+obj/bug.o: bug.c include/global.h include/utils.h include/comm.h \
+  include/multiclass.h include/db.h include/sql.h include/bug.h
+obj/opinion.o: opinion.c include/global.h include/bug.h include/utils.h \
+  include/spells.h include/comm.h include/db.h include/multiclass.h \
+  include/opinion.h
+obj/spells.o: spells.c include/global.h include/bug.h include/utils.h \
+  include/comm.h include/db.h include/interpreter.h include/handler.h \
+  include/multiclass.h include/act_move.h include/weather.h \
+  include/spells.h include/spell_parser.h include/fight.h
+obj/tracking.o: tracking.c include/global.h include/bug.h include/utils.h \
+  include/act_move.h include/comm.h include/db.h include/handler.h \
+  include/hash.h include/interpreter.h include/multiclass.h \
+  include/opinion.h include/spells.h include/fight.h include/modify.h \
+  include/tracking.h
+obj/act_info.o: act_info.c include/global.h include/bug.h include/version.h \
+  include/utils.h include/comm.h include/interpreter.h include/handler.h \
+  include/db.h include/spells.h include/mudlimits.h include/trap.h \
+  include/hash.h include/spell_parser.h include/whod.h \
+  include/multiclass.h include/modify.h include/act_wiz.h \
+  include/act_skills.h include/spec_procs.h include/tracking.h \
+  include/scheduler.h include/i3.h include/sql.h include/reboot.h \
+  include/weather.h include/act_info.h
+obj/act_skills.o: act_skills.c include/global.h include/bug.h include/utils.h \
+  include/comm.h include/db.h include/handler.h include/interpreter.h \
+  include/multiclass.h include/spells.h include/spell_parser.h \
+  include/fight.h include/spec_procs.h include/act_info.h \
+  include/act_skills.h
+obj/crc32.o: crc32.c include/crc32.h
 obj/board.o: board.c include/global.h include/bug.h include/utils.h \
   include/comm.h include/db.h include/interpreter.h include/multiclass.h \
   include/modify.h include/handler.h include/act_info.h include/sql.h \
   include/board.h
+obj/act_off.o: act_off.c include/global.h include/bug.h include/utils.h \
+  include/comm.h include/interpreter.h include/handler.h include/db.h \
+  include/spells.h include/mudlimits.h include/opinion.h \
+  include/multiclass.h include/spec_procs.h include/fight.h \
+  include/act_skills.h include/act_move.h include/spell_parser.h \
+  include/act_info.h include/breath_weapons.h include/act_off.h
+obj/act_obj.o: act_obj.c include/global.h include/bug.h include/utils.h \
+  include/comm.h include/interpreter.h include/handler.h include/db.h \
+  include/spells.h include/trap.h include/spell_parser.h \
+  include/multiclass.h include/mudlimits.h include/fight.h \
+  include/act_info.h include/act_obj.h
+obj/random.o: random.c include/global.h include/bug.h include/utils.h \
+  include/comm.h include/i3.h include/random.h
+obj/events.o: events.c include/global.h include/bug.h include/utils.h \
+  include/comm.h include/interpreter.h include/handler.h include/db.h \
+  include/spells.h include/mudlimits.h include/spell_parser.h \
+  include/fight.h include/spec_procs.h include/opinion.h include/hash.h \
+  include/events.h
 obj/help.o: help.c include/global.h include/bug.h include/utils.h \
   include/comm.h include/stringmap.h include/modify.h \
   include/multiclass.h include/sql.h include/help.h
-obj/ban.o: ban.c include/global.h include/utils.h include/comm.h \
-  include/modify.h include/interpreter.h include/db.h include/bug.h \
-  include/sql.h include/ban.h
-obj/spell_parser.o: spell_parser.c include/global.h include/bug.h \
-  include/utils.h include/comm.h include/db.h include/interpreter.h \
-  include/handler.h include/spells.h include/act_off.h include/random.h \
-  include/multiclass.h include/fight.h include/act_info.h \
-  include/spell_parser.h
 obj/sql.o: sql.c include/global.h include/bug.h include/comm.h \
   include/version.h include/crc32.h include/interpreter.h \
   include/utils.h include/db.h include/weather.h include/ban.h \
   include/reboot.h include/rent.h include/stringmap.h include/help.h \
   include/whod.h include/board.h include/i3.h include/sql.h
-obj/global.o: global.c include/global.h include/bug.h include/mudlimits.h \
-  include/trap.h
-obj/db.o: db.c include/global.h include/i3.h include/bug.h include/utils.h \
-  include/comm.h include/handler.h include/mudlimits.h include/opinion.h \
-  include/hash.h include/spells.h include/spell_parser.h \
-  include/reception.h include/weather.h include/modify.h include/fight.h \
-  include/act_social.h include/spec_procs.h include/multiclass.h \
-  include/board.h include/interpreter.h include/ban.h include/sql.h \
-  include/reboot.h include/rent.h include/stringmap.h include/help.h \
-  include/db.h
+obj/modify.o: modify.c include/global.h include/bug.h include/utils.h \
+  include/interpreter.h include/handler.h include/db.h include/comm.h \
+  include/multiclass.h include/modify.h
+obj/i3.o: i3.c include/global.h include/sql.h include/bug.h include/utils.h \
+  include/db.h include/multiclass.h include/comm.h include/modify.h \
+  include/interpreter.h include/version.h include/stringmap.h \
+  include/scheduler.h include/i3.h
