@@ -214,19 +214,83 @@ $BACKGROUND_IMG = "<img class=\"overlay-bg\" src=\"$GFX_HOME/wallpaper/$BACKGROU
                     <h1>Old Crusty MUD Server</h1>
                     <hr />
                     <h3>Hardware purchased:</h3>
- 54.99                   <a href="http://www.newegg.com/Product/Product.aspx?Item=N82E16813157335">ASRock B75M-DGS LGA 1155 Intel B75 Micro ATX Intel Motherboard</a><br />
- 49.99                   <a href="http://www.newegg.com/Product/Product.aspx?Item=N82E16811147153">Rosewill CHALLENGER Black Gaming ATX Mid Tower Case</a><br />
- 36.99                   <a href="http://www.newegg.com/Product/Product.aspx?Item=N82E16817139026">Corsair CX430 ATX Active PFC Power Supply</a><br />
- 49.99                   <a href="http://www.newegg.com/Product/Product.aspx?Item=N82E16820231489">G.Skill Ripjaw X Series 16GB (2 x 8GB) DDR3 SDRAM (PC3 12800)</a><br />
- 15.99                   <a href="http://www.newegg.com/Product/Product.aspx?Item=N82E16827106289">Lite-On SATA DVD Burner</a> (A burner was cheaper than a non-burner!)<br />
- 64.99                   <a href="http://www.newegg.com/Product/Product.aspx?Item=N82E16819116406">Intel Pentium G630 Sandy Bridge 2.7GHz Dual Core CPU (LGA 1155)</a><br />
+                    <table id="prices" width="100%" align="left">
+                        <tr>
+                            <td width="100" align="right">54.99</td>
+                            <td width="10"> &nbsp; </td>
+                            <td align="left"><a href="http://www.newegg.com/Product/Product.aspx?Item=N82E16813157335">ASRock B75M-DGS LGA 1155 Intel B75 Micro ATX Intel Motherboard</a></td>
+                            <td width="180" align="left">2012-11-21</td>
+                        </tr>
+                        <tr>
+                            <td width="100" align="right">49.99</td>
+                            <td width="10"> &nbsp; </td>
+                            <td align="left"><a href="http://www.newegg.com/Product/Product.aspx?Item=N82E16811147153">Rosewill CHALLENGER Black Gaming ATX Mid Tower Case</a></td>
+                            <td width="180" align="left">2012-11-21</td>
+                        </tr>
+                        <tr>
+                            <td width="100" align="right">36.99</td>
+                            <td width="10"> &nbsp; </td>
+                            <td align="left"><a href="http://www.newegg.com/Product/Product.aspx?Item=N82E16817139026">Corsair CX430 ATX Active PFC Power Supply</a></td>
+                            <td width="180" align="left">2012-11-21</td>
+                        </tr>
+                        <tr>
+                            <td width="100" align="right">49.99</td>
+                            <td width="10"> &nbsp; </td>
+                            <td align="left"><a href="http://www.newegg.com/Product/Product.aspx?Item=N82E16820231489">G.Skill Ripjaw X Series 16GB (2 x 8GB) DDR3 SDRAM (PC3 12800)</a></td>
+                            <td width="180" align="left">2012-11-21</td>
+                        </tr>
+                        <tr>
+                            <td width="100" align="right">15.99</td>
+                            <td width="10"> &nbsp; </td>
+                            <td align="left"><a href="http://www.newegg.com/Product/Product.aspx?Item=N82E16827106289">Lite-On SATA DVD Burner</a> (A burner was cheaper than a non-burner!)</td>
+                            <td width="180" align="left">2012-11-21</td>
+                        </tr>
+                        <tr>
+                            <td width="100" align="right">64.99</td>
+                            <td width="10"> &nbsp; </td>
+                            <td align="left"><a href="http://www.newegg.com/Product/Product.aspx?Item=N82E16819116406">Intel Pentium G630 Sandy Bridge 2.7GHz Dual Core CPU (LGA 1155)</a></td>
+                            <td width="180" align="left">2012-11-21</td>
+                        </tr>
+                        <tr>
+                            <td width="100" align="right"><s>74.99</s></td>
+                            <td width="10"> &nbsp; </td>
+                            <td align="left"><a href="http://www.newegg.com/Product/Product.aspx?Item=N82E16822236070">WD Cavier Green 1TB SATA hard drive</a> RECYCLED </td>
+                            <td width="180" align="left">2012-11-21 RECYCLED</td>
+                        </tr>
+                        <tr>
+                            <td width="100" align="right"><s>119.99</s></td>
+                            <td width="10"> &nbsp; </td>
+                            <td align="left"><a href="http://www.newegg.com/Product/Product.aspx?Item=N82E16822136749">WD My Book 3TB Desktop USB 3.0 External Hard Drive</a> (now internal) RECYCLED </td>
+                            <td width="180" align="left">2015-06-11 RECYCLED</td>
+                        </tr>
+                        <tr>
+                            <td width="100" align="right"><s>147.99</s></td>
+                            <td width="10"> &nbsp; </td>
+                            <td align="left"><a href="https://www.amazon.com/gp/product/B00IRRDHUI/">Crucial M550 256GB SATA 2.5" 7mm (with 9.5mm adapter) Internal Solid State Drive</a> RECYCLED </td>
+                            <td width="180" align="left">2018-01-17 RECYCLED</td>
+                        </tr>
+                        <tr>
+                            <td width="100" align="right">34.99</td>
+                            <td width="10"> &nbsp; </td>
+                            <td align="left"><a href="https://www.amazon.com/gp/product/B016K0896K/">TP-Link AC1300 PCIe WiFi PCIe Card(Archer T6E)- 2.4G/5G Dual Band Wireless PCI Express Adapter</a></td>
+                            <td width="180" align="left">2020-12-24 NEW!</td>
+                        </tr>
+                    </table>
                     <br />
-                    <h3>Total purchase price (with discounts): $269.71 on November 21, 2012</h3>
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <h3>Total purchase price: $304.70 as of December 24, 2020</h3>
                     <hr />
-                    <h3>Hardware recycled:</h3>
- 74.99                   <a href="http://www.newegg.com/Product/Product.aspx?Item=N82E16822236070">WD Cavier Green 1TB SATA hard drive</a><br />
-119.99                   <a href="http://www.newegg.com/Product/Product.aspx?Item=N82E16822136749">WD My Book 3TB Desktop USB 3.0 External Hard Drive</a> (now internal)<br />
-147.99                   <a href="https://www.amazon.com/gp/product/B00IRRDHUI/">Crucial M550 256GB SATA 2.5" 7mm (with 9.5mm adapter) Internal Solid State Drive</a><br />
                 </td>
                 <td align="left" >
                     <img src="<?php echo $graphics['server_case']; ?>" border="0" width="300" height="304" />
