@@ -1,46 +1,98 @@
 #!/bin/bash
 
-NOW=`date "+%Y%m%d"`
-I3LOG_DB="/home/wiley/backups/${NOW}/i3log.sql.xz"
-WILEYMUD_DB="/home/wiley/backups/${NOW}/wileymud.sql.xz"
-LOGFILE_DB="/home/wiley/backups/${NOW}/logfile.sql.xz"
-WILEYMUD_FILES="/home/wiley/backups/${NOW}/wileymud_files.tar.xz"
-DISKWORLD_FILES="/home/wiley/backups/${NOW}/diskworld_files.tar.xz"
-LOGDATA_FILES="/home/wiley/backups/${NOW}/logdata.tar.xz"
-LOGPAGE_FILES="/home/wiley/backups/${NOW}/logpages.tar.xz"
+HOME_DIR="/home/wiley"
+LENIN_DIR="/share/leninbackup"
 
-mkdir -p /home/wiley/backups/${NOW}
+BIN_DIR="${HOME_DIR}/bin"
+BACKUP_DIR="${HOME_DIR}/backups"
+WEB_DIR="${HOME_DIR}/public_html"
+CRON_TAB="${HOME_DIR}/etc/cron.tab"
+
+NOW=`date "+%Y%m%d"`
+YESTERDAY=`date "+%Y%m%d" --date="yesterday"`
+YESTERDAY_DAY=`date "+%d" --date="yesterday"`
+
+NOW_DIR="${BACKUP_DIR}/${NOW}"
+
+ALIVE="${LENIN_DIR}/.alive"
+I3LOG_DB="${NOW_DIR}/i3log.sql.xz"
+WILEYMUD_DB="${NOW_DIR}/wileymud.sql.xz"
+LOGFILE_DB="${NOW_DIR}/logfile.sql.xz"
+WILEYMUD_FILES="${NOW_DIR}/wileymud_files.tar.xz"
+DISKWORLD_FILES="${NOW_DIR}/diskworld_files.tar.xz"
+LOGDATA_FILES="${NOW_DIR}/logdata.tar.xz"
+LOGPAGE_FILES="${NOW_DIR}/logpages.tar.xz"
+
+if [ -d "${NOW_DIR}" ]; then
+    echo "Today's backup has already been done."
+    exit 1
+fi
+
+mkdir -p "${NOW_DIR}"
 
 echo -en "Updating mudlist info..."
-/home/wiley/bin/mkmudlist.pl >/dev/null 2>&1
+${BIN_DIR}/mkmudlist.pl >/dev/null 2>&1
 echo -en "logpages..."
-/home/wiley/bin/mklogpages.pl --overwrite --debug --start -3 --live --json --no-pause >/dev/null 2>&1
+${BIN_DIR}/mklogpages.pl --overwrite --start -3 --json --censor --no-pause >/dev/null 2>&1
 echo -en "urls..."
-/home/wiley/bin/untiny sql --mark >/dev/null 2>&1
+${BIN_DIR}/untiny sql --mark >/dev/null 2>&1
 echo -en "done.\n"
 
 echo -en "Starting i3log database backup..."
-PGPASSWORD=tardis69 /usr/bin/pg_dump --clean --if-exists --no-owner i3log | /usr/bin/xz -9ceq -T0 >$I3LOG_DB
+PGPASSWORD=tardis69 pg_dump --clean --if-exists --no-owner i3log | xz -9ceq -T0 >"${I3LOG_DB}"
 echo -en "wileymud..."
-PGPASSWORD=tardis69 /usr/bin/pg_dump --clean --if-exists --no-owner wileymud | /usr/bin/xz -9ceq -T0 >$WILEYMUD_DB
+PGPASSWORD=tardis69 pg_dump --clean --if-exists --no-owner wileymud | xz -9ceq -T0 >"${WILEYMUD_DB}"
 echo -en "logfile..."
-PGPASSWORD=tardis69 /usr/bin/pg_dump --clean --if-exists --no-owner logfile | /usr/bin/xz -9ceq -T0 >$LOGFILE_DB
+PGPASSWORD=tardis69 pg_dump --clean --if-exists --no-owner logfile | xz -9ceq -T0 >"${LOGFILE_DB}"
 echo -en "done.\n"
 
 echo -en "Starting backup of WileyMUD files..."
-/usr/bin/crontab -l >/home/wiley/etc/cron.tab
-(cd /home/wiley && /usr/bin/tar -Jcf $WILEYMUD_FILES bin src lib etc) >/dev/null 2>&1
+crontab -l >"${CRON_TAB}" 2>/dev/null
+(cd "${HOME_DIR}" && tar -Jcf ${WILEYMUD_FILES} bin src lib etc) >/dev/null 2>&1
 echo -en "Disk World..."
-(cd /home/wiley && /usr/bin/tar -Jcf $DISKWORLD_FILES dw) >/dev/null 2>&1
+(cd "${HOME_DIR}" && tar -Jcf ${DISKWORLD_FILES} dw) >/dev/null 2>&1
 echo -en "done.\n"
 
 echo -en "Starting backup of I3 log data..."
-(cd /home/wiley/public_html && /usr/bin/tar -Jcf $LOGDATA_FILES logdata) >/dev/null 2>&1
+(cd "${WEB_DIR}" && tar -Jcf ${LOGDATA_FILES} logdata) >/dev/null 2>&1
 echo -en "cleanup..."
-/home/wiley/bin/cleanlogs.pl >/dev/null 2>&1
+${BIN_DIR}/cleanlogs.pl >/dev/null 2>&1
 echo -en "pages..."
-(cd /home/wiley/public_html && /usr/bin/tar -Jcf $LOGPAGE_FILES logpages) >/dev/null 2>&1
+(cd "${WEB_DIR}" && tar -Jcf ${LOGPAGE_FILES} logpages) >/dev/null 2>&1
 echo -en "done.\n"
 
-(cd /home/wiley/backups && ls --color --group-directories-first --human-readable -l ./${NOW}*)
+echo -en "Updating web symlinks..."
+ln -sf "${I3LOG_DB}" "${WEB_DIR}/"
+ln -sf "${LOGDATA_FILES}" "${WEB_DIR}/"
+ln -sf "${LOGPAGE_FILES}" "${WEB_DIR}/"
+echo -en "done.\n"
+
+echo -en "Managing old backups..."
+if [ -f "${ALIVE}" ]; then
+    echo -en "copying..."
+    cp -rp "${NOW_DIR}" "${LENIN_DIR}/"
+fi
+if [ -d "${BACKUP_DIR}/${YESTERDAY}" ]; then
+    if [ "${YESTERDAY_DAY}" = "04" ]; then
+        echo -en "skipping..."
+    elif [ "${YESTERDAY_DAY}" = "11" ]; then
+        echo -en "skipping..."
+    elif [ "${YESTERDAY_DAY}" = "18" ]; then
+        echo -en "skipping..."
+    elif [ "${YESTERDAY_DAY}" = "25" ]; then
+        echo -en "skipping..."
+    else
+        echo -en "removing ${YESTERDAY}..."
+        rm -rf "${BACKUP_DIR}/${YESTERDAY}"
+        if [ -f "${ALIVE}" ]; then
+            if [ -d "${LENIN_DIR}/${YESTERDAY}" ]; then
+                echo -en "and remote..."
+                rm -rf "${LENIN_DIR}/${YESTERDAY}"
+            fi
+        fi
+    fi
+fi
+echo -en "done.\n"
+
+(cd "${BACKUP_DIR}" && ls --color --group-directories-first --human-readable -l "./${NOW}*")
 
