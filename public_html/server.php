@@ -69,20 +69,24 @@ $graphics = array();
 $graphics['server_case'] = $isLocal ? "gfx/server_case.png" : "https://i.imgur.com/TFmF5Yg.png";
 //$graphics['server_case'] = $isLocal ? "gfx/server_case.png" : "https://lh6.googleusercontent.com/-w6XwIBerDjw/UdooiSE-NUI/AAAAAAAAAPI/wGjTt7QiEmA/s800/server_case.jpg";
 //$graphics['server_case'] = $isLocal ? "gfx/server_case.jpg" : "http://i302.photobucket.com/albums/nn96/quixadhal/shadowlord/server_case_zpsdcdc0b79.jpg";
-$graphics['speedtest_raw'] = $isLocal ? "gfx/speedtest_raw_4478672602.png" : "http://www.speedtest.net/result/4478672602.png";
-$graphics['speedtest_qos'] = $isLocal ? "gfx/speedtest_qos_4478667111.png" : "http://www.speedtest.net/result/4478667111.png";
-#$graphics['speedtest_new'] = $isLocal ? "gfx/wave_g_test2.png" : "gfx/wave_g_test2.png";
-$graphics['speedtest_new'] = $isLocal ? "gfx/speedtest_10284037752.png" : "https://www.speedtest.net/result/10284037752.png";
-#$graphics['speedtest_current'] = $isLocal ? "gfx/speedtest_8811654706.png" : "gfx/speedtest_8811654706.png";
-#$graphics['speedtest_current'] = $isLocal ? "gfx/speedtest_9404657351.png" : "http://www.speedtest.net/result/9404657351.png";
-#$graphics['speedtest_current'] = $isLocal ? "gfx/speedtest_9809407270.png" : "https://www.speedtest.net/result/9809407270.png";
-#$graphics['speedtest_current'] = $isLocal ? "gfx/speedtest_10030104653.png" : "https://www.speedtest.net/result/10030104653.png";
-#$graphics['speedtest_current'] = $isLocal ? "gfx/speedtest_10284037752.png" : "https://www.speedtest.net/result/10284037752.png";
-#$graphics['speedtest_current'] = $isLocal ? "gfx/speedtest_10478161918.png" : "https://www.speedtest.net/result/10478161918.png";
+$graphics['speedtest_kalamazoo'] = $isLocal ? "gfx/speedtest_kzo_4478672602.png" : "http://www.speedtest.net/result/4478672602.png";
+$graphics['speedtest_seattle'] = $isLocal ? "gfx/speedtest_10284037752.png" : "https://www.speedtest.net/result/10284037752.png";
+$graphics['speedtest_bellevue'] = $isLocal ? "gfx/speedtest_10600322876.png" : "https://www.speedtest.net/result/10600322876.png";
 $graphics['speedtest_current'] = $isLocal ? "gfx/speedtest_10600322876.png" : "https://www.speedtest.net/result/10600322876.png";
 
+$SPEEDTEST_FILE = "/home/wiley/public_html/speedtest.json";
 $MUDLIST_FILE   = "/home/wiley/public_html/mudlist.json";
 $BACKGROUND_DIR = "/home/wiley/public_html/gfx/wallpaper/";
+
+$speedtest_text = file_get_contents($SPEEDTEST_FILE);
+$speedtest = json_decode($speedtest_text, true, 512, JSON_INVALID_UTF8_SUBSTITUTE);
+if( json_last_error() != JSON_ERROR_NONE ) {
+    echo "<hr>".json_last_error_msg()."<br><hr>";
+}
+$graphics['speedtest_current'] = $speedtest["result"]["url"] . ".png";
+
+$speedtest["unix_timestamp"] = strtotime($speedtest["timestamp"]);
+$speedtest["the_time"] = strftime("%Y-%m-%d %H:%M:%S %Z", $speedtest["unix_timestamp"]);
 
 $mudlist_text = file_get_contents($MUDLIST_FILE);
 $mudlist = json_decode($mudlist_text, true, 512, JSON_INVALID_UTF8_SUBSTITUTE);
@@ -304,12 +308,12 @@ $BACKGROUND_IMG = "<img class=\"overlay-bg\" src=\"$GFX_HOME/wallpaper/$BACKGROU
                         <table border="0" cellspacing="0" cellpadding="5">
                             <tr>
                                 <td align="center"> <img src="<?php echo $graphics['speedtest_current']; ?>" border="0" width="300" height="135" /> </td>
-                                <td align="center"> <img src="<?php echo $graphics['speedtest_new']; ?>" border="0" width="300" height="135" /> </td>
-                                <td align="center"> <img src="<?php echo $graphics['speedtest_raw']; ?>" border="0" width="300" height="135" /> </td>
+                                <td align="center"> <img src="<?php echo $graphics['speedtest_bellevue']; ?>" border="0" width="300" height="135" /> </td>
+                                <td align="center"> <img src="<?php echo $graphics['speedtest_kalamazoo']; ?>" border="0" width="300" height="135" /> </td>
                             </tr>
                             <tr>
-                                <td align="center"> Current&nbsp;(Bellevue) </td>
-                                <td align="center"> Seattle </td>
+                                <td align="center"> Current&nbsp;(wifi) </td>
+                                <td align="center"> Bellevue (wired) </td>
                                 <td align="center"> Kalamazoo </td>
                             </tr>
                         </table>
@@ -325,9 +329,27 @@ $BACKGROUND_IMG = "<img class=\"overlay-bg\" src=\"$GFX_HOME/wallpaper/$BACKGROU
                     <pre><?php pcmd("/usr/bin/uptime"); ?></pre>
                     </div>
                     <hr />
+                    <h3><a href="javascript:;" onmousedown="toggleDiv('network');">Network Information:</a></h3>
+                    <div id="network" style="display: none;">
+                        <pre><?php pcmd("/usr/bin/nmcli -f 'DEVICE,CHAN,BARS,SIGNAL,RATE,SSID' dev wifi"); ?></pre>
+                        <pre>
+Speedtest performed on  <?php printf("%s\n", $speedtest["the_time"]); ?>
+          interface     <?php printf("%s\n", $speedtest["interface"]["name"]); ?>
+          target node   <?php printf("%s (%s)\n", $speedtest["server"]["name"], $speedtest["server"]["host"]); ?>
+          ping          <?php printf("%-.3f ms\n", $speedtest["ping"]["latency"]); ?>
+          download      <?php printf("%-.2f Mbps\n", ($speedtest["download"]["bandwidth"] * 8.0 / 1000000.0)); ?>
+          upload        <?php printf("%-.2f Mbps\n", ($speedtest["upload"]["bandwidth"] * 8.0 / 1000000.0)); ?>
+                        </pre>
+                    </div>
+                    <hr />
                     <h3><a href="javascript:;" onmousedown="toggleDiv('mem');">Memory Information:</a></h3>
                     <div id="mem" style="display: none;">
                         <pre><?php pcmd("/usr/bin/free --mega -h"); ?></pre>
+                    </div>
+                    <hr />
+                    <h3><a href="javascript:;" onmousedown="toggleDiv('cpuinfo');">CPU Information:</a></h3>
+                    <div id="cpuinfo" style="display: none;">
+                        <pre><?php pcmd("/bin/cat /proc/cpuinfo"); ?></pre>
                     </div>
                     <hr />
                     <h3><a href="javascript:;" onmousedown="toggleDiv('disk');">Disk Information:</a></h3>
@@ -339,11 +361,6 @@ $BACKGROUND_IMG = "<img class=\"overlay-bg\" src=\"$GFX_HOME/wallpaper/$BACKGROU
                     <h3><a href="javascript:;" onmousedown="toggleDiv('temp');">Temperature Sensor Output:</a></h3>
                     <div id="temp" style="display: none;">
                         <pre><?php pcmd("/usr/bin/sensors"); ?></pre>
-                    </div>
-                    <hr />
-                    <h3><a href="javascript:;" onmousedown="toggleDiv('cpuinfo');">CPU Information:</a></h3>
-                    <div id="cpuinfo" style="display: none;">
-                        <pre><?php pcmd("/bin/cat /proc/cpuinfo"); ?></pre>
                     </div>
                     <hr />
                     <h3><a href="javascript:;" onmousedown="toggleDiv('hacklog');">HACKLOG:</a></h3>

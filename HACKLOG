@@ -498,3 +498,25 @@ A recent update broke python 2 by removing the soft-link to it, so...
 
     apt install smbclient cifs-utils
 
+    Speedtest from the actual speedtest.net people...
+        sudo apt-get install gnupg1 apt-transport-https dirmngr
+        export INSTALL_KEY=379CE192D401AB61
+        sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys $INSTALL_KEY
+        echo "deb https://ookla.bintray.com/debian generic main" | sudo tee  /etc/apt/sources.list.d/speedtest.list
+        sudo apt-get update
+        # Other non-official binaries will conflict with Speedtest CLI
+        # Example how to remove using apt-get
+        # sudo apt-get remove speedtest-cli
+        sudo apt-get install speedtest
+
+To prioritize 5GHz over 2.4GHz...
+    sudo nmcli connection modify Dread_5748 connection.autoconnect-priority 10
+
+    This rewrite parts of /etc/NetworkManager/system-connections/...
+
+    root@lenin:/home/wiley# nmcli -f 'NAME,UUID,AUTOCONNECT,AUTOCONNECT-PRIORITY'
+    NAME                UUID                                  AUTOCONNECT  PRI
+    Dread_5748          5a704699-a2c6-44f7-b768-97feda5e22da  yes          10
+    Dread_2748          21b25bc1-97aa-4c39-8d44-f991435d1921  yes          0
+    Wired connection 1  6311c04f-8177-4d8f-a0d0-9fe12626df6f  yes          20
+
