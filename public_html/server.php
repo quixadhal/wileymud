@@ -69,10 +69,10 @@ $graphics = array();
 $graphics['server_case'] = $isLocal ? "gfx/server_case.png" : "https://i.imgur.com/TFmF5Yg.png";
 //$graphics['server_case'] = $isLocal ? "gfx/server_case.png" : "https://lh6.googleusercontent.com/-w6XwIBerDjw/UdooiSE-NUI/AAAAAAAAAPI/wGjTt7QiEmA/s800/server_case.jpg";
 //$graphics['server_case'] = $isLocal ? "gfx/server_case.jpg" : "http://i302.photobucket.com/albums/nn96/quixadhal/shadowlord/server_case_zpsdcdc0b79.jpg";
-$graphics['speedtest_kalamazoo'] = $isLocal ? "gfx/speedtest_kzo_4478672602.png" : "http://www.speedtest.net/result/4478672602.png";
-$graphics['speedtest_seattle'] = $isLocal ? "gfx/speedtest_10284037752.png" : "https://www.speedtest.net/result/10284037752.png";
-$graphics['speedtest_bellevue'] = $isLocal ? "gfx/speedtest_10600322876.png" : "https://www.speedtest.net/result/10600322876.png";
-$graphics['speedtest_current'] = $isLocal ? "gfx/speedtest_10600322876.png" : "https://www.speedtest.net/result/10600322876.png";
+$graphics['speedtest_kalamazoo'] = $isLocal ? "gfx/speedtest_kalamazoo_4478672602.png" : "http://www.speedtest.net/result/4478672602.png";
+$graphics['speedtest_seattle'] = $isLocal ? "gfx/speedtest_seattle_10284037752.png" : "https://www.speedtest.net/result/10284037752.png";
+$graphics['speedtest_bellevue'] = $isLocal ? "gfx/speedtest_bellevue_10600322876.png" : "https://www.speedtest.net/result/10600322876.png";
+$graphics['speedtest_current'] = $isLocal ? "gfx/speedtest_bellevue_10600322876.png" : "https://www.speedtest.net/result/10600322876.png";
 
 $SPEEDTEST_FILE = "/home/wiley/public_html/speedtest.json";
 $MUDLIST_FILE   = "/home/wiley/public_html/mudlist.json";
@@ -331,6 +331,7 @@ $BACKGROUND_IMG = "<img class=\"overlay-bg\" src=\"$GFX_HOME/wallpaper/$BACKGROU
                     <hr />
                     <h3><a href="javascript:;" onmousedown="toggleDiv('network');">Network Information:</a></h3>
                     <div id="network" style="display: none;">
+                        <pre>Blacklist entries: <?php pcmd("/usr/bin/wc -l /etc/iptables/ipset.blacklist"); ?></pre>
                         <pre><?php pcmd("/usr/bin/nmcli -f 'DEVICE,CHAN,BARS,SIGNAL,RATE,SSID' dev wifi"); ?></pre>
                         <pre>
 Speedtest performed on  <?php printf("%s\n", $speedtest["the_time"]); ?>

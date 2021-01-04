@@ -9,8 +9,10 @@
 
 if [ "$IFACE" = "lo" ]; then
     if [ "$ADDRFAM" = "inet" ]; then
-        ipset restore < /etc/iptables/ipset.blacklist
-        iptables-restore < /etc/iptables/rules.v4
+        if [ -r /etc/iptables/ipset.blacklist -a -r /etc/iptables/rules.v4 ]; then
+            /usr/sbin/ipset restore < /etc/iptables/ipset.blacklist
+            /usr/sbin/iptables-restore < /etc/iptables/rules.v4
+        fi
     fi
 fi
 

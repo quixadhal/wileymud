@@ -520,3 +520,8 @@ To prioritize 5GHz over 2.4GHz...
     Dread_2748          21b25bc1-97aa-4c39-8d44-f991435d1921  yes          0
     Wired connection 1  6311c04f-8177-4d8f-a0d0-9fe12626df6f  yes          20
 
+Heh, forgot to restore root's crontab entry for the banhammer.
+Also, tweaked that stuff to be a bit more reliable.
+(It now "forgives" people who got banned if they stop being naughty
+long enough to fall off the apache error logs)
+
