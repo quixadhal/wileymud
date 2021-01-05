@@ -73,10 +73,12 @@ $graphics['speedtest_kalamazoo'] = $isLocal ? "gfx/speedtest_kalamazoo_447867260
 $graphics['speedtest_seattle'] = $isLocal ? "gfx/speedtest_seattle_10284037752.png" : "https://www.speedtest.net/result/10284037752.png";
 $graphics['speedtest_bellevue'] = $isLocal ? "gfx/speedtest_bellevue_10600322876.png" : "https://www.speedtest.net/result/10600322876.png";
 $graphics['speedtest_current'] = $isLocal ? "gfx/speedtest_bellevue_10600322876.png" : "https://www.speedtest.net/result/10600322876.png";
+$graphics['speedtest_wifi'] = $isLocal ? "gfx/speedtest_bellevue_10600322876.png" : "https://www.speedtest.net/result/10600322876.png";
 
-$SPEEDTEST_FILE = "/home/wiley/public_html/speedtest.json";
-$MUDLIST_FILE   = "/home/wiley/public_html/mudlist.json";
-$BACKGROUND_DIR = "/home/wiley/public_html/gfx/wallpaper/";
+$SPEEDTEST_FILE         = "/home/wiley/public_html/speedtest.json";
+$SPEEDTEST_WIFI_FILE    = "/home/wiley/public_html/speedtest_wifi.json";
+$MUDLIST_FILE           = "/home/wiley/public_html/mudlist.json";
+$BACKGROUND_DIR         = "/home/wiley/public_html/gfx/wallpaper/";
 
 $speedtest_text = file_get_contents($SPEEDTEST_FILE);
 $speedtest = json_decode($speedtest_text, true, 512, JSON_INVALID_UTF8_SUBSTITUTE);
@@ -87,6 +89,16 @@ $graphics['speedtest_current'] = $speedtest["result"]["url"] . ".png";
 
 $speedtest["unix_timestamp"] = strtotime($speedtest["timestamp"]);
 $speedtest["the_time"] = strftime("%Y-%m-%d %H:%M:%S %Z", $speedtest["unix_timestamp"]);
+
+$speedtest_wifi_text = file_get_contents($SPEEDTEST_WIFI_FILE);
+$speedtest_wifi = json_decode($speedtest_wifi_text, true, 512, JSON_INVALID_UTF8_SUBSTITUTE);
+if( json_last_error() != JSON_ERROR_NONE ) {
+    echo "<hr>".json_last_error_msg()."<br><hr>";
+}
+$graphics['speedtest_wifi'] = $speedtest_wifi["result"]["url"] . ".png";
+
+$speedtest_wifi["unix_timestamp"] = strtotime($speedtest_wifi["timestamp"]);
+$speedtest_wifi["the_time"] = strftime("%Y-%m-%d %H:%M:%S %Z", $speedtest_wifi["unix_timestamp"]);
 
 $mudlist_text = file_get_contents($MUDLIST_FILE);
 $mudlist = json_decode($mudlist_text, true, 512, JSON_INVALID_UTF8_SUBSTITUTE);
@@ -308,12 +320,12 @@ $BACKGROUND_IMG = "<img class=\"overlay-bg\" src=\"$GFX_HOME/wallpaper/$BACKGROU
                         <table border="0" cellspacing="0" cellpadding="5">
                             <tr>
                                 <td align="center"> <img src="<?php echo $graphics['speedtest_current']; ?>" border="0" width="300" height="135" /> </td>
-                                <td align="center"> <img src="<?php echo $graphics['speedtest_bellevue']; ?>" border="0" width="300" height="135" /> </td>
+                                <td align="center"> <img src="<?php echo $graphics['speedtest_wifi']; ?>" border="0" width="300" height="135" /> </td>
                                 <td align="center"> <img src="<?php echo $graphics['speedtest_kalamazoo']; ?>" border="0" width="300" height="135" /> </td>
                             </tr>
                             <tr>
-                                <td align="center"> Current&nbsp;(wifi) </td>
-                                <td align="center"> Bellevue (wired) </td>
+                                <td align="center"> Bellevue &nbsp;(wired) </td>
+                                <td align="center"> Bellevue &nbsp;(wifi) </td>
                                 <td align="center"> Kalamazoo </td>
                             </tr>
                         </table>
@@ -332,14 +344,23 @@ $BACKGROUND_IMG = "<img class=\"overlay-bg\" src=\"$GFX_HOME/wallpaper/$BACKGROU
                     <h3><a href="javascript:;" onmousedown="toggleDiv('network');">Network Information:</a></h3>
                     <div id="network" style="display: none;">
                         <pre>Blacklist entries: <?php pcmd("/usr/bin/wc -l /etc/iptables/ipset.blacklist"); ?></pre>
-                        <pre><?php pcmd("/usr/bin/nmcli -f 'DEVICE,CHAN,BARS,SIGNAL,RATE,SSID' dev wifi"); ?></pre>
+                        <pre><?php pcmd("/usr/bin/nmcli -f 'DEVICE,CHAN,BARS,SIGNAL,RATE,SSID' dev wifi | /usr/bin/egrep '(\s+SSID|\s+Dread_.748)'"); ?></pre>
+                        <pre>Wifi Connection in use: <?php pcmd("/sbin/iwconfig wlp1s0 | grep ESSID"); ?></pre>
                         <pre>
-Speedtest performed on  <?php printf("%s\n", $speedtest["the_time"]); ?>
-          interface     <?php printf("%s\n", $speedtest["interface"]["name"]); ?>
-          target node   <?php printf("%s (%s)\n", $speedtest["server"]["name"], $speedtest["server"]["host"]); ?>
-          ping          <?php printf("%-.3f ms\n", $speedtest["ping"]["latency"]); ?>
-          download      <?php printf("%-.2f Mbps\n", ($speedtest["download"]["bandwidth"] * 8.0 / 1000000.0)); ?>
-          upload        <?php printf("%-.2f Mbps\n", ($speedtest["upload"]["bandwidth"] * 8.0 / 1000000.0)); ?>
+Wired Speedtest performed on  <?php printf("%s\n", $speedtest["the_time"]); ?>
+                interface     <?php printf("%s:%s\n", $speedtest["interface"]["internalIp"], $speedtest["interface"]["name"]); ?>
+                target node   <?php printf("%s (%s)\n", $speedtest["server"]["name"], $speedtest["server"]["host"]); ?>
+                ping          <?php printf("%-.3f ms\n", $speedtest["ping"]["latency"]); ?>
+                download      <?php printf("%-.2f Mbps\n", ($speedtest["download"]["bandwidth"] * 8.0 / 1000000.0)); ?>
+                upload        <?php printf("%-.2f Mbps\n", ($speedtest["upload"]["bandwidth"] * 8.0 / 1000000.0)); ?>
+                        </pre>
+                        <pre>
+Wi-fi Speedtest performed on  <?php printf("%s\n", $speedtest_wifi["the_time"]); ?>
+                interface     <?php printf("%s:%s\n", $speedtest_wifi["interface"]["internalIp"], $speedtest_wifi["interface"]["name"]); ?>
+                target node   <?php printf("%s (%s)\n", $speedtest_wifi["server"]["name"], $speedtest_wifi["server"]["host"]); ?>
+                ping          <?php printf("%-.3f ms\n", $speedtest_wifi["ping"]["latency"]); ?>
+                download      <?php printf("%-.2f Mbps\n", ($speedtest_wifi["download"]["bandwidth"] * 8.0 / 1000000.0)); ?>
+                upload        <?php printf("%-.2f Mbps\n", ($speedtest_wifi["upload"]["bandwidth"] * 8.0 / 1000000.0)); ?>
                         </pre>
                     </div>
                     <hr />
