@@ -525,3 +525,25 @@ Also, tweaked that stuff to be a bit more reliable.
 (It now "forgives" people who got banned if they stop being naughty
 long enough to fall off the apache error logs)
 
+Did some more tweaking of the speedtest stuff.
+
+We run speedtest CLI from cron to get the wifi speed, but... we also want
+the real network speed (wired).  To do that, we've set up a batch file on
+my windows desktop using Task Scheduler and symlinks from the web directory
+to our samba-mounted lenin backup directory.
+
+    # m h  dom mon dow   command
+    1 0,3,6,9,12,15,18,21 * * * /home/wiley/bin/mkmudlist.pl >/dev/null 2>&1 &
+    0,15,30,45 * * * * /home/wiley/bin/mklogpages.pl --overwrite --start -3 --json --censor --no-pause >/dev/null 2>&1 &
+    1,5,10 0 * * * /home/wiley/bin/mklogpages.pl --no-pages --censor --no-json --no-pause >/dev/null 2>&1 &
+    0 2 * * *   /usr/bin/speedtest -s 6199 -uMbps -fjson-pretty >/home/wiley/public_html/speedtest_wifi.json 2>&1 &
+    3 1 * * *   /home/wiley/bin/do_backup >/dev/null 2>&1
+
+and the batch file:
+
+    C:\speedtest\speedtest.exe -s 6199 -uMbps -fjson-pretty >E:\Lenin\speedtest.json
+
+Set to run once per day at 2pm via Task Scheduler as a Basic Task, with highest privs,
+and run even if no user is logged in (but using my login credentials)
+I did set it to NOT run if we don't think we have a network connection...
+
