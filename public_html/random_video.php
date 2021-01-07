@@ -16,6 +16,9 @@
         'https://www.youtube.com/watch?v=Ro-_cbfdrYE&list=RDRo-_cbfdrYE&start_radio=1',                             // Ijime, dame, zettai
         'https://www.youtube.com/watch?v=Tz-63JEkVeE&list=RDTz-63JEkVeE&start_radio=1',                             // Girls und Panzer wind
         'https://www.youtube.com/watch?v=iI-BtRbhulE&list=RDiI-BtRbhulE&start_radio=1',                             // Tokkou Dance
+        'https://www.youtube.com/watch?v=GoqcIQ37amo&list=RDGoqcIQ37amo&start_radio=1',                             // Brown Sabbath
+        'https://www.youtube.com/watch?v=2CZ_b6NbFMc&list=RD2CZ_b6NbFMc&start_radio=1',                             // Brown Sabbath
+        'https://www.youtube.com/watch?v=sdPwvBJiQJY&list=RDsdPwvBJiQJY&start_radio=1',                             // Girls Dead Monster
         'https://www.youtube.com/watch?v=O9VOud8y3tg',                                                              // Zombie Land Saga opening
         'https://www.youtube.com/watch?v=Turf7WDB3iY'                                                               // Angel Beats opening
     );

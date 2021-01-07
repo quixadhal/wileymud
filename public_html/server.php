@@ -376,7 +376,7 @@ Wi-fi Speedtest performed on  <?php printf("%s\n", $speedtest_wifi["the_time"]);
                     <hr />
                     <h3><a href="javascript:;" onmousedown="toggleDiv('disk');">Disk Information:</a></h3>
                     <div id="disk" style="display: none;">
-                        <pre><?php pcmd("/bin/dmesg | /bin/grep 'WDC' | /bin/grep 'ata'"); ?></pre>
+                        <pre><?php //pcmd("/bin/dmesg | /bin/grep 'WDC' | /bin/grep 'ata'"); ?></pre>
                         <pre><?php pcmd("/bin/df -h | /bin/grep -v 'udev' | /bin/grep -v 'tmpfs' | /bin/grep -v 'by-uuid'"); ?></pre>
                     </div>
                     <hr />
@@ -400,3 +400,4 @@ Wi-fi Speedtest performed on  <?php printf("%s\n", $speedtest_wifi["the_time"]);
         </div>
     </body>
 </html>
+<?php exit(); ?>

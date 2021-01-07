@@ -547,3 +547,19 @@ Set to run once per day at 2pm via Task Scheduler as a Basic Task, with highest 
 and run even if no user is logged in (but using my login credentials)
 I did set it to NOT run if we don't think we have a network connection...
 
+2021-01-06
+    For amusement, changed the main site "page" to redirect to something more fun
+    instead of the no-longer-functional alternate site.
+
+        META HTTP-EQUIV="Refresh" Content="0; URL=http://wileymud.themud.org/~wiley/random_video.php"
+
+    ROFLMAO!  So, including this file in my server page causes any HTML that was in it to be included...
+    not a huge surprise, and normally not an issue since it's inside pre tags, right?  Well...
+    META header stuff still works.
+
+    So the page was randomly redirecting itself to the commented example above.
+
+    Restored my 404 handler, and made it use my random_video script.
+
+        ErrorDocument 404 http://wileymud.themud.org/~wiley/404.html
+
