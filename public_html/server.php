@@ -343,7 +343,7 @@ $BACKGROUND_IMG = "<img class=\"overlay-bg\" src=\"$GFX_HOME/wallpaper/$BACKGROU
                     <hr />
                     <h3><a href="javascript:;" onmousedown="toggleDiv('network');">Network Information:</a></h3>
                     <div id="network" style="display: none;">
-                        <pre>Blacklist entries: <?php pcmd("/usr/bin/wc -l /etc/iptables/ipset.blacklist"); ?></pre>
+                        <pre>Blacklist entries: <?php pcmd("/bin/cat /etc/iptables/ipset.blacklist | /usr/bin/grep -v 'create blacklist' | /usr/bin/wc -l"); ?></pre>
                         <pre><?php pcmd("/usr/bin/nmcli -f 'DEVICE,CHAN,BARS,SIGNAL,RATE,SSID' dev wifi | /usr/bin/egrep '(\s+SSID|\s+Dread_.748)'"); ?></pre>
                         <pre>Wifi Connection in use: <?php pcmd("/sbin/iwconfig wlp1s0 | grep ESSID"); ?></pre>
                         <pre>
