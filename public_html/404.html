@@ -14,7 +14,9 @@
         </script>
         <script>
             document.onmousedown = function(e) {
-                window.location.replace("http://wileymud.themud.org/~wiley/random_video.php");
+                if(e.button === 0) {
+                    window.location.replace("http://wileymud.themud.org/~wiley/random_video.php");
+                }
             }
         </script>
         <title>Something Wonderful has Happened!</title>
