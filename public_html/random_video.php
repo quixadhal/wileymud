@@ -19,8 +19,21 @@
         'https://www.youtube.com/watch?v=GoqcIQ37amo&list=RDGoqcIQ37amo&start_radio=1',                             // Brown Sabbath
         'https://www.youtube.com/watch?v=2CZ_b6NbFMc&list=RD2CZ_b6NbFMc&start_radio=1',                             // Brown Sabbath
         'https://www.youtube.com/watch?v=sdPwvBJiQJY&list=RDsdPwvBJiQJY&start_radio=1',                             // Girls Dead Monster
+        'https://www.youtube.com/watch?v=L_iOcKZTJzw&list=RDL_iOcKZTJzw&start_radio=1',                             // Girls und Panzer
+        'https://www.youtube.com/watch?v=8F7VGrix2L0&list=RD8F7VGrix2L0&start_radio=1',                             // Atelier Ryza 2
+        'https://www.youtube.com/watch?v=HQbMEgfo5To&list=RDHQbMEgfo5To&start_radio=1',                             // Space Battleship Yamato
+        'https://www.youtube.com/watch?v=ZVJ3Ho83Ksg&list=RDZVJ3Ho83Ksg&start_radio=1',                             // Kyoto Tachibana Band
+        'https://www.youtube.com/watch?v=QZShA_a-5r8&list=RDQZShA_a-5r8&start_radio=1',                             // Nyango Star
+        'https://www.youtube.com/watch?v=oA6UYTbOEMQ&list=RDoA6UYTbOEMQ&start_radio=1',                             // Ladybaby
+        'https://www.youtube.com/watch?v=DgTEKoYhAXg&list=RDDgTEKoYhAXg&start_radio=1',                             // Ningen Isu
+        'https://www.youtube.com/watch?v=Jfk4WbW5lp0&list=RDJfk4WbW5lp0&start_radio=1',                             // Vitamin Love
+        'https://www.youtube.com/watch?v=qqKG7I6oBnc&list=RDqqKG7I6oBnc&start_radio=1',                             // Suzuki Airi
+        'https://www.youtube.com/watch?v=I3Yy6c0Tlvk&list=RDI3Yy6c0Tlvk&start_radio=1',                             // Arcadia
+        'https://www.youtube.com/watch?v=OPCiC1Nku18&list=RDOPCiC1Nku18&start_radio=1',                             // Jefferson Starship
+        'https://www.youtube.com/watch?v=rrWXFxLIV3w&list=RDrrWXFxLIV3w&start_radio=1',                             // Hall and Oates
         'https://www.youtube.com/watch?v=O9VOud8y3tg',                                                              // Zombie Land Saga opening
-        'https://www.youtube.com/watch?v=Turf7WDB3iY'                                                               // Angel Beats opening
+        'https://www.youtube.com/watch?v=Turf7WDB3iY',                                                              // Angel Beats opening
+        'https://www.youtube.com/watch?v=TfXSBBIzRyg'                                                               // Girls und Panzer opening
     );
     $url = sprintf("Location: %s", $playlist_list[array_rand($playlist_list)]);
     header($url);
