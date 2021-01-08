@@ -910,6 +910,10 @@ header("Pragma: no-cache");
                 $span_class = "blurry";
             } else if(preg_match('/on\sfree_speech\&gt\;/', $message) > 0) {
                 $span_class = "blurry";
+            } else if(preg_match('/^spoiler:/i', $message) > 0) {
+                $span_class = "blurry";
+            } else if(preg_match('/\[(spoiler|redacted)\]/i', $message) > 0) {
+                $span_class = "blurry";
             }
         }
         $message = "<span class=\"$span_class\">$message</span>";
