@@ -1370,6 +1370,8 @@ EOM
                     my $span_class = "unblurred";
                     $span_class = "blurry" if $do_censor and $channel eq "free_speech";
                     $span_class = "blurry" if $do_censor and $message =~ /on\sfree_speech\&gt\;/;
+                    $span_class = "blurry" if $do_censor and $message =~ /^spoiler:/i;
+                    $span_class = "blurry" if $do_censor and $message =~ /\[(spoiler|redacted)\]/i;
 
                     printf FP "<td bgcolor=\"%s\"><span class=\"$span_class\">%s</span></td>\n",  $bg_color, $message;
                     printf FP "</tr>\n";
