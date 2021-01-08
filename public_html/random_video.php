@@ -31,8 +31,14 @@
         'https://www.youtube.com/watch?v=I3Yy6c0Tlvk&list=RDI3Yy6c0Tlvk&start_radio=1',                             // Arcadia
         'https://www.youtube.com/watch?v=OPCiC1Nku18&list=RDOPCiC1Nku18&start_radio=1',                             // Jefferson Starship
         'https://www.youtube.com/watch?v=rrWXFxLIV3w&list=RDrrWXFxLIV3w&start_radio=1',                             // Hall and Oates
+        'https://www.youtube.com/watch?v=3I4N8XQJKwo&list=RD3I4N8XQJKwo&start_radio=1',                             // A Certain Scientific Railgun
+        'https://www.youtube.com/watch?v=0K-5RkFEagc&list=RD0K-5RkFEagc&start_radio=1',                             // Airi Suzuki, National Anthem
         'https://www.youtube.com/watch?v=O9VOud8y3tg',                                                              // Zombie Land Saga opening
         'https://www.youtube.com/watch?v=Turf7WDB3iY',                                                              // Angel Beats opening
+        'https://www.youtube.com/watch?v=fv2Ybecq92E',                                                              // A Certain Magical Index opening 1
+        'https://www.youtube.com/watch?v=Q34iirTNwr4',                                                              // A Certain Magical Index opening 2
+        'https://www.youtube.com/watch?v=ZbM6WbUw7Bs',                                                              // Emperor Trumpu
+        'https://www.youtube.com/watch?v=DmxkoaPW23w',                                                              // ときめきトゥナイト
         'https://www.youtube.com/watch?v=TfXSBBIzRyg'                                                               // Girls und Panzer opening
     );
     $url = sprintf("Location: %s", $playlist_list[array_rand($playlist_list)]);
