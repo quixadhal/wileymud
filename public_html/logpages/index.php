@@ -908,6 +908,8 @@ header("Pragma: no-cache");
         if($CENSOR) {
             if($channel == "free_speech") {
                 $span_class = "blurry";
+            } else if($channel == "bsg") {
+                $span_class = "blurry";
             } else if(preg_match('/on\sfree_speech\&gt\;/', $message) > 0) {
                 $span_class = "blurry";
             } else if(preg_match('/^spoiler:/i', $message) > 0) {

@@ -1369,6 +1369,7 @@ EOM
                     my $span_style = "font-family: monospace; white-space: pre-wrap;";
                     my $span_class = "unblurred";
                     $span_class = "blurry" if $do_censor and $channel eq "free_speech";
+                    $span_class = "blurry" if $do_censor and $channel eq "bsg";
                     $span_class = "blurry" if $do_censor and $message =~ /on\sfree_speech\&gt\;/;
                     $span_class = "blurry" if $do_censor and $message =~ /^spoiler:/i;
                     $span_class = "blurry" if $do_censor and $message =~ /\[(spoiler|redacted)\]/i;
