@@ -563,3 +563,13 @@ I did set it to NOT run if we don't think we have a network connection...
 
         ErrorDocument 404 http://wileymud.themud.org/~wiley/404.html
 
+2021-01-07
+    Hmmmm, system update makes systemd more annoying... just in case it screws up
+        add systemd.unified_cgroup_hierarchy=false to the kernel command line
+
+2021-01-12
+    Adjusted /etc/fstab to add remapping of "naughty" characters for windows shares.
+
+        //192.168.0.10/Videos       /share/videos       cifs    user,uid=1001,gid=100,mapposix,vers=3.0,credentials=/home/wiley/.smbpasswd 0   2
+        //192.168.0.10/LeninBackup  /share/leninbackup  cifs    user,uid=1001,gid=100,mapposix,vers=3.0,credentials=/home/wiley/.smbpasswd 0   2
+
