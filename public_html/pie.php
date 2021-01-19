@@ -4,7 +4,7 @@ global $fp;
 global $DEBUG;
 global $FRESH;
 global $CACHE;
-$DEBUG          = 0;
+$DEBUG          = 1;
 $DO_ALL_TIME    = 1;
 
 if( $DEBUG ) {
@@ -177,6 +177,7 @@ function fetch_dates($db) {
                date(min(local)) AS all
           FROM i3log
     ;";
+    if( $DEBUG ) fprintf($fp, "    fetch_dates(): SQL\n                   %s\n", $sql);
 
     try {
         $sth = $db->prepare($sql);
@@ -241,6 +242,7 @@ function fetch_quote($db, $thing) {
     $sql .= $and;
     $sql .= " OFFSET (random() * (SELECT COUNT(*) FROM i3log WHERE speaker <> 'URLbot' AND NOT is_bot";
     $sql .= " $and ))::INTEGER LIMIT 1";
+    if( $DEBUG ) fprintf($fp, "    fetch_quote(): SQL\n                   %s\n", $sql);
 
     try {
         $sth = $db->prepare($sql);
@@ -287,10 +289,12 @@ function fetch_stuff($db, $thing, $kind) {
         $sql .= " GROUP BY $kind ORDER BY count DESC LIMIT 12;";
     }
 
+    if( $DEBUG ) fprintf($fp, "    fetch_stuff(): SQL\n                   %s\n", $sql);
+
     try {
         //$db->beginTransaction();
-        $sth = $db->prepare("SET SESSION enable_seqscan=false;");
-        $sth->execute();
+        //$sth = $db->prepare("SET SESSION enable_seqscan=false;");
+        //$sth->execute();
         $sth = $db->prepare($sql);
         //$sth->bindParam(':time_interval', $time_interval);
         $sth->execute();
@@ -300,8 +304,8 @@ function fetch_stuff($db, $thing, $kind) {
             //$result[$row['pinkfish']] = $row;
             $result[] = $row;
         }
-        $sth = $db->prepare("SET SESSION enable_seqscan=true;");
-        $sth->execute();
+        //$sth = $db->prepare("SET SESSION enable_seqscan=true;");
+        //$sth->execute();
         //$db->commit();
     } catch (Exception $e) {
         //$db->rollback();

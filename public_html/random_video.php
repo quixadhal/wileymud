@@ -33,6 +33,10 @@
         'https://www.youtube.com/watch?v=rrWXFxLIV3w&list=RDrrWXFxLIV3w&start_radio=1',                             // Hall and Oates
         'https://www.youtube.com/watch?v=3I4N8XQJKwo&list=RD3I4N8XQJKwo&start_radio=1',                             // A Certain Scientific Railgun
         'https://www.youtube.com/watch?v=0K-5RkFEagc&list=RD0K-5RkFEagc&start_radio=1',                             // Airi Suzuki, National Anthem
+        'https://www.youtube.com/watch?v=CZND1VUAbVY&list=RDCZND1VUAbVY&start_radio=1',                             // Atarashii Gakkou
+        'https://www.youtube.com/watch?v=hrIpQbnAoyQ&list=RDhrIpQbnAoyQ&start_radio=1',                             // Duke Ellington
+        'https://www.youtube.com/watch?v=8TToLgW7zuc&list=RD8TToLgW7zuc&start_radio=1&rv=8TToLgW7zuc',              // Glenn Frey
+        'https://www.youtube.com/watch?v=dDInMXz0JBc',                                                              // Puella Magi Madoka Magica
         'https://www.youtube.com/watch?v=O9VOud8y3tg',                                                              // Zombie Land Saga opening
         'https://www.youtube.com/watch?v=Turf7WDB3iY',                                                              // Angel Beats opening
         'https://www.youtube.com/watch?v=fv2Ybecq92E',                                                              // A Certain Magical Index opening 1
