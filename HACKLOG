@@ -573,3 +573,12 @@ I did set it to NOT run if we don't think we have a network connection...
         //192.168.0.10/Videos       /share/videos       cifs    user,uid=1001,gid=100,mapposix,vers=3.0,credentials=/home/wiley/.smbpasswd 0   2
         //192.168.0.10/LeninBackup  /share/leninbackup  cifs    user,uid=1001,gid=100,mapposix,vers=3.0,credentials=/home/wiley/.smbpasswd 0   2
 
+2021-01-13
+    pip3 install alpaca-trade-api
+
+2021-01-17
+    apt install calibre enscript gnuplot gimp gimp-data-extras
+                gnuplot-doc python3-unrardll gimp-help-en imagemagick-doc
+                graphviz hp2xx html2ps graphviz-doc python-pyparsing-doc
+                xhtml2ps
+
