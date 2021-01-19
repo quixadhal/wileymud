@@ -2,7 +2,7 @@
 
 use strict;
 use utf8;
-use English;
+use English qw( −no_match_vars );
 use Data::Dumper;
 
 use Time::HiRes qw(sleep time alarm);

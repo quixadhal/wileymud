@@ -1,7 +1,7 @@
 #!/usr/bin/perl -w
 
 use strict;
-use English;
+use English qw( −no_match_vars );
 use Image::Size;
 use Cwd qw(getcwd);
 

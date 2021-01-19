@@ -4,7 +4,7 @@ use utf8;
 use strict;
 use Encode qw(encode_utf8);
 no warnings 'utf8';
-use English;
+use English qw( −no_match_vars );
 use Data::Dumper;
 use DBI;
 use HTML::Entities;
