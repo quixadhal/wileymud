@@ -36,6 +36,9 @@
         'https://www.youtube.com/watch?v=CZND1VUAbVY&list=RDCZND1VUAbVY&start_radio=1',                             // Atarashii Gakkou
         'https://www.youtube.com/watch?v=hrIpQbnAoyQ&list=RDhrIpQbnAoyQ&start_radio=1',                             // Duke Ellington
         'https://www.youtube.com/watch?v=8TToLgW7zuc&list=RD8TToLgW7zuc&start_radio=1&rv=8TToLgW7zuc',              // Glenn Frey
+        'https://www.youtube.com/watch?v=iPcil1XEsmM&list=OLAK5uy_lDTW9sRZ9FBdtffbhEqgNUQvAS8Lhaj-g',               // The Symphonic Ellington
+        'https://www.youtube.com/watch?v=OE3RwpwPGJY',                                                              // Kirisu Mafuyu character song
+        'https://www.youtube.com/watch?v=mz11ntMAGms',                                                              // Taeko Onuki Symphonic Concert
         'https://www.youtube.com/watch?v=dDInMXz0JBc',                                                              // Puella Magi Madoka Magica
         'https://www.youtube.com/watch?v=O9VOud8y3tg',                                                              // Zombie Land Saga opening
         'https://www.youtube.com/watch?v=Turf7WDB3iY',                                                              // Angel Beats opening
