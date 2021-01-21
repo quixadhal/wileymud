@@ -34,9 +34,9 @@
         'https://www.youtube.com/watch?v=3I4N8XQJKwo&list=RD3I4N8XQJKwo&start_radio=1',                             // A Certain Scientific Railgun
         'https://www.youtube.com/watch?v=0K-5RkFEagc&list=RD0K-5RkFEagc&start_radio=1',                             // Airi Suzuki, National Anthem
         'https://www.youtube.com/watch?v=CZND1VUAbVY&list=RDCZND1VUAbVY&start_radio=1',                             // Atarashii Gakkou
-        'https://www.youtube.com/watch?v=hrIpQbnAoyQ&list=RDhrIpQbnAoyQ&start_radio=1',                             // Duke Ellington
         'https://www.youtube.com/watch?v=8TToLgW7zuc&list=RD8TToLgW7zuc&start_radio=1&rv=8TToLgW7zuc',              // Glenn Frey
-        'https://www.youtube.com/watch?v=iPcil1XEsmM&list=OLAK5uy_lDTW9sRZ9FBdtffbhEqgNUQvAS8Lhaj-g',               // The Symphonic Ellington
+        'https://www.youtube.com/watch?v=hrIpQbnAoyQ&list=RDhrIpQbnAoyQ&start_radio=1',                             // Duke Ellington
+        'https://www.youtube.com/watch?v=O5omkuVdwUY&list=RDO5omkuVdwUY&start_radio=1',                             // Stereopony
         'https://www.youtube.com/watch?v=OE3RwpwPGJY',                                                              // Kirisu Mafuyu character song
         'https://www.youtube.com/watch?v=mz11ntMAGms',                                                              // Taeko Onuki Symphonic Concert
         'https://www.youtube.com/watch?v=dDInMXz0JBc',                                                              // Puella Magi Madoka Magica
@@ -46,6 +46,8 @@
         'https://www.youtube.com/watch?v=Q34iirTNwr4',                                                              // A Certain Magical Index opening 2
         'https://www.youtube.com/watch?v=ZbM6WbUw7Bs',                                                              // Emperor Trumpu
         'https://www.youtube.com/watch?v=DmxkoaPW23w',                                                              // ときめきトゥナイト
+        'https://www.youtube.com/watch?v=iPcil1XEsmM&list=OLAK5uy_lDTW9sRZ9FBdtffbhEqgNUQvAS8Lhaj-g',               // The Symphonic Ellington
+        'https://www.youtube.com/watch?v=AALrH26HAmw&list=PLDXhPuAWc_Jf7FBLSbr-dssqcw9Yaiw-Z',                      // Genshin Impact Soundtrack, in the correct order
         'https://www.youtube.com/watch?v=TfXSBBIzRyg'                                                               // Girls und Panzer opening
     );
     $url = sprintf("Location: %s", $playlist_list[array_rand($playlist_list)]);
