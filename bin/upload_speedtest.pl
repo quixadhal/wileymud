@@ -5,7 +5,7 @@ use strict;
 no warnings 'utf8';
 use English qw( −no_match_vars );
 use DBI;
-use JSON qw(decode_json);
+use JSON qw(encode_json decode_json);
 
 sub open_postgres_db {
     my $DB_NAME = shift;
@@ -94,13 +94,42 @@ sub upload_results {
     }
 }
 
+sub dump_average {
+    my $db = shift;
+    my $filename = shift;
+
+    my $result = $db->selectall_arrayref(qq!
+        SELECT      internal_ip,
+                    AVG(download) AS download,
+                    AVG(upload) AS upload,
+                    AVG(ping) AS ping
+        FROM        speedtest
+        WHERE       local BETWEEN now() - '1 week'::interval AND now()
+        GROUP BY    internal_ip
+        HAVING internal_ip IN ('192.168.0.10', '192.168.0.11')
+        ;!, { Slice => {} } );
+    if($result) {
+        my $data = {};
+        foreach my $row (@$result) {
+            $data->{$row->{internal_ip}} = $row;
+        }
+        my $json_data = encode_json($data);
+        die "Invalid JSON data for $filename!" if !defined $json_data;
+        open FP, ">$filename" or die "Cannot open output page $filename: $!";
+        print FP $json_data;
+        close FP;
+    }
+}
+
 my $PG_DB           = 'speedtest';
 my $LINUX_FILE      = '/share/leninbackup/speedtest_wifi.json';
 my $WINDOWS_FILE    = '/share/leninbackup/speedtest.json';
+my $AVERAGE_FILE    = '/share/leninbackup/speedtest_avg.json';
 my $DATABASE        = open_postgres_db($PG_DB);
 
 upload_results($DATABASE, $LINUX_FILE);
 upload_results($DATABASE, $WINDOWS_FILE);
+dump_average($DATABASE, $AVERAGE_FILE);
 
 #create table speedtest (
 #    local       TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(),

@@ -77,6 +77,7 @@ $graphics['speedtest_wifi'] = $isLocal ? "gfx/speedtest_bellevue_10600322876.png
 
 $SPEEDTEST_FILE         = "/home/wiley/public_html/speedtest.json";
 $SPEEDTEST_WIFI_FILE    = "/home/wiley/public_html/speedtest_wifi.json";
+$SPEEDTEST_AVG_FILE     = "/home/wiley/public_html/speedtest_avg.json";
 $MUDLIST_FILE           = "/home/wiley/public_html/mudlist.json";
 $BACKGROUND_DIR         = "/home/wiley/public_html/gfx/wallpaper/";
 
@@ -99,6 +100,12 @@ $graphics['speedtest_wifi'] = $speedtest_wifi["result"]["url"] . ".png";
 
 $speedtest_wifi["unix_timestamp"] = strtotime($speedtest_wifi["timestamp"]);
 $speedtest_wifi["the_time"] = strftime("%Y-%m-%d %H:%M:%S %Z", $speedtest_wifi["unix_timestamp"]);
+
+$speedtest_avg_text = file_get_contents($SPEEDTEST_AVG_FILE);
+$speedtest_avg = json_decode($speedtest_avg_text, true, 512, JSON_INVALID_UTF8_SUBSTITUTE);
+if( json_last_error() != JSON_ERROR_NONE ) {
+    echo "<hr>".json_last_error_msg()."<br><hr>";
+}
 
 $mudlist_text = file_get_contents($MUDLIST_FILE);
 $mudlist = json_decode($mudlist_text, true, 512, JSON_INVALID_UTF8_SUBSTITUTE);
@@ -361,6 +368,14 @@ Wi-fi Speedtest performed on  <?php printf("%s\n", $speedtest_wifi["the_time"]);
                 ping          <?php printf("%-.3f ms\n", $speedtest_wifi["ping"]["latency"]); ?>
                 download      <?php printf("%-.2f Mbps\n", ($speedtest_wifi["download"]["bandwidth"] * 8.0 / 1000000.0)); ?>
                 upload        <?php printf("%-.2f Mbps\n", ($speedtest_wifi["upload"]["bandwidth"] * 8.0 / 1000000.0)); ?>
+                        </pre>
+                        <pre>
+<?php printf("%42s %s\n", ">>> This","Week <<<"); ?>
+<?php printf("%20s %20s %20s %20s\n", "Interface", "Average Ping", "Average Download", "Average Upload"); ?>
+<?php printf("%20s %20s %20s %20s\n", "---------", "------------", "----------------", "--------------"); ?>
+<?php ksort($speedtest_avg); foreach ($speedtest_avg as $k => $v) { ?>
+<?php printf("%20s %20.3f %20.3f %20.3f\n", $k, $v["ping"], $v["download"], $v["upload"]); ?>
+<?php } ?>
                         </pre>
                     </div>
                     <hr />
