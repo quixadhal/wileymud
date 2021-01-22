@@ -56,7 +56,8 @@ sub add_result {
             country,
             host,
             host_ip,
-            result_url
+            result_url,
+            wifi
         )
         VALUES (timezone('US/Pacific', ?),?,?,?,?,?,?,?,?,?,?,?,?);
         !);
@@ -73,7 +74,8 @@ sub add_result {
         $data->{server}{country},
         $data->{server}{host},
         $data->{server}{ip},
-        $data->{result}{url}
+        $data->{result}{url},
+        ($data->{interface}{internalIp} eq '192.168.0.11' ? 1 : 0)
     );
     if($rv) {
         printf "Added result from %s at %s\n", $data->{interface}{internalIp}, $data->{timestamp};
@@ -111,6 +113,7 @@ sub dump_average {
     if($result) {
         my $data = {};
         foreach my $row (@$result) {
+            $row->{wire} = '???';
             $row->{wire} = 'wired'  if $row->{internal_ip} eq '192.168.0.10';
             $row->{wire} = 'wi-fi'  if $row->{internal_ip} eq '192.168.0.11';
             $data->{$row->{internal_ip}} = $row;
@@ -146,6 +149,7 @@ dump_average($DATABASE, $AVERAGE_FILE);
 #    country     TEXT,
 #    host        TEXT,
 #    host_ip     TEXT,
-#    result_url  TEXT
+#    result_url  TEXT,
+#    wifi        BOOLEAN DEFAULT 'f'
 #);
 #

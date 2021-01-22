@@ -331,9 +331,9 @@ $BACKGROUND_IMG = "<img class=\"overlay-bg\" src=\"$GFX_HOME/wallpaper/$BACKGROU
                                 <td align="center"> <img src="<?php echo $graphics['speedtest_kalamazoo']; ?>" border="0" width="300" height="135" /> </td>
                             </tr>
                             <tr>
-                                <td align="center"> Bellevue &nbsp;(192.168.0.10) </td>
-                                <td align="center"> Bellevue &nbsp;(192.168.0.11) </td>
-                                <td align="center"> Kalamazoo </td>
+                                <td align="center">Bellevue &nbsp;(wired)</td>
+                                <td align="center">Bellevue &nbsp;(wi-fi)</td>
+                                <td align="center">Kalamazoo &nbsp;(wired)</td>
                             </tr>
                         </table>
                         <pre>
