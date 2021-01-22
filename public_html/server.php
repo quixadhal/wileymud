@@ -331,11 +331,26 @@ $BACKGROUND_IMG = "<img class=\"overlay-bg\" src=\"$GFX_HOME/wallpaper/$BACKGROU
                                 <td align="center"> <img src="<?php echo $graphics['speedtest_kalamazoo']; ?>" border="0" width="300" height="135" /> </td>
                             </tr>
                             <tr>
-                                <td align="center"> Bellevue &nbsp;(wired) </td>
-                                <td align="center"> Bellevue &nbsp;(wifi) </td>
+                                <td align="center"> Bellevue &nbsp;(192.168.0.10) </td>
+                                <td align="center"> Bellevue &nbsp;(192.168.0.11) </td>
                                 <td align="center"> Kalamazoo </td>
                             </tr>
                         </table>
+                        <pre>
+<?php
+    printf("%s\n", ">>> This Week's Performance Average <<<");
+    printf("%23s %20s %20s %20s\n", "Interface", "Average Ping", "Average Download", "Average Upload");
+    printf("%23s %20s %20s %20s\n", "-----------------------", "--------------------", "--------------------", "--------------------");
+    ksort($speedtest_avg);
+    foreach ($speedtest_avg as $k => $v) {
+        $wire   = sprintf("%s (%s)", $k, $v["wire"]);
+        $ping   = sprintf("%.3f ms", $v["ping"]);
+        $down   = sprintf("%.3f Mbps", $v["download"]);
+        $up     = sprintf("%.3f Mbps", $v["upload"]);
+        printf("%23s %20s %20s %20s\n", $wire, $ping, $down, $up);
+    }
+?>
+                        </pre>
                     </center>
                 </td>
             </tr>
@@ -368,14 +383,6 @@ Wi-fi Speedtest performed on  <?php printf("%s\n", $speedtest_wifi["the_time"]);
                 ping          <?php printf("%-.3f ms\n", $speedtest_wifi["ping"]["latency"]); ?>
                 download      <?php printf("%-.2f Mbps\n", ($speedtest_wifi["download"]["bandwidth"] * 8.0 / 1000000.0)); ?>
                 upload        <?php printf("%-.2f Mbps\n", ($speedtest_wifi["upload"]["bandwidth"] * 8.0 / 1000000.0)); ?>
-                        </pre>
-                        <pre>
-<?php printf("%42s %s\n", ">>> This","Week <<<"); ?>
-<?php printf("%20s %20s %20s %20s\n", "Interface", "Average Ping", "Average Download", "Average Upload"); ?>
-<?php printf("%20s %20s %20s %20s\n", "---------", "------------", "----------------", "--------------"); ?>
-<?php ksort($speedtest_avg); foreach ($speedtest_avg as $k => $v) { ?>
-<?php printf("%20s %20.3f %20.3f %20.3f\n", $k, $v["ping"], $v["download"], $v["upload"]); ?>
-<?php } ?>
                         </pre>
                     </div>
                     <hr />

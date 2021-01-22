@@ -111,6 +111,8 @@ sub dump_average {
     if($result) {
         my $data = {};
         foreach my $row (@$result) {
+            $row->{wire} = 'wired'  if $row->{internal_ip} eq '192.168.0.10';
+            $row->{wire} = 'wi-fi'  if $row->{internal_ip} eq '192.168.0.11';
             $data->{$row->{internal_ip}} = $row;
         }
         my $json_data = encode_json($data);
