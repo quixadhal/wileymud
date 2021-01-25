@@ -5,7 +5,7 @@ Requires=network-online.target
 Requires=postgresql.service
 After=network-online.target
 After=postgresql.service
-After=diskworld.service
+#After=diskworld.service
 
 [Service]
 Type=oneshot
