@@ -213,6 +213,8 @@ $WILEY_TIME = $mudlist["time"];
                 $fileurl = "gfx/mud/" . $mud["md5"] . ".png";
                 $filename = "/home/wiley/public_html/" . $fileurl;
                 $updatetime = 650336715; // The beginning of time for WileyMUD
+                $forever_stamp = date("Y-m-d", $updatetime);
+                $today_stamp = date("Y-m-d", time());
                 if(!file_exists($filename)) {
                     // No image file, pick a random one!
                     $home = getcwd();
@@ -233,6 +235,14 @@ $WILEY_TIME = $mudlist["time"];
                         $updatetime = filemtime($filename);
                     }
                 }
+                $update_stamp = date("Y-m-d", $updatetime);
+                if( $update_stamp === $today_stamp ) {
+                    $update_stamp = "today";
+                } else if( $update_stamp === $forever_stamp ) {
+                    $update_stamp = "... not!";
+                } else {
+                    $update_stamp = "on $update_stamp";
+                }
             ?>
                 <td align="center" style="<?php echo $opacity; ?>">
                     <div class="gallery-item">
@@ -251,7 +261,7 @@ $WILEY_TIME = $mudlist["time"];
                     <a href="telnet://<?php echo $mud["ipaddress"]; ?>:<?php echo $mud["port"]; ?>/">
                         <?php echo $mud["ipaddress"]; ?> <?php echo $mud["port"]; ?>
                     </a><br />
-                    Last seen on <?php echo date("Y-m-d", $updatetime); ?><br />
+                    Last seen <?php echo $update_stamp; ?><br />
                 </td>
             <?php
                 if($counter % 2) {
