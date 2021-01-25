@@ -582,3 +582,7 @@ I did set it to NOT run if we don't think we have a network connection...
                 graphviz hp2xx html2ps graphviz-doc python-pyparsing-doc
                 xhtml2ps
 
+2021-01-24
+    apt install mono-complete
+    apt instal npm
+
