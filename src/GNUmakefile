@@ -7,7 +7,7 @@ CC		= clang #gcc #g++
 MAKE		= make #gmake
 
 PRODBIN		= ../bin
-PRODOWN		= wiley.wiley
+PRODOWN		= wiley.users
 PRODMODE	= 0750
 
 BINDIR		= bin

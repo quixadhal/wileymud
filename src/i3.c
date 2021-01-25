@@ -2356,6 +2356,7 @@ void I3_process_chanlist_reply(I3_HEADER *header, char *s)
     I3_CHANNEL                             *channel;
     char                                    chan[MAX_INPUT_LENGTH];
     ROUTER_DATA                            *router;
+    int is_new = 0;
 
     log_info("I3_process_chanlist_reply: %s", "Got chanlist-reply packet!");
 
@@ -2377,6 +2378,7 @@ void I3_process_chanlist_reply(I3_HEADER *header, char *s)
     while (1) {
 	char                                   *next_ps2;
 
+        // ChanName
 	I3_get_field(ps, &next_ps);
 	remove_quotes(&ps);
 	strlcpy(chan, ps, MAX_INPUT_LENGTH);
@@ -2387,26 +2389,40 @@ void I3_process_chanlist_reply(I3_HEADER *header, char *s)
 	    if (!(channel = find_I3_channel_by_name(chan))) {
 		channel = new_I3_channel();
 		channel->I3_name = I3STRALLOC(chan);
-		log_info("New channel %s has been added from router %s", channel->I3_name,
-		      I3_ROUTER_NAME);
+                is_new = 1;
+		//log_info("New channel %s has been added from router %s", channel->I3_name, I3_ROUTER_NAME);
 	    } else {
-		log_info("Channel %s has been updated from router %s", channel->I3_name,
-		      I3_ROUTER_NAME);
+                is_new = 0;
+		//log_info("Channel %s has been updated from router %s", channel->I3_name, I3_ROUTER_NAME);
 	    }
 
+            // ChanMud
 	    ps += 2;
 	    I3_get_field(ps, &next_ps);
 	    remove_quotes(&ps);
 	    I3STRFREE(channel->host_mud);
 	    channel->host_mud = I3STRALLOC(ps);
 	    ps = next_ps;
+            // ChanStatus
 	    I3_get_field(ps, &next_ps);
 	    channel->status = atoi(ps);
+            log_info("I3 Channel %s: %s@%s (local %s) is %s",
+                    (is_new ? "ADDED" : "UPDATED"),
+                    channel->I3_name,
+                    channel->host_mud,
+                    ((channel->local_name && channel->local_name[0]) ? channel->local_name : "--"),
+                    (channel->status == 0 ? "public" : "private"));
 	} else {
 	    if ((channel = find_I3_channel_by_name(chan)) != NULL) {
-		if (channel->local_name && channel->local_name[0] != '\0')
-		    log_info("Locally configured channel %s has been purged from router %s",
-			  channel->local_name, I3_ROUTER_NAME);
+		if (channel->local_name && channel->local_name[0] != '\0') {
+		    //log_info("Locally configured channel %s has been purged from router %s", channel->local_name, I3_ROUTER_NAME);
+                }
+                log_info("I3 Channel %s: %s@%s (local %s) is %s",
+                        "DELETED",
+                        channel->I3_name,
+                        channel->host_mud,
+                        ((channel->local_name && channel->local_name[0]) ? channel->local_name : "--"),
+                        (channel->status == 0 ? "public" : "private"));
 		destroy_I3_channel(channel);
 		I3_write_channel_config();
 	    }
