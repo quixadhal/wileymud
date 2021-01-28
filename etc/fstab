@@ -1,0 +1,20 @@
+# /etc/fstab: static file system information.
+#
+# Use 'blkid' to print the universally unique identifier for a
+# device; this may be used with UUID= as a more robust way to name devices
+# that works even if disks are added and removed. See fstab(5).
+#
+# <file system> <mount point>   <type>  <options>       <dump>  <pass>
+# / was on /dev/sda2 during installation
+UUID=cd484036-0e0b-48e9-94e9-45c98ff91974 /               ext4    noatime,errors=remount-ro 0       1
+# /boot/efi was on /dev/sda1 during installation
+UUID=71E7-BC65  /boot/efi       vfat    noatime,umask=0077      0       1
+# swap was on /dev/sda3 during installation
+UUID=bd4dc695-a676-4207-b790-c985548fadee none            swap    sw              0       0
+/dev/sr0        /media/cdrom0   udf,iso9660 user,noauto     0       0
+
+# Disk model: WDC WD40EFRX-68N
+UUID=c9465637-14f2-4ea8-8724-9a5278ac74f2 /storage  ext4    defaults,noatime 0   2
+
+//192.168.0.10/Videos       /share/videos       cifs    user,uid=1001,gid=100,_netdev,x-systemd.after=network-online.target,mapposix,vers=3.0,credentials=/home/wiley/.smbpasswd 0   0
+//192.168.0.10/LeninBackup  /share/leninbackup  cifs    user,uid=1001,gid=100,_netdev,x-systemd.after=network-online.target,mapposix,vers=3.0,credentials=/home/wiley/.smbpasswd 0   0

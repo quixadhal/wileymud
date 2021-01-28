@@ -1,0 +1,19 @@
+[Unit]
+Description=Network samba shares
+Documentation=
+Requires=network-online.target
+After=network-online.target
+
+[Service]
+Type=oneshot
+User=root
+Group=root
+Environment=LANG=en_US.utf8
+Environment=LC_ALL=en_US.utf8
+WorkingDirectory=/share
+ExecStartPre=/usr/bin/sleep 30
+ExecStart=/usr/bin/mount -a -t cifs
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target
