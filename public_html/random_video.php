@@ -37,6 +37,8 @@
         'https://www.youtube.com/watch?v=8TToLgW7zuc&list=RD8TToLgW7zuc&start_radio=1&rv=8TToLgW7zuc',              // Glenn Frey
         'https://www.youtube.com/watch?v=hrIpQbnAoyQ&list=RDhrIpQbnAoyQ&start_radio=1',                             // Duke Ellington
         'https://www.youtube.com/watch?v=O5omkuVdwUY&list=RDO5omkuVdwUY&start_radio=1',                             // Stereopony
+        'https://www.youtube.com/watch?v=KJzWGkgFcTU&list=RDKJzWGkgFcTU&start_radio=1',                             // Squirrel Nut Zippers
+        'https://www.youtube.com/watch?v=QrHCn69rppg&list=RDQrHCn69rppg&start_radio=1',                             // Black Sun Empire
         'https://www.youtube.com/watch?v=OE3RwpwPGJY',                                                              // Kirisu Mafuyu character song
         'https://www.youtube.com/watch?v=mz11ntMAGms',                                                              // Taeko Onuki Symphonic Concert
         'https://www.youtube.com/watch?v=dDInMXz0JBc',                                                              // Puella Magi Madoka Magica
