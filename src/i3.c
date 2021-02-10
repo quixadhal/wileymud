@@ -1525,12 +1525,17 @@ bool I3_write_packet(char *msg)
 
     bytes_sent += oldsize + 4;
     if (packetdebug) {
-	log_info("Sending: %d Bytes...", oldsize);
+	log_info("I3_PACKET Sending: %d Bytes...", oldsize);
     }
     check = send(I3_socket, msg, oldsize + 4, 0);
     if (packetdebug) {
-	log_info("Sent: %d Bytes...", check);
-	log_info("Packet Sent: %s", msg + 4);
+        // Normally, this works just fine, but for some bizzare reason that
+        // I don't understand yet.. .if you have packetdebug enabled before
+        // the I3 connection has been established, the above send() will
+        // return -1 and fail.
+        // Oh, and this ONLY happens for *Kelly.  *dalet is fine with it.
+	log_info("I3_PACKET Sent: %d Bytes...", check);
+	log_info("I3_PACKET Packet Sent: %s", msg + 4);
     }
 
 #if 0
@@ -1550,7 +1555,7 @@ bool I3_write_packet(char *msg)
 #endif
 
     if ( check == 0 ) {
-	log_error( "EOF encountered on socket write." );
+	log_error( "I3_PACKET EOF encountered on socket write." );
 	I3_connection_close(TRUE);
 	return FALSE;
     }
@@ -1563,22 +1568,22 @@ bool I3_write_packet(char *msg)
             //case EAGAIN:
             case EWOULDBLOCK:
                 if (packetdebug) {
-                    log_info("Socket would block, retrying later.");
+                    log_info("I3_PACKET Socket would block, retrying later.");
                 }
 	        return TRUE;
                 break;
             case EMSGSIZE:
-                log_error( "Message too big for tcp/ip?" );
+                log_error( "I3_PACKET Message too big for tcp/ip?" );
                 I3_connection_close(TRUE);
                 return FALSE;
                 break;
             case ENOTCONN:
-                log_error( "Socket not actualy connected?" );
+                log_error( "I3_PACKET Socket not actualy connected?" );
                 I3_connection_close(TRUE);
                 return FALSE;
                 break;
             default:
-                log_error( "Socket error: %d (%s)", errno, strerror(errno) );
+                log_error( "I3_PACKET Socket error: %d (%s)", errno, strerror(errno) );
                 I3_connection_close(TRUE);
                 return FALSE;
         }
@@ -4520,7 +4525,7 @@ void I3_parse_packet(void)
 	return;
 
     if (packetdebug)
-	log_info("Packet received: %s", ps);
+	log_info("I3_PACKET Packet received: %s", ps);
 
     ps += 2;
     I3_get_field(ps, &next_ps);
@@ -4657,7 +4662,7 @@ void I3_handle_packet(char *packetBuffer)
     ps = packetBuffer;
 
     if (packetdebug)
-	log_info("Packet received: %s", ps);
+	log_info("I3_PACKET Packet received: %s", ps);
 
     ps += 2;
     I3_get_field(ps, &next_ps);
@@ -15258,7 +15263,7 @@ void i3_loop(void)
 	I3_input_pointer += ret;
 	bytes_received += ret;
 	if (packetdebug)
-	    log_info("Bytes received: %d", ret);
+	    log_info("I3_PACKET Bytes received: %d", ret);
     }
 
     memcpy(&size, I3_input_buffer, 4);
@@ -16319,9 +16324,9 @@ I3_CMD(I3_debug)
     packetdebug = !packetdebug;
 
     if (packetdebug)
-	i3_printf(ch, "Packet debugging enabled.\r\n");
+	i3_printf(ch, "I3_PACKET Packet debugging enabled.\r\n");
     else
-	i3_printf(ch, "Packet debugging disabled.\r\n");
+	i3_printf(ch, "I3_PACKET Packet debugging disabled.\r\n");
 
     return;
 }
@@ -16508,6 +16513,8 @@ I3_CMD(I3_addchan)
 
     if ((channel = find_I3_channel_by_name(arg)) != NULL) {
 	i3_printf(ch, "%%^RED%%^%%^BOLD%%^%s is already hosted by %s.%%^RESET%%^\r\n", channel->I3_name, channel->host_mud);
+        //i3_printf(ch, "%%^RED%%^%%^BOLD%%^But we will try adding it anyways...%%^RESET%%^\r\n");
+        //I3_send_channel_add(ch, arg, type);
 	return;
     }
 
@@ -16575,6 +16582,8 @@ I3_CMD(I3_removechan)
 
     if (strcasecmp(channel->host_mud, this_i3mud->name)) {
 	i3_printf(ch, "%%^RED%%^%%^BOLD%%^%s does not host this channel and cannot remove it.%%^RESET%%^\r\n", this_i3mud->name);
+        //i3_printf(ch, "%%^RED%%^%%^BOLD%%^But we will try removing it anyways...%%^RESET%%^\r\n");
+        //I3_send_channel_remove(ch, channel);
 	return;
     }
 
