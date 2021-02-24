@@ -586,3 +586,24 @@ I did set it to NOT run if we don't think we have a network connection...
     apt install mono-complete
     apt instal npm
 
+2021-02-04
+    apt install libgpg-error-dev libgpgme-dev
+    pip3 list --outdated --format=freeze | grep -v '^\-e' | cut -d = -f 1  | xargs -n1 pip3 install -U
+    pip3 install -U python-dotenv discord.py
+
+2021-02-06
+    apt install git libopus-dev libffi-dev libsodium-dev ffmpeg 
+        build-essential libncursesw5-dev libgdbm-dev libc6-dev
+        zlib1g-dev libsqlite3-dev tk-dev libssl-dev openssl
+
+2021-02-07
+    apt install openjdk-17-jdk openjdk-17-jre openjdk-17-dbg
+        openjdk-17-doc openjdk-17-demo openjdk-17-source
+        libjs-jquery-ui-docs fonts-ipafont-gothic fonts-ipafont-mincho
+        fonts-wqy-microhei fonts-wqy-zenhei fonts-indic
+    apt install maven maven-debian-helper
+
+2021-02-23
+    apt install dos2unix
+    apt install jikespg
+

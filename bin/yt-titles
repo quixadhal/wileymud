@@ -1,0 +1,223 @@
+#!/usr/bin/perl -w
+
+use utf8;
+use strict;
+
+my $GOOGLE_API_KEY_FILE = '/home/wiley/.google-api.key';
+my $AUTOPLAYLIST_FILE = '/home/wiley/public_html/autoplaylist.txt';
+my $RESULT_FILE = '/home/wiley/public_html/autoplaylist_titles.txt';
+no warnings 'utf8';
+use English qw( −no_match_vars );
+use JSON;
+use HTTP::Request::Common qw(POST);
+use HTML::Entities;
+use LWP::UserAgent;
+use Time::HiRes qw(sleep time alarm);
+
+my $api_key = undef;
+my $lwp = LWP::UserAgent->new( cookie_jar => {} );
+   $lwp->timeout(15);
+   $lwp->agent('User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36');
+   $URI::ABS_ALLOW_RELATIVE_SCHEME = 1;
+   $URI::ABS_REMOTE_LEADING_DOTS = 1; 
+   $lwp->max_redirect(5);
+
+sub read_file {
+    my $filename = shift;
+
+    my @urls = ();
+
+    open FP, "$filename" or die "Cannot find file $filename $!";
+    while(my $url = <FP>) {
+        chomp $url;
+        push @urls, $url;
+    }
+    close FP;
+
+    return @urls;
+}
+
+sub append_file {
+    my $filename = shift;
+    my $output = shift;
+
+    return undef if !defined $filename or !defined $output;
+    open FP, ">>$filename" or die "Cannot open file $filename for appending $!";
+    print FP $output;
+    close FP;
+    return $output;
+}
+
+sub read_google_api {
+    my $key = undef;
+    my $found = undef;
+    open FP, "$GOOGLE_API_KEY_FILE" or die "Cannot find API key file $GOOGLE_API_KEY_FILE: $!";
+    while($key = <FP>) {
+        chomp $key;
+        $key =~ s/^\s+|\s+$//g;
+        if (length $key == 39) {
+            $found = 1;
+            last;
+        }
+    }
+    close FP;
+    die "No valid key found in $GOOGLE_API_KEY_FILE!" if !defined $found;
+    return $key;
+}
+
+sub time_parts {
+    my $seconds = shift;
+
+    return "0:00" if !defined $seconds;
+
+    my $days    = int( $seconds / (60 * 60 * 24) );
+    my $hours   = int( $seconds / (60 * 60) );
+    my $minutes = int( $seconds / 60 );
+    $hours      = $hours % 24;
+    $minutes    = $minutes % 60;
+    $seconds    = $seconds % 60;
+
+    if( defined $days and $days > 0 ) {
+        return sprintf "%d days, %d:%02d:%02d", $days, $hours, $minutes, $seconds;
+    } elsif( defined $hours and $hours > 0 ) {
+        return sprintf "%d:%02d:%02d", $hours, $minutes, $seconds;
+    } else {
+        return sprintf "%d:%02d", $minutes, $seconds;
+    }
+}
+
+sub get_page {
+    my $url = shift;
+
+    return undef if !defined $url;
+    return undef if !defined $lwp;
+
+    my $request = HTTP::Request->new(GET => $url);
+    my $response = undef;
+
+    if($request) {
+        eval {
+            local $SIG{ALRM} = sub { die "Exceeded Timeout of 15 seconds for $url\n" };
+            alarm 15;
+            $response = $lwp->request($request);
+            alarm 0;
+        };
+        warn timestamp() . " Timeout" if($EVAL_ERROR and ($EVAL_ERROR =~ /^Exceeded Timeout/));
+
+        if( (defined $response) and $response->is_success ) {
+            return $response->content;
+        }
+    }
+    return undef;
+}
+
+sub get_id {
+    my $url = shift;
+    my $page = shift;
+
+    if( defined $url ) {
+        #https://www.youtube.com/watch?v=PJjTHgJ6rQo
+        $url =~ /watch\?v=([A-Za-z0-9_-]{11})/i;
+        my ($id) =  ($1);
+        return $id if defined $id;
+
+        #https://www.youtube.com/playlist?list=PLGB6RkFB7ZmM3KmoGYdYD3KfSF24MTHZV
+        $url =~ /playlist\?list=([A-Za-z0-9_-]{34})/i;
+        ($id) =  ($1);
+        return $id if defined $id;
+    }
+    if( defined $page ) {
+        $page =~ /<link\s+rel=\"canonical\"\s+href=\".*?\/watch\?v=([^\"\&]*)\">/i;
+        my ($id) =  ($1);
+        return $id if defined $id;
+    }
+
+    return undef;
+}
+
+sub get_youtube_api {
+    my $id = shift;
+    return (undef, undef) if !defined $id;
+
+    my $page = undef;
+    my $title = undef;
+    my $duration = undef;
+
+    $api_key = read_google_api() if !defined $api_key;
+    #print timestamp() . " Got API key\n" if defined $do_debug and defined $api_key;
+
+    my $data_url = "https://www.googleapis.com/youtube/v3/videos?part=contentDetails%2Csnippet&id=$id&key=$api_key";
+    my $request = HTTP::Request->new(GET => $data_url);
+    my $response = undef;
+    my $data = undef;
+    #print timestamp() . " Got request\n" if $do_debug;
+    if($request) {
+        eval {
+            local $SIG{ALRM} = sub { die "Exceeded Timeout of 15 seconds for URL\n" };
+            alarm 15;
+            $response = $lwp->request($request);
+            alarm 0;
+        };
+        warn timestamp() . " Timeout" if($EVAL_ERROR and ($EVAL_ERROR =~ /^Exceeded Timeout/));
+        if( (defined $response) and $response->is_success ) {
+            #$data = decode_json encode_utf8($response->content);
+            #print timestamp() . " Got response\n" if $do_debug;
+            $data = decode_json $response->content;
+        } elsif( defined $response ) {
+            #print timestamp() . " Response:".Dumper($response)."\n" if $do_debug;
+        }
+    }
+    #    "duration": "PT1H52M28S",
+    if( defined $data ) {
+        #print timestamp() . " Got JSON data:".Dumper($data)."\n" if $do_debug;
+        if( defined $data->{'items'} ) {
+            if( defined $data->{'items'}[0] ) {
+                if( defined $data->{'items'}[0]->{'snippet'} ) {
+                    if( exists $data->{'items'}[0]->{'snippet'}->{'title'} ) {
+                        $title = $data->{'items'}[0]->{'snippet'}->{'title'};
+                        $title = decode_entities($title) if defined $title;
+                    }
+                }
+                if( defined $data->{'items'}[0]->{'contentDetails'} ) {
+                    if( exists $data->{'items'}[0]->{'contentDetails'}->{'duration'} ) {
+                        my $funky = $data->{'items'}[0]->{'contentDetails'}->{'duration'};
+                        $funky =~ /PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?/;
+                        my ($hours, $minutes, $seconds) = ($1, $2, $3);
+                        $hours = 0 if !defined $hours or $hours =~ /[^\d]/;
+                        $minutes = 0 if !defined $minutes or $minutes =~ /[^\d]/;
+                        $seconds = 0 if !defined $seconds or $seconds =~ /[^\d]/;
+                        $duration = time_parts(($hours * 60 * 60) + ($minutes * 60) + $seconds);
+                    }
+                }
+            }
+        }
+    }
+    return ($title, $duration);
+}
+
+if( !-f $RESULT_FILE ) {
+    open FP, ">$RESULT_FILE" or die "Cannot open file $RESULT_FILE for writing $!";
+    close FP;
+}
+my @url_list = read_file($AUTOPLAYLIST_FILE);
+my @ondisk_list = read_file($RESULT_FILE);
+
+printf("Found %d urls left to process, out of %d total.\n", (scalar @url_list) - (scalar @ondisk_list), (scalar @url_list));
+
+my $counter = 0;
+foreach my $url (@url_list) {
+    my $page = undef; #get_page($url);
+    my $id = get_id($url, $page);
+    next if grep {/$id/} @ondisk_list;
+
+    $counter++;
+    my ($title, $duration) = get_youtube_api($id);
+    push @ondisk_list, append_file($RESULT_FILE, sprintf("%-34s %s\n", $id, $title));
+    printf("%34s %s\n", $id, $title);
+
+    # Google API limits...
+    sleep 0.15;                         # 10 requests per second
+    sleep 9.0 if ($counter % 100) == 0; # And 100 requests per 100 seconds
+    last if $counter >= 8000;           # And 10000 per day
+}
+

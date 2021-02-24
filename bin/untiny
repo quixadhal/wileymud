@@ -9,7 +9,7 @@ use Time::HiRes qw(sleep time alarm);
 use POSIX qw(strftime);
 use Encode qw(encode encode_utf8);
 no warnings 'utf8';
-use English;
+use English qw( −no_match_vars );
 use Data::Dumper;
 use HTTP::Request::Common qw(POST);
 use HTML::Entities;
