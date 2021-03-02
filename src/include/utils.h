@@ -337,6 +337,8 @@ do                                               \
 #define IS_PARCHED(ch)          (GET_COND(ch, THIRST) < 2)
 #define IS_HOPELESSLY_DRUNK(ch) (GET_COND(ch, DRUNK) > 10)
 
+#define HAS_JSON(ch)  (IS_SET((ch)->specials.new_act, NEW_PLR_JSON))
+
  int                              MobVnum(struct char_data *c);
  int                              ObjVnum(struct obj_data *o);
  int                              percent(int value, int total);

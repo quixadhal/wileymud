@@ -37,6 +37,7 @@
 #include "sql.h"
 #include "reboot.h"
 #include "weather.h"        // time_info_data struct
+#include "json.h"
 #define _ACT_INFO_C
 #include "act_info.h"
 
@@ -925,7 +926,7 @@ void list_char_to_char(struct char_data *list, struct char_data *ch, int mode)
     }
 }
 
-void do_look(struct char_data *ch, const char *argument, int cmd)
+void _normal_look(struct char_data *ch, const char *argument, int cmd)
 {
     char                                    buffer[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
     char                                    arg1[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
@@ -977,9 +978,9 @@ void do_look(struct char_data *ch, const char *argument, int cmd)
 	       (!IS_AFFECTED(ch, AFF_TRUE_SIGHT))) {
 	// cprintf(ch, "\x1b[0;36m%s\x1b[0m\r\n", real_roomp(ch->in_room)->name); /* ANSI CYAN */
         if(IS_IMMORTAL(ch))
-	    cprintf(ch, "[#%d] %s\r\n", ch->in_room, real_roomp(ch->in_room)->name);	/* ANSI CYAN */
+            cprintf(ch, "[#%d] %s\r\n", ch->in_room, real_roomp(ch->in_room)->name);	/* ANSI CYAN */
         else
-	    cprintf(ch, "%s\r\n", real_roomp(ch->in_room)->name);	/* ANSI CYAN */
+            cprintf(ch, "%s\r\n", real_roomp(ch->in_room)->name);	/* ANSI CYAN */
 	cprintf(ch, "\r\nIt is quite dark here...\r\n");
 	if ((IS_AFFECTED(ch, AFF_INFRAVISION)) || BRIGHT_MOON(ch->in_room)) {
 	    list_char_in_room(real_roomp(ch->in_room)->people, ch);
@@ -1272,9 +1273,9 @@ void do_look(struct char_data *ch, const char *argument, int cmd)
 	    case 8:{
 		    // cprintf(ch, "\x1b[0;36m%s\x1b[0m\r\n", real_roomp(ch->in_room)->name); /* ANSI CYAN */
                     if(IS_IMMORTAL(ch))
-	                cprintf(ch, "[#%d] %s\r\n", ch->in_room, real_roomp(ch->in_room)->name);	/* ANSI CYAN */
+                        cprintf(ch, "[#%d] %s\r\n", ch->in_room, real_roomp(ch->in_room)->name);	/* ANSI CYAN */
                     else
-		        cprintf(ch, "%s\r\n", real_roomp(ch->in_room)->name);	/* ANSI CYAN */
+                        cprintf(ch, "%s\r\n", real_roomp(ch->in_room)->name);	/* ANSI CYAN */
 		    if (!IS_SET(ch->specials.act, PLR_BRIEF))
 			cprintf(ch, "%s", real_roomp(ch->in_room)->description);
 
@@ -1331,9 +1332,9 @@ void do_look(struct char_data *ch, const char *argument, int cmd)
 
 		    // cprintf(ch, "\x1b[0;36m%s\x1b[0m\r\n", real_roomp(ch->in_room)->name); /* ANSI CYAN */
                     if(IS_IMMORTAL(ch))
-	                cprintf(ch, "[#%d] %s\r\n", ch->in_room, real_roomp(ch->in_room)->name);	/* ANSI CYAN */
+                        cprintf(ch, "[#%d] %s\r\n", ch->in_room, real_roomp(ch->in_room)->name);	/* ANSI CYAN */
                     else
-		        cprintf(ch, "%s\r\n", real_roomp(ch->in_room)->name);	/* ANSI CYAN */
+                        cprintf(ch, "%s\r\n", real_roomp(ch->in_room)->name);	/* ANSI CYAN */
 		    cprintf(ch, "%s", real_roomp(ch->in_room)->description);
 
 		    if (!IS_NPC(ch)) {
@@ -1376,6 +1377,22 @@ void do_look(struct char_data *ch, const char *argument, int cmd)
 		break;
 	}
     }
+}
+
+void do_look(struct char_data *ch, const char *argument, int cmd)
+{
+    if (DEBUG > 1)
+	log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch),
+		 VNULL(argument), cmd);
+
+    if (!ch->desc)
+	return;
+
+    if(HAS_JSON(ch))
+        // _json_look(ch, argument, cmd);
+        _normal_look(ch, argument, cmd);
+    else
+        _normal_look(ch, argument, cmd);
 }
 
 /* end of look */

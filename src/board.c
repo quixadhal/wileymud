@@ -740,6 +740,7 @@ int board_special(struct char_data *ch, int cmd, char *arg) {
         case CMD_help:
         case CMD_idea:
         case CMD_info:
+        case CMD_json:
         case CMD_north:
         case CMD_nosummon:
         case CMD_noteleport:

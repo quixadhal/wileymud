@@ -795,8 +795,7 @@ void do_stat(struct char_data *ch, const char *argument, int cmd)
 	cprintf(ch, "%s [#%d], in Zone %s [#%d] is %s.\r\n",
 		rm->name, rm->number, zone_table[rm->zone].name, rm->zone, buf2);
 	if (rm->tele_targ > 0) {			       /* teleport room */
-	    double                                  ttime =
-		(double)rm->tele_time / (double)10.0;
+	    double ttime = (double)rm->tele_time / (double)10.0;
 
 	    rp = real_roomp(rm->tele_targ);
 	    cprintf(ch, "Teleports to %s [#%d] every %3.1lf second%s",
@@ -805,8 +804,7 @@ void do_stat(struct char_data *ch, const char *argument, int cmd)
 	}
 	if ((rm->sector_type == SECT_WATER_SWIM) || (rm->sector_type == SECT_WATER_NOSWIM)) {
 	    if (rm->river_dir != -1 && rm->dir_option[rm->river_dir]) {
-		double                                  ttime =
-		    (double)rm->river_speed / (double)10.0;
+		double ttime = (double)rm->river_speed / (double)10.0;
 
 		rp = real_roomp(rm->dir_option[rm->river_dir]->to_room);
 		cprintf(ch,

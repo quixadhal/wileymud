@@ -80,7 +80,7 @@ tOBJ =	mob_actions.o spec_procs.o breath_weapons.o tracking.o act_comm.o \
 	trap.o utils.o weather.o whod.o events.o \
 	ban.o sha256.o imc.o i3.o sql.o \
 	stringmap.o scheduler.o crc32.o reboot.o rent.o \
-	help.o base64.o 2fa.o
+	help.o base64.o 2fa.o json.o
 OBJ =	$(addprefix obj/, $(tOBJ))
 
 tIDOBJ		= id_close.o id_open.o id_parse.o \
@@ -232,6 +232,14 @@ obj/reception.o: reception.c include/global.h include/bug.h include/comm.h \
   include/spells.h include/multiclass.h include/act_social.h \
   include/spec_procs.h include/rent.h include/weather.h \
   include/reception.h
+obj/json.o: json.c include/global.h include/bug.h include/version.h \
+  include/utils.h include/comm.h include/interpreter.h include/handler.h \
+  include/db.h include/spells.h include/mudlimits.h include/trap.h \
+  include/hash.h include/spell_parser.h include/whod.h \
+  include/multiclass.h include/modify.h include/act_wiz.h \
+  include/act_skills.h include/spec_procs.h include/tracking.h \
+  include/scheduler.h include/i3.h include/sql.h include/reboot.h \
+  include/weather.h include/json.h
 obj/magic_utils.o: magic_utils.c include/global.h include/bug.h \
   include/utils.h include/comm.h include/db.h include/spells.h \
   include/handler.h include/mudlimits.h include/fight.h \
@@ -353,7 +361,7 @@ obj/interpreter.o: interpreter.c include/global.h include/i3.h include/bug.h \
   include/modify.h include/whod.h include/events.h include/random.h \
   include/board.h include/multiclass.h include/handler.h \
   include/reception.h include/tracking.h include/ban.h include/sql.h \
-  include/reboot.h include/stringmap.h include/help.h \
+  include/reboot.h include/stringmap.h include/help.h include/json.h \
   include/interpreter.h
 obj/sha256.o: sha256.c include/sha256.h
 obj/mob_actions.o: mob_actions.c include/global.h include/bug.h \
@@ -394,7 +402,7 @@ obj/act_info.o: act_info.c include/global.h include/bug.h include/version.h \
   include/multiclass.h include/modify.h include/act_wiz.h \
   include/act_skills.h include/spec_procs.h include/tracking.h \
   include/scheduler.h include/i3.h include/sql.h include/reboot.h \
-  include/weather.h include/act_info.h
+  include/weather.h include/json.h include/act_info.h
 obj/act_skills.o: act_skills.c include/global.h include/bug.h include/utils.h \
   include/comm.h include/db.h include/handler.h include/interpreter.h \
   include/multiclass.h include/spells.h include/spell_parser.h \

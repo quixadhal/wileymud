@@ -60,6 +60,7 @@ extern char                            *crypt(const char *key, const char *salt)
 #include "reboot.h"
 #include "stringmap.h"
 #include "help.h"
+#include "json.h"
 #define _INTERPRETER_C
 #include "interpreter.h"
 
@@ -132,7 +133,7 @@ const char                             *command[] = {
     "event", "zpurge", "ticks", "bury", "desecrate",
     "setreboot", "home", "bandage", "unban", "immtrack",
     "ansimap", "version", "autoexit", "reboot", "checkurl",
-    "hint",
+    "hint", "json",
     "\n"
 };
 
@@ -893,6 +894,7 @@ void assign_command_pointers(void)
     COMMANDO(CMD_info, POSITION_SLEEPING, do_info, 0);
     COMMANDO(CMD_insult, POSITION_RESTING, do_insult, 0);
     COMMANDO(CMD_inventory, POSITION_DEAD, do_inventory, 0);
+    COMMANDO(CMD_json, POSITION_DEAD, do_json, 0);
     COMMANDO(CMD_junk, POSITION_RESTING, do_junk, 1);
     COMMANDO(CMD_kick, POSITION_FIGHTING, do_kick, 1);
     COMMANDO(CMD_kill, POSITION_FIGHTING, do_kill, 0);

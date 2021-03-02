@@ -729,6 +729,7 @@ struct room_data {
 #define NEW_PLR_PAGER     (1<<6)			       /* Use the Game pager or not */
 #define NEW_PLR_LOGS      (1<<7)			       /* Player is writing tothe board */
 #define NEW_PLR_AUTOEXIT  (1<<8)			       /* Player does exit command after move */
+#define NEW_PLR_JSON      (1<<9)			       /* Player sees JSON instead of normal text */
 
 #define PRIV_GIVE_PRIV  (1<<0)				       /* can this player give privs */
 #define PRIV_FORCE	(1<<1)
