@@ -247,4 +247,11 @@ typedef struct mobs {
     mob                                    *Mob;	       /* list of mob data */
 } mobs;
 
+typedef struct special {
+    int     ProgType;
+    int     Number;
+    char    *FunctionName;
+    char    *Description;
+} special;
+
 #endif

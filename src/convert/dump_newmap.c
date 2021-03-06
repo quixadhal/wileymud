@@ -19,6 +19,10 @@ int     DidStartRoom = 0;
 
 void dump_as_newmap(zones *Zones, rooms *Rooms, objects *Objects, mobs *Mobs, shops *Shops)
 {
+}
+
+void new_dump_as_newmap(zones *Zones, rooms *Rooms, objects *Objects, mobs *Mobs, shops *Shops)
+{
     RoomsLeft = Rooms->Count;
 
     if (!Quiet) {

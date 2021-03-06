@@ -63,7 +63,7 @@ char                                   *get_mem(long Count, long Size)
 {
     char                                   *Memory;
 
-    if (!(Memory = (char *)malloc(Count * Size)))
+    if (!(Memory = (char *)calloc(Count, Size)))
 	log_fatal("Cannot allocate %d bytes!", Count * Size);
     return Memory;
 }

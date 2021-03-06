@@ -30,6 +30,7 @@ OPT_FLAG    = -O0 #-pipe -O3 #-Wuninitialized
 DEBUG_FLAG	= -g
 EFENCE      = #-lpthread -lefence
 PROF_FLAG   = #-pg
+CJSON       = -lcjson
 
 DYN_FLAG	= #-rdynamic
 INC		= -Iinclude
@@ -49,7 +50,7 @@ HDRS =	bug.h utils.h make_index.h main.h formats.h getopt.h \
 	dump_report.h dump_map.h dump_isles.h dump_fr.h dump_afk.h dump_smaug.h \
 	dump_nightmare.h dump_ds.h dump_json.h dump_newmap.h
 HDR =	$(addprefix include/, $(HDRS))
-LIB =	$(NEED_CRYPT) $(NEED_COMPAT) $(NEED_SSL) $(EFENCE)
+LIB =	$(NEED_CRYPT) $(NEED_COMPAT) $(NEED_SSL) $(EFENCE) $(CJSON)
 AUX = GNUmakefile
 
 all : tests

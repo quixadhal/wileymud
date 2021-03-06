@@ -89,9 +89,15 @@
 #define SECT_AIR		8
 #define SECT_UNDERWATER		9
 
+#define SPECIAL_ROOM    1
+#define SPECIAL_OBJECT  2
+#define SPECIAL_MOB     3
+
 #ifndef _PARSE_WILEY_C
 extern const int                        SectorCosts[];
 extern const int                        RevDir[];
+extern const int       SpecialCount;
+extern const special   Specials[];
 #endif
 
 /*
@@ -748,6 +754,7 @@ extern const int                        RevDir[];
 #define TYPE_SMITE                   218
 #define TYPE_SUFFERING               220
 #define TYPE_HUNGER                  221
+
 zones                                  *load_zones(char *infile);
 char                                   *zone_reset_name(int Reset);
 int                                     remap_zone_vnum(zones *Zones, int VNum);

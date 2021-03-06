@@ -93,7 +93,7 @@ void make_zone_report(zones *Zones, rooms *Rooms, objects *Objects, mobs *Mobs, 
 		    case ZONE_CMD_DOOR:
 			fprintf(ofp, "Reset %s door of \"%s\"[#%d] to %s\n",
 				exit_name(Zones->Zone[i].Cmds[j].Arg[ZONE_DOOR_EXIT]),
-				room_name(Rooms, Zones->Zone[i].Cmds[j].Arg[ZONE_ROOM]),
+				room_name(Rooms, Zones->Zone[i].Cmds[j].Arg[ZONE_DOOR_ROOM]),
 				Zones->Zone[i].Cmds[j].Arg[ZONE_DOOR_ROOM],
 				doorstate_name(Zones->Zone[i].Cmds[j].Arg[ZONE_DOOR_STATE]));
 			break;
@@ -101,15 +101,15 @@ void make_zone_report(zones *Zones, rooms *Rooms, objects *Objects, mobs *Mobs, 
 			fprintf(ofp, "Remove Object \"%s\"[#%d] from \"%s\"[#%d]\n",
 				obj_name(Objects, Zones->Zone[i].Cmds[j].Arg[ZONE_REMOVE_OBJ]),
 				Zones->Zone[i].Cmds[j].Arg[ZONE_REMOVE_OBJ],
-				room_name(Rooms, Zones->Zone[i].Cmds[j].Arg[ZONE_ROOM]),
+				room_name(Rooms, Zones->Zone[i].Cmds[j].Arg[ZONE_REMOVE_ROOM]),
 				Zones->Zone[i].Cmds[j].Arg[ZONE_REMOVE_ROOM]);
 			break;
 		    case ZONE_CMD_LEAD:
 			fprintf(ofp,
 				"Load Mobile \"%s\"[#%d] to \"%s\"[#%d], led by Mobile \"%s\"[#%d]\n",
 				mob_name(Mobs, Zones->Zone[i].Cmds[j].Arg[ZONE_MOBILE]),
-				Zones->Zone[i].Cmds[j].Arg[ZONE_MOBILE], room_name(Rooms,
-										   LastLoc),
+				Zones->Zone[i].Cmds[j].Arg[ZONE_MOBILE],
+                                room_name(Rooms, LastLoc),
 				LastLoc, mob_name(Mobs, LeaderMob), LeaderMob);
 			LastMob = Zones->Zone[i].Cmds[j].Arg[ZONE_MOBILE];
 			break;
