@@ -1543,7 +1543,7 @@ void do_exits(struct char_data *ch, const char *argument, int cmd)
 	"Up   ",
 	"Down "
     };
-    const int                               reverse_dir[6] = { 2, 3, 0, 1, 6, 5 };
+    const int                               reverse_dir[6] = { 2, 3, 0, 1, 5, 4 };
     struct room_direction_data             *this_exit = NULL;
     struct room_data                       *this_room = NULL;
     int                                     this_zone = 0;
