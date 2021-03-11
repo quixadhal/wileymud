@@ -4135,7 +4135,8 @@ S
 #70
 Drow Outpost~
 7099 31 2
-P 0 7008 1 7001   * key in pool
+O 0 7001 1 7001   * have to load the pool first, duh
+P 1 7008 1 7001   * key in pool
 M 0 7000 6 7011   * Drow Fighter
 E 1 6404 100 5
 E 1 6405 100 10
@@ -4646,7 +4647,7 @@ D 0 9867 0 2
 D 0 9879 2 2
 D 0 9880 2 2
 D 0 9881 2 2
-D 0 9786 5 1
+* This appears to be broken D 0 9786 5 1
 D 0 9874 0 2
 D 0 9875 0 2
 D 0 9876 0 2
