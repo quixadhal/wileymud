@@ -825,5 +825,6 @@ void                                    check_room_zone_mismatch(zones *Zones, r
 void                                    check_object_zone_mismatch(zones *Zones,
 								   objects *Objects);
 void                                    check_mob_zone_mismatch(zones *Zones, mobs *Mobs);
+EXIT *get_reverse_exit(EXIT *this_exit, rooms *Rooms);
 
 #endif

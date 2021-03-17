@@ -17,7 +17,7 @@ cJSON *process_room_teleport(cJSON *this_room, rooms *Rooms, int i);
 cJSON *process_room_river(cJSON *this_room, rooms *Rooms, int i);
 cJSON *process_room_sounds(cJSON *this_room, rooms *Rooms, int i);
 cJSON *process_room_extra_descriptions(cJSON *this_room, rooms *Rooms, int i);
-cJSON *process_room_exits(cJSON *this_room, rooms *Rooms, int i, objects *Objects);
+cJSON *process_room_exits(cJSON *this_room, rooms *Rooms, int i, zones *Zones, objects *Objects);
 int find_room_resets(rooms *Rooms, int i, zones *Zones, int **reset_checkoffs);
 cJSON *process_room_resets(cJSON *this_room, rooms *Rooms, int i, zones *Zones, objects *Objects, mobs *Mobs, int FoundResets);
 cJSON *process_orphaned_resets(cJSON *root, rooms *Rooms, zones *Zones, objects *Objects, mobs *Mobs, int **reset_checkoffs);

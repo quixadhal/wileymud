@@ -133,7 +133,7 @@ cJSON *process_room_teleport(cJSON *this_room, rooms *Rooms, int i) {
         if(Rooms->Room[i].TeleportLook) {
             cJSON_AddTrueToObject(teleport, "auto_look");
         } else {
-            cJSON_AddFalseToObject(teleport, "auto_look");
+            //cJSON_AddFalseToObject(teleport, "auto_look");
         }
     } else {
         //cJSON_AddNullToObject(this_room, "teleport");
@@ -197,7 +197,7 @@ cJSON *process_room_extra_descriptions(cJSON *this_room, rooms *Rooms, int i) {
     return extra;
 }
 
-cJSON *process_room_exits(cJSON *this_room, rooms *Rooms, int i, objects *Objects) {
+cJSON *process_room_exits(cJSON *this_room, rooms *Rooms, int i, zones *Zones, objects *Objects) {
     cJSON *exits = NULL;
 
     if (Rooms->Room[i].ExitCount) {
@@ -223,6 +223,7 @@ cJSON *process_room_exits(cJSON *this_room, rooms *Rooms, int i, objects *Object
             if(Rooms->Room[i].Exit[j].Error != EXIT_DESCRIPTION_ONLY) {
                 cJSON *target = NULL;
                 cJSON *reverse_target = NULL;
+                int target_room = -1;
 
                 if(Rooms->Room[i].Exit[j].KeyNumber > 0) {
                     cJSON_AddStringToObject(this_exit, "key", obj_name(Objects, Rooms->Room[i].Exit[j].KeyNumber));
@@ -234,22 +235,33 @@ cJSON *process_room_exits(cJSON *this_room, rooms *Rooms, int i, objects *Object
                 cJSON_AddNumberToObject(target, "vnum", Rooms->Room[i].Exit[j].Room);
                 cJSON_AddStringToObject(target, "name", room_name(Rooms, Rooms->Room[i].Exit[j].Room));
 
+                // If this exit goes to a differnet zone, we want to know which one!
+                target_room = remap_room_vnum(Rooms, Rooms->Room[i].Exit[j].Room);
+                if(Rooms->Room[target_room].Zone != Rooms->Room[i].Zone) {
+                    process_zone_info(target, Rooms, target_room , Zones);
+                    cJSON_AddTrueToObject(this_exit, "external_zone");
+                } else {
+                    //cJSON_AddFalseToObject(this_exit, "external_zone");
+                }
+
                 if(Rooms->Room[i].Exit[j].Error == EXIT_ONE_WAY || Rooms->Room[i].Exit[j].Error == EXIT_NON_EUCLIDEAN) {
                     cJSON_AddTrueToObject(this_exit, "one_way");
                 } else {
-                    cJSON_AddFalseToObject(this_exit, "one_way");
+                    //cJSON_AddFalseToObject(this_exit, "one_way");
                 }
                 if(Rooms->Room[i].Exit[j].Error == EXIT_NON_EUCLIDEAN) {
-                    EXIT *foreign = NULL;
+                    EXIT *reverse_exit = NULL;
 
                     cJSON_AddTrueToObject(this_exit, "non_euclidean");
-                    reverse_target = cJSON_AddObjectToObject(this_exit, "reverse_target");
-                    foreign = &Rooms->Room[Rooms->Room[i].Exit[j].RoomIndex].Exit[RevDir[Rooms->Room[i].Exit[j].Direction]];
-                    cJSON_AddNumberToObject(reverse_target, "vnum", foreign->Room);
-                    cJSON_AddStringToObject(reverse_target, "name", room_name(Rooms, foreign->Room));
-                    cJSON_AddStringToObject(reverse_target, "direction", exit_name(foreign->Direction));
+                    reverse_exit = get_reverse_exit(&(Rooms->Room[i].Exit[j]), Rooms);
+                    if(reverse_exit) {
+                        reverse_target = cJSON_AddObjectToObject(this_exit, "reverse_target");
+                        cJSON_AddNumberToObject(reverse_target, "vnum", reverse_exit->Room);
+                        cJSON_AddStringToObject(reverse_target, "name", room_name(Rooms, reverse_exit->Room));
+                        cJSON_AddStringToObject(reverse_target, "direction", exit_name(reverse_exit->Direction));
+                    }
                 } else {
-                    cJSON_AddFalseToObject(this_exit, "non_euclidean");
+                    //cJSON_AddFalseToObject(this_exit, "non_euclidean");
                     //cJSON_AddNullToObject(this_exit, "reverse_target");
                 }
             }
@@ -302,9 +314,9 @@ cJSON *process_reset_segment(int *LastMob, int *LastLoc, int *LastObj, int *Lead
             cJSON_AddStringToObject(this_reset, "command", "load mobile to room");
             cJSON_AddNumberToObject(this_reset, "limit", Zones->Zone[j].Cmds[k].Arg[ZONE_MAX]);
             if( Zones->Zone[j].Cmds[k].IfFlag ) {
-                cJSON_AddTrueToObject(this_reset, "if_previous_ran");
+                cJSON_AddTrueToObject(this_reset, "only_if_previous_ran");
             } else {
-                cJSON_AddFalseToObject(this_reset, "if_previous_ran");
+                //cJSON_AddFalseToObject(this_reset, "only_if_previous_ran");
             }
             cmd_mob = cJSON_AddObjectToObject(this_reset, "mob");
             cJSON_AddNumberToObject(cmd_mob, "vnum", Zones->Zone[j].Cmds[k].Arg[ZONE_MOBILE]);
@@ -334,9 +346,9 @@ cJSON *process_reset_segment(int *LastMob, int *LastLoc, int *LastObj, int *Lead
             cJSON_AddStringToObject(this_reset, "command", "load object to room");
             cJSON_AddNumberToObject(this_reset, "limit", Zones->Zone[j].Cmds[k].Arg[ZONE_MAX]);
             if( Zones->Zone[j].Cmds[k].IfFlag ) {
-                cJSON_AddTrueToObject(this_reset, "if_previous_ran");
+                cJSON_AddTrueToObject(this_reset, "only_if_previous_ran");
             } else {
-                cJSON_AddFalseToObject(this_reset, "if_previous_ran");
+                //cJSON_AddFalseToObject(this_reset, "only_if_previous_ran");
             }
             cmd_obj = cJSON_AddObjectToObject(this_reset, "object");
             cJSON_AddNumberToObject(cmd_obj, "vnum", Zones->Zone[j].Cmds[k].Arg[ZONE_OBJECT]);
@@ -365,9 +377,9 @@ cJSON *process_reset_segment(int *LastMob, int *LastLoc, int *LastObj, int *Lead
             cJSON_AddStringToObject(this_reset, "command", "give object to mobile");
             cJSON_AddNumberToObject(this_reset, "limit", Zones->Zone[j].Cmds[k].Arg[ZONE_MAX]);
             if( Zones->Zone[j].Cmds[k].IfFlag ) {
-                cJSON_AddTrueToObject(this_reset, "if_previous_ran");
+                cJSON_AddTrueToObject(this_reset, "only_if_previous_ran");
             } else {
-                cJSON_AddFalseToObject(this_reset, "if_previous_ran");
+                //cJSON_AddFalseToObject(this_reset, "only_if_previous_ran");
             }
             cmd_obj = cJSON_AddObjectToObject(this_reset, "object");
             cJSON_AddNumberToObject(cmd_obj, "vnum", Zones->Zone[j].Cmds[k].Arg[ZONE_OBJECT]);
@@ -396,9 +408,9 @@ cJSON *process_reset_segment(int *LastMob, int *LastLoc, int *LastObj, int *Lead
             cJSON_AddStringToObject(this_reset, "command", "equip object to mobile");
             cJSON_AddNumberToObject(this_reset, "limit", Zones->Zone[j].Cmds[k].Arg[ZONE_MAX]);
             if( Zones->Zone[j].Cmds[k].IfFlag ) {
-                cJSON_AddTrueToObject(this_reset, "if_previous_ran");
+                cJSON_AddTrueToObject(this_reset, "only_if_previous_ran");
             } else {
-                cJSON_AddFalseToObject(this_reset, "if_previous_ran");
+                //cJSON_AddFalseToObject(this_reset, "only_if_previous_ran");
             }
             cmd_obj = cJSON_AddObjectToObject(this_reset, "object");
             cJSON_AddNumberToObject(cmd_obj, "vnum", Zones->Zone[j].Cmds[k].Arg[ZONE_OBJECT]);
@@ -428,9 +440,9 @@ cJSON *process_reset_segment(int *LastMob, int *LastLoc, int *LastObj, int *Lead
             cJSON_AddStringToObject(this_reset, "command", "put object in object");
             cJSON_AddNumberToObject(this_reset, "limit", Zones->Zone[j].Cmds[k].Arg[ZONE_MAX]);
             if( Zones->Zone[j].Cmds[k].IfFlag ) {
-                cJSON_AddTrueToObject(this_reset, "if_previous_ran");
+                cJSON_AddTrueToObject(this_reset, "only_if_previous_ran");
             } else {
-                cJSON_AddFalseToObject(this_reset, "if_previous_ran");
+                //cJSON_AddFalseToObject(this_reset, "only_if_previous_ran");
             }
             cmd_obj = cJSON_AddObjectToObject(this_reset, "object");
             cJSON_AddNumberToObject(cmd_obj, "vnum", Zones->Zone[j].Cmds[k].Arg[ZONE_OBJECT]);
@@ -457,9 +469,9 @@ cJSON *process_reset_segment(int *LastMob, int *LastLoc, int *LastObj, int *Lead
             sprintf(cmd, "%c", Zones->Zone[j].Cmds[k].Command);
             cJSON_AddStringToObject(this_reset, "command", "set door state");
             if( Zones->Zone[j].Cmds[k].IfFlag ) {
-                cJSON_AddTrueToObject(this_reset, "if_previous_ran");
+                cJSON_AddTrueToObject(this_reset, "only_if_previous_ran");
             } else {
-                cJSON_AddFalseToObject(this_reset, "if_previous_ran");
+                //cJSON_AddFalseToObject(this_reset, "only_if_previous_ran");
             }
             cmd_target = cJSON_AddObjectToObject(this_reset, "door");
             cJSON_AddStringToObject(cmd_target, "name", exit_name(Zones->Zone[j].Cmds[k].Arg[ZONE_DOOR_EXIT]));
@@ -486,9 +498,9 @@ cJSON *process_reset_segment(int *LastMob, int *LastLoc, int *LastObj, int *Lead
             sprintf(cmd, "%c", Zones->Zone[j].Cmds[k].Command);
             cJSON_AddStringToObject(this_reset, "command", "remove object from room");
             if( Zones->Zone[j].Cmds[k].IfFlag ) {
-                cJSON_AddTrueToObject(this_reset, "if_previous_ran");
+                cJSON_AddTrueToObject(this_reset, "only_if_previous_ran");
             } else {
-                cJSON_AddFalseToObject(this_reset, "if_previous_ran");
+                //cJSON_AddFalseToObject(this_reset, "only_if_previous_ran");
             }
             cmd_obj = cJSON_AddObjectToObject(this_reset, "object");
             cJSON_AddNumberToObject(cmd_obj, "vnum", Zones->Zone[j].Cmds[k].Arg[ZONE_REMOVE_OBJ]);
@@ -515,9 +527,9 @@ cJSON *process_reset_segment(int *LastMob, int *LastLoc, int *LastObj, int *Lead
             sprintf(cmd, "%c", Zones->Zone[j].Cmds[k].Command);
             cJSON_AddStringToObject(this_reset, "command", "load mobile to follow leader");
             if( Zones->Zone[j].Cmds[k].IfFlag ) {
-                cJSON_AddTrueToObject(this_reset, "if_previous_ran");
+                cJSON_AddTrueToObject(this_reset, "only_if_previous_ran");
             } else {
-                cJSON_AddFalseToObject(this_reset, "if_previous_ran");
+                //cJSON_AddFalseToObject(this_reset, "only_if_previous_ran");
             }
             cmd_mob = cJSON_AddObjectToObject(this_reset, "mob");
             cJSON_AddNumberToObject(cmd_mob, "vnum", Zones->Zone[j].Cmds[k].Arg[ZONE_MOBILE]);
@@ -548,9 +560,9 @@ cJSON *process_reset_segment(int *LastMob, int *LastLoc, int *LastObj, int *Lead
             sprintf(cmd, "%c", Zones->Zone[j].Cmds[k].Command);
             cJSON_AddStringToObject(this_reset, "command", "set hate status of mobile");
             if( Zones->Zone[j].Cmds[k].IfFlag ) {
-                cJSON_AddTrueToObject(this_reset, "if_previous_ran");
+                cJSON_AddTrueToObject(this_reset, "only_if_previous_ran");
             } else {
-                cJSON_AddFalseToObject(this_reset, "if_previous_ran");
+                //cJSON_AddFalseToObject(this_reset, "only_if_previous_ran");
             }
             cmd_mob = cJSON_AddObjectToObject(this_reset, "mob");
             cJSON_AddNumberToObject(cmd_mob, "vnum", *LastMob);
@@ -827,7 +839,7 @@ void dump_as_json(zones *Zones, rooms *Rooms, objects *Objects, mobs *Mobs, shop
         process_room_river(this_room, Rooms, i);
         process_room_sounds(this_room, Rooms, i);
         process_room_extra_descriptions(this_room, Rooms, i);
-        process_room_exits(this_room, Rooms, i, Objects);
+        process_room_exits(this_room, Rooms, i, Zones, Objects);
 
         FoundResets = find_room_resets(Rooms, i, Zones, reset_checkoffs);
         process_room_resets(this_room, Rooms, i, Zones, Objects, Mobs, FoundResets);

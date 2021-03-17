@@ -362,9 +362,8 @@ void fix_exit_vnums(rooms *Rooms)
 		spin(stderr);
 	    if (Rooms->Room[i].Exit[j].Error == EXIT_OK) {
 		if (Rooms->Room[i].Exit[j].Room <0) {
-		    Rooms->Room[i].                         Exit[j].Error =
-			EXIT_DESCRIPTION_ONLY;
-		    Rooms->Room[i].                         Exit[j].RoomIndex = EXIT_INVALID;
+		    Rooms->Room[i].Exit[j].Error = EXIT_DESCRIPTION_ONLY;
+		    Rooms->Room[i].Exit[j].RoomIndex = EXIT_INVALID;
 
 		    if (Debug)
 			log_error("DESCRIPTION-ONLY exit found as %s exit of Room \"%s\"[#%d].",
@@ -372,7 +371,7 @@ void fix_exit_vnums(rooms *Rooms)
 				  room_name(Rooms, Rooms->Room[i].Number),
 				  Rooms->Room[i].Number);
 		} else
-		    Rooms->Room[i].                         Exit[j].RoomIndex =
+		    Rooms->Room[i].Exit[j].RoomIndex =
 			remap_room_vnum(Rooms, Rooms->Room[i].Exit[j].Room);
 	    }
 	}
@@ -665,19 +664,18 @@ rooms                                  *load_rooms(char *infile, zones *Zones)
  * doors and extra descriptions (and the terminating 'S') in the hopes that
  * that line is what we actually read in....
  */
-	    Rooms->Room[i].                         Flags = 0;
-	    Rooms->Room[i].                         Sector = SECT_FIELD;
-	    Rooms->Room[i].                         MoveCost =
-		SectorCosts[Rooms->Room[i].Sector];
-	    Rooms->Room[i].                         Exit = (EXIT *)get_mem(1, sizeof(EXIT));
-	    bzero(Rooms->Room[i].Exit, sizeof       (EXIT));
-	    Rooms->Room[i].                         Exit[0].Direction = EXIT_INVALID;
-	    Rooms->Room[i].                         Exit[0].Room = EXIT_INVALID;
-	    Rooms->Room[i].                         Exit[0].RoomIndex = EXIT_INVALID;
-	    Rooms->Room[i].                         Exit[0].Error = EXIT_UNKNOWN;
-	    Rooms->Room[i].                         Extra = (extra *)get_mem(1, sizeof(extra));
-	    bzero(Rooms->Room[i].Extra, sizeof      (extra));
-	    j = e = Rooms->Room[i].                 ExitCount = Rooms->Room[i].ExtraCount = 0;
+	    Rooms->Room[i].Flags = 0;
+	    Rooms->Room[i].Sector = SECT_FIELD;
+	    Rooms->Room[i].MoveCost = SectorCosts[Rooms->Room[i].Sector];
+	    Rooms->Room[i].Exit = (EXIT *)get_mem(1, sizeof(EXIT));
+	    bzero(Rooms->Room[i].Exit, sizeof(EXIT));
+	    Rooms->Room[i].Exit[0].Direction = EXIT_INVALID;
+	    Rooms->Room[i].Exit[0].Room = EXIT_INVALID;
+	    Rooms->Room[i].Exit[0].RoomIndex = EXIT_INVALID;
+	    Rooms->Room[i].Exit[0].Error = EXIT_UNKNOWN;
+	    Rooms->Room[i].Extra = (extra *)get_mem(1, sizeof(extra));
+	    bzero(Rooms->Room[i].Extra, sizeof(extra));
+	    j = e = Rooms->Room[i].ExitCount = Rooms->Room[i].ExtraCount = 0;
 
 	    goto HolyShit;
 	}
@@ -722,15 +720,15 @@ rooms                                  *load_rooms(char *infile, zones *Zones)
  * wileymud people did their jobs right! <grin>
  */
 	}
-	Rooms->Room[i].                         Exit = (EXIT *)get_mem(1, sizeof(EXIT));
-	bzero(Rooms->Room[i].Exit, sizeof       (EXIT));
-	Rooms->Room[i].                         Exit[0].Direction = EXIT_INVALID;
-	Rooms->Room[i].                         Exit[0].Room = EXIT_INVALID;
-	Rooms->Room[i].                         Exit[0].RoomIndex = EXIT_INVALID;
-	Rooms->Room[i].                         Exit[0].Error = EXIT_UNKNOWN;
-	Rooms->Room[i].                         Extra = (extra *)get_mem(1, sizeof(extra));
-	bzero(Rooms->Room[i].Extra, sizeof      (extra));
-	Rooms->Room[i].                         MoveCost = SectorCosts[Rooms->Room[i].Sector];
+	Rooms->Room[i].Exit = (EXIT *)get_mem(1, sizeof(EXIT));
+	bzero(Rooms->Room[i].Exit, sizeof(EXIT));
+	Rooms->Room[i].Exit[0].Direction = EXIT_INVALID;
+	Rooms->Room[i].Exit[0].Room = EXIT_INVALID;
+	Rooms->Room[i].Exit[0].RoomIndex = EXIT_INVALID;
+	Rooms->Room[i].Exit[0].Error = EXIT_UNKNOWN;
+	Rooms->Room[i].Extra = (extra *)get_mem(1, sizeof(extra));
+	bzero(Rooms->Room[i].Extra, sizeof(extra));
+	Rooms->Room[i].MoveCost = SectorCosts[Rooms->Room[i].Sector];
 
 	for (j = e = Rooms->Room[i].ExitCount = Rooms->Room[i].ExtraCount = 0;
 	     (tmp = get_line(ifp, &Line, &Pos, 1));) {
@@ -764,17 +762,17 @@ rooms                                  *load_rooms(char *infile, zones *Zones)
  * since our file was taken in mid-hack, right before it got zapped by
  * the Mad Cyric the Destroyer... this is not surprising.
  */
-		    Rooms->Room[i].                         Exit[j].Type = EXIT_OPEN;
-		    Rooms->Room[i].                         Exit[j].KeyNumber = -1;	/* no key */
-		    Rooms->Room[i].                         Exit[j].Room = EXIT_INVALID;
-		    Rooms->Room[i].                         Exit[j].RoomIndex = EXIT_INVALID;
-		    Rooms->Room[i].                         Exit[j].Error = EXIT_NO_TARGET;
+		    Rooms->Room[i].Exit[j].Type = EXIT_OPEN;
+		    Rooms->Room[i].Exit[j].KeyNumber = -1;	/* no key */
+		    Rooms->Room[i].Exit[j].Room = EXIT_INVALID;
+		    Rooms->Room[i].Exit[j].RoomIndex = EXIT_INVALID;
+		    Rooms->Room[i].Exit[j].Error = EXIT_NO_TARGET;
 		} else {
-		    Rooms->Room[i].                         Exit[j].Error = EXIT_OK;
+		    Rooms->Room[i].Exit[j].Error = EXIT_OK;
 		}
 		if (Rooms->Room[i].Exit[j].Error != EXIT_UNKNOWN) {
-		    j = ++Rooms->Room[i].                   ExitCount;
-		    Rooms->Room[i].                         Exit = (EXIT *)
+		    j = ++Rooms->Room[i].ExitCount;
+		    Rooms->Room[i].Exit = (EXIT *)
 			get_more_mem((char *)Rooms->Room[i].Exit, j + 1, sizeof(EXIT));
 
 		    bzero(&(Rooms->Room[i].Exit[j]), sizeof(EXIT));
@@ -783,14 +781,13 @@ rooms                                  *load_rooms(char *infile, zones *Zones)
 		if (!(tmp = get_tilde_string(ifp, &Line, &Pos)))
 		    log_fatal("No extra keywords for Room #%d, %s at %d.",
 			      Rooms->Room[i].Number, infile, Line);
-		Rooms->Room[i].                         Extra[e].Keyword =
-		    make_keyword_list(tmp);
+		Rooms->Room[i].Extra[e].Keyword = make_keyword_list(tmp);
 		if ((!(tmp = get_tilde_string(ifp, &Line, &Pos)))
 		    || (!(Rooms->Room[i].Extra[e].Description = my_strdup(tmp))))
 		    log_fatal("No extra descriptions for Room #%d, %s of %d.",
 			      Rooms->Room[i].Number, infile, Line);
-		e = ++Rooms->Room[i].                   ExtraCount;
-		Rooms->Room[i].                         Extra = (extra *)
+		e = ++Rooms->Room[i].ExtraCount;
+		Rooms->Room[i].Extra = (extra *)
 		    get_more_mem((char *)Rooms->Room[i].Extra, e + 1, sizeof(extra));
 
 		bzero(&(Rooms->Room[i].Extra[e]), sizeof(extra));
@@ -2921,4 +2918,24 @@ mobs                                   *load_mobs(char *infile, zones *Zones)
     set_mob_zones(Zones, Mobs);
     check_mob_zone_mismatch(Zones, Mobs);
     return Mobs;
+}
+
+EXIT *get_reverse_exit(EXIT *this_exit, rooms *Rooms) {
+    EXIT *result = NULL;
+
+    if(this_exit) {
+        int reverse_exit_dir = -1;
+        int target_room = -1;
+
+        reverse_exit_dir = RevDir[this_exit->Direction];
+        target_room = remap_room_vnum(Rooms, this_exit->Room);
+        if(target_room != -1) {
+            for(int i = 0; i < Rooms->Room[target_room].ExitCount; i++) {
+                if(Rooms->Room[target_room].Exit[i].Direction == reverse_exit_dir) {
+                    result = &(Rooms->Room[target_room].Exit[i]);
+                }
+            }
+        }
+    }
+    return result;
 }
