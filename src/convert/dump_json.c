@@ -261,6 +261,316 @@ cJSON *process_room_exits(cJSON *this_room, rooms *Rooms, int i, objects *Object
     return exits;
 }
 
+// M - load mob to room                             ZONE_MOBILE, ZONE_MAX, ZONE_ROOM
+// O - load obj to room                             ZONE_OBJECT, ZONE_MAX, ZONE_ROOM
+// E - equip object to previous mob                 ZONE_OBJECT, ?, ZONE_POSITION
+// G - give obj to previous mob                     ZONE_OBJECT, ?, ?
+// D - set door state in room                       ZONE_DOOR_ROOM, ZONE_DOOR_EXIT, ZONE_DOOR_STATE
+// R - remove obj from room                         ZONE_REMOVE_ROOM, ZONE_REMOVE_OBJ
+// P - put obj in object                            ZONE_OBJECT, ?, ZONE_TARGET_OBJ
+// L - load mob to be led by previous mob           ZONE_GROUP
+// H - set hated flags of previous mob              ZONE_HATE_TYPE, ZONE_HATE_VALUE
+// IfFlag - only do if previous command worked
+
+// i is used as the room index, if -1 is passed in, rooms are not checked
+// j is used as the zone index
+// k is used as the reset index (within the zone)
+cJSON *process_reset_segment(int *LastMob, int *LastLoc, int *LastObj, int *LeaderMob, int i, int j, int k, rooms *Rooms, zones *Zones, objects *Objects, mobs *Mobs, int **reset_checkoffs) {
+    cJSON *this_reset = NULL;
+    cJSON *cmd_room, *cmd_mob, *cmd_obj, *cmd_target;
+    char cmd[2];
+    char found_in[256];
+
+    switch (Zones->Zone[j].Cmds[k].Command) {
+        case ZONE_CMD_MOBILE:
+            if(reset_checkoffs != NULL) {
+                if(reset_checkoffs[j][k] < 1)
+                    break;
+            } else {
+                if(i != -1 && Zones->Zone[j].Cmds[k].Arg[ZONE_ROOM] != Rooms->Room[i].Number)
+                    break;
+            }
+            *LastMob = Zones->Zone[j].Cmds[k].Arg[ZONE_MOBILE];
+            *LastLoc = Zones->Zone[j].Cmds[k].Arg[ZONE_ROOM];
+            *LeaderMob = *LastMob;
+            this_reset  = cJSON_CreateObject();
+            if(reset_checkoffs != NULL) {
+                sprintf(found_in, "Found in zone \"%s\"[#%d], entry %d", Zones->Zone[j].Name, Zones->Zone[j].Number, k);
+                cJSON_AddStringToObject(this_reset, "zone", found_in);
+            }
+            sprintf(cmd, "%c", Zones->Zone[j].Cmds[k].Command);
+            cJSON_AddStringToObject(this_reset, "command", "load mobile to room");
+            cJSON_AddNumberToObject(this_reset, "limit", Zones->Zone[j].Cmds[k].Arg[ZONE_MAX]);
+            if( Zones->Zone[j].Cmds[k].IfFlag ) {
+                cJSON_AddTrueToObject(this_reset, "if_previous_ran");
+            } else {
+                cJSON_AddFalseToObject(this_reset, "if_previous_ran");
+            }
+            cmd_mob = cJSON_AddObjectToObject(this_reset, "mob");
+            cJSON_AddNumberToObject(cmd_mob, "vnum", Zones->Zone[j].Cmds[k].Arg[ZONE_MOBILE]);
+            cJSON_AddStringToObject(cmd_mob, "name", mob_name(Mobs, Zones->Zone[j].Cmds[k].Arg[ZONE_MOBILE]));
+            cmd_room = cJSON_AddObjectToObject(this_reset, "room");
+            cJSON_AddNumberToObject(cmd_room, "vnum", Zones->Zone[j].Cmds[k].Arg[ZONE_ROOM]);
+            cJSON_AddStringToObject(cmd_room, "name", room_name(Rooms, Zones->Zone[j].Cmds[k].Arg[ZONE_ROOM]));
+            //cJSON_AddItemToArray(resets, this_reset);
+            break;
+
+        case ZONE_CMD_OBJECT:
+            if(reset_checkoffs != NULL) {
+                if(reset_checkoffs[j][k] < 1)
+                    break;
+            } else {
+                if(i != -1 && Zones->Zone[j].Cmds[k].Arg[ZONE_ROOM] != Rooms->Room[i].Number)
+                    break;
+            }
+            *LastObj = Zones->Zone[j].Cmds[k].Arg[ZONE_OBJECT];
+            *LastLoc = Zones->Zone[j].Cmds[k].Arg[ZONE_ROOM];
+            this_reset  = cJSON_CreateObject();
+            if(reset_checkoffs != NULL) {
+                sprintf(found_in, "Found in zone \"%s\"[#%d], entry %d", Zones->Zone[j].Name, Zones->Zone[j].Number, k);
+                cJSON_AddStringToObject(this_reset, "zone", found_in);
+            }
+            sprintf(cmd, "%c", Zones->Zone[j].Cmds[k].Command);
+            cJSON_AddStringToObject(this_reset, "command", "load object to room");
+            cJSON_AddNumberToObject(this_reset, "limit", Zones->Zone[j].Cmds[k].Arg[ZONE_MAX]);
+            if( Zones->Zone[j].Cmds[k].IfFlag ) {
+                cJSON_AddTrueToObject(this_reset, "if_previous_ran");
+            } else {
+                cJSON_AddFalseToObject(this_reset, "if_previous_ran");
+            }
+            cmd_obj = cJSON_AddObjectToObject(this_reset, "object");
+            cJSON_AddNumberToObject(cmd_obj, "vnum", Zones->Zone[j].Cmds[k].Arg[ZONE_OBJECT]);
+            cJSON_AddStringToObject(cmd_obj, "name", obj_name(Objects, Zones->Zone[j].Cmds[k].Arg[ZONE_OBJECT]));
+            cmd_room = cJSON_AddObjectToObject(this_reset, "room");
+            cJSON_AddNumberToObject(cmd_room, "vnum", Zones->Zone[j].Cmds[k].Arg[ZONE_ROOM]);
+            cJSON_AddStringToObject(cmd_room, "name", room_name(Rooms, Zones->Zone[j].Cmds[k].Arg[ZONE_ROOM]));
+            //cJSON_AddItemToArray(resets, this_reset);
+            break;
+
+        case ZONE_CMD_GIVE:
+            if(reset_checkoffs != NULL) {
+                if(reset_checkoffs[j][k] < 1)
+                    break;
+            }
+            // This has to use LastMob
+            if(*LastMob < 0)
+                break;
+            *LastObj = Zones->Zone[j].Cmds[k].Arg[ZONE_OBJECT];
+            this_reset  = cJSON_CreateObject();
+            if(reset_checkoffs != NULL) {
+                sprintf(found_in, "Found in zone \"%s\"[#%d], entry %d", Zones->Zone[j].Name, Zones->Zone[j].Number, k);
+                cJSON_AddStringToObject(this_reset, "zone", found_in);
+            }
+            sprintf(cmd, "%c", Zones->Zone[j].Cmds[k].Command);
+            cJSON_AddStringToObject(this_reset, "command", "give object to mobile");
+            cJSON_AddNumberToObject(this_reset, "limit", Zones->Zone[j].Cmds[k].Arg[ZONE_MAX]);
+            if( Zones->Zone[j].Cmds[k].IfFlag ) {
+                cJSON_AddTrueToObject(this_reset, "if_previous_ran");
+            } else {
+                cJSON_AddFalseToObject(this_reset, "if_previous_ran");
+            }
+            cmd_obj = cJSON_AddObjectToObject(this_reset, "object");
+            cJSON_AddNumberToObject(cmd_obj, "vnum", Zones->Zone[j].Cmds[k].Arg[ZONE_OBJECT]);
+            cJSON_AddStringToObject(cmd_obj, "name", obj_name(Objects, Zones->Zone[j].Cmds[k].Arg[ZONE_OBJECT]));
+            cmd_mob = cJSON_AddObjectToObject(this_reset, "mob");
+            cJSON_AddNumberToObject(cmd_mob, "vnum", *LastMob);
+            cJSON_AddStringToObject(cmd_mob, "name", mob_name(Mobs, *LastMob));
+            //cJSON_AddItemToArray(resets, this_reset);
+            break;
+
+        case ZONE_CMD_EQUIP:
+            if(reset_checkoffs != NULL) {
+                if(reset_checkoffs[j][k] < 1)
+                    break;
+            }
+            // This has to use LastMob
+            if(*LastMob < 0)
+                break;
+            *LastObj = Zones->Zone[j].Cmds[k].Arg[ZONE_OBJECT];
+            this_reset  = cJSON_CreateObject();
+            if(reset_checkoffs != NULL) {
+                sprintf(found_in, "Found in zone \"%s\"[#%d], entry %d", Zones->Zone[j].Name, Zones->Zone[j].Number, k);
+                cJSON_AddStringToObject(this_reset, "zone", found_in);
+            }
+            sprintf(cmd, "%c", Zones->Zone[j].Cmds[k].Command);
+            cJSON_AddStringToObject(this_reset, "command", "equip object to mobile");
+            cJSON_AddNumberToObject(this_reset, "limit", Zones->Zone[j].Cmds[k].Arg[ZONE_MAX]);
+            if( Zones->Zone[j].Cmds[k].IfFlag ) {
+                cJSON_AddTrueToObject(this_reset, "if_previous_ran");
+            } else {
+                cJSON_AddFalseToObject(this_reset, "if_previous_ran");
+            }
+            cmd_obj = cJSON_AddObjectToObject(this_reset, "object");
+            cJSON_AddNumberToObject(cmd_obj, "vnum", Zones->Zone[j].Cmds[k].Arg[ZONE_OBJECT]);
+            cJSON_AddStringToObject(cmd_obj, "name", obj_name(Objects, Zones->Zone[j].Cmds[k].Arg[ZONE_OBJECT]));
+            cmd_mob = cJSON_AddObjectToObject(this_reset, "mob");
+            cJSON_AddNumberToObject(cmd_mob, "vnum", *LastMob);
+            cJSON_AddStringToObject(cmd_mob, "name", mob_name(Mobs, *LastMob));
+            cJSON_AddStringToObject(this_reset, "position", equip_name(Zones->Zone[j].Cmds[k].Arg[ZONE_POSITION]));
+            //cJSON_AddItemToArray(resets, this_reset);
+            break;
+
+        case ZONE_CMD_PUT:
+            if(reset_checkoffs != NULL) {
+                if(reset_checkoffs[j][k] < 1)
+                    break;
+            }
+            // We'll check LastLoc and LastObj to make sure
+            // an object was loaded into THIS room.
+            if(*LastObj < 0)
+                break;
+            this_reset  = cJSON_CreateObject();
+            if(reset_checkoffs != NULL) {
+                sprintf(found_in, "Found in zone \"%s\"[#%d], entry %d", Zones->Zone[j].Name, Zones->Zone[j].Number, k);
+                cJSON_AddStringToObject(this_reset, "zone", found_in);
+            }
+            sprintf(cmd, "%c", Zones->Zone[j].Cmds[k].Command);
+            cJSON_AddStringToObject(this_reset, "command", "put object in object");
+            cJSON_AddNumberToObject(this_reset, "limit", Zones->Zone[j].Cmds[k].Arg[ZONE_MAX]);
+            if( Zones->Zone[j].Cmds[k].IfFlag ) {
+                cJSON_AddTrueToObject(this_reset, "if_previous_ran");
+            } else {
+                cJSON_AddFalseToObject(this_reset, "if_previous_ran");
+            }
+            cmd_obj = cJSON_AddObjectToObject(this_reset, "object");
+            cJSON_AddNumberToObject(cmd_obj, "vnum", Zones->Zone[j].Cmds[k].Arg[ZONE_OBJECT]);
+            cJSON_AddStringToObject(cmd_obj, "name", obj_name(Objects, Zones->Zone[j].Cmds[k].Arg[ZONE_OBJECT]));
+            cmd_target = cJSON_AddObjectToObject(this_reset, "target");
+            cJSON_AddNumberToObject(cmd_target, "vnum", Zones->Zone[j].Cmds[k].Arg[ZONE_TARGET_OBJ]);
+            cJSON_AddStringToObject(cmd_target, "name", obj_name(Objects, Zones->Zone[j].Cmds[k].Arg[ZONE_TARGET_OBJ]));
+            //cJSON_AddItemToArray(resets, this_reset);
+            break;
+
+        case ZONE_CMD_DOOR:
+            if(reset_checkoffs != NULL) {
+                if(reset_checkoffs[j][k] < 1)
+                    break;
+            } else {
+                if(i != -1 && Zones->Zone[j].Cmds[k].Arg[ZONE_DOOR_ROOM] != Rooms->Room[i].Number)
+                    break;
+            }
+            this_reset  = cJSON_CreateObject();
+            if(reset_checkoffs != NULL) {
+                sprintf(found_in, "Found in zone \"%s\"[#%d], entry %d", Zones->Zone[j].Name, Zones->Zone[j].Number, k);
+                cJSON_AddStringToObject(this_reset, "zone", found_in);
+            }
+            sprintf(cmd, "%c", Zones->Zone[j].Cmds[k].Command);
+            cJSON_AddStringToObject(this_reset, "command", "set door state");
+            if( Zones->Zone[j].Cmds[k].IfFlag ) {
+                cJSON_AddTrueToObject(this_reset, "if_previous_ran");
+            } else {
+                cJSON_AddFalseToObject(this_reset, "if_previous_ran");
+            }
+            cmd_target = cJSON_AddObjectToObject(this_reset, "door");
+            cJSON_AddStringToObject(cmd_target, "name", exit_name(Zones->Zone[j].Cmds[k].Arg[ZONE_DOOR_EXIT]));
+            cJSON_AddStringToObject(cmd_target, "state", doorstate_name(Zones->Zone[j].Cmds[k].Arg[ZONE_DOOR_STATE]));
+            cmd_room = cJSON_AddObjectToObject(this_reset, "room");
+            cJSON_AddNumberToObject(cmd_room, "vnum", Zones->Zone[j].Cmds[k].Arg[ZONE_DOOR_ROOM]);
+            cJSON_AddStringToObject(cmd_room, "name", room_name(Rooms, Zones->Zone[j].Cmds[k].Arg[ZONE_DOOR_ROOM]));
+            //cJSON_AddItemToArray(resets, this_reset);
+            break;
+
+        case ZONE_CMD_REMOVE:
+            if(reset_checkoffs != NULL) {
+                if(reset_checkoffs[j][k] < 1)
+                    break;
+            } else {
+                if(i != -1 && Zones->Zone[j].Cmds[k].Arg[ZONE_REMOVE_ROOM] != Rooms->Room[i].Number)
+                    break;
+            }
+            this_reset  = cJSON_CreateObject();
+            if(reset_checkoffs != NULL) {
+                sprintf(found_in, "Found in zone \"%s\"[#%d], entry %d", Zones->Zone[j].Name, Zones->Zone[j].Number, k);
+                cJSON_AddStringToObject(this_reset, "zone", found_in);
+            }
+            sprintf(cmd, "%c", Zones->Zone[j].Cmds[k].Command);
+            cJSON_AddStringToObject(this_reset, "command", "remove object from room");
+            if( Zones->Zone[j].Cmds[k].IfFlag ) {
+                cJSON_AddTrueToObject(this_reset, "if_previous_ran");
+            } else {
+                cJSON_AddFalseToObject(this_reset, "if_previous_ran");
+            }
+            cmd_obj = cJSON_AddObjectToObject(this_reset, "object");
+            cJSON_AddNumberToObject(cmd_obj, "vnum", Zones->Zone[j].Cmds[k].Arg[ZONE_REMOVE_OBJ]);
+            cJSON_AddStringToObject(cmd_obj, "name", obj_name(Objects, Zones->Zone[j].Cmds[k].Arg[ZONE_REMOVE_OBJ]));
+            cmd_room = cJSON_AddObjectToObject(this_reset, "room");
+            cJSON_AddNumberToObject(cmd_room, "vnum", Zones->Zone[j].Cmds[k].Arg[ZONE_REMOVE_ROOM]);
+            cJSON_AddStringToObject(cmd_room, "name", room_name(Rooms, Zones->Zone[j].Cmds[k].Arg[ZONE_REMOVE_ROOM]));
+            //cJSON_AddItemToArray(resets, this_reset);
+            break;
+
+        case ZONE_CMD_LEAD:
+            if(reset_checkoffs != NULL) {
+                if(reset_checkoffs[j][k] < 1)
+                    break;
+            }
+            // This has to use LeaderMob
+            if(*LeaderMob < 0)
+                break;
+            this_reset  = cJSON_CreateObject();
+            if(reset_checkoffs != NULL) {
+                sprintf(found_in, "Found in zone \"%s\"[#%d], entry %d", Zones->Zone[j].Name, Zones->Zone[j].Number, k);
+                cJSON_AddStringToObject(this_reset, "zone", found_in);
+            }
+            sprintf(cmd, "%c", Zones->Zone[j].Cmds[k].Command);
+            cJSON_AddStringToObject(this_reset, "command", "load mobile to follow leader");
+            if( Zones->Zone[j].Cmds[k].IfFlag ) {
+                cJSON_AddTrueToObject(this_reset, "if_previous_ran");
+            } else {
+                cJSON_AddFalseToObject(this_reset, "if_previous_ran");
+            }
+            cmd_mob = cJSON_AddObjectToObject(this_reset, "mob");
+            cJSON_AddNumberToObject(cmd_mob, "vnum", Zones->Zone[j].Cmds[k].Arg[ZONE_MOBILE]);
+            cJSON_AddStringToObject(cmd_mob, "name", mob_name(Mobs, Zones->Zone[j].Cmds[k].Arg[ZONE_MOBILE]));
+            cmd_target = cJSON_AddObjectToObject(this_reset, "leader");
+            cJSON_AddNumberToObject(cmd_target, "vnum", *LeaderMob);
+            cJSON_AddStringToObject(cmd_target, "name", mob_name(Mobs, *LeaderMob));
+            cmd_room = cJSON_AddObjectToObject(this_reset, "room");
+            cJSON_AddNumberToObject(cmd_room, "vnum", *LastLoc);
+            cJSON_AddStringToObject(cmd_room, "name", room_name(Rooms, *LastLoc));
+            //cJSON_AddItemToArray(resets, this_reset);
+            *LastMob = Zones->Zone[j].Cmds[k].Arg[ZONE_MOBILE];
+            break;
+
+        case ZONE_CMD_HATE:
+            if(reset_checkoffs != NULL) {
+                if(reset_checkoffs[j][k] < 1)
+                    break;
+            }
+            // This has to use LastMob
+            if(*LastMob < 0)
+                break;
+            this_reset  = cJSON_CreateObject();
+            if(reset_checkoffs != NULL) {
+                sprintf(found_in, "Found in zone \"%s\"[#%d], entry %d", Zones->Zone[j].Name, Zones->Zone[j].Number, k);
+                cJSON_AddStringToObject(this_reset, "zone", found_in);
+            }
+            sprintf(cmd, "%c", Zones->Zone[j].Cmds[k].Command);
+            cJSON_AddStringToObject(this_reset, "command", "set hate status of mobile");
+            if( Zones->Zone[j].Cmds[k].IfFlag ) {
+                cJSON_AddTrueToObject(this_reset, "if_previous_ran");
+            } else {
+                cJSON_AddFalseToObject(this_reset, "if_previous_ran");
+            }
+            cmd_mob = cJSON_AddObjectToObject(this_reset, "mob");
+            cJSON_AddNumberToObject(cmd_mob, "vnum", *LastMob);
+            cJSON_AddStringToObject(cmd_mob, "name", mob_name(Mobs, *LastMob));
+            cmd_room = cJSON_AddObjectToObject(this_reset, "room");
+            cJSON_AddNumberToObject(cmd_room, "vnum", *LastLoc);
+            cJSON_AddStringToObject(cmd_room, "name", room_name(Rooms, *LastLoc));
+            cJSON_AddStringToObject(this_reset, "hate", hate_name(Zones->Zone[j].Cmds[k].Arg[ZONE_HATE_TYPE], Zones->Zone[j].Cmds[k].Arg[ZONE_HATE_VALUE]));
+            //cJSON_AddItemToArray(resets, this_reset);
+            break;
+
+        default:
+            // Error...
+            break;
+    }
+
+    return this_reset;
+}
+
+
 // reset_checkoffs is an output parameter, to be modified in here.
 // You must allocate it outside here and pass in handles to it.
 int find_room_resets(rooms *Rooms, int i, zones *Zones, int **reset_checkoffs) {
@@ -358,17 +668,6 @@ int find_room_resets(rooms *Rooms, int i, zones *Zones, int **reset_checkoffs) {
     return FoundResets;
 }
 
-// M - load mob to room                             ZONE_MOBILE, ZONE_MAX, ZONE_ROOM
-// O - load obj to room                             ZONE_OBJECT, ZONE_MAX, ZONE_ROOM
-// E - equip object to previous mob                 ZONE_OBJECT, ?, ZONE_POSITION
-// G - give obj to previous mob                     ZONE_OBJECT, ?, ?
-// D - set door state in room                       ZONE_DOOR_ROOM, ZONE_DOOR_EXIT, ZONE_DOOR_STATE
-// R - remove obj from room                         ZONE_REMOVE_ROOM, ZONE_REMOVE_OBJ
-// P - put obj in object                            ZONE_OBJECT, ?, ZONE_TARGET_OBJ
-// L - load mob to be led by previous mob           ZONE_GROUP
-// H - set hated flags of previous mob              ZONE_HATE_TYPE, ZONE_HATE_VALUE
-// IfFlag - only do if previous command worked
-
 cJSON *process_room_resets(cJSON *this_room, rooms *Rooms, int i, zones *Zones, objects *Objects, mobs *Mobs, int FoundResets) {
     cJSON *resets = NULL;
     int LastMob = -1;
@@ -392,218 +691,11 @@ cJSON *process_room_resets(cJSON *this_room, rooms *Rooms, int i, zones *Zones, 
             LastObj = -1;
             LeaderMob = -1;
             for (int k = 0; k < Zones->Zone[j].Count; k++) {
-                cJSON *this_reset;
-                cJSON *cmd_room, *cmd_mob, *cmd_obj, *cmd_target;
-                char cmd[2];
+                cJSON *this_reset = NULL;
 
-                switch (Zones->Zone[j].Cmds[k].Command) {
-                    case ZONE_CMD_MOBILE:
-                        if(Zones->Zone[j].Cmds[k].Arg[ZONE_ROOM] != Rooms->Room[i].Number)
-                            break;
-                        LastMob = Zones->Zone[j].Cmds[k].Arg[ZONE_MOBILE];
-                        LastLoc = Zones->Zone[j].Cmds[k].Arg[ZONE_ROOM];
-                        LeaderMob = LastMob;
-                        this_reset  = cJSON_CreateObject();
-                        sprintf(cmd, "%c", Zones->Zone[j].Cmds[k].Command);
-                        cJSON_AddStringToObject(this_reset, "command", "load mobile to room");
-                        cJSON_AddNumberToObject(this_reset, "limit", Zones->Zone[j].Cmds[k].Arg[ZONE_MAX]);
-                        if( Zones->Zone[j].Cmds[k].IfFlag ) {
-                            cJSON_AddTrueToObject(this_reset, "if_previous_ran");
-                        } else {
-                            cJSON_AddFalseToObject(this_reset, "if_previous_ran");
-                        }
-                        cmd_mob = cJSON_AddObjectToObject(this_reset, "mob");
-                        cJSON_AddNumberToObject(cmd_mob, "vnum", Zones->Zone[j].Cmds[k].Arg[ZONE_MOBILE]);
-                        cJSON_AddStringToObject(cmd_mob, "name", mob_name(Mobs, Zones->Zone[j].Cmds[k].Arg[ZONE_MOBILE]));
-                        cmd_room = cJSON_AddObjectToObject(this_reset, "room");
-                        cJSON_AddNumberToObject(cmd_room, "vnum", Zones->Zone[j].Cmds[k].Arg[ZONE_ROOM]);
-                        cJSON_AddStringToObject(cmd_room, "name", room_name(Rooms, Zones->Zone[j].Cmds[k].Arg[ZONE_ROOM]));
-                        cJSON_AddItemToArray(resets, this_reset);
-                        break;
-
-                    case ZONE_CMD_OBJECT:
-                        if(Zones->Zone[j].Cmds[k].Arg[ZONE_ROOM] != Rooms->Room[i].Number)
-                            break;
-                        LastObj = Zones->Zone[j].Cmds[k].Arg[ZONE_OBJECT];
-                        LastLoc = Zones->Zone[j].Cmds[k].Arg[ZONE_ROOM];
-                        this_reset  = cJSON_CreateObject();
-                        sprintf(cmd, "%c", Zones->Zone[j].Cmds[k].Command);
-                        cJSON_AddStringToObject(this_reset, "command", "load object to room");
-                        cJSON_AddNumberToObject(this_reset, "limit", Zones->Zone[j].Cmds[k].Arg[ZONE_MAX]);
-                        if( Zones->Zone[j].Cmds[k].IfFlag ) {
-                            cJSON_AddTrueToObject(this_reset, "if_previous_ran");
-                        } else {
-                            cJSON_AddFalseToObject(this_reset, "if_previous_ran");
-                        }
-                        cmd_obj = cJSON_AddObjectToObject(this_reset, "object");
-                        cJSON_AddNumberToObject(cmd_obj, "vnum", Zones->Zone[j].Cmds[k].Arg[ZONE_OBJECT]);
-                        cJSON_AddStringToObject(cmd_obj, "name", obj_name(Objects, Zones->Zone[j].Cmds[k].Arg[ZONE_OBJECT]));
-                        cmd_room = cJSON_AddObjectToObject(this_reset, "room");
-                        cJSON_AddNumberToObject(cmd_room, "vnum", Zones->Zone[j].Cmds[k].Arg[ZONE_ROOM]);
-                        cJSON_AddStringToObject(cmd_room, "name", room_name(Rooms, Zones->Zone[j].Cmds[k].Arg[ZONE_ROOM]));
-                        cJSON_AddItemToArray(resets, this_reset);
-                        break;
-
-                    case ZONE_CMD_GIVE:
-                        // This has to use LastMob
-                        if(LastMob < 0)
-                            break;
-                        LastObj = Zones->Zone[j].Cmds[k].Arg[ZONE_OBJECT];
-                        this_reset  = cJSON_CreateObject();
-                        sprintf(cmd, "%c", Zones->Zone[j].Cmds[k].Command);
-                        cJSON_AddStringToObject(this_reset, "command", "give object to mobile");
-                        cJSON_AddNumberToObject(this_reset, "limit", Zones->Zone[j].Cmds[k].Arg[ZONE_MAX]);
-                        if( Zones->Zone[j].Cmds[k].IfFlag ) {
-                            cJSON_AddTrueToObject(this_reset, "if_previous_ran");
-                        } else {
-                            cJSON_AddFalseToObject(this_reset, "if_previous_ran");
-                        }
-                        cmd_obj = cJSON_AddObjectToObject(this_reset, "object");
-                        cJSON_AddNumberToObject(cmd_obj, "vnum", Zones->Zone[j].Cmds[k].Arg[ZONE_OBJECT]);
-                        cJSON_AddStringToObject(cmd_obj, "name", obj_name(Objects, Zones->Zone[j].Cmds[k].Arg[ZONE_OBJECT]));
-                        cmd_mob = cJSON_AddObjectToObject(this_reset, "mob");
-                        cJSON_AddNumberToObject(cmd_mob, "vnum", LastMob);
-                        cJSON_AddStringToObject(cmd_mob, "name", mob_name(Mobs, LastMob));
-                        cJSON_AddItemToArray(resets, this_reset);
-                        break;
-
-                    case ZONE_CMD_EQUIP:
-                        // This has to use LastMob
-                        if(LastMob < 0)
-                            break;
-                        LastObj = Zones->Zone[j].Cmds[k].Arg[ZONE_OBJECT];
-                        this_reset  = cJSON_CreateObject();
-                        sprintf(cmd, "%c", Zones->Zone[j].Cmds[k].Command);
-                        cJSON_AddStringToObject(this_reset, "command", "equip object to mobile");
-                        cJSON_AddNumberToObject(this_reset, "limit", Zones->Zone[j].Cmds[k].Arg[ZONE_MAX]);
-                        if( Zones->Zone[j].Cmds[k].IfFlag ) {
-                            cJSON_AddTrueToObject(this_reset, "if_previous_ran");
-                        } else {
-                            cJSON_AddFalseToObject(this_reset, "if_previous_ran");
-                        }
-                        cmd_obj = cJSON_AddObjectToObject(this_reset, "object");
-                        cJSON_AddNumberToObject(cmd_obj, "vnum", Zones->Zone[j].Cmds[k].Arg[ZONE_OBJECT]);
-                        cJSON_AddStringToObject(cmd_obj, "name", obj_name(Objects, Zones->Zone[j].Cmds[k].Arg[ZONE_OBJECT]));
-                        cmd_mob = cJSON_AddObjectToObject(this_reset, "mob");
-                        cJSON_AddNumberToObject(cmd_mob, "vnum", LastMob);
-                        cJSON_AddStringToObject(cmd_mob, "name", mob_name(Mobs, LastMob));
-                        cJSON_AddStringToObject(this_reset, "position", equip_name(Zones->Zone[j].Cmds[k].Arg[ZONE_POSITION]));
-                        cJSON_AddItemToArray(resets, this_reset);
-                        break;
-
-                    case ZONE_CMD_PUT:
-                        // We'll check LastLoc and LastObj to make sure
-                        // an object was loaded into THIS room.
-                        if(LastObj < 0)
-                            break;
-                        this_reset  = cJSON_CreateObject();
-                        sprintf(cmd, "%c", Zones->Zone[j].Cmds[k].Command);
-                        cJSON_AddStringToObject(this_reset, "command", "put object in object");
-                        cJSON_AddNumberToObject(this_reset, "limit", Zones->Zone[j].Cmds[k].Arg[ZONE_MAX]);
-                        if( Zones->Zone[j].Cmds[k].IfFlag ) {
-                            cJSON_AddTrueToObject(this_reset, "if_previous_ran");
-                        } else {
-                            cJSON_AddFalseToObject(this_reset, "if_previous_ran");
-                        }
-                        cmd_obj = cJSON_AddObjectToObject(this_reset, "object");
-                        cJSON_AddNumberToObject(cmd_obj, "vnum", Zones->Zone[j].Cmds[k].Arg[ZONE_OBJECT]);
-                        cJSON_AddStringToObject(cmd_obj, "name", obj_name(Objects, Zones->Zone[j].Cmds[k].Arg[ZONE_OBJECT]));
-                        cmd_target = cJSON_AddObjectToObject(this_reset, "target");
-                        cJSON_AddNumberToObject(cmd_target, "vnum", Zones->Zone[j].Cmds[k].Arg[ZONE_TARGET_OBJ]);
-                        cJSON_AddStringToObject(cmd_target, "name", obj_name(Objects, Zones->Zone[j].Cmds[k].Arg[ZONE_TARGET_OBJ]));
-                        cJSON_AddItemToArray(resets, this_reset);
-                        break;
-
-                    case ZONE_CMD_DOOR:
-                        if(Zones->Zone[j].Cmds[k].Arg[ZONE_DOOR_ROOM] != Rooms->Room[i].Number)
-                            break;
-                        this_reset  = cJSON_CreateObject();
-                        sprintf(cmd, "%c", Zones->Zone[j].Cmds[k].Command);
-                        cJSON_AddStringToObject(this_reset, "command", "set door state");
-                        if( Zones->Zone[j].Cmds[k].IfFlag ) {
-                            cJSON_AddTrueToObject(this_reset, "if_previous_ran");
-                        } else {
-                            cJSON_AddFalseToObject(this_reset, "if_previous_ran");
-                        }
-                        cmd_target = cJSON_AddObjectToObject(this_reset, "door");
-                        cJSON_AddStringToObject(cmd_target, "name", exit_name(Zones->Zone[j].Cmds[k].Arg[ZONE_DOOR_EXIT]));
-                        cJSON_AddStringToObject(cmd_target, "state", doorstate_name(Zones->Zone[j].Cmds[k].Arg[ZONE_DOOR_STATE]));
-                        cmd_room = cJSON_AddObjectToObject(this_reset, "room");
-                        cJSON_AddNumberToObject(cmd_room, "vnum", Zones->Zone[j].Cmds[k].Arg[ZONE_DOOR_ROOM]);
-                        cJSON_AddStringToObject(cmd_room, "name", room_name(Rooms, Zones->Zone[j].Cmds[k].Arg[ZONE_DOOR_ROOM]));
-                        cJSON_AddItemToArray(resets, this_reset);
-                        break;
-
-                    case ZONE_CMD_REMOVE:
-                        if(Zones->Zone[j].Cmds[k].Arg[ZONE_REMOVE_ROOM] != Rooms->Room[i].Number)
-                            break;
-                        this_reset  = cJSON_CreateObject();
-                        sprintf(cmd, "%c", Zones->Zone[j].Cmds[k].Command);
-                        cJSON_AddStringToObject(this_reset, "command", "remove object from room");
-                        if( Zones->Zone[j].Cmds[k].IfFlag ) {
-                            cJSON_AddTrueToObject(this_reset, "if_previous_ran");
-                        } else {
-                            cJSON_AddFalseToObject(this_reset, "if_previous_ran");
-                        }
-                        cmd_obj = cJSON_AddObjectToObject(this_reset, "object");
-                        cJSON_AddNumberToObject(cmd_obj, "vnum", Zones->Zone[j].Cmds[k].Arg[ZONE_REMOVE_OBJ]);
-                        cJSON_AddStringToObject(cmd_obj, "name", obj_name(Objects, Zones->Zone[j].Cmds[k].Arg[ZONE_REMOVE_OBJ]));
-                        cmd_room = cJSON_AddObjectToObject(this_reset, "room");
-                        cJSON_AddNumberToObject(cmd_room, "vnum", Zones->Zone[j].Cmds[k].Arg[ZONE_REMOVE_ROOM]);
-                        cJSON_AddStringToObject(cmd_room, "name", room_name(Rooms, Zones->Zone[j].Cmds[k].Arg[ZONE_REMOVE_ROOM]));
-                        cJSON_AddItemToArray(resets, this_reset);
-                        break;
-
-                    case ZONE_CMD_LEAD:
-                        // This has to use LeaderMob
-                        if(LeaderMob < 0)
-                            break;
-                        this_reset  = cJSON_CreateObject();
-                        sprintf(cmd, "%c", Zones->Zone[j].Cmds[k].Command);
-                        cJSON_AddStringToObject(this_reset, "command", "load mobile to follow leader");
-                        if( Zones->Zone[j].Cmds[k].IfFlag ) {
-                            cJSON_AddTrueToObject(this_reset, "if_previous_ran");
-                        } else {
-                            cJSON_AddFalseToObject(this_reset, "if_previous_ran");
-                        }
-                        cmd_mob = cJSON_AddObjectToObject(this_reset, "mob");
-                        cJSON_AddNumberToObject(cmd_mob, "vnum", Zones->Zone[j].Cmds[k].Arg[ZONE_MOBILE]);
-                        cJSON_AddStringToObject(cmd_mob, "name", mob_name(Mobs, Zones->Zone[j].Cmds[k].Arg[ZONE_MOBILE]));
-                        cmd_target = cJSON_AddObjectToObject(this_reset, "leader");
-                        cJSON_AddNumberToObject(cmd_target, "vnum", LeaderMob);
-                        cJSON_AddStringToObject(cmd_target, "name", mob_name(Mobs, LeaderMob));
-                        cmd_room = cJSON_AddObjectToObject(this_reset, "room");
-                        cJSON_AddNumberToObject(cmd_room, "vnum", LastLoc);
-                        cJSON_AddStringToObject(cmd_room, "name", room_name(Rooms, LastLoc));
-                        cJSON_AddItemToArray(resets, this_reset);
-                        LastMob = Zones->Zone[j].Cmds[k].Arg[ZONE_MOBILE];
-                        break;
-
-                    case ZONE_CMD_HATE:
-                        // This has to use LastMob
-                        if(LastMob < 0)
-                            break;
-                        this_reset  = cJSON_CreateObject();
-                        sprintf(cmd, "%c", Zones->Zone[j].Cmds[k].Command);
-                        cJSON_AddStringToObject(this_reset, "command", "set hate status of mobile");
-                        if( Zones->Zone[j].Cmds[k].IfFlag ) {
-                            cJSON_AddTrueToObject(this_reset, "if_previous_ran");
-                        } else {
-                            cJSON_AddFalseToObject(this_reset, "if_previous_ran");
-                        }
-                        cmd_mob = cJSON_AddObjectToObject(this_reset, "mob");
-                        cJSON_AddNumberToObject(cmd_mob, "vnum", LastMob);
-                        cJSON_AddStringToObject(cmd_mob, "name", mob_name(Mobs, LastMob));
-                        cmd_room = cJSON_AddObjectToObject(this_reset, "room");
-                        cJSON_AddNumberToObject(cmd_room, "vnum", LastLoc);
-                        cJSON_AddStringToObject(cmd_room, "name", room_name(Rooms, LastLoc));
-                        cJSON_AddStringToObject(this_reset, "hate", hate_name(Zones->Zone[j].Cmds[k].Arg[ZONE_HATE_TYPE], Zones->Zone[j].Cmds[k].Arg[ZONE_HATE_VALUE]));
-                        cJSON_AddItemToArray(resets, this_reset);
-                        break;
-
-                    default:
-                        // Error...
-                        break;
+                this_reset = process_reset_segment(&LastMob, &LastLoc, &LastObj, &LeaderMob, i, j, k, Rooms, Zones, Objects, Mobs, NULL);
+                if(this_reset) {
+                    cJSON_AddItemToArray(resets, this_reset);
                 }
             }
         }
@@ -647,231 +739,11 @@ cJSON *process_orphaned_resets(cJSON *root, rooms *Rooms, zones *Zones, objects 
             int LastObj = -1;
             int LeaderMob = -1;
             for (int k = 0; k < Zones->Zone[j].Count; k++) {
-                cJSON *this_reset;
-                cJSON *cmd_room, *cmd_mob, *cmd_obj, *cmd_target;
-                char cmd[2];
-                char found_in[256];
+                cJSON *this_reset = NULL;
 
-                switch (Zones->Zone[j].Cmds[k].Command) {
-                    case ZONE_CMD_MOBILE:
-                        LastMob = Zones->Zone[j].Cmds[k].Arg[ZONE_MOBILE];
-                        LastLoc = Zones->Zone[j].Cmds[k].Arg[ZONE_ROOM];
-                        LeaderMob = LastMob;
-                        if(reset_checkoffs[j][k] < 1) {
-                            this_reset  = cJSON_CreateObject();
-                            sprintf(found_in, "Found in zone \"%s\"[#%d], entry %d", Zones->Zone[j].Name, Zones->Zone[j].Number, k);
-                            cJSON_AddStringToObject(this_reset, "zone", found_in);
-                            sprintf(cmd, "%c", Zones->Zone[j].Cmds[k].Command);
-                            cJSON_AddStringToObject(this_reset, "command", "load mobile to room");
-                            cJSON_AddNumberToObject(this_reset, "limit", Zones->Zone[j].Cmds[k].Arg[ZONE_MAX]);
-                            if( Zones->Zone[j].Cmds[k].IfFlag ) {
-                                cJSON_AddTrueToObject(this_reset, "if_previous_ran");
-                            } else {
-                                cJSON_AddFalseToObject(this_reset, "if_previous_ran");
-                            }
-                            cmd_mob = cJSON_AddObjectToObject(this_reset, "mob");
-                            cJSON_AddNumberToObject(cmd_mob, "vnum", Zones->Zone[j].Cmds[k].Arg[ZONE_MOBILE]);
-                            cJSON_AddStringToObject(cmd_mob, "name", mob_name(Mobs, Zones->Zone[j].Cmds[k].Arg[ZONE_MOBILE]));
-                            cmd_room = cJSON_AddObjectToObject(this_reset, "room");
-                            cJSON_AddNumberToObject(cmd_room, "vnum", Zones->Zone[j].Cmds[k].Arg[ZONE_ROOM]);
-                            cJSON_AddStringToObject(cmd_room, "name", room_name(Rooms, Zones->Zone[j].Cmds[k].Arg[ZONE_ROOM]));
-                            cJSON_AddItemToArray(resets, this_reset);
-                        }
-                        break;
-
-                    case ZONE_CMD_OBJECT:
-                        LastObj = Zones->Zone[j].Cmds[k].Arg[ZONE_OBJECT];
-                        LastLoc = Zones->Zone[j].Cmds[k].Arg[ZONE_ROOM];
-                        if(reset_checkoffs[j][k] < 1) {
-                            this_reset  = cJSON_CreateObject();
-                            sprintf(found_in, "Found in zone \"%s\"[#%d], entry %d", Zones->Zone[j].Name, Zones->Zone[j].Number, k);
-                            cJSON_AddStringToObject(this_reset, "zone", found_in);
-                            sprintf(cmd, "%c", Zones->Zone[j].Cmds[k].Command);
-                            cJSON_AddStringToObject(this_reset, "command", "load object to room");
-                            cJSON_AddNumberToObject(this_reset, "limit", Zones->Zone[j].Cmds[k].Arg[ZONE_MAX]);
-                            if( Zones->Zone[j].Cmds[k].IfFlag ) {
-                                cJSON_AddTrueToObject(this_reset, "if_previous_ran");
-                            } else {
-                                cJSON_AddFalseToObject(this_reset, "if_previous_ran");
-                            }
-                            cmd_obj = cJSON_AddObjectToObject(this_reset, "object");
-                            cJSON_AddNumberToObject(cmd_obj, "vnum", Zones->Zone[j].Cmds[k].Arg[ZONE_OBJECT]);
-                            cJSON_AddStringToObject(cmd_obj, "name", obj_name(Objects, Zones->Zone[j].Cmds[k].Arg[ZONE_OBJECT]));
-                            cmd_room = cJSON_AddObjectToObject(this_reset, "room");
-                            cJSON_AddNumberToObject(cmd_room, "vnum", Zones->Zone[j].Cmds[k].Arg[ZONE_ROOM]);
-                            cJSON_AddStringToObject(cmd_room, "name", room_name(Rooms, Zones->Zone[j].Cmds[k].Arg[ZONE_ROOM]));
-                            cJSON_AddItemToArray(resets, this_reset);
-                        }
-                        break;
-
-                    case ZONE_CMD_GIVE:
-                        LastObj = Zones->Zone[j].Cmds[k].Arg[ZONE_OBJECT];
-                        if(reset_checkoffs[j][k] < 1) {
-                            this_reset  = cJSON_CreateObject();
-                            sprintf(found_in, "Found in zone \"%s\"[#%d], entry %d", Zones->Zone[j].Name, Zones->Zone[j].Number, k);
-                            cJSON_AddStringToObject(this_reset, "zone", found_in);
-                            sprintf(cmd, "%c", Zones->Zone[j].Cmds[k].Command);
-                            cJSON_AddStringToObject(this_reset, "command", "give object to mobile");
-                            cJSON_AddNumberToObject(this_reset, "limit", Zones->Zone[j].Cmds[k].Arg[ZONE_MAX]);
-                            if( Zones->Zone[j].Cmds[k].IfFlag ) {
-                                cJSON_AddTrueToObject(this_reset, "if_previous_ran");
-                            } else {
-                                cJSON_AddFalseToObject(this_reset, "if_previous_ran");
-                            }
-                            cmd_obj = cJSON_AddObjectToObject(this_reset, "object");
-                            cJSON_AddNumberToObject(cmd_obj, "vnum", Zones->Zone[j].Cmds[k].Arg[ZONE_OBJECT]);
-                            cJSON_AddStringToObject(cmd_obj, "name", obj_name(Objects, Zones->Zone[j].Cmds[k].Arg[ZONE_OBJECT]));
-                            cmd_mob = cJSON_AddObjectToObject(this_reset, "mob");
-                            cJSON_AddNumberToObject(cmd_mob, "vnum", LastMob);
-                            cJSON_AddStringToObject(cmd_mob, "name", mob_name(Mobs, LastMob));
-                            cJSON_AddItemToArray(resets, this_reset);
-                        }
-                        break;
-
-                    case ZONE_CMD_EQUIP:
-                        LastObj = Zones->Zone[j].Cmds[k].Arg[ZONE_OBJECT];
-                        if(reset_checkoffs[j][k] < 1) {
-                            this_reset  = cJSON_CreateObject();
-                            sprintf(found_in, "Found in zone \"%s\"[#%d], entry %d", Zones->Zone[j].Name, Zones->Zone[j].Number, k);
-                            cJSON_AddStringToObject(this_reset, "zone", found_in);
-                            sprintf(cmd, "%c", Zones->Zone[j].Cmds[k].Command);
-                            cJSON_AddStringToObject(this_reset, "command", "equip object to mobile");
-                            cJSON_AddNumberToObject(this_reset, "limit", Zones->Zone[j].Cmds[k].Arg[ZONE_MAX]);
-                            if( Zones->Zone[j].Cmds[k].IfFlag ) {
-                                cJSON_AddTrueToObject(this_reset, "if_previous_ran");
-                            } else {
-                                cJSON_AddFalseToObject(this_reset, "if_previous_ran");
-                            }
-                            cmd_obj = cJSON_AddObjectToObject(this_reset, "object");
-                            cJSON_AddNumberToObject(cmd_obj, "vnum", Zones->Zone[j].Cmds[k].Arg[ZONE_OBJECT]);
-                            cJSON_AddStringToObject(cmd_obj, "name", obj_name(Objects, Zones->Zone[j].Cmds[k].Arg[ZONE_OBJECT]));
-                            cmd_mob = cJSON_AddObjectToObject(this_reset, "mob");
-                            cJSON_AddNumberToObject(cmd_mob, "vnum", LastMob);
-                            cJSON_AddStringToObject(cmd_mob, "name", mob_name(Mobs, LastMob));
-                            cJSON_AddStringToObject(this_reset, "position", equip_name(Zones->Zone[j].Cmds[k].Arg[ZONE_POSITION]));
-                            cJSON_AddItemToArray(resets, this_reset);
-                        }
-                        break;
-
-                    case ZONE_CMD_PUT:
-                        if(reset_checkoffs[j][k] < 1) {
-                            this_reset  = cJSON_CreateObject();
-                            sprintf(found_in, "Found in zone \"%s\"[#%d], entry %d", Zones->Zone[j].Name, Zones->Zone[j].Number, k);
-                            cJSON_AddStringToObject(this_reset, "zone", found_in);
-                            sprintf(cmd, "%c", Zones->Zone[j].Cmds[k].Command);
-                            cJSON_AddStringToObject(this_reset, "command", "put object in object");
-                            cJSON_AddNumberToObject(this_reset, "limit", Zones->Zone[j].Cmds[k].Arg[ZONE_MAX]);
-                            if( Zones->Zone[j].Cmds[k].IfFlag ) {
-                                cJSON_AddTrueToObject(this_reset, "if_previous_ran");
-                            } else {
-                                cJSON_AddFalseToObject(this_reset, "if_previous_ran");
-                            }
-                            cmd_obj = cJSON_AddObjectToObject(this_reset, "object");
-                            cJSON_AddNumberToObject(cmd_obj, "vnum", Zones->Zone[j].Cmds[k].Arg[ZONE_OBJECT]);
-                            cJSON_AddStringToObject(cmd_obj, "name", obj_name(Objects, Zones->Zone[j].Cmds[k].Arg[ZONE_OBJECT]));
-                            cmd_target = cJSON_AddObjectToObject(this_reset, "target");
-                            cJSON_AddNumberToObject(cmd_target, "vnum", Zones->Zone[j].Cmds[k].Arg[ZONE_TARGET_OBJ]);
-                            cJSON_AddStringToObject(cmd_target, "name", obj_name(Objects, Zones->Zone[j].Cmds[k].Arg[ZONE_TARGET_OBJ]));
-                            cJSON_AddItemToArray(resets, this_reset);
-                        }
-                        break;
-
-                    case ZONE_CMD_DOOR:
-                        if(reset_checkoffs[j][k] < 1) {
-                            this_reset  = cJSON_CreateObject();
-                            sprintf(found_in, "Found in zone \"%s\"[#%d], entry %d", Zones->Zone[j].Name, Zones->Zone[j].Number, k);
-                            cJSON_AddStringToObject(this_reset, "zone", found_in);
-                            sprintf(cmd, "%c", Zones->Zone[j].Cmds[k].Command);
-                            cJSON_AddStringToObject(this_reset, "command", "set door state");
-                            if( Zones->Zone[j].Cmds[k].IfFlag ) {
-                                cJSON_AddTrueToObject(this_reset, "if_previous_ran");
-                            } else {
-                                cJSON_AddFalseToObject(this_reset, "if_previous_ran");
-                            }
-                            cmd_target = cJSON_AddObjectToObject(this_reset, "door");
-                            cJSON_AddStringToObject(cmd_target, "name", exit_name(Zones->Zone[j].Cmds[k].Arg[ZONE_DOOR_EXIT]));
-                            cJSON_AddStringToObject(cmd_target, "state", doorstate_name(Zones->Zone[j].Cmds[k].Arg[ZONE_DOOR_STATE]));
-                            cmd_room = cJSON_AddObjectToObject(this_reset, "room");
-                            cJSON_AddNumberToObject(cmd_room, "vnum", Zones->Zone[j].Cmds[k].Arg[ZONE_DOOR_ROOM]);
-                            cJSON_AddStringToObject(cmd_room, "name", room_name(Rooms, Zones->Zone[j].Cmds[k].Arg[ZONE_DOOR_ROOM]));
-                            cJSON_AddItemToArray(resets, this_reset);
-                        }
-                        break;
-
-                    case ZONE_CMD_REMOVE:
-                        if(reset_checkoffs[j][k] < 1) {
-                            this_reset  = cJSON_CreateObject();
-                            sprintf(found_in, "Found in zone \"%s\"[#%d], entry %d", Zones->Zone[j].Name, Zones->Zone[j].Number, k);
-                            cJSON_AddStringToObject(this_reset, "zone", found_in);
-                            sprintf(cmd, "%c", Zones->Zone[j].Cmds[k].Command);
-                            cJSON_AddStringToObject(this_reset, "command", "remove object from room");
-                            if( Zones->Zone[j].Cmds[k].IfFlag ) {
-                                cJSON_AddTrueToObject(this_reset, "if_previous_ran");
-                            } else {
-                                cJSON_AddFalseToObject(this_reset, "if_previous_ran");
-                            }
-                            cmd_obj = cJSON_AddObjectToObject(this_reset, "object");
-                            cJSON_AddNumberToObject(cmd_obj, "vnum", Zones->Zone[j].Cmds[k].Arg[ZONE_REMOVE_OBJ]);
-                            cJSON_AddStringToObject(cmd_obj, "name", obj_name(Objects, Zones->Zone[j].Cmds[k].Arg[ZONE_REMOVE_OBJ]));
-                            cmd_room = cJSON_AddObjectToObject(this_reset, "room");
-                            cJSON_AddNumberToObject(cmd_room, "vnum", Zones->Zone[j].Cmds[k].Arg[ZONE_REMOVE_ROOM]);
-                            cJSON_AddStringToObject(cmd_room, "name", room_name(Rooms, Zones->Zone[j].Cmds[k].Arg[ZONE_REMOVE_ROOM]));
-                            cJSON_AddItemToArray(resets, this_reset);
-                        }
-                        break;
-
-                    case ZONE_CMD_LEAD:
-                        if(reset_checkoffs[j][k] < 1) {
-                            this_reset  = cJSON_CreateObject();
-                            sprintf(found_in, "Found in zone \"%s\"[#%d], entry %d", Zones->Zone[j].Name, Zones->Zone[j].Number, k);
-                            cJSON_AddStringToObject(this_reset, "zone", found_in);
-                            sprintf(cmd, "%c", Zones->Zone[j].Cmds[k].Command);
-                            cJSON_AddStringToObject(this_reset, "command", "load mobile to follow leader");
-                            if( Zones->Zone[j].Cmds[k].IfFlag ) {
-                                cJSON_AddTrueToObject(this_reset, "if_previous_ran");
-                            } else {
-                                cJSON_AddFalseToObject(this_reset, "if_previous_ran");
-                            }
-                            cmd_mob = cJSON_AddObjectToObject(this_reset, "mob");
-                            cJSON_AddNumberToObject(cmd_mob, "vnum", Zones->Zone[j].Cmds[k].Arg[ZONE_MOBILE]);
-                            cJSON_AddStringToObject(cmd_mob, "name", mob_name(Mobs, Zones->Zone[j].Cmds[k].Arg[ZONE_MOBILE]));
-                            cmd_target = cJSON_AddObjectToObject(this_reset, "leader");
-                            cJSON_AddNumberToObject(cmd_target, "vnum", LeaderMob);
-                            cJSON_AddStringToObject(cmd_target, "name", mob_name(Mobs, LeaderMob));
-                            cmd_room = cJSON_AddObjectToObject(this_reset, "room");
-                            cJSON_AddNumberToObject(cmd_room, "vnum", LastLoc);
-                            cJSON_AddStringToObject(cmd_room, "name", room_name(Rooms, LastLoc));
-                            cJSON_AddItemToArray(resets, this_reset);
-                        }
-                        LastMob = Zones->Zone[j].Cmds[k].Arg[ZONE_MOBILE];
-                        break;
-
-                    case ZONE_CMD_HATE:
-                        if(reset_checkoffs[j][k] < 1) {
-                            this_reset  = cJSON_CreateObject();
-                            sprintf(found_in, "Found in zone \"%s\"[#%d], entry %d", Zones->Zone[j].Name, Zones->Zone[j].Number, k);
-                            cJSON_AddStringToObject(this_reset, "zone", found_in);
-                            sprintf(cmd, "%c", Zones->Zone[j].Cmds[k].Command);
-                            cJSON_AddStringToObject(this_reset, "command", "set hate status of mobile");
-                            if( Zones->Zone[j].Cmds[k].IfFlag ) {
-                                cJSON_AddTrueToObject(this_reset, "if_previous_ran");
-                            } else {
-                                cJSON_AddFalseToObject(this_reset, "if_previous_ran");
-                            }
-                            cmd_mob = cJSON_AddObjectToObject(this_reset, "mob");
-                            cJSON_AddNumberToObject(cmd_mob, "vnum", LastMob);
-                            cJSON_AddStringToObject(cmd_mob, "name", mob_name(Mobs, LastMob));
-                            cmd_room = cJSON_AddObjectToObject(this_reset, "room");
-                            cJSON_AddNumberToObject(cmd_room, "vnum", LastLoc);
-                            cJSON_AddStringToObject(cmd_room, "name", room_name(Rooms, LastLoc));
-                            cJSON_AddStringToObject(this_reset, "hate", hate_name(Zones->Zone[j].Cmds[k].Arg[ZONE_HATE_TYPE], Zones->Zone[j].Cmds[k].Arg[ZONE_HATE_VALUE]));
-                            cJSON_AddItemToArray(resets, this_reset);
-                        }
-                        break;
-
-                    default:
-                        // Error...
-                        break;
+                this_reset = process_reset_segment(&LastMob, &LastLoc, &LastObj, &LeaderMob, -1, j, k, Rooms, Zones, Objects, Mobs, reset_checkoffs);
+                if(this_reset) {
+                    cJSON_AddItemToArray(resets, this_reset);
                 }
             }
         }
@@ -890,210 +762,11 @@ cJSON *process_zone_resets(cJSON *this_zone, rooms *Rooms, zones *Zones, int j, 
     if(Zones->Zone[j].Count > 0) {
         resets = cJSON_AddArrayToObject(this_zone, "resets");
         for (int k = 0; k < Zones->Zone[j].Count; k++) {
-            cJSON *this_reset;
-            cJSON *cmd_room, *cmd_mob, *cmd_obj, *cmd_target;
-            char cmd[2];
+            cJSON *this_reset = NULL;
 
-            switch (Zones->Zone[j].Cmds[k].Command) {
-                case ZONE_CMD_MOBILE:
-                    LastMob = Zones->Zone[j].Cmds[k].Arg[ZONE_MOBILE];
-                    LastLoc = Zones->Zone[j].Cmds[k].Arg[ZONE_ROOM];
-                    LeaderMob = LastMob;
-                    this_reset  = cJSON_CreateObject();
-                    sprintf(cmd, "%c", Zones->Zone[j].Cmds[k].Command);
-                    cJSON_AddStringToObject(this_reset, "command", "load mobile to room");
-                    cJSON_AddNumberToObject(this_reset, "limit", Zones->Zone[j].Cmds[k].Arg[ZONE_MAX]);
-                    if( Zones->Zone[j].Cmds[k].IfFlag ) {
-                        cJSON_AddTrueToObject(this_reset, "if_previous_ran");
-                    } else {
-                        cJSON_AddFalseToObject(this_reset, "if_previous_ran");
-                    }
-                    cmd_mob = cJSON_AddObjectToObject(this_reset, "mob");
-                    cJSON_AddNumberToObject(cmd_mob, "vnum", Zones->Zone[j].Cmds[k].Arg[ZONE_MOBILE]);
-                    cJSON_AddStringToObject(cmd_mob, "name", mob_name(Mobs, Zones->Zone[j].Cmds[k].Arg[ZONE_MOBILE]));
-                    cmd_room = cJSON_AddObjectToObject(this_reset, "room");
-                    cJSON_AddNumberToObject(cmd_room, "vnum", Zones->Zone[j].Cmds[k].Arg[ZONE_ROOM]);
-                    cJSON_AddStringToObject(cmd_room, "name", room_name(Rooms, Zones->Zone[j].Cmds[k].Arg[ZONE_ROOM]));
-                    cJSON_AddItemToArray(resets, this_reset);
-                    break;
-
-                case ZONE_CMD_OBJECT:
-                    LastObj = Zones->Zone[j].Cmds[k].Arg[ZONE_OBJECT];
-                    LastLoc = Zones->Zone[j].Cmds[k].Arg[ZONE_ROOM];
-                    this_reset  = cJSON_CreateObject();
-                    sprintf(cmd, "%c", Zones->Zone[j].Cmds[k].Command);
-                    cJSON_AddStringToObject(this_reset, "command", "load object to room");
-                    cJSON_AddNumberToObject(this_reset, "limit", Zones->Zone[j].Cmds[k].Arg[ZONE_MAX]);
-                    if( Zones->Zone[j].Cmds[k].IfFlag ) {
-                        cJSON_AddTrueToObject(this_reset, "if_previous_ran");
-                    } else {
-                        cJSON_AddFalseToObject(this_reset, "if_previous_ran");
-                    }
-                    cmd_obj = cJSON_AddObjectToObject(this_reset, "object");
-                    cJSON_AddNumberToObject(cmd_obj, "vnum", Zones->Zone[j].Cmds[k].Arg[ZONE_OBJECT]);
-                    cJSON_AddStringToObject(cmd_obj, "name", obj_name(Objects, Zones->Zone[j].Cmds[k].Arg[ZONE_OBJECT]));
-                    cmd_room = cJSON_AddObjectToObject(this_reset, "room");
-                    cJSON_AddNumberToObject(cmd_room, "vnum", Zones->Zone[j].Cmds[k].Arg[ZONE_ROOM]);
-                    cJSON_AddStringToObject(cmd_room, "name", room_name(Rooms, Zones->Zone[j].Cmds[k].Arg[ZONE_ROOM]));
-                    cJSON_AddItemToArray(resets, this_reset);
-                    break;
-
-                case ZONE_CMD_GIVE:
-                    // This has to use LastMob
-                    if(LastMob < 0)
-                        break;
-                    LastObj = Zones->Zone[j].Cmds[k].Arg[ZONE_OBJECT];
-                    this_reset  = cJSON_CreateObject();
-                    sprintf(cmd, "%c", Zones->Zone[j].Cmds[k].Command);
-                    cJSON_AddStringToObject(this_reset, "command", "give object to mobile");
-                    cJSON_AddNumberToObject(this_reset, "limit", Zones->Zone[j].Cmds[k].Arg[ZONE_MAX]);
-                    if( Zones->Zone[j].Cmds[k].IfFlag ) {
-                        cJSON_AddTrueToObject(this_reset, "if_previous_ran");
-                    } else {
-                        cJSON_AddFalseToObject(this_reset, "if_previous_ran");
-                    }
-                    cmd_obj = cJSON_AddObjectToObject(this_reset, "object");
-                    cJSON_AddNumberToObject(cmd_obj, "vnum", Zones->Zone[j].Cmds[k].Arg[ZONE_OBJECT]);
-                    cJSON_AddStringToObject(cmd_obj, "name", obj_name(Objects, Zones->Zone[j].Cmds[k].Arg[ZONE_OBJECT]));
-                    cmd_mob = cJSON_AddObjectToObject(this_reset, "mob");
-                    cJSON_AddNumberToObject(cmd_mob, "vnum", LastMob);
-                    cJSON_AddStringToObject(cmd_mob, "name", mob_name(Mobs, LastMob));
-                    cJSON_AddItemToArray(resets, this_reset);
-                    break;
-
-                case ZONE_CMD_EQUIP:
-                    // This has to use LastMob
-                    if(LastMob < 0)
-                        break;
-                    LastObj = Zones->Zone[j].Cmds[k].Arg[ZONE_OBJECT];
-                    this_reset  = cJSON_CreateObject();
-                    sprintf(cmd, "%c", Zones->Zone[j].Cmds[k].Command);
-                    cJSON_AddStringToObject(this_reset, "command", "equip object to mobile");
-                    cJSON_AddNumberToObject(this_reset, "limit", Zones->Zone[j].Cmds[k].Arg[ZONE_MAX]);
-                    if( Zones->Zone[j].Cmds[k].IfFlag ) {
-                        cJSON_AddTrueToObject(this_reset, "if_previous_ran");
-                    } else {
-                        cJSON_AddFalseToObject(this_reset, "if_previous_ran");
-                    }
-                    cmd_obj = cJSON_AddObjectToObject(this_reset, "object");
-                    cJSON_AddNumberToObject(cmd_obj, "vnum", Zones->Zone[j].Cmds[k].Arg[ZONE_OBJECT]);
-                    cJSON_AddStringToObject(cmd_obj, "name", obj_name(Objects, Zones->Zone[j].Cmds[k].Arg[ZONE_OBJECT]));
-                    cmd_mob = cJSON_AddObjectToObject(this_reset, "mob");
-                    cJSON_AddNumberToObject(cmd_mob, "vnum", LastMob);
-                    cJSON_AddStringToObject(cmd_mob, "name", mob_name(Mobs, LastMob));
-                    cJSON_AddStringToObject(this_reset, "position", equip_name(Zones->Zone[j].Cmds[k].Arg[ZONE_POSITION]));
-                    cJSON_AddItemToArray(resets, this_reset);
-                    break;
-
-                case ZONE_CMD_PUT:
-                    // We'll check LastLoc and LastObj to make sure
-                    // an object was loaded into THIS room.
-                    if(LastObj < 0)
-                        break;
-                    this_reset  = cJSON_CreateObject();
-                    sprintf(cmd, "%c", Zones->Zone[j].Cmds[k].Command);
-                    cJSON_AddStringToObject(this_reset, "command", "put object in object");
-                    cJSON_AddNumberToObject(this_reset, "limit", Zones->Zone[j].Cmds[k].Arg[ZONE_MAX]);
-                    if( Zones->Zone[j].Cmds[k].IfFlag ) {
-                        cJSON_AddTrueToObject(this_reset, "if_previous_ran");
-                    } else {
-                        cJSON_AddFalseToObject(this_reset, "if_previous_ran");
-                    }
-                    cmd_obj = cJSON_AddObjectToObject(this_reset, "object");
-                    cJSON_AddNumberToObject(cmd_obj, "vnum", Zones->Zone[j].Cmds[k].Arg[ZONE_OBJECT]);
-                    cJSON_AddStringToObject(cmd_obj, "name", obj_name(Objects, Zones->Zone[j].Cmds[k].Arg[ZONE_OBJECT]));
-                    cmd_target = cJSON_AddObjectToObject(this_reset, "target");
-                    cJSON_AddNumberToObject(cmd_target, "vnum", Zones->Zone[j].Cmds[k].Arg[ZONE_TARGET_OBJ]);
-                    cJSON_AddStringToObject(cmd_target, "name", obj_name(Objects, Zones->Zone[j].Cmds[k].Arg[ZONE_TARGET_OBJ]));
-                    cJSON_AddItemToArray(resets, this_reset);
-                    break;
-
-                case ZONE_CMD_DOOR:
-                    this_reset  = cJSON_CreateObject();
-                    sprintf(cmd, "%c", Zones->Zone[j].Cmds[k].Command);
-                    cJSON_AddStringToObject(this_reset, "command", "set door state");
-                    if( Zones->Zone[j].Cmds[k].IfFlag ) {
-                        cJSON_AddTrueToObject(this_reset, "if_previous_ran");
-                    } else {
-                        cJSON_AddFalseToObject(this_reset, "if_previous_ran");
-                    }
-                    cmd_target = cJSON_AddObjectToObject(this_reset, "door");
-                    cJSON_AddStringToObject(cmd_target, "name", exit_name(Zones->Zone[j].Cmds[k].Arg[ZONE_DOOR_EXIT]));
-                    cJSON_AddStringToObject(cmd_target, "state", doorstate_name(Zones->Zone[j].Cmds[k].Arg[ZONE_DOOR_STATE]));
-                    cmd_room = cJSON_AddObjectToObject(this_reset, "room");
-                    cJSON_AddNumberToObject(cmd_room, "vnum", Zones->Zone[j].Cmds[k].Arg[ZONE_DOOR_ROOM]);
-                    cJSON_AddStringToObject(cmd_room, "name", room_name(Rooms, Zones->Zone[j].Cmds[k].Arg[ZONE_DOOR_ROOM]));
-                    cJSON_AddItemToArray(resets, this_reset);
-                    break;
-
-                case ZONE_CMD_REMOVE:
-                    this_reset  = cJSON_CreateObject();
-                    sprintf(cmd, "%c", Zones->Zone[j].Cmds[k].Command);
-                    cJSON_AddStringToObject(this_reset, "command", "remove object from room");
-                    if( Zones->Zone[j].Cmds[k].IfFlag ) {
-                        cJSON_AddTrueToObject(this_reset, "if_previous_ran");
-                    } else {
-                        cJSON_AddFalseToObject(this_reset, "if_previous_ran");
-                    }
-                    cmd_obj = cJSON_AddObjectToObject(this_reset, "object");
-                    cJSON_AddNumberToObject(cmd_obj, "vnum", Zones->Zone[j].Cmds[k].Arg[ZONE_REMOVE_OBJ]);
-                    cJSON_AddStringToObject(cmd_obj, "name", obj_name(Objects, Zones->Zone[j].Cmds[k].Arg[ZONE_REMOVE_OBJ]));
-                    cmd_room = cJSON_AddObjectToObject(this_reset, "room");
-                    cJSON_AddNumberToObject(cmd_room, "vnum", Zones->Zone[j].Cmds[k].Arg[ZONE_REMOVE_ROOM]);
-                    cJSON_AddStringToObject(cmd_room, "name", room_name(Rooms, Zones->Zone[j].Cmds[k].Arg[ZONE_REMOVE_ROOM]));
-                    cJSON_AddItemToArray(resets, this_reset);
-                    break;
-
-                case ZONE_CMD_LEAD:
-                    // This has to use LeaderMob
-                    if(LeaderMob < 0)
-                        break;
-                    this_reset  = cJSON_CreateObject();
-                    sprintf(cmd, "%c", Zones->Zone[j].Cmds[k].Command);
-                    cJSON_AddStringToObject(this_reset, "command", "load mobile to follow leader");
-                    if( Zones->Zone[j].Cmds[k].IfFlag ) {
-                        cJSON_AddTrueToObject(this_reset, "if_previous_ran");
-                    } else {
-                        cJSON_AddFalseToObject(this_reset, "if_previous_ran");
-                    }
-                    cmd_mob = cJSON_AddObjectToObject(this_reset, "mob");
-                    cJSON_AddNumberToObject(cmd_mob, "vnum", Zones->Zone[j].Cmds[k].Arg[ZONE_MOBILE]);
-                    cJSON_AddStringToObject(cmd_mob, "name", mob_name(Mobs, Zones->Zone[j].Cmds[k].Arg[ZONE_MOBILE]));
-                    cmd_target = cJSON_AddObjectToObject(this_reset, "leader");
-                    cJSON_AddNumberToObject(cmd_target, "vnum", LeaderMob);
-                    cJSON_AddStringToObject(cmd_target, "name", mob_name(Mobs, LeaderMob));
-                    cmd_room = cJSON_AddObjectToObject(this_reset, "room");
-                    cJSON_AddNumberToObject(cmd_room, "vnum", LastLoc);
-                    cJSON_AddStringToObject(cmd_room, "name", room_name(Rooms, LastLoc));
-                    cJSON_AddItemToArray(resets, this_reset);
-                    LastMob = Zones->Zone[j].Cmds[k].Arg[ZONE_MOBILE];
-                    break;
-
-                case ZONE_CMD_HATE:
-                    // This has to use LastMob
-                    if(LastMob < 0)
-                        break;
-                    this_reset  = cJSON_CreateObject();
-                    sprintf(cmd, "%c", Zones->Zone[j].Cmds[k].Command);
-                    cJSON_AddStringToObject(this_reset, "command", "set hate status of mobile");
-                    if( Zones->Zone[j].Cmds[k].IfFlag ) {
-                        cJSON_AddTrueToObject(this_reset, "if_previous_ran");
-                    } else {
-                        cJSON_AddFalseToObject(this_reset, "if_previous_ran");
-                    }
-                    cmd_mob = cJSON_AddObjectToObject(this_reset, "mob");
-                    cJSON_AddNumberToObject(cmd_mob, "vnum", LastMob);
-                    cJSON_AddStringToObject(cmd_mob, "name", mob_name(Mobs, LastMob));
-                    cmd_room = cJSON_AddObjectToObject(this_reset, "room");
-                    cJSON_AddNumberToObject(cmd_room, "vnum", LastLoc);
-                    cJSON_AddStringToObject(cmd_room, "name", room_name(Rooms, LastLoc));
-                    cJSON_AddStringToObject(this_reset, "hate", hate_name(Zones->Zone[j].Cmds[k].Arg[ZONE_HATE_TYPE], Zones->Zone[j].Cmds[k].Arg[ZONE_HATE_VALUE]));
-                    cJSON_AddItemToArray(resets, this_reset);
-                    break;
-
-                default:
-                    // Error...
-                    break;
+            this_reset = process_reset_segment(&LastMob, &LastLoc, &LastObj, &LeaderMob, -1, j, k, Rooms, Zones, Objects, Mobs, NULL);
+            if(this_reset) {
+                cJSON_AddItemToArray(resets, this_reset);
             }
         }
     } else {

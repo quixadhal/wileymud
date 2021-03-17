@@ -9,6 +9,9 @@
 #define max(a,b) ((a)>(b)?(a):(b))
 #define abs(a) (((a)<0)?(-(a)):(a))
 
+#define FALSE 0
+#define TRUE 1
+
 void                                    spin(FILE * fp);
 char                                   *my_strdup(char *Str);
 FILE                                   *open_file(char *Filename, char *Mode);
