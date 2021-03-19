@@ -5,6 +5,8 @@
 
 #ifndef _DUMP_JSON_C
 extern const char *room_flag_names[64];
+extern const char *act_flag_names[64];
+extern const char *aff_flag_names[64];
 #include <cjson/cJSON.h>
 #endif
 

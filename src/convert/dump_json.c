@@ -43,6 +43,44 @@ const char *room_flag_names[64] = {
     "", "", "", ""
 };
 
+const char *act_flag_names[64] = {
+    "has_special", "sentinel", "scavenger", "is_npc",
+    "nice_thief", "aggressive", "stay_in_zone", "wimpy",
+    "annoying", "hateful", "afraid", "immortal",
+    "hunting", "deadly", "polyself", "polyother",
+    "guardian", "use_item", "fighter_moves", "provides_food",
+    "protector", "is_mount", "switch", "",
+    "", "", "", "",
+    "", "", "", "",
+    "", "", "", "",
+    "", "", "", "",
+    "", "", "", "",
+    "", "", "", "",
+    "", "", "", "",
+    "", "", "", "",
+    "", "", "", "",
+    "", "", "", ""
+};
+
+const char *aff_flag_names[64] = {
+    "blind", "invisible", "detect_evil", "detect_invisible",
+    "detect_magic", "sense_life", "silenced", "sanctuary",
+    "group", "", "curse", "flying",
+    "poison", "protection_from_evil", "paralysis", "infravision",
+    "water_breathing", "sleep", "drug_free", "sneak",
+    "hide", "fear", "charm", "follow",
+    "", "true_sight", "scrying", "fireshield",
+    "ride", "", "", "",
+    "", "", "", "",
+    "", "", "", "",
+    "", "", "", "",
+    "", "", "", "",
+    "", "", "", "",
+    "", "", "", "",
+    "", "", "", "",
+    "", "", "", ""
+};
+
 // Tack on fixed zone header data
 cJSON *process_zone_header(cJSON *this_zone, zones *Zones, int i) {
     cJSON_AddNumberToObject(this_zone, "vnum", Zones->Zone[i].Number);
@@ -1006,6 +1044,7 @@ cJSON *process_mob_header(cJSON *this_mob, mobs *Mobs, int i)
     cJSON_AddStringToObject(this_mob, "short_description", Mobs->Mob[i].ShortDesc);
     cJSON_AddStringToObject(this_mob, "long_description", Mobs->Mob[i].LongDesc);
     cJSON_AddStringToObject(this_mob, "description", Mobs->Mob[i].Description);
+    cJSON_AddNumberToObject(this_mob, "alignment", Mobs->Mob[i].Alignment);
 
     return this_mob;
 }
@@ -1106,6 +1145,8 @@ void dump_as_json(zones *Zones, rooms *Rooms, objects *Objects, mobs *Mobs, shop
             process_mob_header(this_mob, Mobs, j);
             process_specials(this_mob, Mobs->Mob[j].Number, SPECIAL_MOB);
             process_zone_mob_info(this_mob, Mobs, j, Zones);
+            process_flags(this_mob, Mobs->Mob[j].ActFlags, act_flag_names);
+            process_flags(this_mob, Mobs->Mob[j].AffectedBy, aff_flag_names);
         }
 
         objects = cJSON_AddObjectToObject(this_zone, "objects");
