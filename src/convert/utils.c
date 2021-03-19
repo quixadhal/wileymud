@@ -24,7 +24,33 @@ void spin(FILE * fp)
     static int                              spin_state = 0;
 
     fprintf(fp, "%c\b", spinner[(++spin_state > 3) ? (spin_state = 0) : spin_state]);
-    fflush(stderr);
+    fflush(fp);
+}
+
+void status(FILE *fp, const char *Str, ...)
+{
+    va_list arg;
+    char tmpstr[MAX_STRING_LEN];
+
+    if(!Str || !*Str)
+        return;
+
+    va_start(arg, Str);
+    vsnprintf(tmpstr, MAX_STRING_LEN, Str, arg);
+    va_end(arg);
+
+    if(Verbose) {
+        fprintf(fp, "%s\n", tmpstr);
+        fflush(fp);
+    } else if (!Quiet) {
+        tmpstr[77] = '\0'; // Truncate string at 78 characters.
+        fprintf(fp, "%s", tmpstr);
+        for (int x = strlen(tmpstr); x < 79; x++)
+            fprintf(fp, " ");
+        for (int x = strlen(tmpstr); x < 79; x++)
+            fprintf(fp, "\b");
+        fflush(fp);
+    }
 }
 
 /*

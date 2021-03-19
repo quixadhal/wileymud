@@ -11,6 +11,18 @@
 #define _DUMP_JSON_C
 #include "include/dump_json.h"
 
+// If you define FULL_SCHEMA, false booleans and empty objects
+// will be added to the JSON output, so in all cases, all possible
+// data elements will be present, otherwise, only non-empty and
+// true things will be in the data.
+
+//#define FULL_SCHEMA
+
+#ifndef FULL_SCHEMA
+#define cJSON_AddNullToObject(a,b)
+#define cJSON_AddFalseToObject(a,b)
+#endif
+
 // unsigned long is currently 64 bits...
 const char *room_flag_names[64] = {
     "dark", "death", "nomob", "indoors",
@@ -45,10 +57,10 @@ cJSON *process_zone_header(cJSON *this_zone, zones *Zones, int i) {
         cJSON_AddNumberToObject(this_zone, "reset_frequency", Zones->Zone[i].Time);
     } else if (Zones->Zone[i].Mode == ZONE_RESET_NEVER) {
         cJSON_AddStringToObject(this_zone, "reset_style", "Never");
-        //cJSON_AddNumberToObject(this_zone, "reset_frequency", -1);
+        cJSON_AddNullToObject(this_zone, "reset_frequency");
     } else {
-        //cJSON_AddStringToObject(this_zone, "reset_style", "Error");
-        //cJSON_AddNumberToObject(this_zone, "reset_frequency", -1);
+        cJSON_AddNullToObject(this_zone, "reset_style");
+        cJSON_AddNullToObject(this_zone, "reset_frequency");
     }
     cJSON_AddNumberToObject(this_zone, "reset_commands", Zones->Zone[i].Count);
 
@@ -68,14 +80,14 @@ cJSON *process_room_header(cJSON *this_room, rooms *Rooms, int i) {
     return this_room;
 }
 
-// Find special procedure for the room, if any.
-cJSON *process_room_specials(cJSON *this_room, int RoomVnum) {
+// Find special procedure for the room/mob/object, if any.
+cJSON *process_specials(cJSON *this_thing, int Vnum, int SpecialType) {
     int special_proc = -1;
     cJSON *special = NULL;
 
     for(int j = 0; j < SpecialCount; j++) {
-        if(Specials[j].ProgType == SPECIAL_ROOM) {
-            if(Specials[j].Number == RoomVnum) {
+        if(Specials[j].ProgType == SpecialType) {
+            if(Specials[j].Number == Vnum) {
                 special_proc = j;
                 break;
             }
@@ -83,12 +95,12 @@ cJSON *process_room_specials(cJSON *this_room, int RoomVnum) {
     }
 
     if(special_proc > -1) {
-        special = cJSON_AddObjectToObject(this_room, "special_procedure");
+        special = cJSON_AddObjectToObject(this_thing, "special_procedure");
         cJSON_AddNumberToObject(special, "vnum", Specials[special_proc].Number);
         cJSON_AddStringToObject(special, "function", Specials[special_proc].FunctionName);
         cJSON_AddStringToObject(special, "description", Specials[special_proc].Description);
     } else {
-        //cJSON_AddNullToObject(this_room, "special_procedure");
+        cJSON_AddNullToObject(this_thing, "special_procedure");
     }
 
     return special;
@@ -111,30 +123,30 @@ cJSON *process_flags(cJSON *this_thing, unsigned long Flags, const char **FlagNa
     return flags;
 }
 
-cJSON *process_mob_zone_info(cJSON *this_mob, mobs *Mobs, int i, zones *Zones) {
+cJSON *process_mob_zone_info(const char *KeyName, cJSON *this_mob, mobs *Mobs, int i, zones *Zones) {
     cJSON *zone = NULL;
 
-    zone = cJSON_AddObjectToObject(this_mob, "zone");
+    zone = cJSON_AddObjectToObject(this_mob, KeyName);
     cJSON_AddNumberToObject(zone, "vnum", Mobs->Mob[i].Zone);
     cJSON_AddStringToObject(zone, "name", zone_name(Zones, Mobs->Mob[i].Zone));
 
     return zone;
 }
 
-cJSON *process_obj_zone_info(cJSON *this_obj, objects *Objects, int i, zones *Zones) {
+cJSON *process_obj_zone_info(const char *KeyName, cJSON *this_obj, objects *Objects, int i, zones *Zones) {
     cJSON *zone = NULL;
 
-    zone = cJSON_AddObjectToObject(this_obj, "zone");
+    zone = cJSON_AddObjectToObject(this_obj, KeyName);
     cJSON_AddNumberToObject(zone, "vnum", Objects->Object[i].Zone);
     cJSON_AddStringToObject(zone, "name", zone_name(Zones, Objects->Object[i].Zone));
 
     return zone;
 }
 
-cJSON *process_zone_info(cJSON *this_room, rooms *Rooms, int i, zones *Zones) {
+cJSON *process_room_zone_info(const char *KeyName, cJSON *this_room, rooms *Rooms, int i, zones *Zones) {
     cJSON *zone = NULL;
 
-    zone = cJSON_AddObjectToObject(this_room, "zone");
+    zone = cJSON_AddObjectToObject(this_room, KeyName);
     cJSON_AddNumberToObject(zone, "vnum", Rooms->Room[i].Zone);
     cJSON_AddStringToObject(zone, "name", zone_name(Zones, Rooms->Room[i].Zone));
 
@@ -156,16 +168,15 @@ cJSON *process_room_teleport(cJSON *this_room, rooms *Rooms, int i, zones *Zones
         if(Rooms->Room[i].TeleportLook) {
             cJSON_AddTrueToObject(teleport, "auto_look");
         } else {
-            //cJSON_AddFalseToObject(teleport, "auto_look");
+            cJSON_AddFalseToObject(teleport, "auto_look");
         }
         if(Rooms->Room[target_room].Zone != Rooms->Room[i].Zone) {
-            cJSON_AddTrueToObject(teleport, "external_content");
-            process_zone_info(teleport, Rooms, target_room , Zones);
+            process_room_zone_info("external_zone", teleport, Rooms, target_room , Zones);
         } else {
-            //cJSON_AddFalseToObject(teleport, "external_content");
+            cJSON_AddNullToObject(teleport, "external_zone");
         }
     } else {
-        //cJSON_AddNullToObject(this_room, "teleport");
+        cJSON_AddNullToObject(this_room, "teleport");
     }
 
     return teleport;
@@ -193,14 +204,13 @@ cJSON *process_room_river(cJSON *this_room, rooms *Rooms, int i, zones *Zones) {
             cJSON_AddNumberToObject(target, "vnum", Rooms->Room[target_room].Number);
             cJSON_AddStringToObject(target, "name", room_name(Rooms, Rooms->Room[target_room].Number));
             if(Rooms->Room[target_room].Zone != Rooms->Room[i].Zone) {
-                cJSON_AddTrueToObject(target, "external_content");
-                process_zone_info(target, Rooms, target_room , Zones);
+                process_room_zone_info("external_zone", target, Rooms, target_room , Zones);
             } else {
-                //cJSON_AddFalseToObject(target, "external_content");
+                cJSON_AddNullToObject(target, "external_zone");
             }
         }
     } else {
-        //cJSON_AddNullToObject(this_room, "river");
+        cJSON_AddNullToObject(this_room, "river");
     }
 
     return river;
@@ -214,7 +224,7 @@ cJSON *process_room_sounds(cJSON *this_room, rooms *Rooms, int i) {
         cJSON_AddStringToObject(sound, "in_room", Rooms->Room[i].SoundText[0]);
         cJSON_AddStringToObject(sound, "adjacent", Rooms->Room[i].SoundText[1]);
     } else {
-        //cJSON_AddNullToObject(this_room, "sound");
+        cJSON_AddNullToObject(this_room, "sound");
     }
 
     return sound;
@@ -235,13 +245,13 @@ cJSON *process_room_extra_descriptions(cJSON *this_room, rooms *Rooms, int i) {
                 keywords = cJSON_CreateStringArray((const char *const *) Rooms->Room[i].Extra[j].Keyword->Word, Rooms->Room[i].Extra[j].Keyword->Count);
                 cJSON_AddItemToObject(this_extra, "keywords", keywords);
             } else {
-                //cJSON_AddNullToObject(this_extra, "keywords");
+                cJSON_AddNullToObject(this_extra, "keywords");
             }
             cJSON_AddStringToObject(this_extra, "description", Rooms->Room[i].Extra[j].Description);
             cJSON_AddItemToArray(extra, this_extra);
         }
     } else {
-        //cJSON_AddNullToObject(this_room, "extra_descriptions");
+        cJSON_AddNullToObject(this_room, "extra_descriptions");
     }
 
     return extra;
@@ -267,7 +277,7 @@ cJSON *process_room_exits(cJSON *this_room, rooms *Rooms, int i, zones *Zones, o
                     keywords = cJSON_CreateStringArray((const char *const *)Rooms->Room[i].Exit[j].Keyword->Word, Rooms->Room[i].Exit[j].Keyword->Count);
                     cJSON_AddItemToObject(this_exit, "keywords", keywords);
                 } else {
-                    //cJSON_AddNullToObject(this_exit, "keywords");
+                    cJSON_AddNullToObject(this_exit, "keywords");
                 }
 
             if(Rooms->Room[i].Exit[j].Error != EXIT_DESCRIPTION_ONLY) {
@@ -278,7 +288,7 @@ cJSON *process_room_exits(cJSON *this_room, rooms *Rooms, int i, zones *Zones, o
                 if(Rooms->Room[i].Exit[j].KeyNumber > 0) {
                     cJSON_AddStringToObject(this_exit, "key", obj_name(Objects, Rooms->Room[i].Exit[j].KeyNumber));
                 } else {
-                    //cJSON_AddNullToObject(this_exit, "key");
+                    cJSON_AddNullToObject(this_exit, "key");
                 }
 
                 target = cJSON_AddObjectToObject(this_exit, "target");
@@ -288,16 +298,15 @@ cJSON *process_room_exits(cJSON *this_room, rooms *Rooms, int i, zones *Zones, o
                 // If this exit goes to a differnet zone, we want to know which one!
                 target_room = remap_room_vnum(Rooms, Rooms->Room[i].Exit[j].Room);
                 if(Rooms->Room[target_room].Zone != Rooms->Room[i].Zone) {
-                    cJSON_AddTrueToObject(this_exit, "external_content");
-                    process_zone_info(target, Rooms, target_room , Zones);
+                    process_room_zone_info("external_zone", target, Rooms, target_room , Zones);
                 } else {
-                    //cJSON_AddFalseToObject(this_exit, "external_content");
+                    cJSON_AddNullToObject(this_exit, "external_zone");
                 }
 
                 if(Rooms->Room[i].Exit[j].Error == EXIT_ONE_WAY || Rooms->Room[i].Exit[j].Error == EXIT_NON_EUCLIDEAN) {
                     cJSON_AddTrueToObject(this_exit, "one_way");
                 } else {
-                    //cJSON_AddFalseToObject(this_exit, "one_way");
+                    cJSON_AddFalseToObject(this_exit, "one_way");
                 }
                 if(Rooms->Room[i].Exit[j].Error == EXIT_NON_EUCLIDEAN) {
                     EXIT *reverse_exit = NULL;
@@ -311,13 +320,13 @@ cJSON *process_room_exits(cJSON *this_room, rooms *Rooms, int i, zones *Zones, o
                         cJSON_AddStringToObject(reverse_target, "direction", exit_name(reverse_exit->Direction));
                     }
                 } else {
-                    //cJSON_AddFalseToObject(this_exit, "non_euclidean");
-                    //cJSON_AddNullToObject(this_exit, "reverse_target");
+                    cJSON_AddFalseToObject(this_exit, "non_euclidean");
+                    cJSON_AddNullToObject(this_exit, "reverse_target");
                 }
             }
         }
     } else {
-        //cJSON_AddNullToObject(this_room, "exits");
+        cJSON_AddNullToObject(this_room, "exits");
     }
 
     return exits;
@@ -369,7 +378,7 @@ cJSON *process_reset_segment(int *LastMob, int *LastLoc, int *LastObj, int *Lead
             if( Zones->Zone[j].Cmds[k].IfFlag ) {
                 cJSON_AddTrueToObject(this_reset, "only_if_previous_ran");
             } else {
-                //cJSON_AddFalseToObject(this_reset, "only_if_previous_ran");
+                cJSON_AddFalseToObject(this_reset, "only_if_previous_ran");
             }
 
             cmd_mob = cJSON_AddObjectToObject(this_reset, "mob");
@@ -378,8 +387,9 @@ cJSON *process_reset_segment(int *LastMob, int *LastLoc, int *LastObj, int *Lead
             mob_index = remap_mob_vnum(Mobs, Zones->Zone[j].Cmds[k].Arg[ZONE_MOBILE]);
             if(mob_index != -1 && Mobs->Mob[mob_index].Zone != Zones->Zone[j].Number) {
                 // loading from outside ourselves!
-                cJSON_AddTrueToObject(cmd_mob, "external_content");
-                process_mob_zone_info(cmd_mob, Mobs, mob_index , Zones);
+                process_mob_zone_info("external_zone", cmd_mob, Mobs, mob_index , Zones);
+            } else {
+                cJSON_AddNullToObject(cmd_mob, "external_zone");
             }
 
             cmd_room = cJSON_AddObjectToObject(this_reset, "room");
@@ -388,8 +398,9 @@ cJSON *process_reset_segment(int *LastMob, int *LastLoc, int *LastObj, int *Lead
             room_index = remap_room_vnum(Rooms, Zones->Zone[j].Cmds[k].Arg[ZONE_ROOM]);
             if(room_index != -1 && Rooms->Room[room_index].Zone != Zones->Zone[j].Number) {
                 // loading from outside ourselves!
-                cJSON_AddTrueToObject(cmd_room, "external_content");
-                process_zone_info(cmd_room, Rooms, room_index , Zones);
+                process_room_zone_info("external_zone", cmd_room, Rooms, room_index , Zones);
+            } else {
+                cJSON_AddNullToObject(cmd_room, "external_zone");
             }
             //cJSON_AddItemToArray(resets, this_reset);
             break;
@@ -415,7 +426,7 @@ cJSON *process_reset_segment(int *LastMob, int *LastLoc, int *LastObj, int *Lead
             if( Zones->Zone[j].Cmds[k].IfFlag ) {
                 cJSON_AddTrueToObject(this_reset, "only_if_previous_ran");
             } else {
-                //cJSON_AddFalseToObject(this_reset, "only_if_previous_ran");
+                cJSON_AddFalseToObject(this_reset, "only_if_previous_ran");
             }
 
             cmd_obj = cJSON_AddObjectToObject(this_reset, "object");
@@ -424,8 +435,9 @@ cJSON *process_reset_segment(int *LastMob, int *LastLoc, int *LastObj, int *Lead
             obj_index = remap_obj_vnum(Objects, Zones->Zone[j].Cmds[k].Arg[ZONE_OBJECT]);
             if(obj_index != -1 && Objects->Object[obj_index].Zone != Zones->Zone[j].Number) {
                 // loading from outside ourselves!
-                cJSON_AddTrueToObject(cmd_obj, "external_content");
-                process_obj_zone_info(cmd_obj, Objects, obj_index , Zones);
+                process_obj_zone_info("external_zone", cmd_obj, Objects, obj_index , Zones);
+            } else {
+                cJSON_AddNullToObject(cmd_obj, "external_zone");
             }
 
             cmd_room = cJSON_AddObjectToObject(this_reset, "room");
@@ -434,8 +446,9 @@ cJSON *process_reset_segment(int *LastMob, int *LastLoc, int *LastObj, int *Lead
             room_index = remap_room_vnum(Rooms, Zones->Zone[j].Cmds[k].Arg[ZONE_ROOM]);
             if(room_index != -1 && Rooms->Room[room_index].Zone != Zones->Zone[j].Number) {
                 // loading from outside ourselves!
-                cJSON_AddTrueToObject(cmd_room, "external_content");
-                process_zone_info(cmd_room, Rooms, room_index , Zones);
+                process_room_zone_info("external_zone", cmd_room, Rooms, room_index , Zones);
+            } else {
+                cJSON_AddNullToObject(cmd_room, "external_zone");
             }
             //cJSON_AddItemToArray(resets, this_reset);
             break;
@@ -460,7 +473,7 @@ cJSON *process_reset_segment(int *LastMob, int *LastLoc, int *LastObj, int *Lead
             if( Zones->Zone[j].Cmds[k].IfFlag ) {
                 cJSON_AddTrueToObject(this_reset, "only_if_previous_ran");
             } else {
-                //cJSON_AddFalseToObject(this_reset, "only_if_previous_ran");
+                cJSON_AddFalseToObject(this_reset, "only_if_previous_ran");
             }
 
             cmd_obj = cJSON_AddObjectToObject(this_reset, "object");
@@ -469,8 +482,9 @@ cJSON *process_reset_segment(int *LastMob, int *LastLoc, int *LastObj, int *Lead
             obj_index = remap_obj_vnum(Objects, Zones->Zone[j].Cmds[k].Arg[ZONE_OBJECT]);
             if(obj_index != -1 && Objects->Object[obj_index].Zone != Zones->Zone[j].Number) {
                 // loading from outside ourselves!
-                cJSON_AddTrueToObject(cmd_obj, "external_content");
-                process_obj_zone_info(cmd_obj, Objects, obj_index , Zones);
+                process_obj_zone_info("external_zone", cmd_obj, Objects, obj_index , Zones);
+            } else {
+                cJSON_AddNullToObject(cmd_obj, "external_zone");
             }
 
             cmd_mob = cJSON_AddObjectToObject(this_reset, "mob");
@@ -479,8 +493,9 @@ cJSON *process_reset_segment(int *LastMob, int *LastLoc, int *LastObj, int *Lead
             mob_index = remap_mob_vnum(Mobs, *LastMob);
             if(mob_index != -1 && Mobs->Mob[mob_index].Zone != Zones->Zone[j].Number) {
                 // loading from outside ourselves!
-                cJSON_AddTrueToObject(cmd_mob, "external_content");
-                process_mob_zone_info(cmd_mob, Mobs, mob_index , Zones);
+                process_mob_zone_info("external_zone", cmd_mob, Mobs, mob_index , Zones);
+            } else {
+                cJSON_AddNullToObject(cmd_mob, "external_zone");
             }
 
             //cJSON_AddItemToArray(resets, this_reset);
@@ -506,7 +521,7 @@ cJSON *process_reset_segment(int *LastMob, int *LastLoc, int *LastObj, int *Lead
             if( Zones->Zone[j].Cmds[k].IfFlag ) {
                 cJSON_AddTrueToObject(this_reset, "only_if_previous_ran");
             } else {
-                //cJSON_AddFalseToObject(this_reset, "only_if_previous_ran");
+                cJSON_AddFalseToObject(this_reset, "only_if_previous_ran");
             }
 
             cmd_obj = cJSON_AddObjectToObject(this_reset, "object");
@@ -515,8 +530,9 @@ cJSON *process_reset_segment(int *LastMob, int *LastLoc, int *LastObj, int *Lead
             obj_index = remap_obj_vnum(Objects, Zones->Zone[j].Cmds[k].Arg[ZONE_OBJECT]);
             if(obj_index != -1 && Objects->Object[obj_index].Zone != Zones->Zone[j].Number) {
                 // loading from outside ourselves!
-                cJSON_AddTrueToObject(cmd_obj, "external_content");
-                process_obj_zone_info(cmd_obj, Objects, obj_index , Zones);
+                process_obj_zone_info("external_zone", cmd_obj, Objects, obj_index , Zones);
+            } else {
+                cJSON_AddNullToObject(cmd_obj, "external_zone");
             }
 
             cmd_mob = cJSON_AddObjectToObject(this_reset, "mob");
@@ -526,8 +542,9 @@ cJSON *process_reset_segment(int *LastMob, int *LastLoc, int *LastObj, int *Lead
             mob_index = remap_mob_vnum(Mobs, *LastMob);
             if(mob_index != -1 && Mobs->Mob[mob_index].Zone != Zones->Zone[j].Number) {
                 // loading from outside ourselves!
-                cJSON_AddTrueToObject(cmd_mob, "external_content");
-                process_mob_zone_info(cmd_mob, Mobs, mob_index , Zones);
+                process_mob_zone_info("external_zone", cmd_mob, Mobs, mob_index , Zones);
+            } else {
+                cJSON_AddNullToObject(cmd_mob, "external_zone");
             }
             //cJSON_AddItemToArray(resets, this_reset);
             break;
@@ -552,7 +569,7 @@ cJSON *process_reset_segment(int *LastMob, int *LastLoc, int *LastObj, int *Lead
             if( Zones->Zone[j].Cmds[k].IfFlag ) {
                 cJSON_AddTrueToObject(this_reset, "only_if_previous_ran");
             } else {
-                //cJSON_AddFalseToObject(this_reset, "only_if_previous_ran");
+                cJSON_AddFalseToObject(this_reset, "only_if_previous_ran");
             }
 
             cmd_obj = cJSON_AddObjectToObject(this_reset, "object");
@@ -561,8 +578,9 @@ cJSON *process_reset_segment(int *LastMob, int *LastLoc, int *LastObj, int *Lead
             obj_index = remap_obj_vnum(Objects, Zones->Zone[j].Cmds[k].Arg[ZONE_OBJECT]);
             if(obj_index != -1 && Objects->Object[obj_index].Zone != Zones->Zone[j].Number) {
                 // loading from outside ourselves!
-                cJSON_AddTrueToObject(cmd_obj, "external_content");
-                process_obj_zone_info(cmd_obj, Objects, obj_index , Zones);
+                process_obj_zone_info("external_zone", cmd_obj, Objects, obj_index , Zones);
+            } else {
+                cJSON_AddNullToObject(cmd_obj, "external_zone");
             }
 
             cmd_target = cJSON_AddObjectToObject(this_reset, "target");
@@ -571,8 +589,9 @@ cJSON *process_reset_segment(int *LastMob, int *LastLoc, int *LastObj, int *Lead
             obj_index = remap_obj_vnum(Objects, Zones->Zone[j].Cmds[k].Arg[ZONE_TARGET_OBJ]);
             if(obj_index != -1 && Objects->Object[obj_index].Zone != Zones->Zone[j].Number) {
                 // loading from outside ourselves!
-                cJSON_AddTrueToObject(cmd_obj, "external_content");
-                process_obj_zone_info(cmd_obj, Objects, obj_index , Zones);
+                process_obj_zone_info("external_zone", cmd_target, Objects, obj_index , Zones);
+            } else {
+                cJSON_AddNullToObject(cmd_target, "external_zone");
             }
             //cJSON_AddItemToArray(resets, this_reset);
             break;
@@ -595,7 +614,7 @@ cJSON *process_reset_segment(int *LastMob, int *LastLoc, int *LastObj, int *Lead
             if( Zones->Zone[j].Cmds[k].IfFlag ) {
                 cJSON_AddTrueToObject(this_reset, "only_if_previous_ran");
             } else {
-                //cJSON_AddFalseToObject(this_reset, "only_if_previous_ran");
+                cJSON_AddFalseToObject(this_reset, "only_if_previous_ran");
             }
 
             cmd_target = cJSON_AddObjectToObject(this_reset, "door");
@@ -608,8 +627,9 @@ cJSON *process_reset_segment(int *LastMob, int *LastLoc, int *LastObj, int *Lead
             room_index = remap_room_vnum(Rooms, Zones->Zone[j].Cmds[k].Arg[ZONE_DOOR_ROOM]);
             if(room_index != -1 && Rooms->Room[room_index].Zone != Zones->Zone[j].Number) {
                 // loading from outside ourselves!
-                cJSON_AddTrueToObject(cmd_room, "external_content");
-                process_zone_info(cmd_room, Rooms, room_index , Zones);
+                process_room_zone_info("external_zone", cmd_room, Rooms, room_index , Zones);
+            } else {
+                cJSON_AddNullToObject(cmd_room, "external_zone");
             }
             //cJSON_AddItemToArray(resets, this_reset);
             break;
@@ -632,7 +652,7 @@ cJSON *process_reset_segment(int *LastMob, int *LastLoc, int *LastObj, int *Lead
             if( Zones->Zone[j].Cmds[k].IfFlag ) {
                 cJSON_AddTrueToObject(this_reset, "only_if_previous_ran");
             } else {
-                //cJSON_AddFalseToObject(this_reset, "only_if_previous_ran");
+                cJSON_AddFalseToObject(this_reset, "only_if_previous_ran");
             }
 
             cmd_obj = cJSON_AddObjectToObject(this_reset, "object");
@@ -641,8 +661,9 @@ cJSON *process_reset_segment(int *LastMob, int *LastLoc, int *LastObj, int *Lead
             obj_index = remap_obj_vnum(Objects, Zones->Zone[j].Cmds[k].Arg[ZONE_REMOVE_OBJ]);
             if(obj_index != -1 && Objects->Object[obj_index].Zone != Zones->Zone[j].Number) {
                 // loading from outside ourselves!
-                cJSON_AddTrueToObject(cmd_obj, "external_content");
-                process_obj_zone_info(cmd_obj, Objects, obj_index , Zones);
+                process_obj_zone_info("external_zone", cmd_obj, Objects, obj_index , Zones);
+            } else {
+                cJSON_AddNullToObject(cmd_obj, "external_zone");
             }
 
             cmd_room = cJSON_AddObjectToObject(this_reset, "room");
@@ -651,8 +672,9 @@ cJSON *process_reset_segment(int *LastMob, int *LastLoc, int *LastObj, int *Lead
             room_index = remap_room_vnum(Rooms, Zones->Zone[j].Cmds[k].Arg[ZONE_REMOVE_ROOM]);
             if(room_index != -1 && Rooms->Room[room_index].Zone != Zones->Zone[j].Number) {
                 // loading from outside ourselves!
-                cJSON_AddTrueToObject(cmd_room, "external_content");
-                process_zone_info(cmd_room, Rooms, room_index , Zones);
+                process_room_zone_info("external_zone", cmd_room, Rooms, room_index , Zones);
+            } else {
+                cJSON_AddNullToObject(cmd_room, "external_zone");
             }
             //cJSON_AddItemToArray(resets, this_reset);
             break;
@@ -675,7 +697,7 @@ cJSON *process_reset_segment(int *LastMob, int *LastLoc, int *LastObj, int *Lead
             if( Zones->Zone[j].Cmds[k].IfFlag ) {
                 cJSON_AddTrueToObject(this_reset, "only_if_previous_ran");
             } else {
-                //cJSON_AddFalseToObject(this_reset, "only_if_previous_ran");
+                cJSON_AddFalseToObject(this_reset, "only_if_previous_ran");
             }
 
             cmd_mob = cJSON_AddObjectToObject(this_reset, "mob");
@@ -684,8 +706,9 @@ cJSON *process_reset_segment(int *LastMob, int *LastLoc, int *LastObj, int *Lead
             mob_index = remap_mob_vnum(Mobs, Zones->Zone[j].Cmds[k].Arg[ZONE_MOBILE]);
             if(mob_index != -1 && Mobs->Mob[mob_index].Zone != Zones->Zone[j].Number) {
                 // loading from outside ourselves!
-                cJSON_AddTrueToObject(cmd_mob, "external_content");
-                process_mob_zone_info(cmd_mob, Mobs, mob_index , Zones);
+                process_mob_zone_info("external_zone", cmd_mob, Mobs, mob_index , Zones);
+            } else {
+                cJSON_AddNullToObject(cmd_mob, "external_zone");
             }
 
             cmd_target = cJSON_AddObjectToObject(this_reset, "leader");
@@ -694,8 +717,9 @@ cJSON *process_reset_segment(int *LastMob, int *LastLoc, int *LastObj, int *Lead
             mob_index = remap_mob_vnum(Mobs, *LeaderMob);
             if(mob_index != -1 && Mobs->Mob[mob_index].Zone != Zones->Zone[j].Number) {
                 // loading from outside ourselves!
-                cJSON_AddTrueToObject(cmd_mob, "external_content");
-                process_mob_zone_info(cmd_mob, Mobs, mob_index , Zones);
+                process_mob_zone_info("external_zone", cmd_mob, Mobs, mob_index , Zones);
+            } else {
+                cJSON_AddNullToObject(cmd_mob, "external_zone");
             }
 
             cmd_room = cJSON_AddObjectToObject(this_reset, "room");
@@ -704,8 +728,9 @@ cJSON *process_reset_segment(int *LastMob, int *LastLoc, int *LastObj, int *Lead
             room_index = remap_room_vnum(Rooms, *LastLoc);
             if(room_index != -1 && Rooms->Room[room_index].Zone != Zones->Zone[j].Number) {
                 // loading from outside ourselves!
-                cJSON_AddTrueToObject(cmd_room, "external_content");
-                process_zone_info(cmd_room, Rooms, room_index , Zones);
+                process_room_zone_info("external_zone", cmd_room, Rooms, room_index , Zones);
+            } else {
+                cJSON_AddNullToObject(cmd_room, "external_zone");
             }
             //cJSON_AddItemToArray(resets, this_reset);
             *LastMob = Zones->Zone[j].Cmds[k].Arg[ZONE_MOBILE];
@@ -729,7 +754,7 @@ cJSON *process_reset_segment(int *LastMob, int *LastLoc, int *LastObj, int *Lead
             if( Zones->Zone[j].Cmds[k].IfFlag ) {
                 cJSON_AddTrueToObject(this_reset, "only_if_previous_ran");
             } else {
-                //cJSON_AddFalseToObject(this_reset, "only_if_previous_ran");
+                cJSON_AddFalseToObject(this_reset, "only_if_previous_ran");
             }
 
             cmd_mob = cJSON_AddObjectToObject(this_reset, "mob");
@@ -738,8 +763,9 @@ cJSON *process_reset_segment(int *LastMob, int *LastLoc, int *LastObj, int *Lead
             mob_index = remap_mob_vnum(Mobs, *LastMob);
             if(mob_index != -1 && Mobs->Mob[mob_index].Zone != Zones->Zone[j].Number) {
                 // loading from outside ourselves!
-                cJSON_AddTrueToObject(cmd_mob, "external_content");
-                process_mob_zone_info(cmd_mob, Mobs, mob_index , Zones);
+                process_mob_zone_info("external_zone", cmd_mob, Mobs, mob_index , Zones);
+            } else {
+                cJSON_AddNullToObject(cmd_mob, "external_zone");
             }
 
             cmd_room = cJSON_AddObjectToObject(this_reset, "room");
@@ -749,8 +775,9 @@ cJSON *process_reset_segment(int *LastMob, int *LastLoc, int *LastObj, int *Lead
             room_index = remap_room_vnum(Rooms, *LastLoc);
             if(room_index != -1 && Rooms->Room[room_index].Zone != Zones->Zone[j].Number) {
                 // loading from outside ourselves!
-                cJSON_AddTrueToObject(cmd_room, "external_content");
-                process_zone_info(cmd_room, Rooms, room_index , Zones);
+                process_room_zone_info("external_zone", cmd_room, Rooms, room_index , Zones);
+            } else {
+                cJSON_AddNullToObject(cmd_room, "external_zone");
             }
             //cJSON_AddItemToArray(resets, this_reset);
             break;
@@ -893,7 +920,7 @@ cJSON *process_room_resets(cJSON *this_room, rooms *Rooms, int i, zones *Zones, 
             }
         }
     } else {
-        //cJSON_AddNullToObject(this_room, "resets");
+        cJSON_AddNullToObject(this_room, "resets");
     }
 
     return resets;
@@ -940,12 +967,15 @@ cJSON *process_orphaned_resets(cJSON *root, rooms *Rooms, zones *Zones, objects 
                 }
             }
         }
+    } else {
+        cJSON_AddNullToObject(root, "orphaned_resets");
     }
 
     return resets;
 }
 
-cJSON *process_zone_resets(cJSON *this_zone, rooms *Rooms, zones *Zones, int j, objects *Objects, mobs *Mobs) {
+cJSON *process_zone_resets(cJSON *this_zone, rooms *Rooms, zones *Zones, int j, objects *Objects, mobs *Mobs)
+{
     cJSON *resets = NULL;
     int LastMob = -1;
     int LastLoc = -1;
@@ -963,18 +993,44 @@ cJSON *process_zone_resets(cJSON *this_zone, rooms *Rooms, zones *Zones, int j, 
             }
         }
     } else {
-        //cJSON_AddNullToObject(this_zone, "resets");
+        cJSON_AddNullToObject(this_zone, "resets");
     }
 
     return resets;
 }
 
-void dump_as_json(zones *Zones, rooms *Rooms, objects *Objects, mobs *Mobs, shops *Shops, char *outfile) {
+cJSON *process_mob_header(cJSON *this_mob, mobs *Mobs, int i)
+{
+    cJSON_AddNumberToObject(this_mob, "vnum", Mobs->Mob[i].Number);
+    cJSON_AddStringToObject(this_mob, "name", mob_name(Mobs, Mobs->Mob[i].Number));
+    cJSON_AddStringToObject(this_mob, "short_description", Mobs->Mob[i].ShortDesc);
+    cJSON_AddStringToObject(this_mob, "long_description", Mobs->Mob[i].LongDesc);
+    cJSON_AddStringToObject(this_mob, "description", Mobs->Mob[i].Description);
+
+    return this_mob;
+}
+
+cJSON *process_zone_mob_info(cJSON *this_mob, mobs *Mobs, int i, zones *Zones)
+{
+    cJSON *zone = NULL;
+
+    zone = cJSON_AddObjectToObject(this_mob, "zone");
+    cJSON_AddNumberToObject(zone, "vnum", Mobs->Mob[i].Zone);
+    cJSON_AddStringToObject(zone, "name", zone_name(Zones, Mobs->Mob[i].Zone));
+
+    return zone;
+}
+
+
+void dump_as_json(zones *Zones, rooms *Rooms, objects *Objects, mobs *Mobs, shops *Shops, char *outfile)
+{
     FILE *ofp = NULL;
     char *output = NULL;
     cJSON *root = NULL;
     cJSON *rooms = NULL;
     cJSON *zones = NULL;
+    cJSON *mobs = NULL;
+    cJSON *objects = NULL;
     int **reset_checkoffs = NULL;
 
     root = cJSON_CreateObject();
@@ -992,51 +1048,92 @@ void dump_as_json(zones *Zones, rooms *Rooms, objects *Objects, mobs *Mobs, shop
         cJSON *this_zone = NULL;
         char vnum[32];
 
-        if (!Quiet)
+        if (!Quiet) {
+            status(stderr, "Dumping zone #%d (%s)...", Zones->Zone[i].Number, zone_name(Zones, Zones->Zone[i].Number));
             spin(stderr);
+        }
         sprintf(vnum, "%d", Zones->Zone[i].Number);
         this_zone = cJSON_AddObjectToObject(zones, vnum);
 
         process_zone_header(this_zone, Zones, i);
-        process_zone_resets(this_zone, Rooms, Zones, i, Objects, Mobs);
+        //process_zone_resets(this_zone, Rooms, Zones, i, Objects, Mobs);
+
+        rooms = cJSON_AddObjectToObject(this_zone, "rooms");
+        for (int j = 0; j < Rooms->Count; j++) {
+            cJSON *this_room = NULL;
+            char vnum[32];
+            int FoundResets = 0;
+
+            if (!Quiet)
+                spin(stderr);
+
+            if(Rooms->Room[j].Zone != Zones->Zone[i].Number) {
+                continue;
+            }
+
+            sprintf(vnum, "%d", Rooms->Room[j].Number);
+            this_room = cJSON_AddObjectToObject(rooms, vnum);
+
+            process_room_header(this_room, Rooms, j);
+            process_specials(this_room, Rooms->Room[j].Number, SPECIAL_ROOM);
+            process_room_zone_info("zone", this_room, Rooms, j, Zones);
+            process_flags(this_room, Rooms->Room[j].Flags, room_flag_names);
+            process_room_teleport(this_room, Rooms, j, Zones);
+            process_room_river(this_room, Rooms, j, Zones);
+            process_room_sounds(this_room, Rooms, j);
+            process_room_extra_descriptions(this_room, Rooms, j);
+            process_room_exits(this_room, Rooms, j, Zones, Objects);
+
+            FoundResets = find_room_resets(Rooms, j, Zones, reset_checkoffs);
+            process_room_resets(this_room, Rooms, j, Zones, Objects, Mobs, FoundResets);
+        }
+
+        mobs = cJSON_AddObjectToObject(this_zone, "mobs");
+        for (int j = 0; j < Mobs->Count; j++) {
+            cJSON *this_mob = NULL;
+            char vnum[32];
+
+            if (!Quiet)
+                spin(stderr);
+
+            if(Mobs->Mob[j].Zone != Zones->Zone[i].Number) {
+                continue;
+            }
+
+            sprintf(vnum, "%d", Mobs->Mob[j].Number);
+            this_mob = cJSON_AddObjectToObject(mobs, vnum);
+
+            process_mob_header(this_mob, Mobs, j);
+            process_specials(this_mob, Mobs->Mob[j].Number, SPECIAL_MOB);
+            process_zone_mob_info(this_mob, Mobs, j, Zones);
+        }
+
+        objects = cJSON_AddObjectToObject(this_zone, "objects");
+        for (int j = 0; j < Objects->Count; j++) {
+            cJSON *this_object = NULL;
+            char vnum[32];
+
+            if (!Quiet)
+                spin(stderr);
+
+            if(Objects->Object[j].Zone != Zones->Zone[j].Number) {
+                continue;
+            }
+
+            sprintf(vnum, "%d", Objects->Object[j].Number);
+            this_object = cJSON_AddObjectToObject(objects, vnum);
+        }
+
+        if (!Quiet) {
+            status(stderr, "done.");
+            fprintf(stderr, "\r");
+            fflush(stderr);
+        }
     }
 
-    rooms = cJSON_AddObjectToObject(root, "rooms");
-    for (int i = 0; i < Rooms->Count; i++) {
-        cJSON *this_room = NULL;
-        char vnum[32];
-        int FoundResets = 0;
-
-        if (!Quiet)
-            spin(stderr);
-        sprintf(vnum, "%d", Rooms->Room[i].Number);
-        this_room = cJSON_AddObjectToObject(rooms, vnum);
-
-        process_room_header(this_room, Rooms, i);
-        process_room_specials(this_room, Rooms->Room[i].Number);
-        process_flags(this_room, Rooms->Room[i].Flags, room_flag_names);
-        process_zone_info(this_room, Rooms, i, Zones);
-        process_room_teleport(this_room, Rooms, i, Zones);
-        process_room_river(this_room, Rooms, i, Zones);
-        process_room_sounds(this_room, Rooms, i);
-        process_room_extra_descriptions(this_room, Rooms, i);
-        process_room_exits(this_room, Rooms, i, Zones, Objects);
-
-        FoundResets = find_room_resets(Rooms, i, Zones, reset_checkoffs);
-        process_room_resets(this_room, Rooms, i, Zones, Objects, Mobs, FoundResets);
-    }
-
+    // There shouldn't be any, but if any resets somehow escaped the room
+    // or zone pass, they'd show up here...
     process_orphaned_resets(root, Rooms, Zones, Objects, Mobs, reset_checkoffs);
-
-    /*
-    mobs = cJSON_AddObjectToObject(root, "mobs");
-    for (int i = 0; i < Mobs->Count; i++) {
-    }
-
-    objects = cJSON_AddObjectToObject(root, "objects");
-    for (int i = 0; i < Objects->Count; i++) {
-    }
-    */
 
     // And now, we output!
 

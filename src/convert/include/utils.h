@@ -13,6 +13,8 @@
 #define TRUE 1
 
 void                                    spin(FILE * fp);
+void status(FILE *fp, const char *Str, ...) __attribute__ ( ( format( printf, 2, 3 ) ) );
+void                                    status_message(FILE * fp, char *message);
 char                                   *my_strdup(char *Str);
 FILE                                   *open_file(char *Filename, char *Mode);
 char                                   *get_mem(long Count, long Size);
