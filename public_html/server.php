@@ -67,6 +67,7 @@ $isLocal = is_local_ip();
 
 $graphics = array();
 $graphics['server_case'] = $isLocal ? "gfx/server_case.png" : "https://i.imgur.com/TFmF5Yg.png";
+$graphics['server_guts'] = $isLocal ? "gfx/server_guts.png" : "https://i.imgur.com/toFDHE1.jpg";
 //$graphics['server_case'] = $isLocal ? "gfx/server_case.png" : "https://lh6.googleusercontent.com/-w6XwIBerDjw/UdooiSE-NUI/AAAAAAAAAPI/wGjTt7QiEmA/s800/server_case.jpg";
 //$graphics['server_case'] = $isLocal ? "gfx/server_case.jpg" : "http://i302.photobucket.com/albums/nn96/quixadhal/shadowlord/server_case_zpsdcdc0b79.jpg";
 $graphics['speedtest_kalamazoo'] = $isLocal ? "gfx/speedtest_kalamazoo_4478672602.png" : "http://www.speedtest.net/result/4478672602.png";
@@ -315,8 +316,13 @@ $BACKGROUND_IMG = "<img class=\"overlay-bg\" src=\"$GFX_HOME/wallpaper/$BACKGROU
                     <h3>Total purchase price: $304.70 as of December 24, 2020</h3>
                     <hr />
                 </td>
-                <td align="left" >
-                    <img src="<?php echo $graphics['server_case']; ?>" border="0" width="300" height="304" />
+                <td align="center" >
+                    <div id="server_case" style="display: block;">
+                        <img onmousedown="toggleDiv('server_case'); toggleDiv('server_guts');" src="<?php echo $graphics['server_case']; ?>" border="0" width="300" height="304" />
+                    </div>
+                    <div id="server_guts" style="display: none;">
+                        <img onmousedown="toggleDiv('server_case'); toggleDiv('server_guts');" src="<?php echo $graphics['server_guts']; ?>" border="0" width="187" height="304" />
+                    </div>
                 </td>
             </tr>
             <tr>
