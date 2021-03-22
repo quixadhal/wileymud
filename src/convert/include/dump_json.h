@@ -33,7 +33,8 @@ cJSON *process_mob_saving_throws(cJSON *this_mob, mobs *Mobs, int i);
 cJSON *process_mob_sounds(cJSON *this_mob, mobs *Mobs, int i);
 cJSON *process_mob_attacks(cJSON *this_mob, mobs *Mobs, int i);
 cJSON *process_mob_skills(cJSON *this_mob, mobs *Mobs, int i);
-cJSON *process_zone_mob_info(cJSON *this_mob, mobs *Mobs, int i, zones *Zones);
+cJSON *process_obj_header(cJSON *this_obj, objects *Objects, int i);
+cJSON *process_obj_flags(cJSON *this_obj, objects *Objects, int i);
 
 void dump_as_json(zones *Zones, rooms *Rooms, objects *Objects, mobs *Mobs, shops *Shops, char *outfile);
 

@@ -1211,17 +1211,33 @@ cJSON *process_mob_skills(cJSON *this_mob, mobs *Mobs, int i)
     return skills;
 }
 
-cJSON *process_zone_mob_info(cJSON *this_mob, mobs *Mobs, int i, zones *Zones)
+cJSON *process_obj_header(cJSON *this_obj, objects *Objects, int i)
 {
-    cJSON *zone = NULL;
+    cJSON_AddNumberToObject(this_obj, "vnum", Objects->Object[i].Number);
+    cJSON_AddStringToObject(this_obj, "name", obj_name(Objects, Objects->Object[i].Number));
+    cJSON_AddStringToObject(this_obj, "short_description", Objects->Object[i].ShortDesc);
+    cJSON_AddStringToObject(this_obj, "action_description", Objects->Object[i].ActionDesc);
+    cJSON_AddStringToObject(this_obj, "description", Objects->Object[i].Description);
+    cJSON_AddNumberToObject(this_obj, "weight", Objects->Object[i].Weight);
+    // If Value < 0, the object cannot be sold.
+    cJSON_AddNumberToObject(this_obj, "value", Objects->Object[i].Value);
+    cJSON_AddNumberToObject(this_obj, "rent", Objects->Object[i].Rent);
+    cJSON_AddNumberToObject(this_obj, "timer", Objects->Object[i].Timer);
 
-    zone = cJSON_AddObjectToObject(this_mob, "zone");
-    cJSON_AddNumberToObject(zone, "vnum", Mobs->Mob[i].Zone);
-    cJSON_AddStringToObject(zone, "name", zone_name(Zones, Mobs->Mob[i].Zone));
-
-    return zone;
+    return this_obj;
 }
 
+cJSON *process_obj_flags(cJSON *this_obj, objects *Objects, int i)
+{
+    //cJSON *alignment = NULL;
+
+    // Type
+    // ExtraCount, Extra[]
+    // AffectCount, Affect[]
+    // Flags
+
+    return this_obj;
+}
 
 void dump_as_json(zones *Zones, rooms *Rooms, objects *Objects, mobs *Mobs, shops *Shops, char *outfile)
 {
@@ -1306,7 +1322,7 @@ void dump_as_json(zones *Zones, rooms *Rooms, objects *Objects, mobs *Mobs, shop
 
             process_mob_header(this_mob, Mobs, j);
             process_specials(this_mob, Mobs->Mob[j].Number, SPECIAL_MOB);
-            process_zone_mob_info(this_mob, Mobs, j, Zones);
+            process_mob_zone_info("zone", this_mob, Mobs, j, Zones);
             process_flags(this_mob, Mobs->Mob[j].ActFlags, act_flag_names);
             process_flags(this_mob, Mobs->Mob[j].AffectedBy, aff_flag_names);
             process_mob_abilities(this_mob, Mobs, j);
@@ -1318,18 +1334,22 @@ void dump_as_json(zones *Zones, rooms *Rooms, objects *Objects, mobs *Mobs, shop
 
         objects = cJSON_AddObjectToObject(this_zone, "objects");
         for (int j = 0; j < Objects->Count; j++) {
-            cJSON *this_object = NULL;
+            cJSON *this_obj = NULL;
             char vnum[32];
 
             if (!Quiet)
                 spin(stderr);
 
-            if(Objects->Object[j].Zone != Zones->Zone[j].Number) {
+            if(Objects->Object[j].Zone != Zones->Zone[i].Number) {
                 continue;
             }
 
             sprintf(vnum, "%d", Objects->Object[j].Number);
-            this_object = cJSON_AddObjectToObject(objects, vnum);
+            this_obj = cJSON_AddObjectToObject(objects, vnum);
+
+            process_obj_header(this_obj, Objects, j);
+            process_obj_zone_info("zone", this_obj, Objects, j, Zones);
+            process_obj_flags(this_obj, Objects, j);
         }
 
         if (!Quiet) {
