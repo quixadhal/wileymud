@@ -79,6 +79,8 @@
                         window.location.reload(true);
                     } else if (event.which === 13) { // enter
                         window.location.reload(true);
+                    } else if (event.which === 71 || event.which === 103) { // 'G' or 'g'
+                        window.location = "https://github.com/quixadhal/wileymud/blob/master/public_html/random_image.php";
                     } else if (event.which === 83 || event.which === 115) { // 'S' or 's'
                         if(slideshow == "go") {
                             slideshow = setCookie("slideshow", "nope", 365);
