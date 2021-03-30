@@ -49,6 +49,7 @@
 		d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
 		var expires = "expires="+d.toUTCString();
 		document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+                return cvalue;
 	    }
 	    function getCookie(cname) {
 		var name = cname + "=";
@@ -80,13 +81,16 @@
                         window.location.reload(true);
                     } else if (event.which === 83 || event.which === 115) { // 'S' or 's'
                         if(slideshow == "go") {
+                            slideshow = setCookie("slideshow", "nope", 365);
                             document.getElementById("slideshow").style.display = 'none';
-                            setCookie("slideshow", "nope", 365);
                             clearTimeout(t);
                         } else {
+                            slideshow = setCookie("slideshow", "go", 365);
                             document.getElementById("slideshow").style.display = 'block';
-                            setCookie("slideshow", "go", 365);
-                            window.location.reload(true);
+                            document.getElementById("slideshow").style.display = 'block';
+                            t = setTimeout( function() {
+                                window.location.reload(true);
+                            }, 10000); // set timer for refresh
                         }
                     }
                 });

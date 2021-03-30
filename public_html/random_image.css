@@ -3,7 +3,7 @@ html, body {
     overflow-x: hidden;
     word-wrap: break-word;
     text-overflow: ellipsis;
-    cursor: none;
+    /* cursor: none; */
 }
 a {
     text-decoration:none;
