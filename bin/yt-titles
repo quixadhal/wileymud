@@ -22,6 +22,17 @@ my $lwp = LWP::UserAgent->new( cookie_jar => {} );
    $URI::ABS_REMOTE_LEADING_DOTS = 1; 
    $lwp->max_redirect(5);
 
+sub read_stdin {
+    my @urls = ();
+
+    while(my $url = <STDIN>) {
+        chomp $url;
+        push @urls, $url;
+    }
+
+    return @urls;
+}
+
 sub read_file {
     my $filename = shift;
 
@@ -201,7 +212,19 @@ if( !-f $RESULT_FILE ) {
 }
 my @url_list = read_file($AUTOPLAYLIST_FILE);
 my @ondisk_list = read_file($RESULT_FILE);
+my @new_list = read_stdin();
 
+my $new_counter = 0;
+foreach my $new_url (@new_list) {
+    my $page = undef; #get_page($url);
+    my $id = get_id($new_url, $page);
+    next if grep {/$id/} @url_list;
+    $new_counter++;
+    print "Adding $id...\n";
+    push @url_list, append_file($AUTOPLAYLIST_FILE, sprintf("%s\n", $new_url));
+}
+
+printf("Added %d new urls to process.\n", $new_counter);
 printf("Found %d urls left to process, out of %d total.\n", (scalar @url_list) - (scalar @ondisk_list), (scalar @url_list));
 
 my $counter = 0;
@@ -220,4 +243,3 @@ foreach my $url (@url_list) {
     sleep 9.0 if ($counter % 100) == 0; # And 100 requests per 100 seconds
     last if $counter >= 8000;           # And 10000 per day
 }
-

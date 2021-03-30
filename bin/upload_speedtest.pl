@@ -59,7 +59,7 @@ sub add_result {
             result_url,
             wifi
         )
-        VALUES (timezone('US/Pacific', ?),?,?,?,?,?,?,?,?,?,?,?,?);
+        VALUES (timezone('US/Pacific', ?),?,?,?,?,?,?,?,?,?,?,?,?,?);
         !);
     my $rv = $insert_sql->execute(
         $data->{timestamp},

@@ -1,6 +1,7 @@
 #!/usr/bin/perl -w
 
 use strict;
+use Data::Dumper;
 use English;
 $| = 1;
 
@@ -66,23 +67,48 @@ sub get_format {
     my @lines = (<$fh>);
     close $fh;
 
-    my @candidates = grep {/^(hls-audio-ja-JP-hardsub-en-US[\-\d]+)/i}
-        grep {/1920x1080/i} grep {/mp4a/i} @lines;
+    my @candidates = grep {/^(hls-audio-ja-JP-hardsub-en-US(?:[\d\-])+)\s+/i}
+        grep {/\d*x1080/i} grep {/mp4a/i} @lines;
     if ((scalar @candidates) < 1) {
-        @candidates = grep {/^(hls-audio-ja-JP-hardsub-en-US[\-\d]+)/i}
-            grep {/1280x720/i} grep {/mp4a/i} @lines;
+        @candidates = grep {/^(hls-audio-ja-JP-hardsub-en-US(?:[\d\-])+)\s+/i}
+            grep {/\d*x720/i} grep {/mp4a/i} @lines;
     }
     if ((scalar @candidates) < 1) {
-        @candidates = grep {/^(hls-audio-ja-JP-hardsub-en-US[\-\d]+)/i}
+        @candidates = grep {/^(hls-audio-ja-JP-hardsub-en-US(?:[\d\-])+)\s+/i}
+            grep {/\d*x480/i} grep {/mp4a/i} @lines;
+    }
+    # If there is no native version, take the dubbed one...
+    # hls-audio-en-US-6998-0                   mp4        1920x1080  [en-US] 6998k , avc1.640028, 24.0fps, mp4a.40.2
+    if ((scalar @candidates) < 1) {
+        @candidates = grep {/^(hls-audio-en-US(?:[\d\-])+)\s+/i}
+            grep {/\d*x1080/i} grep {/mp4a/i} @lines;
+    }
+    #print "1080 dubbed: " . Dumper(\@candidates); #TODO
+    if ((scalar @candidates) < 1) {
+        @candidates = grep {/^(hls-audio-en-US(?:[\d\-])+)\s+/i}
+            grep {/\d*x720/i} grep {/mp4a/i} @lines;
+    }
+    if ((scalar @candidates) < 1) {
+        @candidates = grep {/^(hls-audio-en-US(?:[\d\-])+)\s+/i}
             grep {/\d*x480/i} grep {/mp4a/i} @lines;
     }
 
     foreach my $line (@candidates) {
-        $line =~ /^(hls-audio-ja-JP-hardsub-en-US[\-\d]+)/i;
+        $line =~ /^(hls-audio-ja-JP-hardsub-en-US(?:[\d\-])+)\s+/i;
         $format = ($1);
         last if $format;
     }
 
+    #print "selected native $format\n" if $format; #TODO
+    return $format if $format;
+
+    foreach my $line (@candidates) {
+        $line =~ /^(hls-audio-en-US(?:[\d\-])+)\s+/i;
+        $format = ($1);
+        last if $format;
+    }
+
+    #print "selected dubbed: $format\n" if $format; #TODO
     return $format if $format;
 
     # OK, just take whatever we can find...
@@ -102,6 +128,7 @@ sub get_format {
         last if $format;
     }
 
+    #print "selected fallback $format\n" if $format; #TODO
     return $format;
 }
 
@@ -157,6 +184,7 @@ for (my $index = 0; $index < (scalar @urls); $index++) {
                               substr($target, -40) : substr($url, -40);
     my $format = get_format($url, $index);
     printf "%s.\n", (defined $format) ? $format : "not found";
+    #last if !defined $format; #TODO
 
     my $nap = int(rand(10));
     printf "Sleeping for %d seconds...\n", $nap;
