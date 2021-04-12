@@ -176,7 +176,7 @@ void show_obj_to_char(struct obj_data *object, struct char_data *ch, int mode)
 	    strlcat(buffer, "(invisible)", MAX_STRING_LENGTH);
     }
     strlcat(buffer, "\r\n", MAX_STRING_LENGTH);
-    if(mode == 0)
+    if(mode < 5)
         cprintf(ch, "%s", buffer);
     else
         page_string(ch->desc, buffer, 1);
