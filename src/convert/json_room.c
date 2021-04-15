@@ -11,6 +11,28 @@
 #define _JSON_ROOM_C
 #include "include/dump_json.h"
 #include "include/json_room.h"
+#include "include/json_mob.h"
+#include "include/json_obj.h"
+
+// unsigned long is currently 64 bits...
+const char *room_flag_names[64] = {
+    "dark", "death", "nomob", "indoors",
+    "noattack", "nosteal", "nosummon", "nomagic",
+    "", "private", "sound", "",
+    "", "", "", "",
+    "", "", "", "",
+    "", "", "", "",
+    "", "", "", "",
+    "", "", "", "",
+    "", "", "", "",
+    "", "", "", "",
+    "", "", "", "",
+    "", "", "", "",
+    "", "", "", "",
+    "", "", "", "",
+    "", "", "", "",
+    "", "", "", ""
+};
 
 // Just tack on the fixed room header data
 cJSON *process_room_header(cJSON *this_room, rooms *Rooms, int i)
@@ -387,14 +409,10 @@ cJSON *process_rooms_in_zone(cJSON *this_zone, zones *Zones, int i, rooms *Rooms
     for (int j = 0; j < Rooms->Count; j++) {
         if (!Quiet)
             spin(stderr);
-
         if(Rooms->Room[j].Zone != Zones->Zone[i].Number) {
             continue;
         }
-
         process_room(rooms, Zones, j, Rooms, Objects, Mobs, reset_checkoffs);
     }
-
     return rooms;
 }
-

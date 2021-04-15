@@ -1,6 +1,11 @@
 #ifndef _JSON_ROOM_H
 #define _JSON_ROOM_H
 
+#ifndef _JSON_ROOM_C
+extern const char *room_flag_names[64];
+#include <cjson/cJSON.h>
+#endif
+
 cJSON *process_room_header(cJSON *this_room, rooms *Rooms, int i);
 cJSON *process_room_zone_info(const char *KeyName, cJSON *this_room, rooms *Rooms, int i, zones *Zones);
 cJSON *process_room_teleport(cJSON *this_room, rooms *Rooms, int i, zones *Zones);
