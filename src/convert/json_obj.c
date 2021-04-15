@@ -108,159 +108,311 @@ cJSON *process_obj_extra_descriptions(cJSON *this_obj, objects *Objects, int i)
     return extra;
 }
 
-cJSON *process_obj_type_info(cJSON *this_obj, objects *Objects, int i)
+cJSON *process_item_light(cJSON *this_obj, objects *Objects, int i)
+{
+    cJSON *type_details = NULL;
+
+    type_details = cJSON_AddObjectToObject(this_obj, "type_details");
+    cJSON_AddNumberToObject(type_details, "type_id", Objects->Object[i].Type);
+    cJSON_AddStringToObject(type_details, "name", item_type_name(Objects->Object[i].Type));
+    cJSON_AddNumberToObject(type_details, "duration", Objects->Object[i].Flags.Value[2]);
+    // TODO get useful values for these, instead of just raw numbers
+    cJSON_AddNumberToObject(type_details, "light_type", Objects->Object[i].Flags.Value[1]);
+    cJSON_AddNumberToObject(type_details, "light_color", Objects->Object[i].Flags.Value[0]);
+
+    return type_details;
+}
+
+cJSON *process_item_scroll_potion(cJSON *this_obj, objects *Objects, int i)
 {
     cJSON *type_details = NULL;
     int found = 0;
 
+    type_details = cJSON_AddObjectToObject(this_obj, "type_details");
+    cJSON_AddNumberToObject(type_details, "type_id", Objects->Object[i].Type);
+    cJSON_AddStringToObject(type_details, "name", item_type_name(Objects->Object[i].Type));
+    cJSON_AddNumberToObject(type_details, "level", Objects->Object[i].Flags.Value[0]);
+
+    for(int j = 1; j < 4; j++) {
+        if(Objects->Object[i].Flags.Value[j]) {
+            found = 1;
+        }
+    }
+    if(found) {
+        cJSON *spells = NULL;
+
+        spells = cJSON_AddArrayToObject(type_details, "spells");
+        for(int j = 1; j < 4; j++) {
+            if(Objects->Object[i].Flags.Value[j]) {
+                cJSON *this_spell = NULL;
+
+                this_spell = cJSON_CreateObject();
+                cJSON_AddNumberToObject(this_spell, "spell_id", Objects->Object[i].Flags.Value[j]);
+                cJSON_AddStringToObject(this_spell, "name", spell_name(Objects->Object[i].Flags.Value[j]));
+                cJSON_AddNullToObject(this_spell, "current_charges");
+                cJSON_AddNullToObject(this_spell, "max_charges");
+                cJSON_AddItemToArray(spells, this_spell);
+            }
+        }
+    } else {
+        cJSON_AddNullToObject(type_details, "spells");
+    }
+
+    return type_details;
+}
+
+cJSON *process_item_wand_staff(cJSON *this_obj, objects *Objects, int i)
+{
+    cJSON *type_details = NULL;
+
+    type_details = cJSON_AddObjectToObject(this_obj, "type_details");
+    cJSON_AddNumberToObject(type_details, "type_id", Objects->Object[i].Type);
+    cJSON_AddStringToObject(type_details, "name", item_type_name(Objects->Object[i].Type));
+    cJSON_AddNumberToObject(type_details, "level", Objects->Object[i].Flags.Value[0]);
+    {
+        cJSON *spells = NULL;
+        spells = cJSON_AddArrayToObject(type_details, "spells");
+        // [2] of [1] charges of spell [3]
+        {
+            cJSON *this_spell = NULL;
+            this_spell = cJSON_CreateObject();
+            cJSON_AddNumberToObject(this_spell, "spell_id", Objects->Object[i].Flags.Value[2]);
+            cJSON_AddStringToObject(this_spell, "name", spell_name(Objects->Object[i].Flags.Value[2]));
+            cJSON_AddNumberToObject(this_spell, "current_charges", Objects->Object[i].Flags.Value[1]);
+            cJSON_AddNumberToObject(this_spell, "max_charges", Objects->Object[i].Flags.Value[0]);
+            cJSON_AddItemToArray(spells, this_spell);
+        }
+    }
+
+    return type_details;
+}
+
+cJSON *process_item_weapon(cJSON *this_obj, objects *Objects, int i)
+{
+    cJSON *type_details = NULL;
+
+    type_details = cJSON_AddObjectToObject(this_obj, "type_details");
+    cJSON_AddNumberToObject(type_details, "type_id", Objects->Object[i].Type);
+    cJSON_AddStringToObject(type_details, "name", item_type_name(Objects->Object[i].Type));
+    // [1]d[2] damage of type [3]
+    cJSON_AddRawDiceToObject(type_details, "damage",
+            Objects->Object[i].Flags.Value[1],
+            Objects->Object[i].Flags.Value[2], 0);
+    cJSON_AddNumberToObject(type_details, "damage_type_id", Objects->Object[i].Flags.Value[3]);
+    cJSON_AddStringToObject(type_details, "damage_type", damage_name(Objects->Object[i].Flags.Value[3]));
+
+    return type_details;
+}
+
+cJSON *process_item_armor(cJSON *this_obj, objects *Objects, int i)
+{
+    cJSON *type_details = NULL;
+
+    type_details = cJSON_AddObjectToObject(this_obj, "type_details");
+    cJSON_AddNumberToObject(type_details, "type_id", Objects->Object[i].Type);
+    cJSON_AddStringToObject(type_details, "name", item_type_name(Objects->Object[i].Type));
+    // value [0], armor class [1]
+    cJSON_AddNumberToObject(type_details, "gold", Objects->Object[i].Flags.Value[0] / 10.0);
+    cJSON_AddNumberToObject(type_details, "armor_class", Objects->Object[i].Flags.Value[1] / 10.0);
+
+    return type_details;
+}
+
+cJSON *process_item_trap(cJSON *this_obj, objects *Objects, int i)
+{
+    cJSON *type_details = NULL;
+
+    type_details = cJSON_AddObjectToObject(this_obj, "type_details");
+    cJSON_AddNumberToObject(type_details, "type_id", Objects->Object[i].Type);
+    cJSON_AddStringToObject(type_details, "name", item_type_name(Objects->Object[i].Type));
+    // [3] charges, attack type [1], damage [2]
+
+    return type_details;
+}
+
+cJSON *process_item_container(cJSON *this_obj, objects *Objects, int i)
+{
+    cJSON *type_details = NULL;
+
+    type_details = cJSON_AddObjectToObject(this_obj, "type_details");
+    cJSON_AddNumberToObject(type_details, "type_id", Objects->Object[i].Type);
+    cJSON_AddStringToObject(type_details, "name", item_type_name(Objects->Object[i].Type));
+
+    return type_details;
+}
+
+cJSON *process_item_drink(cJSON *this_obj, objects *Objects, int i)
+{
+    cJSON *type_details = NULL;
+
+    type_details = cJSON_AddObjectToObject(this_obj, "type_details");
+    cJSON_AddNumberToObject(type_details, "type_id", Objects->Object[i].Type);
+    cJSON_AddStringToObject(type_details, "name", item_type_name(Objects->Object[i].Type));
+
+    return type_details;
+}
+
+cJSON *process_item_note(cJSON *this_obj, objects *Objects, int i)
+{
+    cJSON *type_details = NULL;
+
+    type_details = cJSON_AddObjectToObject(this_obj, "type_details");
+    cJSON_AddNumberToObject(type_details, "type_id", Objects->Object[i].Type);
+    cJSON_AddStringToObject(type_details, "name", item_type_name(Objects->Object[i].Type));
+
+    return type_details;
+}
+
+cJSON *process_item_key(cJSON *this_obj, objects *Objects, int i)
+{
+    cJSON *type_details = NULL;
+
+    type_details = cJSON_AddObjectToObject(this_obj, "type_details");
+    cJSON_AddNumberToObject(type_details, "type_id", Objects->Object[i].Type);
+    cJSON_AddStringToObject(type_details, "name", item_type_name(Objects->Object[i].Type));
+
+    return type_details;
+}
+
+cJSON *process_item_food(cJSON *this_obj, objects *Objects, int i)
+{
+    cJSON *type_details = NULL;
+
+    type_details = cJSON_AddObjectToObject(this_obj, "type_details");
+    cJSON_AddNumberToObject(type_details, "type_id", Objects->Object[i].Type);
+    cJSON_AddStringToObject(type_details, "name", item_type_name(Objects->Object[i].Type));
+
+    return type_details;
+}
+
+cJSON *process_item_money(cJSON *this_obj, objects *Objects, int i)
+{
+    cJSON *type_details = NULL;
+
+    type_details = cJSON_AddObjectToObject(this_obj, "type_details");
+    cJSON_AddNumberToObject(type_details, "type_id", Objects->Object[i].Type);
+    cJSON_AddStringToObject(type_details, "name", item_type_name(Objects->Object[i].Type));
+
+    return type_details;
+}
+
+cJSON *process_item_trash(cJSON *this_obj, objects *Objects, int i)
+{
+    cJSON *type_details = NULL;
+
+    type_details = cJSON_AddObjectToObject(this_obj, "type_details");
+    cJSON_AddNumberToObject(type_details, "type_id", Objects->Object[i].Type);
+    cJSON_AddStringToObject(type_details, "name", item_type_name(Objects->Object[i].Type));
+
+    return type_details;
+}
+
+cJSON *process_item_pen(cJSON *this_obj, objects *Objects, int i)
+{
+    cJSON *type_details = NULL;
+
+    type_details = cJSON_AddObjectToObject(this_obj, "type_details");
+    cJSON_AddNumberToObject(type_details, "type_id", Objects->Object[i].Type);
+    cJSON_AddStringToObject(type_details, "name", item_type_name(Objects->Object[i].Type));
+
+    return type_details;
+}
+
+cJSON *process_item_board(cJSON *this_obj, objects *Objects, int i)
+{
+    cJSON *type_details = NULL;
+
+    type_details = cJSON_AddObjectToObject(this_obj, "type_details");
+    cJSON_AddNumberToObject(type_details, "type_id", Objects->Object[i].Type);
+    cJSON_AddStringToObject(type_details, "name", item_type_name(Objects->Object[i].Type));
+
+    return type_details;
+}
+
+cJSON *process_item_boat(cJSON *this_obj, objects *Objects, int i)
+{
+    cJSON *type_details = NULL;
+
+    type_details = cJSON_AddObjectToObject(this_obj, "type_details");
+    cJSON_AddNumberToObject(type_details, "type_id", Objects->Object[i].Type);
+    cJSON_AddStringToObject(type_details, "name", item_type_name(Objects->Object[i].Type));
+
+    return type_details;
+}
+
+cJSON *process_item_worn(cJSON *this_obj, objects *Objects, int i)
+{
+    cJSON *type_details = NULL;
+
+    type_details = cJSON_AddObjectToObject(this_obj, "type_details");
+    cJSON_AddNumberToObject(type_details, "type_id", Objects->Object[i].Type);
+    cJSON_AddStringToObject(type_details, "name", item_type_name(Objects->Object[i].Type));
+
+    return type_details;
+}
+
+cJSON *process_obj_type_info(cJSON *this_obj, objects *Objects, int i)
+{
+    cJSON *type_details = NULL;
+
     // Type
     // AffectCount, Affect[]
     // Flags
-
     switch (Objects->Object[i].Type) {
         case ITEM_LIGHT:
-            type_details = cJSON_AddObjectToObject(this_obj, "type_details");
-            cJSON_AddNumberToObject(type_details, "type_id", Objects->Object[i].Type);
-            cJSON_AddStringToObject(type_details, "name", item_type_name(Objects->Object[i].Type));
-            cJSON_AddNumberToObject(type_details, "duration", Objects->Object[i].Flags.Value[2]);
-            // TODO get useful values for these, instead of just raw numbers
-            cJSON_AddNumberToObject(type_details, "light_type", Objects->Object[i].Flags.Value[1]);
-            cJSON_AddNumberToObject(type_details, "light_color", Objects->Object[i].Flags.Value[0]);
+            type_details = process_item_light(this_obj, Objects, i);
             break;
         case ITEM_SCROLL:
         case ITEM_POTION:
-            type_details = cJSON_AddObjectToObject(this_obj, "type_details");
-            cJSON_AddNumberToObject(type_details, "type_id", Objects->Object[i].Type);
-            cJSON_AddStringToObject(type_details, "name", item_type_name(Objects->Object[i].Type));
-            cJSON_AddNumberToObject(type_details, "level", Objects->Object[i].Flags.Value[0]);
-
-            for(int j = 1; j < 4; j++) {
-                if(Objects->Object[i].Flags.Value[j]) {
-                    found = 1;
-                }
-            }
-            if(found) {
-                cJSON *spells = NULL;
-
-                spells = cJSON_AddArrayToObject(type_details, "spells");
-                for(int j = 1; j < 4; j++) {
-                    if(Objects->Object[i].Flags.Value[j]) {
-                        cJSON *this_spell = NULL;
-
-                        this_spell = cJSON_CreateObject();
-                        cJSON_AddNumberToObject(this_spell, "spell_id", Objects->Object[i].Flags.Value[j]);
-                        cJSON_AddStringToObject(this_spell, "name", spell_name(Objects->Object[i].Flags.Value[j]));
-                        cJSON_AddNullToObject(this_spell, "current_charges");
-                        cJSON_AddNullToObject(this_spell, "max_charges");
-                        cJSON_AddItemToArray(spells, this_spell);
-                    }
-                }
-            } else {
-                cJSON_AddNullToObject(type_details, "spells");
-            }
+            type_details = process_item_scroll_potion(this_obj, Objects, i);
             break;
         case ITEM_WAND:
         case ITEM_STAFF:
-            type_details = cJSON_AddObjectToObject(this_obj, "type_details");
-            cJSON_AddNumberToObject(type_details, "type_id", Objects->Object[i].Type);
-            cJSON_AddStringToObject(type_details, "name", item_type_name(Objects->Object[i].Type));
-            cJSON_AddNumberToObject(type_details, "level", Objects->Object[i].Flags.Value[0]);
-            {
-                cJSON *spells = NULL;
-                spells = cJSON_AddArrayToObject(type_details, "spells");
-                // [2] of [1] charges of spell [3]
-                {
-                    cJSON *this_spell = NULL;
-                    this_spell = cJSON_CreateObject();
-                    cJSON_AddNumberToObject(this_spell, "spell_id", Objects->Object[i].Flags.Value[2]);
-                    cJSON_AddStringToObject(this_spell, "name", spell_name(Objects->Object[i].Flags.Value[2]));
-                    cJSON_AddNumberToObject(this_spell, "current_charges", Objects->Object[i].Flags.Value[1]);
-                    cJSON_AddNumberToObject(this_spell, "max_charges", Objects->Object[i].Flags.Value[0]);
-                    cJSON_AddItemToArray(spells, this_spell);
-                }
-            }
+            type_details = process_item_wand_staff(this_obj, Objects, i);
             break;
         case ITEM_WEAPON:
         case ITEM_FIREWEAPON:
         case ITEM_MISSILE:
-            type_details = cJSON_AddObjectToObject(this_obj, "type_details");
-            cJSON_AddNumberToObject(type_details, "type_id", Objects->Object[i].Type);
-            cJSON_AddStringToObject(type_details, "name", item_type_name(Objects->Object[i].Type));
-            // [1]d[2] damage of type [3]
-            cJSON_AddRawDiceToObject(type_details, "damage",
-                    Objects->Object[i].Flags.Value[1],
-                    Objects->Object[i].Flags.Value[2], 0);
-            cJSON_AddNumberToObject(type_details, "damage_type_id", Objects->Object[i].Flags.Value[3]);
-            cJSON_AddStringToObject(type_details, "damage_type", damage_name(Objects->Object[i].Flags.Value[3]));
+            type_details = process_item_weapon(this_obj, Objects, i);
             break;
         case ITEM_ARMOR:
-            type_details = cJSON_AddObjectToObject(this_obj, "type_details");
-            cJSON_AddNumberToObject(type_details, "type_id", Objects->Object[i].Type);
-            cJSON_AddStringToObject(type_details, "name", item_type_name(Objects->Object[i].Type));
-            // value [0], armor class [1]
-            cJSON_AddNumberToObject(type_details, "gold", Objects->Object[i].Flags.Value[0] / 10.0);
-            cJSON_AddNumberToObject(type_details, "armor_class", Objects->Object[i].Flags.Value[1] / 10.0);
+            type_details = process_item_armor(this_obj, Objects, i);
             break;
         case ITEM_TRAP:
-            type_details = cJSON_AddObjectToObject(this_obj, "type_details");
-            cJSON_AddNumberToObject(type_details, "type_id", Objects->Object[i].Type);
-            cJSON_AddStringToObject(type_details, "name", item_type_name(Objects->Object[i].Type));
-            // [3] charges, attack type [1], damage [2]
+            type_details = process_item_trap(this_obj, Objects, i);
             break;
         case ITEM_CONTAINER:
-            type_details = cJSON_AddObjectToObject(this_obj, "type_details");
-            cJSON_AddNumberToObject(type_details, "type_id", Objects->Object[i].Type);
-            cJSON_AddStringToObject(type_details, "name", item_type_name(Objects->Object[i].Type));
+            type_details = process_item_container(this_obj, Objects, i);
             break;
         case ITEM_DRINKCON:
-            type_details = cJSON_AddObjectToObject(this_obj, "type_details");
-            cJSON_AddNumberToObject(type_details, "type_id", Objects->Object[i].Type);
-            cJSON_AddStringToObject(type_details, "name", item_type_name(Objects->Object[i].Type));
+            type_details = process_item_drink(this_obj, Objects, i);
             break;
         case ITEM_NOTE:
-            type_details = cJSON_AddObjectToObject(this_obj, "type_details");
-            cJSON_AddNumberToObject(type_details, "type_id", Objects->Object[i].Type);
-            cJSON_AddStringToObject(type_details, "name", item_type_name(Objects->Object[i].Type));
+            type_details = process_item_note(this_obj, Objects, i);
             break;
         case ITEM_KEY:
-            type_details = cJSON_AddObjectToObject(this_obj, "type_details");
-            cJSON_AddNumberToObject(type_details, "type_id", Objects->Object[i].Type);
-            cJSON_AddStringToObject(type_details, "name", item_type_name(Objects->Object[i].Type));
+            type_details = process_item_key(this_obj, Objects, i);
             break;
         case ITEM_FOOD:
-            type_details = cJSON_AddObjectToObject(this_obj, "type_details");
-            cJSON_AddNumberToObject(type_details, "type_id", Objects->Object[i].Type);
-            cJSON_AddStringToObject(type_details, "name", item_type_name(Objects->Object[i].Type));
+            type_details = process_item_food(this_obj, Objects, i);
             break;
         case ITEM_MONEY:
-            type_details = cJSON_AddObjectToObject(this_obj, "type_details");
-            cJSON_AddNumberToObject(type_details, "type_id", Objects->Object[i].Type);
-            cJSON_AddStringToObject(type_details, "name", item_type_name(Objects->Object[i].Type));
+            type_details = process_item_money(this_obj, Objects, i);
             break;
         case ITEM_TRASH:
-            type_details = cJSON_AddObjectToObject(this_obj, "type_details");
-            cJSON_AddNumberToObject(type_details, "type_id", Objects->Object[i].Type);
-            cJSON_AddStringToObject(type_details, "name", item_type_name(Objects->Object[i].Type));
+            type_details = process_item_trash(this_obj, Objects, i);
             break;
         case ITEM_PEN:
-            type_details = cJSON_AddObjectToObject(this_obj, "type_details");
-            cJSON_AddNumberToObject(type_details, "type_id", Objects->Object[i].Type);
-            cJSON_AddStringToObject(type_details, "name", item_type_name(Objects->Object[i].Type));
+            type_details = process_item_pen(this_obj, Objects, i);
             break;
         case ITEM_BOARD:
-            type_details = cJSON_AddObjectToObject(this_obj, "type_details");
-            cJSON_AddNumberToObject(type_details, "type_id", Objects->Object[i].Type);
-            cJSON_AddStringToObject(type_details, "name", item_type_name(Objects->Object[i].Type));
+            type_details = process_item_board(this_obj, Objects, i);
             break;
         case ITEM_BOAT:
-            type_details = cJSON_AddObjectToObject(this_obj, "type_details");
-            cJSON_AddNumberToObject(type_details, "type_id", Objects->Object[i].Type);
-            cJSON_AddStringToObject(type_details, "name", item_type_name(Objects->Object[i].Type));
+            type_details = process_item_boat(this_obj, Objects, i);
             break;
         case ITEM_WORN:
-            type_details = cJSON_AddObjectToObject(this_obj, "type_details");
-            cJSON_AddNumberToObject(type_details, "type_id", Objects->Object[i].Type);
-            cJSON_AddStringToObject(type_details, "name", item_type_name(Objects->Object[i].Type));
+            type_details = process_item_worn(this_obj, Objects, i);
             break;
         default:
             cJSON_AddNullToObject(this_obj, "type_details");
@@ -279,8 +431,8 @@ cJSON *process_obj(cJSON *parent_node, zones *Zones, int j, rooms *Rooms, object
     process_obj_header(this_obj, Objects, j);
     process_obj_zone_info("zone", this_obj, Objects, j, Zones);
     process_obj_extra_descriptions(this_obj, Objects, j);
-    process_flags(this_obj, Objects->Object[j].Flags.Wear, wear_location_names);
-    process_flags(this_obj, Objects->Object[j].Flags.Extra, item_extra_names);
+    process_flags(this_obj, "wear_flags", Objects->Object[j].Flags.Wear, wear_location_names);
+    process_flags(this_obj, "extra_flags", Objects->Object[j].Flags.Extra, item_extra_names);
     process_obj_type_info(this_obj, Objects, j);
 
     return this_obj;

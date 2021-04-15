@@ -229,8 +229,8 @@ cJSON *process_mob(cJSON *parent_node, zones *Zones, int j, rooms *Rooms, object
     process_mob_header(this_mob, Mobs, j);
     process_specials(this_mob, Mobs->Mob[j].Number, SPECIAL_MOB);
     process_mob_zone_info("zone", this_mob, Mobs, j, Zones);
-    process_flags(this_mob, Mobs->Mob[j].ActFlags, act_flag_names);
-    process_flags(this_mob, Mobs->Mob[j].AffectedBy, aff_flag_names);
+    process_flags(this_mob, "act_flags", Mobs->Mob[j].ActFlags, act_flag_names);
+    process_flags(this_mob, "aff_flags", Mobs->Mob[j].AffectedBy, aff_flag_names);
     process_mob_abilities(this_mob, Mobs, j);
     process_mob_saving_throws(this_mob, Mobs, j);
     process_mob_sounds(this_mob, Mobs, j);

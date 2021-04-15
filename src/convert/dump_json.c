@@ -121,11 +121,23 @@ cJSON *process_specials(cJSON *this_thing, int Vnum, int SpecialType)
     return special;
 }
 
-cJSON *process_flags(cJSON *this_thing, unsigned long Flags, const char **FlagNames)
+cJSON *process_flags(cJSON *this_thing, const char *FlagsetName, unsigned long Flags, const char **FlagNames)
 {
     cJSON *flags = NULL;
 
-    flags = cJSON_AddObjectToObject(this_thing, "flags");
+#ifndef FULL_SCHEMA
+    if (Flags != 0) {
+        flags = cJSON_AddObjectToObject(this_thing, FlagsetName);
+        for (int j = 0; j < sizeof(unsigned long) * 8; j++) {
+            if(FlagNames[j] && FlagNames[j][0]) {
+                if(IS_SET((1 << j), Flags)) {
+                    cJSON_AddTrueToObject(flags, FlagNames[j]);
+                }
+            }
+        }
+    }
+#else
+    flags = cJSON_AddObjectToObject(this_thing, FlagsetName);
     for (int j = 0; j < sizeof(unsigned long) * 8; j++) {
         if(FlagNames[j] && FlagNames[j][0]) {
             if(IS_SET((1 << j), Flags)) {
@@ -135,6 +147,7 @@ cJSON *process_flags(cJSON *this_thing, unsigned long Flags, const char **FlagNa
             }
         }
     }
+#endif
 
     return flags;
 }

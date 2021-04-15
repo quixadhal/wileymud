@@ -388,7 +388,7 @@ cJSON *process_room(cJSON *parent_node, zones *Zones, int j, rooms *Rooms, objec
     process_room_header(this_room, Rooms, j);
     process_specials(this_room, Rooms->Room[j].Number, SPECIAL_ROOM);
     process_room_zone_info("zone", this_room, Rooms, j, Zones);
-    process_flags(this_room, Rooms->Room[j].Flags, room_flag_names);
+    process_flags(this_room, "flags", Rooms->Room[j].Flags, room_flag_names);
     process_room_teleport(this_room, Rooms, j, Zones);
     process_room_river(this_room, Rooms, j, Zones);
     process_room_sounds(this_room, Rooms, j);
