@@ -43,12 +43,12 @@ SRC =	bug.c utils.c make_index.c main.c formats.c \
 	getopt.c getopt1.c \
 	parse_wiley.c \
 	dump_report.c dump_map.c dump_isles.c dump_fr.c dump_afk.c dump_smaug.c \
-	dump_nightmare.c dump_ds.c dump_json.c dump_newmap.c
+	dump_nightmare.c dump_ds.c dump_json.c dump_newmap.c json_room.c
 OBJ =	$(addprefix obj/, $(SRC:.c=.o))
 HDRS =	bug.h utils.h make_index.h main.h formats.h getopt.h \
 	parse_wiley.h \
 	dump_report.h dump_map.h dump_isles.h dump_fr.h dump_afk.h dump_smaug.h \
-	dump_nightmare.h dump_ds.h dump_json.h dump_newmap.h
+	dump_nightmare.h dump_ds.h dump_json.h dump_newmap.h json_room.h
 HDR =	$(addprefix include/, $(HDRS))
 LIB =	$(NEED_CRYPT) $(NEED_COMPAT) $(NEED_SSL) $(EFENCE) $(CJSON)
 AUX = GNUmakefile
