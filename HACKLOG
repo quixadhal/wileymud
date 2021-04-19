@@ -607,3 +607,41 @@ I did set it to NOT run if we don't think we have a network connection...
     apt install dos2unix
     apt install jikespg
 
+2021-03-05
+    apt install libcjson
+
+2021-04-05
+    dpkg --add-architecture i386
+    apt update
+    apt install steamcmd -y
+    ln -s /usr/games/steamcmd /usr/bin/steamcmd
+    steamcmd +force_install_dir /usr/games/valheim +login anonymous +app_update 896660 validate +quit
+    apt install htop
+
+2021-04-09
+    cpan
+        install Config::Tiny
+        install Config::Tiny::Ordered
+
+2021-04-16
+    cpan
+        install CPAN::DistnameInfo
+        install Module::Build
+        install File::Spec
+        install XSLoader
+        install YAML
+        install Time::HiRes
+        install AnyEvent
+        install AnyEvent::Gearman::Client
+        install Class::XSAccessor
+        install Compress::Raw::Zlib
+        install Digest::MD5
+        install Cache::Memcached::Fast
+        install Log::Log4perl
+        install Devel::Size
+        install utf8::all
+        install Test::Differences
+        install Devel::NYTProf
+        install Text::CSV_XS
+
+    apt install libchart-clicker-perl
