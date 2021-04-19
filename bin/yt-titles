@@ -13,6 +13,8 @@ use HTTP::Request::Common qw(POST);
 use HTML::Entities;
 use LWP::UserAgent;
 use Time::HiRes qw(sleep time alarm);
+use Time::Out qw(timeout);
+use File::Basename;
 
 my $api_key = undef;
 my $lwp = LWP::UserAgent->new( cookie_jar => {} );
@@ -22,12 +24,37 @@ my $lwp = LWP::UserAgent->new( cookie_jar => {} );
    $URI::ABS_REMOTE_LEADING_DOTS = 1; 
    $lwp->max_redirect(5);
 
+sub read_args {
+    my @urls = ();
+
+    while(my $arg = shift) {
+        next if !defined $arg;
+        chomp $arg;
+        push @urls, $arg if $arg =~ /^http/i;
+    }
+
+    return @urls;
+}
+
 sub read_stdin {
     my @urls = ();
 
-    while(my $url = <STDIN>) {
-        chomp $url;
-        push @urls, $url;
+    timeout 0.01 => sub {
+        my $first_url = <STDIN>;
+        return if !defined $first_url;
+        chomp $first_url;
+        push @urls, $first_url if $first_url =~ /^http/i;
+    };
+    if ($@) {
+        # We had nothing to read, assume nothing on stdin...
+    } else {
+        # Otherwise go ahead and block, who knows how much
+        # there is, or how it's being delivered...
+        while(my $url = <STDIN>) {
+            next if !defined $url;
+            chomp $url;
+            push @urls, $url if $url =~ /^http/i;
+        }
     }
 
     return @urls;
@@ -57,6 +84,25 @@ sub append_file {
     print FP $output;
     close FP;
     return $output;
+}
+
+sub remove_from_file {
+    my $filename = shift;
+    my $remove = shift;
+
+    return undef if !defined $filename or !defined $remove;
+    return undef if !-f $filename;
+
+    my $found = 0;
+    my @content = read_file($filename);
+    open FP, ">$filename" or die "Cannot open file $filename for overwriting $!";
+    foreach my $line (@content) {
+        next if $line =~ /$remove/;
+        print FP "$line\n";
+        $found = 1;
+    }
+    close FP;
+    return $found ? $remove : undef;
 }
 
 sub read_google_api {
@@ -206,40 +252,79 @@ sub get_youtube_api {
     return ($title, $duration);
 }
 
+my $prog = fileparse($PROGRAM_NAME);
+printf "Program is %s\n", $prog;
+
 if( !-f $RESULT_FILE ) {
     open FP, ">$RESULT_FILE" or die "Cannot open file $RESULT_FILE for writing $!";
     close FP;
 }
 my @url_list = read_file($AUTOPLAYLIST_FILE);
+printf "Found %d playlist entries\n", (scalar @url_list);
 my @ondisk_list = read_file($RESULT_FILE);
+printf "Found %d playlist title entries\n", (scalar @ondisk_list);
+my @arg_list = read_args(@ARGV);
+printf "Found %d potential entries via CLI\n", (scalar @arg_list);
 my @new_list = read_stdin();
+printf "Found %d potential entries via STDIN\n", (scalar @new_list);
 
 my $new_counter = 0;
-foreach my $new_url (@new_list) {
-    my $page = undef; #get_page($url);
-    my $id = get_id($new_url, $page);
-    next if grep {/$id/} @url_list;
-    $new_counter++;
-    print "Adding $id...\n";
-    push @url_list, append_file($AUTOPLAYLIST_FILE, sprintf("%s\n", $new_url));
+
+if($prog eq 'yt-titles') {
+
+    printf "Checking for new entries to add\n";
+    foreach my $new_url (@arg_list, @new_list) {
+        my $page = undef; #get_page($url);
+        my $id = get_id($new_url, $page);
+        next if grep {/$id/} @url_list;
+        $new_counter++;
+        print "Adding $id...\n";
+        push @url_list, append_file($AUTOPLAYLIST_FILE, sprintf("%s\n", $new_url));
+    }
+    printf("Added %d new urls to process.\n", $new_counter);
+    printf("Found %d urls left to process, out of %d total.\n", (scalar @url_list) - (scalar @ondisk_list), (scalar @url_list));
+
+    my $counter = 0;
+    foreach my $url (@url_list) {
+        my $page = undef; #get_page($url);
+        my $id = get_id($url, $page);
+        next if grep {/$id/} @ondisk_list;
+
+        $counter++;
+        my ($title, $duration) = get_youtube_api($id);
+        push @ondisk_list, append_file($RESULT_FILE, sprintf("%-34s %s\n", $id, $title));
+        printf("%34s %s\n", $id, $title);
+
+        # Google API limits...
+        sleep 0.15;                         # 10 requests per second
+        sleep 9.0 if ($counter % 100) == 0; # And 100 requests per 100 seconds
+        last if $counter >= 8000;           # And 10000 per day
+    }
+
+} elsif($prog eq 'rm-titles') {
+
+    my @remove_list = ();
+    printf "Removing entries\n";
+    foreach my $new_url (@arg_list, @new_list) {
+        my $page = undef; #get_page($url);
+        my $id = get_id($new_url, $page);
+        next if !grep {/$id/} @url_list;
+        print "Removing $id from playlist...\n";
+        push @remove_list, remove_from_file($AUTOPLAYLIST_FILE, $id);
+    }
+    printf("Removed %d urls from %d total.\n", (scalar @remove_list), (scalar @url_list));
+
+    @remove_list = ();
+    foreach my $new_url (@arg_list, @new_list) {
+        my $page = undef; #get_page($url);
+        my $id = get_id($new_url, $page);
+        next if !grep {/$id/} @ondisk_list;
+        print "Removing $id from titles...\n";
+        push @remove_list, remove_from_file($RESULT_FILE, $id);
+    }
+    printf("Removed %d titles from %d total.\n", (scalar @remove_list), (scalar @ondisk_list));
+
+} else {
+    printf "Unknown script name, nothing to do\n";
 }
 
-printf("Added %d new urls to process.\n", $new_counter);
-printf("Found %d urls left to process, out of %d total.\n", (scalar @url_list) - (scalar @ondisk_list), (scalar @url_list));
-
-my $counter = 0;
-foreach my $url (@url_list) {
-    my $page = undef; #get_page($url);
-    my $id = get_id($url, $page);
-    next if grep {/$id/} @ondisk_list;
-
-    $counter++;
-    my ($title, $duration) = get_youtube_api($id);
-    push @ondisk_list, append_file($RESULT_FILE, sprintf("%-34s %s\n", $id, $title));
-    printf("%34s %s\n", $id, $title);
-
-    # Google API limits...
-    sleep 0.15;                         # 10 requests per second
-    sleep 9.0 if ($counter % 100) == 0; # And 100 requests per 100 seconds
-    last if $counter >= 8000;           # And 10000 per day
-}
