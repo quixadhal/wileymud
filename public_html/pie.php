@@ -1081,6 +1081,9 @@ if( $DEBUG ) {
                     <img class="glowing" src="http://wileymud.themud.org/~wiley/gfx/log.png" width="48" height="48" border="0" />
                 </a>
                     <img src="http://wileymud.themud.org/~wiley/gfx/pie_chart.png" width="48" height="48" border="0" style="opacity: 0.2; background: rgba(255,0,0,0.25);" />
+                <a href="http://wileymud.themud.org/~wiley/random_video.php" alt="???!" title="???!">
+                    <img class="glowing" src="http://wileymud.themud.org/~wiley/gfx/question_girl3.png" width="48" height="48" border="0" />
+                </a>
             </td>
             <td align="right" width="24%">
                 <a href="telnet://wileymud.themud.org:3000" alt="WileyMUD" title="WileyMUD">

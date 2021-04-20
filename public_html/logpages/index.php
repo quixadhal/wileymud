@@ -80,6 +80,7 @@ $QR_ICON        = "$URL_HOME/stuff/qrcode.png";
 $QR_BIG_ICON    = "$URL_HOME/stuff/qrcode_big.png";
 $PIE_ICON       = "$URL_HOME/gfx/pie_chart.png";
 $GITHUB_ICON    = "$URL_HOME/gfx/github1600.png";
+$QUESTION_ICON  = "$URL_HOME/gfx/question_girl3.png";
 $ICON_WIDTH     = 48;
 
 $MUDLIST_IMG    = "<img class=\"glowing\" src=\"$MUDLIST_ICON\" width=\"$ICON_WIDTH\" height=\"$ICON_WIDTH\" border=\"0\" />";
@@ -89,6 +90,7 @@ $SERVER_IMG     = "<img class=\"glowing\" src=\"$SERVER_ICON\" width=\"$ICON_WID
 $QR_IMG         = "<img src=\"$QR_ICON\" width=\"53\" height=\"53\" border=\"0\" />";
 $PIE_IMG        = "<img class=\"glowing\" src=\"$PIE_ICON\" width=\"$ICON_WIDTH\" height=\"$ICON_WIDTH\" border=\"0\" />";
 $GITHUB_IMG     = "<img class=\"glowing\" src=\"$GITHUB_ICON\" width=\"$ICON_WIDTH\" height=\"$ICON_WIDTH\" border=\"0\" />";
+$QUESTION_IMG   = "<img class=\"glowing\" src=\"$QUESTION_ICON\" width=\"$ICON_WIDTH\" height=\"$ICON_WIDTH\" border=\"0\" />";
 
 $MUDLIST_LINK   = "<a href=\"$URL_HOME/mudlist.php\" alt=\"Mudlist\" title=\"Mudlist\">$MUDLIST_IMG</a>";
 $LOG_LINK       = "<a href=\"https://themud.org/chanhist.php#Channel=all\" alt=\"Other Logs\" title=\"Other Logs\">$LOG_IMG</a>";
@@ -97,6 +99,7 @@ $SERVER_LINK    = "<a href=\"$URL_HOME/server.php\" alt=\"Server\" title=\"Serve
 $QR_LINK        = "<a href=\"$QR_BIG_ICON\" alt=\"リック転がし\" title=\"リック転がし\">$QR_IMG</a>";
 $PIE_LINK       = "<a href=\"$URL_HOME/pie.php\" alt=\"PIE!\" title=\"PIE!\">$PIE_IMG</a>";
 $GITHUB_LINK    = "<a href=\"https://github.com/quixadhal/wileymud\" alt=\"Source\" title=\"Source\">$GITHUB_IMG</a>";
+$QUESTION_LINK  = "<a href=\"$URL_HOME/random_video.php\" alt=\"???!\" title=\"???!\">$QUESTION_IMG</a>";
 
 //$OVERLAY_ICON   = "$URL_HOME/gfx/archive_stamp.png";
 $OVERLAY_ICON   = "$URL_HOME/gfx/NA.png";
@@ -822,6 +825,7 @@ header("Pragma: no-cache");
                     <?php echo $MUDLIST_LINK;?>
                     <?php echo $LOG_LINK;?>
                     <?php echo $PIE_LINK;?>
+                    <?php echo $QUESTION_LINK;?>
                 </td>
                 <td align="right" width="20%">
                     <?php echo $up_link; ?>
