@@ -10,6 +10,25 @@ function is_local_ip() {
     return 0;
 }
 
+function random_image($dir) {
+    $old_dir = getcwd();
+    chdir($dir);
+
+    $jpg_list = glob("*.jpg");
+    $png_list = glob("*.png");
+    $file_list = array_merge($jpg_list, $png_list);
+    $pick = array_rand($file_list);
+
+    chdir($old_dir);
+    return $file_list[$pick];
+}
+
+$URL_HOME       = "http://wileymud.themud.org/~wiley";
+$BACKGROUND_DIR = "/home/wiley/public_html/gfx/wallpaper/";
+$BACKGROUND     = random_image($BACKGROUND_DIR);
+$BACKGROUND_URL = "$URL_HOME/gfx/wallpaper/$BACKGROUND";
+$BACKGROUND_IMG = "<img class=\"overlay-bg\" src=\"$BACKGROUND_URL\" />";
+
 ?>
 <html>
     <head>
@@ -17,6 +36,7 @@ function is_local_ip() {
             a { text-decoration:none; }
             a:hover { text-decoration:underline; }
             a:active, a:focus { outline: 0; border: none; -moz-outline-style: none; }
+            body::after { content: ""; background: url(<?php echo $BACKGROUND_URL; ?>); opacity: 0.15; top: 0; left: 0; bottom: 0; right: 0; position: fixed; z-index: -1; background-size: cover; }
         </style>
         <title> Playlist </title>
     </head>
