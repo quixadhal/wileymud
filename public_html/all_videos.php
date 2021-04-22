@@ -28,10 +28,16 @@ $BACKGROUND_DIR = "/home/wiley/public_html/gfx/wallpaper/";
 $BACKGROUND     = random_image($BACKGROUND_DIR);
 $BACKGROUND_URL = "$URL_HOME/gfx/wallpaper/$BACKGROUND";
 $BACKGROUND_IMG = "<img class=\"overlay-bg\" src=\"$BACKGROUND_URL\" />";
+$JQ             = "$URL_HOME/jquery.js";
+
+$playlist_list = file("/home/wiley/public_html/autoplaylist_titles.txt", FILE_SKIP_EMPTY_LINES);
+$output_list = array();
+$url_list = array();
 
 ?>
 <html>
     <head>
+        <script src="<?php echo $JQ;?>""></script>
         <style>
             a { text-decoration:none; }
             a:hover { text-decoration:underline; }
@@ -41,30 +47,27 @@ $BACKGROUND_IMG = "<img class=\"overlay-bg\" src=\"$BACKGROUND_URL\" />";
         <title> Playlist </title>
     </head>
     <body bgcolor="black" text="#d0d0d0" link="#ffffbf" vlink="#ffa040">
-
-<?php
-    $playlist_list = file("/home/wiley/public_html/autoplaylist_titles.txt", FILE_SKIP_EMPTY_LINES);
-    $output_list = array();
-    $url_list = array();
-?>
         <h1><?php echo count($playlist_list) - count($_POST); ?> not-yet-deleted videos.</h1>
         <form id="to_delete" action="" method="post" >
         <pre>
-        <?php foreach ($playlist_list as $entry) {
+        <?php 
+        $counter = 0;
+        foreach ($playlist_list as $entry) {
             $id = substr($entry, 0, 11);
             $title = substr($entry, 35, -1);
             $url = "https://www.youtube.com/watch?v=" . $id;
+            $counter++;
             if(array_key_exists($id, $_POST)) {
                 // Display in RED to show it has been deleted
         ?>
-            <font color="red"><input style="color: red;" disabled form="to_delete" type="checkbox" name="<?php echo $id;?>" value="<?php echo $id;?>"><?php echo $id;?>&nbsp;<a style="color: red;" target="__autoplaylist_titles.txt" href="<?php echo $url;?>"><?php echo $title; ?></a></font>
+            <font color="red"><input style="color: red;" disabled form="to_delete" type="checkbox" name="<?php echo $id;?>" value="<?php echo $id;?>"><?php printf("%-6d&nbsp;%s",$counter,$id);?>&nbsp;<a style="color: red;" target="__autoplaylist_titles.txt" href="<?php echo $url;?>"><?php echo $title; ?></a></font>
         <?php
             } else {
                 // We write it out and present the form element
                 $output_list[] = $entry;
                 $url_list[] = $url;
         ?>
-            <input form="to_delete" type="checkbox" name="<?php echo $id;?>" value="<?php echo $id;?>"><?php echo $id;?>&nbsp;<a target="__autoplaylist_titles.txt" href="<?php echo $url;?>"><?php echo $title; ?></a>
+            <input form="to_delete" type="checkbox" name="<?php echo $id;?>" value="<?php echo $id;?>"><?php printf("%-6d&nbsp;%s",$counter,$id);?>&nbsp;<a target="__autoplaylist_titles.txt" href="<?php echo $url;?>"><?php echo $title; ?></a>
         <?php
             }
         }
