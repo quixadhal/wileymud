@@ -29,12 +29,16 @@ $BACKGROUND     = random_image($BACKGROUND_DIR);
 $BACKGROUND_URL = "$URL_HOME/gfx/wallpaper/$BACKGROUND";
 $BACKGROUND_IMG = "<img class=\"overlay-bg\" src=\"$BACKGROUND_URL\" />";
 $JQ             = "$URL_HOME/jquery.js";
+$JSCOOKIE       = "$URL_HOME/js.cookie.min.js";
+
+$VISITED        = "#00FF00";
 
 $playlist_list = file("/home/wiley/public_html/autoplaylist_titles.txt", FILE_SKIP_EMPTY_LINES);
 $output_list = array();
 $url_list = array();
 $random_choice = $playlist_list[array_rand($playlist_list)];
 $random_id = substr($random_choice, 0, 11);
+$random_url = "https://www.youtube.com/watch?v=" . $random_id;
 $random_embed = "https://www.youtube.com/embed/" . $random_id . "?showinfo=0&autoplay=1&autohide=0&controls=1&mute=1";
 // YouTube is stupid and will only autoplay if muted until you click something...
 
@@ -88,15 +92,41 @@ $random_embed = "https://www.youtube.com/embed/" . $random_id . "?showinfo=0&aut
         </style>
         <title> Playlist </title>
         <script src="<?php echo $JQ;?>""></script>
+        <script src="<?php echo $JSCOOKIE;?>""></script>
         <script type="text/javascript">
-            function play_link(url) {
-                $('#iframe-player').attr('src', url);
+            function color_links() {
+                var jar = Cookies.get();
+                for (const [key,value] of Object.entries(jar)) {
+                    var element = document.getElementById(key);
+                    if(element !== undefined && element !== null) {
+                        element.style.color = "<?php echo $VISITED; ?>";
+                    }
+                }
+            }
+            function play_link(id) {
+                // We want to mark the clicked link as visited
+                // To do this, since we aren't visiting it in the browser
+                // and aren't allowed to modify the browser's history, we'll
+                // store it in a cookie and color the links as loaded if
+                // the id matches...
+                url = "https://www.youtube.com/watch?v=" + id;
+                embed = "https://www.youtube.com/embed/" + id + "?showinfo=0&autoplay=1&autohide=0&controls=1";
+                Cookies.set(id, url, { expires: 30 });
+                // Refresh link color
+                document.getElementById(id).style.color = "<?php echo $VISITED; ?>";
+                // And then stuff it into the player
+                $('#iframe-player').attr('src', embed);
                 return false;
             }
             $(document).ready(function() {
                 setTimeout(function() {
+                    var id = "<?php echo $random_id;?>";
+                    var url = "<?php echo $random_url;?>";
                     location.hash = "#<?php echo $random_id; ?>";
+                    Cookies.set(id, url, { expires: 30 });
+                    document.getElementById(id).style.color = "<?php echo $VISITED; ?>";
                 }, 500);
+                color_links();
             });
         </script>
     </head>
@@ -123,14 +153,14 @@ $random_embed = "https://www.youtube.com/embed/" . $random_id . "?showinfo=0&aut
                 if(array_key_exists($id, $_POST)) {
                     // Display in RED to show it has been deleted
             ?>
-                <a name="<?php echo $id; ?>"></a><font color="red"><input style="color: red;" disabled form="to_delete" type="checkbox" name="<?php echo $id;?>" value="<?php echo $id;?>"><?php printf("%-6d&nbsp;%s",$counter,$id);?>&nbsp;<a style="color: red;" target="__autoplaylist_titles.txt" onclick="return play_link('<?php echo $embed; ?>');" href="<?php echo $url;?>"><?php echo $title; ?></a></font>
+                <a name="<?php echo $id; ?>"></a><font color="red"><input style="color: red;" disabled form="to_delete" type="checkbox" name="<?php echo $id;?>" value="<?php echo $id;?>"><?php printf("%-6d&nbsp;%s",$counter,$id);?>&nbsp;<a id="<?php echo $id;?>" style="color: red;" target="__autoplaylist_titles.txt" onclick="return play_link('<?php echo $id; ?>');" href="<?php echo $url;?>"><?php echo $title; ?></a></font>
             <?php
                 } else {
                     // We write it out and present the form element
                     $output_list[] = $entry;
                     $url_list[] = $url;
             ?>
-                <a name="<?php echo $id; ?>"></a><input form="to_delete" type="checkbox" name="<?php echo $id;?>" value="<?php echo $id;?>"><?php printf("%-6d&nbsp;%s",$counter,$id);?>&nbsp;<a target="__autoplaylist_titles.txt" onclick="return play_link('<?php echo $embed; ?>');" href="<?php echo $url;?>"><?php echo $title; ?></a>
+                <a name="<?php echo $id; ?>"></a><input form="to_delete" type="checkbox" name="<?php echo $id;?>" value="<?php echo $id;?>"><?php printf("%-6d&nbsp;%s",$counter,$id);?>&nbsp;<a id="<?php echo $id;?>" target="__autoplaylist_titles.txt" onclick="return play_link('<?php echo $id; ?>');" href="<?php echo $url;?>"><?php echo $title; ?></a>
             <?php
                 }
             }
