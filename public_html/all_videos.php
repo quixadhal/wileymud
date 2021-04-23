@@ -139,6 +139,10 @@ $random_embed = "https://www.youtube.com/embed/" . $random_id . "?showinfo=0&aut
                 z-index: 2;
                 transform: translateY(-50%);
             }
+            #delete-button {
+                background-color: #0000FF;
+                color: #FFFFFF;
+            }
         </style>
         <title> Playlist </title>
         <script src="<?php echo $JQ;?>""></script>
@@ -246,10 +250,15 @@ $random_embed = "https://www.youtube.com/embed/" . $random_id . "?showinfo=0&aut
                     boxes_checked++;
                     if(boxes_checked > 1) {
                         $('#banner-warning').text("You've marked " + boxes_checked + " videos for deletion!");
+                        $('#delete-button').val("DELETE " + boxes_checked + " VIDEOS!");
                     } else {
                         $('#banner-warning').text("You've marked " + boxes_checked + " video for deletion!");
+                        $('#delete-button').val("DELETE " + boxes_checked + " VIDEO!");
                     }
                     if(boxes_checked > 0) {
+                        $('#delete-button').css("background-color", "#FF0000");
+                        $('#delete-button').css("color", "#FFFF00");
+                        $('#delete-button').removeAttr("disabled");
                         showDiv("banner");
                     }
                     red_box(obj);
@@ -257,11 +266,23 @@ $random_embed = "https://www.youtube.com/embed/" . $random_id . "?showinfo=0&aut
                     boxes_checked--;
                     if(boxes_checked > 1) {
                         $('#banner-warning').text("You've marked " + boxes_checked + " videos for deletion!");
+                        $('#delete-button').val("DELETE " + boxes_checked + " VIDEOS!");
+                        $('#delete-button').css("background-color", "#FF0000");
+                        $('#delete-button').css("color", "#FFFF00");
+                        $('#delete-button').removeAttr("disabled");
                     } else {
                         $('#banner-warning').text("You've marked " + boxes_checked + " video for deletion!");
+                        $('#delete-button').val("DELETE " + boxes_checked + " VIDEO!");
+                        $('#delete-button').css("background-color", "#FF0000");
+                        $('#delete-button').css("color", "#FFFF00");
+                        $('#delete-button').removeAttr("disabled");
                     }
                     if(boxes_checked < 1) {
                         hideDiv("banner");
+                        $('#delete-button').val("Nothing to DELETE...yet!");
+                        $('#delete-button').css("background-color", "#0000FF");
+                        $('#delete-button').css("color", "#FFFFFF");
+                        $('#delete-button').attr("disabled", true);
                     }
                     green_box(obj);
                 }
@@ -297,6 +318,11 @@ $random_embed = "https://www.youtube.com/embed/" . $random_id . "?showinfo=0&aut
                     var name = red_box(obj);
                     color_a_link(name);
                 }
+
+                $('#delete-button').val("Nothing to DELETE...yet!");
+                $('#delete-button').css("background-color", "#0000FF");
+                $('#delete-button').css("color", "#FFFFFF");
+                $('#delete-button').attr("disabled", true);
             }
 
             function play_link(id) {
@@ -414,11 +440,11 @@ $random_embed = "https://www.youtube.com/embed/" . $random_id . "?showinfo=0&aut
                     file_put_contents("/home/wiley/public_html/autoplaylist.txt", implode("\n", $url_list)."\n");
                 }
             ?>
-                <input form="to_delete" type="submit" value="DELETE ALL CHECKED!">
+                <input id="delete-button" disabled form="to_delete" type="submit" value="DELETE ALL CHECKED!">
             <?php
             } else {
             ?>
-                <h1 style="color:red;">Visitors [<?php echo $_SERVER['REMOTE_ADDR']; ?>] cannot delete entries.</h1>
+                <h1 style="color:red;">Visitors from [<?php echo $_SERVER['REMOTE_ADDR']; ?>] cannot delete entries.</h1>
             <?php
             }
             ?>
