@@ -171,8 +171,6 @@ $random_embed = "https://www.youtube.com/embed/" . $random_id . "?showinfo=0&aut
                 }
             }
             function scroll_to(id) {
-                //$('#banner-warning').text("You clicked HOME with id " + id);
-                //toggleDiv("banner");
                 document.getElementById(id).scrollIntoView({behavior: 'smooth'});
             }
         </script>
@@ -180,9 +178,39 @@ $random_embed = "https://www.youtube.com/embed/" . $random_id . "?showinfo=0&aut
             var boxes_checked = 0;
             var box_ids = [];
             var current_id = "<?php echo $random_id; ?>";
-            var top_id = "<?php echo substr($playlist_list[0], 0, 11); ?>";
+            //var top_id = "<?php echo substr($playlist_list[0], 0, 11); ?>";
+            var top_id = "headline";
             var bottom_id = "<?php echo substr($playlist_list[array_key_last($playlist_list)], 0, 11); ?>";
             var jar = [];
+            var disabled = [];
+
+            function update_headline() {
+                $('#headline-h1').text( " " + (<?php echo count($playlist_list); ?> - disabled.length) + " not-yet-deleted videos.  You've seen " + jar.length + " of them.");
+            }
+
+            function update_delete_stuff() {
+                if(boxes_checked > 1) {
+                        $('#banner-warning').text("You've marked " + boxes_checked + " videos for deletion!");
+                        $('#delete-button').val("DELETE " + boxes_checked + " VIDEOS!");
+                        $('#delete-button').css("background-color", "#FF0000");
+                        $('#delete-button').css("color", "#FFFF00");
+                        $('#delete-button').removeAttr("disabled");
+                        showDiv("banner");
+                } else if(boxes_checked > 0) {
+                        $('#banner-warning').text("You've marked " + boxes_checked + " video for deletion!");
+                        $('#delete-button').val("DELETE " + boxes_checked + " VIDEO!");
+                        $('#delete-button').css("background-color", "#FF0000");
+                        $('#delete-button').css("color", "#FFFF00");
+                        $('#delete-button').removeAttr("disabled");
+                        showDiv("banner");
+                } else {
+                    $('#delete-button').val("Nothing to DELETE...yet!");
+                    $('#delete-button').css("background-color", "#0000FF");
+                    $('#delete-button').css("color", "#FFFFFF");
+                    $('#delete-button').attr("disabled", true);
+                    hideDiv("banner");
+                }
+            }
 
             function mark_seen(id) {
                 var idx = jar.indexOf(id);
@@ -245,45 +273,13 @@ $random_embed = "https://www.youtube.com/embed/" . $random_id . "?showinfo=0&aut
 
             function check_box(obj) {
                 var name = $(obj).attr("name");
-                var idx = box_ids.indexOf(name);
                 if($(obj).is(":checked")) {
                     boxes_checked++;
-                    if(boxes_checked > 1) {
-                        $('#banner-warning').text("You've marked " + boxes_checked + " videos for deletion!");
-                        $('#delete-button').val("DELETE " + boxes_checked + " VIDEOS!");
-                    } else {
-                        $('#banner-warning').text("You've marked " + boxes_checked + " video for deletion!");
-                        $('#delete-button').val("DELETE " + boxes_checked + " VIDEO!");
-                    }
-                    if(boxes_checked > 0) {
-                        $('#delete-button').css("background-color", "#FF0000");
-                        $('#delete-button').css("color", "#FFFF00");
-                        $('#delete-button').removeAttr("disabled");
-                        showDiv("banner");
-                    }
+                    update_delete_stuff();
                     red_box(obj);
                 } else {
                     boxes_checked--;
-                    if(boxes_checked > 1) {
-                        $('#banner-warning').text("You've marked " + boxes_checked + " videos for deletion!");
-                        $('#delete-button').val("DELETE " + boxes_checked + " VIDEOS!");
-                        $('#delete-button').css("background-color", "#FF0000");
-                        $('#delete-button').css("color", "#FFFF00");
-                        $('#delete-button').removeAttr("disabled");
-                    } else {
-                        $('#banner-warning').text("You've marked " + boxes_checked + " video for deletion!");
-                        $('#delete-button').val("DELETE " + boxes_checked + " VIDEO!");
-                        $('#delete-button').css("background-color", "#FF0000");
-                        $('#delete-button').css("color", "#FFFF00");
-                        $('#delete-button').removeAttr("disabled");
-                    }
-                    if(boxes_checked < 1) {
-                        hideDiv("banner");
-                        $('#delete-button').val("Nothing to DELETE...yet!");
-                        $('#delete-button').css("background-color", "#0000FF");
-                        $('#delete-button').css("color", "#FFFFFF");
-                        $('#delete-button').attr("disabled", true);
-                    }
+                    update_delete_stuff();
                     green_box(obj);
                 }
                 color_a_link(name);
@@ -313,16 +309,14 @@ $random_embed = "https://www.youtube.com/embed/" . $random_id . "?showinfo=0&aut
                 }
                 stale = [];
 
-                var disabled = document.querySelectorAll('input:disabled');
+                disabled = document.querySelectorAll('input:disabled');
                 for (const obj of disabled) {
                     var name = red_box(obj);
                     color_a_link(name);
                 }
 
-                $('#delete-button').val("Nothing to DELETE...yet!");
-                $('#delete-button').css("background-color", "#0000FF");
-                $('#delete-button').css("color", "#FFFFFF");
-                $('#delete-button').attr("disabled", true);
+                update_headline();
+                update_delete_button();
             }
 
             function play_link(id) {
@@ -340,6 +334,7 @@ $random_embed = "https://www.youtube.com/embed/" . $random_id . "?showinfo=0&aut
                 document.getElementById(current_id).classList.remove("flash_tag");
                 document.getElementById(id).classList.add("flash_tag");
                 current_id = id;
+                update_headline();
                 // And then stuff it into the player
                 $('#iframe-player').attr('src', embed);
                 return false;
@@ -351,6 +346,7 @@ $random_embed = "https://www.youtube.com/embed/" . $random_id . "?showinfo=0&aut
                     var url = "<?php echo $random_url;?>";
                     location.hash = "#<?php echo $random_id; ?>";
                     mark_seen(id);
+                    update_headline();
                     document.getElementById(id).style.color = "<?php echo $VISITED; ?>";
                     document.getElementById(id).classList.add("flash_tag");
                 }, 500);
@@ -376,7 +372,7 @@ $random_embed = "https://www.youtube.com/embed/" . $random_id . "?showinfo=0&aut
         </div>
         <div id="content">
             <div id="headline">
-                <h1>&nbsp;<?php echo count($playlist_list) - count($_POST); ?> not-yet-deleted videos.</h1>
+                <h1 id="headline-h1">&nbsp;<?php echo count($playlist_list) - count($_POST); ?> not-yet-deleted videos.</h1>
                 <hr />
             </div>
             <form id="to_delete" action="" method="post" >
