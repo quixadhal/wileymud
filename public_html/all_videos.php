@@ -178,6 +178,26 @@ $random_embed = "https://www.youtube.com/embed/" . $random_id . "?showinfo=0&aut
             var current_id = "<?php echo $random_id; ?>";
             var top_id = "<?php echo substr($playlist_list[0], 0, 11); ?>";
             var bottom_id = "<?php echo substr($playlist_list[array_key_last($playlist_list)], 0, 11); ?>";
+            var jar = [];
+
+            function mark_seen(id) {
+                var idx = jar.indexOf(id);
+                if(idx == -1) {
+                    // If not seen before, save it!
+                    jar.push(id);
+                    var cookie = JSON.stringify(jar);
+                    Cookies.set('jar', cookie, { expires: 30 });
+                }
+            }
+
+            function has_seen(id) {
+                var idx = jar.indexOf(id);
+                if(idx == -1) {
+                    return false;
+                } else {
+                    return true;
+                }
+            }
 
             function red_box(obj) {
                 var name = $(obj).attr("name");
@@ -207,7 +227,8 @@ $random_embed = "https://www.youtube.com/embed/" . $random_id . "?showinfo=0&aut
                         // If the box has been checked, it's dead.
                         element.style.color = "<?php echo $DELETED; ?>";
                     } else {
-                        if(Cookies.get(id)) {
+                        //if(Cookies.get(id))
+                        if(has_seen(id)) {
                             element.style.color = "<?php echo $VISITED; ?>";
                         } else {
                             element.style.color = "<?php echo $UNVISITED; ?>";
@@ -246,8 +267,15 @@ $random_embed = "https://www.youtube.com/embed/" . $random_id . "?showinfo=0&aut
             }
 
             function color_links() {
-                var jar = Cookies.get();
-                for (const [name,url] of Object.entries(jar)) {
+                //var jar = Cookies.get();
+                //for (const [name,url] of Object.entries(jar)) {
+                //    color_a_link(name);
+                //}
+                var cookie = Cookies.get('jar');
+                if(cookie != undefined && cookie != null) {
+                    jar = JSON.parse(cookie);
+                }
+                for (const name of jar) {
                     color_a_link(name);
                 }
                 var disabled = document.querySelectorAll('input:disabled');
@@ -265,7 +293,8 @@ $random_embed = "https://www.youtube.com/embed/" . $random_id . "?showinfo=0&aut
                 // the id matches...
                 url = "https://www.youtube.com/watch?v=" + id;
                 embed = "https://www.youtube.com/embed/" + id + "?showinfo=0&autoplay=1&autohide=0&controls=1";
-                Cookies.set(id, 1, { expires: 30 });
+                //Cookies.set(id, 1, { expires: 30 });
+                mark_seen(id);
                 // Refresh link color
                 color_a_link(id);
                 // Unblink the old link, and blink the new one.
@@ -282,7 +311,8 @@ $random_embed = "https://www.youtube.com/embed/" . $random_id . "?showinfo=0&aut
                     var id = "<?php echo $random_id;?>";
                     var url = "<?php echo $random_url;?>";
                     location.hash = "#<?php echo $random_id; ?>";
-                    Cookies.set(id, 1, { expires: 30 });
+                    //Cookies.set(id, 1, { expires: 30 });
+                    mark_seen(id);
                     document.getElementById(id).style.color = "<?php echo $VISITED; ?>";
                     document.getElementById(id).classList.add("flash_tag");
                 }, 500);
