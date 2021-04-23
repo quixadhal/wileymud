@@ -89,11 +89,94 @@ $random_embed = "https://www.youtube.com/embed/" . $random_id . "?showinfo=0&aut
             }
             #content {
             }
+            #headline {
+                width: 100%;
+                height: 80px;
+            }
+            #banner {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 80px;
+                background-color: #FF0000;
+                color: #FFFFFF;
+                opacity: 0.75;
+                z-index: 2;
+                text-align: center;
+                display: none;
+            }
+            @keyframes blinking {
+                0% {
+                    opacity: 0;
+                }
+                49% {
+                    opacity: 0;
+                }
+                50% {
+                    opacity: 1;
+                }
+                100% {
+                    opacity: 1;
+                }
+            }
+            .flash_tag {
+                animation: blinking 1.5s infinite;
+            }
         </style>
         <title> Playlist </title>
         <script src="<?php echo $JQ;?>""></script>
         <script src="<?php echo $JSCOOKIE;?>""></script>
         <script type="text/javascript">
+            function toggleDiv(divID) {
+                element = document.getElementById(divID);
+                if(element !== undefined && element !== null) {
+                    if(element.style.display == 'none') {
+                        element.style.display = 'block';
+                    } else {
+                        element.style.display = 'none';
+                    }
+                }
+            }
+            function showDiv(divID) {
+                element = document.getElementById(divID);
+                if(element !== undefined && element !== null) {
+                    element.style.display = 'block';
+                }
+            }
+            function hideDiv(divID) {
+                element = document.getElementById(divID);
+                if(element !== undefined && element !== null) {
+                    element.style.display = 'none';
+                }
+            }
+        </script>
+        <script type="text/javascript">
+            var boxes_checked = 0;
+
+            function check_box(obj) {
+                if($(obj).is(":checked")) {
+                    boxes_checked++;
+                    if(boxes_checked > 1) {
+                        $('#banner-warning').text("You've marked " + boxes_checked + " videos for deletion!");
+                    } else {
+                        $('#banner-warning').text("You've marked " + boxes_checked + " video for deletion!");
+                    }
+                    if(boxes_checked > 0) {
+                        showDiv("banner");
+                    }
+                } else {
+                    boxes_checked--;
+                    if(boxes_checked > 1) {
+                        $('#banner-warning').text("You've marked " + boxes_checked + " videos for deletion!");
+                    } else {
+                        $('#banner-warning').text("You've marked " + boxes_checked + " video for deletion!");
+                    }
+                    if(boxes_checked < 1) {
+                        hideDiv("banner");
+                    }
+                }
+            }
             function color_links() {
                 var jar = Cookies.get();
                 for (const [key,value] of Object.entries(jar)) {
@@ -138,8 +221,14 @@ $random_embed = "https://www.youtube.com/embed/" . $random_id . "?showinfo=0&aut
                 src="<?php echo $random_embed; ?>">
             </iframe>
         </div>
+        <div id="banner">
+            <h1 id="banner-warning" class="flash_tag"> You've marked something for deletion! </h1>
+        </div>
         <div id="content">
-            <h1><?php echo count($playlist_list) - count($_POST); ?> not-yet-deleted videos.</h1>
+            <div id="headline">
+                <h1>&nbsp;<?php echo count($playlist_list) - count($_POST); ?> not-yet-deleted videos.</h1>
+                <hr />
+            </div>
             <form id="to_delete" action="" method="post" >
             <pre>
             <?php
@@ -166,14 +255,14 @@ $random_embed = "https://www.youtube.com/embed/" . $random_id . "?showinfo=0&aut
                 if(array_key_exists($id, $_POST)) {
                     // Display in RED to show it has been deleted
             ?>
-<a name="<?php echo $id; ?>"></a><font color="red"><input style="color: red;" disabled form="to_delete" type="checkbox" name="<?php echo $id;?>" value="<?php echo $id;?>"><?php printf("&nbsp;%s&nbsp;%s",$percent_string,$id);?>&nbsp;<a id="<?php echo $id;?>" style="color: red;" target="__autoplaylist_titles.txt" onclick="return play_link('<?php echo $id; ?>');" href="<?php echo $url;?>"><?php echo $title; ?></a></font>
+<a name="<?php echo $id; ?>"></a><font color="red"><input onchange="check_box(this);" style="color: red;" disabled form="to_delete" type="checkbox" name="<?php echo $id;?>" value="<?php echo $id;?>"><?php printf("&nbsp;%s&nbsp;%s",$percent_string,$id);?>&nbsp;<a id="<?php echo $id;?>" style="color: red;" target="__autoplaylist_titles.txt" onclick="return play_link('<?php echo $id; ?>');" href="<?php echo $url;?>"><?php echo $title; ?></a></font>
             <?php
                 } else {
                     // We write it out and present the form element
                     $output_list[] = $entry;
                     $url_list[] = $url;
             ?>
-<a name="<?php echo $id; ?>"></a><input form="to_delete" type="checkbox" name="<?php echo $id;?>" value="<?php echo $id;?>"><?php printf("&nbsp;%s&nbsp;%s",$percent_string,$id);?>&nbsp;<a id="<?php echo $id;?>" target="__autoplaylist_titles.txt" onclick="return play_link('<?php echo $id; ?>');" href="<?php echo $url;?>"><?php echo $title; ?></a>
+<a name="<?php echo $id; ?>"></a><input onchange="check_box(this);" form="to_delete" type="checkbox" name="<?php echo $id;?>" value="<?php echo $id;?>"><?php printf("&nbsp;%s&nbsp;%s",$percent_string,$id);?>&nbsp;<a id="<?php echo $id;?>" target="__autoplaylist_titles.txt" onclick="return play_link('<?php echo $id; ?>');" href="<?php echo $url;?>"><?php echo $title; ?></a>
             <?php
                 }
             }
