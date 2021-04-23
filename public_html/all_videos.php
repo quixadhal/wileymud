@@ -316,7 +316,7 @@ $random_embed = "https://www.youtube.com/embed/" . $random_id . "?showinfo=0&aut
                 }
 
                 update_headline();
-                update_delete_button();
+                update_delete_stuff();
             }
 
             function play_link(id) {
