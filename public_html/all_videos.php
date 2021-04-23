@@ -30,6 +30,9 @@ $BACKGROUND_URL = "$URL_HOME/gfx/wallpaper/$BACKGROUND";
 $BACKGROUND_IMG = "<img class=\"overlay-bg\" src=\"$BACKGROUND_URL\" />";
 $JQ             = "$URL_HOME/jquery.js";
 $JSCOOKIE       = "$URL_HOME/js.cookie.min.js";
+$NAVHOME_GFX    = "$URL_HOME/gfx/navhome.png";
+$NAVTOP_GFX     = "$URL_HOME/gfx/nav/green/top.png";
+$NAVBOTTOM_GFX  = "$URL_HOME/gfx/nav/green/bottom.png";
 
 $UNVISITED      = "#ffffbf";
 //$UNVISITED      = "#ffa040";
@@ -126,6 +129,16 @@ $random_embed = "https://www.youtube.com/embed/" . $random_id . "?showinfo=0&aut
             .flash_tag {
                 animation: blinking 1.5s infinite;
             }
+            #nav-home {
+                position: fixed;
+                border: none;
+                top: 50%;
+                left: 10;
+                width: 48px;
+                opacity: 0.75;
+                z-index: 2;
+                transform: translateY(-50%);
+            }
         </style>
         <title> Playlist </title>
         <script src="<?php echo $JQ;?>""></script>
@@ -153,11 +166,18 @@ $random_embed = "https://www.youtube.com/embed/" . $random_id . "?showinfo=0&aut
                     element.style.display = 'none';
                 }
             }
+            function scroll_to(id) {
+                //$('#banner-warning').text("You clicked HOME with id " + id);
+                //toggleDiv("banner");
+                document.getElementById(id).scrollIntoView({behavior: 'smooth'});
+            }
         </script>
         <script type="text/javascript">
             var boxes_checked = 0;
             var box_ids = [];
             var current_id = "<?php echo $random_id; ?>";
+            var top_id = "<?php echo substr($playlist_list[0], 0, 11); ?>";
+            var bottom_id = "<?php echo substr($playlist_list[array_key_last($playlist_list)], 0, 11); ?>";
 
             function red_box(obj) {
                 var name = $(obj).attr("name");
@@ -245,7 +265,7 @@ $random_embed = "https://www.youtube.com/embed/" . $random_id . "?showinfo=0&aut
                 // the id matches...
                 url = "https://www.youtube.com/watch?v=" + id;
                 embed = "https://www.youtube.com/embed/" + id + "?showinfo=0&autoplay=1&autohide=0&controls=1";
-                Cookies.set(id, url, { expires: 30 });
+                Cookies.set(id, 1, { expires: 30 });
                 // Refresh link color
                 color_a_link(id);
                 // Unblink the old link, and blink the new one.
@@ -262,7 +282,7 @@ $random_embed = "https://www.youtube.com/embed/" . $random_id . "?showinfo=0&aut
                     var id = "<?php echo $random_id;?>";
                     var url = "<?php echo $random_url;?>";
                     location.hash = "#<?php echo $random_id; ?>";
-                    Cookies.set(id, url, { expires: 30 });
+                    Cookies.set(id, 1, { expires: 30 });
                     document.getElementById(id).style.color = "<?php echo $VISITED; ?>";
                     document.getElementById(id).classList.add("flash_tag");
                 }, 500);
@@ -281,6 +301,11 @@ $random_embed = "https://www.youtube.com/embed/" . $random_id . "?showinfo=0&aut
         <div id="banner">
             <h1 id="banner-warning" class="flash_tag"> You've marked something for deletion! </h1>
         </div>
+        <div id="nav-home">
+            <img height="48" width="48" src="<?php echo $NAVTOP_GFX; ?>" onclick="scroll_to(top_id);" />
+            <img height="48" width="48" src="<?php echo $NAVHOME_GFX; ?>" onclick="scroll_to(current_id);" />
+            <img height="48" width="48" src="<?php echo $NAVBOTTOM_GFX; ?>" onclick="scroll_to(bottom_id);" />
+        </div>
         <div id="content">
             <div id="headline">
                 <h1>&nbsp;<?php echo count($playlist_list) - count($_POST); ?> not-yet-deleted videos.</h1>
@@ -298,9 +323,22 @@ $random_embed = "https://www.youtube.com/embed/" . $random_id . "?showinfo=0&aut
                 $title = substr($entry, 35, -1);
                 $url = "https://www.youtube.com/watch?v=" . $id;
                 $embed = "https://www.youtube.com/embed/" . $id . "?showinfo=0&autoplay=1&autohide=0&controls=1";
-                if(($counter == 0) || ($counter == (count($playlist_list) - 1)) || (round($percent * 100.0) != round($last_percent * 100.0))) {
+                $is_top = 0;
+                $is_bottom = 0;
+                $aname_class = "middle";
+                if($counter == 0) {
+                    $is_top = 1;
+                    $is_bottom = 0;
+                    $aname_class = "top";
+                }
+                if($counter == (count($playlist_list) - 1)) {
+                    $is_top = 0;
+                    $is_bottom = 1;
+                    $aname_class = "bottom";
+                }
+                if($is_top || $is_bottom || (round($percent * 100.0) != round($last_percent * 100.0))) {
                     $last_percent = $percent;
-                    if($counter == (count($playlist_list) - 1)) {
+                    if($is_bottom) {
                         $percent_string = sprintf("%3d%%", round($last_percent * 100.0));
                     } else {
                         $percent_string = sprintf("%3d%%", $last_percent * 100.0);
@@ -312,14 +350,14 @@ $random_embed = "https://www.youtube.com/embed/" . $random_id . "?showinfo=0&aut
                 if(array_key_exists($id, $_POST)) {
                     // Display in RED to show it has been deleted
             ?>
-<a name="<?php echo $id; ?>"></a><font color="red"><input onchange="check_box(this);" style="color: red;" disabled form="to_delete" type="checkbox" name="<?php echo $id;?>" value="<?php echo $id;?>"><?php printf("&nbsp;%s&nbsp;%s",$percent_string,$id);?>&nbsp;<a id="<?php echo $id;?>" style="color: red;" target="__autoplaylist_titles.txt" onclick="return play_link('<?php echo $id; ?>');" href="<?php echo $url;?>"><?php echo $title; ?></a></font>
+<a name="<?php echo $id; ?>" class="<?php echo $aname_class; ?>"></a><font color="red"><input onchange="check_box(this);" style="color: red;" disabled form="to_delete" type="checkbox" name="<?php echo $id;?>" value="<?php echo $id;?>"><?php printf("&nbsp;%s&nbsp;%s",$percent_string,$id);?>&nbsp;<a id="<?php echo $id;?>" style="color: red;" target="__autoplaylist_titles.txt" onclick="return play_link('<?php echo $id; ?>');" href="<?php echo $url;?>"><?php echo $title; ?></a></font>
             <?php
                 } else {
                     // We write it out and present the form element
                     $output_list[] = $entry;
                     $url_list[] = $url;
             ?>
-<a name="<?php echo $id; ?>"></a><input onchange="check_box(this);" form="to_delete" type="checkbox" name="<?php echo $id;?>" value="<?php echo $id;?>"><?php printf("&nbsp;%s&nbsp;%s",$percent_string,$id);?>&nbsp;<a id="<?php echo $id;?>" target="__autoplaylist_titles.txt" onclick="return play_link('<?php echo $id; ?>');" href="<?php echo $url;?>"><?php echo $title; ?></a>
+<a name="<?php echo $id; ?>" class="<?php echo $aname_class; ?>"></a><input onchange="check_box(this);" form="to_delete" type="checkbox" name="<?php echo $id;?>" value="<?php echo $id;?>"><?php printf("&nbsp;%s&nbsp;%s",$percent_string,$id);?>&nbsp;<a id="<?php echo $id;?>" target="__autoplaylist_titles.txt" onclick="return play_link('<?php echo $id; ?>');" href="<?php echo $url;?>"><?php echo $title; ?></a>
             <?php
                 }
             }
