@@ -93,6 +93,11 @@ $random_embed = "https://www.youtube.com/embed/" . $random_id . "?showinfo=0&aut
                 $('#iframe-player').attr('src', url);
                 return false;
             }
+            $(document).ready(function() {
+                setTimeout(function() {
+                    location.hash = "#<?php echo $random_id; ?>";
+                }, 500);
+            });
         </script>
     </head>
     <body bgcolor="black" text="#d0d0d0" link="#ffffbf" vlink="#ffa040">
@@ -118,14 +123,14 @@ $random_embed = "https://www.youtube.com/embed/" . $random_id . "?showinfo=0&aut
                 if(array_key_exists($id, $_POST)) {
                     // Display in RED to show it has been deleted
             ?>
-                <font color="red"><input style="color: red;" disabled form="to_delete" type="checkbox" name="<?php echo $id;?>" value="<?php echo $id;?>"><?php printf("%-6d&nbsp;%s",$counter,$id);?>&nbsp;<a style="color: red;" target="__autoplaylist_titles.txt" onclick="return play_link('<?php echo $embed; ?>');" href="<?php echo $url;?>"><?php echo $title; ?></a></font>
+                <a name="<?php echo $id; ?>"></a><font color="red"><input style="color: red;" disabled form="to_delete" type="checkbox" name="<?php echo $id;?>" value="<?php echo $id;?>"><?php printf("%-6d&nbsp;%s",$counter,$id);?>&nbsp;<a style="color: red;" target="__autoplaylist_titles.txt" onclick="return play_link('<?php echo $embed; ?>');" href="<?php echo $url;?>"><?php echo $title; ?></a></font>
             <?php
                 } else {
                     // We write it out and present the form element
                     $output_list[] = $entry;
                     $url_list[] = $url;
             ?>
-                <input form="to_delete" type="checkbox" name="<?php echo $id;?>" value="<?php echo $id;?>"><?php printf("%-6d&nbsp;%s",$counter,$id);?>&nbsp;<a target="__autoplaylist_titles.txt" onclick="return play_link('<?php echo $embed; ?>');" href="<?php echo $url;?>"><?php echo $title; ?></a>
+                <a name="<?php echo $id; ?>"></a><input form="to_delete" type="checkbox" name="<?php echo $id;?>" value="<?php echo $id;?>"><?php printf("%-6d&nbsp;%s",$counter,$id);?>&nbsp;<a target="__autoplaylist_titles.txt" onclick="return play_link('<?php echo $embed; ?>');" href="<?php echo $url;?>"><?php echo $title; ?></a>
             <?php
                 }
             }
