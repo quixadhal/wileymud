@@ -227,14 +227,16 @@ $random_embed = "https://www.youtube.com/embed/" . $random_id . "?showinfo=0&aut
                         // If the box has been checked, it's dead.
                         element.style.color = "<?php echo $DELETED; ?>";
                     } else {
-                        //if(Cookies.get(id))
                         if(has_seen(id)) {
                             element.style.color = "<?php echo $VISITED; ?>";
                         } else {
                             element.style.color = "<?php echo $UNVISITED; ?>";
                         }
                     }
+                } else {
+                    return false;
                 }
+                return true;
             }
 
             function check_box(obj) {
@@ -275,9 +277,21 @@ $random_embed = "https://www.youtube.com/embed/" . $random_id . "?showinfo=0&aut
                 if(cookie != undefined && cookie != null) {
                     jar = JSON.parse(cookie);
                 }
+
+                var stale = [];
                 for (const name of jar) {
-                    color_a_link(name);
+                    if(color_a_link(name) == false) {
+                        // This ID is not in our playlist, remove the entry.
+                        stale.push(name);
+                    }
                 }
+                // Now we can iterate over the stale cookies and remove them.
+                for (const name of stale) {
+                    var idx = jar.indexOf(name);
+                    jar.splice(idx, 1);
+                }
+                stale = [];
+
                 var disabled = document.querySelectorAll('input:disabled');
                 for (const obj of disabled) {
                     var name = red_box(obj);
@@ -293,7 +307,6 @@ $random_embed = "https://www.youtube.com/embed/" . $random_id . "?showinfo=0&aut
                 // the id matches...
                 url = "https://www.youtube.com/watch?v=" + id;
                 embed = "https://www.youtube.com/embed/" + id + "?showinfo=0&autoplay=1&autohide=0&controls=1";
-                //Cookies.set(id, 1, { expires: 30 });
                 mark_seen(id);
                 // Refresh link color
                 color_a_link(id);
@@ -311,7 +324,6 @@ $random_embed = "https://www.youtube.com/embed/" . $random_id . "?showinfo=0&aut
                     var id = "<?php echo $random_id;?>";
                     var url = "<?php echo $random_url;?>";
                     location.hash = "#<?php echo $random_id; ?>";
-                    //Cookies.set(id, 1, { expires: 30 });
                     mark_seen(id);
                     document.getElementById(id).style.color = "<?php echo $VISITED; ?>";
                     document.getElementById(id).classList.add("flash_tag");
