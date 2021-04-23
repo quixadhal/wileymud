@@ -52,13 +52,37 @@ $random_embed = "https://www.youtube.com/embed/" . $random_id . "?showinfo=0&aut
 <html>
     <head>
         <style>
-            a { text-decoration:none; color: <?php echo $UNVISITED; ?>; }
-            a:visited { color: <?php echo $UNVISITED; ?>; }
-            a:hover { text-decoration:underline; }
+            a {
+                text-decoration:none;
+                color: <?php echo $UNVISITED; ?>;
+            }
+            a:visited {
+                color: <?php echo $UNVISITED; ?>;
+            }
+            a:hover {
+                text-decoration:underline;
+            }
             a:active, a:focus {
                 outline: 0;
                 border: none;
                 -moz-outline-style: none;
+            }
+            @keyframes blinking {
+                0% {
+                    opacity: 0;
+                }
+                49% {
+                    opacity: 0;
+                }
+                50% {
+                    opacity: 1;
+                }
+                100% {
+                    opacity: 1;
+                }
+            }
+            .flash_tag {
+                animation: blinking 1.5s infinite;
             }
             html, body {
                 font-family: 'Lato', sans-serif;
@@ -66,6 +90,7 @@ $random_embed = "https://www.youtube.com/embed/" . $random_id . "?showinfo=0&aut
                 margin: 0px;
             }
             body::after {
+                z-index: -1;
                 content: "";
                 background: url(<?php echo $BACKGROUND_URL; ?>);
                 opacity: 0.15;
@@ -74,7 +99,6 @@ $random_embed = "https://www.youtube.com/embed/" . $random_id . "?showinfo=0&aut
                 bottom: 0;
                 right: 0;
                 position: fixed;
-                z-index: -2;
                 background-size: cover;
             }
             #player-div {
@@ -100,6 +124,7 @@ $random_embed = "https://www.youtube.com/embed/" . $random_id . "?showinfo=0&aut
                 height: 80px;
             }
             #banner {
+                z-index: 2;
                 position: fixed;
                 top: 0;
                 left: 0;
@@ -108,38 +133,21 @@ $random_embed = "https://www.youtube.com/embed/" . $random_id . "?showinfo=0&aut
                 background-color: #FF0000;
                 color: #FFFFFF;
                 opacity: 0.75;
-                z-index: 2;
                 text-align: center;
                 display: none;
             }
-            @keyframes blinking {
-                0% {
-                    opacity: 0;
-                }
-                49% {
-                    opacity: 0;
-                }
-                50% {
-                    opacity: 1;
-                }
-                100% {
-                    opacity: 1;
-                }
-            }
-            .flash_tag {
-                animation: blinking 1.5s infinite;
-            }
             #nav-home {
+                z-index: 2;
                 position: fixed;
                 border: none;
                 top: 50%;
                 left: 10;
                 width: 48px;
                 opacity: 0.75;
-                z-index: 2;
                 transform: translateY(-50%);
             }
             #delete-button {
+                z-index: 2;
                 background-color: #0000FF;
                 color: #FFFFFF;
             }
