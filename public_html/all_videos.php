@@ -191,23 +191,29 @@ $random_embed = "https://www.youtube.com/embed/" . $random_id . "?showinfo=0&aut
             function update_delete_stuff() {
                 if(boxes_checked > 1) {
                         $('#banner-warning').text("You've marked " + boxes_checked + " videos for deletion!");
+                    <?php if(is_local_ip()) { ?>
                         $('#delete-button').val("DELETE " + boxes_checked + " VIDEOS!");
                         $('#delete-button').css("background-color", "#FF0000");
                         $('#delete-button').css("color", "#FFFF00");
                         $('#delete-button').removeAttr("disabled");
+                    <?php } ?>
                         showDiv("banner");
                 } else if(boxes_checked > 0) {
                         $('#banner-warning').text("You've marked " + boxes_checked + " video for deletion!");
+                    <?php if(is_local_ip()) { ?>
                         $('#delete-button').val("DELETE " + boxes_checked + " VIDEO!");
                         $('#delete-button').css("background-color", "#FF0000");
                         $('#delete-button').css("color", "#FFFF00");
                         $('#delete-button').removeAttr("disabled");
+                    <?php } ?>
                         showDiv("banner");
                 } else {
+                    <?php if(is_local_ip()) { ?>
                     $('#delete-button').val("Nothing to DELETE...yet!");
                     $('#delete-button').css("background-color", "#0000FF");
                     $('#delete-button').css("color", "#FFFFFF");
                     $('#delete-button').attr("disabled", true);
+                    <?php } ?>
                     hideDiv("banner");
                 }
             }
