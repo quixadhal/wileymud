@@ -144,23 +144,36 @@ $random_embed = "https://www.youtube.com/embed/" . $random_id . "?showinfo=0&aut
             <pre>
             <?php
             $counter = 0;
+            $last_percent = 0.0;
+            $percent_string = sprintf("%3d%%", $last_percent * 100.0);
             foreach ($playlist_list as $entry) {
+                $percent = (double)$counter / (double)count($playlist_list);
                 $id = substr($entry, 0, 11);
                 $title = substr($entry, 35, -1);
                 $url = "https://www.youtube.com/watch?v=" . $id;
                 $embed = "https://www.youtube.com/embed/" . $id . "?showinfo=0&autoplay=1&autohide=0&controls=1";
+                if(($counter == 0) || ($counter == (count($playlist_list) - 1)) || (round($percent * 100.0) != round($last_percent * 100.0))) {
+                    $last_percent = $percent;
+                    if($counter == (count($playlist_list) - 1)) {
+                        $percent_string = sprintf("%3d%%", round($last_percent * 100.0));
+                    } else {
+                        $percent_string = sprintf("%3d%%", $last_percent * 100.0);
+                    }
+                } else {
+                    $percent_string = "    ";
+                }
                 $counter++;
                 if(array_key_exists($id, $_POST)) {
                     // Display in RED to show it has been deleted
             ?>
-                <a name="<?php echo $id; ?>"></a><font color="red"><input style="color: red;" disabled form="to_delete" type="checkbox" name="<?php echo $id;?>" value="<?php echo $id;?>"><?php printf("%-6d&nbsp;%s",$counter,$id);?>&nbsp;<a id="<?php echo $id;?>" style="color: red;" target="__autoplaylist_titles.txt" onclick="return play_link('<?php echo $id; ?>');" href="<?php echo $url;?>"><?php echo $title; ?></a></font>
+<a name="<?php echo $id; ?>"></a><font color="red"><input style="color: red;" disabled form="to_delete" type="checkbox" name="<?php echo $id;?>" value="<?php echo $id;?>"><?php printf("&nbsp;%s&nbsp;%s",$percent_string,$id);?>&nbsp;<a id="<?php echo $id;?>" style="color: red;" target="__autoplaylist_titles.txt" onclick="return play_link('<?php echo $id; ?>');" href="<?php echo $url;?>"><?php echo $title; ?></a></font>
             <?php
                 } else {
                     // We write it out and present the form element
                     $output_list[] = $entry;
                     $url_list[] = $url;
             ?>
-                <a name="<?php echo $id; ?>"></a><input form="to_delete" type="checkbox" name="<?php echo $id;?>" value="<?php echo $id;?>"><?php printf("%-6d&nbsp;%s",$counter,$id);?>&nbsp;<a id="<?php echo $id;?>" target="__autoplaylist_titles.txt" onclick="return play_link('<?php echo $id; ?>');" href="<?php echo $url;?>"><?php echo $title; ?></a>
+<a name="<?php echo $id; ?>"></a><input form="to_delete" type="checkbox" name="<?php echo $id;?>" value="<?php echo $id;?>"><?php printf("&nbsp;%s&nbsp;%s",$percent_string,$id);?>&nbsp;<a id="<?php echo $id;?>" target="__autoplaylist_titles.txt" onclick="return play_link('<?php echo $id; ?>');" href="<?php echo $url;?>"><?php echo $title; ?></a>
             <?php
                 }
             }
