@@ -31,7 +31,10 @@ $BACKGROUND_IMG = "<img class=\"overlay-bg\" src=\"$BACKGROUND_URL\" />";
 $JQ             = "$URL_HOME/jquery.js";
 $JSCOOKIE       = "$URL_HOME/js.cookie.min.js";
 
+$UNVISITED      = "#ffffbf";
+//$UNVISITED      = "#ffa040";
 $VISITED        = "#00FF00";
+$DELETED        = "#FF0000";
 
 $playlist_list = file("/home/wiley/public_html/autoplaylist_titles.txt", FILE_SKIP_EMPTY_LINES);
 $output_list = array();
@@ -46,8 +49,8 @@ $random_embed = "https://www.youtube.com/embed/" . $random_id . "?showinfo=0&aut
 <html>
     <head>
         <style>
-            a { text-decoration:none; color: #ffffbf; }
-            a:visited { color: #ffa040; }
+            a { text-decoration:none; color: <?php echo $UNVISITED; ?>; }
+            a:visited { color: <?php echo $UNVISITED; ?>; }
             a:hover { text-decoration:underline; }
             a:active, a:focus {
                 outline: 0;
@@ -153,8 +156,49 @@ $random_embed = "https://www.youtube.com/embed/" . $random_id . "?showinfo=0&aut
         </script>
         <script type="text/javascript">
             var boxes_checked = 0;
+            var box_ids = [];
+            var current_id = "<?php echo $random_id; ?>";
+
+            function red_box(obj) {
+                var name = $(obj).attr("name");
+                var idx = box_ids.indexOf(name);
+                if(idx == -1) {
+                    // Add to array to make RED
+                    box_ids.push(name);
+                }
+                return name;
+            }
+
+            function green_box(obj) {
+                var name = $(obj).attr("name");
+                var idx = box_ids.indexOf(name);
+                if(idx != -1) {
+                    // Remove from array to make RED
+                    box_ids.splice(idx, 1);
+                }
+                return name;
+            }
+
+            function color_a_link(id) {
+                var element = document.getElementById(id);
+                if(element !== undefined && element !== null) {
+                    var idx = box_ids.indexOf(id);
+                    if(idx != -1) {
+                        // If the box has been checked, it's dead.
+                        element.style.color = "<?php echo $DELETED; ?>";
+                    } else {
+                        if(Cookies.get(id)) {
+                            element.style.color = "<?php echo $VISITED; ?>";
+                        } else {
+                            element.style.color = "<?php echo $UNVISITED; ?>";
+                        }
+                    }
+                }
+            }
 
             function check_box(obj) {
+                var name = $(obj).attr("name");
+                var idx = box_ids.indexOf(name);
                 if($(obj).is(":checked")) {
                     boxes_checked++;
                     if(boxes_checked > 1) {
@@ -165,6 +209,7 @@ $random_embed = "https://www.youtube.com/embed/" . $random_id . "?showinfo=0&aut
                     if(boxes_checked > 0) {
                         showDiv("banner");
                     }
+                    red_box(obj);
                 } else {
                     boxes_checked--;
                     if(boxes_checked > 1) {
@@ -175,17 +220,23 @@ $random_embed = "https://www.youtube.com/embed/" . $random_id . "?showinfo=0&aut
                     if(boxes_checked < 1) {
                         hideDiv("banner");
                     }
+                    green_box(obj);
                 }
+                color_a_link(name);
             }
+
             function color_links() {
                 var jar = Cookies.get();
-                for (const [key,value] of Object.entries(jar)) {
-                    var element = document.getElementById(key);
-                    if(element !== undefined && element !== null) {
-                        element.style.color = "<?php echo $VISITED; ?>";
-                    }
+                for (const [name,url] of Object.entries(jar)) {
+                    color_a_link(name);
+                }
+                var disabled = document.querySelectorAll('input:disabled');
+                for (const obj of disabled) {
+                    var name = red_box(obj);
+                    color_a_link(name);
                 }
             }
+
             function play_link(id) {
                 // We want to mark the clicked link as visited
                 // To do this, since we aren't visiting it in the browser
@@ -196,11 +247,16 @@ $random_embed = "https://www.youtube.com/embed/" . $random_id . "?showinfo=0&aut
                 embed = "https://www.youtube.com/embed/" + id + "?showinfo=0&autoplay=1&autohide=0&controls=1";
                 Cookies.set(id, url, { expires: 30 });
                 // Refresh link color
-                document.getElementById(id).style.color = "<?php echo $VISITED; ?>";
+                color_a_link(id);
+                // Unblink the old link, and blink the new one.
+                document.getElementById(current_id).classList.remove("flash_tag");
+                document.getElementById(id).classList.add("flash_tag");
+                current_id = id;
                 // And then stuff it into the player
                 $('#iframe-player').attr('src', embed);
                 return false;
             }
+
             $(document).ready(function() {
                 setTimeout(function() {
                     var id = "<?php echo $random_id;?>";
@@ -208,12 +264,13 @@ $random_embed = "https://www.youtube.com/embed/" . $random_id . "?showinfo=0&aut
                     location.hash = "#<?php echo $random_id; ?>";
                     Cookies.set(id, url, { expires: 30 });
                     document.getElementById(id).style.color = "<?php echo $VISITED; ?>";
+                    document.getElementById(id).classList.add("flash_tag");
                 }, 500);
                 color_links();
             });
         </script>
     </head>
-    <body bgcolor="black" text="#d0d0d0" link="#ffffbf" vlink="#ffa040">
+    <body bgcolor="black" text="#d0d0d0" link="<?php echo $UNVISITED; ?>" vlink="<?php echo $UNVISITED; ?>">
         <div id="player-div">
             <iframe id="iframe-player"
                 frameborder="0"
@@ -274,7 +331,7 @@ $random_embed = "https://www.youtube.com/embed/" . $random_id . "?showinfo=0&aut
                     // If we had anything to delete, write the output back to the file
                     file_put_contents("/home/wiley/public_html/autoplaylist_titles.txt", implode("", $output_list));
                     // Also write the matching raw url list
-                    file_put_contents("/home/wiley/public_html/autoplaylist.txt", implode("\n", $url_list));
+                    file_put_contents("/home/wiley/public_html/autoplaylist.txt", implode("\n", $url_list)."\n");
                 }
             ?>
                 <input form="to_delete" type="submit" value="DELETE ALL CHECKED!">
