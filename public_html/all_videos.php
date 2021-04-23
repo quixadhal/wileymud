@@ -91,9 +91,9 @@ $random_embed = "https://www.youtube.com/embed/" . $random_id . "?showinfo=0&aut
             }
             body::after {
                 z-index: -1;
+                opacity: 0.20;
                 content: "";
                 background: url(<?php echo $BACKGROUND_URL; ?>);
-                opacity: 0.15;
                 top: 0;
                 left: 0;
                 bottom: 0;
@@ -103,7 +103,7 @@ $random_embed = "https://www.youtube.com/embed/" . $random_id . "?showinfo=0&aut
             }
             #player-div {
                 z-index: 1;
-                opacity: 0.5;
+                opacity: 0.55;
                 position: fixed;
                 top: 0;
                 right: 0;
@@ -125,6 +125,7 @@ $random_embed = "https://www.youtube.com/embed/" . $random_id . "?showinfo=0&aut
             }
             #banner {
                 z-index: 2;
+                opacity: 0.70;
                 position: fixed;
                 top: 0;
                 left: 0;
@@ -132,22 +133,22 @@ $random_embed = "https://www.youtube.com/embed/" . $random_id . "?showinfo=0&aut
                 height: 80px;
                 background-color: #FF0000;
                 color: #FFFFFF;
-                opacity: 0.75;
                 text-align: center;
                 display: none;
             }
             #nav-home {
                 z-index: 2;
+                opacity: 0.70;
                 position: fixed;
                 border: none;
                 top: 50%;
                 left: 10;
                 width: 48px;
-                opacity: 0.75;
                 transform: translateY(-50%);
             }
             #delete-button {
                 z-index: 2;
+                opacity: 0.70;
                 background-color: #0000FF;
                 color: #FFFFFF;
             }
