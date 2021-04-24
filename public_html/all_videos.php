@@ -103,7 +103,7 @@ $random_embed = "https://www.youtube.com/embed/" . $random_id . "?showinfo=0&aut
             }
             #player-div {
                 z-index: 1;
-                opacity: 0.55;
+                opacity: 0.65;
                 position: fixed;
                 top: 0;
                 right: 0;
@@ -359,11 +359,12 @@ $random_embed = "https://www.youtube.com/embed/" . $random_id . "?showinfo=0&aut
                 setTimeout(function() {
                     var id = "<?php echo $random_id;?>";
                     var url = "<?php echo $random_url;?>";
-                    location.hash = "#<?php echo $random_id; ?>";
+                    //location.hash = "#<?php echo $random_id; ?>";
                     mark_seen(id);
                     update_headline();
                     document.getElementById(id).style.color = "<?php echo $VISITED; ?>";
                     document.getElementById(id).classList.add("flash_tag");
+                    document.getElementById(id).scrollIntoView({behavior: 'smooth'});
                 }, 500);
                 color_links();
             });
