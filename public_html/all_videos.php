@@ -44,6 +44,11 @@ $output_list = array();
 $url_list = array();
 $random_choice = $playlist_list[array_rand($playlist_list)];
 $random_id = substr($random_choice, 0, 11);
+
+if(array_key_exists('v', $_GET)) {
+    $random_id = $_GET['v'];
+}
+
 $random_url = "https://www.youtube.com/watch?v=" . $random_id;
 $random_embed = "https://www.youtube.com/embed/" . $random_id . "?showinfo=0&autoplay=1&autohide=0&controls=1&mute=1";
 // YouTube is stupid and will only autoplay if muted until you click something...
