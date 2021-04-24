@@ -46,7 +46,14 @@ $random_choice = $playlist_list[array_rand($playlist_list)];
 $random_id = substr($random_choice, 0, 11);
 
 if(array_key_exists('v', $_GET)) {
-    $random_id = $_GET['v'];
+    $candidate = $_GET['v'];
+
+    foreach($playlist_list as $k => $v) {
+        if(substr($v, 0, 11) == $candidate) {
+            $random_id = $candidate;
+            break;
+        }
+    }
 }
 
 $random_url = "https://www.youtube.com/watch?v=" . $random_id;
