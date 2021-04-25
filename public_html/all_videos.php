@@ -405,6 +405,7 @@ $random_embed = "https://www.youtube.com/embed/" . $random_id . "?showinfo=0&aut
             </div>
             <form id="to_delete" action="" method="post" >
             <pre>
+          <font color="red">DELETE</font>     ----ID----- TITLE
             <?php
             $counter = 0;
             $last_percent = 0.0;
