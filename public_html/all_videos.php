@@ -45,6 +45,11 @@ $playlist_list = file("/home/wiley/public_html/autoplaylist_titles.txt", FILE_SK
 $random_choice = $playlist_list[array_rand($playlist_list)];
 $random_id = substr($random_choice, 0, 11);
 $new_id = "nothing";
+$allowed = false;
+
+if(is_local_ip()) {
+    $allowed = true;
+}
 
 if(array_key_exists('v', $_GET)) {
     $candidate = $_GET['v'];
@@ -59,7 +64,7 @@ if(array_key_exists('v', $_GET)) {
     }
     if(!$found) {
         // The candidate wasn't in our playlist... add it?
-        if(is_local_ip()) {
+        if($allowed) {
             // First, append the new entry to the raw url list...
             $fp = fopen("/home/wiley/public_html/autoplaylist.txt", "a");
             if($fp) {
@@ -88,6 +93,9 @@ if(array_key_exists('v', $_GET)) {
                     $new_id = $random_id;
                 }
             }
+        } else {
+            // Not allowed to add a new video, maybe tell the user.
+            $new_id = $candidate;
         }
     }
 }
@@ -175,13 +183,14 @@ $random_embed = "https://www.youtube.com/embed/" . $random_id . "?showinfo=0&aut
                 z-index: 2;
                 opacity: 0.70;
                 position: fixed;
-                top: 0;
+                top: 30%;
                 left: 0;
                 width: 100%;
                 height: 80px;
                 background-color: #0000FF;
                 color: #FFFFFF;
                 text-align: center;
+                transform: translateY(-50%);
                 display: none;
             }
             #banner {
@@ -268,7 +277,7 @@ $random_embed = "https://www.youtube.com/embed/" . $random_id . "?showinfo=0&aut
             function update_delete_stuff() {
                 if(boxes_checked > 1) {
                         $('#banner-warning').text("You've marked " + boxes_checked + " videos for deletion!");
-                    <?php if(is_local_ip()) { ?>
+                    <?php if($allowed) { ?>
                         $('#delete-button').val("DELETE " + boxes_checked + " VIDEOS!");
                         $('#delete-button').css("background-color", "#FF0000");
                         $('#delete-button').css("color", "#FFFF00");
@@ -277,7 +286,7 @@ $random_embed = "https://www.youtube.com/embed/" . $random_id . "?showinfo=0&aut
                         showDiv("banner");
                 } else if(boxes_checked > 0) {
                         $('#banner-warning').text("You've marked " + boxes_checked + " video for deletion!");
-                    <?php if(is_local_ip()) { ?>
+                    <?php if($allowed) { ?>
                         $('#delete-button').val("DELETE " + boxes_checked + " VIDEO!");
                         $('#delete-button').css("background-color", "#FF0000");
                         $('#delete-button').css("color", "#FFFF00");
@@ -285,7 +294,7 @@ $random_embed = "https://www.youtube.com/embed/" . $random_id . "?showinfo=0&aut
                     <?php } ?>
                         showDiv("banner");
                 } else {
-                    <?php if(is_local_ip()) { ?>
+                    <?php if($allowed) { ?>
                     $('#delete-button').val("Nothing to DELETE...yet!");
                     $('#delete-button').css("background-color", "#0000FF");
                     $('#delete-button').css("color", "#FFFFFF");
@@ -434,7 +443,11 @@ $random_embed = "https://www.youtube.com/embed/" . $random_id . "?showinfo=0&aut
                     document.getElementById(id).classList.add("flash_tag");
                     document.getElementById(id).scrollIntoView({behavior: 'smooth'});
                     if("<?php echo $new_id; ?>" != "nothing") {
-                        $('#new-addition-msg').text("You've added <?php echo $new_id; ?>, as a new video!");
+                        if("<?php echo $allowed; ?>" == "1") {
+                            $('#new-addition-msg').text("You've added <?php echo $new_id; ?>, as a new video!");
+                        } else {
+                            $('#new-addition-msg').text("Sorry, <?php echo $new_id; ?> isn't on the list.");
+                        }
                         show_new_addition();
                     }
                 }, 500);
@@ -520,7 +533,7 @@ $random_embed = "https://www.youtube.com/embed/" . $random_id . "?showinfo=0&aut
             ?>
             </pre>
             <?php
-            if(is_local_ip()) {
+            if($allowed) {
                 if(!empty($_POST)) {
                     // If we had anything to delete, write the output back to the file
                     file_put_contents("/home/wiley/public_html/autoplaylist_titles.txt", implode("", $output_list));
