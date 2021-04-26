@@ -254,6 +254,8 @@ sub get_youtube_api {
 
 my $prog = fileparse($PROGRAM_NAME);
 printf "Program is %s\n", $prog;
+printf "User is %d (effective %d)\n", $UID, $EUID;
+printf "Group is %d (effective %d)\n", $GID, $EGID;
 
 if( !-f $RESULT_FILE ) {
     open FP, ">$RESULT_FILE" or die "Cannot open file $RESULT_FILE for writing $!";

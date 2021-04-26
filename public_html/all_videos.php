@@ -39,19 +39,55 @@ $UNVISITED      = "#ffffbf";
 $VISITED        = "#00FF00";
 $DELETED        = "#FF0000";
 
-$playlist_list = file("/home/wiley/public_html/autoplaylist_titles.txt", FILE_SKIP_EMPTY_LINES);
 $output_list = array();
 $url_list = array();
+$playlist_list = file("/home/wiley/public_html/autoplaylist_titles.txt", FILE_SKIP_EMPTY_LINES);
 $random_choice = $playlist_list[array_rand($playlist_list)];
 $random_id = substr($random_choice, 0, 11);
+$new_id = "nothing";
 
 if(array_key_exists('v', $_GET)) {
     $candidate = $_GET['v'];
+    $found = false;
 
     foreach($playlist_list as $k => $v) {
         if(substr($v, 0, 11) == $candidate) {
             $random_id = $candidate;
+            $found = true;
             break;
+        }
+    }
+    if(!$found) {
+        // The candidate wasn't in our playlist... add it?
+        if(is_local_ip()) {
+            // First, append the new entry to the raw url list...
+            $fp = fopen("/home/wiley/public_html/autoplaylist.txt", "a");
+            if($fp) {
+                fprintf($fp, "https://www.youtube.com/watch?v=%s\n", $candidate);
+                fflush($fp);
+                fclose($fp);
+                // Then use our external tool to push it to the title list...
+                exec("/home/wiley/bin/yt-titles");
+                exec("/usr/bin/sync");
+                // Reload our playlist...
+                $playlist_list = file("/home/wiley/public_html/autoplaylist_titles.txt", FILE_SKIP_EMPTY_LINES);
+                $found = false;
+                // And check again to see if it's there now.
+                foreach($playlist_list as $k => $v) {
+                    if(substr($v, 0, 11) == $candidate) {
+                        $random_id = $candidate;
+                        $found = true;
+                        break;
+                    }
+                }
+                if(!$found) {
+                    // Well, we tried... something went wrong...
+                    $random_choice = $playlist_list[array_rand($playlist_list)];
+                    $random_id = substr($random_choice, 0, 11);
+                } else {
+                    $new_id = $random_id;
+                }
+            }
         }
     }
 }
@@ -135,6 +171,19 @@ $random_embed = "https://www.youtube.com/embed/" . $random_id . "?showinfo=0&aut
                 width: 100%;
                 height: 80px;
             }
+            #new-addition {
+                z-index: 2;
+                opacity: 0.70;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 80px;
+                background-color: #0000FF;
+                color: #FFFFFF;
+                text-align: center;
+                display: none;
+            }
             #banner {
                 z-index: 2;
                 opacity: 0.70;
@@ -204,6 +253,13 @@ $random_embed = "https://www.youtube.com/embed/" . $random_id . "?showinfo=0&aut
             var bottom_id = "<?php echo substr($playlist_list[array_key_last($playlist_list)], 0, 11); ?>";
             var jar = [];
             var disabled = [];
+
+            function show_new_addition() {
+                showDiv("new-addition");
+                setTimeout(function() {
+                    hideDiv("new-addition");
+                }, 10000);
+            }
 
             function update_headline() {
                 $('#headline-h1').text( " " + (<?php echo count($playlist_list); ?> - disabled.length) + " not-yet-deleted videos.  You've seen " + jar.length + " of them.");
@@ -377,6 +433,10 @@ $random_embed = "https://www.youtube.com/embed/" . $random_id . "?showinfo=0&aut
                     document.getElementById(id).style.color = "<?php echo $VISITED; ?>";
                     document.getElementById(id).classList.add("flash_tag");
                     document.getElementById(id).scrollIntoView({behavior: 'smooth'});
+                    if("<?php echo $new_id; ?>" != "nothing") {
+                        $('#new-addition-msg').text("You've added <?php echo $new_id; ?>, as a new video!");
+                        show_new_addition();
+                    }
                 }, 500);
                 color_links();
             });
@@ -389,6 +449,9 @@ $random_embed = "https://www.youtube.com/embed/" . $random_id . "?showinfo=0&aut
                 allow="autoplay; fullscreen"
                 src="<?php echo $random_embed; ?>">
             </iframe>
+        </div>
+        <div id="new-addition">
+            <h1 id="new-addition-msg" class="flash_tag"> You've added a new video! </h1>
         </div>
         <div id="banner">
             <h1 id="banner-warning" class="flash_tag"> You've marked something for deletion! </h1>
