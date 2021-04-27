@@ -27,7 +27,11 @@ function random_image($dir) {
 }
 
 $URL_HOME           = "http://wileymud.themud.org/~wiley";
-$BACKGROUND_DIR     = "/home/wiley/public_html/gfx/wallpaper/";
+$FILE_HOME          = "/home/wiley/public_html";
+$PLAYLIST_FILE      = "$FILE_HOME/autoplaylist.txt";
+$TITLES_FILE        = "$FILE_HOME/autoplaylist_titles.txt";
+
+$BACKGROUND_DIR     = "$FILE_HOME/gfx/wallpaper/";
 $BACKGROUND         = random_image($BACKGROUND_DIR);
 $BACKGROUND_DIR_URL = "$URL_HOME/gfx/wallpaper";
 $BACKGROUND_URL     = "$BACKGROUND_DIR_URL/$BACKGROUND";
@@ -39,6 +43,8 @@ $NAVHOME_GFX        = "$URL_HOME/gfx/navhome.png";
 $NAVTOP_GFX         = "$URL_HOME/gfx/nav/green/top.png";
 $NAVBOTTOM_GFX      = "$URL_HOME/gfx/nav/green/bottom.png";
 $QUESTION_GFX       = "$URL_HOME/gfx/question_girl3.png";
+$DOWNLOAD_GFX       = "$URL_HOME/gfx/download.png";
+$DOWNLOAD_URL       = "$URL_HOME/autoplaylist.txt";
 
 $UNVISITED          = "#ffffbf";
 //$UNVISITED         = "#ffa040";
@@ -47,7 +53,7 @@ $DELETED            = "#FF0000";
 
 $output_list = array();
 $url_list = array();
-$playlist_list = file("/home/wiley/public_html/autoplaylist_titles.txt", FILE_SKIP_EMPTY_LINES);
+$playlist_list = file($TITLES_FILE, FILE_SKIP_EMPTY_LINES);
 $random_choice = $playlist_list[array_rand($playlist_list)];
 $random_id = substr($random_choice, 0, 11);
 $new_id = "nothing";
@@ -72,7 +78,7 @@ if(array_key_exists('v', $_GET)) {
         // The candidate wasn't in our playlist... add it?
         if($allowed) {
             // First, append the new entry to the raw url list...
-            $fp = fopen("/home/wiley/public_html/autoplaylist.txt", "a");
+            $fp = fopen($PLAYLIST_FILE, "a");
             if($fp) {
                 fprintf($fp, "https://www.youtube.com/watch?v=%s\n", $candidate);
                 fflush($fp);
@@ -81,7 +87,7 @@ if(array_key_exists('v', $_GET)) {
                 exec("/home/wiley/bin/yt-titles");
                 exec("/usr/bin/sync");
                 // Reload our playlist...
-                $playlist_list = file("/home/wiley/public_html/autoplaylist_titles.txt", FILE_SKIP_EMPTY_LINES);
+                $playlist_list = file($TITLES_FILE, FILE_SKIP_EMPTY_LINES);
                 $found = false;
                 // And check again to see if it's there now.
                 foreach($playlist_list as $k => $v) {
@@ -239,6 +245,16 @@ $random_embed = "https://www.youtube.com/embed/" . $random_id . "?showinfo=0&aut
                 position: fixed;
                 border: none;
                 top: 25%;
+                left: 10;
+                width: 48px;
+                transform: translateY(-50%);
+            }
+            #download-button {
+                z-index: 2;
+                opacity: 0.70;
+                position: fixed;
+                border: none;
+                top: 75%;
                 left: 10;
                 width: 48px;
                 transform: translateY(-50%);
@@ -545,6 +561,11 @@ $random_embed = "https://www.youtube.com/embed/" . $random_id . "?showinfo=0&aut
         <div id="question-mark">
             <img class="glowing" height="48" width="48" src="<?php echo $QUESTION_GFX; ?>" onclick="play_new_random();" />
         </div>
+        <div id="download-button">
+            <a download="autoplaylist.txt" href="<?php echo $DOWNLOAD_URL; ?>">
+                <img class="glowing" height="48" width="48" src="<?php echo $DOWNLOAD_GFX; ?>" />
+            </a>
+        </div>
         <div id="nav-home">
             <img class="glowing" height="48" width="48" src="<?php echo $NAVTOP_GFX; ?>" onclick="scroll_to(top_id);" />
             <img class="glowing" height="48" width="48" src="<?php echo $NAVHOME_GFX; ?>" onclick="scroll_to(current_id);" />
@@ -595,14 +616,14 @@ $random_embed = "https://www.youtube.com/embed/" . $random_id . "?showinfo=0&aut
                 if(array_key_exists($id, $_POST)) {
                     // Display in RED to show it has been deleted
             ?>
-<a name="<?php echo $id; ?>" class="<?php echo $aname_class; ?>"></a><font color="red"><input onchange="check_box(this);" style="color: red;" disabled form="to_delete" type="checkbox" name="<?php echo $id;?>" value="<?php echo $id;?>"><?php printf("&nbsp;%s&nbsp;%s",$percent_string,$id);?>&nbsp;<a id="<?php echo $id;?>" style="color: red;" target="__autoplaylist_titles.txt" onclick="return play_link('<?php echo $id; ?>');" href="<?php echo $url;?>"><?php echo $title; ?></a></font>
+<a name="<?php echo $id; ?>" class="<?php echo $aname_class; ?>"></a><font color="red"><input onchange="check_box(this);" style="color: red;" disabled form="to_delete" type="checkbox" name="<?php echo $id;?>" value="<?php echo $id;?>"><?php printf("&nbsp;%s&nbsp;%s",$percent_string,$id);?>&nbsp;<a id="<?php echo $id;?>" style="color: red;" target="__autoplaylist" onclick="return play_link('<?php echo $id; ?>');" href="<?php echo $url;?>"><?php echo $title; ?></a></font>
             <?php
                 } else {
                     // We write it out and present the form element
                     $output_list[] = $entry;
                     $url_list[] = $url;
             ?>
-<a name="<?php echo $id; ?>" class="<?php echo $aname_class; ?>"></a><input onchange="check_box(this);" form="to_delete" type="checkbox" name="<?php echo $id;?>" value="<?php echo $id;?>"><?php printf("&nbsp;%s&nbsp;%s",$percent_string,$id);?>&nbsp;<a id="<?php echo $id;?>" target="__autoplaylist_titles.txt" onclick="return play_link('<?php echo $id; ?>');" href="<?php echo $url;?>"><?php echo $title; ?></a>
+<a name="<?php echo $id; ?>" class="<?php echo $aname_class; ?>"></a><input onchange="check_box(this);" form="to_delete" type="checkbox" name="<?php echo $id;?>" value="<?php echo $id;?>"><?php printf("&nbsp;%s&nbsp;%s",$percent_string,$id);?>&nbsp;<a id="<?php echo $id;?>" target="__autoplaylist" onclick="return play_link('<?php echo $id; ?>');" href="<?php echo $url;?>"><?php echo $title; ?></a>
             <?php
                 }
             }
@@ -612,9 +633,9 @@ $random_embed = "https://www.youtube.com/embed/" . $random_id . "?showinfo=0&aut
             if($allowed) {
                 if(!empty($_POST)) {
                     // If we had anything to delete, write the output back to the file
-                    file_put_contents("/home/wiley/public_html/autoplaylist_titles.txt", implode("", $output_list));
+                    file_put_contents($TITLES_FILE, implode("", $output_list));
                     // Also write the matching raw url list
-                    file_put_contents("/home/wiley/public_html/autoplaylist.txt", implode("\n", $url_list)."\n");
+                    file_put_contents($PLAYLIST_FILE, implode("\n", $url_list)."\n");
                 }
             ?>
                 <input id="delete-button" disabled form="to_delete" type="submit" value="DELETE ALL CHECKED!">
