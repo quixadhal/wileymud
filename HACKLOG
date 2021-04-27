@@ -645,3 +645,13 @@ I did set it to NOT run if we don't think we have a network connection...
         install Text::CSV_XS
 
     apt install libchart-clicker-perl
+
+2021-04-19
+    cpan
+        install Time::Out
+
+2021-04-26
+    chgrp www-data <google api key file>
+    chmod 640 <google api key file>
+    chgrp www-data <web-dir>/autoplaylist*
+    chmod 664 <web-dir>/autoplaylist*
