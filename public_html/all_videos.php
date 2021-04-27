@@ -166,17 +166,23 @@ $random_embed = "https://www.youtube.com/embed/" . $random_id . "?showinfo=0&aut
                 padding: 0px;
                 margin: 0px;
             }
-            body::after {
+            #background-div {
+                padding: 0px;
+                margin: 0px;
                 z-index: -1;
                 opacity: 0.20;
-                content: "";
-                background: url(<?php echo $BACKGROUND_URL; ?>);
                 top: 0;
                 left: 0;
                 bottom: 0;
                 right: 0;
                 position: fixed;
-                background-size: cover;
+                height: 100%;
+                width: 100%;
+            }
+            #background-img {
+                height: 100%;
+                width: 100%;
+                object-fit: cover;
             }
             #player-div {
                 z-index: 1;
@@ -488,7 +494,10 @@ $random_embed = "https://www.youtube.com/embed/" . $random_id . "?showinfo=0&aut
                 //$('#new-addition-msg').text("Random number is "+choice+" out of "+total+".");
                 //show_new_addition();
                 var bg_choice = Math.floor(BackgroundImageList.length * Random.random());
-                var new_bg = "url('<?php echo "$BACKGROUND_DIR_URL/"; ?>" + BackgroundImageList[bg_choice] + "')";
+                var new_bg = "<?php echo "$BACKGROUND_DIR_URL/"; ?>" + BackgroundImageList[bg_choice];
+                //$('#new-addition-msg').text("Random image is "+new_bg+".");
+                //show_new_addition();
+                $("#background-img").attr("src", new_bg);
                 play_link(new_id);
             }
 
@@ -517,6 +526,9 @@ $random_embed = "https://www.youtube.com/embed/" . $random_id . "?showinfo=0&aut
         </script>
     </head>
     <body bgcolor="black" text="#d0d0d0" link="<?php echo $UNVISITED; ?>" vlink="<?php echo $UNVISITED; ?>">
+        <div id="background-div">
+            <img id="background-img" src="<?php echo $BACKGROUND_URL; ?>" />
+        </div>
         <div id="player-div">
             <iframe id="iframe-player"
                 frameborder="0"
