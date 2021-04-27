@@ -467,6 +467,16 @@ $random_embed = "https://www.youtube.com/embed/" . $random_id . "?showinfo=0&aut
                 var total = $("input:checkbox").length;
                 var choice = Math.floor(total * Random.random());
                 var new_id = $($("input:checkbox")[choice]).attr("name");
+                if(has_seen(new_id)) {
+                    // Two more chances to pick a new unseen video, no loop lagging!
+                    choice = Math.floor(total * Random.random());
+                    new_id = $($("input:checkbox")[choice]).attr("name");
+                }
+                if(has_seen(new_id)) {
+                    // One more chance to pick a new unseen video, no loop lagging!
+                    choice = Math.floor(total * Random.random());
+                    new_id = $($("input:checkbox")[choice]).attr("name");
+                }
                 //$('#new-addition-msg').text("Random number is "+choice+" out of "+total+".");
                 //show_new_addition();
                 play_link(new_id);
