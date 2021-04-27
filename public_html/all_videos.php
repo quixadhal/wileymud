@@ -30,9 +30,11 @@ $BACKGROUND_URL = "$URL_HOME/gfx/wallpaper/$BACKGROUND";
 $BACKGROUND_IMG = "<img class=\"overlay-bg\" src=\"$BACKGROUND_URL\" />";
 $JQ             = "$URL_HOME/jquery.js";
 $JSCOOKIE       = "$URL_HOME/js.cookie.min.js";
+$JSRANDOM       = "$URL_HOME/js.random.js";
 $NAVHOME_GFX    = "$URL_HOME/gfx/navhome.png";
 $NAVTOP_GFX     = "$URL_HOME/gfx/nav/green/top.png";
 $NAVBOTTOM_GFX  = "$URL_HOME/gfx/nav/green/bottom.png";
+$QUESTION_GFX   = "$URL_HOME/gfx/question_girl3.png";
 
 $UNVISITED      = "#ffffbf";
 //$UNVISITED      = "#ffa040";
@@ -123,6 +125,21 @@ $random_embed = "https://www.youtube.com/embed/" . $random_id . "?showinfo=0&aut
                 border: none;
                 -moz-outline-style: none;
             }
+            .blurry:not(:hover) {
+                filter: blur(3px);
+                font-family: monospace;
+                white-space: pre-wrap;
+            }
+            .blurry:hover {
+                font-family: monospace;
+                white-space: pre-wrap;
+            }
+            .glowing:not(:hover) {
+                filter: brightness(1);
+            }
+            .glowing:hover {
+                filter: brightness(1.75);
+            }
             @keyframes blinking {
                 0% {
                     opacity: 0;
@@ -206,6 +223,16 @@ $random_embed = "https://www.youtube.com/embed/" . $random_id . "?showinfo=0&aut
                 text-align: center;
                 display: none;
             }
+            #question-mark {
+                z-index: 2;
+                opacity: 0.70;
+                position: fixed;
+                border: none;
+                top: 25%;
+                left: 10;
+                width: 48px;
+                transform: translateY(-50%);
+            }
             #nav-home {
                 z-index: 2;
                 opacity: 0.70;
@@ -226,6 +253,7 @@ $random_embed = "https://www.youtube.com/embed/" . $random_id . "?showinfo=0&aut
         <title> Playlist </title>
         <script src="<?php echo $JQ;?>""></script>
         <script src="<?php echo $JSCOOKIE;?>""></script>
+        <script src="<?php echo $JSRANDOM;?>""></script>
         <script type="text/javascript">
             function toggleDiv(divID) {
                 element = document.getElementById(divID);
@@ -262,6 +290,8 @@ $random_embed = "https://www.youtube.com/embed/" . $random_id . "?showinfo=0&aut
             var bottom_id = "<?php echo substr($playlist_list[array_key_last($playlist_list)], 0, 11); ?>";
             var jar = [];
             var disabled = [];
+            //var ms = new Date().getMilliseconds();
+            var Random = new MersenneTwister();
 
             function show_new_addition() {
                 showDiv("new-addition");
@@ -425,11 +455,21 @@ $random_embed = "https://www.youtube.com/embed/" . $random_id . "?showinfo=0&aut
                 // Unblink the old link, and blink the new one.
                 document.getElementById(current_id).classList.remove("flash_tag");
                 document.getElementById(id).classList.add("flash_tag");
+                document.getElementById(id).scrollIntoView({behavior: 'smooth'});
                 current_id = id;
                 update_headline();
                 // And then stuff it into the player
                 $('#iframe-player').attr('src', embed);
                 return false;
+            }
+
+            function play_new_random() {
+                var total = $("input:checkbox").length;
+                var choice = Math.floor(total * Random.random());
+                var new_id = $($("input:checkbox")[choice]).attr("name");
+                //$('#new-addition-msg').text("Random number is "+choice+" out of "+total+".");
+                //show_new_addition();
+                play_link(new_id);
             }
 
             $(document).ready(function() {
@@ -449,6 +489,7 @@ $random_embed = "https://www.youtube.com/embed/" . $random_id . "?showinfo=0&aut
                             $('#new-addition-msg').text("Sorry, <?php echo $new_id; ?> isn't on the list.");
                         }
                         show_new_addition();
+                    } else {
                     }
                 }, 500);
                 color_links();
@@ -469,10 +510,13 @@ $random_embed = "https://www.youtube.com/embed/" . $random_id . "?showinfo=0&aut
         <div id="banner">
             <h1 id="banner-warning" class="flash_tag"> You've marked something for deletion! </h1>
         </div>
+        <div id="question-mark">
+            <img class="glowing" height="48" width="48" src="<?php echo $QUESTION_GFX; ?>" onclick="play_new_random();" />
+        </div>
         <div id="nav-home">
-            <img height="48" width="48" src="<?php echo $NAVTOP_GFX; ?>" onclick="scroll_to(top_id);" />
-            <img height="48" width="48" src="<?php echo $NAVHOME_GFX; ?>" onclick="scroll_to(current_id);" />
-            <img height="48" width="48" src="<?php echo $NAVBOTTOM_GFX; ?>" onclick="scroll_to(bottom_id);" />
+            <img class="glowing" height="48" width="48" src="<?php echo $NAVTOP_GFX; ?>" onclick="scroll_to(top_id);" />
+            <img class="glowing" height="48" width="48" src="<?php echo $NAVHOME_GFX; ?>" onclick="scroll_to(current_id);" />
+            <img class="glowing" height="48" width="48" src="<?php echo $NAVBOTTOM_GFX; ?>" onclick="scroll_to(bottom_id);" />
         </div>
         <div id="content">
             <div id="headline">
