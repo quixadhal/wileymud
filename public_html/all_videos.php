@@ -1,5 +1,7 @@
 <?php
 
+$background_image_list = array();
+
 function is_local_ip() {
     $visitor_ip = $_SERVER['REMOTE_ADDR'];
     if($visitor_ip == '104.156.100.167') // Hard coded DNS entry
@@ -11,35 +13,37 @@ function is_local_ip() {
 }
 
 function random_image($dir) {
+    global $background_image_list;
     $old_dir = getcwd();
     chdir($dir);
 
     $jpg_list = glob("*.jpg");
     $png_list = glob("*.png");
-    $file_list = array_merge($jpg_list, $png_list);
-    $pick = array_rand($file_list);
+    $background_image_list = array_merge($jpg_list, $png_list);
+    $pick = array_rand($background_image_list);
 
     chdir($old_dir);
-    return $file_list[$pick];
+    return $background_image_list[$pick];
 }
 
-$URL_HOME       = "http://wileymud.themud.org/~wiley";
-$BACKGROUND_DIR = "/home/wiley/public_html/gfx/wallpaper/";
-$BACKGROUND     = random_image($BACKGROUND_DIR);
-$BACKGROUND_URL = "$URL_HOME/gfx/wallpaper/$BACKGROUND";
-$BACKGROUND_IMG = "<img class=\"overlay-bg\" src=\"$BACKGROUND_URL\" />";
-$JQ             = "$URL_HOME/jquery.js";
-$JSCOOKIE       = "$URL_HOME/js.cookie.min.js";
-$JSRANDOM       = "$URL_HOME/js.random.js";
-$NAVHOME_GFX    = "$URL_HOME/gfx/navhome.png";
-$NAVTOP_GFX     = "$URL_HOME/gfx/nav/green/top.png";
-$NAVBOTTOM_GFX  = "$URL_HOME/gfx/nav/green/bottom.png";
-$QUESTION_GFX   = "$URL_HOME/gfx/question_girl3.png";
+$URL_HOME           = "http://wileymud.themud.org/~wiley";
+$BACKGROUND_DIR     = "/home/wiley/public_html/gfx/wallpaper/";
+$BACKGROUND         = random_image($BACKGROUND_DIR);
+$BACKGROUND_DIR_URL = "$URL_HOME/gfx/wallpaper";
+$BACKGROUND_URL     = "$BACKGROUND_DIR_URL/$BACKGROUND";
+$BACKGROUND_IMG     = "<img class=\"overlay-bg\" src=\"$BACKGROUND_URL\" />";
+$JQ                 = "$URL_HOME/jquery.js";
+$JSCOOKIE           = "$URL_HOME/js.cookie.min.js";
+$JSRANDOM           = "$URL_HOME/js.random.js";
+$NAVHOME_GFX        = "$URL_HOME/gfx/navhome.png";
+$NAVTOP_GFX         = "$URL_HOME/gfx/nav/green/top.png";
+$NAVBOTTOM_GFX      = "$URL_HOME/gfx/nav/green/bottom.png";
+$QUESTION_GFX       = "$URL_HOME/gfx/question_girl3.png";
 
-$UNVISITED      = "#ffffbf";
-//$UNVISITED      = "#ffa040";
-$VISITED        = "#00FF00";
-$DELETED        = "#FF0000";
+$UNVISITED          = "#ffffbf";
+//$UNVISITED         = "#ffa040";
+$VISITED            = "#00FF00";
+$DELETED            = "#FF0000";
 
 $output_list = array();
 $url_list = array();
@@ -292,7 +296,11 @@ $random_embed = "https://www.youtube.com/embed/" . $random_id . "?showinfo=0&aut
             var disabled = [];
             //var ms = new Date().getMilliseconds();
             var Random = new MersenneTwister();
-
+<?php
+            echo "var BackgroundImageList = [\n";
+            echo "\"" . implode("\",\n\"", $background_image_list) . "\"\n";
+            echo "];\n";
+?>
             function show_new_addition() {
                 showDiv("new-addition");
                 setTimeout(function() {
@@ -479,6 +487,8 @@ $random_embed = "https://www.youtube.com/embed/" . $random_id . "?showinfo=0&aut
                 }
                 //$('#new-addition-msg').text("Random number is "+choice+" out of "+total+".");
                 //show_new_addition();
+                var bg_choice = Math.floor(BackgroundImageList.length * Random.random());
+                var new_bg = "url('<?php echo "$BACKGROUND_DIR_URL/"; ?>" + BackgroundImageList[bg_choice] + "')";
                 play_link(new_id);
             }
 
