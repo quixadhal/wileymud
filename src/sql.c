@@ -907,6 +907,26 @@ void setup_i3_packets_table(void) {
     char *sql3 = "CREATE INDEX IF NOT EXISTS ix_i3_packets_local ON i3_packets (local);";
     char *sql4 = "CREATE INDEX IF NOT EXISTS ix_i3_packets_type ON i3_packets (packet_type);";
     char *sql5 = "CREATE INDEX IF NOT EXISTS ix_i3_packets_length ON i3_packets (packet_length);";
+    char *sql6 = "DROP VIEW IF EXISTS packet_view;";
+    //  SELECT to_char(max(i3_packets.local), 'FMDY HH24:MI:SS.MS'::text) AS recent,
+    //      i3_packets.packet_type,
+    //          count(i3_packets.packet_type) AS count,
+    //              min(i3_packets.packet_length) AS min,
+    //                  to_char(avg(i3_packets.packet_length), '999999D99'::text) AS avg,
+    //                      max(i3_packets.packet_length) AS max
+    //                         FROM i3_packets
+    //                           GROUP BY i3_packets.packet_type;
+    //
+    char *sql7 = "CREATE VIEW packet_view AS "
+                 "SELECT   to_char(max(local),'FMDY HH24:MI:SS.MS') as recent, "
+                 "         packet_type, "
+                 "         count(packet_type), "
+                 "         min(packet_length), "
+                 "         to_char(avg(packet_length), '999999D99') as avg, "
+                 "         max(packet_length) "
+                 "    FROM i3_packets "
+                 "GROUP BY packet_type "
+                 "; ";
 
     sql_connect(&db_i3log);
     res = PQexec(db_i3log.dbc, sql);
@@ -949,6 +969,24 @@ void setup_i3_packets_table(void) {
     st = PQresultStatus(res);
     if( st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE ) {
         log_fatal("Cannot create i3_packets length index: %s", PQerrorMessage(db_i3log.dbc));
+        PQclear(res);
+        proper_exit(MUD_HALT);
+    }
+    PQclear(res);
+
+    res = PQexec(db_i3log.dbc, sql6);
+    st = PQresultStatus(res);
+    if( st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE ) {
+        log_fatal("Cannot delete packet_view: %s", PQerrorMessage(db_i3log.dbc));
+        PQclear(res);
+        proper_exit(MUD_HALT);
+    }
+    PQclear(res);
+
+    res = PQexec(db_i3log.dbc, sql7);
+    st = PQresultStatus(res);
+    if( st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE ) {
+        log_fatal("Cannot create packet_view: %s", PQerrorMessage(db_i3log.dbc));
         PQclear(res);
         proper_exit(MUD_HALT);
     }
