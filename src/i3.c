@@ -1516,6 +1516,28 @@ bool I3_write_packet(char *msg)
     size >>= 8;
     s[0] = size % 256;
 
+
+    // So, to log outgoing packets, we need the type.
+    // At this point, it's embedded into the string, so we have to pluck
+    // it out again....
+    // ({"identifier",5
+    // Additionally, we've set aside 4 bytes for the mud-mode crap...
+    // So, if properly formed, the type starts at byte msg[7]
+    // and will go until we hit another double quote...
+    {
+        char *id_start, *id_end;
+        int id_len;
+        char id_buf[MAX_INPUT_LENGTH];
+
+        id_start = (msg + 7);
+        id_end = strchr(id_start, '"');
+        id_len = (id_end - id_start + 1);
+        strlcpy(id_buf, id_start, id_len);
+
+        //i3_packet_log(id_buf, oldsize, (msg + 4));
+        i3_packet_log(id_buf, oldsize, NULL);
+    }
+
     /*
      * Scan for \r used in Diku client packets and change to NULL 
      */
@@ -4534,6 +4556,17 @@ void I3_parse_packet(void)
 
     header = I3_get_header(&ps);
 
+    // At this point, I3_incoming_packet_strlen holds
+    // the length of the packet content (minus the length bytes
+    // and the NUL byte).
+    // ptype is the packet type.
+    //
+    // So if we want to store statistics about it, this is the
+    // point to do so!
+
+    //i3_packet_log(ptype, I3_incoming_packet_strlen, I3_incoming_packet);
+    i3_packet_log(ptype, I3_incoming_packet_strlen, NULL);
+
     /*
      * There. Nice and simple, no? 
      */
@@ -4659,10 +4692,10 @@ void I3_handle_packet(char *packetBuffer)
                                            *next_ps;
     char                                    ptype[MAX_INPUT_LENGTH];
 
-    ps = packetBuffer;
-
     if (packetdebug)
-	log_info("I3_PACKET Packet received: %s", ps);
+	log_info("I3_PACKET Packet received: %s", packetBuffer);
+
+    ps = packetBuffer;
 
     ps += 2;
     I3_get_field(ps, &next_ps);
@@ -4670,6 +4703,17 @@ void I3_handle_packet(char *packetBuffer)
     strlcpy(ptype, ps, MAX_INPUT_LENGTH);
 
     header = I3_get_header(&ps);
+
+    // At this point, I3_incoming_packet_strlen holds
+    // the length of the packet content (minus the length bytes
+    // and the NUL byte).
+    // ptype is the packet type.
+    //
+    // So if we want to store statistics about it, this is the
+    // point to do so!
+
+    //i3_packet_log(ptype, I3_incoming_packet_strlen, I3_incoming_packet);
+    i3_packet_log(ptype, I3_incoming_packet_strlen, NULL);
 
     /*
      * There. Nice and simple, no? 

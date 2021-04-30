@@ -106,6 +106,7 @@ void sql_startup(void) {
     setup_speakers_table();
     setup_i3log_table();
     setup_urls_table();
+    setup_i3_packets_table();
     snprintf(log_msg, MAX_STRING_LENGTH, "%%^GREEN%%^WileyMUD Version: %s (%s), PostgreSQL Version %s.%%^RESET%%^", VERSION_BUILD, VERSION_DATE, sql_version(&db_i3log));
     allchan_log(0,"wiley", "Cron", "Cron", "WileyMUD", log_msg);
 
@@ -890,5 +891,99 @@ char *update_message_from_file( const char *filename, int is_prompt ) {
     // we return that string for our caller to use (or not).
 
     return tmp;
+}
+
+void setup_i3_packets_table(void) {
+    PGresult *res = NULL;
+    ExecStatusType st = 0;
+    char *sql = "CREATE TABLE IF NOT EXISTS i3_packets ( "
+                "    created TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT (now() AT TIME ZONE 'UTC'), "
+                "    local TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "
+                "    packet_type TEXT NOT NULL, "
+                "    packet_length INTEGER NOT NULL, "
+                "    packet_content TEXT "
+                "); ";
+    char *sql2 = "CREATE INDEX IF NOT EXISTS ix_i3_packets_created ON i3_packets (created);";
+    char *sql3 = "CREATE INDEX IF NOT EXISTS ix_i3_packets_local ON i3_packets (local);";
+    char *sql4 = "CREATE INDEX IF NOT EXISTS ix_i3_packets_type ON i3_packets (packet_type);";
+    char *sql5 = "CREATE INDEX IF NOT EXISTS ix_i3_packets_length ON i3_packets (packet_length);";
+
+    sql_connect(&db_i3log);
+    res = PQexec(db_i3log.dbc, sql);
+    st = PQresultStatus(res);
+    if( st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE ) {
+        log_fatal("Cannot create i3_packets table: %s", PQerrorMessage(db_i3log.dbc));
+        PQclear(res);
+        proper_exit(MUD_HALT);
+    }
+    PQclear(res);
+
+    res = PQexec(db_i3log.dbc, sql2);
+    st = PQresultStatus(res);
+    if( st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE ) {
+        log_fatal("Cannot create i3_packets created index: %s", PQerrorMessage(db_i3log.dbc));
+        PQclear(res);
+        proper_exit(MUD_HALT);
+    }
+    PQclear(res);
+
+    res = PQexec(db_i3log.dbc, sql3);
+    st = PQresultStatus(res);
+    if( st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE ) {
+        log_fatal("Cannot create i3_packets local index: %s", PQerrorMessage(db_i3log.dbc));
+        PQclear(res);
+        proper_exit(MUD_HALT);
+    }
+    PQclear(res);
+
+    res = PQexec(db_i3log.dbc, sql4);
+    st = PQresultStatus(res);
+    if( st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE ) {
+        log_fatal("Cannot create i3_packets type index: %s", PQerrorMessage(db_i3log.dbc));
+        PQclear(res);
+        proper_exit(MUD_HALT);
+    }
+    PQclear(res);
+
+    res = PQexec(db_i3log.dbc, sql5);
+    st = PQresultStatus(res);
+    if( st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE ) {
+        log_fatal("Cannot create i3_packets length index: %s", PQerrorMessage(db_i3log.dbc));
+        PQclear(res);
+        proper_exit(MUD_HALT);
+    }
+    PQclear(res);
+}
+
+void i3_packet_log(char *packet_type, long packet_length, char *packet_content) {
+    PGresult *res = NULL;
+    ExecStatusType st = 0;
+    const char *sql = "INSERT INTO i3_packets ( packet_type, packet_length, packet_content ) "
+                      "VALUES ($1,$2,$3);";
+    const char *param_val[3];
+    int param_len[3];
+    int param_bin[3] = {0,0,0};
+    char packet_length_buffer[MAX_INPUT_LENGTH];
+
+    snprintf(packet_length_buffer, MAX_INPUT_LENGTH, "%ld", packet_length);
+    param_val[0] = packet_type;
+    param_val[1] = packet_length_buffer;
+    param_val[2] = packet_content;
+
+    param_len[0] = packet_type ? strlen(packet_type) : 0;
+    param_len[1] = strlen(packet_length_buffer);
+    param_len[2] = packet_content ? strlen(packet_content) : 0;
+
+    sql_connect(&db_i3log);
+    res = PQexecParams(db_i3log.dbc, sql, 3, NULL, param_val, param_len, param_bin, 0);
+    st = PQresultStatus(res);
+    if( st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE ) {
+        log_fatal("Cannot insert packet: %s", PQerrorMessage(db_i3log.dbc));
+        //PQclear(res);
+        //proper_exit(MUD_HALT);
+    }
+    PQclear(res);
+
+    log_info("i3 packet noted %s: %ld", packet_type, packet_length);
 }
 

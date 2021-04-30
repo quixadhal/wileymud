@@ -25,6 +25,8 @@ void setup_i3log_table(void);
 void setup_urls_table(void);
 // Messages
 void setup_messages_table(void);
+// Statistics
+void setup_i3_packets_table(void);
 
 #else
 extern struct sql_connection db_i3log;
@@ -51,5 +53,6 @@ void addspeaker_sql( const char *speaker, const char *pinkfish );
 void do_checkurl( struct char_data *ch, const char *argument, int cmd );
 // Messages
 char *update_message_from_file( const char *filename, int is_prompt );
+void i3_packet_log(char *packet_type, long packet_length, char *packet_content);
 
 #endif
