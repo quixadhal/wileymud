@@ -169,12 +169,12 @@ $WILEY_TIME = $mudlist["time"];
             <tr bgcolor="#002f00">
                 <th align="center" width="100">Players</th>
                 <th align="center" width="100">Gods</th>
-                <th align="left" >Boot Time</th>
+                <th align="left" >Uptime</th>
             </tr>
             <tr bgcolor="#1f1f1f">
                 <td align="center" ><?php echo $mudlist["players"]["mortals"]; ?></td>
                 <td align="center" ><?php echo $mudlist["players"]["gods"]; ?></td>
-                <td align="left" ><?php echo $mudlist["boot"]; ?></td>
+                <td align="left" ><?php echo $mudlist["uptime"]; ?> since <?php echo $mudlist["boot"]; ?></td>
             </tr>
         </table>
         <br />

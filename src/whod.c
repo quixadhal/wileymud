@@ -762,6 +762,7 @@ void                                    generate_json_mudlist(void)
     fprintf(fp, "    \"time\" : \"%5.5s %s\",\n", &nowtimebuf[17], &nowtimebuf[26]);
     //fprintf(fp, "    \"boot\" : \"%s\",\n", uptimebuf);
     fprintf(fp, "    \"boot\" : \"%s\",\n", json_escape(timestamp(Uptime, 0)));
+    fprintf(fp, "    \"uptime\" : \"%s\",\n", json_escape(timestamp_elapsed(Uptime, 0)));
     fprintf(fp, "    \"player_list\" : [\n");
 
     did_one = 0;

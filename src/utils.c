@@ -1475,6 +1475,40 @@ int scprintf(char *buf, size_t limit, const char *Str, ...) {
     return result + len;
 }
 
+char *timestamp_elapsed(time_t since, time_t now) {
+    time_t                                  diff = 0;
+    static char                             display_time[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
+    char                                    day_string[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
+    struct timeval                          the_time;
+    time_t                                  seconds = 0,
+                                            minutes = 0,
+                                            hours = 0,
+                                            days = 0;
+
+    if( now == 0 ) {
+        gettimeofday(&the_time, NULL);
+        now = (time_t) the_time.tv_sec;
+    }
+
+    diff = now - since;
+    seconds = diff % 60;
+    diff /= 60;
+    minutes = diff % 60;
+    diff /= 60;
+    hours = diff % 24;
+    diff /= 24;
+    days = diff;
+
+    *day_string = '\0';
+    *display_time = '\0';
+    scprintf(day_string, MAX_INPUT_LENGTH, "%d day%s, ", (int)days, (days > 1) ? "s" : "");
+    scprintf(display_time, MAX_STRING_LENGTH, "%s%2d:%02d:%02d",
+            (days > 0) ? day_string : "",
+            (int)hours, (int)minutes, (int)seconds);
+
+    return display_time;
+}
+
 char *time_elapsed(time_t since, time_t now) {
     time_t                                  diff = 0;
     static char                             display_time[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
@@ -1503,22 +1537,22 @@ char *time_elapsed(time_t since, time_t now) {
 
     *display_time = '\0';
     if(days > 0) {
-        scprintf(display_time, MAX_STRING_LENGTH, "%d days", (int)days);
+        scprintf(display_time, MAX_STRING_LENGTH, "%d day%s", (int)days, (days > 1)?"s":"");
         if(hours > 0)
             scprintf(display_time, MAX_STRING_LENGTH, ", ");
     }
     if(hours > 0) {
-        scprintf(display_time, MAX_STRING_LENGTH, "%d hours", (int)hours);
+        scprintf(display_time, MAX_STRING_LENGTH, "%d hour%s", (int)hours, (hours > 1)?"s":"");
         if(minutes > 0)
             scprintf(display_time, MAX_STRING_LENGTH, ", ");
     }
     if(minutes > 0) {
-        scprintf(display_time, MAX_STRING_LENGTH, "%d minutes", (int)minutes);
+        scprintf(display_time, MAX_STRING_LENGTH, "%d minute%s", (int)minutes, (minutes > 1)?"s":"");
         if(seconds > 0)
             scprintf(display_time, MAX_STRING_LENGTH, ", ");
     }
     if(seconds > 0)
-        scprintf(display_time, MAX_STRING_LENGTH, "%d seconds", (int)seconds);
+        scprintf(display_time, MAX_STRING_LENGTH, "%d second%s", (int)seconds, (seconds > 1)?"s":"");
     if(days > 0 || hours > 0 || minutes > 0 || seconds > 0 )
         scprintf(display_time, MAX_STRING_LENGTH, ".");
     else
