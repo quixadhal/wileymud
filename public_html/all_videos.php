@@ -560,19 +560,19 @@ $random_embed = "https://www.youtube.com/embed/" . $random_id . "?showinfo=0&aut
             <h1 id="banner-warning" class="flash_tag"> You've marked something for deletion! </h1>
         </div>
         <div id="question-mark">
-            <img class="glowing" height="48" width="48" src="<?php echo $QUESTION_GFX; ?>" onclick="play_new_random();" />
+            <img title="???" class="glowing" height="48" width="48" src="<?php echo $QUESTION_GFX; ?>" onclick="play_new_random();" />
         </div>
         <?php clearstatcache(); if(file_exists($DOWNLOAD_FILE)) { ?>
         <div id="download-button">
-            <a download="autoplaylist.txt" href="<?php echo $DOWNLOAD_URL; ?>">
+            <a title="All the things!" download="autoplaylist.txt" href="<?php echo $DOWNLOAD_URL; ?>">
                 <img class="glowing" height="48" width="48" src="<?php echo $DOWNLOAD_GFX; ?>" />
             </a>
         </div>
         <?php } ?>
         <div id="nav-home">
-            <img class="glowing" height="48" width="48" src="<?php echo $NAVTOP_GFX; ?>" onclick="scroll_to(top_id);" />
-            <img class="glowing" height="48" width="48" src="<?php echo $NAVHOME_GFX; ?>" onclick="scroll_to(current_id);" />
-            <img class="glowing" height="48" width="48" src="<?php echo $NAVBOTTOM_GFX; ?>" onclick="scroll_to(bottom_id);" />
+            <img title="Top of page" class="glowing" height="48" width="48" src="<?php echo $NAVTOP_GFX; ?>" onclick="scroll_to(top_id);" />
+            <img title="Now playing" class="glowing" height="48" width="48" src="<?php echo $NAVHOME_GFX; ?>" onclick="scroll_to(current_id);" />
+            <img title="Bottom of page" class="glowing" height="48" width="48" src="<?php echo $NAVBOTTOM_GFX; ?>" onclick="scroll_to(bottom_id);" />
         </div>
         <div id="content">
             <div id="headline">
