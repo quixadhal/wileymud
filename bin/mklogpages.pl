@@ -55,6 +55,7 @@ my $QR_ICON         = "$URL_HOME/stuff/qrcode.png";
 my $QR_BIG_ICON     = "$URL_HOME/stuff/qrcode_big.png";
 my $PIE_ICON        = "$URL_HOME/gfx/pie_chart.png";
 my $GITHUB_ICON     = "$URL_HOME/gfx/github1600.png";
+my $QUESTION_ICON   = "$URL_HOME/gfx/question_girl3.png";
 my $ICON_WIDTH      = 48;
 
 my $MUDLIST_IMG     = "<img class=\"glowing\" src=\"$MUDLIST_ICON\" width=\"$ICON_WIDTH\" height=\"$ICON_WIDTH\" border=\"0\" />";
@@ -64,6 +65,7 @@ my $SERVER_IMG      = "<img class=\"glowing\" src=\"$SERVER_ICON\" width=\"$ICON
 my $QR_IMG          = "<img src=\"$QR_ICON\" width=\"53\" height=\"53\" border=\"0\" />";
 my $PIE_IMG         = "<img class=\"glowing\" src=\"$PIE_ICON\" width=\"$ICON_WIDTH\" height=\"$ICON_WIDTH\" border=\"0\" />";
 my $GITHUB_IMG      = "<img class=\"glowing\" src=\"$GITHUB_ICON\" width=\"$ICON_WIDTH\" height=\"$ICON_WIDTH\" border=\"0\" />";
+my $QUESTION_IMG    = "<img class=\"glowing\" src=\"$QUESTION_ICON\" width=\"$ICON_WIDTH\" height=\"$ICON_WIDTH\" border=\"0\" />";
 
 my $MUDLIST_LINK    = "<a href=\"$URL_HOME/mudlist.php\" alt=\"Mudlist\" title=\"Mudlist\">$MUDLIST_IMG</a>";
 my $LOG_LINK        = "<a href=\"$LOG_HOME\" alt=\"Logs\" title=\"Logs\">$LOG_IMG</a>";
@@ -72,6 +74,7 @@ my $SERVER_LINK     = "<a href=\"$URL_HOME/server.php\" alt=\"Server\" title=\"S
 my $QR_LINK         = "<a href=\"$QR_BIG_ICON\" alt=\"リック転がし\" title=\"リック転がし\">$QR_IMG</a>";
 my $PIE_LINK        = "<a href=\"$URL_HOME/pie.php\" alt=\"PIE!\" title=\"PIE!\">$PIE_IMG</a>";
 my $GITHUB_LINK     = "<a href=\"https://github.com/quixadhal/wileymud\" alt=\"Source\" title=\"Source\">$GITHUB_IMG</a>";
+my $QUESTION_LINK   = "<a href=\"$URL_HOME/random_video.php\" alt=\"???!\" title=\"???!\">$QUESTION_IMG</a>";
 
 my $OVERLAY_ICON    = "$URL_HOME/gfx/archive_stamp.png";
 my $OVERLAY_IMG     = "<img class=\"overlay-fixed\" src=\"$OVERLAY_ICON\" />";
@@ -1238,6 +1241,7 @@ sub generate_html_page {
                     $MUDLIST_LINK
                     $LOG_LINK
                     $PIE_LINK
+                    $QUESTION_LINK
                 </td>
                 <td align="right" width="20%">
 EOM
