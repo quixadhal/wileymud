@@ -30,6 +30,7 @@ $URL_HOME           = "http://wileymud.themud.org/~wiley";
 $FILE_HOME          = "/home/wiley/public_html";
 $PLAYLIST_FILE      = "$FILE_HOME/autoplaylist.txt";
 $TITLES_FILE        = "$FILE_HOME/autoplaylist_titles.txt";
+$DOWNLOAD_FILE      = "$FILE_HOME/video_list.tar.xz";
 
 $BACKGROUND_DIR     = "$FILE_HOME/gfx/wallpaper/";
 $BACKGROUND         = random_image($BACKGROUND_DIR);
@@ -44,7 +45,7 @@ $NAVTOP_GFX         = "$URL_HOME/gfx/nav/green/top.png";
 $NAVBOTTOM_GFX      = "$URL_HOME/gfx/nav/green/bottom.png";
 $QUESTION_GFX       = "$URL_HOME/gfx/question_girl3.png";
 $DOWNLOAD_GFX       = "$URL_HOME/gfx/download.png";
-$DOWNLOAD_URL       = "$URL_HOME/autoplaylist.txt";
+$DOWNLOAD_URL       = "$URL_HOME/video_list.tar.xz";
 
 $UNVISITED          = "#ffffbf";
 //$UNVISITED         = "#ffa040";
@@ -561,11 +562,13 @@ $random_embed = "https://www.youtube.com/embed/" . $random_id . "?showinfo=0&aut
         <div id="question-mark">
             <img class="glowing" height="48" width="48" src="<?php echo $QUESTION_GFX; ?>" onclick="play_new_random();" />
         </div>
+        <?php clearstatcache(); if(file_exists($DOWNLOAD_FILE)) { ?>
         <div id="download-button">
             <a download="autoplaylist.txt" href="<?php echo $DOWNLOAD_URL; ?>">
                 <img class="glowing" height="48" width="48" src="<?php echo $DOWNLOAD_GFX; ?>" />
             </a>
         </div>
+        <?php } ?>
         <div id="nav-home">
             <img class="glowing" height="48" width="48" src="<?php echo $NAVTOP_GFX; ?>" onclick="scroll_to(top_id);" />
             <img class="glowing" height="48" width="48" src="<?php echo $NAVHOME_GFX; ?>" onclick="scroll_to(current_id);" />
