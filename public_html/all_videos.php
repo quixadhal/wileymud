@@ -40,6 +40,20 @@ $BACKGROUND_IMG     = "<img class=\"overlay-bg\" src=\"$BACKGROUND_URL\" />";
 $JQ                 = "$URL_HOME/jquery.js";
 $JSCOOKIE           = "$URL_HOME/js.cookie.min.js";
 $JSRANDOM           = "$URL_HOME/js.random.js";
+
+$SCALE              = 1.0;
+$ICON_BASE          = 64;
+$FONT_BASE          = 18;
+$PLAYER_BASE_WIDTH  = 960;
+$PLAYER_BASE_HEIGHT = 540;
+
+$ICON_SIZE          = sprintf("%dpx", (int)($ICON_BASE * $SCALE));
+$LEFT_PAD_SIZE      = sprintf("%dpx", (int)($ICON_BASE * 1.5 * $SCALE));
+$FONT_SIZE          = sprintf("%dpt", (int)($FONT_BASE * $SCALE));
+$PLAYER_WIDTH       = sprintf("%dpx", (int)($PLAYER_BASE_WIDTH * $SCALE));
+$PLAYER_HEIGHT      = sprintf("%dpx", (int)($PLAYER_BASE_HEIGHT * $SCALE));
+$BANNER_HEIGHT      = sprintf("%dpx", (int)($FONT_BASE * 4.45 * $SCALE));
+
 $NAVHOME_GFX        = "$URL_HOME/gfx/navhome.png";
 $NAVTOP_GFX         = "$URL_HOME/gfx/nav/green/top.png";
 $NAVBOTTOM_GFX      = "$URL_HOME/gfx/nav/green/bottom.png";
@@ -121,6 +135,11 @@ $random_embed = "https://www.youtube.com/embed/" . $random_id . "?showinfo=0&aut
 <html>
     <head>
         <style>
+            table {
+                table-layout: fixed;
+                max-width: 99%;
+                overflow-x: hidden;
+            }
             a {
                 text-decoration:none;
                 color: <?php echo $UNVISITED; ?>;
@@ -197,21 +216,54 @@ $random_embed = "https://www.youtube.com/embed/" . $random_id . "?showinfo=0&aut
                 position: fixed;
                 top: 0;
                 right: 0;
-                width: 640;
-                height: 360;
             }
             #iframe-player {
                 position: fixed;
                 top: 0;
                 right: 0;
-                width: 640;
-                height: 360;
+                width: <?php echo $PLAYER_WIDTH; ?>;
+                height: <?php echo $PLAYER_HEIGHT; ?>;
             }
             #content {
+                font-family: Consolas, "Lucida Console", Monaco, Courier, monospace;
+                font-size: <?php echo $FONT_SIZE; ?>;
+                overflow-x: hidden;
+            }
+            #content-table {
+                font-family: Consolas, "Lucida Console", Monaco, Courier, monospace;
+                font-size: <?php echo $FONT_SIZE; ?>;
+                overflow-x: hidden;
+            }
+            .padding-column {
+                text-align: center;
+                min-width: <?php echo $LEFT_PAD_SIZE; ?>;
+                width: <?php echo $LEFT_PAD_SIZE; ?>;
+                max-width: <?php echo $LEFT_PAD_SIZE; ?>;
+            }
+            .checkbox-column {
+                text-align: center;
+                min-width: 5%;
+                width: 5%;
+            }
+            .percent-column {
+                text-align: center;
+                min-width: 5%;
+                width: 5%;
+            }
+            .id-column {
+                text-align: center;
+                min-width: 10%;
+                width: 10%;
+            }
+            .title-column {
+                text-align: left;
+                overflow-x: hidden;
+                padding-left: 1em;
+                white-space: nowrap;
             }
             #headline {
                 width: 100%;
-                height: 80px;
+                height: <?php echo $BANNER_HEIGHT; ?>;
             }
             #new-addition {
                 z-index: 2;
@@ -220,7 +272,7 @@ $random_embed = "https://www.youtube.com/embed/" . $random_id . "?showinfo=0&aut
                 top: 30%;
                 left: 0;
                 width: 100%;
-                height: 80px;
+                height: <?php echo $BANNER_HEIGHT; ?>;
                 background-color: #0000FF;
                 color: #FFFFFF;
                 text-align: center;
@@ -234,7 +286,7 @@ $random_embed = "https://www.youtube.com/embed/" . $random_id . "?showinfo=0&aut
                 top: 0;
                 left: 0;
                 width: 100%;
-                height: 80px;
+                height: <?php echo $BANNER_HEIGHT; ?>;
                 background-color: #FF0000;
                 color: #FFFFFF;
                 text-align: center;
@@ -247,7 +299,7 @@ $random_embed = "https://www.youtube.com/embed/" . $random_id . "?showinfo=0&aut
                 border: none;
                 top: 25%;
                 left: 10;
-                width: 48px;
+                width: <?php echo $ICON_SIZE; ?>;
                 transform: translateY(-50%);
             }
             #download-button {
@@ -257,7 +309,7 @@ $random_embed = "https://www.youtube.com/embed/" . $random_id . "?showinfo=0&aut
                 border: none;
                 top: 75%;
                 left: 10;
-                width: 48px;
+                width: <?php echo $ICON_SIZE; ?>;
                 transform: translateY(-50%);
             }
             #nav-home {
@@ -267,7 +319,7 @@ $random_embed = "https://www.youtube.com/embed/" . $random_id . "?showinfo=0&aut
                 border: none;
                 top: 50%;
                 left: 10;
-                width: 48px;
+                width: <?php echo $ICON_SIZE; ?>;
                 transform: translateY(-50%);
             }
             #delete-button {
@@ -275,6 +327,8 @@ $random_embed = "https://www.youtube.com/embed/" . $random_id . "?showinfo=0&aut
                 opacity: 0.70;
                 background-color: #0000FF;
                 color: #FFFFFF;
+                font-family: Consolas, "Lucida Console", Monaco, Courier, monospace;
+                font-size: <?php echo $FONT_SIZE; ?>;
             }
         </style>
         <title> Playlist </title>
@@ -560,78 +614,110 @@ $random_embed = "https://www.youtube.com/embed/" . $random_id . "?showinfo=0&aut
             <h1 id="banner-warning" class="flash_tag"> You've marked something for deletion! </h1>
         </div>
         <div id="question-mark">
-            <img title="???" class="glowing" height="48" width="48" src="<?php echo $QUESTION_GFX; ?>" onclick="play_new_random();" />
+            <img title="???" class="glowing" height="<?php echo $ICON_SIZE; ?>" width="<?php echo $ICON_SIZE; ?>" src="<?php echo $QUESTION_GFX; ?>" onclick="play_new_random();" />
         </div>
         <?php clearstatcache(); if(file_exists($DOWNLOAD_FILE)) { ?>
         <div id="download-button">
             <a title="All the things!" download="autoplaylist.txt" href="<?php echo $DOWNLOAD_URL; ?>">
-                <img class="glowing" height="48" width="48" src="<?php echo $DOWNLOAD_GFX; ?>" />
+                <img class="glowing" height="<?php echo $ICON_SIZE; ?>" width="<?php echo $ICON_SIZE; ?>" src="<?php echo $DOWNLOAD_GFX; ?>" />
             </a>
         </div>
         <?php } ?>
         <div id="nav-home">
-            <img title="Top of page" class="glowing" height="48" width="48" src="<?php echo $NAVTOP_GFX; ?>" onclick="scroll_to(top_id);" />
-            <img title="Now playing" class="glowing" height="48" width="48" src="<?php echo $NAVHOME_GFX; ?>" onclick="scroll_to(current_id);" />
-            <img title="Bottom of page" class="glowing" height="48" width="48" src="<?php echo $NAVBOTTOM_GFX; ?>" onclick="scroll_to(bottom_id);" />
+            <img title="Top of page" class="glowing" height="<?php echo $ICON_SIZE; ?>" width="<?php echo $ICON_SIZE; ?>" src="<?php echo $NAVTOP_GFX; ?>" onclick="scroll_to(top_id);" />
+            <img title="Now playing" class="glowing" height="<?php echo $ICON_SIZE; ?>" width="<?php echo $ICON_SIZE; ?>" src="<?php echo $NAVHOME_GFX; ?>" onclick="scroll_to(current_id);" />
+            <img title="Bottom of page" class="glowing" height="<?php echo $ICON_SIZE; ?>" width="<?php echo $ICON_SIZE; ?>" src="<?php echo $NAVBOTTOM_GFX; ?>" onclick="scroll_to(bottom_id);" />
         </div>
         <div id="content">
             <div id="headline">
                 <h1 id="headline-h1">&nbsp;<?php echo count($playlist_list) - count($_POST); ?> not-yet-deleted videos.</h1>
-                <hr />
             </div>
+            <hr />
             <form id="to_delete" action="" method="post" >
-            <pre>
-          <font color="red">DELETE</font>     ----ID----- TITLE
-            <?php
-            $counter = 0;
-            $last_percent = 0.0;
-            $percent_string = sprintf("%3d%%", $last_percent * 100.0);
-            foreach ($playlist_list as $entry) {
-                $percent = (double)$counter / (double)count($playlist_list);
-                $id = substr($entry, 0, 11);
-                $title = substr($entry, 35, -1);
-                $url = "https://www.youtube.com/watch?v=" . $id;
-                $embed = "https://www.youtube.com/embed/" . $id . "?showinfo=0&autoplay=1&autohide=0&controls=1";
-                $is_top = 0;
-                $is_bottom = 0;
-                $aname_class = "middle";
-                if($counter == 0) {
-                    $is_top = 1;
-                    $is_bottom = 0;
-                    $aname_class = "top";
-                }
-                if($counter == (count($playlist_list) - 1)) {
+            <table id="content-table">
+                <thead>
+                <tr>
+                    <th class="padding-column">&nbsp;</th>
+                    <th class="checkbox-column"><font color="red">DELETE</font></th>
+                    <th class="percent-column">%</th>
+                    <th class="id-column">---ID---</th>
+                    <th class="title-column">TITLE</th>
+                </tr>
+                </thead>
+                <tbody>
+                <?php
+                $counter = 0;
+                $last_percent = 0.0;
+                $percent_string = sprintf("%3d%%", $last_percent * 100.0);
+                foreach ($playlist_list as $entry) {
+                    $percent = (double)$counter / (double)count($playlist_list);
+                    $id = substr($entry, 0, 11);
+                    $title = substr($entry, 35, -1);
+                    $url = "https://www.youtube.com/watch?v=" . $id;
+                    $embed = "https://www.youtube.com/embed/" . $id . "?showinfo=0&autoplay=1&autohide=0&controls=1";
                     $is_top = 0;
-                    $is_bottom = 1;
-                    $aname_class = "bottom";
-                }
-                if($is_top || $is_bottom || (round($percent * 100.0) != round($last_percent * 100.0))) {
-                    $last_percent = $percent;
-                    if($is_bottom) {
-                        $percent_string = sprintf("%3d%%", round($last_percent * 100.0));
-                    } else {
-                        $percent_string = sprintf("%3d%%", $last_percent * 100.0);
+                    $is_bottom = 0;
+                    $aname_class = "middle";
+                    if($counter == 0) {
+                        $is_top = 1;
+                        $is_bottom = 0;
+                        $aname_class = "top";
                     }
-                } else {
-                    $percent_string = "    ";
+                    if($counter == (count($playlist_list) - 1)) {
+                        $is_top = 0;
+                        $is_bottom = 1;
+                        $aname_class = "bottom";
+                    }
+                    if($is_top || $is_bottom || (round($percent * 100.0) != round($last_percent * 100.0))) {
+                        $last_percent = $percent;
+                        if($is_bottom) {
+                            $percent_string = sprintf("%3d%%", round($last_percent * 100.0));
+                        } else {
+                            $percent_string = sprintf("%3d%%", $last_percent * 100.0);
+                        }
+                    } else {
+                        $percent_string = "    ";
+                    }
+                    $counter++;
+                    $red_style = "";
+                    $disabled = "";
+                    $red_font = "";
+                    $red_font_end = "";
+                    if(array_key_exists($id, $_POST)) {
+                        // We make things red to show it was deleted
+                        $red_style = "style=\"color: red;\" ";
+                        $disabled = "disabled ";
+                        $red_font = "<font color=\"red\"> ";
+                        $red_font_end = "</font> ";
+                    } else {
+                        // We write it out and present the form element
+                        $output_list[] = $entry;
+                        $url_list[] = $url;
+                    }
+                    ?>
+                    <tr>
+                        <td class="padding-column">
+                            <a name="<?php echo $id; ?>" class="<?php echo $aname_class; ?>">&nbsp;</a>
+                        </td>
+                        <td class="checkbox-column">
+                            <input onchange="check_box(this);" <?php echo $red_style; echo $disabled; ?> form="to_delete" type="checkbox" name="<?php echo $id;?>" value="<?php echo $id;?>">
+                        </td>
+                        <td class="percent-column">
+                            <?php echo $red_font; echo $percent_string; echo $red_font_end; ?>
+                        </td>
+                        <td class="id-column">
+                            <?php echo $red_font; echo $id; echo $red_font_end; ?>
+                        </td>
+                        <td class="title-column">
+                            <a id="<?php echo $id;?>" <?php echo $red_style; ?> target="__autoplaylist" onclick="return play_link('<?php echo $id; ?>');" href="<?php echo $url;?>"><?php echo $title; ?></a>
+                        </td>
+                    </tr>
+                <?php
                 }
-                $counter++;
-                if(array_key_exists($id, $_POST)) {
-                    // Display in RED to show it has been deleted
-            ?>
-<a name="<?php echo $id; ?>" class="<?php echo $aname_class; ?>"></a><font color="red"><input onchange="check_box(this);" style="color: red;" disabled form="to_delete" type="checkbox" name="<?php echo $id;?>" value="<?php echo $id;?>"><?php printf("&nbsp;%s&nbsp;%s",$percent_string,$id);?>&nbsp;<a id="<?php echo $id;?>" style="color: red;" target="__autoplaylist" onclick="return play_link('<?php echo $id; ?>');" href="<?php echo $url;?>"><?php echo $title; ?></a></font>
-            <?php
-                } else {
-                    // We write it out and present the form element
-                    $output_list[] = $entry;
-                    $url_list[] = $url;
-            ?>
-<a name="<?php echo $id; ?>" class="<?php echo $aname_class; ?>"></a><input onchange="check_box(this);" form="to_delete" type="checkbox" name="<?php echo $id;?>" value="<?php echo $id;?>"><?php printf("&nbsp;%s&nbsp;%s",$percent_string,$id);?>&nbsp;<a id="<?php echo $id;?>" target="__autoplaylist" onclick="return play_link('<?php echo $id; ?>');" href="<?php echo $url;?>"><?php echo $title; ?></a>
-            <?php
-                }
-            }
-            ?>
-            </pre>
+                ?>
+                </tbody>
+            </table>
+
             <?php
             if($allowed) {
                 if(!empty($_POST)) {
@@ -640,15 +726,14 @@ $random_embed = "https://www.youtube.com/embed/" . $random_id . "?showinfo=0&aut
                     // Also write the matching raw url list
                     file_put_contents($PLAYLIST_FILE, implode("\n", $url_list)."\n");
                 }
-            ?>
-                <input id="delete-button" disabled form="to_delete" type="submit" value="DELETE ALL CHECKED!">
-            <?php
-            } else {
-            ?>
-                <h1 style="color:red;">Visitors from [<?php echo $_SERVER['REMOTE_ADDR']; ?>] cannot delete entries.</h1>
-            <?php
             }
             ?>
+
+            <?php if($allowed) { ?>
+                <input id="delete-button" disabled form="to_delete" type="submit" value="DELETE ALL CHECKED!">
+            <?php } else { ?>
+                <h1 style="color:red;">Visitors from [<?php echo $_SERVER['REMOTE_ADDR']; ?>] cannot delete entries.</h1>
+            <?php } ?>
             </form>
         </div>
     </body>
