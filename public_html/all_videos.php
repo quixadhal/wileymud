@@ -61,8 +61,10 @@ $QUESTION_GFX       = "$URL_HOME/gfx/question_girl3.png";
 $DOWNLOAD_GFX       = "$URL_HOME/gfx/download.png";
 $DOWNLOAD_URL       = "$URL_HOME/video_list.tar.xz";
 
+$BGCOLOR            = "black";
+$TEXT               = "#d0d0d0";
 $UNVISITED          = "#ffffbf";
-//$UNVISITED         = "#ffa040";
+//$VISITED            = "#ffa040";
 $VISITED            = "#00FF00";
 $DELETED            = "#FF0000";
 
@@ -154,6 +156,10 @@ $random_embed = "https://www.youtube.com/embed/" . $random_id . "?showinfo=0&aut
                 outline: 0;
                 border: none;
                 -moz-outline-style: none;
+            }
+            .unblurred {
+                font-family: monospace;
+                white-space: pre-wrap;
             }
             .blurry:not(:hover) {
                 filter: blur(3px);
@@ -359,7 +365,7 @@ $random_embed = "https://www.youtube.com/embed/" . $random_id . "?showinfo=0&aut
                 }
             }
             function scroll_to(id) {
-                document.getElementById(id).scrollIntoView({behavior: 'smooth'});
+                document.getElementById(id).scrollIntoView({behavior: 'smooth', block: "center"});
             }
         </script>
         <script type="text/javascript">
@@ -540,7 +546,7 @@ $random_embed = "https://www.youtube.com/embed/" . $random_id . "?showinfo=0&aut
                 // Unblink the old link, and blink the new one.
                 document.getElementById(current_id).classList.remove("flash_tag");
                 document.getElementById(id).classList.add("flash_tag");
-                document.getElementById(id).scrollIntoView({behavior: 'smooth'});
+                scroll_to(id);
                 current_id = id;
                 update_headline();
                 // And then stuff it into the player
@@ -581,7 +587,7 @@ $random_embed = "https://www.youtube.com/embed/" . $random_id . "?showinfo=0&aut
                     update_headline();
                     document.getElementById(id).style.color = "<?php echo $VISITED; ?>";
                     document.getElementById(id).classList.add("flash_tag");
-                    document.getElementById(id).scrollIntoView({behavior: 'smooth'});
+                    scroll_to(id);
                     if("<?php echo $new_id; ?>" != "nothing") {
                         if("<?php echo $allowed; ?>" == "1") {
                             $('#new-addition-msg').text("You've added <?php echo $new_id; ?>, as a new video!");
@@ -596,7 +602,7 @@ $random_embed = "https://www.youtube.com/embed/" . $random_id . "?showinfo=0&aut
             });
         </script>
     </head>
-    <body bgcolor="black" text="#d0d0d0" link="<?php echo $UNVISITED; ?>" vlink="<?php echo $UNVISITED; ?>">
+    <body bgcolor="<?php echo $BGCOLOR; ?>" text="<?php echo $TEXT; ?>" link="<?php echo $UNVISITED; ?>" vlink="<?php echo $VISITED; ?>">
         <div id="background-div">
             <img id="background-img" src="<?php echo $BACKGROUND_URL; ?>" />
         </div>
