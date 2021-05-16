@@ -103,46 +103,71 @@ function fetch_page_data_by_time($db, $query_start_time = NULL, $query_end_time 
         $sth->execute();
         $sth->setFetchMode(PDO::FETCH_ASSOC);
         $result = array();
-        $seen_urls = [];
+        $new_result = array();
         while($row = $sth->fetch()) {
-            $message = $row['message'];
+            $message_orig = $row['message'];
             //$message = htmlentities($message, ENT_QUOTES|ENT_SUBSTITUTE, 'UTF-8');
-            $old_message = $message;
-            $message = preg_replace('/((?:http|https|ftp)\:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(?::[a-zA-Z0-9]*)?\/?(?:[a-zA-Z0-9\-\._\?\,\'\/\\\+&amp;%\$#\=~])*)/i', '<a href="$1" target="I3-link">$1</a>', $message);
-            $row['message'] = $message;
+            $message = preg_replace('/((?:http|https|ftp)\:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(?::[a-zA-Z0-9]*)?\/?(?:[a-zA-Z0-9\-\._\?\,\'\/\\\+&amp;%\$#\=~])*)/i', '<a href="$1" target="I3-link">$1</a>', $message_orig);
+            if($message != $message_orig) {
+                $row['message'] = $message;
+                $row['message_orig'] = $message_orig;
+            }
             $result[] = $row;
+        }
 
-            $urls = [];
-            if(preg_match('/((?:http|https|ftp)\:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(?::[a-zA-Z0-9]*)?\/?(?:[a-zA-Z0-9\-\._\?\,\'\/\\\+&amp;%\$#\=~])*)/i', $old_message, $urls)) {
-                // URLbot, rise from the dead!
-                // Usage: /home/wiley/bin/untiny [wiley|ansi|html|debug] URL [channel] [speaker]
-                //echo "URL MATCH: ";
-                //print_r($urls);
-                $url = $urls[0]; // The whole match
-                $channel = $row['channel'];
-                $speaker = $row['speaker'];
-                // Check for already existing urls here, to avoid repeats...
-                //$urlbot = pcmd("/home/wiley/bin/untiny wiley '$url' '$channel' '$speaker'");
-                $urlbot = '<SPAN class="flash_tag" style="color: red;">COMING SOON!</SPAN>';
+        $sql =  "
+                SELECT message
+                  FROM urls
+                 WHERE message IS NOT NULL AND url = :the_url
+              ORDER BY created ASC
+                 LIMIT 1
+                ";
 
-                $urlbot = preg_replace('/((?:http|https|ftp)\:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(?::[a-zA-Z0-9]*)?\/?(?:[a-zA-Z0-9\-\._\?\,\'\/\\\+&amp;%\$#\=~])*)/i', '<a href="$1" target="I3-link">$1</a>', $urlbot);
-                $urlbot = preg_replace('/YouTube\s+(<span.*?>)\s*\[([^\]]*)\]/i', 'YouTube $1 <a href="https://youtu.be/$2" target="I3-link">[$2]</a>', $urlbot);
-                $urlbot = preg_replace('/IMDB\s+(<span.*?>)\s*\[([^\]]*)\]/i', 'IMDB $1 <a href="https://www.imdb.com/title/$2/" target="I3-link">[$2]</a>', $urlbot);
-                $urlbot = preg_replace('/Steam\s+(<span.*?>)\s*\[([^\]]*)\]/i', 'Steam $1 <a href="http://store.steampowered.com/app/$2/" target="I3-link">[$2]</a>', $urlbot);
-                $urlbot = preg_replace('/Dailymotion\s+(<span.*?>)\s*\[([^\]]*)\]/i', 'Dailymotion $1 <a href="https://www.dailymotion.com/video/$2" target="I3-link">[$2]</a>', $urlbot);
+        foreach($result as $row) {
+            $new_result[] = $row;
+            if(array_key_exists('message_orig', $row)) {
+                // We found a URL before
+                $urls = [];
+                if(preg_match('/((?:http|https|ftp)\:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(?::[a-zA-Z0-9]*)?\/?(?:[a-zA-Z0-9\-\._\?\,\'\/\\\+&amp;%\$#\=~])*)/i', $row['message_orig'], $urls)) {
+                    // Set up a new entry...
+                    $newrow = [];
+                    $newrow['the_date'] = $row['the_date'];
+                    $newrow['the_time'] = $row['the_time'];
+                    $newrow['channel'] = 'url';
+                    $newrow['speaker'] = 'URLbot';
+                    $newrow['hour_html'] = $row['hour_html'];
+                    $newrow['channel_html'] = "<SPAN style=\"background-color: #0000bb; color: #ffff55\">";
+                    $newrow['speaker_html'] = "<SPAN style=\"background-color: #0000bb; color: #ffff55\">";
+                    $newrow['unix_time'] = $row['unix_time'];
 
-                $newrow = [];
-                $newrow['the_date'] = $row['the_date'];
-                $newrow['the_time'] = $row['the_time'];
-                $newrow['channel'] = 'url';
-                $newrow['speaker'] = 'URLbot';
-                $newrow['message'] = $urlbot;
-                $newrow['hour_html'] = $row['hour_html'];
-                $newrow['channel_html'] = "<SPAN style=\"background-color: #0000bb; color: #ffff55\">";
-                $newrow['speaker_html'] = "<SPAN style=\"background-color: #0000bb; color: #ffff55\">";
-                $newrow['unix_time'] = $row['unix_time'];
+                    // extract the url...
+                    $url = $urls[0]; // The whole match
 
-                $result[] = $newrow;
+                    // Now, see if we have this in the database.
+                    $sth = $db->prepare($sql);
+                    $sth->bindParam(':the_url', $url);
+                    $sth->execute();
+                    $sth->setFetchMode(PDO::FETCH_ASSOC);
+
+                    $urlbot = '';
+                    if($known_url = $sth->fetch()) {
+                        // If we got a result back, use it!
+                        $urlbot = $known_url['message'];
+                        $urlbot = preg_replace('/((?:http|https|ftp)\:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(?::[a-zA-Z0-9]*)?\/?(?:[a-zA-Z0-9\-\._\?\,\'\/\\\+&amp;%\$#\=~])*)/i', '<a href="$1" target="I3-link">$1</a>', $urlbot);
+                        $urlbot = preg_replace('/YouTube\s+(<span.*?>)\s*\[([^\]]*)\]/i', 'YouTube $1 <a href="https://youtu.be/$2" target="I3-link">[$2]</a>', $urlbot);
+                        $urlbot = preg_replace('/IMDB\s+(<span.*?>)\s*\[([^\]]*)\]/i', 'IMDB $1 <a href="https://www.imdb.com/title/$2/" target="I3-link">[$2]</a>', $urlbot);
+                        $urlbot = preg_replace('/Steam\s+(<span.*?>)\s*\[([^\]]*)\]/i', 'Steam $1 <a href="http://store.steampowered.com/app/$2/" target="I3-link">[$2]</a>', $urlbot);
+                        $urlbot = preg_replace('/Dailymotion\s+(<span.*?>)\s*\[([^\]]*)\]/i', 'Dailymotion $1 <a href="https://www.dailymotion.com/video/$2" target="I3-link">[$2]</a>', $urlbot);
+                    } else {
+                        // Oh well, maybe it'll populate later...
+                        //$urlbot = pcmd("/home/wiley/bin/untiny wiley '$url' '$channel' '$speaker'");
+                        $urlbot = '<SPAN class="flash_tag" style="color: red;">COMING SOON!</SPAN>';
+                        //$urlbot = pcmd("/home/wiley/bin/untiny cache '$url' '$channel' '$speaker'");
+                    }
+                    $newrow['message'] = $urlbot;
+                    // Now we have to splice the new row between the one we just looked at and the next one
+                    $new_result[] = $newrow;
+                }
             }
         }
         //$db->commit();
@@ -150,7 +175,7 @@ function fetch_page_data_by_time($db, $query_start_time = NULL, $query_end_time 
         //$db->rollback();
         throw $e;
     }
-    return $result;
+    return $new_result;
 }
 
 $time_from = NULL;
