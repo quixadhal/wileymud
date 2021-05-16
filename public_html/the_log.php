@@ -281,13 +281,26 @@ $pinkfish_map = load_pinkfish_map($PINKFISH_CACHE);
                 top: 0;
                 left: 0;
             }
+            #back-navbar {
+                text-align: left;
+                min-width: 100%;
+                width: 100%;
+                top: 0;
+                left: 0;
+                z-index: 2;
+                font-family: Consolas, "Lucida Console", Monaco, Courier, monospace;
+                font-size: <?php echo $FONT_SIZE; ?>;
+                overflow-x: hidden;
+                position: fixed;
+                background-color: black;
+            }
             #navbar-left {
                 text-align: left;
                 min-width: 30%;
                 width: 30%; 
                 top: 0;
                 left: 0;
-                z-index: 2;
+                z-index: 3;
                 font-family: Consolas, "Lucida Console", Monaco, Courier, monospace;
                 font-size: <?php echo $FONT_SIZE; ?>;
                 overflow-x: hidden;
@@ -301,7 +314,7 @@ $pinkfish_map = load_pinkfish_map($PINKFISH_CACHE);
                 top: 0;
                 left: 50%;
                 transform: translateX(-50%);
-                z-index: 2;
+                z-index: 3;
                 font-family: Consolas, "Lucida Console", Monaco, Courier, monospace;
                 font-size: <?php echo $FONT_SIZE; ?>;
                 overflow-x: hidden;
@@ -314,7 +327,7 @@ $pinkfish_map = load_pinkfish_map($PINKFISH_CACHE);
                 width: 30%; 
                 top: 0;
                 right: 0;
-                z-index: 2;
+                z-index: 3;
                 font-family: Consolas, "Lucida Console", Monaco, Courier, monospace;
                 font-size: <?php echo $FONT_SIZE; ?>;
                 overflow-x: hidden;
@@ -334,7 +347,7 @@ $pinkfish_map = load_pinkfish_map($PINKFISH_CACHE);
                 width: 100%;
                 top: <?php echo $ICON_SIZE; ?>;
                 left: 0;
-                z-index: 2;
+                z-index: 3;
             }
             .content-date-header {
                 text-align: left;
@@ -655,6 +668,9 @@ $pinkfish_map = load_pinkfish_map($PINKFISH_CACHE);
             Stuff...
         </div>
 -->
+        <div id="back-navbar">
+            <img class="glowing" border="none" height="<?php echo $ICON_SIZE; ?>" width="<?php echo $ICON_SIZE; ?>" title="???!" src="<?php echo $QUESTION_ICON; ?>" />
+        </div>
         <div id="navbar-left">
             <img class="glowing" border="none" height="<?php echo $ICON_SIZE; ?>" width="<?php echo $ICON_SIZE; ?>" id="navbar-button-mudlist" title="List of MUDs" src="<?php echo $MUDLIST_ICON; ?>" onclick="window.location.href='http://wileymud.themud.org/~wiley/mudlist.php';" />
             <img class="glowing" border="none" height="<?php echo $ICON_SIZE; ?>" width="<?php echo $ICON_SIZE; ?>" id="navbar-button-themudorg" title="Another I3 Log Page" src="<?php echo $LOG_ICON; ?>" onclick="window.location.href='https://themud.org/chanhist.php#Channel=all';" />
@@ -718,7 +734,7 @@ $pinkfish_map = load_pinkfish_map($PINKFISH_CACHE);
     $time_spent = $time_end - $time_start;
 ?>
         <div id="page-load-time">
-            <a href="javascript:;" onmousedown="toggleDiv('page-source');">Page:&nbsp;<span id="elapsed"><?php printf("%7.3f",$time_spent);?></span>&nbsp;seconds</a>
+            <a href="javascript:;" onmousedown="toggleDiv('page-source');">Processing:&nbsp;<span id="elapsed"><?php printf("%7.3f",$time_spent);?></span>&nbsp;seconds</a>
         </div>
         <div id="page-source">
             <?php echo numbered_source(__FILE__); ?>
