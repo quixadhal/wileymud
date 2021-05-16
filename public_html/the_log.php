@@ -44,6 +44,10 @@ function random_image($dir) {
     return $background_image_list[$pick];
 }
 
+function reverseSortByKeyLength($a, $b) {
+    return strlen($b) - strlen($a);
+}
+
 function load_pinkfish_map($filename) {
     if( file_exists($filename) ) {
         $json_data = file_get_contents($filename);
