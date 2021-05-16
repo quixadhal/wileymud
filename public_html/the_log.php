@@ -563,6 +563,7 @@ $pinkfish_map = load_pinkfish_map($PINKFISH_CACHE);
                 rt.style.color = hour_map[momentHour];
             }
             function updateContent() {
+                var startTime = performance.now();
                 var dataUrl;
                 Ticks++;
                 if(LastRow > 0) {
@@ -626,6 +627,9 @@ $pinkfish_map = load_pinkfish_map($PINKFISH_CACHE);
                             scroll_to('content-bottom');
                         }
                     });
+                    var endTime = performance.now();
+                    var elapsedTime = endTime - startTime;
+                    $('#elapsed').html(Math.round(elapsedTime) / 1000.0);
                 });
                 if(Ticks < 10) {
                     Timer = setTimeout(updateContent, 1000 * 60);
@@ -714,7 +718,7 @@ $pinkfish_map = load_pinkfish_map($PINKFISH_CACHE);
     $time_spent = $time_end - $time_start;
 ?>
         <div id="page-load-time">
-            <a href="javascript:;" onmousedown="toggleDiv('page-source');">Page:&nbsp;<?php printf("%7.3f&nbsp;seconds",$time_spent);?></a>
+            <a href="javascript:;" onmousedown="toggleDiv('page-source');">Page:&nbsp;<span id="elapsed"><?php printf("%7.3f",$time_spent);?></span>&nbsp;seconds</a>
         </div>
         <div id="page-source">
             <?php echo numbered_source(__FILE__); ?>

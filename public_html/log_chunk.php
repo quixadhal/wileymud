@@ -5,6 +5,16 @@ $PG_PASS    = "tardis69";
 
 $time_start = microtime(true);
 
+function pcmd($command) {
+    $data = "";
+    $fp = popen("$command", "r");
+    do {
+        $data .= fread($fp, 8192);
+    } while(!feof($fp));
+    pclose($fp);
+    return $data;
+}
+
 function db_connect() {
     global $PG_DB;
     global $PG_USER;
@@ -93,16 +103,47 @@ function fetch_page_data_by_time($db, $query_start_time = NULL, $query_end_time 
         $sth->execute();
         $sth->setFetchMode(PDO::FETCH_ASSOC);
         $result = array();
+        $seen_urls = [];
         while($row = $sth->fetch()) {
             $message = $row['message'];
-            $message = htmlentities($message, ENT_QUOTES|ENT_SUBSTITUTE, 'UTF-8');
+            //$message = htmlentities($message, ENT_QUOTES|ENT_SUBSTITUTE, 'UTF-8');
+            $old_message = $message;
             $message = preg_replace('/((?:http|https|ftp)\:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(?::[a-zA-Z0-9]*)?\/?(?:[a-zA-Z0-9\-\._\?\,\'\/\\\+&amp;%\$#\=~])*)/i', '<a href="$1" target="I3-link">$1</a>', $message);
-            $message = preg_replace('/YouTube\s+(<span.*?>)\s*\[([^\]]*)\]/i', 'YouTube $1 <a href="https://youtu.be/$2" target="I3-link">[$2]</a>', $message);
-            $message = preg_replace('/IMDB\s+(<span.*?>)\s*\[([^\]]*)\]/i', 'IMDB $1 <a href="https://www.imdb.com/title/$2/" target="I3-link">[$2]</a>', $message);
-            $message = preg_replace('/Steam\s+(<span.*?>)\s*\[([^\]]*)\]/i', 'Steam $1 <a href="http://store.steampowered.com/app/$2/" target="I3-link">[$2]</a>', $message);
-            $message = preg_replace('/Dailymotion\s+(<span.*?>)\s*\[([^\]]*)\]/i', 'Dailymotion $1 <a href="https://www.dailymotion.com/video/$2" target="I3-link">[$2]</a>', $message);
             $row['message'] = $message;
             $result[] = $row;
+
+            $urls = [];
+            if(preg_match('/((?:http|https|ftp)\:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(?::[a-zA-Z0-9]*)?\/?(?:[a-zA-Z0-9\-\._\?\,\'\/\\\+&amp;%\$#\=~])*)/i', $old_message, $urls)) {
+                // URLbot, rise from the dead!
+                // Usage: /home/wiley/bin/untiny [wiley|ansi|html|debug] URL [channel] [speaker]
+                //echo "URL MATCH: ";
+                //print_r($urls);
+                $url = $urls[0]; // The whole match
+                $channel = $row['channel'];
+                $speaker = $row['speaker'];
+                // Check for already existing urls here, to avoid repeats...
+                //$urlbot = pcmd("/home/wiley/bin/untiny wiley '$url' '$channel' '$speaker'");
+                $urlbot = '<SPAN class="flash_tag" style="color: red;">COMING SOON!</SPAN>';
+
+                $urlbot = preg_replace('/((?:http|https|ftp)\:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(?::[a-zA-Z0-9]*)?\/?(?:[a-zA-Z0-9\-\._\?\,\'\/\\\+&amp;%\$#\=~])*)/i', '<a href="$1" target="I3-link">$1</a>', $urlbot);
+                $urlbot = preg_replace('/YouTube\s+(<span.*?>)\s*\[([^\]]*)\]/i', 'YouTube $1 <a href="https://youtu.be/$2" target="I3-link">[$2]</a>', $urlbot);
+                $urlbot = preg_replace('/IMDB\s+(<span.*?>)\s*\[([^\]]*)\]/i', 'IMDB $1 <a href="https://www.imdb.com/title/$2/" target="I3-link">[$2]</a>', $urlbot);
+                $urlbot = preg_replace('/Steam\s+(<span.*?>)\s*\[([^\]]*)\]/i', 'Steam $1 <a href="http://store.steampowered.com/app/$2/" target="I3-link">[$2]</a>', $urlbot);
+                $urlbot = preg_replace('/Dailymotion\s+(<span.*?>)\s*\[([^\]]*)\]/i', 'Dailymotion $1 <a href="https://www.dailymotion.com/video/$2" target="I3-link">[$2]</a>', $urlbot);
+
+                $newrow = [];
+                $newrow['the_date'] = $row['the_date'];
+                $newrow['the_time'] = $row['the_time'];
+                $newrow['channel'] = 'url';
+                $newrow['speaker'] = 'URLbot';
+                $newrow['message'] = $urlbot;
+                $newrow['hour_html'] = $row['hour_html'];
+                $newrow['channel_html'] = "<SPAN style=\"background-color: #0000bb; color: #ffff55\">";
+                $newrow['speaker_html'] = "<SPAN style=\"background-color: #0000bb; color: #ffff55\">";
+                $newrow['unix_time'] = $row['unix_time'];
+
+                $result[] = $newrow;
+            }
         }
         //$db->commit();
     } catch (Exception $e) {
