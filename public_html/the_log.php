@@ -644,9 +644,11 @@ $pinkfish_map = load_pinkfish_map($PINKFISH_CACHE);
                     var elapsedTime = endTime - startTime;
                     $('#elapsed').html(Math.round(elapsedTime) / 1000.0);
                 });
-                if(Ticks < 10) {
-                    Timer = setTimeout(updateContent, 1000 * 60);
-                } // else clearTimeout(Timer);
+                //We gradually slow down updates to avoid being spammed by
+                //people who might leave the log page open, unattended, for
+                //days on end.
+                SlowDelay = Math.floor((Ticks / 10)) + 1;
+                Timer = setTimeout(updateContent, 1000 * 60 * SlowDelay);
             }
             $(document).ready(function() {
                 Timer = setTimeout(updateContent, 500);
