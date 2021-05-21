@@ -36,7 +36,7 @@ function db_connect() {
 // select date_part('epoch', now())::integer;
 // select to_timestamp(the_time);
 
-function fetch_page_data_by_time($db, $query_start_time = NULL, $query_end_time = NULL, $limit_count = NULL) {
+function fetch_page_data_by_time($db, $query_start_time = NULL, $query_end_time = NULL, $query_date = NULL, $limit_count = NULL, $urlbot_mode = FALSE) {
     // the_date YYYY-MM-DD
     // the_time HH:MM:SS
     // channel <word+>
@@ -74,11 +74,30 @@ function fetch_page_data_by_time($db, $query_start_time = NULL, $query_end_time 
                   LIMIT :limit_count
             ) s ORDER BY unix_time ASC
     ";
+    $sql3 = "
+             SELECT date(local) AS the_date,
+                    to_char(local, 'HH24:MI:SS') AS the_time,
+                    channel,
+                    speaker || '@' || mud AS speaker,
+                    message,
+                    hour_html, channel_html, speaker_html,
+                    date_part('epoch', local)::integer AS unix_time
+               FROM page_view
+              WHERE date(local) = date(:query_date)
+           ORDER BY local ASC
+              LIMIT :limit_count
+    ";
     $use_times = 1;
+    $use_date = 0;
     $sql = $sql1;
-    if( $query_start_time === NULL && $query_end_time === NULL ) {
+    if( $query_start_time === NULL && $query_end_time === NULL && $query_date === NULL) {
         $use_times = 0;
+        $use_date = 0;
         $sql = $sql2;
+    } elseif ($query_date !== NULL) {
+        $use_times = 0;
+        $use_date = 1;
+        $sql = $sql3;
     } else {
         if( $query_start_time === NULL || !is_numeric($query_start_time) || $query_start_time < 1 ) {
             $query_start_time = time() - (60 * 5);
@@ -87,8 +106,8 @@ function fetch_page_data_by_time($db, $query_start_time = NULL, $query_end_time 
             $query_end_time = time();
         }
     }
-    if( $limit_count === NULL || !is_numeric($limit_count) || $limit_count > 100 ) {
-        $limit_count = 100;
+    if( $limit_count === NULL || !is_numeric($limit_count) || $limit_count > 1000 ) {
+        $limit_count = 1000;
     } else if( $limit_count < 1 ) {
         $limit_count = 1;
     }
@@ -98,6 +117,8 @@ function fetch_page_data_by_time($db, $query_start_time = NULL, $query_end_time 
         if($use_times == 1) {
             $sth->bindParam(':query_start_time', $query_start_time);
             $sth->bindParam(':query_end_time', $query_end_time);
+        } elseif($use_date == 1) {
+            $sth->bindParam(':query_date', $query_date);
         }
         $sth->bindParam(':limit_count', $limit_count);
         $sth->execute();
@@ -124,7 +145,10 @@ function fetch_page_data_by_time($db, $query_start_time = NULL, $query_end_time 
                 ";
 
         foreach($result as $row) {
-            $new_result[] = $row;
+            //$new_result[] = $row;
+            if(!$urlbot_mode) {
+                $new_result[] = $row;
+            }
             if(array_key_exists('message_orig', $row)) {
                 // We found a URL before
                 $urls = [];
@@ -175,12 +199,20 @@ function fetch_page_data_by_time($db, $query_start_time = NULL, $query_end_time 
         //$db->rollback();
         throw $e;
     }
+    $actual_count = count($new_result);
+    if($actual_count > $limit_count) {
+        // The URLbot entries bloated us up, we need to trim the newest
+        // ones off and get them again next time...
+        array_splice($new_result, ($limit_count - $actual_count));
+    }
     return $new_result;
 }
 
 $time_from = NULL;
 $time_to = NULL;
+$the_date = NULL;
 $row_limit = NULL;
+$urlbot_mode = FALSE;
 
 if(array_key_exists('from', $_GET)) {
     $time_from = $_GET['from'];
@@ -188,12 +220,18 @@ if(array_key_exists('from', $_GET)) {
 if(array_key_exists('to', $_GET)) {
     $time_to = $_GET['to'];
 }
+if(array_key_exists('date', $_GET)) {
+    $the_date = $_GET['date'];
+}
 if(array_key_exists('limit', $_GET)) {
     $row_limit = $_GET['limit'];
 }
+if(array_key_exists('urlbot', $_GET)) {
+    $urlbot_mode = TRUE;
+}
 
 $db = db_connect();
-$data = fetch_page_data_by_time($db, $time_from, $time_to, $row_limit);
+$data = fetch_page_data_by_time($db, $time_from, $time_to, $the_date, $row_limit, $urlbot_mode);
 $time_end = microtime(true);
 $time_spent = $time_end - $time_start;
 $json = json_encode($data, JSON_PRETTY_PRINT);

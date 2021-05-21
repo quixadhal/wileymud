@@ -2,6 +2,7 @@
 $time_start = microtime(true);
 $background_image_list = array();
 $allowed = false;
+$do_extra_ajax = 0;
 
 function is_local_ip() {
     $visitor_ip = $_SERVER['REMOTE_ADDR'];
@@ -128,6 +129,11 @@ $EVEN               = "rgba(31,31,31,0.7)";
 $ODD                = "rgba(0,0,0,0.7)";
 
 $pinkfish_map = load_pinkfish_map($PINKFISH_CACHE);
+
+$the_date = NULL;
+if(array_key_exists('date', $_GET)) {
+    $the_date = $_GET['date'];
+}
 
 ?>
 <html>
@@ -536,6 +542,10 @@ $pinkfish_map = load_pinkfish_map($PINKFISH_CACHE);
                 output = output + ps.substr(-2);
                 return output;
             }
+            function server_date() {
+                // This is only true when the page first loads
+                return "<?php echo date("Y-m-d"); ?>";
+            }
         </script>
         <script language="javascript">
             var Random = new MersenneTwister();
@@ -546,9 +556,12 @@ $pinkfish_map = load_pinkfish_map($PINKFISH_CACHE);
             var CurrentTickCountdown = 1;
             var dataUrlBase = "<?php echo $DATA_URL; ?>";
             var LastRow = 0; // unix timestamp of most recent data
+            var FirstRow = 0; // unix timestamp of oldest data kept
             var MD5s = [];
             var RowCount = 0; // number of rows we have now
             var RowLimit = <?php echo $RESULT_LIMIT; ?>;
+            var TheDate = "<?php echo $the_date; ?>";
+            var DoExtraAjax = <?php echo $do_extra_ajax; ?>;
             // 0 -> 23
             var hour_map = [
                 '#555555',
@@ -650,8 +663,11 @@ $pinkfish_map = load_pinkfish_map($PINKFISH_CACHE);
                 CurrentTickCountdown = Math.round(SlowDelay * 60.0);
                 if(LastRow > 0) {
                     dataUrl = dataUrlBase + "?from=" + LastRow + "&limit=" + RowLimit;
+                } else if(TheDate !== "") {
+                    dataUrl = dataUrlBase + "?limit=" + RowLimit + "&date=" + TheDate;
                 } else {
                     dataUrl = dataUrlBase + "?limit=" + RowLimit; // + "&from=1620777600";
+                    //dataUrl = dataUrlBase + "?limit=" + RowLimit + "&date=" + server_date();
                 }
                 randomizeBackground();
                 $.ajax({
@@ -660,6 +676,9 @@ $pinkfish_map = load_pinkfish_map($PINKFISH_CACHE);
                     updateRefreshTime();
                     $.each(data, function(rowId, row) {
                         LastRow = row.unix_time;
+                        if(FirstRow < 1) {
+                            FirstRow = row.unix_time;
+                        }
 
                         var blur = "unblurred";
                         if(shouldBlur(row.channel, row.message)) {
@@ -704,6 +723,12 @@ $pinkfish_map = load_pinkfish_map($PINKFISH_CACHE);
                                 $('#content-table tr:eq(1)').remove();
                                 //$('#content-table tr:eq(0)').remove();
                                 //$('#content-table tr:eq(0)').attr('id', 'content-top');
+
+                                // Now we update the oldest row time to be the new oldest row
+                                var row_date = $('#content-table tr:eq(1) td:eq(0)').text();
+                                var row_time = $('#content-table tr:eq(1) td:eq(1) span').text();
+                                var rowMoment = moment.tz(row_date + " " + row_time, yourTimeZone);
+                                FirstRow = rowMoment.unix();
                             }
                             scroll_to('content-bottom');
                         }
@@ -712,6 +737,60 @@ $pinkfish_map = load_pinkfish_map($PINKFISH_CACHE);
                     var elapsedTime = endTime - startTime;
                     $('#elapsed').html(Math.round(elapsedTime) / 1000.0);
                 });
+
+                if(DoExtraAjax) {
+                    // At this point, FirstRow and LastRow hold the unix timestamps
+                    // of the content we have in our table.  So if we need to
+                    // ask for just the urlbot entries between those, we could
+                    // do so somewhere around here...
+
+                    dataUrl = dataUrlBase + "?from=" + FirstRow + "&to=" + LastRow + "&urlbot";
+                    //console.log("New URL: " + dataUrl);
+                    $.ajax({
+                        url: dataUrl,
+                    }).then(function(data) {
+                        //console.log("Entering");
+                        $.each(data, function(rowId, row) {
+                            //console.log("RowID: " + rowId);
+                            // Loop over table rows.
+                            $("#content-table > tbody > tr").each( function(index, tr) {
+                                var trChannel = $(this).find(".content-channel-column span").text();
+                                var trSpeaker = $(this).find(".content-speaker-column span").text();
+                                //console.log("trChannel: " + trChannel);
+                                //console.log("trSpeaker: " + trSpeaker);
+                                if(trChannel == "url" && trSpeaker == "URLbot") {
+                                    // It is a URLbot thing
+                                    var yourTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+                                    var trDate = $(this).find(".content-date-column").text();
+                                    var trTime = $(this).find(".content-time-column span").text();
+                                    var trMoment = moment.tz(trDate + " " + trTime, yourTimeZone);
+                                    var trUnix= trMoment.unix();
+
+                                    var oldMoment = moment.tz(row.the_date + " " + row.the_time, "America/Los_Angeles");
+                                    var newMoment = oldMoment.clone().tz(yourTimeZone);
+                                    var newUnix= newMoment.unix();
+                                    if(trUnix == newUnix) {
+                                        // AND the date and time match...
+                                        // So, do what we normally do for urlbot things
+                                        var blurThis = "unblurred";
+                                        if(shouldBlur(row.channel, row.message)) {
+                                            blurThis = "blurry";
+                                        }
+                                        var trMessage = $(this).find(".content-message-column").html();
+                                        var newMessage = row.message.split('%^RESET%^').join('');
+                                        newMessage = handle_colors(newMessage);
+                                        newMessage = '<span class="' + blurThis + '">' + newMessage + '</span>';
+
+                                        //console.log("OLD Message: " + trMessage);
+                                        //console.log("NEW Message: " + newMessage);
+                                        $(this).find(".content-message-column").html(newMessage);
+                                    }
+                                }
+                            });
+                        });
+                    });
+                }
+
                 updateProcessingTime();
                 Timer = setTimeout(updateContent, 1000 * 60 * SlowDelay);
             }
@@ -769,28 +848,28 @@ $pinkfish_map = load_pinkfish_map($PINKFISH_CACHE);
         <table id="content-table">
             <tr id="content-top">
                 <td class="content-date-column">&nbsp;</td>
-                <td class="content-time-column">&nbsp;</td>
+                <td class="content-time-column"><span>&nbsp;</span></td>
                 <td class="content-channel-column">&nbsp;</td>
                 <td class="content-speaker-column">&nbsp;</td>
                 <td class="content-message-column">&nbsp;</td>
             </tr>
             <tr>
                 <td class="content-date-column">2021-05-12</td>
-                <td class="content-time-column">08:20:00</td>
+                <td class="content-time-column"><span>08:20:00</span></td>
                 <td class="content-channel-column">poochan</td>
                 <td class="content-speaker-column">pooboy@The Poo Mud</td>
                 <td class="content-message-column">A whole bunch of poo.</td>
             </tr>
             <tr>
                 <td class="content-date-column">2021-05-12</td>
-                <td class="content-time-column">08:20:01</td>
+                <td class="content-time-column"><span>08:20:01</span></td>
                 <td class="content-channel-column">poochan</td>
                 <td class="content-speaker-column">pooboy@The Poo Mud</td>
                 <td class="content-message-column">More poo.</td>
             </tr>
             <tr id="content-bottom">
                 <td class="content-date-column">2021-05-12</td>
-                <td class="content-time-column">08:20:02</td>
+                <td class="content-time-column"><span>08:20:02</span></td>
                 <td class="content-channel-column">poochan</td>
                 <td class="content-speaker-column">pooboy@The Poo Mud</td>
                 <td class="content-message-column">Enough poo for India!</td>
