@@ -112,13 +112,14 @@ $GITHUB_ICON        = "$URL_HOME/gfx/github1600.png";
 
 $SCALE              = 1.0;
 $ICON_BASE          = 64;
-$FONT_BASE          = 16; // 24pt 39px, 18pt 30px, 14pt 24px, 10pt 17px, 1.7 seems close
-$RESULT_LIMIT       = 100;
+$FONT_BASE          = 16;   // 24pt 39px, 18pt 30px, 14pt 24px, 10pt 17px, 1.7 seems close
+$RESULT_LIMIT       = 100;  // Fetch no more than this many per request
+$DISPLAY_LIMIT      = 1000; // Keep no more than this many in the table
 
 $ICON_SIZE          = sprintf("%dpx", (int)($ICON_BASE * $SCALE));
 $FONT_SIZE          = sprintf("%dpt", (int)($FONT_BASE * $SCALE));
 $SMALL_FONT_SIZE    = sprintf("%dpt", (int)($FONT_BASE * $SCALE * 0.90));
-$TINY_FONT_SIZE     = sprintf("%dpt", (int)($FONT_BASE * $SCALE * 0.75));
+$TINY_FONT_SIZE     = sprintf("%dpt", (int)($FONT_BASE * $SCALE * 0.70));
 
 $BGCOLOR            = "black";
 $TEXT               = "#d0d0d0";
@@ -343,10 +344,13 @@ if(array_key_exists('date', $_GET)) {
                 width: 30ch; 
             }
             .content-message-header {
-                text-align: left;
+                font-family: Consolas, "Lucida Console", Monaco, Courier, monospace;
+                font-size: <?php echo $TINY_FONT_SIZE; ?>;
+                text-align: right;
                 overflow-x: hidden;
                 white-space: nowrap;
                 padding-left: 1ch;
+                padding-right: 1ch;
             }
 
             #content-table {
@@ -549,17 +553,21 @@ if(array_key_exists('date', $_GET)) {
         </script>
         <script language="javascript">
             var Random = new MersenneTwister();
-            var Timer;
+            var ContentTimer;
             var CountdownTimer;
             var Ticks = 0;
             var SlowDelay = 1;
             var CurrentTickCountdown = 1;
+            var GotDataLastTime = 0;
             var dataUrlBase = "<?php echo $DATA_URL; ?>";
             var LastRow = 0; // unix timestamp of most recent data
             var FirstRow = 0; // unix timestamp of oldest data kept
             var MD5s = [];
             var RowCount = 0; // number of rows we have now
             var RowLimit = <?php echo $RESULT_LIMIT; ?>;
+            var DisplayLimit = <?php echo $DISPLAY_LIMIT; ?>;
+            var FirstScreen = 1;
+            var FirstTimeNewRow = 1;
             var TheDate = "<?php echo $the_date; ?>";
             var DoExtraAjax = <?php echo $do_extra_ajax; ?>;
             // 0 -> 23
@@ -649,30 +657,22 @@ if(array_key_exists('date', $_GET)) {
                 CountdownTimer = setTimeout(updateProcessingTime, 1000);
             }
             function updateContent() {
-                clearTimeout(Timer);
+                clearTimeout(ContentTimer);
                 var startTime = performance.now();
                 var dataUrl;
                 Ticks++;
-                //We gradually slow down updates to avoid being spammed by
-                //people who might leave the log page open, unattended, for
-                //days on end.
-                //SlowDelay = Math.floor((Math.floor(Ticks / 10) + 1) * 1.5);
-                //SlowDelay = Math.round((Math.floor(Ticks / 10) + 1) * 1.45);
-                //SlowDelay = Math.round(Ticks * 1.45 / 10.0) + 1;
-                SlowDelay = Math.round(((Ticks * 1.45 / 10.0) + 1.0 + (Random.random() - 0.5)) * 100.0) / 100.0;
-                CurrentTickCountdown = Math.round(SlowDelay * 60.0);
                 if(LastRow > 0) {
                     dataUrl = dataUrlBase + "?from=" + LastRow + "&limit=" + RowLimit;
                 } else if(TheDate !== "") {
                     dataUrl = dataUrlBase + "?limit=" + RowLimit + "&date=" + TheDate;
                 } else {
-                    dataUrl = dataUrlBase + "?limit=" + RowLimit; // + "&from=1620777600";
-                    //dataUrl = dataUrlBase + "?limit=" + RowLimit + "&date=" + server_date();
+                    //dataUrl = dataUrlBase + "?limit=" + RowLimit; // + "&from=1620777600";
+                    dataUrl = dataUrlBase + "?limit=" + RowLimit + "&date=" + server_date();
                 }
-                randomizeBackground();
                 $.ajax({
                     url: dataUrl,
                 }).then(function(data) {
+                    randomizeBackground();
                     updateRefreshTime();
                     $.each(data, function(rowId, row) {
                         LastRow = row.unix_time;
@@ -716,10 +716,18 @@ if(array_key_exists('date', $_GET)) {
 
                         if(MD5s.indexOf(newMD5) == -1) {
                             MD5s.push(newMD5);
-                            $('#content-table tr:last').removeAttr('id');
+                            if(FirstTimeNewRow == 1) {
+                                // If this is our first time, remove the placeholder
+                                // row that's in the vanilla HTML...
+                                $('#content-bottom').remove();
+                                FirstTimeNewRow = 0;
+                            } else {
+                                // Otherwise, just demote it.
+                                $('#content-table tr:last').removeAttr('id');
+                            }
                             $('#content-table tr:last').after(newRow);
                             // If we're over our limit, remove a row from the top
-                            if($('#content-table tr').length > (RowLimit + 1)) {
+                            if($('#content-table tr').length > (DisplayLimit + 1)) {
                                 $('#content-table tr:eq(1)').remove();
                                 //$('#content-table tr:eq(0)').remove();
                                 //$('#content-table tr:eq(0)').attr('id', 'content-top');
@@ -730,13 +738,24 @@ if(array_key_exists('date', $_GET)) {
                                 var rowMoment = moment.tz(row_date + " " + row_time, yourTimeZone);
                                 FirstRow = rowMoment.unix();
                             }
-                            scroll_to('content-bottom');
-                            // Reset the delay, because we actually got a result back.
-                            Ticks = 1;
-                            SlowDelay = Math.round(((Ticks * 1.45 / 10.0) + 1.0 + (Random.random() - 0.5)) * 100.0) / 100.0;
-                            CurrentTickCountdown = Math.round(SlowDelay * 60.0);
+                            // Note that we got at least some data...
+                            GotDataLastTime = 1;
                         }
                     });
+                    if(FirstScreen == 1) {
+                        // The very first time we load the page, we want
+                        // to scroll down to the latest content, but then
+                        // we just want to add new things to the bottom and
+                        // let the user scroll as they wish.
+                        scroll_to('content-bottom');
+                        FirstScreen = 0;
+                    }
+                    if(GotDataLastTime == 1) {
+                        // Reset the delay, because we actually got a result back.
+                        Ticks = 1;
+                        on_scroll();
+                        GotDataLastTime = 0;
+                    }
                     var endTime = performance.now();
                     var elapsedTime = endTime - startTime;
                     $('#elapsed').html(Math.round(elapsedTime) / 1000.0);
@@ -795,13 +814,19 @@ if(array_key_exists('date', $_GET)) {
                     });
                 }
 
-                updateProcessingTime();
-                Timer = setTimeout(updateContent, 1000 * 60 * SlowDelay);
+                on_scroll();
+                //We gradually slow down updates to avoid being spammed by
+                //people who might leave the log page open, unattended, for
+                //days on end.
+                SlowDelay = Math.round(((Ticks * 1.45 / 10.0) + 1.0 + (Random.random() - 0.5)) * 100.0) / 100.0;
+                CurrentTickCountdown = Math.round(SlowDelay * 60.0);
+                ContentTimer = setTimeout(updateContent, 1000 * CurrentTickCountdown);
             }
             $(document).ready(function() {
-                Timer = setTimeout(updateContent, 500);
+                ContentTimer = setTimeout(updateContent, 500);
+                CountdownTimer = setTimeout(updateProcessingTime, 500);
                 hideDiv('page-source');
-                showDiv('page-load-time');
+                //showDiv('page-load-time');
                 on_scroll(); // Call once, in case the page cannot scroll
                 $(window).on("scroll", function() {
                     on_scroll();
@@ -840,13 +865,20 @@ if(array_key_exists('date', $_GET)) {
         <div id="fake-navbar">
             <img class="nav-img" title="???!" src="<?php echo $QUESTION_ICON; ?>" />
         </div>
+<?php
+    // Yes, this needs to be up here so the content-header can display it, briefly.
+    $time_end = microtime(true);
+    $time_spent = $time_end - $time_start;
+?>
         <table id="content-header">
             <tr>
                 <td class="content-date-header">Date</td>
                 <td class="content-time-header">Time</td>
                 <td class="content-channel-header">Channel</td>
                 <td class="content-speaker-header">Speaker</td>
-                <td class="content-message-header">&nbsp;</td>
+                <td class="content-message-header">
+                    <a href="javascript:;" onmousedown="toggleDiv('page-source');">Processing&nbsp;in&nbsp;<span id="tick">--:--</span>&nbsp;--&nbsp;<span id="elapsed"><?php printf("%7.3f",$time_spent);?></span>&nbsp;seconds</a>
+                </td>
             </tr>
         </table>
         <table id="content-table">
@@ -857,20 +889,6 @@ if(array_key_exists('date', $_GET)) {
                 <td class="content-speaker-column">&nbsp;</td>
                 <td class="content-message-column">&nbsp;</td>
             </tr>
-            <tr>
-                <td class="content-date-column">2021-05-12</td>
-                <td class="content-time-column"><span>08:20:00</span></td>
-                <td class="content-channel-column">poochan</td>
-                <td class="content-speaker-column">pooboy@The Poo Mud</td>
-                <td class="content-message-column">A whole bunch of poo.</td>
-            </tr>
-            <tr>
-                <td class="content-date-column">2021-05-12</td>
-                <td class="content-time-column"><span>08:20:01</span></td>
-                <td class="content-channel-column">poochan</td>
-                <td class="content-speaker-column">pooboy@The Poo Mud</td>
-                <td class="content-message-column">More poo.</td>
-            </tr>
             <tr id="content-bottom">
                 <td class="content-date-column">2021-05-12</td>
                 <td class="content-time-column"><span>08:20:02</span></td>
@@ -879,13 +897,10 @@ if(array_key_exists('date', $_GET)) {
                 <td class="content-message-column">Enough poo for India!</td>
             </tr>
         </table>
-<?php
-    $time_end = microtime(true);
-    $time_spent = $time_end - $time_start;
-?>
+<!--
         <div id="page-load-time">
-            <a href="javascript:;" onmousedown="toggleDiv('page-source');">Processing&nbsp;in&nbsp;<span id="tick">1</span>&nbsp;--&nbsp;<span id="elapsed"><?php printf("%7.3f",$time_spent);?></span>&nbsp;seconds</a>
         </div>
+-->
         <div id="page-source">
             <?php echo numbered_source(__FILE__); ?>
         </div>
