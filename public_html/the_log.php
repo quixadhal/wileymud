@@ -731,6 +731,10 @@ if(array_key_exists('date', $_GET)) {
                                 FirstRow = rowMoment.unix();
                             }
                             scroll_to('content-bottom');
+                            // Reset the delay, because we actually got a result back.
+                            Ticks = 1;
+                            SlowDelay = Math.round(((Ticks * 1.45 / 10.0) + 1.0 + (Random.random() - 0.5)) * 100.0) / 100.0;
+                            CurrentTickCountdown = Math.round(SlowDelay * 60.0);
                         }
                     });
                     var endTime = performance.now();
