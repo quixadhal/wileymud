@@ -77,9 +77,12 @@ $FILE_HOME          = "/home/wiley/public_html";
 
 $DATA_URL           = "$URL_HOME/log_chunk.php";
 $BACKGROUND_DIR     = "$FILE_HOME/gfx/wallpaper/";
+// We don't use the image itself, but we use the list the function
+// populates for the javascript....
 $BACKGROUND         = random_image($BACKGROUND_DIR);
 $BACKGROUND_DIR_URL = "$URL_HOME/gfx/wallpaper";
-$BACKGROUND_URL     = "$BACKGROUND_DIR_URL/$BACKGROUND";
+$BACKGROUND_URL     = "$URL_HOME/gfx/one_black_pixel.png";
+//$BACKGROUND_URL     = "$BACKGROUND_DIR_URL/$BACKGROUND";
 $BACKGROUND_IMG     = "<img class=\"overlay-bg\" src=\"$BACKGROUND_URL\" />";
 $PINKFISH_CACHE     = "$FILE_HOME/logpages/pinkfish.json";
 
@@ -453,6 +456,8 @@ if(array_key_exists('date', $_GET)) {
         <script src="<?php echo $MOMENT_TZ;?>""></script>
 
         <script language="javascript">
+            var WasAtBottom = false;
+
             function toggleDiv(divID) {
                 element = document.getElementById(divID);
                 if(element !== undefined && element !== null) {
@@ -492,6 +497,21 @@ if(array_key_exists('date', $_GET)) {
                     //element.className = "glowing";
                 }
             }
+            function at_bottom() {
+                var body = document.body;
+                var html = document.documentElement;
+                var doc_height = Math.max( body.scrollHeight, body.offsetHeight,
+                    html.clientHeight, html.scrollHeight, html.offsetHeight );
+                var atBottom = false;
+                if( window.innerHeight >= doc_height ) {
+                    // The page cannot scroll... so yes, but no.
+                } else if( (window.innerHeight + window.pageYOffset) >=
+                    (document.body.offsetHeight) ) {
+                    // We are at the bottom of the page.
+                    atBottom = true;
+                }
+                return atBottom;
+            }
             function on_scroll() {
                 var body = document.body;
                 var html = document.documentElement;
@@ -500,6 +520,11 @@ if(array_key_exists('date', $_GET)) {
                 var doc_height = Math.max( body.scrollHeight, body.offsetHeight,
                     html.clientHeight, html.scrollHeight, html.offsetHeight );
 
+                // This is used so that if we add more content and
+                // nothing scrolls the page, we know we COULD
+                // scroll further, if the user were at the bottom
+                // and thus done reading it.
+                WasAtBottom = false;
                 if( window.innerHeight >= doc_height ) {
                     // The page fits entirely on the screen, no scrolling possible.
                     dim(bb);
@@ -509,6 +534,7 @@ if(array_key_exists('date', $_GET)) {
                     // We are at the bottom of the page.
                     dim(bb);
                     brighten(bt);
+                    WasAtBottom = true;
                 } else if( window.pageYOffset <= 1 ) {
                     // We are at the top of the page.
                     brighten(bb);
@@ -562,7 +588,7 @@ if(array_key_exists('date', $_GET)) {
             var Ticks = 0;
             var SlowDelay = 1;
             var CurrentTickCountdown = 1;
-            var GotDataLastTime = 0;
+            var GotDataLastTime = false;
             var dataUrlBase = "<?php echo $DATA_URL; ?>";
             var LastRow = 0; // unix timestamp of most recent data
             var FirstRow = 0; // unix timestamp of oldest data kept
@@ -570,8 +596,8 @@ if(array_key_exists('date', $_GET)) {
             var RowCount = 0; // number of rows we have now
             var RowLimit = <?php echo $RESULT_LIMIT; ?>;
             var DisplayLimit = <?php echo $DISPLAY_LIMIT; ?>;
-            var FirstScreen = 1;
-            var FirstTimeNewRow = 1;
+            var FirstScreen = true;
+            var FirstTimeNewRow = true;
             var TheDate = "<?php echo $the_date; ?>";
             var DoExtraAjax = <?php echo $do_extra_ajax; ?>;
             // 0 -> 23
@@ -721,11 +747,11 @@ if(array_key_exists('date', $_GET)) {
 
                         if(MD5s.indexOf(newMD5) == -1) {
                             MD5s.push(newMD5);
-                            if(FirstTimeNewRow == 1) {
+                            if(FirstTimeNewRow == true) {
                                 // If this is our first time, remove the placeholder
                                 // row that's in the vanilla HTML...
                                 $('#content-bottom').remove();
-                                FirstTimeNewRow = 0;
+                                FirstTimeNewRow = false;
                             } else {
                                 // Otherwise, just demote it.
                                 $('#content-table tr:last').removeAttr('id');
@@ -744,22 +770,24 @@ if(array_key_exists('date', $_GET)) {
                                 FirstRow = rowMoment.unix();
                             }
                             // Note that we got at least some data...
-                            GotDataLastTime = 1;
+                            GotDataLastTime = true;
                         }
                     });
-                    if(FirstScreen == 1) {
+                    if(FirstScreen == true || WasAtBottom == true) {
                         // The very first time we load the page, we want
-                        // to scroll down to the latest content, but then
-                        // we just want to add new things to the bottom and
-                        // let the user scroll as they wish.
+                        // to scroll down to the latest content.
+                        // Also, if the user was at the bottom (before we
+                        // added stuff), they probably will want to see the
+                        // new stuff too.  Otherwise, let them keep reading
+                        // at their own pace.
                         scroll_to('content-bottom');
-                        FirstScreen = 0;
+                        FirstScreen = false;
                     }
-                    if(GotDataLastTime == 1) {
+                    if(GotDataLastTime == true) {
                         // Reset the delay, because we actually got a result back.
                         Ticks = 1;
                         on_scroll();
-                        GotDataLastTime = 0;
+                        GotDataLastTime = false;
                     }
                     var endTime = performance.now();
                     var elapsedTime = endTime - startTime;
@@ -895,11 +923,11 @@ if(array_key_exists('date', $_GET)) {
                 <td class="content-message-column">&nbsp;</td>
             </tr>
             <tr id="content-bottom">
-                <td class="content-date-column">2021-05-12</td>
-                <td class="content-time-column"><span>08:20:02</span></td>
-                <td class="content-channel-column">poochan</td>
-                <td class="content-speaker-column">pooboy@The Poo Mud</td>
-                <td class="content-message-column">Enough poo for India!</td>
+                <td class="content-date-column">1990-08-10</td>
+                <td class="content-time-column"><span>06:05:15</span></td>
+                <td class="content-channel-column">wiley</td>
+                <td class="content-speaker-column">SYSTEM@WileyMUD</td>
+                <td class="content-message-column">online</td>
             </tr>
         </table>
 <!--
