@@ -1,8 +1,8 @@
 <?php
 require_once 'site_global.php';
 
-$PINKFISH_CACHE     = "$FILE_HOME/logpages/pinkfish.json";
-$pinkfish_map       = array();
+$PINKFISH_CACHE         = "$FILE_HOME/logpages/pinkfish.json";
+$pinkfish_map           = array();
 
 function reverseSortByKeyLength($a, $b) {
     return strlen($b) - strlen($a);
@@ -32,6 +32,6 @@ function handle_colors( $pinkfish_map, $message ) {
 }
 
 // Load the current mapping into a variable we can use elsewhere.
-$pinkfish_map = load_pinkfish_map($PINKFISH_CACHE);
+$pinkfish_map           = load_pinkfish_map($PINKFISH_CACHE);
 
 ?>

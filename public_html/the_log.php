@@ -4,62 +4,19 @@ require_once 'site_global.php';
 require_once 'page_source.php';
 require_once 'random_background.php';
 require_once 'pinkfish_colors.php';
+require_once 'navbar.php';
 
-$allowed = false;
-$do_extra_ajax = 0;
+$allowed                = false;
+$do_extra_ajax          = 0;
 
 if(is_local_ip()) {
     $allowed = true;
 }
 
-$DATA_URL           = "$URL_HOME/log_chunk.php";
-$BACKGROUND_URL     = "$URL_HOME/gfx/one_black_pixel.png";
-
-$JQ                 = "$URL_HOME/jquery.js";
-$JQUI_CSS           = "$URL_HOME/jquery/jquery-ui.css";
-$JQUI_THEME         = "$URL_HOME/jquery/jquery-ui.theme.css";
-$JQUI               = "$URL_HOME/jquery/jquery-ui.js";
-$JSCOOKIE           = "$URL_HOME/js.cookie.min.js";
-$JSRANDOM           = "$URL_HOME/js.random.js";
-$JSMD5              = "$URL_HOME/js.md5.js";
-$MOMENT             = "$URL_HOME/moment.js";
-$MOMENT_TZ          = "$URL_HOME/moment-timezone.js";
-
-$BEGIN_ICON         = "$URL_HOME/gfx/nav/begin.png";
-$PREV_ICON          = "$URL_HOME/gfx/nav/previous.png";
-$NEXT_ICON          = "$URL_HOME/gfx/nav/next.png";
-$END_ICON           = "$URL_HOME/gfx/nav/end.png";
-$UP_ICON            = "$URL_HOME/gfx/nav/green/up.png";
-$DOWN_ICON          = "$URL_HOME/gfx/nav/green/down.png";
-$TOP_ICON           = "$URL_HOME/gfx/nav/green/top.png";
-$BOTTOM_ICON        = "$URL_HOME/gfx/nav/green/bottom.png";
-
-$MUDLIST_ICON       = "$URL_HOME/gfx/mud.png";
-$LOG_ICON           = "$URL_HOME/gfx/other_logs.png";
-$PIE_ICON           = "$URL_HOME/gfx/pie_chart.png";
-$QUESTION_ICON      = "$URL_HOME/gfx/question_girl3.png";
-$DISCORD_ICON       = "$URL_HOME/gfx/discord.png";
-$SERVER_ICON        = "$URL_HOME/gfx/server_icon.png";
-$GITHUB_ICON        = "$URL_HOME/gfx/github1600.png";
-
-$SCALE              = 1.0;
-$ICON_BASE          = 64;
-$FONT_BASE          = 16;   // 24pt 39px, 18pt 30px, 14pt 24px, 10pt 17px, 1.7 seems close
-$RESULT_LIMIT       = 100;  // Fetch no more than this many per request
-$DISPLAY_LIMIT      = 1000; // Keep no more than this many in the table
-
-$ICON_SIZE          = sprintf("%dpx", (int)($ICON_BASE * $SCALE));
-$FONT_SIZE          = sprintf("%dpt", (int)($FONT_BASE * $SCALE));
-$SMALL_FONT_SIZE    = sprintf("%dpt", (int)($FONT_BASE * $SCALE * 0.90));
-$TINY_FONT_SIZE     = sprintf("%dpt", (int)($FONT_BASE * $SCALE * 0.70));
-
-$BGCOLOR            = "black";
-$TEXT               = "#d0d0d0";
-$UNVISITED          = "#ffffbf";
-$VISITED            = "#ffa040";
-$DELETED            = "#ff0000";
-$EVEN               = "rgba(31,31,31,0.7)";
-$ODD                = "rgba(0,0,0,0.7)";
+$DATA_URL               = "$URL_HOME/log_chunk.php";
+$BACKGROUND_URL         = "$URL_HOME/gfx/one_black_pixel.png";
+$RESULT_LIMIT           = 100;  // Fetch no more than this many per request
+$DISPLAY_LIMIT          = 1000; // Keep no more than this many in the table
 
 $the_date = NULL;
 if(array_key_exists('date', $_GET)) {
@@ -72,175 +29,17 @@ if(array_key_exists('date', $_GET)) {
         <meta charset="utf-8" />
         <meta http-equiv="cache-control" content="no-cache" />
         <meta http-equiv="pragma" content="no-cache" />
+        <link rel="stylesheet" href="<?php echo $SITE_GLOBAL_CSS;?>">
         <link rel="stylesheet" href="<?php echo $PAGE_SOURCE_CSS;?>">
+        <link rel="stylesheet" href="<?php echo $BACKGROUND_CSS;?>">
+        <link rel="stylesheet" href="<?php echo $NAVBAR_CSS;?>">
         <style>
-            html, body {
-                font-family: 'Lato', sans-serif;
-                padding: 0px;
-                margin: 0px;
-            }
-            table {
-                table-layout: fixed;
-                max-width: 99%;
-                overflow-x: hidden;
-                border: 0px;
-                padding: 0px;
-                border-spacing: 0px;
-            }
-            a {
-                text-decoration:none;
-                color: <?php echo $UNVISITED; ?>;
-            }
-            a:visited {
-                color: <?php echo $UNVISITED; ?>;
-            }
-            a:hover {
-                text-decoration:underline;
-            }
-            a:active, a:focus {
-                outline: 0;
-                border: none;
-                -moz-outline-style: none;
-            }
-            .unblurred {
-                font-family: Consolas, "Lucida Console", Monaco, Courier, monospace;
-                white-space: pre-wrap;
-            }
-            .blurry:not(:hover) {
-                filter: blur(3px);
-                font-family: Consolas, "Lucida Console", Monaco, Courier, monospace;
-                white-space: pre-wrap;
-            }
-            .blurry:hover {
-                font-family: Consolas, "Lucida Console", Monaco, Courier, monospace;
-                white-space: pre-wrap;
-            }
-            .glowing:not(:hover) {
-                filter: brightness(1);
-            }
-            .glowing:hover {
-                filter: brightness(1.75);
-            }
-            @keyframes blinking {
-                0% {
-                    opacity: 0;
-                }
-                49% {
-                    opacity: 0;
-                }
-                50% {
-                    opacity: 1;
-                }
-                100% {
-                    opacity: 1;
-                }
-            }
-            .flash_tag {
-                animation: blinking 1.5s infinite;
-            }
             #debug-message {
                 font-family: Consolas, "Lucida Console", Monaco, Courier, monospace;
                 font-size: <?php echo $FONT_SIZE; ?>;
                 overflow-x: hidden;
             }
 
-            #background-div {
-                padding: 0px;
-                margin: 0px;
-                z-index: -1;
-                opacity: 0.50;
-                top: 0;
-                left: 0;
-                bottom: 0;
-                right: 0;
-                position: fixed;
-                height: 100%;
-                width: 100%;
-            }
-            #background-img {
-                height: 100%;
-                width: 100%;
-                border: none;
-                object-fit: cover;
-            }
-
-            .nav-img {
-                border: none;
-                min-height: <?php echo $ICON_SIZE; ?>;
-                height: <?php echo $ICON_SIZE; ?>;
-                max-height: <?php echo $ICON_SIZE; ?>;
-                min-width: <?php echo $ICON_SIZE; ?>;
-                width: <?php echo $ICON_SIZE; ?>;
-                max-width: <?php echo $ICON_SIZE; ?>;
-            }
-            #fake-navbar {
-                font-family: Consolas, "Lucida Console", Monaco, Courier, monospace;
-                font-size: <?php echo $FONT_SIZE; ?>;
-                overflow-x: hidden;
-                background-color: black;
-                min-width: 100%;
-                width: 100%;
-                top: 0;
-                left: 0;
-            }
-            #back-navbar {
-                text-align: left;
-                min-width: 100%;
-                width: 100%;
-                top: 0;
-                left: 0;
-                z-index: 2;
-                font-family: Consolas, "Lucida Console", Monaco, Courier, monospace;
-                font-size: <?php echo $FONT_SIZE; ?>;
-                overflow-x: hidden;
-                position: fixed;
-                background-color: black;
-            }
-            #navbar-left {
-                text-align: left;
-                min-width: 30%;
-                width: 30%; 
-                top: 0;
-                left: 0;
-                z-index: 3;
-                font-family: Consolas, "Lucida Console", Monaco, Courier, monospace;
-                font-size: <?php echo $FONT_SIZE; ?>;
-                overflow-x: hidden;
-                position: fixed;
-                background-color: black;
-            }
-            #navbar-center {
-                text-align: center;
-                min-width: 40%;
-                width: 40%; 
-                top: 0;
-                left: 50%;
-                transform: translateX(-50%);
-                z-index: 3;
-                font-family: Consolas, "Lucida Console", Monaco, Courier, monospace;
-                font-size: <?php echo $FONT_SIZE; ?>;
-                overflow-x: hidden;
-                position: fixed;
-                background-color: black;
-            }
-            #navbar-right {
-                text-align: right;
-                min-width: 30%;
-                width: 30%; 
-                top: 0;
-                right: 0;
-                z-index: 3;
-                font-family: Consolas, "Lucida Console", Monaco, Courier, monospace;
-                font-size: <?php echo $FONT_SIZE; ?>;
-                overflow-x: hidden;
-                position: fixed;
-                background-color: black;
-            }
-            #refresh-time {
-                vertical-align: top;
-                font-family: Consolas, "Lucida Console", Monaco, Courier, monospace;
-                font-size: <?php echo $SMALL_FONT_SIZE; ?>;
-            }
 
             #content-header {
                 font-family: Consolas, "Lucida Console", Monaco, Courier, monospace;

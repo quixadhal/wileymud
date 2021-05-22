@@ -1,0 +1,64 @@
+html, body {
+    font-family: 'Lato', sans-serif;
+    padding: 0px;
+    margin: 0px;
+}
+table {
+    table-layout: fixed;
+    max-width: 99%;
+    overflow-x: hidden;
+    border: 0px;
+    padding: 0px;
+    border-spacing: 0px;
+}
+a {
+    text-decoration:none;
+    color: <?php echo $UNVISITED; ?>;
+}
+a:visited {
+    color: <?php echo $UNVISITED; ?>;
+}
+a:hover {
+    text-decoration:underline;
+}
+a:active, a:focus {
+    outline: 0;
+    border: none;
+    -moz-outline-style: none;
+}
+.unblurred {
+    font-family: Consolas, "Lucida Console", Monaco, Courier, monospace;
+    white-space: pre-wrap;
+}
+.blurry:not(:hover) {
+    filter: blur(3px);
+    font-family: Consolas, "Lucida Console", Monaco, Courier, monospace;
+    white-space: pre-wrap;
+}
+.blurry:hover {
+    font-family: Consolas, "Lucida Console", Monaco, Courier, monospace;
+    white-space: pre-wrap;
+}
+.glowing:not(:hover) {
+    filter: brightness(1);
+}
+.glowing:hover {
+    filter: brightness(1.75);
+}
+@keyframes blinking {
+    0% {
+        opacity: 0;
+    }
+    49% {
+        opacity: 0;
+    }
+    50% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+.flash_tag {
+    animation: blinking 1.5s infinite;
+}

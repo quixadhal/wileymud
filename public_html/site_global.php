@@ -9,6 +9,37 @@ function is_local_ip() {
     return 0;
 }
 
-$URL_HOME           = "http://wileymud.themud.org/~wiley";
-$FILE_HOME          = "/home/wiley/public_html";
+$URL_HOME               = "http://wileymud.themud.org/~wiley";
+$FILE_HOME              = "/home/wiley/public_html";
+
+$JQ                     = "$URL_HOME/jquery.js";
+$JQUI_CSS               = "$URL_HOME/jquery/jquery-ui.css";
+$JQUI_THEME             = "$URL_HOME/jquery/jquery-ui.theme.css";
+$JQUI                   = "$URL_HOME/jquery/jquery-ui.js";
+$JSCOOKIE               = "$URL_HOME/js.cookie.min.js";
+$JSRANDOM               = "$URL_HOME/js.random.js";
+$JSMD5                  = "$URL_HOME/js.md5.js";
+$MOMENT                 = "$URL_HOME/moment.js";
+$MOMENT_TZ              = "$URL_HOME/moment-timezone.js";
+
+$SITE_GLOBAL_FILE       = "$FILE_HOME/site_global.css";
+$SITE_GLOBAL_TIME       = filemtime($SITE_GLOBAL_FILE);
+$SITE_GLOBAL_CSS        = "$URL_HOME/site_global.css?version=$SITE_GLOBAL_TIME";
+
+$BGCOLOR                = "black";
+$TEXT                   = "#d0d0d0";
+$UNVISITED              = "#ffffbf";
+$VISITED                = "#ffa040";
+$DELETED                = "#ff0000";
+$EVEN                   = "rgba(31,31,31,0.7)";
+$ODD                    = "rgba(0,0,0,0.7)";
+
+$SCALE                  = 1.0;      // An easy way to adjust the overall size of everything.
+$ICON_BASE              = 64;
+$FONT_BASE              = 16;   // 24pt 39px, 18pt 30px, 14pt 24px, 10pt 17px, 1.7 seems close
+
+$ICON_SIZE              = sprintf("%dpx", (int)($ICON_BASE * $SCALE));
+$FONT_SIZE              = sprintf("%dpt", (int)($FONT_BASE * $SCALE));
+$SMALL_FONT_SIZE        = sprintf("%dpt", (int)($FONT_BASE * $SCALE * 0.90));
+$TINY_FONT_SIZE         = sprintf("%dpt", (int)($FONT_BASE * $SCALE * 0.70));
 ?>
