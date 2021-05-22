@@ -550,6 +550,10 @@ if(array_key_exists('date', $_GET)) {
                 // This is only true when the page first loads
                 return "<?php echo date("Y-m-d"); ?>";
             }
+            function server_time_midnight() {
+                // This is only true when the page first loads
+                return <?php $dt = new DateTime(date("Y-m-d")); echo $dt->format("U"); ?>;
+            }
         </script>
         <script language="javascript">
             var Random = new MersenneTwister();
@@ -667,7 +671,8 @@ if(array_key_exists('date', $_GET)) {
                     dataUrl = dataUrlBase + "?limit=" + RowLimit + "&date=" + TheDate;
                 } else {
                     //dataUrl = dataUrlBase + "?limit=" + RowLimit; // + "&from=1620777600";
-                    dataUrl = dataUrlBase + "?limit=" + RowLimit + "&date=" + server_date();
+                    //dataUrl = dataUrlBase + "?limit=" + RowLimit + "&date=" + server_date();
+                    dataUrl = dataUrlBase + "?from=" + server_time_midnight() + "&limit=" + RowLimit;
                 }
                 $.ajax({
                     url: dataUrl,
