@@ -924,7 +924,7 @@ if(array_key_exists('date', $_GET)) {
             </tr>
             <tr id="content-bottom">
                 <td class="content-date-column">1990-08-10</td>
-                <td class="content-time-column"><span>06:05:15</span></td>
+                <td class="content-time-column"><span>18:05:15</span></td>
                 <td class="content-channel-column">wiley</td>
                 <td class="content-speaker-column">SYSTEM@WileyMUD</td>
                 <td class="content-message-column">online</td>
