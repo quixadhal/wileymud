@@ -1,90 +1,19 @@
 <?php
 $time_start = microtime(true);
-$background_image_list = array();
+require_once 'site_global.php';
+require_once 'page_source.php';
+require_once 'random_background.php';
+require_once 'pinkfish_colors.php';
+
 $allowed = false;
 $do_extra_ajax = 0;
-
-function is_local_ip() {
-    $visitor_ip = $_SERVER['REMOTE_ADDR'];
-    if($visitor_ip == '104.156.100.167') // Hard coded DNS entry
-        return 1;
-    $varr = explode(".", $visitor_ip);
-    if($varr[0] == "192" && $varr[1] == "168")
-        return 1;
-    return 0;
-}
 
 if(is_local_ip()) {
     $allowed = true;
 }
 
-function numbered_source($filename)
-{
-    ini_set('highlight.string',  '#DD0000'); // DD0000
-    ini_set('highlight.comment', '#0000BB'); // FF8000
-    ini_set('highlight.keyword', '#00CC00'); // 007700
-    ini_set('highlight.bg',      '#111111'); // FFFFFF
-    ini_set('highlight.default', '#00DDDD'); // 0000BB
-    ini_set('highlight.html',    '#CCCCCC'); // 000000
-    $lines = implode(range(1, count(file($filename))), '<br />');
-    $content = highlight_file($filename, true);
-    return "<table><tr><td class=\"source-line-number\">\n$lines\n</td><td class=\"source-code\">\n$content\n</td></tr></table>"; 
-}
-
-function random_image($dir) {
-    global $background_image_list;
-    $old_dir = getcwd();
-    chdir($dir);
-
-    $jpg_list = glob("*.jpg");
-    $png_list = glob("*.png");
-    $background_image_list = array_merge($jpg_list, $png_list);
-    $pick = array_rand($background_image_list);
-
-    chdir($old_dir);
-    return $background_image_list[$pick];
-}
-
-function reverseSortByKeyLength($a, $b) {
-    return strlen($b) - strlen($a);
-}
-
-function load_pinkfish_map($filename) {
-    if( file_exists($filename) ) {
-        $json_data = file_get_contents($filename);
-        $data = json_decode($json_data, 1);
-        uksort($data, "reverseSortByKeyLength");
-        //print "\nPINKFISH_CACHE\n";
-        //print_r($data);
-        //print "\n";
-        return $data;
-    }
-    print("No $filename exists.\n");
-    return null;
-}
-
-function handle_colors( $pinkfish_map, $message ) {
-    foreach ($pinkfish_map as $pf) {
-        $pattern = '/'.preg_quote($pf['pinkfish']).'/';
-        $repl = $pf['html'];
-        $message = preg_replace($pattern, $repl, $message);
-    }
-    return $message;
-}
-
-$URL_HOME           = "http://wileymud.themud.org/~wiley";
-$FILE_HOME          = "/home/wiley/public_html";
-
 $DATA_URL           = "$URL_HOME/log_chunk.php";
-$BACKGROUND_DIR     = "$FILE_HOME/gfx/wallpaper/";
-// We don't use the image itself, but we use the list the function
-// populates for the javascript....
-$BACKGROUND         = random_image($BACKGROUND_DIR);
-$BACKGROUND_DIR_URL = "$URL_HOME/gfx/wallpaper";
 $BACKGROUND_URL     = "$URL_HOME/gfx/one_black_pixel.png";
-//$BACKGROUND_URL     = "$BACKGROUND_DIR_URL/$BACKGROUND";
-$BACKGROUND_IMG     = "<img class=\"overlay-bg\" src=\"$BACKGROUND_URL\" />";
-$PINKFISH_CACHE     = "$FILE_HOME/logpages/pinkfish.json";
 
 $JQ                 = "$URL_HOME/jquery.js";
 $JQUI_CSS           = "$URL_HOME/jquery/jquery-ui.css";
@@ -132,8 +61,6 @@ $DELETED            = "#ff0000";
 $EVEN               = "rgba(31,31,31,0.7)";
 $ODD                = "rgba(0,0,0,0.7)";
 
-$pinkfish_map = load_pinkfish_map($PINKFISH_CACHE);
-
 $the_date = NULL;
 if(array_key_exists('date', $_GET)) {
     $the_date = $_GET['date'];
@@ -145,6 +72,7 @@ if(array_key_exists('date', $_GET)) {
         <meta charset="utf-8" />
         <meta http-equiv="cache-control" content="no-cache" />
         <meta http-equiv="pragma" content="no-cache" />
+        <link rel="stylesheet" href="<?php echo $PAGE_SOURCE_CSS;?>">
         <style>
             html, body {
                 font-family: 'Lato', sans-serif;
@@ -404,43 +332,6 @@ if(array_key_exists('date', $_GET)) {
                 right: 0px;
                 z-index: 2;
                 background-color: black;
-            }
-
-            .source-line-number {
-                float: left;
-                color: gray;
-                background-color: #111111;
-                opacity: 0.90;
-                font-family: Consolas, "Lucida Console", Monaco, Courier, monospace;
-                font-size: 14px;
-                text-align: right;
-                margin: 0px;
-                padding: 0px;
-                border-spacing: 0px;
-                margin-right: 0pt;
-                padding-right: 6pt;
-                border-spacing-right: 0px;
-                border-right: 1px solid gray;
-                vertical-align: top;
-                white-space: normal;
-            }
-            .source-code {
-                background-color: black;
-                opacity: 0.70;
-                width: 100%;
-                font-family: Consolas, "Lucida Console", Monaco, Courier, monospace;
-                font-size: 14px;
-                margin: 0px;
-                padding: 0px;
-                border-spacing: 0px;
-                margin-left: 0pt;
-                padding-left: 6px;
-                border-spacing-left: 6px;
-                vertical-align: top;
-                white-space: nowrap;
-            }
-            #page-source {
-                display: none;
             }
         </style>
 <!--
