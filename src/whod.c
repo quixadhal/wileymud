@@ -58,7 +58,7 @@
  */
 
 struct whod_data                        whod = {
-    650336715,          // updated, beginning of time
+    BEGINNING_OF_TIME,  // updated, beginning of time
     0,                  // enabled
     3001,               // port
     "SYSTEM",           // set_by

@@ -37,6 +37,8 @@ typedef int                             (*ifuncp) ( /* CHAR_DATA *, char *, int 
 #define ifuncp(x) int *(x)
 */
 
+#define BEGINNING_OF_TIME       650336715 /* Fri 10 Aug 1990 06:05:15 PM PDT */
+
 #define WLD_FILE_DIRECTORY 	"wld"
 #define MAX_WLD_FILE_ENTRIES	25
 

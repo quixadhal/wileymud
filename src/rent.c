@@ -15,7 +15,7 @@
 #define _RENT_C
 #include "rent.h"
 
-struct rent_data        rent = { 650336715, 1, 1.0, "SYSTEM" }; // beginning of time...
+struct rent_data        rent = { BEGINNING_OF_TIME, 1, 1.0, "SYSTEM" }; // beginning of time...
 
 void setup_rent_table(void) {
     PGresult *res = NULL;
@@ -93,7 +93,7 @@ void load_rent(void) {
                       "factor, set_by FROM rent LIMIT 1;";
     int rows = 0;
     int columns = 0;
-    struct rent_data the_rent = { 650336715, 1, 1.0, "SYSTEM" }; // beginning of time...
+    struct rent_data the_rent = { BEGINNING_OF_TIME, 1, 1.0, "SYSTEM" }; // beginning of time...
 
     sql_connect(&db_wileymud);
     res = PQexec(db_wileymud.dbc, sql);

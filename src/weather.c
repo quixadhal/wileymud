@@ -22,7 +22,7 @@
 #define _WEATHER_C
 #include "weather.h"
 
-const time_t beginning_of_time = 650336715;     /* Fri Aug 10 21:05:15 1990 */
+const time_t beginning_of_time = BEGINNING_OF_TIME;     /* Fri Aug 10 21:05:15 1990 */
 
 const char                             *moon_names[] = {
     "new",
@@ -391,6 +391,7 @@ void setup_weather_table(void) {
                 "    moon INTEGER "
                 "); ";
     char *sql2 = "SELECT count(*) FROM weather;";
+    // BEGINNING_OF_TIME magic constant
     char *sql3 = "INSERT INTO weather (updated) VALUES (to_timestamp(650336715));";
     char *sql4 = "DELETE FROM weather WHERE updated <> (SELECT max(UPDATED) FROM weather);";
     int rows = 0;
