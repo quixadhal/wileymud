@@ -182,33 +182,6 @@ if(array_key_exists('date', $_GET)) {
                     brighten(bt);
                 }
             }
-            function htmlentites(s) {
-                var result = s.replace(/[\u00A0-\u9999<>\&]/g, function(i) {
-                    return '&#'+i.charCodeAt(0)+';';
-                });
-                return result;
-            }
-            function secsToHMS(s) {
-                var d = Math.floor(s / 86400);
-                s -= d * 86400;
-                var h = Math.floor(s / 3600);
-                s -= h * 3600;
-                var m = Math.floor(s / 60);
-                s -= m * 60;
-                var output = '';
-                if(d > 0) {
-                    output = output + d + ' d';
-                }
-                if(h > 0) {
-                    var ph = '0' + h;
-                    output = output + ph.substr(-2) + ':';
-                }
-                var pm = '0' + m;
-                output = output + pm.substr(-2) + ':';
-                var ps = '0' + s;
-                output = output + ps.substr(-2);
-                return output;
-            }
             function server_date() {
                 // This is only true when the page first loads
                 return "<?php echo date("Y-m-d"); ?>";
