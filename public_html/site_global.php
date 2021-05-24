@@ -25,7 +25,7 @@ $MOMENT_TZ              = "$URL_HOME/moment-timezone.js";
 $SITE_GLOBAL_FILE       = "$FILE_HOME/site_global.css";
 $SITE_GLOBAL_TIME       = filemtime($SITE_GLOBAL_FILE);
 $SITE_GLOBAL_CSS        = "$URL_HOME/site_global.css?version=$SITE_GLOBAL_TIME";
-$SITE_GLOBAL_JS         = "$URL_HOME/site_global_js.php?version=$SITE_GLOBAL_TIME";
+$SITE_GLOBAL_JS         = "$URL_HOME/site_global_js.php";
 
 $BGCOLOR                = "black";
 $TEXT                   = "#d0d0d0";
