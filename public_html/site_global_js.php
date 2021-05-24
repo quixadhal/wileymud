@@ -77,3 +77,11 @@ function secsToHMS(s) {
     output = output + ps.substr(-2);
     return output;
 }
+function server_date() {
+    // This is only true when the page first loads
+    return "<?php echo date("Y-m-d"); ?>";
+}
+function server_time_midnight() {
+    // This is only true when the page first loads
+    return <?php $dt = new DateTime(date("Y-m-d")); echo $dt->format("U"); ?>;
+}
