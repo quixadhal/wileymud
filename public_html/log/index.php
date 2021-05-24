@@ -13,7 +13,7 @@ if(is_local_ip()) {
     $allowed = true;
 }
 
-$DATA_URL               = "$URL_HOME/log_chunk.php";
+$DATA_URL               = "$URL_HOME/log/log_chunk.php";
 $BACKGROUND_URL         = "$URL_HOME/gfx/one_black_pixel.png";
 $RESULT_LIMIT           = 100;  // Fetch no more than this many per request
 $DISPLAY_LIMIT          = 1000; // Keep no more than this many in the table

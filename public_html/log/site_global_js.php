@@ -1,6 +1,6 @@
 <?php
 require_once 'site_global.php';
-header("Content-type: application/javascript");
+header("Content-Type: application/json; charset=UTF-8");
 ?>
 function toggleDiv(divID) {
     element = document.getElementById(divID);

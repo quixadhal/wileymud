@@ -18,7 +18,7 @@ $DISCORD_ICON           = "$URL_HOME/gfx/discord.png";
 $SERVER_ICON            = "$URL_HOME/gfx/server_icon.png";
 $GITHUB_ICON            = "$URL_HOME/gfx/github1600.png";
 
-$NAVBAR_FILE            = "$FILE_HOME/navbar_css.php";
+$NAVBAR_FILE            = "$FILE_HOME/log/navbar_css.php";
 $NAVBAR_TIME            = filemtime($NAVBAR_FILE);
-$NAVBAR_CSS             = "$URL_HOME/navbar_css.php?version=$NAVBAR_TIME";
+$NAVBAR_CSS             = "$URL_HOME/log/navbar_css.php?version=$NAVBAR_TIME";
 ?>
