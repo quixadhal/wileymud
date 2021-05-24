@@ -7,7 +7,7 @@ require_once 'pinkfish_colors.php';
 require_once 'navbar.php';
 
 $allowed                = false;
-$do_extra_ajax          = 0;
+$do_extra_ajax          = 1;
 
 if(is_local_ip()) {
     $allowed = true;
@@ -352,6 +352,35 @@ if(array_key_exists('date', $_GET)) {
                 // } else if(preg_match('/\[(spoiler|redacted)\]/i', $message) > 0) {
                 return false;
             }
+            function isUrlBotRow(row) {
+                var trChannel = row.find(".content-channel-column span").text();
+                var trSpeaker = row.find(".content-speaker-column span").text();
+                if(trChannel == "url" && trSpeaker == "URLbot") {
+                    return true;
+                }
+                return false;
+            }
+            function isComingSoon(message) {
+                return /COMING\s+SOON\!(?:\s+\((?<counter>\d+)\))?/.test(message);
+            }
+            function incrementComingSoon(message) {
+                var trMatch = message.match(/COMING\s+SOON\!(?:\s+\((?<counter>\d+)\))?/);
+                if(trMatch !== null) {
+                    var trCounter = trMatch.groups["counter"];
+                    var trValue = 1;
+                    var trNewMessage = "";
+                    if(trCounter !== undefined) {
+                        trValue = parseInt(trCounter) + 1;
+                        // Replace original with new value
+                        trNewMessage = trMessage.replace(/COMING\s+SOON\!\s+\(\d+\)/, "COMING SOON! (" + trValue + ")");
+                    } else {
+                        // Add counter on the end
+                        trNewMessage = trMessage.replace(/COMING\s+SOON\!/, "COMING SOON! (" + trValue + ")");
+                    }
+                    return trNewMessage;
+                }
+                return message;
+            }
             function updateRefreshTime() {
                 var yourTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
                 var yourLocale = (navigator.languages && navigator.languages.length) ?
@@ -484,7 +513,63 @@ if(array_key_exists('date', $_GET)) {
                     $('#elapsed').html(Math.round(elapsedTime) / 1000.0);
                 });
 
-                if(DoExtraAjax) {
+                // At this point, we can check to see if we have any urlbot
+                // rows that were not really filled in, and if so, do our extra
+                // check to see if they can be updated...
+                var FoundComingSoon = false;
+                //console.log("Rows: " + $("#content-table > tbody > tr").length);
+
+                $("#content-table > tbody > tr").each( function(index, tr) {
+                    /*
+                    if(isUrlBotRow(this)) {
+                        var trMessage = $(this).find(".content-message-column").html();
+
+                        if(isComingSoon(trMessage)) {
+                            FoundComingSoon = true;
+                            var trNewMessage = incrementComingSoon(trMessage);
+                            $(this).find(".content-message-column").html(trNewMessage);
+                        }
+                    }
+                     */
+
+                    var trChannel = $(this).find(".content-channel-column span").text();
+                    var trSpeaker = $(this).find(".content-speaker-column span").text();
+                    //console.log("trChannel: " + trChannel);
+                    //console.log("trSpeaker: " + trSpeaker);
+                    if(trChannel == "url" && trSpeaker == "URLbot") {
+                        // It is a URLbot thing
+
+                        var trMessage = $(this).find(".content-message-column").html();
+                        //console.log("trMessage: " + trMessage);
+
+                        //var trMatch = trMessage.match(/COMING SOON!/);
+                        var trMatch = trMessage.match(/COMING\s+SOON\!(?:\s+\((?<counter>\d+)\))?/);
+                        if(trMatch !== null) {
+                            FoundComingSoon = true;
+                            //console.log("trMatch groups:");
+                            //console.log(trMatch.groups);
+                            var trCounter = trMatch.groups["counter"];
+                            var trValue = 1;
+                            var trNewMessage = "";
+                            //console.log("trCounter: " + trCounter);
+                            if(trCounter !== undefined) {
+                                trValue = parseInt(trCounter) + 1;
+                                // Replace original with new value
+                                trNewMessage = trMessage.replace(/COMING\s+SOON\!\s+\(\d+\)/, "COMING SOON! (" + trValue + ")");
+                            } else {
+                                // Add counter on the end
+                                trNewMessage = trMessage.replace(/COMING\s+SOON\!/, "COMING SOON! (" + trValue + ")");
+                            }
+                            //console.log("trValue: " + trValue);
+                            //console.log("trNewMessage: " + trNewMessage);
+                            // Finally, do the actual replacement
+                            $(this).find(".content-message-column").html(trNewMessage);
+                        }
+                    }
+                });
+                //console.log("FoundComingSoon: " + FoundComingSoon);
+
+                if(DoExtraAjax && FoundComingSoon) {
                     // At this point, FirstRow and LastRow hold the unix timestamps
                     // of the content we have in our table.  So if we need to
                     // ask for just the urlbot entries between those, we could
@@ -528,8 +613,28 @@ if(array_key_exists('date', $_GET)) {
                                         newMessage = '<span class="' + blurThis + '">' + newMessage + '</span>';
 
                                         //console.log("OLD Message: " + trMessage);
-                                        //console.log("NEW Message: " + newMessage);
-                                        $(this).find(".content-message-column").html(newMessage);
+                                        // Now, at this point, we should check to see
+                                        // if the message is a placeholder we've been
+                                        // tinkering with...
+                                        var trMatch = trMessage.match(/COMING\s+SOON\!(?:\s+\((?<counter>\d+)\))?/);
+                                        if(trMatch !== null) {
+                                            // It is!  Now, if the replacment is
+                                            // still a placeholder, keep the existing
+                                            // tinkered version...
+                                            var rowMatch = newMessage.match(/COMING\s+SOON\!(?:\s+\((?<counter>\d+)\))?/);
+                                            if(rowMatch !== null) {
+                                                // The new data is still bad, so
+                                                // let's do nothing here..
+                                            } else {
+                                                // The new data is NOT a placeholder
+                                                // so let's use it!
+                                                $(this).find(".content-message-column").html(newMessage);
+                                                //console.log("NEW Message: " + newMessage);
+                                            }
+                                        } else {
+                                            $(this).find(".content-message-column").html(newMessage);
+                                            //console.log("NEW Message: " + newMessage);
+                                        }
                                     }
                                 }
                             });
