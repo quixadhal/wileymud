@@ -352,10 +352,27 @@ if(array_key_exists('date', $_GET)) {
                 // } else if(preg_match('/\[(spoiler|redacted)\]/i', $message) > 0) {
                 return false;
             }
-            function isUrlBotRow(row) {
-                var trChannel = row.find(".content-channel-column span").text();
-                var trSpeaker = row.find(".content-speaker-column span").text();
+            function isUrlBotRow(tr) {
+                var trChannel = tr.find(".content-channel-column span").text();
+                var trSpeaker = tr.find(".content-speaker-column span").text();
                 if(trChannel == "url" && trSpeaker == "URLbot") {
+                    return true;
+                }
+                return false;
+            }
+            function doesUrlBotTimeMatch(tr, row) {
+                var yourTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+                var trDate = tr.find(".content-date-column").text();
+                var trTime = tr.find(".content-time-column span").text();
+                var trMoment = moment.tz(trDate + " " + trTime, yourTimeZone);
+                var trUnix= trMoment.unix();
+
+                // Server Time Zone
+                var oldMoment = moment.tz(row.the_date + " " + row.the_time, "America/Los_Angeles");
+                var newMoment = oldMoment.clone().tz(yourTimeZone);
+                var newUnix= newMoment.unix();
+
+                if(trUnix == newUnix) {
                     return true;
                 }
                 return false;
@@ -372,10 +389,10 @@ if(array_key_exists('date', $_GET)) {
                     if(trCounter !== undefined) {
                         trValue = parseInt(trCounter) + 1;
                         // Replace original with new value
-                        trNewMessage = trMessage.replace(/COMING\s+SOON\!\s+\(\d+\)/, "COMING SOON! (" + trValue + ")");
+                        trNewMessage = message.replace(/COMING\s+SOON\!\s+\(\d+\)/, "COMING SOON! (" + trValue + ")");
                     } else {
                         // Add counter on the end
-                        trNewMessage = trMessage.replace(/COMING\s+SOON\!/, "COMING SOON! (" + trValue + ")");
+                        trNewMessage = message.replace(/COMING\s+SOON\!/, "COMING SOON! (" + trValue + ")");
                     }
                     return trNewMessage;
                 }
@@ -413,7 +430,11 @@ if(array_key_exists('date', $_GET)) {
                 if(LastRow > 0) {
                     dataUrl = dataUrlBase + "?from=" + LastRow + "&limit=" + RowLimit;
                 } else if(TheDate !== "") {
-                    dataUrl = dataUrlBase + "?limit=" + RowLimit + "&date=" + TheDate;
+                    // Server Time Zone
+                    var midnightMoment = moment.tz(TheDate, "America/Los_Angeles");
+                    var midnightUnix = midnightMoment.unix();
+                    dataUrl = dataUrlBase + "?from=" + midnightUnix + "&limit=" + RowLimit;
+                    //dataUrl = dataUrlBase + "?limit=" + RowLimit + "&date=" + TheDate;
                 } else {
                     //dataUrl = dataUrlBase + "?limit=" + RowLimit; // + "&from=1620777600";
                     //dataUrl = dataUrlBase + "?limit=" + RowLimit + "&date=" + server_date();
@@ -520,49 +541,12 @@ if(array_key_exists('date', $_GET)) {
                 //console.log("Rows: " + $("#content-table > tbody > tr").length);
 
                 $("#content-table > tbody > tr").each( function(index, tr) {
-                    /*
-                    if(isUrlBotRow(this)) {
+                    if(isUrlBotRow($(this))) {
                         var trMessage = $(this).find(".content-message-column").html();
 
                         if(isComingSoon(trMessage)) {
                             FoundComingSoon = true;
                             var trNewMessage = incrementComingSoon(trMessage);
-                            $(this).find(".content-message-column").html(trNewMessage);
-                        }
-                    }
-                     */
-
-                    var trChannel = $(this).find(".content-channel-column span").text();
-                    var trSpeaker = $(this).find(".content-speaker-column span").text();
-                    //console.log("trChannel: " + trChannel);
-                    //console.log("trSpeaker: " + trSpeaker);
-                    if(trChannel == "url" && trSpeaker == "URLbot") {
-                        // It is a URLbot thing
-
-                        var trMessage = $(this).find(".content-message-column").html();
-                        //console.log("trMessage: " + trMessage);
-
-                        //var trMatch = trMessage.match(/COMING SOON!/);
-                        var trMatch = trMessage.match(/COMING\s+SOON\!(?:\s+\((?<counter>\d+)\))?/);
-                        if(trMatch !== null) {
-                            FoundComingSoon = true;
-                            //console.log("trMatch groups:");
-                            //console.log(trMatch.groups);
-                            var trCounter = trMatch.groups["counter"];
-                            var trValue = 1;
-                            var trNewMessage = "";
-                            //console.log("trCounter: " + trCounter);
-                            if(trCounter !== undefined) {
-                                trValue = parseInt(trCounter) + 1;
-                                // Replace original with new value
-                                trNewMessage = trMessage.replace(/COMING\s+SOON\!\s+\(\d+\)/, "COMING SOON! (" + trValue + ")");
-                            } else {
-                                // Add counter on the end
-                                trNewMessage = trMessage.replace(/COMING\s+SOON\!/, "COMING SOON! (" + trValue + ")");
-                            }
-                            //console.log("trValue: " + trValue);
-                            //console.log("trNewMessage: " + trNewMessage);
-                            // Finally, do the actual replacement
                             $(this).find(".content-message-column").html(trNewMessage);
                         }
                     }
@@ -585,55 +569,27 @@ if(array_key_exists('date', $_GET)) {
                             //console.log("RowID: " + rowId);
                             // Loop over table rows.
                             $("#content-table > tbody > tr").each( function(index, tr) {
-                                var trChannel = $(this).find(".content-channel-column span").text();
-                                var trSpeaker = $(this).find(".content-speaker-column span").text();
-                                //console.log("trChannel: " + trChannel);
-                                //console.log("trSpeaker: " + trSpeaker);
-                                if(trChannel == "url" && trSpeaker == "URLbot") {
-                                    // It is a URLbot thing
-                                    var yourTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-                                    var trDate = $(this).find(".content-date-column").text();
-                                    var trTime = $(this).find(".content-time-column span").text();
-                                    var trMoment = moment.tz(trDate + " " + trTime, yourTimeZone);
-                                    var trUnix= trMoment.unix();
-
-                                    var oldMoment = moment.tz(row.the_date + " " + row.the_time, "America/Los_Angeles");
-                                    var newMoment = oldMoment.clone().tz(yourTimeZone);
-                                    var newUnix= newMoment.unix();
-                                    if(trUnix == newUnix) {
-                                        // AND the date and time match...
-                                        // So, do what we normally do for urlbot things
+                                if(isUrlBotRow($(this))) {
+                                    if(doesUrlBotTimeMatch($(this), row)) {
+                                        var trMessage = $(this).find(".content-message-column").html();
+                                        var newMessage = row.message.split('%^RESET%^').join('');
                                         var blurThis = "unblurred";
                                         if(shouldBlur(row.channel, row.message)) {
                                             blurThis = "blurry";
                                         }
-                                        var trMessage = $(this).find(".content-message-column").html();
-                                        var newMessage = row.message.split('%^RESET%^').join('');
                                         newMessage = handle_colors(newMessage);
                                         newMessage = '<span class="' + blurThis + '">' + newMessage + '</span>';
 
-                                        //console.log("OLD Message: " + trMessage);
-                                        // Now, at this point, we should check to see
-                                        // if the message is a placeholder we've been
-                                        // tinkering with...
-                                        var trMatch = trMessage.match(/COMING\s+SOON\!(?:\s+\((?<counter>\d+)\))?/);
-                                        if(trMatch !== null) {
-                                            // It is!  Now, if the replacment is
-                                            // still a placeholder, keep the existing
-                                            // tinkered version...
-                                            var rowMatch = newMessage.match(/COMING\s+SOON\!(?:\s+\((?<counter>\d+)\))?/);
-                                            if(rowMatch !== null) {
-                                                // The new data is still bad, so
-                                                // let's do nothing here..
+                                        if(isComingSoon(trMessage)) {
+                                            // The old message is already a placeholder
+                                            if(isComingSoon(newMessage)) {
+                                                // Still just a placeholder, keep the old one
                                             } else {
-                                                // The new data is NOT a placeholder
-                                                // so let's use it!
                                                 $(this).find(".content-message-column").html(newMessage);
-                                                //console.log("NEW Message: " + newMessage);
                                             }
                                         } else {
+                                            // We got a live one!
                                             $(this).find(".content-message-column").html(newMessage);
-                                            //console.log("NEW Message: " + newMessage);
                                         }
                                     }
                                 }
