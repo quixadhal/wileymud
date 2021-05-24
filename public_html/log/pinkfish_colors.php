@@ -1,6 +1,7 @@
 <?php
 require_once 'site_global.php';
 
+$PINKFISH_JS            = "$URL_HOME/log/pinkfish_colors_js.php";
 $PINKFISH_CACHE         = "$FILE_HOME/logpages/pinkfish.json";
 $pinkfish_map           = array();
 

@@ -9,7 +9,6 @@ require_once 'navbar.php';
 $do_extra_ajax          = 1;
 
 $DATA_URL               = "$URL_HOME/log/log_chunk.php";
-$BACKGROUND_URL         = "$URL_HOME/gfx/one_black_pixel.png";
 $RESULT_LIMIT           = 100;  // Fetch no more than this many per request
 $DISPLAY_LIMIT          = 1000; // Keep no more than this many in the table
 
@@ -140,6 +139,8 @@ if(array_key_exists('date', $_GET)) {
         <script src="<?php echo $MOMENT;?>""></script>
         <script src="<?php echo $MOMENT_TZ;?>""></script>
         <script src="<?php echo $SITE_GLOBAL_JS;?>""></script>
+        <script src="<?php echo $BACKGROUND_JS;?>""></script>
+        <script src="<?php echo $PINKFISH_JS;?>""></script>
 
         <script language="javascript">
             var WasAtBottom = false;
@@ -197,56 +198,7 @@ if(array_key_exists('date', $_GET)) {
             var FirstTimeNewRow = true;
             var TheDate = "<?php echo $the_date; ?>";
             var DoExtraAjax = <?php echo $do_extra_ajax; ?>;
-            // 0 -> 23
-            var hour_map = [
-                '#555555',
-                '#555555',
-                '#555555',
-                '#555555',
-                '#bb0000',
-                '#bb0000',
-                '#bbbb00',
-                '#bbbb00',
-                '#ffff55',
-                '#ffff55',
-                '#00bb00',
-                '#00bb00',
-                '#55ff55',
-                '#55ff55',
-                '#bbbbbb',
-                '#bbbbbb',
-                '#55ffff',
-                '#55ffff',
-                '#00bbbb',
-                '#00bbbb',
-                '#5555ff',
-                '#5555ff',
-                '#0000bb',
-                '#0000bb'
-            ];
-<?php
-            echo "var BackgroundImageList = [\n";
-            echo "\"" . implode("\",\n\"", $background_image_list) . "\"\n";
-            echo "];\n";
 
-            echo "var PinkfishMap = {\n";
-            foreach ($pinkfish_map as $pf) {
-                echo "'" . $pf['pinkfish'] . "' : '" . $pf['html'] . "',\n";
-            }
-            echo "};\n";
-?>
-            function handle_colors(s) {
-                var result = s;
-                for([k,v] of Object.entries(PinkfishMap)) {
-                    result = result.split(k).join(v);
-                }
-                return result;
-            }
-            function randomizeBackground() {
-                var bg_choice = Math.floor(BackgroundImageList.length * Random.random());
-                var new_bg = "<?php echo "$BACKGROUND_DIR_URL/"; ?>" + BackgroundImageList[bg_choice];
-                $("#background-img").attr("src", new_bg);
-            }
             function shouldBlur(channel, message) {
                 if(channel == "free_speech") {
                     return true;

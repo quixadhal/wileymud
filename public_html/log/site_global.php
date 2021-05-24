@@ -65,8 +65,10 @@ $mudlist                = json_decode($mudlist_text, true, 512, JSON_INVALID_UTF
 $WILEY_BUILD_NUMBER     = $mudlist["version"]["build"];
 $WILEY_BUILD_DATE       = $mudlist["version"]["date"];
 $WILEY_TIME             = $mudlist["time"];
-$WILEY_BANNER_URL       = "$URL_HOME/gfx/wileymud3.png";
-$WILEY_BANNER_WIDTH     = 247;
-$WILEY_BANNER_HEIGHT    = 48;
+$WILEY_BANNER_ICON      = "$URL_HOME/gfx/wileymud3.png";
+$WILEY_BANNER_WIDTH     = 334;
+$WILEY_BANNER_HEIGHT    = sprintf("%dpx", (int)($ICON_BASE * $SCALE));
+//$WILEY_BANNER_HEIGHT    = 48;
+$WILEY_URL              = "telnet://wileymud.themud.org:3000";
 
 ?>

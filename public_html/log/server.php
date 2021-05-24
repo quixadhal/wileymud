@@ -4,7 +4,6 @@ require_once 'site_global.php';
 require_once 'page_source.php';
 require_once 'random_background.php';
 require_once 'navbar.php';
-$BACKGROUND_URL         = "$URL_HOME/gfx/one_black_pixel.png";
 ?>
 <html>
     <head>
@@ -23,45 +22,10 @@ $BACKGROUND_URL         = "$URL_HOME/gfx/one_black_pixel.png";
         <script src="<?php echo $MOMENT;?>""></script>
         <script src="<?php echo $MOMENT_TZ;?>""></script>
         <script src="<?php echo $SITE_GLOBAL_JS;?>""></script>
+        <script src="<?php echo $BACKGROUND_JS;?>""></script>
 
         <script language="javascript">
             var Random = new MersenneTwister();
-            var hour_map = [
-                '#555555',
-                '#555555',
-                '#555555',
-                '#555555',
-                '#bb0000',
-                '#bb0000',
-                '#bbbb00',
-                '#bbbb00',
-                '#ffff55',
-                '#ffff55',
-                '#00bb00',
-                '#00bb00',
-                '#55ff55',
-                '#55ff55',
-                '#bbbbbb',
-                '#bbbbbb',
-                '#55ffff',
-                '#55ffff',
-                '#00bbbb',
-                '#00bbbb',
-                '#5555ff',
-                '#5555ff',
-                '#0000bb',
-                '#0000bb'
-            ];
-<?php
-            echo "var BackgroundImageList = [\n";
-            echo "\"" . implode("\",\n\"", $background_image_list) . "\"\n";
-            echo "];\n";
-?>
-            function randomizeBackground() {
-                var bg_choice = Math.floor(BackgroundImageList.length * Random.random());
-                var new_bg = "<?php echo "$BACKGROUND_DIR_URL/"; ?>" + BackgroundImageList[bg_choice];
-                $("#background-img").attr("src", new_bg);
-            }
             function updateRefreshTime() {
                 var yourTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
                 var yourLocale = (navigator.languages && navigator.languages.length) ?
@@ -100,8 +64,36 @@ $BACKGROUND_URL         = "$URL_HOME/gfx/one_black_pixel.png";
             <img class="nav-img glowing" id="navbar-button-question" title="???!" src="<?php echo $QUESTION_ICON; ?>" onclick="window.location.href='<?php echo $QUESTION_URL; ?>';" />
         </div>
         <div id="navbar-center">
-            <img class="nav-img glowing" id="navbar-button-top" title="Top of page" src="<?php echo $TOP_ICON; ?>" onclick="scroll_to('content-top');" />
-            <img class="nav-img glowing" id="navbar-button-bottom" title="Bottom of page" src="<?php echo $BOTTOM_ICON; ?>" onclick="scroll_to('content-bottom');" />
+            <table id="wileymud-table">
+                <tr>
+                    <td rowspan="2" align="right" width="<?php echo $WILEY_BANNER_WIDTH; ?>">
+                        <img class="nav-banner-img glowing" id="navbar-button-wileymud" width="<?php echo $WILEY_BANNER_WIDTH; ?>" title="WileyMUD" src="<?php echo $WILEY_BANNER_ICON; ?>" />
+                    </td>
+                    <td class="wileymud-gap">&nbsp;</td>
+                    <td class="wileymud-version" align="right">
+                        Version:
+                    </td>
+                    <td class="wileymud-gap">&nbsp;</td>
+                    <td class="wileymud-version" align="left">
+                        <?php echo $WILEY_BUILD_NUMBER; ?>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="wileymud-gap">&nbsp;</td>
+                    <td class="wileymud-build-date" align="right">
+                        Build Date:
+                    </td>
+                    <td class="wileymud-gap">&nbsp;</td>
+                    <td class="wileymud-build-date" align="left">
+                        <?php echo $WILEY_BUILD_DATE; ?>
+                    </td>
+                </tr>
+            </table>
+<!--
+            <img class="nav-banner-img glowing" id="navbar-button-wileymud" width="<?php echo $WILEY_BANNER_WIDTH; ?>" title="WileyMUD" src="<?php echo $WILEY_BANNER_ICON; ?>" />
+            <span id="wileymud-version">&nbsp;&nbsp;&nbsp;Version:&nbsp;<?php echo $WILEY_BUILD_NUMBER; ?></span>
+            <span id="wileymud-build-date">Build Date:&nbsp;<?php echo $WILEY_BUILD_DATE; ?></span>
+-->
         </div>
         <div id="navbar-right">
             <span id="refresh-time">--:-- ---</span>

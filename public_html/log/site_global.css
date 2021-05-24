@@ -5,7 +5,7 @@ html, body {
 }
 table {
     table-layout: fixed;
-    max-width: 99%;
+    max-width: 100%;
     overflow-x: hidden;
     border: 0px;
     padding: 0px;

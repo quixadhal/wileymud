@@ -1,11 +1,13 @@
 <?php
 require_once 'site_global.php';
 
+$BACKGROUND_URL         = "$URL_HOME/gfx/one_black_pixel.png";
 $BACKGROUND_DIR         = "$FILE_HOME/gfx/wallpaper/";
 $BACKGROUND_DIR_URL     = "$URL_HOME/gfx/wallpaper";
 $BACKGROUND_FILE        = "$FILE_HOME/log/random_background.css";
 $BACKGROUND_TIME        = filemtime($BACKGROUND_FILE);
 $BACKGROUND_CSS         = "$URL_HOME/log/random_background.css?version=$BACKGROUND_TIME";
+$BACKGROUND_JS          = "$URL_HOME/log/random_background_js.php";
 $background_image_list  = array();
 
 function random_background($dir) {

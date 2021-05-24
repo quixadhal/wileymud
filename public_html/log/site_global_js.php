@@ -2,6 +2,33 @@
 require_once 'site_global.php';
 header("Content-Type: application/json; charset=UTF-8");
 ?>
+// 0 -> 23
+var hour_map = [
+    '#555555',
+    '#555555',
+    '#555555',
+    '#555555',
+    '#bb0000',
+    '#bb0000',
+    '#bbbb00',
+    '#bbbb00',
+    '#ffff55',
+    '#ffff55',
+    '#00bb00',
+    '#00bb00',
+    '#55ff55',
+    '#55ff55',
+    '#bbbbbb',
+    '#bbbbbb',
+    '#55ffff',
+    '#55ffff',
+    '#00bbbb',
+    '#00bbbb',
+    '#5555ff',
+    '#5555ff',
+    '#0000bb',
+    '#0000bb'
+];
 function toggleDiv(divID) {
     element = document.getElementById(divID);
     if(element !== undefined && element !== null) {
