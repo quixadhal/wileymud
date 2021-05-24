@@ -6,12 +6,7 @@ require_once 'random_background.php';
 require_once 'pinkfish_colors.php';
 require_once 'navbar.php';
 
-$allowed                = false;
 $do_extra_ajax          = 1;
-
-if(is_local_ip()) {
-    $allowed = true;
-}
 
 $DATA_URL               = "$URL_HOME/log/log_chunk.php";
 $BACKGROUND_URL         = "$URL_HOME/gfx/one_black_pixel.png";
@@ -543,10 +538,10 @@ if(array_key_exists('date', $_GET)) {
             <img class="nav-img" title="???!" src="<?php echo $QUESTION_ICON; ?>" />
         </div>
         <div id="navbar-left">
-            <img class="nav-img glowing" id="navbar-button-mudlist" title="List of MUDs" src="<?php echo $MUDLIST_ICON; ?>" onclick="window.location.href='http://wileymud.themud.org/~wiley/mudlist.php';" />
-            <img class="nav-img glowing" id="navbar-button-themudorg" title="Another I3 Log Page" src="<?php echo $LOG_ICON; ?>" onclick="window.location.href='https://themud.org/chanhist.php#Channel=all';" />
-            <img class="nav-img glowing" id="navbar-button-pie" title="Everyone loves PIE!" src="<?php echo $PIE_ICON; ?>" onclick="window.location.href='http://wileymud.themud.org/~wiley/pie.php';" />
-            <img class="nav-img glowing" id="navbar-button-question" title="???!" src="<?php echo $QUESTION_ICON; ?>" onclick="window.location.href='http://wileymud.themud.org/~wiley/random_video.php';" />
+            <img class="nav-img glowing" id="navbar-button-mudlist" title="List of MUDs" src="<?php echo $MUDLIST_ICON; ?>" onclick="window.location.href='<?php echo $MUDLIST_URL; ?>';" />
+            <img class="nav-img glowing" id="navbar-button-themudorg" title="Another I3 Log Page" src="<?php echo $OTHER_LOG_ICON; ?>" onclick="window.location.href='<?php echo $OTHER_LOG_URL; ?>';" />
+            <img class="nav-img glowing" id="navbar-button-pie" title="Everyone loves PIE!" src="<?php echo $PIE_ICON; ?>" onclick="window.location.href='<?php echo $PIE_URL; ?>';" />
+            <img class="nav-img glowing" id="navbar-button-question" title="???!" src="<?php echo $QUESTION_ICON; ?>" onclick="window.location.href='<?php echo $QUESTION_URL; ?>';" />
         </div>
         <div id="navbar-center">
             <img class="nav-img glowing" id="navbar-button-top" title="Top of page" src="<?php echo $TOP_ICON; ?>" onclick="scroll_to('content-top');" />
@@ -554,9 +549,9 @@ if(array_key_exists('date', $_GET)) {
         </div>
         <div id="navbar-right">
             <span id="refresh-time">--:-- ---</span>
-            <img class="nav-img glowing" id="navbar-button-server" title="Crusty Server Statistics" src="<?php echo $SERVER_ICON; ?>" onclick="window.location.href='http://wileymud.themud.org/~wiley/server.php';" />
-            <img class="nav-img glowing" id="navbar-button-github" title="All of this in Github" src="<?php echo $GITHUB_ICON; ?>" onclick="window.location.href='https://github.com/quixadhal/wileymud';" />
-            <img class="nav-img glowing" id="navbar-button-discord" title="The I3 Discord" src="<?php echo $DISCORD_ICON; ?>" onclick="window.location.href='https://discord.gg/kUduSsJ';" />
+            <img class="nav-img glowing" id="navbar-button-server" title="Crusty Server Statistics" src="<?php echo $SERVER_ICON; ?>" onclick="window.location.href='<?php echo $SERVER_URL; ?>';" />
+            <img class="nav-img glowing" id="navbar-button-github" title="All of this in Github" src="<?php echo $GITHUB_ICON; ?>" onclick="window.location.href='<?php echo $GITHUB_URL; ?>';" />
+            <img class="nav-img glowing" id="navbar-button-discord" title="The I3 Discord" src="<?php echo $DISCORD_ICON; ?>" onclick="window.location.href='<?php echo $DISCORD_URL; ?>';" />
         </div>
         <div id="fake-navbar">
             <img class="nav-img" title="???!" src="<?php echo $QUESTION_ICON; ?>" />

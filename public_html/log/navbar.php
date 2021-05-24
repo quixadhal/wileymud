@@ -11,14 +11,24 @@ $TOP_ICON               = "$URL_HOME/gfx/nav/green/top.png";
 $BOTTOM_ICON            = "$URL_HOME/gfx/nav/green/bottom.png";
 
 $MUDLIST_ICON           = "$URL_HOME/gfx/mud.png";
-$LOG_ICON               = "$URL_HOME/gfx/other_logs.png";
+$OTHER_LOG_ICON         = "$URL_HOME/gfx/other_logs.png";
+$LOG_ICON               = "$URL_HOME/gfx/log.png";
 $PIE_ICON               = "$URL_HOME/gfx/pie_chart.png";
 $QUESTION_ICON          = "$URL_HOME/gfx/question_girl3.png";
-$DISCORD_ICON           = "$URL_HOME/gfx/discord.png";
 $SERVER_ICON            = "$URL_HOME/gfx/server_icon.png";
 $GITHUB_ICON            = "$URL_HOME/gfx/github1600.png";
+$DISCORD_ICON           = "$URL_HOME/gfx/discord.png";
 
 $NAVBAR_FILE            = "$FILE_HOME/log/navbar_css.php";
 $NAVBAR_TIME            = filemtime($NAVBAR_FILE);
 $NAVBAR_CSS             = "$URL_HOME/log/navbar_css.php?version=$NAVBAR_TIME";
+
+$MUDLIST_URL            = "$URL_HOME/mudlist.php";
+$LOG_URL                = "$URL_HOME/log/";
+$OTHER_LOG_URL          = "https://themud.org/chanhist.php#Channel=all";
+$PIE_URL                = "$URL_HOME/pie.php";
+$QUESTION_URL           = "$URL_HOME/random_video.php";
+$SERVER_URL             = "$URL_HOME/log/server.php";
+$GITHUB_URL             = "https://github.com/quixadhal/wileymud";
+$DISCORD_URL            = "https://discord.gg/kUduSsJ";
 ?>

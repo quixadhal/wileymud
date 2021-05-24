@@ -8,8 +8,23 @@ function is_local_ip() {
         return 1;
     return 0;
 }
+function pcmd($command) {
+    $data = "";
+    $fp = popen("$command", "r");
+    do {
+        $data .= fread($fp, 8192);
+    } while(!feof($fp));
+    pclose($fp);
+    echo $data;
+}
+
+$isLocal                = false;
+if(is_local_ip()) {
+    $isLocal = true;
+}
 
 $URL_HOME               = "http://wileymud.themud.org/~wiley";
+//$URL_HOME               = "http://104.156.100.167/~wiley";
 $FILE_HOME              = "/home/wiley/public_html";
 
 $JQ                     = "$URL_HOME/log/jquery-3.3.1.min.js";
@@ -43,4 +58,15 @@ $ICON_SIZE              = sprintf("%dpx", (int)($ICON_BASE * $SCALE));
 $FONT_SIZE              = sprintf("%dpt", (int)($FONT_BASE * $SCALE));
 $SMALL_FONT_SIZE        = sprintf("%dpt", (int)($FONT_BASE * $SCALE * 0.90));
 $TINY_FONT_SIZE         = sprintf("%dpt", (int)($FONT_BASE * $SCALE * 0.70));
+
+$MUDLIST_FILE           = "$FILE_HOME/mudlist.json";
+$mudlist_text           = file_get_contents($MUDLIST_FILE);
+$mudlist                = json_decode($mudlist_text, true, 512, JSON_INVALID_UTF8_SUBSTITUTE);
+$WILEY_BUILD_NUMBER     = $mudlist["version"]["build"];
+$WILEY_BUILD_DATE       = $mudlist["version"]["date"];
+$WILEY_TIME             = $mudlist["time"];
+$WILEY_BANNER_URL       = "$URL_HOME/gfx/wileymud3.png";
+$WILEY_BANNER_WIDTH     = 247;
+$WILEY_BANNER_HEIGHT    = 48;
+
 ?>
