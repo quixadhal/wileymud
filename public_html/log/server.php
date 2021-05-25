@@ -12,6 +12,11 @@ $SPEEDTEST_FILE         = "$FILE_HOME/speedtest.json";
 $SPEEDTEST_WIFI_FILE    = "$FILE_HOME/speedtest_wifi.json";
 $SPEEDTEST_AVG_FILE     = "$FILE_HOME/speedtest_avg.json";
 
+$SPEEDTEST_HEIGHT_BASE  = 200;
+$SPEEDTEST_WIDTH_BASE   = 375;
+$SPEEDTEST_HEIGHT       = sprintf("%dpx", (int)($SPEEDTEST_HEIGHT_BASE * $SCALE));
+$SPEEDTEST_WIDTH        = sprintf("%dpx", (int)($SPEEDTEST_WIDTH_BASE * $SCALE));
+
 $speedtest_text = file_get_contents($SPEEDTEST_FILE);
 $speedtest = json_decode($speedtest_text, true, 512, JSON_INVALID_UTF8_SUBSTITUTE);
 $speedtest["unix_timestamp"] = strtotime($speedtest["timestamp"]);
@@ -22,7 +27,7 @@ $speedtest_wifi_text = file_get_contents($SPEEDTEST_WIFI_FILE);
 $speedtest_wifi = json_decode($speedtest_wifi_text, true, 512, JSON_INVALID_UTF8_SUBSTITUTE);
 $speedtest_wifi["unix_timestamp"] = strtotime($speedtest_wifi["timestamp"]);
 $speedtest_wifi["the_time"] = strftime("%Y-%m-%d %H:%M:%S %Z", $speedtest_wifi["unix_timestamp"]);
-$speedtest_wifi["speedtest_wifi"] = $speedtest_wifi["result"]["url"] . ".png";
+$speedtest_wifi["speedtest_current"] = $speedtest_wifi["result"]["url"] . ".png";
 
 $speedtest_avg_text = file_get_contents($SPEEDTEST_AVG_FILE);
 $speedtest_avg = json_decode($speedtest_avg_text, true, 512, JSON_INVALID_UTF8_SUBSTITUTE);
@@ -38,7 +43,7 @@ $speedtest_avg = json_decode($speedtest_avg_text, true, 512, JSON_INVALID_UTF8_S
         <link rel="stylesheet" href="<?php echo $BACKGROUND_CSS;?>">
         <link rel="stylesheet" href="<?php echo $NAVBAR_CSS;?>">
         <style>
-            #greeting {
+            .greeting {
                 font-family: Consolas, "Lucida Console", Monaco, Courier, monospace;
                 font-size: <?php echo $FONT_SIZE; ?>;
                 overflow-x: hidden;
@@ -49,6 +54,15 @@ $speedtest_avg = json_decode($speedtest_avg_text, true, 512, JSON_INVALID_UTF8_S
                 text-align: left;
                 align: left;
             }
+            .greeting hr {
+                width: 75%;
+                max-width: 75%;
+                min-width: 75%;
+                align: left;
+                text-align: left;
+                margin-left: 0;
+            }
+
             #content-table {
                 font-family: Consolas, "Lucida Console", Monaco, Courier, monospace;
                 font-size: <?php echo $FONT_SIZE; ?>;
@@ -71,7 +85,7 @@ $speedtest_avg = json_decode($speedtest_avg_text, true, 512, JSON_INVALID_UTF8_S
             }
             .content-message-column {
                 text-align: left;
-                white-space: nowrap;
+                white-space: normal;
                 overflow-x: hidden;
                 padding-left: 1ch;
                 padding-right: 1ch;
@@ -123,6 +137,46 @@ $speedtest_avg = json_decode($speedtest_avg_text, true, 512, JSON_INVALID_UTF8_S
                 max-height: 300px;
                 overflow: hidden;
                 object-fit: cover;
+            }
+
+            #speedtest-table {
+                font-family: Consolas, "Lucida Console", Monaco, Courier, monospace;
+                font-size: <?php echo $FONT_SIZE; ?>;
+                overflow-x: hidden;
+                min-width: 100%;
+                width: 100%;
+                text-align: center;
+                align: center;
+                background-color: <?php echo $ODD; ?>;
+            }
+            .speedtest-left-column {
+                font-family: Consolas, "Lucida Console", Monaco, Courier, monospace;
+                font-size: <?php echo $FONT_SIZE; ?>;
+                text-align: right;
+                align: right;
+                width: calc(<?php echo $SPEEDTEST_WIDTH; ?> + 20px);
+                padding-right: 20px;
+            }
+            .speedtest-right-column {
+                font-family: Consolas, "Lucida Console", Monaco, Courier, monospace;
+                font-size: <?php echo $FONT_SIZE; ?>;
+                text-align: left;
+                align: left;
+                width: calc(<?php echo $SPEEDTEST_WIDTH; ?> + 20px);
+                padding-left: 20px;
+            }
+            .speedtest-img {
+                border: none;
+                max-width: <?php echo $SPEEDTEST_WIDTH; ?>;
+                max-height: <?php echo $SPEEDTEST_HEIGHT; ?>;
+                overflow: hidden;
+                object-fit: cover;
+            }
+            .speedtest-text-column {
+                font-family: Consolas, "Lucida Console", Monaco, Courier, monospace;
+                font-size: <?php echo $SMALL_FONT_SIZE; ?>;
+                text-align: center;
+                align: center;
             }
         </style>
 
@@ -198,10 +252,9 @@ $speedtest_avg = json_decode($speedtest_avg_text, true, 512, JSON_INVALID_UTF8_S
         <div id="fake-navbar">
             <img class="nav-img" title="???!" src="<?php echo $QUESTION_ICON; ?>" />
         </div>
-        <div id="greeting">
+        <div class="greeting">
             <h1>Old Crusty MUD Server</h1>
-            <hr width="75%" align="left" />
-            <h3>Hardware purchased:</h3>
+            <hr />
         </div>
         <table id="content-table">
             <tr>
@@ -283,6 +336,37 @@ $speedtest_avg = json_decode($speedtest_avg_text, true, 512, JSON_INVALID_UTF8_S
                 <td class="content-message-column">Total purchase price</td>
                 <td class="content-date-column">2020-12-24</td>
                 <td class="content-status-column">TOTAL</td>
+            </tr>
+        </table>
+
+        <div class="greeting">
+            <hr />
+        </div>
+        <table id="speedtest-table">
+            <tr>
+                <td class="speedtest-left-column"> <img class="speedtest-img" src="<?php echo $speedtest['speedtest_current']; ?>" /> </td>
+<td class="speedtest-text-column" rowspan="0">
+<pre>
+<?php
+    printf("%s\n", ">>> This Week's Performance Average <<<");
+    printf("%23s %20s %20s %20s\n", "Interface", "Average Ping", "Average Download", "Average Upload");
+    printf("%23s %20s %20s %20s\n", "-----------------------", "--------------------", "--------------------", "--------------------");
+    ksort($speedtest_avg);
+    foreach ($speedtest_avg as $k => $v) {
+        $wire   = sprintf("%s (%s)", $k, $v["wire"]);
+        $ping   = sprintf("%.3f ms", $v["ping"]);
+        $down   = sprintf("%.3f Mbps", $v["download"]);
+        $up     = sprintf("%.3f Mbps", $v["upload"]);
+        printf("%23s %20s %20s %20s\n", $wire, $ping, $down, $up);
+    }
+?>
+</pre>
+</td>
+                <td class="speedtest-right-column"> <img class="speedtest-img" src="<?php echo $speedtest_wifi['speedtest_current']; ?>" /> </td>
+            </tr>
+            <tr>
+                <td class="speedtest-left-column">Bellevue&nbsp;(wired)</td>
+                <td class="speedtest-right-column">Bellevue&nbsp;(wi-fi)</td>
             </tr>
         </table>
 
