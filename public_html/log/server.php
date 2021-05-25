@@ -247,6 +247,17 @@ $speedtest_avg = json_decode($speedtest_avg_text, true, 512, JSON_INVALID_UTF8_S
         <script language="javascript">
             var timeSpent;
             var backgroundTimer;
+
+            function toggleLight(divID) {
+                element = document.getElementById(divID);
+                    //console.log("color: " + element.style.color);
+                    // It internally sets the color to "rgb(r, g, b)"...
+                    if(element.style.color == 'rgb(128, 128, 128)') {
+                        element.style.color = '#00FF00';
+                    } else {
+                        element.style.color = '#808080';
+                    }
+            }
             $(document).ready(function() {
                 hideDiv('uptime');
                 hideDiv('network');
@@ -436,14 +447,24 @@ $speedtest_avg = json_decode($speedtest_avg_text, true, 512, JSON_INVALID_UTF8_S
         <div class="greeting">
             <hr class="hr-100" />
             <div id="page-load-time" align="right">Page Loaded.</div>
-            <a href="javascript:;" onmousedown="toggleDiv('uptime');">Uptime</a>
-            <a href="javascript:;" onmousedown="toggleDiv('network');">Network</a>
-            <a href="javascript:;" onmousedown="toggleDiv('cpu');">CPU</a>
-            <a href="javascript:;" onmousedown="toggleDiv('memory');">Memory</a>
-            <a href="javascript:;" onmousedown="toggleDiv('disk');">Disk</a>
-            <a href="javascript:;" onmousedown="toggleDiv('temperature');">Temperature</a>
-            <a href="javascript:;" onmousedown="toggleDiv('hacklog');">HACKLOG</a>
-            <a href="javascript:;" onmousedown="toggleDiv('page-source');">Source</a>
+            <span style="font-size: <?php echo $BIG_FONT_SIZE; ?>;">
+                <span id="uptime-light" style="color: #808080;">&diams;</span>
+                <a href="javascript:;" onmousedown="toggleDiv('uptime'); toggleLight('uptime-light');">Uptime</a>
+                <span id="network-light" style="color: #808080;">&diams;</span>
+                <a href="javascript:;" onmousedown="toggleDiv('network'); toggleLight('network-light');">Network</a>
+                <span id="cpu-light" style="color: #808080;">&diams;</span>
+                <a href="javascript:;" onmousedown="toggleDiv('cpu'); toggleLight('cpu-light');">CPU</a>
+                <span id="memory-light" style="color: #808080;">&diams;</span>
+                <a href="javascript:;" onmousedown="toggleDiv('memory'); toggleLight('memory-light');">Memory</a>
+                <span id="disk-light" style="color: #808080;">&diams;</span>
+                <a href="javascript:;" onmousedown="toggleDiv('disk'); toggleLight('disk-light');">Disk</a>
+                <span id="temperature-light" style="color: #808080;">&diams;</span>
+                <a href="javascript:;" onmousedown="toggleDiv('temperature'); toggleLight('temperature-light');">Temperature</a>
+                <span id="hacklog-light" style="color: #808080;">&diams;</span>
+                <a href="javascript:;" onmousedown="toggleDiv('hacklog'); toggleLight('hacklog-light');">HACKLOG</a>
+                <span id="page-source-light" style="color: #808080;">&diams;</span>
+                <a href="javascript:;" onmousedown="toggleDiv('page-source'); toggleLight('page-source-light');">Source</a>
+            </span>
         </div>
 
         <div id="uptime" >
