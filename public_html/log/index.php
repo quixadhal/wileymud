@@ -111,10 +111,10 @@ if(array_key_exists('date', $_GET)) {
                 padding-left: 1ch;
             }
             #content-table tr:nth-child(even) {
-                background-color: <?php echo $EVEN; ?>
+                background-color: <?php echo $EVEN; ?>;
             }
             #content-table tr:nth-child(odd) {
-                background-color: <?php echo $ODD; ?>
+                background-color: <?php echo $ODD; ?>;
             }
 
             #page-load-time {
