@@ -333,7 +333,7 @@ $speedtest_avg = json_decode($speedtest_avg_text, true, 512, JSON_INVALID_UTF8_S
         <table id="content-table">
             <tr>
                 <td class="content-price-column">54.99</td>
-                <td class="content-message-column"><a href="http://www.newegg.com/Product/Product.aspx?Item=N82E16813157335">ASRock B75M-DGS LGA 1155 Intel B75 Micro ATX Intel Motherboard</a></td>
+                <td class="content-message-column"><a target="__pricelist" href="http://www.newegg.com/Product/Product.aspx?Item=N82E16813157335">ASRock B75M-DGS LGA 1155 Intel B75 Micro ATX Intel Motherboard</a></td>
                 <td class="content-date-column">2012-11-21</td>
                 <td class="content-status-column">&nbsp;</td>
                 <td class="content-image-column" rowspan="0">
@@ -347,55 +347,55 @@ $speedtest_avg = json_decode($speedtest_avg_text, true, 512, JSON_INVALID_UTF8_S
             </tr>
             <tr>
                 <td class="content-price-column">49.99</td>
-                <td class="content-message-column"><a href="http://www.newegg.com/Product/Product.aspx?Item=N82E16811147153">Rosewill CHALLENGER Black Gaming ATX Mid Tower Case</a></td>
+                <td class="content-message-column"><a target="__pricelist" href="http://www.newegg.com/Product/Product.aspx?Item=N82E16811147153">Rosewill CHALLENGER Black Gaming ATX Mid Tower Case</a></td>
                 <td class="content-date-column">2012-11-21</td>
                 <td class="content-status-column">&nbsp;</td>
             </tr>
             <tr>
                 <td class="content-price-column">36.99</td>
-                <td class="content-message-column"><a href="http://www.newegg.com/Product/Product.aspx?Item=N82E16817139026">Corsair CX430 ATX Active PFC Power Supply</a></td>
+                <td class="content-message-column"><a target="__pricelist" href="http://www.newegg.com/Product/Product.aspx?Item=N82E16817139026">Corsair CX430 ATX Active PFC Power Supply</a></td>
                 <td class="content-date-column">2012-11-21</td>
                 <td class="content-status-column">&nbsp;</td>
             </tr>
             <tr>
                 <td class="content-price-column">49.99</td>
-                <td class="content-message-column"><a href="http://www.newegg.com/Product/Product.aspx?Item=N82E16820231489">G.Skill Ripjaw X Series 16GB (2 x 8GB) DDR3 SDRAM (PC3 12800)</a></td>
+                <td class="content-message-column"><a target="__pricelist" href="http://www.newegg.com/Product/Product.aspx?Item=N82E16820231489">G.Skill Ripjaw X Series 16GB (2 x 8GB) DDR3 SDRAM (PC3 12800)</a></td>
                 <td class="content-date-column">2012-11-21</td>
                 <td class="content-status-column">&nbsp;</td>
             </tr>
             <tr>
                 <td class="content-price-column">15.99</td>
-                <td class="content-message-column"><a href="http://www.newegg.com/Product/Product.aspx?Item=N82E16827106289">Lite-On SATA DVD Burner</a> (A burner was cheaper than a non-burner!)</td>
+                <td class="content-message-column"><a target="__pricelist" href="http://www.newegg.com/Product/Product.aspx?Item=N82E16827106289">Lite-On SATA DVD Burner</a> (A burner was cheaper than a non-burner!)</td>
                 <td class="content-date-column">2012-11-21</td>
                 <td class="content-status-column">&nbsp;</td>
             </tr>
             <tr>
                 <td class="content-price-column">64.99</td>
-                <td class="content-message-column"><a href="http://www.newegg.com/Product/Product.aspx?Item=N82E16819116406">Intel Pentium G630 Sandy Bridge 2.7GHz Dual Core CPU (LGA 1155)</a></td>
+                <td class="content-message-column"><a target="__pricelist" href="http://www.newegg.com/Product/Product.aspx?Item=N82E16819116406">Intel Pentium G630 Sandy Bridge 2.7GHz Dual Core CPU (LGA 1155)</a></td>
                 <td class="content-date-column">2012-11-21</td>
                 <td class="content-status-column">&nbsp;</td>
             </tr>
             <tr>
                 <td class="content-price-column">74.99</td>
-                <td class="content-message-column"><a href="http://www.newegg.com/Product/Product.aspx?Item=N82E16822236070">WD Cavier Green 1TB SATA hard drive</a></td>
+                <td class="content-message-column"><a target="__pricelist" href="http://www.newegg.com/Product/Product.aspx?Item=N82E16822236070">WD Cavier Green 1TB SATA hard drive</a></td>
                 <td class="content-date-column">2012-11-21</td>
                 <td class="content-status-column">RECYCLED</td>
             </tr>
             <tr>
                 <td class="content-price-column">119.99</td>
-                <td class="content-message-column"><a href="http://www.newegg.com/Product/Product.aspx?Item=N82E16822136749">WD My Book 3TB Desktop USB 3.0 External Hard Drive</a> (now internal)</td>
+                <td class="content-message-column"><a target="__pricelist" href="http://www.newegg.com/Product/Product.aspx?Item=N82E16822136749">WD My Book 3TB Desktop USB 3.0 External Hard Drive</a> (now internal)</td>
                 <td class="content-date-column">2015-06-11</td>
                 <td class="content-status-column">RECYCLED</td>
             </tr>
             <tr>
                 <td class="content-price-column">147.99</td>
-                <td class="content-message-column"><a href="https://www.amazon.com/gp/product/B00IRRDHUI/">Crucial M550 256GB SATA 2.5" 7mm (with 9.5mm adapter) Internal Solid State Drive</a></td>
+                <td class="content-message-column"><a target="__pricelist" href="https://www.amazon.com/gp/product/B00IRRDHUI/">Crucial M550 256GB SATA 2.5" 7mm (with 9.5mm adapter) Internal Solid State Drive</a></td>
                 <td class="content-date-column">2018-01-17</td>
                 <td class="content-status-column">RECYCLED</td>
             </tr>
             <tr>
                 <td class="content-price-column">34.99</td>
-                <td class="content-message-column"><a href="https://www.amazon.com/gp/product/B016K0896K/">TP-Link AC1300 PCIe WiFi PCIe Card(Archer T6E)- 2.4G/5G Dual Band Wireless PCI Express Adapter</a></td>
+                <td class="content-message-column"><a target="__pricelist" href="https://www.amazon.com/gp/product/B016K0896K/">TP-Link AC1300 PCIe WiFi PCIe Card(Archer T6E)- 2.4G/5G Dual Band Wireless PCI Express Adapter</a></td>
                 <td class="content-date-column">2020-12-24</td>
                 <td class="content-status-column">NEW!</td>
             </tr>
