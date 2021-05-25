@@ -64,6 +64,7 @@ $speedtest_avg = json_decode($speedtest_avg_text, true, 512, JSON_INVALID_UTF8_S
                 align: left;
                 text-align: left;
                 margin-left: 0;
+                border-color: #d0d0d0;
             }
             .hr-100 {
                 width: 100%;
@@ -72,6 +73,7 @@ $speedtest_avg = json_decode($speedtest_avg_text, true, 512, JSON_INVALID_UTF8_S
                 align: left;
                 text-align: left;
                 margin-left: 0;
+                border-color: #d0d0d0;
             }
 
             #content-table {
