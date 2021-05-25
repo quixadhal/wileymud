@@ -22,6 +22,7 @@ $DISCORD_ICON           = "$URL_HOME/gfx/discord.png";
 $NAVBAR_FILE            = "$FILE_HOME/log/navbar_css.php";
 $NAVBAR_TIME            = filemtime($NAVBAR_FILE);
 $NAVBAR_CSS             = "$URL_HOME/log/navbar_css.php?version=$NAVBAR_TIME";
+$NAVBAR_JS              = "$URL_HOME/log/navbar_js.php";
 
 $MUDLIST_URL            = "$URL_HOME/mudlist.php";
 $LOG_URL                = "$URL_HOME/log/";

@@ -141,6 +141,7 @@ if(array_key_exists('date', $_GET)) {
         <script src="<?php echo $SITE_GLOBAL_JS;?>""></script>
         <script src="<?php echo $BACKGROUND_JS;?>""></script>
         <script src="<?php echo $PINKFISH_JS;?>""></script>
+        <script src="<?php echo $NAVBAR_JS;?>""></script>
 
         <script language="javascript">
             var WasAtBottom = false;
@@ -180,7 +181,6 @@ if(array_key_exists('date', $_GET)) {
             }
         </script>
         <script language="javascript">
-            var Random = new MersenneTwister();
             var ContentTimer;
             var CountdownTimer;
             var Ticks = 0;
@@ -256,21 +256,6 @@ if(array_key_exists('date', $_GET)) {
                     return trNewMessage;
                 }
                 return message;
-            }
-            function updateRefreshTime() {
-                var yourTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-                var yourLocale = (navigator.languages && navigator.languages.length) ?
-                    navigator.languages[0] : navigator.language;
-
-                var momentObj = moment().tz(yourTimeZone);
-                //var momentStr = momentObj.format('YYYY-MM-DD HH:mm:ss z');
-                var momentStr = momentObj.format('HH:mm z');
-                var momentHour = momentObj.hour();
-
-                var rt = document.getElementById("refresh-time");
-                //yt.innerHTML = "[" + yourLocale + " " + yourTimeZone + "] " + momentStr;
-                rt.innerHTML = momentStr;
-                rt.style.color = hour_map[momentHour];
             }
             function updateProcessingTime() {
                 clearTimeout(CountdownTimer);

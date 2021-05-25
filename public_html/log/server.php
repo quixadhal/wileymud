@@ -23,30 +23,18 @@ require_once 'navbar.php';
         <script src="<?php echo $MOMENT_TZ;?>""></script>
         <script src="<?php echo $SITE_GLOBAL_JS;?>""></script>
         <script src="<?php echo $BACKGROUND_JS;?>""></script>
+        <script src="<?php echo $NAVBAR_JS;?>""></script>
 
         <script language="javascript">
-            var Random = new MersenneTwister();
-            function updateRefreshTime() {
-                var yourTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-                var yourLocale = (navigator.languages && navigator.languages.length) ?
-                    navigator.languages[0] : navigator.language;
-
-                var momentObj = moment().tz(yourTimeZone);
-                //var momentStr = momentObj.format('YYYY-MM-DD HH:mm:ss z');
-                var momentStr = momentObj.format('HH:mm z');
-                var momentHour = momentObj.hour();
-
-                var rt = document.getElementById("refresh-time");
-                //yt.innerHTML = "[" + yourLocale + " " + yourTimeZone + "] " + momentStr;
-                rt.innerHTML = momentStr;
-                rt.style.color = hour_map[momentHour];
-            }
+            var backgroundTimer;
             $(document).ready(function() {
                 hideDiv('page-source');
                 //showDiv('page-load-time');
                 dim(document.getElementById('navbar-button-server'));
                 randomizeBackground();
                 updateRefreshTime();
+                backgroundTimer = setInterval(randomizeBackground, 1000 * 60 * 5);
+                // clearInterval(backgroundTimer);
             });
         </script>
     </head>
