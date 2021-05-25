@@ -54,10 +54,21 @@ $speedtest_avg = json_decode($speedtest_avg_text, true, 512, JSON_INVALID_UTF8_S
                 text-align: left;
                 align: left;
             }
-            .greeting hr {
+            .greeting pre {
+                white-space: pre-wrap;
+            }
+            .hr-75 {
                 width: 75%;
                 max-width: 75%;
                 min-width: 75%;
+                align: left;
+                text-align: left;
+                margin-left: 0;
+            }
+            .hr-100 {
+                width: 100%;
+                max-width: 100%;
+                min-width: 100%;
                 align: left;
                 text-align: left;
                 margin-left: 0;
@@ -178,6 +189,49 @@ $speedtest_avg = json_decode($speedtest_avg_text, true, 512, JSON_INVALID_UTF8_S
                 text-align: center;
                 align: center;
             }
+
+            .popup-table {
+                font-family: Consolas, "Lucida Console", Monaco, Courier, monospace;
+                font-size: <?php echo $FONT_SIZE; ?>;
+                overflow-x: hidden;
+                min-width: 100%;
+                width: 100%;
+                text-align: center;
+                align: center;
+                background-color: <?php echo $ODD; ?>;
+            }
+            .popup-table pre {
+                white-space: pre-wrap;
+            }
+            .popup-text-column {
+                font-family: Consolas, "Lucida Console", Monaco, Courier, monospace;
+                font-size: <?php echo $SMALL_FONT_SIZE; ?>;
+                text-align: left;
+                align: left;
+                width: 75%;
+            }
+
+            .popup-div {
+                font-family: Consolas, "Lucida Console", Monaco, Courier, monospace;
+                font-size: <?php echo $SMALL_FONT_SIZE; ?>;
+                white-space: normal;
+                overflow-x: hidden;
+                width: 100%;
+                max-width: 100%;
+                min-width: 100%;
+                text-align: center;
+                align: center;
+                display: none;
+                background-color: <?php echo $ODD; ?>;
+            }
+
+            #page-load-time {
+                font-family: 'Lato', sans-serif;
+                font-size: <?php echo $TINY_FONT_SIZE; ?>;
+                color: #808080;
+                text-align: right;
+                align: right;
+            }
         </style>
 
         <script src="<?php echo $JQ;?>""></script>
@@ -191,10 +245,19 @@ $speedtest_avg = json_decode($speedtest_avg_text, true, 512, JSON_INVALID_UTF8_S
         <script src="<?php echo $NAVBAR_JS;?>""></script>
 
         <script language="javascript">
+            var timeSpent;
             var backgroundTimer;
             $(document).ready(function() {
+                hideDiv('uptime');
+                hideDiv('network');
+                hideDiv('cpu');
+                hideDiv('memory');
+                hideDiv('disk');
+                hideDiv('temperature');
+                hideDiv('hacklog');
                 hideDiv('page-source');
-                //showDiv('page-load-time');
+                $('#page-load-time').html(timeSpent);
+                showDiv('page-load-time');
                 dim(document.getElementById('navbar-button-server'));
                 randomizeBackground();
                 updateRefreshTime();
@@ -254,7 +317,7 @@ $speedtest_avg = json_decode($speedtest_avg_text, true, 512, JSON_INVALID_UTF8_S
         </div>
         <div class="greeting">
             <h1>Old Crusty MUD Server</h1>
-            <hr />
+            <hr class="hr-75" />
         </div>
         <table id="content-table">
             <tr>
@@ -340,28 +403,28 @@ $speedtest_avg = json_decode($speedtest_avg_text, true, 512, JSON_INVALID_UTF8_S
         </table>
 
         <div class="greeting">
-            <hr />
+            <hr class="hr-75" />
         </div>
         <table id="speedtest-table">
             <tr>
                 <td class="speedtest-left-column"> <img class="speedtest-img" src="<?php echo $speedtest['speedtest_current']; ?>" /> </td>
-<td class="speedtest-text-column" rowspan="0">
-<pre>
-<?php
-    printf("%s\n", ">>> This Week's Performance Average <<<");
-    printf("%23s %20s %20s %20s\n", "Interface", "Average Ping", "Average Download", "Average Upload");
-    printf("%23s %20s %20s %20s\n", "-----------------------", "--------------------", "--------------------", "--------------------");
-    ksort($speedtest_avg);
-    foreach ($speedtest_avg as $k => $v) {
-        $wire   = sprintf("%s (%s)", $k, $v["wire"]);
-        $ping   = sprintf("%.3f ms", $v["ping"]);
-        $down   = sprintf("%.3f Mbps", $v["download"]);
-        $up     = sprintf("%.3f Mbps", $v["upload"]);
-        printf("%23s %20s %20s %20s\n", $wire, $ping, $down, $up);
-    }
-?>
-</pre>
-</td>
+                <td class="speedtest-text-column" rowspan="0">
+                <pre>
+                <?php
+                    printf("%s\n", ">>> This Week's Performance Average <<<");
+                    printf("%23s %20s %20s %20s\n", "Interface", "Average Ping", "Average Download", "Average Upload");
+                    printf("%23s %20s %20s %20s\n", "-----------------------", "--------------------", "--------------------", "--------------------");
+                    ksort($speedtest_avg);
+                    foreach ($speedtest_avg as $k => $v) {
+                        $wire   = sprintf("%s (%s)", $k, $v["wire"]);
+                        $ping   = sprintf("%.3f ms", $v["ping"]);
+                        $down   = sprintf("%.3f Mbps", $v["download"]);
+                        $up     = sprintf("%.3f Mbps", $v["upload"]);
+                        printf("%23s %20s %20s %20s\n", $wire, $ping, $down, $up);
+                    }
+                ?>
+                </pre>
+                </td>
                 <td class="speedtest-right-column"> <img class="speedtest-img" src="<?php echo $speedtest_wifi['speedtest_current']; ?>" /> </td>
             </tr>
             <tr>
@@ -370,8 +433,132 @@ $speedtest_avg = json_decode($speedtest_avg_text, true, 512, JSON_INVALID_UTF8_S
             </tr>
         </table>
 
+        <div class="greeting">
+            <hr class="hr-100" />
+            <div id="page-load-time" align="right">Page Loaded.</div>
+            <a href="javascript:;" onmousedown="toggleDiv('uptime');">Uptime</a>
+            <a href="javascript:;" onmousedown="toggleDiv('network');">Network</a>
+            <a href="javascript:;" onmousedown="toggleDiv('cpu');">CPU</a>
+            <a href="javascript:;" onmousedown="toggleDiv('memory');">Memory</a>
+            <a href="javascript:;" onmousedown="toggleDiv('disk');">Disk</a>
+            <a href="javascript:;" onmousedown="toggleDiv('temperature');">Temperature</a>
+            <a href="javascript:;" onmousedown="toggleDiv('hacklog');">HACKLOG</a>
+            <a href="javascript:;" onmousedown="toggleDiv('page-source');">Source</a>
+        </div>
+
+        <div id="uptime" >
+            <table class="popup-table">
+                <tr>
+                    <td>&nbsp;</td>
+                    <td class="popup-text-column">
+                        <?php pcmd("/bin/cat /proc/version"); ?>
+                        <pre><?php pcmd("/usr/bin/uptime"); ?></pre>
+                        <hr class="hr-100" />
+                    </td>
+                    <td>&nbsp;</td>
+                </tr>
+            </table>
+        </div>
+
+        <div id="network">
+            <table class="popup-table">
+                <tr>
+                    <td>&nbsp;</td>
+                    <td class="popup-text-column">
+                            <pre>Blacklist entries: <?php pcmd("/bin/cat /etc/iptables/ipset.blacklist | /usr/bin/grep -v 'create blacklist' | /usr/bin/wc -l"); ?></pre>
+                            <pre><?php pcmd("/usr/bin/nmcli -f 'DEVICE,CHAN,BARS,SIGNAL,RATE,SSID' dev wifi | /usr/bin/egrep '(\s+SSID|\s+Dread_.748)'"); ?></pre>
+                            <pre>Wifi Connection in use: <?php pcmd("/sbin/iwconfig wlp1s0 | grep ESSID"); ?></pre>
+                            <pre><?php
+                                    printf("%s %s\n",         "Wired Speedtest performed on", $speedtest["the_time"]);
+                                    printf("%s %s:%s\n",      "                interface   ", $speedtest["interface"]["internalIp"], $speedtest["interface"]["name"]);
+                                    printf("%s %s (%s)\n",    "                target node ", $speedtest["server"]["name"], $speedtest["server"]["host"]);
+                                    printf("%s %-.3f ms\n",   "                ping        ", $speedtest["ping"]["latency"]);
+                                    printf("%s %-.2f Mbps\n", "                download    ", ($speedtest["download"]["bandwidth"] * 8.0 / 1000000.0));
+                                    printf("%s %-.2f Mbps\n", "                upload      ", ($speedtest["upload"]["bandwidth"] * 8.0 / 1000000.0));
+                                 ?>
+                            </pre>
+                            <pre><?php
+                                    printf("%s %s\n",         "Wi-fi Speedtest performed on", $speedtest_wifi["the_time"]);
+                                    printf("%s %s:%s\n",      "                interface   ", $speedtest_wifi["interface"]["internalIp"], $speedtest_wifi["interface"]["name"]);
+                                    printf("%s %s (%s)\n",    "                target node ", $speedtest_wifi["server"]["name"], $speedtest_wifi["server"]["host"]);
+                                    printf("%s %-.3f ms\n",   "                ping        ", $speedtest_wifi["ping"]["latency"]);
+                                    printf("%s %-.2f Mbps\n", "                download    ", ($speedtest_wifi["download"]["bandwidth"] * 8.0 / 1000000.0));
+                                    printf("%s %-.2f Mbps\n", "                upload      ", ($speedtest_wifi["upload"]["bandwidth"] * 8.0 / 1000000.0));
+                                 ?>
+                            </pre>
+                            <hr class="hr-100" />
+                    </td>
+                    <td>&nbsp;</td>
+                </tr>
+            </table>
+        </div>
+
+        <div id="cpu" >
+            <table class="popup-table">
+                <tr>
+                    <td>&nbsp;</td>
+                    <td class="popup-text-column">
+                        <pre><?php pcmd("/bin/cat /proc/cpuinfo"); ?></pre>
+                        <hr class="hr-100" />
+                    </td>
+                    <td>&nbsp;</td>
+                </tr>
+            </table>
+        </div>
+
+        <div id="memory" >
+            <table class="popup-table">
+                <tr>
+                    <td>&nbsp;</td>
+                    <td class="popup-text-column">
+                        <pre><?php pcmd("/usr/bin/free --mega -h"); ?></pre>
+                        <hr class="hr-100" />
+                    </td>
+                    <td>&nbsp;</td>
+                </tr>
+            </table>
+        </div>
+
+        <div id="disk" >
+            <table class="popup-table">
+                <tr>
+                    <td>&nbsp;</td>
+                    <td class="popup-text-column">
+                        <pre><?php pcmd("/bin/df -h | /bin/grep -v 'udev' | /bin/grep -v 'tmpfs' | /bin/grep -v 'by-uuid'"); ?></pre>
+                        <hr class="hr-100" />
+                    </td>
+                    <td>&nbsp;</td>
+                </tr>
+            </table>
+        </div>
+
+        <div id="temperature" >
+            <table class="popup-table">
+                <tr>
+                    <td>&nbsp;</td>
+                    <td class="popup-text-column">
+                        <pre><?php pcmd("/usr/bin/sensors"); ?></pre>
+                        <hr class="hr-100" />
+                    </td>
+                    <td>&nbsp;</td>
+                </tr>
+            </table>
+        </div>
+
+        <div id="hacklog" class="greeting">
+            <pre><?php pcmd("/bin/cat /home/wiley/HACKLOG"); ?></pre>
+            <hr class="hr-100" />
+        </div>
+
         <div id="page-source">
             <?php echo numbered_source(__FILE__); ?>
         </div>
+        <?php
+            $time_end = microtime(true);
+            $time_spent = $time_end - $time_start;
+        ?>
+        <script language="javascript">
+            timeSpent = "<?php printf("Page Loaded in %7.3f seconds.",  $time_spent); ?>";
+        </script>
     </body>
 </html>

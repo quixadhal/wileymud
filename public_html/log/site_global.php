@@ -58,6 +58,7 @@ $ICON_SIZE              = sprintf("%dpx", (int)($ICON_BASE * $SCALE));
 $FONT_SIZE              = sprintf("%dpt", (int)($FONT_BASE * $SCALE));
 $SMALL_FONT_SIZE        = sprintf("%dpt", (int)($FONT_BASE * $SCALE * 0.90));
 $TINY_FONT_SIZE         = sprintf("%dpt", (int)($FONT_BASE * $SCALE * 0.70));
+$BIG_FONT_SIZE          = sprintf("%dpt", (int)($FONT_BASE * $SCALE * 1.20));
 
 $MUDLIST_FILE           = "$FILE_HOME/mudlist.json";
 $mudlist_text           = file_get_contents($MUDLIST_FILE);
