@@ -37,9 +37,9 @@ $JSMD5                  = "$URL_HOME/log/js.md5.js";
 $MOMENT                 = "$URL_HOME/log/moment/moment-with-locales.min.js";
 $MOMENT_TZ              = "$URL_HOME/log/moment/moment-timezone-with-data.min.js";
 
-$SITE_GLOBAL_FILE       = "$FILE_HOME/log/site_global.css";
+$SITE_GLOBAL_FILE       = "$FILE_HOME/log/site_global_css.php";
 $SITE_GLOBAL_TIME       = filemtime($SITE_GLOBAL_FILE);
-$SITE_GLOBAL_CSS        = "$URL_HOME/log/site_global.css?version=$SITE_GLOBAL_TIME";
+$SITE_GLOBAL_CSS        = "$URL_HOME/log/site_global_css.php?version=$SITE_GLOBAL_TIME";
 $SITE_GLOBAL_JS         = "$URL_HOME/log/site_global_js.php";
 
 $BGCOLOR                = "black";
@@ -49,10 +49,17 @@ $VISITED                = "#ffa040";
 $DELETED                = "#ff0000";
 $EVEN                   = "rgba(31,31,31,0.7)";
 $ODD                    = "rgba(0,0,0,0.7)";
+$INPUT                  = "#d0d0d0";
+$INPUT_BORDER           = "#101010";
+$INPUT_BACKGROUND       = "#101010";
+$SELECTED_INPUT             = "#f0f0f0";
+$SELECTED_INPUT_BORDER      = "#101010";
+$SELECTED_INPUT_BACKGROUND  = "#303030";
+
 
 $SCALE                  = 1.0;      // An easy way to adjust the overall size of everything.
 $ICON_BASE              = 64;
-$FONT_BASE              = 16;   // 24pt 39px, 18pt 30px, 14pt 24px, 10pt 17px, 1.7 seems close
+$FONT_BASE              = 14;   // 24pt 39px, 18pt 30px, 14pt 24px, 10pt 17px, 1.7 seems close
 
 $ICON_SIZE              = sprintf("%dpx", (int)($ICON_BASE * $SCALE));
 $FONT_SIZE              = sprintf("%dpt", (int)($FONT_BASE * $SCALE));
