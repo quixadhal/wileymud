@@ -1,3 +1,8 @@
+<?php
+require_once 'site_global.php';
+require_once 'page_source.php';
+header("Content-type: text/css");
+?>
 .source-line-number {
     float: left;
     color: gray;

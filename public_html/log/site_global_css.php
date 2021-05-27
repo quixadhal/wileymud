@@ -1,3 +1,7 @@
+<?php
+require_once 'site_global.php';
+header("Content-type: text/css");
+?>
 html, body {
     font-family: 'Lato', sans-serif;
     padding: 0px;

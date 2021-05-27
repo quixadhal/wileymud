@@ -119,3 +119,13 @@ header("Content-type: text/css");
     font-size: <?php echo $SMALL_FONT_SIZE; ?>;
     color: #bb0000;
 }
+input, select, textarea {
+    border-color: <?php echo $INPUT_BORDER;?> !important;
+    background-color: <?php echo $INPUT_BACKGROUND;?> !important;
+    color: <?php echo $INPUT;?> !important;
+}
+input:focus, textarea:focus {
+    border-color: <?php echo $SELECTED_INPUT_BORDER;?> !important;
+    background-color: <?php echo $SELECTED_INPUT_BACKGROUND;?> !important;
+    color: <?php echo $SELECTED_INPUT;?> !important;
+}

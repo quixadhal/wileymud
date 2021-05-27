@@ -1,3 +1,8 @@
+<?php
+require_once 'site_global.php';
+require_once 'random_background.php';
+header("Content-type: text/css");
+?>
 #background-div {
     padding: 0px;
     margin: 0px;
