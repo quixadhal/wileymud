@@ -38,6 +38,7 @@ $speedtest_avg = json_decode($speedtest_avg_text, true, 512, JSON_INVALID_UTF8_S
         <meta charset="utf-8" />
         <meta http-equiv="cache-control" content="no-cache" />
         <meta http-equiv="pragma" content="no-cache" />
+        <title>Crusty I3 Log Server</title>
         <link rel="stylesheet" href="<?php echo $SITE_GLOBAL_CSS;?>">
         <link rel="stylesheet" href="<?php echo $PAGE_SOURCE_CSS;?>">
         <link rel="stylesheet" href="<?php echo $BACKGROUND_CSS;?>">

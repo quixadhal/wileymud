@@ -23,6 +23,7 @@ if(array_key_exists('date', $_GET)) {
         <meta charset="utf-8" />
         <meta http-equiv="cache-control" content="no-cache" />
         <meta http-equiv="pragma" content="no-cache" />
+        <title>Intermud-3 Log Page</title>
         <link rel="stylesheet" href="<?php echo $SITE_GLOBAL_CSS;?>">
         <link rel="stylesheet" href="<?php echo $PAGE_SOURCE_CSS;?>">
         <link rel="stylesheet" href="<?php echo $BACKGROUND_CSS;?>">
