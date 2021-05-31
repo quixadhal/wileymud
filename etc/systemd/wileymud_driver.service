@@ -1,6 +1,6 @@
 [Unit]
 Description=WileyMUD III Game Driver
-Documentation=http://wileymud.themud.org/~wiley/i3log.php
+Documentation=http://wileymud.themud.org/~wiley/log/
 PartOf=wileymud.service
 Requires=postgresql.service
 After=postgresql.service

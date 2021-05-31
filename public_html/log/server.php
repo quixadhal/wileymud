@@ -477,6 +477,7 @@ $speedtest_avg = json_decode($speedtest_avg_text, true, 512, JSON_INVALID_UTF8_S
                     <td class="popup-text-column">
                         <?php pcmd("/bin/cat /proc/version"); ?>
                         <pre><?php pcmd("/usr/bin/uptime"); ?></pre>
+                        <pre><?php pcmd("/usr/bin/systemctl --no-pager status --lines 0 wileymud_driver"); ?></pre>
                         <hr class="hr-100" />
                     </td>
                     <td>&nbsp;</td>
