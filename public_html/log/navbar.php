@@ -5,9 +5,10 @@ $BEGIN_ICON             = "$URL_HOME/gfx/nav/begin.png";
 $PREV_ICON              = "$URL_HOME/gfx/nav/previous.png";
 $NEXT_ICON              = "$URL_HOME/gfx/nav/next.png";
 $END_ICON               = "$URL_HOME/gfx/nav/end.png";
+
+$TOP_ICON               = "$URL_HOME/gfx/nav/green/top.png";
 $UP_ICON                = "$URL_HOME/gfx/nav/green/up.png";
 $DOWN_ICON              = "$URL_HOME/gfx/nav/green/down.png";
-$TOP_ICON               = "$URL_HOME/gfx/nav/green/top.png";
 $BOTTOM_ICON            = "$URL_HOME/gfx/nav/green/bottom.png";
 
 $MUDLIST_ICON           = "$URL_HOME/gfx/mud.png";

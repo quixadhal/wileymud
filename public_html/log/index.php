@@ -5,6 +5,7 @@ require_once 'page_source.php';
 require_once 'random_background.php';
 require_once 'pinkfish_colors.php';
 require_once 'navbar.php';
+require_once 'log_navigation.php';
 
 $do_extra_ajax          = 1;
 
@@ -143,6 +144,8 @@ if(array_key_exists('date', $_GET)) {
         <script src="<?php echo $BACKGROUND_JS;?>""></script>
         <script src="<?php echo $PINKFISH_JS;?>""></script>
         <script src="<?php echo $NAVBAR_JS;?>""></script>
+        <script src="<?php echo $LOG_NAV_DATES_JS;?>""></script>
+        <script src="<?php echo $LOG_NAV_JS;?>""></script>
 
         <script language="javascript">
             var WasAtBottom = false;
@@ -483,6 +486,7 @@ if(array_key_exists('date', $_GET)) {
         </div>
         <div id="navbar-center">
             <img class="nav-img glowing" id="navbar-button-top" title="Top of page" src="<?php echo $TOP_ICON; ?>" onclick="scroll_to('content-top');" />
+            <!-- <input type="text" id="datepicker" size="10" value="<?php echo $today; ?>" style="font-size: 16px; text-align: center;" /> -->
             <img class="nav-img glowing" id="navbar-button-bottom" title="Bottom of page" src="<?php echo $BOTTOM_ICON; ?>" onclick="scroll_to('content-bottom');" />
         </div>
         <div id="navbar-right">
