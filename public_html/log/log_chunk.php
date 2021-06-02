@@ -106,8 +106,8 @@ function fetch_page_data_by_time($db, $query_start_time = NULL, $query_end_time 
             $query_end_time = time();
         }
     }
-    if( $limit_count === NULL || !is_numeric($limit_count) || $limit_count > 1000 ) {
-        $limit_count = 1000;
+    if( $limit_count === NULL || !is_numeric($limit_count) || $limit_count > 2000 ) {
+        $limit_count = 2000;
     } else if( $limit_count < 1 ) {
         $limit_count = 1;
     }
@@ -126,6 +126,10 @@ function fetch_page_data_by_time($db, $query_start_time = NULL, $query_end_time 
         $result = array();
         $new_result = array();
         while($row = $sth->fetch()) {
+            if($row['channel'] == 'url' && $row['speaker'] == 'URLbot@Disk World') {
+                // Skip OLD urlbot stuff...
+                continue;
+            }
             $message_orig = $row['message'];
             //$message = htmlentities($message, ENT_QUOTES|ENT_SUBSTITUTE, 'UTF-8');
             $message = preg_replace('/((?:http|https|ftp)\:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(?::[a-zA-Z0-9]*)?\/?(?:[a-zA-Z0-9\-\._\?\,\'\/\\\+&amp;%\$#\=~])*)/i', '<a href="$1" target="I3-link">$1</a>', $message_orig);
