@@ -5,19 +5,18 @@ require_once 'log_navigation.php';
 // NOTE:  You must include log_navigation_dates.js first or this will error!
 header("Content-Type: application/json; charset=UTF-8");
 ?>
-var Today = <?php echo $today; ?>;
-var Yesterday = <?php echo $yesterday; ?>;
-var Tomorrow = <?php echo $tomorrow; ?>;
+var Today = "<?php echo $today; ?>";
+var Yesterday = "<?php echo $yesterday; ?>";
+var Tomorrow = "<?php echo $tomorrow; ?>";
+var noData = <?php echo ($no_data == true) ? 1 : 0; ?>;
+var queryParams = query_parameters();
+var queryDate = queryParams.date;
 
-function dateFromUrl(url) {
-    var bits;
-
-    if(typeof(url) === "undefined" || url === null) {
-        bits = window.location.href.toString().split('/');
-    } else {
-        bits = url.split('/');
-    }
-    var my_date = bits[bits.length-1].substr(0,10);
+if(queryDate !== null && queryDate !== undefined) {
+    // We were given a date, maybe adjust Yesterday and Tommorrow?
+} else {
+    // We have none, so use Today
+    queryDate = Today;
 }
 
 function checkDate(date) {
@@ -42,3 +41,13 @@ function gotoNewPage(dateString) {
     window.location.href = "<?php echo $URL_HOME; ?>/log/?date=" + dateString;
 }
 
+$( function() {
+    $( "#datepicker" ).datepicker({
+        beforeShowDay   : checkDate,
+        onSelect        : gotoNewPage,
+        changeYear      : true,
+        changeMonth     : true,
+        dateFormat      : "yy-mm-dd",
+        defaultDate     : queryDate,
+     });
+});

@@ -38,4 +38,5 @@ if( $last_date !== $today ) {
 
 $LOG_NAV_DATES_JS       = "$URL_HOME/log/log_navigation_dates.js";
 $LOG_NAV_JS             = "$URL_HOME/log/log_navigation_js.php";
+$LOG_NAV_CSS            = "$URL_HOME/log/log_navigation_css.php";
 ?>

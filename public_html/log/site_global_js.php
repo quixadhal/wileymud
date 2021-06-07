@@ -112,3 +112,14 @@ function server_time_midnight() {
     // This is only true when the page first loads
     return <?php $dt = new DateTime(date("Y-m-d")); echo $dt->format("U"); ?>;
 }
+function query_parameters() {
+    const queryString = window.location.search.substr(1);
+    const queryParams = queryString.split('&').reduce(
+        (queryResults, thisParam) => {
+            const [k,v] = thisParam.split('=');
+            queryResults[k] = decodeURIComponent(v);
+            return queryResults;
+            }, {}
+        );
+    return queryParams;
+}

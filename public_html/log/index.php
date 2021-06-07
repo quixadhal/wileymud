@@ -26,9 +26,12 @@ if(array_key_exists('date', $_GET)) {
         <meta http-equiv="pragma" content="no-cache" />
         <title>Intermud-3 Log Page</title>
         <link rel="stylesheet" href="<?php echo $SITE_GLOBAL_CSS;?>">
+        <link rel="stylesheet" href="<?php echo $JQUI_CSS;?>">
+        <link rel="stylesheet" href="<?php echo $JQUI_THEME;?>">
         <link rel="stylesheet" href="<?php echo $PAGE_SOURCE_CSS;?>">
         <link rel="stylesheet" href="<?php echo $BACKGROUND_CSS;?>">
         <link rel="stylesheet" href="<?php echo $NAVBAR_CSS;?>">
+        <link rel="stylesheet" href="<?php echo $LOG_NAV_CSS;?>">
         <style>
             #debug-message {
                 font-family: Consolas, "Lucida Console", Monaco, Courier, monospace;
@@ -140,6 +143,7 @@ if(array_key_exists('date', $_GET)) {
         <script src="<?php echo $JSMD5;?>""></script>
         <script src="<?php echo $MOMENT;?>""></script>
         <script src="<?php echo $MOMENT_TZ;?>""></script>
+        <script src="<?php echo $JQUI;?>""></script>
         <script src="<?php echo $SITE_GLOBAL_JS;?>""></script>
         <script src="<?php echo $BACKGROUND_JS;?>""></script>
         <script src="<?php echo $PINKFISH_JS;?>""></script>
@@ -187,6 +191,7 @@ if(array_key_exists('date', $_GET)) {
         <script language="javascript">
             var ContentTimer;
             var CountdownTimer;
+            var IsPaused = false;
             var Ticks = 0;
             var SlowDelay = 1;
             var CurrentTickCountdown = 1;
@@ -454,11 +459,31 @@ if(array_key_exists('date', $_GET)) {
                 CurrentTickCountdown = Math.round(SlowDelay * 60.0);
                 ContentTimer = setTimeout(updateContent, 1000 * CurrentTickCountdown);
             }
+            function pauseUpdate() {
+                IsPaused = true;
+                clearTimeout(CountdownTimer);
+                clearTimeout(ContentTimer);
+                // Switch icon from green play(ing) to red pause(d)
+                // Set countdown text to -- or something similar
+                // Maybe use an animated gif to make the pause icon flash
+                // instead of futzing around with another timer...
+            }
+            function resumeUpdate() {
+                IsPaused = false;
+                // Switch icon from red paused(d) to green play(ing)
+                // Don't call updateContent() directly, or people can spam
+                // by clicking pause/play quickly!
+                SlowDelay = Math.round(((Ticks * 1.45 / 10.0) + 1.0 + (Random.random() - 0.5)) * 100.0) / 100.0;
+                CurrentTickCountdown = Math.round(SlowDelay * 60.0);
+                ContentTimer = setTimeout(updateContent, 1000 * CurrentTickCountdown);
+                updateProcessingTime();
+            }
             $(document).ready(function() {
                 ContentTimer = setTimeout(updateContent, 500);
                 CountdownTimer = setTimeout(updateProcessingTime, 500);
                 hideDiv('page-source');
                 //showDiv('page-load-time');
+                $("#datepicker").val(queryDate);
                 on_scroll(); // Call once, in case the page cannot scroll
                 $(window).on("scroll", function() {
                     on_scroll();
@@ -486,7 +511,7 @@ if(array_key_exists('date', $_GET)) {
         </div>
         <div id="navbar-center">
             <img class="nav-img glowing" id="navbar-button-top" title="Top of page" src="<?php echo $TOP_ICON; ?>" onclick="scroll_to('content-top');" />
-            <!-- <input type="text" id="datepicker" size="10" value="<?php echo $today; ?>" style="font-size: 16px; text-align: center;" /> -->
+            <input type="text" id="datepicker" size="10" value="<?php echo $today; ?>" style="font-size: 16px; text-align: center;" />
             <img class="nav-img glowing" id="navbar-button-bottom" title="Bottom of page" src="<?php echo $BOTTOM_ICON; ?>" onclick="scroll_to('content-bottom');" />
         </div>
         <div id="navbar-right">
