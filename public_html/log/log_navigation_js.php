@@ -37,8 +37,12 @@ function checkDate(date) {
 }
 
 function gotoNewPage(dateString) {
-    // We could also go to the static pages...
-    window.location.href = "<?php echo $URL_HOME; ?>/log/?noscroll&pause&date=" + dateString;
+    if(dateString == Today) {
+        window.location.href = "<?php echo $URL_HOME; ?>/log/";
+    } else {
+        // We could also go to the static pages...
+        window.location.href = "<?php echo $URL_HOME; ?>/log/?noscroll&pause&date=" + dateString;
+    }
 }
 
 $( function() {
