@@ -11,6 +11,10 @@ $UP_ICON                = "$URL_HOME/gfx/nav/green/up.png";
 $DOWN_ICON              = "$URL_HOME/gfx/nav/green/down.png";
 $BOTTOM_ICON            = "$URL_HOME/gfx/nav/green/bottom.png";
 
+$PLAY_ICON              = "$URL_HOME/gfx/nav/green/play.png";
+$PAUSE_RED_ICON         = "$URL_HOME/gfx/nav/green/pause.png";
+$PAUSE_GREY_ICON        = "$URL_HOME/gfx/nav/green/stop.png";
+
 $MUDLIST_ICON           = "$URL_HOME/gfx/mud.png";
 $OTHER_LOG_ICON         = "$URL_HOME/gfx/other_logs.png";
 $LOG_ICON               = "$URL_HOME/gfx/log.png";

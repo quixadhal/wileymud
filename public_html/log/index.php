@@ -191,7 +191,9 @@ if(array_key_exists('date', $_GET)) {
         <script language="javascript">
             var ContentTimer;
             var CountdownTimer;
+            var PauseTimer;
             var IsPaused = false;
+            var PauseIconIsRed = true;
             var Ticks = 0;
             var SlowDelay = 1;
             var CurrentTickCountdown = 1;
@@ -474,24 +476,46 @@ if(array_key_exists('date', $_GET)) {
                 CurrentTickCountdown = Math.round(SlowDelay * 60.0);
                 ContentTimer = setTimeout(updateContent, 1000 * CurrentTickCountdown);
             }
+            function flashPauseButton() {
+                clearTimeout(PauseTimer);
+                if(PauseIconIsRed == true) {
+                    PauseIconIsRed = false;
+                    $("#navbar-button-play").attr("src", "<?php echo $PAUSE_GREY_ICON; ?>");
+                } else {
+                    PauseIconIsRed = true;
+                    $("#navbar-button-play").attr("src", "<?php echo $PAUSE_RED_ICON; ?>");
+                }
+                PauseTimer = setTimeout(flashPauseButton, 1000);
+            }
             function pauseUpdate() {
-                IsPaused = true;
                 clearTimeout(CountdownTimer);
                 clearTimeout(ContentTimer);
-                // Switch icon from green play(ing) to red pause(d)
-                // Set countdown text to -- or something similar
-                // Maybe use an animated gif to make the pause icon flash
-                // instead of futzing around with another timer...
+                clearTimeout(PauseTimer);
+                IsPaused = true;
+                $('#tick').html("--:--");
+                $("#navbar-button-play").attr("src", "<?php echo $PAUSE_RED_ICON; ?>");
+                $("#navbar-button-play").attr("title", "Resume updates");
+                PauseIconIsRed = true;
+                PauseTimer = setTimeout(flashPauseButton, 1000);
             }
             function resumeUpdate() {
+                clearTimeout(PauseTimer);
                 IsPaused = false;
-                // Switch icon from red paused(d) to green play(ing)
-                // Don't call updateContent() directly, or people can spam
-                // by clicking pause/play quickly!
                 SlowDelay = Math.round(((Ticks * 1.45 / 10.0) + 1.0 + (Random.random() - 0.5)) * 100.0) / 100.0;
                 CurrentTickCountdown = Math.round(SlowDelay * 60.0);
                 ContentTimer = setTimeout(updateContent, 1000 * CurrentTickCountdown);
                 updateProcessingTime();
+                $("#navbar-button-play").attr("src", "<?php echo $PLAY_ICON; ?>");
+                $("#navbar-button-play").attr("title", "Pause updates");
+            }
+            function clickPlayPause() {
+                if(IsPaused == false) {
+                    pauseUpdate();
+                } else {
+                    resumeUpdate();
+                    // Don't call updateContent() directly, or people can spam
+                    // by clicking pause/play quickly!
+                }
             }
             $(document).ready(function() {
                 ContentTimer = setTimeout(updateContent, 500);
@@ -525,8 +549,9 @@ if(array_key_exists('date', $_GET)) {
             <img class="nav-img glowing" id="navbar-button-question" title="???!" src="<?php echo $QUESTION_ICON; ?>" onclick="window.location.href='<?php echo $QUESTION_URL; ?>';" />
         </div>
         <div id="navbar-center">
+            <img class="nav-img glowing" id="navbar-button-play" title="Pause updates" src="<?php echo $PLAY_ICON; ?>" onclick="clickPlayPause();" />
+            <input type="text" id="datepicker" size="10" value="<?php echo $today; ?>" title="Date to begin viewing" />
             <img class="nav-img glowing" id="navbar-button-top" title="Top of page" src="<?php echo $TOP_ICON; ?>" onclick="scroll_to('content-top');" />
-            <input type="text" id="datepicker" size="10" value="<?php echo $today; ?>" style="font-size: 16px; text-align: center;" />
             <img class="nav-img glowing" id="navbar-button-bottom" title="Bottom of page" src="<?php echo $BOTTOM_ICON; ?>" onclick="scroll_to('content-bottom');" />
         </div>
         <div id="navbar-right">
