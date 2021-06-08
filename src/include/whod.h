@@ -51,6 +51,9 @@
 #define WILEY_ADDRESS "wileymud.themud.org"
 #define WILEY_PORT 3000
 
+#define JSON_MUDLIST_PAGE "../public_html/" "mudlist.json"
+#define NEW_JSON_MUDLIST_PAGE "../public_html/log/" "mudlist.json"
+
 struct whod_data {
     time_t  updated;
     int     enabled;
@@ -91,7 +94,7 @@ char *whod_text(struct char_data *viewer);
 void show_whod_info(struct char_data *ch);
 void do_whod(struct char_data *ch, const char *arg, int cmd);
 
-void generate_json_mudlist(void);
+void generate_json_mudlist(const char *filename);
 void do_who(struct char_data *ch, const char *argument, int cmd);
 void do_users(struct char_data *ch, const char *argument, int cmd);
 void do_players(struct char_data *ch, const char *argument, int cmd);

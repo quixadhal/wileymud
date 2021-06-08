@@ -729,9 +729,7 @@ void do_whod(struct char_data *ch, const char *arg, int cmd)
 #define DISCORD_URL     "https://discord.gg/kUduSsJ"
 #define SERVER_URL      URL_HOME "/server.php"
 
-#define JSON_MUDLIST_PAGE "../public_html/" "mudlist.json"
-
-void                                    generate_json_mudlist(void)
+void                                    generate_json_mudlist(const char *filename)
 {
     FILE                                   *fp = NULL;
 #ifdef I3
@@ -745,8 +743,8 @@ void                                    generate_json_mudlist(void)
     int                                     mortals = 0;
     int                                     gods = 0;
 
-    if(!(fp = fopen(JSON_MUDLIST_PAGE, "w"))) {
-        log_error("Cannot open %s!", JSON_MUDLIST_PAGE);
+    if(!(fp = fopen(filename, "w"))) {
+        log_error("Cannot open %s!", filename);
         return;
     }
 
