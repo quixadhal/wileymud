@@ -17,6 +17,14 @@ $the_date = NULL;
 if(array_key_exists('date', $_GET)) {
     $the_date = $_GET['date'];
 }
+$start_paused = false;
+if(array_key_exists('pause', $_GET)) {
+    $start_paused = true;
+}
+$no_initial_scroll = false;
+if(array_key_exists('noscroll', $_GET)) {
+    $no_initial_scroll = true;
+}
 
 ?>
 <html>
@@ -153,6 +161,27 @@ if(array_key_exists('date', $_GET)) {
 
         <script language="javascript">
             var WasAtBottom = false;
+            var ContentTimer;
+            var CountdownTimer;
+            var PauseTimer;
+            var IsPaused = <?php echo ($start_paused == true) ? "true" : "false"; ?>;
+            var NoScroll = <?php echo ($no_initial_scroll == true) ? "true" : "false"; ?>;
+            var PauseIconIsRed = true;
+            var Ticks = 0;
+            var SlowDelay = 1;
+            var CurrentTickCountdown = 1;
+            var GotDataLastTime = false;
+            var dataUrlBase = "<?php echo $DATA_URL; ?>";
+            var LastRow = 0; // unix timestamp of most recent data
+            var FirstRow = 0; // unix timestamp of oldest data kept
+            var MD5s = [];
+            var RowCount = 0; // number of rows we have now
+            var RowLimit = <?php echo $RESULT_LIMIT; ?>;
+            var DisplayLimit = <?php echo $DISPLAY_LIMIT; ?>;
+            var FirstScreen = true;
+            var FirstTimeNewRow = true;
+            var TheDate = "<?php echo $the_date; ?>";
+            var DoExtraAjax = <?php echo $do_extra_ajax; ?>;
 
             function on_scroll() {
                 var body = document.body;
@@ -177,6 +206,7 @@ if(array_key_exists('date', $_GET)) {
                     dim(bb);
                     brighten(bt);
                     WasAtBottom = true;
+                    NoScroll = false;
                 } else if( window.pageYOffset <= 1 ) {
                     // We are at the top of the page.
                     brighten(bb);
@@ -187,29 +217,6 @@ if(array_key_exists('date', $_GET)) {
                     brighten(bt);
                 }
             }
-        </script>
-        <script language="javascript">
-            var ContentTimer;
-            var CountdownTimer;
-            var PauseTimer;
-            var IsPaused = false;
-            var PauseIconIsRed = true;
-            var Ticks = 0;
-            var SlowDelay = 1;
-            var CurrentTickCountdown = 1;
-            var GotDataLastTime = false;
-            var dataUrlBase = "<?php echo $DATA_URL; ?>";
-            var LastRow = 0; // unix timestamp of most recent data
-            var FirstRow = 0; // unix timestamp of oldest data kept
-            var MD5s = [];
-            var RowCount = 0; // number of rows we have now
-            var RowLimit = <?php echo $RESULT_LIMIT; ?>;
-            var DisplayLimit = <?php echo $DISPLAY_LIMIT; ?>;
-            var FirstScreen = true;
-            var FirstTimeNewRow = true;
-            var TheDate = "<?php echo $the_date; ?>";
-            var DoExtraAjax = <?php echo $do_extra_ajax; ?>;
-
             function shouldBlur(channel, message) {
                 if(channel == "free_speech") {
                     return true;
@@ -381,7 +388,13 @@ if(array_key_exists('date', $_GET)) {
                         // added stuff), they probably will want to see the
                         // new stuff too.  Otherwise, let them keep reading
                         // at their own pace.
-                        scroll_to('content-bottom');
+                        if(NoScroll == false) {
+                            scroll_to('content-bottom');
+                        }
+                        if(IsPaused == true) {
+                            // Prevent future runs of this until we clock play
+                            pauseUpdate();
+                        }
                         FirstScreen = false;
                     }
                     if(GotDataLastTime == true) {
@@ -518,8 +531,8 @@ if(array_key_exists('date', $_GET)) {
                 }
             }
             $(document).ready(function() {
-                ContentTimer = setTimeout(updateContent, 500);
-                CountdownTimer = setTimeout(updateProcessingTime, 500);
+                ContentTimer = setTimeout(updateContent, 100);
+                CountdownTimer = setTimeout(updateProcessingTime, 100);
                 hideDiv('page-source');
                 //showDiv('page-load-time');
                 $("#datepicker").val(queryDate);
@@ -549,7 +562,7 @@ if(array_key_exists('date', $_GET)) {
             <img class="nav-img glowing" id="navbar-button-question" title="???!" src="<?php echo $QUESTION_ICON; ?>" onclick="window.location.href='<?php echo $QUESTION_URL; ?>';" />
         </div>
         <div id="navbar-center">
-            <img class="nav-img glowing" id="navbar-button-play" title="Pause updates" src="<?php echo $PLAY_ICON; ?>" onclick="clickPlayPause();" />
+            <img class="nav-img glowing" id="navbar-button-play" title="<?php echo ($start_paused == true) ? "Resume updates" : "Pause updates"; ?>" src="<?php echo ($start_paused == true) ? $PAUSE_RED_ICON : $PLAY_ICON; ?>" onclick="clickPlayPause();" />
             <input type="text" id="datepicker" size="10" value="<?php echo $today; ?>" title="Date to begin viewing" />
             <img class="nav-img glowing" id="navbar-button-top" title="Top of page" src="<?php echo $TOP_ICON; ?>" onclick="scroll_to('content-top');" />
             <img class="nav-img glowing" id="navbar-button-bottom" title="Bottom of page" src="<?php echo $BOTTOM_ICON; ?>" onclick="scroll_to('content-bottom');" />
