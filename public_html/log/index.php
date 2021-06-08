@@ -266,6 +266,12 @@ if(array_key_exists('date', $_GET)) {
                 }
                 return message;
             }
+            function firstDateInTable() {
+                return $("#content-table tr").eq(1).children(".content-date-column").text();
+            }
+            function lastDateInTable() {
+                return $("#content-bottom").children(".content-date-column").text();
+            }
             function updateProcessingTime() {
                 clearTimeout(CountdownTimer);
                 $('#tick').html(secsToHMS(CurrentTickCountdown));
@@ -449,6 +455,15 @@ if(array_key_exists('date', $_GET)) {
                             });
                         });
                     });
+                }
+
+                // Our table has now bee updated... so tweak the calendar
+                // widget so it matches our data.
+                // Maybe change the color of dates between first and last?
+                if(FirstScreen != true) {
+                    // Don't do this until we add data once, or we'll get
+                    // the nonsense buffer row in the HTML...
+                    $("#datepicker").val(firstDateInTable());
                 }
 
                 on_scroll();
