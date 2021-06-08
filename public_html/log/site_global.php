@@ -36,6 +36,8 @@ $JSRANDOM               = "$URL_HOME/log/js.random.js";
 $JSMD5                  = "$URL_HOME/log/js.md5.js";
 $MOMENT                 = "$URL_HOME/log/moment/moment-with-locales.min.js";
 $MOMENT_TZ              = "$URL_HOME/log/moment/moment-timezone-with-data.min.js";
+$LIGHTBOX_JS            = "$URL_HOME/log/lightbox/lightbox.min.js";
+$LIGHTBOX_CSS           = "$URL_HOME/log/lightbox/lightbox.min.css";
 
 $SITE_GLOBAL_FILE       = "$FILE_HOME/log/site_global_css.php";
 $SITE_GLOBAL_TIME       = filemtime($SITE_GLOBAL_FILE);
@@ -67,8 +69,8 @@ $SMALL_FONT_SIZE        = sprintf("%dpt", (int)($FONT_BASE * $SCALE * 0.90));
 $TINY_FONT_SIZE         = sprintf("%dpt", (int)($FONT_BASE * $SCALE * 0.70));
 $BIG_FONT_SIZE          = sprintf("%dpt", (int)($FONT_BASE * $SCALE * 1.20));
 
-$MUDLIST_FILE           = "$FILE_HOME/mudlist.json";
-$mudlist_text           = file_get_contents($MUDLIST_FILE);
+$MUDLIST_JSON           = "$FILE_HOME/log/mudlist.json";
+$mudlist_text           = file_get_contents($MUDLIST_JSON);
 $mudlist                = json_decode($mudlist_text, true, 512, JSON_INVALID_UTF8_SUBSTITUTE);
 $WILEY_BUILD_NUMBER     = $mudlist["version"]["build"];
 $WILEY_BUILD_DATE       = $mudlist["version"]["date"];

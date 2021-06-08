@@ -29,7 +29,7 @@ $NAVBAR_TIME            = filemtime($NAVBAR_FILE);
 $NAVBAR_CSS             = "$URL_HOME/log/navbar_css.php?version=$NAVBAR_TIME";
 $NAVBAR_JS              = "$URL_HOME/log/navbar_js.php";
 
-$MUDLIST_URL            = "$URL_HOME/mudlist.php";
+$MUDLIST_URL            = "$URL_HOME/log/mudlist.php";
 $LOG_URL                = "$URL_HOME/log/";
 $OTHER_LOG_URL          = "https://themud.org/chanhist.php#Channel=all";
 $PIE_URL                = "$URL_HOME/pie.php";

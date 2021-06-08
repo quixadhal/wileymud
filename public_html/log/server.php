@@ -237,15 +237,15 @@ $speedtest_avg = json_decode($speedtest_avg_text, true, 512, JSON_INVALID_UTF8_S
             }
         </style>
 
-        <script src="<?php echo $JQ;?>""></script>
-        <script src="<?php echo $JSCOOKIE;?>""></script>
-        <script src="<?php echo $JSRANDOM;?>""></script>
-        <script src="<?php echo $JSMD5;?>""></script>
-        <script src="<?php echo $MOMENT;?>""></script>
-        <script src="<?php echo $MOMENT_TZ;?>""></script>
-        <script src="<?php echo $SITE_GLOBAL_JS;?>""></script>
-        <script src="<?php echo $BACKGROUND_JS;?>""></script>
-        <script src="<?php echo $NAVBAR_JS;?>""></script>
+        <script src="<?php echo $JQ;?>"></script>
+        <script src="<?php echo $JSCOOKIE;?>"></script>
+        <script src="<?php echo $JSRANDOM;?>"></script>
+        <script src="<?php echo $JSMD5;?>"></script>
+        <script src="<?php echo $MOMENT;?>"></script>
+        <script src="<?php echo $MOMENT_TZ;?>"></script>
+        <script src="<?php echo $SITE_GLOBAL_JS;?>"></script>
+        <script src="<?php echo $BACKGROUND_JS;?>"></script>
+        <script src="<?php echo $NAVBAR_JS;?>"></script>
 
         <script language="javascript">
             var timeSpent;

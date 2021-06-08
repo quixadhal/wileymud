@@ -7,7 +7,7 @@ echo "var BackgroundImageList = [\n";
 echo "\"" . implode("\",\n\"", $background_image_list) . "\"\n";
 echo "];\n";
 ?>
-// This depends on <script src="<?php echo $JSRANDOM;?>""></script>
+// This depends on <script src="<?php echo $JSRANDOM;?>"></script>
 
 var Random = new MersenneTwister();
 function randomizeBackground() {

@@ -145,19 +145,19 @@ if(array_key_exists('noscroll', $_GET)) {
                 top: calc(<?php echo $ICON_SIZE; ?> + (<?php echo $FONT_SIZE; ?> * 1.25));
                 left: 0;
 -->
-        <script src="<?php echo $JQ;?>""></script>
-        <script src="<?php echo $JSCOOKIE;?>""></script>
-        <script src="<?php echo $JSRANDOM;?>""></script>
-        <script src="<?php echo $JSMD5;?>""></script>
-        <script src="<?php echo $MOMENT;?>""></script>
-        <script src="<?php echo $MOMENT_TZ;?>""></script>
-        <script src="<?php echo $JQUI;?>""></script>
-        <script src="<?php echo $SITE_GLOBAL_JS;?>""></script>
-        <script src="<?php echo $BACKGROUND_JS;?>""></script>
-        <script src="<?php echo $PINKFISH_JS;?>""></script>
-        <script src="<?php echo $NAVBAR_JS;?>""></script>
-        <script src="<?php echo $LOG_NAV_DATES_JS;?>""></script>
-        <script src="<?php echo $LOG_NAV_JS;?>""></script>
+        <script src="<?php echo $JQ;?>"></script>
+        <script src="<?php echo $JSCOOKIE;?>"></script>
+        <script src="<?php echo $JSRANDOM;?>"></script>
+        <script src="<?php echo $JSMD5;?>"></script>
+        <script src="<?php echo $MOMENT;?>"></script>
+        <script src="<?php echo $MOMENT_TZ;?>"></script>
+        <script src="<?php echo $JQUI;?>"></script>
+        <script src="<?php echo $SITE_GLOBAL_JS;?>"></script>
+        <script src="<?php echo $BACKGROUND_JS;?>"></script>
+        <script src="<?php echo $PINKFISH_JS;?>"></script>
+        <script src="<?php echo $NAVBAR_JS;?>"></script>
+        <script src="<?php echo $LOG_NAV_DATES_JS;?>"></script>
+        <script src="<?php echo $LOG_NAV_JS;?>"></script>
 
         <script language="javascript">
             var WasAtBottom = false;
