@@ -89,7 +89,7 @@ header("Content-type: text/css");
 }
 
 #content-header-table {
-    font-family: Consolas, "Lucida Console", Monaco, Courier, monospace;
+    font-family: 'Lato', sans-serif;
     font-size: <?php echo $FONT_SIZE; ?>;
     border: none;
     border-spacing: none;
@@ -102,7 +102,7 @@ header("Content-type: text/css");
     background-color: #00002f;
 }
 #content-table {
-    font-family: Consolas, "Lucida Console", Monaco, Courier, monospace;
+    font-family: 'Lato', sans-serif;
     font-size: <?php echo $FONT_SIZE; ?>;
     border: none;
     border-spacing: none;
