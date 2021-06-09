@@ -11,6 +11,7 @@ header("Content-type: text/css");
     width: 80%;
     text-align: center;
     margin-left: 10%;
+    margin-right: 10%;
 }
 #player-header-row {
     background-color: #2f0000;
@@ -24,6 +25,7 @@ header("Content-type: text/css");
     width: 80%;
     text-align: center;
     margin-left: 10%;
+    margin-right: 10%;
 }
 #player-table tr:nth-child(even) {
     background-color: <?php echo $EVEN; ?>
@@ -55,6 +57,7 @@ header("Content-type: text/css");
     width: 80%;
     text-align: center;
     margin-left: 10%;
+    margin-right: 10%;
 }
 #status-header-row {
     background-color: #002f00;
@@ -69,6 +72,7 @@ header("Content-type: text/css");
     align: center;
     text-align: center;
     margin-left: 10%;
+    margin-right: 10%;
 }
 #status-table tr:nth-child(even) {
     background-color: <?php echo $EVEN; ?>
@@ -97,6 +101,7 @@ header("Content-type: text/css");
     width: 80%;
     text-align: center;
     margin-left: 10%;
+    margin-right: 10%;
 }
 #content-header-row {
     background-color: #00002f;
@@ -111,6 +116,7 @@ header("Content-type: text/css");
     align: center;
     text-align: center;
     margin-left: 10%;
+    margin-right: 10%;
 }
 #content-table tr:nth-child(even) {
     background-color: <?php echo $EVEN; ?>

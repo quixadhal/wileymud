@@ -185,7 +185,7 @@ $MUDLIST_CSS        = "$URL_HOME/log/mudlist_css.php?version=$MUDLIST_TIME";
                 $opacity = 1.0;
                 foreach ($mudlist["mudlist"] as $mud) {
                     if($mud["online"] == 0) {
-                        $opacity = "opacity: 0.2; background: rgba(255,0,0,0.25);";
+                        $opacity = "opacity: 0.25; background: rgba(255,0,0,0.25);";
                     } else {
                         $opacity = "opacity: 1.0;";
                         $online_counter++;
