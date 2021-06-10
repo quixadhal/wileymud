@@ -99,6 +99,7 @@ my $HOUR_CACHE      = "$PAGE_DIR/hours.json";
 my $JS_DATE_CACHE       = "$NEW_DIR/log_navigation_dates.js";
 my $NEW_DATE_CACHE      = "$NEW_DIR/date_counts.json";
 my $NEW_PINKFISH_CACHE  = "$NEW_DIR/pinkfish.json";
+my $NEW_PIE_CACHE       = "$NEW_DIR/pie.json";
 
 my $page_size       = 100;
 my $page_start      = 0;
@@ -829,6 +830,218 @@ sub json_path {
         $row->{the_date};
 
     return $pathname;
+}
+
+sub generate_pie_stuff {
+    my $db = shift;
+
+    my $result;
+    my $data = {};
+
+    my $quote_sql = {};
+    $quote_sql->{today} = qq!
+        SELECT speaker, message
+        FROM i3log
+        WHERE speaker <> 'URLbot' AND NOT is_bot
+                AND date(local) = date(now())
+        OFFSET (random() * (
+            SELECT COUNT(*) FROM i3log WHERE speaker <> 'URLbot' AND NOT is_bot
+                AND date(local) = date(now())
+            ))::INTEGER LIMIT 1
+    !;
+    $quote_sql->{yesterday} = qq!
+        SELECT speaker, message
+        FROM i3log
+        WHERE speaker <> 'URLbot' AND NOT is_bot
+                AND date(local) = date(now()) - '1 day'::interval
+        OFFSET (random() * (
+            SELECT COUNT(*) FROM i3log WHERE speaker <> 'URLbot' AND NOT is_bot
+                AND date(local) = date(now()) - '1 day'::interval
+            ))::INTEGER LIMIT 1
+    !;
+    $quote_sql->{week} = qq!
+        SELECT speaker, message
+        FROM i3log
+        WHERE speaker <> 'URLbot' AND NOT is_bot
+                AND local BETWEEN date_trunc('day', now()) - '1 week'::interval AND now()
+        OFFSET (random() * (
+            SELECT COUNT(*) FROM i3log WHERE speaker <> 'URLbot' AND NOT is_bot
+                AND local BETWEEN date_trunc('day', now()) - '1 week'::interval AND now()
+            ))::INTEGER LIMIT 1
+    !;
+    $quote_sql->{month} = qq!
+        SELECT speaker, message
+        FROM i3log
+        WHERE speaker <> 'URLbot' AND NOT is_bot
+                AND local BETWEEN date_trunc('day', now()) - '1 month'::interval AND now()
+        OFFSET (random() * (
+            SELECT COUNT(*) FROM i3log WHERE speaker <> 'URLbot' AND NOT is_bot
+                AND local BETWEEN date_trunc('day', now()) - '1 month'::interval AND now()
+            ))::INTEGER LIMIT 1
+    !;
+    $quote_sql->{year} = qq!
+        SELECT speaker, message
+        FROM i3log
+        WHERE speaker <> 'URLbot' AND NOT is_bot
+                AND local BETWEEN date_trunc('day', now()) - '1 year'::interval AND now()
+        OFFSET (random() * (
+            SELECT COUNT(*) FROM i3log WHERE speaker <> 'URLbot' AND NOT is_bot
+                AND local BETWEEN date_trunc('day', now()) - '1 year'::interval AND now()
+            ))::INTEGER LIMIT 1
+    !;
+    $quote_sql->{all} = qq!
+        SELECT speaker, message
+        FROM i3log
+        WHERE speaker <> 'URLbot' AND NOT is_bot
+        OFFSET (random() * (
+            SELECT COUNT(*) FROM i3log WHERE speaker <> 'URLbot' AND NOT is_bot)
+            )::INTEGER LIMIT 1
+    !;
+    my $quotes = {};
+    foreach (qw(today yesterday week month year all)) {
+        $result = $db->selectall_arrayref( $quote_sql->{$_}, { Slice => {} } );
+        $quotes->{$_} = $result->[0];
+    }
+    $data->{quotes} = $quotes;
+
+    my $channel_sql = {};
+    my $speaker_sql = {};
+    $channel_sql->{today} = qq!
+        SELECT channel, count(*)
+        FROM i3log
+        WHERE speaker <> 'URLbot' AND NOT is_bot
+                AND date(local) = date(now())
+        GROUP BY channel
+        ORDER BY count DESC
+        LIMIT 12
+    !;
+    $speaker_sql->{today} = qq!
+        SELECT username AS speaker, count(*)
+        FROM i3log
+        WHERE speaker <> 'URLbot' AND NOT is_bot
+                AND date(local) = date(now())
+        GROUP BY username
+        ORDER BY count DESC
+        LIMIT 12
+    !;
+    $channel_sql->{yesterday} = qq!
+        SELECT channel, count(*)
+        FROM i3log
+        WHERE speaker <> 'URLbot' AND NOT is_bot
+                AND date(local) = date(now()) - '1 day'::interval
+        GROUP BY channel
+        ORDER BY count DESC
+        LIMIT 12
+    !;
+    $speaker_sql->{yesterday} = qq!
+        SELECT username AS speaker, count(*)
+        FROM i3log
+        WHERE speaker <> 'URLbot' AND NOT is_bot
+                AND date(local) = date(now()) - '1 day'::interval
+        GROUP BY username
+        ORDER BY count DESC
+        LIMIT 12
+    !;
+    $channel_sql->{week} = qq!
+        SELECT channel, count(*)
+        FROM i3log
+        WHERE speaker <> 'URLbot' AND NOT is_bot
+                AND local BETWEEN date_trunc('day', now()) - '1 week'::interval AND now()
+        GROUP BY channel
+        ORDER BY count DESC
+        LIMIT 12
+    !;
+    $speaker_sql->{week} = qq!
+        SELECT username AS speaker, count(*)
+        FROM i3log
+        WHERE speaker <> 'URLbot' AND NOT is_bot
+                AND local BETWEEN date_trunc('day', now()) - '1 week'::interval AND now()
+        GROUP BY username
+        ORDER BY count DESC
+        LIMIT 12
+    !;
+    $channel_sql->{month} = qq!
+        SELECT channel, count(*)
+        FROM i3log
+        WHERE speaker <> 'URLbot' AND NOT is_bot
+                AND local BETWEEN date_trunc('day', now()) - '1 month'::interval AND now()
+        GROUP BY channel
+        ORDER BY count DESC
+        LIMIT 12
+    !;
+    $speaker_sql->{month} = qq!
+        SELECT username AS speaker, count(*)
+        FROM i3log
+        WHERE speaker <> 'URLbot' AND NOT is_bot
+                AND local BETWEEN date_trunc('day', now()) - '1 month'::interval AND now()
+        GROUP BY username
+        ORDER BY count DESC
+        LIMIT 12
+    !;
+    $channel_sql->{year} = qq!
+        SELECT channel, count(*)
+        FROM i3log
+        WHERE speaker <> 'URLbot' AND NOT is_bot
+                AND local BETWEEN date_trunc('day', now()) - '1 year'::interval AND now()
+        GROUP BY channel
+        ORDER BY count DESC
+        LIMIT 12
+    !;
+    $speaker_sql->{year} = qq!
+        SELECT username AS speaker, count(*)
+        FROM i3log
+        WHERE speaker <> 'URLbot' AND NOT is_bot
+                AND local BETWEEN date_trunc('day', now()) - '1 year'::interval AND now()
+        GROUP BY username
+        ORDER BY count DESC
+        LIMIT 12
+    !;
+    $channel_sql->{all} = qq!
+        SELECT channel, count(*)
+        FROM i3log
+        WHERE speaker <> 'URLbot' AND NOT is_bot
+        GROUP BY channel
+        ORDER BY count DESC
+        LIMIT 12
+    !;
+    $speaker_sql->{all} = qq!
+        SELECT username AS speaker, count(*)
+        FROM i3log
+        WHERE speaker <> 'URLbot' AND NOT is_bot
+        GROUP BY username
+        ORDER BY count DESC
+        LIMIT 12
+    !;
+    my $speakers = {};
+    my $channels = {};
+    foreach (qw(today yesterday week month year all)) {
+        $result = $db->selectall_arrayref( $speaker_sql->{$_}, { Slice => {} } );
+        $speakers->{$_} = $result;
+    }
+    $data->{speakers} = $speakers;
+    foreach (qw(today yesterday week month year all)) {
+        $result = $db->selectall_arrayref( $channel_sql->{$_}, { Slice => {} } );
+        $channels->{$_} = $result;
+    }
+    $data->{channels} = $channels;
+
+    # old dates.json
+    my $dates;
+    my $dates_sql = qq!
+        SELECT date(now()) AS today,
+               date(now() - '1 day'::interval) AS yesterday,
+               date(now() - '1 week'::interval) AS week,
+               date(now() - '1 month'::interval) AS month,
+               date(now() - '1 year'::interval) AS year,
+               date(min(local)) AS all
+          FROM i3log
+    !;
+    $result = $db->selectall_arrayref( $dates_sql, { Slice => {} } );
+    $dates = $result->[0];
+    $data->{dates} = $dates;
+
+    # Collect all results into one thing to save
+    save_json_cache($data, $NEW_PIE_CACHE);
 }
 
 sub generate_js_dates {
@@ -1601,6 +1814,7 @@ sub main {
     update_cache($pinkfish_map, $hours, $channels, $speakers) if $do_cache;
     generate_navbar_script($DATABASE, $date_counts) if $do_navbar;
     generate_js_dates($DATABASE, $date_counts) if $do_navbar;
+    generate_pie_stuff($DATABASE) if $do_navbar;
     dump_speakers($speakers) if $do_speakers;
 
     my $now_date = fetch_current_date($DATABASE);

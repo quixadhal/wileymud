@@ -54,6 +54,18 @@ function hideDiv(divID) {
 function scroll_to(id) {
     document.getElementById(id).scrollIntoView({behavior: 'smooth', block: "center"});
 }
+function addClass(elementID, className) {
+    element = document.getElementById(elementID);
+    if(element !== undefined && element !== null) {
+        element.classList.add(className);
+    }
+}
+function removeClass(elementID, className) {
+    element = document.getElementById(elementID);
+    if(element !== undefined && element !== null) {
+        element.classList.remove(className);
+    }
+}
 function dim(element) {
     if(element !== null) {
         element.style.opacity = "0.5";

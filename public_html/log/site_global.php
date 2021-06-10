@@ -81,4 +81,6 @@ $WILEY_BANNER_HEIGHT    = sprintf("%dpx", (int)($ICON_BASE * $SCALE));
 //$WILEY_BANNER_HEIGHT    = 48;
 $WILEY_URL              = "telnet://wileymud.themud.org:3000";
 
+$NOT_AVAILABLE_ICON     = "$URL_HOME/gfx/NA.png";
+
 ?>

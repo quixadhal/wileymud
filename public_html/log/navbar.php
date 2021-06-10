@@ -6,14 +6,22 @@ $PREV_ICON              = "$URL_HOME/gfx/nav/previous.png";
 $NEXT_ICON              = "$URL_HOME/gfx/nav/next.png";
 $END_ICON               = "$URL_HOME/gfx/nav/end.png";
 
-$TOP_ICON               = "$URL_HOME/gfx/nav/green/top.png";
-$UP_ICON                = "$URL_HOME/gfx/nav/green/up.png";
-$DOWN_ICON              = "$URL_HOME/gfx/nav/green/down.png";
-$BOTTOM_ICON            = "$URL_HOME/gfx/nav/green/bottom.png";
+//$TOP_ICON               = "$URL_HOME/gfx/nav/green/top.png";
+//$UP_ICON                = "$URL_HOME/gfx/nav/green/up.png";
+//$DOWN_ICON              = "$URL_HOME/gfx/nav/green/down.png";
+//$BOTTOM_ICON            = "$URL_HOME/gfx/nav/green/bottom.png";
 
-$PLAY_ICON              = "$URL_HOME/gfx/nav/green/play.png";
-$PAUSE_RED_ICON         = "$URL_HOME/gfx/nav/green/pause.png";
-$PAUSE_GREY_ICON        = "$URL_HOME/gfx/nav/green/stop.png";
+//$PLAY_ICON              = "$URL_HOME/gfx/nav/green/play.png";
+//$PAUSE_RED_ICON         = "$URL_HOME/gfx/nav/green/pause.png";
+//$PAUSE_GREY_ICON        = "$URL_HOME/gfx/nav/green/stop.png";
+
+$TOP_ICON               = "$URL_HOME/gfx/nav/new/up_arrow.png";
+$UP_ICON                = "$URL_HOME/gfx/nav/new/up_arrow.png";
+$DOWN_ICON              = "$URL_HOME/gfx/nav/new/down_arrow.png";
+$BOTTOM_ICON            = "$URL_HOME/gfx/nav/new/down_arrow.png";
+$PLAY_ICON              = "$URL_HOME/gfx/nav/new/play.png";
+$PAUSE_RED_ICON         = "$URL_HOME/gfx/nav/new/pause_orange.png";
+$PAUSE_GREY_ICON        = "$URL_HOME/gfx/nav/new/pause_grey.png";
 
 $MUDLIST_ICON           = "$URL_HOME/gfx/mud.png";
 $OTHER_LOG_ICON         = "$URL_HOME/gfx/other_logs.png";
@@ -32,7 +40,7 @@ $NAVBAR_JS              = "$URL_HOME/log/navbar_js.php";
 $MUDLIST_URL            = "$URL_HOME/log/mudlist.php";
 $LOG_URL                = "$URL_HOME/log/";
 $OTHER_LOG_URL          = "https://themud.org/chanhist.php#Channel=all";
-$PIE_URL                = "$URL_HOME/pie.php";
+$PIE_URL                = "$URL_HOME/log/pie.php";
 $QUESTION_URL           = "$URL_HOME/random_video.php";
 $SERVER_URL             = "$URL_HOME/log/server.php";
 $GITHUB_URL             = "https://github.com/quixadhal/wileymud";
