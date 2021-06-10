@@ -19,15 +19,27 @@ $SPEEDTEST_WIDTH        = sprintf("%dpx", (int)($SPEEDTEST_WIDTH_BASE * $SCALE))
 
 $speedtest_text = file_get_contents($SPEEDTEST_FILE);
 $speedtest = json_decode($speedtest_text, true, 512, JSON_INVALID_UTF8_SUBSTITUTE);
-$speedtest["unix_timestamp"] = strtotime($speedtest["timestamp"]);
-$speedtest["the_time"] = strftime("%Y-%m-%d %H:%M:%S %Z", $speedtest["unix_timestamp"]);
-$speedtest["speedtest_current"] = $speedtest["result"]["url"] . ".png";
+if(!array_key_exists('result', $speedtest)) {
+    $speedtest["unix_timestamp"] = time();
+    $speedtest["the_time"] = strftime("%Y-%m-%d %H:%M:%S %Z", time());
+    $speedtest["speedtest_current"] = $QUESTION_ICON;
+} else {
+    $speedtest["unix_timestamp"] = strtotime($speedtest["timestamp"]);
+    $speedtest["the_time"] = strftime("%Y-%m-%d %H:%M:%S %Z", $speedtest["unix_timestamp"]);
+    $speedtest["speedtest_current"] = $speedtest["result"]["url"] . ".png";
+}
 
 $speedtest_wifi_text = file_get_contents($SPEEDTEST_WIFI_FILE);
 $speedtest_wifi = json_decode($speedtest_wifi_text, true, 512, JSON_INVALID_UTF8_SUBSTITUTE);
-$speedtest_wifi["unix_timestamp"] = strtotime($speedtest_wifi["timestamp"]);
-$speedtest_wifi["the_time"] = strftime("%Y-%m-%d %H:%M:%S %Z", $speedtest_wifi["unix_timestamp"]);
-$speedtest_wifi["speedtest_current"] = $speedtest_wifi["result"]["url"] . ".png";
+if(!array_key_exists('result', $speedtest_wifi)) {
+    $speedtest["unix_timestamp"] = time();
+    $speedtest["the_time"] = strftime("%Y-%m-%d %H:%M:%S %Z", time());
+    $speedtest["speedtest_current"] = $QUESTION_ICON;
+} else {
+    $speedtest_wifi["unix_timestamp"] = strtotime($speedtest_wifi["timestamp"]);
+    $speedtest_wifi["the_time"] = strftime("%Y-%m-%d %H:%M:%S %Z", $speedtest_wifi["unix_timestamp"]);
+    $speedtest_wifi["speedtest_current"] = $speedtest_wifi["result"]["url"] . ".png";
+}
 
 $speedtest_avg_text = file_get_contents($SPEEDTEST_AVG_FILE);
 $speedtest_avg = json_decode($speedtest_avg_text, true, 512, JSON_INVALID_UTF8_SUBSTITUTE);
