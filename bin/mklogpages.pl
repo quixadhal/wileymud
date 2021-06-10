@@ -18,6 +18,7 @@ use Time::HiRes qw(time);
 my $URL_HOME        = "http://wileymud.themud.org/~wiley";
 my $LOG_HOME        = "$URL_HOME/logpages";
 my $LIVE_PAGE       = "$LOG_HOME/";
+my $NEW_DIR         = '/home/wiley/public_html/log';
 
 #my $LIVE_DB_FILE    = '/home/wiley/lib/i3/wiley.db';
 #my $DB_FILE         = '/home/wiley/lib/i3/wiley.bkp-20190223.db';
@@ -94,6 +95,10 @@ my $CHANNEL_CACHE   = "$PAGE_DIR/channels.json";
 my $SPEAKER_CACHE   = "$PAGE_DIR/speakers.json";
 my $DATE_CACHE      = "$PAGE_DIR/date_counts.json";
 my $HOUR_CACHE      = "$PAGE_DIR/hours.json";
+
+my $JS_DATE_CACHE       = "$NEW_DIR/log_navigation_dates.js";
+my $NEW_DATE_CACHE      = "$NEW_DIR/date_counts.json";
+my $NEW_PINKFISH_CACHE  = "$NEW_DIR/pinkfish.json";
 
 my $page_size       = 100;
 my $page_start      = 0;
@@ -532,6 +537,7 @@ sub update_date_cache {
 
     local $| = 1;
     print "Saving cached versions of SQL date information...";
+    save_date_cache($date_counts, $NEW_DATE_CACHE);
     save_date_cache($date_counts, $DATE_CACHE);
     print "done.\n";
 }
@@ -544,6 +550,7 @@ sub update_cache {
 
     local $| = 1;
     print "Saving cached versions of SQL data...";
+    save_json_cache($pinkfish_map, $NEW_PINKFISH_CACHE);
     save_json_cache($pinkfish_map, $PINKFISH_CACHE);
     save_json_cache($hours, $HOUR_CACHE);
     save_json_cache($channels, $CHANNEL_CACHE);
@@ -822,6 +829,28 @@ sub json_path {
         $row->{the_date};
 
     return $pathname;
+}
+
+sub generate_js_dates {
+    my $db = shift;
+    my $date_counts = shift;
+    die "Invalid date information!" if !defined $date_counts;
+
+    local $| = 1;
+    print "Generating navigation data...";
+
+    my $filename = $JS_DATE_CACHE;
+
+    my @date_list = ();
+    foreach my $row (@$date_counts) {
+        push @date_list, ($row->{the_date}) if -f page_path($row);
+    }
+    my $big_list = join(",\n", map { sprintf "\"%s\"", $_; } (@date_list));
+
+    open FP, ">$filename" or die "Cannot open script $filename: $!";
+    print FP "var validDates = [\n$big_list\n];\n";
+    close FP;
+    print "done.\n";
 }
 
 sub generate_navbar_script {
@@ -1571,6 +1600,7 @@ sub main {
     update_date_cache($date_counts) if $do_dates;
     update_cache($pinkfish_map, $hours, $channels, $speakers) if $do_cache;
     generate_navbar_script($DATABASE, $date_counts) if $do_navbar;
+    generate_js_dates($DATABASE, $date_counts) if $do_navbar;
     dump_speakers($speakers) if $do_speakers;
 
     my $now_date = fetch_current_date($DATABASE);
