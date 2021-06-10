@@ -68,6 +68,8 @@ header("Content-type: text/css");
     height: 90%;
 }
 .quote-div {
+    font-family: 'Lato', sans-serif;
+    font-size: <?php echo $FONT_SIZE; ?>;
     background: rgba(0,0,0,0.50);
     color: #FF9F9F;
     width: 100%;

@@ -13,13 +13,6 @@ $PIE_JSON               = "$FILE_HOME/log/pie.json";
 $pie_text               = file_get_contents($PIE_JSON);
 $pie_data               = json_decode($pie_text, true, 512, JSON_INVALID_UTF8_SUBSTITUTE);
 
-$active_style           = "background-color: #8f4f2f; opacity: 1.0;";
-$hover_style            = "background-color: #4f0000; opacity: 1.0;";
-$inactive_style         = "background-color: #2f0000; opacity: 0.6;";
-
-$activechan_style       = "background-color: #2f4f8f; opacity: 1.0; font-size: 60%";
-$hoverchan_style        = "background-color: #00004f; opacity: 1.0; font-size: 60%";
-$inactivechan_style     = "background-color: #00002f; opacity: 0.6; font-size: 60%";
 ?>
 
 <html>

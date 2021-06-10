@@ -36,6 +36,40 @@ $MUDLIST_CSS        = "$URL_HOME/log/mudlist_css.php?version=$MUDLIST_TIME";
             var timeSpent;
             var backgroundTimer;
 
+            function on_scroll() {
+                var body = document.body;
+                var html = document.documentElement;
+                var bt = document.getElementById("navbar-button-top");
+                var bb = document.getElementById("navbar-button-bottom");
+                var doc_height = Math.max( body.scrollHeight, body.offsetHeight,
+                    html.clientHeight, html.scrollHeight, html.offsetHeight );
+
+                // This is used so that if we add more content and
+                // nothing scrolls the page, we know we COULD
+                // scroll further, if the user were at the bottom
+                // and thus done reading it.
+                WasAtBottom = false;
+                if( window.innerHeight >= doc_height ) {
+                    // The page fits entirely on the screen, no scrolling possible.
+                    dim(bb);
+                    dim(bt);
+                } else if( (window.innerHeight + window.pageYOffset) >=
+                    (document.body.offsetHeight) ) {
+                    // We are at the bottom of the page.
+                    dim(bb);
+                    brighten(bt);
+                    WasAtBottom = true;
+                    NoScroll = false;
+                } else if( window.pageYOffset <= 1 ) {
+                    // We are at the top of the page.
+                    brighten(bb);
+                    dim(bt);
+                } else {
+                    // We're somewhere in the middle.
+                    brighten(bb);
+                    brighten(bt);
+                }
+            }
             $(document).ready(function() {
                 hideDiv('page-source');
                 $('#page-load-time').html(timeSpent);
@@ -44,6 +78,10 @@ $MUDLIST_CSS        = "$URL_HOME/log/mudlist_css.php?version=$MUDLIST_TIME";
                 randomizeBackground();
                 updateRefreshTime();
                 backgroundTimer = setInterval(randomizeBackground, 1000 * 60 * 5);
+                on_scroll(); // Call once, in case the page cannot scroll
+                $(window).on("scroll", function() {
+                    on_scroll();
+                });
             });
         </script>
     </head>
@@ -88,6 +126,8 @@ $MUDLIST_CSS        = "$URL_HOME/log/mudlist_css.php?version=$MUDLIST_TIME";
             </table>
         </div>
         <div id="navbar-right">
+            <img class="nav-img glowing" id="navbar-button-top" title="Top of page" src="<?php echo $TOP_ICON; ?>" onclick="scroll_to('player-header-table');" />
+            <img class="nav-img glowing" id="navbar-button-bottom" title="Bottom of page" src="<?php echo $BOTTOM_ICON; ?>" onclick="scroll_to('content-bottom');" />
             <span id="refresh-time">--:-- ---</span>
             <img class="nav-img glowing" id="navbar-button-server" title="Crusty Server Statistics" src="<?php echo $SERVER_ICON; ?>" onclick="window.location.href='<?php echo $SERVER_URL; ?>';" />
             <img class="nav-img glowing" id="navbar-button-github" title="All of this in Github" src="<?php echo $GITHUB_ICON; ?>" onclick="window.location.href='<?php echo $GITHUB_URL; ?>';" />
@@ -274,7 +314,7 @@ $MUDLIST_CSS        = "$URL_HOME/log/mudlist_css.php?version=$MUDLIST_TIME";
                     )
                 </td>
             </tr>
-            <tr>
+            <tr id="content-bottom">
                 <?php $time_end = microtime(true); $time_spent = $time_end - $time_start; ?>
                 <td colspan="6" id="time-column">
                     <?php echo sprintf("%9.4f", $time_spent); ?> seconds
