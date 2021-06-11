@@ -5,7 +5,13 @@ use Data::Dumper;
 use English;
 $| = 1;
 
+my $PREFER_ENGLISH = 0;
 my $destination = shift || "/share/videos";
+if ($destination =~ /^--english$/i) {
+    # We actually want the english dubbed version for some reason...
+    $PREFER_ENGLISH = 1;
+    $destination = shift || "/share/videos";
+}
 $destination =~ s!/$!!; #Remove trailing slash if there
 die "$destination does not exist!" unless -d "$destination" or -f "$destination";
 
@@ -67,15 +73,19 @@ sub get_format {
     my @lines = (<$fh>);
     close $fh;
 
-    my @candidates = grep {/^(hls-audio-ja-JP-hardsub-en-US(?:[\d\-])+)\s+/i}
-        grep {/\d*x1080/i} grep {/mp4a/i} @lines;
-    if ((scalar @candidates) < 1) {
+    my @candidates = ();
+
+    if(! $PREFER_ENGLISH) {
         @candidates = grep {/^(hls-audio-ja-JP-hardsub-en-US(?:[\d\-])+)\s+/i}
-            grep {/\d*x720/i} grep {/mp4a/i} @lines;
-    }
-    if ((scalar @candidates) < 1) {
-        @candidates = grep {/^(hls-audio-ja-JP-hardsub-en-US(?:[\d\-])+)\s+/i}
-            grep {/\d*x480/i} grep {/mp4a/i} @lines;
+            grep {/\d*x1080/i} grep {/mp4a/i} @lines;
+        if ((scalar @candidates) < 1) {
+            @candidates = grep {/^(hls-audio-ja-JP-hardsub-en-US(?:[\d\-])+)\s+/i}
+                grep {/\d*x720/i} grep {/mp4a/i} @lines;
+        }
+        if ((scalar @candidates) < 1) {
+            @candidates = grep {/^(hls-audio-ja-JP-hardsub-en-US(?:[\d\-])+)\s+/i}
+                grep {/\d*x480/i} grep {/mp4a/i} @lines;
+        }
     }
     # If there is no native version, take the dubbed one...
     # hls-audio-en-US-6998-0                   mp4        1920x1080  [en-US] 6998k , avc1.640028, 24.0fps, mp4a.40.2
@@ -93,14 +103,16 @@ sub get_format {
             grep {/\d*x480/i} grep {/mp4a/i} @lines;
     }
 
-    foreach my $line (@candidates) {
-        $line =~ /^(hls-audio-ja-JP-hardsub-en-US(?:[\d\-])+)\s+/i;
-        $format = ($1);
-        last if $format;
-    }
+    if(! $PREFER_ENGLISH) {
+        foreach my $line (@candidates) {
+            $line =~ /^(hls-audio-ja-JP-hardsub-en-US(?:[\d\-])+)\s+/i;
+            $format = ($1);
+            last if $format;
+        }
 
-    #print "selected native $format\n" if $format; #TODO
-    return $format if $format;
+        #print "selected native $format\n" if $format; #TODO
+        return $format if $format;
+    }
 
     foreach my $line (@candidates) {
         $line =~ /^(hls-audio-en-US(?:[\d\-])+)\s+/i;
