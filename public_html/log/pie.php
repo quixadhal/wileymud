@@ -198,7 +198,7 @@ $pie_data               = json_decode($pie_text, true, 512, JSON_INVALID_UTF8_SU
                     document.getElementById('graph-today').style.display='none';
                     document.getElementById('quote-today').innerHTML= pieData.quotes.today.speaker + " said &#x300C;" + pieData.quotes.today.message + "&#x300D;";
                 } else {
-                    document.getElementById('pie-today').innerHTML='<?php echo $NOT_AVAILABLE_ICON; ?>';
+                    document.getElementById('pie-today').innerHTML='<img class="not-available" src="<?php echo $NOT_AVAILABLE_ICON; ?>" />';
                     document.getElementById('quote-today').innerHTML="I got nothin'.";
                 }
             }
@@ -220,7 +220,7 @@ $pie_data               = json_decode($pie_text, true, 512, JSON_INVALID_UTF8_SU
                     document.getElementById('graph-chan-today').style.display='none';
                     document.getElementById('quote-chan-today').innerHTML= pieData.quotes.today.speaker + " said &#x300C;" + pieData.quotes.today.message + "&#x300D;";
                 } else {
-                    document.getElementById('pie-chan-today').innerHTML='<?php echo $NOT_AVAILABLE_ICON; ?>';
+                    document.getElementById('pie-chan-today').innerHTML='<img class="not-available" src="<?php echo $NOT_AVAILABLE_ICON; ?>" />';
                     document.getElementById('quote-chan-today').innerHTML="I got nothin'.";
                 }
             }
@@ -242,7 +242,7 @@ $pie_data               = json_decode($pie_text, true, 512, JSON_INVALID_UTF8_SU
                     document.getElementById('graph-yesterday').style.display='none';
                     document.getElementById('quote-yesterday').innerHTML= pieData.quotes.yesterday.speaker + " said &#x300C;" + pieData.quotes.yesterday.message + "&#x300D;";
                 } else {
-                    document.getElementById('pie-yesterday').innerHTML='<?php echo $NOT_AVAILABLE_ICON; ?>';
+                    document.getElementById('pie-yesterday').innerHTML='<img class="not-available" src="<?php echo $NOT_AVAILABLE_ICON; ?>" />';
                     document.getElementById('quote-yesterday').innerHTML="I got nothin'.";
                 }
             }
@@ -264,7 +264,7 @@ $pie_data               = json_decode($pie_text, true, 512, JSON_INVALID_UTF8_SU
                     document.getElementById('graph-chan-yesterday').style.display='none';
                     document.getElementById('quote-chan-yesterday').innerHTML= pieData.quotes.yesterday.speaker + " said &#x300C;" + pieData.quotes.yesterday.message + "&#x300D;";
                 } else {
-                    document.getElementById('pie-chan-yesterday').innerHTML='<?php echo $NOT_AVAILABLE_ICON; ?>';
+                    document.getElementById('pie-chan-yesterday').innerHTML='<img class="not-available" src="<?php echo $NOT_AVAILABLE_ICON; ?>" />';
                     document.getElementById('quote-chan-yesterday').innerHTML="I got nothin'.";
                 }
             }
@@ -286,7 +286,7 @@ $pie_data               = json_decode($pie_text, true, 512, JSON_INVALID_UTF8_SU
                     document.getElementById('graph-week').style.display='none';
                     document.getElementById('quote-week').innerHTML= pieData.quotes.week.speaker + " said &#x300C;" + pieData.quotes.week.message + "&#x300D;";
                 } else {
-                    document.getElementById('pie-week').innerHTML='<?php echo $NOT_AVAILABLE_ICON; ?>';
+                    document.getElementById('pie-week').innerHTML='<img class="not-available" src="<?php echo $NOT_AVAILABLE_ICON; ?>" />';
                     document.getElementById('quote-week').innerHTML="I got nothin'.";
                 }
             }
@@ -308,7 +308,7 @@ $pie_data               = json_decode($pie_text, true, 512, JSON_INVALID_UTF8_SU
                     document.getElementById('graph-chan-week').style.display='none';
                     document.getElementById('quote-chan-week').innerHTML= pieData.quotes.week.speaker + " said &#x300C;" + pieData.quotes.week.message + "&#x300D;";
                 } else {
-                    document.getElementById('pie-chan-week').innerHTML='<?php echo $NOT_AVAILABLE_ICON; ?>';
+                    document.getElementById('pie-chan-week').innerHTML='<img class="not-available" src="<?php echo $NOT_AVAILABLE_ICON; ?>" />';
                     document.getElementById('quote-chan-week').innerHTML="I got nothin'.";
                 }
             }
@@ -330,7 +330,7 @@ $pie_data               = json_decode($pie_text, true, 512, JSON_INVALID_UTF8_SU
                     document.getElementById('graph-month').style.display='none';
                     document.getElementById('quote-month').innerHTML= pieData.quotes.month.speaker + " said &#x300C;" + pieData.quotes.month.message + "&#x300D;";
                 } else {
-                    document.getElementById('pie-month').innerHTML='<?php echo $NOT_AVAILABLE_ICON; ?>';
+                    document.getElementById('pie-month').innerHTML='<img class="not-available" src="<?php echo $NOT_AVAILABLE_ICON; ?>" />';
                     document.getElementById('quote-month').innerHTML="I got nothin'.";
                 }
             }
@@ -352,7 +352,7 @@ $pie_data               = json_decode($pie_text, true, 512, JSON_INVALID_UTF8_SU
                     document.getElementById('graph-chan-month').style.display='none';
                     document.getElementById('quote-chan-month').innerHTML= pieData.quotes.month.speaker + " said &#x300C;" + pieData.quotes.month.message + "&#x300D;";
                 } else {
-                    document.getElementById('pie-chan-month').innerHTML='<?php echo $NOT_AVAILABLE_ICON; ?>';
+                    document.getElementById('pie-chan-month').innerHTML='<img class="not-available" src="<?php echo $NOT_AVAILABLE_ICON; ?>" />';
                     document.getElementById('quote-chan-month').innerHTML="I got nothin'.";
                 }
             }
@@ -374,7 +374,7 @@ $pie_data               = json_decode($pie_text, true, 512, JSON_INVALID_UTF8_SU
                     document.getElementById('graph-year').style.display='none';
                     document.getElementById('quote-year').innerHTML= pieData.quotes.year.speaker + " said &#x300C;" + pieData.quotes.year.message + "&#x300D;";
                 } else {
-                    document.getElementById('pie-year').innerHTML='<?php echo $NOT_AVAILABLE_ICON; ?>';
+                    document.getElementById('pie-year').innerHTML='<img class="not-available" src="<?php echo $NOT_AVAILABLE_ICON; ?>" />';
                     document.getElementById('quote-year').innerHTML="I got nothin'.";
                 }
             }
@@ -396,7 +396,7 @@ $pie_data               = json_decode($pie_text, true, 512, JSON_INVALID_UTF8_SU
                     document.getElementById('graph-chan-year').style.display='none';
                     document.getElementById('quote-chan-year').innerHTML= pieData.quotes.year.speaker + " said &#x300C;" + pieData.quotes.year.message + "&#x300D;";
                 } else {
-                    document.getElementById('pie-chan-year').innerHTML='<?php echo $NOT_AVAILABLE_ICON; ?>';
+                    document.getElementById('pie-chan-year').innerHTML='<img class="not-available" src="<?php echo $NOT_AVAILABLE_ICON; ?>" />';
                     document.getElementById('quote-chan-year').innerHTML="I got nothin'.";
                 }
             }
@@ -418,7 +418,7 @@ $pie_data               = json_decode($pie_text, true, 512, JSON_INVALID_UTF8_SU
                     document.getElementById('graph-all').style.display='none';
                     document.getElementById('quote-all').innerHTML= pieData.quotes.all.speaker + " said &#x300C;" + pieData.quotes.all.message + "&#x300D;";
                 } else {
-                    document.getElementById('pie-all').innerHTML='<?php echo $NOT_AVAILABLE_ICON; ?>';
+                    document.getElementById('pie-all').innerHTML='<img class="not-available" src="<?php echo $NOT_AVAILABLE_ICON; ?>" />';
                     document.getElementById('quote-all').innerHTML="I got nothin'.";
                 }
             }
@@ -440,7 +440,7 @@ $pie_data               = json_decode($pie_text, true, 512, JSON_INVALID_UTF8_SU
                     document.getElementById('graph-chan-all').style.display='none';
                     document.getElementById('quote-chan-all').innerHTML= pieData.quotes.all.speaker + " said &#x300C;" + pieData.quotes.all.message + "&#x300D;";
                 } else {
-                    document.getElementById('pie-chan-all').innerHTML='<?php echo $NOT_AVAILABLE_ICON; ?>';
+                    document.getElementById('pie-chan-all').innerHTML='<img class="not-available" src="<?php echo $NOT_AVAILABLE_ICON; ?>" />';
                     document.getElementById('quote-chan-all').innerHTML="I got nothin'.";
                 }
             }

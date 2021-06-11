@@ -75,3 +75,9 @@ header("Content-type: text/css");
     width: 100%;
     text-align: center;
 }
+.not-available {
+    opacity: 0.5;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
