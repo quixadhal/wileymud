@@ -17,6 +17,15 @@ $MUDLIST_CSS        = "$URL_HOME/log/mudlist_css.php?version=$MUDLIST_TIME";
         <meta http-equiv="pragma" content="no-cache" />
         <meta http-equiv="refresh" content="1800" />
         <title>I3 MUD List</title>
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-163395867-1"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', 'UA-163395867-1');
+        </script>
         <link rel="stylesheet" href="<?php echo $SITE_GLOBAL_CSS;?>">
         <link rel="stylesheet" href="<?php echo $PAGE_SOURCE_CSS;?>">
         <link rel="stylesheet" href="<?php echo $BACKGROUND_CSS;?>">

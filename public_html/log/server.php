@@ -51,6 +51,15 @@ $speedtest_avg = json_decode($speedtest_avg_text, true, 512, JSON_INVALID_UTF8_S
         <meta http-equiv="cache-control" content="no-cache" />
         <meta http-equiv="pragma" content="no-cache" />
         <title>Crusty I3 Log Server</title>
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-163395867-1"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', 'UA-163395867-1');
+        </script>
         <link rel="stylesheet" href="<?php echo $SITE_GLOBAL_CSS;?>">
         <link rel="stylesheet" href="<?php echo $PAGE_SOURCE_CSS;?>">
         <link rel="stylesheet" href="<?php echo $BACKGROUND_CSS;?>">

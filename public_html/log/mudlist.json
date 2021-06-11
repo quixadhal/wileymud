@@ -3,9 +3,9 @@
         "build" : "2.171g",
         "date" : "2021-06-08"
     },
-    "time" : "15:15 PDT",
+    "time" : "23:03 PDT",
     "boot" : "2021-06-08 09:50:39.000 PDT",
-    "uptime" : "2 days,  5:24:48",
+    "uptime" : "2 days, 13:13:03",
     "player_list" : [
     ],
     "players" : {
@@ -86,12 +86,30 @@
             "online"    : 0
         },
         {
+            "name"      : "Anarchy!", 
+            "md5"       : "33cfb142ded4e8971528604650ec3f23", 
+            "type"      : "LPMud", 
+            "mudlib"    : "Dead Souls 3.9", 
+            "ipaddress" : "216.252.162.133", 
+            "port"      : 9999,
+            "online"    : 0
+        },
+        {
             "name"      : "Antikaria", 
             "md5"       : "b12ada003e4a5ac54e09aa42ce0d6d80", 
             "type"      : "TMD", 
             "mudlib"    : "antikaria", 
             "ipaddress" : "128.16.10.197", 
             "port"      : 9000,
+            "online"    : 1
+        },
+        {
+            "name"      : "Ar Phes", 
+            "md5"       : "8ee2a98ea6d3f956cc6d3d40eec898b7", 
+            "type"      : "CoffeeMud", 
+            "mudlib"    : "CoffeeMud v5.9.7", 
+            "ipaddress" : "99.187.142.122", 
+            "port"      : 5555,
             "online"    : 1
         },
         {
@@ -181,7 +199,7 @@
             "type"      : "CoffeeMud", 
             "mudlib"    : "CoffeeMud v5.9.11.2", 
             "ipaddress" : "104.14.28.106", 
-            "port"      : 2323,
+            "port"      : 23,
             "online"    : 1
         },
         {
@@ -190,7 +208,7 @@
             "type"      : "CoffeeMud", 
             "mudlib"    : "CoffeeMud v5.9.11.2", 
             "ipaddress" : "104.14.28.106", 
-            "port"      : 23,
+            "port"      : 5555,
             "online"    : 0
         },
         {
@@ -209,7 +227,7 @@
             "mudlib"    : "Colony 2.0", 
             "ipaddress" : "192.99.10.40", 
             "port"      : 6000,
-            "online"    : 0
+            "online"    : 1
         },
         {
             "name"      : "Covenant of Lords", 
@@ -569,7 +587,7 @@
             "mudlib"    : "CoffeeMud v5.9.11.1", 
             "ipaddress" : "120.148.52.180", 
             "port"      : 5555,
-            "online"    : 0
+            "online"    : 1
         },
         {
             "name"      : "Hecklands MUD", 
@@ -668,7 +686,7 @@
             "mudlib"    : "lpcdb v1.0 alpha 2", 
             "ipaddress" : "82.173.25.181", 
             "port"      : 4000,
-            "online"    : 1
+            "online"    : 0
         },
         {
             "name"      : "LPM", 
@@ -1019,7 +1037,7 @@
             "mudlib"    : "Nightmare IVr6", 
             "ipaddress" : "87.229.23.214", 
             "port"      : 5555,
-            "online"    : 0
+            "online"    : 1
         },
         {
             "name"      : "Tales of Aeril", 
@@ -1280,7 +1298,7 @@
             "mudlib"    : "FRlib III", 
             "ipaddress" : "76.182.19.219", 
             "port"      : 4000,
-            "online"    : 0
+            "online"    : 1
         },
         {
             "name"      : "Yellowstone", 
