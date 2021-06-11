@@ -38,6 +38,7 @@ my $do_debug = undef;
 my $do_checksum = undef;
 my $do_lpc = undef;
 my $do_transfer = undef;
+my $do_cache = undef;
 my $channel = undef;
 my $speaker = undef;
 my $style = undef;
@@ -688,6 +689,8 @@ sub parse_style {
     return "lpc"        if $arg eq '-l';
     return "transfer"   if $arg =~ /^(--)?transfer$/;
     return "transfer"   if $arg eq '-t';
+    return "cache"      if $arg =~ /^(--)?cache$/;
+    return "cache"      if $arg eq '-C';
 
     return undef;
 }
@@ -782,7 +785,8 @@ sub format_output {
        $output .= " ${duration}"                        if defined $duration;
        $output .= " at ${origin_host}"                  if !defined $source and defined $title and $two_hosts;
        $output .= " goes to ${origin_host}"             if !defined $source and !defined $title and $two_hosts;
-       $output .= "\n";
+       chomp $output;
+       #$output .= "\n";
 
     return $output;
 }
@@ -884,12 +888,13 @@ if( !defined $style ) {
     $url = shift;
 }
 
-if( !defined $url and $style ne 'sql' and $style ne 'checksum' and $style ne 'lpc' and $style ne 'transfer' ) {
+if( !defined $url and $style ne 'sql' and $style ne 'checksum' and $style ne 'lpc' and $style ne 'transfer' and $style ne 'cache') {
     print "Usage: $prog [wiley|ansi|html|debug] URL [channel] [speaker]\n";
     print "       $prog sql [limit] [--mark]\n";
     print "       $prog checksum [limit]\n";
     print "       $prog lpc [limit]\n";
     print "       $prog transfer [limit]\n";
+    print "       $prog cache URL [channel] [speaker]\n";
     exit 1;
 }
 
@@ -907,6 +912,9 @@ if( $style eq 'sql' ) {
     $style = 'wiley';
 } elsif( $style eq 'transfer' ) {
     $do_transfer = 1;
+    $style = 'wiley';
+} elsif( $style eq 'cache' ) {
+    $do_cache = 1;
     $style = 'wiley';
 }
 
@@ -1115,6 +1123,21 @@ if( $do_sql ) {
     }
     $db->disconnect();
     $sqlite_db->disconnect();
+} elsif( $do_cache ) {
+    $db = DBI->connect("dbi:Pg:dbname=$DB_NAME", 'wiley', 'tardis69', { AutoCommit => 1, RaiseError => 1, PrintError => 0, });
+    my $cached = $db->selectrow_hashref(qq!
+        SELECT message
+          FROM urls
+         WHERE message IS NOT NULL AND url = ?
+      ORDER BY created ASC
+         LIMIT 1
+      !, undef, ($url));
+    if(defined $cached and defined $cached->{message}) {
+        print $cached->{message};
+    } else {
+        print '<SPAN class="flash_tag" style="color: red;">COMING SOON!</SPAN>' . "\n";
+    }
+    $db->disconnect();
 } else {
     handle_url( $url, $channel, $speaker );
 }
