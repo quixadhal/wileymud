@@ -132,6 +132,11 @@ if(array_key_exists('noscroll', $_GET)) {
                 white-space: normal;
                 padding-left: 1ch;
             }
+            .content-alert-column {
+                text-align: center;
+                overflow-x: hidden;
+                white-space: normal;
+            }
             #content-table tr:nth-child(even) {
                 background-color: <?php echo $EVEN; ?>;
             }
@@ -519,19 +524,18 @@ if(array_key_exists('noscroll', $_GET)) {
                 clearTimeout(PauseTimer);
                 IsPaused = false;
                 SlowDelay = Math.round(((Ticks * 1.45 / 10.0) + 1.0 + (Random.random() - 0.5)) * 100.0) / 100.0;
-                CurrentTickCountdown = Math.round(SlowDelay * 60.0);
+                CurrentTickCountdown = 5; // Just a few seconds to prevent spamming.
                 ContentTimer = setTimeout(updateContent, 1000 * CurrentTickCountdown);
                 updateProcessingTime();
                 $("#navbar-button-play").attr("src", "<?php echo $PLAY_ICON; ?>");
                 $("#navbar-button-play").attr("title", "Pause updates");
+                scroll_to('content-bottom');
             }
             function clickPlayPause() {
                 if(IsPaused == false) {
                     pauseUpdate();
                 } else {
                     resumeUpdate();
-                    // Don't call updateContent() directly, or people can spam
-                    // by clicking pause/play quickly!
                 }
             }
             $(document).ready(function() {
@@ -609,7 +613,7 @@ if(array_key_exists('noscroll', $_GET)) {
                 <td class="content-time-column"><span style="color: #00bbbb;">18:05:15</span></td>
                 <td class="content-channel-column">wiley</td>
                 <td class="content-speaker-column">SYSTEM@WileyMUD</td>
-                <td class="content-message-column">online</td>
+                <td class="content-message-column"><font color="#ffbbbb" class="flash_tag">Nobody's awake today, yet...</font></td>
             </tr>
         </table>
 <!--
