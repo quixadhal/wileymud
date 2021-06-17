@@ -293,6 +293,7 @@ if(array_key_exists('noscroll', $_GET)) {
             function updateProcessingTime() {
                 clearTimeout(CountdownTimer);
                 $('#tick').html(secsToHMS(CurrentTickCountdown));
+                $('#message-count').html(MD5s.length);
                 CurrentTickCountdown--;
                 if(CurrentTickCountdown < 1) {
                     CurrentTickCountdown = 0;
@@ -510,6 +511,9 @@ if(array_key_exists('noscroll', $_GET)) {
                 PauseTimer = setTimeout(flashPauseButton, 1000);
             }
             function pauseUpdate() {
+                // Do this once NOW, in case the count changed
+                updateProcessingTime();
+                // And then disable all that.
                 clearTimeout(CountdownTimer);
                 clearTimeout(ContentTimer);
                 clearTimeout(PauseTimer);
@@ -596,7 +600,7 @@ if(array_key_exists('noscroll', $_GET)) {
                 <td class="content-channel-header">Channel</td>
                 <td class="content-speaker-header">Speaker</td>
                 <td class="content-message-header">
-                    <a href="javascript:;" onmousedown="toggleDiv('page-source');">Processing&nbsp;in&nbsp;<span id="tick">--:--</span>&nbsp;--&nbsp;<span id="elapsed"><?php printf("%7.3f",$time_spent);?></span>&nbsp;seconds</a>
+                    <a href="javascript:;" onmousedown="toggleDiv('page-source');"><span id="message-count">No</span>&nbsp;messages, processing&nbsp;more&nbsp;in&nbsp;<span id="tick">--:--</span>&nbsp;--&nbsp;<span id="elapsed"><?php printf("%7.3f",$time_spent);?></span>&nbsp;seconds</a>
                 </td>
             </tr>
         </table>
