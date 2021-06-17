@@ -10,8 +10,8 @@ require_once 'log_navigation.php';
 $do_extra_ajax          = 1;
 
 $DATA_URL               = "$URL_HOME/log/log_chunk.php";
-$RESULT_LIMIT           = 200;  // Fetch no more than this many per request
-$DISPLAY_LIMIT          = 1000; // Keep no more than this many in the table
+$RESULT_LIMIT           = 400;  // Fetch no more than this many per request
+$DISPLAY_LIMIT          = 1200; // Keep no more than this many in the table
 
 $the_date = NULL;
 if(array_key_exists('date', $_GET)) {
