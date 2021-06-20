@@ -27,9 +27,10 @@ if(array_key_exists('noscroll', $_GET)) {
 }
 
 ?>
-<html>
+<html lang="en">
     <head>
         <meta charset="utf-8" />
+        <meta content-language="en, jp" />
         <meta http-equiv="cache-control" content="no-cache" />
         <meta http-equiv="pragma" content="no-cache" />
         <title>Intermud-3 Log Page</title>
@@ -127,6 +128,7 @@ if(array_key_exists('noscroll', $_GET)) {
                 width: 30ch; 
             }
             .content-message-column {
+                font-family: "DejaVu Sans Mono", Consolas, "Lucida Console", Monaco, Courier, monospace;
                 text-align: left;
                 overflow-x: hidden;
                 white-space: normal;
@@ -154,6 +156,7 @@ if(array_key_exists('noscroll', $_GET)) {
                 background-color: black;
             }
         </style>
+        <!-- font-family:"ヒラギノ角ゴ Pro W3", "Hiragino Kaku Gothic Pro",Osaka, "メイリオ", Meiryo, "ＭＳ Ｐゴシック", "MS PGothic", sans-serif; -->
         <script src="<?php echo $JQ;?>"></script>
         <script src="<?php echo $JSCOOKIE;?>"></script>
         <script src="<?php echo $JSRANDOM;?>"></script>
@@ -306,16 +309,28 @@ if(array_key_exists('noscroll', $_GET)) {
                 var dataUrl;
                 Ticks++;
                 if(LastRow > 0) {
+                    // Grab another chunk from where we left off
                     dataUrl = dataUrlBase + "?from=" + LastRow + "&limit=" + RowLimit;
                 } else if(TheDate !== "") {
                     // Server Time Zone
                     var midnightMoment = moment.tz(TheDate, "America/Los_Angeles");
                     var midnightUnix = midnightMoment.unix();
-                    dataUrl = dataUrlBase + "?from=" + midnightUnix + "&limit=" + RowLimit;
+
+                    // Because we now start paused when given a date,
+                    // we don't have to care if this is our first time or not.
+                    // After our first run, LastRow will be set to the latest
+                    // date available, so we'll be in the other part of the if
+                    // clause.
+                    // Edge case:  No data for a given day?
+                    //
+                    // ALSO, we might as well just ignore the RowLimit if we're asking
+                    // for a specific day... instead, we'll use the DisplayLimit,
+                    // which should be larger, again, since we start paused.
+
+                    dataUrl = dataUrlBase + "?from=" + midnightUnix + "&to=" + (midnightUnix + 86400) + "&limit=" + DisplayLimit;
                     //dataUrl = dataUrlBase + "?limit=" + RowLimit + "&date=" + TheDate;
                 } else {
-                    //dataUrl = dataUrlBase + "?limit=" + RowLimit; // + "&from=1620777600";
-                    //dataUrl = dataUrlBase + "?limit=" + RowLimit + "&date=" + server_date();
+                    // Must want current stuff...
                     dataUrl = dataUrlBase + "?from=" + server_time_midnight() + "&limit=" + RowLimit;
                 }
                 $.ajax({

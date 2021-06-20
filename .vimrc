@@ -59,4 +59,8 @@ set enc=utf-8
 set t_Co=256
 set t_ut=
 colorscheme codedark
+set encoding=utf-8
+set fileencodings=utf-8
 
+autocmd BufNewFile,BufRead *_css.php set filetype=css
+autocmd BufNewFile,BufRead *_js.php set filetype=javascript

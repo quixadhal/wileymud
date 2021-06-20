@@ -50,16 +50,13 @@ a:active, a:focus {
     -moz-outline-style: none;
 }
 .unblurred {
-    font-family: Consolas, "Lucida Console", Monaco, Courier, monospace;
     white-space: pre-wrap;
 }
 .blurry:not(:hover) {
     filter: blur(3px);
-    font-family: Consolas, "Lucida Console", Monaco, Courier, monospace;
     white-space: pre-wrap;
 }
 .blurry:hover {
-    font-family: Consolas, "Lucida Console", Monaco, Courier, monospace;
     white-space: pre-wrap;
 }
 .glowing:not(:hover) {
