@@ -29,6 +29,7 @@ if(array_key_exists('noscroll', $_GET)) {
 ?>
 <html lang="en">
     <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <meta charset="utf-8" />
         <meta content-language="en, jp" />
         <meta http-equiv="cache-control" content="no-cache" />
@@ -330,8 +331,8 @@ if(array_key_exists('noscroll', $_GET)) {
                     dataUrl = dataUrlBase + "?from=" + midnightUnix + "&to=" + (midnightUnix + 86400) + "&limit=" + DisplayLimit;
                     //dataUrl = dataUrlBase + "?limit=" + RowLimit + "&date=" + TheDate;
                 } else {
-                    // Must want current stuff...
-                    dataUrl = dataUrlBase + "?from=" + server_time_midnight() + "&limit=" + RowLimit;
+                    // Must want current stuff... and again, use the DisplayLimit.
+                    dataUrl = dataUrlBase + "?from=" + server_time_midnight() + "&limit=" + DisplayLimit;
                 }
                 $.ajax({
                     url: dataUrl,
