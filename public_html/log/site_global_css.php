@@ -53,7 +53,7 @@ a:active, a:focus {
     white-space: pre-wrap;
 }
 .blurry:not(:hover) {
-    filter: blur(3px);
+    filter: blur(5px);
     white-space: pre-wrap;
 }
 .blurry:hover {
