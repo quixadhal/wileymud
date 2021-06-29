@@ -316,7 +316,9 @@ if(array_key_exists('noscroll', $_GET)) {
                             // Prevent future runs of this until we clock play
                             pauseUpdate();
                         }
-                        FirstScreen = false;
+                        if(GotDataLastTime == true) {
+                            FirstScreen = false;
+                        }
                     }
                     if(GotDataLastTime == true) {
                         // Reset the delay, because we actually got a result back.
