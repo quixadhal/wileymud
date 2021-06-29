@@ -238,9 +238,10 @@ $db = db_connect();
 $data = fetch_page_data_by_time($db, $time_from, $time_to, $the_date, $row_limit, $urlbot_mode);
 $time_end = microtime(true);
 $time_spent = $time_end - $time_start;
-$json = json_encode($data, JSON_PRETTY_PRINT);
+$json = json_encode($data, JSON_UNESCAPED_UNICODE | JSON_INVALID_UTF8_SUBSTITUTE | JSON_PRETTY_PRINT);
 
 header("Content-Type: application/json; charset=UTF-8");
+header("Content-Language: en, jp");
 echo $json;
 
 ?>

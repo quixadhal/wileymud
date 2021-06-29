@@ -83,4 +83,9 @@ $WILEY_URL              = "telnet://wileymud.themud.org:3000";
 
 $NOT_AVAILABLE_ICON     = "$URL_HOME/gfx/NA.png";
 
+$LOG_PAGE_FILE          = "$FILE_HOME/log/log_page_css.php";
+$LOG_PAGE_TIME          = filemtime($LOG_PAGE_FILE);
+$LOG_PAGE_CSS           = "$URL_HOME/log/log_page_css.php?version=$LOG_PAGE_TIME";
+$LOG_PAGE_JS            = "$URL_HOME/log/log_page_js.php";
+
 ?>

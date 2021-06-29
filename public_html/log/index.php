@@ -51,112 +51,7 @@ if(array_key_exists('noscroll', $_GET)) {
         <link rel="stylesheet" href="<?php echo $BACKGROUND_CSS;?>">
         <link rel="stylesheet" href="<?php echo $NAVBAR_CSS;?>">
         <link rel="stylesheet" href="<?php echo $LOG_NAV_CSS;?>">
-        <style>
-            #debug-message {
-                font-family: Consolas, "Lucida Console", Monaco, Courier, monospace;
-                font-size: <?php echo $FONT_SIZE; ?>;
-                overflow-x: hidden;
-            }
-
-
-            #content-header {
-                font-family: Consolas, "Lucida Console", Monaco, Courier, monospace;
-                font-size: <?php echo $FONT_SIZE; ?>;
-                overflow-x: hidden;
-                position: fixed;
-                background-color: black;
-                min-width: 100%;
-                width: 100%;
-                top: <?php echo $ICON_SIZE; ?>;
-                left: 0;
-                z-index: 3;
-            }
-            .content-date-header {
-                text-align: left;
-                min-width: 11ch;
-                width: 11ch; 
-            }
-            .content-time-header {
-                text-align: left;
-                min-width: 9ch;
-                width: 9ch; 
-            }
-            .content-channel-header {
-                text-align: left;
-                min-width: 16ch;
-                width: 16ch; 
-            }
-            .content-speaker-header {
-                text-align: left;
-                min-width: 30ch;
-                width: 30ch; 
-            }
-            .content-message-header {
-                font-family: Consolas, "Lucida Console", Monaco, Courier, monospace;
-                font-size: <?php echo $TINY_FONT_SIZE; ?>;
-                text-align: right;
-                overflow-x: hidden;
-                white-space: nowrap;
-                padding-left: 1ch;
-                padding-right: 1ch;
-            }
-
-            #content-table {
-                font-family: Consolas, "Lucida Console", Monaco, Courier, monospace;
-                font-size: <?php echo $FONT_SIZE; ?>;
-                overflow-x: hidden;
-                min-width: 100%;
-                width: 100%;
-            }
-            .content-date-column {
-                text-align: left;
-                min-width: 11ch;
-                width: 11ch; 
-            }
-            .content-time-column {
-                text-align: left;
-                min-width: 9ch;
-                width: 9ch; 
-            }
-            .content-channel-column {
-                text-align: left;
-                min-width: 16ch;
-                width: 16ch; 
-            }
-            .content-speaker-column {
-                text-align: left;
-                min-width: 30ch;
-                width: 30ch; 
-            }
-            .content-message-column {
-                font-family: "DejaVu Sans Mono", Consolas, "Lucida Console", Monaco, Courier, monospace;
-                text-align: left;
-                overflow-x: hidden;
-                white-space: normal;
-                padding-left: 1ch;
-            }
-            .content-alert-column {
-                text-align: center;
-                overflow-x: hidden;
-                white-space: normal;
-            }
-            #content-table tr:nth-child(even) {
-                background-color: <?php echo $EVEN; ?>;
-            }
-            #content-table tr:nth-child(odd) {
-                background-color: <?php echo $ODD; ?>;
-            }
-
-            #page-load-time {
-                font-family: Consolas, "Lucida Console", Monaco, Courier, monospace;
-                font-size: <?php echo $TINY_FONT_SIZE; ?>;
-                position: fixed;
-                bottom: 0px;
-                right: 0px;
-                z-index: 2;
-                background-color: black;
-            }
-        </style>
+        <link rel="stylesheet" href="<?php echo $LOG_PAGE_CSS;?>">
         <!-- font-family:"ヒラギノ角ゴ Pro W3", "Hiragino Kaku Gothic Pro",Osaka, "メイリオ", Meiryo, "ＭＳ Ｐゴシック", "MS PGothic", sans-serif; -->
         <script src="<?php echo $JQ;?>"></script>
         <script src="<?php echo $JSCOOKIE;?>"></script>
@@ -565,6 +460,9 @@ if(array_key_exists('noscroll', $_GET)) {
                 //showDiv('page-load-time');
                 $("#datepicker").val(queryDate);
                 on_scroll(); // Call once, in case the page cannot scroll
+                if(TheDate == "") {
+                    dim(document.getElementById("navbar-button-home"));
+                }
                 $(window).on("scroll", function() {
                     on_scroll();
                 });
@@ -590,12 +488,13 @@ if(array_key_exists('noscroll', $_GET)) {
             <img class="nav-img glowing" id="navbar-button-question" title="???!" src="<?php echo $QUESTION_ICON; ?>" onclick="window.location.href='<?php echo $QUESTION_URL; ?>';" />
         </div>
         <div id="navbar-center">
-            <img class="nav-img glowing" id="navbar-button-play" title="<?php echo ($start_paused == true) ? "Resume updates" : "Pause updates"; ?>" src="<?php echo ($start_paused == true) ? $PAUSE_RED_ICON : $PLAY_ICON; ?>" onclick="clickPlayPause();" />
+            <img class="nav-img glowing" id="navbar-button-home" title="Today!" src="<?php echo $HOME_ICON; ?>" <?php if(!is_null($the_date)) { echo "onclick=\"window.location.href='$LOG_URL';\""; }?> />
             <input type="text" id="datepicker" size="10" value="<?php echo $today; ?>" title="Date to begin viewing" />
-            <img class="nav-img glowing" id="navbar-button-top" title="Top of page" src="<?php echo $TOP_ICON; ?>" onclick="scroll_to('content-top');" />
-            <img class="nav-img glowing" id="navbar-button-bottom" title="Bottom of page" src="<?php echo $BOTTOM_ICON; ?>" onclick="scroll_to('content-bottom');" />
+            <img class="nav-img glowing" id="navbar-button-play" title="<?php echo ($start_paused == true) ? "Resume updates" : "Pause updates"; ?>" src="<?php echo ($start_paused == true) ? $PAUSE_RED_ICON : $PLAY_ICON; ?>" onclick="clickPlayPause();" />
         </div>
         <div id="navbar-right">
+            <img class="nav-img glowing" id="navbar-button-top" title="Top of page" src="<?php echo $TOP_ICON; ?>" onclick="scroll_to('content-top');" />
+            <img class="nav-img glowing" id="navbar-button-bottom" title="Bottom of page" src="<?php echo $BOTTOM_ICON; ?>" onclick="scroll_to('content-bottom');" />
             <span id="refresh-time">--:-- ---</span>
             <img class="nav-img glowing" id="navbar-button-server" title="Crusty Server Statistics" src="<?php echo $SERVER_ICON; ?>" onclick="window.location.href='<?php echo $SERVER_URL; ?>';" />
             <img class="nav-img glowing" id="navbar-button-github" title="All of this in Github" src="<?php echo $GITHUB_ICON; ?>" onclick="window.location.href='<?php echo $GITHUB_URL; ?>';" />
