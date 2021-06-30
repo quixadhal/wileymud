@@ -130,11 +130,21 @@ if(array_key_exists('noscroll', $_GET)) {
                     return true;
                 } else if(channel == "bsg") {
                     return true;
+                } else {
+                    var regexp_fs = /on\s+free_speech\&gt\;/;
+                    var regexp_bsg = /on\s+bsg\&gt\;/;
+                    var regexp_spoiler = /^spoiler:/i;
+                    var regexp_redacted = /\[(spoiler|redacted)\]/i;
+                    if(regexp_spoiler.test(message)) {
+                        return true;
+                    } else if(regexp_redacted.test(message)) {
+                        return true;
+                    } else if(regexp_fs.test(message)) {
+                        return true;
+                    } else if(regexp_bsg.test(message)) {
+                        return true;
+                    }
                 }
-                // } else if(preg_match('/on\sfree_speech\&gt\;/', $message) > 0) {
-                // } else if(preg_match('/on\sbsg\&gt\;/', $message) > 0) {
-                // } else if(preg_match('/^spoiler:/i', $message) > 0) {
-                // } else if(preg_match('/\[(spoiler|redacted)\]/i', $message) > 0) {
                 return false;
             }
             function isUrlBotRow(tr) {
