@@ -49,6 +49,7 @@ $pie_data               = json_decode($pie_text, true, 512, JSON_INVALID_UTF8_SU
         <script language="javascript">
             var timeSpent;
             var backgroundTimer;
+            var ContentTimer;
             var pieData = <?php echo $pie_text; ?>;
 
             var en = [];
@@ -135,6 +136,11 @@ $pie_data               = json_decode($pie_text, true, 512, JSON_INVALID_UTF8_SU
                 addClass('button-' + s, 'button-' + t + 'active');
             }
 
+            function updateContent() {
+                clearTimeout(ContentTimer);
+                click_select(document.getElementById('button-today'));
+            }
+
             $(document).ready(function() {
                 hideDiv('page-source');
                 $('#page-load-time').html(timeSpent);
@@ -143,6 +149,7 @@ $pie_data               = json_decode($pie_text, true, 512, JSON_INVALID_UTF8_SU
                 randomizeBackground();
                 updateRefreshTime();
                 backgroundTimer = setInterval(randomizeBackground, 1000 * 60 * 5);
+                ContentTimer = setTimeout(updateContent, 100);
             });
         </script>
         <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
