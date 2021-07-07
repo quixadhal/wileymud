@@ -272,11 +272,18 @@ $MUDLIST_CSS        = "$URL_HOME/log/mudlist_css.php?version=$MUDLIST_TIME";
                     }
                     $update_stamp = date("Y-m-d", $updatetime);
                     if( $update_stamp === $today_stamp ) {
-                        $update_stamp = "today";
+                        $hour_stamp = date("H", $updatetime);
+                        $now_hour = date("H");
+                        if( $now_hour === $hour_stamp ) {
+                            $update_stamp = "Online!";
+                        } else {
+                            $update_stamp = date("g:i a", $updatetime);
+                            $update_stamp = "Last seen today, at $update_stamp";
+                        }
                     } else if( $update_stamp === $forever_stamp ) {
-                        $update_stamp = "... not!";
+                        $update_stamp = "&nbsp;";
                     } else {
-                        $update_stamp = "on $update_stamp";
+                        $update_stamp = "Last seen on $update_stamp";
                     }
                     ?>
                     <td class="content-left-login" style="<?php echo $opacity; ?>">
@@ -296,7 +303,7 @@ $MUDLIST_CSS        = "$URL_HOME/log/mudlist_css.php?version=$MUDLIST_TIME";
                         <a href="telnet://<?php echo $mud["ipaddress"]; ?>:<?php echo $mud["port"]; ?>/">
                             <?php echo $mud["ipaddress"]; ?> <?php echo $mud["port"]; ?>
                         </a><br />
-                        Last seen <?php echo $update_stamp; ?><br />
+                        <?php echo $update_stamp; ?><br />
                     </td>
                     <?php
                     if($counter % 2) {
