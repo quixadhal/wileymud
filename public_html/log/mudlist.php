@@ -249,6 +249,7 @@ $MUDLIST_CSS        = "$URL_HOME/log/mudlist_css.php?version=$MUDLIST_TIME";
                     $updatetime = 650336715; // The beginning of time for WileyMUD
                     $forever_stamp = date("Y-m-d", $updatetime);
                     $today_stamp = date("Y-m-d", time());
+                    $yesterday_stamp = date("Y-m-d", time() - 86400);
                     if(!file_exists($filename)) {
                         // No image file, pick a random one!
                         $home = getcwd();
@@ -280,6 +281,9 @@ $MUDLIST_CSS        = "$URL_HOME/log/mudlist_css.php?version=$MUDLIST_TIME";
                             $update_stamp = date("g:i a", $updatetime);
                             $update_stamp = "Last seen today, at $update_stamp";
                         }
+                    } else if( $update_stamp === $yesterday_stamp ) {
+                            $update_stamp = date("g:i a", $updatetime);
+                            $update_stamp = "Last seen yesterday, at $update_stamp";
                     } else if( $update_stamp === $forever_stamp ) {
                         $update_stamp = "&nbsp;";
                     } else {
