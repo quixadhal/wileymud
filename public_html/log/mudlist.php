@@ -293,12 +293,21 @@ $MUDLIST_CSS        = "$URL_HOME/log/mudlist_css.php?version=$MUDLIST_TIME";
                     $geo_file = "gfx/mud/" . $mud["md5"] . ".json";
                     $geo_filename = "$FILE_HOME/$geo_file";
                     $country_code = "";
+                    $latitude = "";
+                    $longitude = "";
+                    $map_url = "";
                     if(file_exists($geo_filename)) {
                         $geo_text = file_get_contents($geo_filename);
                         $geo_ip = json_decode($geo_text, true, 512, JSON_INVALID_UTF8_SUBSTITUTE);
                         if(array_key_exists('geoip', $geo_ip)) {
                             if(array_key_exists('country_code', $geo_ip['geoip'])) {
                                 $country_code = strtolower($geo_ip['geoip']['country_code']);
+                            }
+                            if (array_key_exists('latitude', $geo_ip['geoip']) &&
+                                array_key_exists('longitude', $geo_ip['geoip'])) {
+                                $latitude = $geo_ip['geoip']['latitude'];
+                                $longitude = $geo_ip['geoip']['longitude'];
+                                $map_url = "https://www.google.com/maps/place//@$latitude,$longitude,17z";
                             }
                         }
                     }
@@ -322,7 +331,13 @@ $MUDLIST_CSS        = "$URL_HOME/log/mudlist_css.php?version=$MUDLIST_TIME";
                                 $flag_filename = "$FILE_HOME/gfx/flags/$country_code.png";
                                 $flag_url = "$URL_HOME/gfx/flags/$country_code.png";
                                 if(file_exists($flag_filename)) {
+                                    if($map_url !== "") {
+                                        echo "<a href=\"$map_url\">";
+                                    }
                                     echo "<img height=\"$FONT_SIZE\" src=\"$flag_url\" />";
+                                    if($map_url !== "") {
+                                        echo "</a>";
+                                    }
                                 }
                             }
                         ?>
