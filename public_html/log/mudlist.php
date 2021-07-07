@@ -285,6 +285,19 @@ $MUDLIST_CSS        = "$URL_HOME/log/mudlist_css.php?version=$MUDLIST_TIME";
                     } else {
                         $update_stamp = "Last seen on $update_stamp";
                     }
+
+                    $geo_file = "gfx/mud/" . $mud["md5"] . ".json";
+                    $geo_filename = "$FILE_HOME/$geo_file";
+                    $country_code = "";
+                    if(file_exists($geo_filename)) {
+                        $geo_text = file_get_contents($geo_filename);
+                        $geo_ip = json_decode($geo_text, true, 512, JSON_INVALID_UTF8_SUBSTITUTE);
+                        if(array_key_exists('geoip', $geo_ip)) {
+                            if(array_key_exists('country_code', $geo_ip['geoip'])) {
+                                $country_code = strtolower($geo_ip['geoip']['country_code']);
+                            }
+                        }
+                    }
                     ?>
                     <td class="content-left-login" style="<?php echo $opacity; ?>">
                         <div class="gallery-item">
@@ -300,10 +313,20 @@ $MUDLIST_CSS        = "$URL_HOME/log/mudlist_css.php?version=$MUDLIST_TIME";
                         </a><br />
                         <?php echo $mud["type"]; ?><br />
                         <?php echo $mud["mudlib"]; ?><br />
+                        <?php
+                            if($country_code !== "") {
+                                $flag_filename = "$FILE_HOME/gfx/flags/$country_code.png";
+                                $flag_url = "$URL_HOME/gfx/flags/$country_code.png";
+                                if(file_exists($flag_filename)) {
+                                    echo "<img height=\"$FONT_SIZE\" src=\"$flag_url\" />";
+                                }
+                            }
+                        ?>
                         <a href="telnet://<?php echo $mud["ipaddress"]; ?>:<?php echo $mud["port"]; ?>/">
-                            <?php echo $mud["ipaddress"]; ?> <?php echo $mud["port"]; ?>
-                        </a><br />
-                        <?php echo $update_stamp; ?><br />
+                            <?php echo $mud["ipaddress"] . "&nbsp;" . $mud["port"]; ?>
+                        </a>
+                        <br />
+                        <?php echo "$update_stamp"; ?><br />
                     </td>
                     <?php
                     if($counter % 2) {
