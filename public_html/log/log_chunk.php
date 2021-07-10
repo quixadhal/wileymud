@@ -36,7 +36,7 @@ function db_connect() {
 // select date_part('epoch', now())::integer;
 // select to_timestamp(the_time);
 
-function fetch_page_data_by_time($db, $query_start_time = NULL, $query_end_time = NULL, $query_date = NULL, $limit_count = NULL, $urlbot_mode = FALSE) {
+function fetch_page_data_by_time($db, $query_start_time = NULL, $query_end_time = NULL, $query_date = NULL, $limit_count = NULL, $offset_point = NULL, $urlbot_mode = FALSE, $search_terms = NULL) {
     // the_date YYYY-MM-DD
     // the_time HH:MM:SS
     // channel <word+>
@@ -217,6 +217,8 @@ $time_to = NULL;
 $the_date = NULL;
 $row_limit = NULL;
 $urlbot_mode = FALSE;
+$row_offset = NULL;
+$search_terms = NULL;
 
 if(array_key_exists('from', $_GET)) {
     $time_from = $_GET['from'];
@@ -233,9 +235,15 @@ if(array_key_exists('limit', $_GET)) {
 if(array_key_exists('urlbot', $_GET)) {
     $urlbot_mode = TRUE;
 }
+if(array_key_exists('offset', $_GET)) {
+    $offset = $_GET['offset'];
+}
+if(array_key_exists('search', $_GET)) {
+    $search_terms = $_GET['search'];
+}
 
 $db = db_connect();
-$data = fetch_page_data_by_time($db, $time_from, $time_to, $the_date, $row_limit, $urlbot_mode);
+$data = fetch_page_data_by_time($db, $time_from, $time_to, $the_date, $row_limit, $row_offset, $urlbot_mode, $search_terms);
 $time_end = microtime(true);
 $time_spent = $time_end - $time_start;
 $json = json_encode($data, JSON_UNESCAPED_UNICODE | JSON_INVALID_UTF8_SUBSTITUTE | JSON_PRETTY_PRINT);
