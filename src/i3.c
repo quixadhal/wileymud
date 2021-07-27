@@ -18929,6 +18929,21 @@ void i3_daily_summary()
     char                                    yesterfile[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
     char                                    yesternuke[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
     char                                    yestertouch[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
+    char *sql = "SELECT ( "
+        "SELECT count(*) FROM ( "
+            "SELECT DISTINCT username "
+            "FROM i3log "
+            "WHERE date(local) = date(now()) - '1 day'::interval "
+            ") s "
+        ") AS speakers, ( "
+            "SELECT count(*) "
+            "FROM i3log "
+            "WHERE date(local) = date(now()) - '1 day'::interval "
+        ") AS messages;";
+    PGresult *res = NULL;
+    ExecStatusType st = 0;
+    int rows = 0;
+    int columns = 0;
 
     ytc = time(0) - 86400;
     ytm_info = localtime(&ytc);
@@ -18945,6 +18960,28 @@ void i3_daily_summary()
         // We haven't done it yet!
         system(yesternuke);
         system(yestertouch);
+
+        // SQL Stuff...
+        sql_connect(&db_i3log);
+        res = PQexec(db_i3log.dbc, sql);
+        st = PQresultStatus(res);
+        if( st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE ) {
+            log_fatal("Cannot get message count from i3log table: %s", PQerrorMessage(db_wileymud.dbc));
+            PQclear(res);
+            proper_exit(MUD_HALT);
+        }
+        rows = PQntuples(res);
+        columns = PQnfields(res);
+        if(rows > 0 && columns > 1) {
+            speakers = (int) atoi(PQgetvalue(res,0,0));
+            messages = (int) atoi(PQgetvalue(res,0,1));
+        } else {
+            log_fatal("Invalid result set from i3log!");
+            PQclear(res);
+            proper_exit(MUD_HALT);
+        }
+        PQclear(res);
+
         snprintf(output, MAX_STRING_LENGTH, "%%^RED%%^%%^BOLD%%^[%s]%%^RESET%%^ %%^GREEN%%^%%^BOLD%%^ Daily Summary: %d messages from %d speakers.%%^RESET%%^ %s",
                 yesterday, messages, speakers, logpage_url);
         i3_npc_speak("wiley", "Cron", output);
