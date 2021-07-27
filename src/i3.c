@@ -18918,25 +18918,33 @@ char *pinkfish_to_ansi(const char *src)
 
 void i3_daily_summary()
 {
-    struct tm                              *tm_info = NULL;
-    time_t                                  tc = (time_t) 0;
+    struct tm                              *ytm_info = NULL;
+    time_t                                  ytc = (time_t) 0;
+    struct stat                             yst;
     char                                    output[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
     int                                     messages = 0;
     int                                     speakers = 0;
-    char                                    logpage_url[MAX_STRING_LENGTH] = "http://wileymud.themud.org/~wiley/log/";
-    char                                    yesterday[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
-    static int                              done_day = 0;
+    char                                    logpage_url[MAX_INPUT_LENGTH] = "http://wileymud.themud.org/~wiley/log/";
+    char                                    yesterday[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
+    char                                    yesterfile[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
+    char                                    yesternuke[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
+    char                                    yestertouch[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
 
-    tc = time(0);
-    tm_info = localtime(&tc);
+    ytc = time(0) - 86400;
+    ytm_info = localtime(&ytc);
+    snprintf(yesterday, MAX_INPUT_LENGTH, "%-4.4d-%-2.2d-%-2.2d",
+        ytm_info->tm_year + 1900, ytm_info->tm_mon + 1, ytm_info->tm_mday);
+    snprintf(yesterfile, MAX_INPUT_LENGTH, "%s/%s.i3_done", I3_DIR, yesterday);
+    snprintf(yesternuke, MAX_INPUT_LENGTH, "/usr/bin/rm %s/*.i3_done", I3_DIR);
+    snprintf(yestertouch, MAX_INPUT_LENGTH, "/usr/bin/touch %s", yesterday);
 
-    if(done_day == tm_info->tm_mday) {
-        // We already did this today
+    if (stat(yesterfile, &yst) != -1) {
+        // We already did this today, for yesterday.
         return;
     } else {
         // We haven't done it yet!
-        done_day = tm_info->tm_mday;
-        // Should really touch a file and check that, so we don't spam on reboots
+        system(yesternuke);
+        system(yestertouch);
         snprintf(output, MAX_STRING_LENGTH, "%%^RED%%^%%^BOLD%%^[%s]%%^RESET%%^ %%^GREEN%%^%%^BOLD%%^ Daily Summary: %d messages from %d speakers.%%^RESET%%^ %s",
                 yesterday, messages, speakers, logpage_url);
         i3_npc_speak("wiley", "Cron", output);
