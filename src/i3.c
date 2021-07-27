@@ -18916,3 +18916,30 @@ char *pinkfish_to_ansi(const char *src)
 }
 #endif
 
+void i3_daily_summary()
+{
+    struct tm                              *tm_info = NULL;
+    time_t                                  tc = (time_t) 0;
+    char                                    output[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
+    int                                     messages = 0;
+    int                                     speakers = 0;
+    char                                    logpage_url[MAX_STRING_LENGTH] = "http://wileymud.themud.org/~wiley/log/";
+    char                                    yesterday[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
+    static int                              done_day = 0;
+
+    tc = time(0);
+    tm_info = localtime(&tc);
+
+    if(done_day == tm_info->tm_mday) {
+        // We already did this today
+        return;
+    } else {
+        // We haven't done it yet!
+        done_day = tm_info->tm_mday;
+        // Should really touch a file and check that, so we don't spam on reboots
+        snprintf(output, MAX_STRING_LENGTH, "%%^RED%%^%%^BOLD%%^[%s]%%^RESET%%^ %%^GREEN%%^%%^BOLD%%^ Daily Summary: %d messages from %d speakers.%%^RESET%%^ %s",
+                yesterday, messages, speakers, logpage_url);
+        i3_npc_speak("wiley", "Cron", output);
+    }
+}
+
