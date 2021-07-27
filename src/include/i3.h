@@ -412,4 +412,6 @@ char *pinkfish_to(const char *src, int target);
 #define pinkfish_to_grey(s)     pinkfish_to((s),I3_PINKFISH_GREY)
 //char *pinkfish_to_ansi(const char *src);
 
+void i3_daily_summary(void);
+
 #endif

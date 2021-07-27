@@ -15127,6 +15127,8 @@ void i3_loop(void)
     if ( diffTimestamp(time_to_taunt, -1) <= 0 ) {
         time_to_taunt = getTimestamp() + I3_TAUNT_DELAY;
         i3_do_ping("Cron", "intergossip", "Dead Souls Dev");
+        // This seems like a good time to check the I3 statistics too.
+        i3_daily_summary();
     }
 
     // Will prune the cache once every 24hrs after bootup time 
