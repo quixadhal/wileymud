@@ -15129,6 +15129,7 @@ void i3_loop(void)
         i3_do_ping("Cron", "intergossip", "Dead Souls Dev");
         // This seems like a good time to check the I3 statistics too.
         i3_daily_summary();
+        log_info("Next ping in %s", stringTimestamp(time_to_taunt - getTimestamp()));
     }
 
     // Will prune the cache once every 24hrs after bootup time 
@@ -18953,10 +18954,11 @@ void i3_daily_summary()
         ytm_info->tm_year + 1900, ytm_info->tm_mon + 1, ytm_info->tm_mday);
     snprintf(yesterfile, MAX_INPUT_LENGTH, "%s/%s.i3_done", I3_DIR, yesterday);
     snprintf(yesternuke, MAX_INPUT_LENGTH, "/usr/bin/rm %s/*.i3_done", I3_DIR);
-    snprintf(yestertouch, MAX_INPUT_LENGTH, "/usr/bin/touch %s", yesterday);
+    snprintf(yestertouch, MAX_INPUT_LENGTH, "/usr/bin/touch %s", yesterfile);
 
     if (stat(yesterfile, &yst) != -1) {
         // We already did this today, for yesterday.
+        log_info("Summary has already been done: %s exists.", yesterfile);
         return;
     } else {
         // We haven't done it yet!
@@ -18984,7 +18986,7 @@ void i3_daily_summary()
         }
         PQclear(res);
 
-        snprintf(output, MAX_STRING_LENGTH, "%%^RED%%^%%^BOLD%%^[%s]%%^RESET%%^ %%^GREEN%%^%%^BOLD%%^ Daily Summary: %d messages from %d speakers.%%^RESET%%^ %s",
+        snprintf(output, MAX_STRING_LENGTH, "%%^GREEN%%^%%^BOLD%%^Daily Summary for %%^RESET%%^%%^RED%%^%%^BOLD%%^[%s]:%%^RESET%%^%%^GREEN%%^%%^BOLD%%^ %d messages from %d speakers.%%^RESET%%^ %s",
                 yesterday, messages, speakers, logpage_url);
         i3_npc_speak("wiley", "Cron", output);
     }
