@@ -23,7 +23,7 @@ use MIME::Base64;
 use Image::ANSI;
 use Encode;
 use Parallel::ForkManager 0.7.6;
-use JSON qw(decode_json);
+use JSON qw(encode_json decode_json);
 use Encode qw( encode_utf8 );
 use Digest::SHA qw(sha256_hex);
 use Digest::MD5 qw(md5_hex);
@@ -165,6 +165,38 @@ sub dump_png {
     close FP;
 }
 
+sub geoip_locate {
+    my $result = shift;
+    return if !defined $result;
+    return if !defined $result->{'ipaddress'};
+    return if !defined $result->{'name'};
+
+    printf STDERR "            Fetching geographic location for %s\n", $result->{'ipaddress'};
+    my $output = {};
+    my $mudname = $result->{'name'};
+    $mudname = md5_hex($mudname);
+
+    # curl 'https://freegeoip.app/json/104.156.100.167'
+    my $url = "https://freegeoip.app/json/" . $result->{'ipaddress'};
+    my $json = undef;
+    my $data = undef;
+    open(FP, "-|", "/usr/bin/curl", "-s", $url) or die "Can't open /usr/bin/curl $!";
+    {
+        local $/ = undef;
+        $json = <FP>;
+    }
+    close FP;
+    $data = decode_json($json) if defined $json;
+
+    open FP, ">", "$imagedir/$mudname.json" or return;
+    $output->{'ipaddress'} = $result->{'ipaddress'};
+    $output->{'name'} = $result->{'name'};
+    $output->{'geoip'} = $data;
+    # curl 'https://freegeoip.app/json/104.156.100.167'
+    print FP encode_json($output);
+    close FP;
+}
+
 sub get_mudlist {
     my $pm = shift;
 
@@ -194,6 +226,7 @@ sub get_mudlist {
             printf STDERR "    Processing %s (%03d to go)\n", $result->{'name'}, $set_size - $i;
             process_login($result) if defined $result->{'ipaddress'} and defined $result->{'port'};
             dump_png($result) if defined $result->{'png'};
+            geoip_locate($result) if defined $result->{'ipaddress'};
 
             $pm->finish(0, \$result);
         }
