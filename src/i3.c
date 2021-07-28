@@ -16462,11 +16462,6 @@ void router_connect(const char *router_name, bool forced, int mudport, bool isco
     I3_loadbans();
 
     I3_loadSpeakers();
-    I3_loadPinkfishToANSI();
-    I3_loadPinkfishToI3();
-    I3_loadPinkfishToXterm256();
-    I3_loadPinkfishToGreyscale();
-    I3_loadPinkfishToNull();
 
     if (this_i3mud->ucache == TRUE) {
 	I3_load_ucache();
@@ -16520,6 +16515,10 @@ void i3_startup(bool forced, int mudport, bool isconnected)
 {
     time_to_taunt = getTimestamp() + I3_TAUNT_DELAY;
     //i3_nuke_url_file();
+
+    log_boot("I3 Startup beginning!");
+    // NOTE: I3_loadPinkfishTo___() are called from sql_startup() in sql.c now.
+
     if (I3_read_config(mudport))
 	router_connect(NULL, forced, mudport, isconnected);
     else

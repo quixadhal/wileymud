@@ -107,6 +107,14 @@ void sql_startup(void) {
     setup_i3log_table();
     setup_urls_table();
     setup_i3_packets_table();
+
+    // This has to happen here, since we need it for allchan_log()
+    I3_loadPinkfishToNull();
+    I3_loadPinkfishToANSI();
+    I3_loadPinkfishToI3();
+    I3_loadPinkfishToXterm256();
+    I3_loadPinkfishToGreyscale();
+
     snprintf(log_msg, MAX_STRING_LENGTH, "%%^GREEN%%^WileyMUD Version: %s (%s), PostgreSQL Version %s.%%^RESET%%^", VERSION_BUILD, VERSION_DATE, sql_version(&db_i3log));
     allchan_log(0,"wiley", "Cron", "Cron", "WileyMUD", log_msg);
 
