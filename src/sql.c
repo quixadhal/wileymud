@@ -476,10 +476,12 @@ int is_url( int is_emote, const char *channel, const char *speaker, const char *
         // Anything on the URL channel is never treated as a url.  Recursion is recursion.
         return 0;
     }
+    /*
     if(!strcasecmp(speaker, "cron") && !strcasecmp(mud, "wileymud")) {
         // Also ignore automated responses from this mud
         return 0;
     }
+    */
 
     if(!regexp_compiled) { // Haven't compiled yet
         regexp_compiled = pcre_compile(regexp_pattern, regexp_opts, &regexp_error, &regexp_err_offset, NULL);
