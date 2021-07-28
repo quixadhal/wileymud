@@ -844,58 +844,58 @@ sub generate_pie_stuff {
         FROM i3log
         WHERE speaker <> 'URLbot' AND NOT is_bot
                 AND date(local) = date(now())
-        OFFSET (random() * (
+        OFFSET floor(random() * (
             SELECT COUNT(*) FROM i3log WHERE speaker <> 'URLbot' AND NOT is_bot
                 AND date(local) = date(now())
-            ))::INTEGER LIMIT 1
+            )) LIMIT 1
     !;
     $quote_sql->{yesterday} = qq!
         SELECT speaker, message
         FROM i3log
         WHERE speaker <> 'URLbot' AND NOT is_bot
                 AND date(local) = date(now()) - '1 day'::interval
-        OFFSET (random() * (
+        OFFSET floor(random() * (
             SELECT COUNT(*) FROM i3log WHERE speaker <> 'URLbot' AND NOT is_bot
                 AND date(local) = date(now()) - '1 day'::interval
-            ))::INTEGER LIMIT 1
+            )) LIMIT 1
     !;
     $quote_sql->{week} = qq!
         SELECT speaker, message
         FROM i3log
         WHERE speaker <> 'URLbot' AND NOT is_bot
                 AND local BETWEEN date_trunc('day', now()) - '1 week'::interval AND now()
-        OFFSET (random() * (
+        OFFSET floor(random() * (
             SELECT COUNT(*) FROM i3log WHERE speaker <> 'URLbot' AND NOT is_bot
                 AND local BETWEEN date_trunc('day', now()) - '1 week'::interval AND now()
-            ))::INTEGER LIMIT 1
+            )) LIMIT 1
     !;
     $quote_sql->{month} = qq!
         SELECT speaker, message
         FROM i3log
         WHERE speaker <> 'URLbot' AND NOT is_bot
                 AND local BETWEEN date_trunc('day', now()) - '1 month'::interval AND now()
-        OFFSET (random() * (
+        OFFSET floor(random() * (
             SELECT COUNT(*) FROM i3log WHERE speaker <> 'URLbot' AND NOT is_bot
                 AND local BETWEEN date_trunc('day', now()) - '1 month'::interval AND now()
-            ))::INTEGER LIMIT 1
+            )) LIMIT 1
     !;
     $quote_sql->{year} = qq!
         SELECT speaker, message
         FROM i3log
         WHERE speaker <> 'URLbot' AND NOT is_bot
                 AND local BETWEEN date_trunc('day', now()) - '1 year'::interval AND now()
-        OFFSET (random() * (
+        OFFSET floor(random() * (
             SELECT COUNT(*) FROM i3log WHERE speaker <> 'URLbot' AND NOT is_bot
                 AND local BETWEEN date_trunc('day', now()) - '1 year'::interval AND now()
-            ))::INTEGER LIMIT 1
+            )) LIMIT 1
     !;
     $quote_sql->{all} = qq!
         SELECT speaker, message
         FROM i3log
         WHERE speaker <> 'URLbot' AND NOT is_bot
-        OFFSET (random() * (
+        OFFSET floor(random() * (
             SELECT COUNT(*) FROM i3log WHERE speaker <> 'URLbot' AND NOT is_bot)
-            )::INTEGER LIMIT 1
+            ) LIMIT 1
     !;
     my $quotes = {};
     foreach (qw(today yesterday week month year all)) {
