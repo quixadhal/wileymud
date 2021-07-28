@@ -2,6 +2,7 @@
 $PG_DB      = "i3log";
 $PG_USER    = "wiley";
 $PG_PASS    = "tardis69";
+$PG_CHARSET = "en_US.UTF-8";
 
 $time_start = microtime(true);
 
@@ -19,6 +20,7 @@ function db_connect() {
     global $PG_DB;
     global $PG_USER;
     global $PG_PASS;
+    global $PG_CHARSET;
 
     $db = null;
     try {
@@ -30,6 +32,14 @@ function db_connect() {
     } catch(PDOException $e) {
         echo $e->getMessage();
     }
+    /*
+    try {
+        $sth = $db->prepare("SET CLIENT_ENCODING TO 'UTF8';");
+        $sth->execute();
+    } catch(PDOException $e) {
+        echo $e->getMessage();
+    }
+     */
     return $db;
 }
 
