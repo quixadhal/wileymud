@@ -402,6 +402,7 @@ void I3_loadPinkfishToANSI(void);
 void I3_loadPinkfishToI3(void);
 void I3_loadPinkfishToXterm256(void);
 void I3_loadPinkfishToGreyscale(void);
+void I3_loadPinkfishToNull(void);
 
 char *pinkfish_to(const char *src, int target);
 
