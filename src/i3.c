@@ -20836,6 +20836,7 @@ void i3_daily_summary()
         return;
     } else {
         // We haven't done it yet!
+        log_info("Summary needs to be done: %s does not exist.", yesterfile);
         system(yesternuke);
         system(yestertouch);
 
@@ -20863,6 +20864,7 @@ void i3_daily_summary()
         snprintf(output, MAX_STRING_LENGTH, "%%^GREEN%%^%%^BOLD%%^Daily Summary for %%^RESET%%^%%^RED%%^%%^BOLD%%^[%s]:%%^RESET%%^%%^GREEN%%^%%^BOLD%%^ %d messages from %d speakers.%%^RESET%%^ %s",
                 yesterday, messages, speakers, logpage_url);
         i3_npc_speak("wiley", "Cron", output);
+        log_info("Summary done.");
     }
 }
 
