@@ -20806,6 +20806,10 @@ void i3_daily_summary()
     char                                    yesterfile[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
     char                                    yesternuke[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
     char                                    yestertouch[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
+    char *target_channel_list[] = { "intercre", "dchat", "intergossip" };
+    int target_channel_count = 3;
+    char *target_channel = target_channel_list[0];
+
     char *sql = "SELECT ( "
         "SELECT count(*) FROM ( "
             "SELECT DISTINCT username "
@@ -20824,6 +20828,9 @@ void i3_daily_summary()
 
     ytc = time(0) - 86400;
     ytm_info = localtime(&ytc);
+    // Rotate the channel to "spam" every day.
+    target_channel = target_channel_list[ ytm_info->tm_mday % target_channel_count ];
+
     snprintf(yesterday, MAX_INPUT_LENGTH, "%-4.4d-%-2.2d-%-2.2d",
         ytm_info->tm_year + 1900, ytm_info->tm_mon + 1, ytm_info->tm_mday);
     snprintf(yesterfile, MAX_INPUT_LENGTH, "%s/%s.i3_done", I3_DIR, yesterday);
@@ -20863,7 +20870,7 @@ void i3_daily_summary()
 
         snprintf(output, MAX_STRING_LENGTH, "Daily Summary for %%^RED%%^%%^BOLD%%^[%s]%%^RESET%%^ %%^GREEN%%^%%^BOLD%%^%d messages%%^RESET%%^ from %%^YELLOW%%^%d speakers%%^RESET%%^. %s",
                 yesterday, messages, speakers, logpage_url);
-        i3_npc_speak("intercre", "Cron", output);
+        i3_npc_speak(target_channel, "Cron", output);
         log_info("Summary done.");
     }
 }
