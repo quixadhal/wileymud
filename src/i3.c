@@ -20861,9 +20861,9 @@ void i3_daily_summary()
         }
         PQclear(res);
 
-        snprintf(output, MAX_STRING_LENGTH, "Daily Summary for ^%%^RED%%^%%^BOLD%%^[%s]%%^RESET%%^ %%^GREEN%%^%%^BOLD%%^%d messages%%^RESET%%^ from %%^YELLOW%%^%d speakers%%^RESET%%^. %s",
+        snprintf(output, MAX_STRING_LENGTH, "Daily Summary for %%^RED%%^%%^BOLD%%^[%s]%%^RESET%%^ %%^GREEN%%^%%^BOLD%%^%d messages%%^RESET%%^ from %%^YELLOW%%^%d speakers%%^RESET%%^. %s",
                 yesterday, messages, speakers, logpage_url);
-        i3_npc_speak("wiley", "Cron", output);
+        i3_npc_speak("intercre", "Cron", output);
         log_info("Summary done.");
     }
 }
