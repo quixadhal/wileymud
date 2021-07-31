@@ -20814,12 +20814,12 @@ void i3_daily_summary()
         "SELECT count(*) FROM ( "
             "SELECT DISTINCT username "
             "FROM i3log "
-            "WHERE date(local) = date(now()) - '1 day'::interval "
+            "WHERE date(local) = date(now()) - '1 day'::interval AND NOT is_bot "
             ") s "
         ") AS speakers, ( "
             "SELECT count(*) "
             "FROM i3log "
-            "WHERE date(local) = date(now()) - '1 day'::interval "
+            "WHERE date(local) = date(now()) - '1 day'::interval AND NOT is_bot "
         ") AS messages;";
     PGresult *res = NULL;
     ExecStatusType st = 0;
