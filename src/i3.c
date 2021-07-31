@@ -20868,7 +20868,7 @@ void i3_daily_summary()
         }
         PQclear(res);
 
-        snprintf(output, MAX_STRING_LENGTH, "Daily Summary for %%^RED%%^%%^BOLD%%^[%s]%%^RESET%%^ %%^GREEN%%^%%^BOLD%%^%d messages%%^RESET%%^ from %%^YELLOW%%^%d speakers%%^RESET%%^. %s",
+        snprintf(output, MAX_STRING_LENGTH, "I3 Activity Report for %%^RED%%^%%^BOLD%%^%s:%%^RESET%%^ %%^GREEN%%^%%^BOLD%%^%d messages%%^RESET%%^ from %%^YELLOW%%^%d speakers%%^RESET%%^. %s",
                 yesterday, messages, speakers, logpage_url);
         i3_npc_speak(target_channel, "Cron", output);
         log_info("Summary done.");
