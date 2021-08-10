@@ -259,7 +259,11 @@ if(array_key_exists('noscroll', $_GET)) {
                             row.channel = "日本語";
                         }
 
-                        row.message = row.message.split('%^RESET%^').join('');
+                        //We used to remove RESET tags to avoid spurious </span> elements
+                        //that would screw up other formatting... but it looks like we can
+                        //instead just change those to <div> elements, meaning an extar closing
+                        //</span> won't matter.
+                        //row.message = row.message.split('%^RESET%^').join('');
                         row.message = handle_colors(row.message);
                         // HTML entity and URL processing are done in the AJAX
                         // script that feeds us, as it's just easier there.
@@ -280,7 +284,7 @@ if(array_key_exists('noscroll', $_GET)) {
                         newRow = newRow + '<td class="content-time-column">' + newColor + newTime + '</span>' + '</td>';
                         newRow = newRow + '<td class="content-channel-column">' + row.channel_html + row.channel + '</span>' + '</td>';
                         newRow = newRow + '<td class="content-speaker-column">' + row.speaker_html + row.speaker + '</span>' + '</td>';
-                        newRow = newRow + '<td class="content-message-column">' + '<span class="' + blur + '">' + row.message + '</span>' + '</td>';
+                        newRow = newRow + '<td class="content-message-column">' + '<div class="' + blur + '">' + row.message + '</div>' + '</td>';
                         newRow = newRow + '</tr>';
                         var newMD5 = hex_md5(newRow);
 
@@ -385,7 +389,7 @@ if(array_key_exists('noscroll', $_GET)) {
                                             blurThis = "blurry";
                                         }
                                         newMessage = handle_colors(newMessage);
-                                        newMessage = '<span class="' + blurThis + '">' + newMessage + '</span>';
+                                        newMessage = '<div class="' + blurThis + '">' + newMessage + '</div>';
 
                                         if(isComingSoon(trMessage)) {
                                             // The old message is already a placeholder
