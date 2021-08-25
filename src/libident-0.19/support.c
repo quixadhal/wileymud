@@ -17,16 +17,17 @@
 #define IN_LIBIDENT_SRC
 #include "ident.h"
 
-char                                   *id_strdup __P1(char *, str)
+char *id_strdup __P1(char *, str)
 {
-    char                                   *cp;
+    char *cp;
 
     cp = (char *)malloc(strlen(str) + 1);
-    if (cp == NULL) {
+    if (cp == NULL)
+    {
 #ifdef DEBUG
-	perror("libident: malloc");
+        perror("libident: malloc");
 #endif
-	return NULL;
+        return NULL;
     }
 
     strcpy(cp, str);
@@ -34,43 +35,45 @@ char                                   *id_strdup __P1(char *, str)
     return cp;
 }
 
-char                                   *id_strtok __P3(char *, cp, char *, cs, char *, dc)
+char *id_strtok __P3(char *, cp, char *, cs, char *, dc)
 {
-    static char                            *bp = 0;
+    static char *bp = 0;
 
     if (cp)
-	bp = cp;
+        bp = cp;
 
     /*
      ** No delimitor cs - return whole buffer and point at end
      */
-    if (!cs) {
-	while (*bp)
-	    bp++;
-	return cs;
+    if (!cs)
+    {
+        while (*bp)
+            bp++;
+        return cs;
     }
 
     /*
      ** Skip leading spaces
      */
     while (isspace(*bp))
-	bp++;
+        bp++;
 
     /*
      ** No token found?
      */
     if (!*bp)
-	return 0;
+        return 0;
 
     cp = bp;
     while (*bp && !strchr(cs, *bp))
-	bp++;
+        bp++;
 
     /*
      ** Remove trailing spaces
      */
     *dc = *bp;
-    for (dc = bp - 1; dc > cp && isspace(*dc); dc--);
+    for (dc = bp - 1; dc > cp && isspace(*dc); dc--)
+        ;
     *++dc = '\0';
 
     bp++;

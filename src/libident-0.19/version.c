@@ -1,1 +1,1 @@
-char                                    id_version[] = "0.19";
+char id_version[] = "0.19";

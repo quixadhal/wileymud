@@ -29,29 +29,23 @@
 /*
 ** Return the name of the connecting host, or the IP number as a string.
 */
-char                                   *gethost __P1(struct in_addr *, addr)
+char *gethost __P1(struct in_addr *, addr)
 {
-    struct hostent                         *hp;
+    struct hostent *hp;
 
     hp = gethostbyaddr((char *)addr, sizeof(struct in_addr), AF_INET);
     if (hp)
-	return (char *)hp->h_name;
+        return (char *)hp->h_name;
     else
-	return inet_ntoa(*addr);
+        return inet_ntoa(*addr);
 }
 
-void                                    main __P2(int, argc, char **, argv)
+void main __P2(int, argc, char **, argv)
 {
-    struct sockaddr_in                      laddr,
-                                            faddr;
-    int                                     len,
-                                            res,
-                                            lport,
-                                            fport;
-    ident_t                                *id;
-    char                                   *identifier,
-                                           *opsys,
-                                           *charset;
+    struct sockaddr_in laddr, faddr;
+    int len, res, lport, fport;
+    ident_t *id;
+    char *identifier, *opsys, *charset;
 
     puts("Welcome to the IDENT server tester, version 1.8\r\n");
     printf("(Linked with libident-%s)\r\n\n", id_version);
@@ -74,22 +68,23 @@ void                                    main __P2(int, argc, char **, argv)
 #endif
 
     id = id_open(&laddr.sin_addr, &faddr.sin_addr, NULL);
-    if (!id) {
-	perror("id_open()");
-	fflush(stderr);
-	syslog(LOG_ERR, "Error: id_open(): host=%s, error=%m", gethost(&faddr.sin_addr));
-	exit(1);
+    if (!id)
+    {
+        perror("id_open()");
+        fflush(stderr);
+        syslog(LOG_ERR, "Error: id_open(): host=%s, error=%m", gethost(&faddr.sin_addr));
+        exit(1);
     }
 
-    printf("Querying for lport %d, fport %d....\r\n",
-	   (int)ntohs(faddr.sin_port), (int)ntohs(laddr.sin_port));
+    printf("Querying for lport %d, fport %d....\r\n", (int)ntohs(faddr.sin_port), (int)ntohs(laddr.sin_port));
     fflush(stdout);
 
-    if (id_query(id, ntohs(faddr.sin_port), ntohs(laddr.sin_port), 0) < 0) {
-	perror("id_query()");
-	fflush(stderr);
-	syslog(LOG_ERR, "Error: id_query(): host=%s, error=%m", gethost(&faddr.sin_addr));
-	exit(1);
+    if (id_query(id, ntohs(faddr.sin_port), ntohs(laddr.sin_port), 0) < 0)
+    {
+        perror("id_query()");
+        fflush(stderr);
+        syslog(LOG_ERR, "Error: id_query(): host=%s, error=%m", gethost(&faddr.sin_addr));
+        exit(1);
     }
 
     printf("Reading response data...\r\n");
@@ -97,65 +92,63 @@ void                                    main __P2(int, argc, char **, argv)
 
     res = id_parse(id, NULL, &lport, &fport, &identifier, &opsys, &charset);
 
-    switch (res) {
-	default:
-	    perror("id_parse()");
-	    syslog(LOG_ERR, "Error: id_parse(): host=%s, error=%m", gethost(&faddr.sin_addr));
-	    break;
+    switch (res)
+    {
+    default:
+        perror("id_parse()");
+        syslog(LOG_ERR, "Error: id_parse(): host=%s, error=%m", gethost(&faddr.sin_addr));
+        break;
 
-	case -2:
-	    syslog(LOG_ERR, "Error: id_parse(): host=%s, Parse Error: %s",
-		   gethost(&faddr.sin_addr),
-		   identifier ? identifier : "<no information available>");
+    case -2:
+        syslog(LOG_ERR, "Error: id_parse(): host=%s, Parse Error: %s", gethost(&faddr.sin_addr),
+               identifier ? identifier : "<no information available>");
 
-	    if (identifier)
-		printf("Parse error on reply:\n  \"%s\"\n", identifier);
-	    else
-		printf("Unidentifiable parse error on reply.\n");
-	    break;
+        if (identifier)
+            printf("Parse error on reply:\n  \"%s\"\n", identifier);
+        else
+            printf("Unidentifiable parse error on reply.\n");
+        break;
 
-	case -3:
-	    syslog(LOG_ERR, "Error: id_parse(): host=%s, Illegal reply type: %s",
-		   gethost(&faddr.sin_addr), identifier);
+    case -3:
+        syslog(LOG_ERR, "Error: id_parse(): host=%s, Illegal reply type: %s", gethost(&faddr.sin_addr), identifier);
 
-	    printf("Parse error in reply: Illegal reply type: %s\n", identifier);
-	    break;
+        printf("Parse error in reply: Illegal reply type: %s\n", identifier);
+        break;
 
-	case 0:
-	    syslog(LOG_ERR, "Error: id_parse(): host=%s, NotReady", gethost(&faddr.sin_addr));
-	    puts("Not ready. This should not happen...\r");
-	    break;
+    case 0:
+        syslog(LOG_ERR, "Error: id_parse(): host=%s, NotReady", gethost(&faddr.sin_addr));
+        puts("Not ready. This should not happen...\r");
+        break;
 
-	case 2:
-	    syslog(LOG_INFO, "Reply: Error: host=%s, error=%s",
-		   gethost(&faddr.sin_addr), identifier);
+    case 2:
+        syslog(LOG_INFO, "Reply: Error: host=%s, error=%s", gethost(&faddr.sin_addr), identifier);
 
-	    printf("Error response is:\r\n");
-	    printf("   Lport........ %d\r\n", lport);
-	    printf("   Fport........ %d\r\n", fport);
-	    printf("   Error........ %s\r\n", identifier);
-	    break;
+        printf("Error response is:\r\n");
+        printf("   Lport........ %d\r\n", lport);
+        printf("   Fport........ %d\r\n", fport);
+        printf("   Error........ %s\r\n", identifier);
+        break;
 
-	case 1:
-	    if (charset)
-		syslog(LOG_INFO,
-		       "Reply: Userid: host=%s, opsys=%s, charset=%s, userid=%s",
-		       gethost(&faddr.sin_addr), opsys, charset, identifier);
-	    else
-		syslog(LOG_INFO, "Reply: Userid: host=%s, opsys=%s, userid=%s",
-		       gethost(&faddr.sin_addr), opsys, identifier);
+    case 1:
+        if (charset)
+            syslog(LOG_INFO, "Reply: Userid: host=%s, opsys=%s, charset=%s, userid=%s", gethost(&faddr.sin_addr), opsys,
+                   charset, identifier);
+        else
+            syslog(LOG_INFO, "Reply: Userid: host=%s, opsys=%s, userid=%s", gethost(&faddr.sin_addr), opsys,
+                   identifier);
 
-	    printf("Userid response is:\r\n");
-	    printf("   Lport........ %d\r\n", lport);
-	    printf("   Fport........ %d\r\n", fport);
-	    printf("   Opsys........ %s\r\n", opsys);
-	    printf("   Charset...... %s\r\n", charset ? charset : "<not specified>");
-	    printf("   Identifier... %s\r\n", identifier);
+        printf("Userid response is:\r\n");
+        printf("   Lport........ %d\r\n", lport);
+        printf("   Fport........ %d\r\n", fport);
+        printf("   Opsys........ %s\r\n", opsys);
+        printf("   Charset...... %s\r\n", charset ? charset : "<not specified>");
+        printf("   Identifier... %s\r\n", identifier);
 
-	    if (id_query(id, ntohs(faddr.sin_port), ntohs(laddr.sin_port), 0) >= 0) {
-		if (id_parse(id, NULL, &lport, &fport, &identifier, &opsys, &charset) == 1)
-		    printf("   Multiquery... Enabled\r\n");
-	    }
+        if (id_query(id, ntohs(faddr.sin_port), ntohs(laddr.sin_port), 0) >= 0)
+        {
+            if (id_parse(id, NULL, &lport, &fport, &identifier, &opsys, &charset) == 1)
+                printf("   Multiquery... Enabled\r\n");
+        }
     }
 
     fflush(stdout);

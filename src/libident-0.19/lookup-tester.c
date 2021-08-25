@@ -26,10 +26,10 @@
 #define IN_LIBIDENT_SRC
 #include "ident.h"
 
-void                                    main __P2(int, argc, char **, argv)
+void main __P2(int, argc, char **, argv)
 {
-    IDENT                                  *ident;
-    char                                   *user;
+    IDENT *ident;
+    char *user;
 
     chdir("/tmp");
 
@@ -41,14 +41,15 @@ void                                    main __P2(int, argc, char **, argv)
     ident = ident_lookup(fileno(stdin), 30);
 
     if (!ident)
-	perror("ident");
-    else {
-	printf("IDENT response is:\r\n");
-	printf("   Lport........ %d\r\n", ident->lport);
-	printf("   Fport........ %d\r\n", ident->fport);
-	printf("   Opsys........ %s\r\n", ident->opsys);
-	printf("   Charset...... %s\r\n", ident->charset ? ident->charset : "<not specified>");
-	printf("   Identifier... %s\r\n", ident->identifier);
+        perror("ident");
+    else
+    {
+        printf("IDENT response is:\r\n");
+        printf("   Lport........ %d\r\n", ident->lport);
+        printf("   Fport........ %d\r\n", ident->fport);
+        printf("   Opsys........ %s\r\n", ident->opsys);
+        printf("   Charset...... %s\r\n", ident->charset ? ident->charset : "<not specified>");
+        printf("   Identifier... %s\r\n", ident->identifier);
     }
 
     ident_free(ident);
@@ -59,9 +60,9 @@ void                                    main __P2(int, argc, char **, argv)
     user = ident_id(fileno(stdin), 30);
 
     if (user)
-	printf("IDENT response is identifier = %s\r\n", user);
+        printf("IDENT response is identifier = %s\r\n", user);
     else
-	puts("IDENT lookup failed!\r");
+        puts("IDENT lookup failed!\r");
 
     fflush(stdout);
     sleep(1);

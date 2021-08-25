@@ -18,7 +18,7 @@
 #include <string.h>
 #include <unistd.h>
 #if !defined(__sgi) && !defined(VMS)
-#define bzero(p,l)     memset(p, 0, l)
+#define bzero(p, l) memset(p, 0, l)
 #endif
 #endif
 
@@ -37,53 +37,50 @@
 #define IN_LIBIDENT_SRC
 #include "ident.h"
 
-ident_t                                *id_open
-__P((__STRUCT_IN_ADDR_P laddr, __STRUCT_IN_ADDR_P faddr, __STRUCT_TIMEVAL_P timeout))
+ident_t *id_open __P((__STRUCT_IN_ADDR_P laddr, __STRUCT_IN_ADDR_P faddr, __STRUCT_TIMEVAL_P timeout))
 {
-    ident_t                                *id;
-    int                                     res,
-                                            tmperrno;
-    struct sockaddr_in                      sin_laddr,
-                                            sin_faddr;
-    fd_set                                  rs,
-                                            ws,
-                                            es;
+    ident_t *id;
+    int res, tmperrno;
+    struct sockaddr_in sin_laddr, sin_faddr;
+    fd_set rs, ws, es;
 
 #ifndef OLD_SETSOCKOPT
-    int                                     on = 1;
-    struct linger                           linger;
+    int on = 1;
+    struct linger linger;
 #endif
 
     if ((id = (ident_t *)malloc(sizeof(*id))) == 0)
-	return 0;
+        return 0;
 
-    if ((id->fd = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
-	free(id);
-	return 0;
+    if ((id->fd = socket(AF_INET, SOCK_STREAM, 0)) < 0)
+    {
+        free(id);
+        return 0;
     }
 
-    if (timeout) {
-	if ((res = fcntl(id->fd, F_GETFL, 0)) < 0)
-	    goto ERROR;
+    if (timeout)
+    {
+        if ((res = fcntl(id->fd, F_GETFL, 0)) < 0)
+            goto ERROR;
 
 #ifndef VMS
-	if (fcntl(id->fd, F_SETFL, res | FNDELAY) < 0)
-	    goto ERROR;
+        if (fcntl(id->fd, F_SETFL, res | FNDELAY) < 0)
+            goto ERROR;
 #endif
     }
 
     /*
-     * We silently ignore errors if we can't change LINGER 
+     * We silently ignore errors if we can't change LINGER
      */
 #ifdef OLD_SETSOCKOPT
     /*
-     * Old style setsockopt() 
+     * Old style setsockopt()
      */
     (void)setsockopt(id->fd, SOL_SOCKET, SO_DONTLINGER);
     (void)setsockopt(id->fd, SOL_SOCKET, SO_REUSEADDR);
 #else
     /*
-     * New style setsockopt() 
+     * New style setsockopt()
      */
     linger.l_onoff = 0;
     linger.l_linger = 0;
@@ -99,11 +96,12 @@ __P((__STRUCT_IN_ADDR_P laddr, __STRUCT_IN_ADDR_P faddr, __STRUCT_TIMEVAL_P time
     sin_laddr.sin_addr = *laddr;
     sin_laddr.sin_port = 0;
 
-    if (bind(id->fd, (struct sockaddr *)&sin_laddr, sizeof(sin_laddr)) < 0) {
+    if (bind(id->fd, (struct sockaddr *)&sin_laddr, sizeof(sin_laddr)) < 0)
+    {
 #ifdef DEBUG
-	perror("libident: bind");
+        perror("libident: bind");
 #endif
-	goto ERROR;
+        goto ERROR;
     }
 
     bzero((char *)&sin_faddr, sizeof(sin_faddr));
@@ -113,50 +111,53 @@ __P((__STRUCT_IN_ADDR_P laddr, __STRUCT_IN_ADDR_P faddr, __STRUCT_TIMEVAL_P time
 
     errno = 0;
     res = connect(id->fd, (struct sockaddr *)&sin_faddr, sizeof(sin_faddr));
-    if (res < 0 && errno != EINPROGRESS) {
+    if (res < 0 && errno != EINPROGRESS)
+    {
 #ifdef DEBUG
-	perror("libident: connect");
+        perror("libident: connect");
 #endif
-	goto ERROR;
+        goto ERROR;
     }
 
-    if (timeout) {
-	FD_ZERO(&rs);
-	FD_ZERO(&ws);
-	FD_ZERO(&es);
+    if (timeout)
+    {
+        FD_ZERO(&rs);
+        FD_ZERO(&ws);
+        FD_ZERO(&es);
 
-	FD_SET(id->fd, &rs);
-	FD_SET(id->fd, &ws);
-	FD_SET(id->fd, &es);
+        FD_SET(id->fd, &rs);
+        FD_SET(id->fd, &ws);
+        FD_SET(id->fd, &es);
 
 #ifdef __hpux
-	if ((res = select(FD_SETSIZE, (int *)&rs, (int *)&ws, (int *)&es, timeout)) < 0)
+        if ((res = select(FD_SETSIZE, (int *)&rs, (int *)&ws, (int *)&es, timeout)) < 0)
 #else
-	if ((res = select(FD_SETSIZE, &rs, &ws, &es, timeout)) < 0)
+        if ((res = select(FD_SETSIZE, &rs, &ws, &es, timeout)) < 0)
 #endif
-	{
+        {
 #ifdef DEBUG
-	    perror("libident: select");
+            perror("libident: select");
 #endif
-	    goto ERROR;
-	}
+            goto ERROR;
+        }
 
-	if (res == 0) {
-	    errno = ETIMEDOUT;
-	    goto ERROR;
-	}
+        if (res == 0)
+        {
+            errno = ETIMEDOUT;
+            goto ERROR;
+        }
 
-	if (FD_ISSET(id->fd, &es))
-	    goto ERROR;
+        if (FD_ISSET(id->fd, &es))
+            goto ERROR;
 
-	if (!FD_ISSET(id->fd, &rs) && !FD_ISSET(id->fd, &ws))
-	    goto ERROR;
+        if (!FD_ISSET(id->fd, &rs) && !FD_ISSET(id->fd, &ws))
+            goto ERROR;
     }
 
     return id;
 
-  ERROR:
-    tmperrno = errno;					       /* Save, so close() won't erase it */
+ERROR:
+    tmperrno = errno; /* Save, so close() won't erase it */
     close(id->fd);
     free(id);
     errno = tmperrno;

@@ -8,8 +8,9 @@
 #ifndef __IDENT_H__
 #define __IDENT_H__
 
-#ifdef	__cplusplus
-extern                                  "C" {
+#ifdef __cplusplus
+extern "C"
+{
 #endif
 
 /* Sigh */
@@ -24,63 +25,55 @@ extern                                  "C" {
 #endif
 
 #ifdef IS_STDC
-#define __P(AL)	                  AL
+#define __P(AL) AL
 
 #ifdef IN_LIBIDENT_SRC
 
-#define __P1(t1,a1) \
-    (t1 a1)
+#define __P1(t1, a1) (t1 a1)
 
-#define __P2(t1,a1,t2,a2) \
-    (t1 a1, t2 a2)
+#define __P2(t1, a1, t2, a2) (t1 a1, t2 a2)
 
-#define __P3(t1,a1,t2,a2,t3,a3) \
-    (t1 a1, t2 a2, t3 a3)
+#define __P3(t1, a1, t2, a2, t3, a3) (t1 a1, t2 a2, t3 a3)
 
-#define __P4(t1,a1,t2,a2,t3,a3,t4,a4) \
-    (t1 a1, t2 a2, t3 a3, t4 a4)
+#define __P4(t1, a1, t2, a2, t3, a3, t4, a4) (t1 a1, t2 a2, t3 a3, t4 a4)
 
-#define __P5(t1,a1,t2,a2,t3,a3,t4,a4,t5,a5) \
-    (t1 a1, t2 a2, t3 a3, t4 a4, t5 a5)
+#define __P5(t1, a1, t2, a2, t3, a3, t4, a4, t5, a5) (t1 a1, t2 a2, t3 a3, t4 a4, t5 a5)
 
-#define __P7(t1,a1,t2,a2,t3,a3,t4,a4,t5,a5,t6,a6,t7,a7) \
-    (t1 a1, t2 a2, t3 a3, t4 a4, t5 a5, t6 a6, t7 a7)
+#define __P7(t1, a1, t2, a2, t3, a3, t4, a4, t5, a5, t6, a6, t7, a7) (t1 a1, t2 a2, t3 a3, t4 a4, t5 a5, t6 a6, t7 a7)
 #endif
 
 #else
 
-#define __P(AL)	                  ()
+#define __P(AL) ()
 
 #ifdef IN_LIBIDENT_SRC
 
-#define __P1(t1,a1)                     (a1) \
-    t1 a1;
-#define __P2(t1,a1,t2,a2)               (a1, a2) \
-    t1 a1; \
+#define __P1(t1, a1) (a1) t1 a1;
+#define __P2(t1, a1, t2, a2)                                                                                           \
+    (a1, a2) t1 a1;                                                                                                    \
     t2 a2;
-#define __P3(t1,a1,t2,a2,t3,a3)         (a1, a2, a3) \
-    t1 a1; \
-    t2 a2; \
+#define __P3(t1, a1, t2, a2, t3, a3)                                                                                   \
+    (a1, a2, a3) t1 a1;                                                                                                \
+    t2 a2;                                                                                                             \
     t3 a3;
-#define __P4(t1,a1,t2,a2,t3,a3,t4,a4)   (a1, a2, a3, a4) \
-    t1 a1; \
-    t2 a2; \
-    t3 a3; \
+#define __P4(t1, a1, t2, a2, t3, a3, t4, a4)                                                                           \
+    (a1, a2, a3, a4) t1 a1;                                                                                            \
+    t2 a2;                                                                                                             \
+    t3 a3;                                                                                                             \
     t4 a4;
-#define __P5(t1,a1,t2,a2,t3,a3,t4,a4,t5,a5)   (a1, a2, a3, a4, a5) \
-    t1 a1; \
-    t2 a2; \
-    t3 a3; \
-    t4 a4; \
+#define __P5(t1, a1, t2, a2, t3, a3, t4, a4, t5, a5)                                                                   \
+    (a1, a2, a3, a4, a5) t1 a1;                                                                                        \
+    t2 a2;                                                                                                             \
+    t3 a3;                                                                                                             \
+    t4 a4;                                                                                                             \
     t5 a5;
-#define __P7(t1,a1,t2,a2,t3,a3,t4,a4,t5,a5,t6,a6,t7,a7) \
-    (a1, a2, a3, a4, a5, a6, a7) \
-    t1 a1; \
-    t2 a2; \
-    t3 a3; \
-    t4 a4; \
-    t5 a5; \
-    t6 a6; \
+#define __P7(t1, a1, t2, a2, t3, a3, t4, a4, t5, a5, t6, a6, t7, a7)                                                   \
+    (a1, a2, a3, a4, a5, a6, a7) t1 a1;                                                                                \
+    t2 a2;                                                                                                             \
+    t3 a3;                                                                                                             \
+    t4 a4;                                                                                                             \
+    t5 a5;                                                                                                             \
+    t6 a6;                                                                                                             \
     t7 a7;
 #endif
 #endif
@@ -108,20 +101,20 @@ extern                                  "C" {
  * in function prototypes...
  */
 #if defined(__GNUC__) && !defined(INADDR_ANY)
-#define __STRUCT_IN_ADDR_P	void *
+#define __STRUCT_IN_ADDR_P void *
 #else
-#define __STRUCT_IN_ADDR_P	struct in_addr *
+#define __STRUCT_IN_ADDR_P struct in_addr *
 #endif
 
 #if defined(__GNUC__) && !defined(DST_NONE)
-#define __STRUCT_TIMEVAL_P	void *
+#define __STRUCT_TIMEVAL_P void *
 #else
-#define __STRUCT_TIMEVAL_P	struct timeval *
+#define __STRUCT_TIMEVAL_P struct timeval *
 #endif
 
 #if defined(__sgi) && defined(_POSIX_SOURCE)
-#undef  __STRUCT_TIMEVAL_P
-#define __STRUCT_TIMEVAL_P	void *
+#undef __STRUCT_TIMEVAL_P
+#define __STRUCT_TIMEVAL_P void *
 #endif
 
 #ifndef IDBUFSIZE
@@ -129,64 +122,57 @@ extern                                  "C" {
 #endif
 
 #ifndef IDPORT
-#define IDPORT	113
+#define IDPORT 113
 #endif
 
-    typedef struct {
-	int                                     fd;
-	char                                    buf[IDBUFSIZE];
+    typedef struct
+    {
+        int fd;
+        char buf[IDBUFSIZE];
     } ident_t;
 
-    typedef struct {
-	int                                     lport;	       /* Local port */
-	int                                     fport;	       /* Far (remote) port */
-	char                                   *identifier;    /* Normally user name */
-	char                                   *opsys;	       /* OS */
-	char                                   *charset;       /* Charset (what did you expect?) */
-    } IDENT;						       /* For higher-level routines */
+    typedef struct
+    {
+        int lport;        /* Local port */
+        int fport;        /* Far (remote) port */
+        char *identifier; /* Normally user name */
+        char *opsys;      /* OS */
+        char *charset;    /* Charset (what did you expect?) */
+    } IDENT;              /* For higher-level routines */
 
 /* Low-level calls and macros */
-#define id_fileno(ID)	((ID)->fd)
+#define id_fileno(ID) ((ID)->fd)
 
-    extern ident_t                         *id_open __P((__STRUCT_IN_ADDR_P laddr,
-							 __STRUCT_IN_ADDR_P faddr,
-							 __STRUCT_TIMEVAL_P timeout));
+    extern ident_t *id_open __P((__STRUCT_IN_ADDR_P laddr, __STRUCT_IN_ADDR_P faddr, __STRUCT_TIMEVAL_P timeout));
 
-    extern int id_close                     __P((ident_t *id));
+    extern int id_close __P((ident_t * id));
 
-    extern int id_query                     __P((ident_t *id,
-						 int lport,
-						 int fport, __STRUCT_TIMEVAL_P timeout));
+    extern int id_query __P((ident_t * id, int lport, int fport, __STRUCT_TIMEVAL_P timeout));
 
-    extern int id_parse                     __P((ident_t *id,
-						 __STRUCT_TIMEVAL_P timeout,
-						 int *lport,
-						 int *fport,
-						 char **identifier, char **opsys,
-						 char **charset));
+    extern int id_parse __P((ident_t * id, __STRUCT_TIMEVAL_P timeout, int *lport, int *fport, char **identifier,
+                             char **opsys, char **charset));
 
-/* High-level calls */
+    /* High-level calls */
 
-    extern IDENT                           *ident_lookup __P((int fd, int timeout));
+    extern IDENT *ident_lookup __P((int fd, int timeout));
 
-    extern char                            *ident_id __P((int fd, int timeout));
+    extern char *ident_id __P((int fd, int timeout));
 
-    extern IDENT                           *ident_query
-	__P((__STRUCT_IN_ADDR_P laddr, __STRUCT_IN_ADDR_P raddr, int lport,
-	     int rport, int timeout));
+    extern IDENT *ident_query __P((__STRUCT_IN_ADDR_P laddr, __STRUCT_IN_ADDR_P raddr, int lport, int rport,
+                                   int timeout));
 
-    extern void ident_free                  __P((IDENT *id));
+    extern void ident_free __P((IDENT * id));
 
-    extern char                             id_version[];
+    extern char id_version[];
 
 #ifdef IN_LIBIDENT_SRC
 
-    extern char                            *id_strdup __P((char *str));
-    extern char                            *id_strtok __P((char *cp, char *cs, char *dc));
+    extern char *id_strdup __P((char *str));
+    extern char *id_strtok __P((char *cp, char *cs, char *dc));
 
 #endif
 
-#ifdef	__cplusplus
+#ifdef __cplusplus
 }
 #endif
 #endif
