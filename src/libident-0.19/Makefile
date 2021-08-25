@@ -7,7 +7,7 @@ SHELL=/bin/sh
 RM=rm -f
 RANLIB=ranlib
 AR=ar cq
-CC=gcc
+CC=clang #gcc
 
 INSTROOT=/usr/local
 LIBDIR=$(INSTROOT)/lib
@@ -20,9 +20,9 @@ MANDIR=$(INSTROOT)/man/man3
 # Add -DHAVE_ANSIHEADERS if your system have the ANSI C header files
 # needed for our purposes (stdlib, string, unistd).
 #
-WARN = -Wall -Wstrict-prototypes -Wmissing-prototypes
-OPT = -O3 #-fstrength-reduce -funroll-loops -fexpensive-optimizations
-CFLAGS = $(WARN) $(OPT) -ggdb -pipe
+WARN = -Werror -Wall #-Wstrict-prototypes -Wmissing-prototypes
+OPT = -O0 #-O3 #-fstrength-reduce -funroll-loops -fexpensive-optimizations
+CFLAGS = $(WARN) $(OPT) -g #-ggdb -pipe
 
 LDLIBS =
 LIBIDENT = libident.a
@@ -138,7 +138,8 @@ aix hpux hpux8 hpux9:
 #
 #
 linux:
-	@$(MAKE) all CC="gcc" CFLAGS="$(CFLAGS) -DHAVE_ANSIHEADERS"
+	@$(MAKE) all CC="clang" CFLAGS="$(CFLAGS) -DHAVE_ANSIHEADERS"
+	#@$(MAKE) all CC="gcc" CFLAGS="$(CFLAGS) -DHAVE_ANSIHEADERS"
 
 #
 #
