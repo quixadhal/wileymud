@@ -1,7 +1,7 @@
 #ifndef _MAIN_H
 #define _MAIN_H
 
-#define VERSION		"Version 0.7, Released 96.08.02"
+#define VERSION		"Version 0.8, Released 2021-04-15"
 
 #define MAX_STRING_LEN 16384
 

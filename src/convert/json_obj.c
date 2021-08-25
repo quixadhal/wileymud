@@ -225,7 +225,12 @@ cJSON *process_item_trap(cJSON *this_obj, objects *Objects, int i)
     type_details = cJSON_AddObjectToObject(this_obj, "type_details");
     cJSON_AddNumberToObject(type_details, "type_id", Objects->Object[i].Type);
     cJSON_AddStringToObject(type_details, "name", item_type_name(Objects->Object[i].Type));
-    // [3] charges, attack type [1], damage [2]
+    // level [0], [3] charges, attack type [1], damage [2]
+    cJSON_AddNumberToObject(type_details, "level", Objects->Object[i].Flags.Value[0]);
+    cJSON_AddNumberToObject(type_details, "charges", Objects->Object[i].Flags.Value[3]);
+    cJSON_AddNumberToObject(type_details, "damage", Objects->Object[i].Flags.Value[2]);
+    cJSON_AddNumberToObject(type_details, "damage_type_id", Objects->Object[i].Flags.Value[1]);
+    cJSON_AddStringToObject(type_details, "damage_type", damage_name(Objects->Object[i].Flags.Value[1]));
 
     return type_details;
 }
@@ -237,6 +242,19 @@ cJSON *process_item_container(cJSON *this_obj, objects *Objects, int i)
     type_details = cJSON_AddObjectToObject(this_obj, "type_details");
     cJSON_AddNumberToObject(type_details, "type_id", Objects->Object[i].Type);
     cJSON_AddStringToObject(type_details, "name", item_type_name(Objects->Object[i].Type));
+    // [3] is_corpse, lock type [1], capacity [0], [2] is key, -1 for not lockable
+    if(Objects->Object[i].Flags.Value[3]) {
+        cJSON_AddTrueToObject(type_details, "is_corpse");
+    } else {
+        cJSON_AddFalseToObject(type_details, "is_corpse");
+    }
+    cJSON_AddNumberToObject(type_details, "lock_type_id", Objects->Object[i].Flags.Value[1]);
+    if(Objects->Object[i].Flags.Value[2] >= 0) {
+        cJSON_AddNumberToObject(type_details, "key_id", Objects->Object[i].Flags.Value[2]);
+    } else {
+        cJSON_AddNullToObject(type_details, "key_id");
+    }
+    cJSON_AddNumberToObject(type_details, "capacity", Objects->Object[i].Flags.Value[0]);
 
     return type_details;
 }
@@ -248,6 +266,18 @@ cJSON *process_item_drink(cJSON *this_obj, objects *Objects, int i)
     type_details = cJSON_AddObjectToObject(this_obj, "type_details");
     cJSON_AddNumberToObject(type_details, "type_id", Objects->Object[i].Type);
     cJSON_AddStringToObject(type_details, "name", item_type_name(Objects->Object[i].Type));
+    // [0] capacity, [1] current, [2] liquid type id
+    // drink_aff[] holds info about liquids...
+    // [3] means poison
+    cJSON_AddNumberToObject(type_details, "capacity", Objects->Object[i].Flags.Value[0]);
+    cJSON_AddNumberToObject(type_details, "current_fill", Objects->Object[i].Flags.Value[1]);
+    cJSON_AddNumberToObject(type_details, "liquid_type_id", Objects->Object[i].Flags.Value[2]);
+    cJSON_AddStringToObject(type_details, "liquid_type", liquid_name(Objects->Object[i].Flags.Value[2]));
+    if(Objects->Object[i].Flags.Value[3] >= 0) {
+        cJSON_AddTrueToObject(type_details, "is_poison");
+    } else {
+        cJSON_AddFalseToObject(type_details, "is_poison");
+    }
 
     return type_details;
 }
