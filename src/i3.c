@@ -20806,8 +20806,8 @@ void i3_daily_summary()
     char                                    yesterfile[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
     char                                    yesternuke[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
     char                                    yestertouch[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
-    char *target_channel_list[] = { "intercre", "dchat", "intergossip" };
-    int target_channel_count = 3;
+    char *target_channel_list[] = { "intercre", "dchat", "intergossip", "dwchat" };
+    int target_channel_count = 4;
     char *target_channel = target_channel_list[0];
 
     char *sql = "SELECT ( "
@@ -20868,7 +20868,9 @@ void i3_daily_summary()
         }
         PQclear(res);
 
-        snprintf(output, MAX_STRING_LENGTH, "I3 Activity Report for %%^RED%%^%%^BOLD%%^%s:%%^RESET%%^ %%^GREEN%%^%%^BOLD%%^%d messages%%^RESET%%^ from %%^YELLOW%%^%d speakers%%^RESET%%^. %s",
+        //snprintf(output, MAX_STRING_LENGTH, "I3 Activity Report for %%^RED%%^%%^BOLD%%^%s:%%^RESET%%^ %%^GREEN%%^%%^BOLD%%^%d messages%%^RESET%%^ from %%^YELLOW%%^%d speakers%%^RESET%%^. %s",
+        //        yesterday, messages, speakers, logpage_url);
+        snprintf(output, MAX_STRING_LENGTH, "I3 Activity on %s: %d messages from %d speakers.  Logs at %s",
                 yesterday, messages, speakers, logpage_url);
         i3_npc_speak(target_channel, "Cron", output);
         log_info("Summary done.");
