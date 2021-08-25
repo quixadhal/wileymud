@@ -3,14 +3,15 @@
 
 #include <postgresql/libpq-fe.h>
 
-#define SQL_DB  "i3/wiley.db"
-#define URL_DELAY                       ((int)(PULSE_PER_SECOND * 1.5));
+#define SQL_DB "i3/wiley.db"
+#define URL_DELAY ((int)(PULSE_PER_SECOND * 1.5));
 
-#define UNTINY_SQL              "../bin/untiny_sql.pl"
-#define UNTINY                  "../bin/untiny"
-#define PERL                    "/usr/bin/perl"
+#define UNTINY_SQL "../bin/untiny_sql.pl"
+#define UNTINY "../bin/untiny"
+#define PERL "/usr/bin/perl"
 
-struct sql_connection {
+struct sql_connection
+{
     const char *name;
     PGconn *dbc;
 };
@@ -42,17 +43,15 @@ void sql_startup(void);
 void sql_shutdown(void);
 
 // I3
-void add_url( const char *channel, const char *speaker, const char *mud, const char *url );
-int is_url( int is_emote, const char *channel, const char *speaker, const char *mud,
-            const char *message );
-int is_bot( int is_emote, const char *channel, const char *speaker, const char *mud,
-            const char *message );
-void allchan_sql( int is_emote, const char *channel, const char *speaker,
-                  const char *username, const char *mud, const char *message );
-void addspeaker_sql( const char *speaker, const char *pinkfish );
-void do_checkurl( struct char_data *ch, const char *argument, int cmd );
+void add_url(const char *channel, const char *speaker, const char *mud, const char *url);
+int is_url(int is_emote, const char *channel, const char *speaker, const char *mud, const char *message);
+int is_bot(int is_emote, const char *channel, const char *speaker, const char *mud, const char *message);
+void allchan_sql(int is_emote, const char *channel, const char *speaker, const char *username, const char *mud,
+                 const char *message);
+void addspeaker_sql(const char *speaker, const char *pinkfish);
+void do_checkurl(struct char_data *ch, const char *argument, int cmd);
 // Messages
-char *update_message_from_file( const char *filename, int is_prompt );
+char *update_message_from_file(const char *filename, int is_prompt);
 void i3_packet_log(char *packet_type, long packet_length, char *packet_content);
 
 #endif

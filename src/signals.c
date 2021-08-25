@@ -13,7 +13,6 @@
 #include <sys/wait.h>
 #include <execinfo.h>
 
-
 #include "global.h"
 #include "bug.h"
 #include "utils.h"
@@ -35,7 +34,7 @@
 */
 
 /*
-	And under OpenBSD that would be:
+    And under OpenBSD that would be:
 
      struct sigaction {
              union {
@@ -59,7 +58,7 @@ bash-2.05$ kill -l
 17) SIGSTOP     18) SIGTSTP     19) SIGCONT     20) SIGCHLD
 21) SIGTTIN     22) SIGTTOU     23) SIGIO       24) SIGXCPU
 25) SIGXFSZ     26) SIGVTALRM   27) SIGPROF     28) SIGWINCH
-29) SIGINFO     30) SIGUSR1     31) SIGUSR2     
+29) SIGINFO     30) SIGUSR1     31) SIGUSR2
 
   Under slackware 9.1 (Linux 2.4 kernel):
 
@@ -89,90 +88,90 @@ bash-2.05$ kill -l
 51) SIGRTMAX-13 52) SIGRTMAX-12 53) SIGRTMAX-11 54) SIGRTMAX-10
 55) SIGRTMAX-9  56) SIGRTMAX-8  57) SIGRTMAX-7  58) SIGRTMAX-6
 59) SIGRTMAX-5  60) SIGRTMAX-4  61) SIGRTMAX-3  62) SIGRTMAX-2
-63) SIGRTMAX-1  64) SIGRTMAX    
+63) SIGRTMAX-1  64) SIGRTMAX
 */
 
 void signal_setup(void)
 {
-    struct itimerval                        itime;
-    struct timeval                          interval;
+    struct itimerval itime;
+    struct timeval interval;
 
 #ifdef USE_SIGACTION
-    int                                     i = 0;
+    int i = 0;
 
-    struct sigaction                        ack[] = {
+    struct sigaction ack[] = {
 #ifdef __OpenBSD__
-	{{SIG_DFL}, 0, SA_NODEFER | SA_RESETHAND},
-	{{SIG_IGN}, SIGHUP, SA_NODEFER},
-	{{shutdown_request}, SIGINT, SA_NODEFER},
-	{{SIG_IGN}, SIGQUIT, SA_NODEFER},
-	{{SIG_DFL}, SIGILL, SA_NODEFER | SA_RESETHAND},
-	{{SIG_DFL}, SIGTRAP, SA_NODEFER | SA_RESETHAND},
-	{{SIG_DFL}, SIGABRT, SA_NODEFER | SA_RESETHAND},
-	{{SIG_DFL}, SIGEMT, SA_NODEFER | SA_RESETHAND},
-	{{SIG_DFL}, SIGFPE, SA_NODEFER | SA_RESETHAND},
-	{{SIG_DFL}, SIGKILL, SA_NODEFER | SA_RESETHAND},
-	{{SIG_DFL}, SIGBUS, SA_NODEFER | SA_RESETHAND},
-	//{{SIG_DFL}, SIGSEGV, SA_NODEFER | SA_RESETHAND},
-	{{exit_with_traceback}, SIGSEGV, SA_NODEFER | SA_RESETHAND},
-	{{SIG_DFL}, SIGSYS, SA_NODEFER | SA_RESETHAND},
-	{{SIG_IGN}, SIGPIPE, SA_NODEFER},
-	{{SIG_IGN}, SIGALRM, SA_NODEFER},
-	{{reboot_request}, SIGTERM, SA_NODEFER},
-	{{SIG_IGN}, SIGURG, SA_NODEFER},
-	{{SIG_IGN}, SIGSTOP, SA_NODEFER},
-	{{SIG_IGN}, SIGTSTP, SA_NODEFER},
-	{{SIG_IGN}, SIGCONT, SA_NODEFER},
-	{{reaper}, SIGCHLD, SA_NODEFER},
-	{{SIG_IGN}, SIGTTIN, SA_NODEFER},
-	{{SIG_IGN}, SIGTTOU, SA_NODEFER},
-	{{SIG_IGN}, SIGIO, SA_NODEFER},
-	{{SIG_IGN}, SIGXCPU, SA_NODEFER},
-	{{SIG_IGN}, SIGXFSZ, SA_NODEFER},
-	{{checkpointing}, SIGVTALRM, SA_NODEFER},
-	{{SIG_DFL}, SIGPROF, SA_NODEFER | SA_RESETHAND},
-	{{SIG_IGN}, SIGWINCH, SA_NODEFER},
-	{{shutdown_request}, SIGUSR1, SA_NODEFER},
-	{{SIG_IGN}, SIGUSR2, SA_NODEFER}
+        {{SIG_DFL}, 0, SA_NODEFER | SA_RESETHAND},
+        {{SIG_IGN}, SIGHUP, SA_NODEFER},
+        {{shutdown_request}, SIGINT, SA_NODEFER},
+        {{SIG_IGN}, SIGQUIT, SA_NODEFER},
+        {{SIG_DFL}, SIGILL, SA_NODEFER | SA_RESETHAND},
+        {{SIG_DFL}, SIGTRAP, SA_NODEFER | SA_RESETHAND},
+        {{SIG_DFL}, SIGABRT, SA_NODEFER | SA_RESETHAND},
+        {{SIG_DFL}, SIGEMT, SA_NODEFER | SA_RESETHAND},
+        {{SIG_DFL}, SIGFPE, SA_NODEFER | SA_RESETHAND},
+        {{SIG_DFL}, SIGKILL, SA_NODEFER | SA_RESETHAND},
+        {{SIG_DFL}, SIGBUS, SA_NODEFER | SA_RESETHAND},
+        //{{SIG_DFL}, SIGSEGV, SA_NODEFER | SA_RESETHAND},
+        {{exit_with_traceback}, SIGSEGV, SA_NODEFER | SA_RESETHAND},
+        {{SIG_DFL}, SIGSYS, SA_NODEFER | SA_RESETHAND},
+        {{SIG_IGN}, SIGPIPE, SA_NODEFER},
+        {{SIG_IGN}, SIGALRM, SA_NODEFER},
+        {{reboot_request}, SIGTERM, SA_NODEFER},
+        {{SIG_IGN}, SIGURG, SA_NODEFER},
+        {{SIG_IGN}, SIGSTOP, SA_NODEFER},
+        {{SIG_IGN}, SIGTSTP, SA_NODEFER},
+        {{SIG_IGN}, SIGCONT, SA_NODEFER},
+        {{reaper}, SIGCHLD, SA_NODEFER},
+        {{SIG_IGN}, SIGTTIN, SA_NODEFER},
+        {{SIG_IGN}, SIGTTOU, SA_NODEFER},
+        {{SIG_IGN}, SIGIO, SA_NODEFER},
+        {{SIG_IGN}, SIGXCPU, SA_NODEFER},
+        {{SIG_IGN}, SIGXFSZ, SA_NODEFER},
+        {{checkpointing}, SIGVTALRM, SA_NODEFER},
+        {{SIG_DFL}, SIGPROF, SA_NODEFER | SA_RESETHAND},
+        {{SIG_IGN}, SIGWINCH, SA_NODEFER},
+        {{shutdown_request}, SIGUSR1, SA_NODEFER},
+        {{SIG_IGN}, SIGUSR2, SA_NODEFER}
 #else
-	{{SIG_DFL}, {{0}}, SA_NODEFER | SA_RESETHAND, NULL},
-	{{SIG_IGN}, {{SIGHUP}}, SA_NODEFER, NULL},
-	{{shutdown_request}, {{SIGINT}}, SA_NODEFER, NULL},
-	{{SIG_IGN}, {{SIGQUIT}}, SA_NODEFER, NULL},
-	{{SIG_DFL}, {{SIGILL}}, SA_NODEFER | SA_RESETHAND, NULL},
-	{{SIG_DFL}, {{SIGTRAP}}, SA_NODEFER | SA_RESETHAND, NULL},
-	{{SIG_DFL}, {{SIGABRT}}, SA_NODEFER | SA_RESETHAND, NULL},
-	{{SIG_DFL}, {{SIGBUS}}, SA_NODEFER | SA_RESETHAND, NULL},
-	{{SIG_DFL}, {{SIGFPE}}, SA_NODEFER | SA_RESETHAND, NULL},
-	{{SIG_DFL}, {{SIGKILL}}, SA_NODEFER | SA_RESETHAND, NULL},
-	{{shutdown_request}, {{SIGUSR1}}, SA_NODEFER | SA_RESETHAND, NULL},
-	//{{SIG_DFL}, {{SIGSEGV}}, SA_NODEFER | SA_RESETHAND, NULL},
-	{{exit_with_traceback}, {{SIGSEGV}}, SA_NODEFER | SA_RESETHAND, NULL},
-	{{SIG_IGN}, {{SIGUSR2}}, SA_NODEFER | SA_RESETHAND, NULL},
-	{{SIG_IGN}, {{SIGPIPE}}, SA_NODEFER, NULL},
-	{{SIG_IGN}, {{SIGALRM}}, SA_NODEFER, NULL},
-	{{reboot_request}, {{SIGTERM}}, SA_NODEFER, NULL},
-	{{SIG_DFL}, {{0}}, SA_NODEFER | SA_RESETHAND, NULL},   /* Not listed by kill -l ??? */
-	{{reaper}, {{SIGCHLD}}, SA_NODEFER, NULL},
-	{{SIG_IGN}, {{SIGCONT}}, SA_NODEFER, NULL},
-	{{SIG_IGN}, {{SIGSTOP}}, SA_NODEFER, NULL},
-	{{SIG_IGN}, {{SIGTSTP}}, SA_NODEFER, NULL},
-	{{SIG_IGN}, {{SIGTTIN}}, SA_NODEFER, NULL},
-	{{SIG_IGN}, {{SIGTTOU}}, SA_NODEFER, NULL},
-	{{SIG_IGN}, {{SIGURG}}, SA_NODEFER, NULL},
-	{{SIG_IGN}, {{SIGXCPU}}, SA_NODEFER, NULL},
-	{{SIG_IGN}, {{SIGXFSZ}}, SA_NODEFER, NULL},
-	{{checkpointing}, {{SIGVTALRM}}, SA_NODEFER, NULL},
-	{{SIG_DFL}, {{SIGPROF}}, SA_NODEFER | SA_RESETHAND, NULL},
-	{{SIG_IGN}, {{SIGWINCH}}, SA_NODEFER, NULL},
-	{{SIG_IGN}, {{SIGIO}}, SA_NODEFER, NULL},
-	{{shutdown_request}, {{SIGPWR}}, SA_NODEFER, NULL},
-	{{SIG_IGN}, {{SIGSYS}}, SA_NODEFER, NULL}
+        {{SIG_DFL}, {{0}}, SA_NODEFER | SA_RESETHAND, NULL},
+        {{SIG_IGN}, {{SIGHUP}}, SA_NODEFER, NULL},
+        {{shutdown_request}, {{SIGINT}}, SA_NODEFER, NULL},
+        {{SIG_IGN}, {{SIGQUIT}}, SA_NODEFER, NULL},
+        {{SIG_DFL}, {{SIGILL}}, SA_NODEFER | SA_RESETHAND, NULL},
+        {{SIG_DFL}, {{SIGTRAP}}, SA_NODEFER | SA_RESETHAND, NULL},
+        {{SIG_DFL}, {{SIGABRT}}, SA_NODEFER | SA_RESETHAND, NULL},
+        {{SIG_DFL}, {{SIGBUS}}, SA_NODEFER | SA_RESETHAND, NULL},
+        {{SIG_DFL}, {{SIGFPE}}, SA_NODEFER | SA_RESETHAND, NULL},
+        {{SIG_DFL}, {{SIGKILL}}, SA_NODEFER | SA_RESETHAND, NULL},
+        {{shutdown_request}, {{SIGUSR1}}, SA_NODEFER | SA_RESETHAND, NULL},
+        //{{SIG_DFL}, {{SIGSEGV}}, SA_NODEFER | SA_RESETHAND, NULL},
+        {{exit_with_traceback}, {{SIGSEGV}}, SA_NODEFER | SA_RESETHAND, NULL},
+        {{SIG_IGN}, {{SIGUSR2}}, SA_NODEFER | SA_RESETHAND, NULL},
+        {{SIG_IGN}, {{SIGPIPE}}, SA_NODEFER, NULL},
+        {{SIG_IGN}, {{SIGALRM}}, SA_NODEFER, NULL},
+        {{reboot_request}, {{SIGTERM}}, SA_NODEFER, NULL},
+        {{SIG_DFL}, {{0}}, SA_NODEFER | SA_RESETHAND, NULL}, /* Not listed by kill -l ??? */
+        {{reaper}, {{SIGCHLD}}, SA_NODEFER, NULL},
+        {{SIG_IGN}, {{SIGCONT}}, SA_NODEFER, NULL},
+        {{SIG_IGN}, {{SIGSTOP}}, SA_NODEFER, NULL},
+        {{SIG_IGN}, {{SIGTSTP}}, SA_NODEFER, NULL},
+        {{SIG_IGN}, {{SIGTTIN}}, SA_NODEFER, NULL},
+        {{SIG_IGN}, {{SIGTTOU}}, SA_NODEFER, NULL},
+        {{SIG_IGN}, {{SIGURG}}, SA_NODEFER, NULL},
+        {{SIG_IGN}, {{SIGXCPU}}, SA_NODEFER, NULL},
+        {{SIG_IGN}, {{SIGXFSZ}}, SA_NODEFER, NULL},
+        {{checkpointing}, {{SIGVTALRM}}, SA_NODEFER, NULL},
+        {{SIG_DFL}, {{SIGPROF}}, SA_NODEFER | SA_RESETHAND, NULL},
+        {{SIG_IGN}, {{SIGWINCH}}, SA_NODEFER, NULL},
+        {{SIG_IGN}, {{SIGIO}}, SA_NODEFER, NULL},
+        {{shutdown_request}, {{SIGPWR}}, SA_NODEFER, NULL},
+        {{SIG_IGN}, {{SIGSYS}}, SA_NODEFER, NULL}
 #endif
     };
 #else
     if (DEBUG > 2)
-	log_info("called %s with no arguments", __PRETTY_FUNCTION__);
+        log_info("called %s with no arguments", __PRETTY_FUNCTION__);
 
     signal(SIGHUP, SIG_IGN);
     signal(SIGINT, shutdown_request);
@@ -201,10 +200,10 @@ void signal_setup(void)
 #endif
 
     /*
-     * set up the deadlock-protection 
+     * set up the deadlock-protection
      */
 
-    interval.tv_sec = 900;				       /* 30 minutes */
+    interval.tv_sec = 900; /* 30 minutes */
     interval.tv_usec = 0;
     itime.it_interval = interval;
     itime.it_value = interval;
@@ -213,29 +212,31 @@ void signal_setup(void)
 
 #ifdef USE_SIGACTION
     for (i = 1; i < 32; i++)
-	if (ack[i].sa_handler != SIG_DFL)
-	    sigaction(i, &ack[i], NULL);
+        if (ack[i].sa_handler != SIG_DFL)
+            sigaction(i, &ack[i], NULL);
 #endif
 }
 
 void checkpointing(int a)
 {
     if (DEBUG > 3)
-	log_info("called %s with %d", __PRETTY_FUNCTION__, a);
+        log_info("called %s with %d", __PRETTY_FUNCTION__, a);
 
-    if (!tics) {
-	log_fatal("CHECKPOINT shutdown: tics not updated");
-	close_sockets(0);
-	close_whod();
-	proper_exit(MUD_HALT);
-    } else
-	tics = 0;
+    if (!tics)
+    {
+        log_fatal("CHECKPOINT shutdown: tics not updated");
+        close_sockets(0);
+        close_whod();
+        proper_exit(MUD_HALT);
+    }
+    else
+        tics = 0;
 }
 
 void shutdown_request(int a)
 {
     if (DEBUG > 3)
-	log_info("called %s with %d", __PRETTY_FUNCTION__, a);
+        log_info("called %s with %d", __PRETTY_FUNCTION__, a);
 
     log_fatal("Received USR1 - shutdown request");
     close_sockets(0);
@@ -246,18 +247,18 @@ void shutdown_request(int a)
 void reboot_request(int a)
 {
     if (DEBUG > 3)
-	log_info("called %s with %d", __PRETTY_FUNCTION__, a);
+        log_info("called %s with %d", __PRETTY_FUNCTION__, a);
 
     log_fatal("Received SIGHUP, or SIGTERM. Shutting down");
     close_sockets(0);
     close_whod();
-    proper_exit(MUD_REBOOT);				       /* something more elegant should perhaps be substituted */
+    proper_exit(MUD_REBOOT); /* something more elegant should perhaps be substituted */
 }
 
 void logsig(int a)
 {
     if (DEBUG > 3)
-	log_info("called %s with %d", __PRETTY_FUNCTION__, a);
+        log_info("called %s with %d", __PRETTY_FUNCTION__, a);
 
     log_info("Signal received. Ignoring.");
 }
@@ -268,19 +269,19 @@ void reaper(int a)
     int status;
 
     if (DEBUG > 3)
-	log_info("called %s with %d", __PRETTY_FUNCTION__, a);
+        log_info("called %s with %d", __PRETTY_FUNCTION__, a);
 
     log_info("Child died. Reaping.");
-    while((pid = waitpid(-1, &status, WNOHANG)) > 0)
+    while ((pid = waitpid(-1, &status, WNOHANG)) > 0)
         ;
     log_info("Child reaped.");
 }
 
-int addr2line(char const * const program_name, void const * const addr)
+int addr2line(char const *const program_name, void const *const addr)
 {
     char addr2line_cmd[512] = {0};
 
-    sprintf(addr2line_cmd,"addr2line -f -p -e %.256s %p", program_name, addr); 
+    sprintf(addr2line_cmd, "addr2line -f -p -e %.256s %p", program_name, addr);
     return system(addr2line_cmd);
 }
 
@@ -291,16 +292,20 @@ void exit_with_traceback(int a)
     void *buffer[100];
 
     if (DEBUG > 3)
-	log_info("called %s with %d", __PRETTY_FUNCTION__, a);
+        log_info("called %s with %d", __PRETTY_FUNCTION__, a);
 
     count = backtrace(buffer, 100);
     log_fatal("%d frames in backtrace", count);
 
     frames = backtrace_symbols(buffer, count);
-    if(!frames) {
+    if (!frames)
+    {
         log_fatal("No backtrace info available");
-    } else {
-        for( i = 0; i < count; i++ ) {
+    }
+    else
+    {
+        for (i = 0; i < count; i++)
+        {
             log_fatal("%s", frames[i]);
             /*
             if(addr2line(prog_name, frames[i]) != 0) {
@@ -314,4 +319,3 @@ void exit_with_traceback(int a)
     close_whod();
     proper_exit(MUD_REBOOT);
 }
-

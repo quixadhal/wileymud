@@ -15,54 +15,30 @@
 #include "mudlimits.h"
 #include "trap.h"
 
-const char                             *class_name[] = {
-    "mage", "cleric", "warrior", "thief", "ranger", "druid", NULL
+const char *class_name[] = {"mage", "cleric", "warrior", "thief", "ranger", "druid", NULL};
+
+const char *exp_needed_text[] = {
+    "YES!  One more bunny should just about do it!!!"                    /* < 1% left to go */
+    "Your new level should arrive aaaany second now!",                   /* 1..10% */
+    "You can almost TASTE that level!",                                  /* 10 */
+    "You think you catch a glimpse of a level just over the next hill.", /* 20 */
+    "You should be crusing now... That level will get here in no time!", /* 30 */
+    "You're halfway to the next level!  HOORAY!",                        /* > 40% */
+    "You are almost at the halfway point.",                              /* > 50% */
+    "You are making good progress, but the way is still far away.",      /* > 60% */
+    "You're finally getting somewhere, but a level is still a dream.",   /* > 70% */
+    "You've got a LONG way to go for another level.",                    /* > 80% */
+    "It seems like you'll NEVER get a level at this rate!",              /* > 90% */
+    "You think you'll die of old age before you get a level...",         /* > 100% */
 };
 
-const char                             *exp_needed_text[] = {
-    "YES!  One more bunny should just about do it!!!"	       /* < 1% left to go */
-	"Your new level should arrive aaaany second now!",     /* 1..10% */
-    "You can almost TASTE that level!",			       /* 10 */
-    "You think you catch a glimpse of a level just over the next hill.",	/* 20 */
-    "You should be crusing now... That level will get here in no time!",	/* 30 */
-    "You're halfway to the next level!  HOORAY!",	       /* > 40% */
-    "You are almost at the halfway point.",		       /* > 50% */
-    "You are making good progress, but the way is still far away.",	/* > 60% */
-    "You're finally getting somewhere, but a level is still a dream.",	/* > 70% */
-    "You've got a LONG way to go for another level.",	       /* > 80% */
-    "It seems like you'll NEVER get a level at this rate!",    /* > 90% */
-    "You think you'll die of old age before you get a level...",	/* > 100% */
-};
+const char *percent_hit[] = {"massacred", "slaughtered", "bloodied", "beaten", "wounded",  "hurt",
+                             "bruised",   "scratched",   "fine",     "fine",   "excellent"};
 
-const char                             *percent_hit[] = {
-    "massacred",
-    "slaughtered",
-    "bloodied",
-    "beaten",
-    "wounded",
-    "hurt",
-    "bruised",
-    "scratched",
-    "fine",
-    "fine",
-    "excellent"
-};
+const char *percent_tired[] = {"exhausted", "beat",   "tired",  "weary", "haggard", "fatigued",
+                               "worked",    "winded", "rested", "fresh", "fresh"};
 
-const char                             *percent_tired[] = {
-    "exhausted",
-    "beat",
-    "tired",
-    "weary",
-    "haggard",
-    "fatigued",
-    "worked",
-    "winded",
-    "rested",
-    "fresh",
-    "fresh"
-};
-
-const char                             *spell_wear_off_msg[] = {
+const char *spell_wear_off_msg[] = {
     "RESERVED DB.C",
     "You feel less protected.",
     "!Teleport!",
@@ -108,7 +84,7 @@ const char                             *spell_wear_off_msg[] = {
     "!Word of Recall!",
     "!Remove Poison!",
     "You feel less aware of your suroundings.",
-    "",							       /* NO MESSAGE FOR SNEAK */
+    "", /* NO MESSAGE FOR SNEAK */
     "!Hide!",
     "!Steal!",
     "!Backstab!",
@@ -169,7 +145,7 @@ const char                             *spell_wear_off_msg[] = {
     "You feel less righteous and not as healthy.",
 };
 
-const char                             *spell_wear_off_soon_msg[] = {
+const char *spell_wear_off_soon_msg[] = {
     "RESERVED DB.C",
     "You begin to feel less protected.",
     "!Teleport!",
@@ -215,7 +191,7 @@ const char                             *spell_wear_off_soon_msg[] = {
     "!Word of Recall!",
     "!Remove Poison!",
     "You begin to feel less aware of your suroundings.",
-    "",							       /* NO MESSAGE FOR SNEAK */
+    "", /* NO MESSAGE FOR SNEAK */
     "!Hide!",
     "!Steal!",
     "!Backstab!",
@@ -276,259 +252,131 @@ const char                             *spell_wear_off_soon_msg[] = {
     "You begin to feel less righteous and not as healthy.",
 };
 
-const int                               rev_dir[] = {
-    2,
-    3,
-    0,
-    1,
-    5,
-    4
+const int rev_dir[] = {2, 3, 0, 1, 5, 4};
+
+const int TrapDir[] = {TRAP_EFF_NORTH, TRAP_EFF_EAST, TRAP_EFF_SOUTH, TRAP_EFF_WEST, TRAP_EFF_UP, TRAP_EFF_DOWN};
+
+const int movement_loss[] = {
+    1,  /* Inside */
+    2,  /* City */
+    2,  /* Field */
+    3,  /* Forest */
+    4,  /* Hills */
+    6,  /* Mountains */
+    8,  /* Swimming */
+    10, /* Unswimable */
+    2,  /* Flying */
+    20  /* Submarine */
 };
 
-const int                               TrapDir[] = {
-    TRAP_EFF_NORTH,
-    TRAP_EFF_EAST,
-    TRAP_EFF_SOUTH,
-    TRAP_EFF_WEST,
-    TRAP_EFF_UP,
-    TRAP_EFF_DOWN
+const char *dirs[] = {"north", "east", "south", "west", "up", "down", "\n"};
+
+const char *dir_from[] = {
+    "from the north", "from the east", "from the south", "from the west", "from above", "from below", "\n"};
+
+const char *ItemDamType[] = {"burned", "frozen", "electrified", "crushed", "corroded"};
+
+const char *weekdays[7] = {"the Day of the Moon", "the Day of the Bull", "the Day of the Deception",
+                           "the Day of Thunder",  "the Day of Freedom",  "the day of the Great Gods",
+                           "the Day of the Sun"};
+
+const char *month_name[17] = {"Month of Winter", /* 0 */
+                              "Month of the Winter Wiley Wolf",
+                              "Month of the Frost Giant",
+                              "Month of the Old Forces",
+                              "Month of the Grand Struggle",
+                              "Month of the Spring",
+                              "Month of Nature",
+                              "Month of Futility",
+                              "Month of the Dragon",
+                              "Month of the Sun",
+                              "Month of the Heat",
+                              "Month of the Battle",
+                              "Month of the Dark Shades",
+                              "Month of the Shadows",
+                              "Month of the Long Shadows",
+                              "Month of the Ancient Darkness",
+                              "Month of the Great Evil"};
+
+const int sharp[] = {0, 0, 0, 1,  /* Slashing */
+                     0, 0, 0, 0,  /* Bludgeon */
+                     0, 0, 0, 0}; /* Pierce */
+
+const char *where[] = {
+    "<used as light>      ", "<worn on finger>     ", "<worn on finger>     ", "<worn around neck>   ",
+    "<worn around neck>   ", "<worn on body>       ", "<worn on head>       ", "<worn on legs>       ",
+    "<worn on feet>       ", "<worn on hands>      ", "<worn on arms>       ", "<worn as shield>     ",
+    "<worn about body>    ", "<worn about waist>   ", "<worn around wrist>  ", "<worn around wrist>  ",
+    "<wielded>            ", "<held>               ", "<wielded two-handed> ",
 };
 
-const int                               movement_loss[] = {
-    1,							       /* Inside */
-    2,							       /* City */
-    2,							       /* Field */
-    3,							       /* Forest */
-    4,							       /* Hills */
-    6,							       /* Mountains */
-    8,							       /* Swimming */
-    10,							       /* Unswimable */
-    2,							       /* Flying */
-    20							       /* Submarine */
-};
+const char *drinks[] = {"water",
+                        "beer",
+                        "wine",
+                        "ale",
+                        "dark ale",
+                        "whisky",
+                        "lemonade",
+                        "firebreather",
+                        "local speciality",
+                        "slime mold juice",
+                        "milk",
+                        "tea",
+                        "coffee",
+                        "blood",
+                        "salt water",
+                        "coca cola",
+                        "\n"};
 
-const char                             *dirs[] = {
-    "north",
-    "east",
-    "south",
-    "west",
-    "up",
-    "down",
-    "\n"
-};
+const char *drinknames[] = {"water",    "beer",         "wine",  "ale",   "ale",  "whisky",
+                            "lemonade", "firebreather", "local", "juice", "milk", "tea",
+                            "coffee",   "blood",        "salt",  "cola",  "\n"};
 
-const char                             *dir_from[] = {
-    "from the north",
-    "from the east",
-    "from the south",
-    "from the west",
-    "from above",
-    "from below",
-    "\n"
-};
-
-const char                             *ItemDamType[] = {
-    "burned",
-    "frozen",
-    "electrified",
-    "crushed",
-    "corroded"
-};
-
-const char                             *weekdays[7] = {
-    "the Day of the Moon",
-    "the Day of the Bull",
-    "the Day of the Deception",
-    "the Day of Thunder",
-    "the Day of Freedom",
-    "the day of the Great Gods",
-    "the Day of the Sun"
-};
-
-const char                             *month_name[17] = {
-    "Month of Winter",					       /* 0 */
-    "Month of the Winter Wiley Wolf",
-    "Month of the Frost Giant",
-    "Month of the Old Forces",
-    "Month of the Grand Struggle",
-    "Month of the Spring",
-    "Month of Nature",
-    "Month of Futility",
-    "Month of the Dragon",
-    "Month of the Sun",
-    "Month of the Heat",
-    "Month of the Battle",
-    "Month of the Dark Shades",
-    "Month of the Shadows",
-    "Month of the Long Shadows",
-    "Month of the Ancient Darkness",
-    "Month of the Great Evil"
-};
-
-const int                               sharp[] = {
-    0,
-    0,
-    0,
-    1,							       /* Slashing */
-    0,
-    0,
-    0,
-    0,							       /* Bludgeon */
-    0,
-    0,
-    0,
-    0
-};							       /* Pierce */
-
-const char                             *where[] = {
-    "<used as light>      ",
-    "<worn on finger>     ",
-    "<worn on finger>     ",
-    "<worn around neck>   ",
-    "<worn around neck>   ",
-    "<worn on body>       ",
-    "<worn on head>       ",
-    "<worn on legs>       ",
-    "<worn on feet>       ",
-    "<worn on hands>      ",
-    "<worn on arms>       ",
-    "<worn as shield>     ",
-    "<worn about body>    ",
-    "<worn about waist>   ",
-    "<worn around wrist>  ",
-    "<worn around wrist>  ",
-    "<wielded>            ",
-    "<held>               ",
-    "<wielded two-handed> ",
-};
-
-const char                             *drinks[] = {
-    "water",
-    "beer",
-    "wine",
-    "ale",
-    "dark ale",
-    "whisky",
-    "lemonade",
-    "firebreather",
-    "local speciality",
-    "slime mold juice",
-    "milk",
-    "tea",
-    "coffee",
-    "blood",
-    "salt water",
-    "coca cola",
-    "\n"
-};
-
-const char                             *drinknames[] = {
-    "water",
-    "beer",
-    "wine",
-    "ale",
-    "ale",
-    "whisky",
-    "lemonade",
-    "firebreather",
-    "local",
-    "juice",
-    "milk",
-    "tea",
-    "coffee",
-    "blood",
-    "salt",
-    "cola",
-    "\n"
-};
-
-const int                               RacialMax[][4] = {
+const int RacialMax[][4] = {
 
     {(LOW_IMMORTAL - 1), (LOW_IMMORTAL - 1), (LOW_IMMORTAL - 1), (LOW_IMMORTAL - 1)},
     {(LOW_IMMORTAL - 1), (LOW_IMMORTAL - 1), (LOW_IMMORTAL - 1), (LOW_IMMORTAL - 1)},
     {(LOW_IMMORTAL - 1), (LOW_IMMORTAL - 1), (LOW_IMMORTAL - 1), (LOW_IMMORTAL - 1)},
     {(LOW_IMMORTAL - 1), (LOW_IMMORTAL - 1), (LOW_IMMORTAL - 1), (LOW_IMMORTAL - 1)},
     {(LOW_IMMORTAL - 1), (LOW_IMMORTAL - 1), (LOW_IMMORTAL - 1), (LOW_IMMORTAL - 1)},
-    {(LOW_IMMORTAL - 1), (LOW_IMMORTAL - 1), (LOW_IMMORTAL - 1), (LOW_IMMORTAL - 1)}
-};
+    {(LOW_IMMORTAL - 1), (LOW_IMMORTAL - 1), (LOW_IMMORTAL - 1), (LOW_IMMORTAL - 1)}};
 
 /*  fire cold elec blow acid */
 
-const int                               ItemSaveThrows[22][5] = {
-    {15, 2, 10, 10, 10},
-    {19, 2, 16, 2, 7},
-    {11, 2, 2, 13, 9},
-    {7, 2, 2, 10, 8},
-    {6, 2, 2, 7, 13},
-    {10, 10, 10, 10, 10},				       /* not defined */
-    {10, 10, 10, 10, 10},				       /* not defined */
-    {6, 2, 2, 7, 13},					       /* treasure */
-    {6, 2, 2, 7, 13},					       /* armor */
-    {7, 6, 2, 20, 5},					       /* potion */
-    {10, 10, 10, 10, 10},				       /* not defined */
-    {10, 10, 10, 10, 10},				       /* not defined */
-    {10, 10, 10, 10, 10},				       /* not defined */
-    {10, 10, 10, 10, 10},				       /* not defined */
-    {19, 2, 2, 16, 7},
-    {7, 6, 2, 20, 5},					       /* drinkcon */
-    {6, 2, 2, 7, 13},
-    {6, 3, 2, 3, 10},
-    {6, 2, 2, 7, 13},					       /* treasure */
-    {11, 2, 2, 13, 9},
-    {7, 2, 2, 10, 8}
-};
+const int ItemSaveThrows[22][5] = {{15, 2, 10, 10, 10},  {19, 2, 16, 2, 7}, {11, 2, 2, 13, 9},
+                                   {7, 2, 2, 10, 8},     {6, 2, 2, 7, 13},  {10, 10, 10, 10, 10}, /* not defined */
+                                   {10, 10, 10, 10, 10},                                          /* not defined */
+                                   {6, 2, 2, 7, 13},                                              /* treasure */
+                                   {6, 2, 2, 7, 13},                                              /* armor */
+                                   {7, 6, 2, 20, 5},                                              /* potion */
+                                   {10, 10, 10, 10, 10},                                          /* not defined */
+                                   {10, 10, 10, 10, 10},                                          /* not defined */
+                                   {10, 10, 10, 10, 10},                                          /* not defined */
+                                   {10, 10, 10, 10, 10},                                          /* not defined */
+                                   {19, 2, 2, 16, 7},    {7, 6, 2, 20, 5},                        /* drinkcon */
+                                   {6, 2, 2, 7, 13},     {6, 3, 2, 3, 10},  {6, 2, 2, 7, 13},     /* treasure */
+                                   {11, 2, 2, 13, 9},    {7, 2, 2, 10, 8}};
 
-const int                               drink_aff[][3] = {
-    {0, 1, 10},						       /* Water */
-    {3, 2, 5},						       /* beer */
-    {5, 2, 5},						       /* wine */
-    {2, 2, 5},						       /* ale */
-    {1, 2, 5},						       /* ale */
-    {6, 1, 4},						       /* Whiskey */
-    {0, 1, 8},						       /* lemonade */
-    {10, 0, 0},						       /* firebr */
-    {3, 3, 3},						       /* local */
-    {0, 4, -8},						       /* juice */
-    {0, 3, 6},
-    {0, 1, 6},
-    {0, 1, 6},
-    {0, 2, -1},
-    {0, 1, -2},
-    {0, 1, 5},
-    {0, 0, 0}
-};
+const int drink_aff[][3] = {{0, 1, 10}, /* Water */
+                            {3, 2, 5},  /* beer */
+                            {5, 2, 5},  /* wine */
+                            {2, 2, 5},  /* ale */
+                            {1, 2, 5},  /* ale */
+                            {6, 1, 4},  /* Whiskey */
+                            {0, 1, 8},  /* lemonade */
+                            {10, 0, 0}, /* firebr */
+                            {3, 3, 3},  /* local */
+                            {0, 4, -8}, /* juice */
+                            {0, 3, 6},  {0, 1, 6}, {0, 1, 6}, {0, 2, -1}, {0, 1, -2}, {0, 1, 5}, {0, 0, 0}};
 
-const char                             *color_liquid[] = {
-    "clear",
-    "brown",
-    "clear",
-    "brown",
-    "dark",
-    "golden",
-    "red",
-    "green",
-    "clear",
-    "light green",
-    "white",
-    "brown",
-    "black",
-    "red",
-    "clear",
-    "black",
-    "\n"
-};
+const char *color_liquid[] = {"clear",       "brown", "clear", "brown", "dark", "golden", "red",   "green", "clear",
+                              "light green", "white", "brown", "black", "red",  "clear",  "black", "\n"};
 
-const char                             *fullness[] = {
-    "less than half ",
-    "about half ",
-    "more than half ",
-    ""
-};
+const char *fullness[] = {"less than half ", "about half ", "more than half ", ""};
 
-const struct title_type                 titles[6][ABS_MAX_LVL + 1] = {
-    {
-     {"Man", "Woman", 0},
-     {"Supplicant", "Supplicant", 1},			       /* 1 */
+const struct title_type titles[6][ABS_MAX_LVL + 1] = {
+    {{"Man", "Woman", 0},
+     {"Supplicant", "Supplicant", 1}, /* 1 */
      {"Apprentice", "Apprentice", 2500},
      {"Student", "Student", 5000},
      {"Scholar", "Scholar", 10000},
@@ -537,7 +385,7 @@ const struct title_type                 titles[6][ABS_MAX_LVL + 1] = {
      {"Illusionist", "Illusionist", 60000},
      {"Cabalist", "Cabalist", 90000},
      {"Apparitionist", "Apparitionist", 135000},
-     {"Medium", "Gypsy", 250000},			       /* 10 */
+     {"Medium", "Gypsy", 250000}, /* 10 */
      {"Sage", "Sage", 375000},
      {"Diviner", "Diviner", 625000},
      {"Alchemist", "Alchemist", 875000},
@@ -547,7 +395,7 @@ const struct title_type                 titles[6][ABS_MAX_LVL + 1] = {
      {"Enchanter", "Enchantress", 2375000},
      {"Conjurer", "Conjuress", 2750000},
      {"Summoner", "Summoner", 3125000},
-     {"Spiritualist", "Spiritualist", 3525000},		       /* 20 */
+     {"Spiritualist", "Spiritualist", 3525000}, /* 20 */
      {"Shaman", "Shamaness", 3925000},
      {"Magician", "Magician", 4325000},
      {"Mystic", "Mystic", 4725000},
@@ -557,7 +405,7 @@ const struct title_type                 titles[6][ABS_MAX_LVL + 1] = {
      {"Thaumaturgist", "Thaumaturgist", 6500000},
      {"Dispeller", "Dispeller", 7000000},
      {"Occultist", "Occultist", 7500000},
-     {"Apprentice of the Tower", "Apprentice of the Tower", 8000000},	/* 30 */
+     {"Apprentice of the Tower", "Apprentice of the Tower", 8000000}, /* 30 */
      {"Servant of the Tower", "Servant of the Tower", 8500000},
      {"Student of the Tower", "Student of the Tower", 9000000},
      {"Guardian of the Tower", "Guardian of the Tower", 9500000},
@@ -567,7 +415,7 @@ const struct title_type                 titles[6][ABS_MAX_LVL + 1] = {
      {"Master Spellmaster", "Master Spellmistress", 12250000},
      {"Master Enchanter", "Master Enchantress", 13000000},
      {"Master Spiritualist", "Master Spiritualist", 13750000},
-     {"Master of the Tower", "Mistress of the Tower", 14500000},	/* 40 */
+     {"Master of the Tower", "Mistress of the Tower", 14500000}, /* 40 */
      {"Master of the Occult", "Mistress of the Occult", 15500000},
      {"Lord Necromancer", "Lady Necromancer", 16500000},
      {"Master of Energies", "Mistress of Energies", 17500000},
@@ -577,7 +425,7 @@ const struct title_type                 titles[6][ABS_MAX_LVL + 1] = {
      {"High Lord of the Mists", "High Lady of the Mists", 21000000},
      {"Arch Lord of the Mists", "Arch Lady of the Mists", 22000000},
      {"Magi", "Majestrix", 23000000},
-     {"Arch Magi", "Arch Majestrix", 25000000},		       /* 50 */
+     {"Arch Magi", "Arch Majestrix", 25000000}, /* 50 */
      {"Immortal Warlock", "Immortal Enchantress", 27000000},
      {"Immortal Warlock", "Immortal Enchantress", 29000000},
      {"Immortal Warlock", "Immortal Enchantress", 31000000},
@@ -587,12 +435,10 @@ const struct title_type                 titles[6][ABS_MAX_LVL + 1] = {
      {"Avatar of Magic", "Avatar of Magic", 45000000},
      {"Source of Magic", "Source of Magic", 50000000},
      {"Demigod", "Demigoddess", 60000000},
-     {"God", "Goddess", 75000000},			       /* 60 */
-     {"Bug", "Bug", 75000001}
-     },
+     {"God", "Goddess", 75000000}, /* 60 */
+     {"Bug", "Bug", 75000001}},
 
-    {
-     {"Man", "Woman", 0},
+    {{"Man", "Woman", 0},
      {"Believer", "Believer", 1},
      {"Attendant", "Attendant", 1500},
      {"Acolyte", "Acolyte", 3000},
@@ -653,11 +499,9 @@ const struct title_type                 titles[6][ABS_MAX_LVL + 1] = {
      {"Source of Faith", "Source of Faith", 50000000},
      {"Demigod", "Demigoddess", 60000000},
      {"God", "Goddess", 75000000},
-     {"Bug", "Bug", 75000001}
-     },
+     {"Bug", "Bug", 75000001}},
 
-    {
-     {"Man", "Woman", 0},
+    {{"Man", "Woman", 0},
      {"Swordpupil", "Swordpupil", 1},
      {"Recruit", "Recruit", 2000},
      {"Sentry", "Sentress", 4000},
@@ -718,11 +562,9 @@ const struct title_type                 titles[6][ABS_MAX_LVL + 1] = {
      {"Source of Strength", "Source of Strength", 50000000},
      {"Demigod", "Demigoddess", 60000000},
      {"God", "Goddess", 75000000},
-     {"Bug", "Bug", 75000001}
-     },
+     {"Bug", "Bug", 75000001}},
 
-    {
-     {"Man", " Woman", 0},
+    {{"Man", " Woman", 0},
      {"Pilferer", "Pilferess", 1},
      {"Footpad", "Footpad", 1250},
      {"Filcher", "Filcheress", 2500},
@@ -783,13 +625,11 @@ const struct title_type                 titles[6][ABS_MAX_LVL + 1] = {
      {"Source of Deceit", "Source of Deceit", 50000000},
      {"Demigod", "Demigoddess", 60000000},
      {"God", "Goddess", 75000000},
-     {"Bug", "Bug", 75000001}
-     },
+     {"Bug", "Bug", 75000001}},
 
-/* Ranger */
+    /* Ranger */
 
-    {
-     {"Man", "Woman", 0},
+    {{"Man", "Woman", 0},
      {"Runner", "Runneress", 1},
      {"Stryder", "Strydess", 2000},
      {"Scout", "Scoutess", 4000},
@@ -799,7 +639,7 @@ const struct title_type                 titles[6][ABS_MAX_LVL + 1] = {
      {"Pathfinder", "Pathfinder", 75000},
      {"Ranger", "Rangeress", 100000},
      {"Greater Ranger", "Greater Rangeress", 125000},
-     {"Woodland Squire", "Woodland Squire", 300000},	       /* 10 level */
+     {"Woodland Squire", "Woodland Squire", 300000}, /* 10 level */
      {"Apprentice Druid", "Apprentice Druid", 650000},
      {"Protector of the Woods", "Protector of the Woods", 1000000},
      {"Keeper of the Woods", "Keeper of the Woods", 1250000},
@@ -809,27 +649,27 @@ const struct title_type                 titles[6][ABS_MAX_LVL + 1] = {
      {"Knight of Shylar", "Knight of Shylar", 2250000},
      {"Knight of Highstaff", "Knight of Highstaff", 2500000},
      {"Knight of the Reach", "Knight of the Reach", 2750000},
-     {"Knight of Wiley", "Knight of Wiley", 3000000},	       /* 20 level */
+     {"Knight of Wiley", "Knight of Wiley", 3000000}, /* 20 level */
      {"Common Lord", "Common Lady", 3250000},
      {"Common Lord", "Common Lady", 3500000},
      {"Common Lord", "Common Lady", 4000000},
      {"Common Lord", "Common Lady", 4500000},
-     {"Lord of the Land", "Lady of the Land", 5000000},	       /* 25 level */
+     {"Lord of the Land", "Lady of the Land", 5000000}, /* 25 level */
      {"Lord of the Land", "Lady of the Land", 5500000},
      {"Lord of the Land", "Lady of the Land", 6000000},
      {"Lord of the Land", "Lady of the Land", 6500000},
      {"Lord of the Land", "Lady of the Land", 7000000},
-     {"Baron of the Land", "Baroness of the Land", 7500000},   /* 30 level */
+     {"Baron of the Land", "Baroness of the Land", 7500000}, /* 30 level */
      {"Baron of the Land", "Baroness of the Land", 8000000},
      {"Baron of the Land", "Baroness of the Land", 8500000},
      {"Baron of the Land", "Baroness of the Land", 9000000},
      {"Baron of the Land", "Baroness of the Land", 9500000},
-     {"Leader of Men", "Leader of Men", 10000000},	       /* 35 level */
+     {"Leader of Men", "Leader of Men", 10000000}, /* 35 level */
      {"Leader of Men", "Leader of Men", 11000000},
      {"Leader of Men", "Leader of Men", 12000000},
      {"Leader of Men", "Leader of Men", 13000000},
      {"Leader of Men", "Leader of Men", 14000000},
-     {"City Ruler", "City Ruler", 15000000},		       /* 40 level */
+     {"City Ruler", "City Ruler", 15000000}, /* 40 level */
      {"City Ruler", "City Ruler", 16000000},
      {"City Ruler", "City Ruler", 17000000},
      {"City Ruler", "City Ruler", 18000000},
@@ -850,13 +690,11 @@ const struct title_type                 titles[6][ABS_MAX_LVL + 1] = {
      {"Source of Hunting", "Source of Hunting", 50000000},
      {"Demigod", "Demigoddess", 60000000},
      {"God", "Goddess", 75000000},
-     {"Bug", "Bug", 75000001}
-     },
+     {"Bug", "Bug", 75000001}},
 
-/* Druids */
+    /* Druids */
 
-    {
-     {"Man", "Woman", 0},
+    {{"Man", "Woman", 0},
      {"Believer", "Believer", 1},
      {"Attendant", "Attendant", 1500},
      {"Acolyte", "Acolyte", 3000},
@@ -917,649 +755,263 @@ const struct title_type                 titles[6][ABS_MAX_LVL + 1] = {
      {"Source of Nature", "Source of Nature", 50000000},
      {"Demigod", "Demigoddess", 60000000},
      {"God", "Goddess", 75000000},
-     {"Bug", "Bug", 75000001}
-     },
+     {"Bug", "Bug", 75000001}},
 };
 
-const char                             *RaceName[] = {
-    "Half-Breed",
-    "Human",
-    "Elven",
-    "Dwarven",
-    "Halfling",
-    "Gnome",
+const char *RaceName[] = {"Half-Breed", "Human", "Elven", "Dwarven", "Halfling", "Gnome",
 
-/* player races above */
+                          /* player races above */
 
-    "Reptilian",
-    "Mysterion",
-    "Were",
-    "Dragon",
-    "Undead",
-    "Orcan",
-    "Insectoid",
-    "Arachnoid",
-    "Dinosaur",
-    "Icthyiod",
-    "Avian",
-    "Giant",
-    "Carnivorous",
-    "Parasitic",
-    "Slime",
-    "Demon",
-    "Snake",
-    "Herbivorous",
-    "Tree",
-    "Vegan",
-    "Elemental",
-    "Planar",
-    "Devil",
-    "Ghostly",
-    "Goblin",
-    "Troll",
-    "Vegan",
-    "Ilythid",
-    "Primate",
-    "Animal",
-    "Faery",
-    "Plant",
-    "\n"
-};
+                          "Reptilian", "Mysterion", "Were", "Dragon", "Undead", "Orcan", "Insectoid", "Arachnoid",
+                          "Dinosaur", "Icthyiod", "Avian", "Giant", "Carnivorous", "Parasitic", "Slime", "Demon",
+                          "Snake", "Herbivorous", "Tree", "Vegan", "Elemental", "Planar", "Devil", "Ghostly", "Goblin",
+                          "Troll", "Vegan", "Ilythid", "Primate", "Animal", "Faery", "Plant", "\n"};
 
-const char                             *item_types[] = {
-    "UNDEFINED",
-    "LIGHT",
-    "SCROLL",
-    "WAND",
-    "STAFF",
-    "WEAPON",
-    "FIRE WEAPON",
-    "MISSILE",
-    "TREASURE",
-    "ARMOR",
-    "POTION",
-    "WORN",
-    "OTHER",
-    "TRASH",
-    "TRAP",
-    "CONTAINER",
-    "NOTE",
-    "LIQUID CONTAINER",
-    "KEY",
-    "FOOD",
-    "MONEY",
-    "PEN",
-    "BOAT",
-    "AUDIO",
-    "BOW",
-    "\n"
-};
+const char *item_types[] = {
+    "UNDEFINED", "LIGHT",  "SCROLL", "WAND",  "STAFF", "WEAPON", "FIRE WEAPON", "MISSILE", "TREASURE",
+    "ARMOR",     "POTION", "WORN",   "OTHER", "TRASH", "TRAP",   "CONTAINER",   "NOTE",    "LIQUID CONTAINER",
+    "KEY",       "FOOD",   "MONEY",  "PEN",   "BOAT",  "AUDIO",  "BOW",         "\n"};
 
-const char                             *wear_bits[] = {
-    "TAKE",
-    "FINGER",
-    "NECK",
-    "BODY",
-    "HEAD",
-    "LEGS",
-    "FEET",
-    "HANDS",
-    "ARMS",
-    "SHIELD",
-    "ABOUT",
-    "WAIST",
-    "WRIST",
-    "WIELD",
-    "HOLD",
-    "WIELD-2H",
-    "LIGHT-SOURCE",
-    "\n"
-};
+const char *wear_bits[] = {"TAKE",   "FINGER", "NECK",  "BODY",  "HEAD",  "LEGS", "FEET",     "HANDS",        "ARMS",
+                           "SHIELD", "ABOUT",  "WAIST", "WRIST", "WIELD", "HOLD", "WIELD-2H", "LIGHT-SOURCE", "\n"};
 
-const char                             *extra_bits[] = {
-    "GLOW",
-    "HUM",
-    "METAL",
-    "MINERAL",
-    "ORGANIC",
-    "INVISIBLE",
-    "MAGIC",
-    "NODROP",
-    "BLESS",
-    "ANTI-GOOD",
-    "ANTI-EVIL",
-    "ANTI-NEUTRAL",
-    "ANTI-CLERIC",
-    "ANTI-MAGE",
-    "ANTI-THIEF",
-    "ANTI-WARRIOR",
-    "ANTI-RANGER",
-    "PARISH",
-    "\n"
-};
+const char *extra_bits[] = {"GLOW",         "HUM",          "METAL",       "MINERAL",   "ORGANIC",
+                            "INVISIBLE",    "MAGIC",        "NODROP",      "BLESS",     "ANTI-GOOD",
+                            "ANTI-EVIL",    "ANTI-NEUTRAL", "ANTI-CLERIC", "ANTI-MAGE", "ANTI-THIEF",
+                            "ANTI-WARRIOR", "ANTI-RANGER",  "PARISH",      "\n"};
 
-const char                             *room_bits[] = {
-    "DARK",
-    "DEATH",
-    "NO_MOB",
-    "INDOORS",
-    "PEACEFUL",
-    "NOSTEAL",
-    "NO_SUM",
-    "NO_MAGIC",
-    "TUNNEL",
-    "PRIVATE",
-    "SOUND",
-    "\n"
-};
+const char *room_bits[] = {"DARK",   "DEATH",    "NO_MOB", "INDOORS", "PEACEFUL", "NOSTEAL",
+                           "NO_SUM", "NO_MAGIC", "TUNNEL", "PRIVATE", "SOUND",    "\n"};
 
-const char                             *exit_bits[] = {
-    "IS-DOOR",
-    "CLOSED",
-    "LOCKED",
-    "SECRET",
-    "TRAPPED",
-    "PICK-PROOF",
-    "ALIASED",
-    "\n"
-};
+const char *exit_bits[] = {"IS-DOOR", "CLOSED", "LOCKED", "SECRET", "TRAPPED", "PICK-PROOF", "ALIASED", "\n"};
 
-const char                             *sector_types[] = {
-    "Inside",
-    "City",
-    "Field",
-    "Forest",
-    "Hills",
-    "Mountains",
-    "Water Swim",
-    "Water NoSwim",
-    "Air",
-    "Underwater",
-    "\n"
-};
+const char *sector_types[] = {"Inside",     "City",         "Field", "Forest",     "Hills", "Mountains",
+                              "Water Swim", "Water NoSwim", "Air",   "Underwater", "\n"};
 
-const char                             *equipment_types[] = {
-    "Special",
-    "Worn on right finger",
-    "Worn on left finger",
-    "First worn around Neck",
-    "Second worn around Neck",
-    "Worn on body",
-    "Worn on head",
-    "Worn on legs",
-    "Worn on feet",
-    "Worn on hands",
-    "Worn on arms",
-    "Worn as shield",
-    "Worn about body",
-    "Worn around waist",
-    "Worn around right wrist",
-    "Worn around left wrist",
-    "Wielded",
-    "Held",
-    "Wielded Two Handed",
-    "\n"
-};
+const char *equipment_types[] = {"Special",
+                                 "Worn on right finger",
+                                 "Worn on left finger",
+                                 "First worn around Neck",
+                                 "Second worn around Neck",
+                                 "Worn on body",
+                                 "Worn on head",
+                                 "Worn on legs",
+                                 "Worn on feet",
+                                 "Worn on hands",
+                                 "Worn on arms",
+                                 "Worn as shield",
+                                 "Worn about body",
+                                 "Worn around waist",
+                                 "Worn around right wrist",
+                                 "Worn around left wrist",
+                                 "Wielded",
+                                 "Held",
+                                 "Wielded Two Handed",
+                                 "\n"};
 
-const char                             *affected_bits[] = { "BLIND",
-    "INVISIBLE",
-    "DETECT-EVIL",
-    "DETECT-INVISIBLE",
-    "DETECT-MAGIC",
-    "SENCE-LIFE",
-    "SILENCED",
-    "SANCTUARY",
-    "GROUP",
-    "UNUSED",
-    "CURSE",
-    "FLYING",
-    "POISON",
-    "PROTECT-EVIL",
-    "PARALYSIS",
-    "INFRAVISION",
-    "WATER-BREATH",
-    "SLEEP",
-    "DODGE",
-    "SNEAK",
-    "HIDE",
-    "FEAR",
-    "CHARM",
-    "FOLLOW",
-    "SAVED_OBJECTS",
-    "TRUE-SIGHT",
-    "SCRYING",
-    "FIRESHIELD",
-    "U-5",
-    "U-6",
-    "U-7",
-    "U-8",
-    "\n"
-};
+const char *affected_bits[] = {"BLIND",
+                               "INVISIBLE",
+                               "DETECT-EVIL",
+                               "DETECT-INVISIBLE",
+                               "DETECT-MAGIC",
+                               "SENCE-LIFE",
+                               "SILENCED",
+                               "SANCTUARY",
+                               "GROUP",
+                               "UNUSED",
+                               "CURSE",
+                               "FLYING",
+                               "POISON",
+                               "PROTECT-EVIL",
+                               "PARALYSIS",
+                               "INFRAVISION",
+                               "WATER-BREATH",
+                               "SLEEP",
+                               "DODGE",
+                               "SNEAK",
+                               "HIDE",
+                               "FEAR",
+                               "CHARM",
+                               "FOLLOW",
+                               "SAVED_OBJECTS",
+                               "TRUE-SIGHT",
+                               "SCRYING",
+                               "FIRESHIELD",
+                               "U-5",
+                               "U-6",
+                               "U-7",
+                               "U-8",
+                               "\n"};
 
-const char                             *immunity_names[] = { "FIRE",
-    "COLD",
-    "ELECTRICITY",
-    "ENERGY",
-    "BLUNT",
-    "PIERCE",
-    "SLASH",
-    "ACID",
-    "POISON",
-    "DRAIN",
-    "SLEEP",
-    "CHARM",
-    "HOLD",
-    "\n"
-};
+const char *immunity_names[] = {"FIRE", "COLD",   "ELECTRICITY", "ENERGY", "BLUNT", "PIERCE", "SLASH",
+                                "ACID", "POISON", "DRAIN",       "SLEEP",  "CHARM", "HOLD",   "\n"};
 
-const char                             *apply_types[] = {
-    "NONE",
-    "STR",
-    "DEX",
-    "INT",
-    "WIS",
-    "CON",
-    "SEX",
-    "CLASS",
-    "LEVEL",
-    "AGE",
-    "CHAR_WEIGHT",
-    "CHAR_HEIGHT",
-    "MANA",
-    "HIT",
-    "MOVE",
-    "GOLD",
-    "EXP",
-    "ARMOR",
-    "HITROLL",
-    "DAMROLL",
-    "SAVING_PARA",
-    "SAVING_ROD",
-    "SAVING_PETRI",
-    "SAVING_BREATH",
-    "SAVING_SPELL",
-    "SAVING_ALL",
-    "RESISTANCE",
-    "SUSCEPTIBILITY",
-    "IMMUNITY",
-    "SPELL AFFECT",
-    "WEAPON SPELL",
-    "EAT SPELL",
-    "BACKSTAB",
-    "KICK",
-    "SNEAK",
-    "HIDE",
-    "BASH",
-    "PICK",
-    "STEAL",
-    "TRACK",
-    "HIT-N-DAM",
-    "\n"
-};
+const char *apply_types[] = {
+    "NONE",       "STR",          "DEX",           "INT",          "WIS",         "CON",        "SEX",
+    "CLASS",      "LEVEL",        "AGE",           "CHAR_WEIGHT",  "CHAR_HEIGHT", "MANA",       "HIT",
+    "MOVE",       "GOLD",         "EXP",           "ARMOR",        "HITROLL",     "DAMROLL",    "SAVING_PARA",
+    "SAVING_ROD", "SAVING_PETRI", "SAVING_BREATH", "SAVING_SPELL", "SAVING_ALL",  "RESISTANCE", "SUSCEPTIBILITY",
+    "IMMUNITY",   "SPELL AFFECT", "WEAPON SPELL",  "EAT SPELL",    "BACKSTAB",    "KICK",       "SNEAK",
+    "HIDE",       "BASH",         "PICK",          "STEAL",        "TRACK",       "HIT-N-DAM",  "\n"};
 
-const char                             *pc_class_types[] = {
-    "Magic User",
-    "Cleric",
-    "Warrior",
-    "Thief",
-    "Ranger",
-    "Druid",
-    "\n"
-};
+const char *pc_class_types[] = {"Magic User", "Cleric", "Warrior", "Thief", "Ranger", "Druid", "\n"};
 
-const char                             *npc_class_types[] = {
-    "Normal",
-    "Undead",
-    "\n"
-};
+const char *npc_class_types[] = {"Normal", "Undead", "\n"};
 
-const char                             *action_bits[] = {
-    "SPEC",
-    "SENTINEL",
-    "SCAVENGER",
-    "ISNPC",
-    "NICE-THIEF",
-    "AGGRESSIVE",
-    "STAY-ZONE",
-    "WIMPY",
-    "ANNOYING",
-    "HATEFUL",
-    "AFRAID",
-    "IMMORTAL",
-    "HUNTING",
-    "DEADLY",
-    "POLY-SELF" "POLY-OTTHER" "GUARDIAN",
-    "USE-ITEM",
-    "FIGHTER-MOVES",
-    "PROVIDE-FOOD",
-    "PROTECTOR",
-    "MOUNT",
-    "\n"
-};
+const char *action_bits[] = {"SPEC",
+                             "SENTINEL",
+                             "SCAVENGER",
+                             "ISNPC",
+                             "NICE-THIEF",
+                             "AGGRESSIVE",
+                             "STAY-ZONE",
+                             "WIMPY",
+                             "ANNOYING",
+                             "HATEFUL",
+                             "AFRAID",
+                             "IMMORTAL",
+                             "HUNTING",
+                             "DEADLY",
+                             "POLY-SELF"
+                             "POLY-OTTHER"
+                             "GUARDIAN",
+                             "USE-ITEM",
+                             "FIGHTER-MOVES",
+                             "PROVIDE-FOOD",
+                             "PROTECTOR",
+                             "MOUNT",
+                             "\n"};
 
-const char                             *player_bits[] = {
-    "BRIEF",
-    "DONTSET",
-    "COMPACT",
-    "DONTSET",
-    "WIMPY",
-    "NOHASSLE",
-    "STEALTH",
-    "HUNTING",
-    "HERMIT",
-    "ECHO",
-    "",
-    "",
-    "",
-    "",
-    "NO-SHOUT",
-    "PAGER",
-    "LOGS",
-    "\n"
-};
+const char *player_bits[] = {"BRIEF",   "DONTSET", "COMPACT",  "DONTSET", "WIMPY", "NOHASSLE",
+                             "STEALTH", "HUNTING", "HERMIT",   "ECHO",    "",      "",
+                             "",        "",        "NO-SHOUT", "PAGER",   "LOGS",  "\n"};
 
-const char                             *position_types[] = {
-    "Dead",
-    "Mortally wounded",
-    "Incapacitated",
-    "Stunned",
-    "Sleeping",
-    "Resting",
-    "Sitting",
-    "Fighting",
-    "Standing",
-    "Mounted",
-    "\n"
-};
+const char *position_types[] = {"Dead",    "Mortally wounded", "Incapacitated", "Stunned", "Sleeping", "Resting",
+                                "Sitting", "Fighting",         "Standing",      "Mounted", "\n"};
 
-const char                             *connected_types[] = {
-    "Playing",
-    "Get name",
-    "Confirm name",
-    "Read Password",
-    "Get new password",
-    "Confirm new password",
-    "Get sex",
-    "Read messages of today",
-    "Read Menu",
-    "Get extra description",
-    "Get class",
-    "Dead",
-    "New Password",
-    "New Password Confirm",
-    "",
-    "Get Race",
-    "",
-    "\n"
-};
+const char *connected_types[] = {"Playing",
+                                 "Get name",
+                                 "Confirm name",
+                                 "Read Password",
+                                 "Get new password",
+                                 "Confirm new password",
+                                 "Get sex",
+                                 "Read messages of today",
+                                 "Read Menu",
+                                 "Get extra description",
+                                 "Get class",
+                                 "Dead",
+                                 "New Password",
+                                 "New Password Confirm",
+                                 "",
+                                 "Get Race",
+                                 "",
+                                 "\n"};
 
 /* [class], [level] (all) */
-const int                               thaco[6][ABS_MAX_LVL] = {
-    {100, 20, 20, 20, 19, 19, 19, 18, 18, 18, 17, 17, 17, 16, 16, 16, 15, 15, 15, 14, 14, 14,
-     13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13,
-     13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 12, 12, 12, 12, 12, 12},
-    {100, 20, 20, 20, 18, 18, 18, 16, 16, 16, 14, 14, 14, 12, 12, 12, 10, 10, 10, 8, 8, 8, 6, 6,
-     6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6,
-     6, 6, 6, 6, 6, 6, 6},
-    {100, 20, 20, 19, 19, 18, 18, 17, 17, 16, 16, 15, 15, 14, 13, 13, 12, 12, 11, 11, 10, 10, 9,
-     9, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8,
-     8, 8, 8, 8, 8, 8, 8, 8},
-    {100, 20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 1, 1, 1, 1, 1,
-     1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-     1, 1, 1, 1, 1},
-    {100, 20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 1, 1, 1, 1, 1,
-     1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-     1, 1, 1, 1, 1},
-    {100, 20, 20, 20, 18, 18, 18, 16, 16, 16, 14, 14, 14, 12, 12, 12, 10, 10, 10, 8, 8, 8, 6, 6,
-     6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6,
-     6, 6, 6, 6, 6, 6, 6}
-};
+const int thaco[6][ABS_MAX_LVL] = {
+    {100, 20, 20, 20, 19, 19, 19, 18, 18, 18, 17, 17, 17, 16, 16, 16, 15, 15, 15, 14, 14,
+     14,  13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13,
+     13,  13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 12, 12, 12, 12, 12, 12},
+    {100, 20, 20, 20, 18, 18, 18, 16, 16, 16, 14, 14, 14, 12, 12, 12, 10, 10, 10, 8, 8, 8, 6, 6, 6, 6, 6, 6, 6, 6, 6,
+     6,   6,  6,  6,  6,  6,  6,  6,  6,  6,  6,  6,  6,  6,  6,  6,  6,  6,  6,  6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6},
+    {100, 20, 20, 19, 19, 18, 18, 17, 17, 16, 16, 15, 15, 14, 13, 13, 12, 12, 11, 11, 10, 10, 9, 9, 8, 8, 8, 8, 8, 8, 8,
+     8,   8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8, 8, 8, 8, 8, 8, 8, 8},
+    {100, 20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+     1,   1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+    {100, 20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+     1,   1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+    {100, 20, 20, 20, 18, 18, 18, 16, 16, 16, 14, 14, 14, 12, 12, 12, 10, 10, 10, 8, 8, 8, 6, 6, 6, 6, 6, 6, 6, 6, 6,
+     6,   6,  6,  6,  6,  6,  6,  6,  6,  6,  6,  6,  6,  6,  6,  6,  6,  6,  6,  6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6}};
 
 /* [ch] strength apply (all) */
-const struct str_app_type               str_app[31] = {
-    {-5, -4, 1, 0},					       /* 0 */
-    {-5, -4, 15, 1},					       /* 1 */
-    {-3, -2, 20, 2},
-    {-3, -1, 30, 3},					       /* 3 */
-    {-2, -1, 40, 4},
-    {-2, -1, 50, 5},					       /* 5 */
-    {-1, 0, 55, 6},
-    {-1, 0, 55, 7},
-    {0, 0, 60, 8},
-    {0, 0, 60, 9},
-    {0, 0, 65, 10},					       /* 10 */
-    {0, 0, 65, 11},
-    {0, 0, 70, 12},
-    {0, 0, 75, 13},
-    {0, 0, 85, 14},
-    {0, 0, 85, 15},					       /* 15 */
-    {0, 1, 100, 16},
-    {1, 1, 115, 18},
-    {1, 2, 140, 20},					       /* 18 */
-    {3, 7, 485, 40},
-    {3, 8, 700, 40},					       /* 20 */
-    {4, 9, 810, 40},
-    {4, 10, 970, 40},
-    {5, 11, 1130, 40},
-    {6, 12, 1440, 40},
-    {7, 14, 1750, 40},					       /* 25 */
-    {1, 3, 165, 22},					       /* 18/01-50 */
-    {2, 3, 190, 24},					       /* 18/51-75 */
-    {2, 4, 215, 26},					       /* 18/76-90 */
-    {2, 5, 265, 28},					       /* 18/91-99 */
-    {3, 6, 365, 30}					       /* 18/100 (30) */
+const struct str_app_type str_app[31] = {
+    {-5, -4, 1, 0},                                                                             /* 0 */
+    {-5, -4, 15, 1},                                                                            /* 1 */
+    {-3, -2, 20, 2}, {-3, -1, 30, 3},                                                           /* 3 */
+    {-2, -1, 40, 4}, {-2, -1, 50, 5},                                                           /* 5 */
+    {-1, 0, 55, 6},  {-1, 0, 55, 7},   {0, 0, 60, 8},     {0, 0, 60, 9},     {0, 0, 65, 10},    /* 10 */
+    {0, 0, 65, 11},  {0, 0, 70, 12},   {0, 0, 75, 13},    {0, 0, 85, 14},    {0, 0, 85, 15},    /* 15 */
+    {0, 1, 100, 16}, {1, 1, 115, 18},  {1, 2, 140, 20},                                         /* 18 */
+    {3, 7, 485, 40}, {3, 8, 700, 40},                                                           /* 20 */
+    {4, 9, 810, 40}, {4, 10, 970, 40}, {5, 11, 1130, 40}, {6, 12, 1440, 40}, {7, 14, 1750, 40}, /* 25 */
+    {1, 3, 165, 22},                                                                            /* 18/01-50 */
+    {2, 3, 190, 24},                                                                            /* 18/51-75 */
+    {2, 4, 215, 26},                                                                            /* 18/76-90 */
+    {2, 5, 265, 28},                                                                            /* 18/91-99 */
+    {3, 6, 365, 30}                                                                             /* 18/100 (30) */
 };
 
 /* [dex] skillapply (thieves only) */
-const struct dex_skill_type             dex_app_skill[26] = {
-    {-99, -99, -90, -99, -60},				       /* 0 */
-    {-90, -90, -60, -90, -50},				       /* 1 */
-    {-80, -80, -40, -80, -45},
-    {-70, -70, -30, -70, -40},
-    {-60, -60, -30, -60, -35},
-    {-50, -50, -20, -50, -30},				       /* 5 */
-    {-40, -40, -20, -40, -25},
-    {-30, -30, -15, -30, -20},
-    {-20, -20, -15, -20, -15},
-    {-15, -10, -10, -20, -10},
-    {-10, -5, -10, -15, -5},				       /* 10 */
-    {-5, 0, -5, -10, 0},
-    {0, 0, 0, -5, 0},
-    {0, 0, 0, 0, 0},
-    {0, 0, 0, 0, 0},
-    {0, 0, 0, 0, 0},					       /* 15 */
-    {0, 5, 0, 0, 0},
-    {5, 10, 0, 5, 5},
-    {10, 15, 5, 10, 10},
-    {15, 20, 10, 15, 15},
-    {15, 20, 10, 15, 15},				       /* 20 */
-    {20, 25, 10, 15, 20},
-    {20, 25, 15, 20, 20},
-    {25, 25, 15, 20, 20},
-    {25, 30, 15, 25, 25},
-    {25, 30, 15, 25, 25}				       /* 25 */
+const struct dex_skill_type dex_app_skill[26] = {
+    {-99, -99, -90, -99, -60},                                                                                  /* 0 */
+    {-90, -90, -60, -90, -50},                                                                                  /* 1 */
+    {-80, -80, -40, -80, -45}, {-70, -70, -30, -70, -40}, {-60, -60, -30, -60, -35}, {-50, -50, -20, -50, -30}, /* 5 */
+    {-40, -40, -20, -40, -25}, {-30, -30, -15, -30, -20}, {-20, -20, -15, -20, -15}, {-15, -10, -10, -20, -10},
+    {-10, -5, -10, -15, -5}, /* 10 */
+    {-5, 0, -5, -10, 0},       {0, 0, 0, -5, 0},          {0, 0, 0, 0, 0},           {0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0}, /* 15 */
+    {0, 5, 0, 0, 0},           {5, 10, 0, 5, 5},          {10, 15, 5, 10, 10},       {15, 20, 10, 15, 15},
+    {15, 20, 10, 15, 15}, /* 20 */
+    {20, 25, 10, 15, 20},      {20, 25, 15, 20, 20},      {25, 25, 15, 20, 20},      {25, 30, 15, 25, 25},
+    {25, 30, 15, 25, 25} /* 25 */
 };
 
 /* [level] backstab multiplyer (thieves only) */
-const char                              backstab_mult[ABS_MAX_LVL] = {
-    1,							       /* 0 */
-    1,							       /* 1 */
-    1,
-    1,
-    1,
-    1,							       /* 5 */
-    2,
-    2,
-    2,
-    2,
-    2,							       /* 10 */
-    2,
-    2,
-    2,
-    2,
-    3,							       /* 15 */
-    3,
-    3,
-    3,
-    3,
-    3,							       /* 20 */
-    3,
-    3,
-    4,
-    4,							       /* 25 */
-    4,
-    4,
-    4,
-    4,
-    4,							       /* 30 */
-    4,
-    4,
-    4,
-    5,
-    5,							       /* 35 */
-    5,
-    5,
-    5,
-    5,
-    5,							       /* 40 */
-    5,
-    5,
-    5,
-    5,
-    5,							       /* 45 */
-    5,
-    5,
-    5,
-    5,
-    5,							       /* 50? */
-    5,
-    5,
-    5,
-    5,
-    5,
-    5,
-    5,
-    5,
-    5,
-    5
-};
+const char backstab_mult[ABS_MAX_LVL] = {1,             /* 0 */
+                                         1,             /* 1 */
+                                         1, 1, 1, 1,    /* 5 */
+                                         2, 2, 2, 2, 2, /* 10 */
+                                         2, 2, 2, 2, 3, /* 15 */
+                                         3, 3, 3, 3, 3, /* 20 */
+                                         3, 3, 4, 4,    /* 25 */
+                                         4, 4, 4, 4, 4, /* 30 */
+                                         4, 4, 4, 5, 5, /* 35 */
+                                         5, 5, 5, 5, 5, /* 40 */
+                                         5, 5, 5, 5, 5, /* 45 */
+                                         5, 5, 5, 5, 5, /* 50? */
+                                         5, 5, 5, 5, 5, 5, 5, 5, 5, 5};
 
 /* [dex] apply (all) */
-const struct dex_app_type               dex_app[26] = {
-    {-7, -7, 60},					       /* 0 */
-    {-6, -6, 50},					       /* 1 */
-    {-4, -4, 50},
-    {-3, -3, 40},
-    {-2, -2, 30},
-    {-1, -1, 20},					       /* 5 */
-    {0, 0, 10},
-    {0, 0, 0},
-    {0, 0, 0},
-    {0, 0, 0},
-    {0, 0, 0},						       /* 10 */
-    {0, 0, 0},
-    {0, 0, 0},
-    {0, 0, 0},
-    {0, 0, 0},
-    {0, 0, -10},					       /* 15 */
-    {1, 1, -20},
-    {2, 2, -30},
-    {2, 2, -40},
-    {3, 3, -40},
-    {3, 3, -40},					       /* 20 */
-    {4, 4, -50},
-    {4, 4, -50},
-    {4, 4, -50},
-    {5, 5, -60},
-    {5, 5, -60}						       /* 25 */
+const struct dex_app_type dex_app[26] = {
+    {-7, -7, 60},                                                        /* 0 */
+    {-6, -6, 50},                                                        /* 1 */
+    {-4, -4, 50}, {-3, -3, 40}, {-2, -2, 30}, {-1, -1, 20},              /* 5 */
+    {0, 0, 10},   {0, 0, 0},    {0, 0, 0},    {0, 0, 0},    {0, 0, 0},   /* 10 */
+    {0, 0, 0},    {0, 0, 0},    {0, 0, 0},    {0, 0, 0},    {0, 0, -10}, /* 15 */
+    {1, 1, -20},  {2, 2, -30},  {2, 2, -40},  {3, 3, -40},  {3, 3, -40}, /* 20 */
+    {4, 4, -50},  {4, 4, -50},  {4, 4, -50},  {5, 5, -60},  {5, 5, -60}  /* 25 */
 };
 
 /* [con] apply (all) */
-const struct con_app_type               con_app[26] = {
-    {-4, 20},						       /* 0 */
-    {-3, 25},						       /* 1 */
-    {-2, 30},
-    {-2, 35},
-    {-1, 40},
-    {-1, 45},						       /* 5 */
-    {-1, 50},
-    {0, 55},
-    {0, 60},
-    {0, 65},
-    {0, 70},						       /* 10 */
-    {0, 75},
-    {0, 80},
-    {0, 85},
-    {0, 88},
-    {1, 90},						       /* 15 */
-    {2, 95},
-    {3, 97},
-    {3, 99},
-    {4, 99},
-    {5, 99},						       /* 20 */
-    {6, 99},
-    {6, 99},
-    {7, 99},
-    {8, 99},
-    {9, 100}						       /* 25 */
+const struct con_app_type con_app[26] = {
+    {-4, 20},                                        /* 0 */
+    {-3, 25},                                        /* 1 */
+    {-2, 30}, {-2, 35}, {-1, 40}, {-1, 45},          /* 5 */
+    {-1, 50}, {0, 55},  {0, 60},  {0, 65},  {0, 70}, /* 10 */
+    {0, 75},  {0, 80},  {0, 85},  {0, 88},  {1, 90}, /* 15 */
+    {2, 95},  {3, 97},  {3, 99},  {4, 99},  {5, 99}, /* 20 */
+    {6, 99},  {6, 99},  {7, 99},  {8, 99},  {9, 100} /* 25 */
 };
 
 /* [int] apply (all) */
-const struct int_app_type               int_app[26] = {
-    {1},
-    {2},						       /* 1 */
-    {3},
-    {4},
-    {5},
-    {6},						       /* 5 */
-    {7},
-    {8},
-    {9},
-    {10},
-    {11},						       /* 10 */
-    {12},
-    {13},
-    {15},
-    {17},
-    {19},						       /* 15 */
-    {21},
-    {23},
-    {25},
-    {27},
-    {55},						       /* 20 */
-    {56},
-    {60},
-    {70},
-    {80},
-    {99}						       /* 25 */
+const struct int_app_type int_app[26] = {
+    {1},  {2},                    /* 1 */
+    {3},  {4},  {5},  {6},        /* 5 */
+    {7},  {8},  {9},  {10}, {11}, /* 10 */
+    {12}, {13}, {15}, {17}, {19}, /* 15 */
+    {21}, {23}, {25}, {27}, {55}, /* 20 */
+    {56}, {60}, {70}, {80}, {99}  /* 25 */
 };
 
 /* [wis] apply (all) */
-const struct wis_app_type               wis_app[26] = {
-    {0},						       /* 0 */
-    {1},						       /* 1 */
-    {1},
-    {1},
-    {1},
-    {2},						       /* 5 */
-    {2},
-    {2},
-    {2},
-    {2},
-    {3},						       /* 10 */
-    {3},
-    {3},
-    {3},
-    {3},
-    {4},						       /* 15 */
-    {4},
-    {4},
-    {4},						       /* 18 */
-    {4},
-    {6},						       /* 20 */
-    {6},
-    {6},
-    {6},
-    {6},
-    {6}							       /* 25 */
+const struct wis_app_type wis_app[26] = {
+    {0},                     /* 0 */
+    {1},                     /* 1 */
+    {1}, {1}, {1}, {2},      /* 5 */
+    {2}, {2}, {2}, {2}, {3}, /* 10 */
+    {3}, {3}, {3}, {3}, {4}, /* 15 */
+    {4}, {4}, {4},           /* 18 */
+    {4}, {6},                /* 20 */
+    {6}, {6}, {6}, {6}, {6}  /* 25 */
 };

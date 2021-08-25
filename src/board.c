@@ -22,10 +22,11 @@
 #define _BOARD_C
 #include "board.h"
 
-int                       board_count = 0;
-struct board_data        *boards = NULL;
+int board_count = 0;
+struct board_data *boards = NULL;
 
-void setup_board_table(void) {
+void setup_board_table(void)
+{
     PGresult *res = NULL;
     ExecStatusType st = 0;
     char *sql = "CREATE TABLE IF NOT EXISTS boards ( "
@@ -33,21 +34,22 @@ void setup_board_table(void) {
                 "    vnum INTEGER PRIMARY KEY NOT NULL "
                 "); ";
     char *sql2 = "CREATE TABLE IF NOT EXISTS board_messages ( "
-                "    updated TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "
-                "    vnum INTEGER NOT NULL REFERENCES boards (vnum), "
-                "    message_id INTEGER NOT NULL, "
-                "    owner TEXT NOT NULL DEFAULT 'SYSTEM', "
-                "    subject TEXT NOT NULL DEFAULT 'An empty message.', "
-                "    body TEXT NOT NULL DEFAULT '', "
-                "    CONSTRAINT pk_board_messages UNIQUE ( vnum, message_id ) "
-                "); ";
-//    char *sql3 = "CREATE UNIQUE INDEX IF NOT EXISTS ix_board_messages "
-//                "     ON board_messages (vnum, message_id);";
+                 "    updated TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "
+                 "    vnum INTEGER NOT NULL REFERENCES boards (vnum), "
+                 "    message_id INTEGER NOT NULL, "
+                 "    owner TEXT NOT NULL DEFAULT 'SYSTEM', "
+                 "    subject TEXT NOT NULL DEFAULT 'An empty message.', "
+                 "    body TEXT NOT NULL DEFAULT '', "
+                 "    CONSTRAINT pk_board_messages UNIQUE ( vnum, message_id ) "
+                 "); ";
+    //    char *sql3 = "CREATE UNIQUE INDEX IF NOT EXISTS ix_board_messages "
+    //                "     ON board_messages (vnum, message_id);";
 
     sql_connect(&db_wileymud);
     res = PQexec(db_wileymud.dbc, sql);
     st = PQresultStatus(res);
-    if( st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE ) {
+    if (st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE)
+    {
         log_fatal("Cannot create boards table: %s", PQerrorMessage(db_wileymud.dbc));
         PQclear(res);
         proper_exit(MUD_HALT);
@@ -57,7 +59,8 @@ void setup_board_table(void) {
     sql_connect(&db_wileymud);
     res = PQexec(db_wileymud.dbc, sql2);
     st = PQresultStatus(res);
-    if( st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE ) {
+    if (st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE)
+    {
         log_fatal("Cannot create board_messages table: %s", PQerrorMessage(db_wileymud.dbc));
         PQclear(res);
         proper_exit(MUD_HALT);
@@ -77,10 +80,11 @@ void setup_board_table(void) {
     */
 }
 
-void load_boards(void) {
+void load_boards(void)
+{
     PGresult *res = NULL;
     ExecStatusType st = 0;
-    char *sql  = "SELECT count(*) FROM boards;";
+    char *sql = "SELECT count(*) FROM boards;";
     char *sql2 = "SELECT extract('epoch' FROM updated) AS updated, "
                  "       vnum FROM boards ORDER BY vnum;";
     char *sql3 = "SELECT count(*) FROM board_messages WHERE vnum = $1;";
@@ -96,10 +100,13 @@ void load_boards(void) {
     int param_bin[1] = {0};
     char tmp[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
 
-    if(boards) {
+    if (boards)
+    {
         // Free any boards that are currently loaded.
-        for(int i = 0; i < board_count; i++) {
-            if(boards[i].messages) {
+        for (int i = 0; i < board_count; i++)
+        {
+            if (boards[i].messages)
+            {
                 free(boards[i].messages);
             }
         }
@@ -110,32 +117,38 @@ void load_boards(void) {
 
     res = PQexec(db_wileymud.dbc, sql);
     st = PQresultStatus(res);
-    if( st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE ) {
+    if (st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE)
+    {
         log_fatal("Cannot get row count of boards table: %s", PQerrorMessage(db_wileymud.dbc));
         PQclear(res);
         proper_exit(MUD_HALT);
     }
     rows = PQntuples(res);
     columns = PQnfields(res);
-    if(rows > 0 && columns > 0) {
-        board_count = atoi(PQgetvalue(res,0,0));
-    } else {
+    if (rows > 0 && columns > 0)
+    {
+        board_count = atoi(PQgetvalue(res, 0, 0));
+    }
+    else
+    {
         log_fatal("Invalid result set from row count!");
         PQclear(res);
         proper_exit(MUD_HALT);
     }
     PQclear(res);
 
-    if(board_count < 1) {
+    if (board_count < 1)
+    {
         log_error("No boards exist!");
         return;
     }
 
-    boards = (struct board_data *) calloc(board_count, sizeof(struct board_data));
+    boards = (struct board_data *)calloc(board_count, sizeof(struct board_data));
 
     res = PQexec(db_wileymud.dbc, sql2);
     st = PQresultStatus(res);
-    if( st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE ) {
+    if (st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE)
+    {
         log_fatal("Cannot get data from boards table: %s", PQerrorMessage(db_wileymud.dbc));
         PQclear(res);
         proper_exit(MUD_HALT);
@@ -143,42 +156,54 @@ void load_boards(void) {
     rows = PQntuples(res);
     columns = PQnfields(res);
 
-    if(rows != board_count || columns < 2) {
+    if (rows != board_count || columns < 2)
+    {
         // We didn't get any data, or got bad data.
         log_fatal("Got invalid data from boards table: %s", PQerrorMessage(db_wileymud.dbc));
         PQclear(res);
         proper_exit(MUD_HALT);
     }
 
-    for(int i = 0; i < board_count; i++) {
-        boards[i].updated = (time_t) atol(PQgetvalue(res,i,0));
-        boards[i].vnum = (int) atoi(PQgetvalue(res,i,1));
+    for (int i = 0; i < board_count; i++)
+    {
+        boards[i].updated = (time_t)atol(PQgetvalue(res, i, 0));
+        boards[i].vnum = (int)atoi(PQgetvalue(res, i, 1));
     }
 
     PQclear(res);
 
-    for(int i = 0; i < board_count; i++) {
+    for (int i = 0; i < board_count; i++)
+    {
         snprintf(tmp, MAX_INPUT_LENGTH, "%d", boards[i].vnum);
         param_val[0] = *tmp ? tmp : NULL;
         param_len[0] = *tmp ? strlen(tmp) : 0;
         res = PQexecParams(db_wileymud.dbc, sql3, 1, NULL, param_val, param_len, param_bin, 0);
         st = PQresultStatus(res);
-        if( st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE ) {
-            log_fatal("Cannot fetch message count from board_messages table for vnum %s : %s", tmp, PQerrorMessage(db_wileymud.dbc));
+        if (st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE)
+        {
+            log_fatal("Cannot fetch message count from board_messages table for vnum %s : %s", tmp,
+                      PQerrorMessage(db_wileymud.dbc));
             PQclear(res);
             proper_exit(MUD_HALT);
         }
         rows = PQntuples(res);
         columns = PQnfields(res);
 
-        if(rows > 0 && columns > 0) {
-            boards[i].message_count = (int) atoi(PQgetvalue(res,0,0));
-            if(boards[i].message_count > 0) {
-                boards[i].messages  = (struct board_message_data *) calloc(boards[i].message_count, sizeof(struct board_message_data));
-            } else {
-                boards[i].messages  = NULL;
+        if (rows > 0 && columns > 0)
+        {
+            boards[i].message_count = (int)atoi(PQgetvalue(res, 0, 0));
+            if (boards[i].message_count > 0)
+            {
+                boards[i].messages =
+                    (struct board_message_data *)calloc(boards[i].message_count, sizeof(struct board_message_data));
             }
-        } else {
+            else
+            {
+                boards[i].messages = NULL;
+            }
+        }
+        else
+        {
             log_fatal("Invalid result set from row count!");
             PQclear(res);
             proper_exit(MUD_HALT);
@@ -187,30 +212,40 @@ void load_boards(void) {
 
         res = PQexecParams(db_wileymud.dbc, sql4, 1, NULL, param_val, param_len, param_bin, 0);
         st = PQresultStatus(res);
-        if( st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE ) {
-            log_fatal("Cannot fetch messages from board_messages table for vnum %s : %s", tmp, PQerrorMessage(db_wileymud.dbc));
+        if (st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE)
+        {
+            log_fatal("Cannot fetch messages from board_messages table for vnum %s : %s", tmp,
+                      PQerrorMessage(db_wileymud.dbc));
             PQclear(res);
             proper_exit(MUD_HALT);
         }
         rows = PQntuples(res);
         columns = PQnfields(res);
 
-        if(boards[i].message_count > 0) {
-            if(rows == boards[i].message_count && columns > 4) {
-                for(int j = 0; j < boards[i].message_count; j++) {
-                    boards[i].messages[j].updated = (time_t) atol(PQgetvalue(res,j,0));
+        if (boards[i].message_count > 0)
+        {
+            if (rows == boards[i].message_count && columns > 4)
+            {
+                for (int j = 0; j < boards[i].message_count; j++)
+                {
+                    boards[i].messages[j].updated = (time_t)atol(PQgetvalue(res, j, 0));
                     boards[i].messages[j].vnum = boards[i].vnum;
-                    boards[i].messages[j].message_id = (int) atoi(PQgetvalue(res,j,1));
-                    strlcpy(boards[i].messages[j].owner, PQgetvalue(res,j,2), MAX_INPUT_LENGTH);
-                    strlcpy(boards[i].messages[j].subject, PQgetvalue(res,j,3), MAX_INPUT_LENGTH);
-                    strlcpy(boards[i].messages[j].body, PQgetvalue(res,j,4), MAX_STRING_LENGTH);
+                    boards[i].messages[j].message_id = (int)atoi(PQgetvalue(res, j, 1));
+                    strlcpy(boards[i].messages[j].owner, PQgetvalue(res, j, 2), MAX_INPUT_LENGTH);
+                    strlcpy(boards[i].messages[j].subject, PQgetvalue(res, j, 3), MAX_INPUT_LENGTH);
+                    strlcpy(boards[i].messages[j].body, PQgetvalue(res, j, 4), MAX_STRING_LENGTH);
                 }
-            } else {
-                log_fatal("Bad message data from board_messages table for vnum %s : %s", tmp, PQerrorMessage(db_wileymud.dbc));
+            }
+            else
+            {
+                log_fatal("Bad message data from board_messages table for vnum %s : %s", tmp,
+                          PQerrorMessage(db_wileymud.dbc));
                 PQclear(res);
                 proper_exit(MUD_HALT);
             }
-        } else {
+        }
+        else
+        {
             log_error("Empty message board for vnum %d", boards[i].vnum);
         }
         PQclear(res);
@@ -219,14 +254,19 @@ void load_boards(void) {
     }
 }
 
-struct board_data *find_board_in_room(int room) {
-    if(!real_roomp(room))
+struct board_data *find_board_in_room(int room)
+{
+    if (!real_roomp(room))
         return NULL;
 
-    for(struct obj_data *o = real_roomp(room)->contents; o; o = o->next_content) {
-        if(obj_index[o->item_number].func == (ifuncp)board_special) {
-            for(int i = 0; i < board_count; i++) {
-                if(boards[i].vnum == obj_index[o->item_number].virtual) {
+    for (struct obj_data *o = real_roomp(room)->contents; o; o = o->next_content)
+    {
+        if (obj_index[o->item_number].func == (ifuncp)board_special)
+        {
+            for (int i = 0; i < board_count; i++)
+            {
+                if (boards[i].vnum == obj_index[o->item_number].virtual)
+                {
                     return &boards[i];
                 }
             }
@@ -236,9 +276,12 @@ struct board_data *find_board_in_room(int room) {
     return NULL;
 }
 
-struct board_data *find_board_by_vnum(int vnum) {
-    for(int i = 0; i < board_count; i++) {
-        if(boards[i].vnum == vnum) {
+struct board_data *find_board_by_vnum(int vnum)
+{
+    for (int i = 0; i < board_count; i++)
+    {
+        if (boards[i].vnum == vnum)
+        {
             return &boards[i];
         }
     }
@@ -246,10 +289,11 @@ struct board_data *find_board_by_vnum(int vnum) {
     return NULL;
 }
 
-struct board_data *create_board(int vnum) {
+struct board_data *create_board(int vnum)
+{
     PGresult *res = NULL;
     ExecStatusType st = 0;
-    char *sql  = "SELECT 1 FROM boards WHERE vnum = $1;";
+    char *sql = "SELECT 1 FROM boards WHERE vnum = $1;";
     char *sql2 = "INSERT INTO boards (vnum) VALUES ($1);";
     int rows = 0;
     int columns = 0;
@@ -260,7 +304,8 @@ struct board_data *create_board(int vnum) {
     struct board_data *bp = NULL;
 
     bp = find_board_by_vnum(vnum);
-    if(bp != NULL) {
+    if (bp != NULL)
+    {
         // A board already exists with that vnum, and is loaded!
         return bp;
     }
@@ -271,14 +316,16 @@ struct board_data *create_board(int vnum) {
 
     res = PQexecParams(db_wileymud.dbc, sql, 1, NULL, param_val, param_len, param_bin, 0);
     st = PQresultStatus(res);
-    if( st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE ) {
+    if (st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE)
+    {
         log_fatal("Cannot check for board %d existing in board table : %s", vnum, PQerrorMessage(db_wileymud.dbc));
         PQclear(res);
         proper_exit(MUD_HALT);
     }
     rows = PQntuples(res);
     columns = PQnfields(res);
-    if(rows > 0 && columns > 0 && atoi(PQgetvalue(res,0,0)) == 1) {
+    if (rows > 0 && columns > 0 && atoi(PQgetvalue(res, 0, 0)) == 1)
+    {
         // This board already exists.
         PQclear(res);
         load_boards();
@@ -288,7 +335,8 @@ struct board_data *create_board(int vnum) {
 
     res = PQexecParams(db_wileymud.dbc, sql2, 1, NULL, param_val, param_len, param_bin, 0);
     st = PQresultStatus(res);
-    if( st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE ) {
+    if (st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE)
+    {
         log_fatal("Cannot add board %d to board table : %s", vnum, PQerrorMessage(db_wileymud.dbc));
         PQclear(res);
         proper_exit(MUD_HALT);
@@ -296,20 +344,22 @@ struct board_data *create_board(int vnum) {
 
     load_boards();
     bp = find_board_by_vnum(vnum);
-    if(bp == NULL) {
+    if (bp == NULL)
+    {
         log_error("Failed to create board %d", vnum);
         return NULL;
     }
     return bp;
 }
 
-void import_board(struct board_data *bp) {
+void import_board(struct board_data *bp)
+{
     FILE *fp = NULL;
     char board_filename[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
     int message_count = 0;
     PGresult *res = NULL;
     ExecStatusType st = 0;
-    char *sql  = "SELECT 1 FROM boards WHERE vnum = $1;";
+    char *sql = "SELECT 1 FROM boards WHERE vnum = $1;";
     char *sql2 = "INSERT INTO board_messages (vnum, message_id, updated, owner, subject, body) "
                  "VALUES ($1,$2,$3 AT TIME ZONE 'US/Eastern',$4,$5,$6) "
                  "ON CONFLICT ON CONSTRAINT pk_board_messages DO NOTHING;";
@@ -317,10 +367,10 @@ void import_board(struct board_data *bp) {
     int columns = 0;
     const char *param_val[6];
     int param_len[6];
-    int param_bin[6] = {0,0,0,0,0,0};
+    int param_bin[6] = {0, 0, 0, 0, 0, 0};
     char tmp[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
 
-    if(!bp)
+    if (!bp)
         return;
 
     snprintf(tmp, MAX_INPUT_LENGTH, "%d", bp->vnum);
@@ -329,17 +379,21 @@ void import_board(struct board_data *bp) {
 
     res = PQexecParams(db_wileymud.dbc, sql, 1, NULL, param_val, param_len, param_bin, 0);
     st = PQresultStatus(res);
-    if( st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE ) {
+    if (st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE)
+    {
         log_fatal("Cannot check for board %d existing in board table : %s", bp->vnum, PQerrorMessage(db_wileymud.dbc));
         PQclear(res);
         proper_exit(MUD_HALT);
     }
     rows = PQntuples(res);
     columns = PQnfields(res);
-    if(rows > 0 && columns > 0 && atoi(PQgetvalue(res,0,0)) == 1) {
+    if (rows > 0 && columns > 0 && atoi(PQgetvalue(res, 0, 0)) == 1)
+    {
         // This board exists.
         PQclear(res);
-    } else {
+    }
+    else
+    {
         // The board doesn't exist, yet we had a data structure for it?
         log_fatal("Board %d does not exist in board table.", bp->vnum);
         PQclear(res);
@@ -349,14 +403,16 @@ void import_board(struct board_data *bp) {
     snprintf(board_filename, MAX_INPUT_LENGTH, "%s/%d.data", BOARD_DIR, bp->vnum);
     log_boot("Importing board %d from %s...", bp->vnum, board_filename);
 
-    if(!(fp = fopen(board_filename, "r"))) {
+    if (!(fp = fopen(board_filename, "r")))
+    {
         log_error("Cannot open %s for reading!", board_filename);
         return;
     }
 
     message_count = fread_number(fp);
     log_boot("Importing %d messages into board %d.", message_count, bp->vnum);
-    for(int i = 0; i < message_count; i++) {
+    for (int i = 0; i < message_count; i++)
+    {
         int message_id = 0;
         char *message_date = NULL;
         char *message_header = NULL;
@@ -396,8 +452,10 @@ void import_board(struct board_data *bp) {
         log_boot("Importing message %d into board %d.", message_id, bp->vnum);
         res = PQexecParams(db_wileymud.dbc, sql2, 6, NULL, param_val, param_len, param_bin, 0);
         st = PQresultStatus(res);
-        if( st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE ) {
-            log_fatal("Cannot insert message %d to board %d : %s", message_id, bp->vnum, PQerrorMessage(db_wileymud.dbc));
+        if (st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE)
+        {
+            log_fatal("Cannot insert message %d to board %d : %s", message_id, bp->vnum,
+                      PQerrorMessage(db_wileymud.dbc));
             PQclear(res);
             proper_exit(MUD_HALT);
         }
@@ -412,136 +470,147 @@ void import_board(struct board_data *bp) {
     log_boot("Import complete.");
 }
 
-int show_board(struct char_data *ch, char *arg, struct board_data *bp) {
+int show_board(struct char_data *ch, char *arg, struct board_data *bp)
+{
     char tmp[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
 
     one_argument(arg, tmp);
 
-    if(!*tmp || !isname(tmp, "board bulletin"))
+    if (!*tmp || !isname(tmp, "board bulletin"))
         return 0;
 
     page_printf(ch, "This is a bulletin board.  Usage: READ/REMOVE <msg #>, WRITE <subject>\r\n");
 
-    if(bp->message_count < 1) {
+    if (bp->message_count < 1)
+    {
         page_printf(ch, "The board is empty.\r\n");
-    } else {
+    }
+    else
+    {
         char today[MAX_INPUT_LENGTH];
         strlcpy(today, date_only(-1), MAX_INPUT_LENGTH);
 
-        if(IS_IMMORTAL(ch)) {
-            page_printf(ch, "This is board [#%d], and the date is currently %s.\r\n",
-                    bp->vnum, today);
+        if (IS_IMMORTAL(ch))
+        {
+            page_printf(ch, "This is board [#%d], and the date is currently %s.\r\n", bp->vnum, today);
         }
-        page_printf(ch, "There %s %d message%s on the board.\r\n",
-                bp->message_count > 1 ? "are" : "is",
-                bp->message_count,
-                bp->message_count > 1 ? "s" : "");
-        for(int i = 0; i < bp->message_count; i++) {
+        page_printf(ch, "There %s %d message%s on the board.\r\n", bp->message_count > 1 ? "are" : "is",
+                    bp->message_count, bp->message_count > 1 ? "s" : "");
+        for (int i = 0; i < bp->message_count; i++)
+        {
             char message_time[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
 
             strlcpy(message_time, date_only(bp->messages[i].updated), MAX_INPUT_LENGTH);
 
-            if(!strcmp(message_time, today)) {
+            if (!strcmp(message_time, today))
+            {
                 // If the date is today, show the time instead.
                 strlcpy(message_time, time_only(bp->messages[i].updated), MAX_INPUT_LENGTH);
             }
 
             // what was header in the old system should now be broken into
             // updated (date/time), owner (character name), and subject.
-            page_printf(ch, "%3d : %10.10s %16.16s %s\r\n",
-                    bp->messages[i].message_id, message_time, bp->messages[i].owner, 
-                    bp->messages[i].subject);
+            page_printf(ch, "%3d : %10.10s %16.16s %s\r\n", bp->messages[i].message_id, message_time,
+                        bp->messages[i].owner, bp->messages[i].subject);
         }
     }
 
     return 1;
 }
 
-int show_board_message(struct char_data *ch, char *arg, struct board_data *bp) {
-    char                        message_argument[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
-    int                         message_number = 0;
-    struct board_message_data   *msg = NULL;
+int show_board_message(struct char_data *ch, char *arg, struct board_data *bp)
+{
+    char message_argument[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
+    int message_number = 0;
+    struct board_message_data *msg = NULL;
 
-    if(!ch || !arg || !*arg || !bp)
+    if (!ch || !arg || !*arg || !bp)
         return 0;
 
     one_argument(arg, message_argument);
-    if(!*message_argument || !isdigit(*message_argument))
+    if (!*message_argument || !isdigit(*message_argument))
         return 0;
 
     message_number = atoi(message_argument);
-    if(message_number < 1)
+    if (message_number < 1)
         return 0;
 
-    if(bp->message_count < 1) {
+    if (bp->message_count < 1)
+    {
         cprintf(ch, "The board is empty!\r\n");
         return 1;
     }
 
-    for(int i = 0; i < bp->message_count; i++) {
+    for (int i = 0; i < bp->message_count; i++)
+    {
         msg = &bp->messages[i];
-        if(msg->message_id == message_number)
+        if (msg->message_id == message_number)
             break;
         msg = NULL;
     }
 
-    if(!msg) {
+    if (!msg)
+    {
         cprintf(ch, "Message %d exists only in your imagination.\r\n", message_number);
         return 1;
     }
 
     /* Adventurers WANTED! (Quixadhal) Sun Jul 25 00:35:39 2004 */
-    page_printf(ch, "Message %d by %-16.16s on %s : %s\r\n\r\n%s\r\n",
-                msg->message_id, msg->owner, timestamp(msg->updated, 0),
-                msg->subject, msg->body);
+    page_printf(ch, "Message %d by %-16.16s on %s : %s\r\n\r\n%s\r\n", msg->message_id, msg->owner,
+                timestamp(msg->updated, 0), msg->subject, msg->body);
     return 1;
 }
 
-int delete_board_message(struct char_data *ch, char *arg, struct board_data *bp) {
-    char                        message_argument[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
-    int                         message_number = 0;
-    struct board_message_data   *msg = NULL;
+int delete_board_message(struct char_data *ch, char *arg, struct board_data *bp)
+{
+    char message_argument[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
+    int message_number = 0;
+    struct board_message_data *msg = NULL;
     PGresult *res = NULL;
     ExecStatusType st = 0;
-    char *sql  = "DELETE FROM board_messages WHERE vnum = $1 and message_id = $2;";
-    //char *sql2 = "UPDATE boards SET message_count = "
+    char *sql = "DELETE FROM board_messages WHERE vnum = $1 and message_id = $2;";
+    // char *sql2 = "UPDATE boards SET message_count = "
     //             " (SELECT count(*) FROM board_messages WHERE vnum = $1) "
     //             " WHERE vnum = $2;";
     const char *param_val[2];
     int param_len[2];
-    int param_bin[2] = {0,0};
+    int param_bin[2] = {0, 0};
     char tmp[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
     char tmp2[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
 
-    if(!ch || !arg || !*arg || !bp)
+    if (!ch || !arg || !*arg || !bp)
         return 0;
 
     one_argument(arg, message_argument);
-    if(!*message_argument || !isdigit(*message_argument))
+    if (!*message_argument || !isdigit(*message_argument))
         return 0;
 
     message_number = atoi(message_argument);
-    if(message_number < 1)
+    if (message_number < 1)
         return 0;
 
-    if(bp->message_count < 1) {
+    if (bp->message_count < 1)
+    {
         cprintf(ch, "The board is empty!\r\n");
         return 1;
     }
 
-    for(int i = 0; i < bp->message_count; i++) {
+    for (int i = 0; i < bp->message_count; i++)
+    {
         msg = &bp->messages[i];
-        if(msg->message_id == message_number)
+        if (msg->message_id == message_number)
             break;
         msg = NULL;
     }
 
-    if(!msg) {
+    if (!msg)
+    {
         cprintf(ch, "Message %d exists only in your imagination.\r\n", message_number);
         return 1;
     }
 
-    if(!IS_IMMORTAL(ch) && strcasecmp(msg->owner, GET_NAME(ch)) != 0) {
+    if (!IS_IMMORTAL(ch) && strcasecmp(msg->owner, GET_NAME(ch)) != 0)
+    {
         cprintf(ch, "That message belongs to %s, NOT you!\r\n", msg->owner);
         return 1;
     }
@@ -557,8 +626,10 @@ int delete_board_message(struct char_data *ch, char *arg, struct board_data *bp)
 
     res = PQexecParams(db_wileymud.dbc, sql, 2, NULL, param_val, param_len, param_bin, 0);
     st = PQresultStatus(res);
-    if( st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE ) {
-        log_fatal("Cannot remove message %d from board %d : %s", bp->vnum, message_number, PQerrorMessage(db_wileymud.dbc));
+    if (st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE)
+    {
+        log_fatal("Cannot remove message %d from board %d : %s", bp->vnum, message_number,
+                  PQerrorMessage(db_wileymud.dbc));
         PQclear(res);
         proper_exit(MUD_HALT);
     }
@@ -583,13 +654,16 @@ int delete_board_message(struct char_data *ch, char *arg, struct board_data *bp)
     return 1;
 }
 
-int begin_write_board_message(struct char_data *ch, char *arg, struct board_data *bp) {
-    if(!ch || !ch->desc || !arg || !*arg || !bp)
+int begin_write_board_message(struct char_data *ch, char *arg, struct board_data *bp)
+{
+    if (!ch || !ch->desc || !arg || !*arg || !bp)
         return 0;
 
-    for (; isspace(*arg); arg++);   // skip over leading whitespace
+    for (; isspace(*arg); arg++)
+        ; // skip over leading whitespace
 
-    if(!*arg) {
+    if (!*arg)
+    {
         cprintf(ch, "We must have a headline!\r\n");
         return 1;
     }
@@ -610,7 +684,7 @@ int begin_write_board_message(struct char_data *ch, char *arg, struct board_data
     //
     // So convoluted....
     //      Rather than using a proper connection state like nanny() does,
-    //      There's a custom check on descriptor->str.  If it isn't NULL, 
+    //      There's a custom check on descriptor->str.  If it isn't NULL,
     //      it calls string_add(), passing it the descriptor and socket input.
     //          line 557 comm.c
     //      The socket input was obtained via get_from_q()
@@ -664,25 +738,24 @@ int begin_write_board_message(struct char_data *ch, char *arg, struct board_data
 //
 // This is called from interpreter.c:  command_interpreter(), near the top.
 //
-int finish_write_board_message(struct char_data *ch) {
+int finish_write_board_message(struct char_data *ch)
+{
     PGresult *res = NULL;
     ExecStatusType st = 0;
-    char *sql  = "INSERT INTO board_messages (vnum, message_id, owner, subject, body) "
-                 "VALUES ($1, "
-                    "(SELECT COALESCE(MAX(message_id), 0) + 1 "
-                    "FROM board_messages "
-                    "WHERE vnum = $2), "
-                 "$3, $4, $5);";
+    char *sql = "INSERT INTO board_messages (vnum, message_id, owner, subject, body) "
+                "VALUES ($1, "
+                "(SELECT COALESCE(MAX(message_id), 0) + 1 "
+                "FROM board_messages "
+                "WHERE vnum = $2), "
+                "$3, $4, $5);";
     const char *param_val[5];
     int param_len[5];
-    int param_bin[5] = {0,0,0,0,0};
+    int param_bin[5] = {0, 0, 0, 0, 0};
     char tmp[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
 
-    if(!ch || !ch->desc
-           || !GET_NAME(ch)
-           || ch->desc->board_vnum < 1
-           || !ch->desc->board_subject[0]
-           || !ch->desc->board_body[0]) {
+    if (!ch || !ch->desc || !GET_NAME(ch) || ch->desc->board_vnum < 1 || !ch->desc->board_subject[0] ||
+        !ch->desc->board_body[0])
+    {
         log_error("Invalid message data for board message callback!");
         return 0;
     }
@@ -701,8 +774,10 @@ int finish_write_board_message(struct char_data *ch) {
 
     res = PQexecParams(db_wileymud.dbc, sql, 5, NULL, param_val, param_len, param_bin, 0);
     st = PQresultStatus(res);
-    if( st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE ) {
-        log_fatal("Cannot insert message into board_messages for vnum %d : %s", ch->desc->board_vnum, PQerrorMessage(db_wileymud.dbc));
+    if (st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE)
+    {
+        log_fatal("Cannot insert message into board_messages for vnum %d : %s", ch->desc->board_vnum,
+                  PQerrorMessage(db_wileymud.dbc));
         PQclear(res);
         proper_exit(MUD_HALT);
     }
@@ -716,115 +791,120 @@ int finish_write_board_message(struct char_data *ch) {
     return 1;
 }
 
-int board_special(struct char_data *ch, int cmd, char *arg) {
+int board_special(struct char_data *ch, int cmd, char *arg)
+{
     struct board_data *bp = NULL;
 
-    if(!ch || !ch->desc || !arg || !*arg)
+    if (!ch || !ch->desc || !arg || !*arg)
         return FALSE;
 
-    if(!(bp = find_board_in_room(ch->in_room)))
+    if (!(bp = find_board_in_room(ch->in_room)))
         return FALSE;
 
     // We return FALSE to indicate that this did NOT satisfy the command requirements
     // which allows the interperter to try other commands, so we only return TRUE
     // for commands the board system overrides.
-    switch (cmd) {
-        // Mortal commands
-        case CMD_autoexit:
-        case CMD_bug:
-        case CMD_credits:
-        case CMD_down:
-        case CMD_east:
-        case CMD_exits:
-        case CMD_gtell:
-        case CMD_help:
-        case CMD_idea:
-        case CMD_info:
-        case CMD_json:
-        case CMD_north:
-        case CMD_nosummon:
-        case CMD_noteleport:
-        case CMD_pager:
-        case CMD_quit:
-        case CMD_return:
-        case CMD_save:
-        case CMD_score:
-        case CMD_south:
-        case CMD_tell:
-        case CMD_time:
-        case CMD_typo:
-        case CMD_up:
-        case CMD_users:
-        case CMD_version:
-        case CMD_west:
-        case CMD_where:
-        case CMD_who:
-        case CMD_whozone:
-        case CMD_wimp:
-        case CMD_wizlist:
-        // Immortal commands
-        case CMD_at:
-        case CMD_ban:
-        case CMD_checkurl:
-        case CMD_goto:
-        case CMD_immtrack:
-        case CMD_invisible:
-        case CMD_nohassle:
-        case CMD_players:
-        case CMD_reboot:
-        case CMD_rentmode:
-        case CMD_reset:
-        case CMD_restore:
-        case CMD_restoreall:
-        case CMD_setreboot:
-        case CMD_show:
-        case CMD_shutdown:
-        case CMD_snoop:
-        case CMD_switch:
-        case CMD_ticks:
-        case CMD_transfer:
-        case CMD_unban:
-        case CMD_whod:
-        case CMD_wizhelp:
-        case CMD_wizlock:
-        case CMD_wiznet:
-        case CMD_world:
-        case CMD_zpurge:
-            return FALSE;
-            break;
-        case CMD_look:					       /* look */
-            if (!show_board(ch, arg, bp)) {
-                // The user didn't look at the board, or it failed
-                // for some other reason.
-                do_look(ch, "", 0);
-            }
-            return TRUE;
-            break;
-        case CMD_read:					       /* read */
-            if (!show_board_message(ch, arg, bp)) {
-                // The attempt to read the board message failed.
-            }
-            return TRUE;
-            break;
-        case CMD_remove:					       /* remove */
-            if (!delete_board_message(ch, arg, bp)) {
-                // The attempt to remove the board message failed.
-            }
-            return TRUE;
-            break;
-        case CMD_write:					       /* write */
-            if (!begin_write_board_message(ch, arg, bp)) {
-                // The attempt to start writing the board message failed.
-                // NOTE: The message is actually written by a callback
-                // to finish_write_board_message() in the interpreter loop.
-            }
-            return TRUE;
-            break;
-        default:
-            // Everything else fails with a message.
-            cprintf(ch, "This room is too quiet, you can't do that here.\r\n");
-            return TRUE;
-            break;
+    switch (cmd)
+    {
+    // Mortal commands
+    case CMD_autoexit:
+    case CMD_bug:
+    case CMD_credits:
+    case CMD_down:
+    case CMD_east:
+    case CMD_exits:
+    case CMD_gtell:
+    case CMD_help:
+    case CMD_idea:
+    case CMD_info:
+    case CMD_json:
+    case CMD_north:
+    case CMD_nosummon:
+    case CMD_noteleport:
+    case CMD_pager:
+    case CMD_quit:
+    case CMD_return:
+    case CMD_save:
+    case CMD_score:
+    case CMD_south:
+    case CMD_tell:
+    case CMD_time:
+    case CMD_typo:
+    case CMD_up:
+    case CMD_users:
+    case CMD_version:
+    case CMD_west:
+    case CMD_where:
+    case CMD_who:
+    case CMD_whozone:
+    case CMD_wimp:
+    case CMD_wizlist:
+    // Immortal commands
+    case CMD_at:
+    case CMD_ban:
+    case CMD_checkurl:
+    case CMD_goto:
+    case CMD_immtrack:
+    case CMD_invisible:
+    case CMD_nohassle:
+    case CMD_players:
+    case CMD_reboot:
+    case CMD_rentmode:
+    case CMD_reset:
+    case CMD_restore:
+    case CMD_restoreall:
+    case CMD_setreboot:
+    case CMD_show:
+    case CMD_shutdown:
+    case CMD_snoop:
+    case CMD_switch:
+    case CMD_ticks:
+    case CMD_transfer:
+    case CMD_unban:
+    case CMD_whod:
+    case CMD_wizhelp:
+    case CMD_wizlock:
+    case CMD_wiznet:
+    case CMD_world:
+    case CMD_zpurge:
+        return FALSE;
+        break;
+    case CMD_look: /* look */
+        if (!show_board(ch, arg, bp))
+        {
+            // The user didn't look at the board, or it failed
+            // for some other reason.
+            do_look(ch, "", 0);
+        }
+        return TRUE;
+        break;
+    case CMD_read: /* read */
+        if (!show_board_message(ch, arg, bp))
+        {
+            // The attempt to read the board message failed.
+        }
+        return TRUE;
+        break;
+    case CMD_remove: /* remove */
+        if (!delete_board_message(ch, arg, bp))
+        {
+            // The attempt to remove the board message failed.
+        }
+        return TRUE;
+        break;
+    case CMD_write: /* write */
+        if (!begin_write_board_message(ch, arg, bp))
+        {
+            // The attempt to start writing the board message failed.
+            // NOTE: The message is actually written by a callback
+            // to finish_write_board_message() in the interpreter loop.
+        }
+        return TRUE;
+        break;
+    default:
+        // Everything else fails with a message.
+        cprintf(ch, "This room is too quiet, you can't do that here.\r\n");
+        return TRUE;
+        break;
     }
 }
-

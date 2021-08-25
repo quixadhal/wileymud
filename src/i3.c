@@ -27,10 +27,10 @@
 
 /*
  * Copyright (c) 2000 Fatal Dimensions
- * 
+ *
  * See the file "LICENSE" or information on usage and redistribution
  * of this file, and for a DISCLAIMER OF ALL WARRANTIES.
- * 
+ *
  */
 
 /* Ported to Smaug 1.4a by Samson of Alsherok.
@@ -80,211 +80,201 @@
 
 /* Global variables for I3 */
 
-#define I3_PACKET_STATE_NONE        0
-#define I3_PACKET_STATE_GOT_SIZE    1
-#define I3_PACKET_STATE_READING     2
-#define I3_PACKET_STATE_GOT_PACKET  3
-#define I3_PACKET_STATE_PROCESSING  4
-#define I3_PACKET_STATE_LEFTOVERS   5
-#define I3_PACKET_STATE_MISSING     6
+#define I3_PACKET_STATE_NONE 0
+#define I3_PACKET_STATE_GOT_SIZE 1
+#define I3_PACKET_STATE_READING 2
+#define I3_PACKET_STATE_GOT_PACKET 3
+#define I3_PACKET_STATE_PROCESSING 4
+#define I3_PACKET_STATE_LEFTOVERS 5
+#define I3_PACKET_STATE_MISSING 6
 
-char                                    I3_incoming_packet_size[4];
-uint32_t                                I3_incoming_packet_length = 0;
-char                                   *I3_incoming_packet = NULL;
-long                                    I3_incoming_packet_read = 0;
-int                                     I3_packet_processing_state = I3_PACKET_STATE_NONE;
-char                                   *I3_incoming_packet_leftovers = NULL;
-long                                    I3_incoming_packet_strlen = 0;
-stringMap                              *speaker_db = NULL;
-int                                     speaker_count = 0;
+char I3_incoming_packet_size[4];
+uint32_t I3_incoming_packet_length = 0;
+char *I3_incoming_packet = NULL;
+long I3_incoming_packet_read = 0;
+int I3_packet_processing_state = I3_PACKET_STATE_NONE;
+char *I3_incoming_packet_leftovers = NULL;
+long I3_incoming_packet_strlen = 0;
+stringMap *speaker_db = NULL;
+int speaker_count = 0;
 
-stringMap                              *pinkfish_to_ansi_db = NULL;
-int                                     pinkfish_to_ansi_count = 0;
-stringMap                              *pinkfish_to_i3_db = NULL;
-int                                     pinkfish_to_i3_count = 0;
-stringMap                              *pinkfish_to_xterm256_db = NULL;
-int                                     pinkfish_to_xterm256_count = 0;
-stringMap                              *pinkfish_to_greyscale_db = NULL;
-int                                     pinkfish_to_greyscale_count = 0;
-stringMap                              *pinkfish_to_null_db = NULL;
-int                                     pinkfish_to_null_count = 0;
+stringMap *pinkfish_to_ansi_db = NULL;
+int pinkfish_to_ansi_count = 0;
+stringMap *pinkfish_to_i3_db = NULL;
+int pinkfish_to_i3_count = 0;
+stringMap *pinkfish_to_xterm256_db = NULL;
+int pinkfish_to_xterm256_count = 0;
+stringMap *pinkfish_to_greyscale_db = NULL;
+int pinkfish_to_greyscale_count = 0;
+stringMap *pinkfish_to_null_db = NULL;
+int pinkfish_to_null_count = 0;
 
-char                                    I3_input_buffer[IPS];
-char                                    I3_output_buffer[OPS];
-char                                    I3_currentpacket[IPS];
-bool                                    packetdebug = FALSE;   /* Packet debugging toggle, can be turned on to check
-							        * outgoing packets */
-long                                    I3_input_pointer = 0;
-long                                    I3_output_pointer = 4;
+char I3_input_buffer[IPS];
+char I3_output_buffer[OPS];
+char I3_currentpacket[IPS];
+bool packetdebug = FALSE; /* Packet debugging toggle, can be turned on to check
+                           * outgoing packets */
+long I3_input_pointer = 0;
+long I3_output_pointer = 4;
 #define I3_THISMUD (this_i3mud->name)
-char                                   *I3_ROUTER_NAME;
-char                                   *I3_ROUTER_IP;
-const char                             *manual_router;
-int                                     I3_socket;
-int                                     i3wait;		       /* Number of game loops to wait before attempting to
-							        * reconnect when a socket dies */
-int                                     i3justconnected = 0;    // So we can say something for the logs.
-time_t                                  ucache_clock;	       /* Timer for pruning the ucache */
-long                                    channel_m_received;
-long                                    channel_m_sent;
-long                                    bytes_received;
-long                                    bytes_sent;
-time_t                                  i3_time = 0;	       /* Current clock time for the client */
-time_t                                  connected_at = 0;
-time_t                                  connect_started_at = 0;
-int                                     connection_timeouts = 0;
-time_t                                  uptime = 0;
-time_t                                  record_uptime = 0;
-time_t                                  lag_spike = 0;
-time_t                                  record_lag_spike = 0;
+char *I3_ROUTER_NAME;
+char *I3_ROUTER_IP;
+const char *manual_router;
+int I3_socket;
+int i3wait;              /* Number of game loops to wait before attempting to
+                          * reconnect when a socket dies */
+int i3justconnected = 0; // So we can say something for the logs.
+time_t ucache_clock;     /* Timer for pruning the ucache */
+long channel_m_received;
+long channel_m_sent;
+long bytes_received;
+long bytes_sent;
+time_t i3_time = 0; /* Current clock time for the client */
+time_t connected_at = 0;
+time_t connect_started_at = 0;
+int connection_timeouts = 0;
+time_t uptime = 0;
+time_t record_uptime = 0;
+time_t lag_spike = 0;
+time_t record_lag_spike = 0;
 
-I3_MUD                                 *this_i3mud = NULL;
-I3_MUD                                 *first_mud;
-I3_MUD                                 *last_mud;
+I3_MUD *this_i3mud = NULL;
+I3_MUD *first_mud;
+I3_MUD *last_mud;
 
-I3_CHANNEL                             *first_I3chan;
-I3_CHANNEL                             *last_I3chan;
-I3_BAN                                 *first_i3ban;
-I3_BAN                                 *last_i3ban;
-UCACHE_DATA                            *first_ucache;
-UCACHE_DATA                            *last_ucache;
-ROUTER_DATA                            *first_router;
-ROUTER_DATA                            *last_router;
-I3_COLOR                               *first_i3_color;
-I3_COLOR                               *last_i3_color;
-I3_CMD_DATA                            *first_i3_command;
-I3_CMD_DATA                            *last_i3_command;
-I3_HELP_DATA                           *first_i3_help;
-I3_HELP_DATA                           *last_i3_help;
+I3_CHANNEL *first_I3chan;
+I3_CHANNEL *last_I3chan;
+I3_BAN *first_i3ban;
+I3_BAN *last_i3ban;
+UCACHE_DATA *first_ucache;
+UCACHE_DATA *last_ucache;
+ROUTER_DATA *first_router;
+ROUTER_DATA *last_router;
+I3_COLOR *first_i3_color;
+I3_COLOR *last_i3_color;
+I3_CMD_DATA *first_i3_command;
+I3_CMD_DATA *last_i3_command;
+I3_HELP_DATA *first_i3_help;
+I3_HELP_DATA *last_i3_help;
 
-int                                     router_reconnect_short_delay = 15 * PULSE_PER_SECOND;
-int                                     router_reconnect_medium_delay = 60 * PULSE_PER_SECOND;
-int                                     router_reconnect_long_delay = 300 * PULSE_PER_SECOND;
+int router_reconnect_short_delay = 15 * PULSE_PER_SECOND;
+int router_reconnect_medium_delay = 60 * PULSE_PER_SECOND;
+int router_reconnect_long_delay = 300 * PULSE_PER_SECOND;
 
 // These two are for the cases where we're going to be handling multiple requests that
 // could end up with the same timestamp (even with milliseconds).  In those cases, we need
 // to add an incrementing value so we can still sort by time (timestamp + sub_second_counter)
-time_t                                  last_second = 0;
-int                                     sub_second_counter = 0;
-
+time_t last_second = 0;
+int sub_second_counter = 0;
 
 // To move away from "ticks", we need to start using microsecond timing info.
-int64_t                                 time_to_taunt = (int64_t)1730793600 * (int64_t)1000000;
-int64_t                                 timeout_marker = (int64_t)1730793600 * (int64_t)1000000;
-int                                     expecting_timeout = 0;
+int64_t time_to_taunt = (int64_t)1730793600 * (int64_t)1000000;
+int64_t timeout_marker = (int64_t)1730793600 * (int64_t)1000000;
+int expecting_timeout = 0;
 
+void i3_printf(CHAR_DATA *ch, const char *fmt, ...) __attribute__((format(printf, 2, 3)));
+void i3wrap_printf(CHAR_DATA *ch, const char *fmt, ...) __attribute__((format(printf, 2, 3)));
+void i3page_printf(CHAR_DATA *ch, const char *fmt, ...) __attribute__((format(printf, 2, 3)));
+I3_HEADER *I3_get_header(char **pps);
+void I3_send_channel_listen(I3_CHANNEL *channel, bool lconnect);
+void I3_write_channel_config(void);
+const char *i3_funcname(I3_FUN *func);
+I3_FUN *i3_function(const char *func);
+void I3_saveconfig(void);
+void to_channel(const char *argument, char *xchannel, int level);
+void I3_connection_close(bool reconnect);
+char *i3rankbuffer(CHAR_DATA *ch);
+char *I3_nameescape(const char *ps);
+char *I3_nameremap(const char *ps);
+void i3_npc_chat(const char *chan_name, const char *actor, const char *message);
+void i3_npc_speak(const char *chan_name, const char *actor, const char *message);
+void I3_packet_cleanup(void);
 
+// void                                    i3_nuke_url_file(void);
+// void                                    i3_check_urls(void);
 
-
-
-
-
-void                                    i3_printf(CHAR_DATA *ch, const char *fmt, ...)
-    __attribute__ ((format(printf, 2, 3)));
-void                                    i3wrap_printf(CHAR_DATA *ch, const char *fmt, ...)
-    __attribute__ ((format(printf, 2, 3)));
-void                                    i3page_printf(CHAR_DATA *ch, const char *fmt, ...)
-    __attribute__ ((format(printf, 2, 3)));
-I3_HEADER                              *I3_get_header(char **pps);
-void                                    I3_send_channel_listen(I3_CHANNEL *channel,
-							       bool lconnect);
-void                                    I3_write_channel_config(void);
-const char                             *i3_funcname(I3_FUN *func);
-I3_FUN                                 *i3_function(const char *func);
-void                                    I3_saveconfig(void);
-void                                    to_channel(const char *argument, char *xchannel,
-						   int level);
-void                                    I3_connection_close(bool reconnect);
-char                                   *i3rankbuffer(CHAR_DATA *ch);
-char                                   *I3_nameescape(const char *ps);
-char                                   *I3_nameremap(const char *ps);
-void                                    i3_npc_chat(const char *chan_name, const char *actor, const char *message);
-void                                    i3_npc_speak(const char *chan_name, const char *actor, const char *message);
-void                                    I3_packet_cleanup(void);
-
-//void                                    i3_nuke_url_file(void);
-//void                                    i3_check_urls(void);
-
-const char                             *perm_names[] = {
-    "Notset", "None", "Mort", "Imm", "Admin", "Imp"
-};
+const char *perm_names[] = {"Notset", "None", "Mort", "Imm", "Admin", "Imp"};
 
 /*******************************************
  * String buffering and logging functions. *
  ******************************************/
 
-const char                             *i3one_argument(const char *argument, char *arg_first)
+const char *i3one_argument(const char *argument, char *arg_first)
 {
-    char                                    cEnd;
-    int                                     count;
+    char cEnd;
+    int count;
 
     count = 0;
 
     if (arg_first)
-	arg_first[0] = '\0';
+        arg_first[0] = '\0';
 
     if (!argument || argument[0] == '\0')
-	return NULL;
+        return NULL;
 
     while (isspace(*argument))
-	argument++;
+        argument++;
 
     cEnd = ' ';
     if (*argument == '\'' || *argument == '"')
-	cEnd = *argument++;
+        cEnd = *argument++;
 
-    while (*argument != '\0' && ++count <= MAX_INPUT_LENGTH - 1) {
-	if (*argument == cEnd) {
-	    argument++;
-	    break;
-	}
+    while (*argument != '\0' && ++count <= MAX_INPUT_LENGTH - 1)
+    {
+        if (*argument == cEnd)
+        {
+            argument++;
+            break;
+        }
 
-	if (arg_first)
-	    *arg_first++ = *argument++;
-	else
-	    argument++;
+        if (arg_first)
+            *arg_first++ = *argument++;
+        else
+            argument++;
     }
 
     if (arg_first)
-	*arg_first = '\0';
+        *arg_first = '\0';
 
     while (isspace(*argument))
-	argument++;
+        argument++;
 
     return argument;
 }
 
-char                                   *I3_imctag_to_i3tag(const char *txt)
+char *I3_imctag_to_i3tag(const char *txt)
 {
-    I3_COLOR                               *color;
-    static char                             tbuf[MAX_STRING_LENGTH];
+    I3_COLOR *color;
+    static char tbuf[MAX_STRING_LENGTH];
 
     *tbuf = '\0';
     if (!txt || *txt == '\0')
-	return tbuf;
+        return tbuf;
 
     strlcpy(tbuf, txt, MAX_STRING_LENGTH);
     for (color = first_i3_color; color; color = color->next)
-	strlcpy(tbuf, strrep(tbuf, color->imctag, color->i3tag), MAX_STRING_LENGTH);
+        strlcpy(tbuf, strrep(tbuf, color->imctag, color->i3tag), MAX_STRING_LENGTH);
 
     return tbuf;
 }
 
-char                                   *I3_imctag_to_mudtag(CHAR_DATA *ch, const char *txt)
+char *I3_imctag_to_mudtag(CHAR_DATA *ch, const char *txt)
 {
-    I3_COLOR                               *color;
-    static char                             tbuf[MAX_STRING_LENGTH];
+    I3_COLOR *color;
+    static char tbuf[MAX_STRING_LENGTH];
 
     *tbuf = '\0';
     if (!txt || *txt == '\0')
-	return tbuf;
+        return tbuf;
 
-    if (I3IS_SET(I3FLAG(ch), I3_COLORFLAG)) {
-	strlcpy(tbuf, txt, MAX_STRING_LENGTH);
-	for (color = first_i3_color; color; color = color->next)
-	    strlcpy(tbuf, strrep(tbuf, color->imctag, color->mudtag), MAX_STRING_LENGTH);
-    } else
-	strlcpy(tbuf, i3_strip_colors(txt), MAX_STRING_LENGTH);
+    if (I3IS_SET(I3FLAG(ch), I3_COLORFLAG))
+    {
+        strlcpy(tbuf, txt, MAX_STRING_LENGTH);
+        for (color = first_i3_color; color; color = color->next)
+            strlcpy(tbuf, strrep(tbuf, color->imctag, color->mudtag), MAX_STRING_LENGTH);
+    }
+    else
+        strlcpy(tbuf, i3_strip_colors(txt), MAX_STRING_LENGTH);
 
     return tbuf;
 }
@@ -356,9 +346,7 @@ char *I3_mudtag_to_i3tag(const char *txt)
 
 char *I3_i3tag_to_mudtag(CHAR_DATA *ch, const char *txt)
 {
-    return (I3IS_SET(I3FLAG(ch), I3_COLORFLAG))
-        ? pinkfish_to_xterm(txt)
-        : pinkfish_to_null(txt);
+    return (I3IS_SET(I3FLAG(ch), I3_COLORFLAG)) ? pinkfish_to_xterm(txt) : pinkfish_to_null(txt);
 }
 
 #endif
@@ -370,9 +358,9 @@ char *I3_i3tag_to_mudtag(CHAR_DATA *ch, const char *txt)
 /* Generic substitute for cprintf that has color support */
 void i3_printf(CHAR_DATA *ch, const char *fmt, ...)
 {
-    char                                    buf[MAX_STRING_LENGTH];
-    char                                    buf2[MAX_STRING_LENGTH];
-    va_list                                 args;
+    char buf[MAX_STRING_LENGTH];
+    char buf2[MAX_STRING_LENGTH];
+    va_list args;
 
     va_start(args, fmt);
     vsnprintf(buf, MAX_STRING_LENGTH, fmt, args);
@@ -385,36 +373,37 @@ void i3_printf(CHAR_DATA *ch, const char *fmt, ...)
 
 void i3wrap_printf(CHAR_DATA *ch, const char *fmt, ...)
 {
-    char                                    buf[MAX_STRING_LENGTH];
-    char                                    buf2[MAX_STRING_LENGTH];
-    va_list                                 args;
+    char buf[MAX_STRING_LENGTH];
+    char buf2[MAX_STRING_LENGTH];
+    va_list args;
 
     va_start(args, fmt);
     vsnprintf(buf, MAX_STRING_LENGTH, fmt, args);
     va_end(args);
 
     strlcpy(buf2, I3_i3tag_to_mudtag(ch, buf), MAX_STRING_LENGTH);
-    //cprintf(ch, "%s", buf2);
-    //cprintf(ch, "%s", color_wrap(78, 96, "      ", buf2));
-    cprintf(ch, "%s", color_wrap(MAX(18, ch->desc->telnet.cols - 12), MAX(18, ch->desc->telnet.cols - 2), "      ", buf2));
+    // cprintf(ch, "%s", buf2);
+    // cprintf(ch, "%s", color_wrap(78, 96, "      ", buf2));
+    cprintf(ch, "%s",
+            color_wrap(MAX(18, ch->desc->telnet.cols - 12), MAX(18, ch->desc->telnet.cols - 2), "      ", buf2));
     return;
 }
 
 /* Generic page_printf type function */
 void i3page_printf(CHAR_DATA *ch, const char *fmt, ...)
 {
-    char                                    buf[MAX_STRING_LENGTH];
-    char                                    buf2[MAX_STRING_LENGTH];
-    va_list                                 args;
+    char buf[MAX_STRING_LENGTH];
+    char buf2[MAX_STRING_LENGTH];
+    va_list args;
 
     va_start(args, fmt);
-    //log_info("NL-fmt  %s for %s", strpbrk(fmt, "\n") ? "FOUND" : "NOT FOUND", fmt);
+    // log_info("NL-fmt  %s for %s", strpbrk(fmt, "\n") ? "FOUND" : "NOT FOUND", fmt);
     vsnprintf(buf, MAX_STRING_LENGTH, fmt, args);
     va_end(args);
 
-    //log_info("NL-pre  %s for %s", strpbrk(buf, "\n") ? "FOUND" : "NOT FOUND", buf);
+    // log_info("NL-pre  %s for %s", strpbrk(buf, "\n") ? "FOUND" : "NOT FOUND", buf);
     strlcpy(buf2, I3_i3tag_to_mudtag(ch, buf), MAX_STRING_LENGTH);
-    //log_info("NL-post %s for %s", strpbrk(buf2, "\n") ? "FOUND" : "NOT FOUND", buf2);
+    // log_info("NL-post %s for %s", strpbrk(buf2, "\n") ? "FOUND" : "NOT FOUND", buf2);
     page_string(ch->desc, buf2, 1);
     return;
 }
@@ -425,78 +414,79 @@ void i3page_printf(CHAR_DATA *ch, const char *fmt, ...)
 
 int i3todikugender(int gender)
 {
-    int                                     sex = 0;
+    int sex = 0;
 
     if (gender == 0)
-	sex = SEX_MALE;
+        sex = SEX_MALE;
 
     if (gender == 1)
-	sex = SEX_FEMALE;
+        sex = SEX_FEMALE;
 
     if (gender > 1)
-	sex = SEX_NEUTRAL;
+        sex = SEX_NEUTRAL;
 
     return sex;
 }
 
 int dikutoi3gender(int gender)
 {
-    int                                     sex = 0;
+    int sex = 0;
 
     if (gender > 2 || gender < 0)
-	sex = 2;					       /* I3 neuter */
+        sex = 2; /* I3 neuter */
 
     if (gender == SEX_MALE)
-	sex = 0;					       /* I3 Male */
+        sex = 0; /* I3 Male */
 
     if (gender == SEX_FEMALE)
-	sex = 1;					       /* I3 Female */
+        sex = 1; /* I3 Female */
 
     return sex;
 }
 
 int get_permvalue(const char *flag)
 {
-    unsigned int                            x;
+    unsigned int x;
 
     for (x = 0; x < (sizeof(perm_names) / sizeof(perm_names[0])); x++)
-	if (!strcasecmp(flag, perm_names[x]))
-	    return x;
+        if (!strcasecmp(flag, perm_names[x]))
+            return x;
     return -1;
 }
 
 /*  I3_getarg: extract a single argument (with given max length) from
  *  argument to arg; if arg==NULL, just skip an arg, don't copy it out
  */
-char                                   *I3_getarg(char *argument, char *arg, int maxlen)
+char *I3_getarg(char *argument, char *arg, int maxlen)
 {
-    int                                     len = 0;
+    int len = 0;
 
-    if (!argument || argument[0] == '\0') {
-	if (arg)
-	    arg[0] = '\0';
+    if (!argument || argument[0] == '\0')
+    {
+        if (arg)
+            arg[0] = '\0';
 
-	return argument;
+        return argument;
     }
 
     while (*argument && isspace(*argument))
-	argument++;
+        argument++;
 
     if (arg)
-	while (*argument && !isspace(*argument) && len < maxlen - 1)
-	    *arg++ = *argument++, len++;
+        while (*argument && !isspace(*argument) && len < maxlen - 1)
+            *arg++ = *argument++, len++;
     else
-	while (*argument && !isspace(*argument))
-	    argument++;
+        while (*argument && !isspace(*argument))
+            argument++;
 
     while (*argument && !isspace(*argument))
-	argument++;
+        argument++;
 
     while (*argument && isspace(*argument))
-	argument++;
+        argument++;
 
     if (arg)
-	*arg = '\0';
+        *arg = '\0';
 
     return argument;
 }
@@ -504,17 +494,18 @@ char                                   *I3_getarg(char *argument, char *arg, int
 /* Check for a name in a list */
 bool I3_hasname(char *list, const char *name)
 {
-    char                                   *p;
-    char                                    arg[MAX_INPUT_LENGTH];
+    char *p;
+    char arg[MAX_INPUT_LENGTH];
 
     if (!list)
-	return FALSE;
+        return FALSE;
 
     p = I3_getarg(list, arg, MAX_INPUT_LENGTH);
-    while (arg[0]) {
-	if (!strcasecmp(name, arg))
-	    return TRUE;
-	p = I3_getarg(p, arg, MAX_INPUT_LENGTH);
+    while (arg[0])
+    {
+        if (!strcasecmp(name, arg))
+            return TRUE;
+        p = I3_getarg(p, arg, MAX_INPUT_LENGTH);
     }
     return FALSE;
 }
@@ -522,15 +513,15 @@ bool I3_hasname(char *list, const char *name)
 /* Add a name to a list */
 void I3_flagchan(char **list, const char *name)
 {
-    char                                    buf[MAX_STRING_LENGTH];
+    char buf[MAX_STRING_LENGTH];
 
     if (I3_hasname(*list, name))
-	return;
+        return;
 
     if (*list && *list[0] != '\0')
-	snprintf(buf, MAX_STRING_LENGTH, "%s %s", *list, name);
+        snprintf(buf, MAX_STRING_LENGTH, "%s %s", *list, name);
     else
-	strlcpy(buf, name, MAX_STRING_LENGTH);
+        strlcpy(buf, name, MAX_STRING_LENGTH);
 
     I3STRFREE(*list);
     *list = I3STRALLOC(buf);
@@ -539,19 +530,20 @@ void I3_flagchan(char **list, const char *name)
 /* Remove a name from a list */
 void I3_unflagchan(char **list, const char *name)
 {
-    char                                    buf[MAX_STRING_LENGTH],
-                                            arg[MAX_INPUT_LENGTH];
-    char                                   *p;
+    char buf[MAX_STRING_LENGTH], arg[MAX_INPUT_LENGTH];
+    char *p;
 
     buf[0] = '\0';
     p = I3_getarg(*list, arg, MAX_INPUT_LENGTH);
-    while (arg[0]) {
-	if (strcasecmp(arg, name)) {
-	    if (buf[0])
-		strlcat(buf, " ", MAX_STRING_LENGTH);
-	    strlcat(buf, arg, MAX_STRING_LENGTH);
-	}
-	p = I3_getarg(p, arg, MAX_INPUT_LENGTH);
+    while (arg[0])
+    {
+        if (strcasecmp(arg, name))
+        {
+            if (buf[0])
+                strlcat(buf, " ", MAX_STRING_LENGTH);
+            strlcat(buf, arg, MAX_STRING_LENGTH);
+        }
+        p = I3_getarg(p, arg, MAX_INPUT_LENGTH);
     }
     I3STRFREE(*list);
     *list = I3STRALLOC(buf);
@@ -559,19 +551,22 @@ void I3_unflagchan(char **list, const char *name)
 
 bool i3_str_prefix(const char *astr, const char *bstr)
 {
-    if (!astr) {
-	log_error("Strn_cmp: null astr.");
-	return TRUE;
+    if (!astr)
+    {
+        log_error("Strn_cmp: null astr.");
+        return TRUE;
     }
 
-    if (!bstr) {
-	log_error("Strn_cmp: null bstr.");
-	return TRUE;
+    if (!bstr)
+    {
+        log_error("Strn_cmp: null bstr.");
+        return TRUE;
     }
 
-    for (; *astr; astr++, bstr++) {
-	if (LOWER(*astr) != LOWER(*bstr))
-	    return TRUE;
+    for (; *astr; astr++, bstr++)
+    {
+        if (LOWER(*astr) != LOWER(*bstr))
+            return TRUE;
     }
     return FALSE;
 }
@@ -579,13 +574,13 @@ bool i3_str_prefix(const char *astr, const char *bstr)
 /*
  * Returns an initial-capped string.
  */
-char                                   *i3capitalize(const char *str)
+char *i3capitalize(const char *str)
 {
-    static char                             strcap[MAX_STRING_LENGTH];
-    int                                     i;
+    static char strcap[MAX_STRING_LENGTH];
+    int i;
 
     for (i = 0; str[i] != '\0'; i++)
-	strcap[i] = tolower(str[i]);
+        strcap[i] = tolower(str[i]);
     strcap[i] = '\0';
     strcap[0] = toupper(strcap[0]);
     return strcap;
@@ -596,45 +591,46 @@ char                                   *i3capitalize(const char *str)
  */
 bool i3exists_player(char *name)
 {
-    struct stat                             fst;
-    char                                    buf[MAX_INPUT_LENGTH];
+    struct stat fst;
+    char buf[MAX_INPUT_LENGTH];
 
     /*
-     * Stands to reason that if there ain't a name to look at, they damn well don't exist! 
+     * Stands to reason that if there ain't a name to look at, they damn well don't exist!
      */
     if (!name || !strcasecmp(name, ""))
-	return FALSE;
+        return FALSE;
 
-    snprintf(buf, MAX_INPUT_LENGTH, "%s%c/%s", PLAYER_DIR, tolower(name[0]),
-	     i3capitalize(name));
+    snprintf(buf, MAX_INPUT_LENGTH, "%s%c/%s", PLAYER_DIR, tolower(name[0]), i3capitalize(name));
 
     if (stat(buf, &fst) != -1)
-	return TRUE;
+        return TRUE;
     else
-	return FALSE;
+        return FALSE;
 }
 
 bool verify_i3layout(const char *fmt, int num)
 {
-    const char                             *c;
-    int                                     i = 0;
+    const char *c;
+    int i = 0;
 
     c = fmt;
-    while ((c = strchr(c, '%')) != NULL) {
-	if (*(c + 1) == '%') {				       /* %% */
-	    c += 2;
-	    continue;
-	}
+    while ((c = strchr(c, '%')) != NULL)
+    {
+        if (*(c + 1) == '%')
+        { /* %% */
+            c += 2;
+            continue;
+        }
 
-	if (*(c + 1) != 's')				       /* not %s */
-	    return FALSE;
+        if (*(c + 1) != 's') /* not %s */
+            return FALSE;
 
-	c++;
-	i++;
+        c++;
+        i++;
     }
 
     if (i != num)
-	return FALSE;
+        return FALSE;
 
     return TRUE;
 }
@@ -647,7 +643,7 @@ bool verify_i3layout(const char *fmt, int num)
 bool is_connecting(void)
 {
     if (I3_socket < 1)
-	return FALSE;
+        return FALSE;
 
     return TRUE;
 }
@@ -658,7 +654,7 @@ bool is_connecting(void)
  */
 bool is_connected(void)
 {
-    if( connected_at )
+    if (connected_at)
         return TRUE;
 
     return FALSE;
@@ -667,58 +663,64 @@ bool is_connected(void)
 /*
  * Add backslashes in front of the " and \'s
  */
-char                                   *I3_escape(const char *ps)
+char *I3_escape(const char *ps)
 {
-    static char                             xnew[MAX_STRING_LENGTH];
-    char                                   *pnew = xnew;
+    static char xnew[MAX_STRING_LENGTH];
+    char *pnew = xnew;
 
-    while (ps[0]) {
-	if (ps[0] == '"') {
-	    pnew[0] = '\\';
-	    pnew++;
-	}
-	if (ps[0] == '\\') {
-	    pnew[0] = '\\';
-	    pnew++;
-	}
-	if (ps[0] == '\r' || ps[0] == '\n') {
-	    ps++;
-	    continue;
-	}
-	pnew[0] = ps[0];
-	pnew++;
-	ps++;
+    while (ps[0])
+    {
+        if (ps[0] == '"')
+        {
+            pnew[0] = '\\';
+            pnew++;
+        }
+        if (ps[0] == '\\')
+        {
+            pnew[0] = '\\';
+            pnew++;
+        }
+        if (ps[0] == '\r' || ps[0] == '\n')
+        {
+            ps++;
+            continue;
+        }
+        pnew[0] = ps[0];
+        pnew++;
+        ps++;
     }
     pnew[0] = '\0';
     return xnew;
 }
 
 /* Searches through the channel list to see if one exists with the localname supplied to it. */
-I3_CHANNEL                             *find_I3_channel_by_localname(const char *name)
+I3_CHANNEL *find_I3_channel_by_localname(const char *name)
 {
-    I3_CHANNEL                             *channel = NULL;
+    I3_CHANNEL *channel = NULL;
 
-    for (channel = first_I3chan; channel; channel = channel->next) {
-	if (!channel->local_name)
-	    continue;
+    for (channel = first_I3chan; channel; channel = channel->next)
+    {
+        if (!channel->local_name)
+            continue;
 
-	if (!strcasecmp(channel->local_name, name))
-	    return channel;
+        if (!strcasecmp(channel->local_name, name))
+            return channel;
     }
     return NULL;
 }
 
 /* Searches through the channel list to see if one exists with the I3 channel name supplied to it.*/
-I3_CHANNEL                             *find_I3_channel_by_name(const char *name)
+I3_CHANNEL *find_I3_channel_by_name(const char *name)
 {
-    I3_CHANNEL                             *channel = NULL;
+    I3_CHANNEL *channel = NULL;
 
     if (!name || !*name)
         return NULL;
 
-    for (channel = first_I3chan; channel; channel = channel->next) {
-	if (!strcasecmp(channel->I3_name, name))
-	    return channel;
+    for (channel = first_I3chan; channel; channel = channel->next)
+    {
+        if (!strcasecmp(channel->I3_name, name))
+            return channel;
     }
     return NULL;
 }
@@ -726,9 +728,9 @@ I3_CHANNEL                             *find_I3_channel_by_name(const char *name
 /* Sets up a channel on the mud for the first time, configuring its default layout.
  * If you don't like the default layout of channels, this is where you should edit it to your liking.
  */
-I3_CHANNEL                             *new_I3_channel(void)
+I3_CHANNEL *new_I3_channel(void)
 {
-    I3_CHANNEL                             *cnew;
+    I3_CHANNEL *cnew;
 
     I3CREATE(cnew, I3_CHANNEL, 1);
 
@@ -739,11 +741,12 @@ I3_CHANNEL                             *new_I3_channel(void)
 /* Deletes a channel's information from the mud. */
 void destroy_I3_channel(I3_CHANNEL *channel)
 {
-    int                                     x;
+    int x;
 
-    if (channel == NULL) {
-	log_error("%s", "destroy_I3_channel: Null parameter");
-	return;
+    if (channel == NULL)
+    {
+        log_error("%s", "destroy_I3_channel: Null parameter");
+        return;
     }
 
     I3STRFREE(channel->local_name);
@@ -752,10 +755,11 @@ void destroy_I3_channel(I3_CHANNEL *channel)
     I3STRFREE(channel->layout_m);
     I3STRFREE(channel->layout_e);
 
-    for (x = 0; x < MAX_I3HISTORY; x++) {
-	//if (channel->history[x] && channel->history[x][0] != '\0')
-	if (channel->history[x] != NULL)
-	    I3STRFREE(channel->history[x]);
+    for (x = 0; x < MAX_I3HISTORY; x++)
+    {
+        // if (channel->history[x] && channel->history[x][0] != '\0')
+        if (channel->history[x] != NULL)
+            I3STRFREE(channel->history[x]);
     }
 
     I3UNLINK(channel, first_I3chan, last_I3chan, next, prev);
@@ -763,34 +767,34 @@ void destroy_I3_channel(I3_CHANNEL *channel)
 }
 
 /* Finds a mud with the name supplied on the mudlist */
-I3_MUD                                 *find_I3_mud_by_name(const char *name)
+I3_MUD *find_I3_mud_by_name(const char *name)
 {
-    I3_MUD                                 *mud;
+    I3_MUD *mud;
 
-    for (mud = first_mud; mud; mud = mud->next) {
-	if (!strcasecmp(mud->name, name))
-	    return mud;
+    for (mud = first_mud; mud; mud = mud->next)
+    {
+        if (!strcasecmp(mud->name, name))
+            return mud;
     }
     return NULL;
 }
 
-I3_MUD                                 *new_I3_mud(char *name)
+I3_MUD *new_I3_mud(char *name)
 {
-    I3_MUD                                 *cnew,
-                                           *mud_prev;
+    I3_MUD *cnew, *mud_prev;
 
     I3CREATE(cnew, I3_MUD, 1);
 
     cnew->name = I3STRALLOC(name);
 
     for (mud_prev = first_mud; mud_prev; mud_prev = mud_prev->next)
-	if (strcasecmp(mud_prev->name, name) >= 0)
-	    break;
+        if (strcasecmp(mud_prev->name, name) >= 0)
+            break;
 
     if (!mud_prev)
-	I3LINK(cnew, first_mud, last_mud, next, prev);
+        I3LINK(cnew, first_mud, last_mud, next, prev);
     else
-	I3INSERT(cnew, mud_prev, first_mud, next, prev);
+        I3INSERT(cnew, mud_prev, first_mud, next, prev);
 
     return cnew;
 }
@@ -853,19 +857,20 @@ I3_MUD *create_I3_mud()
     mud->password = 0;
     mud->mudlist_id = 0;
     mud->chanlist_id = 0;
-    mud->minlevel = 1;      /* Minimum default level before I3 will acknowledge you exist */
-    mud->immlevel = 2;      /* Default immortal level */
-    mud->adminlevel = 51;   /* Default administration level */
-    mud->implevel = 60;     /* Default implementor level */
+    mud->minlevel = 1;    /* Minimum default level before I3 will acknowledge you exist */
+    mud->immlevel = 2;    /* Default immortal level */
+    mud->adminlevel = 51; /* Default administration level */
+    mud->implevel = 60;   /* Default implementor level */
 
     return mud;
 }
 
 void destroy_I3_mud(I3_MUD *mud)
 {
-    if (mud == NULL) {
-	log_error("%s", "destroy_I3_mud: Null parameter");
-	return;
+    if (mud == NULL)
+    {
+        log_error("%s", "destroy_I3_mud: Null parameter");
+        return;
     }
 
     I3STRFREE(mud->name);
@@ -886,7 +891,7 @@ void destroy_I3_mud(I3_MUD *mud)
 
     I3STRFREE(mud->routerName);
     if (mud != this_i3mud)
-	I3UNLINK(mud, first_mud, last_mud, next, prev);
+        I3UNLINK(mud, first_mud, last_mud, next, prev);
     I3DISPOSE(mud);
 }
 
@@ -894,36 +899,38 @@ void destroy_I3_mud(I3_MUD *mud)
  * Returns a CHAR_DATA class which matches the string
  *
  */
-CHAR_DATA                              *I3_find_user(const char *name)
+CHAR_DATA *I3_find_user(const char *name)
 {
-    DESCRIPTOR_DATA                        *d;
-    CHAR_DATA                              *vch = NULL;
+    DESCRIPTOR_DATA *d;
+    CHAR_DATA *vch = NULL;
 
-    for (d = first_descriptor; d; d = d->next) {
-	if ((vch = d->character ? d->character : d->original) != NULL
-	    && !strcasecmp(CH_I3NAME(vch), name)
-	    && d->connected == CON_PLAYING)
-	    return vch;
+    for (d = first_descriptor; d; d = d->next)
+    {
+        if ((vch = d->character ? d->character : d->original) != NULL && !strcasecmp(CH_I3NAME(vch), name) &&
+            d->connected == CON_PLAYING)
+            return vch;
     }
     return NULL;
 }
 
-void i3_message_to_players( char *str ) {
-    DESCRIPTOR_DATA                        *d;
-    CHAR_DATA                              *vch = NULL;
+void i3_message_to_players(char *str)
+{
+    DESCRIPTOR_DATA *d;
+    CHAR_DATA *vch = NULL;
 
-    for (d = first_descriptor; d; d = d->next) {
-	vch = d->original ? d->original : d->character;
+    for (d = first_descriptor; d; d = d->next)
+    {
+        vch = d->original ? d->original : d->character;
 
-	if (!vch)
-	    continue;
+        if (!vch)
+            continue;
 
-	if (!I3_hasname(I3LISTEN(vch), "wiley")
-	    || I3_hasname(I3DENY(vch), "wiley"))
-	    continue;
+        if (!I3_hasname(I3LISTEN(vch), "wiley") || I3_hasname(I3DENY(vch), "wiley"))
+            continue;
 
-        if (d->connected == CON_PLAYING) {
-	    i3wrap_printf(vch, "%s%%^RESET%%^\r\n", str);
+        if (d->connected == CON_PLAYING)
+        {
+            i3wrap_printf(vch, "%s%%^RESET%%^\r\n", str);
         }
     }
 }
@@ -933,39 +940,42 @@ void i3_message_to_players( char *str ) {
  */
 bool i3ignoring(CHAR_DATA *ch, const char *ignore)
 {
-    I3_IGNORE                              *temp;
-    I3_MUD                                 *mud;
-    char                                   *ps;
-    char                                    ipbuf[MAX_INPUT_LENGTH],
-                                            mudname[MAX_INPUT_LENGTH];
+    I3_IGNORE *temp;
+    I3_MUD *mud;
+    char *ps;
+    char ipbuf[MAX_INPUT_LENGTH], mudname[MAX_INPUT_LENGTH];
 
     /*
-     * Wildcard support thanks to Xorith 
+     * Wildcard support thanks to Xorith
      */
-    for (temp = FIRST_I3IGNORE(ch); temp; temp = temp->next) {
-	if (!fnmatch(temp->name, ignore, 0))
-	    return TRUE;
+    for (temp = FIRST_I3IGNORE(ch); temp; temp = temp->next)
+    {
+        if (!fnmatch(temp->name, ignore, 0))
+            return TRUE;
     }
 
     /*
-     * In theory, getting this far should be the result of an IP:Port ban 
+     * In theory, getting this far should be the result of an IP:Port ban
      */
     ps = strchr(ignore, '@');
 
     if (ignore[0] == '\0' || ps == NULL)
-	return FALSE;
+        return FALSE;
 
     ps[0] = '\0';
     strlcpy(mudname, ps + 1, MAX_INPUT_LENGTH);
 
-    for (mud = first_mud; mud; mud = mud->next) {
-	if (!strcasecmp(mud->name, mudname)) {
-	    snprintf(ipbuf, MAX_INPUT_LENGTH, "%s:%d", mud->ipaddress, mud->player_port);
-	    for (temp = FIRST_I3IGNORE(ch); temp; temp = temp->next) {
-		if (!strcasecmp(temp->name, ipbuf))
-		    return TRUE;
-	    }
-	}
+    for (mud = first_mud; mud; mud = mud->next)
+    {
+        if (!strcasecmp(mud->name, mudname))
+        {
+            snprintf(ipbuf, MAX_INPUT_LENGTH, "%s:%d", mud->ipaddress, mud->player_port);
+            for (temp = FIRST_I3IGNORE(ch); temp; temp = temp->next)
+            {
+                if (!strcasecmp(temp->name, ipbuf))
+                    return TRUE;
+            }
+        }
     }
     return FALSE;
 }
@@ -973,63 +983,70 @@ bool i3ignoring(CHAR_DATA *ch, const char *ignore)
 /* Be careful with an IP ban - Last resort measure, etc. */
 bool i3banned(const char *ignore)
 {
-    I3_BAN                                 *temp;
-    I3_MUD                                 *mud;
-    char                                   *ps;
-    char                                    mudname[MAX_INPUT_LENGTH],
-                                            ipbuf[MAX_INPUT_LENGTH];
+    I3_BAN *temp;
+    I3_MUD *mud;
+    char *ps;
+    char mudname[MAX_INPUT_LENGTH], ipbuf[MAX_INPUT_LENGTH];
 
     /*
-     * Wildcard support thanks to Xorith 
+     * Wildcard support thanks to Xorith
      */
-    for (temp = first_i3ban; temp; temp = temp->next) {
-	if (!fnmatch(temp->name, ignore, 0))
-	    return TRUE;
+    for (temp = first_i3ban; temp; temp = temp->next)
+    {
+        if (!fnmatch(temp->name, ignore, 0))
+            return TRUE;
     }
 
     /*
-     * In theory, getting this far should be the result of an IP:Port ban 
+     * In theory, getting this far should be the result of an IP:Port ban
      */
     ps = strchr(ignore, '@');
 
     if (!ignore || ignore[0] == '\0' || ps == NULL)
-	return FALSE;
+        return FALSE;
 
     ps[0] = '\0';
     strlcpy(mudname, ps + 1, MAX_INPUT_LENGTH);
 
-    for (mud = first_mud; mud; mud = mud->next) {
-	if (!strcasecmp(mud->name, mudname)) {
-	    snprintf(ipbuf, MAX_INPUT_LENGTH, "%s:%d", mud->ipaddress, mud->player_port);
-	    for (temp = first_i3ban; temp; temp = temp->next) {
-		if (!strcasecmp(temp->name, ipbuf))
-		    return TRUE;
-	    }
-	}
+    for (mud = first_mud; mud; mud = mud->next)
+    {
+        if (!strcasecmp(mud->name, mudname))
+        {
+            snprintf(ipbuf, MAX_INPUT_LENGTH, "%s:%d", mud->ipaddress, mud->player_port);
+            for (temp = first_i3ban; temp; temp = temp->next)
+            {
+                if (!strcasecmp(temp->name, ipbuf))
+                    return TRUE;
+            }
+        }
     }
     return FALSE;
 }
 
 bool i3check_permissions(CHAR_DATA *ch, int checkvalue, int targetvalue, bool enforceequal)
 {
-    if (checkvalue < 0 || checkvalue > I3PERM_IMP) {
-	i3_printf(ch, "Invalid permission setting.\r\n");
-	return FALSE;
+    if (checkvalue < 0 || checkvalue > I3PERM_IMP)
+    {
+        i3_printf(ch, "Invalid permission setting.\r\n");
+        return FALSE;
     }
 
-    if (checkvalue > I3PERM(ch)) {
-	i3_printf(ch, "You cannot set permissions higher than your own.\r\n");
-	return FALSE;
+    if (checkvalue > I3PERM(ch))
+    {
+        i3_printf(ch, "You cannot set permissions higher than your own.\r\n");
+        return FALSE;
     }
 
-    if (checkvalue == I3PERM(ch) && I3PERM(ch) != I3PERM_IMP && enforceequal) {
-	i3_printf(ch, "You cannot set permissions equal to your own. Someone higher up must do this.\r\n");
-	return FALSE;
+    if (checkvalue == I3PERM(ch) && I3PERM(ch) != I3PERM_IMP && enforceequal)
+    {
+        i3_printf(ch, "You cannot set permissions equal to your own. Someone higher up must do this.\r\n");
+        return FALSE;
     }
 
-    if (I3PERM(ch) < targetvalue) {
-	i3_printf(ch, "You cannot alter the permissions of someone or something above your own.\r\n");
-	return FALSE;
+    if (I3PERM(ch) < targetvalue)
+    {
+        i3_printf(ch, "You cannot alter the permissions of someone or something above your own.\r\n");
+        return FALSE;
     }
     return TRUE;
 }
@@ -1037,52 +1054,59 @@ bool i3check_permissions(CHAR_DATA *ch, int checkvalue, int targetvalue, bool en
 /*
  * Read a number from a file. [Taken from Smaug's fread_number]
  */
-int i3fread_number(FILE * fp)
+int i3fread_number(FILE *fp)
 {
-    int                                     num;
-    bool                                    sign;
-    char                                    c;
+    int num;
+    bool sign;
+    char c;
 
-    do {
-	if (feof(fp)) {
-	    log_info("%s", "i3fread_number: EOF encountered on read.");
-	    return 0;
-	}
-	c = getc(fp);
-    }
-    while (isspace(c));
+    do
+    {
+        if (feof(fp))
+        {
+            log_info("%s", "i3fread_number: EOF encountered on read.");
+            return 0;
+        }
+        c = getc(fp);
+    } while (isspace(c));
 
     num = 0;
 
     sign = FALSE;
-    if (c == '+') {
-	c = getc(fp);
-    } else if (c == '-') {
-	sign = TRUE;
-	c = getc(fp);
+    if (c == '+')
+    {
+        c = getc(fp);
+    }
+    else if (c == '-')
+    {
+        sign = TRUE;
+        c = getc(fp);
     }
 
-    if (!isdigit(c)) {
-	log_info("i3fread_number: bad format. (%c)", c);
-	return 0;
+    if (!isdigit(c))
+    {
+        log_info("i3fread_number: bad format. (%c)", c);
+        return 0;
     }
 
-    while (isdigit(c)) {
-	if (feof(fp)) {
-	    log_info("%s", "i3fread_number: EOF encountered on read.");
-	    return num;
-	}
-	num = num * 10 + c - '0';
-	c = getc(fp);
+    while (isdigit(c))
+    {
+        if (feof(fp))
+        {
+            log_info("%s", "i3fread_number: EOF encountered on read.");
+            return num;
+        }
+        num = num * 10 + c - '0';
+        c = getc(fp);
     }
 
     if (sign)
-	num = 0 - num;
+        num = 0 - num;
 
     if (c == '|')
-	num += i3fread_number(fp);
+        num += i3fread_number(fp);
     else if (c != ' ')
-	ungetc(c, fp);
+        ungetc(c, fp);
 
     return num;
 }
@@ -1090,12 +1114,12 @@ int i3fread_number(FILE * fp)
 /*
  * Read to end of line into static buffer [Taken from Smaug's fread_line]
  */
-char                                   *i3fread_line(FILE * fp)
+char *i3fread_line(FILE *fp)
 {
-    char                                    line[MAX_STRING_LENGTH];
-    char                                   *pline;
-    char                                    c;
-    int                                     ln;
+    char line[MAX_STRING_LENGTH];
+    char *pline;
+    char c;
+    int ln;
 
     pline = line;
     line[0] = '\0';
@@ -1105,131 +1129,149 @@ char                                   *i3fread_line(FILE * fp)
      * Skip blanks.
      * Read first char.
      */
-    do {
-	if (feof(fp)) {
-	    log_error("%s", "i3fread_line: EOF encountered on read.");
-	    strlcpy(line, "", MAX_STRING_LENGTH);
-	    return I3STRALLOC(line);
-	}
-	c = getc(fp);
-    }
-    while (isspace(c));
+    do
+    {
+        if (feof(fp))
+        {
+            log_error("%s", "i3fread_line: EOF encountered on read.");
+            strlcpy(line, "", MAX_STRING_LENGTH);
+            return I3STRALLOC(line);
+        }
+        c = getc(fp);
+    } while (isspace(c));
 
     ungetc(c, fp);
 
-    do {
-	if (feof(fp)) {
-	    log_error("%s", "i3fread_line: EOF encountered on read.");
-	    *pline = '\0';
-	    return I3STRALLOC(line);
-	}
-	c = getc(fp);
-	*pline++ = c;
-	ln++;
-	if (ln >= (MAX_STRING_LENGTH - 1)) {
-	    log_error("%s", "i3fread_line: line too long");
-	    break;
-	}
-    }
-    while (c != '\n' && c != '\r');
+    do
+    {
+        if (feof(fp))
+        {
+            log_error("%s", "i3fread_line: EOF encountered on read.");
+            *pline = '\0';
+            return I3STRALLOC(line);
+        }
+        c = getc(fp);
+        *pline++ = c;
+        ln++;
+        if (ln >= (MAX_STRING_LENGTH - 1))
+        {
+            log_error("%s", "i3fread_line: line too long");
+            break;
+        }
+    } while (c != '\n' && c != '\r');
 
-    do {
-	c = getc(fp);
-    }
-    while (c == '\n' || c == '\r');
+    do
+    {
+        c = getc(fp);
+    } while (c == '\n' || c == '\r');
 
     ungetc(c, fp);
     pline--;
     *pline = '\0';
 
     /*
-     * Since tildes generally aren't found at the end of lines, this seems workable. Will enable reading old configs. 
+     * Since tildes generally aren't found at the end of lines, this seems workable. Will enable reading old configs.
      */
     if (line[strlen(line) - 1] == '~')
-	line[strlen(line) - 1] = '\0';
+        line[strlen(line) - 1] = '\0';
     return I3STRALLOC(line);
 }
 
 /*
  * Read one word (into static buffer). [Taken from Smaug's fread_word]
  */
-char                                   *i3fread_word(FILE * fp)
+char *i3fread_word(FILE *fp)
 {
-    static char                             word[MAX_INPUT_LENGTH];
-    char                                   *pword;
-    char                                    cEnd;
+    static char word[MAX_INPUT_LENGTH];
+    char *pword;
+    char cEnd;
 
-    do {
-	if (feof(fp)) {
-	    log_info("%s", "i3fread_word: EOF encountered on read.");
-	    word[0] = '\0';
-	    return word;
-	}
-	cEnd = getc(fp);
+    do
+    {
+        if (feof(fp))
+        {
+            log_info("%s", "i3fread_word: EOF encountered on read.");
+            word[0] = '\0';
+            return word;
+        }
+        cEnd = getc(fp);
+    } while (isspace(cEnd));
+
+    if (cEnd == '\'' || cEnd == '"')
+    {
+        pword = word;
     }
-    while (isspace(cEnd));
-
-    if (cEnd == '\'' || cEnd == '"') {
-	pword = word;
-    } else {
-	word[0] = cEnd;
-	pword = word + 1;
-	cEnd = ' ';
+    else
+    {
+        word[0] = cEnd;
+        pword = word + 1;
+        cEnd = ' ';
     }
 
-    for (; pword < word + MAX_INPUT_LENGTH; pword++) {
-	if (feof(fp)) {
-	    log_info("%s", "i3fread_word: EOF encountered on read.");
-	    *pword = '\0';
-	    return word;
-	}
-	*pword = getc(fp);
-	if (cEnd == ' ' ? isspace(*pword) : *pword == cEnd) {
-	    if (cEnd == ' ')
-		ungetc(*pword, fp);
-	    *pword = '\0';
-	    return word;
-	}
+    for (; pword < word + MAX_INPUT_LENGTH; pword++)
+    {
+        if (feof(fp))
+        {
+            log_info("%s", "i3fread_word: EOF encountered on read.");
+            *pword = '\0';
+            return word;
+        }
+        *pword = getc(fp);
+        if (cEnd == ' ' ? isspace(*pword) : *pword == cEnd)
+        {
+            if (cEnd == ' ')
+                ungetc(*pword, fp);
+            *pword = '\0';
+            return word;
+        }
     }
 
     log_info("%s", "i3fread_word: word too long");
     return NULL;
 }
 
-char                                   *i3fread_rest_of_line(FILE * fp)
+char *i3fread_rest_of_line(FILE *fp)
 {
-    static char                             word[MAX_STRING_LENGTH];
-    char                                   *pword;
-    char                                    c;
+    static char word[MAX_STRING_LENGTH];
+    char *pword;
+    char c;
 
-    do {
-	if (feof(fp)) {
-	    log_info("%s", "i3fread_rest_of_line: EOF encountered on read.");
-	    word[0] = '\0';
-	    return word;
-	}
-	c = getc(fp);
+    do
+    {
+        if (feof(fp))
+        {
+            log_info("%s", "i3fread_rest_of_line: EOF encountered on read.");
+            word[0] = '\0';
+            return word;
+        }
+        c = getc(fp);
     } while (isspace(c));
 
     word[0] = c;
     pword = word + 1;
 
-    for (; pword < word + MAX_STRING_LENGTH; pword++) {
-	if (feof(fp)) {
-	    log_info("%s", "i3fread_rest_of_line: EOF encountered on read.");
-	    *pword = '\0';
-	    return word;
-	}
+    for (; pword < word + MAX_STRING_LENGTH; pword++)
+    {
+        if (feof(fp))
+        {
+            log_info("%s", "i3fread_rest_of_line: EOF encountered on read.");
+            *pword = '\0';
+            return word;
+        }
         c = getc(fp);
-        if(c == '\n' || c == '\r') {
-            do {
+        if (c == '\n' || c == '\r')
+        {
+            do
+            {
                 c = getc(fp);
             } while (c == '\n' || c == '\r');
-	    if (!feof(fp))
+            if (!feof(fp))
                 ungetc(c, fp);
             *pword = '\0';
             return word;
-        } else {
+        }
+        else
+        {
             *pword = c;
         }
     }
@@ -1241,18 +1283,19 @@ char                                   *i3fread_rest_of_line(FILE * fp)
 /*
  * Read a letter from a file. [Taken from Smaug's fread_letter]
  */
-char i3fread_letter(FILE * fp)
+char i3fread_letter(FILE *fp)
 {
-    char                                    c;
+    char c;
 
-    do {
-	if (feof(fp)) {
-	    log_info("%s", "i3fread_letter: EOF encountered on read.");
-	    return '\0';
-	}
-	c = getc(fp);
-    }
-    while (isspace(c));
+    do
+    {
+        if (feof(fp))
+        {
+            log_info("%s", "i3fread_letter: EOF encountered on read.");
+            return '\0';
+        }
+        c = getc(fp);
+    } while (isspace(c));
 
     return c;
 }
@@ -1260,23 +1303,24 @@ char i3fread_letter(FILE * fp)
 /*
  * Read to end of line (for comments). [Taken from Smaug's fread_to_eol]
  */
-void i3fread_to_eol(FILE * fp)
+void i3fread_to_eol(FILE *fp)
 {
-    char                                    c;
+    char c;
 
-    do {
-	if (feof(fp)) {
-	    log_info("%s", "i3fread_to_eol: EOF encountered on read.");
-	    return;
-	}
-	c = getc(fp);
-    }
-    while (c != '\n' && c != '\r');
+    do
+    {
+        if (feof(fp))
+        {
+            log_info("%s", "i3fread_to_eol: EOF encountered on read.");
+            return;
+        }
+        c = getc(fp);
+    } while (c != '\n' && c != '\r');
 
-    do {
-	c = getc(fp);
-    }
-    while (c == '\n' || c == '\r');
+    do
+    {
+        c = getc(fp);
+    } while (c == '\n' || c == '\r');
 
     ungetc(c, fp);
     return;
@@ -1285,60 +1329,68 @@ void i3fread_to_eol(FILE * fp)
 /*
  * Read and allocate space for a string from a file.
  */
-char                                   *i3fread_string(FILE * fp)
+char *i3fread_string(FILE *fp)
 {
-    static char                             buf[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
-    char                                   *ack = NULL;
-    int                                     flag = FALSE;
-    int                                     c = 0;
-    static char                             Empty[1] = "";
+    static char buf[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
+    char *ack = NULL;
+    int flag = FALSE;
+    int c = 0;
+    static char Empty[1] = "";
 
     bzero(buf, MAX_STRING_LENGTH);
     ack = buf;
     flag = 0;
-    do {
-	c = getc(fp);
+    do
+    {
+        c = getc(fp);
     } while (isspace(c));
 
     if ((*ack++ = c) == '~')
-	return Empty;
+        return Empty;
     if (((int)(*ack++ = c)) == '\0xA2')
-	return Empty;
+        return Empty;
 
-    for (;;) {
-	if (ack > &buf[MAX_STRING_LENGTH - 1]) {
-	    log_error("new_fread_string: MAX_STRING %d exceeded, truncating.", MAX_STRING_LENGTH);
-	    return buf;
-	}
-	switch ((int)(*ack = getc(fp))) {
-	    default:
-		flag = 0;
-		ack++;
-		break;
-	    case EOF:
-		log_error("Fread_string: EOF");
-		return buf;
-	    case '\r':
-		break;
-	    case '~':
-	    case '\0xA2':
-		ack++;
-		flag = 1;
-		break;
-	    case '\n':
-		if (flag) {
-		    if (ack > buf) {
-			ack--;
-			*ack = '\0';
-		    }
-		    return buf;
-		} else {
-		    flag = 0;
-		    ack++;
-		    *ack++ = '\r';
-		}
-		break;
-	}
+    for (;;)
+    {
+        if (ack > &buf[MAX_STRING_LENGTH - 1])
+        {
+            log_error("new_fread_string: MAX_STRING %d exceeded, truncating.", MAX_STRING_LENGTH);
+            return buf;
+        }
+        switch ((int)(*ack = getc(fp)))
+        {
+        default:
+            flag = 0;
+            ack++;
+            break;
+        case EOF:
+            log_error("Fread_string: EOF");
+            return buf;
+        case '\r':
+            break;
+        case '~':
+        case '\0xA2':
+            ack++;
+            flag = 1;
+            break;
+        case '\n':
+            if (flag)
+            {
+                if (ack > buf)
+                {
+                    ack--;
+                    *ack = '\0';
+                }
+                return buf;
+            }
+            else
+            {
+                flag = 0;
+                ack++;
+                *ack++ = '\r';
+            }
+            break;
+        }
     }
 }
 
@@ -1351,22 +1403,23 @@ char                                   *i3fread_string(FILE * fp)
  */
 void I3_write_buffer(const char *msg)
 {
-    long                                    newsize = I3_output_pointer + strlen(msg);
+    long newsize = I3_output_pointer + strlen(msg);
 
-    if (newsize > OPS - 1) {
-	log_error("I3_write_buffer: buffer too large (would become %ld)", newsize);
-	return;
+    if (newsize > OPS - 1)
+    {
+        log_error("I3_write_buffer: buffer too large (would become %ld)", newsize);
+        return;
     }
     strlcpy(I3_output_buffer + I3_output_pointer, msg, newsize);
     I3_output_pointer = newsize;
 }
 
-/* Use this function in place of I3_write_buffer ONLY if the text to be sent could 
+/* Use this function in place of I3_write_buffer ONLY if the text to be sent could
  * contain color tags to parse into Pinkfish codes. Otherwise it will mess up the packet.
  */
 void send_to_i3(const char *text)
 {
-    char                                    buf[MAX_STRING_LENGTH];
+    char buf[MAX_STRING_LENGTH];
 
     snprintf(buf, MAX_STRING_LENGTH, "%s", I3_mudtag_to_i3tag(text));
     I3_write_buffer(buf);
@@ -1376,40 +1429,47 @@ void send_to_i3(const char *text)
  * Put a I3-header in the send-buffer. If a field is NULL it will
  * be replaced by a 0 (zero).
  */
-void I3_write_header(const char *identifier, const char *originator_mudname,
-		     const char *originator_username, const char *target_mudname,
-		     const char *target_username)
+void I3_write_header(const char *identifier, const char *originator_mudname, const char *originator_username,
+                     const char *target_mudname, const char *target_username)
 {
     I3_write_buffer("({\"");
     I3_write_buffer(identifier);
     I3_write_buffer("\",5,");
-    if (originator_mudname) {
-	I3_write_buffer("\"");
-	I3_write_buffer(originator_mudname);
-	I3_write_buffer("\",");
-    } else
-	I3_write_buffer("0,");
+    if (originator_mudname)
+    {
+        I3_write_buffer("\"");
+        I3_write_buffer(originator_mudname);
+        I3_write_buffer("\",");
+    }
+    else
+        I3_write_buffer("0,");
 
-    if (originator_username) {
-	I3_write_buffer("\"");
-	I3_write_buffer(I3_nameescape(originator_username));
-	I3_write_buffer("\",");
-    } else
-	I3_write_buffer("0,");
+    if (originator_username)
+    {
+        I3_write_buffer("\"");
+        I3_write_buffer(I3_nameescape(originator_username));
+        I3_write_buffer("\",");
+    }
+    else
+        I3_write_buffer("0,");
 
-    if (target_mudname) {
-	I3_write_buffer("\"");
-	I3_write_buffer(target_mudname);
-	I3_write_buffer("\",");
-    } else
-	I3_write_buffer("0,");
+    if (target_mudname)
+    {
+        I3_write_buffer("\"");
+        I3_write_buffer(target_mudname);
+        I3_write_buffer("\",");
+    }
+    else
+        I3_write_buffer("0,");
 
-    if (target_username) {
-	I3_write_buffer("\"");
-	I3_write_buffer(target_username);
-	I3_write_buffer("\",");
-    } else
-	I3_write_buffer("0,");
+    if (target_username)
+    {
+        I3_write_buffer("\"");
+        I3_write_buffer(target_username);
+        I3_write_buffer("\",");
+    }
+    else
+        I3_write_buffer("0,");
 }
 
 /*
@@ -1422,76 +1482,80 @@ void I3_write_header(const char *identifier, const char *originator_mudname,
  * ps will point to the beginning of the next field.
  *
  */
-char                                   *I3_get_field(char *packet, char **ps)
+char *I3_get_field(char *packet, char **ps)
 {
-    int                                     count[MAX_INPUT_LENGTH];
-    char                                    has_apostrophe = 0,
-	has_backslash = 0;
-    char                                    foundit = 0;
+    int count[MAX_INPUT_LENGTH];
+    char has_apostrophe = 0, has_backslash = 0;
+    char foundit = 0;
 
     bzero(count, sizeof(count));
 
     *ps = packet;
-    while (1) {
-	switch (*ps[0]) {
-	    case '{':
-		if (!has_apostrophe)
-		    count[(int)'{']++;
-		break;
-	    case '}':
-		if (!has_apostrophe)
-		    count[(int)'}']++;
-		break;
-	    case '[':
-		if (!has_apostrophe)
-		    count[(int)'[']++;
-		break;
-	    case ']':
-		if (!has_apostrophe)
-		    count[(int)']']++;
-		break;
-	    case '(':
-		if (!has_apostrophe)
-		    count[(int)'(']++;
-		break;
-	    case ')':
-		if (!has_apostrophe)
-		    count[(int)')']++;
-		break;
-	    case '\\':
-		if (has_backslash)
-		    has_backslash = 0;
-		else
-		    has_backslash = 1;
-		break;
-	    case '"':
-		if (has_backslash) {
-		    has_backslash = 0;
-		} else {
-		    if (has_apostrophe)
-			has_apostrophe = 0;
-		    else
-			has_apostrophe = 1;
-		}
-		break;
-	    case ',':
-	    case ':':
-		if (has_apostrophe)
-		    break;
-		if (has_backslash)
-		    break;
-		if (count[(int)'{'] != count[(int)'}'])
-		    break;
-		if (count[(int)'['] != count[(int)']'])
-		    break;
-		if (count[(int)'('] != count[(int)')'])
-		    break;
-		foundit = 1;
-		break;
-	}
-	if (foundit)
-	    break;
-	(*ps)++;
+    while (1)
+    {
+        switch (*ps[0])
+        {
+        case '{':
+            if (!has_apostrophe)
+                count[(int)'{']++;
+            break;
+        case '}':
+            if (!has_apostrophe)
+                count[(int)'}']++;
+            break;
+        case '[':
+            if (!has_apostrophe)
+                count[(int)'[']++;
+            break;
+        case ']':
+            if (!has_apostrophe)
+                count[(int)']']++;
+            break;
+        case '(':
+            if (!has_apostrophe)
+                count[(int)'(']++;
+            break;
+        case ')':
+            if (!has_apostrophe)
+                count[(int)')']++;
+            break;
+        case '\\':
+            if (has_backslash)
+                has_backslash = 0;
+            else
+                has_backslash = 1;
+            break;
+        case '"':
+            if (has_backslash)
+            {
+                has_backslash = 0;
+            }
+            else
+            {
+                if (has_apostrophe)
+                    has_apostrophe = 0;
+                else
+                    has_apostrophe = 1;
+            }
+            break;
+        case ',':
+        case ':':
+            if (has_apostrophe)
+                break;
+            if (has_backslash)
+                break;
+            if (count[(int)'{'] != count[(int)'}'])
+                break;
+            if (count[(int)'['] != count[(int)']'])
+                break;
+            if (count[(int)'('] != count[(int)')'])
+                break;
+            foundit = 1;
+            break;
+        }
+        if (foundit)
+            break;
+        (*ps)++;
     }
     *ps[0] = '\0';
     (*ps)++;
@@ -1503,11 +1567,8 @@ char                                   *I3_get_field(char *packet, char **ps)
  */
 bool I3_write_packet(char *msg)
 {
-    int                                     oldsize,
-                                            size,
-                                            check,
-                                            x;
-    char                                   *s = I3_output_buffer;
+    int oldsize, size, check, x;
+    char *s = I3_output_buffer;
 
     oldsize = size = strlen(msg + 4);
     s[3] = size % 256;
@@ -1517,7 +1578,6 @@ bool I3_write_packet(char *msg)
     s[1] = size % 256;
     size >>= 8;
     s[0] = size % 256;
-
 
     // So, to log outgoing packets, we need the type.
     // At this point, it's embedded into the string, so we have to pluck
@@ -1536,30 +1596,32 @@ bool I3_write_packet(char *msg)
         id_len = (id_end - id_start + 1);
         strlcpy(id_buf, id_start, id_len);
 
-        //i3_packet_log(id_buf, oldsize, (msg + 4));
+        // i3_packet_log(id_buf, oldsize, (msg + 4));
         i3_packet_log(id_buf, oldsize, NULL);
     }
 
     /*
-     * Scan for \r used in Diku client packets and change to NULL 
+     * Scan for \r used in Diku client packets and change to NULL
      */
     for (x = 0; x < oldsize + 4; x++)
-	if (msg[x] == '\r' && x > 3)
-	    msg[x] = '\0';
+        if (msg[x] == '\r' && x > 3)
+            msg[x] = '\0';
 
     bytes_sent += oldsize + 4;
-    if (packetdebug) {
-	log_info("I3_PACKET Sending: %d Bytes...", oldsize);
+    if (packetdebug)
+    {
+        log_info("I3_PACKET Sending: %d Bytes...", oldsize);
     }
     check = send(I3_socket, msg, oldsize + 4, 0);
-    if (packetdebug) {
+    if (packetdebug)
+    {
         // Normally, this works just fine, but for some bizzare reason that
         // I don't understand yet.. .if you have packetdebug enabled before
         // the I3 connection has been established, the above send() will
         // return -1 and fail.
         // Oh, and this ONLY happens for *Kelly.  *dalet is fine with it.
-	log_info("I3_PACKET Sent: %d Bytes...", check);
-	log_info("I3_PACKET Packet Sent: %s", msg + 4);
+        log_info("I3_PACKET Sent: %d Bytes...", check);
+        log_info("I3_PACKET Packet Sent: %s", msg + 4);
     }
 
 #if 0
@@ -1578,38 +1640,42 @@ bool I3_write_packet(char *msg)
     //bytes_sent += check;
 #endif
 
-    if ( check == 0 ) {
-	log_error( "I3_PACKET EOF encountered on socket write." );
-	I3_connection_close(TRUE);
-	return FALSE;
+    if (check == 0)
+    {
+        log_error("I3_PACKET EOF encountered on socket write.");
+        I3_connection_close(TRUE);
+        return FALSE;
     }
 
-    if ( check < 0 ) {
-        switch( errno ) {
-            // Linux morons -- EAGAIN and EWOULDBLOCK are not actually the same error,
-            // even if you tend to do the same thing when they happen.  'tards.
-            
-            //case EAGAIN:
-            case EWOULDBLOCK:
-                if (packetdebug) {
-                    log_info("I3_PACKET Socket would block, retrying later.");
-                }
-	        return TRUE;
-                break;
-            case EMSGSIZE:
-                log_error( "I3_PACKET Message too big for tcp/ip?" );
-                I3_connection_close(TRUE);
-                return FALSE;
-                break;
-            case ENOTCONN:
-                log_error( "I3_PACKET Socket not actualy connected?" );
-                I3_connection_close(TRUE);
-                return FALSE;
-                break;
-            default:
-                log_error( "I3_PACKET Socket error: %d (%s)", errno, strerror(errno) );
-                I3_connection_close(TRUE);
-                return FALSE;
+    if (check < 0)
+    {
+        switch (errno)
+        {
+        // Linux morons -- EAGAIN and EWOULDBLOCK are not actually the same error,
+        // even if you tend to do the same thing when they happen.  'tards.
+
+        // case EAGAIN:
+        case EWOULDBLOCK:
+            if (packetdebug)
+            {
+                log_info("I3_PACKET Socket would block, retrying later.");
+            }
+            return TRUE;
+            break;
+        case EMSGSIZE:
+            log_error("I3_PACKET Message too big for tcp/ip?");
+            I3_connection_close(TRUE);
+            return FALSE;
+            break;
+        case ENOTCONN:
+            log_error("I3_PACKET Socket not actualy connected?");
+            I3_connection_close(TRUE);
+            return FALSE;
+            break;
+        default:
+            log_error("I3_PACKET Socket error: %d (%s)", errno, strerror(errno));
+            I3_connection_close(TRUE);
+            return FALSE;
         }
     }
 
@@ -1631,23 +1697,25 @@ void I3_send_packet(void)
  */
 void I3_startup_packet(void)
 {
-    char                                    s[MAX_INPUT_LENGTH];
-    char                                   *strtime;
-    struct timeval                          last_time;
-    ROUTER_DATA                            *router;
+    char s[MAX_INPUT_LENGTH];
+    char *strtime;
+    struct timeval last_time;
+    ROUTER_DATA *router;
 
     if (!is_connecting())
-	return;
+        return;
 
     I3_output_pointer = 4;
     I3_output_buffer[0] = '\0';
 
-    for (router = first_router; router; router = router->next) {
-        if (!strcasecmp(router->name, I3_ROUTER_NAME)) {
+    for (router = first_router; router; router = router->next)
+    {
+        if (!strcasecmp(router->name, I3_ROUTER_NAME))
+        {
             router->password = this_i3mud->password;
             router->mudlist_id = this_i3mud->mudlist_id;
             router->chanlist_id = this_i3mud->chanlist_id;
-	    break;
+            break;
         }
     }
     I3_saverouters();
@@ -1683,69 +1751,77 @@ void I3_startup_packet(void)
     I3_write_buffer("\",");
 
     /*
-     * Begin first mapping set 
+     * Begin first mapping set
      */
     I3_write_buffer("([");
     if (this_i3mud->emoteto)
-	I3_write_buffer("\"emoteto\":1,");
+        I3_write_buffer("\"emoteto\":1,");
     if (this_i3mud->news)
-	I3_write_buffer("\"news\":1,");
+        I3_write_buffer("\"news\":1,");
     if (this_i3mud->ucache)
-	I3_write_buffer("\"ucache\":1,");
+        I3_write_buffer("\"ucache\":1,");
     if (this_i3mud->auth)
-	I3_write_buffer("\"auth\":1,");
+        I3_write_buffer("\"auth\":1,");
     if (this_i3mud->locate)
-	I3_write_buffer("\"locate\":1,");
+        I3_write_buffer("\"locate\":1,");
     if (this_i3mud->finger)
-	I3_write_buffer("\"finger\":1,");
+        I3_write_buffer("\"finger\":1,");
     if (this_i3mud->channel)
-	I3_write_buffer("\"channel\":1,");
+        I3_write_buffer("\"channel\":1,");
     if (this_i3mud->who)
-	I3_write_buffer("\"who\":1,");
+        I3_write_buffer("\"who\":1,");
     if (this_i3mud->tell)
-	I3_write_buffer("\"tell\":1,");
+        I3_write_buffer("\"tell\":1,");
     if (this_i3mud->beep)
-	I3_write_buffer("\"beep\":1,");
+        I3_write_buffer("\"beep\":1,");
     if (this_i3mud->mail)
-	I3_write_buffer("\"mail\":1,");
+        I3_write_buffer("\"mail\":1,");
     if (this_i3mud->file)
-	I3_write_buffer("\"file\":1,");
-    if (this_i3mud->http) {
-	snprintf(s, MAX_INPUT_LENGTH, "\"http\":%d,", this_i3mud->http);
-	I3_write_buffer(s);
+        I3_write_buffer("\"file\":1,");
+    if (this_i3mud->http)
+    {
+        snprintf(s, MAX_INPUT_LENGTH, "\"http\":%d,", this_i3mud->http);
+        I3_write_buffer(s);
     }
-    if (this_i3mud->smtp) {
-	snprintf(s, MAX_INPUT_LENGTH, "\"smtp\":%d,", this_i3mud->smtp);
-	I3_write_buffer(s);
+    if (this_i3mud->smtp)
+    {
+        snprintf(s, MAX_INPUT_LENGTH, "\"smtp\":%d,", this_i3mud->smtp);
+        I3_write_buffer(s);
     }
-    if (this_i3mud->pop3) {
-	snprintf(s, MAX_INPUT_LENGTH, "\"pop3\":%d,", this_i3mud->pop3);
-	I3_write_buffer(s);
+    if (this_i3mud->pop3)
+    {
+        snprintf(s, MAX_INPUT_LENGTH, "\"pop3\":%d,", this_i3mud->pop3);
+        I3_write_buffer(s);
     }
-    if (this_i3mud->ftp) {
-	snprintf(s, MAX_INPUT_LENGTH, "\"ftp\":%d,", this_i3mud->ftp);
-	I3_write_buffer(s);
+    if (this_i3mud->ftp)
+    {
+        snprintf(s, MAX_INPUT_LENGTH, "\"ftp\":%d,", this_i3mud->ftp);
+        I3_write_buffer(s);
     }
-    if (this_i3mud->nntp) {
-	snprintf(s, MAX_INPUT_LENGTH, "\"nntp\":%d,", this_i3mud->nntp);
-	I3_write_buffer(s);
+    if (this_i3mud->nntp)
+    {
+        snprintf(s, MAX_INPUT_LENGTH, "\"nntp\":%d,", this_i3mud->nntp);
+        I3_write_buffer(s);
     }
-    if (this_i3mud->rcp) {
-	snprintf(s, MAX_INPUT_LENGTH, "\"rcp\":%d,", this_i3mud->rcp);
-	I3_write_buffer(s);
+    if (this_i3mud->rcp)
+    {
+        snprintf(s, MAX_INPUT_LENGTH, "\"rcp\":%d,", this_i3mud->rcp);
+        I3_write_buffer(s);
     }
-    if (this_i3mud->amrcp) {
-	snprintf(s, MAX_INPUT_LENGTH, "\"amrcp\":%d,", this_i3mud->amrcp);
-	I3_write_buffer(s);
+    if (this_i3mud->amrcp)
+    {
+        snprintf(s, MAX_INPUT_LENGTH, "\"amrcp\":%d,", this_i3mud->amrcp);
+        I3_write_buffer(s);
     }
     I3_write_buffer("]),([");
 
     /*
-     * END first set of "mappings", start of second set 
+     * END first set of "mappings", start of second set
      */
-    if (this_i3mud->web && this_i3mud->web[0] != '\0') {
-	snprintf(s, MAX_INPUT_LENGTH, "\"url\":\"%s\",", this_i3mud->web);
-	I3_write_buffer(s);
+    if (this_i3mud->web && this_i3mud->web[0] != '\0')
+    {
+        snprintf(s, MAX_INPUT_LENGTH, "\"url\":\"%s\",", this_i3mud->web);
+        I3_write_buffer(s);
     }
     strtime = ctime(&i3_time);
     strtime[strlen(strtime) - 1] = '\0';
@@ -1755,11 +1831,12 @@ void I3_startup_packet(void)
     I3_write_buffer("]),})\r");
     I3_send_packet();
 
-    if(i3_time == 0) {
+    if (i3_time == 0)
+    {
         // We called this before the first run of i3_loop(), from outside.
         // Either that, or this code has travelled back in time, and I'm going to be rich!
         gettimeofday(&last_time, NULL);
-        i3_time = (time_t) last_time.tv_sec;
+        i3_time = (time_t)last_time.tv_sec;
     }
     connect_started_at = i3_time;
 }
@@ -1773,16 +1850,16 @@ void I3_startup_packet(void)
  */
 void I3_save_id(void)
 {
-    FILE                                   *fp;
+    FILE *fp;
 
-    if (!(fp = fopen(I3_PASSWORD_FILE, "w"))) {
-	log_info("%s", "Couldn't write to I3 password file.");
-	return;
+    if (!(fp = fopen(I3_PASSWORD_FILE, "w")))
+    {
+        log_info("%s", "Couldn't write to I3 password file.");
+        return;
     }
 
     fprintf(fp, "%s", "#PASSWORD\n");
-    fprintf(fp, "%d %d %d\n", this_i3mud->password, this_i3mud->mudlist_id,
-	    this_i3mud->chanlist_id);
+    fprintf(fp, "%d %d %d\n", this_i3mud->password, this_i3mud->mudlist_id, this_i3mud->chanlist_id);
     I3FCLOSE(fp);
 }
 
@@ -1793,17 +1870,17 @@ void I3_save_id(void)
  */
 void I3_process_startup_reply(I3_HEADER *header, char *s)
 {
-    ROUTER_DATA                            *router;
-    I3_CHANNEL                             *channel;
-    char                                   *ps = s;
-    char                                   *next_ps;
+    ROUTER_DATA *router;
+    I3_CHANNEL *channel;
+    char *ps = s;
+    char *next_ps;
 
-    // Recevies the router list. Nothing much to do here until there's more than 1 router. 
+    // Recevies the router list. Nothing much to do here until there's more than 1 router.
     I3_get_field(ps, &next_ps);
-    //log_info("%s", ps);
+    // log_info("%s", ps);
     ps = next_ps;
 
-    // Receives your mud's updated password, which may or may not be the same as what it sent out before 
+    // Receives your mud's updated password, which may or may not be the same as what it sent out before
     I3_get_field(ps, &next_ps);
     this_i3mud->password = atoi(ps);
 
@@ -1811,56 +1888,58 @@ void I3_process_startup_reply(I3_HEADER *header, char *s)
 
     I3_save_id();
 
-    for (router = first_router; router; router = router->next) {
-	if (!strcasecmp(router->name, header->originator_mudname)) {
-	    router->reconattempts = 0;
-	    I3_ROUTER_NAME = router->name;
-	    I3_ROUTER_IP = router->ip;
+    for (router = first_router; router; router = router->next)
+    {
+        if (!strcasecmp(router->name, header->originator_mudname))
+        {
+            router->reconattempts = 0;
+            I3_ROUTER_NAME = router->name;
+            I3_ROUTER_IP = router->ip;
             router->password = this_i3mud->password;
-	    break;
-	}
+            break;
+        }
     }
     I3_saverouters();
 
     i3wait = 0;
     expecting_timeout = 0;
-    i3justconnected = 1;        // This is just a flag to let us process on_connect things
-                                // later, after we've had a chance to get channels setup
+    i3justconnected = 1; // This is just a flag to let us process on_connect things
+                         // later, after we've had a chance to get channels setup
     uptime = 0;
     connected_at = i3_time;
     time_to_taunt = getTimestamp() + I3_TAUNT_DELAY;
 
     log_info("%s", "Intermud-3 Network connection complete.");
 
-    for (channel = first_I3chan; channel; channel = channel->next) {
-	//if (channel->local_name && channel->local_name[0] != '\0') {
-	    log_info("Subscribing to %s", channel->I3_name);
-	    I3_send_channel_listen(channel, TRUE);
-	//}
+    for (channel = first_I3chan; channel; channel = channel->next)
+    {
+        // if (channel->local_name && channel->local_name[0] != '\0') {
+        log_info("Subscribing to %s", channel->I3_name);
+        I3_send_channel_listen(channel, TRUE);
+        //}
     }
     return;
 }
 
 void I3_process_chanack(I3_HEADER *header, char *s)
 {
-    CHAR_DATA                              *ch;
-    char                                   *next_ps,
-                                           *ps = s;
+    CHAR_DATA *ch;
+    char *next_ps, *ps = s;
 
     I3_get_field(ps, &next_ps);
     remove_quotes(&ps);
 
     if (!(ch = I3_find_user(header->target_username)))
-	log_info("%s", ps);
+        log_info("%s", ps);
     else
-	i3_printf(ch, "%%^GREEN%%^%%^BOLD%%^%s%%^RESET%%^\r\n", ps);
+        i3_printf(ch, "%%^GREEN%%^%%^BOLD%%^%s%%^RESET%%^\r\n", ps);
     return;
 }
 
 void I3_send_error(const char *mud, const char *user, const char *code, const char *message)
 {
     if (!is_connected())
-	return;
+        return;
 
     I3_write_header("error", this_i3mud->name, 0, mud, user);
     I3_write_buffer("\"");
@@ -1873,11 +1952,9 @@ void I3_send_error(const char *mud, const char *user, const char *code, const ch
 
 void I3_process_error(I3_HEADER *header, char *s)
 {
-    CHAR_DATA                              *ch;
-    char                                   *next_ps,
-                                           *ps = s;
-    char                                    type[MAX_INPUT_LENGTH],
-                                            error[MAX_STRING_LENGTH];
+    CHAR_DATA *ch;
+    char *next_ps, *ps = s;
+    char type[MAX_INPUT_LENGTH], error[MAX_STRING_LENGTH];
 
     I3_get_field(ps, &next_ps);
     remove_quotes(&ps);
@@ -1888,34 +1965,34 @@ void I3_process_error(I3_HEADER *header, char *s)
     remove_quotes(&ps);
 
     /*
-     * Since VargonMUD likes to spew errors for no good reason.... 
+     * Since VargonMUD likes to spew errors for no good reason....
      */
     if (!strcasecmp(header->originator_mudname, "VargonMUD"))
-	return;
+        return;
     if (!strcasecmp(header->originator_mudname, "Ulario"))
-	return;
+        return;
 
-    snprintf(error, MAX_STRING_LENGTH, "Error: from %s to %s@%s\r\n%s: %s",
-	     header->originator_mudname, header->target_username, header->target_mudname, type,
-	     ps);
+    snprintf(error, MAX_STRING_LENGTH, "Error: from %s to %s@%s\r\n%s: %s", header->originator_mudname,
+             header->target_username, header->target_mudname, type, ps);
 
     if (!(ch = I3_find_user(header->target_username)))
-	log_info("%s", error);
+        log_info("%s", error);
     else
-	i3_printf(ch, "%%^RED%%^%%^BOLD%%^%s%%^RESET%%^\r\n", error);
+        i3_printf(ch, "%%^RED%%^%%^BOLD%%^%s%%^RESET%%^\r\n", error);
 }
 
 int I3_get_ucache_gender(char *name)
 {
-    UCACHE_DATA                            *user;
+    UCACHE_DATA *user;
 
-    for (user = first_ucache; user; user = user->next) {
-	if (!strcasecmp(user->name, name))
-	    return user->gender;
+    for (user = first_ucache; user; user = user->next)
+    {
+        if (!strcasecmp(user->name, name))
+            return user->gender;
     }
 
     /*
-     * -1 means you aren't in the list and need to be put there. 
+     * -1 means you aren't in the list and need to be put there.
      */
     return -1;
 }
@@ -1923,20 +2000,22 @@ int I3_get_ucache_gender(char *name)
 /* Saves the ucache info to disk because it would just be spamcity otherwise */
 void I3_save_ucache(void)
 {
-    FILE                                   *fp;
-    UCACHE_DATA                            *user;
+    FILE *fp;
+    UCACHE_DATA *user;
 
-    if (!(fp = fopen(I3_UCACHE_FILE, "w"))) {
-	log_info("%s", "Couldn't write to I3 ucache file.");
-	return;
+    if (!(fp = fopen(I3_UCACHE_FILE, "w")))
+    {
+        log_info("%s", "Couldn't write to I3 ucache file.");
+        return;
     }
 
-    for (user = first_ucache; user; user = user->next) {
-	fprintf(fp, "%s", "#UCACHE\n");
-	fprintf(fp, "Name %s\n", user->name);
-	fprintf(fp, "Sex  %d\n", user->gender);
-	fprintf(fp, "Time %ld\n", (long int)user->time);
-	fprintf(fp, "%s", "End\n\n");
+    for (user = first_ucache; user; user = user->next)
+    {
+        fprintf(fp, "%s", "#UCACHE\n");
+        fprintf(fp, "Name %s\n", user->name);
+        fprintf(fp, "Sex  %d\n", user->gender);
+        fprintf(fp, "Time %ld\n", (long int)user->time);
+        fprintf(fp, "%s", "End\n\n");
     }
     fprintf(fp, "%s", "#END\n");
     I3FCLOSE(fp);
@@ -1945,20 +2024,21 @@ void I3_save_ucache(void)
 
 void I3_prune_ucache(void)
 {
-    UCACHE_DATA                            *ucache,
-                                           *next_ucache;
+    UCACHE_DATA *ucache, *next_ucache;
 
-    for (ucache = first_ucache; ucache; ucache = next_ucache) {
-	next_ucache = ucache->next;
+    for (ucache = first_ucache; ucache; ucache = next_ucache)
+    {
+        next_ucache = ucache->next;
 
-	/*
-	 * Info older than 30 days is removed since this person likely hasn't logged in at all 
-	 */
-	if (i3_time - ucache->time >= 2592000) {
-	    I3STRFREE(ucache->name);
-	    I3UNLINK(ucache, first_ucache, last_ucache, next, prev);
-	    I3DISPOSE(ucache);
-	}
+        /*
+         * Info older than 30 days is removed since this person likely hasn't logged in at all
+         */
+        if (i3_time - ucache->time >= 2592000)
+        {
+            I3STRFREE(ucache->name);
+            I3UNLINK(ucache, first_ucache, last_ucache, next, prev);
+            I3DISPOSE(ucache);
+        }
     }
     I3_save_ucache();
     return;
@@ -1967,14 +2047,16 @@ void I3_prune_ucache(void)
 /* Updates user info if they exist, adds them if they don't. */
 void I3_ucache_update(char *name, int gender)
 {
-    UCACHE_DATA                            *user;
+    UCACHE_DATA *user;
 
-    for (user = first_ucache; user; user = user->next) {
-	if (!strcasecmp(user->name, name)) {
-	    user->gender = gender;
-	    user->time = i3_time;
-	    return;
-	}
+    for (user = first_ucache; user; user = user->next)
+    {
+        if (!strcasecmp(user->name, name))
+        {
+            user->gender = gender;
+            user->time = i3_time;
+            return;
+        }
     }
     I3CREATE(user, UCACHE_DATA, 1);
     user->name = I3STRALLOC(name);
@@ -1988,10 +2070,10 @@ void I3_ucache_update(char *name, int gender)
 
 void I3_send_ucache_update(const char *visname, int gender)
 {
-    char                                    buf[10];
+    char buf[10];
 
     if (!is_connected())
-	return;
+        return;
 
     I3_write_header("ucache-update", this_i3mud->name, NULL, NULL, NULL);
     I3_write_buffer("\"");
@@ -2009,13 +2091,9 @@ void I3_send_ucache_update(const char *visname, int gender)
 
 void I3_process_ucache_update(I3_HEADER *header, char *s)
 {
-    char                                   *ps = s,
-	*next_ps;
-    char                                    username[MAX_INPUT_LENGTH],
-                                            visname[MAX_INPUT_LENGTH],
-                                            buf[MAX_STRING_LENGTH];
-    int                                     sex,
-                                            gender;
+    char *ps = s, *next_ps;
+    char username[MAX_INPUT_LENGTH], visname[MAX_INPUT_LENGTH], buf[MAX_STRING_LENGTH];
+    int sex, gender;
 
     I3_get_field(ps, &next_ps);
     remove_quotes(&ps);
@@ -2036,7 +2114,7 @@ void I3_process_ucache_update(I3_HEADER *header, char *s)
     sex = I3_get_ucache_gender(buf);
 
     if (sex == gender)
-	return;
+        return;
 
     I3_ucache_update(buf, gender);
     return;
@@ -2045,7 +2123,7 @@ void I3_process_ucache_update(I3_HEADER *header, char *s)
 void I3_send_chan_user_req(char *targetmud, char *targetuser)
 {
     if (!is_connected())
-	return;
+        return;
 
     I3_write_header("chan-user-req", this_i3mud->name, NULL, targetmud, NULL);
     I3_write_buffer("\"");
@@ -2058,10 +2136,9 @@ void I3_send_chan_user_req(char *targetmud, char *targetuser)
 
 void I3_process_chan_user_req(I3_HEADER *header, char *s)
 {
-    char                                    buf[MAX_STRING_LENGTH];
-    char                                   *ps = s,
-	*next_ps;
-    int                                     gender;
+    char buf[MAX_STRING_LENGTH];
+    char *ps = s, *next_ps;
+    int gender;
 
     I3_get_field(ps, &next_ps);
     remove_quotes(&ps);
@@ -2070,10 +2147,10 @@ void I3_process_chan_user_req(I3_HEADER *header, char *s)
     gender = I3_get_ucache_gender(buf);
 
     /*
-     * Gender of -1 means they aren't in the mud's ucache table, don't waste a packet on a reply 
+     * Gender of -1 means they aren't in the mud's ucache table, don't waste a packet on a reply
      */
     if (gender == -1)
-	return;
+        return;
 
     I3_write_header("chan-user-reply", this_i3mud->name, NULL, header->originator_mudname, NULL);
     I3_write_buffer("\"");
@@ -2091,13 +2168,9 @@ void I3_process_chan_user_req(I3_HEADER *header, char *s)
 
 void I3_process_chan_user_reply(I3_HEADER *header, char *s)
 {
-    char                                   *ps = s,
-	*next_ps;
-    char                                    username[MAX_INPUT_LENGTH],
-                                            visname[MAX_INPUT_LENGTH],
-                                            buf[MAX_STRING_LENGTH];
-    int                                     sex,
-                                            gender;
+    char *ps = s, *next_ps;
+    char username[MAX_INPUT_LENGTH], visname[MAX_INPUT_LENGTH], buf[MAX_STRING_LENGTH];
+    int sex, gender;
 
     I3_get_field(ps, &next_ps);
     remove_quotes(&ps);
@@ -2118,7 +2191,7 @@ void I3_process_chan_user_reply(I3_HEADER *header, char *s)
     sex = I3_get_ucache_gender(buf);
 
     if (sex == gender)
-	return;
+        return;
 
     I3_ucache_update(buf, gender);
     return;
@@ -2126,265 +2199,290 @@ void I3_process_chan_user_reply(I3_HEADER *header, char *s)
 
 void I3_process_mudlist(I3_HEADER *header, char *s)
 {
-    char                                   *ps = s,
-	*next_ps;
-    I3_MUD                                 *mud = NULL;
-    char                                    mud_name[MAX_INPUT_LENGTH];
-    ROUTER_DATA                            *router;
+    char *ps = s, *next_ps;
+    I3_MUD *mud = NULL;
+    char mud_name[MAX_INPUT_LENGTH];
+    ROUTER_DATA *router;
 
     I3_get_field(ps, &next_ps);
     this_i3mud->mudlist_id = atoi(ps);
     I3_save_id();
 
-    for (router = first_router; router; router = router->next) {
-        if (!strcasecmp(router->name, I3_ROUTER_NAME)) {
+    for (router = first_router; router; router = router->next)
+    {
+        if (!strcasecmp(router->name, I3_ROUTER_NAME))
+        {
             router->mudlist_id = this_i3mud->mudlist_id;
-	    break;
+            break;
         }
     }
     I3_saverouters();
 
     // If we haven't processed the mudlist recently, do it now!
-    if(pulse_mudlist > (PULSE_MUDLIST / 10))
+    if (pulse_mudlist > (PULSE_MUDLIST / 10))
         pulse_mudlist = 0;
 
     ps = next_ps;
     ps += 2;
 
-    while (1) {
-	char                                   *next_ps2;
+    while (1)
+    {
+        char *next_ps2;
 
-	I3_get_field(ps, &next_ps);
-	remove_quotes(&ps);
-	strlcpy(mud_name, ps, MAX_INPUT_LENGTH);
+        I3_get_field(ps, &next_ps);
+        remove_quotes(&ps);
+        strlcpy(mud_name, ps, MAX_INPUT_LENGTH);
 
-	ps = next_ps;
-	I3_get_field(ps, &next_ps2);
+        ps = next_ps;
+        I3_get_field(ps, &next_ps2);
 
-	if (ps[0] != '0') {
-	    mud = find_I3_mud_by_name(mud_name);
-	    if (!mud)
-		mud = new_I3_mud(mud_name);
+        if (ps[0] != '0')
+        {
+            mud = find_I3_mud_by_name(mud_name);
+            if (!mud)
+                mud = new_I3_mud(mud_name);
 
-	    ps += 2;
-	    I3_get_field(ps, &next_ps);
-	    mud->status = atoi(ps);
-	    ps = next_ps;
+            ps += 2;
+            I3_get_field(ps, &next_ps);
+            mud->status = atoi(ps);
+            ps = next_ps;
 
-	    I3_get_field(ps, &next_ps);
-	    remove_quotes(&ps);
-	    I3STRFREE(mud->ipaddress);
-	    mud->ipaddress = I3STRALLOC(ps);
-	    ps = next_ps;
+            I3_get_field(ps, &next_ps);
+            remove_quotes(&ps);
+            I3STRFREE(mud->ipaddress);
+            mud->ipaddress = I3STRALLOC(ps);
+            ps = next_ps;
 
-	    I3_get_field(ps, &next_ps);
-	    mud->player_port = atoi(ps);
-	    ps = next_ps;
+            I3_get_field(ps, &next_ps);
+            mud->player_port = atoi(ps);
+            ps = next_ps;
 
-	    I3_get_field(ps, &next_ps);
-	    mud->imud_tcp_port = atoi(ps);
-	    ps = next_ps;
+            I3_get_field(ps, &next_ps);
+            mud->imud_tcp_port = atoi(ps);
+            ps = next_ps;
 
-	    I3_get_field(ps, &next_ps);
-	    mud->imud_udp_port = atoi(ps);
-	    ps = next_ps;
+            I3_get_field(ps, &next_ps);
+            mud->imud_udp_port = atoi(ps);
+            ps = next_ps;
 
-	    I3_get_field(ps, &next_ps);
-	    remove_quotes(&ps);
-	    I3STRFREE(mud->mudlib);
-	    mud->mudlib = I3STRALLOC(ps);
-	    ps = next_ps;
+            I3_get_field(ps, &next_ps);
+            remove_quotes(&ps);
+            I3STRFREE(mud->mudlib);
+            mud->mudlib = I3STRALLOC(ps);
+            ps = next_ps;
 
-	    I3_get_field(ps, &next_ps);
-	    remove_quotes(&ps);
-	    I3STRFREE(mud->base_mudlib);
-	    mud->base_mudlib = I3STRALLOC(ps);
-	    ps = next_ps;
+            I3_get_field(ps, &next_ps);
+            remove_quotes(&ps);
+            I3STRFREE(mud->base_mudlib);
+            mud->base_mudlib = I3STRALLOC(ps);
+            ps = next_ps;
 
-	    I3_get_field(ps, &next_ps);
-	    remove_quotes(&ps);
-	    I3STRFREE(mud->driver);
-	    mud->driver = I3STRALLOC(ps);
-	    ps = next_ps;
+            I3_get_field(ps, &next_ps);
+            remove_quotes(&ps);
+            I3STRFREE(mud->driver);
+            mud->driver = I3STRALLOC(ps);
+            ps = next_ps;
 
-	    I3_get_field(ps, &next_ps);
-	    remove_quotes(&ps);
-	    I3STRFREE(mud->mud_type);
-	    mud->mud_type = I3STRALLOC(ps);
-	    ps = next_ps;
+            I3_get_field(ps, &next_ps);
+            remove_quotes(&ps);
+            I3STRFREE(mud->mud_type);
+            mud->mud_type = I3STRALLOC(ps);
+            ps = next_ps;
 
-	    I3_get_field(ps, &next_ps);
-	    remove_quotes(&ps);
-	    I3STRFREE(mud->open_status);
-	    mud->open_status = I3STRALLOC(ps);
-	    ps = next_ps;
+            I3_get_field(ps, &next_ps);
+            remove_quotes(&ps);
+            I3STRFREE(mud->open_status);
+            mud->open_status = I3STRALLOC(ps);
+            ps = next_ps;
 
-	    I3_get_field(ps, &next_ps);
-	    remove_quotes(&ps);
-	    I3STRFREE(mud->admin_email);
-	    mud->admin_email = I3STRALLOC(ps);
-	    ps = next_ps;
+            I3_get_field(ps, &next_ps);
+            remove_quotes(&ps);
+            I3STRFREE(mud->admin_email);
+            mud->admin_email = I3STRALLOC(ps);
+            ps = next_ps;
 
-	    I3_get_field(ps, &next_ps);
+            I3_get_field(ps, &next_ps);
 
-	    ps += 2;
-	    while (1) {
-		char                                   *next_ps3;
-		char                                    key[MAX_INPUT_LENGTH];
+            ps += 2;
+            while (1)
+            {
+                char *next_ps3;
+                char key[MAX_INPUT_LENGTH];
 
-		if (ps[0] == ']')
-		    break;
+                if (ps[0] == ']')
+                    break;
 
-		I3_get_field(ps, &next_ps3);
-		remove_quotes(&ps);
-		strlcpy(key, ps, MAX_INPUT_LENGTH);
-		ps = next_ps3;
-		I3_get_field(ps, &next_ps3);
+                I3_get_field(ps, &next_ps3);
+                remove_quotes(&ps);
+                strlcpy(key, ps, MAX_INPUT_LENGTH);
+                ps = next_ps3;
+                I3_get_field(ps, &next_ps3);
 
-		switch (key[0]) {
-		    case 'a':
-			if (!strcasecmp(key, "auth")) {
-			    mud->auth = ps[0] == '0' ? 0 : 1;
-			    break;
-			}
-			if (!strcasecmp(key, "amrcp")) {
-			    mud->amrcp = atoi(ps);
-			    break;
-			}
-			break;
-		    case 'b':
-			if (!strcasecmp(key, "beep")) {
-			    mud->beep = ps[0] == '0' ? 0 : 1;
-			    break;
-			}
-			break;
-		    case 'c':
-			if (!strcasecmp(key, "channel")) {
-			    mud->channel = ps[0] == '0' ? 0 : 1;
-			    break;
-			}
-			break;
-		    case 'e':
-			if (!strcasecmp(key, "emoteto")) {
-			    mud->emoteto = ps[0] == '0' ? 0 : 1;
-			    break;
-			}
-			break;
-		    case 'f':
-			if (!strcasecmp(key, "file")) {
-			    mud->file = ps[0] == '0' ? 0 : 1;
-			    break;
-			}
-			if (!strcasecmp(key, "finger")) {
-			    mud->finger = ps[0] == '0' ? 0 : 1;
-			    break;
-			}
-			if (!strcasecmp(key, "ftp")) {
-			    mud->ftp = atoi(ps);
-			    break;
-			}
-			break;
-		    case 'h':
-			if (!strcasecmp(key, "http")) {
-			    mud->http = atoi(ps);
-			    break;
-			}
-			break;
-		    case 'l':
-			if (!strcasecmp(key, "locate")) {
-			    mud->locate = ps[0] == '0' ? 0 : 1;
-			    break;
-			}
-			break;
-		    case 'm':
-			if (!strcasecmp(key, "mail")) {
-			    mud->mail = ps[0] == '0' ? 0 : 1;
-			    break;
-			}
-			break;
-		    case 'n':
-			if (!strcasecmp(key, "news")) {
-			    mud->news = ps[0] == '0' ? 0 : 1;
-			    break;
-			}
-			if (!strcasecmp(key, "nntp")) {
-			    mud->nntp = atoi(ps);
-			    break;
-			}
-			break;
-		    case 'p':
-			if (!strcasecmp(key, "pop3")) {
-			    mud->pop3 = atoi(ps);
-			    break;
-			}
-			break;
-		    case 'r':
-			if (!strcasecmp(key, "rcp")) {
-			    mud->rcp = atoi(ps);
-			    break;
-			}
-			break;
-		    case 's':
-			if (!strcasecmp(key, "smtp")) {
-			    mud->smtp = atoi(ps);
-			    break;
-			}
-			break;
-		    case 't':
-			if (!strcasecmp(key, "tell")) {
-			    mud->tell = ps[0] == '0' ? 0 : 1;
-			    break;
-			}
-			break;
-		    case 'u':
-			if (!strcasecmp(key, "ucache")) {
-			    mud->ucache = ps[0] == '0' ? 0 : 1;
-			    break;
-			}
-			if (!strcasecmp(key, "url")) {
-			    remove_quotes(&ps);
-			    I3STRFREE(mud->web_wrong);
-			    mud->web_wrong = I3STRALLOC(ps);
-			    break;
-			}
-			break;
-		    case 'w':
-			if (!strcasecmp(key, "who")) {
-			    mud->who = ps[0] == '0' ? 0 : 1;
-			    break;
-			}
-			break;
-		    default:
-			break;
-		}
+                switch (key[0])
+                {
+                case 'a':
+                    if (!strcasecmp(key, "auth"))
+                    {
+                        mud->auth = ps[0] == '0' ? 0 : 1;
+                        break;
+                    }
+                    if (!strcasecmp(key, "amrcp"))
+                    {
+                        mud->amrcp = atoi(ps);
+                        break;
+                    }
+                    break;
+                case 'b':
+                    if (!strcasecmp(key, "beep"))
+                    {
+                        mud->beep = ps[0] == '0' ? 0 : 1;
+                        break;
+                    }
+                    break;
+                case 'c':
+                    if (!strcasecmp(key, "channel"))
+                    {
+                        mud->channel = ps[0] == '0' ? 0 : 1;
+                        break;
+                    }
+                    break;
+                case 'e':
+                    if (!strcasecmp(key, "emoteto"))
+                    {
+                        mud->emoteto = ps[0] == '0' ? 0 : 1;
+                        break;
+                    }
+                    break;
+                case 'f':
+                    if (!strcasecmp(key, "file"))
+                    {
+                        mud->file = ps[0] == '0' ? 0 : 1;
+                        break;
+                    }
+                    if (!strcasecmp(key, "finger"))
+                    {
+                        mud->finger = ps[0] == '0' ? 0 : 1;
+                        break;
+                    }
+                    if (!strcasecmp(key, "ftp"))
+                    {
+                        mud->ftp = atoi(ps);
+                        break;
+                    }
+                    break;
+                case 'h':
+                    if (!strcasecmp(key, "http"))
+                    {
+                        mud->http = atoi(ps);
+                        break;
+                    }
+                    break;
+                case 'l':
+                    if (!strcasecmp(key, "locate"))
+                    {
+                        mud->locate = ps[0] == '0' ? 0 : 1;
+                        break;
+                    }
+                    break;
+                case 'm':
+                    if (!strcasecmp(key, "mail"))
+                    {
+                        mud->mail = ps[0] == '0' ? 0 : 1;
+                        break;
+                    }
+                    break;
+                case 'n':
+                    if (!strcasecmp(key, "news"))
+                    {
+                        mud->news = ps[0] == '0' ? 0 : 1;
+                        break;
+                    }
+                    if (!strcasecmp(key, "nntp"))
+                    {
+                        mud->nntp = atoi(ps);
+                        break;
+                    }
+                    break;
+                case 'p':
+                    if (!strcasecmp(key, "pop3"))
+                    {
+                        mud->pop3 = atoi(ps);
+                        break;
+                    }
+                    break;
+                case 'r':
+                    if (!strcasecmp(key, "rcp"))
+                    {
+                        mud->rcp = atoi(ps);
+                        break;
+                    }
+                    break;
+                case 's':
+                    if (!strcasecmp(key, "smtp"))
+                    {
+                        mud->smtp = atoi(ps);
+                        break;
+                    }
+                    break;
+                case 't':
+                    if (!strcasecmp(key, "tell"))
+                    {
+                        mud->tell = ps[0] == '0' ? 0 : 1;
+                        break;
+                    }
+                    break;
+                case 'u':
+                    if (!strcasecmp(key, "ucache"))
+                    {
+                        mud->ucache = ps[0] == '0' ? 0 : 1;
+                        break;
+                    }
+                    if (!strcasecmp(key, "url"))
+                    {
+                        remove_quotes(&ps);
+                        I3STRFREE(mud->web_wrong);
+                        mud->web_wrong = I3STRALLOC(ps);
+                        break;
+                    }
+                    break;
+                case 'w':
+                    if (!strcasecmp(key, "who"))
+                    {
+                        mud->who = ps[0] == '0' ? 0 : 1;
+                        break;
+                    }
+                    break;
+                default:
+                    break;
+                }
 
-		ps = next_ps3;
-		if (ps[0] == ']')
-		    break;
-	    }
-	    ps = next_ps;
+                ps = next_ps3;
+                if (ps[0] == ']')
+                    break;
+            }
+            ps = next_ps;
 
-	    I3_get_field(ps, &next_ps);
-	    ps = next_ps;
-
-	} else {
-	    if ((mud = find_I3_mud_by_name(mud_name)) != NULL)
-		destroy_I3_mud(mud);
-	}
-	ps = next_ps2;
-	if (ps[0] == ']')
-	    break;
+            I3_get_field(ps, &next_ps);
+            ps = next_ps;
+        }
+        else
+        {
+            if ((mud = find_I3_mud_by_name(mud_name)) != NULL)
+                destroy_I3_mud(mud);
+        }
+        ps = next_ps2;
+        if (ps[0] == ']')
+            break;
     }
     return;
 }
 
 void I3_process_chanlist_reply(I3_HEADER *header, char *s)
 {
-    char                                   *ps = s,
-	*next_ps;
-    I3_CHANNEL                             *channel;
-    char                                    chan[MAX_INPUT_LENGTH];
-    ROUTER_DATA                            *router;
+    char *ps = s, *next_ps;
+    I3_CHANNEL *channel;
+    char chan[MAX_INPUT_LENGTH];
+    ROUTER_DATA *router;
     int is_new = 0;
 
     log_info("I3_process_chanlist_reply: %s", "Got chanlist-reply packet!");
@@ -2393,10 +2491,12 @@ void I3_process_chanlist_reply(I3_HEADER *header, char *s)
     this_i3mud->chanlist_id = atoi(ps);
     I3_save_id();
 
-    for (router = first_router; router; router = router->next) {
-        if (!strcasecmp(router->name, I3_ROUTER_NAME)) {
+    for (router = first_router; router; router = router->next)
+    {
+        if (!strcasecmp(router->name, I3_ROUTER_NAME))
+        {
             router->chanlist_id = this_i3mud->chanlist_id;
-	    break;
+            break;
         }
     }
     I3_saverouters();
@@ -2404,61 +2504,65 @@ void I3_process_chanlist_reply(I3_HEADER *header, char *s)
     ps = next_ps;
     ps += 2;
 
-    while (1) {
-	char                                   *next_ps2;
+    while (1)
+    {
+        char *next_ps2;
 
         // ChanName
-	I3_get_field(ps, &next_ps);
-	remove_quotes(&ps);
-	strlcpy(chan, ps, MAX_INPUT_LENGTH);
+        I3_get_field(ps, &next_ps);
+        remove_quotes(&ps);
+        strlcpy(chan, ps, MAX_INPUT_LENGTH);
 
-	ps = next_ps;
-	I3_get_field(ps, &next_ps2);
-	if (ps[0] != '0') {
-	    if (!(channel = find_I3_channel_by_name(chan))) {
-		channel = new_I3_channel();
-		channel->I3_name = I3STRALLOC(chan);
+        ps = next_ps;
+        I3_get_field(ps, &next_ps2);
+        if (ps[0] != '0')
+        {
+            if (!(channel = find_I3_channel_by_name(chan)))
+            {
+                channel = new_I3_channel();
+                channel->I3_name = I3STRALLOC(chan);
                 is_new = 1;
-		//log_info("New channel %s has been added from router %s", channel->I3_name, I3_ROUTER_NAME);
-	    } else {
+                // log_info("New channel %s has been added from router %s", channel->I3_name, I3_ROUTER_NAME);
+            }
+            else
+            {
                 is_new = 0;
-		//log_info("Channel %s has been updated from router %s", channel->I3_name, I3_ROUTER_NAME);
-	    }
+                // log_info("Channel %s has been updated from router %s", channel->I3_name, I3_ROUTER_NAME);
+            }
 
             // ChanMud
-	    ps += 2;
-	    I3_get_field(ps, &next_ps);
-	    remove_quotes(&ps);
-	    I3STRFREE(channel->host_mud);
-	    channel->host_mud = I3STRALLOC(ps);
-	    ps = next_ps;
+            ps += 2;
+            I3_get_field(ps, &next_ps);
+            remove_quotes(&ps);
+            I3STRFREE(channel->host_mud);
+            channel->host_mud = I3STRALLOC(ps);
+            ps = next_ps;
             // ChanStatus
-	    I3_get_field(ps, &next_ps);
-	    channel->status = atoi(ps);
-            log_info("I3 Channel %s: %s@%s (local %s) is %s",
-                    (is_new ? "ADDED" : "UPDATED"),
-                    channel->I3_name,
-                    channel->host_mud,
-                    ((channel->local_name && channel->local_name[0]) ? channel->local_name : "--"),
-                    (channel->status == 0 ? "public" : "private"));
-	} else {
-	    if ((channel = find_I3_channel_by_name(chan)) != NULL) {
-		if (channel->local_name && channel->local_name[0] != '\0') {
-		    //log_info("Locally configured channel %s has been purged from router %s", channel->local_name, I3_ROUTER_NAME);
+            I3_get_field(ps, &next_ps);
+            channel->status = atoi(ps);
+            log_info("I3 Channel %s: %s@%s (local %s) is %s", (is_new ? "ADDED" : "UPDATED"), channel->I3_name,
+                     channel->host_mud, ((channel->local_name && channel->local_name[0]) ? channel->local_name : "--"),
+                     (channel->status == 0 ? "public" : "private"));
+        }
+        else
+        {
+            if ((channel = find_I3_channel_by_name(chan)) != NULL)
+            {
+                if (channel->local_name && channel->local_name[0] != '\0')
+                {
+                    // log_info("Locally configured channel %s has been purged from router %s", channel->local_name,
+                    // I3_ROUTER_NAME);
                 }
-                log_info("I3 Channel %s: %s@%s (local %s) is %s",
-                        "DELETED",
-                        channel->I3_name,
-                        channel->host_mud,
-                        ((channel->local_name && channel->local_name[0]) ? channel->local_name : "--"),
-                        (channel->status == 0 ? "public" : "private"));
-		destroy_I3_channel(channel);
-		I3_write_channel_config();
-	    }
-	}
-	ps = next_ps2;
-	if (ps[0] == ']')
-	    break;
+                log_info("I3 Channel %s: %s@%s (local %s) is %s", "DELETED", channel->I3_name, channel->host_mud,
+                         ((channel->local_name && channel->local_name[0]) ? channel->local_name : "--"),
+                         (channel->status == 0 ? "public" : "private"));
+                destroy_I3_channel(channel);
+                I3_write_channel_config();
+            }
+        }
+        ps = next_ps2;
+        if (ps[0] == ']')
+            break;
     }
     log_info("I3_process_chanlist_reply: %s", "Saving channel config data.");
     I3_write_channel_config();
@@ -2467,44 +2571,44 @@ void I3_process_chanlist_reply(I3_HEADER *header, char *s)
 
 void I3_send_channel_message(I3_CHANNEL *channel, const char *name, const char *message)
 {
-    char                                    buf[MAX_STRING_LENGTH];
+    char buf[MAX_STRING_LENGTH];
 
     if (!is_connected())
-	return;
+        return;
 
     strlcpy(buf, message, MAX_STRING_LENGTH);
 
-    //log_info("I3_send_channel(%s@%s, %s, %s)", channel->I3_name, channel->host_mud, name, message);
+    // log_info("I3_send_channel(%s@%s, %s, %s)", channel->I3_name, channel->host_mud, name, message);
     I3_write_header("channel-m", this_i3mud->name, name, NULL, NULL);
-    //log_info("I3_send_channel() header setup.");
+    // log_info("I3_send_channel() header setup.");
     I3_write_buffer("\"");
     I3_write_buffer(channel->I3_name);
     I3_write_buffer("\",\"");
     I3_write_buffer(I3_nameremap(name));
-    //log_info("I3_send_channel() name remap %s to %s.", name, I3_nameremap(name));
+    // log_info("I3_send_channel() name remap %s to %s.", name, I3_nameremap(name));
     I3_write_buffer("\",\"");
     send_to_i3(I3_escape(buf));
-    //log_info("I3_send_channel() escaped buffer.");
+    // log_info("I3_send_channel() escaped buffer.");
     I3_write_buffer("\",})\r");
     lag_spike = i3_time;
     I3_send_packet();
     channel_m_sent++;
-    //log_info("I3_send_channel() done.");
+    // log_info("I3_send_channel() done.");
 
     return;
 }
 
 void I3_send_channel_emote(I3_CHANNEL *channel, const char *name, const char *message)
 {
-    char                                    buf[MAX_STRING_LENGTH];
+    char buf[MAX_STRING_LENGTH];
 
     if (!is_connected())
-	return;
+        return;
 
     if (strstr(message, "$N") == NULL)
-	snprintf(buf, MAX_STRING_LENGTH, "$N %s", message);
+        snprintf(buf, MAX_STRING_LENGTH, "$N %s", message);
     else
-	strlcpy(buf, message, MAX_STRING_LENGTH);
+        strlcpy(buf, message, MAX_STRING_LENGTH);
 
     I3_write_header("channel-e", this_i3mud->name, name, NULL, NULL);
     I3_write_buffer("\"");
@@ -2519,11 +2623,11 @@ void I3_send_channel_emote(I3_CHANNEL *channel, const char *name, const char *me
     return;
 }
 
-void I3_send_channel_t(I3_CHANNEL *channel, const char *name, char *tmud, char *tuser, char *msg_o,
-		       char *msg_t, char *tvis)
+void I3_send_channel_t(I3_CHANNEL *channel, const char *name, char *tmud, char *tuser, char *msg_o, char *msg_t,
+                       char *tvis)
 {
     if (!is_connected())
-	return;
+        return;
 
     I3_write_header("channel-t", this_i3mud->name, name, NULL, NULL);
     I3_write_buffer("\"");
@@ -2548,80 +2652,86 @@ void I3_send_channel_t(I3_CHANNEL *channel, const char *name, char *tmud, char *
 
 int I3_token(char type, char *string, char *oname, char *tname)
 {
-    char                                    code[500];
-    char                                   *p;
+    char code[500];
+    char *p;
 
-    switch (type) {
-	default:
-	    code[0] = type;
-	    code[1] = '\0';
-	    return 1;
-	case '$':
-	    strlcpy(code, "$", 500);
-	    break;
-	case ' ':
-	    strlcpy(code, " ", 500);
-	    break;
-	case 'N':					       /* Originator's name */
-	    strlcpy(code, oname, 500);
-	    break;
-	case 'O':					       /* Target's name */
-	    strlcpy(code, tname, 500);
-	    break;
+    switch (type)
+    {
+    default:
+        code[0] = type;
+        code[1] = '\0';
+        return 1;
+    case '$':
+        strlcpy(code, "$", 500);
+        break;
+    case ' ':
+        strlcpy(code, " ", 500);
+        break;
+    case 'N': /* Originator's name */
+        strlcpy(code, oname, 500);
+        break;
+    case 'O': /* Target's name */
+        strlcpy(code, tname, 500);
+        break;
     }
     p = code;
-    while (*p != '\0') {
-	*string = *p++;
-	*++string = '\0';
+    while (*p != '\0')
+    {
+        *string = *p++;
+        *++string = '\0';
     }
     return (strlen(code));
 }
 
 void I3_message_convert(char *buffer, const char *txt, char *oname, char *tname)
 {
-    const char                             *point;
-    int                                     skip = 0;
+    const char *point;
+    int skip = 0;
 
-    for (point = txt; *point; point++) {
-	if (*point == '$') {
-	    point++;
-	    if (*point == '\0')
-		point--;
-	    else
-		skip = I3_token(*point, buffer, oname, tname);
-	    while (skip-- > 0)
-		++buffer;
-	    continue;
-	}
-	*buffer = *point;
-	*++buffer = '\0';
+    for (point = txt; *point; point++)
+    {
+        if (*point == '$')
+        {
+            point++;
+            if (*point == '\0')
+                point--;
+            else
+                skip = I3_token(*point, buffer, oname, tname);
+            while (skip-- > 0)
+                ++buffer;
+            continue;
+        }
+        *buffer = *point;
+        *++buffer = '\0';
     }
     *buffer = '\0';
     return;
 }
 
-char                                   *I3_convert_channel_message(const char *message,
-								   char *sname, char *tname)
+char *I3_convert_channel_message(const char *message, char *sname, char *tname)
 {
-    static char                             msgbuf[MAX_STRING_LENGTH];
+    static char msgbuf[MAX_STRING_LENGTH];
 
     strcpy(msgbuf, "ERROR");
     /*
-     * Sanity checks - if any of these are NULL, bad things will happen - Samson 6-29-01 
+     * Sanity checks - if any of these are NULL, bad things will happen - Samson 6-29-01
      */
-    if (!message) {
-	log_error("%s", "I3_convert_channel_message: NULL message!");
-	return msgbuf;
+    if (!message)
+    {
+        log_error("%s", "I3_convert_channel_message: NULL message!");
+        return msgbuf;
     }
 
-    if (!sname) {
-	log_error("%s", "I3_convert_channel_message: NULL sname!");
-	return msgbuf;
+    if (!sname)
+    {
+        log_error("%s", "I3_convert_channel_message: NULL sname!");
+        return msgbuf;
     }
 
-    if (!tname) {
-	log_error("%s", "I3_convert_channel_message: NULL tname!");
-	return msgbuf;
+    if (!tname)
+    {
+        log_error("%s", "I3_convert_channel_message: NULL tname!");
+        return msgbuf;
     }
 
     I3_message_convert(msgbuf, message, sname, tname);
@@ -2630,78 +2740,94 @@ char                                   *I3_convert_channel_message(const char *m
 
 void update_chanhistory(I3_CHANNEL *channel, char *message)
 {
-    char                                    msg[MAX_STRING_LENGTH],
-                                            buf[MAX_STRING_LENGTH];
-    struct tm                              *local;
-    time_t                                  t;
-    int                                     x;
+    char msg[MAX_STRING_LENGTH], buf[MAX_STRING_LENGTH];
+    struct tm *local;
+    time_t t;
+    int x;
 
-    if (!channel) {
-	log_error("%s", "update_chanhistory: NULL channel received!");
-	return;
+    if (!channel)
+    {
+        log_error("%s", "update_chanhistory: NULL channel received!");
+        return;
     }
 
-    if (!message || message[0] == '\0') {
-	log_error("%s", "update_chanhistory: NULL message received!");
-	return;
+    if (!message || message[0] == '\0')
+    {
+        log_error("%s", "update_chanhistory: NULL message received!");
+        return;
     }
 
     strlcpy(msg, message, MAX_STRING_LENGTH);
-    for (x = 0; x < MAX_I3HISTORY; x++) {
-	if (channel->history[x] == NULL) {
-	    t = time(NULL);
-	    local = localtime(&t);
-	    snprintf(buf, MAX_STRING_LENGTH, "%%^RED%%^%%^BOLD%%^%-4.4d-%-2.2d-%-2.2d%%^RESET%%^ %%^GREEN%%^%%^BOLD%%^%s",
-		     local->tm_year + 1900, local->tm_mon + 1, local->tm_mday, msg);
-	    channel->history[x] = I3STRALLOC(buf);
+    for (x = 0; x < MAX_I3HISTORY; x++)
+    {
+        if (channel->history[x] == NULL)
+        {
+            t = time(NULL);
+            local = localtime(&t);
+            snprintf(buf, MAX_STRING_LENGTH,
+                     "%%^RED%%^%%^BOLD%%^%-4.4d-%-2.2d-%-2.2d%%^RESET%%^ %%^GREEN%%^%%^BOLD%%^%s",
+                     local->tm_year + 1900, local->tm_mon + 1, local->tm_mday, msg);
+            channel->history[x] = I3STRALLOC(buf);
 
-	    if (I3IS_SET(channel->flags, I3CHAN_LOG) && channel->local_name && channel->local_name[0]) {
-		FILE                                   *fp;
+            if (I3IS_SET(channel->flags, I3CHAN_LOG) && channel->local_name && channel->local_name[0])
+            {
+                FILE *fp;
 
-		snprintf(buf, MAX_STRING_LENGTH, "%s%s.log", I3_DIR, channel->local_name);
-		if (!(fp = fopen(buf, "a"))) {
-		    perror(buf);
-		    log_error("Could not open file %s!", buf);
-		} else {
-		    fprintf(fp, "%s\n", i3_strip_colors(channel->history[x]));
-		    I3FCLOSE(fp);
-		}
-	    }
-	    break;
-	}
+                snprintf(buf, MAX_STRING_LENGTH, "%s%s.log", I3_DIR, channel->local_name);
+                if (!(fp = fopen(buf, "a")))
+                {
+                    perror(buf);
+                    log_error("Could not open file %s!", buf);
+                }
+                else
+                {
+                    fprintf(fp, "%s\n", i3_strip_colors(channel->history[x]));
+                    I3FCLOSE(fp);
+                }
+            }
+            break;
+        }
 
-	if (x == MAX_I3HISTORY - 1) {
-	    int                                     y;
+        if (x == MAX_I3HISTORY - 1)
+        {
+            int y;
 
-	    for (y = 1; y < MAX_I3HISTORY; y++) {
-		int                                     z = y - 1;
+            for (y = 1; y < MAX_I3HISTORY; y++)
+            {
+                int z = y - 1;
 
-		if (channel->history[z] != NULL) {
-		    I3STRFREE(channel->history[z]);
-		    channel->history[z] = I3STRALLOC(channel->history[y]);
-		}
-	    }
+                if (channel->history[z] != NULL)
+                {
+                    I3STRFREE(channel->history[z]);
+                    channel->history[z] = I3STRALLOC(channel->history[y]);
+                }
+            }
 
-	    t = time(NULL);
-	    local = localtime(&t);
-	    snprintf(buf, MAX_STRING_LENGTH, "%%^RED%%^%%^BOLD%%^%-4.4d-%-2.2d-%-2.2d%%^RESET%%^ %%^GREEN%%^%%^BOLD%%^%s",
-		     local->tm_year + 1900, local->tm_mon + 1, local->tm_mday, msg);
-	    I3STRFREE(channel->history[x]);
-	    channel->history[x] = I3STRALLOC(buf);
+            t = time(NULL);
+            local = localtime(&t);
+            snprintf(buf, MAX_STRING_LENGTH,
+                     "%%^RED%%^%%^BOLD%%^%-4.4d-%-2.2d-%-2.2d%%^RESET%%^ %%^GREEN%%^%%^BOLD%%^%s",
+                     local->tm_year + 1900, local->tm_mon + 1, local->tm_mday, msg);
+            I3STRFREE(channel->history[x]);
+            channel->history[x] = I3STRALLOC(buf);
 
-	    if (I3IS_SET(channel->flags, I3CHAN_LOG) && channel->local_name && channel->local_name[0]) {
-		FILE                                   *fp;
+            if (I3IS_SET(channel->flags, I3CHAN_LOG) && channel->local_name && channel->local_name[0])
+            {
+                FILE *fp;
 
-		snprintf(buf, MAX_STRING_LENGTH, "%s%s.log", I3_DIR, channel->local_name);
-		if (!(fp = fopen(buf, "a"))) {
-		    perror(buf);
-		    log_error("Could not open file %s!", buf);
-		} else {
-		    fprintf(fp, "%s\n", i3_strip_colors(channel->history[x]));
-		    I3FCLOSE(fp);
-		}
-	    }
-	}
+                snprintf(buf, MAX_STRING_LENGTH, "%s%s.log", I3_DIR, channel->local_name);
+                if (!(fp = fopen(buf, "a")))
+                {
+                    perror(buf);
+                    log_error("Could not open file %s!", buf);
+                }
+                else
+                {
+                    fprintf(fp, "%s\n", i3_strip_colors(channel->history[x]));
+                    I3FCLOSE(fp);
+                }
+            }
+        }
     }
     return;
 }
@@ -2711,10 +2837,8 @@ void update_chanhistory(I3_CHANNEL *channel, char *message)
  */
 void I3_chan_filter_m(I3_CHANNEL *channel, I3_HEADER *header, char *s)
 {
-    char                                   *ps = s,
-	*next_ps;
-    char                                    visname[MAX_INPUT_LENGTH],
-                                            newmsg[MAX_STRING_LENGTH];
+    char *ps = s, *next_ps;
+    char visname[MAX_INPUT_LENGTH], newmsg[MAX_STRING_LENGTH];
 
     I3_get_field(ps, &next_ps);
     remove_quotes(&ps);
@@ -2750,10 +2874,8 @@ void I3_chan_filter_m(I3_CHANNEL *channel, I3_HEADER *header, char *s)
  */
 void I3_chan_filter_e(I3_CHANNEL *channel, I3_HEADER *header, char *s)
 {
-    char                                   *ps = s,
-	*next_ps;
-    char                                    visname[MAX_INPUT_LENGTH],
-                                            newmsg[MAX_STRING_LENGTH];
+    char *ps = s, *next_ps;
+    char visname[MAX_INPUT_LENGTH], newmsg[MAX_STRING_LENGTH];
 
     I3_get_field(ps, &next_ps);
     remove_quotes(&ps);
@@ -2788,13 +2910,10 @@ void I3_chan_filter_e(I3_CHANNEL *channel, I3_HEADER *header, char *s)
  */
 void I3_chan_filter_t(I3_CHANNEL *channel, I3_HEADER *header, char *s)
 {
-    char                                   *ps = s,
-	*next_ps;
-    char                                    targetmud[MAX_INPUT_LENGTH],
-                                            targetuser[MAX_INPUT_LENGTH],
-                                            message_o[MAX_STRING_LENGTH],
-                                            message_t[MAX_STRING_LENGTH];
-    char                                    visname_o[MAX_INPUT_LENGTH];
+    char *ps = s, *next_ps;
+    char targetmud[MAX_INPUT_LENGTH], targetuser[MAX_INPUT_LENGTH], message_o[MAX_STRING_LENGTH],
+        message_t[MAX_STRING_LENGTH];
+    char visname_o[MAX_INPUT_LENGTH];
 
     I3_get_field(ps, &next_ps);
     remove_quotes(&ps);
@@ -2853,26 +2972,29 @@ void I3_chan_filter_t(I3_CHANNEL *channel, I3_HEADER *header, char *s)
 
 void I3_process_channel_filter(I3_HEADER *header, char *s)
 {
-    char                                   *ps = s,
-	*next_ps;
-    char                                    ptype[MAX_INPUT_LENGTH];
-    I3_CHANNEL                             *channel = NULL;
-    I3_HEADER                              *second_header;
-    char                                    channel_name[MAX_INPUT_LENGTH];
+    char *ps = s, *next_ps;
+    char ptype[MAX_INPUT_LENGTH];
+    I3_CHANNEL *channel = NULL;
+    I3_HEADER *second_header;
+    char channel_name[MAX_INPUT_LENGTH];
 
     I3_get_field(ps, &next_ps);
     remove_quotes(&ps);
 
-    if (!(channel = find_I3_channel_by_name(ps))) {
-	log_info("I3_process_channel_filter: received unknown channel (%s)", ps);
-	return;
+    if (!(channel = find_I3_channel_by_name(ps)))
+    {
+        log_info("I3_process_channel_filter: received unknown channel (%s)", ps);
+        return;
     }
 
-    if (!channel->local_name || !channel->local_name[0]) {
-        //return;         // We don't listen to it.
+    if (!channel->local_name || !channel->local_name[0])
+    {
+        // return;         // We don't listen to it.
         // But let's go ahead and log it anyways...
         strlcpy(channel_name, ps, MAX_INPUT_LENGTH);
-    } else {
+    }
+    else
+    {
         // Situation normal, copy this to simplify the code down there...
         strlcpy(channel_name, channel->local_name, MAX_INPUT_LENGTH);
     }
@@ -2889,133 +3011,108 @@ void I3_process_channel_filter(I3_HEADER *header, char *s)
     remove_quotes(&ps);
 
     if (!strcasecmp(ptype, "channel-m"))
-	I3_chan_filter_m(channel, second_header, next_ps);
+        I3_chan_filter_m(channel, second_header, next_ps);
     if (!strcasecmp(ptype, "channel-e"))
-	I3_chan_filter_e(channel, second_header, next_ps);
+        I3_chan_filter_e(channel, second_header, next_ps);
     if (!strcasecmp(ptype, "channel-t"))
-	I3_chan_filter_t(channel, second_header, next_ps);
+        I3_chan_filter_t(channel, second_header, next_ps);
 
     I3DISPOSE(second_header);
     return;
 }
 
-#define I3_ALLCHAN_LOG  I3_DIR "i3.allchan.log"
+#define I3_ALLCHAN_LOG I3_DIR "i3.allchan.log"
 
 // The speaker here is visname, not originator_username.
 // We should probably pass in both, so we can use both.
 //
-void allchan_log( int is_emote, char *channel, char *speaker, char *username, char *mud, char *str ) {
-    FILE                                   *fp = NULL;
-    struct tm                              *local = NULL;
-    struct timeval                          last_time;
+void allchan_log(int is_emote, char *channel, char *speaker, char *username, char *mud, char *str)
+{
+    FILE *fp = NULL;
+    struct tm *local = NULL;
+    struct timeval last_time;
 
-    if(i3_time == 0) {
+    if (i3_time == 0)
+    {
         // We called this before the first run of i3_loop(), from outside.
         // Either that, or this code has travelled back in time, and I'm going to be rich!
         gettimeofday(&last_time, NULL);
-        i3_time = (time_t) last_time.tv_sec;
+        i3_time = (time_t)last_time.tv_sec;
     }
     local = localtime(&i3_time);
 
-    if(last_second != i3_time) {
+    if (last_second != i3_time)
+    {
         last_second = i3_time;
         sub_second_counter = 0;
-    } else {
+    }
+    else
+    {
         sub_second_counter++;
     }
 
-    if(!(fp = fopen(I3_ALLCHAN_LOG, "a"))) {
+    if (!(fp = fopen(I3_ALLCHAN_LOG, "a")))
+    {
         log_error("Could not open file %s!", I3_ALLCHAN_LOG);
-    } else {
-        fprintf(fp, "%04d.%02d.%02d-%02d.%02d,%02d%03d\t%s\t%s@%s\t%c\t%s\n",
-                local->tm_year + 1900, local->tm_mon + 1, local->tm_mday,
-                local->tm_hour, local->tm_min, local->tm_sec, sub_second_counter,
-                channel, speaker, mud,
-                is_emote ? 't' : 'f',
-                str);
+    }
+    else
+    {
+        fprintf(fp, "%04d.%02d.%02d-%02d.%02d,%02d%03d\t%s\t%s@%s\t%c\t%s\n", local->tm_year + 1900, local->tm_mon + 1,
+                local->tm_mday, local->tm_hour, local->tm_min, local->tm_sec, sub_second_counter, channel, speaker, mud,
+                is_emote ? 't' : 'f', str);
         I3FCLOSE(fp);
     }
     allchan_sql(is_emote, channel, speaker, username, mud, str);
 }
 
-char *color_time( struct tm *local )
+char *color_time(struct tm *local)
 {
-    static char                             timestamp[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0\0";
-    char                                   *hours[] = {
-        "%^BLACK%^%^BOLD%^",
-        "%^BLACK%^%^BOLD%^",
-        "%^BLACK%^%^BOLD%^",
-        "%^BLACK%^%^BOLD%^",
-        "%^RED%^",
-        "%^RED%^",
-        "%^ORANGE%^",
-        "%^ORANGE%^",
-        "%^YELLOW%^",
-        "%^YELLOW%^",
-        "%^GREEN%^",
-        "%^GREEN%^",
-        "%^GREEN%^%^BOLD%^",
-        "%^GREEN%^%^BOLD%^",
-        "%^WHITE%^",
-        "%^WHITE%^",
-        "%^CYAN%^%^BOLD%^",
-        "%^CYAN%^%^BOLD%^",
-        "%^CYAN%^",
-        "%^CYAN%^",
-        "%^BLUE%^%^BOLD%^",
-        "%^BLUE%^%^BOLD%^",
-        "%^BLUE%^",
-        "%^BLUE%^"
-    };
+    static char timestamp[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0\0";
+    char *hours[] = {"%^BLACK%^%^BOLD%^", "%^BLACK%^%^BOLD%^", "%^BLACK%^%^BOLD%^", "%^BLACK%^%^BOLD%^", "%^RED%^",
+                     "%^RED%^",           "%^ORANGE%^",        "%^ORANGE%^",        "%^YELLOW%^",        "%^YELLOW%^",
+                     "%^GREEN%^",         "%^GREEN%^",         "%^GREEN%^%^BOLD%^", "%^GREEN%^%^BOLD%^", "%^WHITE%^",
+                     "%^WHITE%^",         "%^CYAN%^%^BOLD%^",  "%^CYAN%^%^BOLD%^",  "%^CYAN%^",          "%^CYAN%^",
+                     "%^BLUE%^%^BOLD%^",  "%^BLUE%^%^BOLD%^",  "%^BLUE%^",          "%^BLUE%^"};
 
-    snprintf(timestamp, MAX_INPUT_LENGTH,
-            "%s%-2.2d:%s%-2.2d%%^RESET%%^",
-            hours[local->tm_hour], local->tm_hour, hours[local->tm_hour], local->tm_min);
+    snprintf(timestamp, MAX_INPUT_LENGTH, "%s%-2.2d:%s%-2.2d%%^RESET%%^", hours[local->tm_hour], local->tm_hour,
+             hours[local->tm_hour], local->tm_min);
     return timestamp;
 }
 
-char *color_speaker( const char *speaker )
+char *color_speaker(const char *speaker)
 {
-    static char                             result[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0\0";
-    char                                    lowercase_name[MAX_INPUT_LENGTH];
-    const char                             *found = NULL;
-    char                                   *colormap[] = {
-        "%^BLACK%^%^BOLD%^",
-        "%^RED%^",
-        "%^GREEN%^",
-        "%^ORANGE%^",
-        "%^BLUE%^",
-        "%^MAGENTA%^",
-        "%^CYAN%^",
-        "%^WHITE%^",
-        "%^RED%^%^BOLD%^",
-        "%^GREEN%^%^BOLD%^",
-        "%^YELLOW%^",
-        "%^MAGENTA%^%^BOLD%^",
-        "%^BLUE%^%^BOLD%^",
-        "%^CYAN%^%^BOLD%^",
-        "%^WHITE%^%^BOLD%^"
-    };
+    static char result[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0\0";
+    char lowercase_name[MAX_INPUT_LENGTH];
+    const char *found = NULL;
+    char *colormap[] = {"%^BLACK%^%^BOLD%^", "%^RED%^",           "%^GREEN%^",        "%^ORANGE%^",
+                        "%^BLUE%^",          "%^MAGENTA%^",       "%^CYAN%^",         "%^WHITE%^",
+                        "%^RED%^%^BOLD%^",   "%^GREEN%^%^BOLD%^", "%^YELLOW%^",       "%^MAGENTA%^%^BOLD%^",
+                        "%^BLUE%^%^BOLD%^",  "%^CYAN%^%^BOLD%^",  "%^WHITE%^%^BOLD%^"};
 
-    if( speaker && *speaker ) {
+    if (speaker && *speaker)
+    {
         bzero(lowercase_name, MAX_INPUT_LENGTH);
-        for(int i = 0; i < strlen(speaker) && i < MAX_INPUT_LENGTH; i++) {
-            if(isalpha(speaker[i]))
+        for (int i = 0; i < strlen(speaker) && i < MAX_INPUT_LENGTH; i++)
+        {
+            if (isalpha(speaker[i]))
                 lowercase_name[i] = tolower(speaker[i]);
             else
                 lowercase_name[i] = speaker[i];
         }
 
         found = (const char *)stringmap_find(speaker_db, lowercase_name);
-        if(found) {
+        if (found)
+        {
             // Simply return the color code found.
             snprintf(result, MAX_INPUT_LENGTH, "%s", found);
             // For now, always add so it can catch up...
             // addspeaker_sql(lowercase_name, found);
-        } else {
+        }
+        else
+        {
             // Add them as a new speaker and THEN return the color code.
             found = colormap[speaker_count % (sizeof(colormap) / sizeof(colormap[0]))];
-            stringmap_add( speaker_db, lowercase_name, (void *)found, strlen(found)+1 );
+            stringmap_add(speaker_db, lowercase_name, (void *)found, strlen(found) + 1);
             speaker_count++;
             I3_saveSpeakers();
             snprintf(result, MAX_INPUT_LENGTH, "%s", found);
@@ -3027,39 +3124,35 @@ char *color_speaker( const char *speaker )
 
 void I3_process_channel_t(I3_HEADER *header, char *s)
 {
-    char                                   *ps = s;
-    char                                   *next_ps;
-    DESCRIPTOR_DATA                        *d;
-    CHAR_DATA                              *vch = NULL;
-    char                                    targetmud[MAX_INPUT_LENGTH],
-                                            targetuser[MAX_INPUT_LENGTH],
-                                            message_o[MAX_STRING_LENGTH],
-                                            message_t[MAX_STRING_LENGTH],
-                                            buf[MAX_STRING_LENGTH];
-    char                                    visname_o[MAX_INPUT_LENGTH],
-                                            sname[MAX_INPUT_LENGTH],
-                                            tname[MAX_INPUT_LENGTH],
-                                            lname[MAX_INPUT_LENGTH],
-                                            layout[MAX_INPUT_LENGTH],
-                                            tmsg[MAX_STRING_LENGTH],
-                                            omsg[MAX_STRING_LENGTH];
-    I3_CHANNEL                             *channel = NULL;
-    struct tm                              *local = localtime(&i3_time);
-    char                                    channel_name[MAX_INPUT_LENGTH];
+    char *ps = s;
+    char *next_ps;
+    DESCRIPTOR_DATA *d;
+    CHAR_DATA *vch = NULL;
+    char targetmud[MAX_INPUT_LENGTH], targetuser[MAX_INPUT_LENGTH], message_o[MAX_STRING_LENGTH],
+        message_t[MAX_STRING_LENGTH], buf[MAX_STRING_LENGTH];
+    char visname_o[MAX_INPUT_LENGTH], sname[MAX_INPUT_LENGTH], tname[MAX_INPUT_LENGTH], lname[MAX_INPUT_LENGTH],
+        layout[MAX_INPUT_LENGTH], tmsg[MAX_STRING_LENGTH], omsg[MAX_STRING_LENGTH];
+    I3_CHANNEL *channel = NULL;
+    struct tm *local = localtime(&i3_time);
+    char channel_name[MAX_INPUT_LENGTH];
 
     I3_get_field(ps, &next_ps);
     remove_quotes(&ps);
 
-    if (!(channel = find_I3_channel_by_name(ps))) {
-	log_info("I3_process_channel_t: received unknown channel (%s)", ps);
-	return;         // We totally don't recognize this channel.
+    if (!(channel = find_I3_channel_by_name(ps)))
+    {
+        log_info("I3_process_channel_t: received unknown channel (%s)", ps);
+        return; // We totally don't recognize this channel.
     }
 
-    if (!channel->local_name || !channel->local_name[0]) {
-        //return;         // We don't listen to it.
+    if (!channel->local_name || !channel->local_name[0])
+    {
+        // return;         // We don't listen to it.
         // But let's go ahead and log it anyways...
         strlcpy(channel_name, ps, MAX_INPUT_LENGTH);
-    } else {
+    }
+    else
+    {
         // Situation normal, copy this to simplify the code down there...
         strlcpy(channel_name, channel->local_name, MAX_INPUT_LENGTH);
     }
@@ -3096,37 +3189,39 @@ void I3_process_channel_t(I3_HEADER *header, char *s)
     snprintf(sname, MAX_INPUT_LENGTH, "%s@%s", visname_o, header->originator_mudname);
     snprintf(tname, MAX_INPUT_LENGTH, "%s@%s", ps, targetmud);
 
-    snprintf(omsg, MAX_STRING_LENGTH, "%s",
-	     I3_convert_channel_message(message_o, sname, tname));
-    snprintf(tmsg, MAX_STRING_LENGTH, "%s",
-	     I3_convert_channel_message(message_t, sname, tname));
+    snprintf(omsg, MAX_STRING_LENGTH, "%s", I3_convert_channel_message(message_o, sname, tname));
+    snprintf(tmsg, MAX_STRING_LENGTH, "%s", I3_convert_channel_message(message_t, sname, tname));
 
     strcpy(layout, "%s ");
     strcat(layout, channel->layout_e);
 
     allchan_log(1, channel_name, visname_o, header->originator_username, header->originator_mudname, omsg);
 
-    for (d = first_descriptor; d; d = d->next) {
-	vch = d->original ? d->original : d->character;
+    for (d = first_descriptor; d; d = d->next)
+    {
+        vch = d->original ? d->original : d->character;
 
-	if (!vch)
-	    continue;
+        if (!vch)
+            continue;
 
-	if (!I3_hasname(I3LISTEN(vch), channel_name)
-	    || I3_hasname(I3DENY(vch), channel_name))
-	    continue;
+        if (!I3_hasname(I3LISTEN(vch), channel_name) || I3_hasname(I3DENY(vch), channel_name))
+            continue;
 
-	snprintf(lname, MAX_INPUT_LENGTH, "%s@%s", CH_I3NAME(vch), this_i3mud->name);
+        snprintf(lname, MAX_INPUT_LENGTH, "%s@%s", CH_I3NAME(vch), this_i3mud->name);
 
-	if (d->connected == CON_PLAYING && !i3ignoring(vch, sname)) {
-	    if (!strcasecmp(lname, tname)) {
-		sprintf(buf, layout, color_time(local), channel_name, tmsg);
-		i3_printf(vch, "%s%%^RESET%%^\r\n", buf);
-	    } else {
-		sprintf(buf, layout, color_time(local), channel_name, omsg);
-		i3_printf(vch, "%s%%^RESET%%^\r\n", buf);
-	    }
-	}
+        if (d->connected == CON_PLAYING && !i3ignoring(vch, sname))
+        {
+            if (!strcasecmp(lname, tname))
+            {
+                sprintf(buf, layout, color_time(local), channel_name, tmsg);
+                i3_printf(vch, "%s%%^RESET%%^\r\n", buf);
+            }
+            else
+            {
+                sprintf(buf, layout, color_time(local), channel_name, omsg);
+                i3_printf(vch, "%s%%^RESET%%^\r\n", buf);
+            }
+        }
     }
     update_chanhistory(channel, omsg);
     time_to_taunt = getTimestamp() + I3_TAUNT_DELAY;
@@ -3135,42 +3230,44 @@ void I3_process_channel_t(I3_HEADER *header, char *s)
 
 void I3_process_channel_m(I3_HEADER *header, char *s)
 {
-    char                                   *ps = s;
-    char                                   *next_ps;
-    DESCRIPTOR_DATA                        *d;
-    CHAR_DATA                              *vch = NULL;
-    char                                    visname[MAX_INPUT_LENGTH],
-                                            tmpvisname[MAX_INPUT_LENGTH],
-                                            buf[MAX_STRING_LENGTH],
-                                            tps[MAX_STRING_LENGTH],
-                                            format[MAX_INPUT_LENGTH];
-    I3_CHANNEL                             *channel;
-    struct tm                              *local = localtime(&i3_time);
-    int                                     len;
-    char                                    speaker_color[MAX_INPUT_LENGTH];
-    char                                    mud_color[MAX_INPUT_LENGTH];
-    char                                    magic_visname[MAX_INPUT_LENGTH];
-    char                                    channel_name[MAX_INPUT_LENGTH];
+    char *ps = s;
+    char *next_ps;
+    DESCRIPTOR_DATA *d;
+    CHAR_DATA *vch = NULL;
+    char visname[MAX_INPUT_LENGTH], tmpvisname[MAX_INPUT_LENGTH], buf[MAX_STRING_LENGTH], tps[MAX_STRING_LENGTH],
+        format[MAX_INPUT_LENGTH];
+    I3_CHANNEL *channel;
+    struct tm *local = localtime(&i3_time);
+    int len;
+    char speaker_color[MAX_INPUT_LENGTH];
+    char mud_color[MAX_INPUT_LENGTH];
+    char magic_visname[MAX_INPUT_LENGTH];
+    char channel_name[MAX_INPUT_LENGTH];
 
     I3_get_field(ps, &next_ps);
     remove_quotes(&ps);
 
-    if (!(channel = find_I3_channel_by_name(ps))) {
-	log_info("channel_m: received unknown channel (%s)", ps);
-	return;         // We totally don't recognize this channel.
+    if (!(channel = find_I3_channel_by_name(ps)))
+    {
+        log_info("channel_m: received unknown channel (%s)", ps);
+        return; // We totally don't recognize this channel.
     }
 
-    if (!channel->local_name || !channel->local_name[0]) {
-        //return;         // We don't listen to it.
+    if (!channel->local_name || !channel->local_name[0])
+    {
+        // return;         // We don't listen to it.
         // But let's go ahead and log it anyways...
         strlcpy(channel_name, ps, MAX_INPUT_LENGTH);
-    } else {
+    }
+    else
+    {
         // Situation normal, copy this to simplify the code down there...
         strlcpy(channel_name, channel->local_name, MAX_INPUT_LENGTH);
     }
 
     channel_m_received++;
-    if (lag_spike > 0) {
+    if (lag_spike > 0)
+    {
         lag_spike = i3_time - lag_spike;
         if (lag_spike > record_lag_spike)
             record_lag_spike = lag_spike;
@@ -3189,52 +3286,59 @@ void I3_process_channel_m(I3_HEADER *header, char *s)
     /* Try to squash multiple trailing newlines in the packet message */
     strlcpy(tps, ps, MAX_STRING_LENGTH);
     len = strlen(tps);
-    while(ISNEWL(tps[len-1]) && len > 1) {
-        tps[len-1] = '\0';
+    while (ISNEWL(tps[len - 1]) && len > 1)
+    {
+        tps[len - 1] = '\0';
         len--;
     }
 
     strcpy(format, "%s ");
     strcat(format, channel->layout_m);
     snprintf(tmpvisname, MAX_INPUT_LENGTH, "%s@%s", visname, header->originator_mudname);
-    if(!strcasecmp(visname, header->originator_username)) {
+    if (!strcasecmp(visname, header->originator_username))
+    {
         strlcpy(magic_visname, visname, MAX_INPUT_LENGTH);
-    } else {
+    }
+    else
+    {
         snprintf(magic_visname, MAX_INPUT_LENGTH, "%s(%s)", visname, header->originator_username);
     }
 
-    //snprintf(buf, MAX_STRING_LENGTH, format, color_time(local), channel_name, visname, header->originator_mudname, tps);
+    // snprintf(buf, MAX_STRING_LENGTH, format, color_time(local), channel_name, visname, header->originator_mudname,
+    // tps);
 
     // We omit the RESET from the end of the speaker name, so it can also catch the @ if the channel
     // format string doesn't override it.
     snprintf(speaker_color, MAX_INPUT_LENGTH, "%s%s", color_speaker(header->originator_username), magic_visname);
-    snprintf(mud_color, MAX_INPUT_LENGTH, "%s%s%%^RESET%%^", color_speaker(header->originator_username), header->originator_mudname);
+    snprintf(mud_color, MAX_INPUT_LENGTH, "%s%s%%^RESET%%^", color_speaker(header->originator_username),
+             header->originator_mudname);
     snprintf(buf, MAX_STRING_LENGTH, format, color_time(local), channel_name, speaker_color, mud_color, tps);
 
     allchan_log(0, channel_name, visname, header->originator_username, header->originator_mudname, tps);
 
-    for (d = first_descriptor; d; d = d->next) {
+    for (d = first_descriptor; d; d = d->next)
+    {
         if (!d || !d->character)
             continue;
 
         if (d->connected != CON_PLAYING)
             continue;
 
-	vch = d->original ? d->original : d->character;
+        vch = d->original ? d->original : d->character;
 
-	if (!vch)
-	    continue;
+        if (!vch)
+            continue;
 
-	if (!I3_hasname(I3LISTEN(vch), channel_name)
-	    || I3_hasname(I3DENY(vch), channel_name))
-	    continue;
+        if (!I3_hasname(I3LISTEN(vch), channel_name) || I3_hasname(I3DENY(vch), channel_name))
+            continue;
 
-        if (d->connected == CON_PLAYING) {
+        if (d->connected == CON_PLAYING)
+        {
             if (i3ignoring(vch, visname))
                 continue;
             if (i3ignoring(vch, tmpvisname))
                 continue;
-	    i3wrap_printf(vch, "%s%%^RESET%%^\r\n", buf);
+            i3wrap_printf(vch, "%s%%^RESET%%^\r\n", buf);
         }
     }
     update_chanhistory(channel, buf);
@@ -3244,37 +3348,37 @@ void I3_process_channel_m(I3_HEADER *header, char *s)
 
 void I3_process_channel_e(I3_HEADER *header, char *s)
 {
-    char                                   *ps = s;
-    char                                   *next_ps;
-    DESCRIPTOR_DATA                        *d;
-    CHAR_DATA                              *vch = NULL;
-    char                                    visname[MAX_INPUT_LENGTH],
-                                            tmpvisname[MAX_INPUT_LENGTH],
-                                            msg[MAX_STRING_LENGTH],
-                                            buf[MAX_STRING_LENGTH],
-                                            tps[MAX_STRING_LENGTH],
-                                            format[MAX_INPUT_LENGTH];
-    I3_CHANNEL                             *channel;
-    struct tm                              *local = localtime(&i3_time);
-    int                                     len;
-    char                                    speaker_color[MAX_INPUT_LENGTH];
-    char                                    mud_color[MAX_INPUT_LENGTH];
-    int                                     hack_len = 0;
-    char                                    channel_name[MAX_INPUT_LENGTH];
+    char *ps = s;
+    char *next_ps;
+    DESCRIPTOR_DATA *d;
+    CHAR_DATA *vch = NULL;
+    char visname[MAX_INPUT_LENGTH], tmpvisname[MAX_INPUT_LENGTH], msg[MAX_STRING_LENGTH], buf[MAX_STRING_LENGTH],
+        tps[MAX_STRING_LENGTH], format[MAX_INPUT_LENGTH];
+    I3_CHANNEL *channel;
+    struct tm *local = localtime(&i3_time);
+    int len;
+    char speaker_color[MAX_INPUT_LENGTH];
+    char mud_color[MAX_INPUT_LENGTH];
+    int hack_len = 0;
+    char channel_name[MAX_INPUT_LENGTH];
 
     I3_get_field(ps, &next_ps);
     remove_quotes(&ps);
 
-    if (!(channel = find_I3_channel_by_name(ps))) {
-	log_info("channel_e: received unknown channel (%s)", ps);
-	return;         // We totally don't recognize this channel.
+    if (!(channel = find_I3_channel_by_name(ps)))
+    {
+        log_info("channel_e: received unknown channel (%s)", ps);
+        return; // We totally don't recognize this channel.
     }
 
-    if (!channel->local_name || !channel->local_name[0]) {
-        //return;         // We don't listen to it.
+    if (!channel->local_name || !channel->local_name[0])
+    {
+        // return;         // We don't listen to it.
         // But let's go ahead and log it anyways...
         strlcpy(channel_name, ps, MAX_INPUT_LENGTH);
-    } else {
+    }
+    else
+    {
         // Situation normal, copy this to simplify the code down there...
         strlcpy(channel_name, channel->local_name, MAX_INPUT_LENGTH);
     }
@@ -3282,7 +3386,7 @@ void I3_process_channel_e(I3_HEADER *header, char *s)
     ps = next_ps;
     I3_get_field(ps, &next_ps);
     remove_quotes(&ps);
-    //snprintf(visname, MAX_INPUT_LENGTH, "%s@%s", ps, header->originator_mudname);
+    // snprintf(visname, MAX_INPUT_LENGTH, "%s@%s", ps, header->originator_mudname);
     strlcpy(visname, ps, MAX_INPUT_LENGTH);
 
     ps = next_ps;
@@ -3292,14 +3396,15 @@ void I3_process_channel_e(I3_HEADER *header, char *s)
     /* Try to squash multiple trailing newlines in the packet message */
     strlcpy(tps, ps, MAX_STRING_LENGTH);
     len = strlen(tps);
-    while(ISNEWL(tps[len-1]) && len > 1) {
-        tps[len-1] = '\0';
+    while (ISNEWL(tps[len - 1]) && len > 1)
+    {
+        tps[len - 1] = '\0';
         len--;
     }
 
-    //strcpy(format, "%%^GREEN%%^%%^BOLD%%^%-2.2d%%^WHITE%%^%%^BOLD%%^:%%^GREEN%%^%%^BOLD%%^%-2.2d%%^RESET%%^ ");
-    //strcat(format, channel->layout_e);
-    //snprintf(buf, MAX_STRING_LENGTH, format, local->tm_hour, local->tm_min, channel_name, msg);
+    // strcpy(format, "%%^GREEN%%^%%^BOLD%%^%-2.2d%%^WHITE%%^%%^BOLD%%^:%%^GREEN%%^%%^BOLD%%^%-2.2d%%^RESET%%^ ");
+    // strcat(format, channel->layout_e);
+    // snprintf(buf, MAX_STRING_LENGTH, format, local->tm_hour, local->tm_min, channel_name, msg);
 
     strcpy(format, "%s ");
     strcat(format, channel->layout_e);
@@ -3308,7 +3413,8 @@ void I3_process_channel_e(I3_HEADER *header, char *s)
     // We omit the RESET from the end of the speaker name, so it can also catch the @ if the channel
     // format string doesn't override it.
     snprintf(speaker_color, MAX_INPUT_LENGTH, "%s%s", color_speaker(header->originator_username), visname);
-    snprintf(mud_color, MAX_INPUT_LENGTH, "%s%s%%^RESET%%^", color_speaker(header->originator_username), header->originator_mudname);
+    snprintf(mud_color, MAX_INPUT_LENGTH, "%s%s%%^RESET%%^", color_speaker(header->originator_username),
+             header->originator_mudname);
     snprintf(msg, MAX_STRING_LENGTH, "%s", I3_convert_channel_message(tps, tmpvisname, tmpvisname));
 
     // Emotes suck.  The message itself has user@mud embedded in it, so to do things right,
@@ -3320,22 +3426,23 @@ void I3_process_channel_e(I3_HEADER *header, char *s)
 
     allchan_log(1, channel_name, visname, header->originator_username, header->originator_mudname, msg);
 
-    for (d = first_descriptor; d; d = d->next) {
-	vch = d->original ? d->original : d->character;
+    for (d = first_descriptor; d; d = d->next)
+    {
+        vch = d->original ? d->original : d->character;
 
-	if (!vch)
-	    continue;
+        if (!vch)
+            continue;
 
-	if (!I3_hasname(I3LISTEN(vch), channel_name)
-	    || I3_hasname(I3DENY(vch), channel_name))
-	    continue;
+        if (!I3_hasname(I3LISTEN(vch), channel_name) || I3_hasname(I3DENY(vch), channel_name))
+            continue;
 
-        if (d->connected == CON_PLAYING) {
+        if (d->connected == CON_PLAYING)
+        {
             if (i3ignoring(vch, visname))
                 continue;
             if (i3ignoring(vch, tmpvisname))
                 continue;
-	    i3wrap_printf(vch, "%s%%^RESET%%^\r\n", buf);
+            i3wrap_printf(vch, "%s%%^RESET%%^\r\n", buf);
         }
     }
     update_chanhistory(channel, buf);
@@ -3345,58 +3452,55 @@ void I3_process_channel_e(I3_HEADER *header, char *s)
 
 void I3_process_chan_who_req(I3_HEADER *header, char *s)
 {
-    CHAR_DATA                              *vch;
-    DESCRIPTOR_DATA                        *d;
-    char                                   *ps = s,
-	*next_ps;
-    char                                    buf[MAX_STRING_LENGTH],
-                                            ibuf[MAX_INPUT_LENGTH];
-    I3_CHANNEL                             *channel;
+    CHAR_DATA *vch;
+    DESCRIPTOR_DATA *d;
+    char *ps = s, *next_ps;
+    char buf[MAX_STRING_LENGTH], ibuf[MAX_INPUT_LENGTH];
+    I3_CHANNEL *channel;
 
     I3_get_field(ps, &next_ps);
     remove_quotes(&ps);
 
-    snprintf(ibuf, MAX_INPUT_LENGTH, "%s@%s", header->originator_username,
-	     header->originator_mudname);
+    snprintf(ibuf, MAX_INPUT_LENGTH, "%s@%s", header->originator_username, header->originator_mudname);
 
-    if (!(channel = find_I3_channel_by_name(ps))) {
-	snprintf(buf, MAX_STRING_LENGTH, "The channel you specified (%s) is unknown at %s", ps,
-		 this_i3mud->name);
-	I3_send_error(header->originator_mudname, header->originator_username, "unk-channel",
-		      buf);
-	log_info("chan_who_req: received unknown channel (%s)", ps);
-	return;
+    if (!(channel = find_I3_channel_by_name(ps)))
+    {
+        snprintf(buf, MAX_STRING_LENGTH, "The channel you specified (%s) is unknown at %s", ps, this_i3mud->name);
+        I3_send_error(header->originator_mudname, header->originator_username, "unk-channel", buf);
+        log_info("chan_who_req: received unknown channel (%s)", ps);
+        return;
     }
 
-    if (!channel->local_name) {
-	snprintf(buf, MAX_STRING_LENGTH,
-		 "The channel you specified (%s) is not registered at %s", ps, this_i3mud->name);
-	I3_send_error(header->originator_mudname, header->originator_username, "unk-channel",
-		      buf);
-	return;
+    if (!channel->local_name)
+    {
+        snprintf(buf, MAX_STRING_LENGTH, "The channel you specified (%s) is not registered at %s", ps,
+                 this_i3mud->name);
+        I3_send_error(header->originator_mudname, header->originator_username, "unk-channel", buf);
+        return;
     }
 
-    I3_write_header("chan-who-reply", this_i3mud->name, NULL, header->originator_mudname,
-		    header->originator_username);
+    I3_write_header("chan-who-reply", this_i3mud->name, NULL, header->originator_mudname, header->originator_username);
     I3_write_buffer("\"");
     I3_write_buffer(channel->I3_name);
     I3_write_buffer("\",({");
 
-    for (d = first_descriptor; d; d = d->next) {
-	vch = d->original ? d->original : d->character;
+    for (d = first_descriptor; d; d = d->next)
+    {
+        vch = d->original ? d->original : d->character;
 
-	if (!vch)
-	    continue;
+        if (!vch)
+            continue;
 
-	if (I3ISINVIS(vch))
-	    continue;
+        if (I3ISINVIS(vch))
+            continue;
 
-	if (I3_hasname(I3LISTEN(vch), channel->local_name) && !i3ignoring(vch, ibuf)
-	    && !I3_hasname(I3DENY(vch), channel->local_name)) {
-	    I3_write_buffer("\"");
-	    I3_write_buffer(CH_I3NAME(vch));
-	    I3_write_buffer("\",");
-	}
+        if (I3_hasname(I3LISTEN(vch), channel->local_name) && !i3ignoring(vch, ibuf) &&
+            !I3_hasname(I3DENY(vch), channel->local_name))
+        {
+            I3_write_buffer("\"");
+            I3_write_buffer(CH_I3NAME(vch));
+            I3_write_buffer("\",");
+        }
     }
     I3_write_buffer("}),})\r");
     I3_send_packet();
@@ -3405,34 +3509,37 @@ void I3_process_chan_who_req(I3_HEADER *header, char *s)
 
 void I3_process_chan_who_reply(I3_HEADER *header, char *s)
 {
-    char                                   *ps = s,
-	*next_ps;
-    CHAR_DATA                              *ch;
+    char *ps = s, *next_ps;
+    CHAR_DATA *ch;
 
-    if (!(ch = I3_find_user(header->target_username))) {
-	log_error("I3_process_chan_who_reply(): user %s not found.", header->target_username);
-	return;
+    if (!(ch = I3_find_user(header->target_username)))
+    {
+        log_error("I3_process_chan_who_reply(): user %s not found.", header->target_username);
+        return;
     }
 
     I3_get_field(ps, &next_ps);
     remove_quotes(&ps);
-    i3_printf(ch, "%%^WHITE%%^%%^BOLD%%^Users listening to %s on %s:%%^RESET%%^\r\n\r\n", ps, header->originator_mudname);
+    i3_printf(ch, "%%^WHITE%%^%%^BOLD%%^Users listening to %s on %s:%%^RESET%%^\r\n\r\n", ps,
+              header->originator_mudname);
 
     ps = next_ps;
     I3_get_field(ps, &next_ps);
     ps += 2;
-    while (1) {
-	if (ps[0] == '}') {
-	    i3_printf(ch, "%%^CYAN%%^No information returned or no people listening.%%^RESET%%^\r\n");
-	    return;
-	}
-	I3_get_field(ps, &next_ps);
-	remove_quotes(&ps);
-	i3_printf(ch, "%%^CYAN%%^%s%%^RESET%%^\r\n", ps);
+    while (1)
+    {
+        if (ps[0] == '}')
+        {
+            i3_printf(ch, "%%^CYAN%%^No information returned or no people listening.%%^RESET%%^\r\n");
+            return;
+        }
+        I3_get_field(ps, &next_ps);
+        remove_quotes(&ps);
+        i3_printf(ch, "%%^CYAN%%^%s%%^RESET%%^\r\n", ps);
 
-	ps = next_ps;
-	if (ps[0] == '}')
-	    break;
+        ps = next_ps;
+        if (ps[0] == '}')
+            break;
     }
     return;
 }
@@ -3440,7 +3547,7 @@ void I3_process_chan_who_reply(I3_HEADER *header, char *s)
 void I3_send_chan_who(CHAR_DATA *ch, I3_CHANNEL *channel, I3_MUD *mud)
 {
     if (!is_connected())
-	return;
+        return;
 
     I3_write_header("chan-who-req", this_i3mud->name, CH_I3NAME(ch), mud->name, NULL);
     I3_write_buffer("\"");
@@ -3454,7 +3561,7 @@ void I3_send_chan_who(CHAR_DATA *ch, I3_CHANNEL *channel, I3_MUD *mud)
 void I3_send_beep(CHAR_DATA *ch, const char *to, I3_MUD *mud)
 {
     if (!is_connected())
-	return;
+        return;
 
     I3_escape(to);
     I3_write_header("beep", this_i3mud->name, CH_I3NAME(ch), mud->name, to);
@@ -3468,40 +3575,39 @@ void I3_send_beep(CHAR_DATA *ch, const char *to, I3_MUD *mud)
 
 void I3_process_beep(I3_HEADER *header, char *s)
 {
-    char                                    buf[MAX_INPUT_LENGTH];
-    char                                   *ps = s,
-	*next_ps;
-    CHAR_DATA                              *ch;
+    char buf[MAX_INPUT_LENGTH];
+    char *ps = s, *next_ps;
+    CHAR_DATA *ch;
 
-    snprintf(buf, MAX_INPUT_LENGTH, "%s@%s", header->originator_username,
-	     header->originator_mudname);
+    snprintf(buf, MAX_INPUT_LENGTH, "%s@%s", header->originator_username, header->originator_mudname);
 
-    if (!(ch = I3_find_user(header->target_username))) {
-	if (!i3exists_player(header->target_username))
-	    I3_send_error(header->originator_mudname, header->originator_username, "unk-user",
-			  "No such player.");
-	else
-	    I3_send_error(header->originator_mudname, header->originator_username, "unk-user",
-			  "That player is offline.");
-	return;
+    if (!(ch = I3_find_user(header->target_username)))
+    {
+        if (!i3exists_player(header->target_username))
+            I3_send_error(header->originator_mudname, header->originator_username, "unk-user", "No such player.");
+        else
+            I3_send_error(header->originator_mudname, header->originator_username, "unk-user",
+                          "That player is offline.");
+        return;
     }
 
-    if (I3PERM(ch) < I3PERM_MORT) {
-	I3_send_error(header->originator_mudname, header->originator_username, "unk-user",
-		      "No such player.");
-	return;
+    if (I3PERM(ch) < I3PERM_MORT)
+    {
+        I3_send_error(header->originator_mudname, header->originator_username, "unk-user", "No such player.");
+        return;
     }
 
-    if (I3ISINVIS(ch) || i3ignoring(ch, buf)) {
-	I3_send_error(header->originator_mudname, header->originator_username, "unk-user",
-		      "That player is offline.");
-	return;
+    if (I3ISINVIS(ch) || i3ignoring(ch, buf))
+    {
+        I3_send_error(header->originator_mudname, header->originator_username, "unk-user", "That player is offline.");
+        return;
     }
 
-    if (I3IS_SET(I3FLAG(ch), I3_BEEP)) {
-	snprintf(buf, MAX_INPUT_LENGTH, "%s is not accepting beeps.", CH_I3NAME(ch));
-	I3_send_error(header->originator_mudname, header->originator_username, "unk-user", buf);
-	return;
+    if (I3IS_SET(I3FLAG(ch), I3_BEEP))
+    {
+        snprintf(buf, MAX_INPUT_LENGTH, "%s is not accepting beeps.", CH_I3NAME(ch));
+        I3_send_error(header->originator_mudname, header->originator_username, "unk-user", buf);
+        return;
     }
 
     I3_get_field(ps, &next_ps);
@@ -3514,7 +3620,7 @@ void I3_process_beep(I3_HEADER *header, char *s)
 void I3_send_tell(CHAR_DATA *ch, const char *to, const char *mud, const char *message)
 {
     if (!is_connected())
-	return;
+        return;
 
     I3_escape(to);
     I3_write_header("tell", this_i3mud->name, CH_I3NAME(ch), mud, to);
@@ -3530,86 +3636,88 @@ void I3_send_tell(CHAR_DATA *ch, const char *to, const char *mud, const char *me
 
 void i3_update_tellhistory(CHAR_DATA *ch, const char *msg)
 {
-    char                                    new_msg[MAX_STRING_LENGTH];
-    time_t                                  t = time(NULL);
-    struct tm                              *local = localtime(&t);
-    int                                     x;
+    char new_msg[MAX_STRING_LENGTH];
+    time_t t = time(NULL);
+    struct tm *local = localtime(&t);
+    int x;
 
-    snprintf(new_msg, MAX_STRING_LENGTH, "%%^RED%%^%%^BOLD%%^[%-2.2d:%-2.2d] %s", local->tm_hour, local->tm_min,
-	     msg);
+    snprintf(new_msg, MAX_STRING_LENGTH, "%%^RED%%^%%^BOLD%%^[%-2.2d:%-2.2d] %s", local->tm_hour, local->tm_min, msg);
 
-    for (x = 0; x < MAX_I3TELLHISTORY; x++) {
-	if (I3TELLHISTORY(ch, x) == NULL) {
-	    I3TELLHISTORY(ch, x) = I3STRALLOC(new_msg);
-	    break;
-	}
+    for (x = 0; x < MAX_I3TELLHISTORY; x++)
+    {
+        if (I3TELLHISTORY(ch, x) == NULL)
+        {
+            I3TELLHISTORY(ch, x) = I3STRALLOC(new_msg);
+            break;
+        }
 
-	if (x == MAX_I3TELLHISTORY - 1) {
-	    int                                     i;
+        if (x == MAX_I3TELLHISTORY - 1)
+        {
+            int i;
 
-	    for (i = 1; i < MAX_I3TELLHISTORY; i++) {
-		I3STRFREE(I3TELLHISTORY(ch, i - 1));
-		I3TELLHISTORY(ch, i - 1) = I3STRALLOC(I3TELLHISTORY(ch, i));
-	    }
-	    I3STRFREE(I3TELLHISTORY(ch, x));
-	    I3TELLHISTORY(ch, x) = I3STRALLOC(new_msg);
-	}
+            for (i = 1; i < MAX_I3TELLHISTORY; i++)
+            {
+                I3STRFREE(I3TELLHISTORY(ch, i - 1));
+                I3TELLHISTORY(ch, i - 1) = I3STRALLOC(I3TELLHISTORY(ch, i));
+            }
+            I3STRFREE(I3TELLHISTORY(ch, x));
+            I3TELLHISTORY(ch, x) = I3STRALLOC(new_msg);
+        }
     }
     return;
 }
 
 void I3_process_tell(I3_HEADER *header, char *s)
 {
-    char                                    buf[MAX_INPUT_LENGTH],
-                                            usr[MAX_INPUT_LENGTH];
-    char                                   *ps = s,
-	*next_ps;
-    CHAR_DATA                              *ch;
-    struct tm                              *local = localtime(&i3_time);
+    char buf[MAX_INPUT_LENGTH], usr[MAX_INPUT_LENGTH];
+    char *ps = s, *next_ps;
+    CHAR_DATA *ch;
+    struct tm *local = localtime(&i3_time);
 
-    snprintf(buf, MAX_INPUT_LENGTH, "%s@%s", header->originator_username,
-	     header->originator_mudname);
+    snprintf(buf, MAX_INPUT_LENGTH, "%s@%s", header->originator_username, header->originator_mudname);
 
-    if (!(ch = I3_find_user(header->target_username))) {
-	if (!i3exists_player(header->target_username))
-	    I3_send_error(header->originator_mudname, header->originator_username, "unk-user",
-			  "No such player.");
-	else
-	    I3_send_error(header->originator_mudname, header->originator_username, "unk-user",
-			  "That player is offline.");
-	return;
+    if (!(ch = I3_find_user(header->target_username)))
+    {
+        if (!i3exists_player(header->target_username))
+            I3_send_error(header->originator_mudname, header->originator_username, "unk-user", "No such player.");
+        else
+            I3_send_error(header->originator_mudname, header->originator_username, "unk-user",
+                          "That player is offline.");
+        return;
     }
 
-    if (I3PERM(ch) < I3PERM_MORT) {
-	I3_send_error(header->originator_mudname, header->originator_username, "unk-user",
-		      "No such player.");
-	return;
+    if (I3PERM(ch) < I3PERM_MORT)
+    {
+        I3_send_error(header->originator_mudname, header->originator_username, "unk-user", "No such player.");
+        return;
     }
 
-    if (I3ISINVIS(ch) || i3ignoring(ch, buf)) {
-	I3_send_error(header->originator_mudname, header->originator_username, "unk-user",
-		      "That player is offline.");
-	return;
+    if (I3ISINVIS(ch) || i3ignoring(ch, buf))
+    {
+        I3_send_error(header->originator_mudname, header->originator_username, "unk-user", "That player is offline.");
+        return;
     }
 
-    if (I3IS_SET(I3FLAG(ch), I3_TELL)) {
-	snprintf(buf, MAX_INPUT_LENGTH, "%s is not accepting tells.", CH_I3NAME(ch));
-	I3_send_error(header->originator_mudname, header->originator_username, "unk-user", buf);
-	return;
+    if (I3IS_SET(I3FLAG(ch), I3_TELL))
+    {
+        snprintf(buf, MAX_INPUT_LENGTH, "%s is not accepting tells.", CH_I3NAME(ch));
+        I3_send_error(header->originator_mudname, header->originator_username, "unk-user", buf);
+        return;
     }
 
-    if (CH_I3AFK(ch)) {
-	snprintf(buf, MAX_INPUT_LENGTH, "%s is currently AFK. Try back later.", CH_I3NAME(ch));
-	I3_send_error(header->originator_mudname, header->originator_username, "unk-user", buf);
-	return;
+    if (CH_I3AFK(ch))
+    {
+        snprintf(buf, MAX_INPUT_LENGTH, "%s is currently AFK. Try back later.", CH_I3NAME(ch));
+        I3_send_error(header->originator_mudname, header->originator_username, "unk-user", buf);
+        return;
     }
 
     I3_get_field(ps, &next_ps);
     remove_quotes(&ps);
 
     snprintf(usr, MAX_INPUT_LENGTH, "%s@%s", ps, header->originator_mudname);
-    //snprintf(buf, MAX_INPUT_LENGTH, "'%s@%s'", ps, header->originator_mudname);
-    //snprintf(buf, MAX_INPUT_LENGTH, "%s@%s", header->originator_username, header->originator_mudname);
+    // snprintf(buf, MAX_INPUT_LENGTH, "'%s@%s'", ps, header->originator_mudname);
+    // snprintf(buf, MAX_INPUT_LENGTH, "%s@%s", header->originator_username, header->originator_mudname);
 
     I3STRFREE(I3REPLYNAME(ch));
     I3STRFREE(I3REPLYMUD(ch));
@@ -3620,7 +3728,8 @@ void I3_process_tell(I3_HEADER *header, char *s)
     I3_get_field(ps, &next_ps);
     remove_quotes(&ps);
 
-    snprintf(buf, MAX_INPUT_LENGTH, "%s %%^CYAN%%^%%^BOLD%%^%s%%^RESET%%^ %%^YELLOW%%^i3tells you: %%^RESET%%^%s", color_time(local), usr, ps);
+    snprintf(buf, MAX_INPUT_LENGTH, "%s %%^CYAN%%^%%^BOLD%%^%s%%^RESET%%^ %%^YELLOW%%^i3tells you: %%^RESET%%^%s",
+             color_time(local), usr, ps);
     i3_printf(ch, "%s%%^RESET%%^\r\n", buf);
     i3_update_tellhistory(ch, buf);
     time_to_taunt = getTimestamp() + I3_TAUNT_DELAY;
@@ -3630,7 +3739,7 @@ void I3_process_tell(I3_HEADER *header, char *s)
 void I3_send_who(CHAR_DATA *ch, char *mud)
 {
     if (!is_connected())
-	return;
+        return;
 
     I3_escape(mud);
     I3_write_header("who-req", this_i3mud->name, CH_I3NAME(ch), mud, NULL);
@@ -3640,41 +3749,44 @@ void I3_send_who(CHAR_DATA *ch, char *mud)
     return;
 }
 
-char                                   *i3centerline(const char *string, int len)
+char *i3centerline(const char *string, int len)
 {
-    char                                    stripped[MAX_STRING_LENGTH];
-    static char                             outbuf[MAX_STRING_LENGTH];
-    int                                     amount;
+    char stripped[MAX_STRING_LENGTH];
+    static char outbuf[MAX_STRING_LENGTH];
+    int amount;
 
     strlcpy(stripped, i3_strip_colors(string), MAX_STRING_LENGTH);
-    amount = len - strlen(stripped);			       /* Determine amount to put in front of line */
+    amount = len - strlen(stripped); /* Determine amount to put in front of line */
 
     if (amount < 1)
-	amount = 1;
+        amount = 1;
 
     /*
-     * Justice, you are the String God! 
+     * Justice, you are the String God!
      */
     snprintf(outbuf, MAX_STRING_LENGTH, "%*s%s%*s", (amount / 2), "", string,
-	     ((amount / 2) * 2) == amount ? (amount / 2) : ((amount / 2) + 1), "");
+             ((amount / 2) * 2) == amount ? (amount / 2) : ((amount / 2) + 1), "");
 
     return outbuf;
 }
 
-char                                   *i3rankbuffer(CHAR_DATA *ch)
+char *i3rankbuffer(CHAR_DATA *ch)
 {
-    static char                             rbuf[MAX_INPUT_LENGTH];
+    static char rbuf[MAX_INPUT_LENGTH];
 
-    if (I3PERM(ch) >= I3PERM_IMM) {
-	strlcpy(rbuf, "%^YELLOW%^Staff%^RESET%^", MAX_INPUT_LENGTH);
+    if (I3PERM(ch) >= I3PERM_IMM)
+    {
+        strlcpy(rbuf, "%^YELLOW%^Staff%^RESET%^", MAX_INPUT_LENGTH);
 
-	if (CH_I3RANK(ch) && CH_I3RANK(ch)[0] != '\0')
-	    snprintf(rbuf, MAX_INPUT_LENGTH, "%%^YELLOW%%^%s%%^RESET%%^", I3_mudtag_to_i3tag(CH_I3RANK(ch)));
-    } else {
-	strlcpy(rbuf, "%^GREEN%^Player%^RESET%^", MAX_INPUT_LENGTH);
+        if (CH_I3RANK(ch) && CH_I3RANK(ch)[0] != '\0')
+            snprintf(rbuf, MAX_INPUT_LENGTH, "%%^YELLOW%%^%s%%^RESET%%^", I3_mudtag_to_i3tag(CH_I3RANK(ch)));
+    }
+    else
+    {
+        strlcpy(rbuf, "%^GREEN%^Player%^RESET%^", MAX_INPUT_LENGTH);
 
-	if (CH_I3RANK(ch) && CH_I3RANK(ch)[0] != '\0')
-	    snprintf(rbuf, MAX_INPUT_LENGTH, "%%^GREEN%%^BOLD%%^%s%%^RESET%%^", I3_mudtag_to_i3tag(CH_I3RANK(ch)));
+        if (CH_I3RANK(ch) && CH_I3RANK(ch)[0] != '\0')
+            snprintf(rbuf, MAX_INPUT_LENGTH, "%%^GREEN%%^BOLD%%^%s%%^RESET%%^", I3_mudtag_to_i3tag(CH_I3RANK(ch)));
     }
     return rbuf;
 }
@@ -3689,23 +3801,22 @@ void I3_write_who_line(const char *str, int idle, const char *xtra)
 
 void new_I3_process_who_req(I3_HEADER *header, char *s)
 {
-    struct descriptor_data                 *d = NULL;
-    struct char_data                       *person = NULL;
-    //int                                     player_count = 0;
-    //int                                     immortal_count = 0;
-    //int                                     npc_count = 0;
+    struct descriptor_data *d = NULL;
+    struct char_data *person = NULL;
+    // int                                     player_count = 0;
+    // int                                     immortal_count = 0;
+    // int                                     npc_count = 0;
 
-    char                                    boottimebuf[MAX_INPUT_LENGTH];
-    //char                                    uptimebuf[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
-    //char                                    nowtimebuf[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
-    char                                    ibuf[MAX_INPUT_LENGTH];
-    char                                    tmp[MAX_INPUT_LENGTH];
-    char                                    header_line_one[MAX_INPUT_LENGTH];
-    char                                    header_line_two[MAX_INPUT_LENGTH];
+    char boottimebuf[MAX_INPUT_LENGTH];
+    // char                                    uptimebuf[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
+    // char                                    nowtimebuf[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
+    char ibuf[MAX_INPUT_LENGTH];
+    char tmp[MAX_INPUT_LENGTH];
+    char header_line_one[MAX_INPUT_LENGTH];
+    char header_line_two[MAX_INPUT_LENGTH];
 
-    strftime(boottimebuf, MAX_INPUT_LENGTH, RFC1123FMT, localtime((time_t *) &Uptime));
-    snprintf(ibuf, MAX_INPUT_LENGTH, "%s@%s", header->originator_username,
-	     header->originator_mudname);
+    strftime(boottimebuf, MAX_INPUT_LENGTH, RFC1123FMT, localtime((time_t *)&Uptime));
+    snprintf(ibuf, MAX_INPUT_LENGTH, "%s@%s", header->originator_username, header->originator_mudname);
 
     /*
      * Proper who-reply format should be:
@@ -3730,25 +3841,28 @@ void new_I3_process_who_req(I3_HEADER *header, char *s)
      */
 
     // Header line one
-    snprintf(tmp, MAX_INPUT_LENGTH, "%%^RED%%^%%^BOLD%%^-=[ %%^WHITE%%^%%^BOLD%%^Who's on %s %%^RED%%^%%^BOLD%%^]=-%%^RESET%%^", this_i3mud->name);
+    snprintf(tmp, MAX_INPUT_LENGTH,
+             "%%^RED%%^%%^BOLD%%^-=[ %%^WHITE%%^%%^BOLD%%^Who's on %s %%^RED%%^%%^BOLD%%^]=-%%^RESET%%^",
+             this_i3mud->name);
     strlcpy(header_line_one, i3centerline(tmp, 78), MAX_INPUT_LENGTH);
     // Header line two
-    snprintf(tmp, MAX_INPUT_LENGTH, "%%^YELLOW%%^-=[ %%^WHITE%%^%%^BOLD%%^telnet://%s:%d %%^YELLOW%%^]=-%%^RESET%%^", this_i3mud->telnet, this_i3mud->player_port);
+    snprintf(tmp, MAX_INPUT_LENGTH, "%%^YELLOW%%^-=[ %%^WHITE%%^%%^BOLD%%^telnet://%s:%d %%^YELLOW%%^]=-%%^RESET%%^",
+             this_i3mud->telnet, this_i3mud->player_port);
     strlcpy(header_line_two, i3centerline(tmp, 78), MAX_INPUT_LENGTH);
 
     // Actual packet stuff
-    I3_write_header("who-reply", this_i3mud->name, NULL, header->originator_mudname,
-		    header->originator_username);
+    I3_write_header("who-reply", this_i3mud->name, NULL, header->originator_mudname, header->originator_username);
     I3_write_buffer("({");
-        // Header line one
-        I3_write_who_line(header_line_one, -1, "");
-        // Header line two
-        I3_write_buffer(",");
-        I3_write_who_line(header_line_two, -1, "");
+    // Header line one
+    I3_write_who_line(header_line_one, -1, "");
+    // Header line two
+    I3_write_buffer(",");
+    I3_write_who_line(header_line_two, -1, "");
 
-        for (d = first_descriptor; d; d = d->next) {
-	    person = d->original ? d->original : d->character;
-        }
+    for (d = first_descriptor; d; d = d->next)
+    {
+        person = d->original ? d->original : d->character;
+    }
 
     I3_write_buffer("})");
     I3_send_packet();
@@ -3756,38 +3870,31 @@ void new_I3_process_who_req(I3_HEADER *header, char *s)
 
 void I3_process_who_req(I3_HEADER *header, char *s)
 {
-    DESCRIPTOR_DATA                        *d;
-    CHAR_DATA                              *person;
-    char                                    ibuf[MAX_INPUT_LENGTH],
-                                            personbuf[MAX_STRING_LENGTH],
-                                            tailbuf[MAX_STRING_LENGTH];
-    char                                    smallbuf[MAX_INPUT_LENGTH],
-                                            buf[MAX_STRING_LENGTH],
-                                            outbuf[MAX_STRING_LENGTH],
-                                            stats[MAX_INPUT_LENGTH],
-                                            rank[MAX_INPUT_LENGTH];
-    int                                     pcount = 0,
-	xx,
-	yy;
-    long int                                bogusidle = 9999;
-    char                                    boottimebuf[MAX_INPUT_LENGTH];
+    DESCRIPTOR_DATA *d;
+    CHAR_DATA *person;
+    char ibuf[MAX_INPUT_LENGTH], personbuf[MAX_STRING_LENGTH], tailbuf[MAX_STRING_LENGTH];
+    char smallbuf[MAX_INPUT_LENGTH], buf[MAX_STRING_LENGTH], outbuf[MAX_STRING_LENGTH], stats[MAX_INPUT_LENGTH],
+        rank[MAX_INPUT_LENGTH];
+    int pcount = 0, xx, yy;
+    long int bogusidle = 9999;
+    char boottimebuf[MAX_INPUT_LENGTH];
 
-    if(!header || !header->originator_username[0] || !header->originator_mudname[0]) {
+    if (!header || !header->originator_username[0] || !header->originator_mudname[0])
+    {
         log_error("Invalid header in who request");
     }
 
-    strftime(boottimebuf, sizeof(boottimebuf), RFC1123FMT, localtime((time_t *) & Uptime));
-    snprintf(ibuf, MAX_INPUT_LENGTH, "%s@%s", header->originator_username,
-	     header->originator_mudname);
+    strftime(boottimebuf, sizeof(boottimebuf), RFC1123FMT, localtime((time_t *)&Uptime));
+    snprintf(ibuf, MAX_INPUT_LENGTH, "%s@%s", header->originator_username, header->originator_mudname);
 
     log_info("Got who request from %s", ibuf);
 
-    I3_write_header("who-reply", this_i3mud->name, NULL, header->originator_mudname,
-		    header->originator_username);
+    I3_write_header("who-reply", this_i3mud->name, NULL, header->originator_mudname, header->originator_username);
     I3_write_buffer("({");
 
     I3_write_buffer("({\"");
-    snprintf(buf, MAX_STRING_LENGTH, "%%^RED%%^%%^BOLD%%^-=[ %%^WHITE%%^%%^BOLD%%^Players on %s %%^RED%%^%%^BOLD%%^]=-", this_i3mud->name);
+    snprintf(buf, MAX_STRING_LENGTH, "%%^RED%%^%%^BOLD%%^-=[ %%^WHITE%%^%%^BOLD%%^Players on %s %%^RED%%^%%^BOLD%%^]=-",
+             this_i3mud->name);
     strlcpy(outbuf, i3centerline(buf, 78), MAX_STRING_LENGTH);
     send_to_i3(I3_escape(outbuf));
 
@@ -3796,8 +3903,8 @@ void I3_process_who_req(I3_HEADER *header, char *s)
     I3_write_buffer(smallbuf);
 
     I3_write_buffer(",\" \",}),({\"");
-    snprintf(buf, MAX_STRING_LENGTH, "%%^YELLOW%%^-=[ %%^WHITE%%^%%^BOLD%%^telnet://%s:%d %%^YELLOW%%^]=-", this_i3mud->telnet,
-	     this_i3mud->player_port);
+    snprintf(buf, MAX_STRING_LENGTH, "%%^YELLOW%%^-=[ %%^WHITE%%^%%^BOLD%%^telnet://%s:%d %%^YELLOW%%^]=-",
+             this_i3mud->telnet, this_i3mud->player_port);
     strlcpy(outbuf, i3centerline(buf, 78), MAX_STRING_LENGTH);
     send_to_i3(I3_escape(outbuf));
 
@@ -3808,118 +3915,127 @@ void I3_process_who_req(I3_HEADER *header, char *s)
     I3_write_buffer(",\" \",}),");
 
     xx = 0;
-    for (d = first_descriptor; d; d = d->next) {
-        if(!d)
+    for (d = first_descriptor; d; d = d->next)
+    {
+        if (!d)
             break;
-	person = d->original ? d->original : d->character;
+        person = d->original ? d->original : d->character;
 
-	if (person && d->connected >= CON_PLAYING) {
-	    if (I3PERM(person) < I3PERM_MORT || I3PERM(person) >= I3PERM_IMM
-		|| I3ISINVIS(person) || i3ignoring(person, ibuf))
-		continue;
+        if (person && d->connected >= CON_PLAYING)
+        {
+            if (I3PERM(person) < I3PERM_MORT || I3PERM(person) >= I3PERM_IMM || I3ISINVIS(person) ||
+                i3ignoring(person, ibuf))
+                continue;
 
-	    pcount++;
+            pcount++;
 
-	    if (xx == 0) {
-		I3_write_buffer("({\"");
-		send_to_i3(I3_escape("%^BLUE%^%^BOLD%^--------------------------------=[ %^WHITE%^%^BOLD%^Players %^BLUE%^%^BOLD%^]=---------------------------------"));
-		I3_write_buffer("\",");
-		snprintf(smallbuf, MAX_INPUT_LENGTH, "%ld", bogusidle);
-		I3_write_buffer(smallbuf);
-		I3_write_buffer(",\" \",}),");
-	    }
+            if (xx == 0)
+            {
+                I3_write_buffer("({\"");
+                send_to_i3(I3_escape("%^BLUE%^%^BOLD%^--------------------------------=[ %^WHITE%^%^BOLD%^Players "
+                                     "%^BLUE%^%^BOLD%^]=---------------------------------"));
+                I3_write_buffer("\",");
+                snprintf(smallbuf, MAX_INPUT_LENGTH, "%ld", bogusidle);
+                I3_write_buffer(smallbuf);
+                I3_write_buffer(",\" \",}),");
+            }
 
-	    I3_write_buffer("({\"");
+            I3_write_buffer("({\"");
 
-	    strlcpy(rank, i3rankbuffer(person), MAX_INPUT_LENGTH);
-	    strlcpy(outbuf, i3centerline(rank, 20), MAX_STRING_LENGTH);
-	    send_to_i3(I3_escape(outbuf));
+            strlcpy(rank, i3rankbuffer(person), MAX_INPUT_LENGTH);
+            strlcpy(outbuf, i3centerline(rank, 20), MAX_STRING_LENGTH);
+            send_to_i3(I3_escape(outbuf));
 
-	    I3_write_buffer("\",");
-	    snprintf(smallbuf, MAX_INPUT_LENGTH, "%ld", -1l);
-	    I3_write_buffer(smallbuf);
-	    I3_write_buffer(",\"");
+            I3_write_buffer("\",");
+            snprintf(smallbuf, MAX_INPUT_LENGTH, "%ld", -1l);
+            I3_write_buffer(smallbuf);
+            I3_write_buffer(",\"");
 
-	    strlcpy(stats, "[", MAX_INPUT_LENGTH);
-	    if (CH_I3AFK(person))
-		strlcat(stats, "AFK", MAX_INPUT_LENGTH);
-	    else
-		strlcat(stats, "---", MAX_INPUT_LENGTH);
-	    strlcat(stats, "]%^GREEN%^%^BOLD%^", MAX_INPUT_LENGTH);
+            strlcpy(stats, "[", MAX_INPUT_LENGTH);
+            if (CH_I3AFK(person))
+                strlcat(stats, "AFK", MAX_INPUT_LENGTH);
+            else
+                strlcat(stats, "---", MAX_INPUT_LENGTH);
+            strlcat(stats, "]%^GREEN%^%^BOLD%^", MAX_INPUT_LENGTH);
 
-	    snprintf(personbuf, MAX_STRING_LENGTH, "%s %s %s", stats, CH_I3NAME(person),
-		     CH_I3TITLE(person));
-	    send_to_i3(I3_escape(personbuf));
-	    I3_write_buffer("\",}),");
-	    xx++;
-	}
+            snprintf(personbuf, MAX_STRING_LENGTH, "%s %s %s", stats, CH_I3NAME(person), CH_I3TITLE(person));
+            send_to_i3(I3_escape(personbuf));
+            I3_write_buffer("\",}),");
+            xx++;
+        }
     }
 
     yy = 0;
-    for (d = first_descriptor; d; d = d->next) {
-        if(!d)
+    for (d = first_descriptor; d; d = d->next)
+    {
+        if (!d)
             break;
-	person = d->original ? d->original : d->character;
+        person = d->original ? d->original : d->character;
 
-	if (person && d->connected >= CON_PLAYING) {
-	    if (I3PERM(person) < I3PERM_IMM || I3ISINVIS(person) || i3ignoring(person, ibuf))
-		continue;
+        if (person && d->connected >= CON_PLAYING)
+        {
+            if (I3PERM(person) < I3PERM_IMM || I3ISINVIS(person) || i3ignoring(person, ibuf))
+                continue;
 
-	    pcount++;
+            pcount++;
 
-	    if (yy == 0) {
-		I3_write_buffer("({\"");
-		send_to_i3(I3_escape
-			   ("%^RED%^%^BOLD%^-------------------------------=[ %^WHITE%^%^BOLD%^Immortals %^RED%^%^BOLD%^]=--------------------------------"));
-		I3_write_buffer("\",");
-		if (xx > 0)
-		    snprintf(smallbuf, MAX_INPUT_LENGTH, "%ld", bogusidle * 3);
-		else
-		    snprintf(smallbuf, MAX_INPUT_LENGTH, "%ld", bogusidle);
-		I3_write_buffer(smallbuf);
-		I3_write_buffer(",\" \",}),");
-	    }
-	    I3_write_buffer("({\"");
+            if (yy == 0)
+            {
+                I3_write_buffer("({\"");
+                send_to_i3(I3_escape("%^RED%^%^BOLD%^-------------------------------=[ %^WHITE%^%^BOLD%^Immortals "
+                                     "%^RED%^%^BOLD%^]=--------------------------------"));
+                I3_write_buffer("\",");
+                if (xx > 0)
+                    snprintf(smallbuf, MAX_INPUT_LENGTH, "%ld", bogusidle * 3);
+                else
+                    snprintf(smallbuf, MAX_INPUT_LENGTH, "%ld", bogusidle);
+                I3_write_buffer(smallbuf);
+                I3_write_buffer(",\" \",}),");
+            }
+            I3_write_buffer("({\"");
 
-	    strlcpy(rank, i3rankbuffer(person), MAX_INPUT_LENGTH);
-	    strlcpy(outbuf, i3centerline(rank, 20), MAX_STRING_LENGTH);
-	    send_to_i3(I3_escape(outbuf));
+            strlcpy(rank, i3rankbuffer(person), MAX_INPUT_LENGTH);
+            strlcpy(outbuf, i3centerline(rank, 20), MAX_STRING_LENGTH);
+            send_to_i3(I3_escape(outbuf));
 
-	    I3_write_buffer("\",");
-	    snprintf(smallbuf, MAX_INPUT_LENGTH, "%ld", -1l);
-	    I3_write_buffer(smallbuf);
-	    I3_write_buffer(",\"");
+            I3_write_buffer("\",");
+            snprintf(smallbuf, MAX_INPUT_LENGTH, "%ld", -1l);
+            I3_write_buffer(smallbuf);
+            I3_write_buffer(",\"");
 
-	    strlcpy(stats, "[", MAX_INPUT_LENGTH);
-	    if (CH_I3AFK(person))
-		strlcat(stats, "AFK", MAX_INPUT_LENGTH);
-	    else
-		strlcat(stats, "---", MAX_INPUT_LENGTH);
-	    strlcat(stats, "]%^GREEN%^%^BOLD%^", MAX_INPUT_LENGTH);
+            strlcpy(stats, "[", MAX_INPUT_LENGTH);
+            if (CH_I3AFK(person))
+                strlcat(stats, "AFK", MAX_INPUT_LENGTH);
+            else
+                strlcat(stats, "---", MAX_INPUT_LENGTH);
+            strlcat(stats, "]%^GREEN%^%^BOLD%^", MAX_INPUT_LENGTH);
 
-	    snprintf(personbuf, MAX_STRING_LENGTH, "%s %s %s", stats, CH_I3NAME(person),
-		     CH_I3TITLE(person));
-	    send_to_i3(I3_escape(personbuf));
-	    I3_write_buffer("\",}),");
-	    yy++;
-	}
+            snprintf(personbuf, MAX_STRING_LENGTH, "%s %s %s", stats, CH_I3NAME(person), CH_I3TITLE(person));
+            send_to_i3(I3_escape(personbuf));
+            I3_write_buffer("\",}),");
+            yy++;
+        }
     }
 
     I3_write_buffer("({\"");
-    snprintf(tailbuf, MAX_STRING_LENGTH, "%%^YELLOW%%^[%%^WHITE%%^%%^BOLD%%^%d Player%s%%^YELLOW%%^]", pcount, pcount == 1 ? "" : "s");
+    snprintf(tailbuf, MAX_STRING_LENGTH, "%%^YELLOW%%^[%%^WHITE%%^%%^BOLD%%^%d Player%s%%^YELLOW%%^]", pcount,
+             pcount == 1 ? "" : "s");
     send_to_i3(I3_escape(tailbuf));
     I3_write_buffer("\",");
     snprintf(smallbuf, MAX_INPUT_LENGTH, "%ld", bogusidle * 2);
     I3_write_buffer(smallbuf);
     I3_write_buffer(",\"");
-    snprintf(tailbuf, MAX_STRING_LENGTH, "%%^YELLOW%%^[%%^WHITE%%^%%^BOLD%%^Homepage: %s%%^YELLOW%%^] [%%^WHITE%%^%%^BOLD%%^%d Max Since Reboot%%^YELLOW%%^]",
-	     HTTP_PLACEHOLDER, MAXPLAYERS_PLACEHOLDER);
+    snprintf(tailbuf, MAX_STRING_LENGTH,
+             "%%^YELLOW%%^[%%^WHITE%%^%%^BOLD%%^Homepage: %s%%^YELLOW%%^] [%%^WHITE%%^%%^BOLD%%^%d Max Since "
+             "Reboot%%^YELLOW%%^]",
+             HTTP_PLACEHOLDER, MAXPLAYERS_PLACEHOLDER);
     send_to_i3(I3_escape(tailbuf));
     I3_write_buffer("\",}),");
 
     I3_write_buffer("({\"");
-    snprintf(tailbuf, MAX_STRING_LENGTH, "%%^YELLOW%%^[%%^WHITE%%^%%^BOLD%%^%d logins since last reboot on %s%%^YELLOW%%^]",
-	     NUMLOGINS_PLACEHOLDER, boottimebuf);
+    snprintf(tailbuf, MAX_STRING_LENGTH,
+             "%%^YELLOW%%^[%%^WHITE%%^%%^BOLD%%^%d logins since last reboot on %s%%^YELLOW%%^]", NUMLOGINS_PLACEHOLDER,
+             boottimebuf);
     send_to_i3(I3_escape(tailbuf));
     I3_write_buffer("\",");
     snprintf(smallbuf, MAX_INPUT_LENGTH, "%ld", bogusidle);
@@ -3945,67 +4061,66 @@ void I3_process_who_req(I3_HEADER *header, char *s)
  */
 void I3_process_who_reply(I3_HEADER *header, char *s)
 {
-    char                                   *ps = s,
-	*next_ps,
-	*next_ps2;
-    CHAR_DATA                              *ch;
-    char                                    person[MAX_STRING_LENGTH],
-                                            title[MAX_INPUT_LENGTH];
-    int                                     idle;
+    char *ps = s, *next_ps, *next_ps2;
+    CHAR_DATA *ch;
+    char person[MAX_STRING_LENGTH], title[MAX_INPUT_LENGTH];
+    int idle;
 
     if (!(ch = I3_find_user(header->target_username)))
-	return;
+        return;
 
     ps += 2;
 
-    while (1) {
-	if (ps[0] == '}') {
-	    i3_printf(ch, "%%^WHITE%%^%%^BOLD%%^No information returned.%%^RESET%%^\r\n");
-	    return;
-	}
+    while (1)
+    {
+        if (ps[0] == '}')
+        {
+            i3_printf(ch, "%%^WHITE%%^%%^BOLD%%^No information returned.%%^RESET%%^\r\n");
+            return;
+        }
 
-	I3_get_field(ps, &next_ps);
+        I3_get_field(ps, &next_ps);
 
-	ps += 2;
-	I3_get_field(ps, &next_ps2);
-	remove_quotes(&ps);
-	strlcpy(person, ps, MAX_STRING_LENGTH);
-	ps = next_ps2;
-	I3_get_field(ps, &next_ps2);
-	idle = atoi(ps);
-	ps = next_ps2;
-	I3_get_field(ps, &next_ps2);
-	remove_quotes(&ps);
-	strlcpy(title, ps, MAX_INPUT_LENGTH);
-	ps = next_ps2;
+        ps += 2;
+        I3_get_field(ps, &next_ps2);
+        remove_quotes(&ps);
+        strlcpy(person, ps, MAX_STRING_LENGTH);
+        ps = next_ps2;
+        I3_get_field(ps, &next_ps2);
+        idle = atoi(ps);
+        ps = next_ps2;
+        I3_get_field(ps, &next_ps2);
+        remove_quotes(&ps);
+        strlcpy(title, ps, MAX_INPUT_LENGTH);
+        ps = next_ps2;
 
-	if (idle == 9999)
-	    i3_printf(ch, "%s %s\r\n\r\n", person, title);
-	else if (idle == 19998)
-	    i3_printf(ch, "\r\n%s %s\r\n", person, title);
-	else if (idle == 29997)
-	    i3_printf(ch, "\r\n%s %s\r\n\r\n", person, title);
-	else
-	    i3_printf(ch, "%s %s\r\n", person, title);
+        if (idle == 9999)
+            i3_printf(ch, "%s %s\r\n\r\n", person, title);
+        else if (idle == 19998)
+            i3_printf(ch, "\r\n%s %s\r\n", person, title);
+        else if (idle == 29997)
+            i3_printf(ch, "\r\n%s %s\r\n\r\n", person, title);
+        else
+            i3_printf(ch, "%s %s\r\n", person, title);
 
-	ps = next_ps;
-	if (ps[0] == '}')
-	    break;
+        ps = next_ps;
+        if (ps[0] == '}')
+            break;
     }
     return;
 }
 
 void I3_send_emoteto(CHAR_DATA *ch, const char *to, I3_MUD *mud, const char *message)
 {
-    char                                    buf[MAX_STRING_LENGTH];
+    char buf[MAX_STRING_LENGTH];
 
     if (!is_connected())
-	return;
+        return;
 
     if (strstr(message, "$N") == NULL)
-	snprintf(buf, MAX_STRING_LENGTH, "$N %s", message);
+        snprintf(buf, MAX_STRING_LENGTH, "$N %s", message);
     else
-	strlcpy(buf, message, MAX_STRING_LENGTH);
+        strlcpy(buf, message, MAX_STRING_LENGTH);
 
     I3_escape(to);
     I3_write_header("emoteto", this_i3mud->name, CH_I3NAME(ch), mud->name, to);
@@ -4021,35 +4136,32 @@ void I3_send_emoteto(CHAR_DATA *ch, const char *to, I3_MUD *mud, const char *mes
 
 void I3_process_emoteto(I3_HEADER *header, char *s)
 {
-    CHAR_DATA                              *ch;
-    char                                   *ps = s,
-	*next_ps;
-    char                                    visname[MAX_INPUT_LENGTH],
-                                            buf[MAX_INPUT_LENGTH];
+    CHAR_DATA *ch;
+    char *ps = s, *next_ps;
+    char visname[MAX_INPUT_LENGTH], buf[MAX_INPUT_LENGTH];
 
-    snprintf(buf, MAX_INPUT_LENGTH, "%s@%s", header->originator_username,
-	     header->originator_mudname);
+    snprintf(buf, MAX_INPUT_LENGTH, "%s@%s", header->originator_username, header->originator_mudname);
 
-    if (!(ch = I3_find_user(header->target_username))) {
-	if (!i3exists_player(header->target_username))
-	    I3_send_error(header->originator_mudname, header->originator_username, "unk-user",
-			  "No such player.");
-	else
-	    I3_send_error(header->originator_mudname, header->originator_username, "unk-user",
-			  "That player is offline.");
-	return;
+    if (!(ch = I3_find_user(header->target_username)))
+    {
+        if (!i3exists_player(header->target_username))
+            I3_send_error(header->originator_mudname, header->originator_username, "unk-user", "No such player.");
+        else
+            I3_send_error(header->originator_mudname, header->originator_username, "unk-user",
+                          "That player is offline.");
+        return;
     }
 
-    if (I3PERM(ch) < I3PERM_MORT) {
-	I3_send_error(header->originator_mudname, header->originator_username, "unk-user",
-		      "No such player.");
-	return;
+    if (I3PERM(ch) < I3PERM_MORT)
+    {
+        I3_send_error(header->originator_mudname, header->originator_username, "unk-user", "No such player.");
+        return;
     }
 
-    if (I3ISINVIS(ch) || i3ignoring(ch, buf) || !ch->desc) {
-	I3_send_error(header->originator_mudname, header->originator_username, "unk-user",
-		      "That player is offline.");
-	return;
+    if (I3ISINVIS(ch) || i3ignoring(ch, buf) || !ch->desc)
+    {
+        I3_send_error(header->originator_mudname, header->originator_username, "unk-user", "That player is offline.");
+        return;
     }
 
     I3_get_field(ps, &next_ps);
@@ -4060,15 +4172,14 @@ void I3_process_emoteto(I3_HEADER *header, char *s)
     I3_get_field(ps, &next_ps);
     remove_quotes(&ps);
 
-    i3_printf(ch, "%%^CYAN%%^%s%%^RESET%%^\r\n",
-            I3_convert_channel_message(ps, visname, visname));
+    i3_printf(ch, "%%^CYAN%%^%s%%^RESET%%^\r\n", I3_convert_channel_message(ps, visname, visname));
     return;
 }
 
 void I3_send_finger(CHAR_DATA *ch, char *user, char *mud)
 {
     if (!is_connected())
-	return;
+        return;
 
     I3_escape(mud);
 
@@ -4084,20 +4195,17 @@ void I3_send_finger(CHAR_DATA *ch, char *user, char *mud)
 /* The output of this was slightly modified to resemble the Finger snippet */
 void I3_process_finger_reply(I3_HEADER *header, char *s)
 {
-    CHAR_DATA                              *ch;
-    char                                   *ps = s,
-	*next_ps;
-    char                                    title[MAX_INPUT_LENGTH],
-                                            email[MAX_INPUT_LENGTH],
-                                            last[MAX_INPUT_LENGTH],
-                                            level[MAX_INPUT_LENGTH];
+    CHAR_DATA *ch;
+    char *ps = s, *next_ps;
+    char title[MAX_INPUT_LENGTH], email[MAX_INPUT_LENGTH], last[MAX_INPUT_LENGTH], level[MAX_INPUT_LENGTH];
 
     if (!(ch = I3_find_user(header->target_username)))
-	return;
+        return;
 
     I3_get_field(ps, &next_ps);
     remove_quotes(&ps);
-    i3_printf(ch, "%%^WHITE%%^I3FINGER information for %%^GREEN%%^%%^BOLD%%^%s@%s%%^RESET%%^\r\n", ps, header->originator_mudname);
+    i3_printf(ch, "%%^WHITE%%^I3FINGER information for %%^GREEN%%^%%^BOLD%%^%s@%s%%^RESET%%^\r\n", ps,
+              header->originator_mudname);
     i3_printf(ch, "%%^WHITE%%^-------------------------------------------------%%^RESET%%^\r\n");
     ps = next_ps;
 
@@ -4146,56 +4254,53 @@ void I3_process_finger_reply(I3_HEADER *header, char *s)
 
 void I3_process_finger_req(I3_HEADER *header, char *s)
 {
-    CHAR_DATA                              *ch;
-    char                                   *ps = s,
-	*next_ps;
-    char                                    smallbuf[200],
-                                            buf[MAX_INPUT_LENGTH];
+    CHAR_DATA *ch;
+    char *ps = s, *next_ps;
+    char smallbuf[200], buf[MAX_INPUT_LENGTH];
 
     I3_get_field(ps, &next_ps);
     remove_quotes(&ps);
 
-    snprintf(buf, MAX_INPUT_LENGTH, "%s@%s", header->originator_username,
-	     header->originator_mudname);
+    snprintf(buf, MAX_INPUT_LENGTH, "%s@%s", header->originator_username, header->originator_mudname);
 
-    if (!(ch = I3_find_user(ps))) {
-	if (!i3exists_player(ps))
-	    I3_send_error(header->originator_mudname, header->originator_username, "unk-user",
-			  "No such player.");
-	else
-	    I3_send_error(header->originator_mudname, header->originator_username, "unk-user",
-			  "That player is offline.");
-	return;
+    if (!(ch = I3_find_user(ps)))
+    {
+        if (!i3exists_player(ps))
+            I3_send_error(header->originator_mudname, header->originator_username, "unk-user", "No such player.");
+        else
+            I3_send_error(header->originator_mudname, header->originator_username, "unk-user",
+                          "That player is offline.");
+        return;
     }
 
-    if (I3PERM(ch) < I3PERM_MORT) {
-	I3_send_error(header->originator_mudname, header->originator_username, "unk-user",
-		      "No such player.");
-	return;
+    if (I3PERM(ch) < I3PERM_MORT)
+    {
+        I3_send_error(header->originator_mudname, header->originator_username, "unk-user", "No such player.");
+        return;
     }
 
-    if (I3ISINVIS(ch) || i3ignoring(ch, buf)) {
-	I3_send_error(header->originator_mudname, header->originator_username, "unk-user",
-		      "That player is offline.");
-	return;
+    if (I3ISINVIS(ch) || i3ignoring(ch, buf))
+    {
+        I3_send_error(header->originator_mudname, header->originator_username, "unk-user", "That player is offline.");
+        return;
     }
 
-    if (I3IS_SET(I3FLAG(ch), I3_DENYFINGER) || I3IS_SET(I3FLAG(ch), I3_PRIVACY)) {
-	snprintf(buf, MAX_INPUT_LENGTH, "%s is not accepting fingers.", CH_I3NAME(ch));
-	I3_send_error(header->originator_mudname, header->originator_username, "unk-user", buf);
-	return;
+    if (I3IS_SET(I3FLAG(ch), I3_DENYFINGER) || I3IS_SET(I3FLAG(ch), I3_PRIVACY))
+    {
+        snprintf(buf, MAX_INPUT_LENGTH, "%s is not accepting fingers.", CH_I3NAME(ch));
+        I3_send_error(header->originator_mudname, header->originator_username, "unk-user", buf);
+        return;
     }
 
-    i3_printf(ch, "%s@%s has requested your i3finger information.\r\n",
-	      header->originator_username, header->originator_mudname);
+    i3_printf(ch, "%s@%s has requested your i3finger information.\r\n", header->originator_username,
+              header->originator_mudname);
 
-    I3_write_header("finger-reply", this_i3mud->name, NULL, header->originator_mudname,
-		    header->originator_username);
+    I3_write_header("finger-reply", this_i3mud->name, NULL, header->originator_mudname, header->originator_username);
     I3_write_buffer("\"");
     I3_write_buffer(I3_escape(CH_I3NAME(ch)));
     I3_write_buffer("\",\"");
-    //I3_write_buffer(I3_escape(CH_I3NAME(ch)));
-    //I3_write_buffer(" ");
+    // I3_write_buffer(I3_escape(CH_I3NAME(ch)));
+    // I3_write_buffer(" ");
     send_to_i3(I3_escape(CH_I3TITLE(ch)));
     I3_write_buffer("\",\"\",\"");
 #if 0
@@ -4208,7 +4313,7 @@ void I3_process_finger_req(I3_HEADER *header, char *s)
 #endif
     I3_write_buffer("[Private]");
     I3_write_buffer("\",\"");
-    strlcpy(smallbuf, "-1", 200);			       /* online since */
+    strlcpy(smallbuf, "-1", 200); /* online since */
     I3_write_buffer(smallbuf);
     I3_write_buffer("\",");
     snprintf(smallbuf, 200, "%ld", -1l);
@@ -4235,7 +4340,7 @@ void I3_process_finger_req(I3_HEADER *header, char *s)
 void I3_send_locate(CHAR_DATA *ch, const char *user)
 {
     if (!is_connected())
-	return;
+        return;
 
     I3_write_header("locate-req", this_i3mud->name, CH_I3NAME(ch), NULL, NULL);
     I3_write_buffer("\"");
@@ -4248,15 +4353,12 @@ void I3_send_locate(CHAR_DATA *ch, const char *user)
 
 void I3_process_locate_reply(I3_HEADER *header, char *s)
 {
-    char                                    mud_name[MAX_INPUT_LENGTH],
-                                            user_name[MAX_INPUT_LENGTH],
-                                            status[MAX_INPUT_LENGTH];
-    char                                   *ps = s,
-	*next_ps;
-    CHAR_DATA                              *ch;
+    char mud_name[MAX_INPUT_LENGTH], user_name[MAX_INPUT_LENGTH], status[MAX_INPUT_LENGTH];
+    char *ps = s, *next_ps;
+    CHAR_DATA *ch;
 
     if (!(ch = I3_find_user(header->target_username)))
-	return;
+        return;
 
     I3_get_field(ps, &next_ps);
     remove_quotes(&ps);
@@ -4276,64 +4378,63 @@ void I3_process_locate_reply(I3_HEADER *header, char *s)
     strlcpy(status, ps, MAX_INPUT_LENGTH);
 
     if (!strcasecmp(status, "active"))
-	strlcpy(status, "Online", MAX_INPUT_LENGTH);
+        strlcpy(status, "Online", MAX_INPUT_LENGTH);
 
     if (!strcasecmp(status, "exists, but not logged on"))
-	strlcpy(status, "Offline", MAX_INPUT_LENGTH);
+        strlcpy(status, "Offline", MAX_INPUT_LENGTH);
 
-    i3_printf(ch, "%%^RED%%^%%^BOLD%%^I3 Locate: %%^YELLOW%%^%s@%s: %%^CYAN%%^%s.%%^RESET%%^\r\n", user_name, mud_name, status);
+    i3_printf(ch, "%%^RED%%^%%^BOLD%%^I3 Locate: %%^YELLOW%%^%s@%s: %%^CYAN%%^%s.%%^RESET%%^\r\n", user_name, mud_name,
+              status);
     return;
 }
 
 void I3_process_locate_req(I3_HEADER *header, char *s)
 {
-    char                                   *ps = s,
-	*next_ps;
-    char                                    smallbuf[50],
-                                            buf[MAX_INPUT_LENGTH];
-    CHAR_DATA                              *ch;
-    bool                                    choffline = FALSE;
+    char *ps = s, *next_ps;
+    char smallbuf[50], buf[MAX_INPUT_LENGTH];
+    CHAR_DATA *ch;
+    bool choffline = FALSE;
 
     I3_get_field(ps, &next_ps);
     remove_quotes(&ps);
 
-    snprintf(buf, MAX_INPUT_LENGTH, "%s@%s", header->originator_username,
-	     header->originator_mudname);
+    snprintf(buf, MAX_INPUT_LENGTH, "%s@%s", header->originator_username, header->originator_mudname);
 
-    if (!(ch = I3_find_user(ps))) {
-	if (i3exists_player(ps))
-	    choffline = TRUE;
-	else
-	    return;
+    if (!(ch = I3_find_user(ps)))
+    {
+        if (i3exists_player(ps))
+            choffline = TRUE;
+        else
+            return;
     }
 
-    if (ch) {
-	if (I3PERM(ch) < I3PERM_MORT)
-	    return;
+    if (ch)
+    {
+        if (I3PERM(ch) < I3PERM_MORT)
+            return;
 
-	if (I3ISINVIS(ch))
-	    choffline = TRUE;
+        if (I3ISINVIS(ch))
+            choffline = TRUE;
 
-	if (i3ignoring(ch, buf))
-	    choffline = TRUE;
+        if (i3ignoring(ch, buf))
+            choffline = TRUE;
     }
 
-    I3_write_header("locate-reply", this_i3mud->name, NULL, header->originator_mudname,
-		    header->originator_username);
+    I3_write_header("locate-reply", this_i3mud->name, NULL, header->originator_mudname, header->originator_username);
     I3_write_buffer("\"");
     I3_write_buffer(this_i3mud->name);
     I3_write_buffer("\",\"");
     if (!choffline)
-	I3_write_buffer(CH_I3NAME(ch));
+        I3_write_buffer(CH_I3NAME(ch));
     else
-	I3_write_buffer(i3capitalize(ps));
+        I3_write_buffer(i3capitalize(ps));
     I3_write_buffer("\",");
     snprintf(smallbuf, 50, "%ld", -1l);
     I3_write_buffer(smallbuf);
     if (!choffline)
-	I3_write_buffer(",\"Online\",})\r");
+        I3_write_buffer(",\"Online\",})\r");
     else
-	I3_write_buffer(",\"Offline\",})\r");
+        I3_write_buffer(",\"Offline\",})\r");
     I3_send_packet();
 
     return;
@@ -4342,16 +4443,16 @@ void I3_process_locate_req(I3_HEADER *header, char *s)
 void I3_send_channel_listen(I3_CHANNEL *channel, bool lconnect)
 {
     if (!is_connected())
-	return;
+        return;
 
     I3_write_header("channel-listen", this_i3mud->name, NULL, I3_ROUTER_NAME, NULL);
     I3_write_buffer("\"");
     I3_write_buffer(channel->I3_name);
     I3_write_buffer("\",");
     if (lconnect)
-	I3_write_buffer("1,})\r");
+        I3_write_buffer("1,})\r");
     else
-	I3_write_buffer("0,})\r");
+        I3_write_buffer("0,})\r");
     I3_send_packet();
 
     return;
@@ -4359,43 +4460,44 @@ void I3_send_channel_listen(I3_CHANNEL *channel, bool lconnect)
 
 void I3_process_channel_adminlist_reply(I3_HEADER *header, char *s)
 {
-    char                                   *ps = s,
-	*next_ps;
-    I3_CHANNEL                             *channel;
-    CHAR_DATA                              *ch;
+    char *ps = s, *next_ps;
+    I3_CHANNEL *channel;
+    CHAR_DATA *ch;
 
-    if ((ch = I3_find_user(header->target_username)) == NULL) {
-	log_error("I3_process_channel_adminlist_reply(): user %s not found.",
-	      header->target_username);
-	return;
+    if ((ch = I3_find_user(header->target_username)) == NULL)
+    {
+        log_error("I3_process_channel_adminlist_reply(): user %s not found.", header->target_username);
+        return;
     }
 
     I3_get_field(ps, &next_ps);
     remove_quotes(&ps);
-    if (!(channel = find_I3_channel_by_name(ps))) {
-	log_error("I3_process_channel_adminlist_reply(): Invalid local channel %s reply received.",
-	      ps);
-	return;
+    if (!(channel = find_I3_channel_by_name(ps)))
+    {
+        log_error("I3_process_channel_adminlist_reply(): Invalid local channel %s reply received.", ps);
+        return;
     }
     i3_printf(ch, "%%^RED%%^%%^BOLD%%^The following muds are %s %s:%%^RESET%%^\r\n\r\n",
-	      channel->status == 0 ? "banned from" : "invited to", channel->local_name);
+              channel->status == 0 ? "banned from" : "invited to", channel->local_name);
 
     ps = next_ps;
     I3_get_field(ps, &next_ps);
     ps += 2;
-    while (1) {
-	if (ps[0] == '}') {
-	    i3_printf(ch, "%%^YELLOW%%^No entries found.%%^RESET%%^\r\n");
-	    return;
-	}
+    while (1)
+    {
+        if (ps[0] == '}')
+        {
+            i3_printf(ch, "%%^YELLOW%%^No entries found.%%^RESET%%^\r\n");
+            return;
+        }
 
-	I3_get_field(ps, &next_ps);
-	remove_quotes(&ps);
-	i3_printf(ch, "%%^YELLOW%%^%s%%^RESET%%^\r\n", ps);
+        I3_get_field(ps, &next_ps);
+        remove_quotes(&ps);
+        i3_printf(ch, "%%^YELLOW%%^%s%%^RESET%%^\r\n", ps);
 
-	ps = next_ps;
-	if (ps[0] == '}')
-	    break;
+        ps = next_ps;
+        if (ps[0] == '}')
+            break;
     }
     return;
 }
@@ -4403,7 +4505,7 @@ void I3_process_channel_adminlist_reply(I3_HEADER *header, char *s)
 void I3_send_channel_adminlist(CHAR_DATA *ch, char *chan_name)
 {
     if (!is_connected())
-	return;
+        return;
 
     I3_write_header("chan-adminlist", this_i3mud->name, CH_I3NAME(ch), I3_ROUTER_NAME, NULL);
     I3_write_buffer("\"");
@@ -4417,7 +4519,7 @@ void I3_send_channel_adminlist(CHAR_DATA *ch, char *chan_name)
 void I3_send_channel_admin(CHAR_DATA *ch, char *chan_name, char *list)
 {
     if (!is_connected())
-	return;
+        return;
 
     I3_write_header("channel-admin", this_i3mud->name, CH_I3NAME(ch), I3_ROUTER_NAME, NULL);
     I3_write_buffer("\"");
@@ -4433,25 +4535,26 @@ void I3_send_channel_admin(CHAR_DATA *ch, char *chan_name, char *list)
 void I3_send_channel_add(CHAR_DATA *ch, char *arg, int type)
 {
     if (!is_connected())
-	return;
+        return;
 
     I3_write_header("channel-add", this_i3mud->name, CH_I3NAME(ch), I3_ROUTER_NAME, NULL);
     I3_write_buffer("\"");
     I3_write_buffer(arg);
     I3_write_buffer("\",");
-    switch (type) {
-	default:
-	    log_error("%s", "I3_send_channel_add: Illegal channel type!");
-	    return;
-	case 0:
-	    I3_write_buffer("0,})\r");
-	    break;
-	case 1:
-	    I3_write_buffer("1,})\r");
-	    break;
-	case 2:
-	    I3_write_buffer("2,})\r");
-	    break;
+    switch (type)
+    {
+    default:
+        log_error("%s", "I3_send_channel_add: Illegal channel type!");
+        return;
+    case 0:
+        I3_write_buffer("0,})\r");
+        break;
+    case 1:
+        I3_write_buffer("1,})\r");
+        break;
+    case 2:
+        I3_write_buffer("2,})\r");
+        break;
     }
     I3_send_packet();
     return;
@@ -4460,7 +4563,7 @@ void I3_send_channel_add(CHAR_DATA *ch, char *arg, int type)
 void I3_send_channel_remove(CHAR_DATA *ch, I3_CHANNEL *channel)
 {
     if (!is_connected())
-	return;
+        return;
 
     I3_write_header("channel-remove", this_i3mud->name, CH_I3NAME(ch), I3_ROUTER_NAME, NULL);
     I3_write_buffer("\"");
@@ -4472,16 +4575,18 @@ void I3_send_channel_remove(CHAR_DATA *ch, I3_CHANNEL *channel)
 
 void I3_send_shutdown(int delay)
 {
-    I3_CHANNEL                             *channel;
-    char                                    s[50];
+    I3_CHANNEL *channel;
+    char s[50];
 
     if (!is_connecting())
-	return;
+        return;
 
-    if (is_connected()) {
-        for (channel = first_I3chan; channel; channel = channel->next) {
-            //if (channel->local_name && channel->local_name[0] != '\0')
-                I3_send_channel_listen(channel, FALSE);
+    if (is_connected())
+    {
+        for (channel = first_I3chan; channel; channel = channel->next)
+        {
+            // if (channel->local_name && channel->local_name[0] != '\0')
+            I3_send_channel_listen(channel, FALSE);
         }
     }
 
@@ -4491,7 +4596,7 @@ void I3_send_shutdown(int delay)
     I3_write_buffer(",})\r");
 
     if (!I3_write_packet(I3_output_buffer))
-	I3_connection_close(FALSE);
+        I3_connection_close(FALSE);
 
     return;
 }
@@ -4500,11 +4605,10 @@ void I3_send_shutdown(int delay)
  * Read the header of an I3 packet. pps will point to the next field
  * of the packet.
  */
-I3_HEADER                              *I3_get_header(char **pps)
+I3_HEADER *I3_get_header(char **pps)
 {
-    I3_HEADER                              *header;
-    char                                   *ps = *pps,
-	*next_ps;
+    I3_HEADER *header;
+    char *ps = *pps, *next_ps;
 
     I3CREATE(header, I3_HEADER, 1);
 
@@ -4539,17 +4643,16 @@ I3_HEADER                              *I3_get_header(char **pps)
  */
 void I3_parse_packet(void)
 {
-    I3_HEADER                              *header = NULL;
-    char                                   *ps,
-                                           *next_ps;
-    char                                    ptype[MAX_INPUT_LENGTH];
+    I3_HEADER *header = NULL;
+    char *ps, *next_ps;
+    char ptype[MAX_INPUT_LENGTH];
 
     ps = I3_currentpacket;
     if (ps[0] != '(' || ps[1] != '{')
-	return;
+        return;
 
     if (packetdebug)
-	log_info("I3_PACKET Packet received: %s", ps);
+        log_info("I3_PACKET Packet received: %s", ps);
 
     ps += 2;
     I3_get_field(ps, &next_ps);
@@ -4566,101 +4669,105 @@ void I3_parse_packet(void)
     // So if we want to store statistics about it, this is the
     // point to do so!
 
-    //i3_packet_log(ptype, I3_incoming_packet_strlen, I3_incoming_packet);
+    // i3_packet_log(ptype, I3_incoming_packet_strlen, I3_incoming_packet);
     i3_packet_log(ptype, I3_incoming_packet_strlen, NULL);
 
     /*
-     * There. Nice and simple, no? 
+     * There. Nice and simple, no?
      */
     if (i3banned(header->originator_mudname))
-	return;
+        return;
 
     if (!strcasecmp(ptype, "tell"))
-	I3_process_tell(header, ps);
+        I3_process_tell(header, ps);
 
     if (!strcasecmp(ptype, "beep"))
-	I3_process_beep(header, ps);
+        I3_process_beep(header, ps);
 
     if (!strcasecmp(ptype, "emoteto"))
-	I3_process_emoteto(header, ps);
+        I3_process_emoteto(header, ps);
 
     if (!strcasecmp(ptype, "channel-m"))
-	I3_process_channel_m(header, ps);
+        I3_process_channel_m(header, ps);
 
     if (!strcasecmp(ptype, "channel-e"))
-	I3_process_channel_e(header, ps);
+        I3_process_channel_e(header, ps);
 
     if (!strcasecmp(ptype, "chan-filter-req"))
-	I3_process_channel_filter(header, ps);
+        I3_process_channel_filter(header, ps);
 
     if (!strcasecmp(ptype, "finger-req"))
-	I3_process_finger_req(header, ps);
+        I3_process_finger_req(header, ps);
 
     if (!strcasecmp(ptype, "finger-reply"))
-	I3_process_finger_reply(header, ps);
+        I3_process_finger_reply(header, ps);
 
     if (!strcasecmp(ptype, "locate-req"))
-	I3_process_locate_req(header, ps);
+        I3_process_locate_req(header, ps);
 
     if (!strcasecmp(ptype, "locate-reply"))
-	I3_process_locate_reply(header, ps);
+        I3_process_locate_reply(header, ps);
 
     if (!strcasecmp(ptype, "chan-who-req"))
-	I3_process_chan_who_req(header, ps);
+        I3_process_chan_who_req(header, ps);
 
     if (!strcasecmp(ptype, "chan-who-reply"))
-	I3_process_chan_who_reply(header, ps);
+        I3_process_chan_who_reply(header, ps);
 
     if (!strcasecmp(ptype, "chan-adminlist-reply"))
-	I3_process_channel_adminlist_reply(header, ps);
+        I3_process_channel_adminlist_reply(header, ps);
 
     if (!strcasecmp(ptype, "ucache-update") && this_i3mud->ucache == TRUE)
-	I3_process_ucache_update(header, ps);
+        I3_process_ucache_update(header, ps);
 
     if (!strcasecmp(ptype, "who-req"))
-	I3_process_who_req(header, ps);
+        I3_process_who_req(header, ps);
 
     if (!strcasecmp(ptype, "who-reply"))
-	I3_process_who_reply(header, ps);
+        I3_process_who_reply(header, ps);
 
     if (!strcasecmp(ptype, "chanlist-reply"))
-	I3_process_chanlist_reply(header, ps);
+        I3_process_chanlist_reply(header, ps);
 
     if (!strcasecmp(ptype, "startup-reply"))
-	I3_process_startup_reply(header, ps);
+        I3_process_startup_reply(header, ps);
 
     if (!strcasecmp(ptype, "mudlist"))
-	I3_process_mudlist(header, ps);
+        I3_process_mudlist(header, ps);
 
     if (!strcasecmp(ptype, "error"))
-	I3_process_error(header, ps);
+        I3_process_error(header, ps);
 
     if (!strcasecmp(ptype, "chan-ack"))
-	I3_process_chanack(header, ps);
+        I3_process_chanack(header, ps);
 
     if (!strcasecmp(ptype, "channel-t"))
-	I3_process_channel_t(header, ps);
+        I3_process_channel_t(header, ps);
 
     if (!strcasecmp(ptype, "chan-user-req"))
-	I3_process_chan_user_req(header, ps);
+        I3_process_chan_user_req(header, ps);
 
     if (!strcasecmp(ptype, "chan-user-reply") && this_i3mud->ucache == TRUE)
-	I3_process_chan_user_reply(header, ps);
+        I3_process_chan_user_reply(header, ps);
 
-    if (!strcasecmp(ptype, "router-shutdown")) {
-	int                                     delay;
+    if (!strcasecmp(ptype, "router-shutdown"))
+    {
+        int delay;
 
-	I3_get_field(ps, &next_ps);
-	delay = atoi(ps);
+        I3_get_field(ps, &next_ps);
+        delay = atoi(ps);
 
-	if (delay == 0) {
-	    log_info("Router %s is shutting down.", I3_ROUTER_NAME);
-	    I3_connection_close(FALSE);
-	} else {
-	    log_info("Router %s is rebooting and will be back in %d second%s.", I3_ROUTER_NAME,
-		  delay, delay == 1 ? "" : "s");
-	    I3_connection_close(TRUE);
-	}
+        if (delay == 0)
+        {
+            log_info("Router %s is shutting down.", I3_ROUTER_NAME);
+            I3_connection_close(FALSE);
+        }
+        else
+        {
+            log_info("Router %s is rebooting and will be back in %d second%s.", I3_ROUTER_NAME, delay,
+                     delay == 1 ? "" : "s");
+            I3_connection_close(TRUE);
+        }
     }
     I3DISPOSE(header);
     return;
@@ -4671,7 +4778,7 @@ void I3_parse_packet(void)
  */
 void I3_read_packet(void)
 {
-    long                                    size;
+    long size;
 
     memmove(&size, I3_input_buffer, 4);
     size = ntohl(size);
@@ -4679,7 +4786,7 @@ void I3_read_packet(void)
     memmove(I3_currentpacket, I3_input_buffer + 4, size);
 
     if (I3_currentpacket[size - 1] != ')')
-	I3_currentpacket[size - 1] = 0;
+        I3_currentpacket[size - 1] = 0;
     I3_currentpacket[size] = 0;
 
     memmove(I3_input_buffer, I3_input_buffer + size + 4, I3_input_pointer - size - 4);
@@ -4689,13 +4796,12 @@ void I3_read_packet(void)
 
 void I3_handle_packet(char *packetBuffer)
 {
-    I3_HEADER                              *header = NULL;
-    char                                   *ps,
-                                           *next_ps;
-    char                                    ptype[MAX_INPUT_LENGTH];
+    I3_HEADER *header = NULL;
+    char *ps, *next_ps;
+    char ptype[MAX_INPUT_LENGTH];
 
     if (packetdebug)
-	log_info("I3_PACKET Packet received: %s", packetBuffer);
+        log_info("I3_PACKET Packet received: %s", packetBuffer);
 
     ps = packetBuffer;
 
@@ -4714,104 +4820,109 @@ void I3_handle_packet(char *packetBuffer)
     // So if we want to store statistics about it, this is the
     // point to do so!
 
-    //i3_packet_log(ptype, I3_incoming_packet_strlen, I3_incoming_packet);
+    // i3_packet_log(ptype, I3_incoming_packet_strlen, I3_incoming_packet);
     i3_packet_log(ptype, I3_incoming_packet_strlen, NULL);
 
     /*
-     * There. Nice and simple, no? 
+     * There. Nice and simple, no?
      * -- a nice and simple memory leak (Quixadhal)
      */
-    if (i3banned(header->originator_mudname)) {
+    if (i3banned(header->originator_mudname))
+    {
         I3DISPOSE(header);
-	return;
+        return;
     }
 
     if (!strcasecmp(ptype, "tell"))
-	I3_process_tell(header, ps);
+        I3_process_tell(header, ps);
 
     if (!strcasecmp(ptype, "beep"))
-	I3_process_beep(header, ps);
+        I3_process_beep(header, ps);
 
     if (!strcasecmp(ptype, "emoteto"))
-	I3_process_emoteto(header, ps);
+        I3_process_emoteto(header, ps);
 
     if (!strcasecmp(ptype, "channel-m"))
-	I3_process_channel_m(header, ps);
+        I3_process_channel_m(header, ps);
 
     if (!strcasecmp(ptype, "channel-e"))
-	I3_process_channel_e(header, ps);
+        I3_process_channel_e(header, ps);
 
     if (!strcasecmp(ptype, "chan-filter-req"))
-	I3_process_channel_filter(header, ps);
+        I3_process_channel_filter(header, ps);
 
     if (!strcasecmp(ptype, "finger-req"))
-	I3_process_finger_req(header, ps);
+        I3_process_finger_req(header, ps);
 
     if (!strcasecmp(ptype, "finger-reply"))
-	I3_process_finger_reply(header, ps);
+        I3_process_finger_reply(header, ps);
 
     if (!strcasecmp(ptype, "locate-req"))
-	I3_process_locate_req(header, ps);
+        I3_process_locate_req(header, ps);
 
     if (!strcasecmp(ptype, "locate-reply"))
-	I3_process_locate_reply(header, ps);
+        I3_process_locate_reply(header, ps);
 
     if (!strcasecmp(ptype, "chan-who-req"))
-	I3_process_chan_who_req(header, ps);
+        I3_process_chan_who_req(header, ps);
 
     if (!strcasecmp(ptype, "chan-who-reply"))
-	I3_process_chan_who_reply(header, ps);
+        I3_process_chan_who_reply(header, ps);
 
     if (!strcasecmp(ptype, "chan-adminlist-reply"))
-	I3_process_channel_adminlist_reply(header, ps);
+        I3_process_channel_adminlist_reply(header, ps);
 
     if (!strcasecmp(ptype, "ucache-update") && this_i3mud->ucache == TRUE)
-	I3_process_ucache_update(header, ps);
+        I3_process_ucache_update(header, ps);
 
     if (!strcasecmp(ptype, "who-req"))
-	I3_process_who_req(header, ps);
+        I3_process_who_req(header, ps);
 
     if (!strcasecmp(ptype, "who-reply"))
-	I3_process_who_reply(header, ps);
+        I3_process_who_reply(header, ps);
 
     if (!strcasecmp(ptype, "chanlist-reply"))
-	I3_process_chanlist_reply(header, ps);
+        I3_process_chanlist_reply(header, ps);
 
     if (!strcasecmp(ptype, "startup-reply"))
-	I3_process_startup_reply(header, ps);
+        I3_process_startup_reply(header, ps);
 
     if (!strcasecmp(ptype, "mudlist"))
-	I3_process_mudlist(header, ps);
+        I3_process_mudlist(header, ps);
 
     if (!strcasecmp(ptype, "error"))
-	I3_process_error(header, ps);
+        I3_process_error(header, ps);
 
     if (!strcasecmp(ptype, "chan-ack"))
-	I3_process_chanack(header, ps);
+        I3_process_chanack(header, ps);
 
     if (!strcasecmp(ptype, "channel-t"))
-	I3_process_channel_t(header, ps);
+        I3_process_channel_t(header, ps);
 
     if (!strcasecmp(ptype, "chan-user-req"))
-	I3_process_chan_user_req(header, ps);
+        I3_process_chan_user_req(header, ps);
 
     if (!strcasecmp(ptype, "chan-user-reply") && this_i3mud->ucache == TRUE)
-	I3_process_chan_user_reply(header, ps);
+        I3_process_chan_user_reply(header, ps);
 
-    if (!strcasecmp(ptype, "router-shutdown")) {
-	int                                     delay;
+    if (!strcasecmp(ptype, "router-shutdown"))
+    {
+        int delay;
 
-	I3_get_field(ps, &next_ps);
-	delay = atoi(ps);
+        I3_get_field(ps, &next_ps);
+        delay = atoi(ps);
 
-	if (delay == 0) {
-	    log_info("Router %s is shutting down.", I3_ROUTER_NAME);
-	    I3_connection_close(FALSE);
-	} else {
-	    log_info("Router %s is rebooting and will be back in %d second%s.", I3_ROUTER_NAME,
-		  delay, delay == 1 ? "" : "s");
-	    I3_connection_close(TRUE);
-	}
+        if (delay == 0)
+        {
+            log_info("Router %s is shutting down.", I3_ROUTER_NAME);
+            I3_connection_close(FALSE);
+        }
+        else
+        {
+            log_info("Router %s is rebooting and will be back in %d second%s.", I3_ROUTER_NAME, delay,
+                     delay == 1 ? "" : "s");
+            I3_connection_close(TRUE);
+        }
     }
 
     I3DISPOSE(header);
@@ -4826,7 +4937,7 @@ void i3_initchar(CHAR_DATA *ch)
 {
     log_info("Setting up I3 data");
     if (IS_NPC(ch))
-	return;
+        return;
 
     I3CREATE(CH_I3DATA(ch), I3_CHARDATA, 1);
     I3LISTEN(ch) = NULL;
@@ -4834,8 +4945,8 @@ void i3_initchar(CHAR_DATA *ch)
     I3REPLYNAME(ch) = NULL;
     I3REPLYMUD(ch) = NULL;
     I3FLAG(ch) = 0;
-    I3SET_BIT(I3FLAG(ch), I3_COLORFLAG);		       /* Default color to on. People can turn this off if they 
-							        * hate it. */
+    I3SET_BIT(I3FLAG(ch), I3_COLORFLAG); /* Default color to on. People can turn this off if they
+                                          * hate it. */
     FIRST_I3IGNORE(ch) = NULL;
     LAST_I3IGNORE(ch) = NULL;
     I3PERM(ch) = I3PERM_MORT;
@@ -4846,31 +4957,32 @@ void i3_initchar(CHAR_DATA *ch)
 
 void i3_freechardata(CHAR_DATA *ch)
 {
-    I3_IGNORE                              *temp,
-                                           *next;
-    int                                     x;
+    I3_IGNORE *temp, *next;
+    int x;
 
     if (IS_NPC(ch))
-	return;
+        return;
 
     if (!CH_I3DATA(ch))
-	return;
+        return;
 
     I3STRFREE(I3LISTEN(ch));
     I3STRFREE(I3DENY(ch));
     I3STRFREE(I3REPLYNAME(ch));
     I3STRFREE(I3REPLYMUD(ch));
 
-    if (FIRST_I3IGNORE(ch)) {
-	for (temp = FIRST_I3IGNORE(ch); temp; temp = next) {
-	    next = temp->next;
-	    I3STRFREE(temp->name);
-	    I3UNLINK(temp, FIRST_I3IGNORE(ch), LAST_I3IGNORE(ch), next, prev);
-	    I3DISPOSE(temp);
-	}
+    if (FIRST_I3IGNORE(ch))
+    {
+        for (temp = FIRST_I3IGNORE(ch); temp; temp = next)
+        {
+            next = temp->next;
+            I3STRFREE(temp->name);
+            I3UNLINK(temp, FIRST_I3IGNORE(ch), LAST_I3IGNORE(ch), next, prev);
+            I3DISPOSE(temp);
+        }
     }
     for (x = 0; x < MAX_I3TELLHISTORY; x++)
-	I3STRFREE(I3TELLHISTORY(ch, x));
+        I3STRFREE(I3TELLHISTORY(ch, x));
 
     I3DISPOSE(CH_I3DATA(ch));
     return;
@@ -4879,7 +4991,7 @@ void i3_freechardata(CHAR_DATA *ch)
 void I3_adjust_perms(CHAR_DATA *ch)
 {
     if (!this_i3mud)
-	return;
+        return;
 
     /*
      * Ugly hack to let the permission system adapt freely, but retains the ability to override that adaptation
@@ -4887,155 +4999,164 @@ void I3_adjust_perms(CHAR_DATA *ch)
      * * course comes at the cost of forgetting you may have done so and caused the override flag to be set, but hey.
      * * This isn't a perfect system and never will be. Samson 2-8-04.
      */
-    if (!I3IS_SET(I3FLAG(ch), I3_PERMOVERRIDE)) {
-	if (CH_I3LEVEL(ch) < this_i3mud->minlevel)
-	    I3PERM(ch) = I3PERM_NONE;
-	else if (CH_I3LEVEL(ch) >= this_i3mud->minlevel
-		 && CH_I3LEVEL(ch) < this_i3mud->immlevel)
-	    I3PERM(ch) = I3PERM_MORT;
-	else if (CH_I3LEVEL(ch) >= this_i3mud->immlevel
-		 && CH_I3LEVEL(ch) < this_i3mud->adminlevel)
-	    I3PERM(ch) = I3PERM_IMM;
-	else if (CH_I3LEVEL(ch) >= this_i3mud->adminlevel
-		 && CH_I3LEVEL(ch) < this_i3mud->implevel)
-	    I3PERM(ch) = I3PERM_ADMIN;
-	else if (CH_I3LEVEL(ch) >= this_i3mud->implevel)
-	    I3PERM(ch) = I3PERM_IMP;
+    if (!I3IS_SET(I3FLAG(ch), I3_PERMOVERRIDE))
+    {
+        if (CH_I3LEVEL(ch) < this_i3mud->minlevel)
+            I3PERM(ch) = I3PERM_NONE;
+        else if (CH_I3LEVEL(ch) >= this_i3mud->minlevel && CH_I3LEVEL(ch) < this_i3mud->immlevel)
+            I3PERM(ch) = I3PERM_MORT;
+        else if (CH_I3LEVEL(ch) >= this_i3mud->immlevel && CH_I3LEVEL(ch) < this_i3mud->adminlevel)
+            I3PERM(ch) = I3PERM_IMM;
+        else if (CH_I3LEVEL(ch) >= this_i3mud->adminlevel && CH_I3LEVEL(ch) < this_i3mud->implevel)
+            I3PERM(ch) = I3PERM_ADMIN;
+        else if (CH_I3LEVEL(ch) >= this_i3mud->implevel)
+            I3PERM(ch) = I3PERM_IMP;
     }
     return;
 }
 
 void I3_char_login(CHAR_DATA *ch)
 {
-    int                                     gender,
-                                            sex;
-    char                                    buf[MAX_INPUT_LENGTH];
+    int gender, sex;
+    char buf[MAX_INPUT_LENGTH];
 
     if (!this_i3mud)
-	return;
+        return;
 
     I3_adjust_perms(ch);
 
-    if (!is_connected()) {
-	if (I3PERM(ch) >= I3PERM_IMM)
-	    i3_printf(ch, "%%^RED%%^%%^BOLD%%^The Intermud-3 connection is down. Attempts to reconnect were abandoned due to excessive failures.%%^RESET%%^\r\n");
-	return;
+    if (!is_connected())
+    {
+        if (I3PERM(ch) >= I3PERM_IMM)
+            i3_printf(ch, "%%^RED%%^%%^BOLD%%^The Intermud-3 connection is down. Attempts to reconnect were abandoned "
+                          "due to excessive failures.%%^RESET%%^\r\n");
+        return;
     }
 
     if (I3PERM(ch) < I3PERM_MORT)
-	return;
+        return;
 
-    if (this_i3mud->ucache == TRUE) {
-	snprintf(buf, MAX_INPUT_LENGTH, "%s@%s", CH_I3NAME(ch), this_i3mud->name);
-	gender = I3_get_ucache_gender(buf);
-	sex = dikutoi3gender(CH_I3SEX(ch));
+    if (this_i3mud->ucache == TRUE)
+    {
+        snprintf(buf, MAX_INPUT_LENGTH, "%s@%s", CH_I3NAME(ch), this_i3mud->name);
+        gender = I3_get_ucache_gender(buf);
+        sex = dikutoi3gender(CH_I3SEX(ch));
 
-	if (gender == sex)
-	    return;
+        if (gender == sex)
+            return;
 
-	I3_ucache_update(buf, sex);
-	if (!I3IS_SET(I3FLAG(ch), I3_INVIS))
-	    I3_send_ucache_update(CH_I3NAME(ch), sex);
+        I3_ucache_update(buf, sex);
+        if (!I3IS_SET(I3FLAG(ch), I3_INVIS))
+            I3_send_ucache_update(CH_I3NAME(ch), sex);
     }
     return;
 }
 
-bool i3_loadchar(CHAR_DATA *ch, FILE * fp, const char *word)
+bool i3_loadchar(CHAR_DATA *ch, FILE *fp, const char *word)
 {
-    bool                                    fMatch = FALSE;
+    bool fMatch = FALSE;
 
     if (IS_NPC(ch))
-	return FALSE;
+        return FALSE;
 
     if (I3PERM(ch) == I3PERM_NOTSET)
-	I3_adjust_perms(ch);
+        I3_adjust_perms(ch);
 
-    switch (UPPER(word[0])) {
-	case 'I':
-	    KEY("i3perm", I3PERM(ch), i3fread_number(fp));
-	    if (!strcasecmp(word, "i3flags")) {
-		I3FLAG(ch) = i3fread_number(fp);
-		I3_char_login(ch);
-		fMatch = TRUE;
-		break;
-	    }
+    switch (UPPER(word[0]))
+    {
+    case 'I':
+        KEY("i3perm", I3PERM(ch), i3fread_number(fp));
+        if (!strcasecmp(word, "i3flags"))
+        {
+            I3FLAG(ch) = i3fread_number(fp);
+            I3_char_login(ch);
+            fMatch = TRUE;
+            break;
+        }
 
-	    if (!strcasecmp(word, "i3listen")) {
-		I3LISTEN(ch) = i3fread_line(fp);
-		if (I3LISTEN(ch) != NULL && is_connected()) {
-		    I3_CHANNEL                             *channel = NULL;
-		    const char                             *channels = I3LISTEN(ch);
-		    char                                    arg[MAX_INPUT_LENGTH];
+        if (!strcasecmp(word, "i3listen"))
+        {
+            I3LISTEN(ch) = i3fread_line(fp);
+            if (I3LISTEN(ch) != NULL && is_connected())
+            {
+                I3_CHANNEL *channel = NULL;
+                const char *channels = I3LISTEN(ch);
+                char arg[MAX_INPUT_LENGTH];
 
-		    while (1) {
-			if (channels[0] == '\0')
-			    break;
-			channels = i3one_argument(channels, arg);
+                while (1)
+                {
+                    if (channels[0] == '\0')
+                        break;
+                    channels = i3one_argument(channels, arg);
 
-			if (!(channel = find_I3_channel_by_localname(arg)))
-			    I3_unflagchan(&I3LISTEN(ch), arg);
-			if (channel && I3PERM(ch) < channel->i3perm)
-			    I3_unflagchan(&I3LISTEN(ch), arg);
-		    }
-		}
-		fMatch = TRUE;
-		break;
-	    }
+                    if (!(channel = find_I3_channel_by_localname(arg)))
+                        I3_unflagchan(&I3LISTEN(ch), arg);
+                    if (channel && I3PERM(ch) < channel->i3perm)
+                        I3_unflagchan(&I3LISTEN(ch), arg);
+                }
+            }
+            fMatch = TRUE;
+            break;
+        }
 
-	    if (!strcasecmp(word, "i3deny")) {
-		I3DENY(ch) = i3fread_line(fp);
-		if (I3DENY(ch) != NULL && is_connected()) {
-		    I3_CHANNEL                             *channel = NULL;
-		    const char                             *channels = I3DENY(ch);
-		    char                                    arg[MAX_INPUT_LENGTH];
+        if (!strcasecmp(word, "i3deny"))
+        {
+            I3DENY(ch) = i3fread_line(fp);
+            if (I3DENY(ch) != NULL && is_connected())
+            {
+                I3_CHANNEL *channel = NULL;
+                const char *channels = I3DENY(ch);
+                char arg[MAX_INPUT_LENGTH];
 
-		    while (1) {
-			if (channels[0] == '\0')
-			    break;
-			channels = i3one_argument(channels, arg);
+                while (1)
+                {
+                    if (channels[0] == '\0')
+                        break;
+                    channels = i3one_argument(channels, arg);
 
-			if (!(channel = find_I3_channel_by_localname(arg)))
-			    I3_unflagchan(&I3DENY(ch), arg);
-			if (channel && I3PERM(ch) < channel->i3perm)
-			    I3_unflagchan(&I3DENY(ch), arg);
-		    }
-		}
-		fMatch = TRUE;
-		break;
-	    }
-	    if (!strcasecmp(word, "i3ignore")) {
-		I3_IGNORE                              *temp;
+                    if (!(channel = find_I3_channel_by_localname(arg)))
+                        I3_unflagchan(&I3DENY(ch), arg);
+                    if (channel && I3PERM(ch) < channel->i3perm)
+                        I3_unflagchan(&I3DENY(ch), arg);
+                }
+            }
+            fMatch = TRUE;
+            break;
+        }
+        if (!strcasecmp(word, "i3ignore"))
+        {
+            I3_IGNORE *temp;
 
-		I3CREATE(temp, I3_IGNORE, 1);
+            I3CREATE(temp, I3_IGNORE, 1);
 
-		temp->name = i3fread_line(fp);
-		I3LINK(temp, FIRST_I3IGNORE(ch), LAST_I3IGNORE(ch), next, prev);
-		fMatch = TRUE;
-		break;
-	    }
-	    break;
+            temp->name = i3fread_line(fp);
+            I3LINK(temp, FIRST_I3IGNORE(ch), LAST_I3IGNORE(ch), next, prev);
+            fMatch = TRUE;
+            break;
+        }
+        break;
     }
     return fMatch;
 }
 
-void i3_savechar(CHAR_DATA *ch, FILE * fp)
+void i3_savechar(CHAR_DATA *ch, FILE *fp)
 {
-    I3_IGNORE                              *temp;
+    I3_IGNORE *temp;
 
     if (IS_NPC(ch))
-	return;
+        return;
 
     fprintf(fp, "i3perm       %d\n", I3PERM(ch));
     fprintf(fp, "i3flags      %d\n", I3FLAG(ch));
     if (I3LISTEN(ch) && I3LISTEN(ch)[0] != '\0')
-	fprintf(fp, "i3listen     %s\n", I3LISTEN(ch));
+        fprintf(fp, "i3listen     %s\n", I3LISTEN(ch));
     else
-	fprintf(fp, "i3listen     %s\n", "wiley");
+        fprintf(fp, "i3listen     %s\n", "wiley");
 
     if (I3DENY(ch) && I3DENY(ch)[0] != '\0')
-	fprintf(fp, "i3deny       %s\n", I3DENY(ch));
+        fprintf(fp, "i3deny       %s\n", I3DENY(ch));
     for (temp = FIRST_I3IGNORE(ch); temp; temp = temp->next)
-	fprintf(fp, "i3ignore     %s\n", temp->name);
+        fprintf(fp, "i3ignore     %s\n", temp->name);
     return;
 }
 
@@ -5045,13 +5166,14 @@ void i3_savechar(CHAR_DATA *ch, FILE * fp)
 
 void I3_saveSpeakers(void)
 {
-    FILE                                   *fp = NULL;
-    int                                     do_reset = 1;
-    stringMap                              *node = NULL;
+    FILE *fp = NULL;
+    int do_reset = 1;
+    stringMap *node = NULL;
 
-    if ((fp = fopen(I3_SPEAKER_FILE, "w")) == NULL) {
-	log_info("%s", "Couldn't write to I3 speaker file.");
-	return;
+    if ((fp = fopen(I3_SPEAKER_FILE, "w")) == NULL)
+    {
+        log_info("%s", "Couldn't write to I3 speaker file.");
+        return;
     }
 
     log_info("Saving I3 speaker list...");
@@ -5060,16 +5182,18 @@ void I3_saveSpeakers(void)
     fprintf(fp, "%s", "End\n\n");
 
     do_reset = 1;
-    do {
+    do
+    {
         node = stringmap_walk(speaker_db, do_reset);
         do_reset = 0;
-        if( node && node->key ) {
+        if (node && node->key)
+        {
             fprintf(fp, "%s", "#SPEAKER\n");
             fprintf(fp, "Name   %s\n", node->key);
             fprintf(fp, "Color  %s\n", node->value ? (char *)node->value : "%^RESET%^");
             fprintf(fp, "%s", "End\n\n");
         }
-    } while ( node );
+    } while (node);
 
     fprintf(fp, "%s", "#END\n");
     I3FCLOSE(fp);
@@ -5077,119 +5201,138 @@ void I3_saveSpeakers(void)
 
 void I3_readSpeakerCount(FILE *fp)
 {
-    const char                             *word;
-    bool                                    fMatch;
+    const char *word;
+    bool fMatch;
 
-    for (;;) {
-	word = feof(fp) ? "End" : i3fread_word(fp);
-	fMatch = FALSE;
+    for (;;)
+    {
+        word = feof(fp) ? "End" : i3fread_word(fp);
+        fMatch = FALSE;
 
-	switch (word[0]) {
-	    case '*':
-		fMatch = TRUE;
-		i3fread_to_eol(fp);
-		break;
+        switch (word[0])
+        {
+        case '*':
+            fMatch = TRUE;
+            i3fread_to_eol(fp);
+            break;
 
-	    case 'E':
-		if (!strcasecmp(word, "End")) {
-                    return;
-                }
-		break;
+        case 'E':
+            if (!strcasecmp(word, "End"))
+            {
+                return;
+            }
+            break;
 
-	    case 'C':
-		KEY("Count", speaker_count, i3fread_number(fp));
-		break;
-	}
-	if (!fMatch)
-	    log_error("i3_readSpeakerCount: no match: %s", word);
+        case 'C':
+            KEY("Count", speaker_count, i3fread_number(fp));
+            break;
+        }
+        if (!fMatch)
+            log_error("i3_readSpeakerCount: no match: %s", word);
     }
 }
 
 void I3_readSpeaker(FILE *fp)
 {
-    const char                             *word;
-    bool                                    fMatch;
-    char                                   *key = NULL;
-    char                                   *value = NULL;
+    const char *word;
+    bool fMatch;
+    char *key = NULL;
+    char *value = NULL;
 
-    for (;;) {
-	word = feof(fp) ? "End" : i3fread_word(fp);
-	fMatch = FALSE;
+    for (;;)
+    {
+        word = feof(fp) ? "End" : i3fread_word(fp);
+        fMatch = FALSE;
 
-	switch (word[0]) {
-	    case '*':
-		fMatch = TRUE;
-		i3fread_to_eol(fp);
-		break;
+        switch (word[0])
+        {
+        case '*':
+            fMatch = TRUE;
+            i3fread_to_eol(fp);
+            break;
 
-	    case 'E':
-		if (!strcasecmp(word, "End")) {
-                    if(key && *key && value) {
-                        const char *check = NULL;
+        case 'E':
+            if (!strcasecmp(word, "End"))
+            {
+                if (key && *key && value)
+                {
+                    const char *check = NULL;
 
-                        if(!(check = (const char *)stringmap_find(speaker_db, key))) {
-                            stringmap_add(speaker_db, key, value, strlen(value)+1);
-                        }
+                    if (!(check = (const char *)stringmap_find(speaker_db, key)))
+                    {
+                        stringmap_add(speaker_db, key, value, strlen(value) + 1);
                     }
-		    return;
                 }
-		break;
+                return;
+            }
+            break;
 
-	    case 'C':
-		KEY("Color", value, i3fread_line(fp));
-		break;
+        case 'C':
+            KEY("Color", value, i3fread_line(fp));
+            break;
 
-	    case 'N':
-		KEY("Name", key, i3fread_line(fp));
-		break;
-	}
-	if (!fMatch)
-	    log_error("i3_readSpeaker: no match: %s", word);
+        case 'N':
+            KEY("Name", key, i3fread_line(fp));
+            break;
+        }
+        if (!fMatch)
+            log_error("i3_readSpeaker: no match: %s", word);
     }
 }
 
 void I3_loadSpeakers(void)
 {
-    FILE                                   *fp = NULL;
+    FILE *fp = NULL;
 
     log_info("Initializing I3 speaker list...");
-    stringmap_destroy(speaker_db);  // Free anything present
-    speaker_db = stringmap_init();  // Setup a new empty structure
+    stringmap_destroy(speaker_db); // Free anything present
+    speaker_db = stringmap_init(); // Setup a new empty structure
 
     log_info("Loading I3 speaker list...");
-    if ((fp = fopen(I3_SPEAKER_FILE, "r")) == NULL) {
-	log_info("%s", "Couldn't open I3 speaker file.");
-	return;
+    if ((fp = fopen(I3_SPEAKER_FILE, "r")) == NULL)
+    {
+        log_info("%s", "Couldn't open I3 speaker file.");
+        return;
     }
 
-    for (;;) {
-	char                                    letter;
-	char                                   *word;
+    for (;;)
+    {
+        char letter;
+        char *word;
 
-	letter = i3fread_letter(fp);
-	if (letter == '*') {
-	    i3fread_to_eol(fp);
-	    continue;
-	}
+        letter = i3fread_letter(fp);
+        if (letter == '*')
+        {
+            i3fread_to_eol(fp);
+            continue;
+        }
 
-	if (letter != '#') {
-	    log_error("I3_loadSpeakers: # not found.");
-	    break;
-	}
+        if (letter != '#')
+        {
+            log_error("I3_loadSpeakers: # not found.");
+            break;
+        }
 
-	word = i3fread_word(fp);
-	if (!strcasecmp(word, "SPEAKER")) {
+        word = i3fread_word(fp);
+        if (!strcasecmp(word, "SPEAKER"))
+        {
             I3_readSpeaker(fp);
-	    continue;
-	} else if (!strcasecmp(word, "COUNT")) {
+            continue;
+        }
+        else if (!strcasecmp(word, "COUNT"))
+        {
             I3_readSpeakerCount(fp);
-	    continue;
-	} else if (!strcasecmp(word, "END")) {
-	    break;
-        } else {
-	    log_error("I3_loadSpeakers: bad section: %s.", word);
-	    continue;
-	}
+            continue;
+        }
+        else if (!strcasecmp(word, "END"))
+        {
+            break;
+        }
+        else
+        {
+            log_error("I3_loadSpeakers: bad section: %s.", word);
+            continue;
+        }
     }
     I3FCLOSE(fp);
 }
@@ -5197,21 +5340,18 @@ void I3_loadSpeakers(void)
 void I3_loadPinkfishToANSI(void)
 {
     log_info("Initializing Pinkfish to ANSI conversion table...");
-    stringmap_destroy(pinkfish_to_ansi_db);  // Free anything present
-    pinkfish_to_ansi_db = stringmap_init();  // Setup a new empty structure
+    stringmap_destroy(pinkfish_to_ansi_db); // Free anything present
+    pinkfish_to_ansi_db = stringmap_init(); // Setup a new empty structure
 
     log_info("Loading Pinkfish to ANSI conversion data...");
 
 #undef PFto_ADD
-#define PFto_ADD(key,value)                 \
-    do {                                    \
-        stringmap_add( pinkfish_to_ansi_db, \
-                (key),                      \
-                (void *)(value),            \
-                strlen((char *)(value))     \
-                );                          \
-        pinkfish_to_ansi_count++;           \
-    } while(0)
+#define PFto_ADD(key, value)                                                                                           \
+    do                                                                                                                 \
+    {                                                                                                                  \
+        stringmap_add(pinkfish_to_ansi_db, (key), (void *)(value), strlen((char *)(value)));                           \
+        pinkfish_to_ansi_count++;                                                                                      \
+    } while (0)
 
     PFto_ADD("AliceBlue", "\033[1;37m");
     PFto_ADD("AntiqueWhite", "\033[1;37m");
@@ -7067,21 +7207,18 @@ void I3_loadPinkfishToANSI(void)
 void I3_loadPinkfishToI3(void)
 {
     log_info("Initializing Pinkfish to I3 conversion table...");
-    stringmap_destroy(pinkfish_to_i3_db);  // Free anything present
-    pinkfish_to_i3_db = stringmap_init();  // Setup a new empty structure
+    stringmap_destroy(pinkfish_to_i3_db); // Free anything present
+    pinkfish_to_i3_db = stringmap_init(); // Setup a new empty structure
 
     log_info("Loading Pinkfish to I3 conversion data...");
 
 #undef PFto_ADD
-#define PFto_ADD(key,value)                 \
-    do {                                    \
-        stringmap_add( pinkfish_to_i3_db,   \
-                (key),                      \
-                (void *)(value),            \
-                strlen((char *)(value))     \
-                );                          \
-        pinkfish_to_i3_count++;             \
-    } while(0)
+#define PFto_ADD(key, value)                                                                                           \
+    do                                                                                                                 \
+    {                                                                                                                  \
+        stringmap_add(pinkfish_to_i3_db, (key), (void *)(value), strlen((char *)(value)));                             \
+        pinkfish_to_i3_count++;                                                                                        \
+    } while (0)
 
     PFto_ADD("AliceBlue", "%^BOLD%^%^WHITE%^");
     PFto_ADD("AntiqueWhite", "%^BOLD%^%^WHITE%^");
@@ -8937,21 +9074,18 @@ void I3_loadPinkfishToI3(void)
 void I3_loadPinkfishToXterm256(void)
 {
     log_info("Initializing Pinkfish to Xterm256 conversion table...");
-    stringmap_destroy(pinkfish_to_xterm256_db);  // Free anything present
-    pinkfish_to_xterm256_db = stringmap_init();  // Setup a new empty structure
+    stringmap_destroy(pinkfish_to_xterm256_db); // Free anything present
+    pinkfish_to_xterm256_db = stringmap_init(); // Setup a new empty structure
 
     log_info("Loading Pinkfish to Xterm256 conversion data...");
 
 #undef PFto_ADD
-#define PFto_ADD(key,value)                     \
-    do {                                        \
-        stringmap_add( pinkfish_to_xterm256_db, \
-                (key),                          \
-                (void *)(value),                \
-                strlen((char *)(value))         \
-                );                              \
-        pinkfish_to_xterm256_count++;           \
-    } while(0)
+#define PFto_ADD(key, value)                                                                                           \
+    do                                                                                                                 \
+    {                                                                                                                  \
+        stringmap_add(pinkfish_to_xterm256_db, (key), (void *)(value), strlen((char *)(value)));                       \
+        pinkfish_to_xterm256_count++;                                                                                  \
+    } while (0)
 
     PFto_ADD("AliceBlue", "\033[38;5;15m");
     PFto_ADD("AntiqueWhite", "\033[38;5;224m");
@@ -10807,21 +10941,18 @@ void I3_loadPinkfishToXterm256(void)
 void I3_loadPinkfishToGreyscale(void)
 {
     log_info("Initializing Pinkfish to Greyscale conversion table...");
-    stringmap_destroy(pinkfish_to_greyscale_db);  // Free anything present
-    pinkfish_to_greyscale_db = stringmap_init();  // Setup a new empty structure
+    stringmap_destroy(pinkfish_to_greyscale_db); // Free anything present
+    pinkfish_to_greyscale_db = stringmap_init(); // Setup a new empty structure
 
     log_info("Loading Pinkfish to Greyscale conversion data...");
 
 #undef PFto_ADD
-#define PFto_ADD(key,value)                         \
-    do {                                            \
-        stringmap_add( pinkfish_to_greyscale_db,    \
-                (key),                              \
-                (void *)(value),                    \
-                strlen((char *)(value))             \
-                );                                  \
-        pinkfish_to_greyscale_count++;              \
-    } while(0)
+#define PFto_ADD(key, value)                                                                                           \
+    do                                                                                                                 \
+    {                                                                                                                  \
+        stringmap_add(pinkfish_to_greyscale_db, (key), (void *)(value), strlen((char *)(value)));                      \
+        pinkfish_to_greyscale_count++;                                                                                 \
+    } while (0)
 
     PFto_ADD("AliceBlue", "\033[38;5;255m");
     PFto_ADD("AntiqueWhite", "\033[38;5;255m");
@@ -12677,21 +12808,18 @@ void I3_loadPinkfishToGreyscale(void)
 void I3_loadPinkfishToNull(void)
 {
     log_info("Initializing Pinkfish to NULL conversion table...");
-    stringmap_destroy(pinkfish_to_null_db);  // Free anything present
-    pinkfish_to_null_db = stringmap_init();  // Setup a new empty structure
+    stringmap_destroy(pinkfish_to_null_db); // Free anything present
+    pinkfish_to_null_db = stringmap_init(); // Setup a new empty structure
 
     log_info("Loading Pinkfish to NULL conversion data...");
 
 #undef PFto_ADD
-#define PFto_ADD(key,value)                         \
-    do {                                            \
-        stringmap_add( pinkfish_to_null_db,         \
-                (key),                              \
-                (void *)(value),                    \
-                strlen((char *)(value))             \
-                );                                  \
-        pinkfish_to_null_count++;                   \
-    } while(0)
+#define PFto_ADD(key, value)                                                                                           \
+    do                                                                                                                 \
+    {                                                                                                                  \
+        stringmap_add(pinkfish_to_null_db, (key), (void *)(value), strlen((char *)(value)));                           \
+        pinkfish_to_null_count++;                                                                                      \
+    } while (0)
 
     PFto_ADD("AliceBlue", "");
     PFto_ADD("AntiqueWhite", "");
@@ -14544,114 +14672,120 @@ void I3_loadPinkfishToNull(void)
     log_info("Pinkfish to NULL conversion data loaded.");
 }
 
-
-
-
-
-
 void I3_savecolor(void)
 {
-    FILE                                   *fp;
-    I3_COLOR                               *color;
+    FILE *fp;
+    I3_COLOR *color;
 
-    if ((fp = fopen(I3_COLOR_FILE, "w")) == NULL) {
-	log_info("%s", "Couldn't write to I3 color file.");
-	return;
+    if ((fp = fopen(I3_COLOR_FILE, "w")) == NULL)
+    {
+        log_info("%s", "Couldn't write to I3 color file.");
+        return;
     }
 
-    for (color = first_i3_color; color; color = color->next) {
-	fprintf(fp, "%s", "#COLOR\n");
-	fprintf(fp, "Name   %s\n", color->name);
-	fprintf(fp, "Mudtag %s\n", color->mudtag);
-	fprintf(fp, "IMCtag %s\n", color->imctag);
-	fprintf(fp, "I3tag  %s\n", color->i3tag);
-	fprintf(fp, "%s", "End\n\n");
+    for (color = first_i3_color; color; color = color->next)
+    {
+        fprintf(fp, "%s", "#COLOR\n");
+        fprintf(fp, "Name   %s\n", color->name);
+        fprintf(fp, "Mudtag %s\n", color->mudtag);
+        fprintf(fp, "IMCtag %s\n", color->imctag);
+        fprintf(fp, "I3tag  %s\n", color->i3tag);
+        fprintf(fp, "%s", "End\n\n");
     }
     fprintf(fp, "%s", "#END\n");
     I3FCLOSE(fp);
     return;
 }
 
-void I3_readcolor(I3_COLOR *color, FILE * fp)
+void I3_readcolor(I3_COLOR *color, FILE *fp)
 {
-    const char                             *word;
-    bool                                    fMatch;
+    const char *word;
+    bool fMatch;
 
-    for (;;) {
-	word = feof(fp) ? "End" : i3fread_word(fp);
-	fMatch = FALSE;
+    for (;;)
+    {
+        word = feof(fp) ? "End" : i3fread_word(fp);
+        fMatch = FALSE;
 
-	switch (word[0]) {
-	    case '*':
-		fMatch = TRUE;
-		i3fread_to_eol(fp);
-		break;
+        switch (word[0])
+        {
+        case '*':
+            fMatch = TRUE;
+            i3fread_to_eol(fp);
+            break;
 
-	    case 'E':
-		if (!strcasecmp(word, "End"))
-		    return;
-		break;
+        case 'E':
+            if (!strcasecmp(word, "End"))
+                return;
+            break;
 
-	    case 'I':
-		KEY("IMCtag", color->imctag, i3fread_line(fp));
-		KEY("I3tag", color->i3tag, i3fread_line(fp));
-		break;
+        case 'I':
+            KEY("IMCtag", color->imctag, i3fread_line(fp));
+            KEY("I3tag", color->i3tag, i3fread_line(fp));
+            break;
 
-	    case 'M':
-		KEY("Mudtag", color->mudtag, i3fread_line(fp));
-		break;
+        case 'M':
+            KEY("Mudtag", color->mudtag, i3fread_line(fp));
+            break;
 
-	    case 'N':
-		KEY("Name", color->name, i3fread_line(fp));
-		break;
-	}
-	if (!fMatch)
-	    log_error("i3_readcolor: no match: %s", word);
+        case 'N':
+            KEY("Name", color->name, i3fread_line(fp));
+            break;
+        }
+        if (!fMatch)
+            log_error("i3_readcolor: no match: %s", word);
     }
 }
 
 void I3_load_color_table(void)
 {
-    FILE                                   *fp;
-    I3_COLOR                               *color;
+    FILE *fp;
+    I3_COLOR *color;
 
     first_i3_color = last_i3_color = NULL;
 
     log_info("%s", "Loading color table...");
 
-    if (!(fp = fopen(I3_COLOR_FILE, "r"))) {
-	log_info("%s", "No color table found.");
-	return;
+    if (!(fp = fopen(I3_COLOR_FILE, "r")))
+    {
+        log_info("%s", "No color table found.");
+        return;
     }
 
-    for (;;) {
-	char                                    letter;
-	char                                   *word;
+    for (;;)
+    {
+        char letter;
+        char *word;
 
-	letter = i3fread_letter(fp);
-	if (letter == '*') {
-	    i3fread_to_eol(fp);
-	    continue;
-	}
+        letter = i3fread_letter(fp);
+        if (letter == '*')
+        {
+            i3fread_to_eol(fp);
+            continue;
+        }
 
-	if (letter != '#') {
-	    log_error("%s", "i3_load_color_table: # not found.");
-	    break;
-	}
+        if (letter != '#')
+        {
+            log_error("%s", "i3_load_color_table: # not found.");
+            break;
+        }
 
-	word = i3fread_word(fp);
-	if (!strcasecmp(word, "COLOR")) {
-	    I3CREATE(color, I3_COLOR, 1);
+        word = i3fread_word(fp);
+        if (!strcasecmp(word, "COLOR"))
+        {
+            I3CREATE(color, I3_COLOR, 1);
 
-	    I3_readcolor(color, fp);
-	    I3LINK(color, first_i3_color, last_i3_color, next, prev);
-	    continue;
-	} else if (!strcasecmp(word, "END"))
-	    break;
-	else {
-	    log_error("i3_load_color_table: bad section: %s.", word);
-	    continue;
-	}
+            I3_readcolor(color, fp);
+            I3LINK(color, first_i3_color, last_i3_color, next, prev);
+            continue;
+        }
+        else if (!strcasecmp(word, "END"))
+            break;
+        else
+        {
+            log_error("i3_load_color_table: bad section: %s.", word);
+            continue;
+        }
     }
     I3FCLOSE(fp);
     return;
@@ -14659,140 +14793,153 @@ void I3_load_color_table(void)
 
 void I3_savehelps(void)
 {
-    FILE                                   *fp;
-    I3_HELP_DATA                           *help;
+    FILE *fp;
+    I3_HELP_DATA *help;
 
-    if ((fp = fopen(I3_HELP_FILE, "w")) == NULL) {
-	log_info("%s", "Couldn't write to I3 help file.");
-	return;
+    if ((fp = fopen(I3_HELP_FILE, "w")) == NULL)
+    {
+        log_info("%s", "Couldn't write to I3 help file.");
+        return;
     }
 
-    for (help = first_i3_help; help; help = help->next) {
-	fprintf(fp, "%s", "#HELP\n");
-	fprintf(fp, "Name %s\n", help->name);
-	fprintf(fp, "Perm %s\n", perm_names[help->level]);
-	//fprintf(fp, "Text %s¢\n", help->text);
-	fprintf(fp, "Text %s%c\n", help->text, '\0xA2');
-	fprintf(fp, "%s", "End\n\n");
+    for (help = first_i3_help; help; help = help->next)
+    {
+        fprintf(fp, "%s", "#HELP\n");
+        fprintf(fp, "Name %s\n", help->name);
+        fprintf(fp, "Perm %s\n", perm_names[help->level]);
+        // fprintf(fp, "Text %s¢\n", help->text);
+        fprintf(fp, "Text %s%c\n", help->text, '\0xA2');
+        fprintf(fp, "%s", "End\n\n");
     }
     fprintf(fp, "%s", "#END\n");
     I3FCLOSE(fp);
     return;
 }
 
-void I3_readhelp(I3_HELP_DATA *help, FILE * fp)
+void I3_readhelp(I3_HELP_DATA *help, FILE *fp)
 {
-    const char                             *word;
-    //char                                    hbuf[MAX_STRING_LENGTH];
-    int                                     permvalue;
-    bool                                    fMatch;
+    const char *word;
+    // char                                    hbuf[MAX_STRING_LENGTH];
+    int permvalue;
+    bool fMatch;
 
-    for (;;) {
-	word = feof(fp) ? "End" : i3fread_word(fp);
-	fMatch = FALSE;
+    for (;;)
+    {
+        word = feof(fp) ? "End" : i3fread_word(fp);
+        fMatch = FALSE;
 
-	switch (word[0]) {
-	    case '*':
-		fMatch = TRUE;
-		i3fread_to_eol(fp);
-		break;
+        switch (word[0])
+        {
+        case '*':
+            fMatch = TRUE;
+            i3fread_to_eol(fp);
+            break;
 
-	    case 'E':
-		if (!strcasecmp(word, "End"))
-		    return;
-		break;
+        case 'E':
+            if (!strcasecmp(word, "End"))
+                return;
+            break;
 
-	    case 'N':
-		KEY("Name", help->name, i3fread_line(fp));
-		break;
+        case 'N':
+            KEY("Name", help->name, i3fread_line(fp));
+            break;
 
-	    case 'P':
-		if (!strcasecmp(word, "Perm")) {
-		    word = i3fread_word(fp);
-		    permvalue = get_permvalue(word);
+        case 'P':
+            if (!strcasecmp(word, "Perm"))
+            {
+                word = i3fread_word(fp);
+                permvalue = get_permvalue(word);
 
-		    if (permvalue < 0 || permvalue > I3PERM_IMP) {
-			log_error
-			    ("i3_readhelp: Command %s loaded with invalid permission. Set to Imp.",
-			     help->name);
-			help->level = I3PERM_IMP;
-		    } else
-			help->level = permvalue;
-		    fMatch = TRUE;
-		    break;
-		}
-		break;
-
-	    case 'T':
-		if (!strcasecmp(word, "Text")) {
-		    help->text = I3STRALLOC(i3fread_string(fp));
-		    fMatch = TRUE;
-		    break;
+                if (permvalue < 0 || permvalue > I3PERM_IMP)
+                {
+                    log_error("i3_readhelp: Command %s loaded with invalid permission. Set to Imp.", help->name);
+                    help->level = I3PERM_IMP;
                 }
-                /*
-		if (!strcasecmp(word, "Text")) {
-		    int                                     num = 0;
+                else
+                    help->level = permvalue;
+                fMatch = TRUE;
+                break;
+            }
+            break;
 
-		    //while ((hbuf[num] = fgetc(fp)) != EOF && hbuf[num] != '¢'
-		    while ((hbuf[num] = fgetc(fp)) != EOF && (int) hbuf[num] != (int) '\0xA2'
-			   && num < (MAX_STRING_LENGTH - 2))
-			num++;
-		    hbuf[num] = '\0';
-		    help->text = I3STRALLOC(hbuf);
-		    fMatch = TRUE;
-		    break;
-		}
-		KEY("Text", help->text, i3fread_line(fp));
-                */
-		break;
-	}
-	if (!fMatch)
-	    log_error("i3_readhelp: no match: %s", word);
+        case 'T':
+            if (!strcasecmp(word, "Text"))
+            {
+                help->text = I3STRALLOC(i3fread_string(fp));
+                fMatch = TRUE;
+                break;
+            }
+            /*
+    if (!strcasecmp(word, "Text")) {
+        int                                     num = 0;
+
+        //while ((hbuf[num] = fgetc(fp)) != EOF && hbuf[num] != '¢'
+        while ((hbuf[num] = fgetc(fp)) != EOF && (int) hbuf[num] != (int) '\0xA2'
+           && num < (MAX_STRING_LENGTH - 2))
+        num++;
+        hbuf[num] = '\0';
+        help->text = I3STRALLOC(hbuf);
+        fMatch = TRUE;
+        break;
+    }
+    KEY("Text", help->text, i3fread_line(fp));
+            */
+            break;
+        }
+        if (!fMatch)
+            log_error("i3_readhelp: no match: %s", word);
     }
 }
 
 void I3_load_helps(void)
 {
-    FILE                                   *fp;
-    I3_HELP_DATA                           *help;
+    FILE *fp;
+    I3_HELP_DATA *help;
 
     first_i3_help = last_i3_help = NULL;
 
     log_info("%s", "Loading I3 help file...");
 
-    if (!(fp = fopen(I3_HELP_FILE, "r"))) {
-	log_info("%s", "No help file found.");
-	return;
+    if (!(fp = fopen(I3_HELP_FILE, "r")))
+    {
+        log_info("%s", "No help file found.");
+        return;
     }
 
-    for (;;) {
-	char                                    letter;
-	char                                   *word;
+    for (;;)
+    {
+        char letter;
+        char *word;
 
-	letter = i3fread_letter(fp);
-	if (letter == '*') {
-	    i3fread_to_eol(fp);
-	    continue;
-	}
+        letter = i3fread_letter(fp);
+        if (letter == '*')
+        {
+            i3fread_to_eol(fp);
+            continue;
+        }
 
-	if (letter != '#') {
-	    log_error("%s", "i3_load_helps: # not found.");
-	    break;
-	}
+        if (letter != '#')
+        {
+            log_error("%s", "i3_load_helps: # not found.");
+            break;
+        }
 
-	word = i3fread_word(fp);
-	if (!strcasecmp(word, "HELP")) {
-	    I3CREATE(help, I3_HELP_DATA, 1);
+        word = i3fread_word(fp);
+        if (!strcasecmp(word, "HELP"))
+        {
+            I3CREATE(help, I3_HELP_DATA, 1);
 
-	    I3_readhelp(help, fp);
-	    I3LINK(help, first_i3_help, last_i3_help, next, prev);
-	    continue;
-	} else if (!strcasecmp(word, "END"))
-	    break;
-	else {
-	    log_error("i3_load_helps: bad section: %s.", word);
-	    continue;
-	}
+            I3_readhelp(help, fp);
+            I3LINK(help, first_i3_help, last_i3_help, next, prev);
+            continue;
+        }
+        else if (!strcasecmp(word, "END"))
+            break;
+        else
+        {
+            log_error("i3_load_helps: bad section: %s.", word);
+            continue;
+        }
     }
     I3FCLOSE(fp);
     return;
@@ -14800,148 +14947,160 @@ void I3_load_helps(void)
 
 void I3_savecommands(void)
 {
-    FILE                                   *fp;
-    I3_CMD_DATA                            *cmd;
-    I3_ALIAS                               *alias;
+    FILE *fp;
+    I3_CMD_DATA *cmd;
+    I3_ALIAS *alias;
 
-    if (!(fp = fopen(I3_CMD_FILE, "w"))) {
-	log_info("%s", "Couldn't write to I3 command file.");
-	return;
+    if (!(fp = fopen(I3_CMD_FILE, "w")))
+    {
+        log_info("%s", "Couldn't write to I3 command file.");
+        return;
     }
 
-    for (cmd = first_i3_command; cmd; cmd = cmd->next) {
-	fprintf(fp, "%s", "#COMMAND\n");
-	fprintf(fp, "Name      %s\n", cmd->name);
-	if (cmd->function != NULL)
-	    fprintf(fp, "Code      %s\n", i3_funcname(cmd->function));
-	else
-	    fprintf(fp, "%s", "Code      NULL\n");
-	fprintf(fp, "Perm      %s\n", perm_names[cmd->level]);
-	fprintf(fp, "Connected %d\n", cmd->connected);
-	for (alias = cmd->first_alias; alias; alias = alias->next)
-	    fprintf(fp, "Alias     %s\n", alias->name);
-	fprintf(fp, "%s", "End\n\n");
+    for (cmd = first_i3_command; cmd; cmd = cmd->next)
+    {
+        fprintf(fp, "%s", "#COMMAND\n");
+        fprintf(fp, "Name      %s\n", cmd->name);
+        if (cmd->function != NULL)
+            fprintf(fp, "Code      %s\n", i3_funcname(cmd->function));
+        else
+            fprintf(fp, "%s", "Code      NULL\n");
+        fprintf(fp, "Perm      %s\n", perm_names[cmd->level]);
+        fprintf(fp, "Connected %d\n", cmd->connected);
+        for (alias = cmd->first_alias; alias; alias = alias->next)
+            fprintf(fp, "Alias     %s\n", alias->name);
+        fprintf(fp, "%s", "End\n\n");
     }
     fprintf(fp, "%s", "#END\n");
     I3FCLOSE(fp);
     return;
 }
 
-void I3_readcommand(I3_CMD_DATA *cmd, FILE * fp)
+void I3_readcommand(I3_CMD_DATA *cmd, FILE *fp)
 {
-    I3_ALIAS                               *alias;
-    const char                             *word;
-    int                                     permvalue;
-    bool                                    fMatch;
+    I3_ALIAS *alias;
+    const char *word;
+    int permvalue;
+    bool fMatch;
 
-    for (;;) {
-	word = feof(fp) ? "End" : i3fread_word(fp);
-	fMatch = FALSE;
+    for (;;)
+    {
+        word = feof(fp) ? "End" : i3fread_word(fp);
+        fMatch = FALSE;
 
-	switch (word[0]) {
-	    case '*':
-		fMatch = TRUE;
-		i3fread_to_eol(fp);
-		break;
+        switch (word[0])
+        {
+        case '*':
+            fMatch = TRUE;
+            i3fread_to_eol(fp);
+            break;
 
-	    case 'E':
-		if (!strcasecmp(word, "End"))
-		    return;
-		break;
+        case 'E':
+            if (!strcasecmp(word, "End"))
+                return;
+            break;
 
-	    case 'A':
-		if (!strcasecmp(word, "Alias")) {
-		    I3CREATE(alias, I3_ALIAS, 1);
+        case 'A':
+            if (!strcasecmp(word, "Alias"))
+            {
+                I3CREATE(alias, I3_ALIAS, 1);
 
-		    alias->name = i3fread_line(fp);
-		    I3LINK(alias, cmd->first_alias, cmd->last_alias, next, prev);
-		    fMatch = TRUE;
-		    break;
-		}
-		break;
+                alias->name = i3fread_line(fp);
+                I3LINK(alias, cmd->first_alias, cmd->last_alias, next, prev);
+                fMatch = TRUE;
+                break;
+            }
+            break;
 
-	    case 'C':
-		KEY("Connected", cmd->connected, i3fread_number(fp));
-		if (!strcasecmp(word, "Code")) {
-		    word = i3fread_word(fp);
-		    cmd->function = i3_function(word);
-		    if (cmd->function == NULL)
-			log_error
-			    ("i3_readcommand: Command %s loaded with invalid function. Set to NULL.",
-			     cmd->name);
-		    fMatch = TRUE;
-		    break;
-		}
-		break;
+        case 'C':
+            KEY("Connected", cmd->connected, i3fread_number(fp));
+            if (!strcasecmp(word, "Code"))
+            {
+                word = i3fread_word(fp);
+                cmd->function = i3_function(word);
+                if (cmd->function == NULL)
+                    log_error("i3_readcommand: Command %s loaded with invalid function. Set to NULL.", cmd->name);
+                fMatch = TRUE;
+                break;
+            }
+            break;
 
-	    case 'N':
-		KEY("Name", cmd->name, i3fread_line(fp));
-		break;
+        case 'N':
+            KEY("Name", cmd->name, i3fread_line(fp));
+            break;
 
-	    case 'P':
-		if (!strcasecmp(word, "Perm")) {
-		    word = i3fread_word(fp);
-		    permvalue = get_permvalue(word);
+        case 'P':
+            if (!strcasecmp(word, "Perm"))
+            {
+                word = i3fread_word(fp);
+                permvalue = get_permvalue(word);
 
-		    if (permvalue < 0 || permvalue > I3PERM_IMP) {
-			log_error
-			    ("i3_readcommand: Command %s loaded with invalid permission. Set to Imp.",
-			     cmd->name);
-			cmd->level = I3PERM_IMP;
-		    } else
-			cmd->level = permvalue;
-		    fMatch = TRUE;
-		    break;
-		}
-		break;
-	}
-	if (!fMatch)
-	    log_error("i3_readcommand: no match: %s", word);
+                if (permvalue < 0 || permvalue > I3PERM_IMP)
+                {
+                    log_error("i3_readcommand: Command %s loaded with invalid permission. Set to Imp.", cmd->name);
+                    cmd->level = I3PERM_IMP;
+                }
+                else
+                    cmd->level = permvalue;
+                fMatch = TRUE;
+                break;
+            }
+            break;
+        }
+        if (!fMatch)
+            log_error("i3_readcommand: no match: %s", word);
     }
 }
 
 bool I3_load_commands(void)
 {
-    FILE                                   *fp;
-    I3_CMD_DATA                            *cmd;
+    FILE *fp;
+    I3_CMD_DATA *cmd;
 
     first_i3_command = last_i3_command = NULL;
 
     log_info("%s", "Loading I3 command table...");
 
-    if (!(fp = fopen(I3_CMD_FILE, "r"))) {
-	log_info("%s", "No command table found.");
-	return FALSE;
+    if (!(fp = fopen(I3_CMD_FILE, "r")))
+    {
+        log_info("%s", "No command table found.");
+        return FALSE;
     }
 
-    for (;;) {
-	char                                    letter;
-	char                                   *word;
+    for (;;)
+    {
+        char letter;
+        char *word;
 
-	letter = i3fread_letter(fp);
-	if (letter == '*') {
-	    i3fread_to_eol(fp);
-	    continue;
-	}
+        letter = i3fread_letter(fp);
+        if (letter == '*')
+        {
+            i3fread_to_eol(fp);
+            continue;
+        }
 
-	if (letter != '#') {
-	    log_error("%s", "i3_load_commands: # not found.");
-	    break;
-	}
+        if (letter != '#')
+        {
+            log_error("%s", "i3_load_commands: # not found.");
+            break;
+        }
 
-	word = i3fread_word(fp);
-	if (!strcasecmp(word, "COMMAND")) {
-	    I3CREATE(cmd, I3_CMD_DATA, 1);
+        word = i3fread_word(fp);
+        if (!strcasecmp(word, "COMMAND"))
+        {
+            I3CREATE(cmd, I3_CMD_DATA, 1);
 
-	    I3_readcommand(cmd, fp);
-	    I3LINK(cmd, first_i3_command, last_i3_command, next, prev);
-	    continue;
-	} else if (!strcasecmp(word, "END"))
-	    break;
-	else {
-	    log_error("i3_load_commands: bad section: %s.", word);
-	    continue;
-	}
+            I3_readcommand(cmd, fp);
+            I3LINK(cmd, first_i3_command, last_i3_command, next, prev);
+            continue;
+        }
+        else if (!strcasecmp(word, "END"))
+            break;
+        else
+        {
+            log_error("i3_load_commands: bad section: %s.", word);
+            continue;
+        }
     }
     I3FCLOSE(fp);
     return TRUE;
@@ -14949,222 +15108,244 @@ bool I3_load_commands(void)
 
 void I3_saverouters(void)
 {
-    FILE                                   *fp;
-    ROUTER_DATA                            *router;
+    FILE *fp;
+    ROUTER_DATA *router;
 
-    if (!(fp = fopen(I3_ROUTER_FILE, "w"))) {
-	log_info("%s", "Couldn't write to I3 router file.");
-	return;
+    if (!(fp = fopen(I3_ROUTER_FILE, "w")))
+    {
+        log_info("%s", "Couldn't write to I3 router file.");
+        return;
     }
 
-    for (router = first_router; router; router = router->next) {
-	fprintf(fp, "%s", "#ROUTER\n");
-	fprintf(fp, "Name %s\n", router->name);
-	fprintf(fp, "IP   %s\n", router->ip);
-	fprintf(fp, "Port %d\n", router->port);
+    for (router = first_router; router; router = router->next)
+    {
+        fprintf(fp, "%s", "#ROUTER\n");
+        fprintf(fp, "Name %s\n", router->name);
+        fprintf(fp, "IP   %s\n", router->ip);
+        fprintf(fp, "Port %d\n", router->port);
         fprintf(fp, "Password %d\n", router->password);
         fprintf(fp, "MudlistID %d\n", router->mudlist_id);
         fprintf(fp, "ChanlistID %d\n", router->chanlist_id);
-	fprintf(fp, "%s", "End\n\n");
+        fprintf(fp, "%s", "End\n\n");
     }
     fprintf(fp, "%s", "#END\n");
     I3FCLOSE(fp);
     return;
 }
 
-void I3_readrouter(ROUTER_DATA *router, FILE * fp)
+void I3_readrouter(ROUTER_DATA *router, FILE *fp)
 {
-    const char                             *word;
-    bool                                    fMatch;
+    const char *word;
+    bool fMatch;
 
-    for (;;) {
-	word = feof(fp) ? "End" : i3fread_word(fp);
-	fMatch = FALSE;
+    for (;;)
+    {
+        word = feof(fp) ? "End" : i3fread_word(fp);
+        fMatch = FALSE;
 
-	switch (word[0]) {
-	    case '*':
-		fMatch = TRUE;
-		i3fread_to_eol(fp);
-		break;
+        switch (word[0])
+        {
+        case '*':
+            fMatch = TRUE;
+            i3fread_to_eol(fp);
+            break;
 
-	    case 'C':
-		KEY("ChanlistID", router->chanlist_id, i3fread_number(fp));
-		break;
+        case 'C':
+            KEY("ChanlistID", router->chanlist_id, i3fread_number(fp));
+            break;
 
-	    case 'E':
-		if (!strcasecmp(word, "End"))
-		    return;
-		break;
+        case 'E':
+            if (!strcasecmp(word, "End"))
+                return;
+            break;
 
-	    case 'I':
-		KEY("IP", router->ip, i3fread_line(fp));
-		break;
+        case 'I':
+            KEY("IP", router->ip, i3fread_line(fp));
+            break;
 
-	    case 'M':
-		KEY("MudlistID", router->mudlist_id, i3fread_number(fp));
-		break;
+        case 'M':
+            KEY("MudlistID", router->mudlist_id, i3fread_number(fp));
+            break;
 
-	    case 'N':
-		KEY("Name", router->name, i3fread_line(fp));
-		break;
+        case 'N':
+            KEY("Name", router->name, i3fread_line(fp));
+            break;
 
-	    case 'P':
-		KEY("Port", router->port, i3fread_number(fp));
-		KEY("Password", router->password, i3fread_number(fp));
-		break;
-	}
-	if (!fMatch)
-	    log_error("i3_readrouter: no match: %s", word);
+        case 'P':
+            KEY("Port", router->port, i3fread_number(fp));
+            KEY("Password", router->password, i3fread_number(fp));
+            break;
+        }
+        if (!fMatch)
+            log_error("i3_readrouter: no match: %s", word);
     }
 }
 
 bool I3_load_routers(void)
 {
-    FILE                                   *fp;
-    ROUTER_DATA                            *router;
+    FILE *fp;
+    ROUTER_DATA *router;
 
     first_router = last_router = NULL;
 
     log_info("%s", "Loading I3 router data...");
 
-    if (!(fp = fopen(I3_ROUTER_FILE, "r"))) {
-	log_info("%s", "No router data found.");
-	return FALSE;
+    if (!(fp = fopen(I3_ROUTER_FILE, "r")))
+    {
+        log_info("%s", "No router data found.");
+        return FALSE;
     }
 
-    for (;;) {
-	char                                    letter;
-	char                                   *word;
+    for (;;)
+    {
+        char letter;
+        char *word;
 
-	letter = i3fread_letter(fp);
-	if (letter == '*') {
-	    i3fread_to_eol(fp);
-	    continue;
-	}
+        letter = i3fread_letter(fp);
+        if (letter == '*')
+        {
+            i3fread_to_eol(fp);
+            continue;
+        }
 
-	if (letter != '#') {
-	    log_error("%s", "i3_load_routers: # not found.");
-	    break;
-	}
+        if (letter != '#')
+        {
+            log_error("%s", "i3_load_routers: # not found.");
+            break;
+        }
 
-	word = i3fread_word(fp);
-	if (!strcasecmp(word, "ROUTER")) {
-	    I3CREATE(router, ROUTER_DATA, 1);
+        word = i3fread_word(fp);
+        if (!strcasecmp(word, "ROUTER"))
+        {
+            I3CREATE(router, ROUTER_DATA, 1);
 
-	    I3_readrouter(router, fp);
-	    if (!router->name || router->name[0] == '\0' || !router->ip || router->ip[0] == '\0'
-		|| router->port <= 0) {
-		I3STRFREE(router->name);
-		I3STRFREE(router->ip);
-		I3DISPOSE(router);
-	    } else
-		I3LINK(router, first_router, last_router, next, prev);
-	    continue;
-	} else if (!strcasecmp(word, "END"))
-	    break;
-	else {
-	    log_error("i3_load_routers: bad section: %s.", word);
-	    continue;
-	}
+            I3_readrouter(router, fp);
+            if (!router->name || router->name[0] == '\0' || !router->ip || router->ip[0] == '\0' || router->port <= 0)
+            {
+                I3STRFREE(router->name);
+                I3STRFREE(router->ip);
+                I3DISPOSE(router);
+            }
+            else
+                I3LINK(router, first_router, last_router, next, prev);
+            continue;
+        }
+        else if (!strcasecmp(word, "END"))
+            break;
+        else
+        {
+            log_error("i3_load_routers: bad section: %s.", word);
+            continue;
+        }
     }
     I3FCLOSE(fp);
 
     if (!first_router || !last_router)
-	return FALSE;
+        return FALSE;
 
     return TRUE;
 }
 
-ROUTER_DATA                            *i3_find_router(const char *name)
+ROUTER_DATA *i3_find_router(const char *name)
 {
-    ROUTER_DATA                            *router;
+    ROUTER_DATA *router;
 
-    for (router = first_router; router; router = router->next) {
-	if (!strcasecmp(router->name, name))
-	    return router;
+    for (router = first_router; router; router = router->next)
+    {
+        if (!strcasecmp(router->name, name))
+            return router;
     }
     return NULL;
 }
 
-void I3_readucache(UCACHE_DATA *user, FILE * fp)
+void I3_readucache(UCACHE_DATA *user, FILE *fp)
 {
-    const char                             *word;
-    bool                                    fMatch;
+    const char *word;
+    bool fMatch;
 
-    for (;;) {
-	word = feof(fp) ? "End" : i3fread_word(fp);
-	fMatch = FALSE;
+    for (;;)
+    {
+        word = feof(fp) ? "End" : i3fread_word(fp);
+        fMatch = FALSE;
 
-	switch (UPPER(word[0])) {
-	    case '*':
-		fMatch = TRUE;
-		i3fread_to_eol(fp);
-		break;
+        switch (UPPER(word[0]))
+        {
+        case '*':
+            fMatch = TRUE;
+            i3fread_to_eol(fp);
+            break;
 
-	    case 'N':
-		KEY("Name", user->name, i3fread_line(fp));
-		break;
+        case 'N':
+            KEY("Name", user->name, i3fread_line(fp));
+            break;
 
-	    case 'S':
-		KEY("Sex", user->gender, i3fread_number(fp));
-		break;
+        case 'S':
+            KEY("Sex", user->gender, i3fread_number(fp));
+            break;
 
-	    case 'T':
-		KEY("Time", user->time, i3fread_number(fp));
-		break;
+        case 'T':
+            KEY("Time", user->time, i3fread_number(fp));
+            break;
 
-	    case 'E':
-		if (!strcasecmp(word, "End"))
-		    return;
-		break;
-	}
-	if (!fMatch)
-	    log_error("I3_readucache: no match: %s", word);
+        case 'E':
+            if (!strcasecmp(word, "End"))
+                return;
+            break;
+        }
+        if (!fMatch)
+            log_error("I3_readucache: no match: %s", word);
     }
 }
 
 void I3_load_ucache(void)
 {
-    FILE                                   *fp;
-    UCACHE_DATA                            *user;
+    FILE *fp;
+    UCACHE_DATA *user;
 
     first_ucache = last_ucache = NULL;
 
     log_info("%s", "Loading ucache data...");
 
-    if (!(fp = fopen(I3_UCACHE_FILE, "r"))) {
-	log_info("%s", "No ucache data found.");
-	return;
+    if (!(fp = fopen(I3_UCACHE_FILE, "r")))
+    {
+        log_info("%s", "No ucache data found.");
+        return;
     }
 
-    for (;;) {
-	char                                    letter;
-	char                                   *word;
+    for (;;)
+    {
+        char letter;
+        char *word;
 
-	letter = i3fread_letter(fp);
-	if (letter == '*') {
-	    i3fread_to_eol(fp);
-	    continue;
-	}
+        letter = i3fread_letter(fp);
+        if (letter == '*')
+        {
+            i3fread_to_eol(fp);
+            continue;
+        }
 
-	if (letter != '#') {
-	    log_error("%s", "I3_load_ucahe: # not found.");
-	    break;
-	}
+        if (letter != '#')
+        {
+            log_error("%s", "I3_load_ucahe: # not found.");
+            break;
+        }
 
-	word = i3fread_word(fp);
-	if (!strcasecmp(word, "UCACHE")) {
-	    I3CREATE(user, UCACHE_DATA, 1);
+        word = i3fread_word(fp);
+        if (!strcasecmp(word, "UCACHE"))
+        {
+            I3CREATE(user, UCACHE_DATA, 1);
 
-	    I3_readucache(user, fp);
-	    I3LINK(user, first_ucache, last_ucache, next, prev);
-	    continue;
-	} else if (!strcasecmp(word, "END"))
-	    break;
-	else {
-	    log_error("I3_load_ucache: bad section: %s.", word);
-	    continue;
-	}
+            I3_readucache(user, fp);
+            I3LINK(user, first_ucache, last_ucache, next, prev);
+            continue;
+        }
+        else if (!strcasecmp(word, "END"))
+            break;
+        else
+        {
+            log_error("I3_load_ucache: bad section: %s.", word);
+            continue;
+        }
     }
     I3FCLOSE(fp);
     return;
@@ -15172,11 +15353,12 @@ void I3_load_ucache(void)
 
 void I3_saveconfig(void)
 {
-    FILE                                   *fp;
+    FILE *fp;
 
-    if (!(fp = fopen(I3_CONFIG_FILE, "w"))) {
-	log_info("%s", "Couldn't write to i3.config file.");
-	return;
+    if (!(fp = fopen(I3_CONFIG_FILE, "w")))
+    {
+        log_info("%s", "Couldn't write to i3.config file.");
+        return;
     }
 
     fprintf(fp, "%s", "$I3CONFIG\n\n");
@@ -15190,9 +15372,9 @@ void I3_saveconfig(void)
     fprintf(fp, "adminemail   %s\n", this_i3mud->admin_email);
     fprintf(fp, "openstatus   %s\n", this_i3mud->open_status);
     if (this_i3mud->mud_type)
-	fprintf(fp, "mudtype      %s\n", this_i3mud->mud_type);
+        fprintf(fp, "mudtype      %s\n", this_i3mud->mud_type);
     if (this_i3mud->mudlib && strcasecmp(this_i3mud->mudlib, this_i3mud->base_mudlib))
-	fprintf(fp, "mudlib       %s\n", this_i3mud->mudlib);
+        fprintf(fp, "mudlib       %s\n", this_i3mud->mudlib);
     fprintf(fp, "minlevel     %d\n", this_i3mud->minlevel);
     fprintf(fp, "immlevel     %d\n", this_i3mud->immlevel);
     fprintf(fp, "adminlevel   %d\n", this_i3mud->adminlevel);
@@ -15200,10 +15382,9 @@ void I3_saveconfig(void)
 
     fprintf(fp, "%s", "\n# Information below this point cannot be edited online.\n");
     fprintf(fp, "%s", "# The services provided by your mud.\n");
+    fprintf(fp, "%s", "# Do not turn things on unless you KNOW your mud properly supports them!\n");
     fprintf(fp, "%s",
-	    "# Do not turn things on unless you KNOW your mud properly supports them!\n");
-    fprintf(fp, "%s",
-	    "# Refer to http://cie.imaginary.com/protocols/intermud3.html for public packet specifications.\n");
+            "# Refer to http://cie.imaginary.com/protocols/intermud3.html for public packet specifications.\n");
     fprintf(fp, "tell         %d\n", this_i3mud->tell);
     fprintf(fp, "beep         %d\n", this_i3mud->beep);
     fprintf(fp, "emoteto      %d\n", this_i3mud->emoteto);
@@ -15216,8 +15397,7 @@ void I3_saveconfig(void)
     fprintf(fp, "file         %d\n", this_i3mud->file);
     fprintf(fp, "auth         %d\n", this_i3mud->auth);
     fprintf(fp, "ucache       %d\n\n", this_i3mud->ucache);
-    fprintf(fp, "%s",
-	    "# Port numbers for OOB services. Leave as 0 if your mud does not support these.\n");
+    fprintf(fp, "%s", "# Port numbers for OOB services. Leave as 0 if your mud does not support these.\n");
     fprintf(fp, "smtp         %d\n", this_i3mud->smtp);
     fprintf(fp, "ftp          %d\n", this_i3mud->ftp);
     fprintf(fp, "nntp         %d\n", this_i3mud->nntp);
@@ -15231,332 +15411,352 @@ void I3_saveconfig(void)
     return;
 }
 
-void I3_fread_config_file(FILE * fin)
+void I3_fread_config_file(FILE *fin)
 {
-    const char                             *word;
-    bool                                    fMatch;
+    const char *word;
+    bool fMatch;
 
-    for (;;) {
-	word = feof(fin) ? "end" : i3fread_word(fin);
-	fMatch = FALSE;
+    for (;;)
+    {
+        word = feof(fin) ? "end" : i3fread_word(fin);
+        fMatch = FALSE;
 
-	switch (word[0]) {
-	    case '#':
-		fMatch = TRUE;
-		i3fread_to_eol(fin);
-		break;
+        switch (word[0])
+        {
+        case '#':
+            fMatch = TRUE;
+            i3fread_to_eol(fin);
+            break;
 
-	    case 'a':
-		KEY("adminemail", this_i3mud->admin_email, i3fread_line(fin));
-		KEY("adminlevel", this_i3mud->adminlevel, i3fread_number(fin));
-		KEY("amrcp", this_i3mud->amrcp, i3fread_number(fin));
-		KEY("auth", this_i3mud->auth, i3fread_number(fin));
-		KEY("autoconnect", this_i3mud->autoconnect, i3fread_number(fin));
-		break;
+        case 'a':
+            KEY("adminemail", this_i3mud->admin_email, i3fread_line(fin));
+            KEY("adminlevel", this_i3mud->adminlevel, i3fread_number(fin));
+            KEY("amrcp", this_i3mud->amrcp, i3fread_number(fin));
+            KEY("auth", this_i3mud->auth, i3fread_number(fin));
+            KEY("autoconnect", this_i3mud->autoconnect, i3fread_number(fin));
+            break;
 
-	    case 'b':
-		KEY("beep", this_i3mud->beep, i3fread_number(fin));
-		break;
+        case 'b':
+            KEY("beep", this_i3mud->beep, i3fread_number(fin));
+            break;
 
-	    case 'c':
-		KEY("channel", this_i3mud->channel, i3fread_number(fin));
-		break;
+        case 'c':
+            KEY("channel", this_i3mud->channel, i3fread_number(fin));
+            break;
 
-	    case 'e':
-		KEY("emoteto", this_i3mud->emoteto, i3fread_number(fin));
-		if (!strcasecmp(word, "end")) {
-		    char                                    lib_buf[MAX_STRING_LENGTH];
+        case 'e':
+            KEY("emoteto", this_i3mud->emoteto, i3fread_number(fin));
+            if (!strcasecmp(word, "end"))
+            {
+                char lib_buf[MAX_STRING_LENGTH];
 
-		    /*
-		     * Adjust base_mudlib information based on already supplied info (mud.h). -Orion
-		     * Modified for AFKMud use by Samson.
-		     */
-		    I3STRFREE(this_i3mud->mud_type);
-		    this_i3mud->mud_type = I3STRALLOC(CODETYPE);
+                /*
+                 * Adjust base_mudlib information based on already supplied info (mud.h). -Orion
+                 * Modified for AFKMud use by Samson.
+                 */
+                I3STRFREE(this_i3mud->mud_type);
+                this_i3mud->mud_type = I3STRALLOC(CODETYPE);
 
-		    snprintf(lib_buf, MAX_STRING_LENGTH, "%s %s", CODEBASE, CODEVERSION);
-		    I3STRFREE(this_i3mud->base_mudlib);
-		    this_i3mud->base_mudlib = I3STRALLOC(lib_buf);
+                snprintf(lib_buf, MAX_STRING_LENGTH, "%s %s", CODEBASE, CODEVERSION);
+                I3STRFREE(this_i3mud->base_mudlib);
+                this_i3mud->base_mudlib = I3STRALLOC(lib_buf);
 
-		    if (!this_i3mud->mudlib
-			|| strcasecmp(this_i3mud->mudlib, this_i3mud->base_mudlib)) {
-			if (this_i3mud->mudlib)
-			    I3STRFREE(this_i3mud->mudlib);
-			this_i3mud->mudlib = I3STRALLOC(lib_buf);
-		    }
+                if (!this_i3mud->mudlib || strcasecmp(this_i3mud->mudlib, this_i3mud->base_mudlib))
+                {
+                    if (this_i3mud->mudlib)
+                        I3STRFREE(this_i3mud->mudlib);
+                    this_i3mud->mudlib = I3STRALLOC(lib_buf);
+                }
 
-		    I3STRFREE(this_i3mud->driver);
-		    this_i3mud->driver = I3STRALLOC(I3DRIVER);
+                I3STRFREE(this_i3mud->driver);
+                this_i3mud->driver = I3STRALLOC(I3DRIVER);
 
-		    /*
-		     * Convert to new router file 
-		     */
-		    if (first_router) {
-			I3_saverouters();
-			I3_saveconfig();
-		    }
-		    return;
-		}
-		break;
+                /*
+                 * Convert to new router file
+                 */
+                if (first_router)
+                {
+                    I3_saverouters();
+                    I3_saveconfig();
+                }
+                return;
+            }
+            break;
 
-	    case 'f':
-		KEY("file", this_i3mud->file, i3fread_number(fin));
-		KEY("finger", this_i3mud->finger, i3fread_number(fin));
-		KEY("ftp", this_i3mud->ftp, i3fread_number(fin));
-		break;
+        case 'f':
+            KEY("file", this_i3mud->file, i3fread_number(fin));
+            KEY("finger", this_i3mud->finger, i3fread_number(fin));
+            KEY("ftp", this_i3mud->ftp, i3fread_number(fin));
+            break;
 
-	    case 'h':
-		KEY("http", this_i3mud->http, i3fread_number(fin));
-		break;
+        case 'h':
+            KEY("http", this_i3mud->http, i3fread_number(fin));
+            break;
 
-	    case 'i':
-		KEY("immlevel", this_i3mud->immlevel, i3fread_number(fin));
-		KEY("implevel", this_i3mud->implevel, i3fread_number(fin));
-		break;
+        case 'i':
+            KEY("immlevel", this_i3mud->immlevel, i3fread_number(fin));
+            KEY("implevel", this_i3mud->implevel, i3fread_number(fin));
+            break;
 
-	    case 'l':
-		KEY("locate", this_i3mud->locate, i3fread_number(fin));
-		break;
+        case 'l':
+            KEY("locate", this_i3mud->locate, i3fread_number(fin));
+            break;
 
-	    case 'm':
-		KEY("mail", this_i3mud->mail, i3fread_number(fin));
-		KEY("minlevel", this_i3mud->minlevel, i3fread_number(fin));
-		KEY("mudlib", this_i3mud->mudlib, i3fread_line(fin));
-		KEY("mudtype", this_i3mud->mud_type, i3fread_line(fin));
-		break;
+        case 'm':
+            KEY("mail", this_i3mud->mail, i3fread_number(fin));
+            KEY("minlevel", this_i3mud->minlevel, i3fread_number(fin));
+            KEY("mudlib", this_i3mud->mudlib, i3fread_line(fin));
+            KEY("mudtype", this_i3mud->mud_type, i3fread_line(fin));
+            break;
 
-	    case 'n':
-		KEY("news", this_i3mud->news, i3fread_number(fin));
-		KEY("nntp", this_i3mud->nntp, i3fread_number(fin));
-		break;
+        case 'n':
+            KEY("news", this_i3mud->news, i3fread_number(fin));
+            KEY("nntp", this_i3mud->nntp, i3fread_number(fin));
+            break;
 
-	    case 'o':
-		KEY("openstatus", this_i3mud->open_status, i3fread_line(fin));
-		break;
+        case 'o':
+            KEY("openstatus", this_i3mud->open_status, i3fread_line(fin));
+            break;
 
-	    case 'p':
-		KEY("pop3", this_i3mud->pop3, i3fread_number(fin));
-		break;
+        case 'p':
+            KEY("pop3", this_i3mud->pop3, i3fread_number(fin));
+            break;
 
-	    case 'r':
-		KEY("rcp", this_i3mud->rcp, i3fread_number(fin));
-		/*
-		 * Router config loading is legacy support here - routers are configured in their own file now. 
-		 */
-		if (!strcasecmp(word, "router")) {
-		    ROUTER_DATA                            *router;
-		    char                                    rname[MAX_INPUT_LENGTH],
-		                                            rip[MAX_INPUT_LENGTH],
-		                                           *ln;
-		    int                                     rport;
+        case 'r':
+            KEY("rcp", this_i3mud->rcp, i3fread_number(fin));
+            /*
+             * Router config loading is legacy support here - routers are configured in their own file now.
+             */
+            if (!strcasecmp(word, "router"))
+            {
+                ROUTER_DATA *router;
+                char rname[MAX_INPUT_LENGTH], rip[MAX_INPUT_LENGTH], *ln;
+                int rport;
 
-		    ln = i3fread_line(fin);
-		    sscanf(ln, "%s %s %d", rname, rip, &rport);
+                ln = i3fread_line(fin);
+                sscanf(ln, "%s %s %d", rname, rip, &rport);
 
-		    I3CREATE(router, ROUTER_DATA, 1);
+                I3CREATE(router, ROUTER_DATA, 1);
 
-		    router->name = I3STRALLOC(rname);
-		    router->ip = I3STRALLOC(rip);
-		    router->port = rport;
-		    router->reconattempts = 0;
-		    I3LINK(router, first_router, last_router, next, prev);
-		    fMatch = TRUE;
-		    I3DISPOSE(ln);
-		    break;
-		}
-		break;
+                router->name = I3STRALLOC(rname);
+                router->ip = I3STRALLOC(rip);
+                router->port = rport;
+                router->reconattempts = 0;
+                I3LINK(router, first_router, last_router, next, prev);
+                fMatch = TRUE;
+                I3DISPOSE(ln);
+                break;
+            }
+            break;
 
-	    case 's':
-		KEY("smtp", this_i3mud->smtp, i3fread_number(fin));
-		break;
+        case 's':
+            KEY("smtp", this_i3mud->smtp, i3fread_number(fin));
+            break;
 
-	    case 't':
-		KEY("tell", this_i3mud->tell, i3fread_number(fin));
-		KEY("telnet", this_i3mud->telnet, i3fread_line(fin));
-		KEY("thismud", this_i3mud->name, i3fread_line(fin));
-		break;
+        case 't':
+            KEY("tell", this_i3mud->tell, i3fread_number(fin));
+            KEY("telnet", this_i3mud->telnet, i3fread_line(fin));
+            KEY("thismud", this_i3mud->name, i3fread_line(fin));
+            break;
 
-	    case 'u':
-		KEY("ucache", this_i3mud->ucache, i3fread_number(fin));
-		break;
+        case 'u':
+            KEY("ucache", this_i3mud->ucache, i3fread_number(fin));
+            break;
 
-	    case 'w':
-		KEY("web", this_i3mud->web, i3fread_line(fin));
-		KEY("who", this_i3mud->who, i3fread_number(fin));
-		break;
-	}
-	if (!fMatch)
-	    log_error("I3_fread_config_file: Bad keyword: %s\r\n", word);
+        case 'w':
+            KEY("web", this_i3mud->web, i3fread_line(fin));
+            KEY("who", this_i3mud->who, i3fread_number(fin));
+            break;
+        }
+        if (!fMatch)
+            log_error("I3_fread_config_file: Bad keyword: %s\r\n", word);
     }
 }
 
 bool I3_read_config(int mudport)
 {
-    FILE                                   *fin,
-                                           *fp;
+    FILE *fin, *fp;
 
     if (this_i3mud != NULL)
-	destroy_I3_mud(this_i3mud);
+        destroy_I3_mud(this_i3mud);
     this_i3mud = NULL;
 
     log_info("%s", "Loading Intermud-3 network data...");
 
-    if (!(fin = fopen(I3_CONFIG_FILE, "r"))) {
-	log_info("%s", "Can't open configuration file: i3.config");
-	log_info("%s", "Network configuration aborted.");
-	return FALSE;
+    if (!(fin = fopen(I3_CONFIG_FILE, "r")))
+    {
+        log_info("%s", "Can't open configuration file: i3.config");
+        log_info("%s", "Network configuration aborted.");
+        return FALSE;
     }
 
-    for (;;) {
-	char                                    letter;
-	char                                   *word;
+    for (;;)
+    {
+        char letter;
+        char *word;
 
-	letter = i3fread_letter(fin);
+        letter = i3fread_letter(fin);
 
-	if (letter == '#') {
-	    i3fread_to_eol(fin);
-	    continue;
-	}
+        if (letter == '#')
+        {
+            i3fread_to_eol(fin);
+            continue;
+        }
 
-	if (letter != '$') {
-	    log_error("%s", "I3_read_config: $ not found");
-	    break;
-	}
+        if (letter != '$')
+        {
+            log_error("%s", "I3_read_config: $ not found");
+            break;
+        }
 
-	word = i3fread_word(fin);
-	if (!strcasecmp(word, "I3CONFIG") && this_i3mud == NULL) {
+        word = i3fread_word(fin);
+        if (!strcasecmp(word, "I3CONFIG") && this_i3mud == NULL)
+        {
             this_i3mud = create_I3_mud();
-	    this_i3mud->player_port = mudport;		       /* Passed in from the mud's startup script */
-	    I3_fread_config_file(fin);
-	    continue;
-	} else if (!strcasecmp(word, "END"))
-	    break;
-	else {
-	    log_error("I3_read_config: Bad section in config file: %s", word);
-	    continue;
-	}
+            this_i3mud->player_port = mudport; /* Passed in from the mud's startup script */
+            I3_fread_config_file(fin);
+            continue;
+        }
+        else if (!strcasecmp(word, "END"))
+            break;
+        else
+        {
+            log_error("I3_read_config: Bad section in config file: %s", word);
+            continue;
+        }
     }
     I3FCLOSE(fin);
 
-    if (!this_i3mud) {
-	log_info("%s", "Error during configuration load.");
-	log_info("%s", "Network configuration aborted.");
-	return FALSE;
+    if (!this_i3mud)
+    {
+        log_info("%s", "Error during configuration load.");
+        log_info("%s", "Network configuration aborted.");
+        return FALSE;
     }
 
-    if ((fp = fopen(I3_PASSWORD_FILE, "r")) != NULL && this_i3mud != NULL) {
-	char                                   *word;
+    if ((fp = fopen(I3_PASSWORD_FILE, "r")) != NULL && this_i3mud != NULL)
+    {
+        char *word;
 
-	word = i3fread_word(fp);
+        word = i3fread_word(fp);
 
-	if (!strcasecmp(word, "#PASSWORD")) {
-	    char                                   *ln = i3fread_line(fp);
-	    int                                     pass,
-	                                            mud,
-	                                            chan;
+        if (!strcasecmp(word, "#PASSWORD"))
+        {
+            char *ln = i3fread_line(fp);
+            int pass, mud, chan;
 
-	    pass = mud = chan = 0;
-	    sscanf(ln, "%d %d %d", &pass, &mud, &chan);
-	    this_i3mud->password = pass;
-	    this_i3mud->mudlist_id = mud;
-	    this_i3mud->chanlist_id = chan;
-	    I3DISPOSE(ln);
-	}
-	I3FCLOSE(fp);
+            pass = mud = chan = 0;
+            sscanf(ln, "%d %d %d", &pass, &mud, &chan);
+            this_i3mud->password = pass;
+            this_i3mud->mudlist_id = mud;
+            this_i3mud->chanlist_id = chan;
+            I3DISPOSE(ln);
+        }
+        I3FCLOSE(fp);
     }
 
-    if (!this_i3mud->name || this_i3mud->name[0] == '\0') {
-	log_info("%s", "Mud name not loaded in configuration file.");
-	log_info("%s", "Network configuration aborted.");
-	destroy_I3_mud(this_i3mud);
-	return FALSE;
+    if (!this_i3mud->name || this_i3mud->name[0] == '\0')
+    {
+        log_info("%s", "Mud name not loaded in configuration file.");
+        log_info("%s", "Network configuration aborted.");
+        destroy_I3_mud(this_i3mud);
+        return FALSE;
     }
 
     if (!this_i3mud->telnet || this_i3mud->telnet[0] == '\0')
-	this_i3mud->telnet = I3STRALLOC("Address not configured");
+        this_i3mud->telnet = I3STRALLOC("Address not configured");
 
     if (!this_i3mud->web || this_i3mud->web[0] == '\0')
-	this_i3mud->web = I3STRALLOC("Address not configured");
+        this_i3mud->web = I3STRALLOC("Address not configured");
 
     // I3_THISMUD = this_i3mud->name;
     return TRUE;
 }
 
-void I3_readban(I3_BAN *ban, FILE * fin)
+void I3_readban(I3_BAN *ban, FILE *fin)
 {
-    const char                             *word;
-    bool                                    fMatch;
+    const char *word;
+    bool fMatch;
 
-    for (;;) {
-	word = feof(fin) ? "End" : i3fread_word(fin);
-	fMatch = FALSE;
+    for (;;)
+    {
+        word = feof(fin) ? "End" : i3fread_word(fin);
+        fMatch = FALSE;
 
-	switch (UPPER(word[0])) {
-	    case '*':
-		fMatch = TRUE;
-		i3fread_to_eol(fin);
-		break;
+        switch (UPPER(word[0]))
+        {
+        case '*':
+            fMatch = TRUE;
+            i3fread_to_eol(fin);
+            break;
 
-	    case 'N':
-		KEY("Name", ban->name, i3fread_line(fin));
-		break;
+        case 'N':
+            KEY("Name", ban->name, i3fread_line(fin));
+            break;
 
-	    case 'E':
-		if (!strcasecmp(word, "End"))
-		    return;
-		break;
-	}
-	if (!fMatch)
-	    log_error("I3_readban: no match: %s", word);
+        case 'E':
+            if (!strcasecmp(word, "End"))
+                return;
+            break;
+        }
+        if (!fMatch)
+            log_error("I3_readban: no match: %s", word);
     }
 }
 
 void I3_loadbans(void)
 {
-    FILE                                   *fin;
-    I3_BAN                                 *ban;
+    FILE *fin;
+    I3_BAN *ban;
 
     first_i3ban = NULL;
     last_i3ban = NULL;
 
     log_info("%s", "Loading ban list...");
 
-    if ((fin = fopen(I3_BAN_FILE, "r")) == NULL) {
-	log_info("%s", "No ban list defined.");
-	return;
+    if ((fin = fopen(I3_BAN_FILE, "r")) == NULL)
+    {
+        log_info("%s", "No ban list defined.");
+        return;
     }
 
-    for (;;) {
-	char                                    letter;
-	char                                   *word;
+    for (;;)
+    {
+        char letter;
+        char *word;
 
-	letter = i3fread_letter(fin);
-	if (letter == '*') {
-	    i3fread_to_eol(fin);
-	    continue;
-	}
+        letter = i3fread_letter(fin);
+        if (letter == '*')
+        {
+            i3fread_to_eol(fin);
+            continue;
+        }
 
-	if (letter != '#') {
-	    log_error("%s", "I3_loadbans: # not found.");
-	    break;
-	}
+        if (letter != '#')
+        {
+            log_error("%s", "I3_loadbans: # not found.");
+            break;
+        }
 
-	word = i3fread_word(fin);
-	if (!strcasecmp(word, "I3BAN")) {
-	    I3CREATE(ban, I3_BAN, 1);
+        word = i3fread_word(fin);
+        if (!strcasecmp(word, "I3BAN"))
+        {
+            I3CREATE(ban, I3_BAN, 1);
 
-	    I3_readban(ban, fin);
-	    if (!ban->name)
-		I3DISPOSE(ban);
-	    else
-		I3LINK(ban, first_i3ban, last_i3ban, next, prev);
-	    continue;
-	} else if (!strcasecmp(word, "END"))
-	    break;
-	else {
-	    log_error("I3_loadbans: bad section: %s.", word);
-	    continue;
-	}
+            I3_readban(ban, fin);
+            if (!ban->name)
+                I3DISPOSE(ban);
+            else
+                I3LINK(ban, first_i3ban, last_i3ban, next, prev);
+            continue;
+        }
+        else if (!strcasecmp(word, "END"))
+            break;
+        else
+        {
+            log_error("I3_loadbans: bad section: %s.", word);
+            continue;
+        }
     }
     I3FCLOSE(fin);
     return;
@@ -15564,140 +15764,153 @@ void I3_loadbans(void)
 
 void I3_write_bans(void)
 {
-    FILE                                   *fout;
-    I3_BAN                                 *ban;
+    FILE *fout;
+    I3_BAN *ban;
 
-    if ((fout = fopen(I3_BAN_FILE, "w")) == NULL) {
-	log_info("%s", "Couldn't write to ban list file.");
-	return;
+    if ((fout = fopen(I3_BAN_FILE, "w")) == NULL)
+    {
+        log_info("%s", "Couldn't write to ban list file.");
+        return;
     }
 
-    for (ban = first_i3ban; ban; ban = ban->next) {
-	fprintf(fout, "%s", "#I3BAN\n");
-	fprintf(fout, "Name   %s\n", ban->name);
-	fprintf(fout, "%s", "End\n\n");
+    for (ban = first_i3ban; ban; ban = ban->next)
+    {
+        fprintf(fout, "%s", "#I3BAN\n");
+        fprintf(fout, "Name   %s\n", ban->name);
+        fprintf(fout, "%s", "End\n\n");
     }
     fprintf(fout, "%s", "#END\n");
     I3FCLOSE(fout);
 }
 
-void I3_readchannel(I3_CHANNEL *channel, FILE * fin)
+void I3_readchannel(I3_CHANNEL *channel, FILE *fin)
 {
-    const char                             *word;
-    bool                                    fMatch;
+    const char *word;
+    bool fMatch;
 
-    for (;;) {
-	word = feof(fin) ? "End" : i3fread_word(fin);
-	fMatch = FALSE;
+    for (;;)
+    {
+        word = feof(fin) ? "End" : i3fread_word(fin);
+        fMatch = FALSE;
 
-	switch (UPPER(word[0])) {
-	    case '*':
-		fMatch = TRUE;
-		i3fread_to_eol(fin);
-		break;
+        switch (UPPER(word[0]))
+        {
+        case '*':
+            fMatch = TRUE;
+            i3fread_to_eol(fin);
+            break;
 
-	    case 'C':
-		KEY("ChanName", channel->I3_name, i3fread_line(fin));
-		KEY("ChanMud", channel->host_mud, i3fread_line(fin));
-		KEY("ChanLocal", channel->local_name, i3fread_line(fin));
-		KEY("ChanLayM", channel->layout_m, i3fread_line(fin));
-		KEY("ChanLayE", channel->layout_e, i3fread_line(fin));
-		KEY("ChanLevel", channel->i3perm, i3fread_number(fin));
-		KEY("ChanStatus", channel->status, i3fread_number(fin));
-		KEY("ChanFlags", channel->flags, i3fread_number(fin));
-		break;
+        case 'C':
+            KEY("ChanName", channel->I3_name, i3fread_line(fin));
+            KEY("ChanMud", channel->host_mud, i3fread_line(fin));
+            KEY("ChanLocal", channel->local_name, i3fread_line(fin));
+            KEY("ChanLayM", channel->layout_m, i3fread_line(fin));
+            KEY("ChanLayE", channel->layout_e, i3fread_line(fin));
+            KEY("ChanLevel", channel->i3perm, i3fread_number(fin));
+            KEY("ChanStatus", channel->status, i3fread_number(fin));
+            KEY("ChanFlags", channel->flags, i3fread_number(fin));
+            break;
 
-	    case 'E':
-		if (!strcasecmp(word, "End")) {
-		    /*
-		     * Legacy support to convert channel permissions 
-		     */
-		    if (channel->i3perm > I3PERM_IMP) {
-			/*
-			 * The I3PERM_NONE condition should realistically never happen.... 
-			 */
-			if (channel->i3perm < this_i3mud->minlevel)
-			    channel->i3perm = I3PERM_NONE;
-			else if (channel->i3perm >= this_i3mud->minlevel
-				 && channel->i3perm < this_i3mud->immlevel)
-			    channel->i3perm = I3PERM_MORT;
-			else if (channel->i3perm >= this_i3mud->immlevel
-				 && channel->i3perm < this_i3mud->adminlevel)
-			    channel->i3perm = I3PERM_IMM;
-			else if (channel->i3perm >= this_i3mud->adminlevel
-				 && channel->i3perm < this_i3mud->implevel)
-			    channel->i3perm = I3PERM_ADMIN;
-			else if (channel->i3perm >= this_i3mud->implevel)
-			    channel->i3perm = I3PERM_IMP;
-		    }
-		    return;
-		}
-		break;
-	}
-	if (!fMatch)
-	    log_error("I3_readchannel: no match: %s", word);
+        case 'E':
+            if (!strcasecmp(word, "End"))
+            {
+                /*
+                 * Legacy support to convert channel permissions
+                 */
+                if (channel->i3perm > I3PERM_IMP)
+                {
+                    /*
+                     * The I3PERM_NONE condition should realistically never happen....
+                     */
+                    if (channel->i3perm < this_i3mud->minlevel)
+                        channel->i3perm = I3PERM_NONE;
+                    else if (channel->i3perm >= this_i3mud->minlevel && channel->i3perm < this_i3mud->immlevel)
+                        channel->i3perm = I3PERM_MORT;
+                    else if (channel->i3perm >= this_i3mud->immlevel && channel->i3perm < this_i3mud->adminlevel)
+                        channel->i3perm = I3PERM_IMM;
+                    else if (channel->i3perm >= this_i3mud->adminlevel && channel->i3perm < this_i3mud->implevel)
+                        channel->i3perm = I3PERM_ADMIN;
+                    else if (channel->i3perm >= this_i3mud->implevel)
+                        channel->i3perm = I3PERM_IMP;
+                }
+                return;
+            }
+            break;
+        }
+        if (!fMatch)
+            log_error("I3_readchannel: no match: %s", word);
     }
 }
 
 void I3_loadchannels(void)
 {
-    FILE                                   *fin;
-    I3_CHANNEL                             *channel;
+    FILE *fin;
+    I3_CHANNEL *channel;
 
     first_I3chan = last_I3chan = NULL;
 
     log_info("%s", "Loading channels...");
 
-    if (!(fin = fopen(I3_CHANNEL_FILE, "r"))) {
-	log_info("%s", "No channel config file found.");
-	return;
+    if (!(fin = fopen(I3_CHANNEL_FILE, "r")))
+    {
+        log_info("%s", "No channel config file found.");
+        return;
     }
 
-    for (;;) {
-	char                                    letter;
-	char                                   *word;
+    for (;;)
+    {
+        char letter;
+        char *word;
 
-	letter = i3fread_letter(fin);
-	if (letter == '*') {
-	    i3fread_to_eol(fin);
-	    continue;
-	}
+        letter = i3fread_letter(fin);
+        if (letter == '*')
+        {
+            i3fread_to_eol(fin);
+            continue;
+        }
 
-	if (letter != '#') {
-	    log_error("%s", "I3_loadchannels: # not found.");
-	    break;
-	}
+        if (letter != '#')
+        {
+            log_error("%s", "I3_loadchannels: # not found.");
+            break;
+        }
 
-	word = i3fread_word(fin);
-	if (!strcasecmp(word, "I3CHAN")) {
-	    int                                     x;
+        word = i3fread_word(fin);
+        if (!strcasecmp(word, "I3CHAN"))
+        {
+            int x;
 
-	    I3CREATE(channel, I3_CHANNEL, 1);
+            I3CREATE(channel, I3_CHANNEL, 1);
 
-	    I3_readchannel(channel, fin);
+            I3_readchannel(channel, fin);
 
-	    if (channel->local_name && !strcmp(channel->local_name, "(null)")) {
-		I3STRFREE(channel->local_name);
-		channel->local_name = NULL;
-	    }
-	    if (channel->layout_m && !strcmp(channel->layout_m, "(null)")) {
-		I3STRFREE(channel->layout_m);
-		channel->layout_m = I3STRALLOC("[%s] %s@%s: %%^RESET%%^%s");
-	    }
-	    if (channel->layout_e && !strcmp(channel->layout_e, "(null)")) {
-		I3STRFREE(channel->layout_e);
-		channel->layout_e = I3STRALLOC("[%s] %%^RESET%%^%s");
-	    }
-	    for (x = 0; x < MAX_I3HISTORY; x++)
-		channel->history[x] = NULL;
-	    I3LINK(channel, first_I3chan, last_I3chan, next, prev);
-	    continue;
-	} else if (!strcasecmp(word, "END"))
-	    break;
-	else {
-	    log_error("I3_loadchannels: bad section: %s.", word);
-	    continue;
-	}
+            if (channel->local_name && !strcmp(channel->local_name, "(null)"))
+            {
+                I3STRFREE(channel->local_name);
+                channel->local_name = NULL;
+            }
+            if (channel->layout_m && !strcmp(channel->layout_m, "(null)"))
+            {
+                I3STRFREE(channel->layout_m);
+                channel->layout_m = I3STRALLOC("[%s] %s@%s: %%^RESET%%^%s");
+            }
+            if (channel->layout_e && !strcmp(channel->layout_e, "(null)"))
+            {
+                I3STRFREE(channel->layout_e);
+                channel->layout_e = I3STRALLOC("[%s] %%^RESET%%^%s");
+            }
+            for (x = 0; x < MAX_I3HISTORY; x++)
+                channel->history[x] = NULL;
+            I3LINK(channel, first_I3chan, last_I3chan, next, prev);
+            continue;
+        }
+        else if (!strcasecmp(word, "END"))
+            break;
+        else
+        {
+            log_error("I3_loadchannels: bad section: %s.", word);
+            continue;
+        }
     }
     I3FCLOSE(fin);
     return;
@@ -15705,228 +15918,236 @@ void I3_loadchannels(void)
 
 void I3_write_channel_config(void)
 {
-    FILE                                   *fout;
-    I3_CHANNEL                             *channel;
+    FILE *fout;
+    I3_CHANNEL *channel;
 
-    if ((fout = fopen(I3_CHANNEL_FILE, "w")) == NULL) {
-	log_info("%s", "Couldn't write to channel config file.");
-	return;
+    if ((fout = fopen(I3_CHANNEL_FILE, "w")) == NULL)
+    {
+        log_info("%s", "Couldn't write to channel config file.");
+        return;
     }
 
-    for (channel = first_I3chan; channel; channel = channel->next) {
-	// if( channel->local_name )
-	// {
+    for (channel = first_I3chan; channel; channel = channel->next)
+    {
+        // if( channel->local_name )
+        // {
 
         // Skip stupid channels with empty names or leading whitespace
-        if(!channel->I3_name || !channel->I3_name[0] || isspace(channel->I3_name[0]))
+        if (!channel->I3_name || !channel->I3_name[0] || isspace(channel->I3_name[0]))
             continue;
-        if(!channel->host_mud || !channel->host_mud[0] || isspace(channel->host_mud[0]))
+        if (!channel->host_mud || !channel->host_mud[0] || isspace(channel->host_mud[0]))
             continue;
 
-	fprintf(fout, "%s", "#I3CHAN\n");
-	fprintf(fout, "ChanName   %s\n", channel->I3_name);
-	fprintf(fout, "ChanMud    %s\n", channel->host_mud);
-	fprintf(fout, "ChanLocal  %s\n", channel->local_name);
-	fprintf(fout, "ChanLayM   %s\n", channel->layout_m);
-	fprintf(fout, "ChanLayE   %s\n", channel->layout_e);
-	fprintf(fout, "ChanLevel  %d\n", channel->i3perm);
-	fprintf(fout, "ChanStatus %d\n", channel->status);
-	fprintf(fout, "ChanFlags  %ld\n", (long int)channel->flags);
-	fprintf(fout, "%s", "End\n\n");
-	// }
+        fprintf(fout, "%s", "#I3CHAN\n");
+        fprintf(fout, "ChanName   %s\n", channel->I3_name);
+        fprintf(fout, "ChanMud    %s\n", channel->host_mud);
+        fprintf(fout, "ChanLocal  %s\n", channel->local_name);
+        fprintf(fout, "ChanLayM   %s\n", channel->layout_m);
+        fprintf(fout, "ChanLayE   %s\n", channel->layout_e);
+        fprintf(fout, "ChanLevel  %d\n", channel->i3perm);
+        fprintf(fout, "ChanStatus %d\n", channel->status);
+        fprintf(fout, "ChanFlags  %ld\n", (long int)channel->flags);
+        fprintf(fout, "%s", "End\n\n");
+        // }
     }
     fprintf(fout, "%s", "#END\n");
     I3FCLOSE(fout);
 }
 
 /* Used only during copyovers */
-void fread_mudlist(FILE * fin, I3_MUD *mud)
+void fread_mudlist(FILE *fin, I3_MUD *mud)
 {
-    const char                             *word;
-    char                                   *ln;
-    bool                                    fMatch;
-    int                                     x1,
-                                            x2,
-                                            x3,
-                                            x4,
-                                            x5,
-                                            x6,
-                                            x7,
-                                            x8,
-                                            x9,
-                                            x10,
-                                            x11,
-                                            x12;
+    const char *word;
+    char *ln;
+    bool fMatch;
+    int x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12;
 
-    for (;;) {
-	word = feof(fin) ? "End" : i3fread_word(fin);
-	fMatch = FALSE;
+    for (;;)
+    {
+        word = feof(fin) ? "End" : i3fread_word(fin);
+        fMatch = FALSE;
 
-	switch (UPPER(word[0])) {
-	    case '*':
-		fMatch = TRUE;
-		i3fread_to_eol(fin);
-		break;
+        switch (UPPER(word[0]))
+        {
+        case '*':
+            fMatch = TRUE;
+            i3fread_to_eol(fin);
+            break;
 
-	    case 'B':
-		KEY("Banner", mud->banner, i3fread_line(fin));
-		KEY("Baselib", mud->base_mudlib, i3fread_line(fin));
-		break;
+        case 'B':
+            KEY("Banner", mud->banner, i3fread_line(fin));
+            KEY("Baselib", mud->base_mudlib, i3fread_line(fin));
+            break;
 
-	    case 'D':
-		KEY("Daemon", mud->daemon, i3fread_line(fin));
-		KEY("Driver", mud->driver, i3fread_line(fin));
-		break;
+        case 'D':
+            KEY("Daemon", mud->daemon, i3fread_line(fin));
+            KEY("Driver", mud->driver, i3fread_line(fin));
+            break;
 
-	    case 'E':
-		KEY("Email", mud->admin_email, i3fread_line(fin));
-		if (!strcasecmp(word, "End")) {
-		    return;
-		}
+        case 'E':
+            KEY("Email", mud->admin_email, i3fread_line(fin));
+            if (!strcasecmp(word, "End"))
+            {
+                return;
+            }
 
-	    case 'I':
-		KEY("IP", mud->ipaddress, i3fread_line(fin));
-		break;
+        case 'I':
+            KEY("IP", mud->ipaddress, i3fread_line(fin));
+            break;
 
-	    case 'M':
-		KEY("Mudlib", mud->mudlib, i3fread_line(fin));
-		break;
+        case 'M':
+            KEY("Mudlib", mud->mudlib, i3fread_line(fin));
+            break;
 
-	    case 'O':
-		KEY("Openstatus", mud->open_status, i3fread_line(fin));
-		if (!strcasecmp(word, "OOBPorts")) {
-		    ln = i3fread_line(fin);
-		    x1 = x2 = x3 = x4 = x5 = x6 = x7 = 0;
+        case 'O':
+            KEY("Openstatus", mud->open_status, i3fread_line(fin));
+            if (!strcasecmp(word, "OOBPorts"))
+            {
+                ln = i3fread_line(fin);
+                x1 = x2 = x3 = x4 = x5 = x6 = x7 = 0;
 
-		    sscanf(ln, "%d %d %d %d %d %d %d", &x1, &x2, &x3, &x4, &x5, &x6, &x7);
-		    mud->smtp = x1;
-		    mud->ftp = x2;
-		    mud->nntp = x3;
-		    mud->http = x4;
-		    mud->pop3 = x5;
-		    mud->rcp = x6;
-		    mud->amrcp = x7;
-		    fMatch = TRUE;
-		    I3DISPOSE(ln);
-		    break;
-		}
-		break;
+                sscanf(ln, "%d %d %d %d %d %d %d", &x1, &x2, &x3, &x4, &x5, &x6, &x7);
+                mud->smtp = x1;
+                mud->ftp = x2;
+                mud->nntp = x3;
+                mud->http = x4;
+                mud->pop3 = x5;
+                mud->rcp = x6;
+                mud->amrcp = x7;
+                fMatch = TRUE;
+                I3DISPOSE(ln);
+                break;
+            }
+            break;
 
-	    case 'P':
-		if (!strcasecmp(word, "Ports")) {
-		    ln = i3fread_line(fin);
-		    x1 = x2 = x3 = 0;
+        case 'P':
+            if (!strcasecmp(word, "Ports"))
+            {
+                ln = i3fread_line(fin);
+                x1 = x2 = x3 = 0;
 
-		    sscanf(ln, "%d %d %d ", &x1, &x2, &x3);
-		    mud->player_port = x1;
-		    mud->imud_tcp_port = x2;
-		    mud->imud_udp_port = x3;
-		    fMatch = TRUE;
-		    I3DISPOSE(ln);
-		    break;
-		}
-		break;
+                sscanf(ln, "%d %d %d ", &x1, &x2, &x3);
+                mud->player_port = x1;
+                mud->imud_tcp_port = x2;
+                mud->imud_udp_port = x3;
+                fMatch = TRUE;
+                I3DISPOSE(ln);
+                break;
+            }
+            break;
 
-	    case 'S':
-		KEY("Status", mud->status, i3fread_number(fin));
-		if (!strcasecmp(word, "Services")) {
-		    ln = i3fread_line(fin);
-		    x1 = x2 = x3 = x4 = x5 = x6 = x7 = x8 = x9 = x10 = x11 = x12 = 0;
+        case 'S':
+            KEY("Status", mud->status, i3fread_number(fin));
+            if (!strcasecmp(word, "Services"))
+            {
+                ln = i3fread_line(fin);
+                x1 = x2 = x3 = x4 = x5 = x6 = x7 = x8 = x9 = x10 = x11 = x12 = 0;
 
-		    sscanf(ln, "%d %d %d %d %d %d %d %d %d %d %d %d",
-			   &x1, &x2, &x3, &x4, &x5, &x6, &x7, &x8, &x9, &x10, &x11, &x12);
-		    mud->tell = x1;
-		    mud->beep = x2;
-		    mud->emoteto = x3;
-		    mud->who = x4;
-		    mud->finger = x5;
-		    mud->locate = x6;
-		    mud->channel = x7;
-		    mud->news = x8;
-		    mud->mail = x9;
-		    mud->file = x10;
-		    mud->auth = x11;
-		    mud->ucache = x12;
-		    fMatch = TRUE;
-		    I3DISPOSE(ln);
-		    break;
-		}
-		break;
+                sscanf(ln, "%d %d %d %d %d %d %d %d %d %d %d %d", &x1, &x2, &x3, &x4, &x5, &x6, &x7, &x8, &x9, &x10,
+                       &x11, &x12);
+                mud->tell = x1;
+                mud->beep = x2;
+                mud->emoteto = x3;
+                mud->who = x4;
+                mud->finger = x5;
+                mud->locate = x6;
+                mud->channel = x7;
+                mud->news = x8;
+                mud->mail = x9;
+                mud->file = x10;
+                mud->auth = x11;
+                mud->ucache = x12;
+                fMatch = TRUE;
+                I3DISPOSE(ln);
+                break;
+            }
+            break;
 
-	    case 'T':
-		KEY("Telnet", mud->telnet, i3fread_line(fin));
-		KEY("Time", mud->time, i3fread_line(fin));
-		KEY("Type", mud->mud_type, i3fread_line(fin));
-		break;
+        case 'T':
+            KEY("Telnet", mud->telnet, i3fread_line(fin));
+            KEY("Time", mud->time, i3fread_line(fin));
+            KEY("Type", mud->mud_type, i3fread_line(fin));
+            break;
 
-	    case 'W':
-		KEY("Web", mud->web, i3fread_line(fin));
-		break;
-	}
+        case 'W':
+            KEY("Web", mud->web, i3fread_line(fin));
+            break;
+        }
 
-	if (!fMatch)
-	    log_error("I3_readmudlist: no match: %s", word);
+        if (!fMatch)
+            log_error("I3_readmudlist: no match: %s", word);
     }
 }
 
 /* Called only during copyovers */
 void I3_loadmudlist(void)
 {
-    FILE                                   *fin;
-    I3_MUD                                 *mud;
+    FILE *fin;
+    I3_MUD *mud;
 
     if (!(fin = fopen(I3_MUDLIST_FILE, "r")))
-	return;
+        return;
 
-    for (;;) {
-	char                                    letter;
-	const char                             *word;
+    for (;;)
+    {
+        char letter;
+        const char *word;
 
-	letter = i3fread_letter(fin);
-	if (letter == '*') {
-	    i3fread_to_eol(fin);
-	    continue;
-	}
+        letter = i3fread_letter(fin);
+        if (letter == '*')
+        {
+            i3fread_to_eol(fin);
+            continue;
+        }
 
-	if (letter != '#') {
-	    log_error("%s", "I3_loadmudlist: # not found.");
-	    break;
-	}
+        if (letter != '#')
+        {
+            log_error("%s", "I3_loadmudlist: # not found.");
+            break;
+        }
 
-	word = i3fread_word(fin);
-	if (!strcasecmp(word, "ROUTER")) {
-	    I3STRFREE(this_i3mud->routerName);
-	    this_i3mud->routerName = i3fread_line(fin);
-	    I3_ROUTER_NAME = this_i3mud->routerName;
-	    continue;
-	}
-	if (!strcasecmp(word, "MUDLIST")) {
-	    word = i3fread_word(fin);
-	    if (!strcasecmp(word, "Name")) {
-		char                                   *tmpname;
+        word = i3fread_word(fin);
+        if (!strcasecmp(word, "ROUTER"))
+        {
+            I3STRFREE(this_i3mud->routerName);
+            this_i3mud->routerName = i3fread_line(fin);
+            I3_ROUTER_NAME = this_i3mud->routerName;
+            continue;
+        }
+        if (!strcasecmp(word, "MUDLIST"))
+        {
+            word = i3fread_word(fin);
+            if (!strcasecmp(word, "Name"))
+            {
+                char *tmpname;
 
-		tmpname = i3fread_line(fin);
-		mud = new_I3_mud(tmpname);
-		fread_mudlist(fin, mud);
-		I3STRFREE(tmpname);
-	    } else {
-		log_error("%s", "fread_mudlist: No mudname saved, skipping entry.");
-		i3fread_to_eol(fin);
-		for (;;) {
-		    word = feof(fin) ? "End" : i3fread_word(fin);
-		    if (strcasecmp(word, "End"))
-			i3fread_to_eol(fin);
-		    else
-			break;
-		}
-	    }
-	    continue;
-	} else if (!strcasecmp(word, "END"))
-	    break;
-	else {
-	    log_error("I3_loadmudlist: bad section: %s.", word);
-	    continue;
-	}
+                tmpname = i3fread_line(fin);
+                mud = new_I3_mud(tmpname);
+                fread_mudlist(fin, mud);
+                I3STRFREE(tmpname);
+            }
+            else
+            {
+                log_error("%s", "fread_mudlist: No mudname saved, skipping entry.");
+                i3fread_to_eol(fin);
+                for (;;)
+                {
+                    word = feof(fin) ? "End" : i3fread_word(fin);
+                    if (strcasecmp(word, "End"))
+                        i3fread_to_eol(fin);
+                    else
+                        break;
+                }
+            }
+            continue;
+        }
+        else if (!strcasecmp(word, "END"))
+            break;
+        else
+        {
+            log_error("I3_loadmudlist: bad section: %s.", word);
+            continue;
+        }
     }
     I3FCLOSE(fin);
     unlink(I3_MUDLIST_FILE);
@@ -15936,44 +16157,50 @@ void I3_loadmudlist(void)
 /* Called only during copyovers */
 void I3_loadchanlist(void)
 {
-    FILE                                   *fin;
-    I3_CHANNEL                             *channel;
+    FILE *fin;
+    I3_CHANNEL *channel;
 
     if (!(fin = fopen(I3_CHANLIST_FILE, "r")))
-	return;
+        return;
 
-    for (;;) {
-	char                                    letter;
-	char                                   *word;
+    for (;;)
+    {
+        char letter;
+        char *word;
 
-	letter = i3fread_letter(fin);
-	if (letter == '*') {
-	    i3fread_to_eol(fin);
-	    continue;
-	}
+        letter = i3fread_letter(fin);
+        if (letter == '*')
+        {
+            i3fread_to_eol(fin);
+            continue;
+        }
 
-	if (letter != '#') {
-	    log_error("%s", "I3_loadchanlist: # not found.");
-	    break;
-	}
+        if (letter != '#')
+        {
+            log_error("%s", "I3_loadchanlist: # not found.");
+            break;
+        }
 
-	word = i3fread_word(fin);
-	if (!strcasecmp(word, "I3CHAN")) {
-	    int                                     x;
-	    I3CREATE(channel, I3_CHANNEL, 1);
+        word = i3fread_word(fin);
+        if (!strcasecmp(word, "I3CHAN"))
+        {
+            int x;
+            I3CREATE(channel, I3_CHANNEL, 1);
 
-	    I3_readchannel(channel, fin);
+            I3_readchannel(channel, fin);
 
-	    for (x = 0; x < MAX_I3HISTORY; x++)
-		channel->history[x] = NULL;
-	    I3LINK(channel, first_I3chan, last_I3chan, next, prev);
-	    continue;
-	} else if (!strcasecmp(word, "END"))
-	    break;
-	else {
-	    log_error("I3_loadchanlist: bad section: %s.", word);
-	    continue;
-	}
+            for (x = 0; x < MAX_I3HISTORY; x++)
+                channel->history[x] = NULL;
+            I3LINK(channel, first_I3chan, last_I3chan, next, prev);
+            continue;
+        }
+        else if (!strcasecmp(word, "END"))
+            break;
+        else
+        {
+            log_error("I3_loadchanlist: bad section: %s.", word);
+            continue;
+        }
     }
     I3FCLOSE(fin);
     unlink(I3_CHANLIST_FILE);
@@ -15983,52 +16210,52 @@ void I3_loadchanlist(void)
 /* Called only during copyovers */
 void I3_savemudlist(void)
 {
-    FILE                                   *fp;
-    I3_MUD                                 *mud;
+    FILE *fp;
+    I3_MUD *mud;
 
-    if (!(fp = fopen(I3_MUDLIST_FILE, "w"))) {
-	log_error("%s", "I3_savemudlist: Unable to write to mudlist file.");
-	return;
+    if (!(fp = fopen(I3_MUDLIST_FILE, "w")))
+    {
+        log_error("%s", "I3_savemudlist: Unable to write to mudlist file.");
+        return;
     }
 
     fprintf(fp, "#ROUTER %s\n", I3_ROUTER_NAME);
-    for (mud = first_mud; mud; mud = mud->next) {
-	// Don't store muds that are down, who cares? They'll update themselves anyway 
-	if (mud->status == 0)
-	    continue;
-
-        // Skip stupid muds with empty names or leading whitespace
-        if(!mud->name || !mud->name[0] || isspace(mud->name[0]))
+    for (mud = first_mud; mud; mud = mud->next)
+    {
+        // Don't store muds that are down, who cares? They'll update themselves anyway
+        if (mud->status == 0)
             continue;
 
-	fprintf(fp, "%s", "#MUDLIST\n");
-	fprintf(fp, "Name		%s\n", mud->name);
-	fprintf(fp, "Status		%d\n", mud->status);
-	fprintf(fp, "IP			%s\n", mud->ipaddress);
-	fprintf(fp, "Mudlib		%s\n", mud->mudlib);
-	fprintf(fp, "Baselib		%s\n", mud->base_mudlib);
-	fprintf(fp, "Driver		%s\n", mud->driver);
-	fprintf(fp, "Type		%s\n", mud->mud_type);
-	fprintf(fp, "Openstatus	%s\n", mud->open_status);
-	fprintf(fp, "Email		%s\n", mud->admin_email);
-	if (mud->telnet)
-	    fprintf(fp, "Telnet		%s\n", mud->telnet);
-	if (mud->web)
-	    fprintf(fp, "Web		%s\n", mud->web);
-	if (mud->banner)
-	    fprintf(fp, "Banner		%s\n", mud->banner);
-	if (mud->daemon)
-	    fprintf(fp, "Dameon		%s\n", mud->daemon);
-	if (mud->time)
-	    fprintf(fp, "Time		%s\n", mud->time);
-	fprintf(fp, "Ports %d %d %d\n", mud->player_port, mud->imud_tcp_port,
-		mud->imud_udp_port);
-	fprintf(fp, "Services %d %d %d %d %d %d %d %d %d %d %d %d\n", mud->tell, mud->beep,
-		mud->emoteto, mud->who, mud->finger, mud->locate, mud->channel, mud->news,
-		mud->mail, mud->file, mud->auth, mud->ucache);
-	fprintf(fp, "OOBports %d %d %d %d %d %d %d\n", mud->smtp, mud->ftp, mud->nntp,
-		mud->http, mud->pop3, mud->rcp, mud->amrcp);
-	fprintf(fp, "%s", "End\n\n");
+        // Skip stupid muds with empty names or leading whitespace
+        if (!mud->name || !mud->name[0] || isspace(mud->name[0]))
+            continue;
+
+        fprintf(fp, "%s", "#MUDLIST\n");
+        fprintf(fp, "Name		%s\n", mud->name);
+        fprintf(fp, "Status		%d\n", mud->status);
+        fprintf(fp, "IP			%s\n", mud->ipaddress);
+        fprintf(fp, "Mudlib		%s\n", mud->mudlib);
+        fprintf(fp, "Baselib		%s\n", mud->base_mudlib);
+        fprintf(fp, "Driver		%s\n", mud->driver);
+        fprintf(fp, "Type		%s\n", mud->mud_type);
+        fprintf(fp, "Openstatus	%s\n", mud->open_status);
+        fprintf(fp, "Email		%s\n", mud->admin_email);
+        if (mud->telnet)
+            fprintf(fp, "Telnet		%s\n", mud->telnet);
+        if (mud->web)
+            fprintf(fp, "Web		%s\n", mud->web);
+        if (mud->banner)
+            fprintf(fp, "Banner		%s\n", mud->banner);
+        if (mud->daemon)
+            fprintf(fp, "Dameon		%s\n", mud->daemon);
+        if (mud->time)
+            fprintf(fp, "Time		%s\n", mud->time);
+        fprintf(fp, "Ports %d %d %d\n", mud->player_port, mud->imud_tcp_port, mud->imud_udp_port);
+        fprintf(fp, "Services %d %d %d %d %d %d %d %d %d %d %d %d\n", mud->tell, mud->beep, mud->emoteto, mud->who,
+                mud->finger, mud->locate, mud->channel, mud->news, mud->mail, mud->file, mud->auth, mud->ucache);
+        fprintf(fp, "OOBports %d %d %d %d %d %d %d\n", mud->smtp, mud->ftp, mud->nntp, mud->http, mud->pop3, mud->rcp,
+                mud->amrcp);
+        fprintf(fp, "%s", "End\n\n");
     }
     fprintf(fp, "%s", "#END\n");
     I3FCLOSE(fp);
@@ -16038,31 +16265,33 @@ void I3_savemudlist(void)
 /* Called only during copyovers */
 void I3_savechanlist(void)
 {
-    FILE                                   *fp;
-    I3_CHANNEL                             *channel;
+    FILE *fp;
+    I3_CHANNEL *channel;
 
-    if (!(fp = fopen(I3_CHANLIST_FILE, "w"))) {
-	log_error("%s", "I3_savechanlist: Unable to write to chanlist file.");
-	return;
+    if (!(fp = fopen(I3_CHANLIST_FILE, "w")))
+    {
+        log_error("%s", "I3_savechanlist: Unable to write to chanlist file.");
+        return;
     }
 
-    for (channel = first_I3chan; channel; channel = channel->next) {
-	// Don't save local channels, they are stored elsewhere 
-	if (channel->local_name)
-	    continue;
+    for (channel = first_I3chan; channel; channel = channel->next)
+    {
+        // Don't save local channels, they are stored elsewhere
+        if (channel->local_name)
+            continue;
 
         // Skip stupid channels with empty names or leading whitespace
-        if(!channel->I3_name || !channel->I3_name[0] || isspace(channel->I3_name[0]))
+        if (!channel->I3_name || !channel->I3_name[0] || isspace(channel->I3_name[0]))
             continue;
 
-        if(!channel->host_mud || !channel->host_mud[0] || isspace(channel->host_mud[0]))
+        if (!channel->host_mud || !channel->host_mud[0] || isspace(channel->host_mud[0]))
             continue;
 
-	fprintf(fp, "%s", "#I3CHAN\n");
-	fprintf(fp, "ChanMud		%s\n", channel->host_mud);
-	fprintf(fp, "ChanName		%s\n", channel->I3_name);
-	fprintf(fp, "ChanStatus	%d\n", channel->status);
-	fprintf(fp, "%s", "End\n\n");
+        fprintf(fp, "%s", "#I3CHAN\n");
+        fprintf(fp, "ChanMud		%s\n", channel->host_mud);
+        fprintf(fp, "ChanName		%s\n", channel->I3_name);
+        fprintf(fp, "ChanStatus	%d\n", channel->status);
+        fprintf(fp, "%s", "End\n\n");
     }
     fprintf(fp, "%s", "#END\n");
     I3FCLOSE(fp);
@@ -16072,56 +16301,60 @@ void I3_savechanlist(void)
 /* Used during copyovers */
 void I3_loadhistory(void)
 {
-    char                                    filename[MAX_INPUT_LENGTH];
-    FILE                                   *tempfile;
-    I3_CHANNEL                             *tempchan = NULL;
-    int                                     x;
+    char filename[MAX_INPUT_LENGTH];
+    FILE *tempfile;
+    I3_CHANNEL *tempchan = NULL;
+    int x;
 
-    for (tempchan = first_I3chan; tempchan; tempchan = tempchan->next) {
-	if (!tempchan->local_name)
-	    continue;
+    for (tempchan = first_I3chan; tempchan; tempchan = tempchan->next)
+    {
+        if (!tempchan->local_name)
+            continue;
 
-	snprintf(filename, MAX_INPUT_LENGTH, "%s%s.hist", I3_DIR, tempchan->local_name);
+        snprintf(filename, MAX_INPUT_LENGTH, "%s%s.hist", I3_DIR, tempchan->local_name);
 
-	if (!(tempfile = fopen(filename, "r")))
-	    continue;
+        if (!(tempfile = fopen(filename, "r")))
+            continue;
 
-	for (x = 0; x < MAX_I3HISTORY; x++) {
-	    if (feof(tempfile))
-		tempchan->history[x] = NULL;
-	    else
-		tempchan->history[x] = i3fread_line(tempfile);
-	}
-	I3FCLOSE(tempfile);
-	unlink(filename);
+        for (x = 0; x < MAX_I3HISTORY; x++)
+        {
+            if (feof(tempfile))
+                tempchan->history[x] = NULL;
+            else
+                tempchan->history[x] = i3fread_line(tempfile);
+        }
+        I3FCLOSE(tempfile);
+        unlink(filename);
     }
 }
 
 /* Used during copyovers */
 void I3_savehistory(void)
 {
-    char                                    filename[MAX_INPUT_LENGTH];
-    FILE                                   *tempfile;
-    I3_CHANNEL                             *tempchan = NULL;
-    int                                     x;
+    char filename[MAX_INPUT_LENGTH];
+    FILE *tempfile;
+    I3_CHANNEL *tempchan = NULL;
+    int x;
 
-    for (tempchan = first_I3chan; tempchan; tempchan = tempchan->next) {
-	if (!tempchan->local_name)
-	    continue;
+    for (tempchan = first_I3chan; tempchan; tempchan = tempchan->next)
+    {
+        if (!tempchan->local_name)
+            continue;
 
-	if (!tempchan->history[0])
-	    continue;
+        if (!tempchan->history[0])
+            continue;
 
-	snprintf(filename, MAX_INPUT_LENGTH, "%s%s.hist", I3_DIR, tempchan->local_name);
+        snprintf(filename, MAX_INPUT_LENGTH, "%s%s.hist", I3_DIR, tempchan->local_name);
 
-	if (!(tempfile = fopen(filename, "w")))
-	    continue;
+        if (!(tempfile = fopen(filename, "w")))
+            continue;
 
-	for (x = 0; x < MAX_I3HISTORY; x++) {
-	    if (tempchan->history[x] != NULL)
-		fprintf(tempfile, "%s\n", tempchan->history[x]);
-	}
-	I3FCLOSE(tempfile);
+        for (x = 0; x < MAX_I3HISTORY; x++)
+        {
+            if (tempchan->history[x] != NULL)
+                fprintf(tempfile, "%s\n", tempchan->history[x]);
+        }
+        I3FCLOSE(tempfile);
     }
 }
 
@@ -16131,52 +16364,59 @@ void I3_savehistory(void)
  */
 int I3_connection_open(ROUTER_DATA *router)
 {
-    struct sockaddr_in                      sa;
-    struct hostent                         *hostp;
-    int                                     x = 1;
+    struct sockaddr_in sa;
+    struct hostent *hostp;
+    int x = 1;
 
     log_info("Attempting connect to %s on port %d", router->ip, router->port);
 
     I3_socket = socket(AF_INET, SOCK_STREAM, 0);
-    if (I3_socket < 0) {
-	log_info("%s", "Cannot create socket!");
-	I3_connection_close(TRUE);
-	return -1;
+    if (I3_socket < 0)
+    {
+        log_info("%s", "Cannot create socket!");
+        I3_connection_close(TRUE);
+        return -1;
     }
 
-    if ((x = fcntl(I3_socket, F_GETFL, 0)) < 0) {
-	log_info("%s", "I3_connection_open: fcntl(F_GETFL)");
-	I3_connection_close(TRUE);
-	return -1;
+    if ((x = fcntl(I3_socket, F_GETFL, 0)) < 0)
+    {
+        log_info("%s", "I3_connection_open: fcntl(F_GETFL)");
+        I3_connection_close(TRUE);
+        return -1;
     }
 
-    if (fcntl(I3_socket, F_SETFL, x | O_NONBLOCK) < 0) {
-	log_info("%s", "I3_connection_open: fcntl(F_SETFL)");
-	I3_connection_close(TRUE);
-	return -1;
+    if (fcntl(I3_socket, F_SETFL, x | O_NONBLOCK) < 0)
+    {
+        log_info("%s", "I3_connection_open: fcntl(F_SETFL)");
+        I3_connection_close(TRUE);
+        return -1;
     }
 
     memset(&sa, 0, sizeof(sa));
     sa.sin_family = AF_INET;
 
-    if (!inet_aton(router->ip, &sa.sin_addr)) {
-	hostp = gethostbyname(router->ip);
-	if (!hostp) {
-	    log_info("%s", "I3_connection_open: Cannot resolve router hostname.");
-	    I3_connection_close(TRUE);
-	    return -1;
-	}
-	memcpy(&sa.sin_addr, hostp->h_addr, hostp->h_length);
+    if (!inet_aton(router->ip, &sa.sin_addr))
+    {
+        hostp = gethostbyname(router->ip);
+        if (!hostp)
+        {
+            log_info("%s", "I3_connection_open: Cannot resolve router hostname.");
+            I3_connection_close(TRUE);
+            return -1;
+        }
+        memcpy(&sa.sin_addr, hostp->h_addr, hostp->h_length);
     }
 
     sa.sin_port = htons(router->port);
 
-    if (connect(I3_socket, (struct sockaddr *)&sa, sizeof(sa)) < 0) {
-	if (errno != EINPROGRESS) {
-	    log_info("I3_connection_open: Unable to connect to router %s", router->name);
-	    I3_connection_close(TRUE);
-	    return -1;
-	}
+    if (connect(I3_socket, (struct sockaddr *)&sa, sizeof(sa)) < 0)
+    {
+        if (errno != EINPROGRESS)
+        {
+            log_info("I3_connection_open: Unable to connect to router %s", router->name);
+            I3_connection_close(TRUE);
+            return -1;
+        }
     }
     I3_ROUTER_NAME = router->name;
     I3_ROUTER_IP = router->ip;
@@ -16189,8 +16429,8 @@ int I3_connection_open(ROUTER_DATA *router)
  */
 void I3_connection_close(bool reconnect)
 {
-    ROUTER_DATA                            *router = NULL;
-    bool                                    rfound = FALSE;
+    ROUTER_DATA *router = NULL;
+    bool rfound = FALSE;
 
     I3_input_pointer = 0;
     I3_output_pointer = 4;
@@ -16203,62 +16443,75 @@ void I3_connection_close(bool reconnect)
     connect_started_at = 0;
     connected_at = 0;
 
-    for (router = first_router; router; router = router->next) {
-	if (!strcasecmp(router->name, I3_ROUTER_NAME)) {
-	    rfound = TRUE;
-	    break;
-	}
+    for (router = first_router; router; router = router->next)
+    {
+        if (!strcasecmp(router->name, I3_ROUTER_NAME))
+        {
+            rfound = TRUE;
+            break;
+        }
     }
 
-    if (!rfound) {
-	log_info("%s", "I3_connection_close: Disconnecting from router.");
-	if (I3_socket > 0) {
-	    close(I3_socket);
-	    I3_socket = -1;
-	}
-	return;
+    if (!rfound)
+    {
+        log_info("%s", "I3_connection_close: Disconnecting from router.");
+        if (I3_socket > 0)
+        {
+            close(I3_socket);
+            I3_socket = -1;
+        }
+        return;
     }
 
     log_info("Closing connection to Intermud-3 router %s", router->name);
-    if (I3_socket > 0) {
-	close(I3_socket);
-	I3_socket = -1;
+    if (I3_socket > 0)
+    {
+        close(I3_socket);
+        I3_socket = -1;
     }
 
-    if (reconnect) {
-        if (router->reconattempts <= 3) {
+    if (reconnect)
+    {
+        if (router->reconattempts <= 3)
+        {
             i3wait = router_reconnect_short_delay;
-	    log_info("%s", "Will attempt to reconnect in approximately 15 seconds.");
-        } else if (router->reconattempts <= 6) {
+            log_info("%s", "Will attempt to reconnect in approximately 15 seconds.");
+        }
+        else if (router->reconattempts <= 6)
+        {
             i3wait = router_reconnect_medium_delay;
-	    log_info("%s", "Will attempt to reconnect in approximately 1 minute.");
-        } else if (router->reconattempts <= 9) {
+            log_info("%s", "Will attempt to reconnect in approximately 1 minute.");
+        }
+        else if (router->reconattempts <= 9)
+        {
             i3wait = router_reconnect_long_delay;
-	    log_info("%s", "Will attempt to reconnect in approximately 5 minutes.");
-	} else if (router->next != NULL) {
-	    log_info("Unable to reach %s. Abandoning connection.", router->name);
-	    log_info("Bytes sent: %ld. Bytes received: %ld.", bytes_sent, bytes_received);
-	    bytes_sent = 0;
-	    bytes_received = 0;
+            log_info("%s", "Will attempt to reconnect in approximately 5 minutes.");
+        }
+        else if (router->next != NULL)
+        {
+            log_info("Unable to reach %s. Abandoning connection.", router->name);
+            log_info("Bytes sent: %ld. Bytes received: %ld.", bytes_sent, bytes_received);
+            bytes_sent = 0;
+            bytes_received = 0;
             channel_m_sent = 0;
             channel_m_received = 0;
-	    i3wait = router_reconnect_short_delay;
+            i3wait = router_reconnect_short_delay;
             router->reconattempts = 0;
             router = router->next;
-	    log_info("Will attempt new connection to %s in approximately 15 seconds.",
-		  router->name);
-        } else {
-	    log_info("Unable to reach %s. Abandoning connection.", router->name);
-	    log_info("Bytes sent: %ld. Bytes received: %ld.", bytes_sent, bytes_received);
-	    bytes_sent = 0;
-	    bytes_received = 0;
+            log_info("Will attempt new connection to %s in approximately 15 seconds.", router->name);
+        }
+        else
+        {
+            log_info("Unable to reach %s. Abandoning connection.", router->name);
+            log_info("Bytes sent: %ld. Bytes received: %ld.", bytes_sent, bytes_received);
+            bytes_sent = 0;
+            bytes_received = 0;
             channel_m_sent = 0;
             channel_m_received = 0;
-	    i3wait = router_reconnect_short_delay;
+            i3wait = router_reconnect_short_delay;
             router->reconattempts = 0;
             router = first_router;
-	    log_info("Will attempt new connection to %s in approximately 15 seconds.",
-		  router->name);
+            log_info("Will attempt new connection to %s in approximately 15 seconds.", router->name);
         }
     }
     log_info("Bytes sent: %ld. Bytes received: %ld.", bytes_sent, bytes_received);
@@ -16272,98 +16525,103 @@ void I3_connection_close(bool reconnect)
 /* Free up all the data lists once the connection is down. No sense in wasting memory on it. */
 void free_i3data(bool complete)
 {
-    I3_MUD                                 *mud,
-                                           *next_mud;
-    I3_CHANNEL                             *channel,
-                                           *next_chan;
-    I3_BAN                                 *ban,
-                                           *next_ban;
-    UCACHE_DATA                            *ucache,
-                                           *next_ucache;
-    ROUTER_DATA                            *router,
-                                           *router_next;
-    I3_CMD_DATA                            *cmd,
-                                           *cmd_next;
-    I3_ALIAS                               *alias,
-                                           *alias_next;
-    I3_HELP_DATA                           *help,
-                                           *help_next;
-    I3_COLOR                               *color,
-                                           *color_next;
+    I3_MUD *mud, *next_mud;
+    I3_CHANNEL *channel, *next_chan;
+    I3_BAN *ban, *next_ban;
+    UCACHE_DATA *ucache, *next_ucache;
+    ROUTER_DATA *router, *router_next;
+    I3_CMD_DATA *cmd, *cmd_next;
+    I3_ALIAS *alias, *alias_next;
+    I3_HELP_DATA *help, *help_next;
+    I3_COLOR *color, *color_next;
 
-    if (first_i3ban) {
-	for (ban = first_i3ban; ban; ban = next_ban) {
-	    next_ban = ban->next;
-	    I3STRFREE(ban->name);
-	    I3UNLINK(ban, first_i3ban, last_i3ban, next, prev);
-	    I3DISPOSE(ban);
-	}
+    if (first_i3ban)
+    {
+        for (ban = first_i3ban; ban; ban = next_ban)
+        {
+            next_ban = ban->next;
+            I3STRFREE(ban->name);
+            I3UNLINK(ban, first_i3ban, last_i3ban, next, prev);
+            I3DISPOSE(ban);
+        }
     }
 
-    if (first_I3chan) {
-	for (channel = first_I3chan; channel; channel = next_chan) {
-	    next_chan = channel->next;
-	    destroy_I3_channel(channel);
-	}
+    if (first_I3chan)
+    {
+        for (channel = first_I3chan; channel; channel = next_chan)
+        {
+            next_chan = channel->next;
+            destroy_I3_channel(channel);
+        }
     }
 
-    if (first_mud) {
-	for (mud = first_mud; mud; mud = next_mud) {
-	    next_mud = mud->next;
-	    destroy_I3_mud(mud);
-	}
+    if (first_mud)
+    {
+        for (mud = first_mud; mud; mud = next_mud)
+        {
+            next_mud = mud->next;
+            destroy_I3_mud(mud);
+        }
     }
 
-    if (first_ucache) {
-	for (ucache = first_ucache; ucache; ucache = next_ucache) {
-	    next_ucache = ucache->next;
-	    I3STRFREE(ucache->name);
-	    I3UNLINK(ucache, first_ucache, last_ucache, next, prev);
-	    I3DISPOSE(ucache);
-	}
+    if (first_ucache)
+    {
+        for (ucache = first_ucache; ucache; ucache = next_ucache)
+        {
+            next_ucache = ucache->next;
+            I3STRFREE(ucache->name);
+            I3UNLINK(ucache, first_ucache, last_ucache, next, prev);
+            I3DISPOSE(ucache);
+        }
     }
 
-    if (complete == TRUE) {
-	for (router = first_router; router; router = router_next) {
-	    router_next = router->next;
-	    I3STRFREE(router->name);
-	    I3STRFREE(router->ip);
-	    I3UNLINK(router, first_router, last_router, next, prev);
-	    I3DISPOSE(router);
-	}
+    if (complete == TRUE)
+    {
+        for (router = first_router; router; router = router_next)
+        {
+            router_next = router->next;
+            I3STRFREE(router->name);
+            I3STRFREE(router->ip);
+            I3UNLINK(router, first_router, last_router, next, prev);
+            I3DISPOSE(router);
+        }
 
-	for (cmd = first_i3_command; cmd; cmd = cmd_next) {
-	    cmd_next = cmd->next;
+        for (cmd = first_i3_command; cmd; cmd = cmd_next)
+        {
+            cmd_next = cmd->next;
 
-	    for (alias = cmd->first_alias; alias; alias = alias_next) {
-		alias_next = alias->next;
+            for (alias = cmd->first_alias; alias; alias = alias_next)
+            {
+                alias_next = alias->next;
 
-		I3STRFREE(alias->name);
-		I3UNLINK(alias, cmd->first_alias, cmd->last_alias, next, prev);
-		I3DISPOSE(alias);
-	    }
-	    I3STRFREE(cmd->name);
-	    I3UNLINK(cmd, first_i3_command, last_i3_command, next, prev);
-	    I3DISPOSE(cmd);
-	}
+                I3STRFREE(alias->name);
+                I3UNLINK(alias, cmd->first_alias, cmd->last_alias, next, prev);
+                I3DISPOSE(alias);
+            }
+            I3STRFREE(cmd->name);
+            I3UNLINK(cmd, first_i3_command, last_i3_command, next, prev);
+            I3DISPOSE(cmd);
+        }
 
-	for (help = first_i3_help; help; help = help_next) {
-	    help_next = help->next;
-	    I3STRFREE(help->name);
-	    I3STRFREE(help->text);
-	    I3UNLINK(help, first_i3_help, last_i3_help, next, prev);
-	    I3DISPOSE(help);
-	}
+        for (help = first_i3_help; help; help = help_next)
+        {
+            help_next = help->next;
+            I3STRFREE(help->name);
+            I3STRFREE(help->text);
+            I3UNLINK(help, first_i3_help, last_i3_help, next, prev);
+            I3DISPOSE(help);
+        }
 
-	for (color = first_i3_color; color; color = color_next) {
-	    color_next = color->next;
-	    I3STRFREE(color->name);
-	    I3STRFREE(color->mudtag);
-	    I3STRFREE(color->imctag);
-	    I3STRFREE(color->i3tag);
-	    I3UNLINK(color, first_i3_color, last_i3_color, next, prev);
-	    I3DISPOSE(color);
-	}
+        for (color = first_i3_color; color; color = color_next)
+        {
+            color_next = color->next;
+            I3STRFREE(color->name);
+            I3STRFREE(color->mudtag);
+            I3STRFREE(color->imctag);
+            I3STRFREE(color->i3tag);
+            I3UNLINK(color, first_i3_color, last_i3_color, next, prev);
+            I3DISPOSE(color);
+        }
     }
     return;
 }
@@ -16374,16 +16632,16 @@ void free_i3data(bool complete)
 void i3_shutdown(int delay, CHAR_DATA *ch)
 {
     if (I3_socket < 1)
-	return;
+        return;
 
     I3_savehistory();
     free_i3data(FALSE);
 
     /*
-     * Flush the outgoing buffer 
+     * Flush the outgoing buffer
      */
     if (I3_output_pointer != 4)
-	I3_write_packet(I3_output_buffer);
+        I3_write_packet(I3_output_buffer);
 
     I3_send_shutdown(delay);
     I3_connection_close(FALSE);
@@ -16391,7 +16649,7 @@ void i3_shutdown(int delay, CHAR_DATA *ch)
     I3_output_pointer = 4;
     I3_save_id();
     usleep(200000); /* Never lag the MUD for a full 2 seconds! 0.2 is acceptable. */
-    if(ch)
+    if (ch)
         i3_printf(ch, "Intermud-3 router connection closed.\r\n");
 }
 
@@ -16403,8 +16661,8 @@ void i3_shutdown(int delay, CHAR_DATA *ch)
  */
 void router_connect(const char *router_name, bool forced, int mudport, bool isconnected)
 {
-    ROUTER_DATA                            *router;
-    bool                                    rfound = FALSE;
+    ROUTER_DATA *router;
+    bool rfound = FALSE;
 
     bytes_sent = 0;
     bytes_received = 0;
@@ -16414,98 +16672,115 @@ void router_connect(const char *router_name, bool forced, int mudport, bool isco
     manual_router = router_name;
 
     /*
-     * The Command table is required for operation. Like.... duh? 
+     * The Command table is required for operation. Like.... duh?
      */
-    if (first_i3_command == NULL) {
-	if (!I3_load_commands()) {
-	    log_info("%s", "router_connect: Unable to load command table!");
-	    I3_socket = -1;
-	    return;
-	}
+    if (first_i3_command == NULL)
+    {
+        if (!I3_load_commands())
+        {
+            log_info("%s", "router_connect: Unable to load command table!");
+            I3_socket = -1;
+            return;
+        }
     }
 
-    if (!I3_read_config(mudport)) {
-	I3_socket = -1;
-	return;
+    if (!I3_read_config(mudport))
+    {
+        I3_socket = -1;
+        return;
     }
 
-    if (first_router == NULL) {
-	if (!I3_load_routers()) {
-	    log_info("%s", "router_connect: No router configurations were found!");
-	    I3_socket = -1;
-	    return;
-	}
-	I3_ROUTER_NAME = first_router->name;
+    if (first_router == NULL)
+    {
+        if (!I3_load_routers())
+        {
+            log_info("%s", "router_connect: No router configurations were found!");
+            I3_socket = -1;
+            return;
+        }
+        I3_ROUTER_NAME = first_router->name;
         I3_ROUTER_IP = first_router->ip;
     }
 
     /*
-     * Help information should persist even when the network is not connected... 
+     * Help information should persist even when the network is not connected...
      */
     if (first_i3_help == NULL)
-	I3_load_helps();
+        I3_load_helps();
 
     /*
-     * ... as should the color table. 
+     * ... as should the color table.
      */
     if (first_i3_color == NULL)
-	I3_load_color_table();
+        I3_load_color_table();
 
-    if ((!this_i3mud->autoconnect && !forced && !isconnected) || (isconnected && I3_socket < 1)) {
-	log_info("Intermud-3 network data loaded. Autoconnect not set. Will need to connect manually.");
-	I3_socket = -1;
-	return;
-    } else
-	log_info("%s", "Intermud-3 network data loaded. Initialiazing network connection...");
+    if ((!this_i3mud->autoconnect && !forced && !isconnected) || (isconnected && I3_socket < 1))
+    {
+        log_info("Intermud-3 network data loaded. Autoconnect not set. Will need to connect manually.");
+        I3_socket = -1;
+        return;
+    }
+    else
+        log_info("%s", "Intermud-3 network data loaded. Initialiazing network connection...");
 
     I3_loadchannels();
     I3_loadbans();
 
     I3_loadSpeakers();
 
-    if (this_i3mud->ucache == TRUE) {
-	I3_load_ucache();
-	I3_prune_ucache();
-	ucache_clock = i3_time + 86400;
+    if (this_i3mud->ucache == TRUE)
+    {
+        I3_load_ucache();
+        I3_prune_ucache();
+        ucache_clock = i3_time + 86400;
     }
 
-    if (I3_socket < 1) {
-	for (router = first_router; router; router = router->next) {
-	    if (router_name && strcasecmp(router_name, router->name))
-		continue;
+    if (I3_socket < 1)
+    {
+        for (router = first_router; router; router = router->next)
+        {
+            if (router_name && strcasecmp(router_name, router->name))
+                continue;
 
-	    if (router->reconattempts <= 9) {
-		rfound = TRUE;
-		I3_socket = I3_connection_open(router);
-		break;
-	    }
-	}
+            if (router->reconattempts <= 9)
+            {
+                rfound = TRUE;
+                I3_socket = I3_connection_open(router);
+                break;
+            }
+        }
     }
 
-    if (!rfound && !isconnected) {
-	log_info("%s", "Unable to connect. No available routers found.");
-        allchan_log(0,"wiley", "Cron", "Cron", "WileyMUD", "%^RED%^Not connected to I3.  No routers available.%^RESET%^");
+    if (!rfound && !isconnected)
+    {
+        log_info("%s", "Unable to connect. No available routers found.");
+        allchan_log(0, "wiley", "Cron", "Cron", "WileyMUD",
+                    "%^RED%^Not connected to I3.  No routers available.%^RESET%^");
         i3_message_to_players("\r\n%^RED%^I3 is down again.  No routers available.%^RESET%^");
-	I3_socket = -1;
-	return;
+        I3_socket = -1;
+        return;
     }
 
-    if (I3_socket < 1) {
-	i3wait = 100;
-	return;
+    if (I3_socket < 1)
+    {
+        i3wait = 100;
+        return;
     }
 
     usleep(100000);
 
     log_info("%s", "Intermud-3 Network initialized.");
 
-    if (!isconnected) {
-	I3_startup_packet();
+    if (!isconnected)
+    {
+        I3_startup_packet();
         expecting_timeout = 1;
         timeout_marker = getTimestamp() + I3_TIMEOUT_DELAY;
-    } else {
-	I3_loadmudlist();
-	I3_loadchanlist();
+    }
+    else
+    {
+        I3_loadmudlist();
+        I3_loadchanlist();
     }
     I3_loadhistory();
 }
@@ -16514,55 +16789,61 @@ void router_connect(const char *router_name, bool forced, int mudport, bool isco
 void i3_startup(bool forced, int mudport, bool isconnected)
 {
     time_to_taunt = getTimestamp() + I3_TAUNT_DELAY;
-    //i3_nuke_url_file();
+    // i3_nuke_url_file();
 
     log_boot("I3 Startup beginning!");
     // NOTE: I3_loadPinkfishTo___() are called from sql_startup() in sql.c now.
 
     if (I3_read_config(mudport))
-	router_connect(NULL, forced, mudport, isconnected);
+        router_connect(NULL, forced, mudport, isconnected);
     else
-	log_error("i3_startup: %s", "Configuration failed!");
+        log_error("i3_startup: %s", "Configuration failed!");
 }
 
 void do_taunt_from_log(void)
 {
-    FILE                                   *fp = NULL;
-    int                                     taunt_count = 0;
-    char                                    line[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0\0";
-    char                                    taunt[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0\0";
-    int                                     taunt_pid = 0;
-    int                                     i = 0;
-    int                                     taunt_selection = 0;
-    char                                    year[5] = "\0\0\0\0";
-    char                                    month[3] = "\0\0";
-    char                                    day[3] = "\0\0";
-    char                                    hour[3] = "\0\0";
-    char                                    minute[3] = "\0\0";
-    char                                    second[3] = "\0\0";
-    char                                    speaker[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0\0";
-    char                                    message[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0\0";
-    char                                   *ss = NULL;
-    char                                   *se = NULL;
-    char                                   *t = NULL;
+    FILE *fp = NULL;
+    int taunt_count = 0;
+    char line[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0\0";
+    char taunt[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0\0";
+    int taunt_pid = 0;
+    int i = 0;
+    int taunt_selection = 0;
+    char year[5] = "\0\0\0\0";
+    char month[3] = "\0\0";
+    char day[3] = "\0\0";
+    char hour[3] = "\0\0";
+    char minute[3] = "\0\0";
+    char second[3] = "\0\0";
+    char speaker[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0\0";
+    char message[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0\0";
+    char *ss = NULL;
+    char *se = NULL;
+    char *t = NULL;
 
     taunt_pid = fork();
-    if( taunt_pid == 0 ) {
+    if (taunt_pid == 0)
+    {
         // We're up!  Do the needful!
-        if(!(fp = fopen(I3_ALLCHAN_LOG, "r"))) {
+        if (!(fp = fopen(I3_ALLCHAN_LOG, "r")))
+        {
             log_error("Cannot open I3 log file: %s!", I3_ALLCHAN_LOG);
             exit(1);
-        } else {
-            while( fgets(line, MAX_STRING_LENGTH-2, fp) ) {
+        }
+        else
+        {
+            while (fgets(line, MAX_STRING_LENGTH - 2, fp))
+            {
                 taunt_count++;
             }
             rewind(fp);
             taunt_selection = random() % taunt_count;
-            for( i = taunt_selection; i > 0; i-- ) {
-                fgets(line, MAX_STRING_LENGTH-2, fp);
+            for (i = taunt_selection; i > 0; i--)
+            {
+                fgets(line, MAX_STRING_LENGTH - 2, fp);
             }
             fclose(fp);
-/* 2009.09.21-12.10,28000	imud_gossip	Sinistrad@Dead Souls Dev	f	Not out yet tho */
+            /* 2009.09.21-12.10,28000	imud_gossip	Sinistrad@Dead Souls Dev	f	Not out yet tho */
             strncpy(year, &line[0], 4);
             strncpy(month, &line[5], 2);
             strncpy(day, &line[8], 2);
@@ -16571,62 +16852,74 @@ void do_taunt_from_log(void)
             strncpy(second, &line[17], 2);
             // Skip to channel (throw away)
             ss = strchr(line, '\t');
-            if(!ss || !*ss) return;
+            if (!ss || !*ss)
+                return;
             ss++;
 
             // Skip to speaker (ss to se-2)
             ss = strchr(ss, '\t');
-            if(!ss || !*ss) return;
+            if (!ss || !*ss)
+                return;
             ss++;
 
             // Skip to is_emote (se to t-2)
             se = strchr(ss, '\t');
-            if(!se || !*se) return;
+            if (!se || !*se)
+                return;
             se++;
 
             // Get to message (t to EOL)
             t = strchr(se, '\t');
-            if(!t || !*t) return;
+            if (!t || !*t)
+                return;
             t++;
 
             bzero(speaker, MAX_STRING_LENGTH);
-            strncpy(speaker, ss, (se-ss-1));
+            strncpy(speaker, ss, (se - ss - 1));
 
             bzero(message, MAX_STRING_LENGTH);
             strncpy(message, t, MAX_STRING_LENGTH);
 
-            snprintf(taunt, MAX_STRING_LENGTH, "%%^RED%%^%%^BOLD%%^[%-s-%s-%s %s:%s]%%^RESET%%^ %%^YELLOW%%^%s%%^RESET%%^ once said %%^GREEN%%^%%^BOLD%%^%s%%^RESET%%^",
+            snprintf(taunt, MAX_STRING_LENGTH,
+                     "%%^RED%%^%%^BOLD%%^[%-s-%s-%s %s:%s]%%^RESET%%^ %%^YELLOW%%^%s%%^RESET%%^ once said "
+                     "%%^GREEN%%^%%^BOLD%%^%s%%^RESET%%^",
                      year, month, day, hour, minute, speaker, message);
             i3_npc_speak("wiley", "Cron", taunt);
             exit(0);
         }
-    } else {
+    }
+    else
+    {
         // Zombie patrol should be handled by ignoring SIGCHLD
     }
 }
 
-
-#define I3_TAUNT_FILE   I3_DIR "i3.taunts"
+#define I3_TAUNT_FILE I3_DIR "i3.taunts"
 
 char *i3_taunt_line()
 {
-    FILE            *fp = NULL;
-    struct stat      fst;
-    static int       taunt_count = 0;
-    static char    **taunt_list = NULL;
-    static int       last_changed = 0;
-    static int       already_using_defaults = 0;
-    int              i = 0;
-    char             line[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0\0";
+    FILE *fp = NULL;
+    struct stat fst;
+    static int taunt_count = 0;
+    static char **taunt_list = NULL;
+    static int last_changed = 0;
+    static int already_using_defaults = 0;
+    int i = 0;
+    char line[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0\0";
 
-    if (stat(I3_TAUNT_FILE, &fst) != -1) {
-        if( fst.st_mtime > last_changed ) {
+    if (stat(I3_TAUNT_FILE, &fst) != -1)
+    {
+        if (fst.st_mtime > last_changed)
+        {
             /* File has been updated, so reload it */
             last_changed = fst.st_mtime;
 
-            if (taunt_list) {
-                for (i = 0; i < taunt_count; i++) {
-                    if (taunt_list[i]) {
+            if (taunt_list)
+            {
+                for (i = 0; i < taunt_count; i++)
+                {
+                    if (taunt_list[i])
+                    {
                         free(taunt_list[i]);
                         taunt_list[i] = NULL;
                     }
@@ -16635,30 +16928,41 @@ char *i3_taunt_line()
                 taunt_list = NULL;
                 taunt_count = 0;
             }
-            if(!(fp = fopen(I3_TAUNT_FILE, "r"))) {
+            if (!(fp = fopen(I3_TAUNT_FILE, "r")))
+            {
                 log_error("Cannot open I3 taunt file: %s!", I3_TAUNT_FILE);
                 already_using_defaults = 0;
                 goto no_taunt_file;
-            } else {
-                while( fgets(line, MAX_STRING_LENGTH-2, fp) ) {
+            }
+            else
+            {
+                while (fgets(line, MAX_STRING_LENGTH - 2, fp))
+                {
                     taunt_count++;
                 }
                 rewind(fp);
                 taunt_list = calloc(taunt_count, sizeof(char *));
-                for( i = 0; i < taunt_count; i++ ) {
-                    taunt_list[i] = strdup( fgets(line, MAX_STRING_LENGTH-2, fp) );
+                for (i = 0; i < taunt_count; i++)
+                {
+                    taunt_list[i] = strdup(fgets(line, MAX_STRING_LENGTH - 2, fp));
                 }
                 fclose(fp);
                 already_using_defaults = 0;
             }
         }
-    } else {
-no_taunt_file:
+    }
+    else
+    {
+    no_taunt_file:
         /* No file, so use a small set of built-in taunts. */
-        if( !already_using_defaults ) {
-            if (taunt_list) {
-                for (i = 0; i < taunt_count; i++) {
-                    if (taunt_list[i]) {
+        if (!already_using_defaults)
+        {
+            if (taunt_list)
+            {
+                for (i = 0; i < taunt_count; i++)
+                {
+                    if (taunt_list[i])
+                    {
                         free(taunt_list[i]);
                         taunt_list[i] = NULL;
                     }
@@ -16685,34 +16989,39 @@ no_taunt_file:
     }
 
     /* We should have taunt data now */
-    return (taunt_list[number(0, taunt_count-1)]);
+    return (taunt_list[number(0, taunt_count - 1)]);
 }
 
-#define I3_USERMAP_FILE   I3_DIR "i3.usermap"
+#define I3_USERMAP_FILE I3_DIR "i3.usermap"
 
 char *I3_nameremap(const char *ps)
 {
-    FILE            *fp = NULL;
-    struct stat      fst;
-    static int       map_count = 0;
-    static char    **key_list = NULL;
-    static char    **value_list = NULL;
-    static int       last_changed = 0;
-    int              i = 0;
-    char             line[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0\0";
-    static char      remapped[MAX_STRING_LENGTH];
-    char            *s;
+    FILE *fp = NULL;
+    struct stat fst;
+    static int map_count = 0;
+    static char **key_list = NULL;
+    static char **value_list = NULL;
+    static int last_changed = 0;
+    int i = 0;
+    char line[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0\0";
+    static char remapped[MAX_STRING_LENGTH];
+    char *s;
 
     strcpy(remapped, ps);
 
-    if (stat(I3_USERMAP_FILE, &fst) != -1) {
-        if( fst.st_mtime > last_changed ) {
+    if (stat(I3_USERMAP_FILE, &fst) != -1)
+    {
+        if (fst.st_mtime > last_changed)
+        {
             /* File has been updated, so reload it */
             last_changed = fst.st_mtime;
 
-            if (key_list) {
-                for (i = 0; i < map_count; i++) {
-                    if (key_list[i]) {
+            if (key_list)
+            {
+                for (i = 0; i < map_count; i++)
+                {
+                    if (key_list[i])
+                    {
                         free(key_list[i]);
                         key_list[i] = NULL;
                     }
@@ -16720,9 +17029,12 @@ char *I3_nameremap(const char *ps)
                 free(key_list);
                 key_list = NULL;
             }
-            if (value_list) {
-                for (i = 0; i < map_count; i++) {
-                    if (value_list[i]) {
+            if (value_list)
+            {
+                for (i = 0; i < map_count; i++)
+                {
+                    if (value_list[i])
+                    {
                         free(value_list[i]);
                         value_list[i] = NULL;
                     }
@@ -16732,27 +17044,38 @@ char *I3_nameremap(const char *ps)
             }
             map_count = 0;
 
-            if(!(fp = fopen(I3_USERMAP_FILE, "r"))) {
+            if (!(fp = fopen(I3_USERMAP_FILE, "r")))
+            {
                 log_error("Cannot open I3 usermap file: %s!", I3_USERMAP_FILE);
                 return remapped;
-            } else {
-                while( fgets(line, MAX_STRING_LENGTH-2, fp) ) {
+            }
+            else
+            {
+                while (fgets(line, MAX_STRING_LENGTH - 2, fp))
+                {
                     map_count++;
                 }
                 rewind(fp);
                 key_list = calloc(map_count, sizeof(char *));
                 value_list = calloc(map_count, sizeof(char *));
-                for( i = 0; i < map_count; i++ ) {
+                for (i = 0; i < map_count; i++)
+                {
                     s = i3fread_word(fp);
-                    if( s && *s) {
+                    if (s && *s)
+                    {
                         key_list[i] = strdup(s);
                         s = i3fread_rest_of_line(fp);
-                        if( s && *s) {
+                        if (s && *s)
+                        {
                             value_list[i] = strdup(s);
-                        } else {
+                        }
+                        else
+                        {
                             value_list[i] = strdup(key_list[i]);
                         }
-                    } else {
+                    }
+                    else
+                    {
                         // We have to put something here to avoid NULL pointers.
                         key_list[i] = strdup("INVALID_NAME");
                         // If the key wasn't valid, the value probably can't be either.
@@ -16765,9 +17088,12 @@ char *I3_nameremap(const char *ps)
         }
     }
 
-    if(map_count > 0) {
-        for( i = 0; i < map_count; i++ ) {
-            if(strcasecmp(key_list[i], ps) == 0) {
+    if (map_count > 0)
+    {
+        for (i = 0; i < map_count; i++)
+        {
+            if (strcasecmp(key_list[i], ps) == 0)
+            {
                 strcpy(remapped, value_list[i]);
                 break;
             }
@@ -16777,33 +17103,42 @@ char *I3_nameremap(const char *ps)
     return remapped;
 }
 
-void i3_nuke_url_file() {
-    struct stat      fst;
+void i3_nuke_url_file()
+{
+    struct stat fst;
 
-    if(stat(I3_URL_DUMP, &fst) != -1) {
+    if (stat(I3_URL_DUMP, &fst) != -1)
+    {
         truncate(I3_URL_DUMP, 0);
     }
 }
 
-void i3_check_urls() {
-    FILE            *fp = NULL;
-    struct stat      fst;
-    char             line[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0\0";
-    static int       last_changed = 0;
-    int              i = 0;
-    int              j = 0;
-    //int              x = 0;
+void i3_check_urls()
+{
+    FILE *fp = NULL;
+    struct stat fst;
+    char line[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0\0";
+    static int last_changed = 0;
+    int i = 0;
+    int j = 0;
+    // int              x = 0;
 
-    if(stat(I3_URL_DUMP, &fst) != -1) {
-        if( fst.st_mtime > last_changed ) {
+    if (stat(I3_URL_DUMP, &fst) != -1)
+    {
+        if (fst.st_mtime > last_changed)
+        {
             log_info("URL file is ready to process!");
             /* File has been updated, so reload it */
             last_changed = fst.st_mtime;
 
-            if(!(fp = fopen(I3_URL_DUMP, "r"))) {
+            if (!(fp = fopen(I3_URL_DUMP, "r")))
+            {
                 log_error("No URL DUMP file: %s!", I3_URL_DUMP);
-            } else {
-                while( fgets(line, MAX_STRING_LENGTH-2, fp) ) {
+            }
+            else
+            {
+                while (fgets(line, MAX_STRING_LENGTH - 2, fp))
+                {
                     /*
                     // Remove trailing newlines, if any
                     while(*line && ((x = strlen(line)) > 0)) {
@@ -16823,7 +17158,8 @@ void i3_check_urls() {
                     }
                     */
                     i++;
-                    if(*line) {
+                    if (*line)
+                    {
                         i3_npc_speak("url", "URLbot", line);
                         j++;
                     }
@@ -16837,29 +17173,37 @@ void i3_check_urls() {
     }
 }
 
-void i3_log_alive() {
-    struct tm                              *tm_info = NULL;
-    time_t                                  tc = (time_t) 0;
-    char                                    taunt[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
+void i3_log_alive()
+{
+    struct tm *tm_info = NULL;
+    time_t tc = (time_t)0;
+    char taunt[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
 
     tc = time(0);
     tm_info = localtime(&tc);
 
-    snprintf(taunt, MAX_STRING_LENGTH, "%%^RED%%^%%^BOLD%%^[%-4.4d-%-2.2d-%-2.2d %-2.2d:%-2.2d]%%^RESET%%^ %%^GREEN%%^%%^BOLD%%^%s (%s)%%^RESET%%^ %%^YELLOW%%^*** Welcome to WileyMUD III, Quixadhal's Version %s (%s) ***%%^RESET%%^",
-            tm_info->tm_year + 1900, tm_info->tm_mon + 1, tm_info->tm_mday, tm_info->tm_hour, tm_info->tm_min, "It's ALIVE!\r\n", I3_ROUTER_NAME, VERSION_BUILD, VERSION_DATE);
+    snprintf(taunt, MAX_STRING_LENGTH,
+             "%%^RED%%^%%^BOLD%%^[%-4.4d-%-2.2d-%-2.2d %-2.2d:%-2.2d]%%^RESET%%^ %%^GREEN%%^%%^BOLD%%^%s "
+             "(%s)%%^RESET%%^ %%^YELLOW%%^*** Welcome to WileyMUD III, Quixadhal's Version %s (%s) ***%%^RESET%%^",
+             tm_info->tm_year + 1900, tm_info->tm_mon + 1, tm_info->tm_mday, tm_info->tm_hour, tm_info->tm_min,
+             "It's ALIVE!\r\n", I3_ROUTER_NAME, VERSION_BUILD, VERSION_DATE);
     i3_npc_speak("wiley", "Cron", taunt);
 }
 
-void i3_log_dead() {
-    struct tm                              *tm_info = NULL;
-    time_t                                  tc = (time_t) 0;
-    char                                    taunt[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
+void i3_log_dead()
+{
+    struct tm *tm_info = NULL;
+    time_t tc = (time_t)0;
+    char taunt[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
 
     tc = time(0);
     tm_info = localtime(&tc);
 
-    snprintf(taunt, MAX_STRING_LENGTH, "%%^RED%%^%%^BOLD%%^[%-4.4d-%-2.2d-%-2.2d %-2.2d:%-2.2d]%%^RESET%%^ %%^RED%%^%%^BOLD%%^%s (%s)%%^RESET%%^ %%^YELLOW%%^*** Welcome to WileyMUD III, Quixadhal's Version %s (%s) ***%%^RESET%%^",
-            tm_info->tm_year + 1900, tm_info->tm_mon + 1, tm_info->tm_mday, tm_info->tm_hour, tm_info->tm_min, "It's going DOWN!\r\n", I3_ROUTER_NAME, VERSION_BUILD, VERSION_DATE);
+    snprintf(taunt, MAX_STRING_LENGTH,
+             "%%^RED%%^%%^BOLD%%^[%-4.4d-%-2.2d-%-2.2d %-2.2d:%-2.2d]%%^RESET%%^ %%^RED%%^%%^BOLD%%^%s (%s)%%^RESET%%^ "
+             "%%^YELLOW%%^*** Welcome to WileyMUD III, Quixadhal's Version %s (%s) ***%%^RESET%%^",
+             tm_info->tm_year + 1900, tm_info->tm_mon + 1, tm_info->tm_mday, tm_info->tm_hour, tm_info->tm_min,
+             "It's going DOWN!\r\n", I3_ROUTER_NAME, VERSION_BUILD, VERSION_DATE);
     allchan_log(0, "wiley", "Cron", "Cron", "WileyMUD", taunt);
 }
 
@@ -16871,11 +17215,11 @@ void I3_packet_cleanup(void)
     I3_packet_processing_state = I3_PACKET_STATE_NONE;
     I3_incoming_packet_length = 0;
     bzero(I3_incoming_packet_size, 4);
-    if(I3_incoming_packet)
+    if (I3_incoming_packet)
         free(I3_incoming_packet);
     I3_incoming_packet = NULL;
     I3_incoming_packet_read = 0;
-    if(I3_incoming_packet_leftovers)
+    if (I3_incoming_packet_leftovers)
         free(I3_incoming_packet_leftovers);
     I3_incoming_packet_leftovers = NULL;
     I3_incoming_packet_strlen = 0;
@@ -16890,33 +17234,32 @@ void I3_packet_cleanup(void)
  */
 void i3_loop(void)
 {
-    ROUTER_DATA                            *router;
-    int                                     ret;
-    //long                                    size;
-    fd_set                                  in_set,
-                                            out_set,
-                                            exc_set;
-    static struct timeval                   last_time;
-    static struct timeval                   null_time;
-    bool                                    rfound = FALSE;
+    ROUTER_DATA *router;
+    int ret;
+    // long                                    size;
+    fd_set in_set, out_set, exc_set;
+    static struct timeval last_time;
+    static struct timeval null_time;
+    bool rfound = FALSE;
 
-    struct tm                              *tm_info = NULL;
-    time_t                                  tc = (time_t) 0;
+    struct tm *tm_info = NULL;
+    time_t tc = (time_t)0;
 
     gettimeofday(&last_time, NULL);
-    i3_time = (time_t) last_time.tv_sec;
+    i3_time = (time_t)last_time.tv_sec;
 
     FD_ZERO(&in_set);
     FD_ZERO(&out_set);
     FD_ZERO(&exc_set);
 
     if (i3wait > 0)
-	i3wait--;
+        i3wait--;
 
-    if ( expecting_timeout && diffTimestamp(timeout_marker, -1) <= 0 ) {
+    if (expecting_timeout && diffTimestamp(timeout_marker, -1) <= 0)
+    {
         expecting_timeout = 0;
         log_info("I3 Client timeout.");
-        allchan_log(0,"wiley", "Cron", "Cron", "WileyMUD", "%^RED%^I3 Client timeout.%^RESET%^");
+        allchan_log(0, "wiley", "Cron", "Cron", "WileyMUD", "%^RED%^I3 Client timeout.%^RESET%^");
         I3_connection_close(TRUE);
         connection_timeouts++;
         return;
@@ -16943,60 +17286,68 @@ void i3_loop(void)
      * This condition can only occur if you were previously connected and the socket was closed.
      * * Tries 3 times, then attempts connection to an alternate router, if it has one.
      */
-    if (i3wait == 1) {
-	for (router = first_router; router; router = router->next) {
-	    if (manual_router && strcasecmp(router->name, manual_router))
-		continue;
+    if (i3wait == 1)
+    {
+        for (router = first_router; router; router = router->next)
+        {
+            if (manual_router && strcasecmp(router->name, manual_router))
+                continue;
 
-	    if (router->reconattempts <= 9) {
-		rfound = TRUE;
-		break;
-	    }
-	}
+            if (router->reconattempts <= 9)
+            {
+                rfound = TRUE;
+                break;
+            }
+        }
 
-	if (!rfound) {
-	    i3wait = -2;
-	    log_info("%s", "I3 Unable to reconnect. No routers responding.");
-	    return;
-	}
-	I3_socket = I3_connection_open(router);
-	if (I3_socket < 1) {
-	    if (router->reconattempts <= 3)
+        if (!rfound)
+        {
+            i3wait = -2;
+            log_info("%s", "I3 Unable to reconnect. No routers responding.");
+            return;
+        }
+        I3_socket = I3_connection_open(router);
+        if (I3_socket < 1)
+        {
+            if (router->reconattempts <= 3)
                 i3wait = router_reconnect_short_delay;
             else if (router->reconattempts <= 6)
                 i3wait = router_reconnect_medium_delay;
             else
                 i3wait = router_reconnect_long_delay;
-	    return;
-	}
+            return;
+        }
 
-	usleep(100000);
+        usleep(100000);
 
-	log_info("Connection to Intermud-3 router %s %s.",
-	      router->name, router->reconattempts > 0 ? "reestablished" : "established");
-	router->reconattempts++;
-	I3_startup_packet();
+        log_info("Connection to Intermud-3 router %s %s.", router->name,
+                 router->reconattempts > 0 ? "reestablished" : "established");
+        router->reconattempts++;
+        I3_startup_packet();
         expecting_timeout = 1;
         timeout_marker = getTimestamp() + I3_TIMEOUT_DELAY;
-	return;
+        return;
     }
 
     if (!is_connecting())
-	return;
+        return;
 
-    if (i3justconnected) {
+    if (i3justconnected)
+    {
         i3justconnected = 0;
         i3_log_alive();
     }
 
-    if (connected_at > 0) {
+    if (connected_at > 0)
+    {
         uptime = i3_time - connected_at;
         if (uptime > record_uptime)
             record_uptime = uptime;
         // In theory, save this and load it to persist across reboots.
     }
 
-    if ( diffTimestamp(time_to_taunt, -1) <= 0 ) {
+    if (diffTimestamp(time_to_taunt, -1) <= 0)
+    {
         time_to_taunt = getTimestamp() + I3_TAUNT_DELAY;
         i3_do_ping("Cron", "intergossip", "Dead Souls Dev");
         // This seems like a good time to check the I3 statistics too.
@@ -17004,150 +17355,166 @@ void i3_loop(void)
         log_info("Next ping in %s", stringTimestamp(time_to_taunt - getTimestamp()));
     }
 
-    // Will prune the cache once every 24hrs after bootup time 
-    if (ucache_clock <= i3_time) {
-	ucache_clock = i3_time + 86400;
-	I3_prune_ucache();
+    // Will prune the cache once every 24hrs after bootup time
+    if (ucache_clock <= i3_time)
+    {
+        ucache_clock = i3_time + 86400;
+        I3_prune_ucache();
     }
 
     // Flush the output buffer?
     if (I3_output_pointer != 4)
-	I3_write_packet(I3_output_buffer);
+        I3_write_packet(I3_output_buffer);
 
     FD_SET(I3_socket, &in_set);
     FD_SET(I3_socket, &out_set);
     FD_SET(I3_socket, &exc_set);
 
-    if (select(I3_socket + 1, &in_set, &out_set, &exc_set, &null_time) < 0) {
-	perror("i3_loop: select: Unable to poll I3_socket!");
-	I3_connection_close(TRUE);
-	return;
+    if (select(I3_socket + 1, &in_set, &out_set, &exc_set, &null_time) < 0)
+    {
+        perror("i3_loop: select: Unable to poll I3_socket!");
+        I3_connection_close(TRUE);
+        return;
     }
 
-    if (FD_ISSET(I3_socket, &exc_set)) {
-	FD_CLR(I3_socket, &in_set);
-	FD_CLR(I3_socket, &out_set);
-	log_info("%s", "Exception raised on I3 socket.");
-	I3_connection_close(TRUE);
-	return;
+    if (FD_ISSET(I3_socket, &exc_set))
+    {
+        FD_CLR(I3_socket, &in_set);
+        FD_CLR(I3_socket, &out_set);
+        log_info("%s", "Exception raised on I3 socket.");
+        I3_connection_close(TRUE);
+        return;
     }
 
-    if (FD_ISSET(I3_socket, &in_set)) {
+    if (FD_ISSET(I3_socket, &in_set))
+    {
         /* An I3 packet (or part of one) has arrived */
-        switch(I3_packet_processing_state) {
-            case I3_PACKET_STATE_NONE:
-                /* We want to grab the size first! */
-                I3_packet_cleanup();
-                ret = read(I3_socket, I3_incoming_packet_size, 4);
-                if (!ret || (ret < 0 && errno != EAGAIN && errno != EWOULDBLOCK)) {
-                    FD_CLR(I3_socket, &out_set);
-                    if (ret < 0)
-                        log_info("Read error on I3 socket.");
-                    else
-                        log_info("EOF encountered on I3 socket read.");
-                    I3_connection_close(TRUE);
-                    return;
-                }
-                if (ret < 0) { /* EAGAIN */
-                    return;
-                }
-                /* NOTE:  32-bit "int" is assumed here, C sucks, we use uint32_t to try and force it */
-                memcpy(&I3_incoming_packet_length, I3_incoming_packet_size, 4);
-                I3_incoming_packet_length = ntohl(I3_incoming_packet_length);
-                I3_packet_processing_state = I3_PACKET_STATE_GOT_SIZE;
-                /* break; */
-            case I3_PACKET_STATE_GOT_SIZE:
-                /* We now knwo the size we expect */
-                if( I3_incoming_packet_length <= 0 ) {
-                    /* But it's invalid? */
-                    FD_CLR(I3_socket, &out_set);
-                    log_error("Invalid packet size, reboot the sucker!");
-                    I3_connection_close(TRUE);
-                    return;
-                }
-                I3_incoming_packet = (char *)calloc(I3_incoming_packet_length + 1, sizeof(char));
-                I3_packet_processing_state = I3_PACKET_STATE_READING;
-                /* break; */
-            case I3_PACKET_STATE_READING:
-                /* OK, we have a buffer ready, try to read it! */
-                ret = read(I3_socket, I3_incoming_packet + I3_incoming_packet_read, I3_incoming_packet_length - I3_incoming_packet_read);
-                if (!ret || (ret < 0 && errno != EAGAIN && errno != EWOULDBLOCK)) {
-                    FD_CLR(I3_socket, &out_set);
-                    if (ret < 0)
-                        log_info("Read error on I3 socket.");
-                    else
-                        log_info("EOF encountered on I3 socket read.");
-                    I3_connection_close(TRUE);
-                    return;
-                }
-                if (ret < 0) { /* EAGAIN */
-                    return;
-                }
-                if (ret < (I3_incoming_packet_length - I3_incoming_packet_read)) {
-                    /* Still more to read! */
-                    I3_incoming_packet_read += ret;
-                    return;
-                }
-                I3_incoming_packet_read += ret;
-                I3_packet_processing_state = I3_PACKET_STATE_GOT_PACKET;
-                /* break; */
-            case I3_PACKET_STATE_GOT_PACKET:
-                /* Now we have a complete packet, according to the mudmode data */
-                bytes_received += (I3_incoming_packet_length + 4);
-
-                /* Incoming_packet_length is 1 larger than the string content of the packet
-                 * because it counts the NUL byte.
-                 */
-                I3_incoming_packet_strlen = strlen(I3_incoming_packet);
-                if (I3_incoming_packet_strlen == (I3_incoming_packet_length - 1)) {
-                    /* Perfect, we got the packet exactly right */
-                } else if (I3_incoming_packet_strlen >= I3_incoming_packet_length) {
-                    /* This means we didn't get our NUL byte, and the packet size
-                     * was wrong (too small).  Our only choice here is to keep
-                     * reading until we find the NUL byte.
-                     */
-                    log_error("I3 Packet size mismatch!  No NUL byte found in read!");
-                    log_error("I3_incoming_packet_length: %d", I3_incoming_packet_length);
-                    log_error("strlen of packet: %lu", I3_incoming_packet_strlen);
-                    log_error("Packet: %s", I3_incoming_packet);
-                } else {
-                    /* And this means we read too much, because the packet size
-                     * was wrong (too big).  We now have leftovers that are really
-                     * part of the NEXT packet.
-                     */
-                    log_error("I3 Packet size mismatch! Read too much!");
-                    log_error("I3_incoming_packet_length: %d", I3_incoming_packet_length);
-                    log_error("strlen of packet: %lu", I3_incoming_packet_strlen);
-                    log_error("Packet: %s", I3_incoming_packet);
-                }
-
-                if ( I3_incoming_packet[0] != '(' || 
-                     I3_incoming_packet[1] != '{' ||
-                     I3_incoming_packet[I3_incoming_packet_length - 3] != '}' ||
-                     I3_incoming_packet[I3_incoming_packet_length - 2] != ')'
-                     ) {
-                    log_error("Invalid packet data, throw it away!");
-                    log_error("I3_incoming_packet_length: %d", I3_incoming_packet_length);
-                    log_error("strlen of packet: %lu", I3_incoming_packet_strlen);
-                    log_error("Packet: %s", I3_incoming_packet);
-                    I3_packet_cleanup();
-                    return;
-                }
-                I3_packet_processing_state = I3_PACKET_STATE_PROCESSING;
-                /* break; */
-            case I3_PACKET_STATE_PROCESSING:
-                I3_handle_packet(I3_incoming_packet);
-                I3_packet_cleanup();
-                break;
-            case I3_PACKET_STATE_LEFTOVERS:
-                break;
-            case I3_PACKET_STATE_MISSING:
-                break;
-            default:
-                log_error("How did the code get here???");
+        switch (I3_packet_processing_state)
+        {
+        case I3_PACKET_STATE_NONE:
+            /* We want to grab the size first! */
+            I3_packet_cleanup();
+            ret = read(I3_socket, I3_incoming_packet_size, 4);
+            if (!ret || (ret < 0 && errno != EAGAIN && errno != EWOULDBLOCK))
+            {
                 FD_CLR(I3_socket, &out_set);
+                if (ret < 0)
+                    log_info("Read error on I3 socket.");
+                else
+                    log_info("EOF encountered on I3 socket read.");
                 I3_connection_close(TRUE);
-                break;
+                return;
+            }
+            if (ret < 0)
+            { /* EAGAIN */
+                return;
+            }
+            /* NOTE:  32-bit "int" is assumed here, C sucks, we use uint32_t to try and force it */
+            memcpy(&I3_incoming_packet_length, I3_incoming_packet_size, 4);
+            I3_incoming_packet_length = ntohl(I3_incoming_packet_length);
+            I3_packet_processing_state = I3_PACKET_STATE_GOT_SIZE;
+            /* break; */
+        case I3_PACKET_STATE_GOT_SIZE:
+            /* We now knwo the size we expect */
+            if (I3_incoming_packet_length <= 0)
+            {
+                /* But it's invalid? */
+                FD_CLR(I3_socket, &out_set);
+                log_error("Invalid packet size, reboot the sucker!");
+                I3_connection_close(TRUE);
+                return;
+            }
+            I3_incoming_packet = (char *)calloc(I3_incoming_packet_length + 1, sizeof(char));
+            I3_packet_processing_state = I3_PACKET_STATE_READING;
+            /* break; */
+        case I3_PACKET_STATE_READING:
+            /* OK, we have a buffer ready, try to read it! */
+            ret = read(I3_socket, I3_incoming_packet + I3_incoming_packet_read,
+                       I3_incoming_packet_length - I3_incoming_packet_read);
+            if (!ret || (ret < 0 && errno != EAGAIN && errno != EWOULDBLOCK))
+            {
+                FD_CLR(I3_socket, &out_set);
+                if (ret < 0)
+                    log_info("Read error on I3 socket.");
+                else
+                    log_info("EOF encountered on I3 socket read.");
+                I3_connection_close(TRUE);
+                return;
+            }
+            if (ret < 0)
+            { /* EAGAIN */
+                return;
+            }
+            if (ret < (I3_incoming_packet_length - I3_incoming_packet_read))
+            {
+                /* Still more to read! */
+                I3_incoming_packet_read += ret;
+                return;
+            }
+            I3_incoming_packet_read += ret;
+            I3_packet_processing_state = I3_PACKET_STATE_GOT_PACKET;
+            /* break; */
+        case I3_PACKET_STATE_GOT_PACKET:
+            /* Now we have a complete packet, according to the mudmode data */
+            bytes_received += (I3_incoming_packet_length + 4);
+
+            /* Incoming_packet_length is 1 larger than the string content of the packet
+             * because it counts the NUL byte.
+             */
+            I3_incoming_packet_strlen = strlen(I3_incoming_packet);
+            if (I3_incoming_packet_strlen == (I3_incoming_packet_length - 1))
+            {
+                /* Perfect, we got the packet exactly right */
+            }
+            else if (I3_incoming_packet_strlen >= I3_incoming_packet_length)
+            {
+                /* This means we didn't get our NUL byte, and the packet size
+                 * was wrong (too small).  Our only choice here is to keep
+                 * reading until we find the NUL byte.
+                 */
+                log_error("I3 Packet size mismatch!  No NUL byte found in read!");
+                log_error("I3_incoming_packet_length: %d", I3_incoming_packet_length);
+                log_error("strlen of packet: %lu", I3_incoming_packet_strlen);
+                log_error("Packet: %s", I3_incoming_packet);
+            }
+            else
+            {
+                /* And this means we read too much, because the packet size
+                 * was wrong (too big).  We now have leftovers that are really
+                 * part of the NEXT packet.
+                 */
+                log_error("I3 Packet size mismatch! Read too much!");
+                log_error("I3_incoming_packet_length: %d", I3_incoming_packet_length);
+                log_error("strlen of packet: %lu", I3_incoming_packet_strlen);
+                log_error("Packet: %s", I3_incoming_packet);
+            }
+
+            if (I3_incoming_packet[0] != '(' || I3_incoming_packet[1] != '{' ||
+                I3_incoming_packet[I3_incoming_packet_length - 3] != '}' ||
+                I3_incoming_packet[I3_incoming_packet_length - 2] != ')')
+            {
+                log_error("Invalid packet data, throw it away!");
+                log_error("I3_incoming_packet_length: %d", I3_incoming_packet_length);
+                log_error("strlen of packet: %lu", I3_incoming_packet_strlen);
+                log_error("Packet: %s", I3_incoming_packet);
+                I3_packet_cleanup();
+                return;
+            }
+            I3_packet_processing_state = I3_PACKET_STATE_PROCESSING;
+            /* break; */
+        case I3_PACKET_STATE_PROCESSING:
+            I3_handle_packet(I3_incoming_packet);
+            I3_packet_cleanup();
+            break;
+        case I3_PACKET_STATE_LEFTOVERS:
+            break;
+        case I3_PACKET_STATE_MISSING:
+            break;
+        default:
+            log_error("How did the code get here???");
+            FD_CLR(I3_socket, &out_set);
+            I3_connection_close(TRUE);
+            break;
         }
     }
     return;
@@ -17233,15 +17600,18 @@ void i3_loop(void)
 /* This is very possibly going to be spammy as hell */
 I3_CMD(I3_show_ucache_contents)
 {
-    UCACHE_DATA                            *user;
-    int                                     users = 0;
+    UCACHE_DATA *user;
+    int users = 0;
 
     i3page_printf(ch, "%%^WHITE%%^Cached user information%%^RESET%%^\r\n");
-    i3page_printf(ch, "%%^WHITE%%^User                          | Gender ( 0 = Male, 1 = Female, 2 = Neuter )%%^RESET%%^\r\n");
-    i3page_printf(ch, "%%^WHITE%%^---------------------------------------------------------------------------%%^RESET%%^\r\n");
-    for (user = first_ucache; user; user = user->next) {
-	i3page_printf(ch, "%%^WHITE%%^%-30s %d%%^RESET%%^\r\n", user->name, user->gender);
-	users++;
+    i3page_printf(
+        ch, "%%^WHITE%%^User                          | Gender ( 0 = Male, 1 = Female, 2 = Neuter )%%^RESET%%^\r\n");
+    i3page_printf(
+        ch, "%%^WHITE%%^---------------------------------------------------------------------------%%^RESET%%^\r\n");
+    for (user = first_ucache; user; user = user->next)
+    {
+        i3page_printf(ch, "%%^WHITE%%^%-30s %d%%^RESET%%^\r\n", user->name, user->gender);
+        users++;
     }
     i3page_printf(ch, "%%^WHITE%%^%d users being cached.%%^RESET%%^\r\n", users);
     return;
@@ -17249,57 +17619,71 @@ I3_CMD(I3_show_ucache_contents)
 
 I3_CMD(I3_beep)
 {
-    char                                   *ps;
-    char                                    mud[MAX_INPUT_LENGTH];
-    I3_MUD                                 *pmud;
+    char *ps;
+    char mud[MAX_INPUT_LENGTH];
+    I3_MUD *pmud;
 
-    if (I3IS_SET(I3FLAG(ch), I3_DENYBEEP)) {
-	i3_printf(ch, "You are not allowed to use i3beeps.\r\n");
-	return;
+    if (I3IS_SET(I3FLAG(ch), I3_DENYBEEP))
+    {
+        i3_printf(ch, "You are not allowed to use i3beeps.\r\n");
+        return;
     }
 
-    if (!argument || argument[0] == '\0') {
-	i3_printf(ch, "%%^WHITE%%^Usage: i3beep user@mud%%^RESET%%^\r\n");
-	i3_printf(ch, "%%^WHITE%%^Usage: i3beep [on]/[off]%%^RESET%%^\r\n");
-	return;
+    if (!argument || argument[0] == '\0')
+    {
+        i3_printf(ch, "%%^WHITE%%^Usage: i3beep user@mud%%^RESET%%^\r\n");
+        i3_printf(ch, "%%^WHITE%%^Usage: i3beep [on]/[off]%%^RESET%%^\r\n");
+        return;
     }
 
-    if (!strcasecmp(argument, "on")) {
-	I3REMOVE_BIT(I3FLAG(ch), I3_BEEP);
-	i3_printf(ch, "You now send and receive i3beeps.\r\n");
-	return;
+    if (!strcasecmp(argument, "on"))
+    {
+        I3REMOVE_BIT(I3FLAG(ch), I3_BEEP);
+        i3_printf(ch, "You now send and receive i3beeps.\r\n");
+        return;
     }
 
-    if (!strcasecmp(argument, "off")) {
-	I3SET_BIT(I3FLAG(ch), I3_BEEP);
-	i3_printf(ch, "You no longer send and receive i3beeps.\r\n");
-	return;
+    if (!strcasecmp(argument, "off"))
+    {
+        I3SET_BIT(I3FLAG(ch), I3_BEEP);
+        i3_printf(ch, "You no longer send and receive i3beeps.\r\n");
+        return;
     }
 
-    if (I3IS_SET(I3FLAG(ch), I3_BEEP)) {
-	i3_printf(ch, "Your i3beeps are turned off.\r\n");
-	return;
+    if (I3IS_SET(I3FLAG(ch), I3_BEEP))
+    {
+        i3_printf(ch, "Your i3beeps are turned off.\r\n");
+        return;
     }
 
-    if (I3ISINVIS(ch)) {
-	i3_printf(ch, "You are invisible.\r\n");
-	return;
+    if (I3ISINVIS(ch))
+    {
+        i3_printf(ch, "You are invisible.\r\n");
+        return;
     }
 
     ps = strchr(argument, '@');
 
-    if (!argument || argument[0] == '\0' || ps == NULL) {
-	i3_printf(ch, "%%^YELLOW%%^You should specify a person@mud.%%^RESET%%^\r\n" "(use %%^WHITE%%^%%^BOLD%%^i3mudlist%%^YELLOW%%^ to get an overview of the muds available)%%^RESET%%^\r\n");
-	return;
+    if (!argument || argument[0] == '\0' || ps == NULL)
+    {
+        i3_printf(
+            ch,
+            "%%^YELLOW%%^You should specify a person@mud.%%^RESET%%^\r\n"
+            "(use %%^WHITE%%^%%^BOLD%%^i3mudlist%%^YELLOW%%^ to get an overview of the muds available)%%^RESET%%^\r\n");
+        return;
     }
 
     ps[0] = '\0';
     ps++;
     strlcpy(mud, ps, MAX_INPUT_LENGTH);
 
-    if (!(pmud = find_I3_mud_by_name(mud))) {
-	i3_printf(ch, "%%^YELLOW%%^No such mud known.%%^RESET%%^\r\n" "(use %%^WHITE%%^%%^BOLD%%^i3mudlist%%^YELLOW%%^ to get an overview of the muds available)%%^RESET%%^\r\n");
-	return;
+    if (!(pmud = find_I3_mud_by_name(mud)))
+    {
+        i3_printf(
+            ch,
+            "%%^YELLOW%%^No such mud known.%%^RESET%%^\r\n"
+            "(use %%^WHITE%%^%%^BOLD%%^i3mudlist%%^YELLOW%%^ to get an overview of the muds available)%%^RESET%%^\r\n");
+        return;
     }
 
 #if 0
@@ -17309,14 +17693,14 @@ I3_CMD(I3_beep)
     }
 #endif
 
-    if (pmud->status >= 0) {
-	i3_printf(ch, "%s is marked as down.\r\n", pmud->name);
-	return;
+    if (pmud->status >= 0)
+    {
+        i3_printf(ch, "%s is marked as down.\r\n", pmud->name);
+        return;
     }
 
     if (pmud->beep == 0)
-	i3_printf(ch, "%s does not support the 'beep' command. Sending anyway.\r\n",
-		  pmud->name);
+        i3_printf(ch, "%s does not support the 'beep' command. Sending anyway.\r\n", pmud->name);
 
     I3_send_beep(ch, argument, pmud);
     i3_printf(ch, "%%^YELLOW%%^You i3beep %s@%s.%%^RESET%%^\r\n", i3capitalize(argument), pmud->name);
@@ -17324,69 +17708,83 @@ I3_CMD(I3_beep)
 
 I3_CMD(I3_tell)
 {
-    char                                    to[MAX_INPUT_LENGTH],
-                                           *ps;
-    char                                    mud[MAX_INPUT_LENGTH];
-    I3_MUD                                 *pmud;
-    struct tm                              *local = localtime(&i3_time);
+    char to[MAX_INPUT_LENGTH], *ps;
+    char mud[MAX_INPUT_LENGTH];
+    I3_MUD *pmud;
+    struct tm *local = localtime(&i3_time);
 
-    if (I3IS_SET(I3FLAG(ch), I3_DENYTELL)) {
-	i3_printf(ch, "You are not allowed to use i3tells.\r\n");
-	return;
+    if (I3IS_SET(I3FLAG(ch), I3_DENYTELL))
+    {
+        i3_printf(ch, "You are not allowed to use i3tells.\r\n");
+        return;
     }
 
-    if (!argument || argument[0] == '\0') {
-	int                                     x;
+    if (!argument || argument[0] == '\0')
+    {
+        int x;
 
-	i3_printf(ch, "%%^WHITE%%^Usage: i3tell <user@mud> <message>%%^RESET%%^\r\n");
-	i3_printf(ch, "%%^WHITE%%^Usage: i3tell [on]/[off]%%^RESET%%^\r\n\r\n");
-	i3_printf(ch, "%%^CYAN%%^The last %d things you were told over I3:%%^RESET%%^\r\n", MAX_I3TELLHISTORY);
+        i3_printf(ch, "%%^WHITE%%^Usage: i3tell <user@mud> <message>%%^RESET%%^\r\n");
+        i3_printf(ch, "%%^WHITE%%^Usage: i3tell [on]/[off]%%^RESET%%^\r\n\r\n");
+        i3_printf(ch, "%%^CYAN%%^The last %d things you were told over I3:%%^RESET%%^\r\n", MAX_I3TELLHISTORY);
 
-	for (x = 0; x < MAX_I3TELLHISTORY; x++) {
-	    if (I3TELLHISTORY(ch, x) == NULL)
-		break;
-	    i3_printf(ch, "%s\r\n", I3TELLHISTORY(ch, x));
-	}
-	return;
+        for (x = 0; x < MAX_I3TELLHISTORY; x++)
+        {
+            if (I3TELLHISTORY(ch, x) == NULL)
+                break;
+            i3_printf(ch, "%s\r\n", I3TELLHISTORY(ch, x));
+        }
+        return;
     }
 
-    if (!strcasecmp(argument, "on")) {
-	I3REMOVE_BIT(I3FLAG(ch), I3_TELL);
-	i3_printf(ch, "You now send and receive i3tells.\r\n");
-	return;
+    if (!strcasecmp(argument, "on"))
+    {
+        I3REMOVE_BIT(I3FLAG(ch), I3_TELL);
+        i3_printf(ch, "You now send and receive i3tells.\r\n");
+        return;
     }
 
-    if (!strcasecmp(argument, "off")) {
-	I3SET_BIT(I3FLAG(ch), I3_TELL);
-	i3_printf(ch, "You no longer send and receive i3tells.\r\n");
-	return;
+    if (!strcasecmp(argument, "off"))
+    {
+        I3SET_BIT(I3FLAG(ch), I3_TELL);
+        i3_printf(ch, "You no longer send and receive i3tells.\r\n");
+        return;
     }
 
-    if (I3IS_SET(I3FLAG(ch), I3_TELL)) {
-	i3_printf(ch, "Your i3tells are turned off.\r\n");
-	return;
+    if (I3IS_SET(I3FLAG(ch), I3_TELL))
+    {
+        i3_printf(ch, "Your i3tells are turned off.\r\n");
+        return;
     }
 
-    if (I3ISINVIS(ch)) {
-	i3_printf(ch, "You are invisible.\r\n");
-	return;
+    if (I3ISINVIS(ch))
+    {
+        i3_printf(ch, "You are invisible.\r\n");
+        return;
     }
 
     argument = i3one_argument(argument, to);
     ps = strchr(to, '@');
 
-    if (to[0] == '\0' || argument[0] == '\0' || ps == NULL) {
-	i3_printf(ch, "%%^YELLOW%%^You should specify a person and a mud.%%^RESET%%^\r\n" "(use %%^WHITE%%^%%^BOLD%%^i3mudlist%%^YELLOW%%^ to get an overview of the muds available)%%^RESET%%^\r\n");
-	return;
+    if (to[0] == '\0' || argument[0] == '\0' || ps == NULL)
+    {
+        i3_printf(
+            ch,
+            "%%^YELLOW%%^You should specify a person and a mud.%%^RESET%%^\r\n"
+            "(use %%^WHITE%%^%%^BOLD%%^i3mudlist%%^YELLOW%%^ to get an overview of the muds available)%%^RESET%%^\r\n");
+        return;
     }
 
     ps[0] = '\0';
     ps++;
     strlcpy(mud, ps, MAX_INPUT_LENGTH);
 
-    if (!(pmud = find_I3_mud_by_name(mud))) {
-	i3_printf(ch, "%%^YELLOW%%^No such mud known.%%^RESET%%^\r\n" "(use %%^WHITE%%^%%^BOLD%%^i3mudlist%%^YELLOW%%^ to get an overview of the muds available)%%^RESET%%^\r\n");
-	return;
+    if (!(pmud = find_I3_mud_by_name(mud)))
+    {
+        i3_printf(
+            ch,
+            "%%^YELLOW%%^No such mud known.%%^RESET%%^\r\n"
+            "(use %%^WHITE%%^%%^BOLD%%^i3mudlist%%^YELLOW%%^ to get an overview of the muds available)%%^RESET%%^\r\n");
+        return;
     }
 
 #if 0
@@ -17396,52 +17794,61 @@ I3_CMD(I3_tell)
     }
 #endif
 
-    if (pmud->status >= 0) {
-	i3_printf(ch, "%s is marked as down.\r\n", pmud->name);
-	return;
+    if (pmud->status >= 0)
+    {
+        i3_printf(ch, "%s is marked as down.\r\n", pmud->name);
+        return;
     }
 
-    if (pmud->tell == 0) {
-	i3_printf(ch, "%s does not support the 'tell' command.\r\n", pmud->name);
-	return;
+    if (pmud->tell == 0)
+    {
+        i3_printf(ch, "%s does not support the 'tell' command.\r\n", pmud->name);
+        return;
     }
 
     I3_send_tell(ch, to, pmud->name, argument);
-    snprintf(mud, MAX_INPUT_LENGTH, "%s %%^YELLOW%%^You i3tell %%^CYAN%%^%%^BOLD%%^%s@%s%%^RESET%%^%%^YELLOW%%^: %%^RESET%%^%s", color_time(local), i3capitalize(to), pmud->name, argument);
+    snprintf(mud, MAX_INPUT_LENGTH,
+             "%s %%^YELLOW%%^You i3tell %%^CYAN%%^%%^BOLD%%^%s@%s%%^RESET%%^%%^YELLOW%%^: %%^RESET%%^%s",
+             color_time(local), i3capitalize(to), pmud->name, argument);
     i3_printf(ch, "%s%%^RESET%%^\r\n", mud);
     i3_update_tellhistory(ch, mud);
 }
 
 I3_CMD(I3_reply)
 {
-    char                                     buf[MAX_STRING_LENGTH];
-    char                                     to[MAX_INPUT_LENGTH];
-    char                                     mud[MAX_INPUT_LENGTH];
-    char                                    *ps;
-    I3_MUD                                  *pmud;
-    struct tm                               *local = localtime(&i3_time);
+    char buf[MAX_STRING_LENGTH];
+    char to[MAX_INPUT_LENGTH];
+    char mud[MAX_INPUT_LENGTH];
+    char *ps;
+    I3_MUD *pmud;
+    struct tm *local = localtime(&i3_time);
 
-    if (I3IS_SET(I3FLAG(ch), I3_DENYTELL)) {
-	i3_printf(ch, "You are not allowed to use i3tells.\r\n");
-	return;
+    if (I3IS_SET(I3FLAG(ch), I3_DENYTELL))
+    {
+        i3_printf(ch, "You are not allowed to use i3tells.\r\n");
+        return;
     }
 
-    if (!argument || argument[0] == '\0') {
-	i3_printf(ch, "Usage: i3reply <message>\r\n");
-	return;
+    if (!argument || argument[0] == '\0')
+    {
+        i3_printf(ch, "Usage: i3reply <message>\r\n");
+        return;
     }
 
-    if (I3IS_SET(I3FLAG(ch), I3_TELL)) {
-	i3_printf(ch, "Your i3tells are turned off.\r\n");
-	return;
+    if (I3IS_SET(I3FLAG(ch), I3_TELL))
+    {
+        i3_printf(ch, "Your i3tells are turned off.\r\n");
+        return;
     }
 
-    if (I3ISINVIS(ch)) {
-	i3_printf(ch, "You are invisible.\r\n");
-	return;
+    if (I3ISINVIS(ch))
+    {
+        i3_printf(ch, "You are invisible.\r\n");
+        return;
     }
 
-    if (!i3_str_prefix("set ", argument)) {
+    if (!i3_str_prefix("set ", argument))
+    {
         argument += 4;
         argument = i3one_argument(argument, to);
 
@@ -17449,8 +17856,11 @@ I3_CMD(I3_reply)
         i3_printf(ch, "%%^GREEN%%^DEBUG: to == %s\r\n", to);
 
         ps = strchr(to, '@');
-        if (to[0] == '\0' || ps == NULL) {
-            i3_printf(ch, "%%^YELLOW%%^You should specify a person and a mud.%%^RESET%%^\r\n" "(use %%^WHITE%%^%%^BOLD%%^i3mudlist%%^YELLOW%%^ to get an overview of the muds available)%%^RESET%%^\r\n");
+        if (to[0] == '\0' || ps == NULL)
+        {
+            i3_printf(ch, "%%^YELLOW%%^You should specify a person and a mud.%%^RESET%%^\r\n"
+                          "(use %%^WHITE%%^%%^BOLD%%^i3mudlist%%^YELLOW%%^ to get an overview of the muds "
+                          "available)%%^RESET%%^\r\n");
             return;
         }
         ps[0] = '\0';
@@ -17460,8 +17870,11 @@ I3_CMD(I3_reply)
         i3_printf(ch, "%%^GREEN%%^DEBUG: to == %s\r\n", to);
         i3_printf(ch, "%%^GREEN%%^DEBUG: mud == %s\r\n", mud);
 
-        if (!(pmud = find_I3_mud_by_name(mud))) {
-            i3_printf(ch, "%%^YELLOW%%^No such mud known.%%^RESET%%^\r\n" "(use %%^WHITE%%^%%^BOLD%%^i3mudlist%%^YELLOW%%^ to get an overview of the muds available)%%^RESET%%^\r\n");
+        if (!(pmud = find_I3_mud_by_name(mud)))
+        {
+            i3_printf(ch, "%%^YELLOW%%^No such mud known.%%^RESET%%^\r\n"
+                          "(use %%^WHITE%%^%%^BOLD%%^i3mudlist%%^YELLOW%%^ to get an overview of the muds "
+                          "available)%%^RESET%%^\r\n");
             return;
         }
 
@@ -17472,12 +17885,14 @@ I3_CMD(I3_reply)
         }
 #endif
 
-        if (pmud->status >= 0) {
+        if (pmud->status >= 0)
+        {
             i3_printf(ch, "%s is marked as down.\r\n", pmud->name);
             return;
         }
 
-        if (pmud->tell == 0) {
+        if (pmud->tell == 0)
+        {
             i3_printf(ch, "%s does not support the 'tell' command.\r\n", pmud->name);
             return;
         }
@@ -17491,18 +17906,22 @@ I3_CMD(I3_reply)
         return;
     }
 
-    if (!I3REPLYNAME(ch) || !I3REPLYMUD(ch)) {
-	i3_printf(ch, "You have not yet received an i3tell?!?\r\n");
-	return;
+    if (!I3REPLYNAME(ch) || !I3REPLYMUD(ch))
+    {
+        i3_printf(ch, "You have not yet received an i3tell?!?\r\n");
+        return;
     }
 
-    if (!strcasecmp(argument, "show")) {
-	i3_printf(ch, "The last i3tell you received was from %s@%s.\r\n", I3REPLYNAME(ch), I3REPLYMUD(ch));
+    if (!strcasecmp(argument, "show"))
+    {
+        i3_printf(ch, "The last i3tell you received was from %s@%s.\r\n", I3REPLYNAME(ch), I3REPLYMUD(ch));
         return;
     }
 
     I3_send_tell(ch, I3REPLYNAME(ch), I3REPLYMUD(ch), argument);
-    snprintf(buf, MAX_STRING_LENGTH, "%s %%^YELLOW%%^You i3reply to %%^CYAN%%^%%^BOLD%%^%s@%s%%^RESET%%^%%^YELLOW%%^: %%^RESET%%^%s", color_time(local), i3capitalize(I3REPLYNAME(ch)), I3REPLYMUD(ch), argument);
+    snprintf(buf, MAX_STRING_LENGTH,
+             "%s %%^YELLOW%%^You i3reply to %%^CYAN%%^%%^BOLD%%^%s@%s%%^RESET%%^%%^YELLOW%%^: %%^RESET%%^%s",
+             color_time(local), i3capitalize(I3REPLYNAME(ch)), I3REPLYMUD(ch), argument);
     i3_printf(ch, "%s%%^RESET%%^\r\n", buf);
     i3_update_tellhistory(ch, buf);
 
@@ -17515,55 +17934,63 @@ I3_CMD(I3_reply)
 
 I3_CMD(I3_mudlisten)
 {
-    I3_CHANNEL                             *channel;
-    char                                    arg[MAX_INPUT_LENGTH];
+    I3_CHANNEL *channel;
+    char arg[MAX_INPUT_LENGTH];
 
-    if (!argument || argument[0] == '\0') {
-	i3_printf(ch, "%%^WHITE%%^Usage: i3mudlisten [all/none]%%^RESET%%^\r\n");
-	i3_printf(ch, "%%^WHITE%%^Usage: i3mudlisten <localchannel> [on/off]%%^RESET%%^\r\n");
-	return;
+    if (!argument || argument[0] == '\0')
+    {
+        i3_printf(ch, "%%^WHITE%%^Usage: i3mudlisten [all/none]%%^RESET%%^\r\n");
+        i3_printf(ch, "%%^WHITE%%^Usage: i3mudlisten <localchannel> [on/off]%%^RESET%%^\r\n");
+        return;
     }
 
-    if (!strcasecmp(argument, "all")) {
-	for (channel = first_I3chan; channel; channel = channel->next) {
-	    //if (!channel->local_name || channel->local_name[0] == '\0')
-	//	continue;
+    if (!strcasecmp(argument, "all"))
+    {
+        for (channel = first_I3chan; channel; channel = channel->next)
+        {
+            // if (!channel->local_name || channel->local_name[0] == '\0')
+            //	continue;
 
-	    i3_printf(ch, "Subscribing to %s.\r\n", channel->I3_name);
-	    I3_send_channel_listen(channel, TRUE);
-	}
-	i3_printf(ch, "%%^YELLOW%%^The mud is now subscribed to all available local I3 channels.%%^RESET%%^\r\n");
-	return;
+            i3_printf(ch, "Subscribing to %s.\r\n", channel->I3_name);
+            I3_send_channel_listen(channel, TRUE);
+        }
+        i3_printf(ch, "%%^YELLOW%%^The mud is now subscribed to all available local I3 channels.%%^RESET%%^\r\n");
+        return;
     }
 
-    if (!strcasecmp(argument, "none")) {
-	for (channel = first_I3chan; channel; channel = channel->next) {
-	    //if (!channel->local_name || channel->local_name[0] == '\0')
-	//	continue;
+    if (!strcasecmp(argument, "none"))
+    {
+        for (channel = first_I3chan; channel; channel = channel->next)
+        {
+            // if (!channel->local_name || channel->local_name[0] == '\0')
+            //	continue;
 
-	    i3_printf(ch, "Unsubscribing from %s.\r\n", channel->I3_name);
-	    I3_send_channel_listen(channel, FALSE);
-	}
-	i3_printf(ch, "%%^YELLOW%%^The mud is now unsubscribed from all available local I3 channels.%%^RESET%%^\r\n");
-	return;
+            i3_printf(ch, "Unsubscribing from %s.\r\n", channel->I3_name);
+            I3_send_channel_listen(channel, FALSE);
+        }
+        i3_printf(ch, "%%^YELLOW%%^The mud is now unsubscribed from all available local I3 channels.%%^RESET%%^\r\n");
+        return;
     }
 
     argument = i3one_argument(argument, arg);
-    if (!(channel = find_I3_channel_by_localname(arg))) {
-	i3_printf(ch, "No such channel configured locally.\r\n");
-	return;
+    if (!(channel = find_I3_channel_by_localname(arg)))
+    {
+        i3_printf(ch, "No such channel configured locally.\r\n");
+        return;
     }
 
-    if (!strcasecmp(argument, "on")) {
-	i3_printf(ch, "Turning %s channel on.\r\n", channel->local_name);
-	I3_send_channel_listen(channel, TRUE);
-	return;
+    if (!strcasecmp(argument, "on"))
+    {
+        i3_printf(ch, "Turning %s channel on.\r\n", channel->local_name);
+        I3_send_channel_listen(channel, TRUE);
+        return;
     }
 
-    if (!strcasecmp(argument, "off")) {
-	i3_printf(ch, "Turning %s channel off.\r\n", channel->local_name);
-	I3_send_channel_listen(channel, FALSE);
-	return;
+    if (!strcasecmp(argument, "off"))
+    {
+        i3_printf(ch, "Turning %s channel off.\r\n", channel->local_name);
+        I3_send_channel_listen(channel, FALSE);
+        return;
     }
     I3_mudlisten(ch, "");
     return;
@@ -17571,60 +17998,64 @@ I3_CMD(I3_mudlisten)
 
 I3_CMD(I3_mudlist)
 {
-    I3_MUD                                 *mud;
-    char                                    filter[MAX_INPUT_LENGTH];
-    int                                     mudcount = 0;
-    bool                                    all = FALSE;
+    I3_MUD *mud;
+    char filter[MAX_INPUT_LENGTH];
+    int mudcount = 0;
+    bool all = FALSE;
 
     argument = i3one_argument(argument, filter);
 
-    if (!strcasecmp(filter, "all")) {
-	all = TRUE;
-	argument = i3one_argument(argument, filter);
+    if (!strcasecmp(filter, "all"))
+    {
+        all = TRUE;
+        argument = i3one_argument(argument, filter);
     }
 
-    if (first_mud == NULL) {
-	i3_printf(ch, "There are no muds to list!?\r\n");
-	return;
+    if (first_mud == NULL)
+    {
+        i3_printf(ch, "There are no muds to list!?\r\n");
+        return;
     }
 
     i3page_printf(ch, "%%^WHITE%%^%%^BOLD%%^%-30s%-10.10s%-25.25s%-15.15s %s%%^RESET%%^\r\n", "Name", "Type", "Mudlib",
-		  "Address", "Port");
-    for (mud = first_mud; mud; mud = mud->next) {
-	if (mud == NULL) {
-	    log_error("%s", "I3_mudlist: NULL mud found in listing!");
-	    continue;
-	}
+                  "Address", "Port");
+    for (mud = first_mud; mud; mud = mud->next)
+    {
+        if (mud == NULL)
+        {
+            log_error("%s", "I3_mudlist: NULL mud found in listing!");
+            continue;
+        }
 
-	if (mud->name == NULL) {
-	    log_error("%s", "I3_mudlist: NULL mud name found in listing!");
-	    continue;
-	}
+        if (mud->name == NULL)
+        {
+            log_error("%s", "I3_mudlist: NULL mud name found in listing!");
+            continue;
+        }
 
-	if (filter[0] && i3_str_prefix(filter, mud->name) &&
-	    (mud->mud_type && i3_str_prefix(filter, mud->mud_type)) && 
+        if (filter[0] && i3_str_prefix(filter, mud->name) && (mud->mud_type && i3_str_prefix(filter, mud->mud_type)) &&
             (mud->mudlib && i3_str_prefix(filter, mud->mudlib)))
-	    continue;
+            continue;
 
-	if (!all && mud->status == 0)
-	    continue;
+        if (!all && mud->status == 0)
+            continue;
 
-	mudcount++;
+        mudcount++;
 
-	switch (mud->status) {
-	    case -1:
-		i3page_printf(ch, "%%^CYAN%%^%-30s%-10.10s%-25.25s%-15.15s %d%%^RESET%%^\r\n",
-			      mud->name, mud->mud_type, mud->mudlib, mud->ipaddress,
-			      mud->player_port);
-		break;
-	    case 0:
-		i3page_printf(ch, "%%^RED%%^%%^BOLD%%^%-26s(down)%%^RESET%%^\r\n", mud->name);
-		break;
-	    default:
-		i3page_printf(ch, "%%^YELLOW%%^%-26s(rebooting, back in %d seconds)%%^RESET%%^\r\n", mud->name,
-			      mud->status);
-		break;
-	}
+        switch (mud->status)
+        {
+        case -1:
+            i3page_printf(ch, "%%^CYAN%%^%-30s%-10.10s%-25.25s%-15.15s %d%%^RESET%%^\r\n", mud->name, mud->mud_type,
+                          mud->mudlib, mud->ipaddress, mud->player_port);
+            break;
+        case 0:
+            i3page_printf(ch, "%%^RED%%^%%^BOLD%%^%-26s(down)%%^RESET%%^\r\n", mud->name);
+            break;
+        default:
+            i3page_printf(ch, "%%^YELLOW%%^%-26s(rebooting, back in %d seconds)%%^RESET%%^\r\n", mud->name,
+                          mud->status);
+            break;
+        }
     }
     i3page_printf(ch, "%%^WHITE%%^%%^BOLD%%^%d total muds listed.%%^RESET%%^\r\n", mudcount);
     return;
@@ -17632,46 +18063,51 @@ I3_CMD(I3_mudlist)
 
 I3_CMD(I3_chanlist)
 {
-    I3_CHANNEL                             *channel;
-    bool                                    all = FALSE,
-	found = FALSE;
-    char                                    filter[MAX_INPUT_LENGTH];
+    I3_CHANNEL *channel;
+    bool all = FALSE, found = FALSE;
+    char filter[MAX_INPUT_LENGTH];
 
     *filter = '\0';
     argument = i3one_argument(argument, filter);
 
-    if (!strcasecmp(filter, "all") && is_connected()) {
-	all = TRUE;
-	argument = i3one_argument(argument, filter);
-	i3page_printf(ch, "%%^CYAN%%^Showing ALL known channels.%%^RESET%%^\r\n\r\n");
+    if (!strcasecmp(filter, "all") && is_connected())
+    {
+        all = TRUE;
+        argument = i3one_argument(argument, filter);
+        i3page_printf(ch, "%%^CYAN%%^Showing ALL known channels.%%^RESET%%^\r\n\r\n");
     }
 
-    i3page_printf(ch, "%%^CYAN%%^Local name          Perm    I3 Name             Hosted at           Status%%^RESET%%^\r\n");
-    i3page_printf(ch, "%%^CYAN%%^-------------------------------------------------------------------------------%%^RESET%%^\r\n");
-    for (channel = first_I3chan; channel; channel = channel->next) {
-	found = FALSE;
+    i3page_printf(
+        ch, "%%^CYAN%%^Local name          Perm    I3 Name             Hosted at           Status%%^RESET%%^\r\n");
+    i3page_printf(
+        ch, "%%^CYAN%%^-------------------------------------------------------------------------------%%^RESET%%^\r\n");
+    for (channel = first_I3chan; channel; channel = channel->next)
+    {
+        found = FALSE;
 
-	if (!all && !channel->local_name && (filter[0] == '\0'))
-	    continue;
+        if (!all && !channel->local_name && (filter[0] == '\0'))
+            continue;
 
-	if (I3PERM(ch) < I3PERM_ADMIN && !channel->local_name)
-	    continue;
+        if (I3PERM(ch) < I3PERM_ADMIN && !channel->local_name)
+            continue;
 
-	if (I3PERM(ch) < channel->i3perm)
-	    continue;
+        if (I3PERM(ch) < channel->i3perm)
+            continue;
 
-	if (!all && filter[0] != '\0' && i3_str_prefix(filter, channel->I3_name)
-	    && i3_str_prefix(filter, channel->host_mud))
-	    continue;
+        if (!all && filter[0] != '\0' && i3_str_prefix(filter, channel->I3_name) &&
+            i3_str_prefix(filter, channel->host_mud))
+            continue;
 
-	if (channel->local_name && I3_hasname(I3LISTEN(ch), channel->local_name))
-	    found = TRUE;
+        if (channel->local_name && I3_hasname(I3LISTEN(ch), channel->local_name))
+            found = TRUE;
 
-	i3page_printf(ch, "%%^CYAN%%^%%^BOLD%%^%c %%^WHITE%%^%%^BOLD%%^%-18s%%^YELLOW%%^%-8s%%^BLUE%%^%%^BOLD%%^%-20s%%^MAGENTA%%^%%^BOLD%%^%-20s%-8s%%^RESET%%^\r\n",
-		      found ? '*' : ' ',
-		      channel->local_name ? channel->local_name : "Not configured",
-		      perm_names[channel->i3perm], channel->I3_name, channel->host_mud,
-		      channel->status == 0 ? "%^GREEN%^%^BOLD%^Public" : "%^RED%^%^BOLD%^Private");
+        i3page_printf(ch,
+                      "%%^CYAN%%^%%^BOLD%%^%c "
+                      "%%^WHITE%%^%%^BOLD%%^%-18s%%^YELLOW%%^%-8s%%^BLUE%%^%%^BOLD%%^%-20s%%^MAGENTA%%^%%^BOLD%%^%-20s%"
+                      "-8s%%^RESET%%^\r\n",
+                      found ? '*' : ' ', channel->local_name ? channel->local_name : "Not configured",
+                      perm_names[channel->i3perm], channel->I3_name, channel->host_mud,
+                      channel->status == 0 ? "%^GREEN%^%^BOLD%^Public" : "%^RED%^%^BOLD%^Private");
     }
     i3page_printf(ch, "%%^CYAN%%^%%^BOLD%%^*: You are listening to these channels.%%^RESET%%^\r\n");
     return;
@@ -17679,148 +18115,166 @@ I3_CMD(I3_chanlist)
 
 I3_CMD(I3_setup_channel)
 {
-    CHAR_DATA                              *vch;
-    DESCRIPTOR_DATA                        *d;
-    char                                    localname[MAX_INPUT_LENGTH],
-                                            I3_name[MAX_INPUT_LENGTH];
-    I3_CHANNEL                             *channel,
-                                           *channel2;
-    int                                     permvalue = I3PERM_MORT;
+    CHAR_DATA *vch;
+    DESCRIPTOR_DATA *d;
+    char localname[MAX_INPUT_LENGTH], I3_name[MAX_INPUT_LENGTH];
+    I3_CHANNEL *channel, *channel2;
+    int permvalue = I3PERM_MORT;
 
-    if (!argument || argument[0] == '\0') {
-	i3_printf(ch, "Usage: i3setchan <i3channelname> <localname> [permission]\r\n");
-	return;
+    if (!argument || argument[0] == '\0')
+    {
+        i3_printf(ch, "Usage: i3setchan <i3channelname> <localname> [permission]\r\n");
+        return;
     }
 
     argument = i3one_argument(argument, I3_name);
     argument = i3one_argument(argument, localname);
 
-    if (!(channel = find_I3_channel_by_name(I3_name))) {
-	i3_printf(ch, "%%^YELLOW%%^Unknown channel%%^RESET%%^\r\n" "(use %%^WHITE%%^%%^BOLD%%^i3chanlist%%^YELLOW%%^ to get an overview of the channels available)%%^RESET%%^\r\n");
-	return;
+    if (!(channel = find_I3_channel_by_name(I3_name)))
+    {
+        i3_printf(ch, "%%^YELLOW%%^Unknown channel%%^RESET%%^\r\n"
+                      "(use %%^WHITE%%^%%^BOLD%%^i3chanlist%%^YELLOW%%^ to get an overview of the channels "
+                      "available)%%^RESET%%^\r\n");
+        return;
     }
 
-    if (localname[0] == '\0') {
-	if (!channel->local_name) {
-	    i3_printf(ch, "Channel %s@%s isn't configured.%%^RESET%%^\r\n", channel->I3_name,
-		      channel->host_mud);
-	    return;
-	}
+    if (localname[0] == '\0')
+    {
+        if (!channel->local_name)
+        {
+            i3_printf(ch, "Channel %s@%s isn't configured.%%^RESET%%^\r\n", channel->I3_name, channel->host_mud);
+            return;
+        }
 
-	if (channel->i3perm > I3PERM(ch)) {
-	    i3_printf(ch, "You do not have sufficient permission to remove the %s channel.\r\n",
-		      channel->local_name);
-	    return;
-	}
+        if (channel->i3perm > I3PERM(ch))
+        {
+            i3_printf(ch, "You do not have sufficient permission to remove the %s channel.\r\n", channel->local_name);
+            return;
+        }
 
-	for (d = first_descriptor; d; d = d->next) {
-	    vch = d->original ? d->original : d->character;
+        for (d = first_descriptor; d; d = d->next)
+        {
+            vch = d->original ? d->original : d->character;
 
-	    if (!vch)
-		continue;
+            if (!vch)
+                continue;
 
-	    if (I3_hasname(I3LISTEN(vch), channel->local_name))
-		I3_unflagchan(&I3LISTEN(vch), channel->local_name);
-	    if (I3_hasname(I3DENY(vch), channel->local_name))
-		I3_unflagchan(&I3DENY(vch), channel->local_name);
-	}
-	log_info("setup_channel: removing %s as %s@%s", channel->local_name, channel->I3_name,
-	      channel->host_mud);
-	I3_send_channel_listen(channel, FALSE);
-	I3STRFREE(channel->local_name);
-	I3_write_channel_config();
-    } else {
-	if (channel->local_name) {
-	    i3_printf(ch, "Channel %s@%s is already known as %s.\r\n", channel->I3_name,
-		      channel->host_mud, channel->local_name);
-	    return;
-	}
-	if ((channel2 = find_I3_channel_by_localname(localname))) {
-	    i3_printf(ch, "Channel %s@%s is already known as %s.\r\n", channel2->I3_name,
-		      channel2->host_mud, channel2->local_name);
-	    return;
-	}
+            if (I3_hasname(I3LISTEN(vch), channel->local_name))
+                I3_unflagchan(&I3LISTEN(vch), channel->local_name);
+            if (I3_hasname(I3DENY(vch), channel->local_name))
+                I3_unflagchan(&I3DENY(vch), channel->local_name);
+        }
+        log_info("setup_channel: removing %s as %s@%s", channel->local_name, channel->I3_name, channel->host_mud);
+        I3_send_channel_listen(channel, FALSE);
+        I3STRFREE(channel->local_name);
+        I3_write_channel_config();
+    }
+    else
+    {
+        if (channel->local_name)
+        {
+            i3_printf(ch, "Channel %s@%s is already known as %s.\r\n", channel->I3_name, channel->host_mud,
+                      channel->local_name);
+            return;
+        }
+        if ((channel2 = find_I3_channel_by_localname(localname)))
+        {
+            i3_printf(ch, "Channel %s@%s is already known as %s.\r\n", channel2->I3_name, channel2->host_mud,
+                      channel2->local_name);
+            return;
+        }
 
-	if (argument && argument[0] != '\0') {
-	    permvalue = get_permvalue(argument);
-	    if (permvalue < 0 || permvalue > I3PERM_IMP) {
-		i3_printf(ch, "Invalid permission setting.\r\n");
-		return;
-	    }
-	    if (permvalue > I3PERM(ch)) {
-		i3_printf(ch, "You cannot assign a permission value above your own.\r\n");
-		return;
-	    }
-	}
-	channel->local_name = I3STRALLOC(localname);
-	channel->i3perm = permvalue;
-	I3STRFREE(channel->layout_m);
-	I3STRFREE(channel->layout_e);
-	channel->layout_m = I3STRALLOC("%%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^] %%^CYAN%%^%%^BOLD%%^%s@%s: %%^CYAN%%^%s");
-	channel->layout_e = I3STRALLOC("%%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^] %%^CYAN%%^%s");
-	i3_printf(ch, "%s@%s is now locally known as %s\r\n", channel->I3_name,
-		  channel->host_mud, channel->local_name);
-	log_info("setup_channel: setting up %s@%s as %s", channel->I3_name, channel->host_mud,
-	      channel->local_name);
-	I3_send_channel_listen(channel, TRUE);
-	I3_write_channel_config();
+        if (argument && argument[0] != '\0')
+        {
+            permvalue = get_permvalue(argument);
+            if (permvalue < 0 || permvalue > I3PERM_IMP)
+            {
+                i3_printf(ch, "Invalid permission setting.\r\n");
+                return;
+            }
+            if (permvalue > I3PERM(ch))
+            {
+                i3_printf(ch, "You cannot assign a permission value above your own.\r\n");
+                return;
+            }
+        }
+        channel->local_name = I3STRALLOC(localname);
+        channel->i3perm = permvalue;
+        I3STRFREE(channel->layout_m);
+        I3STRFREE(channel->layout_e);
+        channel->layout_m = I3STRALLOC(
+            "%%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^] %%^CYAN%%^%%^BOLD%%^%s@%s: %%^CYAN%%^%s");
+        channel->layout_e = I3STRALLOC("%%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^] %%^CYAN%%^%s");
+        i3_printf(ch, "%s@%s is now locally known as %s\r\n", channel->I3_name, channel->host_mud, channel->local_name);
+        log_info("setup_channel: setting up %s@%s as %s", channel->I3_name, channel->host_mud, channel->local_name);
+        I3_send_channel_listen(channel, TRUE);
+        I3_write_channel_config();
     }
 }
 
 I3_CMD(I3_edit_channel)
 {
-    char                                    localname[MAX_INPUT_LENGTH];
-    char                                    arg2[MAX_INPUT_LENGTH];
-    I3_CHANNEL                             *channel;
+    char localname[MAX_INPUT_LENGTH];
+    char arg2[MAX_INPUT_LENGTH];
+    I3_CHANNEL *channel;
 
-    if (!argument || argument[0] == '\0') {
-	i3_printf(ch, "%%^WHITE%%^Usage: i3 editchan <localname> localname <new localname>%%^RESET%%^\r\n");
-	i3_printf(ch, "%%^WHITE%%^Usage: i3 editchan <localname> perm <type>%%^RESET%%^\r\n");
-	return;
+    if (!argument || argument[0] == '\0')
+    {
+        i3_printf(ch, "%%^WHITE%%^Usage: i3 editchan <localname> localname <new localname>%%^RESET%%^\r\n");
+        i3_printf(ch, "%%^WHITE%%^Usage: i3 editchan <localname> perm <type>%%^RESET%%^\r\n");
+        return;
     }
 
     argument = i3one_argument(argument, localname);
 
-    if ((channel = find_I3_channel_by_localname(localname)) == NULL) {
-	i3_printf(ch, "%%^YELLOW%%^Unknown local channel%%^RESET%%^\r\n" "(use %%^WHITE%%^%%^BOLD%%^i3chanlist%%^YELLOW%%^ to get an overview of the channels available)%%^RESET%%^\r\n");
-	return;
+    if ((channel = find_I3_channel_by_localname(localname)) == NULL)
+    {
+        i3_printf(ch, "%%^YELLOW%%^Unknown local channel%%^RESET%%^\r\n"
+                      "(use %%^WHITE%%^%%^BOLD%%^i3chanlist%%^YELLOW%%^ to get an overview of the channels "
+                      "available)%%^RESET%%^\r\n");
+        return;
     }
 
     argument = i3one_argument(argument, arg2);
 
-    if (channel->i3perm > I3PERM(ch)) {
-	i3_printf(ch, "You do not have sufficient permissions to edit this channel.\r\n");
-	return;
+    if (channel->i3perm > I3PERM(ch))
+    {
+        i3_printf(ch, "You do not have sufficient permissions to edit this channel.\r\n");
+        return;
     }
 
-    if (!strcasecmp(arg2, "localname")) {
-	i3_printf(ch, "Local channel %s renamed to %s.\r\n", channel->local_name, argument);
-	I3STRFREE(channel->local_name);
-	channel->local_name = I3STRALLOC(argument);
-	I3_write_channel_config();
-	return;
+    if (!strcasecmp(arg2, "localname"))
+    {
+        i3_printf(ch, "Local channel %s renamed to %s.\r\n", channel->local_name, argument);
+        I3STRFREE(channel->local_name);
+        channel->local_name = I3STRALLOC(argument);
+        I3_write_channel_config();
+        return;
     }
 
-    if (!strcasecmp(arg2, "perm") || !strcasecmp(arg2, "permission")) {
-	int                                     permvalue = get_permvalue(argument);
+    if (!strcasecmp(arg2, "perm") || !strcasecmp(arg2, "permission"))
+    {
+        int permvalue = get_permvalue(argument);
 
-	if (permvalue < 0 || permvalue > I3PERM_IMP) {
-	    i3_printf(ch, "Invalid permission setting.\r\n");
-	    return;
-	}
-	if (permvalue > I3PERM(ch)) {
-	    i3_printf(ch, "You cannot set a permission higher than your own.\r\n");
-	    return;
-	}
-	if (channel->i3perm > I3PERM(ch)) {
-	    i3_printf(ch, "You cannot edit a channel above your permission level.\r\n");
-	    return;
-	}
-	channel->i3perm = permvalue;
-	i3_printf(ch, "Local channel %s permission changed to %s.\r\n", channel->local_name,
-		  argument);
-	I3_write_channel_config();
-	return;
+        if (permvalue < 0 || permvalue > I3PERM_IMP)
+        {
+            i3_printf(ch, "Invalid permission setting.\r\n");
+            return;
+        }
+        if (permvalue > I3PERM(ch))
+        {
+            i3_printf(ch, "You cannot set a permission higher than your own.\r\n");
+            return;
+        }
+        if (channel->i3perm > I3PERM(ch))
+        {
+            i3_printf(ch, "You cannot edit a channel above your permission level.\r\n");
+            return;
+        }
+        channel->i3perm = permvalue;
+        i3_printf(ch, "Local channel %s permission changed to %s.\r\n", channel->local_name, argument);
+        I3_write_channel_config();
+        return;
     }
     I3_edit_channel(ch, "");
     return;
@@ -17828,30 +18282,39 @@ I3_CMD(I3_edit_channel)
 
 I3_CMD(I3_chan_who)
 {
-    char                                    channel_name[MAX_INPUT_LENGTH];
-    I3_CHANNEL                             *channel;
-    I3_MUD                                 *mud;
+    char channel_name[MAX_INPUT_LENGTH];
+    I3_CHANNEL *channel;
+    I3_MUD *mud;
 
     argument = i3one_argument(argument, channel_name);
 
-    if (channel_name[0] == '\0' || !argument || argument[0] == '\0') {
-	i3_printf(ch, "Usage: i3chanwho <local channel> <mud>\r\n");
-	return;
+    if (channel_name[0] == '\0' || !argument || argument[0] == '\0')
+    {
+        i3_printf(ch, "Usage: i3chanwho <local channel> <mud>\r\n");
+        return;
     }
 
-    if ((channel = find_I3_channel_by_localname(channel_name)) == NULL) {
-	i3_printf(ch, "%%^YELLOW%%^Unknown channel.%%^RESET%%^\r\n" "(use %%^WHITE%%^%%^BOLD%%^i3chanlist%%^YELLOW%%^ to get an overview of the channels available)%%^RESET%%^\r\n");
-	return;
+    if ((channel = find_I3_channel_by_localname(channel_name)) == NULL)
+    {
+        i3_printf(ch, "%%^YELLOW%%^Unknown channel.%%^RESET%%^\r\n"
+                      "(use %%^WHITE%%^%%^BOLD%%^i3chanlist%%^YELLOW%%^ to get an overview of the channels "
+                      "available)%%^RESET%%^\r\n");
+        return;
     }
 
-    if (!(mud = find_I3_mud_by_name(argument))) {
-	i3_printf(ch, "%%^YELLOW%%^Unknown mud.%%^RESET%%^\r\n" "(use %%^WHITE%%^%%^BOLD%%^i3mudlist%%^YELLOW%%^ to get an overview of the muds available)%%^RESET%%^\r\n");
-	return;
+    if (!(mud = find_I3_mud_by_name(argument)))
+    {
+        i3_printf(
+            ch,
+            "%%^YELLOW%%^Unknown mud.%%^RESET%%^\r\n"
+            "(use %%^WHITE%%^%%^BOLD%%^i3mudlist%%^YELLOW%%^ to get an overview of the muds available)%%^RESET%%^\r\n");
+        return;
     }
 
-    if (mud->status >= 0) {
-	i3_printf(ch, "%s is marked as down.\r\n", mud->name);
-	return;
+    if (mud->status >= 0)
+    {
+        i3_printf(ch, "%s is marked as down.\r\n", mud->name);
+        return;
     }
 
     I3_send_chan_who(ch, channel, mud);
@@ -17859,152 +18322,181 @@ I3_CMD(I3_chan_who)
 
 I3_CMD(I3_listen_channel)
 {
-    I3_CHANNEL                             *channel;
+    I3_CHANNEL *channel;
 
-    if (!argument || argument[0] == '\0') {
-	i3_printf(ch, "%%^CYAN%%^Currently tuned into:%%^RESET%%^\r\n");
-	i3_printf(ch, "%%^WHITE%%^%%^BOLD%%^%s%%^RESET%%^\r\n",
-		  (I3LISTEN(ch) && I3LISTEN(ch)[0] != '\0') ? I3LISTEN(ch) : "None");
-	return;
+    if (!argument || argument[0] == '\0')
+    {
+        i3_printf(ch, "%%^CYAN%%^Currently tuned into:%%^RESET%%^\r\n");
+        i3_printf(ch, "%%^WHITE%%^%%^BOLD%%^%s%%^RESET%%^\r\n",
+                  (I3LISTEN(ch) && I3LISTEN(ch)[0] != '\0') ? I3LISTEN(ch) : "None");
+        return;
     }
 
-    if (!strcasecmp(argument, "all")) {
-	for (channel = first_I3chan; channel; channel = channel->next) {
-	    if (!channel->local_name || channel->local_name[0] == '\0')
-		continue;
+    if (!strcasecmp(argument, "all"))
+    {
+        for (channel = first_I3chan; channel; channel = channel->next)
+        {
+            if (!channel->local_name || channel->local_name[0] == '\0')
+                continue;
 
-	    if (I3PERM(ch) >= channel->i3perm && !I3_hasname(I3LISTEN(ch), channel->local_name))
-		I3_flagchan(&I3LISTEN(ch), channel->local_name);
-	}
-	i3_printf(ch, "%%^YELLOW%%^You are now listening to all available I3 channels.%%^RESET%%^\r\n");
-	return;
+            if (I3PERM(ch) >= channel->i3perm && !I3_hasname(I3LISTEN(ch), channel->local_name))
+                I3_flagchan(&I3LISTEN(ch), channel->local_name);
+        }
+        i3_printf(ch, "%%^YELLOW%%^You are now listening to all available I3 channels.%%^RESET%%^\r\n");
+        return;
     }
 
-    if (!strcasecmp(argument, "none")) {
-	for (channel = first_I3chan; channel; channel = channel->next) {
-	    if (!channel->local_name || channel->local_name[0] == '\0')
-		continue;
+    if (!strcasecmp(argument, "none"))
+    {
+        for (channel = first_I3chan; channel; channel = channel->next)
+        {
+            if (!channel->local_name || channel->local_name[0] == '\0')
+                continue;
 
-	    if (I3_hasname(I3LISTEN(ch), channel->local_name))
-		I3_unflagchan(&I3LISTEN(ch), channel->local_name);
-	}
-	i3_printf(ch, "%%^YELLOW%%^You no longer listen to any available I3 channels.%%^RESET%%^\r\n");
-	return;
+            if (I3_hasname(I3LISTEN(ch), channel->local_name))
+                I3_unflagchan(&I3LISTEN(ch), channel->local_name);
+        }
+        i3_printf(ch, "%%^YELLOW%%^You no longer listen to any available I3 channels.%%^RESET%%^\r\n");
+        return;
     }
 
-    if ((channel = find_I3_channel_by_localname(argument)) == NULL) {
-	i3_printf(ch, "%%^YELLOW%%^Unknown channel.%%^RESET%%^\r\n" "(use %%^WHITE%%^%%^BOLD%%^i3chanlist%%^YELLOW%%^ to get an overview of the channels available)%%^RESET%%^\r\n");
-	return;
+    if ((channel = find_I3_channel_by_localname(argument)) == NULL)
+    {
+        i3_printf(ch, "%%^YELLOW%%^Unknown channel.%%^RESET%%^\r\n"
+                      "(use %%^WHITE%%^%%^BOLD%%^i3chanlist%%^YELLOW%%^ to get an overview of the channels "
+                      "available)%%^RESET%%^\r\n");
+        return;
     }
 
-    if (I3_hasname(I3LISTEN(ch), channel->local_name)) {
-	i3_printf(ch, "You no longer listen to %s\r\n", channel->local_name);
-	I3_unflagchan(&I3LISTEN(ch), channel->local_name);
-    } else {
-	if (I3PERM(ch) < channel->i3perm) {
-	    i3_printf(ch, "Channel %s is above your permission level.\r\n",
-		      channel->local_name);
-	    return;
-	}
-	i3_printf(ch, "You now listen to %s\r\n", channel->local_name);
-	I3_flagchan(&I3LISTEN(ch), channel->local_name);
+    if (I3_hasname(I3LISTEN(ch), channel->local_name))
+    {
+        i3_printf(ch, "You no longer listen to %s\r\n", channel->local_name);
+        I3_unflagchan(&I3LISTEN(ch), channel->local_name);
+    }
+    else
+    {
+        if (I3PERM(ch) < channel->i3perm)
+        {
+            i3_printf(ch, "Channel %s is above your permission level.\r\n", channel->local_name);
+            return;
+        }
+        i3_printf(ch, "You now listen to %s\r\n", channel->local_name);
+        I3_flagchan(&I3LISTEN(ch), channel->local_name);
     }
     return;
 }
 
 I3_CMD(I3_deny_channel)
 {
-    char                                    vic_name[MAX_INPUT_LENGTH];
-    CHAR_DATA                              *victim;
-    I3_CHANNEL                             *channel;
+    char vic_name[MAX_INPUT_LENGTH];
+    CHAR_DATA *victim;
+    I3_CHANNEL *channel;
 
     argument = i3one_argument(argument, vic_name);
 
-    if (vic_name[0] == '\0' || !argument || argument[0] == '\0') {
-	i3_printf(ch, "%%^WHITE%%^Usage: i3deny <person> <local channel name>%%^RESET%%^\r\n");
-	i3_printf(ch, "%%^WHITE%%^Usage: i3deny <person> [tell/beep/finger]%%^RESET%%^\r\n");
-	return;
+    if (vic_name[0] == '\0' || !argument || argument[0] == '\0')
+    {
+        i3_printf(ch, "%%^WHITE%%^Usage: i3deny <person> <local channel name>%%^RESET%%^\r\n");
+        i3_printf(ch, "%%^WHITE%%^Usage: i3deny <person> [tell/beep/finger]%%^RESET%%^\r\n");
+        return;
     }
 
-    if (!(victim = I3_find_user(vic_name))) {
-	i3_printf(ch, "No such person is currently online.\r\n");
-	return;
+    if (!(victim = I3_find_user(vic_name)))
+    {
+        i3_printf(ch, "No such person is currently online.\r\n");
+        return;
     }
 
-    if (I3PERM(ch) <= I3PERM(victim)) {
-	i3_printf(ch, "You cannot alter their settings.\r\n");
-	return;
+    if (I3PERM(ch) <= I3PERM(victim))
+    {
+        i3_printf(ch, "You cannot alter their settings.\r\n");
+        return;
     }
 
-    if (!strcasecmp(argument, "tell")) {
-	if (!I3IS_SET(I3FLAG(victim), I3_DENYTELL)) {
-	    I3SET_BIT(I3FLAG(victim), I3_DENYTELL);
-	    i3_printf(ch, "%s can no longer use i3tells.\r\n", CH_I3NAME(victim));
-	    return;
-	}
-	I3REMOVE_BIT(I3FLAG(victim), I3_DENYTELL);
-	i3_printf(ch, "%s can use i3tells again.\r\n", CH_I3NAME(victim));
-	return;
+    if (!strcasecmp(argument, "tell"))
+    {
+        if (!I3IS_SET(I3FLAG(victim), I3_DENYTELL))
+        {
+            I3SET_BIT(I3FLAG(victim), I3_DENYTELL);
+            i3_printf(ch, "%s can no longer use i3tells.\r\n", CH_I3NAME(victim));
+            return;
+        }
+        I3REMOVE_BIT(I3FLAG(victim), I3_DENYTELL);
+        i3_printf(ch, "%s can use i3tells again.\r\n", CH_I3NAME(victim));
+        return;
     }
 
-    if (!strcasecmp(argument, "beep")) {
-	if (!I3IS_SET(I3FLAG(victim), I3_DENYBEEP)) {
-	    I3SET_BIT(I3FLAG(victim), I3_DENYBEEP);
-	    i3_printf(ch, "%s can no longer use i3beeps.\r\n", CH_I3NAME(victim));
-	    return;
-	}
-	I3REMOVE_BIT(I3FLAG(victim), I3_DENYBEEP);
-	i3_printf(ch, "%s can use i3beeps again.\r\n", CH_I3NAME(victim));
-	return;
+    if (!strcasecmp(argument, "beep"))
+    {
+        if (!I3IS_SET(I3FLAG(victim), I3_DENYBEEP))
+        {
+            I3SET_BIT(I3FLAG(victim), I3_DENYBEEP);
+            i3_printf(ch, "%s can no longer use i3beeps.\r\n", CH_I3NAME(victim));
+            return;
+        }
+        I3REMOVE_BIT(I3FLAG(victim), I3_DENYBEEP);
+        i3_printf(ch, "%s can use i3beeps again.\r\n", CH_I3NAME(victim));
+        return;
     }
 
-    if (!strcasecmp(argument, "finger")) {
-	if (!I3IS_SET(I3FLAG(victim), I3_DENYFINGER)) {
-	    I3SET_BIT(I3FLAG(victim), I3_DENYFINGER);
-	    i3_printf(ch, "%s can no longer use i3fingers.\r\n", CH_I3NAME(victim));
-	    return;
-	}
-	I3REMOVE_BIT(I3FLAG(victim), I3_DENYFINGER);
-	i3_printf(ch, "%s can use i3fingers again.\r\n", CH_I3NAME(victim));
-	return;
+    if (!strcasecmp(argument, "finger"))
+    {
+        if (!I3IS_SET(I3FLAG(victim), I3_DENYFINGER))
+        {
+            I3SET_BIT(I3FLAG(victim), I3_DENYFINGER);
+            i3_printf(ch, "%s can no longer use i3fingers.\r\n", CH_I3NAME(victim));
+            return;
+        }
+        I3REMOVE_BIT(I3FLAG(victim), I3_DENYFINGER);
+        i3_printf(ch, "%s can use i3fingers again.\r\n", CH_I3NAME(victim));
+        return;
     }
 
-    if (!(channel = find_I3_channel_by_localname(argument))) {
-	i3_printf(ch, "%%^YELLOW%%^Unknown channel.%%^RESET%%^\r\n" "(use %%^WHITE%%^%%^BOLD%%^i3chanlist%%^YELLOW%%^ to get an overview of the channels available)%%^RESET%%^\r\n");
-	return;
+    if (!(channel = find_I3_channel_by_localname(argument)))
+    {
+        i3_printf(ch, "%%^YELLOW%%^Unknown channel.%%^RESET%%^\r\n"
+                      "(use %%^WHITE%%^%%^BOLD%%^i3chanlist%%^YELLOW%%^ to get an overview of the channels "
+                      "available)%%^RESET%%^\r\n");
+        return;
     }
 
-    if (I3_hasname(I3DENY(ch), channel->local_name)) {
-	i3_printf(ch, "%s can now listen to %s\r\n", CH_I3NAME(victim), channel->local_name);
-	I3_unflagchan(&I3DENY(ch), channel->local_name);
-    } else {
-	i3_printf(ch, "%s can no longer listen to %s\r\n", CH_I3NAME(victim),
-		  channel->local_name);
-	I3_flagchan(&I3DENY(ch), channel->local_name);
+    if (I3_hasname(I3DENY(ch), channel->local_name))
+    {
+        i3_printf(ch, "%s can now listen to %s\r\n", CH_I3NAME(victim), channel->local_name);
+        I3_unflagchan(&I3DENY(ch), channel->local_name);
+    }
+    else
+    {
+        i3_printf(ch, "%s can no longer listen to %s\r\n", CH_I3NAME(victim), channel->local_name);
+        I3_flagchan(&I3DENY(ch), channel->local_name);
     }
     return;
 }
 
 I3_CMD(I3_mudinfo)
 {
-    I3_MUD                                 *mud;
+    I3_MUD *mud;
 
-    if (!argument || argument[0] == '\0') {
-	i3_printf(ch, "Usage: i3mudinfo <mudname>\r\n");
-	return;
+    if (!argument || argument[0] == '\0')
+    {
+        i3_printf(ch, "Usage: i3mudinfo <mudname>\r\n");
+        return;
     }
 
-    if (!(mud = find_I3_mud_by_name(argument))) {
-	i3_printf(ch, "%%^YELLOW%%^Unknown mud.%%^RESET%%^\r\n" "(use %%^WHITE%%^%%^BOLD%%^i3mudlist%%^YELLOW%%^ to get an overview of the muds available)%%^RESET%%^\r\n");
-	return;
+    if (!(mud = find_I3_mud_by_name(argument)))
+    {
+        i3_printf(
+            ch,
+            "%%^YELLOW%%^Unknown mud.%%^RESET%%^\r\n"
+            "(use %%^WHITE%%^%%^BOLD%%^i3mudlist%%^YELLOW%%^ to get an overview of the muds available)%%^RESET%%^\r\n");
+        return;
     }
 
     i3_printf(ch, "%%^WHITE%%^%%^BOLD%%^Information about %s%%^RESET%%^\r\n\r\n", mud->name);
     if (mud->status == 0)
-	i3_printf(ch, "%%^WHITE%%^Status     : Currently down%%^RESET%%^\r\n");
+        i3_printf(ch, "%%^WHITE%%^Status     : Currently down%%^RESET%%^\r\n");
     else if (mud->status > 0)
-	i3_printf(ch, "%%^WHITE%%^Status     : Currently rebooting, back in %d seconds%%^RESET%%^\r\n",
-		  mud->status);
+        i3_printf(ch, "%%^WHITE%%^Status     : Currently rebooting, back in %d seconds%%^RESET%%^\r\n", mud->status);
     i3_printf(ch, "%%^WHITE%%^MUD port   : %s %d%%^RESET%%^\r\n", mud->ipaddress, mud->player_port);
     i3_printf(ch, "%%^WHITE%%^Base mudlib: %s%%^RESET%%^\r\n", mud->base_mudlib);
     i3_printf(ch, "%%^WHITE%%^Mudlib     : %s%%^RESET%%^\r\n", mud->mudlib);
@@ -18013,127 +18505,141 @@ I3_CMD(I3_mudinfo)
     i3_printf(ch, "%%^WHITE%%^Open status: %s%%^RESET%%^\r\n", mud->open_status);
     i3_printf(ch, "%%^WHITE%%^Admin      : %s%%^RESET%%^\r\n", mud->admin_email);
     if (mud->web)
-	i3_printf(ch, "%%^WHITE%%^URL        : %s%%^RESET%%^\r\n", mud->web);
+        i3_printf(ch, "%%^WHITE%%^URL        : %s%%^RESET%%^\r\n", mud->web);
     if (mud->web_wrong && !mud->web)
-	i3_printf(ch, "%%^WHITE%%^URL        : %s%%^RESET%%^\r\n", mud->web_wrong);
+        i3_printf(ch, "%%^WHITE%%^URL        : %s%%^RESET%%^\r\n", mud->web_wrong);
     if (mud->daemon)
-	i3_printf(ch, "%%^WHITE%%^Daemon     : %s%%^RESET%%^\r\n", mud->daemon);
+        i3_printf(ch, "%%^WHITE%%^Daemon     : %s%%^RESET%%^\r\n", mud->daemon);
     if (mud->time)
-	i3_printf(ch, "%%^WHITE%%^Time       : %s%%^RESET%%^\r\n", mud->time);
+        i3_printf(ch, "%%^WHITE%%^Time       : %s%%^RESET%%^\r\n", mud->time);
     if (mud->banner)
-	i3_printf(ch, "%%^WHITE%%^Banner:%%^RESET%%^\r\n%s\r\n", mud->banner);
+        i3_printf(ch, "%%^WHITE%%^Banner:%%^RESET%%^\r\n%s\r\n", mud->banner);
 
     i3_printf(ch, "%%^WHITE%%^Supports   : ");
     if (mud->tell)
-	i3_printf(ch, "%%^WHITE%%^tell, ");
+        i3_printf(ch, "%%^WHITE%%^tell, ");
     if (mud->beep)
-	i3_printf(ch, "%%^WHITE%%^beep, ");
+        i3_printf(ch, "%%^WHITE%%^beep, ");
     if (mud->emoteto)
-	i3_printf(ch, "%%^WHITE%%^emoteto, ");
+        i3_printf(ch, "%%^WHITE%%^emoteto, ");
     if (mud->who)
-	i3_printf(ch, "%%^WHITE%%^who, ");
+        i3_printf(ch, "%%^WHITE%%^who, ");
     if (mud->finger)
-	i3_printf(ch, "%%^WHITE%%^finger, ");
+        i3_printf(ch, "%%^WHITE%%^finger, ");
     if (mud->locate)
-	i3_printf(ch, "%%^WHITE%%^locate, ");
+        i3_printf(ch, "%%^WHITE%%^locate, ");
     if (mud->channel)
-	i3_printf(ch, "%%^WHITE%%^channel, ");
+        i3_printf(ch, "%%^WHITE%%^channel, ");
     if (mud->news)
-	i3_printf(ch, "%%^WHITE%%^news, ");
+        i3_printf(ch, "%%^WHITE%%^news, ");
     if (mud->mail)
-	i3_printf(ch, "%%^WHITE%%^mail, ");
+        i3_printf(ch, "%%^WHITE%%^mail, ");
     if (mud->file)
-	i3_printf(ch, "%%^WHITE%%^file, ");
+        i3_printf(ch, "%%^WHITE%%^file, ");
     if (mud->auth)
-	i3_printf(ch, "%%^WHITE%%^auth, ");
+        i3_printf(ch, "%%^WHITE%%^auth, ");
     if (mud->ucache)
-	i3_printf(ch, "%%^WHITE%%^ucache, ");
+        i3_printf(ch, "%%^WHITE%%^ucache, ");
     i3_printf(ch, "%%^RESET%%^\r\n");
 
     i3_printf(ch, "%%^WHITE%%^Supports   : ");
     if (mud->smtp)
-	i3_printf(ch, "%%^WHITE%%^smtp (port %d), ", mud->smtp);
+        i3_printf(ch, "%%^WHITE%%^smtp (port %d), ", mud->smtp);
     if (mud->http)
-	i3_printf(ch, "%%^WHITE%%^http (port %d), ", mud->http);
+        i3_printf(ch, "%%^WHITE%%^http (port %d), ", mud->http);
     if (mud->ftp)
-	i3_printf(ch, "%%^WHITE%%^ftp  (port %d), ", mud->ftp);
+        i3_printf(ch, "%%^WHITE%%^ftp  (port %d), ", mud->ftp);
     if (mud->pop3)
-	i3_printf(ch, "%%^WHITE%%^pop3 (port %d), ", mud->pop3);
+        i3_printf(ch, "%%^WHITE%%^pop3 (port %d), ", mud->pop3);
     if (mud->nntp)
-	i3_printf(ch, "%%^WHITE%%^nntp (port %d), ", mud->nntp);
+        i3_printf(ch, "%%^WHITE%%^nntp (port %d), ", mud->nntp);
     if (mud->rcp)
-	i3_printf(ch, "%%^WHITE%%^rcp  (port %d), ", mud->rcp);
+        i3_printf(ch, "%%^WHITE%%^rcp  (port %d), ", mud->rcp);
     if (mud->amrcp)
-	i3_printf(ch, "%%^WHITE%%^amrcp (port %d), ", mud->amrcp);
+        i3_printf(ch, "%%^WHITE%%^amrcp (port %d), ", mud->amrcp);
     i3_printf(ch, "%%^RESET%%^\r\n");
 }
 
 I3_CMD(I3_chanlayout)
 {
-    I3_CHANNEL                             *channel = NULL;
-    char                                    arg1[MAX_INPUT_LENGTH],
-                                            arg2[MAX_INPUT_LENGTH];
+    I3_CHANNEL *channel = NULL;
+    char arg1[MAX_INPUT_LENGTH], arg2[MAX_INPUT_LENGTH];
 
-    if (!argument || argument[0] == '\0') {
-	i3_printf(ch, "%%^WHITE%%^Usage: i3chanlayout <localchannel|all> <layout> <format...>%%^RESET%%^\r\n");
-	i3_printf(ch, "%%^WHITE%%^Layout can be one of these: layout_e layout_m%%^RESET%%^\r\n");
-	i3_printf(ch, "%%^WHITE%%^Format can be any way you want it to look, provided you have the proper number of %%s tags in it.%%^RESET%%^\r\n");
-	return;
+    if (!argument || argument[0] == '\0')
+    {
+        i3_printf(ch, "%%^WHITE%%^Usage: i3chanlayout <localchannel|all> <layout> <format...>%%^RESET%%^\r\n");
+        i3_printf(ch, "%%^WHITE%%^Layout can be one of these: layout_e layout_m%%^RESET%%^\r\n");
+        i3_printf(ch, "%%^WHITE%%^Format can be any way you want it to look, provided you have the proper number of "
+                      "%%s tags in it.%%^RESET%%^\r\n");
+        return;
     }
 
     argument = i3one_argument(argument, arg1);
     argument = i3one_argument(argument, arg2);
 
-    if (arg1[0] == '\0') {
-	I3_chanlayout(ch, "");
-	return;
+    if (arg1[0] == '\0')
+    {
+        I3_chanlayout(ch, "");
+        return;
     }
-    if (arg2[0] == '\0') {
-        if (!(channel = find_I3_channel_by_localname(arg1))) {
-	    I3_chanlayout(ch, "");
-	    return;
-        } else {
+    if (arg2[0] == '\0')
+    {
+        if (!(channel = find_I3_channel_by_localname(arg1)))
+        {
+            I3_chanlayout(ch, "");
+            return;
+        }
+        else
+        {
             i3_printf(ch, "Message layout for <%%^GREEN%%^%s%%^RESET%%^>: \"%%^YELLOW%%^", arg1);
             cprintf(ch, "%s", channel->layout_m);
             i3_printf(ch, "%%^RESET%%^\"\r\n");
             i3_printf(ch, "Emote layout for <%%^GREEN%%^%s%%^RESET%%^>: \"%%^YELLOW%%^", arg1);
             cprintf(ch, "%s", channel->layout_e);
             i3_printf(ch, "%%^RESET%%^\"\r\n");
-	    return;
+            return;
         }
     }
-    if (!argument || argument[0] == '\0') {
-	I3_chanlayout(ch, "");
-	return;
+    if (!argument || argument[0] == '\0')
+    {
+        I3_chanlayout(ch, "");
+        return;
     }
 
-    if (!(channel = find_I3_channel_by_localname(arg1))) {
-	i3_printf(ch, "%%^YELLOW%%^Unknown channel.%%^RESET%%^\r\n" "(use %%^WHITE%%^%%^BOLD%%^i3chanlist%%^YELLOW%%^ to get an overview of the channels available)%%^RESET%%^\r\n");
-	return;
+    if (!(channel = find_I3_channel_by_localname(arg1)))
+    {
+        i3_printf(ch, "%%^YELLOW%%^Unknown channel.%%^RESET%%^\r\n"
+                      "(use %%^WHITE%%^%%^BOLD%%^i3chanlist%%^YELLOW%%^ to get an overview of the channels "
+                      "available)%%^RESET%%^\r\n");
+        return;
     }
 
-    if (!strcasecmp(arg2, "layout_e")) {
-	if (!verify_i3layout(argument, 2)) {
-	    i3_printf(ch, "Incorrect format for layout_e. You need exactly 2 %%s's.\r\n");
-	    return;
-	}
-	I3STRFREE(channel->layout_e);
-	channel->layout_e = I3STRALLOC(argument);
-	i3_printf(ch, "Channel layout_e changed.\r\n");
-	I3_write_channel_config();
-	return;
+    if (!strcasecmp(arg2, "layout_e"))
+    {
+        if (!verify_i3layout(argument, 2))
+        {
+            i3_printf(ch, "Incorrect format for layout_e. You need exactly 2 %%s's.\r\n");
+            return;
+        }
+        I3STRFREE(channel->layout_e);
+        channel->layout_e = I3STRALLOC(argument);
+        i3_printf(ch, "Channel layout_e changed.\r\n");
+        I3_write_channel_config();
+        return;
     }
 
-    if (!strcasecmp(arg2, "layout_m")) {
-	if (!verify_i3layout(argument, 4)) {
-	    i3_printf(ch, "Incorrect format for layout_m. You need exactly 4 %%s's.\r\n");
-	    return;
-	}
-	I3STRFREE(channel->layout_m);
-	channel->layout_m = I3STRALLOC(argument);
-	i3_printf(ch, "Channel layout_m changed.\r\n");
-	I3_write_channel_config();
-	return;
+    if (!strcasecmp(arg2, "layout_m"))
+    {
+        if (!verify_i3layout(argument, 4))
+        {
+            i3_printf(ch, "Incorrect format for layout_m. You need exactly 4 %%s's.\r\n");
+            return;
+        }
+        I3STRFREE(channel->layout_m);
+        channel->layout_m = I3STRALLOC(argument);
+        i3_printf(ch, "Channel layout_m changed.\r\n");
+        I3_write_channel_config();
+        return;
     }
     I3_chanlayout(ch, "");
     return;
@@ -18141,36 +18647,43 @@ I3_CMD(I3_chanlayout)
 
 I3_CMD(I3_bancmd)
 {
-    I3_BAN                                 *temp;
+    I3_BAN *temp;
 
-    if (!argument || argument[0] == '\0') {
-	i3_printf(ch, "%%^GREEN%%^%%^BOLD%%^The mud currently has the following ban list:%%^RESET%%^\r\n\r\n");
+    if (!argument || argument[0] == '\0')
+    {
+        i3_printf(ch, "%%^GREEN%%^%%^BOLD%%^The mud currently has the following ban list:%%^RESET%%^\r\n\r\n");
 
-	if (!first_i3ban)
-	    i3_printf(ch, "%%^YELLOW%%^Nothing%%^RESET%%^\r\n");
-	else {
-	    for (temp = first_i3ban; temp; temp = temp->next)
-		i3_printf(ch, "%%^YELLOW%%^\t  - %s%%^RESET%%^\r\n", temp->name);
-	}
-	i3_printf(ch, "\r\n%%^YELLOW%%^To add a ban, just specify a target. Suggested targets being user@mud or IP:Port\r\n");
-	i3_printf(ch, "%%^YELLOW%%^User@mud bans can also have wildcard specifiers, such as *@Mud or User@*%%^RESET%%^\r\n");
-	return;
+        if (!first_i3ban)
+            i3_printf(ch, "%%^YELLOW%%^Nothing%%^RESET%%^\r\n");
+        else
+        {
+            for (temp = first_i3ban; temp; temp = temp->next)
+                i3_printf(ch, "%%^YELLOW%%^\t  - %s%%^RESET%%^\r\n", temp->name);
+        }
+        i3_printf(
+            ch, "\r\n%%^YELLOW%%^To add a ban, just specify a target. Suggested targets being user@mud or IP:Port\r\n");
+        i3_printf(
+            ch, "%%^YELLOW%%^User@mud bans can also have wildcard specifiers, such as *@Mud or User@*%%^RESET%%^\r\n");
+        return;
     }
 
-    if (!fnmatch(argument, this_i3mud->name, 0)) {
-	i3_printf(ch, "%%^YELLOW%%^You don't really want to do that....%%^RESET%%^\r\n");
-	return;
+    if (!fnmatch(argument, this_i3mud->name, 0))
+    {
+        i3_printf(ch, "%%^YELLOW%%^You don't really want to do that....%%^RESET%%^\r\n");
+        return;
     }
 
-    for (temp = first_i3ban; temp; temp = temp->next) {
-	if (!strcasecmp(temp->name, argument)) {
-	    I3STRFREE(temp->name);
-	    I3UNLINK(temp, first_i3ban, last_i3ban, next, prev);
-	    I3DISPOSE(temp);
-	    I3_write_bans();
-	    i3_printf(ch, "%%^YELLOW%%^The mud no longer bans %s.%%^RESET%%^\r\n", argument);
-	    return;
-	}
+    for (temp = first_i3ban; temp; temp = temp->next)
+    {
+        if (!strcasecmp(temp->name, argument))
+        {
+            I3STRFREE(temp->name);
+            I3UNLINK(temp, first_i3ban, last_i3ban, next, prev);
+            I3DISPOSE(temp);
+            I3_write_bans();
+            i3_printf(ch, "%%^YELLOW%%^The mud no longer bans %s.%%^RESET%%^\r\n", argument);
+            return;
+        }
     }
     I3CREATE(temp, I3_BAN, 1);
     temp->name = I3STRALLOC(argument);
@@ -18181,43 +18694,51 @@ I3_CMD(I3_bancmd)
 
 I3_CMD(I3_ignorecmd)
 {
-    I3_IGNORE                              *temp;
-    char                                    buf[MAX_INPUT_LENGTH];
+    I3_IGNORE *temp;
+    char buf[MAX_INPUT_LENGTH];
 
-    if (!argument || argument[0] == '\0') {
-	i3_printf(ch, "%%^GREEN%%^%%^BOLD%%^You are currently ignoring the following:%%^RESET%%^\r\n\r\n");
+    if (!argument || argument[0] == '\0')
+    {
+        i3_printf(ch, "%%^GREEN%%^%%^BOLD%%^You are currently ignoring the following:%%^RESET%%^\r\n\r\n");
 
-	if (!FIRST_I3IGNORE(ch)) {
-	    i3_printf(ch, "%%^YELLOW%%^Nobody%%^RESET%%^\r\n\r\n");
-	    i3_printf(ch, "%%^YELLOW%%^To add an ignore, just specify a target. Suggested targets being user@mud or IP:Port%%^RESET%%^\r\n");
-	    i3_printf(ch, "%%^YELLOW%%^User@mud ignores can also have wildcard specifiers, such as *@Mud or User@*%%^RESET%%^\r\n");
-	    return;
-	}
-	for (temp = FIRST_I3IGNORE(ch); temp; temp = temp->next)
-	    i3_printf(ch, "%%^YELLOW%%^\t  - %s%%^RESET%%^\r\n", temp->name);
+        if (!FIRST_I3IGNORE(ch))
+        {
+            i3_printf(ch, "%%^YELLOW%%^Nobody%%^RESET%%^\r\n\r\n");
+            i3_printf(ch, "%%^YELLOW%%^To add an ignore, just specify a target. Suggested targets being user@mud or "
+                          "IP:Port%%^RESET%%^\r\n");
+            i3_printf(ch, "%%^YELLOW%%^User@mud ignores can also have wildcard specifiers, such as *@Mud or "
+                          "User@*%%^RESET%%^\r\n");
+            return;
+        }
+        for (temp = FIRST_I3IGNORE(ch); temp; temp = temp->next)
+            i3_printf(ch, "%%^YELLOW%%^\t  - %s%%^RESET%%^\r\n", temp->name);
 
-	return;
+        return;
     }
 
     snprintf(buf, MAX_INPUT_LENGTH, "%s@%s", CH_I3NAME(ch), this_i3mud->name);
-    if (!strcasecmp(buf, argument)) {
-	i3_printf(ch, "%%^YELLOW%%^You don't really want to do that....%%^RESET%%^\r\n");
-	return;
+    if (!strcasecmp(buf, argument))
+    {
+        i3_printf(ch, "%%^YELLOW%%^You don't really want to do that....%%^RESET%%^\r\n");
+        return;
     }
 
-    if (!fnmatch(argument, this_i3mud->name, 0)) {
-	i3_printf(ch, "%%^YELLOW%%^Ignoring your own mud would be silly.%%^RESET%%^\r\n");
-	return;
+    if (!fnmatch(argument, this_i3mud->name, 0))
+    {
+        i3_printf(ch, "%%^YELLOW%%^Ignoring your own mud would be silly.%%^RESET%%^\r\n");
+        return;
     }
 
-    for (temp = FIRST_I3IGNORE(ch); temp; temp = temp->next) {
-	if (!strcasecmp(temp->name, argument)) {
-	    I3STRFREE(temp->name);
-	    I3UNLINK(temp, FIRST_I3IGNORE(ch), LAST_I3IGNORE(ch), next, prev);
-	    I3DISPOSE(temp);
-	    i3_printf(ch, "%%^YELLOW%%^You are no longer ignoring %s.%%^RESET%%^\r\n", argument);
-	    return;
-	}
+    for (temp = FIRST_I3IGNORE(ch); temp; temp = temp->next)
+    {
+        if (!strcasecmp(temp->name, argument))
+        {
+            I3STRFREE(temp->name);
+            I3UNLINK(temp, FIRST_I3IGNORE(ch), LAST_I3IGNORE(ch), next, prev);
+            I3DISPOSE(temp);
+            i3_printf(ch, "%%^YELLOW%%^You are no longer ignoring %s.%%^RESET%%^\r\n", argument);
+            return;
+        }
     }
 
     I3CREATE(temp, I3_IGNORE, 1);
@@ -18228,12 +18749,15 @@ I3_CMD(I3_ignorecmd)
 
 I3_CMD(I3_invis)
 {
-    if (I3INVIS(ch)) {
-	I3REMOVE_BIT(I3FLAG(ch), I3_INVIS);
-	i3_printf(ch, "You are now i3visible.\r\n");
-    } else {
-	I3SET_BIT(I3FLAG(ch), I3_INVIS);
-	i3_printf(ch, "You are now i3invisible.\r\n");
+    if (I3INVIS(ch))
+    {
+        I3REMOVE_BIT(I3FLAG(ch), I3_INVIS);
+        i3_printf(ch, "You are now i3visible.\r\n");
+    }
+    else
+    {
+        I3SET_BIT(I3FLAG(ch), I3_INVIS);
+        i3_printf(ch, "You are now i3invisible.\r\n");
     }
     return;
 }
@@ -18243,46 +18767,62 @@ I3_CMD(I3_debug)
     packetdebug = !packetdebug;
 
     if (packetdebug)
-	i3_printf(ch, "I3_PACKET Packet debugging enabled.\r\n");
+        i3_printf(ch, "I3_PACKET Packet debugging enabled.\r\n");
     else
-	i3_printf(ch, "I3_PACKET Packet debugging disabled.\r\n");
+        i3_printf(ch, "I3_PACKET Packet debugging disabled.\r\n");
 
     return;
 }
 
 I3_CMD(I3_send_user_req)
 {
-    char                                    user[MAX_INPUT_LENGTH],
-                                            mud[MAX_INPUT_LENGTH];
-    char                                   *ps;
-    I3_MUD                                 *pmud;
+    char user[MAX_INPUT_LENGTH], mud[MAX_INPUT_LENGTH];
+    char *ps;
+    I3_MUD *pmud;
 
-    if (!argument || argument[0] == '\0') {
-	i3_printf(ch, "%%^YELLOW%%^Query who at which mud?%%^RESET%%^\r\n" "(use %%^WHITE%%^%%^BOLD%%^i3mudlist%%^YELLOW%%^ to get an overview of the muds available)%%^RESET%%^\r\n");
-	return;
+    if (!argument || argument[0] == '\0')
+    {
+        i3_printf(
+            ch,
+            "%%^YELLOW%%^Query who at which mud?%%^RESET%%^\r\n"
+            "(use %%^WHITE%%^%%^BOLD%%^i3mudlist%%^YELLOW%%^ to get an overview of the muds available)%%^RESET%%^\r\n");
+        return;
     }
-    if (!(ps = strchr(argument, '@'))) {
-	i3_printf(ch, "%%^YELLOW%%^You should specify a person and a mud.%%^RESET%%^\r\n" "(use %%^WHITE%%^%%^BOLD%%^i3mudlist%%^YELLOW%%^ to get an overview of the muds available)%%^RESET%%^\r\n");
-	return;
+    if (!(ps = strchr(argument, '@')))
+    {
+        i3_printf(
+            ch,
+            "%%^YELLOW%%^You should specify a person and a mud.%%^RESET%%^\r\n"
+            "(use %%^WHITE%%^%%^BOLD%%^i3mudlist%%^YELLOW%%^ to get an overview of the muds available)%%^RESET%%^\r\n");
+        return;
     }
 
     ps[0] = '\0';
     strlcpy(user, argument, MAX_INPUT_LENGTH);
     strlcpy(mud, ps + 1, MAX_INPUT_LENGTH);
 
-    if (user[0] == '\0' || mud[0] == '\0') {
-	i3_printf(ch, "%%^YELLOW%%^You should specify a person and a mud.%%^RESET%%^\r\n" "(use %%^WHITE%%^%%^BOLD%%^i3mudlist%%^YELLOW%%^ to get an overview of the muds available)%%^RESET%%^\r\n");
-	return;
+    if (user[0] == '\0' || mud[0] == '\0')
+    {
+        i3_printf(
+            ch,
+            "%%^YELLOW%%^You should specify a person and a mud.%%^RESET%%^\r\n"
+            "(use %%^WHITE%%^%%^BOLD%%^i3mudlist%%^YELLOW%%^ to get an overview of the muds available)%%^RESET%%^\r\n");
+        return;
     }
 
-    if (!(pmud = find_I3_mud_by_name(mud))) {
-	i3_printf(ch, "%%^YELLOW%%^No such mud known.%%^RESET%%^\r\n" "(use %%^WHITE%%^%%^BOLD%%^i3mudlist%%^YELLOW%%^ to get an overview of the muds available)%%^RESET%%^\r\n");
-	return;
+    if (!(pmud = find_I3_mud_by_name(mud)))
+    {
+        i3_printf(
+            ch,
+            "%%^YELLOW%%^No such mud known.%%^RESET%%^\r\n"
+            "(use %%^WHITE%%^%%^BOLD%%^i3mudlist%%^YELLOW%%^ to get an overview of the muds available)%%^RESET%%^\r\n");
+        return;
     }
 
-    if (pmud->status >= 0) {
-	i3_printf(ch, "%s is marked as down.\r\n", pmud->name);
-	return;
+    if (pmud->status >= 0)
+    {
+        i3_printf(ch, "%s is marked as down.\r\n", pmud->name);
+        return;
     }
 
     I3_send_chan_user_req(pmud->name, user);
@@ -18291,57 +18831,63 @@ I3_CMD(I3_send_user_req)
 
 I3_CMD(I3_admin_channel)
 {
-    I3_CHANNEL                             *channel = NULL;
-    char                                    arg1[MAX_INPUT_LENGTH],
-                                            arg2[MAX_INPUT_LENGTH],
-                                            buf[MAX_STRING_LENGTH];
+    I3_CHANNEL *channel = NULL;
+    char arg1[MAX_INPUT_LENGTH], arg2[MAX_INPUT_LENGTH], buf[MAX_STRING_LENGTH];
 
-    if (!argument || argument[0] == '\0') {
-	i3_printf(ch, "%%^WHITE%%^Usage: i3adminchan <localchannel> <add|remove> <mudname>%%^RESET%%^\r\n");
-	i3_printf(ch, "%%^WHITE%%^Usage: i3adminchan <localchannel> list%%^RESET%%^\r\n");
-	return;
+    if (!argument || argument[0] == '\0')
+    {
+        i3_printf(ch, "%%^WHITE%%^Usage: i3adminchan <localchannel> <add|remove> <mudname>%%^RESET%%^\r\n");
+        i3_printf(ch, "%%^WHITE%%^Usage: i3adminchan <localchannel> list%%^RESET%%^\r\n");
+        return;
     }
     argument = i3one_argument(argument, arg1);
     argument = i3one_argument(argument, arg2);
 
-    if (arg1[0] == '\0') {
-	I3_admin_channel(ch, "");
-	return;
+    if (arg1[0] == '\0')
+    {
+        I3_admin_channel(ch, "");
+        return;
     }
 
-    if (!(channel = find_I3_channel_by_localname(arg1))) {
-	i3_printf(ch, "No such channel with that name here.\r\n");
-	return;
+    if (!(channel = find_I3_channel_by_localname(arg1)))
+    {
+        i3_printf(ch, "No such channel with that name here.\r\n");
+        return;
     }
 
-    if (arg2[0] == '\0') {
-	I3_admin_channel(ch, "");
-	return;
+    if (arg2[0] == '\0')
+    {
+        I3_admin_channel(ch, "");
+        return;
     }
 
-    if (!strcasecmp(arg2, "list")) {
-	I3_send_channel_adminlist(ch, channel->I3_name);
-	i3_printf(ch, "Sending request for administrative list.\r\n");
-	return;
+    if (!strcasecmp(arg2, "list"))
+    {
+        I3_send_channel_adminlist(ch, channel->I3_name);
+        i3_printf(ch, "Sending request for administrative list.\r\n");
+        return;
     }
 
-    if (!argument || argument[0] == '\0') {
-	I3_admin_channel(ch, "");
-	return;
+    if (!argument || argument[0] == '\0')
+    {
+        I3_admin_channel(ch, "");
+        return;
     }
 
-    if (!strcasecmp(arg2, "add")) {
-	snprintf(buf, MAX_STRING_LENGTH, "({\"%s\",}),({}),", argument);
-	I3_send_channel_admin(ch, channel->I3_name, buf);
-	i3_printf(ch, "Sending administrative list addition.\r\n");
-	return;
+    if (!strcasecmp(arg2, "add"))
+    {
+        snprintf(buf, MAX_STRING_LENGTH, "({\"%s\",}),({}),", argument);
+        I3_send_channel_admin(ch, channel->I3_name, buf);
+        i3_printf(ch, "Sending administrative list addition.\r\n");
+        return;
     }
 
-    if (!strcasecmp(arg2, "remove")) {
-	snprintf(buf, MAX_STRING_LENGTH, "({}),({\"%s\",}),", argument);
-	I3_send_channel_admin(ch, channel->I3_name, buf);
-	i3_printf(ch, "Sending administrative list removal.\r\n");
-	return;
+    if (!strcasecmp(arg2, "remove"))
+    {
+        snprintf(buf, MAX_STRING_LENGTH, "({}),({\"%s\",}),", argument);
+        I3_send_channel_admin(ch, channel->I3_name, buf);
+        i3_printf(ch, "Sending administrative list removal.\r\n");
+        return;
     }
     I3_admin_channel(ch, "");
     return;
@@ -18349,9 +18895,10 @@ I3_CMD(I3_admin_channel)
 
 I3_CMD(I3_disconnect)
 {
-    if (!is_connecting()) {
-	i3_printf(ch, "The MUD isn't connected to the Intermud-3 router.\r\n");
-	return;
+    if (!is_connecting())
+    {
+        i3_printf(ch, "The MUD isn't connected to the Intermud-3 router.\r\n");
+        return;
     }
 
     i3_printf(ch, "Disconnecting from Intermud-3 router.\r\n");
@@ -18362,27 +18909,30 @@ I3_CMD(I3_disconnect)
 
 I3_CMD(I3_connect)
 {
-    ROUTER_DATA                            *router;
+    ROUTER_DATA *router;
 
-    if (is_connecting()) {
-	i3_printf(ch, "The MUD is already connected to Intermud-3 router %s\r\n",
-		  I3_ROUTER_NAME);
-	return;
+    if (is_connecting())
+    {
+        i3_printf(ch, "The MUD is already connected to Intermud-3 router %s\r\n", I3_ROUTER_NAME);
+        return;
     }
 
-    if (!argument || argument[0] == '\0') {
-	i3_printf(ch, "Connecting to Intermud-3 router %s\r\n", I3_ROUTER_NAME);
-	router_connect(NULL, TRUE, this_i3mud->player_port, FALSE);
-	return;
+    if (!argument || argument[0] == '\0')
+    {
+        i3_printf(ch, "Connecting to Intermud-3 router %s\r\n", I3_ROUTER_NAME);
+        router_connect(NULL, TRUE, this_i3mud->player_port, FALSE);
+        return;
     }
 
-    for (router = first_router; router; router = router->next) {
-	if (!strcasecmp(router->name, argument)) {
-	    router->reconattempts = 0;
-	    i3_printf(ch, "Connecting to Intermud-3 router %s\r\n", argument);
-	    router_connect(argument, TRUE, this_i3mud->player_port, FALSE);
-	    return;
-	}
+    for (router = first_router; router; router = router->next)
+    {
+        if (!strcasecmp(router->name, argument))
+        {
+            router->reconattempts = 0;
+            i3_printf(ch, "Connecting to Intermud-3 router %s\r\n", argument);
+            router_connect(argument, TRUE, this_i3mud->player_port, FALSE);
+            return;
+        }
     }
 
     i3_printf(ch, "%s is not configured as a router for this mud.\r\n", argument);
@@ -18392,16 +18942,18 @@ I3_CMD(I3_connect)
 
 I3_CMD(I3_reload)
 {
-    int                                     mudport = this_i3mud->player_port;
+    int mudport = this_i3mud->player_port;
 
-    if (is_connecting()) {
-	i3_printf(ch, "Disconnecting from I3 router %s...\r\n", I3_ROUTER_NAME);
-	i3_shutdown(0, ch);
+    if (is_connecting())
+    {
+        i3_printf(ch, "Disconnecting from I3 router %s...\r\n", I3_ROUTER_NAME);
+        i3_shutdown(0, ch);
     }
     i3_printf(ch, "Reloading I3 configuration...\r\n");
-    if (I3_read_config(mudport)) {
-	i3_printf(ch, "Reconnecting to I3 router...\r\n");
-	router_connect(NULL, FALSE, this_i3mud->player_port, FALSE);
+    if (I3_read_config(mudport))
+    {
+        i3_printf(ch, "Reconnecting to I3 router...\r\n");
+        router_connect(NULL, FALSE, this_i3mud->player_port, FALSE);
     }
     i3_printf(ch, "Done!\r\n");
     return;
@@ -18409,51 +18961,54 @@ I3_CMD(I3_reload)
 
 I3_CMD(I3_addchan)
 {
-    I3_CHANNEL                             *channel;
-    char                                    arg[MAX_INPUT_LENGTH],
-                                            arg2[MAX_INPUT_LENGTH],
-                                            buf[MAX_STRING_LENGTH];
-    int                                     type,
-                                            x;
+    I3_CHANNEL *channel;
+    char arg[MAX_INPUT_LENGTH], arg2[MAX_INPUT_LENGTH], buf[MAX_STRING_LENGTH];
+    int type, x;
 
     argument = i3one_argument(argument, arg);
     argument = i3one_argument(argument, arg2);
 
-    if (!argument || argument[0] == '\0' || arg[0] == '\0' || arg2[0] == '\0') {
-	i3_printf(ch, "%%^WHITE%%^Usage: i3addchan <channelname> <localname> <type>%%^RESET%%^\r\n\r\n");
-	i3_printf(ch, "%%^WHITE%%^Channelname should be the name seen on 'chanlist all'%%^RESET%%^\r\n");
-	i3_printf(ch, "%%^WHITE%%^Localname should be the local name you want it listed as.%%^RESET%%^\r\n");
-	i3_printf(ch, "%%^WHITE%%^Type can be one of the following:%%^RESET%%^\r\n\r\n");
-	i3_printf(ch, "%%^WHITE%%^0: selectively banned%%^RESET%%^\r\n");
-	i3_printf(ch, "%%^WHITE%%^1: selectively admitted%%^RESET%%^\r\n");
-	i3_printf(ch, "%%^WHITE%%^2: filtered - valid for selectively admitted ONLY%%^RESET%%^\r\n");
-	return;
+    if (!argument || argument[0] == '\0' || arg[0] == '\0' || arg2[0] == '\0')
+    {
+        i3_printf(ch, "%%^WHITE%%^Usage: i3addchan <channelname> <localname> <type>%%^RESET%%^\r\n\r\n");
+        i3_printf(ch, "%%^WHITE%%^Channelname should be the name seen on 'chanlist all'%%^RESET%%^\r\n");
+        i3_printf(ch, "%%^WHITE%%^Localname should be the local name you want it listed as.%%^RESET%%^\r\n");
+        i3_printf(ch, "%%^WHITE%%^Type can be one of the following:%%^RESET%%^\r\n\r\n");
+        i3_printf(ch, "%%^WHITE%%^0: selectively banned%%^RESET%%^\r\n");
+        i3_printf(ch, "%%^WHITE%%^1: selectively admitted%%^RESET%%^\r\n");
+        i3_printf(ch, "%%^WHITE%%^2: filtered - valid for selectively admitted ONLY%%^RESET%%^\r\n");
+        return;
     }
 
-    if ((channel = find_I3_channel_by_name(arg)) != NULL) {
-	i3_printf(ch, "%%^RED%%^%%^BOLD%%^%s is already hosted by %s.%%^RESET%%^\r\n", channel->I3_name, channel->host_mud);
-        //i3_printf(ch, "%%^RED%%^%%^BOLD%%^But we will try adding it anyways...%%^RESET%%^\r\n");
-        //I3_send_channel_add(ch, arg, type);
-	return;
+    if ((channel = find_I3_channel_by_name(arg)) != NULL)
+    {
+        i3_printf(ch, "%%^RED%%^%%^BOLD%%^%s is already hosted by %s.%%^RESET%%^\r\n", channel->I3_name,
+                  channel->host_mud);
+        // i3_printf(ch, "%%^RED%%^%%^BOLD%%^But we will try adding it anyways...%%^RESET%%^\r\n");
+        // I3_send_channel_add(ch, arg, type);
+        return;
     }
 
-    if ((channel = find_I3_channel_by_localname(arg2)) != NULL) {
-	i3_printf(ch, "%%^RED%%^%%^BOLD%%^Channel %s@%s is already locally configured as %s.%%^RESET%%^\r\n",
-		  channel->I3_name, channel->host_mud, channel->local_name);
-	return;
+    if ((channel = find_I3_channel_by_localname(arg2)) != NULL)
+    {
+        i3_printf(ch, "%%^RED%%^%%^BOLD%%^Channel %s@%s is already locally configured as %s.%%^RESET%%^\r\n",
+                  channel->I3_name, channel->host_mud, channel->local_name);
+        return;
     }
 
-    if (!isdigit(argument[0])) {
-	i3_printf(ch, "%%^RED%%^%%^BOLD%%^Invalid type. Must be numerical.%%^RESET%%^\r\n");
-	I3_addchan(ch, "");
-	return;
+    if (!isdigit(argument[0]))
+    {
+        i3_printf(ch, "%%^RED%%^%%^BOLD%%^Invalid type. Must be numerical.%%^RESET%%^\r\n");
+        I3_addchan(ch, "");
+        return;
     }
 
     type = atoi(argument);
-    if (type < 0 || type > 2) {
-	i3_printf(ch, "%%^RED%%^%%^BOLD%%^Invalid channel type.%%^RESET%%^\r\n");
-	I3_addchan(ch, "");
-	return;
+    if (type < 0 || type > 2)
+    {
+        i3_printf(ch, "%%^RED%%^%%^BOLD%%^Invalid channel type.%%^RESET%%^\r\n");
+        I3_addchan(ch, "");
+        return;
     }
 
     i3_printf(ch, "%%^GREEN%%^%%^BOLD%%^Adding channel to router: %%^WHITE%%^%%^BOLD%%^%s%%^RESET%%^\r\n", arg);
@@ -18464,20 +19019,23 @@ I3_CMD(I3_addchan)
     channel->host_mud = I3STRALLOC(this_i3mud->name);
     channel->local_name = I3STRALLOC(arg2);
     channel->i3perm = I3PERM_ADMIN;
-    channel->layout_m = I3STRALLOC("%%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^] %%^CYAN%%^%%^BOLD%%^%s@%s: %%^CYAN%%^%s");
+    channel->layout_m = I3STRALLOC(
+        "%%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^] %%^CYAN%%^%%^BOLD%%^%s@%s: %%^CYAN%%^%s");
     channel->layout_e = I3STRALLOC("%%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^] %%^CYAN%%^%s");
     for (x = 0; x < MAX_I3HISTORY; x++)
-	channel->history[x] = NULL;
+        channel->history[x] = NULL;
     I3LINK(channel, first_I3chan, last_I3chan, next, prev);
 
-    if (type != 0) {
-	snprintf(buf, MAX_STRING_LENGTH, "({\"%s\",}),({}),", this_i3mud->name);
-	I3_send_channel_admin(ch, channel->I3_name, buf);
-	i3_printf(ch, "%%^GREEN%%^%%^BOLD%%^Sending command to add %s to the invite list.%%^RESET%%^\r\n", this_i3mud->name);
+    if (type != 0)
+    {
+        snprintf(buf, MAX_STRING_LENGTH, "({\"%s\",}),({}),", this_i3mud->name);
+        I3_send_channel_admin(ch, channel->I3_name, buf);
+        i3_printf(ch, "%%^GREEN%%^%%^BOLD%%^Sending command to add %s to the invite list.%%^RESET%%^\r\n",
+                  this_i3mud->name);
     }
 
-    i3_printf(ch, "%%^YELLOW%%^%s@%s %%^WHITE%%^%%^BOLD%%^is now locally known as %%^YELLOW%%^%s%%^RESET%%^\r\n", channel->I3_name,
-	      channel->host_mud, channel->local_name);
+    i3_printf(ch, "%%^YELLOW%%^%s@%s %%^WHITE%%^%%^BOLD%%^is now locally known as %%^YELLOW%%^%s%%^RESET%%^\r\n",
+              channel->I3_name, channel->host_mud, channel->local_name);
     I3_send_channel_listen(channel, TRUE);
     I3_write_channel_config();
 
@@ -18486,30 +19044,35 @@ I3_CMD(I3_addchan)
 
 I3_CMD(I3_removechan)
 {
-    I3_CHANNEL                             *channel = NULL;
+    I3_CHANNEL *channel = NULL;
 
-    if (!argument || argument[0] == '\0') {
-	i3_printf(ch, "%%^WHITE%%^Usage: i3removechan <channel>%%^RESET%%^\r\n");
-	i3_printf(ch, "%%^WHITE%%^Channelname should be the name seen on 'chanlist all'%%^RESET%%^\r\n");
-	return;
+    if (!argument || argument[0] == '\0')
+    {
+        i3_printf(ch, "%%^WHITE%%^Usage: i3removechan <channel>%%^RESET%%^\r\n");
+        i3_printf(ch, "%%^WHITE%%^Channelname should be the name seen on 'chanlist all'%%^RESET%%^\r\n");
+        return;
     }
 
-    if ((channel = find_I3_channel_by_name(argument)) == NULL) {
-	i3_printf(ch, "%%^RED%%^%%^BOLD%%^No channel by that name exists.%%^RESET%%^\r\n");
-	return;
+    if ((channel = find_I3_channel_by_name(argument)) == NULL)
+    {
+        i3_printf(ch, "%%^RED%%^%%^BOLD%%^No channel by that name exists.%%^RESET%%^\r\n");
+        return;
     }
 
-    if (strcasecmp(channel->host_mud, this_i3mud->name)) {
-	i3_printf(ch, "%%^RED%%^%%^BOLD%%^%s does not host this channel and cannot remove it.%%^RESET%%^\r\n", this_i3mud->name);
-        //i3_printf(ch, "%%^RED%%^%%^BOLD%%^But we will try removing it anyways...%%^RESET%%^\r\n");
-        //I3_send_channel_remove(ch, channel);
-	return;
+    if (strcasecmp(channel->host_mud, this_i3mud->name))
+    {
+        i3_printf(ch, "%%^RED%%^%%^BOLD%%^%s does not host this channel and cannot remove it.%%^RESET%%^\r\n",
+                  this_i3mud->name);
+        // i3_printf(ch, "%%^RED%%^%%^BOLD%%^But we will try removing it anyways...%%^RESET%%^\r\n");
+        // I3_send_channel_remove(ch, channel);
+        return;
     }
 
     i3_printf(ch, "%%^YELLOW%%^Removing channel from router: %%^WHITE%%^%%^BOLD%%^%s%%^RESET%%^\r\n", channel->I3_name);
     I3_send_channel_remove(ch, channel);
 
-    i3_printf(ch, "%%^RED%%^%%^BOLD%%^Destroying local channel entry for %%^WHITE%%^%%^BOLD%%^%s%%^RESET%%^\r\n", channel->I3_name);
+    i3_printf(ch, "%%^RED%%^%%^BOLD%%^Destroying local channel entry for %%^WHITE%%^%%^BOLD%%^%s%%^RESET%%^\r\n",
+              channel->I3_name);
     destroy_I3_channel(channel);
     I3_write_channel_config();
 
@@ -18518,157 +19081,188 @@ I3_CMD(I3_removechan)
 
 I3_CMD(I3_setconfig)
 {
-    char                                    arg[MAX_INPUT_LENGTH];
+    char arg[MAX_INPUT_LENGTH];
 
     argument = i3one_argument(argument, arg);
 
-    if (arg[0] == '\0') {
-	i3_printf(ch, "%%^GREEN%%^%%^BOLD%%^Configuration info for your mud. Changes save when edited.%%^RESET%%^\r\n");
-	i3_printf(ch, "%%^GREEN%%^%%^BOLD%%^You can set the following:%%^RESET%%^\r\n\r\n");
-	i3_printf(ch, "%%^WHITE%%^Show       : %%^GREEN%%^%%^BOLD%%^Displays your current congfiguration.%%^RESET%%^\r\n");
-	i3_printf(ch, "%%^WHITE%%^Autoconnect: %%^GREEN%%^%%^BOLD%%^A toggle. Either on or off. Your mud will connect automatically with it on.%%^RESET%%^\r\n");
-	i3_printf(ch, "%%^WHITE%%^Mudname    : %%^GREEN%%^%%^BOLD%%^The name you want displayed on I3 for your mud.%%^RESET%%^\r\n");
-	i3_printf(ch, "%%^WHITE%%^Telnet     : %%^GREEN%%^%%^BOLD%%^The telnet address for your mud. Do not include the port number.%%^RESET%%^\r\n");
-	i3_printf(ch, "%%^WHITE%%^Web        : %%^GREEN%%^%%^BOLD%%^The website address for your mud. In the form of: www.address.com%%^RESET%%^\r\n");
-	i3_printf(ch, "%%^WHITE%%^Email      : %%^GREEN%%^%%^BOLD%%^The email address of your mud's administrator. Needs to be valid!!%%^RESET%%^\r\n");
-	i3_printf(ch, "%%^WHITE%%^Status     : %%^GREEN%%^%%^BOLD%%^The open status of your mud. IE: Public, Development, etc.%%^RESET%%^\r\n");
-	i3_printf(ch, "%%^WHITE%%^Mudtype    : %%^GREEN%%^%%^BOLD%%^What you call the basic type of your codebase.%%^RESET%%^\r\n");
-	i3_printf(ch, "%%^WHITE%%^Mudlib     : %%^GREEN%%^%%^BOLD%%^What you call the current version of your codebase.%%^RESET%%^\r\n");
-	i3_printf(ch, "%%^WHITE%%^Minlevel   : %%^GREEN%%^%%^BOLD%%^Minimum level at which I3 will recognize your players.%%^RESET%%^\r\n");
-	i3_printf(ch, "%%^WHITE%%^Immlevel   : %%^GREEN%%^%%^BOLD%%^The level at which immortal commands become available.%%^RESET%%^\r\n");
-	i3_printf(ch, "%%^WHITE%%^Adminlevel : %%^GREEN%%^%%^BOLD%%^The level at which administrative commands become available.%%^RESET%%^\r\n");
-	i3_printf(ch, "%%^WHITE%%^Implevel   : %%^GREEN%%^%%^BOLD%%^The level at which implementor commands become available.%%^RESET%%^\r\n");
-	return;
+    if (arg[0] == '\0')
+    {
+        i3_printf(ch, "%%^GREEN%%^%%^BOLD%%^Configuration info for your mud. Changes save when edited.%%^RESET%%^\r\n");
+        i3_printf(ch, "%%^GREEN%%^%%^BOLD%%^You can set the following:%%^RESET%%^\r\n\r\n");
+        i3_printf(ch,
+                  "%%^WHITE%%^Show       : %%^GREEN%%^%%^BOLD%%^Displays your current congfiguration.%%^RESET%%^\r\n");
+        i3_printf(ch, "%%^WHITE%%^Autoconnect: %%^GREEN%%^%%^BOLD%%^A toggle. Either on or off. Your mud will connect "
+                      "automatically with it on.%%^RESET%%^\r\n");
+        i3_printf(ch, "%%^WHITE%%^Mudname    : %%^GREEN%%^%%^BOLD%%^The name you want displayed on I3 for your "
+                      "mud.%%^RESET%%^\r\n");
+        i3_printf(ch, "%%^WHITE%%^Telnet     : %%^GREEN%%^%%^BOLD%%^The telnet address for your mud. Do not include "
+                      "the port number.%%^RESET%%^\r\n");
+        i3_printf(ch, "%%^WHITE%%^Web        : %%^GREEN%%^%%^BOLD%%^The website address for your mud. In the form of: "
+                      "www.address.com%%^RESET%%^\r\n");
+        i3_printf(ch, "%%^WHITE%%^Email      : %%^GREEN%%^%%^BOLD%%^The email address of your mud's administrator. "
+                      "Needs to be valid!!%%^RESET%%^\r\n");
+        i3_printf(ch, "%%^WHITE%%^Status     : %%^GREEN%%^%%^BOLD%%^The open status of your mud. IE: Public, "
+                      "Development, etc.%%^RESET%%^\r\n");
+        i3_printf(ch, "%%^WHITE%%^Mudtype    : %%^GREEN%%^%%^BOLD%%^What you call the basic type of your "
+                      "codebase.%%^RESET%%^\r\n");
+        i3_printf(ch, "%%^WHITE%%^Mudlib     : %%^GREEN%%^%%^BOLD%%^What you call the current version of your "
+                      "codebase.%%^RESET%%^\r\n");
+        i3_printf(ch, "%%^WHITE%%^Minlevel   : %%^GREEN%%^%%^BOLD%%^Minimum level at which I3 will recognize your "
+                      "players.%%^RESET%%^\r\n");
+        i3_printf(ch, "%%^WHITE%%^Immlevel   : %%^GREEN%%^%%^BOLD%%^The level at which immortal commands become "
+                      "available.%%^RESET%%^\r\n");
+        i3_printf(ch, "%%^WHITE%%^Adminlevel : %%^GREEN%%^%%^BOLD%%^The level at which administrative commands become "
+                      "available.%%^RESET%%^\r\n");
+        i3_printf(ch, "%%^WHITE%%^Implevel   : %%^GREEN%%^%%^BOLD%%^The level at which implementor commands become "
+                      "available.%%^RESET%%^\r\n");
+        return;
     }
 
-    if (!strcasecmp(arg, "show")) {
-	i3_printf(ch, "%%^WHITE%%^Mudname       : %%^GREEN%%^%%^BOLD%%^%s%%^RESET%%^\r\n", this_i3mud->name);
-	i3_printf(ch, "%%^WHITE%%^Autoconnect   : %%^GREEN%%^%%^BOLD%%^%s%%^RESET%%^\r\n", this_i3mud->autoconnect == TRUE ? "Enabled" : "Disabled");
-	i3_printf(ch, "%%^WHITE%%^Telnet        : %%^GREEN%%^%%^BOLD%%^%s:%d%%^RESET%%^\r\n", this_i3mud->telnet, this_i3mud->player_port);
-	i3_printf(ch, "%%^WHITE%%^Web           : %%^GREEN%%^%%^BOLD%%^%s%%^RESET%%^\r\n", this_i3mud->web);
-	i3_printf(ch, "%%^WHITE%%^Email         : %%^GREEN%%^%%^BOLD%%^%s%%^RESET%%^\r\n", this_i3mud->admin_email);
-	i3_printf(ch, "%%^WHITE%%^Status        : %%^GREEN%%^%%^BOLD%%^%s%%^RESET%%^\r\n", this_i3mud->open_status);
-	i3_printf(ch, "%%^WHITE%%^Mudtype       : %%^GREEN%%^%%^BOLD%%^%s%%^RESET%%^\r\n", this_i3mud->mud_type);
-	i3_printf(ch, "%%^WHITE%%^Mudlib        : %%^GREEN%%^%%^BOLD%%^%s%%^RESET%%^\r\n", this_i3mud->mudlib);
-	i3_printf(ch, "%%^WHITE%%^Minlevel      : %%^GREEN%%^%%^BOLD%%^%d%%^RESET%%^\r\n", this_i3mud->minlevel);
-	i3_printf(ch, "%%^WHITE%%^Immlevel      : %%^GREEN%%^%%^BOLD%%^%d%%^RESET%%^\r\n", this_i3mud->immlevel);
-	i3_printf(ch, "%%^WHITE%%^Adminlevel    : %%^GREEN%%^%%^BOLD%%^%d%%^RESET%%^\r\n", this_i3mud->adminlevel);
-	i3_printf(ch, "%%^WHITE%%^Implevel      : %%^GREEN%%^%%^BOLD%%^%d%%^RESET%%^\r\n", this_i3mud->implevel);
-	return;
+    if (!strcasecmp(arg, "show"))
+    {
+        i3_printf(ch, "%%^WHITE%%^Mudname       : %%^GREEN%%^%%^BOLD%%^%s%%^RESET%%^\r\n", this_i3mud->name);
+        i3_printf(ch, "%%^WHITE%%^Autoconnect   : %%^GREEN%%^%%^BOLD%%^%s%%^RESET%%^\r\n",
+                  this_i3mud->autoconnect == TRUE ? "Enabled" : "Disabled");
+        i3_printf(ch, "%%^WHITE%%^Telnet        : %%^GREEN%%^%%^BOLD%%^%s:%d%%^RESET%%^\r\n", this_i3mud->telnet,
+                  this_i3mud->player_port);
+        i3_printf(ch, "%%^WHITE%%^Web           : %%^GREEN%%^%%^BOLD%%^%s%%^RESET%%^\r\n", this_i3mud->web);
+        i3_printf(ch, "%%^WHITE%%^Email         : %%^GREEN%%^%%^BOLD%%^%s%%^RESET%%^\r\n", this_i3mud->admin_email);
+        i3_printf(ch, "%%^WHITE%%^Status        : %%^GREEN%%^%%^BOLD%%^%s%%^RESET%%^\r\n", this_i3mud->open_status);
+        i3_printf(ch, "%%^WHITE%%^Mudtype       : %%^GREEN%%^%%^BOLD%%^%s%%^RESET%%^\r\n", this_i3mud->mud_type);
+        i3_printf(ch, "%%^WHITE%%^Mudlib        : %%^GREEN%%^%%^BOLD%%^%s%%^RESET%%^\r\n", this_i3mud->mudlib);
+        i3_printf(ch, "%%^WHITE%%^Minlevel      : %%^GREEN%%^%%^BOLD%%^%d%%^RESET%%^\r\n", this_i3mud->minlevel);
+        i3_printf(ch, "%%^WHITE%%^Immlevel      : %%^GREEN%%^%%^BOLD%%^%d%%^RESET%%^\r\n", this_i3mud->immlevel);
+        i3_printf(ch, "%%^WHITE%%^Adminlevel    : %%^GREEN%%^%%^BOLD%%^%d%%^RESET%%^\r\n", this_i3mud->adminlevel);
+        i3_printf(ch, "%%^WHITE%%^Implevel      : %%^GREEN%%^%%^BOLD%%^%d%%^RESET%%^\r\n", this_i3mud->implevel);
+        return;
     }
 
-    if (!strcasecmp(arg, "autoconnect")) {
-	this_i3mud->autoconnect = !this_i3mud->autoconnect;
+    if (!strcasecmp(arg, "autoconnect"))
+    {
+        this_i3mud->autoconnect = !this_i3mud->autoconnect;
 
-	if (this_i3mud->autoconnect)
-	    i3_printf(ch, "Autoconnect enabled.\r\n");
-	else
-	    i3_printf(ch, "Autoconnect disabled.\r\n");
-	I3_saveconfig();
-	return;
+        if (this_i3mud->autoconnect)
+            i3_printf(ch, "Autoconnect enabled.\r\n");
+        else
+            i3_printf(ch, "Autoconnect disabled.\r\n");
+        I3_saveconfig();
+        return;
     }
 
-    if (!argument || argument[0] == '\0') {
-	I3_setconfig(ch, "");
-	return;
+    if (!argument || argument[0] == '\0')
+    {
+        I3_setconfig(ch, "");
+        return;
     }
 
-    if (!strcasecmp(arg, "implevel") && I3PERM(ch) == I3PERM_IMP) {
-	int                                     value = atoi(argument);
+    if (!strcasecmp(arg, "implevel") && I3PERM(ch) == I3PERM_IMP)
+    {
+        int value = atoi(argument);
 
-	this_i3mud->implevel = value;
-	I3_saveconfig();
-	i3_printf(ch, "Implementor level changed to %d\r\n", value);
-	return;
+        this_i3mud->implevel = value;
+        I3_saveconfig();
+        i3_printf(ch, "Implementor level changed to %d\r\n", value);
+        return;
     }
 
-    if (!strcasecmp(arg, "adminlevel")) {
-	int                                     value = atoi(argument);
+    if (!strcasecmp(arg, "adminlevel"))
+    {
+        int value = atoi(argument);
 
-	this_i3mud->adminlevel = value;
-	I3_saveconfig();
-	i3_printf(ch, "Admin level changed to %d\r\n", value);
-	return;
+        this_i3mud->adminlevel = value;
+        I3_saveconfig();
+        i3_printf(ch, "Admin level changed to %d\r\n", value);
+        return;
     }
 
-    if (!strcasecmp(arg, "immlevel")) {
-	int                                     value = atoi(argument);
+    if (!strcasecmp(arg, "immlevel"))
+    {
+        int value = atoi(argument);
 
-	this_i3mud->immlevel = value;
-	I3_saveconfig();
-	i3_printf(ch, "Immortal level changed to %d\r\n", value);
-	return;
+        this_i3mud->immlevel = value;
+        I3_saveconfig();
+        i3_printf(ch, "Immortal level changed to %d\r\n", value);
+        return;
     }
 
-    if (!strcasecmp(arg, "minlevel")) {
-	int                                     value = atoi(argument);
+    if (!strcasecmp(arg, "minlevel"))
+    {
+        int value = atoi(argument);
 
-	this_i3mud->minlevel = value;
-	I3_saveconfig();
-	i3_printf(ch, "Minimum level changed to %d\r\n", value);
-	return;
+        this_i3mud->minlevel = value;
+        I3_saveconfig();
+        i3_printf(ch, "Minimum level changed to %d\r\n", value);
+        return;
     }
 
-    if (is_connecting()) {
-	i3_printf(ch, "%s may not be changed while the mud is connected.\r\n", arg);
-	return;
+    if (is_connecting())
+    {
+        i3_printf(ch, "%s may not be changed while the mud is connected.\r\n", arg);
+        return;
     }
 
-    if (!strcasecmp(arg, "mudname")) {
-	I3STRFREE(this_i3mud->name);
-	this_i3mud->name = I3STRALLOC(argument);
-	// I3_THISMUD = argument;
-	unlink(I3_PASSWORD_FILE);
-	I3_saveconfig();
-	i3_printf(ch, "Mud name changed to %s\r\n", argument);
-	return;
+    if (!strcasecmp(arg, "mudname"))
+    {
+        I3STRFREE(this_i3mud->name);
+        this_i3mud->name = I3STRALLOC(argument);
+        // I3_THISMUD = argument;
+        unlink(I3_PASSWORD_FILE);
+        I3_saveconfig();
+        i3_printf(ch, "Mud name changed to %s\r\n", argument);
+        return;
     }
 
-    if (!strcasecmp(arg, "telnet")) {
-	I3STRFREE(this_i3mud->telnet);
-	this_i3mud->telnet = I3STRALLOC(argument);
-	I3_saveconfig();
-	i3_printf(ch, "Telnet address changed to %s:%d\r\n", argument, this_i3mud->player_port);
-	return;
+    if (!strcasecmp(arg, "telnet"))
+    {
+        I3STRFREE(this_i3mud->telnet);
+        this_i3mud->telnet = I3STRALLOC(argument);
+        I3_saveconfig();
+        i3_printf(ch, "Telnet address changed to %s:%d\r\n", argument, this_i3mud->player_port);
+        return;
     }
 
-    if (!strcasecmp(arg, "web")) {
-	I3STRFREE(this_i3mud->web);
-	this_i3mud->web = I3STRALLOC(argument);
-	I3_saveconfig();
-	i3_printf(ch, "Website changed to %s\r\n", argument);
-	return;
+    if (!strcasecmp(arg, "web"))
+    {
+        I3STRFREE(this_i3mud->web);
+        this_i3mud->web = I3STRALLOC(argument);
+        I3_saveconfig();
+        i3_printf(ch, "Website changed to %s\r\n", argument);
+        return;
     }
 
-    if (!strcasecmp(arg, "email")) {
-	I3STRFREE(this_i3mud->admin_email);
-	this_i3mud->admin_email = I3STRALLOC(argument);
-	I3_saveconfig();
-	i3_printf(ch, "Admin email changed to %s\r\n", argument);
-	return;
+    if (!strcasecmp(arg, "email"))
+    {
+        I3STRFREE(this_i3mud->admin_email);
+        this_i3mud->admin_email = I3STRALLOC(argument);
+        I3_saveconfig();
+        i3_printf(ch, "Admin email changed to %s\r\n", argument);
+        return;
     }
 
-    if (!strcasecmp(arg, "status")) {
-	I3STRFREE(this_i3mud->open_status);
-	this_i3mud->open_status = I3STRALLOC(argument);
-	I3_saveconfig();
-	i3_printf(ch, "Status changed to %s\r\n", argument);
-	return;
+    if (!strcasecmp(arg, "status"))
+    {
+        I3STRFREE(this_i3mud->open_status);
+        this_i3mud->open_status = I3STRALLOC(argument);
+        I3_saveconfig();
+        i3_printf(ch, "Status changed to %s\r\n", argument);
+        return;
     }
 
-    if (!strcasecmp(arg, "mudlib")) {
-	I3STRFREE(this_i3mud->mudlib);
-	this_i3mud->mudlib = I3STRALLOC(argument);
-	I3_saveconfig();
-	i3_printf(ch, "Mudlib changed to %s\r\n", argument);
-	return;
+    if (!strcasecmp(arg, "mudlib"))
+    {
+        I3STRFREE(this_i3mud->mudlib);
+        this_i3mud->mudlib = I3STRALLOC(argument);
+        I3_saveconfig();
+        i3_printf(ch, "Mudlib changed to %s\r\n", argument);
+        return;
     }
-    if (!strcasecmp(arg, "mudtype")) {
-	I3STRFREE(this_i3mud->mud_type);
-	this_i3mud->mud_type = I3STRALLOC(argument);
-	I3_saveconfig();
-	i3_printf(ch, "Mudtype changed to %s\r\n", argument);
-	return;
+    if (!strcasecmp(arg, "mudtype"))
+    {
+        I3STRFREE(this_i3mud->mud_type);
+        this_i3mud->mud_type = I3STRALLOC(argument);
+        I3_saveconfig();
+        i3_printf(ch, "Mudtype changed to %s\r\n", argument);
+        return;
     }
 
     I3_setconfig(ch, "");
@@ -18677,194 +19271,226 @@ I3_CMD(I3_setconfig)
 
 I3_CMD(I3_permstats)
 {
-    CHAR_DATA                              *victim;
+    CHAR_DATA *victim;
 
-    if (!argument || argument[0] == '\0') {
-	i3_printf(ch, "Usage: i3perms <user>\r\n");
-	return;
+    if (!argument || argument[0] == '\0')
+    {
+        i3_printf(ch, "Usage: i3perms <user>\r\n");
+        return;
     }
 
-    if (!(victim = I3_find_user(argument))) {
-	i3_printf(ch, "No such person is currently online.\r\n");
-	return;
+    if (!(victim = I3_find_user(argument)))
+    {
+        i3_printf(ch, "No such person is currently online.\r\n");
+        return;
     }
 
-    if (I3PERM(victim) < 0 || I3PERM(victim) > I3PERM_IMP) {
-	i3_printf(ch, "%%^RED%%^%%^BOLD%%^%s has an invalid permission setting!%%^RESET%%^\r\n", CH_I3NAME(victim));
-	return;
+    if (I3PERM(victim) < 0 || I3PERM(victim) > I3PERM_IMP)
+    {
+        i3_printf(ch, "%%^RED%%^%%^BOLD%%^%s has an invalid permission setting!%%^RESET%%^\r\n", CH_I3NAME(victim));
+        return;
     }
 
     i3_printf(ch, "%%^GREEN%%^%%^BOLD%%^Permissions for %s: %s%%^RESET%%^\r\n", CH_I3NAME(victim),
-	      perm_names[I3PERM(victim)]);
+              perm_names[I3PERM(victim)]);
     i3_printf(ch, "%%^GREEN%%^These permissions were obtained %s.%%^RESET%%^\r\n",
-	      I3IS_SET(I3FLAG(victim),
-		       I3_PERMOVERRIDE) ? "manually via i3permset" : "automatically by level");
+              I3IS_SET(I3FLAG(victim), I3_PERMOVERRIDE) ? "manually via i3permset" : "automatically by level");
     return;
 }
 
 I3_CMD(I3_permset)
 {
-    CHAR_DATA                              *victim;
-    char                                    arg[MAX_INPUT_LENGTH];
-    int                                     permvalue;
+    CHAR_DATA *victim;
+    char arg[MAX_INPUT_LENGTH];
+    int permvalue;
 
     argument = i3one_argument(argument, arg);
 
-    if (arg[0] == '\0') {
-	i3_printf(ch, "%%^WHITE%%^Usage: i3permset <user> <permission>%%^RESET%%^\r\n");
-	i3_printf(ch, "%%^WHITE%%^Permission can be one of: None, Mort, Imm, Admin, Imp%%^RESET%%^\r\n");
-	return;
+    if (arg[0] == '\0')
+    {
+        i3_printf(ch, "%%^WHITE%%^Usage: i3permset <user> <permission>%%^RESET%%^\r\n");
+        i3_printf(ch, "%%^WHITE%%^Permission can be one of: None, Mort, Imm, Admin, Imp%%^RESET%%^\r\n");
+        return;
     }
 
-    if (!(victim = I3_find_user(arg))) {
-	i3_printf(ch, "No such person is currently online.\r\n");
-	return;
+    if (!(victim = I3_find_user(arg)))
+    {
+        i3_printf(ch, "No such person is currently online.\r\n");
+        return;
     }
 
     if (!strcasecmp(argument, "override"))
-	permvalue = -1;
-    else {
-	permvalue = get_permvalue(argument);
+        permvalue = -1;
+    else
+    {
+        permvalue = get_permvalue(argument);
 
-	if (!i3check_permissions(ch, permvalue, I3PERM(victim), TRUE))
-	    return;
+        if (!i3check_permissions(ch, permvalue, I3PERM(victim), TRUE))
+            return;
     }
 
     /*
-     * Just something to avoid looping through the channel clean-up --Xorith 
+     * Just something to avoid looping through the channel clean-up --Xorith
      */
-    if (I3PERM(victim) == permvalue) {
-	i3_printf(ch, "%s already has a permission level of %s.\r\n", CH_I3NAME(victim),
-		  perm_names[permvalue]);
-	return;
+    if (I3PERM(victim) == permvalue)
+    {
+        i3_printf(ch, "%s already has a permission level of %s.\r\n", CH_I3NAME(victim), perm_names[permvalue]);
+        return;
     }
 
-    if (permvalue == -1) {
-	I3REMOVE_BIT(I3FLAG(victim), I3_PERMOVERRIDE);
-	i3_printf(ch, "%%^YELLOW%%^Permission flag override has been removed from %s%%^RESET%%^\r\n",
-		  CH_I3NAME(victim));
-	return;
+    if (permvalue == -1)
+    {
+        I3REMOVE_BIT(I3FLAG(victim), I3_PERMOVERRIDE);
+        i3_printf(ch, "%%^YELLOW%%^Permission flag override has been removed from %s%%^RESET%%^\r\n",
+                  CH_I3NAME(victim));
+        return;
     }
 
     I3PERM(victim) = permvalue;
     I3SET_BIT(I3FLAG(victim), I3_PERMOVERRIDE);
 
     i3_printf(ch, "%%^YELLOW%%^Permission level for %s has been changed to %s%%^RESET%%^\r\n", CH_I3NAME(victim),
-	      perm_names[permvalue]);
+              perm_names[permvalue]);
     /*
-     * Channel Clean-Up added by Xorith 9-24-03 
+     * Channel Clean-Up added by Xorith 9-24-03
      */
     /*
-     * Note: Let's not clean up I3_DENY for a player. Never know... 
+     * Note: Let's not clean up I3_DENY for a player. Never know...
      */
-    if (I3LISTEN(victim) != NULL) {
-	I3_CHANNEL                             *channel = NULL;
-	const char                             *channels = I3LISTEN(victim);
+    if (I3LISTEN(victim) != NULL)
+    {
+        I3_CHANNEL *channel = NULL;
+        const char *channels = I3LISTEN(victim);
 
-	while (1) {
-	    if (channels[0] == '\0')
-		break;
-	    channels = i3one_argument(channels, arg);
+        while (1)
+        {
+            if (channels[0] == '\0')
+                break;
+            channels = i3one_argument(channels, arg);
 
-	    if (!(channel = find_I3_channel_by_localname(arg)))
-		I3_unflagchan(&I3LISTEN(victim), arg);
-	    if (channel && I3PERM(victim) < channel->i3perm) {
-		I3_unflagchan(&I3LISTEN(victim), arg);
-		i3_printf(ch,
-			  "%%^WHITE%%^%%^BOLD%%^Removing '%s' level channel: '%s', exceeding new permission of '%s'%%^RESET%%^\r\n",
-			  perm_names[channel->i3perm], channel->local_name,
-			  perm_names[I3PERM(victim)]);
-	    }
-	}
+            if (!(channel = find_I3_channel_by_localname(arg)))
+                I3_unflagchan(&I3LISTEN(victim), arg);
+            if (channel && I3PERM(victim) < channel->i3perm)
+            {
+                I3_unflagchan(&I3LISTEN(victim), arg);
+                i3_printf(ch,
+                          "%%^WHITE%%^%%^BOLD%%^Removing '%s' level channel: '%s', exceeding new permission of "
+                          "'%s'%%^RESET%%^\r\n",
+                          perm_names[channel->i3perm], channel->local_name, perm_names[I3PERM(victim)]);
+            }
+        }
     }
     return;
 }
 
 I3_CMD(I3_who)
 {
-    I3_MUD                                 *mud;
+    I3_MUD *mud;
 
-    if (!argument || argument[0] == '\0') {
-	i3_printf(ch, "Usage: i3who <mudname>\r\n");
-	return;
+    if (!argument || argument[0] == '\0')
+    {
+        i3_printf(ch, "Usage: i3who <mudname>\r\n");
+        return;
     }
 
-    if (!(mud = find_I3_mud_by_name(argument))) {
-	i3_printf(ch, "%%^YELLOW%%^No such mud known.%%^RESET%%^\r\n" "(use %%^WHITE%%^%%^BOLD%%^i3mudlist%%^YELLOW%%^ to get an overview of the muds available)%%^RESET%%^\r\n");
-	return;
+    if (!(mud = find_I3_mud_by_name(argument)))
+    {
+        i3_printf(
+            ch,
+            "%%^YELLOW%%^No such mud known.%%^RESET%%^\r\n"
+            "(use %%^WHITE%%^%%^BOLD%%^i3mudlist%%^YELLOW%%^ to get an overview of the muds available)%%^RESET%%^\r\n");
+        return;
     }
 
-    if (mud->status >= 0) {
-	i3_printf(ch, "%s is marked as down.\r\n", mud->name);
-	return;
+    if (mud->status >= 0)
+    {
+        i3_printf(ch, "%s is marked as down.\r\n", mud->name);
+        return;
     }
 
     if (mud->who == 0)
-	i3_printf(ch, "%s does not support the 'who' command. Sending anyway.\r\n", mud->name);
+        i3_printf(ch, "%s does not support the 'who' command. Sending anyway.\r\n", mud->name);
 
     I3_send_who(ch, mud->name);
 }
 
 I3_CMD(I3_locate)
 {
-    if (!argument || argument[0] == '\0') {
-	i3_printf(ch, "Usage: i3locate <person>\r\n");
-	return;
+    if (!argument || argument[0] == '\0')
+    {
+        i3_printf(ch, "Usage: i3locate <person>\r\n");
+        return;
     }
     I3_send_locate(ch, argument);
 }
 
 I3_CMD(I3_finger)
 {
-    char                                    user[MAX_INPUT_LENGTH],
-                                            mud[MAX_INPUT_LENGTH];
-    char                                   *ps;
-    I3_MUD                                 *pmud;
+    char user[MAX_INPUT_LENGTH], mud[MAX_INPUT_LENGTH];
+    char *ps;
+    I3_MUD *pmud;
 
-    if (I3IS_SET(I3FLAG(ch), I3_DENYFINGER)) {
-	i3_printf(ch, "You are not allowed to use i3finger.\r\n");
-	return;
+    if (I3IS_SET(I3FLAG(ch), I3_DENYFINGER))
+    {
+        i3_printf(ch, "You are not allowed to use i3finger.\r\n");
+        return;
     }
 
-    if (!argument || argument[0] == '\0') {
-	i3_printf(ch, "%%^WHITE%%^Usage: i3finger <user@mud>%%^RESET%%^\r\n");
-	i3_printf(ch, "%%^WHITE%%^Usage: i3finger privacy%%^RESET%%^\r\n");
-	return;
+    if (!argument || argument[0] == '\0')
+    {
+        i3_printf(ch, "%%^WHITE%%^Usage: i3finger <user@mud>%%^RESET%%^\r\n");
+        i3_printf(ch, "%%^WHITE%%^Usage: i3finger privacy%%^RESET%%^\r\n");
+        return;
     }
 
-    if (!strcasecmp(argument, "privacy")) {
-	if (!I3IS_SET(I3FLAG(ch), I3_PRIVACY)) {
-	    I3SET_BIT(I3FLAG(ch), I3_PRIVACY);
-	    i3_printf(ch, "I3 finger privacy flag set.\r\n");
-	    return;
-	}
-	I3REMOVE_BIT(I3FLAG(ch), I3_PRIVACY);
-	i3_printf(ch, "I3 finger privacy flag removed.\r\n");
-	return;
+    if (!strcasecmp(argument, "privacy"))
+    {
+        if (!I3IS_SET(I3FLAG(ch), I3_PRIVACY))
+        {
+            I3SET_BIT(I3FLAG(ch), I3_PRIVACY);
+            i3_printf(ch, "I3 finger privacy flag set.\r\n");
+            return;
+        }
+        I3REMOVE_BIT(I3FLAG(ch), I3_PRIVACY);
+        i3_printf(ch, "I3 finger privacy flag removed.\r\n");
+        return;
     }
 
-    if (I3ISINVIS(ch)) {
-	i3_printf(ch, "You are invisible.\r\n");
-	return;
+    if (I3ISINVIS(ch))
+    {
+        i3_printf(ch, "You are invisible.\r\n");
+        return;
     }
 
-    if ((ps = strchr(argument, '@')) == NULL) {
-	i3_printf(ch, "%%^YELLOW%%^You should specify a person and a mud.%%^RESET%%^\r\n" "(use %%^WHITE%%^%%^BOLD%%^i3mudlist%%^YELLOW%%^ to get an overview of the muds available)%%^RESET%%^\r\n");
-	return;
+    if ((ps = strchr(argument, '@')) == NULL)
+    {
+        i3_printf(
+            ch,
+            "%%^YELLOW%%^You should specify a person and a mud.%%^RESET%%^\r\n"
+            "(use %%^WHITE%%^%%^BOLD%%^i3mudlist%%^YELLOW%%^ to get an overview of the muds available)%%^RESET%%^\r\n");
+        return;
     }
 
     ps[0] = '\0';
     strlcpy(user, argument, MAX_INPUT_LENGTH);
     strlcpy(mud, ps + 1, MAX_INPUT_LENGTH);
 
-    if (user[0] == '\0' || mud[0] == '\0') {
-	i3_printf(ch, "%%^YELLOW%%^You should specify a person and a mud.%%^RESET%%^\r\n" "(use %%^WHITE%%^%%^BOLD%%^i3mudlist%%^YELLOW%%^ to get an overview of the muds available)%%^RESET%%^\r\n");
-	return;
+    if (user[0] == '\0' || mud[0] == '\0')
+    {
+        i3_printf(
+            ch,
+            "%%^YELLOW%%^You should specify a person and a mud.%%^RESET%%^\r\n"
+            "(use %%^WHITE%%^%%^BOLD%%^i3mudlist%%^YELLOW%%^ to get an overview of the muds available)%%^RESET%%^\r\n");
+        return;
     }
 
-    if (!(pmud = find_I3_mud_by_name(mud))) {
-	i3_printf(ch, "%%^YELLOW%%^No such mud known.%%^RESET%%^\r\n" "(use %%^WHITE%%^%%^BOLD%%^i3mudlist%%^YELLOW%%^ to get an overview of the muds available)%%^RESET%%^\r\n");
-	return;
+    if (!(pmud = find_I3_mud_by_name(mud)))
+    {
+        i3_printf(
+            ch,
+            "%%^YELLOW%%^No such mud known.%%^RESET%%^\r\n"
+            "(use %%^WHITE%%^%%^BOLD%%^i3mudlist%%^YELLOW%%^ to get an overview of the muds available)%%^RESET%%^\r\n");
+        return;
     }
 
 #if 0
@@ -18874,176 +19500,215 @@ I3_CMD(I3_finger)
     }
 #endif
 
-    if (pmud->status >= 0) {
-	i3_printf(ch, "%s is marked as down.\r\n", pmud->name);
-	return;
+    if (pmud->status >= 0)
+    {
+        i3_printf(ch, "%s is marked as down.\r\n", pmud->name);
+        return;
     }
 
     if (pmud->finger == 0)
-	i3_printf(ch, "%s does not support the 'finger' command. Sending anyway.\r\n",
-		  pmud->name);
+        i3_printf(ch, "%s does not support the 'finger' command. Sending anyway.\r\n", pmud->name);
 
     I3_send_finger(ch, user, pmud->name);
 }
 
 I3_CMD(I3_emote)
 {
-    char                                    to[MAX_INPUT_LENGTH],
-                                           *ps;
-    char                                    mud[MAX_INPUT_LENGTH];
-    I3_MUD                                 *pmud;
+    char to[MAX_INPUT_LENGTH], *ps;
+    char mud[MAX_INPUT_LENGTH];
+    I3_MUD *pmud;
 
-    if (I3ISINVIS(ch)) {
-	i3_printf(ch, "You are invisible.\r\n");
-	return;
+    if (I3ISINVIS(ch))
+    {
+        i3_printf(ch, "You are invisible.\r\n");
+        return;
     }
 
-    if (!argument || argument[0] == '\0') {
-	i3_printf(ch, "Usage: i3emoteto <person@mud> <emote message>\r\n");
-	return;
+    if (!argument || argument[0] == '\0')
+    {
+        i3_printf(ch, "Usage: i3emoteto <person@mud> <emote message>\r\n");
+        return;
     }
 
     argument = i3one_argument(argument, to);
     ps = strchr(to, '@');
 
-    if (to[0] == '\0' || argument[0] == '\0' || ps == NULL) {
-	i3_printf(ch, "%%^YELLOW%%^You should specify a person and a mud.%%^RESET%%^\r\n" "(use %%^WHITE%%^%%^BOLD%%^i3mudlist%%^YELLOW%%^ to get an overview of the muds available)%%^RESET%%^\r\n");
-	return;
+    if (to[0] == '\0' || argument[0] == '\0' || ps == NULL)
+    {
+        i3_printf(
+            ch,
+            "%%^YELLOW%%^You should specify a person and a mud.%%^RESET%%^\r\n"
+            "(use %%^WHITE%%^%%^BOLD%%^i3mudlist%%^YELLOW%%^ to get an overview of the muds available)%%^RESET%%^\r\n");
+        return;
     }
 
     ps[0] = '\0';
     ps++;
     strlcpy(mud, ps, MAX_INPUT_LENGTH);
 
-    if (!(pmud = find_I3_mud_by_name(mud))) {
-	i3_printf(ch, "%%^YELLOW%%^No such mud known.%%^RESET%%^\r\n" "( use %%^WHITE%%^%%^BOLD%%^i3mudlist%%^YELLOW%%^ to get an overview of the muds available)%%^RESET%%^\r\n");
-	return;
+    if (!(pmud = find_I3_mud_by_name(mud)))
+    {
+        i3_printf(ch, "%%^YELLOW%%^No such mud known.%%^RESET%%^\r\n"
+                      "( use %%^WHITE%%^%%^BOLD%%^i3mudlist%%^YELLOW%%^ to get an overview of the muds "
+                      "available)%%^RESET%%^\r\n");
+        return;
     }
 
-    if (pmud->status >= 0) {
-	i3_printf(ch, "%s is marked as down.\r\n", pmud->name);
-	return;
+    if (pmud->status >= 0)
+    {
+        i3_printf(ch, "%s is marked as down.\r\n", pmud->name);
+        return;
     }
 
     if (pmud->emoteto == 0)
-	i3_printf(ch, "%s does not support the 'emoteto' command. Sending anyway.\r\n",
-		  pmud->name);
+        i3_printf(ch, "%s does not support the 'emoteto' command. Sending anyway.\r\n", pmud->name);
 
     I3_send_emoteto(ch, to, pmud, argument);
 }
 
 I3_CMD(I3_router)
 {
-    ROUTER_DATA                            *router;
-    char                                    cmd[MAX_INPUT_LENGTH];
+    ROUTER_DATA *router;
+    char cmd[MAX_INPUT_LENGTH];
 
-    if (!argument || argument[0] == '\0') {
-	i3_printf(ch, "%%^WHITE%%^Usage: i3router add <router_name> <router_ip> <router_port>%%^RESET%%^\r\n");
-	i3_printf(ch, "%%^WHITE%%^Usage: i3router remove <router_name>%%^RESET%%^\r\n");
-	i3_printf(ch, "%%^WHITE%%^Usage: i3router select <router_name>%%^RESET%%^\r\n");
-	i3_printf(ch, "%%^WHITE%%^Usage: i3router list%%^RESET%%^\r\n");
-	return;
+    if (!argument || argument[0] == '\0')
+    {
+        i3_printf(ch, "%%^WHITE%%^Usage: i3router add <router_name> <router_ip> <router_port>%%^RESET%%^\r\n");
+        i3_printf(ch, "%%^WHITE%%^Usage: i3router remove <router_name>%%^RESET%%^\r\n");
+        i3_printf(ch, "%%^WHITE%%^Usage: i3router select <router_name>%%^RESET%%^\r\n");
+        i3_printf(ch, "%%^WHITE%%^Usage: i3router list%%^RESET%%^\r\n");
+        return;
     }
     argument = i3one_argument(argument, cmd);
 
-    if (!strcasecmp(cmd, "list")) {
-	i3_printf(ch, "%%^RED%%^%%^BOLD%%^The mud has the following routers configured:%%^RESET%%^\r\n");
-	i3_printf(ch, "%%^WHITE%%^%%^BOLD%%^Router Name     Router IP/DNS                  Router Port%%^RESET%%^\r\n");
-	for (router = first_router; router; router = router->next)
-	    i3_printf(ch, "%%^CYAN%%^%-15.15s %%^CYAN%%^%-30.30s %d%%^RESET%%^\r\n", router->name, router->ip,
-		      router->port);
-	return;
+    if (!strcasecmp(cmd, "list"))
+    {
+        i3_printf(ch, "%%^RED%%^%%^BOLD%%^The mud has the following routers configured:%%^RESET%%^\r\n");
+        i3_printf(ch, "%%^WHITE%%^%%^BOLD%%^Router Name     Router IP/DNS                  Router Port%%^RESET%%^\r\n");
+        for (router = first_router; router; router = router->next)
+            i3_printf(ch, "%%^CYAN%%^%-15.15s %%^CYAN%%^%-30.30s %d%%^RESET%%^\r\n", router->name, router->ip,
+                      router->port);
+        return;
     }
 
-    if (!argument || argument[0] == '\0') {
-	I3_router(ch, "");
-	return;
+    if (!argument || argument[0] == '\0')
+    {
+        I3_router(ch, "");
+        return;
     }
 
-    if (!strcasecmp(cmd, "remove")) {
-	for (router = first_router; router; router = router->next) {
-	    if (!strcasecmp(router->name, argument) || !strcasecmp(router->ip, argument)) {
-		I3STRFREE(router->name);
-		I3STRFREE(router->ip);
-		I3UNLINK(router, first_router, last_router, next, prev);
-		I3DISPOSE(router);
-		i3_printf(ch, "%%^YELLOW%%^Router %%^WHITE%%^%%^BOLD%%^%s%%^YELLOW%%^ has been removed from your configuration.%%^RESET%%^\r\n",
-			  argument);
-		I3_saverouters();
-		return;
-	    }
-	}
-	i3_printf(ch, "%%^YELLOW%%^No router named %%^WHITE%%^%%^BOLD%%^%s%%^YELLOW%%^ exists in your configuration.%%^RESET%%^\r\n", argument);
-	return;
+    if (!strcasecmp(cmd, "remove"))
+    {
+        for (router = first_router; router; router = router->next)
+        {
+            if (!strcasecmp(router->name, argument) || !strcasecmp(router->ip, argument))
+            {
+                I3STRFREE(router->name);
+                I3STRFREE(router->ip);
+                I3UNLINK(router, first_router, last_router, next, prev);
+                I3DISPOSE(router);
+                i3_printf(ch,
+                          "%%^YELLOW%%^Router %%^WHITE%%^%%^BOLD%%^%s%%^YELLOW%%^ has been removed from your "
+                          "configuration.%%^RESET%%^\r\n",
+                          argument);
+                I3_saverouters();
+                return;
+            }
+        }
+        i3_printf(ch,
+                  "%%^YELLOW%%^No router named %%^WHITE%%^%%^BOLD%%^%s%%^YELLOW%%^ exists in your "
+                  "configuration.%%^RESET%%^\r\n",
+                  argument);
+        return;
     }
 
-    if (!strcasecmp(cmd, "select")) {
-	for (router = first_router; router; router = router->next) {
-	    if (!strcasecmp(router->name, argument) || !strcasecmp(router->ip, argument)) {
+    if (!strcasecmp(cmd, "select"))
+    {
+        for (router = first_router; router; router = router->next)
+        {
+            if (!strcasecmp(router->name, argument) || !strcasecmp(router->ip, argument))
+            {
                 // Remove the router from where it was
-		I3UNLINK(router, first_router, last_router, next, prev);
+                I3UNLINK(router, first_router, last_router, next, prev);
                 // Add it to the top
                 I3HEADLINK(router, first_router, last_router, next, prev);
 
-		i3_printf(ch, "%%^YELLOW%%^Router %%^WHITE%%^%%^BOLD%%^%s%%^YELLOW%%^ has been selected for use.%%^RESET%%^\r\n",
-			  argument);
-		I3_saverouters();
+                i3_printf(
+                    ch,
+                    "%%^YELLOW%%^Router %%^WHITE%%^%%^BOLD%%^%s%%^YELLOW%%^ has been selected for use.%%^RESET%%^\r\n",
+                    argument);
+                I3_saverouters();
                 return I3_reload(ch, argument);
-	    }
-	}
-	i3_printf(ch, "%%^YELLOW%%^No router named %%^WHITE%%^%%^BOLD%%^%s%%^YELLOW%%^ exists in your configuration.%%^RESET%%^\r\n", argument);
-	return;
+            }
+        }
+        i3_printf(ch,
+                  "%%^YELLOW%%^No router named %%^WHITE%%^%%^BOLD%%^%s%%^YELLOW%%^ exists in your "
+                  "configuration.%%^RESET%%^\r\n",
+                  argument);
+        return;
     }
 
-    if (!strcasecmp(cmd, "add")) {
-	ROUTER_DATA                            *temp;
-	char                                    rtname[MAX_INPUT_LENGTH];
-	char                                    rtip[MAX_INPUT_LENGTH];
-	int                                     rtport;
+    if (!strcasecmp(cmd, "add"))
+    {
+        ROUTER_DATA *temp;
+        char rtname[MAX_INPUT_LENGTH];
+        char rtip[MAX_INPUT_LENGTH];
+        int rtport;
 
-	argument = i3one_argument(argument, rtname);
-	argument = i3one_argument(argument, rtip);
+        argument = i3one_argument(argument, rtname);
+        argument = i3one_argument(argument, rtip);
 
-	if (rtname[0] == '\0' || rtip[0] == '\0' || !argument || argument[0] == '\0') {
-	    I3_router(ch, "");
-	    return;
-	}
+        if (rtname[0] == '\0' || rtip[0] == '\0' || !argument || argument[0] == '\0')
+        {
+            I3_router(ch, "");
+            return;
+        }
 
-	if (rtname[0] != '*') {
-	    i3_printf(ch, "%%^YELLOW%%^A router name must begin with a %%^WHITE%%^%%^BOLD%%^*%%^YELLOW%%^ to be valid.%%^RESET%%^\r\n");
-	    return;
-	}
+        if (rtname[0] != '*')
+        {
+            i3_printf(ch, "%%^YELLOW%%^A router name must begin with a %%^WHITE%%^%%^BOLD%%^*%%^YELLOW%%^ to be "
+                          "valid.%%^RESET%%^\r\n");
+            return;
+        }
 
-	for (temp = first_router; temp; temp = temp->next) {
-	    if (!strcasecmp(temp->name, rtname)) {
-		i3_printf(ch, "%%^YELLOW%%^A router named %%^WHITE%%^%%^BOLD%%^%s%%^YELLOW%%^ is already in your configuration.%%^RESET%%^\r\n",
-			  rtname);
-		return;
-	    }
-	}
+        for (temp = first_router; temp; temp = temp->next)
+        {
+            if (!strcasecmp(temp->name, rtname))
+            {
+                i3_printf(ch,
+                          "%%^YELLOW%%^A router named %%^WHITE%%^%%^BOLD%%^%s%%^YELLOW%%^ is already in your "
+                          "configuration.%%^RESET%%^\r\n",
+                          rtname);
+                return;
+            }
+        }
 
-	if (!is_number(argument)) {
-	    i3_printf(ch, "%%^YELLOW%%^Port must be a numerical value.%%^RESET%%^\r\n");
-	    return;
-	}
+        if (!is_number(argument))
+        {
+            i3_printf(ch, "%%^YELLOW%%^Port must be a numerical value.%%^RESET%%^\r\n");
+            return;
+        }
 
-	rtport = atoi(argument);
-	if (rtport < 1 || rtport > 65535) {
-	    i3_printf(ch, "%%^YELLOW%%^Invalid port value specified.%%^RESET%%^\r\n");
-	    return;
-	}
+        rtport = atoi(argument);
+        if (rtport < 1 || rtport > 65535)
+        {
+            i3_printf(ch, "%%^YELLOW%%^Invalid port value specified.%%^RESET%%^\r\n");
+            return;
+        }
 
-	I3CREATE(router, ROUTER_DATA, 1);
-	router->name = I3STRALLOC(rtname);
-	router->ip = I3STRALLOC(rtip);
-	router->port = rtport;
-	router->reconattempts = 0;
-	I3LINK(router, first_router, last_router, next, prev);
+        I3CREATE(router, ROUTER_DATA, 1);
+        router->name = I3STRALLOC(rtname);
+        router->ip = I3STRALLOC(rtip);
+        router->port = rtport;
+        router->reconattempts = 0;
+        I3LINK(router, first_router, last_router, next, prev);
 
-	i3_printf(ch, "%%^YELLOW%%^Router: %%^WHITE%%^%%^BOLD%%^%s %s %d%%^YELLOW%%^ has been added to your configuration.%%^RESET%%^\r\n",
-		  router->name, router->ip, router->port);
-	I3_saverouters();
-	return;
+        i3_printf(ch,
+                  "%%^YELLOW%%^Router: %%^WHITE%%^%%^BOLD%%^%s %s %d%%^YELLOW%%^ has been added to your "
+                  "configuration.%%^RESET%%^\r\n",
+                  router->name, router->ip, router->port);
+        I3_saverouters();
+        return;
     }
     I3_router(ch, "");
     return;
@@ -19051,23 +19716,24 @@ I3_CMD(I3_router)
 
 I3_CMD(I3_stats)
 {
-    I3_MUD                                 *mud;
-    I3_CHANNEL                             *channel;
-    int                                     mud_count = 0,
-	chan_count = 0;
+    I3_MUD *mud;
+    I3_CHANNEL *channel;
+    int mud_count = 0, chan_count = 0;
 
     for (mud = first_mud; mud; mud = mud->next)
-	mud_count++;
+        mud_count++;
 
     for (channel = first_I3chan; channel; channel = channel->next)
-	chan_count++;
+        chan_count++;
 
     i3_printf(ch, "%%^CYAN%%^General Statistics:%%^RESET%%^\r\n\r\n");
 
     if (is_connected())
-        i3_printf(ch, "%%^CYAN%%^Currently connected to     : %%^WHITE%%^%%^BOLD%%^%s (%s)%%^RESET%%^\r\n", I3_ROUTER_NAME, I3_ROUTER_IP);
+        i3_printf(ch, "%%^CYAN%%^Currently connected to     : %%^WHITE%%^%%^BOLD%%^%s (%s)%%^RESET%%^\r\n",
+                  I3_ROUTER_NAME, I3_ROUTER_IP);
     else if (is_connecting())
-        i3_printf(ch, "%%^CYAN%%^Currently connecting to    : %%^YELLOW%%^%%^BOLD%%^%s (%s)%%^RESET%%^\r\n", I3_ROUTER_NAME, I3_ROUTER_IP);
+        i3_printf(ch, "%%^CYAN%%^Currently connecting to    : %%^YELLOW%%^%%^BOLD%%^%s (%s)%%^RESET%%^\r\n",
+                  I3_ROUTER_NAME, I3_ROUTER_IP);
     else
         i3_printf(ch, "%%^CYAN%%^Currently connecting to    : %%^RED%%^%%^BOLD%%^%s%%^RESET%%^\r\n", "Nowhere");
 
@@ -19076,27 +19742,42 @@ I3_CMD(I3_stats)
     else if (is_connecting())
         i3_printf(ch, "%%^CYAN%%^Connecting on descriptor   : %%^YELLOW%%^%%^BOLD%%^%d%%^RESET%%^\r\n", I3_socket);
 
-    if (is_connected()) {
-        i3_printf(ch, "%%^CYAN%%^Connected for              : %%^WHITE%%^%%^BOLD%%^%s%%^RESET%%^\r\n", time_elapsed(connected_at, 0));
-        i3_printf(ch, "%%^CYAN%%^Time to connect            : %%^WHITE%%^%%^BOLD%%^%s%%^RESET%%^\r\n", time_elapsed(connect_started_at - ((I3_TIMEOUT_DELAY / 1000000) * connection_timeouts), connected_at));
-    } else if (is_connecting()) {
-        i3_printf(ch, "%%^CYAN%%^Connecting for             : %%^YELLOW%%^%%^BOLD%%^%s%%^RESET%%^\r\n", time_elapsed(connect_started_at - ((I3_TIMEOUT_DELAY / 1000000) * connection_timeouts), 0));
+    if (is_connected())
+    {
+        i3_printf(ch, "%%^CYAN%%^Connected for              : %%^WHITE%%^%%^BOLD%%^%s%%^RESET%%^\r\n",
+                  time_elapsed(connected_at, 0));
+        i3_printf(
+            ch, "%%^CYAN%%^Time to connect            : %%^WHITE%%^%%^BOLD%%^%s%%^RESET%%^\r\n",
+            time_elapsed(connect_started_at - ((I3_TIMEOUT_DELAY / 1000000) * connection_timeouts), connected_at));
+    }
+    else if (is_connecting())
+    {
+        i3_printf(ch, "%%^CYAN%%^Connecting for             : %%^YELLOW%%^%%^BOLD%%^%s%%^RESET%%^\r\n",
+                  time_elapsed(connect_started_at - ((I3_TIMEOUT_DELAY / 1000000) * connection_timeouts), 0));
     }
 
-    if (expecting_timeout) {
-        i3_printf(ch, "%%^CYAN%%^Time remaining             : %%^YELLOW%%^%%^BOLD%%^%s%%^RESET%%^\r\n", time_elapsed(connect_started_at, (int)(diffTimestamp(timeout_marker, -1) / (int64_t)1000000)));
+    if (expecting_timeout)
+    {
+        i3_printf(ch, "%%^CYAN%%^Time remaining             : %%^YELLOW%%^%%^BOLD%%^%s%%^RESET%%^\r\n",
+                  time_elapsed(connect_started_at, (int)(diffTimestamp(timeout_marker, -1) / (int64_t)1000000)));
     }
 
-    if (connection_timeouts > 0) {
-        i3_printf(ch, "%%^CYAN%%^Connection timeouts        : %%^YELLOW%%^%%^BOLD%%^%s (%d)%%^RESET%%^\r\n", time_elapsed(0, (I3_TIMEOUT_DELAY / 1000000) * connection_timeouts), connection_timeouts);
+    if (connection_timeouts > 0)
+    {
+        i3_printf(ch, "%%^CYAN%%^Connection timeouts        : %%^YELLOW%%^%%^BOLD%%^%s (%d)%%^RESET%%^\r\n",
+                  time_elapsed(0, (I3_TIMEOUT_DELAY / 1000000) * connection_timeouts), connection_timeouts);
     }
 
-    if (record_uptime > 0) {
-        i3_printf(ch, "%%^CYAN%%^Longest Uptime             : %%^GREEN%%^%%^BOLD%%^%s%%^RESET%%^\r\n", time_elapsed(0, record_uptime));
+    if (record_uptime > 0)
+    {
+        i3_printf(ch, "%%^CYAN%%^Longest Uptime             : %%^GREEN%%^%%^BOLD%%^%s%%^RESET%%^\r\n",
+                  time_elapsed(0, record_uptime));
     }
 
-    if (record_lag_spike > 0) {
-        i3_printf(ch, "%%^CYAN%%^Longest LAG Spike          : %%^RED%%^%%^BOLD%%^%s%%^RESET%%^\r\n", time_elapsed(record_lag_spike, 0));
+    if (record_lag_spike > 0)
+    {
+        i3_printf(ch, "%%^CYAN%%^Longest LAG Spike          : %%^RED%%^%%^BOLD%%^%s%%^RESET%%^\r\n",
+                  time_elapsed(record_lag_spike, 0));
     }
 
     i3_printf(ch, "%%^CYAN%%^Bytes sent                 : %%^WHITE%%^%%^BOLD%%^%ld%%^RESET%%^\r\n", bytes_sent);
@@ -19111,45 +19792,49 @@ I3_CMD(I3_stats)
 
 I3_CMD(i3_help)
 {
-    I3_HELP_DATA                           *help;
-    char                                    buf[MAX_STRING_LENGTH];
-    int                                     col,
-                                            perm;
+    I3_HELP_DATA *help;
+    char buf[MAX_STRING_LENGTH];
+    int col, perm;
 
-    if (!argument || argument[0] == '\0') {
-	strlcpy(buf, "%^GREEN%^Help is available for the following commands:%^RESET%^\r\n",
-		  MAX_STRING_LENGTH);
-	strlcat(buf, "%^GREEN%^%^BOLD%^---------------------------------------------%^RESET%^\r\n",
-		  MAX_STRING_LENGTH);
-	for (perm = I3PERM_MORT; perm <= I3PERM(ch); perm++) {
-	    col = 0;
-	    snprintf(buf + strlen(buf), MAX_STRING_LENGTH - strlen(buf),
-		     "%%^RESET%%^\r\n%%^GREEN%%^%s helps:%%^RESET%%^\r\n", perm_names[perm]);
-	    for (help = first_i3_help; help; help = help->next) {
-		if (help->level != perm)
-		    continue;
+    if (!argument || argument[0] == '\0')
+    {
+        strlcpy(buf, "%^GREEN%^Help is available for the following commands:%^RESET%^\r\n", MAX_STRING_LENGTH);
+        strlcat(buf, "%^GREEN%^%^BOLD%^---------------------------------------------%^RESET%^\r\n", MAX_STRING_LENGTH);
+        for (perm = I3PERM_MORT; perm <= I3PERM(ch); perm++)
+        {
+            col = 0;
+            snprintf(buf + strlen(buf), MAX_STRING_LENGTH - strlen(buf),
+                     "%%^RESET%%^\r\n%%^GREEN%%^%s helps:%%^RESET%%^\r\n", perm_names[perm]);
+            for (help = first_i3_help; help; help = help->next)
+            {
+                if (help->level != perm)
+                    continue;
 
-		snprintf(buf + strlen(buf), MAX_STRING_LENGTH - strlen(buf), "%-15s",
-			 help->name);
-		if (++col % 5 == 0)
-		    strlcat(buf, "%^RESET%^\r\n", MAX_STRING_LENGTH);
-	    }
-	    if (col % 5 != 0)
-		strlcat(buf, "%^RESET%^\r\n", MAX_STRING_LENGTH);
-	}
-	strlcat(buf, "%^RESET%^\r\n", MAX_STRING_LENGTH);
-	i3page_printf(ch, "%s", buf);
-	return;
+                snprintf(buf + strlen(buf), MAX_STRING_LENGTH - strlen(buf), "%-15s", help->name);
+                if (++col % 5 == 0)
+                    strlcat(buf, "%^RESET%^\r\n", MAX_STRING_LENGTH);
+            }
+            if (col % 5 != 0)
+                strlcat(buf, "%^RESET%^\r\n", MAX_STRING_LENGTH);
+        }
+        strlcat(buf, "%^RESET%^\r\n", MAX_STRING_LENGTH);
+        i3page_printf(ch, "%s", buf);
+        return;
     }
 
-    for (help = first_i3_help; help; help = help->next) {
-	if (!strcasecmp(help->name, argument)) {
-	    if (!help->text || help->text[0] == '\0')
-		i3_printf(ch, "%%^GREEN%%^No inforation available for topic %%^WHITE%%^%%^BOLD%%^%s%%^GREEN%%^.%%^RESET%%^\r\n", help->name);
-	    else
-		i3_printf(ch, "%%^GREEN%%^%s%%^RESET%%^\r\n", help->text);
-	    return;
-	}
+    for (help = first_i3_help; help; help = help->next)
+    {
+        if (!strcasecmp(help->name, argument))
+        {
+            if (!help->text || help->text[0] == '\0')
+                i3_printf(
+                    ch,
+                    "%%^GREEN%%^No inforation available for topic %%^WHITE%%^%%^BOLD%%^%s%%^GREEN%%^.%%^RESET%%^\r\n",
+                    help->name);
+            else
+                i3_printf(ch, "%%^GREEN%%^%s%%^RESET%%^\r\n", help->text);
+            return;
+        }
     }
     i3_printf(ch, "%%^GREEN%%^No help exists for topic %%^WHITE%%^%%^BOLD%%^%s%%^GREEN%%^.%%^RESET%%^\r\n", argument);
     return;
@@ -19157,53 +19842,62 @@ I3_CMD(i3_help)
 
 I3_CMD(i3_hedit)
 {
-    I3_HELP_DATA                           *help;
-    char                                    name[MAX_INPUT_LENGTH],
-                                            cmd[MAX_INPUT_LENGTH];
-    bool                                    found = FALSE;
+    I3_HELP_DATA *help;
+    char name[MAX_INPUT_LENGTH], cmd[MAX_INPUT_LENGTH];
+    bool found = FALSE;
 
     argument = i3one_argument(argument, name);
     argument = i3one_argument(argument, cmd);
 
-    if (name[0] == '\0' || cmd[0] == '\0' || !argument || argument[0] == '\0') {
-	i3_printf(ch, "%%^WHITE%%^Usage: i3hedit <topic> [name|perm] <field>%%^RESET%%^\r\n");
-	i3_printf(ch, "%%^WHITE%%^Where <field> can be either name, or permission level.%%^RESET%%^\r\n");
-	return;
+    if (name[0] == '\0' || cmd[0] == '\0' || !argument || argument[0] == '\0')
+    {
+        i3_printf(ch, "%%^WHITE%%^Usage: i3hedit <topic> [name|perm] <field>%%^RESET%%^\r\n");
+        i3_printf(ch, "%%^WHITE%%^Where <field> can be either name, or permission level.%%^RESET%%^\r\n");
+        return;
     }
 
-    for (help = first_i3_help; help; help = help->next) {
-	if (!strcasecmp(help->name, name)) {
-	    found = TRUE;
-	    break;
-	}
+    for (help = first_i3_help; help; help = help->next)
+    {
+        if (!strcasecmp(help->name, name))
+        {
+            found = TRUE;
+            break;
+        }
     }
 
-    if (!found) {
-	i3_printf(ch,
-		  "%%^GREEN%%^No help exists for topic %%^WHITE%%^%%^BOLD%%^%s%%^GREEN%%^. You will need to add it to the helpfile manually.%%^RESET%%^\r\n",
-		  name);
-	return;
+    if (!found)
+    {
+        i3_printf(ch,
+                  "%%^GREEN%%^No help exists for topic %%^WHITE%%^%%^BOLD%%^%s%%^GREEN%%^. You will need to add it to "
+                  "the helpfile manually.%%^RESET%%^\r\n",
+                  name);
+        return;
     }
 
-    if (!strcasecmp(cmd, "name")) {
-	i3_printf(ch, "%%^WHITE%%^%%^BOLD%%^%s %%^GREEN%%^has been renamed to %%^WHITE%%^%%^BOLD%%^%s.%%^RESET%%^\r\n", help->name, argument);
-	I3STRFREE(help->name);
-	help->name = I3STRALLOC(argument);
-	I3_savehelps();
-	return;
+    if (!strcasecmp(cmd, "name"))
+    {
+        i3_printf(ch, "%%^WHITE%%^%%^BOLD%%^%s %%^GREEN%%^has been renamed to %%^WHITE%%^%%^BOLD%%^%s.%%^RESET%%^\r\n",
+                  help->name, argument);
+        I3STRFREE(help->name);
+        help->name = I3STRALLOC(argument);
+        I3_savehelps();
+        return;
     }
 
-    if (!strcasecmp(cmd, "perm")) {
-	int                                     permvalue = get_permvalue(argument);
+    if (!strcasecmp(cmd, "perm"))
+    {
+        int permvalue = get_permvalue(argument);
 
-	if (!i3check_permissions(ch, permvalue, help->level, FALSE))
-	    return;
+        if (!i3check_permissions(ch, permvalue, help->level, FALSE))
+            return;
 
-	i3_printf(ch, "%%^GREEN%%^Permission level for %%^WHITE%%^%%^BOLD%%^%s %%^GREEN%%^has been changed to %%^WHITE%%^%%^BOLD%%^%s.%%^RESET%%^\r\n", help->name,
-		  perm_names[permvalue]);
-	help->level = permvalue;
-	I3_savehelps();
-	return;
+        i3_printf(ch,
+                  "%%^GREEN%%^Permission level for %%^WHITE%%^%%^BOLD%%^%s %%^GREEN%%^has been changed to "
+                  "%%^WHITE%%^%%^BOLD%%^%s.%%^RESET%%^\r\n",
+                  help->name, perm_names[permvalue]);
+        help->level = permvalue;
+        I3_savehelps();
+        return;
     }
     i3_hedit(ch, "");
     return;
@@ -19211,262 +19905,320 @@ I3_CMD(i3_hedit)
 
 I3_CMD(I3_other)
 {
-    I3_CMD_DATA                            *cmd;
-    char                                    buf[MAX_STRING_LENGTH];
-    int                                     col,
-                                            perm;
+    I3_CMD_DATA *cmd;
+    char buf[MAX_STRING_LENGTH];
+    int col, perm;
 
     strlcpy(buf, "%^GREEN%^The following commands are available:%^RESET%^\r\n", MAX_STRING_LENGTH);
     strlcat(buf, "%^GREEN%^%^BOLD%^-------------------------------------%^RESET%^\r\n", MAX_STRING_LENGTH);
-    for (perm = I3PERM_MORT; perm <= I3PERM(ch); perm++) {
-	col = 0;
-	snprintf(buf + strlen(buf), MAX_STRING_LENGTH - strlen(buf), "%%^RESET%%^\r\n%%^GREEN%%^%s commands:%%^GREEN%%^%%^BOLD%%^\r\n",
-		 perm_names[perm]);
-	for (cmd = first_i3_command; cmd; cmd = cmd->next) {
-	    if (cmd->level != perm)
-		continue;
+    for (perm = I3PERM_MORT; perm <= I3PERM(ch); perm++)
+    {
+        col = 0;
+        snprintf(buf + strlen(buf), MAX_STRING_LENGTH - strlen(buf),
+                 "%%^RESET%%^\r\n%%^GREEN%%^%s commands:%%^GREEN%%^%%^BOLD%%^\r\n", perm_names[perm]);
+        for (cmd = first_i3_command; cmd; cmd = cmd->next)
+        {
+            if (cmd->level != perm)
+                continue;
 
-	    snprintf(buf + strlen(buf), MAX_STRING_LENGTH - strlen(buf), "%-15s", cmd->name);
-	    if (++col % 5 == 0)
-		strlcat(buf, "%^RESET%^\r\n%^GREEN%^%^BOLD%^", MAX_STRING_LENGTH);
-	}
-	if (col % 5 != 0)
+            snprintf(buf + strlen(buf), MAX_STRING_LENGTH - strlen(buf), "%-15s", cmd->name);
+            if (++col % 5 == 0)
+                strlcat(buf, "%^RESET%^\r\n%^GREEN%^%^BOLD%^", MAX_STRING_LENGTH);
+        }
+        if (col % 5 != 0)
             strlcat(buf, "%^RESET%^\r\n%^GREEN%^%^BOLD%^", MAX_STRING_LENGTH);
     }
     i3page_printf(ch, "%s", buf);
-    i3page_printf(ch, "%%^RESET%%^\r\n%%^GREEN%%^For information about a specific command, see %%^WHITE%%^%%^BOLD%%^i3help <command>%%^GREEN%%^.%%^RESET%%^\r\n");
+    i3page_printf(ch, "%%^RESET%%^\r\n%%^GREEN%%^For information about a specific command, see "
+                      "%%^WHITE%%^%%^BOLD%%^i3help <command>%%^GREEN%%^.%%^RESET%%^\r\n");
     return;
 }
 
 I3_CMD(I3_afk)
 {
-    if (I3IS_SET(I3FLAG(ch), I3_AFK)) {
-	I3REMOVE_BIT(I3FLAG(ch), I3_AFK);
-	i3_printf(ch, "You are no longer AFK to I3.\r\n");
-    } else {
-	I3SET_BIT(I3FLAG(ch), I3_AFK);
-	i3_printf(ch, "You are now AFK to I3.\r\n");
+    if (I3IS_SET(I3FLAG(ch), I3_AFK))
+    {
+        I3REMOVE_BIT(I3FLAG(ch), I3_AFK);
+        i3_printf(ch, "You are no longer AFK to I3.\r\n");
+    }
+    else
+    {
+        I3SET_BIT(I3FLAG(ch), I3_AFK);
+        i3_printf(ch, "You are now AFK to I3.\r\n");
     }
     return;
 }
 
 I3_CMD(I3_color)
 {
-    if (I3IS_SET(I3FLAG(ch), I3_COLORFLAG)) {
-	I3REMOVE_BIT(I3FLAG(ch), I3_COLORFLAG);
-	i3_printf(ch, "I3 color is now off.\r\n");
-    } else {
-	I3SET_BIT(I3FLAG(ch), I3_COLORFLAG);
-	i3_printf(ch, "%%^RED%%^%%^BOLD%%^I3 c%%^YELLOW%%^o%%^GREEN%%^%%^BOLD%%^l%%^BLUE%%^%%^BOLD%%^o%%^MAGENTA%%^%%^BOLD%%^r %%^RED%%^%%^BOLD%%^is now on. Enjoy :)%%^RESET%%^\r\n");
+    if (I3IS_SET(I3FLAG(ch), I3_COLORFLAG))
+    {
+        I3REMOVE_BIT(I3FLAG(ch), I3_COLORFLAG);
+        i3_printf(ch, "I3 color is now off.\r\n");
+    }
+    else
+    {
+        I3SET_BIT(I3FLAG(ch), I3_COLORFLAG);
+        i3_printf(
+            ch,
+            "%%^RED%%^%%^BOLD%%^I3 c%%^YELLOW%%^o%%^GREEN%%^%%^BOLD%%^l%%^BLUE%%^%%^BOLD%%^o%%^MAGENTA%%^%%^BOLD%%^r "
+            "%%^RED%%^%%^BOLD%%^is now on. Enjoy :)%%^RESET%%^\r\n");
     }
     return;
 }
 
 I3_CMD(i3_cedit)
 {
-    I3_CMD_DATA                            *cmd,
-                                           *tmp;
-    I3_ALIAS                               *alias,
-                                           *alias_next;
-    char                                    name[MAX_INPUT_LENGTH],
-                                            option[MAX_INPUT_LENGTH];
-    bool                                    found = FALSE,
-	aliasfound = FALSE;
+    I3_CMD_DATA *cmd, *tmp;
+    I3_ALIAS *alias, *alias_next;
+    char name[MAX_INPUT_LENGTH], option[MAX_INPUT_LENGTH];
+    bool found = FALSE, aliasfound = FALSE;
 
     argument = i3one_argument(argument, name);
     argument = i3one_argument(argument, option);
 
-    if (name[0] == '\0' || option[0] == '\0') {
-	i3_printf(ch, "Usage: i3cedit <command> <create|delete|alias|rename|code|permission|connected> <field>.\r\n");
-	return;
+    if (name[0] == '\0' || option[0] == '\0')
+    {
+        i3_printf(ch, "Usage: i3cedit <command> <create|delete|alias|rename|code|permission|connected> <field>.\r\n");
+        return;
     }
 
-    for (cmd = first_i3_command; cmd; cmd = cmd->next) {
-	if (!strcasecmp(cmd->name, name)) {
-	    found = TRUE;
-	    break;
-	}
-	for (alias = cmd->first_alias; alias; alias = alias->next) {
-	    if (!strcasecmp(alias->name, name))
-		aliasfound = TRUE;
-	}
+    for (cmd = first_i3_command; cmd; cmd = cmd->next)
+    {
+        if (!strcasecmp(cmd->name, name))
+        {
+            found = TRUE;
+            break;
+        }
+        for (alias = cmd->first_alias; alias; alias = alias->next)
+        {
+            if (!strcasecmp(alias->name, name))
+                aliasfound = TRUE;
+        }
     }
 
-    if (!strcasecmp(option, "create")) {
-	if (found) {
-	    i3_printf(ch, "%%^GREEN%%^A command named %%^WHITE%%^%%^BOLD%%^%s %%^GREEN%%^already exists.%%^RESET%%^\r\n", name);
-	    return;
-	}
+    if (!strcasecmp(option, "create"))
+    {
+        if (found)
+        {
+            i3_printf(ch,
+                      "%%^GREEN%%^A command named %%^WHITE%%^%%^BOLD%%^%s %%^GREEN%%^already exists.%%^RESET%%^\r\n",
+                      name);
+            return;
+        }
 
-	if (aliasfound) {
-	    i3_printf(ch, "%%^GREEN%%^%s already exists as an alias for another command.%%^RESET%%^\r\n", name);
-	    return;
-	}
+        if (aliasfound)
+        {
+            i3_printf(ch, "%%^GREEN%%^%s already exists as an alias for another command.%%^RESET%%^\r\n", name);
+            return;
+        }
 
-	I3CREATE(cmd, I3_CMD_DATA, 1);
-	cmd->name = I3STRALLOC(name);
-	cmd->level = I3PERM(ch);
-	cmd->connected = FALSE;
-	i3_printf(ch, "%%^GREEN%%^Command %%^WHITE%%^%%^BOLD%%^%s %%^GREEN%%^created.%%^RESET%%^\r\n", cmd->name);
-	if (argument && argument[0] != '\0') {
-	    cmd->function = i3_function(argument);
-	    if (cmd->function == NULL)
-		i3_printf(ch, "%%^GREEN%%^Function %%^WHITE%%^%%^BOLD%%^%s %%^GREEN%%^does not exist - set to NULL.%%^RESET%%^\r\n", argument);
-	} else {
-	    i3_printf(ch, "%%^GREEN%%^Function set to NULL.%%^RESET%%^\r\n");
-	    cmd->function = NULL;
-	}
-	I3LINK(cmd, first_i3_command, last_i3_command, next, prev);
-	I3_savecommands();
-	return;
+        I3CREATE(cmd, I3_CMD_DATA, 1);
+        cmd->name = I3STRALLOC(name);
+        cmd->level = I3PERM(ch);
+        cmd->connected = FALSE;
+        i3_printf(ch, "%%^GREEN%%^Command %%^WHITE%%^%%^BOLD%%^%s %%^GREEN%%^created.%%^RESET%%^\r\n", cmd->name);
+        if (argument && argument[0] != '\0')
+        {
+            cmd->function = i3_function(argument);
+            if (cmd->function == NULL)
+                i3_printf(ch,
+                          "%%^GREEN%%^Function %%^WHITE%%^%%^BOLD%%^%s %%^GREEN%%^does not exist - set to "
+                          "NULL.%%^RESET%%^\r\n",
+                          argument);
+        }
+        else
+        {
+            i3_printf(ch, "%%^GREEN%%^Function set to NULL.%%^RESET%%^\r\n");
+            cmd->function = NULL;
+        }
+        I3LINK(cmd, first_i3_command, last_i3_command, next, prev);
+        I3_savecommands();
+        return;
     }
 
-    if (!found) {
-	i3_printf(ch, "%%^GREEN%%^No command named %%^WHITE%%^%%^BOLD%%^%s %%^GREEN%%^exists.%%^RESET%%^\r\n", name);
-	return;
+    if (!found)
+    {
+        i3_printf(ch, "%%^GREEN%%^No command named %%^WHITE%%^%%^BOLD%%^%s %%^GREEN%%^exists.%%^RESET%%^\r\n", name);
+        return;
     }
 
     if (!i3check_permissions(ch, cmd->level, cmd->level, FALSE))
-	return;
+        return;
 
-    if (!strcasecmp(option, "delete")) {
-	i3_printf(ch, "%%^GREEN%%^Command %%^WHITE%%^%%^BOLD%%^%s %%^GREEN%%^has been deleted.%%^RESET%%^\r\n", cmd->name);
-	for (alias = cmd->first_alias; alias; alias = alias_next) {
-	    alias_next = alias->next;
+    if (!strcasecmp(option, "delete"))
+    {
+        i3_printf(ch, "%%^GREEN%%^Command %%^WHITE%%^%%^BOLD%%^%s %%^GREEN%%^has been deleted.%%^RESET%%^\r\n",
+                  cmd->name);
+        for (alias = cmd->first_alias; alias; alias = alias_next)
+        {
+            alias_next = alias->next;
 
-	    I3UNLINK(alias, cmd->first_alias, cmd->last_alias, next, prev);
-	    I3STRFREE(alias->name);
-	    I3DISPOSE(alias);
-	}
-	I3UNLINK(cmd, first_i3_command, last_i3_command, next, prev);
-	I3STRFREE(cmd->name);
-	I3DISPOSE(cmd);
-	I3_savecommands();
-	return;
+            I3UNLINK(alias, cmd->first_alias, cmd->last_alias, next, prev);
+            I3STRFREE(alias->name);
+            I3DISPOSE(alias);
+        }
+        I3UNLINK(cmd, first_i3_command, last_i3_command, next, prev);
+        I3STRFREE(cmd->name);
+        I3DISPOSE(cmd);
+        I3_savecommands();
+        return;
     }
 
     /*
-     * MY GOD! What an inefficient mess you've made Samson! 
+     * MY GOD! What an inefficient mess you've made Samson!
      */
-    if (!strcasecmp(option, "alias")) {
-	for (alias = cmd->first_alias; alias; alias = alias_next) {
-	    alias_next = alias->next;
+    if (!strcasecmp(option, "alias"))
+    {
+        for (alias = cmd->first_alias; alias; alias = alias_next)
+        {
+            alias_next = alias->next;
 
-	    if (!strcasecmp(alias->name, argument)) {
-		i3_printf(ch, "%%^WHITE%%^%%^BOLD%%^%s %%^GREEN%%^has been removed as an alias for %%^WHITE%%^%%^BOLD%%^%s%%^RESET%%^\r\n", argument,
-			  cmd->name);
-		I3UNLINK(alias, cmd->first_alias, cmd->last_alias, next, prev);
-		I3STRFREE(alias->name);
-		I3DISPOSE(alias);
-		I3_savecommands();
-		return;
-	    }
-	}
+            if (!strcasecmp(alias->name, argument))
+            {
+                i3_printf(ch,
+                          "%%^WHITE%%^%%^BOLD%%^%s %%^GREEN%%^has been removed as an alias for "
+                          "%%^WHITE%%^%%^BOLD%%^%s%%^RESET%%^\r\n",
+                          argument, cmd->name);
+                I3UNLINK(alias, cmd->first_alias, cmd->last_alias, next, prev);
+                I3STRFREE(alias->name);
+                I3DISPOSE(alias);
+                I3_savecommands();
+                return;
+            }
+        }
 
-	for (tmp = first_i3_command; tmp; tmp = tmp->next) {
-	    if (!strcasecmp(tmp->name, argument)) {
-		i3_printf(ch, "%%^WHITE%%^%%^BOLD%%^%s %%^GREEN%%^is already a command name.%%^RESET%%^\r\n", argument);
-		return;
-	    }
-	    for (alias = tmp->first_alias; alias; alias = alias->next) {
-		if (!strcasecmp(argument, alias->name)) {
-		    i3_printf(ch, "%%^WHITE%%^%%^BOLD%%^%s %%^GREEN%%^is already an alias for %%^WHITE%%^%%^BOLD%%^%s%%^RESET%%^\r\n", argument,
-			      tmp->name);
-		    return;
-		}
-	    }
-	}
+        for (tmp = first_i3_command; tmp; tmp = tmp->next)
+        {
+            if (!strcasecmp(tmp->name, argument))
+            {
+                i3_printf(ch, "%%^WHITE%%^%%^BOLD%%^%s %%^GREEN%%^is already a command name.%%^RESET%%^\r\n", argument);
+                return;
+            }
+            for (alias = tmp->first_alias; alias; alias = alias->next)
+            {
+                if (!strcasecmp(argument, alias->name))
+                {
+                    i3_printf(ch,
+                              "%%^WHITE%%^%%^BOLD%%^%s %%^GREEN%%^is already an alias for "
+                              "%%^WHITE%%^%%^BOLD%%^%s%%^RESET%%^\r\n",
+                              argument, tmp->name);
+                    return;
+                }
+            }
+        }
 
-	I3CREATE(alias, I3_ALIAS, 1);
-	alias->name = I3STRALLOC(argument);
-	I3LINK(alias, cmd->first_alias, cmd->last_alias, next, prev);
-	i3_printf(ch, "%%^WHITE%%^%%^BOLD%%^%s %%^GREEN%%^has been added as an alias for %%^WHITE%%^%%^BOLD%%^%s%%^RESET%%^\r\n", alias->name, cmd->name);
-	I3_savecommands();
-	return;
+        I3CREATE(alias, I3_ALIAS, 1);
+        alias->name = I3STRALLOC(argument);
+        I3LINK(alias, cmd->first_alias, cmd->last_alias, next, prev);
+        i3_printf(
+            ch,
+            "%%^WHITE%%^%%^BOLD%%^%s %%^GREEN%%^has been added as an alias for %%^WHITE%%^%%^BOLD%%^%s%%^RESET%%^\r\n",
+            alias->name, cmd->name);
+        I3_savecommands();
+        return;
     }
 
-    if (!strcasecmp(option, "connected")) {
-	cmd->connected = !cmd->connected;
+    if (!strcasecmp(option, "connected"))
+    {
+        cmd->connected = !cmd->connected;
 
-	if (cmd->connected)
-	    i3_printf(ch, "%%^GREEN%%^Command %%^WHITE%%^%%^BOLD%%^%s %%^GREEN%%^will now require a connection to I3 to use.%%^RESET%%^\r\n",
-		      cmd->name);
-	else
-	    i3_printf(ch,
-		      "%%^GREEN%%^Command %%^WHITE%%^%%^BOLD%%^%s %%^GREEN%%^will no longer require a connection to I3 to use.%%^RESET%%^\r\n",
-		      cmd->name);
-	I3_savecommands();
-	return;
+        if (cmd->connected)
+            i3_printf(ch,
+                      "%%^GREEN%%^Command %%^WHITE%%^%%^BOLD%%^%s %%^GREEN%%^will now require a connection to I3 to "
+                      "use.%%^RESET%%^\r\n",
+                      cmd->name);
+        else
+            i3_printf(ch,
+                      "%%^GREEN%%^Command %%^WHITE%%^%%^BOLD%%^%s %%^GREEN%%^will no longer require a connection to I3 "
+                      "to use.%%^RESET%%^\r\n",
+                      cmd->name);
+        I3_savecommands();
+        return;
     }
 
-    if (!strcasecmp(option, "show")) {
-	char                                    buf[MAX_STRING_LENGTH];
+    if (!strcasecmp(option, "show"))
+    {
+        char buf[MAX_STRING_LENGTH];
 
-	i3_printf(ch, "%%^GREEN%%^Command       : %%^WHITE%%^%%^BOLD%%^%s%%^RESET%%^\r\n", cmd->name);
-	i3_printf(ch, "%%^GREEN%%^Permission    : %%^WHITE%%^%%^BOLD%%^%s%%^RESET%%^\r\n", perm_names[cmd->level]);
-	i3_printf(ch, "%%^GREEN%%^Function      : %%^WHITE%%^%%^BOLD%%^%s%%^RESET%%^\r\n", i3_funcname(cmd->function));
-	i3_printf(ch, "%%^GREEN%%^Connection Req: %%^WHITE%%^%%^BOLD%%^%s%%^RESET%%^\r\n", cmd->connected ? "Yes" : "No");
-	if (cmd->first_alias) {
-	    int                                     col = 0;
+        i3_printf(ch, "%%^GREEN%%^Command       : %%^WHITE%%^%%^BOLD%%^%s%%^RESET%%^\r\n", cmd->name);
+        i3_printf(ch, "%%^GREEN%%^Permission    : %%^WHITE%%^%%^BOLD%%^%s%%^RESET%%^\r\n", perm_names[cmd->level]);
+        i3_printf(ch, "%%^GREEN%%^Function      : %%^WHITE%%^%%^BOLD%%^%s%%^RESET%%^\r\n", i3_funcname(cmd->function));
+        i3_printf(ch, "%%^GREEN%%^Connection Req: %%^WHITE%%^%%^BOLD%%^%s%%^RESET%%^\r\n",
+                  cmd->connected ? "Yes" : "No");
+        if (cmd->first_alias)
+        {
+            int col = 0;
 
-	    strlcpy(buf, "%^GREEN%^Aliases       : %^WHITE%^%^BOLD%^", MAX_STRING_LENGTH);
-	    for (alias = cmd->first_alias; alias; alias = alias->next) {
-		snprintf(buf + strlen(buf), MAX_STRING_LENGTH - strlen(buf), "%s ",
-			 alias->name);
-		if (++col % 10 == 0)
-		    strlcat(buf, "\r\n", MAX_STRING_LENGTH);
-	    }
-	    if (col % 10 != 0)
-		strlcat(buf, "\r\n", MAX_STRING_LENGTH);
-	    i3_printf(ch, "%s%%^RESET%%^", buf);
-	}
-	return;
+            strlcpy(buf, "%^GREEN%^Aliases       : %^WHITE%^%^BOLD%^", MAX_STRING_LENGTH);
+            for (alias = cmd->first_alias; alias; alias = alias->next)
+            {
+                snprintf(buf + strlen(buf), MAX_STRING_LENGTH - strlen(buf), "%s ", alias->name);
+                if (++col % 10 == 0)
+                    strlcat(buf, "\r\n", MAX_STRING_LENGTH);
+            }
+            if (col % 10 != 0)
+                strlcat(buf, "\r\n", MAX_STRING_LENGTH);
+            i3_printf(ch, "%s%%^RESET%%^", buf);
+        }
+        return;
     }
 
-    if (!argument || argument[0] == '\0') {
-	i3_printf(ch, "Required argument missing.\r\n");
-	i3_cedit(ch, "");
-	return;
+    if (!argument || argument[0] == '\0')
+    {
+        i3_printf(ch, "Required argument missing.\r\n");
+        i3_cedit(ch, "");
+        return;
     }
 
-    if (!strcasecmp(option, "rename")) {
-	i3_printf(ch, "%%^GREEN%%^Command %%^WHITE%%^%%^BOLD%%^%s %%^GREEN%%^has been renamed to %%^WHITE%%^%%^BOLD%%^%s.%%^RESET%%^\r\n", cmd->name, argument);
-	I3STRFREE(cmd->name);
-	cmd->name = I3STRALLOC(argument);
-	I3_savecommands();
-	return;
+    if (!strcasecmp(option, "rename"))
+    {
+        i3_printf(ch,
+                  "%%^GREEN%%^Command %%^WHITE%%^%%^BOLD%%^%s %%^GREEN%%^has been renamed to "
+                  "%%^WHITE%%^%%^BOLD%%^%s.%%^RESET%%^\r\n",
+                  cmd->name, argument);
+        I3STRFREE(cmd->name);
+        cmd->name = I3STRALLOC(argument);
+        I3_savecommands();
+        return;
     }
 
-    if (!strcasecmp(option, "code")) {
-	cmd->function = i3_function(argument);
-	if (cmd->function == NULL)
-	    i3_printf(ch, "%%^GREEN%%^Function %%^WHITE%%^%%^BOLD%%^%s %%^GREEN%%^does not exist - set to NULL.%%^RESET%%^\r\n", argument);
-	else
-	    i3_printf(ch, "%%^GREEN%%^Function set to %%^WHITE%%^%%^BOLD%%^%s.%%^RESET%%^\r\n", argument);
-	I3_savecommands();
-	return;
+    if (!strcasecmp(option, "code"))
+    {
+        cmd->function = i3_function(argument);
+        if (cmd->function == NULL)
+            i3_printf(
+                ch,
+                "%%^GREEN%%^Function %%^WHITE%%^%%^BOLD%%^%s %%^GREEN%%^does not exist - set to NULL.%%^RESET%%^\r\n",
+                argument);
+        else
+            i3_printf(ch, "%%^GREEN%%^Function set to %%^WHITE%%^%%^BOLD%%^%s.%%^RESET%%^\r\n", argument);
+        I3_savecommands();
+        return;
     }
 
-    if (!strcasecmp(option, "perm") || !strcasecmp(option, "permission")) {
-	int                                     permvalue = get_permvalue(argument);
+    if (!strcasecmp(option, "perm") || !strcasecmp(option, "permission"))
+    {
+        int permvalue = get_permvalue(argument);
 
-	if (!i3check_permissions(ch, permvalue, cmd->level, FALSE))
-	    return;
+        if (!i3check_permissions(ch, permvalue, cmd->level, FALSE))
+            return;
 
-	cmd->level = permvalue;
-	i3_printf(ch, "%%^GREEN%%^Command %%^WHITE%%^%%^BOLD%%^%s %%^GREEN%%^permission level has been changed to %%^WHITE%%^%%^BOLD%%^%s.%%^RESET%%^\r\n",
-		  cmd->name, perm_names[permvalue]);
-	I3_savecommands();
-	return;
+        cmd->level = permvalue;
+        i3_printf(ch,
+                  "%%^GREEN%%^Command %%^WHITE%%^%%^BOLD%%^%s %%^GREEN%%^permission level has been changed to "
+                  "%%^WHITE%%^%%^BOLD%%^%s.%%^RESET%%^\r\n",
+                  cmd->name, perm_names[permvalue]);
+        I3_savecommands();
+        return;
     }
     i3_cedit(ch, "");
     return;
 }
 
-char                                   *I3_find_social(CHAR_DATA *ch, char *sname, char *person,
-						       char *mud, bool victim)
+char *I3_find_social(CHAR_DATA *ch, char *sname, char *person, char *mud, bool victim)
 {
-    static char                             socname[MAX_STRING_LENGTH];
+    static char socname[MAX_STRING_LENGTH];
 
     socname[0] = '\0';
     i3_printf(ch, "~YSocial ~W%s~Y does not exist on this mud.~!\r\n", sname);
@@ -19519,100 +20271,95 @@ char                                   *I3_find_social(CHAR_DATA *ch, char *snam
 }
 
 /* Revised 10/10/03 by Xorith: Recognize the need to capitalize for a new sentence. */
-char                                   *i3act_string(const char *format, CHAR_DATA *ch,
-						     CHAR_DATA *vic)
+char *i3act_string(const char *format, CHAR_DATA *ch, CHAR_DATA *vic)
 {
-    static const char                      *he_she[] = { "it", "he", "she" };
-    static const char                      *him_her[] = { "it", "him", "her" };
-    static const char                      *his_her[] = { "its", "his", "her" };
-    static char                             buf[MAX_STRING_LENGTH];
-    char                                    tmp_str[MAX_STRING_LENGTH];
-    const char                             *i = "";
-    char                                   *point;
-    bool                                    should_upper = FALSE;
+    static const char *he_she[] = {"it", "he", "she"};
+    static const char *him_her[] = {"it", "him", "her"};
+    static const char *his_her[] = {"its", "his", "her"};
+    static char buf[MAX_STRING_LENGTH];
+    char tmp_str[MAX_STRING_LENGTH];
+    const char *i = "";
+    char *point;
+    bool should_upper = FALSE;
 
     if (!format || format[0] == '\0' || !ch)
-	return NULL;
+        return NULL;
 
     point = buf;
 
-    while (*format != '\0') {
-	if (*format == '.' || *format == '?' || *format == '!')
-	    should_upper = TRUE;
-	else if (should_upper == TRUE && !isspace(*format) && *format != '$')
-	    should_upper = FALSE;
+    while (*format != '\0')
+    {
+        if (*format == '.' || *format == '?' || *format == '!')
+            should_upper = TRUE;
+        else if (should_upper == TRUE && !isspace(*format) && *format != '$')
+            should_upper = FALSE;
 
-	if (*format != '$') {
-	    *point++ = *format++;
-	    continue;
-	}
-	++format;
+        if (*format != '$')
+        {
+            *point++ = *format++;
+            continue;
+        }
+        ++format;
 
-	if ((!vic)
-	    && (*format == 'N' || *format == 'E' || *format == 'M' || *format == 'S'
-		|| *format == 'K'))
-	    i = " !!!!! ";
-	else {
-	    switch (*format) {
-		default:
-		    i = " !!!!! ";
-		    break;
-		case 'n':
-		    i = "$N";
-		    break;
-		case 'N':
-		    i = "$O";
-		    break;
-		case 'e':
-		    i = should_upper ?
-			i3capitalize(he_she[URANGE(0, CH_I3SEX(ch), 2)]) :
-			he_she[URANGE(0, CH_I3SEX(ch), 2)];
-		    break;
+        if ((!vic) && (*format == 'N' || *format == 'E' || *format == 'M' || *format == 'S' || *format == 'K'))
+            i = " !!!!! ";
+        else
+        {
+            switch (*format)
+            {
+            default:
+                i = " !!!!! ";
+                break;
+            case 'n':
+                i = "$N";
+                break;
+            case 'N':
+                i = "$O";
+                break;
+            case 'e':
+                i = should_upper ? i3capitalize(he_she[URANGE(0, CH_I3SEX(ch), 2)])
+                                 : he_she[URANGE(0, CH_I3SEX(ch), 2)];
+                break;
 
-		case 'E':
-		    i = should_upper ?
-			i3capitalize(he_she[URANGE(0, CH_I3SEX(vic), 2)]) :
-			he_she[URANGE(0, CH_I3SEX(vic), 2)];
-		    break;
+            case 'E':
+                i = should_upper ? i3capitalize(he_she[URANGE(0, CH_I3SEX(vic), 2)])
+                                 : he_she[URANGE(0, CH_I3SEX(vic), 2)];
+                break;
 
-		case 'm':
-		    i = should_upper ?
-			i3capitalize(him_her[URANGE(0, CH_I3SEX(ch), 2)]) :
-			him_her[URANGE(0, CH_I3SEX(ch), 2)];
-		    break;
+            case 'm':
+                i = should_upper ? i3capitalize(him_her[URANGE(0, CH_I3SEX(ch), 2)])
+                                 : him_her[URANGE(0, CH_I3SEX(ch), 2)];
+                break;
 
-		case 'M':
-		    i = should_upper ?
-			i3capitalize(him_her[URANGE(0, CH_I3SEX(vic), 2)]) :
-			him_her[URANGE(0, CH_I3SEX(vic), 2)];
-		    break;
+            case 'M':
+                i = should_upper ? i3capitalize(him_her[URANGE(0, CH_I3SEX(vic), 2)])
+                                 : him_her[URANGE(0, CH_I3SEX(vic), 2)];
+                break;
 
-		case 's':
-		    i = should_upper ?
-			i3capitalize(his_her[URANGE(0, CH_I3SEX(ch), 2)]) :
-			his_her[URANGE(0, CH_I3SEX(ch), 2)];
-		    break;
+            case 's':
+                i = should_upper ? i3capitalize(his_her[URANGE(0, CH_I3SEX(ch), 2)])
+                                 : his_her[URANGE(0, CH_I3SEX(ch), 2)];
+                break;
 
-		case 'S':
-		    i = should_upper ?
-			i3capitalize(his_her[URANGE(0, CH_I3SEX(vic), 2)]) :
-			his_her[URANGE(0, CH_I3SEX(vic), 2)];
-		    break;
+            case 'S':
+                i = should_upper ? i3capitalize(his_her[URANGE(0, CH_I3SEX(vic), 2)])
+                                 : his_her[URANGE(0, CH_I3SEX(vic), 2)];
+                break;
 
-		case 'k':
-		    i3one_argument(CH_I3NAME(ch), tmp_str);
-		    i = (char *)tmp_str;
-		    break;
-		case 'K':
-		    i3one_argument(CH_I3NAME(vic), tmp_str);
-		    i = (char *)tmp_str;
-		    break;
-		    break;
-	    }
-	}
-	++format;
-	while ((*point = *i) != '\0')
-	    ++point, ++i;
+            case 'k':
+                i3one_argument(CH_I3NAME(ch), tmp_str);
+                i = (char *)tmp_str;
+                break;
+            case 'K':
+                i3one_argument(CH_I3NAME(vic), tmp_str);
+                i = (char *)tmp_str;
+                break;
+                break;
+            }
+        }
+        ++format;
+        while ((*point = *i) != '\0')
+            ++point, ++i;
     }
     *point = 0;
     point++;
@@ -19622,15 +20369,15 @@ char                                   *i3act_string(const char *format, CHAR_DA
     return buf;
 }
 
-CHAR_DATA                              *I3_make_skeleton(char *name)
+CHAR_DATA *I3_make_skeleton(char *name)
 {
-    CHAR_DATA                              *skeleton;
+    CHAR_DATA *skeleton;
 
     CREATE(skeleton, CHAR_DATA, 1);
 
     skeleton->player.name = I3STRALLOC(name);
     skeleton->player.short_descr = I3STRALLOC(name);
-    skeleton->in_room = 1;				       /* LIMBO */
+    skeleton->in_room = 1; /* LIMBO */
 
     return skeleton;
 }
@@ -19638,7 +20385,7 @@ CHAR_DATA                              *I3_make_skeleton(char *name)
 void I3_purge_skeleton(CHAR_DATA *skeleton)
 {
     if (!skeleton)
-	return;
+        return;
 
     I3STRFREE(skeleton->player.name);
     I3STRFREE(skeleton->player.short_descr);
@@ -19648,108 +20395,117 @@ void I3_purge_skeleton(CHAR_DATA *skeleton)
 
 void I3_send_social(I3_CHANNEL *channel, CHAR_DATA *ch, const char *argument)
 {
-    CHAR_DATA                              *skeleton = NULL;
-    char                                   *ps;
-    char                                    socbuf_o[MAX_STRING_LENGTH],
-                                            socbuf_t[MAX_STRING_LENGTH],
-                                            msg_o[MAX_STRING_LENGTH],
-                                            msg_t[MAX_STRING_LENGTH];
-    char                                    arg1[MAX_INPUT_LENGTH],
-                                            person[MAX_INPUT_LENGTH],
-                                            mud[MAX_INPUT_LENGTH],
-                                            user[MAX_INPUT_LENGTH],
-                                            buf[MAX_STRING_LENGTH];
-    unsigned int                            x;
+    CHAR_DATA *skeleton = NULL;
+    char *ps;
+    char socbuf_o[MAX_STRING_LENGTH], socbuf_t[MAX_STRING_LENGTH], msg_o[MAX_STRING_LENGTH], msg_t[MAX_STRING_LENGTH];
+    char arg1[MAX_INPUT_LENGTH], person[MAX_INPUT_LENGTH], mud[MAX_INPUT_LENGTH], user[MAX_INPUT_LENGTH],
+        buf[MAX_STRING_LENGTH];
+    unsigned int x;
 
     person[0] = '\0';
     mud[0] = '\0';
 
     /*
-     * Name of social, remainder of argument is assumed to hold the target 
+     * Name of social, remainder of argument is assumed to hold the target
      */
     argument = i3one_argument(argument, arg1);
 
     snprintf(user, MAX_INPUT_LENGTH, "%s@%s", CH_I3NAME(ch), this_i3mud->name);
-    if (!strcasecmp(user, argument)) {
-	i3_printf(ch, "Cannot target yourself due to the nature of I3 socials.\r\n");
-	return;
+    if (!strcasecmp(user, argument))
+    {
+        i3_printf(ch, "Cannot target yourself due to the nature of I3 socials.\r\n");
+        return;
     }
 
-    if (argument && argument[0] != '\0') {
-	if (!(ps = strchr(argument, '@'))) {
-	    i3_printf(ch, "You need to specify a person@mud for a target.\r\n");
-	    return;
-	} else {
-	    for (x = 0; x < strlen(argument); x++) {
-		person[x] = argument[x];
-		if (person[x] == '@')
-		    break;
-	    }
-	    person[x] = '\0';
+    if (argument && argument[0] != '\0')
+    {
+        if (!(ps = strchr(argument, '@')))
+        {
+            i3_printf(ch, "You need to specify a person@mud for a target.\r\n");
+            return;
+        }
+        else
+        {
+            for (x = 0; x < strlen(argument); x++)
+            {
+                person[x] = argument[x];
+                if (person[x] == '@')
+                    break;
+            }
+            person[x] = '\0';
 
-	    ps[0] = '\0';
-	    strlcpy(mud, ps + 1, MAX_INPUT_LENGTH);
-	}
+            ps[0] = '\0';
+            strlcpy(mud, ps + 1, MAX_INPUT_LENGTH);
+        }
     }
 
     snprintf(socbuf_o, MAX_STRING_LENGTH, "%s", I3_find_social(ch, arg1, person, mud, FALSE));
 
     if (socbuf_o[0] != '\0')
-	snprintf(socbuf_t, MAX_STRING_LENGTH, "%s",
-		 I3_find_social(ch, arg1, person, mud, TRUE));
+        snprintf(socbuf_t, MAX_STRING_LENGTH, "%s", I3_find_social(ch, arg1, person, mud, TRUE));
 
-    if ((socbuf_o[0] != '\0') && (socbuf_t[0] != '\0')) {
-	if (argument && argument[0] != '\0') {
-	    int                                     sex;
+    if ((socbuf_o[0] != '\0') && (socbuf_t[0] != '\0'))
+    {
+        if (argument && argument[0] != '\0')
+        {
+            int sex;
 
-	    snprintf(buf, MAX_STRING_LENGTH, "%s@%s", person, mud);
-	    sex = I3_get_ucache_gender(buf);
-	    if (sex == -1) {
-		/*
-		 * Greg said to "just punt and call them all males".
-		 * * I decided to meet him halfway and at least request data before punting :)
-		 */
-		I3_send_chan_user_req(mud, person);
-		sex = SEX_MALE;
-	    } else
-		sex = i3todikugender(sex);
+            snprintf(buf, MAX_STRING_LENGTH, "%s@%s", person, mud);
+            sex = I3_get_ucache_gender(buf);
+            if (sex == -1)
+            {
+                /*
+                 * Greg said to "just punt and call them all males".
+                 * * I decided to meet him halfway and at least request data before punting :)
+                 */
+                I3_send_chan_user_req(mud, person);
+                sex = SEX_MALE;
+            }
+            else
+                sex = i3todikugender(sex);
 
-	    skeleton = I3_make_skeleton(buf);
-	    CH_I3SEX(skeleton) = sex;
-	}
+            skeleton = I3_make_skeleton(buf);
+            CH_I3SEX(skeleton) = sex;
+        }
 
-	strlcpy(msg_o, (char *)i3act_string(socbuf_o, ch, skeleton), MAX_STRING_LENGTH);
-	strlcpy(msg_t, (char *)i3act_string(socbuf_t, ch, skeleton), MAX_STRING_LENGTH);
+        strlcpy(msg_o, (char *)i3act_string(socbuf_o, ch, skeleton), MAX_STRING_LENGTH);
+        strlcpy(msg_t, (char *)i3act_string(socbuf_t, ch, skeleton), MAX_STRING_LENGTH);
 
-	if (!skeleton)
-	    I3_send_channel_emote(channel, CH_I3NAME(ch), msg_o);
-	else {
-	    strlcpy(buf, person, MAX_STRING_LENGTH);
-	    buf[0] = tolower(buf[0]);
-	    I3_send_channel_t(channel, CH_I3NAME(ch), mud, buf, msg_o, msg_t, person);
-	}
-	if (skeleton)
-	    I3_purge_skeleton(skeleton);
+        if (!skeleton)
+            I3_send_channel_emote(channel, CH_I3NAME(ch), msg_o);
+        else
+        {
+            strlcpy(buf, person, MAX_STRING_LENGTH);
+            buf[0] = tolower(buf[0]);
+            I3_send_channel_t(channel, CH_I3NAME(ch), mud, buf, msg_o, msg_t, person);
+        }
+        if (skeleton)
+            I3_purge_skeleton(skeleton);
     }
     return;
 }
 
 I3_CMD(I3_taunt)
 {
-    char                                    to[MAX_INPUT_LENGTH],
-                                           *ps;
-    char                                    mud[MAX_INPUT_LENGTH];
-    I3_MUD                                 *pmud;
-    char                                   *taunt;
+    char to[MAX_INPUT_LENGTH], *ps;
+    char mud[MAX_INPUT_LENGTH];
+    I3_MUD *pmud;
+    char *taunt;
 
-    if (!argument || argument[0] == '\0') {
+    if (!argument || argument[0] == '\0')
+    {
         do_taunt_from_log();
-    } else {
+    }
+    else
+    {
         argument = i3one_argument(argument, to);
         ps = strchr(to, '@');
 
-        if (to[0] == '\0' || ps == NULL) {
-            i3_printf(ch, "%%^YELLOW%%^You should specify a person and a mud.%%^RESET%%^\r\n" "(use %%^WHITE%%^%%^BOLD%%^i3mudlist%%^YELLOW%%^ to get an overview of the muds available)%%^RESET%%^\r\n");
+        if (to[0] == '\0' || ps == NULL)
+        {
+            i3_printf(ch, "%%^YELLOW%%^You should specify a person and a mud.%%^RESET%%^\r\n"
+                          "(use %%^WHITE%%^%%^BOLD%%^i3mudlist%%^YELLOW%%^ to get an overview of the muds "
+                          "available)%%^RESET%%^\r\n");
             return;
         }
 
@@ -19757,8 +20513,11 @@ I3_CMD(I3_taunt)
         ps++;
         strlcpy(mud, ps, MAX_INPUT_LENGTH);
 
-        if (!(pmud = find_I3_mud_by_name(mud))) {
-            i3_printf(ch, "%%^YELLOW%%^No such mud known.%%^RESET%%^\r\n" "(use %%^WHITE%%^%%^BOLD%%^i3mudlist%%^YELLOW%%^ to get an overview of the muds available)%%^RESET%%^\r\n");
+        if (!(pmud = find_I3_mud_by_name(mud)))
+        {
+            i3_printf(ch, "%%^YELLOW%%^No such mud known.%%^RESET%%^\r\n"
+                          "(use %%^WHITE%%^%%^BOLD%%^i3mudlist%%^YELLOW%%^ to get an overview of the muds "
+                          "available)%%^RESET%%^\r\n");
             return;
         }
 
@@ -19769,18 +20528,20 @@ I3_CMD(I3_taunt)
         }
 #endif
 
-        if (pmud->status >= 0) {
+        if (pmud->status >= 0)
+        {
             i3_printf(ch, "%s is marked as down.\r\n", pmud->name);
             return;
         }
 
-        if (pmud->tell == 0) {
+        if (pmud->tell == 0)
+        {
             i3_printf(ch, "%s does not support the 'tell' command.\r\n", pmud->name);
             return;
         }
 
-        //I3_send_tell(ch, to, pmud->name, argument);
-        //i3_npc_speak("wiley", "Cron", taunt);
+        // I3_send_tell(ch, to, pmud->name, argument);
+        // i3_npc_speak("wiley", "Cron", taunt);
 
         taunt = i3_taunt_line();
 
@@ -19799,42 +20560,51 @@ I3_CMD(I3_taunt)
 
 I3_CMD(I3_speaker_color)
 {
-    const char                             *found = NULL;
-    char                                    lowercase_name[MAX_INPUT_LENGTH];
-    char                                    speaker[MAX_INPUT_LENGTH];
+    const char *found = NULL;
+    char lowercase_name[MAX_INPUT_LENGTH];
+    char speaker[MAX_INPUT_LENGTH];
 
-    if (!argument || argument[0] == '\0') {
-	i3_printf(ch, "Usage: i3speaker_color <speaker> <color>\r\n");
-	return;
+    if (!argument || argument[0] == '\0')
+    {
+        i3_printf(ch, "Usage: i3speaker_color <speaker> <color>\r\n");
+        return;
     }
 
     bzero(speaker, MAX_INPUT_LENGTH);
     argument = i3one_argument(argument, speaker);
 
-    if (!*speaker) {
-	i3_printf(ch, "Usage: i3speaker_color <speaker> <color>\r\n");
-	return;
+    if (!*speaker)
+    {
+        i3_printf(ch, "Usage: i3speaker_color <speaker> <color>\r\n");
+        return;
     }
 
     bzero(lowercase_name, MAX_INPUT_LENGTH);
-    for(int i = 0; i < strlen(speaker) && i < MAX_INPUT_LENGTH; i++) {
-        if(isalpha(speaker[i]))
+    for (int i = 0; i < strlen(speaker) && i < MAX_INPUT_LENGTH; i++)
+    {
+        if (isalpha(speaker[i]))
             lowercase_name[i] = tolower(speaker[i]);
         else
             lowercase_name[i] = speaker[i];
     }
 
     found = (const char *)stringmap_find(speaker_db, lowercase_name);
-    if(found) {
-        if(!argument || !*argument) {
-	    i3_printf(ch, "%%^YELLOW%%^No color sequence specified.%%^RESET%%^\r\n");
-        } else {
-            stringmap_add( speaker_db, lowercase_name, (void *)argument, strlen(argument)+1 );
-            I3_saveSpeakers();
-	    i3_printf(ch, "%%^GREEN%%^Color sequence for %s saved.%%^RESET%%^\r\n", speaker);
+    if (found)
+    {
+        if (!argument || !*argument)
+        {
+            i3_printf(ch, "%%^YELLOW%%^No color sequence specified.%%^RESET%%^\r\n");
         }
-    } else {
-	i3_printf(ch, "%%^YELLOW%%^No such speaker known.%%^RESET%%^\r\n");
+        else
+        {
+            stringmap_add(speaker_db, lowercase_name, (void *)argument, strlen(argument) + 1);
+            I3_saveSpeakers();
+            i3_printf(ch, "%%^GREEN%%^Color sequence for %s saved.%%^RESET%%^\r\n", speaker);
+        }
+    }
+    else
+    {
+        i3_printf(ch, "%%^YELLOW%%^No such speaker known.%%^RESET%%^\r\n");
     }
 }
 
@@ -19852,186 +20622,186 @@ I3_CMD(I3_reload_speakers)
     return;
 }
 
-const char                             *i3_funcname(I3_FUN *func)
+const char *i3_funcname(I3_FUN *func)
 {
     if (func == I3_other)
-	return ("I3_other");
+        return ("I3_other");
     if (func == I3_listen_channel)
-	return ("I3_listen_channel");
+        return ("I3_listen_channel");
     if (func == I3_chanlist)
-	return ("I3_chanlist");
+        return ("I3_chanlist");
     if (func == I3_mudlist)
-	return ("I3_mudlist");
+        return ("I3_mudlist");
     if (func == I3_invis)
-	return ("I3_invis");
+        return ("I3_invis");
     if (func == I3_who)
-	return ("I3_who");
+        return ("I3_who");
     if (func == I3_locate)
-	return ("I3_locate");
+        return ("I3_locate");
     if (func == I3_tell)
-	return ("I3_tell");
+        return ("I3_tell");
     if (func == I3_reply)
-	return ("I3_reply");
+        return ("I3_reply");
     if (func == I3_emote)
-	return ("I3_emote");
+        return ("I3_emote");
     if (func == I3_beep)
-	return ("I3_beep");
+        return ("I3_beep");
     if (func == I3_ignorecmd)
-	return ("I3_ignorecmd");
+        return ("I3_ignorecmd");
     if (func == I3_finger)
-	return ("I3_finger");
+        return ("I3_finger");
     if (func == I3_mudinfo)
-	return ("I3_mudinfo");
+        return ("I3_mudinfo");
     if (func == I3_color)
-	return ("I3_color");
+        return ("I3_color");
     if (func == I3_afk)
-	return ("I3_afk");
+        return ("I3_afk");
     if (func == I3_chan_who)
-	return ("I3_chan_who");
+        return ("I3_chan_who");
     if (func == I3_connect)
-	return ("I3_connect");
+        return ("I3_connect");
     if (func == I3_disconnect)
-	return ("I3_disconnect");
+        return ("I3_disconnect");
     if (func == I3_reload)
-	return ("I3_reload");
+        return ("I3_reload");
     if (func == I3_send_user_req)
-	return ("I3_send_user_req");
+        return ("I3_send_user_req");
     if (func == I3_permstats)
-	return ("I3_permstats");
+        return ("I3_permstats");
     if (func == I3_deny_channel)
-	return ("I3_deny_channel");
+        return ("I3_deny_channel");
     if (func == I3_permset)
-	return ("I3_permset");
+        return ("I3_permset");
     if (func == I3_chanlayout)
-	return ("I3_chanlayout");
+        return ("I3_chanlayout");
     if (func == I3_admin_channel)
-	return ("I3_admin_channel");
+        return ("I3_admin_channel");
     if (func == I3_addchan)
-	return ("I3_addchan");
+        return ("I3_addchan");
     if (func == I3_removechan)
-	return ("I3_removechan");
+        return ("I3_removechan");
     if (func == I3_edit_channel)
-	return ("I3_edit_channel");
+        return ("I3_edit_channel");
     if (func == I3_mudlisten)
-	return ("I3_mudlisten");
+        return ("I3_mudlisten");
     if (func == I3_router)
-	return ("I3_router");
+        return ("I3_router");
     if (func == I3_bancmd)
-	return ("I3_bancmd");
+        return ("I3_bancmd");
     if (func == I3_setconfig)
-	return ("I3_setconfig");
+        return ("I3_setconfig");
     if (func == I3_setup_channel)
-	return ("I3_setup_channel");
+        return ("I3_setup_channel");
     if (func == I3_stats)
-	return ("I3_stats");
+        return ("I3_stats");
     if (func == I3_show_ucache_contents)
-	return ("I3_show_ucache_contents");
+        return ("I3_show_ucache_contents");
     if (func == I3_debug)
-	return ("I3_debug");
+        return ("I3_debug");
     if (func == i3_hedit)
-	return ("i3_hedit");
+        return ("i3_hedit");
     if (func == i3_help)
-	return ("i3_help");
+        return ("i3_help");
     if (func == i3_cedit)
-	return ("i3_cedit");
+        return ("i3_cedit");
     if (func == I3_taunt)
-	return ("I3_taunt");
+        return ("I3_taunt");
     if (func == I3_speaker_color)
-	return ("I3_speaker_color");
+        return ("I3_speaker_color");
     if (func == I3_reload_speakers)
-	return ("I3_reload_speakers");
+        return ("I3_reload_speakers");
 
     return "";
 }
 
-I3_FUN                                 *i3_function(const char *func)
+I3_FUN *i3_function(const char *func)
 {
     if (!strcasecmp(func, "I3_other"))
-	return I3_other;
+        return I3_other;
     if (!strcasecmp(func, "I3_listen_channel"))
-	return I3_listen_channel;
+        return I3_listen_channel;
     if (!strcasecmp(func, "I3_chanlist"))
-	return I3_chanlist;
+        return I3_chanlist;
     if (!strcasecmp(func, "I3_mudlist"))
-	return I3_mudlist;
+        return I3_mudlist;
     if (!strcasecmp(func, "I3_invis"))
-	return I3_invis;
+        return I3_invis;
     if (!strcasecmp(func, "I3_who"))
-	return I3_who;
+        return I3_who;
     if (!strcasecmp(func, "I3_locate"))
-	return I3_locate;
+        return I3_locate;
     if (!strcasecmp(func, "I3_tell"))
-	return I3_tell;
+        return I3_tell;
     if (!strcasecmp(func, "I3_reply"))
-	return I3_reply;
+        return I3_reply;
     if (!strcasecmp(func, "I3_emote"))
-	return I3_emote;
+        return I3_emote;
     if (!strcasecmp(func, "I3_beep"))
-	return I3_beep;
+        return I3_beep;
     if (!strcasecmp(func, "I3_ignorecmd"))
-	return I3_ignorecmd;
+        return I3_ignorecmd;
     if (!strcasecmp(func, "I3_finger"))
-	return I3_finger;
+        return I3_finger;
     if (!strcasecmp(func, "I3_mudinfo"))
-	return I3_mudinfo;
+        return I3_mudinfo;
     if (!strcasecmp(func, "I3_color"))
-	return I3_color;
+        return I3_color;
     if (!strcasecmp(func, "I3_afk"))
-	return I3_afk;
+        return I3_afk;
     if (!strcasecmp(func, "I3_chan_who"))
-	return I3_chan_who;
+        return I3_chan_who;
     if (!strcasecmp(func, "I3_connect"))
-	return I3_connect;
+        return I3_connect;
     if (!strcasecmp(func, "I3_disconnect"))
-	return I3_disconnect;
+        return I3_disconnect;
     if (!strcasecmp(func, "I3_reload"))
-	return I3_reload;
+        return I3_reload;
     if (!strcasecmp(func, "I3_send_user_req"))
-	return I3_send_user_req;
+        return I3_send_user_req;
     if (!strcasecmp(func, "I3_permstats"))
-	return I3_permstats;
+        return I3_permstats;
     if (!strcasecmp(func, "I3_deny_channel"))
-	return I3_deny_channel;
+        return I3_deny_channel;
     if (!strcasecmp(func, "I3_permset"))
-	return I3_permset;
+        return I3_permset;
     if (!strcasecmp(func, "I3_admin_channel"))
-	return I3_admin_channel;
+        return I3_admin_channel;
     if (!strcasecmp(func, "I3_bancmd"))
-	return I3_bancmd;
+        return I3_bancmd;
     if (!strcasecmp(func, "I3_setconfig"))
-	return I3_setconfig;
+        return I3_setconfig;
     if (!strcasecmp(func, "I3_setup_channel"))
-	return I3_setup_channel;
+        return I3_setup_channel;
     if (!strcasecmp(func, "I3_chanlayout"))
-	return I3_chanlayout;
+        return I3_chanlayout;
     if (!strcasecmp(func, "I3_addchan"))
-	return I3_addchan;
+        return I3_addchan;
     if (!strcasecmp(func, "I3_removechan"))
-	return I3_removechan;
+        return I3_removechan;
     if (!strcasecmp(func, "I3_edit_channel"))
-	return I3_edit_channel;
+        return I3_edit_channel;
     if (!strcasecmp(func, "I3_mudlisten"))
-	return I3_mudlisten;
+        return I3_mudlisten;
     if (!strcasecmp(func, "I3_router"))
-	return I3_router;
+        return I3_router;
     if (!strcasecmp(func, "I3_stats"))
-	return I3_stats;
+        return I3_stats;
     if (!strcasecmp(func, "I3_show_ucache_contents"))
-	return I3_show_ucache_contents;
+        return I3_show_ucache_contents;
     if (!strcasecmp(func, "I3_debug"))
-	return I3_debug;
+        return I3_debug;
     if (!strcasecmp(func, "i3_help"))
-	return i3_help;
+        return i3_help;
     if (!strcasecmp(func, "i3_cedit"))
-	return i3_cedit;
+        return i3_cedit;
     if (!strcasecmp(func, "i3_hedit"))
-	return i3_hedit;
+        return i3_hedit;
     if (!strcasecmp(func, "I3_taunt"))
-	return I3_taunt;
+        return I3_taunt;
     if (!strcasecmp(func, "I3_speaker_color"))
-	return I3_speaker_color;
+        return I3_speaker_color;
     if (!strcasecmp(func, "I3_reload_speakers"))
-	return I3_reload_speakers;
+        return I3_reload_speakers;
 
     return NULL;
 }
@@ -20043,424 +20813,510 @@ I3_FUN                                 *i3_function(const char *func)
  */
 bool i3_command_hook(CHAR_DATA *ch, const char *lcommand, const char *argument)
 {
-    I3_CMD_DATA                            *cmd;
-    I3_ALIAS                               *alias;
-    I3_CHANNEL                             *channel;
-    int                                     x = 0;
-    char                                    buffer[MAX_STRING_LENGTH];
-    const char                             *s = NULL;
-    char                                   *b = buffer;
-    int                                     token_count = 15;
-    const char                             *token[] = {
-        "%^RESET%^%^RED%^",
-        "%^RESET%^%^RED%^%^BOLD%^",
-        "%^RESET%^%^ORANGE%^",
-        "%^RESET%^%^YELLOW%^",
-        "%^RESET%^%^GREEN%^",
-        "%^RESET%^%^GREEN%^%^BOLD%^",
-        "%^RESET%^%^WHITE%^",
-        "%^RESET%^%^WHITE%^%^BOLD%^",
-        "%^RESET%^%^CYAN%^%^BOLD%^",
-        "%^RESET%^%^CYAN%^",
-        "%^RESET%^%^BLUE%^%^BOLD%^",
-        "%^RESET%^%^BLUE%^",
-        "%^RESET%^%^BLACK%^%^BOLD%^",
-        "%^RESET%^%^MAGENTA%^",
-        "%^RESET%^%^MAGENTA%^%^BOLD%^",
+    I3_CMD_DATA *cmd;
+    I3_ALIAS *alias;
+    I3_CHANNEL *channel;
+    int x = 0;
+    char buffer[MAX_STRING_LENGTH];
+    const char *s = NULL;
+    char *b = buffer;
+    int token_count = 15;
+    const char *token[] = {
+        "%^RESET%^%^RED%^",           "%^RESET%^%^RED%^%^BOLD%^",   "%^RESET%^%^ORANGE%^",
+        "%^RESET%^%^YELLOW%^",        "%^RESET%^%^GREEN%^",         "%^RESET%^%^GREEN%^%^BOLD%^",
+        "%^RESET%^%^WHITE%^",         "%^RESET%^%^WHITE%^%^BOLD%^", "%^RESET%^%^CYAN%^%^BOLD%^",
+        "%^RESET%^%^CYAN%^",          "%^RESET%^%^BLUE%^%^BOLD%^",  "%^RESET%^%^BLUE%^",
+        "%^RESET%^%^BLACK%^%^BOLD%^", "%^RESET%^%^MAGENTA%^",       "%^RESET%^%^MAGENTA%^%^BOLD%^",
     };
-    int                                     color = 0;
-    int                                     prev_color = 0;
-    int                                     color_dir = 1;
-    const char                             *original_argument;
-    int                                     emote_hack = 0;
-    int                                     bg_token_count = 10;
-    const char                             *bg_token[] = {
-        "%^RESET%^%^BLACK%^%^B_RED%^",
-        "%^RESET%^%^WHITE%^%^B_RED%^",
-        "%^RESET%^%^BLACK%^%^B_YELLOW%^",
-        "%^RESET%^%^BLACK%^%^B_GREEN%^",
-        "%^RESET%^%^WHITE%^%^B_GREEN%^",
-        "%^RESET%^%^BLACK%^%^B_WHITE%^",
-        "%^RESET%^%^BLACK%^%^B_CYAN%^",
-        "%^RESET%^%^WHITE%^%^B_BLUE%^",
-        "%^RESET%^%^BLACK%^%^B_MAGENTA%^",
+    int color = 0;
+    int prev_color = 0;
+    int color_dir = 1;
+    const char *original_argument;
+    int emote_hack = 0;
+    int bg_token_count = 10;
+    const char *bg_token[] = {
+        "%^RESET%^%^BLACK%^%^B_RED%^",     "%^RESET%^%^WHITE%^%^B_RED%^",   "%^RESET%^%^BLACK%^%^B_YELLOW%^",
+        "%^RESET%^%^BLACK%^%^B_GREEN%^",   "%^RESET%^%^WHITE%^%^B_GREEN%^", "%^RESET%^%^BLACK%^%^B_WHITE%^",
+        "%^RESET%^%^BLACK%^%^B_CYAN%^",    "%^RESET%^%^WHITE%^%^B_BLUE%^",  "%^RESET%^%^BLACK%^%^B_MAGENTA%^",
         "%^RESET%^%^WHITE%^%^B_MAGENTA%^",
     };
 
     if (IS_NPC(ch))
-	return FALSE;
+        return FALSE;
 
     if (!ch->desc)
-	return FALSE;
+        return FALSE;
 
-    if (!this_i3mud) {
-	log_info("%s", "Ooops. I3 called with missing configuration!");
-	return FALSE;
+    if (!this_i3mud)
+    {
+        log_info("%s", "Ooops. I3 called with missing configuration!");
+        return FALSE;
     }
 
-    if (first_i3_command == NULL) {
-	log_info("%s", "Dammit! No command data is loaded!");
-	return FALSE;
+    if (first_i3_command == NULL)
+    {
+        log_info("%s", "Dammit! No command data is loaded!");
+        return FALSE;
     }
 
-    if (I3PERM(ch) <= I3PERM_NONE) {
-	log_error("Permission %d vs. %d", I3PERM(ch), I3PERM_NONE);
-	return FALSE;
+    if (I3PERM(ch) <= I3PERM_NONE)
+    {
+        log_error("Permission %d vs. %d", I3PERM(ch), I3PERM_NONE);
+        return FALSE;
     }
 
     /*
      * Simple command interpreter menu. Nothing overly fancy etc, but it beats trying to tie directly into the mud's
      * own internal structures. Especially with the differences in codebases.
      */
-    for (cmd = first_i3_command; cmd; cmd = cmd->next) {
-	if (I3PERM(ch) < cmd->level)
-	    continue;
+    for (cmd = first_i3_command; cmd; cmd = cmd->next)
+    {
+        if (I3PERM(ch) < cmd->level)
+            continue;
 
-	for (alias = cmd->first_alias; alias; alias = alias->next) {
-	    if (!strcasecmp(lcommand, alias->name)) {
-		lcommand = cmd->name;
-		break;
-	    }
-	}
+        for (alias = cmd->first_alias; alias; alias = alias->next)
+        {
+            if (!strcasecmp(lcommand, alias->name))
+            {
+                lcommand = cmd->name;
+                break;
+            }
+        }
 
-	if (!strcasecmp(lcommand, cmd->name)) {
-	    if (cmd->connected == TRUE && !is_connecting()) {
-		i3_printf(ch, "The mud is not currently connected to I3.\r\n");
-		return TRUE;
-	    }
+        if (!strcasecmp(lcommand, cmd->name))
+        {
+            if (cmd->connected == TRUE && !is_connecting())
+            {
+                i3_printf(ch, "The mud is not currently connected to I3.\r\n");
+                return TRUE;
+            }
 
-	    if (cmd->function == NULL) {
-		i3_printf(ch, "That command has no code set. Inform the administration.\r\n");
-		log_error("i3_command_hook: Command %s has no code set!", cmd->name);
-		return TRUE;
-	    }
+            if (cmd->function == NULL)
+            {
+                i3_printf(ch, "That command has no code set. Inform the administration.\r\n");
+                log_error("i3_command_hook: Command %s has no code set!", cmd->name);
+                return TRUE;
+            }
 
-	    (*cmd->function) (ch, argument);
-	    return TRUE;
-	}
+            (*cmd->function)(ch, argument);
+            return TRUE;
+        }
     }
 
-    // Assumed to be going for a channel if it gets this far 
+    // Assumed to be going for a channel if it gets this far
 
     if (!(channel = find_I3_channel_by_localname(lcommand)))
-	return FALSE;
+        return FALSE;
 
     if (I3PERM(ch) < channel->i3perm)
-	return FALSE;
+        return FALSE;
 
-    if (I3_hasname(I3DENY(ch), channel->local_name)) {
-	i3_printf(ch, "You have been denied the use of %s by the administration.\r\n",
-		  channel->local_name);
-	return TRUE;
+    if (I3_hasname(I3DENY(ch), channel->local_name))
+    {
+        i3_printf(ch, "You have been denied the use of %s by the administration.\r\n", channel->local_name);
+        return TRUE;
     }
 
-    if (!argument || argument[0] == '\0') {
-	return TRUE;
+    if (!argument || argument[0] == '\0')
+    {
+        return TRUE;
     }
 
-    if (!is_connecting()) {
-	i3_printf(ch, "The mud is not currently connected to I3.\r\n");
-	return TRUE;
+    if (!is_connecting())
+    {
+        i3_printf(ch, "The mud is not currently connected to I3.\r\n");
+        return TRUE;
     }
 
-    if (!I3_hasname(I3LISTEN(ch), channel->local_name)) {
-	i3_printf(ch, "%%^YELLOW%%^You were trying to send something to an I3 "
-		  "channel but you're not listening to it.%%^RESET%%^\r\nPlease use the command "
-		  "'%%^WHITE%%^%%^BOLD%%^i3listen %s%%^YELLOW%%^' to listen to it.%%^RESET%%^\r\n", channel->local_name);
-	return TRUE;
+    if (!I3_hasname(I3LISTEN(ch), channel->local_name))
+    {
+        i3_printf(ch,
+                  "%%^YELLOW%%^You were trying to send something to an I3 "
+                  "channel but you're not listening to it.%%^RESET%%^\r\nPlease use the command "
+                  "'%%^WHITE%%^%%^BOLD%%^i3listen %s%%^YELLOW%%^' to listen to it.%%^RESET%%^\r\n",
+                  channel->local_name);
+        return TRUE;
     }
 
-    switch (argument[0]) {
-	case ',':
-	case ':':
-            // Strip the token
-	    argument++;
-            // while (isspace(*argument)) argument++;
-	    I3_send_channel_emote(channel, CH_I3NAME(ch), argument);
-	    break;
-	case '@':
-            // Strip the token
-	    argument++;
-	    // while (isspace(*argument)) argument++;
-	    I3_send_social(channel, ch, argument);
-	    break;
-	case '/':
-	    // Strip the / and then any spaces between it and the command word
-            original_argument = argument;
-	    argument++;
-	    while (*argument && isspace(*argument)) argument++;
-            if (!strncasecmp(argument, "help", 4)) {
-                i3_printf(ch, "%%^GREEN%%^%%^BOLD%%^Channel subcommands available for %s are:%%^RESET%%^\r\n", channel->local_name);
-                i3_printf(ch, "%%^GREEN%%^%%^BOLD%%^    :emote      - Sends message as an \"emote\", which usually prints differently.%%^RESET%%^\r\n");
-                i3_printf(ch, "%%^GREEN%%^%%^BOLD%%^    @social     - Sends message as a \"social\", which we don't really have.%%^RESET%%^\r\n");
-                i3_printf(ch, "%%^GREEN%%^%%^BOLD%%^    /help       - This helpful message.%%^RESET%%^\r\n");
-                i3_printf(ch, "%%^GREEN%%^%%^BOLD%%^    /history    - Shows the last %d messages.%%^RESET%%^\r\n", MAX_I3HISTORY);
-                if (I3PERM(ch) >= I3PERM_ADMIN) {
-                    i3_printf(ch, "%%^GREEN%%^%%^BOLD%%^    /log        - Toggle file logging on or off.%%^RESET%%^\r\n");
-                    i3_printf(ch, "%%^GREEN%%^%%^BOLD%%^    /colorize   - Adds annoying colors to the message.%%^RESET%%^\r\n");
-                    i3_printf(ch, "%%^GREEN%%^%%^BOLD%%^    /rainbow    - Adds differently annoying colors to the message.%%^RESET%%^\r\n");
-                    i3_printf(ch, "%%^GREEN%%^%%^BOLD%%^    /hex        - Display message as hexadecimal codes.%%^RESET%%^\r\n");
-                    i3_printf(ch, "%%^GREEN%%^%%^BOLD%%^    /bin        - Display message as binary digits.%%^RESET%%^\r\n");
-                    i3_printf(ch, "%%^GREEN%%^%%^BOLD%%^    /background - Makes every word have a different background color.%%^RESET%%^\r\n");
-                }
-                return TRUE;
-            } else if (I3PERM(ch) >= I3PERM_ADMIN && !strncasecmp(argument, "log", 3)) {
-                if (!I3IS_SET(channel->flags, I3CHAN_LOG)) {
-                    I3SET_BIT(channel->flags, I3CHAN_LOG);
-                    i3_printf(ch,
-                              "%%^RED%%^%%^BOLD%%^File logging enabled for %s, PLEASE don't forget to undo this when it isn't needed!%%^RESET%%^\r\n",
-                              channel->local_name);
-                } else {
-                    I3REMOVE_BIT(channel->flags, I3CHAN_LOG);
-                    i3_printf(ch, "%%^GREEN%%^%%^BOLD%%^File logging disabled for %s.%%^RESET%%^\r\n", channel->local_name);
-                }
-                I3_write_channel_config();
-                return TRUE;
-            } else if (!strncasecmp(argument, "history", 7) || !strncasecmp(argument, "hist", 4)) {
-                i3_printf(ch, "%%^CYAN%%^The last %d %s messages:%%^RESET%%^\r\n", MAX_I3HISTORY, channel->local_name);
-                for (x = 0; x < MAX_I3HISTORY; x++) {
-                    if (channel->history[x] != NULL)
-                        i3_printf(ch, "%s%%^RESET%%^\r\n", channel->history[x]);
-                    else
-                        break;
-                }
-                return TRUE;
-            } else if (I3PERM(ch) >= I3PERM_ADMIN && !strncasecmp(argument, "colorize", 8)) {
-                argument += 8;
-                // Skip the command verb + one space
-                if (*argument && isspace(*argument)) argument++;
-                if (*argument == ':' || *argument == ',') emote_hack = 1;
-                bzero(buffer, MAX_STRING_LENGTH);
-                b = buffer;
+    switch (argument[0])
+    {
+    case ',':
+    case ':':
+        // Strip the token
+        argument++;
+        // while (isspace(*argument)) argument++;
+        I3_send_channel_emote(channel, CH_I3NAME(ch), argument);
+        break;
+    case '@':
+        // Strip the token
+        argument++;
+        // while (isspace(*argument)) argument++;
+        I3_send_social(channel, ch, argument);
+        break;
+    case '/':
+        // Strip the / and then any spaces between it and the command word
+        original_argument = argument;
+        argument++;
+        while (*argument && isspace(*argument))
+            argument++;
+        if (!strncasecmp(argument, "help", 4))
+        {
+            i3_printf(ch, "%%^GREEN%%^%%^BOLD%%^Channel subcommands available for %s are:%%^RESET%%^\r\n",
+                      channel->local_name);
+            i3_printf(ch, "%%^GREEN%%^%%^BOLD%%^    :emote      - Sends message as an \"emote\", which usually prints "
+                          "differently.%%^RESET%%^\r\n");
+            i3_printf(ch, "%%^GREEN%%^%%^BOLD%%^    @social     - Sends message as a \"social\", which we don't really "
+                          "have.%%^RESET%%^\r\n");
+            i3_printf(ch, "%%^GREEN%%^%%^BOLD%%^    /help       - This helpful message.%%^RESET%%^\r\n");
+            i3_printf(ch, "%%^GREEN%%^%%^BOLD%%^    /history    - Shows the last %d messages.%%^RESET%%^\r\n",
+                      MAX_I3HISTORY);
+            if (I3PERM(ch) >= I3PERM_ADMIN)
+            {
+                i3_printf(ch, "%%^GREEN%%^%%^BOLD%%^    /log        - Toggle file logging on or off.%%^RESET%%^\r\n");
+                i3_printf(ch,
+                          "%%^GREEN%%^%%^BOLD%%^    /colorize   - Adds annoying colors to the message.%%^RESET%%^\r\n");
+                i3_printf(ch, "%%^GREEN%%^%%^BOLD%%^    /rainbow    - Adds differently annoying colors to the "
+                              "message.%%^RESET%%^\r\n");
+                i3_printf(
+                    ch, "%%^GREEN%%^%%^BOLD%%^    /hex        - Display message as hexadecimal codes.%%^RESET%%^\r\n");
+                i3_printf(ch,
+                          "%%^GREEN%%^%%^BOLD%%^    /bin        - Display message as binary digits.%%^RESET%%^\r\n");
+                i3_printf(ch, "%%^GREEN%%^%%^BOLD%%^    /background - Makes every word have a different background "
+                              "color.%%^RESET%%^\r\n");
+            }
+            return TRUE;
+        }
+        else if (I3PERM(ch) >= I3PERM_ADMIN && !strncasecmp(argument, "log", 3))
+        {
+            if (!I3IS_SET(channel->flags, I3CHAN_LOG))
+            {
+                I3SET_BIT(channel->flags, I3CHAN_LOG);
+                i3_printf(ch,
+                          "%%^RED%%^%%^BOLD%%^File logging enabled for %s, PLEASE don't forget to undo this when it "
+                          "isn't needed!%%^RESET%%^\r\n",
+                          channel->local_name);
+            }
+            else
+            {
+                I3REMOVE_BIT(channel->flags, I3CHAN_LOG);
+                i3_printf(ch, "%%^GREEN%%^%%^BOLD%%^File logging disabled for %s.%%^RESET%%^\r\n", channel->local_name);
+            }
+            I3_write_channel_config();
+            return TRUE;
+        }
+        else if (!strncasecmp(argument, "history", 7) || !strncasecmp(argument, "hist", 4))
+        {
+            i3_printf(ch, "%%^CYAN%%^The last %d %s messages:%%^RESET%%^\r\n", MAX_I3HISTORY, channel->local_name);
+            for (x = 0; x < MAX_I3HISTORY; x++)
+            {
+                if (channel->history[x] != NULL)
+                    i3_printf(ch, "%s%%^RESET%%^\r\n", channel->history[x]);
+                else
+                    break;
+            }
+            return TRUE;
+        }
+        else if (I3PERM(ch) >= I3PERM_ADMIN && !strncasecmp(argument, "colorize", 8))
+        {
+            argument += 8;
+            // Skip the command verb + one space
+            if (*argument && isspace(*argument))
+                argument++;
+            if (*argument == ':' || *argument == ',')
+                emote_hack = 1;
+            bzero(buffer, MAX_STRING_LENGTH);
+            b = buffer;
 
-                prev_color = color = random() % token_count;
-                strncpy(b, token[color], strlen(token[color]));
-                b += strlen(token[color]);
-                for(s = argument; *s && strlen(b) < (MAX_STRING_LENGTH - 10);) {
-                    char *u = NULL;
+            prev_color = color = random() % token_count;
+            strncpy(b, token[color], strlen(token[color]));
+            b += strlen(token[color]);
+            for (s = argument; *s && strlen(b) < (MAX_STRING_LENGTH - 10);)
+            {
+                char *u = NULL;
 
-                    u = utf8_check((char *)s);
-                    if(u && *u) {
-                        // Something unicode!
-                        *b = *s;
-                        b++;
-                        s++;
+                u = utf8_check((char *)s);
+                if (u && *u)
+                {
+                    // Something unicode!
+                    *b = *s;
+                    b++;
+                    s++;
 
-                        strncpy(b, u, strlen(u));
-                        b += strlen(u);
-                        s += strlen(u);
+                    strncpy(b, u, strlen(u));
+                    b += strlen(u);
+                    s += strlen(u);
 
-                        if(isspace(*s) || ispunct(*s)) {
-                            for(int pc = 0; pc < 10; pc++) {
-                                color = random() % bg_token_count;
-                                if(color != prev_color)
-                                    break;
-                            }
-                            prev_color = color;
-                            strncpy(b, token[color], strlen(token[color]));
-                            b += strlen(token[color]);
+                    if (isspace(*s) || ispunct(*s))
+                    {
+                        for (int pc = 0; pc < 10; pc++)
+                        {
+                            color = random() % bg_token_count;
+                            if (color != prev_color)
+                                break;
                         }
-                    } else {
-                        *b = *s;
-                        b++;
-                        s++;
-                        if(isspace(*s) || ispunct(*s)) {
-                            for(int pc = 0; pc < 10; pc++) {
-                                color = random() % bg_token_count;
-                                if(color != prev_color)
-                                    break;
-                            }
-                            prev_color = color;
-                            strncpy(b, token[color], strlen(token[color]));
-                            b += strlen(token[color]);
-                        }
+                        prev_color = color;
+                        strncpy(b, token[color], strlen(token[color]));
+                        b += strlen(token[color]);
                     }
                 }
-                strcpy(b, "%^RESET%^");
-                if( emote_hack ) {
-	            I3_send_channel_emote(channel, CH_I3NAME(ch), buffer);
-                    emote_hack = 0;
-                } else {
-	            I3_send_channel_message(channel, CH_I3NAME(ch), buffer);
+                else
+                {
+                    *b = *s;
+                    b++;
+                    s++;
+                    if (isspace(*s) || ispunct(*s))
+                    {
+                        for (int pc = 0; pc < 10; pc++)
+                        {
+                            color = random() % bg_token_count;
+                            if (color != prev_color)
+                                break;
+                        }
+                        prev_color = color;
+                        strncpy(b, token[color], strlen(token[color]));
+                        b += strlen(token[color]);
+                    }
                 }
-            } else if (I3PERM(ch) >= I3PERM_ADMIN && !strncasecmp(argument, "rainbow", 7)) {
-                argument += 7;
-                // Skip the command verb + one space
-                if (*argument && isspace(*argument)) argument++;
-                if (*argument == ':' || *argument == ',') emote_hack = 1;
-                bzero(buffer, MAX_STRING_LENGTH);
-                b = buffer;
+            }
+            strcpy(b, "%^RESET%^");
+            if (emote_hack)
+            {
+                I3_send_channel_emote(channel, CH_I3NAME(ch), buffer);
+                emote_hack = 0;
+            }
+            else
+            {
+                I3_send_channel_message(channel, CH_I3NAME(ch), buffer);
+            }
+        }
+        else if (I3PERM(ch) >= I3PERM_ADMIN && !strncasecmp(argument, "rainbow", 7))
+        {
+            argument += 7;
+            // Skip the command verb + one space
+            if (*argument && isspace(*argument))
+                argument++;
+            if (*argument == ':' || *argument == ',')
+                emote_hack = 1;
+            bzero(buffer, MAX_STRING_LENGTH);
+            b = buffer;
 
-                color = 0;
-                color_dir = 1;
-                strncpy(b, token[color], strlen(token[color]));
-                b += strlen(token[color]);
-                for(s = argument; *s && strlen(b) < (MAX_STRING_LENGTH - 10);) {
-                    char *u = NULL;
+            color = 0;
+            color_dir = 1;
+            strncpy(b, token[color], strlen(token[color]));
+            b += strlen(token[color]);
+            for (s = argument; *s && strlen(b) < (MAX_STRING_LENGTH - 10);)
+            {
+                char *u = NULL;
 
-                    u = utf8_check((char *)s);
-                    if(u && *u) {
-                        // Something unicode!
+                u = utf8_check((char *)s);
+                if (u && *u)
+                {
+                    // Something unicode!
+                    *b = *s;
+                    b++;
+                    s++;
+
+                    strncpy(b, u, strlen(u));
+                    b += strlen(u);
+                    s += strlen(u);
+
+                    color += color_dir;
+                    if (color == 0)
+                    {
+                        color_dir = 1;
+                    }
+                    else if (color == token_count)
+                    {
+                        color_dir = -1;
+                        color = token_count - 1;
+                    }
+                    color = color % token_count;
+                    strncpy(b, token[color], strlen(token[color]));
+                    b += strlen(token[color]);
+                }
+                else
+                {
+                    // a normal character, not utf8
+                    if (isspace(*s))
+                    {
                         *b = *s;
                         b++;
                         s++;
-
-                        strncpy(b, u, strlen(u));
-                        b += strlen(u);
-                        s += strlen(u);
-
+                    }
+                    else
+                    {
+                        *b = *s;
+                        b++;
+                        s++;
                         color += color_dir;
-                        if(color == 0) {
+                        if (color == 0)
+                        {
                             color_dir = 1;
-                        } else if(color == token_count) {
+                        }
+                        else if (color == token_count)
+                        {
                             color_dir = -1;
                             color = token_count - 1;
                         }
                         color = color % token_count;
                         strncpy(b, token[color], strlen(token[color]));
                         b += strlen(token[color]);
-                    } else {
-                        // a normal character, not utf8
-                        if(isspace(*s)) {
-                            *b = *s;
-                            b++;
-                            s++;
-                        } else {
-                            *b = *s;
-                            b++;
-                            s++;
-                            color += color_dir;
-                            if(color == 0) {
-                                color_dir = 1;
-                            } else if(color == token_count) {
-                                color_dir = -1;
-                                color = token_count - 1;
-                            }
-                            color = color % token_count;
-                            strncpy(b, token[color], strlen(token[color]));
-                            b += strlen(token[color]);
-                        }
                     }
                 }
-                strcpy(b, "%^RESET%^");
-                if( emote_hack ) {
-	            I3_send_channel_emote(channel, CH_I3NAME(ch), buffer);
-                    emote_hack = 0;
-                } else {
-	            I3_send_channel_message(channel, CH_I3NAME(ch), buffer);
-                }
-            } else if (I3PERM(ch) >= I3PERM_ADMIN && !strncasecmp(argument, "background", 10)) {
-                argument += 10;
-                // Skip the command verb + one space
-                if (*argument && isspace(*argument)) argument++;
-                if (*argument == ':' || *argument == ',') emote_hack = 1;
-                bzero(buffer, MAX_STRING_LENGTH);
-                b = buffer;
-
-                prev_color = color = random() % bg_token_count;
-                strncpy(b, bg_token[color], strlen(bg_token[color]));
-                b += strlen(bg_token[color]);
-                for(s = argument; *s && strlen(b) < (MAX_STRING_LENGTH - 10);) {
-                    char *u = NULL;
-
-                    u = utf8_check((char *)s);
-                    if(u && *u) {
-                        // Something unicode!
-                        *b = *s;
-                        b++;
-                        s++;
-
-                        strncpy(b, u, strlen(u));
-                        b += strlen(u);
-                        s += strlen(u);
-
-                        if(isspace(*s)) {
-                            for(int pc = 0; pc < 10; pc++) {
-                                color = random() % bg_token_count;
-                                if(color != prev_color)
-                                    break;
-                            }
-                            prev_color = color;
-                            strncpy(b, bg_token[color], strlen(bg_token[color]));
-                            b += strlen(bg_token[color]);
-                        }
-                    } else {
-                        *b = *s;
-                        b++;
-                        s++;
-                        if(isspace(*s)) {
-                            for(int pc = 0; pc < 10; pc++) {
-                                color = random() % bg_token_count;
-                                if(color != prev_color)
-                                    break;
-                            }
-                            prev_color = color;
-                            strncpy(b, bg_token[color], strlen(bg_token[color]));
-                            b += strlen(bg_token[color]);
-                        }
-                    }
-                }
-                strcpy(b, "%^RESET%^");
-                if( emote_hack ) {
-	            I3_send_channel_emote(channel, CH_I3NAME(ch), buffer);
-                    emote_hack = 0;
-                } else {
-	            I3_send_channel_message(channel, CH_I3NAME(ch), buffer);
-                }
-            } else if (I3PERM(ch) >= I3PERM_ADMIN && !strncasecmp(argument, "hex", 3)) {
-                argument += 3;
-                // Skip the command verb + one space
-                if (*argument && isspace(*argument)) argument++;
-                if (*argument == ':' || *argument == ',') emote_hack = 1;
-                bzero(buffer, MAX_STRING_LENGTH);
-                b = buffer;
-
-                for(s = argument; *s && strlen(buffer) < (MAX_STRING_LENGTH - 10);  s++) {
-                    int ss = (int)*s;
-                    scprintf(buffer, MAX_STRING_LENGTH - 10, "%0x", ss);
-                    if (*(s+1))
-		        strlcat(buffer, " ", MAX_STRING_LENGTH - 10);
-                }
-                strlcat(buffer, "%^RESET%^", MAX_STRING_LENGTH);
-                if( emote_hack ) {
-	            I3_send_channel_emote(channel, CH_I3NAME(ch), buffer);
-                    emote_hack = 0;
-                } else {
-	            I3_send_channel_message(channel, CH_I3NAME(ch), buffer);
-                }
-            } else if (I3PERM(ch) >= I3PERM_ADMIN && !strncasecmp(argument, "bin", 3)) {
-                argument += 3;
-                // Skip the command verb + one space
-                if (*argument && isspace(*argument)) argument++;
-                if (*argument == ':' || *argument == ',') emote_hack = 1;
-                bzero(buffer, MAX_STRING_LENGTH);
-                b = buffer;
-
-                for(s = argument; *s && strlen(buffer) < (MAX_STRING_LENGTH - 10);  s++) {
-                    int ss = (int)*s;
-                    scprintf(buffer, MAX_STRING_LENGTH - 10, "%d%d%d%d%d%d%d%d",
-                            (ss & 0x80)?1:0, (ss & 0x40)?1:0,
-                            (ss & 0x20)?1:0, (ss & 0x10)?1:0,
-                            (ss & 0x08)?1:0, (ss & 0x04)?1:0,
-                            (ss & 0x02)?1:0, (ss & 0x01)?1:0);
-                    if (*(s+1))
-		        strlcat(buffer, " ", MAX_STRING_LENGTH - 10);
-                }
-                strlcat(buffer, "%^RESET%^", MAX_STRING_LENGTH);
-                if( emote_hack ) {
-	            I3_send_channel_emote(channel, CH_I3NAME(ch), buffer);
-                    emote_hack = 0;
-                } else {
-	            I3_send_channel_message(channel, CH_I3NAME(ch), buffer);
-                }
-            } else {
-                /* No match for known subcommands, so just send it */
-	        I3_send_channel_message(channel, CH_I3NAME(ch), original_argument);
             }
-            break;
-	default:
-	    I3_send_channel_message(channel, CH_I3NAME(ch), argument);
-	    break;
+            strcpy(b, "%^RESET%^");
+            if (emote_hack)
+            {
+                I3_send_channel_emote(channel, CH_I3NAME(ch), buffer);
+                emote_hack = 0;
+            }
+            else
+            {
+                I3_send_channel_message(channel, CH_I3NAME(ch), buffer);
+            }
+        }
+        else if (I3PERM(ch) >= I3PERM_ADMIN && !strncasecmp(argument, "background", 10))
+        {
+            argument += 10;
+            // Skip the command verb + one space
+            if (*argument && isspace(*argument))
+                argument++;
+            if (*argument == ':' || *argument == ',')
+                emote_hack = 1;
+            bzero(buffer, MAX_STRING_LENGTH);
+            b = buffer;
+
+            prev_color = color = random() % bg_token_count;
+            strncpy(b, bg_token[color], strlen(bg_token[color]));
+            b += strlen(bg_token[color]);
+            for (s = argument; *s && strlen(b) < (MAX_STRING_LENGTH - 10);)
+            {
+                char *u = NULL;
+
+                u = utf8_check((char *)s);
+                if (u && *u)
+                {
+                    // Something unicode!
+                    *b = *s;
+                    b++;
+                    s++;
+
+                    strncpy(b, u, strlen(u));
+                    b += strlen(u);
+                    s += strlen(u);
+
+                    if (isspace(*s))
+                    {
+                        for (int pc = 0; pc < 10; pc++)
+                        {
+                            color = random() % bg_token_count;
+                            if (color != prev_color)
+                                break;
+                        }
+                        prev_color = color;
+                        strncpy(b, bg_token[color], strlen(bg_token[color]));
+                        b += strlen(bg_token[color]);
+                    }
+                }
+                else
+                {
+                    *b = *s;
+                    b++;
+                    s++;
+                    if (isspace(*s))
+                    {
+                        for (int pc = 0; pc < 10; pc++)
+                        {
+                            color = random() % bg_token_count;
+                            if (color != prev_color)
+                                break;
+                        }
+                        prev_color = color;
+                        strncpy(b, bg_token[color], strlen(bg_token[color]));
+                        b += strlen(bg_token[color]);
+                    }
+                }
+            }
+            strcpy(b, "%^RESET%^");
+            if (emote_hack)
+            {
+                I3_send_channel_emote(channel, CH_I3NAME(ch), buffer);
+                emote_hack = 0;
+            }
+            else
+            {
+                I3_send_channel_message(channel, CH_I3NAME(ch), buffer);
+            }
+        }
+        else if (I3PERM(ch) >= I3PERM_ADMIN && !strncasecmp(argument, "hex", 3))
+        {
+            argument += 3;
+            // Skip the command verb + one space
+            if (*argument && isspace(*argument))
+                argument++;
+            if (*argument == ':' || *argument == ',')
+                emote_hack = 1;
+            bzero(buffer, MAX_STRING_LENGTH);
+            b = buffer;
+
+            for (s = argument; *s && strlen(buffer) < (MAX_STRING_LENGTH - 10); s++)
+            {
+                int ss = (int)*s;
+                scprintf(buffer, MAX_STRING_LENGTH - 10, "%0x", ss);
+                if (*(s + 1))
+                    strlcat(buffer, " ", MAX_STRING_LENGTH - 10);
+            }
+            strlcat(buffer, "%^RESET%^", MAX_STRING_LENGTH);
+            if (emote_hack)
+            {
+                I3_send_channel_emote(channel, CH_I3NAME(ch), buffer);
+                emote_hack = 0;
+            }
+            else
+            {
+                I3_send_channel_message(channel, CH_I3NAME(ch), buffer);
+            }
+        }
+        else if (I3PERM(ch) >= I3PERM_ADMIN && !strncasecmp(argument, "bin", 3))
+        {
+            argument += 3;
+            // Skip the command verb + one space
+            if (*argument && isspace(*argument))
+                argument++;
+            if (*argument == ':' || *argument == ',')
+                emote_hack = 1;
+            bzero(buffer, MAX_STRING_LENGTH);
+            b = buffer;
+
+            for (s = argument; *s && strlen(buffer) < (MAX_STRING_LENGTH - 10); s++)
+            {
+                int ss = (int)*s;
+                scprintf(buffer, MAX_STRING_LENGTH - 10, "%d%d%d%d%d%d%d%d", (ss & 0x80) ? 1 : 0, (ss & 0x40) ? 1 : 0,
+                         (ss & 0x20) ? 1 : 0, (ss & 0x10) ? 1 : 0, (ss & 0x08) ? 1 : 0, (ss & 0x04) ? 1 : 0,
+                         (ss & 0x02) ? 1 : 0, (ss & 0x01) ? 1 : 0);
+                if (*(s + 1))
+                    strlcat(buffer, " ", MAX_STRING_LENGTH - 10);
+            }
+            strlcat(buffer, "%^RESET%^", MAX_STRING_LENGTH);
+            if (emote_hack)
+            {
+                I3_send_channel_emote(channel, CH_I3NAME(ch), buffer);
+                emote_hack = 0;
+            }
+            else
+            {
+                I3_send_channel_message(channel, CH_I3NAME(ch), buffer);
+            }
+        }
+        else
+        {
+            /* No match for known subcommands, so just send it */
+            I3_send_channel_message(channel, CH_I3NAME(ch), original_argument);
+        }
+        break;
+    default:
+        I3_send_channel_message(channel, CH_I3NAME(ch), argument);
+        break;
     }
     return TRUE;
 }
@@ -20468,7 +21324,7 @@ bool i3_command_hook(CHAR_DATA *ch, const char *lcommand, const char *argument)
 void i3_do_ping(const char *fake_user, const char *chan_name, const char *mud_name)
 {
     if (!is_connected())
-	return;
+        return;
 
     I3_write_header("chan-who-req", this_i3mud->name, fake_user, mud_name, NULL);
     I3_write_buffer("\"");
@@ -20480,71 +21336,79 @@ void i3_do_ping(const char *fake_user, const char *chan_name, const char *mud_na
 
 void i3_npc_speak(const char *chan_name, const char *actor, const char *message)
 {
-    I3_CHANNEL                             *channel;
+    I3_CHANNEL *channel;
 
-    if (!is_connected()) {
-	log_info("Not connected!");
-	return;
+    if (!is_connected())
+    {
+        log_info("Not connected!");
+        return;
     }
-    if (!(channel = find_I3_channel_by_localname(chan_name))) {
-	log_info("Can't find local channel %s.", chan_name);
-	return;
+    if (!(channel = find_I3_channel_by_localname(chan_name)))
+    {
+        log_info("Can't find local channel %s.", chan_name);
+        return;
     }
 
     while (isspace(*message))
-	message++;
+        message++;
     log_info("Sending [%s] from %s to %s.", message, actor, chan_name);
     I3_send_channel_message(channel, actor, message);
 }
 
 void i3_npc_chat(const char *chan_name, const char *actor, const char *message)
 {
-    I3_CHANNEL                             *channel;
+    I3_CHANNEL *channel;
 
-    if (!is_connected()) {
-	log_info("Not connected!");
-	return;
+    if (!is_connected())
+    {
+        log_info("Not connected!");
+        return;
     }
-    if (!(channel = find_I3_channel_by_localname(chan_name))) {
-	log_info("Can't find local channel %s.", chan_name);
-	return;
+    if (!(channel = find_I3_channel_by_localname(chan_name)))
+    {
+        log_info("Can't find local channel %s.", chan_name);
+        return;
     }
 
     while (isspace(*message))
-	message++;
+        message++;
     log_info("Sending [%s] from %s to %s.", message, actor, chan_name);
     I3_send_channel_emote(channel, actor, message);
 }
 
-char                                   *I3_nameescape(const char *ps)
+char *I3_nameescape(const char *ps)
 {
-    static char                             xnew[MAX_STRING_LENGTH];
-    char                                   *pnew = xnew;
-    char                                    c;
+    static char xnew[MAX_STRING_LENGTH];
+    char *pnew = xnew;
+    char c;
 
-    while (ps[0]) {
-	c = (char)tolower((int)*ps);
-	ps++;
-	if (c < 'a' || c > 'z')
-	    continue;
-	pnew[0] = c;
-	pnew++;
+    while (ps[0])
+    {
+        c = (char)tolower((int)*ps);
+        ps++;
+        if (c < 'a' || c > 'z')
+            continue;
+        pnew[0] = c;
+        pnew++;
     }
     pnew[0] = '\0';
     return xnew;
 }
 
-char                                   *I3_old_nameremap(const char *ps)
+char *I3_old_nameremap(const char *ps)
 {
-    static char                             xnew[MAX_STRING_LENGTH];
+    static char xnew[MAX_STRING_LENGTH];
 
-    if(!strcasecmp(ps, "quixadhal")) {
+    if (!strcasecmp(ps, "quixadhal"))
+    {
         /* strcpy(xnew, "Quixadhal, the Lost"); */
         /* strcpy(xnew, "きけさだる"); */
         /* strcpy(xnew, "Dread Lord Quixadhal"); */
         /* strcpy(xnew, "Off-Topic Quixadhal"); */
         /* strcpy(xnew, "Cromulent Quixadhal"); */
-    } else {
+    }
+    else
+    {
         strcpy(xnew, ps);
     }
     return xnew;
@@ -20553,13 +21417,13 @@ char                                   *I3_old_nameremap(const char *ps)
 char *explode_pinkfish_to(const char *src, int target)
 {
     static char result[MAX_STRING_LENGTH];
-    char **parts                    = NULL;
-    int part_count                  = 0;
-    stringMap *pinkfish_target_db   = NULL;
+    char **parts = NULL;
+    int part_count = 0;
+    stringMap *pinkfish_target_db = NULL;
 
     bzero(result, MAX_STRING_LENGTH);
 
-    if(!src || !*src)
+    if (!src || !*src)
         return result;
 
     // Pinkfish codes are unfortunate.
@@ -20580,23 +21444,24 @@ char *explode_pinkfish_to(const char *src, int target)
     //
     // result = implode("", parts);
 
-    switch(target) {
-        default:
-        case I3_PINKFISH_NULL:
-            pinkfish_target_db = pinkfish_to_null_db;
-            break;
-        case I3_PINKFISH_ANSI:
-            pinkfish_target_db = pinkfish_to_ansi_db;
-            break;
-        case I3_PINKFISH_I3:
-            pinkfish_target_db = pinkfish_to_i3_db;
-            break;
-        case I3_PINKFISH_XTERM:
-            pinkfish_target_db = pinkfish_to_xterm256_db;
-            break;
-        case I3_PINKFISH_GREY:
-            pinkfish_target_db = pinkfish_to_greyscale_db;
-            break;
+    switch (target)
+    {
+    default:
+    case I3_PINKFISH_NULL:
+        pinkfish_target_db = pinkfish_to_null_db;
+        break;
+    case I3_PINKFISH_ANSI:
+        pinkfish_target_db = pinkfish_to_ansi_db;
+        break;
+    case I3_PINKFISH_I3:
+        pinkfish_target_db = pinkfish_to_i3_db;
+        break;
+    case I3_PINKFISH_XTERM:
+        pinkfish_target_db = pinkfish_to_xterm256_db;
+        break;
+    case I3_PINKFISH_GREY:
+        pinkfish_target_db = pinkfish_to_greyscale_db;
+        break;
     }
 
     // This will break the string up into an array of parts,
@@ -20606,36 +21471,49 @@ char *explode_pinkfish_to(const char *src, int target)
     // should be an empty string as a part.
     part_count = explode(src, "%^", &parts);
 
-    for(int i = 0; i < part_count; i++) {
-        if(parts[i]) {
+    for (int i = 0; i < part_count; i++)
+    {
+        if (parts[i])
+        {
             const char *match = stringmap_find(pinkfish_target_db, parts[i]);
-            if(match) {
+            if (match)
+            {
                 // This is a Pinkfish code we recognize!
-                //log_info("pinkfish_to: found \"%s\", remapped to \"ESC%s\" by MODE %d", parts[i], (const unsigned char *)(match +1), target);
+                // log_info("pinkfish_to: found \"%s\", remapped to \"ESC%s\" by MODE %d", parts[i], (const unsigned
+                // char *)(match +1), target);
                 free(parts[i]);
-                if(target == I3_PINKFISH_NULL) {
+                if (target == I3_PINKFISH_NULL)
+                {
                     parts[i] = strdup("");
-                } else {
+                }
+                else
+                {
                     parts[i] = strdup(match);
                 }
-            } else {
-                //log_info("NO MATCH: \"%s\"", parts[i]);
+            }
+            else
+            {
+                // log_info("NO MATCH: \"%s\"", parts[i]);
             }
         }
     }
 
     // Now that we've replaced any that we recognized, implode!
-    for(int i = 0; i < part_count; i++) {
+    for (int i = 0; i < part_count; i++)
+    {
         strlcat(result, parts[i], MAX_STRING_LENGTH);
     }
 
     // And finally, we free the mallocs...
-    for(int i = 0; i < part_count; i++) {
-        if(parts[i]) {
+    for (int i = 0; i < part_count; i++)
+    {
+        if (parts[i])
+        {
             free(parts[i]);
         }
     }
-    if(parts) {
+    if (parts)
+    {
         free(parts);
     }
 
@@ -20653,53 +21531,64 @@ char *pinkfish_to(const char *src, int target)
 
     bzero(result, MAX_STRING_LENGTH);
 
-    if(!src || !*src)
+    if (!src || !*src)
         return result;
 
-    switch(target) {
-        default:
-        case I3_PINKFISH_NULL:
-        case I3_PINKFISH_ANSI:
-            pinkfish_target_db = pinkfish_to_ansi_db;
-            break;
-        case I3_PINKFISH_I3:
-            pinkfish_target_db = pinkfish_to_i3_db;
-            break;
-        case I3_PINKFISH_XTERM:
-            pinkfish_target_db = pinkfish_to_xterm256_db;
-            break;
-        case I3_PINKFISH_GREY:
-            pinkfish_target_db = pinkfish_to_greyscale_db;
-            break;
+    switch (target)
+    {
+    default:
+    case I3_PINKFISH_NULL:
+    case I3_PINKFISH_ANSI:
+        pinkfish_target_db = pinkfish_to_ansi_db;
+        break;
+    case I3_PINKFISH_I3:
+        pinkfish_target_db = pinkfish_to_i3_db;
+        break;
+    case I3_PINKFISH_XTERM:
+        pinkfish_target_db = pinkfish_to_xterm256_db;
+        break;
+    case I3_PINKFISH_GREY:
+        pinkfish_target_db = pinkfish_to_greyscale_db;
+        break;
     }
 
     // Walk the string, finding our delimiters.
     sp = (char *)src;
-    if(!(tok = strstr(sp, "%^"))) {
+    if (!(tok = strstr(sp, "%^")))
+    {
         // No delimiters at all, catch and release.
         strlcpy(result, src, MAX_STRING_LENGTH);
-    } else {
+    }
+    else
+    {
         // We have at least one!
-        if(tok == sp) {
+        if (tok == sp)
+        {
             // We are sitting on it
             sp += 2;
-        } else {
+        }
+        else
+        {
             // There is stuff before it to process
             strlcpy(word, sp, tok - sp + 1);
             sp = (tok + 2);
             strlcat(result, word, MAX_STRING_LENGTH);
         }
 
-        while((tok = strstr(sp, "%^")) != NULL) {
+        while ((tok = strstr(sp, "%^")) != NULL)
+        {
             // From now on, each token we find will mark a potential
             // replacment.
             strlcpy(word, sp, tok - sp + 1);
             sp = (tok + 2);
             match = stringmap_find(pinkfish_target_db, word);
-            if(match) {
+            if (match)
+            {
                 // Hey, a Pinkfish code!
                 strlcat(result, match, MAX_STRING_LENGTH);
-            } else {
+            }
+            else
+            {
                 // Nope, just a word
                 strlcat(result, word, MAX_STRING_LENGTH);
             }
@@ -20707,7 +21596,8 @@ char *pinkfish_to(const char *src, int target)
 
         // Now that we've exhausted all of the tokens, if there's
         // anything left, we just copy it verbatum.
-        if(*sp) {
+        if (*sp)
+        {
             strlcat(result, sp, MAX_STRING_LENGTH);
         }
     }
@@ -20795,32 +21685,32 @@ char *pinkfish_to_ansi(const char *src)
 
 void i3_daily_summary()
 {
-    struct tm                              *ytm_info = NULL;
-    time_t                                  ytc = (time_t) 0;
-    struct stat                             yst;
-    char                                    output[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
-    int                                     messages = 0;
-    int                                     speakers = 0;
-    char                                    logpage_url[MAX_INPUT_LENGTH] = "http://wileymud.themud.org/~wiley/log/";
-    char                                    yesterday[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
-    char                                    yesterfile[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
-    char                                    yesternuke[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
-    char                                    yestertouch[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
-    char *target_channel_list[] = { "intercre", "dchat", "intergossip", "dwchat" };
+    struct tm *ytm_info = NULL;
+    time_t ytc = (time_t)0;
+    struct stat yst;
+    char output[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
+    int messages = 0;
+    int speakers = 0;
+    char logpage_url[MAX_INPUT_LENGTH] = "http://wileymud.themud.org/~wiley/log/";
+    char yesterday[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
+    char yesterfile[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
+    char yesternuke[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
+    char yestertouch[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
+    char *target_channel_list[] = {"intercre", "dchat", "intergossip", "dwchat"};
     int target_channel_count = 4;
     char *target_channel = target_channel_list[0];
 
     char *sql = "SELECT ( "
-        "SELECT count(*) FROM ( "
-            "SELECT DISTINCT username "
-            "FROM i3log "
-            "WHERE date(local) = date(now()) - '1 day'::interval AND NOT is_bot "
-            ") s "
-        ") AS speakers, ( "
-            "SELECT count(*) "
-            "FROM i3log "
-            "WHERE date(local) = date(now()) - '1 day'::interval AND NOT is_bot "
-        ") AS messages;";
+                "SELECT count(*) FROM ( "
+                "SELECT DISTINCT username "
+                "FROM i3log "
+                "WHERE date(local) = date(now()) - '1 day'::interval AND NOT is_bot "
+                ") s "
+                ") AS speakers, ( "
+                "SELECT count(*) "
+                "FROM i3log "
+                "WHERE date(local) = date(now()) - '1 day'::interval AND NOT is_bot "
+                ") AS messages;";
     PGresult *res = NULL;
     ExecStatusType st = 0;
     int rows = 0;
@@ -20829,19 +21719,22 @@ void i3_daily_summary()
     ytc = time(0) - 86400;
     ytm_info = localtime(&ytc);
     // Rotate the channel to "spam" every day.
-    target_channel = target_channel_list[ ytm_info->tm_mday % target_channel_count ];
+    target_channel = target_channel_list[ytm_info->tm_mday % target_channel_count];
 
-    snprintf(yesterday, MAX_INPUT_LENGTH, "%-4.4d-%-2.2d-%-2.2d",
-        ytm_info->tm_year + 1900, ytm_info->tm_mon + 1, ytm_info->tm_mday);
+    snprintf(yesterday, MAX_INPUT_LENGTH, "%-4.4d-%-2.2d-%-2.2d", ytm_info->tm_year + 1900, ytm_info->tm_mon + 1,
+             ytm_info->tm_mday);
     snprintf(yesterfile, MAX_INPUT_LENGTH, "%s/%s.i3_done", I3_DIR, yesterday);
     snprintf(yesternuke, MAX_INPUT_LENGTH, "/usr/bin/rm %s/*.i3_done", I3_DIR);
     snprintf(yestertouch, MAX_INPUT_LENGTH, "/usr/bin/touch %s", yesterfile);
 
-    if (stat(yesterfile, &yst) != -1) {
+    if (stat(yesterfile, &yst) != -1)
+    {
         // We already did this today, for yesterday.
         log_info("Summary has already been done: %s exists.", yesterfile);
         return;
-    } else {
+    }
+    else
+    {
         // We haven't done it yet!
         log_info("Summary needs to be done: %s does not exist.", yesterfile);
         system(yesternuke);
@@ -20851,29 +21744,33 @@ void i3_daily_summary()
         sql_connect(&db_i3log);
         res = PQexec(db_i3log.dbc, sql);
         st = PQresultStatus(res);
-        if( st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE ) {
+        if (st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE)
+        {
             log_fatal("Cannot get message count from i3log table: %s", PQerrorMessage(db_wileymud.dbc));
             PQclear(res);
             proper_exit(MUD_HALT);
         }
         rows = PQntuples(res);
         columns = PQnfields(res);
-        if(rows > 0 && columns > 1) {
-            speakers = (int) atoi(PQgetvalue(res,0,0));
-            messages = (int) atoi(PQgetvalue(res,0,1));
-        } else {
+        if (rows > 0 && columns > 1)
+        {
+            speakers = (int)atoi(PQgetvalue(res, 0, 0));
+            messages = (int)atoi(PQgetvalue(res, 0, 1));
+        }
+        else
+        {
             log_fatal("Invalid result set from i3log!");
             PQclear(res);
             proper_exit(MUD_HALT);
         }
         PQclear(res);
 
-        //snprintf(output, MAX_STRING_LENGTH, "I3 Activity Report for %%^RED%%^%%^BOLD%%^%s:%%^RESET%%^ %%^GREEN%%^%%^BOLD%%^%d messages%%^RESET%%^ from %%^YELLOW%%^%d speakers%%^RESET%%^. %s",
+        // snprintf(output, MAX_STRING_LENGTH, "I3 Activity Report for %%^RED%%^%%^BOLD%%^%s:%%^RESET%%^
+        // %%^GREEN%%^%%^BOLD%%^%d messages%%^RESET%%^ from %%^YELLOW%%^%d speakers%%^RESET%%^. %s",
         //        yesterday, messages, speakers, logpage_url);
-        snprintf(output, MAX_STRING_LENGTH, "I3 Activity on %s: %d messages from %d speakers.  Logs at %s",
-                yesterday, messages, speakers, logpage_url);
+        snprintf(output, MAX_STRING_LENGTH, "I3 Activity on %s: %d messages from %d speakers.  Logs at %s", yesterday,
+                 messages, speakers, logpage_url);
         i3_npc_speak(target_channel, "Cron", output);
         log_info("Summary done.");
     }
 }
-

@@ -29,27 +29,27 @@
  *
  */
 
-#define DELAY_PULSE         250000
-#define DELAY_SECOND        1000000
-#define DELAY_MINUTE        (DELAY_SECOND * 60)
+#define DELAY_PULSE 250000
+#define DELAY_SECOND 1000000
+#define DELAY_MINUTE (DELAY_SECOND * 60)
 
-#define DELAY_VIOLENCE      (DELAY_PULSE * 6)
-#define DELAY_URL           (DELAY_PULSE * 7)
-#define DELAY_RIVER         (DELAY_PULSE * 10)
-#define DELAY_TELEPORT      (DELAY_PULSE * 10)
-#define DELAY_NATURE        (DELAY_PULSE * 19)
-#define DELAY_MOBILE        (DELAY_PULSE * 25)
-#define DELAY_SOUND         (DELAY_PULSE * 33)
-#define DELAY_ZONE          (DELAY_PULSE * 239)
-#define DELAY_REBOOT        (DELAY_PULSE * 599)
-#define DELAY_SHOUT         (DELAY_PULSE * 1203)
-#define DELAY_DUMP          (DELAY_PULSE * 3601)
+#define DELAY_VIOLENCE (DELAY_PULSE * 6)
+#define DELAY_URL (DELAY_PULSE * 7)
+#define DELAY_RIVER (DELAY_PULSE * 10)
+#define DELAY_TELEPORT (DELAY_PULSE * 10)
+#define DELAY_NATURE (DELAY_PULSE * 19)
+#define DELAY_MOBILE (DELAY_PULSE * 25)
+#define DELAY_SOUND (DELAY_PULSE * 33)
+#define DELAY_ZONE (DELAY_PULSE * 239)
+#define DELAY_REBOOT (DELAY_PULSE * 599)
+#define DELAY_SHOUT (DELAY_PULSE * 1203)
+#define DELAY_DUMP (DELAY_PULSE * 3601)
 
-#define DELAY_MUDLIST       (DELAY_MINUTE * 5)
-#define DELAY_URL_HANDLER   (DELAY_MINUTE * 6)
+#define DELAY_MUDLIST (DELAY_MINUTE * 5)
+#define DELAY_URL_HANDLER (DELAY_MINUTE * 6)
 
 #ifndef _SCHEDULER_C
-extern struct timeval       last_tick;
+extern struct timeval last_tick;
 #endif
 
 int64_t abs64(int64_t value);

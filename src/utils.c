@@ -42,78 +42,82 @@
 int MobVnum(struct char_data *c)
 {
     if (DEBUG > 3)
-	log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(c));
+        log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(c));
 
     if (!c || IS_PC(c))
-	return 0;
-    if (IS_MOB(c)) {
-	return mob_index[c->nr].virtual;
-    } else {
-	return -1;
+        return 0;
+    if (IS_MOB(c))
+    {
+        return mob_index[c->nr].virtual;
+    }
+    else
+    {
+        return -1;
     }
 }
 
 int ObjVnum(struct obj_data *o)
 {
     if (DEBUG > 3)
-	log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_ONAME(o));
+        log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_ONAME(o));
 
     if (!o)
-	return 0;
+        return 0;
     if (o->item_number >= 0)
-	return obj_index[o->item_number].virtual;
+        return obj_index[o->item_number].virtual;
     else
-	return -1;
+        return -1;
 }
 
 int percent(int value, int total)
 {
     if (DEBUG > 3)
-	log_info("called %s with %d, %d", __PRETTY_FUNCTION__, value, total);
+        log_info("called %s with %d, %d", __PRETTY_FUNCTION__, value, total);
 
     if (!total)
-	return 0;
+        return 0;
     return ((value * 100) / total);
 }
 
-const char                             *ordinal(int x)
+const char *ordinal(int x)
 {
     if (DEBUG > 3)
-	log_info("called %s with %d", __PRETTY_FUNCTION__, x);
+        log_info("called %s with %d", __PRETTY_FUNCTION__, x);
 
     if (x < 14 && x > 10)
-	x = 4;
+        x = 4;
     else
-	x %= 10;
-    switch (x) {
-	case 1:
-	    return "st";
-	case 2:
-	    return "nd";
-	case 3:
-	    return "rd";
-	default:
-	    return "th";
+        x %= 10;
+    switch (x)
+    {
+    case 1:
+        return "st";
+    case 2:
+        return "nd";
+    case 3:
+        return "rd";
+    default:
+        return "th";
     }
 }
 
 int GetItemClassRestrictions(struct obj_data *obj)
 {
-    int                                     total = 0;
+    int total = 0;
 
     if (DEBUG > 3)
-	log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_ONAME(obj));
+        log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_ONAME(obj));
 
     if (IS_SET(obj->obj_flags.extra_flags, ITEM_ANTI_MAGE))
-	total += CLASS_MAGIC_USER;
+        total += CLASS_MAGIC_USER;
     if (IS_SET(obj->obj_flags.extra_flags, ITEM_ANTI_THIEF))
-	total += CLASS_THIEF;
+        total += CLASS_THIEF;
     if (IS_SET(obj->obj_flags.extra_flags, ITEM_ANTI_RANGER))
-	total += CLASS_RANGER;
+        total += CLASS_RANGER;
     if (IS_SET(obj->obj_flags.extra_flags, ITEM_ANTI_FIGHTER))
-	total += CLASS_WARRIOR;
+        total += CLASS_WARRIOR;
     if (IS_SET(obj->obj_flags.extra_flags, ITEM_ANTI_CLERIC))
-	total += CLASS_CLERIC;
+        total += CLASS_CLERIC;
 
     return (total);
 }
@@ -121,55 +125,55 @@ int GetItemClassRestrictions(struct obj_data *obj)
 int CAN_SEE(struct char_data *s, struct char_data *o)
 {
     if (DEBUG > 3)
-	log_info("called %s with %s, %s", __PRETTY_FUNCTION__, SAFE_NAME(s), SAFE_NAME(o));
+        log_info("called %s with %s, %s", __PRETTY_FUNCTION__, SAFE_NAME(s), SAFE_NAME(o));
 
     if (!o || !s)
-	return (FALSE);
+        return (FALSE);
 
     if ((s->in_room == -1) || (o->in_room == -1))
-	return (FALSE);
+        return (FALSE);
 
     if (o->invis_level >= GetMaxLevel(s))
-	return FALSE;
+        return FALSE;
 
     if (IS_IMMORTAL(s))
-	return (TRUE);
+        return (TRUE);
 
     if (IS_AFFECTED(s, AFF_TRUE_SIGHT))
-	return (TRUE);
+        return (TRUE);
 
     if (IS_AFFECTED(s, AFF_BLIND) && s != o)
-	return (FALSE);
+        return (FALSE);
 
     if (IS_AFFECTED(o, AFF_HIDE))
-	return (FALSE);
+        return (FALSE);
 
-    if (IS_AFFECTED(o, AFF_INVISIBLE)) {
-	if (IS_IMMORTAL(o))
-	    return (FALSE);
-	if (!IS_AFFECTED(s, AFF_DETECT_INVISIBLE))
-	    return (FALSE);
+    if (IS_AFFECTED(o, AFF_INVISIBLE))
+    {
+        if (IS_IMMORTAL(o))
+            return (FALSE);
+        if (!IS_AFFECTED(s, AFF_DETECT_INVISIBLE))
+            return (FALSE);
     }
     if ((IS_DARK(s->in_room) || IS_DARK(o->in_room)) && (!IS_AFFECTED(s, AFF_INFRAVISION)))
-	return (FALSE);
+        return (FALSE);
 
     return (TRUE);
-
 }
 
 int exit_ok(struct room_direction_data *room_exit, struct room_data **rpp)
 {
-    struct room_data                       *rp = NULL;
+    struct room_data *rp = NULL;
 
     if (DEBUG > 3)
-	log_info("called %s with %08zx, %08zx", __PRETTY_FUNCTION__, (size_t) room_exit,
-		 (size_t) rpp);
+        log_info("called %s with %08zx, %08zx", __PRETTY_FUNCTION__, (size_t)room_exit, (size_t)rpp);
 
     if (rpp == NULL)
-	rpp = &rp;
-    if (!room_exit) {
-	*rpp = NULL;
-	return FALSE;
+        rpp = &rp;
+    if (!room_exit)
+    {
+        *rpp = NULL;
+        return FALSE;
     }
     *rpp = real_roomp(room_exit->to_room);
     return (*rpp != NULL);
@@ -178,32 +182,32 @@ int exit_ok(struct room_direction_data *room_exit, struct room_data **rpp)
 int IsImmune(struct char_data *ch, int bit)
 {
     if (DEBUG > 3)
-	log_info("called %s with %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), bit);
+        log_info("called %s with %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), bit);
 
     if (!ch)
-	return 0;
+        return 0;
     return IS_SET(bit, ch->M_immune);
 }
 
 int IsResist(struct char_data *ch, int bit)
 {
     if (DEBUG > 3)
-	log_info("called %s with %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), bit);
+        log_info("called %s with %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), bit);
 
     if (!ch)
-	return 0;
+        return 0;
     if (GetMaxLevel(ch) >= LOW_IMMORTAL)
-	return 1;
+        return 1;
     return IS_SET(bit, ch->immune);
 }
 
 int IsSusc(struct char_data *ch, int bit)
 {
     if (DEBUG > 3)
-	log_info("called %s with %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), bit);
+        log_info("called %s with %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), bit);
 
     if (!ch)
-	return 0;
+        return 0;
     return IS_SET(bit, ch->susc);
 }
 
@@ -211,159 +215,165 @@ int IsSusc(struct char_data *ch, int bit)
 int number(int from, int to)
 {
     if (DEBUG > 3)
-	log_info("called %s with %d, %d", __PRETTY_FUNCTION__, from, to);
+        log_info("called %s with %d, %d", __PRETTY_FUNCTION__, from, to);
 
     if (to - from + 1)
-	return ((random() % (to - from + 1)) + from);
+        return ((random() % (to - from + 1)) + from);
     else
-	return from;
+        return from;
 }
 
 /* simulates dice roll */
 int dice(int rolls, int size)
 {
-    int                                     r = 0;
-    int                                     sum = 0;
+    int r = 0;
+    int sum = 0;
 
     if (DEBUG > 3)
-	log_info("called %s with %d, %d", __PRETTY_FUNCTION__, rolls, size);
+        log_info("called %s with %d, %d", __PRETTY_FUNCTION__, rolls, size);
 
     if (size < 1 || rolls < 1)
-	return 0;
+        return 0;
     if (size == 1)
-	return rolls;
+        return rolls;
     for (r = 1; r <= rolls; r++)
-	sum += ((random() % size) + 1);
+        sum += ((random() % size) + 1);
     return sum;
 }
 
 int fuzz(int x)
 {
     if (DEBUG > 3)
-	log_info("called %s with %d", __PRETTY_FUNCTION__, x);
+        log_info("called %s with %d", __PRETTY_FUNCTION__, x);
 
     if (!x)
-	return 0;
+        return 0;
     if (x < 0)
-	x = -x;
+        x = -x;
     return ((random() % ((2 * x) + 1)) - x);
 }
 
 int scan_number(const char *text, int *rval)
 {
-    int                                     length = 0;
+    int length = 0;
 
     if (DEBUG > 3)
-	log_info("called %s with %s, %08zx", __PRETTY_FUNCTION__, VNULL(text), (size_t) rval);
+        log_info("called %s with %s, %08zx", __PRETTY_FUNCTION__, VNULL(text), (size_t)rval);
 
     if (!text || !*text)
-	return 0;
+        return 0;
     if (1 != sscanf(text, " %i %n", rval, &length))
-	return 0;
+        return 0;
     if (text[length] != 0)
-	return 0;
+        return 0;
     return 1;
 }
 
 int str_cmp(const char *arg1, const char *arg2)
 {
     if (DEBUG > 3)
-	log_info("called %s with %s, %s", __PRETTY_FUNCTION__, VNULL(arg1), VNULL(arg2));
+        log_info("called %s with %s, %s", __PRETTY_FUNCTION__, VNULL(arg1), VNULL(arg2));
 
     if (!arg1 || !arg2)
-	return 1;
+        return 1;
     return strcasecmp(arg1, arg2);
 }
 
 int strn_cmp(const char *arg1, const char *arg2, const int n)
 {
     if (DEBUG > 3)
-	log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, VNULL(arg1), VNULL(arg2), n);
+        log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, VNULL(arg1), VNULL(arg2), n);
 
     if (!arg1 || !arg2)
-	return 1;
+        return 1;
     return strncasecmp(arg1, arg2, n);
 }
 
 void sprintbit(unsigned long vektor, const char *names[], char *result)
 {
-    long                                    nr = 0L;
+    long nr = 0L;
 
     if (DEBUG > 3)
-	log_info("called %s with %lu, %08zx, %08zx", __PRETTY_FUNCTION__, vektor,
-		 (size_t) names, (size_t) result);
+        log_info("called %s with %lu, %08zx, %08zx", __PRETTY_FUNCTION__, vektor, (size_t)names, (size_t)result);
 
     *result = '\0';
-    for (nr = 0; vektor; vektor >>= 1) {
-	if (IS_SET(1, vektor)) {
-	    if (*names[nr] != '\n') {
-		strcat(result, names[nr]);
-		strcat(result, " ");
-	    } else {
-		strcat(result, "UNDEFINED");
-		strcat(result, " ");
-	    }
-	}
-	if (*names[nr] != '\n')
-	    nr++;
+    for (nr = 0; vektor; vektor >>= 1)
+    {
+        if (IS_SET(1, vektor))
+        {
+            if (*names[nr] != '\n')
+            {
+                strcat(result, names[nr]);
+                strcat(result, " ");
+            }
+            else
+            {
+                strcat(result, "UNDEFINED");
+                strcat(result, " ");
+            }
+        }
+        if (*names[nr] != '\n')
+            nr++;
     }
     if (!*result)
-	strcat(result, "NOBITS");
+        strcat(result, "NOBITS");
 }
 
 void sprinttype(int type, const char *names[], char *result)
 {
-    int                                     nr = 0;
+    int nr = 0;
 
     if (DEBUG > 3)
-	log_info("called %s with %d, %08zx, %08zx", __PRETTY_FUNCTION__, type, (size_t) names,
-		 (size_t) result);
+        log_info("called %s with %d, %08zx, %08zx", __PRETTY_FUNCTION__, type, (size_t)names, (size_t)result);
 
-    for (nr = 0; (*names[nr] != '\n'); nr++);
+    for (nr = 0; (*names[nr] != '\n'); nr++)
+        ;
     if (type < nr)
-	strcpy(result, names[type]);
+        strcpy(result, names[type]);
     else
-	strcpy(result, "UNDEFINED");
+        strcpy(result, "UNDEFINED");
 }
-
 
 int in_group(struct char_data *ch1, struct char_data *ch2)
 {
     if (DEBUG > 3)
-	log_info("called %s with %s, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch1), SAFE_NAME(ch2));
+        log_info("called %s with %s, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch1), SAFE_NAME(ch2));
 
     /*
      * three possibilities ->
      * 1.  char is char2's master
      * 2.  char2 is char's master
      * 3.  char and char2 follow same.
-     * 
+     *
      * otherwise not true.
      */
 
     if ((!ch1) || (!ch2))
-	return (0);
+        return (0);
     if (ch1 == ch2)
-	return (TRUE);
+        return (TRUE);
     if ((!ch1->master) && (!ch2->master))
-	return (0);
+        return (0);
     if (ch2->master)
-	if (!strcmp(GET_NAME(ch1), GET_NAME(ch2->master))) {
-	    return (1);
-	}
+        if (!strcmp(GET_NAME(ch1), GET_NAME(ch2->master)))
+        {
+            return (1);
+        }
     if (ch1->master)
-	if (!strcmp(GET_NAME(ch1->master), GET_NAME(ch2))) {
-	    return (1);
-	}
+        if (!strcmp(GET_NAME(ch1->master), GET_NAME(ch2)))
+        {
+            return (1);
+        }
     if ((ch2->master) && (ch1->master))
-	if (!strcmp(GET_NAME(ch1->master), GET_NAME(ch2->master))) {
-	    return (1);
-	}
+        if (!strcmp(GET_NAME(ch1->master), GET_NAME(ch2->master)))
+        {
+            return (1);
+        }
     return (0);
 }
 
 /*
- * more new procedures 
+ * more new procedures
  */
 
 /*
@@ -373,371 +383,376 @@ int in_group(struct char_data *ch1, struct char_data *ch2)
 
 int getall(char *name, char *newname)
 {
-    char                                    arg[40] = "\0\0\0\0\0\0\0";
-    char                                    tmpname[80] = "\0\0\0\0\0\0\0";
-    char                                    otname[80] = "\0\0\0\0\0\0\0";
-    char                                    prd = '\0';
+    char arg[40] = "\0\0\0\0\0\0\0";
+    char tmpname[80] = "\0\0\0\0\0\0\0";
+    char otname[80] = "\0\0\0\0\0\0\0";
+    char prd = '\0';
 
     if (DEBUG > 3)
-	log_info("called %s with %s, %s", __PRETTY_FUNCTION__, VNULL(name), VNULL(newname));
+        log_info("called %s with %s, %s", __PRETTY_FUNCTION__, VNULL(name), VNULL(newname));
 
-    sscanf(name, "%s ", otname);			       /* reads up to first space */
+    sscanf(name, "%s ", otname); /* reads up to first space */
 
     if (strlen(otname) < 5)
-	return (FALSE);
+        return (FALSE);
 
     sscanf(otname, "%3s%c%s", arg, &prd, tmpname);
 
     if (prd != '.')
-	return (FALSE);
+        return (FALSE);
     if (!*tmpname)
-	return (FALSE);
+        return (FALSE);
     if (strcmp(arg, "all"))
-	return (FALSE);
+        return (FALSE);
 
     while (*name != '.')
-	name++;
+        name++;
 
     name++;
 
-    for (; (*newname = *name); name++, newname++);
+    for (; (*newname = *name); name++, newname++)
+        ;
     return (TRUE);
 }
 
 int getabunch(char *name, char *newname)
 {
-    int                                     num = 0;
-    char                                    tmpname[80] = "\0\0\0\0\0\0\0";
+    int num = 0;
+    char tmpname[80] = "\0\0\0\0\0\0\0";
 
     if (DEBUG > 3)
-	log_info("called %s with %s, %s", __PRETTY_FUNCTION__, VNULL(name), VNULL(newname));
+        log_info("called %s with %s, %s", __PRETTY_FUNCTION__, VNULL(name), VNULL(newname));
 
     sscanf(name, "%d*%s", &num, tmpname);
     if (tmpname[0] == '\0')
-	return (FALSE);
+        return (FALSE);
     if (num < 1)
-	return (FALSE);
+        return (FALSE);
     if (num > 9)
-	num = 9;
+        num = 9;
 
     while (*name != '*')
-	name++;
+        name++;
 
     name++;
 
-    for (; (*newname = *name); name++, newname++);
+    for (; (*newname = *name); name++, newname++)
+        ;
 
     return (num);
-
 }
 
 int DetermineExp(struct char_data *mob, int exp_flags)
 {
-    int                                     base = 0;
-    int                                     phit = 0;
-    int                                     sab = 0;
+    int base = 0;
+    int phit = 0;
+    int sab = 0;
 
     /*
-     * reads in the monster, and adds the flags together 
-     * for simplicity, 1 exceptional ability is 2 special abilities 
+     * reads in the monster, and adds the flags together
+     * for simplicity, 1 exceptional ability is 2 special abilities
      */
 
     if (DEBUG > 3)
-	log_info("called %s with %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(mob), exp_flags);
+        log_info("called %s with %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(mob), exp_flags);
 
     if (GetMaxLevel(mob) < 0)
-	return (1);
+        return (1);
 
-    switch (GetMaxLevel(mob)) {
+    switch (GetMaxLevel(mob))
+    {
 
-	case 0:
-	    base = 5;
-	    phit = 1;
-	    sab = 10;
-	    break;
+    case 0:
+        base = 5;
+        phit = 1;
+        sab = 10;
+        break;
 
-	case 1:
-	    base = 10;
-	    phit = 1;
-	    sab = 15;
-	    break;
+    case 1:
+        base = 10;
+        phit = 1;
+        sab = 15;
+        break;
 
-	case 2:
-	    base = 20;
-	    phit = 2;
-	    sab = 20;
-	    break;
+    case 2:
+        base = 20;
+        phit = 2;
+        sab = 20;
+        break;
 
-	case 3:
-	    base = 35;
-	    phit = 3;
-	    sab = 25;
-	    break;
+    case 3:
+        base = 35;
+        phit = 3;
+        sab = 25;
+        break;
 
-	case 4:
-	    base = 60;
-	    phit = 4;
-	    sab = 30;
-	    break;
+    case 4:
+        base = 60;
+        phit = 4;
+        sab = 30;
+        break;
 
-	case 5:
-	    base = 90;
-	    phit = 5;
-	    sab = 40;
-	    break;
+    case 5:
+        base = 90;
+        phit = 5;
+        sab = 40;
+        break;
 
-	case 6:
-	    base = 150;
-	    phit = 6;
-	    sab = 75;
-	    break;
+    case 6:
+        base = 150;
+        phit = 6;
+        sab = 75;
+        break;
 
-	case 7:
-	    base = 225;
-	    phit = 8;
-	    sab = 125;
-	    break;
+    case 7:
+        base = 225;
+        phit = 8;
+        sab = 125;
+        break;
 
-	case 8:
-	    base = 600;
-	    phit = 12;
-	    sab = 175;
-	    break;
+    case 8:
+        base = 600;
+        phit = 12;
+        sab = 175;
+        break;
 
-	case 9:
-	    base = 900;
-	    phit = 14;
-	    sab = 300;
-	    break;
+    case 9:
+        base = 900;
+        phit = 14;
+        sab = 300;
+        break;
 
-	case 10:
-	    base = 1100;
-	    phit = 15;
-	    sab = 450;
-	    break;
+    case 10:
+        base = 1100;
+        phit = 15;
+        sab = 450;
+        break;
 
-	case 11:
-	    base = 1300;
-	    phit = 16;
-	    sab = 700;
-	    break;
+    case 11:
+        base = 1300;
+        phit = 16;
+        sab = 700;
+        break;
 
-	case 12:
-	    base = 1550;
-	    phit = 17;
-	    sab = 700;
-	    break;
+    case 12:
+        base = 1550;
+        phit = 17;
+        sab = 700;
+        break;
 
-	case 13:
-	    base = 1800;
-	    phit = 18;
-	    sab = 950;
-	    break;
+    case 13:
+        base = 1800;
+        phit = 18;
+        sab = 950;
+        break;
 
-	case 14:
-	    base = 2100;
-	    phit = 19;
-	    sab = 950;
-	    break;
+    case 14:
+        base = 2100;
+        phit = 19;
+        sab = 950;
+        break;
 
-	case 15:
-	    base = 2400;
-	    phit = 20;
-	    sab = 1250;
-	    break;
+    case 15:
+        base = 2400;
+        phit = 20;
+        sab = 1250;
+        break;
 
-	case 16:
-	    base = 2700;
-	    phit = 23;
-	    sab = 1250;
-	    break;
+    case 16:
+        base = 2700;
+        phit = 23;
+        sab = 1250;
+        break;
 
-	case 17:
-	    base = 3000;
-	    phit = 25;
-	    sab = 1550;
-	    break;
+    case 17:
+        base = 3000;
+        phit = 25;
+        sab = 1550;
+        break;
 
-	case 18:
-	    base = 3500;
-	    phit = 28;
-	    sab = 1550;
-	    break;
+    case 18:
+        base = 3500;
+        phit = 28;
+        sab = 1550;
+        break;
 
-	case 19:
-	    base = 4000;
-	    phit = 30;
-	    sab = 2100;
-	    break;
+    case 19:
+        base = 4000;
+        phit = 30;
+        sab = 2100;
+        break;
 
-	case 20:
-	    base = 4500;
-	    phit = 33;
-	    sab = 2100;
-	    break;
+    case 20:
+        base = 4500;
+        phit = 33;
+        sab = 2100;
+        break;
 
-	case 21:
-	    base = 5000;
-	    phit = 35;
-	    sab = 2600;
-	    break;
+    case 21:
+        base = 5000;
+        phit = 35;
+        sab = 2600;
+        break;
 
-	case 22:
-	    base = 6000;
-	    phit = 40;
-	    sab = 3000;
-	    break;
+    case 22:
+        base = 6000;
+        phit = 40;
+        sab = 3000;
+        break;
 
-	case 23:
-	    base = 7000;
-	    phit = 45;
-	    sab = 3500;
-	    break;
+    case 23:
+        base = 7000;
+        phit = 45;
+        sab = 3500;
+        break;
 
-	case 24:
-	    base = 8000;
-	    phit = 50;
-	    sab = 4000;
-	    break;
+    case 24:
+        base = 8000;
+        phit = 50;
+        sab = 4000;
+        break;
 
-	case 25:
-	    base = 9000;
-	    phit = 55;
-	    sab = 4500;
-	    break;
+    case 25:
+        base = 9000;
+        phit = 55;
+        sab = 4500;
+        break;
 
-	case 26:
-	    base = 10000;
-	    phit = 60;
-	    sab = 5000;
-	    break;
+    case 26:
+        base = 10000;
+        phit = 60;
+        sab = 5000;
+        break;
 
-	case 27:
-	    base = 12000;
-	    phit = 70;
-	    sab = 6000;
-	    break;
+    case 27:
+        base = 12000;
+        phit = 70;
+        sab = 6000;
+        break;
 
-	case 28:
-	    base = 14000;
-	    phit = 80;
-	    sab = 7000;
-	    break;
+    case 28:
+        base = 14000;
+        phit = 80;
+        sab = 7000;
+        break;
 
-	case 29:
-	    base = 16000;
-	    phit = 90;
-	    sab = 8000;
-	    break;
+    case 29:
+        base = 16000;
+        phit = 90;
+        sab = 8000;
+        break;
 
-	case 30:
-	    base = 20000;
-	    phit = 100;
-	    sab = 10000;
-	    break;
+    case 30:
+        base = 20000;
+        phit = 100;
+        sab = 10000;
+        break;
 
-	default:
-	    base = 25000;
-	    phit = 150;
-	    sab = 20000;
-	    break;
+    default:
+        base = 25000;
+        phit = 150;
+        sab = 20000;
+        break;
     }
 
     return (base + (phit * GET_HIT(mob)) + (sab * exp_flags));
-
 }
 
 void down_river(int current_pulse)
 {
-    struct char_data                       *ch = NULL;
-    struct char_data                       *tmp = NULL;
-    struct obj_data                        *obj_object = NULL;
-    struct obj_data                        *next_obj = NULL;
-    int                                     rd = 0;
-    int                                     or = 0;
-    struct room_data                       *rp = NULL;
+    struct char_data *ch = NULL;
+    struct char_data *tmp = NULL;
+    struct obj_data *obj_object = NULL;
+    struct obj_data *next_obj = NULL;
+    int rd = 0;
+    int or = 0;
+    struct room_data *rp = NULL;
 
     if (DEBUG > 3)
-	log_info("called %s with %d", __PRETTY_FUNCTION__, current_pulse);
+        log_info("called %s with %d", __PRETTY_FUNCTION__, current_pulse);
 
     if (current_pulse < 0)
-	return;
+        return;
 
-    for (ch = character_list; ch; ch = tmp) {
-	tmp = ch->next;
-	if (!IS_NPC(ch)) {
-	    if (ch->in_room != NOWHERE) {
-		if (real_roomp(ch->in_room)->sector_type == SECT_WATER_NOSWIM)
-		    if ((real_roomp(ch->in_room))->river_speed > 0) {
-			if ((current_pulse % (real_roomp(ch->in_room))->river_speed) == 0) {
-			    if (((real_roomp(ch->in_room))->river_dir < MAX_NUM_EXITS) &&
-				((real_roomp(ch->in_room))->river_dir >= 0)) {
-				rd = (real_roomp(ch->in_room))->river_dir;
-				for (obj_object = (real_roomp(ch->in_room))->contents;
-				     obj_object; obj_object = next_obj) {
-				    next_obj = obj_object->next_content;
-				    if ((real_roomp(ch->in_room))->dir_option[rd]) {
-					obj_from_room(obj_object);
-					obj_to_room(obj_object,
-						    (real_roomp(ch->in_room))->
-						    dir_option[rd]->to_room);
-				    }
-				}
-/*
- * flyers don't get moved
- */
-				if (!IS_AFFECTED(ch, AFF_FLYING)) {
-				    rp = real_roomp(ch->in_room);
-				    if (rp && rp->dir_option[rd] && rp->dir_option[rd]->to_room
-					&& (EXIT(ch, rd)->to_room != NOWHERE)) {
-					if (ch->specials.fighting) {
-					    stop_fighting(ch);
-					}
-					cprintf(ch, "You drift %s...\r\n", dirs[rd]);
-					if (MOUNTED(ch)) {
-					    or = ch->in_room;
-					    char_from_room(ch);
-					    char_from_room(MOUNTED(ch));
-					    char_to_room(ch,
-							 (real_roomp(or))->
-							 dir_option[rd]->to_room);
-					    char_to_room(MOUNTED(ch),
-							 (real_roomp(or))->
-							 dir_option[rd]->to_room);
-					    do_look(ch, "", 15);
-					} else if (RIDDEN(ch)) {
-					    or = ch->in_room;
-					    char_from_room(ch);
-					    char_from_room(RIDDEN(ch));
-					    char_to_room(ch,
-							 (real_roomp(or))->
-							 dir_option[rd]->to_room);
-					    char_to_room(RIDDEN(ch),
-							 (real_roomp(or))->
-							 dir_option[rd]->to_room);
-					    do_look(ch, "", 15);
-					} else {
-					    or = ch->in_room;
-					    char_from_room(ch);
-					    char_to_room(ch,
-							 (real_roomp(or))->
-							 dir_option[rd]->to_room);
-					    do_look(ch, "", 15);
-					}
+    for (ch = character_list; ch; ch = tmp)
+    {
+        tmp = ch->next;
+        if (!IS_NPC(ch))
+        {
+            if (ch->in_room != NOWHERE)
+            {
+                if (real_roomp(ch->in_room)->sector_type == SECT_WATER_NOSWIM)
+                    if ((real_roomp(ch->in_room))->river_speed > 0)
+                    {
+                        if ((current_pulse % (real_roomp(ch->in_room))->river_speed) == 0)
+                        {
+                            if (((real_roomp(ch->in_room))->river_dir < MAX_NUM_EXITS) &&
+                                ((real_roomp(ch->in_room))->river_dir >= 0))
+                            {
+                                rd = (real_roomp(ch->in_room))->river_dir;
+                                for (obj_object = (real_roomp(ch->in_room))->contents; obj_object;
+                                     obj_object = next_obj)
+                                {
+                                    next_obj = obj_object->next_content;
+                                    if ((real_roomp(ch->in_room))->dir_option[rd])
+                                    {
+                                        obj_from_room(obj_object);
+                                        obj_to_room(obj_object, (real_roomp(ch->in_room))->dir_option[rd]->to_room);
+                                    }
+                                }
+                                /*
+                                 * flyers don't get moved
+                                 */
+                                if (!IS_AFFECTED(ch, AFF_FLYING))
+                                {
+                                    rp = real_roomp(ch->in_room);
+                                    if (rp && rp->dir_option[rd] && rp->dir_option[rd]->to_room &&
+                                        (EXIT(ch, rd)->to_room != NOWHERE))
+                                    {
+                                        if (ch->specials.fighting)
+                                        {
+                                            stop_fighting(ch);
+                                        }
+                                        cprintf(ch, "You drift %s...\r\n", dirs[rd]);
+                                        if (MOUNTED(ch))
+                                        {
+                                            or = ch->in_room;
+                                            char_from_room(ch);
+                                            char_from_room(MOUNTED(ch));
+                                            char_to_room(ch, (real_roomp(or))->dir_option[rd]->to_room);
+                                            char_to_room(MOUNTED(ch), (real_roomp(or))->dir_option[rd]->to_room);
+                                            do_look(ch, "", 15);
+                                        }
+                                        else if (RIDDEN(ch))
+                                        {
+                                            or = ch->in_room;
+                                            char_from_room(ch);
+                                            char_from_room(RIDDEN(ch));
+                                            char_to_room(ch, (real_roomp(or))->dir_option[rd]->to_room);
+                                            char_to_room(RIDDEN(ch), (real_roomp(or))->dir_option[rd]->to_room);
+                                            do_look(ch, "", 15);
+                                        }
+                                        else
+                                        {
+                                            or = ch->in_room;
+                                            char_from_room(ch);
+                                            char_to_room(ch, (real_roomp(or))->dir_option[rd]->to_room);
+                                            do_look(ch, "", 15);
+                                        }
 
-					if (IS_SET(RM_FLAGS(ch->in_room), DEATH)
-					    && GetMaxLevel(ch) < LOW_IMMORTAL) {
-					    death_cry(ch);
-					    zero_rent(ch);
-					    extract_char(ch);
-					}
-				    }
-				}
-			    }
-			}
-		    }
-	    }
-	}
+                                        if (IS_SET(RM_FLAGS(ch->in_room), DEATH) && GetMaxLevel(ch) < LOW_IMMORTAL)
+                                        {
+                                            death_cry(ch);
+                                            zero_rent(ch);
+                                            extract_char(ch);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+            }
+        }
     }
 }
 
@@ -745,206 +760,216 @@ void down_river(int current_pulse)
 int IsHumanoid(struct char_data *ch)
 {
     if (DEBUG > 3)
-	log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
+        log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
 
-    switch (GET_RACE(ch)) {
-	case RACE_HALFBREED:
-	case RACE_HUMAN:
-	case RACE_GNOME:
-	case RACE_ELVEN:
-	case RACE_DWARF:
-	case RACE_HALFLING:
-	case RACE_ORC:
-	case RACE_LYCANTH:
-	case RACE_UNDEAD:
-	case RACE_GIANT:
-	case RACE_GOBLIN:
-	case RACE_DEVIL:
-	case RACE_TROLL:
-	case RACE_VEGMAN:
-	case RACE_MFLAYER:
-	case RACE_DEMON:
-	case RACE_GHOST:
-	case RACE_PRIMATE:
-	    return TRUE;
-	default:
-	    return FALSE;
+    switch (GET_RACE(ch))
+    {
+    case RACE_HALFBREED:
+    case RACE_HUMAN:
+    case RACE_GNOME:
+    case RACE_ELVEN:
+    case RACE_DWARF:
+    case RACE_HALFLING:
+    case RACE_ORC:
+    case RACE_LYCANTH:
+    case RACE_UNDEAD:
+    case RACE_GIANT:
+    case RACE_GOBLIN:
+    case RACE_DEVIL:
+    case RACE_TROLL:
+    case RACE_VEGMAN:
+    case RACE_MFLAYER:
+    case RACE_DEMON:
+    case RACE_GHOST:
+    case RACE_PRIMATE:
+        return TRUE;
+    default:
+        return FALSE;
     }
 }
 
 int IsAnimal(struct char_data *ch)
 {
     if (DEBUG > 3)
-	log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
+        log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
 
-    switch (GET_RACE(ch)) {
-	case RACE_PREDATOR:
-	case RACE_FISH:
-	case RACE_BIRD:
-	case RACE_HERBIV:
-	case RACE_ANIMAL:
-	case RACE_LYCANTH:
-	    return TRUE;
-	default:
-	    return FALSE;
+    switch (GET_RACE(ch))
+    {
+    case RACE_PREDATOR:
+    case RACE_FISH:
+    case RACE_BIRD:
+    case RACE_HERBIV:
+    case RACE_ANIMAL:
+    case RACE_LYCANTH:
+        return TRUE;
+    default:
+        return FALSE;
     }
 }
 
 int IsUndead(struct char_data *ch)
 {
     if (DEBUG > 3)
-	log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
+        log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
 
-    switch (GET_RACE(ch)) {
-	case RACE_UNDEAD:
-	case RACE_GHOST:
-	    return TRUE;
-	default:
-	    return FALSE;
+    switch (GET_RACE(ch))
+    {
+    case RACE_UNDEAD:
+    case RACE_GHOST:
+        return TRUE;
+    default:
+        return FALSE;
     }
 }
 
 int IsLycanthrope(struct char_data *ch)
 {
     if (DEBUG > 3)
-	log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
+        log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
 
-    switch (GET_RACE(ch)) {
-	case RACE_LYCANTH:
-	    return TRUE;
-	default:
-	    return FALSE;
+    switch (GET_RACE(ch))
+    {
+    case RACE_LYCANTH:
+        return TRUE;
+    default:
+        return FALSE;
     }
 }
 
 int IsDiabolic(struct char_data *ch)
 {
     if (DEBUG > 3)
-	log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
+        log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
 
-    switch (GET_RACE(ch)) {
-	case RACE_DEMON:
-	case RACE_DEVIL:
-	    return TRUE;
-	default:
-	    return FALSE;
+    switch (GET_RACE(ch))
+    {
+    case RACE_DEMON:
+    case RACE_DEVIL:
+        return TRUE;
+    default:
+        return FALSE;
     }
 }
 
 int IsReptile(struct char_data *ch)
 {
     if (DEBUG > 3)
-	log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
+        log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
 
-    switch (GET_RACE(ch)) {
-	case RACE_REPTILE:
-	case RACE_DRAGON:
-	case RACE_DINOSAUR:
-	case RACE_SNAKE:
-	    return TRUE;
-	default:
-	    return FALSE;
+    switch (GET_RACE(ch))
+    {
+    case RACE_REPTILE:
+    case RACE_DRAGON:
+    case RACE_DINOSAUR:
+    case RACE_SNAKE:
+        return TRUE;
+    default:
+        return FALSE;
     }
 }
 
 int IsDraconic(struct char_data *ch)
 {
     if (DEBUG > 3)
-	log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
+        log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
 
-    switch (GET_RACE(ch)) {
-	case RACE_DRAGON:
-	    return TRUE;
-	default:
-	    return FALSE;
+    switch (GET_RACE(ch))
+    {
+    case RACE_DRAGON:
+        return TRUE;
+    default:
+        return FALSE;
     }
 }
 
 int IsAvian(struct char_data *ch)
 {
     if (DEBUG > 3)
-	log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
+        log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
 
-    switch (GET_RACE(ch)) {
-	case RACE_BIRD:
-	case RACE_DRAGON:
-	case RACE_GHOST:				       /* insubstantial? */
-	    return TRUE;
-	default:
-	    return FALSE;
+    switch (GET_RACE(ch))
+    {
+    case RACE_BIRD:
+    case RACE_DRAGON:
+    case RACE_GHOST: /* insubstantial? */
+        return TRUE;
+    default:
+        return FALSE;
     }
 }
 
 int IsExtraPlanar(struct char_data *ch)
 {
     if (DEBUG > 3)
-	log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
+        log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
 
-    switch (GET_RACE(ch)) {
-	case RACE_DEMON:
-	case RACE_DEVIL:
-	case RACE_PLANAR:
-	case RACE_ELEMENT:
-	    return TRUE;
-	default:
-	    return FALSE;
+    switch (GET_RACE(ch))
+    {
+    case RACE_DEMON:
+    case RACE_DEVIL:
+    case RACE_PLANAR:
+    case RACE_ELEMENT:
+        return TRUE;
+    default:
+        return FALSE;
     }
 }
 
 int HasHands(struct char_data *ch)
 {
     if (DEBUG > 3)
-	log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
+        log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
 
     if (IsHumanoid(ch) || IsDiabolic(ch) || IsDraconic(ch))
-	return TRUE;
+        return TRUE;
     else
-	return FALSE;
+        return FALSE;
 }
 
 int IsPerson(struct char_data *ch)
 {
     if (DEBUG > 3)
-	log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
+        log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
 
-    switch (GET_RACE(ch)) {
-	case RACE_HUMAN:
-	case RACE_ELVEN:
-	case RACE_DWARF:
-	case RACE_HALFLING:
-	case RACE_GNOME:
-	    return TRUE;
-	default:
-	    return FALSE;
+    switch (GET_RACE(ch))
+    {
+    case RACE_HUMAN:
+    case RACE_ELVEN:
+    case RACE_DWARF:
+    case RACE_HALFLING:
+    case RACE_GNOME:
+        return TRUE;
+    default:
+        return FALSE;
     }
 }
 
 void SetHunting(struct char_data *ch, struct char_data *tch)
 {
-    int                                     persist = 0;
-    int                                     dist = 0;
+    int persist = 0;
+    int dist = 0;
 
     if (DEBUG > 3)
-	log_info("called %s with %s, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), SAFE_NAME(tch));
+        log_info("called %s with %s, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), SAFE_NAME(tch));
 
     persist = GetMaxLevel(ch);
     /*
-     * persist *= (int) GET_ALIGNMENT(ch) / 100; 
+     * persist *= (int) GET_ALIGNMENT(ch) / 100;
      */
     persist *= (int)GET_ALIGNMENT(ch) / 200;
 
     if (persist < 0)
-	persist = -persist;
+        persist = -persist;
 
     dist = GET_INT(ch) + GetMaxLevel(ch);
 
     /*
-     * dist = GET_ALIGNMENT(tch) - GET_ALIGNMENT(ch); 
+     * dist = GET_ALIGNMENT(tch) - GET_ALIGNMENT(ch);
      */
 
     dist = (dist > 0) ? dist : -dist;
     if (DoesHate(ch, tch))
-	dist *= 2;
+        dist *= 2;
 
     SET_BIT(ch->specials.act, ACT_HUNTING);
     ch->specials.hunting = tch;
@@ -952,436 +977,459 @@ void SetHunting(struct char_data *ch, struct char_data *tch)
     ch->persist = persist;
     ch->old_room = ch->in_room;
 
-    if (GetMaxLevel(tch) >= IMMORTAL) {
-	cprintf(tch, ">>%s is hunting you from %s\r\n",
-		ch->player.short_descr, (real_roomp(ch->in_room))->name);
+    if (GetMaxLevel(tch) >= IMMORTAL)
+    {
+        cprintf(tch, ">>%s is hunting you from %s\r\n", ch->player.short_descr, (real_roomp(ch->in_room))->name);
     }
 }
 
 void CallForGuard(struct char_data *ch, struct char_data *vict, int lev)
 {
-    struct char_data                       *i = NULL;
+    struct char_data *i = NULL;
 
     if (DEBUG > 3)
-	log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch),
-		 SAFE_NAME(vict), lev);
+        log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), SAFE_NAME(vict), lev);
 
     if (lev == 0)
-	lev = 3;
+        lev = 3;
 
-    for (i = character_list; i && lev > 0; i = i->next) {
-	if (IS_NPC(i) && (i != ch)) {
-	    if (!i->specials.fighting) {
-		if ((mob_index[i->nr].virtual == GUARD_VNUM)
-		    || (mob_index[i->nr].virtual == GUARD2_VNUM)) {
-		    if (number(1, 6) >= 3) {
-			if (!IS_SET(i->specials.act, ACT_HUNTING)) {
-			    if (vict) {
-				SetHunting(i, vict);
-				lev--;
-			    }
-			}
-		    }
-		}
-	    }
-	}
+    for (i = character_list; i && lev > 0; i = i->next)
+    {
+        if (IS_NPC(i) && (i != ch))
+        {
+            if (!i->specials.fighting)
+            {
+                if ((mob_index[i->nr].virtual == GUARD_VNUM) || (mob_index[i->nr].virtual == GUARD2_VNUM))
+                {
+                    if (number(1, 6) >= 3)
+                    {
+                        if (!IS_SET(i->specials.act, ACT_HUNTING))
+                        {
+                            if (vict)
+                            {
+                                SetHunting(i, vict);
+                                lev--;
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 }
 
 void CallForAGuard(struct char_data *ch, struct char_data *vict, int lev)
 {
-    struct char_data                       *point = NULL;
+    struct char_data *point = NULL;
 
     if (DEBUG > 3)
-	log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch),
-		 SAFE_NAME(vict), lev);
+        log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), SAFE_NAME(vict), lev);
 
     if (lev == 0)
-	lev = 3;
+        lev = 3;
 
-    for (point = character_list; point && (lev > 0); point = point->next) {
-	if (IS_NPC(point) &&
-	    (ch != point) &&
-	    (!point->specials.fighting) &&
-	    (real_roomp(ch->in_room)->zone == real_roomp(point->in_room)->zone) &&
-	    (IS_SET(point->specials.act, ACT_PROTECTOR))) {
-	    if (number(0, 1)) {
-		if (!IS_SET(point->specials.act, ACT_HUNTING)) {
-		    if (vict) {
-			SetHunting(point, vict);
-			lev--;
-		    }
-		}
-	    }
-	}
+    for (point = character_list; point && (lev > 0); point = point->next)
+    {
+        if (IS_NPC(point) && (ch != point) && (!point->specials.fighting) &&
+            (real_roomp(ch->in_room)->zone == real_roomp(point->in_room)->zone) &&
+            (IS_SET(point->specials.act, ACT_PROTECTOR)))
+        {
+            if (number(0, 1))
+            {
+                if (!IS_SET(point->specials.act, ACT_HUNTING))
+                {
+                    if (vict)
+                    {
+                        SetHunting(point, vict);
+                        lev--;
+                    }
+                }
+            }
+        }
     }
 }
 
 void StandUp(struct char_data *ch)
 {
     if (DEBUG > 3)
-	log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
+        log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
 
-    if ((GET_POS(ch) < POSITION_STANDING) && (GET_POS(ch) > POSITION_STUNNED)) {
-	if (ch->points.hit > (ch->points.max_hit / 2))
-	    act("$n quickly stands up.", 1, ch, 0, 0, TO_ROOM);
-	else if (ch->points.hit > (ch->points.max_hit / 6))
-	    act("$n slowly stands up.", 1, ch, 0, 0, TO_ROOM);
-	else
-	    act("$n gets to $s feet very slowly.", 1, ch, 0, 0, TO_ROOM);
-	GET_POS(ch) = POSITION_STANDING;
+    if ((GET_POS(ch) < POSITION_STANDING) && (GET_POS(ch) > POSITION_STUNNED))
+    {
+        if (ch->points.hit > (ch->points.max_hit / 2))
+            act("$n quickly stands up.", 1, ch, 0, 0, TO_ROOM);
+        else if (ch->points.hit > (ch->points.max_hit / 6))
+            act("$n slowly stands up.", 1, ch, 0, 0, TO_ROOM);
+        else
+            act("$n gets to $s feet very slowly.", 1, ch, 0, 0, TO_ROOM);
+        GET_POS(ch) = POSITION_STANDING;
     }
 }
 
 void FighterMove(struct char_data *ch)
 {
-    int                                     num = 0;
+    int num = 0;
 
     if (DEBUG > 3)
-	log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
+        log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
 
     num = number(1, 4);
 
-    switch (num) {
-	case 1:
-	    if (!ch->skills[SKILL_BASH].learned)
-		ch->skills[SKILL_BASH].learned = 10 + GetMaxLevel(ch) * 4;
-	    do_bash(ch, GET_NAME(ch->specials.fighting), 0);
-	    break;
-	case 2:
-	    if (ch->equipment[WIELD] || ch->equipment[WIELD_TWOH]) {
-		if (!ch->skills[SKILL_DISARM].learned)
-		    ch->skills[SKILL_DISARM].learned = 10 + GetMaxLevel(ch) * 4;
-		do_disarm(ch, GET_NAME(ch->specials.fighting), 0);
-	    } else {
-		if (!ch->skills[SKILL_DISARM].learned)
-		    ch->skills[SKILL_DISARM].learned = 60 + GetMaxLevel(ch) * 4;
-		do_disarm(ch, GET_NAME(ch->specials.fighting), 0);
-	    }
-	    break;
-	case 3:
-	case 4:
-	    if (!ch->skills[SKILL_KICK].learned)
-		ch->skills[SKILL_KICK].learned = 10 + GetMaxLevel(ch) * 4;
-	    do_kick(ch, GET_NAME(ch->specials.fighting), 0);
-	    break;
+    switch (num)
+    {
+    case 1:
+        if (!ch->skills[SKILL_BASH].learned)
+            ch->skills[SKILL_BASH].learned = 10 + GetMaxLevel(ch) * 4;
+        do_bash(ch, GET_NAME(ch->specials.fighting), 0);
+        break;
+    case 2:
+        if (ch->equipment[WIELD] || ch->equipment[WIELD_TWOH])
+        {
+            if (!ch->skills[SKILL_DISARM].learned)
+                ch->skills[SKILL_DISARM].learned = 10 + GetMaxLevel(ch) * 4;
+            do_disarm(ch, GET_NAME(ch->specials.fighting), 0);
+        }
+        else
+        {
+            if (!ch->skills[SKILL_DISARM].learned)
+                ch->skills[SKILL_DISARM].learned = 60 + GetMaxLevel(ch) * 4;
+            do_disarm(ch, GET_NAME(ch->specials.fighting), 0);
+        }
+        break;
+    case 3:
+    case 4:
+        if (!ch->skills[SKILL_KICK].learned)
+            ch->skills[SKILL_KICK].learned = 10 + GetMaxLevel(ch) * 4;
+        do_kick(ch, GET_NAME(ch->specials.fighting), 0);
+        break;
     }
 }
 
 void DevelopHatred(struct char_data *ch, struct char_data *v)
 {
     if (DEBUG > 3)
-	log_info("called %s with %s, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), SAFE_NAME(v));
+        log_info("called %s with %s, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), SAFE_NAME(v));
 
     if (DoesHate(ch, v))
-	return;
+        return;
 
     if (ch == v)
-	return;
+        return;
 
-/*
- * diff = GET_ALIGNMENT(ch) - GET_ALIGNMENT(v);
- * (diff > 0) ? diff : diff = -diff;
- * 
- * diff /= 20;
- * 
- * patience = (int) 100 * (float) (GET_HIT(ch) / GET_MAX_HIT(ch));
- * 
- * var = number(1,40) - 20;
- * 
- * if (patience+var < diff)
- * AddHated(ch, v);
- */
+    /*
+     * diff = GET_ALIGNMENT(ch) - GET_ALIGNMENT(v);
+     * (diff > 0) ? diff : diff = -diff;
+     *
+     * diff /= 20;
+     *
+     * patience = (int) 100 * (float) (GET_HIT(ch) / GET_MAX_HIT(ch));
+     *
+     * var = number(1,40) - 20;
+     *
+     * if (patience+var < diff)
+     * AddHated(ch, v);
+     */
 
     AddHated(ch, v);
-
 }
 
 void Teleport(int current_pulse)
 {
-    struct char_data                       *ch = NULL;
-    struct char_data                       *tmp = NULL;
-    struct char_data                       *pers = NULL;
-    struct obj_data                        *obj_object = NULL;
-    struct obj_data                        *temp_obj = NULL;
-    struct room_data                       *rp = NULL;
-    struct room_data                       *dest = NULL;
+    struct char_data *ch = NULL;
+    struct char_data *tmp = NULL;
+    struct char_data *pers = NULL;
+    struct obj_data *obj_object = NULL;
+    struct obj_data *temp_obj = NULL;
+    struct room_data *rp = NULL;
+    struct room_data *dest = NULL;
 
     if (DEBUG > 3)
-	log_info("called %s with %d", __PRETTY_FUNCTION__, current_pulse);
+        log_info("called %s with %d", __PRETTY_FUNCTION__, current_pulse);
 
     if (current_pulse < 0)
-	return;
+        return;
 
-    for (ch = character_list; ch; ch = ch->next) {
-	if (IS_NPC(ch))
-	    continue;
-	rp = real_roomp(ch->in_room);
-	if (rp &&
-	    (rp)->tele_targ > 0 &&
-	    rp->tele_targ != rp->number &&
-	    (rp)->tele_time > 0 && (current_pulse % (rp)->tele_time) == 0) {
+    for (ch = character_list; ch; ch = ch->next)
+    {
+        if (IS_NPC(ch))
+            continue;
+        rp = real_roomp(ch->in_room);
+        if (rp && (rp)->tele_targ > 0 && rp->tele_targ != rp->number && (rp)->tele_time > 0 &&
+            (current_pulse % (rp)->tele_time) == 0)
+        {
 
-	    dest = real_roomp(rp->tele_targ);
-	    if (!dest) {
-		log_error("invalid tele_target:ROOM %s", rp->name);
-		continue;
-	    }
-	    obj_object = (rp)->contents;
-	    while (obj_object) {
-		temp_obj = obj_object->next_content;
-		obj_from_room(obj_object);
-		obj_to_room(obj_object, (rp)->tele_targ);
-		obj_object = temp_obj;
-	    }
+            dest = real_roomp(rp->tele_targ);
+            if (!dest)
+            {
+                log_error("invalid tele_target:ROOM %s", rp->name);
+                continue;
+            }
+            obj_object = (rp)->contents;
+            while (obj_object)
+            {
+                temp_obj = obj_object->next_content;
+                obj_from_room(obj_object);
+                obj_to_room(obj_object, (rp)->tele_targ);
+                obj_object = temp_obj;
+            }
 
-	    while (rp->people /* should never fail */ ) {
+            while (rp->people /* should never fail */)
+            {
 
-		/*
-		 * find an NPC in the room 
-		 */
-		for (tmp = rp->people; tmp; tmp = tmp->next_in_room) {
-		    if (IS_NPC(tmp))
-			break;
-		}
+                /*
+                 * find an NPC in the room
+                 */
+                for (tmp = rp->people; tmp; tmp = tmp->next_in_room)
+                {
+                    if (IS_NPC(tmp))
+                        break;
+                }
 
-		if (tmp == NULL)
-		    break;				       /* we've run out of NPCs */
+                if (tmp == NULL)
+                    break; /* we've run out of NPCs */
 
-		char_from_room(tmp);			       /* the list of people in the room has changed */
-		char_to_room(tmp, rp->tele_targ);
-		if (IS_SET(dest->room_flags, DEATH)) {
-		    death_cry(tmp);
-		    if (IS_NPC(tmp) && (IS_SET(tmp->specials.act, ACT_POLYSELF))) {
-			/*
-			 *   take char from storage, to room     
-			 */
-			pers = tmp->desc->original;
-			char_from_room(pers);
-			char_to_room(pers, tmp->in_room);
-			SwitchStuff(tmp, pers);
-			zero_rent(pers);
-			extract_char(tmp);
-			tmp = pers;
-		    }
-		    zero_rent(tmp);
-		    extract_char(tmp);
-		}
-	    }
-	    char_from_room(ch);
-	    char_to_room(ch, rp->tele_targ);
-	    if (rp->tele_look) {
-		do_look(ch, "", 15);
-	    }
-	    if (IS_SET(dest->room_flags, DEATH) && GetMaxLevel(ch) < LOW_IMMORTAL) {
-		death_cry(ch);
+                char_from_room(tmp); /* the list of people in the room has changed */
+                char_to_room(tmp, rp->tele_targ);
+                if (IS_SET(dest->room_flags, DEATH))
+                {
+                    death_cry(tmp);
+                    if (IS_NPC(tmp) && (IS_SET(tmp->specials.act, ACT_POLYSELF)))
+                    {
+                        /*
+                         *   take char from storage, to room
+                         */
+                        pers = tmp->desc->original;
+                        char_from_room(pers);
+                        char_to_room(pers, tmp->in_room);
+                        SwitchStuff(tmp, pers);
+                        zero_rent(pers);
+                        extract_char(tmp);
+                        tmp = pers;
+                    }
+                    zero_rent(tmp);
+                    extract_char(tmp);
+                }
+            }
+            char_from_room(ch);
+            char_to_room(ch, rp->tele_targ);
+            if (rp->tele_look)
+            {
+                do_look(ch, "", 15);
+            }
+            if (IS_SET(dest->room_flags, DEATH) && GetMaxLevel(ch) < LOW_IMMORTAL)
+            {
+                death_cry(ch);
 
-		if (IS_NPC(ch) && (IS_SET(ch->specials.act, ACT_POLYSELF))) {
-		    /*
-		     *   take char from storage, to room     
-		     */
-		    pers = ch->desc->original;
-		    char_from_room(pers);
-		    char_to_room(pers, ch->in_room);
-		    SwitchStuff(ch, pers);
-		    zero_rent(ch);
-		    extract_char(ch);
-		    ch = pers;
-		}
-		zero_rent(ch);
-		extract_char(ch);
-	    }
-	}
+                if (IS_NPC(ch) && (IS_SET(ch->specials.act, ACT_POLYSELF)))
+                {
+                    /*
+                     *   take char from storage, to room
+                     */
+                    pers = ch->desc->original;
+                    char_from_room(pers);
+                    char_to_room(pers, ch->in_room);
+                    SwitchStuff(ch, pers);
+                    zero_rent(ch);
+                    extract_char(ch);
+                    ch = pers;
+                }
+                zero_rent(ch);
+                extract_char(ch);
+            }
+        }
     }
 }
 
 int HasObject(struct char_data *ch, int ob_num)
 {
-    int                                     j = 0;
-    int                                     found = FALSE;
-    struct obj_data                        *i = NULL;
+    int j = 0;
+    int found = FALSE;
+    struct obj_data *i = NULL;
 
     if (DEBUG > 3)
-	log_info("called %s with %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), ob_num);
+        log_info("called %s with %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), ob_num);
 
     /*
      * equipment too
      */
 
     for (j = 0; j < MAX_WEAR; j++)
-	if (ch->equipment[j])
-	    found += RecCompObjNum(ch->equipment[j], ob_num);
+        if (ch->equipment[j])
+            found += RecCompObjNum(ch->equipment[j], ob_num);
 
     if (found > 0)
-	return (TRUE);
+        return (TRUE);
 
     /*
-     * carrying 
+     * carrying
      */
     for (i = ch->carrying; i; i = i->next_content)
-	found += RecCompObjNum(i, ob_num);
+        found += RecCompObjNum(i, ob_num);
 
     if (found > 0)
-	return (TRUE);
+        return (TRUE);
     else
-	return (FALSE);
+        return (FALSE);
 }
 
 int room_of_object(struct obj_data *obj)
 {
     if (DEBUG > 3)
-	log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_ONAME(obj));
+        log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_ONAME(obj));
 
     if (obj->in_room != NOWHERE)
-	return obj->in_room;
+        return obj->in_room;
     else if (obj->carried_by)
-	return obj->carried_by->in_room;
+        return obj->carried_by->in_room;
     else if (obj->equipped_by)
-	return obj->equipped_by->in_room;
+        return obj->equipped_by->in_room;
     else if (obj->in_obj)
-	return room_of_object(obj->in_obj);
+        return room_of_object(obj->in_obj);
     else
-	return NOWHERE;
+        return NOWHERE;
 }
 
-struct char_data                       *char_holding(struct obj_data *obj)
+struct char_data *char_holding(struct obj_data *obj)
 {
     if (DEBUG > 3)
-	log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_ONAME(obj));
+        log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_ONAME(obj));
 
     if (obj->in_room != NOWHERE)
-	return NULL;
+        return NULL;
     else if (obj->carried_by)
-	return obj->carried_by;
+        return obj->carried_by;
     else if (obj->equipped_by)
-	return obj->equipped_by;
+        return obj->equipped_by;
     else if (obj->in_obj)
-	return char_holding(obj->in_obj);
+        return char_holding(obj->in_obj);
     else
-	return NULL;
+        return NULL;
 }
 
 int RecCompObjNum(struct obj_data *o, int obj_num)
 {
-    int                                     total = 0;
-    struct obj_data                        *i = NULL;
+    int total = 0;
+    struct obj_data *i = NULL;
 
     if (DEBUG > 3)
-	log_info("called %s with %s, %d", __PRETTY_FUNCTION__, SAFE_ONAME(o), obj_num);
+        log_info("called %s with %s, %d", __PRETTY_FUNCTION__, SAFE_ONAME(o), obj_num);
 
     if (obj_index[o->item_number].virtual == obj_num)
-	total = 1;
+        total = 1;
 
-    if (ITEM_TYPE(o) == ITEM_CONTAINER) {
-	for (i = o->contains; i; i = i->next_content)
-	    total += RecCompObjNum(i, obj_num);
+    if (ITEM_TYPE(o) == ITEM_CONTAINER)
+    {
+        for (i = o->contains; i; i = i->next_content)
+            total += RecCompObjNum(i, obj_num);
     }
     return (total);
-
 }
 
 void RestoreChar(struct char_data *ch)
 {
     if (DEBUG > 3)
-	log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
+        log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
 
     GET_MANA(ch) = GET_MAX_MANA(ch);
     GET_HIT(ch) = GET_MAX_HIT(ch);
     GET_MOVE(ch) = GET_MAX_MOVE(ch);
 
-    if (GetMaxLevel(ch) < LOW_IMMORTAL) {
-	GET_COND(ch, THIRST) = 24;
-	GET_COND(ch, FULL) = 24;
-    } else {
-	GET_COND(ch, THIRST) = -1;
-	GET_COND(ch, FULL) = -1;
+    if (GetMaxLevel(ch) < LOW_IMMORTAL)
+    {
+        GET_COND(ch, THIRST) = 24;
+        GET_COND(ch, FULL) = 24;
+    }
+    else
+    {
+        GET_COND(ch, THIRST) = -1;
+        GET_COND(ch, FULL) = -1;
     }
 }
 
 void RemAllAffects(struct char_data *ch)
 {
     if (DEBUG > 3)
-	log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
+        log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
 
     spell_dispel_magic(IMPLEMENTOR, ch, ch, 0);
 }
 
-const char                             *pain_level(struct char_data *ch)
+const char *pain_level(struct char_data *ch)
 {
-    int                                     health_percent = 0;
+    int health_percent = 0;
 
     if (DEBUG > 3)
-	log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
+        log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
 
     if (GET_MAX_HIT(ch) > 0)
-	health_percent = (100 * GET_HIT(ch)) / GET_MAX_HIT(ch);
+        health_percent = (100 * GET_HIT(ch)) / GET_MAX_HIT(ch);
     else
-	health_percent = -1;				       /* How could MAX_HIT be < 1?? */
+        health_percent = -1; /* How could MAX_HIT be < 1?? */
     if (health_percent >= 100)
-	return ("is in an excellent condition");
+        return ("is in an excellent condition");
     else if (health_percent >= 90)
-	return ("has a few scratches");
+        return ("has a few scratches");
     else if (health_percent >= 75)
-	return ("has some small wounds and bruises");
+        return ("has some small wounds and bruises");
     else if (health_percent >= 50)
-	return ("has quite a few wounds");
+        return ("has quite a few wounds");
     else if (health_percent >= 30)
-	return ("has some big nasty wounds and scratches");
+        return ("has some big nasty wounds and scratches");
     else if (health_percent >= 15)
-	return ("looks pretty hurt");
+        return ("looks pretty hurt");
     else if (health_percent >= 0)
-	return ("is in an awful condition");
+        return ("is in an awful condition");
     else
-	return ("is bleeding awfully from big wounds");
+        return ("is bleeding awfully from big wounds");
 }
 
 int IsWizard(struct char_data *ch)
 {
     if (DEBUG > 3)
-	log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
+        log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
 
     if (!ch)
-	return 0;
+        return 0;
     return ch->player.class & CLASS_WIZARD;
 }
 
 int IsPriest(struct char_data *ch)
 {
     if (DEBUG > 3)
-	log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
+        log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
 
     if (!ch)
-	return 0;
+        return 0;
     return ch->player.class & CLASS_PRIEST;
 }
 
 int IsMagical(struct char_data *ch)
 {
     if (DEBUG > 3)
-	log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
+        log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
 
     if (!ch)
-	return 0;
+        return 0;
     return ch->player.class & CLASS_MAGICAL;
 }
 
 int IsFighter(struct char_data *ch)
 {
     if (DEBUG > 3)
-	log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
+        log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
 
     if (!ch)
-	return 0;
+        return 0;
     return ch->player.class & CLASS_FIGHTER;
 }
 
 int IsSneak(struct char_data *ch)
 {
     if (DEBUG > 3)
-	log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
+        log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
 
     if (!ch)
-	return 0;
+        return 0;
     return ch->player.class & CLASS_SNEAK;
 }
 
@@ -1392,30 +1440,33 @@ int IsSneak(struct char_data *ch)
  */
 size_t strlcpy(char *dst, const char *src, size_t siz)
 {
-    char                                   *d = dst;
-    const char                             *s = src;
-    size_t                                  n = siz;
+    char *d = dst;
+    const char *s = src;
+    size_t n = siz;
 
     /*
-     * Copy as many bytes as will fit 
+     * Copy as many bytes as will fit
      */
-    if (n != 0 && --n != 0) {
-	do {
-	    if ((*d++ = *s++) == 0)
-		break;
-	}
-	while (--n != 0);
+    if (n != 0 && --n != 0)
+    {
+        do
+        {
+            if ((*d++ = *s++) == 0)
+                break;
+        } while (--n != 0);
     }
 
     /*
-     * Not enough room in dst, add NUL and traverse rest of src 
+     * Not enough room in dst, add NUL and traverse rest of src
      */
-    if (n == 0) {
-	if (siz != 0)
-	    *d = '\0';					       /* NUL-terminate dst */
-	while (*s++);
+    if (n == 0)
+    {
+        if (siz != 0)
+            *d = '\0'; /* NUL-terminate dst */
+        while (*s++)
+            ;
     }
-    return (s - src - 1);				       /* count does not include NUL */
+    return (s - src - 1); /* count does not include NUL */
 }
 
 /*
@@ -1427,32 +1478,33 @@ size_t strlcpy(char *dst, const char *src, size_t siz)
  */
 size_t strlcat(char *dst, const char *src, size_t siz)
 {
-    char                                   *d = dst;
-    const char                             *s = src;
-    size_t                                  n = siz;
-    size_t                                  dlen;
+    char *d = dst;
+    const char *s = src;
+    size_t n = siz;
+    size_t dlen;
 
     /*
-     * Find the end of dst and adjust bytes left but don't go past end 
+     * Find the end of dst and adjust bytes left but don't go past end
      */
     while (n-- != 0 && *d != '\0')
-	d++;
+        d++;
     dlen = d - dst;
     n = siz - dlen;
 
     if (n == 0)
-	return (dlen + strlen(s));
-    while (*s != '\0') {
-	if (n != 1) {
-	    *d++ = *s;
-	    n--;
-	}
-	s++;
+        return (dlen + strlen(s));
+    while (*s != '\0')
+    {
+        if (n != 1)
+        {
+            *d++ = *s;
+            n--;
+        }
+        s++;
     }
     *d = '\0';
-    return (dlen + (s - src));				       /* count does not include NUL */
+    return (dlen + (s - src)); /* count does not include NUL */
 }
-
 
 /*
  * This is a wrapper for snprintf() with strlcat(), to basically allow
@@ -1461,33 +1513,34 @@ size_t strlcat(char *dst, const char *src, size_t siz)
  *
  * Think of it as strcat_printf(), but shorter.
  */
-int scprintf(char *buf, size_t limit, const char *Str, ...) {
-    va_list                                 arg;
-    int                                     len = 0;
-    int                                     result = 0;
+int scprintf(char *buf, size_t limit, const char *Str, ...)
+{
+    va_list arg;
+    int len = 0;
+    int result = 0;
 
-    if (buf && limit > 0 && Str && *Str) {
+    if (buf && limit > 0 && Str && *Str)
+    {
         len = strlen(buf);
-	va_start(arg, Str);
-	result = vsnprintf((buf + len), limit - len, Str, arg);
-	va_end(arg);
+        va_start(arg, Str);
+        result = vsnprintf((buf + len), limit - len, Str, arg);
+        va_end(arg);
     }
     return result + len;
 }
 
-char *timestamp_elapsed(time_t since, time_t now) {
-    time_t                                  diff = 0;
-    static char                             display_time[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
-    char                                    day_string[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
-    struct timeval                          the_time;
-    time_t                                  seconds = 0,
-                                            minutes = 0,
-                                            hours = 0,
-                                            days = 0;
+char *timestamp_elapsed(time_t since, time_t now)
+{
+    time_t diff = 0;
+    static char display_time[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
+    char day_string[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
+    struct timeval the_time;
+    time_t seconds = 0, minutes = 0, hours = 0, days = 0;
 
-    if( now == 0 ) {
+    if (now == 0)
+    {
         gettimeofday(&the_time, NULL);
-        now = (time_t) the_time.tv_sec;
+        now = (time_t)the_time.tv_sec;
     }
 
     diff = now - since;
@@ -1502,25 +1555,23 @@ char *timestamp_elapsed(time_t since, time_t now) {
     *day_string = '\0';
     *display_time = '\0';
     scprintf(day_string, MAX_INPUT_LENGTH, "%d day%s, ", (int)days, (days > 1) ? "s" : "");
-    scprintf(display_time, MAX_STRING_LENGTH, "%s%2d:%02d:%02d",
-            (days > 0) ? day_string : "",
-            (int)hours, (int)minutes, (int)seconds);
+    scprintf(display_time, MAX_STRING_LENGTH, "%s%2d:%02d:%02d", (days > 0) ? day_string : "", (int)hours, (int)minutes,
+             (int)seconds);
 
     return display_time;
 }
 
-char *time_elapsed(time_t since, time_t now) {
-    time_t                                  diff = 0;
-    static char                             display_time[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
-    struct timeval                          the_time;
-    time_t                                  seconds = 0,
-                                            minutes = 0,
-                                            hours = 0,
-                                            days = 0;
+char *time_elapsed(time_t since, time_t now)
+{
+    time_t diff = 0;
+    static char display_time[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
+    struct timeval the_time;
+    time_t seconds = 0, minutes = 0, hours = 0, days = 0;
 
-    if( now == 0 ) {
+    if (now == 0)
+    {
         gettimeofday(&the_time, NULL);
-        now = (time_t) the_time.tv_sec;
+        now = (time_t)the_time.tv_sec;
     }
 
     diff = now - since;
@@ -1532,28 +1583,31 @@ char *time_elapsed(time_t since, time_t now) {
     diff /= 24;
     days = diff;
 
-    log_info( "TIME_ELAPSED: since %d, now %d, [ %d %2d:%02d:%02d ]",
-            (int)since, (int)now, (int)days, (int)hours, (int)minutes, (int)seconds );
+    log_info("TIME_ELAPSED: since %d, now %d, [ %d %2d:%02d:%02d ]", (int)since, (int)now, (int)days, (int)hours,
+             (int)minutes, (int)seconds);
 
     *display_time = '\0';
-    if(days > 0) {
-        scprintf(display_time, MAX_STRING_LENGTH, "%d day%s", (int)days, (days > 1)?"s":"");
-        if(hours > 0)
+    if (days > 0)
+    {
+        scprintf(display_time, MAX_STRING_LENGTH, "%d day%s", (int)days, (days > 1) ? "s" : "");
+        if (hours > 0)
             scprintf(display_time, MAX_STRING_LENGTH, ", ");
     }
-    if(hours > 0) {
-        scprintf(display_time, MAX_STRING_LENGTH, "%d hour%s", (int)hours, (hours > 1)?"s":"");
-        if(minutes > 0)
+    if (hours > 0)
+    {
+        scprintf(display_time, MAX_STRING_LENGTH, "%d hour%s", (int)hours, (hours > 1) ? "s" : "");
+        if (minutes > 0)
             scprintf(display_time, MAX_STRING_LENGTH, ", ");
     }
-    if(minutes > 0) {
-        scprintf(display_time, MAX_STRING_LENGTH, "%d minute%s", (int)minutes, (minutes > 1)?"s":"");
-        if(seconds > 0)
+    if (minutes > 0)
+    {
+        scprintf(display_time, MAX_STRING_LENGTH, "%d minute%s", (int)minutes, (minutes > 1) ? "s" : "");
+        if (seconds > 0)
             scprintf(display_time, MAX_STRING_LENGTH, ", ");
     }
-    if(seconds > 0)
-        scprintf(display_time, MAX_STRING_LENGTH, "%d second%s", (int)seconds, (seconds > 1)?"s":"");
-    if(days > 0 || hours > 0 || minutes > 0 || seconds > 0 )
+    if (seconds > 0)
+        scprintf(display_time, MAX_STRING_LENGTH, "%d second%s", (int)seconds, (seconds > 1) ? "s" : "");
+    if (days > 0 || hours > 0 || minutes > 0 || seconds > 0)
         scprintf(display_time, MAX_STRING_LENGTH, ".");
     else
         scprintf(display_time, MAX_STRING_LENGTH, "No time.");
@@ -1561,22 +1615,26 @@ char *time_elapsed(time_t since, time_t now) {
     return display_time;
 }
 
-char                                    *json_escape(char *thing)
+char *json_escape(char *thing)
 {
     static char result[MAX_STRING_LENGTH];
 
     bzero(result, MAX_STRING_LENGTH);
-    for(char *s = thing; *s; s++) {
-        if( *s == '"' || *s == '\\' || ( '\x00' <= *s && *s <= '\x1f' ) ) {
+    for (char *s = thing; *s; s++)
+    {
+        if (*s == '"' || *s == '\\' || ('\x00' <= *s && *s <= '\x1f'))
+        {
             scprintf(result, MAX_STRING_LENGTH, "\\u%04x", (unsigned int)*s);
-        } else {
+        }
+        else
+        {
             scprintf(result, MAX_STRING_LENGTH, "%c", *s);
         }
     }
     return result;
 }
 
-char                                    *md5_hex(const char *str)
+char *md5_hex(const char *str)
 {
     int length;
     int i;
@@ -1587,10 +1645,14 @@ char                                    *md5_hex(const char *str)
     MD5_Init(&c);
 
     length = strlen(str);
-    while (length > 0) {
-        if (length > 512) {
+    while (length > 0)
+    {
+        if (length > 512)
+        {
             MD5_Update(&c, str, 512);
-        } else {
+        }
+        else
+        {
             MD5_Update(&c, str, length);
         }
         length -= 512;
@@ -1599,8 +1661,9 @@ char                                    *md5_hex(const char *str)
 
     MD5_Final(digest, &c);
 
-    for (i = 0; i < 16; ++i) {
-        snprintf(&(result[i*2]), 16*2, "%02x", (unsigned int)digest[i]);
+    for (i = 0; i < 16; ++i)
+    {
+        snprintf(&(result[i * 2]), 16 * 2, "%02x", (unsigned int)digest[i]);
     }
     result[32] = '\0';
 
@@ -1618,68 +1681,81 @@ char                                    *md5_hex(const char *str)
  *
  * CAUTION:  This allocates memory, so be sure to free() it!
  */
-int ansi_explode(const char *input, char ***segment, int **is_ansi) {
+int ansi_explode(const char *input, char ***segment, int **is_ansi)
+{
     int segment_count = 0;
     const char *current = NULL;
     const char *chalk = NULL;
 
-    if(!segment) {
+    if (!segment)
+    {
         printf("NULL segment reference passed to ansi_explode!");
         exit(1);
     }
-    if(!is_ansi) {
+    if (!is_ansi)
+    {
         printf("NULL is_ansi reference passed to ansi_explode!");
         exit(1);
     }
 
     current = strchr(input, 0x1b);
-    if(!current) {
-        //printf("NO ESC found\n");
+    if (!current)
+    {
+        // printf("NO ESC found\n");
         // No segment breaks, so we are just one big segment.
         segment_count = 1;
         *segment = calloc(segment_count, sizeof(char **));
         *is_ansi = calloc(segment_count, sizeof(int));
         *segment[0] = strdup(input);
         *is_ansi[0] = 0;
-    } else {
+    }
+    else
+    {
         current = input;
         chalk = input;
         *segment = NULL;
         *is_ansi = NULL;
         segment_count = 0;
-        do {
+        do
+        {
             const char *lookahead = current;
             // chalk is the previous point, just after the previous ANSI sequence
             // segment is the start of the next ANSI sequence
             current = strstr(current, "\x1b[");
-            if(current) {
+            if (current)
+            {
                 char *mark = NULL;
                 size_t mark_len = 0;
                 size_t segment_len = 0;
 
                 // mark is th end of the current ANSI sequence
                 mark = strchr(current, 'm');
-                if(mark) {
+                if (mark)
+                {
                     // But we only count VALID sequences
                     mark_len = strspn((current + 2), "0123456789;");
                     // ESC [32;1m
                     //      mark_len = 3 2 ; 1 == 4
                     //      (mark - current) = ESC [ 3 2 ; 1 m == 7 == 6 + 1
-                    if((mark - current + 1) == (mark_len + 3)) {
+                    if ((mark - current + 1) == (mark_len + 3))
+                    {
                         // OK, so copy chalk -> current into segment
                         // THEN copy current -> mark into segemnts+1
                         // THEN advance chalk to mark+1
                         segment_len = (current - chalk);
                         mark_len = (mark - current + 1);
 
-                        if(segment_len > 0) {
+                        if (segment_len > 0)
+                        {
                             // We have both a string segment AND ANSI sequence
                             *segment = realloc(*segment, (segment_count + 2) * sizeof(char **));
                             *is_ansi = realloc(*is_ansi, (segment_count + 2) * sizeof(int));
                             (*segment)[segment_count] = strndup(chalk, segment_len);
                             (*is_ansi)[segment_count] = 0;
                             segment_count++;
-                        } else {
+                        }
+                        else
+                        {
                             // We have only the ANSI sequence
                             *segment = realloc(*segment, (segment_count + 1) * sizeof(char **));
                             *is_ansi = realloc(*is_ansi, (segment_count + 1) * sizeof(int));
@@ -1693,8 +1769,11 @@ int ansi_explode(const char *input, char ***segment, int **is_ansi) {
                     }
                 }
                 current++;
-            } else {
-                if(lookahead && *lookahead) {
+            }
+            else
+            {
+                if (lookahead && *lookahead)
+                {
                     // No more ANSI sequences, but some string left.
                     *segment = realloc(*segment, (segment_count + 1) * sizeof(char **));
                     *is_ansi = realloc(*is_ansi, (segment_count + 1) * sizeof(int));
@@ -1703,26 +1782,33 @@ int ansi_explode(const char *input, char ***segment, int **is_ansi) {
                     segment_count++;
                 }
             }
-        } while(current);
+        } while (current);
     }
     return segment_count;
 }
 
-int more_to_go(char **segment, int *is_ansi, int segment_count, int i, int j) {
-    if(segment[i][j]) {
+int more_to_go(char **segment, int *is_ansi, int segment_count, int i, int j)
+{
+    if (segment[i][j])
+    {
         // There might be more in this segment
-        for(int k = i; k < strlen(segment[i]); k++) {
-            if(!isspace(segment[i][k]))
+        for (int k = i; k < strlen(segment[i]); k++)
+        {
+            if (!isspace(segment[i][k]))
                 return 1;
         }
     }
-    if(i < (segment_count - 1)) {
+    if (i < (segment_count - 1))
+    {
         // There might be more in further segments
-        for(int k = i+1; k < segment_count; k++) {
-            if(!is_ansi[k]) {
+        for (int k = i + 1; k < segment_count; k++)
+        {
+            if (!is_ansi[k])
+            {
                 // We have a future segment that is non-ANSI and not empty
-                for(int x = 0; x < strlen(segment[k]); x++) {
-                    if(!isspace(segment[k][x]))
+                for (int x = 0; x < strlen(segment[k]); x++)
+                {
+                    if (!isspace(segment[k][x]))
                         return 1;
                 }
             }
@@ -1731,38 +1817,50 @@ int more_to_go(char **segment, int *is_ansi, int segment_count, int i, int j) {
     return 0;
 }
 
-char *utf8_check(char *candidate) {
+char *utf8_check(char *candidate)
+{
     static char utf[5];
 
     // If you passed in junk, NOT utf-8
-    if(!candidate || !*candidate)
+    if (!candidate || !*candidate)
         return NULL;
 
     // Normal whitespace, not utf-8
-    if(isspace(candidate[0]))
+    if (isspace(candidate[0]))
         return NULL;
 
-    if((unsigned int)candidate[0] > 0x7F) {
+    if ((unsigned int)candidate[0] > 0x7F)
+    {
         // Now we're talking!
         bzero(utf, 5);
 
-        //scprintf(utf, 5, "%c", candidate[0]);
-        if(((unsigned int)candidate[0] & 0xE0) == 0xC0) {
+        // scprintf(utf, 5, "%c", candidate[0]);
+        if (((unsigned int)candidate[0] & 0xE0) == 0xC0)
+        {
             // 110xxxxx means 1 more bytes
-            if(candidate[1]) {
+            if (candidate[1])
+            {
                 scprintf(utf, 5, "%c", candidate[1]);
             }
-        } else if(((unsigned int)candidate[0] & 0xF0) == 0xE0) {
+        }
+        else if (((unsigned int)candidate[0] & 0xF0) == 0xE0)
+        {
             // 1110xxxx means 2 more bytes
-            if(candidate[1] && candidate[2]) {
+            if (candidate[1] && candidate[2])
+            {
                 scprintf(utf, 5, "%c%c", candidate[1], candidate[2]);
             }
-        } else if(((unsigned int)candidate[0] & 0xF8) == 0xF0) {
+        }
+        else if (((unsigned int)candidate[0] & 0xF8) == 0xF0)
+        {
             // 11110xxx means 3 more bytes
-            if(candidate[1] && candidate[2] && candidate[3]) {
+            if (candidate[1] && candidate[2] && candidate[3])
+            {
                 scprintf(utf, 5, "%c%c%c", candidate[1], candidate[2], candidate[3]);
             }
-        } else {
+        }
+        else
+        {
             // The one negative byte was it?  Malformed?
         }
         return utf;
@@ -1771,161 +1869,209 @@ char *utf8_check(char *candidate) {
     return NULL;
 }
 
-char *color_wrap(int soft_limit, int hard_limit, const char *pad, const char *input) {
+char *color_wrap(int soft_limit, int hard_limit, const char *pad, const char *input)
+{
     static char result[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
     char **segment = NULL;
-    int   *is_ansi = NULL;
-    int    segment_count = 0;
-    int    line_pos = 0;
+    int *is_ansi = NULL;
+    int segment_count = 0;
+    int line_pos = 0;
 
     bzero(result, MAX_STRING_LENGTH);
     segment_count = ansi_explode(input, &segment, &is_ansi);
 
-    for(int i = 0; i < segment_count; i++) {
-        if(segment[i]) {
-            if(is_ansi[i]) {
+    for (int i = 0; i < segment_count; i++)
+    {
+        if (segment[i])
+        {
+            if (is_ansi[i])
+            {
                 // Just push the whole ANSI sequence
                 strlcat(result, segment[i], MAX_STRING_LENGTH);
-                //printf("ANSI line_pos: %ld - [%s] %ld\n", line_pos, segment[i], strlen(segment[i]));
-            } else {
+                // printf("ANSI line_pos: %ld - [%s] %ld\n", line_pos, segment[i], strlen(segment[i]));
+            }
+            else
+            {
                 int segment_len = strlen(segment[i]);
-                for(int j = 0; j < segment_len;) {
-                    if(segment[i][j] == '\0')
+                for (int j = 0; j < segment_len;)
+                {
+                    if (segment[i][j] == '\0')
                         break;
 
-                    if(line_pos >= hard_limit) {
-                        //printf("hard_limit: %ld - [%c]\n", line_pos, segment[i][j]);
+                    if (line_pos >= hard_limit)
+                    {
+                        // printf("hard_limit: %ld - [%c]\n", line_pos, segment[i][j]);
                         // Reset our line counter
                         line_pos = 0;
                         // Now eat leading white space from the next line.
-                        while(segment[i][j] && isspace(segment[i][j]))
+                        while (segment[i][j] && isspace(segment[i][j]))
                             j++;
 
                         // only emit the line ending if we have more lines to go.
-                        if(more_to_go(segment, is_ansi, segment_count, i, j)) {
+                        if (more_to_go(segment, is_ansi, segment_count, i, j))
+                        {
                             strlcat(result, "\r\n", MAX_STRING_LENGTH);
                             strlcat(result, pad, MAX_STRING_LENGTH);
                             line_pos = strlen(pad);
                         }
-                    } else if(line_pos >= soft_limit) {
-                        if(isspace(segment[i][j]) || ispunct(segment[i][j])) {
+                    }
+                    else if (line_pos >= soft_limit)
+                    {
+                        if (isspace(segment[i][j]) || ispunct(segment[i][j]))
+                        {
                             int do_linebreak = 1;
 
-                            if(ispunct(segment[i][j])) {
-                                //printf("soft + punct: %ld - [%c]\n", line_pos, segment[i][j]);
+                            if (ispunct(segment[i][j]))
+                            {
+                                // printf("soft + punct: %ld - [%c]\n", line_pos, segment[i][j]);
                                 // If we're sitting on a punctuation symbol,
                                 // emit it before we go to the next line.
                                 scprintf(result, MAX_STRING_LENGTH, "%c", segment[i][j]);
                                 j++;
                                 line_pos++;
                                 // Special cases:  apostrophies, quotes, and elipsis.
-                                switch(segment[i][j-1]) {
-                                    default:
+                                switch (segment[i][j - 1])
+                                {
+                                default:
+                                    line_pos = 0;
+                                    break;
+                                case '\'':
+                                    if (!isspace(segment[i][j]) && !ispunct(segment[i][j]))
+                                    {
+                                        // We found something like Bob's or they're.
+                                        do_linebreak = 0;
+                                    }
+                                    else if (segment[i][j] == '.' || segment[i][j] == '?' || segment[i][j] == '!')
+                                    {
+                                        // Improper punctuation outside single quotes.
+                                        do_linebreak = 0;
+                                    }
+                                    else
+                                    {
+                                        // A single quote, or something else
                                         line_pos = 0;
-                                        break;
-                                    case '\'':
-                                        if(!isspace(segment[i][j]) && !ispunct(segment[i][j])) {
-                                            // We found something like Bob's or they're.
-                                            do_linebreak = 0;
-                                        } else if(segment[i][j] == '.' || segment[i][j] == '?' || segment[i][j] == '!') {
-                                            // Improper punctuation outside single quotes.
-                                            do_linebreak = 0;
-                                        } else {
-                                            // A single quote, or something else
-                                            line_pos = 0;
-                                        }
-                                        break;
-                                    case '\"':
-                                        if(segment[i][j] == '.' || segment[i][j] == '?' || segment[i][j] == '!') {
-                                            // Improper punctuation outside double quotes.
-                                            do_linebreak = 0;
-                                        } else {
-                                            // A double quote
-                                            line_pos = 0;
-                                        }
-                                        break;
-                                    case '-':
-                                        if(segment[i][j] == '-') {
-                                            // A double-dash -- usually is treated as a long dash
-                                            do_linebreak = 0;
-                                        } else if(segment[i][j] == '>') {
-                                            // An arrow token -> keep that intact
-                                            do_linebreak = 0;
-                                        } else {
-                                            // Just a hyphenated word
-                                            line_pos = 0;
-                                        }
-                                        break;
-                                    case '=':
-                                        if(segment[i][j] == '=' || segment[i][j] == '>') {
-                                            // A double == or an arrow =>
-                                            do_linebreak = 0;
-                                        } else {
-                                            // Just an equal sign
-                                            line_pos = 0;
-                                        }
-                                        break;
-                                    case '<':
-                                        if(segment[i][j] == '-' || segment[i][j] == '=') {
-                                            // the other arrow token <- or <=
-                                            do_linebreak = 0;
-                                        } else {
-                                            // Just a bracket
-                                            line_pos = 0;
-                                        }
-                                        break;
-                                    case ':':
-                                        if(segment[i][j] == '=' || segment[i][j] == ':') {
-                                            // An assignemnt := or a double coloin ::
-                                            do_linebreak = 0;
-                                        } else {
-                                            // Just a colon
-                                            line_pos = 0;
-                                        }
-                                        break;
-                                    case '.':
-                                        if(segment[i][j] == '.' && segment[i][j+1] == '.') {
-                                            // We found the start of an elipsis ...
-                                            line_pos = 0;
-                                            scprintf(result, MAX_STRING_LENGTH, "..");
-                                            j += 2;
-                                        } else {
-                                            // End of a sentence, or more than 3 dots...
-                                            line_pos = 0;
-                                        }
-                                        break;
+                                    }
+                                    break;
+                                case '\"':
+                                    if (segment[i][j] == '.' || segment[i][j] == '?' || segment[i][j] == '!')
+                                    {
+                                        // Improper punctuation outside double quotes.
+                                        do_linebreak = 0;
+                                    }
+                                    else
+                                    {
+                                        // A double quote
+                                        line_pos = 0;
+                                    }
+                                    break;
+                                case '-':
+                                    if (segment[i][j] == '-')
+                                    {
+                                        // A double-dash -- usually is treated as a long dash
+                                        do_linebreak = 0;
+                                    }
+                                    else if (segment[i][j] == '>')
+                                    {
+                                        // An arrow token -> keep that intact
+                                        do_linebreak = 0;
+                                    }
+                                    else
+                                    {
+                                        // Just a hyphenated word
+                                        line_pos = 0;
+                                    }
+                                    break;
+                                case '=':
+                                    if (segment[i][j] == '=' || segment[i][j] == '>')
+                                    {
+                                        // A double == or an arrow =>
+                                        do_linebreak = 0;
+                                    }
+                                    else
+                                    {
+                                        // Just an equal sign
+                                        line_pos = 0;
+                                    }
+                                    break;
+                                case '<':
+                                    if (segment[i][j] == '-' || segment[i][j] == '=')
+                                    {
+                                        // the other arrow token <- or <=
+                                        do_linebreak = 0;
+                                    }
+                                    else
+                                    {
+                                        // Just a bracket
+                                        line_pos = 0;
+                                    }
+                                    break;
+                                case ':':
+                                    if (segment[i][j] == '=' || segment[i][j] == ':')
+                                    {
+                                        // An assignemnt := or a double coloin ::
+                                        do_linebreak = 0;
+                                    }
+                                    else
+                                    {
+                                        // Just a colon
+                                        line_pos = 0;
+                                    }
+                                    break;
+                                case '.':
+                                    if (segment[i][j] == '.' && segment[i][j + 1] == '.')
+                                    {
+                                        // We found the start of an elipsis ...
+                                        line_pos = 0;
+                                        scprintf(result, MAX_STRING_LENGTH, "..");
+                                        j += 2;
+                                    }
+                                    else
+                                    {
+                                        // End of a sentence, or more than 3 dots...
+                                        line_pos = 0;
+                                    }
+                                    break;
                                 }
-                            } else {
+                            }
+                            else
+                            {
                                 // Reset our line counter
                                 line_pos = 0;
-                                //printf("soft + space: %ld - [%c]\n", line_pos, segment[i][j]);
+                                // printf("soft + space: %ld - [%c]\n", line_pos, segment[i][j]);
                             }
                             // eat leading white space from the next line.
-                            while(segment[i][j] && isspace(segment[i][j]))
+                            while (segment[i][j] && isspace(segment[i][j]))
                                 j++;
 
                             // only emit the line ending if we have more lines to go.
-                            if(do_linebreak && more_to_go(segment, is_ansi, segment_count, i, j)) {
+                            if (do_linebreak && more_to_go(segment, is_ansi, segment_count, i, j))
+                            {
                                 strlcat(result, "\r\n", MAX_STRING_LENGTH);
                                 strlcat(result, pad, MAX_STRING_LENGTH);
                                 line_pos = strlen(pad);
                             }
-                        } else {
-                            //printf("soft: %ld - [%c]\n", line_pos, segment[i][j]);
+                        }
+                        else
+                        {
+                            // printf("soft: %ld - [%c]\n", line_pos, segment[i][j]);
                             // Finally, if it was something else, emit that
                             // and keep going on the next pass, to try and find
                             // a cleaner point to break
 
                             scprintf(result, MAX_STRING_LENGTH, "%c", segment[i][j]);
-                            if(isspace(segment[i][j])) {
-                                if(isprint(segment[i][j]))
+                            if (isspace(segment[i][j]))
+                            {
+                                if (isprint(segment[i][j]))
                                     line_pos++;
-                            } else {
+                            }
+                            else
+                            {
                                 char *check = NULL;
 
                                 line_pos++;
                                 check = utf8_check(&segment[i][j]);
-                                if(check) {
+                                if (check)
+                                {
                                     // UTF-8 lives here
                                     int utf_len = 0;
 
@@ -1938,41 +2084,50 @@ char *color_wrap(int soft_limit, int hard_limit, const char *pad, const char *in
                             }
                             j++;
                         }
-                    } else {
+                    }
+                    else
+                    {
                         // If we're not near the end of the line, just check for a
                         // linebreak, so we can reset our position if need be.
-                        if(segment[i][j] == '\r' || segment[i][j] == '\n') {
+                        if (segment[i][j] == '\r' || segment[i][j] == '\n')
+                        {
                             j++;
-                            if(segment[i][j] == '\r' && segment[i][j+1] == '\n')
+                            if (segment[i][j] == '\r' && segment[i][j + 1] == '\n')
                                 j++;
-                            if(segment[i][j] == '\n' && segment[i][j+1] == '\r')
+                            if (segment[i][j] == '\n' && segment[i][j + 1] == '\r')
                                 j++;
 
                             // Reset our line counter
                             line_pos = 0;
                             // Now eat leading white space from the next line.
-                            while(segment[i][j] && isspace(segment[i][j]))
+                            while (segment[i][j] && isspace(segment[i][j]))
                                 j++;
 
                             // only emit the line ending if we have more lines to go.
-                            if(more_to_go(segment, is_ansi, segment_count, i, j)) {
+                            if (more_to_go(segment, is_ansi, segment_count, i, j))
+                            {
                                 strlcat(result, "\r\n", MAX_STRING_LENGTH);
                                 strlcat(result, pad, MAX_STRING_LENGTH);
                                 line_pos = strlen(pad);
                             }
                         }
                         // And now process whatever non-whitespace might be here.
-                        if(segment[i][j]) {
+                        if (segment[i][j])
+                        {
                             scprintf(result, MAX_STRING_LENGTH, "%c", segment[i][j]);
-                            if(isspace(segment[i][j])) {
-                                if(isprint(segment[i][j]))
+                            if (isspace(segment[i][j]))
+                            {
+                                if (isprint(segment[i][j]))
                                     line_pos++;
-                            } else {
+                            }
+                            else
+                            {
                                 char *check = NULL;
 
                                 line_pos++;
                                 check = utf8_check(&segment[i][j]);
-                                if(check) {
+                                if (check)
+                                {
                                     // UTF-8 lives here
                                     int utf_len = 0;
 
@@ -2000,10 +2155,12 @@ char *color_wrap(int soft_limit, int hard_limit, const char *pad, const char *in
     return result;
 }
 
-time_t file_date( const char *filename ) {
+time_t file_date(const char *filename)
+{
     struct stat file_info;
 
-    if( stat(filename, &file_info) == -1 ) {
+    if (stat(filename, &file_info) == -1)
+    {
         log_error("File %s does not exist.", filename);
         return -1;
     }
@@ -2013,31 +2170,35 @@ time_t file_date( const char *filename ) {
     return file_info.st_mtime;
 }
 
-char *timestamp(time_t the_time, time_t the_micro) {
-    static char     time_string[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
-    char            timezone_string[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
-    struct timeval  tv;
+char *timestamp(time_t the_time, time_t the_micro)
+{
+    static char time_string[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
+    char timezone_string[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
+    struct timeval tv;
 
     // 2019-08-14 22:04:19.559 PDT
 
-    if(the_time < 0) {
+    if (the_time < 0)
+    {
         gettimeofday(&tv, NULL);
         the_time = tv.tv_sec;
         the_micro = tv.tv_usec;
     }
     strftime(time_string, sizeof(time_string), WILEYMUD_TIMESTAMP, localtime(&the_time));
     strftime(timezone_string, sizeof(timezone_string), WILEYMUD_TIMEZONE, localtime(&the_time));
-    scprintf(time_string, MAX_INPUT_LENGTH, ".%03ld %s", the_micro/1000, timezone_string);
+    scprintf(time_string, MAX_INPUT_LENGTH, ".%03ld %s", the_micro / 1000, timezone_string);
     return time_string;
 }
 
-char *time_only(time_t the_time) {
-    static char     time_string[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
-    struct timeval  tv;
+char *time_only(time_t the_time)
+{
+    static char time_string[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
+    struct timeval tv;
 
     // 22:04:19
 
-    if(the_time < 0) {
+    if (the_time < 0)
+    {
         gettimeofday(&tv, NULL);
         the_time = tv.tv_sec;
     }
@@ -2045,13 +2206,15 @@ char *time_only(time_t the_time) {
     return time_string;
 }
 
-char *date_only(time_t the_time) {
-    static char     time_string[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
-    struct timeval  tv;
+char *date_only(time_t the_time)
+{
+    static char time_string[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
+    struct timeval tv;
 
     // 2019-08-14
 
-    if(the_time < 0) {
+    if (the_time < 0)
+    {
         gettimeofday(&tv, NULL);
         the_time = tv.tv_sec;
     }
@@ -2065,22 +2228,23 @@ char *date_only(time_t the_time) {
  */
 void remove_quotes(char **ps)
 {
-    char                                   *ps1,
-                                           *ps2;
+    char *ps1, *ps2;
 
     if (*ps[0] == '"')
-	(*ps)++;
+        (*ps)++;
     if ((*ps)[strlen(*ps) - 1] == '"')
-	(*ps)[strlen(*ps) - 1] = 0;
+        (*ps)[strlen(*ps) - 1] = 0;
 
     ps1 = ps2 = *ps;
-    while (ps2[0]) {
-	if (ps2[0] == '\\') {
-	    ps2++;
-	}
-	ps1[0] = ps2[0];
-	ps1++;
-	ps2++;
+    while (ps2[0])
+    {
+        if (ps2[0] == '\\')
+        {
+            ps2++;
+        }
+        ps1[0] = ps2[0];
+        ps1++;
+        ps2++;
     }
     ps1[0] = '\0';
 }
@@ -2091,26 +2255,30 @@ void remove_quotes(char **ps)
  */
 char *add_quotes(char *s)
 {
-    static char          buf[MAX_STRING_LENGTH];
-    char                *ps = buf;
-    int                  i;
+    static char buf[MAX_STRING_LENGTH];
+    char *ps = buf;
+    int i;
 
-    if(s[0] != '"') {
+    if (s[0] != '"')
+    {
         *ps++ = '"';
     }
-    for(i = 0; i < strlen(s); i++) {
-        switch( s[i] ) {
-            case '"':
-            case '\'':
-                *ps++ = '\\';
-                *ps++ = s[i];
-                break;
-            default:
-                *ps++ = s[i];
-                break;
+    for (i = 0; i < strlen(s); i++)
+    {
+        switch (s[i])
+        {
+        case '"':
+        case '\'':
+            *ps++ = '\\';
+            *ps++ = s[i];
+            break;
+        default:
+            *ps++ = s[i];
+            break;
         }
     }
-    if(s[strlen(s)-1] != '"') {
+    if (s[strlen(s) - 1] != '"')
+    {
         *ps++ = '"';
     }
     *ps = '\0';
@@ -2128,15 +2296,19 @@ char *strrep(const char *src, const char *search, const char *rep)
     bzero(result, MAX_STRING_LENGTH);
     bit[0] = bit[1] = '\0';
 
-    if(!src || !*src)
+    if (!src || !*src)
         return result;
 
-    for( src_p = src; *src_p && strlen(result) < (MAX_STRING_LENGTH - rep_len); ) {
-        if(strncmp(src_p, search, search_len) == 0) {
+    for (src_p = src; *src_p && strlen(result) < (MAX_STRING_LENGTH - rep_len);)
+    {
+        if (strncmp(src_p, search, search_len) == 0)
+        {
             // Found search string at current source position
             strcat(result, rep);
             src_p += search_len;
-        } else {
+        }
+        else
+        {
             // Current position NOT the start of a pattern
             bit[0] = *src_p;
             strcat(result, bit);
@@ -2146,13 +2318,15 @@ char *strrep(const char *src, const char *search, const char *rep)
     return result;
 }
 
-char *hex_dump(const unsigned char *data, const size_t len) {
+char *hex_dump(const unsigned char *data, const size_t len)
+{
     static char result[MAX_STRING_LENGTH];
 
     strcpy(result, "b'");
-    for(size_t i = 0; i < len; i++) {
+    for (size_t i = 0; i < len; i++)
+    {
         // Truncate if we will overflow
-        if(i >= MAX_STRING_LENGTH - 3)
+        if (i >= MAX_STRING_LENGTH - 3)
             break;
         scprintf(result, MAX_STRING_LENGTH, "\\x%02x", (unsigned char)data[i]);
     }
@@ -2170,27 +2344,34 @@ char *hex_dump(const unsigned char *data, const size_t len) {
 //
 // CAUTION:  This allocates memory, so be sure to free() it!
 //
-int explode(const char *input, const char *delimiter, char ***segment) {
-    int segment_count       = 0;
-    const char *current     = NULL;
-    const char *chalk       = NULL;
+int explode(const char *input, const char *delimiter, char ***segment)
+{
+    int segment_count = 0;
+    const char *current = NULL;
+    const char *chalk = NULL;
 
-    if(!segment) {
+    if (!segment)
+    {
         printf("NULL segment reference passed to explode!");
         exit(1);
     }
 
     current = strstr(input, delimiter);
-    if(!current) {
+    if (!current)
+    {
         segment_count = 1;
         *segment = calloc(segment_count, sizeof(char **));
         *segment[0] = strdup(input);
-    } else {
+    }
+    else
+    {
         chalk = input;
         *segment = NULL;
         segment_count = 0;
-        do {
-            if(current) {
+        do
+        {
+            if (current)
+            {
                 // Found one!
                 // chalk is the previous match, advanced past the delimiter
                 // itself (if any).
@@ -2203,11 +2384,14 @@ int explode(const char *input, const char *delimiter, char ***segment) {
                 current += strlen(delimiter);
                 chalk = current;
                 current = strstr(current, delimiter);
-            } else {
+            }
+            else
+            {
                 // We have no more delimiters, but might either be at the
                 // end of the string, or at the start of the very last
                 // segment.
-                if(*chalk) {
+                if (*chalk)
+                {
                     // We have the last segment to process.
                     *segment = realloc(*segment, (segment_count + 1) * sizeof(char **));
                     (*segment)[segment_count] = strdup(chalk);
@@ -2215,7 +2399,7 @@ int explode(const char *input, const char *delimiter, char ***segment) {
                     break;
                 }
             }
-        } while(current);
+        } while (current);
     }
     // We found 1 or more segments, and put them all in the
     // segments arrayref... remember to free() the mallocs later!

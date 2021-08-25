@@ -19,19 +19,7 @@
 #define _BUG_C
 #include "bug.h"
 
-const char                             *LogNames[] = {
-    "INFO",
-    "ERROR",
-    "FATAL",
-    "BOOT",
-    "AUTH",
-    "KILL",
-    "DEATH",
-    "RESET",
-    "IMC",
-    "SQL",
-    "NOSQL"
-};
+const char *LogNames[] = {"INFO", "ERROR", "FATAL", "BOOT", "AUTH", "KILL", "DEATH", "RESET", "IMC", "SQL", "NOSQL"};
 
 /* Handy query for checking logs:
  *
@@ -39,7 +27,7 @@ const char                             *LogNames[] = {
  * from logfile join log_types using (log_type_id)
  * where log_date > now() - interval '1 day'
  * order by log_date desc
- * limit 20;     
+ * limit 20;
  */
 
 /*
@@ -67,106 +55,113 @@ const char                             *LogNames[] = {
  * using varargs, so you can have this be a printf type
  * set of macros.
  */
-void bug_logger(unsigned int Type, const char *BugFile,
-		const char *File, const char *Func, int Line,
-		const char *AreaFile, int AreaLine,
-		struct char_data *ch, struct char_data *victim,
-		unsigned int Level, const char *Str, ...)
+void bug_logger(unsigned int Type, const char *BugFile, const char *File, const char *Func, int Line,
+                const char *AreaFile, int AreaLine, struct char_data *ch, struct char_data *victim, unsigned int Level,
+                const char *Str, ...)
 {
-    va_list                                 arg;
-    char                                    Result[MAX_STRING_LENGTH] = "\0\0\0";
-    char                                    Temp[MAX_STRING_LENGTH] = "\0\0\0";
-    FILE                                   *fp = NULL;
-    //struct timeb                            right_now;
-    struct timespec                         right_now;
-    struct tm                              *now_part = NULL;
+    va_list arg;
+    char Result[MAX_STRING_LENGTH] = "\0\0\0";
+    char Temp[MAX_STRING_LENGTH] = "\0\0\0";
+    FILE *fp = NULL;
+    // struct timeb                            right_now;
+    struct timespec right_now;
+    struct tm *now_part = NULL;
 
     bzero(Result, MAX_STRING_LENGTH);
     va_start(arg, Str);
-    if (Str && *Str) {
-	struct descriptor_data                 *i;
+    if (Str && *Str)
+    {
+        struct descriptor_data *i;
 
-	snprintf(Result, MAX_STRING_LENGTH, "%s> ", LogNames[Type]);
-	vsnprintf(Temp, MAX_STRING_LENGTH, Str, arg);
-	strlcat(Result, Temp, MAX_STRING_LENGTH);
-	for (i = descriptor_list; i; i = i->next)
-	    if ((!i->connected) && (GetMaxLevel(i->character) >= Level) &&
-		(IS_SET(i->character->specials.new_act, NEW_PLR_LOGS)))
-		write_to_q(Result, &i->output, 1);
-	bzero(Result, MAX_STRING_LENGTH);
-    } else
-	strlcpy(Temp, "PING!", MAX_STRING_LENGTH);
+        snprintf(Result, MAX_STRING_LENGTH, "%s> ", LogNames[Type]);
+        vsnprintf(Temp, MAX_STRING_LENGTH, Str, arg);
+        strlcat(Result, Temp, MAX_STRING_LENGTH);
+        for (i = descriptor_list; i; i = i->next)
+            if ((!i->connected) && (GetMaxLevel(i->character) >= Level) &&
+                (IS_SET(i->character->specials.new_act, NEW_PLR_LOGS)))
+                write_to_q(Result, &i->output, 1);
+        bzero(Result, MAX_STRING_LENGTH);
+    }
+    else
+        strlcpy(Temp, "PING!", MAX_STRING_LENGTH);
     va_end(arg);
-    //ftime(&right_now);
+    // ftime(&right_now);
     clock_gettime(CLOCK_REALTIME, &right_now);
     now_part = localtime((const time_t *)&right_now);
-    snprintf(Result, MAX_STRING_LENGTH, "<: %04d%02d%02d.%02d%02d%02d.%03d",
-	    now_part->tm_year + 1900, now_part->tm_mon + 1, now_part->tm_mday,
-	    now_part->tm_hour, now_part->tm_min, now_part->tm_sec,
-            //right_now.millitm);
-            ((int)(right_now.tv_nsec / 1000000)));
+    snprintf(Result, MAX_STRING_LENGTH, "<: %04d%02d%02d.%02d%02d%02d.%03d", now_part->tm_year + 1900,
+             now_part->tm_mon + 1, now_part->tm_mday, now_part->tm_hour, now_part->tm_min, now_part->tm_sec,
+             // right_now.millitm);
+             ((int)(right_now.tv_nsec / 1000000)));
     scprintf(Result, MAX_STRING_LENGTH, " - %s -", LogNames[Type]);
-    if (File || Func || Line) {
-	strlcat(Result, " (", MAX_STRING_LENGTH);
-	if (File && *File) {
-	    strlcat(Result, File, MAX_STRING_LENGTH);
-	}
-	if (Func && *Func)
-	    scprintf(Result, MAX_STRING_LENGTH, ";%s", Func);
-	if (Line)
-	    scprintf(Result, MAX_STRING_LENGTH, ",%d)", Line);
-	else
-	    strlcat(Result, ")", MAX_STRING_LENGTH);
+    if (File || Func || Line)
+    {
+        strlcat(Result, " (", MAX_STRING_LENGTH);
+        if (File && *File)
+        {
+            strlcat(Result, File, MAX_STRING_LENGTH);
+        }
+        if (Func && *Func)
+            scprintf(Result, MAX_STRING_LENGTH, ";%s", Func);
+        if (Line)
+            scprintf(Result, MAX_STRING_LENGTH, ",%d)", Line);
+        else
+            strlcat(Result, ")", MAX_STRING_LENGTH);
     }
-    if (ch || victim) {
-	if (ch)
-	    scprintf(Result, MAX_STRING_LENGTH, " ch \"%s\" [#%d]", NAME(ch), ch->in_room);
-	if (victim)
-	    scprintf(Result, MAX_STRING_LENGTH, " victim \"%s\" [#%d]",
-		    NAME(victim), victim->in_room);
-/*
-    if (obj)
-      scprintf(Result, MAX_STRING_LENGTH, " obj \"%s\" [#%d]",
-              SAFE_ONAME(obj), obj->in_room);
-    if (room)
-      scprintf(Result, MAX_STRING_LENGTH, " room \"%s\" [#%d]",
-              room->name?room->name:"", room->number);
-*/
-	strlcat(Result, "\n", MAX_STRING_LENGTH);
-    } else if (File || Func || Line)
-	strlcat(Result, "\n", MAX_STRING_LENGTH);
+    if (ch || victim)
+    {
+        if (ch)
+            scprintf(Result, MAX_STRING_LENGTH, " ch \"%s\" [#%d]", NAME(ch), ch->in_room);
+        if (victim)
+            scprintf(Result, MAX_STRING_LENGTH, " victim \"%s\" [#%d]", NAME(victim), victim->in_room);
+        /*
+            if (obj)
+              scprintf(Result, MAX_STRING_LENGTH, " obj \"%s\" [#%d]",
+                      SAFE_ONAME(obj), obj->in_room);
+            if (room)
+              scprintf(Result, MAX_STRING_LENGTH, " room \"%s\" [#%d]",
+                      room->name?room->name:"", room->number);
+        */
+        strlcat(Result, "\n", MAX_STRING_LENGTH);
+    }
+    else if (File || Func || Line)
+        strlcat(Result, "\n", MAX_STRING_LENGTH);
 
     strlcat(Result, " : ", MAX_STRING_LENGTH);
     strlcat(Result, Temp, MAX_STRING_LENGTH);
 
-    if (BugFile && *BugFile) {
-	if (!(fp = fopen(BugFile, "a"))) {
-	    perror(BugFile);
-	    if (ch)
-		cprintf(ch, "Could not open the file!\r\n");
-	} else {
-	    fprintf(fp, "%s\n", Result);
-	    FCLOSE(fp);
-	}
+    if (BugFile && *BugFile)
+    {
+        if (!(fp = fopen(BugFile, "a")))
+        {
+            perror(BugFile);
+            if (ch)
+                cprintf(ch, "Could not open the file!\r\n");
+        }
+        else
+        {
+            fprintf(fp, "%s\n", Result);
+            FCLOSE(fp);
+        }
     }
 
-    if (stderr) {
-	fprintf(stderr, "%s\n", Result);
-	fflush(stderr);
+    if (stderr)
+    {
+        fprintf(stderr, "%s\n", Result);
+        fflush(stderr);
     }
 
     // Here is where we would log to SQL too!
-    if( Type != LOG_NOSQL ) {
+    if (Type != LOG_NOSQL)
+    {
         // If the Type is LOG_NOSQL, it's an error with the database and
         // we have to make sure we don't make a loop of infinite failure.
-        bug_sql(LogNames[Type], File, Func, Line, NULL, 0,
-                ch ? NAME(ch) : NULL, ch ? ch->in_room : 0,
-                victim ? NAME(victim) : NULL,  victim ? victim->in_room : 0,
-                Temp);
+        bug_sql(LogNames[Type], File, Func, Line, NULL, 0, ch ? NAME(ch) : NULL, ch ? ch->in_room : 0,
+                victim ? NAME(victim) : NULL, victim ? victim->in_room : 0, Temp);
     }
 }
 
-void setup_logfile_table(void) {
+void setup_logfile_table(void)
+{
     PGresult *res = NULL;
     ExecStatusType st = 0;
     char *sql = "CREATE TABLE IF NOT EXISTS logfile ( "
@@ -195,7 +190,8 @@ void setup_logfile_table(void) {
 
     res = PQexec(db_logfile.dbc, sql);
     st = PQresultStatus(res);
-    if( st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE ) {
+    if (st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE)
+    {
         log_fatal("Cannot create log table: %s", PQerrorMessage(db_logfile.dbc));
         PQclear(res);
         proper_exit(MUD_HALT);
@@ -204,7 +200,8 @@ void setup_logfile_table(void) {
 
     res = PQexec(db_logfile.dbc, sql2);
     st = PQresultStatus(res);
-    if( st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE ) {
+    if (st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE)
+    {
         log_fatal("Cannot create logfile created index: %s", PQerrorMessage(db_logfile.dbc));
         PQclear(res);
         proper_exit(MUD_HALT);
@@ -213,7 +210,8 @@ void setup_logfile_table(void) {
 
     res = PQexec(db_logfile.dbc, sql3);
     st = PQresultStatus(res);
-    if( st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE ) {
+    if (st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE)
+    {
         log_fatal("Cannot create logfile logtype index: %s", PQerrorMessage(db_logfile.dbc));
         PQclear(res);
         proper_exit(MUD_HALT);
@@ -222,7 +220,8 @@ void setup_logfile_table(void) {
 
     res = PQexec(db_logfile.dbc, sql4);
     st = PQresultStatus(res);
-    if( st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE ) {
+    if (st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE)
+    {
         log_fatal("Cannot create logtail view: %s", PQerrorMessage(db_logfile.dbc));
         PQclear(res);
         proper_exit(MUD_HALT);
@@ -230,11 +229,10 @@ void setup_logfile_table(void) {
     PQclear(res);
 }
 
-void bug_sql( const char *logtype, const char *filename, const char *function, int line,
-              const char *area_file, int area_line, 
-              const char *character, int character_room,
-              const char *victim, int victim_room, 
-              const char *message ) {
+void bug_sql(const char *logtype, const char *filename, const char *function, int line, const char *area_file,
+             int area_line, const char *character, int character_room, const char *victim, int victim_room,
+             const char *message)
+{
     PGresult *res = NULL;
     ExecStatusType st = 0;
     const char *sql = "INSERT INTO logfile ( logtype, filename, function, line, "
@@ -243,13 +241,14 @@ void bug_sql( const char *logtype, const char *filename, const char *function, i
                       "VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11);";
     const char *param_val[11];
     int param_len[11];
-    int param_bin[11] = {0,0,0,1,0,1,0,1,0,1,0};
+    int param_bin[11] = {0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0};
     int param_line;
     int param_area_line;
     int param_char_room;
     int param_vic_room;
 
-    if( !db_logfile.dbc ) {
+    if (!db_logfile.dbc)
+    {
         // If we are not connected, and we've TRIED to connect, punt.
         return;
     }
@@ -286,7 +285,8 @@ void bug_sql( const char *logtype, const char *filename, const char *function, i
     sql_connect(&db_logfile);
     res = PQexecParams(db_logfile.dbc, sql, 11, NULL, param_val, param_len, param_bin, 0);
     st = PQresultStatus(res);
-    if( st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE ) {
+    if (st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE)
+    {
         // In case of an error, we defined a special logging level that does NOT
         // attempt to log to SQL, so we can still emit errors if the database is
         // not available.
@@ -294,4 +294,3 @@ void bug_sql( const char *logtype, const char *filename, const char *function, i
     }
     PQclear(res);
 }
-

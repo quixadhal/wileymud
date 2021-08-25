@@ -10,12 +10,14 @@
 #define _STRINGMAP_C
 #include "stringmap.h"
 
-unsigned int _stringmap( const char *s )
+unsigned int _stringmap(const char *s)
 {
     unsigned int hash = 0;
 
-    if(!s || !*s) return 0;
-    do {
+    if (!s || !*s)
+        return 0;
+    do
+    {
         hash += *s;
         hash *= 13;
         s++;
@@ -24,55 +26,62 @@ unsigned int _stringmap( const char *s )
     return hash % STRINGMAP_BUCKETS;
 }
 
-void _stringmap_recursive_nuke( stringMap *map )
+void _stringmap_recursive_nuke(stringMap *map)
 {
-    if(!map)
+    if (!map)
         return;
 
-    if(map->key) {
+    if (map->key)
+    {
         free(map->key);
         map->key = NULL;
     }
-    if(map->value) {
+    if (map->value)
+    {
         free(map->value);
         map->value = NULL;
     }
     map->size = 0;
-    if(map->next) {
+    if (map->next)
+    {
         _stringmap_recursive_nuke(map->next);
         free(map->next);
         map->next = NULL;
     }
 }
 
-void stringmap_destroy( stringMap *map )
+void stringmap_destroy(stringMap *map)
 {
-    if(!map)
+    if (!map)
         return;
 
-    for(int i = 0; i < STRINGMAP_BUCKETS; i++) {
-        if(map[i].key) {
+    for (int i = 0; i < STRINGMAP_BUCKETS; i++)
+    {
+        if (map[i].key)
+        {
             free(map[i].key);
             map[i].key = NULL;
         }
-        if(map[i].value) {
+        if (map[i].value)
+        {
             free(map[i].value);
             map[i].value = NULL;
         }
         map[i].size = 0;
-        if(map[i].next) {
+        if (map[i].next)
+        {
             _stringmap_recursive_nuke(map->next);
             map[i].next = NULL;
         }
     }
 }
 
-stringMap * stringmap_init( void )
+stringMap *stringmap_init(void)
 {
     int i;
     stringMap *map = (stringMap *)calloc(STRINGMAP_BUCKETS, sizeof(stringMap));
 
-    for(i = 0; i < STRINGMAP_BUCKETS; i++)
+    for (i = 0; i < STRINGMAP_BUCKETS; i++)
     {
         map[i].key = NULL;
         map[i].value = NULL;
@@ -83,35 +92,40 @@ stringMap * stringmap_init( void )
     return map;
 }
 
-void stringmap_add( stringMap *map, const char *k, void *v, size_t size )
+void stringmap_add(stringMap *map, const char *k, void *v, size_t size)
 {
     unsigned int hashcode;
     stringMap *p;
 
     // We won't allow NULL keys
-    if(!k || !*k)
+    if (!k || !*k)
         return;
 
     hashcode = _stringmap(k);
     p = &map[hashcode];
-    while(p->key && strcasecmp(p->key, k) && p->next)
+    while (p->key && strcasecmp(p->key, k) && p->next)
         p = p->next;
 
-    if(!p->key) {
+    if (!p->key)
+    {
         /* First node? */
         p->key = (char *)strdup(k);
         p->value = (void *)calloc(1, size);
         memcpy(p->value, v, size);
         p->size = size;
         p->next = NULL;
-    } else if(!strcasecmp(p->key, k)) {
+    }
+    else if (!strcasecmp(p->key, k))
+    {
         /* Found our match! */
-        if(p->value)
+        if (p->value)
             free((void *)p->value);
         p->value = (void *)calloc(1, size);
         memcpy(p->value, v, size);
         p->size = size;
-    } else {
+    }
+    else
+    {
         /* New key */
         p->next = (stringMap *)calloc(1, sizeof(stringMap));
         p = p->next;
@@ -123,20 +137,20 @@ void stringmap_add( stringMap *map, const char *k, void *v, size_t size )
     }
 }
 
-void * stringmap_find(stringMap *map, const char *k)
+void *stringmap_find(stringMap *map, const char *k)
 {
     unsigned int hashcode;
     stringMap *p;
 
     hashcode = _stringmap(k);
     p = &map[hashcode];
-    while(p->key && strcasecmp(p->key, k) && p->next)
+    while (p->key && strcasecmp(p->key, k) && p->next)
         p = p->next;
 
-    if(!p->key)
+    if (!p->key)
         return NULL;
 
-    if(!strcasecmp(p->key, k))
+    if (!strcasecmp(p->key, k))
         return p->value;
 
     return NULL;
@@ -156,7 +170,7 @@ void * stringmap_find(stringMap *map, const char *k)
  * but any other fields are subject to internal changes.  They
  * should not be modified, or the find functions will fail.
  */
-stringMap * stringmap_walk(stringMap *map, int reset)
+stringMap *stringmap_walk(stringMap *map, int reset)
 {
     static int bucket = 0;
     static stringMap *listptr = NULL;
@@ -164,11 +178,14 @@ stringMap * stringmap_walk(stringMap *map, int reset)
     if (!map)
         return NULL;
 
-    if (reset) {
+    if (reset)
+    {
         bucket = 0;
         listptr = &map[bucket];
-        for (int i = 0; i < STRINGMAP_BUCKETS; i++) {
-            if (map[i].key) {
+        for (int i = 0; i < STRINGMAP_BUCKETS; i++)
+        {
+            if (map[i].key)
+            {
                 // There is something in this bucket, so let's start here.
                 bucket = i;
                 listptr = &map[bucket];
@@ -182,15 +199,20 @@ stringMap * stringmap_walk(stringMap *map, int reset)
     if (!listptr)
         return NULL; // We already hit the end, reset or stop.
 
-    if (listptr->next) {
+    if (listptr->next)
+    {
         // Walk the bucket
         listptr = listptr->next;
         return listptr;
-    } else {
+    }
+    else
+    {
         // No more nodes in this bucket.
         bucket++;
-        for (int i = bucket; i < STRINGMAP_BUCKETS; i++) {
-            if (map[i].key) {
+        for (int i = bucket; i < STRINGMAP_BUCKETS; i++)
+        {
+            if (map[i].key)
+            {
                 // There is something in this bucket, so let's continue from here.
                 bucket = i;
                 listptr = &map[bucket];
@@ -204,4 +226,3 @@ stringMap * stringmap_walk(stringMap *map, int reset)
 
     return NULL;
 }
-

@@ -21,7 +21,7 @@
  */
 int64_t abs64(int64_t value)
 {
-    if( value < 0 )
+    if (value < 0)
         value = -value;
     return value;
 }
@@ -64,9 +64,9 @@ int64_t getTimestamp(void)
  */
 int64_t diffTimestamp(int64_t reference, int64_t point)
 {
-    if( reference < 0 )
+    if (reference < 0)
         reference = 0;
-    if( point < 0 )
+    if (point < 0)
         point = getTimestamp();
 
     return (reference - point);
@@ -92,14 +92,18 @@ struct timeval *packTimestamp(int64_t point, struct timeval *t_point)
 
     microseconds = (int)(abs64(point) % 1000000);
 
-    if( point < 0 && point > -1000000) {
+    if (point < 0 && point > -1000000)
+    {
         seconds = 0;
         microseconds = -microseconds;
-    } else {
+    }
+    else
+    {
         seconds = (int)(point / 1000000);
     }
 
-    if( t_point == NULL ) {
+    if (t_point == NULL)
+    {
         CREATE(t_point, struct timeval, 1);
     }
 
@@ -117,10 +121,13 @@ int timestampToTicks(int64_t point)
 
     microseconds = (int)(abs64(point) % 1000000);
 
-    if( point < 0 && point > -1000000) {
+    if (point < 0 && point > -1000000)
+    {
         seconds = 0;
         microseconds = -microseconds;
-    } else {
+    }
+    else
+    {
         seconds = (int)(point / 1000000);
     }
 
@@ -161,33 +168,39 @@ char *stringTimestamp(int64_t point)
     days = point;
 
     *result = '\0';
-    if(days > 0) {
+    if (days > 0)
+    {
         scprintf(result, MAX_STRING_LENGTH, "%d days", (int)days);
-        if(hours > 0)
+        if (hours > 0)
             scprintf(result, MAX_STRING_LENGTH, ", ");
     }
-    if(hours > 0) {
+    if (hours > 0)
+    {
         scprintf(result, MAX_STRING_LENGTH, "%d hours", (int)hours);
-        if(minutes > 0)
+        if (minutes > 0)
             scprintf(result, MAX_STRING_LENGTH, ", ");
     }
-    if(minutes > 0) {
+    if (minutes > 0)
+    {
         scprintf(result, MAX_STRING_LENGTH, "%d minutes", (int)minutes);
-        if(seconds > 0)
+        if (seconds > 0)
             scprintf(result, MAX_STRING_LENGTH, ", ");
     }
-    if(seconds > 0) {
-        if(microseconds > 999) {
-            scprintf(result, MAX_STRING_LENGTH, "%d.%03d seconds", (int)seconds, (int)(microseconds/1000));
-        } else {
+    if (seconds > 0)
+    {
+        if (microseconds > 999)
+        {
+            scprintf(result, MAX_STRING_LENGTH, "%d.%03d seconds", (int)seconds, (int)(microseconds / 1000));
+        }
+        else
+        {
             scprintf(result, MAX_STRING_LENGTH, "%d seconds", (int)seconds);
         }
     }
-    if(days > 0 || hours > 0 || minutes > 0 || seconds > 0 )
+    if (days > 0 || hours > 0 || minutes > 0 || seconds > 0)
         scprintf(result, MAX_STRING_LENGTH, ".");
     else
         scprintf(result, MAX_STRING_LENGTH, "No time.");
 
     return result;
 }
-

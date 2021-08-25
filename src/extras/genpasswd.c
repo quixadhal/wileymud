@@ -3,16 +3,17 @@
 #define _XOPEN_SOURCE
 #include <unistd.h>
 
-extern char                            *crypt(const char *key, const char *salt);
+extern char *crypt(const char *key, const char *salt);
 
 int main(int argc, char **argv)
 {
-    char                                    key[9];
-    char                                    salt[3];
+    char key[9];
+    char salt[3];
 
-    if (argc != 3) {
-	fprintf(stderr, "usage:  %s <key> <salt>\n", argv[0]);
-	return 1;
+    if (argc != 3)
+    {
+        fprintf(stderr, "usage:  %s <key> <salt>\n", argv[0]);
+        return 1;
     }
     salt[0] = argv[2][0];
     salt[1] = argv[2][1];

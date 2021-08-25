@@ -1,17 +1,19 @@
 #ifndef _HELP_H
 #define _HELP_H
 
-struct help_keyword {
-    char    keyword[MAX_INPUT_LENGTH];
-    int     id;
+struct help_keyword
+{
+    char keyword[MAX_INPUT_LENGTH];
+    int id;
 };
 
-struct help_message {
-    time_t                  updated;
-    int                     immortal;
-    char                    set_by[MAX_INPUT_LENGTH];
-    int                     id;
-    char                    message[MAX_STRING_LENGTH];
+struct help_message
+{
+    time_t updated;
+    int immortal;
+    char set_by[MAX_INPUT_LENGTH];
+    int id;
+    char message[MAX_STRING_LENGTH];
 };
 
 #ifndef _HELP_C
@@ -29,4 +31,3 @@ void do_help(struct char_data *ch, const char *argument, int cmd);
 void do_wizhelp(struct char_data *ch, const char *argument, int cmd);
 
 #endif
-

@@ -11,35 +11,36 @@
 // If both are set, the ban is a particular user@address.  If the user
 // logs in from elsewhere, they will be allowed... and new characters of
 // that name can be made if that user doesn't exist anymore.
-struct ban_data {
-    time_t  updated;                        // The ban was last updated at this time.
-    time_t  expires;                        // The ban expires at this timestamp, never if 0.
-    int     enabled;                        // Is this ban enabled or disabled?
-    char    ban_type[MAX_INPUT_LENGTH];     // Needed because of NULL != NULL issues.
-    char    name[MAX_INPUT_LENGTH];         // The character name banned.
-    char    ip[MAX_INPUT_LENGTH];           // The address banned.
-    char    set_by[MAX_INPUT_LENGTH];       // The immortal that banned you.
-    char    reason[MAX_STRING_LENGTH];      // The reason for being banned, if not NULL.
-    char    updated_text[MAX_INPUT_LENGTH]; // A pretty version of the date, not stored. YYYY-MM-DD HH:MM:SS TZZ
+struct ban_data
+{
+    time_t updated;                      // The ban was last updated at this time.
+    time_t expires;                      // The ban expires at this timestamp, never if 0.
+    int enabled;                         // Is this ban enabled or disabled?
+    char ban_type[MAX_INPUT_LENGTH];     // Needed because of NULL != NULL issues.
+    char name[MAX_INPUT_LENGTH];         // The character name banned.
+    char ip[MAX_INPUT_LENGTH];           // The address banned.
+    char set_by[MAX_INPUT_LENGTH];       // The immortal that banned you.
+    char reason[MAX_STRING_LENGTH];      // The reason for being banned, if not NULL.
+    char updated_text[MAX_INPUT_LENGTH]; // A pretty version of the date, not stored. YYYY-MM-DD HH:MM:SS TZZ
 };
 
 #ifndef _BAN_C
-extern struct ban_data  *ban_list;
-extern int              ban_list_count;
+extern struct ban_data *ban_list;
+extern int ban_list_count;
 #endif
 
-int         acceptable_name(const char *name);
-int         banned_ip(char *ip);
-int         banned_name(char *name);
-int         banned_at(char *name, char *ip);
+int acceptable_name(const char *name);
+int banned_ip(char *ip);
+int banned_name(char *name);
+int banned_at(char *name, char *ip);
 
-void        do_ban(struct char_data *ch, const char *argument, int cmd);
-void        do_unban(struct char_data *ch, const char *argument, int cmd);
+void do_ban(struct char_data *ch, const char *argument, int cmd);
+void do_unban(struct char_data *ch, const char *argument, int cmd);
 
-void        setup_bans_table(void);
-void        load_bans(void);
-void        unload_bans(void);
-int         add_ban(struct ban_data *pal);
-int         remove_ban(struct ban_data *pal);
-int         ban_address(const char *ip_addr, const char *reason);
+void setup_bans_table(void);
+void load_bans(void);
+void unload_bans(void);
+int add_ban(struct ban_data *pal);
+int remove_ban(struct ban_data *pal);
+int ban_address(const char *ip_addr, const char *reason);
 #endif
