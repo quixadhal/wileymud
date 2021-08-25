@@ -30,7 +30,9 @@ cJSON *process_item_boat(cJSON *this_obj, objects *Objects, int i);
 cJSON *process_item_worn(cJSON *this_obj, objects *Objects, int i);
 
 cJSON *process_obj_type_info(cJSON *this_obj, objects *Objects, int i);
-cJSON *process_obj(cJSON *parent_node, zones *Zones, int j, rooms *Rooms, objects *Objects, mobs *Mobs, int **reset_checkoffs);
-cJSON *process_objs_in_zone(cJSON *this_zone, zones *Zones, int i, rooms *Rooms, objects *Objects, mobs *Mobs, int **reset_checkoffs);
+cJSON *process_obj(cJSON *parent_node, zones *Zones, int j, rooms *Rooms, objects *Objects, mobs *Mobs,
+                   int **reset_checkoffs);
+cJSON *process_objs_in_zone(cJSON *this_zone, zones *Zones, int i, rooms *Rooms, objects *Objects, mobs *Mobs,
+                            int **reset_checkoffs);
 
 #endif

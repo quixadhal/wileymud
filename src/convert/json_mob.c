@@ -15,43 +15,135 @@
 #include "include/json_obj.h"
 
 // unsigned long is currently 64 bits...
-const char *act_flag_names[64] = {
-    "has_special", "sentinel", "scavenger", "is_npc",
-    "nice_thief", "aggressive", "stay_in_zone", "wimpy",
-    "annoying", "hateful", "afraid", "immortal",
-    "hunting", "deadly", "polyself", "polyother",
-    "guardian", "use_item", "fighter_moves", "provides_food",
-    "protector", "is_mount", "switch", "",
-    "", "", "", "",
-    "", "", "", "",
-    "", "", "", "",
-    "", "", "", "",
-    "", "", "", "",
-    "", "", "", "",
-    "", "", "", "",
-    "", "", "", "",
-    "", "", "", "",
-    "", "", "", ""
-};
+const char *act_flag_names[64] = {"has_special",
+                                  "sentinel",
+                                  "scavenger",
+                                  "is_npc",
+                                  "nice_thief",
+                                  "aggressive",
+                                  "stay_in_zone",
+                                  "wimpy",
+                                  "annoying",
+                                  "hateful",
+                                  "afraid",
+                                  "immortal",
+                                  "hunting",
+                                  "deadly",
+                                  "polyself",
+                                  "polyother",
+                                  "guardian",
+                                  "use_item",
+                                  "fighter_moves",
+                                  "provides_food",
+                                  "protector",
+                                  "is_mount",
+                                  "switch",
+                                  "",
+                                  "",
+                                  "",
+                                  "",
+                                  "",
+                                  "",
+                                  "",
+                                  "",
+                                  "",
+                                  "",
+                                  "",
+                                  "",
+                                  "",
+                                  "",
+                                  "",
+                                  "",
+                                  "",
+                                  "",
+                                  "",
+                                  "",
+                                  "",
+                                  "",
+                                  "",
+                                  "",
+                                  "",
+                                  "",
+                                  "",
+                                  "",
+                                  "",
+                                  "",
+                                  "",
+                                  "",
+                                  "",
+                                  "",
+                                  "",
+                                  "",
+                                  "",
+                                  "",
+                                  "",
+                                  "",
+                                  ""};
 
-const char *aff_flag_names[64] = {
-    "blind", "invisible", "detect_evil", "detect_invisible",
-    "detect_magic", "sense_life", "silenced", "sanctuary",
-    "group", "", "curse", "flying",
-    "poison", "protection_from_evil", "paralysis", "infravision",
-    "water_breathing", "sleep", "drug_free", "sneak",
-    "hide", "fear", "charm", "follow",
-    "", "true_sight", "scrying", "fireshield",
-    "ride", "", "", "",
-    "", "", "", "",
-    "", "", "", "",
-    "", "", "", "",
-    "", "", "", "",
-    "", "", "", "",
-    "", "", "", "",
-    "", "", "", "",
-    "", "", "", ""
-};
+const char *aff_flag_names[64] = {"blind",
+                                  "invisible",
+                                  "detect_evil",
+                                  "detect_invisible",
+                                  "detect_magic",
+                                  "sense_life",
+                                  "silenced",
+                                  "sanctuary",
+                                  "group",
+                                  "",
+                                  "curse",
+                                  "flying",
+                                  "poison",
+                                  "protection_from_evil",
+                                  "paralysis",
+                                  "infravision",
+                                  "water_breathing",
+                                  "sleep",
+                                  "drug_free",
+                                  "sneak",
+                                  "hide",
+                                  "fear",
+                                  "charm",
+                                  "follow",
+                                  "",
+                                  "true_sight",
+                                  "scrying",
+                                  "fireshield",
+                                  "ride",
+                                  "",
+                                  "",
+                                  "",
+                                  "",
+                                  "",
+                                  "",
+                                  "",
+                                  "",
+                                  "",
+                                  "",
+                                  "",
+                                  "",
+                                  "",
+                                  "",
+                                  "",
+                                  "",
+                                  "",
+                                  "",
+                                  "",
+                                  "",
+                                  "",
+                                  "",
+                                  "",
+                                  "",
+                                  "",
+                                  "",
+                                  "",
+                                  "",
+                                  "",
+                                  "",
+                                  "",
+                                  "",
+                                  "",
+                                  "",
+                                  ""};
 
 cJSON *process_mob_zone_info(const char *KeyName, cJSON *this_mob, mobs *Mobs, int i, zones *Zones)
 {
@@ -143,20 +235,29 @@ cJSON *process_mob_sounds(cJSON *this_mob, mobs *Mobs, int i)
 {
     cJSON *sound = NULL;
 
-    if ( (Mobs->Mob[i].Sound && *Mobs->Mob[i].Sound) || (Mobs->Mob[i].DistantSound && *Mobs->Mob[i].DistantSound)) {
+    if ((Mobs->Mob[i].Sound && *Mobs->Mob[i].Sound) || (Mobs->Mob[i].DistantSound && *Mobs->Mob[i].DistantSound))
+    {
         sound = cJSON_AddObjectToObject(this_mob, "sound");
 
-        if (Mobs->Mob[i].Sound && *Mobs->Mob[i].Sound) {
+        if (Mobs->Mob[i].Sound && *Mobs->Mob[i].Sound)
+        {
             cJSON_AddStringToObject(sound, "in_room", Mobs->Mob[i].Sound);
-        } else {
+        }
+        else
+        {
             cJSON_AddNullToObject(sound, "in_room");
         }
-        if (Mobs->Mob[i].DistantSound && *Mobs->Mob[i].DistantSound) {
+        if (Mobs->Mob[i].DistantSound && *Mobs->Mob[i].DistantSound)
+        {
             cJSON_AddStringToObject(sound, "adjacent", Mobs->Mob[i].DistantSound);
-        } else {
+        }
+        else
+        {
             cJSON_AddNullToObject(sound, "adjacent");
         }
-    } else {
+    }
+    else
+    {
         cJSON_AddNullToObject(this_mob, "sound");
     }
 
@@ -167,14 +268,15 @@ cJSON *process_mob_attacks(cJSON *this_mob, mobs *Mobs, int i)
 {
     cJSON *attacks = NULL;
 
-    if(Mobs->Mob[i].AttackCount > 0) {
+    if (Mobs->Mob[i].AttackCount > 0)
+    {
         attacks = cJSON_AddArrayToObject(this_mob, "attacks");
-        for(int j = 0; j < Mobs->Mob[i].AttackCount; j++) {
+        for (int j = 0; j < Mobs->Mob[i].AttackCount; j++)
+        {
             cJSON *this_attack = NULL;
             char tmp[MAX_STRING_LEN];
 
-            sprintf(tmp, "%dd%d%s%d", Mobs->Mob[i].Attack[j].Rolls,
-                    Mobs->Mob[i].Attack[j].Die,
+            sprintf(tmp, "%dd%d%s%d", Mobs->Mob[i].Attack[j].Rolls, Mobs->Mob[i].Attack[j].Die,
                     (Mobs->Mob[i].Attack[j].Modifier < 0) ? "" : "+", Mobs->Mob[i].Attack[j].Modifier);
 
             this_attack = cJSON_CreateObject();
@@ -188,7 +290,9 @@ cJSON *process_mob_attacks(cJSON *this_mob, mobs *Mobs, int i)
 
             cJSON_AddItemToArray(attacks, this_attack);
         }
-    } else {
+    }
+    else
+    {
         cJSON_AddNullToObject(this_mob, "attacks");
     }
 
@@ -199,9 +303,11 @@ cJSON *process_mob_skills(cJSON *this_mob, mobs *Mobs, int i)
 {
     cJSON *skills = NULL;
 
-    if(Mobs->Mob[i].SkillCount > 0) {
+    if (Mobs->Mob[i].SkillCount > 0)
+    {
         skills = cJSON_AddArrayToObject(this_mob, "skills");
-        for(int j = 0; j < Mobs->Mob[i].SkillCount; j++) {
+        for (int j = 0; j < Mobs->Mob[i].SkillCount; j++)
+        {
             cJSON *this_skill = NULL;
 
             this_skill = cJSON_CreateObject();
@@ -213,14 +319,17 @@ cJSON *process_mob_skills(cJSON *this_mob, mobs *Mobs, int i)
 
             cJSON_AddItemToArray(skills, this_skill);
         }
-    } else {
+    }
+    else
+    {
         cJSON_AddNullToObject(this_mob, "skills");
     }
 
     return skills;
 }
 
-cJSON *process_mob(cJSON *parent_node, zones *Zones, int j, rooms *Rooms, objects *Objects, mobs *Mobs, int **reset_checkoffs)
+cJSON *process_mob(cJSON *parent_node, zones *Zones, int j, rooms *Rooms, objects *Objects, mobs *Mobs,
+                   int **reset_checkoffs)
 {
     cJSON *this_mob = NULL;
 
@@ -240,15 +349,18 @@ cJSON *process_mob(cJSON *parent_node, zones *Zones, int j, rooms *Rooms, object
     return this_mob;
 }
 
-cJSON *process_mobs_in_zone(cJSON *this_zone, zones *Zones, int i, rooms *Rooms, objects *Objects, mobs *Mobs, int **reset_checkoffs)
+cJSON *process_mobs_in_zone(cJSON *this_zone, zones *Zones, int i, rooms *Rooms, objects *Objects, mobs *Mobs,
+                            int **reset_checkoffs)
 {
     cJSON *mobiles = NULL;
 
     mobiles = cJSON_AddObjectToObject(this_zone, "mobs");
-    for (int j = 0; j < Mobs->Count; j++) {
+    for (int j = 0; j < Mobs->Count; j++)
+    {
         if (!Quiet)
             spin(stderr);
-        if(Mobs->Mob[j].Zone != Zones->Zone[i].Number) {
+        if (Mobs->Mob[j].Zone != Zones->Zone[i].Number)
+        {
             continue;
         }
         process_mob(mobiles, Zones, j, Rooms, Objects, Mobs, reset_checkoffs);

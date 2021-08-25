@@ -14,7 +14,9 @@ cJSON *process_mob_saving_throws(cJSON *this_mob, mobs *Mobs, int i);
 cJSON *process_mob_sounds(cJSON *this_mob, mobs *Mobs, int i);
 cJSON *process_mob_attacks(cJSON *this_mob, mobs *Mobs, int i);
 cJSON *process_mob_skills(cJSON *this_mob, mobs *Mobs, int i);
-cJSON *process_mob(cJSON *parent_node, zones *Zones, int j, rooms *Rooms, objects *Objects, mobs *Mobs, int **reset_checkoffs);
-cJSON *process_mobs_in_zone(cJSON *this_zone, zones *Zones, int i, rooms *Rooms, objects *Objects, mobs *Mobs, int **reset_checkoffs);
+cJSON *process_mob(cJSON *parent_node, zones *Zones, int j, rooms *Rooms, objects *Objects, mobs *Mobs,
+                   int **reset_checkoffs);
+cJSON *process_mobs_in_zone(cJSON *this_zone, zones *Zones, int i, rooms *Rooms, objects *Objects, mobs *Mobs,
+                            int **reset_checkoffs);
 
 #endif

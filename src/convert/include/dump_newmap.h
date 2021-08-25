@@ -9,20 +9,22 @@ typedef struct coordinate {
 } coordinate;
 */
 
-typedef struct s_Tree {
-    int             Count;
-    room            **Room;
-    int             Start;
-    int             VNum;
-    int             Zone;
-    int             Colour;
-    coordinate      Origin;
-    coordinate      Size;
+typedef struct s_Tree
+{
+    int Count;
+    room **Room;
+    int Start;
+    int VNum;
+    int Zone;
+    int Colour;
+    coordinate Origin;
+    coordinate Size;
 } t_Tree;
 
-typedef struct s_Forest {
-    int             Count;
-    t_Tree          **Tree;
+typedef struct s_Forest
+{
+    int Count;
+    t_Tree **Tree;
 } t_Forest;
 
 void dump_as_newmap(zones *Zones, rooms *Rooms, objects *Objects, mobs *Mobs, shops *Shops);
