@@ -24,60 +24,60 @@
 #define _MULTICLASS_C
 #include "multiclass.h"
 
-int GetClassLevel(struct char_data *ch, int class)
+int GetClassLevel(struct char_data *ch, int chclass)
 {
     if (DEBUG > 2)
-        log_info("called %s with %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), class);
+        log_info("called %s with %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), chclass);
 
-    if (IS_SET(ch->player.class, class))
+    if (IS_SET(ch->player.chclass, chclass))
     {
-        return (GET_LEVEL(ch, CountBits(class) - 1));
+        return (GET_LEVEL(ch, CountBits(chclass) - 1));
     }
     return (0);
 }
 
-int CountBits(int class)
+int CountBits(int chclass)
 {
     if (DEBUG > 2)
-        log_info("called %s with %d", __PRETTY_FUNCTION__, class);
+        log_info("called %s with %d", __PRETTY_FUNCTION__, chclass);
 
-    if (class == 1)
+    if (chclass == 1)
         return (1);
-    if (class == 2)
+    if (chclass == 2)
         return (2);
-    if (class == 4)
+    if (chclass == 4)
         return (3);
-    if (class == 8)
+    if (chclass == 8)
         return (4);
-    if (class == 16)
+    if (chclass == 16)
         return (5); /* ranger */
-    if (class == 32)
+    if (chclass == 32)
         return (6); /* druid */
     return 0;
 }
 
-int OnlyClass(struct char_data *ch, int class)
+int OnlyClass(struct char_data *ch, int chclass)
 {
     int i = 0;
 
     if (DEBUG > 2)
-        log_info("called %s with %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), class);
+        log_info("called %s with %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), chclass);
 
     for (i = 1; i <= 32; i *= 2)
     {
         if (GetClassLevel(ch, i) != 0)
-            if (i != class)
+            if (i != chclass)
                 return (FALSE);
     }
     return (TRUE);
 }
 
-int HasClass(struct char_data *ch, int class)
+int HasClass(struct char_data *ch, int chclass)
 {
     if (DEBUG > 3)
-        log_info("called %s with %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), class);
+        log_info("called %s with %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), chclass);
 
-    if (IS_SET(ch->player.class, class))
+    if (IS_SET(ch->player.chclass, chclass))
         return TRUE;
     return FALSE;
 }
@@ -270,27 +270,27 @@ void StartLevels(struct char_data *ch)
     if (DEBUG > 2)
         log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
 
-    if (IS_SET(ch->player.class, CLASS_MAGIC_USER))
+    if (IS_SET(ch->player.chclass, CLASS_MAGIC_USER))
     {
         advance_level(ch, MAGE_LEVEL_IND);
     }
-    if (IS_SET(ch->player.class, CLASS_CLERIC))
+    if (IS_SET(ch->player.chclass, CLASS_CLERIC))
     {
         advance_level(ch, CLERIC_LEVEL_IND);
     }
-    if (IS_SET(ch->player.class, CLASS_WARRIOR))
+    if (IS_SET(ch->player.chclass, CLASS_WARRIOR))
     {
         advance_level(ch, WARRIOR_LEVEL_IND);
     }
-    if (IS_SET(ch->player.class, CLASS_RANGER))
+    if (IS_SET(ch->player.chclass, CLASS_RANGER))
     {
         advance_level(ch, RANGER_LEVEL_IND);
     }
-    if (IS_SET(ch->player.class, CLASS_DRUID))
+    if (IS_SET(ch->player.chclass, CLASS_DRUID))
     {
         advance_level(ch, DRUID_LEVEL_IND);
     }
-    if (IS_SET(ch->player.class, CLASS_THIEF))
+    if (IS_SET(ch->player.chclass, CLASS_THIEF))
     {
         advance_level(ch, THIEF_LEVEL_IND);
     }
@@ -299,7 +299,7 @@ void StartLevels(struct char_data *ch)
 int BestClass(struct char_data *ch)
 {
     int max = 0;
-    int class = 0;
+    int chclass = 0;
     int i = 0;
 
     if (DEBUG > 2)
@@ -309,7 +309,7 @@ int BestClass(struct char_data *ch)
         if (max < GET_LEVEL(ch, i))
         {
             max = GET_LEVEL(ch, i);
-            class = i;
+            chclass = i;
         }
     if (max == 0)
     { /* eek */
@@ -319,6 +319,6 @@ int BestClass(struct char_data *ch)
     }
     else
     {
-        return (class);
+        return (chclass);
     }
 }

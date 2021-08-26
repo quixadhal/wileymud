@@ -817,7 +817,7 @@ struct char_data *read_mobile(int nr, int type)
     fscanf(mob_f, " %ld ", &tmp);
     mob->specials.alignment = tmp;
 
-    mob->player.class = CLASS_WARRIOR;
+    mob->player.chclass = CLASS_WARRIOR;
 
     fscanf(mob_f, " %c ", &letter);
 
@@ -918,7 +918,7 @@ struct char_data *read_mobile(int nr, int type)
 
         fscanf(mob_f, "\n");
 
-        mob->player.class = 0;
+        mob->player.chclass = 0;
         mob->player.time.birth = time(0);
         mob->player.time.played = 0;
         mob->player.time.logon = time(0);
@@ -1001,7 +1001,7 @@ struct char_data *read_mobile(int nr, int type)
         mob->player.sex = tmp;
 
         fscanf(mob_f, " %ld ", &tmp);
-        mob->player.class = tmp;
+        mob->player.chclass = tmp;
 
         fscanf(mob_f, " %ld ", &tmp);
         GET_LEVEL(mob, WARRIOR_LEVEL_IND) = tmp;
@@ -1051,7 +1051,7 @@ struct char_data *read_mobile(int nr, int type)
 
         fscanf(mob_f, " %ld %ld %ld %ld %ld", &tmp, &tmp2, &tmp3, &tmp4, &tmp5);
         GET_RACE(mob) = tmp;
-        mob->player.class = tmp2;
+        mob->player.chclass = tmp2;
         mob->player.sex = tmp3;
         mob->player.height = tmp4;
         mob->player.weight = tmp5;
@@ -1060,7 +1060,7 @@ struct char_data *read_mobile(int nr, int type)
         fread_dice(mob_f, &tmp, &tmp2, &tmp3);
         GET_EXP(mob) = dice(tmp, tmp2) + tmp3;
         fscanf(mob_f, " %ld ", &tmp);
-        if (!mob->player.class) /* no class... store level in warrior slot */
+        if (!mob->player.chclass) /* no class... store level in warrior slot */
             GET_LEVEL(mob, WARRIOR_LEVEL_IND) = tmp;
         else
             for (x = 0; x < ABS_MAX_CLASS; x++)
@@ -1597,7 +1597,7 @@ void store_to_char(struct char_file_u *st, struct char_data *ch)
      * strcpy(ch->desc->pwd, st->pwd);
      */
     GET_SEX(ch) = st->sex;
-    ch->player.class = st->class;
+    ch->player.chclass = st->chclass;
 
     for (i = MAGE_LEVEL_IND; i <= DRUID_LEVEL_IND; i++)
         ch->player.level[i] = st->level[i];
@@ -1760,7 +1760,7 @@ void char_to_store(struct char_data *ch, struct char_file_u *st)
     st->weight = GET_WEIGHT(ch);
     st->height = GET_HEIGHT(ch);
     st->sex = GET_SEX(ch);
-    st->class = ch->player.class;
+    st->chclass = ch->player.chclass;
 
     for (i = MAGE_LEVEL_IND; i <= DRUID_LEVEL_IND; i++)
         st->level[i] = ch->player.level[i];
@@ -1986,7 +1986,7 @@ void new_save_char(struct char_file_u *ch, char *filename, struct char_data *xch
 	char                                    title[80];
 	char                                    pre_title[80];
 	char                                    sex;
-	char                                    class;
+	char                                    chclass;
 	char                                    last_connect_site[49];
 	char                                    level[MAX_NUMBER_OF_CLASSES];
 	time_t                                  birth;	       /* Time of birth of character */
@@ -2046,7 +2046,7 @@ void new_save_char(struct char_file_u *ch, char *filename, struct char_data *xch
     fprintf(fp, "Played             %d\n", ch->played);
     fprintf(fp, "Sex                %d\n", (int)ch->sex);
     fprintf(fp, "Race               %d\n", ch->race);
-    fprintf(fp, "Class              %d\n", (int)ch->class);
+    fprintf(fp, "Class              %d\n", (int)ch->chclass);
     fprintf(fp, "Alignment          %d\n", ch->alignment);
     fprintf(fp, "Exp                %ld\n", (long)(ch->points.exp));
     for (i = 0; i < ABS_MAX_CLASS; i++)
@@ -2289,9 +2289,9 @@ void reset_char(struct char_data *ch)
         if (!IS_AFFECTED(ch, AFF_INFRAVISION))
             SET_BIT(ch->specials.affected_by, AFF_INFRAVISION);
     }
-    if ((ch->player.class == 3) && (GET_LEVEL(ch, THIEF_LEVEL_IND)))
+    if ((ch->player.chclass == 3) && (GET_LEVEL(ch, THIEF_LEVEL_IND)))
     {
-        ch->player.class = 8;
+        ch->player.chclass = 8;
         cprintf(ch, "Setting your class to THIEF only.\r\n");
     }
     for (i = 0; i < ABS_MAX_CLASS; i++)
@@ -2416,7 +2416,7 @@ void init_char(struct char_data *ch)
         for (x = 0; x < ABS_MAX_CLASS; x++)
         {
             GET_LEVEL(ch, x) = LOKI;
-            ch->player.class |= 1 << x;
+            ch->player.chclass |= 1 << x;
         }
     }
 
@@ -2960,7 +2960,7 @@ int fread_char(char *name, struct char_file_u *ch, struct char_data *xch)
             break;
 
         case 'C':
-            KEY("Class", ch->class, fread_number(fp));
+            KEY("Class", ch->chclass, fread_number(fp));
             if (!str_cmp(word, "Conditions"))
             {
                 int x = 0;

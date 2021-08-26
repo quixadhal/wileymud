@@ -214,27 +214,27 @@ char *how_good(int percent_known)
     return (buf);
 }
 
-int GainLevel(struct char_data *master, struct char_data *ch, int class)
+int GainLevel(struct char_data *master, struct char_data *ch, int chclass)
 {
     char buf[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
 
     if (DEBUG > 2)
-        log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(master), SAFE_NAME(ch), class);
+        log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(master), SAFE_NAME(ch), chclass);
 
-    if (GET_LEVEL(ch, class) < GetMaxLevel(master) - 20)
+    if (GET_LEVEL(ch, chclass) < GetMaxLevel(master) - 20)
     {
         cprintf(ch, "%s snorts, 'I will not teach such a novice!'\r\n", NAME(master));
     }
-    else if (GET_LEVEL(ch, class) < GetMaxLevel(master) - 10)
+    else if (GET_LEVEL(ch, chclass) < GetMaxLevel(master) - 10)
     {
         int cost;
 
-        if (GET_EXP(ch) >= titles[class][GET_LEVEL(ch, class) + 1].exp)
+        if (GET_EXP(ch) >= titles[chclass][GET_LEVEL(ch, chclass) + 1].exp)
         {
-            cost = GOLD_NEEDED(ch, class);
-            if (GET_LEVEL(ch, class) < 8)
+            cost = GOLD_NEEDED(ch, chclass);
+            if (GET_LEVEL(ch, chclass) < 8)
             {
-                if (GET_LEVEL(ch, class) < 4)
+                if (GET_LEVEL(ch, chclass) < 4)
                 {
                     cprintf(ch, "%s grumbles, 'Newbies... I'm going to STARVE at this rate of discount...'\r\n",
                             NAME(master));
@@ -253,10 +253,10 @@ int GainLevel(struct char_data *master, struct char_data *ch, int class)
             {
                 GET_GOLD(ch) -= cost;
                 cprintf(ch, "You raise a level\r\n");
-                advance_level(ch, class);
+                advance_level(ch, chclass);
                 set_title(ch);
-                sprintf(buf, "Congratulations %s!  You have earned your %d%s level!", NAME(ch), GET_LEVEL(ch, class),
-                        ordinal(GET_LEVEL(ch, class)));
+                sprintf(buf, "Congratulations %s!  You have earned your %d%s level!", NAME(ch), GET_LEVEL(ch, chclass),
+                        ordinal(GET_LEVEL(ch, chclass)));
                 do_shout(master, buf, 0);
                 return TRUE;
             }
@@ -825,7 +825,7 @@ int GenericGuildMaster(struct char_data *ch, int cmd, const char *arg)
         {
             if (r_skills[i].skill_lvl <= GetMaxLevel(ch) || IS_IMMORTAL(ch))
             {
-                if ((IS_SET(ch->player.class, r_skills[i].skill_class) && GetMaxLevel(ch) >= r_skills[i].skill_lvl) ||
+                if ((IS_SET(ch->player.chclass, r_skills[i].skill_class) && GetMaxLevel(ch) >= r_skills[i].skill_lvl) ||
                     IS_IMMORTAL(ch))
                 {
                     cprintf(ch, "%s%s\r\n", r_skills[i].skill_name,
@@ -5733,9 +5733,9 @@ int GuildMaster(struct char_data *ch, int cmd, const char *arg)
             }
             return TRUE;
         }
-        else if (HasClass(master, ch->player.class))
+        else if (HasClass(master, ch->player.chclass))
         {
-            targetclass = ch->player.class;
+            targetclass = ch->player.chclass;
             argument = arg;
             switch (cmd)
             {
@@ -5760,9 +5760,9 @@ int GuildMaster(struct char_data *ch, int cmd, const char *arg)
     }
     else
     { /* you must possess my class */
-        if (HasClass(ch, master->player.class))
+        if (HasClass(ch, master->player.chclass))
         {
-            targetclass = ch->player.class;
+            targetclass = ch->player.chclass;
             argument = arg;
             switch (cmd)
             {

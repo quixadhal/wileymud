@@ -4000,7 +4000,7 @@ void spell_animate_dead(int level, struct char_data *ch, struct char_data *victi
     mob->player.sex = 0;
 
     GET_RACE(mob) = RACE_UNDEAD;
-    mob->player.class = ch->player.class;
+    mob->player.chclass = ch->player.chclass;
     if (number(0, 99) > 50 + GetMaxLevel(ch))
     {
         act("$N turns to $n and snarls.", FALSE, ch, 0, mob, TO_ROOM);
@@ -5500,7 +5500,7 @@ void spell_golem(int level, struct char_data *ch, struct char_data *victim, stru
     IS_CARRYING_W(gol) = 0;
     IS_CARRYING_N(gol) = 0;
 
-    gol->player.class = CLASS_WARRIOR;
+    gol->player.chclass = CLASS_WARRIOR;
 
     if (GET_LEVEL(gol, WARRIOR_LEVEL_IND) > 10)
         gol->mult_att += 0.5;
@@ -7200,7 +7200,7 @@ void spell_know_monster(int level, struct char_data *ch, struct char_data *victi
             }
             if (IS_SET(victim->hatefield, HATE_CLASS))
             {
-                sprintbit((unsigned)victim->hates.class, pc_class_types, buf2);
+                sprintbit((unsigned)victim->hates.chclass, pc_class_types, buf2);
                 act("$n seems to hate the %s class(es)", FALSE, ch, 0, victim, TO_CHAR, buf2);
             }
         }

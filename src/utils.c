@@ -1390,7 +1390,7 @@ int IsWizard(struct char_data *ch)
 
     if (!ch)
         return 0;
-    return ch->player.class & CLASS_WIZARD;
+    return ch->player.chclass & CLASS_WIZARD;
 }
 
 int IsPriest(struct char_data *ch)
@@ -1400,7 +1400,7 @@ int IsPriest(struct char_data *ch)
 
     if (!ch)
         return 0;
-    return ch->player.class & CLASS_PRIEST;
+    return ch->player.chclass & CLASS_PRIEST;
 }
 
 int IsMagical(struct char_data *ch)
@@ -1410,7 +1410,7 @@ int IsMagical(struct char_data *ch)
 
     if (!ch)
         return 0;
-    return ch->player.class & CLASS_MAGICAL;
+    return ch->player.chclass & CLASS_MAGICAL;
 }
 
 int IsFighter(struct char_data *ch)
@@ -1420,7 +1420,7 @@ int IsFighter(struct char_data *ch)
 
     if (!ch)
         return 0;
-    return ch->player.class & CLASS_FIGHTER;
+    return ch->player.chclass & CLASS_FIGHTER;
 }
 
 int IsSneak(struct char_data *ch)
@@ -1430,7 +1430,7 @@ int IsSneak(struct char_data *ch)
 
     if (!ch)
         return 0;
-    return ch->player.class & CLASS_SNEAK;
+    return ch->player.chclass & CLASS_SNEAK;
 }
 
 /*

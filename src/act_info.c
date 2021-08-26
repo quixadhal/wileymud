@@ -2550,7 +2550,7 @@ void do_levels(struct char_data *ch, const char *argument, int cmd)
 {
     int i = 0;
     int RaceMax = 0;
-    int class = 0;
+    int chclass = 0;
     char buf[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
 
     if (DEBUG)
@@ -2577,29 +2577,29 @@ void do_levels(struct char_data *ch, const char *argument, int cmd)
     case 'c':
     case 'P':
     case 'p':
-        class = CLERIC_LEVEL_IND;
+        chclass = CLERIC_LEVEL_IND;
         break;
     case 'F':
     case 'f':
     case 'W':
     case 'w':
-        class = WARRIOR_LEVEL_IND;
+        chclass = WARRIOR_LEVEL_IND;
         break;
     case 'M':
     case 'm':
-        class = MAGE_LEVEL_IND;
+        chclass = MAGE_LEVEL_IND;
         break;
     case 'T':
     case 't':
-        class = THIEF_LEVEL_IND;
+        chclass = THIEF_LEVEL_IND;
         break;
     case 'R':
     case 'r':
-        class = RANGER_LEVEL_IND;
+        chclass = RANGER_LEVEL_IND;
         break;
     case 'D':
     case 'd':
-        class = DRUID_LEVEL_IND;
+        chclass = DRUID_LEVEL_IND;
         break;
     default:
         cprintf(ch, "I don't recognize %s\r\n", argument);
@@ -2607,19 +2607,19 @@ void do_levels(struct char_data *ch, const char *argument, int cmd)
         break;
     }
 
-    RaceMax = RacialMax[RACE_HUMAN][class];
+    RaceMax = RacialMax[RACE_HUMAN][chclass];
 
     for (i = 1; i <= RaceMax; i++)
     {
-        scprintf(buf, MAX_STRING_LENGTH, "[%2d] %9d-%-9d : ", i, titles[class][i].exp, titles[class][i + 1].exp);
+        scprintf(buf, MAX_STRING_LENGTH, "[%2d] %9d-%-9d : ", i, titles[chclass][i].exp, titles[chclass][i + 1].exp);
 
         switch (GET_SEX(ch))
         {
         case SEX_MALE:
-            strlcat(buf, titles[class][i].title_m, MAX_STRING_LENGTH);
+            strlcat(buf, titles[chclass][i].title_m, MAX_STRING_LENGTH);
             break;
         case SEX_FEMALE:
-            strlcat(buf, titles[class][i].title_f, MAX_STRING_LENGTH);
+            strlcat(buf, titles[chclass][i].title_f, MAX_STRING_LENGTH);
             break;
         default:
             cprintf(ch, "Uh oh.\r\n");
@@ -2860,7 +2860,7 @@ void do_skills(struct char_data *ch, const char *argument, int cmd)
     {
         if (r_skills[i].skill_lvl <= GetMaxLevel(ch) || IS_IMMORTAL(ch))
         {
-            if ((IS_SET(ch->player.class, r_skills[i].skill_class) && GetMaxLevel(ch) > r_skills[i].skill_lvl) ||
+            if ((IS_SET(ch->player.chclass, r_skills[i].skill_class) && GetMaxLevel(ch) > r_skills[i].skill_lvl) ||
                 IS_IMMORTAL(ch))
             {
                 cprintf(ch, "%s%s\r\n", r_skills[i].skill_name, how_good(ch->skills[r_skills[i].skill_numb].learned));

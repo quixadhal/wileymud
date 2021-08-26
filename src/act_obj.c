@@ -1458,7 +1458,7 @@ void wear(struct char_data *ch, struct obj_data *obj_object, int keyword)
     if (!IS_IMMORTAL(ch))
     {
         BitMask = GetItemClassRestrictions(obj_object);
-        if (IsRestricted(BitMask, ch->player.class) && (IS_PC(ch) || IS_SET(ch->specials.act, ACT_POLYSELF)))
+        if (IsRestricted(BitMask, ch->player.chclass) && (IS_PC(ch) || IS_SET(ch->specials.act, ACT_POLYSELF)))
         {
             cprintf(ch, "You are forbidden to do that.\r\n");
             return;

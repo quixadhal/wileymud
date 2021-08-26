@@ -21,17 +21,17 @@
 
 #if defined(IMCROM)
 #define first_descriptor descriptor_list
-#define CH_IMCRANK(ch) (title_table[(ch)->class][(ch)->level][(ch)->sex == SEX_FEMALE ? 1 : 0])
+#define CH_IMCRANK(ch) (title_table[(ch)->chclass][(ch)->level][(ch)->sex == SEX_FEMALE ? 1 : 0])
 #endif
 
 #if defined(IMCMERC)
 #define first_descriptor descriptor_list
-#define CH_IMCRANK(ch) (title_table[(ch)->class][(ch)->level][(ch)->sex == SEX_FEMALE ? 1 : 0])
+#define CH_IMCRANK(ch) (title_table[(ch)->chclass][(ch)->level][(ch)->sex == SEX_FEMALE ? 1 : 0])
 #endif
 
 #if defined(IMCACK)
 #define first_descriptor first_desc
-#define CH_IMCRANK(ch) (class_table[(ch)->class].who_name)
+#define CH_IMCRANK(ch) (class_table[(ch)->chclass].who_name)
 #endif
 
 #if defined(IMCUENVY)
@@ -39,7 +39,7 @@
 #define SOCIAL_DATA SOC_INDEX_DATA
 SOC_INDEX_DATA *find_social(char *command);
 #define first_descriptor descriptor_list
-#define CH_IMCRANK(ch) (title_table[(ch)->class][(ch)->level][(ch)->sex == SEX_FEMALE ? 1 : 0])
+#define CH_IMCRANK(ch) (title_table[(ch)->chclass][(ch)->level][(ch)->sex == SEX_FEMALE ? 1 : 0])
 #endif
 
 /* Blasted circle, always gotta do thing the hard way! */

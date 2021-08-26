@@ -393,12 +393,12 @@ void do_track(struct char_data *ch, const char *argument, int cmd)
 
     dist = ch->skills[SKILL_TRACK].learned;
 
-    if (IS_SET(ch->player.class, CLASS_RANGER))
+    if (IS_SET(ch->player.chclass, CLASS_RANGER))
     {
         dist *= 2;
         cost = 15 - (GET_LEVEL(ch, RANGER_LEVEL_IND) / 10);
     }
-    else if (IS_SET(ch->player.class, CLASS_THIEF))
+    else if (IS_SET(ch->player.chclass, CLASS_THIEF))
     {
         cost = 50 - GET_LEVEL(ch, THIEF_LEVEL_IND);
     }

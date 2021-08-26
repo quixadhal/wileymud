@@ -197,7 +197,7 @@ int AddHatred(struct char_data *ch, int parm_type, int parm)
     case OP_CLASS:
         if (!IS_SET(ch->hatefield, HATE_CLASS))
             SET_BIT(ch->hatefield, HATE_CLASS);
-        ch->hates.class = parm;
+        ch->hates.chclass = parm;
         break;
     case OP_VNUM:
         if (!IS_SET(ch->hatefield, HATE_VNUM))
@@ -362,7 +362,7 @@ int AddFears(struct char_data *ch, int parm_type, int parm)
     case OP_CLASS:
         if (!IS_SET(ch->fearfield, FEAR_CLASS))
             SET_BIT(ch->fearfield, FEAR_CLASS);
-        ch->fears.class = parm;
+        ch->fears.chclass = parm;
         break;
     case OP_VNUM:
         if (!IS_SET(ch->fearfield, FEAR_VNUM))
@@ -479,7 +479,7 @@ int DoesHate(struct char_data *ch, struct char_data *v)
     }
     if (IS_SET(ch->hatefield, HATE_CLASS))
     {
-        if (HasClass(v, ch->hates.class))
+        if (HasClass(v, ch->hates.chclass))
         {
             return (TRUE);
         }
@@ -586,7 +586,7 @@ int DoesFear(struct char_data *ch, struct char_data *v)
     }
     if (IS_SET(ch->fearfield, FEAR_CLASS))
     {
-        if (HasClass(v, ch->hates.class))
+        if (HasClass(v, ch->hates.chclass))
         {
             return (TRUE);
         }

@@ -1506,7 +1506,7 @@ void nanny(struct descriptor_data *d, char *arg)
         return;
 
     case CON_GET_CLASS:
-        d->character->player.class = 0;
+        d->character->player.chclass = 0;
         count = 0;
         oops = FALSE;
         for (; *arg && count < 3 && !oops; arg++)
@@ -1524,16 +1524,16 @@ void nanny(struct descriptor_data *d, char *arg)
                 break;
             case 'm':
             case 'M': {
-                if (!IS_SET(d->character->player.class, CLASS_MAGIC_USER))
-                    d->character->player.class += CLASS_MAGIC_USER;
+                if (!IS_SET(d->character->player.chclass, CLASS_MAGIC_USER))
+                    d->character->player.chclass += CLASS_MAGIC_USER;
                 STATE(d) = CON_READ_MOTD;
                 count++;
                 break;
             }
             case 'c':
             case 'C': {
-                if (!IS_SET(d->character->player.class, CLASS_CLERIC))
-                    d->character->player.class += CLASS_CLERIC;
+                if (!IS_SET(d->character->player.chclass, CLASS_CLERIC))
+                    d->character->player.chclass += CLASS_CLERIC;
                 STATE(d) = CON_READ_MOTD;
                 count++;
                 break;
@@ -1542,24 +1542,24 @@ void nanny(struct descriptor_data *d, char *arg)
             case 'F':
             case 'w':
             case 'W': {
-                if (!IS_SET(d->character->player.class, CLASS_WARRIOR))
-                    d->character->player.class += CLASS_WARRIOR;
+                if (!IS_SET(d->character->player.chclass, CLASS_WARRIOR))
+                    d->character->player.chclass += CLASS_WARRIOR;
                 STATE(d) = CON_READ_MOTD;
                 count++;
                 break;
             }
             case 't':
             case 'T': {
-                if (!IS_SET(d->character->player.class, CLASS_THIEF))
-                    d->character->player.class += CLASS_THIEF;
+                if (!IS_SET(d->character->player.chclass, CLASS_THIEF))
+                    d->character->player.chclass += CLASS_THIEF;
                 STATE(d) = CON_READ_MOTD;
                 count++;
                 break;
             }
             case 'r':
             case 'R': {
-                if (!IS_SET(d->character->player.class, CLASS_RANGER))
-                    d->character->player.class = CLASS_RANGER;
+                if (!IS_SET(d->character->player.chclass, CLASS_RANGER))
+                    d->character->player.chclass = CLASS_RANGER;
                 STATE(d) = CON_READ_MOTD;
                 count++;
                 break;
@@ -1567,8 +1567,8 @@ void nanny(struct descriptor_data *d, char *arg)
                 /*
                  * case 'd':
                  * case 'D': {
-                 * if (!IS_SET(d->character->player.class, CLASS_DRUID))
-                 * d->character->player.class += CLASS_DRUID;
+                 * if (!IS_SET(d->character->player.chclass, CLASS_DRUID))
+                 * d->character->player.chclass += CLASS_DRUID;
                  * STATE(d) = CON_READ_MOTD;
                  * count++;
                  * break;
@@ -1581,7 +1581,7 @@ void nanny(struct descriptor_data *d, char *arg)
                 break;
             }
 
-            if ((count > 1) && IS_SET(d->character->player.class, CLASS_RANGER))
+            if ((count > 1) && IS_SET(d->character->player.chclass, CLASS_RANGER))
             {
                 dcprintf(d, "Rangers may only be single classed.\r\n%s", class_menu);
                 STATE(d) = CON_GET_CLASS;

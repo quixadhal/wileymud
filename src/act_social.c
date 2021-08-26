@@ -269,7 +269,7 @@ void boot_pose_messages(void)
 {
     FILE *fl = NULL;
     int counter = 0;
-    int class = 0;
+    int chclass = 0;
 
     if (DEBUG > 1)
         log_info("called %s with no arguments", __PRETTY_FUNCTION__);
@@ -286,10 +286,10 @@ void boot_pose_messages(void)
         fscanf(fl, " %d ", &pose_messages[counter].level);
         if (pose_messages[counter].level < 0)
             break;
-        for (class = 0; class < 4; class ++)
+        for (chclass = 0; chclass < 4; chclass ++)
         {
-            pose_messages[counter].poser_msg[class] = fread_action(fl);
-            pose_messages[counter].room_msg[class] = fread_action(fl);
+            pose_messages[counter].poser_msg[chclass] = fread_action(fl);
+            pose_messages[counter].room_msg[chclass] = fread_action(fl);
         }
     }
 

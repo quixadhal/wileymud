@@ -418,38 +418,38 @@ int move_gain(struct char_data *ch)
 }
 
 /* Gain maximum in various points */
-void advance_level(struct char_data *ch, int class)
+void advance_level(struct char_data *ch, int chclass)
 {
     int add_hp = 0;
     int i = 0;
 
     if (DEBUG > 1)
-        log_info("called %s with %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), class);
+        log_info("called %s with %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), chclass);
 
-    if (GET_LEVEL(ch, class) > 0 &&
+    if (GET_LEVEL(ch, chclass) > 0 &&
         GET_EXP(ch) <
 #ifdef MOB_LEVELING
             ((IS_PC(ch) || (IS_SET(ch->specials.act, ACT_POLYSELF) || IS_SET(ch->specials.act, ACT_POLYSELF)))
-                 ? titles[class][GET_LEVEL(ch, class) + 1].exp
-                 : (titles[class][GET_LEVEL(ch, class) + 1].exp / 20))
+                 ? titles[chclass][GET_LEVEL(ch, chclass) + 1].exp
+                 : (titles[chclass][GET_LEVEL(ch, chclass) + 1].exp / 20))
 #else
-            titles[class][GET_LEVEL(ch, class) + 1].exp
+            titles[chclass][GET_LEVEL(ch, chclass) + 1].exp
 #endif
     )
     {
         log_info("Bad advance_level");
         return;
     }
-    GET_LEVEL(ch, class) += 1;
+    GET_LEVEL(ch, chclass) += 1;
 
     /* Constitution Bonus only for Fighter types */
 
-    if ((class == RANGER_LEVEL_IND) || (class == WARRIOR_LEVEL_IND))
+    if ((chclass == RANGER_LEVEL_IND) || (chclass == WARRIOR_LEVEL_IND))
         add_hp = con_app[(int)GET_CON(ch)].hitp;
     else
         add_hp = MIN(con_app[(int)GET_CON(ch)].hitp, 2);
 
-    switch (class)
+    switch (chclass)
     {
     case MAGE_LEVEL_IND: {
         ch->specials.pracs += MAX(3, wis_app[(int)GET_INT(ch)].bonus);
@@ -510,7 +510,7 @@ void advance_level(struct char_data *ch, int class)
 
     add_hp++;
 
-    if (GET_LEVEL(ch, class) <= 5)
+    if (GET_LEVEL(ch, chclass) <= 5)
         add_hp++;
 
     ch->points.max_hit += MAX(1, add_hp);
@@ -530,14 +530,14 @@ void advance_level(struct char_data *ch, int class)
  * ** Damn tricky for multi-class...
  */
 
-void drop_level(struct char_data *ch, int class)
+void drop_level(struct char_data *ch, int chclass)
 {
     int add_hp = 0;
     int lin_class = 0;
     int old_style = 0;
 
     if (DEBUG > 1)
-        log_info("called %s with %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), class);
+        log_info("called %s with %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), chclass);
 
     /*
      * if (GetMaxLevel(ch) >= LOW_IMMORTAL)
@@ -548,7 +548,7 @@ void drop_level(struct char_data *ch, int class)
 
     add_hp = con_app[(int)GET_CON(ch)].hitp;
 
-    switch (class)
+    switch (chclass)
     {
 
     case CLASS_MAGIC_USER: {
@@ -631,9 +631,9 @@ void drop_level(struct char_data *ch, int class)
     else
         gain_exp(ch, -GET_EXP(ch) / (4 * HowManyClasses(ch)));
 
-    GET_LEVEL(ch, class) -= 1;
-    if (GET_LEVEL(ch, class) < 1)
-        GET_LEVEL(ch, class) = 1;
+    GET_LEVEL(ch, chclass) -= 1;
+    if (GET_LEVEL(ch, chclass) < 1)
+        GET_LEVEL(ch, chclass) = 1;
 
     ch->points.max_hit -= MAX(1, add_hp);
     if (ch->points.max_hit < 1)
@@ -769,13 +769,13 @@ void gain_exp(struct char_data *ch, int gain)
     }
 }
 
-void gain_exp_regardless(struct char_data *ch, int gain, int class)
+void gain_exp_regardless(struct char_data *ch, int gain, int chclass)
 {
     int i = 0;
     int is_altered = FALSE;
 
     if (DEBUG > 2)
-        log_info("called %s with %s, %d, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), gain, class);
+        log_info("called %s with %s, %d, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), gain, chclass);
 
     save_char(ch, NOWHERE);
     if (!IS_NPC(ch))
@@ -784,13 +784,13 @@ void gain_exp_regardless(struct char_data *ch, int gain, int class)
         {
             GET_EXP(ch) += gain;
 
-            for (i = 0; (i < ABS_MAX_LVL) && (titles[class][i].exp <= GET_EXP(ch)); i++)
+            for (i = 0; (i < ABS_MAX_LVL) && (titles[chclass][i].exp <= GET_EXP(ch)); i++)
             {
-                if (i > GET_LEVEL(ch, class))
+                if (i > GET_LEVEL(ch, chclass))
                 {
                     cprintf(ch, "You raise a level\r\n");
-                    /*        GET_LEVEL(ch,class) = i; */
-                    advance_level(ch, class);
+                    /*        GET_LEVEL(ch,chclass) = i; */
+                    advance_level(ch, chclass);
                     is_altered = TRUE;
                 }
             }

@@ -221,10 +221,10 @@ int strn_cmp(const char *arg1, const char *arg2, const int n);
 #define RIDDEN(ch) ((ch)->specials.ridden_by)
 #define GET_ZONE(room) (((room) > -1) ? real_roomp((room)) ? real_roomp((room))->zone : -1 : -1)
 #define GET_LEVEL(ch, i) ((ch)->player.level[(int)(i)])
-#define GET_CLASS_TITLE(ch, class, lev)                                                                                \
-    ((ch)->player.sex ? (((ch)->player.sex == 1) ? titles[(int)(class)][(int)(lev)].title_m                            \
-                                                 : titles[(int)(class)][(int)(lev)].title_f)                           \
-                      : titles[(int)(class)][(int)(lev)].title_m)
+#define GET_CLASS_TITLE(ch, chclass, lev)                                                                                \
+    ((ch)->player.sex ? (((ch)->player.sex == 1) ? titles[(int)(chclass)][(int)(lev)].title_m                            \
+                                                 : titles[(int)(chclass)][(int)(lev)].title_f)                           \
+                      : titles[(int)(chclass)][(int)(lev)].title_m)
 #define GET_REQ(i)                                                                                                     \
     (i < 2 ? "Awful"                                                                                                   \
            : (i < 4 ? "Bad"                                                                                            \
@@ -241,7 +241,7 @@ int strn_cmp(const char *arg1, const char *arg2, const int n);
 #define GET_PRETITLE(ch) ((ch)->player.pre_title)
 #define GET_POOF_IN(ch) ((ch)->player.poof_in)
 #define GET_POOF_OUT(ch) ((ch)->player.poof_out)
-#define GET_CLASS(ch) ((ch)->player.class)
+#define GET_CLASS(ch) ((ch)->player.chclass)
 #define GET_HOME(ch) ((ch)->player.hometown)
 #define GET_AGE(ch) (age(ch).year)
 #define GET_STR(ch) ((ch)->tmpabilities.str)

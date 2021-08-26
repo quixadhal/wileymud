@@ -1081,12 +1081,12 @@ void do_stat(struct char_data *ch, const char *argument, int cmd)
         if (IS_NPC(k))
         {
             strlcpy(buf, "Monster Class: ", MAX_STRING_LENGTH);
-            sprinttype(k->player.class, npc_class_types, buf2);
+            sprinttype(k->player.chclass, npc_class_types, buf2);
         }
         else
         {
             strlcpy(buf, "Class: ", MAX_STRING_LENGTH);
-            sprintbit(k->player.class, pc_class_types, buf2);
+            sprintbit(k->player.chclass, pc_class_types, buf2);
         }
         strlcat(buf, buf2, MAX_STRING_LENGTH);
 
@@ -2330,7 +2330,7 @@ void roll_abilities(struct char_data *ch)
 
     ch->abilities.str_add = 0;
 
-    switch (ch->player.class)
+    switch (ch->player.chclass)
     {
     case CLASS_MAGIC_USER: {
         ch->abilities.intel = table[0];
@@ -2569,12 +2569,12 @@ void start_character(struct char_data *ch)
         obj = read_object(r_num, REAL);
         obj_to_char(obj, ch);
     }
-    if (IS_SET(ch->player.class, CLASS_RANGER))
+    if (IS_SET(ch->player.chclass, CLASS_RANGER))
     {
         ch->skills[SKILL_TRACK].learned = 13;
         ch->skills[SKILL_DISARM].learned = 7;
     }
-    if (IS_SET(ch->player.class, CLASS_THIEF))
+    if (IS_SET(ch->player.chclass, CLASS_THIEF))
     {
         ch->skills[SKILL_SNEAK].learned = 1;
         ch->skills[SKILL_HIDE].learned = 13;
@@ -2600,7 +2600,7 @@ void do_advance(struct char_data *ch, const char *argument, int cmd)
     struct char_data *victim = NULL;
     char name[100] = "\0\0\0\0\0\0\0";
     char level[100] = "\0\0\0\0\0\0\0";
-    char class[100] = "\0\0\0\0\0\0\0";
+    char chclass[100] = "\0\0\0\0\0\0\0";
     int adv = 0;
     int newlevel = 0;
     int lin_class = 0;
@@ -2637,14 +2637,14 @@ void do_advance(struct char_data *ch, const char *argument, int cmd)
         cprintf(ch, "But they are already as powerful as you can imagine!\r\n");
         return;
     }
-    argument = one_argument(argument, class);
+    argument = one_argument(argument, chclass);
 
-    if (!*class)
+    if (!*chclass)
     {
         cprintf(ch, "Classes you may suply: [ M C W T R ]\r\n");
         return;
     }
-    switch (*class)
+    switch (*chclass)
     {
     case 'M':
     case 'm':

@@ -229,7 +229,7 @@ struct opinion
     int sex;   /* number
                 * 1=male,2=female,3=both,4=neut,5=m&n,6=f&n,7=all */
     int race;  /* number */
-    int class; /* 1=m,2=c,4=f,8=t */
+    int chclass; /* 1=m,2=c,4=f,8=t */
     int vnum;  /* # */
     int evil;  /* align < evil = attack */
     int good;  /* align > good = attack */
@@ -794,7 +794,7 @@ struct char_player_data
     char *sounds;              /* Sound that the monster makes (in room) */
     char *distant_snds;        /* Sound that the monster makes (other) */
     char sex;                  /* PC / NPC s sex */
-    char class;                /* PC s class or NPC alignment */
+    char chclass;                /* PC s class or NPC alignment */
     char level[ABS_MAX_CLASS]; /* PC / NPC s level */
     int hometown;              /* PC s Hometown (zone) */
     char talks[MAX_TOUNGE];    /* PC s Tounges 0 for NPC */
@@ -978,7 +978,7 @@ struct char_file_u
     char title[80];
     char pre_title[80];
     char sex;
-    char class;
+    char chclass;
     char last_connect_site[49];
     char level[MAX_NUMBER_OF_CLASSES];
     time_t birth; /* Time of birth of character */

@@ -25,7 +25,7 @@ extern struct special_proc_entry *specials_r;
 #endif
 
 char *how_good(int percent_known);
-int GainLevel(struct char_data *guildmaster, struct char_data *ch, int class);
+int GainLevel(struct char_data *guildmaster, struct char_data *ch, int chclass);
 struct char_data *FindMobInRoomWithFunction(int room, ifuncp func);
 int MageGuildMaster(struct char_data *ch, int cmd, const char *arg);
 int ClericGuildMaster(struct char_data *ch, int cmd, const char *arg);
