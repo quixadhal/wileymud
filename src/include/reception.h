@@ -52,11 +52,11 @@ void load_char_objs(struct char_data *ch);
 void put_obj_in_store(struct obj_data *obj, struct obj_file_u *st);
 
 /* static int contained_weight(struct obj_data *container); */
-void obj_to_store(struct obj_data *obj, struct obj_file_u *st, struct char_data *ch, int delete);
-void save_obj(struct char_data *ch, struct obj_cost *cost, int delete);
+void obj_to_store(struct obj_data *obj, struct obj_file_u *st, struct char_data *ch, int do_delete);
+void save_obj(struct char_data *ch, struct obj_cost *cost, int do_delete);
 void fwrite_obj(struct obj_data *obj, FILE *fp, int ObjectId, int ContainedBy);
-int new_save_obj(struct char_data *ch, struct obj_data *obj, FILE *fp, int delete, int ObjId, int ContainedBy);
-void new_save_equipment(struct char_data *ch, struct obj_cost *cost, int delete);
+int new_save_obj(struct char_data *ch, struct obj_data *obj, FILE *fp, int do_delete, int ObjId, int ContainedBy);
+void new_save_equipment(struct char_data *ch, struct obj_cost *cost, int do_delete);
 int receptionist(struct char_data *ch, int cmd, char *arg);
 void zero_rent(struct char_data *ch);
 int fread_object(struct obj_data *obj, FILE *fp);

@@ -344,21 +344,21 @@ static int contained_weight(struct obj_data *container)
 }
 
 /* Destroy inventory after transferring it to "store inventory" */
-void obj_to_store(struct obj_data *obj, struct obj_file_u *st, struct char_data *ch, int delete)
+void obj_to_store(struct obj_data *obj, struct obj_file_u *st, struct char_data *ch, int do_delete)
 {
     if (DEBUG > 2)
         log_info("called %s with %s, %08zx, %s, %d", __PRETTY_FUNCTION__, SAFE_ONAME(obj), (size_t)st, SAFE_NAME(ch),
-                 delete);
+                 do_delete);
 
     if (!obj)
         return;
 
-    obj_to_store(obj->contains, st, ch, delete);
-    obj_to_store(obj->next_content, st, ch, delete);
+    obj_to_store(obj->contains, st, ch, do_delete);
+    obj_to_store(obj->next_content, st, ch, do_delete);
 
     if ((obj->obj_flags.timer < 0) && (obj->obj_flags.timer != OBJ_NOTIMER))
     {
-        if (delete)
+        if (do_delete)
         {
             cprintf(ch, "You're told: '%s is just old junk, I'll throw it away for you.'\r\n", obj->short_description);
             if (obj->in_obj)
@@ -369,7 +369,7 @@ void obj_to_store(struct obj_data *obj, struct obj_file_u *st, struct char_data 
     }
     else if (obj->obj_flags.cost_per_day < 0)
     {
-        if (delete)
+        if (do_delete)
         {
             cprintf(ch, "You're told: '%s is just old junk, I'll throw it away for you.'\r\n", obj->short_description);
             if (obj->in_obj)
@@ -380,7 +380,7 @@ void obj_to_store(struct obj_data *obj, struct obj_file_u *st, struct char_data 
     }
     else if (obj->item_number == -1)
     {
-        if (delete)
+        if (do_delete)
         {
             if (obj->in_obj)
                 obj_from_obj(obj);
@@ -395,7 +395,7 @@ void obj_to_store(struct obj_data *obj, struct obj_file_u *st, struct char_data 
         GET_OBJ_WEIGHT(obj) -= weight;
         put_obj_in_store(obj, st);
         GET_OBJ_WEIGHT(obj) += weight;
-        if (delete)
+        if (do_delete)
         {
             if (obj->in_obj)
                 obj_from_obj(obj);
@@ -405,7 +405,7 @@ void obj_to_store(struct obj_data *obj, struct obj_file_u *st, struct char_data 
 }
 
 /* write the vital data of a player to the player file */
-void save_obj(struct char_data *ch, struct obj_cost *cost, int delete)
+void save_obj(struct char_data *ch, struct obj_cost *cost, int do_delete)
 {
     FILE *fl = NULL;
     int i = 0;
@@ -415,7 +415,7 @@ void save_obj(struct char_data *ch, struct obj_cost *cost, int delete)
     static struct obj_file_u st;
 
     if (DEBUG > 2)
-        log_info("called %s with %s, %08zx, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), (size_t)cost, delete);
+        log_info("called %s with %s, %08zx, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), (size_t)cost, do_delete);
 
     zero_rent(ch);
 
@@ -428,18 +428,18 @@ void save_obj(struct char_data *ch, struct obj_cost *cost, int delete)
     for (i = 0; i < MAX_WEAR; i++)
         if (ch->equipment[i])
         {
-            if (delete)
+            if (do_delete)
             {
-                obj_to_store(unequip_char(ch, i), &st, ch, delete);
+                obj_to_store(unequip_char(ch, i), &st, ch, do_delete);
             }
             else
             {
-                obj_to_store(ch->equipment[i], &st, ch, delete);
+                obj_to_store(ch->equipment[i], &st, ch, do_delete);
             }
         }
-    obj_to_store(ch->carrying, &st, ch, delete);
+    obj_to_store(ch->carrying, &st, ch, do_delete);
 
-    if (delete)
+    if (do_delete)
         ch->carrying = 0;
 
     strcpy(name, GET_NAME(ch));
@@ -492,21 +492,21 @@ void fwrite_obj(struct obj_data *obj, FILE *fp, int ObjId, int ContainedBy)
     fprintf(fp, "End\n");
 }
 
-int new_save_obj(struct char_data *ch, struct obj_data *obj, FILE *fp, int delete, int ObjId, int ContainedBy)
+int new_save_obj(struct char_data *ch, struct obj_data *obj, FILE *fp, int do_delete, int ObjId, int ContainedBy)
 {
     if (DEBUG > 2)
         log_info("called %s with %s, %s, %08zx, %d, %d, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), SAFE_ONAME(obj),
-                 (size_t)fp, delete, ObjId, ContainedBy);
+                 (size_t)fp, do_delete, ObjId, ContainedBy);
 
     if (!obj)
         return ObjId - 1;
 
-    ObjId = new_save_obj(ch, obj->contains, fp, delete, ObjId + 1, ObjId);
-    ObjId = new_save_obj(ch, obj->next_content, fp, delete, ObjId + 1, ContainedBy);
+    ObjId = new_save_obj(ch, obj->contains, fp, do_delete, ObjId + 1, ObjId);
+    ObjId = new_save_obj(ch, obj->next_content, fp, do_delete, ObjId + 1, ContainedBy);
 
     if ((obj->obj_flags.timer < 0) && (obj->obj_flags.timer != OBJ_NOTIMER))
     {
-        if (delete)
+        if (do_delete)
         {
             cprintf(ch, "You think %s is just old junk and throw it away.\r\n", OBJS(obj, ch));
             if (obj->in_obj)
@@ -518,7 +518,7 @@ int new_save_obj(struct char_data *ch, struct obj_data *obj, FILE *fp, int delet
     }
     else if (obj->obj_flags.cost_per_day < 0)
     {
-        if (delete)
+        if (do_delete)
         {
             cprintf(ch, "You think %s is just old junk and throw it away.\r\n", OBJS(obj, ch));
             if (obj->in_obj)
@@ -530,7 +530,7 @@ int new_save_obj(struct char_data *ch, struct obj_data *obj, FILE *fp, int delet
     }
     else if (obj->item_number == -1)
     {
-        if (delete)
+        if (do_delete)
         {
             if (obj->in_obj)
                 obj_from_obj(obj);
@@ -546,7 +546,7 @@ int new_save_obj(struct char_data *ch, struct obj_data *obj, FILE *fp, int delet
         GET_OBJ_WEIGHT(obj) -= weight;
         fwrite_obj(obj, fp, ObjId, ContainedBy);
         GET_OBJ_WEIGHT(obj) += weight;
-        if (delete)
+        if (do_delete)
         {
             if (obj->in_obj)
                 obj_from_obj(obj);
@@ -556,7 +556,7 @@ int new_save_obj(struct char_data *ch, struct obj_data *obj, FILE *fp, int delet
     return ObjId;
 }
 
-void new_save_equipment(struct char_data *ch, struct obj_cost *cost, int delete)
+void new_save_equipment(struct char_data *ch, struct obj_cost *cost, int do_delete)
 {
     FILE *fp = NULL;
     char name[40] = "\0\0\0\0\0\0\0";
@@ -566,7 +566,7 @@ void new_save_equipment(struct char_data *ch, struct obj_cost *cost, int delete)
     int ObjId = 0;
 
     if (DEBUG > 2)
-        log_info("called %s with %s, %08zx, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), (size_t)cost, delete);
+        log_info("called %s with %s, %08zx, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), (size_t)cost, do_delete);
 
     strcpy(name, GET_NAME(ch));
     t_ptr = name;
@@ -594,22 +594,22 @@ void new_save_equipment(struct char_data *ch, struct obj_cost *cost, int delete)
     {
         if (ch->equipment[i])
         {
-            if (delete)
+            if (do_delete)
             {
-                ObjId = new_save_obj(ch, unequip_char(ch, i), fp, delete, ObjId + 1, -1);
+                ObjId = new_save_obj(ch, unequip_char(ch, i), fp, do_delete, ObjId + 1, -1);
             }
             else
             {
-                ObjId = new_save_obj(ch, ch->equipment[i], fp, delete, ObjId + 1, -1);
+                ObjId = new_save_obj(ch, ch->equipment[i], fp, do_delete, ObjId + 1, -1);
             }
         }
     }
     fprintf(fp, "End\n");
     fprintf(fp, "#CARRIED\n");
-    ObjId = new_save_obj(ch, ch->carrying, fp, delete, ObjId + 1, -1);
+    ObjId = new_save_obj(ch, ch->carrying, fp, do_delete, ObjId + 1, -1);
     fprintf(fp, "End\n");
     fprintf(fp, "#END_RENT\n");
-    if (delete)
+    if (do_delete)
         ch->carrying = 0;
     FCLOSE(fp);
 }
