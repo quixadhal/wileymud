@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <string.h>
+#ifndef _XOPEN_SOURCE
 #define _XOPEN_SOURCE
+#endif
 #include <unistd.h>
 
 extern char *crypt(const char *key, const char *salt);

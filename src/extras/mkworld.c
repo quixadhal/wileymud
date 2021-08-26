@@ -2560,7 +2560,7 @@ void get_desc(char **ptr)
     } while (tmp_str[idx2 - 1] != '~');
     tmp_str[idx2 - 1] = 0;
 
-    *ptr = malloc(strlen(tmp_str) + 1);
+    *ptr = (char *)malloc(strlen(tmp_str) + 1);
     strcpy(*ptr, tmp_str);
 }
 
