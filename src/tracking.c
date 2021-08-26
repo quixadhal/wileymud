@@ -46,17 +46,18 @@ int named_object_on_ground(int room, void *c_data)
     return NULL != get_obj_in_list(name, real_roomp(room)->contents);
 }
 
-int named_mobile_in_room(int room, struct hunting_data *c_data)
+int named_mobile_in_room(int room, void *c_data)
 {
     struct char_data *scan = NULL;
+    struct hunting_data *hunt = c_data;
 
     if (DEBUG > 3)
         log_info("called %s with %d, %08zx", __PRETTY_FUNCTION__, room, (size_t)c_data);
 
     for (scan = real_roomp(room)->people; scan; scan = scan->next_in_room)
-        if (isname(c_data->name, scan->player.name))
+        if (isname(hunt->name, scan->player.name))
         {
-            *(c_data->victim) = scan;
+            *(hunt->victim) = scan;
             return 1;
         }
     return 0;
@@ -84,7 +85,7 @@ int choose_exit(int in_room, int tgt_room, int depth)
         log_info("called %s with %d, %d, %d", __PRETTY_FUNCTION__, in_room, tgt_room, depth);
 
     // return find_path(in_room, is_target_room_p, (const void *)tgt_room, depth);
-    return find_path(in_room, is_target_room_p, (const void *)(size_t)tgt_room, depth);
+    return find_path(in_room, is_target_room_p, (void *)(size_t)tgt_room, depth);
 }
 
 int go_direction(struct char_data *ch, int dir)
@@ -106,7 +107,7 @@ int go_direction(struct char_data *ch, int dir)
     return 0;
 }
 
-int find_path(int in_room, ifuncp predicate, const void *c_data, int depth)
+int find_path(int in_room, predicate_funcp predicate, void *c_data, int depth)
 {
     struct room_q *tmp_q = NULL;
     struct room_q *q_head = NULL;

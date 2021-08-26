@@ -13,11 +13,12 @@ struct hunting_data
 
 int is_target_room_p(int room, void *tgt_room);
 int named_object_on_ground(int room, void *c_data);
-int named_mobile_in_room(int room, struct hunting_data *c_data);
+int named_mobile_in_room(int room, void *c_data);
+
 /* static void donothing(); */
 int choose_exit(int in_room, int tgt_room, int depth);
 int go_direction(struct char_data *ch, int dir);
-int find_path(int in_room, ifuncp predicate, const void *c_data, int depth);
+int find_path(int in_room, predicate_funcp predicate, void *c_data, int depth);
 void MobHunt(struct char_data *ch);
 int dir_track(struct char_data *ch, struct char_data *vict);
 int track(struct char_data *ch, struct char_data *vict);

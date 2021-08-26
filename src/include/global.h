@@ -29,6 +29,8 @@ typedef struct char_data CHAR_DATA;
 typedef void (*funcp)(/* CHAR_DATA *, char *, int */);
 typedef int (*ifuncp)(/* CHAR_DATA *, char *, int */);
 
+typedef int (*predicate_funcp)(int, void *);
+
 /* This might be more correct... */
 /* typedef void (*__sighandler_t) (int); */
 
