@@ -147,7 +147,7 @@ struct obj_index_data
     int number;  /* number of existing units of this mob/obj */
     ifuncp func;
     char *name;
-    struct obj_data *template; /* for preloading of objects */
+    struct obj_data *data_template; /* for preloading of objects */
 };
 
 /* for queueing zones for update   */

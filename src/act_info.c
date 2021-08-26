@@ -2954,7 +2954,7 @@ void do_ticks(struct char_data *ch, const char *argument, int cmd)
 
 void do_map(struct char_data *ch, const char *argument, int cmd)
 {
-    const char *template = "\r\n"
+    const char *map_data = "\r\n"
                            "    U                      +----------------------+\r\n"
                            "    | N                    | %-20.20s |\r\n"
                            "    |/                     | %-6.6s  %12.12s |\r\n"
@@ -3041,7 +3041,7 @@ void do_map(struct char_data *ch, const char *argument, int cmd)
             }
         }
     }
-    cprintf(ch, template, name[UP], vnum[UP], terrain[UP], name[NORTH], vnum[NORTH], terrain[NORTH], name[EAST],
+    cprintf(ch, map_data, name[UP], vnum[UP], terrain[UP], name[NORTH], vnum[NORTH], terrain[NORTH], name[EAST],
             name[WEST], vnum[EAST], terrain[EAST], vnum[WEST], terrain[WEST], name[SOUTH], vnum[SOUTH], terrain[SOUTH],
             name[DOWN], vnum[DOWN], terrain[DOWN]);
 }
