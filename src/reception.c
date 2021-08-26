@@ -793,7 +793,7 @@ int new_load_equipment(struct char_data *ch, struct obj_cost *cost)
  * Routine Receptionist
  */
 
-int receptionist(struct char_data *ch, int cmd, char *arg)
+int receptionist(struct char_data *ch, int cmd, const char *arg)
 {
     struct obj_cost cost;
     struct char_data *recep = NULL;

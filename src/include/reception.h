@@ -57,7 +57,7 @@ void save_obj(struct char_data *ch, struct obj_cost *cost, int do_delete);
 void fwrite_obj(struct obj_data *obj, FILE *fp, int ObjectId, int ContainedBy);
 int new_save_obj(struct char_data *ch, struct obj_data *obj, FILE *fp, int do_delete, int ObjId, int ContainedBy);
 void new_save_equipment(struct char_data *ch, struct obj_cost *cost, int do_delete);
-int receptionist(struct char_data *ch, int cmd, char *arg);
+int receptionist(struct char_data *ch, int cmd, const char *arg);
 void zero_rent(struct char_data *ch);
 int fread_object(struct obj_data *obj, FILE *fp);
 int new_load_equipment(struct char_data *ch, struct obj_cost *cost);

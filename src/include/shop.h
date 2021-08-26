@@ -35,12 +35,12 @@ extern int number_of_shops;
 int is_ok(struct char_data *keeper, struct char_data *ch, int shop_nr);
 int trade_with(struct obj_data *item, int shop_nr);
 int shop_producing(struct obj_data *item, int shop_nr);
-void shopping_buy(char *arg, struct char_data *ch, struct char_data *keeper, int shop_nr);
-void shopping_sell(char *arg, struct char_data *ch, struct char_data *keeper, int shop_nr);
-void shopping_value(char *arg, struct char_data *ch, struct char_data *keeper, int shop_nr);
-void shopping_list(char *arg, struct char_data *ch, struct char_data *keeper, int shop_nr);
-void shopping_kill(char *arg, struct char_data *ch, struct char_data *keeper, int shop_nr);
-int shop_keeper(struct char_data *ch, int cmd, char *arg);
+void shopping_buy(const char *arg, struct char_data *ch, struct char_data *keeper, int shop_nr);
+void shopping_sell(const char *arg, struct char_data *ch, struct char_data *keeper, int shop_nr);
+void shopping_value(const char *arg, struct char_data *ch, struct char_data *keeper, int shop_nr);
+void shopping_list(const char *arg, struct char_data *ch, struct char_data *keeper, int shop_nr);
+void shopping_kill(const char *arg, struct char_data *ch, struct char_data *keeper, int shop_nr);
+int shop_keeper(struct char_data *ch, int cmd, const char *arg);
 void boot_the_shops(void);
 void assign_the_shopkeepers(void);
 

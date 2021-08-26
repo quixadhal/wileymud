@@ -37,12 +37,12 @@ struct board_data *find_board_in_room(int room);
 struct board_data *find_board_by_vnum(int vnum);
 struct board_data *create_board(int vnum);
 void import_board(struct board_data *bp);
-int show_board(struct char_data *ch, char *arg, struct board_data *bp);
-int show_board_message(struct char_data *ch, char *arg, struct board_data *bp);
-int delete_board_message(struct char_data *ch, char *arg, struct board_data *bp);
-int begin_write_board_message(struct char_data *ch, char *arg, struct board_data *bp);
+int show_board(struct char_data *ch, const char *arg, struct board_data *bp);
+int show_board_message(struct char_data *ch, const char *arg, struct board_data *bp);
+int delete_board_message(struct char_data *ch, const char *arg, struct board_data *bp);
+int begin_write_board_message(struct char_data *ch, const char *arg, struct board_data *bp);
 int finish_write_board_message(struct char_data *ch);
-int board_special(struct char_data *ch, int cmd, char *arg);
+int board_special(struct char_data *ch, int cmd, const char *arg);
 
 #define BOARD_DIR "boards"
 

@@ -470,7 +470,7 @@ void import_board(struct board_data *bp)
     log_boot("Import complete.");
 }
 
-int show_board(struct char_data *ch, char *arg, struct board_data *bp)
+int show_board(struct char_data *ch, const char *arg, struct board_data *bp)
 {
     char tmp[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
 
@@ -518,7 +518,7 @@ int show_board(struct char_data *ch, char *arg, struct board_data *bp)
     return 1;
 }
 
-int show_board_message(struct char_data *ch, char *arg, struct board_data *bp)
+int show_board_message(struct char_data *ch, const char *arg, struct board_data *bp)
 {
     char message_argument[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
     int message_number = 0;
@@ -561,7 +561,7 @@ int show_board_message(struct char_data *ch, char *arg, struct board_data *bp)
     return 1;
 }
 
-int delete_board_message(struct char_data *ch, char *arg, struct board_data *bp)
+int delete_board_message(struct char_data *ch, const char *arg, struct board_data *bp)
 {
     char message_argument[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
     int message_number = 0;
@@ -654,7 +654,7 @@ int delete_board_message(struct char_data *ch, char *arg, struct board_data *bp)
     return 1;
 }
 
-int begin_write_board_message(struct char_data *ch, char *arg, struct board_data *bp)
+int begin_write_board_message(struct char_data *ch, const char *arg, struct board_data *bp)
 {
     if (!ch || !ch->desc || !arg || !*arg || !bp)
         return 0;
@@ -791,7 +791,7 @@ int finish_write_board_message(struct char_data *ch)
     return 1;
 }
 
-int board_special(struct char_data *ch, int cmd, char *arg)
+int board_special(struct char_data *ch, int cmd, const char *arg)
 {
     struct board_data *bp = NULL;
 

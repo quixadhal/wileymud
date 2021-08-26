@@ -104,7 +104,7 @@ int shop_producing(struct obj_data *item, int shop_nr)
     return (FALSE);
 }
 
-void shopping_buy(char *arg, struct char_data *ch, struct char_data *keeper, int shop_nr)
+void shopping_buy(const char *arg, struct char_data *ch, struct char_data *keeper, int shop_nr)
 {
     char argm[100] = "\0\0\0\0\0\0\0";
     char buf[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
@@ -213,7 +213,7 @@ void shopping_buy(char *arg, struct char_data *ch, struct char_data *keeper, int
     return;
 }
 
-void shopping_sell(char *arg, struct char_data *ch, struct char_data *keeper, int shop_nr)
+void shopping_sell(const char *arg, struct char_data *ch, struct char_data *keeper, int shop_nr)
 {
     char argm[100] = "\0\0\0\0\0\0\0";
     char buf[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
@@ -318,7 +318,7 @@ void shopping_sell(char *arg, struct char_data *ch, struct char_data *keeper, in
     return;
 }
 
-void shopping_value(char *arg, struct char_data *ch, struct char_data *keeper, int shop_nr)
+void shopping_value(const char *arg, struct char_data *ch, struct char_data *keeper, int shop_nr)
 {
     char argm[100] = "\0\0\0\0\0\0\0";
     char buf[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
@@ -358,7 +358,7 @@ void shopping_value(char *arg, struct char_data *ch, struct char_data *keeper, i
     return;
 }
 
-void shopping_list(char *arg, struct char_data *ch, struct char_data *keeper, int shop_nr)
+void shopping_list(const char *arg, struct char_data *ch, struct char_data *keeper, int shop_nr)
 {
     char buf[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
     char buf2[100] = "\0\0\0\0\0\0\0";
@@ -402,7 +402,7 @@ void shopping_list(char *arg, struct char_data *ch, struct char_data *keeper, in
     return;
 }
 
-void shopping_kill(char *arg, struct char_data *ch, struct char_data *keeper, int shop_nr)
+void shopping_kill(const char *arg, struct char_data *ch, struct char_data *keeper, int shop_nr)
 {
     char buf[100] = "\0\0\0\0\0\0\0";
 
@@ -427,7 +427,7 @@ void shopping_kill(char *arg, struct char_data *ch, struct char_data *keeper, in
     }
 }
 
-int shop_keeper(struct char_data *ch, int cmd, char *arg)
+int shop_keeper(struct char_data *ch, int cmd, const char *arg)
 {
     char argm[100] = "\0\0\0\0\0\0\0";
     struct char_data *temp_char = NULL;

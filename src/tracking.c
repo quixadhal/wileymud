@@ -442,7 +442,7 @@ void do_track(struct char_data *ch, const char *argument, int cmd)
     ch->specials.hunting = 0;
     huntd.name = name;
     huntd.victim = &ch->specials.hunting;
-    code = find_path(ch->in_room, (ifuncp)named_mobile_in_room, &huntd, -dist);
+    code = find_path(ch->in_room, named_mobile_in_room, &huntd, -dist);
 
     WAIT_STATE(ch, PULSE_VIOLENCE * 1);
 
