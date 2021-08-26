@@ -32,8 +32,8 @@
 #define _ACT_OFF_C
 #include "act_off.h"
 
-funcp bweapons[] = {(void *)cast_geyser,       (void *)cast_fire_breath, (void *)cast_gas_breath,
-                    (void *)cast_frost_breath, (void *)cast_acid_breath, (void *)cast_lightning_breath};
+bfuncp bweapons[] = {cast_geyser,       cast_fire_breath, cast_gas_breath,
+                    cast_frost_breath, cast_acid_breath, cast_lightning_breath};
 
 void do_swat(struct char_data *ch, const char *argument, int cmd)
 {
@@ -1256,7 +1256,7 @@ void do_breath(struct char_data *ch, const char *argument, int cmd)
     char name[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
     int count = 0;
     int manacost = 0;
-    funcp weapon = NULL;
+    bfuncp weapon = NULL;
 
     if (DEBUG)
         log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);

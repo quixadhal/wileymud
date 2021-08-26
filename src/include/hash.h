@@ -26,6 +26,6 @@ void *hash_find(struct hash_header *ht, int key);
 int hash_enter(struct hash_header *ht, int key, void *data);
 void *hash_find_or_create(struct hash_header *ht, int key);
 void *hash_remove(struct hash_header *ht, int key);
-void hash_iterate(struct hash_header *ht, funcp func, void *cdata);
+void hash_iterate(struct hash_header *ht, rfuncp f, void *cdata);
 
 #endif

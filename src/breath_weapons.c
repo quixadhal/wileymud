@@ -20,12 +20,12 @@
 #define _BREATH_WEAPONS_C
 #include "breath_weapons.h"
 
-static funcp breaths[] = {(funcp)cast_acid_breath,      NULL,
-                          (funcp)cast_frost_breath,     NULL,
-                          (funcp)cast_lightning_breath, NULL,
-                          (funcp)cast_fire_breath,      NULL,
-                          (funcp)cast_acid_breath,      (funcp)cast_fire_breath,
-                          (funcp)cast_lightning_breath, NULL};
+static bfuncp breaths[] = {cast_acid_breath,      NULL,
+                          cast_frost_breath,     NULL,
+                          cast_lightning_breath, NULL,
+                          cast_fire_breath,      NULL,
+                          cast_acid_breath,      cast_fire_breath,
+                          cast_lightning_breath, NULL};
 
 struct breather breath_monsters[] = {
     {5030, 15, breaths + 6},
@@ -94,7 +94,7 @@ void free_victims(struct breath_victim *head)
     }
 }
 
-int breath_weapon(struct char_data *ch, struct char_data *target, int mana_cost, funcp func)
+int breath_weapon(struct char_data *ch, struct char_data *target, int mana_cost, bfuncp func)
 {
     struct breath_victim *hitlist = NULL;
     struct breath_victim *scan = NULL;
@@ -141,7 +141,7 @@ int breath_weapon(struct char_data *ch, struct char_data *target, int mana_cost,
     return TRUE;
 }
 
-void use_breath_weapon(struct char_data *ch, struct char_data *target, int cost, funcp func)
+void use_breath_weapon(struct char_data *ch, struct char_data *target, int cost, bfuncp func)
 {
     if (DEBUG > 2)
         log_info("called %s with %s, %s, %d, %08zx", __PRETTY_FUNCTION__, SAFE_NAME(ch), SAFE_NAME(target), cost,

@@ -2,7 +2,7 @@
 #define _ACT_OFF_H
 
 #ifndef _ACT_OFF_C
-extern funcp bweapons[];
+extern bfuncp bweapons[];
 
 #endif
 

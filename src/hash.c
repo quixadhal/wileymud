@@ -183,12 +183,12 @@ void *hash_remove(struct hash_header *ht, int key)
     return NULL;
 }
 
-void hash_iterate(struct hash_header *ht, funcp func, void *cdata)
+void hash_iterate(struct hash_header *ht, rfuncp f, void *cdata)
 {
     int i = 0;
 
     if (DEBUG > 2)
-        log_info("called %s with %08zx, %08zx, %08zx", __PRETTY_FUNCTION__, (size_t)ht, (size_t)func, (size_t)cdata);
+        log_info("called %s with %08zx, %08zx, %08zx", __PRETTY_FUNCTION__, (size_t)ht, (size_t)f, (size_t)cdata);
 
     for (i = 0; i < ht->klistlen; i++)
     {
@@ -197,7 +197,7 @@ void hash_iterate(struct hash_header *ht, funcp func, void *cdata)
 
         key = ht->keylist[i];
         temp = hash_find(ht, key);
-        (*func)(key, temp, cdata);
+        (*f)(key, (ROOM_DATA *)temp, cdata);
         if (ht->keylist[i] != key) /* They must have deleted this room */
             i--;                   /* Hit this slot again. */
     }

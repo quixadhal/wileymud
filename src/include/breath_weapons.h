@@ -15,8 +15,8 @@ extern struct breather breath_monsters[];
 
 struct breath_victim *choose_victims(struct char_data *ch, struct char_data *first_victim);
 void free_victims(struct breath_victim *head);
-int breath_weapon(struct char_data *ch, struct char_data *target, int mana_cost, funcp func);
-void use_breath_weapon(struct char_data *ch, struct char_data *target, int cost, funcp func);
+int breath_weapon(struct char_data *ch, struct char_data *target, int mana_cost, bfuncp func);
+void use_breath_weapon(struct char_data *ch, struct char_data *target, int cost, bfuncp func);
 int BreathWeapon(struct char_data *ch, int cmd, const char *arg);
 
 #endif

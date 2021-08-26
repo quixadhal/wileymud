@@ -30,12 +30,13 @@ static int mob_count = 0;
 static int obj_count = 0;
 static int gold_count = 0;
 
-static void event_fill_zone_with_mobs(int rnum, struct room_data *rp, struct event_mob_in_zone *mobs);
-static void event_rats_invade_zone(struct char_data *ch, char *arg);
-static void event_undead_invade_zone(struct char_data *ch, char *arg);
-static void event_zombie_master(struct char_data *ch, char *arg);
-static void event_scatter_goodies_zone(int rnum, struct room_data *rp, struct event_goodies *stuff);
-static void event_scatter_goodies(struct char_data *ch, char *arg);
+static int event_scatter_goodies_zone(int rnum, struct room_data *rp, void *data);
+static int event_fill_zone_with_mobs(int rnum, struct room_data *rp, void *data);
+
+static void event_rats_invade_zone(struct char_data *ch, const char *arg);
+static void event_undead_invade_zone(struct char_data *ch, const char *arg);
+static void event_zombie_master(struct char_data *ch, const char *arg);
+static void event_scatter_goodies(struct char_data *ch, const char *arg);
 
 void do_event(struct char_data *ch, const char *argument, int cmd)
 {
@@ -45,11 +46,11 @@ void do_event(struct char_data *ch, const char *argument, int cmd)
                                        "xenthia - The Lady of the Dead rises and enters the world. [10-15]",
                                        "goodies - Goodies fall to earth, with a few bandits too. [2-15]",
                                        NULL};
-    static const funcp event_code[] = {NULL,
-                                       (funcp)event_rats_invade_zone,
-                                       (funcp)event_undead_invade_zone,
-                                       (funcp)event_zombie_master,
-                                       (funcp)event_scatter_goodies,
+    static const efuncp event_code[] = {NULL,
+                                       event_rats_invade_zone,
+                                       event_undead_invade_zone,
+                                       event_zombie_master,
+                                       event_scatter_goodies,
                                        NULL};
     int i = 0;
     char buf[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
@@ -90,7 +91,7 @@ void do_event(struct char_data *ch, const char *argument, int cmd)
     event_code[found](ch, argument);
 }
 
-static void event_scatter_goodies_zone(int rnum, struct room_data *rp, struct event_goodies *stuff)
+static int event_scatter_goodies_zone(int rnum, struct room_data *rp, void *data)
 {
     int i = 0;
     int exit_found = 0;
@@ -98,14 +99,15 @@ static void event_scatter_goodies_zone(int rnum, struct room_data *rp, struct ev
     struct char_data *monster = NULL;
     struct obj_data *object = NULL;
     struct obj_data *coins = NULL;
+    struct event_goodies  *stuff = data;
 
     if (DEBUG > 1)
         log_info("called %s with %d, %08zx, %08zx", __PRETTY_FUNCTION__, rnum, (size_t)rp, (size_t)stuff);
 
     if (!rp || rp->number < stuff->bottom || rp->number > stuff->top)
-        return;
+        return 0;
     if (IS_SET(rp->room_flags, (NO_MOB | PEACEFUL | PRIVATE)))
-        return;
+        return 0;
     exit_found = 0;
     for (i = 0; i < MAX_NUM_EXITS; i++) /* neswud */
         if (rp->dir_option[i])
@@ -114,9 +116,9 @@ static void event_scatter_goodies_zone(int rnum, struct room_data *rp, struct ev
             break;
         }
     if (!exit_found)
-        return;
+        return 0;
     if (number(0, 99) >= stuff->chance)
-        return;
+        return 0;
     gold = dice(stuff->gold_dice, stuff->gold_die) + stuff->gold_mod;
     gold_count += gold;
     coins = create_money(gold);
@@ -143,9 +145,10 @@ static void event_scatter_goodies_zone(int rnum, struct room_data *rp, struct ev
             rprintf(rnum, "In a shimmering of blue light, %s %s forms!\r\n", SANA(object), object->short_description);
         }
     }
+    return 1;
 }
 
-static void event_fill_zone_with_mobs(int rnum, struct room_data *rp, struct event_mob_in_zone *mobs)
+static int event_fill_zone_with_mobs(int rnum, struct room_data *rp, void *data)
 {
     int i = 0;
     int j = 0;
@@ -153,14 +156,15 @@ static void event_fill_zone_with_mobs(int rnum, struct room_data *rp, struct eve
     int exit_found = FALSE;
     struct char_data *monster = NULL;
     struct obj_data *object = NULL;
+    struct event_mob_in_zone *mobs = data;
 
     if (DEBUG > 1)
         log_info("called %s with %d, %08zx, %08zx", __PRETTY_FUNCTION__, rnum, (size_t)rp, (size_t)mobs);
 
     if (!rp || rp->number < mobs->bottom || rp->number > mobs->top)
-        return;
+        return 0;
     if (IS_SET(rp->room_flags, (NO_MOB | PEACEFUL | PRIVATE)))
-        return;
+        return 0;
     exit_found = 0;
     for (i = 0; i < MAX_NUM_EXITS; i++) /* neswud */
         if (rp->dir_option[i])
@@ -169,7 +173,7 @@ static void event_fill_zone_with_mobs(int rnum, struct room_data *rp, struct eve
             break;
         }
     if (!exit_found)
-        return;
+        return 0;
     couldbe = number(mobs->atleast, mobs->atmost);
     for (j = 0; j < couldbe; j++)
     {
@@ -195,9 +199,10 @@ static void event_fill_zone_with_mobs(int rnum, struct room_data *rp, struct eve
         mob_count++;
         act("In a shimmering column of blue light, $N appears!", FALSE, monster, 0, monster, TO_ROOM);
     }
+    return 1;
 }
 
-static void event_scatter_goodies(struct char_data *ch, char *arg)
+static void event_scatter_goodies(struct char_data *ch, const char *arg)
 {
     int the_objects[] = {5023, 6131, 5932, 15011, 7010, 5937, 1901, 9015};
     int the_mobs[] = {1200, 9618, 1400, 5441, 5054, 5055, 15047, 9620, 1202, 9601};
@@ -224,14 +229,14 @@ static void event_scatter_goodies(struct char_data *ch, char *arg)
                 "of things FALLING all around you!\r\n\r\n",
                 GET_NAME(ch), HSHR(ch));
     mob_count = obj_count = gold_count = 0;
-    hash_iterate(&room_db, (funcp)event_scatter_goodies_zone, &junk);
+    hash_iterate(&room_db, event_scatter_goodies_zone, &junk);
     cprintf(ch, "You just added %d critters, %d things, and %d gold to %s [#%d].\r\n", mob_count, obj_count, gold_count,
             zone_table[zone].name, zone);
     log_info("%s added %d critters, %d things, and %d gold to %s [#%d].\r\n", GET_NAME(ch), mob_count, obj_count,
              gold_count, zone_table[zone].name, zone);
 }
 
-static void event_rats_invade_zone(struct char_data *ch, char *arg)
+static void event_rats_invade_zone(struct char_data *ch, const char *arg)
 {
     struct event_mob_set mobset[11] = {
         /* vnum, hp: xdy+z, exp: xdy+z, gold: xdy+z, object %, obj vnum */
@@ -270,12 +275,12 @@ static void event_rats_invade_zone(struct char_data *ch, char *arg)
                 "you...\r\n\r\n",
                 GET_NAME(ch), HSHR(ch));
     mob_count = 0;
-    hash_iterate(&room_db, (funcp)event_fill_zone_with_mobs, &mobs);
+    hash_iterate(&room_db, event_fill_zone_with_mobs, &mobs);
     cprintf(ch, "You just added %d rats to %s [#%d].\r\n", mob_count, zone_table[zone].name, zone);
     log_info("%s added %d rats to %s [#%d].", GET_NAME(ch), mob_count, zone_table[zone].name, zone);
 }
 
-static void event_undead_invade_zone(struct char_data *ch, char *arg)
+static void event_undead_invade_zone(struct char_data *ch, const char *arg)
 {
     struct event_mob_set mobset[64] = {
         /* vnum, hp: xdy+z, exp: xdy+z, gold: xdy+z, object %, obj vnum */
@@ -377,12 +382,12 @@ static void event_undead_invade_zone(struct char_data *ch, char *arg)
                 "their bones!\"\r\nThe air grows still and cold as you feel... things... begin to move.\r\n",
                 GET_NAME(ch));
     mob_count = 0;
-    hash_iterate(&room_db, (funcp)event_fill_zone_with_mobs, &mobs);
+    hash_iterate(&room_db, event_fill_zone_with_mobs, &mobs);
     cprintf(ch, "You just added %d undead spirits to %s [#%d].\r\n", mob_count, zone_table[zone].name, zone);
     log_info("%s added %d undead to %s [#%d].", GET_NAME(ch), mob_count, zone_table[zone].name, zone);
 }
 
-static void event_zombie_master(struct char_data *ch, char *arg)
+static void event_zombie_master(struct char_data *ch, const char *arg)
 {
     struct room_data *rp = NULL;
     struct char_data *master = NULL;

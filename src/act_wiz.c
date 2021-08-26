@@ -2148,16 +2148,17 @@ void do_load(struct char_data *ch, const char *argument, int cmd)
     }
 }
 
-static void purge_one_room(int rnum, struct room_data *rp, int *range)
+static int purge_one_room(int rnum, struct room_data *rp, void *data)
 {
     struct char_data *ch = NULL;
     struct obj_data *obj = NULL;
+    int *range = data;
 
     if (DEBUG > 2)
         log_info("called %s with %d, %08zx, %08zx", __PRETTY_FUNCTION__, rnum, (size_t)rp, (size_t)range);
 
     if (rnum == 0 || rnum < range[0] || rnum > range[1])
-        return;
+        return 0;
 
     while (rp->people)
     {
@@ -2178,6 +2179,7 @@ static void purge_one_room(int rnum, struct room_data *rp, int *range)
     }
     completely_cleanout_room(rp); /* clear out the pointers */
     hash_remove(&room_db, rnum);  /* remove it from the database */
+    return 1;
 }
 
 /* clean a room of all mobiles and objects */
@@ -2261,7 +2263,7 @@ void do_purge(struct char_data *ch, const char *argument, int cmd)
                     cprintf(ch, "usage: purge room start [end]\r\n");
                     return;
                 }
-                hash_iterate(&room_db, (funcp)purge_one_room, range);
+                hash_iterate(&room_db, purge_one_room, range);
             }
             else
             {
@@ -3108,33 +3110,38 @@ static void print_room(int rnum, struct room_data *rp, struct string_block *sb)
     append_to_string_block(sb, buf);
 }
 
-static void print_death_room(int rnum, struct room_data *rp, struct string_block *sb)
+static int print_death_room(int rnum, struct room_data *rp, void *sb)
 {
     if (DEBUG > 2)
         log_info("called %s with %d, %08zx, %08zx", __PRETTY_FUNCTION__, rnum, (size_t)rp, (size_t)sb);
 
     if (rp && rp->room_flags & DEATH)
-        print_room(rnum, rp, sb);
+        print_room(rnum, rp, (struct string_block *)sb);
+
+    return 1;
 }
 
-static void print_private_room(int rnum, struct room_data *rp, struct string_block *sb)
+static int print_private_room(int rnum, struct room_data *rp, void *sb)
 {
     if (DEBUG > 2)
         log_info("called %s with %d, %08zx, %08zx", __PRETTY_FUNCTION__, rnum, (size_t)rp, (size_t)sb);
 
     if (rp && rp->room_flags & PRIVATE)
-        print_room(rnum, rp, sb);
+        print_room(rnum, rp, (struct string_block *)sb);
+
+    return 1;
 }
 
-static void show_room_zone(int rnum, struct room_data *rp, struct show_room_zone_struct *srzs)
+static int show_room_zone(int rnum, struct room_data *rp, void *data)
 {
     char buf[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
+    struct show_room_zone_struct *srzs = data;
 
     if (DEBUG > 2)
         log_info("called %s with %d, %08zx, %08zx", __PRETTY_FUNCTION__, rnum, (size_t)rp, (size_t)srzs);
 
     if (!rp || rp->number < srzs->bottom || rp->number > srzs->top)
-        return; /* optimize later */
+        return 0; /* optimize later */
 
     if (srzs->blank && (srzs->lastblank + 1 != rp->number))
     {
@@ -3149,7 +3156,7 @@ static void show_room_zone(int rnum, struct room_data *rp, struct show_room_zone
             srzs->startblank = srzs->lastblank;
             srzs->blank = 1;
         }
-        return;
+        return 0;
     }
     else if (srzs->blank)
     {
@@ -3158,6 +3165,7 @@ static void show_room_zone(int rnum, struct room_data *rp, struct show_room_zone
         srzs->blank = 0;
     }
     print_room(rnum, rp, srzs->sb);
+    return 1;
 }
 
 void do_show(struct char_data *ch, const char *argument, int cmd)
@@ -3263,11 +3271,11 @@ void do_show(struct char_data *ch, const char *argument, int cmd)
         append_to_string_block(&sb, buf);
         if (is_abbrev(zonenum, "death"))
         {
-            hash_iterate(&room_db, (funcp)print_death_room, &sb);
+            hash_iterate(&room_db, print_death_room, &sb);
         }
         else if (is_abbrev(zonenum, "private"))
         {
-            hash_iterate(&room_db, (funcp)print_private_room, &sb);
+            hash_iterate(&room_db, print_private_room, &sb);
         }
         else if (1 != sscanf(zonenum, "%i", &zone) || zone < 0 || zone > top_of_zone_table)
         {
@@ -3282,7 +3290,7 @@ void do_show(struct char_data *ch, const char *argument, int cmd)
             srzs.top = zone_table[zone].top;
             srzs.blank = 0;
             srzs.sb = &sb;
-            hash_iterate(&room_db, (funcp)show_room_zone, &srzs);
+            hash_iterate(&room_db, show_room_zone, &srzs);
             if (srzs.blank)
             {
                 snprintf(buf, MAX_STRING_LENGTH, "rooms %d-%d are blank\r\n", srzs.startblank, srzs.lastblank);
@@ -3465,18 +3473,19 @@ void do_reset(struct char_data *ch, const char *argument, int cmd)
     }
 }
 
-static void zone_purge_effect(int rnum, struct room_data *rp, int *zones)
+static int zone_purge_effect(int rnum, struct room_data *rp, void *data)
 {
     struct char_data *vict = NULL;
     struct char_data *next_v = NULL;
     struct obj_data *obj = NULL;
     struct obj_data *next_o = NULL;
+    int *zones = data;
 
     if (DEBUG > 2)
         log_info("called %s with %d, %08zx, %08zx", __PRETTY_FUNCTION__, rnum, (size_t)rp, (size_t)zones);
 
     if (!rp || rp->zone < zones[0] || rp->zone > zones[1])
-        return;
+        return 0;
     rprintf(rnum, "Flames shoot skyward all around you, and it grows quiet.\r\n");
 
     for (vict = rp->people; vict; vict = next_v)
@@ -3490,6 +3499,7 @@ static void zone_purge_effect(int rnum, struct room_data *rp, int *zones)
         next_o = obj->next_content;
         extract_obj(obj);
     }
+    return 1;
 }
 
 void do_zone_purge(struct char_data *ch, const char *argument, int cmd)
@@ -3542,7 +3552,7 @@ void do_zone_purge(struct char_data *ch, const char *argument, int cmd)
             return;
         }
     }
-    hash_iterate(&room_db, (funcp)zone_purge_effect, zones);
+    hash_iterate(&room_db, zone_purge_effect, zones);
     if (zones[0] != zones[1])
     {
         cprintf(ch, "You have cleaned Zones %d through %d.\r\n", zones[0], zones[1]);

@@ -26,8 +26,14 @@ typedef long long                       LONG;
 #endif
 
 typedef struct char_data CHAR_DATA;
-typedef void (*funcp)(/* CHAR_DATA *, char *, int */);
+typedef struct room_data ROOM_DATA;
+typedef struct obj_data OBJ_DATA;
 
+typedef void (*funcp)();
+
+typedef void (*bfuncp)(int, CHAR_DATA *, const char *, int, CHAR_DATA *, OBJ_DATA *);
+typedef void (*efuncp)(CHAR_DATA *, const char *);
+typedef int (*rfuncp)(int, ROOM_DATA *, void *);
 typedef int (*ifuncp)(CHAR_DATA *, int, const char *);
 typedef int (*predicate_funcp)(int, void *);
 
@@ -1255,7 +1261,7 @@ struct breather
 {
     int vnum;
     int cost;
-    funcp *breaths;
+    bfuncp *breaths;
 };
 
 struct title_type
