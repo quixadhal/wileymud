@@ -184,7 +184,7 @@ struct MailRecord
     long int date_read;
     char m[MAX_MAIL_LENGTH];
     int keep;
-    int new;
+    int is_new;
 };
 
 struct Mail

@@ -734,7 +734,7 @@ int get_from_q(struct txt_q *queue, char *dest)
 
 void write_to_q(const char *txt, struct txt_q *queue, int do_timestamp)
 {
-    struct txt_block *new = NULL;
+    struct txt_block *new_block = NULL;
 
 #ifdef TIME_DEBUG
     struct timeval now;
@@ -766,39 +766,39 @@ void write_to_q(const char *txt, struct txt_q *queue, int do_timestamp)
     }
 #endif
 
-    CREATE(new, struct txt_block, 1);
+    CREATE(new_block, struct txt_block, 1);
 
 #ifdef TIME_DEBUG
     if (do_timestamp)
     {
         buflen = strlen(txt) + 1 + 14;
-        CREATE(new->text, char, buflen);
+        CREATE(new_block->text, char, buflen);
 
-        strlcpy(new->text, nowtime + 11, 8);
-        scprintf(new->text, ".%03ld: ", buflen, now.tv_usec / 1000);
-        strlcat(new->text, txt, buflen);
+        strlcpy(new_block->text, nowtime + 11, 8);
+        scprintf(new_block->text, ".%03ld: ", buflen, now.tv_usec / 1000);
+        strlcat(new_block->text, txt, buflen);
     }
     else
     {
         buflen = strlen(txt) + 1;
-        CREATE(new->text, char, buflen);
-        strlcpy(new->text, txt, buflen);
+        CREATE(new_block->text, char, buflen);
+        strlcpy(new_block->text, txt, buflen);
     }
 #else
-    CREATE(new->text, char, strlen(txt) + 1);
-    strlcpy(new->text, txt, strlen(txt) + 1);
+    CREATE(new_block->text, char, strlen(txt) + 1);
+    strlcpy(new_block->text, txt, strlen(txt) + 1);
 #endif
 
     if (!queue->head)
     {
-        new->next = NULL;
-        queue->head = queue->tail = new;
+        new_block->next = NULL;
+        queue->head = queue->tail = new_block;
     }
     else
     {
-        queue->tail->next = new;
-        queue->tail = new;
-        new->next = NULL;
+        queue->tail->next = new_block;
+        queue->tail = new_block;
+        new_block->next = NULL;
     }
 }
 
