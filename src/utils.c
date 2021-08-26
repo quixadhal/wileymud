@@ -48,7 +48,7 @@ int MobVnum(struct char_data *c)
         return 0;
     if (IS_MOB(c))
     {
-        return mob_index[c->nr].virtual;
+        return mob_index[c->nr].vnum;
     }
     else
     {
@@ -64,7 +64,7 @@ int ObjVnum(struct obj_data *o)
     if (!o)
         return 0;
     if (o->item_number >= 0)
-        return obj_index[o->item_number].virtual;
+        return obj_index[o->item_number].vnum;
     else
         return -1;
 }
@@ -999,7 +999,7 @@ void CallForGuard(struct char_data *ch, struct char_data *vict, int lev)
         {
             if (!i->specials.fighting)
             {
-                if ((mob_index[i->nr].virtual == GUARD_VNUM) || (mob_index[i->nr].virtual == GUARD2_VNUM))
+                if ((mob_index[i->nr].vnum == GUARD_VNUM) || (mob_index[i->nr].vnum == GUARD2_VNUM))
                 {
                     if (number(1, 6) >= 3)
                     {
@@ -1314,7 +1314,7 @@ int RecCompObjNum(struct obj_data *o, int obj_num)
     if (DEBUG > 3)
         log_info("called %s with %s, %d", __PRETTY_FUNCTION__, SAFE_ONAME(o), obj_num);
 
-    if (obj_index[o->item_number].virtual == obj_num)
+    if (obj_index[o->item_number].vnum == obj_num)
         total = 1;
 
     if (ITEM_TYPE(o) == ITEM_CONTAINER)

@@ -133,7 +133,7 @@ struct zone_data
 /* element in monster and object index-tables   */
 struct index_data
 {
-    int virtual; /* virtual number of this mob/obj */
+    int vnum; /* virtual number of this mob/obj */
     long pos;    /* file position of this field */
     int number;  /* number of existing units of this mob/obj */
     ifuncp func;
@@ -142,7 +142,7 @@ struct index_data
 
 struct obj_index_data
 {
-    int virtual; /* virtual number of this mob/obj */
+    int vnum; /* virtual number of this mob/obj */
     long pos;    /* file position of this field */
     int number;  /* number of existing units of this mob/obj */
     ifuncp func;
@@ -273,9 +273,9 @@ void reset_char(struct char_data *ch);
 void clear_char(struct char_data *ch);
 void clear_object(struct obj_data *obj);
 void init_char(struct char_data *ch);
-struct room_data *real_roomp(int virtual);
-int real_mobile(int virtual);
-int real_object(int virtual);
+struct room_data *real_roomp(int vnum);
+int real_mobile(int vnum);
+int real_object(int vnum);
 
 char *fix_string(const char *str);
 char *fread_string(FILE *fl);

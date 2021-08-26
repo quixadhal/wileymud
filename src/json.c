@@ -102,7 +102,7 @@ void _json_look(struct char_data *ch, const char *argument, int cmd)
             REMOVE_BIT(ch->specials.act, IS_PC(ch) ? PLR_HUNTING : ACT_HUNTING);
             cprintf(ch, "{\r\n");
             cprintf(ch, "            \"target\": {\r\n");
-            cprintf(ch, "                \"vnum\" : %d,\r\n", IS_PC(ch)? -1 : mob_index[ch->nr].virtual);
+            cprintf(ch, "                \"vnum\" : %d,\r\n", IS_PC(ch)? -1 : mob_index[ch->nr].vnum);
             cprintf(ch, "                \"direction\" : %d\r\n", res);
             cprintf(ch, "            }\r\n");
             cprintf(ch, "        }\r\n");
@@ -131,7 +131,7 @@ void _json_look(struct char_data *ch, const char *argument, int cmd)
 void _json_serialize_object(int vnum, char *buf, size_t buf_len)
 {
     struct obj_data *objp = NULL;
-    int virtual = 0;
+    int vnum_lookup = 0;
 
     if (!(objp = get_obj_num(vnum)))
     {
@@ -142,11 +142,11 @@ void _json_serialize_object(int vnum, char *buf, size_t buf_len)
             return;
         }
     }
-    virtual = (objp->item_number >= 0) ? obj_index[objp->item_number].virtual : 0;
+    vnum_lookup = (objp->item_number >= 0) ? obj_index[objp->item_number].vnum : 0;
 
     scprintf(buf, buf_len, "{\r\n");
     scprintf(buf, buf_len, "    \"vnum\" : %d,\r\n",
-             (objp->item_number >= 0) ? obj_index[objp->item_number].virtual : 0);
+             (objp->item_number >= 0) ? obj_index[objp->item_number].vnum : 0);
     scprintf(buf, buf_len, "    \"name\" : \"%s\",\r\n", objp->name);
 
     scprintf(buf, buf_len, "}\r\n");

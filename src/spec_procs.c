@@ -2970,7 +2970,7 @@ int fido(struct char_data *ch, int cmd, const char *arg)
     for (v = character_list; (v && (!found)); v = next)
     {
         next = v->next;
-        if ((IS_NPC(v)) && (mob_index[v->nr].virtual == 100) && (v->in_room == ch->in_room) && CAN_SEE(ch, v))
+        if ((IS_NPC(v)) && (mob_index[v->nr].vnum == 100) && (v->in_room == ch->in_room) && CAN_SEE(ch, v))
         {
             if (v->specials.fighting)
                 stop_fighting(v);

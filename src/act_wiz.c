@@ -834,7 +834,7 @@ void do_stat(struct char_data *ch, const char *argument, int cmd)
     char buf[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
     char buf2[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
     int i = 0;
-    int virtual = 0;
+    int vnum = 0;
     int i2 = 0;
     int count = 0;
     int found = FALSE;
@@ -947,7 +947,7 @@ void do_stat(struct char_data *ch, const char *argument, int cmd)
                 if (rm->dir_option[i]->key > 0)
                 {
                     cprintf(ch, "     Key: %s [#%d]\r\n", obj_index[rm->dir_option[i]->key].name,
-                            obj_index[rm->dir_option[i]->key].virtual);
+                            obj_index[rm->dir_option[i]->key].vnum);
                 }
             }
         }
@@ -1050,7 +1050,7 @@ void do_stat(struct char_data *ch, const char *argument, int cmd)
         }
         cprintf(ch, "Name: %s  :  [R-Number %d]  ", GET_NAME(k), k->nr);
         if (IS_MOB(k))
-            cprintf(ch, "[Load Number %d]", mob_index[k->nr].virtual);
+            cprintf(ch, "[Load Number %d]", mob_index[k->nr].vnum);
         cprintf(ch, "\r\n");
 
         cprintf(ch, "Location [%d]\r\n", k->in_room);
@@ -1266,10 +1266,10 @@ void do_stat(struct char_data *ch, const char *argument, int cmd)
                 return;
             }
         }
-        virtual = (j->item_number >= 0) ? obj_index[j->item_number].virtual : 0;
+        vnum = (j->item_number >= 0) ? obj_index[j->item_number].vnum : 0;
         snprintf(buf, MAX_STRING_LENGTH,
                  "Object name: [%s]\r\nR-number: [%d], Load Number: [%d]\r\nItem type: ", j->name, j->item_number,
-                 virtual);
+                 vnum);
         sprinttype(GET_ITEM_TYPE(j), item_types, buf2);
         strlcat(buf, buf2, MAX_STRING_LENGTH);
         cprintf(ch, "%s\r\n", buf);
@@ -3244,14 +3244,14 @@ void do_show(struct char_data *ch, const char *argument, int cmd)
             char tbuf[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
 
             oi = which_i + objn;
-            if ((zone >= 0 && (oi->virtual < bottom || oi->virtual > top)) || (zone < 0 && !isname(zonenum, oi->name)))
+            if ((zone >= 0 && (oi->vnum < bottom || oi->vnum > top)) || (zone < 0 && !isname(zonenum, oi->name)))
                 continue; /* optimize later */
             target_mob = get_char_vis_world(ch, oi->name, NULL);
             if (target_mob)
                 target_room = real_roomp(target_mob->in_room);
             if (target_mob && target_room)
                 snprintf(tbuf, MAX_INPUT_LENGTH, "[#%5d] %s", target_mob->in_room, target_room->name);
-            snprintf(buf, MAX_STRING_LENGTH, "%5d %4d %5d %-40s %-16s %s\r\n", oi->virtual, objn, oi->number, oi->name,
+            snprintf(buf, MAX_STRING_LENGTH, "%5d %4d %5d %-40s %-16s %s\r\n", oi->vnum, objn, oi->number, oi->name,
                      target_mob ? track_distance(ch, oi->name) : "", target_room ? tbuf : "");
             append_to_string_block(&sb, buf);
         }

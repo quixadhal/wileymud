@@ -2714,7 +2714,7 @@ void cast_dragon_breath(int level, struct char_data *ch, const char *arg, int ty
         log_info("called %s with %d, %s, %s, %d, %s, %s", __PRETTY_FUNCTION__, level, SAFE_NAME(ch), VNULL(arg), type,
                  SAFE_NAME(victim), SAFE_ONAME(tar_obj));
 
-    for (scan = breath_potions; scan->vnum && scan->vnum != obj_index[tar_obj->item_number].virtual; scan++)
+    for (scan = breath_potions; scan->vnum && scan->vnum != obj_index[tar_obj->item_number].vnum; scan++)
         ;
     if (scan->vnum == 0)
     {
@@ -2722,7 +2722,7 @@ void cast_dragon_breath(int level, struct char_data *ch, const char *arg, int ty
 
         cprintf(ch, "Hey, this potion isn't in my list!\r\n");
         sprintf(buf, "unlisted breath potion %s %d", tar_obj->short_description,
-                obj_index[tar_obj->item_number].virtual);
+                obj_index[tar_obj->item_number].vnum);
         log_error("%s", buf);
         return;
     }

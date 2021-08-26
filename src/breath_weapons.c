@@ -179,7 +179,7 @@ int BreathWeapon(struct char_data *ch, int cmd, const char *arg)
     if (ch->specials.fighting && (ch->specials.fighting->in_room == ch->in_room))
     {
 
-        for (scan = breath_monsters; scan->vnum >= 0 && scan->vnum != mob_index[ch->nr].virtual; scan++)
+        for (scan = breath_monsters; scan->vnum >= 0 && scan->vnum != mob_index[ch->nr].vnum; scan++)
             ;
 
         if (scan->vnum < 0)

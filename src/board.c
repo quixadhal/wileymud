@@ -265,7 +265,7 @@ struct board_data *find_board_in_room(int room)
         {
             for (int i = 0; i < board_count; i++)
             {
-                if (boards[i].vnum == obj_index[o->item_number].virtual)
+                if (boards[i].vnum == obj_index[o->item_number].vnum)
                 {
                     return &boards[i];
                 }

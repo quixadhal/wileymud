@@ -379,7 +379,7 @@ void make_corpse(struct char_data *ch)
 
     if (IS_NPC(ch))
     {
-        corpse->char_vnum = mob_index[ch->nr].virtual;
+        corpse->char_vnum = mob_index[ch->nr].vnum;
         corpse->char_f_pos = 0;
     }
     else

@@ -1273,7 +1273,7 @@ void do_breath(struct char_data *ch, const char *argument, int cmd)
     {
         struct breather *scan;
 
-        for (scan = breath_monsters; scan->vnum >= 0 && scan->vnum != mob_index[ch->nr].virtual; scan++)
+        for (scan = breath_monsters; scan->vnum >= 0 && scan->vnum != mob_index[ch->nr].vnum; scan++)
             ;
 
         if (scan->vnum < 0)

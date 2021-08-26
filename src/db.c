@@ -295,11 +295,11 @@ struct index_data *generate_indices(FILE *fl, int *top)
                     RECREATE(indexp, struct index_data, i + 1);
                 }
 
-                sscanf(buf, "#%d", &indexp[i].virtual);
+                sscanf(buf, "#%d", &indexp[i].vnum);
                 indexp[i].pos = ftell(fl);
                 indexp[i].number = 0;
                 indexp[i].func = 0;
-                indexp[i].name = (indexp[i].virtual < 99999) ? fread_string(fl) : omega;
+                indexp[i].name = (indexp[i].vnum < 99999) ? fread_string(fl) : omega;
                 i++;
             }
             else
@@ -477,7 +477,7 @@ void load_one_room(FILE *fl, struct room_data *rp)
 void boot_world(void)
 {
     FILE *fl = NULL;
-    int virtual_nr = 0;
+    int vnum = 0;
     struct room_data *rp = NULL;
 
     if (DEBUG > 1)
@@ -492,16 +492,16 @@ void boot_world(void)
         log_fatal("boot_world: could not open world file.");
         proper_exit(MUD_HALT);
     }
-    while (1 == fscanf(fl, " #%d\n", &virtual_nr))
+    while (1 == fscanf(fl, " #%d\n", &vnum))
     {
-        if (DEBUG && !(virtual_nr % 10))
-            log_boot("Loading Room [#%d]\r", virtual_nr);
-        allocate_room(virtual_nr);
-        rp = real_roomp(virtual_nr);
+        if (DEBUG && !(vnum % 10))
+            log_boot("Loading Room [#%d]\r", vnum);
+        allocate_room(vnum);
+        rp = real_roomp(vnum);
         /*
          * bzero(rp, sizeof(*rp));
          */
-        rp->number = virtual_nr;
+        rp->number = vnum;
         load_one_room(fl, rp);
     }
     FCLOSE(fl);
@@ -1272,7 +1272,7 @@ struct obj_data *read_object(int nr, int type)
 
         // InitABoard(obj);
         // To allow importing of old data
-        bp = create_board(obj_index[obj->item_number].virtual);
+        bp = create_board(obj_index[obj->item_number].vnum);
         if (bp && bp->message_count < 1)
         {
             import_board(bp);
@@ -2528,23 +2528,23 @@ void init_char(struct char_data *ch)
         GET_COND(ch, i) = (GetMaxLevel(ch) > 51 ? -1 : 24);
 }
 
-struct room_data *real_roomp(int virtual)
+struct room_data *real_roomp(int vnum)
 {
     if (DEBUG > 3)
-        log_info("called %s with %d", __PRETTY_FUNCTION__, virtual);
+        log_info("called %s with %d", __PRETTY_FUNCTION__, vnum);
 
-    return hash_find(&room_db, virtual);
+    return hash_find(&room_db, vnum);
 }
 
 /* returns the real number of the monster with given virtual number */
-int real_mobile(int virtual)
+int real_mobile(int vnum)
 {
     int bot = 0;
     int top = 0;
     int mid = 0;
 
     if (DEBUG > 2)
-        log_info("called %s with %d", __PRETTY_FUNCTION__, virtual);
+        log_info("called %s with %d", __PRETTY_FUNCTION__, vnum);
 
     top = top_of_mobt;
 
@@ -2555,11 +2555,11 @@ int real_mobile(int virtual)
     {
         mid = (bot + top) / 2;
 
-        if ((mob_index + mid)->virtual == virtual)
+        if ((mob_index + mid)->vnum == vnum)
             return (mid);
         if (bot >= top)
             return (-1);
-        if ((mob_index + mid)->virtual > virtual)
+        if ((mob_index + mid)->vnum > vnum)
             top = mid - 1;
         else
             bot = mid + 1;
@@ -2567,14 +2567,14 @@ int real_mobile(int virtual)
 }
 
 /* returns the real number of the object with given virtual number */
-int real_object(int virtual)
+int real_object(int vnum)
 {
     int bot = 0;
     int top = 0;
     int mid = 0;
 
     if (DEBUG > 2)
-        log_info("called %s with %d", __PRETTY_FUNCTION__, virtual);
+        log_info("called %s with %d", __PRETTY_FUNCTION__, vnum);
 
     top = top_of_objt;
 
@@ -2585,11 +2585,11 @@ int real_object(int virtual)
     {
         mid = (bot + top) / 2;
 
-        if ((obj_index + mid)->virtual == virtual)
+        if ((obj_index + mid)->vnum == vnum)
             return (mid);
         if (bot >= top)
             return (-1);
-        if ((obj_index + mid)->virtual > virtual)
+        if ((obj_index + mid)->vnum > vnum)
             top = mid - 1;
         else
             bot = mid + 1;

@@ -305,8 +305,8 @@ int strn_cmp(const char *arg1, const char *arg2, const int n);
 #define IS_IMMORTAL(ch) ((GetMaxLevel(ch) >= LOW_IMMORTAL) && (!IS_NPC(ch)))
 #define IS_MORTAL(ch) (!IS_IMMORTAL(ch))
 #define IS_POLICE(ch)                                                                                                  \
-    ((mob_index[(int)ch->nr].virtual == 3060) || (mob_index[(int)ch->nr].virtual == 3069) ||                           \
-     (mob_index[(int)ch->nr].virtual == 3067))
+    ((mob_index[(int)ch->nr].vnum == 3060) || (mob_index[(int)ch->nr].vnum == 3069) ||                           \
+     (mob_index[(int)ch->nr].vnum == 3067))
 #define IS_CORPSE(obj)                                                                                                 \
     (GET_ITEM_TYPE((obj)) == ITEM_CONTAINER && (obj)->obj_flags.value[3] && isname("corpse", (obj)->name))
 #define EXIT(ch, door) (real_roomp((ch)->in_room)->dir_option[door])

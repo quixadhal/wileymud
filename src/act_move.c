@@ -1040,11 +1040,11 @@ int has_key(struct char_data *ch, int key)
         log_info("called %s with %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), key);
 
     for (o = ch->carrying; o; o = o->next_content)
-        if (obj_index[o->item_number].virtual == key)
+        if (obj_index[o->item_number].vnum == key)
             return (1);
 
     if (ch->equipment[HOLD])
-        if (obj_index[ch->equipment[HOLD]->item_number].virtual == key)
+        if (obj_index[ch->equipment[HOLD]->item_number].vnum == key)
             return (1);
 
     return (0);

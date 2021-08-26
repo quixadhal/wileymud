@@ -324,7 +324,7 @@ int SameRace(struct char_data *ch1, struct char_data *ch2)
 
     if (IS_NPC(ch1) && (IS_NPC(ch2)))
     {
-        if (mob_index[ch1->nr].virtual == mob_index[ch2->nr].virtual)
+        if (mob_index[ch1->nr].vnum == mob_index[ch2->nr].vnum)
             return (TRUE);
         else
             return (FALSE);

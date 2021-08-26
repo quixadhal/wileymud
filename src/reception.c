@@ -314,7 +314,7 @@ void put_obj_in_store(struct obj_data *obj, struct obj_file_u *st)
     }
     oe = st->objects + st->nobjects;
 
-    oe->item_number = obj_index[obj->item_number].virtual;
+    oe->item_number = obj_index[obj->item_number].vnum;
     oe->value[0] = obj->obj_flags.value[0];
     oe->value[1] = obj->obj_flags.value[1];
     oe->value[2] = obj->obj_flags.value[2];

@@ -486,7 +486,7 @@ int DoesHate(struct char_data *ch, struct char_data *v)
     }
     if (IS_SET(ch->hatefield, HATE_VNUM))
     {
-        if (ch->hates.vnum == mob_index[v->nr].virtual)
+        if (ch->hates.vnum == mob_index[v->nr].vnum)
             return (TRUE);
     }
     if (IS_SET(ch->hatefield, HATE_RICH))
@@ -593,7 +593,7 @@ int DoesFear(struct char_data *ch, struct char_data *v)
     }
     if (IS_SET(ch->fearfield, FEAR_VNUM))
     {
-        if (ch->fears.vnum == mob_index[v->nr].virtual)
+        if (ch->fears.vnum == mob_index[v->nr].vnum)
             return (TRUE);
     }
     return (FALSE);
