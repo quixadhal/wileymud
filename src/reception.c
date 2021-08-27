@@ -91,20 +91,20 @@ char recep_offer(struct char_data *ch, struct char_data *recep_mob, struct obj_c
         add_obj_cost(ch, recep_mob, ch->equipment[i], cost);
 
     if (!cost->ok)
-        return (FALSE);
+        return FALSE;
 
     if (cost->no_carried == 0)
     {
         if (recep_mob)
             act("$n tells you 'But you are not carrying anything?'", FALSE, recep_mob, 0, ch, TO_VICT);
-        return (FALSE);
+        return FALSE;
     }
     if (cost->no_carried > MAX_OBJ_SAVE)
     {
         if (recep_mob)
             act("$n tells you 'Sorry, but I can't store any more than %d items.", FALSE, recep_mob, 0, ch, TO_VICT,
                 MAX_OBJ_SAVE);
-        return (FALSE);
+        return FALSE;
     }
     if (recep_mob)
     {
@@ -121,9 +121,9 @@ char recep_offer(struct char_data *ch, struct char_data *recep_mob, struct obj_c
         }
     }
     if (cost->total_cost > (GET_GOLD(ch) + GET_BANK(ch)))
-        return (FALSE);
+        return FALSE;
     else
-        return (TRUE);
+        return TRUE;
 }
 
 /*
@@ -656,7 +656,7 @@ int fread_object(struct obj_data *obj, FILE *fp)
         if (done)
             break;
     }
-    return 1;
+    return TRUE;
 }
 
 int new_load_equipment(struct char_data *ch, struct obj_cost *cost)
@@ -786,7 +786,7 @@ int new_load_equipment(struct char_data *ch, struct obj_cost *cost)
     /*
      * we've now gotten the rental header.... now we have to get the stuff
      */
-    return 0;
+    return FALSE;
 }
 
 /*
@@ -805,7 +805,7 @@ int receptionist(struct char_data *ch, int cmd, const char *arg)
         log_info("called %s with %s, %d, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), cmd, VNULL(arg));
 
     if (!ch->desc)
-        return (FALSE); /* You've forgot FALSE - NPC couldn't leave */
+        return FALSE; /* You've forgot FALSE - NPC couldn't leave */
 
     for (temp_char = real_roomp(ch->in_room)->people; (temp_char) && (!recep); temp_char = temp_char->next_in_room)
         if (IS_MOB(temp_char))
@@ -818,7 +818,7 @@ int receptionist(struct char_data *ch, int cmd, const char *arg)
         proper_exit(MUD_REBOOT);
     }
     if (IS_NPC(ch))
-        return (FALSE);
+        return FALSE;
 
     if ((cmd != 256) && (cmd != 92) && (cmd != 93))
     {
@@ -826,22 +826,22 @@ int receptionist(struct char_data *ch, int cmd, const char *arg)
         {
             if (recep->specials.fighting)
             {
-                return (citizen(recep, 0, ""));
+                return citizen(recep, 0, "");
             }
         }
         if (!number(0, 30))
             do_action(recep, "", action_tabel[number(0, 8)]);
-        return (FALSE);
+        return FALSE;
     }
     if (!AWAKE(recep))
     {
         act("$e isn't able to talk to you...", FALSE, recep, 0, ch, TO_VICT);
-        return (TRUE);
+        return TRUE;
     }
     if (!CAN_SEE(recep, ch))
     {
         act("$n says, 'I don't deal with people I can't see!'", FALSE, recep, 0, 0, TO_ROOM);
-        return (TRUE);
+        return TRUE;
     }
     switch (cmd)
     {
@@ -875,7 +875,7 @@ int receptionist(struct char_data *ch, int cmd, const char *arg)
     }
     break;
     }
-    return (TRUE);
+    return TRUE;
 }
 
 /* removes a player from the list of renters */

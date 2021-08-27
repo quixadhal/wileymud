@@ -31,15 +31,15 @@
 #define _ACT_OTHER_C
 #include "act_other.h"
 
-void do_gain(struct char_data *ch, const char *argument, int cmd)
+int do_gain(struct char_data *ch, const char *argument, int cmd)
 {
     if (DEBUG)
         log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
-    return;
+    return TRUE;
 }
 
-void do_guard(struct char_data *ch, const char *argument, int cmd)
+int do_guard(struct char_data *ch, const char *argument, int cmd)
 {
     if (DEBUG)
         log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
@@ -47,7 +47,7 @@ void do_guard(struct char_data *ch, const char *argument, int cmd)
     if (!IS_NPC(ch) || IS_SET(ch->specials.act, ACT_POLYSELF))
     {
         cprintf(ch, "Sorry. you can't just put your brain on autopilot!\r\n");
-        return;
+        return TRUE;
     }
     if (IS_SET(ch->specials.act, ACT_GUARDIAN))
     {
@@ -61,10 +61,10 @@ void do_guard(struct char_data *ch, const char *argument, int cmd)
         act("$n alertly watches you.", FALSE, ch, 0, 0, TO_ROOM);
         cprintf(ch, "You snap to attention\r\n");
     }
-    return;
+    return TRUE;
 }
 
-void do_junk(struct char_data *ch, const char *argument, int cmd)
+int do_junk(struct char_data *ch, const char *argument, int cmd)
 {
     char arg[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
     char newarg[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
@@ -132,33 +132,34 @@ void do_junk(struct char_data *ch, const char *argument, int cmd)
                 {
                     cprintf(ch, "You don't have anything like that\r\n");
                 }
-                return;
+                return TRUE;
             }
         }
     }
     else
     {
         cprintf(ch, "Junk what?");
-        return;
+        return TRUE;
     }
+    return TRUE;
 }
 
-void do_qui(struct char_data *ch, const char *argument, int cmd)
+int do_qui(struct char_data *ch, const char *argument, int cmd)
 {
     if (DEBUG)
         log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
     cprintf(ch, "You have to write quit - no less, to quit!\r\n");
-    return;
+    return TRUE;
 }
 
-void do_title(struct char_data *ch, const char *argument, int cmd)
+int do_title(struct char_data *ch, const char *argument, int cmd)
 {
     if (DEBUG)
         log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
     if (IS_NPC(ch) || !ch->desc)
-        return;
+        return TRUE;
 
     for (; isspace(*argument); argument++)
         ;
@@ -168,26 +169,27 @@ void do_title(struct char_data *ch, const char *argument, int cmd)
         cprintf(ch, "Your title has been set to : <%s>\r\n", argument);
         ch->player.title = strdup(argument);
     }
+    return TRUE;
 }
 
-void do_quit(struct char_data *ch, const char *argument, int cmd)
+int do_quit(struct char_data *ch, const char *argument, int cmd)
 {
     if (DEBUG)
         log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
     if (IS_NPC(ch) || !ch->desc)
-        return;
+        return TRUE;
 
     if (GET_POS(ch) == POSITION_FIGHTING)
     {
         cprintf(ch, "No way! You are fighting.\r\n");
-        return;
+        return TRUE;
     }
     if (GET_POS(ch) < POSITION_STUNNED)
     {
         cprintf(ch, "You die before your time!\r\n");
         die(ch);
-        return;
+        return TRUE;
     }
     if (MOUNTED(ch))
     {
@@ -198,9 +200,10 @@ void do_quit(struct char_data *ch, const char *argument, int cmd)
     GET_HOME(ch) = 3008;
     zero_rent(ch);
     extract_char(ch); /* Char is saved in extract char */
+    return TRUE;
 }
 
-void do_save(struct char_data *ch, const char *argument, int cmd)
+int do_save(struct char_data *ch, const char *argument, int cmd)
 {
     struct obj_cost cost;
 
@@ -208,24 +211,26 @@ void do_save(struct char_data *ch, const char *argument, int cmd)
         log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
     if (IS_NPC(ch))
-        return;
+        return TRUE;
 
     cprintf(ch, "Saving %s.\r\n", GET_NAME(ch));
     recep_offer(ch, NULL, &cost);
     new_save_equipment(ch, &cost, FALSE);
     save_obj(ch, &cost, FALSE);
     save_char(ch, NOWHERE);
+    return TRUE;
 }
 
-void do_not_here(struct char_data *ch, const char *argument, int cmd)
+int do_not_here(struct char_data *ch, const char *argument, int cmd)
 {
     if (DEBUG)
         log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
     cprintf(ch, "Sorry, but you cannot do that here!\r\n");
+    return TRUE;
 }
 
-void do_sneak(struct char_data *ch, const char *argument, int cmd)
+int do_sneak(struct char_data *ch, const char *argument, int cmd)
 {
     int percent_chance = 0;
     struct affected_type af;
@@ -239,7 +244,7 @@ void do_sneak(struct char_data *ch, const char *argument, int cmd)
         if (IS_AFFECTED(ch, AFF_HIDE))
             REMOVE_BIT(ch->specials.affected_by, AFF_HIDE);
         cprintf(ch, "You are no longer sneaky.\r\n");
-        return;
+        return TRUE;
     }
     cprintf(ch, "Ok, you'll try to move silently for a while.\r\n");
     cprintf(ch, "And you attempt to hide yourself.\r\n");
@@ -247,7 +252,7 @@ void do_sneak(struct char_data *ch, const char *argument, int cmd)
     percent_chance = number(1, 101); /* 101% is a complete failure */
 
     if (percent_chance > ch->skills[SKILL_SNEAK].learned + dex_app_skill[(int)GET_DEX(ch)].sneak)
-        return;
+        return TRUE;
 
     if (ch->skills[SKILL_SNEAK].learned < 50)
         ch->skills[SKILL_SNEAK].learned += 2;
@@ -259,9 +264,10 @@ void do_sneak(struct char_data *ch, const char *argument, int cmd)
     af.location = APPLY_NONE;
     af.bitvector = AFF_SNEAK;
     affect_to_char(ch, &af);
+    return TRUE;
 }
 
-void do_hide(struct char_data *ch, const char *argument, int cmd)
+int do_hide(struct char_data *ch, const char *argument, int cmd)
 {
     int percent_chance = 0;
     struct affected_type af;
@@ -279,7 +285,7 @@ void do_hide(struct char_data *ch, const char *argument, int cmd)
     percent_chance = number(1, 101); /* 101% is a complete failure */
 
     if (percent_chance > ch->skills[SKILL_SNEAK].learned + dex_app_skill[(int)GET_DEX(ch)].sneak)
-        return;
+        return TRUE;
     if (ch->skills[SKILL_SNEAK].learned < 50)
         ch->skills[SKILL_SNEAK].learned += 2;
 
@@ -290,9 +296,10 @@ void do_hide(struct char_data *ch, const char *argument, int cmd)
     af.location = APPLY_NONE;
     af.bitvector = AFF_SNEAK;
     affect_to_char(ch, &af);
+    return TRUE;
 }
 
-void do_steal(struct char_data *ch, const char *argument, int cmd)
+int do_steal(struct char_data *ch, const char *argument, int cmd)
 {
     struct char_data *victim = NULL;
     struct obj_data *obj = NULL;
@@ -309,7 +316,7 @@ void do_steal(struct char_data *ch, const char *argument, int cmd)
         log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
     if (check_peaceful(ch, "What if he caught you?\r\n"))
-        return;
+        return TRUE;
 
     argument = one_argument(argument, obj_name);
     only_argument(argument, victim_name);
@@ -317,18 +324,18 @@ void do_steal(struct char_data *ch, const char *argument, int cmd)
     if (!(victim = get_char_room_vis(ch, victim_name)))
     {
         cprintf(ch, "Steal what from who?\r\n");
-        return;
+        return TRUE;
     }
     else if (victim == ch)
     {
         cprintf(ch, "Come on now, that's rather stupid!\r\n");
-        return;
+        return TRUE;
     }
     if (!CheckKill(ch, victim))
-        return;
+        return TRUE;
 
     if ((!victim->desc) && (IS_PC(victim)))
-        return;
+        return TRUE;
 
     /*
      * 101% is a complete failure
@@ -356,14 +363,14 @@ void do_steal(struct char_data *ch, const char *argument, int cmd)
             if (!obj)
             {
                 act("$E has not got that item.", FALSE, ch, 0, victim, TO_CHAR);
-                return;
+                return TRUE;
             }
             else
             { /* It is equipment */
                 if ((GET_POS(victim) > POSITION_STUNNED))
                 {
                     cprintf(ch, "Steal the equipment now? Impossible!\r\n");
-                    return;
+                    return TRUE;
                 }
                 else
                 {
@@ -449,9 +456,10 @@ void do_steal(struct char_data *ch, const char *argument, int cmd)
             hit(victim, ch, TYPE_UNDEFINED);
         }
     }
+    return TRUE;
 }
 
-void do_practice(struct char_data *ch, const char *argument, int cmd)
+int do_practice(struct char_data *ch, const char *argument, int cmd)
 {
     char buf[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
     int i = 0;
@@ -470,7 +478,7 @@ void do_practice(struct char_data *ch, const char *argument, int cmd)
         log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
     if (cmd != CMD_practice)
-        return;
+        return TRUE;
 
     for (; isspace(*argument); argument++)
         ;
@@ -479,7 +487,7 @@ void do_practice(struct char_data *ch, const char *argument, int cmd)
     if (!*first_arg)
     {
         cprintf(ch, "You need to supply a class for that.");
-        return;
+        return TRUE;
     }
     switch (*first_arg)
     {
@@ -490,7 +498,7 @@ void do_practice(struct char_data *ch, const char *argument, int cmd)
         if (!HasClass(ch, CLASS_WARRIOR))
         {
             cprintf(ch, "I bet you wish you were a warrior.\r\n");
-            return;
+            return TRUE;
         }
         snprintf(buf, MAX_STRING_LENGTH, "You can practice any of these MANLY skills:\r\n");
         for (i = 0; i < MAX_SKILLS; i++)
@@ -499,7 +507,7 @@ void do_practice(struct char_data *ch, const char *argument, int cmd)
                 scprintf(buf, MAX_STRING_LENGTH, "%s%s\r\n", spell_info[i].name, how_good(ch->skills[i].learned));
         }
         page_string(ch->desc, buf, 1);
-        return;
+        return TRUE;
     }
     break;
     case 'r':
@@ -507,7 +515,7 @@ void do_practice(struct char_data *ch, const char *argument, int cmd)
         if (!HasClass(ch, CLASS_RANGER))
         {
             cprintf(ch, "I wish I was a Ranger too!\r\n");
-            return;
+            return TRUE;
         }
         snprintf(buf, MAX_STRING_LENGTH, "You can practice any of these outdoor skills:\r\n");
         for (i = 0; i < MAX_SKILLS; i++)
@@ -522,7 +530,7 @@ void do_practice(struct char_data *ch, const char *argument, int cmd)
                 scprintf(buf, MAX_STRING_LENGTH, "%s%s\r\n", spell_info[i].name, how_good(ch->skills[i].learned));
         }
         page_string(ch->desc, buf, 1);
-        return;
+        return TRUE;
     }
     break;
     case 't':
@@ -530,7 +538,7 @@ void do_practice(struct char_data *ch, const char *argument, int cmd)
         if (!HasClass(ch, CLASS_THIEF))
         {
             cprintf(ch, "A voice whispers, 'You are not a thief.'\r\n");
-            return;
+            return TRUE;
         }
         snprintf(buf, MAX_STRING_LENGTH, "You can practice any of these sneaky skills:\r\n");
         for (i = 0; i < MAX_SKILLS; i++)
@@ -539,7 +547,7 @@ void do_practice(struct char_data *ch, const char *argument, int cmd)
                 scprintf(buf, MAX_STRING_LENGTH, "%s%s\r\n", spell_info[i].name, how_good(ch->skills[i].learned));
         }
         page_string(ch->desc, buf, 1);
-        return;
+        return TRUE;
     }
     break;
     case 'M':
@@ -547,7 +555,7 @@ void do_practice(struct char_data *ch, const char *argument, int cmd)
         if (!HasClass(ch, CLASS_MAGIC_USER))
         {
             cprintf(ch, "You pretend to be a magic-user, 'Gooble-dah!'\r\n");
-            return;
+            return TRUE;
         }
         flag = 0;
         if (is_abbrev(sec_arg, "known"))
@@ -571,7 +579,7 @@ void do_practice(struct char_data *ch, const char *argument, int cmd)
                 }
             }
         page_string(ch->desc, buf, 1);
-        return;
+        return TRUE;
     }
     break;
     case 'C':
@@ -581,7 +589,7 @@ void do_practice(struct char_data *ch, const char *argument, int cmd)
         if (!HasClass(ch, CLASS_CLERIC))
         {
             cprintf(ch, "You feel that impersonating a cleric might be bad.\r\n");
-            return;
+            return TRUE;
         }
         snprintf(buf, MAX_STRING_LENGTH, "You can pray for any of these miracles:\r\n");
         flag = 0;
@@ -605,15 +613,16 @@ void do_practice(struct char_data *ch, const char *argument, int cmd)
                 }
             }
         page_string(ch->desc, buf, 1);
-        return;
+        return TRUE;
     }
     break;
     default:
         cprintf(ch, "Ah, but practice which class???\r\n");
     }
+    return TRUE;
 }
 
-void do_idea(struct char_data *ch, const char *argument, int cmd)
+int do_idea(struct char_data *ch, const char *argument, int cmd)
 {
     FILE *fl = NULL;
     char str[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
@@ -624,7 +633,7 @@ void do_idea(struct char_data *ch, const char *argument, int cmd)
     if (IS_NPC(ch))
     {
         cprintf(ch, "Monsters can't have ideas - Go away.\r\n");
-        return;
+        return TRUE;
     }
     /*
      * skip whites
@@ -635,22 +644,23 @@ void do_idea(struct char_data *ch, const char *argument, int cmd)
     if (!*argument)
     {
         cprintf(ch, "That doesn't sound like a good idea to me.. Sorry.\r\n");
-        return;
+        return TRUE;
     }
     if (!(fl = fopen(IDEA_FILE, "a")))
     {
         log_error("do_idea");
         cprintf(ch, "Could not open the idea-file.\r\n");
-        return;
+        return TRUE;
     }
     snprintf(str, MAX_INPUT_LENGTH, "**%s: %s\n", GET_NAME(ch), argument);
 
     fputs(str, fl);
     FCLOSE(fl);
     cprintf(ch, "Woah!  That's pretty cool.  Thanks!\r\n");
+    return TRUE;
 }
 
-void do_typo(struct char_data *ch, const char *argument, int cmd)
+int do_typo(struct char_data *ch, const char *argument, int cmd)
 {
     FILE *fl = NULL;
     char str[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
@@ -661,7 +671,7 @@ void do_typo(struct char_data *ch, const char *argument, int cmd)
     if (IS_NPC(ch))
     {
         cprintf(ch, "Monsters can't spell - leave me alone.\r\n");
-        return;
+        return TRUE;
     }
     /*
      * skip whites
@@ -672,21 +682,22 @@ void do_typo(struct char_data *ch, const char *argument, int cmd)
     if (!*argument)
     {
         cprintf(ch, "I beg your pardon?\r\n");
-        return;
+        return TRUE;
     }
     if (!(fl = fopen(TYPO_FILE, "a")))
     {
         log_error("do_typo");
         cprintf(ch, "Could not open the typo-file.\r\n");
-        return;
+        return TRUE;
     }
     snprintf(str, MAX_INPUT_LENGTH, "**%s[%d]: %s\n", GET_NAME(ch), ch->in_room, argument);
     fputs(str, fl);
     FCLOSE(fl);
     cprintf(ch, "No problem.  We can send a whizzling to fix it.\r\n");
+    return TRUE;
 }
 
-void do_bug(struct char_data *ch, const char *argument, int cmd)
+int do_bug(struct char_data *ch, const char *argument, int cmd)
 {
     FILE *fl = NULL;
     char str[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
@@ -697,7 +708,7 @@ void do_bug(struct char_data *ch, const char *argument, int cmd)
     if (IS_NPC(ch))
     {
         cprintf(ch, "You are a monster! Bug off!\r\n");
-        return;
+        return TRUE;
     }
     /*
      * skip whites
@@ -708,27 +719,28 @@ void do_bug(struct char_data *ch, const char *argument, int cmd)
     if (!*argument)
     {
         cprintf(ch, "Pardon?\r\n");
-        return;
+        return TRUE;
     }
     if (!(fl = fopen(BUG_FILE, "a")))
     {
         log_error("do_bug");
         cprintf(ch, "Could not open the bug-file.\r\n");
-        return;
+        return TRUE;
     }
     snprintf(str, MAX_INPUT_LENGTH, "**%s[%d]: %s\n", GET_NAME(ch), ch->in_room, argument);
     fputs(str, fl);
     FCLOSE(fl);
     cprintf(ch, "Really?  Ok, we'll send someone to have a look.\r\n");
+    return TRUE;
 }
 
-void do_autoexit(struct char_data *ch, const char *argument, int cmd)
+int do_autoexit(struct char_data *ch, const char *argument, int cmd)
 {
     if (DEBUG)
         log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
     if (IS_NPC(ch))
-        return;
+        return TRUE;
 
     if (IS_SET(ch->specials.new_act, NEW_PLR_AUTOEXIT))
     {
@@ -740,15 +752,16 @@ void do_autoexit(struct char_data *ch, const char *argument, int cmd)
         cprintf(ch, "You will now see exits automatically.\r\n");
         SET_BIT(ch->specials.new_act, NEW_PLR_AUTOEXIT);
     }
+    return TRUE;
 }
 
-void do_brief(struct char_data *ch, const char *argument, int cmd)
+int do_brief(struct char_data *ch, const char *argument, int cmd)
 {
     if (DEBUG)
         log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
     if (IS_NPC(ch))
-        return;
+        return TRUE;
 
     if (IS_SET(ch->specials.act, PLR_BRIEF))
     {
@@ -760,15 +773,16 @@ void do_brief(struct char_data *ch, const char *argument, int cmd)
         cprintf(ch, "Brief mode on.\r\n");
         SET_BIT(ch->specials.act, PLR_BRIEF);
     }
+    return TRUE;
 }
 
-void do_compact(struct char_data *ch, const char *argument, int cmd)
+int do_compact(struct char_data *ch, const char *argument, int cmd)
 {
     if (DEBUG)
         log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
     if (IS_NPC(ch))
-        return;
+        return TRUE;
 
     if (IS_SET(ch->specials.act, PLR_COMPACT))
     {
@@ -780,9 +794,10 @@ void do_compact(struct char_data *ch, const char *argument, int cmd)
         cprintf(ch, "You are now in compact mode.\r\n");
         SET_BIT(ch->specials.act, PLR_COMPACT);
     }
+    return TRUE;
 }
 
-void do_group(struct char_data *ch, const char *argument, int cmd)
+int do_group(struct char_data *ch, const char *argument, int cmd)
 {
     char name[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
     struct char_data *victim = NULL;
@@ -818,7 +833,7 @@ void do_group(struct char_data *ch, const char *argument, int cmd)
                 if (IS_AFFECTED(f->follower, AFF_GROUP))
                     act("     $N", FALSE, ch, 0, f->follower, TO_CHAR);
         }
-        return;
+        return TRUE;
     }
     if (!(victim = get_char_room_vis(ch, name)))
     {
@@ -829,7 +844,7 @@ void do_group(struct char_data *ch, const char *argument, int cmd)
         if (ch->master)
         {
             act("You can not enroll group members without being head of a group.", FALSE, ch, 0, 0, TO_CHAR);
-            return;
+            return TRUE;
         }
         found = FALSE;
 
@@ -867,12 +882,12 @@ void do_group(struct char_data *ch, const char *argument, int cmd)
                 if (IS_IMMORTAL(victim) && !IS_IMMORTAL(ch))
                 {
                     act("You really don't want $n in your group.", FALSE, victim, 0, 0, TO_CHAR);
-                    return;
+                    return TRUE;
                 }
                 /*
                  *	if ((chlvl= GetMaxLevel(ch)) >= LOW_IMMORTAL) {
                  *	  act("Now now.  That would be CHEATING!", FALSE, ch, 0, 0, TO_CHAR);
-                 *	  return;
+                 *	  return TRUE;
                  *	}
                  */
                 chlvl = GetMaxLevel(ch);
@@ -894,14 +909,14 @@ void do_group(struct char_data *ch, const char *argument, int cmd)
                         act("It would be beneath you to lead the lowly $N into battle!", FALSE, ch, 0, victim, TO_CHAR);
                         act("$N is too mighty to pay any heed to the likes of you!", FALSE, victim, 0, ch, TO_CHAR);
                         act("$N tells $n to bugger off.", FALSE, victim, 0, ch, TO_ROOM);
-                        return;
+                        return TRUE;
                     }
                     if (victlvl >= toohigh)
                     {
                         act("You WISH $N would deign to join your group!", FALSE, ch, 0, victim, TO_CHAR);
                         act("$N BEGS you to help $M go kill the chickens.", FALSE, victim, 0, ch, TO_CHAR);
                         act("$N grovels and begs $n to join $S group.", FALSE, victim, 0, ch, TO_ROOM);
-                        return;
+                        return TRUE;
                     }
                 }
                 if (victim != ch)
@@ -921,9 +936,10 @@ void do_group(struct char_data *ch, const char *argument, int cmd)
             act("$N must follow you, to enter the group", FALSE, ch, 0, victim, TO_CHAR);
         }
     }
+    return TRUE;
 }
 
-void do_quaff(struct char_data *ch, const char *argument, int cmd)
+int do_quaff(struct char_data *ch, const char *argument, int cmd)
 {
     char buf[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
     struct obj_data *temp = NULL;
@@ -942,7 +958,7 @@ void do_quaff(struct char_data *ch, const char *argument, int cmd)
         if ((temp == 0) || !isname(buf, temp->name))
         {
             act("You do not have that item.", FALSE, ch, 0, 0, TO_CHAR);
-            return;
+            return TRUE;
         }
     }
     if (!IS_IMMORTAL(ch))
@@ -950,7 +966,7 @@ void do_quaff(struct char_data *ch, const char *argument, int cmd)
         if (GET_COND(ch, FULL) > 20)
         {
             act("Your stomach can't contain anymore!", FALSE, ch, 0, 0, TO_CHAR);
-            return;
+            return TRUE;
         }
         else
         {
@@ -960,7 +976,7 @@ void do_quaff(struct char_data *ch, const char *argument, int cmd)
     if (temp->obj_flags.type_flag != ITEM_POTION)
     {
         act("You can only quaff potions.", FALSE, ch, 0, 0, TO_CHAR);
-        return;
+        return TRUE;
     }
     act("$n quaffs $p.", TRUE, ch, temp, 0, TO_ROOM);
     act("You quaff $p which dissolves.", FALSE, ch, temp, 0, TO_CHAR);
@@ -979,7 +995,7 @@ void do_quaff(struct char_data *ch, const char *argument, int cmd)
                 if (equipped)
                     temp = unequip_char(ch, HOLD);
                 extract_obj(temp);
-                return;
+                return TRUE;
             }
         }
         else
@@ -989,7 +1005,7 @@ void do_quaff(struct char_data *ch, const char *argument, int cmd)
                 act("$n is jolted and drops $p!  It shatters!", TRUE, ch, temp, 0, TO_ROOM);
                 act("You arm is jolted and $p flies from your hand, *SMASH*", TRUE, ch, temp, 0, TO_CHAR);
                 extract_obj(temp);
-                return;
+                return TRUE;
             }
         }
     }
@@ -1004,9 +1020,10 @@ void do_quaff(struct char_data *ch, const char *argument, int cmd)
     extract_obj(temp);
 
     WAIT_STATE(ch, PULSE_VIOLENCE);
+    return TRUE;
 }
 
-void do_recite(struct char_data *ch, const char *argument, int cmd)
+int do_recite(struct char_data *ch, const char *argument, int cmd)
 {
     char buf[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
     struct obj_data *scroll = NULL;
@@ -1028,13 +1045,13 @@ void do_recite(struct char_data *ch, const char *argument, int cmd)
         if ((scroll == 0) || !isname(buf, scroll->name))
         {
             act("You do not have that item.", FALSE, ch, 0, 0, TO_CHAR);
-            return;
+            return TRUE;
         }
     }
     if (scroll->obj_flags.type_flag != ITEM_SCROLL)
     {
         act("Recite is normally used for scrolls.", FALSE, ch, 0, 0, TO_CHAR);
-        return;
+        return TRUE;
     }
     if (*argument)
     {
@@ -1043,7 +1060,7 @@ void do_recite(struct char_data *ch, const char *argument, int cmd)
         if (bits == 0)
         {
             cprintf(ch, "No such thing around to recite the scroll on.\r\n");
-            return;
+            return TRUE;
         }
     }
     else
@@ -1056,7 +1073,7 @@ void do_recite(struct char_data *ch, const char *argument, int cmd)
         if (scroll->obj_flags.value[1] != SPELL_WORD_OF_RECALL)
         {
             cprintf(ch, "You can't understand this...\r\n");
-            return;
+            return TRUE;
         }
     }
     act("$n recites $p.", TRUE, ch, scroll, 0, TO_ROOM);
@@ -1074,9 +1091,10 @@ void do_recite(struct char_data *ch, const char *argument, int cmd)
     if (equipped)
         scroll = unequip_char(ch, HOLD);
     extract_obj(scroll);
+    return TRUE;
 }
 
-void do_use(struct char_data *ch, const char *argument, int cmd)
+int do_use(struct char_data *ch, const char *argument, int cmd)
 {
     char buf[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
     struct char_data *tmp_char = NULL;
@@ -1092,7 +1110,7 @@ void do_use(struct char_data *ch, const char *argument, int cmd)
     if (ch->equipment[HOLD] == 0 || !isname(buf, ch->equipment[HOLD]->name))
     {
         act("You do not hold that item in your hand.", FALSE, ch, 0, 0, TO_CHAR);
-        return;
+        return TRUE;
     }
     stick = ch->equipment[HOLD];
 
@@ -1134,7 +1152,7 @@ void do_use(struct char_data *ch, const char *argument, int cmd)
             }
 
             if (IS_SET(spellp->targets, TAR_VIOLENT) && check_peaceful(ch, "Impolite magic is banned here."))
-                return;
+                return TRUE;
 
             if (stick->obj_flags.value[2] > 0)
             { /* Is there any charges left? */
@@ -1157,9 +1175,10 @@ void do_use(struct char_data *ch, const char *argument, int cmd)
     {
         cprintf(ch, "Use is normally only for wand's and staff's.\r\n");
     }
+    return TRUE;
 }
 
-void do_plr_noshout(struct char_data *ch, const char *argument, int cmd)
+int do_plr_noshout(struct char_data *ch, const char *argument, int cmd)
 {
     char buf[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
 
@@ -1167,7 +1186,7 @@ void do_plr_noshout(struct char_data *ch, const char *argument, int cmd)
         log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
     if (IS_NPC(ch))
-        return;
+        return TRUE;
 
     only_argument(argument, buf);
 
@@ -1188,9 +1207,10 @@ void do_plr_noshout(struct char_data *ch, const char *argument, int cmd)
     {
         cprintf(ch, "Only the gods can shut up someone else. \r\n");
     }
+    return TRUE;
 }
 
-void do_plr_notell(struct char_data *ch, const char *argument, int cmd)
+int do_plr_notell(struct char_data *ch, const char *argument, int cmd)
 {
     char buf[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
 
@@ -1198,7 +1218,7 @@ void do_plr_notell(struct char_data *ch, const char *argument, int cmd)
         log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
     if (IS_NPC(ch))
-        return;
+        return TRUE;
     only_argument(argument, buf);
 
     if (IS_SET(ch->specials.new_act, NEW_PLR_NOTELL))
@@ -1211,20 +1231,21 @@ void do_plr_notell(struct char_data *ch, const char *argument, int cmd)
         cprintf(ch, "From now on, you won't hear tells.\r\n");
         SET_BIT(ch->specials.new_act, NEW_PLR_NOTELL);
     }
+    return TRUE;
 }
 
-void do_plr_nosummon(struct char_data *ch, const char *argument, int cmd)
+int do_plr_nosummon(struct char_data *ch, const char *argument, int cmd)
 {
     if (DEBUG)
         log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
     if (IS_NPC(ch))
-        return;
+        return TRUE;
 
     if (IS_SET(ch->specials.new_act, NEW_PLR_KILLOK))
     {
         cprintf(ch, "Sorry, registered servants of the Dread Lord cannot hide!\r\n");
-        return;
+        return TRUE;
     }
     if (IS_SET(ch->specials.new_act, NEW_PLR_SUMMON))
     {
@@ -1236,20 +1257,21 @@ void do_plr_nosummon(struct char_data *ch, const char *argument, int cmd)
         cprintf(ch, "From now on, you can't be summoned.\r\n");
         SET_BIT(ch->specials.new_act, NEW_PLR_SUMMON);
     }
+    return TRUE;
 }
 
-void do_plr_noteleport(struct char_data *ch, const char *argument, int cmd)
+int do_plr_noteleport(struct char_data *ch, const char *argument, int cmd)
 {
     if (DEBUG)
         log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
     if (IS_NPC(ch))
-        return;
+        return TRUE;
 
     if (IS_SET(ch->specials.new_act, NEW_PLR_KILLOK))
     {
         cprintf(ch, "Sorry, registered servants of the Dread Lord cannot cower!\r\n");
-        return;
+        return TRUE;
     }
     if (IS_SET(ch->specials.new_act, NEW_PLR_TELEPORT))
     {
@@ -1261,4 +1283,5 @@ void do_plr_noteleport(struct char_data *ch, const char *argument, int cmd)
         cprintf(ch, "From now on, you can't be teleported.\r\n");
         SET_BIT(ch->specials.new_act, NEW_PLR_TELEPORT);
     }
+    return TRUE;
 }

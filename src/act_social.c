@@ -44,12 +44,12 @@ char *fread_action(FILE *fl)
             proper_exit(MUD_HALT);
         }
         if (*buf == '#')
-            return (0);
+            return NULL;
         else
         {
             *(buf + strlen(buf) - 1) = '\0';
             rslt = strdup(buf);
-            return (rslt);
+            return rslt;
         }
     }
 }
@@ -131,16 +131,16 @@ int find_action(int cmd)
     top = list_top;
 
     if (top < 0)
-        return (-1);
+        return -1;
 
     for (;;)
     {
         mid = (bot + top) / 2;
 
         if (soc_mess_list[mid].act_nr == cmd)
-            return (mid);
+            return mid;
         if (bot == top)
-            return (-1);
+            return -1;
 
         if (soc_mess_list[mid].act_nr > cmd)
             top = --mid;
@@ -149,7 +149,7 @@ int find_action(int cmd)
     }
 }
 
-void do_action(struct char_data *ch, const char *argument, int cmd)
+int do_action(struct char_data *ch, const char *argument, int cmd)
 {
     int act_nr = 0;
     char buf[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
@@ -162,7 +162,7 @@ void do_action(struct char_data *ch, const char *argument, int cmd)
     if ((act_nr = find_action(cmd)) < 0)
     {
         cprintf(ch, "That action is not supported.\r\n");
-        return;
+        return TRUE;
     }
     action = &soc_mess_list[act_nr];
 
@@ -175,7 +175,7 @@ void do_action(struct char_data *ch, const char *argument, int cmd)
     {
         cprintf(ch, "%s\r\n", action->char_no_arg);
         act("%s", action->hide, ch, 0, 0, TO_ROOM, action->others_no_arg);
-        return;
+        return TRUE;
     }
     if (!(vict = get_char_room_vis(ch, buf)))
     {
@@ -199,9 +199,10 @@ void do_action(struct char_data *ch, const char *argument, int cmd)
             act("%s", action->hide, ch, 0, vict, TO_VICT, action->vict_found);
         }
     }
+    return TRUE;
 }
 
-void do_insult(struct char_data *ch, const char *argument, int cmd)
+int do_insult(struct char_data *ch, const char *argument, int cmd)
 {
     static char arg[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
     struct char_data *victim = NULL;
@@ -263,6 +264,7 @@ void do_insult(struct char_data *ch, const char *argument, int cmd)
     }
     else
         cprintf(ch, "Sure you don't want to insult everybody.\r\n");
+    return TRUE;
 }
 
 void boot_pose_messages(void)
@@ -296,7 +298,7 @@ void boot_pose_messages(void)
     FCLOSE(fl);
 }
 
-void do_pose(struct char_data *ch, const char *argument, int cmd)
+int do_pose(struct char_data *ch, const char *argument, int cmd)
 {
     /*
      * int to_pose = 0;
@@ -307,12 +309,12 @@ void do_pose(struct char_data *ch, const char *argument, int cmd)
         log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
     cprintf(ch, "Sorry Buggy command.\r\n");
-    return;
+    return TRUE;
 
     if ((GetMaxLevel(ch) < pose_messages[0].level) || IS_NPC(ch))
     {
         cprintf(ch, "You can't do that.\r\n");
-        return;
+        return TRUE;
     }
     for (counter = 0; (pose_messages[counter].level < GetMaxLevel(ch)) && (pose_messages[counter].level > 0); counter++)
         ;
@@ -324,4 +326,5 @@ void do_pose(struct char_data *ch, const char *argument, int cmd)
     /*
      * **  find highest level, use that.
      */
+    return TRUE;
 }

@@ -477,7 +477,7 @@ int show_board(struct char_data *ch, const char *arg, struct board_data *bp)
     one_argument(arg, tmp);
 
     if (!*tmp || !isname(tmp, "board bulletin"))
-        return 0;
+        return FALSE;
 
     page_printf(ch, "This is a bulletin board.  Usage: READ/REMOVE <msg #>, WRITE <subject>\r\n");
 
@@ -515,7 +515,7 @@ int show_board(struct char_data *ch, const char *arg, struct board_data *bp)
         }
     }
 
-    return 1;
+    return TRUE;
 }
 
 int show_board_message(struct char_data *ch, const char *arg, struct board_data *bp)
@@ -525,20 +525,20 @@ int show_board_message(struct char_data *ch, const char *arg, struct board_data 
     struct board_message_data *msg = NULL;
 
     if (!ch || !arg || !*arg || !bp)
-        return 0;
+        return FALSE;
 
     one_argument(arg, message_argument);
     if (!*message_argument || !isdigit(*message_argument))
-        return 0;
+        return FALSE;
 
     message_number = atoi(message_argument);
     if (message_number < 1)
-        return 0;
+        return FALSE;
 
     if (bp->message_count < 1)
     {
         cprintf(ch, "The board is empty!\r\n");
-        return 1;
+        return TRUE;
     }
 
     for (int i = 0; i < bp->message_count; i++)
@@ -552,13 +552,13 @@ int show_board_message(struct char_data *ch, const char *arg, struct board_data 
     if (!msg)
     {
         cprintf(ch, "Message %d exists only in your imagination.\r\n", message_number);
-        return 1;
+        return TRUE;
     }
 
     /* Adventurers WANTED! (Quixadhal) Sun Jul 25 00:35:39 2004 */
     page_printf(ch, "Message %d by %-16.16s on %s : %s\r\n\r\n%s\r\n", msg->message_id, msg->owner,
                 timestamp(msg->updated, 0), msg->subject, msg->body);
-    return 1;
+    return TRUE;
 }
 
 int delete_board_message(struct char_data *ch, const char *arg, struct board_data *bp)
@@ -579,20 +579,20 @@ int delete_board_message(struct char_data *ch, const char *arg, struct board_dat
     char tmp2[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
 
     if (!ch || !arg || !*arg || !bp)
-        return 0;
+        return FALSE;
 
     one_argument(arg, message_argument);
     if (!*message_argument || !isdigit(*message_argument))
-        return 0;
+        return FALSE;
 
     message_number = atoi(message_argument);
     if (message_number < 1)
-        return 0;
+        return FALSE;
 
     if (bp->message_count < 1)
     {
         cprintf(ch, "The board is empty!\r\n");
-        return 1;
+        return TRUE;
     }
 
     for (int i = 0; i < bp->message_count; i++)
@@ -606,13 +606,13 @@ int delete_board_message(struct char_data *ch, const char *arg, struct board_dat
     if (!msg)
     {
         cprintf(ch, "Message %d exists only in your imagination.\r\n", message_number);
-        return 1;
+        return TRUE;
     }
 
     if (!IS_IMMORTAL(ch) && strcasecmp(msg->owner, GET_NAME(ch)) != 0)
     {
         cprintf(ch, "That message belongs to %s, NOT you!\r\n", msg->owner);
-        return 1;
+        return TRUE;
     }
 
     // OK, let them remove the message and then reload the board.
@@ -651,13 +651,13 @@ int delete_board_message(struct char_data *ch, const char *arg, struct board_dat
 
     cprintf(ch, "Message %d removed.\r\n", message_number);
     load_boards();
-    return 1;
+    return TRUE;
 }
 
 int begin_write_board_message(struct char_data *ch, const char *arg, struct board_data *bp)
 {
     if (!ch || !ch->desc || !arg || !*arg || !bp)
-        return 0;
+        return FALSE;
 
     for (; isspace(*arg); arg++)
         ; // skip over leading whitespace
@@ -665,7 +665,7 @@ int begin_write_board_message(struct char_data *ch, const char *arg, struct boar
     if (!*arg)
     {
         cprintf(ch, "We must have a headline!\r\n");
-        return 1;
+        return TRUE;
     }
 
     // OK, so now we need the player data structure to have buffers to store
@@ -730,7 +730,7 @@ int begin_write_board_message(struct char_data *ch, const char *arg, struct boar
 
     ch->desc->str = &ch->desc->board_body;
     ch->desc->max_str = MAX_STRING_LENGTH;
-    return 1;
+    return TRUE;
 }
 
 // This is the callback that will actually save the message once the user
@@ -757,7 +757,7 @@ int finish_write_board_message(struct char_data *ch)
         !ch->desc->board_body[0])
     {
         log_error("Invalid message data for board message callback!");
-        return 0;
+        return FALSE;
     }
 
     snprintf(tmp, MAX_INPUT_LENGTH, "%d", ch->desc->board_vnum);
@@ -788,7 +788,7 @@ int finish_write_board_message(struct char_data *ch)
     DESTROY(ch->desc->board_body);
 
     cprintf(ch, "Message written to board.\r\n");
-    return 1;
+    return TRUE;
 }
 
 int board_special(struct char_data *ch, int cmd, const char *arg)

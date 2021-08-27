@@ -179,12 +179,12 @@ int set_first_reboot(void)
         log_fatal("Cannot set next_reboot in reboot table: %s", PQerrorMessage(db_wileymud.dbc));
         PQclear(res);
         // proper_exit(MUD_HALT);
-        return 0;
+        return FALSE;
     }
     PQclear(res);
     log_boot("Next scheduled reboot set in SQL database.");
     load_reboot();
-    return 1;
+    return TRUE;
 }
 
 int set_next_reboot(void)
@@ -203,12 +203,12 @@ int set_next_reboot(void)
         log_fatal("Cannot update next_reboot in reboot table: %s", PQerrorMessage(db_wileymud.dbc));
         PQclear(res);
         // proper_exit(MUD_HALT);
-        return 0;
+        return FALSE;
     }
     PQclear(res);
     log_boot("Next scheduled reboot updated in SQL database.");
     load_reboot();
-    return 1;
+    return TRUE;
 }
 
 int toggle_reboot(struct char_data *ch)
@@ -234,12 +234,12 @@ int toggle_reboot(struct char_data *ch)
     {
         log_error("Cannot toggle reboot in reboot table: %s", PQerrorMessage(db_wileymud.dbc));
         PQclear(res);
-        return 0;
+        return FALSE;
         // proper_exit(MUD_HALT);
     }
     PQclear(res);
     load_reboot();
-    return 1;
+    return TRUE;
 }
 
 int set_reboot_interval(struct char_data *ch, const char *mode, int number)
@@ -283,7 +283,7 @@ int set_reboot_interval(struct char_data *ch, const char *mode, int number)
     {
         log_error("Cannot adjust reboot frequency: %s", PQerrorMessage(db_wileymud.dbc));
         PQclear(res);
-        return 0;
+        return FALSE;
         // proper_exit(MUD_HALT);
     }
     PQclear(res);
@@ -296,7 +296,7 @@ int set_reboot_interval(struct char_data *ch, const char *mode, int number)
         set_first_reboot();
         load_reboot();
     }
-    return 1;
+    return TRUE;
 }
 
 void check_reboot(void)
@@ -386,7 +386,7 @@ void check_reboot(void)
     }
 }
 
-void do_reboot(struct char_data *ch, const char *argument, int cmd)
+int do_reboot(struct char_data *ch, const char *argument, int cmd)
 {
     time_t tc = (time_t)0;
     struct tm *t_info = NULL;
@@ -396,7 +396,7 @@ void do_reboot(struct char_data *ch, const char *argument, int cmd)
         log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
     if (IS_NPC(ch))
-        return;
+        return TRUE;
 
     tc = time(0);
     t_info = localtime(&tc);
@@ -410,9 +410,10 @@ void do_reboot(struct char_data *ch, const char *argument, int cmd)
     i3_log_dead();
     diku_shutdown = diku_reboot = 1;
     save_weather(time_info, weather_info);
+    return TRUE;
 }
 
-void do_shutdown(struct char_data *ch, const char *argument, int cmd)
+int do_shutdown(struct char_data *ch, const char *argument, int cmd)
 {
     time_t tc = (time_t)0;
     struct tm *t_info = NULL;
@@ -423,7 +424,7 @@ void do_shutdown(struct char_data *ch, const char *argument, int cmd)
         log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
     if (IS_NPC(ch))
-        return;
+        return TRUE;
 
     tc = time(0);
     t_info = localtime(&tc);
@@ -460,14 +461,16 @@ void do_shutdown(struct char_data *ch, const char *argument, int cmd)
     }
     else
         cprintf(ch, "Go shut down someone your own size.\r\n");
+    return TRUE;
 }
 
-void do_shutdow(struct char_data *ch, const char *argument, int cmd)
+int do_shutdow(struct char_data *ch, const char *argument, int cmd)
 {
     if (DEBUG)
         log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
     cprintf(ch, "If you want to shut something down - say so!\r\n");
+    return TRUE;
 }
 
 void show_reboot_info(struct char_data *ch)
@@ -477,7 +480,7 @@ void show_reboot_info(struct char_data *ch)
             reboot.next_reboot_text);
 }
 
-void do_setreboot(struct char_data *ch, const char *argument, int cmd)
+int do_setreboot(struct char_data *ch, const char *argument, int cmd)
 {
     char command_verb[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
     char value_arg[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
@@ -486,7 +489,7 @@ void do_setreboot(struct char_data *ch, const char *argument, int cmd)
         log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
     if (IS_NPC(ch))
-        return;
+        return TRUE;
 
     argument = one_argument(argument, command_verb);
     if (*command_verb)
@@ -494,21 +497,21 @@ void do_setreboot(struct char_data *ch, const char *argument, int cmd)
         if (!str_cmp(command_verb, "list") || !str_cmp(command_verb, "show"))
         {
             show_reboot_info(ch);
-            return;
+            return TRUE;
         }
         else if (!str_cmp(command_verb, "enable") || !str_cmp(command_verb, "on"))
         {
             if (!reboot.enabled)
                 toggle_reboot(ch);
             show_reboot_info(ch);
-            return;
+            return TRUE;
         }
         else if (!str_cmp(command_verb, "disable") || !str_cmp(command_verb, "off"))
         {
             if (reboot.enabled)
                 toggle_reboot(ch);
             show_reboot_info(ch);
-            return;
+            return TRUE;
         }
         else if (!str_cmp(command_verb, "weekly") || !str_cmp(command_verb, "week"))
         {
@@ -523,7 +526,7 @@ void do_setreboot(struct char_data *ch, const char *argument, int cmd)
             }
             set_reboot_interval(ch, "week", number);
             show_reboot_info(ch);
-            return;
+            return TRUE;
         }
         else if (!str_cmp(command_verb, "daily") || !str_cmp(command_verb, "day"))
         {
@@ -538,13 +541,13 @@ void do_setreboot(struct char_data *ch, const char *argument, int cmd)
             }
             set_reboot_interval(ch, "day", number);
             show_reboot_info(ch);
-            return;
+            return TRUE;
         }
         else if (!str_cmp(command_verb, "twice"))
         {
             set_reboot_interval(ch, "hour", 12);
             show_reboot_info(ch);
-            return;
+            return TRUE;
         }
         else if (!str_cmp(command_verb, "hourly") || !str_cmp(command_verb, "hour"))
         {
@@ -559,7 +562,7 @@ void do_setreboot(struct char_data *ch, const char *argument, int cmd)
             }
             set_reboot_interval(ch, "hour", number);
             show_reboot_info(ch);
-            return;
+            return TRUE;
         }
     }
     cprintf(ch, "Usage: setreboot list\r\n"
@@ -568,4 +571,5 @@ void do_setreboot(struct char_data *ch, const char *argument, int cmd)
                 "       setreboot day [number]\r\n"
                 "       setreboot twice (twice per day)\r\n"
                 "       setreboot hour [number]\r\n");
+    return TRUE;
 }

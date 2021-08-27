@@ -315,7 +315,7 @@ struct index_data *generate_indices(FILE *fl, int *top)
         }
     }
     *top = i - 2;
-    return (indexp);
+    return indexp;
 }
 
 void cleanout_room(struct room_data *rp)
@@ -787,7 +787,7 @@ struct char_data *read_mobile(int nr, int type)
         if ((nr = real_mobile(nr)) < 0)
         {
             sprintf(buf, "Mobile #%d does not exist.", i);
-            return (0);
+            return NULL;
         }
     fseek(mob_f, mob_index[nr].pos, 0);
 
@@ -1158,7 +1158,7 @@ struct char_data *read_mobile(int nr, int type)
     mob->next = character_list;
     character_list = mob;
     mob_index[nr].number++;
-    return (mob);
+    return mob;
 }
 
 /* read an object from OBJ_FILE */
@@ -1183,7 +1183,7 @@ struct obj_data *read_object(int nr, int type)
     if (nr < 0 || nr > top_of_objt)
     {
         sprintf(buf, "Object #%d does not exist.", i);
-        return (0);
+        return NULL;
     }
     fseek(obj_f, obj_index[nr].pos, 0);
     obj = NULL;
@@ -1279,7 +1279,7 @@ struct obj_data *read_object(int nr, int type)
             load_boards();
         }
     }
-    return (obj);
+    return obj;
 }
 
 /* update zone ages, queue for reset if necessary, and dequeue when possible */
@@ -1548,9 +1548,9 @@ int is_empty(int zone_nr)
             if (i->character->in_room != NOWHERE)
             {
                 if (real_roomp(i->character->in_room)->zone == zone_nr)
-                    return (0);
+                    return FALSE;
             }
-    return (1);
+    return TRUE;
 }
 
 /*
@@ -1574,14 +1574,14 @@ int load_char(char *name, struct char_file_u *char_element)
 
     sprintf(buf, "ply/%c/%s.p", tname[0], tname);
     if (!(fl = fopen(buf, "r+b")))
-        return (-1);
+        return -1;
 
     fread(char_element, sizeof(struct char_file_u), 1, fl);
 
     FCLOSE(fl);
     /* Kludge for ressurection */
     char_element->talks[2] = TRUE;
-    return (1);
+    return 1;
 }
 
 /* copy data from the file structure to a char struct */
@@ -1874,7 +1874,7 @@ int create_entry(char *name)
 
     player_table[top_of_p_table].nr = top_of_p_table;
 
-    return (top_of_p_table);
+    return top_of_p_table;
 }
 
 /* write the vital data of a player to the player file */
@@ -2116,7 +2116,7 @@ int compare(struct player_index_element *arg1, struct player_index_element *arg2
     /*
      * Allow this to blow up on NULL's, it will aid in debugging
      */
-    return (str_cmp(arg1->name, arg2->name));
+    return str_cmp(arg1->name, arg2->name);
 }
 
 /*
@@ -2206,7 +2206,7 @@ int file_to_string(const char *name, char *buf)
     {
         log_error("file-to-string");
         *buf = '\0';
-        return (-1);
+        return -1;
     }
     do
     {
@@ -2230,14 +2230,14 @@ int file_to_string(const char *name, char *buf)
                 log_error("fl->strng: string too big (db.c, file_to_string)");
                 *buf = '\0';
                 FCLOSE(fl);
-                return (-1);
+                return -1;
             }
             strlcat(buf, tmp, MAX_STRING_LENGTH);
         }
     } while (!feof(fl));
 
     FCLOSE(fl);
-    return (0);
+    return 0;
 }
 
 /* read contents of a text file, and place in buf */
@@ -2556,9 +2556,9 @@ int real_mobile(int vnum)
         mid = (bot + top) / 2;
 
         if ((mob_index + mid)->vnum == vnum)
-            return (mid);
+            return mid;
         if (bot >= top)
-            return (-1);
+            return -1;
         if ((mob_index + mid)->vnum > vnum)
             top = mid - 1;
         else
@@ -2586,9 +2586,9 @@ int real_object(int vnum)
         mid = (bot + top) / 2;
 
         if ((obj_index + mid)->vnum == vnum)
-            return (mid);
+            return mid;
         if (bot >= top)
-            return (-1);
+            return -1;
         if ((obj_index + mid)->vnum > vnum)
             top = mid - 1;
         else
@@ -2645,7 +2645,7 @@ char *fread_string(FILE *fl)
         if (!fgets(tmp, MAX_STRING_LENGTH, fl))
         {
             log_error("fread_str");
-            return (Empty);
+            return Empty;
         }
         ack = tmp;
         if (strlen(ack) + strlen(buf) + 1 > MAX_STRING_LENGTH)
@@ -2684,7 +2684,7 @@ char *fread_string(FILE *fl)
     }
     else
         rslt = 0;
-    return (rslt);
+    return rslt;
 }
 
 /*
@@ -2890,7 +2890,7 @@ int fread_char(char *name, struct char_file_u *ch, struct char_data *xch)
 
     sprintf(buf, "ply/%c/%s.chr", tname[0], tname);
     if (!(fp = fopen(buf, "r")))
-        return (-1);
+        return -1;
 
     bzero(ch, sizeof(struct char_file_u));
     for (;;)

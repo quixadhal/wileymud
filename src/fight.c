@@ -199,14 +199,14 @@ int check_peaceful(struct char_data *ch, const char *msg)
         log_info("called %s with %s, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(msg));
 
     if (IS_IMMORTAL(ch))
-        return 0;
+        return FALSE;
     rp = real_roomp(ch->in_room);
     if (rp && rp->room_flags & PEACEFUL)
     {
         cprintf(ch, "%s", msg);
-        return 1;
+        return TRUE;
     }
-    return 0;
+    return FALSE;
 }
 
 /* start one char fighting another (yes, it is horrible, I know... )  */
@@ -794,7 +794,7 @@ char *replace_string(const char *str, const char *weapon, const char *weapon_s)
         *cp = 0;
     } /* For */
 
-    return (buf);
+    return buf;
 }
 
 void dam_message(int dam, struct char_data *ch, struct char_data *victim, int w_type)
@@ -987,9 +987,9 @@ int damage(struct char_data *ch, struct char_data *victim, int dam, int attackty
         {
             update_pos(victim);
             if (GET_POS(victim) != POSITION_DEAD)
-                return (FALSE);
+                return FALSE;
             else
-                return (TRUE);
+                return TRUE;
         }
     }
     update_pos(victim);
@@ -1175,11 +1175,11 @@ int damage(struct char_data *ch, struct char_data *victim, int dam, int attackty
          *  if the victim is dead, return TRUE.
          */
         victim = 0;
-        return (TRUE);
+        return TRUE;
     }
     else
     {
-        return (FALSE);
+        return FALSE;
     }
 }
 
@@ -1624,9 +1624,9 @@ struct char_data *FindVictim(struct char_data *ch)
         log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
 
     if (ch->in_room < 0)
-        return (0);
+        return FALSE;
     if (!real_roomp(ch->in_room))
-        return 0;
+        return FALSE;
 
     for (tmp_ch = (real_roomp(ch->in_room))->people; tmp_ch; tmp_ch = tmp_ch->next_in_room)
     {
@@ -1666,12 +1666,12 @@ struct char_data *FindVictim(struct char_data *ch)
     }
 
     /*
-     * if no legal enemies have been found, return 0
+     * if no legal enemies have been found
      */
 
     if (!found)
     {
-        return (0);
+        return FALSE;
     }
     /*
      * give higher priority to fighters, clerics, thieves, magic users if int <= 12
@@ -1779,7 +1779,7 @@ struct char_data *FindVictim(struct char_data *ch)
                             total -= tjump;
                         }
                         if (total <= 0)
-                            return (tmp_ch);
+                            return tmp_ch;
                     }
                 }
             }
@@ -1787,9 +1787,9 @@ struct char_data *FindVictim(struct char_data *ch)
     }
 
     if (ch->specials.fighting)
-        return (ch->specials.fighting);
+        return ch->specials.fighting;
 
-    return (0);
+    return NULL;
 }
 
 struct char_data *FindAnyVictim(struct char_data *ch)
@@ -1816,7 +1816,7 @@ struct char_data *FindAnyVictim(struct char_data *ch)
         log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
 
     if (ch->in_room < 0)
-        return (0);
+        return NULL;
 
     for (tmp_ch = (real_roomp(ch->in_room))->people; tmp_ch; tmp_ch = tmp_ch->next_in_room)
     {
@@ -1857,7 +1857,7 @@ struct char_data *FindAnyVictim(struct char_data *ch)
 
     if (!found)
     {
-        return (0);
+        return NULL;
     }
     /*
      * give higher priority to fighters, clerics, thieves, magic users if int <= 12
@@ -1960,15 +1960,15 @@ struct char_data *FindAnyVictim(struct char_data *ch)
                     total -= tjump;
                 }
                 if (total <= 0)
-                    return (tmp_ch);
+                    return tmp_ch;
             }
         }
     }
 
     if (ch->specials.fighting)
-        return (ch->specials.fighting);
+        return ch->specials.fighting;
 
-    return (0);
+    return NULL;
 }
 
 int PreProcDam(struct char_data *ch, int type, int dam)
@@ -2050,7 +2050,7 @@ int PreProcDam(struct char_data *ch, int type, int dam)
         Our_Bit = IMM_POISON;
         break;
     default:
-        return (dam);
+        return dam;
         break;
     }
 
@@ -2063,7 +2063,7 @@ int PreProcDam(struct char_data *ch, int type, int dam)
     if (IS_SET(ch->M_immune, Our_Bit))
         dam >>= 2;
 
-    return (dam);
+    return dam;
 }
 
 int DamageOneItem(struct char_data *ch, int dam_type, struct obj_data *obj)
@@ -2081,18 +2081,18 @@ int DamageOneItem(struct char_data *ch, int dam_type, struct obj_data *obj)
         { /* destroy object if fail one last save */
             if (!ItemSave(obj, dam_type))
             {
-                return (TRUE);
+                return TRUE;
             }
         }
         else
         { /* "damage item" (armor), (weapon) */
             if (DamageItem(ch, obj, num))
             {
-                return (TRUE);
+                return TRUE;
             }
         }
     }
-    return (FALSE);
+    return FALSE;
 }
 
 void MakeScrap(struct char_data *ch, struct obj_data *obj)
@@ -2184,7 +2184,7 @@ int DamageItem(struct char_data *ch, struct obj_data *o, int num)
         o->obj_flags.value[0] -= num;
         if (o->obj_flags.value[0] < 0)
         {
-            return (TRUE);
+            return TRUE;
         }
     }
     else if (ITEM_TYPE(o) == ITEM_WEAPON)
@@ -2192,10 +2192,10 @@ int DamageItem(struct char_data *ch, struct obj_data *o, int num)
         o->obj_flags.value[2] -= num;
         if (o->obj_flags.value[2] <= 0)
         {
-            return (TRUE);
+            return TRUE;
         }
     }
-    return (FALSE);
+    return FALSE;
 }
 
 int ItemSave(struct obj_data *i, int dam_type)
@@ -2208,9 +2208,9 @@ int ItemSave(struct obj_data *i, int dam_type)
 
     num = number(1, 20);
     if (num <= 1)
-        return (FALSE);
+        return FALSE;
     if (num >= 20)
-        return (TRUE);
+        return TRUE;
 
     for (j = 0; j < MAX_OBJ_AFFECT; j++)
         if ((i->affected[j].location == APPLY_SAVING_SPELL) || (i->affected[j].location == APPLY_SAVE_ALL))
@@ -2236,17 +2236,17 @@ int ItemSave(struct obj_data *i, int dam_type)
         num += 1;
 
     if (num <= 1)
-        return (FALSE);
+        return FALSE;
     if (num >= 20)
-        return (TRUE);
+        return TRUE;
 
     if (num >= ItemSaveThrows[(int)GET_ITEM_TYPE(i) - 1][dam_type - 1])
     {
-        return (TRUE);
+        return TRUE;
     }
     else
     {
-        return (FALSE);
+        return FALSE;
     }
 }
 
@@ -2263,17 +2263,17 @@ int DamagedByAttack(struct obj_data *i, int dam_type)
         {
             num += 1;
         }
-        return (num);
+        return num;
     }
     else
     {
         if (ItemSave(i, dam_type))
         {
-            return (0);
+            return 0;
         }
         else
         {
-            return (-1);
+            return -1;
         }
     }
 }
@@ -2309,11 +2309,11 @@ int WeaponCheck(struct char_data *ch, struct char_data *v, int type, int dam)
         Immunity = 4;
     }
     if (Immunity < 0)
-        return (dam);
+        return dam;
 
     if ((type < TYPE_HIT) || (type > TYPE_SMITE))
     {
-        return (dam);
+        return dam;
     }
     else
     {
@@ -2321,18 +2321,18 @@ int WeaponCheck(struct char_data *ch, struct char_data *v, int type, int dam)
         {
             if (IS_NPC(ch) && (GetMaxLevel(ch) > (3 * Immunity) + 1))
             {
-                return (dam);
+                return dam;
             }
             else
             {
-                return (0);
+                return 0;
             }
         }
         else
         {
             total = 0;
             if (!ch->equipment[WIELD] && !ch->equipment[WIELD_TWOH])
-                return (0);
+                return 0;
             if (ch->equipment[WIELD_TWOH])
             {
                 for (j = 0; j < MAX_OBJ_AFFECT; j++)
@@ -2353,11 +2353,11 @@ int WeaponCheck(struct char_data *ch, struct char_data *v, int type, int dam)
             }
             if (total > Immunity)
             {
-                return (dam);
+                return dam;
             }
             else
             {
-                return (0);
+                return 0;
             }
         }
     }
@@ -2413,31 +2413,31 @@ int GetItemDamageType(int type)
     case SPELL_FLAMESTRIKE:
     case SPELL_FIRE_BREATH:
     case SPELL_FIRESHIELD:
-        return (FIRE_DAMAGE);
+        return FIRE_DAMAGE;
         break;
 
     case SPELL_LIGHTNING_BOLT:
     case SPELL_CALL_LIGHTNING:
     case SPELL_LIGHTNING_BREATH:
-        return (ELEC_DAMAGE);
+        return ELEC_DAMAGE;
         break;
     case SPELL_CONE_OF_COLD:
     case SPELL_ICE_STORM:
     case SPELL_FROST_BREATH:
-        return (COLD_DAMAGE);
+        return COLD_DAMAGE;
         break;
 
     case SPELL_COLOR_SPRAY:
     case SPELL_METEOR_SWARM:
     case SPELL_GAS_BREATH:
-        return (BLOW_DAMAGE);
+        return BLOW_DAMAGE;
         break;
 
     case SPELL_ACID_BREATH:
     case SPELL_ACID_BLAST:
-        return (ACID_DAMAGE);
+        return ACID_DAMAGE;
     default:
-        return (0);
+        return 0;
         break;
     }
 }
@@ -2464,7 +2464,7 @@ int SkipImmortals(struct char_data *v, int amnt)
     {
         amnt = -1;
     }
-    return (amnt);
+    return amnt;
 }
 
 int CanKill(struct char_data *ch, struct char_data *vict, const char *msg)
@@ -2480,19 +2480,19 @@ int CanKill(struct char_data *ch, struct char_data *vict, const char *msg)
     {
         if ((IS_SET(ch->specials.new_act, NEW_PLR_KILLOK) && IS_SET(vict->specials.new_act, NEW_PLR_KILLOK)) ||
             (IS_IMMORTAL(ch)))
-            return (TRUE);
+            return TRUE;
         else
         {
             if (ch != vict)
             {
                 cprintf(ch, msg, NAME(vict));
-                return (FALSE);
+                return FALSE;
             }
         }
-        return (FALSE);
+        return FALSE;
     }
     else
-        return (TRUE);
+        return TRUE;
 }
 
 int CheckKill(struct char_data *ch, struct char_data *vict)
@@ -2561,7 +2561,7 @@ struct char_data *FindAnAttacker(struct char_data *ch)
         log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
 
     if (ch->in_room < 0)
-        return (0);
+        return NULL;
 
     for (tmp_ch = (real_roomp(ch->in_room))->people; tmp_ch; tmp_ch = tmp_ch->next_in_room)
     {
@@ -2609,7 +2609,7 @@ struct char_data *FindAnAttacker(struct char_data *ch)
 
     if (!found)
     {
-        return (0);
+        return NULL;
     }
     /*
      * give higher priority to fighters, clerics, thieves, magic users if int <= 12
@@ -2719,7 +2719,7 @@ struct char_data *FindAnAttacker(struct char_data *ch)
                                 total -= tjump;
                             }
                             if (total <= 0)
-                                return (tmp_ch);
+                                return tmp_ch;
                         }
                     }
                 }
@@ -2728,9 +2728,9 @@ struct char_data *FindAnAttacker(struct char_data *ch)
     }
 
     if (ch->specials.fighting)
-        return (ch->specials.fighting);
+        return ch->specials.fighting;
 
-    return (0);
+    return NULL;
 }
 
 #if 0
@@ -2794,14 +2794,14 @@ int SwitchTargets(struct char_data *ch, struct char_data *vict)
     if (!ch->specials.fighting)
     {
         hit(ch, vict, TYPE_UNDEFINED);
-        return (TRUE);
+        return TRUE;
     }
     if (ch->specials.fighting != vict)
     {
         if (ch->specials.fighting->specials.fighting == ch)
         {
             cprintf(ch, "You can't shoot weapons at close range!\r\n");
-            return (FALSE);
+            return FALSE;
         }
         else
         {
@@ -2812,7 +2812,7 @@ int SwitchTargets(struct char_data *ch, struct char_data *vict)
     else
     {
         hit(ch, vict, TYPE_UNDEFINED);
-        return (TRUE);
+        return TRUE;
     }
-    return (FALSE);
+    return FALSE;
 }

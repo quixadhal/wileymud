@@ -41,7 +41,7 @@ char *fname(const char *namelist)
 
     *point = '\0';
 
-    return (holder);
+    return holder;
 }
 
 /*
@@ -110,7 +110,7 @@ int isname(const char *str, const char *namelist)
      */
 
     if (exact && argc != xargc)
-        return 0;
+        return FALSE;
 
     for (i = 0; i < argc; i++)
     {
@@ -123,10 +123,10 @@ int isname(const char *str, const char *namelist)
             }
         }
         if (j >= xargc)
-            return 0;
+            return FALSE;
     }
 
-    return 1;
+    return TRUE;
 }
 
 void init_string_block(struct string_block *sb)
@@ -538,9 +538,9 @@ char affected_by_spell(struct char_data *ch, short skill)
 
     for (hjp = ch->affected; hjp; hjp = hjp->next)
         if (hjp->type == skill)
-            return (TRUE);
+            return TRUE;
 
-    return (FALSE);
+    return FALSE;
 }
 
 void affect_join(struct char_data *ch, struct affected_type *af, char avg_dur, char avg_mod)
@@ -831,7 +831,7 @@ struct obj_data *unequip_char(struct char_data *ch, int pos)
 
     affect_total(ch);
 
-    return (obj);
+    return obj;
 }
 
 int get_number(char **name)
@@ -854,11 +854,11 @@ int get_number(char **name)
 
         for (i = 0; *(anumber + i); i++)
             if (!isdigit(*(anumber + i)))
-                return (0);
+                return 0;
 
-        return (atoi(anumber));
+        return atoi(anumber);
     }
-    return (1);
+    return 1;
 }
 
 /* Search a given list for an object, and return a pointer to that object */
@@ -899,16 +899,16 @@ struct obj_data *get_obj_in_list(const char *name, struct obj_data *list)
      */
 
     if (!(anumber = get_number(&tmp)))
-        return (0);
+        return 0;
 
     for (i = list, j = 1; i && (j <= anumber); i = i->next_content)
         if (isname(tmp, i->name))
         {
             if (j == anumber)
-                return (i);
+                return i;
             j++;
         }
-    return (0);
+    return 0;
 }
 
 /* Search a given list for an object number, and return a ptr to that obj */
@@ -921,9 +921,9 @@ struct obj_data *get_obj_in_list_num(int num, struct obj_data *list)
 
     for (i = list; i; i = i->next_content)
         if (i->item_number == num)
-            return (i);
+            return i;
 
-    return (0);
+    return 0;
 }
 
 /*search the entire world for an object, and return a pointer  */
@@ -941,16 +941,16 @@ struct obj_data *get_obj(const char *name)
     strcpy(tmpname, name);
     tmp = tmpname;
     if (!(anumber = get_number(&tmp)))
-        return (0);
+        return NULL;
 
     for (i = object_list, j = 1; i && (j <= anumber); i = i->next)
         if (isname(tmp, i->name))
         {
             if (j == anumber)
-                return (i);
+                return i;
             j++;
         }
-    return (0);
+    return NULL;
 }
 
 /*search the entire world for an object number, and return a pointer  */
@@ -963,9 +963,9 @@ struct obj_data *get_obj_num(int nr)
 
     for (i = object_list; i; i = i->next)
         if (i->item_number == nr)
-            return (i);
+            return i;
 
-    return (0);
+    return NULL;
 }
 
 /* search a room for a char, and return a pointer if found..  */
@@ -983,16 +983,16 @@ struct char_data *get_char_room(const char *name, int room)
     strcpy(tmpname, name);
     tmp = tmpname;
     if (!(anumber = get_number(&tmp)))
-        return (0);
+        return NULL;
 
     for (i = real_roomp(room)->people, j = 1; i && (j <= anumber); i = i->next_in_room)
         if (isname(tmp, GET_NAME(i)))
         {
             if (j == anumber)
-                return (i);
+                return i;
             j++;
         }
-    return (0);
+    return NULL;
 }
 
 /* search all over the world for a char, and return a pointer if found */
@@ -1010,16 +1010,16 @@ struct char_data *get_char(const char *name)
     strcpy(tmpname, name);
     tmp = tmpname;
     if (!(anumber = get_number(&tmp)))
-        return (0);
+        return NULL;
 
     for (i = character_list, j = 1; i && (j <= anumber); i = i->next)
         if (isname(tmp, GET_NAME(i)))
         {
             if (j == anumber)
-                return (i);
+                return i;
             j++;
         }
-    return (0);
+    return NULL;
 }
 
 /* search all over the world for a char num, and return a pointer if found */
@@ -1032,9 +1032,9 @@ struct char_data *get_char_num(int nr)
 
     for (i = character_list; i; i = i->next)
         if (i->nr == nr)
-            return (i);
+            return i;
 
-    return (0);
+    return NULL;
 }
 
 /* put an object in a room */
@@ -1489,17 +1489,17 @@ struct char_data *get_char_room_vis(struct char_data *ch, const char *name)
     strcpy(tmpname, name);
     tmp = tmpname;
     if (!(anumber = get_number(&tmp)))
-        return (0);
+        return NULL;
 
     for (i = real_roomp(ch->in_room)->people, j = 1; i && (j <= anumber); i = i->next_in_room)
         if (isname(tmp, GET_NAME(i)))
             if (CAN_SEE(ch, i))
             {
                 if (j == anumber)
-                    return (i);
+                    return i;
                 j++;
             }
-    return (0);
+    return NULL;
 }
 
 /* get a character from anywhere in the world, doesn't care much about
@@ -1521,7 +1521,7 @@ struct char_data *get_char_vis_world(struct char_data *ch, const char *name, int
     strcpy(tmpname, name);
     tmp = tmpname;
     if (!(anumber = get_number(&tmp)))
-        return (0);
+        return NULL;
 
     j = count ? *count : 1;
     for (i = character_list; i && (j <= anumber); i = i->next)
@@ -1529,12 +1529,12 @@ struct char_data *get_char_vis_world(struct char_data *ch, const char *name, int
             if (CAN_SEE(ch, i))
             {
                 if (j == anumber)
-                    return (i);
+                    return i;
                 j++;
             }
     if (count)
         *count = j;
-    return 0;
+    return NULL;
 }
 
 struct char_data *get_char_vis(struct char_data *ch, const char *name)
@@ -1548,7 +1548,7 @@ struct char_data *get_char_vis(struct char_data *ch, const char *name)
      * check location
      */
     if ((i = get_char_room_vis(ch, name)))
-        return (i);
+        return i;
 
     return get_char_vis_world(ch, name, NULL);
 }
@@ -1567,17 +1567,17 @@ struct obj_data *get_obj_in_list_vis(struct char_data *ch, const char *name, str
     strcpy(tmpname, name);
     tmp = tmpname;
     if (!(anumber = get_number(&tmp)))
-        return (0);
+        return NULL;
 
     for (i = list, j = 1; i && (j <= anumber); i = i->next_content)
         if (isname(tmp, i->name))
             if (CAN_SEE_OBJ(ch, i))
             {
                 if (j == anumber)
-                    return (i);
+                    return i;
                 j++;
             }
-    return (0);
+    return NULL;
 }
 
 struct obj_data *get_obj_vis_world(struct char_data *ch, const char *name, int *count)
@@ -1594,7 +1594,7 @@ struct obj_data *get_obj_vis_world(struct char_data *ch, const char *name, int *
     strcpy(tmpname, name);
     tmp = tmpname;
     if (!(anumber = get_number(&tmp)))
-        return (0);
+        return NULL;
 
     j = count ? *count : 1;
 
@@ -1606,12 +1606,12 @@ struct obj_data *get_obj_vis_world(struct char_data *ch, const char *name, int *
             if (CAN_SEE_OBJ(ch, i))
             {
                 if (j == anumber)
-                    return (i);
+                    return i;
                 j++;
             }
     if (count)
         *count = j;
-    return (0);
+    return NULL;
 }
 
 /*search the entire world for an object, and return a pointer  */
@@ -1626,13 +1626,13 @@ struct obj_data *get_obj_vis(struct char_data *ch, const char *name)
      * scan items carried
      */
     if ((i = get_obj_in_list_vis(ch, name, ch->carrying)))
-        return (i);
+        return i;
 
     /*
      * scan room
      */
     if ((i = get_obj_in_list_vis(ch, name, real_roomp(ch->in_room)->contents)))
-        return (i);
+        return i;
 
     return get_obj_vis_world(ch, name, NULL);
 }
@@ -1651,7 +1651,7 @@ struct obj_data *get_obj_vis_accessible(struct char_data *ch, const char *name)
     strcpy(tmpname, name);
     tmp = tmpname;
     if (!(anumber = get_number(&tmp)))
-        return (0);
+        return NULL;
 
     /*
      * scan items carried
@@ -1660,7 +1660,7 @@ struct obj_data *get_obj_vis_accessible(struct char_data *ch, const char *name)
         if (isname(tmp, i->name) && CAN_SEE_OBJ(ch, i))
         {
             if (j == anumber)
-                return (i);
+                return i;
             else
                 j++;
         }
@@ -1668,11 +1668,11 @@ struct obj_data *get_obj_vis_accessible(struct char_data *ch, const char *name)
         if (isname(tmp, i->name) && CAN_SEE_OBJ(ch, i))
         {
             if (j == anumber)
-                return (i);
+                return i;
             else
                 j++;
         }
-    return 0;
+    return NULL;
 }
 
 struct obj_data *create_money(int amount)
@@ -1746,7 +1746,7 @@ struct obj_data *create_money(int amount)
     obj->next = object_list;
     object_list = obj;
 
-    return (obj);
+    return obj;
 }
 
 /* Generic Find, designed to find any object/character                    */
@@ -1794,7 +1794,7 @@ int generic_find(const char *arg, int bitvector, struct char_data *ch, struct ch
     }
 
     if (!name[0])
-        return (0);
+        return 0;
 
     *tar_ch = 0;
     *tar_obj = 0;
@@ -1803,14 +1803,14 @@ int generic_find(const char *arg, int bitvector, struct char_data *ch, struct ch
     { /* Find person in room */
         if ((*tar_ch = get_char_room_vis(ch, name)))
         {
-            return (FIND_CHAR_ROOM);
+            return FIND_CHAR_ROOM;
         }
     }
     if (IS_SET(bitvector, FIND_CHAR_WORLD))
     {
         if ((*tar_ch = get_char_vis(ch, name)))
         {
-            return (FIND_CHAR_WORLD);
+            return FIND_CHAR_WORLD;
         }
     }
     if (IS_SET(bitvector, FIND_OBJ_EQUIP))
@@ -1823,7 +1823,7 @@ int generic_find(const char *arg, int bitvector, struct char_data *ch, struct ch
             }
         if (found)
         {
-            return (FIND_OBJ_EQUIP);
+            return FIND_OBJ_EQUIP;
         }
     }
     if (IS_SET(bitvector, FIND_OBJ_INV))
@@ -1832,14 +1832,14 @@ int generic_find(const char *arg, int bitvector, struct char_data *ch, struct ch
         {
             if ((*tar_obj = get_obj_vis_accessible(ch, name)))
             {
-                return (FIND_OBJ_INV);
+                return FIND_OBJ_INV;
             }
         }
         else
         {
             if ((*tar_obj = get_obj_in_list_vis(ch, name, ch->carrying)))
             {
-                return (FIND_OBJ_INV);
+                return FIND_OBJ_INV;
             }
         }
     }
@@ -1847,15 +1847,15 @@ int generic_find(const char *arg, int bitvector, struct char_data *ch, struct ch
     {
         if ((*tar_obj = get_obj_in_list_vis(ch, name, real_roomp(ch->in_room)->contents)))
         {
-            return (FIND_OBJ_ROOM);
+            return FIND_OBJ_ROOM;
         }
     }
     if (IS_SET(bitvector, FIND_OBJ_WORLD))
     {
         if ((*tar_obj = get_obj_vis(ch, name)))
         {
-            return (FIND_OBJ_WORLD);
+            return FIND_OBJ_WORLD;
         }
     }
-    return (0);
+    return 0;
 }

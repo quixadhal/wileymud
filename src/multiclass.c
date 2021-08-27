@@ -31,9 +31,9 @@ int GetClassLevel(struct char_data *ch, int chclass)
 
     if (IS_SET(ch->player.chclass, chclass))
     {
-        return (GET_LEVEL(ch, CountBits(chclass) - 1));
+        return GET_LEVEL(ch, CountBits(chclass) - 1);
     }
-    return (0);
+    return 0;
 }
 
 int CountBits(int chclass)
@@ -42,17 +42,17 @@ int CountBits(int chclass)
         log_info("called %s with %d", __PRETTY_FUNCTION__, chclass);
 
     if (chclass == 1)
-        return (1);
+        return 1;
     if (chclass == 2)
-        return (2);
+        return 2;
     if (chclass == 4)
-        return (3);
+        return 3;
     if (chclass == 8)
-        return (4);
+        return 4;
     if (chclass == 16)
-        return (5); /* ranger */
+        return 5; /* ranger */
     if (chclass == 32)
-        return (6); /* druid */
+        return 6; /* druid */
     return 0;
 }
 
@@ -67,9 +67,9 @@ int OnlyClass(struct char_data *ch, int chclass)
     {
         if (GetClassLevel(ch, i) != 0)
             if (i != chclass)
-                return (FALSE);
+                return FALSE;
     }
-    return (TRUE);
+    return TRUE;
 }
 
 int HasClass(struct char_data *ch, int chclass)
@@ -102,20 +102,20 @@ int BestFightingClass(struct char_data *ch)
         log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
 
     if (GET_LEVEL(ch, WARRIOR_LEVEL_IND))
-        return (WARRIOR_LEVEL_IND);
+        return WARRIOR_LEVEL_IND;
     if (GET_LEVEL(ch, RANGER_LEVEL_IND))
-        return (RANGER_LEVEL_IND);
+        return RANGER_LEVEL_IND;
     if (GET_LEVEL(ch, DRUID_LEVEL_IND))
-        return (DRUID_LEVEL_IND);
+        return DRUID_LEVEL_IND;
     if (GET_LEVEL(ch, CLERIC_LEVEL_IND))
-        return (CLERIC_LEVEL_IND);
+        return CLERIC_LEVEL_IND;
     if (GET_LEVEL(ch, THIEF_LEVEL_IND))
-        return (THIEF_LEVEL_IND);
+        return THIEF_LEVEL_IND;
     if (GET_LEVEL(ch, MAGE_LEVEL_IND))
-        return (MAGE_LEVEL_IND);
+        return MAGE_LEVEL_IND;
 
     log_error("Massive error.. character %s has no recognized class.", GET_NAME(ch));
-    return (1);
+    return 1;
 }
 
 int BestThiefClass(struct char_data *ch)
@@ -124,20 +124,20 @@ int BestThiefClass(struct char_data *ch)
         log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
 
     if (GET_LEVEL(ch, THIEF_LEVEL_IND))
-        return (THIEF_LEVEL_IND);
+        return THIEF_LEVEL_IND;
     if (GET_LEVEL(ch, RANGER_LEVEL_IND))
-        return (RANGER_LEVEL_IND);
+        return RANGER_LEVEL_IND;
     if (GET_LEVEL(ch, MAGE_LEVEL_IND))
-        return (MAGE_LEVEL_IND);
+        return MAGE_LEVEL_IND;
     if (GET_LEVEL(ch, WARRIOR_LEVEL_IND))
-        return (WARRIOR_LEVEL_IND);
+        return WARRIOR_LEVEL_IND;
     if (GET_LEVEL(ch, DRUID_LEVEL_IND))
-        return (DRUID_LEVEL_IND);
+        return DRUID_LEVEL_IND;
     if (GET_LEVEL(ch, CLERIC_LEVEL_IND))
-        return (CLERIC_LEVEL_IND);
+        return CLERIC_LEVEL_IND;
 
     log_error("Massive error.. character %s has no recognized class.", GET_NAME(ch));
-    return (1);
+    return 1;
 }
 
 int BestMagicClass(struct char_data *ch)
@@ -146,20 +146,20 @@ int BestMagicClass(struct char_data *ch)
         log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
 
     if (GET_LEVEL(ch, MAGE_LEVEL_IND))
-        return (MAGE_LEVEL_IND);
+        return MAGE_LEVEL_IND;
     if (GET_LEVEL(ch, CLERIC_LEVEL_IND))
-        return (CLERIC_LEVEL_IND);
+        return CLERIC_LEVEL_IND;
     if (GET_LEVEL(ch, DRUID_LEVEL_IND))
-        return (DRUID_LEVEL_IND);
+        return DRUID_LEVEL_IND;
     if (GET_LEVEL(ch, RANGER_LEVEL_IND))
-        return (RANGER_LEVEL_IND);
+        return RANGER_LEVEL_IND;
     if (GET_LEVEL(ch, THIEF_LEVEL_IND))
-        return (THIEF_LEVEL_IND);
+        return THIEF_LEVEL_IND;
     if (GET_LEVEL(ch, WARRIOR_LEVEL_IND))
-        return (WARRIOR_LEVEL_IND);
+        return WARRIOR_LEVEL_IND;
 
     log_error("Massive error.. character %s has no recognized class.", GET_NAME(ch));
-    return (1);
+    return 1;
 }
 
 int GetALevel(struct char_data *ch, int which)
@@ -196,7 +196,7 @@ int GetALevel(struct char_data *ch, int which)
 
     if (which > -1 && which < ABS_MAX_CLASS)
     {
-        return (ind[which]);
+        return ind[which];
     }
     return 0;
 }
@@ -206,7 +206,7 @@ int GetSecMaxLev(struct char_data *ch)
     if (DEBUG > 2)
         log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
 
-    return (GetALevel(ch, 1));
+    return GetALevel(ch, 1);
 }
 
 int GetThirdMaxLev(struct char_data *ch)
@@ -214,7 +214,7 @@ int GetThirdMaxLev(struct char_data *ch)
     if (DEBUG > 2)
         log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
 
-    return (GetALevel(ch, 2));
+    return GetALevel(ch, 2);
 }
 
 int GetMaxLevel(struct char_data *ch)
@@ -235,7 +235,7 @@ int GetMaxLevel(struct char_data *ch)
             max = GET_LEVEL(ch, i);
     }
 
-    return (max);
+    return max;
 }
 
 int GetMinLevel(struct char_data *ch)
@@ -253,7 +253,7 @@ int GetMinLevel(struct char_data *ch)
                 min = GET_LEVEL(ch, i);
     }
 
-    return (min);
+    return min;
 }
 
 int GetTotLevel(struct char_data *ch)
@@ -319,6 +319,6 @@ int BestClass(struct char_data *ch)
     }
     else
     {
-        return (chclass);
+        return chclass;
     }
 }

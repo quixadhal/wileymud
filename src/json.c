@@ -34,13 +34,13 @@
 #define _JSON_C
 #include "json.h"
 
-void do_json(struct char_data *ch, const char *argument, int cmd)
+int do_json(struct char_data *ch, const char *argument, int cmd)
 {
     if (DEBUG)
         log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
     if (IS_NPC(ch))
-        return;
+        return TRUE;
 
     if (IS_SET(ch->specials.new_act, NEW_PLR_JSON))
     {
@@ -52,6 +52,7 @@ void do_json(struct char_data *ch, const char *argument, int cmd)
         cprintf(ch, "You will now get all output as JSON.\r\n");
         SET_BIT(ch->specials.new_act, NEW_PLR_JSON);
     }
+    return TRUE;
 }
 
 #if 0
@@ -62,7 +63,7 @@ int _json_track(struct char_data *ch, struct char_data *vict)
     int code = 0;
 
     if ((!ch) || (!vict))
-	return (-3);        // error
+	return -3;        // error
 
     if (ch->in_room == vict->in_room) {
         return -1;          // Target found

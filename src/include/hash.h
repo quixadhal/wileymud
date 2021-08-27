@@ -19,7 +19,7 @@ struct hash_header
 #define HASH_KEY(ht, key) ((((unsigned int)(key)) * 17) % (ht)->table_size)
 
 void init_hash_table(struct hash_header *ht, int rec_size, int table_size);
-void destroy_hash_table(struct hash_header *ht, funcp gman);
+void destroy_hash_table(struct hash_header *ht, hfuncp gman);
 
 /* static void _hash_enter(struct hash_header *ht, int key, void *data); */
 void *hash_find(struct hash_header *ht, int key);

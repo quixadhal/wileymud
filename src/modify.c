@@ -152,11 +152,10 @@ void quad_arg(const char *arg, int *type, char *name, int *field, char *string)
         ;
     for (; (*string = *arg); arg++, string++)
         ;
-    return;
 }
 
 /* modification of malloc'ed strings in chars/objects */
-void do_string(struct char_data *ch, const char *arg, int cmd)
+int do_string(struct char_data *ch, const char *arg, int cmd)
 {
 
     char name[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
@@ -172,19 +171,19 @@ void do_string(struct char_data *ch, const char *arg, int cmd)
         log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(arg), cmd);
 
     if (IS_NPC(ch))
-        return;
+        return TRUE;
 
     quad_arg(arg, &type, name, &field, string);
 
     if (type == TP_ERROR)
     {
         cprintf(ch, "Syntax:\r\nstring (char) <name> <field> [<string>].");
-        return;
+        return TRUE;
     }
     if (!field)
     {
         cprintf(ch, "No field by that name. Try 'help string'.\r\n");
-        return;
+        return TRUE;
     }
     if (type == TP_MOB)
     {
@@ -194,7 +193,7 @@ void do_string(struct char_data *ch, const char *arg, int cmd)
         if (!(mob = get_char_vis(ch, name)))
         {
             cprintf(ch, "I don't know anyone by that name...\r\n");
-            return;
+            return TRUE;
         }
         switch (field)
         {
@@ -202,12 +201,12 @@ void do_string(struct char_data *ch, const char *arg, int cmd)
             if (!IS_NPC(mob) && GetMaxLevel(ch) < IMPLEMENTOR)
             {
                 cprintf(ch, "You can't change that field for players.");
-                return;
+                return TRUE;
             }
             if (!*string)
             {
                 cprintf(ch, "You have to supply a name!\r\n");
-                return;
+                return TRUE;
             }
             ch->desc->str = &mob->player.name;
             if (!IS_NPC(mob))
@@ -217,7 +216,7 @@ void do_string(struct char_data *ch, const char *arg, int cmd)
             if (!IS_NPC(mob))
             {
                 cprintf(ch, "That field is for monsters only.\r\n");
-                return;
+                return TRUE;
             }
             ch->desc->str = &mob->player.short_descr;
             break;
@@ -225,7 +224,7 @@ void do_string(struct char_data *ch, const char *arg, int cmd)
             if (!IS_NPC(mob))
             {
                 cprintf(ch, "That field is for monsters only.\r\n");
-                return;
+                return TRUE;
             }
             ch->desc->str = &mob->player.long_descr;
             break;
@@ -236,26 +235,26 @@ void do_string(struct char_data *ch, const char *arg, int cmd)
             if (IS_NPC(mob))
             {
                 cprintf(ch, "Monsters have no titles.\r\n");
-                return;
+                return TRUE;
             }
             if ((GetMaxLevel(ch) > GetMaxLevel(mob)) && (ch != mob))
                 ch->desc->str = &mob->player.title;
             else
             {
                 cprintf(ch, "Sorry, can't set the title of someone of highter level.\r\n");
-                return;
+                return TRUE;
             }
             break;
         default:
             cprintf(ch, "That field is undefined for monsters.\r\n");
-            return;
+            return TRUE;
             break;
         }
     }
     else
     {
         cprintf(ch, "Stringing of objects is no longer allowed for now.\r\n");
-        return;
+        return TRUE;
 
         /*
          * type == TP_OBJ
@@ -266,7 +265,7 @@ void do_string(struct char_data *ch, const char *arg, int cmd)
         if (!(obj = get_obj_vis(ch, name)))
         {
             cprintf(ch, "Can't find such a thing here..\r\n");
-            return;
+            return TRUE;
         }
         switch (field)
         {
@@ -275,7 +274,7 @@ void do_string(struct char_data *ch, const char *arg, int cmd)
             if (!*string)
             {
                 cprintf(ch, "You have to supply a keyword.\r\n");
-                return;
+                return TRUE;
             }
             else
             {
@@ -293,7 +292,7 @@ void do_string(struct char_data *ch, const char *arg, int cmd)
             if (!*string)
             {
                 cprintf(ch, "You have to supply a keyword.\r\n");
-                return;
+                return TRUE;
             }
             /*
              * try to locate extra description
@@ -322,13 +321,13 @@ void do_string(struct char_data *ch, const char *arg, int cmd)
                     break;
                 }
             ch->desc->max_str = MAX_STRING_LENGTH;
-            return; /* the stndrd (see below) procedure does not apply here */
+            return TRUE; /* the stndrd (see below) procedure does not apply here */
             break;
         case 6: /* deletion */
             if (!*string)
             {
                 cprintf(ch, "You must supply a field name.\r\n");
-                return;
+                return TRUE;
             }
             /*
              * try to locate field
@@ -337,7 +336,7 @@ void do_string(struct char_data *ch, const char *arg, int cmd)
                 if (!ed)
                 {
                     cprintf(ch, "No field with that keyword.\r\n");
-                    return;
+                    return TRUE;
                 }
                 else if (!str_cmp(ed->keyword, string))
                 {
@@ -359,12 +358,12 @@ void do_string(struct char_data *ch, const char *arg, int cmd)
                     DESTROY(ed);
 
                     cprintf(ch, "Field deleted.\r\n");
-                    return;
+                    return TRUE;
                 }
             break;
         default:
             cprintf(ch, "That field is undefined for objects.\r\n");
-            return;
+            return TRUE;
             break;
         }
     }
@@ -392,6 +391,7 @@ void do_string(struct char_data *ch, const char *arg, int cmd)
         *ch->desc->str = 0;
         ch->desc->max_str = length[field - 1];
     }
+    return TRUE;
 }
 
 void bisect_arg(const char *arg, int *field, char *string)
@@ -416,14 +416,13 @@ void bisect_arg(const char *arg, int *field, char *string)
     for (; (*string = *arg); arg++, string++)
         ;
 
-    return;
 }
 
 /*
  * Modification of character skills
  */
 
-void do_setskill(struct char_data *ch, const char *arg, int cmd)
+int do_setskill(struct char_data *ch, const char *arg, int cmd)
 {
     struct char_data *vict = NULL;
     char name[100] = "\0\0\0\0\0\0\0";
@@ -454,7 +453,7 @@ void do_setskill(struct char_data *ch, const char *arg, int cmd)
 
     cprintf(ch, "This routine is disabled untill it fitts\r\n");
     cprintf(ch, "The new structures (sorry Quinn) ....Bombman\r\n");
-    return;
+    return TRUE;
 
     arg = one_argument(arg, name);
     if (!*name)
@@ -473,34 +472,34 @@ void do_setskill(struct char_data *ch, const char *arg, int cmd)
         }
         if (*helpstr)
             cprintf(ch, "%s", helpstr);
-        return;
+        return TRUE;
     }
     if (!(vict = get_char_vis(ch, name)))
     {
         cprintf(ch, "No living thing by that name.\r\n");
-        return;
+        return TRUE;
     }
     arg = one_argument(arg, buf);
     if (!*buf)
     {
         cprintf(ch, "Skill name expected.\r\n");
-        return;
+        return TRUE;
     }
     if ((skill = old_search_block(buf, 0, strlen(buf), skills, 1)) < 0)
     {
         cprintf(ch, "No such skill is known. Try 'setskill' for list.\r\n");
-        return;
+        return TRUE;
     }
     argument_interpreter(arg, buf, num);
     if (!*num || !*buf)
     {
         cprintf(ch, "Field name or value undefined.\r\n");
-        return;
+        return TRUE;
     }
     if ((field = old_search_block(buf, 0, strlen(buf), skill_fields, 0)) < 0)
     {
         cprintf(ch, "Unrecognized field.\r\n");
-        return;
+        return TRUE;
     }
     value = atoi(num);
     if (field == 3)
@@ -508,18 +507,18 @@ void do_setskill(struct char_data *ch, const char *arg, int cmd)
         if (value < -1)
         {
             cprintf(ch, "Minimum value for that is -1.\r\n");
-            return;
+            return TRUE;
         }
     }
     else if (value < 0)
     {
         cprintf(ch, "Minimum value for that is 0.\r\n");
-        return;
+        return TRUE;
     }
     if (value > max_value[field - 1])
     {
         cprintf(ch, "Max value for that is %d.\r\n", max_value[field - 1]);
-        return;
+        return TRUE;
     }
     switch (field)
     {
@@ -538,6 +537,7 @@ void do_setskill(struct char_data *ch, const char *arg, int cmd)
     }
 
     cprintf(ch, "Ok.\r\n");
+    return TRUE;
 }
 
 /* db stuff *********************************************** */

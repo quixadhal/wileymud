@@ -417,7 +417,7 @@ struct help_message *get_help_by_id(const int id)
     return stringmap_find(help_messages, tmp);
 }
 
-void do_help(struct char_data *ch, const char *argument, int cmd)
+int do_help(struct char_data *ch, const char *argument, int cmd)
 {
     struct help_message *help_me = NULL;
     int id = 0;
@@ -426,7 +426,7 @@ void do_help(struct char_data *ch, const char *argument, int cmd)
         log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
     if (!ch->desc)
-        return;
+        return TRUE;
 
     for (; isspace(*argument); argument++)
         ;
@@ -436,7 +436,7 @@ void do_help(struct char_data *ch, const char *argument, int cmd)
         cprintf(ch, "Reloading help system from SQL...");
         load_help();
         cprintf(ch, "done.\r\n");
-        return;
+        return TRUE;
     }
     if (!strncasecmp(argument, "--list", 8))
     {
@@ -469,7 +469,7 @@ void do_help(struct char_data *ch, const char *argument, int cmd)
         }
         scprintf(result, MAX_STRING_LENGTH, "\r\n");
         page_string(ch->desc, result, 0);
-        return;
+        return TRUE;
     }
 
     id = find_help_by_keyword(*argument ? argument : "contents");
@@ -480,24 +480,26 @@ void do_help(struct char_data *ch, const char *argument, int cmd)
         page_string(ch->desc, help_me->message, 0);
     else
         cprintf(ch, "No help available for that!\r\n");
+    return TRUE;
 }
 
-void do_wizhelp(struct char_data *ch, const char *argument, int cmd)
+int do_wizhelp(struct char_data *ch, const char *argument, int cmd)
 {
     if (DEBUG)
         log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
     if (!ch->desc)
-        return;
+        return TRUE;
 
     if (!IS_IMMORTAL(ch))
     {
         cprintf(ch, "You are not a wizard, Harry.  Try normal help.\r\n");
-        return;
+        return TRUE;
     }
     else
     {
         do_help(ch, argument, cmd);
-        return;
+        return TRUE;
     }
+    return TRUE;
 }

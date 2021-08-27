@@ -2,10 +2,10 @@
 
 /* IMC2 Freedom Client - Developed by Mud Domain.
  *
- * Copyright ©2004-2008 by Roger Libiez ( Samson )
- * Contributions by Johnathan Walker ( Xorith ), Copyright ©2004
- * Additional contributions by Jesse Defer ( Garil ), Copyright ©2004
- * Additional contributions by Rogel, Copyright ©2004
+ * Copyright ?2004-2008 by Roger Libiez ( Samson )
+ * Contributions by Johnathan Walker ( Xorith ), Copyright ?2004
+ * Additional contributions by Jesse Defer ( Garil ), Copyright ?2004
+ * Additional contributions by Rogel, Copyright ?2004
  * Comments and suggestions welcome: http://www.mudbytes.net/imc2-support-forum
  * License terms are available in the imc2freedom.license file.
  */
@@ -3145,7 +3145,7 @@ bool imc_write_socket(void)
     int nleft = this_imcmud->outtop, nwritten = 0;
 
     if (nleft <= 0)
-        return 1;
+        return TRUE;
 
     while (nleft > 0)
     {
@@ -3185,7 +3185,7 @@ bool imc_write_socket(void)
     }
     this_imcmud->outbuf[0] = '\0';
     this_imcmud->outtop = 0;
-    return 1;
+    return TRUE;
 }
 
 void imc_process_authentication(const char *packet)
@@ -3291,7 +3291,7 @@ bool imc_read_buffer(void)
     int k = 0;
 
     if (this_imcmud->inbuf[0] == '\0')
-        return 0;
+        return FALSE;
 
     k = strlen(this_imcmud->incomm);
 
@@ -4261,7 +4261,7 @@ void imc_savehelps(void)
         fprintf(fp, "%s", "#HELP\n");
         fprintf(fp, "Name %s\n", help->name);
         fprintf(fp, "Perm %s\n", imcperm_names[help->level]);
-        /* fprintf(fp, "Text %s¢\n", help->text); */
+        /* fprintf(fp, "Text %s?\n", help->text); */
         fprintf(fp, "Text %s%c\n", help->text, 0xA2);
         fprintf(fp, "%s", "End\n\n");
     }
@@ -7796,7 +7796,7 @@ const char *imc_find_social(CHAR_DATA *ch, const char *sname, const char *person
     return socname;
 }
 
-/* Revised 10/10/03 by Xorith: Recognize the need to capitalize for a new sentence. */
+/* Revised 10/10/03 by Xorith: Recognize the need to capitalize for a new?sentence. */
 char *imc_act_string(const char *format, CHAR_DATA *ch, CHAR_DATA *vic)
 {
     static const char *const he_she[] = {"it", "he", "she"};
@@ -8019,80 +8019,80 @@ const char *imc_send_social(CHAR_DATA *ch, const char *argument, int telloption)
     imcstrlcpy(msg, (char *)imc_act_string(socbuf, ch, skeleton), LGST);
     if (skeleton)
         imc_purge_skeleton(skeleton);
-    return (color_mtoi(msg));
+    return color_mtoi(msg);
 }
 #endif /* IMCSTANDALONE */
 
 const char *imc_funcname(IMC_FUN *func)
 {
     if (func == imc_other)
-        return ("imc_other");
+        return "imc_other";
     if (func == imclisten)
-        return ("imclisten");
+        return "imclisten";
     if (func == imcchanlist)
-        return ("imcchanlist");
+        return "imcchanlist";
     if (func == imclist)
-        return ("imclist");
+        return "imclist";
     if (func == imcinvis)
-        return ("imcinvis");
+        return "imcinvis";
     if (func == imcwho)
-        return ("imcwho");
+        return "imcwho";
     if (func == imclocate)
-        return ("imclocate");
+        return "imclocate";
     if (func == imctell)
-        return ("imctell");
+        return "imctell";
     if (func == imcreply)
-        return ("imcreply");
+        return "imcreply";
     if (func == imcbeep)
-        return ("imcbeep");
+        return "imcbeep";
     if (func == imcignore)
-        return ("imcignore");
+        return "imcignore";
     if (func == imcfinger)
-        return ("imcfinger");
+        return "imcfinger";
     if (func == imcinfo)
-        return ("imcinfo");
+        return "imcinfo";
     if (func == imccolor)
-        return ("imccolor");
+        return "imccolor";
     if (func == imcafk)
-        return ("imcafk");
+        return "imcafk";
     if (func == imcchanwho)
-        return ("imcchanwho");
+        return "imcchanwho";
     if (func == imcconnect)
-        return ("imcconnect");
+        return "imcconnect";
     if (func == imcdisconnect)
-        return ("imcdisconnect");
+        return "imcdisconnect";
     if (func == imcpermstats)
-        return ("imcpermstats");
+        return "imcpermstats";
     if (func == imc_deny_channel)
-        return ("imc_deny_channel");
+        return "imc_deny_channel";
     if (func == imcpermset)
-        return ("imcpermset");
+        return "imcpermset";
     if (func == imcsetup)
-        return ("imcsetup");
+        return "imcsetup";
     if (func == imccommand)
-        return ("imccommand");
+        return "imccommand";
     if (func == imcban)
-        return ("imcban");
+        return "imcban";
     if (func == imcconfig)
-        return ("imcconfig");
+        return "imcconfig";
     if (func == imc_show_ucache_contents)
-        return ("imc_show_ucache_contents");
+        return "imc_show_ucache_contents";
     if (func == imcremoteadmin)
-        return ("imcremoteadmin");
+        return "imcremoteadmin";
     if (func == imcdebug)
-        return ("imcdebug");
+        return "imcdebug";
     if (func == imchedit)
-        return ("imchedit");
+        return "imchedit";
     if (func == imchelp)
-        return ("imchelp");
+        return "imchelp";
     if (func == imccedit)
-        return ("imccedit");
+        return "imccedit";
     if (func == imcrefresh)
-        return ("imcrefresh");
+        return "imcrefresh";
     if (func == imclast)
-        return ("imclast");
+        return "imclast";
     if (func == imctemplates)
-        return ("imctemplates");
+        return "imctemplates";
     return "";
 }
 

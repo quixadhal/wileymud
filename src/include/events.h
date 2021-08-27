@@ -32,6 +32,6 @@ struct event_goodies
     int *mob_vnum;
 };
 
-void do_event(struct char_data *ch, const char *argument, int cmd);
+int do_event(struct char_data *ch, const char *argument, int cmd);
 
 #endif

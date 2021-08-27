@@ -86,7 +86,7 @@ int RemHated(struct char_data *ch, struct char_data *pud)
         for (oldpud = ch->hates.clist; oldpud; oldpud = oldpud->next)
         {
             if (!oldpud)
-                return (FALSE);
+                return FALSE;
             if (oldpud->op_ch)
             {
                 if (oldpud->op_ch == pud)
@@ -146,7 +146,7 @@ int AddHated(struct char_data *ch, struct char_data *pud)
         log_info("called %s with %s, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), SAFE_NAME(pud));
 
     if (ch == pud)
-        return (FALSE);
+        return FALSE;
 
     if (pud)
     {
@@ -214,7 +214,7 @@ int AddHatred(struct char_data *ch, int parm_type, int parm)
     {
         SET_BIT(ch->specials.act, ACT_HATEFUL);
     }
-    return 1; /* assume this means it worked */
+    return TRUE; /* assume this means it worked */
 }
 
 int RemHatred(struct char_data *ch, unsigned short bitv)
@@ -225,7 +225,7 @@ int RemHatred(struct char_data *ch, unsigned short bitv)
     REMOVE_BIT(ch->hatefield, bitv);
     if (!ch->hatefield)
         REMOVE_BIT(ch->specials.act, ACT_HATEFUL);
-    return 1; /* assume this means it worked */
+    return TRUE; /* assume this means it worked */
 }
 
 int RemFeared(struct char_data *ch, struct char_data *pud)
@@ -238,7 +238,7 @@ int RemFeared(struct char_data *ch, struct char_data *pud)
         log_info("called %s with %s, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), SAFE_NAME(pud));
 
     if (!IS_SET(ch->specials.act, ACT_AFRAID))
-        return (FALSE);
+        return FALSE;
 
     if (pud && (ch->fears.clist != 0))
     {
@@ -246,7 +246,7 @@ int RemFeared(struct char_data *ch, struct char_data *pud)
         for (oldpud = ch->fears.clist; (oldpud != 0); oldpud = tmp)
         {
             if (oldpud == 0)
-                return (FALSE);
+                return FALSE;
             tmp = oldpud->next;
             if (oldpud->op_ch)
             {
@@ -307,7 +307,7 @@ int AddFeared(struct char_data *ch, struct char_data *pud)
         log_info("called %s with %s, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), SAFE_NAME(pud));
 
     if (ch == pud)
-        return (FALSE);
+        return FALSE;
 
     if (pud)
     {
@@ -374,7 +374,7 @@ int AddFears(struct char_data *ch, int parm_type, int parm)
     {
         SET_BIT(ch->specials.act, ACT_AFRAID);
     }
-    return 1;
+    return TRUE;
 }
 
 /*
@@ -444,12 +444,12 @@ int DoesHate(struct char_data *ch, struct char_data *v)
                 if (i->op_ch)
                 {
                     if ((i->op_ch == v) && (!strcmp(i->name, GET_NAME(v))))
-                        return (TRUE);
+                        return TRUE;
                 }
                 else
                 {
                     if (!strcmp(i->name, GET_NAME(v)))
-                        return (TRUE);
+                        return TRUE;
                 }
             }
         }
@@ -459,35 +459,35 @@ int DoesHate(struct char_data *ch, struct char_data *v)
         if (ch->hates.race != -1)
         {
             if (ch->hates.race == GET_RACE(v))
-                return (TRUE);
+                return TRUE;
         }
     }
     if (IS_SET(ch->hatefield, HATE_SEX))
     {
         if (ch->hates.sex == GET_SEX(v))
-            return (TRUE);
+            return TRUE;
     }
     if (IS_SET(ch->hatefield, HATE_GOOD))
     {
         if (ch->hates.good < GET_ALIGNMENT(v))
-            return (TRUE);
+            return TRUE;
     }
     if (IS_SET(ch->hatefield, HATE_EVIL))
     {
         if (ch->hates.evil > GET_ALIGNMENT(v))
-            return (TRUE);
+            return TRUE;
     }
     if (IS_SET(ch->hatefield, HATE_CLASS))
     {
         if (HasClass(v, ch->hates.chclass))
         {
-            return (TRUE);
+            return TRUE;
         }
     }
     if (IS_SET(ch->hatefield, HATE_VNUM))
     {
         if (ch->hates.vnum == mob_index[v->nr].vnum)
-            return (TRUE);
+            return TRUE;
     }
     if (IS_SET(ch->hatefield, HATE_RICH))
     {
@@ -495,10 +495,10 @@ int DoesHate(struct char_data *ch, struct char_data *v)
         {
             act("$n charges $N, screaming 'I must have your GOLD!'", TRUE, ch, 0, v, TO_ROOM);
             cprintf(v, "%s charges, screaming 'I must have your GOLD!'\r\n", NAME(ch));
-            return (TRUE);
+            return TRUE;
         }
     }
-    return (FALSE);
+    return FALSE;
 }
 
 int CanHate(struct char_data *ch, struct char_data *v)
@@ -524,7 +524,7 @@ int DoesFear(struct char_data *ch, struct char_data *v)
         log_info("called %s with %s, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), SAFE_NAME(v));
 
     if (!IS_SET(ch->specials.act, ACT_AFRAID))
-        return (FALSE);
+        return FALSE;
 
     if (IS_SET(ch->fearfield, FEAR_CHAR))
     {
@@ -539,7 +539,7 @@ int DoesFear(struct char_data *ch, struct char_data *v)
                         if (i->name[0])
                         {
                             if ((i->op_ch == v) && (!strcmp(i->name, GET_NAME(v))))
-                                return (TRUE);
+                                return TRUE;
                         }
                         else
                         {
@@ -554,7 +554,7 @@ int DoesFear(struct char_data *ch, struct char_data *v)
                         if (i->name[0])
                         {
                             if (!strcmp(i->name, GET_NAME(v)))
-                                return (TRUE);
+                                return TRUE;
                         }
                     }
                 }
@@ -566,37 +566,37 @@ int DoesFear(struct char_data *ch, struct char_data *v)
         if (ch->fears.race != -1)
         {
             if (ch->fears.race == GET_RACE(v))
-                return (TRUE);
+                return TRUE;
         }
     }
     if (IS_SET(ch->fearfield, FEAR_SEX))
     {
         if (ch->fears.sex == GET_SEX(v))
-            return (TRUE);
+            return TRUE;
     }
     if (IS_SET(ch->fearfield, FEAR_GOOD))
     {
         if (ch->fears.good < GET_ALIGNMENT(v))
-            return (TRUE);
+            return TRUE;
     }
     if (IS_SET(ch->fearfield, FEAR_EVIL))
     {
         if (ch->fears.evil > GET_ALIGNMENT(v))
-            return (TRUE);
+            return TRUE;
     }
     if (IS_SET(ch->fearfield, FEAR_CLASS))
     {
         if (HasClass(v, ch->hates.chclass))
         {
-            return (TRUE);
+            return TRUE;
         }
     }
     if (IS_SET(ch->fearfield, FEAR_VNUM))
     {
         if (ch->fears.vnum == mob_index[v->nr].vnum)
-            return (TRUE);
+            return TRUE;
     }
-    return (FALSE);
+    return FALSE;
 }
 
 int CanFear(struct char_data *ch, struct char_data *v)

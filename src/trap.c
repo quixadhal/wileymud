@@ -24,7 +24,7 @@
 #define _TRAP_C
 #include "trap.h"
 
-void do_settrap(struct char_data *ch, const char *argument, int cmd)
+int do_settrap(struct char_data *ch, const char *argument, int cmd)
 {
     if (DEBUG)
         log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
@@ -41,6 +41,7 @@ void do_settrap(struct char_data *ch, const char *argument, int cmd)
     /*
      * parse for level
      */
+    return TRUE;
 }
 
 int CheckForMoveTrap(struct char_data *ch, int dir)
@@ -54,9 +55,9 @@ int CheckForMoveTrap(struct char_data *ch, int dir)
     {
         if ((ITEM_TYPE(i) == ITEM_TRAP) && (IS_SET(GET_TRAP_EFF(i), TRAP_EFF_MOVE)) && (GET_TRAP_CHARGES(i) > 0))
             if (IS_SET(GET_TRAP_EFF(i), TrapDir[dir]))
-                return (TriggerTrap(ch, i));
+                return TriggerTrap(ch, i);
     }
-    return (FALSE);
+    return FALSE;
 }
 
 int CheckForInsideTrap(struct char_data *ch, struct obj_data *i)
@@ -70,10 +71,10 @@ int CheckForInsideTrap(struct char_data *ch, struct obj_data *i)
     {
         if ((ITEM_TYPE(t) == ITEM_TRAP) && (IS_SET(GET_TRAP_EFF(t), TRAP_EFF_OBJECT)) && (GET_TRAP_CHARGES(t) > 0))
         {
-            return (TriggerTrap(ch, t));
+            return TriggerTrap(ch, t);
         }
     }
-    return (FALSE);
+    return FALSE;
 }
 
 int CheckForAnyTrap(struct char_data *ch, struct obj_data *i)
@@ -82,9 +83,9 @@ int CheckForAnyTrap(struct char_data *ch, struct obj_data *i)
         log_info("called %s with %s, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), SAFE_ONAME(i));
 
     if ((ITEM_TYPE(i) == ITEM_TRAP) && (GET_TRAP_CHARGES(i) > 0))
-        return (TriggerTrap(ch, i));
+        return TriggerTrap(ch, i);
 
-    return (FALSE);
+    return FALSE;
 }
 
 int CheckForGetTrap(struct char_data *ch, struct obj_data *i)
@@ -94,9 +95,9 @@ int CheckForGetTrap(struct char_data *ch, struct obj_data *i)
 
     if ((ITEM_TYPE(i) == ITEM_TRAP) && (IS_SET(GET_TRAP_EFF(i), TRAP_EFF_OBJECT)) && (GET_TRAP_CHARGES(i) > 0))
     {
-        return (TriggerTrap(ch, i));
+        return TriggerTrap(ch, i);
     }
-    return (FALSE);
+    return FALSE;
 }
 
 int TriggerTrap(struct char_data *ch, struct obj_data *i)
@@ -133,11 +134,11 @@ int TriggerTrap(struct char_data *ch, struct obj_data *i)
                 {
                     FindTrapDamage(ch, i);
                 }
-                return (TRUE);
+                return TRUE;
             }
         }
     }
-    return (FALSE);
+    return FALSE;
 }
 
 void FindTrapDamage(struct char_data *v, struct obj_data *i)

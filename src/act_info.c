@@ -97,9 +97,9 @@ struct obj_data *get_object_in_equip_vis(struct char_data *ch, const char *arg, 
         if (equipment[(*j)])
             if (CAN_SEE_OBJ(ch, equipment[(*j)]))
                 if (isname(arg, equipment[(*j)]->name))
-                    return (equipment[(*j)]);
+                    return equipment[(*j)];
 
-    return (0);
+    return NULL;
 }
 
 char *find_ex_description(char *word, struct extra_descr_data *list)
@@ -111,9 +111,9 @@ char *find_ex_description(char *word, struct extra_descr_data *list)
 
     for (i = list; i; i = i->next)
         if (isname(word, i->keyword))
-            return (i->description);
+            return i->description;
 
-    return (0);
+    return NULL;
 }
 
 void show_obj_to_char(struct obj_data *object, struct char_data *ch, int mode)
@@ -1597,24 +1597,25 @@ void _normal_look(struct char_data *ch, const char *argument, int cmd)
     }
 }
 
-void do_look(struct char_data *ch, const char *argument, int cmd)
+int do_look(struct char_data *ch, const char *argument, int cmd)
 {
     if (DEBUG > 1)
         log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
     if (!ch->desc)
-        return;
+        return TRUE;
 
     if (HAS_JSON(ch))
         // _json_look(ch, argument, cmd);
         _normal_look(ch, argument, cmd);
     else
         _normal_look(ch, argument, cmd);
+    return TRUE;
 }
 
 /* end of look */
 
-void do_read(struct char_data *ch, const char *argument, int cmd)
+int do_read(struct char_data *ch, const char *argument, int cmd)
 {
     char buf[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
 
@@ -1626,9 +1627,10 @@ void do_read(struct char_data *ch, const char *argument, int cmd)
      */
     snprintf(buf, MAX_INPUT_LENGTH, "at %s", argument);
     do_look(ch, buf, 15);
+    return TRUE;
 }
 
-void do_examine(struct char_data *ch, const char *argument, int cmd)
+int do_examine(struct char_data *ch, const char *argument, int cmd)
 {
     char name[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
     char buf[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
@@ -1646,7 +1648,7 @@ void do_examine(struct char_data *ch, const char *argument, int cmd)
     if (!*name)
     {
         cprintf(ch, "Examine what?\r\n");
-        return;
+        return TRUE;
     }
     generic_find(name, FIND_OBJ_INV | FIND_OBJ_ROOM | FIND_OBJ_EQUIP, ch, &tmp_char, &tmp_object);
 
@@ -1659,9 +1661,10 @@ void do_examine(struct char_data *ch, const char *argument, int cmd)
             do_look(ch, buf, 15);
         }
     }
+    return TRUE;
 }
 
-void do_search(struct char_data *ch, const char *argument, int cmd)
+int do_search(struct char_data *ch, const char *argument, int cmd)
 {
     int door = -1;
     char buf[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
@@ -1675,12 +1678,12 @@ void do_search(struct char_data *ch, const char *argument, int cmd)
     if (IS_DARK(ch->in_room))
     {
         cprintf(ch, "It is far to dark to search...\r\n");
-        return;
+        return TRUE;
     }
     if (GET_MANA(ch) < 30 - (GET_LEVEL(ch, BestThiefClass(ch)) / 5))
     {
         cprintf(ch, "You can not think of a place to begin looking?\r\n");
-        return;
+        return TRUE;
     }
     GET_MANA(ch) -= (30 - (GET_LEVEL(ch, BestThiefClass(ch)) / 5));
 
@@ -1713,9 +1716,10 @@ void do_search(struct char_data *ch, const char *argument, int cmd)
         cprintf(ch, "%s", buf);
     else
         cprintf(ch, "None?\r\n");
+    return TRUE;
 }
 
-void list_exits_in_room(struct char_data *ch)
+int list_exits_in_room(struct char_data *ch)
 {
     int door = -1;
     char buf[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
@@ -1723,7 +1727,7 @@ void list_exits_in_room(struct char_data *ch)
     struct room_direction_data *exitdata = NULL;
 
     if (!IS_IMMORTAL(ch))
-        return;
+        return TRUE;
 
     for (door = 0; door < MAX_NUM_EXITS; door++)
     {
@@ -1739,9 +1743,10 @@ void list_exits_in_room(struct char_data *ch)
         buf[strlen(buf) - 2] = '\0'; // Wipe out the trailing ", "
     }
     cprintf(ch, "Exits: %s\r\n", buf);
+    return TRUE;
 }
 
-void do_exits(struct char_data *ch, const char *argument, int cmd)
+int do_exits(struct char_data *ch, const char *argument, int cmd)
 {
     int door = -1;
     char buf[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
@@ -1841,9 +1846,10 @@ void do_exits(struct char_data *ch, const char *argument, int cmd)
     {
         cprintf(ch, "You seem to be nowhere at all...\r\n");
     }
+    return TRUE;
 }
 
-void do_score(struct char_data *ch, const char *argument, int cmd)
+int do_score(struct char_data *ch, const char *argument, int cmd)
 {
     static char buf[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
     static char tmpbuf[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
@@ -1880,7 +1886,7 @@ void do_score(struct char_data *ch, const char *argument, int cmd)
 #endif
                 {
                     cprintf(ch, "You can't seem to find %s.\r\n", tmpbuf);
-                    return;
+                    return TRUE;
                 }
             }
         }
@@ -2137,17 +2143,19 @@ void do_score(struct char_data *ch, const char *argument, int cmd)
     }
     // write_to_descriptor(ch->desc->descriptor, "\xFF\xFD\x1F"); // Ask client to do NAWS to get windows size
     // log_info("TELNET sent DO_NAWS from score");
+    return TRUE;
 }
 
-void do_mystat(struct char_data *ch, const char *argument, int cmd)
+int do_mystat(struct char_data *ch, const char *argument, int cmd)
 {
     if (DEBUG)
         log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
     cprintf(ch, "Use SCORE instead.\r\n");
+    return TRUE;
 }
 
-void do_time(struct char_data *ch, const char *argument, int cmd)
+int do_time(struct char_data *ch, const char *argument, int cmd)
 {
     struct tm *tm_info = NULL;
     time_t now = (time_t)0;
@@ -2194,9 +2202,10 @@ void do_time(struct char_data *ch, const char *argument, int cmd)
     {
         cprintf(ch, "%s", buf);
     }
+    return TRUE;
 }
 
-void do_weather(struct char_data *ch, const char *argument, int cmd)
+int do_weather(struct char_data *ch, const char *argument, int cmd)
 {
     static const char *sky_look[4] = {"cloudless", "cloudy", "rainy", "lit by flashes of lightning"};
     static const char *sky_words[] = {"Cloudless", "Cloudy", "Rainy", "Lightning", "None"};
@@ -2222,9 +2231,10 @@ void do_weather(struct char_data *ch, const char *argument, int cmd)
     }
     else
         cprintf(ch, "You have no feeling about the weather at all.\r\n");
+    return TRUE;
 }
 
-void do_allcommands(struct char_data *ch, const char *argument, int cmd)
+int do_allcommands(struct char_data *ch, const char *argument, int cmd)
 {
     int no = 0;
     int i = 0;
@@ -2234,7 +2244,7 @@ void do_allcommands(struct char_data *ch, const char *argument, int cmd)
         log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
     if (IS_NPC(ch))
-        return;
+        return TRUE;
 
     cprintf(ch, "The following comands are available:\r\n\r\n");
     for (no = 1, i = 0; *command[i] != '\n'; i++)
@@ -2247,18 +2257,20 @@ void do_allcommands(struct char_data *ch, const char *argument, int cmd)
         }
     strlcat(buf, "\r\n", MAX_STRING_LENGTH);
     page_string(ch->desc, buf, 1);
+    return TRUE;
 }
 
-void do_inventory(struct char_data *ch, const char *argument, int cmd)
+int do_inventory(struct char_data *ch, const char *argument, int cmd)
 {
     if (DEBUG)
         log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
     cprintf(ch, "You are carrying:\r\n");
     list_obj_on_char(ch->carrying, ch);
+    return TRUE;
 }
 
-void do_equipment(struct char_data *ch, const char *argument, int cmd)
+int do_equipment(struct char_data *ch, const char *argument, int cmd)
 {
     int j = 0;
     int Worn_Index = 0;
@@ -2290,38 +2302,43 @@ void do_equipment(struct char_data *ch, const char *argument, int cmd)
     {
         cprintf(ch, " Nothing.\r\n");
     }
+    return TRUE;
 }
 
-void do_credits(struct char_data *ch, const char *argument, int cmd)
+int do_credits(struct char_data *ch, const char *argument, int cmd)
 {
     if (DEBUG)
         log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
     page_string(ch->desc, credits, 0);
+    return TRUE;
 }
 
-void do_news(struct char_data *ch, const char *argument, int cmd)
+int do_news(struct char_data *ch, const char *argument, int cmd)
 {
     if (DEBUG)
         log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
     page_string(ch->desc, news, 0);
+    return TRUE;
 }
 
-void do_info(struct char_data *ch, const char *argument, int cmd)
+int do_info(struct char_data *ch, const char *argument, int cmd)
 {
     if (DEBUG)
         log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
     page_string(ch->desc, info, 0);
+    return TRUE;
 }
 
-void do_wizlist(struct char_data *ch, const char *argument, int cmd)
+int do_wizlist(struct char_data *ch, const char *argument, int cmd)
 {
     if (DEBUG)
         log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
     page_string(ch->desc, wizlist, 0);
+    return TRUE;
 }
 
 static int which_number_mobile(struct char_data *ch, struct char_data *mob)
@@ -2429,7 +2446,7 @@ static void where_object(struct char_data *ch, struct obj_data *obj, int recurse
     }
 }
 
-void do_where(struct char_data *ch, const char *argument, int cmd)
+int do_where(struct char_data *ch, const char *argument, int cmd)
 {
     struct char_data *i = NULL;
     struct obj_data *k = NULL;
@@ -2451,7 +2468,7 @@ void do_where(struct char_data *ch, const char *argument, int cmd)
         if (GetMaxLevel(ch) < LOW_IMMORTAL)
         {
             cprintf(ch, "What are you looking for?\r\n");
-            return;
+            return TRUE;
         }
         else
         {
@@ -2477,7 +2494,7 @@ void do_where(struct char_data *ch, const char *argument, int cmd)
             }
             page_string_block(&sb, ch);
             destroy_string_block(&sb);
-            return;
+            return TRUE;
         }
     }
     if (isdigit(*name))
@@ -2544,9 +2561,10 @@ void do_where(struct char_data *ch, const char *argument, int cmd)
     else
         page_string_block(&sb, ch);
     destroy_string_block(&sb);
+    return TRUE;
 }
 
-void do_levels(struct char_data *ch, const char *argument, int cmd)
+int do_levels(struct char_data *ch, const char *argument, int cmd)
 {
     int i = 0;
     int RaceMax = 0;
@@ -2557,7 +2575,7 @@ void do_levels(struct char_data *ch, const char *argument, int cmd)
         log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
     if (IS_NPC(ch))
-        return;
+        return TRUE;
 
     /*
      * get the class
@@ -2569,7 +2587,7 @@ void do_levels(struct char_data *ch, const char *argument, int cmd)
     if (!*argument)
     {
         cprintf(ch, "You must supply a class!\r\n");
-        return;
+        return TRUE;
     }
     switch (*argument)
     {
@@ -2603,7 +2621,7 @@ void do_levels(struct char_data *ch, const char *argument, int cmd)
         break;
     default:
         cprintf(ch, "I don't recognize %s\r\n", argument);
-        return;
+        return TRUE;
         break;
     }
 
@@ -2628,9 +2646,10 @@ void do_levels(struct char_data *ch, const char *argument, int cmd)
         strlcat(buf, "\r\n", MAX_STRING_LENGTH);
     }
     page_string(ch->desc, buf, 1);
+    return TRUE;
 }
 
-void do_consider(struct char_data *ch, const char *argument, int cmd)
+int do_consider(struct char_data *ch, const char *argument, int cmd)
 {
     struct char_data *victim = NULL;
     char name[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
@@ -2644,13 +2663,13 @@ void do_consider(struct char_data *ch, const char *argument, int cmd)
     if (!(victim = get_char_room_vis(ch, name)))
     {
         cprintf(ch, "Consider killing who?\r\n");
-        return;
+        return TRUE;
     }
     if (victim == ch)
     {
         cprintf(ch, "You think it would be ridiculously easy to kill yourself.\r\n"
                     "Just type quit, and then pick option 6.\r\n");
-        return;
+        return TRUE;
     }
     if (!IS_NPC(victim))
     {
@@ -2658,7 +2677,7 @@ void do_consider(struct char_data *ch, const char *argument, int cmd)
         {
             cprintf(ch, "You can't bear the thought of killing another player!\r\n");
             cprintf(victim, "%s thinks about you and quakes in terror!\r\n", NAME(ch));
-            return;
+            return TRUE;
         }
         else
         {
@@ -2667,7 +2686,7 @@ void do_consider(struct char_data *ch, const char *argument, int cmd)
                 cprintf(ch, "You wish you could cut down %s, but the fool does not serve the Dread Lord.\r\n",
                         NAME(victim));
                 cprintf(victim, "%s seems interested in you for some reason.\r\n", NAME(ch));
-                return;
+                return TRUE;
             }
         }
     }
@@ -2749,9 +2768,10 @@ void do_consider(struct char_data *ch, const char *argument, int cmd)
     {
         cprintf(ch, "Just tell me where to send the flowers.\r\n");
     }
+    return TRUE;
 }
 
-void do_spells(struct char_data *ch, const char *argument, int cmd)
+int do_spells(struct char_data *ch, const char *argument, int cmd)
 {
     int i = 0;
     char buf[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
@@ -2760,7 +2780,7 @@ void do_spells(struct char_data *ch, const char *argument, int cmd)
         log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
     if (IS_NPC(ch))
-        return;
+        return TRUE;
 
     snprintf(buf, MAX_STRING_LENGTH, "Spell Name                Ma Cl Wa Th Ra Dr\r\n");
     for (i = 1; i < MAX_SKILLS; i++)
@@ -2774,9 +2794,10 @@ void do_spells(struct char_data *ch, const char *argument, int cmd)
     }
     strlcat(buf, "\r\n", MAX_STRING_LENGTH);
     page_string(ch->desc, buf, 1);
+    return TRUE;
 }
 
-void do_world(struct char_data *ch, const char *argument, int cmd)
+int do_world(struct char_data *ch, const char *argument, int cmd)
 {
     time_t ct = (time_t)0;
     time_t ot = (time_t)0;
@@ -2821,9 +2842,10 @@ void do_world(struct char_data *ch, const char *argument, int cmd)
     cprintf(ch, "Total number of objects: %d (%d instances)\r\n", top_of_objt + 1, obj_count);
     cprintf(ch, "Total number of mobiles: %d (%d instances)\r\n", top_of_mobt + 1, mob_count);
     cprintf(ch, "Total number of players: %d\r\n", number_of_players);
+    return TRUE;
 }
 
-void do_skills(struct char_data *ch, const char *argument, int cmd)
+int do_skills(struct char_data *ch, const char *argument, int cmd)
 {
     int i = 0;
 
@@ -2867,6 +2889,7 @@ void do_skills(struct char_data *ch, const char *argument, int cmd)
             }
         }
     }
+    return TRUE;
 }
 
 void tick_line(struct char_data *ch, const char *label, int pulse_count)
@@ -2905,7 +2928,7 @@ void tick_line(struct char_data *ch, const char *label, int pulse_count)
     }
 }
 
-void do_ticks(struct char_data *ch, const char *argument, int cmd)
+int do_ticks(struct char_data *ch, const char *argument, int cmd)
 {
     char ticktype[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
 
@@ -2950,9 +2973,10 @@ void do_ticks(struct char_data *ch, const char *argument, int cmd)
         tmp[19] = '\0'; // 2019-07-16 12:48:31
         cprintf(ch, "    %-36s%s\r\n", "Next REBOOT at:", reboot.next_reboot_text);
     }
+    return TRUE;
 }
 
-void do_map(struct char_data *ch, const char *argument, int cmd)
+int do_map(struct char_data *ch, const char *argument, int cmd)
 {
     const char *map_data = "\r\n"
                            "    U                      +----------------------+\r\n"
@@ -3044,6 +3068,7 @@ void do_map(struct char_data *ch, const char *argument, int cmd)
     cprintf(ch, map_data, name[UP], vnum[UP], terrain[UP], name[NORTH], vnum[NORTH], terrain[NORTH], name[EAST],
             name[WEST], vnum[EAST], terrain[EAST], vnum[WEST], terrain[WEST], name[SOUTH], vnum[SOUTH], terrain[SOUTH],
             name[DOWN], vnum[DOWN], terrain[DOWN]);
+    return TRUE;
 }
 
 char *get_ansi_sector(struct room_data *this_room)
@@ -3152,7 +3177,7 @@ struct room_data *walk_room_path(struct room_data *this_room, const char *path)
     return targ_room;
 }
 
-void do_ansimap(struct char_data *ch, const char *argument, int cmd)
+int do_ansimap(struct char_data *ch, const char *argument, int cmd)
 {
     struct room_data *this_room = NULL;
     char *map[9][9];
@@ -3165,12 +3190,12 @@ void do_ansimap(struct char_data *ch, const char *argument, int cmd)
     if (IS_NPC(ch))
     {
         cprintf(ch, "You don't need a map.\r\n");
-        return;
+        return TRUE;
     }
 
     this_room = real_roomp(ch->in_room);
     if (!this_room)
-        return;
+        return TRUE;
 
     for (i = 0; i < 9; i++)
         for (j = 0; j < 9; j++)
@@ -3303,13 +3328,15 @@ void do_ansimap(struct char_data *ch, const char *argument, int cmd)
         for (j = 0; j < 9; j++)
             if (map[i][j])
                 free(map[i][j]);
+    return TRUE;
 }
 
-void do_version(struct char_data *ch, const char *argument, int cmd)
+int do_version(struct char_data *ch, const char *argument, int cmd)
 {
     if (DEBUG)
         log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
     cprintf(ch, "WileyMUD:         %s (%s)\r\n", VERSION_BUILD, VERSION_DATE);
     cprintf(ch, "PostgreSQL:       %s\r\n", sql_version(&db_i3log));
+    return TRUE;
 }

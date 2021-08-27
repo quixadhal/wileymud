@@ -161,13 +161,13 @@ int toggle_rent(struct char_data *ch)
     {
         log_error("Cannot toggle rent in rent table: %s", PQerrorMessage(db_wileymud.dbc));
         PQclear(res);
-        return 0;
+        return FALSE;
         // proper_exit(MUD_HALT);
     }
     PQclear(res);
 
     load_rent();
-    return 1;
+    return TRUE;
 }
 
 int set_rent(struct char_data *ch, float factor)
@@ -197,11 +197,11 @@ int set_rent(struct char_data *ch, float factor)
     {
         log_error("Cannot set rent in rent table: %s", PQerrorMessage(db_wileymud.dbc));
         PQclear(res);
-        return 0;
+        return FALSE;
         // proper_exit(MUD_HALT);
     }
     PQclear(res);
 
     load_rent();
-    return 1;
+    return TRUE;
 }

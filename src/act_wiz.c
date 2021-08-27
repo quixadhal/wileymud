@@ -42,15 +42,15 @@
 #define _ACT_WIZ_C
 #include "act_wiz.h"
 
-void do_polymorph(struct char_data *ch, const char *argument, int cmd)
+int do_polymorph(struct char_data *ch, const char *argument, int cmd)
 {
     if (DEBUG)
         log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
-    return;
+    return TRUE;
 }
 
-void do_highfive(struct char_data *ch, const char *argument, int cmd)
+int do_highfive(struct char_data *ch, const char *argument, int cmd)
 {
     char buf[80] = "\0\0\0\0\0\0\0";
     struct char_data *tch = NULL;
@@ -79,9 +79,10 @@ void do_highfive(struct char_data *ch, const char *argument, int cmd)
             cprintf(ch, "I don't see anyone here like that.\r\n");
         }
     }
+    return TRUE;
 }
 
-void do_rentmode(struct char_data *ch, const char *argument, int cmd)
+int do_rentmode(struct char_data *ch, const char *argument, int cmd)
 {
     char buf[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
     float factor = 0.0;
@@ -92,7 +93,7 @@ void do_rentmode(struct char_data *ch, const char *argument, int cmd)
     if (IS_NPC(ch))
     {
         cprintf(ch, "You cannot toggle rent costs.\r\n");
-        return;
+        return TRUE;
     }
     if (argument && *argument)
     {
@@ -102,7 +103,7 @@ void do_rentmode(struct char_data *ch, const char *argument, int cmd)
         {
             cprintf(ch, "Rent is currently %s and set at %f normal.\r\n", rent.enabled ? "enabled" : "disabled",
                     rent.factor);
-            return;
+            return TRUE;
         }
         else if (!str_cmp(buf, "toggle"))
         {
@@ -111,7 +112,7 @@ void do_rentmode(struct char_data *ch, const char *argument, int cmd)
                     rent.factor);
             log_info("Rent is now %s and curently set at %f normal", rent.enabled ? "enabled" : "disabled",
                      rent.factor);
-            return;
+            return TRUE;
         }
         else if (sscanf(buf, " %f ", &factor) == 1)
         {
@@ -120,15 +121,16 @@ void do_rentmode(struct char_data *ch, const char *argument, int cmd)
                     rent.factor);
             log_info("Rent is currently %s and now set at %f normal", rent.enabled ? "enabled" : "disabled",
                      rent.factor);
-            return;
+            return TRUE;
         }
     }
     cprintf(ch, "Usage: rentmode list\r\n"
                 "       rentmode toggle\r\n"
                 "       rentmode <factor>\r\n");
+    return TRUE;
 }
 
-void do_wizlock(struct char_data *ch, const char *argument, int cmd)
+int do_wizlock(struct char_data *ch, const char *argument, int cmd)
 {
     if (DEBUG)
         log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
@@ -136,7 +138,7 @@ void do_wizlock(struct char_data *ch, const char *argument, int cmd)
     if (IS_NPC(ch))
     {
         cprintf(ch, "You cannot WizLock.\r\n");
-        return;
+        return TRUE;
     }
     if (WizLock)
     {
@@ -150,9 +152,10 @@ void do_wizlock(struct char_data *ch, const char *argument, int cmd)
         log_info("WizLock is now on.");
         WizLock = TRUE;
     }
+    return TRUE;
 }
 
-void do_emote(struct char_data *ch, const char *argument, int cmd)
+int do_emote(struct char_data *ch, const char *argument, int cmd)
 {
     int i = 0;
 
@@ -160,7 +163,7 @@ void do_emote(struct char_data *ch, const char *argument, int cmd)
         log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
     if (IS_NPC(ch) && (cmd != 0) && (cmd != 214))
-        return;
+        return TRUE;
 
     for (i = 0; *(argument + i) == ' '; i++)
         ;
@@ -175,9 +178,10 @@ void do_emote(struct char_data *ch, const char *argument, int cmd)
             cprintf(ch, "You emote: '%s'\r\n", argument + i);
         }
     }
+    return TRUE;
 }
 
-void do_echo(struct char_data *ch, const char *argument, int cmd)
+int do_echo(struct char_data *ch, const char *argument, int cmd)
 {
     int i = 0;
 
@@ -185,7 +189,7 @@ void do_echo(struct char_data *ch, const char *argument, int cmd)
         log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
     if (IS_NPC(ch))
-        return;
+        return TRUE;
 
     for (i = 0; *(argument + i) == ' '; i++)
         ;
@@ -211,9 +215,10 @@ void do_echo(struct char_data *ch, const char *argument, int cmd)
             cprintf(ch, "Ok.\r\n");
         }
     }
+    return TRUE;
 }
 
-void do_system(struct char_data *ch, const char *argument, int cmd)
+int do_system(struct char_data *ch, const char *argument, int cmd)
 {
     int i = 0;
 
@@ -221,7 +226,7 @@ void do_system(struct char_data *ch, const char *argument, int cmd)
         log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
     if (IS_NPC(ch))
-        return;
+        return TRUE;
 
     for (i = 0; *(argument + i) == ' '; i++)
         ;
@@ -232,9 +237,10 @@ void do_system(struct char_data *ch, const char *argument, int cmd)
     {
         allprintf("\r\n%s\r\n", argument + i);
     }
+    return TRUE;
 }
 
-void do_trans(struct char_data *ch, const char *argument, int cmd)
+int do_trans(struct char_data *ch, const char *argument, int cmd)
 {
     struct descriptor_data *i = NULL;
     struct char_data *victim = NULL;
@@ -245,7 +251,7 @@ void do_trans(struct char_data *ch, const char *argument, int cmd)
         log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
     if (IS_NPC(ch))
-        return;
+        return TRUE;
 
     only_argument(argument, buf);
     if (!*buf)
@@ -299,9 +305,10 @@ void do_trans(struct char_data *ch, const char *argument, int cmd)
             }
         cprintf(ch, "Ok.\r\n");
     }
+    return TRUE;
 }
 
-void do_at(struct char_data *ch, const char *argument, int cmd)
+int do_at(struct char_data *ch, const char *argument, int cmd)
 {
     char command_str[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
     char loc_str[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
@@ -314,13 +321,13 @@ void do_at(struct char_data *ch, const char *argument, int cmd)
         log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
     if (IS_NPC(ch))
-        return;
+        return TRUE;
 
     half_chop(argument, loc_str, command_str);
     if (!*loc_str)
     {
         cprintf(ch, "You must supply a room number or a name.\r\n");
-        return;
+        return TRUE;
     }
     if (!(target_mob = get_char_room_vis(ch, loc_str)))
     {
@@ -331,12 +338,12 @@ void do_at(struct char_data *ch, const char *argument, int cmd)
                 if (!(location = atoi(loc_str)))
                 {
                     cprintf(ch, "I have no idea where \"%s\" is...\r\n", loc_str);
-                    return;
+                    return TRUE;
                 }
                 else if (!(real_roomp(location)))
                 {
                     cprintf(ch, "That room exists only in your imagination.\r\n");
-                    return;
+                    return TRUE;
                 }
             }
             else
@@ -344,7 +351,7 @@ void do_at(struct char_data *ch, const char *argument, int cmd)
                 if ((location = target_obj->in_room) == NOWHERE)
                 {
                     cprintf(ch, "The object is not available.\r\n");
-                    return;
+                    return TRUE;
                 }
             }
         }
@@ -353,7 +360,7 @@ void do_at(struct char_data *ch, const char *argument, int cmd)
             if ((location = target_mob->in_room) == NOWHERE)
             {
                 cprintf(ch, "The target mobile is not available.\r\n");
-                return;
+                return TRUE;
             }
         }
     }
@@ -362,7 +369,7 @@ void do_at(struct char_data *ch, const char *argument, int cmd)
         if ((location = target_mob->in_room) == NOWHERE)
         {
             cprintf(ch, "The target mobile is not available.\r\n");
-            return;
+            return TRUE;
         }
     }
     /*
@@ -383,9 +390,10 @@ void do_at(struct char_data *ch, const char *argument, int cmd)
             char_from_room(ch);
             char_to_room(ch, original_loc);
         }
+    return TRUE;
 }
 
-void do_form(struct char_data *ch, const char *argument, int cmd)
+int do_form(struct char_data *ch, const char *argument, int cmd)
 {
     char buf[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
     int loc_nr = 0;
@@ -396,29 +404,29 @@ void do_form(struct char_data *ch, const char *argument, int cmd)
         log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
     if (IS_NPC(ch))
-        return;
+        return TRUE;
 
     only_argument(argument, buf);
     if (!*buf)
     {
         cprintf(ch, "Usage: FORM virtual_number.\r\n");
-        return;
+        return TRUE;
     }
     if (!(isdigit(*buf)))
     {
         cprintf(ch, "Usage: FORM virtual_number.\r\n");
-        return;
+        return TRUE;
     }
     loc_nr = atoi(buf);
     if (real_roomp(loc_nr))
     {
         cprintf(ch, "A room exists with that Vnum!\r\n");
-        return;
+        return TRUE;
     }
     else if (loc_nr < 0)
     {
         cprintf(ch, "You must use a positive Vnum!\r\n");
-        return;
+        return TRUE;
     }
     cprintf(ch, "You have formed a room.\r\n");
     allocate_room(loc_nr);
@@ -439,9 +447,10 @@ void do_form(struct char_data *ch, const char *argument, int cmd)
     snprintf(buf, MAX_INPUT_LENGTH, "%d", loc_nr);
     rp->name = (char *)strdup(buf);
     rp->description = (char *)strdup("New Room\n");
+    return TRUE;
 }
 
-void do_goto(struct char_data *ch, const char *argument, int cmd)
+int do_goto(struct char_data *ch, const char *argument, int cmd)
 {
     char buf[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
     int loc_nr = 0;
@@ -456,13 +465,13 @@ void do_goto(struct char_data *ch, const char *argument, int cmd)
         log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
     if (IS_NPC(ch))
-        return;
+        return TRUE;
 
     only_argument(argument, buf);
     if (!*buf)
     {
         cprintf(ch, "You must supply a room number or a name.\r\n");
-        return;
+        return TRUE;
     }
     if (isdigit(*buf) && NULL == index(buf, '.'))
     {
@@ -470,7 +479,7 @@ void do_goto(struct char_data *ch, const char *argument, int cmd)
         if (NULL == real_roomp(loc_nr))
         {
             cprintf(ch, "No room exists with that number.\r\n");
-            return;
+            return TRUE;
         }
         location = loc_nr;
     }
@@ -483,12 +492,12 @@ void do_goto(struct char_data *ch, const char *argument, int cmd)
         {
             cprintf(ch, "The object is not available.\r\n");
             cprintf(ch, "Try where #.object to nail its room number.\r\n");
-            return;
+            return TRUE;
         }
     else
     {
         cprintf(ch, "No such creature or object around.\r\n");
-        return;
+        return TRUE;
     }
 
     /*
@@ -498,7 +507,7 @@ void do_goto(struct char_data *ch, const char *argument, int cmd)
     if (!real_roomp(location))
     {
         log_error("Massive error in do_goto. Everyone Off NOW.");
-        return;
+        return TRUE;
     }
     if (IS_SET(real_roomp(location)->room_flags, PRIVATE))
     {
@@ -507,7 +516,7 @@ void do_goto(struct char_data *ch, const char *argument, int cmd)
         if (i > 1 && IS_MORTAL(ch))
         {
             cprintf(ch, "There's a private conversation going on in that room.\r\n");
-            return;
+            return TRUE;
         }
     }
     if (IS_SET(ch->specials.act, PLR_STEALTH))
@@ -555,9 +564,10 @@ void do_goto(struct char_data *ch, const char *argument, int cmd)
         act("$n appears from a cloud of mist.", FALSE, ch, 0, 0, TO_ROOM);
     }
     do_look(ch, "", 15);
+    return TRUE;
 }
 
-void do_home(struct char_data *ch, const char *argument, int cmd)
+int do_home(struct char_data *ch, const char *argument, int cmd)
 {
     char buf[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
     int location = 0;
@@ -567,7 +577,7 @@ void do_home(struct char_data *ch, const char *argument, int cmd)
         log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
     if (IS_NPC(ch))
-        return;
+        return TRUE;
 
     only_argument(argument, buf);
     if (!*buf)
@@ -582,7 +592,7 @@ void do_home(struct char_data *ch, const char *argument, int cmd)
     if (!real_roomp(location))
     {
         cprintf(ch, "Hmmmm... homeless, peniless, but surely not alone.\r\n");
-        return;
+        return TRUE;
     }
     if (IS_SET(ch->specials.act, PLR_STEALTH))
     {
@@ -629,9 +639,10 @@ void do_home(struct char_data *ch, const char *argument, int cmd)
         act("$n arrives and immediately curls up in $s spot.", FALSE, ch, 0, 0, TO_ROOM);
     }
     do_look(ch, "", 15);
+    return TRUE;
 }
 
-void do_apraise(struct char_data *ch, const char *argument, int cmd)
+int do_apraise(struct char_data *ch, const char *argument, int cmd)
 {
     char arg1[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
     char buf[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
@@ -644,14 +655,14 @@ void do_apraise(struct char_data *ch, const char *argument, int cmd)
         log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
     if (IS_NPC(ch))
-        return;
+        return TRUE;
 
     only_argument(argument, arg1);
 
     if (GET_MANA(ch) < 3)
     {
         cprintf(ch, "You can't seem to concentrate enough at the moment.\r\n");
-        return;
+        return TRUE;
     }
     chance = number(1, 101);
 
@@ -659,14 +670,14 @@ void do_apraise(struct char_data *ch, const char *argument, int cmd)
     {
         cprintf(ch, "You are unable to apraise this item.\r\n");
         GET_MANA(ch) -= 1;
-        return;
+        return TRUE;
     }
     GET_MANA(ch) -= 3;
 
     if (!*arg1)
     {
         cprintf(ch, "apraise what?\r\n");
-        return;
+        return TRUE;
     }
     else
     {
@@ -817,9 +828,10 @@ void do_apraise(struct char_data *ch, const char *argument, int cmd)
             cprintf(ch, "I don't see that here.\r\n");
         }
     }
+    return TRUE;
 }
 
-void do_stat(struct char_data *ch, const char *argument, int cmd)
+int do_stat(struct char_data *ch, const char *argument, int cmd)
 {
     struct affected_type *aff = NULL;
     struct room_data *rm = NULL;
@@ -844,7 +856,7 @@ void do_stat(struct char_data *ch, const char *argument, int cmd)
         log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
     if (IS_NPC(ch))
-        return;
+        return TRUE;
 
     argument = one_argument(argument, type);
     only_argument(argument, num);
@@ -861,7 +873,7 @@ void do_stat(struct char_data *ch, const char *argument, int cmd)
     if (!*type)
     {
         cprintf(ch, "Usage: stat < pc|mob|obj|room > [ name|vnum ]\r\n");
-        return;
+        return TRUE;
     }
     /*
      * ROOM
@@ -875,7 +887,7 @@ void do_stat(struct char_data *ch, const char *argument, int cmd)
             else
             {
                 cprintf(ch, "Usage: stat room [vnum]\r\n");
-                return;
+                return TRUE;
             }
         }
         rm = real_roomp(anumber);
@@ -977,7 +989,7 @@ void do_stat(struct char_data *ch, const char *argument, int cmd)
             for (; j; j = j->next_content)
                 cprintf(ch, "     %s [#%d]\r\n", j->name, ObjVnum(j));
         }
-        return;
+        return TRUE;
     }
     else if (!str_cmp("mob", type) || !str_cmp("pc", type))
     {
@@ -1000,7 +1012,7 @@ void do_stat(struct char_data *ch, const char *argument, int cmd)
                 if (!(k = read_mobile(anumber, VIRTUAL)))
                 {
                     cprintf(ch, "No such creature exists in Reality!\r\n");
-                    return;
+                    return TRUE;
                 }
                 else
                 {
@@ -1029,7 +1041,7 @@ void do_stat(struct char_data *ch, const char *argument, int cmd)
                             if (!(k = read_mobile(x, REAL)))
                             {
                                 cprintf(ch, "No such creature exists in Reality!\r\n");
-                                return;
+                                return TRUE;
                             }
                             else
                             {
@@ -1043,7 +1055,7 @@ void do_stat(struct char_data *ch, const char *argument, int cmd)
                     if (x > -1)
                     {
                         cprintf(ch, "No such creature exists in Reality!\r\n");
-                        return;
+                        return TRUE;
                     }
                 }
             }
@@ -1226,7 +1238,7 @@ void do_stat(struct char_data *ch, const char *argument, int cmd)
                 cprintf(ch, "%s\r\n", buf);
             }
         }
-        return;
+        return TRUE;
     }
     else if (!str_cmp("obj", type))
     {
@@ -1236,7 +1248,7 @@ void do_stat(struct char_data *ch, const char *argument, int cmd)
         if (anumber == -2)
         {
             cprintf(ch, "Usage: stat obj <name|vnum>\r\n");
-            return;
+            return TRUE;
         }
         /*
          * OBJECT in world
@@ -1249,7 +1261,7 @@ void do_stat(struct char_data *ch, const char *argument, int cmd)
                 if (!(j = read_object(anumber, VIRTUAL)))
                 {
                     cprintf(ch, "No such object exists in Reality!\r\n");
-                    return;
+                    return TRUE;
                 }
                 else
                 {
@@ -1263,7 +1275,7 @@ void do_stat(struct char_data *ch, const char *argument, int cmd)
             if (!(j = get_obj_vis(ch, num)))
             {
                 cprintf(ch, "No such object is visible in the Realm.\r\n");
-                return;
+                return TRUE;
             }
         }
         vnum = (j->item_number >= 0) ? obj_index[j->item_number].vnum : 0;
@@ -1457,16 +1469,17 @@ void do_stat(struct char_data *ch, const char *argument, int cmd)
             sprinttype(j->affected[i].location, apply_types, buf2);
             cprintf(ch, "    Affects : %s By %d\r\n", buf2, j->affected[i].modifier);
         }
-        return;
+        return TRUE;
     }
     else
     {
         cprintf(ch, "Usage: stat < pc|mob|obj|room > [ name|vnum ]\r\n");
-        return;
+        return TRUE;
     }
+    return TRUE;
 }
 
-void do_pretitle(struct char_data *ch, const char *argument, int cmd)
+int do_pretitle(struct char_data *ch, const char *argument, int cmd)
 {
     char name[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
     char pretitle[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
@@ -1483,17 +1496,18 @@ void do_pretitle(struct char_data *ch, const char *argument, int cmd)
     if (!(vict = get_char_vis(ch, name)))
     {
         cprintf(ch, "I don't see them here?\r\n");
-        return;
+        return TRUE;
     }
     if (!strlen(pretitle))
     {
         GET_PRETITLE(vict) = NULL;
-        return;
+        return TRUE;
     }
     GET_PRETITLE(vict) = strdup(pretitle);
+    return TRUE;
 }
 
-void do_set(struct char_data *ch, const char *argument, int cmd)
+int do_set(struct char_data *ch, const char *argument, int cmd)
 {
     struct char_data *mob = NULL;
     char field[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
@@ -1514,7 +1528,7 @@ void do_set(struct char_data *ch, const char *argument, int cmd)
         log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
     if (IS_NPC(ch))
-        return;
+        return TRUE;
 
     argument = one_argument(argument, name);
     argument = one_argument(argument, field);
@@ -1534,7 +1548,7 @@ void do_set(struct char_data *ch, const char *argument, int cmd)
             no++;
         }
         cprintf(ch, "%s\r\n", buf);
-        return;
+        return TRUE;
     }
     for (index_value = 0; pset_list[index_value]; index_value++)
         if (!strcmp(field, pset_list[index_value]))
@@ -1545,14 +1559,14 @@ void do_set(struct char_data *ch, const char *argument, int cmd)
             if (!x)
             {
                 cprintf(ch, "You must also supply a value\r\n");
-                return;
+                return TRUE;
             }
             break;
         }
     if (IS_PC(mob) && mob != ch && GetMaxLevel(mob) >= GetMaxLevel(ch))
     {
         cprintf(ch, "You wish you could set %s's stats...\r\n", GET_NAME(mob));
-        return;
+        return TRUE;
     }
     switch (index_value)
     {
@@ -1587,7 +1601,7 @@ void do_set(struct char_data *ch, const char *argument, int cmd)
         if (ch == mob && parm > 25 && GetMaxLevel(ch) < LOKI)
         {
             cprintf(ch, "Sure, we all want to be more powerful.\r\n");
-            return;
+            return TRUE;
         }
         mob->abilities.str = parm;
         mob->tmpabilities = mob->abilities;
@@ -1596,7 +1610,7 @@ void do_set(struct char_data *ch, const char *argument, int cmd)
         if (ch == mob && parm > 25 && GetMaxLevel(ch) < LOKI)
         {
             cprintf(ch, "Sure, we all want to be more powerful.\r\n");
-            return;
+            return TRUE;
         }
         mob->abilities.intel = parm;
         mob->tmpabilities = mob->abilities;
@@ -1605,7 +1619,7 @@ void do_set(struct char_data *ch, const char *argument, int cmd)
         if (ch == mob && parm > 25 && GetMaxLevel(ch) < LOKI)
         {
             cprintf(ch, "Sure, we all want to be more powerful.\r\n");
-            return;
+            return TRUE;
         }
         mob->abilities.wis = parm;
         mob->tmpabilities = mob->abilities;
@@ -1614,7 +1628,7 @@ void do_set(struct char_data *ch, const char *argument, int cmd)
         if (ch == mob && parm > 25 && GetMaxLevel(ch) < LOKI)
         {
             cprintf(ch, "Sure, we all want to be more powerful.\r\n");
-            return;
+            return TRUE;
         }
         mob->abilities.dex = parm;
         mob->tmpabilities = mob->abilities;
@@ -1623,7 +1637,7 @@ void do_set(struct char_data *ch, const char *argument, int cmd)
         if (ch == mob && parm > 25 && GetMaxLevel(ch) < LOKI)
         {
             cprintf(ch, "Sure, we all want to be more powerful.\r\n");
-            return;
+            return TRUE;
         }
         mob->abilities.con = parm;
         mob->tmpabilities = mob->abilities;
@@ -1654,12 +1668,12 @@ void do_set(struct char_data *ch, const char *argument, int cmd)
         if (ch == mob && parm > GET_LEVEL(ch, MAGE_LEVEL_IND))
         {
             cprintf(ch, "Sure, we all want to be more powerful.\r\n");
-            return;
+            return TRUE;
         }
         if (ch != mob && IS_IMMORTAL(mob) && str_cmp(GET_NAME(ch), "Quixadhal") && parm > GET_LEVEL(ch, MAGE_LEVEL_IND))
         {
             cprintf(ch, "Ask the Dread Lord to make %s mightier!\r\n", GET_NAME(mob));
-            return;
+            return TRUE;
         }
         if (parm < 1)
         {
@@ -1675,13 +1689,13 @@ void do_set(struct char_data *ch, const char *argument, int cmd)
         if (ch == mob && parm > GET_LEVEL(ch, CLERIC_LEVEL_IND))
         {
             cprintf(ch, "Sure, we all want to be more powerful.\r\n");
-            return;
+            return TRUE;
         }
         if (ch != mob && IS_IMMORTAL(mob) && str_cmp(GET_NAME(ch), "Quixadhal") &&
             parm > GET_LEVEL(ch, CLERIC_LEVEL_IND))
         {
             cprintf(ch, "Ask the Dread Lord to make %s mightier!\r\n", GET_NAME(mob));
-            return;
+            return TRUE;
         }
         if (parm < 1)
         {
@@ -1697,13 +1711,13 @@ void do_set(struct char_data *ch, const char *argument, int cmd)
         if (ch == mob && parm > GET_LEVEL(ch, WARRIOR_LEVEL_IND))
         {
             cprintf(ch, "Sure, we all want to be more powerful.\r\n");
-            return;
+            return TRUE;
         }
         if (ch != mob && IS_IMMORTAL(mob) && str_cmp(GET_NAME(ch), "Quixadhal") &&
             parm > GET_LEVEL(ch, WARRIOR_LEVEL_IND))
         {
             cprintf(ch, "Ask the Dread Lord to make %s mightier!\r\n", GET_NAME(mob));
-            return;
+            return TRUE;
         }
         if (parm < 1)
         {
@@ -1719,13 +1733,13 @@ void do_set(struct char_data *ch, const char *argument, int cmd)
         if (ch == mob && parm > GET_LEVEL(ch, THIEF_LEVEL_IND))
         {
             cprintf(ch, "Sure, we all want to be more powerful.\r\n");
-            return;
+            return TRUE;
         }
         if (ch != mob && IS_IMMORTAL(mob) && str_cmp(GET_NAME(ch), "Quixadhal") &&
             parm > GET_LEVEL(ch, THIEF_LEVEL_IND))
         {
             cprintf(ch, "Ask the Dread Lord to make %s mightier!\r\n", GET_NAME(mob));
-            return;
+            return TRUE;
         }
         if (parm < 1)
         {
@@ -1741,13 +1755,13 @@ void do_set(struct char_data *ch, const char *argument, int cmd)
         if (ch == mob && parm > GET_LEVEL(ch, RANGER_LEVEL_IND))
         {
             cprintf(ch, "Sure, we all want to be more powerful.\r\n");
-            return;
+            return TRUE;
         }
         if (ch != mob && IS_IMMORTAL(mob) && str_cmp(GET_NAME(ch), "Quixadhal") &&
             parm > GET_LEVEL(ch, RANGER_LEVEL_IND))
         {
             cprintf(ch, "Ask the Dread Lord to make %s mightier!\r\n", GET_NAME(mob));
-            return;
+            return TRUE;
         }
         if (parm < 1)
         {
@@ -1763,13 +1777,13 @@ void do_set(struct char_data *ch, const char *argument, int cmd)
         if (ch == mob && parm > GET_LEVEL(ch, DRUID_LEVEL_IND))
         {
             cprintf(ch, "Sure, we all want to be more powerful.\r\n");
-            return;
+            return TRUE;
         }
         if (ch != mob && IS_IMMORTAL(mob) && str_cmp(GET_NAME(ch), "Quixadhal") &&
             parm > GET_LEVEL(ch, DRUID_LEVEL_IND))
         {
             cprintf(ch, "Ask the Dread Lord to make %s mightier!\r\n", GET_NAME(mob));
-            return;
+            return TRUE;
         }
         if (parm < 1)
         {
@@ -1785,7 +1799,7 @@ void do_set(struct char_data *ch, const char *argument, int cmd)
         if (!IS_NPC(mob))
         {
             cprintf(ch, "You should tell %s to be more aggressive!\r\n", GET_NAME(mob));
-            return;
+            return TRUE;
         }
         if (parm)
         {
@@ -1808,7 +1822,7 @@ void do_set(struct char_data *ch, const char *argument, int cmd)
         if (!IS_NPC(mob))
         {
             cprintf(ch, "You should tell %s to wander about more!\r\n", GET_NAME(mob));
-            return;
+            return TRUE;
         }
         if (parm)
         {
@@ -1839,9 +1853,10 @@ void do_set(struct char_data *ch, const char *argument, int cmd)
         }
         cprintf(ch, "%s\r\n", buf);
     }
+    return TRUE;
 }
 
-void do_snoop(struct char_data *ch, const char *argument, int cmd)
+int do_snoop(struct char_data *ch, const char *argument, int cmd)
 {
     static char arg[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
     struct char_data *victim = NULL;
@@ -1850,27 +1865,27 @@ void do_snoop(struct char_data *ch, const char *argument, int cmd)
         log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
     if (!ch->desc)
-        return;
+        return TRUE;
 
     if (IS_NPC(ch))
-        return;
+        return TRUE;
 
     only_argument(argument, arg);
 
     if (!*arg)
     {
         cprintf(ch, "Snoop who ?\r\n");
-        return;
+        return TRUE;
     }
     if (!(victim = get_char_vis(ch, arg)))
     {
         cprintf(ch, "No such person around.\r\n");
-        return;
+        return TRUE;
     }
     if (!victim->desc)
     {
         cprintf(ch, "There's no link.. nothing to snoop.\r\n");
-        return;
+        return TRUE;
     }
     if (victim == ch)
     {
@@ -1884,17 +1899,17 @@ void do_snoop(struct char_data *ch, const char *argument, int cmd)
                          ch->desc->snoop.snooping->player.name);
             ch->desc->snoop.snooping = 0;
         }
-        return;
+        return TRUE;
     }
     if (victim->desc->snoop.snoop_by)
     {
         cprintf(ch, "Busy already. \r\n");
-        return;
+        return TRUE;
     }
     if (GetMaxLevel(victim) >= GetMaxLevel(ch))
     {
         cprintf(ch, "You failed.\r\n");
-        return;
+        return TRUE;
     }
     cprintf(ch, "Ok. \r\n");
 
@@ -1904,10 +1919,10 @@ void do_snoop(struct char_data *ch, const char *argument, int cmd)
 
     ch->desc->snoop.snooping = victim;
     victim->desc->snoop.snoop_by = ch;
-    return;
+    return TRUE;
 }
 
-void do_switch(struct char_data *ch, const char *argument, int cmd)
+int do_switch(struct char_data *ch, const char *argument, int cmd)
 {
     static char arg[80] = "\0\0\0\0\0\0\0";
     struct char_data *victim = NULL;
@@ -1916,7 +1931,7 @@ void do_switch(struct char_data *ch, const char *argument, int cmd)
         log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
     if (IS_NPC(ch))
-        return;
+        return TRUE;
 
     only_argument(argument, arg);
 
@@ -1931,19 +1946,19 @@ void do_switch(struct char_data *ch, const char *argument, int cmd)
             if (!(victim = get_char(arg)))
             {
                 cprintf(ch, "They aren't here.\r\n");
-                return;
+                return TRUE;
             }
         }
         {
             if (ch == victim)
             {
                 cprintf(ch, "He he he... We are jolly funny today, eh?\r\n");
-                return;
+                return TRUE;
             }
             if (!ch->desc || ch->desc->snoop.snoop_by || ch->desc->snoop.snooping)
             {
                 cprintf(ch, "Mixing snoop & switch is bad for your health.\r\n");
-                return;
+                return TRUE;
             }
             if (victim->desc || (!IS_NPC(victim)) || IS_SET(victim->specials.act, ACT_SWITCH))
             {
@@ -1962,9 +1977,10 @@ void do_switch(struct char_data *ch, const char *argument, int cmd)
             }
         }
     }
+    return TRUE;
 }
 
-void do_return(struct char_data *ch, const char *argument, int cmd)
+int do_return(struct char_data *ch, const char *argument, int cmd)
 {
     struct char_data *mob = NULL;
     struct char_data *per = NULL;
@@ -1973,14 +1989,14 @@ void do_return(struct char_data *ch, const char *argument, int cmd)
         log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
     if (!ch->desc)
-        return;
+        return TRUE;
 
     if (!ch->desc->original ||
         (IS_NOT_SET(ch->specials.act, ACT_SWITCH) && IS_NOT_SET(ch->specials.act, ACT_POLYSELF) &&
          IS_NOT_SET(ch->specials.act, ACT_POLYOTHER)))
     {
         cprintf(ch, "Huh?  Talk sense I can't understand you.\r\n");
-        return;
+        return TRUE;
     }
     else
     {
@@ -2013,9 +2029,10 @@ void do_return(struct char_data *ch, const char *argument, int cmd)
             extract_char(mob);
         }
     }
+    return TRUE;
 }
 
-void do_force(struct char_data *ch, const char *argument, int cmd)
+int do_force(struct char_data *ch, const char *argument, int cmd)
 {
     struct descriptor_data *i = NULL;
     struct char_data *vict = NULL;
@@ -2026,7 +2043,7 @@ void do_force(struct char_data *ch, const char *argument, int cmd)
         log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
     if (IS_NPC(ch) && (cmd != 0))
-        return;
+        return TRUE;
 
     half_chop(argument, name, to_force);
 
@@ -2067,9 +2084,10 @@ void do_force(struct char_data *ch, const char *argument, int cmd)
             }
         cprintf(ch, "Ok.\r\n");
     }
+    return TRUE;
 }
 
-void do_load(struct char_data *ch, const char *argument, int cmd)
+int do_load(struct char_data *ch, const char *argument, int cmd)
 {
     struct char_data *mob = NULL;
     struct obj_data *obj = NULL;
@@ -2081,7 +2099,7 @@ void do_load(struct char_data *ch, const char *argument, int cmd)
         log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
     if (IS_NPC(ch))
-        return;
+        return TRUE;
 
     argument = one_argument(argument, type);
 
@@ -2108,7 +2126,7 @@ void do_load(struct char_data *ch, const char *argument, int cmd)
         if (anumber < 0 || anumber > top_of_mobt)
         {
             cprintf(ch, "There is no such monster.\r\n");
-            return;
+            return TRUE;
         }
         mob = read_mobile(anumber, REAL);
         char_to_room(mob, ch->in_room);
@@ -2134,7 +2152,7 @@ void do_load(struct char_data *ch, const char *argument, int cmd)
         if (anumber < 0 || anumber > top_of_objt)
         {
             cprintf(ch, "There is no such object.\r\n");
-            return;
+            return TRUE;
         }
         obj = read_object(anumber, REAL);
         obj_to_char(obj, ch);
@@ -2146,6 +2164,7 @@ void do_load(struct char_data *ch, const char *argument, int cmd)
     {
         cprintf(ch, "Usage:  load <object|mobile> <vnum|name>\r\n");
     }
+    return TRUE;
 }
 
 static int purge_one_room(int rnum, struct room_data *rp, void *data)
@@ -2158,7 +2177,7 @@ static int purge_one_room(int rnum, struct room_data *rp, void *data)
         log_info("called %s with %d, %08zx, %08zx", __PRETTY_FUNCTION__, rnum, (size_t)rp, (size_t)range);
 
     if (rnum == 0 || rnum < range[0] || rnum > range[1])
-        return 0;
+        return FALSE;
 
     while (rp->people)
     {
@@ -2179,11 +2198,11 @@ static int purge_one_room(int rnum, struct room_data *rp, void *data)
     }
     completely_cleanout_room(rp); /* clear out the pointers */
     hash_remove(&room_db, rnum);  /* remove it from the database */
-    return 1;
+    return TRUE;
 }
 
 /* clean a room of all mobiles and objects */
-void do_purge(struct char_data *ch, const char *argument, int cmd)
+int do_purge(struct char_data *ch, const char *argument, int cmd)
 {
     struct char_data *vict = NULL;
     struct char_data *next_v = NULL;
@@ -2195,7 +2214,7 @@ void do_purge(struct char_data *ch, const char *argument, int cmd)
         log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
     if (IS_NPC(ch))
-        return;
+        return TRUE;
 
     only_argument(argument, name);
 
@@ -2206,7 +2225,7 @@ void do_purge(struct char_data *ch, const char *argument, int cmd)
             if ((!IS_NPC(vict) || IS_SET(vict->specials.act, ACT_POLYSELF)) && (GetMaxLevel(ch) < IMPLEMENTOR))
             {
                 cprintf(ch, "I'm sorry, Dave.  I can't let you do that.\r\n");
-                return;
+                return TRUE;
             }
             act("$n disintegrates $N.", FALSE, ch, 0, vict, TO_NOTVICT);
 
@@ -2243,13 +2262,13 @@ void do_purge(struct char_data *ch, const char *argument, int cmd)
                 if (GetMaxLevel(ch) < IMPLEMENTOR)
                 {
                     cprintf(ch, "I'm sorry, Dave.  I can't let you do that.\r\n");
-                    return;
+                    return TRUE;
                 }
                 argument = one_argument(argument, name);
                 if (!isdigit(*name))
                 {
                     cprintf(ch, "purge room start [end]");
-                    return;
+                    return TRUE;
                 }
                 range[0] = atoi(name);
                 argument = one_argument(argument, name);
@@ -2261,14 +2280,14 @@ void do_purge(struct char_data *ch, const char *argument, int cmd)
                 if (range[0] == 0 || range[1] == 0)
                 {
                     cprintf(ch, "usage: purge room start [end]\r\n");
-                    return;
+                    return TRUE;
                 }
                 hash_iterate(&room_db, purge_one_room, range);
             }
             else
             {
                 cprintf(ch, "I don't see that here.\r\n");
-                return;
+                return TRUE;
             }
         }
 
@@ -2277,11 +2296,11 @@ void do_purge(struct char_data *ch, const char *argument, int cmd)
     else
     { /* no argument. clean out the room */
         if (GetMaxLevel(ch) < DEMIGOD)
-            return;
+            return TRUE;
         if (IS_NPC(ch))
         {
             cprintf(ch, "You would only kill yourself..\r\n");
-            return;
+            return TRUE;
         }
         act("$n gestures, the world erupts around you in flames!", FALSE, ch, 0, 0, TO_ROOM);
         rprintf(ch->in_room, "The world seems a little cleaner.\r\n");
@@ -2299,6 +2318,7 @@ void do_purge(struct char_data *ch, const char *argument, int cmd)
             extract_obj(obj);
         }
     }
+    return TRUE;
 }
 
 /* Give pointers to the five abilities */
@@ -2597,7 +2617,7 @@ void start_character(struct char_data *ch)
     ch->player.time.logon = time(0);
 }
 
-void do_advance(struct char_data *ch, const char *argument, int cmd)
+int do_advance(struct char_data *ch, const char *argument, int cmd)
 {
     struct char_data *victim = NULL;
     char name[100] = "\0\0\0\0\0\0\0";
@@ -2611,7 +2631,7 @@ void do_advance(struct char_data *ch, const char *argument, int cmd)
         log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
     if (IS_NPC(ch))
-        return;
+        return TRUE;
 
     argument = one_argument(argument, name);
 
@@ -2620,31 +2640,31 @@ void do_advance(struct char_data *ch, const char *argument, int cmd)
         if (!(victim = get_char_room_vis(ch, name)))
         {
             cprintf(ch, "That player is not here.\r\n");
-            return;
+            return TRUE;
         }
     }
     else
     {
         cprintf(ch, "Advance who?\r\n");
-        return;
+        return TRUE;
     }
 
     if (IS_NPC(victim))
     {
         cprintf(ch, "NO! Not on NPC's.\r\n");
-        return;
+        return TRUE;
     }
     if (IS_IMMORTAL(victim))
     {
         cprintf(ch, "But they are already as powerful as you can imagine!\r\n");
-        return;
+        return TRUE;
     }
     argument = one_argument(argument, chclass);
 
     if (!*chclass)
     {
         cprintf(ch, "Classes you may suply: [ M C W T R ]\r\n");
-        return;
+        return TRUE;
     }
     switch (*chclass)
     {
@@ -2684,7 +2704,7 @@ void do_advance(struct char_data *ch, const char *argument, int cmd)
 
     default:
         cprintf(ch, "Classes you may use [ M C W T R ]\r\n");
-        return;
+        return TRUE;
         break;
     }
 
@@ -2695,14 +2715,14 @@ void do_advance(struct char_data *ch, const char *argument, int cmd)
     else if (!*level)
     {
         cprintf(ch, "You must supply a level number.\r\n");
-        return;
+        return TRUE;
     }
     else
     {
         if (!isdigit(*level))
         {
             cprintf(ch, "Third argument must be a positive integer.\r\n");
-            return;
+            return TRUE;
         }
         if ((newlevel = atoi(level)) < GET_LEVEL(victim, lin_class))
         {
@@ -2711,12 +2731,12 @@ void do_advance(struct char_data *ch, const char *argument, int cmd)
             if ((i = GET_LEVEL(victim, lin_class) - newlevel) < 1)
             {
                 cprintf(ch, "Sorry, must leave them at level 1 at least!\r\n");
-                return;
+                return TRUE;
             }
             for (; i > 0; i--)
                 drop_level(victim, lin_class);
             set_title(victim);
-            return;
+            return TRUE;
         }
         adv = newlevel - GET_LEVEL(victim, lin_class);
     }
@@ -2724,17 +2744,17 @@ void do_advance(struct char_data *ch, const char *argument, int cmd)
     if (((adv + GET_LEVEL(victim, lin_class)) > 1) && (GetMaxLevel(ch) < IMPLEMENTOR))
     {
         cprintf(ch, "Thou art not godly enough.\r\n");
-        return;
+        return TRUE;
     }
     if ((adv + GET_LEVEL(victim, lin_class)) > IMPLEMENTOR)
     {
         cprintf(ch, "Implementor is the highest possible level.\r\n");
-        return;
+        return TRUE;
     }
     if (((adv + GET_LEVEL(victim, lin_class)) < 1) && ((adv + GET_LEVEL(victim, lin_class)) != 1))
     {
         cprintf(ch, "1 is the lowest possible level.\r\n");
-        return;
+        return TRUE;
     }
     cprintf(ch, "You feel generous.\r\n");
     act("$n makes some strange gestures.\r\nA strange feeling comes upon you,"
@@ -2767,9 +2787,10 @@ void do_advance(struct char_data *ch, const char *argument, int cmd)
             cprintf(ch, "IMPOSSIBLE! IDIOTIC!\r\n");
         }
     }
+    return TRUE;
 }
 
-void do_reroll(struct char_data *ch, const char *argument, int cmd)
+int do_reroll(struct char_data *ch, const char *argument, int cmd)
 {
     struct char_data *victim = NULL;
     char buf[100] = "\0\0\0\0\0\0\0";
@@ -2778,7 +2799,7 @@ void do_reroll(struct char_data *ch, const char *argument, int cmd)
         log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
     if (IS_NPC(ch))
-        return;
+        return TRUE;
 
     if (IS_IMMORTAL(ch))
     {
@@ -2798,14 +2819,16 @@ void do_reroll(struct char_data *ch, const char *argument, int cmd)
         cprintf(ch, "You feel... different!\r\n");
         roll_abilities(ch);
     }
+    return TRUE;
 }
 
-void do_restore_all(struct char_data *ch, const char *argument, int cmd)
+int do_restore_all(struct char_data *ch, const char *argument, int cmd)
 {
     if (DEBUG)
         log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
     do_restore(ch, "all", 0);
+    return TRUE;
 }
 
 void restore_one_victim(struct char_data *victim)
@@ -2879,7 +2902,7 @@ void restore_one_victim(struct char_data *victim)
     update_pos(victim);
 }
 
-void do_restore(struct char_data *ch, const char *argument, int cmd)
+int do_restore(struct char_data *ch, const char *argument, int cmd)
 {
     struct char_data *victim = NULL;
     struct descriptor_data *i = NULL;
@@ -2923,9 +2946,10 @@ void do_restore(struct char_data *ch, const char *argument, int cmd)
             cprintf(ch, "%s restored.\r\n", GET_NAME(victim));
         act("You have been fully healed by $N!", FALSE, victim, 0, ch, TO_CHAR);
     }
+    return TRUE;
 }
 
-void do_show_logs(struct char_data *ch, const char *argument, int cmd)
+int do_show_logs(struct char_data *ch, const char *argument, int cmd)
 {
     if (DEBUG)
         log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
@@ -2934,17 +2958,18 @@ void do_show_logs(struct char_data *ch, const char *argument, int cmd)
     {
         cprintf(ch, "You will no longer recieve the logs to your screen.\r\n");
         REMOVE_BIT(ch->specials.new_act, NEW_PLR_LOGS);
-        return;
+        return TRUE;
     }
     else
     {
         cprintf(ch, "You WILL recieve the logs to your screen.\r\n");
         SET_BIT(ch->specials.new_act, NEW_PLR_LOGS);
-        return;
+        return TRUE;
     }
+    return TRUE;
 }
 
-void do_noshout(struct char_data *ch, const char *argument, int cmd)
+int do_noshout(struct char_data *ch, const char *argument, int cmd)
 {
     struct char_data *vict = NULL;
     struct obj_data *dummy = NULL;
@@ -2954,7 +2979,7 @@ void do_noshout(struct char_data *ch, const char *argument, int cmd)
         log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
     if (IS_NPC(ch))
-        return;
+        return TRUE;
 
     only_argument(argument, buf);
 
@@ -2991,9 +3016,10 @@ void do_noshout(struct char_data *ch, const char *argument, int cmd)
     {
         cprintf(ch, "Sorry, you can't do that\r\n");
     }
+    return TRUE;
 }
 
-void do_pager(struct char_data *ch, const char *argument, int cmd)
+int do_pager(struct char_data *ch, const char *argument, int cmd)
 {
     if (DEBUG)
         log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
@@ -3008,9 +3034,10 @@ void do_pager(struct char_data *ch, const char *argument, int cmd)
         cprintf(ch, "You now USE the Wiley Pager.\r\n");
         SET_BIT(ch->specials.new_act, NEW_PLR_PAGER);
     }
+    return TRUE;
 }
 
-void do_nohassle(struct char_data *ch, const char *argument, int cmd)
+int do_nohassle(struct char_data *ch, const char *argument, int cmd)
 {
     struct char_data *vict = NULL;
     struct obj_data *dummy = NULL;
@@ -3020,7 +3047,7 @@ void do_nohassle(struct char_data *ch, const char *argument, int cmd)
         log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
     if (IS_NPC(ch))
-        return;
+        return TRUE;
 
     only_argument(argument, buf);
 
@@ -3043,9 +3070,10 @@ void do_nohassle(struct char_data *ch, const char *argument, int cmd)
         act("$E might object to that.. better not.", 0, ch, 0, vict, TO_CHAR);
     else
         cprintf(ch, "The implementor won't let you set this on mortals...\r\n");
+    return TRUE;
 }
 
-void do_stealth(struct char_data *ch, const char *argument, int cmd)
+int do_stealth(struct char_data *ch, const char *argument, int cmd)
 {
     struct char_data *vict = NULL;
     struct obj_data *dummy = NULL;
@@ -3055,7 +3083,7 @@ void do_stealth(struct char_data *ch, const char *argument, int cmd)
         log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
     if (IS_NPC(ch))
-        return;
+        return TRUE;
 
     only_argument(argument, buf);
 
@@ -3078,6 +3106,7 @@ void do_stealth(struct char_data *ch, const char *argument, int cmd)
         act("$E might object to that.. better not.", 0, ch, 0, vict, TO_CHAR);
     else
         cprintf(ch, "The implementor won't let you set this on mortals...\r\n");
+    return TRUE;
 }
 
 static void print_room(int rnum, struct room_data *rp, struct string_block *sb)
@@ -3118,7 +3147,7 @@ static int print_death_room(int rnum, struct room_data *rp, void *sb)
     if (rp && rp->room_flags & DEATH)
         print_room(rnum, rp, (struct string_block *)sb);
 
-    return 1;
+    return TRUE;
 }
 
 static int print_private_room(int rnum, struct room_data *rp, void *sb)
@@ -3129,7 +3158,7 @@ static int print_private_room(int rnum, struct room_data *rp, void *sb)
     if (rp && rp->room_flags & PRIVATE)
         print_room(rnum, rp, (struct string_block *)sb);
 
-    return 1;
+    return TRUE;
 }
 
 static int show_room_zone(int rnum, struct room_data *rp, void *data)
@@ -3141,7 +3170,7 @@ static int show_room_zone(int rnum, struct room_data *rp, void *data)
         log_info("called %s with %d, %08zx, %08zx", __PRETTY_FUNCTION__, rnum, (size_t)rp, (size_t)srzs);
 
     if (!rp || rp->number < srzs->bottom || rp->number > srzs->top)
-        return 0; /* optimize later */
+        return FALSE; /* optimize later */
 
     if (srzs->blank && (srzs->lastblank + 1 != rp->number))
     {
@@ -3156,7 +3185,7 @@ static int show_room_zone(int rnum, struct room_data *rp, void *data)
             srzs->startblank = srzs->lastblank;
             srzs->blank = 1;
         }
-        return 0;
+        return FALSE;
     }
     else if (srzs->blank)
     {
@@ -3165,10 +3194,10 @@ static int show_room_zone(int rnum, struct room_data *rp, void *data)
         srzs->blank = 0;
     }
     print_room(rnum, rp, srzs->sb);
-    return 1;
+    return TRUE;
 }
 
-void do_show(struct char_data *ch, const char *argument, int cmd)
+int do_show(struct char_data *ch, const char *argument, int cmd)
 {
     char buf[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
     char zonenum[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
@@ -3183,7 +3212,7 @@ void do_show(struct char_data *ch, const char *argument, int cmd)
         log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
     if (IS_NPC(ch))
-        return;
+        return TRUE;
 
     argument = one_argument(argument, buf);
     init_string_block(&sb);
@@ -3235,7 +3264,7 @@ void do_show(struct char_data *ch, const char *argument, int cmd)
         {
             snprintf(buf, MAX_STRING_LENGTH, "That is not a valid zone_number\r\n");
             append_to_string_block(&sb, buf);
-            return;
+            return TRUE;
         }
         if (zone >= 0)
         {
@@ -3310,9 +3339,10 @@ void do_show(struct char_data *ch, const char *argument, int cmd)
     }
     page_string_block(&sb, ch);
     destroy_string_block(&sb);
+    return TRUE;
 }
 
-void do_debug(struct char_data *ch, const char *argument, int cmd)
+int do_debug(struct char_data *ch, const char *argument, int cmd)
 {
     char arg[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
     int level = 0;
@@ -3362,10 +3392,10 @@ void do_debug(struct char_data *ch, const char *argument, int cmd)
     {
         cprintf(ch, "Usage:  debug [on|off|<level>]\r\n");
     }
-    return;
+    return TRUE;
 }
 
-void do_invis(struct char_data *ch, const char *argument, int cmd)
+int do_invis(struct char_data *ch, const char *argument, int cmd)
 {
     int level = 0;
 
@@ -3381,7 +3411,7 @@ void do_invis(struct char_data *ch, const char *argument, int cmd)
             if (level >= GetMaxLevel(ch))
             {
                 cprintf(ch, "Sorry, you cant invis that high yet!\r\n");
-                return;
+                return TRUE;
             }
         }
         ch->invis_level = level;
@@ -3400,9 +3430,10 @@ void do_invis(struct char_data *ch, const char *argument, int cmd)
             cprintf(ch, "You are now invisible to level %d.\r\n", GetMaxLevel(ch) - 1);
         }
     }
+    return TRUE;
 }
 
-void do_reset(struct char_data *ch, const char *argument, int cmd)
+int do_reset(struct char_data *ch, const char *argument, int cmd)
 {
     int start = 0;
     int finish = 0;
@@ -3415,7 +3446,7 @@ void do_reset(struct char_data *ch, const char *argument, int cmd)
         log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
     if (IS_NPC(ch))
-        return;
+        return TRUE;
     argument = one_argument(argument, start_level);
     if (!strcasecmp(start_level, "all"))
     {
@@ -3451,7 +3482,7 @@ void do_reset(struct char_data *ch, const char *argument, int cmd)
         }
         else
         {
-            return;
+            return TRUE;
         }
     }
     for (i = start; i <= finish; i++)
@@ -3471,6 +3502,7 @@ void do_reset(struct char_data *ch, const char *argument, int cmd)
         cprintf(ch, "You have reset Zone %d.\r\n", start);
         log_reset("Reset of Zone [#%d] by %s.", start, GET_NAME(ch));
     }
+    return TRUE;
 }
 
 static int zone_purge_effect(int rnum, struct room_data *rp, void *data)
@@ -3485,7 +3517,7 @@ static int zone_purge_effect(int rnum, struct room_data *rp, void *data)
         log_info("called %s with %d, %08zx, %08zx", __PRETTY_FUNCTION__, rnum, (size_t)rp, (size_t)zones);
 
     if (!rp || rp->zone < zones[0] || rp->zone > zones[1])
-        return 0;
+        return FALSE;
     rprintf(rnum, "Flames shoot skyward all around you, and it grows quiet.\r\n");
 
     for (vict = rp->people; vict; vict = next_v)
@@ -3499,10 +3531,10 @@ static int zone_purge_effect(int rnum, struct room_data *rp, void *data)
         next_o = obj->next_content;
         extract_obj(obj);
     }
-    return 1;
+    return TRUE;
 }
 
-void do_zone_purge(struct char_data *ch, const char *argument, int cmd)
+int do_zone_purge(struct char_data *ch, const char *argument, int cmd)
 {
     int zones[2];
     struct room_data *rp = NULL;
@@ -3513,7 +3545,7 @@ void do_zone_purge(struct char_data *ch, const char *argument, int cmd)
         log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
     if (IS_NPC(ch))
-        return;
+        return TRUE;
     argument = one_argument(argument, start_level);
     if (!strcasecmp(start_level, "all"))
     {
@@ -3549,7 +3581,7 @@ void do_zone_purge(struct char_data *ch, const char *argument, int cmd)
         }
         else
         {
-            return;
+            return TRUE;
         }
     }
     hash_iterate(&room_db, zone_purge_effect, zones);
@@ -3563,12 +3595,14 @@ void do_zone_purge(struct char_data *ch, const char *argument, int cmd)
         cprintf(ch, "You have cleaned Zone %d.\r\n", zones[0]);
         log_reset("Purge of Zone [#%d] by %s.", zones[0], GET_NAME(ch));
     }
+    return TRUE;
 }
 
-void do_not_yet_implemented(struct char_data *ch, const char *argument, int cmd)
+int do_not_yet_implemented(struct char_data *ch, const char *argument, int cmd)
 {
     if (DEBUG)
         log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
     cprintf(ch, "This command is not yet implemented.\r\n");
+    return TRUE;
 }

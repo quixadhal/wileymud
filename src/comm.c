@@ -720,16 +720,16 @@ int get_from_q(struct txt_q *queue, char *dest)
     if (!queue)
     {
         log_info("Input from non-existant queue?");
-        return 0;
+        return FALSE;
     }
     if (!queue->head)
-        return 0;
+        return FALSE;
     tmp = queue->head;
     strcpy(dest, queue->head->text);
     queue->head = queue->head->next;
     DESTROY(tmp->text);
     DESTROY(tmp);
-    return 1;
+    return TRUE;
 }
 
 void write_to_q(const char *txt, struct txt_q *queue, int do_timestamp)
@@ -900,7 +900,7 @@ int init_socket(int port)
         proper_exit(MUD_HALT);
     }
     listen(s, 3);
-    return (s);
+    return s;
 }
 
 int new_connection(int s)
@@ -917,7 +917,7 @@ int new_connection(int s)
     if ((t = accept(s, (struct sockaddr *)&isa, &i)) < 0)
     {
         log_error("Accept");
-        return (-1);
+        return -1;
     }
     nonblock(t);
     return t;
@@ -965,7 +965,7 @@ int new_descriptor(int s)
     if ((desc = accept(s, (struct sockaddr *)&isa, &i)) < 0)
     {
         log_error("Accept");
-        return (-1);
+        return -1;
     }
     nonblock(desc);
 
@@ -973,7 +973,7 @@ int new_descriptor(int s)
     {
         write_to_descriptor(desc, "Sorry.. full...\r\n");
         close(desc);
-        return (0);
+        return 0;
     }
     else if (desc > maxdesc)
         maxdesc = desc;
@@ -1071,7 +1071,7 @@ int new_descriptor(int s)
                 maxdesc = old_maxdesc;
                 DESTROY(newd);
                 close(desc);
-                return (0);
+                return 0;
             }
         }
     /*
@@ -1088,7 +1088,7 @@ int new_descriptor(int s)
         maxdesc = old_maxdesc;
         DESTROY(newd);
         close(desc);
-        return (0);
+        return 0;
     }
     /*
      * }
@@ -1101,7 +1101,7 @@ int new_descriptor(int s)
 
     SEND_TO_Q(greetings, newd);
     SEND_TO_Q("By what name do you wish to be known? ", newd);
-    return (0);
+    return 0;
 }
 
 int process_output(struct descriptor_data *t)
@@ -1114,7 +1114,7 @@ int process_output(struct descriptor_data *t)
     // if (!t->prompt_mode && !t->connected)
     if (t->prompt_mode && !t->connected)
         if (write_to_descriptor(t->descriptor, "\r\n") < 0)
-            return (-1);
+            return -1;
 
     /*
      * Cycle thru output queue
@@ -1127,16 +1127,16 @@ int process_output(struct descriptor_data *t)
             write_to_q(i, &t->snoop.snoop_by->desc->output, 0);
         }
         if (write_to_descriptor(t->descriptor, i) < 0)
-            return (-1);
+            return -1;
     }
 
     if (!t->connected && !(t->character && !IS_NPC(t->character) && IS_SET(t->character->specials.act, PLR_COMPACT)))
     {
         if (write_to_descriptor(t->descriptor, "\r\n") < 0)
-            return (-1);
+            return -1;
     }
 
-    return (1);
+    return 1;
 }
 
 int write_to_descriptor(int desc, const char *txt)
@@ -1158,12 +1158,12 @@ int write_to_descriptor(int desc, const char *txt)
             if (errno == EWOULDBLOCK)
                 break;
             log_error("Write to socket");
-            return (-1);
+            return -1;
         }
         sofar += thisround;
     } while (sofar < total);
 
-    return (0);
+    return 0;
 }
 
 void process_opt(char *buffer, int buflen, struct descriptor_data *d)

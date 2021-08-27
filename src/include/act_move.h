@@ -15,21 +15,21 @@ void AddToCharHeap(struct char_data *heap[50], int *top, int total[50], struct c
 int find_door(struct char_data *ch, char *type, char *dir);
 void open_door(struct char_data *ch, int dir);
 void raw_open_door(struct char_data *ch, int dir);
-void do_open(struct char_data *ch, const char *argument, int cmd);
-void do_close(struct char_data *ch, const char *argument, int cmd);
+int do_open(struct char_data *ch, const char *argument, int cmd);
+int do_close(struct char_data *ch, const char *argument, int cmd);
 int has_key(struct char_data *ch, int key);
 void raw_unlock_door(struct char_data *ch, struct room_direction_data *exitp, int door);
 void raw_lock_door(struct char_data *ch, struct room_direction_data *exitp, int door);
-void do_lock(struct char_data *ch, const char *argument, int cmd);
-void do_unlock(struct char_data *ch, const char *argument, int cmd);
-void do_pick(struct char_data *ch, const char *argument, int cmd);
-void do_enter(struct char_data *ch, const char *argument, int cmd);
-void do_leave(struct char_data *ch, const char *argument, int cmd);
-void do_stand(struct char_data *ch, const char *argument, int cmd);
-void do_sit(struct char_data *ch, const char *argument, int cmd);
-void do_rest(struct char_data *ch, const char *argument, int cmd);
-void do_sleep(struct char_data *ch, const char *argument, int cmd);
-void do_wake(struct char_data *ch, const char *argument, int cmd);
-void do_follow(struct char_data *ch, const char *argument, int cmd);
+int do_lock(struct char_data *ch, const char *argument, int cmd);
+int do_unlock(struct char_data *ch, const char *argument, int cmd);
+int do_pick(struct char_data *ch, const char *argument, int cmd);
+int do_enter(struct char_data *ch, const char *argument, int cmd);
+int do_leave(struct char_data *ch, const char *argument, int cmd);
+int do_stand(struct char_data *ch, const char *argument, int cmd);
+int do_sit(struct char_data *ch, const char *argument, int cmd);
+int do_rest(struct char_data *ch, const char *argument, int cmd);
+int do_sleep(struct char_data *ch, const char *argument, int cmd);
+int do_wake(struct char_data *ch, const char *argument, int cmd);
+int do_follow(struct char_data *ch, const char *argument, int cmd);
 
 #endif

@@ -141,7 +141,7 @@ void show_bans(struct char_data *ch)
     }
 }
 
-void do_ban(struct char_data *ch, const char *argument, int cmd)
+int do_ban(struct char_data *ch, const char *argument, int cmd)
 {
     char ban_type[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
     char buf[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
@@ -153,7 +153,7 @@ void do_ban(struct char_data *ch, const char *argument, int cmd)
     if (IS_NPC(ch))
     {
         cprintf(ch, "You're a mob, you can't ban anyone.\r\n");
-        return;
+        return TRUE;
     }
 
     new_ban.updated = -1;
@@ -174,7 +174,7 @@ void do_ban(struct char_data *ch, const char *argument, int cmd)
             if (!str_cmp(ban_type, "list"))
             {
                 show_bans(ch);
-                return;
+                return TRUE;
             }
             else if (!str_cmp(ban_type, "name"))
             {
@@ -186,7 +186,7 @@ void do_ban(struct char_data *ch, const char *argument, int cmd)
                     if (!acceptable_name(buf))
                     {
                         cprintf(ch, "%s is already an invalid choice.\r\n", buf);
-                        return;
+                        return TRUE;
                     }
 
                     strlcpy(new_ban.ban_type, "NAME", MAX_INPUT_LENGTH);
@@ -203,7 +203,7 @@ void do_ban(struct char_data *ch, const char *argument, int cmd)
                         cprintf(ch, "Could not add ban for %s.\r\n", new_ban.name);
                         log_auth(ch, "Failed to add ban for %s.\r\n", new_ban.name);
                     }
-                    return;
+                    return TRUE;
                 }
             }
             else if (!str_cmp(ban_type, "ip") || !str_cmp(ban_type, "address") || !str_cmp(ban_type, "site"))
@@ -214,7 +214,7 @@ void do_ban(struct char_data *ch, const char *argument, int cmd)
                     if (!str_cmp("127.0.0.1", buf))
                     {
                         cprintf(ch, "You cannot ban localhost!\r\n");
-                        return;
+                        return TRUE;
                     }
 
                     strlcpy(new_ban.ban_type, "IP", MAX_INPUT_LENGTH);
@@ -232,15 +232,16 @@ void do_ban(struct char_data *ch, const char *argument, int cmd)
                         log_auth(ch, "Failed to add ban for %s.\r\n", new_ban.ip);
                     }
 
-                    return;
+                    return TRUE;
                 }
             }
         }
     }
     cprintf(ch, "Usage: ban list\r\n       ban name <name-to-ban>\r\n       ban ip <ip-to-ban>\r\n");
+    return TRUE;
 }
 
-void do_unban(struct char_data *ch, const char *argument, int cmd)
+int do_unban(struct char_data *ch, const char *argument, int cmd)
 {
     char ban_type[MAX_STRING_LENGTH] = "\0\0\0";
     char buf[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
@@ -252,7 +253,7 @@ void do_unban(struct char_data *ch, const char *argument, int cmd)
     if (IS_NPC(ch))
     {
         cprintf(ch, "You're a mob, you can't unban anyone.\r\n");
-        return;
+        return TRUE;
     }
 
     new_ban.updated = -1;
@@ -273,7 +274,7 @@ void do_unban(struct char_data *ch, const char *argument, int cmd)
             if (!str_cmp(ban_type, "list"))
             {
                 show_bans(ch);
-                return;
+                return TRUE;
             }
             else if (!str_cmp(ban_type, "name"))
             {
@@ -282,7 +283,7 @@ void do_unban(struct char_data *ch, const char *argument, int cmd)
                     if (!banned_name(buf))
                     {
                         cprintf(ch, "%s is not banned.\r\n", buf);
-                        return;
+                        return TRUE;
                     }
 
                     strlcpy(new_ban.ban_type, "NAME", MAX_INPUT_LENGTH);
@@ -299,7 +300,7 @@ void do_unban(struct char_data *ch, const char *argument, int cmd)
                         cprintf(ch, "Could not remove ban for %s.\r\n", new_ban.name);
                         log_auth(ch, "Failed to remove ban for %s.\r\n", new_ban.name);
                     }
-                    return;
+                    return TRUE;
                 }
             }
             else if (!str_cmp(ban_type, "ip") || !str_cmp(ban_type, "address") || !str_cmp(ban_type, "site"))
@@ -309,7 +310,7 @@ void do_unban(struct char_data *ch, const char *argument, int cmd)
                     if (!banned_ip(buf))
                     {
                         cprintf(ch, "%s is not banned.\r\n", buf);
-                        return;
+                        return TRUE;
                     }
 
                     strlcpy(new_ban.ban_type, "IP", MAX_INPUT_LENGTH);
@@ -326,12 +327,13 @@ void do_unban(struct char_data *ch, const char *argument, int cmd)
                         cprintf(ch, "Could not remove ban for %s.\r\n", new_ban.ip);
                         log_auth(ch, "Failed to remove ban for %s.\r\n", new_ban.ip);
                     }
-                    return;
+                    return TRUE;
                 }
             }
         }
     }
     cprintf(ch, "Usage: unban list\r\n       unban name <name-to-ban>\r\n       unban ip <ip-to-ban>\r\n");
+    return TRUE;
 }
 
 void setup_bans_table(void)
@@ -592,20 +594,20 @@ int add_ban(struct ban_data *pal)
     else
     {
         log_error("INVALID ban type, %s.", VNULL(pal->ban_type));
-        return 0;
+        return FALSE;
     }
     st = PQresultStatus(res);
     if (st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE)
     {
         log_error("Cannot add ban: %s", PQerrorMessage(db_wileymud.dbc));
         PQclear(res);
-        return 0;
+        return FALSE;
         // proper_exit(MUD_HALT);
     }
     PQclear(res);
 
     load_bans();
-    return 1;
+    return TRUE;
 }
 
 int remove_ban(struct ban_data *pal)
@@ -650,7 +652,7 @@ int remove_ban(struct ban_data *pal)
     else
     {
         log_error("INVALID ban type, %s.", VNULL(pal->ban_type));
-        return 0;
+        return FALSE;
     }
 
     st = PQresultStatus(res);
@@ -658,7 +660,7 @@ int remove_ban(struct ban_data *pal)
     {
         log_error("Cannot disable ban from bans table: %s", PQerrorMessage(db_wileymud.dbc));
         PQclear(res);
-        return 0;
+        return FALSE;
         // proper_exit(MUD_HALT);
     }
 
@@ -674,5 +676,5 @@ int remove_ban(struct ban_data *pal)
     PQclear(res);
 
     load_bans();
-    return 1;
+    return TRUE;
 }

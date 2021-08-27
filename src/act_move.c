@@ -60,7 +60,7 @@ int check_exit_alias(struct char_data *ch, const char *argument)
         {
             if (IS_SET(exitp->exit_info, EX_ALIAS))
                 if (!strncmp(exitp->exit_alias, argument, strlen(exitp->exit_alias)))
-                    return (do_move(ch, "", exit_index + 1));
+                    return do_move(ch, "", exit_index + 1);
         }
     }
     return 0;
@@ -80,7 +80,7 @@ int ValidMove(struct char_data *ch, int cmd)
     if (!exit_ok(exitp, NULL))
     {
         NotLegalMove(ch);
-        return (FALSE);
+        return FALSE;
     }
     there = real_roomp(exitp->to_room);
 
@@ -89,7 +89,7 @@ int ValidMove(struct char_data *ch, int cmd)
         if (GET_POS(MOUNTED(ch)) < POSITION_FIGHTING)
         {
             cprintf(ch, "Your mount must be standing\r\n");
-            return (FALSE);
+            return FALSE;
         }
         if (ch->in_room != MOUNTED(ch)->in_room)
         {
@@ -124,18 +124,18 @@ int ValidMove(struct char_data *ch, int cmd)
                     return TRUE;
                 }
                 cprintf(ch, "The %s seems to be closed.\r\n", fname(exitp->keyword));
-                return (FALSE);
+                return FALSE;
             }
             else
             {
                 NotLegalMove(ch);
-                return (FALSE);
+                return FALSE;
             }
         }
         else
         {
             NotLegalMove(ch);
-            return (FALSE);
+            return FALSE;
         }
     }
     else
@@ -145,7 +145,7 @@ int ValidMove(struct char_data *ch, int cmd)
             if (MOUNTED(ch))
             {
                 cprintf(ch, "Your mount refuses to go that way\r\n");
-                return (FALSE);
+                return FALSE;
             }
         }
         if (IS_SET(there->room_flags, DEATH))
@@ -153,10 +153,10 @@ int ValidMove(struct char_data *ch, int cmd)
             if (MOUNTED(ch))
             {
                 cprintf(ch, "Your mount refuses to go that way\r\n");
-                return (FALSE);
+                return FALSE;
             }
         }
-        return (TRUE);
+        return TRUE;
     }
 }
 
@@ -174,17 +174,17 @@ int RawMove(struct char_data *ch, int dir)
         log_info("called %s with %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), dir);
 
     if (special(ch, dir + 1, "")) /* Check for special routines(North is 1) */
-        return (FALSE);
+        return FALSE;
 
     if (!ValidMove(ch, dir))
     {
-        return (FALSE);
+        return FALSE;
     }
     if (IS_AFFECTED(ch, AFF_CHARM) && (ch->master) && (ch->in_room == ch->master->in_room))
     {
         act("$n bursts into tears.", FALSE, ch, 0, 0, TO_ROOM);
         act("You burst into tears at the thought of leaving $N", FALSE, ch, 0, ch->master, TO_CHAR);
-        return (FALSE);
+        return FALSE;
     }
     amount = 0;
     if (IS_AFFECTED(ch, AFF_SNEAK))
@@ -256,7 +256,7 @@ int RawMove(struct char_data *ch, int dir)
             if (!IS_AFFECTED(MOUNTED(ch), AFF_WATERBREATH) && !IS_AFFECTED(MOUNTED(ch), AFF_FLYING))
             {
                 cprintf(ch, "Your mount would have to fly or swim to go there\r\n");
-                return (FALSE);
+                return FALSE;
             }
         }
         if ((!IS_AFFECTED(ch, AFF_WATERBREATH)) && (!IS_AFFECTED(ch, AFF_FLYING)))
@@ -271,7 +271,7 @@ int RawMove(struct char_data *ch, int dir)
             if (!has_boat)
             {
                 cprintf(ch, "You need a boat to go there.\r\n");
-                return (FALSE);
+                return FALSE;
             }
             if (has_boat)
                 need_movement = 1;
@@ -288,13 +288,13 @@ int RawMove(struct char_data *ch, int dir)
             if (!IS_AFFECTED(MOUNTED(ch), AFF_FLYING))
             {
                 cprintf(ch, "Your mount would have to fly to go there!\r\n");
-                return (FALSE);
+                return FALSE;
             }
         }
         if (!IS_AFFECTED(ch, AFF_FLYING))
         {
             cprintf(ch, "You would have to Fly to go there!\r\n");
-            return (FALSE);
+            return FALSE;
         }
     }
     /*
@@ -308,13 +308,13 @@ int RawMove(struct char_data *ch, int dir)
             if (!IS_AFFECTED(MOUNTED(ch), AFF_WATERBREATH))
             {
                 cprintf(ch, "Your mount would need gills to go there!\r\n");
-                return (FALSE);
+                return FALSE;
             }
         }
         if (!IS_AFFECTED(ch, AFF_WATERBREATH))
         {
             cprintf(ch, "You would need to be a fish to go there!\r\n");
-            return (FALSE);
+            return FALSE;
         }
     }
     if (!MOUNTED(ch))
@@ -322,7 +322,7 @@ int RawMove(struct char_data *ch, int dir)
         if (GET_MOVE(ch) < need_movement)
         {
             cprintf(ch, "You are too exhausted.\r\n");
-            return (FALSE);
+            return FALSE;
         }
     }
     else
@@ -330,7 +330,7 @@ int RawMove(struct char_data *ch, int dir)
         if (GET_MOVE(MOUNTED(ch)) < need_movement)
         {
             cprintf(ch, "Your mount is too exhausted.\r\n");
-            return (FALSE);
+            return FALSE;
         }
     }
 
@@ -359,12 +359,12 @@ int RawMove(struct char_data *ch, int dir)
     if (!MOUNTED(ch))
     {
         if (CheckForMoveTrap(ch, dir))
-            return (FALSE);
+            return FALSE;
     }
     else
     {
         if (CheckForMoveTrap(MOUNTED(ch), dir))
-            return (FALSE);
+            return FALSE;
     }
 
     if (MOUNTED(ch))
@@ -406,9 +406,9 @@ int RawMove(struct char_data *ch, int dir)
         }
         zero_rent(ch);
         extract_char(ch);
-        return (FALSE);
+        return FALSE;
     }
-    return (TRUE);
+    return TRUE;
 }
 
 int MoveOne(struct char_data *ch, int dir)
@@ -494,7 +494,7 @@ int MoveGroup(struct char_data *ch, int dir)
             }
         }
     }
-    return 1;
+    return TRUE;
 }
 
 void DisplayOneMove(struct char_data *ch, int dir, int was_in)
@@ -513,7 +513,11 @@ void DisplayGroupMove(struct char_data *ch, int dir, int was_in, int total)
     DisplayMove(ch, dir, was_in, total);
 }
 
-/* void do_move(struct char_data *ch, const char *argument, int cmd) */
+// Normally, interpreter functions return TRUE if they "work", to tell the
+// interpreter to stop looking for another command to try... but since DikuMUD
+// used to be all void, this one returns TRUE to mean you actually moved.
+// Should we ever USE the return values for any other do_ functions, we might
+// need to split this out differently.
 int do_move(struct char_data *ch, const char *argument, int cmd)
 {
     if (DEBUG > 1)
@@ -523,7 +527,7 @@ int do_move(struct char_data *ch, const char *argument, int cmd)
     {
         if (RideCheck(RIDDEN(ch)))
         {
-            return (do_move(RIDDEN(ch), argument, cmd));
+            return do_move(RIDDEN(ch), argument, cmd);
         }
         else
         {
@@ -560,17 +564,17 @@ int do_move(struct char_data *ch, const char *argument, int cmd)
     }
     if (!ch->followers && !ch->master)
     {
-        return (MoveOne(ch, cmd));
+        return MoveOne(ch, cmd);
     }
     else
     {
         if (!ch->followers)
         {
-            return (MoveOne(ch, cmd));
+            return MoveOne(ch, cmd);
         }
         else
         {
-            return (MoveGroup(ch, cmd));
+            return MoveGroup(ch, cmd);
         }
     }
 }
@@ -784,37 +788,37 @@ int find_door(struct char_data *ch, char *type, char *dir)
         if ((door = search_block(dir, exit_dirs, FALSE)) == -1)
         { /* Partial Match */
             cprintf(ch, "That's not a direction.\r\n");
-            return (-1);
+            return -1;
         }
         exitp = EXIT(ch, door);
         if (exitp)
         {
             if (!exitp->keyword)
-                return (door);
+                return door;
             if ((isname(type, exitp->keyword)) && (strcmp(type, "secret")))
             {
-                return (door);
+                return door;
             }
             else
             {
                 cprintf(ch, "I see no %s there.\r\n", type);
-                return (-1);
+                return -1;
             }
         }
         else
         {
             cprintf(ch, "I see no %s there.\r\n", type);
-            return (-1);
+            return -1;
         }
     }
     else
     { /* try to locate the keyword */
         for (door = 0; door < MAX_NUM_EXITS; door++)
             if ((exitp = EXIT(ch, door)) && exitp->keyword && isname(type, exitp->keyword))
-                return (door);
+                return door;
 
         cprintf(ch, "I see no %s here.\r\n", type);
-        return (-1);
+        return -1;
     }
 }
 
@@ -902,7 +906,7 @@ void raw_open_door(struct char_data *ch, int dir)
     }
 }
 
-void do_open(struct char_data *ch, const char *argument, int cmd)
+int do_open(struct char_data *ch, const char *argument, int cmd)
 {
     int door = -1;
     char type[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
@@ -956,9 +960,10 @@ void do_open(struct char_data *ch, const char *argument, int cmd)
             cprintf(ch, "Ok.\r\n");
         }
     }
+    return TRUE;
 }
 
-void do_close(struct char_data *ch, const char *argument, int cmd)
+int do_close(struct char_data *ch, const char *argument, int cmd)
 {
     int door = -1;
     char type[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
@@ -1030,6 +1035,7 @@ void do_close(struct char_data *ch, const char *argument, int cmd)
             }
         }
     }
+    return TRUE;
 }
 
 int has_key(struct char_data *ch, int key)
@@ -1041,13 +1047,13 @@ int has_key(struct char_data *ch, int key)
 
     for (o = ch->carrying; o; o = o->next_content)
         if (obj_index[o->item_number].vnum == key)
-            return (1);
+            return TRUE;
 
     if (ch->equipment[HOLD])
         if (obj_index[ch->equipment[HOLD]->item_number].vnum == key)
-            return (1);
+            return TRUE;
 
-    return (0);
+    return FALSE;
 }
 
 void raw_unlock_door(struct char_data *ch, struct room_direction_data *exitp, int door)
@@ -1096,7 +1102,7 @@ void raw_lock_door(struct char_data *ch, struct room_direction_data *exitp, int 
     }
 }
 
-void do_lock(struct char_data *ch, const char *argument, int cmd)
+int do_lock(struct char_data *ch, const char *argument, int cmd)
 {
     int door = -1;
     char type[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
@@ -1172,9 +1178,10 @@ void do_lock(struct char_data *ch, const char *argument, int cmd)
                 SET_BIT(back->exit_info, EX_LOCKED);
         }
     }
+    return TRUE;
 }
 
-void do_unlock(struct char_data *ch, const char *argument, int cmd)
+int do_unlock(struct char_data *ch, const char *argument, int cmd)
 {
     int door = -1;
     char type[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
@@ -1248,9 +1255,10 @@ void do_unlock(struct char_data *ch, const char *argument, int cmd)
                 REMOVE_BIT(back->exit_info, EX_LOCKED);
         }
     }
+    return TRUE;
 }
 
-void do_pick(struct char_data *ch, const char *argument, int cmd)
+int do_pick(struct char_data *ch, const char *argument, int cmd)
 {
     int percent_chance = 0;
     int door = -1;
@@ -1272,7 +1280,7 @@ void do_pick(struct char_data *ch, const char *argument, int cmd)
     if (percent_chance > (ch->skills[SKILL_PICK_LOCK].learned))
     {
         cprintf(ch, "You failed to pick the lock.\r\n");
-        return;
+        return TRUE;
     }
     if (!*type)
     {
@@ -1333,9 +1341,10 @@ void do_pick(struct char_data *ch, const char *argument, int cmd)
                 ch->skills[SKILL_PICK_LOCK].learned += 2;
         }
     }
+    return TRUE;
 }
 
-void do_enter(struct char_data *ch, const char *argument, int cmd)
+int do_enter(struct char_data *ch, const char *argument, int cmd)
 {
     int door = -1;
     char buf[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
@@ -1353,7 +1362,7 @@ void do_enter(struct char_data *ch, const char *argument, int cmd)
             if (exit_ok(exitp = EXIT(ch, door), NULL) && exitp->keyword && 0 == str_cmp(exitp->keyword, buf))
             {
                 do_move(ch, "", ++door);
-                return;
+                return TRUE;
             }
         cprintf(ch, "There is no %s here.\r\n", buf);
     }
@@ -1371,13 +1380,14 @@ void do_enter(struct char_data *ch, const char *argument, int cmd)
                 IS_SET(rp->room_flags, INDOORS))
             {
                 do_move(ch, "", ++door);
-                return;
+                return TRUE;
             }
         cprintf(ch, "You can't seem to find anything to enter.\r\n");
     }
+    return TRUE;
 }
 
-void do_leave(struct char_data *ch, const char *argument, int cmd)
+int do_leave(struct char_data *ch, const char *argument, int cmd)
 {
     int door = -1;
     struct room_direction_data *exitp = NULL;
@@ -1395,13 +1405,14 @@ void do_leave(struct char_data *ch, const char *argument, int cmd)
                 !IS_SET(rp->room_flags, INDOORS))
             {
                 do_move(ch, "", ++door);
-                return;
+                return TRUE;
             }
         cprintf(ch, "I see no obvious exits to the outside.\r\n");
     }
+    return TRUE;
 }
 
-void do_stand(struct char_data *ch, const char *argument, int cmd)
+int do_stand(struct char_data *ch, const char *argument, int cmd)
 {
     if (DEBUG)
         log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
@@ -1441,9 +1452,10 @@ void do_stand(struct char_data *ch, const char *argument, int cmd)
     }
     break;
     }
+    return TRUE;
 }
 
-void do_sit(struct char_data *ch, const char *argument, int cmd)
+int do_sit(struct char_data *ch, const char *argument, int cmd)
 {
     if (DEBUG)
         log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
@@ -1484,9 +1496,10 @@ void do_sit(struct char_data *ch, const char *argument, int cmd)
     }
     break;
     }
+    return TRUE;
 }
 
-void do_rest(struct char_data *ch, const char *argument, int cmd)
+int do_rest(struct char_data *ch, const char *argument, int cmd)
 {
     if (DEBUG)
         log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
@@ -1527,9 +1540,10 @@ void do_rest(struct char_data *ch, const char *argument, int cmd)
     }
     break;
     }
+    return TRUE;
 }
 
-void do_sleep(struct char_data *ch, const char *argument, int cmd)
+int do_sleep(struct char_data *ch, const char *argument, int cmd)
 {
     if (DEBUG)
         log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
@@ -1562,9 +1576,10 @@ void do_sleep(struct char_data *ch, const char *argument, int cmd)
     }
     break;
     }
+    return TRUE;
 }
 
-void do_wake(struct char_data *ch, const char *argument, int cmd)
+int do_wake(struct char_data *ch, const char *argument, int cmd)
 {
     struct char_data *tmp_char = NULL;
     char arg[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
@@ -1633,9 +1648,10 @@ void do_wake(struct char_data *ch, const char *argument, int cmd)
             }
         }
     }
+    return TRUE;
 }
 
-void do_follow(struct char_data *ch, const char *argument, int cmd)
+int do_follow(struct char_data *ch, const char *argument, int cmd)
 {
     char name[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
     struct char_data *leader = NULL;
@@ -1650,13 +1666,13 @@ void do_follow(struct char_data *ch, const char *argument, int cmd)
         if (!(leader = get_char_room_vis(ch, name)))
         {
             cprintf(ch, "I see no person by that name here!\r\n");
-            return;
+            return TRUE;
         }
     }
     else
     {
         cprintf(ch, "Who do you wish to follow?\r\n");
-        return;
+        return TRUE;
     }
 
     if (IS_AFFECTED(ch, AFF_GROUP))
@@ -1675,7 +1691,7 @@ void do_follow(struct char_data *ch, const char *argument, int cmd)
             if (!ch->master)
             {
                 cprintf(ch, "You are already following yourself.\r\n");
-                return;
+                return TRUE;
             }
             stop_follower(ch);
         }
@@ -1684,7 +1700,7 @@ void do_follow(struct char_data *ch, const char *argument, int cmd)
             if (circle_follow(ch, leader))
             {
                 act("Sorry, but following in 'loops' is not allowed", FALSE, ch, 0, 0, TO_CHAR);
-                return;
+                return TRUE;
             }
             if (ch->master)
                 stop_follower(ch);
@@ -1692,4 +1708,5 @@ void do_follow(struct char_data *ch, const char *argument, int cmd)
             add_follower(ch, leader);
         }
     }
+    return TRUE;
 }

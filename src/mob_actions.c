@@ -317,26 +317,26 @@ int SameRace(struct char_data *ch1, struct char_data *ch2)
         log_info("called %s with %s, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch1), SAFE_NAME(ch2));
 
     if ((!ch1) || (!ch2))
-        return (FALSE);
+        return FALSE;
 
     if (ch1 == ch2)
-        return (TRUE);
+        return TRUE;
 
     if (IS_NPC(ch1) && (IS_NPC(ch2)))
     {
         if (mob_index[ch1->nr].vnum == mob_index[ch2->nr].vnum)
-            return (TRUE);
+            return TRUE;
         else
-            return (FALSE);
+            return FALSE;
     }
     if (in_group(ch1, ch2))
-        return (TRUE);
+        return TRUE;
 
     if (GET_RACE(ch1) == GET_RACE(ch2))
     {
-        return (TRUE);
+        return TRUE;
     }
-    return (FALSE);
+    return FALSE;
 }
 
 void AssistFriend(struct char_data *ch)

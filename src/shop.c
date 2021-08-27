@@ -39,36 +39,36 @@ int is_ok(struct char_data *keeper, struct char_data *ch, int shop_nr)
     if (shop_index[shop_nr].open1 > time_info.hours)
     {
         do_say(keeper, "Come back later!", 17);
-        return (FALSE);
+        return FALSE;
     }
     else if (shop_index[shop_nr].close1 < time_info.hours)
     {
         if (shop_index[shop_nr].open2 > time_info.hours)
         {
             do_say(keeper, "Sorry, we have closed, but come back later.", 17);
-            return (FALSE);
+            return FALSE;
         }
         else if (shop_index[shop_nr].close2 < time_info.hours)
         {
             do_say(keeper, "Sorry, come back tomorrow.", 17);
-            return (FALSE);
+            return FALSE;
         };
     }
 
     if (!(CAN_SEE(keeper, ch)))
     {
         do_say(keeper, "I don't trade with someone I can't see!", 17);
-        return (FALSE);
+        return FALSE;
     };
 
     switch (shop_index[shop_nr].with_who)
     {
     case 0:
-        return (TRUE);
+        return TRUE;
     case 1:
-        return (TRUE);
+        return TRUE;
     default:
-        return (TRUE);
+        return TRUE;
     };
 }
 
@@ -80,12 +80,12 @@ int trade_with(struct obj_data *item, int shop_nr)
         log_info("called %s with %s, %d", __PRETTY_FUNCTION__, SAFE_ONAME(item), shop_nr);
 
     if (item->obj_flags.cost < 1)
-        return (FALSE);
+        return FALSE;
 
     for (counter = 0; counter < MAX_TRADE; counter++)
         if (shop_index[shop_nr].type[counter] == item->obj_flags.type_flag)
-            return (TRUE);
-    return (FALSE);
+            return TRUE;
+    return FALSE;
 }
 
 int shop_producing(struct obj_data *item, int shop_nr)
@@ -96,12 +96,12 @@ int shop_producing(struct obj_data *item, int shop_nr)
         log_info("called %s with %s, %d", __PRETTY_FUNCTION__, SAFE_ONAME(item), shop_nr);
 
     if (item->item_number < 0)
-        return (FALSE);
+        return FALSE;
 
     for (counter = 0; counter < MAX_PROD; counter++)
         if (shop_index[shop_nr].producing[counter] == item->item_number)
-            return (TRUE);
-    return (FALSE);
+            return TRUE;
+    return FALSE;
 }
 
 void shopping_buy(const char *arg, struct char_data *ch, struct char_data *keeper, int shop_nr)
@@ -449,7 +449,7 @@ int shop_keeper(struct char_data *ch, int cmd, const char *arg)
     {
         if (keeper->specials.fighting)
         {
-            return (citizen(keeper, 0, ""));
+            return citizen(keeper, 0, "");
         }
     }
     if ((cmd == 56) && (ch->in_room == shop_index[shop_nr].in_room))
@@ -458,7 +458,7 @@ int shop_keeper(struct char_data *ch, int cmd, const char *arg)
      */
     {
         shopping_buy(arg, ch, keeper, shop_nr);
-        return (TRUE);
+        return TRUE;
     }
     if ((cmd == 57) && (ch->in_room == shop_index[shop_nr].in_room))
     /*
@@ -466,7 +466,7 @@ int shop_keeper(struct char_data *ch, int cmd, const char *arg)
      */
     {
         shopping_sell(arg, ch, keeper, shop_nr);
-        return (TRUE);
+        return TRUE;
     }
     if ((cmd == 58) && (ch->in_room == shop_index[shop_nr].in_room))
     /*
@@ -474,7 +474,7 @@ int shop_keeper(struct char_data *ch, int cmd, const char *arg)
      */
     {
         shopping_value(arg, ch, keeper, shop_nr);
-        return (TRUE);
+        return TRUE;
     }
     if ((cmd == 59) && (ch->in_room == shop_index[shop_nr].in_room))
     /*
@@ -482,7 +482,7 @@ int shop_keeper(struct char_data *ch, int cmd, const char *arg)
      */
     {
         shopping_list(arg, ch, keeper, shop_nr);
-        return (TRUE);
+        return TRUE;
     }
     if ((cmd == 25) || (cmd == 70))
     { /* Kill or Hit */
@@ -491,7 +491,7 @@ int shop_keeper(struct char_data *ch, int cmd, const char *arg)
         if (keeper == get_char_room(argm, ch->in_room))
         {
             shopping_kill(arg, ch, keeper, shop_nr);
-            return (TRUE);
+            return TRUE;
         }
     }
     else if ((cmd == 84) || (cmd == 207) || (cmd == 172))
@@ -499,7 +499,7 @@ int shop_keeper(struct char_data *ch, int cmd, const char *arg)
         act("$N tells you 'No magic here - kid!'.", FALSE, ch, 0, keeper, TO_CHAR);
         return TRUE;
     }
-    return (FALSE);
+    return FALSE;
 }
 
 void boot_the_shops(void)

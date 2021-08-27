@@ -138,7 +138,7 @@ int TFA_verify(const char *tokenStr, unsigned char *b32, size_t b32Len)
 
     if (!tokenStr || !*tokenStr)
     {
-        return 0;
+        return FALSE;
     }
     tokenLen = strlen(tokenStr);
     for (size_t i = 0; i < tokenLen; i++)
@@ -151,7 +151,7 @@ int TFA_verify(const char *tokenStr, unsigned char *b32, size_t b32Len)
         {
         default:
             log_error("Illegal character '%s' in authentication token.\n", oneChar);
-            return 0;
+            return FALSE;
             break;
         case ' ':
         case '-':
@@ -186,14 +186,14 @@ int TFA_verify(const char *tokenStr, unsigned char *b32, size_t b32Len)
         if (trials[i] < 0)
         {
             log_error("DEBUG: Hash error on trial %d ???\n", i);
-            return 0;
+            return FALSE;
         }
         if (token == trials[i])
         {
-            return 1;
+            return TRUE;
         }
     }
-    return 0;
+    return FALSE;
 }
 
 int test_2fa_main(int argc, char **argv)
@@ -253,5 +253,5 @@ int test_2fa_main(int argc, char **argv)
         free(b32);
         b32 = NULL;
     }
-    return 1;
+    return TRUE;
 }

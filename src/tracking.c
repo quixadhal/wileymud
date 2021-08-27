@@ -58,9 +58,9 @@ int named_mobile_in_room(int room, void *c_data)
         if (isname(hunt->name, scan->player.name))
         {
             *(hunt->victim) = scan;
-            return 1;
+            return TRUE;
         }
-    return 0;
+    return FALSE;
 }
 
 /* Perform breadth first search on rooms from start (in_room)
@@ -71,12 +71,11 @@ int named_mobile_in_room(int room, void *c_data)
  * for mobiles that know how to open doors.
  */
 
-static void donothing(void)
+static void donothing(void *data)
 {
     if (DEBUG > 3)
         log_info("called %s with no arguments", __PRETTY_FUNCTION__);
 
-    return;
 }
 
 int choose_exit(int in_room, int tgt_room, int depth)
@@ -94,7 +93,7 @@ int go_direction(struct char_data *ch, int dir)
         log_info("called %s with %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), dir);
 
     if (ch->specials.fighting)
-        return 0;
+        return FALSE;
 
     if (!IS_SET(EXIT(ch, dir)->exit_info, EX_CLOSED))
     {
@@ -104,7 +103,7 @@ int go_direction(struct char_data *ch, int dir)
     {
         open_door(ch, dir);
     }
-    return 0;
+    return FALSE;
 }
 
 int find_path(int in_room, predicate_funcp predicate, void *c_data, int depth)
@@ -219,7 +218,7 @@ int find_path(int in_room, predicate_funcp predicate, void *c_data, int depth)
                      */
                     // if ((int)hash_find(&x_room, tmp_room) == -1)
                     if ((int)(size_t)hash_find(&x_room, tmp_room) == -1)
-                        return (i);
+                        return i;
                     else /* else return the ancestor */
                         // return (-1 + (int)hash_find(&x_room, tmp_room));
                         return (-1 + (int)(size_t)hash_find(&x_room, tmp_room));
@@ -236,7 +235,7 @@ int find_path(int in_room, predicate_funcp predicate, void *c_data, int depth)
     /*
      * couldn't find path
      */
-    return (-1);
+    return -1;
 }
 
 void MobHunt(struct char_data *ch)
@@ -321,12 +320,12 @@ int dir_track(struct char_data *ch, struct char_data *vict)
         log_info("called %s with %s, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), SAFE_NAME(vict));
 
     if ((!ch) || (!vict))
-        return (-1);
+        return -1;
 
     code = choose_exit(ch->in_room, vict->in_room, ch->hunt_dist);
 
     if ((!ch) || (!vict))
-        return (-1);
+        return -1;
 
     if (code == -1)
     {
@@ -338,12 +337,12 @@ int dir_track(struct char_data *ch, struct char_data *vict)
         {
             cprintf(ch, "\r\nTrack -> You have lost the trail.\r\n");
         }
-        return (-1); /* false to continue the hunt */
+        return -1; /* false to continue the hunt */
     }
     else
     {
         cprintf(ch, "\r\nTrack -> You see a faint trail %sward\r\n", dirs[code]);
-        return (code);
+        return code;
     }
 }
 
@@ -355,31 +354,31 @@ int track(struct char_data *ch, struct char_data *vict)
         log_info("called %s with %s, %s", __PRETTY_FUNCTION__, SAFE_NAME(ch), SAFE_NAME(vict));
 
     if ((!ch) || (!vict))
-        return (-1);
+        return -1;
 
     code = choose_exit(ch->in_room, vict->in_room, ch->hunt_dist);
 
     if ((!ch) || (!vict))
-        return (-1);
+        return -1;
 
     if (ch->in_room == vict->in_room)
     {
         cprintf(ch, "\r\nTrack -> You have found your target!\r\n");
-        return (FALSE); /* false to continue the hunt */
+        return FALSE; /* false to continue the hunt */
     }
     if (code == -1)
     {
         cprintf(ch, "\r\nTrack -> You have lost the trail.\r\n");
-        return (FALSE);
+        return FALSE;
     }
     else
     {
         cprintf(ch, "\r\nTrack -> You see a faint trail %sward\r\n", dirs[code]);
-        return (TRUE);
+        return TRUE;
     }
 }
 
-void do_track(struct char_data *ch, const char *argument, int cmd)
+int do_track(struct char_data *ch, const char *argument, int cmd)
 {
     int dist = 0;
     int code = 0;
@@ -412,12 +411,12 @@ void do_track(struct char_data *ch, const char *argument, int cmd)
     if (!dist)
     {
         cprintf(ch, "You do not know of this skill yet!\r\n");
-        return;
+        return TRUE;
     }
     if (GET_MANA(ch) < cost)
     {
         cprintf(ch, "You can not seem to concentrate on the trail...\r\n");
-        return;
+        return TRUE;
     }
     GET_MANA(ch) -= cost;
 
@@ -449,7 +448,7 @@ void do_track(struct char_data *ch, const char *argument, int cmd)
     if (code == -1)
     {
         cprintf(ch, "You are unable to find traces of one.\r\n");
-        return;
+        return TRUE;
     }
     else
     {
@@ -464,9 +463,10 @@ void do_track(struct char_data *ch, const char *argument, int cmd)
         {
             ch->specials.hunting = 0;
             cprintf(ch, "It's too dark in here to track...\r\n");
-            return;
+            return TRUE;
         }
     }
+    return TRUE;
 }
 
 char *track_distance(struct char_data *ch, char *mob_name)
@@ -554,7 +554,7 @@ double heading(double x, double y)
         return 90.0 - val;
 }
 
-void do_immtrack(struct char_data *ch, const char *argument, int cmd)
+int do_immtrack(struct char_data *ch, const char *argument, int cmd)
 {
     char buf[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
     int loc_nr = 0;
@@ -570,14 +570,14 @@ void do_immtrack(struct char_data *ch, const char *argument, int cmd)
     if (IS_NPC(ch))
     {
         cprintf(ch, "You cannot cheat like this.\r\n");
-        return;
+        return TRUE;
     }
 
     only_argument(argument, buf);
     if (!*buf)
     {
         cprintf(ch, "You must supply a room number or a name.\r\n");
-        return;
+        return TRUE;
     }
     if (isdigit(*buf) && NULL == index(buf, '.'))
     {
@@ -590,7 +590,7 @@ void do_immtrack(struct char_data *ch, const char *argument, int cmd)
         else
         {
             cprintf(ch, "No room exists with that number.\r\n");
-            return;
+            return TRUE;
         }
     }
     else if ((target_mob = get_char_vis_world(ch, buf, NULL)))
@@ -604,7 +604,7 @@ void do_immtrack(struct char_data *ch, const char *argument, int cmd)
         {
             cprintf(ch, "The mob is not available.\r\n");
             cprintf(ch, "Try where #.mob to nail its room number.\r\n");
-            return;
+            return TRUE;
         }
     }
     else if ((target_obj = get_obj_vis_world(ch, buf, NULL)))
@@ -618,13 +618,13 @@ void do_immtrack(struct char_data *ch, const char *argument, int cmd)
         {
             cprintf(ch, "The object is not available.\r\n");
             cprintf(ch, "Try where #.object to nail its room number.\r\n");
-            return;
+            return TRUE;
         }
     }
     else
     {
         cprintf(ch, "No such creature or object around.\r\n");
-        return;
+        return TRUE;
     }
 
     /*
@@ -634,7 +634,7 @@ void do_immtrack(struct char_data *ch, const char *argument, int cmd)
     if (!real_roomp(location))
     {
         log_error("Massive error in do_goto. Everyone Off NOW.");
-        return;
+        return TRUE;
     }
 
     switch (type_of_thing)
@@ -662,7 +662,7 @@ void do_immtrack(struct char_data *ch, const char *argument, int cmd)
     if ((dir = choose_exit(this_room, dest_room, -MAX_ROOMS)) < 0)
     {
         page_printf(ch, "Rats!  Can't find a route!\r\n");
-        return;
+        return TRUE;
     }
     else
     {
@@ -680,7 +680,7 @@ void do_immtrack(struct char_data *ch, const char *argument, int cmd)
             if (!to_here)
             {
                 page_printf(ch, "OOPS!\r\n");
-                return;
+                return TRUE;
             }
             count++;
             page_printf(ch, "  %2d %-8s -> [#%5d] %s\r\n", ++i, dirs[dir], next_room, to_here->name);
@@ -713,4 +713,5 @@ void do_immtrack(struct char_data *ch, const char *argument, int cmd)
                     count, abs(dx), dx < 0 ? "w" : "e", abs(dy), dy < 0 ? "s" : "n", abs(dz), dz < 0 ? "d" : "u",
                     (int)sqrt((double)dx * (double)dx + (double)dy * (double)dy), (int)heading(dx, dy));
     }
+    return TRUE;
 }

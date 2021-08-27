@@ -261,12 +261,12 @@ int toggle_whod_flag(struct char_data *ch, const char *param)
     {
         log_error("Cannot toggle %s in whod table: %s", value_param, PQerrorMessage(db_wileymud.dbc));
         PQclear(res);
-        return 0;
+        return FALSE;
         // proper_exit(MUD_HALT);
     }
     PQclear(res);
     load_whod();
-    return 1;
+    return TRUE;
 }
 
 int whod_flag_value(const char *param)
@@ -352,12 +352,12 @@ int set_whod_port(struct char_data *ch, int number)
     {
         log_error("Cannot set port in whod table: %s", PQerrorMessage(db_wileymud.dbc));
         PQclear(res);
-        return 0;
+        return FALSE;
         // proper_exit(MUD_HALT);
     }
     PQclear(res);
     load_whod();
-    return 1;
+    return TRUE;
 }
 
 void init_whod(void)
@@ -682,7 +682,7 @@ void show_whod_info(struct char_data *ch)
     cprintf(ch, "\r\n");
 }
 
-void do_whod(struct char_data *ch, const char *arg, int cmd)
+int do_whod(struct char_data *ch, const char *arg, int cmd)
 {
     char command_verb[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
     char value_arg[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
@@ -691,7 +691,7 @@ void do_whod(struct char_data *ch, const char *arg, int cmd)
         log_info("called by %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(arg), cmd);
 
     if (IS_NPC(ch))
-        return;
+        return FALSE;
 
     arg = one_argument(arg, command_verb);
     if (*command_verb)
@@ -699,7 +699,7 @@ void do_whod(struct char_data *ch, const char *arg, int cmd)
         if (!str_cmp(command_verb, "status") || !str_cmp(command_verb, "list"))
         {
             show_whod_info(ch);
-            return;
+            return TRUE;
         }
         else if (!str_cmp(command_verb, "enable") || !str_cmp(command_verb, "on"))
         {
@@ -709,7 +709,7 @@ void do_whod(struct char_data *ch, const char *arg, int cmd)
                 init_whod();
             }
             show_whod_info(ch);
-            return;
+            return TRUE;
         }
         else if (!str_cmp(command_verb, "disable") || !str_cmp(command_verb, "off"))
         {
@@ -719,7 +719,7 @@ void do_whod(struct char_data *ch, const char *arg, int cmd)
                 close_whod();
             }
             show_whod_info(ch);
-            return;
+            return TRUE;
         }
         else if (!str_cmp(command_verb, "port"))
         {
@@ -740,7 +740,7 @@ void do_whod(struct char_data *ch, const char *arg, int cmd)
                 }
             }
             show_whod_info(ch);
-            return;
+            return TRUE;
         }
         else if (!str_cmp(command_verb, "show") || !str_cmp(command_verb, "display"))
         {
@@ -756,7 +756,7 @@ void do_whod(struct char_data *ch, const char *arg, int cmd)
                 if (!value)
                     toggle_whod_flag(ch, value_arg);
                 show_whod_info(ch);
-                return;
+                return TRUE;
             }
         }
         else if (!str_cmp(command_verb, "hide"))
@@ -773,7 +773,7 @@ void do_whod(struct char_data *ch, const char *arg, int cmd)
                 if (value)
                     toggle_whod_flag(ch, value_arg);
                 show_whod_info(ch);
-                return;
+                return TRUE;
             }
         }
         else if (!str_cmp(command_verb, "toggle"))
@@ -789,7 +789,7 @@ void do_whod(struct char_data *ch, const char *arg, int cmd)
             {
                 toggle_whod_flag(ch, value_arg);
                 show_whod_info(ch);
-                return;
+                return TRUE;
             }
         }
     }
@@ -801,6 +801,7 @@ void do_whod(struct char_data *ch, const char *arg, int cmd)
                 "       column can be one of:\r\n"
                 "       idle, level, name, title, room\r\n"
                 "       room_ingame, or linkdead\r\n");
+    return FALSE;
 }
 
 // The mess down here is what makes the JSON files our web page uses
@@ -964,7 +965,7 @@ void generate_json_mudlist(const char *filename)
     return;
 }
 
-void do_who(struct char_data *ch, const char *argument, int cmd)
+int do_who(struct char_data *ch, const char *argument, int cmd)
 {
     struct descriptor_data *d = NULL;
     struct char_data *person = NULL;
@@ -1084,9 +1085,10 @@ void do_who(struct char_data *ch, const char *argument, int cmd)
     scprintf(buf, MAX_STRING_LENGTH, "Wiley start time was: %s\r\n", timestamp(Uptime, 0));
     scprintf(buf, MAX_STRING_LENGTH, " Quixadhal's time is: %s\r\n", timestamp(-1, 0));
     page_printf(ch, "%s", buf);
+    return TRUE;
 }
 
-void do_users(struct char_data *ch, const char *argument, int cmd)
+int do_users(struct char_data *ch, const char *argument, int cmd)
 {
     struct descriptor_data *d = NULL;
     int flag = 0;
@@ -1127,9 +1129,10 @@ void do_users(struct char_data *ch, const char *argument, int cmd)
             strlcat(buf, line, MAX_STRING_LENGTH);
     }
     cprintf(ch, "%s\r\n", buf);
+    return TRUE;
 }
 
-void do_players(struct char_data *ch, const char *argument, int cmd)
+int do_players(struct char_data *ch, const char *argument, int cmd)
 {
     char buf[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
     int i = 0;
@@ -1152,4 +1155,5 @@ void do_players(struct char_data *ch, const char *argument, int cmd)
     }
     if (strlen(buf))
         page_string(ch->desc, buf, 1);
+    return TRUE;
 }

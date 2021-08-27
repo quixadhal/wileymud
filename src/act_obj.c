@@ -74,7 +74,7 @@ void get(struct char_data *ch, struct obj_data *obj_object, struct obj_data *sub
     }
 }
 
-void do_get(struct char_data *ch, const char *argument, int cmd)
+int do_get(struct char_data *ch, const char *argument, int cmd)
 {
     char arg1[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
     char arg2[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
@@ -146,7 +146,7 @@ void do_get(struct char_data *ch, const char *argument, int cmd)
              * check for a trap (traps fire often)
              */
             if (CheckForAnyTrap(ch, obj_object))
-                return;
+                return TRUE;
 
             if (CAN_SEE_OBJ(ch, obj_object))
             {
@@ -218,7 +218,7 @@ void do_get(struct char_data *ch, const char *argument, int cmd)
             if (obj_object)
             {
                 if (CheckForAnyTrap(ch, obj_object))
-                    return;
+                    return TRUE;
 
                 if ((IS_CARRYING_N(ch) + 1 < CAN_CARRY_N(ch)))
                 {
@@ -285,7 +285,7 @@ void do_get(struct char_data *ch, const char *argument, int cmd)
                 for (obj_object = sub_object->contains; obj_object; obj_object = next_obj)
                 {
                     if (CheckForGetTrap(ch, obj_object))
-                        return;
+                        return TRUE;
 
                     next_obj = obj_object->next_content;
                     if (CAN_SEE_OBJ(ch, obj_object))
@@ -375,7 +375,7 @@ void do_get(struct char_data *ch, const char *argument, int cmd)
                     if (obj_object)
                     {
                         if (CheckForInsideTrap(ch, sub_object))
-                            return;
+                            return TRUE;
                         if ((IS_CARRYING_N(ch) + 1 < CAN_CARRY_N(ch)))
                         {
                             if ((IS_CARRYING_W(ch) + obj_object->obj_flags.weight) < CAN_CARRY_W(ch))
@@ -434,9 +434,10 @@ void do_get(struct char_data *ch, const char *argument, int cmd)
     }
     break;
     }
+    return TRUE;
 }
 
-void do_drop(struct char_data *ch, const char *argument, int cmd)
+int do_drop(struct char_data *ch, const char *argument, int cmd)
 {
     struct obj_data *tmp_object = NULL;
     struct obj_data *next_obj = NULL;
@@ -460,29 +461,29 @@ void do_drop(struct char_data *ch, const char *argument, int cmd)
         /*
          * if (0!=str_cmp("coins",arg) && 0!=str_cmp("coin",arg))  {
          * cprintf(ch, "Sorry, you can't do that (yet)...\r\n");
-         * return;
+         * return TRUE;
          * }
          */
 
         if (amount < 0)
         {
             cprintf(ch, "Sorry, you can't do that!\r\n");
-            return;
+            return TRUE;
         }
         if (GET_GOLD(ch) < amount)
         {
             cprintf(ch, "You haven't got that many coins!\r\n");
-            return;
+            return TRUE;
         }
         cprintf(ch, "OK.\r\n");
         if (amount == 0)
-            return;
+            return TRUE;
 
         act("$n drops some gold.", FALSE, ch, 0, 0, TO_ROOM);
         tmp_object = create_money(amount);
         obj_to_room(tmp_object, ch->in_room);
         GET_GOLD(ch) -= amount;
-        return;
+        return TRUE;
     }
     else
     {
@@ -577,9 +578,10 @@ void do_drop(struct char_data *ch, const char *argument, int cmd)
     {
         cprintf(ch, "Drop what?\r\n");
     }
+    return TRUE;
 }
 
-void do_put(struct char_data *ch, const char *argument, int cmd)
+int do_put(struct char_data *ch, const char *argument, int cmd)
 {
     struct obj_data *obj_object = NULL;
     struct obj_data *sub_object = NULL;
@@ -620,7 +622,7 @@ void do_put(struct char_data *ch, const char *argument, int cmd)
             {
 
                 cprintf(ch, "sorry, you can't do that (yet)\r\n");
-                return;
+                return TRUE;
             }
             else
             {
@@ -644,7 +646,7 @@ void do_put(struct char_data *ch, const char *argument, int cmd)
                                     if (obj_object == sub_object)
                                     {
                                         cprintf(ch, "You attempt to fold it into itself, but fail.\r\n");
-                                        return;
+                                        return TRUE;
                                     }
                                     if (((sub_object->obj_flags.weight) + (obj_object->obj_flags.weight)) <
                                         (sub_object->obj_flags.value[0]))
@@ -713,9 +715,10 @@ void do_put(struct char_data *ch, const char *argument, int cmd)
     {
         cprintf(ch, "Put what in what?\r\n");
     }
+    return TRUE;
 }
 
-void do_give(struct char_data *ch, const char *argument, int cmd)
+int do_give(struct char_data *ch, const char *argument, int cmd)
 {
     struct char_data *vict = NULL;
     struct obj_data *obj = NULL;
@@ -739,31 +742,31 @@ void do_give(struct char_data *ch, const char *argument, int cmd)
          * if (str_cmp("coins",arg) && str_cmp("coin",arg))
          * {
          * cprintf(ch, "Sorry, you can't do that (yet)...\r\n");
-         * return;
+         * return TRUE;
          * }
          */
 
         if (amount < 0)
         {
             cprintf(ch, "Sorry, you can't do that!\r\n");
-            return;
+            return TRUE;
         }
         if ((GET_GOLD(ch) < amount) && (IS_NPC(ch) || (GetMaxLevel(ch) < DEMIGOD)))
         {
             cprintf(ch, "You haven't got that many coins!\r\n");
-            return;
+            return TRUE;
         }
         argument = one_argument(argument, vict_name);
 
         if (!*vict_name)
         {
             cprintf(ch, "To who?\r\n");
-            return;
+            return TRUE;
         }
         if (!(vict = get_char_room_vis(ch, vict_name)))
         {
             cprintf(ch, "To who?\r\n");
-            return;
+            return TRUE;
         }
         cprintf(ch, "Ok.\r\n");
         cprintf(vict, "%s gives you %d gold coins.\r\n", PERS(ch, vict), amount);
@@ -775,13 +778,13 @@ void do_give(struct char_data *ch, const char *argument, int cmd)
         { /* hmmm */
             log_info("%s gave %d coins to %s", GET_NAME(ch), amount, GET_NAME(vict));
         }
-        return;
+        return TRUE;
     }
     argument = one_argument(argument, vict_name);
     if (!*obj_name || !*vict_name)
     {
         cprintf(ch, "Give what to who?\r\n");
-        return;
+        return TRUE;
     }
     /*
      * &&&&
@@ -807,33 +810,33 @@ void do_give(struct char_data *ch, const char *argument, int cmd)
         {
             if (num >= -1)
                 cprintf(ch, "You do not seem to have anything like that.\r\n");
-            return;
+            return TRUE;
         }
         if (IS_SET(obj->obj_flags.extra_flags, ITEM_NODROP) && !IS_IMMORTAL(ch))
         {
             cprintf(ch, "You can't let go of it! Yeech!!\r\n");
-            return;
+            return TRUE;
         }
         if (!(vict = get_char_room_vis(ch, vict_name)))
         {
             cprintf(ch, "No one by that name around here.\r\n");
-            return;
+            return TRUE;
         }
         if (vict == ch)
         {
             log_info("%s just tried to give all.X to %s", GET_NAME(ch), GET_NAME(ch));
             cprintf(ch, "Ok.\r\n");
-            return;
+            return TRUE;
         }
         if ((1 + IS_CARRYING_N(vict)) > CAN_CARRY_N(vict))
         {
             act("$N seems to have $S hands full.", 0, ch, 0, vict, TO_CHAR);
-            return;
+            return TRUE;
         }
         if (obj->obj_flags.weight + IS_CARRYING_W(vict) > CAN_CARRY_W(vict))
         {
             act("$E can't carry that much weight.", 0, ch, 0, vict, TO_CHAR);
-            return;
+            return TRUE;
         }
         obj_from_char(obj);
         obj_to_char(obj, vict);
@@ -844,6 +847,7 @@ void do_give(struct char_data *ch, const char *argument, int cmd)
         if (num > 0)
             num--;
     }
+    return TRUE;
 }
 
 /*
@@ -922,7 +926,7 @@ void name_to_drinkcon(struct obj_data *obj, int type)
     obj->name = new_name;
 }
 
-void do_drink(struct char_data *ch, const char *argument, int cmd)
+int do_drink(struct char_data *ch, const char *argument, int cmd)
 {
     struct obj_data *temp = NULL;
     char buf[255] = "\0\0\0\0\0\0\0";
@@ -937,24 +941,24 @@ void do_drink(struct char_data *ch, const char *argument, int cmd)
     if (!(temp = get_obj_in_list_vis(ch, buf, ch->carrying)))
     {
         act("You can't find it!", FALSE, ch, 0, 0, TO_CHAR);
-        return;
+        return TRUE;
     }
     if (temp->obj_flags.type_flag != ITEM_DRINKCON)
     {
         act("You can't drink from that!", FALSE, ch, 0, 0, TO_CHAR);
-        return;
+        return TRUE;
     }
     if ((GET_COND(ch, DRUNK) > 15) && (GET_COND(ch, THIRST) > 0))
     {
         /* The pig is drunk */
         act("You're just sloshed.", FALSE, ch, 0, 0, TO_CHAR);
         act("$n looks really drunk.", TRUE, ch, 0, 0, TO_ROOM);
-        return;
+        return TRUE;
     }
     if ((GET_COND(ch, FULL) > 20) && (GET_COND(ch, THIRST) > 0))
     { /* Stomach full */
         act("Your stomach can't contain anymore!", FALSE, ch, 0, 0, TO_CHAR);
-        return;
+        return TRUE;
     }
     if (temp->obj_flags.type_flag == ITEM_DRINKCON)
     {
@@ -1016,14 +1020,15 @@ void do_drink(struct char_data *ch, const char *argument, int cmd)
                     extract_obj(temp); /* get rid of it */
                 }
             }
-            return;
+            return TRUE;
         }
         act("It's empty already.", FALSE, ch, 0, 0, TO_CHAR);
-        return;
+        return TRUE;
     }
+    return TRUE;
 }
 
-void do_puke(struct char_data *ch, const char *argument, int cmd)
+int do_puke(struct char_data *ch, const char *argument, int cmd)
 {
     char buf[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
     struct char_data *vict = NULL;
@@ -1041,7 +1046,7 @@ void do_puke(struct char_data *ch, const char *argument, int cmd)
     else if (!(vict = get_char_room_vis(ch, buf)))
     {
         cprintf(ch, "You can't puke on someone who isn't here.\r\n");
-        return;
+        return TRUE;
     }
     else
     {
@@ -1057,10 +1062,10 @@ void do_puke(struct char_data *ch, const char *argument, int cmd)
         }
         damage(ch, ch, 1, TYPE_SUFFERING);
     }
-    return;
+    return TRUE;
 }
 
-void do_eat(struct char_data *ch, const char *argument, int cmd)
+int do_eat(struct char_data *ch, const char *argument, int cmd)
 {
     char buf[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
     int j = 0;
@@ -1076,17 +1081,17 @@ void do_eat(struct char_data *ch, const char *argument, int cmd)
     if (!(temp = get_obj_in_list_vis(ch, buf, ch->carrying)))
     {
         act("You can't find it!", FALSE, ch, 0, 0, TO_CHAR);
-        return;
+        return TRUE;
     }
     if ((temp->obj_flags.type_flag != ITEM_FOOD) && (GetMaxLevel(ch) < DEMIGOD))
     {
         act("Your stomach refuses to eat that!?!", FALSE, ch, 0, 0, TO_CHAR);
-        return;
+        return TRUE;
     }
     if (GET_COND(ch, FULL) > 20)
     { /* Stomach full */
         act("You are to full to eat more!", FALSE, ch, 0, 0, TO_CHAR);
-        return;
+        return TRUE;
     }
     act("$n eats $p", TRUE, ch, temp, 0, TO_ROOM);
     act("You eat the $o.", FALSE, ch, temp, 0, TO_CHAR);
@@ -1118,9 +1123,10 @@ void do_eat(struct char_data *ch, const char *argument, int cmd)
         affect_join(ch, &af, FALSE, FALSE);
     }
     extract_obj(temp);
+    return TRUE;
 }
 
-void do_pour(struct char_data *ch, const char *argument, int cmd)
+int do_pour(struct char_data *ch, const char *argument, int cmd)
 {
     char arg1[132] = "\0\0\0\0\0\0\0";
     char arg2[132] = "\0\0\0\0\0\0\0";
@@ -1136,27 +1142,27 @@ void do_pour(struct char_data *ch, const char *argument, int cmd)
     if (!*arg1)
     { /* No arguments */
         act("What do you want to pour from?", FALSE, ch, 0, 0, TO_CHAR);
-        return;
+        return TRUE;
     }
     if (!(from_obj = get_obj_in_list_vis(ch, arg1, ch->carrying)))
     {
         act("You can't find it!", FALSE, ch, 0, 0, TO_CHAR);
-        return;
+        return TRUE;
     }
     if (from_obj->obj_flags.type_flag != ITEM_DRINKCON)
     {
         act("You can't pour from that!", FALSE, ch, 0, 0, TO_CHAR);
-        return;
+        return TRUE;
     }
     if (from_obj->obj_flags.value[1] == 0)
     {
         act("The $p is empty.", FALSE, ch, from_obj, 0, TO_CHAR);
-        return;
+        return TRUE;
     }
     if (!*arg2)
     {
         act("Where do you want it? Out or in what?", FALSE, ch, 0, 0, TO_CHAR);
-        return;
+        return TRUE;
     }
     if (!str_cmp(arg2, "out"))
     {
@@ -1170,32 +1176,32 @@ void do_pour(struct char_data *ch, const char *argument, int cmd)
         from_obj->obj_flags.value[3] = 0;
         name_from_drinkcon(from_obj);
 
-        return;
+        return TRUE;
     }
     if (!(to_obj = get_obj_in_list_vis(ch, arg2, ch->carrying)))
     {
         act("You can't find it!", FALSE, ch, 0, 0, TO_CHAR);
-        return;
+        return TRUE;
     }
     if (to_obj->obj_flags.type_flag != ITEM_DRINKCON)
     {
         act("You can't pour anything into that.", FALSE, ch, 0, 0, TO_CHAR);
-        return;
+        return TRUE;
     }
     if ((to_obj->obj_flags.value[1] != 0) && (to_obj->obj_flags.value[2] != from_obj->obj_flags.value[2]))
     {
         act("There is already another liquid in it!", FALSE, ch, 0, 0, TO_CHAR);
-        return;
+        return TRUE;
     }
     if (!(to_obj->obj_flags.value[1] < to_obj->obj_flags.value[0]))
     {
         act("There is no room for more.", FALSE, ch, 0, 0, TO_CHAR);
-        return;
+        return TRUE;
     }
     if (to_obj == from_obj)
     {
         act("You can't pour to-from the same container?", FALSE, ch, 0, 0, TO_CHAR);
-        return;
+        return TRUE;
     }
     cprintf(ch, "You pour the %s into the %s.", drinks[from_obj->obj_flags.value[2]], arg2);
 
@@ -1235,10 +1241,10 @@ void do_pour(struct char_data *ch, const char *argument, int cmd)
      */
     to_obj->obj_flags.value[3] = (to_obj->obj_flags.value[3] || from_obj->obj_flags.value[3]);
 
-    return;
+    return TRUE;
 }
 
-void do_sip(struct char_data *ch, const char *argument, int cmd)
+int do_sip(struct char_data *ch, const char *argument, int cmd)
 {
     char arg[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
     struct obj_data *temp = NULL;
@@ -1252,23 +1258,23 @@ void do_sip(struct char_data *ch, const char *argument, int cmd)
     if (!(temp = get_obj_in_list_vis(ch, arg, ch->carrying)))
     {
         act("You can't find it!", FALSE, ch, 0, 0, TO_CHAR);
-        return;
+        return TRUE;
     }
     if (temp->obj_flags.type_flag != ITEM_DRINKCON)
     {
         act("You can't sip from that!", FALSE, ch, 0, 0, TO_CHAR);
-        return;
+        return TRUE;
     }
     if (GET_COND(ch, DRUNK) > 10)
     { /* The pig is drunk ! */
         act("You simply fail to reach your mouth!", FALSE, ch, 0, 0, TO_CHAR);
         act("$n tries to sip, but fails!", TRUE, ch, 0, 0, TO_ROOM);
-        return;
+        return TRUE;
     }
     if (!temp->obj_flags.value[1])
     { /* Empty */
         act("But there is nothing in it?", FALSE, ch, 0, 0, TO_CHAR);
-        return;
+        return TRUE;
     }
     act("$n sips from the $o", TRUE, ch, temp, 0, TO_ROOM);
     cprintf(ch, "It tastes like %s.\r\n", drinks[temp->obj_flags.value[2]]);
@@ -1309,10 +1315,10 @@ void do_sip(struct char_data *ch, const char *argument, int cmd)
         temp->obj_flags.value[3] = 0;
         name_from_drinkcon(temp);
     }
-    return;
+    return TRUE;
 }
 
-void do_taste(struct char_data *ch, const char *argument, int cmd)
+int do_taste(struct char_data *ch, const char *argument, int cmd)
 {
     struct affected_type af;
     char arg[80] = "\0\0\0\0\0\0\0";
@@ -1326,17 +1332,17 @@ void do_taste(struct char_data *ch, const char *argument, int cmd)
     if (!(temp = get_obj_in_list_vis(ch, arg, ch->carrying)))
     {
         act("You can't find it!", FALSE, ch, 0, 0, TO_CHAR);
-        return;
+        return TRUE;
     }
     if (temp->obj_flags.type_flag == ITEM_DRINKCON)
     {
         do_sip(ch, argument, 0);
-        return;
+        return TRUE;
     }
     if (!(temp->obj_flags.type_flag == ITEM_FOOD))
     {
         act("Taste that?!? Your stomach refuses!", FALSE, ch, 0, 0, TO_CHAR);
-        return;
+        return TRUE;
     }
     act("$n tastes the $o", FALSE, ch, temp, 0, TO_ROOM);
     act("You taste the $o", FALSE, ch, temp, 0, TO_CHAR);
@@ -1364,7 +1370,7 @@ void do_taste(struct char_data *ch, const char *argument, int cmd)
         act("There is nothing left now.", FALSE, ch, 0, 0, TO_CHAR);
         extract_obj(temp);
     }
-    return;
+    return TRUE;
 }
 
 /* functions related to wear */
@@ -1443,9 +1449,9 @@ int IsRestricted(int Mask, int Class)
     }
 
     if (Mask == Class)
-        return (TRUE);
+        return TRUE;
 
-    return (FALSE);
+    return FALSE;
 }
 
 void wear(struct char_data *ch, struct obj_data *obj_object, int keyword)
@@ -1883,7 +1889,7 @@ void wear(struct char_data *ch, struct obj_data *obj_object, int keyword)
     }
 }
 
-void do_wear(struct char_data *ch, const char *argument, int cmd)
+int do_wear(struct char_data *ch, const char *argument, int cmd)
 {
     char arg1[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
     char arg2[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
@@ -2000,9 +2006,10 @@ void do_wear(struct char_data *ch, const char *argument, int cmd)
     {
         cprintf(ch, "Wear what?\r\n");
     }
+    return TRUE;
 }
 
-void do_wield(struct char_data *ch, const char *argument, int cmd)
+int do_wield(struct char_data *ch, const char *argument, int cmd)
 {
     char arg1[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
     char arg2[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
@@ -2069,9 +2076,10 @@ void do_wield(struct char_data *ch, const char *argument, int cmd)
     {
         cprintf(ch, "Wield what?\r\n");
     }
+    return TRUE;
 }
 
-void do_grab(struct char_data *ch, const char *argument, int cmd)
+int do_grab(struct char_data *ch, const char *argument, int cmd)
 {
     char arg1[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
     char arg2[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
@@ -2101,9 +2109,10 @@ void do_grab(struct char_data *ch, const char *argument, int cmd)
     {
         cprintf(ch, "Hold what?\r\n");
     }
+    return TRUE;
 }
 
-void do_remove(struct char_data *ch, const char *argument, int cmd)
+int do_remove(struct char_data *ch, const char *argument, int cmd)
 {
     char arg1[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
     char *T = NULL;
@@ -2237,9 +2246,10 @@ void do_remove(struct char_data *ch, const char *argument, int cmd)
     {
         cprintf(ch, "Remove what?\r\n");
     }
+    return TRUE;
 }
 
-void do_bury(struct char_data *ch, const char *argument, int cmd)
+int do_bury(struct char_data *ch, const char *argument, int cmd)
 {
     char buf[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
     struct obj_data *vict = NULL;
@@ -2256,17 +2266,17 @@ void do_bury(struct char_data *ch, const char *argument, int cmd)
     {
         act("$n imitates Stalin, chanting 'We will bury you!'", FALSE, ch, 0, 0, TO_ROOM);
         act("You do a nice imitation of Stalin.", FALSE, ch, 0, 0, TO_CHAR);
-        return;
+        return TRUE;
     }
     else if (!(vict = get_obj_vis_accessible(ch, buf)))
     {
         cprintf(ch, "You feel you should go TO the %s first.\r\n", buf);
-        return;
+        return TRUE;
     }
     else if (!IS_CORPSE(vict))
     {
         cprintf(ch, "You consider burying %s, but what if you can't find it again?\r\n", buf);
-        return;
+        return TRUE;
     }
 
     act("$n buries $p.", FALSE, ch, vict, ch, TO_ROOM);
@@ -2288,10 +2298,10 @@ void do_bury(struct char_data *ch, const char *argument, int cmd)
             GET_ALIGNMENT(ch) = 1000;
         WAIT_STATE(ch, 4);
     }
-    return;
+    return TRUE;
 }
 
-void do_desecrate(struct char_data *ch, const char *argument, int cmd)
+int do_desecrate(struct char_data *ch, const char *argument, int cmd)
 {
     char buf[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
     struct obj_data *vict = NULL;
@@ -2308,17 +2318,17 @@ void do_desecrate(struct char_data *ch, const char *argument, int cmd)
     {
         act("$n looks around for things to desecrate.", FALSE, ch, 0, 0, TO_ROOM);
         act("You can't seem to find anything worth desecrating.", FALSE, ch, 0, 0, TO_CHAR);
-        return;
+        return TRUE;
     }
     else if (!(vict = get_obj_vis_accessible(ch, buf)))
     {
         cprintf(ch, "You feel you should go TO the %s first.\r\n", buf);
-        return;
+        return TRUE;
     }
     else if (!IS_CORPSE(vict))
     {
         cprintf(ch, "You consider desecrating %s, but it just doesn't seem worth the bother.\r\n", buf);
-        return;
+        return TRUE;
     }
 
     act("$n stomps the bloody mush of $p into the ground and spits!", FALSE, ch, vict, ch, TO_ROOM);
@@ -2340,5 +2350,5 @@ void do_desecrate(struct char_data *ch, const char *argument, int cmd)
             GET_ALIGNMENT(ch) = -1000;
         WAIT_STATE(ch, 4);
     }
-    return;
+    return TRUE;
 }

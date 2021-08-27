@@ -368,7 +368,6 @@ void i3_printf(CHAR_DATA *ch, const char *fmt, ...)
 
     strlcpy(buf2, I3_i3tag_to_mudtag(ch, buf), MAX_STRING_LENGTH);
     cprintf(ch, "%s", buf2);
-    return;
 }
 
 void i3wrap_printf(CHAR_DATA *ch, const char *fmt, ...)
@@ -386,7 +385,6 @@ void i3wrap_printf(CHAR_DATA *ch, const char *fmt, ...)
     // cprintf(ch, "%s", color_wrap(78, 96, "      ", buf2));
     cprintf(ch, "%s",
             color_wrap(MAX(18, ch->desc->telnet.cols - 12), MAX(18, ch->desc->telnet.cols - 2), "      ", buf2));
-    return;
 }
 
 /* Generic page_printf type function */
@@ -405,7 +403,6 @@ void i3page_printf(CHAR_DATA *ch, const char *fmt, ...)
     strlcpy(buf2, I3_i3tag_to_mudtag(ch, buf), MAX_STRING_LENGTH);
     // log_info("NL-post %s for %s", strpbrk(buf2, "\n") ? "FOUND" : "NOT FOUND", buf2);
     page_string(ch->desc, buf2, 1);
-    return;
 }
 
 /********************************
@@ -1323,7 +1320,6 @@ void i3fread_to_eol(FILE *fp)
     } while (c == '\n' || c == '\r');
 
     ungetc(c, fp);
-    return;
 }
 
 /*
@@ -1686,7 +1682,6 @@ bool I3_write_packet(char *msg)
 void I3_send_packet(void)
 {
     I3_write_packet(I3_output_buffer);
-    return;
 }
 
 /* The all important startup packet. This is what will be initially sent upon trying to connect
@@ -1918,7 +1913,6 @@ void I3_process_startup_reply(I3_HEADER *header, char *s)
         I3_send_channel_listen(channel, TRUE);
         //}
     }
-    return;
 }
 
 void I3_process_chanack(I3_HEADER *header, char *s)
@@ -1933,7 +1927,6 @@ void I3_process_chanack(I3_HEADER *header, char *s)
         log_info("%s", ps);
     else
         i3_printf(ch, "%%^GREEN%%^%%^BOLD%%^%s%%^RESET%%^\r\n", ps);
-    return;
 }
 
 void I3_send_error(const char *mud, const char *user, const char *code, const char *message)
@@ -2019,7 +2012,6 @@ void I3_save_ucache(void)
     }
     fprintf(fp, "%s", "#END\n");
     I3FCLOSE(fp);
-    return;
 }
 
 void I3_prune_ucache(void)
@@ -2041,7 +2033,6 @@ void I3_prune_ucache(void)
         }
     }
     I3_save_ucache();
-    return;
 }
 
 /* Updates user info if they exist, adds them if they don't. */
@@ -2065,7 +2056,6 @@ void I3_ucache_update(char *name, int gender)
     I3LINK(user, first_ucache, last_ucache, next, prev);
 
     I3_save_ucache();
-    return;
 }
 
 void I3_send_ucache_update(const char *visname, int gender)
@@ -2086,7 +2076,6 @@ void I3_send_ucache_update(const char *visname, int gender)
     I3_write_buffer(",})\r");
     I3_send_packet();
 
-    return;
 }
 
 void I3_process_ucache_update(I3_HEADER *header, char *s)
@@ -2117,7 +2106,6 @@ void I3_process_ucache_update(I3_HEADER *header, char *s)
         return;
 
     I3_ucache_update(buf, gender);
-    return;
 }
 
 void I3_send_chan_user_req(char *targetmud, char *targetuser)
@@ -2131,7 +2119,6 @@ void I3_send_chan_user_req(char *targetmud, char *targetuser)
     I3_write_buffer("\",})\r");
     I3_send_packet();
 
-    return;
 }
 
 void I3_process_chan_user_req(I3_HEADER *header, char *s)
@@ -2163,7 +2150,6 @@ void I3_process_chan_user_req(I3_HEADER *header, char *s)
     I3_write_buffer(",})\r");
     I3_send_packet();
 
-    return;
 }
 
 void I3_process_chan_user_reply(I3_HEADER *header, char *s)
@@ -2194,7 +2180,6 @@ void I3_process_chan_user_reply(I3_HEADER *header, char *s)
         return;
 
     I3_ucache_update(buf, gender);
-    return;
 }
 
 void I3_process_mudlist(I3_HEADER *header, char *s)
@@ -2474,7 +2459,6 @@ void I3_process_mudlist(I3_HEADER *header, char *s)
         if (ps[0] == ']')
             break;
     }
-    return;
 }
 
 void I3_process_chanlist_reply(I3_HEADER *header, char *s)
@@ -2566,7 +2550,6 @@ void I3_process_chanlist_reply(I3_HEADER *header, char *s)
     }
     log_info("I3_process_chanlist_reply: %s", "Saving channel config data.");
     I3_write_channel_config();
-    return;
 }
 
 void I3_send_channel_message(I3_CHANNEL *channel, const char *name, const char *message)
@@ -2595,7 +2578,6 @@ void I3_send_channel_message(I3_CHANNEL *channel, const char *name, const char *
     channel_m_sent++;
     // log_info("I3_send_channel() done.");
 
-    return;
 }
 
 void I3_send_channel_emote(I3_CHANNEL *channel, const char *name, const char *message)
@@ -2620,7 +2602,6 @@ void I3_send_channel_emote(I3_CHANNEL *channel, const char *name, const char *me
     I3_write_buffer("\",})\r");
     I3_send_packet();
 
-    return;
 }
 
 void I3_send_channel_t(I3_CHANNEL *channel, const char *name, char *tmud, char *tuser, char *msg_o, char *msg_t,
@@ -2647,7 +2628,6 @@ void I3_send_channel_t(I3_CHANNEL *channel, const char *name, char *tmud, char *
     I3_write_buffer("\",})\r");
     I3_send_packet();
 
-    return;
 }
 
 int I3_token(char type, char *string, char *oname, char *tname)
@@ -2680,7 +2660,7 @@ int I3_token(char type, char *string, char *oname, char *tname)
         *string = *p++;
         *++string = '\0';
     }
-    return (strlen(code));
+    return strlen(code);
 }
 
 void I3_message_convert(char *buffer, const char *txt, char *oname, char *tname)
@@ -2705,7 +2685,6 @@ void I3_message_convert(char *buffer, const char *txt, char *oname, char *tname)
         *++buffer = '\0';
     }
     *buffer = '\0';
-    return;
 }
 
 char *I3_convert_channel_message(const char *message, char *sname, char *tname)
@@ -2829,7 +2808,6 @@ void update_chanhistory(I3_CHANNEL *channel, char *message)
             }
         }
     }
-    return;
 }
 
 /* Handles the support for channel filtering.
@@ -2866,7 +2844,6 @@ void I3_chan_filter_m(I3_CHANNEL *channel, I3_HEADER *header, char *s)
     I3_write_buffer("\",}),})\r");
 
     I3_send_packet();
-    return;
 }
 
 /* Handles the support for channel filtering.
@@ -2902,7 +2879,6 @@ void I3_chan_filter_e(I3_CHANNEL *channel, I3_HEADER *header, char *s)
     I3_write_buffer("\",}),})\r");
 
     I3_send_packet();
-    return;
 }
 
 /* Handles the support for channel filtering.
@@ -2967,7 +2943,6 @@ void I3_chan_filter_t(I3_CHANNEL *channel, I3_HEADER *header, char *s)
     I3_write_buffer("\",}),})\r");
 
     I3_send_packet();
-    return;
 }
 
 void I3_process_channel_filter(I3_HEADER *header, char *s)
@@ -3018,7 +2993,6 @@ void I3_process_channel_filter(I3_HEADER *header, char *s)
         I3_chan_filter_t(channel, second_header, next_ps);
 
     I3DISPOSE(second_header);
-    return;
 }
 
 #define I3_ALLCHAN_LOG I3_DIR "i3.allchan.log"
@@ -3225,7 +3199,6 @@ void I3_process_channel_t(I3_HEADER *header, char *s)
     }
     update_chanhistory(channel, omsg);
     time_to_taunt = getTimestamp() + I3_TAUNT_DELAY;
-    return;
 }
 
 void I3_process_channel_m(I3_HEADER *header, char *s)
@@ -3343,7 +3316,6 @@ void I3_process_channel_m(I3_HEADER *header, char *s)
     }
     update_chanhistory(channel, buf);
     time_to_taunt = getTimestamp() + I3_TAUNT_DELAY;
-    return;
 }
 
 void I3_process_channel_e(I3_HEADER *header, char *s)
@@ -3447,7 +3419,6 @@ void I3_process_channel_e(I3_HEADER *header, char *s)
     }
     update_chanhistory(channel, buf);
     time_to_taunt = getTimestamp() + I3_TAUNT_DELAY;
-    return;
 }
 
 void I3_process_chan_who_req(I3_HEADER *header, char *s)
@@ -3504,7 +3475,6 @@ void I3_process_chan_who_req(I3_HEADER *header, char *s)
     }
     I3_write_buffer("}),})\r");
     I3_send_packet();
-    return;
 }
 
 void I3_process_chan_who_reply(I3_HEADER *header, char *s)
@@ -3541,7 +3511,6 @@ void I3_process_chan_who_reply(I3_HEADER *header, char *s)
         if (ps[0] == '}')
             break;
     }
-    return;
 }
 
 void I3_send_chan_who(CHAR_DATA *ch, I3_CHANNEL *channel, I3_MUD *mud)
@@ -3555,7 +3524,6 @@ void I3_send_chan_who(CHAR_DATA *ch, I3_CHANNEL *channel, I3_MUD *mud)
     I3_write_buffer("\",})\r");
     I3_send_packet();
 
-    return;
 }
 
 void I3_send_beep(CHAR_DATA *ch, const char *to, I3_MUD *mud)
@@ -3570,7 +3538,6 @@ void I3_send_beep(CHAR_DATA *ch, const char *to, I3_MUD *mud)
     I3_write_buffer("\",})\r");
     I3_send_packet();
 
-    return;
 }
 
 void I3_process_beep(I3_HEADER *header, char *s)
@@ -3614,7 +3581,6 @@ void I3_process_beep(I3_HEADER *header, char *s)
     remove_quotes(&ps);
 
     i3_printf(ch, "%%^YELLOW%%^\a%s@%s i3beeps you.%%^RESET%%^\r\n", ps, header->originator_mudname);
-    return;
 }
 
 void I3_send_tell(CHAR_DATA *ch, const char *to, const char *mud, const char *message)
@@ -3631,7 +3597,6 @@ void I3_send_tell(CHAR_DATA *ch, const char *to, const char *mud, const char *me
     I3_write_buffer("\",})\r");
     I3_send_packet();
 
-    return;
 }
 
 void i3_update_tellhistory(CHAR_DATA *ch, const char *msg)
@@ -3664,7 +3629,6 @@ void i3_update_tellhistory(CHAR_DATA *ch, const char *msg)
             I3TELLHISTORY(ch, x) = I3STRALLOC(new_msg);
         }
     }
-    return;
 }
 
 void I3_process_tell(I3_HEADER *header, char *s)
@@ -3733,7 +3697,6 @@ void I3_process_tell(I3_HEADER *header, char *s)
     i3_printf(ch, "%s%%^RESET%%^\r\n", buf);
     i3_update_tellhistory(ch, buf);
     time_to_taunt = getTimestamp() + I3_TAUNT_DELAY;
-    return;
 }
 
 void I3_send_who(CHAR_DATA *ch, char *mud)
@@ -3746,7 +3709,6 @@ void I3_send_who(CHAR_DATA *ch, char *mud)
     I3_write_buffer("})\r");
     I3_send_packet();
 
-    return;
 }
 
 char *i3centerline(const char *string, int len)
@@ -4043,7 +4005,6 @@ void I3_process_who_req(I3_HEADER *header, char *s)
     I3_write_buffer(",\" \",}),}),})\r");
     I3_send_packet();
 
-    return;
 }
 
 /* This is where the incoming results of a who-reply packet are processed.
@@ -4107,7 +4068,6 @@ void I3_process_who_reply(I3_HEADER *header, char *s)
         if (ps[0] == '}')
             break;
     }
-    return;
 }
 
 void I3_send_emoteto(CHAR_DATA *ch, const char *to, I3_MUD *mud, const char *message)
@@ -4131,7 +4091,6 @@ void I3_send_emoteto(CHAR_DATA *ch, const char *to, I3_MUD *mud, const char *mes
     I3_write_buffer("\",})\r");
     I3_send_packet();
 
-    return;
 }
 
 void I3_process_emoteto(I3_HEADER *header, char *s)
@@ -4173,7 +4132,6 @@ void I3_process_emoteto(I3_HEADER *header, char *s)
     remove_quotes(&ps);
 
     i3_printf(ch, "%%^CYAN%%^%s%%^RESET%%^\r\n", I3_convert_channel_message(ps, visname, visname));
-    return;
 }
 
 void I3_send_finger(CHAR_DATA *ch, char *user, char *mud)
@@ -4189,7 +4147,6 @@ void I3_send_finger(CHAR_DATA *ch, char *user, char *mud)
     I3_write_buffer("\",})\r");
     I3_send_packet();
 
-    return;
 }
 
 /* The output of this was slightly modified to resemble the Finger snippet */
@@ -4249,7 +4206,6 @@ void I3_process_finger_reply(I3_HEADER *header, char *s)
     i3_printf(ch, "%%^WHITE%%^HTTP : %%^GREEN%%^%%^BOLD%%^%s%%^RESET%%^\r\n", ps);
     i3_printf(ch, "%%^WHITE%%^Last on: %%^GREEN%%^%%^BOLD%%^%s%%^RESET%%^\r\n", last);
 
-    return;
 }
 
 void I3_process_finger_req(I3_HEADER *header, char *s)
@@ -4334,7 +4290,6 @@ void I3_process_finger_req(I3_HEADER *header, char *s)
     I3_write_buffer("\",})\r");
     I3_send_packet();
 
-    return;
 }
 
 void I3_send_locate(CHAR_DATA *ch, const char *user)
@@ -4348,7 +4303,6 @@ void I3_send_locate(CHAR_DATA *ch, const char *user)
     I3_write_buffer("\",})\r");
     I3_send_packet();
 
-    return;
 }
 
 void I3_process_locate_reply(I3_HEADER *header, char *s)
@@ -4385,7 +4339,6 @@ void I3_process_locate_reply(I3_HEADER *header, char *s)
 
     i3_printf(ch, "%%^RED%%^%%^BOLD%%^I3 Locate: %%^YELLOW%%^%s@%s: %%^CYAN%%^%s.%%^RESET%%^\r\n", user_name, mud_name,
               status);
-    return;
 }
 
 void I3_process_locate_req(I3_HEADER *header, char *s)
@@ -4437,7 +4390,6 @@ void I3_process_locate_req(I3_HEADER *header, char *s)
         I3_write_buffer(",\"Offline\",})\r");
     I3_send_packet();
 
-    return;
 }
 
 void I3_send_channel_listen(I3_CHANNEL *channel, bool lconnect)
@@ -4455,7 +4407,6 @@ void I3_send_channel_listen(I3_CHANNEL *channel, bool lconnect)
         I3_write_buffer("0,})\r");
     I3_send_packet();
 
-    return;
 }
 
 void I3_process_channel_adminlist_reply(I3_HEADER *header, char *s)
@@ -4499,7 +4450,6 @@ void I3_process_channel_adminlist_reply(I3_HEADER *header, char *s)
         if (ps[0] == '}')
             break;
     }
-    return;
 }
 
 void I3_send_channel_adminlist(CHAR_DATA *ch, char *chan_name)
@@ -4513,7 +4463,6 @@ void I3_send_channel_adminlist(CHAR_DATA *ch, char *chan_name)
     I3_write_buffer("\",})\r");
     I3_send_packet();
 
-    return;
 }
 
 void I3_send_channel_admin(CHAR_DATA *ch, char *chan_name, char *list)
@@ -4529,7 +4478,6 @@ void I3_send_channel_admin(CHAR_DATA *ch, char *chan_name, char *list)
     I3_write_buffer("})\r");
     I3_send_packet();
 
-    return;
 }
 
 void I3_send_channel_add(CHAR_DATA *ch, char *arg, int type)
@@ -4557,7 +4505,6 @@ void I3_send_channel_add(CHAR_DATA *ch, char *arg, int type)
         break;
     }
     I3_send_packet();
-    return;
 }
 
 void I3_send_channel_remove(CHAR_DATA *ch, I3_CHANNEL *channel)
@@ -4570,7 +4517,6 @@ void I3_send_channel_remove(CHAR_DATA *ch, I3_CHANNEL *channel)
     I3_write_buffer(channel->I3_name);
     I3_write_buffer("\",})\r");
     I3_send_packet();
-    return;
 }
 
 void I3_send_shutdown(int delay)
@@ -4598,7 +4544,6 @@ void I3_send_shutdown(int delay)
     if (!I3_write_packet(I3_output_buffer))
         I3_connection_close(FALSE);
 
-    return;
 }
 
 /*
@@ -4770,7 +4715,6 @@ void I3_parse_packet(void)
         }
     }
     I3DISPOSE(header);
-    return;
 }
 
 /*
@@ -4791,7 +4735,6 @@ void I3_read_packet(void)
 
     memmove(I3_input_buffer, I3_input_buffer + size + 4, I3_input_pointer - size - 4);
     I3_input_pointer -= size + 4;
-    return;
 }
 
 void I3_handle_packet(char *packetBuffer)
@@ -4926,7 +4869,6 @@ void I3_handle_packet(char *packetBuffer)
     }
 
     I3DISPOSE(header);
-    return;
 }
 
 /************************************
@@ -4952,7 +4894,6 @@ void i3_initchar(CHAR_DATA *ch)
     I3PERM(ch) = I3PERM_MORT;
 
     log_info("Done");
-    return;
 }
 
 void i3_freechardata(CHAR_DATA *ch)
@@ -4985,7 +4926,6 @@ void i3_freechardata(CHAR_DATA *ch)
         I3STRFREE(I3TELLHISTORY(ch, x));
 
     I3DISPOSE(CH_I3DATA(ch));
-    return;
 }
 
 void I3_adjust_perms(CHAR_DATA *ch)
@@ -5012,7 +4952,6 @@ void I3_adjust_perms(CHAR_DATA *ch)
         else if (CH_I3LEVEL(ch) >= this_i3mud->implevel)
             I3PERM(ch) = I3PERM_IMP;
     }
-    return;
 }
 
 void I3_char_login(CHAR_DATA *ch)
@@ -5049,7 +4988,6 @@ void I3_char_login(CHAR_DATA *ch)
         if (!I3IS_SET(I3FLAG(ch), I3_INVIS))
             I3_send_ucache_update(CH_I3NAME(ch), sex);
     }
-    return;
 }
 
 bool i3_loadchar(CHAR_DATA *ch, FILE *fp, const char *word)
@@ -5157,7 +5095,6 @@ void i3_savechar(CHAR_DATA *ch, FILE *fp)
         fprintf(fp, "i3deny       %s\n", I3DENY(ch));
     for (temp = FIRST_I3IGNORE(ch); temp; temp = temp->next)
         fprintf(fp, "i3ignore     %s\n", temp->name);
-    return;
 }
 
 /*******************************************
@@ -14694,7 +14631,6 @@ void I3_savecolor(void)
     }
     fprintf(fp, "%s", "#END\n");
     I3FCLOSE(fp);
-    return;
 }
 
 void I3_readcolor(I3_COLOR *color, FILE *fp)
@@ -14788,7 +14724,6 @@ void I3_load_color_table(void)
         }
     }
     I3FCLOSE(fp);
-    return;
 }
 
 void I3_savehelps(void)
@@ -14813,7 +14748,6 @@ void I3_savehelps(void)
     }
     fprintf(fp, "%s", "#END\n");
     I3FCLOSE(fp);
-    return;
 }
 
 void I3_readhelp(I3_HELP_DATA *help, FILE *fp)
@@ -14942,7 +14876,6 @@ void I3_load_helps(void)
         }
     }
     I3FCLOSE(fp);
-    return;
 }
 
 void I3_savecommands(void)
@@ -14973,7 +14906,6 @@ void I3_savecommands(void)
     }
     fprintf(fp, "%s", "#END\n");
     I3FCLOSE(fp);
-    return;
 }
 
 void I3_readcommand(I3_CMD_DATA *cmd, FILE *fp)
@@ -15130,7 +15062,6 @@ void I3_saverouters(void)
     }
     fprintf(fp, "%s", "#END\n");
     I3FCLOSE(fp);
-    return;
 }
 
 void I3_readrouter(ROUTER_DATA *router, FILE *fp)
@@ -15348,7 +15279,6 @@ void I3_load_ucache(void)
         }
     }
     I3FCLOSE(fp);
-    return;
 }
 
 void I3_saveconfig(void)
@@ -15408,7 +15338,6 @@ void I3_saveconfig(void)
     fprintf(fp, "%s", "end\n");
     fprintf(fp, "%s", "$END\n");
     I3FCLOSE(fp);
-    return;
 }
 
 void I3_fread_config_file(FILE *fin)
@@ -15759,7 +15688,6 @@ void I3_loadbans(void)
         }
     }
     I3FCLOSE(fin);
-    return;
 }
 
 void I3_write_bans(void)
@@ -15913,7 +15841,6 @@ void I3_loadchannels(void)
         }
     }
     I3FCLOSE(fin);
-    return;
 }
 
 void I3_write_channel_config(void)
@@ -16151,7 +16078,6 @@ void I3_loadmudlist(void)
     }
     I3FCLOSE(fin);
     unlink(I3_MUDLIST_FILE);
-    return;
 }
 
 /* Called only during copyovers */
@@ -16204,7 +16130,6 @@ void I3_loadchanlist(void)
     }
     I3FCLOSE(fin);
     unlink(I3_CHANLIST_FILE);
-    return;
 }
 
 /* Called only during copyovers */
@@ -16259,7 +16184,6 @@ void I3_savemudlist(void)
     }
     fprintf(fp, "%s", "#END\n");
     I3FCLOSE(fp);
-    return;
 }
 
 /* Called only during copyovers */
@@ -16295,7 +16219,6 @@ void I3_savechanlist(void)
     }
     fprintf(fp, "%s", "#END\n");
     I3FCLOSE(fp);
-    return;
 }
 
 /* Used during copyovers */
@@ -16519,7 +16442,6 @@ void I3_connection_close(bool reconnect)
     bytes_received = 0;
     channel_m_sent = 0;
     channel_m_received = 0;
-    return;
 }
 
 /* Free up all the data lists once the connection is down. No sense in wasting memory on it. */
@@ -16623,7 +16545,6 @@ void free_i3data(bool complete)
             I3DISPOSE(color);
         }
     }
-    return;
 }
 
 /*
@@ -16800,7 +16721,7 @@ void i3_startup(bool forced, int mudport, bool isconnected)
         log_error("i3_startup: %s", "Configuration failed!");
 }
 
-void do_taunt_from_log(void)
+int do_taunt_from_log(void)
 {
     FILE *fp = NULL;
     int taunt_count = 0;
@@ -16853,25 +16774,25 @@ void do_taunt_from_log(void)
             // Skip to channel (throw away)
             ss = strchr(line, '\t');
             if (!ss || !*ss)
-                return;
+                return TRUE;
             ss++;
 
             // Skip to speaker (ss to se-2)
             ss = strchr(ss, '\t');
             if (!ss || !*ss)
-                return;
+                return TRUE;
             ss++;
 
             // Skip to is_emote (se to t-2)
             se = strchr(ss, '\t');
             if (!se || !*se)
-                return;
+                return TRUE;
             se++;
 
             // Get to message (t to EOL)
             t = strchr(se, '\t');
             if (!t || !*t)
-                return;
+                return TRUE;
             t++;
 
             bzero(speaker, MAX_STRING_LENGTH);
@@ -16892,6 +16813,7 @@ void do_taunt_from_log(void)
     {
         // Zombie patrol should be handled by ignoring SIGCHLD
     }
+    return TRUE;
 }
 
 #define I3_TAUNT_FILE I3_DIR "i3.taunts"
@@ -16989,7 +16911,7 @@ char *i3_taunt_line()
     }
 
     /* We should have taunt data now */
-    return (taunt_list[number(0, taunt_count - 1)]);
+    return taunt_list[number(0, taunt_count - 1)];
 }
 
 #define I3_USERMAP_FILE I3_DIR "i3.usermap"
@@ -17614,7 +17536,6 @@ I3_CMD(I3_show_ucache_contents)
         users++;
     }
     i3page_printf(ch, "%%^WHITE%%^%d users being cached.%%^RESET%%^\r\n", users);
-    return;
 }
 
 I3_CMD(I3_beep)
@@ -17929,7 +17850,6 @@ I3_CMD(I3_reply)
     snprintf(buf, MAX_STRING_LENGTH, "%s %s", I3REPLY(ch), argument);
     I3_tell(ch, buf);
     */
-    return;
 }
 
 I3_CMD(I3_mudlisten)
@@ -17993,7 +17913,6 @@ I3_CMD(I3_mudlisten)
         return;
     }
     I3_mudlisten(ch, "");
-    return;
 }
 
 I3_CMD(I3_mudlist)
@@ -18058,7 +17977,6 @@ I3_CMD(I3_mudlist)
         }
     }
     i3page_printf(ch, "%%^WHITE%%^%%^BOLD%%^%d total muds listed.%%^RESET%%^\r\n", mudcount);
-    return;
 }
 
 I3_CMD(I3_chanlist)
@@ -18110,7 +18028,6 @@ I3_CMD(I3_chanlist)
                       channel->status == 0 ? "%^GREEN%^%^BOLD%^Public" : "%^RED%^%^BOLD%^Private");
     }
     i3page_printf(ch, "%%^CYAN%%^%%^BOLD%%^*: You are listening to these channels.%%^RESET%%^\r\n");
-    return;
 }
 
 I3_CMD(I3_setup_channel)
@@ -18277,7 +18194,6 @@ I3_CMD(I3_edit_channel)
         return;
     }
     I3_edit_channel(ch, "");
-    return;
 }
 
 I3_CMD(I3_chan_who)
@@ -18383,7 +18299,6 @@ I3_CMD(I3_listen_channel)
         i3_printf(ch, "You now listen to %s\r\n", channel->local_name);
         I3_flagchan(&I3LISTEN(ch), channel->local_name);
     }
-    return;
 }
 
 I3_CMD(I3_deny_channel)
@@ -18470,7 +18385,6 @@ I3_CMD(I3_deny_channel)
         i3_printf(ch, "%s can no longer listen to %s\r\n", CH_I3NAME(victim), channel->local_name);
         I3_flagchan(&I3DENY(ch), channel->local_name);
     }
-    return;
 }
 
 I3_CMD(I3_mudinfo)
@@ -18642,7 +18556,6 @@ I3_CMD(I3_chanlayout)
         return;
     }
     I3_chanlayout(ch, "");
-    return;
 }
 
 I3_CMD(I3_bancmd)
@@ -18759,7 +18672,6 @@ I3_CMD(I3_invis)
         I3SET_BIT(I3FLAG(ch), I3_INVIS);
         i3_printf(ch, "You are now i3invisible.\r\n");
     }
-    return;
 }
 
 I3_CMD(I3_debug)
@@ -18771,7 +18683,6 @@ I3_CMD(I3_debug)
     else
         i3_printf(ch, "I3_PACKET Packet debugging disabled.\r\n");
 
-    return;
 }
 
 I3_CMD(I3_send_user_req)
@@ -18826,7 +18737,6 @@ I3_CMD(I3_send_user_req)
     }
 
     I3_send_chan_user_req(pmud->name, user);
-    return;
 }
 
 I3_CMD(I3_admin_channel)
@@ -18890,7 +18800,6 @@ I3_CMD(I3_admin_channel)
         return;
     }
     I3_admin_channel(ch, "");
-    return;
 }
 
 I3_CMD(I3_disconnect)
@@ -18904,7 +18813,6 @@ I3_CMD(I3_disconnect)
     i3_printf(ch, "Disconnecting from Intermud-3 router.\r\n");
 
     i3_shutdown(0, ch);
-    return;
 }
 
 I3_CMD(I3_connect)
@@ -18937,7 +18845,6 @@ I3_CMD(I3_connect)
 
     i3_printf(ch, "%s is not configured as a router for this mud.\r\n", argument);
     i3_printf(ch, "If you wish to add it, use the i3router command to provide its information.\r\n");
-    return;
 }
 
 I3_CMD(I3_reload)
@@ -18956,7 +18863,6 @@ I3_CMD(I3_reload)
         router_connect(NULL, FALSE, this_i3mud->player_port, FALSE);
     }
     i3_printf(ch, "Done!\r\n");
-    return;
 }
 
 I3_CMD(I3_addchan)
@@ -19039,7 +18945,6 @@ I3_CMD(I3_addchan)
     I3_send_channel_listen(channel, TRUE);
     I3_write_channel_config();
 
-    return;
 }
 
 I3_CMD(I3_removechan)
@@ -19076,7 +18981,6 @@ I3_CMD(I3_removechan)
     destroy_I3_channel(channel);
     I3_write_channel_config();
 
-    return;
 }
 
 I3_CMD(I3_setconfig)
@@ -19266,7 +19170,6 @@ I3_CMD(I3_setconfig)
     }
 
     I3_setconfig(ch, "");
-    return;
 }
 
 I3_CMD(I3_permstats)
@@ -19295,7 +19198,6 @@ I3_CMD(I3_permstats)
               perm_names[I3PERM(victim)]);
     i3_printf(ch, "%%^GREEN%%^These permissions were obtained %s.%%^RESET%%^\r\n",
               I3IS_SET(I3FLAG(victim), I3_PERMOVERRIDE) ? "manually via i3permset" : "automatically by level");
-    return;
 }
 
 I3_CMD(I3_permset)
@@ -19380,7 +19282,6 @@ I3_CMD(I3_permset)
             }
         }
     }
-    return;
 }
 
 I3_CMD(I3_who)
@@ -19711,7 +19612,6 @@ I3_CMD(I3_router)
         return;
     }
     I3_router(ch, "");
-    return;
 }
 
 I3_CMD(I3_stats)
@@ -19787,7 +19687,6 @@ I3_CMD(I3_stats)
     i3_printf(ch, "%%^CYAN%%^Known muds                 : %%^WHITE%%^%%^BOLD%%^%d%%^RESET%%^\r\n", mud_count);
     i3_printf(ch, "%%^CYAN%%^Known channels             : %%^WHITE%%^%%^BOLD%%^%d%%^RESET%%^\r\n", chan_count);
 
-    return;
 }
 
 I3_CMD(i3_help)
@@ -19837,7 +19736,6 @@ I3_CMD(i3_help)
         }
     }
     i3_printf(ch, "%%^GREEN%%^No help exists for topic %%^WHITE%%^%%^BOLD%%^%s%%^GREEN%%^.%%^RESET%%^\r\n", argument);
-    return;
 }
 
 I3_CMD(i3_hedit)
@@ -19900,7 +19798,6 @@ I3_CMD(i3_hedit)
         return;
     }
     i3_hedit(ch, "");
-    return;
 }
 
 I3_CMD(I3_other)
@@ -19931,7 +19828,6 @@ I3_CMD(I3_other)
     i3page_printf(ch, "%s", buf);
     i3page_printf(ch, "%%^RESET%%^\r\n%%^GREEN%%^For information about a specific command, see "
                       "%%^WHITE%%^%%^BOLD%%^i3help <command>%%^GREEN%%^.%%^RESET%%^\r\n");
-    return;
 }
 
 I3_CMD(I3_afk)
@@ -19946,7 +19842,6 @@ I3_CMD(I3_afk)
         I3SET_BIT(I3FLAG(ch), I3_AFK);
         i3_printf(ch, "You are now AFK to I3.\r\n");
     }
-    return;
 }
 
 I3_CMD(I3_color)
@@ -19964,7 +19859,6 @@ I3_CMD(I3_color)
             "%%^RED%%^%%^BOLD%%^I3 c%%^YELLOW%%^o%%^GREEN%%^%%^BOLD%%^l%%^BLUE%%^%%^BOLD%%^o%%^MAGENTA%%^%%^BOLD%%^r "
             "%%^RED%%^%%^BOLD%%^is now on. Enjoy :)%%^RESET%%^\r\n");
     }
-    return;
 }
 
 I3_CMD(i3_cedit)
@@ -20213,7 +20107,6 @@ I3_CMD(i3_cedit)
         return;
     }
     i3_cedit(ch, "");
-    return;
 }
 
 char *I3_find_social(CHAR_DATA *ch, char *sname, char *person, char *mud, bool victim)
@@ -20390,7 +20283,6 @@ void I3_purge_skeleton(CHAR_DATA *skeleton)
     I3STRFREE(skeleton->player.name);
     I3STRFREE(skeleton->player.short_descr);
     I3DISPOSE(skeleton);
-    return;
 }
 
 void I3_send_social(I3_CHANNEL *channel, CHAR_DATA *ch, const char *argument)
@@ -20482,7 +20374,6 @@ void I3_send_social(I3_CHANNEL *channel, CHAR_DATA *ch, const char *argument)
         if (skeleton)
             I3_purge_skeleton(skeleton);
     }
-    return;
 }
 
 I3_CMD(I3_taunt)
@@ -20555,7 +20446,6 @@ I3_CMD(I3_taunt)
         I3_send_packet();
         i3_printf(ch, "%%^YELLOW%%^You TAUNT %%^CYAN%%^%%^BOLD%%^%s@%s%%^RESET%%^ with: %s\r\n", to, pmud->name, taunt);
     }
-    return;
 }
 
 I3_CMD(I3_speaker_color)
@@ -20619,97 +20509,96 @@ I3_CMD(I3_reload_speakers)
     I3_loadPinkfishToGreyscale();
 
     i3_printf(ch, "done.");
-    return;
 }
 
 const char *i3_funcname(I3_FUN *func)
 {
     if (func == I3_other)
-        return ("I3_other");
+        return "I3_other";
     if (func == I3_listen_channel)
-        return ("I3_listen_channel");
+        return "I3_listen_channel";
     if (func == I3_chanlist)
-        return ("I3_chanlist");
+        return "I3_chanlist";
     if (func == I3_mudlist)
-        return ("I3_mudlist");
+        return "I3_mudlist";
     if (func == I3_invis)
-        return ("I3_invis");
+        return "I3_invis";
     if (func == I3_who)
-        return ("I3_who");
+        return "I3_who";
     if (func == I3_locate)
-        return ("I3_locate");
+        return "I3_locate";
     if (func == I3_tell)
-        return ("I3_tell");
+        return "I3_tell";
     if (func == I3_reply)
-        return ("I3_reply");
+        return "I3_reply";
     if (func == I3_emote)
-        return ("I3_emote");
+        return "I3_emote";
     if (func == I3_beep)
-        return ("I3_beep");
+        return "I3_beep";
     if (func == I3_ignorecmd)
-        return ("I3_ignorecmd");
+        return "I3_ignorecmd";
     if (func == I3_finger)
-        return ("I3_finger");
+        return "I3_finger";
     if (func == I3_mudinfo)
-        return ("I3_mudinfo");
+        return "I3_mudinfo";
     if (func == I3_color)
-        return ("I3_color");
+        return "I3_color";
     if (func == I3_afk)
-        return ("I3_afk");
+        return "I3_afk";
     if (func == I3_chan_who)
-        return ("I3_chan_who");
+        return "I3_chan_who";
     if (func == I3_connect)
-        return ("I3_connect");
+        return "I3_connect";
     if (func == I3_disconnect)
-        return ("I3_disconnect");
+        return "I3_disconnect";
     if (func == I3_reload)
-        return ("I3_reload");
+        return "I3_reload";
     if (func == I3_send_user_req)
-        return ("I3_send_user_req");
+        return "I3_send_user_req";
     if (func == I3_permstats)
-        return ("I3_permstats");
+        return "I3_permstats";
     if (func == I3_deny_channel)
-        return ("I3_deny_channel");
+        return "I3_deny_channel";
     if (func == I3_permset)
-        return ("I3_permset");
+        return "I3_permset";
     if (func == I3_chanlayout)
-        return ("I3_chanlayout");
+        return "I3_chanlayout";
     if (func == I3_admin_channel)
-        return ("I3_admin_channel");
+        return "I3_admin_channel";
     if (func == I3_addchan)
-        return ("I3_addchan");
+        return "I3_addchan";
     if (func == I3_removechan)
-        return ("I3_removechan");
+        return "I3_removechan";
     if (func == I3_edit_channel)
-        return ("I3_edit_channel");
+        return "I3_edit_channel";
     if (func == I3_mudlisten)
-        return ("I3_mudlisten");
+        return "I3_mudlisten";
     if (func == I3_router)
-        return ("I3_router");
+        return "I3_router";
     if (func == I3_bancmd)
-        return ("I3_bancmd");
+        return "I3_bancmd";
     if (func == I3_setconfig)
-        return ("I3_setconfig");
+        return "I3_setconfig";
     if (func == I3_setup_channel)
-        return ("I3_setup_channel");
+        return "I3_setup_channel";
     if (func == I3_stats)
-        return ("I3_stats");
+        return "I3_stats";
     if (func == I3_show_ucache_contents)
-        return ("I3_show_ucache_contents");
+        return "I3_show_ucache_contents";
     if (func == I3_debug)
-        return ("I3_debug");
+        return "I3_debug";
     if (func == i3_hedit)
-        return ("i3_hedit");
+        return "i3_hedit";
     if (func == i3_help)
-        return ("i3_help");
+        return "i3_help";
     if (func == i3_cedit)
-        return ("i3_cedit");
+        return "i3_cedit";
     if (func == I3_taunt)
-        return ("I3_taunt");
+        return "I3_taunt";
     if (func == I3_speaker_color)
-        return ("I3_speaker_color");
+        return "I3_speaker_color";
     if (func == I3_reload_speakers)
-        return ("I3_reload_speakers");
+        return "I3_reload_speakers";
 
     return "";
 }

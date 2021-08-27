@@ -100,11 +100,11 @@ char *player_room_name(struct char_data *ch);
 char *player_site_name(struct char_data *ch);
 char *whod_text(struct char_data *viewer);
 void show_whod_info(struct char_data *ch);
-void do_whod(struct char_data *ch, const char *arg, int cmd);
+int do_whod(struct char_data *ch, const char *arg, int cmd);
 
 void generate_json_mudlist(const char *filename);
-void do_who(struct char_data *ch, const char *argument, int cmd);
-void do_users(struct char_data *ch, const char *argument, int cmd);
-void do_players(struct char_data *ch, const char *argument, int cmd);
+int do_who(struct char_data *ch, const char *argument, int cmd);
+int do_users(struct char_data *ch, const char *argument, int cmd);
+int do_players(struct char_data *ch, const char *argument, int cmd);
 
 #endif

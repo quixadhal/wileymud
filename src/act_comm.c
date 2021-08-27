@@ -24,7 +24,7 @@
 #define _ACT_COMM_C
 #include "act_comm.h"
 
-void do_say(struct char_data *ch, const char *argument, int cmd)
+int do_say(struct char_data *ch, const char *argument, int cmd)
 {
     int i = 0;
 
@@ -63,9 +63,10 @@ void do_say(struct char_data *ch, const char *argument, int cmd)
             break;
         }
     }
+    return TRUE;
 }
 
-void do_shout(struct char_data *ch, const char *argument, int cmd)
+int do_shout(struct char_data *ch, const char *argument, int cmd)
 {
     struct descriptor_data *i = NULL;
     struct room_data *rp = NULL;
@@ -83,7 +84,7 @@ void do_shout(struct char_data *ch, const char *argument, int cmd)
     if (IS_SET(ch->specials.new_act, NEW_PLR_NOSHOUT))
     {
         cprintf(ch, "You can't shout!!\r\n");
-        return;
+        return TRUE;
     }
     for (; *argument == ' '; argument++)
         ; /* skip leading spaces */
@@ -91,12 +92,12 @@ void do_shout(struct char_data *ch, const char *argument, int cmd)
     if (ch->master && IS_AFFECTED(ch, AFF_CHARM))
     {
         cprintf(ch->master, "You pet is trying to shout....");
-        return;
+        return TRUE;
     }
     if (!(*argument))
     {
         cprintf(ch, "usage: shout <mesg>.\r\n");
-        return;
+        return TRUE;
     }
 
     if (IS_IMMORTAL(ch) || IS_NPC(ch))
@@ -115,17 +116,17 @@ void do_shout(struct char_data *ch, const char *argument, int cmd)
         if (GET_MOVE(ch) < (GET_MAX_MOVE(ch) / 10))
         {
             cprintf(ch, "You are just too tired to shout anything.\r\n");
-            return;
+            return TRUE;
         }
         if (GET_MANA(ch) < (GET_MAX_MANA(ch) / 15))
         {
             cprintf(ch, "You can't seem to summon the energy to shout.\r\n");
-            return;
+            return TRUE;
         }
         if (GET_COND(ch, THIRST) < 4)
         {
             cprintf(ch, "Your throat is too dry to shout anything!\r\n");
-            return;
+            return TRUE;
         }
         GET_MOVE(ch) -= (GET_MAX_MOVE(ch) / 10);
         GET_MANA(ch) -= (GET_MAX_MANA(ch) / 15);
@@ -144,17 +145,17 @@ void do_shout(struct char_data *ch, const char *argument, int cmd)
         if (GET_MOVE(ch) < (GET_MAX_MOVE(ch) / 10))
         {
             cprintf(ch, "You are just too tired to shout anything.\r\n");
-            return;
+            return TRUE;
         }
         if (GET_MANA(ch) < (GET_MAX_MANA(ch) / 15))
         {
             cprintf(ch, "You can't seem to summon the energy to shout.\r\n");
-            return;
+            return TRUE;
         }
         if (GET_COND(ch, THIRST) < 4)
         {
             cprintf(ch, "Your throat is too dry to shout anything!\r\n");
-            return;
+            return TRUE;
         }
         GET_MOVE(ch) -= (GET_MAX_MOVE(ch) / 10);
         GET_MANA(ch) -= (GET_MAX_MANA(ch) / 15);
@@ -174,7 +175,7 @@ void do_shout(struct char_data *ch, const char *argument, int cmd)
         if (!(mrp = real_roomp(ch->in_room)))
         {
             cprintf(ch, "You are not in reality... this is bad.\r\n");
-            return;
+            return TRUE;
         }
         for (v = mrp->people; v; v = v->next_in_room)
             if (v != ch && v->desc && !IS_SET(v->specials.new_act, NEW_PLR_NOSHOUT) &&
@@ -195,9 +196,10 @@ void do_shout(struct char_data *ch, const char *argument, int cmd)
                 }
 #endif
     }
+    return TRUE;
 }
 
-void do_commune(struct char_data *ch, const char *argument, int cmd)
+int do_commune(struct char_data *ch, const char *argument, int cmd)
 {
     struct descriptor_data *i = NULL;
 
@@ -220,9 +222,10 @@ void do_commune(struct char_data *ch, const char *argument, int cmd)
                 (GetMaxLevel(i->character) >= LOW_IMMORTAL))
                 act("$n : '%s'", 0, ch, 0, i->character, TO_VICT, argument);
     }
+    return TRUE;
 }
 
-void do_tell(struct char_data *ch, const char *argument, int cmd)
+int do_tell(struct char_data *ch, const char *argument, int cmd)
 {
     struct char_data *vict = NULL;
     char name[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
@@ -236,37 +239,37 @@ void do_tell(struct char_data *ch, const char *argument, int cmd)
     if (!*name || !*message)
     {
         cprintf(ch, "usage: tell <who> <mesg>.\r\n");
-        return;
+        return TRUE;
     }
     if (!(vict = get_char_vis(ch, name)))
     {
         cprintf(ch, "No-one by that name here..\r\n");
-        return;
+        return TRUE;
     }
     if (ch == vict)
     {
         cprintf(ch, "You try to tell yourself something.\r\n");
-        return;
+        return TRUE;
     }
     if (GET_POS(vict) == POSITION_SLEEPING)
     {
         act("$E is asleep, shhh.", FALSE, ch, 0, vict, TO_CHAR);
-        return;
+        return TRUE;
     }
     if (IS_NPC(vict) && !(vict->desc))
     {
         cprintf(ch, "No-one by that name here..\r\n");
-        return;
+        return TRUE;
     }
     if (!vict->desc)
     {
         cprintf(ch, "They can't hear you, link dead.\r\n");
-        return;
+        return TRUE;
     }
     if (IS_SET(vict->specials.new_act, NEW_PLR_NOTELL) && IS_MORTAL(ch))
     {
         cprintf(ch, "They are not recieving tells at the moment.\r\n");
-        return;
+        return TRUE;
     }
     switch (message[strlen(message) - 1])
     {
@@ -286,9 +289,10 @@ void do_tell(struct char_data *ch, const char *argument, int cmd)
             cprintf(ch, "\x1b[1;33mYou tell %s '%s'\x1b[0m\r\n", NAME(vict), message);
         break;
     }
+    return TRUE;
 }
 
-void do_whisper(struct char_data *ch, const char *argument, int cmd)
+int do_whisper(struct char_data *ch, const char *argument, int cmd)
 {
     struct char_data *vict = NULL;
     char name[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
@@ -318,9 +322,10 @@ void do_whisper(struct char_data *ch, const char *argument, int cmd)
         }
         act("\x1b[35m$n whispers something to $N.\x1b[0m", FALSE, ch, 0, vict, TO_NOTVICT);
     }
+    return TRUE;
 }
 
-void do_ask(struct char_data *ch, const char *argument, int cmd)
+int do_ask(struct char_data *ch, const char *argument, int cmd)
 {
     struct char_data *vict = NULL;
     char name[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
@@ -350,9 +355,10 @@ void do_ask(struct char_data *ch, const char *argument, int cmd)
         }
         act("$n asks $N a question.", FALSE, ch, 0, vict, TO_NOTVICT);
     }
+    return TRUE;
 }
 
-void do_write(struct char_data *ch, const char *argument, int cmd)
+int do_write(struct char_data *ch, const char *argument, int cmd)
 {
     struct obj_data *paper = NULL;
     struct obj_data *pen = NULL;
@@ -365,27 +371,27 @@ void do_write(struct char_data *ch, const char *argument, int cmd)
     argument_interpreter(argument, papername, penname);
 
     if (!ch->desc)
-        return;
+        return TRUE;
 
     if (!*papername)
     { /* nothing was delivered */
         cprintf(ch, "write (on) papername (with) penname.\r\n");
-        return;
+        return TRUE;
     }
     if (!*penname)
     {
         cprintf(ch, "write (on) papername (with) penname.\r\n");
-        return;
+        return TRUE;
     }
     if (!(paper = get_obj_in_list_vis(ch, papername, ch->carrying)))
     {
         cprintf(ch, "You have no %s.\r\n", papername);
-        return;
+        return TRUE;
     }
     if (!(pen = get_obj_in_list_vis(ch, penname, ch->carrying)))
     {
         cprintf(ch, "You have no %s.\r\n", penname);
-        return;
+        return TRUE;
     }
     /*
      * ok.. now let's see what kind of stuff we've found
@@ -401,7 +407,7 @@ void do_write(struct char_data *ch, const char *argument, int cmd)
     else if (paper->action_description)
     {
         cprintf(ch, "There's something written on it already.\r\n");
-        return;
+        return TRUE;
     }
     else
     {
@@ -413,9 +419,10 @@ void do_write(struct char_data *ch, const char *argument, int cmd)
         ch->desc->str = &paper->action_description;
         ch->desc->max_str = MAX_NOTE_LENGTH;
     }
+    return TRUE;
 }
 
-void do_group_tell(struct char_data *ch, const char *argument, int cmd)
+int do_group_tell(struct char_data *ch, const char *argument, int cmd)
 {
     struct char_data *k = NULL;
     struct char_data *vict = NULL;
@@ -427,17 +434,17 @@ void do_group_tell(struct char_data *ch, const char *argument, int cmd)
     if (!*argument)
     {
         cprintf(ch, "usage: gtell <mesg>.\r\n");
-        return;
+        return TRUE;
     }
     if (!IS_AFFECTED(ch, AFF_GROUP))
     {
         cprintf(ch, "But you are a member of no group?!\r\n");
-        return;
+        return TRUE;
     }
     if (GET_POS(ch) == POSITION_SLEEPING)
     {
         cprintf(ch, "You are to tired to do this....\r\n");
-        return;
+        return TRUE;
     }
     if (!ch->master)
         k = ch;
@@ -469,9 +476,10 @@ void do_group_tell(struct char_data *ch, const char *argument, int cmd)
 
     if (IS_NPC(ch) || IS_SET(ch->specials.new_act, NEW_PLR_ECHO))
         cprintf(ch, "\x1b[0;33mYou tell the group '%s'\x1b[0m\r\n", argument);
+    return TRUE;
 }
 
-void do_group_report(struct char_data *ch, const char *argument, int cmd)
+int do_group_report(struct char_data *ch, const char *argument, int cmd)
 {
     struct char_data *k = NULL;
     struct char_data *vict = NULL;
@@ -484,12 +492,12 @@ void do_group_report(struct char_data *ch, const char *argument, int cmd)
     if (!IS_AFFECTED(ch, AFF_GROUP))
     {
         cprintf(ch, "But you are a member of no group?!\r\n");
-        return;
+        return TRUE;
     }
     if (GET_POS(ch) == POSITION_SLEEPING)
     {
         cprintf(ch, "You are to tired to do this....\r\n");
-        return;
+        return TRUE;
     }
     snprintf(message, MAX_INPUT_LENGTH, "\r\nGroup Report from:Name:%s Hits:%d(%d) Mana:%d(%d) Move:%d(%d)",
              GET_NAME(ch), GET_HIT(ch), GET_MAX_HIT(ch), GET_MANA(ch), GET_MAX_MANA(ch), GET_MOVE(ch),
@@ -523,9 +531,10 @@ void do_group_report(struct char_data *ch, const char *argument, int cmd)
 
     if (IS_NPC(ch) || IS_SET(ch->specials.new_act, NEW_PLR_ECHO))
         cprintf(ch, "You tell the group your stats.\r\n");
+    return TRUE;
 }
 
-void do_split(struct char_data *ch, const char *argument, int cmd)
+int do_split(struct char_data *ch, const char *argument, int cmd)
 {
     struct char_data *vict = NULL;
     struct follow_type *f = NULL;
@@ -540,25 +549,25 @@ void do_split(struct char_data *ch, const char *argument, int cmd)
     if (!IS_AFFECTED(ch, AFF_GROUP))
     {
         cprintf(ch, "You are a member of no group!\r\n");
-        return;
+        return TRUE;
     }
     if (ch->master)
     {
         cprintf(ch, "You must be the leader of the group to use this.\r\n");
-        return;
+        return TRUE;
     }
     one_argument(argument, blah);
 
     if (!is_number(blah))
     {
         cprintf(ch, "You must supply an integer amount.\r\n");
-        return;
+        return TRUE;
     }
     amount = atoi(blah);
     if (amount > GET_GOLD(ch))
     {
         cprintf(ch, "You do not have that much gold.\r\n");
-        return;
+        return TRUE;
     }
     GET_GOLD(ch) -= amount;
     count = 1;
@@ -590,9 +599,10 @@ void do_split(struct char_data *ch, const char *argument, int cmd)
             }
         }
     }
+    return TRUE;
 }
 
-void do_land(struct char_data *ch, const char *argument, int cmd)
+int do_land(struct char_data *ch, const char *argument, int cmd)
 {
     if (DEBUG)
         log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
@@ -600,7 +610,7 @@ void do_land(struct char_data *ch, const char *argument, int cmd)
     if (IS_NOT_SET(ch->specials.affected_by, AFF_FLYING))
     {
         cprintf(ch, "But you are not flying?\r\n");
-        return;
+        return TRUE;
     }
     act("$n slowly lands on the ground.", FALSE, ch, 0, 0, TO_ROOM);
 
@@ -610,9 +620,10 @@ void do_land(struct char_data *ch, const char *argument, int cmd)
         REMOVE_BIT(ch->specials.affected_by, AFF_FLYING);
 
     cprintf(ch, "You feel the extreme pull of gravity...\r\n");
+    return TRUE;
 }
 
-void do_invis_off(struct char_data *ch, const char *argument, int cmd)
+int do_invis_off(struct char_data *ch, const char *argument, int cmd)
 {
     if (DEBUG)
         log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
@@ -620,7 +631,7 @@ void do_invis_off(struct char_data *ch, const char *argument, int cmd)
     if (!IS_SET(ch->specials.affected_by, AFF_INVISIBLE))
     {
         cprintf(ch, "But you are not invisible?\r\n");
-        return;
+        return TRUE;
     }
     act("$n slowly fades into existence.", FALSE, ch, 0, 0, TO_ROOM);
     act("You feel exposed.", FALSE, ch, 0, 0, TO_CHAR);
@@ -630,4 +641,5 @@ void do_invis_off(struct char_data *ch, const char *argument, int cmd)
 
     if (IS_SET(ch->specials.affected_by, AFF_INVISIBLE))
         REMOVE_BIT(ch->specials.affected_by, AFF_INVISIBLE);
+    return TRUE;
 }

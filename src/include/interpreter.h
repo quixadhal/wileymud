@@ -320,7 +320,8 @@
 
 struct command_info
 {
-    void (*command_pointer)(struct char_data *ch, const char *argument, int cmd);
+    //void (*command_pointer)(struct char_data *ch, const char *argument, int cmd);
+    cfuncp command_pointer;
     char minimum_position;
     char minimum_level;
 };

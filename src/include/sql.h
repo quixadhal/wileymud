@@ -49,7 +49,7 @@ int is_bot(int is_emote, const char *channel, const char *speaker, const char *m
 void allchan_sql(int is_emote, const char *channel, const char *speaker, const char *username, const char *mud,
                  const char *message);
 void addspeaker_sql(const char *speaker, const char *pinkfish);
-void do_checkurl(struct char_data *ch, const char *argument, int cmd);
+int do_checkurl(struct char_data *ch, const char *argument, int cmd);
 // Messages
 char *update_message_from_file(const char *filename, int is_prompt);
 void i3_packet_log(char *packet_type, long packet_length, char *packet_content);

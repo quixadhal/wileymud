@@ -27,7 +27,7 @@ void setup_help_table(void);
 void load_help(void);
 int find_help_by_keyword(const char *keyword);
 struct help_message *get_help_by_id(const int id);
-void do_help(struct char_data *ch, const char *argument, int cmd);
-void do_wizhelp(struct char_data *ch, const char *argument, int cmd);
+int do_help(struct char_data *ch, const char *argument, int cmd);
+int do_wizhelp(struct char_data *ch, const char *argument, int cmd);
 
 #endif

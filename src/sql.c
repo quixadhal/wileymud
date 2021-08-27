@@ -520,17 +520,17 @@ int is_url(int is_emote, const char *channel, const char *speaker, const char *m
     if (regexp_broken)
     {
         // URL processing is screwed up, so trying again won't help.
-        return 0;
+        return FALSE;
     }
     if (!strcasecmp(channel, "url"))
     {
         // Anything on the URL channel is never treated as a url.  Recursion is recursion.
-        return 0;
+        return FALSE;
     }
     /*
     if(!strcasecmp(speaker, "cron") && !strcasecmp(mud, "wileymud")) {
         // Also ignore automated responses from this mud
-        return 0;
+        return FALSE;
     }
     */
 
@@ -542,14 +542,14 @@ int is_url(int is_emote, const char *channel, const char *speaker, const char *m
         {
             log_error("regexp failed to compile");
             regexp_broken = 1;
-            return 0;
+            return FALSE;
         }
         regexp_studied = pcre_study(regexp_compiled, 0, &regexp_error);
         if (regexp_error != NULL)
         {
             log_error("regexp study failed");
             regexp_broken = 1;
-            return 0;
+            return FALSE;
         }
     }
 
@@ -561,7 +561,7 @@ int is_url(int is_emote, const char *channel, const char *speaker, const char *m
     if (regexp_rv <= 0)
     {
         // Either an error, or no URL match found
-        return 0;
+        return FALSE;
     }
 
     // This version will become active once the external script is redesigned to use
@@ -590,44 +590,44 @@ int is_url(int is_emote, const char *channel, const char *speaker, const char *m
     // higher up, so it only runs once per N tics.
 
     // spawn_url_handler();
-    return 1;
+    return TRUE;
 }
 
 int is_bot(int is_emote, const char *channel, const char *speaker, const char *mud, const char *message)
 {
     if (!strcasecmp(speaker, "cron") && !strcasecmp(mud, "wileymud"))
-        return 1;
+        return TRUE;
     if (!strcasecmp(speaker, "urlbot") && !strcasecmp(mud, "wileymud"))
-        return 1;
+        return TRUE;
     if (!strcasecmp(speaker, "system") && !strcasecmp(mud, "bloodlines"))
-        return 1;
+        return TRUE;
     if (!strcasecmp(speaker, "gribbles") && !strcasecmp(mud, "rock the halo"))
-        return 1;
+        return TRUE;
     if (!strcasecmp(speaker, "timbot") && !strcasecmp(mud, "timmud"))
-        return 1;
+        return TRUE;
 
     if (!strcasecmp(channel, "inews") && !strcasecmp(mud, "rock the halo"))
-        return 1;
+        return TRUE;
     if (!strcasecmp(channel, "mudnews") && !strcasecmp(mud, "rock the halo"))
-        return 1;
+        return TRUE;
     if (!strcasecmp(channel, "sport") && !strcasecmp(mud, "rock the halo"))
-        return 1;
+        return TRUE;
     if (!strcasecmp(channel, "admin") && !strcasecmp(mud, "rock the halo"))
-        return 1;
+        return TRUE;
 
     if (!strcasecmp(channel, "inews") && !strcasecmp(mud, "rth"))
-        return 1;
+        return TRUE;
     if (!strcasecmp(channel, "mudnews") && !strcasecmp(mud, "rth"))
-        return 1;
+        return TRUE;
     if (!strcasecmp(channel, "sport") && !strcasecmp(mud, "rth"))
-        return 1;
+        return TRUE;
     if (!strcasecmp(channel, "admin") && !strcasecmp(mud, "rth"))
-        return 1;
+        return TRUE;
 
     if (!strcasecmp(channel, "admin") && !strcasecmp(mud, "bloodlines"))
-        return 1;
+        return TRUE;
 
-    return 0;
+    return FALSE;
 }
 
 // This gets passed "visname", rather than "originator_username"
@@ -733,7 +733,7 @@ void addspeaker_sql(const char *speaker, const char *pinkfish)
     PQclear(res);
 }
 
-void do_checkurl(struct char_data *ch, const char *argument, int cmd)
+int do_checkurl(struct char_data *ch, const char *argument, int cmd)
 {
     static char buf[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
     static char tmp[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
@@ -842,6 +842,7 @@ void do_checkurl(struct char_data *ch, const char *argument, int cmd)
         log_info("checkurl %s\n", tmp);
         cprintf(ch, "URL is not known, yet!\r\n");
     }
+    return TRUE;
 }
 
 // Messages

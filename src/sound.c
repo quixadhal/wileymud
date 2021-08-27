@@ -23,19 +23,19 @@ int RecGetObjRoom(struct obj_data *obj)
 
     if (obj->in_room != NOWHERE)
     {
-        return (obj->in_room);
+        return obj->in_room;
     }
     if (obj->carried_by)
     {
-        return (obj->carried_by->in_room);
+        return obj->carried_by->in_room;
     }
     if (obj->equipped_by)
     {
-        return (obj->equipped_by->in_room);
+        return obj->equipped_by->in_room;
     }
     if (obj->in_obj)
     {
-        return (RecGetObjRoom(obj->in_obj));
+        return RecGetObjRoom(obj->in_obj);
     }
     return -1; /* This is an invalid room index... hope real_roomp()
                 * works */

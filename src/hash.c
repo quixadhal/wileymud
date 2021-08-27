@@ -37,7 +37,7 @@ void init_hash_table(struct hash_header *ht, int rec_size, int table_size)
     ht->klistlen = 0;
 }
 
-void destroy_hash_table(struct hash_header *ht, funcp gman)
+void destroy_hash_table(struct hash_header *ht, hfuncp gman)
 {
     int i = 0;
     struct hash_link *scan = NULL;
@@ -119,10 +119,10 @@ int hash_enter(struct hash_header *ht, int key, void *data)
     if (DEBUG)
         log_info("hash_enter");
     if (temp)
-        return 0;
+        return FALSE;
 
     _hash_enter(ht, key, data);
-    return 1;
+    return TRUE;
 }
 
 void *hash_find_or_create(struct hash_header *ht, int key)

@@ -29,8 +29,10 @@ typedef struct char_data CHAR_DATA;
 typedef struct room_data ROOM_DATA;
 typedef struct obj_data OBJ_DATA;
 
-typedef void (*funcp)();
+//typedef void (*funcp)();
 
+typedef void (*hfuncp)(void *);
+typedef int (*cfuncp)(CHAR_DATA *, const char *, int);
 typedef void (*bfuncp)(int, CHAR_DATA *, const char *, int, CHAR_DATA *, OBJ_DATA *);
 typedef void (*efuncp)(CHAR_DATA *, const char *);
 typedef int (*rfuncp)(int, ROOM_DATA *, void *);

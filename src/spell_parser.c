@@ -164,7 +164,7 @@ int CanCast(struct char_data *ch, int sn)
         log_info("called %s with %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), sn);
 
     if (!ch || sn < 0 || sn >= MAX_SKILLS)
-        return 0;
+        return FALSE;
     lowest = ABS_MAX_LVL;
     lowclass = -1;
     for (i = 0; i < ABS_MAX_CLASS; i++)
@@ -187,7 +187,7 @@ int CanCastClass(struct char_data *ch, int sn, int cl)
         log_info("called %s with %s, %d, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), sn, cl);
 
     if (!ch || sn < 0 || sn >= MAX_SKILLS)
-        return 0;
+        return FALSE;
     return (HasClass(ch, 1 << cl) && spell_info[sn].castable && spell_info[sn].spell_pointer &&
             (int)GET_LEVEL(ch, cl) >= spell_info[sn].min_level[cl]);
 }
@@ -202,7 +202,7 @@ int CanUse(struct char_data *ch, int sn)
         log_info("called %s with %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), sn);
 
     if (!ch || sn < 0 || sn >= MAX_SKILLS)
-        return 0;
+        return FALSE;
     lowest = ABS_MAX_LVL;
     lowclass = -1;
     for (i = 0; i < ABS_MAX_CLASS; i++)
@@ -225,7 +225,7 @@ int CanUseClass(struct char_data *ch, int sn, int cl)
         log_info("called %s with %s, %d, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), sn, cl);
 
     if (!ch || sn < 0 || sn >= MAX_SKILLS)
-        return 0;
+        return FALSE;
     return (HasClass(ch, 1 << cl) && spell_info[sn].useable && (int)GET_LEVEL(ch, cl) >= spell_info[sn].min_level[cl]);
 }
 
@@ -397,10 +397,10 @@ char circle_follow(struct char_data *ch, struct char_data *victim)
     for (k = victim; k; k = k->master)
     {
         if (k == ch)
-            return (TRUE);
+            return TRUE;
     }
 
-    return (FALSE);
+    return FALSE;
 }
 
 /* Called when stop following persons, or stopping charm */
@@ -586,7 +586,7 @@ char saves_spell(struct char_data *ch, short int save_type)
          */
         save += saving_throws[BestMagicClass(ch)][save_type][(int)GET_LEVEL(ch, BestMagicClass(ch))];
         if (GetMaxLevel(ch) > MAX_MORT)
-            return (TRUE);
+            return TRUE;
     }
     return (MAX(1, save) < number(1, 20));
 }
@@ -621,7 +621,7 @@ char ImpSaveSpell(struct char_data *ch, short int save_type, int mod)
         save += saving_throws[BestMagicClass(ch)][save_type][(int)GET_LEVEL(ch, BestMagicClass(ch))];
         /*
          *  if (GetMaxLevel(ch) >= LOW_IMMORTAL)
-         *    return (TRUE);
+         *    return TRUE;
          */
     }
     return (MAX(1, save) < number(1, 20));
@@ -635,12 +635,12 @@ const char *skip_spaces(const char *string)
     for (; *string && (*string) == ' '; string++)
         ;
 
-    return (string);
+    return string;
 }
 
 /* Assumes that *argument does start with first letter of chopped string */
 
-void do_cast(struct char_data *ch, const char *argument, int cmd)
+int do_cast(struct char_data *ch, const char *argument, int cmd)
 {
     struct room_data *rp = NULL;
     struct obj_data *tar_obj = NULL;
@@ -656,36 +656,36 @@ void do_cast(struct char_data *ch, const char *argument, int cmd)
         log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
     /*
-     * if (IS_NPC(ch) && (IS_NOT_SET(ch->specials.act, ACT_POLYSELF))) return;
+     * if (IS_NPC(ch) && (IS_NOT_SET(ch->specials.act, ACT_POLYSELF))) return TRUE;
      */
 
     if (!IsHumanoid(ch) && GET_RACE(ch) != RACE_DRAGON)
     {
         cprintf(ch, "You try to form the words, but you can only growl.\r\n");
-        return;
+        return TRUE;
     }
     if (IsNonMagical(ch))
     {
         cprintf(ch, "Maybe you should leave the hocus pocus to the bookworms, eh?\r\n");
-        return;
+        return TRUE;
     }
     rp = real_roomp(ch->in_room);
     if (IS_SET(rp->room_flags, NO_MAGIC) && !IS_IMMORTAL(ch))
     {
         cprintf(ch, "Your mystical power seems feeble and useless here.\r\n");
-        return;
+        return TRUE;
     }
     argument = skip_spaces(argument);
 
     if (!(*argument))
     {
         cprintf(ch, "cast 'spell name' <target>\r\n");
-        return;
+        return TRUE;
     }
     if (*argument != '\'')
     {
         cprintf(ch, "Magic must always be enclosed by single quotes: '\r\n");
-        return;
+        return TRUE;
     }
     for (qend = 1; *(argument + qend) && (*(argument + qend) != '\''); qend++)
         ;
@@ -697,7 +697,7 @@ void do_cast(struct char_data *ch, const char *argument, int cmd)
     if (*(argument + qend) != '\'')
     {
         cprintf(ch, "Magic must always be enclosed by single quotes: '\r\n");
-        return;
+        return TRUE;
     }
     /*
      * spl = old_search_block(argument, 1, qend - 1, spells, 0);
@@ -707,12 +707,12 @@ void do_cast(struct char_data *ch, const char *argument, int cmd)
     if (!strlen(spell_name))
     {
         cprintf(ch, "You successfully cast Nothing!\r\n");
-        return;
+        return TRUE;
     }
     if ((spl = GetSpellByName(spell_name)) < 0)
     {
         cprintf(ch, "You reconsider your attempt to summon the demon %s!\r\n", spell_name);
-        return;
+        return TRUE;
     }
     if (CanCast(ch, spl))
     {
@@ -753,7 +753,7 @@ void do_cast(struct char_data *ch, const char *argument, int cmd)
             if (!(rp = real_roomp(ch->in_room)))
                 if (IS_SET(spell_info[spl].targets, TAR_VIOLENT) &&
                     check_peaceful(ch, "You cannot seem to focus your hatred."))
-                    return;
+                    return TRUE;
 
             if (IS_NOT_SET(spell_info[spl].targets, TAR_IGNORE))
             {
@@ -770,7 +770,7 @@ void do_cast(struct char_data *ch, const char *argument, int cmd)
                             else
                             {
                                 cprintf(ch, "You wish everyone would stop for a moment...\r\n");
-                                return;
+                                return TRUE;
                             }
                         }
                     }
@@ -816,7 +816,7 @@ void do_cast(struct char_data *ch, const char *argument, int cmd)
                             if (IS_SET(tar_char->specials.act, ACT_IMMORTAL))
                             {
                                 cprintf(ch, "You can't cast magic on that!");
-                                return;
+                                return TRUE;
                             }
                     }
                 }
@@ -873,7 +873,7 @@ void do_cast(struct char_data *ch, const char *argument, int cmd)
                     else
                         cprintf(ch, "What would you like to cast %s at?\r\n", spell_info[spl].name);
                 }
-                return;
+                return TRUE;
             }
             else
             { /* TARGET IS OK */
@@ -881,17 +881,17 @@ void do_cast(struct char_data *ch, const char *argument, int cmd)
                 if ((tar_char == ch) && IS_SET(spell_info[spl].targets, TAR_SELF_NONO))
                 {
                     cprintf(ch, "You can't cast %s on yourself!\r\n", spell_info[spl].name);
-                    return;
+                    return TRUE;
                 }
                 else if ((tar_char != ch) && IS_SET(spell_info[spl].targets, TAR_SELF_ONLY))
                 {
                     cprintf(ch, "Only you are worthy of the %s spell.\r\n", spell_info[spl].name);
-                    return;
+                    return TRUE;
                 }
                 else if (IS_AFFECTED(ch, AFF_CHARM) && (ch->master == tar_char))
                 {
                     cprintf(ch, "No!  Casting %s might harm your beloved master!\r\n", spell_info[spl].name);
-                    return;
+                    return TRUE;
                 }
             }
 
@@ -901,7 +901,7 @@ void do_cast(struct char_data *ch, const char *argument, int cmd)
             if (GET_MANA(ch) < USE_MANA(ch, spl))
             {
                 cprintf(ch, "You mutter and wave your hands tiredly as the spell fails.\r\n");
-                return;
+                return TRUE;
             }
             if (spl != SPELL_VENTRILOQUATE) /* :-) */
                 say_spell(ch, spl);
@@ -925,7 +925,7 @@ void do_cast(struct char_data *ch, const char *argument, int cmd)
                         GET_MANA(ch) -= MAX(1, (USE_MANA(ch, spl) / 3));
                     else
                         GET_MANA(ch) -= MAX(1, (USE_MANA(ch, spl) / 2));
-                    return;
+                    return TRUE;
                 }
                 cprintf(ch, "You mutter and wave and suddenly Cast %s!\r\n", spell_info[spl].name);
                 if (ch->skills[spl].learned < 60)
@@ -940,9 +940,10 @@ void do_cast(struct char_data *ch, const char *argument, int cmd)
                 GET_MANA(ch) -= (USE_MANA(ch, spl));
             }
         } /* if GET_POS < min_pos */
-        return;
+        return TRUE;
     }
     random_magic_failure(ch);
+    return TRUE;
 }
 
 void assign_spell_pointers(void)
@@ -1349,14 +1350,14 @@ int check_falling(struct char_data *ch)
         log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
 
     if (IS_AFFECTED(ch, AFF_FLYING))
-        return (FALSE);
+        return FALSE;
 
     rp = real_roomp(ch->in_room);
     if (!rp)
-        return (FALSE);
+        return FALSE;
 
     if (rp->sector_type != SECT_AIR)
-        return (FALSE);
+        return FALSE;
 
     act("The world spins, and you plummet out of control", TRUE, ch, 0, 0, TO_CHAR);
     done = FALSE;
@@ -1601,7 +1602,7 @@ int check_nature(struct char_data *i)
 
     if (check_falling(i))
     {
-        return (TRUE);
+        return TRUE;
     }
     return check_drowning(i);
 }

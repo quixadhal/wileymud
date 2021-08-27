@@ -127,7 +127,7 @@ int search_block(const char *arg, const char **list, char exact)
     {
         for (i = 0; **(list + i) != '\n'; i++)
             if (!strcasecmp(arg, *(list + i)))
-                return (i);
+                return i;
     }
     else
     {
@@ -135,9 +135,9 @@ int search_block(const char *arg, const char **list, char exact)
             l = 1; /* Avoid "" to match the first available string */
         for (i = 0; **(list + i) != '\n'; i++)
             if (!strncasecmp(arg, *(list + i), l))
-                return (i);
+                return i;
     }
-    return (-1);
+    return -1;
 }
 
 int old_search_block(const char *argument, int begin, int arglen, const char **list, int mode)
@@ -546,12 +546,12 @@ int is_number(const char *str)
         log_info("called %s with %s", __PRETTY_FUNCTION__, VNULL(str));
 
     if (*str == '\0')
-        return (0);
+        return FALSE;
 
     for (look_at = 0; *(str + look_at) != '\0'; look_at++)
         if ((*(str + look_at) < '0') || (*(str + look_at) > '9'))
-            return (0);
-    return (1);
+            return FALSE;
+    return TRUE;
 }
 
 /*
@@ -631,11 +631,11 @@ int is_abbrev(const char *arg1, const char *arg2)
         log_info("called %s with %s, %s", __PRETTY_FUNCTION__, VNULL(arg1), VNULL(arg2));
 
     if (!*arg1 || !*arg2)
-        return 0;
+        return FALSE;
     for (; *arg1; arg1++, arg2++)
         if (LOWER(*arg1) != LOWER(*arg2))
-            return 0;
-    return 1;
+            return FALSE;
+    return TRUE;
 }
 
 /*
@@ -670,14 +670,14 @@ int special(struct char_data *ch, int cmd, const char *arg)
     if (ch->in_room == NOWHERE)
     {
         char_to_room(ch, DEFAULT_HOME);
-        return 0;
+        return FALSE;
     }
     /*
      * special in room?
      */
     if (real_roomp(ch->in_room)->funct)
         if ((*real_roomp(ch->in_room)->funct)(ch, cmd, arg))
-            return (1);
+            return TRUE;
 
     /*
      * special in equipment list?
@@ -686,7 +686,7 @@ int special(struct char_data *ch, int cmd, const char *arg)
         if (ch->equipment[j] && ch->equipment[j]->item_number >= 0)
             if (obj_index[ch->equipment[j]->item_number].func)
                 if ((*obj_index[ch->equipment[j]->item_number].func)(ch, cmd, arg))
-                    return (1);
+                    return TRUE;
 
     test++;
     /*
@@ -696,7 +696,7 @@ int special(struct char_data *ch, int cmd, const char *arg)
         if (i->item_number >= 0)
             if (obj_index[i->item_number].func)
                 if ((*obj_index[i->item_number].func)(ch, cmd, arg))
-                    return (1);
+                    return TRUE;
 
     test++;
 
@@ -707,7 +707,7 @@ int special(struct char_data *ch, int cmd, const char *arg)
         if (IS_MOB(k))
             if (mob_index[k->nr].func)
                 if ((*mob_index[k->nr].func)(ch, cmd, arg))
-                    return (1);
+                    return TRUE;
 
     test++;
 
@@ -718,11 +718,11 @@ int special(struct char_data *ch, int cmd, const char *arg)
         if (i->item_number >= 0)
             if (obj_index[i->item_number].func)
                 if ((*obj_index[i->item_number].func)(ch, cmd, arg))
-                    return (1);
+                    return TRUE;
 
     test++;
 
-    return (0);
+    return FALSE;
 }
 
 void assign_command_pointers(void)
@@ -842,10 +842,10 @@ void assign_command_pointers(void)
     COMMANDO(CMD_dismount, POSITION_MOUNTED, do_mount, 1);
     COMMANDO(CMD_doh, POSITION_DEAD, do_action, 0);
     COMMANDO(CMD_doorbash, POSITION_STANDING, do_doorbash, 1);
-    COMMANDO(CMD_down, POSITION_STANDING, (funcp)do_move, 0);
+    COMMANDO(CMD_down, POSITION_STANDING, do_move, 0);
     COMMANDO(CMD_drink, POSITION_RESTING, do_drink, 0);
     COMMANDO(CMD_drop, POSITION_RESTING, do_drop, 0);
-    COMMANDO(CMD_east, POSITION_STANDING, (funcp)do_move, 0);
+    COMMANDO(CMD_east, POSITION_STANDING, do_move, 0);
     COMMANDO(CMD_eat, POSITION_RESTING, do_eat, 0);
     COMMANDO(CMD_echo, POSITION_SLEEPING, do_echo, 1);
     COMMANDO(CMD_emote, POSITION_SLEEPING, do_emote, 0);
@@ -910,7 +910,7 @@ void assign_command_pointers(void)
     COMMANDO(CMD_news, POSITION_SLEEPING, do_news, 0);
     COMMANDO(CMD_nibble, POSITION_RESTING, do_action, 0);
     COMMANDO(CMD_nod, POSITION_RESTING, do_action, 0);
-    COMMANDO(CMD_north, POSITION_STANDING, (funcp)do_move, 0);
+    COMMANDO(CMD_north, POSITION_STANDING, do_move, 0);
     COMMANDO(CMD_noshout, POSITION_SLEEPING, do_noshout, 1);
     COMMANDO(CMD_nosummon, POSITION_SLEEPING, do_plr_nosummon, 1);
     COMMANDO(CMD_noteleport, POSITION_SLEEPING, do_plr_noteleport, 1);
@@ -967,7 +967,7 @@ void assign_command_pointers(void)
     COMMANDO(CMD_sing, POSITION_RESTING, do_action, 0);
     COMMANDO(CMD_sip, POSITION_RESTING, do_sip, 0);
     COMMANDO(CMD_sit, POSITION_RESTING, do_sit, 0);
-    COMMANDO(CMD_skills, POSITION_STANDING, (funcp)do_skills, 1);
+    COMMANDO(CMD_skills, POSITION_STANDING, do_skills, 1);
     COMMANDO(CMD_slap, POSITION_RESTING, do_action, 0);
     COMMANDO(CMD_sleep, POSITION_SLEEPING, do_sleep, 0);
     COMMANDO(CMD_smile, POSITION_RESTING, do_action, 0);
@@ -980,7 +980,7 @@ void assign_command_pointers(void)
     COMMANDO(CMD_sniff, POSITION_RESTING, do_action, 0);
     COMMANDO(CMD_snore, POSITION_SLEEPING, do_action, 0);
     COMMANDO(CMD_snuggle, POSITION_RESTING, do_action, 0);
-    COMMANDO(CMD_south, POSITION_STANDING, (funcp)do_move, 0);
+    COMMANDO(CMD_south, POSITION_STANDING, do_move, 0);
     COMMANDO(CMD_spank, POSITION_RESTING, do_action, 0);
     COMMANDO(CMD_spit, POSITION_STANDING, do_action, 0);
     COMMANDO(CMD_split, POSITION_RESTING, do_split, 1);
@@ -1005,7 +1005,7 @@ void assign_command_pointers(void)
     COMMANDO(CMD_twiddle, POSITION_RESTING, do_action, 0);
     COMMANDO(CMD_typo, POSITION_DEAD, do_typo, 0);
     COMMANDO(CMD_unlock, POSITION_SITTING, do_unlock, 0);
-    COMMANDO(CMD_up, POSITION_STANDING, (funcp)do_move, 0);
+    COMMANDO(CMD_up, POSITION_STANDING, do_move, 0);
     COMMANDO(CMD_use, POSITION_SITTING, do_use, 1);
     COMMANDO(CMD_value, POSITION_STANDING, do_not_here, 0);
     COMMANDO(CMD_version, POSITION_DEAD, do_version, 0);
@@ -1013,7 +1013,7 @@ void assign_command_pointers(void)
     COMMANDO(CMD_wave, POSITION_RESTING, do_action, 0);
     COMMANDO(CMD_wear, POSITION_RESTING, do_wear, 0);
     COMMANDO(CMD_weather, POSITION_RESTING, do_weather, 0);
-    COMMANDO(CMD_west, POSITION_STANDING, (funcp)do_move, 0);
+    COMMANDO(CMD_west, POSITION_STANDING, do_move, 0);
     COMMANDO(CMD_where, POSITION_DEAD, do_where, 1);
     COMMANDO(CMD_whine, POSITION_RESTING, do_action, 0);
     COMMANDO(CMD_whisper, POSITION_RESTING, do_whisper, 0);
@@ -1049,9 +1049,9 @@ int find_name(char *name)
     for (i = 0; i <= top_of_p_table; i++)
     {
         if (!str_cmp((player_table + i)->name, name))
-            return (i);
+            return i;
     }
-    return (-1);
+    return -1;
 }
 
 int _parse_name(char *arg, char *name)
@@ -1065,11 +1065,11 @@ int _parse_name(char *arg, char *name)
         ;
     for (i = 0; (*name = *arg); arg++, i++, name++)
         if ((*arg < 0) || !isalpha(*arg) || i > 15)
-            return (1);
+            return TRUE;
 
     if (!i)
-        return (1);
-    return (0);
+        return TRUE;
+    return FALSE;
 }
 
 /*
@@ -1084,16 +1084,16 @@ int valid_parse_name(const char *arg, char *name)
         log_info("called %s with %s, %08zx", __PRETTY_FUNCTION__, VNULL(arg), (size_t)name);
 
     if (!arg || !*arg)
-        return 0;
+        return FALSE;
     if (strlen(arg) < 3)
-        return 0;
+        return FALSE;
     for (i = 0; hard[i]; i++)
         if (!strcasecmp(hard[i], arg))
-            return 0;
+            return FALSE;
     for (i = 0; (*name = *arg); i++, arg++, name++)
         if (!*arg || !isalpha(*arg) || i > 15)
-            return 0;
-    return 1;
+            return FALSE;
+    return TRUE;
 }
 
 /*
@@ -1203,21 +1203,21 @@ int check_playing(struct descriptor_data *d, char *tmp_name)
         {
             if (GET_NAME(k->original) && !str_cmp(GET_NAME(k->original), tmp_name))
             {
-                return 1;
+                return TRUE;
             }
         }
         else
         {
             if (GET_NAME(k->character) && !str_cmp(GET_NAME(k->character), tmp_name))
             {
-                return 1;
+                return TRUE;
             }
         }
         /*
          * }
          */
     }
-    return 0;
+    return FALSE;
 }
 
 /*
@@ -1918,7 +1918,7 @@ int ValidPlayer(char *who, char *pwd, char *oldpwd)
         strcpy(oldpwd, "NOT USED");
         strcpy(pwd, "NOT USED");
         log_info("Password checking disabled!");
-        return 1;
+        return TRUE;
     }
     log_info("Searching passwd file for %s...", who);
 
@@ -1942,11 +1942,11 @@ int ValidPlayer(char *who, char *pwd, char *oldpwd)
                 strcpy(pwd, passwd);
             }
             FCLOSE(pwd_fd);
-            return 1;
+            return TRUE;
         }
     }
     FCLOSE(pwd_fd);
-    return 0;
+    return FALSE;
 }
 
 #if 0
@@ -1959,8 +1959,8 @@ int GetPlayerFile(char *name, struct char_data *where)
 
     if ((load_char(name, &tmp_store)) > -1) {
 	store_to_char(&tmp_store, where);
-	return (1);
+	return TRUE;
     }
-    return (0);
+    return FALSE;
 }
 #endif

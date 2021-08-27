@@ -38,7 +38,7 @@ static void event_undead_invade_zone(struct char_data *ch, const char *arg);
 static void event_zombie_master(struct char_data *ch, const char *arg);
 static void event_scatter_goodies(struct char_data *ch, const char *arg);
 
-void do_event(struct char_data *ch, const char *argument, int cmd)
+int do_event(struct char_data *ch, const char *argument, int cmd)
 {
     static const char *event_list[] = {NULL,
                                        "rats - Rats invade whatever zone you are standing in. [1+]",
@@ -60,12 +60,12 @@ void do_event(struct char_data *ch, const char *argument, int cmd)
         log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
 
     if (IS_NPC(ch))
-        return;
+        return TRUE;
     only_argument(argument, buf);
     if (!*buf)
     {
         cprintf(ch, "usage:  event { list | <event name> }\r\n");
-        return;
+        return TRUE;
     }
     if (!strcasecmp(buf, "list"))
     {
@@ -74,7 +74,7 @@ void do_event(struct char_data *ch, const char *argument, int cmd)
         {
             cprintf(ch, "    %s\r\n", event_list[i]);
         }
-        return;
+        return TRUE;
     }
     for (i = 1; event_list[i]; i++)
     {
@@ -85,10 +85,11 @@ void do_event(struct char_data *ch, const char *argument, int cmd)
         }
     }
     if (!found)
-        return;
+        return TRUE;
     cprintf(ch, "Doing Event [#%d] %s\r\n", found, event_list[found]);
     log_info("%s does Event [#%d] %s", GET_NAME(ch), found, event_list[found]);
     event_code[found](ch, argument);
+    return TRUE;
 }
 
 static int event_scatter_goodies_zone(int rnum, struct room_data *rp, void *data)
@@ -105,9 +106,9 @@ static int event_scatter_goodies_zone(int rnum, struct room_data *rp, void *data
         log_info("called %s with %d, %08zx, %08zx", __PRETTY_FUNCTION__, rnum, (size_t)rp, (size_t)stuff);
 
     if (!rp || rp->number < stuff->bottom || rp->number > stuff->top)
-        return 0;
+        return FALSE;
     if (IS_SET(rp->room_flags, (NO_MOB | PEACEFUL | PRIVATE)))
-        return 0;
+        return FALSE;
     exit_found = 0;
     for (i = 0; i < MAX_NUM_EXITS; i++) /* neswud */
         if (rp->dir_option[i])
@@ -116,9 +117,9 @@ static int event_scatter_goodies_zone(int rnum, struct room_data *rp, void *data
             break;
         }
     if (!exit_found)
-        return 0;
+        return FALSE;
     if (number(0, 99) >= stuff->chance)
-        return 0;
+        return FALSE;
     gold = dice(stuff->gold_dice, stuff->gold_die) + stuff->gold_mod;
     gold_count += gold;
     coins = create_money(gold);
@@ -145,7 +146,7 @@ static int event_scatter_goodies_zone(int rnum, struct room_data *rp, void *data
             rprintf(rnum, "In a shimmering of blue light, %s %s forms!\r\n", SANA(object), object->short_description);
         }
     }
-    return 1;
+    return TRUE;
 }
 
 static int event_fill_zone_with_mobs(int rnum, struct room_data *rp, void *data)
@@ -162,9 +163,9 @@ static int event_fill_zone_with_mobs(int rnum, struct room_data *rp, void *data)
         log_info("called %s with %d, %08zx, %08zx", __PRETTY_FUNCTION__, rnum, (size_t)rp, (size_t)mobs);
 
     if (!rp || rp->number < mobs->bottom || rp->number > mobs->top)
-        return 0;
+        return FALSE;
     if (IS_SET(rp->room_flags, (NO_MOB | PEACEFUL | PRIVATE)))
-        return 0;
+        return FALSE;
     exit_found = 0;
     for (i = 0; i < MAX_NUM_EXITS; i++) /* neswud */
         if (rp->dir_option[i])
@@ -173,7 +174,7 @@ static int event_fill_zone_with_mobs(int rnum, struct room_data *rp, void *data)
             break;
         }
     if (!exit_found)
-        return 0;
+        return FALSE;
     couldbe = number(mobs->atleast, mobs->atmost);
     for (j = 0; j < couldbe; j++)
     {
@@ -199,7 +200,7 @@ static int event_fill_zone_with_mobs(int rnum, struct room_data *rp, void *data)
         mob_count++;
         act("In a shimmering column of blue light, $N appears!", FALSE, monster, 0, monster, TO_ROOM);
     }
-    return 1;
+    return TRUE;
 }
 
 static void event_scatter_goodies(struct char_data *ch, const char *arg)

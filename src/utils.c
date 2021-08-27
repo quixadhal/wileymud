@@ -119,7 +119,7 @@ int GetItemClassRestrictions(struct obj_data *obj)
     if (IS_SET(obj->obj_flags.extra_flags, ITEM_ANTI_CLERIC))
         total += CLASS_CLERIC;
 
-    return (total);
+    return total;
 }
 
 int CAN_SEE(struct char_data *s, struct char_data *o)
@@ -128,37 +128,37 @@ int CAN_SEE(struct char_data *s, struct char_data *o)
         log_info("called %s with %s, %s", __PRETTY_FUNCTION__, SAFE_NAME(s), SAFE_NAME(o));
 
     if (!o || !s)
-        return (FALSE);
+        return FALSE;
 
     if ((s->in_room == -1) || (o->in_room == -1))
-        return (FALSE);
+        return FALSE;
 
     if (o->invis_level >= GetMaxLevel(s))
         return FALSE;
 
     if (IS_IMMORTAL(s))
-        return (TRUE);
+        return TRUE;
 
     if (IS_AFFECTED(s, AFF_TRUE_SIGHT))
-        return (TRUE);
+        return TRUE;
 
     if (IS_AFFECTED(s, AFF_BLIND) && s != o)
-        return (FALSE);
+        return FALSE;
 
     if (IS_AFFECTED(o, AFF_HIDE))
-        return (FALSE);
+        return FALSE;
 
     if (IS_AFFECTED(o, AFF_INVISIBLE))
     {
         if (IS_IMMORTAL(o))
-            return (FALSE);
+            return FALSE;
         if (!IS_AFFECTED(s, AFF_DETECT_INVISIBLE))
-            return (FALSE);
+            return FALSE;
     }
     if ((IS_DARK(s->in_room) || IS_DARK(o->in_room)) && (!IS_AFFECTED(s, AFF_INFRAVISION)))
-        return (FALSE);
+        return FALSE;
 
-    return (TRUE);
+    return TRUE;
 }
 
 int exit_ok(struct room_direction_data *room_exit, struct room_data **rpp)
@@ -185,7 +185,7 @@ int IsImmune(struct char_data *ch, int bit)
         log_info("called %s with %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), bit);
 
     if (!ch)
-        return 0;
+        return FALSE;
     return IS_SET(bit, ch->M_immune);
 }
 
@@ -195,9 +195,9 @@ int IsResist(struct char_data *ch, int bit)
         log_info("called %s with %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), bit);
 
     if (!ch)
-        return 0;
+        return FALSE;
     if (GetMaxLevel(ch) >= LOW_IMMORTAL)
-        return 1;
+        return TRUE;
     return IS_SET(bit, ch->immune);
 }
 
@@ -207,7 +207,7 @@ int IsSusc(struct char_data *ch, int bit)
         log_info("called %s with %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), bit);
 
     if (!ch)
-        return 0;
+        return FALSE;
     return IS_SET(bit, ch->susc);
 }
 
@@ -266,7 +266,7 @@ int scan_number(const char *text, int *rval)
         return 0;
     if (text[length] != 0)
         return 0;
-    return 1;
+    return TRUE;
 }
 
 int str_cmp(const char *arg1, const char *arg2)
@@ -275,7 +275,7 @@ int str_cmp(const char *arg1, const char *arg2)
         log_info("called %s with %s, %s", __PRETTY_FUNCTION__, VNULL(arg1), VNULL(arg2));
 
     if (!arg1 || !arg2)
-        return 1;
+        return TRUE;
     return strcasecmp(arg1, arg2);
 }
 
@@ -285,7 +285,7 @@ int strn_cmp(const char *arg1, const char *arg2, const int n)
         log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, VNULL(arg1), VNULL(arg2), n);
 
     if (!arg1 || !arg2)
-        return 1;
+        return TRUE;
     return strncasecmp(arg1, arg2, n);
 }
 
@@ -349,27 +349,27 @@ int in_group(struct char_data *ch1, struct char_data *ch2)
      */
 
     if ((!ch1) || (!ch2))
-        return (0);
+        return FALSE;
     if (ch1 == ch2)
-        return (TRUE);
+        return TRUE;
     if ((!ch1->master) && (!ch2->master))
-        return (0);
+        return FALSE;
     if (ch2->master)
         if (!strcmp(GET_NAME(ch1), GET_NAME(ch2->master)))
         {
-            return (1);
+            return TRUE;
         }
     if (ch1->master)
         if (!strcmp(GET_NAME(ch1->master), GET_NAME(ch2)))
         {
-            return (1);
+            return TRUE;
         }
     if ((ch2->master) && (ch1->master))
         if (!strcmp(GET_NAME(ch1->master), GET_NAME(ch2->master)))
         {
-            return (1);
+            return TRUE;
         }
-    return (0);
+    return FALSE;
 }
 
 /*
@@ -394,16 +394,16 @@ int getall(char *name, char *newname)
     sscanf(name, "%s ", otname); /* reads up to first space */
 
     if (strlen(otname) < 5)
-        return (FALSE);
+        return FALSE;
 
     sscanf(otname, "%3s%c%s", arg, &prd, tmpname);
 
     if (prd != '.')
-        return (FALSE);
+        return FALSE;
     if (!*tmpname)
-        return (FALSE);
+        return FALSE;
     if (strcmp(arg, "all"))
-        return (FALSE);
+        return FALSE;
 
     while (*name != '.')
         name++;
@@ -412,7 +412,7 @@ int getall(char *name, char *newname)
 
     for (; (*newname = *name); name++, newname++)
         ;
-    return (TRUE);
+    return TRUE;
 }
 
 int getabunch(char *name, char *newname)
@@ -425,9 +425,9 @@ int getabunch(char *name, char *newname)
 
     sscanf(name, "%d*%s", &num, tmpname);
     if (tmpname[0] == '\0')
-        return (FALSE);
+        return FALSE;
     if (num < 1)
-        return (FALSE);
+        return FALSE;
     if (num > 9)
         num = 9;
 
@@ -439,7 +439,7 @@ int getabunch(char *name, char *newname)
     for (; (*newname = *name); name++, newname++)
         ;
 
-    return (num);
+    return num;
 }
 
 int DetermineExp(struct char_data *mob, int exp_flags)
@@ -457,7 +457,7 @@ int DetermineExp(struct char_data *mob, int exp_flags)
         log_info("called %s with %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(mob), exp_flags);
 
     if (GetMaxLevel(mob) < 0)
-        return (1);
+        return 1;
 
     switch (GetMaxLevel(mob))
     {
@@ -1258,7 +1258,7 @@ int HasObject(struct char_data *ch, int ob_num)
             found += RecCompObjNum(ch->equipment[j], ob_num);
 
     if (found > 0)
-        return (TRUE);
+        return TRUE;
 
     /*
      * carrying
@@ -1267,9 +1267,9 @@ int HasObject(struct char_data *ch, int ob_num)
         found += RecCompObjNum(i, ob_num);
 
     if (found > 0)
-        return (TRUE);
+        return TRUE;
     else
-        return (FALSE);
+        return FALSE;
 }
 
 int room_of_object(struct obj_data *obj)
@@ -1322,7 +1322,7 @@ int RecCompObjNum(struct obj_data *o, int obj_num)
         for (i = o->contains; i; i = i->next_content)
             total += RecCompObjNum(i, obj_num);
     }
-    return (total);
+    return total;
 }
 
 void RestoreChar(struct char_data *ch)
@@ -1366,21 +1366,21 @@ const char *pain_level(struct char_data *ch)
     else
         health_percent = -1; /* How could MAX_HIT be < 1?? */
     if (health_percent >= 100)
-        return ("is in an excellent condition");
+        return "is in an excellent condition";
     else if (health_percent >= 90)
-        return ("has a few scratches");
+        return "has a few scratches";
     else if (health_percent >= 75)
-        return ("has some small wounds and bruises");
+        return "has some small wounds and bruises";
     else if (health_percent >= 50)
-        return ("has quite a few wounds");
+        return "has quite a few wounds";
     else if (health_percent >= 30)
-        return ("has some big nasty wounds and scratches");
+        return "has some big nasty wounds and scratches";
     else if (health_percent >= 15)
-        return ("looks pretty hurt");
+        return "looks pretty hurt";
     else if (health_percent >= 0)
-        return ("is in an awful condition");
+        return "is in an awful condition";
     else
-        return ("is bleeding awfully from big wounds");
+        return "is bleeding awfully from big wounds";
 }
 
 int IsWizard(struct char_data *ch)
@@ -1389,7 +1389,7 @@ int IsWizard(struct char_data *ch)
         log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
 
     if (!ch)
-        return 0;
+        return FALSE;
     return ch->player.chclass & CLASS_WIZARD;
 }
 
@@ -1399,7 +1399,7 @@ int IsPriest(struct char_data *ch)
         log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
 
     if (!ch)
-        return 0;
+        return FALSE;
     return ch->player.chclass & CLASS_PRIEST;
 }
 
@@ -1409,7 +1409,7 @@ int IsMagical(struct char_data *ch)
         log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
 
     if (!ch)
-        return 0;
+        return FALSE;
     return ch->player.chclass & CLASS_MAGICAL;
 }
 
@@ -1419,7 +1419,7 @@ int IsFighter(struct char_data *ch)
         log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
 
     if (!ch)
-        return 0;
+        return FALSE;
     return ch->player.chclass & CLASS_FIGHTER;
 }
 
@@ -1429,7 +1429,7 @@ int IsSneak(struct char_data *ch)
         log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
 
     if (!ch)
-        return 0;
+        return FALSE;
     return ch->player.chclass & CLASS_SNEAK;
 }
 
@@ -1795,7 +1795,7 @@ int more_to_go(char **segment, int *is_ansi, int segment_count, int i, int j)
         for (int k = i; k < strlen(segment[i]); k++)
         {
             if (!isspace(segment[i][k]))
-                return 1;
+                return TRUE;
         }
     }
     if (i < (segment_count - 1))
@@ -1809,12 +1809,12 @@ int more_to_go(char **segment, int *is_ansi, int segment_count, int i, int j)
                 for (int x = 0; x < strlen(segment[k]); x++)
                 {
                     if (!isspace(segment[k][x]))
-                        return 1;
+                        return TRUE;
                 }
             }
         }
     }
-    return 0;
+    return FALSE;
 }
 
 char *utf8_check(char *candidate)

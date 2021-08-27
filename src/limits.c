@@ -58,7 +58,7 @@ char *ClassTitles(struct char_data *ch)
             }
         }
     }
-    return (buf);
+    return buf;
 }
 
 /* When age < 15 return the value p0 */
@@ -74,7 +74,7 @@ int graf(int char_age, int p0, int p1, int p2, int p3, int p4, int p5, int p6)
                  p6);
 
     if (char_age < 15)
-        return (p0); /* < 15 */
+        return p0; /* < 15 */
     else if (char_age <= 29)
         return (int)(p1 + (((char_age - 15) * (p2 - p1)) / 15)); /* 15..29 */
     else if (char_age <= 44)
@@ -84,7 +84,7 @@ int graf(int char_age, int p0, int p1, int p2, int p3, int p4, int p5, int p6)
     else if (char_age <= 79)
         return (int)(p4 + (((char_age - 60) * (p5 - p4)) / 20)); /* 60..79 */
     else
-        return (p6); /* >= 80 */
+        return p6; /* >= 80 */
 }
 
 /* The three MAX functions define a characters Effective maximum */
@@ -118,7 +118,7 @@ int mana_limit(struct char_data *ch)
         max += extra;
     }
     max += ch->points.max_mana; /* bonus mana */
-    return (max);
+    return max;
 }
 
 int hit_limit(struct char_data *ch)
@@ -147,7 +147,7 @@ int hit_limit(struct char_data *ch)
      * Skill/Spell calculations
      */
 
-    return (max);
+    return max;
 }
 
 int move_limit(struct char_data *ch)
@@ -177,7 +177,7 @@ int move_limit(struct char_data *ch)
         max += 10;
         break;
     }
-    return (max);
+    return max;
 }
 
 int mana_gain(struct char_data *ch)
@@ -249,7 +249,7 @@ int mana_gain(struct char_data *ch)
     if (GET_COND(ch, THIRST) < 2) /* parched */
         gain >>= 2;
 
-    return (gain);
+    return gain;
 }
 
 int hit_gain(struct char_data *ch)
@@ -346,7 +346,7 @@ int hit_gain(struct char_data *ch)
 
     // if (IS_PC(ch)) cprintf(ch, "You should be gaining %d hit points.\r\n", gain);
 
-    return (gain);
+    return gain;
 }
 
 /*
@@ -360,7 +360,7 @@ int move_gain(struct char_data *ch)
         log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
 
     if (IS_NPC(ch))
-        return (GetTotLevel(ch));
+        return GetTotLevel(ch);
     else
     {
         if (GET_POS(ch) != POSITION_FIGHTING)
@@ -414,7 +414,7 @@ int move_gain(struct char_data *ch)
     if (GET_COND(ch, THIRST) < 2) /* parched */
         gain = 1;
 
-    return (gain);
+    return gain;
 }
 
 /* Gain maximum in various points */
@@ -1201,7 +1201,7 @@ int ObjFromCorpse(struct obj_data *c)
             else if (c->in_room != NOWHERE)
                 obj_to_room(jj, c->in_room);
             else
-                return (FALSE);
+                return FALSE;
         }
         else
         {
@@ -1212,7 +1212,7 @@ int ObjFromCorpse(struct obj_data *c)
             c->contains = 0;
             extract_obj(c);
             log_error("Memory lost in ObjFromCorpse.");
-            return (TRUE);
+            return TRUE;
         }
     }
     extract_obj(c);
