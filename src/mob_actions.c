@@ -104,21 +104,21 @@ void MobScavenge(struct char_data *ch)
 {
     struct obj_data *best_obj = NULL;
     struct obj_data *obj = NULL;
-    int max = 0;
+    int maximum = 0;
 
     if (DEBUG > 2)
         log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
 
     if ((real_roomp(ch->in_room))->contents && !number(0, 5))
     {
-        for (max = 1, best_obj = 0, obj = (real_roomp(ch->in_room))->contents; obj; obj = obj->next_content)
+        for (maximum = 1, best_obj = 0, obj = (real_roomp(ch->in_room))->contents; obj; obj = obj->next_content)
         {
             if (CAN_GET_OBJ(ch, obj))
             {
-                if (obj->obj_flags.cost > max)
+                if (obj->obj_flags.cost > maximum)
                 {
                     best_obj = obj;
-                    max = obj->obj_flags.cost;
+                    maximum = obj->obj_flags.cost;
                 }
             }
         } /* for */

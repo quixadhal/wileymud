@@ -219,7 +219,7 @@ int GetThirdMaxLev(struct char_data *ch)
 
 int GetMaxLevel(struct char_data *ch)
 {
-    int max = 0;
+    int maximum = 0;
     int i = 0;
 
     /*
@@ -231,16 +231,16 @@ int GetMaxLevel(struct char_data *ch)
 
     for (i = MAGE_LEVEL_IND; i <= DRUID_LEVEL_IND; i++)
     {
-        if (GET_LEVEL(ch, i) > max)
-            max = GET_LEVEL(ch, i);
+        if (GET_LEVEL(ch, i) > maximum)
+            maximum = GET_LEVEL(ch, i);
     }
 
-    return max;
+    return maximum;
 }
 
 int GetMinLevel(struct char_data *ch)
 {
-    int min = INT_MAX;
+    int minimum = INT_MAX;
     int i = 0;
 
     if (DEBUG > 2)
@@ -249,11 +249,11 @@ int GetMinLevel(struct char_data *ch)
     for (i = MAGE_LEVEL_IND; i <= DRUID_LEVEL_IND; i++)
     {
         if (GET_LEVEL(ch, i) > 0)
-            if (GET_LEVEL(ch, i) < min)
-                min = GET_LEVEL(ch, i);
+            if (GET_LEVEL(ch, i) < minimum)
+                minimum = GET_LEVEL(ch, i);
     }
 
-    return min;
+    return minimum;
 }
 
 int GetTotLevel(struct char_data *ch)
@@ -298,7 +298,7 @@ void StartLevels(struct char_data *ch)
 
 int BestClass(struct char_data *ch)
 {
-    int max = 0;
+    int maximum = 0;
     int chclass = 0;
     int i = 0;
 
@@ -306,12 +306,12 @@ int BestClass(struct char_data *ch)
         log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
 
     for (i = MAGE_LEVEL_IND; i <= DRUID_LEVEL_IND; i++)
-        if (max < GET_LEVEL(ch, i))
+        if (maximum < GET_LEVEL(ch, i))
         {
-            max = GET_LEVEL(ch, i);
+            maximum = GET_LEVEL(ch, i);
             chclass = i;
         }
-    if (max == 0)
+    if (maximum == 0)
     { /* eek */
         log_fatal("Massive error.. character %s has no recognized class.", GET_NAME(ch));
         proper_exit(MUD_HALT);

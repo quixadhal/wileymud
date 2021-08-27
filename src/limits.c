@@ -91,7 +91,7 @@ int graf(int char_age, int p0, int p1, int p2, int p3, int p4, int p5, int p6)
 /* Which is NOT the same as the ch->points.max_xxxx !!!          */
 int mana_limit(struct char_data *ch)
 {
-    int max = 100;
+    int maximum = 100;
     int extra = 0;
     int cl = 0;
 
@@ -115,23 +115,23 @@ int mana_limit(struct char_data *ch)
         cl = HowManyClasses(ch);
         if ((cl = HowManyClasses(ch)) > 1)
             extra = ((extra * 10) / ((cl * 10) + 5));
-        max += extra;
+        maximum += extra;
     }
-    max += ch->points.max_mana; /* bonus mana */
-    return max;
+    maximum += ch->points.max_mana; /* bonus mana */
+    return maximum;
 }
 
 int hit_limit(struct char_data *ch)
 {
-    int max = 0;
+    int maximum = 0;
 
     if (DEBUG > 2)
         log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
 
     if (IS_PC(ch))
-        max = (ch->points.max_hit) + (graf(age(ch).year, 2, 4, 17, 14, 8, 4, 3));
+        maximum = (ch->points.max_hit) + (graf(age(ch).year, 2, 4, 17, 14, 8, 4, 3));
     else
-        max = (ch->points.max_hit);
+        maximum = (ch->points.max_hit);
 
     /*
      * Class/Level calculations
@@ -139,45 +139,45 @@ int hit_limit(struct char_data *ch)
     if (HowManyClasses(ch) == 1)
     {
         if (HasClass(ch, CLASS_RANGER))
-            max += (GET_LEVEL(ch, RANGER_LEVEL_IND) / 5) + 2;
+            maximum += (GET_LEVEL(ch, RANGER_LEVEL_IND) / 5) + 2;
         else if (HasClass(ch, CLASS_WARRIOR))
-            max += (GET_LEVEL(ch, WARRIOR_LEVEL_IND) / 2) + 1;
+            maximum += (GET_LEVEL(ch, WARRIOR_LEVEL_IND) / 2) + 1;
     }
     /*
      * Skill/Spell calculations
      */
 
-    return max;
+    return maximum;
 }
 
 int move_limit(struct char_data *ch)
 {
-    int max = 0;
+    int maximum = 0;
 
     if (DEBUG > 2)
         log_info("called %s with %s", __PRETTY_FUNCTION__, SAFE_NAME(ch));
 
     if (!IS_NPC(ch))
-        max = 70 + age(ch).year + (int)GET_CON(ch) + GetTotLevel(ch);
+        maximum = 70 + age(ch).year + (int)GET_CON(ch) + GetTotLevel(ch);
     else
-        max = ch->points.max_move;
+        maximum = ch->points.max_move;
 
     switch (GET_RACE(ch))
     {
     case RACE_DWARF:
-        max -= 15;
+        maximum -= 15;
         break;
     case RACE_GNOME:
-        max -= 10;
+        maximum -= 10;
         break;
     case RACE_HALFLING:
-        max += 5;
+        maximum += 5;
         break;
     case RACE_ELVEN:
-        max += 10;
+        maximum += 10;
         break;
     }
-    return max;
+    return maximum;
 }
 
 int mana_gain(struct char_data *ch)
