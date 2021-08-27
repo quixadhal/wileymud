@@ -46,12 +46,8 @@ int do_event(struct char_data *ch, const char *argument, int cmd)
                                        "xenthia - The Lady of the Dead rises and enters the world. [10-15]",
                                        "goodies - Goodies fall to earth, with a few bandits too. [2-15]",
                                        NULL};
-    static const efuncp event_code[] = {NULL,
-                                       event_rats_invade_zone,
-                                       event_undead_invade_zone,
-                                       event_zombie_master,
-                                       event_scatter_goodies,
-                                       NULL};
+    static const efuncp event_code[] = {
+        NULL, event_rats_invade_zone, event_undead_invade_zone, event_zombie_master, event_scatter_goodies, NULL};
     int i = 0;
     char buf[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
     int found = FALSE;
@@ -100,7 +96,7 @@ static int event_scatter_goodies_zone(int rnum, struct room_data *rp, void *data
     struct char_data *monster = NULL;
     struct obj_data *object = NULL;
     struct obj_data *coins = NULL;
-    struct event_goodies  *stuff = data;
+    struct event_goodies *stuff = data;
 
     if (DEBUG > 1)
         log_info("called %s with %d, %08zx, %08zx", __PRETTY_FUNCTION__, rnum, (size_t)rp, (size_t)stuff);

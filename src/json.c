@@ -146,8 +146,7 @@ void _json_serialize_object(int vnum, char *buf, size_t buf_len)
     vnum_lookup = (objp->item_number >= 0) ? obj_index[objp->item_number].vnum : 0;
 
     scprintf(buf, buf_len, "{\r\n");
-    scprintf(buf, buf_len, "    \"vnum\" : %d,\r\n",
-             (objp->item_number >= 0) ? obj_index[objp->item_number].vnum : 0);
+    scprintf(buf, buf_len, "    \"vnum\" : %d,\r\n", (objp->item_number >= 0) ? obj_index[objp->item_number].vnum : 0);
     scprintf(buf, buf_len, "    \"name\" : \"%s\",\r\n", objp->name);
 
     scprintf(buf, buf_len, "}\r\n");

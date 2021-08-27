@@ -21,11 +21,11 @@
 #include "breath_weapons.h"
 
 static bfuncp breaths[] = {cast_acid_breath,      NULL,
-                          cast_frost_breath,     NULL,
-                          cast_lightning_breath, NULL,
-                          cast_fire_breath,      NULL,
-                          cast_acid_breath,      cast_fire_breath,
-                          cast_lightning_breath, NULL};
+                           cast_frost_breath,     NULL,
+                           cast_lightning_breath, NULL,
+                           cast_fire_breath,      NULL,
+                           cast_acid_breath,      cast_fire_breath,
+                           cast_lightning_breath, NULL};
 
 struct breather breath_monsters[] = {
     {5030, 15, breaths + 6},

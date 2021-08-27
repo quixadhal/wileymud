@@ -288,7 +288,7 @@ void boot_pose_messages(void)
         fscanf(fl, " %d ", &pose_messages[counter].level);
         if (pose_messages[counter].level < 0)
             break;
-        for (chclass = 0; chclass < 4; chclass ++)
+        for (chclass = 0; chclass < 4; chclass++)
         {
             pose_messages[counter].poser_msg[chclass] = fread_action(fl);
             pose_messages[counter].room_msg[chclass] = fread_action(fl);

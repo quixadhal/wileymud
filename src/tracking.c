@@ -75,7 +75,6 @@ static void donothing(void *data)
 {
     if (DEBUG > 3)
         log_info("called %s with no arguments", __PRETTY_FUNCTION__);
-
 }
 
 int choose_exit(int in_room, int tgt_room, int depth)

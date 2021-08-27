@@ -2721,8 +2721,7 @@ void cast_dragon_breath(int level, struct char_data *ch, const char *arg, int ty
         char buf[MAX_STRING_LENGTH];
 
         cprintf(ch, "Hey, this potion isn't in my list!\r\n");
-        sprintf(buf, "unlisted breath potion %s %d", tar_obj->short_description,
-                obj_index[tar_obj->item_number].vnum);
+        sprintf(buf, "unlisted breath potion %s %d", tar_obj->short_description, obj_index[tar_obj->item_number].vnum);
         log_error("%s", buf);
         return;
     }

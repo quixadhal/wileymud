@@ -693,7 +693,7 @@ void allchan_sql(int is_emote, const char *channel, const char *speaker, const c
     {
         //
         //<: 20200706.231200.137 - FATAL - (sql.c;void allchan_sql(int, const char *, const char *, const char *, const
-        //char *, const char *),619)
+        // char *, const char *),619)
         // : Cannot insert message: ERROR:  invalid byte sequence for encoding "UTF8": 0xe2 0x88 0x54
         //
         log_fatal("Cannot insert message: %s", PQerrorMessage(db_i3log.dbc));

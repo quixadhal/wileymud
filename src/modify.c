@@ -415,7 +415,6 @@ void bisect_arg(const char *arg, int *field, char *str)
         ;
     for (; (*str = *arg); arg++, str++)
         ;
-
 }
 
 /*

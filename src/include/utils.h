@@ -72,17 +72,17 @@ int strn_cmp(const char *arg1, const char *arg2, const int n);
         }                                                                                                              \
     } while (0)
 
-#define STRDUP(result, str)                                                                                         \
+#define STRDUP(result, str)                                                                                            \
     do                                                                                                                 \
     {                                                                                                                  \
-        if (!((result) = (char *)calloc(strlen(str) + 1, sizeof(char))))                                            \
+        if (!((result) = (char *)calloc(strlen(str) + 1, sizeof(char))))                                               \
         {                                                                                                              \
             perror("calloc failure");                                                                                  \
             fprintf(stderr, "Calloc failure @ %s:%d\n", __FILE__, __LINE__);                                           \
             fflush(stderr);                                                                                            \
             proper_exit(42);                                                                                           \
         }                                                                                                              \
-        strcpy((result), (str));                                                                                    \
+        strcpy((result), (str));                                                                                       \
     } while (0)
 
 #define RECREATE(result, type, number)                                                                                 \
@@ -221,9 +221,9 @@ int strn_cmp(const char *arg1, const char *arg2, const int n);
 #define RIDDEN(ch) ((ch)->specials.ridden_by)
 #define GET_ZONE(room) (((room) > -1) ? real_roomp((room)) ? real_roomp((room))->zone : -1 : -1)
 #define GET_LEVEL(ch, i) ((ch)->player.level[(int)(i)])
-#define GET_CLASS_TITLE(ch, chclass, lev)                                                                                \
-    ((ch)->player.sex ? (((ch)->player.sex == 1) ? titles[(int)(chclass)][(int)(lev)].title_m                            \
-                                                 : titles[(int)(chclass)][(int)(lev)].title_f)                           \
+#define GET_CLASS_TITLE(ch, chclass, lev)                                                                              \
+    ((ch)->player.sex ? (((ch)->player.sex == 1) ? titles[(int)(chclass)][(int)(lev)].title_m                          \
+                                                 : titles[(int)(chclass)][(int)(lev)].title_f)                         \
                       : titles[(int)(chclass)][(int)(lev)].title_m)
 #define GET_REQ(i)                                                                                                     \
     (i < 2 ? "Awful"                                                                                                   \
@@ -305,7 +305,7 @@ int strn_cmp(const char *arg1, const char *arg2, const int n);
 #define IS_IMMORTAL(ch) ((GetMaxLevel(ch) >= LOW_IMMORTAL) && (!IS_NPC(ch)))
 #define IS_MORTAL(ch) (!IS_IMMORTAL(ch))
 #define IS_POLICE(ch)                                                                                                  \
-    ((mob_index[(int)ch->nr].vnum == 3060) || (mob_index[(int)ch->nr].vnum == 3069) ||                           \
+    ((mob_index[(int)ch->nr].vnum == 3060) || (mob_index[(int)ch->nr].vnum == 3069) ||                                 \
      (mob_index[(int)ch->nr].vnum == 3067))
 #define IS_CORPSE(obj)                                                                                                 \
     (GET_ITEM_TYPE((obj)) == ITEM_CONTAINER && (obj)->obj_flags.value[3] && isname("corpse", (obj)->name))

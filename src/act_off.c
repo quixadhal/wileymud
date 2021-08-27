@@ -33,7 +33,7 @@
 #include "act_off.h"
 
 bfuncp bweapons[] = {cast_geyser,       cast_fire_breath, cast_gas_breath,
-                    cast_frost_breath, cast_acid_breath, cast_lightning_breath};
+                     cast_frost_breath, cast_acid_breath, cast_lightning_breath};
 
 int do_swat(struct char_data *ch, const char *argument, int cmd)
 {

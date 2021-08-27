@@ -2075,7 +2075,6 @@ void I3_send_ucache_update(const char *visname, int gender)
     I3_write_buffer(buf);
     I3_write_buffer(",})\r");
     I3_send_packet();
-
 }
 
 void I3_process_ucache_update(I3_HEADER *header, char *s)
@@ -2118,7 +2117,6 @@ void I3_send_chan_user_req(char *targetmud, char *targetuser)
     I3_write_buffer(targetuser);
     I3_write_buffer("\",})\r");
     I3_send_packet();
-
 }
 
 void I3_process_chan_user_req(I3_HEADER *header, char *s)
@@ -2149,7 +2147,6 @@ void I3_process_chan_user_req(I3_HEADER *header, char *s)
     I3_write_buffer(buf);
     I3_write_buffer(",})\r");
     I3_send_packet();
-
 }
 
 void I3_process_chan_user_reply(I3_HEADER *header, char *s)
@@ -2577,7 +2574,6 @@ void I3_send_channel_message(I3_CHANNEL *channel, const char *name, const char *
     I3_send_packet();
     channel_m_sent++;
     // log_info("I3_send_channel() done.");
-
 }
 
 void I3_send_channel_emote(I3_CHANNEL *channel, const char *name, const char *message)
@@ -2601,7 +2597,6 @@ void I3_send_channel_emote(I3_CHANNEL *channel, const char *name, const char *me
     send_to_i3(I3_escape(buf));
     I3_write_buffer("\",})\r");
     I3_send_packet();
-
 }
 
 void I3_send_channel_t(I3_CHANNEL *channel, const char *name, char *tmud, char *tuser, char *msg_o, char *msg_t,
@@ -2627,7 +2622,6 @@ void I3_send_channel_t(I3_CHANNEL *channel, const char *name, char *tmud, char *
     I3_write_buffer(tvis);
     I3_write_buffer("\",})\r");
     I3_send_packet();
-
 }
 
 int I3_token(char type, char *str, char *oname, char *tname)
@@ -3523,7 +3517,6 @@ void I3_send_chan_who(CHAR_DATA *ch, I3_CHANNEL *channel, I3_MUD *mud)
     I3_write_buffer(channel->I3_name);
     I3_write_buffer("\",})\r");
     I3_send_packet();
-
 }
 
 void I3_send_beep(CHAR_DATA *ch, const char *to, I3_MUD *mud)
@@ -3537,7 +3530,6 @@ void I3_send_beep(CHAR_DATA *ch, const char *to, I3_MUD *mud)
     I3_write_buffer(CH_I3NAME(ch));
     I3_write_buffer("\",})\r");
     I3_send_packet();
-
 }
 
 void I3_process_beep(I3_HEADER *header, char *s)
@@ -3596,7 +3588,6 @@ void I3_send_tell(CHAR_DATA *ch, const char *to, const char *mud, const char *me
     send_to_i3(I3_escape(message));
     I3_write_buffer("\",})\r");
     I3_send_packet();
-
 }
 
 void i3_update_tellhistory(CHAR_DATA *ch, const char *msg)
@@ -3708,7 +3699,6 @@ void I3_send_who(CHAR_DATA *ch, char *mud)
     I3_write_header("who-req", this_i3mud->name, CH_I3NAME(ch), mud, NULL);
     I3_write_buffer("})\r");
     I3_send_packet();
-
 }
 
 char *i3centerline(const char *str, int len)
@@ -4004,7 +3994,6 @@ void I3_process_who_req(I3_HEADER *header, char *s)
     I3_write_buffer(smallbuf);
     I3_write_buffer(",\" \",}),}),})\r");
     I3_send_packet();
-
 }
 
 /* This is where the incoming results of a who-reply packet are processed.
@@ -4090,7 +4079,6 @@ void I3_send_emoteto(CHAR_DATA *ch, const char *to, I3_MUD *mud, const char *mes
     send_to_i3(I3_escape(buf));
     I3_write_buffer("\",})\r");
     I3_send_packet();
-
 }
 
 void I3_process_emoteto(I3_HEADER *header, char *s)
@@ -4146,7 +4134,6 @@ void I3_send_finger(CHAR_DATA *ch, char *user, char *mud)
     I3_write_buffer(I3_escape(user));
     I3_write_buffer("\",})\r");
     I3_send_packet();
-
 }
 
 /* The output of this was slightly modified to resemble the Finger snippet */
@@ -4205,7 +4192,6 @@ void I3_process_finger_reply(I3_HEADER *header, char *s)
     i3_printf(ch, "%%^WHITE%%^Email: %%^GREEN%%^%%^BOLD%%^%s%%^RESET%%^\r\n", email);
     i3_printf(ch, "%%^WHITE%%^HTTP : %%^GREEN%%^%%^BOLD%%^%s%%^RESET%%^\r\n", ps);
     i3_printf(ch, "%%^WHITE%%^Last on: %%^GREEN%%^%%^BOLD%%^%s%%^RESET%%^\r\n", last);
-
 }
 
 void I3_process_finger_req(I3_HEADER *header, char *s)
@@ -4289,7 +4275,6 @@ void I3_process_finger_req(I3_HEADER *header, char *s)
     I3_write_buffer("[Private]");
     I3_write_buffer("\",})\r");
     I3_send_packet();
-
 }
 
 void I3_send_locate(CHAR_DATA *ch, const char *user)
@@ -4302,7 +4287,6 @@ void I3_send_locate(CHAR_DATA *ch, const char *user)
     I3_write_buffer(I3_escape(user));
     I3_write_buffer("\",})\r");
     I3_send_packet();
-
 }
 
 void I3_process_locate_reply(I3_HEADER *header, char *s)
@@ -4389,7 +4373,6 @@ void I3_process_locate_req(I3_HEADER *header, char *s)
     else
         I3_write_buffer(",\"Offline\",})\r");
     I3_send_packet();
-
 }
 
 void I3_send_channel_listen(I3_CHANNEL *channel, bool lconnect)
@@ -4406,7 +4389,6 @@ void I3_send_channel_listen(I3_CHANNEL *channel, bool lconnect)
     else
         I3_write_buffer("0,})\r");
     I3_send_packet();
-
 }
 
 void I3_process_channel_adminlist_reply(I3_HEADER *header, char *s)
@@ -4462,7 +4444,6 @@ void I3_send_channel_adminlist(CHAR_DATA *ch, char *chan_name)
     I3_write_buffer(chan_name);
     I3_write_buffer("\",})\r");
     I3_send_packet();
-
 }
 
 void I3_send_channel_admin(CHAR_DATA *ch, char *chan_name, char *list)
@@ -4477,7 +4458,6 @@ void I3_send_channel_admin(CHAR_DATA *ch, char *chan_name, char *list)
     I3_write_buffer(list);
     I3_write_buffer("})\r");
     I3_send_packet();
-
 }
 
 void I3_send_channel_add(CHAR_DATA *ch, char *arg, int type)
@@ -4543,7 +4523,6 @@ void I3_send_shutdown(int delay)
 
     if (!I3_write_packet(I3_output_buffer))
         I3_connection_close(FALSE);
-
 }
 
 /*
@@ -18682,7 +18661,6 @@ I3_CMD(I3_debug)
         i3_printf(ch, "I3_PACKET Packet debugging enabled.\r\n");
     else
         i3_printf(ch, "I3_PACKET Packet debugging disabled.\r\n");
-
 }
 
 I3_CMD(I3_send_user_req)
@@ -18944,7 +18922,6 @@ I3_CMD(I3_addchan)
               channel->I3_name, channel->host_mud, channel->local_name);
     I3_send_channel_listen(channel, TRUE);
     I3_write_channel_config();
-
 }
 
 I3_CMD(I3_removechan)
@@ -18980,7 +18957,6 @@ I3_CMD(I3_removechan)
               channel->I3_name);
     destroy_I3_channel(channel);
     I3_write_channel_config();
-
 }
 
 I3_CMD(I3_setconfig)
@@ -19686,7 +19662,6 @@ I3_CMD(I3_stats)
     i3_printf(ch, "%%^CYAN%%^Channel messages received  : %%^WHITE%%^%%^BOLD%%^%ld%%^RESET%%^\r\n", channel_m_received);
     i3_printf(ch, "%%^CYAN%%^Known muds                 : %%^WHITE%%^%%^BOLD%%^%d%%^RESET%%^\r\n", mud_count);
     i3_printf(ch, "%%^CYAN%%^Known channels             : %%^WHITE%%^%%^BOLD%%^%d%%^RESET%%^\r\n", chan_count);
-
 }
 
 I3_CMD(i3_help)

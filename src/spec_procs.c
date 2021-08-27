@@ -1977,8 +1977,8 @@ int shylar_guard(struct char_data *ch, int cmd, const char *arg)
                     // if (0 <= (dir = find_path(ch->in_room, is_target_room_p, (void *)(the_path[path_index]), -200)))
                     //
                     // {
-                    if (0 <= (dir = find_path(ch->in_room, is_target_room_p,
-                                              (void *)(size_t)(the_path[path_index]), -200)))
+                    if (0 <=
+                        (dir = find_path(ch->in_room, is_target_room_p, (void *)(size_t)(the_path[path_index]), -200)))
                     {
                         go_direction(ch, dir);
                         return TRUE;

@@ -65,9 +65,9 @@
         break;                                                                                                         \
     }
 
-#define SKEY(str, field)                                                                                            \
+#define SKEY(str, field)                                                                                               \
     {                                                                                                                  \
-        if (!str_cmp((word), (str)))                                                                                \
+        if (!str_cmp((word), (str)))                                                                                   \
         {                                                                                                              \
             if (field)                                                                                                 \
                 free(field);                                                                                           \
@@ -133,18 +133,18 @@ struct zone_data
 /* element in monster and object index-tables   */
 struct index_data
 {
-    int vnum; /* virtual number of this mob/obj */
-    long pos;    /* file position of this field */
-    int number;  /* number of existing units of this mob/obj */
+    int vnum;   /* virtual number of this mob/obj */
+    long pos;   /* file position of this field */
+    int number; /* number of existing units of this mob/obj */
     ifuncp func;
     char *name;
 };
 
 struct obj_index_data
 {
-    int vnum; /* virtual number of this mob/obj */
-    long pos;    /* file position of this field */
-    int number;  /* number of existing units of this mob/obj */
+    int vnum;   /* virtual number of this mob/obj */
+    long pos;   /* file position of this field */
+    int number; /* number of existing units of this mob/obj */
     ifuncp func;
     char *name;
     struct obj_data *data_template; /* for preloading of objects */

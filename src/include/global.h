@@ -29,7 +29,7 @@ typedef struct char_data CHAR_DATA;
 typedef struct room_data ROOM_DATA;
 typedef struct obj_data OBJ_DATA;
 
-//typedef void (*funcp)();
+// typedef void (*funcp)();
 
 typedef void (*hfuncp)(void *);
 typedef int (*cfuncp)(CHAR_DATA *, const char *, int);
@@ -236,14 +236,14 @@ struct char_list
 struct opinion
 {
     struct char_list *clist;
-    int sex;   /* number
-                * 1=male,2=female,3=both,4=neut,5=m&n,6=f&n,7=all */
-    int race;  /* number */
+    int sex;     /* number
+                  * 1=male,2=female,3=both,4=neut,5=m&n,6=f&n,7=all */
+    int race;    /* number */
     int chclass; /* 1=m,2=c,4=f,8=t */
-    int vnum;  /* # */
-    int evil;  /* align < evil = attack */
-    int good;  /* align > good = attack */
-    int gold;  /* victim has > gold == attack */
+    int vnum;    /* # */
+    int evil;    /* align < evil = attack */
+    int good;    /* align > good = attack */
+    int gold;    /* victim has > gold == attack */
 };
 
 /*
@@ -804,7 +804,7 @@ struct char_player_data
     char *sounds;              /* Sound that the monster makes (in room) */
     char *distant_snds;        /* Sound that the monster makes (other) */
     char sex;                  /* PC / NPC s sex */
-    char chclass;                /* PC s class or NPC alignment */
+    char chclass;              /* PC s class or NPC alignment */
     char level[ABS_MAX_CLASS]; /* PC / NPC s level */
     int hometown;              /* PC s Hometown (zone) */
     char talks[MAX_TOUNGE];    /* PC s Tounges 0 for NPC */
