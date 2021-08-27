@@ -641,19 +641,19 @@ int is_abbrev(const char *arg1, const char *arg2)
 /*
  * return first 'word' plus trailing substring of input string
  */
-void half_chop(const char *string, char *arg1, char *arg2)
+void half_chop(const char *str, char *arg1, char *arg2)
 {
     if (DEBUG > 2)
-        log_info("called %s with %s, %08zx, %08zx", __PRETTY_FUNCTION__, VNULL(string), (size_t)arg1, (size_t)arg2);
+        log_info("called %s with %s, %08zx, %08zx", __PRETTY_FUNCTION__, VNULL(str), (size_t)arg1, (size_t)arg2);
 
-    for (; isspace(*string); string++)
+    for (; isspace(*str); str++)
         ;
-    for (; !isspace(*arg1 = *string) && *string; string++, arg1++)
+    for (; !isspace(*arg1 = *str) && *str; str++, arg1++)
         ;
     *arg1 = '\0';
-    for (; isspace(*string); string++)
+    for (; isspace(*str); str++)
         ;
-    for (; (*arg2 = *string); string++, arg2++)
+    for (; (*arg2 = *str); str++, arg2++)
         ;
 }
 

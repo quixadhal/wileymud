@@ -61,7 +61,7 @@ void add_follower(struct char_data *ch, struct char_data *leader);
 void say_spell(struct char_data *ch, int si);
 char saves_spell(struct char_data *ch, short int save_type);
 char ImpSaveSpell(struct char_data *ch, short int save_type, int mod);
-const char *skip_spaces(const char *string);
+const char *skip_spaces(const char *str);
 int do_cast(struct char_data *ch, const char *argument, int cmd);
 void assign_spell_pointers(void);
 int splat(struct char_data *ch, struct room_data *rp, int height);

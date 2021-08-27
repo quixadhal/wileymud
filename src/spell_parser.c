@@ -627,15 +627,15 @@ char ImpSaveSpell(struct char_data *ch, short int save_type, int mod)
     return (MAX(1, save) < number(1, 20));
 }
 
-const char *skip_spaces(const char *string)
+const char *skip_spaces(const char *str)
 {
     if (DEBUG > 3)
-        log_info("called %s with %s", __PRETTY_FUNCTION__, VNULL(string));
+        log_info("called %s with %s", __PRETTY_FUNCTION__, VNULL(str));
 
-    for (; *string && (*string) == ' '; string++)
+    for (; *str && (*str) == ' '; str++)
         ;
 
-    return string;
+    return str;
 }
 
 /* Assumes that *argument does start with first letter of chopped string */

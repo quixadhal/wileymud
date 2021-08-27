@@ -112,13 +112,13 @@ void string_add(struct descriptor_data *d, char *str)
 }
 
 /* interpret an argument for do_string */
-void quad_arg(const char *arg, int *type, char *name, int *field, char *string)
+void quad_arg(const char *arg, int *type, char *name, int *field, char *str)
 {
     char buf[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
 
     if (DEBUG > 2)
         log_info("called %s with %s, %08zx, %s, %08zx, %s", __PRETTY_FUNCTION__, VNULL(arg), (size_t)type, VNULL(name),
-                 (size_t)field, VNULL(string));
+                 (size_t)field, VNULL(str));
 
     /*
      * determine type
@@ -150,7 +150,7 @@ void quad_arg(const char *arg, int *type, char *name, int *field, char *string)
      */
     for (; isspace(*arg); arg++)
         ;
-    for (; (*string = *arg); arg++, string++)
+    for (; (*str = *arg); arg++, str++)
         ;
 }
 
@@ -159,7 +159,7 @@ int do_string(struct char_data *ch, const char *arg, int cmd)
 {
 
     char name[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
-    char string[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
+    char str[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
     struct extra_descr_data *ed = NULL;
     struct extra_descr_data *tmp = NULL;
     int field = 0;
@@ -173,7 +173,7 @@ int do_string(struct char_data *ch, const char *arg, int cmd)
     if (IS_NPC(ch))
         return TRUE;
 
-    quad_arg(arg, &type, name, &field, string);
+    quad_arg(arg, &type, name, &field, str);
 
     if (type == TP_ERROR)
     {
@@ -203,7 +203,7 @@ int do_string(struct char_data *ch, const char *arg, int cmd)
                 cprintf(ch, "You can't change that field for players.");
                 return TRUE;
             }
-            if (!*string)
+            if (!*str)
             {
                 cprintf(ch, "You have to supply a name!\r\n");
                 return TRUE;
@@ -271,7 +271,7 @@ int do_string(struct char_data *ch, const char *arg, int cmd)
         {
 
         case 1:
-            if (!*string)
+            if (!*str)
             {
                 cprintf(ch, "You have to supply a keyword.\r\n");
                 return TRUE;
@@ -289,7 +289,7 @@ int do_string(struct char_data *ch, const char *arg, int cmd)
             ch->desc->str = &obj->description;
             break;
         case 4:
-            if (!*string)
+            if (!*str)
             {
                 cprintf(ch, "You have to supply a keyword.\r\n");
                 return TRUE;
@@ -304,15 +304,15 @@ int do_string(struct char_data *ch, const char *arg, int cmd)
 
                     ed->next = obj->ex_description;
                     obj->ex_description = ed;
-                    CREATE(ed->keyword, char, strlen(string) + 1);
+                    CREATE(ed->keyword, char, strlen(str) + 1);
 
-                    strcpy(ed->keyword, string);
+                    strcpy(ed->keyword, str);
                     ed->description = 0;
                     ch->desc->str = &ed->description;
                     cprintf(ch, "New field.\r\n");
                     break;
                 }
-                else if (!str_cmp(ed->keyword, string))
+                else if (!str_cmp(ed->keyword, str))
                 { /* the field exists */
                     DESTROY(ed->description);
                     ed->description = 0;
@@ -324,7 +324,7 @@ int do_string(struct char_data *ch, const char *arg, int cmd)
             return TRUE; /* the stndrd (see below) procedure does not apply here */
             break;
         case 6: /* deletion */
-            if (!*string)
+            if (!*str)
             {
                 cprintf(ch, "You must supply a field name.\r\n");
                 return TRUE;
@@ -338,7 +338,7 @@ int do_string(struct char_data *ch, const char *arg, int cmd)
                     cprintf(ch, "No field with that keyword.\r\n");
                     return TRUE;
                 }
-                else if (!str_cmp(ed->keyword, string))
+                else if (!str_cmp(ed->keyword, str))
                 {
                     DESTROY(ed->keyword);
                     if (ed->description)
@@ -372,16 +372,16 @@ int do_string(struct char_data *ch, const char *arg, int cmd)
     {
         DESTROY(*ch->desc->str);
     }
-    if (*string)
+    if (*str)
     { /* there was a string in the argument array */
-        if (strlen(string) > length[field - 1])
+        if (strlen(str) > length[field - 1])
         {
             cprintf(ch, "String too long - truncated.\r\n");
-            *(string + length[field - 1]) = '\0';
+            *(str + length[field - 1]) = '\0';
         }
-        CREATE(*ch->desc->str, char, strlen(string) + 1);
+        CREATE(*ch->desc->str, char, strlen(str) + 1);
 
-        strcpy(*ch->desc->str, string);
+        strcpy(*ch->desc->str, str);
         ch->desc->str = 0;
         cprintf(ch, "Ok.\r\n");
     }
@@ -394,12 +394,12 @@ int do_string(struct char_data *ch, const char *arg, int cmd)
     return TRUE;
 }
 
-void bisect_arg(const char *arg, int *field, char *string)
+void bisect_arg(const char *arg, int *field, char *str)
 {
     char buf[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
 
     if (DEBUG > 2)
-        log_info("called %s with %s, %08zx, %s", __PRETTY_FUNCTION__, VNULL(arg), (size_t)field, VNULL(string));
+        log_info("called %s with %s, %08zx, %s", __PRETTY_FUNCTION__, VNULL(arg), (size_t)field, VNULL(str));
 
     /*
      * field name and number
@@ -413,7 +413,7 @@ void bisect_arg(const char *arg, int *field, char *string)
      */
     for (; isspace(*arg); arg++)
         ;
-    for (; (*string = *arg); arg++, string++)
+    for (; (*str = *arg); arg++, str++)
         ;
 
 }

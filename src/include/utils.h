@@ -72,17 +72,17 @@ int strn_cmp(const char *arg1, const char *arg2, const int n);
         }                                                                                                              \
     } while (0)
 
-#define STRDUP(result, string)                                                                                         \
+#define STRDUP(result, str)                                                                                         \
     do                                                                                                                 \
     {                                                                                                                  \
-        if (!((result) = (char *)calloc(strlen(string) + 1, sizeof(char))))                                            \
+        if (!((result) = (char *)calloc(strlen(str) + 1, sizeof(char))))                                            \
         {                                                                                                              \
             perror("calloc failure");                                                                                  \
             fprintf(stderr, "Calloc failure @ %s:%d\n", __FILE__, __LINE__);                                           \
             fflush(stderr);                                                                                            \
             proper_exit(42);                                                                                           \
         }                                                                                                              \
-        strcpy((result), (string));                                                                                    \
+        strcpy((result), (str));                                                                                    \
     } while (0)
 
 #define RECREATE(result, type, number)                                                                                 \

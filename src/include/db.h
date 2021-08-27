@@ -65,9 +65,9 @@
         break;                                                                                                         \
     }
 
-#define SKEY(string, field)                                                                                            \
+#define SKEY(str, field)                                                                                            \
     {                                                                                                                  \
-        if (!str_cmp((word), (string)))                                                                                \
+        if (!str_cmp((word), (str)))                                                                                \
         {                                                                                                              \
             if (field)                                                                                                 \
                 free(field);                                                                                           \

@@ -1427,29 +1427,29 @@ void imc_freepacket(IMC_PACKET *p)
     IMCDISPOSE(p);
 }
 
-int find_next_esign(const char *string, int current)
+int find_next_esign(const char *str, int current)
 {
     bool quote = FALSE;
 
-    if (string[current] == '=')
+    if (str[current] == '=')
         current++;
 
-    for (; string[current] != '\0'; current++)
+    for (; str[current] != '\0'; current++)
     {
-        if (string[current] == '\\' && string[current + 1] == '"')
+        if (str[current] == '\\' && str[current + 1] == '"')
         {
             current++;
             continue;
         }
 
-        if (string[current] == '"')
+        if (str[current] == '"')
             quote = !quote;
 
-        if (string[current] == '=' && !quote)
+        if (str[current] == '=' && !quote)
             break;
     }
 
-    if (string[current] == '\0')
+    if (str[current] == '\0')
         return -1;
 
     return current;
@@ -2114,13 +2114,13 @@ PFUN(imc_recv_chanwho)
     imc_write_packet(p);
 }
 
-char *imccenterline(const char *string, int slen)
+char *imccenterline(const char *str, int slen)
 {
     char stripped[300];
     static char outbuf[400];
     int amount;
 
-    imcstrlcpy(stripped, imc_strip_colors(string), 300);
+    imcstrlcpy(stripped, imc_strip_colors(str), 300);
     amount = slen - strlen(stripped); /* Determine amount to put in front of line */
 
     if (amount < 1)
@@ -2129,7 +2129,7 @@ char *imccenterline(const char *string, int slen)
     /*
      * Justice, you are the String God!
      */
-    snprintf(outbuf, 400, "%*s%s%*s", (amount / 2), "", string,
+    snprintf(outbuf, 400, "%*s%s%*s", (amount / 2), "", str,
              ((amount / 2) * 2) == amount ? (amount / 2) : ((amount / 2) + 1), "");
 
     return outbuf;

@@ -2630,7 +2630,7 @@ void I3_send_channel_t(I3_CHANNEL *channel, const char *name, char *tmud, char *
 
 }
 
-int I3_token(char type, char *string, char *oname, char *tname)
+int I3_token(char type, char *str, char *oname, char *tname)
 {
     char code[500];
     char *p;
@@ -2657,8 +2657,8 @@ int I3_token(char type, char *string, char *oname, char *tname)
     p = code;
     while (*p != '\0')
     {
-        *string = *p++;
-        *++string = '\0';
+        *str = *p++;
+        *++str = '\0';
     }
     return strlen(code);
 }
@@ -3711,13 +3711,13 @@ void I3_send_who(CHAR_DATA *ch, char *mud)
 
 }
 
-char *i3centerline(const char *string, int len)
+char *i3centerline(const char *str, int len)
 {
     char stripped[MAX_STRING_LENGTH];
     static char outbuf[MAX_STRING_LENGTH];
     int amount;
 
-    strlcpy(stripped, i3_strip_colors(string), MAX_STRING_LENGTH);
+    strlcpy(stripped, i3_strip_colors(str), MAX_STRING_LENGTH);
     amount = len - strlen(stripped); /* Determine amount to put in front of line */
 
     if (amount < 1)
@@ -3726,7 +3726,7 @@ char *i3centerline(const char *string, int len)
     /*
      * Justice, you are the String God!
      */
-    snprintf(outbuf, MAX_STRING_LENGTH, "%*s%s%*s", (amount / 2), "", string,
+    snprintf(outbuf, MAX_STRING_LENGTH, "%*s%s%*s", (amount / 2), "", str,
              ((amount / 2) * 2) == amount ? (amount / 2) : ((amount / 2) + 1), "");
 
     return outbuf;
