@@ -34,7 +34,7 @@
 
 #undef BOOT_IDLE /* define this to kick idle people, undefine to let them stay idle all day */
 
-const struct title_type titles[6][ABS_MAX_LVL + 1] = {
+struct title_type titles[6][ABS_MAX_LVL + 1] = {
     {{"Man", "Woman", 0},
      {"Supplicant", "Supplicant", 1}, /* 1 */
      {"Apprentice", "Apprentice", 2500},

@@ -4,9 +4,9 @@ DATESTAMP	= $(shell /bin/date "+%Y-%m-%d")
 DEPLINE		= $(shell /bin/grep -n -e '^\#--- Comment for make deps ---' GNUmakefile | awk -F: '{print $$1}')
 
 CC		= clang #gcc #g++
-LANGFLAGS	= #-x c++ -std=gnu++17
+LANGFLAGS	= -x c++ -std=gnu++17
 W_GCC		= #-Wno-parentheses -Wno-format-truncation -Wno-sign-compare -Wno-unused-but-set-variable -Wno-multichar
-W_CLANG		= -Wno-unused-const-variable
+W_CLANG		= #-Wno-unused-const-variable
 MAKE		= make #gmake
 
 PRODBIN		= ../bin
@@ -78,7 +78,7 @@ tOBJ =	mob_actions.o spec_procs.o breath_weapons.o tracking.o act_comm.o \
 	act_info.o act_move.o act_obj.o act_off.o act_other.o \
 	act_skills.o act_social.o act_wiz.o board.o bug.o \
 	comm.o global.o db.o fight.o handler.o \
-	hash.o interpreter.o limits.o magic.o magic_utils.o \
+	hash.o interpreter.o mudlimits.o magic.o magic_utils.o \
 	modify.o multiclass.o opinion.o random.o reception.o \
 	shop.o signals.o sound.o spell_parser.o spells.o \
 	trap.o utils.o weather.o whod.o events.o \

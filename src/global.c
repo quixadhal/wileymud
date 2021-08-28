@@ -252,11 +252,11 @@ const char *spell_wear_off_soon_msg[] = {
     "You begin to feel less righteous and not as healthy.",
 };
 
-const int rev_dir[] = {2, 3, 0, 1, 5, 4};
+int rev_dir[] = {2, 3, 0, 1, 5, 4};
 
-const int TrapDir[] = {TRAP_EFF_NORTH, TRAP_EFF_EAST, TRAP_EFF_SOUTH, TRAP_EFF_WEST, TRAP_EFF_UP, TRAP_EFF_DOWN};
+int TrapDir[] = {TRAP_EFF_NORTH, TRAP_EFF_EAST, TRAP_EFF_SOUTH, TRAP_EFF_WEST, TRAP_EFF_UP, TRAP_EFF_DOWN};
 
-const int movement_loss[] = {
+int movement_loss[] = {
     1,  /* Inside */
     2,  /* City */
     2,  /* Field */
@@ -298,7 +298,7 @@ const char *month_name[17] = {"Month of Winter", /* 0 */
                               "Month of the Ancient Darkness",
                               "Month of the Great Evil"};
 
-const int sharp[] = {0, 0, 0, 1,  /* Slashing */
+int sharp[] = {0, 0, 0, 1,  /* Slashing */
                      0, 0, 0, 0,  /* Bludgeon */
                      0, 0, 0, 0}; /* Pierce */
 
@@ -332,7 +332,7 @@ const char *drinknames[] = {"water",    "beer",         "wine",  "ale",   "ale",
                             "lemonade", "firebreather", "local", "juice", "milk", "tea",
                             "coffee",   "blood",        "salt",  "cola",  "\n"};
 
-const int RacialMax[][4] = {
+int RacialMax[][4] = {
 
     {(LOW_IMMORTAL - 1), (LOW_IMMORTAL - 1), (LOW_IMMORTAL - 1), (LOW_IMMORTAL - 1)},
     {(LOW_IMMORTAL - 1), (LOW_IMMORTAL - 1), (LOW_IMMORTAL - 1), (LOW_IMMORTAL - 1)},
@@ -343,7 +343,7 @@ const int RacialMax[][4] = {
 
 /*  fire cold elec blow acid */
 
-const int ItemSaveThrows[22][5] = {{15, 2, 10, 10, 10},  {19, 2, 16, 2, 7}, {11, 2, 2, 13, 9},
+int ItemSaveThrows[22][5] = {{15, 2, 10, 10, 10},  {19, 2, 16, 2, 7}, {11, 2, 2, 13, 9},
                                    {7, 2, 2, 10, 8},     {6, 2, 2, 7, 13},  {10, 10, 10, 10, 10}, /* not defined */
                                    {10, 10, 10, 10, 10},                                          /* not defined */
                                    {6, 2, 2, 7, 13},                                              /* treasure */
@@ -357,7 +357,7 @@ const int ItemSaveThrows[22][5] = {{15, 2, 10, 10, 10},  {19, 2, 16, 2, 7}, {11,
                                    {6, 2, 2, 7, 13},     {6, 3, 2, 3, 10},  {6, 2, 2, 7, 13},     /* treasure */
                                    {11, 2, 2, 13, 9},    {7, 2, 2, 10, 8}};
 
-const int drink_aff[][3] = {{0, 1, 10}, /* Water */
+int drink_aff[][3] = {{0, 1, 10}, /* Water */
                             {3, 2, 5},  /* beer */
                             {5, 2, 5},  /* wine */
                             {2, 2, 5},  /* ale */
@@ -525,7 +525,7 @@ const char *connected_types[] = {"Playing",
                                  "\n"};
 
 /* [class], [level] (all) */
-const int thaco[6][ABS_MAX_LVL] = {
+int thaco[6][ABS_MAX_LVL] = {
     {100, 20, 20, 20, 19, 19, 19, 18, 18, 18, 17, 17, 17, 16, 16, 16, 15, 15, 15, 14, 14,
      14,  13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13,
      13,  13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 12, 12, 12, 12, 12, 12},
@@ -541,7 +541,7 @@ const int thaco[6][ABS_MAX_LVL] = {
      6,   6,  6,  6,  6,  6,  6,  6,  6,  6,  6,  6,  6,  6,  6,  6,  6,  6,  6,  6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6}};
 
 /* [ch] strength apply (all) */
-const struct str_app_type str_app[31] = {
+struct str_app_type str_app[31] = {
     {-5, -4, 1, 0},                                                                             /* 0 */
     {-5, -4, 15, 1},                                                                            /* 1 */
     {-3, -2, 20, 2}, {-3, -1, 30, 3},                                                           /* 3 */
@@ -559,7 +559,7 @@ const struct str_app_type str_app[31] = {
 };
 
 /* [dex] skillapply (thieves only) */
-const struct dex_skill_type dex_app_skill[26] = {
+struct dex_skill_type dex_app_skill[26] = {
     {-99, -99, -90, -99, -60},                                                                                  /* 0 */
     {-90, -90, -60, -90, -50},                                                                                  /* 1 */
     {-80, -80, -40, -80, -45}, {-70, -70, -30, -70, -40}, {-60, -60, -30, -60, -35}, {-50, -50, -20, -50, -30}, /* 5 */
@@ -574,7 +574,7 @@ const struct dex_skill_type dex_app_skill[26] = {
 };
 
 /* [level] backstab multiplyer (thieves only) */
-const char backstab_mult[ABS_MAX_LVL] = {1,             /* 0 */
+char backstab_mult[ABS_MAX_LVL] = {1,             /* 0 */
                                          1,             /* 1 */
                                          1, 1, 1, 1,    /* 5 */
                                          2, 2, 2, 2, 2, /* 10 */
@@ -589,7 +589,7 @@ const char backstab_mult[ABS_MAX_LVL] = {1,             /* 0 */
                                          5, 5, 5, 5, 5, 5, 5, 5, 5, 5};
 
 /* [dex] apply (all) */
-const struct dex_app_type dex_app[26] = {
+struct dex_app_type dex_app[26] = {
     {-7, -7, 60},                                                        /* 0 */
     {-6, -6, 50},                                                        /* 1 */
     {-4, -4, 50}, {-3, -3, 40}, {-2, -2, 30}, {-1, -1, 20},              /* 5 */
@@ -600,7 +600,7 @@ const struct dex_app_type dex_app[26] = {
 };
 
 /* [con] apply (all) */
-const struct con_app_type con_app[26] = {
+struct con_app_type con_app[26] = {
     {-4, 20},                                        /* 0 */
     {-3, 25},                                        /* 1 */
     {-2, 30}, {-2, 35}, {-1, 40}, {-1, 45},          /* 5 */
@@ -611,7 +611,7 @@ const struct con_app_type con_app[26] = {
 };
 
 /* [int] apply (all) */
-const struct int_app_type int_app[26] = {
+struct int_app_type int_app[26] = {
     {1},  {2},                    /* 1 */
     {3},  {4},  {5},  {6},        /* 5 */
     {7},  {8},  {9},  {10}, {11}, /* 10 */
@@ -621,7 +621,7 @@ const struct int_app_type int_app[26] = {
 };
 
 /* [wis] apply (all) */
-const struct wis_app_type wis_app[26] = {
+struct wis_app_type wis_app[26] = {
     {0},                     /* 0 */
     {1},                     /* 1 */
     {1}, {1}, {1}, {2},      /* 5 */

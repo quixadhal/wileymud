@@ -12,7 +12,7 @@
 #define MOB_LEVELING
 
 #ifndef _DIKU_LIMITS_C
-extern const struct title_type titles[6][ABS_MAX_LVL + 1];
+extern struct title_type titles[6][ABS_MAX_LVL + 1];
 #endif
 
 char *ClassTitles(struct char_data *ch);
