@@ -224,11 +224,6 @@ obj/whod.o: whod.c include/version.h include/global.h include/bug.h \
   include/db.h include/comm.h include/utils.h include/interpreter.h \
   include/multiclass.h include/i3.h include/sha256.h include/modify.h \
   include/sql.h include/whod.h
-obj/limits.o: limits.c include/global.h include/bug.h include/spells.h \
-  include/comm.h include/db.h include/spell_parser.h include/utils.h \
-  include/multiclass.h include/fight.h include/reception.h \
-  include/interpreter.h include/handler.h include/act_obj.h \
-  include/act_other.h include/weather.h include/mudlimits.h
 obj/rent.o: rent.c include/global.h include/bug.h include/utils.h \
   include/comm.h include/sql.h include/rent.h
 obj/reception.o: reception.c include/global.h include/bug.h include/comm.h \
@@ -394,6 +389,11 @@ obj/spells.o: spells.c include/global.h include/bug.h include/utils.h \
   include/comm.h include/db.h include/interpreter.h include/handler.h \
   include/multiclass.h include/act_move.h include/weather.h \
   include/spells.h include/spell_parser.h include/fight.h
+obj/mudlimits.o: mudlimits.c include/global.h include/bug.h include/spells.h \
+  include/comm.h include/db.h include/spell_parser.h include/utils.h \
+  include/multiclass.h include/fight.h include/reception.h \
+  include/interpreter.h include/handler.h include/act_obj.h \
+  include/act_other.h include/weather.h include/mudlimits.h
 obj/tracking.o: tracking.c include/global.h include/bug.h include/utils.h \
   include/act_move.h include/comm.h include/db.h include/handler.h \
   include/hash.h include/interpreter.h include/multiclass.h \
