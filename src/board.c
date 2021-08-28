@@ -28,12 +28,12 @@ struct board_data *boards = NULL;
 void setup_board_table(void)
 {
     PGresult *res = NULL;
-    ExecStatusType st = 0;
-    char *sql = "CREATE TABLE IF NOT EXISTS boards ( "
+    ExecStatusType st = (ExecStatusType) 0;
+    const char *sql = "CREATE TABLE IF NOT EXISTS boards ( "
                 "    updated TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "
                 "    vnum INTEGER PRIMARY KEY NOT NULL "
                 "); ";
-    char *sql2 = "CREATE TABLE IF NOT EXISTS board_messages ( "
+    const char *sql2 = "CREATE TABLE IF NOT EXISTS board_messages ( "
                  "    updated TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "
                  "    vnum INTEGER NOT NULL REFERENCES boards (vnum), "
                  "    message_id INTEGER NOT NULL, "
@@ -42,7 +42,7 @@ void setup_board_table(void)
                  "    body TEXT NOT NULL DEFAULT '', "
                  "    CONSTRAINT pk_board_messages UNIQUE ( vnum, message_id ) "
                  "); ";
-    //    char *sql3 = "CREATE UNIQUE INDEX IF NOT EXISTS ix_board_messages "
+    //    const char *sql3 = "CREATE UNIQUE INDEX IF NOT EXISTS ix_board_messages "
     //                "     ON board_messages (vnum, message_id);";
 
     sql_connect(&db_wileymud);
@@ -83,12 +83,12 @@ void setup_board_table(void)
 void load_boards(void)
 {
     PGresult *res = NULL;
-    ExecStatusType st = 0;
-    char *sql = "SELECT count(*) FROM boards;";
-    char *sql2 = "SELECT extract('epoch' FROM updated) AS updated, "
+    ExecStatusType st = (ExecStatusType) 0;
+    const char *sql = "SELECT count(*) FROM boards;";
+    const char *sql2 = "SELECT extract('epoch' FROM updated) AS updated, "
                  "       vnum FROM boards ORDER BY vnum;";
-    char *sql3 = "SELECT count(*) FROM board_messages WHERE vnum = $1;";
-    char *sql4 = "SELECT extract('epoch' FROM updated) AS updated, "
+    const char *sql3 = "SELECT count(*) FROM board_messages WHERE vnum = $1;";
+    const char *sql4 = "SELECT extract('epoch' FROM updated) AS updated, "
                  "       message_id, owner, subject, body "
                  "FROM board_messages "
                  "WHERE vnum = $1 "
@@ -292,9 +292,9 @@ struct board_data *find_board_by_vnum(int vnum)
 struct board_data *create_board(int vnum)
 {
     PGresult *res = NULL;
-    ExecStatusType st = 0;
-    char *sql = "SELECT 1 FROM boards WHERE vnum = $1;";
-    char *sql2 = "INSERT INTO boards (vnum) VALUES ($1);";
+    ExecStatusType st = (ExecStatusType) 0;
+    const char *sql = "SELECT 1 FROM boards WHERE vnum = $1;";
+    const char *sql2 = "INSERT INTO boards (vnum) VALUES ($1);";
     int rows = 0;
     int columns = 0;
     const char *param_val[1];
@@ -358,9 +358,9 @@ void import_board(struct board_data *bp)
     char board_filename[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
     int message_count = 0;
     PGresult *res = NULL;
-    ExecStatusType st = 0;
-    char *sql = "SELECT 1 FROM boards WHERE vnum = $1;";
-    char *sql2 = "INSERT INTO board_messages (vnum, message_id, updated, owner, subject, body) "
+    ExecStatusType st = (ExecStatusType) 0;
+    const char *sql = "SELECT 1 FROM boards WHERE vnum = $1;";
+    const char *sql2 = "INSERT INTO board_messages (vnum, message_id, updated, owner, subject, body) "
                  "VALUES ($1,$2,$3 AT TIME ZONE 'US/Eastern',$4,$5,$6) "
                  "ON CONFLICT ON CONSTRAINT pk_board_messages DO NOTHING;";
     int rows = 0;
@@ -567,9 +567,9 @@ int delete_board_message(struct char_data *ch, const char *arg, struct board_dat
     int message_number = 0;
     struct board_message_data *msg = NULL;
     PGresult *res = NULL;
-    ExecStatusType st = 0;
-    char *sql = "DELETE FROM board_messages WHERE vnum = $1 and message_id = $2;";
-    // char *sql2 = "UPDATE boards SET message_count = "
+    ExecStatusType st = (ExecStatusType) 0;
+    const char *sql = "DELETE FROM board_messages WHERE vnum = $1 and message_id = $2;";
+    // const char *sql2 = "UPDATE boards SET message_count = "
     //             " (SELECT count(*) FROM board_messages WHERE vnum = $1) "
     //             " WHERE vnum = $2;";
     const char *param_val[2];
@@ -741,8 +741,8 @@ int begin_write_board_message(struct char_data *ch, const char *arg, struct boar
 int finish_write_board_message(struct char_data *ch)
 {
     PGresult *res = NULL;
-    ExecStatusType st = 0;
-    char *sql = "INSERT INTO board_messages (vnum, message_id, owner, subject, body) "
+    ExecStatusType st = (ExecStatusType) 0;
+    const char *sql = "INSERT INTO board_messages (vnum, message_id, owner, subject, body) "
                 "VALUES ($1, "
                 "(SELECT COALESCE(MAX(message_id), 0) + 1 "
                 "FROM board_messages "

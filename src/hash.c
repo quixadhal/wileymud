@@ -26,14 +26,14 @@ void init_hash_table(struct hash_header *ht, int rec_size, int table_size)
      * if(!(ht->buckets = (void *)calloc(sizeof(struct hash_link **), table_size))) { log_error("Cannot allocate hash
      * bucket list"); proper_exit(MUD_HALT); }
      */
-    CREATE_VOID(ht->buckets, struct hash_link **, table_size);
+    CREATE(ht->buckets, struct hash_link *, table_size);
 
     /*
      * if(!(ht->keylist = (void *)malloc(sizeof(*ht->keylist) * (ht->klistsize = 128)))) { log_error("Cannot allocate
      * hash key list"); proper_exit(MUD_HALT); }
      */
     ht->klistsize = 128;
-    CREATE_VOID(ht->keylist, *ht->keylist, ht->klistsize);
+    CREATE(ht->keylist, int, ht->klistsize);
     ht->klistlen = 0;
 }
 
@@ -68,14 +68,14 @@ static void _hash_enter(struct hash_header *ht, int key, void *data)
     /*
      * if(!(temp = (void *)malloc(sizeof(*temp)))) { log_error("Cannot allocate hash entry"); proper_exit(MUD_HALT); }
      */
-    CREATE_VOID(temp, *temp, 1);
+    CREATE(temp, struct hash_link, 1);
     temp->key = key;
     temp->next = ht->buckets[HASH_KEY(ht, key)];
     temp->data = data;
     ht->buckets[HASH_KEY(ht, key)] = temp;
     if (ht->klistlen >= ht->klistsize)
     {
-        if (!(ht->keylist = (void *)realloc(ht->keylist, sizeof(*ht->keylist) * (ht->klistsize *= 2))))
+        if (!(ht->keylist = (int *)realloc(ht->keylist, sizeof(*ht->keylist) * (ht->klistsize *= 2))))
         {
             log_fatal("Cannot grow hash entry");
             proper_exit(MUD_HALT);
@@ -164,7 +164,7 @@ void *hash_remove(struct hash_header *ht, int key)
         struct hash_link *temp = NULL;
         struct hash_link *aux = NULL;
 
-        temp = (*scan)->data;
+        temp = (struct hash_link *) (*scan)->data;
         aux = *scan;
         *scan = aux->next;
         free(aux);

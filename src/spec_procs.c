@@ -1100,7 +1100,7 @@ void exec_social(struct char_data *npc, const char *cmd, int next_line, int *cur
         return;
 
     case 'e':
-        act("%s", FALSE, npc, *thing, *thing, TO_ROOM, cmd + 1);
+        act("%s", FALSE, npc, (struct obj_data *)*thing, *thing, TO_ROOM, cmd + 1);
         break;
 
     case 'E':
@@ -4077,7 +4077,7 @@ int zombie_master(struct char_data *ch, int cmd, const char *arg)
             act("$n searches for bodies.", FALSE, zmaster, 0, 0, TO_ROOM);
             return TRUE;
         }
-        else if (0 <= (dir = find_path(zmaster->in_room, named_object_on_ground, "corpse", -200)))
+        else if (0 <= (dir = find_path(zmaster->in_room, named_object_on_ground, (void *)"corpse", -200)))
         {
             go_direction(zmaster, dir);
             return TRUE;

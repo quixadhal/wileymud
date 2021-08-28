@@ -64,6 +64,7 @@
 #include <sys/types.h>
 #include <signal.h>
 #include "global.h"
+#include "mudlimits.h"
 #include "sql.h"
 #include "bug.h"
 #include "utils.h"
@@ -954,7 +955,7 @@ bool i3ignoring(CHAR_DATA *ch, const char *ignore)
     /*
      * In theory, getting this far should be the result of an IP:Port ban
      */
-    ps = strchr(ignore, '@');
+    ps = (char *)strchr(ignore, '@');
 
     if (ignore[0] == '\0' || ps == NULL)
         return FALSE;
@@ -997,7 +998,7 @@ bool i3banned(const char *ignore)
     /*
      * In theory, getting this far should be the result of an IP:Port ban
      */
-    ps = strchr(ignore, '@');
+    ps = (char *)strchr(ignore, '@');
 
     if (!ignore || ignore[0] == '\0' || ps == NULL)
         return FALSE;
@@ -3036,11 +3037,32 @@ void allchan_log(int is_emote, char *channel, char *speaker, char *username, cha
 char *color_time(struct tm *local)
 {
     static char timestamp[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0\0";
-    char *hours[] = {"%^BLACK%^%^BOLD%^", "%^BLACK%^%^BOLD%^", "%^BLACK%^%^BOLD%^", "%^BLACK%^%^BOLD%^", "%^RED%^",
-                     "%^RED%^",           "%^ORANGE%^",        "%^ORANGE%^",        "%^YELLOW%^",        "%^YELLOW%^",
-                     "%^GREEN%^",         "%^GREEN%^",         "%^GREEN%^%^BOLD%^", "%^GREEN%^%^BOLD%^", "%^WHITE%^",
-                     "%^WHITE%^",         "%^CYAN%^%^BOLD%^",  "%^CYAN%^%^BOLD%^",  "%^CYAN%^",          "%^CYAN%^",
-                     "%^BLUE%^%^BOLD%^",  "%^BLUE%^%^BOLD%^",  "%^BLUE%^",          "%^BLUE%^"};
+    const char *hours[] = {
+        (const char *)"%^BLACK%^%^BOLD%^",
+        (const char *)"%^BLACK%^%^BOLD%^",
+        (const char *)"%^BLACK%^%^BOLD%^",
+        (const char *)"%^BLACK%^%^BOLD%^",
+        (const char *)"%^RED%^",
+        (const char *)"%^RED%^",
+        (const char *)"%^ORANGE%^",
+        (const char *)"%^ORANGE%^",
+        (const char *)"%^YELLOW%^",
+        (const char *)"%^YELLOW%^",
+        (const char *)"%^GREEN%^",
+        (const char *)"%^GREEN%^",
+        (const char *)"%^GREEN%^%^BOLD%^",
+        (const char *)"%^GREEN%^%^BOLD%^",
+        (const char *)"%^WHITE%^",
+        (const char *)"%^WHITE%^",
+        (const char *)"%^CYAN%^%^BOLD%^",
+        (const char *)"%^CYAN%^%^BOLD%^",
+        (const char *)"%^CYAN%^",
+        (const char *)"%^CYAN%^",
+        (const char *)"%^BLUE%^%^BOLD%^",
+        (const char *)"%^BLUE%^%^BOLD%^",
+        (const char *)"%^BLUE%^",
+        (const char *)"%^BLUE%^"
+    };
 
     snprintf(timestamp, MAX_INPUT_LENGTH, "%s%-2.2d:%s%-2.2d%%^RESET%%^", hours[local->tm_hour], local->tm_hour,
              hours[local->tm_hour], local->tm_min);
@@ -3052,10 +3074,23 @@ char *color_speaker(const char *speaker)
     static char result[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0\0";
     char lowercase_name[MAX_INPUT_LENGTH];
     const char *found = NULL;
-    char *colormap[] = {"%^BLACK%^%^BOLD%^", "%^RED%^",           "%^GREEN%^",        "%^ORANGE%^",
-                        "%^BLUE%^",          "%^MAGENTA%^",       "%^CYAN%^",         "%^WHITE%^",
-                        "%^RED%^%^BOLD%^",   "%^GREEN%^%^BOLD%^", "%^YELLOW%^",       "%^MAGENTA%^%^BOLD%^",
-                        "%^BLUE%^%^BOLD%^",  "%^CYAN%^%^BOLD%^",  "%^WHITE%^%^BOLD%^"};
+    const char *colormap[] = {
+        (const char *)"%^BLACK%^%^BOLD%^",
+        (const char *)"%^RED%^",
+        (const char *)"%^GREEN%^",
+        (const char *)"%^ORANGE%^",
+        (const char *)"%^BLUE%^",
+        (const char *)"%^MAGENTA%^",
+        (const char *)"%^CYAN%^",
+        (const char *)"%^WHITE%^",
+        (const char *)"%^RED%^%^BOLD%^",
+        (const char *)"%^GREEN%^%^BOLD%^",
+        (const char *)"%^YELLOW%^",
+        (const char *)"%^MAGENTA%^%^BOLD%^",
+        (const char *)"%^BLUE%^%^BOLD%^",
+        (const char *)"%^CYAN%^%^BOLD%^",
+        (const char *)"%^WHITE%^%^BOLD%^"
+    };
 
     if (speaker && *speaker)
     {
@@ -16654,9 +16689,9 @@ void router_connect(const char *router_name, bool forced, int mudport, bool isco
     if (!rfound && !isconnected)
     {
         log_info("%s", "Unable to connect. No available routers found.");
-        allchan_log(0, "wiley", "Cron", "Cron", "WileyMUD",
-                    "%^RED%^Not connected to I3.  No routers available.%^RESET%^");
-        i3_message_to_players("\r\n%^RED%^I3 is down again.  No routers available.%^RESET%^");
+        allchan_log(0, (char *)"wiley", (char *)"Cron", (char *)"Cron", (char *)"WileyMUD",
+                    (char *)"%^RED%^Not connected to I3.  No routers available.%^RESET%^");
+        i3_message_to_players((char *)"\r\n%^RED%^I3 is down again.  No routers available.%^RESET%^");
         I3_socket = -1;
         return;
     }
@@ -16842,10 +16877,10 @@ char *i3_taunt_line()
                     taunt_count++;
                 }
                 rewind(fp);
-                taunt_list = calloc(taunt_count, sizeof(char *));
+                taunt_list = (char **)calloc(taunt_count, sizeof(char *));
                 for (i = 0; i < taunt_count; i++)
                 {
-                    taunt_list[i] = strdup(fgets(line, MAX_STRING_LENGTH - 2, fp));
+                    taunt_list[i] = (char *)strdup(fgets(line, MAX_STRING_LENGTH - 2, fp));
                 }
                 fclose(fp);
                 already_using_defaults = 0;
@@ -16874,7 +16909,7 @@ char *i3_taunt_line()
             }
 
             taunt_count = 10;
-            taunt_list = calloc(taunt_count, sizeof(char *));
+            taunt_list = (char **)calloc(taunt_count, sizeof(char *));
             taunt_list[0] = strdup("Ummmm.. go away, we already got one.");
             taunt_list[1] = strdup("Connection closed by foreign host");
             taunt_list[2] = strdup("NO CARRIER");
@@ -16957,8 +16992,8 @@ char *I3_nameremap(const char *ps)
                     map_count++;
                 }
                 rewind(fp);
-                key_list = calloc(map_count, sizeof(char *));
-                value_list = calloc(map_count, sizeof(char *));
+                key_list = (char **)calloc(map_count, sizeof(char *));
+                value_list = (char **)calloc(map_count, sizeof(char *));
                 for (i = 0; i < map_count; i++)
                 {
                     s = i3fread_word(fp);
@@ -17105,7 +17140,7 @@ void i3_log_dead()
              "%%^YELLOW%%^*** Welcome to WileyMUD III, Quixadhal's Version %s (%s) ***%%^RESET%%^",
              tm_info->tm_year + 1900, tm_info->tm_mon + 1, tm_info->tm_mday, tm_info->tm_hour, tm_info->tm_min,
              "It's going DOWN!\r\n", I3_ROUTER_NAME, VERSION_BUILD, VERSION_DATE);
-    allchan_log(0, "wiley", "Cron", "Cron", "WileyMUD", taunt);
+    allchan_log(0, (char *)"wiley", (char *)"Cron", (char *)"Cron", (char *)"WileyMUD", taunt);
 }
 
 /*
@@ -17160,7 +17195,7 @@ void i3_loop(void)
     {
         expecting_timeout = 0;
         log_info("I3 Client timeout.");
-        allchan_log(0, "wiley", "Cron", "Cron", "WileyMUD", "%^RED%^I3 Client timeout.%^RESET%^");
+        allchan_log(0, (char *)"wiley", (char *)"Cron", (char *)"Cron", (char *)"WileyMUD", (char *)"%^RED%^I3 Client timeout.%^RESET%^");
         I3_connection_close(TRUE);
         connection_timeouts++;
         return;
@@ -17176,7 +17211,7 @@ void i3_loop(void)
     if ((tm_info->tm_wday == 1) || (tm_info->tm_wday == 3) || (tm_info->tm_wday == 5)) {
         if ((tm_info->tm_hour == 5) && (tm_info->tm_min == 0) && (tm_info->tm_sec == 0)) {
 	    log_info("I3 Client is rebooting for scheduled router reboot.");
-            allchan_log(0,"wiley", "Cron", "Cron", "WileyMUD", "%^RED%^I3 Client is rebooting for scheduled router reboot.%^RESET%^");
+            allchan_log(0,(char *)"wiley", (char *)"Cron", (char *)"Cron", (char *)"WileyMUD", (char *)"%^RED%^I3 Client is rebooting for scheduled router reboot.%^RESET%^");
             I3_connection_close(TRUE);
             return;
         }
@@ -17562,7 +17597,7 @@ I3_CMD(I3_beep)
         return;
     }
 
-    ps = strchr(argument, '@');
+    ps = (char *)strchr(argument, '@');
 
     if (!argument || argument[0] == '\0' || ps == NULL)
     {
@@ -17663,7 +17698,7 @@ I3_CMD(I3_tell)
     }
 
     argument = i3one_argument(argument, to);
-    ps = strchr(to, '@');
+    ps = (char *)strchr(to, '@');
 
     if (to[0] == '\0' || argument[0] == '\0' || ps == NULL)
     {
@@ -17755,7 +17790,7 @@ I3_CMD(I3_reply)
         i3_printf(ch, "%%^GREEN%%^DEBUG: argument == %s\r\n", argument);
         i3_printf(ch, "%%^GREEN%%^DEBUG: to == %s\r\n", to);
 
-        ps = strchr(to, '@');
+        ps = (char *)strchr(to, '@');
         if (to[0] == '\0' || ps == NULL)
         {
             i3_printf(ch, "%%^YELLOW%%^You should specify a person and a mud.%%^RESET%%^\r\n"
@@ -18677,7 +18712,7 @@ I3_CMD(I3_send_user_req)
             "(use %%^WHITE%%^%%^BOLD%%^i3mudlist%%^YELLOW%%^ to get an overview of the muds available)%%^RESET%%^\r\n");
         return;
     }
-    if (!(ps = strchr(argument, '@')))
+    if (!(ps = (char *)strchr(argument, '@')))
     {
         i3_printf(
             ch,
@@ -19339,7 +19374,7 @@ I3_CMD(I3_finger)
         return;
     }
 
-    if ((ps = strchr(argument, '@')) == NULL)
+    if ((ps = (char *)strchr(argument, '@')) == NULL)
     {
         i3_printf(
             ch,
@@ -19408,7 +19443,7 @@ I3_CMD(I3_emote)
     }
 
     argument = i3one_argument(argument, to);
-    ps = strchr(to, '@');
+    ps = (char *)strchr(to, '@');
 
     if (to[0] == '\0' || argument[0] == '\0' || ps == NULL)
     {
@@ -20286,7 +20321,7 @@ void I3_send_social(I3_CHANNEL *channel, CHAR_DATA *ch, const char *argument)
 
     if (argument && argument[0] != '\0')
     {
-        if (!(ps = strchr(argument, '@')))
+        if (!(ps = (char *)strchr(argument, '@')))
         {
             i3_printf(ch, "You need to specify a person@mud for a target.\r\n");
             return;
@@ -21339,7 +21374,7 @@ char *explode_pinkfish_to(const char *src, int target)
     {
         if (parts[i])
         {
-            const char *match = stringmap_find(pinkfish_target_db, parts[i]);
+            const char *match = (const char *)stringmap_find(pinkfish_target_db, parts[i]);
             if (match)
             {
                 // This is a Pinkfish code we recognize!
@@ -21445,7 +21480,7 @@ char *pinkfish_to(const char *src, int target)
             // replacment.
             strlcpy(word, sp, tok - sp + 1);
             sp = (tok + 2);
-            match = stringmap_find(pinkfish_target_db, word);
+            match = (const char *)stringmap_find(pinkfish_target_db, word);
             if (match)
             {
                 // Hey, a Pinkfish code!
@@ -21560,11 +21595,16 @@ void i3_daily_summary()
     char yesterfile[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
     char yesternuke[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
     char yestertouch[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
-    char *target_channel_list[] = {"intercre", "dchat", "intergossip", "dwchat"};
+    char *target_channel_list[] = {
+        (char *)"intercre",
+        (char *)"dchat",
+        (char *)"intergossip",
+        (char *)"dwchat"
+    };
     int target_channel_count = 4;
     char *target_channel = target_channel_list[0];
 
-    char *sql = "SELECT ( "
+    const char *sql = "SELECT ( "
                 "SELECT count(*) FROM ( "
                 "SELECT DISTINCT username "
                 "FROM i3log "
@@ -21576,7 +21616,7 @@ void i3_daily_summary()
                 "WHERE date(local) = date(now()) - '1 day'::interval AND NOT is_bot "
                 ") AS messages;";
     PGresult *res = NULL;
-    ExecStatusType st = 0;
+    ExecStatusType st = (ExecStatusType) 0;
     int rows = 0;
     int columns = 0;
 

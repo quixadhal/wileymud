@@ -60,7 +60,9 @@ unsigned char *TFA_secret(const char *rawSecret, size_t *b32Len)
         if (secretLen < 16)
         {
             // right justify with spaces
-            sprintf(secret, "%16.16s", secret);
+            char copy[17] = "\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0";
+            strcpy(copy, secret);
+            sprintf(secret, "%16.16s", copy);
             for (size_t i = 0; i < 16; i++)
             {
                 if (secret[i] == ' ')

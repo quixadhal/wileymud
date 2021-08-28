@@ -28,7 +28,7 @@ int diku_reboot = 0;   /* reboot the game after a shutdown */
 void setup_reboot_table(void)
 {
     PGresult *res = NULL;
-    ExecStatusType st = 0;
+    ExecStatusType st = (ExecStatusType) 0;
     // frequency indicates when the next reboot should be scheduled after the
     // current one happens.  We use PostgreSQL's interval type to store this,
     // but the UI will have simple keywords such as
@@ -38,16 +38,16 @@ void setup_reboot_table(void)
     // frequency is a nullable column, so one-shot reboots can be done, but
     // the UI would be clunky unless we feed the argument directly to SQL and
     // the user knows what PostgreSQL supports for interval strings.
-    char *sql = "CREATE TABLE IF NOT EXISTS reboot ( "
+    const char *sql = "CREATE TABLE IF NOT EXISTS reboot ( "
                 "    updated TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "
                 "    enabled BOOLEAN NOT NULL DEFAULT false, "
                 "    next_reboot TIMESTAMP WITH TIME ZONE DEFAULT (now() + '1 day'::interval), "
                 "    frequency INTERVAL DEFAULT '1 day'::interval, "
                 "    set_by TEXT NOT NULL DEFAULT 'SYSTEM'"
                 "); ";
-    char *sql2 = "SELECT count(*) FROM reboot;";
-    char *sql3 = "INSERT INTO reboot (enabled) VALUES (false);";
-    char *sql4 = "DELETE FROM reboot WHERE updated <> (SELECT max(UPDATED) FROM reboot);";
+    const char *sql2 = "SELECT count(*) FROM reboot;";
+    const char *sql3 = "INSERT INTO reboot (enabled) VALUES (false);";
+    const char *sql4 = "DELETE FROM reboot WHERE updated <> (SELECT max(UPDATED) FROM reboot);";
     int rows = 0;
     int columns = 0;
     int count = 0;
@@ -117,7 +117,7 @@ void setup_reboot_table(void)
 void load_reboot(void)
 {
     PGresult *res = NULL;
-    ExecStatusType st = 0;
+    ExecStatusType st = (ExecStatusType) 0;
     const char *sql = "SELECT extract('epoch' FROM updated) AS updated, "
                       "enabled::integer, "
                       "extract('epoch' FROM next_reboot) AS next_reboot, "
@@ -166,7 +166,7 @@ void load_reboot(void)
 int set_first_reboot(void)
 {
     PGresult *res = NULL;
-    ExecStatusType st = 0;
+    ExecStatusType st = (ExecStatusType) 0;
     const char *sql = "UPDATE reboot "
                       "SET next_reboot = now() + frequency "
                       "WHERE frequency IS NOT NULL;";
@@ -190,7 +190,7 @@ int set_first_reboot(void)
 int set_next_reboot(void)
 {
     PGresult *res = NULL;
-    ExecStatusType st = 0;
+    ExecStatusType st = (ExecStatusType) 0;
     const char *sql = "UPDATE reboot "
                       "SET next_reboot = next_reboot + frequency "
                       "WHERE frequency IS NOT NULL;";
@@ -214,7 +214,7 @@ int set_next_reboot(void)
 int toggle_reboot(struct char_data *ch)
 {
     PGresult *res = NULL;
-    ExecStatusType st = 0;
+    ExecStatusType st = (ExecStatusType) 0;
     const char *sql = "UPDATE reboot SET enabled = NOT enabled, "
                       "updated = now(), "
                       "set_by = $1;";
@@ -245,7 +245,7 @@ int toggle_reboot(struct char_data *ch)
 int set_reboot_interval(struct char_data *ch, const char *mode, int number)
 {
     PGresult *res = NULL;
-    ExecStatusType st = 0;
+    ExecStatusType st = (ExecStatusType) 0;
     const char *sql = "UPDATE reboot SET frequency = $1::interval, "
                       "updated = now(), "
                       "set_by = $2;";

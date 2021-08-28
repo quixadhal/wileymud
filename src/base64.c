@@ -247,7 +247,7 @@ char *base64_decode(const char *input, size_t inputLen, size_t *finalOutputLen)
                 char *pos = NULL;
                 size_t x = 0;
 
-                pos = strchr(b64decodingTable, (int)input[i]);
+                pos = (char *)strchr(b64decodingTable, (int)input[i]);
                 x = (size_t)(pos - b64decodingTable);
                 chunk |= x << shiftAmounts[k];
                 i++;
@@ -360,7 +360,7 @@ char *base32_decode(const char *input, size_t inputLen, size_t *finalOutputLen)
                 char *pos = NULL;
                 size_t x = 0;
 
-                pos = strchr(b32decodingTable, (int)input[i]);
+                pos = (char *)strchr(b32decodingTable, (int)input[i]);
                 x = (size_t)(pos - b32decodingTable);
                 chunk |= x << shiftAmounts[k];
                 i++;

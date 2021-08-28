@@ -1447,7 +1447,7 @@ void Command_format(void)
      * First get rid of all current new lines.
      */
     idx = -1;
-    while (++idx <= strlen(ptr))
+    while (++idx <= (int)strlen(ptr))
         if (ptr[idx] == '\n')
             ptr[idx] = ' ';
 
@@ -1456,7 +1456,7 @@ void Command_format(void)
      */
 
     idx2 = 78;
-    while (idx2 < strlen(ptr))
+    while (idx2 < (int)strlen(ptr))
     {
         /*
          * Starting at the current lines end position, go backwards until we find a blank char.  This means we are at
@@ -1475,7 +1475,7 @@ void Command_format(void)
         idx3++;
         idx4 = idx3;
         idx2 = idx3 + 77;
-        while (idx3 <= strlen(ptr) && ptr[idx3] == ' ')
+        while (idx3 <= (int)strlen(ptr) && ptr[idx3] == ' ')
             idx3++;
 
         /*
@@ -1483,7 +1483,7 @@ void Command_format(void)
          * line".
          */
 
-        while (idx3 <= strlen(ptr))
+        while (idx3 <= (int)strlen(ptr))
             ptr[idx4++] = ptr[idx3++];
         ptr[idx3] = 0;
     }
@@ -2423,7 +2423,7 @@ int direction_number(char *ptr)
 {
     int idx;
 
-    for (idx = 0; idx < strlen(ptr); idx++)
+    for (idx = 0; idx < (int)strlen(ptr); idx++)
         ptr[idx] = tolower(ptr[idx]);
 
     idx = 0;
@@ -2440,7 +2440,7 @@ int find_keyword(char *buffer)
     if (buffer[0] == '\0')
         return -1;
 
-    for (idx = 0; idx < strlen(buffer); idx++)
+    for (idx = 0; idx < (int)strlen(buffer); idx++)
         buffer[idx] = tolower(buffer[idx]);
 
     idx = 0;

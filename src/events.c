@@ -96,7 +96,7 @@ static int event_scatter_goodies_zone(int rnum, struct room_data *rp, void *data
     struct char_data *monster = NULL;
     struct obj_data *object = NULL;
     struct obj_data *coins = NULL;
-    struct event_goodies *stuff = data;
+    struct event_goodies *stuff = (struct event_goodies *)data;
 
     if (DEBUG > 1)
         log_info("called %s with %d, %08zx, %08zx", __PRETTY_FUNCTION__, rnum, (size_t)rp, (size_t)stuff);
@@ -153,7 +153,7 @@ static int event_fill_zone_with_mobs(int rnum, struct room_data *rp, void *data)
     int exit_found = FALSE;
     struct char_data *monster = NULL;
     struct obj_data *object = NULL;
-    struct event_mob_in_zone *mobs = data;
+    struct event_mob_in_zone *mobs = (struct event_mob_in_zone *)data;
 
     if (DEBUG > 1)
         log_info("called %s with %d, %08zx, %08zx", __PRETTY_FUNCTION__, rnum, (size_t)rp, (size_t)mobs);

@@ -515,8 +515,8 @@ void say_spell(struct char_data *ch, int si)
 
     struct syllable
     {
-        char org[10];
-        char new[10];
+        char original[10];
+        char replacement[10];
     };
 
     struct syllable syls[] = {
@@ -540,12 +540,12 @@ void say_spell(struct char_data *ch, int si)
 
     while (*(splwd + offs))
     {
-        for (j = 0; *(syls[j].org); j++)
-            if (strncmp(syls[j].org, splwd + offs, strlen(syls[j].org)) == 0)
+        for (j = 0; *(syls[j].original); j++)
+            if (strncmp(syls[j].original, splwd + offs, strlen(syls[j].original)) == 0)
             {
-                strcat(buf, syls[j].new);
-                if (strlen(syls[j].org))
-                    offs += strlen(syls[j].org);
+                strcat(buf, syls[j].replacement);
+                if (strlen(syls[j].original))
+                    offs += strlen(syls[j].original);
                 else
                     ++offs;
             }
@@ -807,7 +807,7 @@ int do_cast(struct char_data *ch, const char *argument, int cmd)
                         }
                     if (!target_ok && IS_SET(spell_info[spl].targets, TAR_NAME))
                     {
-                        tar_obj = (void *)name;
+                        tar_obj = (struct obj_data *)name;
                         target_ok = TRUE;
                     }
                     if (tar_char)

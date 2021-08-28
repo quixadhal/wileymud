@@ -4,6 +4,9 @@ DATESTAMP	= $(shell /bin/date "+%Y-%m-%d")
 DEPLINE		= $(shell /bin/grep -n -e '^\#--- Comment for make deps ---' GNUmakefile | awk -F: '{print $$1}')
 
 CC		= clang #gcc #g++
+LANGFLAGS	= #-x c++ -std=gnu++17
+W_GCC		= #-Wno-parentheses -Wno-format-truncation -Wno-sign-compare -Wno-unused-but-set-variable -Wno-multichar
+W_CLANG		= -Wno-unused-const-variable
 MAKE		= make #gmake
 
 PRODBIN		= ../bin
@@ -47,7 +50,8 @@ W_NITPICK       = -Wpointer-arith -Winline
 W_CONLY		= -Wmissing-declarations -Wmissing-prototypes -Wstrict-prototypes 
 
 #W_FLAGS		= $(W_ERROR) $(W_ANSI) $(W_UBER) $(W_FORMAT) $(W_MESSY) $(W_TYPE) $(W_EXTRA) $(W_NITPICK) $(W_CONLY)
-W_FLAGS		= -Werror -Wall # -Weverything
+
+W_FLAGS		= -Werror -Wall $(W_GCC) $(W_CLANG)
 
 #OPT_FLAG	= -pipe -O3 #-Wuninitialized
 OPT_FLAG	= -O0 #-pipe -O3 #-Wuninitialized
@@ -62,8 +66,6 @@ DYN_FLAG	= -rdynamic
 INC		= -Iinclude $(ID_INC) $(IMC_INC) $(I3_INC) $(SQL_INC)
 LIB		= $(ID_LIB) $(NEED_MATH) $(NEED_SSL) $(NEED_CRYPT) $(NEED_COMPAT) $(EFENCE) $(PCRE_LIB) $(SQL_LIB)
 EXTRALIB	= $(NEED_MATH) $(NEED_CRYPT) $(NEED_COMPAT) $(EFENCE)
-
-LANGFLAGS	= #-x c++ -std=gnu++17
 
 CFLAGS		= $(LANGFLAGS) $(W_FLAGS) $(DEBUG_FLAG) $(OPT_FLAG) $(PROF_FLAG) $(M_ARCH) $(INC)
 LDFLAGS		= $(DEBUG_FLAG) $(OPT_FLAG) $(PROF_FLAG) $(DYN_FLAG)
@@ -444,7 +446,7 @@ obj/sql.o: sql.c include/global.h include/bug.h include/comm.h \
 obj/modify.o: modify.c include/global.h include/bug.h include/utils.h \
   include/interpreter.h include/handler.h include/db.h include/comm.h \
   include/multiclass.h include/modify.h
-obj/i3.o: i3.c include/global.h include/sql.h include/bug.h include/utils.h \
-  include/db.h include/multiclass.h include/comm.h include/modify.h \
-  include/interpreter.h include/version.h include/stringmap.h \
-  include/scheduler.h include/i3.h
+obj/i3.o: i3.c include/global.h include/mudlimits.h include/sql.h \
+  include/bug.h include/utils.h include/db.h include/multiclass.h \
+  include/comm.h include/modify.h include/interpreter.h \
+  include/version.h include/stringmap.h include/scheduler.h include/i3.h

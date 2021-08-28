@@ -365,8 +365,8 @@ struct weather_data default_weather(void)
 void setup_weather_table(void)
 {
     PGresult *res = NULL;
-    ExecStatusType st = 0;
-    char *sql = "CREATE TABLE IF NOT EXISTS weather ( "
+    ExecStatusType st = (ExecStatusType) 0;
+    const char *sql = "CREATE TABLE IF NOT EXISTS weather ( "
                 "    updated TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "
                 "    hours INTEGER, "
                 "    day INTEGER, "
@@ -380,10 +380,10 @@ void setup_weather_table(void)
                 "    wind_direction INTEGER, "
                 "    moon INTEGER "
                 "); ";
-    char *sql2 = "SELECT count(*) FROM weather;";
+    const char *sql2 = "SELECT count(*) FROM weather;";
     // BEGINNING_OF_TIME magic constant
-    char *sql3 = "INSERT INTO weather (updated) VALUES (to_timestamp(650336715));";
-    char *sql4 = "DELETE FROM weather WHERE updated <> (SELECT max(UPDATED) FROM weather);";
+    const char *sql3 = "INSERT INTO weather (updated) VALUES (to_timestamp(650336715));";
+    const char *sql4 = "DELETE FROM weather WHERE updated <> (SELECT max(UPDATED) FROM weather);";
     int rows = 0;
     int columns = 0;
     int count = 0;
@@ -458,7 +458,7 @@ void setup_weather_table(void)
 void load_weather(void)
 {
     PGresult *res = NULL;
-    ExecStatusType st = 0;
+    ExecStatusType st = (ExecStatusType) 0;
     const char *sql = "SELECT extract(EPOCH from updated) AS the_time, "
                       "       hours, "
                       "       day, "
@@ -533,7 +533,7 @@ void load_weather(void)
 void save_weather(struct time_info_data local_time, struct weather_data local_weather)
 {
     PGresult *res = NULL;
-    ExecStatusType st = 0;
+    ExecStatusType st = (ExecStatusType) 0;
     const char *sql = "UPDATE weather SET "
                       "    updated = now(), "
                       "    hours = $1, "

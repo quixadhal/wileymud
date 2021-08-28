@@ -38,7 +38,7 @@ int is_target_room_p(int room, void *tgt_room)
 
 int named_object_on_ground(int room, void *c_data)
 {
-    char *name = c_data;
+    char *name = (char *)c_data;
 
     if (DEBUG > 3)
         log_info("called %s with %d, %08zx", __PRETTY_FUNCTION__, room, (size_t)c_data);
@@ -49,7 +49,7 @@ int named_object_on_ground(int room, void *c_data)
 int named_mobile_in_room(int room, void *c_data)
 {
     struct char_data *scan = NULL;
-    struct hunting_data *hunt = c_data;
+    struct hunting_data *hunt = (struct hunting_data *)c_data;
 
     if (DEBUG > 3)
         log_info("called %s with %d, %08zx", __PRETTY_FUNCTION__, room, (size_t)c_data);

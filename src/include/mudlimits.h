@@ -11,6 +11,10 @@
 #define STARTING_HP 20
 #define MOB_LEVELING
 
+#ifndef _DIKU_LIMITS_C
+extern const struct title_type titles[6][ABS_MAX_LVL + 1];
+#endif
+
 char *ClassTitles(struct char_data *ch);
 int graf(int char_age, int p0, int p1, int p2, int p3, int p4, int p5, int p6);
 int mana_limit(struct char_data *ch);

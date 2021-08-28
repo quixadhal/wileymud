@@ -163,8 +163,8 @@ void bug_logger(unsigned int Type, const char *BugFile, const char *File, const 
 void setup_logfile_table(void)
 {
     PGresult *res = NULL;
-    ExecStatusType st = 0;
-    char *sql = "CREATE TABLE IF NOT EXISTS logfile ( "
+    ExecStatusType st = (ExecStatusType) 0;
+    const char *sql = "CREATE TABLE IF NOT EXISTS logfile ( "
                 "    created TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "
                 "    logtype TEXT DEFAULT 'INFO', "
                 "    filename TEXT, "
@@ -178,9 +178,9 @@ void setup_logfile_table(void)
                 "    victim_room INTEGER, "
                 "    message TEXT "
                 "); ";
-    char *sql2 = "CREATE INDEX IF NOT EXISTS ix_logfile_created ON logfile (created);";
-    char *sql3 = "CREATE INDEX IF NOT EXISTS ix_logfile_logtype ON logfile (logtype);";
-    char *sql4 = "CREATE OR REPLACE VIEW logtail AS "
+    const char *sql2 = "CREATE INDEX IF NOT EXISTS ix_logfile_created ON logfile (created);";
+    const char *sql3 = "CREATE INDEX IF NOT EXISTS ix_logfile_logtype ON logfile (logtype);";
+    const char *sql4 = "CREATE OR REPLACE VIEW logtail AS "
                  "SELECT to_char(logfile.created, 'YYYY-MM-DD HH24:MI:SS'::text) AS created, "
                  "       logfile.logtype, "
                  "       logfile.message "
@@ -234,7 +234,7 @@ void bug_sql(const char *logtype, const char *filename, const char *function, in
              const char *message)
 {
     PGresult *res = NULL;
-    ExecStatusType st = 0;
+    ExecStatusType st = (ExecStatusType) 0;
     const char *sql = "INSERT INTO logfile ( logtype, filename, function, line, "
                       "area_file, area_line, character, character_room, victim, "
                       "victim_room, message ) "

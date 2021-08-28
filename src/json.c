@@ -153,8 +153,8 @@ void _json_serialize_object(int vnum, char *buf, size_t buf_len)
 }
 
 // This does NOT clear the buffer passed in, but appends to it.
-void _json_sprintbit(unsigned long vektor, const char *names[], char *result, size_t result_len, char *prefix,
-                     char *postfix, char *indent)
+void _json_sprintbit(unsigned long vektor, const char *names[], char *result, size_t result_len, const char *prefix,
+                     const char *postfix, const char *indent)
 {
     scprintf(result, result_len, "%s", prefix); // "flags : {\r\n"
     for (int i = 0; i < sizeof(long) * 8; i++)
@@ -230,7 +230,9 @@ void _json_serialize_room(int vnum, char *buf, size_t buf_len)
         scprintf(buf, buf_len, "            \"keyword\" : \"%s\",\r\n", roomp->dir_option[i]->keyword);
         scprintf(buf, buf_len, "            \"description\" : \"%s\",\r\n", roomp->dir_option[i]->general_description);
         _json_sprintbit((unsigned long)roomp->dir_option[i]->exit_info, exit_bits, buf, buf_len,
-                        "            \"flags\" : {\r\n", "                ", "            },\r\n");
+                        (const char *)"            \"flags\" : {\r\n",
+                        (const char *)"                ",
+                        (const char *)"            },\r\n");
         scprintf(buf, buf_len, "            \"alias\" : \"%s\",\r\n", roomp->dir_option[i]->exit_alias);
         scprintf(buf, buf_len, "            \"key\" : \"%s\",\r\n", obj_index[roomp->dir_option[i]->key].name);
         scprintf(buf, buf_len, "            \"key_vnum\" : %d,\r\n", obj_index[roomp->dir_option[i]->key].number);
@@ -240,8 +242,10 @@ void _json_serialize_room(int vnum, char *buf, size_t buf_len)
         // dangling , on last entry
     }
     scprintf(buf, buf_len, "    },\r\n");
-    _json_sprintbit((unsigned long)roomp->room_flags, room_bits, buf, buf_len, "    \"flags\" : {\r\n", "        ",
-                    "    },\r\n");
+    _json_sprintbit((unsigned long)roomp->room_flags, room_bits, buf, buf_len,
+                    (const char *)"    \"flags\" : {\r\n",
+                    (const char *)"        ",
+                    (const char *)"    },\r\n");
     scprintf(buf, buf_len, "    \"sound\" : {\r\n");
     if (roomp->room_flags & SOUND)
     {

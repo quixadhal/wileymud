@@ -226,7 +226,14 @@ void load_char_objs(struct char_data *ch)
 
     if (rh.inuse == 1)
     {
-        CREATE_VOID(st, char, rh.length);
+        if (!(st = (struct obj_file_u *)calloc(rh.length, sizeof(char))))
+        {
+            perror("calloc failure");
+            fprintf(stderr, "Calloc failure @ %s:%d\n", __FILE__, __LINE__);
+            fflush(stderr);
+            proper_exit(42);
+        }
+        //CREATE_VOID(st, char, rh.length);
 
         fread(st, rh.length, 1, fl);
         obj_store_to_char(ch, st);

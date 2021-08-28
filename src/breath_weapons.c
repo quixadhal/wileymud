@@ -46,7 +46,7 @@ struct breath_victim *choose_victims(struct char_data *ch, struct char_data *fir
 
     for (cons = real_roomp(ch->in_room)->people; cons; cons = cons->next_in_room)
     {
-        CREATE_VOID(temp, struct breath_victim, 1);
+        CREATE(temp, struct breath_victim, 1);
 
         temp->ch = cons;
         temp->next = head;

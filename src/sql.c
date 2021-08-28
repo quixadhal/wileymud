@@ -128,7 +128,7 @@ void sql_startup(void)
 
     snprintf(log_msg, MAX_STRING_LENGTH, "%%^GREEN%%^WileyMUD Version: %s (%s), PostgreSQL Version %s.%%^RESET%%^",
              VERSION_BUILD, VERSION_DATE, sql_version(&db_i3log));
-    allchan_log(0, "wiley", "Cron", "Cron", "WileyMUD", log_msg);
+    allchan_log(0, (char *)"wiley", (char *)"Cron", (char *)"Cron", (char *)"WileyMUD", log_msg);
 
     // Messages
     log_boot("Opening SQL database for WileyMUD.");
@@ -150,7 +150,7 @@ void sql_shutdown(void)
     log_boot("Shutting down SQL database.");
     snprintf(log_msg, MAX_STRING_LENGTH, "%%^RED%%^WileyMUD Version: %s (%s), PostgreSQL Version %s.%%^RESET%%^",
              VERSION_BUILD, VERSION_DATE, sql_version(&db_i3log));
-    allchan_log(0, "wiley", "Cron", "Cron", "WileyMUD", log_msg);
+    allchan_log(0, (char *)"wiley", (char *)"Cron", (char *)"Cron", (char *)"WileyMUD", log_msg);
     sql_disconnect(&db_i3log);
     sql_disconnect(&db_wileymud);
 }
@@ -160,8 +160,8 @@ void sql_shutdown(void)
 void setup_pinkfish_map_table(void)
 {
     PGresult *res = NULL;
-    ExecStatusType st = 0;
-    char *sql = "CREATE TABLE IF NOT EXISTS pinkfish_map ( "
+    ExecStatusType st = (ExecStatusType) 0;
+    const char *sql = "CREATE TABLE IF NOT EXISTS pinkfish_map ( "
                 "    pinkfish TEXT PRIMARY KEY NOT NULL, "
                 "    html TEXT NOT NULL "
                 "); ";
@@ -181,8 +181,8 @@ void setup_pinkfish_map_table(void)
 void setup_hours_table(void)
 {
     PGresult *res = NULL;
-    ExecStatusType st = 0;
-    char *sql = "CREATE TABLE IF NOT EXISTS hours ( "
+    ExecStatusType st = (ExecStatusType) 0;
+    const char *sql = "CREATE TABLE IF NOT EXISTS hours ( "
                 "    hour INTEGER PRIMARY KEY NOT NULL, "
                 "    pinkfish TEXT NOT NULL REFERENCES pinkfish_map (pinkfish) "
                 "); ";
@@ -202,8 +202,8 @@ void setup_hours_table(void)
 void setup_channels_table(void)
 {
     PGresult *res = NULL;
-    ExecStatusType st = 0;
-    char *sql = "CREATE TABLE IF NOT EXISTS channels ( "
+    ExecStatusType st = (ExecStatusType) 0;
+    const char *sql = "CREATE TABLE IF NOT EXISTS channels ( "
                 "    channel TEXT PRIMARY KEY NOT NULL, "
                 "    pinkfish TEXT NOT NULL REFERENCES pinkfish_map (pinkfish) "
                 "); ";
@@ -223,8 +223,8 @@ void setup_channels_table(void)
 void setup_speakers_table(void)
 {
     PGresult *res = NULL;
-    ExecStatusType st = 0;
-    char *sql = "CREATE TABLE IF NOT EXISTS speakers ( "
+    ExecStatusType st = (ExecStatusType) 0;
+    const char *sql = "CREATE TABLE IF NOT EXISTS speakers ( "
                 "    speaker TEXT PRIMARY KEY NOT NULL, "
                 "    pinkfish TEXT NOT NULL REFERENCES pinkfish_map (pinkfish) "
                 "); ";
@@ -244,8 +244,8 @@ void setup_speakers_table(void)
 void setup_i3log_table(void)
 {
     PGresult *res = NULL;
-    ExecStatusType st = 0;
-    char *sql = "CREATE TABLE IF NOT EXISTS i3log ( "
+    ExecStatusType st = (ExecStatusType) 0;
+    const char *sql = "CREATE TABLE IF NOT EXISTS i3log ( "
                 "    created TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT (now() AT TIME ZONE 'UTC'), "
                 "    local TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "
                 "    is_emote BOOLEAN, "
@@ -257,13 +257,13 @@ void setup_i3log_table(void)
                 "    mud TEXT NOT NULL, "
                 "    message TEXT "
                 "); ";
-    char *sql2 = "CREATE INDEX IF NOT EXISTS ix_i3log_local ON i3log (local);";
-    char *sql3 = "ALTER TABLE i3log DROP CONSTRAINT IF EXISTS ix_i3log_row;";
-    char *sql4 = "ALTER TABLE i3log ADD CONSTRAINT ix_i3log_row UNIQUE "
+    const char *sql2 = "CREATE INDEX IF NOT EXISTS ix_i3log_local ON i3log (local);";
+    const char *sql3 = "ALTER TABLE i3log DROP CONSTRAINT IF EXISTS ix_i3log_row;";
+    const char *sql4 = "ALTER TABLE i3log ADD CONSTRAINT ix_i3log_row UNIQUE "
                  "    (created, local, is_emote, is_url, is_bot, "
                  "     channel, speaker, mud, message);";
-    char *sql5 = "DROP VIEW IF EXISTS page_view;";
-    char *sql6 = "CREATE VIEW page_view AS "
+    const char *sql5 = "DROP VIEW IF EXISTS page_view;";
+    const char *sql6 = "CREATE VIEW page_view AS "
                  "SELECT i3log.local, "
                  "       i3log.is_emote, "
                  "       i3log.is_url, "
@@ -300,10 +300,10 @@ void setup_i3log_table(void)
                  "       ON (channels.pinkfish = pinkfish_map_channel.pinkfish) "
                  "LEFT JOIN pinkfish_map pinkfish_map_speaker "
                  "       ON (speakers.pinkfish = pinkfish_map_speaker.pinkfish); ";
-    char *sql7 = "CREATE INDEX IF NOT EXISTS ix_i3log_bot ON i3log (is_bot);";
-    char *sql8 = "CREATE INDEX IF NOT EXISTS ix_i3log_url ON i3log (is_url);";
-    char *sql9 = "CREATE INDEX IF NOT EXISTS ix_i3log_speaker ON i3log (speaker);";
-    char *sql10 = "CREATE INDEX IF NOT EXISTS ix_i3log_channel ON i3log (channel);";
+    const char *sql7 = "CREATE INDEX IF NOT EXISTS ix_i3log_bot ON i3log (is_bot);";
+    const char *sql8 = "CREATE INDEX IF NOT EXISTS ix_i3log_url ON i3log (is_url);";
+    const char *sql9 = "CREATE INDEX IF NOT EXISTS ix_i3log_speaker ON i3log (speaker);";
+    const char *sql10 = "CREATE INDEX IF NOT EXISTS ix_i3log_channel ON i3log (channel);";
 
     sql_connect(&db_i3log);
     res = PQexec(db_i3log.dbc, sql);
@@ -410,8 +410,8 @@ void setup_i3log_table(void)
 void setup_urls_table(void)
 {
     PGresult *res = NULL;
-    ExecStatusType st = 0;
-    char *sql = "CREATE TABLE IF NOT EXISTS urls ( "
+    ExecStatusType st = (ExecStatusType) 0;
+    const char *sql = "CREATE TABLE IF NOT EXISTS urls ( "
                 "    created TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT (now() AT TIME ZONE 'UTC'), "
                 "    processed BOOLEAN, "
                 "    channel TEXT NOT NULL, "
@@ -423,8 +423,8 @@ void setup_urls_table(void)
                 "    hits INTEGER DEFAULT 1, "
                 "    tiny TEXT "
                 "); ";
-    char *sql2 = "DROP INDEX IF EXISTS ix_urls_checksum;";
-    char *sql3 = "CREATE UNIQUE INDEX ix_urls_checksum ON urls (checksum);";
+    const char *sql2 = "DROP INDEX IF EXISTS ix_urls_checksum;";
+    const char *sql3 = "CREATE UNIQUE INDEX ix_urls_checksum ON urls (checksum);";
 
     sql_connect(&db_i3log);
     res = PQexec(db_i3log.dbc, sql);
@@ -463,7 +463,7 @@ void add_url(const char *channel, const char *speaker, const char *mud, const ch
     u_int32_t crc;
     char checksum[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
     PGresult *res = NULL;
-    ExecStatusType st = 0;
+    ExecStatusType st = (ExecStatusType) 0;
     const char *sql = "INSERT INTO urls ( url, channel, speaker, mud, checksum ) "
                       "VALUES ($1,$2,$3,$4,$5) "
                       "ON CONFLICT (checksum) "
@@ -640,7 +640,7 @@ void allchan_sql(int is_emote, const char *channel, const char *speaker, const c
                  const char *message)
 {
     PGresult *res = NULL;
-    ExecStatusType st = 0;
+    ExecStatusType st = (ExecStatusType) 0;
     const char *sql = "INSERT INTO i3log ( channel, speaker, username, mud, message, is_emote, is_url, is_bot ) "
                       "VALUES ($1,$2,lower($3),$4,$5,$6,$7,$8);";
     const char *param_val[8];
@@ -706,7 +706,7 @@ void allchan_sql(int is_emote, const char *channel, const char *speaker, const c
 void addspeaker_sql(const char *speaker, const char *pinkfish)
 {
     PGresult *res = NULL;
-    ExecStatusType st = 0;
+    ExecStatusType st = (ExecStatusType) 0;
     const char *sql = "INSERT INTO speakers (speaker, pinkfish) "
                       "VALUES ($1,$2) "
                       "ON CONFLICT (speaker) "
@@ -738,7 +738,7 @@ int do_checkurl(struct char_data *ch, const char *argument, int cmd)
     static char buf[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
     static char tmp[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
     PGresult *res = NULL;
-    ExecStatusType st = 0;
+    ExecStatusType st = (ExecStatusType) 0;
     const char *sql = "SELECT to_char(created "
                       "AT TIME ZONE 'UTC' " // This is to work around the timestamp without time zone type
                       "AT TIME ZONE 'US/Pacific', "
@@ -850,15 +850,15 @@ int do_checkurl(struct char_data *ch, const char *argument, int cmd)
 void setup_messages_table(void)
 {
     PGresult *res = NULL;
-    ExecStatusType st = 0;
-    char *sql = "CREATE TABLE IF NOT EXISTS messages ( "
+    ExecStatusType st = (ExecStatusType) 0;
+    const char *sql = "CREATE TABLE IF NOT EXISTS messages ( "
                 "    created TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "
                 "    updated TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "
                 "    filename TEXT PRIMARY KEY NOT NULL, "
                 "    message TEXT "
                 "); ";
-    char *sql2 = "CREATE INDEX IF NOT EXISTS ix_messages_updated ON messages (updated);";
-    char *sql3 = "CREATE INDEX IF NOT EXISTS ix_messages_filename ON messages (filename);";
+    const char *sql2 = "CREATE INDEX IF NOT EXISTS ix_messages_updated ON messages (updated);";
+    const char *sql3 = "CREATE INDEX IF NOT EXISTS ix_messages_filename ON messages (filename);";
 
     sql_connect(&db_wileymud);
     res = PQexec(db_wileymud.dbc, sql);
@@ -899,7 +899,7 @@ char *update_message_from_file(const char *filename, int is_prompt)
     time_t sql_timestamp = -1;
 
     PGresult *res = NULL;
-    ExecStatusType st = 0;
+    ExecStatusType st = (ExecStatusType) 0;
     const char *sql = "SELECT extract(EPOCH from updated) AS the_time, "
                       "       message "
                       "FROM   messages "
@@ -1006,19 +1006,19 @@ char *update_message_from_file(const char *filename, int is_prompt)
 void setup_i3_packets_table(void)
 {
     PGresult *res = NULL;
-    ExecStatusType st = 0;
-    char *sql = "CREATE TABLE IF NOT EXISTS i3_packets ( "
+    ExecStatusType st = (ExecStatusType) 0;
+    const char *sql = "CREATE TABLE IF NOT EXISTS i3_packets ( "
                 "    created TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT (now() AT TIME ZONE 'UTC'), "
                 "    local TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "
                 "    packet_type TEXT NOT NULL, "
                 "    packet_length INTEGER NOT NULL, "
                 "    packet_content TEXT "
                 "); ";
-    char *sql2 = "CREATE INDEX IF NOT EXISTS ix_i3_packets_created ON i3_packets (created);";
-    char *sql3 = "CREATE INDEX IF NOT EXISTS ix_i3_packets_local ON i3_packets (local);";
-    char *sql4 = "CREATE INDEX IF NOT EXISTS ix_i3_packets_type ON i3_packets (packet_type);";
-    char *sql5 = "CREATE INDEX IF NOT EXISTS ix_i3_packets_length ON i3_packets (packet_length);";
-    char *sql6 = "DROP VIEW IF EXISTS packet_view;";
+    const char *sql2 = "CREATE INDEX IF NOT EXISTS ix_i3_packets_created ON i3_packets (created);";
+    const char *sql3 = "CREATE INDEX IF NOT EXISTS ix_i3_packets_local ON i3_packets (local);";
+    const char *sql4 = "CREATE INDEX IF NOT EXISTS ix_i3_packets_type ON i3_packets (packet_type);";
+    const char *sql5 = "CREATE INDEX IF NOT EXISTS ix_i3_packets_length ON i3_packets (packet_length);";
+    const char *sql6 = "DROP VIEW IF EXISTS packet_view;";
     //  SELECT to_char(max(i3_packets.local), 'FMDY HH24:MI:SS.MS'::text) AS recent,
     //      i3_packets.packet_type,
     //          count(i3_packets.packet_type) AS count,
@@ -1028,7 +1028,7 @@ void setup_i3_packets_table(void)
     //                         FROM i3_packets
     //                           GROUP BY i3_packets.packet_type;
     //
-    char *sql7 = "CREATE VIEW packet_view AS "
+    const char *sql7 = "CREATE VIEW packet_view AS "
                  "SELECT   to_char(max(local),'FMDY HH24:MI:SS.MS') as recent, "
                  "         packet_type, "
                  "         count(packet_type), "
@@ -1114,7 +1114,7 @@ void setup_i3_packets_table(void)
 void i3_packet_log(char *packet_type, long packet_length, char *packet_content)
 {
     PGresult *res = NULL;
-    ExecStatusType st = 0;
+    ExecStatusType st = (ExecStatusType) 0;
     const char *sql = "INSERT INTO i3_packets ( packet_type, packet_length, packet_content ) "
                       "VALUES ($1,$2,$3);";
     const char *param_val[3];

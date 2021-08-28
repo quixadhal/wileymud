@@ -78,8 +78,8 @@ struct whod_data whod = {
 void setup_whod_table(void)
 {
     PGresult *res = NULL;
-    ExecStatusType st = 0;
-    char *sql = "CREATE TABLE IF NOT EXISTS whod ( "
+    ExecStatusType st = (ExecStatusType) 0;
+    const char *sql = "CREATE TABLE IF NOT EXISTS whod ( "
                 "    updated TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "
                 "    enabled BOOLEAN NOT NULL DEFAULT false, "
                 "    port INTEGER NOT NULL DEFAULT 3001,"
@@ -93,9 +93,9 @@ void setup_whod_table(void)
                 "    show_room_ingame BOOLEAN NOT NULL DEFAULT true, "
                 "    show_linkdead BOOLEAN NOT NULL DEFAULT false "
                 "); ";
-    char *sql2 = "SELECT count(*) FROM whod;";
-    char *sql3 = "INSERT INTO whod (enabled) VALUES (false);";
-    char *sql4 = "DELETE FROM whod WHERE updated <> (SELECT max(UPDATED) FROM whod);";
+    const char *sql2 = "SELECT count(*) FROM whod;";
+    const char *sql3 = "INSERT INTO whod (enabled) VALUES (false);";
+    const char *sql4 = "DELETE FROM whod WHERE updated <> (SELECT max(UPDATED) FROM whod);";
     int rows = 0;
     int columns = 0;
     int count = 0;
@@ -165,7 +165,7 @@ void setup_whod_table(void)
 void load_whod(void)
 {
     PGresult *res = NULL;
-    ExecStatusType st = 0;
+    ExecStatusType st = (ExecStatusType) 0;
     const char *sql = "SELECT extract('epoch' FROM updated) AS updated, "
                       "enabled::integer, "
                       "port, "
@@ -222,7 +222,7 @@ void load_whod(void)
 int toggle_whod_flag(struct char_data *ch, const char *param)
 {
     PGresult *res = NULL;
-    ExecStatusType st = 0;
+    ExecStatusType st = (ExecStatusType) 0;
     const char *sql_proto = "UPDATE whod SET %s = NOT %s, "
                             "updated = now(), "
                             "set_by = $1;";
@@ -327,7 +327,7 @@ int whod_flag_value(const char *param)
 int set_whod_port(struct char_data *ch, int number)
 {
     PGresult *res = NULL;
-    ExecStatusType st = 0;
+    ExecStatusType st = (ExecStatusType) 0;
     const char *sql = "UPDATE whod SET port = $1, "
                       "updated = now(), "
                       "set_by = $2;";
@@ -857,8 +857,8 @@ void generate_json_mudlist(const char *filename)
 
     fprintf(fp, "{\n");
     fprintf(fp, "    \"version\" : {\n");
-    fprintf(fp, "        \"build\" : \"%s\",\n", json_escape(VERSION_BUILD));
-    fprintf(fp, "        \"date\" : \"%s\"\n", json_escape(VERSION_DATE));
+    fprintf(fp, "        \"build\" : \"%s\",\n", json_escape((char *)VERSION_BUILD));
+    fprintf(fp, "        \"date\" : \"%s\"\n", json_escape((char *)VERSION_DATE));
     fprintf(fp, "    },\n");
     fprintf(fp, "    \"time\" : \"%5.5s %s\",\n", &nowtimebuf[17], &nowtimebuf[26]);
     // fprintf(fp, "    \"boot\" : \"%s\",\n", uptimebuf);

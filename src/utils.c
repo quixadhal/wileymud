@@ -6,6 +6,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdarg.h>
 /* #include <unistd.h> */
 #include <sys/types.h>
 /* #include <malloc.h> */
@@ -665,7 +666,7 @@ void down_river(int current_pulse)
     struct obj_data *obj_object = NULL;
     struct obj_data *next_obj = NULL;
     int rd = 0;
-    int or = 0;
+    int original_room = 0;
     struct room_data *rp = NULL;
 
     if (DEBUG > 3)
@@ -716,27 +717,27 @@ void down_river(int current_pulse)
                                         cprintf(ch, "You drift %s...\r\n", dirs[rd]);
                                         if (MOUNTED(ch))
                                         {
-                                            or = ch->in_room;
+                                            original_room = ch->in_room;
                                             char_from_room(ch);
                                             char_from_room(MOUNTED(ch));
-                                            char_to_room(ch, (real_roomp(or))->dir_option[rd]->to_room);
-                                            char_to_room(MOUNTED(ch), (real_roomp(or))->dir_option[rd]->to_room);
+                                            char_to_room(ch, (real_roomp(original_room))->dir_option[rd]->to_room);
+                                            char_to_room(MOUNTED(ch), (real_roomp(original_room))->dir_option[rd]->to_room);
                                             do_look(ch, "", 15);
                                         }
                                         else if (RIDDEN(ch))
                                         {
-                                            or = ch->in_room;
+                                            original_room = ch->in_room;
                                             char_from_room(ch);
                                             char_from_room(RIDDEN(ch));
-                                            char_to_room(ch, (real_roomp(or))->dir_option[rd]->to_room);
-                                            char_to_room(RIDDEN(ch), (real_roomp(or))->dir_option[rd]->to_room);
+                                            char_to_room(ch, (real_roomp(original_room))->dir_option[rd]->to_room);
+                                            char_to_room(RIDDEN(ch), (real_roomp(original_room))->dir_option[rd]->to_room);
                                             do_look(ch, "", 15);
                                         }
                                         else
                                         {
-                                            or = ch->in_room;
+                                            original_room = ch->in_room;
                                             char_from_room(ch);
-                                            char_to_room(ch, (real_roomp(or))->dir_option[rd]->to_room);
+                                            char_to_room(ch, (real_roomp(original_room))->dir_option[rd]->to_room);
                                             do_look(ch, "", 15);
                                         }
 
@@ -1704,8 +1705,8 @@ int ansi_explode(const char *input, char ***segment, int **is_ansi)
         // printf("NO ESC found\n");
         // No segment breaks, so we are just one big segment.
         segment_count = 1;
-        *segment = calloc(segment_count, sizeof(char **));
-        *is_ansi = calloc(segment_count, sizeof(int));
+        *segment = (char **)calloc(segment_count, sizeof(char **));
+        *is_ansi = (int *)calloc(segment_count, sizeof(int));
         *segment[0] = strdup(input);
         *is_ansi[0] = 0;
     }
@@ -1729,7 +1730,7 @@ int ansi_explode(const char *input, char ***segment, int **is_ansi)
                 size_t segment_len = 0;
 
                 // mark is th end of the current ANSI sequence
-                mark = strchr(current, 'm');
+                mark = (char *)strchr(current, 'm');
                 if (mark)
                 {
                     // But we only count VALID sequences
@@ -1748,8 +1749,8 @@ int ansi_explode(const char *input, char ***segment, int **is_ansi)
                         if (segment_len > 0)
                         {
                             // We have both a string segment AND ANSI sequence
-                            *segment = realloc(*segment, (segment_count + 2) * sizeof(char **));
-                            *is_ansi = realloc(*is_ansi, (segment_count + 2) * sizeof(int));
+                            *segment = (char **)realloc(*segment, (segment_count + 2) * sizeof(char **));
+                            *is_ansi = (int *)realloc(*is_ansi, (segment_count + 2) * sizeof(int));
                             (*segment)[segment_count] = strndup(chalk, segment_len);
                             (*is_ansi)[segment_count] = 0;
                             segment_count++;
@@ -1757,8 +1758,8 @@ int ansi_explode(const char *input, char ***segment, int **is_ansi)
                         else
                         {
                             // We have only the ANSI sequence
-                            *segment = realloc(*segment, (segment_count + 1) * sizeof(char **));
-                            *is_ansi = realloc(*is_ansi, (segment_count + 1) * sizeof(int));
+                            *segment = (char **)realloc(*segment, (segment_count + 1) * sizeof(char **));
+                            *is_ansi = (int *)realloc(*is_ansi, (segment_count + 1) * sizeof(int));
                         }
                         (*segment)[segment_count] = strndup(current, mark_len);
                         (*is_ansi)[segment_count] = 1;
@@ -1775,8 +1776,8 @@ int ansi_explode(const char *input, char ***segment, int **is_ansi)
                 if (lookahead && *lookahead)
                 {
                     // No more ANSI sequences, but some string left.
-                    *segment = realloc(*segment, (segment_count + 1) * sizeof(char **));
-                    *is_ansi = realloc(*is_ansi, (segment_count + 1) * sizeof(int));
+                    *segment = (char **)realloc(*segment, (segment_count + 1) * sizeof(char **));
+                    *is_ansi = (int *)realloc(*is_ansi, (segment_count + 1) * sizeof(int));
                     (*segment)[segment_count] = strdup(lookahead);
                     (*is_ansi)[segment_count] = 0;
                     segment_count++;
@@ -2360,7 +2361,7 @@ int explode(const char *input, const char *delimiter, char ***segment)
     if (!current)
     {
         segment_count = 1;
-        *segment = calloc(segment_count, sizeof(char **));
+        *segment = (char **)calloc(segment_count, sizeof(char **));
         *segment[0] = strdup(input);
     }
     else
@@ -2378,7 +2379,7 @@ int explode(const char *input, const char *delimiter, char ***segment)
                 size_t segment_len = 0;
 
                 segment_len = current - chalk;
-                *segment = realloc(*segment, (segment_count + 1) * sizeof(char **));
+                *segment = (char **)realloc(*segment, (segment_count + 1) * sizeof(char **));
                 (*segment)[segment_count] = strndup(chalk, segment_len);
                 segment_count++;
                 current += strlen(delimiter);
@@ -2393,7 +2394,7 @@ int explode(const char *input, const char *delimiter, char ***segment)
                 if (*chalk)
                 {
                     // We have the last segment to process.
-                    *segment = realloc(*segment, (segment_count + 1) * sizeof(char **));
+                    *segment = (char **)realloc(*segment, (segment_count + 1) * sizeof(char **));
                     (*segment)[segment_count] = strdup(chalk);
                     segment_count++;
                     break;

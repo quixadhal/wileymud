@@ -3115,18 +3115,18 @@ struct room_data *walk_room_path(struct room_data *this_room, const char *path)
     if (strspn(path, "nNeEsSwWuUdD") < strlen(path))
         return NULL;
 
-    rotated = malloc(strlen(path) + 1);
+    rotated = (char *)malloc(strlen(path) + 1);
     rotated[strlen(path)] = '\0';
     orig_room = this_room;
 
-    for (r = 0; r < strlen(path); r++)
+    for (r = 0; r < (int)strlen(path); r++)
     {
         memcpy(rotated, path + r, strlen(path) - r);
         if (r > 0)
             memcpy(rotated + strlen(path) - r, path, r);
         found = 1;
         this_room = orig_room;
-        for (i = 0; i < strlen(path); i++)
+        for (i = 0; i < (int)strlen(path); i++)
         {
             switch (rotated[i])
             {

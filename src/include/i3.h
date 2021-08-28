@@ -87,7 +87,9 @@
 
 #ifndef __IMUD_KLUDGE
 #define __IMUD_KLUDGE
+#ifndef __cplusplus
 typedef unsigned char bool;
+#endif
 typedef struct descriptor_data DESCRIPTOR_DATA;
 #endif
 

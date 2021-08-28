@@ -339,8 +339,8 @@ int do_unban(struct char_data *ch, const char *argument, int cmd)
 void setup_bans_table(void)
 {
     PGresult *res = NULL;
-    ExecStatusType st = 0;
-    char *sql = "CREATE TABLE IF NOT EXISTS bans ( "
+    ExecStatusType st = (ExecStatusType) 0;
+    const char *sql = "CREATE TABLE IF NOT EXISTS bans ( "
                 "    updated TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "
                 "    expires TIMESTAMP WITH TIME ZONE, "
                 "    enabled BOOLEAN DEFAULT true, "
@@ -353,10 +353,10 @@ void setup_bans_table(void)
                 "    CONSTRAINT bans_type_ip UNIQUE(ban_type, ip), "
                 "    CONSTRAINT bans_type_name_ip UNIQUE(ban_type, name, ip) "
                 "); ";
-    char *sql2 = "CREATE INDEX IF NOT EXISTS ix_bans_enabled ON bans (enabled);";
-    char *sql3 = "CREATE INDEX IF NOT EXISTS ix_bans_type ON bans (ban_type);";
-    char *sql4 = "CREATE INDEX IF NOT EXISTS ix_bans_name ON bans (name);";
-    char *sql5 = "CREATE INDEX IF NOT EXISTS ix_bans_ip ON bans (ip);";
+    const char *sql2 = "CREATE INDEX IF NOT EXISTS ix_bans_enabled ON bans (enabled);";
+    const char *sql3 = "CREATE INDEX IF NOT EXISTS ix_bans_type ON bans (ban_type);";
+    const char *sql4 = "CREATE INDEX IF NOT EXISTS ix_bans_name ON bans (name);";
+    const char *sql5 = "CREATE INDEX IF NOT EXISTS ix_bans_ip ON bans (ip);";
 
     sql_connect(&db_wileymud);
     res = PQexec(db_wileymud.dbc, sql);
@@ -413,9 +413,9 @@ void setup_bans_table(void)
 void load_bans(void)
 {
     PGresult *res = NULL;
-    ExecStatusType st = 0;
-    char *sql = "SELECT count(*) FROM bans WHERE enabled;";
-    char *sql2 = "SELECT extract(EPOCH from updated) AS updated, "
+    ExecStatusType st = (ExecStatusType) 0;
+    const char *sql = "SELECT count(*) FROM bans WHERE enabled;";
+    const char *sql2 = "SELECT extract(EPOCH from updated) AS updated, "
                  "       extract(EPOCH from expires) AS expires, "
                  "       enabled::integer, ban_type, name, ip, set_by, reason, "
                  "       to_char(updated AT TIME ZONE 'US/Pacific', 'YYYY-MM-DD') "
@@ -516,7 +516,7 @@ int ban_address(const char *ip_addr, const char *reason)
 int add_ban(struct ban_data *pal)
 {
     PGresult *res = NULL;
-    ExecStatusType st = 0;
+    ExecStatusType st = (ExecStatusType) 0;
     const char *sql_name = "INSERT INTO bans ( ban_type, expires, name, set_by, reason ) "
                            "VALUES ('NAME', to_timestamp($1),$2,$3,$4) "
                            "ON CONFLICT ON CONSTRAINT bans_type_name "
@@ -613,15 +613,15 @@ int add_ban(struct ban_data *pal)
 int remove_ban(struct ban_data *pal)
 {
     PGresult *res = NULL;
-    ExecStatusType st = 0;
+    ExecStatusType st = (ExecStatusType) 0;
     const char *param_val[2];
     int param_len[2];
     int param_bin[2] = {0, 0};
-    char *sql_name =
+    const char *sql_name =
         "UPDATE bans SET updated = now(), enabled = false WHERE ban_type = 'NAME' AND name = $1 AND ip IS NULL;";
-    char *sql_ip =
+    const char *sql_ip =
         "UPDATE bans SET updated = now(), enabled = false WHERE ban_type = 'IP' AND name IS NULL AND ip = $1;";
-    char *sql_at =
+    const char *sql_at =
         "UPDATE bans SET updated = now(), enabled = false WHERE ban_type = 'NAME_AT_IP' AND name = $1 AND ip = $2;";
     int rows = 0;
 

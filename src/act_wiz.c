@@ -2171,7 +2171,7 @@ static int purge_one_room(int rnum, struct room_data *rp, void *data)
 {
     struct char_data *ch = NULL;
     struct obj_data *obj = NULL;
-    int *range = data;
+    int *range = (int *)data;
 
     if (DEBUG > 2)
         log_info("called %s with %d, %08zx, %08zx", __PRETTY_FUNCTION__, rnum, (size_t)rp, (size_t)range);
@@ -3164,7 +3164,7 @@ static int print_private_room(int rnum, struct room_data *rp, void *sb)
 static int show_room_zone(int rnum, struct room_data *rp, void *data)
 {
     char buf[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
-    struct show_room_zone_struct *srzs = data;
+    struct show_room_zone_struct *srzs = (struct show_room_zone_struct *)data;
 
     if (DEBUG > 2)
         log_info("called %s with %d, %08zx, %08zx", __PRETTY_FUNCTION__, rnum, (size_t)rp, (size_t)srzs);
@@ -3511,7 +3511,7 @@ static int zone_purge_effect(int rnum, struct room_data *rp, void *data)
     struct char_data *next_v = NULL;
     struct obj_data *obj = NULL;
     struct obj_data *next_o = NULL;
-    int *zones = data;
+    int *zones = (int *)data;
 
     if (DEBUG > 2)
         log_info("called %s with %d, %08zx, %08zx", __PRETTY_FUNCTION__, rnum, (size_t)rp, (size_t)zones);

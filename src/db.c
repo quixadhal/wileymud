@@ -2164,7 +2164,7 @@ void free_char(struct char_data *ch)
 /* release memory allocated for an obj struct */
 void free_obj(struct obj_data *obj)
 {
-    struct extra_descr_data *this = NULL;
+    struct extra_descr_data *this_one = NULL;
     struct extra_descr_data *next_one = NULL;
 
     if (DEBUG > 2)
@@ -2178,14 +2178,14 @@ void free_obj(struct obj_data *obj)
     if (obj->action_description)
         DESTROY(obj->action_description);
 
-    for (this = obj->ex_description; (this != 0); this = next_one)
+    for (this_one = obj->ex_description; (this_one != 0); this_one = next_one)
     {
-        next_one = this->next;
-        if (this->keyword)
-            DESTROY(this->keyword);
-        if (this->description)
-            DESTROY(this->description);
-        DESTROY(this);
+        next_one = this_one->next;
+        if (this_one->keyword)
+            DESTROY(this_one->keyword);
+        if (this_one->description)
+            DESTROY(this_one->description);
+        DESTROY(this_one);
     }
 
     DESTROY(obj);
@@ -2533,7 +2533,7 @@ struct room_data *real_roomp(int vnum)
     if (DEBUG > 3)
         log_info("called %s with %d", __PRETTY_FUNCTION__, vnum);
 
-    return hash_find(&room_db, vnum);
+    return (struct room_data *)hash_find(&room_db, vnum);
 }
 
 /* returns the real number of the monster with given virtual number */

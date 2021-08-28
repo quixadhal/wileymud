@@ -66,9 +66,9 @@ extern char *crypt(const char *key, const char *salt);
 
 struct command_info cmd_info[MAX_CMD_LIST];
 
-const char echo_on[] = {IAC, WONT, TELOPT_ECHO, '\0'};
+const char echo_on[] = {(const char)IAC, (const char)WONT, TELOPT_ECHO, '\0'};
 
-const char echo_off[] = {IAC, WILL, TELOPT_ECHO, '\0'};
+const char echo_off[] = {(const char)IAC, (const char)WILL, TELOPT_ECHO, '\0'};
 
 const char *command[] = {
     "north",     "east",      "south",      "west",     "up",       "down",     "enter",      "exits",       "kill",
@@ -1765,23 +1765,23 @@ void nanny(struct descriptor_data *d, char *arg)
     case CON_SUICIDE:
         if (!strcmp(arg, "I want to DIE!"))
         {
-            char name[80], *t_ptr, old[80], bkp[80];
+            char name[MAX_INPUT_LENGTH], *t_ptr, old[MAX_INPUT_LENGTH], bkp[MAX_INPUT_LENGTH];
 
             strcpy(name, d->usr_name);
             t_ptr = name;
             for (; *t_ptr != '\0'; t_ptr++)
                 *t_ptr = LOWER(*t_ptr);
-            sprintf(old, "ply/%c/%s.p", name[0], name);
-            sprintf(bkp, "ply/%c/%s.p-dead", name[0], name);
+            snprintf(old, MAX_INPUT_LENGTH, "ply/%c/%s.p", name[0], name);
+            snprintf(bkp, MAX_INPUT_LENGTH, "ply/%c/%s.p-dead", name[0], name);
             rename(old, bkp);
-            sprintf(old, "ply/%c/%s.o", name[0], name);
-            sprintf(bkp, "ply/%c/%s.o-dead", name[0], name);
+            snprintf(old, MAX_INPUT_LENGTH, "ply/%c/%s.o", name[0], name);
+            snprintf(bkp, MAX_INPUT_LENGTH, "ply/%c/%s.o-dead", name[0], name);
             rename(old, bkp);
-            sprintf(old, "ply/%c/%s.chr", name[0], name);
-            sprintf(bkp, "ply/%c/%s.chr-dead", name[0], name);
+            snprintf(old, MAX_INPUT_LENGTH, "ply/%c/%s.chr", name[0], name);
+            snprintf(bkp, MAX_INPUT_LENGTH, "ply/%c/%s.chr-dead", name[0], name);
             rename(old, bkp);
-            sprintf(old, "ply/%c/%s.obj", name[0], name);
-            sprintf(bkp, "ply/%c/%s.obj-dead", name[0], name);
+            snprintf(old, MAX_INPUT_LENGTH, "ply/%c/%s.obj", name[0], name);
+            snprintf(bkp, MAX_INPUT_LENGTH, "ply/%c/%s.obj-dead", name[0], name);
             rename(old, bkp);
             for (i = 0; i < number_of_players; i++)
             {
@@ -1854,12 +1854,12 @@ void update_player_list_entry(struct descriptor_data *d)
     // ftime(&right_now);
     clock_gettime(CLOCK_REALTIME, &right_now);
     now_part = localtime((const time_t *)&right_now);
-    sprintf(buf, "%-16s %s@%s %02d.%02d.%02d %02d:%02d ", tmpbuf, d->username, d->host, now_part->tm_year,
+    snprintf(buf, MAX_INPUT_LENGTH, "%-16s %s@%s %02d.%02d.%02d %02d:%02d ", tmpbuf, d->username, d->host, now_part->tm_year,
             now_part->tm_mon + 1, now_part->tm_mday, now_part->tm_hour, now_part->tm_min);
     if (!(d->character))
         strcat(buf, "1\n");
     else
-        sprintf(buf + strlen(buf), "%d\n", GetMaxLevel(d->character));
+        scprintf(buf, MAX_INPUT_LENGTH, "%d\n", GetMaxLevel(d->character));
     for (i = 0; i < number_of_players; i++)
     {
         if (list_of_players[i])

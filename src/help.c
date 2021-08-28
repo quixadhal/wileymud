@@ -27,38 +27,38 @@ int help_keyword_count = 0;
 void setup_help_table(void)
 {
     PGresult *res = NULL;
-    ExecStatusType st = 0;
-    char *sqla = "CREATE TABLE IF NOT EXISTS help_messages ( "
+    ExecStatusType st = (ExecStatusType) 0;
+    const char *sqla = "CREATE TABLE IF NOT EXISTS help_messages ( "
                  "    updated TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "
                  "    immortal BOOLEAN NOT NULL DEFAULT false, "
                  "    set_by TEXT NOT NULL DEFAULT 'SYSTEM', "
                  "    id INTEGER PRIMARY KEY NOT NULL, "
                  "    message TEXT "
                  "); ";
-    char *sqlb = "CREATE TABLE IF NOT EXISTS help_keywords ( "
+    const char *sqlb = "CREATE TABLE IF NOT EXISTS help_keywords ( "
                  "    id INTEGER NOT NULL REFERENCES help_messages(id), "
                  "    keyword TEXT PRIMARY KEY NOT NULL "
                  "); ";
     // We need to verify that our magic keywords are present, and that
     // entries exist for them.
-    char *sql2 = "SELECT id FROM help_keywords WHERE lower(keyword) = lower($1);";
-    char *sql2b = "SELECT id FROM help_messages WHERE id = $1;";
+    const char *sql2 = "SELECT id FROM help_keywords WHERE lower(keyword) = lower($1);";
+    const char *sql2b = "SELECT id FROM help_messages WHERE id = $1;";
 
     // We might need this if we have an issue...
-    char *sql3 = "SELECT coalesce(MAX(id), 0) FROM help_messages;";
+    const char *sql3 = "SELECT coalesce(MAX(id), 0) FROM help_messages;";
 
     // If anything wasn't there, we'll need to put placeholders in...
-    char *sql4a = "INSERT INTO help_messages (id, message, immortal) VALUES ($1,$2,$3) "
+    const char *sql4a = "INSERT INTO help_messages (id, message, immortal) VALUES ($1,$2,$3) "
                   "ON CONFLICT DO NOTHING;";
-    char *sql4b = "INSERT INTO help_keywords (id, keyword) VALUES ($1,$2) "
+    const char *sql4b = "INSERT INTO help_keywords (id, keyword) VALUES ($1,$2) "
                   "ON CONFLICT DO NOTHING;";
 
     const char *param_val[3];
     int param_len[3];
     int param_bin[3] = {0, 0, 0};
-    char *keywords[3] = {"HELP", "CONTENTS", "WIZHELP"};
-    char *wizzness[3] = {"0", "0", "1"};
-    char *messages[3] = {// HELP
+    const char *keywords[3] = {"HELP", "CONTENTS", "WIZHELP"};
+    const char *wizzness[3] = {"0", "0", "1"};
+    const char *messages[3] = {// HELP
                          "The help system is not fully installed, complain to your admin!\r\n",
                          // CONTENTS
                          "The help system is empty, your admin is lazy!\r\n",
@@ -250,7 +250,7 @@ void setup_help_table(void)
 void load_help(void)
 {
     PGresult *res = NULL;
-    ExecStatusType st = 0;
+    ExecStatusType st = (ExecStatusType) 0;
     const char *sql = "SELECT count(*) FROM help_messages;";
     const char *sql2 = "SELECT count(*) FROM help_keywords;";
     const char *sql3 = "SELECT extract('epoch' FROM updated) AS updated, "
@@ -402,9 +402,9 @@ int find_help_by_keyword(const char *keyword)
     strlcpy(needle.keyword, keyword, MAX_INPUT_LENGTH);
     needle.id = 0;
 
-    result = bsearch(&needle, help_keywords, help_keyword_count, sizeof(struct help_keyword), _exact_keyword_cmp);
+    result = (struct help_keyword *)bsearch(&needle, help_keywords, help_keyword_count, sizeof(struct help_keyword), _exact_keyword_cmp);
     if (!result)
-        result = bsearch(&needle, help_keywords, help_keyword_count, sizeof(struct help_keyword), _keyword_cmp);
+        result = (struct help_keyword *)bsearch(&needle, help_keywords, help_keyword_count, sizeof(struct help_keyword), _keyword_cmp);
 
     return result ? result->id : -1;
 }
@@ -414,7 +414,7 @@ struct help_message *get_help_by_id(const int id)
     char tmp[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
 
     snprintf(tmp, MAX_INPUT_LENGTH, "%d", id);
-    return stringmap_find(help_messages, tmp);
+    return (struct help_message *)stringmap_find(help_messages, tmp);
 }
 
 int do_help(struct char_data *ch, const char *argument, int cmd)

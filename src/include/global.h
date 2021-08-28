@@ -1344,7 +1344,6 @@ extern int ItemSaveThrows[22][5];
 extern const int drink_aff[][3];
 extern const char *color_liquid[];
 extern const char *fullness[];
-extern const struct title_type titles[6][ABS_MAX_LVL + 1];
 extern const char *RaceName[];
 extern const char *item_types[];
 extern const char *wear_bits[];

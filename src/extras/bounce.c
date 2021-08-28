@@ -137,7 +137,8 @@ void telcli(int source)
 void communicate(int sfd, int cfd)
 {
     char *chead, *ctail, *shead, *stail;
-    int num, nfd, spos, cpos;
+    int num, nfd;
+    unsigned int spos, cpos;
 
     /*
      * extern int errno;

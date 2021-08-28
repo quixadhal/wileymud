@@ -20,16 +20,16 @@ struct rent_data rent = {BEGINNING_OF_TIME, 1, 1.0, "SYSTEM"}; // beginning of t
 void setup_rent_table(void)
 {
     PGresult *res = NULL;
-    ExecStatusType st = 0;
-    char *sql = "CREATE TABLE IF NOT EXISTS rent ( "
+    ExecStatusType st = (ExecStatusType) 0;
+    const char *sql = "CREATE TABLE IF NOT EXISTS rent ( "
                 "    updated TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "
                 "    enabled BOOLEAN NOT NULL DEFAULT true, "
                 "    factor FLOAT NOT NULL DEFAULT 1.0, "
                 "    set_by TEXT NOT NULL DEFAULT 'SYSTEM'"
                 "); ";
-    char *sql2 = "SELECT count(*) FROM rent;";
-    char *sql3 = "INSERT INTO rent (enabled) VALUES (true);";
-    char *sql4 = "DELETE FROM rent WHERE updated <> (SELECT max(UPDATED) FROM rent);";
+    const char *sql2 = "SELECT count(*) FROM rent;";
+    const char *sql3 = "INSERT INTO rent (enabled) VALUES (true);";
+    const char *sql4 = "DELETE FROM rent WHERE updated <> (SELECT max(UPDATED) FROM rent);";
     int rows = 0;
     int columns = 0;
     int count = 0;
@@ -99,7 +99,7 @@ void setup_rent_table(void)
 void load_rent(void)
 {
     PGresult *res = NULL;
-    ExecStatusType st = 0;
+    ExecStatusType st = (ExecStatusType) 0;
     const char *sql = "SELECT extract('epoch' FROM updated) AS updated, "
                       "enabled::integer, "
                       "factor, set_by FROM rent LIMIT 1;";
@@ -141,7 +141,7 @@ void load_rent(void)
 int toggle_rent(struct char_data *ch)
 {
     PGresult *res = NULL;
-    ExecStatusType st = 0;
+    ExecStatusType st = (ExecStatusType) 0;
     const char *sql = "UPDATE rent SET enabled = NOT enabled, "
                       "updated = now(), "
                       "set_by = $1;";
@@ -173,7 +173,7 @@ int toggle_rent(struct char_data *ch)
 int set_rent(struct char_data *ch, float factor)
 {
     PGresult *res = NULL;
-    ExecStatusType st = 0;
+    ExecStatusType st = (ExecStatusType) 0;
     const char *sql = "UPDATE rent SET factor = $1, "
                       "updated = now(), "
                       "set_by = $2;";
