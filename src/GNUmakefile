@@ -4,7 +4,7 @@ DATESTAMP	= $(shell /bin/date "+%Y-%m-%d")
 DEPLINE		= $(shell /bin/grep -n -e '^\#--- Comment for make deps ---' GNUmakefile | awk -F: '{print $$1}')
 
 CC		= clang #gcc #g++
-LANGFLAGS	= -x c++ -std=gnu++17
+LANGFLAGS	= -x c++ -std=c++17 #-std=gnu++17
 W_GCC		= #-Wno-parentheses -Wno-format-truncation -Wno-sign-compare -Wno-unused-but-set-variable -Wno-multichar
 W_CLANG		= #-Wno-unused-const-variable
 MAKE		= make #gmake
