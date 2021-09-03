@@ -21599,9 +21599,10 @@ void i3_daily_summary()
         (char *)"intercre",
         (char *)"dchat",
         (char *)"intergossip",
-        (char *)"dwchat"
+        (char *)"dwchat",
+        (char *)"ds"
     };
-    int target_channel_count = 4;
+    int target_channel_count = 5;
     char *target_channel = target_channel_list[0];
 
     const char *sql = "SELECT ( "
