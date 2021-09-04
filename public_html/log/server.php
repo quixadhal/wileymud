@@ -318,7 +318,7 @@ $speedtest_avg = json_decode($speedtest_avg_text, true, 512, JSON_INVALID_UTF8_S
             <table id="wileymud-table">
                 <tr>
                     <td rowspan="2" align="right" width="<?php echo $WILEY_BANNER_WIDTH; ?>">
-                        <img class="nav-banner-img glowing" id="navbar-button-wileymud" width="<?php echo $WILEY_BANNER_WIDTH; ?>" title="WileyMUD" src="<?php echo $WILEY_BANNER_ICON; ?>" />
+                        <img class="nav-banner-img glowing" id="navbar-button-wileymud" width="<?php echo $WILEY_BANNER_WIDTH; ?>" title="<?php echo "$WILEY_IP $WILEY_PORT"; ?>" src="<?php echo $WILEY_BANNER_ICON; ?>" />
                     </td>
                     <td class="wileymud-gap">&nbsp;</td>
                     <td class="wileymud-version" align="right">
