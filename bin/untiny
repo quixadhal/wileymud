@@ -780,8 +780,8 @@ sub format_output {
        $output .= "${given_host}"                       if !defined $source;
        $output .= " ${id}"                              if defined $id;
        $output .= " URL"                                if !defined $id;
-       $output .= " from ${channel}"                    if defined $channel;
-       $output .= " is ${title}"                        if defined $title;
+       $output .= " from ${channel}"                    if defined $channel and "$channel" ne "";
+       $output .= " is ${title}"                        if defined $title and "$title" ne "";
        $output .= " ${duration}"                        if defined $duration;
        $output .= " at ${origin_host}"                  if !defined $source and defined $title and $two_hosts;
        $output .= " goes to ${origin_host}"             if !defined $source and !defined $title and $two_hosts;

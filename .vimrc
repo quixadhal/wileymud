@@ -12,7 +12,7 @@ set showmatch
 
 set nohlsearch
 set incsearch
-set ignorecase
+set noignorecase
 set smartcase
 set showfulltag
 

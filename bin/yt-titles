@@ -354,8 +354,7 @@ system "/usr/bin/tar", "-Jcf", "/home/wiley/public_html/video_list.tar.xz",
     "public_html/gfx/wallpaper/1eee6874a1db6aa8210ec4dc2020d38c.jpg",
     "public_html/gfx/wallpaper/4a080c7f2f3cd9efc5ab9583b7692309.jpg",
     "public_html/gfx/wallpaper/5c3d280ddcb9a49385c6bc7bd989f5e3.jpg",
-    "public_html/gfx/wallpaper/7d2064eaefb6858aa5723400332d31ec.jpg",
-    "public_html/gfx/wallpaper/9fd89299df74bbec1de5498608632ead.jpg"
+    "public_html/gfx/wallpaper/7d2064eaefb6858aa5723400332d31ec.jpg"
     ;
 chdir $OLDDIR;
 

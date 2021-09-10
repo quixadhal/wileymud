@@ -5,7 +5,7 @@ use English qw( −no_match_vars );
 use Image::Size;
 use Cwd qw(getcwd);
 
-die "NO!" if getcwd() =~ /\/home\/.*?\/public_html\/gfx\/wallpaper/i;
+#die "NO!" if getcwd() =~ /\/home\/.*?\/public_html\/gfx\/wallpaper/i;
 
 opendir DP, '.' or die "Can't opendir '.' $!";
 my @pics = grep { /\.(jpeg|jpg|png|gif|webp)$/i && -f "./$_" } readdir DP;
@@ -13,7 +13,7 @@ closedir DP;
 
 foreach my $filename (@pics) {
     next if ! -f $filename;
-    open(FP, "-|", "md5sum", $filename) or die "Can't open $filename $!";
+    open(FP, "-|", "md5sum", "--", $filename) or die "Can't open $filename $!";
     my $md5 = <FP>;
     close FP;
 

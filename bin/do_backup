@@ -11,6 +11,18 @@ CRON_TAB="${HOME_DIR}/etc/cron.tab"
 NOW=`date "+%Y%m%d"`
 YESTERDAY=`date "+%Y%m%d" --date="yesterday"`
 YESTERDAY_DAY=`date "+%d" --date="yesterday"`
+OLD_MONTH=`date "+%Y%m" --date="2 months ago"`
+
+# Keep one backup a week for the current and previous months
+KEEP_1="04"
+KEEP_2="11"
+KEEP_3="18"
+KEEP_4="25"
+
+# Trash ones from OLD_MONTH if they're in the first 3 KEEP weeks
+TOSS_1="${OLD_MONTH}${KEEP_1}"
+TOSS_2="${OLD_MONTH}${KEEP_2}"
+TOSS_3="${OLD_MONTH}${KEEP_3}"
 
 NOW_DIR="${BACKUP_DIR}/${NOW}"
 
@@ -71,15 +83,16 @@ echo -en "Managing old backups..."
 if [ -f "${ALIVE}" ]; then
     echo -en "copying..."
     cp -rp "${NOW_DIR}" "${LENIN_DIR}/"
+    echo -en "done.\n"
 fi
 if [ -d "${BACKUP_DIR}/${YESTERDAY}" ]; then
-    if [ "${YESTERDAY_DAY}" = "04" ]; then
+    if [ "${YESTERDAY_DAY}" = "${KEEP_1}" ]; then
         echo -en "skipping..."
-    elif [ "${YESTERDAY_DAY}" = "11" ]; then
+    elif [ "${YESTERDAY_DAY}" = "${KEEP_2}" ]; then
         echo -en "skipping..."
-    elif [ "${YESTERDAY_DAY}" = "18" ]; then
+    elif [ "${YESTERDAY_DAY}" = "${KEEP_3}" ]; then
         echo -en "skipping..."
-    elif [ "${YESTERDAY_DAY}" = "25" ]; then
+    elif [ "${YESTERDAY_DAY}" = "${KEEP_4}" ]; then
         echo -en "skipping..."
     else
         echo -en "removing ${YESTERDAY}..."
@@ -90,9 +103,43 @@ if [ -d "${BACKUP_DIR}/${YESTERDAY}" ]; then
                 rm -rf "${LENIN_DIR}/${YESTERDAY}"
             fi
         fi
+        echo -en "\n"
     fi
+fi
+if [ -d "${BACKUP_DIR}/${TOSS_1}" ]; then
+    echo -en "removing ${TOSS_1}..."
+    rm -rf "${BACKUP_DIR}/${TOSS_1}"
+    if [ -f "${ALIVE}" ]; then
+        if [ -d "${LENIN_DIR}/${TOSS_1}" ]; then
+            echo -en "and remote..."
+            rm -rf "${LENIN_DIR}/${TOSS_1}"
+        fi
+    fi
+    echo -en "\n"
+fi
+if [ -d "${BACKUP_DIR}/${TOSS_2}" ]; then
+    echo -en "removing ${TOSS_2}..."
+    rm -rf "${BACKUP_DIR}/${TOSS_2}"
+    if [ -f "${ALIVE}" ]; then
+        if [ -d "${LENIN_DIR}/${TOSS_2}" ]; then
+            echo -en "and remote..."
+            rm -rf "${LENIN_DIR}/${TOSS_2}"
+        fi
+    fi
+    echo -en "\n"
+fi
+if [ -d "${BACKUP_DIR}/${TOSS_3}" ]; then
+    echo -en "removing ${TOSS_3}..."
+    rm -rf "${BACKUP_DIR}/${TOSS_3}"
+    if [ -f "${ALIVE}" ]; then
+        if [ -d "${LENIN_DIR}/${TOSS_3}" ]; then
+            echo -en "and remote..."
+            rm -rf "${LENIN_DIR}/${TOSS_3}"
+        fi
+    fi
+    echo -en "\n"
 fi
 echo -en "done.\n"
 
-(cd "${BACKUP_DIR}" && ls --color --group-directories-first --human-readable -l "./${NOW}*")
+(cd "${BACKUP_DIR}/${NOW}" && ls --color --group-directories-first --human-readable -l)
 
