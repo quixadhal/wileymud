@@ -21673,7 +21673,7 @@ void i3_daily_summary()
         // snprintf(output, MAX_STRING_LENGTH, "I3 Activity Report for %%^RED%%^%%^BOLD%%^%s:%%^RESET%%^
         // %%^GREEN%%^%%^BOLD%%^%d messages%%^RESET%%^ from %%^YELLOW%%^%d speakers%%^RESET%%^. %s",
         //        yesterday, messages, speakers, logpage_url);
-        snprintf(output, MAX_STRING_LENGTH, "I3 Activity on %s: %d messages from %d speakers.  Logs at %s", yesterday,
+        snprintf(output, MAX_STRING_LENGTH, "I3 Activity on %s: %d messages from %d speakers.  Logs and MUD-list at %s", yesterday,
                  messages, speakers, logpage_url);
         i3_npc_speak(target_channel, "Cron", output);
         log_info("Summary done.");
