@@ -177,7 +177,8 @@ sub geoip_locate {
     $mudname = md5_hex($mudname);
 
     # curl 'https://freegeoip.app/json/104.156.100.167'
-    my $url = "https://freegeoip.app/json/" . $result->{'ipaddress'};
+    #my $url = "https://freegeoip.app/json/" . $result->{'ipaddress'};
+    my $url = "https://freegeoip.live/json/" . $result->{'ipaddress'};
     my $json = undef;
     my $data = undef;
     open(FP, "-|", "/usr/bin/curl", "-s", $url) or die "Can't open /usr/bin/curl $!";
