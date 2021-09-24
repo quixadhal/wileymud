@@ -21595,6 +21595,7 @@ void i3_daily_summary()
     char yesterfile[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
     char yesternuke[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
     char yestertouch[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
+    char yesterurl[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
     char *target_channel_list[] = {
         (char *)"intercre",
         (char *)"dchat",
@@ -21631,6 +21632,7 @@ void i3_daily_summary()
     snprintf(yesterfile, MAX_INPUT_LENGTH, "%s/%s.i3_done", I3_DIR, yesterday);
     snprintf(yesternuke, MAX_INPUT_LENGTH, "/usr/bin/rm %s/*.i3_done", I3_DIR);
     snprintf(yestertouch, MAX_INPUT_LENGTH, "/usr/bin/touch %s", yesterfile);
+    snprintf(yesterurl, MAX_INPUT_LENGTH, "%s?noscroll&pause&date=%s", logpage_url, yesterday);
 
     if (stat(yesterfile, &yst) != -1)
     {
@@ -21670,11 +21672,10 @@ void i3_daily_summary()
         }
         PQclear(res);
 
-        // snprintf(output, MAX_STRING_LENGTH, "I3 Activity Report for %%^RED%%^%%^BOLD%%^%s:%%^RESET%%^
-        // %%^GREEN%%^%%^BOLD%%^%d messages%%^RESET%%^ from %%^YELLOW%%^%d speakers%%^RESET%%^. %s",
-        //        yesterday, messages, speakers, logpage_url);
-        snprintf(output, MAX_STRING_LENGTH, "I3 Activity on %s: %d messages from %d speakers.  Logs and MUD-list at %s", yesterday,
-                 messages, speakers, logpage_url);
+        snprintf(output, MAX_STRING_LENGTH, "I3 Activity on %s: %d messages from %d speakers.  Logs and MUD-list at %s",
+                 yesterday, messages, speakers, logpage_url);
+        // The last parameter is the URL to link.  logpage_url is "now" and never changes,
+        // yesterurl is the date matching the activity, and will change each day.
         i3_npc_speak(target_channel, "Cron", output);
         log_info("Summary done.");
     }
