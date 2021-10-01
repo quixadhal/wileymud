@@ -505,7 +505,7 @@ if(array_key_exists('noscroll', $_GET)) {
         </div>
         <div id="navbar-center">
             <img class="nav-img glowing" id="navbar-button-home" title="Today!" src="<?php echo $HOME_ICON; ?>" <?php if(!is_null($the_date)) { echo "onclick=\"window.location.href='$LOG_URL';\""; }?> />
-            <input type="text" id="datepicker" size="10" value="<?php echo $today; ?>" title="Date to begin viewing" />
+            <input class="glowing" type="text" id="datepicker" size="10" value="<?php echo $today; ?>" title="Date to begin viewing" />
             <img class="nav-img glowing" id="navbar-button-play" title="<?php echo ($start_paused == true) ? "Resume updates" : "Pause updates"; ?>" src="<?php echo ($start_paused == true) ? $PAUSE_RED_ICON : $PLAY_ICON; ?>" onclick="clickPlayPause();" />
         </div>
         <div id="navbar-right">
