@@ -850,7 +850,7 @@ sub handle_url {
 
     if(defined $sql_row) {
         $db->begin_work();
-        my $rv = $update_sql->execute($message, $sql_row->{'created'}, $sql_row->{'url'});
+        my $rv = $update_sql->execute($message, $tinyurl, $sql_row->{'created'}, $sql_row->{'url'});
         if($rv) {
             $db->commit;
         } else {
@@ -945,13 +945,13 @@ if( $do_sql ) {
     if( $mark_processed ) {
         $update_sql = $db->prepare( qq!
             UPDATE urls
-               SET message = ?, processed = TRUE
+               SET message = ?, tiny = ?, processed = TRUE
              WHERE created = ? AND url = ? AND processed IS NOT TRUE AND message IS NULL
             !);
     } else {
         $update_sql = $db->prepare( qq!
             UPDATE urls
-               SET message = ?
+               SET message = ?, tiny = ?
              WHERE created = ? AND url = ? AND processed IS NOT TRUE AND message IS NULL
             !);
     }
