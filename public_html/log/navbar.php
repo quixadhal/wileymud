@@ -43,6 +43,9 @@ $LOG_URL                = "$URL_HOME/log/";
 $OTHER_LOG_URL          = "https://themud.org/chanhist.php#Channel=all";
 $PIE_URL                = "$URL_HOME/log/pie.php";
 $QUESTION_URL           = "$URL_HOME/random_video.php";
+if($isLocal) {
+    $QUESTION_URL       = "$URL_HOME/all_videos.php";
+}
 $SERVER_URL             = "$URL_HOME/log/server.php";
 $GITHUB_URL             = "https://github.com/quixadhal/wileymud";
 $DISCORD_URL            = "https://discord.gg/kUduSsJ";
