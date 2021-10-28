@@ -386,6 +386,7 @@ void i3_startup(bool forced, int mudport, bool isconnected);
 void i3_shutdown(int delay, CHAR_DATA *ch);
 void i3_npc_chat(const char *chan_name, const char *actor, const char *message);
 void i3_npc_speak(const char *chan_name, const char *actor, const char *message);
+void i3_npc_tell(const char *target_name, const char *target_mud, const char *actor, const char *message);
 void I3_listen_channel(CHAR_DATA *ch, const char *argument);
 bool I3_hasname(char *list, const char *name);
 void allchan_log(int is_emote, char *channel, char *speaker, char *username, char *mud, char *str);
@@ -422,5 +423,6 @@ char *pinkfish_to(const char *src, int target);
 // char *pinkfish_to_ansi(const char *src);
 
 void i3_daily_summary(void);
+void piss_off_shentino(void);
 
 #endif

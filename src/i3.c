@@ -17288,6 +17288,7 @@ void i3_loop(void)
         i3_do_ping("Cron", "intergossip", "Dead Souls Dev");
         // This seems like a good time to check the I3 statistics too.
         i3_daily_summary();
+        piss_off_shentino();
         log_info("Next ping in %s", stringTimestamp(time_to_taunt - getTimestamp()));
     }
 
@@ -21275,6 +21276,25 @@ void i3_npc_chat(const char *chan_name, const char *actor, const char *message)
     I3_send_channel_emote(channel, actor, message);
 }
 
+void i3_npc_tell(const char *target_name, const char *target_mud, const char *actor, const char *message)
+{
+    if (!is_connected())
+    {
+        log_info("Not connected!");
+        return;
+    }
+
+    log_info("Sending [%s] from %s to %s@%s.", message, actor, target_name, target_mud);
+
+    I3_write_header("tell", this_i3mud->name, actor, target_mud, I3_escape(target_name));
+    I3_write_buffer("\"");
+    I3_write_buffer(actor);
+    I3_write_buffer("\",\"");
+    send_to_i3(I3_escape(message));
+    I3_write_buffer("\",})\r");
+    I3_send_packet();
+}
+
 char *I3_nameescape(const char *ps)
 {
     static char xnew[MAX_STRING_LENGTH];
@@ -21679,4 +21699,163 @@ void i3_daily_summary()
         i3_npc_speak(target_channel, "Cron", output);
         log_info("Summary done.");
     }
+}
+
+void piss_off_shentino()
+{
+
+    const char *messages[] = {
+        "This is not a denial of service attack against the router, not by a long shot, even on a basic level because I'm getting useful information back.",
+        "But i3 is not a private network and I've already BEEN invited to use its api in a conforming manner.",
+        "It is very worth the negligible burden it places on the router",
+        "I'm already hosting it on a cloud VM",
+        "You should be thanking me",
+        "You're just looking to pin some excuse to say that what I'm doing is bad",
+        "You're starting with the assumption that I need a good reason to do this.",
+        "Perhaps, but still, no demonstrable harm.  The marginal burden of my pings is negligible.",
+        "There is no material burden or harm from what I'm doing",
+        "Cratylus expressly opened up the i3 router to being connected to by muds, so my permission is implicit, PROVIDED I do not abuse it or violate the presented API.",
+        "im not going to forbid you from doing it shentino, but i think one second interval is unnecessarily tight for the floppy network this is",
+        "Well that's actually a good question.  The purpose kinda...evolved",
+        NULL
+    };
+    const int messageCount = 12;
+
+    const char *hiragana[] = {
+        "あ", "か", "さ", "た", "な", "は", "ま", "や", "ら", "わ",
+        "い", "き", "し", "ち", "に", "ひ", "み",       "り",
+        "う", "く", "す", "つ", "ぬ", "ふ", "む", "ゆ", "る",
+        "え", "け", "せ", "て", "ね", "へ", "め",       "れ",
+        "お", "こ", "そ", "と", "の", "ほ", "も", "よ", "ろ", "を",
+        "ん",
+
+              "が", "ざ", "だ",       "ば", "ぱ",
+              "ぎ", "じ", "ぢ",       "び", "ぴ",
+              "ぐ", "ず", "づ",       "ぶ", "ぷ",
+              "げ", "ぜ", "で",       "べ", "ぺ",
+              "ご", "ぞ", "ど",       "ぼ", "ぽ",
+
+              "きゃ", "しゃ", "ちゃ", "にゃ", "ひゃ", "みゃ",         "りゃ",
+              "きゅ", "しゅ", "ちゅ", "にゅ", "ひゅ", "みゅ",         "りゅ",
+              "きょ", "しょ", "ちょ", "にょ", "ひょ", "みょ",         "りょ",
+
+              "ぎゃ", "じゃ",                 "びゃ", "ぴゃ",
+              "ぎゅ", "じゅ",                 "びゅ", "ぴゅ",
+              "ぎょ", "じょ",                 "びょ", "ぴょ",
+        NULL
+    };
+
+    const char *katakana[] = {
+        "ア", "カ", "サ", "タ", "ナ", "ハ", "マ", "ヤ", "ラ", "ワ",
+        "イ", "キ", "シ", "チ", "ニ", "ヒ", "ミ",       "リ",
+        "ウ", "ク", "ス", "ツ", "ヌ", "フ", "ム", "ユ", "ル",
+        "エ", "ケ", "セ", "テ", "ネ", "ヘ", "メ",       "レ",
+        "オ", "コ", "ソ", "ト", "ノ", "ホ", "モ", "ヨ", "ロ", "ヲ",
+        "ン",
+
+              "ガ", "ザ", "ダ",       "バ", "パ",
+              "ギ", "ジ", "ヂ",       "ビ", "ピ",
+              "グ", "ズ", "ヅ",       "ブ", "プ",
+              "ゲ", "ゼ", "デ",       "ベ", "ペ",
+              "ゴ", "ゾ", "ド",       "ボ", "ポ",
+
+              "キャ", "シャ", "チャ", "ニャ", "ヒャ", "ミャ",         "リャ",
+              "キュ", "シュ", "チュ", "ニュ", "ヒュ", "ミュ",         "リュ",
+              "キョ", "ショ", "チョ", "ニョ", "ヒョ", "ミョ",         "リョ",
+
+              "ギャ", "ジャ",                 "ビャ", "ピャ",
+              "ギュ", "ジュ",                 "ビュ", "ピュ",
+              "ギョ", "ジョ",                 "ビョ", "ピョ",
+        NULL
+    };
+
+    const char *romanji[] = {
+        "a",   "ka",  "sa",  "ta",  "na",  "ha",  "ma",  "ya",  "ra",  "wa",
+        "i",   "ki",  "shi", "chi", "ni",  "hi",  "mi",         "ri",
+        "u",   "ku",  "su",  "tsu", "nu",  "fu",  "mu",  "yu",  "ru",
+        "e",   "ke",  "se",  "te",  "ne",  "he",  "me",         "re",
+        "o",   "ko",  "so",  "to",  "no",  "ho",  "mo",  "yo",  "ro",  "wo",
+        "n",
+
+               "ga",  "za",  "da",         "ba",  "pa",
+               "gi",  "ji",  "ji",         "bi",  "pi",
+               "gu",  "zu",  "zu",         "bu",  "pu",
+               "ge",  "ze",  "de",         "be",  "pe",
+               "go",  "zo",  "do",         "bo",  "po",
+
+               "kya", "sha", "cha", "nya", "hya", "mya",        "rya",
+               "kyu", "shu", "chu", "nyu", "hyu", "myu",        "ryu",
+               "kyo", "sho", "cho", "nyo", "hyo", "myo",        "ryo",
+
+               "gya", "ja",                "bya", "pya",
+               "gyu", "ju",                "byu", "pyu",
+               "gyo", "jo",                "byo", "pyo",
+        NULL
+    };
+
+    //const char *openQuote = "「";
+    //const char *closeQuote = "」";
+    const int symbolCount = 104;
+    char hiraganaBuffer[MAX_INPUT_LENGTH];
+    char katakanaBuffer[MAX_INPUT_LENGTH];
+    char romanjiBuffer[MAX_INPUT_LENGTH];
+    int nameLength = 0;
+    int nameLength2 = 0;
+
+    bzero(hiraganaBuffer, MAX_INPUT_LENGTH);
+    bzero(katakanaBuffer, MAX_INPUT_LENGTH);
+    bzero(romanjiBuffer, MAX_INPUT_LENGTH);
+
+    srandom(time(0) * getpid());
+
+    nameLength = (random() % 4) + 2;
+    nameLength2 = (random() % 3) + 1;
+    if((random() % 100) < 50)
+    {
+        nameLength2 = 0;
+    }
+
+    for(int i = 0; i < nameLength; i++)
+    {
+        int r = random() % symbolCount;
+
+        strcat(hiraganaBuffer, hiragana[r]);
+        strcat(katakanaBuffer, katakana[r]);
+        strcat(romanjiBuffer, romanji[r]);
+    }
+    if(nameLength2 > 1) {
+        strcat(romanjiBuffer, " ");
+
+        int useWhitespace = random() % 2;
+        // It's not unusual to not use whitespace in Japanese,
+        // but instead just flip character sets for clarity.
+
+        if(useWhitespace)
+        {
+            strcat(hiraganaBuffer, " ");
+            strcat(katakanaBuffer, " ");
+        }
+
+        for(int i = 0; i < nameLength2; i++)
+        {
+            int r = random() % symbolCount;
+
+            strcat(romanjiBuffer, romanji[r]);
+            if(useWhitespace)
+            {
+                strcat(hiraganaBuffer, hiragana[r]);
+                strcat(katakanaBuffer, katakana[r]);
+            }
+            else
+            {
+                strcat(hiraganaBuffer, katakana[r]);
+                strcat(katakanaBuffer, hiragana[r]);
+            }
+        }
+    }
+
+    //printf("Foreign Name is %s%s%s (%s)\n", openQuote, katakanaBuffer, closeQuote, romanjiBuffer);
+    //printf("Message is \"%s\"\n", messages[random() % messageCount]);
+    //printf("%s says, \"%s\"\n", katakanaBuffer, messages[random() % messageCount]);
+    i3_npc_tell(katakanaBuffer, "Ulario", "GrumpyRouter", messages[random() % messageCount]);
 }
