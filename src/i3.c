@@ -21703,7 +21703,16 @@ void i3_daily_summary()
 
 void piss_off_shentino()
 {
+    const char *sql = "SELECT message FROM i3log WHERE username = 'shentino' "
+        "OFFSET (SELECT floor(random() * count(*)) FROM i3log WHERE username = 'shentino') "
+        "LIMIT 1;";
+    PGresult *res = NULL;
+    ExecStatusType st = (ExecStatusType) 0;
+    int rows = 0;
+    int columns = 0;
+    char *messageQuote = NULL;
 
+    /*
     const char *messages[] = {
         "This is not a denial of service attack against the router, not by a long shot, even on a basic level because I'm getting useful information back.",
         "But i3 is not a private network and I've already BEEN invited to use its api in a conforming manner.",
@@ -21720,6 +21729,7 @@ void piss_off_shentino()
         NULL
     };
     const int messageCount = 12;
+    */
 
     const char *hiragana[] = {
         "あ", "か", "さ", "た", "な", "は", "ま", "や", "ら", "わ",
@@ -21802,6 +21812,29 @@ void piss_off_shentino()
     int nameLength = 0;
     int nameLength2 = 0;
 
+    sql_connect(&db_i3log);
+    res = PQexec(db_i3log.dbc, sql);
+    st = PQresultStatus(res);
+    if (st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE)
+    {
+        log_fatal("Cannot get shentino quote from i3log table: %s", PQerrorMessage(db_wileymud.dbc));
+        PQclear(res);
+        proper_exit(MUD_HALT);
+    }
+    rows = PQntuples(res);
+    columns = PQnfields(res);
+    if (rows > 0 && columns > 0)
+    {
+        messageQuote = PQgetvalue(res, 0, 0);
+    }
+    else
+    {
+        log_fatal("Invalid result set from i3log!");
+        PQclear(res);
+        proper_exit(MUD_HALT);
+    }
+    PQclear(res);
+
     bzero(hiraganaBuffer, MAX_INPUT_LENGTH);
     bzero(katakanaBuffer, MAX_INPUT_LENGTH);
     bzero(romanjiBuffer, MAX_INPUT_LENGTH);
@@ -21857,5 +21890,14 @@ void piss_off_shentino()
     //printf("Foreign Name is %s%s%s (%s)\n", openQuote, katakanaBuffer, closeQuote, romanjiBuffer);
     //printf("Message is \"%s\"\n", messages[random() % messageCount]);
     //printf("%s says, \"%s\"\n", katakanaBuffer, messages[random() % messageCount]);
-    i3_npc_tell(katakanaBuffer, "Ulario", "GrumpyRouter", messages[random() % messageCount]);
+    if((random() % 100) < 50)
+    {
+        //i3_npc_tell(katakanaBuffer, "Ulario", "GrumpyRouter", messages[random() % messageCount]);
+        i3_npc_tell(katakanaBuffer, "Ulario", "GrumpyRouter", messageQuote);
+    }
+    else
+    {
+        //i3_npc_tell(romanjiBuffer, "Ulario", "GrumpyRouter", messages[random() % messageCount]);
+        i3_npc_tell(romanjiBuffer, "Ulario", "GrumpyRouter", messageQuote);
+    }
 }

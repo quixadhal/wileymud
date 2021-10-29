@@ -1142,5 +1142,5 @@ void i3_packet_log(char *packet_type, long packet_length, char *packet_content)
     }
     PQclear(res);
 
-    log_info("i3 packet noted %s: %ld", packet_type, packet_length);
+    //log_info("i3 packet noted %s: %ld", packet_type, packet_length);
 }
