@@ -32,9 +32,9 @@ if(!array_key_exists('result', $speedtest)) {
 $speedtest_wifi_text = file_get_contents($SPEEDTEST_WIFI_FILE);
 $speedtest_wifi = json_decode($speedtest_wifi_text, true, 512, JSON_INVALID_UTF8_SUBSTITUTE);
 if(!array_key_exists('result', $speedtest_wifi)) {
-    $speedtest["unix_timestamp"] = time();
-    $speedtest["the_time"] = strftime("%Y-%m-%d %H:%M:%S %Z", time());
-    $speedtest["speedtest_current"] = $NOT_AVAILABLE_ICON;
+    $speedtest_wifi["unix_timestamp"] = time();
+    $speedtest_wifi["the_time"] = strftime("%Y-%m-%d %H:%M:%S %Z", time());
+    $speedtest_wifi["speedtest_current"] = $NOT_AVAILABLE_ICON;
 } else {
     $speedtest_wifi["unix_timestamp"] = strtotime($speedtest_wifi["timestamp"]);
     $speedtest_wifi["the_time"] = strftime("%Y-%m-%d %H:%M:%S %Z", $speedtest_wifi["unix_timestamp"]);
