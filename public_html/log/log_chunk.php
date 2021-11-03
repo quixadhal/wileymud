@@ -46,7 +46,7 @@ function db_connect() {
 // select date_part('epoch', now())::integer;
 // select to_timestamp(the_time);
 
-function fetch_page_data_by_time($db, $query_start_time = NULL, $query_end_time = NULL, $query_date = NULL, $limit_count = NULL, $offset_point = NULL, $urlbot_mode = FALSE, $search_terms = NULL) {
+function fetch_page_data_by_time($db, $query_start_time = NULL, $query_end_time = NULL, $query_date = NULL, $limit_count = NULL, $offset_point = NULL, $urlbot_mode = FALSE, $search_term = NULL) {
     // the_date YYYY-MM-DD
     // the_time HH:MM:SS
     // channel <word+>
@@ -97,17 +97,67 @@ function fetch_page_data_by_time($db, $query_start_time = NULL, $query_end_time 
            ORDER BY local ASC
               LIMIT :limit_count
     ";
+
+    $sql1s = "
+             SELECT date(local) AS the_date,
+                    to_char(local, 'HH24:MI:SS') AS the_time,
+                    channel,
+                    speaker || '@' || mud AS speaker,
+                    message,
+                    hour_html, channel_html, speaker_html,
+                    date_part('epoch', local)::integer AS unix_time
+               FROM page_view
+              WHERE local >= to_timestamp(:query_start_time)
+                AND local <= to_timestamp(:query_end_time)
+                AND position(:search_term IN lower(message)) > 0
+           ORDER BY local ASC
+              LIMIT :limit_count
+    ";
+    $sql2s = "
+             SELECT * FROM (
+                 SELECT date(local) AS the_date,
+                        to_char(local, 'HH24:MI:SS') AS the_time,
+                        channel,
+                        speaker || '@' || mud AS speaker,
+                        message,
+                        hour_html, channel_html, speaker_html,
+                        date_part('epoch', local)::integer AS unix_time
+                   FROM page_view
+                  WHERE position(:search_term IN lower(message)) > 0
+               ORDER BY local DESC
+                  LIMIT :limit_count
+            ) s ORDER BY unix_time ASC
+    ";
+    $sql3s = "
+             SELECT date(local) AS the_date,
+                    to_char(local, 'HH24:MI:SS') AS the_time,
+                    channel,
+                    speaker || '@' || mud AS speaker,
+                    message,
+                    hour_html, channel_html, speaker_html,
+                    date_part('epoch', local)::integer AS unix_time
+               FROM page_view
+              WHERE date(local) = date(:query_date)
+                AND position(:search_term IN lower(message)) > 0
+           ORDER BY local ASC
+              LIMIT :limit_count
+    ";
+
     $use_times = 1;
     $use_date = 0;
+    $use_search = 0;
     $sql = $sql1;
+    $sqls = $sql1s;
     if( $query_start_time === NULL && $query_end_time === NULL && $query_date === NULL) {
         $use_times = 0;
         $use_date = 0;
         $sql = $sql2;
+        $sqls = $sql2s;
     } elseif ($query_date !== NULL) {
         $use_times = 0;
         $use_date = 1;
         $sql = $sql3;
+        $sqls = $sql3s;
     } else {
         if( $query_start_time === NULL || !is_numeric($query_start_time) || $query_start_time < 1 ) {
             $query_start_time = time() - (60 * 5);
@@ -121,14 +171,24 @@ function fetch_page_data_by_time($db, $query_start_time = NULL, $query_end_time 
     } else if( $limit_count < 1 ) {
         $limit_count = 1;
     }
+    if( $search_term !== NULL ) {
+        $use_search = 1;
+    }
     try {
         //$db->beginTransaction();
-        $sth = $db->prepare($sql);
+        if($use_search == 1) {
+            $sth = $db->prepare($sqls);
+        } else {
+            $sth = $db->prepare($sql);
+        }
         if($use_times == 1) {
             $sth->bindParam(':query_start_time', $query_start_time);
             $sth->bindParam(':query_end_time', $query_end_time);
         } elseif($use_date == 1) {
             $sth->bindParam(':query_date', $query_date);
+        }
+        if($use_search == 1) {
+            $sth->bindParam(':search_term', $search_term);
         }
         $sth->bindParam(':limit_count', $limit_count);
         $sth->execute();
@@ -230,7 +290,7 @@ $the_date = NULL;
 $row_limit = NULL;
 $urlbot_mode = FALSE;
 $row_offset = NULL;
-$search_terms = NULL;
+$search_term = NULL;
 
 if(array_key_exists('from', $_GET)) {
     $time_from = $_GET['from'];
@@ -251,11 +311,11 @@ if(array_key_exists('offset', $_GET)) {
     $offset = $_GET['offset'];
 }
 if(array_key_exists('search', $_GET)) {
-    $search_terms = $_GET['search'];
+    $search_term = $_GET['search'];
 }
 
 $db = db_connect();
-$data = fetch_page_data_by_time($db, $time_from, $time_to, $the_date, $row_limit, $row_offset, $urlbot_mode, $search_terms);
+$data = fetch_page_data_by_time($db, $time_from, $time_to, $the_date, $row_limit, $row_offset, $urlbot_mode, $search_term);
 $time_end = microtime(true);
 $time_spent = $time_end - $time_start;
 $json = json_encode($data, JSON_UNESCAPED_UNICODE | JSON_INVALID_UTF8_SUBSTITUTE | JSON_PRETTY_PRINT);

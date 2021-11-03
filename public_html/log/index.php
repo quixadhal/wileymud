@@ -13,6 +13,15 @@ $DATA_URL               = "$URL_HOME/log/log_chunk.php";
 $RESULT_LIMIT           = 400;  // Fetch no more than this many per request
 $DISPLAY_LIMIT          = 1200; // Keep no more than this many in the table
 
+$the_search_term = NULL;
+if(array_key_exists('search', $_GET)) {
+    $the_search_term = $_GET['search'];
+    // /p{P} matches punctuation with /u for unicode aware.
+    // /p{L} would match letters, and /P{L} would match non-letters.
+    if(!is_null($the_search_term)) {
+        $the_search_term = preg_replace('/[\p{P}]+/u', '', $the_search_term);
+    }
+}
 $the_date = NULL;
 if(array_key_exists('date', $_GET)) {
     $the_date = $_GET['date'];
@@ -90,6 +99,7 @@ if(array_key_exists('noscroll', $_GET)) {
             var FirstTimeNewRow = true;
             var TheDate = "<?php echo $the_date; ?>";
             var DoExtraAjax = <?php echo $do_extra_ajax; ?>;
+            var SearchTerm = "<?php echo $the_search_term; ?>";
 
             function on_scroll() {
                 var body = document.body;
@@ -217,6 +227,9 @@ if(array_key_exists('noscroll', $_GET)) {
                 if(LastRow > 0) {
                     // Grab another chunk from where we left off
                     dataUrl = dataUrlBase + "?from=" + LastRow + "&limit=" + RowLimit;
+                    if(SearchTerm !== "") {
+                        dataUrl = dataUrl + "&search=" + SearchTerm;
+                    }
                 } else if(TheDate !== "") {
                     // Server Time Zone
                     var midnightMoment = moment.tz(TheDate, "America/Los_Angeles");
@@ -235,9 +248,16 @@ if(array_key_exists('noscroll', $_GET)) {
 
                     dataUrl = dataUrlBase + "?from=" + midnightUnix + "&to=" + (midnightUnix + 86400) + "&limit=" + DisplayLimit;
                     //dataUrl = dataUrlBase + "?limit=" + RowLimit + "&date=" + TheDate;
+                    if(SearchTerm !== "") {
+                        dataUrl = dataUrlBase + "?from=" + midnightUnix + "&limit=" + DisplayLimit;
+                        dataUrl = dataUrl + "&search=" + SearchTerm;
+                    }
                 } else {
                     // Must want current stuff... and again, use the DisplayLimit.
                     dataUrl = dataUrlBase + "?from=" + server_time_midnight() + "&limit=" + DisplayLimit;
+                    if(SearchTerm !== "") {
+                        dataUrl = dataUrl + "&search=" + SearchTerm;
+                    }
                 }
                 $.ajax({
                     url: dataUrl,

@@ -11,6 +11,7 @@ var Tomorrow = "<?php echo $tomorrow; ?>";
 var noData = <?php echo ($no_data == true) ? 1 : 0; ?>;
 var queryParams = query_parameters();
 var queryDate = queryParams.date;
+var querySearch = queryParams.search;
 
 if(queryDate !== null && queryDate !== undefined) {
     // We were given a date, maybe adjust Yesterday and Tommorrow?
@@ -38,10 +39,18 @@ function checkDate(date) {
 
 function gotoNewPage(dateString) {
     if(dateString == Today) {
-        window.location.href = "<?php echo $URL_HOME; ?>/log/";
+        if(querySearch !== null && querySearch !== undefined && querySearch !== '') {
+            window.location.href = "<?php echo $URL_HOME; ?>/log/?search=" + querySearch;
+        } else {
+            window.location.href = "<?php echo $URL_HOME; ?>/log/";
+        }
     } else {
         // We could also go to the static pages...
-        window.location.href = "<?php echo $URL_HOME; ?>/log/?noscroll&pause&date=" + dateString;
+        if(querySearch !== null && querySearch !== undefined && querySearch !== '') {
+            window.location.href = "<?php echo $URL_HOME; ?>/log/?noscroll&pause&date=" + dateString + "&search=" + querySearch;
+        } else {
+            window.location.href = "<?php echo $URL_HOME; ?>/log/?noscroll&pause&date=" + dateString;
+        }
     }
 }
 
