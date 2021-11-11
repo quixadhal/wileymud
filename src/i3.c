@@ -21652,12 +21652,12 @@ void i3_daily_summary()
     snprintf(yesterfile, MAX_INPUT_LENGTH, "%s/%s.i3_done", I3_DIR, yesterday);
     snprintf(yesternuke, MAX_INPUT_LENGTH, "/usr/bin/rm %s/*.i3_done", I3_DIR);
     snprintf(yestertouch, MAX_INPUT_LENGTH, "/usr/bin/touch %s", yesterfile);
-    snprintf(yesterurl, MAX_INPUT_LENGTH, "%s?noscroll&pause&date=%s", logpage_url, yesterday);
+    snprintf(yesterurl, MAX_INPUT_LENGTH, "%s?noscroll&date=%s", logpage_url, yesterday);
 
     if (stat(yesterfile, &yst) != -1)
     {
         // We already did this today, for yesterday.
-        log_info("Summary has already been done: %s exists.", yesterfile);
+        //log_info("Summary has already been done: %s exists.", yesterfile);
         return;
     }
     else
@@ -21693,7 +21693,7 @@ void i3_daily_summary()
         PQclear(res);
 
         snprintf(output, MAX_STRING_LENGTH, "I3 Activity on %s: %d messages from %d speakers.  Logs and MUD-list at %s",
-                 yesterday, messages, speakers, logpage_url);
+                 yesterday, messages, speakers, yesterurl);
         // The last parameter is the URL to link.  logpage_url is "now" and never changes,
         // yesterurl is the date matching the activity, and will change each day.
         i3_npc_speak(target_channel, "Cron", output);
