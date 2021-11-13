@@ -298,6 +298,20 @@ if(array_key_exists('noscroll', $_GET)) {
                         var newTime = newMoment.format('HH:mm:ss');
                         var newHour = newMoment.hour();
                         var newColor = '<span style="color: ' + hour_map[newHour] + '">';
+                        var yesterMoment = newMoment.clone().add(-1, 'hours');
+                        var yesterDate = yesterMoment.format('YYYY-MM-DD');
+                        // I3 Activity on 2021-11-11: 74 messages from 5 speakers.  Logs and MUD-list at <a href="http://wileymud.themud.org/~wiley/log/" target="I3-link">http://wileymud.themud.org/~wiley/log/</a>
+                        var yesterRegex = /Logs and MUD-list at <a href="http:\/\/wileymud.themud.org\/\~wiley\/log\/"/;
+
+                        if(row.speaker == 'Cron@WileyMUD' && yesterRegex.test(row.message)) {
+                            // A log URL without a date is here...
+                            //alert(row.speaker);
+                            var yesterChomp = /at <a href="http:\/\/wileymud.themud.org\/\~wiley\/log\/".*/;
+                            row.message = row.message.replace(yesterChomp,
+                                'at <a href="http://wileymud.themud.org/~wiley/log/?noscroll&date='+ yesterDate +
+                                '" target="I3-link">http://wileymud.themud.org/~wiley/log/?noscroll&date='+ yesterDate +
+                                '</a>');
+                        }
 
                         var newRow = '<tr id="content-bottom">';
                         newRow = newRow + '<td class="content-date-column">' + newDate + '</td>';
