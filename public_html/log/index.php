@@ -309,7 +309,7 @@ if(array_key_exists('noscroll', $_GET)) {
                             var yesterChomp = /at <a href="http:\/\/wileymud.themud.org\/\~wiley\/log\/".*/;
                             row.message = row.message.replace(yesterChomp,
                                 'at <a href="http://wileymud.themud.org/~wiley/log/?noscroll&date='+ yesterDate +
-                                '" target="I3-link">http://wileymud.themud.org/~wiley/log/?noscroll&date='+ yesterDate +
+                                '" target="_self">http://wileymud.themud.org/~wiley/log/?noscroll&date='+ yesterDate +
                                 '</a>');
                         }
 
