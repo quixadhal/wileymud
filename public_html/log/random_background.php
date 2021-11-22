@@ -30,6 +30,10 @@ function random_background($dir) {
     $pick = array_rand($background_image_list);
 
     if(is_dir($today_dir)) {
+        // This allows us to create special subdirectories
+        // which will override the normal set for a specific
+        // date each year (mm-dd format), so we can have
+        // holiday specific images.
         $today_dir_exists = true;
         chdir($today_dir);
         $jpg_list = glob("*.jpg");
