@@ -6,6 +6,7 @@ require_once 'log_navigation.php';
 header("Content-Type: application/json; charset=UTF-8");
 ?>
 var Today = "<?php echo $today; ?>";
+var MonthDay = "<?php echo $month_day; ?>";
 var Yesterday = "<?php echo $yesterday; ?>";
 var Tomorrow = "<?php echo $tomorrow; ?>";
 var noData = <?php echo ($no_data == true) ? 1 : 0; ?>;

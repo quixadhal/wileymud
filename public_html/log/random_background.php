@@ -1,25 +1,42 @@
 <?php
 require_once 'site_global.php';
+require_once 'log_navigation.php';
 
 $BACKGROUND_URL         = "$URL_HOME/gfx/one_black_pixel.png";
 $BACKGROUND_DIR         = "$FILE_HOME/gfx/wallpaper/";
+$SPECIAL_DIR            = "$FILE_HOME/gfx/wallpaper/$month_day/";
 $BACKGROUND_DIR_URL     = "$URL_HOME/gfx/wallpaper";
+$SPECIAL_DIR_URL        = "$URL_HOME/gfx/wallpaper/$month_day";
 $BACKGROUND_FILE        = "$FILE_HOME/log/random_background_css.php";
 $BACKGROUND_TIME        = filemtime($BACKGROUND_FILE);
 $BACKGROUND_CSS         = "$URL_HOME/log/random_background_css.php?version=$BACKGROUND_TIME";
 $BACKGROUND_JS          = "$URL_HOME/log/random_background_js.php";
 $background_image_list  = array();
+$special_image_list     = array();
+$today_dir_exists       = false;
 
 function random_background($dir) {
     global $background_image_list;
+    global $special_image_list;
+    global $month_day;
+    global $today_dir_exists;
     $old_dir = getcwd();
-    chdir($dir);
+    $today_dir = "$dir/$month_day";
 
+    chdir($dir);
     $jpg_list = glob("*.jpg");
     $png_list = glob("*.png");
     $background_image_list = array_merge($jpg_list, $png_list);
     $pick = array_rand($background_image_list);
 
+    if(is_dir($today_dir)) {
+        $today_dir_exists = true;
+        chdir($today_dir);
+        $jpg_list = glob("*.jpg");
+        $png_list = glob("*.png");
+        $special_image_list = array_merge($jpg_list, $png_list);
+        $pick = array_rand($special_image_list);
+    }
     chdir($old_dir);
     return $background_image_list[$pick];
 }

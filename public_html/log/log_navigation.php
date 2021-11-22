@@ -26,6 +26,7 @@ $date_obj = new DateTime('NOW', $tz_obj);
 $date_obj->setTime(0,0);    // Set the clock at midnight of the current day.
 
 $today = $date_obj->format('Y-m-d');
+$month_day = $date_obj->format('m-d');
 $date_obj->modify('-1 day');
 $yesterday = $date_obj->format('Y-m-d');
 $date_obj->modify('-2 day');
