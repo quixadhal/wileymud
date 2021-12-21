@@ -32,6 +32,8 @@ header("Content-type: text/css");
 }
 .content-channel-header {
     text-align: left;
+    overflow-x: hidden;
+    white-space: nowrap;
     min-width: 16ch;
     width: 16ch; 
 }
@@ -69,6 +71,8 @@ header("Content-type: text/css");
 }
 .content-channel-column {
     text-align: left;
+    overflow-x: hidden;
+    white-space: nowrap;
     min-width: 16ch;
     width: 16ch; 
 }
