@@ -32,6 +32,7 @@ require_once 'random_background.php';
                 opacity: 1.00;
             }
             #filename-div {
+                display: none;
                 position: absolute;
                 top: 10px;
                 left: 10px;
@@ -47,6 +48,7 @@ require_once 'random_background.php';
                 -moz-border-radius: 20px;
             }
             #clock-div {
+                display: none;
                 position: absolute;
                 top: 10px;
                 right: 10px;
@@ -62,6 +64,7 @@ require_once 'random_background.php';
                 -moz-border-radius: 20px;
             }
             #help-div {
+                display: none;
                 position: absolute;
                 top: 20%;
                 left: 20%;
@@ -135,6 +138,7 @@ require_once 'random_background.php';
             $(document).ready(function() {
                 newBackground();
                 hideDiv('filename-div');
+                showDiv('clock-div');
                 showDiv('help-div');
                 helpTimer = setTimeout(hideHelp, autoHelpTime);
                 clockTimer = setInterval(updateRefreshTime, autoClockTime);
@@ -216,7 +220,7 @@ require_once 'random_background.php';
                 the next image manually, while paused or not.
             </p>
             <p>
-                The 'h' key hides, or reveals, this helpful help!
+                The 'h' or '?' keys hide, or reveal, this helpful help!
             </p>
         </div>
     </body>
