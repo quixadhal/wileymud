@@ -90,12 +90,16 @@ require_once 'random_background.php';
         <script src="<?php echo $NAVBAR_JS;?>"></script>
 
         <script language="javascript">
-            var backgroundTimer;
-            var isPlaying = true;
             var autoSkipTime = 1000 * 60 * 0.5;
-            var currentBackground = $("#background-img").attr("src");
-            var helpTime = 1000 * 60 * 0.75;
+            var autoHelpTime = 1000 * 60 * 0.25;
+            var autoClockTime = 1000 * 60 & 0.1;
+
+            var backgroundTimer;
             var helpTimer;
+            var clockTimer;
+
+            var isPlaying = true;
+            var currentBackground = $("#background-img").attr("src");
 
             function newBackground() {
                 randomizeBackground();
@@ -132,7 +136,8 @@ require_once 'random_background.php';
                 newBackground();
                 hideDiv('filename-div');
                 showDiv('help-div');
-                helpTimer = setTimeout(hideHelp, helpTime);
+                helpTimer = setTimeout(hideHelp, autoHelpTime);
+                clockTimer = setInterval(updateRefreshTime, autoClockTime);
             });
 
             $(document).click( function(event) {
@@ -158,13 +163,13 @@ require_once 'random_background.php';
                 }
             });
 
-            $(document).keydown( function(event) {
+            $(document).keypress( function(event) {
                 if (event.which === 32 || event.which === 13) { // space or enter
                     newBackground();
                 } else if (event.which === 67 || event.which === 99) { // 'C' or 'c'
                     var url = $("#filename-a").attr("href");
                     copyTextToClipboard(url);
-                } else if (event.which === 72 || event.which === 104) { // 'H' or 'h'
+                } else if (event.which === 72 || event.which === 104 || event.which === 63) { // 'H', 'h', or '?'
                     clearTimeout(helpTimer);
                     toggleDiv('help-div');
                 } else if (event.which === 80 || event.which === 112) { // 'P' or 'p'
