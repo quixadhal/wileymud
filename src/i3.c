@@ -3789,7 +3789,7 @@ void I3_write_who_line(const char *str, int idle, const char *xtra)
 void new_I3_process_who_req(I3_HEADER *header, char *s)
 {
     struct descriptor_data *d = NULL;
-    struct char_data *person = NULL;
+    //struct char_data *person = NULL;
     // int                                     player_count = 0;
     // int                                     immortal_count = 0;
     // int                                     npc_count = 0;
@@ -3848,7 +3848,7 @@ void new_I3_process_who_req(I3_HEADER *header, char *s)
 
     for (d = first_descriptor; d; d = d->next)
     {
-        person = d->original ? d->original : d->character;
+        //person = d->original ? d->original : d->character;
     }
 
     I3_write_buffer("})");
@@ -17178,8 +17178,10 @@ void i3_loop(void)
     static struct timeval null_time;
     bool rfound = FALSE;
 
+#if 0
     struct tm *tm_info = NULL;
     time_t tc = (time_t)0;
+#endif
 
     gettimeofday(&last_time, NULL);
     i3_time = (time_t)last_time.tv_sec;
@@ -17201,10 +17203,10 @@ void i3_loop(void)
         return;
     }
 
+#if 0
     tc = time(0);
     tm_info = localtime(&tc);
 
-#if 0
     /* We reboot our router every Monday, Wedensday, and Friday, at 4:45AM.  This makes the I3
      * connection die, but we can't seem to recognize this, so bounce I3 at 5AM on those days.
      */

@@ -132,7 +132,7 @@ void _json_look(struct char_data *ch, const char *argument, int cmd)
 void _json_serialize_object(int vnum, char *buf, size_t buf_len)
 {
     struct obj_data *objp = NULL;
-    int vnum_lookup = 0;
+    //int vnum_lookup = 0;
 
     if (!(objp = get_obj_num(vnum)))
     {
@@ -143,7 +143,7 @@ void _json_serialize_object(int vnum, char *buf, size_t buf_len)
             return;
         }
     }
-    vnum_lookup = (objp->item_number >= 0) ? obj_index[objp->item_number].vnum : 0;
+    //vnum_lookup = (objp->item_number >= 0) ? obj_index[objp->item_number].vnum : 0;
 
     scprintf(buf, buf_len, "{\r\n");
     scprintf(buf, buf_len, "    \"vnum\" : %d,\r\n", (objp->item_number >= 0) ? obj_index[objp->item_number].vnum : 0);

@@ -357,7 +357,7 @@ void list_obj_on_char(struct obj_data *list, struct char_data *ch)
     int k = 0;
     int cond_top = 0;
     int found = FALSE;
-    int Num_Inventory = 1;
+    //int Num_Inventory = 1;
     struct obj_data *cond_ptr[50];
     int cond_tot[50];
 
@@ -409,7 +409,7 @@ void list_obj_on_char(struct obj_data *list, struct char_data *ch)
         {
             if (cond_tot[k] > 1)
             {
-                Num_Inventory += cond_tot[k] - 1;
+                //Num_Inventory += cond_tot[k] - 1;
                 show_mult_obj_to_char(cond_ptr[k], ch, 2, cond_tot[k]);
             }
             else

@@ -332,7 +332,7 @@ void command_interpreter(struct char_data *ch, char *argument)
 void new_command_interpreter(struct char_data *ch, char *argument)
 {
     const char *s = argument;
-    char token = '\0';
+    //char token = '\0';
     char arg[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
     char *a = arg;
     int cmd = 0;
@@ -375,7 +375,7 @@ void new_command_interpreter(struct char_data *ch, char *argument)
     case '"':
     case ',':
     case '@':
-        token = *s;
+        //token = *s;
         s++;
         break;
     default:
