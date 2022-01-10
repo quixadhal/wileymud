@@ -893,3 +893,48 @@ I did set it to NOT run if we don't think we have a network connection...
     chgrp www-data <web-dir>/autoplaylist*
     chmod 664 <web-dir>/autoplaylist*
 
+2021-11-04
+    Nothing to report, but https://bit.ly/2ZMshTj is the document for
+    adjusting the windows group policy entries for automatic reboots, which
+    I figured I'd stash for the future.
+
+2021-11-10
+    did the pg_upgradecluster dance to move from postgresql 13 to 14.
+
+2021-11-27
+    apt install aria2
+
+    youtube-dl --external-downloader aria2c
+        --external-downloader-args '-c -j 3 -x 3 -s 3 -k 1M' URL
+
+2021-12-03
+    apt install pandoc
+
+2022-01-07
+    Added "password-flags=0" to
+        /etc/NetworkManager/system-connections/Dread_5748.nmconnection
+        in an attempt to solve the recent change that now causes wifi
+        to request a password from the user, even when no users is logged
+        in, which means having to walk to the console and type in an
+        account password.  This is NOT the wifi password (which is remembered)
+        This is debian deciding it needs user authentication despite the
+        connection being set to system level and NOT associated with any
+        user.
+
+2022-01-10
+    Fucking idiots... no idea if this will actually work, but...
+
+    https://code.luasoftware.com/tutorials/linux/ubuntu-prompt-system-policy-prevents-modification-of-network-settings-for-all-users/
+    https://www.freedesktop.org/software/polkit/docs/0.105/pklocalauthority.8.html
+
+    /etc/polkit-1/localauthority/50-local.d/10-network-manager.pkla
+        [Let all users modify system settings for network]
+        Identity=unix-user:*
+        Action=org.freedesktop.NetworkManager.settings.modify.system;
+            org.freedesktop.NetworkManager.settings.enable-disable-network;
+            org.freedesktop.NetworkManager.sleep-wake;
+            org.freedesktop.NetworkManager.wifi.scan
+        ResultAny=yes
+        ResultInactive=yes
+        ResultActive=yes
+
