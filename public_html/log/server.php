@@ -470,7 +470,6 @@ $speedtest_avg = json_decode($speedtest_avg_text, true, 512, JSON_INVALID_UTF8_S
 
         <div class="greeting">
             <hr class="hr-100" />
-            <div id="page-load-time" align="right">Page Loaded.</div>
             <span style="font-size: <?php echo $BIG_FONT_SIZE; ?>;">
                 <span id="uptime-light" style="color: #808080;">&diams;</span>
                 <a href="javascript:;" onmousedown="toggleDiv('uptime'); toggleLight('uptime-light');">Uptime</a>
@@ -489,6 +488,7 @@ $speedtest_avg = json_decode($speedtest_avg_text, true, 512, JSON_INVALID_UTF8_S
                 <span id="page-source-light" style="color: #808080;">&diams;</span>
                 <a href="javascript:;" onmousedown="toggleDiv('page-source'); toggleLight('page-source-light');">Source</a>
             </span>
+            <div id="page-load-time" align="right">Page Loaded.</div>
         </div>
 
         <div id="uptime" >
