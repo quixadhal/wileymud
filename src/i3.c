@@ -17290,7 +17290,7 @@ void i3_loop(void)
         i3_do_ping("Cron", "intergossip", "Dead Souls Dev");
         // This seems like a good time to check the I3 statistics too.
         i3_daily_summary();
-        piss_off_shentino();
+        //piss_off_shentino();
         log_info("Next ping in %s", stringTimestamp(time_to_taunt - getTimestamp()));
     }
 
