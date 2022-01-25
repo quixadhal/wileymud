@@ -938,3 +938,15 @@ I did set it to NOT run if we don't think we have a network connection...
         ResultInactive=yes
         ResultActive=yes
 
+2022-01-25
+    PHP upgraded to 8.1, which means you have to re-re-re-edit the config file
+    /etc/apache2/mods-enabled/php8.1.conf
+        # To re-enable PHP in user directories comment the following lines
+        # (from <IfModule ...> to </IfModule>.) Do NOT set it to On as it
+        # prevents .htaccess files from disabling it.
+        #<IfModule mod_userdir.c>
+        #    <Directory /home/*/public_html>
+        #        php_admin_flag engine Off
+        #    </Directory>
+        #</IfModule>
+
