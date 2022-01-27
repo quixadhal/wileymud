@@ -660,7 +660,7 @@ $speedtest_avg = json_decode($speedtest_avg_text, true, 512, JSON_INVALID_UTF8_S
         </div>
 
         <div id="hacklog" class="greeting">
-            <pre><?php pcmd("/bin/cat /home/wiley/HACKLOG"); ?></pre>
+            <pre><?php echo htmlentities(file_get_contents("/home/wiley/HACKLOG")); ?></pre>
             <hr class="hr-100" />
         </div>
 
