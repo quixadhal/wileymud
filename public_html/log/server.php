@@ -17,12 +17,62 @@ $SPEEDTEST_WIDTH_BASE   = 375;
 $SPEEDTEST_HEIGHT       = sprintf("%dpx", (int)($SPEEDTEST_HEIGHT_BASE * $SCALE));
 $SPEEDTEST_WIDTH        = sprintf("%dpx", (int)($SPEEDTEST_WIDTH_BASE * $SCALE));
 
+$PG_DB      = "speedtest";
+$PG_USER    = "wiley";
+$PG_PASS    = "tardis69";
+$PG_CHARSET = "en_US.UTF-8";
+
+function db_connect() {
+    global $PG_DB;
+    global $PG_USER;
+    global $PG_PASS;
+    global $PG_CHARSET;
+
+    $db = null;
+    try {
+        $db = new PDO( "pgsql:dbname=$PG_DB;user=$PG_USER;password=$PG_PASS", null, null, array(
+            //PDO::ATTR_PERSISTENT        => true, 
+            PDO::ATTR_ERRMODE           => PDO::ERRMODE_EXCEPTION,
+            PDO::ATTR_EMULATE_PREPARES  => false,
+        ));
+    } catch(PDOException $e) {
+        echo $e->getMessage();
+    }
+    /*
+    try {
+        $sth = $db->prepare("SET CLIENT_ENCODING TO 'UTF8';");
+        $sth->execute();
+    } catch(PDOException $e) {
+        echo $e->getMessage();
+    }
+     */
+    return $db;
+}
+
 $speedtest_text = file_get_contents($SPEEDTEST_FILE);
 $speedtest = json_decode($speedtest_text, true, 512, JSON_INVALID_UTF8_SUBSTITUTE);
 if(!array_key_exists('result', $speedtest)) {
     $speedtest["unix_timestamp"] = time();
     $speedtest["the_time"] = strftime("%Y-%m-%d %H:%M:%S %Z", time());
     $speedtest["speedtest_current"] = $NOT_AVAILABLE_ICON;
+    $sql = "
+            SELECT  extract(epoch FROM local)::integer AS unix_timestamp,
+                    result_url
+              FROM speedtest
+             WHERE NOT wifi
+          ORDER BY local DESC
+             LIMIT 1
+    ";
+    $db = db_connect();
+    $sth = $db->prepare($sql);
+    $sth->execute();
+    $sth->setFetchMode(PDO::FETCH_ASSOC);
+    while($row = $sth->fetch()) {
+        $speedtest["unix_timestamp"] = $row["unix_timestamp"];
+        $speedtest["the_time"] = strftime("%Y-%m-%d %H:%M:%S %Z", $speedtest["unix_timestamp"]);
+        $speedtest["speedtest_current"] = $row["result_url"] . ".png";
+    }
+    $db = null;
 } else {
     $speedtest["unix_timestamp"] = strtotime($speedtest["timestamp"]);
     $speedtest["the_time"] = strftime("%Y-%m-%d %H:%M:%S %Z", $speedtest["unix_timestamp"]);
@@ -35,6 +85,24 @@ if(!array_key_exists('result', $speedtest_wifi)) {
     $speedtest_wifi["unix_timestamp"] = time();
     $speedtest_wifi["the_time"] = strftime("%Y-%m-%d %H:%M:%S %Z", time());
     $speedtest_wifi["speedtest_current"] = $NOT_AVAILABLE_ICON;
+    $sql = "
+            SELECT  extract(epoch FROM local)::integer AS unix_timestamp,
+                    result_url
+              FROM speedtest
+             WHERE wifi
+          ORDER BY local DESC
+             LIMIT 1
+    ";
+    $db = db_connect();
+    $sth = $db->prepare($sql);
+    $sth->execute();
+    $sth->setFetchMode(PDO::FETCH_ASSOC);
+    while($row = $sth->fetch()) {
+        $speedtest_wifi["unix_timestamp"] = $row["unix_timestamp"];
+        $speedtest_wifi["the_time"] = strftime("%Y-%m-%d %H:%M:%S %Z", $speedtest["unix_timestamp"]);
+        $speedtest_wifi["speedtest_current"] = $row["result_url"] . ".png";
+    }
+    $db = null;
 } else {
     $speedtest_wifi["unix_timestamp"] = strtotime($speedtest_wifi["timestamp"]);
     $speedtest_wifi["the_time"] = strftime("%Y-%m-%d %H:%M:%S %Z", $speedtest_wifi["unix_timestamp"]);
