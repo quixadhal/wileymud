@@ -11,7 +11,7 @@ function numbered_source($filename)
     ini_set('highlight.bg',      '#111111'); // FFFFFF
     ini_set('highlight.default', '#00DDDD'); // 0000BB
     ini_set('highlight.html',    '#CCCCCC'); // 000000
-    $lines = implode(range(1, count(file($filename))), '<br />');
+    $lines = implode('<br />', range(1, count(file($filename))));
     $content = highlight_file($filename, true);
     return "<table><tr><td class=\"source-line-number\">\n$lines\n</td><td class=\"source-code\">\n$content\n</td></tr></table>"; 
 }
