@@ -3349,7 +3349,7 @@ int NudgeNudge(struct char_data *ch, int cmd, const char *arg)
         else
         {
             do_say(ch, "What the fuck?  I'm neuter!", 0);
-            act("$n looks between it's legs and screams!!!", FALSE, ch, 0, 0, TO_ROOM);
+            act("$n looks between its legs and screams!!!", FALSE, ch, 0, 0, TO_ROOM);
         }
         break;
     case NN_FOLLOW:
