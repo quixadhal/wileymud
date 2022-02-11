@@ -950,3 +950,7 @@ I did set it to NOT run if we don't think we have a network connection...
         #    </Directory>
         #</IfModule>
 
+2022-02-11
+    # For the current fluffos/lima build
+    apt install cmake libevent-dev libjemalloc-dev
+
