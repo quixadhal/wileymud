@@ -39,6 +39,7 @@ my $do_checksum = undef;
 my $do_lpc = undef;
 my $do_transfer = undef;
 my $do_cache = undef;
+my $do_add = undef;
 my $channel = undef;
 my $speaker = undef;
 my $style = undef;
@@ -691,6 +692,8 @@ sub parse_style {
     return "transfer"   if $arg eq '-t';
     return "cache"      if $arg =~ /^(--)?cache$/;
     return "cache"      if $arg eq '-C';
+    return "add"        if $arg =~ /^(--)?add$/;
+    return "add"        if $arg eq '-A';
 
     return undef;
 }
@@ -806,6 +809,7 @@ sub handle_url {
     my $url = undef;
     my $channel = undef;
     my $speaker = undef;
+    my $result = {};
 
     # This check works because isa() can always be called on a non-reference
     # or on a blessed reference.  For a non-reference, it always returns undef.
@@ -839,6 +843,16 @@ sub handle_url {
     my $the_url = (defined $origin_host) ? $origin : $url;
     my $source = get_source($the_url);
 
+    my $mud_speaker = undef;
+    my $mud_mud = undef;
+
+    $result->{channel} = $channel;
+    ($mud_speaker, $mud_mud) = (split /\@/, $speaker) if defined $speaker;
+    $mud_mud = 'WileyMUD' if defined $speaker and !defined $mud_mud;
+    $result->{speaker} = $mud_speaker;
+    $result->{mud} = $mud_mud;
+    $result->{url} = $url;
+
     $channel = get_channel($channel, $speaker);
     my ($id, $title, $duration) = get_metadata($source, $the_url);
     my $output = format_output($style, $source, $given_host, $origin_host,
@@ -847,6 +861,9 @@ sub handle_url {
     my $utf8 = encode("UTF-8", $message);
     #my $entities = encode_entities($utf8);
     $message = $utf8;
+
+    $result->{tiny} = $tinyurl;
+    $result->{message} = $message;
 
     if(defined $sql_row) {
         $db->begin_work();
@@ -877,6 +894,7 @@ sub handle_url {
         }
         print "$message\n";
     }
+    return $result;
 }
 
 $url = shift;
@@ -895,6 +913,7 @@ if( !defined $url and $style ne 'sql' and $style ne 'checksum' and $style ne 'lp
     print "       $prog lpc [limit]\n";
     print "       $prog transfer [limit]\n";
     print "       $prog cache URL [channel] [speaker]\n";
+    print "       $prog add URL [channel] [speaker]\n";
     exit 1;
 }
 
@@ -915,6 +934,9 @@ if( $style eq 'sql' ) {
     $style = 'wiley';
 } elsif( $style eq 'cache' ) {
     $do_cache = 1;
+    $style = 'wiley';
+} elsif( $style eq 'add' ) {
+    $do_add = 1;
     $style = 'wiley';
 }
 
@@ -1137,6 +1159,13 @@ if( $do_sql ) {
     } else {
         print '<SPAN class="flash_tag" style="color: red;">COMING SOON!</SPAN>' . "\n";
     }
+    $db->disconnect();
+} elsif( $do_add ) {
+    my $result = handle_url( $url, $channel, $speaker );
+    print Dumper($result);
+    exit 1;
+    # Eventually, add this to the database and then do what do_sql does for it.
+    $db = DBI->connect("dbi:Pg:dbname=$DB_NAME", 'wiley', 'tardis69', { AutoCommit => 1, RaiseError => 1, PrintError => 0, });
     $db->disconnect();
 } else {
     handle_url( $url, $channel, $speaker );
