@@ -142,7 +142,6 @@ $pie_data               = json_decode($pie_text, true, 512, JSON_INVALID_UTF8_SU
             }
 
             $(document).ready(function() {
-                hideDiv('page-source');
                 $('#page-load-time').html(timeSpent);
                 showDiv('page-load-time');
                 dim(document.getElementById('navbar-button-pie'));
