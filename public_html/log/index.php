@@ -34,6 +34,10 @@ $no_initial_scroll = false;
 if(array_key_exists('noscroll', $_GET)) {
     $no_initial_scroll = true;
 }
+$toggle_background = false;
+if(array_key_exists('togglebg', $_GET)) {
+    $toggle_background = true;
+}
 
 ?>
 <html lang="en">
@@ -76,6 +80,18 @@ if(array_key_exists('noscroll', $_GET)) {
         <script src="<?php echo $LOG_NAV_DATES_JS;?>"></script>
         <script src="<?php echo $LOG_NAV_JS;?>"></script>
 
+        <script language="javascript">
+            var ToggleBackground = <?php echo $toggle_background ? "true" : "false"; ?>;
+            if(ToggleBackground) {
+                if(Cookies.get('nobackground')) {
+                    Cookies.remove("nobackground");
+                } else {
+                    Cookies.set("nobackground", true);
+                }
+                // force reload to pick this up.
+                window.location.href = '<?php echo "$LOG_URL"; ?>';
+            }
+        </script>
         <script language="javascript">
             var WasAtBottom = false;
             var ContentTimer;
