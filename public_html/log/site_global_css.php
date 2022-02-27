@@ -82,3 +82,14 @@ a:active, a:focus {
 .flash_tag {
     animation: blinking 1.5s infinite;
 }
+@keyframes spinning {
+    from {
+        transform: rotate(360deg);
+    }
+    to {
+        transform: rotate(0deg);
+    }
+}
+.spinning {
+    animation: spinning 42s infinite linear;
+}

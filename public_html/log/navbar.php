@@ -29,6 +29,7 @@ $OTHER_LOG_ICON         = "$URL_HOME/gfx/other_logs.png";
 $LOG_ICON               = "$URL_HOME/gfx/log.png";
 $PIE_ICON               = "$URL_HOME/gfx/pie_chart.png";
 $QUESTION_ICON          = "$URL_HOME/gfx/question_girl3.png";
+$FORUM_ICON             = "$URL_HOME/gfx/skull.png";
 $SERVER_ICON            = "$URL_HOME/gfx/server_icon.png";
 $GITHUB_ICON            = "$URL_HOME/gfx/github1600.png";
 $DISCORD_ICON           = "$URL_HOME/gfx/discord.png";
@@ -46,6 +47,7 @@ $QUESTION_URL           = "$URL_HOME/random_video.php";
 if($isLocal) {
     $QUESTION_URL       = "$URL_HOME/all_videos.php";
 }
+$FORUM_URL              = "$URL_HOME/lpmuds.net/forum/index.html";
 $SERVER_URL             = "$URL_HOME/log/server.php";
 $GITHUB_URL             = "https://github.com/quixadhal/wileymud";
 $DISCORD_URL            = "https://discord.gg/kUduSsJ";
