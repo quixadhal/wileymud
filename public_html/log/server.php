@@ -601,6 +601,7 @@ $speedtest_avg = json_decode($speedtest_avg_text, true, 512, JSON_INVALID_UTF8_S
                                     printf("%s %-.2f Mbps\n", "                upload      ", ($speedtest_wifi["upload"]["bandwidth"] * 8.0 / 1000000.0));
                                  ?>
                             </pre>
+                            <pre><?php echo htmlentities(file_get_contents("/home/wiley/public_html/log/kelly.ascii")); ?></pre>
                             <hr class="hr-100" />
                     </td>
                     <td>&nbsp;</td>

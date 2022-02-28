@@ -91,5 +91,5 @@ a:active, a:focus {
     }
 }
 .spinning {
-    animation: spinning 42s infinite linear;
+    animation: spinning 240s infinite linear;
 }
