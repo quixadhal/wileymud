@@ -991,3 +991,9 @@ I did set it to NOT run if we don't think we have a network connection...
         3 1 * * *                   /home/wiley/bin/do_backup >/home/wiley/backup.log 2>&1
         7 */2 * * *                 /usr/bin/mtr -c 10 -r -w kelly >/home/wiley/public_html/log/kelly.ascii 2>/dev/null &
 
+2022-03-03
+    I forgot, I also had to fiddle with apt, because it now wants third party
+    gpg keys to be in /etc/apt/trusted.gpg.d/
+
+    So, munge stuff to make /etc/apt/trusted.gpg.d/packagecloud.io.asc
+
