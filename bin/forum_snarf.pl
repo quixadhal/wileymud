@@ -15,7 +15,7 @@ sub trim {
 }
 
 sub get_boards {
-    my $file = '/space/stuff/Mirrors/MudMirror-2020-05-11/lpmuds.net/forum/index.html';
+    my $file = '/space/stuff/Mirrors/MudMirror-2021-10-16/lpmuds.net/forum/index.html';
     die "File not found." if ! -r $file;
     my $root = HTML::TreeBuilder->new_from_file($file) or die "Can't parse file.";
     my $table = $root->look_down(class => 'table_list') or die "No table_list found.";
@@ -168,6 +168,131 @@ foreach my $category (
             $board->{last_post}{post_title},
             $board->{last_post}{post_topic_id},
             $board->{last_post}{post_message_id};
+    }
+}
+
+
+# For each board, the url to show topics looks like
+# lpmuds.net/smf/indexd0e9.html?board=1.0
+# and we can see the 1 is the board ID number
+# and the .0 part is the message number to start displaying from...
+#
+# However, the way this was scraped, the file itself varies...
+# lpmuds.net/smf/index318d.html?board=1.20
+#
+# So, instead, we'll have to harvest the link from the tiny navbar bit.
+# There is no "next page" though, so instead we have to know where we are
+# via the URL we have, and then divide by 20 and look for the next highest
+# number in the Pages: entry
+#
+
+# div class="pagelinks floatleft"
+#   Pages: [
+#       <string>1</strong>
+#   ] 
+#   a class="navPages" href="url">2</a>
+#
+# Seems like we either need to search for the newPages links and find one whose
+# text is the next number up... if none, then we hit the end.
+# The other option is to search the URL part and do (X-1*20).
+#
+
+foreach my $category (
+    map { $board_results->{$_} } (
+        sort { $a <=> $b } keys %$board_results
+    )
+) {
+    foreach my $board (
+        map { $category->{$_} } (
+            sort { $a <=> $b } grep {!/^category_/} keys %$category
+        )
+    ) {
+        my $board_id = $board->{board_id};
+        my $board_url = $board->{board_url};
+        $board_url =~ s!\.html\?.*$!.html!;
+
+        my $current_page = 1;
+        my $file = "/space/stuff/Mirrors/MudMirror-2021-10-16/lpmuds.net/forum/$board_url";
+        print "FILE: $file\n";
+        die "File not found." if ! -r $file;
+        my $root = HTML::TreeBuilder->new_from_file($file) or die "Can't parse file.";
+        my $pagelinks = $root->look_down(class => 'pagelinks') or die "No page list found.";
+        my @page_links = $pagelinks->look_down(class => 'navPages');
+        my $next_page_url = undef;
+        my $next_page = undef;
+
+        foreach my $link (@page_links) {
+            my $page_number = $link->as_text;
+            next if $page_number <= $current_page;
+            $next_page = $page_number;
+            $next_page_url = $link->attr('href');
+            last;
+        }
+
+        print "Current Page:    $current_page\n";
+        print "Next Page:       $next_page\n"       if defined $next_page;
+        print "URL:             $next_page_url\n"   if defined $next_page_url;
+
+        # Here, we'd process the topic list on THIS page, and then...
+        #
+        my $topic_table = $root->look_down(id => 'messageIndex') or die "No topic list found.";
+        my $topic_grid = $topic_table->look_down(class => 'table_grid') or die "No topic list found.";
+        my $table = $topic_grid->look_down(_tag => 'tbody') or die "No topic list found.";
+        my @rows = $table->look_down(_tag => 'tr') or die "No topics found.";
+        my @topic_data = ();
+        foreach my $row (@rows) {
+            my @cols = $row->look_down(_tag => 'td') or die "No topics columns found.";
+
+            my $topic_span = $cols[2]->look_down(_tag => 'span');
+            my $topic_message_id = $topic_span->attr('id'); # msg_NNN
+            $topic_message_id =~ s/msg_//;
+
+            my $topic_started_blob = $cols[2]->look_down(_tag => 'p');
+            my $topic_started_a = $topic_started_blob->look_down(_tag => 'a');
+            my $topic_started_by_url = $topic_started_a->attr('href');
+            my $topic_started_by_name = $topic_started_a->as_text;
+
+            my $topic_a = $topic_span->look_down(_tag => 'a');
+            my $topic_desc = $topic_a->as_text;
+            my $topic_url = $topic_a->attr('href');
+            $topic_url =~ /\.html\?topic=(\d+)\.\d+/;
+            my $topic_id = $1;
+
+            my $stats_blob = $cols[3]->as_text;
+            $stats_blob =~ /(\d+)\s+Replies\s+(\d+)\s+Views/;
+            my ($topic_replies, $topic_views) = ($1,$2);
+
+            my $lastpost = $cols[4];
+            my $last_blob = trim $lastpost->as_text;
+            my @last_urls = $lastpost->look_down(_tag => 'a'); # should be 2
+            my $last_post_url = $last_urls[0]->attr('href');
+            my $last_post_profile_url = $last_urls[1]->attr('href');
+            my $last_post_profile_name = $last_urls[1]->as_text;
+
+            $last_blob =~ /^(.*?\s+[ap]m)\s+by/;
+            my $last_post_date  = $1;
+
+            push @topic_data, {
+                topic_id                => $topic_id,
+                topic_message_id        => $topic_message_id,
+                topic_desc              => $topic_desc,
+                topic_url               => $topic_url,
+                topic_started_by_name   => $topic_started_by_name,
+                topic_started_by_url    => $topic_started_by_url,
+                topic_replies           => $topic_replies,
+                topic_views             => $topic_views,
+                last_post_url           => $last_post_url,
+                last_post_date          => $last_post_date,
+                last_post_profile_name  => $last_post_profile_name,
+                last_post_profile_url   => $last_post_profile_url,
+            };
+        }
+
+        print Dumper(\@topic_data);
+
+        # At this point, we'd walk down that page to get the next page, etc, etc.
+        exit 1;
+
     }
 }
 
