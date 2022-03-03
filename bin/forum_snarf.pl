@@ -5,6 +5,15 @@ use HTML::TreeBuilder;
 use Data::Dumper;
 $Data::Dumper::Sortkeys = 1;
 
+sub trim {
+    my $str = shift;
+    return undef unless defined $str;
+
+    $str =~ s/^\s+//;
+    $str =~ s/\s+$//;
+    return $str;
+}
+
 sub get_boards {
     my $file = '/space/stuff/Mirrors/MudMirror-2020-05-11/lpmuds.net/forum/index.html';
     die "File not found." if ! -r $file;
@@ -21,9 +30,7 @@ sub get_boards {
         my $parent = $cat->look_up(class => 'table_list');
         my $cat_head = $parent->look_down(id => "category_$cat_number");
         my $cat_info = $cat_head->look_down(class => 'catbg');
-        my $cat_name = $cat_info->as_text;
-        $cat_name =~ s/^\s+//;
-        $cat_name =~ s/\s+$//;
+        my $cat_name = trim $cat_info->as_text;
 
         $board_results->{$cat_number} = {
             category_id     => $cat_number,
@@ -69,14 +76,10 @@ sub get_boards {
 
             my $anchor = $info->look_down(class => 'subject');
             my $board_url = $anchor->attr('href');
-            my $board_name = $anchor->as_text;
-            $board_name =~ s/^\s+//;
-            $board_name =~ s/\s+$//;
+            my $board_name = trim $anchor->as_text;
 
             my $p = $info->look_down(_tag => 'p');
-            my $board_desc = $p->as_text;
-            $board_desc =~ s/^\s+//;
-            $board_desc =~ s/\s+$//;
+            my $board_desc = trim $p->as_text;
 
             #  <td class="stats windowbg">
             #    <p>1621 Posts <br /> 271 Topics
