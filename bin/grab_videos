@@ -192,10 +192,8 @@ for (my $index = 0; $index < (scalar @urls); $index++) {
         next;
     }
 
-    printf "Format for %s: ", (defined $target) ?
-                              substr($target, -40) : substr($url, -40);
     my $format = get_format($url, $index);
-    printf "%s.\n", (defined $format) ? $format : "not found";
+    printf "Format: %s.\n", (defined $format) ? $format : "not found";
     #last if !defined $format; #TODO
 
     my $nap = int(rand(10));
@@ -206,8 +204,10 @@ for (my $index = 0; $index < (scalar @urls); $index++) {
 
     printf "Fetching... %s ", (defined $target) ?
                               substr($target, -40) : substr($url, -40);
-    system("youtube-dl", "--quiet", "--ignore-config", "-f",
-        "$format", "-o", "$output_format", "$url");
+    system( "youtube-dl", "--quiet", "--ignore-config",
+            #"--external-downloader", "aria2c",
+            #"--external-downloader-args", "-c -q -j 7 -x 7 -s 7 -k 1M",
+            "-f", "$format", "-o", "$output_format", "$url");
     system("sync");
 
     if (!defined $target) {
