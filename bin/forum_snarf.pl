@@ -85,7 +85,7 @@ sub get_boards {
             my $board_name = trim $anchor->as_text;
 
             my $p = $info->look_down(_tag => 'p') or die "Cannot get board description for $board_name.";
-            my $board_desc = trim $p->as_text;
+            my $board_title = trim $p->as_text;
 
             #  <td class="stats windowbg">
             #    <p>1621 Posts <br /> 271 Topics
@@ -104,7 +104,7 @@ sub get_boards {
             #    <br /> on April 11, 2020, 06:24:26 pm
             #  </td>
             my $lastpost = $board->look_down(class => 'lastpost') or die "Cannot get last post info for $board_name.";
-            my $blah = $lastpost->as_text;
+            my $last_blob = trim $lastpost->as_text;
 
             # We assumne the ordering of the hrefs here!
             my $last_post_data = {};
@@ -125,14 +125,14 @@ sub get_boards {
                 }
                 $url_count++;
             }
-            $blah =~ /\s+on\s+(.*)\s+/;
+            $last_blob =~ /\s+on\s+(.*)\s+/;
             $last_post_data->{post_date} = $1;
 
             my $data = {
                 board_id    => $board_number,
                 board_name  => $board_name,
                 board_url   => $board_url,
-                board_desc  => $board_desc,
+                board_title => $board_title,
                 posts       => $posts,
                 topics      => $topics,
                 last_post   => $last_post_data,
@@ -200,7 +200,7 @@ sub get_board_topics {
         }
 
         my $topic_a = $topic_span->look_down(_tag => 'a') or die "No topic URL.";
-        my $topic_desc = $topic_a->as_text;
+        my $topic_title = $topic_a->as_text;
         my $topic_url = $topic_a->attr('href');
         $topic_url =~ /\.html\?topic=(\d+)\.\d+/;
         my $topic_id = $1;
@@ -211,36 +211,38 @@ sub get_board_topics {
 
         my $lastpost = $cols[4];
         my $last_blob = trim $lastpost->as_text;
+        my $last_post_data = {};
+
         my @last_urls = $lastpost->look_down(_tag => 'a'); # should be 2
-        my $last_post_url = $last_urls[0]->attr('href');
-        my $last_post_profile_url = "";
-        my $last_post_profile_name = "";
-        my $last_post_date = "";
+        $last_post_data->{post_url} = $last_urls[0]->attr('href');
+        #index5b35.html?topic=1638.0#msg9143
+        $last_post_data->{post_url} =~ /topic=(\d+)\.\d+\#msg(\d+)/;
+        ($last_post_data->{post_topic_id}, $last_post_data->{post_message_id}) = ($1,$2);
+
         if((scalar @last_urls) < 2) {
             # December 16, 2009, 01:49:20 pm by Kalinash
             $last_blob =~ /^(.*?\s+[ap]m)\s+by\s+(.*)\s*$/;
-            ($last_post_profile_name, $last_post_date) = ($1,$2);
+            ($last_post_data->{post_date}, $last_post_data->{profile_name}) = ($1,$2);
         } else {
-            $last_post_profile_url = $last_urls[1]->attr('href');
-            $last_post_profile_name = trim $last_urls[1]->as_text;
+            $last_post_data->{profile_url} = $last_urls[1]->attr('href');
+            $last_post_data->{profile_name} = trim $last_urls[1]->as_text;
             $last_blob =~ /^(.*?\s+[ap]m)\s+by/;
-            $last_post_date = $1;
+            $last_post_data->{post_date} = $1;
+            #indexa82d.html?action=profile;u=185
+            $last_post_data->{profile_url} =~ /profile;u=(\d+)/;
+            $last_post_data->{profile_id} = $1;
         }
 
         push @topic_data, {
             topic_id                => $topic_id,
             topic_message_id        => $topic_message_id,
-            topic_desc              => $topic_desc,
+            topic_title             => $topic_title,
             topic_url               => $topic_url,
             topic_started_by_name   => $topic_started_by_name,
             topic_started_by_url    => $topic_started_by_url,
             topic_replies           => $topic_replies,
             topic_views             => $topic_views,
-            last_post_url           => $last_post_url,
-            last_post_date          => $last_post_date,
-            last_post_profile_name  => $last_post_profile_name,
-            last_post_profile_url   => $last_post_profile_url,
-
+            last_post               => $last_post_data,
         };
     }
 
@@ -270,10 +272,10 @@ sub show_board_data {
             )
         ) {
             # insert into categories_boards (category_id, board_id) values (?,?)
-            # insert into boards (id, name, url, desc) values (?,?,?,?)
+            # insert into boards (id, name, url, title) values (?,?,?,?)
             printf "    Board           %02d\n", $board->{board_id};
             printf "        NAME        %s\n", $board->{board_name};
-            printf "        DESC        %s\n", $board->{board_desc};
+            printf "        TITLE       %s\n", $board->{board_title};
             printf "        TOPICS      %d\n", $board->{topics};
             printf "        POSTS       %d\n", $board->{posts};
             printf "        LAST POST   %s\n", $board->{last_post}{post_date};
