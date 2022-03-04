@@ -3,6 +3,7 @@
 use strict;
 use English qw( −no_match_vars );
 use HTML::TreeBuilder;
+use JSON qw(encode_json);
 use Data::Dumper;
 $Data::Dumper::Sortkeys = 1;
 
@@ -193,7 +194,6 @@ sub get_board_topics {
             $topic_started_by_url = $topic_started_by_a->attr('href');
             $topic_started_by_name = trim $topic_started_by_a->as_text;
         } else {
-            #printf "TOPIC in $file STARTED BY BLOB: %s\n", $topic_started_by_blob->as_text;
             # Started by daelaskai
             $topic_started_by_blob->as_text =~ /^Started\s+by\s+(.*)\s*$/;
             $topic_started_by_name = $1;
@@ -217,7 +217,6 @@ sub get_board_topics {
         my $last_post_profile_name = "";
         my $last_post_date = "";
         if((scalar @last_urls) < 2) {
-            #printf "LAST BLOB in $file: %s\n", $lastpost->as_text;
             # December 16, 2009, 01:49:20 pm by Kalinash
             $last_blob =~ /^(.*?\s+[ap]m)\s+by\s+(.*)\s*$/;
             ($last_post_profile_name, $last_post_date) = ($1,$2);
@@ -316,15 +315,11 @@ my $board_results = get_boards();
 # The other option is to search the URL part and do (X-1*20).
 #
 
-my $topic_results = {};
-
 foreach my $category (
     map { $board_results->{$_} } (
         sort { $a <=> $b } keys %$board_results
     )
 ) {
-    $topic_results->{$category->{category_id}} = {};
-
     foreach my $board (
         map { $category->{$_} } (
             sort { $a <=> $b } grep {!/^category_/} keys %$category
@@ -340,15 +335,16 @@ foreach my $category (
             push @topics, ( @{ $topic_chunk->{topics} } );
             last if !defined $url;
         }
-        printf "Category %d (%s), Board %d (%s), Topics: %d\n",
-            $category->{category_id}, $category->{category_name},
-            $board->{board_id}, $board->{board_name},
-            (scalar @topics);
-        $topic_results->{$category->{category_id}}{$board->{board_id}} = \@topics;
+        #printf "Category %d (%s), Board %d (%s), Topics: %d\n",
+        #    $category->{category_id}, $category->{category_name},
+        #    $board->{board_id}, $board->{board_name},
+        #    (scalar @topics);
+        $board_results->{$category->{category_id}}{$board->{board_id}}{topics} = \@topics;
     }
 }
 
-print Dumper($topic_results);
+my $json_dump = JSON->new->utf8->allow_nonref->canonical->pretty->encode($board_results);
+print "$json_dump\n";
 
 # Interesting.. /space/stuff/Mirrors/MudMirror-2020-05-11/lpmuds.net/smf/index0e50.html
 # Looks like the format changed?  We may have to adapt, as the forum might have started
